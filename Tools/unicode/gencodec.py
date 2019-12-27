@@ -283,7 +283,7 @@ def codegen(name, map, encodingname, comments=1):
 
 """#"
 
-import codecs
+agiza codecs
 
 ### Codec APIs
 

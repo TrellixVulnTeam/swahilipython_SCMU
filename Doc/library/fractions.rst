@@ -14,8 +14,8 @@
 The :mod:`fractions` module provides support for rational number arithmetic.
 
 
-A Fraction instance can be constructed from a pair of integers, from
-another rational number, or from a string.
+A Fraction instance can be constructed kutoka a pair of integers, kutoka
+another rational number, or kutoka a string.
 
 .. class:: Fraction(numerator=0, denominator=1)
            Fraction(other_fraction)
@@ -48,7 +48,7 @@ another rational number, or from a string.
    input string may also have leading and/or trailing whitespace.
    Here are some examples::
 
-      >>> from fractions import Fraction
+      >>> kutoka fractions agiza Fraction
       >>> Fraction(16, -10)
       Fraction(-8, 5)
       >>> Fraction(123)
@@ -69,14 +69,14 @@ another rational number, or from a string.
       Fraction(9, 4)
       >>> Fraction(1.1)
       Fraction(2476979795053773, 2251799813685248)
-      >>> from decimal import Decimal
+      >>> kutoka decimal agiza Decimal
       >>> Fraction(Decimal('1.1'))
       Fraction(11, 10)
 
 
-   The :class:`Fraction` class inherits from the abstract base class
+   The :class:`Fraction` kundi inherits kutoka the abstract base class
    :class:`numbers.Rational`, and implements all of the methods and
-   operations from that class.  :class:`Fraction` instances are hashable,
+   operations kutoka that class.  :class:`Fraction` instances are hashable,
    and should be treated as immutable.  In addition,
    :class:`Fraction` has the following properties and methods:
 
@@ -101,27 +101,27 @@ another rational number, or from a string.
 
       .. versionadded:: 3.8
 
-   .. method:: from_float(flt)
+   .. method:: kutoka_float(flt)
 
-      This class method constructs a :class:`Fraction` representing the exact
+      This kundi method constructs a :class:`Fraction` representing the exact
       value of *flt*, which must be a :class:`float`. Beware that
-      ``Fraction.from_float(0.3)`` is not the same value as ``Fraction(3, 10)``.
+      ``Fraction.kutoka_float(0.3)`` is not the same value as ``Fraction(3, 10)``.
 
       .. note::
 
          From Python 3.2 onwards, you can also construct a
-         :class:`Fraction` instance directly from a :class:`float`.
+         :class:`Fraction` instance directly kutoka a :class:`float`.
 
 
-   .. method:: from_decimal(dec)
+   .. method:: kutoka_decimal(dec)
 
-      This class method constructs a :class:`Fraction` representing the exact
+      This kundi method constructs a :class:`Fraction` representing the exact
       value of *dec*, which must be a :class:`decimal.Decimal` instance.
 
       .. note::
 
          From Python 3.2 onwards, you can also construct a
-         :class:`Fraction` instance directly from a :class:`decimal.Decimal`
+         :class:`Fraction` instance directly kutoka a :class:`decimal.Decimal`
          instance.
 
 
@@ -131,13 +131,13 @@ another rational number, or from a string.
       denominator at most max_denominator.  This method is useful for finding
       rational approximations to a given floating-point number:
 
-         >>> from fractions import Fraction
+         >>> kutoka fractions agiza Fraction
          >>> Fraction('3.1415926535897932').limit_denominator(1000)
          Fraction(355, 113)
 
       or for recovering a rational number that's represented as a float:
 
-         >>> from math import pi, cos
+         >>> kutoka math agiza pi, cos
          >>> Fraction(cos(pi/3))
          Fraction(4503599627370497, 9007199254740992)
          >>> Fraction(cos(pi/3)).limit_denominator()
@@ -151,7 +151,7 @@ another rational number, or from a string.
       Returns the greatest :class:`int` ``<= self``.  This method can
       also be accessed through the :func:`math.floor` function:
 
-        >>> from math import floor
+        >>> kutoka math agiza floor
         >>> floor(Fraction(355, 113))
         3
 

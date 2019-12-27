@@ -7,7 +7,7 @@ BIG = 1<<32
 HUGE = 1<<64
 REALLY_HUGE = 1<<96
 
-class BigNum(IntEnum):
+kundi BigNum(IntEnum):
     small = SMALL
     big = BIG
     huge = HUGE
@@ -17,7 +17,7 @@ E = 2.718281
 PI = 3.141593
 TAU = 2 * PI
 
-class FloatNum(float, Enum):
+kundi FloatNum(float, Enum):
     e = E
     pi = PI
     tau = TAU
@@ -26,36 +26,36 @@ INF = float('inf')
 NEG_INF = float('-inf')
 NAN = float('nan')
 
-class WierdNum(float, Enum):
+kundi WierdNum(float, Enum):
     inf = INF
     neg_inf = NEG_INF
     nan = NAN
 
-class TestEnum:
+kundi TestEnum:
 
-    def test_floats(self):
+    eleza test_floats(self):
         for enum in FloatNum:
             self.assertEqual(self.dumps(enum), repr(enum.value))
             self.assertEqual(float(self.dumps(enum)), enum)
             self.assertEqual(self.loads(self.dumps(enum)), enum)
 
-    def test_weird_floats(self):
+    eleza test_weird_floats(self):
         for enum, expected in zip(WierdNum, ('Infinity', '-Infinity', 'NaN')):
             self.assertEqual(self.dumps(enum), expected)
-            if not isnan(enum):
+            ikiwa not isnan(enum):
                 self.assertEqual(float(self.dumps(enum)), enum)
                 self.assertEqual(self.loads(self.dumps(enum)), enum)
             else:
                 self.assertTrue(isnan(float(self.dumps(enum))))
                 self.assertTrue(isnan(self.loads(self.dumps(enum))))
 
-    def test_ints(self):
+    eleza test_ints(self):
         for enum in BigNum:
             self.assertEqual(self.dumps(enum), str(enum.value))
             self.assertEqual(int(self.dumps(enum)), enum)
             self.assertEqual(self.loads(self.dumps(enum)), enum)
 
-    def test_list(self):
+    eleza test_list(self):
         self.assertEqual(self.dumps(list(BigNum)),
                          str([SMALL, BIG, HUGE, REALLY_HUGE]))
         self.assertEqual(self.loads(self.dumps(list(BigNum))),
@@ -70,7 +70,7 @@ class TestEnum:
                          list(WierdNum)[:2])
         self.assertTrue(isnan(self.loads(self.dumps(list(WierdNum)))[2]))
 
-    def test_dict_keys(self):
+    eleza test_dict_keys(self):
         s, b, h, r = BigNum
         e, p, t = FloatNum
         i, j, n = WierdNum
@@ -91,7 +91,7 @@ class TestEnum:
         self.assertEqual(nd['-Infinity'], '-Infinity')
         self.assertEqual(nd['NaN'], 'NaN')
 
-    def test_dict_values(self):
+    eleza test_dict_values(self):
         d = dict(
                 tiny=BigNum.small,
                 large=BigNum.big,
@@ -116,5 +116,5 @@ class TestEnum:
         self.assertEqual(nd['j'], NEG_INF)
         self.assertTrue(isnan(nd['n']))
 
-class TestPyEnum(TestEnum, PyTest): pass
-class TestCEnum(TestEnum, CTest): pass
+kundi TestPyEnum(TestEnum, PyTest): pass
+kundi TestCEnum(TestEnum, CTest): pass

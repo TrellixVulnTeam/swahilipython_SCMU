@@ -12,7 +12,7 @@ extern "C" {
 #  define _PyObject_CallMethodId _PyObject_CallMethodId_SizeT
 #endif
 
-/* Convert keyword arguments from the FASTCALL (stack: C array, kwnames: tuple)
+/* Convert keyword arguments kutoka the FASTCALL (stack: C array, kwnames: tuple)
    format to a Python dictionary ("kwargs" dict).
 
    The type of kwnames keys is not checked. The final function getting
@@ -207,7 +207,7 @@ PyAPI_FUNC(int) PyObject_GetBuffer(PyObject *obj, Py_buffer *view,
    Note that view->ndim is the assumed size of indices. */
 PyAPI_FUNC(void *) PyBuffer_GetPointer(Py_buffer *view, Py_ssize_t *indices);
 
-/* Return the implied itemsize of the data-format area from a
+/* Return the implied itemsize of the data-format area kutoka a
    struct-style description. */
 PyAPI_FUNC(int) PyBuffer_SizeFromFormat(const char *);
 
@@ -218,7 +218,7 @@ PyAPI_FUNC(int) PyBuffer_ToContiguous(void *buf, Py_buffer *view,
 PyAPI_FUNC(int) PyBuffer_FromContiguous(Py_buffer *view, void *buf,
                                         Py_ssize_t len, char order);
 
-/* Copy len bytes of data from the contiguous chunk of memory
+/* Copy len bytes of data kutoka the contiguous chunk of memory
    pointed to by buf into the buffer exported by obj.  Return
    0 on success and return -1 and raise a PyBuffer_Error on
    error (i.e. the object does not have a buffer interface or
@@ -233,7 +233,7 @@ PyAPI_FUNC(int) PyBuffer_FromContiguous(Py_buffer *view, void *buf,
    in whatever way is more efficient. */
 PyAPI_FUNC(int) PyObject_CopyData(PyObject *dest, PyObject *src);
 
-/* Copy the data from the src buffer to the buffer of destination. */
+/* Copy the data kutoka the src buffer to the buffer of destination. */
 PyAPI_FUNC(int) PyBuffer_IsContiguous(const Py_buffer *view, char fort);
 
 /*Fill the strides array with byte-strides of a contiguous
@@ -255,7 +255,7 @@ PyAPI_FUNC(int) PyBuffer_FillInfo(Py_buffer *view, PyObject *o, void *buf,
                                   Py_ssize_t len, int readonly,
                                   int flags);
 
-/* Releases a Py_buffer obtained from getbuffer ParseTuple's "s*". */
+/* Releases a Py_buffer obtained kutoka getbuffer ParseTuple's "s*". */
 PyAPI_FUNC(void) PyBuffer_Release(Py_buffer *view);
 
 /* ==== Iterators ================================================ */

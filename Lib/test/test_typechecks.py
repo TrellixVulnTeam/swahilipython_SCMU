@@ -3,54 +3,54 @@
 agiza unittest
 
 
-class ABC(type):
+kundi ABC(type):
 
-    def __instancecheck__(cls, inst):
+    eleza __instancecheck__(cls, inst):
         """Implement isinstance(inst, cls)."""
-        return any(cls.__subclasscheck__(c)
+        rudisha any(cls.__subclasscheck__(c)
                    for c in {type(inst), inst.__class__})
 
-    def __subclasscheck__(cls, sub):
+    eleza __subclasscheck__(cls, sub):
         """Implement issubclass(sub, cls)."""
         candidates = cls.__dict__.get("__subclass__", set()) | {cls}
-        return any(c in candidates for c in sub.mro())
+        rudisha any(c in candidates for c in sub.mro())
 
 
-class Integer(metaclass=ABC):
+kundi Integer(metaclass=ABC):
     __subclass__ = {int}
 
 
-class SubInt(Integer):
+kundi SubInt(Integer):
     pass
 
 
-class TypeChecksTest(unittest.TestCase):
+kundi TypeChecksTest(unittest.TestCase):
 
-    def testIsSubclassInternal(self):
+    eleza testIsSubclassInternal(self):
         self.assertEqual(Integer.__subclasscheck__(int), True)
         self.assertEqual(Integer.__subclasscheck__(float), False)
 
-    def testIsSubclassBuiltin(self):
+    eleza testIsSubclassBuiltin(self):
         self.assertEqual(issubclass(int, Integer), True)
         self.assertEqual(issubclass(int, (Integer,)), True)
         self.assertEqual(issubclass(float, Integer), False)
         self.assertEqual(issubclass(float, (Integer,)), False)
 
-    def testIsInstanceBuiltin(self):
+    eleza testIsInstanceBuiltin(self):
         self.assertEqual(isinstance(42, Integer), True)
         self.assertEqual(isinstance(42, (Integer,)), True)
         self.assertEqual(isinstance(3.14, Integer), False)
         self.assertEqual(isinstance(3.14, (Integer,)), False)
 
-    def testIsInstanceActual(self):
+    eleza testIsInstanceActual(self):
         self.assertEqual(isinstance(Integer(), Integer), True)
         self.assertEqual(isinstance(Integer(), (Integer,)), True)
 
-    def testIsSubclassActual(self):
+    eleza testIsSubclassActual(self):
         self.assertEqual(issubclass(Integer, Integer), True)
         self.assertEqual(issubclass(Integer, (Integer,)), True)
 
-    def testSubclassBehavior(self):
+    eleza testSubclassBehavior(self):
         self.assertEqual(issubclass(SubInt, Integer), True)
         self.assertEqual(issubclass(SubInt, (Integer,)), True)
         self.assertEqual(issubclass(SubInt, SubInt), True)
@@ -67,5 +67,5 @@ class TypeChecksTest(unittest.TestCase):
         self.assertEqual(isinstance(42, (SubInt,)), False)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

@@ -6,10 +6,10 @@ agiza time
 agiza hashlib
 
 
-def creatorFunc():
+eleza creatorFunc():
     raise RuntimeError("eek, creatorFunc not overridden")
 
-def test_scaled_msg(scale, name):
+eleza test_scaled_msg(scale, name):
     iterations = 106201//scale * 20
     longStr = b'Z'*scale
 
@@ -19,23 +19,23 @@ def test_scaled_msg(scale, name):
         x = localCF(longStr).digest()
     end = time.perf_counter()
 
-    print(('%2.2f' % (end-start)), "seconds", iterations, "x", len(longStr), "bytes", name)
+    andika(('%2.2f' % (end-start)), "seconds", iterations, "x", len(longStr), "bytes", name)
 
-def test_create():
+eleza test_create():
     start = time.perf_counter()
     for f in range(20000):
         d = creatorFunc()
     end = time.perf_counter()
 
-    print(('%2.2f' % (end-start)), "seconds", '[20000 creations]')
+    andika(('%2.2f' % (end-start)), "seconds", '[20000 creations]')
 
-def test_zero():
+eleza test_zero():
     start = time.perf_counter()
     for f in range(20000):
         x = creatorFunc().digest()
     end = time.perf_counter()
 
-    print(('%2.2f' % (end-start)), "seconds", '[20000 "" digests]')
+    andika(('%2.2f' % (end-start)), "seconds", '[20000 "" digests]')
 
 
 
@@ -44,36 +44,36 @@ hName = sys.argv[1]
 #
 # setup our creatorFunc to test the requested hash
 #
-if hName in ('_md5', '_sha'):
+ikiwa hName in ('_md5', '_sha'):
     exec('agiza '+hName)
     exec('creatorFunc = '+hName+'.new')
-    print("testing speed of old", hName, "legacy interface")
-elif hName == '_hashlib' and len(sys.argv) > 3:
+    andika("testing speed of old", hName, "legacy interface")
+elikiwa hName == '_hashlib' and len(sys.argv) > 3:
     agiza _hashlib
     exec('creatorFunc = _hashlib.%s' % sys.argv[2])
-    print("testing speed of _hashlib.%s" % sys.argv[2], getattr(_hashlib, sys.argv[2]))
-elif hName == '_hashlib' and len(sys.argv) == 3:
+    andika("testing speed of _hashlib.%s" % sys.argv[2], getattr(_hashlib, sys.argv[2]))
+elikiwa hName == '_hashlib' and len(sys.argv) == 3:
     agiza _hashlib
     exec('creatorFunc = lambda x=_hashlib.new : x(%r)' % sys.argv[2])
-    print("testing speed of _hashlib.new(%r)" % sys.argv[2])
-elif hasattr(hashlib, hName) and hasattr(getattr(hashlib, hName), '__call__'):
+    andika("testing speed of _hashlib.new(%r)" % sys.argv[2])
+elikiwa hasattr(hashlib, hName) and hasattr(getattr(hashlib, hName), '__call__'):
     creatorFunc = getattr(hashlib, hName)
-    print("testing speed of hashlib."+hName, getattr(hashlib, hName))
+    andika("testing speed of hashlib."+hName, getattr(hashlib, hName))
 else:
     exec("creatorFunc = lambda x=hashlib.new : x(%r)" % hName)
-    print("testing speed of hashlib.new(%r)" % hName)
+    andika("testing speed of hashlib.new(%r)" % hName)
 
 try:
     test_create()
 except ValueError:
-    print()
-    print("pass argument(s) naming the hash to run a speed test on:")
-    print(" '_md5' and '_sha' test the legacy builtin md5 and sha")
-    print(" '_hashlib' 'openssl_hName' 'fast' tests the builtin _hashlib")
-    print(" '_hashlib' 'hName' tests builtin _hashlib.new(shaFOO)")
-    print(" 'hName' tests the hashlib.hName() implementation if it exists")
-    print("         otherwise it uses hashlib.new(hName).")
-    print()
+    andika()
+    andika("pass argument(s) naming the hash to run a speed test on:")
+    andika(" '_md5' and '_sha' test the legacy builtin md5 and sha")
+    andika(" '_hashlib' 'openssl_hName' 'fast' tests the builtin _hashlib")
+    andika(" '_hashlib' 'hName' tests builtin _hashlib.new(shaFOO)")
+    andika(" 'hName' tests the hashlib.hName() implementation ikiwa it exists")
+    andika("         otherwise it uses hashlib.new(hName).")
+    andika()
     raise
 
 test_zero()

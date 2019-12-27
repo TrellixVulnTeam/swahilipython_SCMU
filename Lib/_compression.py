@@ -6,7 +6,7 @@ agiza io
 BUFFER_SIZE = io.DEFAULT_BUFFER_SIZE  # Compressed data read chunk size
 
 
-class BaseStream(io.BufferedIOBase):
+kundi BaseStream(io.BufferedIOBase):
     """Mode-checking helper functions."""
 
     def _check_not_closed(self):
@@ -30,7 +30,7 @@ class BaseStream(io.BufferedIOBase):
                                           "does not support seeking")
 
 
-class DecompressReader(io.RawIOBase):
+kundi DecompressReader(io.RawIOBase):
     """Adapts the decompressor API to a RawIOBase reader API"""
 
     def readable(self):
@@ -52,7 +52,7 @@ class DecompressReader(io.RawIOBase):
         self._decomp_args = decomp_args
         self._decompressor = self._decomp_factory(**self._decomp_args)
 
-        # Exception class to catch kutoka decompressor signifying invalid
+        # Exception kundi to catch kutoka decompressor signifying invalid
         # trailing data to ignore
         self._trailing_error = trailing_error
 
@@ -121,9 +121,9 @@ class DecompressReader(io.RawIOBase):
         # Recalculate offset as an absolute file position.
         if whence == io.SEEK_SET:
             pass
-        elif whence == io.SEEK_CUR:
+        lasivyo whence == io.SEEK_CUR:
             offset = self._pos + offset
-        elif whence == io.SEEK_END:
+        lasivyo whence == io.SEEK_END:
             # Seeking relative to EOF - we need to know the file's size.
             if self._size < 0:
                 while self.read(io.DEFAULT_BUFFER_SIZE):

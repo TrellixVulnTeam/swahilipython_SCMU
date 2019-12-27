@@ -4,7 +4,7 @@
 # https://devguide.python.org/grammar/
 
 # Start symbols for the grammar:
-#	file_input is a module or sequence of commands read from an input file;
+#	file_input is a module or sequence of commands read kutoka an input file;
 #	single_input is a single interactive statement;
 #	eval_input is the input for the eval() and input() functions.
 # NB: compound_stmt in single_input is followed by extra NEWLINE!
@@ -14,22 +14,22 @@ eval_input: testlist NEWLINE* ENDMARKER
 
 decorator: '@' dotted_name [ '(' [arglist] ')' ] NEWLINE
 decorators: decorator+
-decorated: decorators (classdef | funcdef | async_funcdef)
+decorated: decorators (classeleza | funceleza | async_funcdef)
 async_funcdef: ASYNC funcdef
 funcdef: 'def' NAME parameters ['->' test] ':' suite
 parameters: '(' [typedargslist] ')'
-typedargslist: ((tfpdef ['=' test] ',')*
+typedargslist: ((tfpeleza ['=' test] ',')*
                 ('*' [tname] (',' tname ['=' test])* [',' ['**' tname [',']]] | '**' tname [','])
-                | tfpdef ['=' test] (',' tfpdef ['=' test])* [','])
+                | tfpeleza ['=' test] (',' tfpeleza ['=' test])* [','])
 tname: NAME [':' test]
 tfpdef: tname | '(' tfplist ')'
-tfplist: tfpdef (',' tfpdef)* [',']
-varargslist: ((vfpdef ['=' test] ',')*
+tfplist: tfpeleza (',' tfpdef)* [',']
+varargslist: ((vfpeleza ['=' test] ',')*
               ('*' [vname] (',' vname ['=' test])*  [',' ['**' vname [',']]] | '**' vname [','])
-              | vfpdef ['=' test] (',' vfpdef ['=' test])* [','])
+              | vfpeleza ['=' test] (',' vfpeleza ['=' test])* [','])
 vname: NAME
 vfpdef: vname | '(' vfplist ')'
-vfplist: vfpdef (',' vfpdef)* [',']
+vfplist: vfpeleza (',' vfpdef)* [',']
 
 stmt: simple_stmt | compound_stmt
 simple_stmt: small_stmt (';' small_stmt)* [';'] NEWLINE
@@ -51,10 +51,10 @@ break_stmt: 'break'
 continue_stmt: 'continue'
 return_stmt: 'return' [testlist]
 yield_stmt: yield_expr
-raise_stmt: 'raise' [test ['from' test | ',' test [',' test]]]
-import_stmt: import_name | import_from
+raise_stmt: 'raise' [test ['kutoka' test | ',' test [',' test]]]
+import_stmt: import_name | import_kutoka
 import_name: 'agiza' dotted_as_names
-import_from: ('from' ('.'* dotted_name | '.'+)
+import_kutoka: ('kutoka' ('.'* dotted_name | '.'+)
               'agiza' ('*' | '(' import_as_names ')' | import_as_names))
 import_as_name: NAME ['as' NAME]
 dotted_as_name: dotted_name ['as' NAME]
@@ -65,8 +65,8 @@ global_stmt: ('global' | 'nonlocal') NAME (',' NAME)*
 exec_stmt: 'exec' expr ['in' test [',' test]]
 assert_stmt: 'assert' test [',' test]
 
-compound_stmt: if_stmt | while_stmt | for_stmt | try_stmt | with_stmt | funcdef | classdef | decorated | async_stmt
-async_stmt: ASYNC (funcdef | with_stmt | for_stmt)
+compound_stmt: if_stmt | while_stmt | for_stmt | try_stmt | with_stmt | funceleza | classeleza | decorated | async_stmt
+async_stmt: ASYNC (funceleza | with_stmt | for_stmt)
 if_stmt: 'if' test ':' suite ('elif' test ':' suite)* ['else' ':' suite]
 while_stmt: 'while' test ':' suite ['else' ':' suite]
 for_stmt: 'for' exprlist 'in' testlist ':' suite ['else' ':' suite]
@@ -83,9 +83,9 @@ except_clause: 'except' [test [(',' | 'as') test]]
 suite: simple_stmt | NEWLINE INDENT stmt+ DEDENT
 
 # Backward compatibility cruft to support:
-# [ x for x in lambda: True, lambda: False if x() ]
+# [ x for x in lambda: True, lambda: False ikiwa x() ]
 # even while also allowing:
-# lambda x: 5 if x else 2
+# lambda x: 5 ikiwa x else 2
 # (But not a mix of the two)
 testlist_safe: old_test [(',' old_test)+ [',']]
 old_test: or_test | old_lambdef
@@ -147,8 +147,8 @@ comp_if: 'if' old_test [comp_iter]
 
 testlist1: test (',' test)*
 
-# not used in grammar, but may appear in "node" passed from Parser to Compiler
+# not used in grammar, but may appear in "node" passed kutoka Parser to Compiler
 encoding_decl: NAME
 
 yield_expr: 'yield' [yield_arg]
-yield_arg: 'from' test | testlist
+yield_arg: 'kutoka' test | testlist

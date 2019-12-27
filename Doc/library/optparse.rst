@@ -25,7 +25,7 @@ GNU/POSIX syntax, and additionally generates usage and help messages for you.
 
 Here's an example of using :mod:`optparse` in a simple script::
 
-   from optparse import OptionParser
+   kutoka optparse agiza OptionParser
    ...
    parser = OptionParser()
    parser.add_option("-f", "--file", dest="filename",
@@ -43,7 +43,7 @@ on the command-line, for example::
 
 As it parses the command line, :mod:`optparse` sets attributes of the
 ``options`` object returned by :meth:`parse_args` based on user-supplied
-command-line values.  When :meth:`parse_args` returns from parsing this command
+command-line values.  When :meth:`parse_args` returns kutoka parsing this command
 line, ``options.filename`` will be ``"outfile"`` and ``options.verbose`` will be
 ``False``.  :mod:`optparse` supports both long and short options, allows short
 options to be merged together, and allows options to be associated with their
@@ -71,7 +71,7 @@ and :mod:`optparse` will print out a brief summary of your script's options:
      -f FILE, --file=FILE  write report to FILE
      -q, --quiet           don't print status messages to stdout
 
-where the value of *yourscript* is determined at runtime (normally from
+where the value of *yourscript* is determined at runtime (normally kutoka
 ``sys.argv[0]``).
 
 
@@ -135,8 +135,8 @@ option
 
 option argument
    an argument that follows an option, is closely associated with that option,
-   and is consumed from the argument list when that option is. With
-   :mod:`optparse`, option arguments may either be in a separate argument from
+   and is consumed kutoka the argument list when that option is. With
+   :mod:`optparse`, option arguments may either be in a separate argument kutoka
    their option:
 
    .. code-block:: text
@@ -161,13 +161,13 @@ option argument
 
 positional argument
    something leftover in the argument list after options have been parsed, i.e.
-   after options and their arguments have been parsed and removed from the
+   after options and their arguments have been parsed and removed kutoka the
    argument list.
 
 required option
    an option that must be supplied on the command-line; note that the phrase
    "required option" is self-contradictory in English.  :mod:`optparse` doesn't
-   prevent you from implementing required options, but doesn't give you much
+   prevent you kutoka implementing required options, but doesn't give you much
    help at it either.
 
 For example, consider this hypothetical command-line::
@@ -187,7 +187,7 @@ What are options for?
 Options are used to provide extra information to tune or customize the execution
 of a program.  In case it wasn't clear, options are usually *optional*.  A
 program should be able to run just fine with no options whatsoever.  (Pick a
-random program from the Unix or GNU toolsets.  Can it run without any options at
+random program kutoka the Unix or GNU toolsets.  Can it run without any options at
 all and still make sense?  The main exceptions are ``find``, ``tar``, and
 ``dd``\ ---all of which are mutant oddballs that have been rightly criticized
 for their non-standard syntax and confusing interfaces.)
@@ -209,7 +209,7 @@ does not require any options at all::
 You can get pretty far with just that.  Most ``cp`` implementations provide a
 bunch of options to tweak exactly how the files are copied: you can preserve
 mode and modification time, avoid following symlinks, ask before clobbering
-existing files, etc.  But none of this distracts from the core mission of
+existing files, etc.  But none of this distracts kutoka the core mission of
 ``cp``, which is to copy either one file to another, or several files to another
 directory.
 
@@ -224,7 +224,7 @@ absolutely, positively requires to run.
 
 A good user interface should have as few absolute requirements as possible.  If
 your program requires 17 distinct pieces of information in order to run
-successfully, it doesn't much matter *how* you get that information from the
+successfully, it doesn't much matter *how* you get that information kutoka the
 user---most people will give up and walk away before they successfully run the
 program.  This applies whether the user interface is a command-line, a
 configuration file, or a GUI: if you make that many demands on your users, most
@@ -249,10 +249,10 @@ While :mod:`optparse` is quite flexible and powerful, it's also straightforward
 to use in most cases.  This section covers the code patterns that are common to
 any :mod:`optparse`\ -based program.
 
-First, you need to import the OptionParser class; then, early in the main
+First, you need to agiza the OptionParser class; then, early in the main
 program, create an OptionParser instance::
 
-   from optparse import OptionParser
+   kutoka optparse agiza OptionParser
    ...
    parser = OptionParser()
 
@@ -278,7 +278,7 @@ The option strings passed to :meth:`OptionParser.add_option` are effectively
 labels for the
 option defined by that call.  For brevity, we will frequently refer to
 *encountering an option* on the command line; in reality, :mod:`optparse`
-encounters *option strings* and looks up options from them.
+encounters *option strings* and looks up options kutoka them.
 
 Once all of your options are defined, instruct :mod:`optparse` to parse your
 program's command line::
@@ -312,7 +312,7 @@ Actions tell :mod:`optparse` what to do when it encounters an option on the
 command line.  There is a fixed set of actions hard-coded into :mod:`optparse`;
 adding new actions is an advanced topic covered in section
 :ref:`optparse-extending-optparse`.  Most actions tell :mod:`optparse` to store
-a value in some variable---for example, take a string from the command line and
+a value in some variable---for example, take a string kutoka the command line and
 store it in an attribute of ``options``.
 
 If you don't specify an option action, :mod:`optparse` defaults to ``store``.
@@ -365,7 +365,7 @@ be a lot shorter::
    parser.add_option("-f", "--file", dest="filename")
 
 If you don't supply a destination, :mod:`optparse` figures out a sensible
-default from the option strings: if the first long option string is
+default kutoka the option strings: if the first long option string is
 ``--foo-bar``, then the default destination is ``foo_bar``.  If there are no
 long option strings, :mod:`optparse` looks at the first short option string: the
 default destination for ``-f`` is ``f``.
@@ -561,7 +561,7 @@ When dealing with many options, it is convenient to group these options for
 better help output.  An :class:`OptionParser` can contain several option groups,
 each of which can contain several options.
 
-An option group is obtained using the class :class:`OptionGroup`:
+An option group is obtained using the kundi :class:`OptionGroup`:
 
 .. class:: OptionGroup(parser, title, description=None)
 
@@ -572,7 +572,7 @@ An option group is obtained using the class :class:`OptionGroup`:
    * title is the group title
    * description, optional, is a long description of the group
 
-:class:`OptionGroup` inherits from :class:`OptionContainer` (like
+:class:`OptionGroup` inherits kutoka :class:`OptionContainer` (like
 :class:`OptionParser`) and so the :meth:`add_option` method can be used to add
 an option to the group.
 
@@ -672,7 +672,7 @@ argument to OptionParser::
 
    parser = OptionParser(usage="%prog [-f] [-q]", version="%prog 1.0")
 
-``%prog`` is expanded just like it is in ``usage``.  Apart from that,
+``%prog`` is expanded just like it is in ``usage``.  Apart kutoka that,
 ``version`` can contain anything you like.  When you supply it, :mod:`optparse`
 automatically adds a ``--version`` option to your parser. If it encounters
 this option on the command line, it expands your ``version`` string (by
@@ -750,10 +750,10 @@ Or, where the user fails to pass a value at all:
 
 :mod:`optparse`\ -generated error messages take care always to mention the
 option involved in the error; be sure to do the same when calling
-:func:`OptionParser.error` from your application code.
+:func:`OptionParser.error` kutoka your application code.
 
 If :mod:`optparse`'s default error-handling behaviour does not suit your needs,
-you'll need to subclass OptionParser and override its :meth:`~OptionParser.exit`
+you'll need to subkundi OptionParser and override its :meth:`~OptionParser.exit`
 and/or :meth:`~OptionParser.error` methods.
 
 
@@ -764,13 +764,13 @@ Putting it all together
 
 Here's what :mod:`optparse`\ -based scripts usually look like::
 
-   from optparse import OptionParser
+   kutoka optparse agiza OptionParser
    ...
    def main():
        usage = "usage: %prog [options] arg"
        parser = OptionParser(usage)
        parser.add_option("-f", "--file", dest="filename",
-                         help="read data from FILENAME")
+                         help="read data kutoka FILENAME")
        parser.add_option("-v", "--verbose",
                          action="store_true", dest="verbose")
        parser.add_option("-q", "--quiet",
@@ -816,7 +816,7 @@ The first step in using :mod:`optparse` is to create an OptionParser instance.
    ``option_list`` (default: ``[]``)
       A list of Option objects to populate the parser with.  The options in
       ``option_list`` are added after any options in ``standard_option_list`` (a
-      class attribute that may be set by OptionParser subclasses), but before
+      kundi attribute that may be set by OptionParser subclasses), but before
       any version or help options. Deprecated; use :meth:`add_option` after
       creating the parser instead.
 
@@ -885,7 +885,7 @@ the OptionParser constructor, as in::
 (:func:`make_option` is a factory function for creating Option instances;
 currently it is an alias for the Option constructor.  A future version of
 :mod:`optparse` may split Option into several classes, and :func:`make_option`
-will pick the right class to instantiate.  Do not instantiate Option directly.)
+will pick the right kundi to instantiate.  Do not instantiate Option directly.)
 
 
 .. _optparse-defining-options:
@@ -1014,7 +1014,7 @@ relevant to a particular option, or fail to pass a required option attribute,
 
 .. attribute:: Option.dest
 
-   (default: derived from option strings)
+   (default: derived kutoka option strings)
 
    If the option's action implies writing or modifying a value somewhere, this
    tells :mod:`optparse` where to write it: :attr:`~Option.dest` names an
@@ -1041,7 +1041,7 @@ relevant to a particular option, or fail to pass a required option attribute,
 .. attribute:: Option.choices
 
    For options of type ``"choice"``, the list of strings the user may choose
-   from.
+   kutoka.
 
 .. attribute:: Option.callback
 
@@ -1064,7 +1064,7 @@ relevant to a particular option, or fail to pass a required option attribute,
 
 .. attribute:: Option.metavar
 
-   (default: derived from option strings)
+   (default: derived kutoka option strings)
 
    Stand-in for the option argument(s) to use when printing help text.  See
    section :ref:`optparse-tutorial` for an example.
@@ -1085,7 +1085,7 @@ must specify for any option using that action.
 
   The option must be followed by an argument, which is converted to a value
   according to :attr:`~Option.type` and stored in :attr:`~Option.dest`.  If
-  :attr:`~Option.nargs` > 1, multiple arguments will be consumed from the
+  :attr:`~Option.nargs` > 1, multiple arguments will be consumed kutoka the
   command line; all will be converted according to :attr:`~Option.type` and
   stored to :attr:`~Option.dest` as a tuple.  See the
   :ref:`optparse-standard-option-types` section.
@@ -1096,9 +1096,9 @@ must specify for any option using that action.
   If :attr:`~Option.type` is not supplied, it defaults to ``"string"``.
 
   If :attr:`~Option.dest` is not supplied, :mod:`optparse` derives a destination
-  from the first long option string (e.g., ``--foo-bar`` implies
+  kutoka the first long option string (e.g., ``--foo-bar`` implies
   ``foo_bar``). If there are no long option strings, :mod:`optparse` derives a
-  destination from the first short option string (e.g., ``-f`` implies ``f``).
+  destination kutoka the first short option string (e.g., ``-f`` implies ``f``).
 
   Example::
 
@@ -1178,7 +1178,7 @@ must specify for any option using that action.
   option.  This means that any default value specified must have an ``append``
   method.  It also means that if the default value is non-empty, the default
   elements will be present in the parsed value for the option, with any values
-  from the command line appended after those default values::
+  kutoka the command line appended after those default values::
 
      >>> parser.add_option("--files", action="append", default=['~/.mypkg/defaults'])
      >>> opts, args = parser.parse_args(['--files', 'overrides.mypkg'])
@@ -1226,7 +1226,7 @@ must specify for any option using that action.
 * ``"help"``
 
   Prints a complete help message for all the options in the current option
-  parser.  The help message is constructed from the ``usage`` string passed to
+  parser.  The help message is constructed kutoka the ``usage`` string passed to
   OptionParser's constructor and the :attr:`~Option.help` string passed to every
   option.
 
@@ -1239,7 +1239,7 @@ must specify for any option using that action.
 
   Example::
 
-     from optparse import OptionParser, SUPPRESS_HELP
+     kutoka optparse agiza OptionParser, SUPPRESS_HELP
 
      # usually, a help option is added automatically, but that can
      # be suppressed using the add_help_option argument
@@ -1249,7 +1249,7 @@ must specify for any option using that action.
      parser.add_option("-v", action="store_true", dest="verbose",
                        help="Be moderately verbose")
      parser.add_option("--file", dest="filename",
-                       help="Input file to read data from")
+                       help="Input file to read data kutoka")
      parser.add_option("--secret", help=SUPPRESS_HELP)
 
   If :mod:`optparse` sees either ``-h`` or ``--help`` on the command line,
@@ -1263,7 +1263,7 @@ must specify for any option using that action.
      Options:
        -h, --help        Show this help message and exit
        -v                Be moderately verbose
-       --file=FILENAME   Input file to read data from
+       --file=FILENAME   Input file to read data kutoka
 
   After printing the help message, :mod:`optparse` terminates your process with
   ``sys.exit(0)``.
@@ -1419,7 +1419,7 @@ strings::
    ...
    parser.add_option("-n", "--noisy", ...)
 
-(This is particularly true if you've defined your own OptionParser subclass with
+(This is particularly true if you've defined your own OptionParser subkundi with
 some standard options.)
 
 Every time you add an option, :mod:`optparse` checks for conflicts with existing
@@ -1451,7 +1451,7 @@ intelligently and add conflicting options to it::
 
 At this point, :mod:`optparse` detects that a previously-added option is already
 using the ``-n`` option string.  Since ``conflict_handler`` is ``"resolve"``,
-it resolves the situation by removing ``-n`` from the earlier option's list of
+it resolves the situation by removing ``-n`` kutoka the earlier option's list of
 option strings.  Now ``--dry-run`` is the only way for the user to activate
 that option.  If the user asks for help, the help message will reflect that::
 
@@ -1461,7 +1461,7 @@ that option.  If the user asks for help, the help message will reflect that::
      -n, --noisy   be noisy
 
 It's possible to whittle away the option strings for a previously-added option
-until there are none left, and the user has no way of invoking that option from
+until there are none left, and the user has no way of invoking that option kutoka
 the command-line.  In that case, :mod:`optparse` removes that option completely,
 so it doesn't show up in help text or anywhere else. Carrying on with our
 existing OptionParser::
@@ -1486,7 +1486,7 @@ OptionParser instances have several cyclic references.  This should not be a
 problem for Python's garbage collector, but you may wish to break the cyclic
 references explicitly by calling :meth:`~OptionParser.destroy` on your
 OptionParser once you are done with it.  This is particularly useful in
-long-running applications where large object graphs are reachable from your
+long-running applications where large object graphs are reachable kutoka your
 OptionParser.
 
 
@@ -1563,7 +1563,7 @@ Defining a callback option
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 As always, the easiest way to define a callback option is by using the
-:meth:`OptionParser.add_option` method.  Apart from :attr:`~Option.action`, the
+:meth:`OptionParser.add_option` method.  Apart kutoka :attr:`~Option.action`, the
 only option attribute you must specify is ``callback``, the function to call::
 
    parser.add_option("-c", action="callback", callback=my_callback)
@@ -1851,8 +1851,8 @@ direction of extension is to add new actions and new types.
 Adding new types
 ^^^^^^^^^^^^^^^^
 
-To add new types, you need to define your own subclass of :mod:`optparse`'s
-:class:`Option` class.  This class has a couple of attributes that define
+To add new types, you need to define your own subkundi of :mod:`optparse`'s
+:class:`Option` class.  This kundi has a couple of attributes that define
 :mod:`optparse`'s types: :attr:`~Option.TYPES` and :attr:`~Option.TYPE_CHECKER`.
 
 .. attribute:: Option.TYPES
@@ -1868,7 +1868,7 @@ To add new types, you need to define your own subclass of :mod:`optparse`'s
       def check_mytype(option, opt, value)
 
    where ``option`` is an :class:`Option` instance, ``opt`` is an option string
-   (e.g., ``-f``), and ``value`` is the string from the command line that must
+   (e.g., ``-f``), and ``value`` is the string kutoka the command line that must
    be checked and converted to your desired type.  ``check_mytype()`` should
    return an object of the hypothetical type ``mytype``.  The value returned by
    a type-checking function will wind up in the OptionValues instance returned
@@ -1888,11 +1888,11 @@ complex numbers, but never mind.)
 
 First, the necessary imports::
 
-   from copy import copy
-   from optparse import Option, OptionValueError
+   kutoka copy agiza copy
+   kutoka optparse agiza Option, OptionValueError
 
 You need to define your type-checker first, since it's referred to later (in the
-:attr:`~Option.TYPE_CHECKER` class attribute of your Option subclass)::
+:attr:`~Option.TYPE_CHECKER` kundi attribute of your Option subclass)::
 
    def check_complex(option, opt, value):
        try:
@@ -1903,14 +1903,14 @@ You need to define your type-checker first, since it's referred to later (in the
 
 Finally, the Option subclass::
 
-   class MyOption (Option):
+   kundi MyOption (Option):
        TYPES = Option.TYPES + ("complex",)
        TYPE_CHECKER = copy(Option.TYPE_CHECKER)
        TYPE_CHECKER["complex"] = check_complex
 
 (If we didn't make a :func:`copy` of :attr:`Option.TYPE_CHECKER`, we would end
 up modifying the :attr:`~Option.TYPE_CHECKER` attribute of :mod:`optparse`'s
-Option class.  This being Python, nothing stops you from doing that except good
+Option class.  This being Python, nothing stops you kutoka doing that except good
 manners and common sense.)
 
 That's it!  Now you can write a script that uses the new option type just like
@@ -1922,7 +1922,7 @@ OptionParser to use MyOption instead of Option::
 
 Alternately, you can build your own option list and pass it to OptionParser; if
 you don't use :meth:`add_option` in the above way, you don't need to tell
-OptionParser which option class to use::
+OptionParser which option kundi to use::
 
    option_list = [MyOption("-c", action="store", type="complex", dest="c")]
    parser = OptionParser(option_list=option_list)
@@ -1942,7 +1942,7 @@ Adding new actions is a bit trickier, because you have to understand that
    attribute to be supplied to the Option constructor.
 
 "typed" actions
-   actions that take a value from the command line and expect it to be of a
+   actions that take a value kutoka the command line and expect it to be of a
    certain type; or rather, a string that can be converted to a certain type.
    These options require a :attr:`~Option.type` attribute to the Option
    constructor.
@@ -1952,7 +1952,7 @@ These are overlapping sets: some default "store" actions are ``"store"``,
 actions are ``"store"``, ``"append"``, and ``"callback"``.
 
 When you add an action, you need to categorize it by listing it in at least one
-of the following class attributes of Option (all are lists of strings):
+of the following kundi attributes of Option (all are lists of strings):
 
 .. attribute:: Option.ACTIONS
 
@@ -1977,7 +1977,7 @@ In order to actually implement your new action, you must override Option's
 :meth:`take_action` method and add a case that recognizes your action.
 
 For example, let's add an ``"extend"`` action.  This is similar to the standard
-``"append"`` action, but instead of taking a single value from the command-line
+``"append"`` action, but instead of taking a single value kutoka the command-line
 and appending it to an existing list, ``"extend"`` will take multiple values in
 a single comma-delimited string, and extend an existing list with them.  That
 is, if ``--names`` is an ``"extend"`` option of type ``"string"``, the command
@@ -1989,9 +1989,9 @@ would result in a list  ::
 
    ["foo", "bar", "blah", "ding", "dong"]
 
-Again we define a subclass of Option::
+Again we define a subkundi of Option::
 
-   class MyOption(Option):
+   kundi MyOption(Option):
 
        ACTIONS = Option.ACTIONS + ("extend",)
        STORE_ACTIONS = Option.STORE_ACTIONS + ("extend",)

@@ -50,7 +50,7 @@ The available exception and functions in this module are:
 .. function:: compress(data, level=-1)
 
    Compresses the bytes in *data*, returning a bytes object containing compressed data.
-   *level* is an integer from ``0`` to ``9`` or ``-1`` controlling the level of compression;
+   *level* is an integer kutoka ``0`` to ``9`` or ``-1`` controlling the level of compression;
    ``1`` (Z_BEST_SPEED) is fastest and produces the least compression, ``9`` (Z_BEST_COMPRESSION)
    is slowest and produces the most.  ``0`` (Z_NO_COMPRESSION) is no compression.
    The default value is ``-1`` (Z_DEFAULT_COMPRESSION).  Z_DEFAULT_COMPRESSION represents a default
@@ -66,7 +66,7 @@ The available exception and functions in this module are:
    Returns a compression object, to be used for compressing data streams that won't
    fit into memory at once.
 
-   *level* is the compression level -- an integer from ``0`` to ``9`` or ``-1``.
+   *level* is the compression level -- an integer kutoka ``0`` to ``9`` or ``-1``.
    A value of ``1`` (Z_BEST_SPEED) is fastest and produces the least compression,
    while a value of ``9`` (Z_BEST_COMPRESSION) is slowest and produces the most.
    ``0`` (Z_NO_COMPRESSION) is no compression.  The default value is ``-1`` (Z_DEFAULT_COMPRESSION).
@@ -95,7 +95,7 @@ The available exception and functions in this module are:
      and trailing checksum in the output.
 
    The *memLevel* argument controls the amount of memory used for the
-   internal compression state. Valid values range from ``1`` to ``9``.
+   internal compression state. Valid values range kutoka ``1`` to ``9``.
    Higher values use more memory, but are faster and produce smaller output.
 
    *strategy* is used to tune the compression algorithm. Possible values are
@@ -150,7 +150,7 @@ The available exception and functions in this module are:
    * +8 to +15: The base-two logarithm of the window size.  The input
      must include a zlib header and trailer.
 
-   * 0: Automatically determine the window size from the zlib header.
+   * 0: Automatically determine the window size kutoka the zlib header.
      Only supported since zlib 1.2.3.5.
 
    * −8 to −15: Uses the absolute value of *wbits* as the window size
@@ -215,7 +215,7 @@ Compression objects support the following methods:
 .. method:: Compress.flush([mode])
 
    All pending input is processed, and a bytes object containing the remaining compressed
-   output is returned.  *mode* can be selected from the constants
+   output is returned.  *mode* can be selected kutoka the constants
    :const:`Z_NO_FLUSH`, :const:`Z_PARTIAL_FLUSH`, :const:`Z_SYNC_FLUSH`,
    :const:`Z_FULL_FLUSH`, :const:`Z_BLOCK` (zlib 1.2.3.4), or :const:`Z_FINISH`,
    defaulting to :const:`Z_FINISH`.  Except :const:`Z_FINISH`, all constants
@@ -315,7 +315,7 @@ the following constants:
 .. data:: ZLIB_VERSION
 
    The version string of the zlib library that was used for building the module.
-   This may be different from the zlib library actually used at runtime, which
+   This may be different kutoka the zlib library actually used at runtime, which
    is available as :const:`ZLIB_RUNTIME_VERSION`.
 
 

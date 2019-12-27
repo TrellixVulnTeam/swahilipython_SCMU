@@ -12,7 +12,7 @@
 --------------
 
 The :mod:`textwrap` module provides some convenience functions,
-as well as :class:`TextWrapper`, the class that does all the work.
+as well as :class:`TextWrapper`, the kundi that does all the work.
 If you're just wrapping or filling one or two text strings, the convenience
 functions should be good enough; otherwise, you should use an instance of
 :class:`TextWrapper` for efficiency.
@@ -47,7 +47,7 @@ functions should be good enough; otherwise, you should use an instance of
 
    First the whitespace in *text* is collapsed (all whitespace is replaced by
    single spaces).  If the result fits in the *width*, it is returned.
-   Otherwise, enough words are dropped from the end so that the remaining words
+   Otherwise, enough words are dropped kutoka the end so that the remaining words
    plus the :attr:`placeholder` fit within :attr:`width`::
 
       >>> textwrap.shorten("Hello  world!", width=12)
@@ -68,7 +68,7 @@ functions should be good enough; otherwise, you should use an instance of
 
 .. function:: dedent(text)
 
-   Remove any common leading whitespace from every line in *text*.
+   Remove any common leading whitespace kutoka every line in *text*.
 
    This can be used to make triple-quoted strings line up with the left edge of the
    display, while still presenting them in the source code in indented form.
@@ -287,7 +287,7 @@ hyphenated words; only then will long words be broken if necessary, unless
    .. method:: wrap(text)
 
       Wraps the single paragraph in *text* (a string) so every line is at most
-      :attr:`width` characters long.  All wrapping options are taken from
+      :attr:`width` characters long.  All wrapping options are taken kutoka
       instance attributes of the :class:`TextWrapper` instance.  Returns a list
       of output lines, without final newlines.  If the wrapped output has no
       content, the returned list is empty.

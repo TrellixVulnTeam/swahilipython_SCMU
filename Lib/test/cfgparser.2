@@ -34,7 +34,7 @@
 # 2. Printing Options:
 # CHANGES TO ENABLE PRINTING ON ALL CUPS PRINTERS IN THE NETWORK
 # (as cups is now used in linux-mandrake 7.2 by default)
-# if you want to automatically load your printer list rather
+# ikiwa you want to automatically load your printer list rather
 # than setting them up individually then you'll need this
    
    printcap name = lpstat
@@ -72,15 +72,15 @@
 # 4. Security and Domain Membership Options:
 # This option is agizaant for security. It allows you to restrict
 # connections to machines which are on your local network. The
-# following example restricts access to two C class networks and
+# following example restricts access to two C kundi networks and
 # the "loopback" interface. For more examples of the syntax see
-# the smb.conf man page. Do not enable this if (tcp/ip) name resolution #does
+# the smb.conf man page. Do not enable this ikiwa (tcp/ip) name resolution #does
 # not work for all the hosts in your network.
 ;   hosts allow = 192.168.1. 192.168.2. 127.
 
   hosts allow = 127.  //note this is only my private IP address
 
-# Uncomment this if you want a guest account, you must add this to
+# Uncomment this ikiwa you want a guest account, you must add this to
 # /etc/passwd
 # otherwise the user "nobody" is used
 ;  guest account = pcguest
@@ -190,7 +190,7 @@
 # Cause this host to announce itself to local subnets here
 ;   remote announce = 192.168.1.255 192.168.2.44
 
-# set local master to no if you don't want Samba to become a master
+# set local master to no ikiwa you don't want Samba to become a master
 # browser on your network. Otherwise the normal election rules apply
 ;   local master = no
 
@@ -200,7 +200,7 @@
 
 # Domain Master specifies Samba to be the Domain Master Browser. This
 # allows Samba to collate browse lists between subnets. Don't use this
-# if you already have a Windows NT domain controller doing this job
+# ikiwa you already have a Windows NT domain controller doing this job
 ;   domain master = yes 
 
 # Preferred Master causes Samba to force a local browser election on
@@ -208,14 +208,14 @@
 ;   preferred master = yes
 
 # 6. Domain Control Options:
-# Enable this if you want Samba to be a domain logon server for 
+# Enable this ikiwa you want Samba to be a domain logon server for 
 # Windows95 workstations or Primary Domain Controller for WinNT and
 # Win2k
 
 ;  domain logons = yes
 
 
-# if you enable domain logons then you may want a per-machine or
+# ikiwa you enable domain logons then you may want a per-machine or
 # per user logon script
 # run a specific logon batch file per workstation (machine)
 ;   logon script = %m.bat
@@ -236,7 +236,7 @@
 # the domain controller to add local machine accounts when adding 
 # machines to the domain.
 # The script must work kutoka the command line when replacing the macros,
-# or the operation will fail. Check that groups exist if forcing a 
+# or the operation will fail. Check that groups exist ikiwa forcing a 
 # group.
 # Script for domain controller for adding machines:
 ; add user script = /usr/sbin/useradd -d /dev/null -g machines –c
@@ -357,7 +357,7 @@
 ;   guest ok = yes
 ;   writable = no
 
-#Uncomment the following 2 lines if you would like your login scripts
+#Uncomment the following 2 lines ikiwa you would like your login scripts
 # to be created dynamically by ntlogon (check that you have it in the
 # correct location (the default of the ntlogon rpm available in
 # contribs)
@@ -400,7 +400,7 @@
 ;  print command = lpr-cups -P %p %s 
 # using cups own drivers (use generic PostScript on clients).
 # The following two commands are the samba defaults for printing=cups
-# change them only if you need different options:
+# change them only ikiwa you need different options:
 ;   lpq command = lpq -P %p
 ;   lprm command = cancel %p-%j
 

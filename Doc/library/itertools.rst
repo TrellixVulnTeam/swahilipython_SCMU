@@ -9,12 +9,12 @@
 
 .. testsetup::
 
-   from itertools import *
+   kutoka itertools agiza *
 
 --------------
 
 This module implements a number of :term:`iterator` building blocks inspired
-by constructs from APL, Haskell, and SML.  Each has been recast in a form
+by constructs kutoka APL, Haskell, and SML.  Each has been recast in a form
 suitable for Python.
 
 The module standardizes a core set of fast, memory efficient tools that are
@@ -49,12 +49,12 @@ Iterator                        Arguments                       Results         
 ============================    ============================    =================================================   =============================================================
 :func:`accumulate`              p [,func]                       p0, p0+p1, p0+p1+p2, ...                            ``accumulate([1,2,3,4,5]) --> 1 3 6 10 15``
 :func:`chain`                   p, q, ...                       p0, p1, ... plast, q0, q1, ...                      ``chain('ABC', 'DEF') --> A B C D E F``
-:func:`chain.from_iterable`     iterable                        p0, p1, ... plast, q0, q1, ...                      ``chain.from_iterable(['ABC', 'DEF']) --> A B C D E F``
+:func:`chain.kutoka_iterable`     iterable                        p0, p1, ... plast, q0, q1, ...                      ``chain.kutoka_iterable(['ABC', 'DEF']) --> A B C D E F``
 :func:`compress`                data, selectors                 (d[0] if s[0]), (d[1] if s[1]), ...                 ``compress('ABCDEF', [1,0,1,0,1,1]) --> A C E F``
 :func:`dropwhile`               pred, seq                       seq[n], seq[n+1], starting when pred fails          ``dropwhile(lambda x: x<5, [1,4,6,4,1]) --> 6 4 1``
 :func:`filterfalse`             pred, seq                       elements of seq where pred(elem) is false           ``filterfalse(lambda x: x%2, range(10)) --> 0 2 4 6 8``
 :func:`groupby`                 iterable[, key]                 sub-iterators grouped by value of key(v)
-:func:`islice`                  seq, [start,] stop [, step]     elements from seq[start:stop:step]                  ``islice('ABCDEFG', 2, None) --> C D E F G``
+:func:`islice`                  seq, [start,] stop [, step]     elements kutoka seq[start:stop:step]                  ``islice('ABCDEFG', 2, None) --> C D E F G``
 :func:`starmap`                 func, seq                       func(\*seq[0]), func(\*seq[1]), ...                 ``starmap(pow, [(2,5), (3,2), (10,3)]) --> 32 9 1000``
 :func:`takewhile`               pred, seq                       seq[0], seq[1], until pred fails                    ``takewhile(lambda x: x<5, [1,4,6,4,1]) --> 1 4``
 :func:`tee`                     it, n                           it1, it2, ... itn  splits one iterator into n
@@ -171,7 +171,7 @@ loops that truncate the stream.
 
 .. function:: chain(*iterables)
 
-   Make an iterator that returns elements from the first iterable until it is
+   Make an iterator that returns elements kutoka the first iterable until it is
    exhausted, then proceeds to the next iterable, until all of the iterables are
    exhausted.  Used for treating consecutive sequences as a single sequence.
    Roughly equivalent to::
@@ -183,13 +183,13 @@ loops that truncate the stream.
                   yield element
 
 
-.. classmethod:: chain.from_iterable(iterable)
+.. classmethod:: chain.kutoka_iterable(iterable)
 
-   Alternate constructor for :func:`chain`.  Gets chained inputs from a
+   Alternate constructor for :func:`chain`.  Gets chained inputs kutoka a
    single iterable argument that is evaluated lazily.  Roughly equivalent to::
 
-      def from_iterable(iterables):
-          # chain.from_iterable(['ABC', 'DEF']) --> A B C D E F
+      def kutoka_iterable(iterables):
+          # chain.kutoka_iterable(['ABC', 'DEF']) --> A B C D E F
           for it in iterables:
               for element in it:
                   yield element
@@ -197,7 +197,7 @@ loops that truncate the stream.
 
 .. function:: combinations(iterable, r)
 
-   Return *r* length subsequences of elements from the input *iterable*.
+   Return *r* length subsequences of elements kutoka the input *iterable*.
 
    Combinations are emitted in lexicographic sort order.  So, if the
    input *iterable* is sorted, the combination tuples will be produced
@@ -245,7 +245,7 @@ loops that truncate the stream.
 
 .. function:: combinations_with_replacement(iterable, r)
 
-   Return *r* length subsequences of elements from the input *iterable*
+   Return *r* length subsequences of elements kutoka the input *iterable*
    allowing individual elements to be repeated more than once.
 
    Combinations are emitted in lexicographic sort order.  So, if the
@@ -293,7 +293,7 @@ loops that truncate the stream.
 
 .. function:: compress(data, selectors)
 
-   Make an iterator that filters elements from *data* returning only those that
+   Make an iterator that filters elements kutoka *data* returning only those that
    have a corresponding element in *selectors* that evaluates to ``True``.
    Stops when either the *data* or *selectors* iterables has been exhausted.
    Roughly equivalent to::
@@ -328,8 +328,8 @@ loops that truncate the stream.
 
 .. function:: cycle(iterable)
 
-   Make an iterator returning elements from the iterable and saving a copy of each.
-   When the iterable is exhausted, return elements from the saved copy.  Repeats
+   Make an iterator returning elements kutoka the iterable and saving a copy of each.
+   When the iterable is exhausted, return elements kutoka the saved copy.  Repeats
    indefinitely.  Roughly equivalent to::
 
       def cycle(iterable):
@@ -348,7 +348,7 @@ loops that truncate the stream.
 
 .. function:: dropwhile(predicate, iterable)
 
-   Make an iterator that drops elements from the iterable as long as the predicate
+   Make an iterator that drops elements kutoka the iterable as long as the predicate
    is true; afterwards, returns every element.  Note, the iterator does not produce
    *any* output until the predicate first becomes false, so it may have a lengthy
    start-up time.  Roughly equivalent to::
@@ -365,7 +365,7 @@ loops that truncate the stream.
 
 .. function:: filterfalse(predicate, iterable)
 
-   Make an iterator that filters elements from iterable returning only those for
+   Make an iterator that filters elements kutoka iterable returning only those for
    which the predicate is ``False``. If *predicate* is ``None``, return the items
    that are false. Roughly equivalent to::
 
@@ -380,7 +380,7 @@ loops that truncate the stream.
 
 .. function:: groupby(iterable, key=None)
 
-   Make an iterator that returns consecutive keys and groups from the *iterable*.
+   Make an iterator that returns consecutive keys and groups kutoka the *iterable*.
    The *key* is a function computing a key value for each element.  If not
    specified or is ``None``, *key* defaults to an identity function and returns
    the element unchanged.  Generally, the iterable needs to already be sorted on
@@ -389,7 +389,7 @@ loops that truncate the stream.
    The operation of :func:`groupby` is similar to the ``uniq`` filter in Unix.  It
    generates a break or new group every time the value of the key function changes
    (which is why it is usually necessary to have sorted the data using the same key
-   function).  That behavior differs from SQL's GROUP BY which aggregates common
+   function).  That behavior differs kutoka SQL's GROUP BY which aggregates common
    elements regardless of their input order.
 
    The returned group is itself an iterator that shares the underlying iterable
@@ -406,7 +406,7 @@ loops that truncate the stream.
 
    :func:`groupby` is roughly equivalent to::
 
-      class groupby:
+      kundi groupby:
           # [k for k, g in groupby('AAAABBBCCDAABBB')] --> A B C D A B
           # [list(g) for k, g in groupby('AAAABBBCCD')] --> AAAA BBB CC D
           def __init__(self, iterable, key=None):
@@ -437,14 +437,14 @@ loops that truncate the stream.
 .. function:: islice(iterable, stop)
               islice(iterable, start, stop[, step])
 
-   Make an iterator that returns selected elements from the iterable. If *start* is
-   non-zero, then elements from the iterable are skipped until start is reached.
+   Make an iterator that returns selected elements kutoka the iterable. If *start* is
+   non-zero, then elements kutoka the iterable are skipped until start is reached.
    Afterward, elements are returned consecutively unless *step* is set higher than
    one which results in items being skipped.  If *stop* is ``None``, then iteration
    continues until the iterator is exhausted, if at all; otherwise, it stops at the
    specified position.  Unlike regular slicing, :func:`islice` does not support
    negative values for *start*, *stop*, or *step*.  Can be used to extract related
-   fields from data where the internal structure has been flattened (for example, a
+   fields kutoka data where the internal structure has been flattened (for example, a
    multi-line report may list a name field on every third line).  Roughly equivalent to::
 
       def islice(iterable, *args):
@@ -521,7 +521,7 @@ loops that truncate the stream.
 
    The code for :func:`permutations` can be also expressed as a subsequence of
    :func:`product`, filtered to exclude entries with repeated elements (those
-   from the same position in the input pool)::
+   kutoka the same position in the input pool)::
 
         def permutations(iterable, r=None):
             pool = tuple(iterable)
@@ -590,9 +590,9 @@ loops that truncate the stream.
 
 .. function:: starmap(function, iterable)
 
-   Make an iterator that computes the function using arguments obtained from
+   Make an iterator that computes the function using arguments obtained kutoka
    the iterable.  Used instead of :func:`map` when argument parameters are already
-   grouped in tuples from a single iterable (the data has been "pre-zipped").  The
+   grouped in tuples kutoka a single iterable (the data has been "pre-zipped").  The
    difference between :func:`map` and :func:`starmap` parallels the distinction
    between ``function(a,b)`` and ``function(*c)``. Roughly equivalent to::
 
@@ -604,7 +604,7 @@ loops that truncate the stream.
 
 .. function:: takewhile(predicate, iterable)
 
-   Make an iterator that returns elements from the iterable as long as the
+   Make an iterator that returns elements kutoka the iterable as long as the
    predicate is true.  Roughly equivalent to::
 
       def takewhile(predicate, iterable):
@@ -618,7 +618,7 @@ loops that truncate the stream.
 
 .. function:: tee(iterable, n=2)
 
-   Return *n* independent iterators from a single iterable.
+   Return *n* independent iterators kutoka a single iterable.
 
    The following Python code helps explain what *tee* does (although the actual
    implementation is more complex and uses only a single underlying
@@ -657,7 +657,7 @@ loops that truncate the stream.
 
 .. function:: zip_longest(*iterables, fillvalue=None)
 
-   Make an iterator that aggregates elements from each of the iterables. If the
+   Make an iterator that aggregates elements kutoka each of the iterables. If the
    iterables are of uneven length, missing values are filled-in with *fillvalue*.
    Iteration continues until the longest iterable is exhausted.  Roughly equivalent to::
 
@@ -695,7 +695,7 @@ Itertools Recipes
 This section shows recipes for creating an extended toolset using the existing
 itertools as building blocks.
 
-Substantially all of these recipes and many, many others can be installed from
+Substantially all of these recipes and many, many others can be installed kutoka
 the `more-itertools project <https://pypi.org/project/more-itertools/>`_ found
 on the Python Package Index::
 
@@ -761,14 +761,14 @@ which incur interpreter overhead.
 
    def ncycles(iterable, n):
        "Returns the sequence elements n times"
-       return chain.from_iterable(repeat(tuple(iterable), n))
+       return chain.kutoka_iterable(repeat(tuple(iterable), n))
 
    def dotproduct(vec1, vec2):
        return sum(map(operator.mul, vec1, vec2))
 
    def flatten(listOfLists):
        "Flatten one level of nesting"
-       return chain.from_iterable(listOfLists)
+       return chain.kutoka_iterable(listOfLists)
 
    def repeatfunc(func, times=None, *args):
        """Repeat calls to func with specified arguments.
@@ -801,7 +801,7 @@ which incur interpreter overhead.
                for next in nexts:
                    yield next()
            except StopIteration:
-               # Remove the iterator we just exhausted from the cycle.
+               # Remove the iterator we just exhausted kutoka the cycle.
                num_active -= 1
                nexts = cycle(islice(nexts, num_active))
 
@@ -814,7 +814,7 @@ which incur interpreter overhead.
    def powerset(iterable):
        "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
        s = list(iterable)
-       return chain.from_iterable(combinations(s, r) for r in range(len(s)+1))
+       return chain.kutoka_iterable(combinations(s, r) for r in range(len(s)+1))
 
    def unique_everseen(iterable, key=None):
        "List unique elements, preserving order. Remember all elements ever seen."
@@ -876,25 +876,25 @@ which incur interpreter overhead.
        return next(filter(pred, iterable), default)
 
    def random_product(*args, repeat=1):
-       "Random selection from itertools.product(*args, **kwds)"
+       "Random selection kutoka itertools.product(*args, **kwds)"
        pools = [tuple(pool) for pool in args] * repeat
        return tuple(random.choice(pool) for pool in pools)
 
    def random_permutation(iterable, r=None):
-       "Random selection from itertools.permutations(iterable, r)"
+       "Random selection kutoka itertools.permutations(iterable, r)"
        pool = tuple(iterable)
        r = len(pool) if r is None else r
        return tuple(random.sample(pool, r))
 
    def random_combination(iterable, r):
-       "Random selection from itertools.combinations(iterable, r)"
+       "Random selection kutoka itertools.combinations(iterable, r)"
        pool = tuple(iterable)
        n = len(pool)
        indices = sorted(random.sample(range(n), r))
        return tuple(pool[i] for i in indices)
 
    def random_combination_with_replacement(iterable, r):
-       "Random selection from itertools.combinations_with_replacement(iterable, r)"
+       "Random selection kutoka itertools.combinations_with_replacement(iterable, r)"
        pool = tuple(iterable)
        n = len(pool)
        indices = sorted(random.randrange(n) for i in range(r))

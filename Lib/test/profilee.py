@@ -2,7 +2,7 @@
 Input for test_profile.py and test_cprofile.py.
 
 IMPORTANT: This stuff is touchy. If you modify anything above the
-test class you'll have to regenerate the stats by running the two
+test kundi you'll have to regenerate the stats by running the two
 test files.
 
 *ALL* NUMBERS in the expected output are relevant.  If you change
@@ -19,10 +19,10 @@ agiza sys
 # included in the profile and would appear to consume all the time.)
 TICKS = 42000
 
-def timer():
-    return TICKS
+eleza timer():
+    rudisha TICKS
 
-def testfunc():
+eleza testfunc():
     # 1 call
     # 1000 ticks total: 270 ticks local, 730 ticks in subfunctions
     global TICKS
@@ -32,27 +32,27 @@ def testfunc():
     TICKS += 171
     factorial(14)                       # 130
 
-def factorial(n):
+eleza factorial(n):
     # 23 calls total
     # 170 ticks total, 150 ticks local
     # 3 primitive calls, 130, 20 and 20 ticks total
     # including 116, 17, 17 ticks local
     global TICKS
-    if n > 0:
+    ikiwa n > 0:
         TICKS += n
-        return mul(n, factorial(n-1))
+        rudisha mul(n, factorial(n-1))
     else:
         TICKS += 11
-        return 1
+        rudisha 1
 
-def mul(a, b):
+eleza mul(a, b):
     # 20 calls
     # 1 tick, local
     global TICKS
     TICKS += 1
-    return a * b
+    rudisha a * b
 
-def helper():
+eleza helper():
     # 2 calls
     # 300 ticks total: 20 ticks local, 260 ticks in subfunctions
     global TICKS
@@ -70,7 +70,7 @@ def helper():
     helper2_indirect()                  # 70
     TICKS += 1
 
-def helper1():
+eleza helper1():
     # 4 calls
     # 30 ticks total: 29 ticks local, 1 tick in subfunctions
     global TICKS
@@ -81,11 +81,11 @@ def helper1():
     lst.append(42)                      # 0
     sys.exc_info()                      # 0
 
-def helper2_indirect():
+eleza helper2_indirect():
     helper2()                           # 50
     factorial(3)                        # 20
 
-def helper2():
+eleza helper2():
     # 8 calls
     # 50 ticks local: 39 ticks local, 11 ticks in subfunctions
     global TICKS
@@ -95,7 +95,7 @@ def helper2():
     subhelper()                         # 10
     TICKS += 15
 
-def subhelper():
+eleza subhelper():
     # 8 calls
     # 10 ticks total: 8 ticks local, 2 ticks in subfunctions
     global TICKS
@@ -106,8 +106,8 @@ def subhelper():
         except AttributeError:
             TICKS += 3                  # 3 x 2
 
-class C:
-    def __getattr__(self, name):
+kundi C:
+    eleza __getattr__(self, name):
         # 28 calls
         # 1 tick, local
         global TICKS

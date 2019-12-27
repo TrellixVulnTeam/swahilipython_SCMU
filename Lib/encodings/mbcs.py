@@ -11,7 +11,7 @@ which was written by Marc-Andre Lemburg (mal@lemburg.com).
 # on non-Windows systems
 from codecs import mbcs_encode, mbcs_decode
 # for IncrementalDecoder, IncrementalEncoder, ...
-import codecs
+agiza codecs
 
 ### Codec APIs
 

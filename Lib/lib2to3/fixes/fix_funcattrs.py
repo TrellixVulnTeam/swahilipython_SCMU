@@ -6,7 +6,7 @@ kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name
 
 
-class FixFuncattrs(fixer_base.BaseFix):
+kundi FixFuncattrs(fixer_base.BaseFix):
     BM_compatible = True
 
     PATTERN = """
@@ -15,7 +15,7 @@ class FixFuncattrs(fixer_base.BaseFix):
                                   | 'func_dict') > any* >
     """
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         attr = results["attr"][0]
         attr.replace(Name(("__%s__" % attr.value[5:]),
                           prefix=attr.prefix))

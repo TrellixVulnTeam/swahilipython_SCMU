@@ -10,10 +10,10 @@ agiza weakref
 kutoka test agiza support
 
 
-class DictTest(unittest.TestCase):
+kundi DictTest(unittest.TestCase):
 
-    def test_invalid_keyword_arguments(self):
-        class Custom(dict):
+    eleza test_invalid_keyword_arguments(self):
+        kundi Custom(dict):
             pass
         for invalid in {1 : 2}, Custom({1 : 2}):
             with self.assertRaises(TypeError):
@@ -21,12 +21,12 @@ class DictTest(unittest.TestCase):
             with self.assertRaises(TypeError):
                 {}.update(**invalid)
 
-    def test_constructor(self):
-        # calling built-in types without argument must return empty
+    eleza test_constructor(self):
+        # calling built-in types without argument must rudisha empty
         self.assertEqual(dict(), {})
         self.assertIsNot(dict(), {})
 
-    def test_literal_constructor(self):
+    eleza test_literal_constructor(self):
         # check literal constructor for different sized dicts
         # (to exercise the BUILD_MAP oparg).
         for n in (0, 1, 6, 256, 400):
@@ -37,13 +37,13 @@ class DictTest(unittest.TestCase):
             dictliteral = '{' + ', '.join(formatted_items) + '}'
             self.assertEqual(eval(dictliteral), dict(items))
 
-    def test_bool(self):
+    eleza test_bool(self):
         self.assertIs(not {}, True)
         self.assertTrue({1: 2})
         self.assertIs(bool({}), False)
         self.assertIs(bool({1: 2}), True)
 
-    def test_keys(self):
+    eleza test_keys(self):
         d = {}
         self.assertEqual(set(d.keys()), set())
         d = {'a': 1, 'b': 2}
@@ -56,7 +56,7 @@ class DictTest(unittest.TestCase):
         self.assertRaises(TypeError, d.keys, None)
         self.assertEqual(repr(dict(a=1).keys()), "dict_keys(['a'])")
 
-    def test_values(self):
+    eleza test_values(self):
         d = {}
         self.assertEqual(set(d.values()), set())
         d = {1:2}
@@ -64,7 +64,7 @@ class DictTest(unittest.TestCase):
         self.assertRaises(TypeError, d.values, None)
         self.assertEqual(repr(dict(a=1).values()), "dict_values([1])")
 
-    def test_items(self):
+    eleza test_items(self):
         d = {}
         self.assertEqual(set(d.items()), set())
 
@@ -73,7 +73,7 @@ class DictTest(unittest.TestCase):
         self.assertRaises(TypeError, d.items, None)
         self.assertEqual(repr(dict(a=1).items()), "dict_items([('a', 1)])")
 
-    def test_contains(self):
+    eleza test_contains(self):
         d = {}
         self.assertNotIn('a', d)
         self.assertFalse('a' in d)
@@ -85,13 +85,13 @@ class DictTest(unittest.TestCase):
 
         self.assertRaises(TypeError, d.__contains__)
 
-    def test_len(self):
+    eleza test_len(self):
         d = {}
         self.assertEqual(len(d), 0)
         d = {'a': 1, 'b': 2}
         self.assertEqual(len(d), 2)
 
-    def test_getitem(self):
+    eleza test_getitem(self):
         d = {'a': 1, 'b': 2}
         self.assertEqual(d['a'], 1)
         self.assertEqual(d['b'], 2)
@@ -104,39 +104,39 @@ class DictTest(unittest.TestCase):
 
         self.assertRaises(TypeError, d.__getitem__)
 
-        class BadEq(object):
-            def __eq__(self, other):
+        kundi BadEq(object):
+            eleza __eq__(self, other):
                 raise Exc()
-            def __hash__(self):
-                return 24
+            eleza __hash__(self):
+                rudisha 24
 
         d = {}
         d[BadEq()] = 42
         self.assertRaises(KeyError, d.__getitem__, 23)
 
-        class Exc(Exception): pass
+        kundi Exc(Exception): pass
 
-        class BadHash(object):
+        kundi BadHash(object):
             fail = False
-            def __hash__(self):
-                if self.fail:
+            eleza __hash__(self):
+                ikiwa self.fail:
                     raise Exc()
                 else:
-                    return 42
+                    rudisha 42
 
         x = BadHash()
         d[x] = 42
         x.fail = True
         self.assertRaises(Exc, d.__getitem__, x)
 
-    def test_clear(self):
+    eleza test_clear(self):
         d = {1:1, 2:2, 3:3}
         d.clear()
         self.assertEqual(d, {})
 
         self.assertRaises(TypeError, d.clear, None)
 
-    def test_update(self):
+    eleza test_update(self):
         d = {}
         d.update({1:100})
         d.update({2:20})
@@ -148,129 +148,129 @@ class DictTest(unittest.TestCase):
 
         self.assertRaises((TypeError, AttributeError), d.update, None)
 
-        class SimpleUserDict:
-            def __init__(self):
+        kundi SimpleUserDict:
+            eleza __init__(self):
                 self.d = {1:1, 2:2, 3:3}
-            def keys(self):
-                return self.d.keys()
-            def __getitem__(self, i):
-                return self.d[i]
+            eleza keys(self):
+                rudisha self.d.keys()
+            eleza __getitem__(self, i):
+                rudisha self.d[i]
         d.clear()
         d.update(SimpleUserDict())
         self.assertEqual(d, {1:1, 2:2, 3:3})
 
-        class Exc(Exception): pass
+        kundi Exc(Exception): pass
 
         d.clear()
-        class FailingUserDict:
-            def keys(self):
+        kundi FailingUserDict:
+            eleza keys(self):
                 raise Exc
         self.assertRaises(Exc, d.update, FailingUserDict())
 
-        class FailingUserDict:
-            def keys(self):
-                class BogonIter:
-                    def __init__(self):
+        kundi FailingUserDict:
+            eleza keys(self):
+                kundi BogonIter:
+                    eleza __init__(self):
                         self.i = 1
-                    def __iter__(self):
-                        return self
-                    def __next__(self):
-                        if self.i:
+                    eleza __iter__(self):
+                        rudisha self
+                    eleza __next__(self):
+                        ikiwa self.i:
                             self.i = 0
-                            return 'a'
+                            rudisha 'a'
                         raise Exc
-                return BogonIter()
-            def __getitem__(self, key):
-                return key
+                rudisha BogonIter()
+            eleza __getitem__(self, key):
+                rudisha key
         self.assertRaises(Exc, d.update, FailingUserDict())
 
-        class FailingUserDict:
-            def keys(self):
-                class BogonIter:
-                    def __init__(self):
+        kundi FailingUserDict:
+            eleza keys(self):
+                kundi BogonIter:
+                    eleza __init__(self):
                         self.i = ord('a')
-                    def __iter__(self):
-                        return self
-                    def __next__(self):
-                        if self.i <= ord('z'):
+                    eleza __iter__(self):
+                        rudisha self
+                    eleza __next__(self):
+                        ikiwa self.i <= ord('z'):
                             rtn = chr(self.i)
                             self.i += 1
-                            return rtn
+                            rudisha rtn
                         raise StopIteration
-                return BogonIter()
-            def __getitem__(self, key):
+                rudisha BogonIter()
+            eleza __getitem__(self, key):
                 raise Exc
         self.assertRaises(Exc, d.update, FailingUserDict())
 
-        class badseq(object):
-            def __iter__(self):
-                return self
-            def __next__(self):
+        kundi badseq(object):
+            eleza __iter__(self):
+                rudisha self
+            eleza __next__(self):
                 raise Exc()
 
         self.assertRaises(Exc, {}.update, badseq())
 
         self.assertRaises(ValueError, {}.update, [(1, 2, 3)])
 
-    def test_fromkeys(self):
-        self.assertEqual(dict.fromkeys('abc'), {'a':None, 'b':None, 'c':None})
+    eleza test_kutokakeys(self):
+        self.assertEqual(dict.kutokakeys('abc'), {'a':None, 'b':None, 'c':None})
         d = {}
-        self.assertIsNot(d.fromkeys('abc'), d)
-        self.assertEqual(d.fromkeys('abc'), {'a':None, 'b':None, 'c':None})
-        self.assertEqual(d.fromkeys((4,5),0), {4:0, 5:0})
-        self.assertEqual(d.fromkeys([]), {})
-        def g():
+        self.assertIsNot(d.kutokakeys('abc'), d)
+        self.assertEqual(d.kutokakeys('abc'), {'a':None, 'b':None, 'c':None})
+        self.assertEqual(d.kutokakeys((4,5),0), {4:0, 5:0})
+        self.assertEqual(d.kutokakeys([]), {})
+        eleza g():
             yield 1
-        self.assertEqual(d.fromkeys(g()), {1:None})
-        self.assertRaises(TypeError, {}.fromkeys, 3)
-        class dictlike(dict): pass
-        self.assertEqual(dictlike.fromkeys('a'), {'a':None})
-        self.assertEqual(dictlike().fromkeys('a'), {'a':None})
-        self.assertIsInstance(dictlike.fromkeys('a'), dictlike)
-        self.assertIsInstance(dictlike().fromkeys('a'), dictlike)
-        class mydict(dict):
-            def __new__(cls):
-                return collections.UserDict()
-        ud = mydict.fromkeys('ab')
+        self.assertEqual(d.kutokakeys(g()), {1:None})
+        self.assertRaises(TypeError, {}.kutokakeys, 3)
+        kundi dictlike(dict): pass
+        self.assertEqual(dictlike.kutokakeys('a'), {'a':None})
+        self.assertEqual(dictlike().kutokakeys('a'), {'a':None})
+        self.assertIsInstance(dictlike.kutokakeys('a'), dictlike)
+        self.assertIsInstance(dictlike().kutokakeys('a'), dictlike)
+        kundi mydict(dict):
+            eleza __new__(cls):
+                rudisha collections.UserDict()
+        ud = mydict.kutokakeys('ab')
         self.assertEqual(ud, {'a':None, 'b':None})
         self.assertIsInstance(ud, collections.UserDict)
-        self.assertRaises(TypeError, dict.fromkeys)
+        self.assertRaises(TypeError, dict.kutokakeys)
 
-        class Exc(Exception): pass
+        kundi Exc(Exception): pass
 
-        class baddict1(dict):
-            def __init__(self):
+        kundi baddict1(dict):
+            eleza __init__(self):
                 raise Exc()
 
-        self.assertRaises(Exc, baddict1.fromkeys, [1])
+        self.assertRaises(Exc, baddict1.kutokakeys, [1])
 
-        class BadSeq(object):
-            def __iter__(self):
-                return self
-            def __next__(self):
+        kundi BadSeq(object):
+            eleza __iter__(self):
+                rudisha self
+            eleza __next__(self):
                 raise Exc()
 
-        self.assertRaises(Exc, dict.fromkeys, BadSeq())
+        self.assertRaises(Exc, dict.kutokakeys, BadSeq())
 
-        class baddict2(dict):
-            def __setitem__(self, key, value):
+        kundi baddict2(dict):
+            eleza __setitem__(self, key, value):
                 raise Exc()
 
-        self.assertRaises(Exc, baddict2.fromkeys, [1])
+        self.assertRaises(Exc, baddict2.kutokakeys, [1])
 
         # test fast path for dictionary inputs
         d = dict(zip(range(6), range(6)))
-        self.assertEqual(dict.fromkeys(d, 0), dict(zip(range(6), [0]*6)))
+        self.assertEqual(dict.kutokakeys(d, 0), dict(zip(range(6), [0]*6)))
 
-        class baddict3(dict):
-            def __new__(cls):
-                return d
+        kundi baddict3(dict):
+            eleza __new__(cls):
+                rudisha d
         d = {i : i for i in range(10)}
         res = d.copy()
         res.update(a=None, b=None, c=None)
-        self.assertEqual(baddict3.fromkeys({"a", "b", "c"}), res)
+        self.assertEqual(baddict3.kutokakeys({"a", "b", "c"}), res)
 
-    def test_copy(self):
+    eleza test_copy(self):
         d = {1: 1, 2: 2, 3: 3}
         self.assertIsNot(d.copy(), d)
         self.assertEqual(d.copy(), d)
@@ -283,7 +283,7 @@ class DictTest(unittest.TestCase):
         self.assertEqual({}.copy(), {})
         self.assertRaises(TypeError, d.copy, None)
 
-    def test_copy_fuzz(self):
+    eleza test_copy_fuzz(self):
         for dict_size in [10, 100, 1000, 10000, 100000]:
             dict_size = random.randrange(
                 dict_size // 2, dict_size + dict_size // 2)
@@ -299,8 +299,8 @@ class DictTest(unittest.TestCase):
                 self.assertNotEqual(d, d2)
                 self.assertEqual(len(d2), len(d) + 1)
 
-    def test_copy_maintains_tracking(self):
-        class A:
+    eleza test_copy_maintains_tracking(self):
+        kundi A:
             pass
 
         key = A()
@@ -309,7 +309,7 @@ class DictTest(unittest.TestCase):
             d2 = d.copy()
             self.assertEqual(gc.is_tracked(d), gc.is_tracked(d2))
 
-    def test_copy_noncompact(self):
+    eleza test_copy_noncompact(self):
         # Dicts don't compact themselves on del/pop operations.
         # Copy will use a slow merging strategy that produces
         # a compacted copy when roughly 33% of dict is a non-used
@@ -322,7 +322,7 @@ class DictTest(unittest.TestCase):
         d2 = d.copy()
         self.assertEqual(d2, d)
 
-    def test_get(self):
+    eleza test_get(self):
         d = {}
         self.assertIs(d.get('c'), None)
         self.assertEqual(d.get('c', 3), 3)
@@ -334,7 +334,7 @@ class DictTest(unittest.TestCase):
         self.assertRaises(TypeError, d.get)
         self.assertRaises(TypeError, d.get, None, None, None)
 
-    def test_setdefault(self):
+    eleza test_setdefault(self):
         # dict.setdefault()
         d = {}
         self.assertIs(d.setdefault('key0'), None)
@@ -346,33 +346,33 @@ class DictTest(unittest.TestCase):
         self.assertEqual(len(d['key']), 2)
         self.assertRaises(TypeError, d.setdefault)
 
-        class Exc(Exception): pass
+        kundi Exc(Exception): pass
 
-        class BadHash(object):
+        kundi BadHash(object):
             fail = False
-            def __hash__(self):
-                if self.fail:
+            eleza __hash__(self):
+                ikiwa self.fail:
                     raise Exc()
                 else:
-                    return 42
+                    rudisha 42
 
         x = BadHash()
         d[x] = 42
         x.fail = True
         self.assertRaises(Exc, d.setdefault, x, [])
 
-    def test_setdefault_atomic(self):
+    eleza test_setdefault_atomic(self):
         # Issue #13521: setdefault() calls __hash__ and __eq__ only once.
-        class Hashed(object):
-            def __init__(self):
+        kundi Hashed(object):
+            eleza __init__(self):
                 self.hash_count = 0
                 self.eq_count = 0
-            def __hash__(self):
+            eleza __hash__(self):
                 self.hash_count += 1
-                return 42
-            def __eq__(self, other):
+                rudisha 42
+            eleza __eq__(self, other):
                 self.eq_count += 1
-                return id(self) == id(other)
+                rudisha id(self) == id(other)
         hashed1 = Hashed()
         y = {hashed1: 5}
         hashed2 = Hashed()
@@ -381,17 +381,17 @@ class DictTest(unittest.TestCase):
         self.assertEqual(hashed2.hash_count, 1)
         self.assertEqual(hashed1.eq_count + hashed2.eq_count, 1)
 
-    def test_setitem_atomic_at_resize(self):
-        class Hashed(object):
-            def __init__(self):
+    eleza test_setitem_atomic_at_resize(self):
+        kundi Hashed(object):
+            eleza __init__(self):
                 self.hash_count = 0
                 self.eq_count = 0
-            def __hash__(self):
+            eleza __hash__(self):
                 self.hash_count += 1
-                return 42
-            def __eq__(self, other):
+                rudisha 42
+            eleza __eq__(self, other):
                 self.eq_count += 1
-                return id(self) == id(other)
+                rudisha id(self) == id(other)
         hashed1 = Hashed()
         # 5 items
         y = {hashed1: 5, 0: 0, 1: 1, 2: 2, 3: 3}
@@ -402,7 +402,7 @@ class DictTest(unittest.TestCase):
         self.assertEqual(hashed2.hash_count, 1)
         self.assertEqual(hashed1.eq_count + hashed2.eq_count, 1)
 
-    def test_popitem(self):
+    eleza test_popitem(self):
         # dict.popitem()
         for copymode in -1, +1:
             # -1: b has same structure as a
@@ -413,9 +413,9 @@ class DictTest(unittest.TestCase):
                 b = {}
                 for i in range(size):
                     a[repr(i)] = i
-                    if copymode < 0:
+                    ikiwa copymode < 0:
                         b[repr(i)] = i
-                if copymode > 0:
+                ikiwa copymode > 0:
                     b = a.copy()
                 for i in range(size):
                     ka, va = ta = a.popitem()
@@ -429,7 +429,7 @@ class DictTest(unittest.TestCase):
         d = {}
         self.assertRaises(KeyError, d.popitem)
 
-    def test_pop(self):
+    eleza test_pop(self):
         # Tests for pop with specified key
         d = {}
         k, v = 'abc', 'def'
@@ -447,22 +447,22 @@ class DictTest(unittest.TestCase):
 
         self.assertRaises(TypeError, d.pop)
 
-        class Exc(Exception): pass
+        kundi Exc(Exception): pass
 
-        class BadHash(object):
+        kundi BadHash(object):
             fail = False
-            def __hash__(self):
-                if self.fail:
+            eleza __hash__(self):
+                ikiwa self.fail:
                     raise Exc()
                 else:
-                    return 42
+                    rudisha 42
 
         x = BadHash()
         d[x] = 42
         x.fail = True
         self.assertRaises(Exc, d.pop, x)
 
-    def test_mutating_iteration(self):
+    eleza test_mutating_iteration(self):
         # changing dict size during iteration
         d = {}
         d[1] = 1
@@ -470,7 +470,7 @@ class DictTest(unittest.TestCase):
             for i in d:
                 d[i+1] = 1
 
-    def test_mutating_iteration_delete(self):
+    eleza test_mutating_iteration_delete(self):
         # change dict content during iteration
         d = {}
         d[0] = 0
@@ -479,7 +479,7 @@ class DictTest(unittest.TestCase):
                 del d[0]
                 d[0] = 0
 
-    def test_mutating_iteration_delete_over_values(self):
+    eleza test_mutating_iteration_delete_over_values(self):
         # change dict content during iteration
         d = {}
         d[0] = 0
@@ -488,7 +488,7 @@ class DictTest(unittest.TestCase):
                 del d[0]
                 d[0] = 0
 
-    def test_mutating_iteration_delete_over_items(self):
+    eleza test_mutating_iteration_delete_over_items(self):
         # change dict content during iteration
         d = {}
         d[0] = 0
@@ -497,24 +497,24 @@ class DictTest(unittest.TestCase):
                 del d[0]
                 d[0] = 0
 
-    def test_mutating_lookup(self):
+    eleza test_mutating_lookup(self):
         # changing dict during a lookup (issue #14417)
-        class NastyKey:
+        kundi NastyKey:
             mutate_dict = None
 
-            def __init__(self, value):
+            eleza __init__(self, value):
                 self.value = value
 
-            def __hash__(self):
+            eleza __hash__(self):
                 # hash collision!
-                return 1
+                rudisha 1
 
-            def __eq__(self, other):
-                if NastyKey.mutate_dict:
+            eleza __eq__(self, other):
+                ikiwa NastyKey.mutate_dict:
                     mydict, key = NastyKey.mutate_dict
                     NastyKey.mutate_dict = None
                     del mydict[key]
-                return self.value == other.value
+                rudisha self.value == other.value
 
         key1 = NastyKey(1)
         key2 = NastyKey(2)
@@ -523,7 +523,7 @@ class DictTest(unittest.TestCase):
         d[key2] = 2
         self.assertEqual(d, {key2: 2})
 
-    def test_repr(self):
+    eleza test_repr(self):
         d = {}
         self.assertEqual(repr(d), '{}')
         d[1] = 2
@@ -532,32 +532,32 @@ class DictTest(unittest.TestCase):
         d[1] = d
         self.assertEqual(repr(d), '{1: {...}}')
 
-        class Exc(Exception): pass
+        kundi Exc(Exception): pass
 
-        class BadRepr(object):
-            def __repr__(self):
+        kundi BadRepr(object):
+            eleza __repr__(self):
                 raise Exc()
 
         d = {1: BadRepr()}
         self.assertRaises(Exc, repr, d)
 
-    def test_repr_deep(self):
+    eleza test_repr_deep(self):
         d = {}
         for i in range(sys.getrecursionlimit() + 100):
             d = {1: d}
         self.assertRaises(RecursionError, repr, d)
 
-    def test_eq(self):
+    eleza test_eq(self):
         self.assertEqual({}, {})
         self.assertEqual({1: 2}, {1: 2})
 
-        class Exc(Exception): pass
+        kundi Exc(Exception): pass
 
-        class BadCmp(object):
-            def __eq__(self, other):
+        kundi BadCmp(object):
+            eleza __eq__(self, other):
                 raise Exc()
-            def __hash__(self):
-                return 1
+            eleza __hash__(self):
+                rudisha 1
 
         d1 = {BadCmp(): 1}
         d2 = {1: 1}
@@ -565,11 +565,11 @@ class DictTest(unittest.TestCase):
         with self.assertRaises(Exc):
             d1 == d2
 
-    def test_keys_contained(self):
+    eleza test_keys_contained(self):
         self.helper_keys_contained(lambda x: x.keys())
         self.helper_keys_contained(lambda x: x.items())
 
-    def helper_keys_contained(self, fn):
+    eleza helper_keys_contained(self, fn):
         # Test rich comparisons against dict key views, which should behave the
         # same as sets.
         empty = fn(dict())
@@ -613,9 +613,9 @@ class DictTest(unittest.TestCase):
         self.assertTrue(larger != larger3)
         self.assertFalse(larger == larger3)
 
-    def test_errors_in_view_containment_check(self):
-        class C:
-            def __eq__(self, other):
+    eleza test_errors_in_view_containment_check(self):
+        kundi C:
+            eleza __eq__(self, other):
                 raise RuntimeError
 
         d1 = {1: C()}
@@ -635,7 +635,7 @@ class DictTest(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             d3.items() > d2.items()
 
-    def test_dictview_set_operations_on_keys(self):
+    eleza test_dictview_set_operations_on_keys(self):
         k1 = {1:1, 2:2}.keys()
         k2 = {1:1, 2:2, 3:3}.keys()
         k3 = {4:4}.keys()
@@ -650,7 +650,7 @@ class DictTest(unittest.TestCase):
         self.assertEqual(k1 ^ k2, {3})
         self.assertEqual(k1 ^ k3, {1,2,4})
 
-    def test_dictview_set_operations_on_items(self):
+    eleza test_dictview_set_operations_on_items(self):
         k1 = {1:1, 2:2}.items()
         k2 = {1:1, 2:2, 3:3}.items()
         k3 = {4:4}.items()
@@ -665,7 +665,7 @@ class DictTest(unittest.TestCase):
         self.assertEqual(k1 ^ k2, {(3,3)})
         self.assertEqual(k1 ^ k3, {(1,1), (2,2), (4,4)})
 
-    def test_dictview_mixed_set_operations(self):
+    eleza test_dictview_mixed_set_operations(self):
         # Just a few for .keys()
         self.assertTrue({1:1}.keys() == {1})
         self.assertTrue({1} == {1:1}.keys())
@@ -677,18 +677,18 @@ class DictTest(unittest.TestCase):
         self.assertEqual({1:1}.items() | {2}, {(1,1), 2})
         self.assertEqual({2} | {1:1}.items(), {(1,1), 2})
 
-    def test_missing(self):
+    eleza test_missing(self):
         # Make sure dict doesn't have a __missing__ method
         self.assertFalse(hasattr(dict, "__missing__"))
         self.assertFalse(hasattr({}, "__missing__"))
         # Test several cases:
-        # (D) subclass defines __missing__ method returning a value
-        # (E) subclass defines __missing__ method raising RuntimeError
-        # (F) subclass sets __missing__ instance variable (no effect)
-        # (G) subclass doesn't define __missing__ at all
-        class D(dict):
-            def __missing__(self, key):
-                return 42
+        # (D) subkundi defines __missing__ method returning a value
+        # (E) subkundi defines __missing__ method raising RuntimeError
+        # (F) subkundi sets __missing__ instance variable (no effect)
+        # (G) subkundi doesn't define __missing__ at all
+        kundi D(dict):
+            eleza __missing__(self, key):
+                rudisha 42
         d = D({1: 2, 3: 4})
         self.assertEqual(d[1], 2)
         self.assertEqual(d[3], 4)
@@ -696,16 +696,16 @@ class DictTest(unittest.TestCase):
         self.assertNotIn(2, d.keys())
         self.assertEqual(d[2], 42)
 
-        class E(dict):
-            def __missing__(self, key):
+        kundi E(dict):
+            eleza __missing__(self, key):
                 raise RuntimeError(key)
         e = E()
         with self.assertRaises(RuntimeError) as c:
             e[42]
         self.assertEqual(c.exception.args, (42,))
 
-        class F(dict):
-            def __init__(self):
+        kundi F(dict):
+            eleza __init__(self):
                 # An instance variable __missing__ should have no effect
                 self.__missing__ = lambda key: None
         f = F()
@@ -713,33 +713,33 @@ class DictTest(unittest.TestCase):
             f[42]
         self.assertEqual(c.exception.args, (42,))
 
-        class G(dict):
+        kundi G(dict):
             pass
         g = G()
         with self.assertRaises(KeyError) as c:
             g[42]
         self.assertEqual(c.exception.args, (42,))
 
-    def test_tuple_keyerror(self):
+    eleza test_tuple_keyerror(self):
         # SF #1576657
         d = {}
         with self.assertRaises(KeyError) as c:
             d[(1,)]
         self.assertEqual(c.exception.args, ((1,),))
 
-    def test_bad_key(self):
-        # Dictionary lookups should fail if __eq__() raises an exception.
-        class CustomException(Exception):
+    eleza test_bad_key(self):
+        # Dictionary lookups should fail ikiwa __eq__() raises an exception.
+        kundi CustomException(Exception):
             pass
 
-        class BadDictKey:
-            def __hash__(self):
-                return hash(self.__class__)
+        kundi BadDictKey:
+            eleza __hash__(self):
+                rudisha hash(self.__class__)
 
-            def __eq__(self, other):
-                if isinstance(other, self.__class__):
+            eleza __eq__(self, other):
+                ikiwa isinstance(other, self.__class__):
                     raise CustomException
-                return other
+                rudisha other
 
         d = {}
         x1 = BadDictKey()
@@ -755,7 +755,7 @@ class DictTest(unittest.TestCase):
             with self.assertRaises(CustomException):
                 exec(stmt, locals())
 
-    def test_resize1(self):
+    eleza test_resize1(self):
         # Dict resizing bug, found by Jack Jansen in 2.2 CVS development.
         # This version got an assert failure in debug build, infinite loop in
         # release build.  Unfortunately, provoking this kind of stuff requires
@@ -771,17 +771,17 @@ class DictTest(unittest.TestCase):
         for i in range(5, 9):  # i==8 was the problem
             d[i] = i
 
-    def test_resize2(self):
+    eleza test_resize2(self):
         # Another dict resizing bug (SF bug #1456209).
         # This caused Segmentation faults or Illegal instructions.
 
-        class X(object):
-            def __hash__(self):
-                return 5
-            def __eq__(self, other):
-                if resizing:
+        kundi X(object):
+            eleza __hash__(self):
+                rudisha 5
+            eleza __eq__(self, other):
+                ikiwa resizing:
                     d.clear()
-                return False
+                rudisha False
         d = {}
         resizing = False
         d[X()] = 1
@@ -793,18 +793,18 @@ class DictTest(unittest.TestCase):
         resizing = True
         d[9] = 6
 
-    def test_empty_presized_dict_in_freelist(self):
-        # Bug #3537: if an empty but presized dict with a size larger
+    eleza test_empty_presized_dict_in_freelist(self):
+        # Bug #3537: ikiwa an empty but presized dict with a size larger
         # than 7 was in the freelist, it triggered an assertion failure
         with self.assertRaises(ZeroDivisionError):
             d = {'a': 1 // 0, 'b': None, 'c': None, 'd': None, 'e': None,
                  'f': None, 'g': None, 'h': None}
         d = {}
 
-    def test_container_iterator(self):
+    eleza test_container_iterator(self):
         # Bug #3680: tp_traverse was not implemented for dictiter and
         # dictview objects.
-        class C(object):
+        kundi C(object):
             pass
         views = (dict.items, dict.values, dict.keys)
         for v in views:
@@ -817,20 +817,20 @@ class DictTest(unittest.TestCase):
             gc.collect()
             self.assertIs(ref(), None, "Cycle was not collected")
 
-    def _not_tracked(self, t):
+    eleza _not_tracked(self, t):
         # Nested containers can take several collections to untrack
         gc.collect()
         gc.collect()
         self.assertFalse(gc.is_tracked(t), t)
 
-    def _tracked(self, t):
+    eleza _tracked(self, t):
         self.assertTrue(gc.is_tracked(t), t)
         gc.collect()
         gc.collect()
         self.assertTrue(gc.is_tracked(t), t)
 
     @support.cpython_only
-    def test_track_literals(self):
+    eleza test_track_literals(self):
         # Test GC-optimization of dict literals
         x, y, z, w = 1.5, "a", (1, None), []
 
@@ -840,7 +840,7 @@ class DictTest(unittest.TestCase):
         self._not_tracked({1: 2, (None, True, False, ()): int})
         self._not_tracked({1: object()})
 
-        # Dicts with mutable elements are always tracked, even if those
+        # Dicts with mutable elements are always tracked, even ikiwa those
         # elements are not tracked right now.
         self._tracked({1: []})
         self._tracked({1: ([],)})
@@ -848,9 +848,9 @@ class DictTest(unittest.TestCase):
         self._tracked({1: set()})
 
     @support.cpython_only
-    def test_track_dynamic(self):
+    eleza test_track_dynamic(self):
         # Test GC-optimization of dynamically-created dicts
-        class MyObject(object):
+        kundi MyObject(object):
             pass
         x, y, z, w, o = 1.5, "a", (1, object()), [], MyObject()
 
@@ -880,12 +880,12 @@ class DictTest(unittest.TestCase):
         dd[1] = d
         self._tracked(dd)
 
-        d = dict.fromkeys([x, y, z])
+        d = dict.kutokakeys([x, y, z])
         self._not_tracked(d)
         dd = dict()
         dd.update(d)
         self._not_tracked(dd)
-        d = dict.fromkeys([x, y, z, o])
+        d = dict.kutokakeys([x, y, z, o])
         self._tracked(d)
         dd = dict()
         dd.update(d)
@@ -912,14 +912,14 @@ class DictTest(unittest.TestCase):
         self._tracked(d)
 
     @support.cpython_only
-    def test_track_subtypes(self):
+    eleza test_track_subtypes(self):
         # Dict subtypes are always tracked
-        class MyDict(dict):
+        kundi MyDict(dict):
             pass
         self._tracked(MyDict())
 
-    def make_shared_key_dict(self, n):
-        class C:
+    eleza make_shared_key_dict(self, n):
+        kundi C:
             pass
 
         dicts = []
@@ -928,10 +928,10 @@ class DictTest(unittest.TestCase):
             a.x, a.y, a.z = 1, 2, 3
             dicts.append(a.__dict__)
 
-        return dicts
+        rudisha dicts
 
     @support.cpython_only
-    def test_splittable_setdefault(self):
+    eleza test_splittable_setdefault(self):
         """split table must be combined when setdefault()
         breaks insertion order"""
         a, b = self.make_shared_key_dict(2)
@@ -948,7 +948,7 @@ class DictTest(unittest.TestCase):
         self.assertEqual(list(b), ['x', 'y', 'z', 'b', 'a'])
 
     @support.cpython_only
-    def test_splittable_del(self):
+    eleza test_splittable_del(self):
         """split table must be combined when del d[k]"""
         a, b = self.make_shared_key_dict(2)
 
@@ -968,7 +968,7 @@ class DictTest(unittest.TestCase):
         self.assertEqual(list(b), ['x', 'y', 'z'])
 
     @support.cpython_only
-    def test_splittable_pop(self):
+    eleza test_splittable_pop(self):
         """split table must be combined when d.pop(k)"""
         a, b = self.make_shared_key_dict(2)
 
@@ -988,7 +988,7 @@ class DictTest(unittest.TestCase):
         self.assertEqual(list(b), ['x', 'y', 'z'])
 
     @support.cpython_only
-    def test_splittable_pop_pending(self):
+    eleza test_splittable_pop_pending(self):
         """pop a pending key in a splitted table should not crash"""
         a, b = self.make_shared_key_dict(2)
 
@@ -997,7 +997,7 @@ class DictTest(unittest.TestCase):
             b.pop('a')
 
     @support.cpython_only
-    def test_splittable_popitem(self):
+    eleza test_splittable_popitem(self):
         """split table must be combined when d.popitem()"""
         a, b = self.make_shared_key_dict(2)
 
@@ -1013,12 +1013,12 @@ class DictTest(unittest.TestCase):
         self.assertEqual(list(b), ['x', 'y', 'z'])
 
     @support.cpython_only
-    def test_splittable_setattr_after_pop(self):
+    eleza test_splittable_setattr_after_pop(self):
         """setattr() must not convert combined table into split table."""
         # Issue 28147
         agiza _testcapi
 
-        class C:
+        kundi C:
             pass
         a = C()
 
@@ -1042,7 +1042,7 @@ class DictTest(unittest.TestCase):
         a.a = 3
         self.assertFalse(_testcapi.dict_hassplittable(a.__dict__))
 
-    def test_iterator_pickling(self):
+    eleza test_iterator_pickling(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             data = {1:"a", 2:"b", 3:"c"}
             it = iter(data)
@@ -1060,7 +1060,7 @@ class DictTest(unittest.TestCase):
             del data[drop]
             self.assertEqual(list(it), list(data))
 
-    def test_itemiterator_pickling(self):
+    eleza test_itemiterator_pickling(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             data = {1:"a", 2:"b", 3:"c"}
             # dictviews aren't picklable, only their iterators
@@ -1082,7 +1082,7 @@ class DictTest(unittest.TestCase):
             del data[drop[0]]
             self.assertEqual(dict(it), data)
 
-    def test_valuesiterator_pickling(self):
+    eleza test_valuesiterator_pickling(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             data = {1:"a", 2:"b", 3:"c"}
             # data.values() isn't picklable, only its iterator
@@ -1098,7 +1098,7 @@ class DictTest(unittest.TestCase):
             values = list(it) + [drop]
             self.assertEqual(sorted(values), sorted(list(data.values())))
 
-    def test_reverseiterator_pickling(self):
+    eleza test_reverseiterator_pickling(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             data = {1:"a", 2:"b", 3:"c"}
             it = reversed(data)
@@ -1116,7 +1116,7 @@ class DictTest(unittest.TestCase):
             del data[drop]
             self.assertEqual(list(it), list(reversed(data)))
 
-    def test_reverseitemiterator_pickling(self):
+    eleza test_reverseitemiterator_pickling(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             data = {1:"a", 2:"b", 3:"c"}
             # dictviews aren't picklable, only their iterators
@@ -1138,7 +1138,7 @@ class DictTest(unittest.TestCase):
             del data[drop[0]]
             self.assertEqual(dict(it), data)
 
-    def test_reversevaluesiterator_pickling(self):
+    eleza test_reversevaluesiterator_pickling(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             data = {1:"a", 2:"b", 3:"c"}
             # data.values() isn't picklable, only its iterator
@@ -1154,59 +1154,59 @@ class DictTest(unittest.TestCase):
             values = list(it) + [drop]
             self.assertEqual(sorted(values), sorted(data.values()))
 
-    def test_instance_dict_getattr_str_subclass(self):
-        class Foo:
-            def __init__(self, msg):
+    eleza test_instance_dict_getattr_str_subclass(self):
+        kundi Foo:
+            eleza __init__(self, msg):
                 self.msg = msg
         f = Foo('123')
-        class _str(str):
+        kundi _str(str):
             pass
         self.assertEqual(f.msg, getattr(f, _str('msg')))
         self.assertEqual(f.msg, f.__dict__[_str('msg')])
 
-    def test_object_set_item_single_instance_non_str_key(self):
-        class Foo: pass
+    eleza test_object_set_item_single_instance_non_str_key(self):
+        kundi Foo: pass
         f = Foo()
         f.__dict__[1] = 1
         f.a = 'a'
         self.assertEqual(f.__dict__, {1:1, 'a':'a'})
 
-    def check_reentrant_insertion(self, mutate):
+    eleza check_reentrant_insertion(self, mutate):
         # This object will trigger mutation of the dict when replaced
         # by another value.  Note this relies on refcounting: the test
         # won't achieve its purpose on fully-GCed Python implementations.
-        class Mutating:
-            def __del__(self):
+        kundi Mutating:
+            eleza __del__(self):
                 mutate(d)
 
         d = {k: Mutating() for k in 'abcdefghijklmnopqr'}
         for k in list(d):
             d[k] = k
 
-    def test_reentrant_insertion(self):
+    eleza test_reentrant_insertion(self):
         # Reentrant insertion shouldn't crash (see issue #22653)
-        def mutate(d):
+        eleza mutate(d):
             d['b'] = 5
         self.check_reentrant_insertion(mutate)
 
-        def mutate(d):
+        eleza mutate(d):
             d.update(self.__dict__)
             d.clear()
         self.check_reentrant_insertion(mutate)
 
-        def mutate(d):
+        eleza mutate(d):
             while d:
                 d.popitem()
         self.check_reentrant_insertion(mutate)
 
-    def test_merge_and_mutate(self):
-        class X:
-            def __hash__(self):
-                return 0
+    eleza test_merge_and_mutate(self):
+        kundi X:
+            eleza __hash__(self):
+                rudisha 0
 
-            def __eq__(self, o):
+            eleza __eq__(self, o):
                 other.clear()
-                return False
+                rudisha False
 
         l = [(i,0) for i in range(1, 1337)]
         other = dict(l)
@@ -1214,105 +1214,105 @@ class DictTest(unittest.TestCase):
         d = {X(): 0, 1: 1}
         self.assertRaises(RuntimeError, d.update, other)
 
-    def test_free_after_iterating(self):
+    eleza test_free_after_iterating(self):
         support.check_free_after_iterating(self, iter, dict)
         support.check_free_after_iterating(self, lambda d: iter(d.keys()), dict)
         support.check_free_after_iterating(self, lambda d: iter(d.values()), dict)
         support.check_free_after_iterating(self, lambda d: iter(d.items()), dict)
 
-    def test_equal_operator_modifying_operand(self):
+    eleza test_equal_operator_modifying_operand(self):
         # test fix for seg fault reported in issue 27945 part 3.
-        class X():
-            def __del__(self):
+        kundi X():
+            eleza __del__(self):
                 dict_b.clear()
 
-            def __eq__(self, other):
+            eleza __eq__(self, other):
                 dict_a.clear()
-                return True
+                rudisha True
 
-            def __hash__(self):
-                return 13
+            eleza __hash__(self):
+                rudisha 13
 
         dict_a = {X(): 0}
         dict_b = {X(): X()}
         self.assertTrue(dict_a == dict_b)
 
-    def test_fromkeys_operator_modifying_dict_operand(self):
+    eleza test_kutokakeys_operator_modifying_dict_operand(self):
         # test fix for seg fault reported in issue 27945 part 4a.
-        class X(int):
-            def __hash__(self):
-                return 13
+        kundi X(int):
+            eleza __hash__(self):
+                rudisha 13
 
-            def __eq__(self, other):
-                if len(d) > 1:
+            eleza __eq__(self, other):
+                ikiwa len(d) > 1:
                     d.clear()
-                return False
+                rudisha False
 
         d = {}  # this is required to exist so that d can be constructed!
         d = {X(1): 1, X(2): 2}
         try:
-            dict.fromkeys(d)  # shouldn't crash
+            dict.kutokakeys(d)  # shouldn't crash
         except RuntimeError:  # implementation defined
             pass
 
-    def test_fromkeys_operator_modifying_set_operand(self):
+    eleza test_kutokakeys_operator_modifying_set_operand(self):
         # test fix for seg fault reported in issue 27945 part 4b.
-        class X(int):
-            def __hash__(self):
-                return 13
+        kundi X(int):
+            eleza __hash__(self):
+                rudisha 13
 
-            def __eq__(self, other):
-                if len(d) > 1:
+            eleza __eq__(self, other):
+                ikiwa len(d) > 1:
                     d.clear()
-                return False
+                rudisha False
 
         d = {}  # this is required to exist so that d can be constructed!
         d = {X(1), X(2)}
         try:
-            dict.fromkeys(d)  # shouldn't crash
+            dict.kutokakeys(d)  # shouldn't crash
         except RuntimeError:  # implementation defined
             pass
 
-    def test_dictitems_contains_use_after_free(self):
-        class X:
-            def __eq__(self, other):
+    eleza test_dictitems_contains_use_after_free(self):
+        kundi X:
+            eleza __eq__(self, other):
                 d.clear()
-                return NotImplemented
+                rudisha NotImplemented
 
         d = {0: set()}
         (0, X()) in d.items()
 
-    def test_init_use_after_free(self):
-        class X:
-            def __hash__(self):
+    eleza test_init_use_after_free(self):
+        kundi X:
+            eleza __hash__(self):
                 pair[:] = []
-                return 13
+                rudisha 13
 
         pair = [X(), 123]
         dict([pair])
 
-    def test_oob_indexing_dictiter_iternextitem(self):
-        class X(int):
-            def __del__(self):
+    eleza test_oob_indexing_dictiter_iternextitem(self):
+        kundi X(int):
+            eleza __del__(self):
                 d.clear()
 
         d = {i: X(i) for i in range(8)}
 
-        def iter_and_mutate():
+        eleza iter_and_mutate():
             for result in d.items():
-                if result[0] == 2:
+                ikiwa result[0] == 2:
                     d[2] = None # free d[2] --> X(2).__del__ was called
 
         self.assertRaises(RuntimeError, iter_and_mutate)
 
-    def test_reversed(self):
+    eleza test_reversed(self):
         d = {"a": 1, "b": 2, "foo": 0, "c": 3, "d": 4}
         del d["foo"]
         r = reversed(d)
         self.assertEqual(list(r), list('dcba'))
         self.assertRaises(StopIteration, next, r)
 
-    def test_dict_copy_order(self):
+    eleza test_dict_copy_order(self):
         # bpo-34320
         od = collections.OrderedDict([('a', 1), ('b', 2)])
         od.move_to_end('a')
@@ -1321,8 +1321,8 @@ class DictTest(unittest.TestCase):
         copy = dict(od)
         self.assertEqual(list(copy.items()), expected)
 
-        # dict subclass doesn't override __iter__
-        class CustomDict(dict):
+        # dict subkundi doesn't override __iter__
+        kundi CustomDict(dict):
             pass
 
         pairs = [('a', 1), ('b', 2), ('c', 3)]
@@ -1330,24 +1330,24 @@ class DictTest(unittest.TestCase):
         d = CustomDict(pairs)
         self.assertEqual(pairs, list(dict(d).items()))
 
-        class CustomReversedDict(dict):
-            def keys(self):
-                return reversed(list(dict.keys(self)))
+        kundi CustomReversedDict(dict):
+            eleza keys(self):
+                rudisha reversed(list(dict.keys(self)))
 
             __iter__ = keys
 
-            def items(self):
-                return reversed(dict.items(self))
+            eleza items(self):
+                rudisha reversed(dict.items(self))
 
         d = CustomReversedDict(pairs)
         self.assertEqual(pairs[::-1], list(dict(d).items()))
 
 
-class CAPITest(unittest.TestCase):
+kundi CAPITest(unittest.TestCase):
 
     # Test _PyDict_GetItem_KnownHash()
     @support.cpython_only
-    def test_getitem_knownhash(self):
+    eleza test_getitem_knownhash(self):
         kutoka _testcapi agiza dict_getitem_knownhash
 
         d = {'x': 1, 'y': 2, 'z': 3}
@@ -1360,12 +1360,12 @@ class CAPITest(unittest.TestCase):
         # key does not exist
         self.assertRaises(KeyError, dict_getitem_knownhash, {}, 1, hash(1))
 
-        class Exc(Exception): pass
-        class BadEq:
-            def __eq__(self, other):
+        kundi Exc(Exception): pass
+        kundi BadEq:
+            eleza __eq__(self, other):
                 raise Exc
-            def __hash__(self):
-                return 7
+            eleza __hash__(self):
+                rudisha 7
 
         k1, k2 = BadEq(), BadEq()
         d = {k1: 1}
@@ -1375,15 +1375,15 @@ class CAPITest(unittest.TestCase):
 
 kutoka test agiza mapping_tests
 
-class GeneralMappingTests(mapping_tests.BasicTestMappingProtocol):
+kundi GeneralMappingTests(mapping_tests.BasicTestMappingProtocol):
     type2test = dict
 
-class Dict(dict):
+kundi Dict(dict):
     pass
 
-class SubclassMappingTests(mapping_tests.BasicTestMappingProtocol):
+kundi SubclassMappingTests(mapping_tests.BasicTestMappingProtocol):
     type2test = Dict
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

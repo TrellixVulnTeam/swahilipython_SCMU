@@ -18,15 +18,15 @@ LONGSLEEP = 2
 SHORTSLEEP = 0.5
 NUM_THREADS = 4
 
-class ForkWait(unittest.TestCase):
+kundi ForkWait(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self._threading_key = support.threading_setup()
         self.alive = {}
         self.stop = 0
         self.threads = []
 
-    def tearDown(self):
+    eleza tearDown(self):
         # Stop threads
         self.stop = 1
         for thread in self.threads:
@@ -35,7 +35,7 @@ class ForkWait(unittest.TestCase):
         self.threads.clear()
         support.threading_cleanup(*self._threading_key)
 
-    def f(self, id):
+    eleza f(self, id):
         while not self.stop:
             self.alive[id] = os.getpid()
             try:
@@ -43,19 +43,19 @@ class ForkWait(unittest.TestCase):
             except OSError:
                 pass
 
-    def wait_impl(self, cpid):
+    eleza wait_impl(self, cpid):
         for i in range(10):
             # waitpid() shouldn't hang, but some of the buildbots seem to hang
             # in the forking tests.  This is an attempt to fix the problem.
             spid, status = os.waitpid(cpid, os.WNOHANG)
-            if spid == cpid:
+            ikiwa spid == cpid:
                 break
             time.sleep(2 * SHORTSLEEP)
 
         self.assertEqual(spid, cpid)
         self.assertEqual(status, 0, "cause = %d, exit = %d" % (status&0xff, status>>8))
 
-    def test_wait(self):
+    eleza test_wait(self):
         for i in range(NUM_THREADS):
             thread = threading.Thread(target=self.f, args=(i,))
             thread.start()
@@ -65,7 +65,7 @@ class ForkWait(unittest.TestCase):
         deadline = time.monotonic() + 10.0
         while len(self.alive) < NUM_THREADS:
             time.sleep(0.1)
-            if deadline < time.monotonic():
+            ikiwa deadline < time.monotonic():
                 break
 
         a = sorted(self.alive.keys())
@@ -73,17 +73,17 @@ class ForkWait(unittest.TestCase):
 
         prefork_lives = self.alive.copy()
 
-        if sys.platform in ['unixware7']:
+        ikiwa sys.platform in ['unixware7']:
             cpid = os.fork1()
         else:
             cpid = os.fork()
 
-        if cpid == 0:
+        ikiwa cpid == 0:
             # Child
             time.sleep(LONGSLEEP)
             n = 0
             for key in self.alive:
-                if self.alive[key] != prefork_lives[key]:
+                ikiwa self.alive[key] != prefork_lives[key]:
                     n += 1
             os._exit(n)
         else:

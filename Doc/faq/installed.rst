@@ -25,9 +25,9 @@ there are several possible ways it could have gotten there.
   installed it.
 * A third-party application installed on the machine might have been written in
   Python and included a Python installation.  There are many such applications,
-  from GUI programs to network servers and administrative scripts.
+  kutoka GUI programs to network servers and administrative scripts.
 * Some Windows machines also have Python installed.  At this writing we're aware
-  of computers from Hewlett-Packard and Compaq that include Python.  Apparently
+  of computers kutoka Hewlett-Packard and Compaq that include Python.  Apparently
   some of HP/Compaq's administrative tools are written in Python.
 * Many Unix-compatible operating systems, such as Mac OS X and some Linux
   distributions, have Python installed by default; it's included in the base
@@ -37,7 +37,7 @@ there are several possible ways it could have gotten there.
 Can I delete Python?
 --------------------
 
-That depends on where Python came from.
+That depends on where Python came kutoka.
 
 If someone installed it deliberately, you can remove it without hurting
 anything.  On Windows, use the Add/Remove Programs icon in the Control Panel.

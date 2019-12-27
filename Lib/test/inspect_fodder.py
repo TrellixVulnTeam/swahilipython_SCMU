@@ -5,11 +5,11 @@ agiza sys, inspect
 # line 5
 
 # line 7
-def spam(a, /, b, c, d=3, e=4, f=5, *g, **h):
+eleza spam(a, /, b, c, d=3, e=4, f=5, *g, **h):
     eggs(b + d, c + f)
 
 # line 11
-def eggs(x, y):
+eleza eggs(x, y):
     "A docstring."
     global fr, st
     fr = inspect.currentframe()
@@ -18,7 +18,7 @@ def eggs(x, y):
     q = y / 0
 
 # line 20
-class StupidGit:
+kundi StupidGit:
     """A longer,
 
     indented
@@ -26,7 +26,7 @@ class StupidGit:
     docstring."""
 # line 27
 
-    def abuse(self, a, b, c):
+    eleza abuse(self, a, b, c):
         """Another
 
 \tdocstring
@@ -38,7 +38,7 @@ class StupidGit:
         """
         self.argue(a, b, c)
 # line 40
-    def argue(self, a, b, c):
+    eleza argue(self, a, b, c):
         try:
             spam(a, b, c)
         except:
@@ -46,33 +46,33 @@ class StupidGit:
             self.tr = inspect.trace()
 
     @property
-    def contradiction(self):
+    eleza contradiction(self):
         'The automatic gainsaying.'
         pass
 
 # line 53
-class MalodorousPervert(StupidGit):
-    def abuse(self, a, b, c):
+kundi MalodorousPervert(StupidGit):
+    eleza abuse(self, a, b, c):
         pass
 
     @property
-    def contradiction(self):
+    eleza contradiction(self):
         pass
 
 Tit = MalodorousPervert
 
-class ParrotDroppings:
+kundi ParrotDroppings:
     pass
 
-class FesteringGob(MalodorousPervert, ParrotDroppings):
-    def abuse(self, a, b, c):
+kundi FesteringGob(MalodorousPervert, ParrotDroppings):
+    eleza abuse(self, a, b, c):
         pass
 
     @property
-    def contradiction(self):
+    eleza contradiction(self):
         pass
 
-async def lobbest(grenade):
+async eleza lobbest(grenade):
     pass
 
 currentframe = inspect.currentframe()
@@ -81,13 +81,13 @@ try:
 except:
     tb = sys.exc_info()[2]
 
-class Callable:
-    def __call__(self, *args):
-        return args
+kundi Callable:
+    eleza __call__(self, *args):
+        rudisha args
 
-    def as_method_of(self, obj):
+    eleza as_method_of(self, obj):
         kutoka types agiza MethodType
-        return MethodType(self, obj)
+        rudisha MethodType(self, obj)
 
 custom_method = Callable().as_method_of(42)
 del Callable

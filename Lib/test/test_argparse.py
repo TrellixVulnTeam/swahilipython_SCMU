@@ -14,12 +14,12 @@ kutoka io agiza StringIO
 
 kutoka test agiza support
 kutoka unittest agiza mock
-class StdIOBuffer(StringIO):
+kundi StdIOBuffer(StringIO):
     pass
 
-class TestCase(unittest.TestCase):
+kundi TestCase(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         # The tests assume that line wrapping occurs at 80 columns, but this
         # behaviour can be overridden by setting the COLUMNS environment
         # variable.  To ensure that this width is used, set COLUMNS to 80.
@@ -28,50 +28,50 @@ class TestCase(unittest.TestCase):
         self.addCleanup(env.__exit__)
 
 
-class TempDirMixin(object):
+kundi TempDirMixin(object):
 
-    def setUp(self):
+    eleza setUp(self):
         self.temp_dir = tempfile.mkdtemp()
         self.old_dir = os.getcwd()
         os.chdir(self.temp_dir)
 
-    def tearDown(self):
+    eleza tearDown(self):
         os.chdir(self.old_dir)
         for root, dirs, files in os.walk(self.temp_dir, topdown=False):
             for name in files:
                 os.chmod(os.path.join(self.temp_dir, name), stat.S_IWRITE)
         shutil.rmtree(self.temp_dir, True)
 
-    def create_readonly_file(self, filename):
+    eleza create_readonly_file(self, filename):
         file_path = os.path.join(self.temp_dir, filename)
         with open(file_path, 'w') as file:
             file.write(filename)
         os.chmod(file_path, stat.S_IREAD)
 
-class Sig(object):
+kundi Sig(object):
 
-    def __init__(self, *args, **kwargs):
+    eleza __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs
 
 
-class NS(object):
+kundi NS(object):
 
-    def __init__(self, **kwargs):
+    eleza __init__(self, **kwargs):
         self.__dict__.update(kwargs)
 
-    def __repr__(self):
+    eleza __repr__(self):
         sorted_items = sorted(self.__dict__.items())
         kwarg_str = ', '.join(['%s=%r' % tup for tup in sorted_items])
-        return '%s(%s)' % (type(self).__name__, kwarg_str)
+        rudisha '%s(%s)' % (type(self).__name__, kwarg_str)
 
-    def __eq__(self, other):
-        return vars(self) == vars(other)
+    eleza __eq__(self, other):
+        rudisha vars(self) == vars(other)
 
 
-class ArgumentParserError(Exception):
+kundi ArgumentParserError(Exception):
 
-    def __init__(self, message, stdout=None, stderr=None, error_code=None):
+    eleza __init__(self, message, stdout=None, stderr=None, error_code=None):
         Exception.__init__(self, message, stdout, stderr)
         self.message = message
         self.stdout = stdout
@@ -79,14 +79,14 @@ class ArgumentParserError(Exception):
         self.error_code = error_code
 
 
-def stderr_to_parser_error(parse_args, *args, **kwargs):
-    # if this is being called recursively and stderr or stdout is already being
+eleza stderr_to_parser_error(parse_args, *args, **kwargs):
+    # ikiwa this is being called recursively and stderr or stdout is already being
     # redirected, simply call the function and let the enclosing function
     # catch the exception
-    if isinstance(sys.stderr, StdIOBuffer) or isinstance(sys.stdout, StdIOBuffer):
-        return parse_args(*args, **kwargs)
+    ikiwa isinstance(sys.stderr, StdIOBuffer) or isinstance(sys.stdout, StdIOBuffer):
+        rudisha parse_args(*args, **kwargs)
 
-    # if this is not being called recursively, redirect stderr and
+    # ikiwa this is not being called recursively, redirect stderr and
     # use it as the ArgumentParserError message
     old_stdout = sys.stdout
     old_stderr = sys.stderr
@@ -96,11 +96,11 @@ def stderr_to_parser_error(parse_args, *args, **kwargs):
         try:
             result = parse_args(*args, **kwargs)
             for key in list(vars(result)):
-                if getattr(result, key) is sys.stdout:
+                ikiwa getattr(result, key) is sys.stdout:
                     setattr(result, key, old_stdout)
-                if getattr(result, key) is sys.stderr:
+                ikiwa getattr(result, key) is sys.stderr:
                     setattr(result, key, old_stderr)
-            return result
+            rudisha result
         except SystemExit:
             code = sys.exc_info()[1].code
             stdout = sys.stdout.getvalue()
@@ -111,23 +111,23 @@ def stderr_to_parser_error(parse_args, *args, **kwargs):
         sys.stderr = old_stderr
 
 
-class ErrorRaisingArgumentParser(argparse.ArgumentParser):
+kundi ErrorRaisingArgumentParser(argparse.ArgumentParser):
 
-    def parse_args(self, *args, **kwargs):
+    eleza parse_args(self, *args, **kwargs):
         parse_args = super(ErrorRaisingArgumentParser, self).parse_args
-        return stderr_to_parser_error(parse_args, *args, **kwargs)
+        rudisha stderr_to_parser_error(parse_args, *args, **kwargs)
 
-    def exit(self, *args, **kwargs):
+    eleza exit(self, *args, **kwargs):
         exit = super(ErrorRaisingArgumentParser, self).exit
-        return stderr_to_parser_error(exit, *args, **kwargs)
+        rudisha stderr_to_parser_error(exit, *args, **kwargs)
 
-    def error(self, *args, **kwargs):
+    eleza error(self, *args, **kwargs):
         error = super(ErrorRaisingArgumentParser, self).error
-        return stderr_to_parser_error(error, *args, **kwargs)
+        rudisha stderr_to_parser_error(error, *args, **kwargs)
 
 
-class ParserTesterMetaclass(type):
-    """Adds parser tests using the class attributes.
+kundi ParserTesterMetaclass(type):
+    """Adds parser tests using the kundi attributes.
 
     Classes of this type should specify the following attributes:
 
@@ -142,31 +142,31 @@ class ParserTesterMetaclass(type):
         remaining unparsed arguments
     """
 
-    def __init__(cls, name, bases, bodydict):
-        if name == 'ParserTestCase':
+    eleza __init__(cls, name, bases, bodydict):
+        ikiwa name == 'ParserTestCase':
             return
 
         # default parser signature is empty
-        if not hasattr(cls, 'parser_signature'):
+        ikiwa not hasattr(cls, 'parser_signature'):
             cls.parser_signature = Sig()
-        if not hasattr(cls, 'parser_class'):
-            cls.parser_class = ErrorRaisingArgumentParser
+        ikiwa not hasattr(cls, 'parser_class'):
+            cls.parser_kundi = ErrorRaisingArgumentParser
 
         # ---------------------------------------
         # functions for adding optional arguments
         # ---------------------------------------
-        def no_groups(parser, argument_signatures):
+        eleza no_groups(parser, argument_signatures):
             """Add all arguments directly to the parser"""
             for sig in argument_signatures:
                 parser.add_argument(*sig.args, **sig.kwargs)
 
-        def one_group(parser, argument_signatures):
+        eleza one_group(parser, argument_signatures):
             """Add all arguments under a single group in the parser"""
             group = parser.add_argument_group('foo')
             for sig in argument_signatures:
                 group.add_argument(*sig.args, **sig.kwargs)
 
-        def many_groups(parser, argument_signatures):
+        eleza many_groups(parser, argument_signatures):
             """Add each argument in its own group to the parser"""
             for i, sig in enumerate(argument_signatures):
                 group = parser.add_argument_group('foo:%i' % i)
@@ -175,24 +175,24 @@ class ParserTesterMetaclass(type):
         # --------------------------
         # functions for parsing args
         # --------------------------
-        def listargs(parser, args):
+        eleza listargs(parser, args):
             """Parse the args by passing in a list"""
-            return parser.parse_args(args)
+            rudisha parser.parse_args(args)
 
-        def sysargs(parser, args):
+        eleza sysargs(parser, args):
             """Parse the args by defaulting to sys.argv"""
             old_sys_argv = sys.argv
             sys.argv = [old_sys_argv[0]] + args
             try:
-                return parser.parse_args()
+                rudisha parser.parse_args()
             finally:
                 sys.argv = old_sys_argv
 
-        # class that holds the combination of one optional argument
+        # kundi that holds the combination of one optional argument
         # addition method and one arg parsing method
-        class AddTests(object):
+        kundi AddTests(object):
 
-            def __init__(self, tester_cls, add_arguments, parse_args):
+            eleza __init__(self, tester_cls, add_arguments, parse_args):
                 self._add_arguments = add_arguments
                 self._parse_args = parse_args
 
@@ -203,7 +203,7 @@ class ParserTesterMetaclass(type):
                     names = func_name, add_arguments_name, parse_args_name
                     test_name = '_'.join(names)
 
-                    def wrapper(self, test_func=test_func):
+                    eleza wrapper(self, test_func=test_func):
                         test_func(self)
                     try:
                         wrapper.__name__ = test_name
@@ -211,24 +211,24 @@ class ParserTesterMetaclass(type):
                         pass
                     setattr(tester_cls, test_name, wrapper)
 
-            def _get_parser(self, tester):
+            eleza _get_parser(self, tester):
                 args = tester.parser_signature.args
                 kwargs = tester.parser_signature.kwargs
                 parser = tester.parser_class(*args, **kwargs)
                 self._add_arguments(parser, tester.argument_signatures)
-                return parser
+                rudisha parser
 
-            def test_failures(self, tester):
+            eleza test_failures(self, tester):
                 parser = self._get_parser(tester)
                 for args_str in tester.failures:
                     args = args_str.split()
                     with tester.assertRaises(ArgumentParserError, msg=args):
                         parser.parse_args(args)
 
-            def test_successes(self, tester):
+            eleza test_successes(self, tester):
                 parser = self._get_parser(tester)
                 for args, expected_ns in tester.successes:
-                    if isinstance(args, str):
+                    ikiwa isinstance(args, str):
                         args = args.split()
                     result_ns = self._parse_args(parser, args)
                     tester.assertEqual(expected_ns, result_ns)
@@ -246,7 +246,7 @@ ParserTestCase = ParserTesterMetaclass('ParserTestCase', bases, {})
 # Optionals tests
 # ===============
 
-class TestOptionalsSingleDash(ParserTestCase):
+kundi TestOptionalsSingleDash(ParserTestCase):
     """Test an Optional with a single-dash option string"""
 
     argument_signatures = [Sig('-x')]
@@ -260,7 +260,7 @@ class TestOptionalsSingleDash(ParserTestCase):
     ]
 
 
-class TestOptionalsSingleDashCombined(ParserTestCase):
+kundi TestOptionalsSingleDashCombined(ParserTestCase):
     """Test an Optional with a single-dash option string"""
 
     argument_signatures = [
@@ -286,7 +286,7 @@ class TestOptionalsSingleDashCombined(ParserTestCase):
     ]
 
 
-class TestOptionalsSingleDashLong(ParserTestCase):
+kundi TestOptionalsSingleDashLong(ParserTestCase):
     """Test an Optional with a multi-character single-dash option string"""
 
     argument_signatures = [Sig('-foo')]
@@ -300,7 +300,7 @@ class TestOptionalsSingleDashLong(ParserTestCase):
     ]
 
 
-class TestOptionalsSingleDashSubsetAmbiguous(ParserTestCase):
+kundi TestOptionalsSingleDashSubsetAmbiguous(ParserTestCase):
     """Test Optionals where option strings are subsets of each other"""
 
     argument_signatures = [Sig('-f'), Sig('-foobar'), Sig('-foorab')]
@@ -316,7 +316,7 @@ class TestOptionalsSingleDashSubsetAmbiguous(ParserTestCase):
     ]
 
 
-class TestOptionalsSingleDashAmbiguous(ParserTestCase):
+kundi TestOptionalsSingleDashAmbiguous(ParserTestCase):
     """Test Optionals that partially match but are not subsets"""
 
     argument_signatures = [Sig('-foobar'), Sig('-foorab')]
@@ -332,7 +332,7 @@ class TestOptionalsSingleDashAmbiguous(ParserTestCase):
     ]
 
 
-class TestOptionalsNumeric(ParserTestCase):
+kundi TestOptionalsNumeric(ParserTestCase):
     """Test an Optional with a short opt string"""
 
     argument_signatures = [Sig('-1', dest='one')]
@@ -345,7 +345,7 @@ class TestOptionalsNumeric(ParserTestCase):
     ]
 
 
-class TestOptionalsDoubleDash(ParserTestCase):
+kundi TestOptionalsDoubleDash(ParserTestCase):
     """Test an Optional with a double-dash option string"""
 
     argument_signatures = [Sig('--foo')]
@@ -359,7 +359,7 @@ class TestOptionalsDoubleDash(ParserTestCase):
     ]
 
 
-class TestOptionalsDoubleDashPartialMatch(ParserTestCase):
+kundi TestOptionalsDoubleDashPartialMatch(ParserTestCase):
     """Tests partial matching with a double-dash option string"""
 
     argument_signatures = [
@@ -377,7 +377,7 @@ class TestOptionalsDoubleDashPartialMatch(ParserTestCase):
     ]
 
 
-class TestOptionalsDoubleDashPrefixMatch(ParserTestCase):
+kundi TestOptionalsDoubleDashPrefixMatch(ParserTestCase):
     """Tests when one double-dash option string is a prefix of another"""
 
     argument_signatures = [
@@ -396,7 +396,7 @@ class TestOptionalsDoubleDashPrefixMatch(ParserTestCase):
     ]
 
 
-class TestOptionalsSingleDoubleDash(ParserTestCase):
+kundi TestOptionalsSingleDoubleDash(ParserTestCase):
     """Test an Optional with single- and double-dash option strings"""
 
     argument_signatures = [
@@ -415,7 +415,7 @@ class TestOptionalsSingleDoubleDash(ParserTestCase):
     ]
 
 
-class TestOptionalsAlternatePrefixChars(ParserTestCase):
+kundi TestOptionalsAlternatePrefixChars(ParserTestCase):
     """Test an Optional with option strings with custom prefixes"""
 
     parser_signature = Sig(prefix_chars='+:/', add_help=False)
@@ -435,7 +435,7 @@ class TestOptionalsAlternatePrefixChars(ParserTestCase):
     ]
 
 
-class TestOptionalsAlternatePrefixCharsAddedHelp(ParserTestCase):
+kundi TestOptionalsAlternatePrefixCharsAddedHelp(ParserTestCase):
     """When ``-`` not in prefix_chars, default operators created for help
        should use the prefix_chars in use rather than - or --
        http://bugs.python.org/issue9444"""
@@ -457,7 +457,7 @@ class TestOptionalsAlternatePrefixCharsAddedHelp(ParserTestCase):
     ]
 
 
-class TestOptionalsAlternatePrefixCharsMultipleShortArgs(ParserTestCase):
+kundi TestOptionalsAlternatePrefixCharsMultipleShortArgs(ParserTestCase):
     """Verify that Optionals must be called with their defined prefixes"""
 
     parser_signature = Sig(prefix_chars='+-', add_help=False)
@@ -480,7 +480,7 @@ class TestOptionalsAlternatePrefixCharsMultipleShortArgs(ParserTestCase):
     ]
 
 
-class TestOptionalsShortLong(ParserTestCase):
+kundi TestOptionalsShortLong(ParserTestCase):
     """Test a combination of single- and double-dash option strings"""
 
     argument_signatures = [
@@ -496,7 +496,7 @@ class TestOptionalsShortLong(ParserTestCase):
     ]
 
 
-class TestOptionalsDest(ParserTestCase):
+kundi TestOptionalsDest(ParserTestCase):
     """Tests various means of setting destination"""
 
     argument_signatures = [Sig('--foo-bar'), Sig('--baz', dest='zabbaz')]
@@ -509,7 +509,7 @@ class TestOptionalsDest(ParserTestCase):
     ]
 
 
-class TestOptionalsDefault(ParserTestCase):
+kundi TestOptionalsDefault(ParserTestCase):
     """Tests specifying a default for an Optional"""
 
     argument_signatures = [Sig('-x'), Sig('-y', default=42)]
@@ -521,7 +521,7 @@ class TestOptionalsDefault(ParserTestCase):
     ]
 
 
-class TestOptionalsNargsDefault(ParserTestCase):
+kundi TestOptionalsNargsDefault(ParserTestCase):
     """Tests not specifying the number of args for an Optional"""
 
     argument_signatures = [Sig('-x')]
@@ -532,7 +532,7 @@ class TestOptionalsNargsDefault(ParserTestCase):
     ]
 
 
-class TestOptionalsNargs1(ParserTestCase):
+kundi TestOptionalsNargs1(ParserTestCase):
     """Tests specifying 1 arg for an Optional"""
 
     argument_signatures = [Sig('-x', nargs=1)]
@@ -543,7 +543,7 @@ class TestOptionalsNargs1(ParserTestCase):
     ]
 
 
-class TestOptionalsNargs3(ParserTestCase):
+kundi TestOptionalsNargs3(ParserTestCase):
     """Tests specifying 3 args for an Optional"""
 
     argument_signatures = [Sig('-x', nargs=3)]
@@ -554,7 +554,7 @@ class TestOptionalsNargs3(ParserTestCase):
     ]
 
 
-class TestOptionalsNargsOptional(ParserTestCase):
+kundi TestOptionalsNargsOptional(ParserTestCase):
     """Tests specifying an Optional arg for an Optional"""
 
     argument_signatures = [
@@ -577,7 +577,7 @@ class TestOptionalsNargsOptional(ParserTestCase):
     ]
 
 
-class TestOptionalsNargsZeroOrMore(ParserTestCase):
+kundi TestOptionalsNargsZeroOrMore(ParserTestCase):
     """Tests specifying args for an Optional that accepts zero or more"""
 
     argument_signatures = [
@@ -596,7 +596,7 @@ class TestOptionalsNargsZeroOrMore(ParserTestCase):
     ]
 
 
-class TestOptionalsNargsOneOrMore(ParserTestCase):
+kundi TestOptionalsNargsOneOrMore(ParserTestCase):
     """Tests specifying args for an Optional that accepts one or more"""
 
     argument_signatures = [
@@ -613,7 +613,7 @@ class TestOptionalsNargsOneOrMore(ParserTestCase):
     ]
 
 
-class TestOptionalsChoices(ParserTestCase):
+kundi TestOptionalsChoices(ParserTestCase):
     """Tests specifying the choices for an Optional"""
 
     argument_signatures = [
@@ -630,7 +630,7 @@ class TestOptionalsChoices(ParserTestCase):
     ]
 
 
-class TestOptionalsRequired(ParserTestCase):
+kundi TestOptionalsRequired(ParserTestCase):
     """Tests an optional action that is required"""
 
     argument_signatures = [
@@ -643,7 +643,7 @@ class TestOptionalsRequired(ParserTestCase):
     ]
 
 
-class TestOptionalsActionStore(ParserTestCase):
+kundi TestOptionalsActionStore(ParserTestCase):
     """Tests the store action for an Optional"""
 
     argument_signatures = [Sig('-x', action='store')]
@@ -654,7 +654,7 @@ class TestOptionalsActionStore(ParserTestCase):
     ]
 
 
-class TestOptionalsActionStoreConst(ParserTestCase):
+kundi TestOptionalsActionStoreConst(ParserTestCase):
     """Tests the store_const action for an Optional"""
 
     argument_signatures = [Sig('-y', action='store_const', const=object)]
@@ -665,7 +665,7 @@ class TestOptionalsActionStoreConst(ParserTestCase):
     ]
 
 
-class TestOptionalsActionStoreFalse(ParserTestCase):
+kundi TestOptionalsActionStoreFalse(ParserTestCase):
     """Tests the store_false action for an Optional"""
 
     argument_signatures = [Sig('-z', action='store_false')]
@@ -676,7 +676,7 @@ class TestOptionalsActionStoreFalse(ParserTestCase):
     ]
 
 
-class TestOptionalsActionStoreTrue(ParserTestCase):
+kundi TestOptionalsActionStoreTrue(ParserTestCase):
     """Tests the store_true action for an Optional"""
 
     argument_signatures = [Sig('--apple', action='store_true')]
@@ -687,7 +687,7 @@ class TestOptionalsActionStoreTrue(ParserTestCase):
     ]
 
 
-class TestOptionalsActionAppend(ParserTestCase):
+kundi TestOptionalsActionAppend(ParserTestCase):
     """Tests the append action for an Optional"""
 
     argument_signatures = [Sig('--baz', action='append')]
@@ -699,7 +699,7 @@ class TestOptionalsActionAppend(ParserTestCase):
     ]
 
 
-class TestOptionalsActionAppendWithDefault(ParserTestCase):
+kundi TestOptionalsActionAppendWithDefault(ParserTestCase):
     """Tests the append action for an Optional"""
 
     argument_signatures = [Sig('--baz', action='append', default=['X'])]
@@ -711,7 +711,7 @@ class TestOptionalsActionAppendWithDefault(ParserTestCase):
     ]
 
 
-class TestOptionalsActionAppendConst(ParserTestCase):
+kundi TestOptionalsActionAppendConst(ParserTestCase):
     """Tests the append_const action for an Optional"""
 
     argument_signatures = [
@@ -726,7 +726,7 @@ class TestOptionalsActionAppendConst(ParserTestCase):
     ]
 
 
-class TestOptionalsActionAppendConstWithDefault(ParserTestCase):
+kundi TestOptionalsActionAppendConstWithDefault(ParserTestCase):
     """Tests the append_const action for an Optional"""
 
     argument_signatures = [
@@ -741,7 +741,7 @@ class TestOptionalsActionAppendConstWithDefault(ParserTestCase):
     ]
 
 
-class TestOptionalsActionCount(ParserTestCase):
+kundi TestOptionalsActionCount(ParserTestCase):
     """Tests the count action for an Optional"""
 
     argument_signatures = [Sig('-x', action='count')]
@@ -752,7 +752,7 @@ class TestOptionalsActionCount(ParserTestCase):
     ]
 
 
-class TestOptionalsAllowLongAbbreviation(ParserTestCase):
+kundi TestOptionalsAllowLongAbbreviation(ParserTestCase):
     """Allow long options to be abbreviated unambiguously"""
 
     argument_signatures = [
@@ -769,7 +769,7 @@ class TestOptionalsAllowLongAbbreviation(ParserTestCase):
     ]
 
 
-class TestOptionalsDisallowLongAbbreviation(ParserTestCase):
+kundi TestOptionalsDisallowLongAbbreviation(ParserTestCase):
     """Do not allow abbreviations of long options at all"""
 
     parser_signature = Sig(allow_abbrev=False)
@@ -786,7 +786,7 @@ class TestOptionalsDisallowLongAbbreviation(ParserTestCase):
     ]
 
 
-class TestDisallowLongAbbreviationAllowsShortGrouping(ParserTestCase):
+kundi TestDisallowLongAbbreviationAllowsShortGrouping(ParserTestCase):
     """Do not allow abbreviations of long options at all"""
 
     parser_signature = Sig(allow_abbrev=False)
@@ -808,7 +808,7 @@ class TestDisallowLongAbbreviationAllowsShortGrouping(ParserTestCase):
 # Positional tests
 # ================
 
-class TestPositionalsNargsNone(ParserTestCase):
+kundi TestPositionalsNargsNone(ParserTestCase):
     """Test a Positional that doesn't specify nargs"""
 
     argument_signatures = [Sig('foo')]
@@ -818,7 +818,7 @@ class TestPositionalsNargsNone(ParserTestCase):
     ]
 
 
-class TestPositionalsNargs1(ParserTestCase):
+kundi TestPositionalsNargs1(ParserTestCase):
     """Test a Positional that specifies an nargs of 1"""
 
     argument_signatures = [Sig('foo', nargs=1)]
@@ -828,7 +828,7 @@ class TestPositionalsNargs1(ParserTestCase):
     ]
 
 
-class TestPositionalsNargs2(ParserTestCase):
+kundi TestPositionalsNargs2(ParserTestCase):
     """Test a Positional that specifies an nargs of 2"""
 
     argument_signatures = [Sig('foo', nargs=2)]
@@ -838,7 +838,7 @@ class TestPositionalsNargs2(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsZeroOrMore(ParserTestCase):
+kundi TestPositionalsNargsZeroOrMore(ParserTestCase):
     """Test a Positional that specifies unlimited nargs"""
 
     argument_signatures = [Sig('foo', nargs='*')]
@@ -850,7 +850,7 @@ class TestPositionalsNargsZeroOrMore(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsZeroOrMoreDefault(ParserTestCase):
+kundi TestPositionalsNargsZeroOrMoreDefault(ParserTestCase):
     """Test a Positional that specifies unlimited nargs and a default"""
 
     argument_signatures = [Sig('foo', nargs='*', default='bar')]
@@ -862,7 +862,7 @@ class TestPositionalsNargsZeroOrMoreDefault(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOneOrMore(ParserTestCase):
+kundi TestPositionalsNargsOneOrMore(ParserTestCase):
     """Test a Positional that specifies one or more nargs"""
 
     argument_signatures = [Sig('foo', nargs='+')]
@@ -873,7 +873,7 @@ class TestPositionalsNargsOneOrMore(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOptional(ParserTestCase):
+kundi TestPositionalsNargsOptional(ParserTestCase):
     """Tests an Optional Positional"""
 
     argument_signatures = [Sig('foo', nargs='?')]
@@ -884,7 +884,7 @@ class TestPositionalsNargsOptional(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOptionalDefault(ParserTestCase):
+kundi TestPositionalsNargsOptionalDefault(ParserTestCase):
     """Tests an Optional Positional with a default value"""
 
     argument_signatures = [Sig('foo', nargs='?', default=42)]
@@ -895,7 +895,7 @@ class TestPositionalsNargsOptionalDefault(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOptionalConvertedDefault(ParserTestCase):
+kundi TestPositionalsNargsOptionalConvertedDefault(ParserTestCase):
     """Tests an Optional Positional with a default value
     that needs to be converted to the appropriate type.
     """
@@ -910,7 +910,7 @@ class TestPositionalsNargsOptionalConvertedDefault(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsNoneNone(ParserTestCase):
+kundi TestPositionalsNargsNoneNone(ParserTestCase):
     """Test two Positionals that don't specify nargs"""
 
     argument_signatures = [Sig('foo'), Sig('bar')]
@@ -920,7 +920,7 @@ class TestPositionalsNargsNoneNone(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsNone1(ParserTestCase):
+kundi TestPositionalsNargsNone1(ParserTestCase):
     """Test a Positional with no nargs followed by one with 1"""
 
     argument_signatures = [Sig('foo'), Sig('bar', nargs=1)]
@@ -930,7 +930,7 @@ class TestPositionalsNargsNone1(ParserTestCase):
     ]
 
 
-class TestPositionalsNargs2None(ParserTestCase):
+kundi TestPositionalsNargs2None(ParserTestCase):
     """Test a Positional with 2 nargs followed by one with none"""
 
     argument_signatures = [Sig('foo', nargs=2), Sig('bar')]
@@ -940,7 +940,7 @@ class TestPositionalsNargs2None(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsNoneZeroOrMore(ParserTestCase):
+kundi TestPositionalsNargsNoneZeroOrMore(ParserTestCase):
     """Test a Positional with no nargs followed by one with unlimited"""
 
     argument_signatures = [Sig('foo'), Sig('bar', nargs='*')]
@@ -952,7 +952,7 @@ class TestPositionalsNargsNoneZeroOrMore(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsNoneOneOrMore(ParserTestCase):
+kundi TestPositionalsNargsNoneOneOrMore(ParserTestCase):
     """Test a Positional with no nargs followed by one with one or more"""
 
     argument_signatures = [Sig('foo'), Sig('bar', nargs='+')]
@@ -963,7 +963,7 @@ class TestPositionalsNargsNoneOneOrMore(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsNoneOptional(ParserTestCase):
+kundi TestPositionalsNargsNoneOptional(ParserTestCase):
     """Test a Positional with no nargs followed by one with an Optional"""
 
     argument_signatures = [Sig('foo'), Sig('bar', nargs='?')]
@@ -974,7 +974,7 @@ class TestPositionalsNargsNoneOptional(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsZeroOrMoreNone(ParserTestCase):
+kundi TestPositionalsNargsZeroOrMoreNone(ParserTestCase):
     """Test a Positional with unlimited nargs followed by one with none"""
 
     argument_signatures = [Sig('foo', nargs='*'), Sig('bar')]
@@ -986,7 +986,7 @@ class TestPositionalsNargsZeroOrMoreNone(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOneOrMoreNone(ParserTestCase):
+kundi TestPositionalsNargsOneOrMoreNone(ParserTestCase):
     """Test a Positional with one or more nargs followed by one with none"""
 
     argument_signatures = [Sig('foo', nargs='+'), Sig('bar')]
@@ -997,7 +997,7 @@ class TestPositionalsNargsOneOrMoreNone(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOptionalNone(ParserTestCase):
+kundi TestPositionalsNargsOptionalNone(ParserTestCase):
     """Test a Positional with an Optional nargs followed by one with none"""
 
     argument_signatures = [Sig('foo', nargs='?', default=42), Sig('bar')]
@@ -1008,7 +1008,7 @@ class TestPositionalsNargsOptionalNone(ParserTestCase):
     ]
 
 
-class TestPositionalsNargs2ZeroOrMore(ParserTestCase):
+kundi TestPositionalsNargs2ZeroOrMore(ParserTestCase):
     """Test a Positional with 2 nargs followed by one with unlimited"""
 
     argument_signatures = [Sig('foo', nargs=2), Sig('bar', nargs='*')]
@@ -1019,7 +1019,7 @@ class TestPositionalsNargs2ZeroOrMore(ParserTestCase):
     ]
 
 
-class TestPositionalsNargs2OneOrMore(ParserTestCase):
+kundi TestPositionalsNargs2OneOrMore(ParserTestCase):
     """Test a Positional with 2 nargs followed by one with one or more"""
 
     argument_signatures = [Sig('foo', nargs=2), Sig('bar', nargs='+')]
@@ -1029,7 +1029,7 @@ class TestPositionalsNargs2OneOrMore(ParserTestCase):
     ]
 
 
-class TestPositionalsNargs2Optional(ParserTestCase):
+kundi TestPositionalsNargs2Optional(ParserTestCase):
     """Test a Positional with 2 nargs followed by one optional"""
 
     argument_signatures = [Sig('foo', nargs=2), Sig('bar', nargs='?')]
@@ -1040,7 +1040,7 @@ class TestPositionalsNargs2Optional(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsZeroOrMore1(ParserTestCase):
+kundi TestPositionalsNargsZeroOrMore1(ParserTestCase):
     """Test a Positional with unlimited nargs followed by one with 1"""
 
     argument_signatures = [Sig('foo', nargs='*'), Sig('bar', nargs=1)]
@@ -1052,7 +1052,7 @@ class TestPositionalsNargsZeroOrMore1(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOneOrMore1(ParserTestCase):
+kundi TestPositionalsNargsOneOrMore1(ParserTestCase):
     """Test a Positional with one or more nargs followed by one with 1"""
 
     argument_signatures = [Sig('foo', nargs='+'), Sig('bar', nargs=1)]
@@ -1063,7 +1063,7 @@ class TestPositionalsNargsOneOrMore1(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOptional1(ParserTestCase):
+kundi TestPositionalsNargsOptional1(ParserTestCase):
     """Test a Positional with an Optional nargs followed by one with 1"""
 
     argument_signatures = [Sig('foo', nargs='?'), Sig('bar', nargs=1)]
@@ -1074,7 +1074,7 @@ class TestPositionalsNargsOptional1(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsNoneZeroOrMore1(ParserTestCase):
+kundi TestPositionalsNargsNoneZeroOrMore1(ParserTestCase):
     """Test three Positionals: no nargs, unlimited nargs and 1 nargs"""
 
     argument_signatures = [
@@ -1089,7 +1089,7 @@ class TestPositionalsNargsNoneZeroOrMore1(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsNoneOneOrMore1(ParserTestCase):
+kundi TestPositionalsNargsNoneOneOrMore1(ParserTestCase):
     """Test three Positionals: no nargs, one or more nargs and 1 nargs"""
 
     argument_signatures = [
@@ -1104,7 +1104,7 @@ class TestPositionalsNargsNoneOneOrMore1(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsNoneOptional1(ParserTestCase):
+kundi TestPositionalsNargsNoneOptional1(ParserTestCase):
     """Test three Positionals: no nargs, optional narg and 1 nargs"""
 
     argument_signatures = [
@@ -1119,7 +1119,7 @@ class TestPositionalsNargsNoneOptional1(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOptionalOptional(ParserTestCase):
+kundi TestPositionalsNargsOptionalOptional(ParserTestCase):
     """Test two optional nargs"""
 
     argument_signatures = [
@@ -1134,7 +1134,7 @@ class TestPositionalsNargsOptionalOptional(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOptionalZeroOrMore(ParserTestCase):
+kundi TestPositionalsNargsOptionalZeroOrMore(ParserTestCase):
     """Test an Optional narg followed by unlimited nargs"""
 
     argument_signatures = [Sig('foo', nargs='?'), Sig('bar', nargs='*')]
@@ -1147,7 +1147,7 @@ class TestPositionalsNargsOptionalZeroOrMore(ParserTestCase):
     ]
 
 
-class TestPositionalsNargsOptionalOneOrMore(ParserTestCase):
+kundi TestPositionalsNargsOptionalOneOrMore(ParserTestCase):
     """Test an Optional narg followed by one or more nargs"""
 
     argument_signatures = [Sig('foo', nargs='?'), Sig('bar', nargs='+')]
@@ -1159,7 +1159,7 @@ class TestPositionalsNargsOptionalOneOrMore(ParserTestCase):
     ]
 
 
-class TestPositionalsChoicesString(ParserTestCase):
+kundi TestPositionalsChoicesString(ParserTestCase):
     """Test a set of single-character choices"""
 
     argument_signatures = [Sig('spam', choices=set('abcdefg'))]
@@ -1170,7 +1170,7 @@ class TestPositionalsChoicesString(ParserTestCase):
     ]
 
 
-class TestPositionalsChoicesInt(ParserTestCase):
+kundi TestPositionalsChoicesInt(ParserTestCase):
     """Test a set of integer choices"""
 
     argument_signatures = [Sig('spam', type=int, choices=range(20))]
@@ -1181,7 +1181,7 @@ class TestPositionalsChoicesInt(ParserTestCase):
     ]
 
 
-class TestPositionalsActionAppend(ParserTestCase):
+kundi TestPositionalsActionAppend(ParserTestCase):
     """Test the 'append' action"""
 
     argument_signatures = [
@@ -1197,7 +1197,7 @@ class TestPositionalsActionAppend(ParserTestCase):
 # Combined optionals and positionals tests
 # ========================================
 
-class TestOptionalsNumericAndPositionals(ParserTestCase):
+kundi TestOptionalsNumericAndPositionals(ParserTestCase):
     """Tests negative number args when numeric options are present"""
 
     argument_signatures = [
@@ -1213,7 +1213,7 @@ class TestOptionalsNumericAndPositionals(ParserTestCase):
     ]
 
 
-class TestOptionalsAlmostNumericAndPositionals(ParserTestCase):
+kundi TestOptionalsAlmostNumericAndPositionals(ParserTestCase):
     """Tests negative number args when almost numeric options are present"""
 
     argument_signatures = [
@@ -1230,7 +1230,7 @@ class TestOptionalsAlmostNumericAndPositionals(ParserTestCase):
     ]
 
 
-class TestEmptyAndSpaceContainingArguments(ParserTestCase):
+kundi TestEmptyAndSpaceContainingArguments(ParserTestCase):
 
     argument_signatures = [
         Sig('x', nargs='?'),
@@ -1249,7 +1249,7 @@ class TestEmptyAndSpaceContainingArguments(ParserTestCase):
     ]
 
 
-class TestPrefixCharacterOnlyArguments(ParserTestCase):
+kundi TestPrefixCharacterOnlyArguments(ParserTestCase):
 
     parser_signature = Sig(prefix_chars='-+')
     argument_signatures = [
@@ -1268,7 +1268,7 @@ class TestPrefixCharacterOnlyArguments(ParserTestCase):
     ]
 
 
-class TestNargsZeroOrMore(ParserTestCase):
+kundi TestNargsZeroOrMore(ParserTestCase):
     """Tests specifying args for an Optional that accepts zero or more"""
 
     argument_signatures = [Sig('-x', nargs='*'), Sig('y', nargs='*')]
@@ -1284,7 +1284,7 @@ class TestNargsZeroOrMore(ParserTestCase):
     ]
 
 
-class TestNargsRemainder(ParserTestCase):
+kundi TestNargsRemainder(ParserTestCase):
     """Tests specifying a positional with nargs=REMAINDER"""
 
     argument_signatures = [Sig('x'), Sig('y', nargs='...'), Sig('-z')]
@@ -1297,7 +1297,7 @@ class TestNargsRemainder(ParserTestCase):
     ]
 
 
-class TestOptionLike(ParserTestCase):
+kundi TestOptionLike(ParserTestCase):
     """Tests options that may or may not be arguments"""
 
     argument_signatures = [
@@ -1324,7 +1324,7 @@ class TestOptionLike(ParserTestCase):
     ]
 
 
-class TestDefaultSuppress(ParserTestCase):
+kundi TestDefaultSuppress(ParserTestCase):
     """Test actions with suppressed defaults"""
 
     argument_signatures = [
@@ -1343,7 +1343,7 @@ class TestDefaultSuppress(ParserTestCase):
     ]
 
 
-class TestParserDefaultSuppress(ParserTestCase):
+kundi TestParserDefaultSuppress(ParserTestCase):
     """Test actions with a parser-level default of SUPPRESS"""
 
     parser_signature = Sig(argument_default=argparse.SUPPRESS)
@@ -1363,7 +1363,7 @@ class TestParserDefaultSuppress(ParserTestCase):
     ]
 
 
-class TestParserDefault42(ParserTestCase):
+kundi TestParserDefault42(ParserTestCase):
     """Test actions with a parser-level default of 42"""
 
     parser_signature = Sig(argument_default=42)
@@ -1384,10 +1384,10 @@ class TestParserDefault42(ParserTestCase):
     ]
 
 
-class TestArgumentsFromFile(TempDirMixin, ParserTestCase):
+kundi TestArgumentsFromFile(TempDirMixin, ParserTestCase):
     """Test reading arguments kutoka a file"""
 
-    def setUp(self):
+    eleza setUp(self):
         super(TestArgumentsFromFile, self).setUp()
         file_texts = [
             ('hello', 'hello world!\n'),
@@ -1400,7 +1400,7 @@ class TestArgumentsFromFile(TempDirMixin, ParserTestCase):
             with open(path, 'w') as file:
                 file.write(text)
 
-    parser_signature = Sig(fromfile_prefix_chars='@')
+    parser_signature = Sig(kutokafile_prefix_chars='@')
     argument_signatures = [
         Sig('-a'),
         Sig('x'),
@@ -1418,10 +1418,10 @@ class TestArgumentsFromFile(TempDirMixin, ParserTestCase):
     ]
 
 
-class TestArgumentsFromFileConverter(TempDirMixin, ParserTestCase):
+kundi TestArgumentsFromFileConverter(TempDirMixin, ParserTestCase):
     """Test reading arguments kutoka a file"""
 
-    def setUp(self):
+    eleza setUp(self):
         super(TestArgumentsFromFileConverter, self).setUp()
         file_texts = [
             ('hello', 'hello world!\n'),
@@ -1430,15 +1430,15 @@ class TestArgumentsFromFileConverter(TempDirMixin, ParserTestCase):
             with open(path, 'w') as file:
                 file.write(text)
 
-    class FromFileConverterArgumentParser(ErrorRaisingArgumentParser):
+    kundi FromFileConverterArgumentParser(ErrorRaisingArgumentParser):
 
-        def convert_arg_line_to_args(self, arg_line):
+        eleza convert_arg_line_to_args(self, arg_line):
             for arg in arg_line.split():
-                if not arg.strip():
+                ikiwa not arg.strip():
                     continue
                 yield arg
-    parser_class = FromFileConverterArgumentParser
-    parser_signature = Sig(fromfile_prefix_chars='@')
+    parser_kundi = FromFileConverterArgumentParser
+    parser_signature = Sig(kutokafile_prefix_chars='@')
     argument_signatures = [
         Sig('y', nargs='+'),
     ]
@@ -1452,61 +1452,61 @@ class TestArgumentsFromFileConverter(TempDirMixin, ParserTestCase):
 # Type conversion tests
 # =====================
 
-class TestFileTypeRepr(TestCase):
+kundi TestFileTypeRepr(TestCase):
 
-    def test_r(self):
+    eleza test_r(self):
         type = argparse.FileType('r')
         self.assertEqual("FileType('r')", repr(type))
 
-    def test_wb_1(self):
+    eleza test_wb_1(self):
         type = argparse.FileType('wb', 1)
         self.assertEqual("FileType('wb', 1)", repr(type))
 
-    def test_r_latin(self):
+    eleza test_r_latin(self):
         type = argparse.FileType('r', encoding='latin_1')
         self.assertEqual("FileType('r', encoding='latin_1')", repr(type))
 
-    def test_w_big5_ignore(self):
+    eleza test_w_big5_ignore(self):
         type = argparse.FileType('w', encoding='big5', errors='ignore')
         self.assertEqual("FileType('w', encoding='big5', errors='ignore')",
                          repr(type))
 
-    def test_r_1_replace(self):
+    eleza test_r_1_replace(self):
         type = argparse.FileType('r', 1, errors='replace')
         self.assertEqual("FileType('r', 1, errors='replace')", repr(type))
 
-class StdStreamComparer:
-    def __init__(self, attr):
+kundi StdStreamComparer:
+    eleza __init__(self, attr):
         self.attr = attr
 
-    def __eq__(self, other):
-        return other == getattr(sys, self.attr)
+    eleza __eq__(self, other):
+        rudisha other == getattr(sys, self.attr)
 
 eq_stdin = StdStreamComparer('stdin')
 eq_stdout = StdStreamComparer('stdout')
 eq_stderr = StdStreamComparer('stderr')
 
-class RFile(object):
+kundi RFile(object):
     seen = {}
 
-    def __init__(self, name):
+    eleza __init__(self, name):
         self.name = name
 
-    def __eq__(self, other):
-        if other in self.seen:
+    eleza __eq__(self, other):
+        ikiwa other in self.seen:
             text = self.seen[other]
         else:
             text = self.seen[other] = other.read()
             other.close()
-        if not isinstance(text, str):
+        ikiwa not isinstance(text, str):
             text = text.decode('ascii')
-        return self.name == other.name == text
+        rudisha self.name == other.name == text
 
 
-class TestFileTypeR(TempDirMixin, ParserTestCase):
+kundi TestFileTypeR(TempDirMixin, ParserTestCase):
     """Test the FileType option/argument type for reading files"""
 
-    def setUp(self):
+    eleza setUp(self):
         super(TestFileTypeR, self).setUp()
         for file_name in ['foo', 'bar']:
             with open(os.path.join(self.temp_dir, file_name), 'w') as file:
@@ -1526,9 +1526,9 @@ class TestFileTypeR(TempDirMixin, ParserTestCase):
         ('readonly', NS(x=None, spam=RFile('readonly'))),
     ]
 
-class TestFileTypeDefaults(TempDirMixin, ParserTestCase):
+kundi TestFileTypeDefaults(TempDirMixin, ParserTestCase):
     """Test that a file is not created unless the default is needed"""
-    def setUp(self):
+    eleza setUp(self):
         super(TestFileTypeDefaults, self).setUp()
         file = open(os.path.join(self.temp_dir, 'good'), 'w')
         file.write('good')
@@ -1543,10 +1543,10 @@ class TestFileTypeDefaults(TempDirMixin, ParserTestCase):
     successes = [('-c good', NS(c=RFile('good')))]
 
 
-class TestFileTypeRB(TempDirMixin, ParserTestCase):
+kundi TestFileTypeRB(TempDirMixin, ParserTestCase):
     """Test the FileType option/argument type for reading files"""
 
-    def setUp(self):
+    eleza setUp(self):
         super(TestFileTypeRB, self).setUp()
         for file_name in ['foo', 'bar']:
             with open(os.path.join(self.temp_dir, file_name), 'w') as file:
@@ -1565,29 +1565,29 @@ class TestFileTypeRB(TempDirMixin, ParserTestCase):
     ]
 
 
-class WFile(object):
+kundi WFile(object):
     seen = set()
 
-    def __init__(self, name):
+    eleza __init__(self, name):
         self.name = name
 
-    def __eq__(self, other):
-        if other not in self.seen:
+    eleza __eq__(self, other):
+        ikiwa other not in self.seen:
             text = 'Check that file is writable.'
-            if 'b' in other.mode:
+            ikiwa 'b' in other.mode:
                 text = text.encode('ascii')
             other.write(text)
             other.close()
             self.seen.add(other)
-        return self.name == other.name
+        rudisha self.name == other.name
 
 
 @unittest.skipIf(hasattr(os, 'geteuid') and os.geteuid() == 0,
                  "non-root user required")
-class TestFileTypeW(TempDirMixin, ParserTestCase):
+kundi TestFileTypeW(TempDirMixin, ParserTestCase):
     """Test the FileType option/argument type for writing files"""
 
-    def setUp(self):
+    eleza setUp(self):
         super(TestFileTypeW, self).setUp()
         self.create_readonly_file('readonly')
 
@@ -1604,7 +1604,7 @@ class TestFileTypeW(TempDirMixin, ParserTestCase):
     ]
 
 
-class TestFileTypeWB(TempDirMixin, ParserTestCase):
+kundi TestFileTypeWB(TempDirMixin, ParserTestCase):
 
     argument_signatures = [
         Sig('-x', type=argparse.FileType('wb')),
@@ -1619,10 +1619,10 @@ class TestFileTypeWB(TempDirMixin, ParserTestCase):
     ]
 
 
-class TestFileTypeOpenArgs(TestCase):
+kundi TestFileTypeOpenArgs(TestCase):
     """Test that open (the builtin) is correctly called"""
 
-    def test_open_args(self):
+    eleza test_open_args(self):
         FT = argparse.FileType
         cases = [
             (FT('rb'), ('rb', -1, None, None)),
@@ -1637,25 +1637,25 @@ class TestFileTypeOpenArgs(TestCase):
                 m.assert_called_with('foo', *args)
 
 
-class TestFileTypeMissingInitialization(TestCase):
+kundi TestFileTypeMissingInitialization(TestCase):
     """
-    Test that add_argument throws an error if FileType class
+    Test that add_argument throws an error ikiwa FileType class
     object was passed instead of instance of FileType
     """
 
-    def test(self):
+    eleza test(self):
         parser = argparse.ArgumentParser()
         with self.assertRaises(ValueError) as cm:
             parser.add_argument('-x', type=argparse.FileType)
 
         self.assertEqual(
-            '%r is a FileType class object, instance of it must be passed'
+            '%r is a FileType kundi object, instance of it must be passed'
             % (argparse.FileType,),
             str(cm.exception)
         )
 
 
-class TestTypeCallable(ParserTestCase):
+kundi TestTypeCallable(ParserTestCase):
     """Test some callables as option/argument types"""
 
     argument_signatures = [
@@ -1670,16 +1670,16 @@ class TestTypeCallable(ParserTestCase):
     ]
 
 
-class TestTypeUserDefined(ParserTestCase):
+kundi TestTypeUserDefined(ParserTestCase):
     """Test a user-defined option/argument type"""
 
-    class MyType(TestCase):
+    kundi MyType(TestCase):
 
-        def __init__(self, value):
+        eleza __init__(self, value):
             self.value = value
 
-        def __eq__(self, other):
-            return (type(self), self.value) == (type(other), other.value)
+        eleza __eq__(self, other):
+            rudisha (type(self), self.value) == (type(other), other.value)
 
     argument_signatures = [
         Sig('-x', type=MyType),
@@ -1692,16 +1692,16 @@ class TestTypeUserDefined(ParserTestCase):
     ]
 
 
-class TestTypeClassicClass(ParserTestCase):
-    """Test a classic class type"""
+kundi TestTypeClassicClass(ParserTestCase):
+    """Test a classic kundi type"""
 
-    class C:
+    kundi C:
 
-        def __init__(self, value):
+        eleza __init__(self, value):
             self.value = value
 
-        def __eq__(self, other):
-            return (type(self), self.value) == (type(other), other.value)
+        eleza __eq__(self, other):
+            rudisha (type(self), self.value) == (type(other), other.value)
 
     argument_signatures = [
         Sig('-x', type=C),
@@ -1714,13 +1714,13 @@ class TestTypeClassicClass(ParserTestCase):
     ]
 
 
-class TestTypeRegistration(TestCase):
+kundi TestTypeRegistration(TestCase):
     """Test a user-defined type by registering it"""
 
-    def test(self):
+    eleza test(self):
 
-        def get_my_type(string):
-            return 'my_type{%s}' % string
+        eleza get_my_type(string):
+            rudisha 'my_type{%s}' % string
 
         parser = argparse.ArgumentParser()
         parser.register('type', 'my_type', get_my_type)
@@ -1737,12 +1737,12 @@ class TestTypeRegistration(TestCase):
 # Action tests
 # ============
 
-class TestActionUserDefined(ParserTestCase):
+kundi TestActionUserDefined(ParserTestCase):
     """Test a user-defined option/argument action"""
 
-    class OptionalAction(argparse.Action):
+    kundi OptionalAction(argparse.Action):
 
-        def __call__(self, parser, namespace, value, option_string=None):
+        eleza __call__(self, parser, namespace, value, option_string=None):
             try:
                 # check destination and option string
                 assert self.dest == 'spam', 'dest: %s' % self.dest
@@ -1750,9 +1750,9 @@ class TestActionUserDefined(ParserTestCase):
                 # when option is before argument, badger=2, and when
                 # option is after argument, badger=<whatever was set>
                 expected_ns = NS(spam=0.25)
-                if value in [0.125, 0.625]:
+                ikiwa value in [0.125, 0.625]:
                     expected_ns.badger = 2
-                elif value in [2.0]:
+                elikiwa value in [2.0]:
                     expected_ns.badger = 84
                 else:
                     raise AssertionError('value: %s' % value)
@@ -1763,9 +1763,9 @@ class TestActionUserDefined(ParserTestCase):
                 raise ArgumentParserError('opt_action failed: %s' % e)
             setattr(namespace, 'spam', value)
 
-    class PositionalAction(argparse.Action):
+    kundi PositionalAction(argparse.Action):
 
-        def __call__(self, parser, namespace, value, option_string=None):
+        eleza __call__(self, parser, namespace, value, option_string=None):
             try:
                 assert option_string is None, ('option_string: %s' %
                                                option_string)
@@ -1774,11 +1774,11 @@ class TestActionUserDefined(ParserTestCase):
                 # when argument is before option, spam=0.25, and when
                 # option is after argument, spam=<whatever was set>
                 expected_ns = NS(badger=2)
-                if value in [42, 84]:
+                ikiwa value in [42, 84]:
                     expected_ns.spam = 0.25
-                elif value in [1]:
+                elikiwa value in [1]:
                     expected_ns.spam = 0.625
-                elif value in [2]:
+                elikiwa value in [2]:
                     expected_ns.spam = 0.125
                 else:
                     raise AssertionError('value: %s' % value)
@@ -1804,15 +1804,15 @@ class TestActionUserDefined(ParserTestCase):
     ]
 
 
-class TestActionRegistration(TestCase):
+kundi TestActionRegistration(TestCase):
     """Test a user-defined action supplied by registering it"""
 
-    class MyAction(argparse.Action):
+    kundi MyAction(argparse.Action):
 
-        def __call__(self, parser, namespace, values, option_string=None):
+        eleza __call__(self, parser, namespace, values, option_string=None):
             setattr(namespace, self.dest, 'foo[%s]' % values)
 
-    def test(self):
+    eleza test(self):
 
         parser = argparse.ArgumentParser()
         parser.register('action', 'my_action', self.MyAction)
@@ -1822,7 +1822,7 @@ class TestActionRegistration(TestCase):
         self.assertEqual(parser.parse_args(['42']), NS(badger='foo[42]'))
 
 
-class TestActionExtend(ParserTestCase):
+kundi TestActionExtend(ParserTestCase):
     argument_signatures = [
         Sig('--foo', action="extend", nargs="+", type=str),
     ]
@@ -1835,16 +1835,16 @@ class TestActionExtend(ParserTestCase):
 # Subparsers tests
 # ================
 
-class TestAddSubparsers(TestCase):
+kundi TestAddSubparsers(TestCase):
     """Test the add_subparsers method"""
 
-    def assertArgumentParserError(self, *args, **kwargs):
+    eleza assertArgumentParserError(self, *args, **kwargs):
         self.assertRaises(ArgumentParserError, *args, **kwargs)
 
-    def _get_parser(self, subparser_help=False, prefix_chars=None,
+    eleza _get_parser(self, subparser_help=False, prefix_chars=None,
                     aliases=False):
         # create a parser with a subparsers argument
-        if prefix_chars:
+        ikiwa prefix_chars:
             parser = ErrorRaisingArgumentParser(
                 prog='PROG', description='main description', prefix_chars=prefix_chars)
             parser.add_argument(
@@ -1859,7 +1859,7 @@ class TestAddSubparsers(TestCase):
 
         # check that only one subparsers argument can be added
         subparsers_kwargs = {'required': False}
-        if aliases:
+        ikiwa aliases:
             subparsers_kwargs['metavar'] = 'COMMAND'
             subparsers_kwargs['title'] = 'commands'
         else:
@@ -1869,9 +1869,9 @@ class TestAddSubparsers(TestCase):
 
         # add first sub-parser
         parser1_kwargs = dict(description='1 description')
-        if subparser_help:
+        ikiwa subparser_help:
             parser1_kwargs['help'] = '1 help'
-        if aliases:
+        ikiwa aliases:
             parser1_kwargs['aliases'] = ['1alias1', '1alias2']
         parser1 = subparsers.add_parser('1', **parser1_kwargs)
         parser1.add_argument('-w', type=int, help='w help')
@@ -1879,7 +1879,7 @@ class TestAddSubparsers(TestCase):
 
         # add second sub-parser
         parser2_kwargs = dict(description='2 description')
-        if subparser_help:
+        ikiwa subparser_help:
             parser2_kwargs['help'] = '2 help'
         parser2 = subparsers.add_parser('2', **parser2_kwargs)
         parser2.add_argument('-y', choices='123', help='y help')
@@ -1887,28 +1887,28 @@ class TestAddSubparsers(TestCase):
 
         # add third sub-parser
         parser3_kwargs = dict(description='3 description')
-        if subparser_help:
+        ikiwa subparser_help:
             parser3_kwargs['help'] = '3 help'
         parser3 = subparsers.add_parser('3', **parser3_kwargs)
         parser3.add_argument('t', type=int, help='t help')
         parser3.add_argument('u', nargs='...', help='u help')
 
-        # return the main parser
-        return parser
+        # rudisha the main parser
+        rudisha parser
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.parser = self._get_parser()
         self.command_help_parser = self._get_parser(subparser_help=True)
 
-    def test_parse_args_failures(self):
+    eleza test_parse_args_failures(self):
         # check some failure cases:
         for args_str in ['', 'a', 'a a', '0.5 a', '0.5 1',
                          '0.5 1 -y', '0.5 2 -w']:
             args = args_str.split()
             self.assertArgumentParserError(self.parser.parse_args, args)
 
-    def test_parse_args(self):
+    eleza test_parse_args(self):
         # check some non-failure cases:
         self.assertEqual(
             self.parser.parse_args('0.5 1 b -w 7'.split()),
@@ -1927,7 +1927,7 @@ class TestAddSubparsers(TestCase):
             NS(foo=False, bar=-1.5, t=11, u=['a', '--foo', '7', '--', 'b']),
         )
 
-    def test_parse_known_args(self):
+    eleza test_parse_known_args(self):
         self.assertEqual(
             self.parser.parse_known_args('0.5 1 b -w 7'.split()),
             (NS(foo=False, bar=0.5, w=7, x='b'), []),
@@ -1949,7 +1949,7 @@ class TestAddSubparsers(TestCase):
             (NS(foo=False, bar=0.5, w=7, x='b'), ['-W', '-X', 'Y', 'Z']),
         )
 
-    def test_dest(self):
+    eleza test_dest(self):
         parser = ErrorRaisingArgumentParser()
         parser.add_argument('--foo', action='store_true')
         subparsers = parser.add_subparsers(dest='bar')
@@ -1958,7 +1958,7 @@ class TestAddSubparsers(TestCase):
         self.assertEqual(NS(foo=False, bar='1', baz='2'),
                          parser.parse_args('1 2'.split()))
 
-    def _test_required_subparsers(self, parser):
+    eleza _test_required_subparsers(self, parser):
         # Should parse the sub command
         ret = parser.parse_args(['run'])
         self.assertEqual(ret.command, 'run')
@@ -1966,20 +1966,20 @@ class TestAddSubparsers(TestCase):
         # Error when the command is missing
         self.assertArgumentParserError(parser.parse_args, ())
 
-    def test_required_subparsers_via_attribute(self):
+    eleza test_required_subparsers_via_attribute(self):
         parser = ErrorRaisingArgumentParser()
         subparsers = parser.add_subparsers(dest='command')
         subparsers.required = True
         subparsers.add_parser('run')
         self._test_required_subparsers(parser)
 
-    def test_required_subparsers_via_kwarg(self):
+    eleza test_required_subparsers_via_kwarg(self):
         parser = ErrorRaisingArgumentParser()
         subparsers = parser.add_subparsers(dest='command', required=True)
         subparsers.add_parser('run')
         self._test_required_subparsers(parser)
 
-    def test_required_subparsers_default(self):
+    eleza test_required_subparsers_default(self):
         parser = ErrorRaisingArgumentParser()
         subparsers = parser.add_subparsers(dest='command')
         subparsers.add_parser('run')
@@ -1987,7 +1987,7 @@ class TestAddSubparsers(TestCase):
         ret = parser.parse_args(())
         self.assertIsNone(ret.command)
 
-    def test_optional_subparsers(self):
+    eleza test_optional_subparsers(self):
         parser = ErrorRaisingArgumentParser()
         subparsers = parser.add_subparsers(dest='command', required=False)
         subparsers.add_parser('run')
@@ -1995,7 +1995,7 @@ class TestAddSubparsers(TestCase):
         ret = parser.parse_args(())
         self.assertIsNone(ret.command)
 
-    def test_help(self):
+    eleza test_help(self):
         self.assertEqual(self.parser.format_usage(),
                          'usage: PROG [-h] [--foo] bar {1,2,3} ...\n')
         self.assertEqual(self.parser.format_help(), textwrap.dedent('''\
@@ -2012,8 +2012,8 @@ class TestAddSubparsers(TestCase):
               --foo       foo help
             '''))
 
-    def test_help_extra_prefix_chars(self):
-        # Make sure - is still used for help if it is a non-first prefix char
+    eleza test_help_extra_prefix_chars(self):
+        # Make sure - is still used for help ikiwa it is a non-first prefix char
         parser = self._get_parser(prefix_chars='+:-')
         self.assertEqual(parser.format_usage(),
                          'usage: PROG [-h] [++foo] bar {1,2,3} ...\n')
@@ -2031,7 +2031,7 @@ class TestAddSubparsers(TestCase):
               ++foo       foo help
             '''))
 
-    def test_help_non_breaking_spaces(self):
+    eleza test_help_non_breaking_spaces(self):
         parser = ErrorRaisingArgumentParser(
             prog='PROG', description='main description')
         parser.add_argument(
@@ -2049,7 +2049,7 @@ class TestAddSubparsers(TestCase):
                               wrap\N{NO-BREAK SPACE}at non-breaking spaces
         '''))
 
-    def test_help_alternate_prefix_chars(self):
+    eleza test_help_alternate_prefix_chars(self):
         parser = self._get_parser(prefix_chars='+:/')
         self.assertEqual(parser.format_usage(),
                          'usage: PROG [+h] [++foo] bar {1,2,3} ...\n')
@@ -2067,7 +2067,7 @@ class TestAddSubparsers(TestCase):
               ++foo       foo help
             '''))
 
-    def test_parser_command_help(self):
+    eleza test_parser_command_help(self):
         self.assertEqual(self.command_help_parser.format_usage(),
                          'usage: PROG [-h] [--foo] bar {1,2,3} ...\n')
         self.assertEqual(self.command_help_parser.format_help(),
@@ -2088,7 +2088,7 @@ class TestAddSubparsers(TestCase):
               --foo       foo help
             '''))
 
-    def test_subparser_title_help(self):
+    eleza test_subparser_title_help(self):
         parser = ErrorRaisingArgumentParser(prog='PROG',
                                             description='main description')
         parser.add_argument('--foo', action='store_true', help='foo help')
@@ -2118,12 +2118,12 @@ class TestAddSubparsers(TestCase):
               {1,2}       additional text
             '''))
 
-    def _test_subparser_help(self, args_str, expected_help):
+    eleza _test_subparser_help(self, args_str, expected_help):
         with self.assertRaises(ArgumentParserError) as cm:
             self.parser.parse_args(args_str.split())
         self.assertEqual(expected_help, cm.exception.stdout)
 
-    def test_subparser1_help(self):
+    eleza test_subparser1_help(self):
         self._test_subparser_help('5.0 1 -h', textwrap.dedent('''\
             usage: PROG bar 1 [-h] [-w W] {a,b,c}
 
@@ -2137,7 +2137,7 @@ class TestAddSubparsers(TestCase):
               -w W        w help
             '''))
 
-    def test_subparser2_help(self):
+    eleza test_subparser2_help(self):
         self._test_subparser_help('5.0 2 -h', textwrap.dedent('''\
             usage: PROG bar 2 [-h] [-y {1,2,3}] [z [z ...]]
 
@@ -2151,7 +2151,7 @@ class TestAddSubparsers(TestCase):
               -y {1,2,3}  y help
             '''))
 
-    def test_alias_invocation(self):
+    eleza test_alias_invocation(self):
         parser = self._get_parser(aliases=True)
         self.assertEqual(
             parser.parse_known_args('0.5 1alias1 b'.split()),
@@ -2162,12 +2162,12 @@ class TestAddSubparsers(TestCase):
             (NS(foo=False, bar=0.5, w=None, x='b'), []),
         )
 
-    def test_error_alias_invocation(self):
+    eleza test_error_alias_invocation(self):
         parser = self._get_parser(aliases=True)
         self.assertArgumentParserError(parser.parse_args,
                                        '0.5 1alias3 b'.split())
 
-    def test_alias_help(self):
+    eleza test_alias_help(self):
         parser = self._get_parser(aliases=True, subparser_help=True)
         self.maxDiff = None
         self.assertEqual(parser.format_help(), textwrap.dedent("""\
@@ -2194,10 +2194,10 @@ class TestAddSubparsers(TestCase):
 # Groups tests
 # ============
 
-class TestPositionalsGroups(TestCase):
+kundi TestPositionalsGroups(TestCase):
     """Tests that order of group positionals matches construction order"""
 
-    def test_nongroup_first(self):
+    eleza test_nongroup_first(self):
         parser = ErrorRaisingArgumentParser()
         parser.add_argument('foo')
         group = parser.add_argument_group('g')
@@ -2207,7 +2207,7 @@ class TestPositionalsGroups(TestCase):
         result = parser.parse_args('1 2 3'.split())
         self.assertEqual(expected, result)
 
-    def test_group_first(self):
+    eleza test_group_first(self):
         parser = ErrorRaisingArgumentParser()
         group = parser.add_argument_group('xxx')
         group.add_argument('foo')
@@ -2217,7 +2217,7 @@ class TestPositionalsGroups(TestCase):
         result = parser.parse_args('1 2 3'.split())
         self.assertEqual(expected, result)
 
-    def test_interleaved_groups(self):
+    eleza test_interleaved_groups(self):
         parser = ErrorRaisingArgumentParser()
         group = parser.add_argument_group('xxx')
         parser.add_argument('foo')
@@ -2233,13 +2233,13 @@ class TestPositionalsGroups(TestCase):
 # Parent parser tests
 # ===================
 
-class TestParentParsers(TestCase):
+kundi TestParentParsers(TestCase):
     """Tests that parsers can be created with parent parsers"""
 
-    def assertArgumentParserError(self, *args, **kwargs):
+    eleza assertArgumentParserError(self, *args, **kwargs):
         self.assertRaises(ArgumentParserError, *args, **kwargs)
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.wxyz_parent = ErrorRaisingArgumentParser(add_help=False)
         self.wxyz_parent.add_argument('--w')
@@ -2267,23 +2267,23 @@ class TestParentParsers(TestCase):
 
         self.main_program = os.path.basename(sys.argv[0])
 
-    def test_single_parent(self):
+    eleza test_single_parent(self):
         parser = ErrorRaisingArgumentParser(parents=[self.wxyz_parent])
         self.assertEqual(parser.parse_args('-y 1 2 --w 3'.split()),
                          NS(w='3', y='1', z='2'))
 
-    def test_single_parent_mutex(self):
+    eleza test_single_parent_mutex(self):
         self._test_mutex_ab(self.ab_mutex_parent.parse_args)
         parser = ErrorRaisingArgumentParser(parents=[self.ab_mutex_parent])
         self._test_mutex_ab(parser.parse_args)
 
-    def test_single_granparent_mutex(self):
+    eleza test_single_granparent_mutex(self):
         parents = [self.ab_mutex_parent]
         parser = ErrorRaisingArgumentParser(add_help=False, parents=parents)
         parser = ErrorRaisingArgumentParser(parents=[parser])
         self._test_mutex_ab(parser.parse_args)
 
-    def _test_mutex_ab(self, parse_args):
+    eleza _test_mutex_ab(self, parse_args):
         self.assertEqual(parse_args([]), NS(a=False, b=False))
         self.assertEqual(parse_args(['-a']), NS(a=True, b=False))
         self.assertEqual(parse_args(['-b']), NS(a=False, b=True))
@@ -2293,13 +2293,13 @@ class TestParentParsers(TestCase):
         self.assertArgumentParserError(parse_args, ['-a', '-c'])
         self.assertArgumentParserError(parse_args, ['-b', '-c'])
 
-    def test_multiple_parents(self):
+    eleza test_multiple_parents(self):
         parents = [self.abcd_parent, self.wxyz_parent]
         parser = ErrorRaisingArgumentParser(parents=parents)
         self.assertEqual(parser.parse_args('--d 1 --w 2 3 4'.split()),
                          NS(a='3', b=None, d='1', w='2', y=None, z='4'))
 
-    def test_multiple_parents_mutex(self):
+    eleza test_multiple_parents_mutex(self):
         parents = [self.ab_mutex_parent, self.wxyz_parent]
         parser = ErrorRaisingArgumentParser(parents=parents)
         self.assertEqual(parser.parse_args('-a --w 2 3'.split()),
@@ -2309,25 +2309,25 @@ class TestParentParsers(TestCase):
         self.assertArgumentParserError(
             parser.parse_args, '-a -b --w 2 3'.split())
 
-    def test_conflicting_parents(self):
+    eleza test_conflicting_parents(self):
         self.assertRaises(
             argparse.ArgumentError,
             argparse.ArgumentParser,
             parents=[self.w_parent, self.wxyz_parent])
 
-    def test_conflicting_parents_mutex(self):
+    eleza test_conflicting_parents_mutex(self):
         self.assertRaises(
             argparse.ArgumentError,
             argparse.ArgumentParser,
             parents=[self.abcd_parent, self.ab_mutex_parent])
 
-    def test_same_argument_name_parents(self):
+    eleza test_same_argument_name_parents(self):
         parents = [self.wxyz_parent, self.z_parent]
         parser = ErrorRaisingArgumentParser(parents=parents)
         self.assertEqual(parser.parse_args('1 2'.split()),
                          NS(w=None, y=None, z='2'))
 
-    def test_subparser_parents(self):
+    eleza test_subparser_parents(self):
         parser = ErrorRaisingArgumentParser()
         subparsers = parser.add_subparsers()
         abcde_parser = subparsers.add_parser('bar', parents=[self.abcd_parent])
@@ -2335,7 +2335,7 @@ class TestParentParsers(TestCase):
         self.assertEqual(parser.parse_args('bar -b 1 --d 2 3 4'.split()),
                          NS(a='3', b='1', d='2', e='4'))
 
-    def test_subparser_parents_mutex(self):
+    eleza test_subparser_parents_mutex(self):
         parser = ErrorRaisingArgumentParser()
         subparsers = parser.add_subparsers()
         parents = [self.ab_mutex_parent]
@@ -2354,7 +2354,7 @@ class TestParentParsers(TestCase):
         self.assertArgumentParserError(
             parser.parse_args, 'bar -b -a 4'.split())
 
-    def test_parent_help(self):
+    eleza test_parent_help(self):
         parents = [self.abcd_parent, self.wxyz_parent]
         parser = ErrorRaisingArgumentParser(parents=parents)
         parser_help = parser.format_help()
@@ -2376,9 +2376,9 @@ class TestParentParsers(TestCase):
 
             x:
               -y Y
-        '''.format(progname, ' ' if progname else '' )))
+        '''.format(progname, ' ' ikiwa progname else '' )))
 
-    def test_groups_parents(self):
+    eleza test_groups_parents(self):
         parent = ErrorRaisingArgumentParser(add_help=False)
         g = parent.add_argument_group(title='g', description='gd')
         g.add_argument('-w')
@@ -2406,20 +2406,20 @@ class TestParentParsers(TestCase):
 
               -w W
               -x X
-        '''.format(progname, ' ' if progname else '' )))
+        '''.format(progname, ' ' ikiwa progname else '' )))
 
 # ==============================
 # Mutually exclusive group tests
 # ==============================
 
-class TestMutuallyExclusiveGroupErrors(TestCase):
+kundi TestMutuallyExclusiveGroupErrors(TestCase):
 
-    def test_invalid_add_argument_group(self):
+    eleza test_invalid_add_argument_group(self):
         parser = ErrorRaisingArgumentParser()
         raises = self.assertRaises
         raises(TypeError, parser.add_mutually_exclusive_group, title='foo')
 
-    def test_invalid_add_argument(self):
+    eleza test_invalid_add_argument(self):
         parser = ErrorRaisingArgumentParser()
         group = parser.add_mutually_exclusive_group()
         add_argument = group.add_argument
@@ -2430,7 +2430,7 @@ class TestMutuallyExclusiveGroupErrors(TestCase):
         raises(ValueError, add_argument, 'bar', nargs=1)
         raises(ValueError, add_argument, 'bar', nargs=argparse.PARSER)
 
-    def test_help(self):
+    eleza test_help(self):
         parser = ErrorRaisingArgumentParser(prog='PROG')
         group1 = parser.add_mutually_exclusive_group()
         group1.add_argument('--foo', action='store_true')
@@ -2450,62 +2450,62 @@ class TestMutuallyExclusiveGroupErrors(TestCase):
               '''
         self.assertEqual(parser.format_help(), textwrap.dedent(expected))
 
-class MEMixin(object):
+kundi MEMixin(object):
 
-    def test_failures_when_not_required(self):
+    eleza test_failures_when_not_required(self):
         parse_args = self.get_parser(required=False).parse_args
         error = ArgumentParserError
         for args_string in self.failures:
             self.assertRaises(error, parse_args, args_string.split())
 
-    def test_failures_when_required(self):
+    eleza test_failures_when_required(self):
         parse_args = self.get_parser(required=True).parse_args
         error = ArgumentParserError
         for args_string in self.failures + ['']:
             self.assertRaises(error, parse_args, args_string.split())
 
-    def test_successes_when_not_required(self):
+    eleza test_successes_when_not_required(self):
         parse_args = self.get_parser(required=False).parse_args
         successes = self.successes + self.successes_when_not_required
         for args_string, expected_ns in successes:
             actual_ns = parse_args(args_string.split())
             self.assertEqual(actual_ns, expected_ns)
 
-    def test_successes_when_required(self):
+    eleza test_successes_when_required(self):
         parse_args = self.get_parser(required=True).parse_args
         for args_string, expected_ns in self.successes:
             actual_ns = parse_args(args_string.split())
             self.assertEqual(actual_ns, expected_ns)
 
-    def test_usage_when_not_required(self):
+    eleza test_usage_when_not_required(self):
         format_usage = self.get_parser(required=False).format_usage
         expected_usage = self.usage_when_not_required
         self.assertEqual(format_usage(), textwrap.dedent(expected_usage))
 
-    def test_usage_when_required(self):
+    eleza test_usage_when_required(self):
         format_usage = self.get_parser(required=True).format_usage
         expected_usage = self.usage_when_required
         self.assertEqual(format_usage(), textwrap.dedent(expected_usage))
 
-    def test_help_when_not_required(self):
+    eleza test_help_when_not_required(self):
         format_help = self.get_parser(required=False).format_help
         help = self.usage_when_not_required + self.help
         self.assertEqual(format_help(), textwrap.dedent(help))
 
-    def test_help_when_required(self):
+    eleza test_help_when_required(self):
         format_help = self.get_parser(required=True).format_help
         help = self.usage_when_required + self.help
         self.assertEqual(format_help(), textwrap.dedent(help))
 
 
-class TestMutuallyExclusiveSimple(MEMixin, TestCase):
+kundi TestMutuallyExclusiveSimple(MEMixin, TestCase):
 
-    def get_parser(self, required=None):
+    eleza get_parser(self, required=None):
         parser = ErrorRaisingArgumentParser(prog='PROG')
         group = parser.add_mutually_exclusive_group(required=required)
         group.add_argument('--bar', help='bar help')
         group.add_argument('--baz', nargs='?', const='Z', help='baz help')
-        return parser
+        rudisha parser
 
     failures = ['--bar X --baz Y', '--bar X --baz']
     successes = [
@@ -2533,16 +2533,16 @@ class TestMutuallyExclusiveSimple(MEMixin, TestCase):
         '''
 
 
-class TestMutuallyExclusiveLong(MEMixin, TestCase):
+kundi TestMutuallyExclusiveLong(MEMixin, TestCase):
 
-    def get_parser(self, required=None):
+    eleza get_parser(self, required=None):
         parser = ErrorRaisingArgumentParser(prog='PROG')
         parser.add_argument('--abcde', help='abcde help')
         parser.add_argument('--fghij', help='fghij help')
         group = parser.add_mutually_exclusive_group(required=required)
         group.add_argument('--klmno', help='klmno help')
         group.add_argument('--pqrst', help='pqrst help')
-        return parser
+        rudisha parser
 
     failures = ['--klmno X --pqrst Y']
     successes = [
@@ -2576,14 +2576,14 @@ class TestMutuallyExclusiveLong(MEMixin, TestCase):
     '''
 
 
-class TestMutuallyExclusiveFirstSuppressed(MEMixin, TestCase):
+kundi TestMutuallyExclusiveFirstSuppressed(MEMixin, TestCase):
 
-    def get_parser(self, required):
+    eleza get_parser(self, required):
         parser = ErrorRaisingArgumentParser(prog='PROG')
         group = parser.add_mutually_exclusive_group(required=required)
         group.add_argument('-x', help=argparse.SUPPRESS)
         group.add_argument('-y', action='store_false', help='y help')
-        return parser
+        rudisha parser
 
     failures = ['-x X -y']
     successes = [
@@ -2609,16 +2609,16 @@ class TestMutuallyExclusiveFirstSuppressed(MEMixin, TestCase):
         '''
 
 
-class TestMutuallyExclusiveManySuppressed(MEMixin, TestCase):
+kundi TestMutuallyExclusiveManySuppressed(MEMixin, TestCase):
 
-    def get_parser(self, required):
+    eleza get_parser(self, required):
         parser = ErrorRaisingArgumentParser(prog='PROG')
         group = parser.add_mutually_exclusive_group(required=required)
         add = group.add_argument
         add('--spam', action='store_true', help=argparse.SUPPRESS)
         add('--badger', action='store_false', help=argparse.SUPPRESS)
         add('--bladder', help=argparse.SUPPRESS)
-        return parser
+        rudisha parser
 
     failures = [
         '--spam --badger',
@@ -2645,15 +2645,15 @@ class TestMutuallyExclusiveManySuppressed(MEMixin, TestCase):
         '''
 
 
-class TestMutuallyExclusiveOptionalAndPositional(MEMixin, TestCase):
+kundi TestMutuallyExclusiveOptionalAndPositional(MEMixin, TestCase):
 
-    def get_parser(self, required):
+    eleza get_parser(self, required):
         parser = ErrorRaisingArgumentParser(prog='PROG')
         group = parser.add_mutually_exclusive_group(required=required)
         group.add_argument('--foo', action='store_true', help='FOO')
         group.add_argument('--spam', help='SPAM')
         group.add_argument('badger', nargs='*', default='X', help='BADGER')
-        return parser
+        rudisha parser
 
     failures = [
         '--foo --spam S',
@@ -2690,9 +2690,9 @@ class TestMutuallyExclusiveOptionalAndPositional(MEMixin, TestCase):
         '''
 
 
-class TestMutuallyExclusiveOptionalsMixed(MEMixin, TestCase):
+kundi TestMutuallyExclusiveOptionalsMixed(MEMixin, TestCase):
 
-    def get_parser(self, required):
+    eleza get_parser(self, required):
         parser = ErrorRaisingArgumentParser(prog='PROG')
         parser.add_argument('-x', action='store_true', help='x help')
         group = parser.add_mutually_exclusive_group(required=required)
@@ -2700,7 +2700,7 @@ class TestMutuallyExclusiveOptionalsMixed(MEMixin, TestCase):
         group.add_argument('-b', action='store_true', help='b help')
         parser.add_argument('-y', action='store_true', help='y help')
         group.add_argument('-c', action='store_true', help='c help')
-        return parser
+        rudisha parser
 
     failures = ['-a -b', '-b -c', '-a -c', '-a -b -c']
     successes = [
@@ -2732,9 +2732,9 @@ class TestMutuallyExclusiveOptionalsMixed(MEMixin, TestCase):
         '''
 
 
-class TestMutuallyExclusiveInGroup(MEMixin, TestCase):
+kundi TestMutuallyExclusiveInGroup(MEMixin, TestCase):
 
-    def get_parser(self, required=None):
+    eleza get_parser(self, required=None):
         parser = ErrorRaisingArgumentParser(prog='PROG')
         titled_group = parser.add_argument_group(
             title='Titled group', description='Group description')
@@ -2742,7 +2742,7 @@ class TestMutuallyExclusiveInGroup(MEMixin, TestCase):
             titled_group.add_mutually_exclusive_group(required=required)
         mutex_group.add_argument('--bar', help='bar help')
         mutex_group.add_argument('--baz', help='baz help')
-        return parser
+        rudisha parser
 
     failures = ['--bar X --baz Y', '--baz X --bar Y']
     successes = [
@@ -2772,9 +2772,9 @@ class TestMutuallyExclusiveInGroup(MEMixin, TestCase):
         '''
 
 
-class TestMutuallyExclusiveOptionalsAndPositionalsMixed(MEMixin, TestCase):
+kundi TestMutuallyExclusiveOptionalsAndPositionalsMixed(MEMixin, TestCase):
 
-    def get_parser(self, required):
+    eleza get_parser(self, required):
         parser = ErrorRaisingArgumentParser(prog='PROG')
         parser.add_argument('x', help='x help')
         parser.add_argument('-y', action='store_true', help='y help')
@@ -2782,7 +2782,7 @@ class TestMutuallyExclusiveOptionalsAndPositionalsMixed(MEMixin, TestCase):
         group.add_argument('a', nargs='?', help='a help')
         group.add_argument('-b', action='store_true', help='b help')
         group.add_argument('-c', action='store_true', help='c help')
-        return parser
+        rudisha parser
 
     failures = ['X A -b', '-b -c', '-c X A']
     successes = [
@@ -2813,9 +2813,9 @@ class TestMutuallyExclusiveOptionalsAndPositionalsMixed(MEMixin, TestCase):
           -c          c help
         '''
 
-class TestMutuallyExclusiveNested(MEMixin, TestCase):
+kundi TestMutuallyExclusiveNested(MEMixin, TestCase):
 
-    def get_parser(self, required):
+    eleza get_parser(self, required):
         parser = ErrorRaisingArgumentParser(prog='PROG')
         group = parser.add_mutually_exclusive_group(required=required)
         group.add_argument('-a')
@@ -2826,7 +2826,7 @@ class TestMutuallyExclusiveNested(MEMixin, TestCase):
         group3 = group2.add_mutually_exclusive_group(required=required)
         group3.add_argument('-e')
         group3.add_argument('-f')
-        return parser
+        rudisha parser
 
     usage_when_not_required = '''\
         usage: PROG [-h] [-a A | -b B | [-c C | -d D | [-e E | -f F]]]
@@ -2857,51 +2857,51 @@ class TestMutuallyExclusiveNested(MEMixin, TestCase):
 # Mutually exclusive group in parent parser tests
 # =================================================
 
-class MEPBase(object):
+kundi MEPBase(object):
 
-    def get_parser(self, required=None):
+    eleza get_parser(self, required=None):
         parent = super(MEPBase, self).get_parser(required=required)
         parser = ErrorRaisingArgumentParser(
             prog=parent.prog, add_help=False, parents=[parent])
-        return parser
+        rudisha parser
 
 
-class TestMutuallyExclusiveGroupErrorsParent(
+kundi TestMutuallyExclusiveGroupErrorsParent(
     MEPBase, TestMutuallyExclusiveGroupErrors):
     pass
 
 
-class TestMutuallyExclusiveSimpleParent(
+kundi TestMutuallyExclusiveSimpleParent(
     MEPBase, TestMutuallyExclusiveSimple):
     pass
 
 
-class TestMutuallyExclusiveLongParent(
+kundi TestMutuallyExclusiveLongParent(
     MEPBase, TestMutuallyExclusiveLong):
     pass
 
 
-class TestMutuallyExclusiveFirstSuppressedParent(
+kundi TestMutuallyExclusiveFirstSuppressedParent(
     MEPBase, TestMutuallyExclusiveFirstSuppressed):
     pass
 
 
-class TestMutuallyExclusiveManySuppressedParent(
+kundi TestMutuallyExclusiveManySuppressedParent(
     MEPBase, TestMutuallyExclusiveManySuppressed):
     pass
 
 
-class TestMutuallyExclusiveOptionalAndPositionalParent(
+kundi TestMutuallyExclusiveOptionalAndPositionalParent(
     MEPBase, TestMutuallyExclusiveOptionalAndPositional):
     pass
 
 
-class TestMutuallyExclusiveOptionalsMixedParent(
+kundi TestMutuallyExclusiveOptionalsMixedParent(
     MEPBase, TestMutuallyExclusiveOptionalsMixed):
     pass
 
 
-class TestMutuallyExclusiveOptionalsAndPositionalsMixedParent(
+kundi TestMutuallyExclusiveOptionalsAndPositionalsMixedParent(
     MEPBase, TestMutuallyExclusiveOptionalsAndPositionalsMixed):
     pass
 
@@ -2909,9 +2909,9 @@ class TestMutuallyExclusiveOptionalsAndPositionalsMixedParent(
 # Set default tests
 # =================
 
-class TestSetDefaults(TestCase):
+kundi TestSetDefaults(TestCase):
 
-    def test_set_defaults_no_args(self):
+    eleza test_set_defaults_no_args(self):
         parser = ErrorRaisingArgumentParser()
         parser.set_defaults(x='foo')
         parser.set_defaults(y='bar', z=1)
@@ -2924,7 +2924,7 @@ class TestSetDefaults(TestCase):
         self.assertEqual(NS(x='baz', y='bar', z=2),
                          parser.parse_args([], NS(x='baz', z=2)))
 
-    def test_set_defaults_with_args(self):
+    eleza test_set_defaults_with_args(self):
         parser = ErrorRaisingArgumentParser()
         parser.set_defaults(x='foo', y='bar')
         parser.add_argument('-x', default='xfoox')
@@ -2941,7 +2941,7 @@ class TestSetDefaults(TestCase):
         self.assertEqual(NS(x='1', y='bar'),
                          parser.parse_args('-x 1'.split(), NS(x='baz')))
 
-    def test_set_defaults_subparsers(self):
+    eleza test_set_defaults_subparsers(self):
         parser = ErrorRaisingArgumentParser()
         parser.set_defaults(x='foo')
         subparsers = parser.add_subparsers()
@@ -2950,20 +2950,20 @@ class TestSetDefaults(TestCase):
         self.assertEqual(NS(x='foo', y='bar'),
                          parser.parse_args('a'.split()))
 
-    def test_set_defaults_parents(self):
+    eleza test_set_defaults_parents(self):
         parent = ErrorRaisingArgumentParser(add_help=False)
         parent.set_defaults(x='foo')
         parser = ErrorRaisingArgumentParser(parents=[parent])
         self.assertEqual(NS(x='foo'), parser.parse_args([]))
 
-    def test_set_defaults_on_parent_and_subparser(self):
+    eleza test_set_defaults_on_parent_and_subparser(self):
         parser = argparse.ArgumentParser()
         xparser = parser.add_subparsers().add_parser('X')
         parser.set_defaults(foo=1)
         xparser.set_defaults(foo=2)
         self.assertEqual(NS(foo=2), parser.parse_args(['X']))
 
-    def test_set_defaults_same_as_add_argument(self):
+    eleza test_set_defaults_same_as_add_argument(self):
         parser = ErrorRaisingArgumentParser()
         parser.set_defaults(w='W', x='X', y='Y', z='Z')
         parser.add_argument('-w')
@@ -2980,7 +2980,7 @@ class TestSetDefaults(TestCase):
         self.assertEqual(NS(w='WW', x='X', y='YY', z='Z'),
                          parser.parse_args([]))
 
-    def test_set_defaults_same_as_add_argument_group(self):
+    eleza test_set_defaults_same_as_add_argument_group(self):
         parser = ErrorRaisingArgumentParser()
         parser.set_defaults(w='W', x='X', y='Y', z='Z')
         group = parser.add_argument_group('foo')
@@ -3003,9 +3003,9 @@ class TestSetDefaults(TestCase):
 # Get default tests
 # =================
 
-class TestGetDefault(TestCase):
+kundi TestGetDefault(TestCase):
 
-    def test_get_default(self):
+    eleza test_get_default(self):
         parser = ErrorRaisingArgumentParser()
         self.assertIsNone(parser.get_default("foo"))
         self.assertIsNone(parser.get_default("bar"))
@@ -3026,14 +3026,14 @@ class TestGetDefault(TestCase):
 # Namespace 'contains' tests
 # ==========================
 
-class TestNamespaceContainsSimple(TestCase):
+kundi TestNamespaceContainsSimple(TestCase):
 
-    def test_empty(self):
+    eleza test_empty(self):
         ns = argparse.Namespace()
         self.assertNotIn('', ns)
         self.assertNotIn('x', ns)
 
-    def test_non_empty(self):
+    eleza test_non_empty(self):
         ns = argparse.Namespace(x=1, y=2)
         self.assertNotIn('', ns)
         self.assertIn('x', ns)
@@ -3045,15 +3045,15 @@ class TestNamespaceContainsSimple(TestCase):
 # Help formatting tests
 # =====================
 
-class TestHelpFormattingMetaclass(type):
+kundi TestHelpFormattingMetaclass(type):
 
-    def __init__(cls, name, bases, bodydict):
-        if name == 'HelpTestCase':
+    eleza __init__(cls, name, bases, bodydict):
+        ikiwa name == 'HelpTestCase':
             return
 
-        class AddTests(object):
+        kundi AddTests(object):
 
-            def __init__(self, test_class, func_suffix, std_name):
+            eleza __init__(self, test_class, func_suffix, std_name):
                 self.func_suffix = func_suffix
                 self.std_name = std_name
 
@@ -3062,7 +3062,7 @@ class TestHelpFormattingMetaclass(type):
                                   self.test_print_file]:
                     test_name = '%s_%s' % (test_func.__name__, func_suffix)
 
-                    def test_wrapper(self, test_func=test_func):
+                    eleza test_wrapper(self, test_func=test_func):
                         test_func(self)
                     try:
                         test_wrapper.__name__ = test_name
@@ -3070,7 +3070,7 @@ class TestHelpFormattingMetaclass(type):
                         pass
                     setattr(test_class, test_name, test_wrapper)
 
-            def _get_parser(self, tester):
+            eleza _get_parser(self, tester):
                 parser = argparse.ArgumentParser(
                     *tester.parser_signature.args,
                     **tester.parser_signature.kwargs)
@@ -3085,24 +3085,24 @@ class TestHelpFormattingMetaclass(type):
                         group.add_argument(*argument_sig.args,
                                            **argument_sig.kwargs)
                 subparsers_sigs = getattr(tester, 'subparsers_signatures', [])
-                if subparsers_sigs:
+                ikiwa subparsers_sigs:
                     subparsers = parser.add_subparsers()
                     for subparser_sig in subparsers_sigs:
                         subparsers.add_parser(*subparser_sig.args,
                                                **subparser_sig.kwargs)
-                return parser
+                rudisha parser
 
-            def _test(self, tester, parser_text):
+            eleza _test(self, tester, parser_text):
                 expected_text = getattr(tester, self.func_suffix)
                 expected_text = textwrap.dedent(expected_text)
                 tester.assertEqual(expected_text, parser_text)
 
-            def test_format(self, tester):
+            eleza test_format(self, tester):
                 parser = self._get_parser(tester)
                 format = getattr(parser, 'format_%s' % self.func_suffix)
                 self._test(tester, format())
 
-            def test_print(self, tester):
+            eleza test_andika(self, tester):
                 parser = self._get_parser(tester)
                 print_ = getattr(parser, 'print_%s' % self.func_suffix)
                 old_stream = getattr(sys, self.std_name)
@@ -3114,7 +3114,7 @@ class TestHelpFormattingMetaclass(type):
                     setattr(sys, self.std_name, old_stream)
                 self._test(tester, parser_text)
 
-            def test_print_file(self, tester):
+            eleza test_print_file(self, tester):
                 parser = self._get_parser(tester)
                 print_ = getattr(parser, 'print_%s' % self.func_suffix)
                 sfile = StdIOBuffer()
@@ -3131,7 +3131,7 @@ bases = TestCase,
 HelpTestCase = TestHelpFormattingMetaclass('HelpTestCase', bases, {})
 
 
-class TestHelpBiggerOptionals(HelpTestCase):
+kundi TestHelpBiggerOptionals(HelpTestCase):
     """Make sure that argument help aligns when options are longer"""
 
     parser_signature = Sig(prog='PROG', description='DESCRIPTION',
@@ -3167,13 +3167,13 @@ class TestHelpBiggerOptionals(HelpTestCase):
         0.1
         '''
 
-class TestShortColumns(HelpTestCase):
+kundi TestShortColumns(HelpTestCase):
     '''Test extremely small number of columns.
 
     TestCase prevents "COLUMNS" kutoka being too small in the tests themselves,
     but we don't want any exceptions thrown in such cases. Only ugly representation.
     '''
-    def setUp(self):
+    eleza setUp(self):
         env = support.EnvironmentVarGuard()
         env.set("COLUMNS", '15')
         self.addCleanup(env.__exit__)
@@ -3222,7 +3222,7 @@ class TestShortColumns(HelpTestCase):
     version                     = TestHelpBiggerOptionals.version
 
 
-class TestHelpBiggerOptionalGroups(HelpTestCase):
+kundi TestHelpBiggerOptionalGroups(HelpTestCase):
     """Make sure that argument help aligns when options are longer"""
 
     parser_signature = Sig(prog='PROG', description='DESCRIPTION',
@@ -3269,7 +3269,7 @@ class TestHelpBiggerOptionalGroups(HelpTestCase):
         '''
 
 
-class TestHelpBiggerPositionals(HelpTestCase):
+kundi TestHelpBiggerPositionals(HelpTestCase):
     """Make sure that help aligns when arguments are longer"""
 
     parser_signature = Sig(usage='USAGE', description='DESCRIPTION')
@@ -3300,7 +3300,7 @@ class TestHelpBiggerPositionals(HelpTestCase):
     version = ''
 
 
-class TestHelpReformatting(HelpTestCase):
+kundi TestHelpReformatting(HelpTestCase):
     """Make sure that text after short names starts on the first line"""
 
     parser_signature = Sig(
@@ -3352,7 +3352,7 @@ be wrapped
     version = ''
 
 
-class TestHelpWrappingShortNames(HelpTestCase):
+kundi TestHelpWrappingShortNames(HelpTestCase):
     """Make sure that text after short names starts on the first line"""
 
     parser_signature = Sig(prog='PROG', description= 'D\nD' * 30)
@@ -3392,7 +3392,7 @@ HHAAHHH
     version = ''
 
 
-class TestHelpWrappingLongNames(HelpTestCase):
+kundi TestHelpWrappingLongNames(HelpTestCase):
     """Make sure that text after long names starts on the next line"""
 
     parser_signature = Sig(usage='USAGE', description= 'D D' * 30)
@@ -3446,7 +3446,7 @@ VV VV VV
         '''
 
 
-class TestHelpUsage(HelpTestCase):
+kundi TestHelpUsage(HelpTestCase):
     """Test basic usage messages"""
 
     parser_signature = Sig(prog='PROG')
@@ -3490,7 +3490,7 @@ class TestHelpUsage(HelpTestCase):
     version = ''
 
 
-class TestHelpOnlyUserGroups(HelpTestCase):
+kundi TestHelpOnlyUserGroups(HelpTestCase):
     """Test basic usage messages"""
 
     parser_signature = Sig(prog='PROG', add_help=False)
@@ -3521,7 +3521,7 @@ class TestHelpOnlyUserGroups(HelpTestCase):
     version = ''
 
 
-class TestHelpUsageLongProg(HelpTestCase):
+kundi TestHelpUsageLongProg(HelpTestCase):
     """Test usage messages where the prog is long"""
 
     parser_signature = Sig(prog='P' * 60)
@@ -3550,7 +3550,7 @@ class TestHelpUsageLongProg(HelpTestCase):
     version = ''
 
 
-class TestHelpUsageLongProgOptionsWrap(HelpTestCase):
+kundi TestHelpUsageLongProgOptionsWrap(HelpTestCase):
     """Test usage messages where the prog is long and the optionals wrap"""
 
     parser_signature = Sig(prog='P' * 60)
@@ -3586,7 +3586,7 @@ class TestHelpUsageLongProgOptionsWrap(HelpTestCase):
     version = ''
 
 
-class TestHelpUsageLongProgPositionalsWrap(HelpTestCase):
+kundi TestHelpUsageLongProgPositionalsWrap(HelpTestCase):
     """Test usage messages where the prog is long and the positionals wrap"""
 
     parser_signature = Sig(prog='P' * 60, add_help=False)
@@ -3611,7 +3611,7 @@ class TestHelpUsageLongProgPositionalsWrap(HelpTestCase):
     version = ''
 
 
-class TestHelpUsageOptionalsWrap(HelpTestCase):
+kundi TestHelpUsageOptionalsWrap(HelpTestCase):
     """Test usage messages where the optionals wrap"""
 
     parser_signature = Sig(prog='PROG')
@@ -3649,7 +3649,7 @@ class TestHelpUsageOptionalsWrap(HelpTestCase):
     version = ''
 
 
-class TestHelpUsagePositionalsWrap(HelpTestCase):
+kundi TestHelpUsagePositionalsWrap(HelpTestCase):
     """Test usage messages where the positionals wrap"""
 
     parser_signature = Sig(prog='PROG')
@@ -3683,7 +3683,7 @@ class TestHelpUsagePositionalsWrap(HelpTestCase):
     version = ''
 
 
-class TestHelpUsageOptionalsPositionalsWrap(HelpTestCase):
+kundi TestHelpUsageOptionalsPositionalsWrap(HelpTestCase):
     """Test usage messages where the optionals and positionals wrap"""
 
     parser_signature = Sig(prog='PROG')
@@ -3719,7 +3719,7 @@ class TestHelpUsageOptionalsPositionalsWrap(HelpTestCase):
     version = ''
 
 
-class TestHelpUsageOptionalsOnlyWrap(HelpTestCase):
+kundi TestHelpUsageOptionalsOnlyWrap(HelpTestCase):
     """Test usage messages where there are only optionals and they wrap"""
 
     parser_signature = Sig(prog='PROG')
@@ -3745,7 +3745,7 @@ class TestHelpUsageOptionalsOnlyWrap(HelpTestCase):
     version = ''
 
 
-class TestHelpUsagePositionalsOnlyWrap(HelpTestCase):
+kundi TestHelpUsagePositionalsOnlyWrap(HelpTestCase):
     """Test usage messages where there are only positionals and they wrap"""
 
     parser_signature = Sig(prog='PROG', add_help=False)
@@ -3769,7 +3769,7 @@ class TestHelpUsagePositionalsOnlyWrap(HelpTestCase):
     version = ''
 
 
-class TestHelpVariableExpansion(HelpTestCase):
+kundi TestHelpVariableExpansion(HelpTestCase):
     """Test that variables are expanded properly in help messages"""
 
     parser_signature = Sig(prog='PROG')
@@ -3815,7 +3815,7 @@ class TestHelpVariableExpansion(HelpTestCase):
     version = ''
 
 
-class TestHelpVariableExpansionUsageSupplied(HelpTestCase):
+kundi TestHelpVariableExpansionUsageSupplied(HelpTestCase):
     """Test that variables are expanded properly when usage= is present"""
 
     parser_signature = Sig(prog='PROG', usage='%(prog)s FOO')
@@ -3832,7 +3832,7 @@ class TestHelpVariableExpansionUsageSupplied(HelpTestCase):
     version = ''
 
 
-class TestHelpVariableExpansionNoArguments(HelpTestCase):
+kundi TestHelpVariableExpansionNoArguments(HelpTestCase):
     """Test that variables are expanded properly with no arguments"""
 
     parser_signature = Sig(prog='PROG', add_help=False)
@@ -3845,7 +3845,7 @@ class TestHelpVariableExpansionNoArguments(HelpTestCase):
     version = ''
 
 
-class TestHelpSuppressUsage(HelpTestCase):
+kundi TestHelpSuppressUsage(HelpTestCase):
     """Test that items can be suppressed in usage messages"""
 
     parser_signature = Sig(prog='PROG', usage=argparse.SUPPRESS)
@@ -3866,7 +3866,7 @@ class TestHelpSuppressUsage(HelpTestCase):
     version = ''
 
 
-class TestHelpSuppressOptional(HelpTestCase):
+kundi TestHelpSuppressOptional(HelpTestCase):
     """Test that optional arguments can be suppressed in help messages"""
 
     parser_signature = Sig(prog='PROG', add_help=False)
@@ -3886,7 +3886,7 @@ class TestHelpSuppressOptional(HelpTestCase):
     version = ''
 
 
-class TestHelpSuppressOptionalGroup(HelpTestCase):
+kundi TestHelpSuppressOptionalGroup(HelpTestCase):
     """Test that optional groups can be suppressed in help messages"""
 
     parser_signature = Sig(prog='PROG')
@@ -3912,7 +3912,7 @@ class TestHelpSuppressOptionalGroup(HelpTestCase):
     version = ''
 
 
-class TestHelpSuppressPositional(HelpTestCase):
+kundi TestHelpSuppressPositional(HelpTestCase):
     """Test that positional arguments can be suppressed in help messages"""
 
     parser_signature = Sig(prog='PROG')
@@ -3933,7 +3933,7 @@ class TestHelpSuppressPositional(HelpTestCase):
     version = ''
 
 
-class TestHelpRequiredOptional(HelpTestCase):
+kundi TestHelpRequiredOptional(HelpTestCase):
     """Test that required options don't look optional"""
 
     parser_signature = Sig(prog='PROG')
@@ -3953,7 +3953,7 @@ class TestHelpRequiredOptional(HelpTestCase):
     version = ''
 
 
-class TestHelpAlternatePrefixChars(HelpTestCase):
+kundi TestHelpAlternatePrefixChars(HelpTestCase):
     """Test that options display with different prefix characters"""
 
     parser_signature = Sig(prog='PROG', prefix_chars='^;', add_help=False)
@@ -3974,7 +3974,7 @@ class TestHelpAlternatePrefixChars(HelpTestCase):
     version = ''
 
 
-class TestHelpNoHelpOptional(HelpTestCase):
+kundi TestHelpNoHelpOptional(HelpTestCase):
     """Test that the --help argument can be suppressed help messages"""
 
     parser_signature = Sig(prog='PROG', add_help=False)
@@ -3997,8 +3997,8 @@ class TestHelpNoHelpOptional(HelpTestCase):
     version = ''
 
 
-class TestHelpNone(HelpTestCase):
-    """Test that no errors occur if no help is specified"""
+kundi TestHelpNone(HelpTestCase):
+    """Test that no errors occur ikiwa no help is specified"""
 
     parser_signature = Sig(prog='PROG')
     argument_signatures = [
@@ -4021,7 +4021,7 @@ class TestHelpNone(HelpTestCase):
     version = ''
 
 
-class TestHelpTupleMetavar(HelpTestCase):
+kundi TestHelpTupleMetavar(HelpTestCase):
     """Test specifying metavar as a tuple"""
 
     parser_signature = Sig(prog='PROG')
@@ -4048,7 +4048,7 @@ class TestHelpTupleMetavar(HelpTestCase):
     version = ''
 
 
-class TestHelpRawText(HelpTestCase):
+kundi TestHelpRawText(HelpTestCase):
     """Test the RawTextHelpFormatter"""
 
     parser_signature = Sig(
@@ -4097,7 +4097,7 @@ class TestHelpRawText(HelpTestCase):
     version = ''
 
 
-class TestHelpRawDescription(HelpTestCase):
+kundi TestHelpRawDescription(HelpTestCase):
     """Test the RawTextHelpFormatter"""
 
     parser_signature = Sig(
@@ -4145,7 +4145,7 @@ class TestHelpRawDescription(HelpTestCase):
     version = ''
 
 
-class TestHelpArgumentDefaults(HelpTestCase):
+kundi TestHelpArgumentDefaults(HelpTestCase):
     """Test the ArgumentDefaultsHelpFormatter"""
 
     parser_signature = Sig(
@@ -4185,7 +4185,7 @@ class TestHelpArgumentDefaults(HelpTestCase):
         '''
     version = ''
 
-class TestHelpVersionAction(HelpTestCase):
+kundi TestHelpVersionAction(HelpTestCase):
     """Test the default help for the version action"""
 
     parser_signature = Sig(prog='PROG', description='description')
@@ -4205,7 +4205,7 @@ class TestHelpVersionAction(HelpTestCase):
     version = ''
 
 
-class TestHelpVersionActionSuppress(HelpTestCase):
+kundi TestHelpVersionActionSuppress(HelpTestCase):
     """Test that the --version argument can be suppressed in help messages"""
 
     parser_signature = Sig(prog='PROG')
@@ -4230,7 +4230,7 @@ class TestHelpVersionActionSuppress(HelpTestCase):
         '''
 
 
-class TestHelpSubparsersOrdering(HelpTestCase):
+kundi TestHelpSubparsersOrdering(HelpTestCase):
     """Test ordering of subcommands in help matches the code"""
     parser_signature = Sig(prog='PROG',
                            description='display some subcommands')
@@ -4259,7 +4259,7 @@ class TestHelpSubparsersOrdering(HelpTestCase):
         0.1
         '''
 
-class TestHelpSubparsersWithHelpOrdering(HelpTestCase):
+kundi TestHelpSubparsersWithHelpOrdering(HelpTestCase):
     """Test ordering of subcommands in help matches the code"""
     parser_signature = Sig(prog='PROG',
                            description='display some subcommands')
@@ -4302,10 +4302,10 @@ class TestHelpSubparsersWithHelpOrdering(HelpTestCase):
 
 
 
-class TestHelpMetavarTypeFormatter(HelpTestCase):
+kundi TestHelpMetavarTypeFormatter(HelpTestCase):
 
-    def custom_type(string):
-        return string
+    eleza custom_type(string):
+        rudisha string
 
     parser_signature = Sig(prog='PROG', description='description',
                            formatter_class=argparse.MetavarTypeHelpFormatter)
@@ -4335,39 +4335,39 @@ class TestHelpMetavarTypeFormatter(HelpTestCase):
 # Optional/Positional constructor tests
 # =====================================
 
-class TestInvalidArgumentConstructors(TestCase):
+kundi TestInvalidArgumentConstructors(TestCase):
     """Test a bunch of invalid Argument constructors"""
 
-    def assertTypeError(self, *args, **kwargs):
+    eleza assertTypeError(self, *args, **kwargs):
         parser = argparse.ArgumentParser()
         self.assertRaises(TypeError, parser.add_argument,
                           *args, **kwargs)
 
-    def assertValueError(self, *args, **kwargs):
+    eleza assertValueError(self, *args, **kwargs):
         parser = argparse.ArgumentParser()
         self.assertRaises(ValueError, parser.add_argument,
                           *args, **kwargs)
 
-    def test_invalid_keyword_arguments(self):
+    eleza test_invalid_keyword_arguments(self):
         self.assertTypeError('-x', bar=None)
         self.assertTypeError('-y', callback='foo')
         self.assertTypeError('-y', callback_args=())
         self.assertTypeError('-y', callback_kwargs={})
 
-    def test_missing_destination(self):
+    eleza test_missing_destination(self):
         self.assertTypeError()
         for action in ['append', 'store']:
             self.assertTypeError(action=action)
 
-    def test_invalid_option_strings(self):
+    eleza test_invalid_option_strings(self):
         self.assertValueError('--')
         self.assertValueError('---')
 
-    def test_invalid_type(self):
+    eleza test_invalid_type(self):
         self.assertValueError('--foo', type='int')
         self.assertValueError('--foo', type=(int, float))
 
-    def test_invalid_action(self):
+    eleza test_invalid_action(self):
         self.assertValueError('-x', action='foo')
         self.assertValueError('foo', action='baz')
         self.assertValueError('--foo', action=('store', 'append'))
@@ -4376,7 +4376,7 @@ class TestInvalidArgumentConstructors(TestCase):
             parser.add_argument("--foo", action="store-true")
         self.assertIn('unknown action', str(cm.exception))
 
-    def test_multiple_dest(self):
+    eleza test_multiple_dest(self):
         parser = argparse.ArgumentParser()
         parser.add_argument(dest='foo')
         with self.assertRaises(ValueError) as cm:
@@ -4384,14 +4384,14 @@ class TestInvalidArgumentConstructors(TestCase):
         self.assertIn('dest supplied twice for positional argument',
                       str(cm.exception))
 
-    def test_no_argument_actions(self):
+    eleza test_no_argument_actions(self):
         for action in ['store_const', 'store_true', 'store_false',
                        'append_const', 'count']:
             for attrs in [dict(type=int), dict(nargs='+'),
                           dict(choices='ab')]:
                 self.assertTypeError('-x', action=action, **attrs)
 
-    def test_no_argument_no_const_actions(self):
+    eleza test_no_argument_no_const_actions(self):
         # options with zero arguments
         for action in ['store_true', 'store_false', 'count']:
 
@@ -4401,7 +4401,7 @@ class TestInvalidArgumentConstructors(TestCase):
             # nargs is always disallowed
             self.assertTypeError('-x', nargs='*', action=action)
 
-    def test_more_than_one_argument_actions(self):
+    eleza test_more_than_one_argument_actions(self):
         for action in ['store', 'append']:
 
             # nargs=0 is disallowed
@@ -4415,40 +4415,40 @@ class TestInvalidArgumentConstructors(TestCase):
                 self.assertValueError('spam', const='foo',
                                       nargs=nargs, action=action)
 
-    def test_required_const_actions(self):
+    eleza test_required_const_actions(self):
         for action in ['store_const', 'append_const']:
 
             # nargs is always disallowed
             self.assertTypeError('-x', nargs='+', action=action)
 
-    def test_parsers_action_missing_params(self):
+    eleza test_parsers_action_missing_params(self):
         self.assertTypeError('command', action='parsers')
         self.assertTypeError('command', action='parsers', prog='PROG')
         self.assertTypeError('command', action='parsers',
                              parser_class=argparse.ArgumentParser)
 
-    def test_required_positional(self):
+    eleza test_required_positional(self):
         self.assertTypeError('foo', required=True)
 
-    def test_user_defined_action(self):
+    eleza test_user_defined_action(self):
 
-        class Success(Exception):
+        kundi Success(Exception):
             pass
 
-        class Action(object):
+        kundi Action(object):
 
-            def __init__(self,
+            eleza __init__(self,
                          option_strings,
                          dest,
                          const,
                          default,
                          required=False):
-                if dest == 'spam':
-                    if const is Success:
-                        if default is Success:
+                ikiwa dest == 'spam':
+                    ikiwa const is Success:
+                        ikiwa default is Success:
                             raise Success()
 
-            def __call__(self, *args, **kwargs):
+            eleza __call__(self, *args, **kwargs):
                 pass
 
         parser = argparse.ArgumentParser()
@@ -4461,9 +4461,9 @@ class TestInvalidArgumentConstructors(TestCase):
 # Actions returned by add_argument
 # ================================
 
-class TestActionsReturned(TestCase):
+kundi TestActionsReturned(TestCase):
 
-    def test_dest(self):
+    eleza test_dest(self):
         parser = argparse.ArgumentParser()
         action = parser.add_argument('--foo')
         self.assertEqual(action.dest, 'foo')
@@ -4472,7 +4472,7 @@ class TestActionsReturned(TestCase):
         action = parser.add_argument('-x', '-y')
         self.assertEqual(action.dest, 'x')
 
-    def test_misc(self):
+    eleza test_misc(self):
         parser = argparse.ArgumentParser()
         action = parser.add_argument('--foo', nargs='?', const=42,
                                      default=84, type=int, choices=[1, 2],
@@ -4491,13 +4491,13 @@ class TestActionsReturned(TestCase):
 # Argument conflict handling tests
 # ================================
 
-class TestConflictHandling(TestCase):
+kundi TestConflictHandling(TestCase):
 
-    def test_bad_type(self):
+    eleza test_bad_type(self):
         self.assertRaises(ValueError, argparse.ArgumentParser,
                           conflict_handler='foo')
 
-    def test_conflict_error(self):
+    eleza test_conflict_error(self):
         parser = argparse.ArgumentParser()
         parser.add_argument('-x')
         self.assertRaises(argparse.ArgumentError,
@@ -4506,7 +4506,7 @@ class TestConflictHandling(TestCase):
         self.assertRaises(argparse.ArgumentError,
                           parser.add_argument, '--spam')
 
-    def test_resolve_error(self):
+    eleza test_resolve_error(self):
         get_parser = argparse.ArgumentParser
         parser = get_parser(prog='PROG', conflict_handler='resolve')
 
@@ -4536,53 +4536,53 @@ class TestConflictHandling(TestCase):
 # Help and Version option tests
 # =============================
 
-class TestOptionalsHelpVersionActions(TestCase):
+kundi TestOptionalsHelpVersionActions(TestCase):
     """Test the help and version actions"""
 
-    def assertPrintHelpExit(self, parser, args_str):
+    eleza assertPrintHelpExit(self, parser, args_str):
         with self.assertRaises(ArgumentParserError) as cm:
             parser.parse_args(args_str.split())
         self.assertEqual(parser.format_help(), cm.exception.stdout)
 
-    def assertArgumentParserError(self, parser, *args):
+    eleza assertArgumentParserError(self, parser, *args):
         self.assertRaises(ArgumentParserError, parser.parse_args, args)
 
-    def test_version(self):
+    eleza test_version(self):
         parser = ErrorRaisingArgumentParser()
         parser.add_argument('-v', '--version', action='version', version='1.0')
         self.assertPrintHelpExit(parser, '-h')
         self.assertPrintHelpExit(parser, '--help')
         self.assertRaises(AttributeError, getattr, parser, 'format_version')
 
-    def test_version_format(self):
+    eleza test_version_format(self):
         parser = ErrorRaisingArgumentParser(prog='PPP')
         parser.add_argument('-v', '--version', action='version', version='%(prog)s 3.5')
         with self.assertRaises(ArgumentParserError) as cm:
             parser.parse_args(['-v'])
         self.assertEqual('PPP 3.5\n', cm.exception.stdout)
 
-    def test_version_no_help(self):
+    eleza test_version_no_help(self):
         parser = ErrorRaisingArgumentParser(add_help=False)
         parser.add_argument('-v', '--version', action='version', version='1.0')
         self.assertArgumentParserError(parser, '-h')
         self.assertArgumentParserError(parser, '--help')
         self.assertRaises(AttributeError, getattr, parser, 'format_version')
 
-    def test_version_action(self):
+    eleza test_version_action(self):
         parser = ErrorRaisingArgumentParser(prog='XXX')
         parser.add_argument('-V', action='version', version='%(prog)s 3.7')
         with self.assertRaises(ArgumentParserError) as cm:
             parser.parse_args(['-V'])
         self.assertEqual('XXX 3.7\n', cm.exception.stdout)
 
-    def test_no_help(self):
+    eleza test_no_help(self):
         parser = ErrorRaisingArgumentParser(add_help=False)
         self.assertArgumentParserError(parser, '-h')
         self.assertArgumentParserError(parser, '--help')
         self.assertArgumentParserError(parser, '-v')
         self.assertArgumentParserError(parser, '--version')
 
-    def test_alternate_help_version(self):
+    eleza test_alternate_help_version(self):
         parser = ErrorRaisingArgumentParser()
         parser.add_argument('-x', action='help')
         parser.add_argument('-y', action='version')
@@ -4591,7 +4591,7 @@ class TestOptionalsHelpVersionActions(TestCase):
         self.assertArgumentParserError(parser, '--version')
         self.assertRaises(AttributeError, getattr, parser, 'format_version')
 
-    def test_help_version_extra_arguments(self):
+    eleza test_help_version_extra_arguments(self):
         parser = ErrorRaisingArgumentParser()
         parser.add_argument('--version', action='version', version='1.0')
         parser.add_argument('-x', action='store_true')
@@ -4612,14 +4612,14 @@ class TestOptionalsHelpVersionActions(TestCase):
 # str() and repr() tests
 # ======================
 
-class TestStrings(TestCase):
+kundi TestStrings(TestCase):
     """Test str()  and repr() on Optionals and Positionals"""
 
-    def assertStringEqual(self, obj, result_string):
+    eleza assertStringEqual(self, obj, result_string):
         for func in [str, repr]:
             self.assertEqual(func(obj), result_string)
 
-    def test_optional(self):
+    eleza test_optional(self):
         option = argparse.Action(
             option_strings=['--foo', '-a', '-b'],
             dest='b',
@@ -4635,7 +4635,7 @@ class TestStrings(TestCase):
             "choices=[1, 2, 3], help='HELP', metavar='METAVAR')")
         self.assertStringEqual(option, string)
 
-    def test_argument(self):
+    eleza test_argument(self):
         argument = argparse.Action(
             option_strings=[],
             dest='x',
@@ -4651,27 +4651,27 @@ class TestStrings(TestCase):
             "help='H HH H', metavar='MV MV MV')" % float)
         self.assertStringEqual(argument, string)
 
-    def test_namespace(self):
+    eleza test_namespace(self):
         ns = argparse.Namespace(foo=42, bar='spam')
         string = "Namespace(bar='spam', foo=42)"
         self.assertStringEqual(ns, string)
 
-    def test_namespace_starkwargs_notidentifier(self):
+    eleza test_namespace_starkwargs_notidentifier(self):
         ns = argparse.Namespace(**{'"': 'quote'})
         string = """Namespace(**{'"': 'quote'})"""
         self.assertStringEqual(ns, string)
 
-    def test_namespace_kwargs_and_starkwargs_notidentifier(self):
+    eleza test_namespace_kwargs_and_starkwargs_notidentifier(self):
         ns = argparse.Namespace(a=1, **{'"': 'quote'})
         string = """Namespace(a=1, **{'"': 'quote'})"""
         self.assertStringEqual(ns, string)
 
-    def test_namespace_starkwargs_identifier(self):
+    eleza test_namespace_starkwargs_identifier(self):
         ns = argparse.Namespace(**{'valid': True})
         string = "Namespace(valid=True)"
         self.assertStringEqual(ns, string)
 
-    def test_parser(self):
+    eleza test_parser(self):
         parser = argparse.ArgumentParser(prog='PROG')
         string = (
             "ArgumentParser(prog='PROG', usage=None, description=None, "
@@ -4683,9 +4683,9 @@ class TestStrings(TestCase):
 # Namespace tests
 # ===============
 
-class TestNamespace(TestCase):
+kundi TestNamespace(TestCase):
 
-    def test_constructor(self):
+    eleza test_constructor(self):
         ns = argparse.Namespace()
         self.assertRaises(AttributeError, getattr, ns, 'x')
 
@@ -4693,7 +4693,7 @@ class TestNamespace(TestCase):
         self.assertEqual(ns.a, 42)
         self.assertEqual(ns.b, 'spam')
 
-    def test_equality(self):
+    eleza test_equality(self):
         ns1 = argparse.Namespace(a=1, b=2)
         ns2 = argparse.Namespace(b=2, a=1)
         ns3 = argparse.Namespace(a=1)
@@ -4709,7 +4709,7 @@ class TestNamespace(TestCase):
         self.assertTrue(ns2 != ns3)
         self.assertTrue(ns2 != ns4)
 
-    def test_equality_returns_notimplemented(self):
+    eleza test_equality_returns_notimplemented(self):
         # See issue 21481
         ns = argparse.Namespace(a=1, b=2)
         self.assertIs(ns.__eq__(None), NotImplemented)
@@ -4720,27 +4720,27 @@ class TestNamespace(TestCase):
 # File encoding tests
 # ===================
 
-class TestEncoding(TestCase):
+kundi TestEncoding(TestCase):
 
-    def _test_module_encoding(self, path):
+    eleza _test_module_encoding(self, path):
         path, _ = os.path.splitext(path)
         path += ".py"
         with open(path, 'r', encoding='utf-8') as f:
             f.read()
 
-    def test_argparse_module_encoding(self):
+    eleza test_argparse_module_encoding(self):
         self._test_module_encoding(argparse.__file__)
 
-    def test_test_argparse_module_encoding(self):
+    eleza test_test_argparse_module_encoding(self):
         self._test_module_encoding(__file__)
 
 # ===================
 # ArgumentError tests
 # ===================
 
-class TestArgumentError(TestCase):
+kundi TestArgumentError(TestCase):
 
-    def test_argument_error(self):
+    eleza test_argument_error(self):
         msg = "my error here"
         error = argparse.ArgumentError(None, msg)
         self.assertEqual(str(error), msg)
@@ -4749,11 +4749,11 @@ class TestArgumentError(TestCase):
 # ArgumentTypeError tests
 # =======================
 
-class TestArgumentTypeError(TestCase):
+kundi TestArgumentTypeError(TestCase):
 
-    def test_argument_type_error(self):
+    eleza test_argument_type_error(self):
 
-        def spam(string):
+        eleza spam(string):
             raise argparse.ArgumentTypeError('spam!')
 
         parser = ErrorRaisingArgumentParser(prog='PROG', add_help=False)
@@ -4767,9 +4767,9 @@ class TestArgumentTypeError(TestCase):
 # MessageContentError tests
 # =========================
 
-class TestMessageContentError(TestCase):
+kundi TestMessageContentError(TestCase):
 
-    def test_missing_argument_name_in_message(self):
+    eleza test_missing_argument_name_in_message(self):
         parser = ErrorRaisingArgumentParser(prog='PROG', usage='')
         parser.add_argument('req_pos', type=str)
         parser.add_argument('-req_opt', type=int, required=True)
@@ -4794,7 +4794,7 @@ class TestMessageContentError(TestCase):
         self.assertNotIn(msg, 'req_opt')
         self.assertRegex(msg, 'need_one')
 
-    def test_optional_optional_not_in_message(self):
+    eleza test_optional_optional_not_in_message(self):
         parser = ErrorRaisingArgumentParser(prog='PROG', usage='')
         parser.add_argument('req_pos', type=str)
         parser.add_argument('--req_opt', type=int, required=True)
@@ -4813,7 +4813,7 @@ class TestMessageContentError(TestCase):
         self.assertNotIn(msg, 'req_opt')
         self.assertNotIn(msg, 'opt_opt')
 
-    def test_optional_positional_not_in_message(self):
+    eleza test_optional_positional_not_in_message(self):
         parser = ErrorRaisingArgumentParser(prog='PROG', usage='')
         parser.add_argument('req_pos')
         parser.add_argument('optional_positional', nargs='?', default='eggs')
@@ -4828,12 +4828,12 @@ class TestMessageContentError(TestCase):
 # Check that the type function is called only once
 # ================================================
 
-class TestTypeFunctionCallOnlyOnce(TestCase):
+kundi TestTypeFunctionCallOnlyOnce(TestCase):
 
-    def test_type_function_call_only_once(self):
-        def spam(string_to_convert):
+    eleza test_type_function_call_only_once(self):
+        eleza spam(string_to_convert):
             self.assertEqual(string_to_convert, 'spam!')
-            return 'foo_converted'
+            rudisha 'foo_converted'
 
         parser = argparse.ArgumentParser()
         parser.add_argument('--foo', type=spam, default='bar')
@@ -4844,12 +4844,12 @@ class TestTypeFunctionCallOnlyOnce(TestCase):
 # Check semantics regarding the default argument and type conversion
 # ==================================================================
 
-class TestTypeFunctionCalledOnDefault(TestCase):
+kundi TestTypeFunctionCalledOnDefault(TestCase):
 
-    def test_type_function_call_with_non_string_default(self):
-        def spam(int_to_convert):
+    eleza test_type_function_call_with_non_string_default(self):
+        eleza spam(int_to_convert):
             self.assertEqual(int_to_convert, 0)
-            return 'foo_converted'
+            rudisha 'foo_converted'
 
         parser = argparse.ArgumentParser()
         parser.add_argument('--foo', type=spam, default=0)
@@ -4857,9 +4857,9 @@ class TestTypeFunctionCalledOnDefault(TestCase):
         # foo should *not* be converted because its default is not a string.
         self.assertEqual(NS(foo=0), args)
 
-    def test_type_function_call_with_string_default(self):
-        def spam(int_to_convert):
-            return 'foo_converted'
+    eleza test_type_function_call_with_string_default(self):
+        eleza spam(int_to_convert):
+            rudisha 'foo_converted'
 
         parser = argparse.ArgumentParser()
         parser.add_argument('--foo', type=spam, default='0')
@@ -4867,9 +4867,9 @@ class TestTypeFunctionCalledOnDefault(TestCase):
         # foo is converted because its default is a string.
         self.assertEqual(NS(foo='foo_converted'), args)
 
-    def test_no_double_type_conversion_of_default(self):
-        def extend(str_to_convert):
-            return str_to_convert + '*'
+    eleza test_no_double_type_conversion_of_default(self):
+        eleza extend(str_to_convert):
+            rudisha str_to_convert + '*'
 
         parser = argparse.ArgumentParser()
         parser.add_argument('--test', type=extend, default='*')
@@ -4879,7 +4879,7 @@ class TestTypeFunctionCalledOnDefault(TestCase):
         # once.
         self.assertEqual(NS(test='**'), args)
 
-    def test_issue_15906(self):
+    eleza test_issue_15906(self):
         # Issue #15906: When action='append', type=str, default=[] are
         # providing, the dest value was the string representation "[]" when it
         # should have been an empty list.
@@ -4893,34 +4893,34 @@ class TestTypeFunctionCalledOnDefault(TestCase):
 # parse_known_args tests
 # ======================
 
-class TestParseKnownArgs(TestCase):
+kundi TestParseKnownArgs(TestCase):
 
-    def test_arguments_tuple(self):
+    eleza test_arguments_tuple(self):
         parser = argparse.ArgumentParser()
         parser.parse_args(())
 
-    def test_arguments_list(self):
+    eleza test_arguments_list(self):
         parser = argparse.ArgumentParser()
         parser.parse_args([])
 
-    def test_arguments_tuple_positional(self):
+    eleza test_arguments_tuple_positional(self):
         parser = argparse.ArgumentParser()
         parser.add_argument('x')
         parser.parse_args(('x',))
 
-    def test_arguments_list_positional(self):
+    eleza test_arguments_list_positional(self):
         parser = argparse.ArgumentParser()
         parser.add_argument('x')
         parser.parse_args(['x'])
 
-    def test_optionals(self):
+    eleza test_optionals(self):
         parser = argparse.ArgumentParser()
         parser.add_argument('--foo')
         args, extras = parser.parse_known_args('--foo F --bar --baz'.split())
         self.assertEqual(NS(foo='F'), args)
         self.assertEqual(['--bar', '--baz'], extras)
 
-    def test_mixed(self):
+    eleza test_mixed(self):
         parser = argparse.ArgumentParser()
         parser.add_argument('-v', nargs='?', const=1, type=int)
         parser.add_argument('--spam', action='store_false')
@@ -4935,8 +4935,8 @@ class TestParseKnownArgs(TestCase):
 # parse_intermixed_args tests
 # ===========================
 
-class TestIntermixedArgs(TestCase):
-    def test_basic(self):
+kundi TestIntermixedArgs(TestCase):
+    eleza test_basic(self):
         # test parsing intermixed optionals and positionals
         parser = argparse.ArgumentParser(prog='PROG')
         parser.add_argument('--foo', dest='foo')
@@ -4963,7 +4963,7 @@ class TestIntermixedArgs(TestCase):
         self.assertIsNone(parser.usage)
         self.assertEqual(bar.required, True)
 
-    def test_remainder(self):
+    eleza test_remainder(self):
         # Intermixed and remainder are incompatible
         parser = ErrorRaisingArgumentParser(prog='PROG')
         parser.add_argument('-z')
@@ -4976,7 +4976,7 @@ class TestIntermixedArgs(TestCase):
             parser.parse_intermixed_args(argv)
         self.assertRegex(str(cm.exception), r'\.\.\.')
 
-    def test_exclusive(self):
+    eleza test_exclusive(self):
         # mutually exclusive group; intermixed works fine
         parser = ErrorRaisingArgumentParser(prog='PROG')
         group = parser.add_mutually_exclusive_group(required=True)
@@ -4988,7 +4988,7 @@ class TestIntermixedArgs(TestCase):
         self.assertRaises(ArgumentParserError, parser.parse_intermixed_args, '1 2'.split())
         self.assertEqual(group.required, True)
 
-    def test_exclusive_incompatible(self):
+    eleza test_exclusive_incompatible(self):
         # mutually exclusive group including positional - fail
         parser = ErrorRaisingArgumentParser(prog='PROG')
         group = parser.add_mutually_exclusive_group(required=True)
@@ -4998,10 +4998,10 @@ class TestIntermixedArgs(TestCase):
         self.assertRaises(TypeError, parser.parse_intermixed_args, [])
         self.assertEqual(group.required, True)
 
-class TestIntermixedMessageContentError(TestCase):
+kundi TestIntermixedMessageContentError(TestCase):
     # case where Intermixed gives different error message
     # error is raised by 1st parsing step
-    def test_missing_argument_name_in_message(self):
+    eleza test_missing_argument_name_in_message(self):
         parser = ErrorRaisingArgumentParser(prog='PROG', usage='')
         parser.add_argument('req_pos', type=str)
         parser.add_argument('-req_opt', type=int, required=True)
@@ -5022,15 +5022,15 @@ class TestIntermixedMessageContentError(TestCase):
 # add_argument metavar tests
 # ==========================
 
-class TestAddArgumentMetavar(TestCase):
+kundi TestAddArgumentMetavar(TestCase):
 
     EXPECTED_MESSAGE = "length of metavar tuple does not match nargs"
 
-    def do_test_no_exception(self, nargs, metavar):
+    eleza do_test_no_exception(self, nargs, metavar):
         parser = argparse.ArgumentParser()
         parser.add_argument("--foo", nargs=nargs, metavar=metavar)
 
-    def do_test_exception(self, nargs, metavar):
+    eleza do_test_exception(self, nargs, metavar):
         parser = argparse.ArgumentParser()
         with self.assertRaises(ValueError) as cm:
             parser.add_argument("--foo", nargs=nargs, metavar=metavar)
@@ -5038,172 +5038,172 @@ class TestAddArgumentMetavar(TestCase):
 
     # Unit tests for different values of metavar when nargs=None
 
-    def test_nargs_None_metavar_string(self):
+    eleza test_nargs_None_metavar_string(self):
         self.do_test_no_exception(nargs=None, metavar="1")
 
-    def test_nargs_None_metavar_length0(self):
+    eleza test_nargs_None_metavar_length0(self):
         self.do_test_exception(nargs=None, metavar=tuple())
 
-    def test_nargs_None_metavar_length1(self):
+    eleza test_nargs_None_metavar_length1(self):
         self.do_test_no_exception(nargs=None, metavar=("1",))
 
-    def test_nargs_None_metavar_length2(self):
+    eleza test_nargs_None_metavar_length2(self):
         self.do_test_exception(nargs=None, metavar=("1", "2"))
 
-    def test_nargs_None_metavar_length3(self):
+    eleza test_nargs_None_metavar_length3(self):
         self.do_test_exception(nargs=None, metavar=("1", "2", "3"))
 
     # Unit tests for different values of metavar when nargs=?
 
-    def test_nargs_optional_metavar_string(self):
+    eleza test_nargs_optional_metavar_string(self):
         self.do_test_no_exception(nargs="?", metavar="1")
 
-    def test_nargs_optional_metavar_length0(self):
+    eleza test_nargs_optional_metavar_length0(self):
         self.do_test_exception(nargs="?", metavar=tuple())
 
-    def test_nargs_optional_metavar_length1(self):
+    eleza test_nargs_optional_metavar_length1(self):
         self.do_test_no_exception(nargs="?", metavar=("1",))
 
-    def test_nargs_optional_metavar_length2(self):
+    eleza test_nargs_optional_metavar_length2(self):
         self.do_test_exception(nargs="?", metavar=("1", "2"))
 
-    def test_nargs_optional_metavar_length3(self):
+    eleza test_nargs_optional_metavar_length3(self):
         self.do_test_exception(nargs="?", metavar=("1", "2", "3"))
 
     # Unit tests for different values of metavar when nargs=*
 
-    def test_nargs_zeroormore_metavar_string(self):
+    eleza test_nargs_zeroormore_metavar_string(self):
         self.do_test_no_exception(nargs="*", metavar="1")
 
-    def test_nargs_zeroormore_metavar_length0(self):
+    eleza test_nargs_zeroormore_metavar_length0(self):
         self.do_test_exception(nargs="*", metavar=tuple())
 
-    def test_nargs_zeroormore_metavar_length1(self):
+    eleza test_nargs_zeroormore_metavar_length1(self):
         self.do_test_exception(nargs="*", metavar=("1",))
 
-    def test_nargs_zeroormore_metavar_length2(self):
+    eleza test_nargs_zeroormore_metavar_length2(self):
         self.do_test_no_exception(nargs="*", metavar=("1", "2"))
 
-    def test_nargs_zeroormore_metavar_length3(self):
+    eleza test_nargs_zeroormore_metavar_length3(self):
         self.do_test_exception(nargs="*", metavar=("1", "2", "3"))
 
     # Unit tests for different values of metavar when nargs=+
 
-    def test_nargs_oneormore_metavar_string(self):
+    eleza test_nargs_oneormore_metavar_string(self):
         self.do_test_no_exception(nargs="+", metavar="1")
 
-    def test_nargs_oneormore_metavar_length0(self):
+    eleza test_nargs_oneormore_metavar_length0(self):
         self.do_test_exception(nargs="+", metavar=tuple())
 
-    def test_nargs_oneormore_metavar_length1(self):
+    eleza test_nargs_oneormore_metavar_length1(self):
         self.do_test_exception(nargs="+", metavar=("1",))
 
-    def test_nargs_oneormore_metavar_length2(self):
+    eleza test_nargs_oneormore_metavar_length2(self):
         self.do_test_no_exception(nargs="+", metavar=("1", "2"))
 
-    def test_nargs_oneormore_metavar_length3(self):
+    eleza test_nargs_oneormore_metavar_length3(self):
         self.do_test_exception(nargs="+", metavar=("1", "2", "3"))
 
     # Unit tests for different values of metavar when nargs=...
 
-    def test_nargs_remainder_metavar_string(self):
+    eleza test_nargs_remainder_metavar_string(self):
         self.do_test_no_exception(nargs="...", metavar="1")
 
-    def test_nargs_remainder_metavar_length0(self):
+    eleza test_nargs_remainder_metavar_length0(self):
         self.do_test_no_exception(nargs="...", metavar=tuple())
 
-    def test_nargs_remainder_metavar_length1(self):
+    eleza test_nargs_remainder_metavar_length1(self):
         self.do_test_no_exception(nargs="...", metavar=("1",))
 
-    def test_nargs_remainder_metavar_length2(self):
+    eleza test_nargs_remainder_metavar_length2(self):
         self.do_test_no_exception(nargs="...", metavar=("1", "2"))
 
-    def test_nargs_remainder_metavar_length3(self):
+    eleza test_nargs_remainder_metavar_length3(self):
         self.do_test_no_exception(nargs="...", metavar=("1", "2", "3"))
 
     # Unit tests for different values of metavar when nargs=A...
 
-    def test_nargs_parser_metavar_string(self):
+    eleza test_nargs_parser_metavar_string(self):
         self.do_test_no_exception(nargs="A...", metavar="1")
 
-    def test_nargs_parser_metavar_length0(self):
+    eleza test_nargs_parser_metavar_length0(self):
         self.do_test_exception(nargs="A...", metavar=tuple())
 
-    def test_nargs_parser_metavar_length1(self):
+    eleza test_nargs_parser_metavar_length1(self):
         self.do_test_no_exception(nargs="A...", metavar=("1",))
 
-    def test_nargs_parser_metavar_length2(self):
+    eleza test_nargs_parser_metavar_length2(self):
         self.do_test_exception(nargs="A...", metavar=("1", "2"))
 
-    def test_nargs_parser_metavar_length3(self):
+    eleza test_nargs_parser_metavar_length3(self):
         self.do_test_exception(nargs="A...", metavar=("1", "2", "3"))
 
     # Unit tests for different values of metavar when nargs=1
 
-    def test_nargs_1_metavar_string(self):
+    eleza test_nargs_1_metavar_string(self):
         self.do_test_no_exception(nargs=1, metavar="1")
 
-    def test_nargs_1_metavar_length0(self):
+    eleza test_nargs_1_metavar_length0(self):
         self.do_test_exception(nargs=1, metavar=tuple())
 
-    def test_nargs_1_metavar_length1(self):
+    eleza test_nargs_1_metavar_length1(self):
         self.do_test_no_exception(nargs=1, metavar=("1",))
 
-    def test_nargs_1_metavar_length2(self):
+    eleza test_nargs_1_metavar_length2(self):
         self.do_test_exception(nargs=1, metavar=("1", "2"))
 
-    def test_nargs_1_metavar_length3(self):
+    eleza test_nargs_1_metavar_length3(self):
         self.do_test_exception(nargs=1, metavar=("1", "2", "3"))
 
     # Unit tests for different values of metavar when nargs=2
 
-    def test_nargs_2_metavar_string(self):
+    eleza test_nargs_2_metavar_string(self):
         self.do_test_no_exception(nargs=2, metavar="1")
 
-    def test_nargs_2_metavar_length0(self):
+    eleza test_nargs_2_metavar_length0(self):
         self.do_test_exception(nargs=2, metavar=tuple())
 
-    def test_nargs_2_metavar_length1(self):
+    eleza test_nargs_2_metavar_length1(self):
         self.do_test_exception(nargs=2, metavar=("1",))
 
-    def test_nargs_2_metavar_length2(self):
+    eleza test_nargs_2_metavar_length2(self):
         self.do_test_no_exception(nargs=2, metavar=("1", "2"))
 
-    def test_nargs_2_metavar_length3(self):
+    eleza test_nargs_2_metavar_length3(self):
         self.do_test_exception(nargs=2, metavar=("1", "2", "3"))
 
     # Unit tests for different values of metavar when nargs=3
 
-    def test_nargs_3_metavar_string(self):
+    eleza test_nargs_3_metavar_string(self):
         self.do_test_no_exception(nargs=3, metavar="1")
 
-    def test_nargs_3_metavar_length0(self):
+    eleza test_nargs_3_metavar_length0(self):
         self.do_test_exception(nargs=3, metavar=tuple())
 
-    def test_nargs_3_metavar_length1(self):
+    eleza test_nargs_3_metavar_length1(self):
         self.do_test_exception(nargs=3, metavar=("1",))
 
-    def test_nargs_3_metavar_length2(self):
+    eleza test_nargs_3_metavar_length2(self):
         self.do_test_exception(nargs=3, metavar=("1", "2"))
 
-    def test_nargs_3_metavar_length3(self):
+    eleza test_nargs_3_metavar_length3(self):
         self.do_test_no_exception(nargs=3, metavar=("1", "2", "3"))
 
 
-class TestInvalidNargs(TestCase):
+kundi TestInvalidNargs(TestCase):
 
     EXPECTED_INVALID_MESSAGE = "invalid nargs value"
-    EXPECTED_RANGE_MESSAGE = ("nargs for store actions must be != 0; if you "
+    EXPECTED_RANGE_MESSAGE = ("nargs for store actions must be != 0; ikiwa you "
                               "have nothing to store, actions such as store "
                               "true or store const may be more appropriate")
 
-    def do_test_range_exception(self, nargs):
+    eleza do_test_range_exception(self, nargs):
         parser = argparse.ArgumentParser()
         with self.assertRaises(ValueError) as cm:
             parser.add_argument("--foo", nargs=nargs)
         self.assertEqual(cm.exception.args[0], self.EXPECTED_RANGE_MESSAGE)
 
-    def do_test_invalid_exception(self, nargs):
+    eleza do_test_invalid_exception(self, nargs):
         parser = argparse.ArgumentParser()
         with self.assertRaises(ValueError) as cm:
             parser.add_argument("--foo", nargs=nargs)
@@ -5211,36 +5211,36 @@ class TestInvalidNargs(TestCase):
 
     # Unit tests for different values of nargs
 
-    def test_nargs_alphabetic(self):
+    eleza test_nargs_alphabetic(self):
         self.do_test_invalid_exception(nargs='a')
         self.do_test_invalid_exception(nargs="abcd")
 
-    def test_nargs_zero(self):
+    eleza test_nargs_zero(self):
         self.do_test_range_exception(nargs=0)
 
 # ============================
 # kutoka argparse agiza * tests
 # ============================
 
-class TestImportStar(TestCase):
+kundi TestImportStar(TestCase):
 
-    def test(self):
+    eleza test(self):
         for name in argparse.__all__:
             self.assertTrue(hasattr(argparse, name))
 
-    def test_all_exports_everything_but_modules(self):
+    eleza test_all_exports_everything_but_modules(self):
         items = [
             name
             for name, value in vars(argparse).items()
-            if not (name.startswith("_") or name == 'ngettext')
-            if not inspect.ismodule(value)
+            ikiwa not (name.startswith("_") or name == 'ngettext')
+            ikiwa not inspect.ismodule(value)
         ]
         self.assertEqual(sorted(items), sorted(argparse.__all__))
 
 
-class TestWrappingMetavar(TestCase):
+kundi TestWrappingMetavar(TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.parser = ErrorRaisingArgumentParser(
             'this_is_spammy_prog_with_a_long_name_sorry_about_the_name'
@@ -5250,7 +5250,7 @@ class TestWrappingMetavar(TestCase):
         metavar = '<http[s]://example:1234>'
         self.parser.add_argument('--proxy', metavar=metavar)
 
-    def test_help_with_metavar(self):
+    eleza test_help_with_metavar(self):
         help_text = self.parser.format_help()
         self.assertEqual(help_text, textwrap.dedent('''\
             usage: this_is_spammy_prog_with_a_long_name_sorry_about_the_name
@@ -5262,7 +5262,7 @@ class TestWrappingMetavar(TestCase):
             '''))
 
 
-def test_main():
+eleza test_main():
     support.run_unittest(__name__)
     # Remove global references to avoid looking like we have refleaks.
     RFile.seen = {}
@@ -5270,5 +5270,5 @@ def test_main():
 
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test_main()

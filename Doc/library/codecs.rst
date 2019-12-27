@@ -123,7 +123,7 @@ these additional functions which use :func:`lookup` for the codec lookup:
 .. function:: getincrementalencoder(encoding)
 
    Look up the codec for the given encoding and return its incremental encoder
-   class or factory function.
+   kundi or factory function.
 
    Raises a :exc:`LookupError` in case the encoding cannot be found or the codec
    doesn't support an incremental encoder.
@@ -132,7 +132,7 @@ these additional functions which use :func:`lookup` for the codec lookup:
 .. function:: getincrementaldecoder(encoding)
 
    Look up the codec for the given encoding and return its incremental decoder
-   class or factory function.
+   kundi or factory function.
 
    Raises a :exc:`LookupError` in case the encoding cannot be found or the codec
    doesn't support an incremental decoder.
@@ -141,7 +141,7 @@ these additional functions which use :func:`lookup` for the codec lookup:
 .. function:: getreader(encoding)
 
    Look up the codec for the given encoding and return its :class:`StreamReader`
-   class or factory function.
+   kundi or factory function.
 
    Raises a :exc:`LookupError` in case the encoding cannot be found.
 
@@ -149,7 +149,7 @@ these additional functions which use :func:`lookup` for the codec lookup:
 .. function:: getwriter(encoding)
 
    Look up the codec for the given encoding and return its :class:`StreamWriter`
-   class or factory function.
+   kundi or factory function.
 
    Raises a :exc:`LookupError` in case the encoding cannot be found.
 
@@ -188,7 +188,7 @@ wider range of codecs when working with binary files:
       :func:`open` function; the ``'b'`` is automatically added.
 
    *encoding* specifies the encoding which is to be used for the file.
-   Any encoding that encodes to and decodes from bytes is allowed, and
+   Any encoding that encodes to and decodes kutoka bytes is allowed, and
    the data types supported by the file methods depend on the codec used.
 
    *errors* may be given to define the error handling. It defaults to ``'strict'``
@@ -206,7 +206,7 @@ wider range of codecs when working with binary files:
 
    Data written to the wrapped file is decoded according to the given
    *data_encoding* and then written to the original file as bytes using
-   *file_encoding*. Bytes read from the original file are decoded
+   *file_encoding*. Bytes read kutoka the original file are decoded
    according to *file_encoding*, and the result is encoded
    using *data_encoding*.
 
@@ -343,7 +343,7 @@ The following error handlers are only applicable to
 |                         | :func:`namereplace_errors`.                   |
 +-------------------------+-----------------------------------------------+
 | ``'surrogateescape'``   | On decoding, replace byte with individual     |
-|                         | surrogate code ranging from ``U+DC80`` to     |
+|                         | surrogate code ranging kutoka ``U+DC80`` to     |
 |                         | ``U+DCFF``. This code will then be turned     |
 |                         | back into the same byte when the              |
 |                         | ``'surrogateescape'`` error handler is used   |
@@ -397,7 +397,7 @@ handler:
 
    Decoding and translating works similarly, except :exc:`UnicodeDecodeError` or
    :exc:`UnicodeTranslateError` will be passed to the handler and that the
-   replacement from the error handler will be put into the output directly.
+   replacement kutoka the error handler will be put into the output directly.
 
 
 Previously registered error handlers (including the standard error handlers)
@@ -459,7 +459,7 @@ functions:
 Stateless Encoding and Decoding
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The base :class:`Codec` class defines these methods which also define the
+The base :class:`Codec` kundi defines these methods which also define the
 function interfaces of the stateless encoder and decoder:
 
 
@@ -525,7 +525,7 @@ encoded/decoded with the stateless encoder/decoder.
 IncrementalEncoder Objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The :class:`IncrementalEncoder` class is used for encoding an input in multiple
+The :class:`IncrementalEncoder` kundi is used for encoding an input in multiple
 steps. It defines the following methods which every incremental encoder must
 define in order to be compatible with the Python codec registry.
 
@@ -582,7 +582,7 @@ define in order to be compatible with the Python codec registry.
 IncrementalDecoder Objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The :class:`IncrementalDecoder` class is used for decoding an input in multiple
+The :class:`IncrementalDecoder` kundi is used for decoding an input in multiple
 steps. It defines the following methods which every incremental decoder must
 define in order to be compatible with the Python codec registry.
 
@@ -656,7 +656,7 @@ easily. See :mod:`encodings.utf_8` for an example of how this is done.
 StreamWriter Objects
 ~~~~~~~~~~~~~~~~~~~~
 
-The :class:`StreamWriter` class is a subclass of :class:`Codec` and defines the
+The :class:`StreamWriter` kundi is a subkundi of :class:`Codec` and defines the
 following methods which every stream writer must define in order to be
 compatible with the Python codec registry.
 
@@ -702,7 +702,7 @@ compatible with the Python codec registry.
 
 
 In addition to the above methods, the :class:`StreamWriter` must also inherit
-all other methods and attributes from the underlying stream.
+all other methods and attributes kutoka the underlying stream.
 
 
 .. _stream-reader-objects:
@@ -710,7 +710,7 @@ all other methods and attributes from the underlying stream.
 StreamReader Objects
 ~~~~~~~~~~~~~~~~~~~~
 
-The :class:`StreamReader` class is a subclass of :class:`Codec` and defines the
+The :class:`StreamReader` kundi is a subkundi of :class:`Codec` and defines the
 following methods which every stream reader must define in order to be
 compatible with the Python codec registry.
 
@@ -740,7 +740,7 @@ compatible with the Python codec registry.
 
    .. method:: read([size[, chars, [firstline]]])
 
-      Decodes data from the stream and returns the resulting object.
+      Decodes data kutoka the stream and returns the resulting object.
 
       The *chars* argument indicates the number of decoded
       code points or bytes to return. The :func:`read` method will
@@ -766,12 +766,12 @@ compatible with the Python codec registry.
 
    .. method:: readline([size[, keepends]])
 
-      Read one line from the input stream and return the decoded data.
+      Read one line kutoka the input stream and return the decoded data.
 
       *size*, if given, is passed as size argument to the stream's
       :meth:`read` method.
 
-      If *keepends* is false line-endings will be stripped from the lines
+      If *keepends* is false line-endings will be stripped kutoka the lines
       returned.
 
 
@@ -792,18 +792,18 @@ compatible with the Python codec registry.
       Resets the codec buffers used for keeping state.
 
       Note that no stream repositioning should take place. This method is
-      primarily intended to be able to recover from decoding errors.
+      primarily intended to be able to recover kutoka decoding errors.
 
 
 In addition to the above methods, the :class:`StreamReader` must also inherit
-all other methods and attributes from the underlying stream.
+all other methods and attributes kutoka the underlying stream.
 
 .. _stream-reader-writer:
 
 StreamReaderWriter Objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The :class:`StreamReaderWriter` is a convenience class that allows wrapping
+The :class:`StreamReaderWriter` is a convenience kundi that allows wrapping
 streams which work in both read and write modes.
 
 The design is such that one can use the factory functions returned by the
@@ -819,7 +819,7 @@ The design is such that one can use the factory functions returned by the
 
 :class:`StreamReaderWriter` instances define the combined interfaces of
 :class:`StreamReader` and :class:`StreamWriter` classes. They inherit all other
-methods and attributes from the underlying stream.
+methods and attributes kutoka the underlying stream.
 
 
 .. _stream-recoder-objects:
@@ -827,7 +827,7 @@ methods and attributes from the underlying stream.
 StreamRecoder Objects
 ~~~~~~~~~~~~~~~~~~~~~
 
-The :class:`StreamRecoder` translates data from one encoding to another,
+The :class:`StreamRecoder` translates data kutoka one encoding to another,
 which is sometimes useful when dealing with different encoding environments.
 
 The design is such that one can use the factory functions returned by the
@@ -841,7 +841,7 @@ The design is such that one can use the factory functions returned by the
    code calling :meth:`read` and :meth:`write`, while *Reader* and *Writer*
    work on the backend — the data in *stream*.
 
-   You can use these objects to do transparent transcodings, e.g., from Latin-1
+   You can use these objects to do transparent transcodings, e.g., kutoka Latin-1
    to UTF-8 and back.
 
    The *stream* argument must be a file-like object.
@@ -857,7 +857,7 @@ The design is such that one can use the factory functions returned by the
 
 :class:`StreamRecoder` instances define the combined interfaces of
 :class:`StreamReader` and :class:`StreamWriter` classes. They inherit all other
-methods and attributes from the underlying stream.
+methods and attributes kutoka the underlying stream.
 
 
 .. _encodings-overview:
@@ -871,7 +871,7 @@ more details about the implementation.)
 Once a string object is used outside of CPU and memory, endianness
 and how these arrays are stored as bytes become an issue. As with other
 codecs, serialising a string into a sequence of bytes is known as *encoding*,
-and recreating the string from the sequence of bytes is known as *decoding*.
+and recreating the string kutoka the sequence of bytes is known as *decoding*.
 There are a variety of different text serialisation codecs, which are
 collectivity referred to as :term:`text encodings <text encoding>`.
 
@@ -959,7 +959,7 @@ map to
    | INVERTED QUESTION MARK
 
 in iso-8859-1), this increases the probability that a ``utf-8-sig`` encoding can be
-correctly guessed from the byte sequence. So here the BOM is not used to be able
+correctly guessed kutoka the byte sequence. So here the BOM is not used to be able
 to determine the byte order used for generating the byte sequence, but as a
 signature that helps in guessing the encoding. On encoding the utf-8-sig codec
 will write ``0xef``, ``0xbb``, ``0xbf`` as the first three bytes to the file. On
@@ -1001,7 +1001,7 @@ particular, the following variants typically exist:
 
 * an ISO 8859 codeset
 
-* a Microsoft Windows code page, which is typically derived from an 8859 codeset,
+* a Microsoft Windows code page, which is typically derived kutoka an 8859 codeset,
   but replaces control characters with additional graphic characters
 
 * an IBM EBCDIC code page
@@ -1309,7 +1309,7 @@ encodings.
 |                    |         | Python source code,       |
 |                    |         | except that quotes are    |
 |                    |         | not escaped. Decode       |
-|                    |         | from Latin-1 source code. |
+|                    |         | kutoka Latin-1 source code. |
 |                    |         | Beware that Python source |
 |                    |         | code actually uses UTF-8  |
 |                    |         | by default.               |
@@ -1437,7 +1437,7 @@ parameters, such as :mod:`http.client` and :mod:`ftplib`, accept Unicode host
 names (:mod:`http.client` then also transparently sends an IDNA hostname in the
 :mailheader:`Host` field if it sends that field at all).
 
-When receiving host names from the wire (such as in reverse name lookup), no
+When receiving host names kutoka the wire (such as in reverse name lookup), no
 automatic conversion to Unicode is performed: applications wishing to present
 such host names to the user should decode them to Unicode.
 

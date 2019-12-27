@@ -56,7 +56,7 @@ or as base classes.
 
 .. class:: XMLGenerator(out=None, encoding='iso-8859-1', short_empty_elements=False)
 
-   This class implements the :class:`~xml.sax.handler.ContentHandler` interface
+   This kundi implements the :class:`~xml.sax.handler.ContentHandler` interface
    by writing SAX
    events back into an XML document. In other words, using an :class:`XMLGenerator`
    as the content handler will reproduce the original document being parsed. *out*
@@ -72,7 +72,7 @@ or as base classes.
 
 .. class:: XMLFilterBase(base)
 
-   This class is designed to sit between an
+   This kundi is designed to sit between an
    :class:`~xml.sax.xmlreader.XMLReader` and the client
    application's event handlers.  By default, it does nothing but pass requests up
    to the reader and events on to the handlers unmodified, but subclasses can

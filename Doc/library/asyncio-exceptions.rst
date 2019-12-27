@@ -16,7 +16,7 @@ Exceptions
    The operation has exceeded the given deadline.
 
    .. important::
-      This exception is different from the builtin :exc:`TimeoutError`
+      This exception is different kutoka the builtin :exc:`TimeoutError`
       exception.
 
 
@@ -30,7 +30,7 @@ Exceptions
 
    .. versionchanged:: 3.8
 
-      :exc:`CancelledError` is now a subclass of :class:`BaseException`.
+      :exc:`CancelledError` is now a subkundi of :class:`BaseException`.
 
 
 .. exception:: InvalidStateError
@@ -46,7 +46,7 @@ Exceptions
    The "sendfile" syscall is not available for the given
    socket or file type.
 
-   A subclass of :exc:`RuntimeError`.
+   A subkundi of :exc:`RuntimeError`.
 
 
 .. exception:: IncompleteReadError
@@ -55,7 +55,7 @@ Exceptions
 
    Raised by the :ref:`asyncio stream APIs<asyncio-streams>`.
 
-   This exception is a subclass of :exc:`EOFError`.
+   This exception is a subkundi of :exc:`EOFError`.
 
    .. attribute:: expected
 

@@ -16,7 +16,7 @@ Output Formatting
 The :mod:`reprlib` module provides a version of :func:`repr` customized for
 abbreviated displays of large or deeply nested containers::
 
-   >>> import reprlib
+   >>> agiza reprlib
    >>> reprlib.repr(set('supercalifragilisticexpialidocious'))
    "{'a', 'c', 'd', 'e', 'f', 'g', ...}"
 
@@ -25,7 +25,7 @@ built-in and user defined objects in a way that is readable by the interpreter.
 When the result is longer than one line, the "pretty printer" adds line breaks
 and indentation to more clearly reveal data structure::
 
-   >>> import pprint
+   >>> agiza pprint
    >>> t = [[[['black', 'cyan'], 'white', ['green', 'red']], [['magenta',
    ...     'yellow'], 'blue']]]
    ...
@@ -39,7 +39,7 @@ and indentation to more clearly reveal data structure::
 The :mod:`textwrap` module formats paragraphs of text to fit a given screen
 width::
 
-   >>> import textwrap
+   >>> agiza textwrap
    >>> doc = """The wrap() method is just like fill() except that it returns
    ... a list of strings instead of one big string with newlines to separate
    ... the wrapped lines."""
@@ -54,7 +54,7 @@ The :mod:`locale` module accesses a database of culture specific data formats.
 The grouping attribute of locale's format function provides a direct way of
 formatting numbers with group separators::
 
-   >>> import locale
+   >>> agiza locale
    >>> locale.setlocale(locale.LC_ALL, 'English_United States.1252')
    'English_United States.1252'
    >>> conv = locale.localeconv()          # get a mapping of conventions
@@ -80,7 +80,7 @@ The format uses placeholder names formed by ``$`` with valid Python identifiers
 braces allows it to be followed by more alphanumeric letters with no intervening
 spaces.  Writing ``$$`` creates a single escaped ``$``::
 
-   >>> from string import Template
+   >>> kutoka string agiza Template
    >>> t = Template('${village}folk send $$10 to $cause.')
    >>> t.substitute(village='Nottingham', cause='the ditch fund')
    'Nottinghamfolk send $10 to the ditch fund.'
@@ -104,9 +104,9 @@ Template subclasses can specify a custom delimiter.  For example, a batch
 renaming utility for a photo browser may elect to use percent signs for
 placeholders such as the current date, image sequence number, or file format::
 
-   >>> import time, os.path
+   >>> agiza time, os.path
    >>> photofiles = ['img_1074.jpg', 'img_1076.jpg', 'img_1077.jpg']
-   >>> class BatchRename(Template):
+   >>> kundi BatchRename(Template):
    ...     delimiter = '%'
    >>> fmt = input('Enter rename style (%d-date %n-seqnum %f-format):  ')
    Enter rename style (%d-date %n-seqnum %f-format):  Ashley_%n%f
@@ -122,7 +122,7 @@ placeholders such as the current date, image sequence number, or file format::
    img_1076.jpg --> Ashley_1.jpg
    img_1077.jpg --> Ashley_2.jpg
 
-Another application for templating is separating program logic from the details
+Another application for templating is separating program logic kutoka the details
 of multiple output formats.  This makes it possible to substitute custom
 templates for XML files, plain text reports, and HTML web reports.
 
@@ -140,7 +140,7 @@ how to loop through header information in a ZIP file without using the
 byte unsigned numbers respectively.  The ``"<"`` indicates that they are
 standard size and in little-endian byte order::
 
-   import struct
+   agiza struct
 
    with open('myfile.zip', 'rb') as f:
        data = f.read()
@@ -173,9 +173,9 @@ case is running I/O in parallel with computations in another thread.
 The following code shows how the high level :mod:`threading` module can run
 tasks in background while the main program continues to run::
 
-   import threading, zipfile
+   agiza threading, zipfile
 
-   class AsyncZip(threading.Thread):
+   kundi AsyncZip(threading.Thread):
        def __init__(self, infile, outfile):
            threading.Thread.__init__(self)
            self.infile = infile
@@ -202,7 +202,7 @@ variables, and semaphores.
 While those tools are powerful, minor design errors can result in problems that
 are difficult to reproduce.  So, the preferred approach to task coordination is
 to concentrate all access to a resource in a single thread and then use the
-:mod:`queue` module to feed that thread with requests from other threads.
+:mod:`queue` module to feed that thread with requests kutoka other threads.
 Applications using :class:`~queue.Queue` objects for inter-thread communication and
 coordination are easier to design, more readable, and more reliable.
 
@@ -215,7 +215,7 @@ Logging
 The :mod:`logging` module offers a full featured and flexible logging system.
 At its simplest, log messages are sent to a file or to ``sys.stderr``::
 
-   import logging
+   agiza logging
    logging.debug('Debugging information')
    logging.info('Informational message')
    logging.warning('Warning:config file %s not found', 'server.conf')
@@ -237,7 +237,7 @@ different routing based on message priority: :const:`~logging.DEBUG`,
 :const:`~logging.INFO`, :const:`~logging.WARNING`, :const:`~logging.ERROR`,
 and :const:`~logging.CRITICAL`.
 
-The logging system can be configured directly from Python or can be loaded from
+The logging system can be configured directly kutoka Python or can be loaded kutoka
 a user editable configuration file for customized logging without altering the
 application.
 
@@ -256,11 +256,11 @@ to track objects only as long as they are being used by something else.
 Unfortunately, just tracking them creates a reference that makes them permanent.
 The :mod:`weakref` module provides tools for tracking objects without creating a
 reference.  When the object is no longer needed, it is automatically removed
-from a weakref table and a callback is triggered for weakref objects.  Typical
+kutoka a weakref table and a callback is triggered for weakref objects.  Typical
 applications include caching objects that are expensive to create::
 
-   >>> import weakref, gc
-   >>> class A:
+   >>> agiza weakref, gc
+   >>> kundi A:
    ...     def __init__(self, value):
    ...         self.value = value
    ...     def __repr__(self):
@@ -298,7 +298,7 @@ following example shows an array of numbers stored as two byte unsigned binary
 numbers (typecode ``"H"``) rather than the usual 16 bytes per entry for regular
 lists of Python int objects::
 
-   >>> from array import array
+   >>> kutoka array agiza array
    >>> a = array('H', [4000, 10, 700, 22222])
    >>> sum(a)
    26932
@@ -306,11 +306,11 @@ lists of Python int objects::
    array('H', [10, 700])
 
 The :mod:`collections` module provides a :class:`~collections.deque()` object
-that is like a list with faster appends and pops from the left side but slower
+that is like a list with faster appends and pops kutoka the left side but slower
 lookups in the middle. These objects are well suited for implementing queues
 and breadth first tree searches::
 
-   >>> from collections import deque
+   >>> kutoka collections agiza deque
    >>> d = deque(["task1", "task2", "task3"])
    >>> d.append("task4")
    >>> print("Handling", d.popleft())
@@ -330,7 +330,7 @@ In addition to alternative list implementations, the library also offers other
 tools such as the :mod:`bisect` module with functions for manipulating sorted
 lists::
 
-   >>> import bisect
+   >>> agiza bisect
    >>> scores = [(100, 'perl'), (200, 'tcl'), (400, 'lua'), (500, 'python')]
    >>> bisect.insort(scores, (300, 'ruby'))
    >>> scores
@@ -341,7 +341,7 @@ regular lists.  The lowest valued entry is always kept at position zero.  This
 is useful for applications which repeatedly access the smallest element but do
 not want to run a full list sort::
 
-   >>> from heapq import heapify, heappop, heappush
+   >>> kutoka heapq agiza heapify, heappop, heappush
    >>> data = [1, 3, 5, 7, 9, 2, 4, 6, 8, 0]
    >>> heapify(data)                      # rearrange the list into heap order
    >>> heappush(data, -5)                 # add a new entry
@@ -356,7 +356,7 @@ Decimal Floating Point Arithmetic
 
 The :mod:`decimal` module offers a :class:`~decimal.Decimal` datatype for
 decimal floating point arithmetic.  Compared to the built-in :class:`float`
-implementation of binary floating point, the class is especially helpful for
+implementation of binary floating point, the kundi is especially helpful for
 
 * financial applications and other uses which require exact decimal
   representation,
@@ -370,19 +370,19 @@ For example, calculating a 5% tax on a 70 cent phone charge gives different
 results in decimal floating point and binary floating point. The difference
 becomes significant if the results are rounded to the nearest cent::
 
-   >>> from decimal import *
+   >>> kutoka decimal agiza *
    >>> round(Decimal('0.70') * Decimal('1.05'), 2)
    Decimal('0.74')
    >>> round(.70 * 1.05, 2)
    0.73
 
 The :class:`~decimal.Decimal` result keeps a trailing zero, automatically
-inferring four place significance from multiplicands with two place
+inferring four place significance kutoka multiplicands with two place
 significance.  Decimal reproduces mathematics as done by hand and avoids
 issues that can arise when binary floating point cannot exactly represent
 decimal quantities.
 
-Exact representation enables the :class:`~decimal.Decimal` class to perform
+Exact representation enables the :class:`~decimal.Decimal` kundi to perform
 modulo calculations and equality tests that are unsuitable for binary floating
 point::
 

@@ -263,7 +263,7 @@ class Charset:
         assert self.body_encoding != SHORTEST
         if self.body_encoding == QP:
             return 'quoted-printable'
-        elif self.body_encoding == BASE64:
+        lasivyo self.body_encoding == BASE64:
             return 'base64'
         else:
             return encode_7or8bit
@@ -360,9 +360,9 @@ class Charset:
     def _get_encoder(self, header_bytes):
         if self.header_encoding == BASE64:
             return email.base64mime
-        elif self.header_encoding == QP:
+        lasivyo self.header_encoding == QP:
             return email.quoprimime
-        elif self.header_encoding == SHORTEST:
+        lasivyo self.header_encoding == SHORTEST:
             len64 = email.base64mime.header_length(header_bytes)
             lenqp = email.quoprimime.header_length(header_bytes)
             if len64 < lenqp:
@@ -387,7 +387,7 @@ class Charset:
             if isinstance(string, str):
                 string = string.encode(self.output_charset)
             return email.base64mime.body_encode(string)
-        elif self.body_encoding is QP:
+        lasivyo self.body_encoding is QP:
             # quopromime.body_encode takes a string, but operates on it as if
             # it were a list of byte codes.  For a (minimal) history on why
             # this is so, see changeset 0cf700464177.  To correctly encode a

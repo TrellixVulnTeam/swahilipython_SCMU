@@ -29,11 +29,11 @@ Python; others are only available when the underlying system supports or
 requires them; yet others are available only when a particular configuration
 option was chosen at the time when Python was compiled and installed.
 
-This manual is organized "from the inside out:" it first describes the built-in
+This manual is organized "kutoka the inside out:" it first describes the built-in
 functions, data types and exceptions, and finally the modules, grouped in
 chapters of related modules.
 
-This means that if you start reading this manual from the start, and skip to the
+This means that if you start reading this manual kutoka the start, and skip to the
 next chapter when you get bored, you will get a reasonable overview of the
 available modules and application areas that are supported by the Python
 library.  Of course, you don't *have* to read it like a novel --- you can also

@@ -2,7 +2,7 @@
 
 Here's an example of the sort of thing that is tested.
 
->>> def f(x):
+>>> eleza f(x):
 ...     global x
 Traceback (most recent call last):
 SyntaxError: name 'x' is parameter and global
@@ -124,13 +124,13 @@ SyntaxError: cannot assign to __debug__
 Traceback (most recent call last):
 SyntaxError: cannot assign to operator
 
->>> a if 1 else b = 1
+>>> a ikiwa 1 else b = 1
 Traceback (most recent call last):
 SyntaxError: cannot assign to conditional expression
 
 From compiler_complex_args():
 
->>> def f(None=1):
+>>> eleza f(None=1):
 ...     pass
 Traceback (most recent call last):
 SyntaxError: invalid syntax
@@ -138,22 +138,22 @@ SyntaxError: invalid syntax
 
 From ast_for_arguments():
 
->>> def f(x, y=1, z):
+>>> eleza f(x, y=1, z):
 ...     pass
 Traceback (most recent call last):
 SyntaxError: non-default argument follows default argument
 
->>> def f(x, None):
+>>> eleza f(x, None):
 ...     pass
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
->>> def f(*None):
+>>> eleza f(*None):
 ...     pass
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
->>> def f(**None):
+>>> eleza f(**None):
 ...     pass
 Traceback (most recent call last):
 SyntaxError: invalid syntax
@@ -161,7 +161,7 @@ SyntaxError: invalid syntax
 
 From ast_for_funcdef():
 
->>> def None(x):
+>>> eleza None(x):
 ...     pass
 Traceback (most recent call last):
 SyntaxError: invalid syntax
@@ -169,8 +169,8 @@ SyntaxError: invalid syntax
 
 From ast_for_call():
 
->>> def f(it, *varargs, **kwargs):
-...     return list(it)
+>>> eleza f(it, *varargs, **kwargs):
+...     rudisha list(it)
 >>> L = range(10)
 >>> f(x for x in L)
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -197,13 +197,13 @@ Traceback (most recent call last):
 SyntaxError: Generator expression must be parenthesized
 >>> f((x for x in L), 1)
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
->>> class C(x for x in L):
+>>> kundi C(x for x in L):
 ...     pass
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
->>> def g(*args, **kwargs):
-...     print(args, sorted(kwargs.items()))
+>>> eleza g(*args, **kwargs):
+...     andika(args, sorted(kwargs.items()))
 >>> g(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
 ...   20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37,
 ...   38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55,
@@ -270,9 +270,9 @@ SyntaxError: invalid syntax
 ...  # doctest: +ELLIPSIS
 () [('a000', 0), ('a001', 1), ('a002', 2), ..., ('a298', 298), ('a299', 299)]
 
->>> class C:
-...     def meth(self, *args):
-...         return args
+>>> kundi C:
+...     eleza meth(self, *args):
+...         rudisha args
 >>> obj = C()
 >>> obj.meth(
 ...   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
@@ -344,29 +344,29 @@ Test continue in finally in weird combinations.
 
 continue in for loop under finally should be ok.
 
-    >>> def test():
+    >>> eleza test():
     ...     try:
     ...         pass
     ...     finally:
     ...         for abc in range(10):
     ...             continue
-    ...     print(abc)
+    ...     andika(abc)
     >>> test()
     9
 
 continue in a finally should be ok.
 
-    >>> def test():
+    >>> eleza test():
     ...    for abc in range(10):
     ...        try:
     ...            pass
     ...        finally:
     ...            continue
-    ...    print(abc)
+    ...    andika(abc)
     >>> test()
     9
 
-    >>> def test():
+    >>> eleza test():
     ...    for abc in range(10):
     ...        try:
     ...            pass
@@ -375,11 +375,11 @@ continue in a finally should be ok.
     ...                continue
     ...            except:
     ...                pass
-    ...    print(abc)
+    ...    andika(abc)
     >>> test()
     9
 
-    >>> def test():
+    >>> eleza test():
     ...    for abc in range(10):
     ...        try:
     ...            pass
@@ -388,13 +388,13 @@ continue in a finally should be ok.
     ...                pass
     ...            except:
     ...                continue
-    ...    print(abc)
+    ...    andika(abc)
     >>> test()
     9
 
 A continue outside loop should not be allowed.
 
-    >>> def foo():
+    >>> eleza foo():
     ...     try:
     ...         pass
     ...     finally:
@@ -409,11 +409,11 @@ so we need to be sure that a break is actually inside a loop.  If it
 isn't, there should be a syntax error.
 
    >>> try:
-   ...     print(1)
+   ...     andika(1)
    ...     break
-   ...     print(2)
+   ...     andika(2)
    ... finally:
-   ...     print(3)
+   ...     andika(3)
    Traceback (most recent call last):
      ...
    SyntaxError: 'break' outside loop
@@ -452,58 +452,58 @@ build.  The number of blocks must be greater than CO_MAXBLOCKS.  SF #1565514
 
 Misuse of the nonlocal and global statement can lead to a few unique syntax errors.
 
-   >>> def f():
-   ...     print(x)
+   >>> eleza f():
+   ...     andika(x)
    ...     global x
    Traceback (most recent call last):
      ...
    SyntaxError: name 'x' is used prior to global declaration
 
-   >>> def f():
+   >>> eleza f():
    ...     x = 1
    ...     global x
    Traceback (most recent call last):
      ...
    SyntaxError: name 'x' is assigned to before global declaration
 
-   >>> def f(x):
+   >>> eleza f(x):
    ...     global x
    Traceback (most recent call last):
      ...
    SyntaxError: name 'x' is parameter and global
 
-   >>> def f():
+   >>> eleza f():
    ...     x = 1
-   ...     def g():
-   ...         print(x)
+   ...     eleza g():
+   ...         andika(x)
    ...         nonlocal x
    Traceback (most recent call last):
      ...
    SyntaxError: name 'x' is used prior to nonlocal declaration
 
-   >>> def f():
+   >>> eleza f():
    ...     x = 1
-   ...     def g():
+   ...     eleza g():
    ...         x = 2
    ...         nonlocal x
    Traceback (most recent call last):
      ...
    SyntaxError: name 'x' is assigned to before nonlocal declaration
 
-   >>> def f(x):
+   >>> eleza f(x):
    ...     nonlocal x
    Traceback (most recent call last):
      ...
    SyntaxError: name 'x' is parameter and nonlocal
 
-   >>> def f():
+   >>> eleza f():
    ...     global x
    ...     nonlocal x
    Traceback (most recent call last):
      ...
    SyntaxError: name 'x' is nonlocal and global
 
-   >>> def f():
+   >>> eleza f():
    ...     nonlocal x
    Traceback (most recent call last):
      ...
@@ -516,8 +516,8 @@ From SF bug #1705365
    SyntaxError: nonlocal declaration not allowed at module level
 
 From https://bugs.python.org/issue25973
-   >>> class A:
-   ...     def f(self):
+   >>> kundi A:
+   ...     eleza f(self):
    ...         nonlocal __x
    Traceback (most recent call last):
      ...
@@ -528,25 +528,25 @@ This tests assignment-context; there was a bug in Python 2.5 where compiling
 a complex 'if' (one with 'elif') would fail to notice an invalid suite,
 leading to spurious errors.
 
-   >>> if 1:
+   >>> ikiwa 1:
    ...   x() = 1
-   ... elif 1:
+   ... elikiwa 1:
    ...   pass
    Traceback (most recent call last):
      ...
    SyntaxError: cannot assign to function call
 
-   >>> if 1:
+   >>> ikiwa 1:
    ...   pass
-   ... elif 1:
+   ... elikiwa 1:
    ...   x() = 1
    Traceback (most recent call last):
      ...
    SyntaxError: cannot assign to function call
 
-   >>> if 1:
+   >>> ikiwa 1:
    ...   x() = 1
-   ... elif 1:
+   ... elikiwa 1:
    ...   pass
    ... else:
    ...   pass
@@ -554,9 +554,9 @@ leading to spurious errors.
      ...
    SyntaxError: cannot assign to function call
 
-   >>> if 1:
+   >>> ikiwa 1:
    ...   pass
-   ... elif 1:
+   ... elikiwa 1:
    ...   x() = 1
    ... else:
    ...   pass
@@ -564,9 +564,9 @@ leading to spurious errors.
      ...
    SyntaxError: cannot assign to function call
 
-   >>> if 1:
+   >>> ikiwa 1:
    ...   pass
-   ... elif 1:
+   ... elikiwa 1:
    ...   pass
    ... else:
    ...   x() = 1
@@ -608,15 +608,15 @@ SyntaxError: cannot assign to f-string expression
 
 Corner-cases that used to fail to raise the correct error:
 
-    >>> def f(*, x=lambda __debug__:0): pass
+    >>> eleza f(*, x=lambda __debug__:0): pass
     Traceback (most recent call last):
     SyntaxError: cannot assign to __debug__
 
-    >>> def f(*args:(lambda __debug__:0)): pass
+    >>> eleza f(*args:(lambda __debug__:0)): pass
     Traceback (most recent call last):
     SyntaxError: cannot assign to __debug__
 
-    >>> def f(**kwargs:(lambda __debug__:0)): pass
+    >>> eleza f(**kwargs:(lambda __debug__:0)): pass
     Traceback (most recent call last):
     SyntaxError: cannot assign to __debug__
 
@@ -626,11 +626,11 @@ Corner-cases that used to fail to raise the correct error:
 
 Corner-cases that used to crash:
 
-    >>> def f(**__debug__): pass
+    >>> eleza f(**__debug__): pass
     Traceback (most recent call last):
     SyntaxError: cannot assign to __debug__
 
-    >>> def f(*xx, __debug__): pass
+    >>> eleza f(*xx, __debug__): pass
     Traceback (most recent call last):
     SyntaxError: cannot assign to __debug__
 
@@ -641,135 +641,135 @@ agiza unittest
 
 kutoka test agiza support
 
-class SyntaxTestCase(unittest.TestCase):
+kundi SyntaxTestCase(unittest.TestCase):
 
-    def _check_error(self, code, errtext,
+    eleza _check_error(self, code, errtext,
                      filename="<testcase>", mode="exec", subclass=None, lineno=None, offset=None):
         """Check that compiling code raises SyntaxError with errtext.
 
         errtest is a regular expression that must be present in the
-        test of the exception raised.  If subclass is specified it
-        is the expected subclass of SyntaxError (e.g. IndentationError).
+        test of the exception raised.  If subkundi is specified it
+        is the expected subkundi of SyntaxError (e.g. IndentationError).
         """
         try:
             compile(code, filename, mode)
         except SyntaxError as err:
-            if subclass and not isinstance(err, subclass):
+            ikiwa subkundi and not isinstance(err, subclass):
                 self.fail("SyntaxError is not a %s" % subclass.__name__)
             mo = re.search(errtext, str(err))
-            if mo is None:
+            ikiwa mo is None:
                 self.fail("SyntaxError did not contain '%r'" % (errtext,))
             self.assertEqual(err.filename, filename)
-            if lineno is not None:
+            ikiwa lineno is not None:
                 self.assertEqual(err.lineno, lineno)
-            if offset is not None:
+            ikiwa offset is not None:
                 self.assertEqual(err.offset, offset)
         else:
             self.fail("compile() did not raise SyntaxError")
 
-    def test_assign_call(self):
+    eleza test_assign_call(self):
         self._check_error("f() = 1", "assign")
 
-    def test_assign_del(self):
+    eleza test_assign_del(self):
         self._check_error("del f()", "delete")
 
-    def test_global_param_err_first(self):
-        source = """if 1:
-            def error(a):
+    eleza test_global_param_err_first(self):
+        source = """ikiwa 1:
+            eleza error(a):
                 global a  # SyntaxError
-            def error2():
+            eleza error2():
                 b = 1
                 global b  # SyntaxError
             """
         self._check_error(source, "parameter and global", lineno=3)
 
-    def test_nonlocal_param_err_first(self):
-        source = """if 1:
-            def error(a):
+    eleza test_nonlocal_param_err_first(self):
+        source = """ikiwa 1:
+            eleza error(a):
                 nonlocal a  # SyntaxError
-            def error2():
+            eleza error2():
                 b = 1
                 global b  # SyntaxError
             """
         self._check_error(source, "parameter and nonlocal", lineno=3)
 
-    def test_break_outside_loop(self):
+    eleza test_break_outside_loop(self):
         self._check_error("break", "outside loop")
 
-    def test_yield_outside_function(self):
-        self._check_error("if 0: yield",                "outside function")
-        self._check_error("if 0: yield\nelse:  x=1",    "outside function")
-        self._check_error("if 1: pass\nelse: yield",    "outside function")
+    eleza test_yield_outside_function(self):
+        self._check_error("ikiwa 0: yield",                "outside function")
+        self._check_error("ikiwa 0: yield\nelse:  x=1",    "outside function")
+        self._check_error("ikiwa 1: pass\nelse: yield",    "outside function")
         self._check_error("while 0: yield",             "outside function")
         self._check_error("while 0: yield\nelse:  x=1", "outside function")
-        self._check_error("class C:\n  if 0: yield",    "outside function")
-        self._check_error("class C:\n  if 1: pass\n  else: yield",
+        self._check_error("kundi C:\n  ikiwa 0: yield",    "outside function")
+        self._check_error("kundi C:\n  ikiwa 1: pass\n  else: yield",
                           "outside function")
-        self._check_error("class C:\n  while 0: yield", "outside function")
-        self._check_error("class C:\n  while 0: yield\n  else:  x = 1",
+        self._check_error("kundi C:\n  while 0: yield", "outside function")
+        self._check_error("kundi C:\n  while 0: yield\n  else:  x = 1",
                           "outside function")
 
-    def test_return_outside_function(self):
-        self._check_error("if 0: return",                "outside function")
-        self._check_error("if 0: return\nelse:  x=1",    "outside function")
-        self._check_error("if 1: pass\nelse: return",    "outside function")
+    eleza test_return_outside_function(self):
+        self._check_error("ikiwa 0: return",                "outside function")
+        self._check_error("ikiwa 0: return\nelse:  x=1",    "outside function")
+        self._check_error("ikiwa 1: pass\nelse: return",    "outside function")
         self._check_error("while 0: return",             "outside function")
-        self._check_error("class C:\n  if 0: return",    "outside function")
-        self._check_error("class C:\n  while 0: return", "outside function")
-        self._check_error("class C:\n  while 0: return\n  else:  x=1",
+        self._check_error("kundi C:\n  ikiwa 0: return",    "outside function")
+        self._check_error("kundi C:\n  while 0: return", "outside function")
+        self._check_error("kundi C:\n  while 0: return\n  else:  x=1",
                           "outside function")
-        self._check_error("class C:\n  if 0: return\n  else: x= 1",
+        self._check_error("kundi C:\n  ikiwa 0: return\n  else: x= 1",
                           "outside function")
-        self._check_error("class C:\n  if 1: pass\n  else: return",
+        self._check_error("kundi C:\n  ikiwa 1: pass\n  else: return",
                           "outside function")
 
-    def test_break_outside_loop(self):
-        self._check_error("if 0: break",             "outside loop")
-        self._check_error("if 0: break\nelse:  x=1",  "outside loop")
-        self._check_error("if 1: pass\nelse: break", "outside loop")
-        self._check_error("class C:\n  if 0: break", "outside loop")
-        self._check_error("class C:\n  if 1: pass\n  else: break",
+    eleza test_break_outside_loop(self):
+        self._check_error("ikiwa 0: break",             "outside loop")
+        self._check_error("ikiwa 0: break\nelse:  x=1",  "outside loop")
+        self._check_error("ikiwa 1: pass\nelse: break", "outside loop")
+        self._check_error("kundi C:\n  ikiwa 0: break", "outside loop")
+        self._check_error("kundi C:\n  ikiwa 1: pass\n  else: break",
                           "outside loop")
 
-    def test_continue_outside_loop(self):
-        self._check_error("if 0: continue",             "not properly in loop")
-        self._check_error("if 0: continue\nelse:  x=1", "not properly in loop")
-        self._check_error("if 1: pass\nelse: continue", "not properly in loop")
-        self._check_error("class C:\n  if 0: continue", "not properly in loop")
-        self._check_error("class C:\n  if 1: pass\n  else: continue",
+    eleza test_continue_outside_loop(self):
+        self._check_error("ikiwa 0: continue",             "not properly in loop")
+        self._check_error("ikiwa 0: continue\nelse:  x=1", "not properly in loop")
+        self._check_error("ikiwa 1: pass\nelse: continue", "not properly in loop")
+        self._check_error("kundi C:\n  ikiwa 0: continue", "not properly in loop")
+        self._check_error("kundi C:\n  ikiwa 1: pass\n  else: continue",
                           "not properly in loop")
 
-    def test_unexpected_indent(self):
+    eleza test_unexpected_indent(self):
         self._check_error("foo()\n bar()\n", "unexpected indent",
                           subclass=IndentationError)
 
-    def test_no_indent(self):
-        self._check_error("if 1:\nfoo()", "expected an indented block",
+    eleza test_no_indent(self):
+        self._check_error("ikiwa 1:\nfoo()", "expected an indented block",
                           subclass=IndentationError)
 
-    def test_bad_outdent(self):
-        self._check_error("if 1:\n  foo()\n bar()",
+    eleza test_bad_outdent(self):
+        self._check_error("ikiwa 1:\n  foo()\n bar()",
                           "unindent does not match .* level",
                           subclass=IndentationError)
 
-    def test_kwargs_last(self):
+    eleza test_kwargs_last(self):
         self._check_error("int(base=10, '2')",
                           "positional argument follows keyword argument")
 
-    def test_kwargs_last2(self):
+    eleza test_kwargs_last2(self):
         self._check_error("int(**{'base': 10}, '2')",
                           "positional argument follows "
                           "keyword argument unpacking")
 
-    def test_kwargs_last3(self):
+    eleza test_kwargs_last3(self):
         self._check_error("int(**{'base': 10}, *['2'])",
                           "iterable argument unpacking follows "
                           "keyword argument unpacking")
 
-def test_main():
+eleza test_main():
     support.run_unittest(SyntaxTestCase)
     kutoka test agiza test_syntax
     support.run_doctest(test_syntax, verbosity=True)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

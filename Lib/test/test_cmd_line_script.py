@@ -25,91 +25,91 @@ example_args = ['test1', 'test2', 'test3']
 test_source = """\
 # Script may be run with optimisation enabled, so don't rely on assert
 # statements being executed
-def assertEqual(lhs, rhs):
-    if lhs != rhs:
+eleza assertEqual(lhs, rhs):
+    ikiwa lhs != rhs:
         raise AssertionError('%r != %r' % (lhs, rhs))
-def assertIdentical(lhs, rhs):
-    if lhs is not rhs:
+eleza assertIdentical(lhs, rhs):
+    ikiwa lhs is not rhs:
         raise AssertionError('%r is not %r' % (lhs, rhs))
 # Check basic code execution
 result = ['Top level assignment']
-def f():
+eleza f():
     result.append('Lower level reference')
 f()
 assertEqual(result, ['Top level assignment', 'Lower level reference'])
 # Check population of magic variables
 assertEqual(__name__, '__main__')
 kutoka importlib.machinery agiza BuiltinImporter
-_loader = __loader__ if __loader__ is BuiltinImporter else type(__loader__)
-print('__loader__==%a' % _loader)
-print('__file__==%a' % __file__)
-print('__cached__==%a' % __cached__)
-print('__package__==%r' % __package__)
+_loader = __loader__ ikiwa __loader__ is BuiltinImporter else type(__loader__)
+andika('__loader__==%a' % _loader)
+andika('__file__==%a' % __file__)
+andika('__cached__==%a' % __cached__)
+andika('__package__==%r' % __package__)
 # Check PEP 451 details
 agiza os.path
-if __package__ is not None:
-    print('__main__ was located through the agiza system')
+ikiwa __package__ is not None:
+    andika('__main__ was located through the agiza system')
     assertIdentical(__spec__.loader, __loader__)
     expected_spec_name = os.path.splitext(os.path.basename(__file__))[0]
-    if __package__:
+    ikiwa __package__:
         expected_spec_name = __package__ + "." + expected_spec_name
     assertEqual(__spec__.name, expected_spec_name)
     assertEqual(__spec__.parent, __package__)
     assertIdentical(__spec__.submodule_search_locations, None)
     assertEqual(__spec__.origin, __file__)
-    if __spec__.cached is not None:
+    ikiwa __spec__.cached is not None:
         assertEqual(__spec__.cached, __cached__)
 # Check the sys module
 agiza sys
 assertIdentical(globals(), sys.modules[__name__].__dict__)
-if __spec__ is not None:
+ikiwa __spec__ is not None:
     # XXX: We're not currently making __main__ available under its real name
     pass # assertIdentical(globals(), sys.modules[__spec__.name].__dict__)
 kutoka test agiza test_cmd_line_script
 example_args_list = test_cmd_line_script.example_args
 assertEqual(sys.argv[1:], example_args_list)
-print('sys.argv[0]==%a' % sys.argv[0])
-print('sys.path[0]==%a' % sys.path[0])
+andika('sys.argv[0]==%a' % sys.argv[0])
+andika('sys.path[0]==%a' % sys.path[0])
 # Check the working directory
 agiza os
-print('cwd==%a' % os.getcwd())
+andika('cwd==%a' % os.getcwd())
 """
 
-def _make_test_script(script_dir, script_basename, source=test_source):
-    to_return = make_script(script_dir, script_basename, source)
+eleza _make_test_script(script_dir, script_basename, source=test_source):
+    to_rudisha = make_script(script_dir, script_basename, source)
     importlib.invalidate_caches()
-    return to_return
+    rudisha to_return
 
-def _make_test_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
+eleza _make_test_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
                        source=test_source, depth=1):
-    to_return = make_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
+    to_rudisha = make_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
                              source, depth)
     importlib.invalidate_caches()
-    return to_return
+    rudisha to_return
 
-class CmdLineTest(unittest.TestCase):
-    def _check_output(self, script_name, exit_code, data,
+kundi CmdLineTest(unittest.TestCase):
+    eleza _check_output(self, script_name, exit_code, data,
                              expected_file, expected_argv0,
                              expected_path0, expected_package,
                              expected_loader, expected_cwd=None):
-        if verbose > 1:
-            print("Output kutoka test script %r:" % script_name)
-            print(repr(data))
+        ikiwa verbose > 1:
+            andika("Output kutoka test script %r:" % script_name)
+            andika(repr(data))
         self.assertEqual(exit_code, 0)
         printed_loader = '__loader__==%a' % expected_loader
         printed_file = '__file__==%a' % expected_file
         printed_package = '__package__==%r' % expected_package
         printed_argv0 = 'sys.argv[0]==%a' % expected_argv0
         printed_path0 = 'sys.path[0]==%a' % expected_path0
-        if expected_cwd is None:
+        ikiwa expected_cwd is None:
             expected_cwd = os.getcwd()
         printed_cwd = 'cwd==%a' % expected_cwd
-        if verbose > 1:
-            print('Expected output:')
-            print(printed_file)
-            print(printed_package)
-            print(printed_argv0)
-            print(printed_cwd)
+        ikiwa verbose > 1:
+            andika('Expected output:')
+            andika(printed_file)
+            andika(printed_package)
+            andika(printed_argv0)
+            andika(printed_cwd)
         self.assertIn(printed_loader.encode('utf-8'), data)
         self.assertIn(printed_file.encode('utf-8'), data)
         self.assertIn(printed_package.encode('utf-8'), data)
@@ -117,13 +117,13 @@ class CmdLineTest(unittest.TestCase):
         self.assertIn(printed_path0.encode('utf-8'), data)
         self.assertIn(printed_cwd.encode('utf-8'), data)
 
-    def _check_script(self, script_exec_args, expected_file,
+    eleza _check_script(self, script_exec_args, expected_file,
                             expected_argv0, expected_path0,
                             expected_package, expected_loader,
                             *cmd_line_switches, cwd=None, **env_vars):
-        if isinstance(script_exec_args, str):
+        ikiwa isinstance(script_exec_args, str):
             script_exec_args = [script_exec_args]
-        run_args = [*support.optim_args_from_interpreter_flags(),
+        run_args = [*support.optim_args_kutoka_interpreter_flags(),
                     *cmd_line_switches, *script_exec_args, *example_args]
         rc, out, err = assert_python_ok(
             *run_args, __isolated=False, __cwd=cwd, **env_vars
@@ -132,9 +132,9 @@ class CmdLineTest(unittest.TestCase):
                            expected_argv0, expected_path0,
                            expected_package, expected_loader, cwd)
 
-    def _check_import_error(self, script_exec_args, expected_msg,
+    eleza _check_import_error(self, script_exec_args, expected_msg,
                             *cmd_line_switches, cwd=None, **env_vars):
-        if isinstance(script_exec_args, str):
+        ikiwa isinstance(script_exec_args, str):
             script_exec_args = (script_exec_args,)
         else:
             script_exec_args = tuple(script_exec_args)
@@ -142,24 +142,24 @@ class CmdLineTest(unittest.TestCase):
         rc, out, err = assert_python_failure(
             *run_args, __isolated=False, __cwd=cwd, **env_vars
         )
-        if verbose > 1:
-            print('Output kutoka test script %r:' % script_exec_args)
-            print(repr(err))
-            print('Expected output: %r' % expected_msg)
+        ikiwa verbose > 1:
+            andika('Output kutoka test script %r:' % script_exec_args)
+            andika(repr(err))
+            andika('Expected output: %r' % expected_msg)
         self.assertIn(expected_msg.encode('utf-8'), err)
 
-    def test_dash_c_loader(self):
-        rc, out, err = assert_python_ok("-c", "print(__loader__)")
+    eleza test_dash_c_loader(self):
+        rc, out, err = assert_python_ok("-c", "andika(__loader__)")
         expected = repr(importlib.machinery.BuiltinImporter).encode("utf-8")
         self.assertIn(expected, out)
 
-    def test_stdin_loader(self):
+    eleza test_stdin_loader(self):
         # Unfortunately, there's no way to automatically test the fully
         # interactive REPL, since that code path only gets executed when
         # stdin is an interactive tty.
         p = spawn_python()
         try:
-            p.stdin.write(b"print(__loader__)\n")
+            p.stdin.write(b"andika(__loader__)\n")
             p.stdin.flush()
         finally:
             out = kill_python(p)
@@ -167,8 +167,8 @@ class CmdLineTest(unittest.TestCase):
         self.assertIn(expected, out)
 
     @contextlib.contextmanager
-    def interactive_python(self, separate_stderr=False):
-        if separate_stderr:
+    eleza interactive_python(self, separate_stderr=False):
+        ikiwa separate_stderr:
             p = spawn_python('-i', stderr=subprocess.PIPE)
             stderr = p.stderr
         else:
@@ -178,7 +178,7 @@ class CmdLineTest(unittest.TestCase):
             # Drain stderr until prompt
             while True:
                 data = stderr.read(4)
-                if data == b">>> ":
+                ikiwa data == b">>> ":
                     break
                 stderr.readline()
             yield p
@@ -186,41 +186,41 @@ class CmdLineTest(unittest.TestCase):
             kill_python(p)
             stderr.close()
 
-    def check_repl_stdout_flush(self, separate_stderr=False):
+    eleza check_repl_stdout_flush(self, separate_stderr=False):
         with self.interactive_python(separate_stderr) as p:
-            p.stdin.write(b"print('foo')\n")
+            p.stdin.write(b"andika('foo')\n")
             p.stdin.flush()
             self.assertEqual(b'foo', p.stdout.readline().strip())
 
-    def check_repl_stderr_flush(self, separate_stderr=False):
+    eleza check_repl_stderr_flush(self, separate_stderr=False):
         with self.interactive_python(separate_stderr) as p:
             p.stdin.write(b"1/0\n")
             p.stdin.flush()
-            stderr = p.stderr if separate_stderr else p.stdout
+            stderr = p.stderr ikiwa separate_stderr else p.stdout
             self.assertIn(b'Traceback ', stderr.readline())
             self.assertIn(b'File "<stdin>"', stderr.readline())
             self.assertIn(b'ZeroDivisionError', stderr.readline())
 
-    def test_repl_stdout_flush(self):
+    eleza test_repl_stdout_flush(self):
         self.check_repl_stdout_flush()
 
-    def test_repl_stdout_flush_separate_stderr(self):
+    eleza test_repl_stdout_flush_separate_stderr(self):
         self.check_repl_stdout_flush(True)
 
-    def test_repl_stderr_flush(self):
+    eleza test_repl_stderr_flush(self):
         self.check_repl_stderr_flush()
 
-    def test_repl_stderr_flush_separate_stderr(self):
+    eleza test_repl_stderr_flush_separate_stderr(self):
         self.check_repl_stderr_flush(True)
 
-    def test_basic_script(self):
+    eleza test_basic_script(self):
         with support.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, 'script')
             self._check_script(script_name, script_name, script_name,
                                script_dir, None,
                                importlib.machinery.SourceFileLoader)
 
-    def test_script_compiled(self):
+    eleza test_script_compiled(self):
         with support.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, 'script')
             py_compile.compile(script_name, doraise=True)
@@ -230,14 +230,14 @@ class CmdLineTest(unittest.TestCase):
                                pyc_file, script_dir, None,
                                importlib.machinery.SourcelessFileLoader)
 
-    def test_directory(self):
+    eleza test_directory(self):
         with support.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, '__main__')
             self._check_script(script_dir, script_name, script_dir,
                                script_dir, '',
                                importlib.machinery.SourceFileLoader)
 
-    def test_directory_compiled(self):
+    eleza test_directory_compiled(self):
         with support.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, '__main__')
             py_compile.compile(script_name, doraise=True)
@@ -247,19 +247,19 @@ class CmdLineTest(unittest.TestCase):
                                script_dir, '',
                                importlib.machinery.SourcelessFileLoader)
 
-    def test_directory_error(self):
+    eleza test_directory_error(self):
         with support.temp_dir() as script_dir:
             msg = "can't find '__main__' module in %r" % script_dir
             self._check_import_error(script_dir, msg)
 
-    def test_zipfile(self):
+    eleza test_zipfile(self):
         with support.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, '__main__')
             zip_name, run_name = make_zip_script(script_dir, 'test_zip', script_name)
             self._check_script(zip_name, run_name, zip_name, zip_name, '',
                                zipagiza.zipimporter)
 
-    def test_zipfile_compiled_timestamp(self):
+    eleza test_zipfile_compiled_timestamp(self):
         with support.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, '__main__')
             compiled_name = py_compile.compile(
@@ -269,7 +269,7 @@ class CmdLineTest(unittest.TestCase):
             self._check_script(zip_name, run_name, zip_name, zip_name, '',
                                zipagiza.zipimporter)
 
-    def test_zipfile_compiled_checked_hash(self):
+    eleza test_zipfile_compiled_checked_hash(self):
         with support.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, '__main__')
             compiled_name = py_compile.compile(
@@ -279,7 +279,7 @@ class CmdLineTest(unittest.TestCase):
             self._check_script(zip_name, run_name, zip_name, zip_name, '',
                                zipagiza.zipimporter)
 
-    def test_zipfile_compiled_unchecked_hash(self):
+    eleza test_zipfile_compiled_unchecked_hash(self):
         with support.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, '__main__')
             compiled_name = py_compile.compile(
@@ -289,14 +289,14 @@ class CmdLineTest(unittest.TestCase):
             self._check_script(zip_name, run_name, zip_name, zip_name, '',
                                zipagiza.zipimporter)
 
-    def test_zipfile_error(self):
+    eleza test_zipfile_error(self):
         with support.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, 'not_main')
             zip_name, run_name = make_zip_script(script_dir, 'test_zip', script_name)
             msg = "can't find '__main__' module in %r" % zip_name
             self._check_import_error(zip_name, msg)
 
-    def test_module_in_package(self):
+    eleza test_module_in_package(self):
         with support.temp_dir() as script_dir:
             pkg_dir = os.path.join(script_dir, 'test_pkg')
             make_pkg(pkg_dir)
@@ -306,14 +306,14 @@ class CmdLineTest(unittest.TestCase):
                                importlib.machinery.SourceFileLoader,
                                cwd=script_dir)
 
-    def test_module_in_package_in_zipfile(self):
+    eleza test_module_in_package_in_zipfile(self):
         with support.temp_dir() as script_dir:
             zip_name, run_name = _make_test_zip_pkg(script_dir, 'test_zip', 'test_pkg', 'script')
             self._check_script(["-m", "test_pkg.script"], run_name, run_name,
                                script_dir, 'test_pkg', zipagiza.zipimporter,
                                PYTHONPATH=zip_name, cwd=script_dir)
 
-    def test_module_in_subpackage_in_zipfile(self):
+    eleza test_module_in_subpackage_in_zipfile(self):
         with support.temp_dir() as script_dir:
             zip_name, run_name = _make_test_zip_pkg(script_dir, 'test_zip', 'test_pkg', 'script', depth=2)
             self._check_script(["-m", "test_pkg.test_pkg.script"], run_name, run_name,
@@ -321,7 +321,7 @@ class CmdLineTest(unittest.TestCase):
                                zipagiza.zipimporter,
                                PYTHONPATH=zip_name, cwd=script_dir)
 
-    def test_package(self):
+    eleza test_package(self):
         with support.temp_dir() as script_dir:
             pkg_dir = os.path.join(script_dir, 'test_pkg')
             make_pkg(pkg_dir)
@@ -331,7 +331,7 @@ class CmdLineTest(unittest.TestCase):
                                importlib.machinery.SourceFileLoader,
                                cwd=script_dir)
 
-    def test_package_compiled(self):
+    eleza test_package_compiled(self):
         with support.temp_dir() as script_dir:
             pkg_dir = os.path.join(script_dir, 'test_pkg')
             make_pkg(pkg_dir)
@@ -344,7 +344,7 @@ class CmdLineTest(unittest.TestCase):
                                importlib.machinery.SourcelessFileLoader,
                                cwd=script_dir)
 
-    def test_package_error(self):
+    eleza test_package_error(self):
         with support.temp_dir() as script_dir:
             pkg_dir = os.path.join(script_dir, 'test_pkg')
             make_pkg(pkg_dir)
@@ -352,7 +352,7 @@ class CmdLineTest(unittest.TestCase):
                    "be directly executed")
             self._check_import_error(["-m", "test_pkg"], msg, cwd=script_dir)
 
-    def test_package_recursion(self):
+    eleza test_package_recursion(self):
         with support.temp_dir() as script_dir:
             pkg_dir = os.path.join(script_dir, 'test_pkg')
             make_pkg(pkg_dir)
@@ -363,24 +363,24 @@ class CmdLineTest(unittest.TestCase):
                    "be directly executed")
             self._check_import_error(["-m", "test_pkg"], msg, cwd=script_dir)
 
-    def test_issue8202(self):
+    eleza test_issue8202(self):
         # Make sure package __init__ modules see "-m" in sys.argv0 while
         # searching for the module to execute
         with support.temp_dir() as script_dir:
             with support.change_cwd(path=script_dir):
                 pkg_dir = os.path.join(script_dir, 'test_pkg')
-                make_pkg(pkg_dir, "agiza sys; print('init_argv0==%r' % sys.argv[0])")
+                make_pkg(pkg_dir, "agiza sys; andika('init_argv0==%r' % sys.argv[0])")
                 script_name = _make_test_script(pkg_dir, 'script')
                 rc, out, err = assert_python_ok('-m', 'test_pkg.script', *example_args, __isolated=False)
-                if verbose > 1:
-                    print(repr(out))
+                ikiwa verbose > 1:
+                    andika(repr(out))
                 expected = "init_argv0==%r" % '-m'
                 self.assertIn(expected.encode('utf-8'), out)
                 self._check_output(script_name, rc, out,
                                    script_name, script_name, script_dir, 'test_pkg',
                                    importlib.machinery.SourceFileLoader)
 
-    def test_issue8202_dash_c_file_ignored(self):
+    eleza test_issue8202_dash_c_file_ignored(self):
         # Make sure a "-c" file in the current directory
         # does not alter the value of sys.path[0]
         with support.temp_dir() as script_dir:
@@ -388,14 +388,14 @@ class CmdLineTest(unittest.TestCase):
                 with open("-c", "w") as f:
                     f.write("data")
                     rc, out, err = assert_python_ok('-c',
-                        'agiza sys; print("sys.path[0]==%r" % sys.path[0])',
+                        'agiza sys; andika("sys.path[0]==%r" % sys.path[0])',
                         __isolated=False)
-                    if verbose > 1:
-                        print(repr(out))
+                    ikiwa verbose > 1:
+                        andika(repr(out))
                     expected = "sys.path[0]==%r" % ''
                     self.assertIn(expected.encode('utf-8'), out)
 
-    def test_issue8202_dash_m_file_ignored(self):
+    eleza test_issue8202_dash_m_file_ignored(self):
         # Make sure a "-m" file in the current directory
         # does not alter the value of sys.path[0]
         with support.temp_dir() as script_dir:
@@ -409,7 +409,7 @@ class CmdLineTest(unittest.TestCase):
                                       script_name, script_name, script_dir, '',
                                       importlib.machinery.SourceFileLoader)
 
-    def test_issue20884(self):
+    eleza test_issue20884(self):
         # On Windows, script with encoding cookie and LF line ending
         # will be failed.
         with support.temp_dir() as script_dir:
@@ -427,31 +427,31 @@ class CmdLineTest(unittest.TestCase):
             self.assertEqual(b"", err)
 
     @contextlib.contextmanager
-    def setup_test_pkg(self, *args):
+    eleza setup_test_pkg(self, *args):
         with support.temp_dir() as script_dir, \
                 support.change_cwd(path=script_dir):
             pkg_dir = os.path.join(script_dir, 'test_pkg')
             make_pkg(pkg_dir, *args)
             yield pkg_dir
 
-    def check_dash_m_failure(self, *args):
+    eleza check_dash_m_failure(self, *args):
         rc, out, err = assert_python_failure('-m', *args, __isolated=False)
-        if verbose > 1:
-            print(repr(out))
+        ikiwa verbose > 1:
+            andika(repr(out))
         self.assertEqual(rc, 1)
-        return err
+        rudisha err
 
-    def test_dash_m_error_code_is_one(self):
+    eleza test_dash_m_error_code_is_one(self):
         # If a module is invoked with the -m command line flag
-        # and results in an error that the return code to the
+        # and results in an error that the rudisha code to the
         # shell is '1'
         with self.setup_test_pkg() as pkg_dir:
             script_name = _make_test_script(pkg_dir, 'other',
-                                            "if __name__ == '__main__': raise ValueError")
+                                            "ikiwa __name__ == '__main__': raise ValueError")
             err = self.check_dash_m_failure('test_pkg.other', *example_args)
             self.assertIn(b'ValueError', err)
 
-    def test_dash_m_errors(self):
+    eleza test_dash_m_errors(self):
         # Exercise error reporting for various invalid package executions
         tests = (
             ('builtins', br'No code object available'),
@@ -472,7 +472,7 @@ class CmdLineTest(unittest.TestCase):
                 self.assertRegex(err, regex)
                 self.assertNotIn(b'Traceback', err)
 
-    def test_dash_m_bad_pyc(self):
+    eleza test_dash_m_bad_pyc(self):
         with support.temp_dir() as script_dir, \
                 support.change_cwd(path=script_dir):
             os.mkdir('test_pkg')
@@ -486,7 +486,7 @@ class CmdLineTest(unittest.TestCase):
             self.assertNotIn(b'is a package', err)
             self.assertNotIn(b'Traceback', err)
 
-    def test_dash_m_init_traceback(self):
+    eleza test_dash_m_init_traceback(self):
         # These were wrapped in an ImportError and tracebacks were
         # suppressed; see Issue 14285
         exceptions = (ImportError, AttributeError, TypeError, ValueError)
@@ -500,7 +500,7 @@ class CmdLineTest(unittest.TestCase):
                 self.assertIn(b'Exception in __init__.py', err)
                 self.assertIn(b'Traceback', err)
 
-    def test_dash_m_main_traceback(self):
+    eleza test_dash_m_main_traceback(self):
         # Ensure that an ImportError's traceback is reported
         with self.setup_test_pkg() as pkg_dir:
             main = "raise ImportError('Exception in __main__ module')"
@@ -510,7 +510,7 @@ class CmdLineTest(unittest.TestCase):
             self.assertIn(b'Exception in __main__ module', err)
             self.assertIn(b'Traceback', err)
 
-    def test_pep_409_verbiage(self):
+    eleza test_pep_409_verbiage(self):
         # Make sure PEP 409 syntax properly suppresses
         # the context of an exception
         script = textwrap.dedent("""\
@@ -528,20 +528,20 @@ class CmdLineTest(unittest.TestCase):
             self.assertTrue(text[1].startswith('  File '))
             self.assertTrue(text[3].startswith('NameError'))
 
-    def test_non_ascii(self):
+    eleza test_non_ascii(self):
         # Mac OS X denies the creation of a file with an invalid UTF-8 name.
         # Windows allows creating a name with an arbitrary bytes name, but
         # Python cannot a undecodable bytes argument to a subprocess.
-        if (support.TESTFN_UNDECODABLE
+        ikiwa (support.TESTFN_UNDECODABLE
         and sys.platform not in ('win32', 'darwin')):
             name = os.fsdecode(support.TESTFN_UNDECODABLE)
-        elif support.TESTFN_NONASCII:
+        elikiwa support.TESTFN_NONASCII:
             name = support.TESTFN_NONASCII
         else:
             self.skipTest("need support.TESTFN_NONASCII")
 
         # Issue #16218
-        source = 'print(ascii(__file__))\n'
+        source = 'andika(ascii(__file__))\n'
         script_name = _make_test_script(os.curdir, name, source)
         self.addCleanup(support.unlink, script_name)
         rc, stdout, stderr = assert_python_ok(script_name)
@@ -551,7 +551,7 @@ class CmdLineTest(unittest.TestCase):
             'stdout=%r stderr=%r' % (stdout, stderr))
         self.assertEqual(0, rc)
 
-    def test_issue20500_exit_with_exception_value(self):
+    eleza test_issue20500_exit_with_exception_value(self):
         script = textwrap.dedent("""\
             agiza sys
             error = None
@@ -560,7 +560,7 @@ class CmdLineTest(unittest.TestCase):
             except ValueError as err:
                 error = err
 
-            if error:
+            ikiwa error:
                 sys.exit(error)
             """)
         with support.temp_dir() as script_dir:
@@ -569,7 +569,7 @@ class CmdLineTest(unittest.TestCase):
             text = stderr.decode('ascii')
             self.assertEqual(text, "some text")
 
-    def test_syntaxerror_unindented_caret_position(self):
+    eleza test_syntaxerror_unindented_caret_position(self):
         script = "1 + 1 = 2\n"
         with support.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, 'script', script)
@@ -578,9 +578,9 @@ class CmdLineTest(unittest.TestCase):
             # Confirm that the caret is located under the first 1 character
             self.assertIn("\n    1 + 1 = 2\n    ^", text)
 
-    def test_syntaxerror_indented_caret_position(self):
+    eleza test_syntaxerror_indented_caret_position(self):
         script = textwrap.dedent("""\
-            if True:
+            ikiwa True:
                 1 + 1 = 2
             """)
         with support.temp_dir() as script_dir:
@@ -592,7 +592,7 @@ class CmdLineTest(unittest.TestCase):
 
             # Try the same with a form feed at the start of the indented line
             script = (
-                "if True:\n"
+                "ikiwa True:\n"
                 "\f    1 + 1 = 2\n"
             )
             script_name = _make_test_script(script_dir, "script", script)
@@ -601,7 +601,7 @@ class CmdLineTest(unittest.TestCase):
             self.assertNotIn("\f", text)
             self.assertIn("\n    1 + 1 = 2\n    ^", text)
 
-    def test_syntaxerror_multi_line_fstring(self):
+    eleza test_syntaxerror_multi_line_fstring(self):
         script = 'foo = f"""{}\nfoo"""\n'
         with support.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, 'script', script)
@@ -615,7 +615,7 @@ class CmdLineTest(unittest.TestCase):
                 ],
             )
 
-    def test_syntaxerror_invalid_escape_sequence_multi_line(self):
+    eleza test_syntaxerror_invalid_escape_sequence_multi_line(self):
         script = 'foo = """\\q\n"""\n'
         with support.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, 'script', script)
@@ -631,7 +631,7 @@ class CmdLineTest(unittest.TestCase):
                 ],
             )
 
-    def test_consistent_sys_path_for_direct_execution(self):
+    eleza test_consistent_sys_path_for_direct_execution(self):
         # This test case ensures that the following all give the same
         # sys.path configuration:
         #
@@ -641,7 +641,7 @@ class CmdLineTest(unittest.TestCase):
         script = textwrap.dedent("""\
             agiza sys
             for entry in sys.path:
-                print(entry)
+                andika(entry)
             """)
         # Always show full path diffs on errors
         self.maxDiff = None
@@ -662,7 +662,7 @@ class CmdLineTest(unittest.TestCase):
             out_by_dir_isolated = kill_python(p).decode().splitlines()
             self.assertEqual(out_by_dir_isolated, out_by_dir, out_by_name)
 
-    def test_consistent_sys_path_for_module_execution(self):
+    eleza test_consistent_sys_path_for_module_execution(self):
         # This test case ensures that the following both give the same
         # sys.path configuration:
         #    ./python -sm script_pkg.__main__
@@ -673,7 +673,7 @@ class CmdLineTest(unittest.TestCase):
         script = textwrap.dedent("""\
             agiza sys
             for entry in sys.path:
-                print(entry)
+                andika(entry)
             """)
         # Always show full path diffs on errors
         self.maxDiff = None
@@ -699,9 +699,9 @@ class CmdLineTest(unittest.TestCase):
             traceback_lines = stderr.decode().splitlines()
             self.assertIn("No module named script_pkg", traceback_lines[-1])
 
-    def test_nonexisting_script(self):
+    eleza test_nonexisting_script(self):
         # bpo-34783: "./python script.py" must not crash
-        # if the script file doesn't exist.
+        # ikiwa the script file doesn't exist.
         # (Skip test for macOS framework builds because sys.excutable name
         #  is not the actual Python executable file name.
         script = 'nonexistingscript.py'
@@ -715,9 +715,9 @@ class CmdLineTest(unittest.TestCase):
         self.assertNotEqual(proc.returncode, 0)
 
 
-def test_main():
+eleza test_main():
     support.run_unittest(CmdLineTest)
     support.reap_children()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test_main()

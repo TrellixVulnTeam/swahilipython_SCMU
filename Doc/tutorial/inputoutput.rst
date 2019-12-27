@@ -88,9 +88,9 @@ Some examples::
    ... repr((x, y, ('spam', 'eggs')))
    "(32.5, 40000, ('spam', 'eggs'))"
 
-The :mod:`string` module contains a :class:`~string.Template` class that offers
+The :mod:`string` module contains a :class:`~string.Template` kundi that offers
 yet another way to substitute values into strings, using placeholders like
-``$x`` and replacing them with values from a dictionary, but offers much less
+``$x`` and replacing them with values kutoka a dictionary, but offers much less
 control of the formatting.
 
 
@@ -108,7 +108,7 @@ An optional format specifier can follow the expression. This allows greater
 control over how the value is formatted. The following example rounds pi to
 three places after the decimal::
 
-   >>> import math
+   >>> agiza math
    >>> print(f'The value of pi is approximately {math.pi:.3f}.')
    The value of pi is approximately 3.142.
 
@@ -259,10 +259,10 @@ Old string formatting
 
 The ``%`` operator can also be used for string formatting. It interprets the
 left argument much like a :c:func:`sprintf`\ -style format string to be applied
-to the right argument, and returns the string resulting from this formatting
+to the right argument, and returns the string resulting kutoka this formatting
 operation. For example::
 
-   >>> import math
+   >>> agiza math
    >>> print('The value of pi is approximately %5.3f.' % math.pi)
    The value of pi is approximately 3.142.
 
@@ -300,7 +300,7 @@ writing. The *mode* argument is optional; ``'r'`` will be assumed if it's
 omitted.
 
 Normally, files are opened in :dfn:`text mode`, that means, you read and write
-strings from and to the file, which are encoded in a specific encoding. If
+strings kutoka and to the file, which are encoded in a specific encoding. If
 encoding is not specified, the default is platform dependent (see
 :func:`open`). ``'b'`` appended to the mode opens the file in
 :dfn:`binary mode`: now the data is read and written in the form of bytes
@@ -368,7 +368,7 @@ string (``''``).  ::
    >>> f.read()
    ''
 
-``f.readline()`` reads a single line from the file; a newline character (``\n``)
+``f.readline()`` reads a single line kutoka the file; a newline character (``\n``)
 is left at the end of the string, and is only omitted on the last line of the
 file if the file doesn't end in a newline.  This makes the return value
 unambiguous; if ``f.readline()`` returns an empty string, the end of the file
@@ -382,7 +382,7 @@ containing only a single newline.  ::
    >>> f.readline()
    ''
 
-For reading lines from a file, you can loop over the file object. This is memory
+For reading lines kutoka a file, you can loop over the file object. This is memory
 efficient, fast, and leads to simple code::
 
    >>> for line in f:
@@ -409,12 +409,12 @@ or a bytes object (in binary mode) -- before writing them::
    18
 
 ``f.tell()`` returns an integer giving the file object's current position in the file
-represented as number of bytes from the beginning of the file when in binary mode and
+represented as number of bytes kutoka the beginning of the file when in binary mode and
 an opaque number when in text mode.
 
 To change the file object's position, use ``f.seek(offset, whence)``.  The position is computed
-from adding *offset* to a reference point; the reference point is selected by
-the *whence* argument.  A *whence* value of 0 measures from the beginning
+kutoka adding *offset* to a reference point; the reference point is selected by
+the *whence* argument.  A *whence* value of 0 measures kutoka the beginning
 of the file, 1 uses the current file position, and 2 uses the end of the file as
 the reference point.  *whence* can be omitted and defaults to 0, using the
 beginning of the file as the reference point. ::
@@ -434,7 +434,7 @@ beginning of the file as the reference point. ::
 In text files (those opened without a ``b`` in the mode string), only seeks
 relative to the beginning of the file are allowed (the exception being seeking
 to the very file end with ``seek(0, 2)``) and the only valid *offset* values are
-those returned from the ``f.tell()``, or zero. Any other *offset* value produces
+those returned kutoka the ``f.tell()``, or zero. Any other *offset* value produces
 undefined behaviour.
 
 File objects have some additional methods, such as :meth:`~file.isatty` and
@@ -449,7 +449,7 @@ Saving structured data with :mod:`json`
 
 .. index:: module: json
 
-Strings can easily be written to and read from a file.  Numbers take a bit more
+Strings can easily be written to and read kutoka a file.  Numbers take a bit more
 effort, since the :meth:`read` method only returns strings, which will have to
 be passed to a function like :func:`int`, which takes a string like ``'123'``
 and returns its numeric value 123.  When you want to save more complex data
@@ -461,7 +461,7 @@ complicated data types to files, Python allows you to use the popular data
 interchange format called `JSON (JavaScript Object Notation)
 <http://json.org>`_.  The standard module called :mod:`json` can take Python
 data hierarchies, and convert them to string representations; this process is
-called :dfn:`serializing`.  Reconstructing the data from the string representation
+called :dfn:`serializing`.  Reconstructing the data kutoka the string representation
 is called :dfn:`deserializing`.  Between serializing and deserializing, the
 string representing the object may have been stored in a file or data, or
 sent over a network connection to some distant machine.
@@ -474,7 +474,7 @@ sent over a network connection to some distant machine.
 If you have an object ``x``, you can view its JSON string representation with a
 simple line of code::
 
-   >>> import json
+   >>> agiza json
    >>> json.dumps([1, 'simple', 'list'])
    '[1, "simple", "list"]'
 
@@ -490,7 +490,7 @@ been opened for reading::
    x = json.load(f)
 
 This simple serialization technique can handle lists and dictionaries, but
-serializing arbitrary class instances in JSON requires a bit of extra effort.
+serializing arbitrary kundi instances in JSON requires a bit of extra effort.
 The reference for the :mod:`json` module contains an explanation of this.
 
 .. seealso::
@@ -501,5 +501,5 @@ The reference for the :mod:`json` module contains an explanation of this.
    the serialization of arbitrarily complex Python objects.  As such, it is
    specific to Python and cannot be used to communicate with applications
    written in other languages.  It is also insecure by default:
-   deserializing pickle data coming from an untrusted source can execute
+   deserializing pickle data coming kutoka an untrusted source can execute
    arbitrary code, if the data was crafted by a skilled attacker.

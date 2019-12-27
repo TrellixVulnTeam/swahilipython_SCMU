@@ -98,7 +98,7 @@ typedef struct {
          * ready = 1
          * (length is the length of the utf8 and wstr strings)
          * (data starts just after the structure)
-         * (since ASCII is decoded from UTF-8, the utf8 string are the data)
+         * (since ASCII is decoded kutoka UTF-8, the utf8 string are the data)
 
        - compact:
 
@@ -168,7 +168,7 @@ typedef struct {
            SSTATE_INTERNED_MORTAL (1)
            SSTATE_INTERNED_IMMORTAL (2)
 
-           If interned != SSTATE_NOT_INTERNED, the two references from the
+           If interned != SSTATE_NOT_INTERNED, the two references kutoka the
            dictionary to this object are *not* counted in ob_refcnt.
          */
         unsigned int interned:2;
@@ -364,7 +364,7 @@ enum PyUnicode_Kind {
 
 /* Write into the canonical representation, this macro does not do any sanity
    checks and is intended for usage in loops.  The caller should cache the
-   kind and data pointers obtained from other macro calls.
+   kind and data pointers obtained kutoka other macro calls.
    index is the index in the string (starts at 0) and value is the new
    code point value which should be written to that location. */
 #define PyUnicode_WRITE(kind, data, index, value) \
@@ -385,7 +385,7 @@ enum PyUnicode_Kind {
         } \
     } while (0)
 
-/* Read a code point from the string's canonical representation.  No checks
+/* Read a code point kutoka the string's canonical representation.  No checks
    or ready calls are performed. */
 #define PyUnicode_READ(kind, data, index) \
     ((Py_UCS4) \
@@ -461,7 +461,7 @@ PyAPI_FUNC(PyObject*) PyUnicode_New(
     Py_UCS4 maxchar             /* maximum code point value in the string */
     );
 
-/* Initializes the canonical string representation from the deprecated
+/* Initializes the canonical string representation kutoka the deprecated
    wstr/Py_UNICODE representation. This function is used to convert Unicode
    objects which were created using the old API to the new flexible format
    introduced with PEP 393.
@@ -477,11 +477,11 @@ PyAPI_FUNC(PyObject*) _PyUnicode_Copy(
     PyObject *unicode
     );
 
-/* Copy character from one unicode object into another, this function performs
+/* Copy character kutoka one unicode object into another, this function performs
    character conversion when necessary and falls back to memcpy() if possible.
 
    Fail if to is too small (smaller than *how_many* or smaller than
-   len(from)-from_start), or if kind(from[from_start:from_start+how_many]) >
+   len(kutoka)-kutoka_start), or if kind(kutoka[kutoka_start:kutoka_start+how_many]) >
    kind(to), or if *to* has more than 1 reference.
 
    Return the number of written character, or return -1 and raise an exception
@@ -489,8 +489,8 @@ PyAPI_FUNC(PyObject*) _PyUnicode_Copy(
 
    Pseudo-code:
 
-       how_many = min(how_many, len(from) - from_start)
-       to[to_start:to_start+how_many] = from[from_start:from_start+how_many]
+       how_many = min(how_many, len(kutoka) - kutoka_start)
+       to[to_start:to_start+how_many] = kutoka[kutoka_start:kutoka_start+how_many]
        return how_many
 
    Note: The function doesn't write a terminating null character.
@@ -498,8 +498,8 @@ PyAPI_FUNC(PyObject*) _PyUnicode_Copy(
 PyAPI_FUNC(Py_ssize_t) PyUnicode_CopyCharacters(
     PyObject *to,
     Py_ssize_t to_start,
-    PyObject *from,
-    Py_ssize_t from_start,
+    PyObject *kutoka,
+    Py_ssize_t kutoka_start,
     Py_ssize_t how_many
     );
 
@@ -509,8 +509,8 @@ PyAPI_FUNC(Py_ssize_t) PyUnicode_CopyCharacters(
 PyAPI_FUNC(void) _PyUnicode_FastCopyCharacters(
     PyObject *to,
     Py_ssize_t to_start,
-    PyObject *from,
-    Py_ssize_t from_start,
+    PyObject *kutoka,
+    Py_ssize_t kutoka_start,
     Py_ssize_t how_many
     );
 
@@ -538,7 +538,7 @@ PyAPI_FUNC(void) _PyUnicode_FastFill(
     Py_UCS4 fill_char
     );
 
-/* Create a Unicode Object from the Py_UNICODE buffer u of the given
+/* Create a Unicode Object kutoka the Py_UNICODE buffer u of the given
    size.
 
    u may be NULL which causes the contents to be undefined. It is the
@@ -552,14 +552,14 @@ PyAPI_FUNC(void) _PyUnicode_FastFill(
     Py_ssize_t size             /* size of buffer */
     );
 
-/* Create a new string from a buffer of Py_UCS1, Py_UCS2 or Py_UCS4 characters.
+/* Create a new string kutoka a buffer of Py_UCS1, Py_UCS2 or Py_UCS4 characters.
    Scan the string to find the maximum character. */
 PyAPI_FUNC(PyObject*) PyUnicode_FromKindAndData(
     int kind,
     const void *buffer,
     Py_ssize_t size);
 
-/* Create a new string from a buffer of ASCII characters.
+/* Create a new string kutoka a buffer of ASCII characters.
    WARNING: Don't check if the string contains any non-ASCII character. */
 PyAPI_FUNC(PyObject*) _PyUnicode_FromASCII(
     const char *buffer,
@@ -770,7 +770,7 @@ PyAPI_FUNC(const char *) PyUnicode_AsUTF8AndSize(
    support the previous internal function with the same behaviour.
 
    Use of this API is DEPRECATED since no size information can be
-   extracted from the returned data.
+   extracted kutoka the returned data.
 
    *** This API is for interpreter INTERNAL USE ONLY and will likely
    *** be removed or changed for Python 3.1.
@@ -1013,7 +1013,7 @@ PyAPI_FUNC(PyObject*) PyUnicode_TransformDecimalToASCII(
    for using in int, float and complex parsers.
    Transforms code points that have decimal digit property to the
    corresponding ASCII digit code points.  Transforms spaces to ASCII.
-   Transforms code points starting from the first non-ASCII code point that
+   Transforms code points starting kutoka the first non-ASCII code point that
    is neither a decimal digit nor a space to the end into '?'. */
 
 PyAPI_FUNC(PyObject*) _PyUnicode_TransformDecimalAndSpaceToASCII(

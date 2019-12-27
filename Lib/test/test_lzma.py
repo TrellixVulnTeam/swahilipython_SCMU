@@ -16,11 +16,11 @@ lzma = import_module("lzma")
 kutoka lzma agiza LZMACompressor, LZMADecompressor, LZMAError, LZMAFile
 
 
-class CompressorDecompressorTestCase(unittest.TestCase):
+kundi CompressorDecompressorTestCase(unittest.TestCase):
 
     # Test error cases.
 
-    def test_simple_bad_args(self):
+    eleza test_simple_bad_args(self):
         self.assertRaises(TypeError, LZMACompressor, [])
         self.assertRaises(TypeError, LZMACompressor, format=3.45)
         self.assertRaises(TypeError, LZMACompressor, check="")
@@ -60,7 +60,7 @@ class CompressorDecompressorTestCase(unittest.TestCase):
         lzd.decompress(empty)
         self.assertRaises(EOFError, lzd.decompress, b"quux")
 
-    def test_bad_filter_spec(self):
+    eleza test_bad_filter_spec(self):
         self.assertRaises(TypeError, LZMACompressor, filters=[b"wobsite"])
         self.assertRaises(ValueError, LZMACompressor, filters=[{"xyzzy": 3}])
         self.assertRaises(ValueError, LZMACompressor, filters=[{"id": 98765}])
@@ -71,12 +71,12 @@ class CompressorDecompressorTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             LZMACompressor(filters=[{"id": lzma.FILTER_X86, "foo": 0}])
 
-    def test_decompressor_after_eof(self):
+    eleza test_decompressor_after_eof(self):
         lzd = LZMADecompressor()
         lzd.decompress(COMPRESSED_XZ)
         self.assertRaises(EOFError, lzd.decompress, b"nyan")
 
-    def test_decompressor_memlimit(self):
+    eleza test_decompressor_memlimit(self):
         lzd = LZMADecompressor(memlimit=1024)
         self.assertRaises(LZMAError, lzd.decompress, COMPRESSED_XZ)
 
@@ -88,7 +88,7 @@ class CompressorDecompressorTestCase(unittest.TestCase):
 
     # Test LZMADecompressor on known-good input data.
 
-    def _test_decompressor(self, lzd, data, check, unused_data=b""):
+    eleza _test_decompressor(self, lzd, data, check, unused_data=b""):
         self.assertFalse(lzd.eof)
         out = lzd.decompress(data)
         self.assertEqual(out, INPUT)
@@ -96,38 +96,38 @@ class CompressorDecompressorTestCase(unittest.TestCase):
         self.assertTrue(lzd.eof)
         self.assertEqual(lzd.unused_data, unused_data)
 
-    def test_decompressor_auto(self):
+    eleza test_decompressor_auto(self):
         lzd = LZMADecompressor()
         self._test_decompressor(lzd, COMPRESSED_XZ, lzma.CHECK_CRC64)
 
         lzd = LZMADecompressor()
         self._test_decompressor(lzd, COMPRESSED_ALONE, lzma.CHECK_NONE)
 
-    def test_decompressor_xz(self):
+    eleza test_decompressor_xz(self):
         lzd = LZMADecompressor(lzma.FORMAT_XZ)
         self._test_decompressor(lzd, COMPRESSED_XZ, lzma.CHECK_CRC64)
 
-    def test_decompressor_alone(self):
+    eleza test_decompressor_alone(self):
         lzd = LZMADecompressor(lzma.FORMAT_ALONE)
         self._test_decompressor(lzd, COMPRESSED_ALONE, lzma.CHECK_NONE)
 
-    def test_decompressor_raw_1(self):
+    eleza test_decompressor_raw_1(self):
         lzd = LZMADecompressor(lzma.FORMAT_RAW, filters=FILTERS_RAW_1)
         self._test_decompressor(lzd, COMPRESSED_RAW_1, lzma.CHECK_NONE)
 
-    def test_decompressor_raw_2(self):
+    eleza test_decompressor_raw_2(self):
         lzd = LZMADecompressor(lzma.FORMAT_RAW, filters=FILTERS_RAW_2)
         self._test_decompressor(lzd, COMPRESSED_RAW_2, lzma.CHECK_NONE)
 
-    def test_decompressor_raw_3(self):
+    eleza test_decompressor_raw_3(self):
         lzd = LZMADecompressor(lzma.FORMAT_RAW, filters=FILTERS_RAW_3)
         self._test_decompressor(lzd, COMPRESSED_RAW_3, lzma.CHECK_NONE)
 
-    def test_decompressor_raw_4(self):
+    eleza test_decompressor_raw_4(self):
         lzd = LZMADecompressor(lzma.FORMAT_RAW, filters=FILTERS_RAW_4)
         self._test_decompressor(lzd, COMPRESSED_RAW_4, lzma.CHECK_NONE)
 
-    def test_decompressor_chunks(self):
+    eleza test_decompressor_chunks(self):
         lzd = LZMADecompressor()
         out = []
         for i in range(0, len(COMPRESSED_XZ), 10):
@@ -139,7 +139,7 @@ class CompressorDecompressorTestCase(unittest.TestCase):
         self.assertTrue(lzd.eof)
         self.assertEqual(lzd.unused_data, b"")
 
-    def test_decompressor_chunks_empty(self):
+    eleza test_decompressor_chunks_empty(self):
         lzd = LZMADecompressor()
         out = []
         for i in range(0, len(COMPRESSED_XZ), 10):
@@ -154,7 +154,7 @@ class CompressorDecompressorTestCase(unittest.TestCase):
         self.assertTrue(lzd.eof)
         self.assertEqual(lzd.unused_data, b"")
 
-    def test_decompressor_chunks_maxsize(self):
+    eleza test_decompressor_chunks_maxsize(self):
         lzd = LZMADecompressor()
         max_length = 100
         out = []
@@ -186,7 +186,7 @@ class CompressorDecompressorTestCase(unittest.TestCase):
         self.assertEqual(lzd.check, lzma.CHECK_CRC64)
         self.assertEqual(lzd.unused_data, b"")
 
-    def test_decompressor_inputbuf_1(self):
+    eleza test_decompressor_inputbuf_1(self):
         # Test reusing input buffer after moving existing
         # contents to beginning
         lzd = LZMADecompressor()
@@ -208,7 +208,7 @@ class CompressorDecompressorTestCase(unittest.TestCase):
         out.append(lzd.decompress(COMPRESSED_XZ[105:]))
         self.assertEqual(b''.join(out), INPUT)
 
-    def test_decompressor_inputbuf_2(self):
+    eleza test_decompressor_inputbuf_2(self):
         # Test reusing input buffer by appending data at the
         # end right away
         lzd = LZMADecompressor()
@@ -229,7 +229,7 @@ class CompressorDecompressorTestCase(unittest.TestCase):
         out.append(lzd.decompress(COMPRESSED_XZ[300:]))
         self.assertEqual(b''.join(out), INPUT)
 
-    def test_decompressor_inputbuf_3(self):
+    eleza test_decompressor_inputbuf_3(self):
         # Test reusing input buffer after extending it
 
         lzd = LZMADecompressor()
@@ -245,13 +245,13 @@ class CompressorDecompressorTestCase(unittest.TestCase):
         out.append(lzd.decompress(COMPRESSED_XZ[300:]))
         self.assertEqual(b''.join(out), INPUT)
 
-    def test_decompressor_unused_data(self):
+    eleza test_decompressor_unused_data(self):
         lzd = LZMADecompressor()
         extra = b"fooblibar"
         self._test_decompressor(lzd, COMPRESSED_XZ + extra, lzma.CHECK_CRC64,
                                 unused_data=extra)
 
-    def test_decompressor_bad_input(self):
+    eleza test_decompressor_bad_input(self):
         lzd = LZMADecompressor()
         self.assertRaises(LZMAError, lzd.decompress, COMPRESSED_RAW_1)
 
@@ -264,7 +264,7 @@ class CompressorDecompressorTestCase(unittest.TestCase):
         lzd = LZMADecompressor(lzma.FORMAT_RAW, filters=FILTERS_RAW_1)
         self.assertRaises(LZMAError, lzd.decompress, COMPRESSED_XZ)
 
-    def test_decompressor_bug_28275(self):
+    eleza test_decompressor_bug_28275(self):
         # Test coverage for Issue 28275
         lzd = LZMADecompressor()
         self.assertRaises(LZMAError, lzd.decompress, COMPRESSED_RAW_1)
@@ -273,25 +273,25 @@ class CompressorDecompressorTestCase(unittest.TestCase):
 
     # Test that LZMACompressor->LZMADecompressor preserves the input data.
 
-    def test_roundtrip_xz(self):
+    eleza test_roundtrip_xz(self):
         lzc = LZMACompressor()
         cdata = lzc.compress(INPUT) + lzc.flush()
         lzd = LZMADecompressor()
         self._test_decompressor(lzd, cdata, lzma.CHECK_CRC64)
 
-    def test_roundtrip_alone(self):
+    eleza test_roundtrip_alone(self):
         lzc = LZMACompressor(lzma.FORMAT_ALONE)
         cdata = lzc.compress(INPUT) + lzc.flush()
         lzd = LZMADecompressor()
         self._test_decompressor(lzd, cdata, lzma.CHECK_NONE)
 
-    def test_roundtrip_raw(self):
+    eleza test_roundtrip_raw(self):
         lzc = LZMACompressor(lzma.FORMAT_RAW, filters=FILTERS_RAW_4)
         cdata = lzc.compress(INPUT) + lzc.flush()
         lzd = LZMADecompressor(lzma.FORMAT_RAW, filters=FILTERS_RAW_4)
         self._test_decompressor(lzd, cdata, lzma.CHECK_NONE)
 
-    def test_roundtrip_raw_empty(self):
+    eleza test_roundtrip_raw_empty(self):
         lzc = LZMACompressor(lzma.FORMAT_RAW, filters=FILTERS_RAW_4)
         cdata = lzc.compress(INPUT)
         cdata += lzc.compress(b'')
@@ -301,7 +301,7 @@ class CompressorDecompressorTestCase(unittest.TestCase):
         lzd = LZMADecompressor(lzma.FORMAT_RAW, filters=FILTERS_RAW_4)
         self._test_decompressor(lzd, cdata, lzma.CHECK_NONE)
 
-    def test_roundtrip_chunks(self):
+    eleza test_roundtrip_chunks(self):
         lzc = LZMACompressor()
         cdata = []
         for i in range(0, len(INPUT), 10):
@@ -311,7 +311,7 @@ class CompressorDecompressorTestCase(unittest.TestCase):
         lzd = LZMADecompressor()
         self._test_decompressor(lzd, cdata, lzma.CHECK_CRC64)
 
-    def test_roundtrip_empty_chunks(self):
+    eleza test_roundtrip_empty_chunks(self):
         lzc = LZMACompressor()
         cdata = []
         for i in range(0, len(INPUT), 10):
@@ -326,7 +326,7 @@ class CompressorDecompressorTestCase(unittest.TestCase):
 
     # LZMADecompressor intentionally does not handle concatenated streams.
 
-    def test_decompressor_multistream(self):
+    eleza test_decompressor_multistream(self):
         lzd = LZMADecompressor()
         self._test_decompressor(lzd, COMPRESSED_XZ + COMPRESSED_ALONE,
                                 lzma.CHECK_CRC64, unused_data=COMPRESSED_ALONE)
@@ -335,7 +335,7 @@ class CompressorDecompressorTestCase(unittest.TestCase):
 
     @support.skip_if_pgo_task
     @bigmemtest(size=_4G + 100, memuse=2)
-    def test_compressor_bigmem(self, size):
+    eleza test_compressor_bigmem(self, size):
         lzc = LZMACompressor()
         cdata = lzc.compress(b"x" * size) + lzc.flush()
         ddata = lzma.decompress(cdata)
@@ -347,7 +347,7 @@ class CompressorDecompressorTestCase(unittest.TestCase):
 
     @support.skip_if_pgo_task
     @bigmemtest(size=_4G + 100, memuse=3)
-    def test_decompressor_bigmem(self, size):
+    eleza test_decompressor_bigmem(self, size):
         lzd = LZMADecompressor()
         blocksize = 10 * 1024 * 1024
         block = random.getrandbits(blocksize * 8).to_bytes(blocksize, "little")
@@ -361,7 +361,7 @@ class CompressorDecompressorTestCase(unittest.TestCase):
 
     # Pickling raises an exception; there's no way to serialize an lzma_stream.
 
-    def test_pickle(self):
+    eleza test_pickle(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.assertRaises(TypeError):
                 pickle.dumps(LZMACompressor(), proto)
@@ -369,7 +369,7 @@ class CompressorDecompressorTestCase(unittest.TestCase):
                 pickle.dumps(LZMADecompressor(), proto)
 
     @support.refcount_test
-    def test_refleaks_in_decompressor___init__(self):
+    eleza test_refleaks_in_decompressor___init__(self):
         gettotalrefcount = support.get_attribute(sys, 'gettotalrefcount')
         lzd = LZMADecompressor()
         refs_before = gettotalrefcount()
@@ -378,11 +378,11 @@ class CompressorDecompressorTestCase(unittest.TestCase):
         self.assertAlmostEqual(gettotalrefcount() - refs_before, 0, delta=10)
 
 
-class CompressDecompressFunctionTestCase(unittest.TestCase):
+kundi CompressDecompressFunctionTestCase(unittest.TestCase):
 
     # Test error cases:
 
-    def test_bad_args(self):
+    eleza test_bad_args(self):
         self.assertRaises(TypeError, lzma.compress)
         self.assertRaises(TypeError, lzma.compress, [])
         self.assertRaises(TypeError, lzma.compress, b"", format="xz")
@@ -411,7 +411,7 @@ class CompressDecompressFunctionTestCase(unittest.TestCase):
             lzma.decompress(
                     b"", format=lzma.FORMAT_ALONE, filters=FILTERS_RAW_1)
 
-    def test_decompress_memlimit(self):
+    eleza test_decompress_memlimit(self):
         with self.assertRaises(LZMAError):
             lzma.decompress(COMPRESSED_XZ, memlimit=1024)
         with self.assertRaises(LZMAError):
@@ -423,7 +423,7 @@ class CompressDecompressFunctionTestCase(unittest.TestCase):
 
     # Test LZMADecompressor on known-good input data.
 
-    def test_decompress_good_input(self):
+    eleza test_decompress_good_input(self):
         ddata = lzma.decompress(COMPRESSED_XZ)
         self.assertEqual(ddata, INPUT)
 
@@ -452,7 +452,7 @@ class CompressDecompressFunctionTestCase(unittest.TestCase):
                 COMPRESSED_RAW_4, lzma.FORMAT_RAW, filters=FILTERS_RAW_4)
         self.assertEqual(ddata, INPUT)
 
-    def test_decompress_incomplete_input(self):
+    eleza test_decompress_incomplete_input(self):
         self.assertRaises(LZMAError, lzma.decompress, COMPRESSED_XZ[:128])
         self.assertRaises(LZMAError, lzma.decompress, COMPRESSED_ALONE[:128])
         self.assertRaises(LZMAError, lzma.decompress, COMPRESSED_RAW_1[:128],
@@ -464,7 +464,7 @@ class CompressDecompressFunctionTestCase(unittest.TestCase):
         self.assertRaises(LZMAError, lzma.decompress, COMPRESSED_RAW_4[:128],
                           format=lzma.FORMAT_RAW, filters=FILTERS_RAW_4)
 
-    def test_decompress_bad_input(self):
+    eleza test_decompress_bad_input(self):
         with self.assertRaises(LZMAError):
             lzma.decompress(COMPRESSED_BOGUS)
         with self.assertRaises(LZMAError):
@@ -479,7 +479,7 @@ class CompressDecompressFunctionTestCase(unittest.TestCase):
 
     # Test that compress()->decompress() preserves the input data.
 
-    def test_roundtrip(self):
+    eleza test_roundtrip(self):
         cdata = lzma.compress(INPUT)
         ddata = lzma.decompress(cdata)
         self.assertEqual(ddata, INPUT)
@@ -498,39 +498,39 @@ class CompressDecompressFunctionTestCase(unittest.TestCase):
 
     # Unlike LZMADecompressor, decompress() *does* handle concatenated streams.
 
-    def test_decompress_multistream(self):
+    eleza test_decompress_multistream(self):
         ddata = lzma.decompress(COMPRESSED_XZ + COMPRESSED_ALONE)
         self.assertEqual(ddata, INPUT * 2)
 
     # Test robust handling of non-LZMA data following the compressed stream(s).
 
-    def test_decompress_trailing_junk(self):
+    eleza test_decompress_trailing_junk(self):
         ddata = lzma.decompress(COMPRESSED_XZ + COMPRESSED_BOGUS)
         self.assertEqual(ddata, INPUT)
 
-    def test_decompress_multistream_trailing_junk(self):
+    eleza test_decompress_multistream_trailing_junk(self):
         ddata = lzma.decompress(COMPRESSED_XZ * 3 + COMPRESSED_BOGUS)
         self.assertEqual(ddata, INPUT * 3)
 
 
-class TempFile:
+kundi TempFile:
     """Context manager - creates a file, and deletes it on __exit__."""
 
-    def __init__(self, filename, data=b""):
+    eleza __init__(self, filename, data=b""):
         self.filename = filename
         self.data = data
 
-    def __enter__(self):
+    eleza __enter__(self):
         with open(self.filename, "wb") as f:
             f.write(self.data)
 
-    def __exit__(self, *args):
+    eleza __exit__(self, *args):
         unlink(self.filename)
 
 
-class FileTestCase(unittest.TestCase):
+kundi FileTestCase(unittest.TestCase):
 
-    def test_init(self):
+    eleza test_init(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             pass
         with LZMAFile(BytesIO(), "w") as f:
@@ -540,7 +540,7 @@ class FileTestCase(unittest.TestCase):
         with LZMAFile(BytesIO(), "a") as f:
             pass
 
-    def test_init_with_PathLike_filename(self):
+    eleza test_init_with_PathLike_filename(self):
         filename = pathlib.Path(TESTFN)
         with TempFile(filename, COMPRESSED_XZ):
             with LZMAFile(filename) as f:
@@ -550,7 +550,7 @@ class FileTestCase(unittest.TestCase):
             with LZMAFile(filename) as f:
                 self.assertEqual(f.read(), INPUT * 2)
 
-    def test_init_with_filename(self):
+    eleza test_init_with_filename(self):
         with TempFile(TESTFN, COMPRESSED_XZ):
             with LZMAFile(TESTFN) as f:
                 pass
@@ -559,7 +559,7 @@ class FileTestCase(unittest.TestCase):
             with LZMAFile(TESTFN, "a") as f:
                 pass
 
-    def test_init_mode(self):
+    eleza test_init_mode(self):
         with TempFile(TESTFN):
             with LZMAFile(TESTFN, "r"):
                 pass
@@ -574,7 +574,7 @@ class FileTestCase(unittest.TestCase):
             with LZMAFile(TESTFN, "ab"):
                 pass
 
-    def test_init_with_x_mode(self):
+    eleza test_init_with_x_mode(self):
         self.addCleanup(unlink, TESTFN)
         for mode in ("x", "xb"):
             unlink(TESTFN)
@@ -584,7 +584,7 @@ class FileTestCase(unittest.TestCase):
                 with LZMAFile(TESTFN, mode):
                     pass
 
-    def test_init_bad_mode(self):
+    eleza test_init_bad_mode(self):
         with self.assertRaises(ValueError):
             LZMAFile(BytesIO(COMPRESSED_XZ), (3, "x"))
         with self.assertRaises(ValueError):
@@ -608,7 +608,7 @@ class FileTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             LZMAFile(BytesIO(COMPRESSED_XZ), "rw")
 
-    def test_init_bad_check(self):
+    eleza test_init_bad_check(self):
         with self.assertRaises(TypeError):
             LZMAFile(BytesIO(), "w", check=b"asd")
         # CHECK_UNKNOWN and anything above CHECK_ID_MAX should be invalid.
@@ -628,7 +628,7 @@ class FileTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             LZMAFile(BytesIO(COMPRESSED_XZ), check=lzma.CHECK_UNKNOWN)
 
-    def test_init_bad_preset(self):
+    eleza test_init_bad_preset(self):
         with self.assertRaises(TypeError):
             LZMAFile(BytesIO(), "w", preset=4.39)
         with self.assertRaises(LZMAError):
@@ -645,7 +645,7 @@ class FileTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             LZMAFile(BytesIO(COMPRESSED_XZ), preset=3)
 
-    def test_init_bad_filter_spec(self):
+    eleza test_init_bad_filter_spec(self):
         with self.assertRaises(TypeError):
             LZMAFile(BytesIO(), "w", filters=[b"wobsite"])
         with self.assertRaises(ValueError):
@@ -662,12 +662,12 @@ class FileTestCase(unittest.TestCase):
             LZMAFile(BytesIO(), "w",
                      filters=[{"id": lzma.FILTER_X86, "foo": 0}])
 
-    def test_init_with_preset_and_filters(self):
+    eleza test_init_with_preset_and_filters(self):
         with self.assertRaises(ValueError):
             LZMAFile(BytesIO(), "w", format=lzma.FORMAT_RAW,
                      preset=6, filters=FILTERS_RAW_1)
 
-    def test_close(self):
+    eleza test_close(self):
         with BytesIO(COMPRESSED_XZ) as src:
             f = LZMAFile(src)
             f.close()
@@ -687,7 +687,7 @@ class FileTestCase(unittest.TestCase):
             # Try closing an already-closed LZMAFile.
             f.close()
 
-    def test_closed(self):
+    eleza test_closed(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
         try:
             self.assertFalse(f.closed)
@@ -704,7 +704,7 @@ class FileTestCase(unittest.TestCase):
             f.close()
         self.assertTrue(f.closed)
 
-    def test_fileno(self):
+    eleza test_fileno(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
         try:
             self.assertRaises(UnsupportedOperation, f.fileno)
@@ -720,7 +720,7 @@ class FileTestCase(unittest.TestCase):
                 f.close()
         self.assertRaises(ValueError, f.fileno)
 
-    def test_seekable(self):
+    eleza test_seekable(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
         try:
             self.assertTrue(f.seekable())
@@ -746,7 +746,7 @@ class FileTestCase(unittest.TestCase):
             f.close()
         self.assertRaises(ValueError, f.seekable)
 
-    def test_readable(self):
+    eleza test_readable(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
         try:
             self.assertTrue(f.readable())
@@ -763,7 +763,7 @@ class FileTestCase(unittest.TestCase):
             f.close()
         self.assertRaises(ValueError, f.readable)
 
-    def test_writable(self):
+    eleza test_writable(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
         try:
             self.assertFalse(f.writable())
@@ -780,7 +780,7 @@ class FileTestCase(unittest.TestCase):
             f.close()
         self.assertRaises(ValueError, f.writable)
 
-    def test_read(self):
+    eleza test_read(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             self.assertEqual(f.read(), INPUT)
             self.assertEqual(f.read(), b"")
@@ -809,7 +809,7 @@ class FileTestCase(unittest.TestCase):
             self.assertEqual(f.read(), INPUT)
             self.assertEqual(f.read(), b"")
 
-    def test_read_0(self):
+    eleza test_read_0(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             self.assertEqual(f.read(0), b"")
         with LZMAFile(BytesIO(COMPRESSED_ALONE)) as f:
@@ -819,18 +819,18 @@ class FileTestCase(unittest.TestCase):
         with LZMAFile(BytesIO(COMPRESSED_ALONE), format=lzma.FORMAT_ALONE) as f:
             self.assertEqual(f.read(0), b"")
 
-    def test_read_10(self):
+    eleza test_read_10(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             chunks = []
             while True:
                 result = f.read(10)
-                if not result:
+                ikiwa not result:
                     break
                 self.assertLessEqual(len(result), 10)
                 chunks.append(result)
             self.assertEqual(b"".join(chunks), INPUT)
 
-    def test_read_multistream(self):
+    eleza test_read_multistream(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ * 5)) as f:
             self.assertEqual(f.read(), INPUT * 5)
         with LZMAFile(BytesIO(COMPRESSED_XZ + COMPRESSED_ALONE)) as f:
@@ -839,7 +839,7 @@ class FileTestCase(unittest.TestCase):
                       format=lzma.FORMAT_RAW, filters=FILTERS_RAW_3) as f:
             self.assertEqual(f.read(), INPUT * 4)
 
-    def test_read_multistream_buffer_size_aligned(self):
+    eleza test_read_multistream_buffer_size_aligned(self):
         # Test the case where a stream boundary coincides with the end
         # of the raw read buffer.
         saved_buffer_size = _compression.BUFFER_SIZE
@@ -850,21 +850,21 @@ class FileTestCase(unittest.TestCase):
         finally:
             _compression.BUFFER_SIZE = saved_buffer_size
 
-    def test_read_trailing_junk(self):
+    eleza test_read_trailing_junk(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ + COMPRESSED_BOGUS)) as f:
             self.assertEqual(f.read(), INPUT)
 
-    def test_read_multistream_trailing_junk(self):
+    eleza test_read_multistream_trailing_junk(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ * 5 + COMPRESSED_BOGUS)) as f:
             self.assertEqual(f.read(), INPUT * 5)
 
-    def test_read_from_file(self):
+    eleza test_read_kutoka_file(self):
         with TempFile(TESTFN, COMPRESSED_XZ):
             with LZMAFile(TESTFN) as f:
                 self.assertEqual(f.read(), INPUT)
                 self.assertEqual(f.read(), b"")
 
-    def test_read_from_file_with_bytes_filename(self):
+    eleza test_read_kutoka_file_with_bytes_filename(self):
         try:
             bytes_filename = TESTFN.encode("ascii")
         except UnicodeEncodeError:
@@ -874,11 +874,11 @@ class FileTestCase(unittest.TestCase):
                 self.assertEqual(f.read(), INPUT)
                 self.assertEqual(f.read(), b"")
 
-    def test_read_incomplete(self):
+    eleza test_read_incomplete(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ[:128])) as f:
             self.assertRaises(EOFError, f.read)
 
-    def test_read_truncated(self):
+    eleza test_read_truncated(self):
         # Drop stream footer: CRC (4 bytes), index size (4 bytes),
         # flags (2 bytes) and magic number (2 bytes).
         truncated = COMPRESSED_XZ[:-12]
@@ -892,7 +892,7 @@ class FileTestCase(unittest.TestCase):
             with LZMAFile(BytesIO(truncated[:i])) as f:
                 self.assertRaises(EOFError, f.read, 1)
 
-    def test_read_bad_args(self):
+    eleza test_read_bad_args(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
         f.close()
         self.assertRaises(ValueError, f.read)
@@ -901,48 +901,48 @@ class FileTestCase(unittest.TestCase):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             self.assertRaises(TypeError, f.read, float())
 
-    def test_read_bad_data(self):
+    eleza test_read_bad_data(self):
         with LZMAFile(BytesIO(COMPRESSED_BOGUS)) as f:
             self.assertRaises(LZMAError, f.read)
 
-    def test_read1(self):
+    eleza test_read1(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             blocks = []
             while True:
                 result = f.read1()
-                if not result:
+                ikiwa not result:
                     break
                 blocks.append(result)
             self.assertEqual(b"".join(blocks), INPUT)
             self.assertEqual(f.read1(), b"")
 
-    def test_read1_0(self):
+    eleza test_read1_0(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             self.assertEqual(f.read1(0), b"")
 
-    def test_read1_10(self):
+    eleza test_read1_10(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             blocks = []
             while True:
                 result = f.read1(10)
-                if not result:
+                ikiwa not result:
                     break
                 blocks.append(result)
             self.assertEqual(b"".join(blocks), INPUT)
             self.assertEqual(f.read1(), b"")
 
-    def test_read1_multistream(self):
+    eleza test_read1_multistream(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ * 5)) as f:
             blocks = []
             while True:
                 result = f.read1()
-                if not result:
+                ikiwa not result:
                     break
                 blocks.append(result)
             self.assertEqual(b"".join(blocks), INPUT * 5)
             self.assertEqual(f.read1(), b"")
 
-    def test_read1_bad_args(self):
+    eleza test_read1_bad_args(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
         f.close()
         self.assertRaises(ValueError, f.read1)
@@ -951,7 +951,7 @@ class FileTestCase(unittest.TestCase):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             self.assertRaises(TypeError, f.read1, None)
 
-    def test_peek(self):
+    eleza test_peek(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             result = f.peek()
             self.assertGreater(len(result), 0)
@@ -963,11 +963,11 @@ class FileTestCase(unittest.TestCase):
             self.assertTrue(INPUT.startswith(result))
             self.assertEqual(f.read(), INPUT)
 
-    def test_peek_bad_args(self):
+    eleza test_peek_bad_args(self):
         with LZMAFile(BytesIO(), "w") as f:
             self.assertRaises(ValueError, f.peek)
 
-    def test_iterator(self):
+    eleza test_iterator(self):
         with BytesIO(INPUT) as f:
             lines = f.readlines()
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
@@ -982,20 +982,20 @@ class FileTestCase(unittest.TestCase):
                       format=lzma.FORMAT_RAW, filters=FILTERS_RAW_2) as f:
             self.assertListEqual(list(iter(f)), lines)
 
-    def test_readline(self):
+    eleza test_readline(self):
         with BytesIO(INPUT) as f:
             lines = f.readlines()
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             for line in lines:
                 self.assertEqual(f.readline(), line)
 
-    def test_readlines(self):
+    eleza test_readlines(self):
         with BytesIO(INPUT) as f:
             lines = f.readlines()
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             self.assertListEqual(f.readlines(), lines)
 
-    def test_decompress_limited(self):
+    eleza test_decompress_limited(self):
         """Decompressed data buffering should be limited"""
         bomb = lzma.compress(b'\0' * int(2e6), preset=6)
         self.assertLess(len(bomb), _compression.BUFFER_SIZE)
@@ -1006,7 +1006,7 @@ class FileTestCase(unittest.TestCase):
         self.assertLessEqual(decomp._buffer.raw.tell(), max_decomp,
             "Excessive amount of data was decompressed")
 
-    def test_write(self):
+    eleza test_write(self):
         with BytesIO() as dst:
             with LZMAFile(dst, "w") as f:
                 f.write(INPUT)
@@ -1030,7 +1030,7 @@ class FileTestCase(unittest.TestCase):
                                      filters=FILTERS_RAW_2)
             self.assertEqual(dst.getvalue(), expected)
 
-    def test_write_10(self):
+    eleza test_write_10(self):
         with BytesIO() as dst:
             with LZMAFile(dst, "w") as f:
                 for start in range(0, len(INPUT), 10):
@@ -1038,7 +1038,7 @@ class FileTestCase(unittest.TestCase):
             expected = lzma.compress(INPUT)
             self.assertEqual(dst.getvalue(), expected)
 
-    def test_write_append(self):
+    eleza test_write_append(self):
         part1 = INPUT[:1024]
         part2 = INPUT[1024:1536]
         part3 = INPUT[1536:]
@@ -1052,7 +1052,7 @@ class FileTestCase(unittest.TestCase):
                 f.write(part3)
             self.assertEqual(dst.getvalue(), expected)
 
-    def test_write_to_file(self):
+    eleza test_write_to_file(self):
         try:
             with LZMAFile(TESTFN, "w") as f:
                 f.write(INPUT)
@@ -1062,7 +1062,7 @@ class FileTestCase(unittest.TestCase):
         finally:
             unlink(TESTFN)
 
-    def test_write_to_file_with_bytes_filename(self):
+    eleza test_write_to_file_with_bytes_filename(self):
         try:
             bytes_filename = TESTFN.encode("ascii")
         except UnicodeEncodeError:
@@ -1076,7 +1076,7 @@ class FileTestCase(unittest.TestCase):
         finally:
             unlink(TESTFN)
 
-    def test_write_append_to_file(self):
+    eleza test_write_append_to_file(self):
         part1 = INPUT[:1024]
         part2 = INPUT[1024:1536]
         part3 = INPUT[1536:]
@@ -1093,7 +1093,7 @@ class FileTestCase(unittest.TestCase):
         finally:
             unlink(TESTFN)
 
-    def test_write_bad_args(self):
+    eleza test_write_bad_args(self):
         f = LZMAFile(BytesIO(), "w")
         f.close()
         self.assertRaises(ValueError, f.write, b"foo")
@@ -1104,7 +1104,7 @@ class FileTestCase(unittest.TestCase):
             self.assertRaises(TypeError, f.write, "text")
             self.assertRaises(TypeError, f.write, 789)
 
-    def test_writelines(self):
+    eleza test_writelines(self):
         with BytesIO(INPUT) as f:
             lines = f.readlines()
         with BytesIO() as dst:
@@ -1113,57 +1113,57 @@ class FileTestCase(unittest.TestCase):
             expected = lzma.compress(INPUT)
             self.assertEqual(dst.getvalue(), expected)
 
-    def test_seek_forward(self):
+    eleza test_seek_forward(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             f.seek(555)
             self.assertEqual(f.read(), INPUT[555:])
 
-    def test_seek_forward_across_streams(self):
+    eleza test_seek_forward_across_streams(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ * 2)) as f:
             f.seek(len(INPUT) + 123)
             self.assertEqual(f.read(), INPUT[123:])
 
-    def test_seek_forward_relative_to_current(self):
+    eleza test_seek_forward_relative_to_current(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             f.read(100)
             f.seek(1236, 1)
             self.assertEqual(f.read(), INPUT[1336:])
 
-    def test_seek_forward_relative_to_end(self):
+    eleza test_seek_forward_relative_to_end(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             f.seek(-555, 2)
             self.assertEqual(f.read(), INPUT[-555:])
 
-    def test_seek_backward(self):
+    eleza test_seek_backward(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             f.read(1001)
             f.seek(211)
             self.assertEqual(f.read(), INPUT[211:])
 
-    def test_seek_backward_across_streams(self):
+    eleza test_seek_backward_across_streams(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ * 2)) as f:
             f.read(len(INPUT) + 333)
             f.seek(737)
             self.assertEqual(f.read(), INPUT[737:] + INPUT)
 
-    def test_seek_backward_relative_to_end(self):
+    eleza test_seek_backward_relative_to_end(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             f.seek(-150, 2)
             self.assertEqual(f.read(), INPUT[-150:])
 
-    def test_seek_past_end(self):
+    eleza test_seek_past_end(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             f.seek(len(INPUT) + 9001)
             self.assertEqual(f.tell(), len(INPUT))
             self.assertEqual(f.read(), b"")
 
-    def test_seek_past_start(self):
+    eleza test_seek_past_start(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             f.seek(-88)
             self.assertEqual(f.tell(), 0)
             self.assertEqual(f.read(), INPUT)
 
-    def test_seek_bad_args(self):
+    eleza test_seek_bad_args(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
         f.close()
         self.assertRaises(ValueError, f.seek, 0)
@@ -1176,13 +1176,13 @@ class FileTestCase(unittest.TestCase):
             self.assertRaises(TypeError, f.seek, None)
             self.assertRaises(TypeError, f.seek, b"derp")
 
-    def test_tell(self):
+    eleza test_tell(self):
         with LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
             pos = 0
             while True:
                 self.assertEqual(f.tell(), pos)
                 result = f.read(183)
-                if not result:
+                ikiwa not result:
                     break
                 pos += len(result)
             self.assertEqual(f.tell(), len(INPUT))
@@ -1192,12 +1192,12 @@ class FileTestCase(unittest.TestCase):
                 f.write(INPUT[pos:pos+144])
             self.assertEqual(f.tell(), len(INPUT))
 
-    def test_tell_bad_args(self):
+    eleza test_tell_bad_args(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
         f.close()
         self.assertRaises(ValueError, f.tell)
 
-    def test_issue21872(self):
+    eleza test_issue21872(self):
         # sometimes decompress data incompletely
 
         # ---------------------
@@ -1228,9 +1228,9 @@ class FileTestCase(unittest.TestCase):
         self.assertEqual(out1 + out2, entire)
 
 
-class OpenTestCase(unittest.TestCase):
+kundi OpenTestCase(unittest.TestCase):
 
-    def test_binary_modes(self):
+    eleza test_binary_modes(self):
         with lzma.open(BytesIO(COMPRESSED_XZ), "rb") as f:
             self.assertEqual(f.read(), INPUT)
         with BytesIO() as bio:
@@ -1243,7 +1243,7 @@ class OpenTestCase(unittest.TestCase):
             file_data = lzma.decompress(bio.getvalue())
             self.assertEqual(file_data, INPUT * 2)
 
-    def test_text_modes(self):
+    eleza test_text_modes(self):
         uncompressed = INPUT.decode("ascii")
         uncompressed_raw = uncompressed.replace("\n", os.linesep)
         with lzma.open(BytesIO(COMPRESSED_XZ), "rt") as f:
@@ -1258,7 +1258,7 @@ class OpenTestCase(unittest.TestCase):
             file_data = lzma.decompress(bio.getvalue()).decode("ascii")
             self.assertEqual(file_data, uncompressed_raw * 2)
 
-    def test_filename(self):
+    eleza test_filename(self):
         with TempFile(TESTFN):
             with lzma.open(TESTFN, "wb") as f:
                 f.write(INPUT)
@@ -1272,7 +1272,7 @@ class OpenTestCase(unittest.TestCase):
             with lzma.open(TESTFN, "rb") as f:
                 self.assertEqual(f.read(), INPUT * 2)
 
-    def test_with_pathlike_filename(self):
+    eleza test_with_pathlike_filename(self):
         filename = pathlib.Path(TESTFN)
         with TempFile(filename):
             with lzma.open(filename, "wb") as f:
@@ -1283,7 +1283,7 @@ class OpenTestCase(unittest.TestCase):
             with lzma.open(filename, "rb") as f:
                 self.assertEqual(f.read(), INPUT)
 
-    def test_bad_params(self):
+    eleza test_bad_params(self):
         # Test invalid parameter combinations.
         with self.assertRaises(ValueError):
             lzma.open(TESTFN, "")
@@ -1296,7 +1296,7 @@ class OpenTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             lzma.open(TESTFN, "rb", newline="\n")
 
-    def test_format_and_filters(self):
+    eleza test_format_and_filters(self):
         # Test non-default format and filter chain.
         options = {"format": lzma.FORMAT_RAW, "filters": FILTERS_RAW_1}
         with lzma.open(BytesIO(COMPRESSED_RAW_1), "rb", **options) as f:
@@ -1307,7 +1307,7 @@ class OpenTestCase(unittest.TestCase):
             file_data = lzma.decompress(bio.getvalue(), **options)
             self.assertEqual(file_data, INPUT)
 
-    def test_encoding(self):
+    eleza test_encoding(self):
         # Test non-default encoding.
         uncompressed = INPUT.decode("ascii")
         uncompressed_raw = uncompressed.replace("\n", os.linesep)
@@ -1320,13 +1320,13 @@ class OpenTestCase(unittest.TestCase):
             with lzma.open(bio, "rt", encoding="utf-16-le") as f:
                 self.assertEqual(f.read(), uncompressed)
 
-    def test_encoding_error_handler(self):
+    eleza test_encoding_error_handler(self):
         # Test with non-default encoding error handler.
         with BytesIO(lzma.compress(b"foo\xffbar")) as bio:
             with lzma.open(bio, "rt", encoding="ascii", errors="ignore") as f:
                 self.assertEqual(f.read(), "foobar")
 
-    def test_newline(self):
+    eleza test_newline(self):
         # Test with explicit newline (universal newline mode disabled).
         text = INPUT.decode("ascii")
         with BytesIO() as bio:
@@ -1336,7 +1336,7 @@ class OpenTestCase(unittest.TestCase):
             with lzma.open(bio, "rt", newline="\r") as f:
                 self.assertEqual(f.readlines(), [text])
 
-    def test_x_mode(self):
+    eleza test_x_mode(self):
         self.addCleanup(unlink, TESTFN)
         for mode in ("x", "xb", "xt"):
             unlink(TESTFN)
@@ -1347,9 +1347,9 @@ class OpenTestCase(unittest.TestCase):
                     pass
 
 
-class MiscellaneousTestCase(unittest.TestCase):
+kundi MiscellaneousTestCase(unittest.TestCase):
 
-    def test_is_check_supported(self):
+    eleza test_is_check_supported(self):
         # CHECK_NONE and CHECK_CRC32 should always be supported,
         # regardless of the options liblzma was compiled with.
         self.assertTrue(lzma.is_check_supported(lzma.CHECK_NONE))
@@ -1361,7 +1361,7 @@ class MiscellaneousTestCase(unittest.TestCase):
         # This value should not be a valid check ID.
         self.assertFalse(lzma.is_check_supported(lzma.CHECK_UNKNOWN))
 
-    def test__encode_filter_properties(self):
+    eleza test__encode_filter_properties(self):
         with self.assertRaises(TypeError):
             lzma._encode_filter_properties(b"not a dict")
         with self.assertRaises(ValueError):
@@ -1382,7 +1382,7 @@ class MiscellaneousTestCase(unittest.TestCase):
             })
         self.assertEqual(props, b"]\x00\x00\x80\x00")
 
-    def test__decode_filter_properties(self):
+    eleza test__decode_filter_properties(self):
         with self.assertRaises(TypeError):
             lzma._decode_filter_properties(lzma.FILTER_X86, {"should be": bytes})
         with self.assertRaises(lzma.LZMAError):
@@ -1397,7 +1397,7 @@ class MiscellaneousTestCase(unittest.TestCase):
         self.assertEqual(filterspec["lc"], 3)
         self.assertEqual(filterspec["dict_size"], 8 << 20)
 
-    def test_filter_properties_roundtrip(self):
+    eleza test_filter_properties_roundtrip(self):
         spec1 = lzma._decode_filter_properties(
                 lzma.FILTER_LZMA1, b"]\x00\x00\x80\x00")
         reencoded = lzma._encode_filter_properties(spec1)
@@ -1927,7 +1927,7 @@ ISSUE_21872_DAT = (
 )
 
 
-def test_main():
+eleza test_main():
     run_unittest(
         CompressorDecompressorTestCase,
         CompressDecompressFunctionTestCase,
@@ -1936,5 +1936,5 @@ def test_main():
         MiscellaneousTestCase,
     )
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

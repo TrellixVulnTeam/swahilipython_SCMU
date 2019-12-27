@@ -13,48 +13,48 @@ kutoka test.support agiza temp_cwd, temp_dir
 skip_if_missing()
 
 
-class Test_pygettext(unittest.TestCase):
+kundi Test_pygettext(unittest.TestCase):
     """Tests for the pygettext.py tool"""
 
     script = os.path.join(toolsdir,'i18n', 'pygettext.py')
 
-    def get_header(self, data):
-        """ utility: return the header of a .po file as a dictionary """
+    eleza get_header(self, data):
+        """ utility: rudisha the header of a .po file as a dictionary """
         headers = {}
         for line in data.split('\n'):
-            if not line or line.startswith(('#', 'msgid','msgstr')):
+            ikiwa not line or line.startswith(('#', 'msgid','msgstr')):
                 continue
             line = line.strip('"')
             key, val = line.split(':',1)
             headers[key] = val.strip()
-        return headers
+        rudisha headers
 
-    def get_msgids(self, data):
-        """ utility: return all msgids in .po file as a list of strings """
+    eleza get_msgids(self, data):
+        """ utility: rudisha all msgids in .po file as a list of strings """
         msgids = []
         reading_msgid = False
         cur_msgid = []
         for line in data.split('\n'):
-            if reading_msgid:
-                if line.startswith('"'):
+            ikiwa reading_msgid:
+                ikiwa line.startswith('"'):
                     cur_msgid.append(line.strip('"'))
                 else:
                     msgids.append('\n'.join(cur_msgid))
                     cur_msgid = []
                     reading_msgid = False
                     continue
-            if line.startswith('msgid '):
+            ikiwa line.startswith('msgid '):
                 line = line[len('msgid '):]
                 cur_msgid.append(line.strip('"'))
                 reading_msgid = True
         else:
-            if reading_msgid:
+            ikiwa reading_msgid:
                 msgids.append('\n'.join(cur_msgid))
 
-        return msgids
+        rudisha msgids
 
-    def extract_docstrings_from_str(self, module_content):
-        """ utility: return all msgids extracted kutoka module_content """
+    eleza extract_docstrings_kutoka_str(self, module_content):
+        """ utility: rudisha all msgids extracted kutoka module_content """
         filename = 'test_docstrings.py'
         with temp_cwd(None) as cwd:
             with open(filename, 'w') as fp:
@@ -62,9 +62,9 @@ class Test_pygettext(unittest.TestCase):
             assert_python_ok(self.script, '-D', filename)
             with open('messages.pot') as fp:
                 data = fp.read()
-        return self.get_msgids(data)
+        rudisha self.get_msgids(data)
 
-    def test_header(self):
+    eleza test_header(self):
         """Make sure the required fields are in the header, according to:
            http://www.gnu.org/software/gettext/manual/gettext.html#Header-Entry
         """
@@ -84,7 +84,7 @@ class Test_pygettext(unittest.TestCase):
             self.assertIn("Content-Transfer-Encoding", header)
             self.assertIn("Generated-By", header)
 
-            # not clear if these should be required in POT (template) files
+            # not clear ikiwa these should be required in POT (template) files
             #self.assertIn("Report-Msgid-Bugs-To", header)
             #self.assertIn("Language", header)
 
@@ -92,7 +92,7 @@ class Test_pygettext(unittest.TestCase):
 
     @unittest.skipIf(sys.platform.startswith('aix'),
                      'bpo-29972: broken test on AIX')
-    def test_POT_Creation_Date(self):
+    eleza test_POT_Creation_Date(self):
         """ Match the date format kutoka xgettext for POT-Creation-Date """
         kutoka datetime agiza datetime
         with temp_cwd(None) as cwd:
@@ -103,124 +103,124 @@ class Test_pygettext(unittest.TestCase):
             creationDate = header['POT-Creation-Date']
 
             # peel off the escaped newline at the end of string
-            if creationDate.endswith('\\n'):
+            ikiwa creationDate.endswith('\\n'):
                 creationDate = creationDate[:-len('\\n')]
 
-            # This will raise if the date format does not exactly match.
+            # This will raise ikiwa the date format does not exactly match.
             datetime.strptime(creationDate, '%Y-%m-%d %H:%M%z')
 
-    def test_funcdocstring(self):
+    eleza test_funcdocstring(self):
         for doc in ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
             with self.subTest(doc):
-                msgids = self.extract_docstrings_from_str(dedent('''\
-                def foo(bar):
+                msgids = self.extract_docstrings_kutoka_str(dedent('''\
+                eleza foo(bar):
                     %s
                 ''' % doc))
                 self.assertIn('doc', msgids)
 
-    def test_funcdocstring_bytes(self):
-        msgids = self.extract_docstrings_from_str(dedent('''\
-        def foo(bar):
+    eleza test_funcdocstring_bytes(self):
+        msgids = self.extract_docstrings_kutoka_str(dedent('''\
+        eleza foo(bar):
             b"""doc"""
         '''))
-        self.assertFalse([msgid for msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid for msgid in msgids ikiwa 'doc' in msgid])
 
-    def test_funcdocstring_fstring(self):
-        msgids = self.extract_docstrings_from_str(dedent('''\
-        def foo(bar):
+    eleza test_funcdocstring_fstring(self):
+        msgids = self.extract_docstrings_kutoka_str(dedent('''\
+        eleza foo(bar):
             f"""doc"""
         '''))
-        self.assertFalse([msgid for msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid for msgid in msgids ikiwa 'doc' in msgid])
 
-    def test_classdocstring(self):
+    eleza test_classdocstring(self):
         for doc in ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
             with self.subTest(doc):
-                msgids = self.extract_docstrings_from_str(dedent('''\
-                class C:
+                msgids = self.extract_docstrings_kutoka_str(dedent('''\
+                kundi C:
                     %s
                 ''' % doc))
                 self.assertIn('doc', msgids)
 
-    def test_classdocstring_bytes(self):
-        msgids = self.extract_docstrings_from_str(dedent('''\
-        class C:
+    eleza test_classdocstring_bytes(self):
+        msgids = self.extract_docstrings_kutoka_str(dedent('''\
+        kundi C:
             b"""doc"""
         '''))
-        self.assertFalse([msgid for msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid for msgid in msgids ikiwa 'doc' in msgid])
 
-    def test_classdocstring_fstring(self):
-        msgids = self.extract_docstrings_from_str(dedent('''\
-        class C:
+    eleza test_classdocstring_fstring(self):
+        msgids = self.extract_docstrings_kutoka_str(dedent('''\
+        kundi C:
             f"""doc"""
         '''))
-        self.assertFalse([msgid for msgid in msgids if 'doc' in msgid])
+        self.assertFalse([msgid for msgid in msgids ikiwa 'doc' in msgid])
 
-    def test_msgid(self):
-        msgids = self.extract_docstrings_from_str(
+    eleza test_msgid(self):
+        msgids = self.extract_docstrings_kutoka_str(
                 '''_("""doc""" r'str' u"ing")''')
         self.assertIn('docstring', msgids)
 
-    def test_msgid_bytes(self):
-        msgids = self.extract_docstrings_from_str('_(b"""doc""")')
-        self.assertFalse([msgid for msgid in msgids if 'doc' in msgid])
+    eleza test_msgid_bytes(self):
+        msgids = self.extract_docstrings_kutoka_str('_(b"""doc""")')
+        self.assertFalse([msgid for msgid in msgids ikiwa 'doc' in msgid])
 
-    def test_msgid_fstring(self):
-        msgids = self.extract_docstrings_from_str('_(f"""doc""")')
-        self.assertFalse([msgid for msgid in msgids if 'doc' in msgid])
+    eleza test_msgid_fstring(self):
+        msgids = self.extract_docstrings_kutoka_str('_(f"""doc""")')
+        self.assertFalse([msgid for msgid in msgids ikiwa 'doc' in msgid])
 
-    def test_funcdocstring_annotated_args(self):
+    eleza test_funcdocstring_annotated_args(self):
         """ Test docstrings for functions with annotated args """
-        msgids = self.extract_docstrings_from_str(dedent('''\
-        def foo(bar: str):
+        msgids = self.extract_docstrings_kutoka_str(dedent('''\
+        eleza foo(bar: str):
             """doc"""
         '''))
         self.assertIn('doc', msgids)
 
-    def test_funcdocstring_annotated_return(self):
-        """ Test docstrings for functions with annotated return type """
-        msgids = self.extract_docstrings_from_str(dedent('''\
-        def foo(bar) -> str:
+    eleza test_funcdocstring_annotated_return(self):
+        """ Test docstrings for functions with annotated rudisha type """
+        msgids = self.extract_docstrings_kutoka_str(dedent('''\
+        eleza foo(bar) -> str:
             """doc"""
         '''))
         self.assertIn('doc', msgids)
 
-    def test_funcdocstring_defvalue_args(self):
+    eleza test_funcdocstring_defvalue_args(self):
         """ Test docstring for functions with default arg values """
-        msgids = self.extract_docstrings_from_str(dedent('''\
-        def foo(bar=()):
+        msgids = self.extract_docstrings_kutoka_str(dedent('''\
+        eleza foo(bar=()):
             """doc"""
         '''))
         self.assertIn('doc', msgids)
 
-    def test_funcdocstring_multiple_funcs(self):
+    eleza test_funcdocstring_multiple_funcs(self):
         """ Test docstring extraction for multiple functions combining
-        annotated args, annotated return types and default arg values
+        annotated args, annotated rudisha types and default arg values
         """
-        msgids = self.extract_docstrings_from_str(dedent('''\
-        def foo1(bar: tuple=()) -> str:
+        msgids = self.extract_docstrings_kutoka_str(dedent('''\
+        eleza foo1(bar: tuple=()) -> str:
             """doc1"""
 
-        def foo2(bar: List[1:2]) -> (lambda x: x):
+        eleza foo2(bar: List[1:2]) -> (lambda x: x):
             """doc2"""
 
-        def foo3(bar: 'func'=lambda x: x) -> {1: 2}:
+        eleza foo3(bar: 'func'=lambda x: x) -> {1: 2}:
             """doc3"""
         '''))
         self.assertIn('doc1', msgids)
         self.assertIn('doc2', msgids)
         self.assertIn('doc3', msgids)
 
-    def test_classdocstring_early_colon(self):
-        """ Test docstring extraction for a class with colons occurring within
+    eleza test_classdocstring_early_colon(self):
+        """ Test docstring extraction for a kundi with colons occurring within
         the parentheses.
         """
-        msgids = self.extract_docstrings_from_str(dedent('''\
-        class D(L[1:2], F({1: 2}), metaclass=M(lambda x: x)):
+        msgids = self.extract_docstrings_kutoka_str(dedent('''\
+        kundi D(L[1:2], F({1: 2}), metaclass=M(lambda x: x)):
             """doc"""
         '''))
         self.assertIn('doc', msgids)
 
-    def test_files_list(self):
+    eleza test_files_list(self):
         """Make sure the directories are inspected for source files
            bpo-31920
         """

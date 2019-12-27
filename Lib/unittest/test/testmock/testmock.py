@@ -14,42 +14,42 @@ kutoka unittest.mock agiza (
 )
 
 
-class Iter(object):
-    def __init__(self):
+kundi Iter(object):
+    eleza __init__(self):
         self.thing = iter(['this', 'is', 'an', 'iter'])
 
-    def __iter__(self):
-        return self
+    eleza __iter__(self):
+        rudisha self
 
-    def next(self):
-        return next(self.thing)
+    eleza next(self):
+        rudisha next(self.thing)
 
     __next__ = next
 
 
-class Something(object):
-    def meth(self, a, b, c, d=None): pass
+kundi Something(object):
+    eleza meth(self, a, b, c, d=None): pass
 
     @classmethod
-    def cmeth(cls, a, b, c, d=None): pass
+    eleza cmeth(cls, a, b, c, d=None): pass
 
     @staticmethod
-    def smeth(a, b, c, d=None): pass
+    eleza smeth(a, b, c, d=None): pass
 
 
-def something(a): pass
+eleza something(a): pass
 
 
-class MockTest(unittest.TestCase):
+kundi MockTest(unittest.TestCase):
 
-    def test_all(self):
-        # if __all__ is badly defined then agiza * will raise an error
+    eleza test_all(self):
+        # ikiwa __all__ is badly defined then agiza * will raise an error
         # We have to exec it because you can't agiza * inside a method
         # in Python 3
         exec("kutoka unittest.mock agiza *")
 
 
-    def test_constructor(self):
+    eleza test_constructor(self):
         mock = Mock()
 
         self.assertFalse(mock.called, "called not initialised correctly")
@@ -77,28 +77,28 @@ class MockTest(unittest.TestCase):
                          "children not initialised incorrectly")
 
 
-    def test_return_value_in_constructor(self):
+    eleza test_return_value_in_constructor(self):
         mock = Mock(return_value=None)
         self.assertIsNone(mock.return_value,
-                          "return value in constructor not honoured")
+                          "rudisha value in constructor not honoured")
 
 
-    def test_change_return_value_via_delegate(self):
-        def f(): pass
+    eleza test_change_return_value_via_delegate(self):
+        eleza f(): pass
         mock = create_autospec(f)
         mock.mock.return_value = 1
         self.assertEqual(mock(), 1)
 
 
-    def test_change_side_effect_via_delegate(self):
-        def f(): pass
+    eleza test_change_side_effect_via_delegate(self):
+        eleza f(): pass
         mock = create_autospec(f)
         mock.mock.side_effect = TypeError()
         with self.assertRaises(TypeError):
             mock()
 
 
-    def test_repr(self):
+    eleza test_repr(self):
         mock = Mock(name='foo')
         self.assertIn('foo', repr(mock))
         self.assertIn("'%s'" % id(mock), repr(mock))
@@ -114,8 +114,8 @@ class MockTest(unittest.TestCase):
                           repr(mock()().foo.bar.baz().bing))
 
 
-    def test_repr_with_spec(self):
-        class X(object):
+    eleza test_repr_with_spec(self):
+        kundi X(object):
             pass
 
         mock = Mock(spec=X)
@@ -144,10 +144,10 @@ class MockTest(unittest.TestCase):
         self.assertNotIn("spec", repr(mock))
 
 
-    def test_side_effect(self):
+    eleza test_side_effect(self):
         mock = Mock()
 
-        def effect(*args, **kwargs):
+        eleza effect(*args, **kwargs):
             raise SystemError('kablooie')
 
         mock.side_effect = effect
@@ -155,8 +155,8 @@ class MockTest(unittest.TestCase):
         mock.assert_called_with(1, 2, fish=3)
 
         results = [1, 2, 3]
-        def effect():
-            return results.pop()
+        eleza effect():
+            rudisha results.pop()
         mock.side_effect = effect
 
         self.assertEqual([mock(), mock(), mock()], [3, 2, 1],
@@ -166,17 +166,17 @@ class MockTest(unittest.TestCase):
         self.assertEqual(mock.side_effect, sentinel.SideEffect,
                           "side effect in constructor not used")
 
-        def side_effect():
-            return DEFAULT
+        eleza side_effect():
+            rudisha DEFAULT
         mock = Mock(side_effect=side_effect, return_value=sentinel.RETURN)
         self.assertEqual(mock(), sentinel.RETURN)
 
-    def test_autospec_side_effect(self):
+    eleza test_autospec_side_effect(self):
         # Test for issue17826
         results = [1, 2, 3]
-        def effect():
-            return results.pop()
-        def f(): pass
+        eleza effect():
+            rudisha results.pop()
+        eleza f(): pass
 
         mock = create_autospec(f)
         mock.side_effect = [1, 2, 3]
@@ -189,16 +189,16 @@ class MockTest(unittest.TestCase):
         self.assertEqual([mock(), mock(), mock()], [3, 2, 1],
                           "callable side effect not used correctly")
 
-    def test_autospec_side_effect_exception(self):
+    eleza test_autospec_side_effect_exception(self):
         # Test for issue 23661
-        def f(): pass
+        eleza f(): pass
 
         mock = create_autospec(f)
         mock.side_effect = ValueError('Bazinga!')
         self.assertRaisesRegex(ValueError, 'Bazinga!', mock)
 
 
-    def test_reset_mock(self):
+    eleza test_reset_mock(self):
         parent = Mock()
         spec = ["something"]
         mock = Mock(name="child", parent=parent, spec=spec)
@@ -231,7 +231,7 @@ class MockTest(unittest.TestCase):
                           "side_effect incorrectly reset")
         self.assertEqual(mock.return_value, return_value,
                           "return_value incorrectly reset")
-        self.assertFalse(return_value.called, "return value mock not reset")
+        self.assertFalse(return_value.called, "rudisha value mock not reset")
         self.assertEqual(mock._mock_children, {'something': something},
                           "children reset incorrectly")
         self.assertEqual(mock.something, something,
@@ -239,18 +239,18 @@ class MockTest(unittest.TestCase):
         self.assertFalse(mock.something.called, "child not reset")
 
 
-    def test_reset_mock_recursion(self):
+    eleza test_reset_mock_recursion(self):
         mock = Mock()
         mock.return_value = mock
 
         # used to cause recursion
         mock.reset_mock()
 
-    def test_reset_mock_on_mock_open_issue_18622(self):
+    eleza test_reset_mock_on_mock_open_issue_18622(self):
         a = mock.mock_open()
         a.reset_mock()
 
-    def test_call(self):
+    eleza test_call(self):
         mock = Mock()
         self.assertTrue(is_instance(mock.return_value, Mock),
                         "Default return_value should be a Mock")
@@ -275,7 +275,7 @@ class MockTest(unittest.TestCase):
         mock.return_value = sentinel.ReturnValue
         ret_val = mock(sentinel.Arg, key=sentinel.KeyArg)
         self.assertEqual(ret_val, sentinel.ReturnValue,
-                         "incorrect return value")
+                         "incorrect rudisha value")
 
         self.assertEqual(mock.call_count, 2, "call_count incorrect")
         self.assertEqual(mock.call_args,
@@ -288,7 +288,7 @@ class MockTest(unittest.TestCase):
             "call_args_list not set")
 
 
-    def test_call_args_comparison(self):
+    eleza test_call_args_comparison(self):
         mock = Mock()
         mock()
         mock(sentinel.Arg)
@@ -310,7 +310,7 @@ class MockTest(unittest.TestCase):
         self.assertFalse(mock.call_args == "a long sequence")
 
 
-    def test_calls_equal_with_any(self):
+    eleza test_calls_equal_with_any(self):
         # Check that equality and non-equality is consistent even when
         # comparing with mock.ANY
         mm = mock.MagicMock()
@@ -331,11 +331,11 @@ class MockTest(unittest.TestCase):
         self.assertFalse(call2 != call1)
 
 
-    def test_assert_called_with(self):
+    eleza test_assert_called_with(self):
         mock = Mock()
         mock()
 
-        # Will raise an exception if it fails
+        # Will raise an exception ikiwa it fails
         mock.assert_called_with()
         self.assertRaises(AssertionError, mock.assert_called_with, 1)
 
@@ -346,14 +346,14 @@ class MockTest(unittest.TestCase):
         mock.assert_called_with(1, 2, 3, a='fish', b='nothing')
 
 
-    def test_assert_called_with_any(self):
+    eleza test_assert_called_with_any(self):
         m = MagicMock()
         m(MagicMock())
         m.assert_called_with(mock.ANY)
 
 
-    def test_assert_called_with_function_spec(self):
-        def f(a, b, c, d=None): pass
+    eleza test_assert_called_with_function_spec(self):
+        eleza f(a, b, c, d=None): pass
 
         mock = Mock(spec=f)
 
@@ -368,8 +368,8 @@ class MockTest(unittest.TestCase):
         self.assertIsInstance(cm.exception.__cause__, TypeError)
 
 
-    def test_assert_called_with_method_spec(self):
-        def _check(mock):
+    eleza test_assert_called_with_method_spec(self):
+        eleza _check(mock):
             mock(1, b=2, c=3)
             mock.assert_called_with(1, 2, 3)
             mock.assert_called_with(a=1, b=2, c=3)
@@ -388,7 +388,7 @@ class MockTest(unittest.TestCase):
         _check(mock)
 
 
-    def test_assert_called_exception_message(self):
+    eleza test_assert_called_exception_message(self):
         msg = "Expected '{0}' to have been called"
         with self.assertRaisesRegex(AssertionError, msg.format('mock')):
             Mock().assert_called()
@@ -396,11 +396,11 @@ class MockTest(unittest.TestCase):
             Mock(name="test_name").assert_called()
 
 
-    def test_assert_called_once_with(self):
+    eleza test_assert_called_once_with(self):
         mock = Mock()
         mock()
 
-        # Will raise an exception if it fails
+        # Will raise an exception ikiwa it fails
         mock.assert_called_once_with()
 
         mock()
@@ -419,7 +419,7 @@ class MockTest(unittest.TestCase):
             lambda: mock.assert_called_once_with('bob', 'bar', baz=2)
         )
 
-    def test_assert_called_once_with_call_list(self):
+    eleza test_assert_called_once_with_call_list(self):
         m = Mock()
         m(1)
         m(2)
@@ -428,8 +428,8 @@ class MockTest(unittest.TestCase):
             lambda: m.assert_called_once_with(2))
 
 
-    def test_assert_called_once_with_function_spec(self):
-        def f(a, b, c, d=None): pass
+    eleza test_assert_called_once_with_function_spec(self):
+        eleza f(a, b, c, d=None): pass
 
         mock = Mock(spec=f)
 
@@ -450,7 +450,7 @@ class MockTest(unittest.TestCase):
                           4, 5, 6)
 
 
-    def test_attribute_access_returns_mocks(self):
+    eleza test_attribute_access_returns_mocks(self):
         mock = Mock()
         something = mock.something
         self.assertTrue(is_instance(something, Mock), "attribute isn't a mock")
@@ -466,7 +466,7 @@ class MockTest(unittest.TestCase):
                         "method didn't record being called")
 
 
-    def test_attributes_have_name_and_parent_set(self):
+    eleza test_attributes_have_name_and_parent_set(self):
         mock = Mock()
         something = mock.something
 
@@ -476,7 +476,7 @@ class MockTest(unittest.TestCase):
                          "attribute parent not set correctly")
 
 
-    def test_method_calls_recorded(self):
+    eleza test_method_calls_recorded(self):
         mock = Mock()
         mock.something(3, fish=None)
         mock.something_else.something(6, cake=sentinel.Cake)
@@ -491,7 +491,7 @@ class MockTest(unittest.TestCase):
             "method calls not recorded correctly")
 
 
-    def test_method_calls_compare_easily(self):
+    eleza test_method_calls_compare_easily(self):
         mock = Mock()
         mock.something()
         self.assertEqual(mock.method_calls, [('something',)])
@@ -515,7 +515,7 @@ class MockTest(unittest.TestCase):
         ])
 
 
-    def test_only_allowed_methods_exist(self):
+    eleza test_only_allowed_methods_exist(self):
         for spec in ['something'], ('something',):
             for arg in 'spec', 'spec_set':
                 mock = Mock(**{arg: spec})
@@ -529,13 +529,13 @@ class MockTest(unittest.TestCase):
                 )
 
 
-    def test_from_spec(self):
-        class Something(object):
+    eleza test_kutoka_spec(self):
+        kundi Something(object):
             x = 3
             __something__ = None
-            def y(self): pass
+            eleza y(self): pass
 
-        def test_attributes(mock):
+        eleza test_attributes(mock):
             # should work
             mock.x
             mock.y
@@ -555,7 +555,7 @@ class MockTest(unittest.TestCase):
         test_attributes(Mock(spec=Something()))
 
 
-    def test_wraps_calls(self):
+    eleza test_wraps_calls(self):
         real = Mock()
 
         mock = Mock(wraps=real)
@@ -567,8 +567,8 @@ class MockTest(unittest.TestCase):
         real.assert_called_with(1, 2, fish=3)
 
 
-    def test_wraps_prevents_automatic_creation_of_mocks(self):
-        class Real(object):
+    eleza test_wraps_prevents_automatic_creation_of_mocks(self):
+        kundi Real(object):
             pass
 
         real = Real()
@@ -577,7 +577,7 @@ class MockTest(unittest.TestCase):
         self.assertRaises(AttributeError, lambda: mock.new_attr())
 
 
-    def test_wraps_call_with_nondefault_return_value(self):
+    eleza test_wraps_call_with_nondefault_return_value(self):
         real = Mock()
 
         mock = Mock(wraps=real)
@@ -587,8 +587,8 @@ class MockTest(unittest.TestCase):
         self.assertFalse(real.called)
 
 
-    def test_wraps_attributes(self):
-        class Real(object):
+    eleza test_wraps_attributes(self):
+        kundi Real(object):
             attribute = Mock()
 
         real = Real()
@@ -603,10 +603,10 @@ class MockTest(unittest.TestCase):
         self.assertEqual(result, Real.attribute.frog())
 
 
-    def test_customize_wrapped_object_with_side_effect_iterable_with_default(self):
-        class Real(object):
-            def method(self):
-                return sentinel.ORIGINAL_VALUE
+    eleza test_customize_wrapped_object_with_side_effect_iterable_with_default(self):
+        kundi Real(object):
+            eleza method(self):
+                rudisha sentinel.ORIGINAL_VALUE
 
         real = Real()
         mock = Mock(wraps=real)
@@ -617,9 +617,9 @@ class MockTest(unittest.TestCase):
         self.assertRaises(StopIteration, mock.method)
 
 
-    def test_customize_wrapped_object_with_side_effect_iterable(self):
-        class Real(object):
-            def method(self): pass
+    eleza test_customize_wrapped_object_with_side_effect_iterable(self):
+        kundi Real(object):
+            eleza method(self): pass
 
         real = Real()
         mock = Mock(wraps=real)
@@ -630,9 +630,9 @@ class MockTest(unittest.TestCase):
         self.assertRaises(StopIteration, mock.method)
 
 
-    def test_customize_wrapped_object_with_side_effect_exception(self):
-        class Real(object):
-            def method(self): pass
+    eleza test_customize_wrapped_object_with_side_effect_exception(self):
+        kundi Real(object):
+            eleza method(self): pass
 
         real = Real()
         mock = Mock(wraps=real)
@@ -641,11 +641,11 @@ class MockTest(unittest.TestCase):
         self.assertRaises(RuntimeError, mock.method)
 
 
-    def test_customize_wrapped_object_with_side_effect_function(self):
-        class Real(object):
-            def method(self): pass
-        def side_effect():
-            return sentinel.VALUE
+    eleza test_customize_wrapped_object_with_side_effect_function(self):
+        kundi Real(object):
+            eleza method(self): pass
+        eleza side_effect():
+            rudisha sentinel.VALUE
 
         real = Real()
         mock = Mock(wraps=real)
@@ -654,9 +654,9 @@ class MockTest(unittest.TestCase):
         self.assertEqual(mock.method(), sentinel.VALUE)
 
 
-    def test_customize_wrapped_object_with_return_value(self):
-        class Real(object):
-            def method(self): pass
+    eleza test_customize_wrapped_object_with_return_value(self):
+        kundi Real(object):
+            eleza method(self): pass
 
         real = Real()
         mock = Mock(wraps=real)
@@ -665,10 +665,10 @@ class MockTest(unittest.TestCase):
         self.assertEqual(mock.method(), sentinel.VALUE)
 
 
-    def test_customize_wrapped_object_with_return_value_and_side_effect(self):
+    eleza test_customize_wrapped_object_with_return_value_and_side_effect(self):
         # side_effect should always take precedence over return_value.
-        class Real(object):
-            def method(self): pass
+        kundi Real(object):
+            eleza method(self): pass
 
         real = Real()
         mock = Mock(wraps=real)
@@ -680,10 +680,10 @@ class MockTest(unittest.TestCase):
         self.assertRaises(StopIteration, mock.method)
 
 
-    def test_customize_wrapped_object_with_return_value_and_side_effect2(self):
-        # side_effect can return DEFAULT to default to return_value
-        class Real(object):
-            def method(self): pass
+    eleza test_customize_wrapped_object_with_return_value_and_side_effect2(self):
+        # side_effect can rudisha DEFAULT to default to return_value
+        kundi Real(object):
+            eleza method(self): pass
 
         real = Real()
         mock = Mock(wraps=real)
@@ -693,9 +693,9 @@ class MockTest(unittest.TestCase):
         self.assertEqual(mock.method(), sentinel.VALUE)
 
 
-    def test_customize_wrapped_object_with_return_value_and_side_effect_default(self):
-        class Real(object):
-            def method(self): pass
+    eleza test_customize_wrapped_object_with_return_value_and_side_effect_default(self):
+        kundi Real(object):
+            eleza method(self): pass
 
         real = Real()
         mock = Mock(wraps=real)
@@ -707,7 +707,7 @@ class MockTest(unittest.TestCase):
         self.assertRaises(StopIteration, mock.method)
 
 
-    def test_exceptional_side_effect(self):
+    eleza test_exceptional_side_effect(self):
         mock = Mock(side_effect=AttributeError)
         self.assertRaises(AttributeError, mock)
 
@@ -715,7 +715,7 @@ class MockTest(unittest.TestCase):
         self.assertRaises(AttributeError, mock)
 
 
-    def test_baseexceptional_side_effect(self):
+    eleza test_baseexceptional_side_effect(self):
         mock = Mock(side_effect=KeyboardInterrupt)
         self.assertRaises(KeyboardInterrupt, mock)
 
@@ -723,20 +723,20 @@ class MockTest(unittest.TestCase):
         self.assertRaises(KeyboardInterrupt, mock)
 
 
-    def test_assert_called_with_message(self):
+    eleza test_assert_called_with_message(self):
         mock = Mock()
         self.assertRaisesRegex(AssertionError, 'not called',
                                 mock.assert_called_with)
 
 
-    def test_assert_called_once_with_message(self):
+    eleza test_assert_called_once_with_message(self):
         mock = Mock(name='geoffrey')
         self.assertRaisesRegex(AssertionError,
                      r"Expected 'geoffrey' to be called once\.",
                      mock.assert_called_once_with)
 
 
-    def test__name__(self):
+    eleza test__name__(self):
         mock = Mock()
         self.assertRaises(AttributeError, lambda: mock.__name__)
 
@@ -744,8 +744,8 @@ class MockTest(unittest.TestCase):
         self.assertEqual(mock.__name__, 'foo')
 
 
-    def test_spec_list_subclass(self):
-        class Sub(list):
+    eleza test_spec_list_subclass(self):
+        kundi Sub(list):
             pass
         mock = Mock(spec=Sub(['foo']))
 
@@ -754,8 +754,8 @@ class MockTest(unittest.TestCase):
         self.assertRaises(AttributeError, getattr, mock, 'foo')
 
 
-    def test_spec_class(self):
-        class X(object):
+    eleza test_spec_class(self):
+        kundi X(object):
             pass
 
         mock = Mock(spec=X)
@@ -774,8 +774,8 @@ class MockTest(unittest.TestCase):
         self.assertIsInstance(mock, X)
 
 
-    def test_spec_class_no_object_base(self):
-        class X:
+    eleza test_spec_class_no_object_base(self):
+        kundi X:
             pass
 
         mock = Mock(spec=X)
@@ -794,22 +794,22 @@ class MockTest(unittest.TestCase):
         self.assertIsInstance(mock, X)
 
 
-    def test_setting_attribute_with_spec_set(self):
-        class X(object):
+    eleza test_setting_attribute_with_spec_set(self):
+        kundi X(object):
             y = 3
 
         mock = Mock(spec=X)
         mock.x = 'foo'
 
         mock = Mock(spec_set=X)
-        def set_attr():
+        eleza set_attr():
             mock.x = 'foo'
 
         mock.y = 'foo'
         self.assertRaises(AttributeError, set_attr)
 
 
-    def test_copy(self):
+    eleza test_copy(self):
         current = sys.getrecursionlimit()
         self.addCleanup(sys.setrecursionlimit, current)
 
@@ -819,31 +819,31 @@ class MockTest(unittest.TestCase):
         copy.copy(Mock())
 
 
-    def test_subclass_with_properties(self):
-        class SubClass(Mock):
-            def _get(self):
-                return 3
-            def _set(self, value):
+    eleza test_subclass_with_properties(self):
+        kundi SubClass(Mock):
+            eleza _get(self):
+                rudisha 3
+            eleza _set(self, value):
                 raise NameError('strange error')
             some_attribute = property(_get, _set)
 
         s = SubClass(spec_set=SubClass)
         self.assertEqual(s.some_attribute, 3)
 
-        def test():
+        eleza test():
             s.some_attribute = 3
         self.assertRaises(NameError, test)
 
-        def test():
+        eleza test():
             s.foo = 'bar'
         self.assertRaises(AttributeError, test)
 
 
-    def test_setting_call(self):
+    eleza test_setting_call(self):
         mock = Mock()
-        def __call__(self, a):
+        eleza __call__(self, a):
             self._increment_mock_call(a)
-            return self._mock_call(a)
+            rudisha self._mock_call(a)
 
         type(mock).__call__ = __call__
         mock('one')
@@ -852,10 +852,10 @@ class MockTest(unittest.TestCase):
         self.assertRaises(TypeError, mock, 'one', 'two')
 
 
-    def test_dir(self):
+    eleza test_dir(self):
         mock = Mock()
         attrs = set(dir(mock))
-        type_attrs = set([m for m in dir(Mock) if not m.startswith('_')])
+        type_attrs = set([m for m in dir(Mock) ikiwa not m.startswith('_')])
 
         # all public attributes kutoka the type are included
         self.assertEqual(set(), type_attrs - attrs)
@@ -875,7 +875,7 @@ class MockTest(unittest.TestCase):
         self.assertIn('__iter__', dir(mock))
 
 
-    def test_dir_from_spec(self):
+    eleza test_dir_kutoka_spec(self):
         mock = Mock(spec=unittest.TestCase)
         testcase_attrs = set(dir(unittest.TestCase))
         attrs = set(dir(mock))
@@ -888,7 +888,7 @@ class MockTest(unittest.TestCase):
         self.assertEqual(dir(mock).count('version'), 1)
 
 
-    def test_filter_dir(self):
+    eleza test_filter_dir(self):
         patcher = patch.object(mock, 'FILTER_DIR', False)
         patcher.start()
         try:
@@ -901,7 +901,7 @@ class MockTest(unittest.TestCase):
             patcher.stop()
 
 
-    def test_dir_does_not_include_deleted_attributes(self):
+    eleza test_dir_does_not_include_deleted_attributes(self):
         mock = Mock()
         mock.child.return_value = 1
 
@@ -910,7 +910,7 @@ class MockTest(unittest.TestCase):
         self.assertNotIn('child', dir(mock))
 
 
-    def test_configure_mock(self):
+    eleza test_configure_mock(self):
         mock = Mock(foo='bar')
         self.assertEqual(mock.foo, 'bar')
 
@@ -931,7 +931,7 @@ class MockTest(unittest.TestCase):
         self.assertIsInstance(mock.foo, MagicMock)
 
 
-    def assertRaisesWithMsg(self, exception, message, func, *args, **kwargs):
+    eleza assertRaisesWithMsg(self, exception, message, func, *args, **kwargs):
         # needed because assertRaisesRegex doesn't work easily with newlines
         with self.assertRaises(exception) as context:
             func(*args, **kwargs)
@@ -939,7 +939,7 @@ class MockTest(unittest.TestCase):
         self.assertEqual(msg, message)
 
 
-    def test_assert_called_with_failure_message(self):
+    eleza test_assert_called_with_failure_message(self):
         mock = NonCallableMock()
 
         actual = 'not called.'
@@ -995,7 +995,7 @@ class MockTest(unittest.TestCase):
             )
 
 
-    def test_mock_calls(self):
+    eleza test_mock_calls(self):
         mock = MagicMock()
 
         # need to do this because MagicMock.mock_calls used to just return
@@ -1073,7 +1073,7 @@ class MockTest(unittest.TestCase):
                              call().__int__().call_list())
 
 
-    def test_child_mock_call_equal(self):
+    eleza test_child_mock_call_equal(self):
         m = Mock()
         result = m()
         result.wibble()
@@ -1083,40 +1083,40 @@ class MockTest(unittest.TestCase):
         self.assertEqual(result.mock_calls, [call.wibble()])
 
 
-    def test_mock_call_not_equal_leaf(self):
+    eleza test_mock_call_not_equal_leaf(self):
         m = Mock()
         m.foo().something()
         self.assertNotEqual(m.mock_calls[1], call.foo().different())
         self.assertEqual(m.mock_calls[0], call.foo())
 
 
-    def test_mock_call_not_equal_non_leaf(self):
+    eleza test_mock_call_not_equal_non_leaf(self):
         m = Mock()
         m.foo().bar()
         self.assertNotEqual(m.mock_calls[1], call.baz().bar())
         self.assertNotEqual(m.mock_calls[0], call.baz())
 
 
-    def test_mock_call_not_equal_non_leaf_params_different(self):
+    eleza test_mock_call_not_equal_non_leaf_params_different(self):
         m = Mock()
         m.foo(x=1).bar()
         # This isn't ideal, but there's no way to fix it without breaking backwards compatibility:
         self.assertEqual(m.mock_calls[1], call.foo(x=2).bar())
 
 
-    def test_mock_call_not_equal_non_leaf_attr(self):
+    eleza test_mock_call_not_equal_non_leaf_attr(self):
         m = Mock()
         m.foo.bar()
         self.assertNotEqual(m.mock_calls[0], call.baz.bar())
 
 
-    def test_mock_call_not_equal_non_leaf_call_versus_attr(self):
+    eleza test_mock_call_not_equal_non_leaf_call_versus_attr(self):
         m = Mock()
         m.foo.bar()
         self.assertNotEqual(m.mock_calls[0], call.foo().bar())
 
 
-    def test_mock_call_repr(self):
+    eleza test_mock_call_repr(self):
         m = Mock()
         m.foo().bar().baz.bob()
         self.assertEqual(repr(m.mock_calls[0]), 'call.foo()')
@@ -1124,36 +1124,36 @@ class MockTest(unittest.TestCase):
         self.assertEqual(repr(m.mock_calls[2]), 'call.foo().bar().baz.bob()')
 
 
-    def test_mock_call_repr_loop(self):
+    eleza test_mock_call_repr_loop(self):
         m = Mock()
         m.foo = m
         repr(m.foo())
         self.assertRegex(repr(m.foo()), r"<Mock name='mock\(\)' id='\d+'>")
 
 
-    def test_mock_calls_contains(self):
+    eleza test_mock_calls_contains(self):
         m = Mock()
         self.assertFalse([call()] in m.mock_calls)
 
 
-    def test_subclassing(self):
-        class Subclass(Mock):
+    eleza test_subclassing(self):
+        kundi Subclass(Mock):
             pass
 
         mock = Subclass()
         self.assertIsInstance(mock.foo, Subclass)
         self.assertIsInstance(mock(), Subclass)
 
-        class Subclass(Mock):
-            def _get_child_mock(self, **kwargs):
-                return Mock(**kwargs)
+        kundi Subclass(Mock):
+            eleza _get_child_mock(self, **kwargs):
+                rudisha Mock(**kwargs)
 
         mock = Subclass()
         self.assertNotIsInstance(mock.foo, Subclass)
         self.assertNotIsInstance(mock(), Subclass)
 
 
-    def test_arg_lists(self):
+    eleza test_arg_lists(self):
         mocks = [
             Mock(),
             MagicMock(),
@@ -1161,7 +1161,7 @@ class MockTest(unittest.TestCase):
             NonCallableMagicMock()
         ]
 
-        def assert_attrs(mock):
+        eleza assert_attrs(mock):
             names = 'call_args_list', 'method_calls', 'mock_calls'
             for name in names:
                 attr = getattr(mock, name)
@@ -1172,7 +1172,7 @@ class MockTest(unittest.TestCase):
         for mock in mocks:
             assert_attrs(mock)
 
-            if callable(mock):
+            ikiwa callable(mock):
                 mock()
                 mock(1, 2)
                 mock(a=3)
@@ -1188,7 +1188,7 @@ class MockTest(unittest.TestCase):
             assert_attrs(mock)
 
 
-    def test_call_args_two_tuple(self):
+    eleza test_call_args_two_tuple(self):
         mock = Mock()
         mock(1, a=3)
         mock(2, b=4)
@@ -1204,7 +1204,7 @@ class MockTest(unittest.TestCase):
             self.assertEqual(expected[1], call_args[1])
 
 
-    def test_side_effect_iterator(self):
+    eleza test_side_effect_iterator(self):
         mock = Mock(side_effect=iter([1, 2, 3]))
         self.assertEqual([mock(), mock(), mock()], [1, 2, 3])
         self.assertRaises(StopIteration, mock)
@@ -1217,7 +1217,7 @@ class MockTest(unittest.TestCase):
         self.assertEqual([mock(), mock(), mock()], ['g', 'h', 'i'])
         self.assertRaises(StopIteration, mock)
 
-        class Foo(object):
+        kundi Foo(object):
             pass
         mock = MagicMock(side_effect=Foo)
         self.assertIsInstance(mock(), Foo)
@@ -1228,7 +1228,7 @@ class MockTest(unittest.TestCase):
         self.assertRaises(StopIteration, mock)
 
 
-    def test_side_effect_iterator_exceptions(self):
+    eleza test_side_effect_iterator_exceptions(self):
         for Klass in Mock, MagicMock:
             iterable = (ValueError, 3, KeyError, 6)
             m = Klass(side_effect=iterable)
@@ -1238,7 +1238,7 @@ class MockTest(unittest.TestCase):
             self.assertEqual(m(), 6)
 
 
-    def test_side_effect_setting_iterator(self):
+    eleza test_side_effect_setting_iterator(self):
         mock = Mock()
         mock.side_effect = iter([1, 2, 3])
         self.assertEqual([mock(), mock(), mock()], [1, 2, 3])
@@ -1259,12 +1259,12 @@ class MockTest(unittest.TestCase):
         self.assertRaises(StopIteration, mock)
         self.assertIs(mock.side_effect, this_iter)
 
-    def test_side_effect_iterator_default(self):
+    eleza test_side_effect_iterator_default(self):
         mock = Mock(return_value=2)
         mock.side_effect = iter([1, DEFAULT])
         self.assertEqual([mock(), mock()], [1, 2])
 
-    def test_assert_has_calls_any_order(self):
+    eleza test_assert_has_calls_any_order(self):
         mock = Mock()
         mock(1, 2)
         mock(a=3)
@@ -1308,7 +1308,7 @@ class MockTest(unittest.TestCase):
                 kall_list, any_order=True
             )
 
-    def test_assert_has_calls(self):
+    eleza test_assert_has_calls(self):
         kalls1 = [
                 call(1, 2), ({'a': 3},),
                 ((3, 4),), call(b=6),
@@ -1340,7 +1340,7 @@ class MockTest(unittest.TestCase):
                     these = kalls[i:i+step]
                     mock.assert_has_calls(these)
 
-                    if len(these) > 1:
+                    ikiwa len(these) > 1:
                         self.assertRaises(
                             AssertionError,
                             mock.assert_has_calls,
@@ -1348,18 +1348,18 @@ class MockTest(unittest.TestCase):
                         )
 
 
-    def test_assert_has_calls_nested_spec(self):
-        class Something:
+    eleza test_assert_has_calls_nested_spec(self):
+        kundi Something:
 
-            def __init__(self): pass
-            def meth(self, a, b, c, d=None): pass
+            eleza __init__(self): pass
+            eleza meth(self, a, b, c, d=None): pass
 
-            class Foo:
+            kundi Foo:
 
-                def __init__(self, a): pass
-                def meth1(self, a, b): pass
+                eleza __init__(self, a): pass
+                eleza meth1(self, a, b): pass
 
-        mock_class = create_autospec(Something)
+        mock_kundi = create_autospec(Something)
 
         for m in [mock_class, mock_class()]:
             m.meth(1, 2, 3, d=1)
@@ -1388,7 +1388,7 @@ class MockTest(unittest.TestCase):
             )
 
 
-    def test_assert_has_calls_nested_without_spec(self):
+    eleza test_assert_has_calls_nested_without_spec(self):
         m = MagicMock()
         m().foo().bar().baz()
         m.one().two().three()
@@ -1396,8 +1396,8 @@ class MockTest(unittest.TestCase):
         m.assert_has_calls(calls)
 
 
-    def test_assert_has_calls_with_function_spec(self):
-        def f(a, b, c, d=None): pass
+    eleza test_assert_has_calls_with_function_spec(self):
+        eleza f(a, b, c, d=None): pass
 
         mock = Mock(spec=f)
 
@@ -1427,8 +1427,8 @@ class MockTest(unittest.TestCase):
             mock.assert_has_calls(calls[:-1])
         mock.assert_has_calls(calls[:-1], any_order=True)
 
-    def test_assert_has_calls_not_matching_spec_error(self):
-        def f(x=None): pass
+    eleza test_assert_has_calls_not_matching_spec_error(self):
+        eleza f(x=None): pass
 
         mock = Mock(spec=f)
         mock(1)
@@ -1454,7 +1454,7 @@ class MockTest(unittest.TestCase):
             mock.assert_has_calls([call(), call(1, 2)])
         self.assertIsInstance(cm.exception.__cause__, TypeError)
 
-    def test_assert_any_call(self):
+    eleza test_assert_any_call(self):
         mock = Mock()
         mock(1, 2)
         mock(a=3)
@@ -1480,8 +1480,8 @@ class MockTest(unittest.TestCase):
         )
 
 
-    def test_assert_any_call_with_function_spec(self):
-        def f(a, b, c, d=None): pass
+    eleza test_assert_any_call_with_function_spec(self):
+        eleza f(a, b, c, d=None): pass
 
         mock = Mock(spec=f)
 
@@ -1499,8 +1499,8 @@ class MockTest(unittest.TestCase):
         self.assertIsInstance(cm.exception.__cause__, TypeError)
 
 
-    def test_mock_calls_create_autospec(self):
-        def f(a, b): pass
+    eleza test_mock_calls_create_autospec(self):
+        eleza f(a, b): pass
         obj = Iter()
         obj.f = f
 
@@ -1517,18 +1517,18 @@ class MockTest(unittest.TestCase):
             )
 
     #Issue21222
-    def test_create_autospec_with_name(self):
+    eleza test_create_autospec_with_name(self):
         m = mock.create_autospec(object(), name='sweet_func')
         self.assertIn('sweet_func', repr(m))
 
     #Issue23078
-    def test_create_autospec_classmethod_and_staticmethod(self):
-        class TestClass:
+    eleza test_create_autospec_classmethod_and_staticmethod(self):
+        kundi TestClass:
             @classmethod
-            def class_method(cls): pass
+            eleza class_method(cls): pass
 
             @staticmethod
-            def static_method(): pass
+            eleza static_method(): pass
         for method in ('class_method', 'static_method'):
             with self.subTest(method=method):
                 mock_method = mock.create_autospec(getattr(TestClass, method))
@@ -1537,7 +1537,7 @@ class MockTest(unittest.TestCase):
                 self.assertRaises(TypeError, mock_method, 'extra_arg')
 
     #Issue21238
-    def test_mock_unsafe(self):
+    eleza test_mock_unsafe(self):
         m = Mock()
         msg = "Attributes cannot start with 'assert' or 'assret'"
         with self.assertRaisesRegex(AttributeError, msg):
@@ -1549,21 +1549,21 @@ class MockTest(unittest.TestCase):
         m.assret_foo_call()
 
     #Issue21262
-    def test_assert_not_called(self):
+    eleza test_assert_not_called(self):
         m = Mock()
         m.hello.assert_not_called()
         m.hello()
         with self.assertRaises(AssertionError):
             m.hello.assert_not_called()
 
-    def test_assert_not_called_message(self):
+    eleza test_assert_not_called_message(self):
         m = Mock()
         m(1, 2)
         self.assertRaisesRegex(AssertionError,
             re.escape("Calls: [call(1, 2)]"),
             m.assert_not_called)
 
-    def test_assert_called(self):
+    eleza test_assert_called(self):
         m = Mock()
         with self.assertRaises(AssertionError):
             m.hello.assert_called()
@@ -1573,7 +1573,7 @@ class MockTest(unittest.TestCase):
         m.hello()
         m.hello.assert_called()
 
-    def test_assert_called_once(self):
+    eleza test_assert_called_once(self):
         m = Mock()
         with self.assertRaises(AssertionError):
             m.hello.assert_called_once()
@@ -1584,7 +1584,7 @@ class MockTest(unittest.TestCase):
         with self.assertRaises(AssertionError):
             m.hello.assert_called_once()
 
-    def test_assert_called_once_message(self):
+    eleza test_assert_called_once_message(self):
         m = Mock()
         m(1, 2)
         m(3)
@@ -1592,21 +1592,21 @@ class MockTest(unittest.TestCase):
             re.escape("Calls: [call(1, 2), call(3)]"),
             m.assert_called_once)
 
-    def test_assert_called_once_message_not_called(self):
+    eleza test_assert_called_once_message_not_called(self):
         m = Mock()
         with self.assertRaises(AssertionError) as e:
             m.assert_called_once()
         self.assertNotIn("Calls:", str(e.exception))
 
     #Issue37212 printout of keyword args now preserves the original order
-    def test_ordered_call_signature(self):
+    eleza test_ordered_call_signature(self):
         m = Mock()
         m.hello(name='hello', daddy='hero')
         text = "call(name='hello', daddy='hero')"
         self.assertEqual(repr(m.hello.call_args), text)
 
     #Issue21270 overrides tuple methods for mock.call objects
-    def test_override_tuple_methods(self):
+    eleza test_override_tuple_methods(self):
         c = call.count()
         i = call.index(132,'hello')
         m = Mock()
@@ -1615,30 +1615,30 @@ class MockTest(unittest.TestCase):
         self.assertEqual(m.method_calls[0], c)
         self.assertEqual(m.method_calls[1], i)
 
-    def test_reset_return_sideeffect(self):
+    eleza test_reset_return_sideeffect(self):
         m = Mock(return_value=10, side_effect=[2,3])
         m.reset_mock(return_value=True, side_effect=True)
         self.assertIsInstance(m.return_value, Mock)
         self.assertEqual(m.side_effect, None)
 
-    def test_reset_return(self):
+    eleza test_reset_return(self):
         m = Mock(return_value=10, side_effect=[2,3])
         m.reset_mock(return_value=True)
         self.assertIsInstance(m.return_value, Mock)
         self.assertNotEqual(m.side_effect, None)
 
-    def test_reset_sideeffect(self):
+    eleza test_reset_sideeffect(self):
         m = Mock(return_value=10, side_effect=[2,3])
         m.reset_mock(side_effect=True)
         self.assertEqual(m.return_value, 10)
         self.assertEqual(m.side_effect, None)
 
-    def test_mock_add_spec(self):
-        class _One(object):
+    eleza test_mock_add_spec(self):
+        kundi _One(object):
             one = 1
-        class _Two(object):
+        kundi _Two(object):
             two = 2
-        class Anything(object):
+        kundi Anything(object):
             one = two = three = 'four'
 
         klasses = [
@@ -1665,7 +1665,7 @@ class MockTest(unittest.TestCase):
                         self.assertRaises(
                             AttributeError, getattr, mock, 'three'
                         )
-                        if 'spec_set' in kwargs:
+                        ikiwa 'spec_set' in kwargs:
                             self.assertRaises(
                                 AttributeError, setattr, mock, 'three', None
                             )
@@ -1678,7 +1678,7 @@ class MockTest(unittest.TestCase):
                         self.assertRaises(
                             AttributeError, getattr, mock, 'three'
                         )
-                        if 'spec_set' in kwargs:
+                        ikiwa 'spec_set' in kwargs:
                             self.assertRaises(
                                 AttributeError, setattr, mock, 'three', None
                             )
@@ -1686,7 +1686,7 @@ class MockTest(unittest.TestCase):
             # *then* setting a spec doesn't work. Not the intended use case
 
 
-    def test_mock_add_spec_magic_methods(self):
+    eleza test_mock_add_spec_magic_methods(self):
         for Klass in MagicMock, NonCallableMagicMock:
             mock = Klass()
             int(mock)
@@ -1703,7 +1703,7 @@ class MockTest(unittest.TestCase):
             self.assertRaises(TypeError, lambda: mock['foo'])
 
 
-    def test_adding_child_mock(self):
+    eleza test_adding_child_mock(self):
         for Klass in (NonCallableMock, Mock, MagicMock, NonCallableMagicMock,
                       AsyncMock):
             mock = Klass()
@@ -1728,7 +1728,7 @@ class MockTest(unittest.TestCase):
             self.assertEqual(mock.mock_calls, [])
 
 
-    def test_adding_return_value_mock(self):
+    eleza test_adding_return_value_mock(self):
         for Klass in Mock, MagicMock:
             mock = Klass()
             mock.return_value = MagicMock()
@@ -1737,8 +1737,8 @@ class MockTest(unittest.TestCase):
             self.assertEqual(mock.mock_calls, [call(), call()()])
 
 
-    def test_manager_mock(self):
-        class Foo(object):
+    eleza test_manager_mock(self):
+        kundi Foo(object):
             one = 'one'
             two = 'two'
         manager = Mock()
@@ -1759,7 +1759,7 @@ class MockTest(unittest.TestCase):
         self.assertEqual(manager.mock_calls, [call.two(), call.one()])
 
 
-    def test_magic_methods_mock_calls(self):
+    eleza test_magic_methods_mock_calls(self):
         for Klass in Mock, MagicMock:
             m = Klass()
             m.__int__ = Mock(return_value=3)
@@ -1770,7 +1770,7 @@ class MockTest(unittest.TestCase):
             self.assertEqual(m.mock_calls, [call.__int__(), call.__float__()])
             self.assertEqual(m.method_calls, [])
 
-    def test_mock_open_reuse_issue_21750(self):
+    eleza test_mock_open_reuse_issue_21750(self):
         mocked_open = mock.mock_open(read_data='data')
         f1 = mocked_open('a-name')
         f1_data = f1.read()
@@ -1778,7 +1778,7 @@ class MockTest(unittest.TestCase):
         f2_data = f2.read()
         self.assertEqual(f1_data, f2_data)
 
-    def test_mock_open_dunder_iter_issue(self):
+    eleza test_mock_open_dunder_iter_issue(self):
         # Test dunder_iter method generates the expected result and
         # consumes the iterator.
         mocked_open = mock.mock_open(read_data='Remarkable\nNorwegian Blue')
@@ -1788,7 +1788,7 @@ class MockTest(unittest.TestCase):
         self.assertEqual(lines[1], 'Norwegian Blue')
         self.assertEqual(list(f1), [])
 
-    def test_mock_open_using_next(self):
+    eleza test_mock_open_using_next(self):
         mocked_open = mock.mock_open(read_data='1st line\n2nd line\n3rd line')
         f1 = mocked_open('a-name')
         line1 = next(f1)
@@ -1801,18 +1801,18 @@ class MockTest(unittest.TestCase):
         with self.assertRaises(StopIteration):
             next(f1)
 
-    def test_mock_open_write(self):
+    eleza test_mock_open_write(self):
         # Test exception in file writing write()
         mock_namedtemp = mock.mock_open(mock.MagicMock(name='JLV'))
         with mock.patch('tempfile.NamedTemporaryFile', mock_namedtemp):
             mock_filehandle = mock_namedtemp.return_value
             mock_write = mock_filehandle.write
             mock_write.side_effect = OSError('Test 2 Error')
-            def attempt():
+            eleza attempt():
                 tempfile.NamedTemporaryFile().write('asd')
             self.assertRaises(OSError, attempt)
 
-    def test_mock_open_alter_readline(self):
+    eleza test_mock_open_alter_readline(self):
         mopen = mock.mock_open(read_data='foo\nbarn')
         mopen.return_value.readline.side_effect = lambda *args:'abc'
         first = mopen().readline()
@@ -1820,7 +1820,7 @@ class MockTest(unittest.TestCase):
         self.assertEqual('abc', first)
         self.assertEqual('abc', second)
 
-    def test_mock_open_after_eof(self):
+    eleza test_mock_open_after_eof(self):
         # read, readline and readlines should work after end of file.
         _open = mock.mock_open(read_data='foo')
         h = _open('bar')
@@ -1832,7 +1832,7 @@ class MockTest(unittest.TestCase):
         self.assertEqual([], h.readlines())
         self.assertEqual([], h.readlines())
 
-    def test_mock_parents(self):
+    eleza test_mock_parents(self):
         for Klass in Mock, MagicMock:
             m = Klass()
             original_repr = repr(m)
@@ -1861,7 +1861,7 @@ class MockTest(unittest.TestCase):
             self.assertEqual(repr(m.a()), original_repr)
 
 
-    def test_attach_mock(self):
+    eleza test_attach_mock(self):
         classes = Mock, MagicMock, NonCallableMagicMock, NonCallableMock
         for Klass in classes:
             for Klass2 in classes:
@@ -1878,7 +1878,7 @@ class MockTest(unittest.TestCase):
                 self.assertEqual(m.method_calls, [call.bar.baz(1)])
 
 
-    def test_attach_mock_return_value(self):
+    eleza test_attach_mock_return_value(self):
         classes = Mock, MagicMock, NonCallableMagicMock, NonCallableMock
         for Klass in Mock, MagicMock:
             for Klass2 in classes:
@@ -1894,7 +1894,7 @@ class MockTest(unittest.TestCase):
                 self.assertEqual(m.mock_calls, call().foo().call_list())
 
 
-    def test_attach_mock_patch_autospec(self):
+    eleza test_attach_mock_patch_autospec(self):
         parent = Mock()
 
         with mock.patch(f'{__name__}.something', autospec=True) as mock_func:
@@ -1914,7 +1914,7 @@ class MockTest(unittest.TestCase):
             self.assertEqual(mock_func.mock._extract_mock_name(), 'mock.child')
 
 
-    def test_attribute_deletion(self):
+    eleza test_attribute_deletion(self):
         for mock in (Mock(), MagicMock(), NonCallableMagicMock(),
                      NonCallableMock()):
             self.assertTrue(hasattr(mock, 'm'))
@@ -1927,7 +1927,7 @@ class MockTest(unittest.TestCase):
             self.assertRaises(AttributeError, getattr, mock, 'f')
 
 
-    def test_mock_does_not_raise_on_repeated_attribute_deletion(self):
+    eleza test_mock_does_not_raise_on_repeated_attribute_deletion(self):
         # bpo-20239: Assigning and deleting twice an attribute raises.
         for mock in (Mock(), MagicMock(), NonCallableMagicMock(),
                      NonCallableMock()):
@@ -1946,7 +1946,7 @@ class MockTest(unittest.TestCase):
             self.assertFalse(hasattr(mock, 'foo'))
 
 
-    def test_mock_raises_when_deleting_nonexistent_attribute(self):
+    eleza test_mock_raises_when_deleting_nonexistent_attribute(self):
         for mock in (Mock(), MagicMock(), NonCallableMagicMock(),
                      NonCallableMock()):
             del mock.foo
@@ -1954,7 +1954,7 @@ class MockTest(unittest.TestCase):
                 del mock.foo
 
 
-    def test_reset_mock_does_not_raise_on_attr_deletion(self):
+    eleza test_reset_mock_does_not_raise_on_attr_deletion(self):
         # bpo-31177: reset_mock should not raise AttributeError when attributes
         # were deleted in a mock instance
         mock = Mock()
@@ -1964,7 +1964,7 @@ class MockTest(unittest.TestCase):
         self.assertFalse(hasattr(mock, 'child'))
 
 
-    def test_class_assignable(self):
+    eleza test_class_assignable(self):
         for mock in Mock(), MagicMock():
             self.assertNotIsInstance(mock, int)
 
@@ -1972,14 +1972,14 @@ class MockTest(unittest.TestCase):
             self.assertIsInstance(mock, int)
             mock.foo
 
-    def test_name_attribute_of_call(self):
+    eleza test_name_attribute_of_call(self):
         # bpo-35357: _Call should not disclose any attributes whose names
         # may clash with popular ones (such as ".name")
         self.assertIsNotNone(call.name)
         self.assertEqual(type(call.name), _Call)
         self.assertEqual(type(call.name().name), _Call)
 
-    def test_parent_attribute_of_call(self):
+    eleza test_parent_attribute_of_call(self):
         # bpo-35357: _Call should not disclose any attributes whose names
         # may clash with popular ones (such as ".parent")
         self.assertIsNotNone(call.parent)
@@ -1987,9 +1987,9 @@ class MockTest(unittest.TestCase):
         self.assertEqual(type(call.parent().parent), _Call)
 
 
-    def test_parent_propagation_with_create_autospec(self):
+    eleza test_parent_propagation_with_create_autospec(self):
 
-        def foo(a, b): pass
+        eleza foo(a, b): pass
 
         mock = Mock()
         mock.child = create_autospec(foo)
@@ -1999,9 +1999,9 @@ class MockTest(unittest.TestCase):
         self.assertEqual(mock.mock_calls, [call.child(1, 2)])
         self.assertIn('mock.child', repr(mock.child.mock))
 
-    def test_parent_propagation_with_autospec_attach_mock(self):
+    eleza test_parent_propagation_with_autospec_attach_mock(self):
 
-        def foo(a, b): pass
+        eleza foo(a, b): pass
 
         parent = Mock()
         parent.attach_mock(create_autospec(foo, name='bar'), 'child')
@@ -2012,8 +2012,8 @@ class MockTest(unittest.TestCase):
         self.assertIn('mock.child', repr(parent.child.mock))
 
 
-    def test_isinstance_under_settrace(self):
-        # bpo-36593 : __class__ is not set for a class that has __class__
+    eleza test_isinstance_under_settrace(self):
+        # bpo-36593 : __class__ is not set for a kundi that has __class__
         # property defined when it's used with sys.settrace(trace) set.
         # Delete the module to force reagiza with tracing function set
         # restore the old reference later since there are other tests that are
@@ -2033,8 +2033,8 @@ class MockTest(unittest.TestCase):
             del sys.modules['unittest.mock']
 
             # This trace will stop coverage being measured ;-)
-            def trace(frame, event, arg):  # pragma: no cover
-                return trace
+            eleza trace(frame, event, arg):  # pragma: no cover
+                rudisha trace
 
             self.addCleanup(sys.settrace, sys.gettrace())
             sys.settrace(trace)
@@ -2052,5 +2052,5 @@ class MockTest(unittest.TestCase):
                 self.assertIsInstance(obj, Something)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

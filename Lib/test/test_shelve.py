@@ -5,49 +5,49 @@ kutoka test agiza support
 kutoka collections.abc agiza MutableMapping
 kutoka test.test_dbm agiza dbm_iterator
 
-def L1(s):
-    return s.decode("latin-1")
+eleza L1(s):
+    rudisha s.decode("latin-1")
 
-class byteskeydict(MutableMapping):
+kundi byteskeydict(MutableMapping):
     "Mapping that supports bytes keys"
 
-    def __init__(self):
+    eleza __init__(self):
         self.d = {}
 
-    def __getitem__(self, key):
-        return self.d[L1(key)]
+    eleza __getitem__(self, key):
+        rudisha self.d[L1(key)]
 
-    def __setitem__(self, key, value):
+    eleza __setitem__(self, key, value):
         self.d[L1(key)] = value
 
-    def __delitem__(self, key):
+    eleza __delitem__(self, key):
         del self.d[L1(key)]
 
-    def __len__(self):
-        return len(self.d)
+    eleza __len__(self):
+        rudisha len(self.d)
 
-    def iterkeys(self):
+    eleza iterkeys(self):
         for k in self.d.keys():
             yield k.encode("latin-1")
 
     __iter__ = iterkeys
 
-    def keys(self):
-        return list(self.iterkeys())
+    eleza keys(self):
+        rudisha list(self.iterkeys())
 
-    def copy(self):
-        return byteskeydict(self.d)
+    eleza copy(self):
+        rudisha byteskeydict(self.d)
 
 
-class TestCase(unittest.TestCase):
+kundi TestCase(unittest.TestCase):
 
     fn = "shelftemp.db"
 
-    def tearDown(self):
+    eleza tearDown(self):
         for f in glob.glob(self.fn+"*"):
             support.unlink(f)
 
-    def test_close(self):
+    eleza test_close(self):
         d1 = {}
         s = shelve.Shelf(d1, protocol=2, writeback=False)
         s['key1'] = [1,2,3,4]
@@ -62,7 +62,7 @@ class TestCase(unittest.TestCase):
         else:
             self.fail('Closed shelf should not find a key')
 
-    def test_ascii_file_shelf(self):
+    eleza test_ascii_file_shelf(self):
         s = shelve.open(self.fn, protocol=0)
         try:
             s['key1'] = (1,2,3,4)
@@ -70,7 +70,7 @@ class TestCase(unittest.TestCase):
         finally:
             s.close()
 
-    def test_binary_file_shelf(self):
+    eleza test_binary_file_shelf(self):
         s = shelve.open(self.fn, protocol=1)
         try:
             s['key1'] = (1,2,3,4)
@@ -78,7 +78,7 @@ class TestCase(unittest.TestCase):
         finally:
             s.close()
 
-    def test_proto2_file_shelf(self):
+    eleza test_proto2_file_shelf(self):
         s = shelve.open(self.fn, protocol=2)
         try:
             s['key1'] = (1,2,3,4)
@@ -86,7 +86,7 @@ class TestCase(unittest.TestCase):
         finally:
             s.close()
 
-    def test_in_memory_shelf(self):
+    eleza test_in_memory_shelf(self):
         d1 = byteskeydict()
         with shelve.Shelf(d1, protocol=0) as s:
             s['key1'] = (1,2,3,4)
@@ -100,7 +100,7 @@ class TestCase(unittest.TestCase):
         self.assertEqual(len(d2), 1)
         self.assertNotEqual(d1.items(), d2.items())
 
-    def test_mutable_entry(self):
+    eleza test_mutable_entry(self):
         d1 = byteskeydict()
         with shelve.Shelf(d1, protocol=2, writeback=False) as s:
             s['key1'] = [1,2,3,4]
@@ -118,7 +118,7 @@ class TestCase(unittest.TestCase):
         self.assertEqual(len(d1), 1)
         self.assertEqual(len(d2), 1)
 
-    def test_keyencoding(self):
+    eleza test_keyencoding(self):
         d = {}
         key = 'PÃ¶p'
         # the default keyencoding is utf-8
@@ -131,19 +131,19 @@ class TestCase(unittest.TestCase):
         s = shelve.Shelf(d, keyencoding='ascii')
         self.assertRaises(UnicodeEncodeError, s.__setitem__, key, [1])
 
-    def test_writeback_also_writes_immediately(self):
+    eleza test_writeback_also_writes_immediately(self):
         # Issue 5754
         d = {}
         key = 'key'
         encodedkey = key.encode('utf-8')
         with shelve.Shelf(d, writeback=True) as s:
             s[key] = [1]
-            p1 = d[encodedkey]  # Will give a KeyError if backing store not updated
+            p1 = d[encodedkey]  # Will give a KeyError ikiwa backing store not updated
             s['key'].append(2)
         p2 = d[encodedkey]
         self.assertNotEqual(p1, p2)  # Write creates new object in store
 
-    def test_with(self):
+    eleza test_with(self):
         d1 = {}
         with shelve.Shelf(d1, protocol=2, writeback=False) as s:
             s['key1'] = [1,2,3,4]
@@ -157,57 +157,57 @@ class TestCase(unittest.TestCase):
         else:
             self.fail('Closed shelf should not find a key')
 
-    def test_default_protocol(self):
+    eleza test_default_protocol(self):
         with shelve.Shelf({}) as s:
             self.assertEqual(s._protocol, 3)
 
 kutoka test agiza mapping_tests
 
-class TestShelveBase(mapping_tests.BasicTestMappingProtocol):
+kundi TestShelveBase(mapping_tests.BasicTestMappingProtocol):
     fn = "shelftemp.db"
     counter = 0
-    def __init__(self, *args, **kw):
+    eleza __init__(self, *args, **kw):
         self._db = []
         mapping_tests.BasicTestMappingProtocol.__init__(self, *args, **kw)
     type2test = shelve.Shelf
-    def _reference(self):
-        return {"key1":"value1", "key2":2, "key3":(1,2,3)}
-    def _empty_mapping(self):
-        if self._in_mem:
+    eleza _reference(self):
+        rudisha {"key1":"value1", "key2":2, "key3":(1,2,3)}
+    eleza _empty_mapping(self):
+        ikiwa self._in_mem:
             x= shelve.Shelf(byteskeydict(), **self._args)
         else:
             self.counter+=1
             x= shelve.open(self.fn+str(self.counter), **self._args)
         self._db.append(x)
-        return x
-    def tearDown(self):
+        rudisha x
+    eleza tearDown(self):
         for db in self._db:
             db.close()
         self._db = []
-        if not self._in_mem:
+        ikiwa not self._in_mem:
             for f in glob.glob(self.fn+"*"):
                 support.unlink(f)
 
-class TestAsciiFileShelve(TestShelveBase):
+kundi TestAsciiFileShelve(TestShelveBase):
     _args={'protocol':0}
     _in_mem = False
-class TestBinaryFileShelve(TestShelveBase):
+kundi TestBinaryFileShelve(TestShelveBase):
     _args={'protocol':1}
     _in_mem = False
-class TestProto2FileShelve(TestShelveBase):
+kundi TestProto2FileShelve(TestShelveBase):
     _args={'protocol':2}
     _in_mem = False
-class TestAsciiMemShelve(TestShelveBase):
+kundi TestAsciiMemShelve(TestShelveBase):
     _args={'protocol':0}
     _in_mem = True
-class TestBinaryMemShelve(TestShelveBase):
+kundi TestBinaryMemShelve(TestShelveBase):
     _args={'protocol':1}
     _in_mem = True
-class TestProto2MemShelve(TestShelveBase):
+kundi TestProto2MemShelve(TestShelveBase):
     _args={'protocol':2}
     _in_mem = True
 
-def test_main():
+eleza test_main():
     for module in dbm_iterator():
         support.run_unittest(
             TestAsciiFileShelve,
@@ -219,5 +219,5 @@ def test_main():
             TestCase
         )
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

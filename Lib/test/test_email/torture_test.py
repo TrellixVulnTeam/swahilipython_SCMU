@@ -15,8 +15,8 @@ from test.test_email import TestEmailBase
 from test.support import run_unittest
 
 import email
-from email import __file__ as testfile
-from email.iterators import _structure
+from email agiza __file__ as testfile
+from email.iterators agiza _structure
 
 def openfile(filename):
     from os.path import join, dirname, abspath

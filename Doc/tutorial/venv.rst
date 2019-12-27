@@ -82,7 +82,7 @@ For example:
   (tutorial-env) $ python
   Python 3.5.1 (default, May  6 2016, 10:59:36)
     ...
-  >>> import sys
+  >>> agiza sys
   >>> sys.path
   ['', '/usr/local/lib/python35.zip', ...,
   '~/envs/tutorial-env/lib/python3.5/site-packages']
@@ -93,7 +93,7 @@ Managing Packages with pip
 ==========================
 
 You can install, upgrade, and remove packages using a program called
-:program:`pip`.  By default ``pip`` will install packages from the Python
+:program:`pip`.  By default ``pip`` will install packages kutoka the Python
 Package Index, <https://pypi.org>.  You can browse the Python
 Package Index by going to it in your web browser, or you can use ``pip``'s
 limited search feature:
@@ -150,7 +150,7 @@ install --upgrade`` to upgrade the package to the latest version:
   Successfully installed requests-2.7.0
 
 ``pip uninstall`` followed by one or more package names will remove the
-packages from the virtual environment.
+packages kutoka the virtual environment.
 
 ``pip show`` will display information about a particular package:
 
@@ -200,11 +200,11 @@ necessary packages with ``install -r``:
 .. code-block:: bash
 
   (tutorial-env) $ pip install -r requirements.txt
-  Collecting novas==3.1.1.3 (from -r requirements.txt (line 1))
+  Collecting novas==3.1.1.3 (kutoka -r requirements.txt (line 1))
     ...
-  Collecting numpy==1.9.2 (from -r requirements.txt (line 2))
+  Collecting numpy==1.9.2 (kutoka -r requirements.txt (line 2))
     ...
-  Collecting requests==2.7.0 (from -r requirements.txt (line 3))
+  Collecting requests==2.7.0 (kutoka -r requirements.txt (line 3))
     ...
   Installing collected packages: novas, numpy, requests
     Running setup.py install for novas

@@ -5,8 +5,8 @@ agiza doctest
 agiza sys
 
 
-class TestWithAscii(unittest.TestCase):
-    def test_one_insert(self):
+kundi TestWithAscii(unittest.TestCase):
+    eleza test_one_insert(self):
         sm = difflib.SequenceMatcher(None, 'b' * 100, 'a' + 'b' * 100)
         self.assertAlmostEqual(sm.ratio(), 0.995, places=3)
         self.assertEqual(list(sm.get_opcodes()),
@@ -21,7 +21,7 @@ class TestWithAscii(unittest.TestCase):
                 ('equal', 50, 100, 51, 101)])
         self.assertEqual(sm.bpopular, set())
 
-    def test_one_delete(self):
+    eleza test_one_delete(self):
         sm = difflib.SequenceMatcher(None, 'a' * 40 + 'c' + 'b' * 40, 'a' * 40 + 'b' * 40)
         self.assertAlmostEqual(sm.ratio(), 0.994, places=3)
         self.assertEqual(list(sm.get_opcodes()),
@@ -29,7 +29,7 @@ class TestWithAscii(unittest.TestCase):
                 ('delete', 40, 41, 40, 40),
                 ('equal', 41, 81, 40, 80)])
 
-    def test_bjunk(self):
+    eleza test_bjunk(self):
         sm = difflib.SequenceMatcher(isjunk=lambda x: x == ' ',
                 a='a' * 40 + 'b' * 40, b='a' * 44 + 'b' * 40)
         self.assertEqual(sm.bjunk, set())
@@ -43,9 +43,9 @@ class TestWithAscii(unittest.TestCase):
         self.assertEqual(sm.bjunk, {' ', 'b'})
 
 
-class TestAutojunk(unittest.TestCase):
+kundi TestAutojunk(unittest.TestCase):
     """Tests for the autojunk parameter added in 2.7"""
-    def test_one_insert_homogenous_sequence(self):
+    eleza test_one_insert_homogenous_sequence(self):
         # By default autojunk=True and the heuristic kicks in for a sequence
         # of length 200+
         seq1 = 'b' * 200
@@ -61,22 +61,22 @@ class TestAutojunk(unittest.TestCase):
         self.assertEqual(sm.bpopular, set())
 
 
-class TestSFbugs(unittest.TestCase):
-    def test_ratio_for_null_seqn(self):
+kundi TestSFbugs(unittest.TestCase):
+    eleza test_ratio_for_null_seqn(self):
         # Check clearing of SF bug 763023
         s = difflib.SequenceMatcher(None, [], [])
         self.assertEqual(s.ratio(), 1)
         self.assertEqual(s.quick_ratio(), 1)
         self.assertEqual(s.real_quick_ratio(), 1)
 
-    def test_comparing_empty_lists(self):
+    eleza test_comparing_empty_lists(self):
         # Check fix for bug #979794
         group_gen = difflib.SequenceMatcher(None, [], []).get_grouped_opcodes()
         self.assertRaises(StopIteration, next, group_gen)
         diff_gen = difflib.unified_diff([], [])
         self.assertRaises(StopIteration, next, diff_gen)
 
-    def test_matching_blocks_cache(self):
+    eleza test_matching_blocks_cache(self):
         # Issue #21635
         s = difflib.SequenceMatcher(None, "abxcd", "abcd")
         first = s.get_matching_blocks()
@@ -85,7 +85,7 @@ class TestSFbugs(unittest.TestCase):
         self.assertEqual(second[1].size, 2)
         self.assertEqual(second[2].size, 0)
 
-    def test_added_tab_hint(self):
+    eleza test_added_tab_hint(self):
         # Check fix for bug #1488943
         diff = list(difflib.Differ().compare(["\tI am a buggy"],["\t\tI am a bug"]))
         self.assertEqual("- \tI am a buggy", diff[0])
@@ -93,13 +93,13 @@ class TestSFbugs(unittest.TestCase):
         self.assertEqual("+ \t\tI am a bug", diff[2])
         self.assertEqual("? +\n", diff[3])
 
-    def test_hint_indented_properly_with_tabs(self):
+    eleza test_hint_indented_properly_with_tabs(self):
         diff = list(difflib.Differ().compare(["\t \t \t^"], ["\t \t \t^\n"]))
         self.assertEqual("- \t \t \t^", diff[0])
         self.assertEqual("+ \t \t \t^\n", diff[1])
         self.assertEqual("? \t \t \t +\n", diff[2])
 
-    def test_mdiff_catch_stop_iteration(self):
+    eleza test_mdiff_catch_stop_iteration(self):
         # Issue #33224
         self.assertEqual(
             list(difflib._mdiff(["2"], ["3"], 1)),
@@ -107,7 +107,7 @@ class TestSFbugs(unittest.TestCase):
         )
 
 
-patch914575_from1 = """
+patch914575_kutoka1 = """
    1. Beautiful is beTTer than ugly.
    2. Explicit is better than implicit.
    3. Simple is better than complex.
@@ -121,7 +121,7 @@ patch914575_to1 = """
    5. Flat is better than nested.
 """
 
-patch914575_nonascii_from1 = """
+patch914575_nonascii_kutoka1 = """
    1. Beautiful is beTTer than ugly.
    2. Explicit is better than ımplıcıt.
    3. Simple is better than complex.
@@ -135,7 +135,7 @@ patch914575_nonascii_to1 = """
    5. Flat is better than nested.
 """
 
-patch914575_from2 = """
+patch914575_kutoka2 = """
 \t\tLine 1: preceded by kutoka:[tt] to:[ssss]
   \t\tLine 2: preceded by kutoka:[sstt] to:[sssst]
   \t \tLine 3: preceded by kutoka:[sstst] to:[ssssss]
@@ -151,7 +151,7 @@ Line 4:   has kutoka:[sst] to:[sss] after :
 Line 5: has kutoka:[t] to:[ss] at end
 """
 
-patch914575_from3 = """line 0
+patch914575_kutoka3 = """line 0
 1234567890123456789012345689012345
 line 1
 line 2
@@ -185,11 +185,11 @@ just fitS in!!
 just fits in two lineS yup!!
 the end"""
 
-class TestSFpatches(unittest.TestCase):
+kundi TestSFpatches(unittest.TestCase):
 
-    def test_html_diff(self):
+    eleza test_html_diff(self):
         # Check SF patch 914575 for generating HTML differences
-        f1a = ((patch914575_from1 + '123\n'*10)*3)
+        f1a = ((patch914575_kutoka1 + '123\n'*10)*3)
         t1a = (patch914575_to1 + '123\n'*10)*3
         f1b = '456\n'*10 + f1a
         t1b = '456\n'*10 + t1a
@@ -197,33 +197,33 @@ class TestSFpatches(unittest.TestCase):
         t1a = t1a.splitlines()
         f1b = f1b.splitlines()
         t1b = t1b.splitlines()
-        f2 = patch914575_from2.splitlines()
+        f2 = patch914575_kutoka2.splitlines()
         t2 = patch914575_to2.splitlines()
-        f3 = patch914575_from3
+        f3 = patch914575_kutoka3
         t3 = patch914575_to3
         i = difflib.HtmlDiff()
         j = difflib.HtmlDiff(tabsize=2)
         k = difflib.HtmlDiff(wrapcolumn=14)
 
-        full = i.make_file(f1a,t1a,'from','to',context=False,numlines=5)
+        full = i.make_file(f1a,t1a,'kutoka','to',context=False,numlines=5)
         tables = '\n'.join(
             [
              '<h2>Context (first diff within numlines=5(default))</h2>',
-             i.make_table(f1a,t1a,'from','to',context=True),
+             i.make_table(f1a,t1a,'kutoka','to',context=True),
              '<h2>Context (first diff after numlines=5(default))</h2>',
-             i.make_table(f1b,t1b,'from','to',context=True),
+             i.make_table(f1b,t1b,'kutoka','to',context=True),
              '<h2>Context (numlines=6)</h2>',
-             i.make_table(f1a,t1a,'from','to',context=True,numlines=6),
+             i.make_table(f1a,t1a,'kutoka','to',context=True,numlines=6),
              '<h2>Context (numlines=0)</h2>',
-             i.make_table(f1a,t1a,'from','to',context=True,numlines=0),
+             i.make_table(f1a,t1a,'kutoka','to',context=True,numlines=0),
              '<h2>Same Context</h2>',
-             i.make_table(f1a,f1a,'from','to',context=True),
+             i.make_table(f1a,f1a,'kutoka','to',context=True),
              '<h2>Same Full</h2>',
-             i.make_table(f1a,f1a,'from','to',context=False),
+             i.make_table(f1a,f1a,'kutoka','to',context=False),
              '<h2>Empty Context</h2>',
-             i.make_table([],[],'from','to',context=True),
+             i.make_table([],[],'kutoka','to',context=True),
              '<h2>Empty Full</h2>',
-             i.make_table([],[],'from','to',context=False),
+             i.make_table([],[],'kutoka','to',context=False),
              '<h2>tabsize=2</h2>',
              j.make_table(f2,t2),
              '<h2>tabsize=default</h2>',
@@ -244,37 +244,37 @@ class TestSFpatches(unittest.TestCase):
         with open(findfile('test_difflib_expect.html')) as fp:
             self.assertEqual(actual, fp.read())
 
-    def test_recursion_limit(self):
-        # Check if the problem described in patch #1413711 exists.
+    eleza test_recursion_limit(self):
+        # Check ikiwa the problem described in patch #1413711 exists.
         limit = sys.getrecursionlimit()
         old = [(i%2 and "K:%d" or "V:A:%d") % i for i in range(limit*2)]
         new = [(i%2 and "K:%d" or "V:B:%d") % i for i in range(limit*2)]
         difflib.SequenceMatcher(None, old, new).get_opcodes()
 
-    def test_make_file_default_charset(self):
+    eleza test_make_file_default_charset(self):
         html_diff = difflib.HtmlDiff()
-        output = html_diff.make_file(patch914575_from1.splitlines(),
+        output = html_diff.make_file(patch914575_kutoka1.splitlines(),
                                      patch914575_to1.splitlines())
         self.assertIn('content="text/html; charset=utf-8"', output)
 
-    def test_make_file_iso88591_charset(self):
+    eleza test_make_file_iso88591_charset(self):
         html_diff = difflib.HtmlDiff()
-        output = html_diff.make_file(patch914575_from1.splitlines(),
+        output = html_diff.make_file(patch914575_kutoka1.splitlines(),
                                      patch914575_to1.splitlines(),
                                      charset='iso-8859-1')
         self.assertIn('content="text/html; charset=iso-8859-1"', output)
 
-    def test_make_file_usascii_charset_with_nonascii_input(self):
+    eleza test_make_file_usascii_charset_with_nonascii_input(self):
         html_diff = difflib.HtmlDiff()
-        output = html_diff.make_file(patch914575_nonascii_from1.splitlines(),
+        output = html_diff.make_file(patch914575_nonascii_kutoka1.splitlines(),
                                      patch914575_nonascii_to1.splitlines(),
                                      charset='us-ascii')
         self.assertIn('content="text/html; charset=us-ascii"', output)
         self.assertIn('&#305;mpl&#305;c&#305;t', output)
 
 
-class TestOutputFormat(unittest.TestCase):
-    def test_tab_delimiter(self):
+kundi TestOutputFormat(unittest.TestCase):
+    eleza test_tab_delimiter(self):
         args = ['one', 'two', 'Original', 'Current',
             '2005-01-26 23:30:50', '2010-04-02 10:20:52']
         ud = difflib.unified_diff(*args, lineterm='')
@@ -286,7 +286,7 @@ class TestOutputFormat(unittest.TestCase):
                            "*** Original\t2005-01-26 23:30:50",
                            "--- Current\t2010-04-02 10:20:52"])
 
-    def test_no_trailing_tab_on_empty_filedate(self):
+    eleza test_no_trailing_tab_on_empty_filedate(self):
         args = ['one', 'two', 'Original', 'Current']
         ud = difflib.unified_diff(*args, lineterm='')
         self.assertEqual(list(ud)[0:2], ["--- Original", "+++ Current"])
@@ -294,15 +294,15 @@ class TestOutputFormat(unittest.TestCase):
         cd = difflib.context_diff(*args, lineterm='')
         self.assertEqual(list(cd)[0:2], ["*** Original", "--- Current"])
 
-    def test_range_format_unified(self):
+    eleza test_range_format_unified(self):
         # Per the diff spec at http://www.unix.org/single_unix_specification/
         spec = '''\
            Each <range> field shall be of the form:
-             %1d", <beginning line number>  if the range contains exactly one line,
+             %1d", <beginning line number>  ikiwa the range contains exactly one line,
            and:
             "%1d,%1d", <beginning line number>, <number of lines> otherwise.
            If a range is empty, its beginning line number shall be the number of
-           the line just before the range, or 0 if the empty range starts the file.
+           the line just before the range, or 0 ikiwa the empty range starts the file.
         '''
         fmt = difflib._format_range_unified
         self.assertEqual(fmt(3,3), '3,0')
@@ -311,19 +311,19 @@ class TestOutputFormat(unittest.TestCase):
         self.assertEqual(fmt(3,6), '4,3')
         self.assertEqual(fmt(0,0), '0,0')
 
-    def test_range_format_context(self):
+    eleza test_range_format_context(self):
         # Per the diff spec at http://www.unix.org/single_unix_specification/
         spec = '''\
            The range of lines in file1 shall be written in the following format
-           if the range contains two or more lines:
+           ikiwa the range contains two or more lines:
                "*** %d,%d ****\n", <beginning line number>, <ending line number>
            and the following format otherwise:
                "*** %d ****\n", <ending line number>
            The ending line number of an empty range shall be the number of the preceding line,
-           or 0 if the range is at the start of the file.
+           or 0 ikiwa the range is at the start of the file.
 
            Next, the range of lines in file2 shall be written in the following format
-           if the range contains two or more lines:
+           ikiwa the range contains two or more lines:
                "--- %d,%d ----\n", <beginning line number>, <ending line number>
            and the following format otherwise:
                "--- %d ----\n", <ending line number>
@@ -336,18 +336,18 @@ class TestOutputFormat(unittest.TestCase):
         self.assertEqual(fmt(0,0), '0')
 
 
-class TestBytes(unittest.TestCase):
+kundi TestBytes(unittest.TestCase):
     # don't really care about the content of the output, just the fact
     # that it's bytes and we don't crash
-    def check(self, diff):
+    eleza check(self, diff):
         diff = list(diff)   # trigger exceptions first
         for line in diff:
             self.assertIsInstance(
                 line, bytes,
                 "all lines of diff should be bytes, but got: %r" % line)
 
-    def test_byte_content(self):
-        # if we receive byte strings, we return byte strings
+    eleza test_byte_content(self):
+        # ikiwa we receive byte strings, we rudisha byte strings
         a = [b'hello', b'andr\xe9']     # iso-8859-1 bytes
         b = [b'hello', b'andr\xc3\xa9'] # utf-8 bytes
 
@@ -374,7 +374,7 @@ class TestBytes(unittest.TestCase):
         check(difflib.diff_bytes(context, a, a, b'a', b'a', b'2005', b'2013'))
         check(difflib.diff_bytes(context, a, b, b'a', b'b', b'2005', b'2013'))
 
-    def test_byte_filenames(self):
+    eleza test_byte_filenames(self):
         # somebody renamed a file kutoka ISO-8859-2 to UTF-8
         fna = b'\xb3odz.txt'    # "łodz.txt"
         fnb = b'\xc5\x82odz.txt'
@@ -389,7 +389,7 @@ class TestBytes(unittest.TestCase):
         check(difflib.diff_bytes(unified, a, b, fna, fnb))
         check(difflib.diff_bytes(context, a, b, fna, fnb))
 
-        def assertDiff(expect, actual):
+        eleza assertDiff(expect, actual):
             # do not compare expect and equal as lists, because unittest
             # uses difflib to report difference between lists
             actual = list(actual)
@@ -427,7 +427,7 @@ class TestBytes(unittest.TestCase):
                                     lineterm=b'')
         assertDiff(expect, actual)
 
-    def test_mixed_types_content(self):
+    eleza test_mixed_types_content(self):
         # type of input content must be consistent: all str or all bytes
         a = [b'hello']
         b = ['hello']
@@ -447,8 +447,8 @@ class TestBytes(unittest.TestCase):
         self._assert_type_error(expect, difflib.diff_bytes, context, a, b)
         self._assert_type_error(expect, difflib.diff_bytes, context, b, a)
 
-    def test_mixed_types_filenames(self):
-        # cannot pass filenames as bytes if content is str (this may not be
+    eleza test_mixed_types_filenames(self):
+        # cannot pass filenames as bytes ikiwa content is str (this may not be
         # the right behaviour, but at least the test demonstrates how
         # things work)
         a = ['hello\n']
@@ -459,7 +459,7 @@ class TestBytes(unittest.TestCase):
             "all arguments must be str, not: b'ol\\xe9.txt'",
             difflib.unified_diff, a, b, fna, fnb)
 
-    def test_mixed_types_dates(self):
+    eleza test_mixed_types_dates(self):
         # type of dates must be consistent with type of contents
         a = [b'foo\n']
         b = [b'bar\n']
@@ -470,43 +470,43 @@ class TestBytes(unittest.TestCase):
             difflib.diff_bytes, difflib.unified_diff,
             a, b, b'a', b'b', datea, dateb)
 
-        # if input is str, non-ASCII dates are fine
+        # ikiwa input is str, non-ASCII dates are fine
         a = ['foo\n']
         b = ['bar\n']
         list(difflib.unified_diff(a, b, 'a', 'b', datea, dateb))
 
-    def _assert_type_error(self, msg, generator, *args):
+    eleza _assert_type_error(self, msg, generator, *args):
         with self.assertRaises(TypeError) as ctx:
             list(generator(*args))
         self.assertEqual(msg, str(ctx.exception))
 
-class TestJunkAPIs(unittest.TestCase):
-    def test_is_line_junk_true(self):
+kundi TestJunkAPIs(unittest.TestCase):
+    eleza test_is_line_junk_true(self):
         for line in ['#', '  ', ' #', '# ', ' # ', '']:
             self.assertTrue(difflib.IS_LINE_JUNK(line), repr(line))
 
-    def test_is_line_junk_false(self):
+    eleza test_is_line_junk_false(self):
         for line in ['##', ' ##', '## ', 'abc ', 'abc #', 'Mr. Moose is up!']:
             self.assertFalse(difflib.IS_LINE_JUNK(line), repr(line))
 
-    def test_is_line_junk_REDOS(self):
+    eleza test_is_line_junk_REDOS(self):
         evil_input = ('\t' * 1000000) + '##'
         self.assertFalse(difflib.IS_LINE_JUNK(evil_input))
 
-    def test_is_character_junk_true(self):
+    eleza test_is_character_junk_true(self):
         for char in [' ', '\t']:
             self.assertTrue(difflib.IS_CHARACTER_JUNK(char), repr(char))
 
-    def test_is_character_junk_false(self):
+    eleza test_is_character_junk_false(self):
         for char in ['a', '#', '\n', '\f', '\r', '\v']:
             self.assertFalse(difflib.IS_CHARACTER_JUNK(char), repr(char))
 
-def test_main():
+eleza test_main():
     difflib.HtmlDiff._default_prefix = 0
     Doctests = doctest.DocTestSuite(difflib)
     run_unittest(
         TestWithAscii, TestAutojunk, TestSFpatches, TestSFbugs,
         TestOutputFormat, TestBytes, TestJunkAPIs, Doctests)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test_main()

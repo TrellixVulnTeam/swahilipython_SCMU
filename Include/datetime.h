@@ -42,7 +42,7 @@ typedef struct
 
 typedef struct
 {
-    PyObject_HEAD               /* a pure abstract base class */
+    PyObject_HEAD               /* a pure abstract base kundi */
 } PyDateTime_TZInfo;
 
 
@@ -88,7 +88,7 @@ typedef struct
 
 /* All datetime objects are of PyDateTime_DateTimeType, but that can be
  * allocated in two ways too, just like for time objects above.  In addition,
- * the plain date type is a base class for datetime, so it must also have
+ * the plain date type is a base kundi for datetime, so it must also have
  * a hastzinfo member (although it's unused there).
  */
 typedef struct

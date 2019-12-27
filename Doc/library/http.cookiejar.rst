@@ -13,7 +13,7 @@
 
 The :mod:`http.cookiejar` module defines classes for automatic handling of HTTP
 cookies.  It is useful for accessing web sites that require small pieces of data
--- :dfn:`cookies` -- to be set on the client machine by an HTTP response from a
+-- :dfn:`cookies` -- to be set on the client machine by an HTTP response kutoka a
 web server, and then returned to the server in later HTTP requests.
 
 Both the regular Netscape cookie protocol and the protocol defined by
@@ -22,7 +22,7 @@ Both the regular Netscape cookie protocol and the protocol defined by
 either as Netscape or RFC 2965 cookies according to the 'policy' in effect.
 Note that the great majority of cookies on the Internet are Netscape cookies.
 :mod:`http.cookiejar` attempts to follow the de-facto Netscape cookie protocol (which
-differs substantially from that set out in the original Netscape specification),
+differs substantially kutoka that set out in the original Netscape specification),
 including taking note of the ``max-age`` and ``port`` cookie-attributes
 introduced with RFC 2965.
 
@@ -30,7 +30,7 @@ introduced with RFC 2965.
 
    The various named parameters found in :mailheader:`Set-Cookie` and
    :mailheader:`Set-Cookie2` headers (eg. ``domain`` and ``expires``) are
-   conventionally referred to as :dfn:`attributes`.  To distinguish them from
+   conventionally referred to as :dfn:`attributes`.  To distinguish them kutoka
    Python attributes, the documentation for this module uses the term
    :dfn:`cookie-attribute` instead.
 
@@ -41,10 +41,10 @@ The module defines the following exception:
 .. exception:: LoadError
 
    Instances of :class:`FileCookieJar` raise this exception on failure to load
-   cookies from a file.  :exc:`LoadError` is a subclass of :exc:`OSError`.
+   cookies kutoka a file.  :exc:`LoadError` is a subkundi of :exc:`OSError`.
 
    .. versionchanged:: 3.3
-      LoadError was made a subclass of :exc:`OSError` instead of
+      LoadError was made a subkundi of :exc:`OSError` instead of
       :exc:`IOError`.
 
 
@@ -55,10 +55,10 @@ The following classes are provided:
 
    *policy* is an object implementing the :class:`CookiePolicy` interface.
 
-   The :class:`CookieJar` class stores HTTP cookies.  It extracts cookies from HTTP
+   The :class:`CookieJar` kundi stores HTTP cookies.  It extracts cookies kutoka HTTP
    requests, and returns them in HTTP responses. :class:`CookieJar` instances
    automatically expire contained cookies when necessary.  Subclasses are also
-   responsible for storing and retrieving cookies from a file or database.
+   responsible for storing and retrieving cookies kutoka a file or database.
 
 
 .. class:: FileCookieJar(filename, delayload=None, policy=None)
@@ -66,9 +66,9 @@ The following classes are provided:
    *policy* is an object implementing the :class:`CookiePolicy` interface.  For the
    other arguments, see the documentation for the corresponding attributes.
 
-   A :class:`CookieJar` which can load cookies from, and perhaps save cookies to, a
-   file on disk.  Cookies are **NOT** loaded from the named file until either the
-   :meth:`load` or :meth:`revert` method is called.  Subclasses of this class are
+   A :class:`CookieJar` which can load cookies kutoka, and perhaps save cookies to, a
+   file on disk.  Cookies are **NOT** loaded kutoka the named file until either the
+   :meth:`load` or :meth:`revert` method is called.  Subclasses of this kundi are
    documented in section :ref:`file-cookie-jar-classes`.
 
    .. versionchanged:: 3.8
@@ -78,15 +78,15 @@ The following classes are provided:
 
 .. class:: CookiePolicy()
 
-   This class is responsible for deciding whether each cookie should be accepted
-   from / returned to the server.
+   This kundi is responsible for deciding whether each cookie should be accepted
+   kutoka / returned to the server.
 
 
 .. class:: DefaultCookiePolicy( blocked_domains=None, allowed_domains=None, netscape=True, rfc2965=False, rfc2109_as_netscape=None, hide_cookie2=False, strict_domain=False, strict_rfc2965_unverifiable=True, strict_ns_unverifiable=False, strict_ns_domain=DefaultCookiePolicy.DomainLiberal, strict_ns_set_initial_dollar=False, strict_ns_set_path=False, secure_protocols=("https", "wss") )
 
    Constructor arguments should be passed as keyword arguments only.
    *blocked_domains* is a sequence of domain names that we never accept cookies
-   from, nor return cookies to. *allowed_domains* if not :const:`None`, this is a
+   kutoka, nor return cookies to. *allowed_domains* if not :const:`None`, this is a
    sequence of the only domains for which we accept and return cookies.
    *secure_protocols* is a sequence of protocols for which secure cookies can be
    added to. By default *https* and *wss* (secure websocket) are considered
@@ -106,7 +106,7 @@ The following classes are provided:
 
 .. class:: Cookie()
 
-   This class represents Netscape, :rfc:`2109` and :rfc:`2965` cookies.  It is not
+   This kundi represents Netscape, :rfc:`2109` and :rfc:`2965` cookies.  It is not
    expected that users of :mod:`http.cookiejar` construct their own :class:`Cookie`
    instances.  Instead, if necessary, call :meth:`make_cookies` on a
    :class:`CookieJar` instance.
@@ -174,7 +174,7 @@ contained :class:`Cookie` objects.
 
 .. method:: CookieJar.extract_cookies(response, request)
 
-   Extract cookies from HTTP *response* and store them in the :class:`CookieJar`,
+   Extract cookies kutoka HTTP *response* and store them in the :class:`CookieJar`,
    where allowed by policy.
 
    The :class:`CookieJar` will look for allowable :mailheader:`Set-Cookie` and
@@ -204,7 +204,7 @@ contained :class:`Cookie` objects.
 
 .. method:: CookieJar.make_cookies(response, request)
 
-   Return sequence of :class:`Cookie` objects extracted from *response* object.
+   Return sequence of :class:`Cookie` objects extracted kutoka *response* object.
 
    See the documentation for :meth:`extract_cookies` for the interfaces required of
    the *response* and *request* arguments.
@@ -253,7 +253,7 @@ contained :class:`Cookie` objects.
 
    Save cookies to a file.
 
-   This base class raises :exc:`NotImplementedError`.  Subclasses may leave this
+   This base kundi raises :exc:`NotImplementedError`.  Subclasses may leave this
    method unimplemented.
 
    *filename* is the name of file in which to save cookies.  If *filename* is not
@@ -271,7 +271,7 @@ contained :class:`Cookie` objects.
 
 .. method:: FileCookieJar.load(filename=None, ignore_discard=False, ignore_expires=False)
 
-   Load cookies from a file.
+   Load cookies kutoka a file.
 
    Old cookies are kept unless overwritten by newly loaded ones.
 
@@ -287,7 +287,7 @@ contained :class:`Cookie` objects.
 
 .. method:: FileCookieJar.revert(filename=None, ignore_discard=False, ignore_expires=False)
 
-   Clear all cookies and reload cookies from a saved file.
+   Clear all cookies and reload cookies kutoka a saved file.
 
    :meth:`revert` can raise the same exceptions as :meth:`load`. If there is a
    failure, the object's state will not be altered.
@@ -303,7 +303,7 @@ contained :class:`Cookie` objects.
 
 .. attribute:: FileCookieJar.delayload
 
-   If true, load cookies lazily from disk.  This attribute should not be assigned
+   If true, load cookies lazily kutoka disk.  This attribute should not be assigned
    to.  This is only a hint, since this only affects performance, not behaviour
    (unless the cookies on disk are changing). A :class:`CookieJar` object may
    ignore it.  None of the :class:`FileCookieJar` classes included in the standard
@@ -320,7 +320,7 @@ writing.
 
 .. class:: MozillaCookieJar(filename, delayload=None, policy=None)
 
-   A :class:`FileCookieJar` that can load from and save cookies to disk in the
+   A :class:`FileCookieJar` that can load kutoka and save cookies to disk in the
    Mozilla ``cookies.txt`` file format (which is also used by the Lynx and Netscape
    browsers).
 
@@ -341,7 +341,7 @@ writing.
 
 .. class:: LWPCookieJar(filename, delayload=None, policy=None)
 
-   A :class:`FileCookieJar` that can load from and save cookies to disk in format
+   A :class:`FileCookieJar` that can load kutoka and save cookies to disk in format
    compatible with the libwww-perl library's ``Set-Cookie3`` file format.  This is
    convenient if you want to store cookies in a human-readable file.
 
@@ -360,7 +360,7 @@ methods:
 
 .. method:: CookiePolicy.set_ok(cookie, request)
 
-   Return boolean value indicating whether cookie should be accepted from server.
+   Return boolean value indicating whether cookie should be accepted kutoka server.
 
    *cookie* is a :class:`Cookie` instance.  *request* is an object
    implementing the interface defined by the documentation for
@@ -382,7 +382,7 @@ methods:
 
    This method is an optimization.  It removes the need for checking every cookie
    with a particular domain (which might involve reading many files).  Returning
-   true from :meth:`domain_return_ok` and :meth:`path_return_ok` leaves all the
+   true kutoka :meth:`domain_return_ok` and :meth:`path_return_ok` leaves all the
    work to :meth:`return_ok`.
 
    If :meth:`domain_return_ok` returns true for the cookie domain,
@@ -427,8 +427,8 @@ be assigned to.
    Don't add :mailheader:`Cookie2` header to requests (the presence of this header
    indicates to the server that we understand :rfc:`2965` cookies).
 
-The most useful way to define a :class:`CookiePolicy` class is by subclassing
-from :class:`DefaultCookiePolicy` and overriding some or all of the methods
+The most useful way to define a :class:`CookiePolicy` kundi is by subclassing
+kutoka :class:`DefaultCookiePolicy` and overriding some or all of the methods
 above.  :class:`CookiePolicy` itself may be used as a 'null policy' to allow
 setting and receiving any and all cookies (this is unlikely to be useful).
 
@@ -443,12 +443,12 @@ Implements the standard rules for accepting and returning cookies.
 Both :rfc:`2965` and Netscape cookies are covered.  RFC 2965 handling is switched
 off by default.
 
-The easiest way to provide your own policy is to override this class and call
+The easiest way to provide your own policy is to override this kundi and call
 its methods in your overridden implementations before adding your own additional
 checks::
 
-   import http.cookiejar
-   class MyCookiePolicy(http.cookiejar.DefaultCookiePolicy):
+   agiza http.cookiejar
+   kundi MyCookiePolicy(http.cookiejar.DefaultCookiePolicy):
        def set_ok(self, cookie, request):
            if not http.cookiejar.DefaultCookiePolicy.set_ok(self, cookie, request):
                return False
@@ -457,7 +457,7 @@ checks::
            return True
 
 In addition to the features required to implement the :class:`CookiePolicy`
-interface, this class allows you to block and allow domains from setting and
+interface, this kundi allows you to block and allow domains kutoka setting and
 receiving cookies.  There are also some strictness switches that allow you to
 tighten up the rather loose Netscape protocol rules a little bit (at the cost of
 blocking some benign cookies).
@@ -513,7 +513,7 @@ and ``".168.1.2"``, 192.168.1.2 is blocked, but 193.168.1.2 is not.
    cookies.
 
 :class:`DefaultCookiePolicy` instances have the following attributes, which are
-all initialised from the constructor arguments of the same name, and which may
+all initialised kutoka the constructor arguments of the same name, and which may
 all be assigned to.
 
 
@@ -532,7 +532,7 @@ General strictness switches:
 .. attribute:: DefaultCookiePolicy.strict_domain
 
    Don't allow sites to set two-component domains with country-code top-level
-   domains like ``.co.uk``, ``.gov.uk``, ``.co.nz``.etc.  This is far from perfect
+   domains like ``.co.uk``, ``.gov.uk``, ``.co.nz``.etc.  This is far kutoka perfect
    and isn't guaranteed to work!
 
 
@@ -541,7 +541,7 @@ General strictness switches:
 .. attribute:: DefaultCookiePolicy.strict_rfc2965_unverifiable
 
    Follow :rfc:`2965` rules on unverifiable transactions (usually, an unverifiable
-   transaction is one resulting from a redirect or a request for an image hosted on
+   transaction is one resulting kutoka a redirect or a request for an image hosted on
    another site).  If this is false, cookies are *never* blocked on the basis of
    verifiability
 
@@ -584,7 +584,7 @@ both flags are set).
 
    Cookies that did not explicitly specify a ``domain`` cookie-attribute can only
    be returned to a domain equal to the domain that set the cookie (eg.
-   ``spam.example.com`` won't be returned cookies from ``example.com`` that had no
+   ``spam.example.com`` won't be returned cookies kutoka ``example.com`` that had no
    ``domain`` cookie-attribute).
 
 
@@ -615,11 +615,11 @@ standard cookie-attributes specified in the various cookie standards.  The
 correspondence is not one-to-one, because there are complicated rules for
 assigning default values, because the ``max-age`` and ``expires``
 cookie-attributes contain equivalent information, and because :rfc:`2109` cookies
-may be 'downgraded' by :mod:`http.cookiejar` from version 1 to version 0 (Netscape)
+may be 'downgraded' by :mod:`http.cookiejar` kutoka version 1 to version 0 (Netscape)
 cookies.
 
 Assignment to these attributes should not be necessary other than in rare
-circumstances in a :class:`CookiePolicy` method.  The class does not enforce
+circumstances in a :class:`CookiePolicy` method.  The kundi does not enforce
 internal consistency, so you should know what you're doing if you do that.
 
 
@@ -670,13 +670,13 @@ internal consistency, so you should know what you're doing if you do that.
 
 .. attribute:: Cookie.comment
 
-   String comment from the server explaining the function of this cookie, or
+   String comment kutoka the server explaining the function of this cookie, or
    :const:`None`.
 
 
 .. attribute:: Cookie.comment_url
 
-   URL linking to a comment from the server explaining the function of this cookie,
+   URL linking to a comment kutoka the server explaining the function of this cookie,
    or :const:`None`.
 
 
@@ -724,7 +724,7 @@ accessed using the following methods:
 
    Set the value of the named cookie-attribute.
 
-The :class:`Cookie` class also defines the following method:
+The :class:`Cookie` kundi also defines the following method:
 
 
 .. method:: Cookie.is_expired(now=None)
@@ -739,7 +739,7 @@ Examples
 
 The first example shows the most common usage of :mod:`http.cookiejar`::
 
-   import http.cookiejar, urllib.request
+   agiza http.cookiejar, urllib.request
    cj = http.cookiejar.CookieJar()
    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
    r = opener.open("http://example.com/")
@@ -747,7 +747,7 @@ The first example shows the most common usage of :mod:`http.cookiejar`::
 This example illustrates how to open a URL using your Netscape, Mozilla, or Lynx
 cookies (assumes Unix/Netscape convention for location of the cookies file)::
 
-   import os, http.cookiejar, urllib.request
+   agiza os, http.cookiejar, urllib.request
    cj = http.cookiejar.MozillaCookieJar()
    cj.load(os.path.join(os.path.expanduser("~"), ".netscape", "cookies.txt"))
    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
@@ -755,11 +755,11 @@ cookies (assumes Unix/Netscape convention for location of the cookies file)::
 
 The next example illustrates the use of :class:`DefaultCookiePolicy`. Turn on
 :rfc:`2965` cookies, be more strict about domains when setting and returning
-Netscape cookies, and block some domains from setting cookies or having them
+Netscape cookies, and block some domains kutoka setting cookies or having them
 returned::
 
-   import urllib.request
-   from http.cookiejar import CookieJar, DefaultCookiePolicy
+   agiza urllib.request
+   kutoka http.cookiejar agiza CookieJar, DefaultCookiePolicy
    policy = DefaultCookiePolicy(
        rfc2965=True, strict_ns_domain=Policy.DomainStrict,
        blocked_domains=["ads.net", ".ads.net"])

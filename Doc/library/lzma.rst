@@ -21,7 +21,7 @@ interface supporting the ``.xz`` and legacy ``.lzma`` file formats used by the
 The interface provided by this module is very similar to that of the :mod:`bz2`
 module. However, note that :class:`LZMAFile` is *not* thread-safe, unlike
 :class:`bz2.BZ2File`, so if you need to use a single :class:`LZMAFile` instance
-from multiple threads, it is necessary to protect it with a lock.
+kutoka multiple threads, it is necessary to protect it with a lock.
 
 
 .. exception:: LZMAError
@@ -41,7 +41,7 @@ Reading and writing compressed files
    The *filename* argument can be either an actual file name (given as a
    :class:`str`, :class:`bytes` or :term:`path-like <path-like object>` object), in
    which case the named file is opened, or it can be an existing file object
-   to read from or write to.
+   to read kutoka or write to.
 
    The *mode* argument can be any of ``"r"``, ``"rb"``, ``"w"``, ``"wb"``,
    ``"x"``, ``"xb"``, ``"a"`` or ``"ab"`` for binary mode, or ``"rt"``,
@@ -232,7 +232,7 @@ Compressing and decompressing data in memory
    See :ref:`filter-chain-specs` for more information about filter chains.
 
    .. note::
-      This class does not transparently handle inputs containing multiple
+      This kundi does not transparently handle inputs containing multiple
       compressed streams, unlike :func:`decompress` and :class:`LZMAFile`. To
       decompress a multi-stream input with :class:`LZMADecompressor`, you must
       create a new decompressor for each stream.
@@ -386,26 +386,26 @@ Examples
 
 Reading in a compressed file::
 
-   import lzma
+   agiza lzma
    with lzma.open("file.xz") as f:
        file_content = f.read()
 
 Creating a compressed file::
 
-   import lzma
+   agiza lzma
    data = b"Insert Data Here"
    with lzma.open("file.xz", "w") as f:
        f.write(data)
 
 Compressing data in memory::
 
-   import lzma
+   agiza lzma
    data_in = b"Insert Data Here"
    data_out = lzma.compress(data_in)
 
 Incremental compression::
 
-   import lzma
+   agiza lzma
    lzc = lzma.LZMACompressor()
    out1 = lzc.compress(b"Some data\n")
    out2 = lzc.compress(b"Another piece of data\n")
@@ -416,7 +416,7 @@ Incremental compression::
 
 Writing compressed data to an already-open file::
 
-   import lzma
+   agiza lzma
    with open("file.xz", "wb") as f:
        f.write(b"This data will not be compressed\n")
        with lzma.open(f, "w") as lzf:
@@ -425,7 +425,7 @@ Writing compressed data to an already-open file::
 
 Creating a compressed file using a custom filter chain::
 
-   import lzma
+   agiza lzma
    my_filters = [
        {"id": lzma.FILTER_DELTA, "dist": 5},
        {"id": lzma.FILTER_LZMA2, "preset": 7 | lzma.PRESET_EXTREME},

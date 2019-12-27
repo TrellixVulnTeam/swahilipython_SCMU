@@ -28,57 +28,57 @@ agiza tempfile
 agiza time
 
 
-def write_tests(filename, tests):
+eleza write_tests(filename, tests):
     with open(filename, "w") as fp:
         for name in tests:
-            print(name, file=fp)
+            andika(name, file=fp)
         fp.flush()
 
 
-def write_output(filename, tests):
-    if not filename:
+eleza write_output(filename, tests):
+    ikiwa not filename:
         return
-    print("Writing %s tests into %s" % (len(tests), filename))
+    andika("Writing %s tests into %s" % (len(tests), filename))
     write_tests(filename, tests)
-    return filename
+    rudisha filename
 
 
-def format_shell_args(args):
-    return ' '.join(args)
+eleza format_shell_args(args):
+    rudisha ' '.join(args)
 
 
-def list_cases(args):
+eleza list_cases(args):
     cmd = [sys.executable, '-m', 'test', '--list-cases']
     cmd.extend(args.test_args)
     proc = subprocess.run(cmd,
                           stdout=subprocess.PIPE,
                           universal_newlines=True)
     exitcode = proc.returncode
-    if exitcode:
+    ikiwa exitcode:
         cmd = format_shell_args(cmd)
-        print("Failed to list tests: %s failed with exit code %s"
+        andika("Failed to list tests: %s failed with exit code %s"
               % (cmd, exitcode))
         sys.exit(exitcode)
     tests = proc.stdout.splitlines()
-    return tests
+    rudisha tests
 
 
-def run_tests(args, tests, huntrleaks=None):
+eleza run_tests(args, tests, huntrleaks=None):
     tmp = tempfile.mktemp()
     try:
         write_tests(tmp, tests)
 
         cmd = [sys.executable, '-m', 'test', '--matchfile', tmp]
         cmd.extend(args.test_args)
-        print("+ %s" % format_shell_args(cmd))
+        andika("+ %s" % format_shell_args(cmd))
         proc = subprocess.run(cmd)
-        return proc.returncode
+        rudisha proc.returncode
     finally:
-        if os.path.exists(tmp):
+        ikiwa os.path.exists(tmp):
             os.unlink(tmp)
 
 
-def parse_args():
+eleza parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--input',
                         help='Test names produced by --list-tests written '
@@ -95,26 +95,26 @@ def parse_args():
 
     args, test_args = parser.parse_known_args()
     args.test_args = test_args
-    return args
+    rudisha args
 
 
-def main():
+eleza main():
     args = parse_args()
 
-    if args.input:
+    ikiwa args.input:
         with open(args.input) as fp:
             tests = [line.strip() for line in fp]
     else:
         tests = list_cases(args)
 
-    print("Start bisection with %s tests" % len(tests))
-    print("Test arguments: %s" % format_shell_args(args.test_args))
-    print("Bisection will stop when getting %s or less tests "
+    andika("Start bisection with %s tests" % len(tests))
+    andika("Test arguments: %s" % format_shell_args(args.test_args))
+    andika("Bisection will stop when getting %s or less tests "
           "(-n/--max-tests option), or after %s iterations "
           "(-N/--max-iter option)"
           % (args.max_tests, args.max_iter))
     output = write_output(args.output, tests)
-    print()
+    andika()
 
     start_time = time.monotonic()
     iteration = 1
@@ -124,44 +124,44 @@ def main():
             ntest = max(ntest // 2, 1)
             subtests = random.sample(tests, ntest)
 
-            print("[+] Iteration %s: run %s tests/%s"
+            andika("[+] Iteration %s: run %s tests/%s"
                   % (iteration, len(subtests), len(tests)))
-            print()
+            andika()
 
             exitcode = run_tests(args, subtests)
 
-            print("ran %s tests/%s" % (ntest, len(tests)))
-            print("exit", exitcode)
-            if exitcode:
-                print("Tests failed: continuing with this subtest")
+            andika("ran %s tests/%s" % (ntest, len(tests)))
+            andika("exit", exitcode)
+            ikiwa exitcode:
+                andika("Tests failed: continuing with this subtest")
                 tests = subtests
                 output = write_output(args.output, tests)
             else:
-                print("Tests succeeded: skipping this subtest, trying a new subset")
-            print()
+                andika("Tests succeeded: skipping this subtest, trying a new subset")
+            andika()
             iteration += 1
     except KeyboardInterrupt:
-        print()
-        print("Bisection interrupted!")
-        print()
+        andika()
+        andika("Bisection interrupted!")
+        andika()
 
-    print("Tests (%s):" % len(tests))
+    andika("Tests (%s):" % len(tests))
     for test in tests:
-        print("* %s" % test)
-    print()
+        andika("* %s" % test)
+    andika()
 
-    if output:
-        print("Output written into %s" % output)
+    ikiwa output:
+        andika("Output written into %s" % output)
 
     dt = math.ceil(time.monotonic() - start_time)
-    if len(tests) <= args.max_tests:
-        print("Bisection completed in %s iterations and %s"
+    ikiwa len(tests) <= args.max_tests:
+        andika("Bisection completed in %s iterations and %s"
               % (iteration, datetime.timedelta(seconds=dt)))
         sys.exit(1)
     else:
-        print("Bisection failed after %s iterations and %s"
+        andika("Bisection failed after %s iterations and %s"
               % (iteration, datetime.timedelta(seconds=dt)))
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     main()

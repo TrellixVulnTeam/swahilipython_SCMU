@@ -11,7 +11,7 @@ sys.exc_traceback -> sys.exc_info()[2]
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Attr, Call, Name, Number, Subscript, Node, syms
 
-class FixSysExc(fixer_base.BaseFix):
+kundi FixSysExc(fixer_base.BaseFix):
     # This order matches the ordering of sys.exc_info().
     exc_info = ["exc_type", "exc_value", "exc_traceback"]
     BM_compatible = True
@@ -19,7 +19,7 @@ class FixSysExc(fixer_base.BaseFix):
               power< 'sys' trailer< dot='.' attribute=(%s) > >
               """ % '|'.join("'%s'" % e for e in exc_info)
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         sys_attr = results["attribute"][0]
         index = Number(self.exc_info.index(sys_attr.value))
 
@@ -27,4 +27,4 @@ class FixSysExc(fixer_base.BaseFix):
         attr = Attr(Name("sys"), call)
         attr[1].children[0].prefix = results["dot"].prefix
         attr.append(Subscript(index))
-        return Node(syms.power, attr, prefix=node.prefix)
+        rudisha Node(syms.power, attr, prefix=node.prefix)

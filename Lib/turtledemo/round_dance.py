@@ -24,11 +24,11 @@ controlled through update().
 
 kutoka turtle agiza *
 
-def stop():
+eleza stop():
     global running
     running = False
 
-def main():
+eleza main():
     global running
     clearscreen()
     bgcolor("gray10")
@@ -59,7 +59,7 @@ def main():
         tilt(-4)
         lt(2)
         update()
-        if i % 12 == 0:
+        ikiwa i % 12 == 0:
             dancers.append(clone())
     home()
     # dance
@@ -73,14 +73,14 @@ def main():
             dancer.fd(7)
             dancer.lt(2)
             dancer.tilt(ta)
-            ta = -4 if ta > 0 else 2
-        if cs < 180:
+            ta = -4 ikiwa ta > 0 else 2
+        ikiwa cs < 180:
             right(4)
             shapesize(cs)
             cs *= 1.005
         update()
-    return "DONE!"
+    rudisha "DONE!"
 
-if __name__=='__main__':
-    print(main())
+ikiwa __name__=='__main__':
+    andika(main())
     mainloop()

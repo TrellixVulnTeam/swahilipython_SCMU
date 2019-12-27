@@ -5,14 +5,14 @@ GOOD_SERIALS = ("alpha", "beta", "candidate", "final")
 
 features = __future__.all_feature_names
 
-class FutureTest(unittest.TestCase):
+kundi FutureTest(unittest.TestCase):
 
-    def test_names(self):
+    eleza test_names(self):
         # Verify that all_feature_names appears correct.
         given_feature_names = features[:]
         for name in dir(__future__):
             obj = getattr(__future__, name, None)
-            if obj is not None and isinstance(obj, __future__._Feature):
+            ikiwa obj is not None and isinstance(obj, __future__._Feature):
                 self.assertTrue(
                     name in given_feature_names,
                     "%r should have been in all_feature_names" % name
@@ -21,7 +21,7 @@ class FutureTest(unittest.TestCase):
         self.assertEqual(len(given_feature_names), 0,
                "all_feature_names has too much: %r" % given_feature_names)
 
-    def test_attributes(self):
+    eleza test_attributes(self):
         for feature in features:
             value = getattr(__future__, feature)
 
@@ -30,7 +30,7 @@ class FutureTest(unittest.TestCase):
 
             a = self.assertTrue
             e = self.assertEqual
-            def check(t, name):
+            eleza check(t, name):
                 a(isinstance(t, tuple), "%s isn't tuple" % name)
                 e(len(t), 5, "%s isn't 5-tuple" % name)
                 (major, minor, micro, level, serial) = t
@@ -44,7 +44,7 @@ class FutureTest(unittest.TestCase):
                 a(isinstance(serial, int), "%s serial isn't int" % name)
 
             check(optional, "optional")
-            if mandatory is not None:
+            ikiwa mandatory is not None:
                 check(mandatory, "mandatory")
                 a(optional < mandatory,
                        "optional not less than mandatory, and mandatory not None")
@@ -57,5 +57,5 @@ class FutureTest(unittest.TestCase):
                    ".compiler_flag isn't int")
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

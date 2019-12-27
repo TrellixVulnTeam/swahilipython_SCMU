@@ -147,7 +147,7 @@ invoke *function* with the filled-in arguments.
 
 Here's a small but realistic example::
 
-   import functools
+   agiza functools
 
    def log (message, subsystem):
        "Write the contents of 'message' to the specified subsystem."
@@ -157,13 +157,13 @@ Here's a small but realistic example::
    server_log = functools.partial(log, subsystem='server')
    server_log('Unable to open socket')
 
-Here's another example, from a program that uses PyGTK.  Here a context-sensitive
+Here's another example, kutoka a program that uses PyGTK.  Here a context-sensitive
 pop-up menu is being constructed dynamically.  The callback provided
 for the menu option is a partially applied version of the :meth:`open_item`
 method, where the first argument has been provided. ::
 
    ...
-   class Application:
+   kundi Application:
        def open_item(self, path):
           ...
        def init (self):
@@ -257,8 +257,8 @@ PEP 328: Absolute and Relative Imports
 ======================================
 
 The simpler part of :pep:`328` was implemented in Python 2.4: parentheses could now
-be used to enclose the names imported from a module using the ``from ... import
-...`` statement, making it easier to import many different names.
+be used to enclose the names imported kutoka a module using the ``kutoka ... import
+...`` statement, making it easier to agiza many different names.
 
 The more complicated part has been implemented in Python 2.5: importing a module
 can be specified to use absolute or package-relative imports.  The plan is to
@@ -275,7 +275,7 @@ This defines a package named :mod:`pkg` containing the :mod:`pkg.main` and
 :mod:`pkg.string` submodules.
 
 Consider the code in the :file:`main.py` module.  What happens if it executes
-the statement ``import string``?  In Python 2.4 and earlier, it will first look
+the statement ``agiza string``?  In Python 2.4 and earlier, it will first look
 in the package's directory to perform a relative import, finds
 :file:`pkg/string.py`, imports the contents of that file as the
 :mod:`pkg.string` module, and that module is bound to the name ``string`` in the
@@ -285,8 +285,8 @@ That's fine if :mod:`pkg.string` was what you wanted.  But what if you wanted
 Python's standard :mod:`string` module?  There's no clean way to ignore
 :mod:`pkg.string` and look for the standard module; generally you had to look at
 the contents of ``sys.modules``, which is slightly unclean.    Holger Krekel's
-:mod:`py.std` package provides a tidier way to perform imports from the standard
-library, ``import py; py.std.string.join()``, but that package isn't available
+:mod:`py.std` package provides a tidier way to perform imports kutoka the standard
+library, ``agiza py; py.std.string.join()``, but that package isn't available
 on all Python installations.
 
 Reading code which relies on relative imports is also less clear, because a
@@ -297,32 +297,32 @@ can't protect against having your submodule's name being used for a new module
 added in a future version of Python.
 
 In Python 2.5, you can switch :keyword:`import`'s behaviour to  absolute imports
-using a ``from __future__ import absolute_import`` directive.  This absolute-import
+using a ``kutoka __future__ agiza absolute_import`` directive.  This absolute-import
 behaviour will become the default in a future version (probably Python
-2.7).  Once absolute imports  are the default, ``import string`` will always
+2.7).  Once absolute imports  are the default, ``agiza string`` will always
 find the standard library's version. It's suggested that users should begin
 using absolute imports as much as possible, so it's preferable to begin writing
-``from pkg import string`` in your code.
+``kutoka pkg agiza string`` in your code.
 
 Relative imports are still possible by adding a leading period  to the module
-name when using the ``from ... import`` form::
+name when using the ``kutoka ... import`` form::
 
-   # Import names from pkg.string
-   from .string import name1, name2
+   # Import names kutoka pkg.string
+   kutoka .string agiza name1, name2
    # Import pkg.string
-   from . import string
+   kutoka . agiza string
 
 This imports the :mod:`string` module relative to the current package, so in
-:mod:`pkg.main` this will import *name1* and *name2* from :mod:`pkg.string`.
-Additional leading periods perform the relative import starting from the parent
+:mod:`pkg.main` this will agiza *name1* and *name2* kutoka :mod:`pkg.string`.
+Additional leading periods perform the relative agiza starting kutoka the parent
 of the current package.  For example, code in the :mod:`A.B.C` module can do::
 
-   from . import D                 # Imports A.B.D
-   from .. import E                # Imports A.E
-   from ..F import G               # Imports A.F.G
+   kutoka . agiza D                 # Imports A.B.D
+   kutoka .. agiza E                # Imports A.E
+   kutoka ..F agiza G               # Imports A.F.G
 
-Leading periods cannot be used with the ``import modname``  form of the import
-statement, only the ``from ... import`` form.
+Leading periods cannot be used with the ``agiza modname``  form of the import
+statement, only the ``kutoka ... import`` form.
 
 
 .. seealso::
@@ -346,11 +346,11 @@ gained a few more abilities.  Instead of being implemented in C code inside the
 Python interpreter, the switch now uses an implementation in a new module,
 :mod:`runpy`.
 
-The :mod:`runpy` module implements a more sophisticated import mechanism so that
+The :mod:`runpy` module implements a more sophisticated agiza mechanism so that
 it's now possible to run modules in a package such as :mod:`pychecker.checker`.
-The module also supports alternative import mechanisms such as the
+The module also supports alternative agiza mechanisms such as the
 :mod:`zipimport` module.  This means you can add a .zip archive's path to
-``sys.path`` and then use the :option:`-m` switch to execute code from the
+``sys.path`` and then use the :option:`-m` switch to execute code kutoka the
 archive.
 
 
@@ -432,7 +432,7 @@ To refresh your memory of basic generators, here's a simple example::
            i += 1
 
 When you call ``counter(10)``, the result is an iterator that returns the values
-from 0 up to 9.  On encountering the :keyword:`yield` statement, the iterator
+kutoka 0 up to 9.  On encountering the :keyword:`yield` statement, the iterator
 returns the provided value and suspends the function's execution, preserving the
 local variables. Execution resumes on the following call to the iterator's
 :meth:`next` method, picking up after the :keyword:`!yield` statement.
@@ -512,7 +512,7 @@ In addition to :meth:`send`, there are two other new methods on generators:
   If you need to run cleanup code when a :exc:`GeneratorExit` occurs, I suggest
   using a ``try: ... finally:`` suite instead of  catching :exc:`GeneratorExit`.
 
-The cumulative effect of these changes is to turn generators from one-way
+The cumulative effect of these changes is to turn generators kutoka one-way
 producers of information into both producers and consumers.
 
 Generators also become *coroutines*, a more generalized form of subroutines.
@@ -552,7 +552,7 @@ exhausted.
       The Wikipedia entry for  coroutines.
 
    http://www.sidhe.org/~dan/blog/archives/000178.html
-      An explanation of coroutines from a Perl point of view, written by Dan Sugalski.
+      An explanation of coroutines kutoka a Perl point of view, written by Dan Sugalski.
 
 .. ======================================================================
 
@@ -590,7 +590,7 @@ clean-up code.
 To enable the statement in Python 2.5, you need to add the following directive
 to your module::
 
-   from __future__ import with_statement
+   kutoka __future__ agiza with_statement
 
 The statement will always be enabled in Python 2.6.
 
@@ -626,7 +626,7 @@ The new :func:`localcontext` function in the :mod:`decimal` module makes it easy
 to save and restore the current decimal context, which encapsulates the desired
 precision and rounding characteristics for computations::
 
-   from decimal import Decimal, Context, localcontext
+   kutoka decimal agiza Decimal, Context, localcontext
 
    # Displays with default precision of 28 digits
    v = Decimal('578')
@@ -687,14 +687,14 @@ be to let the user write code like this::
    db_connection = DatabaseConnection()
    with db_connection as cursor:
        cursor.execute('insert into ...')
-       cursor.execute('delete from ...')
+       cursor.execute('delete kutoka ...')
        # ... more operations ...
 
 The transaction should be committed if the code in the block runs flawlessly or
 rolled back if there's an exception. Here's the basic interface for
 :class:`DatabaseConnection` that I'll assume::
 
-   class DatabaseConnection:
+   kundi DatabaseConnection:
        # Database interface
        def cursor (self):
            "Returns a cursor object and starts a new transaction"
@@ -708,7 +708,7 @@ transaction.  For this application the resulting cursor object would be a useful
 result, so the method will return it.  The user can then add ``as cursor`` to
 their ':keyword:`with`' statement to bind the cursor to a variable name. ::
 
-   class DatabaseConnection:
+   kundi DatabaseConnection:
        ...
        def __enter__ (self):
            # Code to start a new transaction
@@ -725,7 +725,7 @@ returning the default value of ``None``.  ``None`` is false, so the exception
 will be re-raised automatically.  If you wished, you could be more explicit and
 add a :keyword:`return` statement at the marked location. ::
 
-   class DatabaseConnection:
+   kundi DatabaseConnection:
        ...
        def __exit__ (self, type, value, tb):
            if tb is None:
@@ -754,10 +754,10 @@ value that will get bound to the variable in the ':keyword:`with`' statement's
 executed in the :meth:`__exit__` method.  Any exception raised in the block will
 be raised by the :keyword:`!yield` statement.
 
-Our database example from the previous section could be written  using this
+Our database example kutoka the previous section could be written  using this
 decorator as::
 
-   from contextlib import contextmanager
+   kutoka contextlib agiza contextmanager
 
    @contextmanager
    def db_transaction (connection):
@@ -786,8 +786,8 @@ statement both starts a database transaction and acquires a thread lock::
 Finally, the ``closing(object)`` function returns *object* so that it can be
 bound to a variable, and calls ``object.close`` at the end of the block. ::
 
-   import urllib, sys
-   from contextlib import closing
+   agiza urllib, sys
+   kutoka contextlib agiza closing
 
    with closing(urllib.urlopen('http://www.yahoo.com')) as f:
        for line in f:
@@ -813,7 +813,7 @@ PEP 352: Exceptions as New-Style Classes
 ========================================
 
 Exception classes can now be new-style classes, not just classic classes, and
-the built-in :exc:`Exception` class and all the standard built-in exceptions
+the built-in :exc:`Exception` kundi and all the standard built-in exceptions
 (:exc:`NameError`, :exc:`ValueError`, etc.) are now new-style classes.
 
 The inheritance hierarchy for exceptions has been rearranged a bit. In 2.5, the
@@ -845,10 +845,10 @@ result, catching all the exceptions that usually indicate errors  but leaving
 :exc:`KeyboardInterrupt` and :exc:`SystemExit` alone.  As in previous versions,
 a bare ``except:`` still catches all exceptions.
 
-The goal for Python 3.0 is to require any class raised as an exception to derive
-from :exc:`BaseException` or some descendant of :exc:`BaseException`, and future
+The goal for Python 3.0 is to require any kundi raised as an exception to derive
+kutoka :exc:`BaseException` or some descendant of :exc:`BaseException`, and future
 releases in the Python 2.x series may begin to enforce this constraint.
-Therefore, I suggest you begin making all your exception classes derive from
+Therefore, I suggest you begin making all your exception classes derive kutoka
 :exc:`Exception` now.  It's been suggested that the bare ``except:`` form should
 be removed in Python 3.0, but Guido van Rossum hasn't decided whether to do this
 or not.
@@ -860,7 +860,7 @@ to be able to remove the string-exception feature in a few releases.
 
 .. seealso::
 
-   :pep:`352` - Required Superclass for Exceptions
+   :pep:`352` - Required Superkundi for Exceptions
       PEP written by  Brett Cannon and Guido van Rossum; implemented by Brett Cannon.
 
 .. ======================================================================
@@ -946,7 +946,7 @@ and that's clearly an undesirable behaviour.
 Instead, a new special method called :meth:`__index__` was added.  It takes no
 arguments and returns an integer giving the slice index to use.  For example::
 
-   class C:
+   kundi C:
        def __index__ (self):
            return self.value
 
@@ -978,11 +978,11 @@ Here are all of the changes that Python 2.5 makes to the core Python language.
 * The :class:`dict` type has a new hook for letting subclasses provide a default
   value when a key isn't contained in the dictionary. When a key isn't found, the
   dictionary's ``__missing__(key)`` method will be called.  This hook is used
-  to implement the new :class:`defaultdict` class in the :mod:`collections`
+  to implement the new :class:`defaultdict` kundi in the :mod:`collections`
   module.  The following example defines a dictionary  that returns zero for any
   missing key::
 
-     class zerodict (dict):
+     kundi zerodict (dict):
          def __missing__ (self, key):
              return 0
 
@@ -1000,7 +1000,7 @@ Here are all of the changes that Python 2.5 makes to the core Python language.
   itself, and the substring after the separator.  If the separator isn't found,
   the first element of the tuple is the entire string and the other two elements
   are empty.  ``rpartition(sep)`` also returns a 3-tuple but starts searching
-  from the end of the string; the ``r`` stands for 'reverse'.
+  kutoka the end of the string; the ``r`` stands for 'reverse'.
 
   Some examples::
 
@@ -1031,7 +1031,7 @@ Here are all of the changes that Python 2.5 makes to the core Python language.
   parameter analogous to the ``key`` argument for :meth:`sort`.  This parameter
   supplies a function that takes a single argument and is called for every value
   in the list; :func:`min`/:func:`max` will return the element with the
-  smallest/largest return value from this function. For example, to find the
+  smallest/largest return value kutoka this function. For example, to find the
   longest string in a list, you can do::
 
      L = ['medium', 'longest', 'short']
@@ -1094,15 +1094,15 @@ Here are all of the changes that Python 2.5 makes to the core Python language.
   :file:`__init__.py` module in a package directory. Debugging this mistake can be
   confusing, and usually requires running Python with the :option:`-v` switch to
   log all the paths searched. In Python 2.5, a new :exc:`ImportWarning` warning is
-  triggered when an import would have picked up a directory as a package but no
+  triggered when an agiza would have picked up a directory as a package but no
   :file:`__init__.py` was found.  This warning is silently ignored by default;
   provide the :option:`-Wd <-W>` option when running the Python executable to display
   the warning message. (Implemented by Thomas Wouters.)
 
-* The list of base classes in a class definition can now be empty.   As an
+* The list of base classes in a kundi definition can now be empty.   As an
   example, this is now legal::
 
-     class C():
+     kundi C():
          pass
 
   (Implemented by Brett Cannon.)
@@ -1139,9 +1139,9 @@ Optimizations
 -------------
 
 Several of the optimizations were developed at the NeedForSpeed sprint, an event
-held in Reykjavik, Iceland, from May 21--28 2006. The sprint focused on speed
+held in Reykjavik, Iceland, kutoka May 21--28 2006. The sprint focused on speed
 enhancements to the CPython implementation and was funded by EWT LLC with local
-support from CCP Games.  Those optimizations added at this sprint are specially
+support kutoka CCP Games.  Those optimizations added at this sprint are specially
 marked in the following list.
 
 * When they were introduced  in Python 2.4, the built-in :class:`set` and
@@ -1170,7 +1170,7 @@ marked in the following list.
   methods.  Iteration uses an internal buffer and the  :meth:`read\*` methods
   don't use that buffer.   Instead they would return the data following the
   buffer, causing the data to appear out of order.  Mixing iteration and these
-  methods will now trigger a :exc:`ValueError` from the :meth:`read\*` method.
+  methods will now trigger a :exc:`ValueError` kutoka the :meth:`read\*` method.
   (Implemented by Thomas Wouters.)
 
   .. Patch 1397960
@@ -1293,8 +1293,8 @@ complete list of changes, or look through the SVN logs for all the details.
   received several enhancements and a number of bugfixes.  You can now set the
   maximum size in bytes of a field by calling the
   ``csv.field_size_limit(new_limit)`` function; omitting the *new_limit*
-  argument will return the currently-set limit.  The :class:`reader` class now has
-  a :attr:`line_num` attribute that counts the number of physical lines read from
+  argument will return the currently-set limit.  The :class:`reader` kundi now has
+  a :attr:`line_num` attribute that counts the number of physical lines read kutoka
   the source; records can span multiple physical lines, so :attr:`line_num` is not
   the same as the number of records read.
 
@@ -1308,12 +1308,12 @@ complete list of changes, or look through the SVN logs for all the details.
 
   (Contributed by Skip Montanaro and Andrew McNamara.)
 
-* The :class:`~datetime.datetime` class in the :mod:`datetime`  module now has a
+* The :class:`~datetime.datetime` kundi in the :mod:`datetime`  module now has a
   ``strptime(string, format)``  method for parsing date strings, contributed
   by Josh Spoerri. It uses the same format characters as :func:`time.strptime` and
   :func:`time.strftime`::
 
-     from datetime import datetime
+     kutoka datetime agiza datetime
 
      ts = datetime.strptime('10:13:15 2006-03-07',
                             '%H:%M:%S %Y-%m-%d')
@@ -1323,12 +1323,12 @@ complete list of changes, or look through the SVN logs for all the details.
   subsequences.  Previously, the algorithm would occasionally break a block of
   matching elements into two list entries. (Enhancement by Tim Peters.)
 
-* The :mod:`doctest` module gained a ``SKIP`` option that keeps an example from
+* The :mod:`doctest` module gained a ``SKIP`` option that keeps an example kutoka
   being executed at all.  This is intended for code snippets that are usage
   examples intended for the reader and aren't actually test cases.
 
   An *encoding* parameter was added to the :func:`testfile` function and the
-  :class:`DocFileSuite` class to specify the file's encoding.  This makes it
+  :class:`DocFileSuite` kundi to specify the file's encoding.  This makes it
   easier to use non-ASCII characters in  tests contained within a docstring.
   (Contributed by Bjorn Tillenius.)
 
@@ -1363,7 +1363,7 @@ complete list of changes, or look through the SVN logs for all the details.
   the :func:`min`/:func:`max` functions and the :meth:`sort` methods.  For
   example::
 
-     >>> import heapq
+     >>> agiza heapq
      >>> L = ["short", 'medium', 'longest', 'longer still']
      >>> heapq.nsmallest(2, L)  # Return two lowest elements, lexicographically
      ['longer still', 'longest']
@@ -1409,9 +1409,9 @@ complete list of changes, or look through the SVN logs for all the details.
   The following example converts a maildir-format mailbox into an mbox-format
   one::
 
-     import mailbox
+     agiza mailbox
 
-     # 'factory=None' uses email.Message.Message as the class representing
+     # 'factory=None' uses email.Message.Message as the kundi representing
      # individual messages.
      src = mailbox.Maildir('maildir', factory=None)
      dest = mailbox.mbox('/tmp/mbox')
@@ -1438,7 +1438,7 @@ complete list of changes, or look through the SVN logs for all the details.
   multiple fields. (Contributed by Raymond Hettinger.)
 
 * The :mod:`optparse` module was updated to version 1.5.1 of the Optik library.
-  The :class:`OptionParser` class gained an :attr:`epilog` attribute, a string
+  The :class:`OptionParser` kundi gained an :attr:`epilog` attribute, a string
   that will be printed after the help message, and a :meth:`destroy` method to
   break reference cycles created by the object. (Contributed by Greg Ward.)
 
@@ -1458,7 +1458,7 @@ complete list of changes, or look through the SVN logs for all the details.
   a tuple of the process ID and its exit status, but :func:`wait3` and
   :func:`wait4` return additional information.  :func:`wait3` doesn't take a
   process ID as input, so it waits for any child process to exit and returns a
-  3-tuple of *process-id*, *exit-status*, *resource-usage* as returned from the
+  3-tuple of *process-id*, *exit-status*, *resource-usage* as returned kutoka the
   :func:`resource.getrusage` function. ``wait4(pid)`` does take a process ID.
   (Contributed by Chad J. Schroeder.)
 
@@ -1479,12 +1479,12 @@ complete list of changes, or look through the SVN logs for all the details.
   .. Patch 790710
 
 * The :mod:`pickle` and :mod:`cPickle` modules no longer accept a return value
-  of ``None`` from the :meth:`__reduce__` method; the method must return a tuple
+  of ``None`` kutoka the :meth:`__reduce__` method; the method must return a tuple
   of arguments instead.  The ability to return ``None`` was deprecated in Python
   2.4, so this completes the removal of the feature.
 
 * The :mod:`pkgutil` module, containing various utility functions for finding
-  packages, was enhanced to support :pep:`302`'s import hooks and now also works for
+  packages, was enhanced to support :pep:`302`'s agiza hooks and now also works for
   packages stored in ZIP-format archives. (Contributed by Phillip J. Eby.)
 
 * The pybench benchmark suite by Marc-André Lemburg is now included in the
@@ -1498,7 +1498,7 @@ complete list of changes, or look through the SVN logs for all the details.
 * The :mod:`pyexpat` module now uses version 2.0 of the Expat parser.
   (Contributed by Trent Mick.)
 
-* The :class:`~queue.Queue` class provided by the :mod:`Queue` module gained two new
+* The :class:`~queue.Queue` kundi provided by the :mod:`Queue` module gained two new
   methods.  :meth:`join` blocks until all items in the queue have been retrieved
   and all processing work on the items  have been completed.  Worker threads call
   the other new method,  :meth:`task_done`, to signal that processing for an item
@@ -1515,7 +1515,7 @@ complete list of changes, or look through the SVN logs for all the details.
 
 * The :mod:`rlcompleter` module is no longer  dependent on importing the
   :mod:`readline` module and therefore now works on non-Unix platforms. (Patch
-  from Robert Kiendl.)
+  kutoka Robert Kiendl.)
 
   .. Patch #1472854
 
@@ -1527,14 +1527,14 @@ complete list of changes, or look through the SVN logs for all the details.
   .. Bug #1473048
 
 * The :mod:`socket` module now supports :const:`AF_NETLINK` sockets on Linux,
-  thanks to a patch from Philippe Biondi.   Netlink sockets are a Linux-specific
+  thanks to a patch kutoka Philippe Biondi.   Netlink sockets are a Linux-specific
   mechanism for communications between a user-space process and kernel code; an
   introductory  article about them is at https://www.linuxjournal.com/article/7356.
   In Python code, netlink addresses are represented as a tuple of 2 integers,
   ``(pid, group_mask)``.
 
   Two new methods on socket objects, ``recv_into(buffer)`` and
-  ``recvfrom_into(buffer)``, store the received data in an object  that
+  ``recvkutoka_into(buffer)``, store the received data in an object  that
   supports the buffer protocol instead of returning the data as a string.  This
   means you can put the data directly into an array or a memory-mapped file.
 
@@ -1557,8 +1557,8 @@ complete list of changes, or look through the SVN logs for all the details.
      data = s.pack(1972, 187, 'abc')
      year, number, name = s.unpack(data)
 
-  You can also pack and unpack data to and from buffer objects directly using the
-  ``pack_into(buffer, offset, v1, v2, ...)`` and ``unpack_from(buffer,
+  You can also pack and unpack data to and kutoka buffer objects directly using the
+  ``pack_into(buffer, offset, v1, v2, ...)`` and ``unpack_kutoka(buffer,
   offset)`` methods.  This lets you store data directly into an array or a
   memory-mapped file.
 
@@ -1566,7 +1566,7 @@ complete list of changes, or look through the SVN logs for all the details.
   sprint.  Support for buffer objects was added by Martin Blais, also at the
   NeedForSpeed sprint.)
 
-* The Python developers switched from CVS to Subversion during the 2.5
+* The Python developers switched kutoka CVS to Subversion during the 2.5
   development process.  Information about the exact build version is available as
   the ``sys.subversion`` variable, a 3-tuple of ``(interpreter-name, branch-name,
   revision-range)``.  For example, at the time of writing my copy of 2.5 was
@@ -1582,8 +1582,8 @@ complete list of changes, or look through the SVN logs for all the details.
   topmost stack frame currently active in that thread at the time the function is
   called.  (Contributed by Tim Peters.)
 
-* The :class:`TarFile` class in the :mod:`tarfile` module now has an
-  :meth:`extractall` method that extracts all members from the archive into the
+* The :class:`TarFile` kundi in the :mod:`tarfile` module now has an
+  :meth:`extractall` method that extracts all members kutoka the archive into the
   current working directory.  It's also possible to set a different directory as
   the extraction target, and to unpack only a subset of the archive's members.
 
@@ -1606,13 +1606,13 @@ complete list of changes, or look through the SVN logs for all the details.
 
 * New module: the  :mod:`uuid` module generates  universally unique identifiers
   (UUIDs) according to :rfc:`4122`.  The RFC defines several different UUID
-  versions that are generated from a starting string, from system properties, or
-  purely randomly.  This module contains a :class:`UUID` class and  functions
+  versions that are generated kutoka a starting string, kutoka system properties, or
+  purely randomly.  This module contains a :class:`UUID` kundi and  functions
   named :func:`uuid1`, :func:`uuid3`, :func:`uuid4`,  and  :func:`uuid5` to
   generate different versions of UUID.  (Version 2 UUIDs  are not specified in
   :rfc:`4122` and are not supported by this module.) ::
 
-     >>> import uuid
+     >>> agiza uuid
      >>> # make a UUID based on the host ID and current time
      >>> uuid.uuid1()
      UUID('a8098c1a-f86e-11da-bd1a-00112444be1e')
@@ -1652,7 +1652,7 @@ complete list of changes, or look through the SVN logs for all the details.
 
 * The :mod:`xmlrpclib` module now supports returning  :class:`~datetime.datetime` objects
   for the XML-RPC date type.  Supply  ``use_datetime=True`` to the :func:`loads`
-  function or the :class:`Unmarshaller` class to enable this feature. (Contributed
+  function or the :class:`Unmarshaller` kundi to enable this feature. (Contributed
   by Skip Montanaro.)
 
   .. Patch 1120353
@@ -1685,11 +1685,11 @@ provides functions for loading shared libraries and calling functions in them.
 The :mod:`ctypes` package is much fancier.
 
 To load a shared library or DLL, you must create an instance of the
-:class:`CDLL` class and provide the name or path of the shared library or DLL.
+:class:`CDLL` kundi and provide the name or path of the shared library or DLL.
 Once that's done, you can call arbitrary functions by accessing them as
 attributes of the :class:`CDLL` object.   ::
 
-   import ctypes
+   agiza ctypes
 
    libc = ctypes.CDLL('libc.so.6')
    result = libc.printf("Line of output\n")
@@ -1727,7 +1727,7 @@ interpreter lock before calling a function, because the lock must be held when
 calling into the interpreter's code.   There's a :class:`py_object()` type
 constructor that will create a  :c:type:`PyObject \*` pointer.  A simple usage::
 
-   import ctypes
+   agiza ctypes
 
    d = {}
    ctypes.pythonapi.PyObject_SetItem(ctypes.py_object(d),
@@ -1761,7 +1761,7 @@ The ElementTree package
 
 A subset of Fredrik Lundh's ElementTree library for processing XML has been
 added to the standard library as :mod:`xml.etree`.  The available modules are
-:mod:`ElementTree`, :mod:`ElementPath`, and :mod:`ElementInclude` from
+:mod:`ElementTree`, :mod:`ElementPath`, and :mod:`ElementInclude` kutoka
 ElementTree 1.2.6.    The :mod:`cElementTree` accelerator module is also
 included.
 
@@ -1779,7 +1779,7 @@ The most commonly used parsing function is :func:`parse`, that takes either a
 string (assumed to contain a filename) or a file-like object and returns an
 :class:`ElementTree` instance::
 
-   from xml.etree import ElementTree as ET
+   kutoka xml.etree agiza ElementTree as ET
 
    tree = ET.parse('ex-1.xml')
 
@@ -1971,7 +1971,7 @@ and call its :meth:`execute` method to perform SQL commands::
    c.execute("""insert into stocks
              values ('2006-01-05','BUY','RHAT',100,35.14)""")
 
-Usually your SQL operations will need to use values from Python variables.  You
+Usually your SQL operations will need to use values kutoka Python variables.  You
 shouldn't assemble your query using Python's string operations because doing so
 is insecure; it makes your program vulnerable to an SQL injection attack.
 
@@ -1986,7 +1986,7 @@ may use a different placeholder, such as ``%s`` or ``:1``.) For example::
 
    # Do this instead
    t = (symbol,)
-   c.execute('select * from stocks where symbol=?', t)
+   c.execute('select * kutoka stocks where symbol=?', t)
 
    # Larger example
    for t in (('2006-03-28', 'BUY', 'IBM', 1000, 45.00),
@@ -2003,7 +2003,7 @@ rows.
 This example uses the iterator form::
 
    >>> c = conn.cursor()
-   >>> c.execute('select * from stocks order by price')
+   >>> c.execute('select * kutoka stocks order by price')
    >>> for row in c:
    ...    print row
    ...
@@ -2050,7 +2050,7 @@ The package includes a basic HTTP server that will run a WSGI application; this
 server is useful for debugging but isn't intended for  production use.  Setting
 up a server takes only a few lines of code::
 
-   from wsgiref import simple_server
+   kutoka wsgiref agiza simple_server
 
    wsgi_app = ...
 
@@ -2081,7 +2081,7 @@ Build and C API Changes
 
 Changes to Python's build process and to the C API include:
 
-* The Python source tree was converted from CVS to Subversion,  in a complex
+* The Python source tree was converted kutoka CVS to Subversion,  in a complex
   migration procedure that was supervised and flawlessly carried out by Martin von
   Löwis.  The procedure was developed as :pep:`347`.
 
@@ -2091,7 +2091,7 @@ Changes to Python's build process and to the C API include:
   refcounting problems, often occurring in error-handling code.  See
   https://scan.coverity.com for the statistics.
 
-* The largest change to the C API came from :pep:`353`, which modifies the
+* The largest change to the C API came kutoka :pep:`353`, which modifies the
   interpreter to use a :c:type:`Py_ssize_t` type definition instead of
   :c:type:`int`.  See the earlier section :ref:`pep-353` for a discussion of this
   change.
@@ -2105,7 +2105,7 @@ Changes to Python's build process and to the C API include:
   :func:`compile` built-in and specifying ``_ast.PyCF_ONLY_AST`` as the value of
   the  *flags* parameter::
 
-     from _ast import PyCF_ONLY_AST
+     kutoka _ast agiza PyCF_ONLY_AST
      ast = compile("""a=0
      for i in range(10):
          a += i
@@ -2130,7 +2130,7 @@ Changes to Python's build process and to the C API include:
   Schemenauer, plus the participants in a number of AST sprints at conferences
   such as PyCon.
 
-  .. List of names taken from Jeremy's python-dev post at
+  .. List of names taken kutoka Jeremy's python-dev post at
   .. https://mail.python.org/pipermail/python-dev/2005-October/057500.html
 
 * Evan Jones's patch to obmalloc, first described in a talk at PyCon DC 2005,
@@ -2254,7 +2254,7 @@ code:
   no surrounding text.
 
 * Library: The :mod:`pickle` and :mod:`cPickle` modules no longer accept a
-  return value of ``None`` from the :meth:`__reduce__` method; the method must
+  return value of ``None`` kutoka the :meth:`__reduce__` method; the method must
   return a tuple of arguments instead.  The modules also no longer accept the
   deprecated *bin* keyword parameter.
 

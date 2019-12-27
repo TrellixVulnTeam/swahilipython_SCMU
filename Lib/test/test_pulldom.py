@@ -22,9 +22,9 @@ SMALL_SAMPLE = """<?xml version="1.0"?>
 </html>"""
 
 
-class PullDOMTestCase(unittest.TestCase):
+kundi PullDOMTestCase(unittest.TestCase):
 
-    def test_parse(self):
+    eleza test_parse(self):
         """Minimal test of DOMEventStream.parse()"""
 
         # This just tests that parsing kutoka a stream works. Actual parser
@@ -40,7 +40,7 @@ class PullDOMTestCase(unittest.TestCase):
         with open(tstfile, "rb") as fin:
             list(pulldom.parse(fin))
 
-    def test_parse_semantics(self):
+    eleza test_parse_semantics(self):
         """Test DOMEventStream parsing semantics."""
 
         items = pulldom.parseString(SMALL_SAMPLE)
@@ -102,12 +102,12 @@ class PullDOMTestCase(unittest.TestCase):
         #evt, node = next(items)
         #self.assertEqual(pulldom.END_DOCUMENT, evt)
 
-    def test_expandItem(self):
+    eleza test_expandItem(self):
         """Ensure expandItem works as expected."""
         items = pulldom.parseString(SMALL_SAMPLE)
         # Loop through the nodes until we get to a "title" start tag:
         for evt, item in items:
-            if evt == pulldom.START_ELEMENT and item.tagName == "title":
+            ikiwa evt == pulldom.START_ELEMENT and item.tagName == "title":
                 items.expandNode(item)
                 self.assertEqual(1, len(item.childNodes))
                 break
@@ -115,7 +115,7 @@ class PullDOMTestCase(unittest.TestCase):
             self.fail("No \"title\" element detected in SMALL_SAMPLE!")
         # Loop until we get to the next start-element:
         for evt, node in items:
-            if evt == pulldom.START_ELEMENT:
+            ikiwa evt == pulldom.START_ELEMENT:
                 break
         self.assertEqual("hr", node.tagName,
             "expandNode did not leave DOMEventStream in the correct state.")
@@ -135,22 +135,22 @@ class PullDOMTestCase(unittest.TestCase):
         self.assertIsNone(items.stream)
 
     @unittest.expectedFailure
-    def test_comment(self):
+    eleza test_comment(self):
         """PullDOM does not receive "comment" events."""
         items = pulldom.parseString(SMALL_SAMPLE)
         for evt, _ in items:
-            if evt == pulldom.COMMENT:
+            ikiwa evt == pulldom.COMMENT:
                 break
         else:
             self.fail("No comment was encountered")
 
     @unittest.expectedFailure
-    def test_end_document(self):
+    eleza test_end_document(self):
         """PullDOM does not receive "end-document" events."""
         items = pulldom.parseString(SMALL_SAMPLE)
         # Read all of the nodes up to and including </html>:
         for evt, node in items:
-            if evt == pulldom.END_ELEMENT and node.tagName == "html":
+            ikiwa evt == pulldom.END_ELEMENT and node.tagName == "html":
                 break
         try:
             # Assert that the next node is END_DOCUMENT:
@@ -160,39 +160,39 @@ class PullDOMTestCase(unittest.TestCase):
             self.fail(
                 "Ran out of events, but should have received END_DOCUMENT")
 
-    def test_getitem_deprecation(self):
+    eleza test_getitem_deprecation(self):
         parser = pulldom.parseString(SMALL_SAMPLE)
         with self.assertWarnsRegex(DeprecationWarning,
                                    r'Use iterator protocol instead'):
             # This should have returned 'END_ELEMENT'.
             self.assertEqual(parser[-1][0], pulldom.START_DOCUMENT)
 
-    def test_external_ges_default(self):
+    eleza test_external_ges_default(self):
         parser = pulldom.parseString(SMALL_SAMPLE)
         saxparser = parser.parser
         ges = saxparser.getFeature(feature_external_ges)
         self.assertEqual(ges, False)
 
 
-class ThoroughTestCase(unittest.TestCase):
+kundi ThoroughTestCase(unittest.TestCase):
     """Test the hard-to-reach parts of pulldom."""
 
-    def test_thorough_parse(self):
+    eleza test_thorough_parse(self):
         """Test some of the hard-to-reach parts of PullDOM."""
         self._test_thorough(pulldom.parse(None, parser=SAXExerciser()))
 
     @unittest.expectedFailure
-    def test_sax2dom_fail(self):
+    eleza test_sax2dom_fail(self):
         """SAX2DOM can"t handle a PI before the root element."""
         pd = SAX2DOMTestHelper(None, SAXExerciser(), 12)
         self._test_thorough(pd)
 
-    def test_thorough_sax2dom(self):
+    eleza test_thorough_sax2dom(self):
         """Test some of the hard-to-reach parts of SAX2DOM."""
         pd = SAX2DOMTestHelper(None, SAX2DOMExerciser(), 12)
         self._test_thorough(pd, False)
 
-    def _test_thorough(self, pd, before_root=True):
+    eleza _test_thorough(self, pd, before_root=True):
         """Test some of the hard-to-reach parts of the parser, using a mock
         parser."""
 
@@ -201,7 +201,7 @@ class ThoroughTestCase(unittest.TestCase):
         # Just check the node is a Document:
         self.assertTrue(hasattr(node, "createElement"))
 
-        if before_root:
+        ikiwa before_root:
             evt, node = next(pd)
             self.assertEqual(pulldom.COMMENT, evt)
             self.assertEqual("a comment", node.data)
@@ -239,14 +239,14 @@ class ThoroughTestCase(unittest.TestCase):
         self.assertEqual(pulldom.END_DOCUMENT, evt)
 
 
-class SAXExerciser(object):
+kundi SAXExerciser(object):
     """A fake sax parser that calls some of the harder-to-reach sax methods to
     ensure it emits the correct events"""
 
-    def setContentHandler(self, handler):
+    eleza setContentHandler(self, handler):
         self._handler = handler
 
-    def parse(self, _):
+    eleza parse(self, _):
         h = self._handler
         h.startDocument()
 
@@ -266,18 +266,18 @@ class SAXExerciser(object):
         h.endElement("html")
         h.endDocument()
 
-    def stub(self, *args, **kwargs):
+    eleza stub(self, *args, **kwargs):
         """Stub method. Does nothing."""
         pass
     setProperty = stub
     setFeature = stub
 
 
-class SAX2DOMExerciser(SAXExerciser):
+kundi SAX2DOMExerciser(SAXExerciser):
     """The same as SAXExerciser, but without the processing instruction and
     comment before the root element, because S2D can"t handle it"""
 
-    def parse(self, _):
+    eleza parse(self, _):
         h = self._handler
         h.startDocument()
         h.startElement("html", AttributesImpl({}))
@@ -290,34 +290,34 @@ class SAX2DOMExerciser(SAXExerciser):
         h.endDocument()
 
 
-class SAX2DOMTestHelper(pulldom.DOMEventStream):
+kundi SAX2DOMTestHelper(pulldom.DOMEventStream):
     """Allows us to drive SAX2DOM kutoka a DOMEventStream."""
 
-    def reset(self):
+    eleza reset(self):
         self.pulldom = pulldom.SAX2DOM()
         # This content handler relies on namespace support
         self.parser.setFeature(xml.sax.handler.feature_namespaces, 1)
         self.parser.setContentHandler(self.pulldom)
 
 
-class SAX2DOMTestCase(unittest.TestCase):
+kundi SAX2DOMTestCase(unittest.TestCase):
 
-    def confirm(self, test, testname="Test"):
+    eleza confirm(self, test, testname="Test"):
         self.assertTrue(test, testname)
 
-    def test_basic(self):
+    eleza test_basic(self):
         """Ensure SAX2DOM can parse kutoka a stream."""
         with io.StringIO(SMALL_SAMPLE) as fin:
             sd = SAX2DOMTestHelper(fin, xml.sax.make_parser(),
                                    len(SMALL_SAMPLE))
             for evt, node in sd:
-                if evt == pulldom.START_ELEMENT and node.tagName == "html":
+                ikiwa evt == pulldom.START_ELEMENT and node.tagName == "html":
                     break
             # Because the buffer is the same length as the XML, all the
             # nodes should have been parsed and added:
             self.assertGreater(len(node.childNodes), 0)
 
-    def testSAX2DOM(self):
+    eleza testSAX2DOM(self):
         """Ensure SAX2DOM expands nodes as expected."""
         sax2dom = pulldom.SAX2DOM()
         sax2dom.startDocument()
@@ -352,5 +352,5 @@ class SAX2DOMTestCase(unittest.TestCase):
         doc.unlink()
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

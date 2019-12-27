@@ -12,8 +12,8 @@ kutoka . agiza transports
 kutoka .log agiza logger
 
 
-def _create_transport_context(server_side, server_hostname):
-    if server_side:
+eleza _create_transport_context(server_side, server_hostname):
+    ikiwa server_side:
         raise ValueError('Server side SSL needs a valid SSLContext')
 
     # Client side may pass ssl=True to use a default
@@ -21,9 +21,9 @@ def _create_transport_context(server_side, server_hostname):
     # The default is secure for client connections.
     # Python 3.4+: use up-to-date strong settings.
     sslcontext = ssl.create_default_context()
-    if not server_hostname:
+    ikiwa not server_hostname:
         sslcontext.check_hostname = False
-    return sslcontext
+    rudisha sslcontext
 
 
 # States of an _SSLPipe.
@@ -33,7 +33,7 @@ _WRAPPED = "WRAPPED"
 _SHUTDOWN = "SHUTDOWN"
 
 
-class _SSLPipe(object):
+kundi _SSLPipe(object):
     """An SSL "Pipe".
 
     An SSL pipe allows you to communicate with an SSL/TLS protocol instance
@@ -53,7 +53,7 @@ class _SSLPipe(object):
 
     max_size = 256 * 1024   # Buffer size passed to read()
 
-    def __init__(self, context, server_side, server_hostname=None):
+    eleza __init__(self, context, server_side, server_hostname=None):
         """
         The *context* argument specifies the ssl.SSLContext to use.
 
@@ -76,43 +76,43 @@ class _SSLPipe(object):
         self._shutdown_cb = None
 
     @property
-    def context(self):
+    eleza context(self):
         """The SSL context passed to the constructor."""
-        return self._context
+        rudisha self._context
 
     @property
-    def ssl_object(self):
+    eleza ssl_object(self):
         """The internal ssl.SSLObject instance.
 
-        Return None if the pipe is not wrapped.
+        Return None ikiwa the pipe is not wrapped.
         """
-        return self._sslobj
+        rudisha self._sslobj
 
     @property
-    def need_ssldata(self):
+    eleza need_ssldata(self):
         """Whether more record level data is needed to complete a handshake
         that is currently in progress."""
-        return self._need_ssldata
+        rudisha self._need_ssldata
 
     @property
-    def wrapped(self):
+    eleza wrapped(self):
         """
         Whether a security layer is currently in effect.
 
         Return False during handshake.
         """
-        return self._state == _WRAPPED
+        rudisha self._state == _WRAPPED
 
-    def do_handshake(self, callback=None):
+    eleza do_handshake(self, callback=None):
         """Start the SSL handshake.
 
         Return a list of ssldata. A ssldata element is a list of buffers
 
         The optional *callback* argument can be used to install a callback that
         will be called when the handshake is complete. The callback will be
-        called with None if successful, else an exception instance.
+        called with None ikiwa successful, else an exception instance.
         """
-        if self._state != _UNWRAPPED:
+        ikiwa self._state != _UNWRAPPED:
             raise RuntimeError('handshake in progress or completed')
         self._sslobj = self._context.wrap_bio(
             self._incoming, self._outgoing,
@@ -122,9 +122,9 @@ class _SSLPipe(object):
         self._handshake_cb = callback
         ssldata, appdata = self.feed_ssldata(b'', only_handshake=True)
         assert len(appdata) == 0
-        return ssldata
+        rudisha ssldata
 
-    def shutdown(self, callback=None):
+    eleza shutdown(self, callback=None):
         """Start the SSL shutdown sequence.
 
         Return a list of ssldata. A ssldata element is a list of buffers
@@ -133,28 +133,28 @@ class _SSLPipe(object):
         will be called when the shutdown is complete. The callback will be
         called without arguments.
         """
-        if self._state == _UNWRAPPED:
+        ikiwa self._state == _UNWRAPPED:
             raise RuntimeError('no security layer present')
-        if self._state == _SHUTDOWN:
+        ikiwa self._state == _SHUTDOWN:
             raise RuntimeError('shutdown in progress')
         assert self._state in (_WRAPPED, _DO_HANDSHAKE)
         self._state = _SHUTDOWN
         self._shutdown_cb = callback
         ssldata, appdata = self.feed_ssldata(b'')
         assert appdata == [] or appdata == [b'']
-        return ssldata
+        rudisha ssldata
 
-    def feed_eof(self):
+    eleza feed_eof(self):
         """Send a potentially "ragged" EOF.
 
-        This method will raise an SSL_ERROR_EOF exception if the EOF is
+        This method will raise an SSL_ERROR_EOF exception ikiwa the EOF is
         unexpected.
         """
         self._incoming.write_eof()
         ssldata, appdata = self.feed_ssldata(b'')
         assert appdata == [] or appdata == [b'']
 
-    def feed_ssldata(self, data, only_handshake=False):
+    eleza feed_ssldata(self, data, only_handshake=False):
         """Feed SSL record level data into the pipe.
 
         The data must be a bytes instance. It is OK to send an empty bytes
@@ -169,67 +169,67 @@ class _SSLPipe(object):
         an empty buffer indicating an SSL "close_notify" alert. This alert must
         be acknowledged by calling shutdown().
         """
-        if self._state == _UNWRAPPED:
+        ikiwa self._state == _UNWRAPPED:
             # If unwrapped, pass plaintext data straight through.
-            if data:
+            ikiwa data:
                 appdata = [data]
             else:
                 appdata = []
-            return ([], appdata)
+            rudisha ([], appdata)
 
         self._need_ssldata = False
-        if data:
+        ikiwa data:
             self._incoming.write(data)
 
         ssldata = []
         appdata = []
         try:
-            if self._state == _DO_HANDSHAKE:
+            ikiwa self._state == _DO_HANDSHAKE:
                 # Call do_handshake() until it doesn't raise anymore.
                 self._sslobj.do_handshake()
                 self._state = _WRAPPED
-                if self._handshake_cb:
+                ikiwa self._handshake_cb:
                     self._handshake_cb(None)
-                if only_handshake:
-                    return (ssldata, appdata)
+                ikiwa only_handshake:
+                    rudisha (ssldata, appdata)
                 # Handshake done: execute the wrapped block
 
-            if self._state == _WRAPPED:
+            ikiwa self._state == _WRAPPED:
                 # Main state: read data kutoka SSL until close_notify
                 while True:
                     chunk = self._sslobj.read(self.max_size)
                     appdata.append(chunk)
-                    if not chunk:  # close_notify
+                    ikiwa not chunk:  # close_notify
                         break
 
-            elif self._state == _SHUTDOWN:
+            elikiwa self._state == _SHUTDOWN:
                 # Call shutdown() until it doesn't raise anymore.
                 self._sslobj.unwrap()
                 self._sslobj = None
                 self._state = _UNWRAPPED
-                if self._shutdown_cb:
+                ikiwa self._shutdown_cb:
                     self._shutdown_cb()
 
-            elif self._state == _UNWRAPPED:
+            elikiwa self._state == _UNWRAPPED:
                 # Drain possible plaintext data after close_notify.
                 appdata.append(self._incoming.read())
         except (ssl.SSLError, ssl.CertificateError) as exc:
             exc_errno = getattr(exc, 'errno', None)
-            if exc_errno not in (
+            ikiwa exc_errno not in (
                     ssl.SSL_ERROR_WANT_READ, ssl.SSL_ERROR_WANT_WRITE,
                     ssl.SSL_ERROR_SYSCALL):
-                if self._state == _DO_HANDSHAKE and self._handshake_cb:
+                ikiwa self._state == _DO_HANDSHAKE and self._handshake_cb:
                     self._handshake_cb(exc)
                 raise
             self._need_ssldata = (exc_errno == ssl.SSL_ERROR_WANT_READ)
 
         # Check for record level data that needs to be sent back.
         # Happens for the initial handshake and renegotiations.
-        if self._outgoing.pending:
+        ikiwa self._outgoing.pending:
             ssldata.append(self._outgoing.read())
-        return (ssldata, appdata)
+        rudisha (ssldata, appdata)
 
-    def feed_appdata(self, data, offset=0):
+    eleza feed_appdata(self, data, offset=0):
         """Feed plaintext data into the pipe.
 
         Return an (ssldata, offset) tuple. The ssldata element is a list of
@@ -245,67 +245,67 @@ class _SSLPipe(object):
         there will still be encrypted data in ssldata.
         """
         assert 0 <= offset <= len(data)
-        if self._state == _UNWRAPPED:
+        ikiwa self._state == _UNWRAPPED:
             # pass through data in unwrapped mode
-            if offset < len(data):
+            ikiwa offset < len(data):
                 ssldata = [data[offset:]]
             else:
                 ssldata = []
-            return (ssldata, len(data))
+            rudisha (ssldata, len(data))
 
         ssldata = []
         view = memoryview(data)
         while True:
             self._need_ssldata = False
             try:
-                if offset < len(view):
+                ikiwa offset < len(view):
                     offset += self._sslobj.write(view[offset:])
             except ssl.SSLError as exc:
                 # It is not allowed to call write() after unwrap() until the
-                # close_notify is acknowledged. We return the condition to the
+                # close_notify is acknowledged. We rudisha the condition to the
                 # caller as a short write.
                 exc_errno = getattr(exc, 'errno', None)
-                if exc.reason == 'PROTOCOL_IS_SHUTDOWN':
+                ikiwa exc.reason == 'PROTOCOL_IS_SHUTDOWN':
                     exc_errno = exc.errno = ssl.SSL_ERROR_WANT_READ
-                if exc_errno not in (ssl.SSL_ERROR_WANT_READ,
+                ikiwa exc_errno not in (ssl.SSL_ERROR_WANT_READ,
                                      ssl.SSL_ERROR_WANT_WRITE,
                                      ssl.SSL_ERROR_SYSCALL):
                     raise
                 self._need_ssldata = (exc_errno == ssl.SSL_ERROR_WANT_READ)
 
-            # See if there's any record level data back for us.
-            if self._outgoing.pending:
+            # See ikiwa there's any record level data back for us.
+            ikiwa self._outgoing.pending:
                 ssldata.append(self._outgoing.read())
-            if offset == len(view) or self._need_ssldata:
+            ikiwa offset == len(view) or self._need_ssldata:
                 break
-        return (ssldata, offset)
+        rudisha (ssldata, offset)
 
 
-class _SSLProtocolTransport(transports._FlowControlMixin,
+kundi _SSLProtocolTransport(transports._FlowControlMixin,
                             transports.Transport):
 
     _sendfile_compatible = constants._SendfileMode.FALLBACK
 
-    def __init__(self, loop, ssl_protocol):
+    eleza __init__(self, loop, ssl_protocol):
         self._loop = loop
         # SSLProtocol instance
         self._ssl_protocol = ssl_protocol
         self._closed = False
 
-    def get_extra_info(self, name, default=None):
+    eleza get_extra_info(self, name, default=None):
         """Get optional transport information."""
-        return self._ssl_protocol._get_extra_info(name, default)
+        rudisha self._ssl_protocol._get_extra_info(name, default)
 
-    def set_protocol(self, protocol):
+    eleza set_protocol(self, protocol):
         self._ssl_protocol._set_app_protocol(protocol)
 
-    def get_protocol(self):
-        return self._ssl_protocol._app_protocol
+    eleza get_protocol(self):
+        rudisha self._ssl_protocol._app_protocol
 
-    def is_closing(self):
-        return self._closed
+    eleza is_closing(self):
+        rudisha self._closed
 
-    def close(self):
+    eleza close(self):
         """Close the transport.
 
         Buffered data will be flushed asynchronously.  No more data
@@ -316,18 +316,18 @@ class _SSLProtocolTransport(transports._FlowControlMixin,
         self._closed = True
         self._ssl_protocol._start_shutdown()
 
-    def __del__(self, _warn=warnings.warn):
-        if not self._closed:
+    eleza __del__(self, _warn=warnings.warn):
+        ikiwa not self._closed:
             _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
             self.close()
 
-    def is_reading(self):
+    eleza is_reading(self):
         tr = self._ssl_protocol._transport
-        if tr is None:
+        ikiwa tr is None:
             raise RuntimeError('SSL transport has not been initialized yet')
-        return tr.is_reading()
+        rudisha tr.is_reading()
 
-    def pause_reading(self):
+    eleza pause_reading(self):
         """Pause the receiving end.
 
         No data will be passed to the protocol's data_received()
@@ -335,7 +335,7 @@ class _SSLProtocolTransport(transports._FlowControlMixin,
         """
         self._ssl_protocol._transport.pause_reading()
 
-    def resume_reading(self):
+    eleza resume_reading(self):
         """Resume the receiving end.
 
         Data received will once again be passed to the protocol's
@@ -343,7 +343,7 @@ class _SSLProtocolTransport(transports._FlowControlMixin,
         """
         self._ssl_protocol._transport.resume_reading()
 
-    def set_write_buffer_limits(self, high=None, low=None):
+    eleza set_write_buffer_limits(self, high=None, low=None):
         """Set the high- and low-water limits for write flow control.
 
         These two values control when to call the protocol's
@@ -364,33 +364,33 @@ class _SSLProtocolTransport(transports._FlowControlMixin,
         """
         self._ssl_protocol._transport.set_write_buffer_limits(high, low)
 
-    def get_write_buffer_size(self):
+    eleza get_write_buffer_size(self):
         """Return the current size of the write buffer."""
-        return self._ssl_protocol._transport.get_write_buffer_size()
+        rudisha self._ssl_protocol._transport.get_write_buffer_size()
 
     @property
-    def _protocol_paused(self):
+    eleza _protocol_paused(self):
         # Required for sendfile fallback pause_writing/resume_writing logic
-        return self._ssl_protocol._transport._protocol_paused
+        rudisha self._ssl_protocol._transport._protocol_paused
 
-    def write(self, data):
+    eleza write(self, data):
         """Write some data bytes to the transport.
 
         This does not block; it buffers the data and arranges for it
         to be sent out asynchronously.
         """
-        if not isinstance(data, (bytes, bytearray, memoryview)):
+        ikiwa not isinstance(data, (bytes, bytearray, memoryview)):
             raise TypeError(f"data: expecting a bytes-like instance, "
                             f"got {type(data).__name__}")
-        if not data:
+        ikiwa not data:
             return
         self._ssl_protocol._write_appdata(data)
 
-    def can_write_eof(self):
-        """Return True if this transport supports write_eof(), False if not."""
-        return False
+    eleza can_write_eof(self):
+        """Return True ikiwa this transport supports write_eof(), False ikiwa not."""
+        rudisha False
 
-    def abort(self):
+    eleza abort(self):
         """Close the transport immediately.
 
         Buffered data will be lost.  No more data will be received.
@@ -401,33 +401,33 @@ class _SSLProtocolTransport(transports._FlowControlMixin,
         self._closed = True
 
 
-class SSLProtocol(protocols.Protocol):
+kundi SSLProtocol(protocols.Protocol):
     """SSL protocol.
 
     Implementation of SSL on top of a socket using incoming and outgoing
     buffers which are ssl.MemoryBIO objects.
     """
 
-    def __init__(self, loop, app_protocol, sslcontext, waiter,
+    eleza __init__(self, loop, app_protocol, sslcontext, waiter,
                  server_side=False, server_hostname=None,
                  call_connection_made=True,
                  ssl_handshake_timeout=None):
-        if ssl is None:
+        ikiwa ssl is None:
             raise RuntimeError('stdlib ssl module not available')
 
-        if ssl_handshake_timeout is None:
+        ikiwa ssl_handshake_timeout is None:
             ssl_handshake_timeout = constants.SSL_HANDSHAKE_TIMEOUT
-        elif ssl_handshake_timeout <= 0:
+        elikiwa ssl_handshake_timeout <= 0:
             raise ValueError(
                 f"ssl_handshake_timeout should be a positive number, "
                 f"got {ssl_handshake_timeout}")
 
-        if not sslcontext:
+        ikiwa not sslcontext:
             sslcontext = _create_transport_context(
                 server_side, server_hostname)
 
         self._server_side = server_side
-        if server_hostname and not server_side:
+        ikiwa server_hostname and not server_side:
             self._server_hostname = server_hostname
         else:
             self._server_hostname = None
@@ -454,22 +454,22 @@ class SSLProtocol(protocols.Protocol):
         self._call_connection_made = call_connection_made
         self._ssl_handshake_timeout = ssl_handshake_timeout
 
-    def _set_app_protocol(self, app_protocol):
+    eleza _set_app_protocol(self, app_protocol):
         self._app_protocol = app_protocol
         self._app_protocol_is_buffer = \
             isinstance(app_protocol, protocols.BufferedProtocol)
 
-    def _wakeup_waiter(self, exc=None):
-        if self._waiter is None:
+    eleza _wakeup_waiter(self, exc=None):
+        ikiwa self._waiter is None:
             return
-        if not self._waiter.cancelled():
-            if exc is not None:
+        ikiwa not self._waiter.cancelled():
+            ikiwa exc is not None:
                 self._waiter.set_exception(exc)
             else:
                 self._waiter.set_result(None)
         self._waiter = None
 
-    def connection_made(self, transport):
+    eleza connection_made(self, transport):
         """Called when the low-level connection is made.
 
         Start the SSL handshake.
@@ -480,48 +480,48 @@ class SSLProtocol(protocols.Protocol):
                                  self._server_hostname)
         self._start_handshake()
 
-    def connection_lost(self, exc):
+    eleza connection_lost(self, exc):
         """Called when the low-level connection is lost or closed.
 
         The argument is an exception object or None (the latter
         meaning a regular EOF is received or the connection was
         aborted or closed).
         """
-        if self._session_established:
+        ikiwa self._session_established:
             self._session_established = False
             self._loop.call_soon(self._app_protocol.connection_lost, exc)
         else:
             # Most likely an exception occurred while in SSL handshake.
             # Just mark the app transport as closed so that its __del__
             # doesn't complain.
-            if self._app_transport is not None:
+            ikiwa self._app_transport is not None:
                 self._app_transport._closed = True
         self._transport = None
         self._app_transport = None
-        if getattr(self, '_handshake_timeout_handle', None):
+        ikiwa getattr(self, '_handshake_timeout_handle', None):
             self._handshake_timeout_handle.cancel()
         self._wakeup_waiter(exc)
         self._app_protocol = None
         self._sslpipe = None
 
-    def pause_writing(self):
+    eleza pause_writing(self):
         """Called when the low-level transport's buffer goes over
         the high-water mark.
         """
         self._app_protocol.pause_writing()
 
-    def resume_writing(self):
+    eleza resume_writing(self):
         """Called when the low-level transport's buffer drains below
         the low-water mark.
         """
         self._app_protocol.resume_writing()
 
-    def data_received(self, data):
+    eleza data_received(self, data):
         """Called when some SSL data is received.
 
         The argument is a bytes object.
         """
-        if self._sslpipe is None:
+        ikiwa self._sslpipe is None:
             # transport closing, sslpipe is destroyed
             return
 
@@ -537,9 +537,9 @@ class SSLProtocol(protocols.Protocol):
             self._transport.write(chunk)
 
         for chunk in appdata:
-            if chunk:
+            ikiwa chunk:
                 try:
-                    if self._app_protocol_is_buffer:
+                    ikiwa self._app_protocol_is_buffer:
                         protocols._feed_data_to_buffered_proto(
                             self._app_protocol, chunk)
                     else:
@@ -554,7 +554,7 @@ class SSLProtocol(protocols.Protocol):
                 self._start_shutdown()
                 break
 
-    def eof_received(self):
+    eleza eof_received(self):
         """Called when the other end of the low-level stream
         is half-closed.
 
@@ -563,43 +563,43 @@ class SSLProtocol(protocols.Protocol):
         transport is up to the protocol.
         """
         try:
-            if self._loop.get_debug():
+            ikiwa self._loop.get_debug():
                 logger.debug("%r received EOF", self)
 
             self._wakeup_waiter(ConnectionResetError)
 
-            if not self._in_handshake:
+            ikiwa not self._in_handshake:
                 keep_open = self._app_protocol.eof_received()
-                if keep_open:
+                ikiwa keep_open:
                     logger.warning('returning true kutoka eof_received() '
                                    'has no effect when using ssl')
         finally:
             self._transport.close()
 
-    def _get_extra_info(self, name, default=None):
-        if name in self._extra:
-            return self._extra[name]
-        elif self._transport is not None:
-            return self._transport.get_extra_info(name, default)
+    eleza _get_extra_info(self, name, default=None):
+        ikiwa name in self._extra:
+            rudisha self._extra[name]
+        elikiwa self._transport is not None:
+            rudisha self._transport.get_extra_info(name, default)
         else:
-            return default
+            rudisha default
 
-    def _start_shutdown(self):
-        if self._in_shutdown:
+    eleza _start_shutdown(self):
+        ikiwa self._in_shutdown:
             return
-        if self._in_handshake:
+        ikiwa self._in_handshake:
             self._abort()
         else:
             self._in_shutdown = True
             self._write_appdata(b'')
 
-    def _write_appdata(self, data):
+    eleza _write_appdata(self, data):
         self._write_backlog.append((data, 0))
         self._write_buffer_size += len(data)
         self._process_write_backlog()
 
-    def _start_handshake(self):
-        if self._loop.get_debug():
+    eleza _start_handshake(self):
+        ikiwa self._loop.get_debug():
             logger.debug("%r starts SSL handshake", self)
             self._handshake_start_time = self._loop.time()
         else:
@@ -613,8 +613,8 @@ class SSLProtocol(protocols.Protocol):
                                   self._check_handshake_timeout)
         self._process_write_backlog()
 
-    def _check_handshake_timeout(self):
-        if self._in_handshake is True:
+    eleza _check_handshake_timeout(self):
+        ikiwa self._in_handshake is True:
             msg = (
                 f"SSL handshake is taking longer than "
                 f"{self._ssl_handshake_timeout} seconds: "
@@ -622,27 +622,27 @@ class SSLProtocol(protocols.Protocol):
             )
             self._fatal_error(ConnectionAbortedError(msg))
 
-    def _on_handshake_complete(self, handshake_exc):
+    eleza _on_handshake_complete(self, handshake_exc):
         self._in_handshake = False
         self._handshake_timeout_handle.cancel()
 
         sslobj = self._sslpipe.ssl_object
         try:
-            if handshake_exc is not None:
+            ikiwa handshake_exc is not None:
                 raise handshake_exc
 
             peercert = sslobj.getpeercert()
         except (SystemExit, KeyboardInterrupt):
             raise
         except BaseException as exc:
-            if isinstance(exc, ssl.CertificateError):
+            ikiwa isinstance(exc, ssl.CertificateError):
                 msg = 'SSL handshake failed on verifying the certificate'
             else:
                 msg = 'SSL handshake failed'
             self._fatal_error(exc, msg)
             return
 
-        if self._loop.get_debug():
+        ikiwa self._loop.get_debug():
             dt = self._loop.time() - self._handshake_start_time
             logger.debug("%r: SSL handshake took %.1f ms", self, dt * 1e3)
 
@@ -652,7 +652,7 @@ class SSLProtocol(protocols.Protocol):
                            compression=sslobj.compression(),
                            ssl_object=sslobj,
                            )
-        if self._call_connection_made:
+        ikiwa self._call_connection_made:
             self._app_protocol.connection_made(self._app_transport)
         self._wakeup_waiter()
         self._session_established = True
@@ -663,17 +663,17 @@ class SSLProtocol(protocols.Protocol):
         # reentrant.
         self._loop.call_soon(self._process_write_backlog)
 
-    def _process_write_backlog(self):
+    eleza _process_write_backlog(self):
         # Try to make progress on the write backlog.
-        if self._transport is None or self._sslpipe is None:
+        ikiwa self._transport is None or self._sslpipe is None:
             return
 
         try:
             for i in range(len(self._write_backlog)):
                 data, offset = self._write_backlog[0]
-                if data:
+                ikiwa data:
                     ssldata, offset = self._sslpipe.feed_appdata(data, offset)
-                elif offset:
+                elikiwa offset:
                     ssldata = self._sslpipe.do_handshake(
                         self._on_handshake_complete)
                     offset = 1
@@ -684,12 +684,12 @@ class SSLProtocol(protocols.Protocol):
                 for chunk in ssldata:
                     self._transport.write(chunk)
 
-                if offset < len(data):
+                ikiwa offset < len(data):
                     self._write_backlog[0] = (data, offset)
                     # A short write means that a write is blocked on a read
-                    # We need to enable reading if it is paused!
+                    # We need to enable reading ikiwa it is paused!
                     assert self._sslpipe.need_ssldata
-                    if self._transport._paused:
+                    ikiwa self._transport._paused:
                         self._transport.resume_reading()
                     break
 
@@ -700,15 +700,15 @@ class SSLProtocol(protocols.Protocol):
         except (SystemExit, KeyboardInterrupt):
             raise
         except BaseException as exc:
-            if self._in_handshake:
+            ikiwa self._in_handshake:
                 # Exceptions will be re-raised in _on_handshake_complete.
                 self._on_handshake_complete(exc)
             else:
                 self._fatal_error(exc, 'Fatal error on SSL transport')
 
-    def _fatal_error(self, exc, message='Fatal error on transport'):
-        if isinstance(exc, OSError):
-            if self._loop.get_debug():
+    eleza _fatal_error(self, exc, message='Fatal error on transport'):
+        ikiwa isinstance(exc, OSError):
+            ikiwa self._loop.get_debug():
                 logger.debug("%r: %s", self, message, exc_info=True)
         else:
             self._loop.call_exception_handler({
@@ -717,18 +717,18 @@ class SSLProtocol(protocols.Protocol):
                 'transport': self._transport,
                 'protocol': self,
             })
-        if self._transport:
+        ikiwa self._transport:
             self._transport._force_close(exc)
 
-    def _finalize(self):
+    eleza _finalize(self):
         self._sslpipe = None
 
-        if self._transport is not None:
+        ikiwa self._transport is not None:
             self._transport.close()
 
-    def _abort(self):
+    eleza _abort(self):
         try:
-            if self._transport is not None:
+            ikiwa self._transport is not None:
                 self._transport.abort()
         finally:
             self._finalize()

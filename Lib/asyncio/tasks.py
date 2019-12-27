@@ -31,16 +31,16 @@ kutoka .coroutines agiza _is_coroutine
 _task_name_counter = itertools.count(1).__next__
 
 
-def current_task(loop=None):
+eleza current_task(loop=None):
     """Return a currently executed task."""
-    if loop is None:
+    ikiwa loop is None:
         loop = events.get_running_loop()
-    return _current_tasks.get(loop)
+    rudisha _current_tasks.get(loop)
 
 
-def all_tasks(loop=None):
+eleza all_tasks(loop=None):
     """Return a set of all tasks for the loop."""
-    if loop is None:
+    ikiwa loop is None:
         loop = events.get_running_loop()
     # Looping over a WeakSet (_all_tasks) isn't safe as it can be updated kutoka another
     # thread while we do so. Therefore we cast it to list prior to filtering. The list
@@ -53,19 +53,19 @@ def all_tasks(loop=None):
             tasks = list(_all_tasks)
         except RuntimeError:
             i += 1
-            if i >= 1000:
+            ikiwa i >= 1000:
                 raise
         else:
             break
-    return {t for t in tasks
-            if futures._get_loop(t) is loop and not t.done()}
+    rudisha {t for t in tasks
+            ikiwa futures._get_loop(t) is loop and not t.done()}
 
 
-def _all_tasks_compat(loop=None):
+eleza _all_tasks_compat(loop=None):
     # Different kutoka "all_task()" by returning *all* Tasks, including
     # the completed ones.  Used to implement deprecated "Tasks.all_task()"
     # method.
-    if loop is None:
+    ikiwa loop is None:
         loop = events.get_event_loop()
     # Looping over a WeakSet (_all_tasks) isn't safe as it can be updated kutoka another
     # thread while we do so. Therefore we cast it to list prior to filtering. The list
@@ -78,15 +78,15 @@ def _all_tasks_compat(loop=None):
             tasks = list(_all_tasks)
         except RuntimeError:
             i += 1
-            if i >= 1000:
+            ikiwa i >= 1000:
                 raise
         else:
             break
-    return {t for t in tasks if futures._get_loop(t) is loop}
+    rudisha {t for t in tasks ikiwa futures._get_loop(t) is loop}
 
 
-def _set_task_name(task, name):
-    if name is not None:
+eleza _set_task_name(task, name):
+    ikiwa name is not None:
         try:
             set_name = task.set_name
         except AttributeError:
@@ -95,7 +95,7 @@ def _set_task_name(task, name):
             set_name(name)
 
 
-class Task(futures._PyFuture):  # Inherit Python Task implementation
+kundi Task(futures._PyFuture):  # Inherit Python Task implementation
                                 # kutoka a Python Future implementation.
 
     """A coroutine wrapped in a Future."""
@@ -109,12 +109,12 @@ class Task(futures._PyFuture):  # Inherit Python Task implementation
     # _wakeup().  When _fut_waiter is not None, one of its callbacks
     # must be _wakeup().
 
-    # If False, don't log a message if the task is destroyed whereas its
+    # If False, don't log a message ikiwa the task is destroyed whereas its
     # status is still pending
     _log_destroy_pending = True
 
     @classmethod
-    def current_task(cls, loop=None):
+    eleza current_task(cls, loop=None):
         """Return the currently running task in an event loop or None.
 
         By default the current task for the current event loop is returned.
@@ -125,12 +125,12 @@ class Task(futures._PyFuture):  # Inherit Python Task implementation
                       "use asyncio.current_task() instead",
                       DeprecationWarning,
                       stacklevel=2)
-        if loop is None:
+        ikiwa loop is None:
             loop = events.get_event_loop()
-        return current_task(loop)
+        rudisha current_task(loop)
 
     @classmethod
-    def all_tasks(cls, loop=None):
+    eleza all_tasks(cls, loop=None):
         """Return a set of all tasks for an event loop.
 
         By default all tasks for the current event loop are returned.
@@ -139,19 +139,19 @@ class Task(futures._PyFuture):  # Inherit Python Task implementation
                       "use asyncio.all_tasks() instead",
                       DeprecationWarning,
                       stacklevel=2)
-        return _all_tasks_compat(loop)
+        rudisha _all_tasks_compat(loop)
 
-    def __init__(self, coro, *, loop=None, name=None):
+    eleza __init__(self, coro, *, loop=None, name=None):
         super().__init__(loop=loop)
-        if self._source_traceback:
+        ikiwa self._source_traceback:
             del self._source_traceback[-1]
-        if not coroutines.iscoroutine(coro):
+        ikiwa not coroutines.iscoroutine(coro):
             # raise after Future.__init__(), attrs are required for __del__
             # prevent logging for pending task in __del__
             self._log_destroy_pending = False
             raise TypeError(f"a coroutine was expected, got {coro!r}")
 
-        if name is None:
+        ikiwa name is None:
             self._name = f'Task-{_task_name_counter()}'
         else:
             self._name = str(name)
@@ -164,36 +164,36 @@ class Task(futures._PyFuture):  # Inherit Python Task implementation
         self._loop.call_soon(self.__step, context=self._context)
         _register_task(self)
 
-    def __del__(self):
-        if self._state == futures._PENDING and self._log_destroy_pending:
+    eleza __del__(self):
+        ikiwa self._state == futures._PENDING and self._log_destroy_pending:
             context = {
                 'task': self,
                 'message': 'Task was destroyed but it is pending!',
             }
-            if self._source_traceback:
+            ikiwa self._source_traceback:
                 context['source_traceback'] = self._source_traceback
             self._loop.call_exception_handler(context)
         super().__del__()
 
-    def _repr_info(self):
-        return base_tasks._task_repr_info(self)
+    eleza _repr_info(self):
+        rudisha base_tasks._task_repr_info(self)
 
-    def get_coro(self):
-        return self._coro
+    eleza get_coro(self):
+        rudisha self._coro
 
-    def get_name(self):
-        return self._name
+    eleza get_name(self):
+        rudisha self._name
 
-    def set_name(self, value):
+    eleza set_name(self, value):
         self._name = str(value)
 
-    def set_result(self, result):
+    eleza set_result(self, result):
         raise RuntimeError('Task does not support set_result operation')
 
-    def set_exception(self, exception):
+    eleza set_exception(self, exception):
         raise RuntimeError('Task does not support set_exception operation')
 
-    def get_stack(self, *, limit=None):
+    eleza get_stack(self, *, limit=None):
         """Return the list of stack frames for this task's coroutine.
 
         If the coroutine is not done, this returns the stack where it is
@@ -214,9 +214,9 @@ class Task(futures._PyFuture):  # Inherit Python Task implementation
         For reasons beyond our control, only one stack frame is
         returned for a suspended coroutine.
         """
-        return base_tasks._task_get_stack(self, limit)
+        rudisha base_tasks._task_get_stack(self, limit)
 
-    def print_stack(self, *, limit=None, file=None):
+    eleza print_stack(self, *, limit=None, file=None):
         """Print the stack or traceback for this task's coroutine.
 
         This produces output similar to that of the traceback module,
@@ -225,9 +225,9 @@ class Task(futures._PyFuture):  # Inherit Python Task implementation
         to which the output is written; by default output is written
         to sys.stderr.
         """
-        return base_tasks._task_print_stack(self, limit, file)
+        rudisha base_tasks._task_print_stack(self, limit, file)
 
-    def cancel(self):
+    eleza cancel(self):
         """Request that this task cancel itself.
 
         This arranges for a CancelledError to be thrown into the
@@ -238,34 +238,34 @@ class Task(futures._PyFuture):  # Inherit Python Task implementation
         Unlike Future.cancel, this does not guarantee that the
         task will be cancelled: the exception might be caught and
         acted upon, delaying cancellation of the task or preventing
-        cancellation completely.  The task may also return a value or
+        cancellation completely.  The task may also rudisha a value or
         raise a different exception.
 
         Immediately after this method is called, Task.cancelled() will
-        not return True (unless the task was already cancelled).  A
+        not rudisha True (unless the task was already cancelled).  A
         task will be marked as cancelled when the wrapped coroutine
-        terminates with a CancelledError exception (even if cancel()
+        terminates with a CancelledError exception (even ikiwa cancel()
         was not called).
         """
         self._log_traceback = False
-        if self.done():
-            return False
-        if self._fut_waiter is not None:
-            if self._fut_waiter.cancel():
+        ikiwa self.done():
+            rudisha False
+        ikiwa self._fut_waiter is not None:
+            ikiwa self._fut_waiter.cancel():
                 # Leave self._fut_waiter; it may be a Task that
                 # catches and ignores the cancellation so we may have
                 # to cancel it again later.
-                return True
+                rudisha True
         # It must be the case that self.__step is already scheduled.
         self._must_cancel = True
-        return True
+        rudisha True
 
-    def __step(self, exc=None):
-        if self.done():
+    eleza __step(self, exc=None):
+        ikiwa self.done():
             raise exceptions.InvalidStateError(
                 f'_step(): already done: {self!r}, {exc!r}')
-        if self._must_cancel:
-            if not isinstance(exc, exceptions.CancelledError):
+        ikiwa self._must_cancel:
+            ikiwa not isinstance(exc, exceptions.CancelledError):
                 exc = exceptions.CancelledError()
             self._must_cancel = False
         coro = self._coro
@@ -274,14 +274,14 @@ class Task(futures._PyFuture):  # Inherit Python Task implementation
         _enter_task(self._loop, self)
         # Call either coro.throw(exc) or coro.send(None).
         try:
-            if exc is None:
+            ikiwa exc is None:
                 # We use the `send` method directly, because coroutines
                 # don't have `__iter__` and `__next__` methods.
                 result = coro.send(None)
             else:
                 result = coro.throw(exc)
         except StopIteration as exc:
-            if self._must_cancel:
+            ikiwa self._must_cancel:
                 # Task is cancelled right before coro stops.
                 self._must_cancel = False
                 super().cancel()
@@ -296,16 +296,16 @@ class Task(futures._PyFuture):  # Inherit Python Task implementation
             super().set_exception(exc)
         else:
             blocking = getattr(result, '_asyncio_future_blocking', None)
-            if blocking is not None:
+            ikiwa blocking is not None:
                 # Yielded Future must come kutoka Future.__iter__().
-                if futures._get_loop(result) is not self._loop:
+                ikiwa futures._get_loop(result) is not self._loop:
                     new_exc = RuntimeError(
                         f'Task {self!r} got Future '
                         f'{result!r} attached to a different loop')
                     self._loop.call_soon(
                         self.__step, new_exc, context=self._context)
-                elif blocking:
-                    if result is self:
+                elikiwa blocking:
+                    ikiwa result is self:
                         new_exc = RuntimeError(
                             f'Task cannot await on itself: {self!r}')
                         self._loop.call_soon(
@@ -315,8 +315,8 @@ class Task(futures._PyFuture):  # Inherit Python Task implementation
                         result.add_done_callback(
                             self.__wakeup, context=self._context)
                         self._fut_waiter = result
-                        if self._must_cancel:
-                            if self._fut_waiter.cancel():
+                        ikiwa self._must_cancel:
+                            ikiwa self._fut_waiter.cancel():
                                 self._must_cancel = False
                 else:
                     new_exc = RuntimeError(
@@ -325,10 +325,10 @@ class Task(futures._PyFuture):  # Inherit Python Task implementation
                     self._loop.call_soon(
                         self.__step, new_exc, context=self._context)
 
-            elif result is None:
+            elikiwa result is None:
                 # Bare yield relinquishes control for one event loop iteration.
                 self._loop.call_soon(self.__step, context=self._context)
-            elif inspect.isgenerator(result):
+            elikiwa inspect.isgenerator(result):
                 # Yielding a generator is just wrong.
                 new_exc = RuntimeError(
                     f'yield was used instead of yield kutoka for '
@@ -344,7 +344,7 @@ class Task(futures._PyFuture):  # Inherit Python Task implementation
             _leave_task(self._loop, self)
             self = None  # Needed to break cycles when an exception occurs.
 
-    def __wakeup(self, future):
+    eleza __wakeup(self, future):
         try:
             future.result()
         except BaseException as exc:
@@ -356,7 +356,7 @@ class Task(futures._PyFuture):  # Inherit Python Task implementation
             # If we call `_step(value, None)` instead of `_step()`,
             # Python eval loop would use `.send(value)` method call,
             # instead of `__next__()`, which is slower for futures
-            # that return non-generator iterators kutoka their `__iter__`.
+            # that rudisha non-generator iterators kutoka their `__iter__`.
             self.__step()
         self = None  # Needed to break cycles when an exception occurs.
 
@@ -373,7 +373,7 @@ else:
     Task = _CTask = _asyncio.Task
 
 
-def create_task(coro, *, name=None):
+eleza create_task(coro, *, name=None):
     """Schedule the execution of a coroutine object in a spawn task.
 
     Return a Task object.
@@ -381,7 +381,7 @@ def create_task(coro, *, name=None):
     loop = events.get_running_loop()
     task = loop.create_task(coro)
     _set_task_name(task, name)
-    return task
+    rudisha task
 
 
 # wait() and as_completed() similar to those in PEP 3148.
@@ -391,7 +391,7 @@ FIRST_EXCEPTION = concurrent.futures.FIRST_EXCEPTION
 ALL_COMPLETED = concurrent.futures.ALL_COMPLETED
 
 
-async def wait(fs, *, loop=None, timeout=None, return_when=ALL_COMPLETED):
+async eleza wait(fs, *, loop=None, timeout=None, return_when=ALL_COMPLETED):
     """Wait for the Futures and coroutines given by fs to complete.
 
     The sequence futures must not be empty.
@@ -407,14 +407,14 @@ async def wait(fs, *, loop=None, timeout=None, return_when=ALL_COMPLETED):
     Note: This does not raise TimeoutError! Futures that aren't done
     when the timeout occurs are returned in the second set.
     """
-    if futures.isfuture(fs) or coroutines.iscoroutine(fs):
+    ikiwa futures.isfuture(fs) or coroutines.iscoroutine(fs):
         raise TypeError(f"expect a list of futures, not {type(fs).__name__}")
-    if not fs:
+    ikiwa not fs:
         raise ValueError('Set of coroutines/Futures is empty.')
-    if return_when not in (FIRST_COMPLETED, FIRST_EXCEPTION, ALL_COMPLETED):
+    ikiwa return_when not in (FIRST_COMPLETED, FIRST_EXCEPTION, ALL_COMPLETED):
         raise ValueError(f'Invalid return_when value: {return_when}')
 
-    if loop is None:
+    ikiwa loop is None:
         loop = events.get_running_loop()
     else:
         warnings.warn("The loop argument is deprecated since Python 3.8, "
@@ -423,15 +423,15 @@ async def wait(fs, *, loop=None, timeout=None, return_when=ALL_COMPLETED):
 
     fs = {ensure_future(f, loop=loop) for f in set(fs)}
 
-    return await _wait(fs, timeout, return_when, loop)
+    rudisha await _wait(fs, timeout, return_when, loop)
 
 
-def _release_waiter(waiter, *args):
-    if not waiter.done():
+eleza _release_waiter(waiter, *args):
+    ikiwa not waiter.done():
         waiter.set_result(None)
 
 
-async def wait_for(fut, timeout, *, loop=None):
+async eleza wait_for(fut, timeout, *, loop=None):
     """Wait for the single Future or coroutine to complete, with timeout.
 
     Coroutine will be wrapped in Task.
@@ -444,21 +444,21 @@ async def wait_for(fut, timeout, *, loop=None):
 
     This function is a coroutine.
     """
-    if loop is None:
+    ikiwa loop is None:
         loop = events.get_running_loop()
     else:
         warnings.warn("The loop argument is deprecated since Python 3.8, "
                       "and scheduled for removal in Python 3.10.",
                       DeprecationWarning, stacklevel=2)
 
-    if timeout is None:
-        return await fut
+    ikiwa timeout is None:
+        rudisha await fut
 
-    if timeout <= 0:
+    ikiwa timeout <= 0:
         fut = ensure_future(fut, loop=loop)
 
-        if fut.done():
-            return fut.result()
+        ikiwa fut.done():
+            rudisha fut.result()
 
         fut.cancel()
         raise exceptions.TimeoutError()
@@ -479,8 +479,8 @@ async def wait_for(fut, timeout, *, loop=None):
             fut.cancel()
             raise
 
-        if fut.done():
-            return fut.result()
+        ikiwa fut.done():
+            rudisha fut.result()
         else:
             fut.remove_done_callback(cb)
             # We must ensure that the task is not running
@@ -492,7 +492,7 @@ async def wait_for(fut, timeout, *, loop=None):
         timeout_handle.cancel()
 
 
-async def _wait(fs, timeout, return_when, loop):
+async eleza _wait(fs, timeout, return_when, loop):
     """Internal helper for wait().
 
     The fs argument must be a collection of Futures.
@@ -500,20 +500,20 @@ async def _wait(fs, timeout, return_when, loop):
     assert fs, 'Set of Futures is empty.'
     waiter = loop.create_future()
     timeout_handle = None
-    if timeout is not None:
+    ikiwa timeout is not None:
         timeout_handle = loop.call_later(timeout, _release_waiter, waiter)
     counter = len(fs)
 
-    def _on_completion(f):
+    eleza _on_completion(f):
         nonlocal counter
         counter -= 1
-        if (counter <= 0 or
+        ikiwa (counter <= 0 or
             return_when == FIRST_COMPLETED or
             return_when == FIRST_EXCEPTION and (not f.cancelled() and
                                                 f.exception() is not None)):
-            if timeout_handle is not None:
+            ikiwa timeout_handle is not None:
                 timeout_handle.cancel()
-            if not waiter.done():
+            ikiwa not waiter.done():
                 waiter.set_result(None)
 
     for f in fs:
@@ -522,21 +522,21 @@ async def _wait(fs, timeout, return_when, loop):
     try:
         await waiter
     finally:
-        if timeout_handle is not None:
+        ikiwa timeout_handle is not None:
             timeout_handle.cancel()
         for f in fs:
             f.remove_done_callback(_on_completion)
 
     done, pending = set(), set()
     for f in fs:
-        if f.done():
+        ikiwa f.done():
             done.add(f)
         else:
             pending.add(f)
-    return done, pending
+    rudisha done, pending
 
 
-async def _cancel_and_wait(fut, loop):
+async eleza _cancel_and_wait(fut, loop):
     """Cancel the *fut* future or task and wait until it completes."""
 
     waiter = loop.create_future()
@@ -553,7 +553,7 @@ async def _cancel_and_wait(fut, loop):
 
 
 # This is *not* a @coroutine!  It is just an iterator (yielding Futures).
-def as_completed(fs, *, loop=None, timeout=None):
+eleza as_completed(fs, *, loop=None, timeout=None):
     """Return an iterator whose values are coroutines.
 
     When waiting for the yielded coroutines you'll get the results (or
@@ -571,13 +571,13 @@ def as_completed(fs, *, loop=None, timeout=None):
 
     Note: The futures 'f' are not necessarily members of fs.
     """
-    if futures.isfuture(fs) or coroutines.iscoroutine(fs):
+    ikiwa futures.isfuture(fs) or coroutines.iscoroutine(fs):
         raise TypeError(f"expect a list of futures, not {type(fs).__name__}")
 
     kutoka .queues agiza Queue  # Import here to avoid circular agiza problem.
     done = Queue(loop=loop)
 
-    if loop is None:
+    ikiwa loop is None:
         loop = events.get_event_loop()
     else:
         warnings.warn("The loop argument is deprecated since Python 3.8, "
@@ -586,37 +586,37 @@ def as_completed(fs, *, loop=None, timeout=None):
     todo = {ensure_future(f, loop=loop) for f in set(fs)}
     timeout_handle = None
 
-    def _on_timeout():
+    eleza _on_timeout():
         for f in todo:
             f.remove_done_callback(_on_completion)
             done.put_nowait(None)  # Queue a dummy value for _wait_for_one().
         todo.clear()  # Can't do todo.remove(f) in the loop.
 
-    def _on_completion(f):
-        if not todo:
-            return  # _on_timeout() was here first.
+    eleza _on_completion(f):
+        ikiwa not todo:
+            rudisha  # _on_timeout() was here first.
         todo.remove(f)
         done.put_nowait(f)
-        if not todo and timeout_handle is not None:
+        ikiwa not todo and timeout_handle is not None:
             timeout_handle.cancel()
 
-    async def _wait_for_one():
+    async eleza _wait_for_one():
         f = await done.get()
-        if f is None:
+        ikiwa f is None:
             # Dummy value kutoka _on_timeout().
             raise exceptions.TimeoutError
-        return f.result()  # May raise f.exception().
+        rudisha f.result()  # May raise f.exception().
 
     for f in todo:
         f.add_done_callback(_on_completion)
-    if todo and timeout is not None:
+    ikiwa todo and timeout is not None:
         timeout_handle = loop.call_later(timeout, _on_timeout)
     for _ in range(len(todo)):
         yield _wait_for_one()
 
 
 @types.coroutine
-def __sleep0():
+eleza __sleep0():
     """Skip one event loop run cycle.
 
     This is a private helper for 'asyncio.sleep()', used
@@ -627,13 +627,13 @@ def __sleep0():
     yield
 
 
-async def sleep(delay, result=None, *, loop=None):
+async eleza sleep(delay, result=None, *, loop=None):
     """Coroutine that completes after a given time (in seconds)."""
-    if delay <= 0:
+    ikiwa delay <= 0:
         await __sleep0()
-        return result
+        rudisha result
 
-    if loop is None:
+    ikiwa loop is None:
         loop = events.get_running_loop()
     else:
         warnings.warn("The loop argument is deprecated since Python 3.8, "
@@ -645,48 +645,48 @@ async def sleep(delay, result=None, *, loop=None):
                         futures._set_result_unless_cancelled,
                         future, result)
     try:
-        return await future
+        rudisha await future
     finally:
         h.cancel()
 
 
-def ensure_future(coro_or_future, *, loop=None):
+eleza ensure_future(coro_or_future, *, loop=None):
     """Wrap a coroutine or an awaitable in a future.
 
     If the argument is a Future, it is returned directly.
     """
-    if coroutines.iscoroutine(coro_or_future):
-        if loop is None:
+    ikiwa coroutines.iscoroutine(coro_or_future):
+        ikiwa loop is None:
             loop = events.get_event_loop()
         task = loop.create_task(coro_or_future)
-        if task._source_traceback:
+        ikiwa task._source_traceback:
             del task._source_traceback[-1]
-        return task
-    elif futures.isfuture(coro_or_future):
-        if loop is not None and loop is not futures._get_loop(coro_or_future):
+        rudisha task
+    elikiwa futures.isfuture(coro_or_future):
+        ikiwa loop is not None and loop is not futures._get_loop(coro_or_future):
             raise ValueError('The future belongs to a different loop than '
                              'the one specified as the loop argument')
-        return coro_or_future
-    elif inspect.isawaitable(coro_or_future):
-        return ensure_future(_wrap_awaitable(coro_or_future), loop=loop)
+        rudisha coro_or_future
+    elikiwa inspect.isawaitable(coro_or_future):
+        rudisha ensure_future(_wrap_awaitable(coro_or_future), loop=loop)
     else:
         raise TypeError('An asyncio.Future, a coroutine or an awaitable is '
                         'required')
 
 
 @types.coroutine
-def _wrap_awaitable(awaitable):
+eleza _wrap_awaitable(awaitable):
     """Helper for asyncio.ensure_future().
 
     Wraps awaitable (an object with __await__) into a coroutine
     that will later be wrapped in a Task by ensure_future().
     """
-    return (yield kutoka awaitable.__await__())
+    rudisha (yield kutoka awaitable.__await__())
 
 _wrap_awaitable._is_coroutine = _is_coroutine
 
 
-class _GatheringFuture(futures.Future):
+kundi _GatheringFuture(futures.Future):
     """Helper for gather().
 
     This overrides cancel() to cancel all the children and act more
@@ -694,27 +694,27 @@ class _GatheringFuture(futures.Future):
     cancelled.
     """
 
-    def __init__(self, children, *, loop=None):
+    eleza __init__(self, children, *, loop=None):
         super().__init__(loop=loop)
         self._children = children
         self._cancel_requested = False
 
-    def cancel(self):
-        if self.done():
-            return False
+    eleza cancel(self):
+        ikiwa self.done():
+            rudisha False
         ret = False
         for child in self._children:
-            if child.cancel():
+            ikiwa child.cancel():
                 ret = True
-        if ret:
+        ikiwa ret:
             # If any child tasks were actually cancelled, we should
             # propagate the cancellation request regardless of
             # *return_exceptions* argument.  See issue 32684.
             self._cancel_requested = True
-        return ret
+        rudisha ret
 
 
-def gather(*coros_or_futures, loop=None, return_exceptions=False):
+eleza gather(*coros_or_futures, loop=None, return_exceptions=False):
     """Return a future aggregating results kutoka the given coroutines/futures.
 
     Coroutines will be wrapped in a future and scheduled in the event
@@ -730,15 +730,15 @@ def gather(*coros_or_futures, loop=None, return_exceptions=False):
     raised exception will be immediately propagated to the returned
     future.
 
-    Cancellation: if the outer Future is cancelled, all children (that
+    Cancellation: ikiwa the outer Future is cancelled, all children (that
     have not completed yet) are also cancelled.  If any child is
-    cancelled, this is treated as if it raised CancelledError --
+    cancelled, this is treated as ikiwa it raised CancelledError --
     the outer Future is *not* cancelled in this case.  (This is to
     prevent the cancellation of one child to cause other children to
     be cancelled.)
     """
-    if not coros_or_futures:
-        if loop is None:
+    ikiwa not coros_or_futures:
+        ikiwa loop is None:
             loop = events.get_event_loop()
         else:
             warnings.warn("The loop argument is deprecated since Python 3.8, "
@@ -746,21 +746,21 @@ def gather(*coros_or_futures, loop=None, return_exceptions=False):
                           DeprecationWarning, stacklevel=2)
         outer = loop.create_future()
         outer.set_result([])
-        return outer
+        rudisha outer
 
-    def _done_callback(fut):
+    eleza _done_callback(fut):
         nonlocal nfinished
         nfinished += 1
 
-        if outer.done():
-            if not fut.cancelled():
+        ikiwa outer.done():
+            ikiwa not fut.cancelled():
                 # Mark exception retrieved.
                 fut.exception()
             return
 
-        if not return_exceptions:
-            if fut.cancelled():
-                # Check if 'fut' is cancelled first, as
+        ikiwa not return_exceptions:
+            ikiwa fut.cancelled():
+                # Check ikiwa 'fut' is cancelled first, as
                 # 'fut.exception()' will *raise* a CancelledError
                 # instead of returning it.
                 exc = exceptions.CancelledError()
@@ -768,28 +768,28 @@ def gather(*coros_or_futures, loop=None, return_exceptions=False):
                 return
             else:
                 exc = fut.exception()
-                if exc is not None:
+                ikiwa exc is not None:
                     outer.set_exception(exc)
                     return
 
-        if nfinished == nfuts:
+        ikiwa nfinished == nfuts:
             # All futures are done; create a list of results
             # and set it to the 'outer' future.
             results = []
 
             for fut in children:
-                if fut.cancelled():
-                    # Check if 'fut' is cancelled first, as
+                ikiwa fut.cancelled():
+                    # Check ikiwa 'fut' is cancelled first, as
                     # 'fut.exception()' will *raise* a CancelledError
                     # instead of returning it.
                     res = exceptions.CancelledError()
                 else:
                     res = fut.exception()
-                    if res is None:
+                    ikiwa res is None:
                         res = fut.result()
                 results.append(res)
 
-            if outer._cancel_requested:
+            ikiwa outer._cancel_requested:
                 # If gather is being cancelled we must propagate the
                 # cancellation regardless of *return_exceptions* argument.
                 # See issue 32684.
@@ -802,11 +802,11 @@ def gather(*coros_or_futures, loop=None, return_exceptions=False):
     nfuts = 0
     nfinished = 0
     for arg in coros_or_futures:
-        if arg not in arg_to_fut:
+        ikiwa arg not in arg_to_fut:
             fut = ensure_future(arg, loop=loop)
-            if loop is None:
+            ikiwa loop is None:
                 loop = futures._get_loop(fut)
-            if fut is not arg:
+            ikiwa fut is not arg:
                 # 'arg' was not a Future, therefore, 'fut' is a new
                 # Future created specifically for 'arg'.  Since the caller
                 # can't control it, disable the "destroy pending task"
@@ -824,10 +824,10 @@ def gather(*coros_or_futures, loop=None, return_exceptions=False):
         children.append(fut)
 
     outer = _GatheringFuture(children, loop=loop)
-    return outer
+    rudisha outer
 
 
-def shield(arg, *, loop=None):
+eleza shield(arg, *, loop=None):
     """Wait for a future, shielding it kutoka cancellation.
 
     The statement
@@ -838,7 +838,7 @@ def shield(arg, *, loop=None):
 
         res = await something()
 
-    *except* that if the coroutine containing it is cancelled, the
+    *except* that ikiwa the coroutine containing it is cancelled, the
     task running in something() is not cancelled.  From the POV of
     something(), the cancellation did not happen.  But its caller is
     still cancelled, so the yield-kutoka expression still raises
@@ -853,64 +853,64 @@ def shield(arg, *, loop=None):
         except CancelledError:
             res = None
     """
-    if loop is not None:
+    ikiwa loop is not None:
         warnings.warn("The loop argument is deprecated since Python 3.8, "
                       "and scheduled for removal in Python 3.10.",
                       DeprecationWarning, stacklevel=2)
     inner = ensure_future(arg, loop=loop)
-    if inner.done():
+    ikiwa inner.done():
         # Shortcut.
-        return inner
+        rudisha inner
     loop = futures._get_loop(inner)
     outer = loop.create_future()
 
-    def _inner_done_callback(inner):
-        if outer.cancelled():
-            if not inner.cancelled():
+    eleza _inner_done_callback(inner):
+        ikiwa outer.cancelled():
+            ikiwa not inner.cancelled():
                 # Mark inner's result as retrieved.
                 inner.exception()
             return
 
-        if inner.cancelled():
+        ikiwa inner.cancelled():
             outer.cancel()
         else:
             exc = inner.exception()
-            if exc is not None:
+            ikiwa exc is not None:
                 outer.set_exception(exc)
             else:
                 outer.set_result(inner.result())
 
 
-    def _outer_done_callback(outer):
-        if not inner.done():
+    eleza _outer_done_callback(outer):
+        ikiwa not inner.done():
             inner.remove_done_callback(_inner_done_callback)
 
     inner.add_done_callback(_inner_done_callback)
     outer.add_done_callback(_outer_done_callback)
-    return outer
+    rudisha outer
 
 
-def run_coroutine_threadsafe(coro, loop):
+eleza run_coroutine_threadsafe(coro, loop):
     """Submit a coroutine object to a given event loop.
 
     Return a concurrent.futures.Future to access the result.
     """
-    if not coroutines.iscoroutine(coro):
+    ikiwa not coroutines.iscoroutine(coro):
         raise TypeError('A coroutine object is required')
     future = concurrent.futures.Future()
 
-    def callback():
+    eleza callback():
         try:
             futures._chain_future(ensure_future(coro, loop=loop), future)
         except (SystemExit, KeyboardInterrupt):
             raise
         except BaseException as exc:
-            if future.set_running_or_notify_cancel():
+            ikiwa future.set_running_or_notify_cancel():
                 future.set_exception(exc)
             raise
 
     loop.call_soon_threadsafe(callback)
-    return future
+    rudisha future
 
 
 # WeakSet containing all alive tasks.
@@ -921,28 +921,28 @@ _all_tasks = weakref.WeakSet()
 _current_tasks = {}
 
 
-def _register_task(task):
+eleza _register_task(task):
     """Register a new task in asyncio as executed by loop."""
     _all_tasks.add(task)
 
 
-def _enter_task(loop, task):
+eleza _enter_task(loop, task):
     current_task = _current_tasks.get(loop)
-    if current_task is not None:
+    ikiwa current_task is not None:
         raise RuntimeError(f"Cannot enter into task {task!r} while another "
                            f"task {current_task!r} is being executed.")
     _current_tasks[loop] = task
 
 
-def _leave_task(loop, task):
+eleza _leave_task(loop, task):
     current_task = _current_tasks.get(loop)
-    if current_task is not task:
+    ikiwa current_task is not task:
         raise RuntimeError(f"Leaving task {task!r} does not match "
                            f"the current task {current_task!r}.")
     del _current_tasks[loop]
 
 
-def _unregister_task(task):
+eleza _unregister_task(task):
     """Unregister a task."""
     _all_tasks.discard(task)
 

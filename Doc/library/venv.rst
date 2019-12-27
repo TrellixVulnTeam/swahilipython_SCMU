@@ -16,7 +16,7 @@
 --------------
 
 The :mod:`venv` module provides support for creating lightweight "virtual
-environments" with their own site directories, optionally isolated from system
+environments" with their own site directories, optionally isolated kutoka system
 site directories.  Each virtual environment has its own Python binary (which
 matches the version of the binary that was used to create this environment) and
 can have its own independent set of installed Python packages in its site
@@ -39,7 +39,7 @@ Creating virtual environments
 .. _venv-def:
 
 .. note:: A virtual environment is a Python environment such that the Python
-   interpreter, libraries and scripts installed into it are isolated from those
+   interpreter, libraries and scripts installed into it are isolated kutoka those
    installed in other virtual environments, and (by default) any libraries
    installed in a "system" Python, i.e., one which is installed as part of your
    operating system.
@@ -64,7 +64,7 @@ Creating virtual environments
    Python installation).
 
    When a virtual environment is active, any options that change the
-   installation path will be ignored from all :mod:`distutils` configuration
+   installation path will be ignored kutoka all :mod:`distutils` configuration
    files to prevent projects being inadvertently installed outside of the
    virtual environment.
 
@@ -100,7 +100,7 @@ creation according to their needs, the :class:`EnvBuilder` class.
                       symlinks=False, upgrade=False, with_pip=False, \
                       prompt=None)
 
-    The :class:`EnvBuilder` class accepts the following keyword arguments on
+    The :class:`EnvBuilder` kundi accepts the following keyword arguments on
     instantiation:
 
     * ``system_site_packages`` -- a Boolean value indicating that the system Python
@@ -131,7 +131,7 @@ creation according to their needs, the :class:`EnvBuilder` class.
        Added the ``prompt`` parameter
 
     Creators of third-party virtual environment tools will be free to use the
-    provided :class:`EnvBuilder` class as a base class.
+    provided :class:`EnvBuilder` kundi as a base class.
 
     The returned env-builder is an object which has a method, ``create``:
 
@@ -143,8 +143,8 @@ creation according to their needs, the :class:`EnvBuilder` class.
         environment in the specified directory, or raise an appropriate
         exception.
 
-        The ``create`` method of the :class:`EnvBuilder` class illustrates the
-        hooks available for subclass customization::
+        The ``create`` method of the :class:`EnvBuilder` kundi illustrates the
+        hooks available for subkundi customization::
 
             def create(self, env_dir):
                 """
@@ -203,7 +203,7 @@ creation according to their needs, the :class:`EnvBuilder` class.
     .. versionchanged:: 3.7.2
        Windows now uses redirector scripts for ``python[w].exe`` instead of
        copying the actual binaries. In 3.7.2 only :meth:`setup_python` does
-       nothing unless running from a build in the source tree.
+       nothing unless running kutoka a build in the source tree.
 
     .. versionchanged:: 3.7.3
        Windows copies the redirector scripts as part of :meth:`setup_python`
@@ -211,7 +211,7 @@ creation according to their needs, the :class:`EnvBuilder` class.
        When using symlinks, the original executables will be linked.
 
     In addition, :class:`EnvBuilder` provides this utility method that can be
-    called from :meth:`setup_scripts` or :meth:`post_setup` in subclasses to
+    called kutoka :meth:`setup_scripts` or :meth:`post_setup` in subclasses to
     assist in installing custom scripts into the virtual environment.
 
     .. method:: install_scripts(context, path)
@@ -260,18 +260,18 @@ An example of extending ``EnvBuilder``
 --------------------------------------
 
 The following script shows how to extend :class:`EnvBuilder` by implementing a
-subclass which installs setuptools and pip into a created virtual environment::
+subkundi which installs setuptools and pip into a created virtual environment::
 
-    import os
-    import os.path
-    from subprocess import Popen, PIPE
-    import sys
-    from threading import Thread
-    from urllib.parse import urlparse
-    from urllib.request import urlretrieve
-    import venv
+    agiza os
+    agiza os.path
+    kutoka subprocess agiza Popen, PIPE
+    agiza sys
+    kutoka threading agiza Thread
+    kutoka urllib.parse agiza urlparse
+    kutoka urllib.request agiza urlretrieve
+    agiza venv
 
-    class ExtendedEnvBuilder(venv.EnvBuilder):
+    kundi ExtendedEnvBuilder(venv.EnvBuilder):
         """
         This builder installs setuptools and pip so that you can pip or
         easy_install other packages into the created virtual environment.
@@ -284,11 +284,11 @@ subclass which installs setuptools and pip into a created virtual environment::
                          installation can be monitored by passing a progress
                          callable. If specified, it is called with two
                          arguments: a string indicating some progress, and a
-                         context indicating where the string is coming from.
+                         context indicating where the string is coming kutoka.
                          The context argument can have one of three values:
-                         'main', indicating that it is called from virtualize()
+                         'main', indicating that it is called kutoka virtualize()
                          itself, and 'stdout' and 'stderr', which are obtained
-                         by reading lines from the output streams of a subprocess
+                         by reading lines kutoka the output streams of a subprocess
                          which is used to install the app.
 
                          If a callable is not specified, default progress
@@ -319,7 +319,7 @@ subclass which installs setuptools and pip into a created virtual environment::
 
         def reader(self, stream, context):
             """
-            Read lines from a subprocess' output stream and either pass to a progress
+            Read lines kutoka a subprocess' output stream and either pass to a progress
             callable (if specified) or write progress information to sys.stderr.
             """
             progress = self.progress
@@ -407,7 +407,7 @@ subclass which installs setuptools and pip into a created virtual environment::
             raise ValueError('This script is only for use with '
                              'Python 3.3 or later')
         else:
-            import argparse
+            agiza argparse
 
             parser = argparse.ArgumentParser(prog=__name__,
                                              description='Creates virtual Python '
@@ -453,7 +453,7 @@ subclass which installs setuptools and pip into a created virtual environment::
                                                      'in-place.')
             parser.add_argument('--verbose', default=False, action='store_true',
                                 dest='verbose', help='Display the output '
-                                                   'from the scripts which '
+                                                   'kutoka the scripts which '
                                                    'install setuptools and pip.')
             options = parser.parse_args(args)
             if options.upgrade and options.clear:

@@ -23,18 +23,18 @@ PTModule = sys.modules[__name__]
 MODNAME = '%s.PTModule' % __name__
 
 
-def _get_proxy(obj, get_only=True):
-    class Proxy(object):
-        def __getattr__(self, name):
-            return getattr(obj, name)
-    if not get_only:
-        def __setattr__(self, name, value):
+eleza _get_proxy(obj, get_only=True):
+    kundi Proxy(object):
+        eleza __getattr__(self, name):
+            rudisha getattr(obj, name)
+    ikiwa not get_only:
+        eleza __setattr__(self, name, value):
             setattr(obj, name, value)
-        def __delattr__(self, name):
+        eleza __delattr__(self, name):
             delattr(obj, name)
         Proxy.__setattr__ = __setattr__
         Proxy.__delattr__ = __delattr__
-    return Proxy()
+    rudisha Proxy()
 
 
 # for use in the test
@@ -42,50 +42,50 @@ something  = sentinel.Something
 something_else  = sentinel.SomethingElse
 
 
-class Foo(object):
-    def __init__(self, a): pass
-    def f(self, a): pass
-    def g(self): pass
+kundi Foo(object):
+    eleza __init__(self, a): pass
+    eleza f(self, a): pass
+    eleza g(self): pass
     foo = 'bar'
 
     @staticmethod
-    def static_method(): pass
+    eleza static_method(): pass
 
     @classmethod
-    def class_method(cls): pass
+    eleza class_method(cls): pass
 
-    class Bar(object):
-        def a(self): pass
+    kundi Bar(object):
+        eleza a(self): pass
 
 foo_name = '%s.Foo' % __name__
 
 
-def function(a, b=Foo): pass
+eleza function(a, b=Foo): pass
 
 
-class Container(object):
-    def __init__(self):
+kundi Container(object):
+    eleza __init__(self):
         self.values = {}
 
-    def __getitem__(self, name):
-        return self.values[name]
+    eleza __getitem__(self, name):
+        rudisha self.values[name]
 
-    def __setitem__(self, name, value):
+    eleza __setitem__(self, name, value):
         self.values[name] = value
 
-    def __delitem__(self, name):
+    eleza __delitem__(self, name):
         del self.values[name]
 
-    def __iter__(self):
-        return iter(self.values)
+    eleza __iter__(self):
+        rudisha iter(self.values)
 
 
 
-class PatchTest(unittest.TestCase):
+kundi PatchTest(unittest.TestCase):
 
-    def assertNotCallable(self, obj, magic=True):
+    eleza assertNotCallable(self, obj, magic=True):
         MockClass = NonCallableMagicMock
-        if not magic:
+        ikiwa not magic:
             MockClass = NonCallableMock
 
         self.assertRaises(TypeError, obj)
@@ -93,12 +93,12 @@ class PatchTest(unittest.TestCase):
         self.assertFalse(is_instance(obj, CallableMixin))
 
 
-    def test_single_patchobject(self):
-        class Something(object):
+    eleza test_single_patchobject(self):
+        kundi Something(object):
             attribute = sentinel.Original
 
         @patch.object(Something, 'attribute', sentinel.Patched)
-        def test():
+        eleza test():
             self.assertEqual(Something.attribute, sentinel.Patched, "unpatched")
 
         test()
@@ -106,12 +106,12 @@ class PatchTest(unittest.TestCase):
                          "patch not restored")
 
 
-    def test_patchobject_with_none(self):
-        class Something(object):
+    eleza test_patchobject_with_none(self):
+        kundi Something(object):
             attribute = sentinel.Original
 
         @patch.object(Something, 'attribute', None)
-        def test():
+        eleza test():
             self.assertIsNone(Something.attribute, "unpatched")
 
         test()
@@ -119,14 +119,14 @@ class PatchTest(unittest.TestCase):
                          "patch not restored")
 
 
-    def test_multiple_patchobject(self):
-        class Something(object):
+    eleza test_multiple_patchobject(self):
+        kundi Something(object):
             attribute = sentinel.Original
             next_attribute = sentinel.Original2
 
         @patch.object(Something, 'attribute', sentinel.Patched)
         @patch.object(Something, 'next_attribute', sentinel.Patched2)
-        def test():
+        eleza test():
             self.assertEqual(Something.attribute, sentinel.Patched,
                              "unpatched")
             self.assertEqual(Something.next_attribute, sentinel.Patched2,
@@ -139,11 +139,11 @@ class PatchTest(unittest.TestCase):
                          "patch not restored")
 
 
-    def test_object_lookup_is_quite_lazy(self):
+    eleza test_object_lookup_is_quite_lazy(self):
         global something
         original = something
         @patch('%s.something' % __name__, sentinel.Something2)
-        def test():
+        eleza test():
             pass
 
         try:
@@ -154,9 +154,9 @@ class PatchTest(unittest.TestCase):
             something = original
 
 
-    def test_patch(self):
+    eleza test_patch(self):
         @patch('%s.something' % __name__, sentinel.Something2)
-        def test():
+        eleza test():
             self.assertEqual(PTModule.something, sentinel.Something2,
                              "unpatched")
 
@@ -166,7 +166,7 @@ class PatchTest(unittest.TestCase):
 
         @patch('%s.something' % __name__, sentinel.Something2)
         @patch('%s.something_else' % __name__, sentinel.SomethingElse)
-        def test():
+        eleza test():
             self.assertEqual(PTModule.something, sentinel.Something2,
                              "unpatched")
             self.assertEqual(PTModule.something_else, sentinel.SomethingElse,
@@ -188,7 +188,7 @@ class PatchTest(unittest.TestCase):
         mock = Mock()
         mock.return_value = sentinel.Handle
         @patch('%s.open' % builtin_string, mock)
-        def test():
+        eleza test():
             self.assertEqual(open('filename', 'r'), sentinel.Handle,
                              "open not patched")
         test()
@@ -197,10 +197,10 @@ class PatchTest(unittest.TestCase):
         self.assertNotEqual(open, mock, "patch not restored")
 
 
-    def test_patch_class_attribute(self):
+    eleza test_patch_class_attribute(self):
         @patch('%s.SomeClass.class_attribute' % __name__,
                sentinel.ClassAttribute)
-        def test():
+        eleza test():
             self.assertEqual(PTModule.SomeClass.class_attribute,
                              sentinel.ClassAttribute, "unpatched")
         test()
@@ -209,13 +209,13 @@ class PatchTest(unittest.TestCase):
                           "patch not restored")
 
 
-    def test_patchobject_with_default_mock(self):
-        class Test(object):
+    eleza test_patchobject_with_default_mock(self):
+        kundi Test(object):
             something = sentinel.Original
             something2 = sentinel.Original2
 
         @patch.object(Test, 'something')
-        def test(mock):
+        eleza test(mock):
             self.assertEqual(mock, Test.something,
                              "Mock not passed into test function")
             self.assertIsInstance(mock, MagicMock,
@@ -225,7 +225,7 @@ class PatchTest(unittest.TestCase):
 
         @patch.object(Test, 'something')
         @patch.object(Test, 'something2')
-        def test(this1, this2, mock1, mock2):
+        eleza test(this1, this2, mock1, mock2):
             self.assertEqual(this1, sentinel.this1,
                              "Patched function didn't receive initial argument")
             self.assertEqual(this2, sentinel.this2,
@@ -242,7 +242,7 @@ class PatchTest(unittest.TestCase):
             # A hack to test that new mocks are passed the second time
             self.assertNotEqual(outerMock1, mock1, "unexpected value for mock1")
             self.assertNotEqual(outerMock2, mock2, "unexpected value for mock1")
-            return mock1, mock2
+            rudisha mock1, mock2
 
         outerMock1 = outerMock2 = None
         outerMock1, outerMock2 = test(sentinel.this1, sentinel.this2)
@@ -251,9 +251,9 @@ class PatchTest(unittest.TestCase):
         test(sentinel.this1, sentinel.this2)
 
 
-    def test_patch_with_spec(self):
+    eleza test_patch_with_spec(self):
         @patch('%s.SomeClass' % __name__, spec=SomeClass)
-        def test(MockSomeClass):
+        eleza test(MockSomeClass):
             self.assertEqual(SomeClass, MockSomeClass)
             self.assertTrue(is_instance(SomeClass.wibble, MagicMock))
             self.assertRaises(AttributeError, lambda: SomeClass.not_wibble)
@@ -261,9 +261,9 @@ class PatchTest(unittest.TestCase):
         test()
 
 
-    def test_patchobject_with_spec(self):
+    eleza test_patchobject_with_spec(self):
         @patch.object(SomeClass, 'class_attribute', spec=SomeClass)
-        def test(MockAttribute):
+        eleza test(MockAttribute):
             self.assertEqual(SomeClass.class_attribute, MockAttribute)
             self.assertTrue(is_instance(SomeClass.class_attribute.wibble,
                                        MagicMock))
@@ -273,9 +273,9 @@ class PatchTest(unittest.TestCase):
         test()
 
 
-    def test_patch_with_spec_as_list(self):
+    eleza test_patch_with_spec_as_list(self):
         @patch('%s.SomeClass' % __name__, spec=['wibble'])
-        def test(MockSomeClass):
+        eleza test(MockSomeClass):
             self.assertEqual(SomeClass, MockSomeClass)
             self.assertTrue(is_instance(SomeClass.wibble, MagicMock))
             self.assertRaises(AttributeError, lambda: SomeClass.not_wibble)
@@ -283,9 +283,9 @@ class PatchTest(unittest.TestCase):
         test()
 
 
-    def test_patchobject_with_spec_as_list(self):
+    eleza test_patchobject_with_spec_as_list(self):
         @patch.object(SomeClass, 'class_attribute', spec=['wibble'])
-        def test(MockAttribute):
+        eleza test(MockAttribute):
             self.assertEqual(SomeClass.class_attribute, MockAttribute)
             self.assertTrue(is_instance(SomeClass.class_attribute.wibble,
                                        MagicMock))
@@ -295,20 +295,20 @@ class PatchTest(unittest.TestCase):
         test()
 
 
-    def test_nested_patch_with_spec_as_list(self):
+    eleza test_nested_patch_with_spec_as_list(self):
         # regression test for nested decorators
         @patch('%s.open' % builtin_string)
         @patch('%s.SomeClass' % __name__, spec=['wibble'])
-        def test(MockSomeClass, MockOpen):
+        eleza test(MockSomeClass, MockOpen):
             self.assertEqual(SomeClass, MockSomeClass)
             self.assertTrue(is_instance(SomeClass.wibble, MagicMock))
             self.assertRaises(AttributeError, lambda: SomeClass.not_wibble)
         test()
 
 
-    def test_patch_with_spec_as_boolean(self):
+    eleza test_patch_with_spec_as_boolean(self):
         @patch('%s.SomeClass' % __name__, spec=True)
-        def test(MockSomeClass):
+        eleza test(MockSomeClass):
             self.assertEqual(SomeClass, MockSomeClass)
             # Should not raise attribute error
             MockSomeClass.wibble
@@ -318,9 +318,9 @@ class PatchTest(unittest.TestCase):
         test()
 
 
-    def test_patch_object_with_spec_as_boolean(self):
+    eleza test_patch_object_with_spec_as_boolean(self):
         @patch.object(PTModule, 'SomeClass', spec=True)
-        def test(MockSomeClass):
+        eleza test(MockSomeClass):
             self.assertEqual(SomeClass, MockSomeClass)
             # Should not raise attribute error
             MockSomeClass.wibble
@@ -330,9 +330,9 @@ class PatchTest(unittest.TestCase):
         test()
 
 
-    def test_patch_class_acts_with_spec_is_inherited(self):
+    eleza test_patch_class_acts_with_spec_is_inherited(self):
         @patch('%s.SomeClass' % __name__, spec=True)
-        def test(MockSomeClass):
+        eleza test(MockSomeClass):
             self.assertTrue(is_instance(MockSomeClass, MagicMock))
             instance = MockSomeClass()
             self.assertNotCallable(instance)
@@ -344,109 +344,109 @@ class PatchTest(unittest.TestCase):
         test()
 
 
-    def test_patch_with_create_mocks_non_existent_attributes(self):
+    eleza test_patch_with_create_mocks_non_existent_attributes(self):
         @patch('%s.frooble' % builtin_string, sentinel.Frooble, create=True)
-        def test():
+        eleza test():
             self.assertEqual(frooble, sentinel.Frooble)
 
         test()
         self.assertRaises(NameError, lambda: frooble)
 
 
-    def test_patchobject_with_create_mocks_non_existent_attributes(self):
+    eleza test_patchobject_with_create_mocks_non_existent_attributes(self):
         @patch.object(SomeClass, 'frooble', sentinel.Frooble, create=True)
-        def test():
+        eleza test():
             self.assertEqual(SomeClass.frooble, sentinel.Frooble)
 
         test()
         self.assertFalse(hasattr(SomeClass, 'frooble'))
 
 
-    def test_patch_wont_create_by_default(self):
+    eleza test_patch_wont_create_by_default(self):
         with self.assertRaises(AttributeError):
             @patch('%s.frooble' % builtin_string, sentinel.Frooble)
-            def test(): pass
+            eleza test(): pass
 
             test()
         self.assertRaises(NameError, lambda: frooble)
 
 
-    def test_patchobject_wont_create_by_default(self):
+    eleza test_patchobject_wont_create_by_default(self):
         with self.assertRaises(AttributeError):
             @patch.object(SomeClass, 'ord', sentinel.Frooble)
-            def test(): pass
+            eleza test(): pass
             test()
         self.assertFalse(hasattr(SomeClass, 'ord'))
 
 
-    def test_patch_builtins_without_create(self):
+    eleza test_patch_builtins_without_create(self):
         @patch(__name__+'.ord')
-        def test_ord(mock_ord):
+        eleza test_ord(mock_ord):
             mock_ord.return_value = 101
-            return ord('c')
+            rudisha ord('c')
 
         @patch(__name__+'.open')
-        def test_open(mock_open):
+        eleza test_open(mock_open):
             m = mock_open.return_value
             m.read.return_value = 'abcd'
 
             fobj = open('doesnotexists.txt')
             data = fobj.read()
             fobj.close()
-            return data
+            rudisha data
 
         self.assertEqual(test_ord(), 101)
         self.assertEqual(test_open(), 'abcd')
 
 
-    def test_patch_with_static_methods(self):
-        class Foo(object):
+    eleza test_patch_with_static_methods(self):
+        kundi Foo(object):
             @staticmethod
-            def woot():
-                return sentinel.Static
+            eleza woot():
+                rudisha sentinel.Static
 
         @patch.object(Foo, 'woot', staticmethod(lambda: sentinel.Patched))
-        def anonymous():
+        eleza anonymous():
             self.assertEqual(Foo.woot(), sentinel.Patched)
         anonymous()
 
         self.assertEqual(Foo.woot(), sentinel.Static)
 
 
-    def test_patch_local(self):
+    eleza test_patch_local(self):
         foo = sentinel.Foo
         @patch.object(sentinel, 'Foo', 'Foo')
-        def anonymous():
+        eleza anonymous():
             self.assertEqual(sentinel.Foo, 'Foo')
         anonymous()
 
         self.assertEqual(sentinel.Foo, foo)
 
 
-    def test_patch_slots(self):
-        class Foo(object):
+    eleza test_patch_slots(self):
+        kundi Foo(object):
             __slots__ = ('Foo',)
 
         foo = Foo()
         foo.Foo = sentinel.Foo
 
         @patch.object(foo, 'Foo', 'Foo')
-        def anonymous():
+        eleza anonymous():
             self.assertEqual(foo.Foo, 'Foo')
         anonymous()
 
         self.assertEqual(foo.Foo, sentinel.Foo)
 
 
-    def test_patchobject_class_decorator(self):
-        class Something(object):
+    eleza test_patchobject_class_decorator(self):
+        kundi Something(object):
             attribute = sentinel.Original
 
-        class Foo(object):
-            def test_method(other_self):
+        kundi Foo(object):
+            eleza test_method(other_self):
                 self.assertEqual(Something.attribute, sentinel.Patched,
                                  "unpatched")
-            def not_test_method(other_self):
+            eleza not_test_method(other_self):
                 self.assertEqual(Something.attribute, sentinel.Original,
                                  "non-test method patched")
 
@@ -460,18 +460,18 @@ class PatchTest(unittest.TestCase):
                          "patch not restored")
 
 
-    def test_patch_class_decorator(self):
-        class Something(object):
+    eleza test_patch_class_decorator(self):
+        kundi Something(object):
             attribute = sentinel.Original
 
-        class Foo(object):
+        kundi Foo(object):
 
             test_class_attr = 'whatever'
 
-            def test_method(other_self, mock_something):
+            eleza test_method(other_self, mock_something):
                 self.assertEqual(PTModule.something, mock_something,
                                  "unpatched")
-            def not_test_method(other_self):
+            eleza not_test_method(other_self):
                 self.assertEqual(PTModule.something, sentinel.Something,
                                  "non-test method patched")
         Foo = patch('%s.something' % __name__)(Foo)
@@ -486,14 +486,14 @@ class PatchTest(unittest.TestCase):
                          "patch not restored")
 
 
-    def test_patchobject_twice(self):
-        class Something(object):
+    eleza test_patchobject_twice(self):
+        kundi Something(object):
             attribute = sentinel.Original
             next_attribute = sentinel.Original2
 
         @patch.object(Something, 'attribute', sentinel.Patched)
         @patch.object(Something, 'attribute', sentinel.Patched)
-        def test():
+        eleza test():
             self.assertEqual(Something.attribute, sentinel.Patched, "unpatched")
 
         test()
@@ -502,12 +502,12 @@ class PatchTest(unittest.TestCase):
                          "patch not restored")
 
 
-    def test_patch_dict(self):
+    eleza test_patch_dict(self):
         foo = {'initial': object(), 'other': 'something'}
         original = foo.copy()
 
         @patch.dict(foo)
-        def test():
+        eleza test():
             foo['a'] = 3
             del foo['initial']
             foo['other'] = 'something else'
@@ -517,7 +517,7 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(foo, original)
 
         @patch.dict(foo, {'a': 'b'})
-        def test():
+        eleza test():
             self.assertEqual(len(foo), 3)
             self.assertEqual(foo['a'], 'b')
 
@@ -526,7 +526,7 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(foo, original)
 
         @patch.dict(foo, [('a', 'b')])
-        def test():
+        eleza test():
             self.assertEqual(len(foo), 3)
             self.assertEqual(foo['a'], 'b')
 
@@ -535,7 +535,7 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(foo, original)
 
 
-    def test_patch_dict_with_container_object(self):
+    eleza test_patch_dict_with_container_object(self):
         foo = Container()
         foo['initial'] = object()
         foo['other'] =  'something'
@@ -543,7 +543,7 @@ class PatchTest(unittest.TestCase):
         original = foo.values.copy()
 
         @patch.dict(foo)
-        def test():
+        eleza test():
             foo['a'] = 3
             del foo['initial']
             foo['other'] = 'something else'
@@ -553,7 +553,7 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(foo.values, original)
 
         @patch.dict(foo, {'a': 'b'})
-        def test():
+        eleza test():
             self.assertEqual(len(foo.values), 3)
             self.assertEqual(foo['a'], 'b')
 
@@ -562,12 +562,12 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(foo.values, original)
 
 
-    def test_patch_dict_with_clear(self):
+    eleza test_patch_dict_with_clear(self):
         foo = {'initial': object(), 'other': 'something'}
         original = foo.copy()
 
         @patch.dict(foo, clear=True)
-        def test():
+        eleza test():
             self.assertEqual(foo, {})
             foo['a'] = 3
             foo['other'] = 'something else'
@@ -577,7 +577,7 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(foo, original)
 
         @patch.dict(foo, {'a': 'b'}, clear=True)
-        def test():
+        eleza test():
             self.assertEqual(foo, {'a': 'b'})
 
         test()
@@ -585,7 +585,7 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(foo, original)
 
         @patch.dict(foo, [('a', 'b')], clear=True)
-        def test():
+        eleza test():
             self.assertEqual(foo, {'a': 'b'})
 
         test()
@@ -593,7 +593,7 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(foo, original)
 
 
-    def test_patch_dict_with_container_object_and_clear(self):
+    eleza test_patch_dict_with_container_object_and_clear(self):
         foo = Container()
         foo['initial'] = object()
         foo['other'] =  'something'
@@ -601,7 +601,7 @@ class PatchTest(unittest.TestCase):
         original = foo.values.copy()
 
         @patch.dict(foo, clear=True)
-        def test():
+        eleza test():
             self.assertEqual(foo.values, {})
             foo['a'] = 3
             foo['other'] = 'something else'
@@ -611,7 +611,7 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(foo.values, original)
 
         @patch.dict(foo, {'a': 'b'}, clear=True)
-        def test():
+        eleza test():
             self.assertEqual(foo.values, {'a': 'b'})
 
         test()
@@ -619,30 +619,30 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(foo.values, original)
 
 
-    def test_patch_dict_as_context_manager(self):
+    eleza test_patch_dict_as_context_manager(self):
         foo = {'a': 'b'}
         with patch.dict(foo, a='c') as patched:
             self.assertEqual(patched, {'a': 'c'})
         self.assertEqual(foo, {'a': 'b'})
 
 
-    def test_name_preserved(self):
+    eleza test_name_preserved(self):
         foo = {}
 
         @patch('%s.SomeClass' % __name__, object())
         @patch('%s.SomeClass' % __name__, object(), autospec=True)
         @patch.object(SomeClass, object())
         @patch.dict(foo)
-        def some_name(): pass
+        eleza some_name(): pass
 
         self.assertEqual(some_name.__name__, 'some_name')
 
 
-    def test_patch_with_exception(self):
+    eleza test_patch_with_exception(self):
         foo = {}
 
         @patch.dict(foo, {'a': 'b'})
-        def test():
+        eleza test():
             raise NameError('Konrad')
 
         with self.assertRaises(NameError):
@@ -651,21 +651,21 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(foo, {})
 
 
-    def test_patch_dict_with_string(self):
+    eleza test_patch_dict_with_string(self):
         @patch.dict('os.environ', {'konrad_delong': 'some value'})
-        def test():
+        eleza test():
             self.assertIn('konrad_delong', os.environ)
 
         test()
 
 
-    def test_patch_dict_decorator_resolution(self):
+    eleza test_patch_dict_decorator_resolution(self):
         # bpo-35512: Ensure that patch with a string target resolves to
         # the new dictionary during function call
         original = support.target.copy()
 
         @patch.dict('unittest.test.testmock.support.target', {'bar': 'BAR'})
-        def test():
+        eleza test():
             self.assertEqual(support.target, {'foo': 'BAZ', 'bar': 'BAR'})
 
         try:
@@ -676,41 +676,41 @@ class PatchTest(unittest.TestCase):
             support.target = original
 
 
-    def test_patch_spec_set(self):
+    eleza test_patch_spec_set(self):
         @patch('%s.SomeClass' % __name__, spec=SomeClass, spec_set=True)
-        def test(MockClass):
+        eleza test(MockClass):
             MockClass.z = 'foo'
 
         self.assertRaises(AttributeError, test)
 
         @patch.object(support, 'SomeClass', spec=SomeClass, spec_set=True)
-        def test(MockClass):
+        eleza test(MockClass):
             MockClass.z = 'foo'
 
         self.assertRaises(AttributeError, test)
         @patch('%s.SomeClass' % __name__, spec_set=True)
-        def test(MockClass):
+        eleza test(MockClass):
             MockClass.z = 'foo'
 
         self.assertRaises(AttributeError, test)
 
         @patch.object(support, 'SomeClass', spec_set=True)
-        def test(MockClass):
+        eleza test(MockClass):
             MockClass.z = 'foo'
 
         self.assertRaises(AttributeError, test)
 
 
-    def test_spec_set_inherit(self):
+    eleza test_spec_set_inherit(self):
         @patch('%s.SomeClass' % __name__, spec_set=True)
-        def test(MockClass):
+        eleza test(MockClass):
             instance = MockClass()
             instance.z = 'foo'
 
         self.assertRaises(AttributeError, test)
 
 
-    def test_patch_start_stop(self):
+    eleza test_patch_start_stop(self):
         original = something
         patcher = patch('%s.something' % __name__)
         self.assertIs(something, original)
@@ -723,14 +723,14 @@ class PatchTest(unittest.TestCase):
         self.assertIs(something, original)
 
 
-    def test_stop_without_start(self):
-        # bpo-36366: calling stop without start will return None.
+    eleza test_stop_without_start(self):
+        # bpo-36366: calling stop without start will rudisha None.
         patcher = patch(foo_name, 'bar', 3)
         self.assertIsNone(patcher.stop())
 
 
-    def test_stop_idempotent(self):
-        # bpo-36366: calling stop on an already stopped patch will return None.
+    eleza test_stop_idempotent(self):
+        # bpo-36366: calling stop on an already stopped patch will rudisha None.
         patcher = patch(foo_name, 'bar', 3)
 
         patcher.start()
@@ -738,7 +738,7 @@ class PatchTest(unittest.TestCase):
         self.assertIsNone(patcher.stop())
 
 
-    def test_patchobject_start_stop(self):
+    eleza test_patchobject_start_stop(self):
         original = something
         patcher = patch.object(PTModule, 'something', 'foo')
         self.assertIs(something, original)
@@ -751,7 +751,7 @@ class PatchTest(unittest.TestCase):
         self.assertIs(something, original)
 
 
-    def test_patch_dict_start_stop(self):
+    eleza test_patch_dict_start_stop(self):
         d = {'foo': 'bar'}
         original = d.copy()
         patcher = patch.dict(d, [('spam', 'eggs')], clear=True)
@@ -765,15 +765,15 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(d, original)
 
 
-    def test_patch_dict_class_decorator(self):
+    eleza test_patch_dict_class_decorator(self):
         this = self
         d = {'spam': 'eggs'}
         original = d.copy()
 
-        class Test(object):
-            def test_first(self):
+        kundi Test(object):
+            eleza test_first(self):
                 this.assertEqual(d, {'foo': 'bar'})
-            def test_second(self):
+            eleza test_second(self):
                 this.assertEqual(d, {'foo': 'bar'})
 
         Test = patch.dict(d, {'foo': 'bar'}, clear=True)(Test)
@@ -796,17 +796,17 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(d, original)
 
 
-    def test_get_only_proxy(self):
-        class Something(object):
+    eleza test_get_only_proxy(self):
+        kundi Something(object):
             foo = 'foo'
-        class SomethingElse:
+        kundi SomethingElse:
             foo = 'foo'
 
         for thing in Something, SomethingElse, Something(), SomethingElse:
             proxy = _get_proxy(thing)
 
             @patch.object(proxy, 'foo', 'bar')
-            def test():
+            eleza test():
                 self.assertEqual(proxy.foo, 'bar')
             test()
             self.assertEqual(proxy.foo, 'foo')
@@ -814,17 +814,17 @@ class PatchTest(unittest.TestCase):
             self.assertNotIn('foo', proxy.__dict__)
 
 
-    def test_get_set_delete_proxy(self):
-        class Something(object):
+    eleza test_get_set_delete_proxy(self):
+        kundi Something(object):
             foo = 'foo'
-        class SomethingElse:
+        kundi SomethingElse:
             foo = 'foo'
 
         for thing in Something, SomethingElse, Something(), SomethingElse:
             proxy = _get_proxy(Something, get_only=False)
 
             @patch.object(proxy, 'foo', 'bar')
-            def test():
+            eleza test():
                 self.assertEqual(proxy.foo, 'bar')
             test()
             self.assertEqual(proxy.foo, 'foo')
@@ -832,7 +832,7 @@ class PatchTest(unittest.TestCase):
             self.assertNotIn('foo', proxy.__dict__)
 
 
-    def test_patch_keyword_args(self):
+    eleza test_patch_keyword_args(self):
         kwargs = {'side_effect': KeyError, 'foo.bar.return_value': 33,
                   'foo': MagicMock()}
 
@@ -845,7 +845,7 @@ class PatchTest(unittest.TestCase):
         self.assertIsInstance(mock.foo, MagicMock)
 
 
-    def test_patch_object_keyword_args(self):
+    eleza test_patch_object_keyword_args(self):
         kwargs = {'side_effect': KeyError, 'foo.bar.return_value': 33,
                   'foo': MagicMock()}
 
@@ -858,7 +858,7 @@ class PatchTest(unittest.TestCase):
         self.assertIsInstance(mock.foo, MagicMock)
 
 
-    def test_patch_dict_keyword_args(self):
+    eleza test_patch_dict_keyword_args(self):
         original = {'foo': 'bar'}
         copy = original.copy()
 
@@ -873,22 +873,22 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(original, copy)
 
 
-    def test_autospec(self):
-        class Boo(object):
-            def __init__(self, a): pass
-            def f(self, a): pass
-            def g(self): pass
+    eleza test_autospec(self):
+        kundi Boo(object):
+            eleza __init__(self, a): pass
+            eleza f(self, a): pass
+            eleza g(self): pass
             foo = 'bar'
 
-            class Bar(object):
-                def a(self): pass
+            kundi Bar(object):
+                eleza a(self): pass
 
-        def _test(mock):
+        eleza _test(mock):
             mock(1)
             mock.assert_called_with(1)
             self.assertRaises(TypeError, mock)
 
-        def _test2(mock):
+        eleza _test2(mock):
             mock.f(1)
             mock.f.assert_called_with(1)
             self.assertRaises(TypeError, mock.f)
@@ -917,12 +917,12 @@ class PatchTest(unittest.TestCase):
             self.assertRaises(AttributeError, getattr, mock.Bar, 'b')
             self.assertRaises(AttributeError, getattr, mock.Bar(), 'b')
 
-        def function(mock):
+        eleza function(mock):
             _test(mock)
             _test2(mock)
             _test2(mock(1))
             self.assertIs(mock, Foo)
-            return mock
+            rudisha mock
 
         test = patch(foo_name, autospec=True)(function)
 
@@ -940,9 +940,9 @@ class PatchTest(unittest.TestCase):
         test()
 
 
-    def test_autospec_function(self):
+    eleza test_autospec_function(self):
         @patch('%s.function' % __name__, autospec=True)
-        def test(mock):
+        eleza test(mock):
             function.assert_not_called()
             self.assertRaises(AssertionError, function.assert_called)
             self.assertRaises(AssertionError, function.assert_called_once)
@@ -960,30 +960,30 @@ class PatchTest(unittest.TestCase):
         test()
 
 
-    def test_autospec_keywords(self):
+    eleza test_autospec_keywords(self):
         @patch('%s.function' % __name__, autospec=True,
                return_value=3)
-        def test(mock_function):
+        eleza test(mock_function):
             #self.assertEqual(function.abc, 'foo')
-            return function(1, 2)
+            rudisha function(1, 2)
 
         result = test()
         self.assertEqual(result, 3)
 
 
-    def test_autospec_staticmethod(self):
+    eleza test_autospec_staticmethod(self):
         with patch('%s.Foo.static_method' % __name__, autospec=True) as method:
             Foo.static_method()
             method.assert_called_once_with()
 
 
-    def test_autospec_classmethod(self):
+    eleza test_autospec_classmethod(self):
         with patch('%s.Foo.class_method' % __name__, autospec=True) as method:
             Foo.class_method()
             method.assert_called_once_with()
 
 
-    def test_autospec_with_new(self):
+    eleza test_autospec_with_new(self):
         patcher = patch('%s.function' % __name__, new=3, autospec=True)
         self.assertRaises(TypeError, patcher.start)
 
@@ -992,8 +992,8 @@ class PatchTest(unittest.TestCase):
         self.assertRaises(TypeError, patcher.start)
 
 
-    def test_autospec_with_object(self):
-        class Bar(Foo):
+    eleza test_autospec_with_object(self):
+        kundi Bar(Foo):
             extra = []
 
         patcher = patch(foo_name, autospec=Bar)
@@ -1005,7 +1005,7 @@ class PatchTest(unittest.TestCase):
             patcher.stop()
 
 
-    def test_autospec_inherits(self):
+    eleza test_autospec_inherits(self):
         FooClass = Foo
         patcher = patch(foo_name, autospec=True)
         mock = patcher.start()
@@ -1016,7 +1016,7 @@ class PatchTest(unittest.TestCase):
             patcher.stop()
 
 
-    def test_autospec_name(self):
+    eleza test_autospec_name(self):
         patcher = patch(foo_name, autospec=True)
         mock = patcher.start()
 
@@ -1029,9 +1029,9 @@ class PatchTest(unittest.TestCase):
             patcher.stop()
 
 
-    def test_tracebacks(self):
+    eleza test_tracebacks(self):
         @patch.object(Foo, 'f', object())
-        def test():
+        eleza test():
             raise AssertionError
         try:
             test()
@@ -1043,7 +1043,7 @@ class PatchTest(unittest.TestCase):
         self.assertIn('raise AssertionError', traceback)
 
 
-    def test_new_callable_patch(self):
+    eleza test_new_callable_patch(self):
         patcher = patch(foo_name, new_callable=NonCallableMagicMock)
 
         m1 = patcher.start()
@@ -1056,7 +1056,7 @@ class PatchTest(unittest.TestCase):
             self.assertNotCallable(m1)
 
 
-    def test_new_callable_patch_object(self):
+    eleza test_new_callable_patch_object(self):
         patcher = patch.object(Foo, 'f', new_callable=NonCallableMagicMock)
 
         m1 = patcher.start()
@@ -1069,10 +1069,10 @@ class PatchTest(unittest.TestCase):
             self.assertNotCallable(m1)
 
 
-    def test_new_callable_keyword_arguments(self):
-        class Bar(object):
+    eleza test_new_callable_keyword_arguments(self):
+        kundi Bar(object):
             kwargs = None
-            def __init__(self, **kwargs):
+            eleza __init__(self, **kwargs):
                 Bar.kwargs = kwargs
 
         patcher = patch(foo_name, new_callable=Bar, arg1=1, arg2=2)
@@ -1084,10 +1084,10 @@ class PatchTest(unittest.TestCase):
             patcher.stop()
 
 
-    def test_new_callable_spec(self):
-        class Bar(object):
+    eleza test_new_callable_spec(self):
+        kundi Bar(object):
             kwargs = None
-            def __init__(self, **kwargs):
+            eleza __init__(self, **kwargs):
                 Bar.kwargs = kwargs
 
         patcher = patch(foo_name, new_callable=Bar, spec=Bar)
@@ -1105,7 +1105,7 @@ class PatchTest(unittest.TestCase):
             patcher.stop()
 
 
-    def test_new_callable_create(self):
+    eleza test_new_callable_create(self):
         non_existent_attr = '%s.weeeee' % foo_name
         p = patch(non_existent_attr, new_callable=NonCallableMock)
         self.assertRaises(AttributeError, p.start)
@@ -1119,7 +1119,7 @@ class PatchTest(unittest.TestCase):
             p.stop()
 
 
-    def test_new_callable_incompatible_with_new(self):
+    eleza test_new_callable_incompatible_with_new(self):
         self.assertRaises(
             ValueError, patch, foo_name, new=object(), new_callable=MagicMock
         )
@@ -1129,7 +1129,7 @@ class PatchTest(unittest.TestCase):
         )
 
 
-    def test_new_callable_incompatible_with_autospec(self):
+    eleza test_new_callable_incompatible_with_autospec(self):
         self.assertRaises(
             ValueError, patch, foo_name, new_callable=MagicMock,
             autospec=True
@@ -1140,8 +1140,8 @@ class PatchTest(unittest.TestCase):
         )
 
 
-    def test_new_callable_inherit_for_mocks(self):
-        class MockSub(Mock):
+    eleza test_new_callable_inherit_for_mocks(self):
+        kundi MockSub(Mock):
             pass
 
         MockClasses = (
@@ -1159,9 +1159,9 @@ class PatchTest(unittest.TestCase):
                     p.stop()
 
 
-    def test_new_callable_inherit_non_mock(self):
-        class NotAMock(object):
-            def __init__(self, spec):
+    eleza test_new_callable_inherit_non_mock(self):
+        kundi NotAMock(object):
+            eleza __init__(self, spec):
                 self.spec = spec
 
         p = patch(foo_name, new_callable=NotAMock, spec=True)
@@ -1175,19 +1175,19 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(m.spec, Foo)
 
 
-    def test_new_callable_class_decorating(self):
+    eleza test_new_callable_class_decorating(self):
         test = self
         original = Foo
-        class SomeTest(object):
+        kundi SomeTest(object):
 
-            def _test(self, mock_foo):
+            eleza _test(self, mock_foo):
                 test.assertIsNot(Foo, original)
                 test.assertIs(Foo, mock_foo)
                 test.assertIsInstance(Foo, SomeClass)
 
-            def test_two(self, mock_foo):
+            eleza test_two(self, mock_foo):
                 self._test(mock_foo)
-            def test_one(self, mock_foo):
+            eleza test_one(self, mock_foo):
                 self._test(mock_foo)
 
         SomeTest = patch(foo_name, new_callable=SomeClass)(SomeTest)
@@ -1196,7 +1196,7 @@ class PatchTest(unittest.TestCase):
         self.assertIs(Foo, original)
 
 
-    def test_patch_multiple(self):
+    eleza test_patch_multiple(self):
         original_foo = Foo
         original_f = Foo.f
         original_g = Foo.g
@@ -1219,7 +1219,7 @@ class PatchTest(unittest.TestCase):
 
 
         @patch.multiple(foo_name, f=3, g=4)
-        def test():
+        eleza test():
             self.assertIs(Foo, original_foo)
             self.assertEqual(Foo.f, 3)
             self.assertEqual(Foo.g, 4)
@@ -1227,18 +1227,18 @@ class PatchTest(unittest.TestCase):
         test()
 
 
-    def test_patch_multiple_no_kwargs(self):
+    eleza test_patch_multiple_no_kwargs(self):
         self.assertRaises(ValueError, patch.multiple, foo_name)
         self.assertRaises(ValueError, patch.multiple, Foo)
 
 
-    def test_patch_multiple_create_mocks(self):
+    eleza test_patch_multiple_create_mocks(self):
         original_foo = Foo
         original_f = Foo.f
         original_g = Foo.g
 
         @patch.multiple(foo_name, f=DEFAULT, g=3, foo=DEFAULT)
-        def test(f, foo):
+        eleza test(f, foo):
             self.assertIs(Foo, original_foo)
             self.assertIs(Foo.f, f)
             self.assertEqual(Foo.g, 3)
@@ -1251,7 +1251,7 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(Foo.g, original_g)
 
 
-    def test_patch_multiple_create_mocks_different_order(self):
+    eleza test_patch_multiple_create_mocks_different_order(self):
         original_f = Foo.f
         original_g = Foo.g
 
@@ -1263,7 +1263,7 @@ class PatchTest(unittest.TestCase):
         patcher.additional_patchers = [other]
 
         @patcher
-        def test(g):
+        eleza test(g):
             self.assertIs(Foo.g, g)
             self.assertEqual(Foo.f, 3)
 
@@ -1272,7 +1272,7 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(Foo.g, original_g)
 
 
-    def test_patch_multiple_stacked_decorators(self):
+    eleza test_patch_multiple_stacked_decorators(self):
         original_foo = Foo
         original_f = Foo.f
         original_g = Foo.g
@@ -1280,22 +1280,22 @@ class PatchTest(unittest.TestCase):
         @patch.multiple(foo_name, f=DEFAULT)
         @patch.multiple(foo_name, foo=DEFAULT)
         @patch(foo_name + '.g')
-        def test1(g, **kwargs):
+        eleza test1(g, **kwargs):
             _test(g, **kwargs)
 
         @patch.multiple(foo_name, f=DEFAULT)
         @patch(foo_name + '.g')
         @patch.multiple(foo_name, foo=DEFAULT)
-        def test2(g, **kwargs):
+        eleza test2(g, **kwargs):
             _test(g, **kwargs)
 
         @patch(foo_name + '.g')
         @patch.multiple(foo_name, f=DEFAULT)
         @patch.multiple(foo_name, foo=DEFAULT)
-        def test3(g, **kwargs):
+        eleza test3(g, **kwargs):
             _test(g, **kwargs)
 
-        def _test(g, **kwargs):
+        eleza _test(g, **kwargs):
             f = kwargs.pop('f')
             foo = kwargs.pop('foo')
             self.assertFalse(kwargs)
@@ -1315,7 +1315,7 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(Foo.g, original_g)
 
 
-    def test_patch_multiple_create_mocks_patcher(self):
+    eleza test_patch_multiple_create_mocks_patcher(self):
         original_foo = Foo
         original_f = Foo.f
         original_g = Foo.g
@@ -1340,15 +1340,15 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(Foo.g, original_g)
 
 
-    def test_patch_multiple_decorating_class(self):
+    eleza test_patch_multiple_decorating_class(self):
         test = self
         original_foo = Foo
         original_f = Foo.f
         original_g = Foo.g
 
-        class SomeTest(object):
+        kundi SomeTest(object):
 
-            def _test(self, f, foo):
+            eleza _test(self, f, foo):
                 test.assertIs(Foo, original_foo)
                 test.assertIs(Foo.f, f)
                 test.assertEqual(Foo.g, 3)
@@ -1356,9 +1356,9 @@ class PatchTest(unittest.TestCase):
                 test.assertTrue(is_instance(f, MagicMock))
                 test.assertTrue(is_instance(foo, MagicMock))
 
-            def test_two(self, f, foo):
+            eleza test_two(self, f, foo):
                 self._test(f, foo)
-            def test_one(self, f, foo):
+            eleza test_one(self, f, foo):
                 self._test(f, foo)
 
         SomeTest = patch.multiple(
@@ -1373,7 +1373,7 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(Foo.g, original_g)
 
 
-    def test_patch_multiple_create(self):
+    eleza test_patch_multiple_create(self):
         patcher = patch.multiple(Foo, blam='blam')
         self.assertRaises(AttributeError, patcher.start)
 
@@ -1387,8 +1387,8 @@ class PatchTest(unittest.TestCase):
         self.assertFalse(hasattr(Foo, 'blam'))
 
 
-    def test_patch_multiple_spec_set(self):
-        # if spec_set works then we can assume that spec and autospec also
+    eleza test_patch_multiple_spec_set(self):
+        # ikiwa spec_set works then we can assume that spec and autospec also
         # work as the underlying machinery is the same
         patcher = patch.multiple(Foo, foo=DEFAULT, spec_set=['a', 'b'])
         result = patcher.start()
@@ -1403,8 +1403,8 @@ class PatchTest(unittest.TestCase):
             patcher.stop()
 
 
-    def test_patch_multiple_new_callable(self):
-        class Thing(object):
+    eleza test_patch_multiple_new_callable(self):
+        kundi Thing(object):
             pass
 
         patcher = patch.multiple(
@@ -1421,24 +1421,24 @@ class PatchTest(unittest.TestCase):
             patcher.stop()
 
 
-    def test_nested_patch_failure(self):
+    eleza test_nested_patch_failure(self):
         original_f = Foo.f
         original_g = Foo.g
 
         @patch.object(Foo, 'g', 1)
         @patch.object(Foo, 'missing', 1)
         @patch.object(Foo, 'f', 1)
-        def thing1(): pass
+        eleza thing1(): pass
 
         @patch.object(Foo, 'missing', 1)
         @patch.object(Foo, 'g', 1)
         @patch.object(Foo, 'f', 1)
-        def thing2(): pass
+        eleza thing2(): pass
 
         @patch.object(Foo, 'g', 1)
         @patch.object(Foo, 'f', 1)
         @patch.object(Foo, 'missing', 1)
-        def thing3(): pass
+        eleza thing3(): pass
 
         for func in thing1, thing2, thing3:
             self.assertRaises(AttributeError, func)
@@ -1446,28 +1446,28 @@ class PatchTest(unittest.TestCase):
             self.assertEqual(Foo.g, original_g)
 
 
-    def test_new_callable_failure(self):
+    eleza test_new_callable_failure(self):
         original_f = Foo.f
         original_g = Foo.g
         original_foo = Foo.foo
 
-        def crasher():
+        eleza crasher():
             raise NameError('crasher')
 
         @patch.object(Foo, 'g', 1)
         @patch.object(Foo, 'foo', new_callable=crasher)
         @patch.object(Foo, 'f', 1)
-        def thing1(): pass
+        eleza thing1(): pass
 
         @patch.object(Foo, 'foo', new_callable=crasher)
         @patch.object(Foo, 'g', 1)
         @patch.object(Foo, 'f', 1)
-        def thing2(): pass
+        eleza thing2(): pass
 
         @patch.object(Foo, 'g', 1)
         @patch.object(Foo, 'f', 1)
         @patch.object(Foo, 'foo', new_callable=crasher)
-        def thing3(): pass
+        eleza thing3(): pass
 
         for func in thing1, thing2, thing3:
             self.assertRaises(NameError, func)
@@ -1476,7 +1476,7 @@ class PatchTest(unittest.TestCase):
             self.assertEqual(Foo.foo, original_foo)
 
 
-    def test_patch_multiple_failure(self):
+    eleza test_patch_multiple_failure(self):
         original_f = Foo.f
         original_g = Foo.g
 
@@ -1493,19 +1493,19 @@ class PatchTest(unittest.TestCase):
             patcher.additional_patchers = additionals
 
             @patcher
-            def func(): pass
+            eleza func(): pass
 
             self.assertRaises(AttributeError, func)
             self.assertEqual(Foo.f, original_f)
             self.assertEqual(Foo.g, original_g)
 
 
-    def test_patch_multiple_new_callable_failure(self):
+    eleza test_patch_multiple_new_callable_failure(self):
         original_f = Foo.f
         original_g = Foo.g
         original_foo = Foo.foo
 
-        def crasher():
+        eleza crasher():
             raise NameError('crasher')
 
         patcher = patch.object(Foo, 'f', 1)
@@ -1521,7 +1521,7 @@ class PatchTest(unittest.TestCase):
             patcher.additional_patchers = additionals
 
             @patcher
-            def func(): pass
+            eleza func(): pass
 
             self.assertRaises(NameError, func)
             self.assertEqual(Foo.f, original_f)
@@ -1529,11 +1529,11 @@ class PatchTest(unittest.TestCase):
             self.assertEqual(Foo.foo, original_foo)
 
 
-    def test_patch_multiple_string_subclasses(self):
+    eleza test_patch_multiple_string_subclasses(self):
         Foo = type('Foo', (str,), {'fish': 'tasty'})
         foo = Foo()
         @patch.multiple(foo, fish='nearly gone')
-        def test():
+        eleza test():
             self.assertEqual(foo.fish, 'nearly gone')
 
         test()
@@ -1541,18 +1541,18 @@ class PatchTest(unittest.TestCase):
 
 
     @patch('unittest.mock.patch.TEST_PREFIX', 'foo')
-    def test_patch_test_prefix(self):
-        class Foo(object):
+    eleza test_patch_test_prefix(self):
+        kundi Foo(object):
             thing = 'original'
 
-            def foo_one(self):
-                return self.thing
-            def foo_two(self):
-                return self.thing
-            def test_one(self):
-                return self.thing
-            def test_two(self):
-                return self.thing
+            eleza foo_one(self):
+                rudisha self.thing
+            eleza foo_two(self):
+                rudisha self.thing
+            eleza test_one(self):
+                rudisha self.thing
+            eleza test_two(self):
+                rudisha self.thing
 
         Foo = patch.object(Foo, 'thing', 'changed')(Foo)
 
@@ -1564,16 +1564,16 @@ class PatchTest(unittest.TestCase):
 
 
     @patch('unittest.mock.patch.TEST_PREFIX', 'bar')
-    def test_patch_dict_test_prefix(self):
-        class Foo(object):
-            def bar_one(self):
-                return dict(the_dict)
-            def bar_two(self):
-                return dict(the_dict)
-            def test_one(self):
-                return dict(the_dict)
-            def test_two(self):
-                return dict(the_dict)
+    eleza test_patch_dict_test_prefix(self):
+        kundi Foo(object):
+            eleza bar_one(self):
+                rudisha dict(the_dict)
+            eleza bar_two(self):
+                rudisha dict(the_dict)
+            eleza test_one(self):
+                rudisha dict(the_dict)
+            eleza test_two(self):
+                rudisha dict(the_dict)
 
         the_dict = {'key': 'original'}
         Foo = patch.dict(the_dict, key='changed')(Foo)
@@ -1585,7 +1585,7 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(foo.test_two(), {'key': 'original'})
 
 
-    def test_patch_with_spec_mock_repr(self):
+    eleza test_patch_with_spec_mock_repr(self):
         for arg in ('spec', 'autospec', 'spec_set'):
             p = patch('%s.SomeClass' % __name__, **{arg: True})
             m = p.start()
@@ -1600,7 +1600,7 @@ class PatchTest(unittest.TestCase):
                 p.stop()
 
 
-    def test_patch_nested_autospec_repr(self):
+    eleza test_patch_nested_autospec_repr(self):
         with patch('unittest.test.testmock.support', autospec=True) as m:
             self.assertIn(" name='support.SomeClass.wibble()'",
                           repr(m.SomeClass.wibble()))
@@ -1609,7 +1609,7 @@ class PatchTest(unittest.TestCase):
 
 
 
-    def test_mock_calls_with_patch(self):
+    eleza test_mock_calls_with_patch(self):
         for arg in ('spec', 'autospec', 'spec_set'):
             p = patch('%s.SomeClass' % __name__, **{arg: True})
             m = p.start()
@@ -1636,7 +1636,7 @@ class PatchTest(unittest.TestCase):
                 p.stop()
 
 
-    def test_patch_agizas_lazily(self):
+    eleza test_patch_agizas_lazily(self):
         p1 = patch('squizz.squozz')
         self.assertRaises(ImportError, p1.start)
 
@@ -1651,25 +1651,25 @@ class PatchTest(unittest.TestCase):
             p1.stop()
         self.assertEqual(squizz.squozz, 3)
 
-    def test_patch_propagates_exc_on_exit(self):
-        class holder:
+    eleza test_patch_propagates_exc_on_exit(self):
+        kundi holder:
             exc_info = None, None, None
 
-        class custom_patch(_patch):
-            def __exit__(self, etype=None, val=None, tb=None):
+        kundi custom_patch(_patch):
+            eleza __exit__(self, etype=None, val=None, tb=None):
                 _patch.__exit__(self, etype, val, tb)
                 holder.exc_info = etype, val, tb
             stop = __exit__
 
-        def with_custom_patch(target):
+        eleza with_custom_patch(target):
             getter, attribute = _get_target(target)
-            return custom_patch(
+            rudisha custom_patch(
                 getter, attribute, DEFAULT, None, False, None,
                 None, None, {}
             )
 
         @with_custom_patch('squizz.squozz')
-        def test(mock):
+        eleza test(mock):
             raise RuntimeError
 
         with uncache('squizz'):
@@ -1685,20 +1685,20 @@ class PatchTest(unittest.TestCase):
                             'exception traceback not propagated')
 
 
-    def test_create_and_specs(self):
+    eleza test_create_and_specs(self):
         for kwarg in ('spec', 'spec_set', 'autospec'):
             p = patch('%s.doesnotexist' % __name__, create=True,
                       **{kwarg: True})
             self.assertRaises(TypeError, p.start)
             self.assertRaises(NameError, lambda: doesnotexist)
 
-            # check that spec with create is innocuous if the original exists
+            # check that spec with create is innocuous ikiwa the original exists
             p = patch(MODNAME, create=True, **{kwarg: True})
             p.start()
             p.stop()
 
 
-    def test_multiple_specs(self):
+    eleza test_multiple_specs(self):
         original = PTModule
         for kwarg in ('spec', 'spec_set'):
             p = patch(MODNAME, autospec=0, **{kwarg: 0})
@@ -1716,7 +1716,7 @@ class PatchTest(unittest.TestCase):
             self.assertIs(PTModule, original)
 
 
-    def test_specs_false_instead_of_none(self):
+    eleza test_specs_false_instead_of_none(self):
         p = patch(MODNAME, spec=False, spec_set=False, autospec=False)
         mock = p.start()
         try:
@@ -1727,7 +1727,7 @@ class PatchTest(unittest.TestCase):
             p.stop()
 
 
-    def test_falsey_spec(self):
+    eleza test_falsey_spec(self):
         for kwarg in ('spec', 'autospec', 'spec_set'):
             p = patch(MODNAME, **{kwarg: 0})
             m = p.start()
@@ -1737,7 +1737,7 @@ class PatchTest(unittest.TestCase):
                 p.stop()
 
 
-    def test_spec_set_true(self):
+    eleza test_spec_set_true(self):
         for kwarg in ('spec', 'autospec'):
             p = patch(MODNAME, spec_set=True, **{kwarg: True})
             m = p.start()
@@ -1749,7 +1749,7 @@ class PatchTest(unittest.TestCase):
                 p.stop()
 
 
-    def test_callable_spec_as_list(self):
+    eleza test_callable_spec_as_list(self):
         spec = ('__call__',)
         p = patch(MODNAME, spec=spec)
         m = p.start()
@@ -1759,7 +1759,7 @@ class PatchTest(unittest.TestCase):
             p.stop()
 
 
-    def test_not_callable_spec_as_list(self):
+    eleza test_not_callable_spec_as_list(self):
         spec = ('foo', 'bar')
         p = patch(MODNAME, spec=spec)
         m = p.start()
@@ -1769,7 +1769,7 @@ class PatchTest(unittest.TestCase):
             p.stop()
 
 
-    def test_patch_stopall(self):
+    eleza test_patch_stopall(self):
         unlink = os.unlink
         chdir = os.chdir
         path = os.path
@@ -1777,7 +1777,7 @@ class PatchTest(unittest.TestCase):
         patch('os.chdir', something_else).start()
 
         @patch('os.path')
-        def patched(mock_path):
+        eleza patched(mock_path):
             patch.stopall()
             self.assertIs(os.path, mock_path)
             self.assertIs(os.unlink, unlink)
@@ -1786,17 +1786,17 @@ class PatchTest(unittest.TestCase):
         patched()
         self.assertIs(os.path, path)
 
-    def test_stopall_lifo(self):
+    eleza test_stopall_lifo(self):
         stopped = []
-        class thing(object):
+        kundi thing(object):
             one = two = three = None
 
-        def get_patch(attribute):
-            class mypatch(_patch):
-                def stop(self):
+        eleza get_patch(attribute):
+            kundi mypatch(_patch):
+                eleza stop(self):
                     stopped.append(attribute)
-                    return super(mypatch, self).stop()
-            return mypatch(lambda: thing, attribute, None, None,
+                    rudisha super(mypatch, self).stop()
+            rudisha mypatch(lambda: thing, attribute, None, None,
                            False, None, None, None, {})
         [get_patch(val).start() for val in ("one", "two", "three")]
         patch.stopall()
@@ -1804,10 +1804,10 @@ class PatchTest(unittest.TestCase):
         self.assertEqual(stopped, ["three", "two", "one"])
 
 
-    def test_special_attrs(self):
-        def foo(x=0):
+    eleza test_special_attrs(self):
+        eleza foo(x=0):
             """TEST"""
-            return x
+            rudisha x
         with patch.object(foo, '__defaults__', (1, )):
             self.assertEqual(foo(), 1)
         self.assertEqual(foo(), 0)
@@ -1824,13 +1824,13 @@ class PatchTest(unittest.TestCase):
             self.assertEqual(foo.__annotations__, dict([('s', 1, )]))
         self.assertEqual(foo.__annotations__, dict())
 
-        def foo(*a, x=0):
-            return x
+        eleza foo(*a, x=0):
+            rudisha x
         with patch.object(foo, '__kwdefaults__', dict([('x', 1, )])):
             self.assertEqual(foo(), 1)
         self.assertEqual(foo(), 0)
 
-    def test_dotted_but_module_not_loaded(self):
+    eleza test_dotted_but_module_not_loaded(self):
         # This exercises the AttributeError branch of _dot_lookup.
 
         # make sure it's there
@@ -1844,22 +1844,22 @@ class PatchTest(unittest.TestCase):
 
             # now make sure we can patch based on a dotted path:
             @patch('unittest.test.testmock.support.X')
-            def test(mock):
+            eleza test(mock):
                 pass
             test()
 
 
-    def test_invalid_target(self):
+    eleza test_invalid_target(self):
         with self.assertRaises(TypeError):
             patch('')
 
 
-    def test_cant_set_kwargs_when_passing_a_mock(self):
+    eleza test_cant_set_kwargs_when_passing_a_mock(self):
         @patch('unittest.test.testmock.support.X', new=object(), x=1)
-        def test(): pass
+        eleza test(): pass
         with self.assertRaises(TypeError):
             test()
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

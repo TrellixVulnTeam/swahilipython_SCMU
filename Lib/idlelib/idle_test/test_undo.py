@@ -11,32 +11,32 @@ kutoka tkinter agiza Text, Tk
 kutoka idlelib.percolator agiza Percolator
 
 
-class UndoDelegatorTest(unittest.TestCase):
+kundi UndoDelegatorTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.root = Tk()
         cls.text = Text(cls.root)
         cls.percolator = Percolator(cls.text)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         cls.percolator.redir.close()
         del cls.percolator, cls.text
         cls.root.destroy()
         del cls.root
 
-    def setUp(self):
+    eleza setUp(self):
         self.delegator = UndoDelegator()
         self.delegator.bell = Mock()
         self.percolator.insertfilter(self.delegator)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.percolator.removefilter(self.delegator)
         self.text.delete('1.0', 'end')
         self.delegator.resetcache()
 
-    def test_undo_event(self):
+    eleza test_undo_event(self):
         text = self.text
 
         text.insert('insert', 'foobar')
@@ -58,7 +58,7 @@ class UndoDelegatorTest(unittest.TestCase):
         self.delegator.undo_event('event')
         self.assertTrue(self.delegator.bell.called)
 
-    def test_redo_event(self):
+    eleza test_redo_event(self):
         text = self.text
 
         text.insert('insert', 'foo')
@@ -70,7 +70,7 @@ class UndoDelegatorTest(unittest.TestCase):
         text.event_generate('<<redo>>')
         self.assertTrue(self.delegator.bell.called)
 
-    def test_dump_event(self):
+    eleza test_dump_event(self):
         """
         Dump_event cannot be tested directly without changing
         environment variables. So, test statements in dump_event
@@ -86,7 +86,7 @@ class UndoDelegatorTest(unittest.TestCase):
         text.event_generate('<<undo>>')
         self.assertTupleEqual((d.pointer, d.can_merge), (2, False))
 
-    def test_get_set_saved(self):
+    eleza test_get_set_saved(self):
         # test the getter method get_saved
         # test the setter method set_saved
         # indirectly test check_saved
@@ -105,7 +105,7 @@ class UndoDelegatorTest(unittest.TestCase):
         self.assertEqual(d.saved, -1)
         self.assertTrue(d.saved_change_hook.called)
 
-    def test_undo_start_stop(self):
+    eleza test_undo_start_stop(self):
         # test the undo_block_start and undo_block_stop methods
         text = self.text
 
@@ -122,7 +122,7 @@ class UndoDelegatorTest(unittest.TestCase):
         self.delegator.undo_block_stop()
         self.assertEqual(text.get('1.0', '1.3'), 'foo')
 
-    def test_addcmd(self):
+    eleza test_addcmd(self):
         text = self.text
         # when number of undo operations exceeds max_undo
         self.delegator.max_undo = max_undo = 10
@@ -131,5 +131,5 @@ class UndoDelegatorTest(unittest.TestCase):
             self.assertLessEqual(len(self.delegator.undolist), max_undo)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2, exit=False)

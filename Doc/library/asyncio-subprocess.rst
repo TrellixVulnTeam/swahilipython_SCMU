@@ -19,7 +19,7 @@ create and manage subprocesses.
 Here's an example of how asyncio can run a shell command and
 obtain its result::
 
-    import asyncio
+    agiza asyncio
 
     async def run(cmd):
         proc = await asyncio.create_subprocess_shell(
@@ -167,7 +167,7 @@ their completion.
    :func:`create_subprocess_exec` and :func:`create_subprocess_shell`
    functions.
 
-   This class is designed to have a similar API to the
+   This kundi is designed to have a similar API to the
    :class:`subprocess.Popen` class, but there are some
    notable differences:
 
@@ -184,7 +184,7 @@ their completion.
 
    * the *universal_newlines* parameter is not supported.
 
-   This class is :ref:`not thread safe <asyncio-multithreading>`.
+   This kundi is :ref:`not thread safe <asyncio-multithreading>`.
 
    See also the :ref:`Subprocess and Threads <asyncio-subprocess-threads>`
    section.
@@ -208,7 +208,7 @@ their completion.
       Interact with process:
 
       1. send data to *stdin* (if *input* is not ``None``);
-      2. read data from *stdout* and *stderr*, until EOF is reached;
+      2. read data kutoka *stdout* and *stderr*, until EOF is reached;
       3. wait for process to terminate.
 
       The optional *input* argument is the data (:class:`bytes` object)
@@ -306,7 +306,7 @@ their completion.
 Subprocess and Threads
 ----------------------
 
-Standard asyncio event loop supports running subprocesses from different threads by
+Standard asyncio event loop supports running subprocesses kutoka different threads by
 default.
 
 On Windows subprocesses are provided by :class:`ProactorEventLoop` only (default),
@@ -318,7 +318,7 @@ On UNIX *child watchers* are used for subprocess finish waiting, see
 
 .. versionchanged:: 3.8
 
-   UNIX switched to use :class:`ThreadedChildWatcher` for spawning subprocesses from
+   UNIX switched to use :class:`ThreadedChildWatcher` for spawning subprocesses kutoka
    different threads without any limitation.
 
    Spawning a subprocess with *inactive* current child watcher raises
@@ -336,8 +336,8 @@ please refer to their documentation.
 Examples
 --------
 
-An example using the :class:`~asyncio.subprocess.Process` class to
-control a subprocess and the :class:`StreamReader` class to read from
+An example using the :class:`~asyncio.subprocess.Process` kundi to
+control a subprocess and the :class:`StreamReader` kundi to read kutoka
 its standard output.
 
 .. _asyncio_example_create_subprocess_exec:
@@ -345,11 +345,11 @@ its standard output.
 The subprocess is created by the :func:`create_subprocess_exec`
 function::
 
-    import asyncio
-    import sys
+    agiza asyncio
+    agiza sys
 
     async def get_date():
-        code = 'import datetime; print(datetime.datetime.now())'
+        code = 'agiza datetime; print(datetime.datetime.now())'
 
         # Create the subprocess; redirect the standard output
         # into a pipe.

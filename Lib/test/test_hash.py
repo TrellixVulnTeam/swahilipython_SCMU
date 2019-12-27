@@ -12,58 +12,58 @@ kutoka collections.abc agiza Hashable
 
 IS_64BIT = sys.maxsize > 2**32
 
-def lcg(x, length=16):
+eleza lcg(x, length=16):
     """Linear congruential generator"""
-    if x == 0:
-        return bytes(length)
+    ikiwa x == 0:
+        rudisha bytes(length)
     out = bytearray(length)
     for i in range(length):
         x = (214013 * x + 2531011) & 0x7fffffff
         out[i] = (x >> 16) & 0xff
-    return bytes(out)
+    rudisha bytes(out)
 
-def pysiphash(uint64):
+eleza pysiphash(uint64):
     """Convert SipHash24 output to Py_hash_t
     """
     assert 0 <= uint64 < (1 << 64)
     # simple unsigned to signed int64
-    if uint64 > (1 << 63) - 1:
+    ikiwa uint64 > (1 << 63) - 1:
         int64 = uint64 - (1 << 64)
     else:
         int64 = uint64
     # mangle uint64 to uint32
     uint32 = (uint64 ^ uint64 >> 32) & 0xffffffff
     # simple unsigned to signed int32
-    if uint32 > (1 << 31) - 1:
+    ikiwa uint32 > (1 << 31) - 1:
         int32 = uint32 - (1 << 32)
     else:
         int32 = uint32
-    return int32, int64
+    rudisha int32, int64
 
-def skip_unless_internalhash(test):
+eleza skip_unless_internalhash(test):
     """Skip decorator for tests that depend on SipHash24 or FNV"""
     ok = sys.hash_info.algorithm in {"fnv", "siphash24"}
     msg = "Requires SipHash24 or FNV"
-    return test if ok else unittest.skip(msg)(test)
+    rudisha test ikiwa ok else unittest.skip(msg)(test)
 
 
-class HashEqualityTestCase(unittest.TestCase):
+kundi HashEqualityTestCase(unittest.TestCase):
 
-    def same_hash(self, *objlist):
+    eleza same_hash(self, *objlist):
         # Hash each object given and fail if
         # the hash values are not all the same.
         hashed = list(map(hash, objlist))
         for h in hashed[1:]:
-            if h != hashed[0]:
+            ikiwa h != hashed[0]:
                 self.fail("hashed values differ: %r" % (objlist,))
 
-    def test_numeric_literals(self):
+    eleza test_numeric_literals(self):
         self.same_hash(1, 1, 1.0, 1.0+0.0j)
         self.same_hash(0, 0.0, 0.0+0.0j)
         self.same_hash(-1, -1.0, -1.0+0.0j)
         self.same_hash(-2, -2.0, -2.0+0.0j)
 
-    def test_coerced_integers(self):
+    eleza test_coerced_integers(self):
         self.same_hash(int(1), int(1), float(1), complex(1),
                        int('1'), float('1.0'))
         self.same_hash(int(-2**31), float(-2**31))
@@ -74,11 +74,11 @@ class HashEqualityTestCase(unittest.TestCase):
         self.same_hash(int(-2**63), float(-2**63))
         self.same_hash(int(2**63), float(2**63))
 
-    def test_coerced_floats(self):
+    eleza test_coerced_floats(self):
         self.same_hash(int(1.23e300), float(1.23e300))
         self.same_hash(float(0.5), complex(0.5, 0.0))
 
-    def test_unaligned_buffers(self):
+    eleza test_unaligned_buffers(self):
         # The hash function for bytes-like objects shouldn't have
         # alignment-dependent results (example in issue #16427).
         b = b"123456789abcdefghijklmnopqrstuvwxyz" * 128
@@ -90,28 +90,28 @@ class HashEqualityTestCase(unittest.TestCase):
 
 
 _default_hash = object.__hash__
-class DefaultHash(object): pass
+kundi DefaultHash(object): pass
 
 _FIXED_HASH_VALUE = 42
-class FixedHash(object):
-    def __hash__(self):
-        return _FIXED_HASH_VALUE
+kundi FixedHash(object):
+    eleza __hash__(self):
+        rudisha _FIXED_HASH_VALUE
 
-class OnlyEquality(object):
-    def __eq__(self, other):
-        return self is other
+kundi OnlyEquality(object):
+    eleza __eq__(self, other):
+        rudisha self is other
 
-class OnlyInequality(object):
-    def __ne__(self, other):
-        return self is not other
+kundi OnlyInequality(object):
+    eleza __ne__(self, other):
+        rudisha self is not other
 
-class InheritedHashWithEquality(FixedHash, OnlyEquality): pass
-class InheritedHashWithInequality(FixedHash, OnlyInequality): pass
+kundi InheritedHashWithEquality(FixedHash, OnlyEquality): pass
+kundi InheritedHashWithInequality(FixedHash, OnlyInequality): pass
 
-class NoHash(object):
+kundi NoHash(object):
     __hash__ = None
 
-class HashInheritanceTestCase(unittest.TestCase):
+kundi HashInheritanceTestCase(unittest.TestCase):
     default_expected = [object(),
                         DefaultHash(),
                         OnlyInequality(),
@@ -124,61 +124,61 @@ class HashInheritanceTestCase(unittest.TestCase):
                       OnlyEquality(),
                       ]
 
-    def test_default_hash(self):
+    eleza test_default_hash(self):
         for obj in self.default_expected:
             self.assertEqual(hash(obj), _default_hash(obj))
 
-    def test_fixed_hash(self):
+    eleza test_fixed_hash(self):
         for obj in self.fixed_expected:
             self.assertEqual(hash(obj), _FIXED_HASH_VALUE)
 
-    def test_error_hash(self):
+    eleza test_error_hash(self):
         for obj in self.error_expected:
             self.assertRaises(TypeError, hash, obj)
 
-    def test_hashable(self):
+    eleza test_hashable(self):
         objects = (self.default_expected +
                    self.fixed_expected)
         for obj in objects:
             self.assertIsInstance(obj, Hashable)
 
-    def test_not_hashable(self):
+    eleza test_not_hashable(self):
         for obj in self.error_expected:
             self.assertNotIsInstance(obj, Hashable)
 
 
 # Issue #4701: Check that some builtin types are correctly hashable
-class DefaultIterSeq(object):
+kundi DefaultIterSeq(object):
     seq = range(10)
-    def __len__(self):
-        return len(self.seq)
-    def __getitem__(self, index):
-        return self.seq[index]
+    eleza __len__(self):
+        rudisha len(self.seq)
+    eleza __getitem__(self, index):
+        rudisha self.seq[index]
 
-class HashBuiltinsTestCase(unittest.TestCase):
+kundi HashBuiltinsTestCase(unittest.TestCase):
     hashes_to_check = [enumerate(range(10)),
                        iter(DefaultIterSeq()),
                        iter(lambda: 0, 0),
                       ]
 
-    def test_hashes(self):
+    eleza test_hashes(self):
         _default_hash = object.__hash__
         for obj in self.hashes_to_check:
             self.assertEqual(hash(obj), _default_hash(obj))
 
-class HashRandomizationTests:
+kundi HashRandomizationTests:
 
-    # Each subclass should define a field "repr_", containing the repr() of
+    # Each subkundi should define a field "repr_", containing the repr() of
     # an object to be tested
 
-    def get_hash_command(self, repr_):
-        return 'print(hash(eval(%a)))' % repr_
+    eleza get_hash_command(self, repr_):
+        rudisha 'andika(hash(eval(%a)))' % repr_
 
-    def get_hash(self, repr_, seed=None):
+    eleza get_hash(self, repr_, seed=None):
         env = os.environ.copy()
         env['__cleanenv'] = True  # signal to assert_python not to do a copy
                                   # of os.environ on its own
-        if seed is not None:
+        ikiwa seed is not None:
             env['PYTHONHASHSEED'] = str(seed)
         else:
             env.pop('PYTHONHASHSEED', None)
@@ -186,15 +186,15 @@ class HashRandomizationTests:
             '-c', self.get_hash_command(repr_),
             **env)
         stdout = out[1].strip()
-        return int(stdout)
+        rudisha int(stdout)
 
-    def test_randomized_hash(self):
-        # two runs should return different hashes
+    eleza test_randomized_hash(self):
+        # two runs should rudisha different hashes
         run1 = self.get_hash(self.repr_, seed='random')
         run2 = self.get_hash(self.repr_, seed='random')
         self.assertNotEqual(run1, run2)
 
-class StringlikeHashRandomizationTests(HashRandomizationTests):
+kundi StringlikeHashRandomizationTests(HashRandomizationTests):
     repr_ = None
     repr_long = None
 
@@ -238,19 +238,19 @@ class StringlikeHashRandomizationTests(HashRandomizationTests):
         ]
     }
 
-    def get_expected_hash(self, position, length):
-        if length < sys.hash_info.cutoff:
+    eleza get_expected_hash(self, position, length):
+        ikiwa length < sys.hash_info.cutoff:
             algorithm = "djba33x"
         else:
             algorithm = sys.hash_info.algorithm
-        if sys.byteorder == 'little':
-            platform = 1 if IS_64BIT else 0
+        ikiwa sys.byteorder == 'little':
+            platform = 1 ikiwa IS_64BIT else 0
         else:
             assert(sys.byteorder == 'big')
-            platform = 3 if IS_64BIT else 2
-        return self.known_hashes[algorithm][position][platform]
+            platform = 3 ikiwa IS_64BIT else 2
+        rudisha self.known_hashes[algorithm][position][platform]
 
-    def test_null_hash(self):
+    eleza test_null_hash(self):
         # PYTHONHASHSEED=0 disables the randomized hash
         known_hash_of_obj = self.get_expected_hash(0, 3)
 
@@ -261,72 +261,72 @@ class StringlikeHashRandomizationTests(HashRandomizationTests):
         self.assertEqual(self.get_hash(self.repr_, seed=0), known_hash_of_obj)
 
     @skip_unless_internalhash
-    def test_fixed_hash(self):
+    eleza test_fixed_hash(self):
         # test a fixed seed for the randomized hash
         # Note that all types share the same values:
         h = self.get_expected_hash(1, 3)
         self.assertEqual(self.get_hash(self.repr_, seed=42), h)
 
     @skip_unless_internalhash
-    def test_long_fixed_hash(self):
-        if self.repr_long is None:
+    eleza test_long_fixed_hash(self):
+        ikiwa self.repr_long is None:
             return
         h = self.get_expected_hash(2, 11)
         self.assertEqual(self.get_hash(self.repr_long, seed=42), h)
 
 
-class StrHashRandomizationTests(StringlikeHashRandomizationTests,
+kundi StrHashRandomizationTests(StringlikeHashRandomizationTests,
                                 unittest.TestCase):
     repr_ = repr('abc')
     repr_long = repr('abcdefghijk')
     repr_ucs2 = repr('äú∑ℇ')
 
     @skip_unless_internalhash
-    def test_empty_string(self):
+    eleza test_empty_string(self):
         self.assertEqual(hash(""), 0)
 
     @skip_unless_internalhash
-    def test_ucs2_string(self):
+    eleza test_ucs2_string(self):
         h = self.get_expected_hash(3, 6)
         self.assertEqual(self.get_hash(self.repr_ucs2, seed=0), h)
         h = self.get_expected_hash(4, 6)
         self.assertEqual(self.get_hash(self.repr_ucs2, seed=42), h)
 
-class BytesHashRandomizationTests(StringlikeHashRandomizationTests,
+kundi BytesHashRandomizationTests(StringlikeHashRandomizationTests,
                                   unittest.TestCase):
     repr_ = repr(b'abc')
     repr_long = repr(b'abcdefghijk')
 
     @skip_unless_internalhash
-    def test_empty_string(self):
+    eleza test_empty_string(self):
         self.assertEqual(hash(b""), 0)
 
-class MemoryviewHashRandomizationTests(StringlikeHashRandomizationTests,
+kundi MemoryviewHashRandomizationTests(StringlikeHashRandomizationTests,
                                        unittest.TestCase):
     repr_ = "memoryview(b'abc')"
     repr_long = "memoryview(b'abcdefghijk')"
 
     @skip_unless_internalhash
-    def test_empty_string(self):
+    eleza test_empty_string(self):
         self.assertEqual(hash(memoryview(b"")), 0)
 
-class DatetimeTests(HashRandomizationTests):
-    def get_hash_command(self, repr_):
-        return 'agiza datetime; print(hash(%s))' % repr_
+kundi DatetimeTests(HashRandomizationTests):
+    eleza get_hash_command(self, repr_):
+        rudisha 'agiza datetime; andika(hash(%s))' % repr_
 
-class DatetimeDateTests(DatetimeTests, unittest.TestCase):
+kundi DatetimeDateTests(DatetimeTests, unittest.TestCase):
     repr_ = repr(datetime.date(1066, 10, 14))
 
-class DatetimeDatetimeTests(DatetimeTests, unittest.TestCase):
+kundi DatetimeDatetimeTests(DatetimeTests, unittest.TestCase):
     repr_ = repr(datetime.datetime(1, 2, 3, 4, 5, 6, 7))
 
-class DatetimeTimeTests(DatetimeTests, unittest.TestCase):
+kundi DatetimeTimeTests(DatetimeTests, unittest.TestCase):
     repr_ = repr(datetime.time(0))
 
 
-class HashDistributionTestCase(unittest.TestCase):
+kundi HashDistributionTestCase(unittest.TestCase):
 
-    def test_hash_distribution(self):
+    eleza test_hash_distribution(self):
         # check for hash collision
         base = "abcdefghabcdefg"
         for i in range(1, len(base)):
@@ -342,5 +342,5 @@ class HashDistributionTestCase(unittest.TestCase):
                 self.assertGreater(len(s15), 8, prefix)
                 self.assertGreater(len(s255), 128, prefix)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

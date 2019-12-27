@@ -39,7 +39,7 @@ Type aliases
 A type alias is defined by assigning the type to the alias. In this example,
 ``Vector`` and ``List[float]`` will be treated as interchangeable synonyms::
 
-   from typing import List
+   kutoka typing agiza List
    Vector = List[float]
 
    def scale(scalar: float, vector: Vector) -> Vector:
@@ -50,7 +50,7 @@ A type alias is defined by assigning the type to the alias. In this example,
 
 Type aliases are useful for simplifying complex type signatures. For example::
 
-   from typing import Dict, Tuple, Sequence
+   kutoka typing agiza Dict, Tuple, Sequence
 
    ConnectionOptions = Dict[str, str]
    Address = Tuple[str, int]
@@ -76,7 +76,7 @@ NewType
 
 Use the :func:`NewType` helper function to create distinct types::
 
-   from typing import NewType
+   kutoka typing agiza NewType
 
    UserId = NewType('UserId', int)
    some_id = UserId(524313)
@@ -95,7 +95,7 @@ of the original type. This is useful in helping catch logical errors::
 
 You may still perform all ``int`` operations on a variable of type ``UserId``,
 but the result will always be of type ``int``. This lets you pass in a
-``UserId`` wherever an ``int`` might be expected, but will prevent you from
+``UserId`` wherever an ``int`` might be expected, but will prevent you kutoka
 accidentally creating a ``UserId`` in an invalid way::
 
    # 'output' is of type 'int', not 'UserId'
@@ -104,7 +104,7 @@ accidentally creating a ``UserId`` in an invalid way::
 Note that these checks are enforced only by the static type checker. At runtime,
 the statement ``Derived = NewType('Derived', Base)`` will make ``Derived`` a
 function that immediately returns whatever parameter you pass it. That means
-the expression ``Derived(some_value)`` does not create a new class or introduce
+the expression ``Derived(some_value)`` does not create a new kundi or introduce
 any overhead beyond that of a regular function call.
 
 More precisely, the expression ``some_value is Derived(some_value)`` is always
@@ -113,16 +113,16 @@ true at runtime.
 This also means that it is not possible to create a subtype of ``Derived``
 since it is an identity function at runtime, not an actual type::
 
-   from typing import NewType
+   kutoka typing agiza NewType
 
    UserId = NewType('UserId', int)
 
    # Fails at runtime and does not typecheck
-   class AdminUserId(UserId): pass
+   kundi AdminUserId(UserId): pass
 
 However, it is possible to create a :func:`NewType` based on a 'derived' ``NewType``::
 
-   from typing import NewType
+   kutoka typing agiza NewType
 
    UserId = NewType('UserId', int)
 
@@ -156,7 +156,7 @@ type hinted using ``Callable[[Arg1Type, Arg2Type], ReturnType]``.
 
 For example::
 
-   from typing import Callable
+   kutoka typing agiza Callable
 
    def feeder(get_next_item: Callable[[], str]) -> None:
        # Body
@@ -180,7 +180,7 @@ subscription to denote expected types for container elements.
 
 ::
 
-   from typing import Mapping, Sequence
+   kutoka typing agiza Mapping, Sequence
 
    def notify_by_email(employees: Sequence[Employee],
                        overrides: Mapping[str, str]) -> None: ...
@@ -190,7 +190,7 @@ called :class:`TypeVar`.
 
 ::
 
-   from typing import Sequence, TypeVar
+   kutoka typing agiza Sequence, TypeVar
 
    T = TypeVar('T')      # Declare type variable
 
@@ -201,16 +201,16 @@ called :class:`TypeVar`.
 User-defined generic types
 --------------------------
 
-A user-defined class can be defined as a generic class.
+A user-defined kundi can be defined as a generic class.
 
 ::
 
-   from typing import TypeVar, Generic
-   from logging import Logger
+   kutoka typing agiza TypeVar, Generic
+   kutoka logging agiza Logger
 
    T = TypeVar('T')
 
-   class LoggedVar(Generic[T]):
+   kundi LoggedVar(Generic[T]):
        def __init__(self, value: T, name: str, logger: Logger) -> None:
            self.name = name
            self.logger = logger
@@ -227,14 +227,14 @@ A user-defined class can be defined as a generic class.
        def log(self, message: str) -> None:
            self.logger.info('%s: %s', self.name, message)
 
-``Generic[T]`` as a base class defines that the class ``LoggedVar`` takes a
+``Generic[T]`` as a base kundi defines that the kundi ``LoggedVar`` takes a
 single type parameter ``T`` . This also makes ``T`` valid as a type within the
-class body.
+kundi body.
 
-The :class:`Generic` base class defines :meth:`__class_getitem__` so that
+The :class:`Generic` base kundi defines :meth:`__class_getitem__` so that
 ``LoggedVar[t]`` is valid as a type::
 
-   from typing import Iterable
+   kutoka typing agiza Iterable
 
    def zero_all_vars(vars: Iterable[LoggedVar[int]]) -> None:
        for var in vars:
@@ -243,57 +243,57 @@ The :class:`Generic` base class defines :meth:`__class_getitem__` so that
 A generic type can have any number of type variables, and type variables may
 be constrained::
 
-   from typing import TypeVar, Generic
+   kutoka typing agiza TypeVar, Generic
    ...
 
    T = TypeVar('T')
    S = TypeVar('S', int, str)
 
-   class StrangePair(Generic[T, S]):
+   kundi StrangePair(Generic[T, S]):
        ...
 
 Each type variable argument to :class:`Generic` must be distinct.
 This is thus invalid::
 
-   from typing import TypeVar, Generic
+   kutoka typing agiza TypeVar, Generic
    ...
 
    T = TypeVar('T')
 
-   class Pair(Generic[T, T]):   # INVALID
+   kundi Pair(Generic[T, T]):   # INVALID
        ...
 
 You can use multiple inheritance with :class:`Generic`::
 
-   from typing import TypeVar, Generic, Sized
+   kutoka typing agiza TypeVar, Generic, Sized
 
    T = TypeVar('T')
 
-   class LinkedList(Sized, Generic[T]):
+   kundi LinkedList(Sized, Generic[T]):
        ...
 
-When inheriting from generic classes, some type variables could be fixed::
+When inheriting kutoka generic classes, some type variables could be fixed::
 
-    from typing import TypeVar, Mapping
+    kutoka typing agiza TypeVar, Mapping
 
     T = TypeVar('T')
 
-    class MyDict(Mapping[str, T]):
+    kundi MyDict(Mapping[str, T]):
         ...
 
 In this case ``MyDict`` has a single parameter, ``T``.
 
-Using a generic class without specifying type parameters assumes
+Using a generic kundi without specifying type parameters assumes
 :data:`Any` for each position. In the following example, ``MyIterable`` is
-not generic but implicitly inherits from ``Iterable[Any]``::
+not generic but implicitly inherits kutoka ``Iterable[Any]``::
 
-   from typing import Iterable
+   kutoka typing agiza Iterable
 
-   class MyIterable(Iterable): # Same as Iterable[Any]
+   kundi MyIterable(Iterable): # Same as Iterable[Any]
 
 User defined generic type aliases are also supported. Examples::
 
-   from typing import TypeVar, Iterable, Tuple, Union
+   kutoka typing agiza TypeVar, Iterable, Tuple, Union
    S = TypeVar('S')
    Response = Union[Iterable[S], int]
 
@@ -310,7 +310,7 @@ User defined generic type aliases are also supported. Examples::
 .. versionchanged:: 3.7
     :class:`Generic` no longer has a custom metaclass.
 
-A user-defined generic class can have ABCs as base classes without a metaclass
+A user-defined generic kundi can have ABCs as base classes without a metaclass
 conflict. Generic metaclasses are not supported. The outcome of parameterizing
 generics is cached, and most types in the typing module are hashable and
 comparable for equality.
@@ -326,7 +326,7 @@ compatible with every type.
 This means that it is possible to perform any operation or method call on a
 value of type on :data:`Any` and assign it to any variable::
 
-   from typing import Any
+   kutoka typing agiza Any
 
    a = None    # type: Any
    a = []      # OK
@@ -398,31 +398,31 @@ Nominal vs structural subtyping
 -------------------------------
 
 Initially :pep:`484` defined Python static type system as using
-*nominal subtyping*. This means that a class ``A`` is allowed where
-a class ``B`` is expected if and only if ``A`` is a subclass of ``B``.
+*nominal subtyping*. This means that a kundi ``A`` is allowed where
+a kundi ``B`` is expected if and only if ``A`` is a subkundi of ``B``.
 
 This requirement previously also applied to abstract base classes, such as
-:class:`Iterable`. The problem with this approach is that a class had
+:class:`Iterable`. The problem with this approach is that a kundi had
 to be explicitly marked to support them, which is unpythonic and unlike
 what one would normally do in idiomatic dynamically typed Python code.
 For example, this conforms to the :pep:`484`::
 
-   from typing import Sized, Iterable, Iterator
+   kutoka typing agiza Sized, Iterable, Iterator
 
-   class Bucket(Sized, Iterable[int]):
+   kundi Bucket(Sized, Iterable[int]):
        ...
        def __len__(self) -> int: ...
        def __iter__(self) -> Iterator[int]: ...
 
 :pep:`544` allows to solve this problem by allowing users to write
-the above code without explicit base classes in the class definition,
+the above code without explicit base classes in the kundi definition,
 allowing ``Bucket`` to be implicitly considered a subtype of both ``Sized``
 and ``Iterable[int]`` by static type checkers. This is known as
 *structural subtyping* (or static duck-typing)::
 
-   from typing import Iterator, Iterable
+   kutoka typing agiza Iterator, Iterable
 
-   class Bucket:  # Note: no base classes
+   kundi Bucket:  # Note: no base classes
        ...
        def __len__(self) -> int: ...
        def __iter__(self) -> Iterator[int]: ...
@@ -430,7 +430,7 @@ and ``Iterable[int]`` by static type checkers. This is known as
    def collect(items: Iterable[int]) -> int: ...
    result = collect(Bucket())  # Passes type check
 
-Moreover, by subclassing a special class :class:`Protocol`, a user
+Moreover, by subclassing a special kundi :class:`Protocol`, a user
 can define new custom protocols to fully enjoy structural subtyping
 (see examples below).
 
@@ -451,7 +451,7 @@ The module defines the following classes, functions and decorators:
 
     Type variables exist primarily for the benefit of static type
     checkers.  They serve as the parameters for generic types as well
-    as for generic function definitions.  See class Generic for more
+    as for generic function definitions.  See kundi Generic for more
     information on generic types.  Generic functions work as follows::
 
        def repeat(x: T, n: int) -> Sequence[T]:
@@ -464,7 +464,7 @@ The module defines the following classes, functions and decorators:
 
     The latter example's signature is essentially the overloading
     of ``(str, str) -> str`` and ``(bytes, bytes) -> bytes``.  Also note
-    that if the arguments are instances of some subclass of :class:`str`,
+    that if the arguments are instances of some subkundi of :class:`str`,
     the return type is still plain :class:`str`.
 
     At runtime, ``isinstance(x, T)`` will raise :exc:`TypeError`.  In general,
@@ -475,23 +475,23 @@ The module defines the following classes, functions and decorators:
     details.  By default type variables are invariant.  Alternatively,
     a type variable may specify an upper bound using ``bound=<type>``.
     This means that an actual type substituted (explicitly or implicitly)
-    for the type variable must be a subclass of the boundary type,
+    for the type variable must be a subkundi of the boundary type,
     see :pep:`484`.
 
 .. class:: Generic
 
-   Abstract base class for generic types.
+   Abstract base kundi for generic types.
 
-   A generic type is typically declared by inheriting from an
-   instantiation of this class with one or more type variables.
+   A generic type is typically declared by inheriting kutoka an
+   instantiation of this kundi with one or more type variables.
    For example, a generic mapping type might be defined as::
 
-      class Mapping(Generic[KT, VT]):
+      kundi Mapping(Generic[KT, VT]):
           def __getitem__(self, key: KT) -> VT:
               ...
               # Etc.
 
-   This class can then be used as follows::
+   This kundi can then be used as follows::
 
       X = TypeVar('X')
       Y = TypeVar('Y')
@@ -504,16 +504,16 @@ The module defines the following classes, functions and decorators:
 
 .. class:: Protocol(Generic)
 
-   Base class for protocol classes. Protocol classes are defined like this::
+   Base kundi for protocol classes. Protocol classes are defined like this::
 
-      class Proto(Protocol):
+      kundi Proto(Protocol):
           def meth(self) -> int:
               ...
 
    Such classes are primarily used with static type checkers that recognize
    structural subtyping (static duck-typing), for example::
 
-      class C:
+      kundi C:
           def meth(self) -> int:
               return 0
 
@@ -529,7 +529,7 @@ The module defines the following classes, functions and decorators:
 
    Protocol classes can be generic, for example::
 
-      class GenProto(Protocol[T]):
+      kundi GenProto(Protocol[T]):
           def meth(self) -> T:
               ...
 
@@ -539,7 +539,7 @@ The module defines the following classes, functions and decorators:
 
    A variable annotated with ``C`` may accept a value of type ``C``. In
    contrast, a variable annotated with ``Type[C]`` may accept values that are
-   classes themselves -- specifically, it will accept the *class object* of
+   classes themselves -- specifically, it will accept the *kundi object* of
    ``C``. For example::
 
       a = 3         # Has type 'int'
@@ -548,10 +548,10 @@ The module defines the following classes, functions and decorators:
 
    Note that ``Type[C]`` is covariant::
 
-      class User: ...
-      class BasicUser(User): ...
-      class ProUser(User): ...
-      class TeamUser(User): ...
+      kundi User: ...
+      kundi BasicUser(User): ...
+      kundi ProUser(User): ...
+      kundi TeamUser(User): ...
 
       # Accepts User, BasicUser, ProUser, TeamUser, ...
       def make_new_user(user_class: Type[User]) -> User:
@@ -559,7 +559,7 @@ The module defines the following classes, functions and decorators:
           return user_class()
 
    The fact that ``Type[C]`` is covariant implies that all subclasses of
-   ``C`` should implement the same constructor signature and class method
+   ``C`` should implement the same constructor signature and kundi method
    signatures as ``C``. The type checker should flag violations of this,
    but should also allow constructor calls in subclasses that match the
    constructor calls in the indicated base class. How the type checker is
@@ -573,7 +573,7 @@ The module defines the following classes, functions and decorators:
       def new_non_team_user(user_class: Type[Union[BaseUser, ProUser]]): ...
 
    ``Type[Any]`` is equivalent to ``Type`` which in turn is equivalent
-   to ``type``, which is the root of Python's metaclass hierarchy.
+   to ``type``, which is the root of Python's metakundi hierarchy.
 
    .. versionadded:: 3.5.2
 
@@ -739,7 +739,7 @@ The module defines the following classes, functions and decorators:
    The variance and order of type variables
    correspond to those of :class:`Generator`, for example::
 
-      from typing import List, Coroutine
+      kutoka typing agiza List, Coroutine
       c = None # type: Coroutine[List[str], str, int]
       ...
       x = c.send('hi') # type: List[str]
@@ -902,7 +902,7 @@ The module defines the following classes, functions and decorators:
            Match
 
    These type aliases
-   correspond to the return types from :func:`re.compile` and
+   correspond to the return types kutoka :func:`re.compile` and
    :func:`re.match`.  These types (and the corresponding functions)
    are generic in ``AnyStr`` and can be made specific by writing
    ``Pattern[str]``, ``Pattern[bytes]``, ``Match[str]``, or
@@ -914,7 +914,7 @@ The module defines the following classes, functions and decorators:
 
    Usage::
 
-       class Employee(NamedTuple):
+       kundi Employee(NamedTuple):
            name: str
            id: int
 
@@ -922,9 +922,9 @@ The module defines the following classes, functions and decorators:
 
        Employee = collections.namedtuple('Employee', ['name', 'id'])
 
-   To give a field a default value, you can assign to it in the class body::
+   To give a field a default value, you can assign to it in the kundi body::
 
-      class Employee(NamedTuple):
+      kundi Employee(NamedTuple):
           name: str
           id: int = 3
 
@@ -933,7 +933,7 @@ The module defines the following classes, functions and decorators:
 
    Fields with a default value must come after any fields without a default.
 
-   The resulting class has an extra attribute ``__annotations__`` giving a
+   The resulting kundi has an extra attribute ``__annotations__`` giving a
    dict that maps the field names to the field types.  (The field names are in
    the ``_fields`` attribute and the default values are in the
    ``_field_defaults`` attribute both of which are part of the namedtuple
@@ -941,7 +941,7 @@ The module defines the following classes, functions and decorators:
 
    ``NamedTuple`` subclasses can also have docstrings and methods::
 
-      class Employee(NamedTuple):
+      kundi Employee(NamedTuple):
           """Represents an employee."""
           name: str
           id: int = 3
@@ -978,7 +978,7 @@ The module defines the following classes, functions and decorators:
    is not checked at runtime but is only enforced by type checkers.
    Usage::
 
-      class Point2D(TypedDict):
+      kundi Point2D(TypedDict):
           x: int
           y: int
           label: str
@@ -1003,9 +1003,9 @@ The module defines the following classes, functions and decorators:
 
 .. class:: ForwardRef
 
-   A class used for internal typing representation of string forward references.
+   A kundi used for internal typing representation of string forward references.
    For example, ``List["SomeClass"]`` is implicitly transformed into
-   ``List[ForwardRef("SomeClass")]``.  This class should not be instantiated by
+   ``List[ForwardRef("SomeClass")]``.  This kundi should not be instantiated by
    a user, but may be used by introspection tools.
 
 .. function:: NewType(typ)
@@ -1031,13 +1031,13 @@ The module defines the following classes, functions and decorators:
 .. function:: get_type_hints(obj[, globals[, locals]])
 
    Return a dictionary containing type hints for a function, method, module
-   or class object.
+   or kundi object.
 
    This is often the same as ``obj.__annotations__``. In addition,
    forward references encoded as string literals are handled by evaluating
    them in ``globals`` and ``locals`` namespaces. If necessary,
    ``Optional[t]`` is added for function and method annotations if a default
-   value equal to ``None`` is set. For a class ``C``, return
+   value equal to ``None`` is set. For a kundi ``C``, return
    a dictionary constructed by merging all the ``__annotations__`` along
    ``C.__mro__`` in reverse order.
 
@@ -1091,21 +1091,21 @@ The module defines the following classes, functions and decorators:
 .. decorator:: final
 
    A decorator to indicate to type checkers that the decorated method
-   cannot be overridden, and the decorated class cannot be subclassed.
+   cannot be overridden, and the decorated kundi cannot be subclassed.
    For example::
 
-      class Base:
+      kundi Base:
           @final
           def done(self) -> None:
               ...
-      class Sub(Base):
+      kundi Sub(Base):
           def done(self) -> None:  # Error reported by type checker
                 ...
 
       @final
-      class Leaf:
+      kundi Leaf:
           ...
-      class Other(Leaf):  # Error reported by type checker
+      kundi Other(Leaf):  # Error reported by type checker
           ...
 
    There is no runtime checking of these properties. See :pep:`591` for
@@ -1117,8 +1117,8 @@ The module defines the following classes, functions and decorators:
 
    Decorator to indicate that annotations are not type hints.
 
-   This works as class or function :term:`decorator`.  With a class, it
-   applies recursively to all methods defined in that class (but not
+   This works as kundi or function :term:`decorator`.  With a class, it
+   applies recursively to all methods defined in that kundi (but not
    to methods defined in its superclasses or subclasses).
 
    This mutates the function(s) in place.
@@ -1132,14 +1132,14 @@ The module defines the following classes, functions and decorators:
 
 .. decorator:: type_check_only
 
-   Decorator to mark a class or function to be unavailable at runtime.
+   Decorator to mark a kundi or function to be unavailable at runtime.
 
    This decorator is itself not available at runtime. It is mainly
    intended to mark classes that are defined in type stub files if
    an implementation returns an instance of a private class::
 
       @type_check_only
-      class Response:  # private or not available at runtime
+      kundi Response:  # private or not available at runtime
           code: int
           def get_header(self, name: str) -> str: ...
 
@@ -1150,7 +1150,7 @@ The module defines the following classes, functions and decorators:
 
 .. decorator:: runtime_checkable
 
-   Mark a protocol class as a runtime protocol.
+   Mark a protocol kundi as a runtime protocol.
 
    Such a protocol can be used with :func:`isinstance` and :func:`issubclass`.
    This raises :exc:`TypeError` when applied to a non-protocol class.  This
@@ -1158,7 +1158,7 @@ The module defines the following classes, functions and decorators:
    in :mod:`collections.abc` such as :class:`Iterable`.  For example::
 
       @runtime_checkable
-      class Closable(Protocol):
+      kundi Closable(Protocol):
           def close(self): ...
 
       assert isinstance(open('/some/file'), Closable)
@@ -1180,7 +1180,7 @@ The module defines the following classes, functions and decorators:
    Special type indicating that a function never returns.
    For example::
 
-      from typing import NoReturn
+      kutoka typing agiza NoReturn
 
       def stop() -> NoReturn:
           raise RuntimeError('no way')
@@ -1212,14 +1212,14 @@ The module defines the following classes, functions and decorators:
 
        Union[int, str] == Union[str, int]
 
-   * You cannot subclass or instantiate a union.
+   * You cannot subkundi or instantiate a union.
 
    * You cannot write ``Union[X][Y]``.
 
    * You can use ``Optional[X]`` as a shorthand for ``Union[X, None]``.
 
    .. versionchanged:: 3.7
-      Don't remove explicit subclasses from unions at runtime.
+      Don't remove explicit subclasses kutoka unions at runtime.
 
 .. data:: Optional
 
@@ -1297,26 +1297,26 @@ The module defines the following classes, functions and decorators:
 
 .. data:: ClassVar
 
-   Special type construct to mark class variables.
+   Special type construct to mark kundi variables.
 
    As introduced in :pep:`526`, a variable annotation wrapped in ClassVar
-   indicates that a given attribute is intended to be used as a class variable
+   indicates that a given attribute is intended to be used as a kundi variable
    and should not be set on instances of that class. Usage::
 
-      class Starship:
-          stats: ClassVar[Dict[str, int]] = {} # class variable
+      kundi Starship:
+          stats: ClassVar[Dict[str, int]] = {} # kundi variable
           damage: int = 10                     # instance variable
 
    :data:`ClassVar` accepts only types and cannot be further subscribed.
 
-   :data:`ClassVar` is not a class itself, and should not
+   :data:`ClassVar` is not a kundi itself, and should not
    be used with :func:`isinstance` or :func:`issubclass`.
    :data:`ClassVar` does not change Python runtime behavior, but
    it can be used by third-party type checkers. For example, a type checker
    might flag the following code as an error::
 
       enterprise_d = Starship(3000)
-      enterprise_d.stats = {} # Error, setting class variable on instance
+      enterprise_d.stats = {} # Error, setting kundi variable on instance
       Starship.stats = {}     # This is OK
 
    .. versionadded:: 3.5.3
@@ -1329,10 +1329,10 @@ The module defines the following classes, functions and decorators:
       MAX_SIZE: Final = 9000
       MAX_SIZE += 1  # Error reported by type checker
 
-      class Connection:
+      kundi Connection:
           TIMEOUT: Final[int] = 10
 
-      class FastConnector(Connection):
+      kundi FastConnector(Connection):
           TIMEOUT = 1  # Error reported by type checker
 
    There is no runtime checking of these properties. See :pep:`591` for
@@ -1361,13 +1361,13 @@ The module defines the following classes, functions and decorators:
    type checkers. It is ``False`` at runtime. Usage::
 
       if TYPE_CHECKING:
-          import expensive_mod
+          agiza expensive_mod
 
       def fun(arg: 'expensive_mod.SomeType') -> None:
           local_var: expensive_mod.AnotherType = other_fun()
 
    Note that the first type annotation must be enclosed in quotes, making it a
-   "forward reference", to hide the ``expensive_mod`` reference from the
+   "forward reference", to hide the ``expensive_mod`` reference kutoka the
    interpreter runtime.  Type annotations for local variables are not
    evaluated, so the second annotation does not need to be enclosed in quotes.
 

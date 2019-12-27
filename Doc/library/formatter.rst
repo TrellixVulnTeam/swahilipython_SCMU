@@ -81,7 +81,7 @@ The following attributes are defined for formatter instance objects:
 .. method:: formatter.add_flowing_data(data)
 
    Provide data which should be formatted with collapsed whitespace. Whitespace
-   from preceding and successive calls to :meth:`add_flowing_data` is considered as
+   kutoka preceding and successive calls to :meth:`add_flowing_data` is considered as
    well when the whitespace collapse is performed.  The data which is passed to
    this method is expected to be word-wrapped by the output device.  Note that any
    word-wrapping still must be performed by the writer object due to the need to
@@ -119,7 +119,7 @@ The following attributes are defined for formatter instance objects:
 
 .. method:: formatter.flush_softspace()
 
-   Send any pending whitespace buffered from a previous call to
+   Send any pending whitespace buffered kutoka a previous call to
    :meth:`add_flowing_data` to the associated writer object.  This should be called
    before any direct manipulation of the writer object.
 
@@ -127,7 +127,7 @@ The following attributes are defined for formatter instance objects:
 .. method:: formatter.push_alignment(align)
 
    Push a new alignment setting onto the alignment stack.  This may be
-   :const:`AS_IS` if no change is desired.  If the alignment value is changed from
+   :const:`AS_IS` if no change is desired.  If the alignment value is changed kutoka
    the previous setting, the writer's :meth:`new_alignment` method is called with
    the *align* value.
 
@@ -203,8 +203,8 @@ applications may use one of these classes without modification or subclassing.
 
    A formatter which does nothing.  If *writer* is omitted, a :class:`NullWriter`
    instance is created.  No methods of the writer are called by
-   :class:`NullFormatter` instances.  Implementations should inherit from this
-   class if implementing a writer interface but don't need to inherit any
+   :class:`NullFormatter` instances.  Implementations should inherit kutoka this
+   kundi if implementing a writer interface but don't need to inherit any
    implementation.
 
 
@@ -220,10 +220,10 @@ applications may use one of these classes without modification or subclassing.
 The Writer Interface
 --------------------
 
-Interfaces to create writers are dependent on the specific writer class being
+Interfaces to create writers are dependent on the specific writer kundi being
 instantiated.  The interfaces described below are the required interfaces which
 all writers must support once initialized. Note that while most applications can
-use the :class:`AbstractFormatter` class as a formatter, the writer must
+use the :class:`AbstractFormatter` kundi as a formatter, the writer must
 typically be provided by the application.
 
 
@@ -324,14 +324,14 @@ Writer Implementations
 ----------------------
 
 Three implementations of the writer object interface are provided as examples by
-this module.  Most applications will need to derive new writer classes from the
+this module.  Most applications will need to derive new writer classes kutoka the
 :class:`NullWriter` class.
 
 
 .. class:: NullWriter()
 
    A writer which only provides the interface definition; no actions are taken on
-   any methods.  This should be the base class for all writers which do not need to
+   any methods.  This should be the base kundi for all writers which do not need to
    inherit any implementation methods.
 
 
@@ -344,8 +344,8 @@ this module.  Most applications will need to derive new writer classes from the
 
 .. class:: DumbWriter(file=None, maxcol=72)
 
-   Simple writer class which writes output on the :term:`file object` passed
+   Simple writer kundi which writes output on the :term:`file object` passed
    in as *file* or, if *file* is omitted, on standard output.  The output is
    simply word-wrapped to the number of columns specified by *maxcol*.  This
-   class is suitable for reflowing a sequence of paragraphs.
+   kundi is suitable for reflowing a sequence of paragraphs.
 

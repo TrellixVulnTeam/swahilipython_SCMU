@@ -11,7 +11,7 @@
 The :mod:`trace` module allows you to trace program execution, generate
 annotated statement coverage listings, print caller/callee relationships and
 list functions executed during a program run.  It can be used in another program
-or from the command line.
+or kutoka the command line.
 
 .. seealso::
 
@@ -24,7 +24,7 @@ or from the command line.
 Command-Line Usage
 ------------------
 
-The :mod:`trace` module can be invoked from the command line.  It can be as
+The :mod:`trace` module can be invoked kutoka the command line.  It can be as
 simple as ::
 
    python -m trace --count -C . somefile.py ...
@@ -73,7 +73,7 @@ the :option:`--trace <-t>` and :option:`--count <-c>` options. When
 
 .. cmdoption:: -r, --report
 
-   Produce an annotated list from an earlier program run that used the
+   Produce an annotated list kutoka an earlier program run that used the
    :option:`--count <-c>` and :option:`--file <-f>` option.  This does not
    execute any code.
 
@@ -148,20 +148,20 @@ Programmatic Interface
    functions called during the run.  *countcallers* enables call relationship
    tracking.  *ignoremods* is a list of modules or packages to ignore.
    *ignoredirs* is a list of directories whose modules or packages should be
-   ignored.  *infile* is the name of the file from which to read stored count
+   ignored.  *infile* is the name of the file kutoka which to read stored count
    information.  *outfile* is the name of the file in which to write updated
    count information.  *timing* enables a timestamp relative to when tracing was
    started to be displayed.
 
     .. method:: run(cmd)
 
-       Execute the command and gather statistics from the execution with
+       Execute the command and gather statistics kutoka the execution with
        the current tracing parameters.  *cmd* must be a string or code object,
        suitable for passing into :func:`exec`.
 
     .. method:: runctx(cmd, globals=None, locals=None)
 
-       Execute the command and gather statistics from the execution with the
+       Execute the command and gather statistics kutoka the execution with the
        current tracing parameters, in the defined global and local
        environments.  If not defined, *globals* and *locals* default to empty
        dictionaries.
@@ -185,7 +185,7 @@ Programmatic Interface
 
     .. method:: update(other)
 
-       Merge in data from another :class:`CoverageResults` object.
+       Merge in data kutoka another :class:`CoverageResults` object.
 
     .. method:: write_results(show_missing=True, summary=False, coverdir=None)
 
@@ -197,8 +197,8 @@ Programmatic Interface
 
 A simple example demonstrating the use of the programmatic interface::
 
-   import sys
-   import trace
+   agiza sys
+   agiza trace
 
    # create a Trace object, telling it what to ignore, and whether to
    # do tracing or line-counting or both.

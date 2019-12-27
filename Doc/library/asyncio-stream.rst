@@ -19,7 +19,7 @@ using callbacks or low-level protocols and transports.
 Here is an example of a TCP echo client written using asyncio
 streams::
 
-    import asyncio
+    agiza asyncio
 
     async def tcp_echo_client(message):
         reader, writer = await asyncio.open_connection(
@@ -60,7 +60,7 @@ and work with streams:
    :class:`StreamReader` and :class:`StreamWriter` classes.
 
    The *loop* argument is optional and can always be determined
-   automatically when this function is awaited from a coroutine.
+   automatically when this function is awaited kutoka a coroutine.
 
    *limit* determines the buffer size limit used by the
    returned :class:`StreamReader` instance.  By default the *limit*
@@ -93,7 +93,7 @@ and work with streams:
    it will be automatically scheduled as a :class:`Task`.
 
    The *loop* argument is optional and can always be determined
-   automatically when this method is awaited from a coroutine.
+   automatically when this method is awaited kutoka a coroutine.
 
    *limit* determines the buffer size limit used by the
    returned :class:`StreamReader` instance.  By default the *limit*
@@ -159,7 +159,7 @@ StreamReader
 .. class:: StreamReader
 
    Represents a reader object that provides APIs to read data
-   from the IO stream.
+   kutoka the IO stream.
 
    It is not recommended to instantiate *StreamReader* objects
    directly; use :func:`open_connection` and :func:`start_server`
@@ -194,9 +194,9 @@ StreamReader
 
    .. coroutinemethod:: readuntil(separator=b'\\n')
 
-      Read data from the stream until *separator* is found.
+      Read data kutoka the stream until *separator* is found.
 
-      On success, the data and separator will be removed from the
+      On success, the data and separator will be removed kutoka the
       internal buffer (consumed). Returned data will include the
       separator at the end.
 
@@ -322,7 +322,7 @@ TCP echo client using streams
 
 TCP echo client using the :func:`asyncio.open_connection` function::
 
-    import asyncio
+    agiza asyncio
 
     async def tcp_echo_client(message):
         reader, writer = await asyncio.open_connection(
@@ -353,14 +353,14 @@ TCP echo server using streams
 
 TCP echo server using the :func:`asyncio.start_server` function::
 
-    import asyncio
+    agiza asyncio
 
     async def handle_echo(reader, writer):
         data = await reader.read(100)
         message = data.decode()
         addr = writer.get_extra_info('peername')
 
-        print(f"Received {message!r} from {addr!r}")
+        print(f"Received {message!r} kutoka {addr!r}")
 
         print(f"Send: {message!r}")
         writer.write(data)
@@ -393,9 +393,9 @@ Get HTTP headers
 
 Simple example querying HTTP headers of the URL passed on the command line::
 
-    import asyncio
-    import urllib.parse
-    import sys
+    agiza asyncio
+    agiza urllib.parse
+    agiza sys
 
     async def print_http_headers(url):
         url = urllib.parse.urlsplit(url)
@@ -446,8 +446,8 @@ Register an open socket to wait for data using streams
 Coroutine waiting until a socket receives data using the
 :func:`open_connection` function::
 
-    import asyncio
-    import socket
+    agiza asyncio
+    agiza socket
 
     async def wait_for_data():
         # Get a reference to the current event loop because
@@ -460,7 +460,7 @@ Coroutine waiting until a socket receives data using the
         # Register the open socket to wait for data.
         reader, writer = await asyncio.open_connection(sock=rsock)
 
-        # Simulate the reception of data from the network
+        # Simulate the reception of data kutoka the network
         loop.call_soon(wsock.send, 'abc'.encode())
 
         # Wait for data

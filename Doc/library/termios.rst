@@ -41,7 +41,7 @@ The module defines the following functions:
 
 .. function:: tcsetattr(fd, when, attributes)
 
-   Set the tty attributes for file descriptor *fd* from the *attributes*, which is
+   Set the tty attributes for file descriptor *fd* kutoka the *attributes*, which is
    a list like the one returned by :func:`tcgetattr`.  The *when* argument
    determines when the attributes are changed: :const:`TCSANOW` to change
    immediately, :const:`TCSADRAIN` to change after transmitting all queued output,
@@ -91,7 +91,7 @@ technique using a separate :func:`tcgetattr` call and a :keyword:`try` ...
 exactly no matter what happens::
 
    def getpass(prompt="Password: "):
-       import termios, sys
+       agiza termios, sys
        fd = sys.stdin.fileno()
        old = termios.tcgetattr(fd)
        new = termios.tcgetattr(fd)

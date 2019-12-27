@@ -10,13 +10,13 @@ agiza unittest
 skip_if_missing()
 
 
-class lllTests(unittest.TestCase):
+kundi lllTests(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.lll = import_tool('lll')
 
     @support.skip_unless_symlink
-    def test_lll_multiple_dirs(self):
+    eleza test_lll_multiple_dirs(self):
         with tempfile.TemporaryDirectory() as dir1, \
              tempfile.TemporaryDirectory() as dir2:
             fn1 = os.path.join(dir1, 'foo1')
@@ -27,7 +27,7 @@ class lllTests(unittest.TestCase):
 
             with support.captured_stdout() as output:
                 self.lll.main([dir1, dir2])
-            prefix = '\\\\?\\' if os.name == 'nt' else ''
+            prefix = '\\\\?\\' ikiwa os.name == 'nt' else ''
             self.assertEqual(output.getvalue(),
                 f'{dir1}:\n'
                 f'symlink -> {prefix}{fn1}\n'
@@ -37,5 +37,5 @@ class lllTests(unittest.TestCase):
             )
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

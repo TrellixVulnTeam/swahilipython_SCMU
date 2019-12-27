@@ -2,7 +2,7 @@
 ---------------------------------------------------
 
 .. module:: email.message
-   :synopsis: The base class representing email messages.
+   :synopsis: The base kundi representing email messages.
 .. moduleauthor:: R. David Murray <rdmurray@bitdance.com>
 .. sectionauthor:: R. David Murray <rdmurray@bitdance.com>,
                    Barry A. Warsaw <barry@python.org>
@@ -13,8 +13,8 @@
 
 .. versionadded:: 3.6 [1]_
 
-The central class in the :mod:`email` package is the :class:`EmailMessage`
-class, imported from the :mod:`email.message` module.  It is the base class for
+The central kundi in the :mod:`email` package is the :class:`EmailMessage`
+class, imported kutoka the :mod:`email.message` module.  It is the base kundi for
 the :mod:`email` object model.  :class:`EmailMessage` provides the core
 functionality for setting and querying header fields, for accessing message
 bodies, and for creating or modifying structured messages.
@@ -32,7 +32,7 @@ The conceptual model provided by an :class:`EmailMessage` object is that of an
 ordered dictionary of headers coupled with a *payload* that represents the
 :rfc:`5322` body of the message, which might be a list of sub-``EmailMessage``
 objects.  In addition to the normal dictionary methods for accessing the header
-names and values, there are methods for accessing specialized information from
+names and values, there are methods for accessing specialized information kutoka
 the headers (for example the MIME content type), for operating on the payload,
 for generating a serialized version of the message, and for recursively walking
 over the object tree.
@@ -59,17 +59,17 @@ message objects.
    the Python standard ``\n`` line endings).  For more information see the
    :mod:`~email.policy` documentation.
 
-   .. method:: as_string(unixfrom=False, maxheaderlen=None, policy=None)
+   .. method:: as_string(unixkutoka=False, maxheaderlen=None, policy=None)
 
       Return the entire message flattened as a string.  When optional
-      *unixfrom* is true, the envelope header is included in the returned
-      string.  *unixfrom* defaults to ``False``.  For backward compatibility
-      with the base :class:`~email.message.Message` class *maxheaderlen* is
+      *unixkutoka* is true, the envelope header is included in the returned
+      string.  *unixkutoka* defaults to ``False``.  For backward compatibility
+      with the base :class:`~email.message.Message` kundi *maxheaderlen* is
       accepted, but defaults to ``None``, which means that by default the line
       length is controlled by the
       :attr:`~email.policy.EmailPolicy.max_line_length` of the policy.  The
       *policy* argument may be used to override the default policy obtained
-      from the message instance.  This can be used to control some of the
+      kutoka the message instance.  This can be used to control some of the
       formatting produced by the method, since the specified *policy* will be
       passed to the :class:`~email.generator.Generator`.
 
@@ -86,8 +86,8 @@ message objects.
       :attr:`~email.policy.EmailPolicy.utf8` is ``False``, which is the default.
 
       .. versionchanged:: 3.6 the default behavior when *maxheaderlen*
-         is not specified was changed from defaulting to 0 to defaulting
-         to the value of *max_line_length* from the policy.
+         is not specified was changed kutoka defaulting to 0 to defaulting
+         to the value of *max_line_length* kutoka the policy.
 
 
    .. method:: __str__()
@@ -101,12 +101,12 @@ message objects.
          being a direct alias for :meth:`as_string`.
 
 
-   .. method:: as_bytes(unixfrom=False, policy=None)
+   .. method:: as_bytes(unixkutoka=False, policy=None)
 
       Return the entire message flattened as a bytes object.  When optional
-      *unixfrom* is true, the envelope header is included in the returned
-      string.  *unixfrom* defaults to ``False``.  The *policy* argument may be
-      used to override the default policy obtained from the message instance.
+      *unixkutoka* is true, the envelope header is included in the returned
+      string.  *unixkutoka* defaults to ``False``.  The *policy* argument may be
+      used to override the default policy obtained kutoka the message instance.
       This can be used to control some of the formatting produced by the
       method, since the specified *policy* will be passed to the
       :class:`~email.generator.BytesGenerator`.
@@ -140,14 +140,14 @@ message objects.
       :class:`EmailMessage` is of type ``message/rfc822``.
 
 
-   .. method:: set_unixfrom(unixfrom)
+   .. method:: set_unixkutoka(unixkutoka)
 
-      Set the message's envelope header to *unixfrom*, which should be a
+      Set the message's envelope header to *unixkutoka*, which should be a
       string.  (See :class:`~mailbox.mboxMessage` for a brief description of
       this header.)
 
 
-   .. method:: get_unixfrom()
+   .. method:: get_unixkutoka()
 
       Return the message's envelope header.  Defaults to ``None`` if the
       envelope header was never set.
@@ -198,7 +198,7 @@ message objects.
       extant headers named *name*.
 
       Using the standard (non-``compat32``) policies, the returned value is an
-      instance of a subclass of :class:`email.headerregistry.BaseHeader`.
+      instance of a subkundi of :class:`email.headerregistry.BaseHeader`.
 
 
    .. method:: __setitem__(name, val)
@@ -223,7 +223,7 @@ message objects.
 
    .. method:: __delitem__(name)
 
-      Delete all occurrences of the field with name *name* from the message's
+      Delete all occurrences of the field with name *name* kutoka the message's
       headers.  No exception is raised if the named field isn't present in the
       headers.
 
@@ -386,7 +386,7 @@ message objects.
 
    .. method:: del_param(param, header='content-type', requote=True)
 
-      Remove the given parameter completely from the :mailheader:`Content-Type`
+      Remove the given parameter completely kutoka the :mailheader:`Content-Type`
       header.  The header will be re-written in place without the parameter or
       its value.  Optional *header* specifies an alternative to
       :mailheader:`Content-Type`.
@@ -421,7 +421,7 @@ message objects.
       necessary.  A :exc:`~email.errors.HeaderParseError` is raised if the
       message object has no :mailheader:`Content-Type` header.
 
-      Note that using this method is subtly different from deleting the old
+      Note that using this method is subtly different kutoka deleting the old
       :mailheader:`Content-Type` header and adding a new one with the new
       boundary via :meth:`add_header`, because :meth:`set_boundary` preserves
       the order of the :mailheader:`Content-Type` header in the list of
@@ -484,9 +484,9 @@ message objects.
 
       .. testsetup::
 
-         from email import message_from_binary_file
+         kutoka email agiza message_kutoka_binary_file
          with open('../Lib/test/test_email/data/msg_16.txt', 'rb') as f:
-             msg = message_from_binary_file(f)
+             msg = message_kutoka_binary_file(f)
 
       .. doctest::
 
@@ -508,7 +508,7 @@ message objects.
 
       .. doctest::
 
-         >>> from email.iterators import _structure
+         >>> kutoka email.iterators agiza _structure
          >>> for part in msg.walk():
          ...     print(part.get_content_maintype() == 'multipart',
          ...           part.is_multipart())
@@ -538,7 +538,7 @@ message objects.
       Return the MIME part that is the best candidate to be the "body" of the
       message.
 
-      *preferencelist* must be a sequence of strings from the set ``related``,
+      *preferencelist* must be a sequence of strings kutoka the set ``related``,
       ``html``, and ``plain``, and indicates the order of preference for the
       content type of the part returned.
 
@@ -738,7 +738,7 @@ message objects.
 
 .. class:: MIMEPart(policy=default)
 
-    This class represents a subpart of a MIME message.  It is identical to
+    This kundi represents a subpart of a MIME message.  It is identical to
     :class:`EmailMessage`, except that no :mailheader:`MIME-Version` headers are
     added when :meth:`~EmailMessage.set_content` is called, since sub-parts do
     not need their own :mailheader:`MIME-Version` headers.
@@ -747,5 +747,5 @@ message objects.
 .. rubric:: Footnotes
 
 .. [1] Originally added in 3.4 as a :term:`provisional module <provisional
-       package>`.  Docs for legacy message class moved to
+       package>`.  Docs for legacy message kundi moved to
        :ref:`compat32_message`.

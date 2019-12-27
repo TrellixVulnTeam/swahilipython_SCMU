@@ -395,7 +395,7 @@ class FeedParser:
                         epilogue = self._last.epilogue
                         if epilogue == '':
                             self._last.epilogue = None
-                        elif epilogue is not None:
+                        lasivyo epilogue is not None:
                             mo = NLCRE_eol.search(epilogue)
                             if mo:
                                 end = len(mo.group(0))
@@ -496,7 +496,7 @@ class FeedParser:
                         line = line[:-len(mo.group(0))]
                     self._cur.set_unixfrom(line)
                     continue
-                elif lineno == len(lines) - 1:
+                lasivyo lineno == len(lines) - 1:
                     # Something looking like a unix-from at the end - it's
                     # probably the first line of the body, so push back the
                     # line and stop.

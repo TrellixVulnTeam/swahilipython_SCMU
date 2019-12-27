@@ -13,7 +13,7 @@ supporting community of contributors and users that also make their software
 available for other Python developers to use under open source license terms.
 
 This allows Python users to share and collaborate effectively, benefiting
-from the solutions others have already created to common (and sometimes
+kutoka the solutions others have already created to common (and sometimes
 even rare!) problems, as well as potentially contributing their own
 solutions to the common pool.
 
@@ -74,11 +74,11 @@ Key terms
 Basic usage
 ===========
 
-The standard packaging tools are all designed to be used from the command
+The standard packaging tools are all designed to be used kutoka the command
 line.
 
 The following command will install the latest version of a module and its
-dependencies from the Python Packaging Index::
+dependencies kutoka the Python Packaging Index::
 
     python -m pip install SomePackage
 
@@ -185,7 +185,7 @@ switch::
 .. other questions:
 
    Once the Development & Deployment part of PPUG is fleshed out, some of
-   those sections should be linked from new questions here (most notably,
+   those sections should be linked kutoka new questions here (most notably,
    we should have a question about avoiding depending on PyPI that links to
    https://packaging.python.org/en/latest/mirrors/)
 
@@ -221,7 +221,7 @@ Installing binary extensions
 ----------------------------
 
 Python has typically relied heavily on source based distribution, with end
-users being expected to compile extension modules from source as part of
+users being expected to compile extension modules kutoka source as part of
 the installation process.
 
 With the introduction of support for the binary ``wheel`` format, and the

@@ -15,6 +15,6 @@ This module provides a duplicate interface to the :mod:`threading` module.
 It was meant to be imported when the :mod:`_thread` module was not provided
 on a platform.
 
-Be careful to not use this module where deadlock might occur from a thread being
+Be careful to not use this module where deadlock might occur kutoka a thread being
 created that blocks waiting for another thread to be created.  This often occurs
 with blocking I/O.

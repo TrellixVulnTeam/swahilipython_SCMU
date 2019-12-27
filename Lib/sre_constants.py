@@ -20,7 +20,7 @@ kutoka _sre agiza MAXREPEAT, MAXGROUPS
 # SRE standard exception (access as sre.error)
 # should this really be here?
 
-class error(Exception):
+kundi error(Exception):
     """Exception raised for invalid regular expressions.
 
     Attributes:
@@ -34,41 +34,41 @@ class error(Exception):
 
     __module__ = 're'
 
-    def __init__(self, msg, pattern=None, pos=None):
+    eleza __init__(self, msg, pattern=None, pos=None):
         self.msg = msg
         self.pattern = pattern
         self.pos = pos
-        if pattern is not None and pos is not None:
+        ikiwa pattern is not None and pos is not None:
             msg = '%s at position %d' % (msg, pos)
-            if isinstance(pattern, str):
+            ikiwa isinstance(pattern, str):
                 newline = '\n'
             else:
                 newline = b'\n'
             self.lineno = pattern.count(newline, 0, pos) + 1
             self.colno = pos - pattern.rfind(newline, 0, pos)
-            if newline in pattern:
+            ikiwa newline in pattern:
                 msg = '%s (line %d, column %d)' % (msg, self.lineno, self.colno)
         else:
             self.lineno = self.colno = None
         super().__init__(msg)
 
 
-class _NamedIntConstant(int):
-    def __new__(cls, value, name):
+kundi _NamedIntConstant(int):
+    eleza __new__(cls, value, name):
         self = super(_NamedIntConstant, cls).__new__(cls, value)
         self.name = name
-        return self
+        rudisha self
 
-    def __repr__(self):
-        return self.name
+    eleza __repr__(self):
+        rudisha self.name
 
 MAXREPEAT = _NamedIntConstant(MAXREPEAT, 'MAXREPEAT')
 
-def _makecodes(names):
+eleza _makecodes(names):
     names = names.strip().split()
     items = [_NamedIntConstant(i, name) for i, name in enumerate(names)]
     globals().update({item.name: item for item in items})
-    return items
+    rudisha items
 
 # operators
 # failure=0 success=1 (just because it looks better that way :-)
@@ -214,8 +214,8 @@ SRE_INFO_PREFIX = 1 # has prefix
 SRE_INFO_LITERAL = 2 # entire pattern is literal (given by prefix)
 SRE_INFO_CHARSET = 4 # pattern starts with character kutoka given set
 
-if __name__ == "__main__":
-    def dump(f, d, prefix):
+ikiwa __name__ == "__main__":
+    eleza dump(f, d, prefix):
         items = sorted(d)
         for item in items:
             f.write("#define %s_%s %d\n" % (prefix, item, item))
@@ -256,4 +256,4 @@ if __name__ == "__main__":
         f.write("#define SRE_INFO_LITERAL %d\n" % SRE_INFO_LITERAL)
         f.write("#define SRE_INFO_CHARSET %d\n" % SRE_INFO_CHARSET)
 
-    print("done")
+    andika("done")

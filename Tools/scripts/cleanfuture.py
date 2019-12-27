@@ -38,7 +38,7 @@ from __future__ import generators
 because nested_scopes is no longer optional in 2.2 but generators is.
 """
 
-import __future__
+agiza __future__
 import tokenize
 import os
 import sys

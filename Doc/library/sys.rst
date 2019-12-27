@@ -34,7 +34,7 @@ always available.
    called first, followed by hooks added in the current interpreter.
 
    Calling this function will trigger an event for all existing hooks, and if
-   any raise an exception derived from :class:`Exception`, the add will be
+   any raise an exception derived kutoka :class:`Exception`, the add will be
    silently ignored. As a result, callers cannot assume that their hook has been
    added unless they control all existing hooks.
 
@@ -59,7 +59,7 @@ always available.
    command line, see the :mod:`fileinput` module.
 
    .. note::
-      On Unix, command line arguments are passed by bytes from OS.  Python decodes
+      On Unix, command line arguments are passed by bytes kutoka OS.  Python decodes
       them with filesystem encoding and "surrogateescape" error handler.
       When you need original bytes, you can get it by
       ``[os.fsencode(arg) for arg in sys.argv]``.
@@ -101,7 +101,7 @@ always available.
    :data:`prefix` and :data:`exec_prefix` will be changed to point to the
    virtual environment, whereas :data:`base_prefix` and
    :data:`base_exec_prefix` will remain pointing to the base Python
-   installation (the one which the virtual environment was created from).
+   installation (the one which the virtual environment was created kutoka).
 
    .. versionadded:: 3.3
 
@@ -114,7 +114,7 @@ always available.
    use, the values of :data:`prefix` and :data:`exec_prefix` will be changed to
    point to the virtual environment, whereas :data:`base_prefix` and
    :data:`base_exec_prefix` will remain pointing to the base Python
-   installation (the one which the virtual environment was created from).
+   installation (the one which the virtual environment was created kutoka).
 
    .. versionadded:: 3.3
 
@@ -136,7 +136,7 @@ always available.
 .. function:: call_tracing(func, args)
 
    Call ``func(*args)``, while tracing is enabled.  The tracing state is saved,
-   and restored afterwards.  This is intended to be called from a debugger from
+   and restored afterwards.  This is intended to be called kutoka a debugger kutoka
    a checkpoint, to recursively debug some other code.
 
 
@@ -183,14 +183,14 @@ always available.
    you might bind it to a function that expects additional arguments
    (positional and/or keyword).  The built-in ``breakpoint()`` function passes
    its ``*args`` and ``**kws`` straight through.  Whatever
-   ``breakpointhooks()`` returns is returned from ``breakpoint()``.
+   ``breakpointhooks()`` returns is returned kutoka ``breakpoint()``.
 
    The default implementation first consults the environment variable
    :envvar:`PYTHONBREAKPOINT`.  If that is set to ``"0"`` then this function
    returns immediately; i.e. it is a no-op.  If the environment variable is
    not set, or is set to the empty string, ``pdb.set_trace()`` is called.
    Otherwise this variable should name a function to run, using Python's
-   dotted-import nomenclature, e.g. ``package.subpackage.module.function``.
+   dotted-agiza nomenclature, e.g. ``package.subpackage.module.function``.
    In this case, ``package.subpackage.module`` would be imported and the
    resulting module must have a callable named ``function()``.  This is run,
    passing in ``*args`` and ``**kws``, and whatever ``function()`` returns,
@@ -268,7 +268,7 @@ always available.
 .. data:: dont_write_bytecode
 
    If this is true, Python won't try to write ``.pyc`` files on the
-   import of source modules.  This value is initially set to ``True`` or
+   agiza of source modules.  This value is initially set to ``True`` or
    ``False`` depending on the :option:`-B` command line option and the
    :envvar:`PYTHONDONTWRITEBYTECODE` environment variable, but you can set it
    yourself to control bytecode file generation.
@@ -277,8 +277,8 @@ always available.
 .. data:: pycache_prefix
 
    If this is set (not ``None``), Python will write bytecode-cache ``.pyc``
-   files to (and read them from) a parallel directory tree rooted at this
-   directory, rather than from ``__pycache__`` directories in the source code
+   files to (and read them kutoka) a parallel directory tree rooted at this
+   directory, rather than kutoka ``__pycache__`` directories in the source code
    tree. Any ``__pycache__`` directories in the source code tree will be ignored
    and new `.pyc` files written within the pycache prefix. Thus if you use
    :mod:`compileall` as a pre-build step, you must ensure you run it with the
@@ -332,7 +332,7 @@ always available.
    This function returns a tuple of three values that give information about the
    exception that is currently being handled.  The information returned is specific
    both to the current thread and to the current stack frame.  If the current stack
-   frame is not handling an exception, the information is taken from the calling
+   frame is not handling an exception, the information is taken kutoka the calling
    stack frame, or its caller, and so on until a stack frame is found that is
    handling an exception.  Here, "handling an exception" is defined as "executing
    an except clause."  For any stack frame, only information about the exception
@@ -343,7 +343,7 @@ always available.
    If no exception is being handled anywhere on the stack, a tuple containing
    three ``None`` values is returned.  Otherwise, the values returned are
    ``(type, value, traceback)``.  Their meaning is: *type* gets the type of the
-   exception being handled (a subclass of :exc:`BaseException`); *value* gets
+   exception being handled (a subkundi of :exc:`BaseException`); *value* gets
    the exception instance (an instance of the exception type); *traceback* gets
    a :ref:`traceback object <traceback-objects>` which encapsulates the call
    stack at the point where the exception originally occurred.
@@ -378,7 +378,7 @@ always available.
 
 .. function:: exit([arg])
 
-   Exit from Python.  This is implemented by raising the :exc:`SystemExit`
+   Exit kutoka Python.  This is implemented by raising the :exc:`SystemExit`
    exception, so cleanup actions specified by finally clauses of :keyword:`try`
    statements are honored, and it is possible to intercept the exit attempt at
    an outer level.
@@ -397,7 +397,7 @@ always available.
    program when an error occurs.
 
    Since :func:`exit` ultimately "only" raises an exception, it will only exit
-   the process when called from the main thread, and the exception is not
+   the process when called kutoka the main thread, and the exception is not
    intercepted.
 
    .. versionchanged:: 3.6
@@ -503,7 +503,7 @@ always available.
    float and back again will recover a string representing the same decimal
    value::
 
-      >>> import sys
+      >>> agiza sys
       >>> sys.float_info.dig
       15
       >>> s = '3.14159265358979'    # decimal string with 15 significant digits
@@ -535,7 +535,7 @@ always available.
    Return the number of memory blocks currently allocated by the interpreter,
    regardless of their size.  This function is mainly useful for tracking
    and debugging memory leaks.  Because of the interpreter's internal
-   caches, the result can vary from call to call; you may have to call
+   caches, the result can vary kutoka call to call; you may have to call
    :func:`_clear_type_cache()` and :func:`gc.collect()` to get more
    predictable results.
 
@@ -619,7 +619,7 @@ always available.
 .. function:: getfilesystemencodeerrors()
 
    Return the name of the error mode used to convert between Unicode filenames
-   and bytes filenames. The encoding name is returned from
+   and bytes filenames. The encoding name is returned kutoka
    :func:`getfilesystemencoding`.
 
    :func:`os.fsencode` and :func:`os.fsdecode` should be used to ensure that
@@ -637,7 +637,7 @@ always available.
 .. function:: getrecursionlimit()
 
    Return the current value of the recursion limit, the maximum depth of the Python
-   interpreter stack.  This limit prevents infinite recursion from causing an
+   interpreter stack.  This limit prevents infinite recursion kutoka causing an
    overflow of the C stack and crashing Python.  It can be set by
    :func:`setrecursionlimit`.
 
@@ -673,7 +673,7 @@ always available.
 
 .. function:: _getframe([depth])
 
-   Return a frame object from the call stack.  If optional integer *depth* is
+   Return a frame object kutoka the call stack.  If optional integer *depth* is
    given, return the frame object that many calls below the top of the stack.  If
    that is deeper than the call stack, :exc:`ValueError` is raised.  The default
    for *depth* is zero, returning the frame at the top of the call stack.
@@ -856,7 +856,7 @@ always available.
 
    *version* is a named tuple, in the same format as
    :data:`sys.version_info`.  It represents the version of the Python
-   *implementation*.  This has a distinct meaning from the specific
+   *implementation*.  This has a distinct meaning kutoka the specific
    version of the Python *language* to which the currently running
    interpreter conforms, which ``sys.version_info`` represents.  For
    example, for PyPy 1.8 ``sys.implementation.version`` might be
@@ -867,7 +867,7 @@ always available.
    *hexversion* is the implementation version in hexadecimal format, like
    :data:`sys.hexversion`.
 
-   *cache_tag* is the tag used by the import machinery in the filenames of
+   *cache_tag* is the tag used by the agiza machinery in the filenames of
    cached modules.  By convention, it would be a composite of the
    implementation's name and version, like ``'cpython-33'``.  However, a
    Python implementation may use some other value if appropriate.  If
@@ -934,10 +934,10 @@ always available.
    interned, and the lookup key is interned, the key comparisons (after hashing)
    can be done by a pointer compare instead of a string compare.  Normally, the
    names used in Python programs are automatically interned, and the dictionaries
-   used to hold module, class or instance attributes have interned keys.
+   used to hold module, kundi or instance attributes have interned keys.
 
    Interned strings are not immortal; you must keep a reference to the return
-   value of :func:`intern` around to benefit from it.
+   value of :func:`intern` around to benefit kutoka it.
 
 
 .. function:: is_finalizing()
@@ -954,13 +954,13 @@ always available.
 
    These three variables are not always defined; they are set when an exception is
    not handled and the interpreter prints an error message and a stack traceback.
-   Their intended use is to allow an interactive user to import a debugger module
+   Their intended use is to allow an interactive user to agiza a debugger module
    and engage in post-mortem debugging without having to re-execute the command
-   that caused the error.  (Typical use is ``import pdb; pdb.pm()`` to enter the
+   that caused the error.  (Typical use is ``agiza pdb; pdb.pm()`` to enter the
    post-mortem debugger; see :mod:`pdb` module for
    more information.)
 
-   The meaning of the variables is the same as that of the return values from
+   The meaning of the variables is the same as that of the return values kutoka
    :func:`exc_info` above.
 
 
@@ -996,10 +996,10 @@ always available.
     .. seealso::
 
         :class:`importlib.abc.MetaPathFinder`
-          The abstract base class defining the interface of finder objects on
+          The abstract base kundi defining the interface of finder objects on
           :data:`meta_path`.
         :class:`importlib.machinery.ModuleSpec`
-          The concrete class which
+          The concrete kundi which
           :meth:`~importlib.abc.MetaPathFinder.find_spec` should return
           instances of.
 
@@ -1016,21 +1016,21 @@ always available.
    This is a dictionary that maps module names to modules which have already been
    loaded.  This can be manipulated to force reloading of modules and other tricks.
    However, replacing the dictionary will not necessarily work as expected and
-   deleting essential items from the dictionary may cause Python to fail.
+   deleting essential items kutoka the dictionary may cause Python to fail.
 
 
 .. data:: path
 
    .. index:: triple: module; search; path
 
-   A list of strings that specifies the search path for modules. Initialized from
+   A list of strings that specifies the search path for modules. Initialized kutoka
    the environment variable :envvar:`PYTHONPATH`, plus an installation-dependent
    default.
 
    As initialized upon program startup, the first item of this list, ``path[0]``,
    is the directory containing the script that was used to invoke the Python
    interpreter.  If the script directory is not available (e.g.  if the interpreter
-   is invoked interactively or if the script is read from standard input),
+   is invoked interactively or if the script is read kutoka standard input),
    ``path[0]`` is the empty string, which directs Python to search modules in the
    current directory first.  Notice that the script directory is inserted *before*
    the entries inserted as a result of :envvar:`PYTHONPATH`.
@@ -1229,7 +1229,7 @@ always available.
 .. function:: setrecursionlimit(limit)
 
    Set the maximum depth of the Python interpreter stack to *limit*.  This limit
-   prevents infinite recursion from causing an overflow of the C stack and crashing
+   prevents infinite recursion kutoka causing an overflow of the C stack and crashing
    Python.
 
    The highest possible limit is platform-dependent.  A user may need to set the
@@ -1326,7 +1326,7 @@ always available.
 
    For more fine-grained usage, it's possible to set a trace function by
    assigning ``frame.f_trace = tracefunc`` explicitly, rather than relying on
-   it being set indirectly via the return value from an already installed
+   it being set indirectly via the return value kutoka an already installed
    trace function. This is also required for activating the trace function on
    the current frame, which :func:`settrace` doesn't do. Note that in order
    for this to work, a global tracing function must have been installed
@@ -1458,7 +1458,7 @@ always available.
 
    .. note::
 
-      To write or read binary data from/to the standard streams, use the
+      To write or read binary data kutoka/to the standard streams, use the
       underlying binary :data:`~io.TextIOBase.buffer` object.  For example, to
       write bytes to :data:`stdout`, use ``sys.stdout.buffer.write(b'abc')``.
 
@@ -1620,7 +1620,7 @@ always available.
       Python 3.2a3+ (py3k, Oct 16 2010, 20:14:50)
       [GCC 4.4.3] on linux2
       Type "help", "copyright", "credits" or "license" for more information.
-      >>> import sys
+      >>> agiza sys
       >>> sys._xoptions
       {'a': 'b', 'c': True}
 

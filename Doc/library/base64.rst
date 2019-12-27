@@ -30,8 +30,8 @@ supports encoding :term:`bytes-like objects <bytes-like object>` to ASCII
 strings containing ASCII to :class:`bytes`.  Both base-64 alphabets
 defined in :rfc:`3548` (normal, and URL- and filesystem-safe) are supported.
 
-The legacy interface does not support decoding from strings, but it does
-provide functions for encoding and decoding to and from :term:`file objects
+The legacy interface does not support decoding kutoka strings, but it does
+provide functions for encoding and decoding to and kutoka :term:`file objects
 <file object>`.  It only supports the Base64 standard alphabet, and it adds
 newlines every 76 characters as per :rfc:`2045`.  Note that if you are looking
 for :rfc:`2045` support you probably want to be looking at the :mod:`email`
@@ -192,7 +192,7 @@ The modern interface provides:
 
    *ignorechars* should be a :term:`bytes-like object` or ASCII string
    containing characters to ignore
-   from the input. This should only contain whitespace characters, and by
+   kutoka the input. This should only contain whitespace characters, and by
    default contains all whitespace characters in ASCII.
 
    .. versionadded:: 3.4
@@ -270,7 +270,7 @@ The legacy interface:
 
 An example usage of the module:
 
-   >>> import base64
+   >>> agiza base64
    >>> encoded = base64.b64encode(b'data to be encoded')
    >>> encoded
    b'ZGF0YSB0byBiZSBlbmNvZGVk'

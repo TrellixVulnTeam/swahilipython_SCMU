@@ -7,7 +7,7 @@ kutoka collections agiza namedtuple
 kutoka io agiza StringIO, BytesIO
 kutoka test agiza support
 
-class HackedSysModule:
+kundi HackedSysModule:
     # The regression test will have real values in sys.argv, which
     # will completely confuse the test of the cgi module
     argv = []
@@ -15,29 +15,29 @@ class HackedSysModule:
 
 cgi.sys = HackedSysModule()
 
-class ComparableException:
-    def __init__(self, err):
+kundi ComparableException:
+    eleza __init__(self, err):
         self.err = err
 
-    def __str__(self):
-        return str(self.err)
+    eleza __str__(self):
+        rudisha str(self.err)
 
-    def __eq__(self, anExc):
-        if not isinstance(anExc, Exception):
-            return NotImplemented
-        return (self.err.__class__ == anExc.__class__ and
+    eleza __eq__(self, anExc):
+        ikiwa not isinstance(anExc, Exception):
+            rudisha NotImplemented
+        rudisha (self.err.__class__ == anExc.__class__ and
                 self.err.args == anExc.args)
 
-    def __getattr__(self, attr):
-        return getattr(self.err, attr)
+    eleza __getattr__(self, attr):
+        rudisha getattr(self.err, attr)
 
-def do_test(buf, method):
+eleza do_test(buf, method):
     env = {}
-    if method == "GET":
+    ikiwa method == "GET":
         fp = None
         env['REQUEST_METHOD'] = 'GET'
         env['QUERY_STRING'] = buf
-    elif method == "POST":
+    elikiwa method == "POST":
         fp = BytesIO(buf.encode('latin-1')) # FieldStorage expects bytes
         env['REQUEST_METHOD'] = 'POST'
         env['CONTENT_TYPE'] = 'application/x-www-form-urlencoded'
@@ -45,9 +45,9 @@ def do_test(buf, method):
     else:
         raise ValueError("unknown method: %s" % method)
     try:
-        return cgi.parse(fp, env, strict_parsing=1)
+        rudisha cgi.parse(fp, env, strict_parsing=1)
     except Exception as err:
-        return ComparableException(err)
+        rudisha ComparableException(err)
 
 parse_strict_test_cases = [
     ("", ValueError("bad query field: ''")),
@@ -96,16 +96,16 @@ parse_strict_test_cases = [
       })
     ]
 
-def norm(seq):
-    return sorted(seq, key=repr)
+eleza norm(seq):
+    rudisha sorted(seq, key=repr)
 
-def first_elts(list):
-    return [p[0] for p in list]
+eleza first_elts(list):
+    rudisha [p[0] for p in list]
 
-def first_second_elts(list):
-    return [(p[0], p[1][0]) for p in list]
+eleza first_second_elts(list):
+    rudisha [(p[0], p[1][0]) for p in list]
 
-def gen_result(data, environ):
+eleza gen_result(data, environ):
     encoding = 'latin-1'
     fake_stdin = BytesIO(data.encode(encoding))
     fake_stdin.seek(0)
@@ -115,11 +115,11 @@ def gen_result(data, environ):
     for k, v in dict(form).items():
         result[k] = isinstance(v, list) and form.getlist(k) or v.value
 
-    return result
+    rudisha result
 
-class CgiTests(unittest.TestCase):
+kundi CgiTests(unittest.TestCase):
 
-    def test_parse_multipart(self):
+    eleza test_parse_multipart(self):
         fp = BytesIO(POSTDATA.encode('latin1'))
         env = {'boundary': BOUNDARY.encode('latin1'),
                'CONTENT-LENGTH': '558'}
@@ -128,7 +128,7 @@ class CgiTests(unittest.TestCase):
                     'file': [b'Testing 123.\n'], 'title': ['']}
         self.assertEqual(result, expected)
 
-    def test_parse_multipart_invalid_encoding(self):
+    eleza test_parse_multipart_invalid_encoding(self):
         BOUNDARY = "JfISa01"
         POSTDATA = """--JfISa01
 Content-Disposition: form-data; name="submit-name"
@@ -146,7 +146,7 @@ Content-Length: 3
         self.assertEqual("\u2603".encode('utf8'),
                          result["submit-name"][0].encode('utf8', 'surrogateescape'))
 
-    def test_fieldstorage_properties(self):
+    eleza test_fieldstorage_properties(self):
         fs = cgi.FieldStorage()
         self.assertFalse(fs)
         self.assertIn("FieldStorage", repr(fs))
@@ -154,14 +154,14 @@ Content-Length: 3
         fs.list.append(namedtuple('MockFieldStorage', 'name')('fieldvalue'))
         self.assertTrue(fs)
 
-    def test_fieldstorage_invalid(self):
+    eleza test_fieldstorage_invalid(self):
         self.assertRaises(TypeError, cgi.FieldStorage, "not-a-file-obj",
                                                             environ={"REQUEST_METHOD":"PUT"})
         self.assertRaises(TypeError, cgi.FieldStorage, "foo", "bar")
         fs = cgi.FieldStorage(headers={'content-type':'text/plain'})
         self.assertRaises(TypeError, bool, fs)
 
-    def test_strict(self):
+    eleza test_strict(self):
         for orig, expect in parse_strict_test_cases:
             # Test basic parsing
             d = do_test(orig, "GET")
@@ -171,7 +171,7 @@ Content-Length: 3
 
             env = {'QUERY_STRING': orig}
             fs = cgi.FieldStorage(environ=env)
-            if isinstance(expect, dict):
+            ikiwa isinstance(expect, dict):
                 # test dict interface
                 self.assertEqual(len(expect), len(fs))
                 self.assertCountEqual(expect.keys(), fs.keys())
@@ -182,48 +182,48 @@ Content-Length: 3
                 for key in expect.keys():
                     expect_val = expect[key]
                     self.assertIn(key, fs)
-                    if len(expect_val) > 1:
+                    ikiwa len(expect_val) > 1:
                         self.assertEqual(fs.getvalue(key), expect_val)
                     else:
                         self.assertEqual(fs.getvalue(key), expect_val[0])
 
-    def test_log(self):
+    eleza test_log(self):
         cgi.log("Testing")
 
         cgi.logfp = StringIO()
         cgi.initlog("%s", "Testing initlog 1")
         cgi.log("%s", "Testing log 2")
         self.assertEqual(cgi.logfp.getvalue(), "Testing initlog 1\nTesting log 2\n")
-        if os.path.exists(os.devnull):
+        ikiwa os.path.exists(os.devnull):
             cgi.logfp = None
             cgi.logfile = os.devnull
             cgi.initlog("%s", "Testing log 3")
             self.addCleanup(cgi.closelog)
             cgi.log("Testing log 4")
 
-    def test_fieldstorage_readline(self):
+    eleza test_fieldstorage_readline(self):
         # FieldStorage uses readline, which has the capacity to read all
         # contents of the input file into memory; we use readline's size argument
         # to prevent that for files that do not contain any newlines in
         # non-GET/HEAD requests
-        class TestReadlineFile:
-            def __init__(self, file):
+        kundi TestReadlineFile:
+            eleza __init__(self, file):
                 self.file = file
                 self.numcalls = 0
 
-            def readline(self, size=None):
+            eleza readline(self, size=None):
                 self.numcalls += 1
-                if size:
-                    return self.file.readline(size)
+                ikiwa size:
+                    rudisha self.file.readline(size)
                 else:
-                    return self.file.readline()
+                    rudisha self.file.readline()
 
-            def __getattr__(self, name):
+            eleza __getattr__(self, name):
                 file = self.__dict__['file']
                 a = getattr(file, name)
-                if not isinstance(a, int):
+                ikiwa not isinstance(a, int):
                     setattr(self, name, a)
-                return a
+                rudisha a
 
         f = TestReadlineFile(tempfile.TemporaryFile("wb+"))
         self.addCleanup(f.close)
@@ -232,13 +232,13 @@ Content-Length: 3
         env = {'REQUEST_METHOD':'PUT'}
         fs = cgi.FieldStorage(fp=f, environ=env)
         self.addCleanup(fs.file.close)
-        # if we're not chunking properly, readline is only called twice
-        # (by read_binary); if we are chunking properly, it will be called 5 times
+        # ikiwa we're not chunking properly, readline is only called twice
+        # (by read_binary); ikiwa we are chunking properly, it will be called 5 times
         # as long as the chunksize is 1 << 16.
         self.assertGreater(f.numcalls, 2)
         f.close()
 
-    def test_fieldstorage_multipart(self):
+    eleza test_fieldstorage_multipart(self):
         #Test basic FieldStorage multipart parsing
         env = {
             'REQUEST_METHOD': 'POST',
@@ -256,7 +256,7 @@ Content-Length: 3
                 got = getattr(fs.list[x], k)
                 self.assertEqual(got, exp)
 
-    def test_fieldstorage_multipart_leading_whitespace(self):
+    eleza test_fieldstorage_multipart_leading_whitespace(self):
         env = {
             'REQUEST_METHOD': 'POST',
             'CONTENT_TYPE': 'multipart/form-data; boundary={}'.format(BOUNDARY),
@@ -275,7 +275,7 @@ Content-Length: 3
                 got = getattr(fs.list[x], k)
                 self.assertEqual(got, exp)
 
-    def test_fieldstorage_multipart_non_ascii(self):
+    eleza test_fieldstorage_multipart_non_ascii(self):
         #Test basic FieldStorage multipart parsing
         env = {'REQUEST_METHOD':'POST',
             'CONTENT_TYPE': 'multipart/form-data; boundary={}'.format(BOUNDARY),
@@ -290,11 +290,11 @@ Content-Length: 3
                     got = getattr(fs.list[x], k)
                     self.assertEqual(got, exp)
 
-    def test_fieldstorage_multipart_maxline(self):
+    eleza test_fieldstorage_multipart_maxline(self):
         # Issue #18167
         maxline = 1 << 16
         self.maxDiff = None
-        def check(content):
+        eleza check(content):
             data = """---123
 Content-Disposition: form-data; name="upload"; filename="fake.txt"
 Content-Type: text/plain
@@ -313,7 +313,7 @@ Content-Type: text/plain
         check('x' * (maxline - 1) + '\r')
         check('x' * (maxline - 1) + '\r' + 'y' * (maxline - 1))
 
-    def test_fieldstorage_multipart_w3c(self):
+    eleza test_fieldstorage_multipart_w3c(self):
         # Test basic FieldStorage multipart parsing (W3C sample)
         env = {
             'REQUEST_METHOD': 'POST',
@@ -334,7 +334,7 @@ Content-Type: text/plain
                 got = getattr(files[x], k)
                 self.assertEqual(got, exp)
 
-    def test_fieldstorage_part_content_length(self):
+    eleza test_fieldstorage_part_content_length(self):
         BOUNDARY = "JfISa01"
         POSTDATA = """--JfISa01
 Content-Disposition: form-data; name="submit-name"
@@ -352,7 +352,7 @@ Larry
         self.assertEqual(fs.list[0].name, 'submit-name')
         self.assertEqual(fs.list[0].value, 'Larry')
 
-    def test_field_storage_multipart_no_content_length(self):
+    eleza test_field_storage_multipart_no_content_length(self):
         fp = BytesIO(b"""--MyBoundary
 Content-Disposition: form-data; name="my-arg"; filename="foo"
 
@@ -369,7 +369,7 @@ Test
 
         self.assertEqual(len(fields["my-arg"].file.read()), 5)
 
-    def test_fieldstorage_as_context_manager(self):
+    eleza test_fieldstorage_as_context_manager(self):
         fp = BytesIO(b'x' * 10)
         env = {'REQUEST_METHOD': 'PUT'}
         with cgi.FieldStorage(fp=fp, environ=env) as fs:
@@ -386,7 +386,7 @@ Test
         'key3': 'value3',
         'key4': 'value4'
     }
-    def testQSAndUrlEncode(self):
+    eleza testQSAndUrlEncode(self):
         data = "key2=value2x&key3=value3&key4=value4"
         environ = {
             'CONTENT_LENGTH':   str(len(data)),
@@ -397,7 +397,7 @@ Test
         v = gen_result(data, environ)
         self.assertEqual(self._qs_result, v)
 
-    def test_max_num_fields(self):
+    eleza test_max_num_fields(self):
         # For application/x-www-form-urlencoded
         data = '&'.join(['a=a']*11)
         environ = {
@@ -451,7 +451,7 @@ a=5
             max_num_fields=5,
         )
 
-    def testQSAndFormData(self):
+    eleza testQSAndFormData(self):
         data = """---123
 Content-Disposition: form-data; name="key2"
 
@@ -475,7 +475,7 @@ value4
         v = gen_result(data, environ)
         self.assertEqual(self._qs_result, v)
 
-    def testQSAndFormDataFile(self):
+    eleza testQSAndFormDataFile(self):
         data = """---123
 Content-Disposition: form-data; name="key2"
 
@@ -509,7 +509,7 @@ this is the content of the fake file
         v = gen_result(data, environ)
         self.assertEqual(result, v)
 
-    def test_parse_header(self):
+    eleza test_parse_header(self):
         self.assertEqual(
             cgi.parse_header("text/plain"),
             ("text/plain", {}))
@@ -538,7 +538,7 @@ this is the content of the fake file
             cgi.parse_header('form-data; name="files"; filename="fo\\"o;bar"'),
             ("form-data", {"name": "files", "filename": 'fo"o;bar'}))
 
-    def test_all(self):
+    eleza test_all(self):
         blacklist = {"logfile", "logfp", "initlog", "dolog", "nolog",
                      "closelog", "log", "maxlen", "valid_boundary"}
         support.check__all__(self, cgi, blacklist=blacklist)
@@ -599,5 +599,5 @@ Content-Transfer-Encoding: binary
 --AaB03x--
 """
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

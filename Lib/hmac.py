@@ -23,18 +23,18 @@ digest_size = None
 
 
 
-class HMAC:
+kundi HMAC:
     """RFC 2104 HMAC class.  Also complies with RFC 4231.
 
     This supports the API for Cryptographic Hash Functions (PEP 247).
     """
     blocksize = 64  # 512-bit HMAC; can be changed in subclasses.
 
-    def __init__(self, key, msg = None, digestmod = None):
+    eleza __init__(self, key, msg = None, digestmod = None):
         """Create a new HMAC object.
 
         key:       key for the keyed hash object.
-        msg:       Initial input for the hash, if provided.
+        msg:       Initial input for the hash, ikiwa provided.
         digestmod: Required.  A module supporting PEP 247.  *OR*
                    A hashlib constructor returning a new hash object.  *OR*
                    A hash name suitable for hashlib.new().
@@ -42,15 +42,15 @@ class HMAC:
         Note: key and msg must be a bytes or bytearray objects.
         """
 
-        if not isinstance(key, (bytes, bytearray)):
+        ikiwa not isinstance(key, (bytes, bytearray)):
             raise TypeError("key: expected bytes or bytearray, but got %r" % type(key).__name__)
 
-        if digestmod is None:
+        ikiwa digestmod is None:
             raise ValueError('`digestmod` is required.')
 
-        if callable(digestmod):
+        ikiwa callable(digestmod):
             self.digest_cons = digestmod
-        elif isinstance(digestmod, str):
+        elikiwa isinstance(digestmod, str):
             self.digest_cons = lambda d=b'': _hashlib.new(digestmod, d)
         else:
             self.digest_cons = lambda d=b'': digestmod.new(d)
@@ -59,9 +59,9 @@ class HMAC:
         self.inner = self.digest_cons()
         self.digest_size = self.inner.digest_size
 
-        if hasattr(self.inner, 'block_size'):
+        ikiwa hasattr(self.inner, 'block_size'):
             blocksize = self.inner.block_size
-            if blocksize < 16:
+            ikiwa blocksize < 16:
                 _warnings.warn('block_size of %d seems too small; using our '
                                'default of %d.' % (blocksize, self.blocksize),
                                RuntimeWarning, 2)
@@ -76,25 +76,25 @@ class HMAC:
         # effective block size as well as the public API attribute.
         self.block_size = blocksize
 
-        if len(key) > blocksize:
+        ikiwa len(key) > blocksize:
             key = self.digest_cons(key).digest()
 
         key = key.ljust(blocksize, b'\0')
         self.outer.update(key.translate(trans_5C))
         self.inner.update(key.translate(trans_36))
-        if msg is not None:
+        ikiwa msg is not None:
             self.update(msg)
 
     @property
-    def name(self):
-        return "hmac-" + self.inner.name
+    eleza name(self):
+        rudisha "hmac-" + self.inner.name
 
-    def update(self, msg):
+    eleza update(self, msg):
         """Update this hashing object with the string msg.
         """
         self.inner.update(msg)
 
-    def copy(self):
+    eleza copy(self):
         """Return a separate copy of this hashing object.
 
         An update to this copy won't affect the original object.
@@ -105,18 +105,18 @@ class HMAC:
         other.digest_size = self.digest_size
         other.inner = self.inner.copy()
         other.outer = self.outer.copy()
-        return other
+        rudisha other
 
-    def _current(self):
+    eleza _current(self):
         """Return a hash object for the current state.
 
         To be used only internally with digest() and hexdigest().
         """
         h = self.outer.copy()
         h.update(self.inner.digest())
-        return h
+        rudisha h
 
-    def digest(self):
+    eleza digest(self):
         """Return the hash value of this hashing object.
 
         This returns a string containing 8-bit data.  The object is
@@ -124,29 +124,29 @@ class HMAC:
         updating the object after calling this function.
         """
         h = self._current()
-        return h.digest()
+        rudisha h.digest()
 
-    def hexdigest(self):
+    eleza hexdigest(self):
         """Like digest(), but returns a string of hexadecimal digits instead.
         """
         h = self._current()
-        return h.hexdigest()
+        rudisha h.hexdigest()
 
-def new(key, msg = None, digestmod = None):
-    """Create a new hashing object and return it.
+eleza new(key, msg = None, digestmod = None):
+    """Create a new hashing object and rudisha it.
 
     key: The starting key for the hash.
-    msg: if available, will immediately be hashed into the object's starting
+    msg: ikiwa available, will immediately be hashed into the object's starting
     state.
 
     You can now feed arbitrary strings into the object using its update()
     method, and can ask for the hash value at any time by calling its digest()
     method.
     """
-    return HMAC(key, msg, digestmod)
+    rudisha HMAC(key, msg, digestmod)
 
 
-def digest(key, msg, digest):
+eleza digest(key, msg, digest):
     """Fast inline implementation of HMAC
 
     key:    key for the keyed hash object.
@@ -157,13 +157,13 @@ def digest(key, msg, digest):
 
     Note: key and msg must be a bytes or bytearray objects.
     """
-    if (_hashopenssl is not None and
+    ikiwa (_hashopenssl is not None and
             isinstance(digest, str) and digest in _openssl_md_meths):
-        return _hashopenssl.hmac_digest(key, msg, digest)
+        rudisha _hashopenssl.hmac_digest(key, msg, digest)
 
-    if callable(digest):
+    ikiwa callable(digest):
         digest_cons = digest
-    elif isinstance(digest, str):
+    elikiwa isinstance(digest, str):
         digest_cons = lambda d=b'': _hashlib.new(digest, d)
     else:
         digest_cons = lambda d=b'': digest.new(d)
@@ -171,11 +171,11 @@ def digest(key, msg, digest):
     inner = digest_cons()
     outer = digest_cons()
     blocksize = getattr(inner, 'block_size', 64)
-    if len(key) > blocksize:
+    ikiwa len(key) > blocksize:
         key = digest_cons(key).digest()
     key = key + b'\x00' * (blocksize - len(key))
     inner.update(key.translate(trans_36))
     outer.update(key.translate(trans_5C))
     inner.update(msg)
     outer.update(inner.digest())
-    return outer.digest()
+    rudisha outer.digest()

@@ -967,10 +967,10 @@ PyCoro_New:PyFrameObject*:frame:0:
 PyCoro_New:PyObject*:name:0:
 PyCoro_New:PyObject*:qualname:0:
 
-PyImport_AddModule:PyObject*::0:reference borrowed from sys.modules
+PyImport_AddModule:PyObject*::0:reference borrowed kutoka sys.modules
 PyImport_AddModule:const char*:name::
 
-PyImport_AddModuleObject:PyObject*::0:reference borrowed from sys.modules
+PyImport_AddModuleObject:PyObject*::0:reference borrowed kutoka sys.modules
 PyImport_AddModuleObject:PyObject*:name:0:
 
 PyImport_Cleanup:void:::
@@ -1022,20 +1022,20 @@ PyImport_ImportModuleEx:PyObject*::+1:
 PyImport_ImportModuleEx:const char*:name::
 PyImport_ImportModuleEx:PyObject*:globals:0:???
 PyImport_ImportModuleEx:PyObject*:locals:0:???
-PyImport_ImportModuleEx:PyObject*:fromlist:0:???
+PyImport_ImportModuleEx:PyObject*:kutokalist:0:???
 
 PyImport_ImportModuleLevel:PyObject*::+1:
 PyImport_ImportModuleLevel:const char*:name::
 PyImport_ImportModuleLevel:PyObject*:globals:0:???
 PyImport_ImportModuleLevel:PyObject*:locals:0:???
-PyImport_ImportModuleLevel:PyObject*:fromlist:0:???
+PyImport_ImportModuleLevel:PyObject*:kutokalist:0:???
 PyImport_ImportModuleLevel:int:level::
 
 PyImport_ImportModuleLevelObject:PyObject*::+1:
 PyImport_ImportModuleLevelObject:PyObject*:name:0:
 PyImport_ImportModuleLevelObject:PyObject*:globals:0:???
 PyImport_ImportModuleLevelObject:PyObject*:locals:0:???
-PyImport_ImportModuleLevelObject:PyObject*:fromlist:0:???
+PyImport_ImportModuleLevelObject:PyObject*:kutokalist:0:???
 PyImport_ImportModuleLevelObject:int:level::
 
 PyImport_ImportModuleNoBlock:PyObject*::+1:
@@ -2781,8 +2781,8 @@ PyUnicode_GetLength:PyObject*:unicode:0:
 PyUnicode_CopyCharacters:Py_ssize_t:::
 PyUnicode_CopyCharacters:PyObject*:to:0:
 PyUnicode_CopyCharacters:Py_ssize_t:to_start::
-PyUnicode_CopyCharacters:PyObject*:from:0:
-PyUnicode_CopyCharacters:Py_ssize_t:from_start::
+PyUnicode_CopyCharacters:PyObject*:kutoka:0:
+PyUnicode_CopyCharacters:Py_ssize_t:kutoka_start::
 PyUnicode_CopyCharacters:Py_ssize_t:how_many::
 
 PyUnicode_Fill:Py_ssize_t:::

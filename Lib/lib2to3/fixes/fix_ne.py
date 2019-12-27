@@ -9,15 +9,15 @@ kutoka ..pgen2 agiza token
 kutoka .. agiza fixer_base
 
 
-class FixNe(fixer_base.BaseFix):
+kundi FixNe(fixer_base.BaseFix):
     # This is so simple that we don't need the pattern compiler.
 
     _accept_type = token.NOTEQUAL
 
-    def match(self, node):
+    eleza match(self, node):
         # Override
-        return node.value == "<>"
+        rudisha node.value == "<>"
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         new = pytree.Leaf(token.NOTEQUAL, "!=", prefix=node.prefix)
-        return new
+        rudisha new

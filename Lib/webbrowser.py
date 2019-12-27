@@ -11,7 +11,7 @@ agiza threading
 
 __all__ = ["Error", "open", "open_new", "open_new_tab", "get", "register"]
 
-class Error(Exception):
+kundi Error(Exception):
     pass
 
 _lock = threading.RLock()
@@ -19,74 +19,74 @@ _browsers = {}                  # Dictionary of available browser controllers
 _tryorder = None                # Preference order of available browsers
 _os_preferred_browser = None    # The preferred browser
 
-def register(name, klass, instance=None, *, preferred=False):
+eleza register(name, klass, instance=None, *, preferred=False):
     """Register a browser connector."""
     with _lock:
-        if _tryorder is None:
+        ikiwa _tryorder is None:
             register_standard_browsers()
         _browsers[name.lower()] = [klass, instance]
 
         # Preferred browsers go to the front of the list.
         # Need to match to the default browser returned by xdg-settings, which
         # may be of the form e.g. "firefox.desktop".
-        if preferred or (_os_preferred_browser and name in _os_preferred_browser):
+        ikiwa preferred or (_os_preferred_browser and name in _os_preferred_browser):
             _tryorder.insert(0, name)
         else:
             _tryorder.append(name)
 
-def get(using=None):
+eleza get(using=None):
     """Return a browser launcher instance appropriate for the environment."""
-    if _tryorder is None:
+    ikiwa _tryorder is None:
         with _lock:
-            if _tryorder is None:
+            ikiwa _tryorder is None:
                 register_standard_browsers()
-    if using is not None:
+    ikiwa using is not None:
         alternatives = [using]
     else:
         alternatives = _tryorder
     for browser in alternatives:
-        if '%s' in browser:
+        ikiwa '%s' in browser:
             # User gave us a command line, split it into name and args
             browser = shlex.split(browser)
-            if browser[-1] == '&':
-                return BackgroundBrowser(browser[:-1])
+            ikiwa browser[-1] == '&':
+                rudisha BackgroundBrowser(browser[:-1])
             else:
-                return GenericBrowser(browser)
+                rudisha GenericBrowser(browser)
         else:
             # User gave us a browser name or path.
             try:
                 command = _browsers[browser.lower()]
             except KeyError:
                 command = _synthesize(browser)
-            if command[1] is not None:
-                return command[1]
-            elif command[0] is not None:
-                return command[0]()
+            ikiwa command[1] is not None:
+                rudisha command[1]
+            elikiwa command[0] is not None:
+                rudisha command[0]()
     raise Error("could not locate runnable browser")
 
 # Please note: the following definition hides a builtin function.
 # It is recommended one does "agiza webbrowser" and uses webbrowser.open(url)
 # instead of "kutoka webbrowser agiza *".
 
-def open(url, new=0, autoraise=True):
-    if _tryorder is None:
+eleza open(url, new=0, autoraise=True):
+    ikiwa _tryorder is None:
         with _lock:
-            if _tryorder is None:
+            ikiwa _tryorder is None:
                 register_standard_browsers()
     for name in _tryorder:
         browser = get(name)
-        if browser.open(url, new, autoraise):
-            return True
-    return False
+        ikiwa browser.open(url, new, autoraise):
+            rudisha True
+    rudisha False
 
-def open_new(url):
-    return open(url, 1)
+eleza open_new(url):
+    rudisha open(url, 1)
 
-def open_new_tab(url):
-    return open(url, 2)
+eleza open_new_tab(url):
+    rudisha open(url, 2)
 
 
-def _synthesize(browser, *, preferred=False):
+eleza _synthesize(browser, *, preferred=False):
     """Attempt to synthesize a controller base on existing controllers.
 
     This is useful to create a controller when a user specifies a path to
@@ -94,57 +94,57 @@ def _synthesize(browser, *, preferred=False):
     controller to operate using a specific installation of the desired
     browser in this way.
 
-    If we can't create a controller in this way, or if there is no
-    executable for the requested browser, return [None, None].
+    If we can't create a controller in this way, or ikiwa there is no
+    executable for the requested browser, rudisha [None, None].
 
     """
     cmd = browser.split()[0]
-    if not shutil.which(cmd):
-        return [None, None]
+    ikiwa not shutil.which(cmd):
+        rudisha [None, None]
     name = os.path.basename(cmd)
     try:
         command = _browsers[name.lower()]
     except KeyError:
-        return [None, None]
+        rudisha [None, None]
     # now attempt to clone to fit the new name:
     controller = command[1]
-    if controller and name.lower() == controller.basename:
+    ikiwa controller and name.lower() == controller.basename:
         agiza copy
         controller = copy.copy(controller)
         controller.name = browser
         controller.basename = os.path.basename(browser)
         register(browser, None, instance=controller, preferred=preferred)
-        return [None, controller]
-    return [None, None]
+        rudisha [None, controller]
+    rudisha [None, None]
 
 
 # General parent classes
 
-class BaseBrowser(object):
-    """Parent class for all browsers. Do not use directly."""
+kundi BaseBrowser(object):
+    """Parent kundi for all browsers. Do not use directly."""
 
     args = ['%s']
 
-    def __init__(self, name=""):
+    eleza __init__(self, name=""):
         self.name = name
         self.basename = name
 
-    def open(self, url, new=0, autoraise=True):
+    eleza open(self, url, new=0, autoraise=True):
         raise NotImplementedError
 
-    def open_new(self, url):
-        return self.open(url, 1)
+    eleza open_new(self, url):
+        rudisha self.open(url, 1)
 
-    def open_new_tab(self, url):
-        return self.open(url, 2)
+    eleza open_new_tab(self, url):
+        rudisha self.open(url, 2)
 
 
-class GenericBrowser(BaseBrowser):
+kundi GenericBrowser(BaseBrowser):
     """Class for all browsers started with a command
        and without remote functionality."""
 
-    def __init__(self, name):
-        if isinstance(name, str):
+    eleza __init__(self, name):
+        ikiwa isinstance(name, str):
             self.name = name
             self.args = ["%s"]
         else:
@@ -153,41 +153,41 @@ class GenericBrowser(BaseBrowser):
             self.args = name[1:]
         self.basename = os.path.basename(self.name)
 
-    def open(self, url, new=0, autoraise=True):
+    eleza open(self, url, new=0, autoraise=True):
         sys.audit("webbrowser.open", url)
         cmdline = [self.name] + [arg.replace("%s", url)
                                  for arg in self.args]
         try:
-            if sys.platform[:3] == 'win':
+            ikiwa sys.platform[:3] == 'win':
                 p = subprocess.Popen(cmdline)
             else:
                 p = subprocess.Popen(cmdline, close_fds=True)
-            return not p.wait()
+            rudisha not p.wait()
         except OSError:
-            return False
+            rudisha False
 
 
-class BackgroundBrowser(GenericBrowser):
+kundi BackgroundBrowser(GenericBrowser):
     """Class for all browsers which are to be started in the
        background."""
 
-    def open(self, url, new=0, autoraise=True):
+    eleza open(self, url, new=0, autoraise=True):
         cmdline = [self.name] + [arg.replace("%s", url)
                                  for arg in self.args]
         sys.audit("webbrowser.open", url)
         try:
-            if sys.platform[:3] == 'win':
+            ikiwa sys.platform[:3] == 'win':
                 p = subprocess.Popen(cmdline)
             else:
                 p = subprocess.Popen(cmdline, close_fds=True,
                                      start_new_session=True)
-            return (p.poll() is None)
+            rudisha (p.poll() is None)
         except OSError:
-            return False
+            rudisha False
 
 
-class UnixBrowser(BaseBrowser):
-    """Parent class for all Unix browsers with remote functionality."""
+kundi UnixBrowser(BaseBrowser):
+    """Parent kundi for all Unix browsers with remote functionality."""
 
     raise_opts = None
     background = False
@@ -203,17 +203,17 @@ class UnixBrowser(BaseBrowser):
     remote_action_newwin = None
     remote_action_newtab = None
 
-    def _invoke(self, args, remote, autoraise, url=None):
+    eleza _invoke(self, args, remote, autoraise, url=None):
         raise_opt = []
-        if remote and self.raise_opts:
+        ikiwa remote and self.raise_opts:
             # use autoraise argument only for remote invocation
             autoraise = int(autoraise)
             opt = self.raise_opts[autoraise]
-            if opt: raise_opt = [opt]
+            ikiwa opt: raise_opt = [opt]
 
         cmdline = [self.name] + raise_opt + args
 
-        if remote or self.background:
+        ikiwa remote or self.background:
             inout = subprocess.DEVNULL
         else:
             # for TTY browsers, we need stdin/out
@@ -221,31 +221,31 @@ class UnixBrowser(BaseBrowser):
         p = subprocess.Popen(cmdline, close_fds=True, stdin=inout,
                              stdout=(self.redirect_stdout and inout or None),
                              stderr=inout, start_new_session=True)
-        if remote:
+        ikiwa remote:
             # wait at most five seconds. If the subprocess is not finished, the
             # remote invocation has (hopefully) started a new instance.
             try:
                 rc = p.wait(5)
-                # if remote call failed, open() will try direct invocation
-                return not rc
+                # ikiwa remote call failed, open() will try direct invocation
+                rudisha not rc
             except subprocess.TimeoutExpired:
-                return True
-        elif self.background:
-            if p.poll() is None:
-                return True
+                rudisha True
+        elikiwa self.background:
+            ikiwa p.poll() is None:
+                rudisha True
             else:
-                return False
+                rudisha False
         else:
-            return not p.wait()
+            rudisha not p.wait()
 
-    def open(self, url, new=0, autoraise=True):
+    eleza open(self, url, new=0, autoraise=True):
         sys.audit("webbrowser.open", url)
-        if new == 0:
+        ikiwa new == 0:
             action = self.remote_action
-        elif new == 1:
+        elikiwa new == 1:
             action = self.remote_action_newwin
-        elif new == 2:
-            if self.remote_action_newtab is None:
+        elikiwa new == 2:
+            ikiwa self.remote_action_newtab is None:
                 action = self.remote_action_newwin
             else:
                 action = self.remote_action_newtab
@@ -255,18 +255,18 @@ class UnixBrowser(BaseBrowser):
 
         args = [arg.replace("%s", url).replace("%action", action)
                 for arg in self.remote_args]
-        args = [arg for arg in args if arg]
+        args = [arg for arg in args ikiwa arg]
         success = self._invoke(args, True, autoraise, url)
-        if not success:
+        ikiwa not success:
             # remote invocation failed, try straight way
             args = [arg.replace("%s", url) for arg in self.args]
-            return self._invoke(args, False, False)
+            rudisha self._invoke(args, False, False)
         else:
-            return True
+            rudisha True
 
 
-class Mozilla(UnixBrowser):
-    """Launcher class for Mozilla browsers."""
+kundi Mozilla(UnixBrowser):
+    """Launcher kundi for Mozilla browsers."""
 
     remote_args = ['%action', '%s']
     remote_action = ""
@@ -275,8 +275,8 @@ class Mozilla(UnixBrowser):
     background = True
 
 
-class Netscape(UnixBrowser):
-    """Launcher class for Netscape browser."""
+kundi Netscape(UnixBrowser):
+    """Launcher kundi for Netscape browser."""
 
     raise_opts = ["-noraise", "-raise"]
     remote_args = ['-remote', 'openURL(%s%action)']
@@ -286,8 +286,8 @@ class Netscape(UnixBrowser):
     background = True
 
 
-class Galeon(UnixBrowser):
-    """Launcher class for Galeon/Epiphany browsers."""
+kundi Galeon(UnixBrowser):
+    """Launcher kundi for Galeon/Epiphany browsers."""
 
     raise_opts = ["-noraise", ""]
     remote_args = ['%action', '%s']
@@ -296,8 +296,8 @@ class Galeon(UnixBrowser):
     background = True
 
 
-class Chrome(UnixBrowser):
-    "Launcher class for Google Chrome browser."
+kundi Chrome(UnixBrowser):
+    "Launcher kundi for Google Chrome browser."
 
     remote_args = ['%action', '%s']
     remote_action = ""
@@ -308,8 +308,8 @@ class Chrome(UnixBrowser):
 Chromium = Chrome
 
 
-class Opera(UnixBrowser):
-    "Launcher class for Opera browser."
+kundi Opera(UnixBrowser):
+    "Launcher kundi for Opera browser."
 
     remote_args = ['%action', '%s']
     remote_action = ""
@@ -318,8 +318,8 @@ class Opera(UnixBrowser):
     background = True
 
 
-class Elinks(UnixBrowser):
-    "Launcher class for Elinks browsers."
+kundi Elinks(UnixBrowser):
+    "Launcher kundi for Elinks browsers."
 
     remote_args = ['-remote', 'openURL(%s%action)']
     remote_action = ""
@@ -332,17 +332,17 @@ class Elinks(UnixBrowser):
     redirect_stdout = False
 
 
-class Konqueror(BaseBrowser):
+kundi Konqueror(BaseBrowser):
     """Controller for the KDE File Manager (kfm, or Konqueror).
 
     See the output of ``kfmclient --commands``
     for more information on the Konqueror remote-control interface.
     """
 
-    def open(self, url, new=0, autoraise=True):
+    eleza open(self, url, new=0, autoraise=True):
         sys.audit("webbrowser.open", url)
         # XXX Currently I know no way to prevent KFM kutoka opening a new win.
-        if new == 2:
+        ikiwa new == 2:
             action = "newTab"
         else:
             action = "openURL"
@@ -358,8 +358,8 @@ class Konqueror(BaseBrowser):
             pass
         else:
             p.wait()
-            # kfmclient's return code unfortunately has no meaning as it seems
-            return True
+            # kfmclient's rudisha code unfortunately has no meaning as it seems
+            rudisha True
 
         try:
             p = subprocess.Popen(["konqueror", "--silent", url],
@@ -370,9 +370,9 @@ class Konqueror(BaseBrowser):
             # fall through to next variant
             pass
         else:
-            if p.poll() is None:
+            ikiwa p.poll() is None:
                 # Should be running now.
-                return True
+                rudisha True
 
         try:
             p = subprocess.Popen(["kfm", "-d", url],
@@ -380,16 +380,16 @@ class Konqueror(BaseBrowser):
                                  stdout=devnull, stderr=devnull,
                                  start_new_session=True)
         except OSError:
-            return False
+            rudisha False
         else:
-            return (p.poll() is None)
+            rudisha (p.poll() is None)
 
 
-class Grail(BaseBrowser):
+kundi Grail(BaseBrowser):
     # There should be a way to maintain a connection to Grail, but the
     # Grail remote control protocol doesn't really allow that at this
     # point.  It probably never will!
-    def _find_grail_rc(self):
+    eleza _find_grail_rc(self):
         agiza glob
         agiza pwd
         agiza socket
@@ -399,8 +399,8 @@ class Grail(BaseBrowser):
         user = pwd.getpwuid(os.getuid())[0]
         filename = os.path.join(tempdir, user + "-*")
         maybes = glob.glob(filename)
-        if not maybes:
-            return None
+        ikiwa not maybes:
+            rudisha None
         s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         for fn in maybes:
             # need to PING each one until we find one that's live
@@ -413,23 +413,23 @@ class Grail(BaseBrowser):
                 except OSError:
                     pass
             else:
-                return s
+                rudisha s
 
-    def _remote(self, action):
+    eleza _remote(self, action):
         s = self._find_grail_rc()
-        if not s:
-            return 0
+        ikiwa not s:
+            rudisha 0
         s.send(action)
         s.close()
-        return 1
+        rudisha 1
 
-    def open(self, url, new=0, autoraise=True):
+    eleza open(self, url, new=0, autoraise=True):
         sys.audit("webbrowser.open", url)
-        if new:
+        ikiwa new:
             ok = self._remote("LOADNEW " + url)
         else:
             ok = self._remote("LOAD " + url)
-        return ok
+        rudisha ok
 
 
 #
@@ -439,76 +439,76 @@ class Grail(BaseBrowser):
 # These are the right tests because all these Unix browsers require either
 # a console terminal or an X display to run.
 
-def register_X_browsers():
+eleza register_X_browsers():
 
-    # use xdg-open if around
-    if shutil.which("xdg-open"):
+    # use xdg-open ikiwa around
+    ikiwa shutil.which("xdg-open"):
         register("xdg-open", None, BackgroundBrowser("xdg-open"))
 
     # The default GNOME3 browser
-    if "GNOME_DESKTOP_SESSION_ID" in os.environ and shutil.which("gvfs-open"):
+    ikiwa "GNOME_DESKTOP_SESSION_ID" in os.environ and shutil.which("gvfs-open"):
         register("gvfs-open", None, BackgroundBrowser("gvfs-open"))
 
     # The default GNOME browser
-    if "GNOME_DESKTOP_SESSION_ID" in os.environ and shutil.which("gnome-open"):
+    ikiwa "GNOME_DESKTOP_SESSION_ID" in os.environ and shutil.which("gnome-open"):
         register("gnome-open", None, BackgroundBrowser("gnome-open"))
 
     # The default KDE browser
-    if "KDE_FULL_SESSION" in os.environ and shutil.which("kfmclient"):
+    ikiwa "KDE_FULL_SESSION" in os.environ and shutil.which("kfmclient"):
         register("kfmclient", Konqueror, Konqueror("kfmclient"))
 
-    if shutil.which("x-www-browser"):
+    ikiwa shutil.which("x-www-browser"):
         register("x-www-browser", None, BackgroundBrowser("x-www-browser"))
 
     # The Mozilla browsers
     for browser in ("firefox", "iceweasel", "iceape", "seamonkey"):
-        if shutil.which(browser):
+        ikiwa shutil.which(browser):
             register(browser, None, Mozilla(browser))
 
     # The Netscape and old Mozilla browsers
     for browser in ("mozilla-firefox",
                     "mozilla-firebird", "firebird",
                     "mozilla", "netscape"):
-        if shutil.which(browser):
+        ikiwa shutil.which(browser):
             register(browser, None, Netscape(browser))
 
     # Konqueror/kfm, the KDE browser.
-    if shutil.which("kfm"):
+    ikiwa shutil.which("kfm"):
         register("kfm", Konqueror, Konqueror("kfm"))
-    elif shutil.which("konqueror"):
+    elikiwa shutil.which("konqueror"):
         register("konqueror", Konqueror, Konqueror("konqueror"))
 
     # Gnome's Galeon and Epiphany
     for browser in ("galeon", "epiphany"):
-        if shutil.which(browser):
+        ikiwa shutil.which(browser):
             register(browser, None, Galeon(browser))
 
     # Skipstone, another Gtk/Mozilla based browser
-    if shutil.which("skipstone"):
+    ikiwa shutil.which("skipstone"):
         register("skipstone", None, BackgroundBrowser("skipstone"))
 
     # Google Chrome/Chromium browsers
     for browser in ("google-chrome", "chrome", "chromium", "chromium-browser"):
-        if shutil.which(browser):
+        ikiwa shutil.which(browser):
             register(browser, None, Chrome(browser))
 
     # Opera, quite popular
-    if shutil.which("opera"):
+    ikiwa shutil.which("opera"):
         register("opera", None, Opera("opera"))
 
     # Next, Mosaic -- old but still in use.
-    if shutil.which("mosaic"):
+    ikiwa shutil.which("mosaic"):
         register("mosaic", None, BackgroundBrowser("mosaic"))
 
     # Grail, the Python browser. Does anybody still use it?
-    if shutil.which("grail"):
+    ikiwa shutil.which("grail"):
         register("grail", Grail, None)
 
-def register_standard_browsers():
+eleza register_standard_browsers():
     global _tryorder
     _tryorder = []
 
-    if sys.platform == 'darwin':
+    ikiwa sys.platform == 'darwin':
         register("MacOSX", None, MacOSXOSAScript('default'))
         register("chrome", None, MacOSXOSAScript('chrome'))
         register("firefox", None, MacOSXOSAScript('firefox'))
@@ -516,7 +516,7 @@ def register_standard_browsers():
         # OS X can use below Unix support (but we prefer using the OS X
         # specific stuff)
 
-    if sys.platform[:3] == "win":
+    ikiwa sys.platform[:3] == "win":
         # First try to use the default Windows browser
         register("windows-default", WindowsDefault)
 
@@ -525,11 +525,11 @@ def register_standard_browsers():
                                 "Internet Explorer\\IEXPLORE.EXE")
         for browser in ("firefox", "firebird", "seamonkey", "mozilla",
                         "netscape", "opera", iexplore):
-            if shutil.which(browser):
+            ikiwa shutil.which(browser):
                 register(browser, None, BackgroundBrowser(browser))
     else:
-        # Prefer X browsers if present
-        if os.environ.get("DISPLAY"):
+        # Prefer X browsers ikiwa present
+        ikiwa os.environ.get("DISPLAY"):
             try:
                 cmd = "xdg-settings get default-web-browser".split()
                 raw_result = subprocess.check_output(cmd, stderr=subprocess.DEVNULL)
@@ -543,89 +543,89 @@ def register_standard_browsers():
             register_X_browsers()
 
         # Also try console browsers
-        if os.environ.get("TERM"):
-            if shutil.which("www-browser"):
+        ikiwa os.environ.get("TERM"):
+            ikiwa shutil.which("www-browser"):
                 register("www-browser", None, GenericBrowser("www-browser"))
             # The Links/elinks browsers <http://artax.karlin.mff.cuni.cz/~mikulas/links/>
-            if shutil.which("links"):
+            ikiwa shutil.which("links"):
                 register("links", None, GenericBrowser("links"))
-            if shutil.which("elinks"):
+            ikiwa shutil.which("elinks"):
                 register("elinks", None, Elinks("elinks"))
             # The Lynx browser <http://lynx.isc.org/>, <http://lynx.browser.org/>
-            if shutil.which("lynx"):
+            ikiwa shutil.which("lynx"):
                 register("lynx", None, GenericBrowser("lynx"))
             # The w3m browser <http://w3m.sourceforge.net/>
-            if shutil.which("w3m"):
+            ikiwa shutil.which("w3m"):
                 register("w3m", None, GenericBrowser("w3m"))
 
     # OK, now that we know what the default preference orders for each
     # platform are, allow user to override them with the BROWSER variable.
-    if "BROWSER" in os.environ:
+    ikiwa "BROWSER" in os.environ:
         userchoices = os.environ["BROWSER"].split(os.pathsep)
         userchoices.reverse()
 
-        # Treat choices in same way as if passed into get() but do register
+        # Treat choices in same way as ikiwa passed into get() but do register
         # and prepend to _tryorder
         for cmdline in userchoices:
-            if cmdline != '':
+            ikiwa cmdline != '':
                 cmd = _synthesize(cmdline, preferred=True)
-                if cmd[1] is None:
+                ikiwa cmd[1] is None:
                     register(cmdline, None, GenericBrowser(cmdline), preferred=True)
 
-    # what to do if _tryorder is now empty?
+    # what to do ikiwa _tryorder is now empty?
 
 
 #
 # Platform support for Windows
 #
 
-if sys.platform[:3] == "win":
-    class WindowsDefault(BaseBrowser):
-        def open(self, url, new=0, autoraise=True):
+ikiwa sys.platform[:3] == "win":
+    kundi WindowsDefault(BaseBrowser):
+        eleza open(self, url, new=0, autoraise=True):
             sys.audit("webbrowser.open", url)
             try:
                 os.startfile(url)
             except OSError:
                 # [Error 22] No application is associated with the specified
                 # file for this operation: '<URL>'
-                return False
+                rudisha False
             else:
-                return True
+                rudisha True
 
 #
 # Platform support for MacOS
 #
 
-if sys.platform == 'darwin':
+ikiwa sys.platform == 'darwin':
     # Adapted kutoka patch submitted to SourceForge by Steven J. Burr
-    class MacOSX(BaseBrowser):
-        """Launcher class for Aqua browsers on Mac OS X
+    kundi MacOSX(BaseBrowser):
+        """Launcher kundi for Aqua browsers on Mac OS X
 
         Optionally specify a browser name on instantiation.  Note that this
-        will not work for Aqua browsers if the user has moved the application
+        will not work for Aqua browsers ikiwa the user has moved the application
         package after installation.
 
         If no browser is specified, the default browser, as specified in the
         Internet System Preferences panel, will be used.
         """
-        def __init__(self, name):
+        eleza __init__(self, name):
             self.name = name
 
-        def open(self, url, new=0, autoraise=True):
+        eleza open(self, url, new=0, autoraise=True):
             sys.audit("webbrowser.open", url)
             assert "'" not in url
             # hack for local urls
-            if not ':' in url:
+            ikiwa not ':' in url:
                 url = 'file:'+url
 
             # new must be 0 or 1
             new = int(bool(new))
-            if self.name == "default":
+            ikiwa self.name == "default":
                 # User called open, open_new or get without a browser parameter
                 script = 'open location "%s"' % url.replace('"', '%22') # opens in default browser
             else:
                 # User called get and chose a browser
-                if self.name == "OmniWeb":
+                ikiwa self.name == "OmniWeb":
                     toWindow = ""
                 else:
                     # Include toWindow parameter of OpenURL command for browsers
@@ -638,19 +638,19 @@ if sys.platform == 'darwin':
                             end tell''' % (self.name, cmd, toWindow)
             # Open pipe to AppleScript through osascript command
             osapipe = os.popen("osascript", "w")
-            if osapipe is None:
-                return False
+            ikiwa osapipe is None:
+                rudisha False
             # Write script to osascript's stdin
             osapipe.write(script)
             rc = osapipe.close()
-            return not rc
+            rudisha not rc
 
-    class MacOSXOSAScript(BaseBrowser):
-        def __init__(self, name):
+    kundi MacOSXOSAScript(BaseBrowser):
+        eleza __init__(self, name):
             self._name = name
 
-        def open(self, url, new=0, autoraise=True):
-            if self._name == 'default':
+        eleza open(self, url, new=0, autoraise=True):
+            ikiwa self._name == 'default':
                 script = 'open location "%s"' % url.replace('"', '%22') # opens in default browser
             else:
                 script = '''
@@ -661,15 +661,15 @@ if sys.platform == 'darwin':
                    '''%(self._name, url.replace('"', '%22'))
 
             osapipe = os.popen("osascript", "w")
-            if osapipe is None:
-                return False
+            ikiwa osapipe is None:
+                rudisha False
 
             osapipe.write(script)
             rc = osapipe.close()
-            return not rc
+            rudisha not rc
 
 
-def main():
+eleza main():
     agiza getopt
     usage = """Usage: %s [-n | -t] url
     -n: open new window
@@ -677,21 +677,21 @@ def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], 'ntd')
     except getopt.error as msg:
-        print(msg, file=sys.stderr)
-        print(usage, file=sys.stderr)
+        andika(msg, file=sys.stderr)
+        andika(usage, file=sys.stderr)
         sys.exit(1)
     new_win = 0
     for o, a in opts:
-        if o == '-n': new_win = 1
-        elif o == '-t': new_win = 2
-    if len(args) != 1:
-        print(usage, file=sys.stderr)
+        ikiwa o == '-n': new_win = 1
+        elikiwa o == '-t': new_win = 2
+    ikiwa len(args) != 1:
+        andika(usage, file=sys.stderr)
         sys.exit(1)
 
     url = args[0]
     open(url, new_win)
 
-    print("\a")
+    andika("\a")
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     main()

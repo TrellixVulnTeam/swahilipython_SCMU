@@ -43,7 +43,7 @@ Any object can be tested for truth value, for use in an :keyword:`if` or
 
 .. index:: single: true
 
-By default, an object is considered true unless its class defines either a
+By default, an object is considered true unless its kundi defines either a
 :meth:`__bool__` method that returns ``False`` or a :meth:`__len__` method that
 returns zero, when called with the object. [1]_  Here are most of the built-in
 objects considered false:
@@ -165,7 +165,7 @@ This table summarizes the comparison operations:
 
 Objects of different types, except different numeric types, never compare equal.
 The ``==`` operator is always defined but for some object types (for example,
-class objects) is equivalent to :keyword:`is`. The ``<``, ``<=``, ``>`` and ``>=``
+kundi objects) is equivalent to :keyword:`is`. The ``<``, ``<=``, ``>`` and ``>=``
 operators are only defined where they make sense; for example, they raise a
 :exc:`TypeError` exception when one of the arguments is a complex number.
 
@@ -177,11 +177,11 @@ operators are only defined where they make sense; for example, they raise a
    single: __gt__() (instance method)
    single: __ge__() (instance method)
 
-Non-identical instances of a class normally compare as non-equal unless the
-class defines the :meth:`__eq__` method.
+Non-identical instances of a kundi normally compare as non-equal unless the
+kundi defines the :meth:`__eq__` method.
 
-Instances of a class cannot be ordered with respect to other instances of the
-same class, or other types of object, unless the class defines enough of the
+Instances of a kundi cannot be ordered with respect to other instances of the
+same class, or other types of object, unless the kundi defines enough of the
 methods :meth:`__lt__`, :meth:`__le__`, :meth:`__gt__`, and :meth:`__ge__` (in
 general, :meth:`__lt__` and :meth:`__eq__` are sufficient, if you want the
 conventional meanings of the comparison operators).
@@ -219,7 +219,7 @@ about the precision and internal representation of floating point
 numbers for the machine on which your program is running is available
 in :data:`sys.float_info`.  Complex numbers have a real and imaginary
 part, which are each a floating point number.  To extract these parts
-from a complex number *z*, use ``z.real`` and ``z.imag``. (The standard
+kutoka a complex number *z*, use ``z.real`` and ``z.imag``. (The standard
 library includes the additional numeric types :mod:`fractions.Fraction`, for
 rationals, and :mod:`decimal.Decimal`, for floating-point numbers with
 user-definable precision.)
@@ -334,7 +334,7 @@ Notes:
       pair: numeric; conversions
       pair: C; language
 
-   Conversion from floating point to integer may round or truncate
+   Conversion kutoka floating point to integer may round or truncate
    as in C; see functions :func:`math.floor` and :func:`math.ceil` for
    well-defined conversions.
 
@@ -510,19 +510,19 @@ class`. In addition, it provides a few more methods:
 
     .. versionadded:: 3.2
 
-.. classmethod:: int.from_bytes(bytes, byteorder, \*, signed=False)
+.. classmethod:: int.kutoka_bytes(bytes, byteorder, \*, signed=False)
 
     Return the integer represented by the given array of bytes.
 
-        >>> int.from_bytes(b'\x00\x10', byteorder='big')
+        >>> int.kutoka_bytes(b'\x00\x10', byteorder='big')
         16
-        >>> int.from_bytes(b'\x00\x10', byteorder='little')
+        >>> int.kutoka_bytes(b'\x00\x10', byteorder='little')
         4096
-        >>> int.from_bytes(b'\xfc\x00', byteorder='big', signed=True)
+        >>> int.kutoka_bytes(b'\xfc\x00', byteorder='big', signed=True)
         -1024
-        >>> int.from_bytes(b'\xfc\x00', byteorder='big', signed=False)
+        >>> int.kutoka_bytes(b'\xfc\x00', byteorder='big', signed=False)
         64512
-        >>> int.from_bytes([255, 0, 0], byteorder='big')
+        >>> int.kutoka_bytes([255, 0, 0], byteorder='big')
         16711680
 
     The argument *bytes* must either be a :term:`bytes-like object` or an
@@ -573,8 +573,8 @@ class`. float also has the following additional methods.
       False
 
 Two methods support conversion to
-and from hexadecimal strings.  Since Python's floats are stored
-internally as binary numbers, converting a float to or from a
+and kutoka hexadecimal strings.  Since Python's floats are stored
+internally as binary numbers, converting a float to or kutoka a
 *decimal* string usually involves a small rounding error.  In
 contrast, hexadecimal strings allow exact representation and
 specification of floating-point numbers.  This can be useful when
@@ -589,7 +589,7 @@ debugging, and in numerical work.
    exponent.
 
 
-.. classmethod:: float.fromhex(s)
+.. classmethod:: float.kutokahex(s)
 
    Class method to return the float represented by a hexadecimal
    string *s*.  The string *s* may have leading and trailing
@@ -597,7 +597,7 @@ debugging, and in numerical work.
 
 
 Note that :meth:`float.hex` is an instance method, while
-:meth:`float.fromhex` is a class method.
+:meth:`float.kutokahex` is a kundi method.
 
 A hexadecimal string takes the form::
 
@@ -613,7 +613,7 @@ the syntax used in Java 1.5 onwards.  In particular, the output of
 :meth:`float.hex` is usable as a hexadecimal floating-point literal in
 C or Java code, and hexadecimal strings produced by C's ``%a`` format
 character or Java's ``Double.toHexString`` are accepted by
-:meth:`float.fromhex`.
+:meth:`float.kutokahex`.
 
 
 Note that the exponent is written in decimal rather than hexadecimal,
@@ -622,7 +622,7 @@ For example, the hexadecimal string ``0x3.a7p10`` represents the
 floating-point number ``(3 + 10./16 + 7./16**2) * 2.0**10``, or
 ``3740.0``::
 
-   >>> float.fromhex('0x3.a7p10')
+   >>> float.kutokahex('0x3.a7p10')
    3740.0
 
 
@@ -689,7 +689,7 @@ equivalent to the built-in hash, for computing the hash of a rational
 number, :class:`float`, or :class:`complex`::
 
 
-   import sys, math
+   agiza sys, math
 
    def hash_fraction(m, n):
        """Compute the hash of a rational number m / n.
@@ -782,7 +782,7 @@ methods, which together form the :dfn:`iterator protocol`:
 
 .. method:: iterator.__next__()
 
-   Return the next item from the container.  If there are no further items, raise
+   Return the next item kutoka the container.  If there are no further items, raise
    the :exc:`StopIteration` exception.  This method corresponds to the
    :c:member:`~PyTypeObject.tp_iternext` slot of the type structure for Python objects in the
    Python/C API.
@@ -874,9 +874,9 @@ operations have the same priority as the corresponding numeric operations. [3]_
 +--------------------------+--------------------------------+----------+
 | ``s[i]``                 | *i*\ th item of *s*, origin 0  | \(3)     |
 +--------------------------+--------------------------------+----------+
-| ``s[i:j]``               | slice of *s* from *i* to *j*   | (3)(4)   |
+| ``s[i:j]``               | slice of *s* kutoka *i* to *j*   | (3)(4)   |
 +--------------------------+--------------------------------+----------+
-| ``s[i:j:k]``             | slice of *s* from *i* to *j*   | (3)(5)   |
+| ``s[i:j:k]``             | slice of *s* kutoka *i* to *j*   | (3)(5)   |
 |                          | with step *k*                  |          |
 +--------------------------+--------------------------------+----------+
 | ``len(s)``               | length of *s*                  |          |
@@ -944,14 +944,14 @@ Notes:
    still ``0``.
 
 (4)
-   The slice of *s* from *i* to *j* is defined as the sequence of items with index
+   The slice of *s* kutoka *i* to *j* is defined as the sequence of items with index
    *k* such that ``i <= k < j``.  If *i* or *j* is greater than ``len(s)``, use
    ``len(s)``.  If *i* is omitted or ``None``, use ``0``.  If *j* is omitted or
    ``None``, use ``len(s)``.  If *i* is greater than or equal to *j*, the slice is
    empty.
 
 (5)
-   The slice of *s* from *i* to *j* with step *k* is defined as the sequence of
+   The slice of *s* kutoka *i* to *j* with step *k* is defined as the sequence of
    items with index  ``x = i + n*k`` such that ``0 <= n < (j-i)/k``.  In other words,
    the indices are ``i``, ``i+k``, ``i+2*k``, ``i+3*k`` and so on, stopping when
    *j* is reached (but never including *j*).  When *k* is positive,
@@ -978,7 +978,7 @@ Notes:
 
    * if concatenating :class:`tuple` objects, extend a :class:`list` instead
 
-   * for other types, investigate the relevant class documentation
+   * for other types, investigate the relevant kundi documentation
 
 
 (7)
@@ -1058,7 +1058,7 @@ accepts integers that meet the value restriction ``0 <= x <= 255``).
 | ``s[i] = x``                 | item *i* of *s* is replaced by |                     |
 |                              | *x*                            |                     |
 +------------------------------+--------------------------------+---------------------+
-| ``s[i:j] = t``               | slice of *s* from *i* to *j*   |                     |
+| ``s[i:j] = t``               | slice of *s* kutoka *i* to *j*   |                     |
 |                              | is replaced by the contents of |                     |
 |                              | the iterable *t*               |                     |
 +------------------------------+--------------------------------+---------------------+
@@ -1068,13 +1068,13 @@ accepts integers that meet the value restriction ``0 <= x <= 255``).
 |                              | are replaced by those of *t*   |                     |
 +------------------------------+--------------------------------+---------------------+
 | ``del s[i:j:k]``             | removes the elements of        |                     |
-|                              | ``s[i:j:k]`` from the list     |                     |
+|                              | ``s[i:j:k]`` kutoka the list     |                     |
 +------------------------------+--------------------------------+---------------------+
 | ``s.append(x)``              | appends *x* to the end of the  |                     |
 |                              | sequence (same as              |                     |
 |                              | ``s[len(s):len(s)] = [x]``)    |                     |
 +------------------------------+--------------------------------+---------------------+
-| ``s.clear()``                | removes all items from *s*     | \(5)                |
+| ``s.clear()``                | removes all items kutoka *s*     | \(5)                |
 |                              | (same as ``del s[:]``)         |                     |
 +------------------------------+--------------------------------+---------------------+
 | ``s.copy()``                 | creates a shallow copy of *s*  | \(5)                |
@@ -1093,9 +1093,9 @@ accepts integers that meet the value restriction ``0 <= x <= 255``).
 |                              | (same as ``s[i:i] = [x]``)     |                     |
 +------------------------------+--------------------------------+---------------------+
 | ``s.pop([i])``               | retrieves the item at *i* and  | \(2)                |
-|                              | also removes it from *s*       |                     |
+|                              | also removes it kutoka *s*       |                     |
 +------------------------------+--------------------------------+---------------------+
-| ``s.remove(x)``              | remove the first item from *s* | \(3)                |
+| ``s.remove(x)``              | remove the first item kutoka *s* | \(3)                |
 |                              | where ``s[i]`` is equal to *x* |                     |
 +------------------------------+--------------------------------+---------------------+
 | ``s.reverse()``              | reverses the items of *s* in   | \(4)                |
@@ -1184,7 +1184,7 @@ application).
       (:ref:`keyword-only arguments <keyword-only_parameter>`):
 
       *key* specifies a function of one argument that is used to extract a
-      comparison key from each list element (for example, ``key=str.lower``).
+      comparison key kutoka each list element (for example, ``key=str.lower``).
       The key corresponding to each item in the list is calculated once and
       then used for the entire sorting process. The default value of ``None``
       means that list items are sorted directly without calculating a separate
@@ -1290,7 +1290,7 @@ loops.
 
    A range object will be empty if ``r[0]`` does not meet the value
    constraint. Ranges do support negative indices, but these are interpreted
-   as indexing from the end of the sequence determined by the positive
+   as indexing kutoka the end of the sequence determined by the positive
    indices.
 
    Ranges containing absolute values larger than :data:`sys.maxsize` are
@@ -1417,7 +1417,7 @@ See :ref:`strings` for more about the various forms of string literal,
 including supported escape sequences, and the ``r`` ("raw") prefix that
 disables most escape sequence processing.
 
-Strings may also be created from other objects using the :class:`str`
+Strings may also be created kutoka other objects using the :class:`str`
 constructor.
 
 Since there is no separate "character" type, indexing a string produces
@@ -1427,7 +1427,7 @@ strings of length 1. That is, for a non-empty string *s*, ``s[0] == s[0:1]``.
    object: io.StringIO
 
 There is also no mutable string type, but :meth:`str.join` or
-:class:`io.StringIO` can be used to efficiently construct strings from
+:class:`io.StringIO` can be used to efficiently construct strings kutoka
 multiple fragments.
 
 .. versionchanged:: 3.3
@@ -1474,7 +1474,7 @@ multiple fragments.
       >>> str(b'Zoot!')
       "b'Zoot!'"
 
-   For more information on the ``str`` class and its methods, see
+   For more information on the ``str`` kundi and its methods, see
    :ref:`textseq` and the :ref:`string-methods` section below.  To output
    formatted strings, see the :ref:`f-strings` and :ref:`formatstrings`
    sections.  In addition, see the :ref:`stringservices` section.
@@ -1644,7 +1644,7 @@ expression support in the :mod:`re` module).
    used directly and not copied to a :class:`dict`.  This is useful
    if for example ``mapping`` is a dict subclass:
 
-   >>> class Default(dict):
+   >>> kundi Default(dict):
    ...     def __missing__(self, key):
    ...         return key
    ...
@@ -1674,7 +1674,7 @@ expression support in the :mod:`re` module).
    one character, false otherwise.  Alphabetic characters are those characters defined
    in the Unicode character database as "Letter", i.e., those with general category
    property being one of "Lm", "Lt", "Lu", "Ll", or "Lo".  Note that this is different
-   from the "Alphabetic" property defined in the Unicode Standard.
+   kutoka the "Alphabetic" property defined in the Unicode Standard.
 
 
 .. method:: str.isascii()
@@ -1717,7 +1717,7 @@ expression support in the :mod:`re` module).
    Example:
    ::
 
-      >>> from keyword import iskeyword
+      >>> kutoka keyword agiza iskeyword
 
       >>> 'hello'.isidentifier(), iskeyword('hello')
       True, False
@@ -1759,7 +1759,7 @@ expression support in the :mod:`re` module).
 
    A character is *whitespace* if in the Unicode character database
    (see :mod:`unicodedata`), either its general category is ``Zs``
-   ("Separator, space"), or its bidirectional class is one of ``WS``,
+   ("Separator, space"), or its bidirectional kundi is one of ``WS``,
    ``B``, or ``S``.
 
 
@@ -1876,7 +1876,7 @@ expression support in the :mod:`re` module).
    Return a list of the words in the string, using *sep* as the delimiter string.
    If *maxsplit* is given, at most *maxsplit* splits are done, the *rightmost*
    ones.  If *sep* is not specified or ``None``, any whitespace string is a
-   separator.  Except for splitting from the right, :meth:`rsplit` behaves like
+   separator.  Except for splitting kutoka the right, :meth:`rsplit` behaves like
    :meth:`split` which is described in detail below.
 
 
@@ -2021,7 +2021,7 @@ expression support in the :mod:`re` module).
       'example'
 
    The outermost leading and trailing *chars* argument values are stripped
-   from the string. Characters are removed from the leading end until
+   kutoka the string. Characters are removed kutoka the leading end until
    reaching a string character that is not contained in the set of
    characters in *chars*. A similar action takes place on the trailing end.
    For example::
@@ -2053,12 +2053,12 @@ expression support in the :mod:`re` module).
    it means that apostrophes in contractions and possessives form word
    boundaries, which may not be the desired result::
 
-        >>> "they're bill's friends from the UK".title()
+        >>> "they're bill's friends kutoka the UK".title()
         "They'Re Bill'S Friends From The Uk"
 
    A workaround for apostrophes can be constructed using regular expressions::
 
-        >>> import re
+        >>> agiza re
         >>> def titlecase(s):
         ...     return re.sub(r"[A-Za-z]+('[A-Za-z]+)?",
         ...                   lambda mo: mo.group(0).capitalize(),
@@ -2076,10 +2076,10 @@ expression support in the :mod:`re` module).
    :term:`sequence`.  When indexed by a Unicode ordinal (an integer), the
    table object can do any of the following: return a Unicode ordinal or a
    string, to map the character to one or more other characters; return
-   ``None``, to delete the character from the return string; or raise a
+   ``None``, to delete the character kutoka the return string; or raise a
    :exc:`LookupError` exception, to map the character to itself.
 
-   You can use :meth:`str.maketrans` to create a translation map from
+   You can use :meth:`str.maketrans` to create a translation map kutoka
    character-to-character mappings in different formats.
 
    See also the :mod:`codecs` module for a more flexible approach to custom
@@ -2167,11 +2167,11 @@ components, which must occur in this order:
    types.
 
 #. Minimum field width (optional).  If specified as an ``'*'`` (asterisk), the
-   actual width is read from the next element of the tuple in *values*, and the
+   actual width is read kutoka the next element of the tuple in *values*, and the
    object to convert comes after the minimum field width and optional precision.
 
 #. Precision (optional), given as a ``'.'`` (dot) followed by the precision.  If
-   specified as ``'*'`` (an asterisk), the actual precision is read from the next
+   specified as ``'*'`` (an asterisk), the actual precision is read kutoka the next
    element of the tuple in *values*, and the value to convert comes after the
    precision.
 
@@ -2182,7 +2182,7 @@ components, which must occur in this order:
 When the right argument is a dictionary (or other mapping type), then the
 formats in the string *must* include a parenthesised mapping key into that
 dictionary inserted immediately after the ``'%'`` character. The mapping key
-selects the value to be formatted from the mapping.  For example:
+selects the value to be formatted kutoka the mapping.  For example:
 
    >>> print('%(language)s has %(number)03d quote types.' %
    ...       {'language': "Python", "number": 2})
@@ -2381,19 +2381,19 @@ data and are closely related to string objects in a variety of other ways.
 
    Since 2 hexadecimal digits correspond precisely to a single byte, hexadecimal
    numbers are a commonly used format for describing binary data. Accordingly,
-   the bytes type has an additional class method to read data in that format:
+   the bytes type has an additional kundi method to read data in that format:
 
-   .. classmethod:: fromhex(string)
+   .. classmethod:: kutokahex(string)
 
-      This :class:`bytes` class method returns a bytes object, decoding the
+      This :class:`bytes` kundi method returns a bytes object, decoding the
       given string object.  The string must contain two hexadecimal digits per
       byte, with ASCII whitespace being ignored.
 
-      >>> bytes.fromhex('2Ef0 F1f2  ')
+      >>> bytes.kutokahex('2Ef0 F1f2  ')
       b'.\xf0\xf1\xf2'
 
       .. versionchanged:: 3.7
-         :meth:`bytes.fromhex` now skips all ASCII whitespace in the string,
+         :meth:`bytes.kutokahex` now skips all ASCII whitespace in the string,
          not just spaces.
 
    A reverse conversion function exists to transform a bytes object into its
@@ -2411,7 +2411,7 @@ data and are closely related to string objects in a variety of other ways.
       single character separator *sep* parameter to include in the output.
       By default between each byte.  A second optional *bytes_per_sep*
       parameter controls the spacing.  Positive values calculate the
-      separator position from the right, negative values from the left.
+      separator position kutoka the right, negative values kutoka the left.
 
       >>> value = b'\xf0\xf1\xf2'
       >>> value.hex('-')
@@ -2475,19 +2475,19 @@ objects.
 
    Since 2 hexadecimal digits correspond precisely to a single byte, hexadecimal
    numbers are a commonly used format for describing binary data. Accordingly,
-   the bytearray type has an additional class method to read data in that format:
+   the bytearray type has an additional kundi method to read data in that format:
 
-   .. classmethod:: fromhex(string)
+   .. classmethod:: kutokahex(string)
 
-      This :class:`bytearray` class method returns bytearray object, decoding
+      This :class:`bytearray` kundi method returns bytearray object, decoding
       the given string object.  The string must contain two hexadecimal digits
       per byte, with ASCII whitespace being ignored.
 
-      >>> bytearray.fromhex('2Ef0 F1f2  ')
+      >>> bytearray.kutokahex('2Ef0 F1f2  ')
       bytearray(b'.\xf0\xf1\xf2')
 
       .. versionchanged:: 3.7
-         :meth:`bytearray.fromhex` now skips all ASCII whitespace in the string,
+         :meth:`bytearray.kutokahex` now skips all ASCII whitespace in the string,
          not just spaces.
 
    A reverse conversion function exists to transform a bytearray object into its
@@ -2570,7 +2570,7 @@ arbitrary binary data.
 .. method:: bytes.decode(encoding="utf-8", errors="strict")
             bytearray.decode(encoding="utf-8", errors="strict")
 
-   Return a string decoded from the given bytes.  Default encoding is
+   Return a string decoded kutoka the given bytes.  Default encoding is
    ``'utf-8'``. *errors* may be given to set a different
    error handling scheme.  The default for *errors* is ``'strict'``, meaning
    that encoding errors raise a :exc:`UnicodeError`.  Other possible values are
@@ -2647,12 +2647,12 @@ arbitrary binary data.
    bytearray object providing this method.
 
 
-.. staticmethod:: bytes.maketrans(from, to)
-                  bytearray.maketrans(from, to)
+.. staticmethod:: bytes.maketrans(kutoka, to)
+                  bytearray.maketrans(kutoka, to)
 
    This static method returns a translation table usable for
-   :meth:`bytes.translate` that will map each character in *from* into the
-   character at the same position in *to*; *from* and *to* must both be
+   :meth:`bytes.translate` that will map each character in *kutoka* into the
+   character at the same position in *to*; *kutoka* and *to* must both be
    :term:`bytes-like objects <bytes-like object>` and have the same length.
 
    .. versionadded:: 3.1
@@ -2839,7 +2839,7 @@ produce new objects.
    as the delimiter string. If *maxsplit* is given, at most *maxsplit* splits
    are done, the *rightmost* ones.  If *sep* is not specified or ``None``,
    any subsequence consisting solely of ASCII whitespace is a separator.
-   Except for splitting from the right, :meth:`rsplit` behaves like
+   Except for splitting kutoka the right, :meth:`rsplit` behaves like
    :meth:`split` which is described in detail below.
 
 
@@ -3199,12 +3199,12 @@ place, and instead produce new objects.
    it means that apostrophes in contractions and possessives form word
    boundaries, which may not be the desired result::
 
-        >>> b"they're bill's friends from the UK".title()
+        >>> b"they're bill's friends kutoka the UK".title()
         b"They'Re Bill'S Friends From The Uk"
 
    A workaround for apostrophes can be constructed using regular expressions::
 
-        >>> import re
+        >>> agiza re
         >>> def titlecase(s):
         ...     return re.sub(rb"[A-Za-z]+('[A-Za-z]+)?",
         ...                   lambda mo: mo.group(0)[0:1].upper() +
@@ -3317,11 +3317,11 @@ components, which must occur in this order:
    types.
 
 #. Minimum field width (optional).  If specified as an ``'*'`` (asterisk), the
-   actual width is read from the next element of the tuple in *values*, and the
+   actual width is read kutoka the next element of the tuple in *values*, and the
    object to convert comes after the minimum field width and optional precision.
 
 #. Precision (optional), given as a ``'.'`` (dot) followed by the precision.  If
-   specified as ``'*'`` (an asterisk), the actual precision is read from the next
+   specified as ``'*'`` (an asterisk), the actual precision is read kutoka the next
    element of the tuple in *values*, and the value to convert comes after the
    precision.
 
@@ -3332,7 +3332,7 @@ components, which must occur in this order:
 When the right argument is a dictionary (or other mapping type), then the
 formats in the bytes object *must* include a parenthesised mapping key into that
 dictionary inserted immediately after the ``'%'`` character. The mapping key
-selects the value to be formatted from the mapping.  For example:
+selects the value to be formatted kutoka the mapping.  For example:
 
    >>> print(b'%(language)s has %(number)03d quote types.' %
    ...       {b'language': b"Python", b"number": 2})
@@ -3512,7 +3512,7 @@ copying.
     b'bce'
 
    If :class:`~memoryview.format` is one of the native format specifiers
-   from the :mod:`struct` module, indexing with an integer or a tuple of
+   kutoka the :mod:`struct` module, indexing with an integer or a tuple of
    integers is also supported and returns a single *element* with
    the correct type.  One-dimensional memoryviews can be indexed
    with an integer or a one-integer tuple.  Multi-dimensional memoryviews
@@ -3522,7 +3522,7 @@ copying.
 
    Here is an example with a non-byte format::
 
-      >>> import array
+      >>> agiza array
       >>> a = array.array('l', [-11111111, 22222222, -33333333, 44444444])
       >>> m = memoryview(a)
       >>> m[0]
@@ -3587,7 +3587,7 @@ copying.
       For the subset of :mod:`struct` format strings currently supported by
       :meth:`tolist`, ``v`` and ``w`` are equal if ``v.tolist() == w.tolist()``::
 
-         >>> import array
+         >>> agiza array
          >>> a = array.array('I', [1, 2, 3, 4, 5])
          >>> b = array.array('d', [1.0, 2.0, 3.0, 4.0, 5.0])
          >>> c = array.array('b', [5, 3, 1])
@@ -3607,8 +3607,8 @@ copying.
       then the objects will always compare as unequal (even if the format
       strings and buffer contents are identical)::
 
-         >>> from ctypes import BigEndianStructure, c_long
-         >>> class BEPoint(BigEndianStructure):
+         >>> kutoka ctypes agiza BigEndianStructure, c_long
+         >>> kundi BEPoint(BigEndianStructure):
          ...     _fields_ = [("x", c_long), ("y", c_long)]
          ...
          >>> point = BEPoint(100, 200)
@@ -3666,7 +3666,7 @@ copying.
 
          >>> memoryview(b'abc').tolist()
          [97, 98, 99]
-         >>> import array
+         >>> agiza array
          >>> a = array.array('d', [1.1, 2.2, 3.3])
          >>> m = memoryview(a)
          >>> m.tolist()
@@ -3744,7 +3744,7 @@ copying.
 
       Cast 1D/long to 1D/unsigned bytes::
 
-         >>> import array
+         >>> agiza array
          >>> a = array.array('l', [1,2,3])
          >>> x = memoryview(a)
          >>> x.format
@@ -3780,7 +3780,7 @@ copying.
 
       Cast 1D/bytes to 3D/ints to 1D/signed char::
 
-         >>> import struct
+         >>> agiza struct
          >>> buf = struct.pack("i"*12, *list(range(12)))
          >>> x = memoryview(buf)
          >>> y = x.cast('i', shape=[2,2,3])
@@ -3840,7 +3840,7 @@ copying.
       the amount of space in bytes that the array would use in a contiguous
       representation. It is not necessarily equal to ``len(m)``::
 
-         >>> import array
+         >>> agiza array
          >>> a = array.array('i', [1,2,3,4,5])
          >>> m = memoryview(a)
          >>> len(m)
@@ -3857,7 +3857,7 @@ copying.
 
       Multi-dimensional arrays::
 
-         >>> import struct
+         >>> agiza struct
          >>> buf = struct.pack("d"*12, *[1.5*x for x in range(12)])
          >>> x = memoryview(buf)
          >>> y = x.cast('d', shape=[3,4])
@@ -3877,7 +3877,7 @@ copying.
    .. attribute:: format
 
       A string containing the format (in :mod:`struct` module style) for each
-      element in the view. A memoryview can be created from exporters with
+      element in the view. A memoryview can be created kutoka exporters with
       arbitrary format strings, but some methods (e.g. :meth:`tolist`) are
       restricted to native single element formats.
 
@@ -3889,7 +3889,7 @@ copying.
 
       The size in bytes of each element of the memoryview::
 
-         >>> import array, struct
+         >>> agiza array, struct
          >>> m = memoryview(array.array('H', [32000, 32001, 32002]))
          >>> m.itemsize
          2
@@ -3950,7 +3950,7 @@ Set Types --- :class:`set`, :class:`frozenset`
 .. index:: object: set
 
 A :dfn:`set` object is an unordered collection of distinct :term:`hashable` objects.
-Common uses include membership testing, removing duplicates from a sequence, and
+Common uses include membership testing, removing duplicates kutoka a sequence, and
 computing mathematical operations such as intersection, union, difference, and
 symmetric difference.
 (For other containers see the built-in :class:`dict`, :class:`list`,
@@ -3978,7 +3978,7 @@ The constructors for both classes work the same:
 .. class:: set([iterable])
            frozenset([iterable])
 
-   Return a new set or frozenset object whose elements are taken from
+   Return a new set or frozenset object whose elements are taken kutoka
    *iterable*.  The elements of a set must be :term:`hashable`.  To
    represent sets of sets, the inner sets must be :class:`frozenset`
    objects.  If *iterable* is not specified, a new empty set is
@@ -4027,7 +4027,7 @@ The constructors for both classes work the same:
    .. method:: union(*others)
                set | other | ...
 
-      Return a new set with elements from the set and all others.
+      Return a new set with elements kutoka the set and all others.
 
    .. method:: intersection(*others)
                set & other & ...
@@ -4087,7 +4087,7 @@ The constructors for both classes work the same:
    .. method:: update(*others)
                set |= other | ...
 
-      Update the set, adding elements from all others.
+      Update the set, adding elements kutoka all others.
 
    .. method:: intersection_update(*others)
                set &= other & ...
@@ -4110,21 +4110,21 @@ The constructors for both classes work the same:
 
    .. method:: remove(elem)
 
-      Remove element *elem* from the set.  Raises :exc:`KeyError` if *elem* is
+      Remove element *elem* kutoka the set.  Raises :exc:`KeyError` if *elem* is
       not contained in the set.
 
    .. method:: discard(elem)
 
-      Remove element *elem* from the set if it is present.
+      Remove element *elem* kutoka the set if it is present.
 
    .. method:: pop()
 
-      Remove and return an arbitrary element from the set.  Raises
+      Remove and return an arbitrary element kutoka the set.  Raises
       :exc:`KeyError` if the set is empty.
 
    .. method:: clear()
 
-      Remove all elements from the set.
+      Remove all elements kutoka the set.
 
 
    Note, the non-operator versions of the :meth:`update`,
@@ -4134,7 +4134,7 @@ The constructors for both classes work the same:
 
    Note, the *elem* argument to the :meth:`__contains__`, :meth:`remove`, and
    :meth:`discard` methods may be a set.  To support searching for an equivalent
-   frozenset, a temporary one is created from *elem*.
+   frozenset, a temporary one is created kutoka *elem*.
 
 
 .. _typesmapping:
@@ -4173,7 +4173,7 @@ pairs within braces, for example: ``{'jack': 4098, 'sjoerd': 4127}`` or ``{4098:
            dict(mapping, **kwarg)
            dict(iterable, **kwarg)
 
-   Return a new dictionary initialized from an optional positional argument
+   Return a new dictionary initialized kutoka an optional positional argument
    and a possibly empty set of keyword arguments.
 
    If no positional argument is given, an empty dictionary is created.
@@ -4187,9 +4187,9 @@ pairs within braces, for example: ``{'jack': 4098, 'sjoerd': 4127}`` or ``{4098:
    dictionary.
 
    If keyword arguments are given, the keyword arguments and their values are
-   added to the dictionary created from the positional argument.  If a key
-   being added is already present, the value from the keyword argument
-   replaces the value from the positional argument.
+   added to the dictionary created kutoka the positional argument.  If a key
+   being added is already present, the value kutoka the keyword argument
+   replaces the value kutoka the positional argument.
 
    To illustrate, the following examples all return a dictionary equal to
    ``{"one": 1, "two": 2, "three": 3}``::
@@ -4224,7 +4224,7 @@ pairs within braces, for example: ``{'jack': 4098, 'sjoerd': 4127}`` or ``{4098:
 
       .. index:: __missing__()
 
-      If a subclass of dict defines a method :meth:`__missing__` and *key*
+      If a subkundi of dict defines a method :meth:`__missing__` and *key*
       is not present, the ``d[key]`` operation calls that method with the key *key*
       as argument.  The ``d[key]`` operation then returns or raises whatever is
       returned or raised by the ``__missing__(key)`` call.
@@ -4232,7 +4232,7 @@ pairs within braces, for example: ``{'jack': 4098, 'sjoerd': 4127}`` or ``{4098:
       :meth:`__missing__` is not defined, :exc:`KeyError` is raised.
       :meth:`__missing__` must be a method; it cannot be an instance variable::
 
-          >>> class Counter(dict):
+          >>> kundi Counter(dict):
           ...     def __missing__(self, key):
           ...         return 0
           >>> c = Counter()
@@ -4252,7 +4252,7 @@ pairs within braces, for example: ``{'jack': 4098, 'sjoerd': 4127}`` or ``{4098:
 
    .. describe:: del d[key]
 
-      Remove ``d[key]`` from *d*.  Raises a :exc:`KeyError` if *key* is not in the
+      Remove ``d[key]`` kutoka *d*.  Raises a :exc:`KeyError` if *key* is not in the
       map.
 
    .. describe:: key in d
@@ -4270,17 +4270,17 @@ pairs within braces, for example: ``{'jack': 4098, 'sjoerd': 4127}`` or ``{4098:
 
    .. method:: clear()
 
-      Remove all items from the dictionary.
+      Remove all items kutoka the dictionary.
 
    .. method:: copy()
 
       Return a shallow copy of the dictionary.
 
-   .. classmethod:: fromkeys(iterable[, value])
+   .. classmethod:: kutokakeys(iterable[, value])
 
-      Create a new dictionary with keys from *iterable* and values set to *value*.
+      Create a new dictionary with keys kutoka *iterable* and values set to *value*.
 
-      :meth:`fromkeys` is a class method that returns a new dictionary. *value*
+      :meth:`kutokakeys` is a kundi method that returns a new dictionary. *value*
       defaults to ``None``.  All of the values refer to just a single instance,
       so it generally doesn't make sense for *value* to be a mutable object
       such as an empty list.  To get distinct values, use a :ref:`dict
@@ -4310,7 +4310,7 @@ pairs within braces, for example: ``{'jack': 4098, 'sjoerd': 4127}`` or ``{4098:
 
    .. method:: popitem()
 
-      Remove and return a ``(key, value)`` pair from the dictionary.
+      Remove and return a ``(key, value)`` pair kutoka the dictionary.
       Pairs are returned in :abbr:`LIFO (last-in, first-out)` order.
 
       :meth:`popitem` is useful to destructively iterate over a dictionary, as
@@ -4334,7 +4334,7 @@ pairs within braces, for example: ``{'jack': 4098, 'sjoerd': 4127}`` or ``{4098:
 
    .. method:: update([other])
 
-      Update the dictionary with the key/value pairs from *other*, overwriting
+      Update the dictionary with the key/value pairs kutoka *other*, overwriting
       existing keys.  Return ``None``.
 
       :meth:`update` accepts either another dictionary object or an iterable of
@@ -4379,7 +4379,7 @@ pairs within braces, for example: ``{'jack': 4098, 'sjoerd': 4127}`` or ``{4098:
 
    .. versionchanged:: 3.7
       Dictionary order is guaranteed to be insertion order.  This behavior was
-      an implementation detail of CPython from 3.6.
+      an implementation detail of CPython kutoka 3.6.
 
    Dictionaries and dictionary views are reversible. ::
 
@@ -4453,7 +4453,7 @@ Keys views are set-like since their entries are unique and hashable.  If all
 values are hashable, so that ``(key, value)`` pairs are unique and hashable,
 then the items view is also set-like.  (Values views are not treated as set-like
 since the entries are generally not unique.)  For set-like views, all of the
-operations defined for the abstract base class :class:`collections.abc.Set` are
+operations defined for the abstract base kundi :class:`collections.abc.Set` are
 available (for example, ``==``, ``<``, or ``^``).
 
 An example of dictionary view usage::
@@ -4512,7 +4512,7 @@ before the statement body is executed and exited when the statement ends:
    this context manager.
 
    An example of a context manager that returns itself is a :term:`file object`.
-   File objects return themselves from __enter__() to allow :func:`open` to be
+   File objects return themselves kutoka __enter__() to allow :func:`open` to be
    used as the context expression in a :keyword:`with` statement.
 
    An example of a context manager that returns a related object is the one
@@ -4530,7 +4530,7 @@ before the statement body is executed and exited when the statement ends:
    body of the :keyword:`with` statement, the arguments contain the exception type,
    value and traceback information. Otherwise, all three arguments are ``None``.
 
-   Returning a true value from this method will cause the :keyword:`with` statement
+   Returning a true value kutoka this method will cause the :keyword:`with` statement
    to suppress the exception and continue execution with the statement immediately
    following the :keyword:`!with` statement. Otherwise the exception continues
    propagating after this method has finished executing. Exceptions that occur
@@ -4560,7 +4560,7 @@ Note that there is no specific slot for any of these methods in the type
 structure for Python objects in the Python/C API. Extension types wanting to
 define these methods must provide them as a normal Python accessible method.
 Compared to the overhead of setting up the runtime context, the overhead of a
-single class dictionary lookup is negligible.
+single kundi dictionary lookup is negligible.
 
 
 .. _typesother:
@@ -4593,7 +4593,7 @@ actually change the module's symbol table, but direct assignment to the
 not recommended.
 
 Modules built into the interpreter are written like this: ``<module 'sys'
-(built-in)>``.  If loaded from a file, they are written as ``<module 'os' from
+(built-in)>``.  If loaded kutoka a file, they are written as ``<module 'os' kutoka
 '/usr/local/lib/pythonX.Y/os.pyc'>``.
 
 
@@ -4632,7 +4632,7 @@ two flavors: built-in methods (such as :meth:`append` on lists) and class
 instance methods.  Built-in methods are described with the types that support
 them.
 
-If you access a method (a function defined in a class namespace) through an
+If you access a method (a function defined in a kundi namespace) through an
 instance, you get a special object: a :dfn:`bound method` (also called
 :dfn:`instance method`) object. When called, it will add the ``self`` argument
 to the argument list.  Bound methods have two special read-only attributes:
@@ -4648,7 +4648,7 @@ bound methods is disallowed.  Attempting to set an attribute on a method
 results in an :exc:`AttributeError` being raised.  In order to set a method
 attribute, you need to explicitly set it on the underlying function object::
 
-   >>> class C:
+   >>> kundi C:
    ...     def method(self):
    ...         pass
    ...
@@ -4676,10 +4676,10 @@ Code Objects
    single: __code__ (function object attribute)
 
 Code objects are used by the implementation to represent "pseudo-compiled"
-executable Python code such as a function body. They differ from function
+executable Python code such as a function body. They differ kutoka function
 objects because they don't contain a reference to their global execution
 environment.  Code objects are returned by the built-in :func:`compile` function
-and can be extracted from function objects through their :attr:`__code__`
+and can be extracted kutoka function objects through their :attr:`__code__`
 attribute. See also the :mod:`code` module.
 
 .. index::
@@ -4706,7 +4706,7 @@ by the built-in function :func:`type`.  There are no special operations on
 types.  The standard module :mod:`types` defines names for all standard built-in
 types.
 
-Types are written like this: ``<class 'int'>``.
+Types are written like this: ``<kundi 'int'>``.
 
 
 .. _bltin-null-object:
@@ -4740,7 +4740,7 @@ It is written as ``Ellipsis`` or ``...``.
 The NotImplemented Object
 -------------------------
 
-This object is returned from comparisons and binary operations when they are
+This object is returned kutoka comparisons and binary operations when they are
 asked to operate on types they don't support. See :ref:`comparisons` for more
 information.  There is exactly one ``NotImplemented`` object.
 ``type(NotImplemented)()`` produces the singleton instance.
@@ -4796,12 +4796,12 @@ types, where they are relevant.  Some of these are not reported by the
 
 .. attribute:: instance.__class__
 
-   The class to which a class instance belongs.
+   The kundi to which a kundi instance belongs.
 
 
 .. attribute:: class.__bases__
 
-   The tuple of base classes of a class object.
+   The tuple of base classes of a kundi object.
 
 
 .. attribute:: definition.__name__
@@ -4826,19 +4826,19 @@ types, where they are relevant.  Some of these are not reported by the
 
 .. method:: class.mro()
 
-   This method can be overridden by a metaclass to customize the method
-   resolution order for its instances.  It is called at class instantiation, and
+   This method can be overridden by a metakundi to customize the method
+   resolution order for its instances.  It is called at kundi instantiation, and
    its result is stored in :attr:`~class.__mro__`.
 
 
 .. method:: class.__subclasses__
 
-   Each class keeps a list of weak references to its immediate subclasses.  This
+   Each kundi keeps a list of weak references to its immediate subclasses.  This
    method returns a list of all those references still alive.
    Example::
 
       >>> int.__subclasses__()
-      [<class 'bool'>]
+      [<kundi 'bool'>]
 
 
 .. rubric:: Footnotes

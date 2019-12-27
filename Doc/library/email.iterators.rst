@@ -19,7 +19,7 @@ message object trees.
    This iterates over all the payloads in all the subparts of *msg*, returning the
    string payloads line-by-line.  It skips over all the subpart headers, and it
    skips over any subpart with a payload that isn't a Python string.  This is
-   somewhat equivalent to reading the flat text representation of the message from
+   somewhat equivalent to reading the flat text representation of the message kutoka
    a file using :meth:`~io.TextIOBase.readline`, skipping over all the
    intervening headers.
 
@@ -50,13 +50,13 @@ The following function has been added as a useful debugging tool.  It should
 
    .. testsetup::
 
-      import email
-      from email.iterators import _structure
+      agiza email
+      kutoka email.iterators agiza _structure
       somefile = open('../Lib/test/test_email/data/msg_02.txt')
 
    .. doctest::
 
-      >>> msg = email.message_from_file(somefile)
+      >>> msg = email.message_kutoka_file(somefile)
       >>> _structure(msg)
       multipart/mixed
           text/plain

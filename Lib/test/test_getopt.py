@@ -8,25 +8,25 @@ agiza getopt
 
 sentinel = object()
 
-class GetoptTests(unittest.TestCase):
-    def setUp(self):
+kundi GetoptTests(unittest.TestCase):
+    eleza setUp(self):
         self.env = EnvironmentVarGuard()
-        if "POSIXLY_CORRECT" in self.env:
+        ikiwa "POSIXLY_CORRECT" in self.env:
             del self.env["POSIXLY_CORRECT"]
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.env.__exit__()
         del self.env
 
-    def assertError(self, *args, **kwargs):
+    eleza assertError(self, *args, **kwargs):
         self.assertRaises(getopt.GetoptError, *args, **kwargs)
 
-    def test_short_has_arg(self):
+    eleza test_short_has_arg(self):
         self.assertTrue(getopt.short_has_arg('a', 'a:'))
         self.assertFalse(getopt.short_has_arg('a', 'a'))
         self.assertError(getopt.short_has_arg, 'a', 'b')
 
-    def test_long_has_args(self):
+    eleza test_long_has_args(self):
         has_arg, option = getopt.long_has_args('abc', ['abc='])
         self.assertTrue(has_arg)
         self.assertEqual(option, 'abc')
@@ -43,7 +43,7 @@ class GetoptTests(unittest.TestCase):
         self.assertError(getopt.long_has_args, 'abc', [])
         self.assertError(getopt.long_has_args, 'abc', ['abcd','abcde'])
 
-    def test_do_shorts(self):
+    eleza test_do_shorts(self):
         opts, args = getopt.do_shorts([], 'a', 'a', [])
         self.assertEqual(opts, [('-a', '')])
         self.assertEqual(args, [])
@@ -67,7 +67,7 @@ class GetoptTests(unittest.TestCase):
         self.assertError(getopt.do_shorts, [], 'a1', 'a', [])
         self.assertError(getopt.do_shorts, [], 'a', 'a:', [])
 
-    def test_do_longs(self):
+    eleza test_do_longs(self):
         opts, args = getopt.do_longs([], 'abc', ['abc'], [])
         self.assertEqual(opts, [('--abc', '')])
         self.assertEqual(args, [])
@@ -94,7 +94,7 @@ class GetoptTests(unittest.TestCase):
         self.assertError(getopt.do_longs, [], 'abc=1', ['abc'], [])
         self.assertError(getopt.do_longs, [], 'abc', ['abc='], [])
 
-    def test_getopt(self):
+    eleza test_getopt(self):
         # note: the empty string between '-a' and '--beta' is significant:
         # it simulates an empty string option argument ('-a ""') on the
         # command line.
@@ -111,7 +111,7 @@ class GetoptTests(unittest.TestCase):
 
         self.assertError(getopt.getopt, cmdline, 'a:b', ['alpha', 'beta'])
 
-    def test_gnu_getopt(self):
+    eleza test_gnu_getopt(self):
         # Test handling of GNU style scanning mode.
         cmdline = ['-a', 'arg1', '-b', '1', '--alpha', '--beta=2']
 
@@ -137,7 +137,7 @@ class GetoptTests(unittest.TestCase):
         self.assertEqual(opts, [('-a', '')])
         self.assertEqual(args, ['arg1', '-b', '1', '--alpha', '--beta=2'])
 
-    def test_libref_examples(self):
+    eleza test_libref_examples(self):
         s = """
         Examples kutoka the Library Reference:  Doc/lib/libgetopt.tex
 
@@ -157,7 +157,7 @@ class GetoptTests(unittest.TestCase):
         Using long option names is equally easy:
 
 
-        >>> s = '--condition=foo --testing --output-file abc.def -x a1 a2'
+        >>> s = '--condition=foo --testing --output-file abc.eleza -x a1 a2'
         >>> args = s.split()
         >>> args
         ['--condition=foo', '--testing', '--output-file', 'abc.def', '-x', 'a1', 'a2']
@@ -173,12 +173,12 @@ class GetoptTests(unittest.TestCase):
         m = types.ModuleType("libreftest", s)
         run_doctest(m, verbose)
 
-    def test_issue4629(self):
+    eleza test_issue4629(self):
         longopts, shortopts = getopt.getopt(['--help='], '', ['help='])
         self.assertEqual(longopts, [('--help', '')])
         longopts, shortopts = getopt.getopt(['--help=x'], '', ['help='])
         self.assertEqual(longopts, [('--help', 'x')])
         self.assertRaises(getopt.GetoptError, getopt.getopt, ['--help='], '', ['help'])
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

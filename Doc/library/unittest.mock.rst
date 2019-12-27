@@ -18,14 +18,14 @@
 replace parts of your system under test with mock objects and make assertions
 about how they have been used.
 
-:mod:`unittest.mock` provides a core :class:`Mock` class removing the need to
+:mod:`unittest.mock` provides a core :class:`Mock` kundi removing the need to
 create a host of stubs throughout your test suite. After performing an
 action, you can make assertions about which methods / attributes were used
 and arguments they were called with. You can also specify return values and
 set needed attributes in the normal way.
 
 Additionally, mock provides a :func:`patch` decorator that handles patching
-module and class level attributes within the scope of a test, along with
+module and kundi level attributes within the scope of a test, along with
 :const:`sentinel` for creating unique objects. See the `quick guide`_ for
 some examples of how to use :class:`Mock`, :class:`MagicMock` and
 :func:`patch`.
@@ -43,11 +43,11 @@ Quick Guide
 
 .. testsetup::
 
-    class ProductionClass:
+    kundi ProductionClass:
         def method(self, a, b, c):
             pass
 
-    class SomeClass:
+    kundi SomeClass:
         @staticmethod
         def static_method(args):
             return args
@@ -62,7 +62,7 @@ methods as you access them and store details of how they have been used. You
 can configure them, to specify return values or limit what attributes are
 available, and then make assertions about how they have been used:
 
-    >>> from unittest.mock import MagicMock
+    >>> kutoka unittest.mock agiza MagicMock
     >>> thing = ProductionClass()
     >>> thing.method = MagicMock(return_value=3)
     >>> thing.method(3, 4, 5, key='value')
@@ -91,14 +91,14 @@ exception when a mock is called:
 
 Mock has many other ways you can configure it and control its behaviour. For
 example the *spec* argument configures the mock to take its specification
-from another object. Attempting to access attributes or methods on the mock
+kutoka another object. Attempting to access attributes or methods on the mock
 that don't exist on the spec will fail with an :exc:`AttributeError`.
 
 The :func:`patch` decorator / context manager makes it easy to mock classes or
 objects in a module under test. The object you specify will be replaced with a
 mock (or other object) during the test and restored when the test ends::
 
-    >>> from unittest.mock import patch
+    >>> kutoka unittest.mock agiza patch
     >>> @patch('module.ClassName2')
     ... @patch('module.ClassName1')
     ... def test(MockClass1, MockClass2):
@@ -115,7 +115,7 @@ mock (or other object) during the test and restored when the test ends::
 
    When you nest patch decorators the mocks are passed in to the decorated
    function in the same order they applied (the normal *Python* order that
-   decorators are applied). This means from the bottom up, so in the example
+   decorators are applied). This means kutoka the bottom up, so in the example
    above the mock for ``module.ClassName1`` is passed in first.
 
    With :func:`patch` it matters that you patch objects in the namespace where they
@@ -154,7 +154,7 @@ allows you to do things like:
     >>> mock.__str__.assert_called_with()
 
 Mock allows you to assign functions (or other Mock instances) to magic methods
-and they will be called appropriately. The :class:`MagicMock` class is just a Mock
+and they will be called appropriately. The :class:`MagicMock` kundi is just a Mock
 variant that has all of the magic methods pre-created for you (well, all the
 useful ones anyway).
 
@@ -177,7 +177,7 @@ signature as the real object.
 This ensures that your mocks will fail in the same way as your production
 code if they are used incorrectly:
 
-   >>> from unittest.mock import create_autospec
+   >>> kutoka unittest.mock agiza create_autospec
    >>> def function(a, b, c):
    ...     pass
    ...
@@ -201,12 +201,12 @@ The Mock Class
 
 .. testsetup::
 
-    import asyncio
-    import inspect
-    import unittest
-    from unittest.mock import sentinel, DEFAULT, ANY
-    from unittest.mock import patch, call, Mock, MagicMock, PropertyMock, AsyncMock
-    from unittest.mock import mock_open
+    agiza asyncio
+    agiza inspect
+    agiza unittest
+    kutoka unittest.mock agiza sentinel, DEFAULT, ANY
+    kutoka unittest.mock agiza patch, call, Mock, MagicMock, PropertyMock, AsyncMock
+    kutoka unittest.mock agiza mock_open
 
 :class:`Mock` is a flexible mock object intended to replace the use of stubs and
 test doubles throughout your code. Mocks are callable and create attributes as
@@ -214,14 +214,14 @@ new mocks when you access them [#]_. Accessing the same attribute will always
 return the same mock. Mocks record how you use them, allowing you to make
 assertions about what your code has done to them.
 
-:class:`MagicMock` is a subclass of :class:`Mock` with all the magic methods
+:class:`MagicMock` is a subkundi of :class:`Mock` with all the magic methods
 pre-created and ready to use. There are also non-callable variants, useful
 when you are mocking out objects that aren't callable:
 :class:`NonCallableMock` and :class:`NonCallableMagicMock`
 
 The :func:`patch` decorators makes it easy to temporarily replace classes
 in a particular module with a :class:`Mock` object. By default :func:`patch` will create
-a :class:`MagicMock` for you. You can specify an alternative class of :class:`Mock` using
+a :class:`MagicMock` for you. You can specify an alternative kundi of :class:`Mock` using
 the *new_callable* argument to :func:`patch`.
 
 
@@ -231,13 +231,13 @@ the *new_callable* argument to :func:`patch`.
     that specify the behaviour of the Mock object:
 
     * *spec*: This can be either a list of strings or an existing object (a
-      class or instance) that acts as the specification for the mock object. If
+      kundi or instance) that acts as the specification for the mock object. If
       you pass in an object then a list of strings is formed by calling dir on
       the object (excluding unsupported magic attributes and methods).
       Accessing any attribute not in this list will raise an :exc:`AttributeError`.
 
       If *spec* is an object (rather than a list of strings) then
-      :attr:`~instance.__class__` returns the class of the spec object. This
+      :attr:`~instance.__class__` returns the kundi of the spec object. This
       allows mocks to pass :func:`isinstance` tests.
 
     * *spec_set*: A stricter variant of *spec*. If used, attempting to *set*
@@ -250,11 +250,11 @@ the *new_callable* argument to :func:`patch`.
       arguments as the mock, and unless it returns :data:`DEFAULT`, the return
       value of this function is used as the return value.
 
-      Alternatively *side_effect* can be an exception class or instance. In
+      Alternatively *side_effect* can be an exception kundi or instance. In
       this case the exception will be raised when the mock is called.
 
       If *side_effect* is an iterable then each call to the mock will return
-      the next value from the iterable.
+      the next value kutoka the iterable.
 
       A *side_effect* can be cleared by setting it to ``None``.
 
@@ -423,7 +423,7 @@ the *new_callable* argument to :func:`patch`.
 
         Add a spec to a mock. *spec* can either be an object or a
         list of strings. Only attributes on the *spec* can be fetched as
-        attributes from the mock.
+        attributes kutoka the mock.
 
         If *spec_set* is true then only attributes on the spec can be set.
 
@@ -544,17 +544,17 @@ the *new_callable* argument to :func:`patch`.
     .. attribute:: side_effect
 
         This can either be a function to be called when the mock is called,
-        an iterable or an exception (class or instance) to be raised.
+        an iterable or an exception (kundi or instance) to be raised.
 
         If you pass in a function it will be called with same arguments as the
         mock and unless the function returns the :data:`DEFAULT` singleton the
         call to the mock will then return whatever the function returns. If the
         function returns :data:`DEFAULT` then the mock will return its normal
-        value (from the :attr:`return_value`).
+        value (kutoka the :attr:`return_value`).
 
         If you pass in an iterable, it is used to retrieve an iterator which
         must yield a value on every call.  This value can either be an exception
-        instance to be raised, or a value to be returned from the call to the
+        instance to be raised, or a value to be returned kutoka the call to the
         mock (:data:`DEFAULT` handling is identical to the function case).
 
         An example of a mock that raises an exception (to test exception
@@ -752,7 +752,7 @@ the *new_callable* argument to :func:`patch`.
     meaning of :class:`Mock`, with the exception of *return_value* and *side_effect*
     which have no meaning on a non-callable mock.
 
-Mock objects that use a class or an instance as a :attr:`spec` or
+Mock objects that use a kundi or an instance as a :attr:`spec` or
 :attr:`spec_set` are able to pass :func:`isinstance` tests:
 
     >>> mock = Mock(spec=SomeClass)
@@ -819,10 +819,10 @@ apply to method calls on the mock object.
    :class:`PropertyMock` provides :meth:`__get__` and :meth:`__set__` methods
    so you can specify a return value when it is fetched.
 
-   Fetching a :class:`PropertyMock` instance from an object calls the mock, with
+   Fetching a :class:`PropertyMock` instance kutoka an object calls the mock, with
    no args. Setting it calls the mock with the value being set. ::
 
-        >>> class Foo:
+        >>> kundi Foo:
         ...     @property
         ...     def foo(self):
         ...         return 'something'
@@ -892,13 +892,13 @@ object::
 
 
   Setting the *spec* of a :class:`Mock`, :class:`MagicMock`, or :class:`AsyncMock`
-  to a class with asynchronous and synchronous functions will automatically
+  to a kundi with asynchronous and synchronous functions will automatically
   detect the synchronous functions and set them as :class:`MagicMock` (if the
   parent mock is :class:`AsyncMock` or :class:`MagicMock`) or :class:`Mock` (if
   the parent mock is :class:`Mock`). All asynchronous functions will be
   :class:`AsyncMock`.
 
-  >>> class ExampleClass:
+  >>> kundi ExampleClass:
   ...     def sync_foo():
   ...         pass
   ...     async def async_foo():
@@ -919,7 +919,7 @@ object::
   .. method:: assert_awaited()
 
       Assert that the mock was awaited at least once. Note that this is separate
-      from the object having been called, the ``await`` keyword must be used:
+      kutoka the object having been called, the ``await`` keyword must be used:
 
           >>> mock = AsyncMock()
           >>> async def main(coroutine_mock):
@@ -1110,7 +1110,7 @@ been recorded, so if :attr:`side_effect` raises an exception the call is still
 recorded.
 
 The simplest way to make a mock raise an exception when called is to make
-:attr:`~Mock.side_effect` an exception class or instance:
+:attr:`~Mock.side_effect` an exception kundi or instance:
 
         >>> m = MagicMock(side_effect=IndexError)
         >>> m(1, 2, 3)
@@ -1145,7 +1145,7 @@ call dynamically, based on the input:
 
 If you want the mock to still return the default return value (a new mock), or
 any set return value, then there are two ways of doing this. Either return
-:attr:`mock.return_value` from inside :attr:`side_effect`, or return :data:`DEFAULT`:
+:attr:`mock.return_value` kutoka inside :attr:`side_effect`, or return :data:`DEFAULT`:
 
         >>> m = MagicMock()
         >>> def side_effect(*args, **kwargs):
@@ -1177,7 +1177,7 @@ To remove a :attr:`side_effect`, and return to the default behaviour, set the
         6
 
 The :attr:`side_effect` can also be any iterable object. Repeated calls to the mock
-will return values from the iterable (until the iterable is exhausted and
+will return values kutoka the iterable (until the iterable is exhausted and
 a :exc:`StopIteration` is raised):
 
         >>> m = MagicMock(side_effect=[1, 2, 3])
@@ -1318,7 +1318,7 @@ The patchers
 The patch decorators are used for patching objects only within the scope of
 the function they decorate. They automatically handle the unpatching for you,
 even if exceptions are raised. All of these functions can also be used in with
-statements or as class decorators.
+statements or as kundi decorators.
 
 
 patch
@@ -1331,7 +1331,7 @@ patch
 
 .. function:: patch(target, new=DEFAULT, spec=None, create=False, spec_set=None, autospec=None, new_callable=None, **kwargs)
 
-    :func:`patch` acts as a function decorator, class decorator or a context
+    :func:`patch` acts as a function decorator, kundi decorator or a context
     manager. Inside the body of the function or with statement, the *target*
     is patched with a *new* object. When the function/with statement exits
     the patch is undone.
@@ -1346,8 +1346,8 @@ patch
 
     *target* should be a string in the form ``'package.module.ClassName'``. The
     *target* is imported and the specified object replaced with the *new*
-    object, so the *target* must be importable from the environment you are
-    calling :func:`patch` from. The target is imported when the decorated function
+    object, so the *target* must be importable kutoka the environment you are
+    calling :func:`patch` kutoka. The target is imported when the decorated function
     is executed, not at decoration time.
 
     The *spec* and *spec_set* keyword arguments are passed to the :class:`MagicMock`
@@ -1361,7 +1361,7 @@ patch
     is used for async functions and :class:`MagicMock` for the rest.
 
     A more powerful form of *spec* is *autospec*. If you set ``autospec=True``
-    then the mock will be created with a spec from the object being replaced.
+    then the mock will be created with a spec kutoka the object being replaced.
     All attributes of the mock will also have the spec of the corresponding
     attribute of the object being replaced. Methods and functions being mocked
     will have their arguments checked and will raise a :exc:`TypeError` if they are
@@ -1387,7 +1387,7 @@ patch
            If you are patching builtins in a module then you don't
            need to pass ``create=True``, it will be added by default.
 
-    Patch can be used as a :class:`TestCase` class decorator. It works by
+    Patch can be used as a :class:`TestCase` kundi decorator. It works by
     decorating each test method in the class. This reduces the boilerplate
     code when your test methods share a common patchings set. :func:`patch` finds
     tests by looking for method names that start with ``patch.TEST_PREFIX``.
@@ -1410,23 +1410,23 @@ the decorated function::
 
     >>> @patch('__main__.SomeClass')
     ... def function(normal_argument, mock_class):
-    ...     print(mock_class is SomeClass)
+    ...     print(mock_kundi is SomeClass)
     ...
     >>> function(None)
     True
 
-Patching a class replaces the class with a :class:`MagicMock` *instance*. If the
-class is instantiated in the code under test then it will be the
+Patching a kundi replaces the kundi with a :class:`MagicMock` *instance*. If the
+kundi is instantiated in the code under test then it will be the
 :attr:`~Mock.return_value` of the mock that will be used.
 
-If the class is instantiated multiple times you could use
+If the kundi is instantiated multiple times you could use
 :attr:`~Mock.side_effect` to return a new mock each time. Alternatively you
 can set the *return_value* to be anything you want.
 
 To configure return values on methods of *instances* on the patched class
 you must do this on the :attr:`return_value`. For example::
 
-    >>> class Class:
+    >>> kundi Class:
     ...     def method(self):
     ...         pass
     ...
@@ -1448,7 +1448,7 @@ return value of the created mock will have the same spec. ::
     >>> patcher.stop()
 
 The *new_callable* argument is useful where you want to use an alternative
-class to the default :class:`MagicMock` for the created mock. For example, if
+kundi to the default :class:`MagicMock` for the created mock. For example, if
 you wanted a :class:`NonCallableMock` to be used::
 
     >>> thing = object()
@@ -1462,7 +1462,7 @@ you wanted a :class:`NonCallableMock` to be used::
 
 Another use case might be to replace an object with an :class:`io.StringIO` instance::
 
-    >>> from io import StringIO
+    >>> kutoka io agiza StringIO
     >>> def foo():
     ...     print('Something')
     ...
@@ -1535,13 +1535,13 @@ patch.object
     patch the named member (*attribute*) on an object (*target*) with a mock
     object.
 
-    :func:`patch.object` can be used as a decorator, class decorator or a context
+    :func:`patch.object` can be used as a decorator, kundi decorator or a context
     manager. Arguments *new*, *spec*, *create*, *spec_set*, *autospec* and
     *new_callable* have the same meaning as for :func:`patch`. Like :func:`patch`,
     :func:`patch.object` takes arbitrary keyword arguments for configuring the mock
     object it creates.
 
-    When used as a class decorator :func:`patch.object` honours ``patch.TEST_PREFIX``
+    When used as a kundi decorator :func:`patch.object` honours ``patch.TEST_PREFIX``
     for choosing which methods to wrap.
 
 You can either call :func:`patch.object` with three arguments or two arguments. The
@@ -1602,14 +1602,14 @@ decorator:
     >>> test()
     >>> assert foo == {}
 
-When used as a class decorator :func:`patch.dict` honours
+When used as a kundi decorator :func:`patch.dict` honours
 ``patch.TEST_PREFIX`` (default to ``'test'``) for choosing which methods to wrap:
 
-    >>> import os
-    >>> import unittest
-    >>> from unittest.mock import patch
+    >>> agiza os
+    >>> agiza unittest
+    >>> kutoka unittest.mock agiza patch
     >>> @patch.dict('os.environ', {'newkey': 'newvalue'})
-    ... class TestSample(unittest.TestCase):
+    ... kundi TestSample(unittest.TestCase):
     ...     def test_sample(self):
     ...         self.assertEqual(os.environ['newkey'], 'newvalue')
 
@@ -1631,7 +1631,7 @@ ends.
     >>> assert foo == {}
     >>> assert patched_foo == {}
 
-    >>> import os
+    >>> agiza os
     >>> with patch.dict('os.environ', {'newkey': 'newvalue'}):
     ...     print(os.environ['newkey'])
     ...
@@ -1643,7 +1643,7 @@ Keywords can be used in the :func:`patch.dict` call to set values in the diction
     >>> mymodule = MagicMock()
     >>> mymodule.function.return_value = 'fish'
     >>> with patch.dict('sys.modules', mymodule=mymodule):
-    ...     import mymodule
+    ...     agiza mymodule
     ...     mymodule.function('some', 'args')
     ...
     'fish'
@@ -1654,7 +1654,7 @@ deleting and either iteration or membership test. This corresponds to the
 magic methods :meth:`__getitem__`, :meth:`__setitem__`, :meth:`__delitem__` and either
 :meth:`__iter__` or :meth:`__contains__`.
 
-    >>> class Container:
+    >>> kundi Container:
     ...     def __init__(self):
     ...         self.values = {}
     ...     def __getitem__(self, name):
@@ -1693,12 +1693,12 @@ patch.multiple
     function by keyword, and a dictionary is returned when :func:`patch.multiple` is
     used as a context manager.
 
-    :func:`patch.multiple` can be used as a decorator, class decorator or a context
+    :func:`patch.multiple` can be used as a decorator, kundi decorator or a context
     manager. The arguments *spec*, *spec_set*, *create*, *autospec* and
     *new_callable* have the same meaning as for :func:`patch`. These arguments will
     be applied to *all* patches done by :func:`patch.multiple`.
 
-    When used as a class decorator :func:`patch.multiple` honours ``patch.TEST_PREFIX``
+    When used as a kundi decorator :func:`patch.multiple` honours ``patch.TEST_PREFIX``
     for choosing which methods to wrap.
 
 If you want :func:`patch.multiple` to create mocks for you, then you can use
@@ -1755,7 +1755,7 @@ If you are using :func:`patch` to create a mock for you then it will be returned
 the call to ``patcher.start``. ::
 
     >>> patcher = patch('package.module.ClassName')
-    >>> from package import module
+    >>> kutoka package agiza module
     >>> original = module.ClassName
     >>> new_mock = patcher.start()
     >>> assert module.ClassName is not original
@@ -1768,7 +1768,7 @@ the call to ``patcher.start``. ::
 A typical use case for this might be for doing multiple patches in the ``setUp``
 method of a :class:`TestCase`::
 
-    >>> class MyTest(unittest.TestCase):
+    >>> kundi MyTest(unittest.TestCase):
     ...     def setUp(self):
     ...         self.patcher1 = patch('package.module.Class1')
     ...         self.patcher2 = patch('package.module.Class2')
@@ -1792,7 +1792,7 @@ method of a :class:`TestCase`::
     exception is raised in the ``setUp`` then ``tearDown`` is not called.
     :meth:`unittest.TestCase.addCleanup` makes this easier::
 
-        >>> class MyTest(unittest.TestCase):
+        >>> kundi MyTest(unittest.TestCase):
         ...     def setUp(self):
         ...         patcher = patch('package.module.Class')
         ...         self.MockClass = patcher.start()
@@ -1834,7 +1834,7 @@ builtin :func:`ord`::
 TEST_PREFIX
 ~~~~~~~~~~~
 
-All of the patchers can be used as class decorators. When used in this way
+All of the patchers can be used as kundi decorators. When used in this way
 they wrap every test method on the class. The patchers recognise methods that
 start with ``'test'`` as being test methods. This is the same way that the
 :class:`unittest.TestLoader` finds test methods by default.
@@ -1846,7 +1846,7 @@ inform the patchers of the different prefix by setting ``patch.TEST_PREFIX``::
     >>> value = 3
     >>>
     >>> @patch('__main__.value', 'not three')
-    ... class Thing:
+    ... kundi Thing:
     ...     def foo_one(self):
     ...         print(value)
     ...     def foo_two(self):
@@ -1883,7 +1883,7 @@ You can stack up multiple patch decorators using this pattern:
     >>> mock2.assert_called_once_with('bar')
 
 
-Note that the decorators are applied from the bottom upwards. This is the
+Note that the decorators are applied kutoka the bottom upwards. This is the
 standard way that Python applies decorators. The order of the created mocks
 passed into your test function matches this order.
 
@@ -1908,12 +1908,12 @@ Imagine we have a project that we want to test with the following structure::
         -> Defines SomeClass
 
     b.py
-        -> from a import SomeClass
+        -> kutoka a agiza SomeClass
         -> some_function instantiates SomeClass
 
 Now we want to test ``some_function`` but we want to mock out ``SomeClass`` using
-:func:`patch`. The problem is that when we import module b, which we will have to
-do then it imports ``SomeClass`` from module a. If we use :func:`patch` to mock out
+:func:`patch`. The problem is that when we agiza module b, which we will have to
+do then it imports ``SomeClass`` kutoka module a. If we use :func:`patch` to mock out
 ``a.SomeClass`` then it will have no effect on our test; module b already has a
 reference to the *real* ``SomeClass`` and it looks like our patching had no
 effect.
@@ -1924,9 +1924,9 @@ where we have imported it. The patching should look like::
 
     @patch('b.SomeClass')
 
-However, consider the alternative scenario where instead of ``from a import
-SomeClass`` module b does ``import a`` and ``some_function`` uses ``a.SomeClass``. Both
-of these import forms are common. In this case the class we want to patch is
+However, consider the alternative scenario where instead of ``kutoka a import
+SomeClass`` module b does ``agiza a`` and ``some_function`` uses ``a.SomeClass``. Both
+of these agiza forms are common. In this case the kundi we want to patch is
 being looked up in the module and so we have to patch ``a.SomeClass`` instead::
 
     @patch('a.SomeClass')
@@ -1954,7 +1954,7 @@ Mocking Magic Methods
 "magic methods". This allows mock objects to replace containers or other
 objects that implement Python protocols.
 
-Because magic methods are looked up differently from normal methods [#]_, this
+Because magic methods are looked up differently kutoka normal methods [#]_, this
 support has been specially implemented. This means that only specific magic
 methods are supported. The supported list includes *almost* all of them. If
 there are any missing that you need please let us know.
@@ -2049,7 +2049,7 @@ There are two ``MagicMock`` variants: :class:`MagicMock` and :class:`NonCallable
 
 .. class:: MagicMock(*args, **kw)
 
-   ``MagicMock`` is a subclass of :class:`Mock` with default implementations
+   ``MagicMock`` is a subkundi of :class:`Mock` with default implementations
    of most of the magic methods. You can use ``MagicMock`` without having to
    configure the magic methods yourself.
 
@@ -2164,12 +2164,12 @@ Magic methods that are supported but not setup by default in ``MagicMock`` are:
 
 
 
-.. [#] Magic methods *should* be looked up on the class rather than the
+.. [#] Magic methods *should* be looked up on the kundi rather than the
    instance. Different versions of Python are inconsistent about applying this
    rule. The supported protocol methods should work with all supported versions
    of Python.
 .. [#] The function is basically hooked up to the class, but each ``Mock``
-   instance is kept isolated from the others.
+   instance is kept isolated kutoka the others.
 
 
 Helpers
@@ -2245,7 +2245,7 @@ chained call is multiple calls on a single line of code. This results in
 multiple entries in :attr:`~Mock.mock_calls` on a mock. Manually constructing
 the sequence of calls can be tedious.
 
-:meth:`~call.call_list` can construct the sequence of calls from the same
+:meth:`~call.call_list` can construct the sequence of calls kutoka the same
 chained call:
 
     >>> m = MagicMock()
@@ -2321,8 +2321,8 @@ create_autospec
     If *spec_set* is ``True`` then attempting to set attributes that don't exist
     on the spec object will raise an :exc:`AttributeError`.
 
-    If a class is used as a spec then the return value of the mock (the
-    instance of the class) will have the same spec. You can use a class as the
+    If a kundi is used as a spec then the return value of the mock (the
+    instance of the class) will have the same spec. You can use a kundi as the
     spec for an instance object by passing ``instance=True``. The returned mock
     will only be callable if instances of the mock are callable.
 
@@ -2384,7 +2384,7 @@ set ``mock.FILTER_DIR = False``.
 With filtering on, ``dir(some_mock)`` shows only useful attributes and will
 include any dynamically created attributes that wouldn't normally be shown.
 If the mock was created with a *spec* (or *autospec* of course) then all the
-attributes from the original are shown, even if they haven't been accessed
+attributes kutoka the original are shown, even if they haven't been accessed
 yet:
 
 .. doctest::
@@ -2400,7 +2400,7 @@ yet:
      'assert_not_called',
      'attach_mock',
      ...
-    >>> from urllib import request
+    >>> kutoka urllib agiza request
     >>> dir(Mock(spec=request))
     ['AbstractBasicAuthHandler',
      'AbstractDigestAuthHandler',
@@ -2410,14 +2410,14 @@ yet:
 
 Many of the not-very-useful (private to :class:`Mock` rather than the thing being
 mocked) underscore and double underscore prefixed attributes have been
-filtered from the result of calling :func:`dir` on a :class:`Mock`. If you dislike this
+filtered kutoka the result of calling :func:`dir` on a :class:`Mock`. If you dislike this
 behaviour you can switch it off by setting the module level switch
 :data:`FILTER_DIR`:
 
 .. doctest::
     :options: +ELLIPSIS,+NORMALIZE_WHITESPACE
 
-    >>> from unittest import mock
+    >>> kutoka unittest agiza mock
     >>> mock.FILTER_DIR = False
     >>> dir(mock.Mock())
     ['_NonCallableMock__get_return_value',
@@ -2448,7 +2448,7 @@ mock_open
 
    *read_data* is a string for the :meth:`~io.IOBase.read`,
    :meth:`~io.IOBase.readline`, and :meth:`~io.IOBase.readlines` methods
-   of the file handle to return.  Calls to those methods will take data from
+   of the file handle to return.  Calls to those methods will take data kutoka
    *read_data* until it is depleted.  The mock of these methods is pretty
    simplistic: every time the *mock* is called, the *read_data* is rewound to
    the start.  If you need more control over the data that you are feeding to
@@ -2519,8 +2519,8 @@ called incorrectly.
 
 Before I explain how auto-speccing works, here's why it is needed.
 
-:class:`Mock` is a very powerful and flexible object, but it suffers from two flaws
-when used to mock out objects from a system under test. One of these flaws is
+:class:`Mock` is a very powerful and flexible object, but it suffers kutoka two flaws
+when used to mock out objects kutoka a system under test. One of these flaws is
 specific to the :class:`Mock` api and the other is a more general problem with using
 mock objects.
 
@@ -2560,10 +2560,10 @@ don't test how your units are "wired together" there is still lots of room
 for bugs that tests might have caught.
 
 :mod:`mock` already provides a feature to help with this, called speccing. If you
-use a class or instance as the :attr:`spec` for a mock then you can only access
+use a kundi or instance as the :attr:`spec` for a mock then you can only access
 attributes on the mock that exist on the real class:
 
-    >>> from urllib import request
+    >>> kutoka urllib agiza request
     >>> mock = Mock(spec=request.Request)
     >>> mock.assret_called_with
     Traceback (most recent call last):
@@ -2585,12 +2585,12 @@ mock with a spec. If you use the ``autospec=True`` argument to :func:`patch` the
 object that is being replaced will be used as the spec object. Because the
 speccing is done "lazily" (the spec is created as attributes on the mock are
 accessed) you can use it with very complex or deeply nested objects (like
-modules that import modules that import modules) without a big performance
+modules that agiza modules that agiza modules) without a big performance
 hit.
 
 Here's an example of it in use::
 
-    >>> from urllib import request
+    >>> kutoka urllib agiza request
     >>> patcher = patch('__main__.request', autospec=True)
     >>> mock_request = patcher.start()
     >>> request is mock_request
@@ -2633,7 +2633,7 @@ changes.
 As well as using *autospec* through :func:`patch` there is a
 :func:`create_autospec` for creating autospecced mocks directly:
 
-    >>> from urllib import request
+    >>> kutoka urllib agiza request
     >>> mock_request = create_autospec(request)
     >>> mock_request.Request('foo', 'bar')
     <NonCallableMagicMock name='mock.Request()' spec='Request' id='...'>
@@ -2648,11 +2648,11 @@ able to use autospec. On the other hand it is much better to design your
 objects so that introspection is safe [#]_.
 
 A more serious problem is that it is common for instance attributes to be
-created in the :meth:`__init__` method and not to exist on the class at all.
+created in the :meth:`__init__` method and not to exist on the kundi at all.
 *autospec* can't know about any dynamically created attributes and restricts
 the api to visible attributes. ::
 
-    >>> class Something:
+    >>> kundi Something:
     ...   def __init__(self):
     ...     self.a = 33
     ...
@@ -2688,14 +2688,14 @@ this particular scenario:
      ...
     AttributeError: Mock object has no attribute 'a'
 
-Probably the best way of solving the problem is to add class attributes as
+Probably the best way of solving the problem is to add kundi attributes as
 default values for instance members initialised in :meth:`__init__`. Note that if
 you are only setting default attributes in :meth:`__init__` then providing them via
-class attributes (shared between instances of course) is faster too. e.g.
+kundi attributes (shared between instances of course) is faster too. e.g.
 
 .. code-block:: python
 
-    class Something:
+    kundi Something:
         a = 33
 
 This brings up another issue. It is relatively common to provide a default
@@ -2706,7 +2706,7 @@ spec, and probably indicates a member that will normally of some other type,
 autospec doesn't use a spec for members that are set to ``None``. These will
 just be ordinary mocks (well - MagicMocks):
 
-    >>> class Something:
+    >>> kundi Something:
     ...     member = None
     ...
     >>> mock = create_autospec(Something)
@@ -2715,17 +2715,17 @@ just be ordinary mocks (well - MagicMocks):
 
 If modifying your production classes to add defaults isn't to your liking
 then there are more options. One of these is simply to use an instance as the
-spec rather than the class. The other is to create a subclass of the
-production class and add the defaults to the subclass without affecting the
+spec rather than the class. The other is to create a subkundi of the
+production kundi and add the defaults to the subkundi without affecting the
 production class. Both of these require you to use an alternative object as
 the spec. Thankfully :func:`patch` supports this - you can simply pass the
 alternative object as the *autospec* argument::
 
-    >>> class Something:
+    >>> kundi Something:
     ...   def __init__(self):
     ...     self.a = 33
     ...
-    >>> class SomethingForTest(Something):
+    >>> kundi SomethingForTest(Something):
     ...   a = 33
     ...
     >>> p = patch('__main__.Something', autospec=SomethingForTest)
@@ -2735,7 +2735,7 @@ alternative object as the *autospec* argument::
 
 
 .. [#] This only applies to classes or already instantiated objects. Calling
-   a mocked class to create a mock instance *does not* create a real instance.
+   a mocked kundi to create a mock instance *does not* create a real instance.
    It is only attribute lookups - along with calls to :func:`dir` - that are done.
 
 Sealing mocks
@@ -2744,7 +2744,7 @@ Sealing mocks
 
 .. testsetup::
 
-    from unittest.mock import seal
+    kutoka unittest.mock agiza seal
 
 .. function:: seal(mock)
 
@@ -2752,7 +2752,7 @@ Sealing mocks
     the mock being sealed or any of its attributes that are already mocks recursively.
 
     If a mock instance with a name or a spec is assigned to an attribute
-    it won't be considered in the sealing chain. This allows one to prevent seal from
+    it won't be considered in the sealing chain. This allows one to prevent seal kutoka
     fixing part of the mock object. ::
 
         >>> mock = Mock()

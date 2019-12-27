@@ -15,23 +15,23 @@ CRASHER_FILES = os.path.join(CRASHER_DIR, "*.py")
 
 infinite_loops = ["infinite_loop_re.py", "nasty_eq_vs_dict.py"]
 
-class CrasherTest(unittest.TestCase):
+kundi CrasherTest(unittest.TestCase):
 
     @unittest.skip("these tests are too fragile")
     @test.support.cpython_only
-    def test_crashers_crash(self):
+    eleza test_crashers_crash(self):
         for fname in glob.glob(CRASHER_FILES):
-            if os.path.basename(fname) in infinite_loops:
+            ikiwa os.path.basename(fname) in infinite_loops:
                 continue
             # Some "crashers" only trigger an exception rather than a
             # segfault. Consider that an acceptable outcome.
-            if test.support.verbose:
-                print("Checking crasher:", fname)
+            ikiwa test.support.verbose:
+                andika("Checking crasher:", fname)
             assert_python_failure(fname)
 
 
-def tearDownModule():
+eleza tearDownModule():
     test.support.reap_children()
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

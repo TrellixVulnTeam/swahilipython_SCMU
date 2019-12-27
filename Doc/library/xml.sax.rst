@@ -28,7 +28,7 @@ the SAX API.
 
    The SAX parser no longer processes general external entities by default
    to increase security. Before, the parser created network connections
-   to fetch remote files or loaded local files from the file
+   to fetch remote files or loaded local files kutoka the file
    system for DTD and entities. The feature can be enabled again with method
    :meth:`~xml.sax.xmlreader.XMLReader.setFeature` on the parser object
    and argument :data:`~xml.sax.handler.feature_external_ges`.
@@ -61,7 +61,7 @@ The convenience functions are:
 
 .. function:: parseString(string, handler, error_handler=handler.ErrorHandler())
 
-   Similar to :func:`parse`, but parses from a buffer *string* received as a
+   Similar to :func:`parse`, but parses kutoka a buffer *string* received as a
    parameter.  *string* must be a :class:`str` instance or a
    :term:`bytes-like object`.
 
@@ -70,26 +70,26 @@ The convenience functions are:
 
 A typical SAX application uses three kinds of objects: readers, handlers and
 input sources.  "Reader" in this context is another term for parser, i.e. some
-piece of code that reads the bytes or characters from the input source, and
+piece of code that reads the bytes or characters kutoka the input source, and
 produces a sequence of events. The events then get distributed to the handler
 objects, i.e. the reader invokes a method on the handler.  A SAX application
 must therefore obtain a reader object, create or open the input sources, create
 the handlers, and connect these objects all together.  As the final step of
 preparation, the reader is called to parse the input. During parsing, methods on
-the handler objects are called based on structural and syntactic events from the
+the handler objects are called based on structural and syntactic events kutoka the
 input data.
 
 For these objects, only the interfaces are relevant; they are normally not
 instantiated by the application itself.  Since Python does not have an explicit
 notion of interface, they are formally introduced as classes, but applications
-may use implementations which do not inherit from the provided classes.  The
+may use implementations which do not inherit kutoka the provided classes.  The
 :class:`~xml.sax.xmlreader.InputSource`, :class:`~xml.sax.xmlreader.Locator`,
 :class:`~xml.sax.xmlreader.Attributes`, :class:`~xml.sax.xmlreader.AttributesNS`,
 and :class:`~xml.sax.xmlreader.XMLReader` interfaces are defined in the
 module :mod:`xml.sax.xmlreader`.  The handler interfaces are defined in
 :mod:`xml.sax.handler`.  For convenience,
 :class:`~xml.sax.xmlreader.InputSource` (which is often
-instantiated directly) and the handler classes are also available from
+instantiated directly) and the handler classes are also available kutoka
 :mod:`xml.sax`.  These interfaces are described below.
 
 In addition to these classes, :mod:`xml.sax` provides the following exception
@@ -98,8 +98,8 @@ classes.
 
 .. exception:: SAXException(msg, exception=None)
 
-   Encapsulate an XML error or warning.  This class can contain basic error or
-   warning information from either the XML parser or the application: it can be
+   Encapsulate an XML error or warning.  This kundi can contain basic error or
+   warning information kutoka either the XML parser or the application: it can be
    subclassed to provide additional functionality or to add localization.  Note
    that although the handlers defined in the
    :class:`~xml.sax.handler.ErrorHandler` interface
@@ -110,34 +110,34 @@ classes.
    The optional *exception* parameter, if given, should be ``None`` or an exception
    that was caught by the parsing code and is being passed along as information.
 
-   This is the base class for the other SAX exception classes.
+   This is the base kundi for the other SAX exception classes.
 
 
 .. exception:: SAXParseException(msg, exception, locator)
 
-   Subclass of :exc:`SAXException` raised on parse errors. Instances of this
-   class are passed to the methods of the SAX
+   Subkundi of :exc:`SAXException` raised on parse errors. Instances of this
+   kundi are passed to the methods of the SAX
    :class:`~xml.sax.handler.ErrorHandler` interface to provide information
-   about the parse error.  This class supports the SAX
+   about the parse error.  This kundi supports the SAX
    :class:`~xml.sax.xmlreader.Locator` interface as well as the
    :class:`SAXException` interface.
 
 
 .. exception:: SAXNotRecognizedException(msg, exception=None)
 
-   Subclass of :exc:`SAXException` raised when a SAX
+   Subkundi of :exc:`SAXException` raised when a SAX
    :class:`~xml.sax.xmlreader.XMLReader` is
    confronted with an unrecognized feature or property.  SAX applications and
-   extensions may use this class for similar purposes.
+   extensions may use this kundi for similar purposes.
 
 
 .. exception:: SAXNotSupportedException(msg, exception=None)
 
-   Subclass of :exc:`SAXException` raised when a SAX
+   Subkundi of :exc:`SAXException` raised when a SAX
    :class:`~xml.sax.xmlreader.XMLReader` is asked to
    enable a feature that is not supported, or to set a property to a value that the
    implementation does not support.  SAX applications and extensions may use this
-   class for similar purposes.
+   kundi for similar purposes.
 
 
 .. seealso::
@@ -162,7 +162,7 @@ classes.
 SAXException Objects
 --------------------
 
-The :class:`SAXException` exception class supports the following methods:
+The :class:`SAXException` exception kundi supports the following methods:
 
 
 .. method:: SAXException.getMessage()

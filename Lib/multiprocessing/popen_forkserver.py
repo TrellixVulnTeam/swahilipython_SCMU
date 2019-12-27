@@ -2,7 +2,7 @@ agiza io
 agiza os
 
 kutoka .context agiza reduction, set_spawning_popen
-if not reduction.HAVE_SEND_HANDLE:
+ikiwa not reduction.HAVE_SEND_HANDLE:
     raise ImportError('No support for sending fds between processes')
 kutoka . agiza forkserver
 kutoka . agiza popen_fork
@@ -16,29 +16,29 @@ __all__ = ['Popen']
 # Wrapper for an fd used while launching a process
 #
 
-class _DupFd(object):
-    def __init__(self, ind):
+kundi _DupFd(object):
+    eleza __init__(self, ind):
         self.ind = ind
-    def detach(self):
-        return forkserver.get_inherited_fds()[self.ind]
+    eleza detach(self):
+        rudisha forkserver.get_inherited_fds()[self.ind]
 
 #
 # Start child process using a server process
 #
 
-class Popen(popen_fork.Popen):
+kundi Popen(popen_fork.Popen):
     method = 'forkserver'
     DupFd = _DupFd
 
-    def __init__(self, process_obj):
+    eleza __init__(self, process_obj):
         self._fds = []
         super().__init__(process_obj)
 
-    def duplicate_for_child(self, fd):
+    eleza duplicate_for_child(self, fd):
         self._fds.append(fd)
-        return len(self._fds) - 1
+        rudisha len(self._fds) - 1
 
-    def _launch(self, process_obj):
+    eleza _launch(self, process_obj):
         prep_data = spawn.get_preparation_data(process_obj._name)
         buf = io.BytesIO()
         set_spawning_popen(self)
@@ -58,12 +58,12 @@ class Popen(popen_fork.Popen):
             f.write(buf.getbuffer())
         self.pid = forkserver.read_signed(self.sentinel)
 
-    def poll(self, flag=os.WNOHANG):
-        if self.returncode is None:
+    eleza poll(self, flag=os.WNOHANG):
+        ikiwa self.returncode is None:
             kutoka multiprocessing.connection agiza wait
-            timeout = 0 if flag == os.WNOHANG else None
-            if not wait([self.sentinel], timeout):
-                return None
+            timeout = 0 ikiwa flag == os.WNOHANG else None
+            ikiwa not wait([self.sentinel], timeout):
+                rudisha None
             try:
                 self.returncode = forkserver.read_signed(self.sentinel)
             except (OSError, EOFError):
@@ -71,4 +71,4 @@ class Popen(popen_fork.Popen):
                 # process itself got killed
                 self.returncode = 255
 
-        return self.returncode
+        rudisha self.returncode

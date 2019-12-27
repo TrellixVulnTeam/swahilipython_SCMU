@@ -12,14 +12,14 @@ TESTS = [
     'test_urllib2_localnet', 'test_venv', 'test_xmlrpc'
 ]
 
-def run_regrtests(*extra_args):
-    print(ssl.OPENSSL_VERSION)
+eleza run_regrtests(*extra_args):
+    andika(ssl.OPENSSL_VERSION)
     args = [
         sys.executable,
         '-Werror', '-bb',  # turn warnings into exceptions
         '-m', 'test',
     ]
-    if not extra_args:
+    ikiwa not extra_args:
         args.extend([
             '-r',  # randomize
             '-w',  # re-run failed tests with -v
@@ -33,5 +33,5 @@ def run_regrtests(*extra_args):
     result = subprocess.call(args)
     sys.exit(result)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     run_regrtests(*sys.argv[1:])

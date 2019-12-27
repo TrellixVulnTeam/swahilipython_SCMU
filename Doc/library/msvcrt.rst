@@ -1,9 +1,9 @@
-:mod:`msvcrt` --- Useful routines from the MS VC++ runtime
+:mod:`msvcrt` --- Useful routines kutoka the MS VC++ runtime
 ==========================================================
 
 .. module:: msvcrt
    :platform: Windows
-   :synopsis: Miscellaneous useful routines from the MS VC++ runtime.
+   :synopsis: Miscellaneous useful routines kutoka the MS VC++ runtime.
 
 .. sectionauthor:: Fred L. Drake, Jr. <fdrake@acm.org>
 
@@ -35,8 +35,8 @@ File Operations
 
 .. function:: locking(fd, mode, nbytes)
 
-   Lock part of a file based on file descriptor *fd* from the C runtime.  Raises
-   :exc:`OSError` on failure.  The locked region of the file extends from the
+   Lock part of a file based on file descriptor *fd* kutoka the C runtime.  Raises
+   :exc:`OSError` on failure.  The locked region of the file extends kutoka the
    current file position for *nbytes* bytes, and may continue beyond the end of the
    file.  *mode* must be one of the :const:`LK_\*` constants listed below. Multiple
    regions in a file may be locked at the same time, but may not overlap.  Adjacent
@@ -72,7 +72,7 @@ File Operations
 
 .. function:: open_osfhandle(handle, flags)
 
-   Create a C runtime file descriptor from the file handle *handle*.  The *flags*
+   Create a C runtime file descriptor kutoka the file handle *handle*.  The *flags*
    parameter should be a bitwise OR of :const:`os.O_APPEND`, :const:`os.O_RDONLY`,
    and :const:`os.O_TEXT`.  The returned file descriptor may be used as a parameter
    to :func:`os.fdopen` to create a file object.

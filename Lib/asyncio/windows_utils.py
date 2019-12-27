@@ -2,7 +2,7 @@
 
 agiza sys
 
-if sys.platform != 'win32':  # pragma: no cover
+ikiwa sys.platform != 'win32':  # pragma: no cover
     raise ImportError('win32 only')
 
 agiza _winapi
@@ -29,13 +29,13 @@ _mmap_counter = itertools.count()
 # Replacement for os.pipe() using handles instead of fds
 
 
-def pipe(*, duplex=False, overlapped=(True, True), bufsize=BUFSIZE):
+eleza pipe(*, duplex=False, overlapped=(True, True), bufsize=BUFSIZE):
     """Like os.pipe() but with overlapped support and using handles not fds."""
     address = tempfile.mktemp(
         prefix=r'\\.\pipe\python-pipe-{:d}-{:d}-'.format(
             os.getpid(), next(_mmap_counter)))
 
-    if duplex:
+    ikiwa duplex:
         openmode = _winapi.PIPE_ACCESS_DUPLEX
         access = _winapi.GENERIC_READ | _winapi.GENERIC_WRITE
         obsize, ibsize = bufsize, bufsize
@@ -46,10 +46,10 @@ def pipe(*, duplex=False, overlapped=(True, True), bufsize=BUFSIZE):
 
     openmode |= _winapi.FILE_FLAG_FIRST_PIPE_INSTANCE
 
-    if overlapped[0]:
+    ikiwa overlapped[0]:
         openmode |= _winapi.FILE_FLAG_OVERLAPPED
 
-    if overlapped[1]:
+    ikiwa overlapped[1]:
         flags_and_attribs = _winapi.FILE_FLAG_OVERLAPPED
     else:
         flags_and_attribs = 0
@@ -66,11 +66,11 @@ def pipe(*, duplex=False, overlapped=(True, True), bufsize=BUFSIZE):
 
         ov = _winapi.ConnectNamedPipe(h1, overlapped=True)
         ov.GetOverlappedResult(True)
-        return h1, h2
+        rudisha h1, h2
     except:
-        if h1 is not None:
+        ikiwa h1 is not None:
             _winapi.CloseHandle(h1)
-        if h2 is not None:
+        ikiwa h2 is not None:
             _winapi.CloseHandle(h2)
         raise
 
@@ -78,74 +78,74 @@ def pipe(*, duplex=False, overlapped=(True, True), bufsize=BUFSIZE):
 # Wrapper for a pipe handle
 
 
-class PipeHandle:
+kundi PipeHandle:
     """Wrapper for an overlapped pipe handle which is vaguely file-object like.
 
     The IOCP event loop can use these instead of socket objects.
     """
-    def __init__(self, handle):
+    eleza __init__(self, handle):
         self._handle = handle
 
-    def __repr__(self):
-        if self._handle is not None:
+    eleza __repr__(self):
+        ikiwa self._handle is not None:
             handle = f'handle={self._handle!r}'
         else:
             handle = 'closed'
-        return f'<{self.__class__.__name__} {handle}>'
+        rudisha f'<{self.__class__.__name__} {handle}>'
 
     @property
-    def handle(self):
-        return self._handle
+    eleza handle(self):
+        rudisha self._handle
 
-    def fileno(self):
-        if self._handle is None:
+    eleza fileno(self):
+        ikiwa self._handle is None:
             raise ValueError("I/O operation on closed pipe")
-        return self._handle
+        rudisha self._handle
 
-    def close(self, *, CloseHandle=_winapi.CloseHandle):
-        if self._handle is not None:
+    eleza close(self, *, CloseHandle=_winapi.CloseHandle):
+        ikiwa self._handle is not None:
             CloseHandle(self._handle)
             self._handle = None
 
-    def __del__(self, _warn=warnings.warn):
-        if self._handle is not None:
+    eleza __del__(self, _warn=warnings.warn):
+        ikiwa self._handle is not None:
             _warn(f"unclosed {self!r}", ResourceWarning, source=self)
             self.close()
 
-    def __enter__(self):
-        return self
+    eleza __enter__(self):
+        rudisha self
 
-    def __exit__(self, t, v, tb):
+    eleza __exit__(self, t, v, tb):
         self.close()
 
 
 # Replacement for subprocess.Popen using overlapped pipe handles
 
 
-class Popen(subprocess.Popen):
+kundi Popen(subprocess.Popen):
     """Replacement for subprocess.Popen using overlapped pipe handles.
 
     The stdin, stdout, stderr are None or instances of PipeHandle.
     """
-    def __init__(self, args, stdin=None, stdout=None, stderr=None, **kwds):
+    eleza __init__(self, args, stdin=None, stdout=None, stderr=None, **kwds):
         assert not kwds.get('universal_newlines')
         assert kwds.get('bufsize', 0) == 0
         stdin_rfd = stdout_wfd = stderr_wfd = None
         stdin_wh = stdout_rh = stderr_rh = None
-        if stdin == PIPE:
+        ikiwa stdin == PIPE:
             stdin_rh, stdin_wh = pipe(overlapped=(False, True), duplex=True)
             stdin_rfd = msvcrt.open_osfhandle(stdin_rh, os.O_RDONLY)
         else:
             stdin_rfd = stdin
-        if stdout == PIPE:
+        ikiwa stdout == PIPE:
             stdout_rh, stdout_wh = pipe(overlapped=(True, False))
             stdout_wfd = msvcrt.open_osfhandle(stdout_wh, 0)
         else:
             stdout_wfd = stdout
-        if stderr == PIPE:
+        ikiwa stderr == PIPE:
             stderr_rh, stderr_wh = pipe(overlapped=(True, False))
             stderr_wfd = msvcrt.open_osfhandle(stderr_wh, 0)
-        elif stderr == STDOUT:
+        elikiwa stderr == STDOUT:
             stderr_wfd = stdout_wfd
         else:
             stderr_wfd = stderr
@@ -154,20 +154,20 @@ class Popen(subprocess.Popen):
                              stderr=stderr_wfd, **kwds)
         except:
             for h in (stdin_wh, stdout_rh, stderr_rh):
-                if h is not None:
+                ikiwa h is not None:
                     _winapi.CloseHandle(h)
             raise
         else:
-            if stdin_wh is not None:
+            ikiwa stdin_wh is not None:
                 self.stdin = PipeHandle(stdin_wh)
-            if stdout_rh is not None:
+            ikiwa stdout_rh is not None:
                 self.stdout = PipeHandle(stdout_rh)
-            if stderr_rh is not None:
+            ikiwa stderr_rh is not None:
                 self.stderr = PipeHandle(stderr_rh)
         finally:
-            if stdin == PIPE:
+            ikiwa stdin == PIPE:
                 os.close(stdin_rfd)
-            if stdout == PIPE:
+            ikiwa stdout == PIPE:
                 os.close(stdout_wfd)
-            if stderr == PIPE:
+            ikiwa stderr == PIPE:
                 os.close(stderr_wfd)

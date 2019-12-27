@@ -14,7 +14,7 @@ def setUpModule():
     global libc_name
     if os.name == "nt":
         libc_name = find_library("c")
-    elif sys.platform == "cygwin":
+    lasivyo sys.platform == "cygwin":
         libc_name = "cygwin1.dll"
     else:
         libc_name = find_library("c")
@@ -71,7 +71,7 @@ class LoaderTest(unittest.TestCase):
     @unittest.skipUnless(os.name == "nt",
                          'test specific to Windows')
     def test_load_ordinal_functions(self):
-        import _ctypes_test
+        agiza _ctypes_test
         dll = WinDLL(_ctypes_test.__file__)
         # We load the same function both via ordinal and name
         func_ord = dll[2]

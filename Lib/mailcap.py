@@ -6,17 +6,17 @@ agiza warnings
 __all__ = ["getcaps","findmatch"]
 
 
-def lineno_sort_key(entry):
+eleza lineno_sort_key(entry):
     # Sort in ascending order, with unspecified entries at the end
-    if 'lineno' in entry:
-        return 0, entry['lineno']
+    ikiwa 'lineno' in entry:
+        rudisha 0, entry['lineno']
     else:
-        return 1, 0
+        rudisha 1, 0
 
 
 # Part 1: top-level interface.
 
-def getcaps():
+eleza getcaps():
     """Return a dictionary containing the mailcap database.
 
     The dictionary maps a MIME type (in all lowercase, e.g. 'text/plain')
@@ -36,65 +36,65 @@ def getcaps():
         with fp:
             morecaps, lineno = _readmailcapfile(fp, lineno)
         for key, value in morecaps.items():
-            if not key in caps:
+            ikiwa not key in caps:
                 caps[key] = value
             else:
                 caps[key] = caps[key] + value
-    return caps
+    rudisha caps
 
-def listmailcapfiles():
+eleza listmailcapfiles():
     """Return a list of all mailcap files found on the system."""
     # This is mostly a Unix thing, but we use the OS path separator anyway
-    if 'MAILCAPS' in os.environ:
+    ikiwa 'MAILCAPS' in os.environ:
         pathstr = os.environ['MAILCAPS']
         mailcaps = pathstr.split(os.pathsep)
     else:
-        if 'HOME' in os.environ:
+        ikiwa 'HOME' in os.environ:
             home = os.environ['HOME']
         else:
             # Don't bother with getpwuid()
             home = '.' # Last resort
         mailcaps = [home + '/.mailcap', '/etc/mailcap',
                 '/usr/etc/mailcap', '/usr/local/etc/mailcap']
-    return mailcaps
+    rudisha mailcaps
 
 
 # Part 2: the parser.
-def readmailcapfile(fp):
-    """Read a mailcap file and return a dictionary keyed by MIME type."""
+eleza readmailcapfile(fp):
+    """Read a mailcap file and rudisha a dictionary keyed by MIME type."""
     warnings.warn('readmailcapfile is deprecated, use getcaps instead',
                   DeprecationWarning, 2)
     caps, _ = _readmailcapfile(fp, None)
-    return caps
+    rudisha caps
 
 
-def _readmailcapfile(fp, lineno):
-    """Read a mailcap file and return a dictionary keyed by MIME type.
+eleza _readmailcapfile(fp, lineno):
+    """Read a mailcap file and rudisha a dictionary keyed by MIME type.
 
     Each MIME type is mapped to an entry consisting of a list of
     dictionaries; the list will contain more than one such dictionary
-    if a given MIME type appears more than once in the mailcap file.
+    ikiwa a given MIME type appears more than once in the mailcap file.
     Each dictionary contains key-value pairs for that MIME type, where
     the viewing command is stored with the key "view".
     """
     caps = {}
     while 1:
         line = fp.readline()
-        if not line: break
+        ikiwa not line: break
         # Ignore comments and blank lines
-        if line[0] == '#' or line.strip() == '':
+        ikiwa line[0] == '#' or line.strip() == '':
             continue
         nextline = line
         # Join continuation lines
         while nextline[-2:] == '\\\n':
             nextline = fp.readline()
-            if not nextline: nextline = '\n'
+            ikiwa not nextline: nextline = '\n'
             line = line[:-2] + nextline
         # Parse the line
         key, fields = parseline(line)
-        if not (key and fields):
+        ikiwa not (key and fields):
             continue
-        if lineno is not None:
+        ikiwa lineno is not None:
             fields['lineno'] = lineno
             lineno += 1
         # Normalize the key
@@ -103,14 +103,14 @@ def _readmailcapfile(fp, lineno):
             types[j] = types[j].strip()
         key = '/'.join(types).lower()
         # Update the database
-        if key in caps:
+        ikiwa key in caps:
             caps[key].append(fields)
         else:
             caps[key] = [fields]
-    return caps, lineno
+    rudisha caps, lineno
 
-def parseline(line):
-    """Parse one entry in a mailcap file and return a dictionary.
+eleza parseline(line):
+    """Parse one entry in a mailcap file and rudisha a dictionary.
 
     The viewing command is stored as the value with the key "view",
     and the rest of the fields produce key-value pairs in the dict.
@@ -121,46 +121,46 @@ def parseline(line):
         field, i = parsefield(line, i, n)
         fields.append(field)
         i = i+1 # Skip semicolon
-    if len(fields) < 2:
-        return None, None
+    ikiwa len(fields) < 2:
+        rudisha None, None
     key, view, rest = fields[0], fields[1], fields[2:]
     fields = {'view': view}
     for field in rest:
         i = field.find('=')
-        if i < 0:
+        ikiwa i < 0:
             fkey = field
             fvalue = ""
         else:
             fkey = field[:i].strip()
             fvalue = field[i+1:].strip()
-        if fkey in fields:
+        ikiwa fkey in fields:
             # Ignore it
             pass
         else:
             fields[fkey] = fvalue
-    return key, fields
+    rudisha key, fields
 
-def parsefield(line, i, n):
+eleza parsefield(line, i, n):
     """Separate one key-value pair in a mailcap entry."""
     start = i
     while i < n:
         c = line[i]
-        if c == ';':
+        ikiwa c == ';':
             break
-        elif c == '\\':
+        elikiwa c == '\\':
             i = i+2
         else:
             i = i+1
-    return line[start:i].strip(), i
+    rudisha line[start:i].strip(), i
 
 
 # Part 3: using the database.
 
-def findmatch(caps, MIMEtype, key='view', filename="/dev/null", plist=[]):
+eleza findmatch(caps, MIMEtype, key='view', filename="/dev/null", plist=[]):
     """Find a match for a mailcap entry.
 
     Return a tuple containing the command line, and the mailcap entry
-    used; (None, None) if no match is found.  This may invoke the
+    used; (None, None) ikiwa no match is found.  This may invoke the
     'test' command of several matching entries before deciding which
     entry to use.
 
@@ -168,46 +168,46 @@ def findmatch(caps, MIMEtype, key='view', filename="/dev/null", plist=[]):
     entries = lookup(caps, MIMEtype, key)
     # XXX This code should somehow check for the needsterminal flag.
     for e in entries:
-        if 'test' in e:
+        ikiwa 'test' in e:
             test = subst(e['test'], filename, plist)
-            if test and os.system(test) != 0:
+            ikiwa test and os.system(test) != 0:
                 continue
         command = subst(e[key], MIMEtype, filename, plist)
-        return command, e
-    return None, None
+        rudisha command, e
+    rudisha None, None
 
-def lookup(caps, MIMEtype, key=None):
+eleza lookup(caps, MIMEtype, key=None):
     entries = []
-    if MIMEtype in caps:
+    ikiwa MIMEtype in caps:
         entries = entries + caps[MIMEtype]
     MIMEtypes = MIMEtype.split('/')
     MIMEtype = MIMEtypes[0] + '/*'
-    if MIMEtype in caps:
+    ikiwa MIMEtype in caps:
         entries = entries + caps[MIMEtype]
-    if key is not None:
-        entries = [e for e in entries if key in e]
+    ikiwa key is not None:
+        entries = [e for e in entries ikiwa key in e]
     entries = sorted(entries, key=lineno_sort_key)
-    return entries
+    rudisha entries
 
-def subst(field, MIMEtype, filename, plist=[]):
+eleza subst(field, MIMEtype, filename, plist=[]):
     # XXX Actually, this is Unix-specific
     res = ''
     i, n = 0, len(field)
     while i < n:
         c = field[i]; i = i+1
-        if c != '%':
-            if c == '\\':
+        ikiwa c != '%':
+            ikiwa c == '\\':
                 c = field[i:i+1]; i = i+1
             res = res + c
         else:
             c = field[i]; i = i+1
-            if c == '%':
+            ikiwa c == '%':
                 res = res + c
-            elif c == 's':
+            elikiwa c == 's':
                 res = res + filename
-            elif c == 't':
+            elikiwa c == 't':
                 res = res + MIMEtype
-            elif c == '{':
+            elikiwa c == '{':
                 start = i
                 while i < n and field[i] != '}':
                     i = i+1
@@ -215,61 +215,61 @@ def subst(field, MIMEtype, filename, plist=[]):
                 i = i+1
                 res = res + findparam(name, plist)
             # XXX To do:
-            # %n == number of parts if type is multipart/*
+            # %n == number of parts ikiwa type is multipart/*
             # %F == list of alternating type and filename for parts
             else:
                 res = res + '%' + c
-    return res
+    rudisha res
 
-def findparam(name, plist):
+eleza findparam(name, plist):
     name = name.lower() + '='
     n = len(name)
     for p in plist:
-        if p[:n].lower() == name:
-            return p[n:]
-    return ''
+        ikiwa p[:n].lower() == name:
+            rudisha p[n:]
+    rudisha ''
 
 
 # Part 4: test program.
 
-def test():
+eleza test():
     agiza sys
     caps = getcaps()
-    if not sys.argv[1:]:
+    ikiwa not sys.argv[1:]:
         show(caps)
         return
     for i in range(1, len(sys.argv), 2):
         args = sys.argv[i:i+2]
-        if len(args) < 2:
-            print("usage: mailcap [MIMEtype file] ...")
+        ikiwa len(args) < 2:
+            andika("usage: mailcap [MIMEtype file] ...")
             return
         MIMEtype = args[0]
         file = args[1]
         command, e = findmatch(caps, MIMEtype, 'view', file)
-        if not command:
-            print("No viewer found for", type)
+        ikiwa not command:
+            andika("No viewer found for", type)
         else:
-            print("Executing:", command)
+            andika("Executing:", command)
             sts = os.system(command)
-            if sts:
-                print("Exit status:", sts)
+            ikiwa sts:
+                andika("Exit status:", sts)
 
-def show(caps):
-    print("Mailcap files:")
-    for fn in listmailcapfiles(): print("\t" + fn)
-    print()
-    if not caps: caps = getcaps()
-    print("Mailcap entries:")
-    print()
+eleza show(caps):
+    andika("Mailcap files:")
+    for fn in listmailcapfiles(): andika("\t" + fn)
+    andika()
+    ikiwa not caps: caps = getcaps()
+    andika("Mailcap entries:")
+    andika()
     ckeys = sorted(caps)
     for type in ckeys:
-        print(type)
+        andika(type)
         entries = caps[type]
         for e in entries:
             keys = sorted(e)
             for k in keys:
-                print("  %-15s" % k, e[k])
-            print()
+                andika("  %-15s" % k, e[k])
+            andika()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test()

@@ -9,7 +9,7 @@ kutoka html.entities agiza html5 as _html5
 __all__ = ['escape', 'unescape']
 
 
-def escape(s, quote=True):
+eleza escape(s, quote=True):
     """
     Replace special characters "&", "<" and ">" to HTML-safe sequences.
     If the optional flag quote is true (the default), the quotation mark
@@ -19,10 +19,10 @@ def escape(s, quote=True):
     s = s.replace("&", "&amp;") # Must be done first!
     s = s.replace("<", "&lt;")
     s = s.replace(">", "&gt;")
-    if quote:
+    ikiwa quote:
         s = s.replace('"', "&quot;")
         s = s.replace('\'', "&#x27;")
-    return s
+    rudisha s
 
 
 # see http://www.w3.org/TR/html5/syntax.html#tokenizing-character-references
@@ -88,38 +88,38 @@ _invalid_codepoints = {
 }
 
 
-def _replace_charref(s):
+eleza _replace_charref(s):
     s = s.group(1)
-    if s[0] == '#':
+    ikiwa s[0] == '#':
         # numeric charref
-        if s[1] in 'xX':
+        ikiwa s[1] in 'xX':
             num = int(s[2:].rstrip(';'), 16)
         else:
             num = int(s[1:].rstrip(';'))
-        if num in _invalid_charrefs:
-            return _invalid_charrefs[num]
-        if 0xD800 <= num <= 0xDFFF or num > 0x10FFFF:
-            return '\uFFFD'
-        if num in _invalid_codepoints:
-            return ''
-        return chr(num)
+        ikiwa num in _invalid_charrefs:
+            rudisha _invalid_charrefs[num]
+        ikiwa 0xD800 <= num <= 0xDFFF or num > 0x10FFFF:
+            rudisha '\uFFFD'
+        ikiwa num in _invalid_codepoints:
+            rudisha ''
+        rudisha chr(num)
     else:
         # named charref
-        if s in _html5:
-            return _html5[s]
+        ikiwa s in _html5:
+            rudisha _html5[s]
         # find the longest matching name (as defined by the standard)
         for x in range(len(s)-1, 1, -1):
-            if s[:x] in _html5:
-                return _html5[s[:x]] + s[x:]
+            ikiwa s[:x] in _html5:
+                rudisha _html5[s[:x]] + s[x:]
         else:
-            return '&' + s
+            rudisha '&' + s
 
 
 _charref = _re.compile(r'&(#[0-9]+;?'
                        r'|#[xX][0-9a-fA-F]+;?'
                        r'|[^\t\n\f <&#;]{1,32};?)')
 
-def unescape(s):
+eleza unescape(s):
     """
     Convert all named and numeric character references (e.g. &gt;, &#62;,
     &x3e;) in the string s to the corresponding unicode characters.
@@ -127,6 +127,6 @@ def unescape(s):
     for both valid and invalid character references, and the list of
     HTML 5 named character references defined in html.entities.html5.
     """
-    if '&' not in s:
-        return s
-    return _charref.sub(_replace_charref, s)
+    ikiwa '&' not in s:
+        rudisha s
+    rudisha _charref.sub(_replace_charref, s)

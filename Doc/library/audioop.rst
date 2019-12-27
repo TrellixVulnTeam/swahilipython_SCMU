@@ -121,7 +121,7 @@ The module defines the following variables and functions:
 
 .. function:: getsample(fragment, width, index)
 
-   Return the value of sample *index* from the fragment.
+   Return the value of sample *index* kutoka the fragment.
 
 
 .. function:: lin2adpcm(fragment, width, state)
@@ -158,7 +158,7 @@ The module defines the following variables and functions:
          new_frames = audioop.lin2lin(frames, old_width, 1)
          new_frames = audioop.bias(new_frames, 1, 128)
 
-      The same, in reverse, has to be applied when converting from 8 to 16, 24
+      The same, in reverse, has to be applied when converting kutoka 8 to 16, 24
       or 32 bit width samples.
 
 
@@ -225,8 +225,8 @@ The module defines the following variables and functions:
 
 .. function:: tostereo(fragment, width, lfactor, rfactor)
 
-   Generate a stereo fragment from a mono fragment.  Each pair of samples in the
-   stereo fragment are computed from the mono sample, whereby left channel samples
+   Generate a stereo fragment kutoka a mono fragment.  Each pair of samples in the
+   stereo fragment are computed kutoka the mono sample, whereby left channel samples
    are multiplied by *lfactor* and right channel samples by *rfactor*.
 
 
@@ -265,7 +265,7 @@ they will not be interoperable with the respective standards.
 The :func:`find\*` routines might look a bit funny at first sight. They are
 primarily meant to do echo cancellation.  A reasonably fast way to do this is to
 pick the most energetic piece of the output sample, locate that in the input
-sample and subtract the whole output sample from the input sample::
+sample and subtract the whole output sample kutoka the input sample::
 
    def echocancel(outputdata, inputdata):
        pos = audioop.findmax(outputdata, 800)    # one tenth second

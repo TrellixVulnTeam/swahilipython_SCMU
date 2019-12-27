@@ -39,7 +39,7 @@ There are (at least) three kinds of modules in Python:
 3) modules written in C and linked with the interpreter; to get a list of these,
    type::
 
-      import sys
+      agiza sys
       print(sys.builtin_module_names)
 
 
@@ -101,7 +101,7 @@ module in the :source:`Modules` subdirectory, though it's not compiled by defaul
 curses module for Windows.)
 
 The :mod:`curses` module supports basic curses features as well as many additional
-functions from ncurses and SYSV curses such as colour, alternative character set
+functions kutoka ncurses and SYSV curses such as colour, alternative character set
 support, pads, and mouse support. This means the module isn't compatible with
 operating systems that only have BSD curses, but there don't seem to be any
 currently maintained OSes that fall into this category.
@@ -146,7 +146,7 @@ Smalltalk testing frameworks.
 
 To make testing easier, you should use good modular design in your program.
 Your program should have almost all functionality
-encapsulated in either functions or class methods -- and this sometimes has the
+encapsulated in either functions or kundi methods -- and this sometimes has the
 surprising and delightful effect of making the program run faster (because local
 variable accesses are faster than global accesses).  Furthermore the program
 should avoid depending on mutating global variables, since this makes testing
@@ -178,11 +178,11 @@ the external interfaces are unavailable by using "fake" interfaces implemented
 in Python.
 
 
-How do I create documentation from doc strings?
+How do I create documentation kutoka doc strings?
 -----------------------------------------------
 
-The :mod:`pydoc` module can create HTML from the doc strings in your Python
-source code.  An alternative for creating API documentation purely from
+The :mod:`pydoc` module can create HTML kutoka the doc strings in your Python
+source code.  An alternative for creating API documentation purely kutoka
 docstrings is `epydoc <http://epydoc.sourceforge.net/>`_.  `Sphinx
 <http://sphinx-doc.org>`_ can also include docstring content.
 
@@ -197,7 +197,7 @@ using curses, but curses is a fairly large module to learn.
 
    Here's a solution without curses::
 
-   import termios, fcntl, sys, os
+   agiza termios, fcntl, sys, os
    fd = sys.stdin.fileno()
 
    oldterm = termios.tcgetattr(fd)
@@ -229,7 +229,7 @@ using curses, but curses is a fairly large module to learn.
    results in an :exc:`OSError`, this error is caught and ignored.
 
    .. versionchanged:: 3.3
-      *sys.stdin.read* used to raise :exc:`IOError`. Starting from Python 3.3
+      *sys.stdin.read* used to raise :exc:`IOError`. Starting kutoka Python 3.3
       :exc:`IOError` is alias for :exc:`OSError`.
 
 
@@ -243,7 +243,7 @@ Be sure to use the :mod:`threading` module and not the :mod:`_thread` module.
 The :mod:`threading` module builds convenient abstractions on top of the
 low-level primitives provided by the :mod:`_thread` module.
 
-Aahz has a set of slides from his threading tutorial that are helpful; see
+Aahz has a set of slides kutoka his threading tutorial that are helpful; see
 http://www.pythoncraft.com/OSCON2001/.
 
 
@@ -256,7 +256,7 @@ running too quickly, giving the threads no time to do any work.
 A simple fix is to add a sleep to the end of the program that's long enough for
 all the threads to finish::
 
-   import threading, time
+   agiza threading, time
 
    def thread_task(name, n):
        for i in range(n):
@@ -288,7 +288,7 @@ A simple fix is to add a tiny sleep to the start of the run function::
 Instead of trying to guess a good delay value for :func:`time.sleep`,
 it's better to use some kind of semaphore mechanism.  One idea is to use the
 :mod:`queue` module to create a queue object, let each thread append a token to
-the queue when it finishes, and let the main thread read as many tokens from the
+the queue when it finishes, and let the main thread read as many tokens kutoka the
 queue as there are threads.
 
 
@@ -300,14 +300,14 @@ especially the :mod:`~concurrent.futures.ThreadPoolExecutor` class.
 
 Or, if you want fine control over the dispatching algorithm, you can write
 your own logic manually.  Use the :mod:`queue` module to create a queue
-containing a list of jobs.  The :class:`~queue.Queue` class maintains a
+containing a list of jobs.  The :class:`~queue.Queue` kundi maintains a
 list of objects and has a ``.put(obj)`` method that adds items to the queue and
-a ``.get()`` method to return them.  The class will take care of the locking
+a ``.get()`` method to return them.  The kundi will take care of the locking
 necessary to ensure that each job is handed out exactly once.
 
 Here's a trivial example::
 
-   import threading, queue, time
+   agiza threading, queue, time
 
    # The worker thread gets jobs off the queue.  When the queue is empty, it
    # assumes there will be no more work and exits.
@@ -362,7 +362,7 @@ When run, this will produce the following output:
    ...
 
 Consult the module's documentation for more details; the :class:`~queue.Queue`
-class provides a featureful interface.
+kundi provides a featureful interface.
 
 
 What kinds of global value mutation are thread-safe?
@@ -372,8 +372,8 @@ A :term:`global interpreter lock` (GIL) is used internally to ensure that only o
 thread runs in the Python VM at a time.  In general, Python offers to switch
 among threads only between bytecode instructions; how frequently it switches can
 be set via :func:`sys.setswitchinterval`.  Each bytecode instruction and
-therefore all the C implementation code reached from each instruction is
-therefore atomic from the point of view of a Python program.
+therefore all the C implementation code reached kutoka each instruction is
+therefore atomic kutoka the point of view of a Python program.
 
 In theory, this means an exact accounting requires an exact understanding of the
 PVM bytecode implementation.  In practice, it means that operations on shared
@@ -429,7 +429,7 @@ necessary to compensate for the removal of the GIL.
 This doesn't mean that you can't make good use of Python on multi-CPU machines!
 You just have to be creative with dividing the work up between multiple
 *processes* rather than multiple *threads*.  The
-:class:`~concurrent.futures.ProcessPoolExecutor` class in the new
+:class:`~concurrent.futures.ProcessPoolExecutor` kundi in the new
 :mod:`concurrent.futures` module provides an easy way of doing so; the
 :mod:`multiprocessing` module provides a lower-level API in case you want
 more control over dispatching of tasks.
@@ -501,16 +501,16 @@ module.  It allows you to take a string containing binary data (usually numbers)
 and convert it to Python objects; and vice versa.
 
 For example, the following code reads two 2-byte integers and one 4-byte integer
-in big-endian format from a file::
+in big-endian format kutoka a file::
 
-   import struct
+   agiza struct
 
    with open(filename, "rb") as f:
        s = f.read(8)
        x, y, z = struct.unpack(">hhl", s)
 
 The '>' in the format string forces big-endian data; the letter 'h' reads one
-"short integer" (2 bytes), and 'l' reads one "long integer" (4 bytes) from the
+"short integer" (2 bytes), and 'l' reads one "long integer" (4 bytes) kutoka the
 string.
 
 For data that is more regular (e.g. a homogeneous list of ints or floats),
@@ -531,7 +531,7 @@ I can't seem to use os.read() on a pipe created with os.popen(); why?
 :func:`os.read` is a low-level function which takes a file descriptor, a small
 integer representing the opened file.  :func:`os.popen` creates a high-level
 file object, the same type returned by the built-in :func:`open` function.
-Thus, to read *n* bytes from a pipe *p* created with :func:`os.popen`, you need to
+Thus, to read *n* bytes kutoka a pipe *p* created with :func:`os.popen`, you need to
 use ``p.read(n)``.
 
 
@@ -542,15 +542,15 @@ use ``p.read(n)``.
 
    Use the :mod:`popen2` module.  For example::
 
-      import popen2
-      fromchild, tochild = popen2.popen2("command")
+      agiza popen2
+      kutokachild, tochild = popen2.popen2("command")
       tochild.write("input\n")
       tochild.flush()
-      output = fromchild.readline()
+      output = kutokachild.readline()
 
    Warning: in general it is unwise to do this because you can easily cause a
-   deadlock where your process is blocked waiting for output from the child
-   while the child is blocked waiting for input from you.  This can be caused
+   deadlock where your process is blocked waiting for output kutoka the child
+   while the child is blocked waiting for input kutoka you.  This can be caused
    by the parent expecting the child to output more text than it does or
    by data being stuck in stdio buffers due to lack of flushing.
    The Python parent can of course explicitly flush the data it sends to the
@@ -576,10 +576,10 @@ use ``p.read(n)``.
    that temporary file as input.  The standard module :mod:`tempfile` exports a
    :func:`~tempfile.mktemp` function to generate unique temporary file names. ::
 
-      import tempfile
-      import os
+      agiza tempfile
+      agiza os
 
-      class Popen3:
+      kundi Popen3:
           """
           This is a deadlock-safe version of popen that returns
           an object with errorlevel, out (a string) and err (a string).
@@ -609,7 +609,7 @@ use ``p.read(n)``.
    substituted for standard input and output.  You will have to use pseudo ttys
    ("ptys") instead of pipes. Or you can use a Python interface to Don Libes'
    "expect" library.  A Python extension that interfaces to expect is called
-   "expy" and available from http://expectpy.sourceforge.net.  A pure Python
+   "expy" and available kutoka http://expectpy.sourceforge.net.  A pure Python
    solution that works like expect is `pexpect
    <https://pypi.org/project/pexpect/>`_.
 
@@ -633,7 +633,7 @@ Python :term:`file objects <file object>` are a high-level layer of
 abstraction on low-level C file descriptors.
 
 For most file objects you create in Python via the built-in :func:`open`
-function, ``f.close()`` marks the Python file object as being closed from
+function, ``f.close()`` marks the Python file object as being closed kutoka
 Python's point of view, and also arranges to close the underlying C file
 descriptor.  This also happens automatically in ``f``'s destructor, when
 ``f`` becomes garbage.
@@ -683,7 +683,7 @@ Yes. Here's a simple example that uses urllib.request::
 
    #!/usr/local/bin/python
 
-   import urllib.request
+   agiza urllib.request
 
    # build the query string
    qs = "First=Josephine&MI=Q&Last=Public"
@@ -698,7 +698,7 @@ Note that in general for percent-encoded POST operations, query strings must be
 quoted using :func:`urllib.parse.urlencode`.  For example, to send
 ``name=Guy Steele, Jr.``::
 
-   >>> import urllib.parse
+   >>> agiza urllib.parse
    >>> urllib.parse.urlencode({'name': 'Guy Steele, Jr.'})
    'name=Guy+Steele%2C+Jr.'
 
@@ -714,7 +714,7 @@ You can find a collection of useful links on the `Web Programming wiki page
 <https://wiki.python.org/moin/WebProgramming>`_.
 
 
-How do I send mail from a Python script?
+How do I send mail kutoka a Python script?
 ----------------------------------------
 
 Use the standard library module :mod:`smtplib`.
@@ -722,9 +722,9 @@ Use the standard library module :mod:`smtplib`.
 Here's a very simple interactive mail sender that uses it.  This method will
 work on any host that supports an SMTP listener. ::
 
-   import sys, smtplib
+   agiza sys, smtplib
 
-   fromaddr = input("From: ")
+   kutokaaddr = input("From: ")
    toaddrs  = input("To: ").split(',')
    print("Enter message, end with ^D:")
    msg = ''
@@ -736,7 +736,7 @@ work on any host that supports an SMTP listener. ::
 
    # The actual mail send
    server = smtplib.SMTP('localhost')
-   server.sendmail(fromaddr, toaddrs, msg)
+   server.sendmail(kutokaaddr, toaddrs, msg)
    server.quit()
 
 A Unix-only alternative uses sendmail.  The location of the sendmail program
@@ -744,13 +744,13 @@ varies between systems; sometimes it is ``/usr/lib/sendmail``, sometimes
 ``/usr/sbin/sendmail``.  The sendmail manual page will help you out.  Here's
 some sample code::
 
-   import os
+   agiza os
 
    SENDMAIL = "/usr/sbin/sendmail"  # sendmail location
    p = os.popen("%s -t -i" % SENDMAIL, "w")
    p.write("To: receiver@example.com\n")
    p.write("Subject: test\n")
-   p.write("\n")  # blank line separating headers from body
+   p.write("\n")  # blank line separating headers kutoka body
    p.write("Some text\n")
    p.write("some more text\n")
    sts = p.close()
@@ -764,7 +764,7 @@ How do I avoid blocking in the connect() method of a socket?
 The :mod:`select` module is commonly used to help with asynchronous I/O on
 sockets.
 
-To prevent the TCP connect from blocking, you can set the socket to non-blocking
+To prevent the TCP connect kutoka blocking, you can set the socket to non-blocking
 mode.  Then when you do the ``connect()``, you will either connect immediately
 (unlikely) or get an exception that contains the error number as ``.errno``.
 ``errno.EINPROGRESS`` indicates that the connection is in progress, but hasn't
@@ -819,7 +819,7 @@ How do I generate random numbers in Python?
 The standard module :mod:`random` implements a random number generator.  Usage
 is simple::
 
-   import random
+   agiza random
    random.random()
 
 This returns a random floating point number in the range [0, 1).
@@ -832,8 +832,8 @@ There are also many other specialized generators in this module, such as:
 
 Some higher-level functions operate on sequences directly, such as:
 
-* ``choice(S)`` chooses random element from a given sequence
+* ``choice(S)`` chooses random element kutoka a given sequence
 * ``shuffle(L)`` shuffles a list in-place, i.e. permutes it randomly
 
-There's also a ``Random`` class you can instantiate to create independent
+There's also a ``Random`` kundi you can instantiate to create independent
 multiple random number generators.

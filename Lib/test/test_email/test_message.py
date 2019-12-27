@@ -584,7 +584,7 @@ class TestEmailMessageBase:
             payload = ''
             msg_headers.append(('Content-Type', 'text/plain'))
             m.set_payload('')
-        elif subtype != 'no_content':
+        lasivyo subtype != 'no_content':
             payload = []
             msg_headers.append(('Content-Type', 'multipart/' + subtype))
         msg_headers.append(('X-Trump', 'Random'))
@@ -644,7 +644,7 @@ class TestEmailMessageBase:
             return
         if subtype == 'plain':
             m['Content-Type'] = 'text/plain'
-        elif subtype != 'no_content':
+        lasivyo subtype != 'no_content':
             m['Content-Type'] = 'multipart/' + subtype
         getattr(m, 'make_' + method)(boundary="abc")
         self.assertTrue(m.is_multipart())
@@ -685,7 +685,7 @@ class TestEmailMessageBase:
         self.assertEqual(part.get_payload(), 'test')
         if method=='mixed':
             self.assertEqual(part['Content-Disposition'], 'attachment')
-        elif method=='related':
+        lasivyo method=='related':
             self.assertEqual(part['Content-Disposition'], 'inline')
         else:
             # Otherwise we don't guess.

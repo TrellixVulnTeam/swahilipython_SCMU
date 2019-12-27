@@ -4,19 +4,19 @@ kutoka idlelib agiza debugobj_r
 agiza unittest
 
 
-class WrappedObjectTreeItemTest(unittest.TestCase):
+kundi WrappedObjectTreeItemTest(unittest.TestCase):
 
-    def test_getattr(self):
+    eleza test_getattr(self):
         ti = debugobj_r.WrappedObjectTreeItem(list)
         self.assertEqual(ti.append, list.append)
 
-class StubObjectTreeItemTest(unittest.TestCase):
+kundi StubObjectTreeItemTest(unittest.TestCase):
 
-    def test_init(self):
+    eleza test_init(self):
         ti = debugobj_r.StubObjectTreeItem('socket', 1111)
         self.assertEqual(ti.sockio, 'socket')
         self.assertEqual(ti.oid, 1111)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

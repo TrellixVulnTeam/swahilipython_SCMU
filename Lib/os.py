@@ -34,18 +34,18 @@ __all__ = ["altsep", "curdir", "pardir", "sep", "pathsep", "linesep",
            "SEEK_END", "fsencode", "fsdecode", "get_exec_path", "fdopen",
            "popen", "extsep"]
 
-def _exists(name):
-    return name in globals()
+eleza _exists(name):
+    rudisha name in globals()
 
-def _get_exports_list(module):
+eleza _get_exports_list(module):
     try:
-        return list(module.__all__)
+        rudisha list(module.__all__)
     except AttributeError:
-        return [n for n in dir(module) if n[0] != '_']
+        rudisha [n for n in dir(module) ikiwa n[0] != '_']
 
 # Any new dependencies of the os module and/or changes in path separator
 # requires updating importlib as well.
-if 'posix' in _names:
+ikiwa 'posix' in _names:
     name = 'posix'
     linesep = '\n'
     kutoka posix agiza *
@@ -65,7 +65,7 @@ if 'posix' in _names:
     __all__.extend(_get_exports_list(posix))
     del posix
 
-elif 'nt' in _names:
+elikiwa 'nt' in _names:
     name = 'nt'
     linesep = '\r\n'
     kutoka nt agiza *
@@ -95,10 +95,10 @@ kutoka os.path agiza (curdir, pardir, sep, pathsep, defpath, extsep, altsep,
 del _names
 
 
-if _exists("_have_functions"):
+ikiwa _exists("_have_functions"):
     _globals = globals()
-    def _add(str, fn):
-        if (fn in _globals) and (str in _have_functions):
+    eleza _add(str, fn):
+        ikiwa (fn in _globals) and (str in _have_functions):
             _set.add(_globals[fn])
 
     _set = set()
@@ -136,7 +136,7 @@ if _exists("_have_functions"):
     _add("HAVE_FUTIMENS",   "utime")
     _add("HAVE_FUTIMES",    "utime")
     _add("HAVE_FPATHCONF",  "pathconf")
-    if _exists("statvfs") and _exists("fstatvfs"): # mac os x10.3
+    ikiwa _exists("statvfs") and _exists("fstatvfs"): # mac os x10.3
         _add("HAVE_FSTATVFS", "statvfs")
     supports_fd = _set
 
@@ -159,7 +159,7 @@ if _exists("_have_functions"):
     #
     # Therefore we simply ignore fchmodat() when deciding whether or not
     # os.chmod supports follow_symlinks.  Just checking lchmod() is
-    # sufficient.  After all--if you have a working fchmodat(), your
+    # sufficient.  After all--ikiwa you have a working fchmodat(), your
     # lchmod() almost certainly works too.
     #
     # _add("HAVE_FCHMODAT",   "chmod")
@@ -167,7 +167,7 @@ if _exists("_have_functions"):
     _add("HAVE_FSTATAT",    "stat")
     _add("HAVE_LCHFLAGS",   "chflags")
     _add("HAVE_LCHMOD",     "chmod")
-    if _exists("lchown"): # mac os x10.3
+    ikiwa _exists("lchown"): # mac os x10.3
         _add("HAVE_LCHOWN", "chown")
     _add("HAVE_LINKAT",     "link")
     _add("HAVE_LUTIMES",    "utime")
@@ -184,7 +184,7 @@ if _exists("_have_functions"):
 
 
 # Python uses fixed values for the SEEK_ constants; they are mapped
-# to native constants if necessary in posixmodule.c
+# to native constants ikiwa necessary in posixmodule.c
 # Other possible SEEK values are directly imported kutoka posixmodule.c
 SEEK_SET = 0
 SEEK_CUR = 1
@@ -193,43 +193,43 @@ SEEK_END = 2
 # Super directory utilities.
 # (Inspired by Eric Raymond; the doc strings are mostly his)
 
-def makedirs(name, mode=0o777, exist_ok=False):
+eleza makedirs(name, mode=0o777, exist_ok=False):
     """makedirs(name [, mode=0o777][, exist_ok=False])
 
     Super-mkdir; create a leaf directory and all intermediate ones.  Works like
     mkdir, except that any intermediate path segment (not just the rightmost)
-    will be created if it does not exist. If the target directory already
-    exists, raise an OSError if exist_ok is False. Otherwise no exception is
+    will be created ikiwa it does not exist. If the target directory already
+    exists, raise an OSError ikiwa exist_ok is False. Otherwise no exception is
     raised.  This is recursive.
 
     """
     head, tail = path.split(name)
-    if not tail:
+    ikiwa not tail:
         head, tail = path.split(head)
-    if head and tail and not path.exists(head):
+    ikiwa head and tail and not path.exists(head):
         try:
             makedirs(head, exist_ok=exist_ok)
         except FileExistsError:
             # Defeats race condition when another thread created the path
             pass
         cdir = curdir
-        if isinstance(tail, bytes):
+        ikiwa isinstance(tail, bytes):
             cdir = bytes(curdir, 'ASCII')
-        if tail == cdir:           # xxx/newdir/. exists if xxx/newdir exists
+        ikiwa tail == cdir:           # xxx/newdir/. exists ikiwa xxx/newdir exists
             return
     try:
         mkdir(name, mode)
     except OSError:
         # Cannot rely on checking for EEXIST, since the operating system
         # could give priority to other errors like EACCES or EROFS
-        if not exist_ok or not path.isdir(name):
+        ikiwa not exist_ok or not path.isdir(name):
             raise
 
-def removedirs(name):
+eleza removedirs(name):
     """removedirs(name)
 
     Super-rmdir; remove a leaf directory and all empty intermediate
-    ones.  Works like rmdir except that, if the leaf directory is
+    ones.  Works like rmdir except that, ikiwa the leaf directory is
     successfully removed, directories corresponding to rightmost path
     segments will be pruned away until either the whole path is
     consumed or an error occurs.  Errors during this latter phase are
@@ -238,7 +238,7 @@ def removedirs(name):
     """
     rmdir(name)
     head, tail = path.split(name)
-    if not tail:
+    ikiwa not tail:
         head, tail = path.split(head)
     while head and tail:
         try:
@@ -247,7 +247,7 @@ def removedirs(name):
             break
         head, tail = path.split(head)
 
-def renames(old, new):
+eleza renames(old, new):
     """renames(old, new)
 
     Super-rename; create directories as necessary and delete any left
@@ -258,16 +258,16 @@ def renames(old, new):
     whole path is consumed or a nonempty directory is found.
 
     Note: this function can fail with the new directory structure made
-    if you lack permissions needed to unlink the leaf directory or
+    ikiwa you lack permissions needed to unlink the leaf directory or
     file.
 
     """
     head, tail = path.split(new)
-    if head and tail and not path.exists(head):
+    ikiwa head and tail and not path.exists(head):
         makedirs(head)
     rename(old, new)
     head, tail = path.split(old)
-    if head and tail:
+    ikiwa head and tail:
         try:
             removedirs(head)
         except OSError:
@@ -275,7 +275,7 @@ def renames(old, new):
 
 __all__.extend(["makedirs", "removedirs", "renames"])
 
-def walk(top, topdown=True, onerror=None, followlinks=False):
+eleza walk(top, topdown=True, onerror=None, followlinks=False):
     """Directory tree generator.
 
     For each directory in the directory tree rooted at top (including top
@@ -317,7 +317,7 @@ def walk(top, topdown=True, onerror=None, followlinks=False):
     systems that support them.  In order to get this functionality, set the
     optional argument 'followlinks' to true.
 
-    Caution:  if you pass a relative pathname for top, don't change the
+    Caution:  ikiwa you pass a relative pathname for top, don't change the
     current working directory between resumptions of walk.  walk never
     changes the current directory, and assumes that the client doesn't
     either.
@@ -327,10 +327,10 @@ def walk(top, topdown=True, onerror=None, followlinks=False):
     agiza os
     kutoka os.path agiza join, getsize
     for root, dirs, files in os.walk('python/Lib/email'):
-        print(root, "consumes", end="")
-        print(sum(getsize(join(root, name)) for name in files), end="")
-        print("bytes in", len(files), "non-directory files")
-        if 'CVS' in dirs:
+        andika(root, "consumes", end="")
+        andika(sum(getsize(join(root, name)) for name in files), end="")
+        andika("bytes in", len(files), "non-directory files")
+        ikiwa 'CVS' in dirs:
             dirs.remove('CVS')  # don't visit CVS directories
 
     """
@@ -349,7 +349,7 @@ def walk(top, topdown=True, onerror=None, followlinks=False):
         # to earlier agiza-*.
         scandir_it = scandir(top)
     except OSError as error:
-        if onerror is not None:
+        ikiwa onerror is not None:
             onerror(error)
         return
 
@@ -361,7 +361,7 @@ def walk(top, topdown=True, onerror=None, followlinks=False):
                 except StopIteration:
                     break
             except OSError as error:
-                if onerror is not None:
+                ikiwa onerror is not None:
                     onerror(error)
                 return
 
@@ -372,15 +372,15 @@ def walk(top, topdown=True, onerror=None, followlinks=False):
                 # a directory, same behaviour than os.path.isdir().
                 is_dir = False
 
-            if is_dir:
+            ikiwa is_dir:
                 dirs.append(entry.name)
             else:
                 nondirs.append(entry.name)
 
-            if not topdown and is_dir:
+            ikiwa not topdown and is_dir:
                 # Bottom-up: recurse into sub-directory, but exclude symlinks to
-                # directories if followlinks is False
-                if followlinks:
+                # directories ikiwa followlinks is False
+                ikiwa followlinks:
                     walk_into = True
                 else:
                     try:
@@ -392,11 +392,11 @@ def walk(top, topdown=True, onerror=None, followlinks=False):
                         is_symlink = False
                     walk_into = not is_symlink
 
-                if walk_into:
+                ikiwa walk_into:
                     walk_dirs.append(entry.path)
 
-    # Yield before recursion if going top down
-    if topdown:
+    # Yield before recursion ikiwa going top down
+    ikiwa topdown:
         yield top, dirs, nondirs
 
         # Recurse into sub-directories
@@ -407,20 +407,20 @@ def walk(top, topdown=True, onerror=None, followlinks=False):
             # entry.is_symlink() result during the loop on os.scandir() because
             # the caller can replace the directory entry during the "yield"
             # above.
-            if followlinks or not islink(new_path):
+            ikiwa followlinks or not islink(new_path):
                 yield kutoka walk(new_path, topdown, onerror, followlinks)
     else:
         # Recurse into sub-directories
         for new_path in walk_dirs:
             yield kutoka walk(new_path, topdown, onerror, followlinks)
-        # Yield after recursion if going bottom up
+        # Yield after recursion ikiwa going bottom up
         yield top, dirs, nondirs
 
 __all__.append("walk")
 
-if {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
+ikiwa {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
 
-    def fwalk(top=".", topdown=True, onerror=None, *, follow_symlinks=False, dir_fd=None):
+    eleza fwalk(top=".", topdown=True, onerror=None, *, follow_symlinks=False, dir_fd=None):
         """Directory tree generator.
 
         This behaves exactly like walk(), except that it yields a 4-tuple
@@ -439,36 +439,36 @@ if {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
 
         Caution:
         Since fwalk() yields file descriptors, those are only valid until the
-        next iteration step, so you should dup() them if you want to keep them
+        next iteration step, so you should dup() them ikiwa you want to keep them
         for a longer period.
 
         Example:
 
         agiza os
         for root, dirs, files, rootfd in os.fwalk('python/Lib/email'):
-            print(root, "consumes", end="")
-            print(sum(os.stat(name, dir_fd=rootfd).st_size for name in files),
+            andika(root, "consumes", end="")
+            andika(sum(os.stat(name, dir_fd=rootfd).st_size for name in files),
                   end="")
-            print("bytes in", len(files), "non-directory files")
-            if 'CVS' in dirs:
+            andika("bytes in", len(files), "non-directory files")
+            ikiwa 'CVS' in dirs:
                 dirs.remove('CVS')  # don't visit CVS directories
         """
-        if not isinstance(top, int) or not hasattr(top, '__index__'):
+        ikiwa not isinstance(top, int) or not hasattr(top, '__index__'):
             top = fspath(top)
         # Note: To guard against symlink races, we use the standard
         # lstat()/open()/fstat() trick.
-        if not follow_symlinks:
+        ikiwa not follow_symlinks:
             orig_st = stat(top, follow_symlinks=False, dir_fd=dir_fd)
         topfd = open(top, O_RDONLY, dir_fd=dir_fd)
         try:
-            if (follow_symlinks or (st.S_ISDIR(orig_st.st_mode) and
+            ikiwa (follow_symlinks or (st.S_ISDIR(orig_st.st_mode) and
                                     path.samestat(orig_st, stat(topfd)))):
                 yield kutoka _fwalk(topfd, top, isinstance(top, bytes),
                                   topdown, onerror, follow_symlinks)
         finally:
             close(topfd)
 
-    def _fwalk(topfd, toppath, isbytes, topdown, onerror, follow_symlinks):
+    eleza _fwalk(topfd, toppath, isbytes, topdown, onerror, follow_symlinks):
         # Note: This uses O(depth of the directory tree) file descriptors: if
         # necessary, it can be adapted to only require O(1) FDs, see issue
         # #13734.
@@ -476,33 +476,33 @@ if {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
         scandir_it = scandir(topfd)
         dirs = []
         nondirs = []
-        entries = None if topdown or follow_symlinks else []
+        entries = None ikiwa topdown or follow_symlinks else []
         for entry in scandir_it:
             name = entry.name
-            if isbytes:
+            ikiwa isbytes:
                 name = fsencode(name)
             try:
-                if entry.is_dir():
+                ikiwa entry.is_dir():
                     dirs.append(name)
-                    if entries is not None:
+                    ikiwa entries is not None:
                         entries.append(entry)
                 else:
                     nondirs.append(name)
             except OSError:
                 try:
                     # Add dangling symlinks, ignore disappeared files
-                    if entry.is_symlink():
+                    ikiwa entry.is_symlink():
                         nondirs.append(name)
                 except OSError:
                     pass
 
-        if topdown:
+        ikiwa topdown:
             yield toppath, dirs, nondirs, topfd
 
-        for name in dirs if entries is None else zip(dirs, entries):
+        for name in dirs ikiwa entries is None else zip(dirs, entries):
             try:
-                if not follow_symlinks:
-                    if topdown:
+                ikiwa not follow_symlinks:
+                    ikiwa topdown:
                         orig_st = stat(name, dir_fd=topfd, follow_symlinks=False)
                     else:
                         assert entries is not None
@@ -510,30 +510,30 @@ if {open, stat} <= supports_dir_fd and {scandir, stat} <= supports_fd:
                         orig_st = entry.stat(follow_symlinks=False)
                 dirfd = open(name, O_RDONLY, dir_fd=topfd)
             except OSError as err:
-                if onerror is not None:
+                ikiwa onerror is not None:
                     onerror(err)
                 continue
             try:
-                if follow_symlinks or path.samestat(orig_st, stat(dirfd)):
+                ikiwa follow_symlinks or path.samestat(orig_st, stat(dirfd)):
                     dirpath = path.join(toppath, name)
                     yield kutoka _fwalk(dirfd, dirpath, isbytes,
                                       topdown, onerror, follow_symlinks)
             finally:
                 close(dirfd)
 
-        if not topdown:
+        ikiwa not topdown:
             yield toppath, dirs, nondirs, topfd
 
     __all__.append("fwalk")
 
-def execl(file, *args):
+eleza execl(file, *args):
     """execl(file, *args)
 
     Execute the executable file with argument list args, replacing the
     current process. """
     execv(file, args)
 
-def execle(file, *args):
+eleza execle(file, *args):
     """execle(file, *args, env)
 
     Execute the executable file with argument list args and
@@ -541,14 +541,14 @@ def execle(file, *args):
     env = args[-1]
     execve(file, args[:-1], env)
 
-def execlp(file, *args):
+eleza execlp(file, *args):
     """execlp(file, *args)
 
     Execute the executable file (which is searched for along $PATH)
     with argument list args, replacing the current process. """
     execvp(file, args)
 
-def execlpe(file, *args):
+eleza execlpe(file, *args):
     """execlpe(file, *args, env)
 
     Execute the executable file (which is searched for along $PATH)
@@ -557,7 +557,7 @@ def execlpe(file, *args):
     env = args[-1]
     execvpe(file, args[:-1], env)
 
-def execvp(file, args):
+eleza execvp(file, args):
     """execvp(file, args)
 
     Execute the executable file (which is searched for along $PATH)
@@ -565,7 +565,7 @@ def execvp(file, args):
     args may be a list or tuple of strings. """
     _execvpe(file, args)
 
-def execvpe(file, args, env):
+eleza execvpe(file, args, env):
     """execvpe(file, args, env)
 
     Execute the executable file (which is searched for along $PATH)
@@ -576,8 +576,8 @@ def execvpe(file, args, env):
 
 __all__.extend(["execl","execle","execlp","execlpe","execvp","execvpe"])
 
-def _execvpe(file, args, env=None):
-    if env is not None:
+eleza _execvpe(file, args, env=None):
+    ikiwa env is not None:
         exec_func = execve
         argrest = (args, env)
     else:
@@ -585,12 +585,12 @@ def _execvpe(file, args, env=None):
         argrest = (args,)
         env = environ
 
-    if path.dirname(file):
+    ikiwa path.dirname(file):
         exec_func(file, *argrest)
         return
     saved_exc = None
     path_list = get_exec_path(env)
-    if name != 'nt':
+    ikiwa name != 'nt':
         file = fsencode(file)
         path_list = map(fsencode, path_list)
     for dir in path_list:
@@ -601,14 +601,14 @@ def _execvpe(file, args, env=None):
             last_exc = e
         except OSError as e:
             last_exc = e
-            if saved_exc is None:
+            ikiwa saved_exc is None:
                 saved_exc = e
-    if saved_exc is not None:
+    ikiwa saved_exc is not None:
         raise saved_exc
     raise last_exc
 
 
-def get_exec_path(env=None):
+eleza get_exec_path(env=None):
     """Returns the sequence of directories that will be searched for the
     named executable (similar to a shell) when launching a process.
 
@@ -620,7 +620,7 @@ def get_exec_path(env=None):
     # Python. It may also avoid a bootstrap issue.
     agiza warnings
 
-    if env is None:
+    ikiwa env is None:
         env = environ
 
     # {b'PATH': ...}.get('PATH') and {'PATH': ...}.get(b'PATH') emit a
@@ -633,30 +633,30 @@ def get_exec_path(env=None):
         except TypeError:
             path_list = None
 
-        if supports_bytes_environ:
+        ikiwa supports_bytes_environ:
             try:
                 path_listb = env[b'PATH']
             except (KeyError, TypeError):
                 pass
             else:
-                if path_list is not None:
+                ikiwa path_list is not None:
                     raise ValueError(
                         "env cannot contain 'PATH' and b'PATH' keys")
                 path_list = path_listb
 
-            if path_list is not None and isinstance(path_list, bytes):
+            ikiwa path_list is not None and isinstance(path_list, bytes):
                 path_list = fsdecode(path_list)
 
-    if path_list is None:
+    ikiwa path_list is None:
         path_list = defpath
-    return path_list.split(pathsep)
+    rudisha path_list.split(pathsep)
 
 
-# Change environ to automatically call putenv(), unsetenv if they exist.
+# Change environ to automatically call putenv(), unsetenv ikiwa they exist.
 kutoka _collections_abc agiza MutableMapping
 
-class _Environ(MutableMapping):
-    def __init__(self, data, encodekey, decodekey, encodevalue, decodevalue, putenv, unsetenv):
+kundi _Environ(MutableMapping):
+    eleza __init__(self, data, encodekey, decodekey, encodevalue, decodevalue, putenv, unsetenv):
         self.encodekey = encodekey
         self.decodekey = decodekey
         self.encodevalue = encodevalue
@@ -665,21 +665,21 @@ class _Environ(MutableMapping):
         self.unsetenv = unsetenv
         self._data = data
 
-    def __getitem__(self, key):
+    eleza __getitem__(self, key):
         try:
             value = self._data[self.encodekey(key)]
         except KeyError:
             # raise KeyError with the original key value
             raise KeyError(key) kutoka None
-        return self.decodevalue(value)
+        rudisha self.decodevalue(value)
 
-    def __setitem__(self, key, value):
+    eleza __setitem__(self, key, value):
         key = self.encodekey(key)
         value = self.encodevalue(value)
         self.putenv(key, value)
         self._data[key] = value
 
-    def __delitem__(self, key):
+    eleza __delitem__(self, key):
         encodedkey = self.encodekey(key)
         self.unsetenv(encodedkey)
         try:
@@ -688,34 +688,34 @@ class _Environ(MutableMapping):
             # raise KeyError with the original key value
             raise KeyError(key) kutoka None
 
-    def __iter__(self):
+    eleza __iter__(self):
         # list() kutoka dict object is an atomic operation
         keys = list(self._data)
         for key in keys:
             yield self.decodekey(key)
 
-    def __len__(self):
-        return len(self._data)
+    eleza __len__(self):
+        rudisha len(self._data)
 
-    def __repr__(self):
-        return 'environ({{{}}})'.format(', '.join(
+    eleza __repr__(self):
+        rudisha 'environ({{{}}})'.format(', '.join(
             ('{!r}: {!r}'.format(self.decodekey(key), self.decodevalue(value))
             for key, value in self._data.items())))
 
-    def copy(self):
-        return dict(self)
+    eleza copy(self):
+        rudisha dict(self)
 
-    def setdefault(self, key, value):
-        if key not in self:
+    eleza setdefault(self, key, value):
+        ikiwa key not in self:
             self[key] = value
-        return self[key]
+        rudisha self[key]
 
 try:
     _putenv = putenv
 except NameError:
     _putenv = lambda key, value: None
 else:
-    if "putenv" not in __all__:
+    ikiwa "putenv" not in __all__:
         __all__.append("putenv")
 
 try:
@@ -723,35 +723,35 @@ try:
 except NameError:
     _unsetenv = lambda key: _putenv(key, "")
 else:
-    if "unsetenv" not in __all__:
+    ikiwa "unsetenv" not in __all__:
         __all__.append("unsetenv")
 
-def _createenviron():
-    if name == 'nt':
+eleza _createenviron():
+    ikiwa name == 'nt':
         # Where Env Var Names Must Be UPPERCASE
-        def check_str(value):
-            if not isinstance(value, str):
+        eleza check_str(value):
+            ikiwa not isinstance(value, str):
                 raise TypeError("str expected, not %s" % type(value).__name__)
-            return value
+            rudisha value
         encode = check_str
         decode = str
-        def encodekey(key):
-            return encode(key).upper()
+        eleza encodekey(key):
+            rudisha encode(key).upper()
         data = {}
         for key, value in environ.items():
             data[encodekey(key)] = value
     else:
         # Where Env Var Names Can Be Mixed Case
         encoding = sys.getfilesystemencoding()
-        def encode(value):
-            if not isinstance(value, str):
+        eleza encode(value):
+            ikiwa not isinstance(value, str):
                 raise TypeError("str expected, not %s" % type(value).__name__)
-            return value.encode(encoding, 'surrogateescape')
-        def decode(value):
-            return value.decode(encoding, 'surrogateescape')
+            rudisha value.encode(encoding, 'surrogateescape')
+        eleza decode(value):
+            rudisha value.decode(encoding, 'surrogateescape')
         encodekey = encode
         data = environ
-    return _Environ(data,
+    rudisha _Environ(data,
         encodekey, decode,
         encode, decode,
         _putenv, _unsetenv)
@@ -761,20 +761,20 @@ environ = _createenviron()
 del _createenviron
 
 
-def getenv(key, default=None):
-    """Get an environment variable, return None if it doesn't exist.
+eleza getenv(key, default=None):
+    """Get an environment variable, rudisha None ikiwa it doesn't exist.
     The optional second argument can specify an alternate default.
     key, default and the result are str."""
-    return environ.get(key, default)
+    rudisha environ.get(key, default)
 
 supports_bytes_environ = (name != 'nt')
 __all__.extend(("getenv", "supports_bytes_environ"))
 
-if supports_bytes_environ:
-    def _check_bytes(value):
-        if not isinstance(value, bytes):
+ikiwa supports_bytes_environ:
+    eleza _check_bytes(value):
+        ikiwa not isinstance(value, bytes):
             raise TypeError("bytes expected, not %s" % type(value).__name__)
-        return value
+        rudisha value
 
     # bytes environ
     environb = _Environ(environ._data,
@@ -783,49 +783,49 @@ if supports_bytes_environ:
         _putenv, _unsetenv)
     del _check_bytes
 
-    def getenvb(key, default=None):
-        """Get an environment variable, return None if it doesn't exist.
+    eleza getenvb(key, default=None):
+        """Get an environment variable, rudisha None ikiwa it doesn't exist.
         The optional second argument can specify an alternate default.
         key, default and the result are bytes."""
-        return environb.get(key, default)
+        rudisha environb.get(key, default)
 
     __all__.extend(("environb", "getenvb"))
 
-def _fscodec():
+eleza _fscodec():
     encoding = sys.getfilesystemencoding()
     errors = sys.getfilesystemencodeerrors()
 
-    def fsencode(filename):
+    eleza fsencode(filename):
         """Encode filename (an os.PathLike, bytes, or str) to the filesystem
-        encoding with 'surrogateescape' error handler, return bytes unchanged.
-        On Windows, use 'strict' error handler if the file system encoding is
+        encoding with 'surrogateescape' error handler, rudisha bytes unchanged.
+        On Windows, use 'strict' error handler ikiwa the file system encoding is
         'mbcs' (which is the default encoding).
         """
         filename = fspath(filename)  # Does type-checking of `filename`.
-        if isinstance(filename, str):
-            return filename.encode(encoding, errors)
+        ikiwa isinstance(filename, str):
+            rudisha filename.encode(encoding, errors)
         else:
-            return filename
+            rudisha filename
 
-    def fsdecode(filename):
+    eleza fsdecode(filename):
         """Decode filename (an os.PathLike, bytes, or str) kutoka the filesystem
-        encoding with 'surrogateescape' error handler, return str unchanged. On
-        Windows, use 'strict' error handler if the file system encoding is
+        encoding with 'surrogateescape' error handler, rudisha str unchanged. On
+        Windows, use 'strict' error handler ikiwa the file system encoding is
         'mbcs' (which is the default encoding).
         """
         filename = fspath(filename)  # Does type-checking of `filename`.
-        if isinstance(filename, bytes):
-            return filename.decode(encoding, errors)
+        ikiwa isinstance(filename, bytes):
+            rudisha filename.decode(encoding, errors)
         else:
-            return filename
+            rudisha filename
 
-    return fsencode, fsdecode
+    rudisha fsencode, fsdecode
 
 fsencode, fsdecode = _fscodec()
 del _fscodec
 
 # Supply spawn*() (probably only for Unix)
-if _exists("fork") and not _exists("spawnv") and _exists("execv"):
+ikiwa _exists("fork") and not _exists("spawnv") and _exists("execv"):
 
     P_WAIT = 0
     P_NOWAIT = P_NOWAITO = 1
@@ -836,17 +836,17 @@ if _exists("fork") and not _exists("spawnv") and _exists("execv"):
     # and close the std I/O streams.  Also, P_OVERLAY is the same
     # as execv*()?
 
-    def _spawnvef(mode, file, args, env, func):
+    eleza _spawnvef(mode, file, args, env, func):
         # Internal helper; func is the exec*() function to use
-        if not isinstance(args, (tuple, list)):
+        ikiwa not isinstance(args, (tuple, list)):
             raise TypeError('argv must be a tuple or a list')
-        if not args or not args[0]:
+        ikiwa not args or not args[0]:
             raise ValueError('argv first element cannot be empty')
         pid = fork()
-        if not pid:
+        ikiwa not pid:
             # Child
             try:
-                if env is None:
+                ikiwa env is None:
                     func(file, args)
                 else:
                     func(file, args, env)
@@ -854,176 +854,176 @@ if _exists("fork") and not _exists("spawnv") and _exists("execv"):
                 _exit(127)
         else:
             # Parent
-            if mode == P_NOWAIT:
-                return pid # Caller is responsible for waiting!
+            ikiwa mode == P_NOWAIT:
+                rudisha pid # Caller is responsible for waiting!
             while 1:
                 wpid, sts = waitpid(pid, 0)
-                if WIFSTOPPED(sts):
+                ikiwa WIFSTOPPED(sts):
                     continue
-                elif WIFSIGNALED(sts):
-                    return -WTERMSIG(sts)
-                elif WIFEXITED(sts):
-                    return WEXITSTATUS(sts)
+                elikiwa WIFSIGNALED(sts):
+                    rudisha -WTERMSIG(sts)
+                elikiwa WIFEXITED(sts):
+                    rudisha WEXITSTATUS(sts)
                 else:
                     raise OSError("Not stopped, signaled or exited???")
 
-    def spawnv(mode, file, args):
+    eleza spawnv(mode, file, args):
         """spawnv(mode, file, args) -> integer
 
 Execute file with arguments kutoka args in a subprocess.
-If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code if it exits normally;
-otherwise return -SIG, where SIG is the signal that killed it. """
-        return _spawnvef(mode, file, args, None, execv)
+If mode == P_NOWAIT rudisha the pid of the process.
+If mode == P_WAIT rudisha the process's exit code ikiwa it exits normally;
+otherwise rudisha -SIG, where SIG is the signal that killed it. """
+        rudisha _spawnvef(mode, file, args, None, execv)
 
-    def spawnve(mode, file, args, env):
+    eleza spawnve(mode, file, args, env):
         """spawnve(mode, file, args, env) -> integer
 
 Execute file with arguments kutoka args in a subprocess with the
 specified environment.
-If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code if it exits normally;
-otherwise return -SIG, where SIG is the signal that killed it. """
-        return _spawnvef(mode, file, args, env, execve)
+If mode == P_NOWAIT rudisha the pid of the process.
+If mode == P_WAIT rudisha the process's exit code ikiwa it exits normally;
+otherwise rudisha -SIG, where SIG is the signal that killed it. """
+        rudisha _spawnvef(mode, file, args, env, execve)
 
     # Note: spawnvp[e] isn't currently supported on Windows
 
-    def spawnvp(mode, file, args):
+    eleza spawnvp(mode, file, args):
         """spawnvp(mode, file, args) -> integer
 
 Execute file (which is looked for along $PATH) with arguments kutoka
 args in a subprocess.
-If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code if it exits normally;
-otherwise return -SIG, where SIG is the signal that killed it. """
-        return _spawnvef(mode, file, args, None, execvp)
+If mode == P_NOWAIT rudisha the pid of the process.
+If mode == P_WAIT rudisha the process's exit code ikiwa it exits normally;
+otherwise rudisha -SIG, where SIG is the signal that killed it. """
+        rudisha _spawnvef(mode, file, args, None, execvp)
 
-    def spawnvpe(mode, file, args, env):
+    eleza spawnvpe(mode, file, args, env):
         """spawnvpe(mode, file, args, env) -> integer
 
 Execute file (which is looked for along $PATH) with arguments kutoka
 args in a subprocess with the supplied environment.
-If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code if it exits normally;
-otherwise return -SIG, where SIG is the signal that killed it. """
-        return _spawnvef(mode, file, args, env, execvpe)
+If mode == P_NOWAIT rudisha the pid of the process.
+If mode == P_WAIT rudisha the process's exit code ikiwa it exits normally;
+otherwise rudisha -SIG, where SIG is the signal that killed it. """
+        rudisha _spawnvef(mode, file, args, env, execvpe)
 
 
     __all__.extend(["spawnv", "spawnve", "spawnvp", "spawnvpe"])
 
 
-if _exists("spawnv"):
+ikiwa _exists("spawnv"):
     # These aren't supplied by the basic Windows code
     # but can be easily implemented in Python
 
-    def spawnl(mode, file, *args):
+    eleza spawnl(mode, file, *args):
         """spawnl(mode, file, *args) -> integer
 
 Execute file with arguments kutoka args in a subprocess.
-If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code if it exits normally;
-otherwise return -SIG, where SIG is the signal that killed it. """
-        return spawnv(mode, file, args)
+If mode == P_NOWAIT rudisha the pid of the process.
+If mode == P_WAIT rudisha the process's exit code ikiwa it exits normally;
+otherwise rudisha -SIG, where SIG is the signal that killed it. """
+        rudisha spawnv(mode, file, args)
 
-    def spawnle(mode, file, *args):
+    eleza spawnle(mode, file, *args):
         """spawnle(mode, file, *args, env) -> integer
 
 Execute file with arguments kutoka args in a subprocess with the
 supplied environment.
-If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code if it exits normally;
-otherwise return -SIG, where SIG is the signal that killed it. """
+If mode == P_NOWAIT rudisha the pid of the process.
+If mode == P_WAIT rudisha the process's exit code ikiwa it exits normally;
+otherwise rudisha -SIG, where SIG is the signal that killed it. """
         env = args[-1]
-        return spawnve(mode, file, args[:-1], env)
+        rudisha spawnve(mode, file, args[:-1], env)
 
 
     __all__.extend(["spawnl", "spawnle"])
 
 
-if _exists("spawnvp"):
+ikiwa _exists("spawnvp"):
     # At the moment, Windows doesn't implement spawnvp[e],
     # so it won't have spawnlp[e] either.
-    def spawnlp(mode, file, *args):
+    eleza spawnlp(mode, file, *args):
         """spawnlp(mode, file, *args) -> integer
 
 Execute file (which is looked for along $PATH) with arguments kutoka
 args in a subprocess with the supplied environment.
-If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code if it exits normally;
-otherwise return -SIG, where SIG is the signal that killed it. """
-        return spawnvp(mode, file, args)
+If mode == P_NOWAIT rudisha the pid of the process.
+If mode == P_WAIT rudisha the process's exit code ikiwa it exits normally;
+otherwise rudisha -SIG, where SIG is the signal that killed it. """
+        rudisha spawnvp(mode, file, args)
 
-    def spawnlpe(mode, file, *args):
+    eleza spawnlpe(mode, file, *args):
         """spawnlpe(mode, file, *args, env) -> integer
 
 Execute file (which is looked for along $PATH) with arguments kutoka
 args in a subprocess with the supplied environment.
-If mode == P_NOWAIT return the pid of the process.
-If mode == P_WAIT return the process's exit code if it exits normally;
-otherwise return -SIG, where SIG is the signal that killed it. """
+If mode == P_NOWAIT rudisha the pid of the process.
+If mode == P_WAIT rudisha the process's exit code ikiwa it exits normally;
+otherwise rudisha -SIG, where SIG is the signal that killed it. """
         env = args[-1]
-        return spawnvpe(mode, file, args[:-1], env)
+        rudisha spawnvpe(mode, file, args[:-1], env)
 
 
     __all__.extend(["spawnlp", "spawnlpe"])
 
 
 # Supply os.popen()
-def popen(cmd, mode="r", buffering=-1):
-    if not isinstance(cmd, str):
+eleza popen(cmd, mode="r", buffering=-1):
+    ikiwa not isinstance(cmd, str):
         raise TypeError("invalid cmd type (%s, expected string)" % type(cmd))
-    if mode not in ("r", "w"):
+    ikiwa mode not in ("r", "w"):
         raise ValueError("invalid mode %r" % mode)
-    if buffering == 0 or buffering is None:
+    ikiwa buffering == 0 or buffering is None:
         raise ValueError("popen() does not support unbuffered streams")
     agiza subprocess, io
-    if mode == "r":
+    ikiwa mode == "r":
         proc = subprocess.Popen(cmd,
                                 shell=True,
                                 stdout=subprocess.PIPE,
                                 bufsize=buffering)
-        return _wrap_close(io.TextIOWrapper(proc.stdout), proc)
+        rudisha _wrap_close(io.TextIOWrapper(proc.stdout), proc)
     else:
         proc = subprocess.Popen(cmd,
                                 shell=True,
                                 stdin=subprocess.PIPE,
                                 bufsize=buffering)
-        return _wrap_close(io.TextIOWrapper(proc.stdin), proc)
+        rudisha _wrap_close(io.TextIOWrapper(proc.stdin), proc)
 
 # Helper for popen() -- a proxy for a file whose close waits for the process
-class _wrap_close:
-    def __init__(self, stream, proc):
+kundi _wrap_close:
+    eleza __init__(self, stream, proc):
         self._stream = stream
         self._proc = proc
-    def close(self):
+    eleza close(self):
         self._stream.close()
         returncode = self._proc.wait()
-        if returncode == 0:
-            return None
-        if name == 'nt':
-            return returncode
+        ikiwa returncode == 0:
+            rudisha None
+        ikiwa name == 'nt':
+            rudisha returncode
         else:
-            return returncode << 8  # Shift left to match old behavior
-    def __enter__(self):
-        return self
-    def __exit__(self, *args):
+            rudisha returncode << 8  # Shift left to match old behavior
+    eleza __enter__(self):
+        rudisha self
+    eleza __exit__(self, *args):
         self.close()
-    def __getattr__(self, name):
-        return getattr(self._stream, name)
-    def __iter__(self):
-        return iter(self._stream)
+    eleza __getattr__(self, name):
+        rudisha getattr(self._stream, name)
+    eleza __iter__(self):
+        rudisha iter(self._stream)
 
 # Supply os.fdopen()
-def fdopen(fd, *args, **kwargs):
-    if not isinstance(fd, int):
+eleza fdopen(fd, *args, **kwargs):
+    ikiwa not isinstance(fd, int):
         raise TypeError("invalid fd type (%s, expected integer)" % type(fd))
     agiza io
-    return io.open(fd, *args, **kwargs)
+    rudisha io.open(fd, *args, **kwargs)
 
 
 # For testing purposes, make sure the function is available when the C
 # implementation exists.
-def _fspath(path):
+eleza _fspath(path):
     """Return the path representation of a path-like object.
 
     If str or bytes is passed in, it is returned unchanged. Otherwise the
@@ -1031,8 +1031,8 @@ def _fspath(path):
     path representation is not str or bytes, TypeError is raised. If the
     provided path is not str, bytes, or os.PathLike, TypeError is raised.
     """
-    if isinstance(path, (str, bytes)):
-        return path
+    ikiwa isinstance(path, (str, bytes)):
+        rudisha path
 
     # Work kutoka the object's type to match method resolution of other magic
     # methods.
@@ -1040,58 +1040,58 @@ def _fspath(path):
     try:
         path_repr = path_type.__fspath__(path)
     except AttributeError:
-        if hasattr(path_type, '__fspath__'):
+        ikiwa hasattr(path_type, '__fspath__'):
             raise
         else:
             raise TypeError("expected str, bytes or os.PathLike object, "
                             "not " + path_type.__name__)
-    if isinstance(path_repr, (str, bytes)):
-        return path_repr
+    ikiwa isinstance(path_repr, (str, bytes)):
+        rudisha path_repr
     else:
-        raise TypeError("expected {}.__fspath__() to return str or bytes, "
+        raise TypeError("expected {}.__fspath__() to rudisha str or bytes, "
                         "not {}".format(path_type.__name__,
                                         type(path_repr).__name__))
 
 # If there is no C implementation, make the pure Python version the
 # implementation as transparently as possible.
-if not _exists('fspath'):
+ikiwa not _exists('fspath'):
     fspath = _fspath
     fspath.__name__ = "fspath"
 
 
-class PathLike(abc.ABC):
+kundi PathLike(abc.ABC):
 
-    """Abstract base class for implementing the file system path protocol."""
+    """Abstract base kundi for implementing the file system path protocol."""
 
     @abc.abstractmethod
-    def __fspath__(self):
+    eleza __fspath__(self):
         """Return the file system path representation of the object."""
         raise NotImplementedError
 
     @classmethod
-    def __subclasshook__(cls, subclass):
-        return hasattr(subclass, '__fspath__')
+    eleza __subclasshook__(cls, subclass):
+        rudisha hasattr(subclass, '__fspath__')
 
 
-if name == 'nt':
-    class _AddedDllDirectory:
-        def __init__(self, path, cookie, remove_dll_directory):
+ikiwa name == 'nt':
+    kundi _AddedDllDirectory:
+        eleza __init__(self, path, cookie, remove_dll_directory):
             self.path = path
             self._cookie = cookie
             self._remove_dll_directory = remove_dll_directory
-        def close(self):
+        eleza close(self):
             self._remove_dll_directory(self._cookie)
             self.path = None
-        def __enter__(self):
-            return self
-        def __exit__(self, *args):
+        eleza __enter__(self):
+            rudisha self
+        eleza __exit__(self, *args):
             self.close()
-        def __repr__(self):
-            if self.path:
-                return "<AddedDllDirectory({!r})>".format(self.path)
-            return "<AddedDllDirectory()>"
+        eleza __repr__(self):
+            ikiwa self.path:
+                rudisha "<AddedDllDirectory({!r})>".format(self.path)
+            rudisha "<AddedDllDirectory()>"
 
-    def add_dll_directory(path):
+    eleza add_dll_directory(path):
         """Add a path to the DLL search path.
 
         This search path is used when resolving dependencies for imported
@@ -1103,7 +1103,7 @@ if name == 'nt':
         """
         agiza nt
         cookie = nt._add_dll_directory(path)
-        return _AddedDllDirectory(
+        rudisha _AddedDllDirectory(
             path,
             cookie,
             nt._remove_dll_directory

@@ -1,9 +1,9 @@
 agiza __future__
 agiza unittest
 
-class FLUFLTests(unittest.TestCase):
+kundi FLUFLTests(unittest.TestCase):
 
-    def test_barry_as_bdfl(self):
+    eleza test_barry_as_bdfl(self):
         code = "kutoka __future__ agiza barry_as_FLUFL\n2 {0} 3"
         compile(code.format('<>'), '<BDFL test>', 'exec',
                 __future__.CO_FUTURE_BARRY_AS_BDFL)
@@ -17,7 +17,7 @@ class FLUFLTests(unittest.TestCase):
         self.assertEqual(cm.exception.lineno, 2)
         self.assertEqual(cm.exception.offset, 4)
 
-    def test_guido_as_bdfl(self):
+    eleza test_guido_as_bdfl(self):
         code = '2 {0} 3'
         compile(code.format('!='), '<BDFL test>', 'exec')
         with self.assertRaises(SyntaxError) as cm:
@@ -29,5 +29,5 @@ class FLUFLTests(unittest.TestCase):
         self.assertEqual(cm.exception.offset, 4)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

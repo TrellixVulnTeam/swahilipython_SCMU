@@ -4,7 +4,7 @@
 Modules
 *******
 
-If you quit from the Python interpreter and enter it again, the definitions you
+If you quit kutoka the Python interpreter and enter it again, the definitions you
 have made (functions and variables) are lost. Therefore, if you want to write a
 somewhat longer program, you are better off using a text editor to prepare the
 input for the interpreter and running it with that file as input instead.  This
@@ -15,7 +15,7 @@ definition into each program.
 
 To support this, Python has a way to put definitions in a file and use them in a
 script or in an interactive instance of the interpreter. Such a file is called a
-*module*; definitions from a module can be *imported* into other modules or into
+*module*; definitions kutoka a module can be *imported* into other modules or into
 the *main* module (the collection of variables that you have access to in a
 script executed at the top level and in calculator mode).
 
@@ -42,10 +42,10 @@ called :file:`fibo.py` in the current directory with the following contents::
            a, b = b, a+b
        return result
 
-Now enter the Python interpreter and import this module with the following
+Now enter the Python interpreter and agiza this module with the following
 command::
 
-   >>> import fibo
+   >>> agiza fibo
 
 This does not enter the names of the functions defined in ``fibo``  directly in
 the current symbol table; it only enters the module name ``fibo`` there. Using
@@ -72,7 +72,7 @@ More on Modules
 
 A module can contain executable statements as well as function definitions.
 These statements are intended to initialize the module. They are executed only
-the *first* time the module name is encountered in an import statement. [#]_
+the *first* time the module name is encountered in an agiza statement. [#]_
 (They are also run if the file is executed as a script.)
 
 Each module has its own private symbol table, which is used as the global symbol
@@ -82,24 +82,24 @@ with a user's global variables. On the other hand, if you know what you are
 doing you can touch a module's global variables with the same notation used to
 refer to its functions, ``modname.itemname``.
 
-Modules can import other modules.  It is customary but not required to place all
+Modules can agiza other modules.  It is customary but not required to place all
 :keyword:`import` statements at the beginning of a module (or script, for that
 matter).  The imported module names are placed in the importing module's global
 symbol table.
 
-There is a variant of the :keyword:`import` statement that imports names from a
+There is a variant of the :keyword:`import` statement that imports names kutoka a
 module directly into the importing module's symbol table.  For example::
 
-   >>> from fibo import fib, fib2
+   >>> kutoka fibo agiza fib, fib2
    >>> fib(500)
    0 1 1 2 3 5 8 13 21 34 55 89 144 233 377
 
-This does not introduce the module name from which the imports are taken in the
+This does not introduce the module name kutoka which the imports are taken in the
 local symbol table (so in the example, ``fibo`` is not defined).
 
-There is even a variant to import all names that a module defines::
+There is even a variant to agiza all names that a module defines::
 
-   >>> from fibo import *
+   >>> kutoka fibo agiza *
    >>> fib(500)
    0 1 1 2 3 5 8 13 21 34 55 89 144 233 377
 
@@ -108,7 +108,7 @@ In most cases Python programmers do not use this facility since it introduces
 an unknown set of names into the interpreter, possibly hiding some things
 you have already defined.
 
-Note that in general the practice of importing ``*`` from a module or package is
+Note that in general the practice of importing ``*`` kutoka a module or package is
 frowned upon, since it often causes poorly readable code. However, it is okay to
 use it to save typing in interactive sessions.
 
@@ -117,16 +117,16 @@ following :keyword:`!as` is bound directly to the imported module.
 
 ::
 
-   >>> import fibo as fib
+   >>> agiza fibo as fib
    >>> fib.fib(500)
    0 1 1 2 3 5 8 13 21 34 55 89 144 233 377
 
-This is effectively importing the module in the same way that ``import fibo``
+This is effectively importing the module in the same way that ``agiza fibo``
 will do, with the only difference of it being available as ``fib``.
 
-It can also be used when utilising :keyword:`from` with similar effects::
+It can also be used when utilising :keyword:`kutoka` with similar effects::
 
-   >>> from fibo import fib as fibonacci
+   >>> kutoka fibo agiza fib as fibonacci
    >>> fibonacci(500)
    0 1 1 2 3 5 8 13 21 34 55 89 144 233 377
 
@@ -136,7 +136,7 @@ It can also be used when utilising :keyword:`from` with similar effects::
    For efficiency reasons, each module is only imported once per interpreter
    session.  Therefore, if you change your modules, you must restart the
    interpreter -- or, if it's just one module you want to test interactively,
-   use :func:`importlib.reload`, e.g. ``import importlib;
+   use :func:`importlib.reload`, e.g. ``agiza importlib;
    importlib.reload(modulename)``.
 
 
@@ -154,7 +154,7 @@ the ``__name__`` set to ``"__main__"``.  That means that by adding this code at
 the end of your module::
 
    if __name__ == "__main__":
-       import sys
+       agiza sys
        fib(int(sys.argv[1]))
 
 you can make the file usable as a script as well as an importable module,
@@ -168,7 +168,7 @@ executed as the "main" file:
 
 If the module is imported, the code is not run::
 
-   >>> import fibo
+   >>> agiza fibo
    >>>
 
 This is often used either to provide a convenient user interface to a module, or
@@ -185,7 +185,7 @@ The Module Search Path
 When a module named :mod:`spam` is imported, the interpreter first searches for
 a built-in module with that name. If not found, it then searches for a file
 named :file:`spam.py` in a list of directories given by the variable
-:data:`sys.path`.  :data:`sys.path` is initialized from these locations:
+:data:`sys.path`.  :data:`sys.path` is initialized kutoka these locations:
 
 * The directory containing the input script (or the current directory when no
   file is specified).
@@ -216,7 +216,7 @@ in the ``__pycache__`` directory under the name :file:`module.{version}.pyc`,
 where the version encodes the format of the compiled file; it generally contains
 the Python version number.  For example, in CPython release 3.3 the compiled
 version of spam.py would be cached as ``__pycache__/spam.cpython-33.pyc``.  This
-naming convention allows compiled modules from different releases and different
+naming convention allows compiled modules kutoka different releases and different
 versions of Python to coexist.
 
 Python checks the modification date of the source against the compiled version
@@ -226,7 +226,7 @@ same library can be shared among systems with different architectures.
 
 Python does not check the cache in two circumstances.  First, it always
 recompiles and does not store the result for the module that's loaded directly
-from the command line.  Second, it does not check the cache if there is no
+kutoka the command line.  Second, it does not check the cache if there is no
 source module.  To support a non-source (compiled only) distribution, the
 compiled module must be in the source directory, and there must not be a source
 module.
@@ -241,8 +241,8 @@ Some tips for experts:
   an ``opt-`` tag and are usually smaller.  Future releases may
   change the effects of optimization.
 
-* A program doesn't run any faster when it is read from a ``.pyc``
-  file than when it is read from a ``.py`` file; the only thing that's faster
+* A program doesn't run any faster when it is read kutoka a ``.pyc``
+  file than when it is read kutoka a ``.py`` file; the only thing that's faster
   about ``.pyc`` files is the speed with which they are loaded.
 
 * The module :mod:`compileall` can create .pyc files for all modules in a
@@ -271,7 +271,7 @@ provided on Windows systems. One particular module deserves some attention:
 ``sys.ps1`` and ``sys.ps2`` define the strings used as primary and secondary
 prompts::
 
-   >>> import sys
+   >>> agiza sys
    >>> sys.ps1
    '>>> '
    >>> sys.ps2
@@ -285,12 +285,12 @@ prompts::
 These two variables are only defined if the interpreter is in interactive mode.
 
 The variable ``sys.path`` is a list of strings that determines the interpreter's
-search path for modules. It is initialized to a default path taken from the
-environment variable :envvar:`PYTHONPATH`, or from a built-in default if
+search path for modules. It is initialized to a default path taken kutoka the
+environment variable :envvar:`PYTHONPATH`, or kutoka a built-in default if
 :envvar:`PYTHONPATH` is not set.  You can modify it using standard list
 operations::
 
-   >>> import sys
+   >>> agiza sys
    >>> sys.path.append('/ufs/guido/lib/python')
 
 
@@ -302,7 +302,7 @@ The :func:`dir` Function
 The built-in function :func:`dir` is used to find out which names a module
 defines.  It returns a sorted list of strings::
 
-   >>> import fibo, sys
+   >>> agiza fibo, sys
    >>> dir(fibo)
    ['__name__', 'fib', 'fib2']
    >>> dir(sys)  # doctest: +NORMALIZE_WHITESPACE
@@ -327,7 +327,7 @@ defines.  It returns a sorted list of strings::
 Without arguments, :func:`dir` lists the names you have defined currently::
 
    >>> a = [1, 2, 3, 4, 5]
-   >>> import fibo
+   >>> agiza fibo
    >>> fib = fibo.fib
    >>> dir()
    ['__builtins__', '__name__', 'a', 'fib', 'fibo', 'sys']
@@ -340,7 +340,7 @@ Note that it lists all types of names: variables, modules, functions, etc.
 want a list of those, they are defined in the standard module
 :mod:`builtins`::
 
-   >>> import builtins
+   >>> agiza builtins
    >>> dir(builtins)  # doctest: +NORMALIZE_WHITESPACE
    ['ArithmeticError', 'AssertionError', 'AttributeError', 'BaseException',
     'BlockingIOError', 'BrokenPipeError', 'BufferError', 'BytesWarning',
@@ -380,9 +380,9 @@ Packages
 Packages are a way of structuring Python's module namespace by using "dotted
 module names".  For example, the module name :mod:`A.B` designates a submodule
 named ``B`` in a package named ``A``.  Just like the use of modules saves the
-authors of different modules from having to worry about each other's global
+authors of different modules kutoka having to worry about each other's global
 variable names, the use of dotted module names saves the authors of multi-module
-packages like NumPy or Pillow from having to worry about
+packages like NumPy or Pillow kutoka having to worry about
 each other's module names.
 
 Suppose you want to design a collection of modules (a "package") for the uniform
@@ -432,10 +432,10 @@ on the module search path. In the simplest case, :file:`__init__.py` can just be
 an empty file, but it can also execute initialization code for the package or
 set the ``__all__`` variable, described later.
 
-Users of the package can import individual modules from the package, for
+Users of the package can agiza individual modules kutoka the package, for
 example::
 
-   import sound.effects.echo
+   agiza sound.effects.echo
 
 This loads the submodule :mod:`sound.effects.echo`.  It must be referenced with
 its full name. ::
@@ -444,32 +444,32 @@ its full name. ::
 
 An alternative way of importing the submodule is::
 
-   from sound.effects import echo
+   kutoka sound.effects agiza echo
 
 This also loads the submodule :mod:`echo`, and makes it available without its
 package prefix, so it can be used as follows::
 
    echo.echofilter(input, output, delay=0.7, atten=4)
 
-Yet another variation is to import the desired function or variable directly::
+Yet another variation is to agiza the desired function or variable directly::
 
-   from sound.effects.echo import echofilter
+   kutoka sound.effects.echo agiza echofilter
 
 Again, this loads the submodule :mod:`echo`, but this makes its function
 :func:`echofilter` directly available::
 
    echofilter(input, output, delay=0.7, atten=4)
 
-Note that when using ``from package import item``, the item can be either a
+Note that when using ``kutoka package agiza item``, the item can be either a
 submodule (or subpackage) of the package, or some  other name defined in the
-package, like a function, class or variable.  The ``import`` statement first
+package, like a function, kundi or variable.  The ``import`` statement first
 tests whether the item is defined in the package; if not, it assumes it is a
 module and attempts to load it.  If it fails to find it, an :exc:`ImportError`
 exception is raised.
 
-Contrarily, when using syntax like ``import item.subitem.subsubitem``, each item
+Contrarily, when using syntax like ``agiza item.subitem.subsubitem``, each item
 except for the last must be a package; the last item can be a module or a
-package but can't be a class or function or variable defined in the previous
+package but can't be a kundi or function or variable defined in the previous
 item.
 
 
@@ -480,7 +480,7 @@ Importing \* From a Package
 
 .. index:: single: __all__
 
-Now what happens when the user writes ``from sound.effects import *``?  Ideally,
+Now what happens when the user writes ``kutoka sound.effects agiza *``?  Ideally,
 one would hope that this somehow goes out to the filesystem, finds which
 submodules are present in the package, and imports them all.  This could take a
 long time and importing sub-modules might have unwanted side-effects that should
@@ -489,20 +489,20 @@ only happen when the sub-module is explicitly imported.
 The only solution is for the package author to provide an explicit index of the
 package.  The :keyword:`import` statement uses the following convention: if a package's
 :file:`__init__.py` code defines a list named ``__all__``, it is taken to be the
-list of module names that should be imported when ``from package import *`` is
+list of module names that should be imported when ``kutoka package agiza *`` is
 encountered.  It is up to the package author to keep this list up-to-date when a
 new version of the package is released.  Package authors may also decide not to
-support it, if they don't see a use for importing \* from their package.  For
+support it, if they don't see a use for importing \* kutoka their package.  For
 example, the file :file:`sound/effects/__init__.py` could contain the following
 code::
 
    __all__ = ["echo", "surround", "reverse"]
 
-This would mean that ``from sound.effects import *`` would import the three
+This would mean that ``kutoka sound.effects agiza *`` would agiza the three
 named submodules of the :mod:`sound` package.
 
-If ``__all__`` is not defined, the statement ``from sound.effects import *``
-does *not* import all submodules from the package :mod:`sound.effects` into the
+If ``__all__`` is not defined, the statement ``kutoka sound.effects agiza *``
+does *not* agiza all submodules kutoka the package :mod:`sound.effects` into the
 current namespace; it only ensures that the package :mod:`sound.effects` has
 been imported (possibly running any initialization code in :file:`__init__.py`)
 and then imports whatever names are defined in the package.  This includes any
@@ -510,22 +510,22 @@ names defined (and submodules explicitly loaded) by :file:`__init__.py`.  It
 also includes any submodules of the package that were explicitly loaded by
 previous :keyword:`import` statements.  Consider this code::
 
-   import sound.effects.echo
-   import sound.effects.surround
-   from sound.effects import *
+   agiza sound.effects.echo
+   agiza sound.effects.surround
+   kutoka sound.effects agiza *
 
 In this example, the :mod:`echo` and :mod:`surround` modules are imported in the
 current namespace because they are defined in the :mod:`sound.effects` package
-when the ``from...import`` statement is executed.  (This also works when
+when the ``kutoka...import`` statement is executed.  (This also works when
 ``__all__`` is defined.)
 
 Although certain modules are designed to export only names that follow certain
-patterns when you use ``import *``, it is still considered bad practice in
+patterns when you use ``agiza *``, it is still considered bad practice in
 production code.
 
-Remember, there is nothing wrong with using ``from package import
+Remember, there is nothing wrong with using ``kutoka package import
 specific_submodule``!  In fact, this is the recommended notation unless the
-importing module needs to use submodules with the same name from different
+importing module needs to use submodules with the same name kutoka different
 packages.
 
 
@@ -535,17 +535,17 @@ Intra-package References
 When packages are structured into subpackages (as with the :mod:`sound` package
 in the example), you can use absolute imports to refer to submodules of siblings
 packages.  For example, if the module :mod:`sound.filters.vocoder` needs to use
-the :mod:`echo` module in the :mod:`sound.effects` package, it can use ``from
-sound.effects import echo``.
+the :mod:`echo` module in the :mod:`sound.effects` package, it can use ``kutoka
+sound.effects agiza echo``.
 
-You can also write relative imports, with the ``from module import name`` form
-of import statement.  These imports use leading dots to indicate the current and
+You can also write relative imports, with the ``kutoka module agiza name`` form
+of agiza statement.  These imports use leading dots to indicate the current and
 parent packages involved in the relative import.  From the :mod:`surround`
 module for example, you might use::
 
-   from . import echo
-   from .. import formats
-   from ..filters import equalizer
+   kutoka . agiza echo
+   kutoka .. agiza formats
+   kutoka ..filters agiza equalizer
 
 Note that relative imports are based on the name of the current module.  Since
 the name of the main module is always ``"__main__"``, modules intended for use

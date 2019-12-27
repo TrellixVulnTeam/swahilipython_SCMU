@@ -32,7 +32,7 @@ The :mod:`uu` module defines the following functions:
 
    Uuencode file *in_file* into file *out_file*.  The uuencoded file will have
    the header specifying *name* and *mode* as the defaults for the results of
-   decoding the file. The default defaults are taken from *in_file*, or ``'-'``
+   decoding the file. The default defaults are taken kutoka *in_file*, or ``'-'``
    and ``0o666`` respectively.  If *backtick* is true, zeros are represented by
    ``'`'`` instead of spaces.
 
@@ -45,17 +45,17 @@ The :mod:`uu` module defines the following functions:
    This call decodes uuencoded file *in_file* placing the result on file
    *out_file*. If *out_file* is a pathname, *mode* is used to set the permission
    bits if the file must be created. Defaults for *out_file* and *mode* are taken
-   from the uuencode header.  However, if the file specified in the header already
+   kutoka the uuencode header.  However, if the file specified in the header already
    exists, a :exc:`uu.Error` is raised.
 
    :func:`decode` may print a warning to standard error if the input was produced
-   by an incorrect uuencoder and Python could recover from that error.  Setting
+   by an incorrect uuencoder and Python could recover kutoka that error.  Setting
    *quiet* to a true value silences this warning.
 
 
 .. exception:: Error()
 
-   Subclass of :exc:`Exception`, this can be raised by :func:`uu.decode` under
+   Subkundi of :exc:`Exception`, this can be raised by :func:`uu.decode` under
    various situations, such as described above, but also including a badly
    formatted header, or truncated input file.
 

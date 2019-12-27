@@ -2,20 +2,20 @@ kutoka collections agiza deque
 agiza unittest
 
 
-class base_set:
-    def __init__(self, el):
+kundi base_set:
+    eleza __init__(self, el):
         self.el = el
 
-class myset(base_set):
-    def __contains__(self, el):
-        return self.el == el
+kundi myset(base_set):
+    eleza __contains__(self, el):
+        rudisha self.el == el
 
-class seq(base_set):
-    def __getitem__(self, n):
-        return [self.el][n]
+kundi seq(base_set):
+    eleza __getitem__(self, n):
+        rudisha [self.el][n]
 
-class TestContains(unittest.TestCase):
-    def test_common_tests(self):
+kundi TestContains(unittest.TestCase):
+    eleza test_common_tests(self):
         a = base_set(1)
         b = myset(1)
         c = seq(1)
@@ -35,7 +35,7 @@ class TestContains(unittest.TestCase):
 
         self.assertRaises(TypeError, lambda: None in 'abc')
 
-    def test_builtin_sequence_types(self):
+    eleza test_builtin_sequence_types(self):
         # a collection of tests on builtin sequence types
         a = range(10)
         for i in a:
@@ -49,34 +49,34 @@ class TestContains(unittest.TestCase):
         self.assertNotIn(16, a)
         self.assertNotIn(a, a)
 
-        class Deviant1:
+        kundi Deviant1:
             """Behaves strangely when compared
 
-            This class is designed to make sure that the contains code
+            This kundi is designed to make sure that the contains code
             works when the list is modified during the check.
             """
             aList = list(range(15))
-            def __eq__(self, other):
-                if other == 12:
+            eleza __eq__(self, other):
+                ikiwa other == 12:
                     self.aList.remove(12)
                     self.aList.remove(13)
                     self.aList.remove(14)
-                return 0
+                rudisha 0
 
         self.assertNotIn(Deviant1(), Deviant1.aList)
 
-    def test_nonreflexive(self):
+    eleza test_nonreflexive(self):
         # containment and equality tests involving elements that are
         # not necessarily equal to themselves
 
-        class MyNonReflexive(object):
-            def __eq__(self, other):
-                return False
-            def __hash__(self):
-                return 28
+        kundi MyNonReflexive(object):
+            eleza __eq__(self, other):
+                rudisha False
+            eleza __hash__(self):
+                rudisha 28
 
         values = float('nan'), 1, None, 'abc', MyNonReflexive()
-        constructors = list, tuple, dict.fromkeys, set, frozenset, deque
+        constructors = list, tuple, dict.kutokakeys, set, frozenset, deque
         for constructor in constructors:
             container = constructor(values)
             for elem in container:
@@ -84,16 +84,16 @@ class TestContains(unittest.TestCase):
             self.assertTrue(container == constructor(values))
             self.assertTrue(container == container)
 
-    def test_block_fallback(self):
+    eleza test_block_fallback(self):
         # blocking fallback with __contains__ = None
-        class ByContains(object):
-            def __contains__(self, other):
-                return False
+        kundi ByContains(object):
+            eleza __contains__(self, other):
+                rudisha False
         c = ByContains()
-        class BlockContains(ByContains):
+        kundi BlockContains(ByContains):
             """Is not a container
 
-            This class is a perfectly good iterable (as tested by
+            This kundi is a perfectly good iterable (as tested by
             list(bc)), as well as inheriting kutoka a perfectly good
             container, but __contains__ = None prevents the usual
             fallback to iteration in the container protocol. That
@@ -101,7 +101,7 @@ class TestContains(unittest.TestCase):
             of any(x==0 for x in bc), but here it's blocked kutoka
             doing so.
             """
-            def __iter__(self):
+            eleza __iter__(self):
                 while False:
                     yield None
             __contains__ = None
@@ -110,5 +110,5 @@ class TestContains(unittest.TestCase):
         self.assertFalse(0 in list(bc))
         self.assertRaises(TypeError, lambda: 0 in bc)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

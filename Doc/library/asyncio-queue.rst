@@ -40,7 +40,7 @@ Queue
       The *loop* parameter.
 
 
-   This class is :ref:`not thread safe <asyncio-multithreading>`.
+   This kundi is :ref:`not thread safe <asyncio-multithreading>`.
 
    .. attribute:: maxsize
 
@@ -59,7 +59,7 @@ Queue
 
    .. coroutinemethod:: get()
 
-      Remove and return an item from the queue. If queue is empty,
+      Remove and return an item kutoka the queue. If queue is empty,
       wait until an item is available.
 
    .. method:: get_nowait()
@@ -153,9 +153,9 @@ Examples
 Queues can be used to distribute workload between several
 concurrent tasks::
 
-   import asyncio
-   import random
-   import time
+   agiza asyncio
+   agiza random
+   agiza time
 
 
    async def worker(name, queue):

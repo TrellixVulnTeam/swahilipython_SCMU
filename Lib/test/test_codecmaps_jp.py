@@ -6,7 +6,7 @@
 kutoka test agiza multibytecodec_support
 agiza unittest
 
-class TestCP932Map(multibytecodec_support.TestBase_Mapping,
+kundi TestCP932Map(multibytecodec_support.TestBase_Mapping,
                    unittest.TestCase):
     encoding = 'cp932'
     mapfileurl = 'http://www.pythontest.net/unicode/CP932.TXT'
@@ -21,14 +21,14 @@ class TestCP932Map(multibytecodec_support.TestBase_Mapping,
         supmaps.append((bytes([i]), chr(i+0xfec0)))
 
 
-class TestEUCJPCOMPATMap(multibytecodec_support.TestBase_Mapping,
+kundi TestEUCJPCOMPATMap(multibytecodec_support.TestBase_Mapping,
                          unittest.TestCase):
     encoding = 'euc_jp'
     mapfilename = 'EUC-JP.TXT'
     mapfileurl = 'http://www.pythontest.net/unicode/EUC-JP.TXT'
 
 
-class TestSJISCOMPATMap(multibytecodec_support.TestBase_Mapping,
+kundi TestSJISCOMPATMap(multibytecodec_support.TestBase_Mapping,
                         unittest.TestCase):
     encoding = 'shift_jis'
     mapfilename = 'SHIFTJIS.TXT'
@@ -42,19 +42,19 @@ class TestSJISCOMPATMap(multibytecodec_support.TestBase_Mapping,
         (b'\x81_', '\\'),
     ]
 
-class TestEUCJISX0213Map(multibytecodec_support.TestBase_Mapping,
+kundi TestEUCJISX0213Map(multibytecodec_support.TestBase_Mapping,
                          unittest.TestCase):
     encoding = 'euc_jisx0213'
     mapfilename = 'EUC-JISX0213.TXT'
     mapfileurl = 'http://www.pythontest.net/unicode/EUC-JISX0213.TXT'
 
 
-class TestSJISX0213Map(multibytecodec_support.TestBase_Mapping,
+kundi TestSJISX0213Map(multibytecodec_support.TestBase_Mapping,
                        unittest.TestCase):
     encoding = 'shift_jisx0213'
     mapfilename = 'SHIFT_JISX0213.TXT'
     mapfileurl = 'http://www.pythontest.net/unicode/SHIFT_JISX0213.TXT'
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

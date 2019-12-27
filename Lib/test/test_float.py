@@ -25,15 +25,15 @@ requires_setformat = unittest.skipUnless(hasattr(float, "__setformat__"),
 test_dir = os.path.dirname(__file__) or os.curdir
 format_testfile = os.path.join(test_dir, 'formatfloat_testcases.txt')
 
-class FloatSubclass(float):
+kundi FloatSubclass(float):
     pass
 
-class OtherFloatSubclass(float):
+kundi OtherFloatSubclass(float):
     pass
 
-class GeneralFloatCases(unittest.TestCase):
+kundi GeneralFloatCases(unittest.TestCase):
 
-    def test_float(self):
+    eleza test_float(self):
         self.assertEqual(float(3.14), 3.14)
         self.assertEqual(float(314), 314.0)
         self.assertEqual(float("  3.14  "), 3.14)
@@ -64,15 +64,15 @@ class GeneralFloatCases(unittest.TestCase):
         # See bpo-34087
         self.assertRaises(ValueError, float, '\u3053\u3093\u306b\u3061\u306f')
 
-    def test_underscores(self):
+    eleza test_underscores(self):
         for lit in VALID_UNDERSCORE_LITERALS:
-            if not any(ch in lit for ch in 'jJxXoObB'):
+            ikiwa not any(ch in lit for ch in 'jJxXoObB'):
                 self.assertEqual(float(lit), eval(lit))
                 self.assertEqual(float(lit), float(lit.replace('_', '')))
         for lit in INVALID_UNDERSCORE_LITERALS:
-            if lit in ('0_7', '09_99'):  # octals are not recognized here
+            ikiwa lit in ('0_7', '09_99'):  # octals are not recognized here
                 continue
-            if not any(ch in lit for ch in 'jJxXoObB'):
+            ikiwa not any(ch in lit for ch in 'jJxXoObB'):
                 self.assertRaises(ValueError, float, lit)
         # Additional test cases; nan and inf are never valid as literals,
         # only in the float() constructor, but we don't allow underscores
@@ -85,12 +85,12 @@ class GeneralFloatCases(unittest.TestCase):
         # Check that we handle bytes values correctly.
         self.assertRaises(ValueError, float, b'0_.\xff9')
 
-    def test_non_numeric_input_types(self):
+    eleza test_non_numeric_input_types(self):
         # Test possible non-numeric types for the argument x, including
         # subclasses of the explicitly documented accepted types.
-        class CustomStr(str): pass
-        class CustomBytes(bytes): pass
-        class CustomByteArray(bytearray): pass
+        kundi CustomStr(str): pass
+        kundi CustomBytes(bytes): pass
+        kundi CustomByteArray(bytearray): pass
 
         factories = [
             bytes,
@@ -114,15 +114,15 @@ class GeneralFloatCases(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "could not convert"):
                     float(f(b'A' * 0x10))
 
-    def test_float_memoryview(self):
+    eleza test_float_memoryview(self):
         self.assertEqual(float(memoryview(b'12.3')[1:4]), 2.3)
         self.assertEqual(float(memoryview(b'12.3\x00')[1:4]), 2.3)
         self.assertEqual(float(memoryview(b'12.3 ')[1:4]), 2.3)
         self.assertEqual(float(memoryview(b'12.3A')[1:4]), 2.3)
         self.assertEqual(float(memoryview(b'12.34')[1:4]), 2.3)
 
-    def test_error_message(self):
-        def check(s):
+    eleza test_error_message(self):
+        eleza check(s):
             with self.assertRaises(ValueError, msg='float(%r)' % (s,)) as cm:
                 float(s)
             self.assertEqual(str(cm.exception),
@@ -145,12 +145,12 @@ class GeneralFloatCases(unittest.TestCase):
         check(b'123\xa0')
 
     @support.run_with_locale('LC_NUMERIC', 'fr_FR', 'de_DE')
-    def test_float_with_comma(self):
+    eleza test_float_with_comma(self):
         # set locale to something that doesn't use '.' for the decimal point
         # float must not accept the locale specific decimal point but
         # it still has to accept the normal python syntax
         agiza locale
-        if not locale.localeconv()['decimal_point'] == ',':
+        ikiwa not locale.localeconv()['decimal_point'] == ',':
             self.skipTest('decimal_point is not ","')
 
         self.assertEqual(float("  3.14  "), 3.14)
@@ -171,32 +171,32 @@ class GeneralFloatCases(unittest.TestCase):
         self.assertEqual(float("  25.e-1  "), 2.5)
         self.assertAlmostEqual(float("  .25e-1  "), .025)
 
-    def test_floatconversion(self):
+    eleza test_floatconversion(self):
         # Make sure that calls to __float__() work properly
-        class Foo1(object):
-            def __float__(self):
-                return 42.
+        kundi Foo1(object):
+            eleza __float__(self):
+                rudisha 42.
 
-        class Foo2(float):
-            def __float__(self):
-                return 42.
+        kundi Foo2(float):
+            eleza __float__(self):
+                rudisha 42.
 
-        class Foo3(float):
-            def __new__(cls, value=0.):
-                return float.__new__(cls, 2*value)
+        kundi Foo3(float):
+            eleza __new__(cls, value=0.):
+                rudisha float.__new__(cls, 2*value)
 
-            def __float__(self):
-                return self
+            eleza __float__(self):
+                rudisha self
 
-        class Foo4(float):
-            def __float__(self):
-                return 42
+        kundi Foo4(float):
+            eleza __float__(self):
+                rudisha 42
 
         # Issue 5759: __float__ not called on str subclasses (though it is on
         # unicode subclasses).
-        class FooStr(str):
-            def __float__(self):
-                return float(str(self)) + 1
+        kundi FooStr(str):
+            eleza __float__(self):
+                rudisha float(str(self)) + 1
 
         self.assertEqual(float(Foo1()), 42.)
         self.assertEqual(float(Foo2()), 42.)
@@ -205,15 +205,15 @@ class GeneralFloatCases(unittest.TestCase):
         self.assertRaises(TypeError, float, Foo4(42))
         self.assertEqual(float(FooStr('8')), 9.)
 
-        class Foo5:
-            def __float__(self):
-                return ""
+        kundi Foo5:
+            eleza __float__(self):
+                rudisha ""
         self.assertRaises(TypeError, time.sleep, Foo5())
 
         # Issue #24731
-        class F:
-            def __float__(self):
-                return OtherFloatSubclass(42.)
+        kundi F:
+            eleza __float__(self):
+                rudisha OtherFloatSubclass(42.)
         with self.assertWarns(DeprecationWarning):
             self.assertEqual(float(F()), 42.)
         with self.assertWarns(DeprecationWarning):
@@ -223,32 +223,32 @@ class GeneralFloatCases(unittest.TestCase):
         with self.assertWarns(DeprecationWarning):
             self.assertIs(type(FloatSubclass(F())), FloatSubclass)
 
-        class MyIndex:
-            def __init__(self, value):
+        kundi MyIndex:
+            eleza __init__(self, value):
                 self.value = value
-            def __index__(self):
-                return self.value
+            eleza __index__(self):
+                rudisha self.value
 
         self.assertEqual(float(MyIndex(42)), 42.0)
         self.assertRaises(OverflowError, float, MyIndex(2**2000))
 
-        class MyInt:
-            def __int__(self):
-                return 42
+        kundi MyInt:
+            eleza __int__(self):
+                rudisha 42
 
         self.assertRaises(TypeError, float, MyInt())
 
-    def test_keyword_args(self):
+    eleza test_keyword_args(self):
         with self.assertRaisesRegex(TypeError, 'keyword argument'):
             float(x='3.14')
 
-    def test_is_integer(self):
+    eleza test_is_integer(self):
         self.assertFalse((1.1).is_integer())
         self.assertTrue((1.).is_integer())
         self.assertFalse(float("nan").is_integer())
         self.assertFalse(float("inf").is_integer())
 
-    def test_floatasratio(self):
+    eleza test_floatasratio(self):
         for f, ratio in [
                 (0.875, (7, 8)),
                 (-0.875, (-7, 8)),
@@ -281,7 +281,7 @@ class GeneralFloatCases(unittest.TestCase):
         self.assertRaises(OverflowError, float('-inf').as_integer_ratio)
         self.assertRaises(ValueError, float('nan').as_integer_ratio)
 
-    def test_float_containment(self):
+    eleza test_float_containment(self):
         floats = (INF, -INF, 0.0, 1.0, NAN)
         for f in floats:
             self.assertIn(f, [f])
@@ -306,14 +306,14 @@ class GeneralFloatCases(unittest.TestCase):
             self.assertTrue(s == s, "{%r} not equal to itself" % f)
             self.assertTrue(d == d, "{%r : None} not equal to itself" % f)
 
-    def assertEqualAndEqualSign(self, a, b):
+    eleza assertEqualAndEqualSign(self, a, b):
         # fail unless a == b and a and b have the same sign bit;
         # the only difference kutoka assertEqual is that this test
         # distinguishes -0.0 and 0.0.
         self.assertEqual((a, copysign(1.0, a)), (b, copysign(1.0, b)))
 
     @support.requires_IEEE_754
-    def test_float_mod(self):
+    eleza test_float_mod(self):
         # Check behaviour of % operator for IEEE 754 special cases.
         # In particular, check signs of zeros.
         mod = operator.mod
@@ -333,7 +333,7 @@ class GeneralFloatCases(unittest.TestCase):
         self.assertEqualAndEqualSign(mod(1.0, -1.0), -0.0)
 
     @support.requires_IEEE_754
-    def test_float_pow(self):
+    eleza test_float_pow(self):
         # test builtin pow and ** operator for IEEE 754 special cases.
         # Special cases taken kutoka section F.9.4.4 of the C99 specification
 
@@ -385,7 +385,7 @@ class GeneralFloatCases(unittest.TestCase):
             self.assertEqualAndEqualSign(pow_op(-1.0, -INF), 1.0)
             self.assertEqualAndEqualSign(pow_op(-1.0, INF), 1.0)
 
-            # 1**y is 1 for any y, even if y is an infinity or nan
+            # 1**y is 1 for any y, even ikiwa y is an infinity or nan
             self.assertEqualAndEqualSign(pow_op(1.0, -INF), 1.0)
             self.assertEqualAndEqualSign(pow_op(1.0, -2.0), 1.0)
             self.assertEqualAndEqualSign(pow_op(1.0, -1.0), 1.0)
@@ -398,7 +398,7 @@ class GeneralFloatCases(unittest.TestCase):
             self.assertEqualAndEqualSign(pow_op(1.0, INF), 1.0)
             self.assertEqualAndEqualSign(pow_op(1.0, NAN), 1.0)
 
-            # x**+-0 is 1 for any x, even if x is a zero, infinity, or nan
+            # x**+-0 is 1 for any x, even ikiwa x is a zero, infinity, or nan
             self.assertEqualAndEqualSign(pow_op(-INF, 0.0), 1.0)
             self.assertEqualAndEqualSign(pow_op(-2.0, 0.0), 1.0)
             self.assertEqualAndEqualSign(pow_op(-1.0, 0.0), 1.0)
@@ -535,17 +535,17 @@ class GeneralFloatCases(unittest.TestCase):
 
 
 @requires_setformat
-class FormatFunctionsTestCase(unittest.TestCase):
+kundi FormatFunctionsTestCase(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.save_formats = {'double':float.__getformat__('double'),
                              'float':float.__getformat__('float')}
 
-    def tearDown(self):
+    eleza tearDown(self):
         float.__setformat__('double', self.save_formats['double'])
         float.__setformat__('float', self.save_formats['float'])
 
-    def test_getformat(self):
+    eleza test_getformat(self):
         self.assertIn(float.__getformat__('double'),
                       ['unknown', 'IEEE, big-endian', 'IEEE, little-endian'])
         self.assertIn(float.__getformat__('float'),
@@ -553,13 +553,13 @@ class FormatFunctionsTestCase(unittest.TestCase):
         self.assertRaises(ValueError, float.__getformat__, 'chicken')
         self.assertRaises(TypeError, float.__getformat__, 1)
 
-    def test_setformat(self):
+    eleza test_setformat(self):
         for t in 'double', 'float':
             float.__setformat__(t, 'unknown')
-            if self.save_formats[t] == 'IEEE, big-endian':
+            ikiwa self.save_formats[t] == 'IEEE, big-endian':
                 self.assertRaises(ValueError, float.__setformat__,
                                   t, 'IEEE, little-endian')
-            elif self.save_formats[t] == 'IEEE, little-endian':
+            elikiwa self.save_formats[t] == 'IEEE, little-endian':
                 self.assertRaises(ValueError, float.__setformat__,
                                   t, 'IEEE, big-endian')
             else:
@@ -586,25 +586,25 @@ LE_FLOAT_NAN = bytes(reversed(BE_FLOAT_NAN))
 # representing an infinity or a NaN should raise an exception.
 
 @requires_setformat
-class UnknownFormatTestCase(unittest.TestCase):
-    def setUp(self):
+kundi UnknownFormatTestCase(unittest.TestCase):
+    eleza setUp(self):
         self.save_formats = {'double':float.__getformat__('double'),
                              'float':float.__getformat__('float')}
         float.__setformat__('double', 'unknown')
         float.__setformat__('float', 'unknown')
 
-    def tearDown(self):
+    eleza tearDown(self):
         float.__setformat__('double', self.save_formats['double'])
         float.__setformat__('float', self.save_formats['float'])
 
-    def test_double_specials_dont_unpack(self):
+    eleza test_double_specials_dont_unpack(self):
         for fmt, data in [('>d', BE_DOUBLE_INF),
                           ('>d', BE_DOUBLE_NAN),
                           ('<d', LE_DOUBLE_INF),
                           ('<d', LE_DOUBLE_NAN)]:
             self.assertRaises(ValueError, struct.unpack, fmt, data)
 
-    def test_float_specials_dont_unpack(self):
+    eleza test_float_specials_dont_unpack(self):
         for fmt, data in [('>f', BE_FLOAT_INF),
                           ('>f', BE_FLOAT_NAN),
                           ('<f', LE_FLOAT_INF),
@@ -617,10 +617,10 @@ class UnknownFormatTestCase(unittest.TestCase):
 # is accident (today).
 # let's also try to guarantee that -0.0 and 0.0 don't get confused.
 
-class IEEEFormatTestCase(unittest.TestCase):
+kundi IEEEFormatTestCase(unittest.TestCase):
 
     @support.requires_IEEE_754
-    def test_double_specials_do_unpack(self):
+    eleza test_double_specials_do_unpack(self):
         for fmt, data in [('>d', BE_DOUBLE_INF),
                           ('>d', BE_DOUBLE_NAN),
                           ('<d', LE_DOUBLE_INF),
@@ -628,7 +628,7 @@ class IEEEFormatTestCase(unittest.TestCase):
             struct.unpack(fmt, data)
 
     @support.requires_IEEE_754
-    def test_float_specials_do_unpack(self):
+    eleza test_float_specials_do_unpack(self):
         for fmt, data in [('>f', BE_FLOAT_INF),
                           ('>f', BE_FLOAT_NAN),
                           ('<f', LE_FLOAT_INF),
@@ -636,14 +636,14 @@ class IEEEFormatTestCase(unittest.TestCase):
             struct.unpack(fmt, data)
 
     @support.requires_IEEE_754
-    def test_serialized_float_rounding(self):
+    eleza test_serialized_float_rounding(self):
         kutoka _testcapi agiza FLT_MAX
         self.assertEqual(struct.pack("<f", 3.40282356e38), struct.pack("<f", FLT_MAX))
         self.assertEqual(struct.pack("<f", -3.40282356e38), struct.pack("<f", -FLT_MAX))
 
-class FormatTestCase(unittest.TestCase):
+kundi FormatTestCase(unittest.TestCase):
 
-    def test_format(self):
+    eleza test_format(self):
         # these should be rewritten to use both format(x, spec) and
         # x.__format__(spec)
 
@@ -681,7 +681,7 @@ class FormatTestCase(unittest.TestCase):
         #  in particular int specifiers
         for format_spec in ([chr(x) for x in range(ord('a'), ord('z')+1)] +
                             [chr(x) for x in range(ord('A'), ord('Z')+1)]):
-            if not format_spec in 'eEfFgGn%':
+            ikiwa not format_spec in 'eEfFgGn%':
                 self.assertRaises(ValueError, format, 0.0, format_spec)
                 self.assertRaises(ValueError, format, 1.0, format_spec)
                 self.assertRaises(ValueError, format, -1.0, format_spec)
@@ -697,13 +697,13 @@ class FormatTestCase(unittest.TestCase):
         self.assertEqual(format(INF, 'F'), 'INF')
 
     @support.requires_IEEE_754
-    def test_format_testfile(self):
+    eleza test_format_testfile(self):
         with open(format_testfile) as testfile:
             for line in testfile:
-                if line.startswith('--'):
+                ikiwa line.startswith('--'):
                     continue
                 line = line.strip()
-                if not line:
+                ikiwa not line:
                     continue
 
                 lhs, rhs = map(str.strip, line.split('->'))
@@ -711,12 +711,12 @@ class FormatTestCase(unittest.TestCase):
                 self.assertEqual(fmt % float(arg), rhs)
                 self.assertEqual(fmt % -float(arg), '-' + rhs)
 
-    def test_issue5864(self):
+    eleza test_issue5864(self):
         self.assertEqual(format(123.456, '.4'), '123.5')
         self.assertEqual(format(1234.56, '.4'), '1.235e+03')
         self.assertEqual(format(12345.6, '.4'), '1.235e+04')
 
-    def test_issue35560(self):
+    eleza test_issue35560(self):
         self.assertEqual(format(123.0, '00'), '123.0')
         self.assertEqual(format(123.34, '00f'), '123.340000')
         self.assertEqual(format(123.34, '00e'), '1.233400e+02')
@@ -735,20 +735,20 @@ class FormatTestCase(unittest.TestCase):
         self.assertEqual(format(-123.34, '00.10e'), '-1.2334000000e+02')
         self.assertEqual(format(-123.34, '00.10g'), '-123.34')
 
-class ReprTestCase(unittest.TestCase):
-    def test_repr(self):
+kundi ReprTestCase(unittest.TestCase):
+    eleza test_repr(self):
         with open(os.path.join(os.path.split(__file__)[0],
                   'floating_points.txt')) as floats_file:
             for line in floats_file:
                 line = line.strip()
-                if not line or line.startswith('#'):
+                ikiwa not line or line.startswith('#'):
                     continue
                 v = eval(line)
                 self.assertEqual(v, eval(repr(v)))
 
     @unittest.skipUnless(getattr(sys, 'float_repr_style', '') == 'short',
                          "applies only when using short float repr style")
-    def test_short_repr(self):
+    eleza test_short_repr(self):
         # test short float repr introduced in Python 3.1.  One aspect
         # of this repr is that we get some degree of str -> float ->
         # str roundtripping.  In particular, for any numeric string
@@ -781,7 +781,7 @@ class ReprTestCase(unittest.TestCase):
             '0.0001',
             '9.999999999999e-05',
             '1e-05',
-            # values designed to provoke failure if the FPU rounding
+            # values designed to provoke failure ikiwa the FPU rounding
             # precision isn't set correctly
             '8.72293771110361e+25',
             '7.47005307342313e+26',
@@ -799,9 +799,9 @@ class ReprTestCase(unittest.TestCase):
             self.assertEqual(repr(float(negs)), str(float(negs)))
 
 @support.requires_IEEE_754
-class RoundTestCase(unittest.TestCase):
+kundi RoundTestCase(unittest.TestCase):
 
-    def test_inf_nan(self):
+    eleza test_inf_nan(self):
         self.assertRaises(OverflowError, round, INF)
         self.assertRaises(OverflowError, round, -INF)
         self.assertRaises(ValueError, round, NAN)
@@ -810,7 +810,7 @@ class RoundTestCase(unittest.TestCase):
         self.assertRaises(TypeError, round, NAN, "ceci n'est pas un integer")
         self.assertRaises(TypeError, round, -0.0, 1j)
 
-    def test_large_n(self):
+    eleza test_large_n(self):
         for n in [324, 325, 400, 2**31-1, 2**31, 2**32, 2**100]:
             self.assertEqual(round(123.456, n), 123.456)
             self.assertEqual(round(-123.456, n), -123.456)
@@ -822,20 +822,20 @@ class RoundTestCase(unittest.TestCase):
         self.assertEqual(round(1e150, 309), 1e150)
         self.assertEqual(round(1.4e-315, 315), 1e-315)
 
-    def test_small_n(self):
+    eleza test_small_n(self):
         for n in [-308, -309, -400, 1-2**31, -2**31, -2**31-1, -2**100]:
             self.assertEqual(round(123.456, n), 0.0)
             self.assertEqual(round(-123.456, n), -0.0)
             self.assertEqual(round(1e300, n), 0.0)
             self.assertEqual(round(1e-320, n), 0.0)
 
-    def test_overflow(self):
+    eleza test_overflow(self):
         self.assertRaises(OverflowError, round, 1.6e308, -308)
         self.assertRaises(OverflowError, round, -1.7e308, -308)
 
     @unittest.skipUnless(getattr(sys, 'float_repr_style', '') == 'short',
                          "applies only when using short float repr style")
-    def test_previous_round_bugs(self):
+    eleza test_previous_round_bugs(self):
         # particular cases that have occurred in bug reports
         self.assertEqual(round(562949953421312.5, 1),
                           562949953421312.5)
@@ -853,7 +853,7 @@ class RoundTestCase(unittest.TestCase):
 
     @unittest.skipUnless(getattr(sys, 'float_repr_style', '') == 'short',
                          "applies only when using short float repr style")
-    def test_matches_float_format(self):
+    eleza test_matches_float_format(self):
         # round should give the same results as float formatting
         for i in range(500):
             x = i/1000.
@@ -876,10 +876,10 @@ class RoundTestCase(unittest.TestCase):
             self.assertEqual(float(format(x, '.2f')), round(x, 2))
             self.assertEqual(float(format(x, '.3f')), round(x, 3))
 
-    def test_format_specials(self):
+    eleza test_format_specials(self):
         # Test formatting of nans and infs.
 
-        def test(fmt, value, expected):
+        eleza test(fmt, value, expected):
             # Test with both % and format().
             self.assertEqual(fmt % value, expected, fmt)
             fmt = fmt[1:] # strip off the %
@@ -906,7 +906,7 @@ class RoundTestCase(unittest.TestCase):
             test(sfmt, NAN, ' nan')
             test(sfmt, -NAN, ' nan')
 
-    def test_None_ndigits(self):
+    eleza test_None_ndigits(self):
         for x in round(1.23), round(1.23, None), round(1.23, ndigits=None):
             self.assertEqual(x, 1)
             self.assertIsInstance(x, int)
@@ -917,8 +917,8 @@ class RoundTestCase(unittest.TestCase):
 
 # Beginning with Python 2.6 float has cross platform compatible
 # ways to create and represent inf and nan
-class InfNanTest(unittest.TestCase):
-    def test_inf_from_str(self):
+kundi InfNanTest(unittest.TestCase):
+    eleza test_inf_kutoka_str(self):
         self.assertTrue(isinf(float("inf")))
         self.assertTrue(isinf(float("+inf")))
         self.assertTrue(isinf(float("-inf")))
@@ -963,14 +963,14 @@ class InfNanTest(unittest.TestCase):
         self.assertRaises(ValueError, float, "+-infinity")
         self.assertRaises(ValueError, float, "--Infinity")
 
-    def test_inf_as_str(self):
+    eleza test_inf_as_str(self):
         self.assertEqual(repr(1e300 * 1e300), "inf")
         self.assertEqual(repr(-1e300 * 1e300), "-inf")
 
         self.assertEqual(str(1e300 * 1e300), "inf")
         self.assertEqual(str(-1e300 * 1e300), "-inf")
 
-    def test_nan_from_str(self):
+    eleza test_nan_kutoka_str(self):
         self.assertTrue(isnan(float("nan")))
         self.assertTrue(isnan(float("+nan")))
         self.assertTrue(isnan(float("-nan")))
@@ -999,51 +999,51 @@ class InfNanTest(unittest.TestCase):
         self.assertRaises(ValueError, float, "+-NaN")
         self.assertRaises(ValueError, float, "--nAn")
 
-    def test_nan_as_str(self):
+    eleza test_nan_as_str(self):
         self.assertEqual(repr(1e300 * 1e300 * 0), "nan")
         self.assertEqual(repr(-1e300 * 1e300 * 0), "nan")
 
         self.assertEqual(str(1e300 * 1e300 * 0), "nan")
         self.assertEqual(str(-1e300 * 1e300 * 0), "nan")
 
-    def test_inf_signs(self):
+    eleza test_inf_signs(self):
         self.assertEqual(copysign(1.0, float('inf')), 1.0)
         self.assertEqual(copysign(1.0, float('-inf')), -1.0)
 
     @unittest.skipUnless(getattr(sys, 'float_repr_style', '') == 'short',
                          "applies only when using short float repr style")
-    def test_nan_signs(self):
+    eleza test_nan_signs(self):
         # When using the dtoa.c code, the sign of float('nan') should
         # be predictable.
         self.assertEqual(copysign(1.0, float('nan')), 1.0)
         self.assertEqual(copysign(1.0, float('-nan')), -1.0)
 
 
-fromHex = float.fromhex
+kutokaHex = float.kutokahex
 toHex = float.hex
-class HexFloatTestCase(unittest.TestCase):
-    MAX = fromHex('0x.fffffffffffff8p+1024')  # max normal
-    MIN = fromHex('0x1p-1022')                # min normal
-    TINY = fromHex('0x0.0000000000001p-1022') # min subnormal
-    EPS = fromHex('0x0.0000000000001p0') # diff between 1.0 and next float up
+kundi HexFloatTestCase(unittest.TestCase):
+    MAX = kutokaHex('0x.fffffffffffff8p+1024')  # max normal
+    MIN = kutokaHex('0x1p-1022')                # min normal
+    TINY = kutokaHex('0x0.0000000000001p-1022') # min subnormal
+    EPS = kutokaHex('0x0.0000000000001p0') # diff between 1.0 and next float up
 
-    def identical(self, x, y):
+    eleza identical(self, x, y):
         # check that floats x and y are identical, or that both
         # are NaNs
-        if isnan(x) or isnan(y):
-            if isnan(x) == isnan(y):
+        ikiwa isnan(x) or isnan(y):
+            ikiwa isnan(x) == isnan(y):
                 return
-        elif x == y and (x != 0.0 or copysign(1.0, x) == copysign(1.0, y)):
+        elikiwa x == y and (x != 0.0 or copysign(1.0, x) == copysign(1.0, y)):
             return
         self.fail('%r not identical to %r' % (x, y))
 
-    def test_ends(self):
+    eleza test_ends(self):
         self.identical(self.MIN, ldexp(1.0, -1022))
         self.identical(self.TINY, ldexp(1.0, -1074))
         self.identical(self.EPS, ldexp(1.0, -52))
         self.identical(self.MAX, 2.*(ldexp(1.0, 1023) - ldexp(1.0, 970)))
 
-    def test_invalid_inputs(self):
+    eleza test_invalid_inputs(self):
         invalid_inputs = [
             'infi',   # misspelt infinities and nans
             '-Infinit',
@@ -1099,15 +1099,15 @@ class HexFloatTestCase(unittest.TestCase):
             ]
         for x in invalid_inputs:
             try:
-                result = fromHex(x)
+                result = kutokaHex(x)
             except ValueError:
                 pass
             else:
-                self.fail('Expected float.fromhex(%r) to raise ValueError; '
+                self.fail('Expected float.kutokahex(%r) to raise ValueError; '
                           'got %r instead' % (x, result))
 
 
-    def test_whitespace(self):
+    eleza test_whitespace(self):
         value_pairs = [
             ('inf', INF),
             ('-Infinity', -INF),
@@ -1129,304 +1129,304 @@ class HexFloatTestCase(unittest.TestCase):
         for inp, expected in value_pairs:
             for lead in whitespace:
                 for trail in whitespace:
-                    got = fromHex(lead + inp + trail)
+                    got = kutokaHex(lead + inp + trail)
                     self.identical(got, expected)
 
 
-    def test_from_hex(self):
+    eleza test_kutoka_hex(self):
         MIN = self.MIN;
         MAX = self.MAX;
         TINY = self.TINY;
         EPS = self.EPS;
 
         # two spellings of infinity, with optional signs; case-insensitive
-        self.identical(fromHex('inf'), INF)
-        self.identical(fromHex('+Inf'), INF)
-        self.identical(fromHex('-INF'), -INF)
-        self.identical(fromHex('iNf'), INF)
-        self.identical(fromHex('Infinity'), INF)
-        self.identical(fromHex('+INFINITY'), INF)
-        self.identical(fromHex('-infinity'), -INF)
-        self.identical(fromHex('-iNFiNitY'), -INF)
+        self.identical(kutokaHex('inf'), INF)
+        self.identical(kutokaHex('+Inf'), INF)
+        self.identical(kutokaHex('-INF'), -INF)
+        self.identical(kutokaHex('iNf'), INF)
+        self.identical(kutokaHex('Infinity'), INF)
+        self.identical(kutokaHex('+INFINITY'), INF)
+        self.identical(kutokaHex('-infinity'), -INF)
+        self.identical(kutokaHex('-iNFiNitY'), -INF)
 
         # nans with optional sign; case insensitive
-        self.identical(fromHex('nan'), NAN)
-        self.identical(fromHex('+NaN'), NAN)
-        self.identical(fromHex('-NaN'), NAN)
-        self.identical(fromHex('-nAN'), NAN)
+        self.identical(kutokaHex('nan'), NAN)
+        self.identical(kutokaHex('+NaN'), NAN)
+        self.identical(kutokaHex('-NaN'), NAN)
+        self.identical(kutokaHex('-nAN'), NAN)
 
         # variations in input format
-        self.identical(fromHex('1'), 1.0)
-        self.identical(fromHex('+1'), 1.0)
-        self.identical(fromHex('1.'), 1.0)
-        self.identical(fromHex('1.0'), 1.0)
-        self.identical(fromHex('1.0p0'), 1.0)
-        self.identical(fromHex('01'), 1.0)
-        self.identical(fromHex('01.'), 1.0)
-        self.identical(fromHex('0x1'), 1.0)
-        self.identical(fromHex('0x1.'), 1.0)
-        self.identical(fromHex('0x1.0'), 1.0)
-        self.identical(fromHex('+0x1.0'), 1.0)
-        self.identical(fromHex('0x1p0'), 1.0)
-        self.identical(fromHex('0X1p0'), 1.0)
-        self.identical(fromHex('0X1P0'), 1.0)
-        self.identical(fromHex('0x1P0'), 1.0)
-        self.identical(fromHex('0x1.p0'), 1.0)
-        self.identical(fromHex('0x1.0p0'), 1.0)
-        self.identical(fromHex('0x.1p4'), 1.0)
-        self.identical(fromHex('0x.1p04'), 1.0)
-        self.identical(fromHex('0x.1p004'), 1.0)
-        self.identical(fromHex('0x1p+0'), 1.0)
-        self.identical(fromHex('0x1P-0'), 1.0)
-        self.identical(fromHex('+0x1p0'), 1.0)
-        self.identical(fromHex('0x01p0'), 1.0)
-        self.identical(fromHex('0x1p00'), 1.0)
-        self.identical(fromHex(' 0x1p0 '), 1.0)
-        self.identical(fromHex('\n 0x1p0'), 1.0)
-        self.identical(fromHex('0x1p0 \t'), 1.0)
-        self.identical(fromHex('0xap0'), 10.0)
-        self.identical(fromHex('0xAp0'), 10.0)
-        self.identical(fromHex('0xaP0'), 10.0)
-        self.identical(fromHex('0xAP0'), 10.0)
-        self.identical(fromHex('0xbep0'), 190.0)
-        self.identical(fromHex('0xBep0'), 190.0)
-        self.identical(fromHex('0xbEp0'), 190.0)
-        self.identical(fromHex('0XBE0P-4'), 190.0)
-        self.identical(fromHex('0xBEp0'), 190.0)
-        self.identical(fromHex('0xB.Ep4'), 190.0)
-        self.identical(fromHex('0x.BEp8'), 190.0)
-        self.identical(fromHex('0x.0BEp12'), 190.0)
+        self.identical(kutokaHex('1'), 1.0)
+        self.identical(kutokaHex('+1'), 1.0)
+        self.identical(kutokaHex('1.'), 1.0)
+        self.identical(kutokaHex('1.0'), 1.0)
+        self.identical(kutokaHex('1.0p0'), 1.0)
+        self.identical(kutokaHex('01'), 1.0)
+        self.identical(kutokaHex('01.'), 1.0)
+        self.identical(kutokaHex('0x1'), 1.0)
+        self.identical(kutokaHex('0x1.'), 1.0)
+        self.identical(kutokaHex('0x1.0'), 1.0)
+        self.identical(kutokaHex('+0x1.0'), 1.0)
+        self.identical(kutokaHex('0x1p0'), 1.0)
+        self.identical(kutokaHex('0X1p0'), 1.0)
+        self.identical(kutokaHex('0X1P0'), 1.0)
+        self.identical(kutokaHex('0x1P0'), 1.0)
+        self.identical(kutokaHex('0x1.p0'), 1.0)
+        self.identical(kutokaHex('0x1.0p0'), 1.0)
+        self.identical(kutokaHex('0x.1p4'), 1.0)
+        self.identical(kutokaHex('0x.1p04'), 1.0)
+        self.identical(kutokaHex('0x.1p004'), 1.0)
+        self.identical(kutokaHex('0x1p+0'), 1.0)
+        self.identical(kutokaHex('0x1P-0'), 1.0)
+        self.identical(kutokaHex('+0x1p0'), 1.0)
+        self.identical(kutokaHex('0x01p0'), 1.0)
+        self.identical(kutokaHex('0x1p00'), 1.0)
+        self.identical(kutokaHex(' 0x1p0 '), 1.0)
+        self.identical(kutokaHex('\n 0x1p0'), 1.0)
+        self.identical(kutokaHex('0x1p0 \t'), 1.0)
+        self.identical(kutokaHex('0xap0'), 10.0)
+        self.identical(kutokaHex('0xAp0'), 10.0)
+        self.identical(kutokaHex('0xaP0'), 10.0)
+        self.identical(kutokaHex('0xAP0'), 10.0)
+        self.identical(kutokaHex('0xbep0'), 190.0)
+        self.identical(kutokaHex('0xBep0'), 190.0)
+        self.identical(kutokaHex('0xbEp0'), 190.0)
+        self.identical(kutokaHex('0XBE0P-4'), 190.0)
+        self.identical(kutokaHex('0xBEp0'), 190.0)
+        self.identical(kutokaHex('0xB.Ep4'), 190.0)
+        self.identical(kutokaHex('0x.BEp8'), 190.0)
+        self.identical(kutokaHex('0x.0BEp12'), 190.0)
 
         # moving the point around
-        pi = fromHex('0x1.921fb54442d18p1')
-        self.identical(fromHex('0x.006487ed5110b46p11'), pi)
-        self.identical(fromHex('0x.00c90fdaa22168cp10'), pi)
-        self.identical(fromHex('0x.01921fb54442d18p9'), pi)
-        self.identical(fromHex('0x.03243f6a8885a3p8'), pi)
-        self.identical(fromHex('0x.06487ed5110b46p7'), pi)
-        self.identical(fromHex('0x.0c90fdaa22168cp6'), pi)
-        self.identical(fromHex('0x.1921fb54442d18p5'), pi)
-        self.identical(fromHex('0x.3243f6a8885a3p4'), pi)
-        self.identical(fromHex('0x.6487ed5110b46p3'), pi)
-        self.identical(fromHex('0x.c90fdaa22168cp2'), pi)
-        self.identical(fromHex('0x1.921fb54442d18p1'), pi)
-        self.identical(fromHex('0x3.243f6a8885a3p0'), pi)
-        self.identical(fromHex('0x6.487ed5110b46p-1'), pi)
-        self.identical(fromHex('0xc.90fdaa22168cp-2'), pi)
-        self.identical(fromHex('0x19.21fb54442d18p-3'), pi)
-        self.identical(fromHex('0x32.43f6a8885a3p-4'), pi)
-        self.identical(fromHex('0x64.87ed5110b46p-5'), pi)
-        self.identical(fromHex('0xc9.0fdaa22168cp-6'), pi)
-        self.identical(fromHex('0x192.1fb54442d18p-7'), pi)
-        self.identical(fromHex('0x324.3f6a8885a3p-8'), pi)
-        self.identical(fromHex('0x648.7ed5110b46p-9'), pi)
-        self.identical(fromHex('0xc90.fdaa22168cp-10'), pi)
-        self.identical(fromHex('0x1921.fb54442d18p-11'), pi)
+        pi = kutokaHex('0x1.921fb54442d18p1')
+        self.identical(kutokaHex('0x.006487ed5110b46p11'), pi)
+        self.identical(kutokaHex('0x.00c90fdaa22168cp10'), pi)
+        self.identical(kutokaHex('0x.01921fb54442d18p9'), pi)
+        self.identical(kutokaHex('0x.03243f6a8885a3p8'), pi)
+        self.identical(kutokaHex('0x.06487ed5110b46p7'), pi)
+        self.identical(kutokaHex('0x.0c90fdaa22168cp6'), pi)
+        self.identical(kutokaHex('0x.1921fb54442d18p5'), pi)
+        self.identical(kutokaHex('0x.3243f6a8885a3p4'), pi)
+        self.identical(kutokaHex('0x.6487ed5110b46p3'), pi)
+        self.identical(kutokaHex('0x.c90fdaa22168cp2'), pi)
+        self.identical(kutokaHex('0x1.921fb54442d18p1'), pi)
+        self.identical(kutokaHex('0x3.243f6a8885a3p0'), pi)
+        self.identical(kutokaHex('0x6.487ed5110b46p-1'), pi)
+        self.identical(kutokaHex('0xc.90fdaa22168cp-2'), pi)
+        self.identical(kutokaHex('0x19.21fb54442d18p-3'), pi)
+        self.identical(kutokaHex('0x32.43f6a8885a3p-4'), pi)
+        self.identical(kutokaHex('0x64.87ed5110b46p-5'), pi)
+        self.identical(kutokaHex('0xc9.0fdaa22168cp-6'), pi)
+        self.identical(kutokaHex('0x192.1fb54442d18p-7'), pi)
+        self.identical(kutokaHex('0x324.3f6a8885a3p-8'), pi)
+        self.identical(kutokaHex('0x648.7ed5110b46p-9'), pi)
+        self.identical(kutokaHex('0xc90.fdaa22168cp-10'), pi)
+        self.identical(kutokaHex('0x1921.fb54442d18p-11'), pi)
         # ...
-        self.identical(fromHex('0x1921fb54442d1.8p-47'), pi)
-        self.identical(fromHex('0x3243f6a8885a3p-48'), pi)
-        self.identical(fromHex('0x6487ed5110b46p-49'), pi)
-        self.identical(fromHex('0xc90fdaa22168cp-50'), pi)
-        self.identical(fromHex('0x1921fb54442d18p-51'), pi)
-        self.identical(fromHex('0x3243f6a8885a30p-52'), pi)
-        self.identical(fromHex('0x6487ed5110b460p-53'), pi)
-        self.identical(fromHex('0xc90fdaa22168c0p-54'), pi)
-        self.identical(fromHex('0x1921fb54442d180p-55'), pi)
+        self.identical(kutokaHex('0x1921fb54442d1.8p-47'), pi)
+        self.identical(kutokaHex('0x3243f6a8885a3p-48'), pi)
+        self.identical(kutokaHex('0x6487ed5110b46p-49'), pi)
+        self.identical(kutokaHex('0xc90fdaa22168cp-50'), pi)
+        self.identical(kutokaHex('0x1921fb54442d18p-51'), pi)
+        self.identical(kutokaHex('0x3243f6a8885a30p-52'), pi)
+        self.identical(kutokaHex('0x6487ed5110b460p-53'), pi)
+        self.identical(kutokaHex('0xc90fdaa22168c0p-54'), pi)
+        self.identical(kutokaHex('0x1921fb54442d180p-55'), pi)
 
 
         # results that should overflow...
-        self.assertRaises(OverflowError, fromHex, '-0x1p1024')
-        self.assertRaises(OverflowError, fromHex, '0x1p+1025')
-        self.assertRaises(OverflowError, fromHex, '+0X1p1030')
-        self.assertRaises(OverflowError, fromHex, '-0x1p+1100')
-        self.assertRaises(OverflowError, fromHex, '0X1p123456789123456789')
-        self.assertRaises(OverflowError, fromHex, '+0X.8p+1025')
-        self.assertRaises(OverflowError, fromHex, '+0x0.8p1025')
-        self.assertRaises(OverflowError, fromHex, '-0x0.4p1026')
-        self.assertRaises(OverflowError, fromHex, '0X2p+1023')
-        self.assertRaises(OverflowError, fromHex, '0x2.p1023')
-        self.assertRaises(OverflowError, fromHex, '-0x2.0p+1023')
-        self.assertRaises(OverflowError, fromHex, '+0X4p+1022')
-        self.assertRaises(OverflowError, fromHex, '0x1.ffffffffffffffp+1023')
-        self.assertRaises(OverflowError, fromHex, '-0X1.fffffffffffff9p1023')
-        self.assertRaises(OverflowError, fromHex, '0X1.fffffffffffff8p1023')
-        self.assertRaises(OverflowError, fromHex, '+0x3.fffffffffffffp1022')
-        self.assertRaises(OverflowError, fromHex, '0x3fffffffffffffp+970')
-        self.assertRaises(OverflowError, fromHex, '0x10000000000000000p960')
-        self.assertRaises(OverflowError, fromHex, '-0Xffffffffffffffffp960')
+        self.assertRaises(OverflowError, kutokaHex, '-0x1p1024')
+        self.assertRaises(OverflowError, kutokaHex, '0x1p+1025')
+        self.assertRaises(OverflowError, kutokaHex, '+0X1p1030')
+        self.assertRaises(OverflowError, kutokaHex, '-0x1p+1100')
+        self.assertRaises(OverflowError, kutokaHex, '0X1p123456789123456789')
+        self.assertRaises(OverflowError, kutokaHex, '+0X.8p+1025')
+        self.assertRaises(OverflowError, kutokaHex, '+0x0.8p1025')
+        self.assertRaises(OverflowError, kutokaHex, '-0x0.4p1026')
+        self.assertRaises(OverflowError, kutokaHex, '0X2p+1023')
+        self.assertRaises(OverflowError, kutokaHex, '0x2.p1023')
+        self.assertRaises(OverflowError, kutokaHex, '-0x2.0p+1023')
+        self.assertRaises(OverflowError, kutokaHex, '+0X4p+1022')
+        self.assertRaises(OverflowError, kutokaHex, '0x1.ffffffffffffffp+1023')
+        self.assertRaises(OverflowError, kutokaHex, '-0X1.fffffffffffff9p1023')
+        self.assertRaises(OverflowError, kutokaHex, '0X1.fffffffffffff8p1023')
+        self.assertRaises(OverflowError, kutokaHex, '+0x3.fffffffffffffp1022')
+        self.assertRaises(OverflowError, kutokaHex, '0x3fffffffffffffp+970')
+        self.assertRaises(OverflowError, kutokaHex, '0x10000000000000000p960')
+        self.assertRaises(OverflowError, kutokaHex, '-0Xffffffffffffffffp960')
 
         # ...and those that round to +-max float
-        self.identical(fromHex('+0x1.fffffffffffffp+1023'), MAX)
-        self.identical(fromHex('-0X1.fffffffffffff7p1023'), -MAX)
-        self.identical(fromHex('0X1.fffffffffffff7fffffffffffffp1023'), MAX)
+        self.identical(kutokaHex('+0x1.fffffffffffffp+1023'), MAX)
+        self.identical(kutokaHex('-0X1.fffffffffffff7p1023'), -MAX)
+        self.identical(kutokaHex('0X1.fffffffffffff7fffffffffffffp1023'), MAX)
 
         # zeros
-        self.identical(fromHex('0x0p0'), 0.0)
-        self.identical(fromHex('0x0p1000'), 0.0)
-        self.identical(fromHex('-0x0p1023'), -0.0)
-        self.identical(fromHex('0X0p1024'), 0.0)
-        self.identical(fromHex('-0x0p1025'), -0.0)
-        self.identical(fromHex('0X0p2000'), 0.0)
-        self.identical(fromHex('0x0p123456789123456789'), 0.0)
-        self.identical(fromHex('-0X0p-0'), -0.0)
-        self.identical(fromHex('-0X0p-1000'), -0.0)
-        self.identical(fromHex('0x0p-1023'), 0.0)
-        self.identical(fromHex('-0X0p-1024'), -0.0)
-        self.identical(fromHex('-0x0p-1025'), -0.0)
-        self.identical(fromHex('-0x0p-1072'), -0.0)
-        self.identical(fromHex('0X0p-1073'), 0.0)
-        self.identical(fromHex('-0x0p-1074'), -0.0)
-        self.identical(fromHex('0x0p-1075'), 0.0)
-        self.identical(fromHex('0X0p-1076'), 0.0)
-        self.identical(fromHex('-0X0p-2000'), -0.0)
-        self.identical(fromHex('-0x0p-123456789123456789'), -0.0)
+        self.identical(kutokaHex('0x0p0'), 0.0)
+        self.identical(kutokaHex('0x0p1000'), 0.0)
+        self.identical(kutokaHex('-0x0p1023'), -0.0)
+        self.identical(kutokaHex('0X0p1024'), 0.0)
+        self.identical(kutokaHex('-0x0p1025'), -0.0)
+        self.identical(kutokaHex('0X0p2000'), 0.0)
+        self.identical(kutokaHex('0x0p123456789123456789'), 0.0)
+        self.identical(kutokaHex('-0X0p-0'), -0.0)
+        self.identical(kutokaHex('-0X0p-1000'), -0.0)
+        self.identical(kutokaHex('0x0p-1023'), 0.0)
+        self.identical(kutokaHex('-0X0p-1024'), -0.0)
+        self.identical(kutokaHex('-0x0p-1025'), -0.0)
+        self.identical(kutokaHex('-0x0p-1072'), -0.0)
+        self.identical(kutokaHex('0X0p-1073'), 0.0)
+        self.identical(kutokaHex('-0x0p-1074'), -0.0)
+        self.identical(kutokaHex('0x0p-1075'), 0.0)
+        self.identical(kutokaHex('0X0p-1076'), 0.0)
+        self.identical(kutokaHex('-0X0p-2000'), -0.0)
+        self.identical(kutokaHex('-0x0p-123456789123456789'), -0.0)
 
         # values that should underflow to 0
-        self.identical(fromHex('0X1p-1075'), 0.0)
-        self.identical(fromHex('-0X1p-1075'), -0.0)
-        self.identical(fromHex('-0x1p-123456789123456789'), -0.0)
-        self.identical(fromHex('0x1.00000000000000001p-1075'), TINY)
-        self.identical(fromHex('-0x1.1p-1075'), -TINY)
-        self.identical(fromHex('0x1.fffffffffffffffffp-1075'), TINY)
+        self.identical(kutokaHex('0X1p-1075'), 0.0)
+        self.identical(kutokaHex('-0X1p-1075'), -0.0)
+        self.identical(kutokaHex('-0x1p-123456789123456789'), -0.0)
+        self.identical(kutokaHex('0x1.00000000000000001p-1075'), TINY)
+        self.identical(kutokaHex('-0x1.1p-1075'), -TINY)
+        self.identical(kutokaHex('0x1.fffffffffffffffffp-1075'), TINY)
 
         # check round-half-even is working correctly near 0 ...
-        self.identical(fromHex('0x1p-1076'), 0.0)
-        self.identical(fromHex('0X2p-1076'), 0.0)
-        self.identical(fromHex('0X3p-1076'), TINY)
-        self.identical(fromHex('0x4p-1076'), TINY)
-        self.identical(fromHex('0X5p-1076'), TINY)
-        self.identical(fromHex('0X6p-1076'), 2*TINY)
-        self.identical(fromHex('0x7p-1076'), 2*TINY)
-        self.identical(fromHex('0X8p-1076'), 2*TINY)
-        self.identical(fromHex('0X9p-1076'), 2*TINY)
-        self.identical(fromHex('0xap-1076'), 2*TINY)
-        self.identical(fromHex('0Xbp-1076'), 3*TINY)
-        self.identical(fromHex('0xcp-1076'), 3*TINY)
-        self.identical(fromHex('0Xdp-1076'), 3*TINY)
-        self.identical(fromHex('0Xep-1076'), 4*TINY)
-        self.identical(fromHex('0xfp-1076'), 4*TINY)
-        self.identical(fromHex('0x10p-1076'), 4*TINY)
-        self.identical(fromHex('-0x1p-1076'), -0.0)
-        self.identical(fromHex('-0X2p-1076'), -0.0)
-        self.identical(fromHex('-0x3p-1076'), -TINY)
-        self.identical(fromHex('-0X4p-1076'), -TINY)
-        self.identical(fromHex('-0x5p-1076'), -TINY)
-        self.identical(fromHex('-0x6p-1076'), -2*TINY)
-        self.identical(fromHex('-0X7p-1076'), -2*TINY)
-        self.identical(fromHex('-0X8p-1076'), -2*TINY)
-        self.identical(fromHex('-0X9p-1076'), -2*TINY)
-        self.identical(fromHex('-0Xap-1076'), -2*TINY)
-        self.identical(fromHex('-0xbp-1076'), -3*TINY)
-        self.identical(fromHex('-0xcp-1076'), -3*TINY)
-        self.identical(fromHex('-0Xdp-1076'), -3*TINY)
-        self.identical(fromHex('-0xep-1076'), -4*TINY)
-        self.identical(fromHex('-0Xfp-1076'), -4*TINY)
-        self.identical(fromHex('-0X10p-1076'), -4*TINY)
+        self.identical(kutokaHex('0x1p-1076'), 0.0)
+        self.identical(kutokaHex('0X2p-1076'), 0.0)
+        self.identical(kutokaHex('0X3p-1076'), TINY)
+        self.identical(kutokaHex('0x4p-1076'), TINY)
+        self.identical(kutokaHex('0X5p-1076'), TINY)
+        self.identical(kutokaHex('0X6p-1076'), 2*TINY)
+        self.identical(kutokaHex('0x7p-1076'), 2*TINY)
+        self.identical(kutokaHex('0X8p-1076'), 2*TINY)
+        self.identical(kutokaHex('0X9p-1076'), 2*TINY)
+        self.identical(kutokaHex('0xap-1076'), 2*TINY)
+        self.identical(kutokaHex('0Xbp-1076'), 3*TINY)
+        self.identical(kutokaHex('0xcp-1076'), 3*TINY)
+        self.identical(kutokaHex('0Xdp-1076'), 3*TINY)
+        self.identical(kutokaHex('0Xep-1076'), 4*TINY)
+        self.identical(kutokaHex('0xfp-1076'), 4*TINY)
+        self.identical(kutokaHex('0x10p-1076'), 4*TINY)
+        self.identical(kutokaHex('-0x1p-1076'), -0.0)
+        self.identical(kutokaHex('-0X2p-1076'), -0.0)
+        self.identical(kutokaHex('-0x3p-1076'), -TINY)
+        self.identical(kutokaHex('-0X4p-1076'), -TINY)
+        self.identical(kutokaHex('-0x5p-1076'), -TINY)
+        self.identical(kutokaHex('-0x6p-1076'), -2*TINY)
+        self.identical(kutokaHex('-0X7p-1076'), -2*TINY)
+        self.identical(kutokaHex('-0X8p-1076'), -2*TINY)
+        self.identical(kutokaHex('-0X9p-1076'), -2*TINY)
+        self.identical(kutokaHex('-0Xap-1076'), -2*TINY)
+        self.identical(kutokaHex('-0xbp-1076'), -3*TINY)
+        self.identical(kutokaHex('-0xcp-1076'), -3*TINY)
+        self.identical(kutokaHex('-0Xdp-1076'), -3*TINY)
+        self.identical(kutokaHex('-0xep-1076'), -4*TINY)
+        self.identical(kutokaHex('-0Xfp-1076'), -4*TINY)
+        self.identical(kutokaHex('-0X10p-1076'), -4*TINY)
 
         # ... and near MIN ...
-        self.identical(fromHex('0x0.ffffffffffffd6p-1022'), MIN-3*TINY)
-        self.identical(fromHex('0x0.ffffffffffffd8p-1022'), MIN-2*TINY)
-        self.identical(fromHex('0x0.ffffffffffffdap-1022'), MIN-2*TINY)
-        self.identical(fromHex('0x0.ffffffffffffdcp-1022'), MIN-2*TINY)
-        self.identical(fromHex('0x0.ffffffffffffdep-1022'), MIN-2*TINY)
-        self.identical(fromHex('0x0.ffffffffffffe0p-1022'), MIN-2*TINY)
-        self.identical(fromHex('0x0.ffffffffffffe2p-1022'), MIN-2*TINY)
-        self.identical(fromHex('0x0.ffffffffffffe4p-1022'), MIN-2*TINY)
-        self.identical(fromHex('0x0.ffffffffffffe6p-1022'), MIN-2*TINY)
-        self.identical(fromHex('0x0.ffffffffffffe8p-1022'), MIN-2*TINY)
-        self.identical(fromHex('0x0.ffffffffffffeap-1022'), MIN-TINY)
-        self.identical(fromHex('0x0.ffffffffffffecp-1022'), MIN-TINY)
-        self.identical(fromHex('0x0.ffffffffffffeep-1022'), MIN-TINY)
-        self.identical(fromHex('0x0.fffffffffffff0p-1022'), MIN-TINY)
-        self.identical(fromHex('0x0.fffffffffffff2p-1022'), MIN-TINY)
-        self.identical(fromHex('0x0.fffffffffffff4p-1022'), MIN-TINY)
-        self.identical(fromHex('0x0.fffffffffffff6p-1022'), MIN-TINY)
-        self.identical(fromHex('0x0.fffffffffffff8p-1022'), MIN)
-        self.identical(fromHex('0x0.fffffffffffffap-1022'), MIN)
-        self.identical(fromHex('0x0.fffffffffffffcp-1022'), MIN)
-        self.identical(fromHex('0x0.fffffffffffffep-1022'), MIN)
-        self.identical(fromHex('0x1.00000000000000p-1022'), MIN)
-        self.identical(fromHex('0x1.00000000000002p-1022'), MIN)
-        self.identical(fromHex('0x1.00000000000004p-1022'), MIN)
-        self.identical(fromHex('0x1.00000000000006p-1022'), MIN)
-        self.identical(fromHex('0x1.00000000000008p-1022'), MIN)
-        self.identical(fromHex('0x1.0000000000000ap-1022'), MIN+TINY)
-        self.identical(fromHex('0x1.0000000000000cp-1022'), MIN+TINY)
-        self.identical(fromHex('0x1.0000000000000ep-1022'), MIN+TINY)
-        self.identical(fromHex('0x1.00000000000010p-1022'), MIN+TINY)
-        self.identical(fromHex('0x1.00000000000012p-1022'), MIN+TINY)
-        self.identical(fromHex('0x1.00000000000014p-1022'), MIN+TINY)
-        self.identical(fromHex('0x1.00000000000016p-1022'), MIN+TINY)
-        self.identical(fromHex('0x1.00000000000018p-1022'), MIN+2*TINY)
+        self.identical(kutokaHex('0x0.ffffffffffffd6p-1022'), MIN-3*TINY)
+        self.identical(kutokaHex('0x0.ffffffffffffd8p-1022'), MIN-2*TINY)
+        self.identical(kutokaHex('0x0.ffffffffffffdap-1022'), MIN-2*TINY)
+        self.identical(kutokaHex('0x0.ffffffffffffdcp-1022'), MIN-2*TINY)
+        self.identical(kutokaHex('0x0.ffffffffffffdep-1022'), MIN-2*TINY)
+        self.identical(kutokaHex('0x0.ffffffffffffe0p-1022'), MIN-2*TINY)
+        self.identical(kutokaHex('0x0.ffffffffffffe2p-1022'), MIN-2*TINY)
+        self.identical(kutokaHex('0x0.ffffffffffffe4p-1022'), MIN-2*TINY)
+        self.identical(kutokaHex('0x0.ffffffffffffe6p-1022'), MIN-2*TINY)
+        self.identical(kutokaHex('0x0.ffffffffffffe8p-1022'), MIN-2*TINY)
+        self.identical(kutokaHex('0x0.ffffffffffffeap-1022'), MIN-TINY)
+        self.identical(kutokaHex('0x0.ffffffffffffecp-1022'), MIN-TINY)
+        self.identical(kutokaHex('0x0.ffffffffffffeep-1022'), MIN-TINY)
+        self.identical(kutokaHex('0x0.fffffffffffff0p-1022'), MIN-TINY)
+        self.identical(kutokaHex('0x0.fffffffffffff2p-1022'), MIN-TINY)
+        self.identical(kutokaHex('0x0.fffffffffffff4p-1022'), MIN-TINY)
+        self.identical(kutokaHex('0x0.fffffffffffff6p-1022'), MIN-TINY)
+        self.identical(kutokaHex('0x0.fffffffffffff8p-1022'), MIN)
+        self.identical(kutokaHex('0x0.fffffffffffffap-1022'), MIN)
+        self.identical(kutokaHex('0x0.fffffffffffffcp-1022'), MIN)
+        self.identical(kutokaHex('0x0.fffffffffffffep-1022'), MIN)
+        self.identical(kutokaHex('0x1.00000000000000p-1022'), MIN)
+        self.identical(kutokaHex('0x1.00000000000002p-1022'), MIN)
+        self.identical(kutokaHex('0x1.00000000000004p-1022'), MIN)
+        self.identical(kutokaHex('0x1.00000000000006p-1022'), MIN)
+        self.identical(kutokaHex('0x1.00000000000008p-1022'), MIN)
+        self.identical(kutokaHex('0x1.0000000000000ap-1022'), MIN+TINY)
+        self.identical(kutokaHex('0x1.0000000000000cp-1022'), MIN+TINY)
+        self.identical(kutokaHex('0x1.0000000000000ep-1022'), MIN+TINY)
+        self.identical(kutokaHex('0x1.00000000000010p-1022'), MIN+TINY)
+        self.identical(kutokaHex('0x1.00000000000012p-1022'), MIN+TINY)
+        self.identical(kutokaHex('0x1.00000000000014p-1022'), MIN+TINY)
+        self.identical(kutokaHex('0x1.00000000000016p-1022'), MIN+TINY)
+        self.identical(kutokaHex('0x1.00000000000018p-1022'), MIN+2*TINY)
 
         # ... and near 1.0.
-        self.identical(fromHex('0x0.fffffffffffff0p0'), 1.0-EPS)
-        self.identical(fromHex('0x0.fffffffffffff1p0'), 1.0-EPS)
-        self.identical(fromHex('0X0.fffffffffffff2p0'), 1.0-EPS)
-        self.identical(fromHex('0x0.fffffffffffff3p0'), 1.0-EPS)
-        self.identical(fromHex('0X0.fffffffffffff4p0'), 1.0-EPS)
-        self.identical(fromHex('0X0.fffffffffffff5p0'), 1.0-EPS/2)
-        self.identical(fromHex('0X0.fffffffffffff6p0'), 1.0-EPS/2)
-        self.identical(fromHex('0x0.fffffffffffff7p0'), 1.0-EPS/2)
-        self.identical(fromHex('0x0.fffffffffffff8p0'), 1.0-EPS/2)
-        self.identical(fromHex('0X0.fffffffffffff9p0'), 1.0-EPS/2)
-        self.identical(fromHex('0X0.fffffffffffffap0'), 1.0-EPS/2)
-        self.identical(fromHex('0x0.fffffffffffffbp0'), 1.0-EPS/2)
-        self.identical(fromHex('0X0.fffffffffffffcp0'), 1.0)
-        self.identical(fromHex('0x0.fffffffffffffdp0'), 1.0)
-        self.identical(fromHex('0X0.fffffffffffffep0'), 1.0)
-        self.identical(fromHex('0x0.ffffffffffffffp0'), 1.0)
-        self.identical(fromHex('0X1.00000000000000p0'), 1.0)
-        self.identical(fromHex('0X1.00000000000001p0'), 1.0)
-        self.identical(fromHex('0x1.00000000000002p0'), 1.0)
-        self.identical(fromHex('0X1.00000000000003p0'), 1.0)
-        self.identical(fromHex('0x1.00000000000004p0'), 1.0)
-        self.identical(fromHex('0X1.00000000000005p0'), 1.0)
-        self.identical(fromHex('0X1.00000000000006p0'), 1.0)
-        self.identical(fromHex('0X1.00000000000007p0'), 1.0)
-        self.identical(fromHex('0x1.00000000000007ffffffffffffffffffffp0'),
+        self.identical(kutokaHex('0x0.fffffffffffff0p0'), 1.0-EPS)
+        self.identical(kutokaHex('0x0.fffffffffffff1p0'), 1.0-EPS)
+        self.identical(kutokaHex('0X0.fffffffffffff2p0'), 1.0-EPS)
+        self.identical(kutokaHex('0x0.fffffffffffff3p0'), 1.0-EPS)
+        self.identical(kutokaHex('0X0.fffffffffffff4p0'), 1.0-EPS)
+        self.identical(kutokaHex('0X0.fffffffffffff5p0'), 1.0-EPS/2)
+        self.identical(kutokaHex('0X0.fffffffffffff6p0'), 1.0-EPS/2)
+        self.identical(kutokaHex('0x0.fffffffffffff7p0'), 1.0-EPS/2)
+        self.identical(kutokaHex('0x0.fffffffffffff8p0'), 1.0-EPS/2)
+        self.identical(kutokaHex('0X0.fffffffffffff9p0'), 1.0-EPS/2)
+        self.identical(kutokaHex('0X0.fffffffffffffap0'), 1.0-EPS/2)
+        self.identical(kutokaHex('0x0.fffffffffffffbp0'), 1.0-EPS/2)
+        self.identical(kutokaHex('0X0.fffffffffffffcp0'), 1.0)
+        self.identical(kutokaHex('0x0.fffffffffffffdp0'), 1.0)
+        self.identical(kutokaHex('0X0.fffffffffffffep0'), 1.0)
+        self.identical(kutokaHex('0x0.ffffffffffffffp0'), 1.0)
+        self.identical(kutokaHex('0X1.00000000000000p0'), 1.0)
+        self.identical(kutokaHex('0X1.00000000000001p0'), 1.0)
+        self.identical(kutokaHex('0x1.00000000000002p0'), 1.0)
+        self.identical(kutokaHex('0X1.00000000000003p0'), 1.0)
+        self.identical(kutokaHex('0x1.00000000000004p0'), 1.0)
+        self.identical(kutokaHex('0X1.00000000000005p0'), 1.0)
+        self.identical(kutokaHex('0X1.00000000000006p0'), 1.0)
+        self.identical(kutokaHex('0X1.00000000000007p0'), 1.0)
+        self.identical(kutokaHex('0x1.00000000000007ffffffffffffffffffffp0'),
                        1.0)
-        self.identical(fromHex('0x1.00000000000008p0'), 1.0)
-        self.identical(fromHex('0x1.00000000000008000000000000000001p0'),
+        self.identical(kutokaHex('0x1.00000000000008p0'), 1.0)
+        self.identical(kutokaHex('0x1.00000000000008000000000000000001p0'),
                        1+EPS)
-        self.identical(fromHex('0X1.00000000000009p0'), 1.0+EPS)
-        self.identical(fromHex('0x1.0000000000000ap0'), 1.0+EPS)
-        self.identical(fromHex('0x1.0000000000000bp0'), 1.0+EPS)
-        self.identical(fromHex('0X1.0000000000000cp0'), 1.0+EPS)
-        self.identical(fromHex('0x1.0000000000000dp0'), 1.0+EPS)
-        self.identical(fromHex('0x1.0000000000000ep0'), 1.0+EPS)
-        self.identical(fromHex('0X1.0000000000000fp0'), 1.0+EPS)
-        self.identical(fromHex('0x1.00000000000010p0'), 1.0+EPS)
-        self.identical(fromHex('0X1.00000000000011p0'), 1.0+EPS)
-        self.identical(fromHex('0x1.00000000000012p0'), 1.0+EPS)
-        self.identical(fromHex('0X1.00000000000013p0'), 1.0+EPS)
-        self.identical(fromHex('0X1.00000000000014p0'), 1.0+EPS)
-        self.identical(fromHex('0x1.00000000000015p0'), 1.0+EPS)
-        self.identical(fromHex('0x1.00000000000016p0'), 1.0+EPS)
-        self.identical(fromHex('0X1.00000000000017p0'), 1.0+EPS)
-        self.identical(fromHex('0x1.00000000000017ffffffffffffffffffffp0'),
+        self.identical(kutokaHex('0X1.00000000000009p0'), 1.0+EPS)
+        self.identical(kutokaHex('0x1.0000000000000ap0'), 1.0+EPS)
+        self.identical(kutokaHex('0x1.0000000000000bp0'), 1.0+EPS)
+        self.identical(kutokaHex('0X1.0000000000000cp0'), 1.0+EPS)
+        self.identical(kutokaHex('0x1.0000000000000dp0'), 1.0+EPS)
+        self.identical(kutokaHex('0x1.0000000000000ep0'), 1.0+EPS)
+        self.identical(kutokaHex('0X1.0000000000000fp0'), 1.0+EPS)
+        self.identical(kutokaHex('0x1.00000000000010p0'), 1.0+EPS)
+        self.identical(kutokaHex('0X1.00000000000011p0'), 1.0+EPS)
+        self.identical(kutokaHex('0x1.00000000000012p0'), 1.0+EPS)
+        self.identical(kutokaHex('0X1.00000000000013p0'), 1.0+EPS)
+        self.identical(kutokaHex('0X1.00000000000014p0'), 1.0+EPS)
+        self.identical(kutokaHex('0x1.00000000000015p0'), 1.0+EPS)
+        self.identical(kutokaHex('0x1.00000000000016p0'), 1.0+EPS)
+        self.identical(kutokaHex('0X1.00000000000017p0'), 1.0+EPS)
+        self.identical(kutokaHex('0x1.00000000000017ffffffffffffffffffffp0'),
                        1.0+EPS)
-        self.identical(fromHex('0x1.00000000000018p0'), 1.0+2*EPS)
-        self.identical(fromHex('0X1.00000000000018000000000000000001p0'),
+        self.identical(kutokaHex('0x1.00000000000018p0'), 1.0+2*EPS)
+        self.identical(kutokaHex('0X1.00000000000018000000000000000001p0'),
                        1.0+2*EPS)
-        self.identical(fromHex('0x1.00000000000019p0'), 1.0+2*EPS)
-        self.identical(fromHex('0X1.0000000000001ap0'), 1.0+2*EPS)
-        self.identical(fromHex('0X1.0000000000001bp0'), 1.0+2*EPS)
-        self.identical(fromHex('0x1.0000000000001cp0'), 1.0+2*EPS)
-        self.identical(fromHex('0x1.0000000000001dp0'), 1.0+2*EPS)
-        self.identical(fromHex('0x1.0000000000001ep0'), 1.0+2*EPS)
-        self.identical(fromHex('0X1.0000000000001fp0'), 1.0+2*EPS)
-        self.identical(fromHex('0x1.00000000000020p0'), 1.0+2*EPS)
+        self.identical(kutokaHex('0x1.00000000000019p0'), 1.0+2*EPS)
+        self.identical(kutokaHex('0X1.0000000000001ap0'), 1.0+2*EPS)
+        self.identical(kutokaHex('0X1.0000000000001bp0'), 1.0+2*EPS)
+        self.identical(kutokaHex('0x1.0000000000001cp0'), 1.0+2*EPS)
+        self.identical(kutokaHex('0x1.0000000000001dp0'), 1.0+2*EPS)
+        self.identical(kutokaHex('0x1.0000000000001ep0'), 1.0+2*EPS)
+        self.identical(kutokaHex('0X1.0000000000001fp0'), 1.0+2*EPS)
+        self.identical(kutokaHex('0x1.00000000000020p0'), 1.0+2*EPS)
 
-    def test_roundtrip(self):
-        def roundtrip(x):
-            return fromHex(toHex(x))
+    eleza test_roundtrip(self):
+        eleza roundtrip(x):
+            rudisha kutokaHex(toHex(x))
 
         for x in [NAN, INF, self.MAX, self.MIN, self.MIN-self.TINY, self.TINY, 0.0]:
             self.identical(x, roundtrip(x))
             self.identical(-x, roundtrip(-x))
 
-        # fromHex(toHex(x)) should exactly recover x, for any non-NaN float x.
+        # kutokaHex(toHex(x)) should exactly recover x, for any non-NaN float x.
         agiza random
         for i in range(10000):
             e = random.randrange(-1200, 1200)
@@ -1437,26 +1437,26 @@ class HexFloatTestCase(unittest.TestCase):
             except OverflowError:
                 pass
             else:
-                self.identical(x, fromHex(toHex(x)))
+                self.identical(x, kutokaHex(toHex(x)))
 
-    def test_subclass(self):
-        class F(float):
-            def __new__(cls, value):
-                return float.__new__(cls, value + 1)
+    eleza test_subclass(self):
+        kundi F(float):
+            eleza __new__(cls, value):
+                rudisha float.__new__(cls, value + 1)
 
-        f = F.fromhex((1.5).hex())
+        f = F.kutokahex((1.5).hex())
         self.assertIs(type(f), F)
         self.assertEqual(f, 2.5)
 
-        class F2(float):
-            def __init__(self, value):
+        kundi F2(float):
+            eleza __init__(self, value):
                 self.foo = 'bar'
 
-        f = F2.fromhex((1.5).hex())
+        f = F2.kutokahex((1.5).hex())
         self.assertIs(type(f), F2)
         self.assertEqual(f, 1.5)
         self.assertEqual(getattr(f, 'foo', 'none'), 'bar')
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

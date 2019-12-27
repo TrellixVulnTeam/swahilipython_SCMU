@@ -10,30 +10,30 @@ agiza warnings
 kutoka test agiza support
 
 
-class SortedDict(collections.UserDict):
+kundi SortedDict(collections.UserDict):
 
-    def items(self):
-        return sorted(self.data.items())
+    eleza items(self):
+        rudisha sorted(self.data.items())
 
-    def keys(self):
-        return sorted(self.data.keys())
+    eleza keys(self):
+        rudisha sorted(self.data.keys())
 
-    def values(self):
-        return [i[1] for i in self.items()]
+    eleza values(self):
+        rudisha [i[1] for i in self.items()]
 
-    def iteritems(self):
-        return iter(self.items())
+    eleza iteritems(self):
+        rudisha iter(self.items())
 
-    def iterkeys(self):
-        return iter(self.keys())
+    eleza iterkeys(self):
+        rudisha iter(self.keys())
 
-    def itervalues(self):
-        return iter(self.values())
+    eleza itervalues(self):
+        rudisha iter(self.values())
 
     __iter__ = iterkeys
 
 
-class CfgParserTestCaseClass:
+kundi CfgParserTestCaseClass:
     allow_no_value = False
     delimiters = ('=', ':')
     comment_prefixes = (';', '#')
@@ -44,7 +44,7 @@ class CfgParserTestCaseClass:
     default_section = configparser.DEFAULTSECT
     interpolation = configparser._UNSET
 
-    def newconfig(self, defaults=None):
+    eleza newconfig(self, defaults=None):
         arguments = dict(
             defaults=defaults,
             allow_no_value=self.allow_no_value,
@@ -58,17 +58,17 @@ class CfgParserTestCaseClass:
             interpolation=self.interpolation,
         )
         instance = self.config_class(**arguments)
-        return instance
+        rudisha instance
 
-    def fromstring(self, string, defaults=None):
+    eleza kutokastring(self, string, defaults=None):
         cf = self.newconfig(defaults)
         cf.read_string(string)
-        return cf
+        rudisha cf
 
 
-class BasicTestCase(CfgParserTestCaseClass):
+kundi BasicTestCase(CfgParserTestCaseClass):
 
-    def basic_test(self, cf):
+    eleza basic_test(self, cf):
         E = ['Commented Bar',
              'Foo Bar',
              'Internationalized Stuff',
@@ -80,7 +80,7 @@ class BasicTestCase(CfgParserTestCaseClass):
              'Types',
              ]
 
-        if self.allow_no_value:
+        ikiwa self.allow_no_value:
             E.append('NoValue')
         E.sort()
         F = [('baz', 'qwe'), ('foo', 'bar3')]
@@ -129,7 +129,7 @@ class BasicTestCase(CfgParserTestCaseClass):
         eq(cf.get('Types', 'float'), "0.44")
         eq(cf.getboolean('Types', 'boolean'), False)
         eq(cf.get('Types', '123'), 'strange but acceptable')
-        if self.allow_no_value:
+        ikiwa self.allow_no_value:
             eq(cf.get('NoValue', 'option-without-value'), None)
 
         # test vars= and fallback=
@@ -162,7 +162,7 @@ class BasicTestCase(CfgParserTestCaseClass):
         with self.assertRaises(configparser.NoOptionError):
             cf.getboolean('Types', 'no-such-boolean')
         eq(cf.getboolean('No Such Types', 'boolean', fallback=True), True)
-        if self.allow_no_value:
+        ikiwa self.allow_no_value:
             eq(cf.get('NoValue', 'option-without-value', fallback=False), None)
             eq(cf.get('NoValue', 'no-such-option-without-value',
                       fallback=False), False)
@@ -185,7 +185,7 @@ class BasicTestCase(CfgParserTestCaseClass):
         eq(cf['Spaces']['another with spaces'], 'splat!')
         eq(cf['Long Line']['foo'],
            'this line is much, much longer than my editor\nlikes it.')
-        if self.allow_no_value:
+        ikiwa self.allow_no_value:
             eq(cf['NoValue']['option-without-value'], None)
         # test vars= and fallback=
         eq(cf['Foo Bar'].get('foo', 'baz'), 'bar1')
@@ -228,7 +228,7 @@ class BasicTestCase(CfgParserTestCaseClass):
         eq(cf['Types'].getboolean('no-such-boolean', True), True)
         eq(cf['Types'].getboolean('no-such-boolean', fallback=True), True)
         eq(cf['Types'].getboolean('no-such-boolean'), None)
-        if self.allow_no_value:
+        ikiwa self.allow_no_value:
             eq(cf['NoValue'].get('option-without-value', False), None)
             eq(cf['NoValue'].get('option-without-value', fallback=False), None)
             eq(cf['NoValue'].get('no-such-option-without-value', False), False)
@@ -290,7 +290,7 @@ class BasicTestCase(CfgParserTestCaseClass):
         # Don't add new asserts below in this method as most of the options
         # and sections are now removed.
 
-    def test_basic(self):
+    eleza test_basic(self):
         config_string = """\
 [Foo Bar]
 foo{0[0]}bar1
@@ -320,14 +320,14 @@ float {0[0]} 0.44
 boolean {0[0]} NO
 123 {0[1]} strange but acceptable
 """.format(self.delimiters, self.comment_prefixes)
-        if self.allow_no_value:
+        ikiwa self.allow_no_value:
             config_string += (
                 "[NoValue]\n"
                 "option-without-value\n"
                 )
-        cf = self.fromstring(config_string)
+        cf = self.kutokastring(config_string)
         self.basic_test(cf)
-        if self.strict:
+        ikiwa self.strict:
             with self.assertRaises(configparser.DuplicateOptionError):
                 cf.read_string(textwrap.dedent("""\
                     [Duplicate Options Here]
@@ -355,7 +355,7 @@ boolean {0[0]} NO
                 the larch {0[1]} 1
             """.format(self.delimiters)))
 
-    def test_basic_from_dict(self):
+    eleza test_basic_kutoka_dict(self):
         config = {
             "Foo Bar": {
                 "foo": "bar1",
@@ -394,7 +394,7 @@ boolean {0[0]} NO
                 123: "strange but acceptable",
             },
         }
-        if self.allow_no_value:
+        ikiwa self.allow_no_value:
             config.update({
                 "NoValue": {
                     "option-without-value": None,
@@ -403,7 +403,7 @@ boolean {0[0]} NO
         cf = self.newconfig()
         cf.read_dict(config)
         self.basic_test(cf)
-        if self.strict:
+        ikiwa self.strict:
             with self.assertRaises(configparser.DuplicateSectionError):
                 cf.read_dict({
                     '1': {'key': 'value'},
@@ -428,7 +428,7 @@ boolean {0[0]} NO
                 },
             })
 
-    def test_case_sensitivity(self):
+    eleza test_case_sensitivity(self):
         cf = self.newconfig()
         cf.add_section("A")
         cf.add_section("a")
@@ -457,20 +457,20 @@ boolean {0[0]} NO
         eq(cf.options("a"), [])
 
         # SF bug #432369:
-        cf = self.fromstring(
+        cf = self.kutokastring(
             "[MySection]\nOption{} first line   \n\tsecond line   \n".format(
                 self.delimiters[0]))
         eq(cf.options("MySection"), ["option"])
         eq(cf.get("MySection", "Option"), "first line\nsecond line")
 
         # SF bug #561822:
-        cf = self.fromstring("[section]\n"
+        cf = self.kutokastring("[section]\n"
                              "nekey{}nevalue\n".format(self.delimiters[0]),
                              defaults={"key":"value"})
         self.assertTrue(cf.has_option("section", "Key"))
 
 
-    def test_case_sensitivity_mapping_access(self):
+    eleza test_case_sensitivity_mapping_access(self):
         cf = self.newconfig()
         cf["A"] = {}
         cf["a"] = {"B": "value"}
@@ -498,19 +498,19 @@ boolean {0[0]} NO
         elem_eq(cf["a"].keys(), {})
 
         # SF bug #432369:
-        cf = self.fromstring(
+        cf = self.kutokastring(
             "[MySection]\nOption{} first line   \n\tsecond line   \n".format(
                 self.delimiters[0]))
         eq(cf["MySection"].keys(), {"option"})
         eq(cf["MySection"]["Option"], "first line\nsecond line")
 
         # SF bug #561822:
-        cf = self.fromstring("[section]\n"
+        cf = self.kutokastring("[section]\n"
                              "nekey{}nevalue\n".format(self.delimiters[0]),
                              defaults={"key":"value"})
         self.assertTrue("Key" in cf["section"])
 
-    def test_default_case_sensitivity(self):
+    eleza test_default_case_sensitivity(self):
         cf = self.newconfig({"foo": "Bar"})
         self.assertEqual(
             cf.get(self.default_section, "Foo"), "Bar",
@@ -520,7 +520,7 @@ boolean {0[0]} NO
             cf.get(self.default_section, "Foo"), "Bar",
             "could not locate option, expecting case-insensitive defaults")
 
-    def test_parse_errors(self):
+    eleza test_parse_errors(self):
         cf = self.newconfig()
         self.parse_error(cf, configparser.ParsingError,
                          "[Foo]\n"
@@ -531,13 +531,13 @@ boolean {0[0]} NO
         e = self.parse_error(cf, configparser.MissingSectionHeaderError,
                              "No Section!\n")
         self.assertEqual(e.args, ('<???>', 1, "No Section!\n"))
-        if not self.allow_no_value:
+        ikiwa not self.allow_no_value:
             e = self.parse_error(cf, configparser.ParsingError,
                                 "[Foo]\n  wrong-indent\n")
             self.assertEqual(e.args, ('<???>',))
             # read_file on a real file
             tricky = support.findfile("cfgparser.3")
-            if self.delimiters[0] == '=':
+            ikiwa self.delimiters[0] == '=':
                 error = configparser.ParsingError
                 expected = (tricky,)
             else:
@@ -548,16 +548,16 @@ boolean {0[0]} NO
                 e = self.parse_error(cf, error, f)
             self.assertEqual(e.args, expected)
 
-    def parse_error(self, cf, exc, src):
-        if hasattr(src, 'readline'):
+    eleza parse_error(self, cf, exc, src):
+        ikiwa hasattr(src, 'readline'):
             sio = src
         else:
             sio = io.StringIO(src)
         with self.assertRaises(exc) as cm:
             cf.read_file(sio)
-        return cm.exception
+        rudisha cm.exception
 
-    def test_query_errors(self):
+    eleza test_query_errors(self):
         cf = self.newconfig()
         self.assertEqual(cf.sections(), [],
                          "new ConfigParser should have no defined sections")
@@ -574,17 +574,17 @@ boolean {0[0]} NO
         e = self.get_error(cf, configparser.NoOptionError, "foo", "bar")
         self.assertEqual(e.args, ("bar", "foo"))
 
-    def get_error(self, cf, exc, section, option):
+    eleza get_error(self, cf, exc, section, option):
         try:
             cf.get(section, option)
         except exc as e:
-            return e
+            rudisha e
         else:
             self.fail("expected exception type %s.%s"
                       % (exc.__module__, exc.__qualname__))
 
-    def test_boolean(self):
-        cf = self.fromstring(
+    eleza test_boolean(self):
+        cf = self.kutokastring(
             "[BOOLTEST]\n"
             "T1{equals}1\n"
             "T2{equals}TRUE\n"
@@ -608,7 +608,7 @@ boolean {0[0]} NO
             self.assertRaises(ValueError,
                               cf.getboolean, 'BOOLTEST', 'e%d' % x)
 
-    def test_weird_errors(self):
+    eleza test_weird_errors(self):
         cf = self.newconfig()
         cf.add_section("Foo")
         with self.assertRaises(configparser.DuplicateSectionError) as cm:
@@ -617,7 +617,7 @@ boolean {0[0]} NO
         self.assertEqual(str(e), "Section 'Foo' already exists")
         self.assertEqual(e.args, ("Foo", None, None))
 
-        if self.strict:
+        ikiwa self.strict:
             with self.assertRaises(configparser.DuplicateSectionError) as cm:
                 cf.read_string(textwrap.dedent("""\
                     [Foo]
@@ -639,7 +639,7 @@ boolean {0[0]} NO
                                      "'opt' in section 'Bar' already exists")
             self.assertEqual(e.args, ("Bar", "opt", "<dict>", None))
 
-    def test_write(self):
+    eleza test_write(self):
         config_string = (
             "[Long Line]\n"
             "foo{0[0]} this line is much, much longer than my editor\n"
@@ -655,18 +655,18 @@ boolean {0[0]} NO
             "\n".format(self.delimiters, comment=self.comment_prefixes[0],
                         default_section=self.default_section)
             )
-        if self.allow_no_value:
+        ikiwa self.allow_no_value:
             config_string += (
             "[Valueless]\n"
             "option-without-value\n"
             )
 
-        cf = self.fromstring(config_string)
+        cf = self.kutokastring(config_string)
         for space_around_delimiters in (True, False):
             output = io.StringIO()
             cf.write(output, space_around_delimiters=space_around_delimiters)
             delimiter = self.delimiters[0]
-            if space_around_delimiters:
+            ikiwa space_around_delimiters:
                 delimiter = " {} ".format(delimiter)
             expect_string = (
                 "[{default_section}]\n"
@@ -685,7 +685,7 @@ boolean {0[0]} NO
                 "\n".format(equals=delimiter,
                             default_section=self.default_section)
                 )
-            if self.allow_no_value:
+            ikiwa self.allow_no_value:
                 expect_string += (
                     "[Valueless]\n"
                     "option-without-value\n"
@@ -693,12 +693,12 @@ boolean {0[0]} NO
                     )
             self.assertEqual(output.getvalue(), expect_string)
 
-    def test_set_string_types(self):
-        cf = self.fromstring("[sect]\n"
+    eleza test_set_string_types(self):
+        cf = self.kutokastring("[sect]\n"
                              "option1{eq}foo\n".format(eq=self.delimiters[0]))
         # Check that we don't get an exception when setting values in
         # an existing section using strings:
-        class mystr(str):
+        kundi mystr(str):
             pass
         cf.set("sect", "option1", "splat")
         cf.set("sect", "option1", mystr("splat"))
@@ -707,8 +707,8 @@ boolean {0[0]} NO
         cf.set("sect", "option1", "splat")
         cf.set("sect", "option2", "splat")
 
-    def test_read_returns_file_list(self):
-        if self.delimiters[0] != '=':
+    eleza test_read_returns_file_list(self):
+        ikiwa self.delimiters[0] != '=':
             self.skipTest('incompatible format')
         file1 = support.findfile("cfgparser.1")
         # check when we pass a mix of readable and non-readable files:
@@ -740,8 +740,8 @@ boolean {0[0]} NO
         parsed_files = cf.read([])
         self.assertEqual(parsed_files, [])
 
-    def test_read_returns_file_list_with_bytestring_path(self):
-        if self.delimiters[0] != '=':
+    eleza test_read_returns_file_list_with_bytestring_path(self):
+        ikiwa self.delimiters[0] != '=':
             self.skipTest('incompatible format')
         file1_bytestring = support.findfile("cfgparser.1").encode()
         # check when passing an existing bytestring path
@@ -758,8 +758,8 @@ boolean {0[0]} NO
         self.assertEqual(parsed_files, [file1_bytestring])
 
     # shared by subclasses
-    def get_interpolation_config(self):
-        return self.fromstring(
+    eleza get_interpolation_config(self):
+        rudisha self.kutokastring(
             "[Foo]\n"
             "bar{equals}something %(with1)s interpolation (1 step)\n"
             "bar9{equals}something %(with9)s lots of interpolation (9 steps)\n"
@@ -785,8 +785,8 @@ boolean {0[0]} NO
             # no definition for 'reference'
             "name{equals}%(reference)s\n".format(equals=self.delimiters[0]))
 
-    def check_items_config(self, expected):
-        cf = self.fromstring("""
+    eleza check_items_config(self, expected):
+        cf = self.kutokastring("""
             [section]
             name {0[0]} %(value)s
             key{0[1]} |%(name)s|
@@ -798,8 +798,8 @@ boolean {0[0]} NO
         with self.assertRaises(configparser.NoSectionError):
             cf.items("no such section")
 
-    def test_popitem(self):
-        cf = self.fromstring("""
+    eleza test_popitem(self):
+        cf = self.kutokastring("""
             [section1]
             name1 {0[0]} value1
             [section2]
@@ -813,7 +813,7 @@ boolean {0[0]} NO
         with self.assertRaises(KeyError):
             cf.popitem()
 
-    def test_clear(self):
+    eleza test_clear(self):
         cf = self.newconfig({"foo": "Bar"})
         self.assertEqual(
             cf.get(self.default_section, "Foo"), "Bar",
@@ -825,8 +825,8 @@ boolean {0[0]} NO
         self.assertEqual(set(cf.sections()), set())
         self.assertEqual(set(cf[self.default_section].keys()), {'foo'})
 
-    def test_setitem(self):
-        cf = self.fromstring("""
+    eleza test_setitem(self):
+        cf = self.kutokastring("""
             [section1]
             name1 {0[0]} value1
             [section2]
@@ -863,9 +863,9 @@ boolean {0[0]} NO
         cf['section2'] = cf['section2']
         self.assertEqual(set(cf['section2'].keys()), {'name22'})
 
-    def test_invalid_multiline_value(self):
-        if self.allow_no_value:
-            self.skipTest('if no_value is allowed, ParsingError is not raised')
+    eleza test_invalid_multiline_value(self):
+        ikiwa self.allow_no_value:
+            self.skipTest('ikiwa no_value is allowed, ParsingError is not raised')
 
         invalid = textwrap.dedent("""\
             [DEFAULT]
@@ -879,15 +879,15 @@ boolean {0[0]} NO
         self.assertEqual(cf['DEFAULT']['test'], 'test')
 
 
-class StrictTestCase(BasicTestCase, unittest.TestCase):
-    config_class = configparser.RawConfigParser
+kundi StrictTestCase(BasicTestCase, unittest.TestCase):
+    config_kundi = configparser.RawConfigParser
     strict = True
 
 
-class ConfigParserTestCase(BasicTestCase, unittest.TestCase):
-    config_class = configparser.ConfigParser
+kundi ConfigParserTestCase(BasicTestCase, unittest.TestCase):
+    config_kundi = configparser.ConfigParser
 
-    def test_interpolation(self):
+    eleza test_interpolation(self):
         cf = self.get_interpolation_config()
         eq = self.assertEqual
         eq(cf.get("Foo", "bar"), "something with interpolation (1 step)")
@@ -896,50 +896,50 @@ class ConfigParserTestCase(BasicTestCase, unittest.TestCase):
         eq(cf.get("Foo", "bar10"),
            "something with lots of interpolation (10 steps)")
         e = self.get_error(cf, configparser.InterpolationDepthError, "Foo", "bar11")
-        if self.interpolation == configparser._UNSET:
+        ikiwa self.interpolation == configparser._UNSET:
             self.assertEqual(e.args, ("bar11", "Foo",
                 "something %(with11)s lots of interpolation (11 steps)"))
-        elif isinstance(self.interpolation, configparser.LegacyInterpolation):
+        elikiwa isinstance(self.interpolation, configparser.LegacyInterpolation):
             self.assertEqual(e.args, ("bar11", "Foo",
                 "something %(with11)s lots of interpolation (11 steps)"))
 
-    def test_interpolation_missing_value(self):
+    eleza test_interpolation_missing_value(self):
         cf = self.get_interpolation_config()
         e = self.get_error(cf, configparser.InterpolationMissingOptionError,
                            "Interpolation Error", "name")
         self.assertEqual(e.reference, "reference")
         self.assertEqual(e.section, "Interpolation Error")
         self.assertEqual(e.option, "name")
-        if self.interpolation == configparser._UNSET:
+        ikiwa self.interpolation == configparser._UNSET:
             self.assertEqual(e.args, ('name', 'Interpolation Error',
                                     '%(reference)s', 'reference'))
-        elif isinstance(self.interpolation, configparser.LegacyInterpolation):
+        elikiwa isinstance(self.interpolation, configparser.LegacyInterpolation):
             self.assertEqual(e.args, ('name', 'Interpolation Error',
                                     '%(reference)s', 'reference'))
 
-    def test_items(self):
+    eleza test_items(self):
         self.check_items_config([('default', '<default>'),
                                  ('getdefault', '|<default>|'),
                                  ('key', '|value|'),
                                  ('name', 'value')])
 
-    def test_safe_interpolation(self):
+    eleza test_safe_interpolation(self):
         # See http://www.python.org/sf/511737
-        cf = self.fromstring("[section]\n"
+        cf = self.kutokastring("[section]\n"
                              "option1{eq}xxx\n"
                              "option2{eq}%(option1)s/xxx\n"
                              "ok{eq}%(option1)s/%%s\n"
                              "not_ok{eq}%(option2)s/%%s".format(
                                  eq=self.delimiters[0]))
         self.assertEqual(cf.get("section", "ok"), "xxx/%s")
-        if self.interpolation == configparser._UNSET:
+        ikiwa self.interpolation == configparser._UNSET:
             self.assertEqual(cf.get("section", "not_ok"), "xxx/xxx/%s")
-        elif isinstance(self.interpolation, configparser.LegacyInterpolation):
+        elikiwa isinstance(self.interpolation, configparser.LegacyInterpolation):
             with self.assertRaises(TypeError):
                 cf.get("section", "not_ok")
 
-    def test_set_malformatted_interpolation(self):
-        cf = self.fromstring("[sect]\n"
+    eleza test_set_malformatted_interpolation(self):
+        cf = self.kutokastring("[sect]\n"
                              "option1{eq}foo\n".format(eq=self.delimiters[0]))
 
         self.assertEqual(cf.get('sect', "option1"), "foo")
@@ -954,8 +954,8 @@ class ConfigParserTestCase(BasicTestCase, unittest.TestCase):
         cf.set("sect", "option2", "foo%%bar")
         self.assertEqual(cf.get("sect", "option2"), "foo%bar")
 
-    def test_set_nonstring_types(self):
-        cf = self.fromstring("[sect]\n"
+    eleza test_set_nonstring_types(self):
+        cf = self.kutokastring("[sect]\n"
                              "option1{eq}foo\n".format(eq=self.delimiters[0]))
         # Check that we get a TypeError when setting non-string values
         # in an existing section:
@@ -968,11 +968,11 @@ class ConfigParserTestCase(BasicTestCase, unittest.TestCase):
         self.assertRaises(TypeError, cf.set, "sect", 123, "invalid opt name!")
         self.assertRaises(TypeError, cf.add_section, 123)
 
-    def test_add_section_default(self):
+    eleza test_add_section_default(self):
         cf = self.newconfig()
         self.assertRaises(ValueError, cf.add_section, self.default_section)
 
-    def test_defaults_keyword(self):
+    eleza test_defaults_keyword(self):
         """bpo-23835 fix for ConfigParser"""
         cf = self.newconfig(defaults={1: 2.4})
         self.assertEqual(cf[self.default_section]['1'], '2.4')
@@ -982,8 +982,8 @@ class ConfigParserTestCase(BasicTestCase, unittest.TestCase):
         self.assertAlmostEqual(cf[self.default_section].getfloat('a'), 5.2)
 
 
-class ConfigParserTestCaseNoInterpolation(BasicTestCase, unittest.TestCase):
-    config_class = configparser.ConfigParser
+kundi ConfigParserTestCaseNoInterpolation(BasicTestCase, unittest.TestCase):
+    config_kundi = configparser.ConfigParser
     interpolation = None
     ini = textwrap.dedent("""
         [numbers]
@@ -995,22 +995,22 @@ class ConfigParserTestCaseNoInterpolation(BasicTestCase, unittest.TestCase):
         sixteen = ${numbers:two} * 8
     """).strip()
 
-    def assertMatchesIni(self, cf):
+    eleza assertMatchesIni(self, cf):
         self.assertEqual(cf['numbers']['one'], '1')
         self.assertEqual(cf['numbers']['two'], '%(one)s * 2')
         self.assertEqual(cf['numbers']['three'], '${common:one} * 3')
         self.assertEqual(cf['hexen']['sixteen'], '${numbers:two} * 8')
 
-    def test_no_interpolation(self):
-        cf = self.fromstring(self.ini)
+    eleza test_no_interpolation(self):
+        cf = self.kutokastring(self.ini)
         self.assertMatchesIni(cf)
 
-    def test_empty_case(self):
+    eleza test_empty_case(self):
         cf = self.newconfig()
         self.assertIsNone(cf.read_string(""))
 
-    def test_none_as_default_interpolation(self):
-        class CustomConfigParser(configparser.ConfigParser):
+    eleza test_none_as_default_interpolation(self):
+        kundi CustomConfigParser(configparser.ConfigParser):
             _DEFAULT_INTERPOLATION = None
 
         cf = CustomConfigParser()
@@ -1018,12 +1018,12 @@ class ConfigParserTestCaseNoInterpolation(BasicTestCase, unittest.TestCase):
         self.assertMatchesIni(cf)
 
 
-class ConfigParserTestCaseLegacyInterpolation(ConfigParserTestCase):
-    config_class = configparser.ConfigParser
+kundi ConfigParserTestCaseLegacyInterpolation(ConfigParserTestCase):
+    config_kundi = configparser.ConfigParser
     interpolation = configparser.LegacyInterpolation()
 
-    def test_set_malformatted_interpolation(self):
-        cf = self.fromstring("[sect]\n"
+    eleza test_set_malformatted_interpolation(self):
+        cf = self.kutokastring("[sect]\n"
                              "option1{eq}foo\n".format(eq=self.delimiters[0]))
 
         self.assertEqual(cf.get('sect', "option1"), "foo")
@@ -1040,23 +1040,23 @@ class ConfigParserTestCaseLegacyInterpolation(ConfigParserTestCase):
         self.assertEqual(cf.get("sect", "option2"), "foo%%bar")
 
 
-class ConfigParserTestCaseNonStandardDelimiters(ConfigParserTestCase):
+kundi ConfigParserTestCaseNonStandardDelimiters(ConfigParserTestCase):
     delimiters = (':=', '$')
     comment_prefixes = ('//', '"')
     inline_comment_prefixes = ('//', '"')
 
 
-class ConfigParserTestCaseNonStandardDefaultSection(ConfigParserTestCase):
+kundi ConfigParserTestCaseNonStandardDefaultSection(ConfigParserTestCase):
     default_section = 'general'
 
 
-class MultilineValuesTestCase(BasicTestCase, unittest.TestCase):
-    config_class = configparser.ConfigParser
+kundi MultilineValuesTestCase(BasicTestCase, unittest.TestCase):
+    config_kundi = configparser.ConfigParser
     wonderful_spam = ("I'm having spam spam spam spam "
                       "spam spam spam beaked beans spam "
                       "spam spam and spam!").replace(' ', '\t\n')
 
-    def setUp(self):
+    eleza setUp(self):
         cf = self.newconfig()
         for i in range(100):
             s = 'section{}'.format(i)
@@ -1066,23 +1066,23 @@ class MultilineValuesTestCase(BasicTestCase, unittest.TestCase):
         with open(support.TESTFN, 'w') as f:
             cf.write(f)
 
-    def tearDown(self):
+    eleza tearDown(self):
         os.unlink(support.TESTFN)
 
-    def test_dominating_multiline_values(self):
+    eleza test_dominating_multiline_values(self):
         # We're reading kutoka file because this is where the code changed
         # during performance updates in Python 3.2
-        cf_from_file = self.newconfig()
+        cf_kutoka_file = self.newconfig()
         with open(support.TESTFN) as f:
-            cf_from_file.read_file(f)
-        self.assertEqual(cf_from_file.get('section8', 'lovely_spam4'),
+            cf_kutoka_file.read_file(f)
+        self.assertEqual(cf_kutoka_file.get('section8', 'lovely_spam4'),
                          self.wonderful_spam.replace('\t\n', '\n'))
 
 
-class RawConfigParserTestCase(BasicTestCase, unittest.TestCase):
-    config_class = configparser.RawConfigParser
+kundi RawConfigParserTestCase(BasicTestCase, unittest.TestCase):
+    config_kundi = configparser.RawConfigParser
 
-    def test_interpolation(self):
+    eleza test_interpolation(self):
         cf = self.get_interpolation_config()
         eq = self.assertEqual
         eq(cf.get("Foo", "bar"),
@@ -1094,13 +1094,13 @@ class RawConfigParserTestCase(BasicTestCase, unittest.TestCase):
         eq(cf.get("Foo", "bar11"),
            "something %(with11)s lots of interpolation (11 steps)")
 
-    def test_items(self):
+    eleza test_items(self):
         self.check_items_config([('default', '<default>'),
                                  ('getdefault', '|%(default)s|'),
                                  ('key', '|%(name)s|'),
                                  ('name', '%(value)s')])
 
-    def test_set_nonstring_types(self):
+    eleza test_set_nonstring_types(self):
         cf = self.newconfig()
         cf.add_section('non-string')
         cf.set('non-string', 'int', 1)
@@ -1113,14 +1113,14 @@ class RawConfigParserTestCase(BasicTestCase, unittest.TestCase):
         cf.add_section(123)
         cf.set(123, 'this is sick', True)
         self.assertEqual(cf.get(123, 'this is sick'), True)
-        if cf._dict is configparser._default_dict:
+        ikiwa cf._dict is configparser._default_dict:
             # would not work for SortedDict; only checking for the most common
             # default dictionary (dict)
             cf.optionxform = lambda x: x
             cf.set('non-string', 1, 1)
             self.assertEqual(cf.get('non-string', 1), 1)
 
-    def test_defaults_keyword(self):
+    eleza test_defaults_keyword(self):
         """bpo-23835 legacy behavior for RawConfigParser"""
         with self.assertRaises(AttributeError) as ctx:
             self.newconfig(defaults={1: 2.4})
@@ -1130,19 +1130,19 @@ class RawConfigParserTestCase(BasicTestCase, unittest.TestCase):
         self.assertAlmostEqual(cf[self.default_section]['a'], 5.2)
 
 
-class RawConfigParserTestCaseNonStandardDelimiters(RawConfigParserTestCase):
+kundi RawConfigParserTestCaseNonStandardDelimiters(RawConfigParserTestCase):
     delimiters = (':=', '$')
     comment_prefixes = ('//', '"')
     inline_comment_prefixes = ('//', '"')
 
 
-class RawConfigParserTestSambaConf(CfgParserTestCaseClass, unittest.TestCase):
-    config_class = configparser.RawConfigParser
+kundi RawConfigParserTestSambaConf(CfgParserTestCaseClass, unittest.TestCase):
+    config_kundi = configparser.RawConfigParser
     comment_prefixes = ('#', ';', '----')
     inline_comment_prefixes = ('//',)
     empty_lines_in_values = False
 
-    def test_reading(self):
+    eleza test_reading(self):
         smbconf = support.findfile("cfgparser.2")
         # check when we pass a mix of readable and non-readable files:
         cf = self.newconfig()
@@ -1156,21 +1156,21 @@ class RawConfigParserTestSambaConf(CfgParserTestCaseClass, unittest.TestCase):
         self.assertEqual(cf.get("global", "hosts allow"), "127.")
         self.assertEqual(cf.get("tmp", "echo command"), "cat %s; rm %s")
 
-class ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase):
-    config_class = configparser.ConfigParser
+kundi ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase):
+    config_kundi = configparser.ConfigParser
     interpolation = configparser.ExtendedInterpolation()
     default_section = 'common'
     strict = True
 
-    def fromstring(self, string, defaults=None, optionxform=None):
+    eleza kutokastring(self, string, defaults=None, optionxform=None):
         cf = self.newconfig(defaults)
-        if optionxform:
+        ikiwa optionxform:
             cf.optionxform = optionxform
         cf.read_string(string)
-        return cf
+        rudisha cf
 
-    def test_extended_interpolation(self):
-        cf = self.fromstring(textwrap.dedent("""
+    eleza test_extended_interpolation(self):
+        cf = self.kutokastring(textwrap.dedent("""
             [common]
             favourite Beatle = Paul
             favourite color = green
@@ -1214,8 +1214,8 @@ class ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase
         eq(cf['stanley']['favourite song'],
            'black sabbath - paranoid')
 
-    def test_endless_loop(self):
-        cf = self.fromstring(textwrap.dedent("""
+    eleza test_endless_loop(self):
+        cf = self.kutokastring(textwrap.dedent("""
             [one for you]
             ping = ${one for me:pong}
 
@@ -1231,8 +1231,8 @@ class ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase
         with self.assertRaises(configparser.InterpolationDepthError):
             cf['selfish']['me']
 
-    def test_strange_options(self):
-        cf = self.fromstring("""
+    eleza test_strange_options(self):
+        cf = self.kutokastring("""
             [dollars]
             $var = $$value
             $var2 = ${$var}
@@ -1246,13 +1246,13 @@ class ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase
         self.assertEqual(cf['dollars']['$var'], '$value')
         self.assertEqual(cf['interpolated']['$other'], '$value')
         self.assertEqual(cf['dollars']['${sick}'], 'cannot interpolate me')
-        exception_class = configparser.InterpolationMissingOptionError
+        exception_kundi = configparser.InterpolationMissingOptionError
         with self.assertRaises(exception_class) as cm:
             cf['interpolated']['$trying']
         self.assertEqual(cm.exception.reference, 'dollars:${sick')
         self.assertEqual(cm.exception.args[2], '${dollars:${sick}}') #rawval
 
-    def test_case_sensitivity_basic(self):
+    eleza test_case_sensitivity_basic(self):
         ini = textwrap.dedent("""
             [common]
             optionlower = value
@@ -1267,7 +1267,7 @@ class ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase
             FooUpper = ${Common:OptionUpper} Redefined
         """).strip()
 
-        cf = self.fromstring(ini)
+        cf = self.kutokastring(ini)
         eq = self.assertEqual
         eq(cf['common']['optionlower'], 'value')
         eq(cf['common']['OptionUpper'], 'Value')
@@ -1276,7 +1276,7 @@ class ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase
         eq(cf['random']['foolower'], 'value redefined')
         eq(cf['random']['FooUpper'], 'A Better Value Redefined')
 
-    def test_case_sensitivity_conflicts(self):
+    eleza test_case_sensitivity_conflicts(self):
         ini = textwrap.dedent("""
             [common]
             option = value
@@ -1291,10 +1291,10 @@ class ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase
             Foo = ${Common:Option} Redefined
         """).strip()
         with self.assertRaises(configparser.DuplicateOptionError):
-            cf = self.fromstring(ini)
+            cf = self.kutokastring(ini)
 
         # raw options
-        cf = self.fromstring(ini, optionxform=lambda opt: opt)
+        cf = self.kutokastring(ini, optionxform=lambda opt: opt)
         eq = self.assertEqual
         eq(cf['common']['option'], 'value')
         eq(cf['common']['Option'], 'Value')
@@ -1303,8 +1303,8 @@ class ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase
         eq(cf['random']['foo'], 'value redefined')
         eq(cf['random']['Foo'], 'A Better Value Redefined')
 
-    def test_other_errors(self):
-        cf = self.fromstring("""
+    eleza test_other_errors(self):
+        cf = self.kutokastring("""
             [interpolation fail]
             case1 = ${where's the brace
             case2 = ${does_not_exist}
@@ -1327,17 +1327,17 @@ class ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase
             cf['interpolation fail']['case6'] = "BLACK $ABBATH"
 
 
-class ConfigParserTestCaseNoValue(ConfigParserTestCase):
+kundi ConfigParserTestCaseNoValue(ConfigParserTestCase):
     allow_no_value = True
 
 
-class ConfigParserTestCaseTrickyFile(CfgParserTestCaseClass, unittest.TestCase):
-    config_class = configparser.ConfigParser
+kundi ConfigParserTestCaseTrickyFile(CfgParserTestCaseClass, unittest.TestCase):
+    config_kundi = configparser.ConfigParser
     delimiters = {'='}
     comment_prefixes = {'#'}
     allow_no_value = True
 
-    def test_cfgparser_dot_3(self):
+    eleza test_cfgparser_dot_3(self):
         tricky = support.findfile("cfgparser.3")
         cf = self.newconfig()
         self.assertEqual(len(cf.read(tricky, encoding='utf-8')), 1)
@@ -1369,14 +1369,14 @@ class ConfigParserTestCaseTrickyFile(CfgParserTestCaseClass, unittest.TestCase):
                          cf.get('tricky interpolation', 'go'))
         self.assertEqual(cf.get('more interpolation', 'lets'), 'go shopping')
 
-    def test_unicode_failure(self):
+    eleza test_unicode_failure(self):
         tricky = support.findfile("cfgparser.3")
         cf = self.newconfig()
         with self.assertRaises(UnicodeDecodeError):
             cf.read(tricky, encoding='ascii')
 
 
-class Issue7005TestCase(unittest.TestCase):
+kundi Issue7005TestCase(unittest.TestCase):
     """Test output when None is set() as a value and allow_no_value == False.
 
     http://bugs.python.org/issue7005
@@ -1385,31 +1385,31 @@ class Issue7005TestCase(unittest.TestCase):
 
     expected_output = "[section]\noption = None\n\n"
 
-    def prepare(self, config_class):
+    eleza prepare(self, config_class):
         # This is the default, but that's the point.
         cp = config_class(allow_no_value=False)
         cp.add_section("section")
         cp.set("section", "option", None)
         sio = io.StringIO()
         cp.write(sio)
-        return sio.getvalue()
+        rudisha sio.getvalue()
 
-    def test_none_as_value_stringified(self):
+    eleza test_none_as_value_stringified(self):
         cp = configparser.ConfigParser(allow_no_value=False)
         cp.add_section("section")
         with self.assertRaises(TypeError):
             cp.set("section", "option", None)
 
-    def test_none_as_value_stringified_raw(self):
+    eleza test_none_as_value_stringified_raw(self):
         output = self.prepare(configparser.RawConfigParser)
         self.assertEqual(output, self.expected_output)
 
 
-class SortedTestCase(RawConfigParserTestCase):
+kundi SortedTestCase(RawConfigParserTestCase):
     dict_type = SortedDict
 
-    def test_sorted(self):
-        cf = self.fromstring("[b]\n"
+    eleza test_sorted(self):
+        cf = self.kutokastring("[b]\n"
                              "o4=1\n"
                              "o3=2\n"
                              "o2=3\n"
@@ -1428,12 +1428,12 @@ class SortedTestCase(RawConfigParserTestCase):
                          "o4 = 1\n\n")
 
 
-class CompatibleTestCase(CfgParserTestCaseClass, unittest.TestCase):
-    config_class = configparser.RawConfigParser
+kundi CompatibleTestCase(CfgParserTestCaseClass, unittest.TestCase):
+    config_kundi = configparser.RawConfigParser
     comment_prefixes = '#;'
     inline_comment_prefixes = ';'
 
-    def test_comment_handling(self):
+    eleza test_comment_handling(self):
         config_string = textwrap.dedent("""\
         [Commented Bar]
         baz=qwe ; a comment
@@ -1443,17 +1443,17 @@ class CompatibleTestCase(CfgParserTestCaseClass, unittest.TestCase):
         quirk: this;is not a comment
         ; a space must precede an inline comment
         """)
-        cf = self.fromstring(config_string)
+        cf = self.kutokastring(config_string)
         self.assertEqual(cf.get('Commented Bar', 'foo'),
                          'bar # not a comment!')
         self.assertEqual(cf.get('Commented Bar', 'baz'), 'qwe')
         self.assertEqual(cf.get('Commented Bar', 'quirk'),
                          'this;is not a comment')
 
-class CopyTestCase(BasicTestCase, unittest.TestCase):
-    config_class = configparser.ConfigParser
+kundi CopyTestCase(BasicTestCase, unittest.TestCase):
+    config_kundi = configparser.ConfigParser
 
-    def fromstring(self, string, defaults=None):
+    eleza kutokastring(self, string, defaults=None):
         cf = self.newconfig(defaults)
         cf.read_string(string)
         cf_copy = self.newconfig()
@@ -1461,28 +1461,28 @@ class CopyTestCase(BasicTestCase, unittest.TestCase):
         # we have to clean up option duplicates that appeared because of
         # the magic DEFAULTSECT behaviour.
         for section in cf_copy.values():
-            if section.name == self.default_section:
+            ikiwa section.name == self.default_section:
                 continue
             for default, value in cf[self.default_section].items():
-                if section[default] == value:
+                ikiwa section[default] == value:
                     del section[default]
-        return cf_copy
+        rudisha cf_copy
 
 
-class FakeFile:
-    def __init__(self):
+kundi FakeFile:
+    eleza __init__(self):
         file_path = support.findfile("cfgparser.1")
         with open(file_path) as f:
             self.lines = f.readlines()
             self.lines.reverse()
 
-    def readline(self):
-        if len(self.lines):
-            return self.lines.pop()
-        return ''
+    eleza readline(self):
+        ikiwa len(self.lines):
+            rudisha self.lines.pop()
+        rudisha ''
 
 
-def readline_generator(f):
+eleza readline_generator(f):
     """As advised in Doc/library/configparser.rst."""
     line = f.readline()
     while line:
@@ -1490,8 +1490,8 @@ def readline_generator(f):
         line = f.readline()
 
 
-class ReadFileTestCase(unittest.TestCase):
-    def test_file(self):
+kundi ReadFileTestCase(unittest.TestCase):
+    eleza test_file(self):
         file_paths = [support.findfile("cfgparser.1")]
         try:
             file_paths.append(file_paths[0].encode('utf8'))
@@ -1505,7 +1505,7 @@ class ReadFileTestCase(unittest.TestCase):
             self.assertIn("foo", parser["Foo Bar"])
             self.assertEqual(parser["Foo Bar"]["foo"], "newbar")
 
-    def test_iterable(self):
+    eleza test_iterable(self):
         lines = textwrap.dedent("""
         [Foo Bar]
         foo=newbar""").strip().split('\n')
@@ -1515,7 +1515,7 @@ class ReadFileTestCase(unittest.TestCase):
         self.assertIn("foo", parser["Foo Bar"])
         self.assertEqual(parser["Foo Bar"]["foo"], "newbar")
 
-    def test_readline_generator(self):
+    eleza test_readline_generator(self):
         """Issue #11670."""
         parser = configparser.ConfigParser()
         with self.assertRaises(TypeError):
@@ -1525,7 +1525,7 @@ class ReadFileTestCase(unittest.TestCase):
         self.assertIn("foo", parser["Foo Bar"])
         self.assertEqual(parser["Foo Bar"]["foo"], "newbar")
 
-    def test_source_as_bytes(self):
+    eleza test_source_as_bytes(self):
         """Issue #18260."""
         lines = textwrap.dedent("""
         [badbad]
@@ -1573,10 +1573,10 @@ class ReadFileTestCase(unittest.TestCase):
         )
 
 
-class CoverageOneHundredTestCase(unittest.TestCase):
+kundi CoverageOneHundredTestCase(unittest.TestCase):
     """Covers edge cases in the codebase."""
 
-    def test_duplicate_option_error(self):
+    eleza test_duplicate_option_error(self):
         error = configparser.DuplicateOptionError('section', 'option')
         self.assertEqual(error.section, 'section')
         self.assertEqual(error.option, 'option')
@@ -1586,14 +1586,14 @@ class CoverageOneHundredTestCase(unittest.TestCase):
         self.assertEqual(str(error), "Option 'option' in section 'section' "
                                      "already exists")
 
-    def test_interpolation_depth_error(self):
+    eleza test_interpolation_depth_error(self):
         error = configparser.InterpolationDepthError('option', 'section',
                                                      'rawval')
         self.assertEqual(error.args, ('option', 'section', 'rawval'))
         self.assertEqual(error.option, 'option')
         self.assertEqual(error.section, 'section')
 
-    def test_parsing_error(self):
+    eleza test_parsing_error(self):
         with self.assertRaises(ValueError) as cm:
             configparser.ParsingError()
         self.assertEqual(str(cm.exception), "Required argument `source' not "
@@ -1612,7 +1612,7 @@ class CoverageOneHundredTestCase(unittest.TestCase):
         for warning in w:
             self.assertTrue(warning.category is DeprecationWarning)
 
-    def test_interpolation_validation(self):
+    eleza test_interpolation_validation(self):
         parser = configparser.ConfigParser()
         parser.read_string("""
             [section]
@@ -1629,7 +1629,7 @@ class CoverageOneHundredTestCase(unittest.TestCase):
         self.assertEqual(str(cm.exception), "bad interpolation variable "
                                             "reference '%(()'")
 
-    def test_readfp_deprecation(self):
+    eleza test_readfp_deprecation(self):
         sio = io.StringIO("""
         [section]
         option = value
@@ -1643,14 +1643,14 @@ class CoverageOneHundredTestCase(unittest.TestCase):
         self.assertEqual(len(parser), 2)
         self.assertEqual(parser['section']['option'], 'value')
 
-    def test_safeconfigparser_deprecation(self):
+    eleza test_safeconfigparser_deprecation(self):
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always", DeprecationWarning)
             parser = configparser.SafeConfigParser()
         for warning in w:
             self.assertTrue(warning.category is DeprecationWarning)
 
-    def test_sectionproxy_repr(self):
+    eleza test_sectionproxy_repr(self):
         parser = configparser.ConfigParser()
         parser.read_string("""
             [section]
@@ -1658,7 +1658,7 @@ class CoverageOneHundredTestCase(unittest.TestCase):
         """)
         self.assertEqual(repr(parser['section']), '<Section: section>')
 
-    def test_inconsistent_converters_state(self):
+    eleza test_inconsistent_converters_state(self):
         parser = configparser.ConfigParser()
         agiza decimal
         parser.converters['decimal'] = decimal.Decimal
@@ -1687,10 +1687,10 @@ class CoverageOneHundredTestCase(unittest.TestCase):
             parser['s2'].getdecimal('two')
 
 
-class ExceptionPicklingTestCase(unittest.TestCase):
+kundi ExceptionPicklingTestCase(unittest.TestCase):
     """Tests for issue #13760: ConfigParser exceptions are not picklable."""
 
-    def test_error(self):
+    eleza test_error(self):
         agiza pickle
         e1 = configparser.Error('value')
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -1699,7 +1699,7 @@ class ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(e1.message, e2.message)
             self.assertEqual(repr(e1), repr(e2))
 
-    def test_nosectionerror(self):
+    eleza test_nosectionerror(self):
         agiza pickle
         e1 = configparser.NoSectionError('section')
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -1710,7 +1710,7 @@ class ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(e1.section, e2.section)
             self.assertEqual(repr(e1), repr(e2))
 
-    def test_nooptionerror(self):
+    eleza test_nooptionerror(self):
         agiza pickle
         e1 = configparser.NoOptionError('option', 'section')
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -1722,7 +1722,7 @@ class ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(e1.option, e2.option)
             self.assertEqual(repr(e1), repr(e2))
 
-    def test_duplicatesectionerror(self):
+    eleza test_duplicatesectionerror(self):
         agiza pickle
         e1 = configparser.DuplicateSectionError('section', 'source', 123)
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -1735,7 +1735,7 @@ class ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(e1.lineno, e2.lineno)
             self.assertEqual(repr(e1), repr(e2))
 
-    def test_duplicateoptionerror(self):
+    eleza test_duplicateoptionerror(self):
         agiza pickle
         e1 = configparser.DuplicateOptionError('section', 'option', 'source',
             123)
@@ -1750,7 +1750,7 @@ class ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(e1.lineno, e2.lineno)
             self.assertEqual(repr(e1), repr(e2))
 
-    def test_interpolationerror(self):
+    eleza test_interpolationerror(self):
         agiza pickle
         e1 = configparser.InterpolationError('option', 'section', 'msg')
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -1762,7 +1762,7 @@ class ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(e1.option, e2.option)
             self.assertEqual(repr(e1), repr(e2))
 
-    def test_interpolationmissingoptionerror(self):
+    eleza test_interpolationmissingoptionerror(self):
         agiza pickle
         e1 = configparser.InterpolationMissingOptionError('option', 'section',
             'rawval', 'reference')
@@ -1776,7 +1776,7 @@ class ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(e1.reference, e2.reference)
             self.assertEqual(repr(e1), repr(e2))
 
-    def test_interpolationsyntaxerror(self):
+    eleza test_interpolationsyntaxerror(self):
         agiza pickle
         e1 = configparser.InterpolationSyntaxError('option', 'section', 'msg')
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -1788,7 +1788,7 @@ class ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(e1.option, e2.option)
             self.assertEqual(repr(e1), repr(e2))
 
-    def test_interpolationdeptherror(self):
+    eleza test_interpolationdeptherror(self):
         agiza pickle
         e1 = configparser.InterpolationDepthError('option', 'section',
             'rawval')
@@ -1801,7 +1801,7 @@ class ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(e1.option, e2.option)
             self.assertEqual(repr(e1), repr(e2))
 
-    def test_parsingerror(self):
+    eleza test_parsingerror(self):
         agiza pickle
         e1 = configparser.ParsingError('source')
         e1.append(1, 'line1')
@@ -1828,7 +1828,7 @@ class ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(e1.errors, e2.errors)
             self.assertEqual(repr(e1), repr(e2))
 
-    def test_missingsectionheadererror(self):
+    eleza test_missingsectionheadererror(self):
         agiza pickle
         e1 = configparser.MissingSectionHeaderError('filename', 123, 'line')
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -1842,11 +1842,11 @@ class ExceptionPicklingTestCase(unittest.TestCase):
             self.assertEqual(repr(e1), repr(e2))
 
 
-class InlineCommentStrippingTestCase(unittest.TestCase):
+kundi InlineCommentStrippingTestCase(unittest.TestCase):
     """Tests for issue #14590: ConfigParser doesn't strip inline comment when
     delimiter occurs earlier without preceding space.."""
 
-    def test_stripping(self):
+    eleza test_stripping(self):
         cfg = configparser.ConfigParser(inline_comment_prefixes=(';', '#',
                 '//'))
         cfg.read_string("""
@@ -1878,11 +1878,11 @@ class InlineCommentStrippingTestCase(unittest.TestCase):
         self.assertEqual(s['k3'], 'v3;#//still v3# and still v3')
 
 
-class ExceptionContextTestCase(unittest.TestCase):
+kundi ExceptionContextTestCase(unittest.TestCase):
     """ Test that implementation details doesn't leak
     through raising exceptions. """
 
-    def test_get_basic_interpolation(self):
+    eleza test_get_basic_interpolation(self):
         parser = configparser.ConfigParser()
         parser.read_string("""
         [Paths]
@@ -1895,7 +1895,7 @@ class ExceptionContextTestCase(unittest.TestCase):
             parser.get('Paths', 'my_dir')
         self.assertIs(cm.exception.__suppress_context__, True)
 
-    def test_get_extended_interpolation(self):
+    eleza test_get_extended_interpolation(self):
         parser = configparser.ConfigParser(
           interpolation=configparser.ExtendedInterpolation())
         parser.read_string("""
@@ -1909,7 +1909,7 @@ class ExceptionContextTestCase(unittest.TestCase):
             parser.get('Paths', 'my_dir')
         self.assertIs(cm.exception.__suppress_context__, True)
 
-    def test_missing_options(self):
+    eleza test_missing_options(self):
         parser = configparser.ConfigParser()
         parser.read_string("""
         [Paths]
@@ -1919,31 +1919,31 @@ class ExceptionContextTestCase(unittest.TestCase):
             parser.options('test')
         self.assertIs(cm.exception.__suppress_context__, True)
 
-    def test_missing_section(self):
+    eleza test_missing_section(self):
         config = configparser.ConfigParser()
         with self.assertRaises(configparser.NoSectionError) as cm:
             config.set('Section1', 'an_int', '15')
         self.assertIs(cm.exception.__suppress_context__, True)
 
-    def test_remove_option(self):
+    eleza test_remove_option(self):
         config = configparser.ConfigParser()
         with self.assertRaises(configparser.NoSectionError) as cm:
             config.remove_option('Section1', 'an_int')
         self.assertIs(cm.exception.__suppress_context__, True)
 
 
-class ConvertersTestCase(BasicTestCase, unittest.TestCase):
+kundi ConvertersTestCase(BasicTestCase, unittest.TestCase):
     """Introduced in 3.5, issue #18159."""
 
-    config_class = configparser.ConfigParser
+    config_kundi = configparser.ConfigParser
 
-    def newconfig(self, defaults=None):
+    eleza newconfig(self, defaults=None):
         instance = super().newconfig(defaults=defaults)
         instance.converters['list'] = lambda v: [e.strip() for e in v.split()
-                                                 if e.strip()]
-        return instance
+                                                 ikiwa e.strip()]
+        rudisha instance
 
-    def test_converters(self):
+    eleza test_converters(self):
         cfg = self.newconfig()
         self.assertIn('boolean', cfg.converters)
         self.assertIn('list', cfg.converters)
@@ -2014,8 +2014,8 @@ class ConvertersTestCase(BasicTestCase, unittest.TestCase):
             del cfg.converters[None]
 
 
-class BlatantOverrideConvertersTestCase(unittest.TestCase):
-    """What if somebody overrode a getboolean()? We want to make sure that in
+kundi BlatantOverrideConvertersTestCase(unittest.TestCase):
+    """What ikiwa somebody overrode a getboolean()? We want to make sure that in
     this case the automatic converters do not kick in."""
 
     config = """
@@ -2030,25 +2030,25 @@ class BlatantOverrideConvertersTestCase(unittest.TestCase):
         three = four
     """
 
-    def test_converters_at_init(self):
+    eleza test_converters_at_init(self):
         cfg = configparser.ConfigParser(converters={'len': len})
         cfg.read_string(self.config)
         self._test_len(cfg)
         self.assertIsNotNone(cfg.converters['len'])
 
-    def test_inheritance(self):
-        class StrangeConfigParser(configparser.ConfigParser):
+    eleza test_inheritance(self):
+        kundi StrangeConfigParser(configparser.ConfigParser):
             gettysburg = 'a historic borough in south central Pennsylvania'
 
-            def getboolean(self, section, option, *, raw=False, vars=None,
+            eleza getboolean(self, section, option, *, raw=False, vars=None,
                         fallback=configparser._UNSET):
-                if section == option:
-                    return True
-                return super().getboolean(section, option, raw=raw, vars=vars,
+                ikiwa section == option:
+                    rudisha True
+                rudisha super().getboolean(section, option, raw=raw, vars=vars,
                                           fallback=fallback)
-            def getlen(self, section, option, *, raw=False, vars=None,
+            eleza getlen(self, section, option, *, raw=False, vars=None,
                        fallback=configparser._UNSET):
-                return self._get_conv(section, option, len, raw=raw, vars=vars,
+                rudisha self._get_conv(section, option, len, raw=raw, vars=vars,
                                       fallback=fallback)
 
         cfg = StrangeConfigParser()
@@ -2065,7 +2065,7 @@ class BlatantOverrideConvertersTestCase(unittest.TestCase):
         self.assertFalse(cfg.getboolean('one', 'two'))
         self.assertFalse(cfg.getboolean('two', 'one'))
 
-    def _test_len(self, cfg):
+    eleza _test_len(self, cfg):
         self.assertEqual(len(cfg.converters), 4)
         self.assertIn('boolean', cfg.converters)
         self.assertIn('len', cfg.converters)
@@ -2091,7 +2091,7 @@ class BlatantOverrideConvertersTestCase(unittest.TestCase):
         self.assertEqual(cfg['two'].getlen('four', 0), 0)
         self.assertEqual(cfg['two'].getlen('four'), None)
 
-    def test_instance_assignment(self):
+    eleza test_instance_assignment(self):
         cfg = configparser.ConfigParser()
         cfg.getboolean = lambda section, option: True
         cfg.getlen = lambda section, option: len(cfg[section][option])
@@ -2125,11 +2125,11 @@ class BlatantOverrideConvertersTestCase(unittest.TestCase):
             self.assertEqual(cfg['two'].getlen('one'), 5)
 
 
-class MiscTestCase(unittest.TestCase):
-    def test__all__(self):
+kundi MiscTestCase(unittest.TestCase):
+    eleza test__all__(self):
         blacklist = {"Error"}
         support.check__all__(self, configparser, blacklist=blacklist)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

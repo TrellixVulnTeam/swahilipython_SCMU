@@ -8,7 +8,7 @@
  *     * Redistributions of source code must retain the above copyright
  * notice, this list of conditions and the following disclaimer.
  *     * Neither the name of Google Inc. nor the names of its
- * contributors may be used to endorse or promote products derived from
+ * contributors may be used to endorse or promote products derived kutoka
  * this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -70,7 +70,7 @@
      The annotations _Py_ANNOTATE_HAPPENS_BEFORE() and
      _Py_ANNOTATE_HAPPENS_AFTER() can be used to define happens-before arcs in
      user-defined synchronization mechanisms: the race detector will infer an
-     arc from the former to the latter when they share the same argument
+     arc kutoka the former to the latter when they share the same argument
      pointer.
 
      Example 1 (reference counting):
@@ -126,7 +126,7 @@
 
   /* Report that the bytes in the range [pointer, pointer+size) are about
      to be published safely. The race checker will create a happens-before
-     arc from the call _Py_ANNOTATE_PUBLISH_MEMORY_RANGE(pointer, size) to
+     arc kutoka the call _Py_ANNOTATE_PUBLISH_MEMORY_RANGE(pointer, size) to
      subsequent accesses to this memory.
      Note: this annotation may not work properly if the race detector uses
      sampling, i.e. does not observe all memory accesses.
@@ -149,7 +149,7 @@
      was protected in one way starts to be protected in another. */
 
   /* Report that a new memory at "address" of size "size" has been allocated.
-     This might be used when the memory has been retrieved from a free list and
+     This might be used when the memory has been retrieved kutoka a free list and
      is about to be reused, or when the locking discipline for a variable
      changes. */
 #define _Py_ANNOTATE_NEW_MEMORY(address, size) \
@@ -176,7 +176,7 @@
 #define _Py_ANNOTATE_PCQ_PUT(pcq) \
     AnnotatePCQPut(__FILE__, __LINE__, pcq)
 
-  /* Report that we've just got an element from a FIFO queue at address "pcq". */
+  /* Report that we've just got an element kutoka a FIFO queue at address "pcq". */
 #define _Py_ANNOTATE_PCQ_GET(pcq) \
     AnnotatePCQGet(__FILE__, __LINE__, pcq)
 
@@ -469,7 +469,7 @@ int RunningOnValgrind(void);
         _Py_ANNOTATE_IGNORE_READS_END();
      one can use
         ... = _Py_ANNOTATE_UNPROTECTED_READ(x); */
-  template <class T>
+  template <kundi T>
   inline T _Py_ANNOTATE_UNPROTECTED_READ(const volatile T &x) {
     _Py_ANNOTATE_IGNORE_READS_BEGIN();
     T res = x;
@@ -479,7 +479,7 @@ int RunningOnValgrind(void);
   /* Apply _Py_ANNOTATE_BENIGN_RACE_SIZED to a static variable. */
 #define _Py_ANNOTATE_BENIGN_RACE_STATIC(static_var, description)        \
     namespace {                                                       \
-      class static_var ## _annotator {                                \
+      kundi static_var ## _annotator {                                \
        public:                                                        \
         static_var ## _annotator() {                                  \
           _Py_ANNOTATE_BENIGN_RACE_SIZED(&static_var,                     \

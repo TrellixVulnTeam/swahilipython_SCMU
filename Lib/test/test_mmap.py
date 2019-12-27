@@ -8,25 +8,25 @@ agiza socket
 agiza sys
 agiza weakref
 
-# Skip test if we can't agiza mmap.
+# Skip test ikiwa we can't agiza mmap.
 mmap = import_module('mmap')
 
 PAGESIZE = mmap.PAGESIZE
 
 
-class MmapTests(unittest.TestCase):
+kundi MmapTests(unittest.TestCase):
 
-    def setUp(self):
-        if os.path.exists(TESTFN):
+    eleza setUp(self):
+        ikiwa os.path.exists(TESTFN):
             os.unlink(TESTFN)
 
-    def tearDown(self):
+    eleza tearDown(self):
         try:
             os.unlink(TESTFN)
         except OSError:
             pass
 
-    def test_basic(self):
+    eleza test_basic(self):
         # Test mmap module on Unix systems and Windows
 
         # Create a file to be mmap'ed.
@@ -68,7 +68,7 @@ class MmapTests(unittest.TestCase):
 
         # Test doing a regular expression match in an mmap'ed file
         match = re.search(b'[A-Za-z]+', m)
-        if match is None:
+        ikiwa match is None:
             self.fail('regex match on mmap failed!')
         else:
             start, end = match.span(0)
@@ -120,7 +120,7 @@ class MmapTests(unittest.TestCase):
 
         m.close()
 
-    def test_access_parameter(self):
+    eleza test_access_parameter(self):
         # Test for "access" keyword parameter
         mapsize = 10
         with open(TESTFN, "wb") as fp:
@@ -185,14 +185,14 @@ class MmapTests(unittest.TestCase):
                 # CAUTION:  This also changes the size of the file on disk, and
                 # later tests assume that the length hasn't changed.  We need to
                 # repair that.
-                if sys.platform.startswith('win'):
+                ikiwa sys.platform.startswith('win'):
                     self.fail("Opening mmap with size+1 should work on Windows.")
             else:
                 # we expect a ValueError on Unix, but not on Windows
-                if not sys.platform.startswith('win'):
+                ikiwa not sys.platform.startswith('win'):
                     self.fail("Opening mmap with size+1 should raise ValueError.")
                 m.close()
-            if sys.platform.startswith('win'):
+            ikiwa sys.platform.startswith('win'):
                 # Repair damage kutoka the resizing test.
                 with open(TESTFN, 'r+b') as f:
                     f.truncate(mapsize)
@@ -230,7 +230,7 @@ class MmapTests(unittest.TestCase):
         with open(TESTFN, "r+b") as f:
             self.assertRaises(ValueError, mmap.mmap, f.fileno(), mapsize, access=4)
 
-        if os.name == "posix":
+        ikiwa os.name == "posix":
             # Try incompatible flags, prot and access parameters.
             with open(TESTFN, "r+b") as f:
                 self.assertRaises(ValueError, mmap.mmap, f.fileno(), mapsize,
@@ -245,11 +245,11 @@ class MmapTests(unittest.TestCase):
                 self.assertRaises(TypeError, m.write_byte, 0)
                 m.close()
 
-    def test_bad_file_desc(self):
+    eleza test_bad_file_desc(self):
         # Try opening a bad file descriptor...
         self.assertRaises(OSError, mmap.mmap, -2, 4096)
 
-    def test_tougher_find(self):
+    eleza test_tougher_find(self):
         # Do a tougher .find() test.  SF bug 515943 pointed out that, in 2.2,
         # searching for data with embedded \0 bytes didn't work.
         with open(TESTFN, 'wb+') as f:
@@ -267,7 +267,7 @@ class MmapTests(unittest.TestCase):
                 self.assertEqual(m.find(slice + b'x'), -1)
         m.close()
 
-    def test_find_end(self):
+    eleza test_find_end(self):
         # test the new 'end' parameter works as expected
         with open(TESTFN, 'wb+') as f:
             data = b'one two ones'
@@ -285,7 +285,7 @@ class MmapTests(unittest.TestCase):
         self.assertEqual(m.find(bytearray(b'one')), 0)
 
 
-    def test_rfind(self):
+    eleza test_rfind(self):
         # test the new 'end' parameter works as expected
         with open(TESTFN, 'wb+') as f:
             data = b'one two ones'
@@ -303,7 +303,7 @@ class MmapTests(unittest.TestCase):
         self.assertEqual(m.rfind(bytearray(b'one')), 8)
 
 
-    def test_double_close(self):
+    eleza test_double_close(self):
         # make sure a double close doesn't crash on Solaris (Bug# 665913)
         with open(TESTFN, 'wb+') as f:
             f.write(2**16 * b'a') # Arbitrary character
@@ -313,7 +313,7 @@ class MmapTests(unittest.TestCase):
             mf.close()
             mf.close()
 
-    def test_entire_file(self):
+    eleza test_entire_file(self):
         # test mapping of entire file by passing 0 for map length
         with open(TESTFN, "wb+") as f:
             f.write(2**16 * b'm') # Arbitrary character
@@ -323,7 +323,7 @@ class MmapTests(unittest.TestCase):
             self.assertEqual(len(mf), 2**16, "Map size should equal file size.")
             self.assertEqual(mf.read(2**16), 2**16 * b"m")
 
-    def test_length_0_offset(self):
+    eleza test_length_0_offset(self):
         # Issue #10916: test mapping of remainder of file by passing 0 for
         # map length with an offset doesn't cause a segfault.
         # NOTE: allocation granularity is currently 65536 under Win64,
@@ -335,7 +335,7 @@ class MmapTests(unittest.TestCase):
             with mmap.mmap(f.fileno(), 0, offset=65536, access=mmap.ACCESS_READ) as mf:
                 self.assertRaises(IndexError, mf.__getitem__, 80000)
 
-    def test_length_0_large_offset(self):
+    eleza test_length_0_large_offset(self):
         # Issue #10959: test mapping of a file by passing 0 for
         # map length with a large offset doesn't cause a segfault.
         with open(TESTFN, "wb") as f:
@@ -345,7 +345,7 @@ class MmapTests(unittest.TestCase):
             self.assertRaises(ValueError, mmap.mmap, f.fileno(), 0,
                               offset=2147418112)
 
-    def test_move(self):
+    eleza test_move(self):
         # make move works everywhere (64-bit format problem earlier)
         with open(TESTFN, 'wb+') as f:
 
@@ -393,7 +393,7 @@ class MmapTests(unittest.TestCase):
         m.move(0, 0, 0)
 
 
-    def test_anonymous(self):
+    eleza test_anonymous(self):
         # anonymous mmap.mmap(-1, PAGE)
         m = mmap.mmap(-1, PAGESIZE)
         for x in range(PAGESIZE):
@@ -405,7 +405,7 @@ class MmapTests(unittest.TestCase):
             m[x] = b
             self.assertEqual(m[x], b)
 
-    def test_read_all(self):
+    eleza test_read_all(self):
         m = mmap.mmap(-1, 16)
         self.addCleanup(m.close)
 
@@ -426,7 +426,7 @@ class MmapTests(unittest.TestCase):
         m.seek(9)
         self.assertEqual(m.read(-42), bytes(range(9, 16)))
 
-    def test_read_invalid_arg(self):
+    eleza test_read_invalid_arg(self):
         m = mmap.mmap(-1, 16)
         self.addCleanup(m.close)
 
@@ -434,7 +434,7 @@ class MmapTests(unittest.TestCase):
         self.assertRaises(TypeError, m.read, 5.5)
         self.assertRaises(TypeError, m.read, [1, 2, 3])
 
-    def test_extended_getslice(self):
+    eleza test_extended_getslice(self):
         # Test extended slicing by comparing with list slicing.
         s = bytes(reversed(range(256)))
         m = mmap.mmap(-1, len(s))
@@ -448,7 +448,7 @@ class MmapTests(unittest.TestCase):
                     self.assertEqual(m[start:stop:step],
                                      s[start:stop:step])
 
-    def test_extended_set_del_slice(self):
+    eleza test_extended_set_del_slice(self):
         # Test extended slicing by comparing with list slicing.
         s = bytes(reversed(range(256)))
         m = mmap.mmap(-1, len(s))
@@ -468,15 +468,15 @@ class MmapTests(unittest.TestCase):
                     m[start:stop:step] = data
                     self.assertEqual(m[:], bytes(L))
 
-    def make_mmap_file (self, f, halfsize):
+    eleza make_mmap_file (self, f, halfsize):
         # Write 2 pages worth of data to the file
         f.write (b'\0' * halfsize)
         f.write (b'foo')
         f.write (b'\0' * (halfsize - 3))
         f.flush ()
-        return mmap.mmap (f.fileno(), 0)
+        rudisha mmap.mmap (f.fileno(), 0)
 
-    def test_empty_file (self):
+    eleza test_empty_file (self):
         f = open (TESTFN, 'w+b')
         f.close()
         with open(TESTFN, "rb") as f :
@@ -485,7 +485,7 @@ class MmapTests(unittest.TestCase):
                                    mmap.mmap, f.fileno(), 0,
                                    access=mmap.ACCESS_READ)
 
-    def test_offset (self):
+    eleza test_offset (self):
         f = open (TESTFN, 'w+b')
 
         try: # unlink TESTFN no matter what
@@ -542,14 +542,14 @@ class MmapTests(unittest.TestCase):
             except OSError:
                 pass
 
-    def test_subclass(self):
-        class anon_mmap(mmap.mmap):
-            def __new__(klass, *args, **kwargs):
-                return mmap.mmap.__new__(klass, -1, *args, **kwargs)
+    eleza test_subclass(self):
+        kundi anon_mmap(mmap.mmap):
+            eleza __new__(klass, *args, **kwargs):
+                rudisha mmap.mmap.__new__(klass, -1, *args, **kwargs)
         anon_mmap(PAGESIZE)
 
     @unittest.skipUnless(hasattr(mmap, 'PROT_READ'), "needs mmap.PROT_READ")
-    def test_prot_readonly(self):
+    eleza test_prot_readonly(self):
         mapsize = 10
         with open(TESTFN, "wb") as fp:
             fp.write(b"a"*mapsize)
@@ -557,10 +557,10 @@ class MmapTests(unittest.TestCase):
             m = mmap.mmap(f.fileno(), mapsize, prot=mmap.PROT_READ)
             self.assertRaises(TypeError, m.write, "foo")
 
-    def test_error(self):
+    eleza test_error(self):
         self.assertIs(mmap.error, OSError)
 
-    def test_io_methods(self):
+    eleza test_io_methods(self):
         data = b"0123456789"
         with open(TESTFN, "wb") as fp:
             fp.write(b"x"*len(data))
@@ -594,7 +594,7 @@ class MmapTests(unittest.TestCase):
         self.assertEqual(m[:], b"012barbaz9")
         self.assertRaises(ValueError, m.write, b"ba")
 
-    def test_non_ascii_byte(self):
+    eleza test_non_ascii_byte(self):
         for b in (129, 200, 255): # > 128
             m = mmap.mmap(-1, 1)
             m.write_byte(b)
@@ -604,7 +604,7 @@ class MmapTests(unittest.TestCase):
             m.close()
 
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
-    def test_tagname(self):
+    eleza test_tagname(self):
         data1 = b"0123456789"
         data2 = b"abcdefghij"
         assert len(data1) == len(data2)
@@ -631,7 +631,7 @@ class MmapTests(unittest.TestCase):
 
     @cpython_only
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
-    def test_sizeof(self):
+    eleza test_sizeof(self):
         m1 = mmap.mmap(-1, 100)
         tagname = "foo"
         m2 = mmap.mmap(-1, 100, tagname=tagname)
@@ -639,7 +639,7 @@ class MmapTests(unittest.TestCase):
                          sys.getsizeof(m1) + len(tagname) + 1)
 
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
-    def test_crasher_on_windows(self):
+    eleza test_crasher_on_windows(self):
         # Should not crash (Issue 1733986)
         m = mmap.mmap(-1, 1000, tagname="foo")
         try:
@@ -665,7 +665,7 @@ class MmapTests(unittest.TestCase):
         m.close()
 
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
-    def test_invalid_descriptor(self):
+    eleza test_invalid_descriptor(self):
         # socket file descriptors are valid, but out of range
         # for _get_osfhandle, causing a crash when validating the
         # parameters to _get_osfhandle.
@@ -676,12 +676,12 @@ class MmapTests(unittest.TestCase):
         finally:
             s.close()
 
-    def test_context_manager(self):
+    eleza test_context_manager(self):
         with mmap.mmap(-1, 10) as m:
             self.assertFalse(m.closed)
         self.assertTrue(m.closed)
 
-    def test_context_manager_exception(self):
+    eleza test_context_manager_exception(self):
         # Test that the OSError gets passed through
         with self.assertRaises(Exception) as exc:
             with mmap.mmap(-1, 10) as m:
@@ -690,7 +690,7 @@ class MmapTests(unittest.TestCase):
                               "wrong exception raised in context manager")
         self.assertTrue(m.closed, "context manager failed")
 
-    def test_weakref(self):
+    eleza test_weakref(self):
         # Check mmap objects are weakrefable
         mm = mmap.mmap(-1, 16)
         wr = weakref.ref(mm)
@@ -699,7 +699,7 @@ class MmapTests(unittest.TestCase):
         gc_collect()
         self.assertIs(wr(), None)
 
-    def test_write_returning_the_number_of_bytes_written(self):
+    eleza test_write_returning_the_number_of_bytes_written(self):
         mm = mmap.mmap(-1, 16)
         self.assertEqual(mm.write(b""), 0)
         self.assertEqual(mm.write(b"x"), 1)
@@ -707,7 +707,7 @@ class MmapTests(unittest.TestCase):
         self.assertEqual(mm.write(b"python"), 6)
 
     @unittest.skipIf(os.name == 'nt', 'cannot resize anonymous mmaps on Windows')
-    def test_resize_past_pos(self):
+    eleza test_resize_past_pos(self):
         m = mmap.mmap(-1, 8192)
         self.addCleanup(m.close)
         m.read(5000)
@@ -720,28 +720,28 @@ class MmapTests(unittest.TestCase):
         self.assertRaises(ValueError, m.write_byte, 42)
         self.assertRaises(ValueError, m.write, b'abc')
 
-    def test_concat_repeat_exception(self):
+    eleza test_concat_repeat_exception(self):
         m = mmap.mmap(-1, 16)
         with self.assertRaises(TypeError):
             m + m
         with self.assertRaises(TypeError):
             m * 2
 
-    def test_flush_return_value(self):
-        # mm.flush() should return None on success, raise an
+    eleza test_flush_return_value(self):
+        # mm.flush() should rudisha None on success, raise an
         # exception on error under all platforms.
         mm = mmap.mmap(-1, 16)
         self.addCleanup(mm.close)
         mm.write(b'python')
         result = mm.flush()
         self.assertIsNone(result)
-        if sys.platform.startswith('linux'):
+        ikiwa sys.platform.startswith('linux'):
             # 'offset' must be a multiple of mmap.PAGESIZE on Linux.
             # See bpo-34754 for details.
             self.assertRaises(OSError, mm.flush, 1, len(b'python'))
 
     @unittest.skipUnless(hasattr(mmap.mmap, 'madvise'), 'needs madvise')
-    def test_madvise(self):
+    eleza test_madvise(self):
         size = 2 * PAGESIZE
         m = mmap.mmap(-1, size)
 
@@ -760,16 +760,16 @@ class MmapTests(unittest.TestCase):
         self.assertEqual(m.madvise(mmap.MADV_NORMAL, 0, size), None)
 
 
-class LargeMmapTests(unittest.TestCase):
+kundi LargeMmapTests(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         unlink(TESTFN)
 
-    def tearDown(self):
+    eleza tearDown(self):
         unlink(TESTFN)
 
-    def _make_test_file(self, num_zeroes, tail):
-        if sys.platform[:3] == 'win' or sys.platform == 'darwin':
+    eleza _make_test_file(self, num_zeroes, tail):
+        ikiwa sys.platform[:3] == 'win' or sys.platform == 'darwin':
             requires('largefile',
                 'test requires %s bytes and a long time to run' % str(0x180000000))
         f = open(TESTFN, 'w+b')
@@ -783,16 +783,16 @@ class LargeMmapTests(unittest.TestCase):
             except (OSError, OverflowError):
                 pass
             raise unittest.SkipTest("filesystem does not have largefile support")
-        return f
+        rudisha f
 
-    def test_large_offset(self):
+    eleza test_large_offset(self):
         with self._make_test_file(0x14FFFFFFF, b" ") as f:
             with mmap.mmap(f.fileno(), 0, offset=0x140000000, access=mmap.ACCESS_READ) as m:
                 self.assertEqual(m[0xFFFFFFF], 32)
 
-    def test_large_filesize(self):
+    eleza test_large_filesize(self):
         with self._make_test_file(0x17FFFFFFF, b" ") as f:
-            if sys.maxsize < 0x180000000:
+            ikiwa sys.maxsize < 0x180000000:
                 # On 32 bit platforms the file is larger than sys.maxsize so
                 # mapping the whole file should fail -- Issue #16743
                 with self.assertRaises(OverflowError):
@@ -804,7 +804,7 @@ class LargeMmapTests(unittest.TestCase):
 
     # Issue 11277: mmap() with large (~4 GiB) sparse files crashes on OS X.
 
-    def _test_around_boundary(self, boundary):
+    eleza _test_around_boundary(self, boundary):
         tail = b'  DEARdear  '
         start = boundary - len(tail) // 2
         end = start + len(tail)
@@ -813,13 +813,13 @@ class LargeMmapTests(unittest.TestCase):
                 self.assertEqual(m[start:end], tail)
 
     @unittest.skipUnless(sys.maxsize > _4G, "test cannot run on 32-bit systems")
-    def test_around_2GB(self):
+    eleza test_around_2GB(self):
         self._test_around_boundary(_2G)
 
     @unittest.skipUnless(sys.maxsize > _4G, "test cannot run on 32-bit systems")
-    def test_around_4GB(self):
+    eleza test_around_4GB(self):
         self._test_around_boundary(_4G)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

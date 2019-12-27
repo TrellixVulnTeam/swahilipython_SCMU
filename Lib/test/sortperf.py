@@ -14,7 +14,7 @@ agiza os
 
 td = tempfile.gettempdir()
 
-def randfloats(n):
+eleza randfloats(n):
     """Return a list of n random floats in [0, 1)."""
     # Generating floats is expensive, so this writes them out to a file in
     # a temp directory.  If the file already exists, it just reads them
@@ -32,13 +32,13 @@ def randfloats(n):
                 fp.close()
                 fp = None
             finally:
-                if fp:
+                ikiwa fp:
                     try:
                         os.unlink(fn)
                     except OSError:
                         pass
         except OSError as msg:
-            print("can't write", fn, ":", msg)
+            andika("can't write", fn, ":", msg)
     else:
         result = marshal.load(fp)
         fp.close()
@@ -51,19 +51,19 @@ def randfloats(n):
             result.extend(temp)
             del temp
     assert len(result) == n
-    return result
+    rudisha result
 
-def flush():
+eleza flush():
     sys.stdout.flush()
 
-def doit(L):
+eleza doit(L):
     t0 = time.perf_counter()
     L.sort()
     t1 = time.perf_counter()
-    print("%6.2f" % (t1-t0), end=' ')
+    andika("%6.2f" % (t1-t0), end=' ')
     flush()
 
-def tabulate(r):
+eleza tabulate(r):
     r"""Tabulate sort speed for lists of various sizes.
 
     The sizes are 2**i for i in r (the argument, a list).
@@ -84,11 +84,11 @@ def tabulate(r):
     """
     cases = tuple([ch + "sort" for ch in r"*\/3+%~=!"])
     fmt = ("%2s %7s" + " %6s"*len(cases))
-    print(fmt % (("i", "2**i") + cases))
+    andika(fmt % (("i", "2**i") + cases))
     for i in r:
         n = 1 << i
         L = randfloats(n)
-        print("%2d %7d" % (i, n), end=' ')
+        andika("%2d %7d" % (i, n), end=' ')
         flush()
         doit(L) # *sort
         L.reverse()
@@ -103,7 +103,7 @@ def tabulate(r):
         doit(L) # 3sort
 
         # Replace the last 10 with random floats.
-        if n >= 10:
+        ikiwa n >= 10:
             L[-10:] = [random.random() for dummy in range(10)]
         doit(L) # +sort
 
@@ -113,7 +113,7 @@ def tabulate(r):
         doit(L) # %sort
 
         # Arrange for lots of duplicates.
-        if n > 4:
+        ikiwa n > 4:
             del L[4:]
             L = L * (n // 4)
             # Force the elements to be distinct objects, else timings can be
@@ -134,12 +134,12 @@ def tabulate(r):
         L = list(range(half - 1, -1, -1))
         L.extend(range(half))
         # Force to float, so that the timings are comparable.  This is
-        # significantly faster if we leave tham as ints.
+        # significantly faster ikiwa we leave tham as ints.
         L = list(map(float, L))
         doit(L) # !sort
-        print()
+        andika()
 
-def main():
+eleza main():
     """Main program when invoked as a script.
 
     One argument: tabulate a single row.
@@ -150,13 +150,13 @@ def main():
     # default range (inclusive)
     k1 = 15
     k2 = 20
-    if sys.argv[1:]:
+    ikiwa sys.argv[1:]:
         # one argument: single point
         k1 = k2 = int(sys.argv[1])
-        if sys.argv[2:]:
+        ikiwa sys.argv[2:]:
             # two arguments: specify range
             k2 = int(sys.argv[2])
-            if sys.argv[3:]:
+            ikiwa sys.argv[3:]:
                 # derive random seed kutoka remaining arguments
                 x = 1
                 for a in sys.argv[3:]:
@@ -165,5 +165,5 @@ def main():
     r = range(k1, k2+1)                 # include the end point
     tabulate(r)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

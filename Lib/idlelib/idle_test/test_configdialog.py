@@ -1,6 +1,6 @@
 """Test configdialog, coverage 94%.
 
-Half the class creates dialog, half works with user customizations.
+Half the kundi creates dialog, half works with user customizations.
 """
 kutoka idlelib agiza configdialog
 kutoka test.support agiza requires
@@ -30,14 +30,14 @@ highpage = changes['highlight']
 keyspage = changes['keys']
 extpage = changes['extensions']
 
-def setUpModule():
+eleza setUpModule():
     global root, dialog
     idleConf.userCfg = testcfg
     root = Tk()
     # root.withdraw()    # Comment out, see issue 30870
     dialog = configdialog.ConfigDialog(root, 'Test', _utest=True)
 
-def tearDownModule():
+eleza tearDownModule():
     global root, dialog
     idleConf.userCfg = usercfg
     tracers.detach()
@@ -48,7 +48,7 @@ def tearDownModule():
     root = dialog = None
 
 
-class FontPageTest(unittest.TestCase):
+kundi FontPageTest(unittest.TestCase):
     """Test that font widgets enable users to make font changes.
 
     Test that widget actions set vars, that var changes add three
@@ -56,20 +56,20 @@ class FontPageTest(unittest.TestCase):
     changes the font of both sample boxes.
     """
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         page = cls.page = dialog.fontpage
         dialog.note.select(page)
         page.set_samples = Func()  # Mask instance method.
         page.update()
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         del cls.page.set_samples  # Unmask instance method.
 
-    def setUp(self):
+    eleza setUp(self):
         changes.clear()
 
-    def test_load_font_cfg(self):
+    eleza test_load_font_cfg(self):
         # Leave widget load test to human visual check.
         # TODO Improve checks when add IdleConf.get_font_values.
         tracers.detach()
@@ -85,10 +85,10 @@ class FontPageTest(unittest.TestCase):
         self.assertEqual(d.set_samples.called, 1)
         tracers.attach()
 
-    def test_fontlist_key(self):
+    eleza test_fontlist_key(self):
         # Up and Down keys should select a new font.
         d = self.page
-        if d.fontlist.size() < 2:
+        ikiwa d.fontlist.size() < 2:
             self.skipTest('need at least 2 fonts')
         fontlist = d.fontlist
         fontlist.activate(0)
@@ -114,10 +114,10 @@ class FontPageTest(unittest.TestCase):
         self.assertEqual(up_font, font)
         self.assertIn(d.font_name.get(), up_font.lower())
 
-    def test_fontlist_mouse(self):
+    eleza test_fontlist_mouse(self):
         # Click on item should select that item.
         d = self.page
-        if d.fontlist.size() < 2:
+        ikiwa d.fontlist.size() < 2:
             self.skipTest('need at least 2 fonts')
         fontlist = d.fontlist
         fontlist.activate(0)
@@ -137,13 +137,13 @@ class FontPageTest(unittest.TestCase):
         self.assertEqual(select_font, font1)
         self.assertIn(d.font_name.get(), font1.lower())
 
-    def test_sizelist(self):
+    eleza test_sizelist(self):
         # Click on number should select that number
         d = self.page
         d.sizelist.variable.set(40)
         self.assertEqual(d.font_size.get(), '40')
 
-    def test_bold_toggle(self):
+    eleza test_bold_toggle(self):
         # Click on checkbutton should invert it.
         d = self.page
         d.font_bold.set(False)
@@ -152,7 +152,7 @@ class FontPageTest(unittest.TestCase):
         d.bold_toggle.invoke()
         self.assertFalse(d.font_bold.get())
 
-    def test_font_set(self):
+    eleza test_font_set(self):
         # Test that setting a font Variable results in 3 provisional
         # change entries and a call to set_samples. Use values sure to
         # not be defaults.
@@ -188,7 +188,7 @@ class FontPageTest(unittest.TestCase):
         self.assertEqual(mainpage, expected)
         self.assertEqual(d.set_samples.called, 3)
 
-    def test_set_samples(self):
+    eleza test_set_samples(self):
         d = self.page
         del d.set_samples  # Unmask method for test
         orig_samples = d.font_sample, d.highlight_sample
@@ -206,20 +206,20 @@ class FontPageTest(unittest.TestCase):
         d.set_samples = Func()  # Re-mask for other tests.
 
 
-class IndentTest(unittest.TestCase):
+kundi IndentTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.page = dialog.fontpage
         cls.page.update()
 
-    def test_load_tab_cfg(self):
+    eleza test_load_tab_cfg(self):
         d = self.page
         d.space_num.set(16)
         d.load_tab_cfg()
         self.assertEqual(d.space_num.get(), 4)
 
-    def test_indent_scale(self):
+    eleza test_indent_scale(self):
         d = self.page
         changes.clear()
         d.indent_scale.set(20)
@@ -227,7 +227,7 @@ class IndentTest(unittest.TestCase):
         self.assertEqual(mainpage, {'Indent': {'num-spaces': '16'}})
 
 
-class HighPageTest(unittest.TestCase):
+kundi HighPageTest(unittest.TestCase):
     """Test that highlight tab widgets enable users to make changes.
 
     Test that widget actions set vars, that var changes add
@@ -235,7 +235,7 @@ class HighPageTest(unittest.TestCase):
     """
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         page = cls.page = dialog.highpage
         dialog.note.select(page)
         page.set_theme_type = Func()
@@ -245,12 +245,12 @@ class HighPageTest(unittest.TestCase):
         page.update()
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         d = cls.page
         del d.set_theme_type, d.paint_theme_sample
         del d.set_highlight_target, d.set_color_sample
 
-    def setUp(self):
+    eleza setUp(self):
         d = self.page
         # The following is needed for test_load_key_cfg, _delete_custom_keys.
         # This may indicate a defect in some test or function.
@@ -262,7 +262,7 @@ class HighPageTest(unittest.TestCase):
         d.set_highlight_target.called = 0
         d.set_color_sample.called = 0
 
-    def test_load_theme_cfg(self):
+    eleza test_load_theme_cfg(self):
         tracers.detach()
         d = self.page
         eq = self.assertEqual
@@ -303,7 +303,7 @@ class HighPageTest(unittest.TestCase):
         del idleConf.CurrentTheme
         tracers.attach()
 
-    def test_theme_source(self):
+    eleza test_theme_source(self):
         eq = self.assertEqual
         d = self.page
         # Test these separately.
@@ -324,7 +324,7 @@ class HighPageTest(unittest.TestCase):
         eq(d.var_changed_custom_name.called, 1)
         del d.var_changed_builtin_name, d.var_changed_custom_name
 
-    def test_builtin_name(self):
+    eleza test_builtin_name(self):
         eq = self.assertEqual
         d = self.page
         item_list = ['IDLE Classic', 'IDLE Dark', 'IDLE New']
@@ -352,7 +352,7 @@ class HighPageTest(unittest.TestCase):
         eq(d.theme_message['text'], '')
         eq(d.paint_theme_sample.called, 3)
 
-    def test_custom_name(self):
+    eleza test_custom_name(self):
         d = self.page
 
         # If no selections, doesn't get added.
@@ -366,7 +366,7 @@ class HighPageTest(unittest.TestCase):
         self.assertEqual(mainpage, {'Theme': {'name': 'c'}})
         self.assertEqual(d.paint_theme_sample.called, 1)
 
-    def test_color(self):
+    eleza test_color(self):
         d = self.page
         d.on_new_color_set = Func()
         # self.color is only set in get_color through ColorChooser.
@@ -374,7 +374,7 @@ class HighPageTest(unittest.TestCase):
         self.assertEqual(d.on_new_color_set.called, 1)
         del d.on_new_color_set
 
-    def test_highlight_target_list_mouse(self):
+    eleza test_highlight_target_list_mouse(self):
         # Set highlight_target through targetlist.
         eq = self.assertEqual
         d = self.page
@@ -383,7 +383,7 @@ class HighPageTest(unittest.TestCase):
         eq(d.highlight_target.get(), 'c')
         eq(d.set_highlight_target.called, 1)
 
-    def test_highlight_target_text_mouse(self):
+    eleza test_highlight_target_text_mouse(self):
         # Set highlight_target through clicking highlight_sample.
         eq = self.assertEqual
         d = self.page
@@ -395,11 +395,11 @@ class HighPageTest(unittest.TestCase):
         hs.see(1.0)
         hs.update_idletasks()
 
-        def tag_to_element(elem):
+        eleza tag_to_element(elem):
             for element, tag in d.theme_elements.items():
                 elem[tag[0]] = element
 
-        def click_it(start):
+        eleza click_it(start):
             x, y, dx, dy = hs.bbox(start)
             x += dx // 2
             y += dy // 2
@@ -420,7 +420,7 @@ class HighPageTest(unittest.TestCase):
                 eq(d.highlight_target.get(), elem[tag])
                 eq(d.set_highlight_target.called, count)
 
-    def test_set_theme_type(self):
+    eleza test_set_theme_type(self):
         eq = self.assertEqual
         d = self.page
         del d.set_theme_type
@@ -441,7 +441,7 @@ class HighPageTest(unittest.TestCase):
         eq(d.button_delete_custom.state(), ())
         d.set_theme_type = Func()
 
-    def test_get_color(self):
+    eleza test_get_color(self):
         eq = self.assertEqual
         d = self.page
         orig_chooser = configdialog.tkColorChooser.askcolor
@@ -488,7 +488,7 @@ class HighPageTest(unittest.TestCase):
         del d.get_new_theme_name
         configdialog.tkColorChooser.askcolor = orig_chooser
 
-    def test_on_new_color_set(self):
+    eleza test_on_new_color_set(self):
         d = self.page
         color = '#3f7cae'
         d.custom_name.set('Python')
@@ -501,7 +501,7 @@ class HighPageTest(unittest.TestCase):
         self.assertEqual(highpage,
                          {'Python': {'hilite-foreground': color}})
 
-    def test_get_new_theme_name(self):
+    eleza test_get_new_theme_name(self):
         orig_sectionname = configdialog.SectionName
         sn = configdialog.SectionName = Func(return_self=True)
         d = self.page
@@ -511,7 +511,7 @@ class HighPageTest(unittest.TestCase):
 
         configdialog.SectionName = orig_sectionname
 
-    def test_save_as_new_theme(self):
+    eleza test_save_as_new_theme(self):
         d = self.page
         gntn = d.get_new_theme_name = Func()
         d.theme_source.set(True)
@@ -530,7 +530,7 @@ class HighPageTest(unittest.TestCase):
 
         del d.get_new_theme_name
 
-    def test_create_new_and_save_new(self):
+    eleza test_create_new_and_save_new(self):
         eq = self.assertEqual
         d = self.page
 
@@ -562,7 +562,7 @@ class HighPageTest(unittest.TestCase):
         eq(idleConf.GetThemeDict('user', first_new),
            idleConf.GetThemeDict('user', second_new))
 
-    def test_set_highlight_target(self):
+    eleza test_set_highlight_target(self):
         eq = self.assertEqual
         d = self.page
         del d.set_highlight_target
@@ -583,7 +583,7 @@ class HighPageTest(unittest.TestCase):
 
         d.set_highlight_target = Func()
 
-    def test_set_color_sample_binding(self):
+    eleza test_set_color_sample_binding(self):
         d = self.page
         scs = d.set_color_sample
 
@@ -593,7 +593,7 @@ class HighPageTest(unittest.TestCase):
         d.bg_on.invoke()
         self.assertEqual(scs.called, 2)
 
-    def test_set_color_sample(self):
+    eleza test_set_color_sample(self):
         d = self.page
         del d.set_color_sample
         d.highlight_target.set('Selected Text')
@@ -604,7 +604,7 @@ class HighPageTest(unittest.TestCase):
                 d.highlight_sample.tag_cget('hilite', 'foreground'))
         d.set_color_sample = Func()
 
-    def test_paint_theme_sample(self):
+    eleza test_paint_theme_sample(self):
         eq = self.assertEqual
         page = self.page
         del page.paint_theme_sample  # Delete masking mock.
@@ -636,7 +636,7 @@ class HighPageTest(unittest.TestCase):
 
         page.paint_theme_sample = Func()
 
-    def test_delete_custom(self):
+    eleza test_delete_custom(self):
         eq = self.assertEqual
         d = self.page
         d.button_delete_custom.state(('!disabled',))
@@ -678,7 +678,7 @@ class HighPageTest(unittest.TestCase):
         del d.askyesno
 
 
-class KeysPageTest(unittest.TestCase):
+kundi KeysPageTest(unittest.TestCase):
     """Test that keys tab widgets enable users to make changes.
 
     Test that widget actions set vars, that var changes add
@@ -686,18 +686,18 @@ class KeysPageTest(unittest.TestCase):
     """
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         page = cls.page = dialog.keyspage
         dialog.note.select(page)
         page.set_keys_type = Func()
         page.load_keys_list = Func()
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         page = cls.page
         del page.set_keys_type, page.load_keys_list
 
-    def setUp(self):
+    eleza setUp(self):
         d = self.page
         # The following is needed for test_load_key_cfg, _delete_custom_keys.
         # This may indicate a defect in some test or function.
@@ -707,7 +707,7 @@ class KeysPageTest(unittest.TestCase):
         d.set_keys_type.called = 0
         d.load_keys_list.called = 0
 
-    def test_load_key_cfg(self):
+    eleza test_load_key_cfg(self):
         tracers.detach()
         d = self.page
         eq = self.assertEqual
@@ -749,7 +749,7 @@ class KeysPageTest(unittest.TestCase):
         del idleConf.CurrentKeys, idleConf.default_keys
         tracers.attach()
 
-    def test_keyset_source(self):
+    eleza test_keyset_source(self):
         eq = self.assertEqual
         d = self.page
         # Test these separately.
@@ -770,7 +770,7 @@ class KeysPageTest(unittest.TestCase):
         eq(d.var_changed_custom_name.called, 1)
         del d.var_changed_builtin_name, d.var_changed_custom_name
 
-    def test_builtin_name(self):
+    eleza test_builtin_name(self):
         eq = self.assertEqual
         d = self.page
         idleConf.userCfg['main'].remove_section('Keys')
@@ -802,7 +802,7 @@ class KeysPageTest(unittest.TestCase):
         eq(d.load_keys_list.called, 3)
         eq(d.load_keys_list.args, ('IDLE Classic OSX', ))
 
-    def test_custom_name(self):
+    eleza test_custom_name(self):
         d = self.page
 
         # If no selections, doesn't get added.
@@ -816,7 +816,7 @@ class KeysPageTest(unittest.TestCase):
         self.assertEqual(mainpage, {'Keys': {'name': 'c'}})
         self.assertEqual(d.load_keys_list.called, 1)
 
-    def test_keybinding(self):
+    eleza test_keybinding(self):
         idleConf.SetOption('extensions', 'ZzDummy', 'enable', 'True')
         d = self.page
         d.custom_name.set('my custom keys')
@@ -837,7 +837,7 @@ class KeysPageTest(unittest.TestCase):
         self.assertEqual(extpage,
                          {'ZzDummy_cfgBindings': {'z-in': '<Key-F11>'}})
 
-    def test_set_keys_type(self):
+    eleza test_set_keys_type(self):
         eq = self.assertEqual
         d = self.page
         del d.set_keys_type
@@ -858,7 +858,7 @@ class KeysPageTest(unittest.TestCase):
         eq(d.button_delete_custom_keys.state(), ())
         d.set_keys_type = Func()
 
-    def test_get_new_keys(self):
+    eleza test_get_new_keys(self):
         eq = self.assertEqual
         d = self.page
         orig_getkeysdialog = configdialog.GetKeysDialog
@@ -906,7 +906,7 @@ class KeysPageTest(unittest.TestCase):
         del d.get_new_keys_name
         configdialog.GetKeysDialog = orig_getkeysdialog
 
-    def test_get_new_keys_name(self):
+    eleza test_get_new_keys_name(self):
         orig_sectionname = configdialog.SectionName
         sn = configdialog.SectionName = Func(return_self=True)
         d = self.page
@@ -916,7 +916,7 @@ class KeysPageTest(unittest.TestCase):
 
         configdialog.SectionName = orig_sectionname
 
-    def test_save_as_new_key_set(self):
+    eleza test_save_as_new_key_set(self):
         d = self.page
         gnkn = d.get_new_keys_name = Func()
         d.keyset_source.set(True)
@@ -934,7 +934,7 @@ class KeysPageTest(unittest.TestCase):
 
         del d.get_new_keys_name
 
-    def test_on_bindingslist_select(self):
+    eleza test_on_bindingslist_select(self):
         d = self.page
         b = d.bindingslist
         b.delete(0, 'end')
@@ -955,7 +955,7 @@ class KeysPageTest(unittest.TestCase):
         self.assertEqual(b.get('anchor'), 'find')
         self.assertEqual(d.button_new_keys.state(), ())
 
-    def test_create_new_key_set_and_save_new_key_set(self):
+    eleza test_create_new_key_set_and_save_new_key_set(self):
         eq = self.assertEqual
         d = self.page
 
@@ -986,7 +986,7 @@ class KeysPageTest(unittest.TestCase):
         idleConf.SetOption('keys', first_new, 'copy', '<Key-F11>')
         eq(idleConf.GetKeySet(first_new), idleConf.GetKeySet(second_new))
 
-    def test_load_keys_list(self):
+    eleza test_load_keys_list(self):
         eq = self.assertEqual
         d = self.page
         gks = idleConf.GetKeySet = Func()
@@ -1029,7 +1029,7 @@ class KeysPageTest(unittest.TestCase):
 
         del idleConf.GetKeySet
 
-    def test_delete_custom_keys(self):
+    eleza test_delete_custom_keys(self):
         eq = self.assertEqual
         d = self.page
         d.button_delete_custom_keys.state(('!disabled',))
@@ -1071,14 +1071,14 @@ class KeysPageTest(unittest.TestCase):
         del d.askyesno
 
 
-class GenPageTest(unittest.TestCase):
+kundi GenPageTest(unittest.TestCase):
     """Test that general tab widgets enable users to make changes.
 
     Test that widget actions set vars, that var changes add
     options to changes and that helplist works correctly.
     """
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         page = cls.page = dialog.genpage
         dialog.note.select(page)
         page.set = page.set_add_delete_state = Func()
@@ -1086,17 +1086,17 @@ class GenPageTest(unittest.TestCase):
         page.update()
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         page = cls.page
         del page.set, page.set_add_delete_state
         del page.upc, page.update_help_changes
         page.helplist.delete(0, 'end')
         page.user_helplist.clear()
 
-    def setUp(self):
+    eleza setUp(self):
         changes.clear()
 
-    def test_load_general_cfg(self):
+    eleza test_load_general_cfg(self):
         # Set to wrong values, load, check right values.
         eq = self.assertEqual
         d = self.page
@@ -1115,7 +1115,7 @@ class GenPageTest(unittest.TestCase):
         eq(d.helplist.get(0, 'end'), ('name',))
         eq(d.user_helplist, [('name', 'file', '1')])
 
-    def test_startup(self):
+    eleza test_startup(self):
         d = self.page
         d.startup_editor_on.invoke()
         self.assertEqual(mainpage,
@@ -1125,7 +1125,7 @@ class GenPageTest(unittest.TestCase):
         self.assertEqual(mainpage,
                          {'General': {'editor-on-startup': '0'}})
 
-    def test_editor_size(self):
+    eleza test_editor_size(self):
         d = self.page
         d.win_height_int.delete(0, 'end')
         d.win_height_int.insert(0, '11')
@@ -1135,12 +1135,12 @@ class GenPageTest(unittest.TestCase):
         d.win_width_int.insert(0, '11')
         self.assertEqual(mainpage, {'EditorWindow': {'width': '11'}})
 
-    def test_autocomplete_wait(self):
+    eleza test_autocomplete_wait(self):
         self.page.auto_wait_int.delete(0, 'end')
         self.page.auto_wait_int.insert(0, '11')
         self.assertEqual(extpage, {'AutoComplete': {'popupwait': '11'}})
 
-    def test_parenmatch(self):
+    eleza test_parenmatch(self):
         d = self.page
         eq = self.assertEqual
         d.paren_style_type['menu'].invoke(0)
@@ -1153,24 +1153,24 @@ class GenPageTest(unittest.TestCase):
         d.bell_on.invoke()
         eq(extpage, {'ParenMatch': {'bell': 'False'}})
 
-    def test_autosave(self):
+    eleza test_autosave(self):
         d = self.page
         d.save_auto_on.invoke()
         self.assertEqual(mainpage, {'General': {'autosave': '1'}})
         d.save_ask_on.invoke()
         self.assertEqual(mainpage, {'General': {'autosave': '0'}})
 
-    def test_paragraph(self):
+    eleza test_paragraph(self):
         self.page.format_width_int.delete(0, 'end')
         self.page.format_width_int.insert(0, '11')
         self.assertEqual(extpage, {'FormatParagraph': {'max-width': '11'}})
 
-    def test_context(self):
+    eleza test_context(self):
         self.page.context_int.delete(0, 'end')
         self.page.context_int.insert(0, '1')
         self.assertEqual(extpage, {'CodeContext': {'maxlines': '1'}})
 
-    def test_source_selected(self):
+    eleza test_source_selected(self):
         d = self.page
         d.set = d.set_add_delete_state
         d.upc = d.update_help_changes
@@ -1194,7 +1194,7 @@ class GenPageTest(unittest.TestCase):
         self.assertTrue(d.set.called)
         self.assertFalse(d.upc.called)
 
-    def test_set_add_delete_state(self):
+    eleza test_set_add_delete_state(self):
         # Call with 0 items, 1 unselected item, 1 selected item.
         eq = self.assertEqual
         d = self.page
@@ -1218,7 +1218,7 @@ class GenPageTest(unittest.TestCase):
         eq(d.button_helplist_remove.state(), ())
         d.set_add_delete_state = Func()  # Mask method.
 
-    def test_helplist_item_add(self):
+    eleza test_helplist_item_add(self):
         # Call without and twice with HelpSource result.
         # Double call enables check on order.
         eq = self.assertEqual
@@ -1246,7 +1246,7 @@ class GenPageTest(unittest.TestCase):
 
         configdialog.HelpSource = orig_helpsource
 
-    def test_helplist_item_edit(self):
+    eleza test_helplist_item_edit(self):
         # Call without and with HelpSource change.
         eq = self.assertEqual
         orig_helpsource = configdialog.HelpSource
@@ -1276,7 +1276,7 @@ class GenPageTest(unittest.TestCase):
 
         configdialog.HelpSource = orig_helpsource
 
-    def test_helplist_item_remove(self):
+    eleza test_helplist_item_remove(self):
         eq = self.assertEqual
         d = self.page
         d.helplist.delete(0, 'end')
@@ -1292,7 +1292,7 @@ class GenPageTest(unittest.TestCase):
         eq(d.user_helplist, [])
         self.assertTrue(d.upc.called == d.set.called == 1)
 
-    def test_update_help_changes(self):
+    eleza test_update_help_changes(self):
         d = self.page
         del d.update_help_changes
         d.user_helplist.clear()
@@ -1305,35 +1305,35 @@ class GenPageTest(unittest.TestCase):
         d.update_help_changes = Func()
 
 
-class VarTraceTest(unittest.TestCase):
+kundi VarTraceTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.tracers = configdialog.VarTrace()
         cls.iv = IntVar(root)
         cls.bv = BooleanVar(root)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         del cls.tracers, cls.iv, cls.bv
 
-    def setUp(self):
+    eleza setUp(self):
         self.tracers.clear()
         self.called = 0
 
-    def var_changed_increment(self, *params):
+    eleza var_changed_increment(self, *params):
         self.called += 13
 
-    def var_changed_boolean(self, *params):
+    eleza var_changed_boolean(self, *params):
         pass
 
-    def test_init(self):
+    eleza test_init(self):
         tr = self.tracers
         tr.__init__()
         self.assertEqual(tr.untraced, [])
         self.assertEqual(tr.traced, [])
 
-    def test_clear(self):
+    eleza test_clear(self):
         tr = self.tracers
         tr.untraced.append(0)
         tr.traced.append(1)
@@ -1341,7 +1341,7 @@ class VarTraceTest(unittest.TestCase):
         self.assertEqual(tr.untraced, [])
         self.assertEqual(tr.traced, [])
 
-    def test_add(self):
+    eleza test_add(self):
         tr = self.tracers
         func = Func()
         cb = tr.make_callback = mock.Mock(return_value=func)
@@ -1365,7 +1365,7 @@ class VarTraceTest(unittest.TestCase):
 
         del tr.make_callback
 
-    def test_make_callback(self):
+    eleza test_make_callback(self):
         cb = self.tracers.make_callback(self.iv, ('main', 'section', 'option'))
         self.assertTrue(callable(cb))
         self.iv.set(42)
@@ -1377,7 +1377,7 @@ class VarTraceTest(unittest.TestCase):
         self.assertEqual(changes['main']['section']['option'], '42')
         changes.clear()
 
-    def test_attach_detach(self):
+    eleza test_attach_detach(self):
         tr = self.tracers
         iv = tr.add(self.iv, self.var_changed_increment)
         bv = tr.add(self.bv, self.var_changed_boolean)
@@ -1409,5 +1409,5 @@ class VarTraceTest(unittest.TestCase):
         self.assertEqual(self.called, 0)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -6,16 +6,16 @@ agiza unittest
 kutoka test agiza support
 
 
-class TestMultipleFeatures(unittest.TestCase):
+kundi TestMultipleFeatures(unittest.TestCase):
 
-    def test_unicode_literals(self):
+    eleza test_unicode_literals(self):
         self.assertIsInstance("", str)
 
-    def test_print_function(self):
+    eleza test_print_function(self):
         with support.captured_output("stderr") as s:
-            print("foo", file=sys.stderr)
+            andika("foo", file=sys.stderr)
         self.assertEqual(s.getvalue(), "foo\n")
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

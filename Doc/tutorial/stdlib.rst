@@ -13,15 +13,15 @@ Operating System Interface
 The :mod:`os` module provides dozens of functions for interacting with the
 operating system::
 
-   >>> import os
+   >>> agiza os
    >>> os.getcwd()      # Return the current working directory
    'C:\\Python38'
    >>> os.chdir('/server/accesslogs')   # Change current working directory
    >>> os.system('mkdir today')   # Run the command mkdir in the system shell
    0
 
-Be sure to use the ``import os`` style instead of ``from os import *``.  This
-will keep :func:`os.open` from shadowing the built-in :func:`open` function which
+Be sure to use the ``agiza os`` style instead of ``kutoka os agiza *``.  This
+will keep :func:`os.open` kutoka shadowing the built-in :func:`open` function which
 operates much differently.
 
 .. index:: builtin: help
@@ -29,16 +29,16 @@ operates much differently.
 The built-in :func:`dir` and :func:`help` functions are useful as interactive
 aids for working with large modules like :mod:`os`::
 
-   >>> import os
+   >>> agiza os
    >>> dir(os)
    <returns a list of all module functions>
    >>> help(os)
-   <returns an extensive manual page created from the module's docstrings>
+   <returns an extensive manual page created kutoka the module's docstrings>
 
 For daily file and directory management tasks, the :mod:`shutil` module provides
 a higher level interface that is easier to use::
 
-   >>> import shutil
+   >>> agiza shutil
    >>> shutil.copyfile('data.db', 'archive.db')
    'archive.db'
    >>> shutil.move('/build/executables', 'installdir')
@@ -50,10 +50,10 @@ a higher level interface that is easier to use::
 File Wildcards
 ==============
 
-The :mod:`glob` module provides a function for making file lists from directory
+The :mod:`glob` module provides a function for making file lists kutoka directory
 wildcard searches::
 
-   >>> import glob
+   >>> agiza glob
    >>> glob.glob('*.py')
    ['primes.py', 'random.py', 'quote.py']
 
@@ -65,10 +65,10 @@ Command Line Arguments
 
 Common utility scripts often need to process command line arguments. These
 arguments are stored in the :mod:`sys` module's *argv* attribute as a list.  For
-instance the following output results from running ``python demo.py one two
+instance the following output results kutoka running ``python demo.py one two
 three`` at the command line::
 
-   >>> import sys
+   >>> agiza sys
    >>> print(sys.argv)
    ['demo.py', 'one', 'two', 'three']
 
@@ -77,8 +77,8 @@ It should always be preferred over directly processing ``sys.argv`` manually.
 
 Take, for example, the below snippet of code::
 
-   >>> import argparse
-   >>> from getpass import getuser
+   >>> agiza argparse
+   >>> kutoka getpass agiza getuser
    >>> parser = argparse.ArgumentParser(description='An argparse example.')
    >>> parser.add_argument('name', nargs='?', default=getuser(), help='The name of someone to greet.')
    >>> parser.add_argument('--verbose', '-v', action='count')
@@ -112,7 +112,7 @@ The :mod:`re` module provides regular expression tools for advanced string
 processing. For complex matching and manipulation, regular expressions offer
 succinct, optimized solutions::
 
-   >>> import re
+   >>> agiza re
    >>> re.findall(r'\bf[a-z]*', 'which foot or hand fell fastest')
    ['foot', 'fell', 'fastest']
    >>> re.sub(r'(\b[a-z]+) \1', r'\1', 'cat in the the hat')
@@ -133,7 +133,7 @@ Mathematics
 The :mod:`math` module gives access to the underlying C library functions for
 floating point math::
 
-   >>> import math
+   >>> agiza math
    >>> math.cos(math.pi / 4)
    0.70710678118654757
    >>> math.log(1024, 2)
@@ -141,20 +141,20 @@ floating point math::
 
 The :mod:`random` module provides tools for making random selections::
 
-   >>> import random
+   >>> agiza random
    >>> random.choice(['apple', 'pear', 'banana'])
    'apple'
    >>> random.sample(range(100), 10)   # sampling without replacement
    [30, 83, 16, 4, 8, 81, 41, 50, 18, 33]
    >>> random.random()    # random float
    0.17970987693706186
-   >>> random.randrange(6)    # random integer chosen from range(6)
+   >>> random.randrange(6)    # random integer chosen kutoka range(6)
    4
 
 The :mod:`statistics` module calculates basic statistical properties
 (the mean, median, variance, etc.) of numeric data::
 
-    >>> import statistics
+    >>> agiza statistics
     >>> data = [2.75, 1.75, 1.25, 0.25, 0.5, 1.25, 3.5]
     >>> statistics.mean(data)
     1.6071428571428572
@@ -173,9 +173,9 @@ Internet Access
 
 There are a number of modules for accessing the internet and processing internet
 protocols. Two of the simplest are :mod:`urllib.request` for retrieving data
-from URLs and :mod:`smtplib` for sending mail::
+kutoka URLs and :mod:`smtplib` for sending mail::
 
-   >>> from urllib.request import urlopen
+   >>> kutoka urllib.request agiza urlopen
    >>> with urlopen('http://tycho.usno.navy.mil/cgi-bin/timer.pl') as response:
    ...     for line in response:
    ...         line = line.decode('utf-8')  # Decoding the binary data to text.
@@ -184,7 +184,7 @@ from URLs and :mod:`smtplib` for sending mail::
 
    <BR>Nov. 25, 09:43:32 PM EST
 
-   >>> import smtplib
+   >>> agiza smtplib
    >>> server = smtplib.SMTP('localhost')
    >>> server.sendmail('soothsayer@example.org', 'jcaesar@example.org',
    ... """To: jcaesar@example.org
@@ -209,7 +209,7 @@ formatting and manipulation.  The module also supports objects that are timezone
 aware. ::
 
    >>> # dates are easily constructed and formatted
-   >>> from datetime import date
+   >>> kutoka datetime agiza date
    >>> now = date.today()
    >>> now
    datetime.date(2003, 12, 2)
@@ -232,7 +232,7 @@ Common data archiving and compression formats are directly supported by modules
 including: :mod:`zlib`, :mod:`gzip`, :mod:`bz2`, :mod:`lzma`, :mod:`zipfile` and
 :mod:`tarfile`. ::
 
-   >>> import zlib
+   >>> agiza zlib
    >>> s = b'witch which has which witches wrist watch'
    >>> len(s)
    41
@@ -258,7 +258,7 @@ For example, it may be tempting to use the tuple packing and unpacking feature
 instead of the traditional approach to swapping arguments. The :mod:`timeit`
 module quickly demonstrates a modest performance advantage::
 
-   >>> from timeit import Timer
+   >>> kutoka timeit agiza Timer
    >>> Timer('t=a; a=b; b=t', 'a=1; b=2').timeit()
    0.57535828626024577
    >>> Timer('a,b = b,a', 'a=1; b=2').timeit()
@@ -293,16 +293,16 @@ documentation::
        """
        return sum(values) / len(values)
 
-   import doctest
+   agiza doctest
    doctest.testmod()   # automatically validate the embedded tests
 
 The :mod:`unittest` module is not as effortless as the :mod:`doctest` module,
 but it allows a more comprehensive set of tests to be maintained in a separate
 file::
 
-   import unittest
+   agiza unittest
 
-   class TestStatisticalFunctions(unittest.TestCase):
+   kundi TestStatisticalFunctions(unittest.TestCase):
 
        def test_average(self):
            self.assertEqual(average([20, 30, 70]), 40.0)
@@ -312,7 +312,7 @@ file::
            with self.assertRaises(TypeError):
                average(20, 30, 70)
 
-   unittest.main()  # Calling from the command line invokes all tests
+   unittest.main()  # Calling kutoka the command line invokes all tests
 
 
 .. _tut-batteries-included:

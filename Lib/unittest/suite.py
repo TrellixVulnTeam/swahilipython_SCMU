@@ -8,65 +8,65 @@ kutoka . agiza util
 __unittest = True
 
 
-def _call_if_exists(parent, attr):
+eleza _call_if_exists(parent, attr):
     func = getattr(parent, attr, lambda: None)
     func()
 
 
-class BaseTestSuite(object):
-    """A simple test suite that doesn't provide class or module shared fixtures.
+kundi BaseTestSuite(object):
+    """A simple test suite that doesn't provide kundi or module shared fixtures.
     """
     _cleanup = True
 
-    def __init__(self, tests=()):
+    eleza __init__(self, tests=()):
         self._tests = []
         self._removed_tests = 0
         self.addTests(tests)
 
-    def __repr__(self):
-        return "<%s tests=%s>" % (util.strclass(self.__class__), list(self))
+    eleza __repr__(self):
+        rudisha "<%s tests=%s>" % (util.strclass(self.__class__), list(self))
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return NotImplemented
-        return list(self) == list(other)
+    eleza __eq__(self, other):
+        ikiwa not isinstance(other, self.__class__):
+            rudisha NotImplemented
+        rudisha list(self) == list(other)
 
-    def __iter__(self):
-        return iter(self._tests)
+    eleza __iter__(self):
+        rudisha iter(self._tests)
 
-    def countTestCases(self):
+    eleza countTestCases(self):
         cases = self._removed_tests
         for test in self:
-            if test:
+            ikiwa test:
                 cases += test.countTestCases()
-        return cases
+        rudisha cases
 
-    def addTest(self, test):
+    eleza addTest(self, test):
         # sanity checks
-        if not callable(test):
+        ikiwa not callable(test):
             raise TypeError("{} is not callable".format(repr(test)))
-        if isinstance(test, type) and issubclass(test,
+        ikiwa isinstance(test, type) and issubclass(test,
                                                  (case.TestCase, TestSuite)):
             raise TypeError("TestCases and TestSuites must be instantiated "
                             "before passing them to addTest()")
         self._tests.append(test)
 
-    def addTests(self, tests):
-        if isinstance(tests, str):
+    eleza addTests(self, tests):
+        ikiwa isinstance(tests, str):
             raise TypeError("tests must be an iterable of tests, not a string")
         for test in tests:
             self.addTest(test)
 
-    def run(self, result):
+    eleza run(self, result):
         for index, test in enumerate(self):
-            if result.shouldStop:
+            ikiwa result.shouldStop:
                 break
             test(result)
-            if self._cleanup:
+            ikiwa self._cleanup:
                 self._removeTestAtIndex(index)
-        return result
+        rudisha result
 
-    def _removeTestAtIndex(self, index):
+    eleza _removeTestAtIndex(self, index):
         """Stop holding a reference to the TestCase at index."""
         try:
             test = self._tests[index]
@@ -76,93 +76,93 @@ class BaseTestSuite(object):
         else:
             # Some unittest tests add non TestCase/TestSuite objects to
             # the suite.
-            if hasattr(test, 'countTestCases'):
+            ikiwa hasattr(test, 'countTestCases'):
                 self._removed_tests += test.countTestCases()
             self._tests[index] = None
 
-    def __call__(self, *args, **kwds):
-        return self.run(*args, **kwds)
+    eleza __call__(self, *args, **kwds):
+        rudisha self.run(*args, **kwds)
 
-    def debug(self):
+    eleza debug(self):
         """Run the tests without collecting errors in a TestResult"""
         for test in self:
             test.debug()
 
 
-class TestSuite(BaseTestSuite):
+kundi TestSuite(BaseTestSuite):
     """A test suite is a composite test consisting of a number of TestCases.
 
     For use, create an instance of TestSuite, then add test case instances.
     When all tests have been added, the suite can be passed to a test
     runner, such as TextTestRunner. It will run the individual test cases
     in the order in which they were added, aggregating the results. When
-    subclassing, do not forget to call the base class constructor.
+    subclassing, do not forget to call the base kundi constructor.
     """
 
-    def run(self, result, debug=False):
+    eleza run(self, result, debug=False):
         topLevel = False
-        if getattr(result, '_testRunEntered', False) is False:
+        ikiwa getattr(result, '_testRunEntered', False) is False:
             result._testRunEntered = topLevel = True
 
         for index, test in enumerate(self):
-            if result.shouldStop:
+            ikiwa result.shouldStop:
                 break
 
-            if _isnotsuite(test):
+            ikiwa _isnotsuite(test):
                 self._tearDownPreviousClass(test, result)
                 self._handleModuleFixture(test, result)
                 self._handleClassSetUp(test, result)
                 result._previousTestClass = test.__class__
 
-                if (getattr(test.__class__, '_classSetupFailed', False) or
+                ikiwa (getattr(test.__class__, '_classSetupFailed', False) or
                     getattr(result, '_moduleSetUpFailed', False)):
                     continue
 
-            if not debug:
+            ikiwa not debug:
                 test(result)
             else:
                 test.debug()
 
-            if self._cleanup:
+            ikiwa self._cleanup:
                 self._removeTestAtIndex(index)
 
-        if topLevel:
+        ikiwa topLevel:
             self._tearDownPreviousClass(None, result)
             self._handleModuleTearDown(result)
             result._testRunEntered = False
-        return result
+        rudisha result
 
-    def debug(self):
+    eleza debug(self):
         """Run the tests without collecting errors in a TestResult"""
         debug = _DebugResult()
         self.run(debug, True)
 
     ################################
 
-    def _handleClassSetUp(self, test, result):
+    eleza _handleClassSetUp(self, test, result):
         previousClass = getattr(result, '_previousTestClass', None)
         currentClass = test.__class__
-        if currentClass == previousClass:
+        ikiwa currentClass == previousClass:
             return
-        if result._moduleSetUpFailed:
+        ikiwa result._moduleSetUpFailed:
             return
-        if getattr(currentClass, "__unittest_skip__", False):
+        ikiwa getattr(currentClass, "__unittest_skip__", False):
             return
 
         try:
             currentClass._classSetupFailed = False
         except TypeError:
             # test may actually be a function
-            # so its class will be a builtin-type
+            # so its kundi will be a builtin-type
             pass
 
         setUpClass = getattr(currentClass, 'setUpClass', None)
-        if setUpClass is not None:
+        ikiwa setUpClass is not None:
             _call_if_exists(result, '_setupStdout')
             try:
                 setUpClass()
             except Exception as e:
-                if isinstance(result, _DebugResult):
+                ikiwa isinstance(result, _DebugResult):
                     raise
                 currentClass._classSetupFailed = True
                 className = util.strclass(currentClass)
@@ -171,26 +171,26 @@ class TestSuite(BaseTestSuite):
                                                         className)
             finally:
                 _call_if_exists(result, '_restoreStdout')
-                if currentClass._classSetupFailed is True:
+                ikiwa currentClass._classSetupFailed is True:
                     currentClass.doClassCleanups()
-                    if len(currentClass.tearDown_exceptions) > 0:
+                    ikiwa len(currentClass.tearDown_exceptions) > 0:
                         for exc in currentClass.tearDown_exceptions:
                             self._createClassOrModuleLevelException(
                                     result, exc[1], 'setUpClass', className,
                                     info=exc)
 
-    def _get_previous_module(self, result):
+    eleza _get_previous_module(self, result):
         previousModule = None
         previousClass = getattr(result, '_previousTestClass', None)
-        if previousClass is not None:
+        ikiwa previousClass is not None:
             previousModule = previousClass.__module__
-        return previousModule
+        rudisha previousModule
 
 
-    def _handleModuleFixture(self, test, result):
+    eleza _handleModuleFixture(self, test, result):
         previousModule = self._get_previous_module(result)
         currentModule = test.__class__.__module__
-        if currentModule == previousModule:
+        ikiwa currentModule == previousModule:
             return
 
         self._handleModuleTearDown(result)
@@ -202,7 +202,7 @@ class TestSuite(BaseTestSuite):
         except KeyError:
             return
         setUpModule = getattr(module, 'setUpModule', None)
-        if setUpModule is not None:
+        ikiwa setUpModule is not None:
             _call_if_exists(result, '_setupStdout')
             try:
                 setUpModule()
@@ -213,7 +213,7 @@ class TestSuite(BaseTestSuite):
                     self._createClassOrModuleLevelException(result, exc,
                                                             'setUpModule',
                                                             currentModule)
-                if isinstance(result, _DebugResult):
+                ikiwa isinstance(result, _DebugResult):
                     raise
                 result._moduleSetUpFailed = True
                 self._createClassOrModuleLevelException(result, e,
@@ -222,28 +222,28 @@ class TestSuite(BaseTestSuite):
             finally:
                 _call_if_exists(result, '_restoreStdout')
 
-    def _createClassOrModuleLevelException(self, result, exc, method_name,
+    eleza _createClassOrModuleLevelException(self, result, exc, method_name,
                                            parent, info=None):
         errorName = f'{method_name} ({parent})'
         self._addClassOrModuleLevelException(result, exc, errorName, info)
 
-    def _addClassOrModuleLevelException(self, result, exception, errorName,
+    eleza _addClassOrModuleLevelException(self, result, exception, errorName,
                                         info=None):
         error = _ErrorHolder(errorName)
         addSkip = getattr(result, 'addSkip', None)
-        if addSkip is not None and isinstance(exception, case.SkipTest):
+        ikiwa addSkip is not None and isinstance(exception, case.SkipTest):
             addSkip(error, str(exception))
         else:
-            if not info:
+            ikiwa not info:
                 result.addError(error, sys.exc_info())
             else:
                 result.addError(error, info)
 
-    def _handleModuleTearDown(self, result):
+    eleza _handleModuleTearDown(self, result):
         previousModule = self._get_previous_module(result)
-        if previousModule is None:
+        ikiwa previousModule is None:
             return
-        if result._moduleSetUpFailed:
+        ikiwa result._moduleSetUpFailed:
             return
 
         try:
@@ -252,12 +252,12 @@ class TestSuite(BaseTestSuite):
             return
 
         tearDownModule = getattr(module, 'tearDownModule', None)
-        if tearDownModule is not None:
+        ikiwa tearDownModule is not None:
             _call_if_exists(result, '_setupStdout')
             try:
                 tearDownModule()
             except Exception as e:
-                if isinstance(result, _DebugResult):
+                ikiwa isinstance(result, _DebugResult):
                     raise
                 self._createClassOrModuleLevelException(result, e,
                                                         'tearDownModule',
@@ -271,25 +271,25 @@ class TestSuite(BaseTestSuite):
                                                             'tearDownModule',
                                                             previousModule)
 
-    def _tearDownPreviousClass(self, test, result):
+    eleza _tearDownPreviousClass(self, test, result):
         previousClass = getattr(result, '_previousTestClass', None)
         currentClass = test.__class__
-        if currentClass == previousClass:
+        ikiwa currentClass == previousClass:
             return
-        if getattr(previousClass, '_classSetupFailed', False):
+        ikiwa getattr(previousClass, '_classSetupFailed', False):
             return
-        if getattr(result, '_moduleSetUpFailed', False):
+        ikiwa getattr(result, '_moduleSetUpFailed', False):
             return
-        if getattr(previousClass, "__unittest_skip__", False):
+        ikiwa getattr(previousClass, "__unittest_skip__", False):
             return
 
         tearDownClass = getattr(previousClass, 'tearDownClass', None)
-        if tearDownClass is not None:
+        ikiwa tearDownClass is not None:
             _call_if_exists(result, '_setupStdout')
             try:
                 tearDownClass()
             except Exception as e:
-                if isinstance(result, _DebugResult):
+                ikiwa isinstance(result, _DebugResult):
                     raise
                 className = util.strclass(previousClass)
                 self._createClassOrModuleLevelException(result, e,
@@ -298,7 +298,7 @@ class TestSuite(BaseTestSuite):
             finally:
                 _call_if_exists(result, '_restoreStdout')
                 previousClass.doClassCleanups()
-                if len(previousClass.tearDown_exceptions) > 0:
+                ikiwa len(previousClass.tearDown_exceptions) > 0:
                     for exc in previousClass.tearDown_exceptions:
                         className = util.strclass(previousClass)
                         self._createClassOrModuleLevelException(result, exc[1],
@@ -307,7 +307,7 @@ class TestSuite(BaseTestSuite):
                                                                 info=exc)
 
 
-class _ErrorHolder(object):
+kundi _ErrorHolder(object):
     """
     Placeholder for a TestCase inside a result. As far as a TestResult
     is concerned, this looks exactly like a unit test. Used to insert
@@ -319,43 +319,43 @@ class _ErrorHolder(object):
     # attribute used by TestResult._exc_info_to_string
     failureException = None
 
-    def __init__(self, description):
+    eleza __init__(self, description):
         self.description = description
 
-    def id(self):
-        return self.description
+    eleza id(self):
+        rudisha self.description
 
-    def shortDescription(self):
-        return None
+    eleza shortDescription(self):
+        rudisha None
 
-    def __repr__(self):
-        return "<ErrorHolder description=%r>" % (self.description,)
+    eleza __repr__(self):
+        rudisha "<ErrorHolder description=%r>" % (self.description,)
 
-    def __str__(self):
-        return self.id()
+    eleza __str__(self):
+        rudisha self.id()
 
-    def run(self, result):
+    eleza run(self, result):
         # could call result.addError(...) - but this test-like object
         # shouldn't be run anyway
         pass
 
-    def __call__(self, result):
-        return self.run(result)
+    eleza __call__(self, result):
+        rudisha self.run(result)
 
-    def countTestCases(self):
-        return 0
+    eleza countTestCases(self):
+        rudisha 0
 
-def _isnotsuite(test):
+eleza _isnotsuite(test):
     "A crude way to tell apart testcases and suites with duck-typing"
     try:
         iter(test)
     except TypeError:
-        return True
-    return False
+        rudisha True
+    rudisha False
 
 
-class _DebugResult(object):
-    "Used by the TestSuite to hold previous class when running in debug."
+kundi _DebugResult(object):
+    "Used by the TestSuite to hold previous kundi when running in debug."
     _previousTestClass = None
     _moduleSetUpFailed = False
     shouldStop = False

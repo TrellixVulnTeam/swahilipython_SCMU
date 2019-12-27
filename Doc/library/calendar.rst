@@ -34,7 +34,7 @@ interpreted as prescribed by the ISO 8601 standard.  Year 0 is 1 BC, year -1 is
    first day of the week. ``0`` is Monday (the default), ``6`` is Sunday.
 
    A :class:`Calendar` object provides several methods that can be used for
-   preparing the calendar data for formatting. This class doesn't do any formatting
+   preparing the calendar data for formatting. This kundi doesn't do any formatting
    itself. This is the job of subclasses.
 
 
@@ -43,7 +43,7 @@ interpreted as prescribed by the ISO 8601 standard.  Year 0 is 1 BC, year -1 is
    .. method:: iterweekdays()
 
       Return an iterator for the week day numbers that will be used for one
-      week.  The first value from the iterator will be the same as the value of
+      week.  The first value kutoka the iterator will be the same as the value of
       the :attr:`firstweekday` property.
 
 
@@ -134,7 +134,7 @@ interpreted as prescribed by the ISO 8601 standard.  Year 0 is 1 BC, year -1 is
 
 .. class:: TextCalendar(firstweekday=0)
 
-   This class can be used to generate plain text calendars.
+   This kundi can be used to generate plain text calendars.
 
    :class:`TextCalendar` instances have the following methods:
 
@@ -169,7 +169,7 @@ interpreted as prescribed by the ISO 8601 standard.  Year 0 is 1 BC, year -1 is
 
 .. class:: HTMLCalendar(firstweekday=0)
 
-   This class can be used to generate HTML calendars.
+   This kundi can be used to generate HTML calendars.
 
 
    :class:`!HTMLCalendar` instances have the following methods:
@@ -201,7 +201,7 @@ interpreted as prescribed by the ISO 8601 standard.  Year 0 is 1 BC, year -1 is
 
    .. attribute:: cssclasses
 
-      A list of CSS classes used for each weekday. The default class list is::
+      A list of CSS classes used for each weekday. The default kundi list is::
 
          cssclasses = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
 
@@ -214,7 +214,7 @@ interpreted as prescribed by the ISO 8601 standard.  Year 0 is 1 BC, year -1 is
 
    .. attribute:: cssclass_noday
 
-      The CSS class for a weekday occurring in the previous or coming month.
+      The CSS kundi for a weekday occurring in the previous or coming month.
 
       .. versionadded:: 3.7
 
@@ -229,7 +229,7 @@ interpreted as prescribed by the ISO 8601 standard.  Year 0 is 1 BC, year -1 is
 
    .. attribute:: cssclass_month_head
 
-      The month's head CSS class (used by :meth:`formatmonthname`).
+      The month's head CSS kundi (used by :meth:`formatmonthname`).
       The default value is ``"month"``.
 
       .. versionadded:: 3.7
@@ -237,7 +237,7 @@ interpreted as prescribed by the ISO 8601 standard.  Year 0 is 1 BC, year -1 is
 
    .. attribute:: cssclass_month
 
-      The CSS class for the whole month's table (used by :meth:`formatmonth`).
+      The CSS kundi for the whole month's table (used by :meth:`formatmonth`).
       The default value is ``"month"``.
 
       .. versionadded:: 3.7
@@ -245,7 +245,7 @@ interpreted as prescribed by the ISO 8601 standard.  Year 0 is 1 BC, year -1 is
 
    .. attribute:: cssclass_year
 
-      The CSS class for the whole year's table of tables (used by
+      The CSS kundi for the whole year's table of tables (used by
       :meth:`formatyear`). The default value is ``"year"``.
 
       .. versionadded:: 3.7
@@ -253,21 +253,21 @@ interpreted as prescribed by the ISO 8601 standard.  Year 0 is 1 BC, year -1 is
 
    .. attribute:: cssclass_year_head
 
-      The CSS class for the table head for the whole year (used by
+      The CSS kundi for the table head for the whole year (used by
       :meth:`formatyear`). The default value is ``"year"``.
 
       .. versionadded:: 3.7
 
 
-   Note that although the naming for the above described class attributes is
+   Note that although the naming for the above described kundi attributes is
    singular (e.g. ``cssclass_month`` ``cssclass_noday``), one can replace the
-   single CSS class with a space separated list of CSS classes, for example::
+   single CSS kundi with a space separated list of CSS classes, for example::
 
          "text-bold text-red"
 
    Here is an example how :class:`!HTMLCalendar` can be customized::
 
-       class CustomHTMLCal(calendar.HTMLCalendar):
+       kundi CustomHTMLCal(calendar.HTMLCalendar):
            cssclasses = [style + " text-nowrap" for style in
                          calendar.HTMLCalendar.cssclasses]
            cssclass_month_head = "text-center month-head"
@@ -277,7 +277,7 @@ interpreted as prescribed by the ISO 8601 standard.  Year 0 is 1 BC, year -1 is
 
 .. class:: LocaleTextCalendar(firstweekday=0, locale=None)
 
-   This subclass of :class:`TextCalendar` can be passed a locale name in the
+   This subkundi of :class:`TextCalendar` can be passed a locale name in the
    constructor and will return month and weekday names in the specified locale.
    If this locale includes an encoding all strings containing month and weekday
    names will be returned as unicode.
@@ -285,7 +285,7 @@ interpreted as prescribed by the ISO 8601 standard.  Year 0 is 1 BC, year -1 is
 
 .. class:: LocaleHTMLCalendar(firstweekday=0, locale=None)
 
-   This subclass of :class:`HTMLCalendar` can be passed a locale name in the
+   This subkundi of :class:`HTMLCalendar` can be passed a locale name in the
    constructor and will return month and weekday names in the specified
    locale. If this locale includes an encoding all strings containing month and
    weekday names will be returned as unicode.
@@ -306,7 +306,7 @@ For simple text calendars this module provides the following functions.
    :const:`FRIDAY`, :const:`SATURDAY`, and :const:`SUNDAY` are provided for
    convenience. For example, to set the first weekday to Sunday::
 
-      import calendar
+      agiza calendar
       calendar.setfirstweekday(calendar.SUNDAY)
 
 
@@ -322,7 +322,7 @@ For simple text calendars this module provides the following functions.
 
 .. function:: leapdays(y1, y2)
 
-   Returns the number of leap years in the range from *y1* to *y2* (exclusive),
+   Returns the number of leap years in the range kutoka *y1* to *y2* (exclusive),
    where *y1* and *y2* are years.
 
    This function works for ranges spanning a century change.

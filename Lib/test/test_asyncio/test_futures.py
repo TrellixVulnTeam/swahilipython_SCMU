@@ -336,7 +336,7 @@ class BaseFutureTests:
                          f'<{self.cls.__name__} cancelled>')
 
     def test_copy_state(self):
-        from asyncio.futures import _copy_future_state
+        from asyncio.futures agiza _copy_future_state
 
         f = self._new_future(loop=self.loop)
         f.set_result(10)

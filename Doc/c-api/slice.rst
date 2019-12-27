@@ -28,7 +28,7 @@ Slice Objects
 
 .. c:function:: int PySlice_GetIndices(PyObject *slice, Py_ssize_t length, Py_ssize_t *start, Py_ssize_t *stop, Py_ssize_t *step)
 
-   Retrieve the start, stop and step indices from the slice object *slice*,
+   Retrieve the start, stop and step indices kutoka the slice object *slice*,
    assuming a sequence of length *length*. Treats indices greater than
    *length* as errors.
 
@@ -46,7 +46,7 @@ Slice Objects
 .. c:function:: int PySlice_GetIndicesEx(PyObject *slice, Py_ssize_t length, Py_ssize_t *start, Py_ssize_t *stop, Py_ssize_t *step, Py_ssize_t *slicelength)
 
    Usable replacement for :c:func:`PySlice_GetIndices`.  Retrieve the start,
-   stop, and step indices from the slice object *slice* assuming a sequence of
+   stop, and step indices kutoka the slice object *slice* assuming a sequence of
    length *length*, and store the length of the slice in *slicelength*.  Out
    of bounds indices are clipped in a manner consistent with the handling of
    normal slices.
@@ -88,7 +88,7 @@ Slice Objects
 
 .. c:function:: int PySlice_Unpack(PyObject *slice, Py_ssize_t *start, Py_ssize_t *stop, Py_ssize_t *step)
 
-   Extract the start, stop and step data members from a slice object as
+   Extract the start, stop and step data members kutoka a slice object as
    C integers.  Silently reduce values larger than ``PY_SSIZE_T_MAX`` to
    ``PY_SSIZE_T_MAX``, silently boost the start and stop values less than
    ``PY_SSIZE_T_MIN`` to ``PY_SSIZE_T_MIN``, and silently boost the step

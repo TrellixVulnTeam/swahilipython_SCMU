@@ -9,55 +9,55 @@ agiza traceback
 agiza warnings
 
 
-def normalize_text(text):
-    if text is None:
-        return None
+eleza normalize_text(text):
+    ikiwa text is None:
+        rudisha None
     text = str(text)
     text = re.sub(r'\s+', ' ', text)
-    return text.strip()
+    rudisha text.strip()
 
 
-class PythonInfo:
-    def __init__(self):
+kundi PythonInfo:
+    eleza __init__(self):
         self.info = {}
 
-    def add(self, key, value):
-        if key in self.info:
+    eleza add(self, key, value):
+        ikiwa key in self.info:
             raise ValueError("duplicate key: %r" % key)
 
-        if value is None:
+        ikiwa value is None:
             return
 
-        if not isinstance(value, int):
-            if not isinstance(value, str):
+        ikiwa not isinstance(value, int):
+            ikiwa not isinstance(value, str):
                 # convert other objects like sys.flags to string
                 value = str(value)
 
             value = value.strip()
-            if not value:
+            ikiwa not value:
                 return
 
         self.info[key] = value
 
-    def get_infos(self):
+    eleza get_infos(self):
         """
         Get information as a key:value dictionary where values are strings.
         """
-        return {key: str(value) for key, value in self.info.items()}
+        rudisha {key: str(value) for key, value in self.info.items()}
 
 
-def copy_attributes(info_add, obj, name_fmt, attributes, *, formatter=None):
+eleza copy_attributes(info_add, obj, name_fmt, attributes, *, formatter=None):
     for attr in attributes:
         value = getattr(obj, attr, None)
-        if value is None:
+        ikiwa value is None:
             continue
         name = name_fmt % attr
-        if formatter is not None:
+        ikiwa formatter is not None:
             value = formatter(attr, value)
         info_add(name, value)
 
 
-def copy_attr(info_add, name, mod, attr_name):
+eleza copy_attr(info_add, name, mod, attr_name):
     try:
         value = getattr(mod, attr_name)
     except AttributeError:
@@ -65,18 +65,18 @@ def copy_attr(info_add, name, mod, attr_name):
     info_add(name, value)
 
 
-def call_func(info_add, name, mod, func_name, *, formatter=None):
+eleza call_func(info_add, name, mod, func_name, *, formatter=None):
     try:
         func = getattr(mod, func_name)
     except AttributeError:
         return
     value = func()
-    if formatter is not None:
+    ikiwa formatter is not None:
         value = formatter(value)
     info_add(name, value)
 
 
-def collect_sys(info_add):
+eleza collect_sys(info_add):
     attributes = (
         '_framework',
         'abiflags',
@@ -108,32 +108,32 @@ def collect_sys(info_add):
     call_func(info_add, 'sys.windowsversion', sys, 'getwindowsversion')
 
     encoding = sys.getfilesystemencoding()
-    if hasattr(sys, 'getfilesystemencodeerrors'):
+    ikiwa hasattr(sys, 'getfilesystemencodeerrors'):
         encoding = '%s/%s' % (encoding, sys.getfilesystemencodeerrors())
     info_add('sys.filesystem_encoding', encoding)
 
     for name in ('stdin', 'stdout', 'stderr'):
         stream = getattr(sys, name)
-        if stream is None:
+        ikiwa stream is None:
             continue
         encoding = getattr(stream, 'encoding', None)
-        if not encoding:
+        ikiwa not encoding:
             continue
         errors = getattr(stream, 'errors', None)
-        if errors:
+        ikiwa errors:
             encoding = '%s/%s' % (encoding, errors)
         info_add('sys.%s.encoding' % name, encoding)
 
     # Were we compiled --with-pydebug or with #define Py_DEBUG?
     Py_DEBUG = hasattr(sys, 'gettotalrefcount')
-    if Py_DEBUG:
+    ikiwa Py_DEBUG:
         text = 'Yes (sys.gettotalrefcount() present)'
     else:
         text = 'No (sys.gettotalrefcount() missing)'
     info_add('Py_DEBUG', text)
 
 
-def collect_platform(info_add):
+eleza collect_platform(info_add):
     agiza platform
 
     arch = platform.architecture()
@@ -146,26 +146,26 @@ def collect_platform(info_add):
              platform.platform(aliased=True))
 
     libc_ver = ('%s %s' % platform.libc_ver()).strip()
-    if libc_ver:
+    ikiwa libc_ver:
         info_add('platform.libc_ver', libc_ver)
 
 
-def collect_locale(info_add):
+eleza collect_locale(info_add):
     agiza locale
 
     info_add('locale.encoding', locale.getpreferredencoding(False))
 
 
-def collect_builtins(info_add):
+eleza collect_builtins(info_add):
     info_add('builtins.float.float_format', float.__getformat__("float"))
     info_add('builtins.float.double_format', float.__getformat__("double"))
 
 
-def collect_urandom(info_add):
+eleza collect_urandom(info_add):
     agiza os
 
-    if hasattr(os, 'getrandom'):
-        # PEP 524: Check if system urandom is initialized
+    ikiwa hasattr(os, 'getrandom'):
+        # PEP 524: Check ikiwa system urandom is initialized
         try:
             try:
                 os.getrandom(1, os.GRND_NONBLOCK)
@@ -176,19 +176,19 @@ def collect_urandom(info_add):
         except OSError as exc:
             # Python was compiled on a more recent Linux version
             # than the current Linux kernel: ignore OSError(ENOSYS)
-            if exc.errno != errno.ENOSYS:
+            ikiwa exc.errno != errno.ENOSYS:
                 raise
 
 
-def collect_os(info_add):
+eleza collect_os(info_add):
     agiza os
 
-    def format_attr(attr, value):
-        if attr in ('supports_follow_symlinks', 'supports_fd',
+    eleza format_attr(attr, value):
+        ikiwa attr in ('supports_follow_symlinks', 'supports_fd',
                     'supports_effective_ids'):
-            return str(sorted(func.__name__ for func in value))
+            rudisha str(sorted(func.__name__ for func in value))
         else:
-            return value
+            rudisha value
 
     attributes = (
         'name',
@@ -205,12 +205,12 @@ def collect_os(info_add):
     call_func(info_add, 'os.getgid', os, 'getgid')
     call_func(info_add, 'os.uname', os, 'uname')
 
-    def format_groups(groups):
-        return ', '.join(map(str, groups))
+    eleza format_groups(groups):
+        rudisha ', '.join(map(str, groups))
 
     call_func(info_add, 'os.getgroups', os, 'getgroups', formatter=format_groups)
 
-    if hasattr(os, 'getlogin'):
+    ikiwa hasattr(os, 'getlogin'):
         try:
             login = os.getlogin()
         except OSError:
@@ -293,20 +293,20 @@ def collect_os(info_add):
     ))
     for name, value in os.environ.items():
         uname = name.upper()
-        if (uname in ENV_VARS
+        ikiwa (uname in ENV_VARS
            # Copy PYTHON* and LC_* variables
            or uname.startswith(("PYTHON", "LC_"))
            # Visual Studio: VS140COMNTOOLS
            or (uname.startswith("VS") and uname.endswith("COMNTOOLS"))):
             info_add('os.environ[%s]' % name, value)
 
-    if hasattr(os, 'umask'):
+    ikiwa hasattr(os, 'umask'):
         mask = os.umask(0)
         os.umask(mask)
         info_add("os.umask", '%03o' % mask)
 
 
-def collect_pwd(info_add):
+eleza collect_pwd(info_add):
     try:
         agiza pwd
     except ImportError:
@@ -320,30 +320,30 @@ def collect_pwd(info_add):
         entry = None
 
     info_add('pwd.getpwuid(%s)'% uid,
-             entry if entry is not None else '<KeyError>')
+             entry ikiwa entry is not None else '<KeyError>')
 
-    if entry is None:
-        # there is nothing interesting to read if the current user identifier
+    ikiwa entry is None:
+        # there is nothing interesting to read ikiwa the current user identifier
         # is not the password database
         return
 
-    if hasattr(os, 'getgrouplist'):
+    ikiwa hasattr(os, 'getgrouplist'):
         groups = os.getgrouplist(entry.pw_name, entry.pw_gid)
         groups = ', '.join(map(str, groups))
         info_add('os.getgrouplist', groups)
 
 
-def collect_readline(info_add):
+eleza collect_readline(info_add):
     try:
         agiza readline
     except ImportError:
         return
 
-    def format_attr(attr, value):
-        if isinstance(value, int):
-            return "%#x" % value
+    eleza format_attr(attr, value):
+        ikiwa isinstance(value, int):
+            rudisha "%#x" % value
         else:
-            return value
+            rudisha value
 
     attributes = (
         "_READLINE_VERSION",
@@ -353,16 +353,16 @@ def collect_readline(info_add):
     copy_attributes(info_add, readline, 'readline.%s', attributes,
                     formatter=format_attr)
 
-    if not hasattr(readline, "_READLINE_LIBRARY_VERSION"):
+    ikiwa not hasattr(readline, "_READLINE_LIBRARY_VERSION"):
         # _READLINE_LIBRARY_VERSION has been added to CPython 3.7
         doc = getattr(readline, '__doc__', '')
-        if 'libedit readline' in doc:
+        ikiwa 'libedit readline' in doc:
             info_add('readline.library', 'libedit readline')
-        elif 'GNU readline' in doc:
+        elikiwa 'GNU readline' in doc:
             info_add('readline.library', 'GNU readline')
 
 
-def collect_gdb(info_add):
+eleza collect_gdb(info_add):
     agiza subprocess
 
     try:
@@ -379,7 +379,7 @@ def collect_gdb(info_add):
     info_add('gdb_version', version)
 
 
-def collect_tkinter(info_add):
+eleza collect_tkinter(info_add):
     try:
         agiza _tkinter
     except ImportError:
@@ -398,7 +398,7 @@ def collect_tkinter(info_add):
         info_add('tkinter.info_patchlevel', patchlevel)
 
 
-def collect_time(info_add):
+eleza collect_time(info_add):
     agiza time
 
     info_add('time.time', time.time())
@@ -411,7 +411,7 @@ def collect_time(info_add):
     )
     copy_attributes(info_add, time, 'time.%s', attributes)
 
-    if hasattr(time, 'get_clock_info'):
+    ikiwa hasattr(time, 'get_clock_info'):
         for clock in ('clock', 'monotonic', 'perf_counter',
                       'process_time', 'thread_time', 'time'):
             try:
@@ -425,7 +425,7 @@ def collect_time(info_add):
                 info_add('time.get_clock_info(%s)' % clock, clock_info)
 
 
-def collect_datetime(info_add):
+eleza collect_datetime(info_add):
     try:
         agiza datetime
     except ImportError:
@@ -434,7 +434,7 @@ def collect_datetime(info_add):
     info_add('datetime.datetime.now', datetime.datetime.now())
 
 
-def collect_sysconfig(info_add):
+eleza collect_sysconfig(info_add):
     agiza sysconfig
 
     for name in (
@@ -462,14 +462,14 @@ def collect_sysconfig(info_add):
         'prefix',
     ):
         value = sysconfig.get_config_var(name)
-        if name == 'ANDROID_API_LEVEL' and not value:
+        ikiwa name == 'ANDROID_API_LEVEL' and not value:
             # skip ANDROID_API_LEVEL=0
             continue
         value = normalize_text(value)
         info_add('sysconfig[%s]' % name, value)
 
 
-def collect_ssl(info_add):
+eleza collect_ssl(info_add):
     agiza os
     try:
         agiza ssl
@@ -480,11 +480,11 @@ def collect_ssl(info_add):
     except ImportError:
         _ssl = None
 
-    def format_attr(attr, value):
-        if attr.startswith('OP_'):
-            return '%#8x' % value
+    eleza format_attr(attr, value):
+        ikiwa attr.startswith('OP_'):
+            rudisha '%#8x' % value
         else:
-            return value
+            rudisha value
 
     attributes = (
         'OPENSSL_VERSION',
@@ -510,7 +510,7 @@ def collect_ssl(info_add):
         copy_attributes(info_add, ctx, f'ssl.{name}.%s', attributes)
 
     env_names = ["OPENSSL_CONF", "SSLKEYLOGFILE"]
-    if _ssl is not None and hasattr(_ssl, 'get_default_verify_paths'):
+    ikiwa _ssl is not None and hasattr(_ssl, 'get_default_verify_paths'):
         parts = _ssl.get_default_verify_paths()
         env_names.extend((parts[0], parts[2]))
 
@@ -522,14 +522,14 @@ def collect_ssl(info_add):
         info_add('ssl.environ[%s]' % name, value)
 
 
-def collect_socket(info_add):
+eleza collect_socket(info_add):
     agiza socket
 
     hostname = socket.gethostname()
     info_add('socket.hostname', hostname)
 
 
-def collect_sqlite(info_add):
+eleza collect_sqlite(info_add):
     try:
         agiza sqlite3
     except ImportError:
@@ -539,7 +539,7 @@ def collect_sqlite(info_add):
     copy_attributes(info_add, sqlite3, 'sqlite3.%s', attributes)
 
 
-def collect_zlib(info_add):
+eleza collect_zlib(info_add):
     try:
         agiza zlib
     except ImportError:
@@ -549,7 +549,7 @@ def collect_zlib(info_add):
     copy_attributes(info_add, zlib, 'zlib.%s', attributes)
 
 
-def collect_expat(info_add):
+eleza collect_expat(info_add):
     try:
         kutoka xml.parsers agiza expat
     except ImportError:
@@ -559,7 +559,7 @@ def collect_expat(info_add):
     copy_attributes(info_add, expat, 'expat.%s', attributes)
 
 
-def collect_decimal(info_add):
+eleza collect_decimal(info_add):
     try:
         agiza _decimal
     except ImportError:
@@ -569,7 +569,7 @@ def collect_decimal(info_add):
     copy_attributes(info_add, _decimal, '_decimal.%s', attributes)
 
 
-def collect_testcapi(info_add):
+eleza collect_testcapi(info_add):
     try:
         agiza _testcapi
     except ImportError:
@@ -579,13 +579,13 @@ def collect_testcapi(info_add):
     copy_attr(info_add, 'pymem.with_pymalloc', _testcapi, 'WITH_PYMALLOC')
 
 
-def collect_resource(info_add):
+eleza collect_resource(info_add):
     try:
         agiza resource
     except ImportError:
         return
 
-    limits = [attr for attr in dir(resource) if attr.startswith('RLIMIT_')]
+    limits = [attr for attr in dir(resource) ikiwa attr.startswith('RLIMIT_')]
     for name in limits:
         key = getattr(resource, name)
         value = resource.getrlimit(key)
@@ -594,7 +594,7 @@ def collect_resource(info_add):
     call_func(info_add, 'resource.pagesize', resource, 'getpagesize')
 
 
-def collect_test_socket(info_add):
+eleza collect_test_socket(info_add):
     try:
         kutoka test agiza test_socket
     except ImportError:
@@ -602,11 +602,11 @@ def collect_test_socket(info_add):
 
     # all check attributes like HAVE_SOCKET_CAN
     attributes = [name for name in dir(test_socket)
-                  if name.startswith('HAVE_')]
+                  ikiwa name.startswith('HAVE_')]
     copy_attributes(info_add, test_socket, 'test_socket.%s', attributes)
 
 
-def collect_test_support(info_add):
+eleza collect_test_support(info_add):
     try:
         kutoka test agiza support
     except ImportError:
@@ -619,12 +619,12 @@ def collect_test_support(info_add):
     call_func(info_add, 'test_support.python_is_optimized', support, 'python_is_optimized')
 
 
-def collect_cc(info_add):
+eleza collect_cc(info_add):
     agiza subprocess
     agiza sysconfig
 
     CC = sysconfig.get_config_var('CC')
-    if not CC:
+    ikiwa not CC:
         return
 
     try:
@@ -645,7 +645,7 @@ def collect_cc(info_add):
         return
 
     stdout = proc.communicate()[0]
-    if proc.returncode:
+    ikiwa proc.returncode:
         # CC --version failed: ignore error
         return
 
@@ -654,7 +654,7 @@ def collect_cc(info_add):
     info_add('CC.version', text)
 
 
-def collect_gdbm(info_add):
+eleza collect_gdbm(info_add):
     try:
         kutoka _gdbm agiza _GDBM_VERSION
     except ImportError:
@@ -663,7 +663,7 @@ def collect_gdbm(info_add):
     info_add('gdbm.GDBM_VERSION', '.'.join(map(str, _GDBM_VERSION)))
 
 
-def collect_get_config(info_add):
+eleza collect_get_config(info_add):
     # Get global configuration variables, _PyPreConfig and _PyCoreConfig
     try:
         kutoka _testinternalcapi agiza get_configs
@@ -677,18 +677,18 @@ def collect_get_config(info_add):
             info_add('%s[%s]' % (config_type, key), repr(config[key]))
 
 
-def collect_subprocess(info_add):
+eleza collect_subprocess(info_add):
     agiza subprocess
     copy_attributes(info_add, subprocess, 'subprocess.%s', ('_USE_POSIX_SPAWN',))
 
 
-def collect_windows(info_add):
+eleza collect_windows(info_add):
     try:
         agiza ctypes
     except ImportError:
         return
 
-    if not hasattr(ctypes, 'WinDLL'):
+    ikiwa not hasattr(ctypes, 'WinDLL'):
         return
 
     ntdll = ctypes.WinDLL('ntdll')
@@ -712,7 +712,7 @@ def collect_windows(info_add):
         pass
 
 
-def collect_info(info):
+eleza collect_info(info):
     error = False
     info_add = info.add
 
@@ -756,38 +756,38 @@ def collect_info(info):
             collect_func(info_add)
         except Exception as exc:
             error = True
-            print("ERROR: %s() failed" % (collect_func.__name__),
+            andika("ERROR: %s() failed" % (collect_func.__name__),
                   file=sys.stderr)
             traceback.print_exc(file=sys.stderr)
-            print(file=sys.stderr)
+            andika(file=sys.stderr)
             sys.stderr.flush()
 
-    return error
+    rudisha error
 
 
-def dump_info(info, file=None):
+eleza dump_info(info, file=None):
     title = "Python debug information"
-    print(title)
-    print("=" * len(title))
-    print()
+    andika(title)
+    andika("=" * len(title))
+    andika()
 
     infos = info.get_infos()
     infos = sorted(infos.items())
     for key, value in infos:
         value = value.replace("\n", " ")
-        print("%s: %s" % (key, value))
-    print()
+        andika("%s: %s" % (key, value))
+    andika()
 
 
-def main():
+eleza main():
     info = PythonInfo()
     error = collect_info(info)
     dump_info(info)
 
-    if error:
-        print("Collection failed: exit with error", file=sys.stderr)
+    ikiwa error:
+        andika("Collection failed: exit with error", file=sys.stderr)
         sys.exit(1)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     main()

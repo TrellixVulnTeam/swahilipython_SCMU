@@ -1,11 +1,11 @@
 """A generally useful event scheduler class.
 
-Each instance of this class manages its own queue.
+Each instance of this kundi manages its own queue.
 No multi-threading is implied; you are supposed to hack that
 yourself, or use a single instance per application.
 
 Each instance is parametrized with two functions, one that is
-supposed to return the current time, one that is supposed to
+supposed to rudisha the current time, one that is supposed to
 implement a delay.  You can implement real-time scheduling by
 substituting time and sleep kutoka built-in module time, or you can
 implement simulated time by writing your own functions.  This can
@@ -31,15 +31,15 @@ kutoka time agiza monotonic as _time
 
 __all__ = ["scheduler"]
 
-class Event(namedtuple('Event', 'time, priority, action, argument, kwargs')):
+kundi Event(namedtuple('Event', 'time, priority, action, argument, kwargs')):
     __slots__ = []
-    def __eq__(s, o): return (s.time, s.priority) == (o.time, o.priority)
-    def __lt__(s, o): return (s.time, s.priority) <  (o.time, o.priority)
-    def __le__(s, o): return (s.time, s.priority) <= (o.time, o.priority)
-    def __gt__(s, o): return (s.time, s.priority) >  (o.time, o.priority)
-    def __ge__(s, o): return (s.time, s.priority) >= (o.time, o.priority)
+    eleza __eq__(s, o): rudisha (s.time, s.priority) == (o.time, o.priority)
+    eleza __lt__(s, o): rudisha (s.time, s.priority) <  (o.time, o.priority)
+    eleza __le__(s, o): rudisha (s.time, s.priority) <= (o.time, o.priority)
+    eleza __gt__(s, o): rudisha (s.time, s.priority) >  (o.time, o.priority)
+    eleza __ge__(s, o): rudisha (s.time, s.priority) >= (o.time, o.priority)
 
-Event.time.__doc__ = ('''Numeric type compatible with the return value of the
+Event.time.__doc__ = ('''Numeric type compatible with the rudisha value of the
 timefunc function passed to the constructor.''')
 Event.priority.__doc__ = ('''Events scheduled for the same time will be executed
 in the order of their priority.''')
@@ -52,9 +52,9 @@ arguments for the action.''')
 
 _sentinel = object()
 
-class scheduler:
+kundi scheduler:
 
-    def __init__(self, timefunc=_time, delayfunc=time.sleep):
+    eleza __init__(self, timefunc=_time, delayfunc=time.sleep):
         """Initialize a new instance, passing the time and delay
         functions"""
         self._queue = []
@@ -62,30 +62,30 @@ class scheduler:
         self.timefunc = timefunc
         self.delayfunc = delayfunc
 
-    def enterabs(self, time, priority, action, argument=(), kwargs=_sentinel):
+    eleza enterabs(self, time, priority, action, argument=(), kwargs=_sentinel):
         """Enter a new event in the queue at an absolute time.
 
         Returns an ID for the event which can be used to remove it,
-        if necessary.
+        ikiwa necessary.
 
         """
-        if kwargs is _sentinel:
+        ikiwa kwargs is _sentinel:
             kwargs = {}
         event = Event(time, priority, action, argument, kwargs)
         with self._lock:
             heapq.heappush(self._queue, event)
-        return event # The ID
+        rudisha event # The ID
 
-    def enter(self, delay, priority, action, argument=(), kwargs=_sentinel):
+    eleza enter(self, delay, priority, action, argument=(), kwargs=_sentinel):
         """A variant that specifies the time as a relative time.
 
         This is actually the more commonly used interface.
 
         """
         time = self.timefunc() + delay
-        return self.enterabs(time, priority, action, argument, kwargs)
+        rudisha self.enterabs(time, priority, action, argument, kwargs)
 
-    def cancel(self, event):
+    eleza cancel(self, event):
         """Remove an event kutoka the queue.
 
         This must be presented the ID as returned by enter().
@@ -96,15 +96,15 @@ class scheduler:
             self._queue.remove(event)
             heapq.heapify(self._queue)
 
-    def empty(self):
+    eleza empty(self):
         """Check whether the queue is empty."""
         with self._lock:
-            return not self._queue
+            rudisha not self._queue
 
-    def run(self, blocking=True):
+    eleza run(self, blocking=True):
         """Execute events until the queue is empty.
         If blocking is False executes the scheduled events due to
-        expire soonest (if any) and then return the deadline of the
+        expire soonest (ikiwa any) and then rudisha the deadline of the
         next scheduled call in the scheduler.
 
         When there is a positive delay until the first event, the
@@ -134,25 +134,25 @@ class scheduler:
         pop = heapq.heappop
         while True:
             with lock:
-                if not q:
+                ikiwa not q:
                     break
                 time, priority, action, argument, kwargs = q[0]
                 now = timefunc()
-                if time > now:
+                ikiwa time > now:
                     delay = True
                 else:
                     delay = False
                     pop(q)
-            if delay:
-                if not blocking:
-                    return time - now
+            ikiwa delay:
+                ikiwa not blocking:
+                    rudisha time - now
                 delayfunc(time - now)
             else:
                 action(*argument, **kwargs)
                 delayfunc(0)   # Let other threads run
 
     @property
-    def queue(self):
+    eleza queue(self):
         """An ordered list of upcoming events.
 
         Events are named tuples with fields for:
@@ -164,4 +164,4 @@ class scheduler:
         # the actual order they would be retrieved.
         with self._lock:
             events = self._queue[:]
-        return list(map(heapq.heappop, [events]*len(events)))
+        rudisha list(map(heapq.heappop, [events]*len(events)))

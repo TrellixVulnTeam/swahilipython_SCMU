@@ -14,9 +14,9 @@
 
 This module performs conversions between Python values and C structs represented
 as Python :class:`bytes` objects.  This can be used in handling binary data
-stored in files or from network connections, among other sources.  It uses
+stored in files or kutoka network connections, among other sources.  It uses
 :ref:`struct-format-strings` as compact descriptions of the layout of the C
-structs and the intended conversion to/from Python values.
+structs and the intended conversion to/kutoka Python values.
 
 .. note::
 
@@ -33,7 +33,7 @@ argument.  This refers to objects that implement the :ref:`bufferobjects` and
 provide either a readable or read-writable buffer.  The most common types used
 for that purpose are :class:`bytes` and :class:`bytearray`, but many other types
 that can be viewed as an array of bytes implement the buffer protocol, so that
-they can be read/filled without additional copying from a :class:`bytes` object.
+they can be read/filled without additional copying kutoka a :class:`bytes` object.
 
 
 Functions and Exceptions
@@ -64,15 +64,15 @@ The module defines the following exception and functions:
 
 .. function:: unpack(format, buffer)
 
-   Unpack from the buffer *buffer* (presumably packed by ``pack(format, ...)``)
+   Unpack kutoka the buffer *buffer* (presumably packed by ``pack(format, ...)``)
    according to the format string *format*.  The result is a tuple even if it
    contains exactly one item.  The buffer's size in bytes must match the
    size required by the format, as reflected by :func:`calcsize`.
 
 
-.. function:: unpack_from(format, buffer, offset=0)
+.. function:: unpack_kutoka(format, buffer, offset=0)
 
-   Unpack from *buffer* starting at position *offset*, according to the format
+   Unpack kutoka *buffer* starting at position *offset*, according to the format
    string *format*.  The result is a tuple even if it contains exactly one
    item.  The buffer's size in bytes, starting at position *offset*, must be at
    least the size required by the format, as reflected by :func:`calcsize`.
@@ -80,9 +80,9 @@ The module defines the following exception and functions:
 
 .. function:: iter_unpack(format, buffer)
 
-   Iteratively unpack from the buffer *buffer* according to the format
+   Iteratively unpack kutoka the buffer *buffer* according to the format
    string *format*.  This function returns an iterator which will read
-   equally-sized chunks from the buffer until all its contents have been
+   equally-sized chunks kutoka the buffer until all its contents have been
    consumed.  The buffer's size in bytes must be a multiple of the size
    required by the format, as reflected by :func:`calcsize`.
 
@@ -103,7 +103,7 @@ Format Strings
 --------------
 
 Format strings are the mechanism used to specify the expected layout when
-packing and unpacking data.  They are built up from :ref:`format-characters`,
+packing and unpacking data.  They are built up kutoka :ref:`format-characters`,
 which specify the type of data being packed/unpacked.  In addition, there are
 special characters for controlling the :ref:`struct-alignment`.
 
@@ -346,7 +346,7 @@ Examples
 
 A basic example of packing/unpacking three integers::
 
-   >>> from struct import *
+   >>> kutoka struct agiza *
    >>> pack('hhl', 1, 2, 3)
    b'\x00\x01\x00\x02\x00\x00\x00\x03'
    >>> unpack('hhl', b'\x00\x01\x00\x02\x00\x00\x00\x03')
@@ -360,7 +360,7 @@ the result in a named tuple::
     >>> record = b'raymond   \x32\x12\x08\x01\x08'
     >>> name, serialnum, school, gradelevel = unpack('<10sHHb', record)
 
-    >>> from collections import namedtuple
+    >>> kutoka collections agiza namedtuple
     >>> Student = namedtuple('Student', 'name serialnum school gradelevel')
     >>> Student._make(unpack('<10sHHb', record))
     Student(name=b'raymond   ', serialnum=4658, school=264, gradelevel=8)
@@ -437,9 +437,9 @@ The :mod:`struct` module also defines the following type:
       The buffer's size in bytes must equal :attr:`size`.
 
 
-   .. method:: unpack_from(buffer, offset=0)
+   .. method:: unpack_kutoka(buffer, offset=0)
 
-      Identical to the :func:`unpack_from` function, using the compiled format.
+      Identical to the :func:`unpack_kutoka` function, using the compiled format.
       The buffer's size in bytes, starting at position *offset*, must be at least
       :attr:`size`.
 

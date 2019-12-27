@@ -26,27 +26,27 @@ agiza sqlite3 as sqlite
 
 kutoka test.support agiza TESTFN, unlink
 
-class CollationTests(unittest.TestCase):
-    def CheckCreateCollationNotString(self):
+kundi CollationTests(unittest.TestCase):
+    eleza CheckCreateCollationNotString(self):
         con = sqlite.connect(":memory:")
         with self.assertRaises(TypeError):
             con.create_collation(None, lambda x, y: (x > y) - (x < y))
 
-    def CheckCreateCollationNotCallable(self):
+    eleza CheckCreateCollationNotCallable(self):
         con = sqlite.connect(":memory:")
         with self.assertRaises(TypeError) as cm:
             con.create_collation("X", 42)
         self.assertEqual(str(cm.exception), 'parameter must be callable')
 
-    def CheckCreateCollationNotAscii(self):
+    eleza CheckCreateCollationNotAscii(self):
         con = sqlite.connect(":memory:")
         with self.assertRaises(sqlite.ProgrammingError):
             con.create_collation("collä", lambda x, y: (x > y) - (x < y))
 
-    def CheckCreateCollationBadUpper(self):
-        class BadUpperStr(str):
-            def upper(self):
-                return None
+    eleza CheckCreateCollationBadUpper(self):
+        kundi BadUpperStr(str):
+            eleza upper(self):
+                rudisha None
         con = sqlite.connect(":memory:")
         mycoll = lambda x, y: -((x > y) - (x < y))
         con.create_collation(BadUpperStr("mycoll"), mycoll)
@@ -62,10 +62,10 @@ class CollationTests(unittest.TestCase):
 
     @unittest.skipIf(sqlite.sqlite_version_info < (3, 2, 1),
                      'old SQLite versions crash on this test')
-    def CheckCollationIsUsed(self):
-        def mycoll(x, y):
+    eleza CheckCollationIsUsed(self):
+        eleza mycoll(x, y):
             # reverse order
-            return -((x > y) - (x < y))
+            rudisha -((x > y) - (x < y))
 
         con = sqlite.connect(":memory:")
         con.create_collation("mycoll", mycoll)
@@ -87,10 +87,10 @@ class CollationTests(unittest.TestCase):
             result = con.execute(sql).fetchall()
         self.assertEqual(str(cm.exception), 'no such collation sequence: mycoll')
 
-    def CheckCollationReturnsLargeInteger(self):
-        def mycoll(x, y):
+    eleza CheckCollationReturnsLargeInteger(self):
+        eleza mycoll(x, y):
             # reverse order
-            return -((x > y) - (x < y)) * 2**32
+            rudisha -((x > y) - (x < y)) * 2**32
         con = sqlite.connect(":memory:")
         con.create_collation("mycoll", mycoll)
         sql = """
@@ -106,7 +106,7 @@ class CollationTests(unittest.TestCase):
         self.assertEqual(result, [('c',), ('b',), ('a',)],
                          msg="the expected order was not returned")
 
-    def CheckCollationRegisterTwice(self):
+    eleza CheckCollationRegisterTwice(self):
         """
         Register two different collation functions under the same name.
         Verify that the last one is actually used.
@@ -120,9 +120,9 @@ class CollationTests(unittest.TestCase):
         self.assertEqual(result[0][0], 'b')
         self.assertEqual(result[1][0], 'a')
 
-    def CheckDeregisterCollation(self):
+    eleza CheckDeregisterCollation(self):
         """
-        Register a collation, then deregister it. Make sure an error is raised if we try
+        Register a collation, then deregister it. Make sure an error is raised ikiwa we try
         to use it.
         """
         con = sqlite.connect(":memory:")
@@ -132,16 +132,16 @@ class CollationTests(unittest.TestCase):
             con.execute("select 'a' as x union select 'b' as x order by x collate mycoll")
         self.assertEqual(str(cm.exception), 'no such collation sequence: mycoll')
 
-class ProgressTests(unittest.TestCase):
-    def CheckProgressHandlerUsed(self):
+kundi ProgressTests(unittest.TestCase):
+    eleza CheckProgressHandlerUsed(self):
         """
         Test that the progress handler is invoked once it is set.
         """
         con = sqlite.connect(":memory:")
         progress_calls = []
-        def progress():
+        eleza progress():
             progress_calls.append(None)
-            return 0
+            rudisha 0
         con.set_progress_handler(progress, 1)
         con.execute("""
             create table foo(a, b)
@@ -149,15 +149,15 @@ class ProgressTests(unittest.TestCase):
         self.assertTrue(progress_calls)
 
 
-    def CheckOpcodeCount(self):
+    eleza CheckOpcodeCount(self):
         """
         Test that the opcode argument is respected.
         """
         con = sqlite.connect(":memory:")
         progress_calls = []
-        def progress():
+        eleza progress():
             progress_calls.append(None)
-            return 0
+            rudisha 0
         con.set_progress_handler(progress, 1)
         curs = con.cursor()
         curs.execute("""
@@ -172,13 +172,13 @@ class ProgressTests(unittest.TestCase):
         second_count = len(progress_calls)
         self.assertGreaterEqual(first_count, second_count)
 
-    def CheckCancelOperation(self):
+    eleza CheckCancelOperation(self):
         """
         Test that returning a non-zero value stops the operation in progress.
         """
         con = sqlite.connect(":memory:")
-        def progress():
-            return 1
+        eleza progress():
+            rudisha 1
         con.set_progress_handler(progress, 1)
         curs = con.cursor()
         self.assertRaises(
@@ -186,56 +186,56 @@ class ProgressTests(unittest.TestCase):
             curs.execute,
             "create table bar (a, b)")
 
-    def CheckClearHandler(self):
+    eleza CheckClearHandler(self):
         """
         Test that setting the progress handler to None clears the previously set handler.
         """
         con = sqlite.connect(":memory:")
         action = 0
-        def progress():
+        eleza progress():
             nonlocal action
             action = 1
-            return 0
+            rudisha 0
         con.set_progress_handler(progress, 1)
         con.set_progress_handler(None, 1)
         con.execute("select 1 union select 2 union select 3").fetchall()
         self.assertEqual(action, 0, "progress handler was not cleared")
 
-class TraceCallbackTests(unittest.TestCase):
-    def CheckTraceCallbackUsed(self):
+kundi TraceCallbackTests(unittest.TestCase):
+    eleza CheckTraceCallbackUsed(self):
         """
         Test that the trace callback is invoked once it is set.
         """
         con = sqlite.connect(":memory:")
         traced_statements = []
-        def trace(statement):
+        eleza trace(statement):
             traced_statements.append(statement)
         con.set_trace_callback(trace)
         con.execute("create table foo(a, b)")
         self.assertTrue(traced_statements)
         self.assertTrue(any("create table foo" in stmt for stmt in traced_statements))
 
-    def CheckClearTraceCallback(self):
+    eleza CheckClearTraceCallback(self):
         """
         Test that setting the trace callback to None clears the previously set callback.
         """
         con = sqlite.connect(":memory:")
         traced_statements = []
-        def trace(statement):
+        eleza trace(statement):
             traced_statements.append(statement)
         con.set_trace_callback(trace)
         con.set_trace_callback(None)
         con.execute("create table foo(a, b)")
         self.assertFalse(traced_statements, "trace callback was not cleared")
 
-    def CheckUnicodeContent(self):
+    eleza CheckUnicodeContent(self):
         """
         Test that the statement can contain unicode literals.
         """
         unicode_value = '\xf6\xe4\xfc\xd6\xc4\xdc\xdf\u20ac'
         con = sqlite.connect(":memory:")
         traced_statements = []
-        def trace(statement):
+        eleza trace(statement):
             traced_statements.append(statement)
         con.set_trace_callback(trace)
         con.execute("create table foo(x)")
@@ -249,10 +249,10 @@ class TraceCallbackTests(unittest.TestCase):
                         % (ascii(unicode_value), ', '.join(map(ascii, traced_statements))))
 
     @unittest.skipIf(sqlite.sqlite_version_info < (3, 3, 9), "sqlite3_prepare_v2 is not available")
-    def CheckTraceCallbackContent(self):
+    eleza CheckTraceCallbackContent(self):
         # set_trace_callback() shouldn't produce duplicate content (bpo-26187)
         traced_statements = []
-        def trace(statement):
+        eleza trace(statement):
             traced_statements.append(statement)
 
         queries = ["create table foo(x)",
@@ -268,15 +268,15 @@ class TraceCallbackTests(unittest.TestCase):
         self.assertEqual(traced_statements, queries)
 
 
-def suite():
+eleza suite():
     collation_suite = unittest.makeSuite(CollationTests, "Check")
     progress_suite = unittest.makeSuite(ProgressTests, "Check")
     trace_suite = unittest.makeSuite(TraceCallbackTests, "Check")
-    return unittest.TestSuite((collation_suite, progress_suite, trace_suite))
+    rudisha unittest.TestSuite((collation_suite, progress_suite, trace_suite))
 
-def test():
+eleza test():
     runner = unittest.TextTestRunner()
     runner.run(suite())
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test()

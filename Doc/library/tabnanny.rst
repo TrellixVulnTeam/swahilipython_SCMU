@@ -15,7 +15,7 @@
 --------------
 
 For the time being this module is intended to be called as a script. However it
-is possible to import it into an IDE and use the function :func:`check`
+is possible to agiza it into an IDE and use the function :func:`check`
 described below.
 
 .. note::

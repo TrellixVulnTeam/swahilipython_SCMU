@@ -5,8 +5,8 @@ agiza operator
 agiza unittest
 kutoka numbers agiza Complex, Real, Rational, Integral
 
-class TestNumbers(unittest.TestCase):
-    def test_int(self):
+kundi TestNumbers(unittest.TestCase):
+    eleza test_int(self):
         self.assertTrue(issubclass(int, Integral))
         self.assertTrue(issubclass(int, Complex))
 
@@ -17,7 +17,7 @@ class TestNumbers(unittest.TestCase):
         self.assertEqual(7, int(7).numerator)
         self.assertEqual(1, int(7).denominator)
 
-    def test_float(self):
+    eleza test_float(self):
         self.assertFalse(issubclass(float, Rational))
         self.assertTrue(issubclass(float, Real))
 
@@ -26,7 +26,7 @@ class TestNumbers(unittest.TestCase):
         self.assertEqual(7.3, float(7.3).conjugate())
         self.assertEqual(-7.3, float(-7.3).conjugate())
 
-    def test_complex(self):
+    eleza test_complex(self):
         self.assertFalse(issubclass(complex, Real))
         self.assertTrue(issubclass(complex, Complex))
 
@@ -40,5 +40,5 @@ class TestNumbers(unittest.TestCase):
         self.assertRaises(TypeError, int, c1)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

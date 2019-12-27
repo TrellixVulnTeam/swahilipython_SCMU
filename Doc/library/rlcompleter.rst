@@ -14,13 +14,13 @@ The :mod:`rlcompleter` module defines a completion function suitable for the
 :mod:`readline` module by completing valid Python identifiers and keywords.
 
 When this module is imported on a Unix platform with the :mod:`readline` module
-available, an instance of the :class:`Completer` class is automatically created
+available, an instance of the :class:`Completer` kundi is automatically created
 and its :meth:`complete` method is set as the :mod:`readline` completer.
 
 Example::
 
-   >>> import rlcompleter
-   >>> import readline
+   >>> agiza rlcompleter
+   >>> agiza readline
    >>> readline.parse_and_bind("tab: complete")
    >>> readline. <TAB PRESSED>
    readline.__doc__          readline.get_line_buffer(  readline.read_init_file(
@@ -33,7 +33,7 @@ The :mod:`rlcompleter` module is designed for use with Python's
 :option:`-S` option, the module is automatically imported and configured
 (see :ref:`rlcompleter-config`).
 
-On platforms without :mod:`readline`, the :class:`Completer` class defined by
+On platforms without :mod:`readline`, the :class:`Completer` kundi defined by
 this module can still be used for custom purposes.
 
 
@@ -50,7 +50,7 @@ Completer objects have the following method:
    Return the *state*\ th completion for *text*.
 
    If called for *text* that doesn't include a period character (``'.'``), it will
-   complete from names currently defined in :mod:`__main__`, :mod:`builtins` and
+   complete kutoka names currently defined in :mod:`__main__`, :mod:`builtins` and
    keywords (as defined by the :mod:`keyword` module).
 
    If called for a dotted name, it will try to evaluate anything without obvious

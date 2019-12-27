@@ -69,7 +69,7 @@ In this example, the memory request for the I/O buffer is handled by the C
 library allocator. The Python memory manager is involved only in the allocation
 of the bytes object returned as a result.
 
-In most situations, however, it is recommended to allocate memory from the
+In most situations, however, it is recommended to allocate memory kutoka the
 Python heap specifically because the latter is under control of the Python
 memory manager. For example, this is required when the interpreter is extended
 with new object types written in C. Another reason for using the Python heap is
@@ -164,7 +164,7 @@ Memory Interface
 
 The following function sets, modeled after the ANSI C standard, but specifying
 behavior when requesting zero bytes, are available for allocating and releasing
-memory from the Python heap.
+memory kutoka the Python heap.
 
 The :ref:`default memory allocator <default-memory-allocators>` uses the
 :ref:`pymalloc memory allocator <pymalloc>`.
@@ -270,7 +270,7 @@ Object allocators
 
 The following function sets, modeled after the ANSI C standard, but specifying
 behavior when requesting zero bytes, are available for allocating and releasing
-memory from the Python heap.
+memory kutoka the Python heap.
 
 The :ref:`default object allocator <default-memory-allocators>` uses the
 :ref:`pymalloc memory allocator <pymalloc>`.
@@ -348,7 +348,7 @@ Debug build, without pymalloc    ``"malloc_debug"``    ``malloc`` + debug  ``mal
 Legend:
 
 * Name: value for :envvar:`PYTHONMALLOC` environment variable
-* ``malloc``: system allocators from the standard C library, C functions:
+* ``malloc``: system allocators kutoka the standard C library, C functions:
   :c:func:`malloc`, :c:func:`calloc`, :c:func:`realloc` and :c:func:`free`
 * ``pymalloc``: :ref:`pymalloc memory allocator <pymalloc>`
 * "+ debug": with debug hooks installed by :c:func:`PyMem_SetupDebugHooks`
@@ -555,8 +555,8 @@ tracemalloc C API
 Examples
 ========
 
-Here is the example from section :ref:`memoryoverview`, rewritten so that the
-I/O buffer is allocated from the Python heap by using the first function set::
+Here is the example kutoka section :ref:`memoryoverview`, rewritten so that the
+I/O buffer is allocated kutoka the Python heap by using the first function set::
 
    PyObject *res;
    char *buf = (char *) PyMem_Malloc(BUFSIZ); /* for I/O */
@@ -595,7 +595,7 @@ allocators operating on different heaps. ::
    free(buf2);       /* Right -- allocated via malloc() */
    free(buf1);       /* Fatal -- should be PyMem_Del()  */
 
-In addition to the functions aimed at handling raw memory blocks from the Python
+In addition to the functions aimed at handling raw memory blocks kutoka the Python
 heap, objects in Python are allocated and released with :c:func:`PyObject_New`,
 :c:func:`PyObject_NewVar` and :c:func:`PyObject_Del`.
 

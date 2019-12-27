@@ -14,14 +14,14 @@ kutoka functools agiza partial
 
 _fname = support.TESTFN
 
-def _delete_files():
+eleza _delete_files():
     for ext in [".dir", ".dat", ".bak"]:
         try:
             os.unlink(_fname + ext)
         except OSError:
             pass
 
-class DumbDBMTestCase(unittest.TestCase):
+kundi DumbDBMTestCase(unittest.TestCase):
     _dict = {b'0': b'',
              b'a': b'Python:',
              b'b': b'Programming',
@@ -32,7 +32,7 @@ class DumbDBMTestCase(unittest.TestCase):
              '\u00fc'.encode('utf-8') : b'!',
              }
 
-    def test_dumbdbm_creation(self):
+    eleza test_dumbdbm_creation(self):
         with contextlib.closing(dumbdbm.open(_fname, 'c')) as f:
             self.assertEqual(list(f.keys()), [])
             for key in self._dict:
@@ -40,7 +40,7 @@ class DumbDBMTestCase(unittest.TestCase):
             self.read_helper(f)
 
     @unittest.skipUnless(hasattr(os, 'umask'), 'test needs os.umask()')
-    def test_dumbdbm_creation_mode(self):
+    eleza test_dumbdbm_creation_mode(self):
         try:
             old_umask = os.umask(0o002)
             f = dumbdbm.open(_fname, 'c', 0o637)
@@ -49,7 +49,7 @@ class DumbDBMTestCase(unittest.TestCase):
             os.umask(old_umask)
 
         expected_mode = 0o635
-        if os.name != 'posix':
+        ikiwa os.name != 'posix':
             # Windows only supports setting the read-only attribute.
             # This shouldn't fail, but doesn't work like Unix either.
             expected_mode = 0o666
@@ -60,14 +60,14 @@ class DumbDBMTestCase(unittest.TestCase):
         st = os.stat(_fname + '.dir')
         self.assertEqual(stat.S_IMODE(st.st_mode), expected_mode)
 
-    def test_close_twice(self):
+    eleza test_close_twice(self):
         f = dumbdbm.open(_fname)
         f[b'a'] = b'b'
         self.assertEqual(f[b'a'], b'b')
         f.close()
         f.close()
 
-    def test_dumbdbm_modification(self):
+    eleza test_dumbdbm_modification(self):
         self.init_db()
         with contextlib.closing(dumbdbm.open(_fname, 'w')) as f:
             self._dict[b'g'] = f[b'g'] = b"indented"
@@ -76,7 +76,7 @@ class DumbDBMTestCase(unittest.TestCase):
             self.assertEqual(f.setdefault(b'xxx', b'foo'), b'foo')
             self.assertEqual(f[b'xxx'], b'foo')
 
-    def test_dumbdbm_read(self):
+    eleza test_dumbdbm_read(self):
         self.init_db()
         with contextlib.closing(dumbdbm.open(_fname, 'r')) as f:
             self.read_helper(f)
@@ -93,17 +93,17 @@ class DumbDBMTestCase(unittest.TestCase):
             with self.assertRaises(KeyError):
                 f[b'xxx']
 
-    def test_dumbdbm_keys(self):
+    eleza test_dumbdbm_keys(self):
         self.init_db()
         with contextlib.closing(dumbdbm.open(_fname)) as f:
             keys = self.keys_helper(f)
 
-    def test_write_contains(self):
+    eleza test_write_contains(self):
         with contextlib.closing(dumbdbm.open(_fname)) as f:
             f[b'1'] = b'hello'
             self.assertIn(b'1', f)
 
-    def test_write_write_read(self):
+    eleza test_write_write_read(self):
         # test for bug #482460
         with contextlib.closing(dumbdbm.open(_fname)) as f:
             f[b'1'] = b'hello'
@@ -111,12 +111,12 @@ class DumbDBMTestCase(unittest.TestCase):
         with contextlib.closing(dumbdbm.open(_fname)) as f:
             self.assertEqual(f[b'1'], b'hello2')
 
-    def test_str_read(self):
+    eleza test_str_read(self):
         self.init_db()
         with contextlib.closing(dumbdbm.open(_fname, 'r')) as f:
             self.assertEqual(f['\u00fc'], self._dict['\u00fc'.encode('utf-8')])
 
-    def test_str_write_contains(self):
+    eleza test_str_write_contains(self):
         self.init_db()
         with contextlib.closing(dumbdbm.open(_fname)) as f:
             f['\u00fc'] = b'!'
@@ -127,8 +127,8 @@ class DumbDBMTestCase(unittest.TestCase):
                              self._dict['\u00fc'.encode('utf-8')])
             self.assertEqual(f[b'1'], b'a')
 
-    def test_line_endings(self):
-        # test for bug #1172763: dumbdbm would die if the line endings
+    eleza test_line_endings(self):
+        # test for bug #1172763: dumbdbm would die ikiwa the line endings
         # weren't what was expected.
         with contextlib.closing(dumbdbm.open(_fname)) as f:
             f[b'1'] = b'hello'
@@ -137,7 +137,7 @@ class DumbDBMTestCase(unittest.TestCase):
         # Mangle the file by changing the line separator to Windows or Unix
         with io.open(_fname + '.dir', 'rb') as file:
             data = file.read()
-        if os.linesep == '\n':
+        ikiwa os.linesep == '\n':
             data = data.replace(b'\n', b'\r\n')
         else:
             data = data.replace(b'\r\n', b'\n')
@@ -149,33 +149,33 @@ class DumbDBMTestCase(unittest.TestCase):
         self.assertEqual(f[b'2'], b'hello2')
 
 
-    def read_helper(self, f):
+    eleza read_helper(self, f):
         keys = self.keys_helper(f)
         for key in self._dict:
             self.assertEqual(self._dict[key], f[key])
 
-    def init_db(self):
+    eleza init_db(self):
         with contextlib.closing(dumbdbm.open(_fname, 'n')) as f:
             for k in self._dict:
                 f[k] = self._dict[k]
 
-    def keys_helper(self, f):
+    eleza keys_helper(self, f):
         keys = sorted(f.keys())
         dkeys = sorted(self._dict.keys())
         self.assertEqual(keys, dkeys)
-        return keys
+        rudisha keys
 
     # Perform randomized operations.  This doesn't make assumptions about
     # what *might* fail.
-    def test_random(self):
+    eleza test_random(self):
         agiza random
         d = {}  # mirror the database
         for dummy in range(5):
             with contextlib.closing(dumbdbm.open(_fname)) as f:
                 for dummy in range(100):
                     k = random.choice('abcdefghijklm')
-                    if random.random() < 0.2:
-                        if k in d:
+                    ikiwa random.random() < 0.2:
+                        ikiwa k in d:
                             del d[k]
                             del f[k]
                     else:
@@ -189,7 +189,7 @@ class DumbDBMTestCase(unittest.TestCase):
                 got = sorted(f.items())
                 self.assertEqual(expected, got)
 
-    def test_context_manager(self):
+    eleza test_context_manager(self):
         with dumbdbm.open(_fname, 'c') as db:
             db["dumbdbm context manager"] = "context manager"
 
@@ -199,7 +199,7 @@ class DumbDBMTestCase(unittest.TestCase):
         with self.assertRaises(dumbdbm.error):
             db.keys()
 
-    def test_check_closed(self):
+    eleza test_check_closed(self):
         f = dumbdbm.open(_fname, 'c')
         f.close()
 
@@ -221,7 +221,7 @@ class DumbDBMTestCase(unittest.TestCase):
             self.assertEqual(str(cm.exception),
                              "DBM object has already been closed")
 
-    def test_create_new(self):
+    eleza test_create_new(self):
         with dumbdbm.open(_fname, 'n') as f:
             for k in self._dict:
                 f[k] = self._dict[k]
@@ -229,16 +229,16 @@ class DumbDBMTestCase(unittest.TestCase):
         with dumbdbm.open(_fname, 'n') as f:
             self.assertEqual(f.keys(), [])
 
-    def test_eval(self):
+    eleza test_eval(self):
         with open(_fname + '.dir', 'w') as stream:
-            stream.write("str(print('Hacked!')), 0\n")
+            stream.write("str(andika('Hacked!')), 0\n")
         with support.captured_stdout() as stdout:
             with self.assertRaises(ValueError):
                 with dumbdbm.open(_fname) as f:
                     pass
             self.assertEqual(stdout.getvalue(), '')
 
-    def test_missing_data(self):
+    eleza test_missing_data(self):
         for value in ('r', 'w'):
             _delete_files()
             with self.assertRaises(FileNotFoundError):
@@ -246,7 +246,7 @@ class DumbDBMTestCase(unittest.TestCase):
             self.assertFalse(os.path.exists(_fname + '.dir'))
             self.assertFalse(os.path.exists(_fname + '.bak'))
 
-    def test_missing_index(self):
+    eleza test_missing_index(self):
         with dumbdbm.open(_fname, 'n') as f:
             pass
         os.unlink(_fname + '.dir')
@@ -256,14 +256,14 @@ class DumbDBMTestCase(unittest.TestCase):
             self.assertFalse(os.path.exists(_fname + '.dir'))
             self.assertFalse(os.path.exists(_fname + '.bak'))
 
-    def test_invalid_flag(self):
+    eleza test_invalid_flag(self):
         for flag in ('x', 'rf', None):
             with self.assertRaisesRegex(ValueError,
                                         "Flag must be one of "
                                         "'r', 'w', 'c', or 'n'"):
                 dumbdbm.open(_fname, flag)
 
-    def test_readonly_files(self):
+    eleza test_readonly_files(self):
         with support.temp_dir() as dir:
             fname = os.path.join(dir, 'db')
             with dumbdbm.open(fname, 'n') as f:
@@ -279,7 +279,7 @@ class DumbDBMTestCase(unittest.TestCase):
 
     @unittest.skipUnless(support.TESTFN_NONASCII,
                          'requires OS support of non-ASCII encodings')
-    def test_nonascii_filename(self):
+    eleza test_nonascii_filename(self):
         filename = support.TESTFN_NONASCII
         for suffix in ['.dir', '.dat', '.bak']:
             self.addCleanup(support.unlink, filename + suffix)
@@ -292,12 +292,12 @@ class DumbDBMTestCase(unittest.TestCase):
             self.assertTrue(b'key' in db)
             self.assertEqual(db[b'key'], b'value')
 
-    def tearDown(self):
+    eleza tearDown(self):
         _delete_files()
 
-    def setUp(self):
+    eleza setUp(self):
         _delete_files()
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

@@ -4,7 +4,7 @@ from ctypes import *
 import unittest, sys
 from test import support
 
-import _ctypes_test
+agiza _ctypes_test
 
 @unittest.skipUnless(sys.platform == "win32", 'Windows-specific test')
 class FunctionCallTestCase(unittest.TestCase):
@@ -129,7 +129,7 @@ class Structures(unittest.TestCase):
             self.assertEqual(ret.bottom, bottom.value)
 
         # to not leak references, we must clean _pointer_type_cache
-        from ctypes import _pointer_type_cache
+        from ctypes agiza _pointer_type_cache
         del _pointer_type_cache[RECT]
 
 if __name__ == '__main__':

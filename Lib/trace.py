@@ -64,7 +64,7 @@ agiza threading
 
 PRAGMA_NOCOVER = "#pragma NO COVER"
 
-class _Ignore:
+kundi _Ignore:
     def __init__(self, modules=None, dirs=None):
         self._mods = set() if not modules else set(modules)
         self._dirs = [] if not dirs else [os.path.normpath(d)
@@ -149,7 +149,7 @@ def _fullmodname(path):
     filename, ext = os.path.splitext(base)
     return filename.lstrip(".")
 
-class CoverageResults:
+kundi CoverageResults:
     def __init__(self, counts=None, calledfuncs=None, infile=None,
                  callers=None, outfile=None):
         self.counts = counts
@@ -312,7 +312,7 @@ class CoverageResults:
                     outfile.write("%5d: " % lines_hit[lineno])
                     n_hits += 1
                     n_lines += 1
-                elif lineno in lnotab and not PRAGMA_NOCOVER in line:
+                lasivyo lineno in lnotab and not PRAGMA_NOCOVER in line:
                     # Highlight never-executed lines, unless the line contains
                     # #pragma: NO COVER
                     outfile.write(">>>>>> ")
@@ -323,7 +323,7 @@ class CoverageResults:
 
         return n_hits, n_lines
 
-def _find_lines_from_code(code, strs):
+def _find_lines_kutoka_code(code, strs):
     """Return dict where keys are lines in the line number table."""
     linenos = {}
 
@@ -336,7 +336,7 @@ def _find_lines_from_code(code, strs):
 def _find_lines(code, strs):
     """Return lineno dict for all code objects reachable kutoka code."""
     # get all of the lineno information kutoka the code of this scope level
-    linenos = _find_lines_from_code(code, strs)
+    linenos = _find_lines_kutoka_code(code, strs)
 
     # and check the constants for references to other code objects
     for c in code.co_consts:
@@ -382,7 +382,7 @@ def _find_executable_linenos(filename):
     strs = _find_strings(filename, encoding)
     return _find_lines(code, strs)
 
-class Trace:
+kundi Trace:
     def __init__(self, count=1, trace=1, countfuncs=0, countcallers=0,
                  ignoremods=(), ignoredirs=(), infile=None, outfile=None,
                  timing=False):
@@ -418,15 +418,15 @@ class Trace:
             self.start_time = _time()
         if countcallers:
             self.globaltrace = self.globaltrace_trackcallers
-        elif countfuncs:
+        lasivyo countfuncs:
             self.globaltrace = self.globaltrace_countfuncs
-        elif trace and count:
+        lasivyo trace and count:
             self.globaltrace = self.globaltrace_lt
             self.localtrace = self.localtrace_trace_and_count
-        elif trace:
+        lasivyo trace:
             self.globaltrace = self.globaltrace_lt
             self.localtrace = self.localtrace_trace
-        elif count:
+        lasivyo count:
             self.globaltrace = self.globaltrace_lt
             self.localtrace = self.localtrace_count
         else:
@@ -454,10 +454,10 @@ class Trace:
     def runfunc(*args, **kw):
         if len(args) >= 2:
             self, func, *args = args
-        elif not args:
+        lasivyo not args:
             raise TypeError("descriptor 'runfunc' of 'Trace' object "
                             "needs an argument")
-        elif 'func' in kw:
+        lasivyo 'func' in kw:
             func = kw.pop('func')
             self, *args = args
             agiza warnings

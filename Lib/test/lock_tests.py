@@ -12,15 +12,15 @@ agiza weakref
 kutoka test agiza support
 
 
-def _wait():
+eleza _wait():
     # A crude wait/yield function not relying on synchronization primitives.
     time.sleep(0.01)
 
-class Bunch(object):
+kundi Bunch(object):
     """
     A bunch of threads.
     """
-    def __init__(self, f, n, wait_before_exit=False):
+    eleza __init__(self, f, n, wait_before_exit=False):
         """
         Construct a bunch of `n` threads running the same function `f`.
         If `wait_before_exit` is True, the threads won't terminate until
@@ -34,7 +34,7 @@ class Bunch(object):
         self.wait_thread = support.wait_threads_exit()
         self.wait_thread.__enter__()
 
-        def task():
+        eleza task():
             tid = threading.get_ident()
             self.started.append(tid)
             try:
@@ -51,29 +51,29 @@ class Bunch(object):
             self._can_exit = True
             raise
 
-    def wait_for_started(self):
+    eleza wait_for_started(self):
         while len(self.started) < self.n:
             _wait()
 
-    def wait_for_finished(self):
+    eleza wait_for_finished(self):
         while len(self.finished) < self.n:
             _wait()
         # Wait for threads exit
         self.wait_thread.__exit__(None, None, None)
 
-    def do_finish(self):
+    eleza do_finish(self):
         self._can_exit = True
 
 
-class BaseTestCase(unittest.TestCase):
-    def setUp(self):
+kundi BaseTestCase(unittest.TestCase):
+    eleza setUp(self):
         self._threads = support.threading_setup()
 
-    def tearDown(self):
+    eleza tearDown(self):
         support.threading_cleanup(*self._threads)
         support.reap_children()
 
-    def assertTimeout(self, actual, expected):
+    eleza assertTimeout(self, actual, expected):
         # The waiting and/or time.monotonic() can be imprecise, which
         # is why comparing to the expected value would sometimes fail
         # (especially under Windows).
@@ -82,57 +82,57 @@ class BaseTestCase(unittest.TestCase):
         self.assertLess(actual, expected * 10.0)
 
 
-class BaseLockTests(BaseTestCase):
+kundi BaseLockTests(BaseTestCase):
     """
     Tests for both recursive and non-recursive locks.
     """
 
-    def test_constructor(self):
+    eleza test_constructor(self):
         lock = self.locktype()
         del lock
 
-    def test_repr(self):
+    eleza test_repr(self):
         lock = self.locktype()
         self.assertRegex(repr(lock), "<unlocked .* object (.*)?at .*>")
         del lock
 
-    def test_locked_repr(self):
+    eleza test_locked_repr(self):
         lock = self.locktype()
         lock.acquire()
         self.assertRegex(repr(lock), "<locked .* object (.*)?at .*>")
         del lock
 
-    def test_acquire_destroy(self):
+    eleza test_acquire_destroy(self):
         lock = self.locktype()
         lock.acquire()
         del lock
 
-    def test_acquire_release(self):
+    eleza test_acquire_release(self):
         lock = self.locktype()
         lock.acquire()
         lock.release()
         del lock
 
-    def test_try_acquire(self):
+    eleza test_try_acquire(self):
         lock = self.locktype()
         self.assertTrue(lock.acquire(False))
         lock.release()
 
-    def test_try_acquire_contended(self):
+    eleza test_try_acquire_contended(self):
         lock = self.locktype()
         lock.acquire()
         result = []
-        def f():
+        eleza f():
             result.append(lock.acquire(False))
         Bunch(f, 1).wait_for_finished()
         self.assertFalse(result[0])
         lock.release()
 
-    def test_acquire_contended(self):
+    eleza test_acquire_contended(self):
         lock = self.locktype()
         lock.acquire()
         N = 5
-        def f():
+        eleza f():
             lock.acquire()
             lock.release()
 
@@ -144,14 +144,14 @@ class BaseLockTests(BaseTestCase):
         b.wait_for_finished()
         self.assertEqual(len(b.finished), N)
 
-    def test_with(self):
+    eleza test_with(self):
         lock = self.locktype()
-        def f():
+        eleza f():
             lock.acquire()
             lock.release()
-        def _with(err=None):
+        eleza _with(err=None):
             with lock:
-                if err is not None:
+                ikiwa err is not None:
                     raise err
         _with()
         # Check the lock is unacquired
@@ -160,18 +160,18 @@ class BaseLockTests(BaseTestCase):
         # Check the lock is unacquired
         Bunch(f, 1).wait_for_finished()
 
-    def test_thread_leak(self):
+    eleza test_thread_leak(self):
         # The lock shouldn't leak a Thread instance when used kutoka a foreign
         # (non-threading) thread.
         lock = self.locktype()
-        def f():
+        eleza f():
             lock.acquire()
             lock.release()
         n = len(threading.enumerate())
         # We run many threads in the hope that existing threads ids won't
         # be recycled.
         Bunch(f, 15).wait_for_finished()
-        if len(threading.enumerate()) != n:
+        ikiwa len(threading.enumerate()) != n:
             # There is a small window during which a Thread instance's
             # target function has finished running, but the Thread is still
             # alive and registered.  Avoid spurious failures by waiting a
@@ -179,9 +179,9 @@ class BaseLockTests(BaseTestCase):
             time.sleep(0.4)
             self.assertEqual(n, len(threading.enumerate()))
 
-    def test_timeout(self):
+    eleza test_timeout(self):
         lock = self.locktype()
-        # Can't set timeout if not blocking
+        # Can't set timeout ikiwa not blocking
         self.assertRaises(ValueError, lock.acquire, 0, 1)
         # Invalid timeout values
         self.assertRaises(ValueError, lock.acquire, timeout=-100)
@@ -196,7 +196,7 @@ class BaseLockTests(BaseTestCase):
         # Just a sanity test that it didn't actually wait for the timeout.
         self.assertLess(t2 - t1, 5)
         results = []
-        def f():
+        eleza f():
             t1 = time.monotonic()
             results.append(lock.acquire(timeout=0.5))
             t2 = time.monotonic()
@@ -205,29 +205,29 @@ class BaseLockTests(BaseTestCase):
         self.assertFalse(results[0])
         self.assertTimeout(results[1], 0.5)
 
-    def test_weakref_exists(self):
+    eleza test_weakref_exists(self):
         lock = self.locktype()
         ref = weakref.ref(lock)
         self.assertIsNotNone(ref())
 
-    def test_weakref_deleted(self):
+    eleza test_weakref_deleted(self):
         lock = self.locktype()
         ref = weakref.ref(lock)
         del lock
         self.assertIsNone(ref())
 
 
-class LockTests(BaseLockTests):
+kundi LockTests(BaseLockTests):
     """
     Tests for non-recursive, weak locks
     (which can be acquired and released kutoka different threads).
     """
-    def test_reacquire(self):
+    eleza test_reacquire(self):
         # Lock needs to be released before re-acquiring.
         lock = self.locktype()
         phase = []
 
-        def f():
+        eleza f():
             lock.acquire()
             phase.append(None)
             lock.acquire()
@@ -244,18 +244,18 @@ class LockTests(BaseLockTests):
                 _wait()
             self.assertEqual(len(phase), 2)
 
-    def test_different_thread(self):
+    eleza test_different_thread(self):
         # Lock can be released kutoka a different thread.
         lock = self.locktype()
         lock.acquire()
-        def f():
+        eleza f():
             lock.release()
         b = Bunch(f, 1)
         b.wait_for_finished()
         lock.acquire()
         lock.release()
 
-    def test_state_after_timeout(self):
+    eleza test_state_after_timeout(self):
         # Issue #11618: check that lock is in a proper state after a
         # (non-zero) timeout.
         lock = self.locktype()
@@ -266,11 +266,11 @@ class LockTests(BaseLockTests):
         self.assertTrue(lock.acquire(blocking=False))
 
 
-class RLockTests(BaseLockTests):
+kundi RLockTests(BaseLockTests):
     """
     Tests for recursive locks.
     """
-    def test_reacquire(self):
+    eleza test_reacquire(self):
         lock = self.locktype()
         lock.acquire()
         lock.acquire()
@@ -279,7 +279,7 @@ class RLockTests(BaseLockTests):
         lock.release()
         lock.release()
 
-    def test_release_unacquired(self):
+    eleza test_release_unacquired(self):
         # Cannot release an unacquired lock
         lock = self.locktype()
         self.assertRaises(RuntimeError, lock.release)
@@ -291,7 +291,7 @@ class RLockTests(BaseLockTests):
         lock.release()
         self.assertRaises(RuntimeError, lock.release)
 
-    def test_release_save_unacquired(self):
+    eleza test_release_save_unacquired(self):
         # Cannot _release_save an unacquired lock
         lock = self.locktype()
         self.assertRaises(RuntimeError, lock._release_save)
@@ -303,10 +303,10 @@ class RLockTests(BaseLockTests):
         lock.release()
         self.assertRaises(RuntimeError, lock._release_save)
 
-    def test_different_thread(self):
+    eleza test_different_thread(self):
         # Cannot release kutoka a different thread
         lock = self.locktype()
-        def f():
+        eleza f():
             lock.acquire()
         b = Bunch(f, 1, True)
         try:
@@ -315,7 +315,7 @@ class RLockTests(BaseLockTests):
             b.do_finish()
         b.wait_for_finished()
 
-    def test__is_owned(self):
+    eleza test__is_owned(self):
         lock = self.locktype()
         self.assertFalse(lock._is_owned())
         lock.acquire()
@@ -323,7 +323,7 @@ class RLockTests(BaseLockTests):
         lock.acquire()
         self.assertTrue(lock._is_owned())
         result = []
-        def f():
+        eleza f():
             result.append(lock._is_owned())
         Bunch(f, 1).wait_for_finished()
         self.assertFalse(result[0])
@@ -333,12 +333,12 @@ class RLockTests(BaseLockTests):
         self.assertFalse(lock._is_owned())
 
 
-class EventTests(BaseTestCase):
+kundi EventTests(BaseTestCase):
     """
     Tests for Event objects.
     """
 
-    def test_is_set(self):
+    eleza test_is_set(self):
         evt = self.eventtype()
         self.assertFalse(evt.is_set())
         evt.set()
@@ -350,12 +350,12 @@ class EventTests(BaseTestCase):
         evt.clear()
         self.assertFalse(evt.is_set())
 
-    def _check_notify(self, evt):
+    eleza _check_notify(self, evt):
         # All threads get notified
         N = 5
         results1 = []
         results2 = []
-        def f():
+        eleza f():
             results1.append(evt.wait())
             results2.append(evt.wait())
         b = Bunch(f, N)
@@ -367,7 +367,7 @@ class EventTests(BaseTestCase):
         self.assertEqual(results1, [True] * N)
         self.assertEqual(results2, [True] * N)
 
-    def test_notify(self):
+    eleza test_notify(self):
         evt = self.eventtype()
         self._check_notify(evt)
         # Another time, after an explicit clear()
@@ -375,12 +375,12 @@ class EventTests(BaseTestCase):
         evt.clear()
         self._check_notify(evt)
 
-    def test_timeout(self):
+    eleza test_timeout(self):
         evt = self.eventtype()
         results1 = []
         results2 = []
         N = 5
-        def f():
+        eleza f():
             results1.append(evt.wait(0.0))
             t1 = time.monotonic()
             r = evt.wait(0.5)
@@ -400,14 +400,14 @@ class EventTests(BaseTestCase):
         for r, dt in results2:
             self.assertTrue(r)
 
-    def test_set_and_clear(self):
+    eleza test_set_and_clear(self):
         # Issue #13502: check that wait() returns true even when the event is
         # cleared before the waiting thread is woken up.
         evt = self.eventtype()
         results = []
         timeout = 0.250
         N = 5
-        def f():
+        eleza f():
             results.append(evt.wait(timeout * 4))
         b = Bunch(f, N)
         b.wait_for_started()
@@ -417,7 +417,7 @@ class EventTests(BaseTestCase):
         b.wait_for_finished()
         self.assertEqual(results, [True] * N)
 
-    def test_reset_internal_locks(self):
+    eleza test_reset_internal_locks(self):
         # ensure that condition is still using a Lock after reset
         evt = self.eventtype()
         with evt._cond:
@@ -427,12 +427,12 @@ class EventTests(BaseTestCase):
             self.assertFalse(evt._cond.acquire(False))
 
 
-class ConditionTests(BaseTestCase):
+kundi ConditionTests(BaseTestCase):
     """
     Tests for condition variables.
     """
 
-    def test_acquire(self):
+    eleza test_acquire(self):
         cond = self.condtype()
         # Be default we have an RLock: the condition can be acquired multiple
         # times.
@@ -451,15 +451,15 @@ class ConditionTests(BaseTestCase):
         with cond:
             self.assertFalse(lock.acquire(False))
 
-    def test_unacquired_wait(self):
+    eleza test_unacquired_wait(self):
         cond = self.condtype()
         self.assertRaises(RuntimeError, cond.wait)
 
-    def test_unacquired_notify(self):
+    eleza test_unacquired_notify(self):
         cond = self.condtype()
         self.assertRaises(RuntimeError, cond.notify)
 
-    def _check_notify(self, cond):
+    eleza _check_notify(self, cond):
         # Note that this test is sensitive to timing.  If the worker threads
         # don't execute in a timely fashion, the main thread may think they
         # are further along then they are.  The main thread therefore issues
@@ -476,7 +476,7 @@ class ConditionTests(BaseTestCase):
         results1 = []
         results2 = []
         phase_num = 0
-        def f():
+        eleza f():
             cond.acquire()
             ready.append(phase_num)
             result = cond.wait()
@@ -533,17 +533,17 @@ class ConditionTests(BaseTestCase):
         self.assertEqual(results2, [(True, 2)] * 3 + [(True, 3)] * 2)
         b.wait_for_finished()
 
-    def test_notify(self):
+    eleza test_notify(self):
         cond = self.condtype()
         self._check_notify(cond)
         # A second time, to check internal state is still ok.
         self._check_notify(cond)
 
-    def test_timeout(self):
+    eleza test_timeout(self):
         cond = self.condtype()
         results = []
         N = 5
-        def f():
+        eleza f():
             cond.acquire()
             t1 = time.monotonic()
             result = cond.wait(0.5)
@@ -555,16 +555,16 @@ class ConditionTests(BaseTestCase):
         for dt, result in results:
             self.assertTimeout(dt, 0.5)
             # Note that conceptually (that"s the condition variable protocol)
-            # a wait() may succeed even if no one notifies us and before any
+            # a wait() may succeed even ikiwa no one notifies us and before any
             # timeout occurs.  Spurious wakeups can occur.
             # This makes it hard to verify the result value.
             # In practice, this implementation has no spurious wakeups.
             self.assertFalse(result)
 
-    def test_waitfor(self):
+    eleza test_waitfor(self):
         cond = self.condtype()
         state = 0
-        def f():
+        eleza f():
             with cond:
                 result = cond.wait_for(lambda : state==4)
                 self.assertTrue(result)
@@ -578,11 +578,11 @@ class ConditionTests(BaseTestCase):
                 cond.notify()
         b.wait_for_finished()
 
-    def test_waitfor_timeout(self):
+    eleza test_waitfor_timeout(self):
         cond = self.condtype()
         state = 0
         success = []
-        def f():
+        eleza f():
             with cond:
                 dt = time.monotonic()
                 result = cond.wait_for(lambda : state==4, timeout=0.1)
@@ -602,16 +602,16 @@ class ConditionTests(BaseTestCase):
         self.assertEqual(len(success), 1)
 
 
-class BaseSemaphoreTests(BaseTestCase):
+kundi BaseSemaphoreTests(BaseTestCase):
     """
     Common tests for {bounded, unbounded} semaphore objects.
     """
 
-    def test_constructor(self):
+    eleza test_constructor(self):
         self.assertRaises(ValueError, self.semtype, value = -1)
         self.assertRaises(ValueError, self.semtype, value = -sys.maxsize)
 
-    def test_acquire(self):
+    eleza test_acquire(self):
         sem = self.semtype(1)
         sem.acquire()
         sem.release()
@@ -621,12 +621,12 @@ class BaseSemaphoreTests(BaseTestCase):
         sem.release()
         sem.release()
 
-    def test_acquire_destroy(self):
+    eleza test_acquire_destroy(self):
         sem = self.semtype()
         sem.acquire()
         del sem
 
-    def test_acquire_contended(self):
+    eleza test_acquire_contended(self):
         sem = self.semtype(7)
         sem.acquire()
         N = 10
@@ -634,7 +634,7 @@ class BaseSemaphoreTests(BaseTestCase):
         results1 = []
         results2 = []
         phase_num = 0
-        def f():
+        eleza f():
             sem_results.append(sem.acquire())
             results1.append(phase_num)
             sem_results.append(sem.acquire())
@@ -663,7 +663,7 @@ class BaseSemaphoreTests(BaseTestCase):
         b.wait_for_finished()
         self.assertEqual(sem_results, [True] * (6 + 7 + 6 + 1))
 
-    def test_try_acquire(self):
+    eleza test_try_acquire(self):
         sem = self.semtype(2)
         self.assertTrue(sem.acquire(False))
         self.assertTrue(sem.acquire(False))
@@ -671,11 +671,11 @@ class BaseSemaphoreTests(BaseTestCase):
         sem.release()
         self.assertTrue(sem.acquire(False))
 
-    def test_try_acquire_contended(self):
+    eleza test_try_acquire_contended(self):
         sem = self.semtype(4)
         sem.acquire()
         results = []
-        def f():
+        eleza f():
             results.append(sem.acquire(False))
             results.append(sem.acquire(False))
         Bunch(f, 5).wait_for_finished()
@@ -684,7 +684,7 @@ class BaseSemaphoreTests(BaseTestCase):
         # ordered.
         self.assertEqual(sorted(results), [False] * 7 + [True] *  3 )
 
-    def test_acquire_timeout(self):
+    eleza test_acquire_timeout(self):
         sem = self.semtype(2)
         self.assertRaises(ValueError, sem.acquire, False, timeout=1.0)
         self.assertTrue(sem.acquire(timeout=0.005))
@@ -697,11 +697,11 @@ class BaseSemaphoreTests(BaseTestCase):
         dt = time.monotonic() - t
         self.assertTimeout(dt, 0.5)
 
-    def test_default_value(self):
+    eleza test_default_value(self):
         # The default initial value is 1.
         sem = self.semtype()
         sem.acquire()
-        def f():
+        eleza f():
             sem.acquire()
             sem.release()
         b = Bunch(f, 1)
@@ -711,15 +711,15 @@ class BaseSemaphoreTests(BaseTestCase):
         sem.release()
         b.wait_for_finished()
 
-    def test_with(self):
+    eleza test_with(self):
         sem = self.semtype(2)
-        def _with(err=None):
+        eleza _with(err=None):
             with sem:
                 self.assertTrue(sem.acquire(False))
                 sem.release()
                 with sem:
                     self.assertFalse(sem.acquire(False))
-                    if err:
+                    ikiwa err:
                         raise err
         _with()
         self.assertTrue(sem.acquire(False))
@@ -728,12 +728,12 @@ class BaseSemaphoreTests(BaseTestCase):
         self.assertTrue(sem.acquire(False))
         sem.release()
 
-class SemaphoreTests(BaseSemaphoreTests):
+kundi SemaphoreTests(BaseSemaphoreTests):
     """
     Tests for unbounded semaphores.
     """
 
-    def test_release_unacquired(self):
+    eleza test_release_unacquired(self):
         # Unbounded releases are allowed and increment the semaphore's value
         sem = self.semtype(1)
         sem.release()
@@ -742,12 +742,12 @@ class SemaphoreTests(BaseSemaphoreTests):
         sem.release()
 
 
-class BoundedSemaphoreTests(BaseSemaphoreTests):
+kundi BoundedSemaphoreTests(BaseSemaphoreTests):
     """
     Tests for bounded semaphores.
     """
 
-    def test_release_unacquired(self):
+    eleza test_release_unacquired(self):
         # Cannot go past the initial value
         sem = self.semtype()
         self.assertRaises(ValueError, sem.release)
@@ -756,24 +756,24 @@ class BoundedSemaphoreTests(BaseSemaphoreTests):
         self.assertRaises(ValueError, sem.release)
 
 
-class BarrierTests(BaseTestCase):
+kundi BarrierTests(BaseTestCase):
     """
     Tests for Barrier objects.
     """
     N = 5
     defaultTimeout = 2.0
 
-    def setUp(self):
+    eleza setUp(self):
         self.barrier = self.barriertype(self.N, timeout=self.defaultTimeout)
-    def tearDown(self):
+    eleza tearDown(self):
         self.barrier.abort()
 
-    def run_threads(self, f):
+    eleza run_threads(self, f):
         b = Bunch(f, self.N-1)
         f()
         b.wait_for_finished()
 
-    def multipass(self, results, n):
+    eleza multipass(self, results, n):
         m = self.barrier.parties
         self.assertEqual(m, self.N)
         for i in range(n):
@@ -786,57 +786,57 @@ class BarrierTests(BaseTestCase):
         self.assertEqual(self.barrier.n_waiting, 0)
         self.assertFalse(self.barrier.broken)
 
-    def test_barrier(self, passes=1):
+    eleza test_barrier(self, passes=1):
         """
         Test that a barrier is passed in lockstep
         """
         results = [[],[]]
-        def f():
+        eleza f():
             self.multipass(results, passes)
         self.run_threads(f)
 
-    def test_barrier_10(self):
+    eleza test_barrier_10(self):
         """
         Test that a barrier works for 10 consecutive runs
         """
-        return self.test_barrier(10)
+        rudisha self.test_barrier(10)
 
-    def test_wait_return(self):
+    eleza test_wait_return(self):
         """
-        test the return value kutoka barrier.wait
+        test the rudisha value kutoka barrier.wait
         """
         results = []
-        def f():
+        eleza f():
             r = self.barrier.wait()
             results.append(r)
 
         self.run_threads(f)
         self.assertEqual(sum(results), sum(range(self.N)))
 
-    def test_action(self):
+    eleza test_action(self):
         """
         Test the 'action' callback
         """
         results = []
-        def action():
+        eleza action():
             results.append(True)
         barrier = self.barriertype(self.N, action)
-        def f():
+        eleza f():
             barrier.wait()
             self.assertEqual(len(results), 1)
 
         self.run_threads(f)
 
-    def test_abort(self):
+    eleza test_abort(self):
         """
         Test that an abort will put the barrier in a broken state
         """
         results1 = []
         results2 = []
-        def f():
+        eleza f():
             try:
                 i = self.barrier.wait()
-                if i == self.N//2:
+                ikiwa i == self.N//2:
                     raise RuntimeError
                 self.barrier.wait()
                 results1.append(True)
@@ -851,16 +851,16 @@ class BarrierTests(BaseTestCase):
         self.assertEqual(len(results2), self.N-1)
         self.assertTrue(self.barrier.broken)
 
-    def test_reset(self):
+    eleza test_reset(self):
         """
         Test that a 'reset' on a barrier frees the waiting threads
         """
         results1 = []
         results2 = []
         results3 = []
-        def f():
+        eleza f():
             i = self.barrier.wait()
-            if i == self.N//2:
+            ikiwa i == self.N//2:
                 # Wait until the other threads are all in the barrier.
                 while self.barrier.n_waiting < self.N-1:
                     time.sleep(0.001)
@@ -881,7 +881,7 @@ class BarrierTests(BaseTestCase):
         self.assertEqual(len(results3), self.N)
 
 
-    def test_abort_and_reset(self):
+    eleza test_abort_and_reset(self):
         """
         Test that a barrier can be reset after being broken.
         """
@@ -889,10 +889,10 @@ class BarrierTests(BaseTestCase):
         results2 = []
         results3 = []
         barrier2 = self.barriertype(self.N)
-        def f():
+        eleza f():
             try:
                 i = self.barrier.wait()
-                if i == self.N//2:
+                ikiwa i == self.N//2:
                     raise RuntimeError
                 self.barrier.wait()
                 results1.append(True)
@@ -904,7 +904,7 @@ class BarrierTests(BaseTestCase):
             # Synchronize and reset the barrier.  Must synchronize first so
             # that everyone has left it when we reset, and after so that no
             # one enters it before the reset.
-            if barrier2.wait() == self.N//2:
+            ikiwa barrier2.wait() == self.N//2:
                 self.barrier.reset()
             barrier2.wait()
             self.barrier.wait()
@@ -915,13 +915,13 @@ class BarrierTests(BaseTestCase):
         self.assertEqual(len(results2), self.N-1)
         self.assertEqual(len(results3), self.N)
 
-    def test_timeout(self):
+    eleza test_timeout(self):
         """
         Test wait(timeout)
         """
-        def f():
+        eleza f():
             i = self.barrier.wait()
-            if i == self.N // 2:
+            ikiwa i == self.N // 2:
                 # One thread is late!
                 time.sleep(1.0)
             # Default timeout is 2.0, so this is shorter.
@@ -929,21 +929,21 @@ class BarrierTests(BaseTestCase):
                               self.barrier.wait, 0.5)
         self.run_threads(f)
 
-    def test_default_timeout(self):
+    eleza test_default_timeout(self):
         """
         Test the barrier's default timeout
         """
         # create a barrier with a low default timeout
         barrier = self.barriertype(self.N, timeout=0.3)
-        def f():
+        eleza f():
             i = barrier.wait()
-            if i == self.N // 2:
+            ikiwa i == self.N // 2:
                 # One thread is later than the default timeout of 0.3s.
                 time.sleep(1.0)
             self.assertRaises(threading.BrokenBarrierError, barrier.wait)
         self.run_threads(f)
 
-    def test_single_thread(self):
+    eleza test_single_thread(self):
         b = self.barriertype(1)
         b.wait()
         b.wait()

@@ -7,7 +7,7 @@ An Informal Introduction to Python
 In the following examples, input and output are distinguished by the presence or
 absence of prompts (:term:`>>>` and :term:`...`): to repeat the example, you must type
 everything after the prompt, when the prompt appears; lines that do not begin
-with a prompt are output from the interpreter. Note that a secondary prompt on a
+with a prompt are output kutoka the interpreter. Note that a secondary prompt on a
 line by itself in an example means you must type a blank line; this is used to
 end a multi-line command.
 
@@ -154,7 +154,7 @@ to escape quotes::
 
 In the interactive interpreter, the output string is enclosed in quotes and
 special characters are escaped with backslashes.  While this might sometimes
-look different from the input (the enclosing quotes could change), the two
+look different kutoka the input (the enclosing quotes could change), the two
 strings are equivalent.  The string is enclosed in double quotes if
 the string contains a single quote and no double quotes, otherwise it is
 enclosed in single quotes.  The :func:`print` function produces a more
@@ -250,7 +250,7 @@ one::
    >>> word[5]  # character in position 5
    'n'
 
-Indices may also be negative numbers, to start counting from the right::
+Indices may also be negative numbers, to start counting kutoka the right::
 
    >>> word[-1]  # last character
    'n'
@@ -259,14 +259,14 @@ Indices may also be negative numbers, to start counting from the right::
    >>> word[-6]
    'P'
 
-Note that since -0 is the same as 0, negative indices start from -1.
+Note that since -0 is the same as 0, negative indices start kutoka -1.
 
 In addition to indexing, *slicing* is also supported.  While indexing is used
 to obtain individual characters, *slicing* allows you to obtain substring::
 
-   >>> word[0:2]  # characters from position 0 (included) to 2 (excluded)
+   >>> word[0:2]  # characters kutoka position 0 (included) to 2 (excluded)
    'Py'
-   >>> word[2:5]  # characters from position 2 (included) to 5 (excluded)
+   >>> word[2:5]  # characters kutoka position 2 (included) to 5 (excluded)
    'tho'
 
 Note how the start is always included, and the end always excluded.  This
@@ -280,11 +280,11 @@ makes sure that ``s[:i] + s[i:]`` is always equal to ``s``::
 Slice indices have useful defaults; an omitted first index defaults to zero, an
 omitted second index defaults to the size of the string being sliced. ::
 
-   >>> word[:2]   # character from the beginning to position 2 (excluded)
+   >>> word[:2]   # character kutoka the beginning to position 2 (excluded)
    'Py'
-   >>> word[4:]   # characters from position 4 (included) to the end
+   >>> word[4:]   # characters kutoka position 4 (included) to the end
    'on'
-   >>> word[-2:]  # characters from the second-last (included) to the end
+   >>> word[-2:]  # characters kutoka the second-last (included) to the end
    'on'
 
 One way to remember how slices work is to think of the indices as pointing
@@ -299,7 +299,7 @@ index *n*, for example::
    -6  -5  -4  -3  -2  -1
 
 The first row of numbers gives the position of the indices 0...6 in the string;
-the second row gives the corresponding negative indices. The slice from *i* to
+the second row gives the corresponding negative indices. The slice kutoka *i* to
 *j* consists of all characters between the edges labeled *i* and *j*,
 respectively.
 
@@ -492,7 +492,7 @@ This example introduces several new features.
   simultaneously get the new values 0 and 1.  On the last line this is used again,
   demonstrating that the expressions on the right-hand side are all evaluated
   first before any of the assignments take place.  The right-hand side expressions
-  are evaluated  from the left to the right.
+  are evaluated  kutoka the left to the right.
 
 * The :keyword:`while` loop executes as long as the condition (here: ``a < 10``)
   remains true.  In Python, like in C, any non-zero integer value is true; zero is
@@ -513,7 +513,7 @@ This example introduces several new features.
   block must be indented by the same amount.
 
 * The :func:`print` function writes the value of the argument(s) it is given.
-  It differs from just writing the expression you want to write (as we did
+  It differs kutoka just writing the expression you want to write (as we did
   earlier in the calculator examples) in the way it handles multiple arguments,
   floating point quantities, and strings.  Strings are printed without quotes,
   and a space is inserted between items, so you can format things nicely, like

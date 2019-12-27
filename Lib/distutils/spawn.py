@@ -34,7 +34,7 @@ def spawn(cmd, search_path=1, verbose=0, dry_run=0):
     cmd = list(cmd)
     if os.name == 'posix':
         _spawn_posix(cmd, search_path, dry_run=dry_run)
-    elif os.name == 'nt':
+    lasivyo os.name == 'nt':
         _spawn_nt(cmd, search_path, dry_run=dry_run)
     else:
         raise DistutilsPlatformError(
@@ -147,7 +147,7 @@ def _spawn_posix(cmd, search_path=1, verbose=0, dry_run=0):
                 raise DistutilsExecError(
                       "command %r terminated by signal %d"
                       % (cmd, os.WTERMSIG(status)))
-            elif os.WIFEXITED(status):
+            lasivyo os.WIFEXITED(status):
                 exit_status = os.WEXITSTATUS(status)
                 if exit_status == 0:
                     return   # hey, it succeeded!
@@ -157,7 +157,7 @@ def _spawn_posix(cmd, search_path=1, verbose=0, dry_run=0):
                     raise DistutilsExecError(
                           "command %r failed with exit status %d"
                           % (cmd, exit_status))
-            elif os.WIFSTOPPED(status):
+            lasivyo os.WIFSTOPPED(status):
                 continue
             else:
                 if not DEBUG:

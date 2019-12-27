@@ -25,7 +25,7 @@ The :mod:`filecmp` module defines the following functions:
    If *shallow* is true, files with identical :func:`os.stat` signatures are
    taken to be equal.  Otherwise, the contents of the files are compared.
 
-   Note that no external programs are called from this function, giving it
+   Note that no external programs are called kutoka this function, giving it
    portability and efficiency.
 
    This function uses a cache for past comparisons and the results,
@@ -74,10 +74,10 @@ The :class:`dircmp` class
    :attr:`filecmp.DEFAULT_IGNORES`.  *hide* is a list of names to hide, and
    defaults to ``[os.curdir, os.pardir]``.
 
-   The :class:`dircmp` class compares files by doing *shallow* comparisons
+   The :class:`dircmp` kundi compares files by doing *shallow* comparisons
    as described for :func:`filecmp.cmp`.
 
-   The :class:`dircmp` class provides the following methods:
+   The :class:`dircmp` kundi provides the following methods:
 
    .. method:: report()
 
@@ -93,7 +93,7 @@ The :class:`dircmp` class
       Print a comparison between *a* and *b* and common subdirectories
       (recursively).
 
-   The :class:`dircmp` class offers a number of interesting attributes that may be
+   The :class:`dircmp` kundi offers a number of interesting attributes that may be
    used to get various bits of information about the directory trees being
    compared.
 
@@ -185,7 +185,7 @@ The :class:`dircmp` class
 Here is a simplified example of using the ``subdirs`` attribute to search
 recursively through two directories to show common different files::
 
-    >>> from filecmp import dircmp
+    >>> kutoka filecmp agiza dircmp
     >>> def print_diff_files(dcmp):
     ...     for name in dcmp.diff_files:
     ...         print("diff_file %s found in %s and %s" % (name, dcmp.left,

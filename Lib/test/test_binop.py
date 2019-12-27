@@ -4,200 +4,200 @@ agiza unittest
 kutoka operator agiza eq, le, ne
 kutoka abc agiza ABCMeta
 
-def gcd(a, b):
+eleza gcd(a, b):
     """Greatest common divisor using Euclid's algorithm."""
     while a:
         a, b = b%a, a
-    return b
+    rudisha b
 
-def isint(x):
+eleza isint(x):
     """Test whether an object is an instance of int."""
-    return isinstance(x, int)
+    rudisha isinstance(x, int)
 
-def isnum(x):
+eleza isnum(x):
     """Test whether an object is an instance of a built-in numeric type."""
     for T in int, float, complex:
-        if isinstance(x, T):
-            return 1
-    return 0
+        ikiwa isinstance(x, T):
+            rudisha 1
+    rudisha 0
 
-def isRat(x):
+eleza isRat(x):
     """Test whether an object is an instance of the Rat class."""
-    return isinstance(x, Rat)
+    rudisha isinstance(x, Rat)
 
-class Rat(object):
+kundi Rat(object):
 
     """Rational number implemented as a normalized pair of ints."""
 
     __slots__ = ['_Rat__num', '_Rat__den']
 
-    def __init__(self, num=0, den=1):
+    eleza __init__(self, num=0, den=1):
         """Constructor: Rat([num[, den]]).
 
         The arguments must be ints, and default to (0, 1)."""
-        if not isint(num):
+        ikiwa not isint(num):
             raise TypeError("Rat numerator must be int (%r)" % num)
-        if not isint(den):
+        ikiwa not isint(den):
             raise TypeError("Rat denominator must be int (%r)" % den)
         # But the zero is always on
-        if den == 0:
+        ikiwa den == 0:
             raise ZeroDivisionError("zero denominator")
         g = gcd(den, num)
         self.__num = int(num//g)
         self.__den = int(den//g)
 
-    def _get_num(self):
+    eleza _get_num(self):
         """Accessor function for read-only 'num' attribute of Rat."""
-        return self.__num
+        rudisha self.__num
     num = property(_get_num, None)
 
-    def _get_den(self):
+    eleza _get_den(self):
         """Accessor function for read-only 'den' attribute of Rat."""
-        return self.__den
+        rudisha self.__den
     den = property(_get_den, None)
 
-    def __repr__(self):
+    eleza __repr__(self):
         """Convert a Rat to a string resembling a Rat constructor call."""
-        return "Rat(%d, %d)" % (self.__num, self.__den)
+        rudisha "Rat(%d, %d)" % (self.__num, self.__den)
 
-    def __str__(self):
+    eleza __str__(self):
         """Convert a Rat to a string resembling a decimal numeric value."""
-        return str(float(self))
+        rudisha str(float(self))
 
-    def __float__(self):
+    eleza __float__(self):
         """Convert a Rat to a float."""
-        return self.__num*1.0/self.__den
+        rudisha self.__num*1.0/self.__den
 
-    def __int__(self):
+    eleza __int__(self):
         """Convert a Rat to an int; self.den must be 1."""
-        if self.__den == 1:
+        ikiwa self.__den == 1:
             try:
-                return int(self.__num)
+                rudisha int(self.__num)
             except OverflowError:
                 raise OverflowError("%s too large to convert to int" %
                                       repr(self))
         raise ValueError("can't convert %s to int" % repr(self))
 
-    def __add__(self, other):
+    eleza __add__(self, other):
         """Add two Rats, or a Rat and a number."""
-        if isint(other):
+        ikiwa isint(other):
             other = Rat(other)
-        if isRat(other):
-            return Rat(self.__num*other.__den + other.__num*self.__den,
+        ikiwa isRat(other):
+            rudisha Rat(self.__num*other.__den + other.__num*self.__den,
                        self.__den*other.__den)
-        if isnum(other):
-            return float(self) + other
-        return NotImplemented
+        ikiwa isnum(other):
+            rudisha float(self) + other
+        rudisha NotImplemented
 
     __radd__ = __add__
 
-    def __sub__(self, other):
+    eleza __sub__(self, other):
         """Subtract two Rats, or a Rat and a number."""
-        if isint(other):
+        ikiwa isint(other):
             other = Rat(other)
-        if isRat(other):
-            return Rat(self.__num*other.__den - other.__num*self.__den,
+        ikiwa isRat(other):
+            rudisha Rat(self.__num*other.__den - other.__num*self.__den,
                        self.__den*other.__den)
-        if isnum(other):
-            return float(self) - other
-        return NotImplemented
+        ikiwa isnum(other):
+            rudisha float(self) - other
+        rudisha NotImplemented
 
-    def __rsub__(self, other):
+    eleza __rsub__(self, other):
         """Subtract two Rats, or a Rat and a number (reversed args)."""
-        if isint(other):
+        ikiwa isint(other):
             other = Rat(other)
-        if isRat(other):
-            return Rat(other.__num*self.__den - self.__num*other.__den,
+        ikiwa isRat(other):
+            rudisha Rat(other.__num*self.__den - self.__num*other.__den,
                        self.__den*other.__den)
-        if isnum(other):
-            return other - float(self)
-        return NotImplemented
+        ikiwa isnum(other):
+            rudisha other - float(self)
+        rudisha NotImplemented
 
-    def __mul__(self, other):
+    eleza __mul__(self, other):
         """Multiply two Rats, or a Rat and a number."""
-        if isRat(other):
-            return Rat(self.__num*other.__num, self.__den*other.__den)
-        if isint(other):
-            return Rat(self.__num*other, self.__den)
-        if isnum(other):
-            return float(self)*other
-        return NotImplemented
+        ikiwa isRat(other):
+            rudisha Rat(self.__num*other.__num, self.__den*other.__den)
+        ikiwa isint(other):
+            rudisha Rat(self.__num*other, self.__den)
+        ikiwa isnum(other):
+            rudisha float(self)*other
+        rudisha NotImplemented
 
     __rmul__ = __mul__
 
-    def __truediv__(self, other):
+    eleza __truediv__(self, other):
         """Divide two Rats, or a Rat and a number."""
-        if isRat(other):
-            return Rat(self.__num*other.__den, self.__den*other.__num)
-        if isint(other):
-            return Rat(self.__num, self.__den*other)
-        if isnum(other):
-            return float(self) / other
-        return NotImplemented
+        ikiwa isRat(other):
+            rudisha Rat(self.__num*other.__den, self.__den*other.__num)
+        ikiwa isint(other):
+            rudisha Rat(self.__num, self.__den*other)
+        ikiwa isnum(other):
+            rudisha float(self) / other
+        rudisha NotImplemented
 
-    def __rtruediv__(self, other):
+    eleza __rtruediv__(self, other):
         """Divide two Rats, or a Rat and a number (reversed args)."""
-        if isRat(other):
-            return Rat(other.__num*self.__den, other.__den*self.__num)
-        if isint(other):
-            return Rat(other*self.__den, self.__num)
-        if isnum(other):
-            return other / float(self)
-        return NotImplemented
+        ikiwa isRat(other):
+            rudisha Rat(other.__num*self.__den, other.__den*self.__num)
+        ikiwa isint(other):
+            rudisha Rat(other*self.__den, self.__num)
+        ikiwa isnum(other):
+            rudisha other / float(self)
+        rudisha NotImplemented
 
-    def __floordiv__(self, other):
+    eleza __floordiv__(self, other):
         """Divide two Rats, returning the floored result."""
-        if isint(other):
+        ikiwa isint(other):
             other = Rat(other)
-        elif not isRat(other):
-            return NotImplemented
+        elikiwa not isRat(other):
+            rudisha NotImplemented
         x = self/other
-        return x.__num // x.__den
+        rudisha x.__num // x.__den
 
-    def __rfloordiv__(self, other):
+    eleza __rfloordiv__(self, other):
         """Divide two Rats, returning the floored result (reversed args)."""
         x = other/self
-        return x.__num // x.__den
+        rudisha x.__num // x.__den
 
-    def __divmod__(self, other):
+    eleza __divmod__(self, other):
         """Divide two Rats, returning quotient and remainder."""
-        if isint(other):
+        ikiwa isint(other):
             other = Rat(other)
-        elif not isRat(other):
-            return NotImplemented
+        elikiwa not isRat(other):
+            rudisha NotImplemented
         x = self//other
-        return (x, self - other * x)
+        rudisha (x, self - other * x)
 
-    def __rdivmod__(self, other):
+    eleza __rdivmod__(self, other):
         """Divide two Rats, returning quotient and remainder (reversed args)."""
-        if isint(other):
+        ikiwa isint(other):
             other = Rat(other)
-        elif not isRat(other):
-            return NotImplemented
-        return divmod(other, self)
+        elikiwa not isRat(other):
+            rudisha NotImplemented
+        rudisha divmod(other, self)
 
-    def __mod__(self, other):
+    eleza __mod__(self, other):
         """Take one Rat modulo another."""
-        return divmod(self, other)[1]
+        rudisha divmod(self, other)[1]
 
-    def __rmod__(self, other):
+    eleza __rmod__(self, other):
         """Take one Rat modulo another (reversed args)."""
-        return divmod(other, self)[1]
+        rudisha divmod(other, self)[1]
 
-    def __eq__(self, other):
+    eleza __eq__(self, other):
         """Compare two Rats for equality."""
-        if isint(other):
-            return self.__den == 1 and self.__num == other
-        if isRat(other):
-            return self.__num == other.__num and self.__den == other.__den
-        if isnum(other):
-            return float(self) == other
-        return NotImplemented
+        ikiwa isint(other):
+            rudisha self.__den == 1 and self.__num == other
+        ikiwa isRat(other):
+            rudisha self.__num == other.__num and self.__den == other.__den
+        ikiwa isnum(other):
+            rudisha float(self) == other
+        rudisha NotImplemented
 
-class RatTestCase(unittest.TestCase):
-    """Unit tests for Rat class and its support utilities."""
+kundi RatTestCase(unittest.TestCase):
+    """Unit tests for Rat kundi and its support utilities."""
 
-    def test_gcd(self):
+    eleza test_gcd(self):
         self.assertEqual(gcd(10, 12), 2)
         self.assertEqual(gcd(10, 15), 5)
         self.assertEqual(gcd(10, 11), 1)
@@ -212,7 +212,7 @@ class RatTestCase(unittest.TestCase):
                 self.assertTrue(gcd(i, -j) > 0)
                 self.assertTrue(gcd(-i, -j) < 0)
 
-    def test_constructor(self):
+    eleza test_constructor(self):
         a = Rat(10, 15)
         self.assertEqual(a.num, 2)
         self.assertEqual(a.den, 3)
@@ -248,48 +248,48 @@ class RatTestCase(unittest.TestCase):
             else:
                 self.fail("Rat(1, %r) didn't raise TypeError" % bad)
 
-    def test_add(self):
+    eleza test_add(self):
         self.assertEqual(Rat(2, 3) + Rat(1, 3), 1)
         self.assertEqual(Rat(2, 3) + 1, Rat(5, 3))
         self.assertEqual(1 + Rat(2, 3), Rat(5, 3))
         self.assertEqual(1.0 + Rat(1, 2), 1.5)
         self.assertEqual(Rat(1, 2) + 1.0, 1.5)
 
-    def test_sub(self):
+    eleza test_sub(self):
         self.assertEqual(Rat(7, 2) - Rat(7, 5), Rat(21, 10))
         self.assertEqual(Rat(7, 5) - 1, Rat(2, 5))
         self.assertEqual(1 - Rat(3, 5), Rat(2, 5))
         self.assertEqual(Rat(3, 2) - 1.0, 0.5)
         self.assertEqual(1.0 - Rat(1, 2), 0.5)
 
-    def test_mul(self):
+    eleza test_mul(self):
         self.assertEqual(Rat(2, 3) * Rat(5, 7), Rat(10, 21))
         self.assertEqual(Rat(10, 3) * 3, 10)
         self.assertEqual(3 * Rat(10, 3), 10)
         self.assertEqual(Rat(10, 5) * 0.5, 1.0)
         self.assertEqual(0.5 * Rat(10, 5), 1.0)
 
-    def test_div(self):
+    eleza test_div(self):
         self.assertEqual(Rat(10, 3) / Rat(5, 7), Rat(14, 3))
         self.assertEqual(Rat(10, 3) / 3, Rat(10, 9))
         self.assertEqual(2 / Rat(5), Rat(2, 5))
         self.assertEqual(3.0 * Rat(1, 2), 1.5)
         self.assertEqual(Rat(1, 2) * 3.0, 1.5)
 
-    def test_floordiv(self):
+    eleza test_floordiv(self):
         self.assertEqual(Rat(10) // Rat(4), 2)
         self.assertEqual(Rat(10, 3) // Rat(4, 3), 2)
         self.assertEqual(Rat(10) // 4, 2)
         self.assertEqual(10 // Rat(4), 2)
 
-    def test_eq(self):
+    eleza test_eq(self):
         self.assertEqual(Rat(10), Rat(20, 2))
         self.assertEqual(Rat(10), 10)
         self.assertEqual(10, Rat(10))
         self.assertEqual(Rat(10), 10.0)
         self.assertEqual(10.0, Rat(10))
 
-    def test_true_div(self):
+    eleza test_true_div(self):
         self.assertEqual(Rat(10, 3) / Rat(5, 7), Rat(14, 3))
         self.assertEqual(Rat(10, 3) / 3, Rat(10, 9))
         self.assertEqual(2 / Rat(5), Rat(2, 5))
@@ -300,14 +300,14 @@ class RatTestCase(unittest.TestCase):
     # XXX Ran out of steam; TO DO: divmod, div, future division
 
 
-class OperationLogger:
-    """Base class for classes with operation logging."""
-    def __init__(self, logger):
+kundi OperationLogger:
+    """Base kundi for classes with operation logging."""
+    eleza __init__(self, logger):
         self.logger = logger
-    def log_operation(self, *args):
+    eleza log_operation(self, *args):
         self.logger(*args)
 
-def op_sequence(op, *classes):
+eleza op_sequence(op, *classes):
     """Return the sequence of operations that results kutoka applying
     the operation `op` to instances of the given classes."""
     log = []
@@ -319,61 +319,61 @@ def op_sequence(op, *classes):
         op(*instances)
     except TypeError:
         pass
-    return log
+    rudisha log
 
-class A(OperationLogger):
-    def __eq__(self, other):
+kundi A(OperationLogger):
+    eleza __eq__(self, other):
         self.log_operation('A.__eq__')
-        return NotImplemented
-    def __le__(self, other):
+        rudisha NotImplemented
+    eleza __le__(self, other):
         self.log_operation('A.__le__')
-        return NotImplemented
-    def __ge__(self, other):
+        rudisha NotImplemented
+    eleza __ge__(self, other):
         self.log_operation('A.__ge__')
-        return NotImplemented
+        rudisha NotImplemented
 
-class B(OperationLogger, metaclass=ABCMeta):
-    def __eq__(self, other):
+kundi B(OperationLogger, metaclass=ABCMeta):
+    eleza __eq__(self, other):
         self.log_operation('B.__eq__')
-        return NotImplemented
-    def __le__(self, other):
+        rudisha NotImplemented
+    eleza __le__(self, other):
         self.log_operation('B.__le__')
-        return NotImplemented
-    def __ge__(self, other):
+        rudisha NotImplemented
+    eleza __ge__(self, other):
         self.log_operation('B.__ge__')
-        return NotImplemented
+        rudisha NotImplemented
 
-class C(B):
-    def __eq__(self, other):
+kundi C(B):
+    eleza __eq__(self, other):
         self.log_operation('C.__eq__')
-        return NotImplemented
-    def __le__(self, other):
+        rudisha NotImplemented
+    eleza __le__(self, other):
         self.log_operation('C.__le__')
-        return NotImplemented
-    def __ge__(self, other):
+        rudisha NotImplemented
+    eleza __ge__(self, other):
         self.log_operation('C.__ge__')
-        return NotImplemented
+        rudisha NotImplemented
 
-class V(OperationLogger):
-    """Virtual subclass of B"""
-    def __eq__(self, other):
+kundi V(OperationLogger):
+    """Virtual subkundi of B"""
+    eleza __eq__(self, other):
         self.log_operation('V.__eq__')
-        return NotImplemented
-    def __le__(self, other):
+        rudisha NotImplemented
+    eleza __le__(self, other):
         self.log_operation('V.__le__')
-        return NotImplemented
-    def __ge__(self, other):
+        rudisha NotImplemented
+    eleza __ge__(self, other):
         self.log_operation('V.__ge__')
-        return NotImplemented
+        rudisha NotImplemented
 B.register(V)
 
 
-class OperationOrderTests(unittest.TestCase):
-    def test_comparison_orders(self):
+kundi OperationOrderTests(unittest.TestCase):
+    eleza test_comparison_orders(self):
         self.assertEqual(op_sequence(eq, A, A), ['A.__eq__', 'A.__eq__'])
         self.assertEqual(op_sequence(eq, A, B), ['A.__eq__', 'B.__eq__'])
         self.assertEqual(op_sequence(eq, B, A), ['B.__eq__', 'A.__eq__'])
-        # C is a subclass of B, so C.__eq__ is called first
+        # C is a subkundi of B, so C.__eq__ is called first
         self.assertEqual(op_sequence(eq, B, C), ['C.__eq__', 'B.__eq__'])
         self.assertEqual(op_sequence(eq, C, B), ['C.__eq__', 'B.__eq__'])
 
@@ -387,36 +387,36 @@ class OperationOrderTests(unittest.TestCase):
         self.assertEqual(op_sequence(eq, B, V), ['B.__eq__', 'V.__eq__'])
         self.assertEqual(op_sequence(le, B, V), ['B.__le__', 'V.__ge__'])
 
-class SupEq(object):
+kundi SupEq(object):
     """Class that can test equality"""
-    def __eq__(self, other):
-        return True
+    eleza __eq__(self, other):
+        rudisha True
 
-class S(SupEq):
-    """Subclass of SupEq that should fail"""
+kundi S(SupEq):
+    """Subkundi of SupEq that should fail"""
     __eq__ = None
 
-class F(object):
-    """Independent class that should fall back"""
+kundi F(object):
+    """Independent kundi that should fall back"""
 
-class X(object):
-    """Independent class that should fail"""
+kundi X(object):
+    """Independent kundi that should fail"""
     __eq__ = None
 
-class SN(SupEq):
-    """Subclass of SupEq that can test equality, but not non-equality"""
+kundi SN(SupEq):
+    """Subkundi of SupEq that can test equality, but not non-equality"""
     __ne__ = None
 
-class XN:
-    """Independent class that can test equality, but not non-equality"""
-    def __eq__(self, other):
-        return True
+kundi XN:
+    """Independent kundi that can test equality, but not non-equality"""
+    eleza __eq__(self, other):
+        rudisha True
     __ne__ = None
 
-class FallbackBlockingTests(unittest.TestCase):
+kundi FallbackBlockingTests(unittest.TestCase):
     """Unit tests for None method blocking"""
 
-    def test_fallback_rmethod_blocking(self):
+    eleza test_fallback_rmethod_blocking(self):
         e, f, s, x = SupEq(), F(), S(), X()
         self.assertEqual(e, e)
         self.assertEqual(e, f)
@@ -428,7 +428,7 @@ class FallbackBlockingTests(unittest.TestCase):
         self.assertRaises(TypeError, eq, e, s)
         self.assertRaises(TypeError, eq, s, e)
 
-    def test_fallback_ne_blocking(self):
+    eleza test_fallback_ne_blocking(self):
         e, sn, xn = SupEq(), SN(), XN()
         self.assertFalse(e != e)
         self.assertRaises(TypeError, ne, e, sn)
@@ -436,5 +436,5 @@ class FallbackBlockingTests(unittest.TestCase):
         self.assertFalse(e != xn)
         self.assertRaises(TypeError, ne, xn, e)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

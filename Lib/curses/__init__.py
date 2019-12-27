@@ -23,7 +23,7 @@ import sys as _sys
 # curses import *' if you'll be needing the ACS_* constants.
 
 def initscr():
-    import _curses, curses
+    agiza _curses, curses
     # we call setupterm() here because it raises an error
     # instead of calling exit() in error cases.
     setupterm(term=_os.environ.get("TERM", "unknown"),
@@ -40,7 +40,7 @@ def initscr():
 # called.
 
 def start_color():
-    import _curses, curses
+    agiza _curses, curses
     retval = _curses.start_color()
     if hasattr(_curses, 'COLORS'):
         curses.COLORS = _curses.COLORS
@@ -70,7 +70,7 @@ def wrapper(*args, **kwds):
 
     if args:
         func, *args = args
-    elif 'func' in kwds:
+    lasivyo 'func' in kwds:
         func = kwds.pop('func')
         import warnings
         warnings.warn("Passing 'func' as keyword argument is deprecated",

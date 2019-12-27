@@ -10,7 +10,7 @@ kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza ImportAndCall, touch_agiza
 
 
-class FixIntern(fixer_base.BaseFix):
+kundi FixIntern(fixer_base.BaseFix):
     BM_compatible = True
     order = "pre"
 
@@ -24,18 +24,18 @@ class FixIntern(fixer_base.BaseFix):
     >
     """
 
-    def transform(self, node, results):
-        if results:
+    eleza transform(self, node, results):
+        ikiwa results:
             # I feel like we should be able to express this logic in the
             # PATTERN above but I don't know how to do it so...
             obj = results['obj']
-            if obj:
-                if obj.type == self.syms.star_expr:
-                    return  # Make no change.
-                if (obj.type == self.syms.argument and
+            ikiwa obj:
+                ikiwa obj.type == self.syms.star_expr:
+                    rudisha  # Make no change.
+                ikiwa (obj.type == self.syms.argument and
                     obj.children[0].value == '**'):
-                    return  # Make no change.
+                    rudisha  # Make no change.
         names = ('sys', 'intern')
         new = ImportAndCall(node, results, names)
         touch_agiza(None, 'sys', node)
-        return new
+        rudisha new

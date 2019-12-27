@@ -1,4 +1,4 @@
-import _winapi
+agiza _winapi
 import math
 import msvcrt
 import os
@@ -182,7 +182,7 @@ class WindowsLoadTracker():
             if self._load is not None:
                 self._load = (self._load * LOAD_FACTOR_1
                               + processor_queue_length  * (1.0 - LOAD_FACTOR_1))
-            elif len(self._values) < NVALUE:
+            lasivyo len(self._values) < NVALUE:
                 self._values.append(processor_queue_length)
             else:
                 self._load = sum(self._values) / len(self._values)

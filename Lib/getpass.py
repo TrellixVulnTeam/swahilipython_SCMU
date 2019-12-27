@@ -23,10 +23,10 @@ agiza warnings
 __all__ = ["getpass","getuser","GetPassWarning"]
 
 
-class GetPassWarning(UserWarning): pass
+kundi GetPassWarning(UserWarning): pass
 
 
-def unix_getpass(prompt='Password: ', stream=None):
+eleza unix_getpass(prompt='Password: ', stream=None):
     """Prompt for a password, with echo turned off.
 
     Args:
@@ -50,10 +50,10 @@ def unix_getpass(prompt='Password: ', stream=None):
             stack.enter_context(tty)
             input = io.TextIOWrapper(tty)
             stack.enter_context(input)
-            if not stream:
+            ikiwa not stream:
                 stream = input
         except OSError as e:
-            # If that fails, see if stdin can be controlled.
+            # If that fails, see ikiwa stdin can be controlled.
             stack.close()
             try:
                 fd = sys.stdin.fileno()
@@ -61,16 +61,16 @@ def unix_getpass(prompt='Password: ', stream=None):
                 fd = None
                 passwd = fallback_getpass(prompt, stream)
             input = sys.stdin
-            if not stream:
+            ikiwa not stream:
                 stream = sys.stderr
 
-        if fd is not None:
+        ikiwa fd is not None:
             try:
                 old = termios.tcgetattr(fd)     # a copy to save
                 new = old[:]
                 new[3] &= ~termios.ECHO  # 3 == 'lflags'
                 tcsetattr_flags = termios.TCSAFLUSH
-                if hasattr(termios, 'TCSASOFT'):
+                ikiwa hasattr(termios, 'TCSASOFT'):
                     tcsetattr_flags |= termios.TCSASOFT
                 try:
                     termios.tcsetattr(fd, tcsetattr_flags, new)
@@ -79,61 +79,61 @@ def unix_getpass(prompt='Password: ', stream=None):
                     termios.tcsetattr(fd, tcsetattr_flags, old)
                     stream.flush()  # issue7208
             except termios.error:
-                if passwd is not None:
+                ikiwa passwd is not None:
                     # _raw_input succeeded.  The final tcsetattr failed.  Reraise
                     # instead of leaving the terminal in an unknown state.
                     raise
                 # We can't control the tty or stdin.  Give up and use normal IO.
                 # fallback_getpass() raises an appropriate warning.
-                if stream is not input:
+                ikiwa stream is not input:
                     # clean up unused file objects before blocking
                     stack.close()
                 passwd = fallback_getpass(prompt, stream)
 
         stream.write('\n')
-        return passwd
+        rudisha passwd
 
 
-def win_getpass(prompt='Password: ', stream=None):
+eleza win_getpass(prompt='Password: ', stream=None):
     """Prompt for password with echo off, using Windows getch()."""
-    if sys.stdin is not sys.__stdin__:
-        return fallback_getpass(prompt, stream)
+    ikiwa sys.stdin is not sys.__stdin__:
+        rudisha fallback_getpass(prompt, stream)
 
     for c in prompt:
         msvcrt.putwch(c)
     pw = ""
     while 1:
         c = msvcrt.getwch()
-        if c == '\r' or c == '\n':
+        ikiwa c == '\r' or c == '\n':
             break
-        if c == '\003':
+        ikiwa c == '\003':
             raise KeyboardInterrupt
-        if c == '\b':
+        ikiwa c == '\b':
             pw = pw[:-1]
         else:
             pw = pw + c
     msvcrt.putwch('\r')
     msvcrt.putwch('\n')
-    return pw
+    rudisha pw
 
 
-def fallback_getpass(prompt='Password: ', stream=None):
+eleza fallback_getpass(prompt='Password: ', stream=None):
     warnings.warn("Can not control echo on the terminal.", GetPassWarning,
                   stacklevel=2)
-    if not stream:
+    ikiwa not stream:
         stream = sys.stderr
-    print("Warning: Password input may be echoed.", file=stream)
-    return _raw_input(prompt, stream)
+    andika("Warning: Password input may be echoed.", file=stream)
+    rudisha _raw_input(prompt, stream)
 
 
-def _raw_input(prompt="", stream=None, input=None):
+eleza _raw_input(prompt="", stream=None, input=None):
     # This doesn't save the string in the GNU readline history.
-    if not stream:
+    ikiwa not stream:
         stream = sys.stderr
-    if not input:
+    ikiwa not input:
         input = sys.stdin
     prompt = str(prompt)
-    if prompt:
+    ikiwa prompt:
         try:
             stream.write(prompt)
         except UnicodeEncodeError:
@@ -144,14 +144,14 @@ def _raw_input(prompt="", stream=None, input=None):
         stream.flush()
     # NOTE: The Python C API calls flockfile() (and unlock) during readline.
     line = input.readline()
-    if not line:
+    ikiwa not line:
         raise EOFError
-    if line[-1] == '\n':
+    ikiwa line[-1] == '\n':
         line = line[:-1]
-    return line
+    rudisha line
 
 
-def getuser():
+eleza getuser():
     """Get the username kutoka the environment or password database.
 
     First try various environment variables, then the password
@@ -161,12 +161,12 @@ def getuser():
 
     for name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
         user = os.environ.get(name)
-        if user:
-            return user
+        ikiwa user:
+            rudisha user
 
     # If this fails, the exception will "explain" why
     agiza pwd
-    return pwd.getpwuid(os.getuid())[0]
+    rudisha pwd.getpwuid(os.getuid())[0]
 
 # Bind the name getpass to the appropriate function
 try:

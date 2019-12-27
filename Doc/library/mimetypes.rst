@@ -13,13 +13,13 @@
 --------------
 
 The :mod:`mimetypes` module converts between a filename or URL and the MIME type
-associated with the filename extension.  Conversions are provided from filename
-to MIME type and from MIME type to filename extension; encodings are not
+associated with the filename extension.  Conversions are provided kutoka filename
+to MIME type and kutoka MIME type to filename extension; encodings are not
 supported for the latter conversion.
 
-The module provides one class and a number of convenience functions. The
+The module provides one kundi and a number of convenience functions. The
 functions are the normal interface to this module, but some applications may be
-interested in the class as well.
+interested in the kundi as well.
 
 The functions described below provide the primary interface for this module.  If
 the module has not been initialized, they will call :func:`init` if they rely on
@@ -85,13 +85,13 @@ behavior of the module.
 
    Initialize the internal data structures.  If given, *files* must be a sequence
    of file names which should be used to augment the default type map.  If omitted,
-   the file names to use are taken from :const:`knownfiles`; on Windows, the
+   the file names to use are taken kutoka :const:`knownfiles`; on Windows, the
    current registry settings are loaded.  Each file named in *files* or
    :const:`knownfiles` takes precedence over those named before it.  Calling
    :func:`init` repeatedly is allowed.
 
-   Specifying an empty list for *files* will prevent the system defaults from
-   being applied: only the well-known values will be present from a built-in list.
+   Specifying an empty list for *files* will prevent the system defaults kutoka
+   being applied: only the well-known values will be present kutoka a built-in list.
 
    If *files* is ``None`` the internal data structure is completely rebuilt to its
    initial default value. This is a stable operation and will produce the same results
@@ -111,7 +111,7 @@ behavior of the module.
 
 .. function:: add_type(type, ext, strict=True)
 
-   Add a mapping from the MIME type *type* to the extension *ext*. When the
+   Add a mapping kutoka the MIME type *type* to the extension *ext*. When the
    extension is already known, the new type will replace the old one. When the type
    is already known the extension will be added to the list of known extensions.
 
@@ -160,7 +160,7 @@ behavior of the module.
 
 An example usage of the module::
 
-   >>> import mimetypes
+   >>> agiza mimetypes
    >>> mimetypes.init()
    >>> mimetypes.knownfiles
    ['/etc/mime.types', '/etc/httpd/mime.types', ... ]
@@ -177,14 +177,14 @@ An example usage of the module::
 MimeTypes Objects
 -----------------
 
-The :class:`MimeTypes` class may be useful for applications which may want more
+The :class:`MimeTypes` kundi may be useful for applications which may want more
 than one MIME-type database; it provides an interface similar to the one of the
 :mod:`mimetypes` module.
 
 
 .. class:: MimeTypes(filenames=(), strict=True)
 
-   This class represents a MIME-types database.  By default, it provides access to
+   This kundi represents a MIME-types database.  By default, it provides access to
    the same database as the rest of this module. The initial database is a copy of
    that provided by the module, and may be extended by loading additional
    :file:`mime.types`\ -style files into the database using the :meth:`read` or
@@ -246,7 +246,7 @@ than one MIME-type database; it provides an interface similar to the one of the
 
    .. method:: MimeTypes.read(filename, strict=True)
 
-      Load MIME information from a file named *filename*.  This uses :meth:`readfp` to
+      Load MIME information kutoka a file named *filename*.  This uses :meth:`readfp` to
       parse the file.
 
       If *strict* is ``True``, information will be added to list of standard types,
@@ -255,7 +255,7 @@ than one MIME-type database; it provides an interface similar to the one of the
 
    .. method:: MimeTypes.readfp(fp, strict=True)
 
-      Load MIME type information from an open file *fp*.  The file must have the format of
+      Load MIME type information kutoka an open file *fp*.  The file must have the format of
       the standard :file:`mime.types` files.
 
       If *strict* is ``True``, information will be added to the list of standard
@@ -264,7 +264,7 @@ than one MIME-type database; it provides an interface similar to the one of the
 
    .. method:: MimeTypes.read_windows_registry(strict=True)
 
-      Load MIME type information from the Windows registry.
+      Load MIME type information kutoka the Windows registry.
 
       .. availability:: Windows.
 

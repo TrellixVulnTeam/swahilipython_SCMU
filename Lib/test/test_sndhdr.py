@@ -3,8 +3,8 @@ agiza pickle
 agiza unittest
 kutoka test.support agiza findfile
 
-class TestFormats(unittest.TestCase):
-    def test_data(self):
+kundi TestFormats(unittest.TestCase):
+    eleza test_data(self):
         for filename, expected in (
             ('sndhdr.8svx', ('8svx', 0, 1, 0, 8)),
             ('sndhdr.aifc', ('aifc', 44100, 2, 5, 16)),
@@ -25,7 +25,7 @@ class TestFormats(unittest.TestCase):
             self.assertEqual(what.nframes, expected[3])
             self.assertEqual(what.sampwidth, expected[4])
 
-    def test_pickleable(self):
+    eleza test_pickleable(self):
         filename = findfile('sndhdr.aifc', subdir="sndhdrdata")
         what = sndhdr.what(filename)
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -33,5 +33,5 @@ class TestFormats(unittest.TestCase):
             self.assertEqual(pickle.loads(dump), what)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

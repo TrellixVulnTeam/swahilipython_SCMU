@@ -4,9 +4,9 @@ kutoka idlelib.delegator agiza Delegator
 agiza unittest
 
 
-class DelegatorTest(unittest.TestCase):
+kundi DelegatorTest(unittest.TestCase):
 
-    def test_mydel(self):
+    eleza test_mydel(self):
         # Test a simple use scenario.
 
         # Initialize an int delegator.
@@ -40,5 +40,5 @@ class DelegatorTest(unittest.TestCase):
         self.assertIs(mydel.delegate, float)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2, exit=2)

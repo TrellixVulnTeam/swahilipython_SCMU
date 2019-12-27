@@ -18,7 +18,7 @@ EMPTY_STRING_SIZE = sys.getsizeof(b'')
 INVALID_NFRAME = (-1, 2**30)
 
 
-def get_frames(nframe, lineno_delta):
+eleza get_frames(nframe, lineno_delta):
     frames = []
     frame = sys._getframe(1)
     for index in range(nframe):
@@ -27,18 +27,18 @@ def get_frames(nframe, lineno_delta):
         frames.append((code.co_filename, lineno))
         lineno_delta = 0
         frame = frame.f_back
-        if frame is None:
+        ikiwa frame is None:
             break
-    return tuple(frames)
+    rudisha tuple(frames)
 
-def allocate_bytes(size):
+eleza allocate_bytes(size):
     nframe = tracemalloc.get_traceback_limit()
     bytes_len = (size - EMPTY_STRING_SIZE)
     frames = get_frames(nframe, 1)
     data = b'x' * bytes_len
-    return data, tracemalloc.Traceback(frames)
+    rudisha data, tracemalloc.Traceback(frames)
 
-def create_snapshots():
+eleza create_snapshots():
     traceback_limit = 2
 
     # _tracemalloc._get_traces() returns a list of (domain, size,
@@ -69,32 +69,32 @@ def create_snapshots():
     ]
     snapshot2 = tracemalloc.Snapshot(raw_traces2, traceback_limit)
 
-    return (snapshot, snapshot2)
+    rudisha (snapshot, snapshot2)
 
-def frame(filename, lineno):
-    return tracemalloc._Frame((filename, lineno))
+eleza frame(filename, lineno):
+    rudisha tracemalloc._Frame((filename, lineno))
 
-def traceback(*frames):
-    return tracemalloc.Traceback(frames)
+eleza traceback(*frames):
+    rudisha tracemalloc.Traceback(frames)
 
-def traceback_lineno(filename, lineno):
-    return traceback((filename, lineno))
+eleza traceback_lineno(filename, lineno):
+    rudisha traceback((filename, lineno))
 
-def traceback_filename(filename):
-    return traceback_lineno(filename, 0)
+eleza traceback_filename(filename):
+    rudisha traceback_lineno(filename, 0)
 
 
-class TestTracemallocEnabled(unittest.TestCase):
-    def setUp(self):
-        if tracemalloc.is_tracing():
+kundi TestTracemallocEnabled(unittest.TestCase):
+    eleza setUp(self):
+        ikiwa tracemalloc.is_tracing():
             self.skipTest("tracemalloc must be stopped before the test")
 
         tracemalloc.start(1)
 
-    def tearDown(self):
+    eleza tearDown(self):
         tracemalloc.stop()
 
-    def test_get_tracemalloc_memory(self):
+    eleza test_get_tracemalloc_memory(self):
         data = [allocate_bytes(123) for count in range(1000)]
         size = tracemalloc.get_tracemalloc_memory()
         self.assertGreaterEqual(size, 0)
@@ -104,14 +104,14 @@ class TestTracemallocEnabled(unittest.TestCase):
         self.assertGreaterEqual(size2, 0)
         self.assertLessEqual(size2, size)
 
-    def test_get_object_traceback(self):
+    eleza test_get_object_traceback(self):
         tracemalloc.clear_traces()
         obj_size = 12345
         obj, obj_traceback = allocate_bytes(obj_size)
         traceback = tracemalloc.get_object_traceback(obj)
         self.assertEqual(traceback, obj_traceback)
 
-    def test_new_reference(self):
+    eleza test_new_reference(self):
         tracemalloc.clear_traces()
         # gc.collect() indirectly calls PyList_ClearFreeList()
         support.gc_collect()
@@ -131,7 +131,7 @@ class TestTracemallocEnabled(unittest.TestCase):
         self.assertIsNotNone(traceback)
         self.assertEqual(traceback, obj_traceback)
 
-    def test_set_traceback_limit(self):
+    eleza test_set_traceback_limit(self):
         obj_size = 10
 
         tracemalloc.stop()
@@ -151,14 +151,14 @@ class TestTracemallocEnabled(unittest.TestCase):
         self.assertEqual(len(traceback), 1)
         self.assertEqual(traceback, obj_traceback)
 
-    def find_trace(self, traces, traceback):
+    eleza find_trace(self, traces, traceback):
         for trace in traces:
-            if trace[2] == traceback._frames:
-                return trace
+            ikiwa trace[2] == traceback._frames:
+                rudisha trace
 
         self.fail("trace not found")
 
-    def test_get_traces(self):
+    eleza test_get_traces(self):
         tracemalloc.clear_traces()
         obj_size = 12345
         obj, obj_traceback = allocate_bytes(obj_size)
@@ -174,14 +174,14 @@ class TestTracemallocEnabled(unittest.TestCase):
         tracemalloc.stop()
         self.assertEqual(tracemalloc._get_traces(), [])
 
-    def test_get_traces_intern_traceback(self):
+    eleza test_get_traces_intern_traceback(self):
         # dummy wrappers to get more useful and identical frames in the traceback
-        def allocate_bytes2(size):
-            return allocate_bytes(size)
-        def allocate_bytes3(size):
-            return allocate_bytes2(size)
-        def allocate_bytes4(size):
-            return allocate_bytes3(size)
+        eleza allocate_bytes2(size):
+            rudisha allocate_bytes(size)
+        eleza allocate_bytes3(size):
+            rudisha allocate_bytes2(size)
+        eleza allocate_bytes4(size):
+            rudisha allocate_bytes3(size)
 
         # Ensure that two identical tracebacks are not duplicated
         tracemalloc.stop()
@@ -201,7 +201,7 @@ class TestTracemallocEnabled(unittest.TestCase):
         domain2, size2, traceback2 = trace2
         self.assertIs(traceback2, traceback1)
 
-    def test_get_traced_memory(self):
+    eleza test_get_traced_memory(self):
         # Python allocates some internals objects, so the test must tolerate
         # a small difference between the expected size and the real usage
         max_error = 2048
@@ -237,7 +237,7 @@ class TestTracemallocEnabled(unittest.TestCase):
         tracemalloc.stop()
         self.assertEqual(tracemalloc.get_traced_memory(), (0, 0))
 
-    def test_clear_traces(self):
+    eleza test_clear_traces(self):
         obj, obj_traceback = allocate_bytes(123)
         traceback = tracemalloc.get_object_traceback(obj)
         self.assertIsNotNone(traceback)
@@ -246,14 +246,14 @@ class TestTracemallocEnabled(unittest.TestCase):
         traceback2 = tracemalloc.get_object_traceback(obj)
         self.assertIsNone(traceback2)
 
-    def test_is_tracing(self):
+    eleza test_is_tracing(self):
         tracemalloc.stop()
         self.assertFalse(tracemalloc.is_tracing())
 
         tracemalloc.start()
         self.assertTrue(tracemalloc.is_tracing())
 
-    def test_snapshot(self):
+    eleza test_snapshot(self):
         obj, source = allocate_bytes(123)
 
         # take a snapshot
@@ -275,7 +275,7 @@ class TestTracemallocEnabled(unittest.TestCase):
                          "the tracemalloc module must be tracing memory "
                          "allocations to take a snapshot")
 
-    def test_snapshot_save_attr(self):
+    eleza test_snapshot_save_attr(self):
         # take a snapshot with a new attribute
         snapshot = tracemalloc.take_snapshot()
         snapshot.test_attr = "new"
@@ -286,24 +286,24 @@ class TestTracemallocEnabled(unittest.TestCase):
         snapshot2 = tracemalloc.Snapshot.load(support.TESTFN)
         self.assertEqual(snapshot2.test_attr, "new")
 
-    def fork_child(self):
-        if not tracemalloc.is_tracing():
-            return 2
+    eleza fork_child(self):
+        ikiwa not tracemalloc.is_tracing():
+            rudisha 2
 
         obj_size = 12345
         obj, obj_traceback = allocate_bytes(obj_size)
         traceback = tracemalloc.get_object_traceback(obj)
-        if traceback is None:
-            return 3
+        ikiwa traceback is None:
+            rudisha 3
 
         # everything is fine
-        return 0
+        rudisha 0
 
     @unittest.skipUnless(hasattr(os, 'fork'), 'need os.fork()')
-    def test_fork(self):
+    eleza test_fork(self):
         # check that tracemalloc is still working after fork
         pid = os.fork()
-        if not pid:
+        ikiwa not pid:
             # child
             exitcode = 1
             try:
@@ -317,10 +317,10 @@ class TestTracemallocEnabled(unittest.TestCase):
             self.assertEqual(exitcode, 0)
 
 
-class TestSnapshot(unittest.TestCase):
+kundi TestSnapshot(unittest.TestCase):
     maxDiff = 4000
 
-    def test_create_snapshot(self):
+    eleza test_create_snapshot(self):
         raw_traces = [(0, 5, (('a.py', 2),))]
 
         with contextlib.ExitStack() as stack:
@@ -340,7 +340,7 @@ class TestSnapshot(unittest.TestCase):
             self.assertEqual(trace.traceback[0].filename, 'a.py')
             self.assertEqual(trace.traceback[0].lineno, 2)
 
-    def test_filter_traces(self):
+    eleza test_filter_traces(self):
         snapshot, snapshot2 = create_snapshots()
         filter1 = tracemalloc.Filter(False, "b.py")
         filter2 = tracemalloc.Filter(True, "a.py", 2)
@@ -378,7 +378,7 @@ class TestSnapshot(unittest.TestCase):
 
         self.assertRaises(TypeError, snapshot.filter_traces, filter1)
 
-    def test_filter_traces_domain(self):
+    eleza test_filter_traces_domain(self):
         snapshot, snapshot2 = create_snapshots()
         filter1 = tracemalloc.Filter(False, "a.py", domain=1)
         filter2 = tracemalloc.Filter(True, "a.py", domain=1)
@@ -405,7 +405,7 @@ class TestSnapshot(unittest.TestCase):
             (3, 7, (('<unknown>', 0),)),
         ])
 
-    def test_filter_traces_domain_filter(self):
+    eleza test_filter_traces_domain_filter(self):
         snapshot, snapshot2 = create_snapshots()
         filter1 = tracemalloc.DomainFilter(False, domain=3)
         filter2 = tracemalloc.DomainFilter(True, domain=3)
@@ -426,7 +426,7 @@ class TestSnapshot(unittest.TestCase):
             (3, 7, (('<unknown>', 0),)),
         ])
 
-    def test_snapshot_group_by_line(self):
+    eleza test_snapshot_group_by_line(self):
         snapshot, snapshot2 = create_snapshots()
         tb_0 = traceback_lineno('<unknown>', 0)
         tb_a_2 = traceback_lineno('a.py', 2)
@@ -461,7 +461,7 @@ class TestSnapshot(unittest.TestCase):
             tracemalloc.StatisticDiff(tb_a_2, 30, 0, 3, 0),
         ])
 
-    def test_snapshot_group_by_file(self):
+    eleza test_snapshot_group_by_file(self):
         snapshot, snapshot2 = create_snapshots()
         tb_0 = traceback_filename('<unknown>')
         tb_a = traceback_filename('a.py')
@@ -492,7 +492,7 @@ class TestSnapshot(unittest.TestCase):
             tracemalloc.StatisticDiff(tb_0, 0, -7, 0, -1),
         ])
 
-    def test_snapshot_group_by_traceback(self):
+    eleza test_snapshot_group_by_traceback(self):
         snapshot, snapshot2 = create_snapshots()
 
         # stats per file
@@ -530,7 +530,7 @@ class TestSnapshot(unittest.TestCase):
         self.assertRaises(ValueError,
                           snapshot.statistics, 'traceback', cumulative=True)
 
-    def test_snapshot_group_by_cumulative(self):
+    eleza test_snapshot_group_by_cumulative(self):
         snapshot, snapshot2 = create_snapshots()
         tb_0 = traceback_filename('<unknown>')
         tb_a = traceback_filename('a.py')
@@ -558,7 +558,7 @@ class TestSnapshot(unittest.TestCase):
             tracemalloc.Statistic(tb_a_5, 2, 1),
         ])
 
-    def test_trace_format(self):
+    eleza test_trace_format(self):
         snapshot, snapshot2 = create_snapshots()
         trace = snapshot.traces[0]
         self.assertEqual(str(trace), 'b.py:4: 10 B')
@@ -567,21 +567,21 @@ class TestSnapshot(unittest.TestCase):
         frame = traceback[0]
         self.assertEqual(str(frame), 'b.py:4')
 
-    def test_statistic_format(self):
+    eleza test_statistic_format(self):
         snapshot, snapshot2 = create_snapshots()
         stats = snapshot.statistics('lineno')
         stat = stats[0]
         self.assertEqual(str(stat),
                          'b.py:1: size=66 B, count=1, average=66 B')
 
-    def test_statistic_diff_format(self):
+    eleza test_statistic_diff_format(self):
         snapshot, snapshot2 = create_snapshots()
         stats = snapshot2.compare_to(snapshot, 'lineno')
         stat = stats[0]
         self.assertEqual(str(stat),
                          'a.py:5: size=5002 B (+5000 B), count=2 (+1), average=2501 B')
 
-    def test_slices(self):
+    eleza test_slices(self):
         snapshot, snapshot2 = create_snapshots()
         self.assertEqual(snapshot.traces[:2],
                          (snapshot.traces[0], snapshot.traces[1]))
@@ -590,10 +590,10 @@ class TestSnapshot(unittest.TestCase):
         self.assertEqual(traceback[:2],
                          (traceback[0], traceback[1]))
 
-    def test_format_traceback(self):
+    eleza test_format_traceback(self):
         snapshot, snapshot2 = create_snapshots()
-        def getline(filename, lineno):
-            return '  <%s, %s>' % (filename, lineno)
+        eleza getline(filename, lineno):
+            rudisha '  <%s, %s>' % (filename, lineno)
         with unittest.mock.patch('tracemalloc.linecache.getline',
                                  side_effect=getline):
             tb = snapshot.traces[0].traceback
@@ -626,10 +626,10 @@ class TestSnapshot(unittest.TestCase):
                               '    <b.py, 4>'])
 
 
-class TestFilters(unittest.TestCase):
+kundi TestFilters(unittest.TestCase):
     maxDiff = 2048
 
-    def test_filter_attributes(self):
+    eleza test_filter_attributes(self):
         # test default values
         f = tracemalloc.Filter(True, "abc")
         self.assertEqual(f.inclusive, True)
@@ -654,7 +654,7 @@ class TestFilters(unittest.TestCase):
         # read-only attribute
         self.assertRaises(AttributeError, setattr, f, "filename_pattern", "abc")
 
-    def test_filter_match(self):
+    eleza test_filter_match(self):
         # filter without line number
         f = tracemalloc.Filter(True, "abc")
         self.assertTrue(f._match_frame("abc", 0))
@@ -706,10 +706,10 @@ class TestFilters(unittest.TestCase):
         self.assertTrue(f._match_frame("12356", 5))
         self.assertTrue(f._match_frame("12356", 10))
 
-    def test_filter_match_filename(self):
-        def fnmatch(inclusive, filename, pattern):
+    eleza test_filter_match_filename(self):
+        eleza fnmatch(inclusive, filename, pattern):
             f = tracemalloc.Filter(inclusive, pattern)
-            return f._match_frame(filename, 0)
+            rudisha f._match_frame(filename, 0)
 
         self.assertTrue(fnmatch(True, "abc", "abc"))
         self.assertFalse(fnmatch(True, "12356", "abc"))
@@ -719,10 +719,10 @@ class TestFilters(unittest.TestCase):
         self.assertTrue(fnmatch(False, "12356", "abc"))
         self.assertTrue(fnmatch(False, "<unknown>", "abc"))
 
-    def test_filter_match_filename_joker(self):
-        def fnmatch(filename, pattern):
+    eleza test_filter_match_filename_joker(self):
+        eleza fnmatch(filename, pattern):
             filter = tracemalloc.Filter(True, pattern)
-            return filter._match_frame(filename, 0)
+            rudisha filter._match_frame(filename, 0)
 
         # empty string
         self.assertFalse(fnmatch('abc', ''))
@@ -757,7 +757,7 @@ class TestFilters(unittest.TestCase):
         self.assertTrue(fnmatch('a.pyc', 'a.py'))
         self.assertTrue(fnmatch('a.py', 'a.pyc'))
 
-        if os.name == 'nt':
+        ikiwa os.name == 'nt':
             # case insensitive
             self.assertTrue(fnmatch('aBC', 'ABc'))
             self.assertTrue(fnmatch('aBcDe', 'Ab*dE'))
@@ -772,7 +772,7 @@ class TestFilters(unittest.TestCase):
             self.assertFalse(fnmatch('a.pyc', 'a.PY'))
             self.assertFalse(fnmatch('a.py', 'a.PYC'))
 
-        if os.name == 'nt':
+        ikiwa os.name == 'nt':
             # normalize alternate separator "/" to the standard separator "\"
             self.assertTrue(fnmatch(r'a/b', r'a\b'))
             self.assertTrue(fnmatch(r'a\b', r'a/b'))
@@ -788,7 +788,7 @@ class TestFilters(unittest.TestCase):
         # as of 3.5, .pyo is no longer munged to .py
         self.assertFalse(fnmatch('a.pyo', 'a.py'))
 
-    def test_filter_match_trace(self):
+    eleza test_filter_match_trace(self):
         t1 = (("a.py", 2), ("b.py", 3))
         t2 = (("b.py", 4), ("b.py", 5))
         t3 = (("c.py", 5), ('<unknown>', 0))
@@ -837,92 +837,92 @@ class TestFilters(unittest.TestCase):
         self.assertFalse(f._match_traceback(unknown))
 
 
-class TestCommandLine(unittest.TestCase):
-    def test_env_var_disabled_by_default(self):
+kundi TestCommandLine(unittest.TestCase):
+    eleza test_env_var_disabled_by_default(self):
         # not tracing by default
-        code = 'agiza tracemalloc; print(tracemalloc.is_tracing())'
+        code = 'agiza tracemalloc; andika(tracemalloc.is_tracing())'
         ok, stdout, stderr = assert_python_ok('-c', code)
         stdout = stdout.rstrip()
         self.assertEqual(stdout, b'False')
 
     @unittest.skipIf(interpreter_requires_environment(),
                      'Cannot run -E tests when PYTHON env vars are required.')
-    def test_env_var_ignored_with_E(self):
+    eleza test_env_var_ignored_with_E(self):
         """PYTHON* environment variables must be ignored when -E is present."""
-        code = 'agiza tracemalloc; print(tracemalloc.is_tracing())'
+        code = 'agiza tracemalloc; andika(tracemalloc.is_tracing())'
         ok, stdout, stderr = assert_python_ok('-E', '-c', code, PYTHONTRACEMALLOC='1')
         stdout = stdout.rstrip()
         self.assertEqual(stdout, b'False')
 
-    def test_env_var_disabled(self):
+    eleza test_env_var_disabled(self):
         # tracing at startup
-        code = 'agiza tracemalloc; print(tracemalloc.is_tracing())'
+        code = 'agiza tracemalloc; andika(tracemalloc.is_tracing())'
         ok, stdout, stderr = assert_python_ok('-c', code, PYTHONTRACEMALLOC='0')
         stdout = stdout.rstrip()
         self.assertEqual(stdout, b'False')
 
-    def test_env_var_enabled_at_startup(self):
+    eleza test_env_var_enabled_at_startup(self):
         # tracing at startup
-        code = 'agiza tracemalloc; print(tracemalloc.is_tracing())'
+        code = 'agiza tracemalloc; andika(tracemalloc.is_tracing())'
         ok, stdout, stderr = assert_python_ok('-c', code, PYTHONTRACEMALLOC='1')
         stdout = stdout.rstrip()
         self.assertEqual(stdout, b'True')
 
-    def test_env_limit(self):
+    eleza test_env_limit(self):
         # start and set the number of frames
-        code = 'agiza tracemalloc; print(tracemalloc.get_traceback_limit())'
+        code = 'agiza tracemalloc; andika(tracemalloc.get_traceback_limit())'
         ok, stdout, stderr = assert_python_ok('-c', code, PYTHONTRACEMALLOC='10')
         stdout = stdout.rstrip()
         self.assertEqual(stdout, b'10')
 
-    def check_env_var_invalid(self, nframe):
+    eleza check_env_var_invalid(self, nframe):
         with support.SuppressCrashReport():
             ok, stdout, stderr = assert_python_failure(
                 '-c', 'pass',
                 PYTHONTRACEMALLOC=str(nframe))
 
-        if b'ValueError: the number of frames must be in range' in stderr:
+        ikiwa b'ValueError: the number of frames must be in range' in stderr:
             return
-        if b'PYTHONTRACEMALLOC: invalid number of frames' in stderr:
+        ikiwa b'PYTHONTRACEMALLOC: invalid number of frames' in stderr:
             return
         self.fail(f"unexpected output: {stderr!a}")
 
 
-    def test_env_var_invalid(self):
+    eleza test_env_var_invalid(self):
         for nframe in INVALID_NFRAME:
             with self.subTest(nframe=nframe):
                 self.check_env_var_invalid(nframe)
 
-    def test_sys_xoptions(self):
+    eleza test_sys_xoptions(self):
         for xoptions, nframe in (
             ('tracemalloc', 1),
             ('tracemalloc=1', 1),
             ('tracemalloc=15', 15),
         ):
             with self.subTest(xoptions=xoptions, nframe=nframe):
-                code = 'agiza tracemalloc; print(tracemalloc.get_traceback_limit())'
+                code = 'agiza tracemalloc; andika(tracemalloc.get_traceback_limit())'
                 ok, stdout, stderr = assert_python_ok('-X', xoptions, '-c', code)
                 stdout = stdout.rstrip()
                 self.assertEqual(stdout, str(nframe).encode('ascii'))
 
-    def check_sys_xoptions_invalid(self, nframe):
+    eleza check_sys_xoptions_invalid(self, nframe):
         args = ('-X', 'tracemalloc=%s' % nframe, '-c', 'pass')
         with support.SuppressCrashReport():
             ok, stdout, stderr = assert_python_failure(*args)
 
-        if b'ValueError: the number of frames must be in range' in stderr:
+        ikiwa b'ValueError: the number of frames must be in range' in stderr:
             return
-        if b'-X tracemalloc=NFRAME: invalid number of frames' in stderr:
+        ikiwa b'-X tracemalloc=NFRAME: invalid number of frames' in stderr:
             return
         self.fail(f"unexpected output: {stderr!a}")
 
-    def test_sys_xoptions_invalid(self):
+    eleza test_sys_xoptions_invalid(self):
         for nframe in INVALID_NFRAME:
             with self.subTest(nframe=nframe):
                 self.check_sys_xoptions_invalid(nframe)
 
     @unittest.skipIf(_testcapi is None, 'need _testcapi')
-    def test_pymem_alloc0(self):
+    eleza test_pymem_alloc0(self):
         # Issue #21639: Check that PyMem_Malloc(0) with tracemalloc enabled
         # does not crash.
         code = 'agiza _testcapi; _testcapi.test_pymem_alloc0(); 1'
@@ -930,11 +930,11 @@ class TestCommandLine(unittest.TestCase):
 
 
 @unittest.skipIf(_testcapi is None, 'need _testcapi')
-class TestCAPI(unittest.TestCase):
+kundi TestCAPI(unittest.TestCase):
     maxDiff = 80 * 20
 
-    def setUp(self):
-        if tracemalloc.is_tracing():
+    eleza setUp(self):
+        ikiwa tracemalloc.is_tracing():
             self.skipTest("tracemalloc must be stopped before the test")
 
         self.domain = 5
@@ -945,33 +945,33 @@ class TestCAPI(unittest.TestCase):
         # This type is not tracked by the garbage collector
         self.ptr = id(self.obj)
 
-    def tearDown(self):
+    eleza tearDown(self):
         tracemalloc.stop()
 
-    def get_traceback(self):
+    eleza get_traceback(self):
         frames = _testcapi.tracemalloc_get_traceback(self.domain, self.ptr)
-        if frames is not None:
-            return tracemalloc.Traceback(frames)
+        ikiwa frames is not None:
+            rudisha tracemalloc.Traceback(frames)
         else:
-            return None
+            rudisha None
 
-    def track(self, release_gil=False, nframe=1):
+    eleza track(self, release_gil=False, nframe=1):
         frames = get_frames(nframe, 1)
         _testcapi.tracemalloc_track(self.domain, self.ptr, self.size,
                                     release_gil)
-        return frames
+        rudisha frames
 
-    def untrack(self):
+    eleza untrack(self):
         _testcapi.tracemalloc_untrack(self.domain, self.ptr)
 
-    def get_traced_memory(self):
+    eleza get_traced_memory(self):
         # Get the traced size in the domain
         snapshot = tracemalloc.take_snapshot()
         domain_filter = tracemalloc.DomainFilter(True, self.domain)
         snapshot = snapshot.filter_traces([domain_filter])
-        return sum(trace.size for trace in snapshot.traces)
+        rudisha sum(trace.size for trace in snapshot.traces)
 
-    def check_track(self, release_gil):
+    eleza check_track(self, release_gil):
         nframe = 5
         tracemalloc.start(nframe)
 
@@ -983,15 +983,15 @@ class TestCAPI(unittest.TestCase):
 
         self.assertEqual(self.get_traced_memory(), self.size)
 
-    def test_track(self):
+    eleza test_track(self):
         self.check_track(False)
 
-    def test_track_without_gil(self):
+    eleza test_track_without_gil(self):
         # check that calling _PyTraceMalloc_Track() without holding the GIL
         # works too
         self.check_track(True)
 
-    def test_track_already_tracked(self):
+    eleza test_track_already_tracked(self):
         nframe = 5
         tracemalloc.start(nframe)
 
@@ -1004,7 +1004,7 @@ class TestCAPI(unittest.TestCase):
         self.assertEqual(self.get_traceback(),
                          tracemalloc.Traceback(frames))
 
-    def test_untrack(self):
+    eleza test_untrack(self):
         tracemalloc.start()
 
         self.track()
@@ -1020,7 +1020,7 @@ class TestCAPI(unittest.TestCase):
         self.untrack()
         self.untrack()
 
-    def test_stop_track(self):
+    eleza test_stop_track(self):
         tracemalloc.start()
         tracemalloc.stop()
 
@@ -1028,7 +1028,7 @@ class TestCAPI(unittest.TestCase):
             self.track()
         self.assertIsNone(self.get_traceback())
 
-    def test_stop_untrack(self):
+    eleza test_stop_untrack(self):
         tracemalloc.start()
         self.track()
 
@@ -1037,7 +1037,7 @@ class TestCAPI(unittest.TestCase):
             self.untrack()
 
 
-def test_main():
+eleza test_main():
     support.run_unittest(
         TestTracemallocEnabled,
         TestSnapshot,
@@ -1046,5 +1046,5 @@ def test_main():
         TestCAPI,
     )
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

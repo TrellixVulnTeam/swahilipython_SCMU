@@ -2,7 +2,7 @@ kutoka enum agiza IntEnum
 
 __all__ = ['HTTPStatus']
 
-class HTTPStatus(IntEnum):
+kundi HTTPStatus(IntEnum):
     """HTTP status codes and reason phrases
 
     Status codes kutoka the following RFCs are all observed:
@@ -18,13 +18,13 @@ class HTTPStatus(IntEnum):
         * RFC 7725: An HTTP Status Code to Report Legal Obstacles
         * RFC 7540: Hypertext Transfer Protocol Version 2 (HTTP/2)
     """
-    def __new__(cls, value, phrase, description=''):
+    eleza __new__(cls, value, phrase, description=''):
         obj = int.__new__(cls, value)
         obj._value_ = value
 
         obj.phrase = phrase
         obj.description = description
-        return obj
+        rudisha obj
 
     # informational
     CONTINUE = 100, 'Continue', 'Request received, please continue'

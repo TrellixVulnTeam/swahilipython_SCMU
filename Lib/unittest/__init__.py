@@ -4,22 +4,22 @@ Smalltalk testing framework (used with permission).
 
 This module contains the core framework classes that form the basis of
 specific test cases and suites (TestCase, TestSuite etc.), and also a
-text-based utility class for running the tests and reporting the results
+text-based utility kundi for running the tests and reporting the results
  (TextTestRunner).
 
 Simple usage:
 
     agiza unittest
 
-    class IntegerArithmeticTestCase(unittest.TestCase):
-        def testAdd(self):  # test method names begin with 'test'
+    kundi IntegerArithmeticTestCase(unittest.TestCase):
+        eleza testAdd(self):  # test method names begin with 'test'
             self.assertEqual((1 + 2), 3)
             self.assertEqual(0 + 1, 1)
-        def testMultiply(self):
+        eleza testMultiply(self):
             self.assertEqual((0 * 10), 0)
             self.assertEqual((5 * 8), 40)
 
-    if __name__ == '__main__':
+    ikiwa __name__ == '__main__':
         unittest.main()
 
 Further information is available in the bundled documentation, and kutoka
@@ -73,8 +73,8 @@ _TextTestResult = TextTestResult
 # There are no tests here, so don't try to run anything discovered kutoka
 # introspecting the symbols (e.g. FunctionTestCase). Instead, all our
 # tests come kutoka within unittest.test.
-def load_tests(loader, tests, pattern):
+eleza load_tests(loader, tests, pattern):
     agiza os.path
     # top level directory cached on loader instance
     this_dir = os.path.dirname(__file__)
-    return loader.discover(start_dir=this_dir, pattern=pattern)
+    rudisha loader.discover(start_dir=this_dir, pattern=pattern)

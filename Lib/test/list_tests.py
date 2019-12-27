@@ -9,9 +9,9 @@ kutoka functools agiza cmp_to_key
 kutoka test agiza support, seq_tests
 
 
-class CommonTest(seq_tests.CommonTest):
+kundi CommonTest(seq_tests.CommonTest):
 
-    def test_init(self):
+    eleza test_init(self):
         # Iterable arg is optional
         self.assertEqual(self.type2test([]), self.type2test())
 
@@ -25,24 +25,24 @@ class CommonTest(seq_tests.CommonTest):
         a.__init__([4, 5, 6])
         self.assertEqual(a, self.type2test([4, 5, 6]))
 
-        # Mutables always return a new object
+        # Mutables always rudisha a new object
         b = self.type2test(a)
         self.assertNotEqual(id(a), id(b))
         self.assertEqual(a, b)
 
-    def test_getitem_error(self):
+    eleza test_getitem_error(self):
         a = []
         msg = "list indices must be integers or slices"
         with self.assertRaisesRegex(TypeError, msg):
             a['a']
 
-    def test_setitem_error(self):
+    eleza test_setitem_error(self):
         a = []
         msg = "list indices must be integers or slices"
         with self.assertRaisesRegex(TypeError, msg):
             a['a'] = "python"
 
-    def test_repr(self):
+    eleza test_repr(self):
         l0 = []
         l2 = [0, 1, 2]
         a0 = self.type2test(l0)
@@ -59,13 +59,13 @@ class CommonTest(seq_tests.CommonTest):
         self.assertEqual(str(a2), "[0, 1, 2, [...], 3]")
         self.assertEqual(repr(a2), "[0, 1, 2, [...], 3]")
 
-    def test_repr_deep(self):
+    eleza test_repr_deep(self):
         a = self.type2test([])
         for i in range(sys.getrecursionlimit() + 100):
             a = self.type2test([a])
         self.assertRaises(RecursionError, repr, a)
 
-    def test_print(self):
+    eleza test_andika(self):
         d = self.type2test(range(200))
         d.append(d)
         d.extend(range(200,400))
@@ -79,7 +79,7 @@ class CommonTest(seq_tests.CommonTest):
         finally:
             os.remove(support.TESTFN)
 
-    def test_set_subscript(self):
+    eleza test_set_subscript(self):
         a = self.type2test(range(20))
         self.assertRaises(ValueError, a.__setitem__, slice(0, 10, 0), [1,2,3])
         self.assertRaises(TypeError, a.__setitem__, slice(0, 10), 1)
@@ -90,7 +90,7 @@ class CommonTest(seq_tests.CommonTest):
                                             9, 10, 11, 12, 13, 14, 15,
                                             16, 17, 18, 19]))
 
-    def test_reversed(self):
+    eleza test_reversed(self):
         a = self.type2test(range(20))
         r = reversed(a)
         self.assertEqual(list(r), self.type2test(range(19, -1, -1)))
@@ -100,7 +100,7 @@ class CommonTest(seq_tests.CommonTest):
         # Bug 3689: make sure list-reversed-iterator doesn't have __len__
         self.assertRaises(TypeError, len, reversed([1,2,3]))
 
-    def test_setitem(self):
+    eleza test_setitem(self):
         a = self.type2test([0, 1])
         a[0] = 0
         a[1] = 100
@@ -137,7 +137,7 @@ class CommonTest(seq_tests.CommonTest):
         with self.assertRaisesRegex(TypeError, msg):
             a['a'] = "python"
 
-    def test_delitem(self):
+    eleza test_delitem(self):
         a = self.type2test([0, 1])
         del a[1]
         self.assertEqual(a, [0])
@@ -159,7 +159,7 @@ class CommonTest(seq_tests.CommonTest):
 
         self.assertRaises(TypeError, a.__delitem__)
 
-    def test_setslice(self):
+    eleza test_setslice(self):
         l = [0, 1]
         a = self.type2test(l)
 
@@ -205,7 +205,7 @@ class CommonTest(seq_tests.CommonTest):
 
         self.assertRaises(TypeError, a.__setitem__)
 
-    def test_delslice(self):
+    eleza test_delslice(self):
         a = self.type2test([0, 1])
         del a[1:2]
         del a[0:1]
@@ -246,7 +246,7 @@ class CommonTest(seq_tests.CommonTest):
         del a[:]
         self.assertEqual(a, self.type2test([]))
 
-    def test_append(self):
+    eleza test_append(self):
         a = self.type2test([])
         a.append(0)
         a.append(1)
@@ -255,7 +255,7 @@ class CommonTest(seq_tests.CommonTest):
 
         self.assertRaises(TypeError, a.append)
 
-    def test_extend(self):
+    eleza test_extend(self):
         a1 = self.type2test([0])
         a2 = self.type2test((0, 1))
         a = a1[:]
@@ -276,19 +276,19 @@ class CommonTest(seq_tests.CommonTest):
         self.assertRaises(TypeError, a.extend)
 
         # overflow test. issue1621
-        class CustomIter:
-            def __iter__(self):
-                return self
-            def __next__(self):
+        kundi CustomIter:
+            eleza __iter__(self):
+                rudisha self
+            eleza __next__(self):
                 raise StopIteration
-            def __length_hint__(self):
-                return sys.maxsize
+            eleza __length_hint__(self):
+                rudisha sys.maxsize
         a = self.type2test([1,2,3,4])
         a.extend(CustomIter())
         self.assertEqual(a, [1,2,3,4])
 
 
-    def test_insert(self):
+    eleza test_insert(self):
         a = self.type2test([0, 1, 2])
         a.insert(0, -2)
         a.insert(1, -1)
@@ -303,7 +303,7 @@ class CommonTest(seq_tests.CommonTest):
 
         self.assertRaises(TypeError, a.insert)
 
-    def test_pop(self):
+    eleza test_pop(self):
         a = self.type2test([-1, 0, 1])
         a.pop()
         self.assertEqual(a, [-1, 0])
@@ -316,7 +316,7 @@ class CommonTest(seq_tests.CommonTest):
         self.assertRaises(TypeError, a.pop, 42, 42)
         a = self.type2test([0, 10, 20, 30, 40])
 
-    def test_remove(self):
+    eleza test_remove(self):
         a = self.type2test([0, 0, 1])
         a.remove(1)
         self.assertEqual(a, [0, 0])
@@ -329,20 +329,20 @@ class CommonTest(seq_tests.CommonTest):
 
         self.assertRaises(TypeError, a.remove)
 
-        class BadExc(Exception):
+        kundi BadExc(Exception):
             pass
 
-        class BadCmp:
-            def __eq__(self, other):
-                if other == 2:
+        kundi BadCmp:
+            eleza __eq__(self, other):
+                ikiwa other == 2:
                     raise BadExc()
-                return False
+                rudisha False
 
         a = self.type2test([0, 1, 2, 3])
         self.assertRaises(BadExc, a.remove, BadCmp())
 
-        class BadCmp2:
-            def __eq__(self, other):
+        kundi BadCmp2:
+            eleza __eq__(self, other):
                 raise BadExc()
 
         d = self.type2test('abcdefghcij')
@@ -361,7 +361,7 @@ class CommonTest(seq_tests.CommonTest):
             # verify that original order and values are retained.
             self.assertIs(x, y)
 
-    def test_index(self):
+    eleza test_index(self):
         super().test_index()
         a = self.type2test([-2, -1, 0, 0, 1, 2])
         a.remove(0)
@@ -369,18 +369,18 @@ class CommonTest(seq_tests.CommonTest):
         self.assertEqual(a, self.type2test([-2, -1, 0, 1, 2]))
 
         # Test modifying the list during index's iteration
-        class EvilCmp:
-            def __init__(self, victim):
+        kundi EvilCmp:
+            eleza __init__(self, victim):
                 self.victim = victim
-            def __eq__(self, other):
+            eleza __eq__(self, other):
                 del self.victim[:]
-                return False
+                rudisha False
         a = self.type2test()
         a[:] = [EvilCmp(a) for _ in range(100)]
         # This used to seg fault before patch #1005778
         self.assertRaises(ValueError, a.index, None)
 
-    def test_reverse(self):
+    eleza test_reverse(self):
         u = self.type2test([-2, -1, 0, 1, 2])
         u2 = u[:]
         u.reverse()
@@ -390,7 +390,7 @@ class CommonTest(seq_tests.CommonTest):
 
         self.assertRaises(TypeError, u.reverse, 42)
 
-    def test_clear(self):
+    eleza test_clear(self):
         u = self.type2test([2, 3, 4])
         u.clear()
         self.assertEqual(u, [])
@@ -407,7 +407,7 @@ class CommonTest(seq_tests.CommonTest):
 
         self.assertRaises(TypeError, u.clear, None)
 
-    def test_copy(self):
+    eleza test_copy(self):
         u = self.type2test([1, 2, 3])
         v = u.copy()
         self.assertEqual(v, [1, 2, 3])
@@ -431,7 +431,7 @@ class CommonTest(seq_tests.CommonTest):
 
         self.assertRaises(TypeError, u.copy, None)
 
-    def test_sort(self):
+    eleza test_sort(self):
         u = self.type2test([1, 0])
         u.sort()
         self.assertEqual(u, [0, 1])
@@ -442,49 +442,49 @@ class CommonTest(seq_tests.CommonTest):
 
         self.assertRaises(TypeError, u.sort, 42, 42)
 
-        def revcmp(a, b):
-            if a == b:
-                return 0
-            elif a < b:
-                return 1
+        eleza revcmp(a, b):
+            ikiwa a == b:
+                rudisha 0
+            elikiwa a < b:
+                rudisha 1
             else: # a > b
-                return -1
+                rudisha -1
         u.sort(key=cmp_to_key(revcmp))
         self.assertEqual(u, self.type2test([2,1,0,-1,-2]))
 
         # The following dumps core in unpatched Python 1.5:
-        def myComparison(x,y):
+        eleza myComparison(x,y):
             xmod, ymod = x%3, y%7
-            if xmod == ymod:
-                return 0
-            elif xmod < ymod:
-                return -1
+            ikiwa xmod == ymod:
+                rudisha 0
+            elikiwa xmod < ymod:
+                rudisha -1
             else: # xmod > ymod
-                return 1
+                rudisha 1
         z = self.type2test(range(12))
         z.sort(key=cmp_to_key(myComparison))
 
         self.assertRaises(TypeError, z.sort, 2)
 
-        def selfmodifyingComparison(x,y):
+        eleza selfmodifyingComparison(x,y):
             z.append(1)
-            if x == y:
-                return 0
-            elif x < y:
-                return -1
+            ikiwa x == y:
+                rudisha 0
+            elikiwa x < y:
+                rudisha -1
             else: # x > y
-                return 1
+                rudisha 1
         self.assertRaises(ValueError, z.sort,
                           key=cmp_to_key(selfmodifyingComparison))
 
         self.assertRaises(TypeError, z.sort, 42, 42, 42, 42)
 
-    def test_slice(self):
+    eleza test_slice(self):
         u = self.type2test("spam")
         u[:2] = "h"
         self.assertEqual(u, list("ham"))
 
-    def test_iadd(self):
+    eleza test_iadd(self):
         super().test_iadd()
         u = self.type2test([0, 1])
         u2 = u
@@ -497,14 +497,14 @@ class CommonTest(seq_tests.CommonTest):
 
         self.assertRaises(TypeError, u.__iadd__, None)
 
-    def test_imul(self):
+    eleza test_imul(self):
         super().test_imul()
         s = self.type2test([])
         oldid = id(s)
         s *= 10
         self.assertEqual(id(s), oldid)
 
-    def test_extendedslicing(self):
+    eleza test_extendedslicing(self):
         #  subscript
         a = self.type2test([0,1,2,3,4])
 
@@ -545,14 +545,14 @@ class CommonTest(seq_tests.CommonTest):
         a = self.type2test(range(10))
         del a[9::1<<333]
 
-    def test_constructor_exception_handling(self):
+    eleza test_constructor_exception_handling(self):
         # Bug #1242657
-        class F(object):
-            def __iter__(self):
+        kundi F(object):
+            eleza __iter__(self):
                 raise KeyboardInterrupt
         self.assertRaises(KeyboardInterrupt, list, F())
 
-    def test_exhausted_iterator(self):
+    eleza test_exhausted_iterator(self):
         a = self.type2test([1, 2, 3])
         exhit = iter(a)
         empit = iter(a)

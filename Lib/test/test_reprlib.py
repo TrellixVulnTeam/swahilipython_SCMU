@@ -16,15 +16,15 @@ kutoka reprlib agiza Repr
 kutoka reprlib agiza recursive_repr
 
 
-def nestedTuple(nesting):
+eleza nestedTuple(nesting):
     t = ()
     for i in range(nesting):
         t = (t,)
-    return t
+    rudisha t
 
-class ReprTests(unittest.TestCase):
+kundi ReprTests(unittest.TestCase):
 
-    def test_string(self):
+    eleza test_string(self):
         eq = self.assertEqual
         eq(r("abc"), "'abc'")
         eq(r("abcdefghijklmnop"),"'abcdefghijklmnop'")
@@ -38,7 +38,7 @@ class ReprTests(unittest.TestCase):
         expected = repr(s)[:13] + "..." + repr(s)[-14:]
         eq(r(s), expected)
 
-    def test_tuple(self):
+    eleza test_tuple(self):
         eq = self.assertEqual
         eq(r((1,)), "(1,)")
 
@@ -50,7 +50,7 @@ class ReprTests(unittest.TestCase):
         expected = repr(t3)[:-2] + "...)"
         eq(r2.repr(t3), expected)
 
-    def test_container(self):
+    eleza test_container(self):
         kutoka array agiza array
         kutoka collections agiza deque
 
@@ -103,21 +103,21 @@ class ReprTests(unittest.TestCase):
         eq(r(array('i', [1, 2, 3, 4, 5, 6])),
                    "array('i', [1, 2, 3, 4, 5, ...])")
 
-    def test_set_literal(self):
+    eleza test_set_literal(self):
         eq = self.assertEqual
         eq(r({1}), "{1}")
         eq(r({1, 2, 3}), "{1, 2, 3}")
         eq(r({1, 2, 3, 4, 5, 6}), "{1, 2, 3, 4, 5, 6}")
         eq(r({1, 2, 3, 4, 5, 6, 7}), "{1, 2, 3, 4, 5, 6, ...}")
 
-    def test_frozenset(self):
+    eleza test_frozenset(self):
         eq = self.assertEqual
         eq(r(frozenset({1})), "frozenset({1})")
         eq(r(frozenset({1, 2, 3})), "frozenset({1, 2, 3})")
         eq(r(frozenset({1, 2, 3, 4, 5, 6})), "frozenset({1, 2, 3, 4, 5, 6})")
         eq(r(frozenset({1, 2, 3, 4, 5, 6, 7})), "frozenset({1, 2, 3, 4, 5, 6, ...})")
 
-    def test_numbers(self):
+    eleza test_numbers(self):
         eq = self.assertEqual
         eq(r(123), repr(123))
         eq(r(123), repr(123))
@@ -127,7 +127,7 @@ class ReprTests(unittest.TestCase):
         expected = repr(n)[:18] + "..." + repr(n)[-19:]
         eq(r(n), expected)
 
-    def test_instance(self):
+    eleza test_instance(self):
         eq = self.assertEqual
         i1 = ClassWithRepr("a")
         eq(r(i1), repr(i1))
@@ -140,16 +140,16 @@ class ReprTests(unittest.TestCase):
         eq(r(i3), ("<ClassWithFailingRepr instance at %#x>"%id(i3)))
 
         s = r(ClassWithFailingRepr)
-        self.assertTrue(s.startswith("<class "))
+        self.assertTrue(s.startswith("<kundi "))
         self.assertTrue(s.endswith(">"))
         self.assertIn(s.find("..."), [12, 13])
 
-    def test_lambda(self):
+    eleza test_lambda(self):
         r = repr(lambda x: x)
         self.assertTrue(r.startswith("<function ReprTests.test_lambda.<locals>.<lambda"), r)
         # XXX anonymous functions?  see func_repr
 
-    def test_builtin_function(self):
+    eleza test_builtin_function(self):
         eq = self.assertEqual
         # Functions
         eq(repr(hash), '<built-in function hash>')
@@ -157,13 +157,13 @@ class ReprTests(unittest.TestCase):
         self.assertTrue(repr(''.split).startswith(
             '<built-in method split of str object at 0x'))
 
-    def test_range(self):
+    eleza test_range(self):
         eq = self.assertEqual
         eq(repr(range(1)), 'range(0, 1)')
         eq(repr(range(1, 2)), 'range(1, 2)')
         eq(repr(range(1, 4, 3)), 'range(1, 4, 3)')
 
-    def test_nesting(self):
+    eleza test_nesting(self):
         eq = self.assertEqual
         # everything is meant to give up after 6 levels.
         eq(r([[[[[[[]]]]]]]), "[[[[[[[]]]]]]]")
@@ -180,33 +180,33 @@ class ReprTests(unittest.TestCase):
         eq(r([[[[[[{}]]]]]]), "[[[[[[{}]]]]]]")
         eq(r([[[[[[[{}]]]]]]]), "[[[[[[[...]]]]]]]")
 
-    def test_cell(self):
-        def get_cell():
+    eleza test_cell(self):
+        eleza get_cell():
             x = 42
-            def inner():
-                return x
-            return inner
+            eleza inner():
+                rudisha x
+            rudisha inner
         x = get_cell().__closure__[0]
         self.assertRegex(repr(x), r'<cell at 0x[0-9A-Fa-f]+: '
                                   r'int object at 0x[0-9A-Fa-f]+>')
         self.assertRegex(r(x), r'<cell at 0x.*\.\.\..*>')
 
-    def test_descriptors(self):
+    eleza test_descriptors(self):
         eq = self.assertEqual
         # method descriptors
         eq(repr(dict.items), "<method 'items' of 'dict' objects>")
         # XXX member descriptors
         # XXX attribute descriptors
         # XXX slot descriptors
-        # static and class methods
-        class C:
-            def foo(cls): pass
+        # static and kundi methods
+        kundi C:
+            eleza foo(cls): pass
         x = staticmethod(C.foo)
         self.assertTrue(repr(x).startswith('<staticmethod object at 0x'))
         x = classmethod(C.foo)
         self.assertTrue(repr(x).startswith('<classmethod object at 0x'))
 
-    def test_unsortable(self):
+    eleza test_unsortable(self):
         # Repr.repr() used to call sorted() on sets, frozensets and dicts
         # without taking into account that not all objects are comparable
         x = set([1j, 2j, 3j])
@@ -216,14 +216,14 @@ class ReprTests(unittest.TestCase):
         r(y)
         r(z)
 
-def write_file(path, text):
+eleza write_file(path, text):
     with open(path, 'w', encoding='ASCII') as fp:
         fp.write(text)
 
-class LongReprTest(unittest.TestCase):
+kundi LongReprTest(unittest.TestCase):
     longname = 'areallylongpackageandmodulenametotestreprtruncation'
 
-    def setUp(self):
+    eleza setUp(self):
         self.pkgname = os.path.join(self.longname)
         self.subpkgname = os.path.join(self.longname, self.longname)
         # Make the package and subpackage
@@ -240,7 +240,7 @@ class LongReprTest(unittest.TestCase):
         # enough.
         importlib.invalidate_caches()
 
-    def tearDown(self):
+    eleza tearDown(self):
         actions = []
         for dirpath, dirnames, filenames in os.walk(self.pkgname):
             for name in dirnames + filenames:
@@ -249,13 +249,13 @@ class LongReprTest(unittest.TestCase):
         actions.sort()
         actions.reverse()
         for p in actions:
-            if os.path.isdir(p):
+            ikiwa os.path.isdir(p):
                 os.rmdir(p)
             else:
                 os.remove(p)
         del sys.path[0]
 
-    def _check_path_limitations(self, module_name):
+    eleza _check_path_limitations(self, module_name):
         # base directory
         source_path_len = len(self.here)
         # a path separator + `longname` (twice)
@@ -263,17 +263,17 @@ class LongReprTest(unittest.TestCase):
         # a path separator + `module_name` + ".py"
         source_path_len += len(module_name) + 1 + len(".py")
         cached_path_len = (source_path_len +
-            len(importlib.util.cache_from_source("x.py")) - len("x.py"))
-        if os.name == 'nt' and cached_path_len >= 258:
+            len(importlib.util.cache_kutoka_source("x.py")) - len("x.py"))
+        ikiwa os.name == 'nt' and cached_path_len >= 258:
             # Under Windows, the max path len is 260 including C's terminating
             # NUL character.
             # (see http://msdn.microsoft.com/en-us/library/windows/desktop/aa365247%28v=vs.85%29.aspx#maxpath)
             self.skipTest("test paths too long (%d characters) for Windows' 260 character limit"
                           % cached_path_len)
-        elif os.name == 'nt' and verbose:
-            print("cached_path_len =", cached_path_len)
+        elikiwa os.name == 'nt' and verbose:
+            andika("cached_path_len =", cached_path_len)
 
-    def test_module(self):
+    eleza test_module(self):
         self.maxDiff = None
         self._check_path_limitations(self.pkgname)
         create_empty_file(os.path.join(self.subpkgname, self.pkgname + '.py'))
@@ -283,39 +283,39 @@ class LongReprTest(unittest.TestCase):
         self.assertEqual(repr(module), "<module %r kutoka %r>" % (module.__name__, module.__file__))
         self.assertEqual(repr(sys), "<module 'sys' (built-in)>")
 
-    def test_type(self):
+    eleza test_type(self):
         self._check_path_limitations('foo')
         eq = self.assertEqual
         write_file(os.path.join(self.subpkgname, 'foo.py'), '''\
-class foo(object):
+kundi foo(object):
     pass
 ''')
         importlib.invalidate_caches()
         kutoka areallylongpackageandmodulenametotestreprtruncation.areallylongpackageandmodulenametotestreprtruncation agiza foo
         eq(repr(foo.foo),
-               "<class '%s.foo'>" % foo.__name__)
+               "<kundi '%s.foo'>" % foo.__name__)
 
     @unittest.skip('need a suitable object')
-    def test_object(self):
+    eleza test_object(self):
         # XXX Test the repr of a type with a really long tp_name but with no
         # tp_repr.  WIBNI we had ::Inline? :)
         pass
 
-    def test_class(self):
+    eleza test_class(self):
         self._check_path_limitations('bar')
         write_file(os.path.join(self.subpkgname, 'bar.py'), '''\
-class bar:
+kundi bar:
     pass
 ''')
         importlib.invalidate_caches()
         kutoka areallylongpackageandmodulenametotestreprtruncation.areallylongpackageandmodulenametotestreprtruncation agiza bar
         # Module name may be prefixed with "test.", depending on how run.
-        self.assertEqual(repr(bar.bar), "<class '%s.bar'>" % bar.__name__)
+        self.assertEqual(repr(bar.bar), "<kundi '%s.bar'>" % bar.__name__)
 
-    def test_instance(self):
+    eleza test_instance(self):
         self._check_path_limitations('baz')
         write_file(os.path.join(self.subpkgname, 'baz.py'), '''\
-class baz:
+kundi baz:
     pass
 ''')
         importlib.invalidate_caches()
@@ -324,12 +324,12 @@ class baz:
         self.assertTrue(repr(ibaz).startswith(
             "<%s.baz object at 0x" % baz.__name__))
 
-    def test_method(self):
+    eleza test_method(self):
         self._check_path_limitations('qux')
         eq = self.assertEqual
         write_file(os.path.join(self.subpkgname, 'qux.py'), '''\
-class aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:
-    def amethod(self): pass
+kundi aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:
+    eleza amethod(self): pass
 ''')
         importlib.invalidate_caches()
         kutoka areallylongpackageandmodulenametotestreprtruncation.areallylongpackageandmodulenametotestreprtruncation agiza qux
@@ -344,45 +344,45 @@ class aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
             % (qux.__name__,) ), r)
 
     @unittest.skip('needs a built-in function with a really long name')
-    def test_builtin_function(self):
+    eleza test_builtin_function(self):
         # XXX test built-in functions and methods with really long names
         pass
 
-class ClassWithRepr:
-    def __init__(self, s):
+kundi ClassWithRepr:
+    eleza __init__(self, s):
         self.s = s
-    def __repr__(self):
-        return "ClassWithRepr(%r)" % self.s
+    eleza __repr__(self):
+        rudisha "ClassWithRepr(%r)" % self.s
 
 
-class ClassWithFailingRepr:
-    def __repr__(self):
+kundi ClassWithFailingRepr:
+    eleza __repr__(self):
         raise Exception("This should be caught by Repr.repr_instance")
 
-class MyContainer:
-    'Helper class for TestRecursiveRepr'
-    def __init__(self, values):
+kundi MyContainer:
+    'Helper kundi for TestRecursiveRepr'
+    eleza __init__(self, values):
         self.values = list(values)
-    def append(self, value):
+    eleza append(self, value):
         self.values.append(value)
     @recursive_repr()
-    def __repr__(self):
-        return '<' + ', '.join(map(str, self.values)) + '>'
+    eleza __repr__(self):
+        rudisha '<' + ', '.join(map(str, self.values)) + '>'
 
-class MyContainer2(MyContainer):
+kundi MyContainer2(MyContainer):
     @recursive_repr('+++')
-    def __repr__(self):
-        return '<' + ', '.join(map(str, self.values)) + '>'
+    eleza __repr__(self):
+        rudisha '<' + ', '.join(map(str, self.values)) + '>'
 
-class MyContainer3:
-    def __repr__(self):
+kundi MyContainer3:
+    eleza __repr__(self):
         'Test document content'
         pass
     wrapped = __repr__
     wrapper = recursive_repr()(wrapped)
 
-class TestRecursiveRepr(unittest.TestCase):
-    def test_recursive_repr(self):
+kundi TestRecursiveRepr(unittest.TestCase):
+    eleza test_recursive_repr(self):
         m = MyContainer(list('abcde'))
         m.append(m)
         m.append('x')
@@ -394,12 +394,12 @@ class TestRecursiveRepr(unittest.TestCase):
         m.append(m)
         self.assertEqual(repr(m), '<a, b, c, d, e, +++, x, +++>')
 
-    def test_assigned_attributes(self):
+    eleza test_assigned_attributes(self):
         kutoka functools agiza WRAPPER_ASSIGNMENTS as assigned
         wrapped = MyContainer3.wrapped
         wrapper = MyContainer3.wrapper
         for name in assigned:
             self.assertIs(getattr(wrapper, name), getattr(wrapped, name))
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

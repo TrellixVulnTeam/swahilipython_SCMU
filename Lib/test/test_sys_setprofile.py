@@ -4,37 +4,37 @@ agiza sys
 agiza unittest
 
 
-class TestGetProfile(unittest.TestCase):
-    def setUp(self):
+kundi TestGetProfile(unittest.TestCase):
+    eleza setUp(self):
         sys.setprofile(None)
 
-    def tearDown(self):
+    eleza tearDown(self):
         sys.setprofile(None)
 
-    def test_empty(self):
+    eleza test_empty(self):
         self.assertIsNone(sys.getprofile())
 
-    def test_setget(self):
-        def fn(*args):
+    eleza test_setget(self):
+        eleza fn(*args):
             pass
 
         sys.setprofile(fn)
         self.assertIs(sys.getprofile(), fn)
 
-class HookWatcher:
-    def __init__(self):
+kundi HookWatcher:
+    eleza __init__(self):
         self.frames = []
         self.events = []
 
-    def callback(self, frame, event, arg):
-        if (event == "call"
+    eleza callback(self, frame, event, arg):
+        ikiwa (event == "call"
             or event == "return"
             or event == "exception"):
             self.add_event(event, frame)
 
-    def add_event(self, event, frame=None):
+    eleza add_event(self, event, frame=None):
         """Add an event to the log."""
-        if frame is None:
+        ikiwa frame is None:
             frame = sys._getframe(1)
 
         try:
@@ -45,37 +45,37 @@ class HookWatcher:
 
         self.events.append((frameno, event, ident(frame)))
 
-    def get_events(self):
+    eleza get_events(self):
         """Remove calls to add_event()."""
         disallowed = [ident(self.add_event.__func__), ident(ident)]
         self.frames = None
 
-        return [item for item in self.events if item[2] not in disallowed]
+        rudisha [item for item in self.events ikiwa item[2] not in disallowed]
 
 
-class ProfileSimulator(HookWatcher):
-    def __init__(self, testcase):
+kundi ProfileSimulator(HookWatcher):
+    eleza __init__(self, testcase):
         self.testcase = testcase
         self.stack = []
         HookWatcher.__init__(self)
 
-    def callback(self, frame, event, arg):
+    eleza callback(self, frame, event, arg):
         # Callback registered with sys.setprofile()/sys.settrace()
         self.dispatch[event](self, frame)
 
-    def trace_call(self, frame):
+    eleza trace_call(self, frame):
         self.add_event('call', frame)
         self.stack.append(frame)
 
-    def trace_return(self, frame):
+    eleza trace_return(self, frame):
         self.add_event('return', frame)
         self.stack.pop()
 
-    def trace_exception(self, frame):
+    eleza trace_exception(self, frame):
         self.testcase.fail(
             "the profiler should never receive exception events")
 
-    def trace_pass(self, frame):
+    eleza trace_pass(self, frame):
         pass
 
     dispatch = {
@@ -88,36 +88,36 @@ class ProfileSimulator(HookWatcher):
         }
 
 
-class TestCaseBase(unittest.TestCase):
-    def check_events(self, callable, expected):
+kundi TestCaseBase(unittest.TestCase):
+    eleza check_events(self, callable, expected):
         events = capture_events(callable, self.new_watcher())
-        if events != expected:
+        ikiwa events != expected:
             self.fail("Expected events:\n%s\nReceived events:\n%s"
                       % (pprint.pformat(expected), pprint.pformat(events)))
 
 
-class ProfileHookTestCase(TestCaseBase):
-    def new_watcher(self):
-        return HookWatcher()
+kundi ProfileHookTestCase(TestCaseBase):
+    eleza new_watcher(self):
+        rudisha HookWatcher()
 
-    def test_simple(self):
-        def f(p):
+    eleza test_simple(self):
+        eleza f(p):
             pass
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
                               ])
 
-    def test_exception(self):
-        def f(p):
+    eleza test_exception(self):
+        eleza f(p):
             1/0
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
                               ])
 
-    def test_caught_exception(self):
-        def f(p):
+    eleza test_caught_exception(self):
+        eleza f(p):
             try: 1/0
             except: pass
         f_ident = ident(f)
@@ -125,8 +125,8 @@ class ProfileHookTestCase(TestCaseBase):
                               (1, 'return', f_ident),
                               ])
 
-    def test_caught_nested_exception(self):
-        def f(p):
+    eleza test_caught_nested_exception(self):
+        eleza f(p):
             try: 1/0
             except: pass
         f_ident = ident(f)
@@ -134,8 +134,8 @@ class ProfileHookTestCase(TestCaseBase):
                               (1, 'return', f_ident),
                               ])
 
-    def test_nested_exception(self):
-        def f(p):
+    eleza test_nested_exception(self):
+        eleza f(p):
             1/0
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
@@ -145,10 +145,10 @@ class ProfileHookTestCase(TestCaseBase):
                               (1, 'return', f_ident),
                               ])
 
-    def test_exception_in_except_clause(self):
-        def f(p):
+    eleza test_exception_in_except_clause(self):
+        eleza f(p):
             1/0
-        def g(p):
+        eleza g(p):
             try:
                 f(p)
             except:
@@ -164,10 +164,10 @@ class ProfileHookTestCase(TestCaseBase):
                               (1, 'return', g_ident),
                               ])
 
-    def test_exception_propagation(self):
-        def f(p):
+    eleza test_exception_propagation(self):
+        eleza f(p):
             1/0
-        def g(p):
+        eleza g(p):
             try: f(p)
             finally: p.add_event("falling through")
         f_ident = ident(f)
@@ -179,8 +179,8 @@ class ProfileHookTestCase(TestCaseBase):
                               (1, 'return', g_ident),
                               ])
 
-    def test_raise_twice(self):
-        def f(p):
+    eleza test_raise_twice(self):
+        eleza f(p):
             try: 1/0
             except: 1/0
         f_ident = ident(f)
@@ -188,8 +188,8 @@ class ProfileHookTestCase(TestCaseBase):
                               (1, 'return', f_ident),
                               ])
 
-    def test_raise_reraise(self):
-        def f(p):
+    eleza test_raise_reraise(self):
+        eleza f(p):
             try: 1/0
             except: raise
         f_ident = ident(f)
@@ -197,24 +197,24 @@ class ProfileHookTestCase(TestCaseBase):
                               (1, 'return', f_ident),
                               ])
 
-    def test_raise(self):
-        def f(p):
+    eleza test_raise(self):
+        eleza f(p):
             raise Exception()
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
                               ])
 
-    def test_distant_exception(self):
-        def f():
+    eleza test_distant_exception(self):
+        eleza f():
             1/0
-        def g():
+        eleza g():
             f()
-        def h():
+        eleza h():
             g()
-        def i():
+        eleza i():
             h()
-        def j(p):
+        eleza j(p):
             i()
         f_ident = ident(f)
         g_ident = ident(g)
@@ -233,11 +233,11 @@ class ProfileHookTestCase(TestCaseBase):
                               (1, 'return', j_ident),
                               ])
 
-    def test_generator(self):
-        def f():
+    eleza test_generator(self):
+        eleza f():
             for i in range(2):
                 yield i
-        def g(p):
+        eleza g(p):
             for i in f():
                 pass
         f_ident = ident(f)
@@ -255,11 +255,11 @@ class ProfileHookTestCase(TestCaseBase):
                               (1, 'return', g_ident),
                               ])
 
-    def test_stop_iteration(self):
-        def f():
+    eleza test_stop_iteration(self):
+        eleza f():
             for i in range(2):
                 yield i
-        def g(p):
+        eleza g(p):
             for i in f():
                 pass
         f_ident = ident(f)
@@ -277,28 +277,28 @@ class ProfileHookTestCase(TestCaseBase):
                               ])
 
 
-class ProfileSimulatorTestCase(TestCaseBase):
-    def new_watcher(self):
-        return ProfileSimulator(self)
+kundi ProfileSimulatorTestCase(TestCaseBase):
+    eleza new_watcher(self):
+        rudisha ProfileSimulator(self)
 
-    def test_simple(self):
-        def f(p):
+    eleza test_simple(self):
+        eleza f(p):
             pass
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
                               ])
 
-    def test_basic_exception(self):
-        def f(p):
+    eleza test_basic_exception(self):
+        eleza f(p):
             1/0
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
                               ])
 
-    def test_caught_exception(self):
-        def f(p):
+    eleza test_caught_exception(self):
+        eleza f(p):
             try: 1/0
             except: pass
         f_ident = ident(f)
@@ -306,16 +306,16 @@ class ProfileSimulatorTestCase(TestCaseBase):
                               (1, 'return', f_ident),
                               ])
 
-    def test_distant_exception(self):
-        def f():
+    eleza test_distant_exception(self):
+        eleza f():
             1/0
-        def g():
+        eleza g():
             f()
-        def h():
+        eleza h():
             g()
-        def i():
+        eleza i():
             h()
-        def j(p):
+        eleza j(p):
             i()
         f_ident = ident(f)
         g_ident = ident(g)
@@ -335,66 +335,66 @@ class ProfileSimulatorTestCase(TestCaseBase):
                               ])
 
     # bpo-34125: profiling method_descriptor with **kwargs
-    def test_unbound_method(self):
+    eleza test_unbound_method(self):
         kwargs = {}
-        def f(p):
+        eleza f(p):
             dict.get({}, 42, **kwargs)
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident)])
 
     # Test an invalid call (bpo-34126)
-    def test_unbound_method_no_args(self):
-        def f(p):
+    eleza test_unbound_method_no_args(self):
+        eleza f(p):
             dict.get()
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident)])
 
     # Test an invalid call (bpo-34126)
-    def test_unbound_method_invalid_args(self):
-        def f(p):
+    eleza test_unbound_method_invalid_args(self):
+        eleza f(p):
             dict.get(print, 42)
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident)])
 
     # Test an invalid call (bpo-34125)
-    def test_unbound_method_no_keyword_args(self):
+    eleza test_unbound_method_no_keyword_args(self):
         kwargs = {}
-        def f(p):
+        eleza f(p):
             dict.get(**kwargs)
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident)])
 
     # Test an invalid call (bpo-34125)
-    def test_unbound_method_invalid_keyword_args(self):
+    eleza test_unbound_method_invalid_keyword_args(self):
         kwargs = {}
-        def f(p):
+        eleza f(p):
             dict.get(print, 42, **kwargs)
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident)])
 
 
-def ident(function):
-    if hasattr(function, "f_code"):
+eleza ident(function):
+    ikiwa hasattr(function, "f_code"):
         code = function.f_code
     else:
         code = function.__code__
-    return code.co_firstlineno, code.co_name
+    rudisha code.co_firstlineno, code.co_name
 
 
-def protect(f, p):
+eleza protect(f, p):
     try: f(p)
     except: pass
 
 protect_ident = ident(protect)
 
 
-def capture_events(callable, p=None):
-    if p is None:
+eleza capture_events(callable, p=None):
+    ikiwa p is None:
         p = HookWatcher()
     # Disable the garbage collector. This prevents __del__s kutoka showing up in
     # traces.
@@ -405,15 +405,15 @@ def capture_events(callable, p=None):
         protect(callable, p)
         sys.setprofile(None)
     finally:
-        if old_gc:
+        ikiwa old_gc:
             gc.enable()
-    return p.get_events()[1:-1]
+    rudisha p.get_events()[1:-1]
 
 
-def show_events(callable):
+eleza show_events(callable):
     agiza pprint
-    pprint.pprint(capture_events(callable))
+    pprint.pandika(capture_events(callable))
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

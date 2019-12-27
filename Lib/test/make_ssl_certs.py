@@ -107,9 +107,9 @@ req_template = """
 here = os.path.abspath(os.path.dirname(__file__))
 
 
-def make_cert_key(hostname, sign=False, extra_san='',
+eleza make_cert_key(hostname, sign=False, extra_san='',
                   ext='req_x509_extensions_full', key='rsa:3072'):
-    print("creating cert for " + hostname)
+    andika("creating cert for " + hostname)
     tempnames = []
     for i in range(3):
         with tempfile.NamedTemporaryFile(delete=False) as f:
@@ -123,7 +123,7 @@ def make_cert_key(hostname, sign=False, extra_san='',
                 '-newkey', key, '-keyout', key_file,
                 '-extensions', ext,
                 '-config', req_file]
-        if sign:
+        ikiwa sign:
             with tempfile.NamedTemporaryFile(delete=False) as f:
                 tempnames.append(f.name)
                 reqfile = f.name
@@ -133,7 +133,7 @@ def make_cert_key(hostname, sign=False, extra_san='',
             args += ['-x509', '-out', cert_file ]
         check_call(['openssl'] + args)
 
-        if sign:
+        ikiwa sign:
             args = [
                 'ca',
                 '-config', req_file,
@@ -150,17 +150,17 @@ def make_cert_key(hostname, sign=False, extra_san='',
             cert = f.read()
         with open(key_file, 'r') as f:
             key = f.read()
-        return cert, key
+        rudisha cert, key
     finally:
         for name in tempnames:
             os.remove(name)
 
 TMP_CADIR = 'cadir'
 
-def unmake_ca():
+eleza unmake_ca():
     shutil.rmtree(TMP_CADIR)
 
-def make_ca():
+eleza make_ca():
     os.mkdir(TMP_CADIR)
     with open(os.path.join('cadir','index.txt'),'a+') as f:
         pass # empty file
@@ -193,19 +193,19 @@ def make_ca():
     shutil.copy('capath/ceff1710.0', 'capath/b1930218.0')
 
 
-def print_cert(path):
+eleza print_cert(path):
     agiza _ssl
-    pprint.pprint(_ssl._test_decode_cert(path))
+    pprint.pandika(_ssl._test_decode_cert(path))
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     os.chdir(here)
     cert, key = make_cert_key('localhost', ext='req_x509_extensions_simple')
     with open('ssl_cert.pem', 'w') as f:
         f.write(cert)
     with open('ssl_key.pem', 'w') as f:
         f.write(key)
-    print("password protecting ssl_key.pem in ssl_key.passwd.pem")
+    andika("password protecting ssl_key.pem in ssl_key.passwd.pem")
     check_call(['openssl','pkey','-in','ssl_key.pem','-out','ssl_key.passwd.pem','-aes256','-passout','pass:somepass'])
     check_call(['openssl','pkey','-in','ssl_key.pem','-out','keycert.passwd.pem','-aes256','-passout','pass:somepass'])
 
@@ -277,6 +277,6 @@ if __name__ == '__main__':
         f.write(cert)
 
     unmake_ca()
-    print("update Lib/test/test_ssl.py and Lib/test/test_asyncio/util.py")
+    andika("update Lib/test/test_ssl.py and Lib/test/test_asyncio/util.py")
     print_cert('keycert.pem')
     print_cert('keycert3.pem')

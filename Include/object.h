@@ -16,13 +16,13 @@ the use of objects to ensure they are properly garbage-collected.
 Objects are never allocated statically or on the stack; they must be
 accessed through special macros and functions only.  (Type objects are
 exceptions to the first rule; the standard types are represented by
-statically initialized type objects, although work on type/class unification
+statically initialized type objects, although work on type/kundi unification
 for Python 2.2 made it possible to have heap-allocated type objects too).
 
 An object has a 'reference count' that is increased or decreased when a
 pointer to the object is copied or deleted; when the reference count
 reaches zero there are no references to the object left and it can be
-removed from the heap.
+removed kutoka the heap.
 
 An object has a 'type' that determines what it represents and what kind
 of data it contains.  An object's type is fixed when it is created.
@@ -420,7 +420,7 @@ PyAPI_FUNC(void) _Py_dec_count(struct _typeobject *);
 #endif /* COUNT_ALLOCS */
 
 /* Update the Python traceback of an object. This function must be called
-   when a memory block is reused from a free list. */
+   when a memory block is reused kutoka a free list. */
 PyAPI_FUNC(int) _PyTraceMalloc_NewReference(PyObject *op);
 
 #ifdef Py_TRACE_REFS
@@ -560,7 +560,7 @@ Don't forget to apply Py_INCREF() when returning this value!!!
 PyAPI_DATA(PyObject) _Py_NoneStruct; /* Don't use this directly */
 #define Py_None (&_Py_NoneStruct)
 
-/* Macro for returning Py_None from a function */
+/* Macro for returning Py_None kutoka a function */
 #define Py_RETURN_NONE return Py_INCREF(Py_None), Py_None
 
 /*
@@ -570,7 +570,7 @@ not implemented for a given type combination.
 PyAPI_DATA(PyObject) _Py_NotImplementedStruct; /* Don't use this directly */
 #define Py_NotImplemented (&_Py_NotImplementedStruct)
 
-/* Macro for returning Py_NotImplemented from a function */
+/* Macro for returning Py_NotImplemented kutoka a function */
 #define Py_RETURN_NOTIMPLEMENTED \
     return Py_INCREF(Py_NotImplemented), Py_NotImplemented
 
@@ -677,7 +677,7 @@ mytype_dealloc(mytype *p)
     Py_TRASHCAN_END                // there should be no code after this
 }
 
-CAUTION:  Never return from the middle of the body!  If the body needs to
+CAUTION:  Never return kutoka the middle of the body!  If the body needs to
 "get out early", put a label immediately before the Py_TRASHCAN_END
 call, and goto it.  Else the call-depth counter (see below) will stay
 above 0 forever, and the trashcan will never get emptied.
@@ -695,9 +695,9 @@ may have been added to the list of deferred deallocations.  In effect, a
 chain of N deallocations is broken into (N-1)/(PyTrash_UNWIND_LEVEL-1) pieces,
 with the call stack never exceeding a depth of PyTrash_UNWIND_LEVEL.
 
-Since the tp_dealloc of a subclass typically calls the tp_dealloc of the base
+Since the tp_dealloc of a subkundi typically calls the tp_dealloc of the base
 class, we need to ensure that the trashcan is only triggered on the tp_dealloc
-of the actual class being deallocated. Otherwise we might end up with a
+of the actual kundi being deallocated. Otherwise we might end up with a
 partially-deallocated object. To check this, the tp_dealloc function must be
 passed as second argument to Py_TRASHCAN_BEGIN().
 */

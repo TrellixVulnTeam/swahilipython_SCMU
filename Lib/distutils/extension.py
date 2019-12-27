@@ -195,36 +195,36 @@ def read_setup_file(filename):
                     # or leave it up to the CCompiler implementation to
                     # worry about?
                     ext.sources.append(word)
-                elif switch == "-I":
+                lasivyo switch == "-I":
                     ext.include_dirs.append(value)
-                elif switch == "-D":
+                lasivyo switch == "-D":
                     equals = value.find("=")
                     if equals == -1:        # bare "-DFOO" -- no value
                         ext.define_macros.append((value, None))
                     else:                   # "-DFOO=blah"
                         ext.define_macros.append((value[0:equals],
                                                   value[equals+2:]))
-                elif switch == "-U":
+                lasivyo switch == "-U":
                     ext.undef_macros.append(value)
-                elif switch == "-C":        # only here 'cause makesetup has it!
+                lasivyo switch == "-C":        # only here 'cause makesetup has it!
                     ext.extra_compile_args.append(word)
-                elif switch == "-l":
+                lasivyo switch == "-l":
                     ext.libraries.append(value)
-                elif switch == "-L":
+                lasivyo switch == "-L":
                     ext.library_dirs.append(value)
-                elif switch == "-R":
+                lasivyo switch == "-R":
                     ext.runtime_library_dirs.append(value)
-                elif word == "-rpath":
+                lasivyo word == "-rpath":
                     append_next_word = ext.runtime_library_dirs
-                elif word == "-Xlinker":
+                lasivyo word == "-Xlinker":
                     append_next_word = ext.extra_link_args
-                elif word == "-Xcompiler":
+                lasivyo word == "-Xcompiler":
                     append_next_word = ext.extra_compile_args
-                elif switch == "-u":
+                lasivyo switch == "-u":
                     ext.extra_link_args.append(word)
                     if not value:
                         append_next_word = ext.extra_link_args
-                elif suffix in (".a", ".so", ".sl", ".o", ".dylib"):
+                lasivyo suffix in (".a", ".so", ".sl", ".o", ".dylib"):
                     # NB. a really faithful emulation of makesetup would
                     # append a .o file to extra_objects only if it
                     # had a slash in it; otherwise, it would s/.o/.c/

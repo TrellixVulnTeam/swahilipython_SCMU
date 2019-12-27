@@ -6,7 +6,7 @@
 
 .. testsetup::
 
-   from math import fsum
+   kutoka math agiza fsum
 
 --------------
 
@@ -14,7 +14,7 @@ This module provides access to the mathematical functions defined by the C
 standard.
 
 These functions cannot be used with complex numbers; use the functions of the
-same name from the :mod:`cmath` module if you require support for complex
+same name kutoka the :mod:`cmath` module if you require support for complex
 numbers.  The distinction between functions which support complex numbers and
 those which don't is made since most users do not want to learn quite as much
 mathematics as required to understand complex numbers.  Receiving an exception
@@ -38,7 +38,7 @@ Number-theoretic and representation functions
 
 .. function:: comb(n, k)
 
-   Return the number of ways to choose *k* items from *n* items without repetition
+   Return the number of ways to choose *k* items kutoka *n* items without repetition
    and without order.
 
    Evaluates to ``n! / (k! * (n - k)!)`` when ``k <= n`` and evaluates
@@ -212,7 +212,7 @@ Number-theoretic and representation functions
 
 .. function:: perm(n, k=None)
 
-   Return the number of ways to choose *k* items from *n* items
+   Return the number of ways to choose *k* items kutoka *n* items
    without repetition and with order.
 
    Evaluates to ``n! / (n - k)!`` when ``k <= n`` and evaluates
@@ -297,7 +297,7 @@ Power and logarithmic functions
    <https://en.wikipedia.org/wiki/Loss_of_significance>`_\; the :func:`expm1`
    function provides a way to compute this quantity to full precision::
 
-      >>> from math import exp, expm1
+      >>> kutoka math agiza exp, expm1
       >>> exp(1e-5) - 1  # gives result accurate to 11 places
       1.0000050000069649e-05
       >>> expm1(1e-5)    # result accurate to full precision
@@ -379,7 +379,7 @@ Trigonometric functions
 .. function:: atan2(y, x)
 
    Return ``atan(y / x)``, in radians. The result is between ``-pi`` and ``pi``.
-   The vector in the plane from the origin to point ``(x, y)`` makes this angle
+   The vector in the plane kutoka the origin to point ``(x, y)`` makes this angle
    with the positive X axis. The point of :func:`atan2` is that the signs of both
    inputs are known to it, so it can compute the correct quadrant for the angle.
    For example, ``atan(1)`` and ``atan2(1, 1)`` are both ``pi/4``, but ``atan2(-1,
@@ -407,7 +407,7 @@ Trigonometric functions
 .. function:: hypot(*coordinates)
 
    Return the Euclidean norm, ``sqrt(sum(x**2 for x in coordinates))``.
-   This is the length of the vector from the origin to the point
+   This is the length of the vector kutoka the origin to the point
    given by the coordinates.
 
    For a two dimensional point ``(x, y)``, this is equivalent to computing
@@ -434,12 +434,12 @@ Angular conversion
 
 .. function:: degrees(x)
 
-   Convert angle *x* from radians to degrees.
+   Convert angle *x* kutoka radians to degrees.
 
 
 .. function:: radians(x)
 
-   Convert angle *x* from degrees to radians.
+   Convert angle *x* kutoka degrees to radians.
 
 
 Hyperbolic functions
@@ -503,7 +503,7 @@ Special functions
    Return the complementary error function at *x*.  The `complementary error
    function <https://en.wikipedia.org/wiki/Error_function>`_ is defined as
    ``1.0 - erf(x)``.  It is used for large values of *x* where a subtraction
-   from one would cause a `loss of significance
+   kutoka one would cause a `loss of significance
    <https://en.wikipedia.org/wiki/Loss_of_significance>`_\.
 
    .. versionadded:: 3.2
@@ -573,13 +573,13 @@ Constants
    :exc:`ValueError` for invalid operations like ``sqrt(-1.0)`` or ``log(0.0)``
    (where C99 Annex F recommends signaling invalid operation or divide-by-zero),
    and :exc:`OverflowError` for results that overflow (for example,
-   ``exp(1000.0)``).  A NaN will not be returned from any of the functions
+   ``exp(1000.0)``).  A NaN will not be returned kutoka any of the functions
    above unless one or more of the input arguments was a NaN; in that case,
    most functions will return a NaN, but (again following C99 Annex F) there
    are some exceptions to this rule, for example ``pow(float('nan'), 0.0)`` or
    ``hypot(float('nan'), float('inf'))``.
 
-   Note that Python makes no effort to distinguish signaling NaNs from
+   Note that Python makes no effort to distinguish signaling NaNs kutoka
    quiet NaNs, and behavior for signaling NaNs remains unspecified.
    Typical behavior is to treat all NaNs as though they were quiet.
 

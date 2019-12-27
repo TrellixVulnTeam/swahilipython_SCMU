@@ -29,20 +29,20 @@ kutoka ..pgen2.parse agiza ParseError
 kutoka lib2to3.pygram agiza python_symbols as syms
 
 
-class TestDriver(support.TestCase):
+kundi TestDriver(support.TestCase):
 
-    def test_formfeed(self):
+    eleza test_formfeed(self):
         s = """print 1\n\x0Cprint 2\n"""
         t = driver.parse_string(s)
         self.assertEqual(t.children[0].children[0].type, syms.print_stmt)
         self.assertEqual(t.children[1].children[0].type, syms.print_stmt)
 
 
-class TestPgen2Caching(support.TestCase):
-    def test_load_grammar_from_txt_file(self):
+kundi TestPgen2Caching(support.TestCase):
+    eleza test_load_grammar_kutoka_txt_file(self):
         pgen2_driver.load_grammar(support.grammar_path, save=False, force=True)
 
-    def test_load_grammar_from_pickle(self):
+    eleza test_load_grammar_kutoka_pickle(self):
         # Make a copy of the grammar file in a temp directory we are
         # guaranteed to be able to write to.
         tmpdir = tempfile.mkdtemp()
@@ -61,7 +61,7 @@ class TestPgen2Caching(support.TestCase):
             shutil.rmtree(tmpdir)
 
     @unittest.skipIf(sys.executable is None, 'sys.executable required')
-    def test_load_grammar_from_subprocess(self):
+    eleza test_load_grammar_kutoka_subprocess(self):
         tmpdir = tempfile.mkdtemp()
         tmpsubdir = os.path.join(tmpdir, 'subdir')
         try:
@@ -101,25 +101,25 @@ pgen2_driver.load_grammar(%r, save=True, force=True)
         finally:
             shutil.rmtree(tmpdir)
 
-    def test_load_packaged_grammar(self):
+    eleza test_load_packaged_grammar(self):
         modname = __name__ + '.load_test'
-        class MyLoader:
-            def get_data(self, where):
-                return pickle.dumps({'elephant': 19})
-        class MyModule:
+        kundi MyLoader:
+            eleza get_data(self, where):
+                rudisha pickle.dumps({'elephant': 19})
+        kundi MyModule:
             __file__ = 'parsertestmodule'
-            __spec__ = importlib.util.spec_from_loader(modname, MyLoader())
+            __spec__ = importlib.util.spec_kutoka_loader(modname, MyLoader())
         sys.modules[modname] = MyModule()
         self.addCleanup(operator.delitem, sys.modules, modname)
         g = pgen2_driver.load_packaged_grammar(modname, 'Grammar.txt')
         self.assertEqual(g.elephant, 19)
 
 
-class GrammarTest(support.TestCase):
-    def validate(self, code):
+kundi GrammarTest(support.TestCase):
+    eleza validate(self, code):
         support.parse_string(code)
 
-    def invalid_syntax(self, code):
+    eleza invalid_syntax(self, code):
         try:
             self.validate(code)
         except ParseError:
@@ -128,255 +128,255 @@ class GrammarTest(support.TestCase):
             raise AssertionError("Syntax shouldn't have been valid")
 
 
-class TestMatrixMultiplication(GrammarTest):
-    def test_matrix_multiplication_operator(self):
+kundi TestMatrixMultiplication(GrammarTest):
+    eleza test_matrix_multiplication_operator(self):
         self.validate("a @ b")
         self.validate("a @= b")
 
 
-class TestYieldFrom(GrammarTest):
-    def test_yield_from(self):
+kundi TestYieldFrom(GrammarTest):
+    eleza test_yield_kutoka(self):
         self.validate("yield kutoka x")
         self.validate("(yield kutoka x) + y")
         self.invalid_syntax("yield kutoka")
 
 
-class TestAsyncAwait(GrammarTest):
-    def test_await_expr(self):
-        self.validate("""async def foo():
+kundi TestAsyncAwait(GrammarTest):
+    eleza test_await_expr(self):
+        self.validate("""async eleza foo():
                              await x
                       """)
 
-        self.validate("""async def foo():
+        self.validate("""async eleza foo():
                              [i async for i in b]
                       """)
 
-        self.validate("""async def foo():
+        self.validate("""async eleza foo():
                              {i for i in b
-                                async for i in a if await i
+                                async for i in a ikiwa await i
                                   for b in i}
                       """)
 
-        self.validate("""async def foo():
-                             [await i for i in b if await c]
+        self.validate("""async eleza foo():
+                             [await i for i in b ikiwa await c]
                       """)
 
-        self.validate("""async def foo():
-                             [ i for i in b if c]
+        self.validate("""async eleza foo():
+                             [ i for i in b ikiwa c]
                       """)
 
-        self.validate("""async def foo():
+        self.validate("""async eleza foo():
 
-            def foo(): pass
+            eleza foo(): pass
 
-            def foo(): pass
+            eleza foo(): pass
 
             await x
         """)
 
-        self.validate("""async def foo(): return await a""")
+        self.validate("""async eleza foo(): rudisha await a""")
 
-        self.validate("""def foo():
-            def foo(): pass
-            async def foo(): await x
+        self.validate("""eleza foo():
+            eleza foo(): pass
+            async eleza foo(): await x
         """)
 
         self.invalid_syntax("await x")
-        self.invalid_syntax("""def foo():
+        self.invalid_syntax("""eleza foo():
                                    await x""")
 
-        self.invalid_syntax("""def foo():
-            def foo(): pass
-            async def foo(): pass
+        self.invalid_syntax("""eleza foo():
+            eleza foo(): pass
+            async eleza foo(): pass
             await x
         """)
 
-    def test_async_var(self):
+    eleza test_async_var(self):
         self.validate("""async = 1""")
         self.validate("""await = 1""")
-        self.validate("""def async(): pass""")
+        self.validate("""eleza async(): pass""")
 
-    def test_async_with(self):
-        self.validate("""async def foo():
+    eleza test_async_with(self):
+        self.validate("""async eleza foo():
                              async for a in b: pass""")
 
-        self.invalid_syntax("""def foo():
+        self.invalid_syntax("""eleza foo():
                                    async for a in b: pass""")
 
-    def test_async_for(self):
-        self.validate("""async def foo():
+    eleza test_async_for(self):
+        self.validate("""async eleza foo():
                              async with a: pass""")
 
-        self.invalid_syntax("""def foo():
+        self.invalid_syntax("""eleza foo():
                                    async with a: pass""")
 
 
-class TestRaiseChanges(GrammarTest):
-    def test_2x_style_1(self):
+kundi TestRaiseChanges(GrammarTest):
+    eleza test_2x_style_1(self):
         self.validate("raise")
 
-    def test_2x_style_2(self):
+    eleza test_2x_style_2(self):
         self.validate("raise E, V")
 
-    def test_2x_style_3(self):
+    eleza test_2x_style_3(self):
         self.validate("raise E, V, T")
 
-    def test_2x_style_invalid_1(self):
+    eleza test_2x_style_invalid_1(self):
         self.invalid_syntax("raise E, V, T, Z")
 
-    def test_3x_style(self):
+    eleza test_3x_style(self):
         self.validate("raise E1 kutoka E2")
 
-    def test_3x_style_invalid_1(self):
+    eleza test_3x_style_invalid_1(self):
         self.invalid_syntax("raise E, V kutoka E1")
 
-    def test_3x_style_invalid_2(self):
+    eleza test_3x_style_invalid_2(self):
         self.invalid_syntax("raise E kutoka E1, E2")
 
-    def test_3x_style_invalid_3(self):
+    eleza test_3x_style_invalid_3(self):
         self.invalid_syntax("raise kutoka E1, E2")
 
-    def test_3x_style_invalid_4(self):
+    eleza test_3x_style_invalid_4(self):
         self.invalid_syntax("raise E kutoka")
 
 
-# Modelled after Lib/test/test_grammar.py:TokenTests.test_funcdef issue2292
+# Modelled after Lib/test/test_grammar.py:TokenTests.test_funceleza issue2292
 # and Lib/test/text_parser.py test_list_displays, test_set_displays,
 # test_dict_displays, test_argument_unpacking, ... changes.
-class TestUnpackingGeneralizations(GrammarTest):
-    def test_mid_positional_star(self):
+kundi TestUnpackingGeneralizations(GrammarTest):
+    eleza test_mid_positional_star(self):
         self.validate("""func(1, *(2, 3), 4)""")
 
-    def test_double_star_dict_literal(self):
+    eleza test_double_star_dict_literal(self):
         self.validate("""func(**{'eggs':'scrambled', 'spam':'fried'})""")
 
-    def test_double_star_dict_literal_after_keywords(self):
+    eleza test_double_star_dict_literal_after_keywords(self):
         self.validate("""func(spam='fried', **{'eggs':'scrambled'})""")
 
-    def test_list_display(self):
+    eleza test_list_display(self):
         self.validate("""[*{2}, 3, *[4]]""")
 
-    def test_set_display(self):
+    eleza test_set_display(self):
         self.validate("""{*{2}, 3, *[4]}""")
 
-    def test_dict_display_1(self):
+    eleza test_dict_display_1(self):
         self.validate("""{**{}}""")
 
-    def test_dict_display_2(self):
+    eleza test_dict_display_2(self):
         self.validate("""{**{}, 3:4, **{5:6, 7:8}}""")
 
-    def test_argument_unpacking_1(self):
+    eleza test_argument_unpacking_1(self):
         self.validate("""f(a, *b, *c, d)""")
 
-    def test_argument_unpacking_2(self):
+    eleza test_argument_unpacking_2(self):
         self.validate("""f(**a, **b)""")
 
-    def test_argument_unpacking_3(self):
+    eleza test_argument_unpacking_3(self):
         self.validate("""f(2, *a, *b, **b, **c, **d)""")
 
-    def test_trailing_commas_1(self):
-        self.validate("def f(a, b): call(a, b)")
-        self.validate("def f(a, b,): call(a, b,)")
+    eleza test_trailing_commas_1(self):
+        self.validate("eleza f(a, b): call(a, b)")
+        self.validate("eleza f(a, b,): call(a, b,)")
 
-    def test_trailing_commas_2(self):
-        self.validate("def f(a, *b): call(a, *b)")
-        self.validate("def f(a, *b,): call(a, *b,)")
+    eleza test_trailing_commas_2(self):
+        self.validate("eleza f(a, *b): call(a, *b)")
+        self.validate("eleza f(a, *b,): call(a, *b,)")
 
-    def test_trailing_commas_3(self):
-        self.validate("def f(a, b=1): call(a, b=1)")
-        self.validate("def f(a, b=1,): call(a, b=1,)")
+    eleza test_trailing_commas_3(self):
+        self.validate("eleza f(a, b=1): call(a, b=1)")
+        self.validate("eleza f(a, b=1,): call(a, b=1,)")
 
-    def test_trailing_commas_4(self):
-        self.validate("def f(a, **b): call(a, **b)")
-        self.validate("def f(a, **b,): call(a, **b,)")
+    eleza test_trailing_commas_4(self):
+        self.validate("eleza f(a, **b): call(a, **b)")
+        self.validate("eleza f(a, **b,): call(a, **b,)")
 
-    def test_trailing_commas_5(self):
-        self.validate("def f(*a, b=1): call(*a, b=1)")
-        self.validate("def f(*a, b=1,): call(*a, b=1,)")
+    eleza test_trailing_commas_5(self):
+        self.validate("eleza f(*a, b=1): call(*a, b=1)")
+        self.validate("eleza f(*a, b=1,): call(*a, b=1,)")
 
-    def test_trailing_commas_6(self):
-        self.validate("def f(*a, **b): call(*a, **b)")
-        self.validate("def f(*a, **b,): call(*a, **b,)")
+    eleza test_trailing_commas_6(self):
+        self.validate("eleza f(*a, **b): call(*a, **b)")
+        self.validate("eleza f(*a, **b,): call(*a, **b,)")
 
-    def test_trailing_commas_7(self):
-        self.validate("def f(*, b=1): call(*b)")
-        self.validate("def f(*, b=1,): call(*b,)")
+    eleza test_trailing_commas_7(self):
+        self.validate("eleza f(*, b=1): call(*b)")
+        self.validate("eleza f(*, b=1,): call(*b,)")
 
-    def test_trailing_commas_8(self):
-        self.validate("def f(a=1, b=2): call(a=1, b=2)")
-        self.validate("def f(a=1, b=2,): call(a=1, b=2,)")
+    eleza test_trailing_commas_8(self):
+        self.validate("eleza f(a=1, b=2): call(a=1, b=2)")
+        self.validate("eleza f(a=1, b=2,): call(a=1, b=2,)")
 
-    def test_trailing_commas_9(self):
-        self.validate("def f(a=1, **b): call(a=1, **b)")
-        self.validate("def f(a=1, **b,): call(a=1, **b,)")
+    eleza test_trailing_commas_9(self):
+        self.validate("eleza f(a=1, **b): call(a=1, **b)")
+        self.validate("eleza f(a=1, **b,): call(a=1, **b,)")
 
-    def test_trailing_commas_lambda_1(self):
+    eleza test_trailing_commas_lambda_1(self):
         self.validate("f = lambda a, b: call(a, b)")
         self.validate("f = lambda a, b,: call(a, b,)")
 
-    def test_trailing_commas_lambda_2(self):
+    eleza test_trailing_commas_lambda_2(self):
         self.validate("f = lambda a, *b: call(a, *b)")
         self.validate("f = lambda a, *b,: call(a, *b,)")
 
-    def test_trailing_commas_lambda_3(self):
+    eleza test_trailing_commas_lambda_3(self):
         self.validate("f = lambda a, b=1: call(a, b=1)")
         self.validate("f = lambda a, b=1,: call(a, b=1,)")
 
-    def test_trailing_commas_lambda_4(self):
+    eleza test_trailing_commas_lambda_4(self):
         self.validate("f = lambda a, **b: call(a, **b)")
         self.validate("f = lambda a, **b,: call(a, **b,)")
 
-    def test_trailing_commas_lambda_5(self):
+    eleza test_trailing_commas_lambda_5(self):
         self.validate("f = lambda *a, b=1: call(*a, b=1)")
         self.validate("f = lambda *a, b=1,: call(*a, b=1,)")
 
-    def test_trailing_commas_lambda_6(self):
+    eleza test_trailing_commas_lambda_6(self):
         self.validate("f = lambda *a, **b: call(*a, **b)")
         self.validate("f = lambda *a, **b,: call(*a, **b,)")
 
-    def test_trailing_commas_lambda_7(self):
+    eleza test_trailing_commas_lambda_7(self):
         self.validate("f = lambda *, b=1: call(*b)")
         self.validate("f = lambda *, b=1,: call(*b,)")
 
-    def test_trailing_commas_lambda_8(self):
+    eleza test_trailing_commas_lambda_8(self):
         self.validate("f = lambda a=1, b=2: call(a=1, b=2)")
         self.validate("f = lambda a=1, b=2,: call(a=1, b=2,)")
 
-    def test_trailing_commas_lambda_9(self):
+    eleza test_trailing_commas_lambda_9(self):
         self.validate("f = lambda a=1, **b: call(a=1, **b)")
         self.validate("f = lambda a=1, **b,: call(a=1, **b,)")
 
 
 # Adapted kutoka Python 3's Lib/test/test_grammar.py:GrammarTests.testFuncdef
-class TestFunctionAnnotations(GrammarTest):
-    def test_1(self):
-        self.validate("""def f(x) -> list: pass""")
+kundi TestFunctionAnnotations(GrammarTest):
+    eleza test_1(self):
+        self.validate("""eleza f(x) -> list: pass""")
 
-    def test_2(self):
-        self.validate("""def f(x:int): pass""")
+    eleza test_2(self):
+        self.validate("""eleza f(x:int): pass""")
 
-    def test_3(self):
-        self.validate("""def f(*x:str): pass""")
+    eleza test_3(self):
+        self.validate("""eleza f(*x:str): pass""")
 
-    def test_4(self):
-        self.validate("""def f(**x:float): pass""")
+    eleza test_4(self):
+        self.validate("""eleza f(**x:float): pass""")
 
-    def test_5(self):
-        self.validate("""def f(x, y:1+2): pass""")
+    eleza test_5(self):
+        self.validate("""eleza f(x, y:1+2): pass""")
 
-    def test_6(self):
-        self.validate("""def f(a, (b:1, c:2, d)): pass""")
+    eleza test_6(self):
+        self.validate("""eleza f(a, (b:1, c:2, d)): pass""")
 
-    def test_7(self):
-        self.validate("""def f(a, (b:1, c:2, d), e:3=4, f=5, *g:6): pass""")
+    eleza test_7(self):
+        self.validate("""eleza f(a, (b:1, c:2, d), e:3=4, f=5, *g:6): pass""")
 
-    def test_8(self):
-        s = """def f(a, (b:1, c:2, d), e:3=4, f=5,
+    eleza test_8(self):
+        s = """eleza f(a, (b:1, c:2, d), e:3=4, f=5,
                         *g:6, h:7, i=8, j:9=10, **k:11) -> 12: pass"""
         self.validate(s)
 
-    def test_9(self):
-        s = """def f(
+    eleza test_9(self):
+        s = """eleza f(
           a: str,
           b: int,
           *,
@@ -386,97 +386,97 @@ class TestFunctionAnnotations(GrammarTest):
             call(c=c, **kwargs,)"""
         self.validate(s)
 
-    def test_10(self):
-        s = """def f(
+    eleza test_10(self):
+        s = """eleza f(
           a: str,
         ) -> None:
             call(a,)"""
         self.validate(s)
 
-    def test_11(self):
-        s = """def f(
+    eleza test_11(self):
+        s = """eleza f(
           a: str = '',
         ) -> None:
             call(a=a,)"""
         self.validate(s)
 
-    def test_12(self):
-        s = """def f(
+    eleza test_12(self):
+        s = """eleza f(
           *args: str,
         ) -> None:
             call(*args,)"""
         self.validate(s)
 
-    def test_13(self):
-        self.validate("def f(a: str, b: int) -> None: call(a, b)")
-        self.validate("def f(a: str, b: int,) -> None: call(a, b,)")
+    eleza test_13(self):
+        self.validate("eleza f(a: str, b: int) -> None: call(a, b)")
+        self.validate("eleza f(a: str, b: int,) -> None: call(a, b,)")
 
-    def test_14(self):
-        self.validate("def f(a: str, *b: int) -> None: call(a, *b)")
-        self.validate("def f(a: str, *b: int,) -> None: call(a, *b,)")
+    eleza test_14(self):
+        self.validate("eleza f(a: str, *b: int) -> None: call(a, *b)")
+        self.validate("eleza f(a: str, *b: int,) -> None: call(a, *b,)")
 
-    def test_15(self):
-        self.validate("def f(a: str, b: int=1) -> None: call(a, b=1)")
-        self.validate("def f(a: str, b: int=1,) -> None: call(a, b=1,)")
+    eleza test_15(self):
+        self.validate("eleza f(a: str, b: int=1) -> None: call(a, b=1)")
+        self.validate("eleza f(a: str, b: int=1,) -> None: call(a, b=1,)")
 
-    def test_16(self):
-        self.validate("def f(a: str, **b: int) -> None: call(a, **b)")
-        self.validate("def f(a: str, **b: int,) -> None: call(a, **b,)")
+    eleza test_16(self):
+        self.validate("eleza f(a: str, **b: int) -> None: call(a, **b)")
+        self.validate("eleza f(a: str, **b: int,) -> None: call(a, **b,)")
 
-    def test_17(self):
-        self.validate("def f(*a: str, b: int=1) -> None: call(*a, b=1)")
-        self.validate("def f(*a: str, b: int=1,) -> None: call(*a, b=1,)")
+    eleza test_17(self):
+        self.validate("eleza f(*a: str, b: int=1) -> None: call(*a, b=1)")
+        self.validate("eleza f(*a: str, b: int=1,) -> None: call(*a, b=1,)")
 
-    def test_18(self):
-        self.validate("def f(*a: str, **b: int) -> None: call(*a, **b)")
-        self.validate("def f(*a: str, **b: int,) -> None: call(*a, **b,)")
+    eleza test_18(self):
+        self.validate("eleza f(*a: str, **b: int) -> None: call(*a, **b)")
+        self.validate("eleza f(*a: str, **b: int,) -> None: call(*a, **b,)")
 
-    def test_19(self):
-        self.validate("def f(*, b: int=1) -> None: call(*b)")
-        self.validate("def f(*, b: int=1,) -> None: call(*b,)")
+    eleza test_19(self):
+        self.validate("eleza f(*, b: int=1) -> None: call(*b)")
+        self.validate("eleza f(*, b: int=1,) -> None: call(*b,)")
 
-    def test_20(self):
-        self.validate("def f(a: str='', b: int=2) -> None: call(a=a, b=2)")
-        self.validate("def f(a: str='', b: int=2,) -> None: call(a=a, b=2,)")
+    eleza test_20(self):
+        self.validate("eleza f(a: str='', b: int=2) -> None: call(a=a, b=2)")
+        self.validate("eleza f(a: str='', b: int=2,) -> None: call(a=a, b=2,)")
 
-    def test_21(self):
-        self.validate("def f(a: str='', **b: int) -> None: call(a=a, **b)")
-        self.validate("def f(a: str='', **b: int,) -> None: call(a=a, **b,)")
+    eleza test_21(self):
+        self.validate("eleza f(a: str='', **b: int) -> None: call(a=a, **b)")
+        self.validate("eleza f(a: str='', **b: int,) -> None: call(a=a, **b,)")
 
 
 # Adapted kutoka Python 3's Lib/test/test_grammar.py:GrammarTests.test_var_annot
-class TestVarAnnotations(GrammarTest):
-    def test_1(self):
+kundi TestVarAnnotations(GrammarTest):
+    eleza test_1(self):
         self.validate("var1: int = 5")
 
-    def test_2(self):
+    eleza test_2(self):
         self.validate("var2: [int, str]")
 
-    def test_3(self):
-        self.validate("def f():\n"
+    eleza test_3(self):
+        self.validate("eleza f():\n"
                       "    st: str = 'Hello'\n"
                       "    a.b: int = (1, 2)\n"
-                      "    return st\n")
+                      "    rudisha st\n")
 
-    def test_4(self):
-        self.validate("def fbad():\n"
+    eleza test_4(self):
+        self.validate("eleza fbad():\n"
                       "    x: int\n"
-                      "    print(x)\n")
+                      "    andika(x)\n")
 
-    def test_5(self):
-        self.validate("class C:\n"
+    eleza test_5(self):
+        self.validate("kundi C:\n"
                       "    x: int\n"
                       "    s: str = 'attr'\n"
                       "    z = 2\n"
-                      "    def __init__(self, x):\n"
+                      "    eleza __init__(self, x):\n"
                       "        self.x: int = x\n")
 
-    def test_6(self):
+    eleza test_6(self):
         self.validate("lst: List[int] = []")
 
 
-class TestExcept(GrammarTest):
-    def test_new(self):
+kundi TestExcept(GrammarTest):
+    eleza test_new(self):
         s = """
             try:
                 x
@@ -484,7 +484,7 @@ class TestExcept(GrammarTest):
                 y"""
         self.validate(s)
 
-    def test_old(self):
+    eleza test_old(self):
         s = """
             try:
                 x
@@ -493,7 +493,7 @@ class TestExcept(GrammarTest):
         self.validate(s)
 
 
-class TestStringLiterals(GrammarTest):
+kundi TestStringLiterals(GrammarTest):
     prefixes = ("'", '"',
         "r'", 'r"', "R'", 'R"',
         "u'", 'u"', "U'", 'U"',
@@ -506,7 +506,7 @@ class TestStringLiterals(GrammarTest):
         "rb'", 'rb"', "Rb'", 'Rb"',
         "rB'", 'rB"', "RB'", 'RB"',)
 
-    def test_lit(self):
+    eleza test_lit(self):
         for pre in self.prefixes:
             single = "{p}spamspamspam{s}".format(p=pre, s=pre[-1])
             self.validate(single)
@@ -515,54 +515,54 @@ class TestStringLiterals(GrammarTest):
 
 
 # Adapted kutoka Python 3's Lib/test/test_grammar.py:GrammarTests.testAtoms
-class TestSetLiteral(GrammarTest):
-    def test_1(self):
+kundi TestSetLiteral(GrammarTest):
+    eleza test_1(self):
         self.validate("""x = {'one'}""")
 
-    def test_2(self):
+    eleza test_2(self):
         self.validate("""x = {'one', 1,}""")
 
-    def test_3(self):
+    eleza test_3(self):
         self.validate("""x = {'one', 'two', 'three'}""")
 
-    def test_4(self):
+    eleza test_4(self):
         self.validate("""x = {2, 3, 4,}""")
 
 
 # Adapted kutoka Python 3's Lib/test/test_unicode_identifiers.py and
 # Lib/test/test_tokenize.py:TokenizeTest.test_non_ascii_identifiers
-class TestIdentfier(GrammarTest):
-    def test_non_ascii_identifiers(self):
+kundi TestIdentfier(GrammarTest):
+    eleza test_non_ascii_identifiers(self):
         self.validate("Örter = 'places'\ngrün = 'green'")
         self.validate("蟒 = a蟒 = 锦蛇 = 1")
         self.validate("µ = aµ = µµ = 1")
         self.validate("𝔘𝔫𝔦𝔠𝔬𝔡𝔢 = a_𝔘𝔫𝔦𝔠𝔬𝔡𝔢 = 1")
 
 
-class TestNumericLiterals(GrammarTest):
-    def test_new_octal_notation(self):
+kundi TestNumericLiterals(GrammarTest):
+    eleza test_new_octal_notation(self):
         self.validate("""0o7777777777777""")
         self.invalid_syntax("""0o7324528887""")
 
-    def test_new_binary_notation(self):
+    eleza test_new_binary_notation(self):
         self.validate("""0b101010""")
         self.invalid_syntax("""0b0101021""")
 
 
-class TestClassDef(GrammarTest):
-    def test_new_syntax(self):
-        self.validate("class B(t=7): pass")
-        self.validate("class B(t, *args): pass")
-        self.validate("class B(t, **kwargs): pass")
-        self.validate("class B(t, *args, **kwargs): pass")
-        self.validate("class B(t, y=9, *args, **kwargs,): pass")
+kundi TestClassDef(GrammarTest):
+    eleza test_new_syntax(self):
+        self.validate("kundi B(t=7): pass")
+        self.validate("kundi B(t, *args): pass")
+        self.validate("kundi B(t, **kwargs): pass")
+        self.validate("kundi B(t, *args, **kwargs): pass")
+        self.validate("kundi B(t, y=9, *args, **kwargs,): pass")
 
 
-class TestParserIdempotency(support.TestCase):
+kundi TestParserIdempotency(support.TestCase):
 
     """A cut-down version of pytree_idempotency.py."""
 
-    def test_all_project_files(self):
+    eleza test_all_project_files(self):
         for filepath in support.all_project_files():
             with open(filepath, "rb") as fp:
                 encoding = tokenize.detect_encoding(fp.readline)[0]
@@ -578,23 +578,23 @@ class TestParserIdempotency(support.TestCase):
                 except ParseError as err:
                     self.fail('ParseError on file %s (%s)' % (filepath, err))
             new = str(tree)
-            if new != source:
-                print(diff_texts(source, new, filepath))
+            ikiwa new != source:
+                andika(diff_texts(source, new, filepath))
                 self.fail("Idempotency failed: %s" % filepath)
 
-    def test_extended_unpacking(self):
+    eleza test_extended_unpacking(self):
         driver.parse_string("a, *b, c = x\n")
         driver.parse_string("[*a, b] = x\n")
         driver.parse_string("(z, *y, w) = m\n")
         driver.parse_string("for *z, m in d: pass\n")
 
 
-class TestLiterals(GrammarTest):
+kundi TestLiterals(GrammarTest):
 
-    def validate(self, s):
+    eleza validate(self, s):
         driver.parse_string(support.dedent(s) + "\n\n")
 
-    def test_multiline_bytes_literals(self):
+    eleza test_multiline_bytes_literals(self):
         s = """
             md5test(b"\xaa" * 80,
                     (b"Test Using Larger Than Block-Size Key "
@@ -603,7 +603,7 @@ class TestLiterals(GrammarTest):
             """
         self.validate(s)
 
-    def test_multiline_bytes_tripquote_literals(self):
+    eleza test_multiline_bytes_tripquote_literals(self):
         s = '''
             b"""
             <?xml version="1.0" encoding="UTF-8"?>
@@ -612,7 +612,7 @@ class TestLiterals(GrammarTest):
             '''
         self.validate(s)
 
-    def test_multiline_str_literals(self):
+    eleza test_multiline_str_literals(self):
         s = """
             md5test("\xaa" * 80,
                     ("Test Using Larger Than Block-Size Key "
@@ -622,8 +622,8 @@ class TestLiterals(GrammarTest):
         self.validate(s)
 
 
-class TestPickleableException(unittest.TestCase):
-    def test_ParseError(self):
+kundi TestPickleableException(unittest.TestCase):
+    eleza test_ParseError(self):
         err = ParseError('msg', 2, None, (1, 'context'))
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             err2 = pickle.loads(pickle.dumps(err, protocol=proto))
@@ -634,13 +634,13 @@ class TestPickleableException(unittest.TestCase):
             self.assertEqual(err.context, err2.context)
 
 
-def diff_texts(a, b, filename):
+eleza diff_texts(a, b, filename):
     a = a.splitlines()
     b = b.splitlines()
-    return difflib.unified_diff(a, b, filename, filename,
+    rudisha difflib.unified_diff(a, b, filename, filename,
                                 "(original)", "(reserialized)",
                                 lineterm="")
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

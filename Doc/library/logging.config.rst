@@ -35,7 +35,7 @@ in :mod:`logging` itself) and defining handlers which are declared either in
 
 .. function:: dictConfig(config)
 
-    Takes the logging configuration from a dictionary.  The contents of
+    Takes the logging configuration kutoka a dictionary.  The contents of
     this dictionary are described in :ref:`logging-config-dictschema`
     below.
 
@@ -68,7 +68,7 @@ in :mod:`logging` itself) and defining handlers which are declared either in
           def dictConfig(config):
               dictConfigClass(config).configure()
 
-    For example, a subclass of :class:`DictConfigurator` could call
+    For example, a subkundi of :class:`DictConfigurator` could call
     ``DictConfigurator.__init__()`` in its own :meth:`__init__()`, then
     set up custom prefixes which would be usable in the subsequent
     :meth:`configure` call. :attr:`dictConfigClass` would be bound to
@@ -79,19 +79,19 @@ in :mod:`logging` itself) and defining handlers which are declared either in
 
 .. function:: fileConfig(fname, defaults=None, disable_existing_loggers=True)
 
-   Reads the logging configuration from a :mod:`configparser`\-format file. The
+   Reads the logging configuration kutoka a :mod:`configparser`\-format file. The
    format of the file should be as described in
    :ref:`logging-config-fileformat`.
-   This function can be called several times from an application, allowing an
-   end user to select from various pre-canned configurations (if the developer
+   This function can be called several times kutoka an application, allowing an
+   end user to select kutoka various pre-canned configurations (if the developer
    provides a mechanism to present the choices and load the chosen
    configuration).
 
    :param fname: A filename, or a file-like object, or an instance derived
-                 from :class:`~configparser.RawConfigParser`. If a
+                 kutoka :class:`~configparser.RawConfigParser`. If a
                  ``RawConfigParser``-derived instance is passed, it is used as
                  is. Otherwise, a :class:`~configparser.Configparser` is
-                 instantiated, and the configuration read by it from the
+                 instantiated, and the configuration read by it kutoka the
                  object passed in ``fname``. If that has a :meth:`readline`
                  method, it is assumed to be a file-like object and read using
                  :meth:`~configparser.ConfigParser.read_file`; otherwise,
@@ -112,12 +112,12 @@ in :mod:`logging` itself) and defining handlers which are declared either in
                                     in the logging configuration.
 
    .. versionchanged:: 3.4
-      An instance of a subclass of :class:`~configparser.RawConfigParser` is
+      An instance of a subkundi of :class:`~configparser.RawConfigParser` is
       now accepted as a value for ``fname``. This facilitates:
 
       * Use of a configuration file where logging configuration is just part
         of the overall application configuration.
-      * Use of a configuration read from a file, and then modified by the using
+      * Use of a configuration read kutoka a file, and then modified by the using
         application (e.g. based on command-line parameters or other aspects
         of the runtime environment) before being passed to ``fileConfig``.
 
@@ -152,7 +152,7 @@ in :mod:`logging` itself) and defining handlers which are declared either in
       Because portions of the configuration are passed through
       :func:`eval`, use of this function may open its users to a security risk.
       While the function only binds to a socket on ``localhost``, and so does
-      not accept connections from remote machines, there are scenarios where
+      not accept connections kutoka remote machines, there are scenarios where
       untrusted code could be run under the account of the process which calls
       :func:`listen`. Specifically, if the process calling :func:`listen` runs
       on a multi-user machine where users cannot trust each other, then a
@@ -163,7 +163,7 @@ in :mod:`logging` itself) and defining handlers which are declared either in
       especially easy to do if the default port is used, but not hard even if a
       different port is used). To avoid the risk of this happening, use the
       ``verify`` argument to :func:`listen` to prevent unrecognised
-      configurations from being applied.
+      configurations kutoka being applied.
 
    .. versionchanged:: 3.4
       The ``verify`` argument was added.
@@ -180,7 +180,7 @@ in :mod:`logging` itself) and defining handlers which are declared either in
 .. function:: stopListening()
 
    Stops the listening server which was created with a call to :func:`listen`.
-   This is typically called before calling :meth:`join` on the return value from
+   This is typically called before calling :meth:`join` on the return value kutoka
    :func:`listen`.
 
 
@@ -263,13 +263,13 @@ otherwise, the context is used to determine what to instantiate.
 
       handlers:
         console:
-          class : logging.StreamHandler
+          kundi : logging.StreamHandler
           formatter: brief
           level   : INFO
           filters: [allow_foo]
           stream  : ext://sys.stdout
         file:
-          class : logging.handlers.RotatingFileHandler
+          kundi : logging.handlers.RotatingFileHandler
           formatter: precise
           filename: logconfig.log
           maxBytes: 1024
@@ -419,13 +419,13 @@ schema for user-defined logger classes.)
 
 Objects to be configured are described by dictionaries
 which detail their configuration.  In some places, the logging system
-will be able to infer from the context how an object is to be
+will be able to infer kutoka the context how an object is to be
 instantiated, but when a user-defined object is to be instantiated,
 the system will not know how to do this.  In order to provide complete
 flexibility for user-defined object instantiation, the user needs
 to provide a 'factory' - a callable which is called with a
 configuration dictionary and which returns the instantiated object.
-This is signalled by an absolute import path to the factory being
+This is signalled by an absolute agiza path to the factory being
 made available under the special key ``'()'``.  Here's a concrete
 example:
 
@@ -463,7 +463,7 @@ and::
     }
 
 respectively, and as these dictionaries do not contain the special key
-``'()'``, the instantiation is inferred from the context: as a result,
+``'()'``, the instantiation is inferred kutoka the context: as a result,
 standard :class:`logging.Formatter` instances are created.  The
 configuration sub-dictionary for the third formatter, with id
 ``custom``, is::
@@ -479,7 +479,7 @@ and this contains the special key ``'()'``, which means that
 user-defined instantiation is wanted.  In this case, the specified
 factory callable will be used. If it is an actual callable it will be
 used directly - otherwise, if you specify a string (as in the example)
-the actual callable will be located using normal import mechanisms.
+the actual callable will be located using normal agiza mechanisms.
 The callable will be called with the **remaining** items in the
 configuration sub-dictionary as keyword arguments.  In the above
 example, the formatter with id ``custom`` will be assumed to be
@@ -503,13 +503,13 @@ external to the configuration, for example ``sys.stderr``.  If the
 configuration dict is constructed using Python code, this is
 straightforward, but a problem arises when the configuration is
 provided via a text file (e.g. JSON, YAML).  In a text file, there is
-no standard way to distinguish ``sys.stderr`` from the literal string
+no standard way to distinguish ``sys.stderr`` kutoka the literal string
 ``'sys.stderr'``.  To facilitate this distinction, the configuration
 system looks for certain special prefixes in string values and
 treat them specially.  For example, if the literal string
 ``'ext://sys.stderr'`` is provided as a value in the configuration,
 then the ``ext://`` will be stripped off and the remainder of the
-value processed using normal import mechanisms.
+value processed using normal agiza mechanisms.
 
 The handling of such prefixes is done in a way analogous to protocol
 handling: there is a generic mechanism to look for prefixes which
@@ -539,7 +539,7 @@ example, consider :class:`logging.handlers.MemoryHandler`, which takes
 a ``target`` argument which is another handler to delegate to. Since
 the system already knows about this class, then in the configuration,
 the given ``target`` just needs to be the object id of the relevant
-target handler, and the system will resolve to the handler from the
+target handler, and the system will resolve to the handler kutoka the
 id.  If, however, a user defines a ``my.package.MyHandler`` which has
 an ``alternate`` handler, the configuration system would not know that
 the ``alternate`` referred to a handler.  To cater for this, a generic
@@ -557,7 +557,7 @@ resolution system allows the user to specify:
 
 The literal string ``'cfg://handlers.file'`` will be resolved in an
 analogous way to strings with the ``ext://`` prefix, but looking
-in the configuration itself rather than the import namespace.  The
+in the configuration itself rather than the agiza namespace.  The
 mechanism allows access by dot or by index, in a similar way to
 that provided by ``str.format``.  Thus, given the following snippet:
 
@@ -567,7 +567,7 @@ that provided by ``str.format``.  Thus, given the following snippet:
       email:
         class: logging.handlers.SMTPHandler
         mailhost: localhost
-        fromaddr: my_app@domain.tld
+        kutokaaddr: my_app@domain.tld
         toaddrs:
           - support_team@domain.tld
           - dev_team@domain.tld
@@ -590,7 +590,7 @@ value if needed.
 Given a string ``cfg://handlers.myhandler.mykey.123``, this will
 resolve to ``config_dict['handlers']['myhandler']['mykey']['123']``.
 If the string is specified as ``cfg://handlers.myhandler.mykey[123]``,
-the system will attempt to retrieve the value from
+the system will attempt to retrieve the value kutoka
 ``config_dict['handlers']['myhandler']['mykey'][123]``, and fall back
 to ``config_dict['handlers']['myhandler']['mykey']['123']`` if that
 fails.
@@ -606,13 +606,13 @@ to do its importing. You may want to replace this with your own importing
 mechanism: if so, you can replace the :attr:`importer` attribute of the
 :class:`DictConfigurator` or its superclass, the
 :class:`BaseConfigurator` class. However, you need to be
-careful because of the way functions are accessed from classes via
+careful because of the way functions are accessed kutoka classes via
 descriptors. If you are using a Python callable to do your imports, and you
-want to define it at class level rather than instance level, you need to wrap
+want to define it at kundi level rather than instance level, you need to wrap
 it with :func:`staticmethod`. For example::
 
-   from importlib import import_module
-   from logging.config import BaseConfigurator
+   kutoka importlib agiza import_module
+   kutoka logging.config agiza BaseConfigurator
 
    BaseConfigurator.importer = staticmethod(import_module)
 
@@ -697,7 +697,7 @@ The ``level`` and ``handlers`` entries are interpreted as for the root logger,
 except that if a non-root logger's level is specified as ``NOTSET``, the system
 consults loggers higher up the hierarchy to determine the effective level of the
 logger. The ``propagate`` entry is set to 1 to indicate that messages must
-propagate to handlers higher up the logger hierarchy from this logger, or 0 to
+propagate to handlers higher up the logger hierarchy kutoka this logger, or 0 to
 indicate that messages are **not** propagated to handlers up the hierarchy. The
 ``qualname`` entry is the hierarchical channel name of the logger, that is to
 say the name used by the application to get the logger.
@@ -712,7 +712,7 @@ Sections which specify handler configuration are exemplified by the following.
    formatter=form01
    args=(sys.stdout,)
 
-The ``class`` entry indicates the handler's class (as determined by :func:`eval`
+The ``class`` entry indicates the handler's kundi (as determined by :func:`eval`
 in the ``logging`` package's namespace). The ``level`` is interpreted as for
 loggers, and ``NOTSET`` is taken to mean 'log everything'.
 
@@ -767,7 +767,7 @@ for the handler class. If not provided, it defaults to ``{}``.
    class=handlers.SMTPHandler
    level=WARN
    formatter=form07
-   args=('localhost', 'from@abc', ['user1@abc', 'user2@xyz'], 'Logger Subject')
+   args=('localhost', 'kutoka@abc', ['user1@abc', 'user2@xyz'], 'Logger Subject')
    kwargs={'timeout': 10.0}
 
    [handler_hand08]
@@ -801,7 +801,7 @@ which are appended to the result of using the above format string, with a comma
 separator.  An example time in this format is ``2003-01-23 00:29:50,411``.
 
 The ``class`` entry is optional.  It indicates the name of the formatter's class
-(as a dotted module and class name.)  This option is useful for instantiating a
+(as a dotted module and kundi name.)  This option is useful for instantiating a
 :class:`~logging.Formatter` subclass.  Subclasses of
 :class:`~logging.Formatter` can present exception tracebacks in an expanded or
 condensed format.
@@ -809,7 +809,7 @@ condensed format.
 .. note::
 
    Due to the use of :func:`eval` as described above, there are
-   potential security risks which result from using the :func:`listen` to send
+   potential security risks which result kutoka using the :func:`listen` to send
    and receive configurations via sockets. The risks are limited to where
    multiple users with no mutual trust run code on the same machine; see the
    :func:`listen` documentation for more information.

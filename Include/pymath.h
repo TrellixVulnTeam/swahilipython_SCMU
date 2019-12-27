@@ -38,7 +38,7 @@ extern double pow(double, double);
 #endif /* _MSC_VER */
 
 /* High precision definition of pi and e (Euler)
- * The values are taken from libc6's math.h.
+ * The values are taken kutoka libc6's math.h.
  */
 #ifndef Py_MATH_PIl
 #define Py_MATH_PIl 3.1415926535897932384626433832795029L
@@ -55,14 +55,14 @@ extern double pow(double, double);
 #define Py_MATH_E 2.7182818284590452354
 #endif
 
-/* Tau (2pi) to 40 digits, taken from tauday.com/tau-digits. */
+/* Tau (2pi) to 40 digits, taken kutoka tauday.com/tau-digits. */
 #ifndef Py_MATH_TAU
 #define Py_MATH_TAU 6.2831853071795864769252867665590057683943L
 #endif
 
 
 /* On x86, Py_FORCE_DOUBLE forces a floating-point number out of an x87 FPU
-   register and into a 64-bit memory location, rounding from extended
+   register and into a 64-bit memory location, rounding kutoka extended
    precision to double precision in the process.  On other platforms it does
    nothing. */
 
@@ -109,9 +109,9 @@ PyAPI_FUNC(void) _Py_set_387controlword(unsigned short);
  *    This implementation may set the underflow flag if |X| is very small;
  *    it really can't be implemented correctly (& easily) before C99.
  *    Override in pyconfig.h if you have a better spelling on your platform.
- *  Py_FORCE_DOUBLE is used to avoid getting false negatives from a
+ *  Py_FORCE_DOUBLE is used to avoid getting false negatives kutoka a
  *    non-infinite value v sitting in an 80-bit x87 register such that
- *    v becomes infinite when spilled from the register to 64-bit memory.
+ *    v becomes infinite when spilled kutoka the register to 64-bit memory.
  * Note: PC/pyconfig.h defines Py_IS_INFINITY as _isinf
  */
 #ifndef Py_IS_INFINITY

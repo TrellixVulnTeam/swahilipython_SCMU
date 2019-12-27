@@ -12,7 +12,7 @@
 
 --------------
 
-This module defines a class :class:`HTMLParser` which serves as the basis for
+This module defines a kundi :class:`HTMLParser` which serves as the basis for
 parsing text files formatted in HTML (HyperText Mark-up Language) and XHTML.
 
 .. class:: HTMLParser(*, convert_charrefs=True)
@@ -25,7 +25,7 @@ parsing text files formatted in HTML (HyperText Mark-up Language) and XHTML.
 
    An :class:`.HTMLParser` instance is fed HTML data and calls handler methods
    when start tags, end tags, text, comments, and other markup elements are
-   encountered.  The user should subclass :class:`.HTMLParser` and override its
+   encountered.  The user should subkundi :class:`.HTMLParser` and override its
    methods to implement the desired behavior.
 
    This parser does not check that end tags match start tags or call the end-tag
@@ -42,12 +42,12 @@ Example HTML Parser Application
 -------------------------------
 
 As a basic example, below is a simple HTML parser that uses the
-:class:`HTMLParser` class to print out start tags, end tags, and data
+:class:`HTMLParser` kundi to print out start tags, end tags, and data
 as they are encountered::
 
-   from html.parser import HTMLParser
+   kutoka html.parser agiza HTMLParser
 
-   class MyHTMLParser(HTMLParser):
+   kundi MyHTMLParser(HTMLParser):
        def handle_starttag(self, tag, attrs):
            print("Encountered a start tag:", tag)
 
@@ -95,9 +95,9 @@ The output will then be:
 .. method:: HTMLParser.close()
 
    Force processing of all buffered data as if it were followed by an end-of-file
-   mark.  This method may be redefined by a derived class to define additional
+   mark.  This method may be redefined by a derived kundi to define additional
    processing at the end of the input, but the redefined version should always call
-   the :class:`HTMLParser` base class method :meth:`close`.
+   the :class:`HTMLParser` base kundi method :meth:`close`.
 
 
 .. method:: HTMLParser.reset()
@@ -137,7 +137,7 @@ implementations do nothing (except for :meth:`~HTMLParser.handle_startendtag`):
    For instance, for the tag ``<A HREF="https://www.cwi.nl/">``, this method
    would be called as ``handle_starttag('a', [('href', 'https://www.cwi.nl/')])``.
 
-   All entity references from :mod:`html.entities` are replaced in the attribute
+   All entity references kutoka :mod:`html.entities` are replaced in the attribute
    values.
 
 
@@ -206,11 +206,11 @@ implementations do nothing (except for :meth:`~HTMLParser.handle_startendtag`):
    parameter will contain the entire processing instruction. For example, for the
    processing instruction ``<?proc color='red'>``, this method would be called as
    ``handle_pi("proc color='red'")``.  It is intended to be overridden by a derived
-   class; the base class implementation does nothing.
+   class; the base kundi implementation does nothing.
 
    .. note::
 
-      The :class:`HTMLParser` class uses the SGML syntactic rules for processing
+      The :class:`HTMLParser` kundi uses the SGML syntactic rules for processing
       instructions.  An XHTML processing instruction using the trailing ``'?'`` will
       cause the ``'?'`` to be included in *data*.
 
@@ -221,7 +221,7 @@ implementations do nothing (except for :meth:`~HTMLParser.handle_startendtag`):
 
    The *data* parameter will be the entire contents of the declaration inside
    the ``<![...]>`` markup.  It is sometimes useful to be overridden by a
-   derived class.  The base class implementation does nothing.
+   derived class.  The base kundi implementation does nothing.
 
 
 .. _htmlparser-examples:
@@ -229,13 +229,13 @@ implementations do nothing (except for :meth:`~HTMLParser.handle_startendtag`):
 Examples
 --------
 
-The following class implements a parser that will be used to illustrate more
+The following kundi implements a parser that will be used to illustrate more
 examples::
 
-   from html.parser import HTMLParser
-   from html.entities import name2codepoint
+   kutoka html.parser agiza HTMLParser
+   kutoka html.entities agiza name2codepoint
 
-   class MyHTMLParser(HTMLParser):
+   kundi MyHTMLParser(HTMLParser):
        def handle_starttag(self, tag, attrs):
            print("Start tag:", tag)
            for attr in attrs:

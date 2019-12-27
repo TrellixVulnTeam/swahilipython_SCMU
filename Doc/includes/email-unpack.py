@@ -23,7 +23,7 @@ Unpack a MIME message into a directory of files.
     args = parser.parse_args()
 
     with open(args.msgfile, 'rb') as fp:
-        msg = email.message_from_binary_file(fp, policy=default)
+        msg = email.message_kutoka_binary_file(fp, policy=default)
 
     try:
         os.mkdir(args.directory)

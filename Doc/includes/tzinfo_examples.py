@@ -4,7 +4,7 @@ ZERO = timedelta(0)
 HOUR = timedelta(hours=1)
 SECOND = timedelta(seconds=1)
 
-# A class capturing the platform's idea of local time.
+# A kundi capturing the platform's idea of local time.
 # (May result in wrong values on historical times in
 #  timezones where UTC offset and/or the DST rules had
 #  changed in the past.)
@@ -18,9 +18,9 @@ else:
 
 DSTDIFF = DSTOFFSET - STDOFFSET
 
-class LocalTimezone(tzinfo):
+kundi LocalTimezone(tzinfo):
 
-    def fromutc(self, dt):
+    def kutokautc(self, dt):
         assert dt.tzinfo is self
         stamp = (dt - datetime(1970, 1, 1, tzinfo=self)) // SECOND
         args = _time.localtime(stamp)[:6]
@@ -107,7 +107,7 @@ def us_dst_range(year):
     return start, end
 
 
-class USTimeZone(tzinfo):
+kundi USTimeZone(tzinfo):
 
     def __init__(self, hours, reprname, stdname, dstname):
         self.stdoffset = timedelta(hours=hours)
@@ -131,7 +131,7 @@ class USTimeZone(tzinfo):
         if dt is None or dt.tzinfo is None:
             # An exception may be sensible here, in one or both cases.
             # It depends on how you want to treat them.  The default
-            # fromutc() implementation (called by the default astimezone()
+            # kutokautc() implementation (called by the default astimezone()
             # implementation) passes a datetime with dt.tzinfo is self.
             return ZERO
         assert dt.tzinfo is self
@@ -151,7 +151,7 @@ class USTimeZone(tzinfo):
         # DST is off.
         return ZERO
 
-    def fromutc(self, dt):
+    def kutokautc(self, dt):
         assert dt.tzinfo is self
         start, end = us_dst_range(dt.year)
         start = start.replace(tzinfo=self)

@@ -2,9 +2,9 @@
 
 kutoka __future__ agiza *
 
-def f(x):
-    def g(y):
-        return x + y
-    return g
+eleza f(x):
+    eleza g(y):
+        rudisha x + y
+    rudisha g
 
-print(f(2)(4))
+andika(f(2)(4))

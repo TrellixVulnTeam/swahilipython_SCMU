@@ -149,7 +149,7 @@ subtypes but not for instances of :class:`frozenset` or its subtypes.
 .. c:function:: PyObject* PySet_Pop(PyObject *set)
 
    Return a new reference to an arbitrary object in the *set*, and removes the
-   object from the *set*.  Return *NULL* on failure.  Raise :exc:`KeyError` if the
+   object kutoka the *set*.  Return *NULL* on failure.  Raise :exc:`KeyError` if the
    set is empty. Raise a :exc:`SystemError` if *set* is not an instance of
    :class:`set` or its subtype.
 

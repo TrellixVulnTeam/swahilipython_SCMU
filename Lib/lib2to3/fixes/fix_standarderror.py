@@ -8,11 +8,11 @@ kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name
 
 
-class FixStandarderror(fixer_base.BaseFix):
+kundi FixStandarderror(fixer_base.BaseFix):
     BM_compatible = True
     PATTERN = """
               'StandardError'
               """
 
-    def transform(self, node, results):
-        return Name("Exception", prefix=node.prefix)
+    eleza transform(self, node, results):
+        rudisha Name("Exception", prefix=node.prefix)

@@ -6,48 +6,48 @@ kutoka test.support agiza import_module
 asyncio = import_module("asyncio")
 
 
-class AwaitException(Exception):
+kundi AwaitException(Exception):
     pass
 
 
 @types.coroutine
-def awaitable(*, throw=False):
-    if throw:
+eleza awaitable(*, throw=False):
+    ikiwa throw:
         yield ('throw',)
     else:
         yield ('result',)
 
 
-def run_until_complete(coro):
+eleza run_until_complete(coro):
     exc = False
     while True:
         try:
-            if exc:
+            ikiwa exc:
                 exc = False
                 fut = coro.throw(AwaitException)
             else:
                 fut = coro.send(None)
         except StopIteration as ex:
-            return ex.args[0]
+            rudisha ex.args[0]
 
-        if fut == ('throw',):
+        ikiwa fut == ('throw',):
             exc = True
 
 
-def to_list(gen):
-    async def iterate():
+eleza to_list(gen):
+    async eleza iterate():
         res = []
         async for i in gen:
             res.append(i)
-        return res
+        rudisha res
 
-    return run_until_complete(iterate())
+    rudisha run_until_complete(iterate())
 
 
-class AsyncGenSyntaxTest(unittest.TestCase):
+kundi AsyncGenSyntaxTest(unittest.TestCase):
 
-    def test_async_gen_syntax_01(self):
-        code = '''async def foo():
+    eleza test_async_gen_syntax_01(self):
+        code = '''async eleza foo():
             await abc
             yield kutoka 123
         '''
@@ -55,48 +55,48 @@ class AsyncGenSyntaxTest(unittest.TestCase):
         with self.assertRaisesRegex(SyntaxError, 'yield kutoka.*inside async'):
             exec(code, {}, {})
 
-    def test_async_gen_syntax_02(self):
-        code = '''async def foo():
+    eleza test_async_gen_syntax_02(self):
+        code = '''async eleza foo():
             yield kutoka 123
         '''
 
         with self.assertRaisesRegex(SyntaxError, 'yield kutoka.*inside async'):
             exec(code, {}, {})
 
-    def test_async_gen_syntax_03(self):
-        code = '''async def foo():
+    eleza test_async_gen_syntax_03(self):
+        code = '''async eleza foo():
             await abc
             yield
-            return 123
+            rudisha 123
         '''
 
         with self.assertRaisesRegex(SyntaxError, 'return.*value.*async gen'):
             exec(code, {}, {})
 
-    def test_async_gen_syntax_04(self):
-        code = '''async def foo():
+    eleza test_async_gen_syntax_04(self):
+        code = '''async eleza foo():
             yield
-            return 123
+            rudisha 123
         '''
 
         with self.assertRaisesRegex(SyntaxError, 'return.*value.*async gen'):
             exec(code, {}, {})
 
-    def test_async_gen_syntax_05(self):
-        code = '''async def foo():
-            if 0:
+    eleza test_async_gen_syntax_05(self):
+        code = '''async eleza foo():
+            ikiwa 0:
                 yield
-            return 12
+            rudisha 12
         '''
 
         with self.assertRaisesRegex(SyntaxError, 'return.*value.*async gen'):
             exec(code, {}, {})
 
 
-class AsyncGenTest(unittest.TestCase):
+kundi AsyncGenTest(unittest.TestCase):
 
-    def compare_generators(self, sync_gen, async_gen):
-        def sync_iterate(g):
+    eleza compare_generators(self, sync_gen, async_gen):
+        eleza sync_iterate(g):
             res = []
             while True:
                 try:
@@ -106,9 +106,9 @@ class AsyncGenTest(unittest.TestCase):
                     break
                 except Exception as ex:
                     res.append(str(type(ex)))
-            return res
+            rudisha res
 
-        def async_iterate(g):
+        eleza async_iterate(g):
             res = []
             while True:
                 an = g.__anext__()
@@ -117,7 +117,7 @@ class AsyncGenTest(unittest.TestCase):
                         try:
                             an.__next__()
                         except StopIteration as ex:
-                            if ex.args:
+                            ikiwa ex.args:
                                 res.append(ex.args[0])
                                 break
                             else:
@@ -131,15 +131,15 @@ class AsyncGenTest(unittest.TestCase):
                 except StopAsyncIteration:
                     res.append('STOP')
                     break
-            return res
+            rudisha res
 
         sync_gen_result = sync_iterate(sync_gen)
         async_gen_result = async_iterate(async_gen)
         self.assertEqual(sync_gen_result, async_gen_result)
-        return async_gen_result
+        rudisha async_gen_result
 
-    def test_async_gen_iteration_01(self):
-        async def gen():
+    eleza test_async_gen_iteration_01(self):
+        async eleza gen():
             await awaitable()
             a = yield 123
             self.assertIs(a, None)
@@ -150,8 +150,8 @@ class AsyncGenTest(unittest.TestCase):
 
         self.assertEqual(to_list(gen()), [123, 456, 789])
 
-    def test_async_gen_iteration_02(self):
-        async def gen():
+    eleza test_async_gen_iteration_02(self):
+        async eleza gen():
             await awaitable()
             yield 123
             await awaitable()
@@ -179,8 +179,8 @@ class AsyncGenTest(unittest.TestCase):
         else:
             self.fail('StopAsyncIteration was not raised')
 
-    def test_async_gen_exception_03(self):
-        async def gen():
+    eleza test_async_gen_exception_03(self):
+        async eleza gen():
             await awaitable()
             yield 123
             await awaitable(throw=True)
@@ -189,8 +189,8 @@ class AsyncGenTest(unittest.TestCase):
         with self.assertRaises(AwaitException):
             to_list(gen())
 
-    def test_async_gen_exception_04(self):
-        async def gen():
+    eleza test_async_gen_exception_04(self):
+        async eleza gen():
             await awaitable()
             yield 123
             1 / 0
@@ -210,8 +210,8 @@ class AsyncGenTest(unittest.TestCase):
         with self.assertRaises(ZeroDivisionError):
             ai.__anext__().__next__()
 
-    def test_async_gen_exception_05(self):
-        async def gen():
+    eleza test_async_gen_exception_05(self):
+        async eleza gen():
             yield 123
             raise StopAsyncIteration
 
@@ -219,8 +219,8 @@ class AsyncGenTest(unittest.TestCase):
                                     'async generator.*StopAsyncIteration'):
             to_list(gen())
 
-    def test_async_gen_exception_06(self):
-        async def gen():
+    eleza test_async_gen_exception_06(self):
+        async eleza gen():
             yield 123
             raise StopIteration
 
@@ -228,8 +228,8 @@ class AsyncGenTest(unittest.TestCase):
                                     'async generator.*StopIteration'):
             to_list(gen())
 
-    def test_async_gen_exception_07(self):
-        def sync_gen():
+    eleza test_async_gen_exception_07(self):
+        eleza sync_gen():
             try:
                 yield 1
                 1 / 0
@@ -239,7 +239,7 @@ class AsyncGenTest(unittest.TestCase):
 
             yield 100
 
-        async def async_gen():
+        async eleza async_gen():
             try:
                 yield 1
                 1 / 0
@@ -251,8 +251,8 @@ class AsyncGenTest(unittest.TestCase):
 
         self.compare_generators(sync_gen(), async_gen())
 
-    def test_async_gen_exception_08(self):
-        def sync_gen():
+    eleza test_async_gen_exception_08(self):
+        eleza sync_gen():
             try:
                 yield 1
             finally:
@@ -262,7 +262,7 @@ class AsyncGenTest(unittest.TestCase):
 
             yield 100
 
-        async def async_gen():
+        async eleza async_gen():
             try:
                 yield 1
                 await awaitable()
@@ -276,8 +276,8 @@ class AsyncGenTest(unittest.TestCase):
 
         self.compare_generators(sync_gen(), async_gen())
 
-    def test_async_gen_exception_09(self):
-        def sync_gen():
+    eleza test_async_gen_exception_09(self):
+        eleza sync_gen():
             try:
                 yield 1
                 1 / 0
@@ -287,7 +287,7 @@ class AsyncGenTest(unittest.TestCase):
 
             yield 100
 
-        async def async_gen():
+        async eleza async_gen():
             try:
                 await awaitable()
                 yield 1
@@ -301,19 +301,19 @@ class AsyncGenTest(unittest.TestCase):
 
         self.compare_generators(sync_gen(), async_gen())
 
-    def test_async_gen_exception_10(self):
-        async def gen():
+    eleza test_async_gen_exception_10(self):
+        async eleza gen():
             yield 123
         with self.assertRaisesRegex(TypeError,
                                     "non-None value .* async generator"):
             gen().__anext__().send(100)
 
-    def test_async_gen_exception_11(self):
-        def sync_gen():
+    eleza test_async_gen_exception_11(self):
+        eleza sync_gen():
             yield 10
             yield 20
 
-        def sync_gen_wrapper():
+        eleza sync_gen_wrapper():
             yield 1
             sg = sync_gen()
             sg.send(None)
@@ -323,11 +323,11 @@ class AsyncGenTest(unittest.TestCase):
                 yield 2
             yield 3
 
-        async def async_gen():
+        async eleza async_gen():
             yield 10
             yield 20
 
-        async def async_gen_wrapper():
+        async eleza async_gen_wrapper():
             yield 1
             asg = async_gen()
             await asg.asend(None)
@@ -339,8 +339,8 @@ class AsyncGenTest(unittest.TestCase):
 
         self.compare_generators(sync_gen_wrapper(), async_gen_wrapper())
 
-    def test_async_gen_api_01(self):
-        async def gen():
+    eleza test_async_gen_api_01(self):
+        async eleza gen():
             yield 123
 
         g = gen()
@@ -361,25 +361,25 @@ class AsyncGenTest(unittest.TestCase):
         self.assertTrue(inspect.isawaitable(g.aclose()))
 
 
-class AsyncGenAsyncioTest(unittest.TestCase):
+kundi AsyncGenAsyncioTest(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.loop = asyncio.new_event_loop()
         asyncio.set_event_loop(None)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.loop.close()
         self.loop = None
         asyncio.set_event_loop_policy(None)
 
-    async def to_list(self, gen):
+    async eleza to_list(self, gen):
         res = []
         async for i in gen:
             res.append(i)
-        return res
+        rudisha res
 
-    def test_async_gen_asyncio_01(self):
-        async def gen():
+    eleza test_async_gen_asyncio_01(self):
+        async eleza gen():
             yield 1
             await asyncio.sleep(0.01)
             yield 2
@@ -390,8 +390,8 @@ class AsyncGenAsyncioTest(unittest.TestCase):
         res = self.loop.run_until_complete(self.to_list(gen()))
         self.assertEqual(res, [1, 2])
 
-    def test_async_gen_asyncio_02(self):
-        async def gen():
+    eleza test_async_gen_asyncio_02(self):
+        async eleza gen():
             yield 1
             await asyncio.sleep(0.01)
             yield 2
@@ -401,11 +401,11 @@ class AsyncGenAsyncioTest(unittest.TestCase):
         with self.assertRaises(ZeroDivisionError):
             self.loop.run_until_complete(self.to_list(gen()))
 
-    def test_async_gen_asyncio_03(self):
+    eleza test_async_gen_asyncio_03(self):
         loop = self.loop
 
-        class Gen:
-            async def __aiter__(self):
+        kundi Gen:
+            async eleza __aiter__(self):
                 yield 1
                 await asyncio.sleep(0.01)
                 yield 2
@@ -413,8 +413,8 @@ class AsyncGenAsyncioTest(unittest.TestCase):
         res = loop.run_until_complete(self.to_list(Gen()))
         self.assertEqual(res, [1, 2])
 
-    def test_async_gen_asyncio_anext_04(self):
-        async def foo():
+    eleza test_async_gen_asyncio_anext_04(self):
+        async eleza foo():
             yield 1
             await asyncio.sleep(0.01)
             try:
@@ -425,7 +425,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
             await asyncio.sleep(0.01)
             yield 4
 
-        async def run1():
+        async eleza run1():
             it = foo().__aiter__()
 
             self.assertEqual(await it.__anext__(), 1)
@@ -437,7 +437,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
             with self.assertRaises(StopAsyncIteration):
                 await it.__anext__()
 
-        async def run2():
+        async eleza run2():
             it = foo().__aiter__()
 
             self.assertEqual(await it.__anext__(), 1)
@@ -455,13 +455,13 @@ class AsyncGenAsyncioTest(unittest.TestCase):
         self.loop.run_until_complete(run1())
         self.loop.run_until_complete(run2())
 
-    def test_async_gen_asyncio_anext_05(self):
-        async def foo():
+    eleza test_async_gen_asyncio_anext_05(self):
+        async eleza foo():
             v = yield 1
             v = yield v
             yield v * 100
 
-        async def run():
+        async eleza run():
             it = foo().__aiter__()
 
             try:
@@ -490,11 +490,11 @@ class AsyncGenAsyncioTest(unittest.TestCase):
 
         self.loop.run_until_complete(run())
 
-    def test_async_gen_asyncio_anext_06(self):
+    eleza test_async_gen_asyncio_anext_06(self):
         DONE = 0
 
         # test synchronous generators
-        def foo():
+        eleza foo():
             try:
                 yield
             except:
@@ -506,7 +506,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
 
         # now with asynchronous generators
 
-        async def gen():
+        async eleza gen():
             nonlocal DONE
             try:
                 yield
@@ -514,7 +514,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
                 pass
             DONE = 1
 
-        async def run():
+        async eleza run():
             nonlocal DONE
             g = gen()
             await g.asend(None)
@@ -525,14 +525,14 @@ class AsyncGenAsyncioTest(unittest.TestCase):
         self.loop.run_until_complete(run())
         self.assertEqual(DONE, 11)
 
-    def test_async_gen_asyncio_anext_tuple(self):
-        async def foo():
+    eleza test_async_gen_asyncio_anext_tuple(self):
+        async eleza foo():
             try:
                 yield (1,)
             except ZeroDivisionError:
                 yield (2,)
 
-        async def run():
+        async eleza run():
             it = foo().__aiter__()
 
             self.assertEqual(await it.__anext__(), (1,))
@@ -544,14 +544,14 @@ class AsyncGenAsyncioTest(unittest.TestCase):
 
         self.loop.run_until_complete(run())
 
-    def test_async_gen_asyncio_anext_stopiteration(self):
-        async def foo():
+    eleza test_async_gen_asyncio_anext_stopiteration(self):
+        async eleza foo():
             try:
                 yield StopIteration(1)
             except ZeroDivisionError:
                 yield StopIteration(3)
 
-        async def run():
+        async eleza run():
             it = foo().__aiter__()
 
             v = await it.__anext__()
@@ -567,8 +567,8 @@ class AsyncGenAsyncioTest(unittest.TestCase):
 
         self.loop.run_until_complete(run())
 
-    def test_async_gen_asyncio_aclose_06(self):
-        async def foo():
+    eleza test_async_gen_asyncio_aclose_06(self):
+        async eleza foo():
             try:
                 yield 1
                 1 / 0
@@ -576,7 +576,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
                 await asyncio.sleep(0.01)
                 yield 12
 
-        async def run():
+        async eleza run():
             gen = foo()
             it = gen.__aiter__()
             await it.__anext__()
@@ -587,10 +587,10 @@ class AsyncGenAsyncioTest(unittest.TestCase):
                 "async generator ignored GeneratorExit"):
             self.loop.run_until_complete(run())
 
-    def test_async_gen_asyncio_aclose_07(self):
+    eleza test_async_gen_asyncio_aclose_07(self):
         DONE = 0
 
-        async def foo():
+        async eleza foo():
             nonlocal DONE
             try:
                 yield 1
@@ -601,7 +601,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
                 DONE += 1
             DONE += 1000
 
-        async def run():
+        async eleza run():
             gen = foo()
             it = gen.__aiter__()
             await it.__anext__()
@@ -610,12 +610,12 @@ class AsyncGenAsyncioTest(unittest.TestCase):
         self.loop.run_until_complete(run())
         self.assertEqual(DONE, 1)
 
-    def test_async_gen_asyncio_aclose_08(self):
+    eleza test_async_gen_asyncio_aclose_08(self):
         DONE = 0
 
         fut = asyncio.Future(loop=self.loop)
 
-        async def foo():
+        async eleza foo():
             nonlocal DONE
             try:
                 yield 1
@@ -628,7 +628,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
                 DONE += 1
             DONE += 1000
 
-        async def run():
+        async eleza run():
             gen = foo()
             it = gen.__aiter__()
             self.assertEqual(await it.__anext__(), 1)
@@ -641,10 +641,10 @@ class AsyncGenAsyncioTest(unittest.TestCase):
         fut.cancel()
         self.loop.run_until_complete(asyncio.sleep(0.01))
 
-    def test_async_gen_asyncio_gc_aclose_09(self):
+    eleza test_async_gen_asyncio_gc_aclose_09(self):
         DONE = 0
 
-        async def gen():
+        async eleza gen():
             nonlocal DONE
             try:
                 while True:
@@ -654,7 +654,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
                 await asyncio.sleep(0.01)
                 DONE = 1
 
-        async def run():
+        async eleza run():
             g = gen()
             await g.__anext__()
             await g.__anext__()
@@ -665,11 +665,11 @@ class AsyncGenAsyncioTest(unittest.TestCase):
         self.loop.run_until_complete(run())
         self.assertEqual(DONE, 1)
 
-    def test_async_gen_asyncio_aclose_10(self):
+    eleza test_async_gen_asyncio_aclose_10(self):
         DONE = 0
 
         # test synchronous generators
-        def foo():
+        eleza foo():
             try:
                 yield
             except:
@@ -680,7 +680,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
 
         # now with asynchronous generators
 
-        async def gen():
+        async eleza gen():
             nonlocal DONE
             try:
                 yield
@@ -688,7 +688,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
                 pass
             DONE = 1
 
-        async def run():
+        async eleza run():
             nonlocal DONE
             g = gen()
             await g.asend(None)
@@ -698,11 +698,11 @@ class AsyncGenAsyncioTest(unittest.TestCase):
         self.loop.run_until_complete(run())
         self.assertEqual(DONE, 11)
 
-    def test_async_gen_asyncio_aclose_11(self):
+    eleza test_async_gen_asyncio_aclose_11(self):
         DONE = 0
 
         # test synchronous generators
-        def foo():
+        eleza foo():
             try:
                 yield
             except:
@@ -715,7 +715,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
 
         # now with asynchronous generators
 
-        async def gen():
+        async eleza gen():
             nonlocal DONE
             try:
                 yield
@@ -724,7 +724,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
             yield
             DONE += 1
 
-        async def run():
+        async eleza run():
             nonlocal DONE
             g = gen()
             await g.asend(None)
@@ -735,11 +735,11 @@ class AsyncGenAsyncioTest(unittest.TestCase):
         self.loop.run_until_complete(run())
         self.assertEqual(DONE, 10)
 
-    def test_async_gen_asyncio_asend_01(self):
+    eleza test_async_gen_asyncio_asend_01(self):
         DONE = 0
 
         # Sanity check:
-        def sgen():
+        eleza sgen():
             v = yield 1
             yield v * 2
         sg = sgen()
@@ -748,7 +748,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
         v = sg.send(100)
         self.assertEqual(v, 200)
 
-        async def gen():
+        async eleza gen():
             nonlocal DONE
             try:
                 await asyncio.sleep(0.01)
@@ -762,7 +762,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
                 await asyncio.sleep(0.01)
                 DONE = 1
 
-        async def run():
+        async eleza run():
             g = gen()
 
             v = await g.asend(None)
@@ -777,14 +777,14 @@ class AsyncGenAsyncioTest(unittest.TestCase):
         self.loop.run_until_complete(run())
         self.assertEqual(DONE, 1)
 
-    def test_async_gen_asyncio_asend_02(self):
+    eleza test_async_gen_asyncio_asend_02(self):
         DONE = 0
 
-        async def sleep_n_crash(delay):
+        async eleza sleep_n_crash(delay):
             await asyncio.sleep(delay)
             1 / 0
 
-        async def gen():
+        async eleza gen():
             nonlocal DONE
             try:
                 await asyncio.sleep(0.01)
@@ -797,7 +797,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
                 await asyncio.sleep(0.01)
                 DONE = 1
 
-        async def run():
+        async eleza run():
             g = gen()
 
             v = await g.asend(None)
@@ -809,16 +809,16 @@ class AsyncGenAsyncioTest(unittest.TestCase):
             self.loop.run_until_complete(run())
         self.assertEqual(DONE, 1)
 
-    def test_async_gen_asyncio_asend_03(self):
+    eleza test_async_gen_asyncio_asend_03(self):
         DONE = 0
 
-        async def sleep_n_crash(delay):
+        async eleza sleep_n_crash(delay):
             fut = asyncio.ensure_future(asyncio.sleep(delay),
                                         loop=self.loop)
             self.loop.call_later(delay / 2, lambda: fut.cancel())
-            return await fut
+            rudisha await fut
 
-        async def gen():
+        async eleza gen():
             nonlocal DONE
             try:
                 await asyncio.sleep(0.01)
@@ -831,7 +831,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
                 await asyncio.sleep(0.01)
                 DONE = 1
 
-        async def run():
+        async eleza run():
             g = gen()
 
             v = await g.asend(None)
@@ -843,14 +843,14 @@ class AsyncGenAsyncioTest(unittest.TestCase):
             self.loop.run_until_complete(run())
         self.assertEqual(DONE, 1)
 
-    def test_async_gen_asyncio_athrow_01(self):
+    eleza test_async_gen_asyncio_athrow_01(self):
         DONE = 0
 
-        class FooEr(Exception):
+        kundi FooEr(Exception):
             pass
 
         # Sanity check:
-        def sgen():
+        eleza sgen():
             try:
                 v = yield 1
             except FooEr:
@@ -864,7 +864,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
         with self.assertRaises(StopIteration):
             sg.send(None)
 
-        async def gen():
+        async eleza gen():
             nonlocal DONE
             try:
                 await asyncio.sleep(0.01)
@@ -881,7 +881,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
                 await asyncio.sleep(0.01)
                 DONE = 1
 
-        async def run():
+        async eleza run():
             g = gen()
 
             v = await g.asend(None)
@@ -896,19 +896,19 @@ class AsyncGenAsyncioTest(unittest.TestCase):
         self.loop.run_until_complete(run())
         self.assertEqual(DONE, 1)
 
-    def test_async_gen_asyncio_athrow_02(self):
+    eleza test_async_gen_asyncio_athrow_02(self):
         DONE = 0
 
-        class FooEr(Exception):
+        kundi FooEr(Exception):
             pass
 
-        async def sleep_n_crash(delay):
+        async eleza sleep_n_crash(delay):
             fut = asyncio.ensure_future(asyncio.sleep(delay),
                                         loop=self.loop)
             self.loop.call_later(delay / 2, lambda: fut.cancel())
-            return await fut
+            rudisha await fut
 
-        async def gen():
+        async eleza gen():
             nonlocal DONE
             try:
                 await asyncio.sleep(0.01)
@@ -924,7 +924,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
                 await asyncio.sleep(0.01)
                 DONE = 1
 
-        async def run():
+        async eleza run():
             g = gen()
 
             v = await g.asend(None)
@@ -942,11 +942,11 @@ class AsyncGenAsyncioTest(unittest.TestCase):
             self.loop.run_until_complete(run())
         self.assertEqual(DONE, 1)
 
-    def test_async_gen_asyncio_athrow_03(self):
+    eleza test_async_gen_asyncio_athrow_03(self):
         DONE = 0
 
         # test synchronous generators
-        def foo():
+        eleza foo():
             try:
                 yield
             except:
@@ -958,7 +958,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
 
         # now with asynchronous generators
 
-        async def gen():
+        async eleza gen():
             nonlocal DONE
             try:
                 yield
@@ -966,7 +966,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
                 pass
             DONE = 1
 
-        async def run():
+        async eleza run():
             nonlocal DONE
             g = gen()
             await g.asend(None)
@@ -977,14 +977,14 @@ class AsyncGenAsyncioTest(unittest.TestCase):
         self.loop.run_until_complete(run())
         self.assertEqual(DONE, 11)
 
-    def test_async_gen_asyncio_athrow_tuple(self):
-        async def gen():
+    eleza test_async_gen_asyncio_athrow_tuple(self):
+        async eleza gen():
             try:
                 yield 1
             except ZeroDivisionError:
                 yield (2,)
 
-        async def run():
+        async eleza run():
             g = gen()
             v = await g.asend(None)
             self.assertEqual(v, 1)
@@ -995,14 +995,14 @@ class AsyncGenAsyncioTest(unittest.TestCase):
 
         self.loop.run_until_complete(run())
 
-    def test_async_gen_asyncio_athrow_stopiteration(self):
-        async def gen():
+    eleza test_async_gen_asyncio_athrow_stopiteration(self):
+        async eleza gen():
             try:
                 yield 1
             except ZeroDivisionError:
                 yield StopIteration(2)
 
-        async def run():
+        async eleza run():
             g = gen()
             v = await g.asend(None)
             self.assertEqual(v, 1)
@@ -1014,10 +1014,10 @@ class AsyncGenAsyncioTest(unittest.TestCase):
 
         self.loop.run_until_complete(run())
 
-    def test_async_gen_asyncio_shutdown_01(self):
+    eleza test_async_gen_asyncio_shutdown_01(self):
         finalized = 0
 
-        async def waiter(timeout):
+        async eleza waiter(timeout):
             nonlocal finalized
             try:
                 await asyncio.sleep(timeout)
@@ -1026,7 +1026,7 @@ class AsyncGenAsyncioTest(unittest.TestCase):
                 await asyncio.sleep(0)
                 finalized += 1
 
-        async def wait():
+        async eleza wait():
             async for _ in waiter(1):
                 pass
 
@@ -1048,49 +1048,49 @@ class AsyncGenAsyncioTest(unittest.TestCase):
 
         self.assertEqual(finalized, 2)
 
-    def test_async_gen_expression_01(self):
-        async def arange(n):
+    eleza test_async_gen_expression_01(self):
+        async eleza arange(n):
             for i in range(n):
                 await asyncio.sleep(0.01)
                 yield i
 
-        def make_arange(n):
+        eleza make_arange(n):
             # This syntax is legal starting with Python 3.7
-            return (i * 2 async for i in arange(n))
+            rudisha (i * 2 async for i in arange(n))
 
-        async def run():
-            return [i async for i in make_arange(10)]
+        async eleza run():
+            rudisha [i async for i in make_arange(10)]
 
         res = self.loop.run_until_complete(run())
         self.assertEqual(res, [i * 2 for i in range(10)])
 
-    def test_async_gen_expression_02(self):
-        async def wrap(n):
+    eleza test_async_gen_expression_02(self):
+        async eleza wrap(n):
             await asyncio.sleep(0.01)
-            return n
+            rudisha n
 
-        def make_arange(n):
+        eleza make_arange(n):
             # This syntax is legal starting with Python 3.7
-            return (i * 2 for i in range(n) if await wrap(i))
+            rudisha (i * 2 for i in range(n) ikiwa await wrap(i))
 
-        async def run():
-            return [i async for i in make_arange(10)]
+        async eleza run():
+            rudisha [i async for i in make_arange(10)]
 
         res = self.loop.run_until_complete(run())
         self.assertEqual(res, [i * 2 for i in range(1, 10)])
 
-    def test_asyncgen_nonstarted_hooks_are_cancellable(self):
+    eleza test_asyncgen_nonstarted_hooks_are_cancellable(self):
         # See https://bugs.python.org/issue38013
         messages = []
 
-        def exception_handler(loop, context):
+        eleza exception_handler(loop, context):
             messages.append(context)
 
-        async def async_iterate():
+        async eleza async_iterate():
             yield 1
             yield 2
 
-        async def main():
+        async eleza main():
             loop = asyncio.get_running_loop()
             loop.set_exception_handler(exception_handler)
 
@@ -1102,5 +1102,5 @@ class AsyncGenAsyncioTest(unittest.TestCase):
         self.assertEqual([], messages)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

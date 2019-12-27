@@ -14,10 +14,10 @@ cET_alias = import_fresh_module('xml.etree.cElementTree',
 
 
 @unittest.skipUnless(cET, 'requires _elementtree')
-class MiscTests(unittest.TestCase):
+kundi MiscTests(unittest.TestCase):
     # Issue #8651.
     @support.bigmemtest(size=support._2G + 100, memuse=1, dry_run=False)
-    def test_length_overflow(self, size):
+    eleza test_length_overflow(self, size):
         data = b'x' * size
         parser = cET.XMLParser()
         try:
@@ -25,7 +25,7 @@ class MiscTests(unittest.TestCase):
         finally:
             data = None
 
-    def test_del_attribute(self):
+    eleza test_del_attribute(self):
         element = cET.Element('tag')
 
         element.tag = 'TAG'
@@ -57,7 +57,7 @@ class MiscTests(unittest.TestCase):
             del element.attrib
         self.assertEqual(element.attrib, {'A': 'B', 'C': 'D'})
 
-    def test_trashcan(self):
+    eleza test_trashcan(self):
         # If this test fails, it will most likely die via segfault.
         e = root = cET.Element('root')
         for i in range(200000):
@@ -66,12 +66,12 @@ class MiscTests(unittest.TestCase):
         del root
         support.gc_collect()
 
-    def test_parser_ref_cycle(self):
+    eleza test_parser_ref_cycle(self):
         # bpo-31499: xmlparser_dealloc() crashed with a segmentation fault when
         # xmlparser_gc_clear() was called previously by the garbage collector,
         # when the parser was part of a reference cycle.
 
-        def parser_ref_cycle():
+        eleza parser_ref_cycle():
             parser = cET.XMLParser()
             # Create a reference cycle using an exception to keep the frame
             # alive, so the parser will be destroyed by the garbage collector
@@ -86,13 +86,13 @@ class MiscTests(unittest.TestCase):
         # and so destroy the parser
         support.gc_collect()
 
-    def test_bpo_31728(self):
+    eleza test_bpo_31728(self):
         # A crash or an assertion failure shouldn't happen, in case garbage
         # collection triggers a call to clear() or a reading of text or tail,
         # while a setter or clear() or __setstate__() is already running.
         elem = cET.Element('elem')
-        class X:
-            def __del__(self):
+        kundi X:
+            eleza __del__(self):
                 elem.text
                 elem.tail
                 elem.clear()
@@ -118,7 +118,7 @@ class MiscTests(unittest.TestCase):
         elem.tail = X()
         elem.__setstate__({'tag': 42})  # shouldn't cause an assertion failure
 
-    def test_setstate_leaks(self):
+    eleza test_setstate_leaks(self):
         # Test reference leaks
         elem = cET.Element.__new__(cET.Element)
         for i in range(100):
@@ -134,7 +134,7 @@ class MiscTests(unittest.TestCase):
         self.assertEqual(len(elem), 1)
         self.assertEqual(elem[0].tag, 'child')
 
-    def test_iterparse_leaks(self):
+    eleza test_iterparse_leaks(self):
         # Test reference leaks in TreeBuilder (issue #35502).
         # The test is written to be executed in the hunting reference leaks
         # mode.
@@ -144,7 +144,7 @@ class MiscTests(unittest.TestCase):
         del parser
         support.gc_collect()
 
-    def test_xmlpullparser_leaks(self):
+    eleza test_xmlpullparser_leaks(self):
         # Test reference leaks in TreeBuilder (issue #35502).
         # The test is written to be executed in the hunting reference leaks
         # mode.
@@ -156,50 +156,50 @@ class MiscTests(unittest.TestCase):
 
 
 @unittest.skipUnless(cET, 'requires _elementtree')
-class TestAliasWorking(unittest.TestCase):
+kundi TestAliasWorking(unittest.TestCase):
     # Test that the cET alias module is alive
-    def test_alias_working(self):
+    eleza test_alias_working(self):
         e = cET_alias.Element('foo')
         self.assertEqual(e.tag, 'foo')
 
 
 @unittest.skipUnless(cET, 'requires _elementtree')
 @support.cpython_only
-class TestAcceleratorImported(unittest.TestCase):
+kundi TestAcceleratorImported(unittest.TestCase):
     # Test that the C accelerator was imported, as expected
-    def test_correct_import_cET(self):
+    eleza test_correct_import_cET(self):
         # SubElement is a function so it retains _elementtree as its module.
         self.assertEqual(cET.SubElement.__module__, '_elementtree')
 
-    def test_correct_import_cET_alias(self):
+    eleza test_correct_import_cET_alias(self):
         self.assertEqual(cET_alias.SubElement.__module__, '_elementtree')
 
-    def test_parser_comes_from_C(self):
+    eleza test_parser_comes_kutoka_C(self):
         # The type of methods defined in Python code is types.FunctionType,
         # while the type of methods defined inside _elementtree is
-        # <class 'wrapper_descriptor'>
+        # <kundi 'wrapper_descriptor'>
         self.assertNotIsInstance(cET.Element.__init__, types.FunctionType)
 
 
 @unittest.skipUnless(cET, 'requires _elementtree')
 @support.cpython_only
-class SizeofTest(unittest.TestCase):
-    def setUp(self):
+kundi SizeofTest(unittest.TestCase):
+    eleza setUp(self):
         self.elementsize = support.calcobjsize('5P')
         # extra
         self.extra = struct.calcsize('PnnP4P')
 
     check_sizeof = support.check_sizeof
 
-    def test_element(self):
+    eleza test_element(self):
         e = cET.Element('a')
         self.check_sizeof(e, self.elementsize)
 
-    def test_element_with_attrib(self):
+    eleza test_element_with_attrib(self):
         e = cET.Element('a', href='about:')
         self.check_sizeof(e, self.elementsize + self.extra)
 
-    def test_element_with_children(self):
+    eleza test_element_with_children(self):
         e = cET.Element('a')
         for i in range(5):
             cET.SubElement(e, 'span')
@@ -207,7 +207,7 @@ class SizeofTest(unittest.TestCase):
         self.check_sizeof(e, self.elementsize + self.extra +
                              struct.calcsize('8P'))
 
-def test_main():
+eleza test_main():
     kutoka test agiza test_xml_etree
 
     # Run the tests specific to the C implementation
@@ -222,5 +222,5 @@ def test_main():
     test_xml_etree.test_main(module=cET)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test_main()

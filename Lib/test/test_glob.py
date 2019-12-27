@@ -8,22 +8,22 @@ kutoka test.support agiza (TESTFN, skip_unless_symlink,
                           can_symlink, create_empty_file, change_cwd)
 
 
-class GlobTests(unittest.TestCase):
+kundi GlobTests(unittest.TestCase):
 
-    def norm(self, *parts):
-        return os.path.normpath(os.path.join(self.tempdir, *parts))
+    eleza norm(self, *parts):
+        rudisha os.path.normpath(os.path.join(self.tempdir, *parts))
 
-    def joins(self, *tuples):
-        return [os.path.join(self.tempdir, *parts) for parts in tuples]
+    eleza joins(self, *tuples):
+        rudisha [os.path.join(self.tempdir, *parts) for parts in tuples]
 
-    def mktemp(self, *parts):
+    eleza mktemp(self, *parts):
         filename = self.norm(*parts)
         base, file = os.path.split(filename)
-        if not os.path.exists(base):
+        ikiwa not os.path.exists(base):
             os.makedirs(base)
         create_empty_file(filename)
 
-    def setUp(self):
+    eleza setUp(self):
         self.tempdir = TESTFN + "_dir"
         self.mktemp('a', 'D')
         self.mktemp('aab', 'F')
@@ -34,16 +34,16 @@ class GlobTests(unittest.TestCase):
         self.mktemp('EF')
         self.mktemp('a', 'bcd', 'EF')
         self.mktemp('a', 'bcd', 'efg', 'ha')
-        if can_symlink():
+        ikiwa can_symlink():
             os.symlink(self.norm('broken'), self.norm('sym1'))
             os.symlink('broken', self.norm('sym2'))
             os.symlink(os.path.join('a', 'bcd'), self.norm('sym3'))
 
-    def tearDown(self):
+    eleza tearDown(self):
         shutil.rmtree(self.tempdir)
 
-    def glob(self, *parts, **kwargs):
-        if len(parts) == 1:
+    eleza glob(self, *parts, **kwargs):
+        ikiwa len(parts) == 1:
             pattern = parts[0]
         else:
             pattern = os.path.join(*parts)
@@ -53,15 +53,15 @@ class GlobTests(unittest.TestCase):
         bres = [os.fsencode(x) for x in res]
         self.assertCountEqual(glob.glob(os.fsencode(p), **kwargs), bres)
         self.assertCountEqual(glob.iglob(os.fsencode(p), **kwargs), bres)
-        return res
+        rudisha res
 
-    def assertSequencesEqual_noorder(self, l1, l2):
+    eleza assertSequencesEqual_noorder(self, l1, l2):
         l1 = list(l1)
         l2 = list(l2)
         self.assertEqual(set(l1), set(l2))
         self.assertEqual(sorted(l1), sorted(l2))
 
-    def test_glob_literal(self):
+    eleza test_glob_literal(self):
         eq = self.assertSequencesEqual_noorder
         eq(self.glob('a'), [self.norm('a')])
         eq(self.glob('a', 'D'), [self.norm('a', 'D')])
@@ -78,7 +78,7 @@ class GlobTests(unittest.TestCase):
         res = glob.glob(os.path.join(os.fsencode(os.curdir), b'*'))
         self.assertEqual({type(r) for r in res}, {bytes})
 
-    def test_glob_one_directory(self):
+    eleza test_glob_one_directory(self):
         eq = self.assertSequencesEqual_noorder
         eq(self.glob('a*'), map(self.norm, ['a', 'aab', 'aaa']))
         eq(self.glob('*a'), map(self.norm, ['a', 'aaa']))
@@ -88,9 +88,9 @@ class GlobTests(unittest.TestCase):
         eq(self.glob('aa[ab]'), map(self.norm, ['aaa', 'aab']))
         eq(self.glob('*q'), [])
 
-    def test_glob_nested_directory(self):
+    eleza test_glob_nested_directory(self):
         eq = self.assertSequencesEqual_noorder
-        if os.path.normcase("abCD") == "abCD":
+        ikiwa os.path.normcase("abCD") == "abCD":
             # case-sensitive filesystem
             eq(self.glob('a', 'bcd', 'E*'), [self.norm('a', 'bcd', 'EF')])
         else:
@@ -99,7 +99,7 @@ class GlobTests(unittest.TestCase):
                                              self.norm('a', 'bcd', 'efg')])
         eq(self.glob('a', 'bcd', '*g'), [self.norm('a', 'bcd', 'efg')])
 
-    def test_glob_directory_names(self):
+    eleza test_glob_directory_names(self):
         eq = self.assertSequencesEqual_noorder
         eq(self.glob('*', 'D'), [self.norm('a', 'D')])
         eq(self.glob('*', '*a'), [])
@@ -108,7 +108,7 @@ class GlobTests(unittest.TestCase):
         eq(self.glob('?a?', '*F'), [self.norm('aaa', 'zzzF'),
                                     self.norm('aab', 'F')])
 
-    def test_glob_directory_with_trailing_slash(self):
+    eleza test_glob_directory_with_trailing_slash(self):
         # Patterns ending with a slash shouldn't match non-dirs
         res = glob.glob(self.norm('Z*Z') + os.sep)
         self.assertEqual(res, [])
@@ -124,7 +124,7 @@ class GlobTests(unittest.TestCase):
                       {self.norm('aaa') + os.sep, self.norm('aab') + os.sep},
                       ])
 
-    def test_glob_bytes_directory_with_trailing_slash(self):
+    eleza test_glob_bytes_directory_with_trailing_slash(self):
         # Same as test_glob_directory_with_trailing_slash, but with a
         # bytes argument.
         res = glob.glob(os.fsencode(self.norm('Z*Z') + os.sep))
@@ -142,7 +142,7 @@ class GlobTests(unittest.TestCase):
                       ])
 
     @skip_unless_symlink
-    def test_glob_symlinks(self):
+    eleza test_glob_symlinks(self):
         eq = self.assertSequencesEqual_noorder
         eq(self.glob('sym3'), [self.norm('sym3')])
         eq(self.glob('sym3', '*'), [self.norm('sym3', 'EF'),
@@ -154,7 +154,7 @@ class GlobTests(unittest.TestCase):
             self.norm('aab', 'F'), self.norm('sym3', 'EF')])
 
     @skip_unless_symlink
-    def test_glob_broken_symlinks(self):
+    eleza test_glob_broken_symlinks(self):
         eq = self.assertSequencesEqual_noorder
         eq(self.glob('sym*'), [self.norm('sym1'), self.norm('sym2'),
                                self.norm('sym3')])
@@ -162,7 +162,7 @@ class GlobTests(unittest.TestCase):
         eq(self.glob('sym2'), [self.norm('sym2')])
 
     @unittest.skipUnless(sys.platform == "win32", "Win32 specific test")
-    def test_glob_magic_in_drive(self):
+    eleza test_glob_magic_in_drive(self):
         eq = self.assertSequencesEqual_noorder
         eq(glob.glob('*:'), [])
         eq(glob.glob(b'*:'), [])
@@ -173,11 +173,11 @@ class GlobTests(unittest.TestCase):
         eq(glob.glob('\\\\*\\*\\'), [])
         eq(glob.glob(b'\\\\*\\*\\'), [])
 
-    def check_escape(self, arg, expected):
+    eleza check_escape(self, arg, expected):
         self.assertEqual(glob.escape(arg), expected)
         self.assertEqual(glob.escape(os.fsencode(arg)), os.fsencode(expected))
 
-    def test_escape(self):
+    eleza test_escape(self):
         check = self.check_escape
         check('abc', 'abc')
         check('[', '[[]')
@@ -187,7 +187,7 @@ class GlobTests(unittest.TestCase):
         check('/[[_/*?*/_]]/', '/[[][[]_/[*][?][*]/_]]/')
 
     @unittest.skipUnless(sys.platform == "win32", "Win32 specific test")
-    def test_escape_windows(self):
+    eleza test_escape_windows(self):
         check = self.check_escape
         check('?:?', '?:[?]')
         check('*:*', '*:[*]')
@@ -196,10 +196,10 @@ class GlobTests(unittest.TestCase):
         check('//?/c:/?', '//?/c:/[?]')
         check('//*/*/*', '//*/*/[*]')
 
-    def rglob(self, *parts, **kwargs):
-        return self.glob(*parts, recursive=True, **kwargs)
+    eleza rglob(self, *parts, **kwargs):
+        rudisha self.glob(*parts, recursive=True, **kwargs)
 
-    def test_recursive_glob(self):
+    eleza test_recursive_glob(self):
         eq = self.assertSequencesEqual_noorder
         full = [('EF',), ('ZZZ',),
                 ('a',), ('a', 'D'),
@@ -210,7 +210,7 @@ class GlobTests(unittest.TestCase):
                 ('aaa',), ('aaa', 'zzzF'),
                 ('aab',), ('aab', 'F'),
                ]
-        if can_symlink():
+        ikiwa can_symlink():
             full += [('sym1',), ('sym2',),
                      ('sym3',),
                      ('sym3', 'EF'),
@@ -222,7 +222,7 @@ class GlobTests(unittest.TestCase):
             self.joins((os.curdir, ''), *((os.curdir,) + i for i in full)))
         dirs = [('a', ''), ('a', 'bcd', ''), ('a', 'bcd', 'efg', ''),
                 ('aaa', ''), ('aab', '')]
-        if can_symlink():
+        ikiwa can_symlink():
             dirs += [('sym3', ''), ('sym3', 'efg', '')]
         eq(self.rglob('**', ''), self.joins(('',), *dirs))
 
@@ -231,11 +231,11 @@ class GlobTests(unittest.TestCase):
             ('a', 'bcd', 'efg'), ('a', 'bcd', 'efg', 'ha')))
         eq(self.rglob('a**'), self.joins(('a',), ('aaa',), ('aab',)))
         expect = [('a', 'bcd', 'EF'), ('EF',)]
-        if can_symlink():
+        ikiwa can_symlink():
             expect += [('sym3', 'EF')]
         eq(self.rglob('**', 'EF'), self.joins(*expect))
         expect = [('a', 'bcd', 'EF'), ('aaa', 'zzzF'), ('aab', 'F'), ('EF',)]
-        if can_symlink():
+        ikiwa can_symlink():
             expect += [('sym3', 'EF')]
         eq(self.rglob('**', '*F'), self.joins(*expect))
         eq(self.rglob('**', '*F', ''), [])
@@ -260,11 +260,11 @@ class GlobTests(unittest.TestCase):
                 [join('aaa', 'zzzF')])
             eq(glob.glob('**zz*F', recursive=True), [])
             expect = [join('a', 'bcd', 'EF'), 'EF']
-            if can_symlink():
+            ikiwa can_symlink():
                 expect += [join('sym3', 'EF')]
             eq(glob.glob(join('**', 'EF'), recursive=True), expect)
 
-    def test_glob_many_open_files(self):
+    eleza test_glob_many_open_files(self):
         depth = 30
         base = os.path.join(self.tempdir, 'deep')
         p = os.path.join(base, *(['d']*depth))
@@ -283,9 +283,9 @@ class GlobTests(unittest.TestCase):
 
 
 @skip_unless_symlink
-class SymlinkLoopGlobTests(unittest.TestCase):
+kundi SymlinkLoopGlobTests(unittest.TestCase):
 
-    def test_selflink(self):
+    eleza test_selflink(self):
         tempdir = TESTFN + "_dir"
         os.makedirs(tempdir)
         self.addCleanup(shutil.rmtree, tempdir)
@@ -302,7 +302,7 @@ class SymlinkLoopGlobTests(unittest.TestCase):
                 path = os.path.join(*(['dir'] + ['link'] * depth))
                 self.assertIn(path, results)
                 results.remove(path)
-                if not results:
+                ikiwa not results:
                     break
                 path = os.path.join(path, 'file')
                 self.assertIn(path, results)
@@ -330,5 +330,5 @@ class SymlinkLoopGlobTests(unittest.TestCase):
                 depth += 1
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

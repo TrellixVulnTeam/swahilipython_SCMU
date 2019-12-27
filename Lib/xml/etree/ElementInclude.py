@@ -59,7 +59,7 @@ XINCLUDE_FALLBACK = XINCLUDE + "fallback"
 ##
 # Fatal include error.
 
-class FatalIncludeError(SyntaxError):
+kundi FatalIncludeError(SyntaxError):
     pass
 
 ##
@@ -68,22 +68,22 @@ class FatalIncludeError(SyntaxError):
 # @param href Resource reference.
 # @param parse Parse mode.  Either "xml" or "text".
 # @param encoding Optional text encoding (UTF-8 by default for "text").
-# @return The expanded resource.  If the parse mode is "xml", this
+# @rudisha The expanded resource.  If the parse mode is "xml", this
 #    is an ElementTree instance.  If the parse mode is "text", this
-#    is a Unicode string.  If the loader fails, it can return None
+#    is a Unicode string.  If the loader fails, it can rudisha None
 #    or raise an OSError exception.
 # @throws OSError If the loader fails to load the resource.
 
-def default_loader(href, parse, encoding=None):
-    if parse == "xml":
+eleza default_loader(href, parse, encoding=None):
+    ikiwa parse == "xml":
         with open(href, 'rb') as file:
             data = ElementTree.parse(file).getroot()
     else:
-        if not encoding:
+        ikiwa not encoding:
             encoding = 'UTF-8'
         with open(href, 'r', encoding=encoding) as file:
             data = file.read()
-    return data
+    rudisha data
 
 ##
 # Expand XInclude directives.
@@ -93,37 +93,37 @@ def default_loader(href, parse, encoding=None):
 #     to {@link default_loader}.  If given, it should be a callable
 #     that implements the same interface as <b>default_loader</b>.
 # @throws FatalIncludeError If the function fails to include a given
-#     resource, or if the tree contains malformed XInclude elements.
+#     resource, or ikiwa the tree contains malformed XInclude elements.
 # @throws OSError If the function fails to load a given resource.
 
-def include(elem, loader=None):
-    if loader is None:
+eleza include(elem, loader=None):
+    ikiwa loader is None:
         loader = default_loader
     # look for xinclude elements
     i = 0
     while i < len(elem):
         e = elem[i]
-        if e.tag == XINCLUDE_INCLUDE:
+        ikiwa e.tag == XINCLUDE_INCLUDE:
             # process xinclude directive
             href = e.get("href")
             parse = e.get("parse", "xml")
-            if parse == "xml":
+            ikiwa parse == "xml":
                 node = loader(href, parse)
-                if node is None:
+                ikiwa node is None:
                     raise FatalIncludeError(
                         "cannot load %r as %r" % (href, parse)
                         )
                 node = copy.copy(node)
-                if e.tail:
+                ikiwa e.tail:
                     node.tail = (node.tail or "") + e.tail
                 elem[i] = node
-            elif parse == "text":
+            elikiwa parse == "text":
                 text = loader(href, parse, e.get("encoding"))
-                if text is None:
+                ikiwa text is None:
                     raise FatalIncludeError(
                         "cannot load %r as %r" % (href, parse)
                         )
-                if i:
+                ikiwa i:
                     node = elem[i-1]
                     node.tail = (node.tail or "") + text + (e.tail or "")
                 else:
@@ -134,7 +134,7 @@ def include(elem, loader=None):
                 raise FatalIncludeError(
                     "unknown parse type in xi:include tag (%r)" % parse
                 )
-        elif e.tag == XINCLUDE_FALLBACK:
+        elikiwa e.tag == XINCLUDE_FALLBACK:
             raise FatalIncludeError(
                 "xi:fallback tag must be child of xi:include (%r)" % e.tag
                 )

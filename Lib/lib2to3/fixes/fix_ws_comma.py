@@ -9,7 +9,7 @@ kutoka .. agiza pytree
 kutoka ..pgen2 agiza token
 kutoka .. agiza fixer_base
 
-class FixWsComma(fixer_base.BaseFix):
+kundi FixWsComma(fixer_base.BaseFix):
 
     explicit = True # The user must ask for this fixers
 
@@ -21,19 +21,19 @@ class FixWsComma(fixer_base.BaseFix):
     COLON = pytree.Leaf(token.COLON, ":")
     SEPS = (COMMA, COLON)
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         new = node.clone()
         comma = False
         for child in new.children:
-            if child in self.SEPS:
+            ikiwa child in self.SEPS:
                 prefix = child.prefix
-                if prefix.isspace() and "\n" not in prefix:
+                ikiwa prefix.isspace() and "\n" not in prefix:
                     child.prefix = ""
                 comma = True
             else:
-                if comma:
+                ikiwa comma:
                     prefix = child.prefix
-                    if not prefix:
+                    ikiwa not prefix:
                         child.prefix = " "
                 comma = False
-        return new
+        rudisha new

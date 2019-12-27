@@ -21,26 +21,26 @@ file_line_pats = [
 file_line_progs = None
 
 
-def compile_progs():
+eleza compile_progs():
     "Compile the patterns for matching to file name and line number."
     global file_line_progs
     file_line_progs = [re.compile(pat, re.IGNORECASE)
                        for pat in file_line_pats]
 
 
-def file_line_helper(line):
+eleza file_line_helper(line):
     """Extract file name and line number kutoka line of text.
 
-    Check if line of text contains one of the file/line patterns.
-    If it does and if the file and line are valid, return
+    Check ikiwa line of text contains one of the file/line patterns.
+    If it does and ikiwa the file and line are valid, return
     a tuple of the file name and line number.  If it doesn't match
-    or if the file or line is invalid, return None.
+    or ikiwa the file or line is invalid, rudisha None.
     """
-    if not file_line_progs:
+    ikiwa not file_line_progs:
         compile_progs()
     for prog in file_line_progs:
         match = prog.search(line)
-        if match:
+        ikiwa match:
             filename, lineno = match.group(1, 2)
             try:
                 f = open(filename, "r")
@@ -49,18 +49,18 @@ def file_line_helper(line):
             except OSError:
                 continue
     else:
-        return None
+        rudisha None
     try:
-        return filename, int(lineno)
+        rudisha filename, int(lineno)
     except TypeError:
-        return None
+        rudisha None
 
 
-class OutputWindow(EditorWindow):
+kundi OutputWindow(EditorWindow):
     """An editor window that can serve as an output file.
 
-    Also the future base class for the Python shell window.
-    This class has no input facilities.
+    Also the future base kundi for the Python shell window.
+    This kundi has no input facilities.
 
     Adds binding to open a file at a line to the text widget.
     """
@@ -76,25 +76,25 @@ class OutputWindow(EditorWindow):
 
     allow_code_context = False
 
-    def __init__(self, *args):
+    eleza __init__(self, *args):
         EditorWindow.__init__(self, *args)
         self.text.bind("<<goto-file-line>>", self.goto_file_line)
 
     # Customize EditorWindow
-    def ispythonsource(self, filename):
+    eleza ispythonsource(self, filename):
         "Python source is only part of output: do not colorize."
-        return False
+        rudisha False
 
-    def short_title(self):
+    eleza short_title(self):
         "Customize EditorWindow title."
-        return "Output"
+        rudisha "Output"
 
-    def maybesave(self):
+    eleza maybesave(self):
         "Customize EditorWindow to not display save file messagebox."
-        return 'yes' if self.get_saved() else 'no'
+        rudisha 'yes' ikiwa self.get_saved() else 'no'
 
     # Act as output file
-    def write(self, s, tags=(), mark="insert"):
+    eleza write(self, s, tags=(), mark="insert"):
         """Write text to text widget.
 
         The text is inserted at the given index with the provided
@@ -110,26 +110,26 @@ class OutputWindow(EditorWindow):
         Return:
             Length of text inserted.
         """
-        if isinstance(s, bytes):
+        ikiwa isinstance(s, bytes):
             s = s.decode(iomenu.encoding, "replace")
         self.text.insert(mark, s, tags)
         self.text.see(mark)
         self.text.update()
-        return len(s)
+        rudisha len(s)
 
-    def writelines(self, lines):
+    eleza writelines(self, lines):
         "Write each item in lines iterable."
         for line in lines:
             self.write(line)
 
-    def flush(self):
+    eleza flush(self):
         "No flushing needed as write() directly writes to widget."
         pass
 
-    def showerror(self, *args, **kwargs):
+    eleza showerror(self, *args, **kwargs):
         messagebox.showerror(*args, **kwargs)
 
-    def goto_file_line(self, event=None):
+    eleza goto_file_line(self, event=None):
         """Handle request to open file/line.
 
         If the selected or previous line in the output window
@@ -140,13 +140,13 @@ class OutputWindow(EditorWindow):
         """
         line = self.text.get("insert linestart", "insert lineend")
         result = file_line_helper(line)
-        if not result:
+        ikiwa not result:
             # Try the previous line.  This is handy e.g. in tracebacks,
             # where you tend to right-click on the displayed source line
             line = self.text.get("insert -1line linestart",
                                  "insert -1line lineend")
             result = file_line_helper(line)
-            if not result:
+            ikiwa not result:
                 self.showerror(
                     "No special line",
                     "The line you point at doesn't look like "
@@ -158,7 +158,7 @@ class OutputWindow(EditorWindow):
 
 
 # These classes are currently not used but might come in handy
-class OnDemandOutputWindow:
+kundi OnDemandOutputWindow:
 
     tagdefs = {
         # XXX Should use IdlePrefs.ColorPrefs
@@ -166,24 +166,24 @@ class OnDemandOutputWindow:
         "stderr":  {"foreground": "#007700"},
     }
 
-    def __init__(self, flist):
+    eleza __init__(self, flist):
         self.flist = flist
         self.owin = None
 
-    def write(self, s, tags, mark):
-        if not self.owin:
+    eleza write(self, s, tags, mark):
+        ikiwa not self.owin:
             self.setup()
         self.owin.write(s, tags, mark)
 
-    def setup(self):
+    eleza setup(self):
         self.owin = owin = OutputWindow(self.flist)
         text = owin.text
         for tag, cnf in self.tagdefs.items():
-            if cnf:
+            ikiwa cnf:
                 text.tag_configure(tag, **cnf)
         text.tag_raise('sel')
         self.write = self.owin.write
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_outwin', verbosity=2, exit=False)

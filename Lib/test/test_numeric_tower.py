@@ -14,18 +14,18 @@ kutoka fractions agiza Fraction as F
 _PyHASH_MODULUS = sys.hash_info.modulus
 _PyHASH_INF = sys.hash_info.inf
 
-class HashTest(unittest.TestCase):
-    def check_equal_hash(self, x, y):
+kundi HashTest(unittest.TestCase):
+    eleza check_equal_hash(self, x, y):
         # check both that x and y are equal and that their hashes are equal
         self.assertEqual(hash(x), hash(y),
                          "got different hashes for {!r} and {!r}".format(x, y))
         self.assertEqual(x, y)
 
-    def test_bools(self):
+    eleza test_bools(self):
         self.check_equal_hash(False, 0)
         self.check_equal_hash(True, 1)
 
-    def test_integers(self):
+    eleza test_integers(self):
         # check that equal values hash equal
 
         # exact integers
@@ -38,7 +38,7 @@ class HashTest(unittest.TestCase):
         # n, so pay special attention to numbers of the form 2**n and 2**n-1.
         for i in range(100):
             n = 2**i - 1
-            if n == int(float(n)):
+            ikiwa n == int(float(n)):
                 self.check_equal_hash(n, float(n))
                 self.check_equal_hash(-n, -float(n))
             self.check_equal_hash(n, D(n))
@@ -60,10 +60,10 @@ class HashTest(unittest.TestCase):
             n = random.randrange(-10**e, 10**e)
             self.check_equal_hash(n, D(n))
             self.check_equal_hash(n, F(n))
-            if n == int(float(n)):
+            ikiwa n == int(float(n)):
                 self.check_equal_hash(n, float(n))
 
-    def test_binary_floats(self):
+    eleza test_binary_floats(self):
         # check that floats hash equal to corresponding Fractions and Decimals
 
         # floats that are distinct but numerically equal should hash the same
@@ -81,10 +81,10 @@ class HashTest(unittest.TestCase):
 
         for _ in range(1000):
             x = random.random() * math.exp(random.random()*200.0 - 100.0)
-            self.check_equal_hash(x, D.from_float(x))
-            self.check_equal_hash(x, F.from_float(x))
+            self.check_equal_hash(x, D.kutoka_float(x))
+            self.check_equal_hash(x, F.kutoka_float(x))
 
-    def test_complex(self):
+    eleza test_complex(self):
         # complex numbers with zero imaginary part should hash equal to
         # the corresponding float
 
@@ -95,7 +95,7 @@ class HashTest(unittest.TestCase):
             for value in test_values:
                 self.check_equal_hash(value, complex(value, zero))
 
-    def test_decimals(self):
+    eleza test_decimals(self):
         # check that Decimal instances that have different representations
         # but equal values give the same hash
         zeros = ['0', '-0', '0.0', '-0.0e10', '000e-10']
@@ -113,7 +113,7 @@ class HashTest(unittest.TestCase):
         self.check_equal_hash(D('12300.00'), D(12300))
         self.check_equal_hash(D('12300.000'), D(12300))
 
-    def test_fractions(self):
+    eleza test_fractions(self):
         # check special case for fractions where either the numerator
         # or the denominator is a multiple of _PyHASH_MODULUS
         self.assertEqual(hash(F(1, _PyHASH_MODULUS)), _PyHASH_INF)
@@ -121,11 +121,11 @@ class HashTest(unittest.TestCase):
         self.assertEqual(hash(F(7*_PyHASH_MODULUS, 1)), 0)
         self.assertEqual(hash(F(-_PyHASH_MODULUS, 1)), 0)
 
-    def test_hash_normalization(self):
+    eleza test_hash_normalization(self):
         # Test for a bug encountered while changing long_hash.
         #
         # Given objects x and y, it should be possible for y's
-        # __hash__ method to return hash(x) in order to ensure that
+        # __hash__ method to rudisha hash(x) in order to ensure that
         # hash(x) == hash(y).  But hash(x) is not exactly equal to the
         # result of x.__hash__(): there's some internal normalization
         # to make sure that the result fits in a C long, and is not
@@ -133,17 +133,17 @@ class HashTest(unittest.TestCase):
         # normalization must therefore not change the result of
         # hash(x) for any x.
 
-        class HalibutProxy:
-            def __hash__(self):
-                return hash('halibut')
-            def __eq__(self, other):
-                return other == 'halibut'
+        kundi HalibutProxy:
+            eleza __hash__(self):
+                rudisha hash('halibut')
+            eleza __eq__(self, other):
+                rudisha other == 'halibut'
 
         x = {'halibut', HalibutProxy()}
         self.assertEqual(len(x), 1)
 
-class ComparisonTest(unittest.TestCase):
-    def test_mixed_comparisons(self):
+kundi ComparisonTest(unittest.TestCase):
+    eleza test_mixed_comparisons(self):
 
         # ordered list of distinct test values of various types:
         # int, float, Fraction, Decimal
@@ -174,7 +174,7 @@ class ComparisonTest(unittest.TestCase):
                 self.assertGreater(second, first)
                 self.assertGreaterEqual(second, first)
 
-    def test_complex(self):
+    eleza test_complex(self):
         # comparisons with complex are special:  equality and inequality
         # comparisons should always succeed, but order comparisons should
         # raise TypeError.
@@ -198,5 +198,5 @@ class ComparisonTest(unittest.TestCase):
                 self.assertRaises(TypeError, op, v, z)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

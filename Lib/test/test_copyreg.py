@@ -3,51 +3,51 @@ agiza unittest
 
 kutoka test.pickletester agiza ExtensionSaver
 
-class C:
+kundi C:
     pass
 
 
-class WithoutSlots(object):
+kundi WithoutSlots(object):
     pass
 
-class WithWeakref(object):
+kundi WithWeakref(object):
     __slots__ = ('__weakref__',)
 
-class WithPrivate(object):
+kundi WithPrivate(object):
     __slots__ = ('__spam',)
 
-class _WithLeadingUnderscoreAndPrivate(object):
+kundi _WithLeadingUnderscoreAndPrivate(object):
     __slots__ = ('__spam',)
 
-class ___(object):
+kundi ___(object):
     __slots__ = ('__spam',)
 
-class WithSingleString(object):
+kundi WithSingleString(object):
     __slots__ = 'spam'
 
-class WithInherited(WithSingleString):
+kundi WithInherited(WithSingleString):
     __slots__ = ('eggs',)
 
 
-class CopyRegTestCase(unittest.TestCase):
+kundi CopyRegTestCase(unittest.TestCase):
 
-    def test_class(self):
+    eleza test_class(self):
         self.assertRaises(TypeError, copyreg.pickle,
                           C, None, None)
 
-    def test_noncallable_reduce(self):
+    eleza test_noncallable_reduce(self):
         self.assertRaises(TypeError, copyreg.pickle,
                           type(1), "not a callable")
 
-    def test_noncallable_constructor(self):
+    eleza test_noncallable_constructor(self):
         self.assertRaises(TypeError, copyreg.pickle,
                           type(1), int, "not a callable")
 
-    def test_bool(self):
+    eleza test_bool(self):
         agiza copy
         self.assertEqual(True, copy.copy(True))
 
-    def test_extension_registry(self):
+    eleza test_extension_registry(self):
         mod, func, code = 'junk1 ', ' junk2', 0xabcd
         e = ExtensionSaver(code)
         try:
@@ -78,7 +78,7 @@ class CopyRegTestCase(unittest.TestCase):
             self.assertRaises(ValueError, copyreg.remove_extension,
                               mod, func[1:], code)
             # Can't remove one that isn't registered at all.
-            if code + 1 not in copyreg._inverted_registry:
+            ikiwa code + 1 not in copyreg._inverted_registry:
                 self.assertRaises(ValueError, copyreg.remove_extension,
                                   mod[1:], func[1:], code + 1)
 
@@ -105,7 +105,7 @@ class CopyRegTestCase(unittest.TestCase):
             self.assertRaises(ValueError, copyreg.add_extension,
                               mod, func, code)
 
-    def test_slotnames(self):
+    eleza test_slotnames(self):
         self.assertEqual(copyreg._slotnames(WithoutSlots), [])
         self.assertEqual(copyreg._slotnames(WithWeakref), [])
         expected = ['_WithPrivate__spam']
@@ -122,5 +122,5 @@ class CopyRegTestCase(unittest.TestCase):
         self.assertEqual(result, expected)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

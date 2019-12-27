@@ -34,7 +34,7 @@ Interface summary:
 .. _shallow_vs_deep_copy:
 
 The difference between shallow and deep copying is only relevant for compound
-objects (objects that contain other objects, like lists or class instances):
+objects (objects that contain other objects, like lists or kundi instances):
 
 * A *shallow copy* constructs a new compound object and then (to the extent
   possible) inserts *references* into it to the objects found in the original.
@@ -73,13 +73,13 @@ of lists by assigning a slice of the entire list, for example,
 Classes can use the same interfaces to control copying that they use to control
 pickling.  See the description of module :mod:`pickle` for information on these
 methods.  In fact, the :mod:`copy` module uses the registered
-pickle functions from the :mod:`copyreg` module.
+pickle functions kutoka the :mod:`copyreg` module.
 
 .. index::
    single: __copy__() (copy protocol)
    single: __deepcopy__() (copy protocol)
 
-In order for a class to define its own copy implementation, it can define
+In order for a kundi to define its own copy implementation, it can define
 special methods :meth:`__copy__` and :meth:`__deepcopy__`.  The former is called
 to implement the shallow copy operation; no additional arguments are passed.
 The latter is called to implement the deep copy operation; it is passed one

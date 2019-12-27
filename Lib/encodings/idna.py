@@ -230,7 +230,7 @@ class IncrementalEncoder(codecs.BufferedIncrementalEncoder):
             if not labels[-1]:
                 trailing_dot = b'.'
                 del labels[-1]
-            elif not final:
+            lasivyo not final:
                 # Keep potentially unfinished label until the next call
                 del labels[-1]
                 if labels:
@@ -271,7 +271,7 @@ class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
             if not labels[-1]:
                 trailing_dot = '.'
                 del labels[-1]
-            elif not final:
+            lasivyo not final:
                 # Keep potentially unfinished label until the next call
                 del labels[-1]
                 if labels:

@@ -6,10 +6,10 @@ agiza warnings
 
 kutoka fnmatch agiza fnmatch, fnmatchcase, translate, filter
 
-class FnmatchTestCase(unittest.TestCase):
+kundi FnmatchTestCase(unittest.TestCase):
 
-    def check_match(self, filename, pattern, should_match=True, fn=fnmatch):
-        if should_match:
+    eleza check_match(self, filename, pattern, should_match=True, fn=fnmatch):
+        ikiwa should_match:
             self.assertTrue(fn(filename, pattern),
                          "expected %r to match pattern %r"
                          % (filename, pattern))
@@ -18,7 +18,7 @@ class FnmatchTestCase(unittest.TestCase):
                          "expected %r not to match pattern %r"
                          % (filename, pattern))
 
-    def test_fnmatch(self):
+    eleza test_fnmatch(self):
         check = self.check_match
         check('abc', 'abc')
         check('abc', '?*?')
@@ -45,13 +45,13 @@ class FnmatchTestCase(unittest.TestCase):
         check('\nfoo', 'foo*', False)
         check('\n', '*')
 
-    def test_mix_bytes_str(self):
+    eleza test_mix_bytes_str(self):
         self.assertRaises(TypeError, fnmatch, 'test', b'*')
         self.assertRaises(TypeError, fnmatch, b'test', '*')
         self.assertRaises(TypeError, fnmatchcase, 'test', b'*')
         self.assertRaises(TypeError, fnmatchcase, b'test', '*')
 
-    def test_fnmatchcase(self):
+    eleza test_fnmatchcase(self):
         check = self.check_match
         check('abc', 'abc', True, fnmatchcase)
         check('AbC', 'abc', False, fnmatchcase)
@@ -63,12 +63,12 @@ class FnmatchTestCase(unittest.TestCase):
         check('usr/bin', 'usr\\bin', False, fnmatchcase)
         check('usr\\bin', 'usr\\bin', True, fnmatchcase)
 
-    def test_bytes(self):
+    eleza test_bytes(self):
         self.check_match(b'test', b'te*')
         self.check_match(b'test\xff', b'te*\xff')
         self.check_match(b'foo\nbar', b'foo*')
 
-    def test_case(self):
+    eleza test_case(self):
         ignorecase = os.path.normcase('ABC') == os.path.normcase('abc')
         check = self.check_match
         check('abc', 'abc')
@@ -76,7 +76,7 @@ class FnmatchTestCase(unittest.TestCase):
         check('abc', 'AbC', ignorecase)
         check('AbC', 'AbC')
 
-    def test_sep(self):
+    eleza test_sep(self):
         normsep = os.path.normcase('\\') == os.path.normcase('/')
         check = self.check_match
         check('usr/bin', 'usr/bin')
@@ -84,7 +84,7 @@ class FnmatchTestCase(unittest.TestCase):
         check('usr/bin', 'usr\\bin', normsep)
         check('usr\\bin', 'usr\\bin')
 
-    def test_warnings(self):
+    eleza test_warnings(self):
         with warnings.catch_warnings():
             warnings.simplefilter('error', Warning)
             check = self.check_match
@@ -96,9 +96,9 @@ class FnmatchTestCase(unittest.TestCase):
             check('.', '[a-z--/A-Z]')
 
 
-class TranslateTestCase(unittest.TestCase):
+kundi TranslateTestCase(unittest.TestCase):
 
-    def test_translate(self):
+    eleza test_translate(self):
         self.assertEqual(translate('*'), r'(?s:.*)\Z')
         self.assertEqual(translate('?'), r'(?s:.)\Z')
         self.assertEqual(translate('a?b*'), r'(?s:a.b.*)\Z')
@@ -109,32 +109,32 @@ class TranslateTestCase(unittest.TestCase):
         self.assertEqual(translate('[x'), r'(?s:\[x)\Z')
 
 
-class FilterTestCase(unittest.TestCase):
+kundi FilterTestCase(unittest.TestCase):
 
-    def test_filter(self):
+    eleza test_filter(self):
         self.assertEqual(filter(['Python', 'Ruby', 'Perl', 'Tcl'], 'P*'),
                          ['Python', 'Perl'])
         self.assertEqual(filter([b'Python', b'Ruby', b'Perl', b'Tcl'], b'P*'),
                          [b'Python', b'Perl'])
 
-    def test_mix_bytes_str(self):
+    eleza test_mix_bytes_str(self):
         self.assertRaises(TypeError, filter, ['test'], b'*')
         self.assertRaises(TypeError, filter, [b'test'], '*')
 
-    def test_case(self):
+    eleza test_case(self):
         ignorecase = os.path.normcase('P') == os.path.normcase('p')
         self.assertEqual(filter(['Test.py', 'Test.rb', 'Test.PL'], '*.p*'),
-                         ['Test.py', 'Test.PL'] if ignorecase else ['Test.py'])
+                         ['Test.py', 'Test.PL'] ikiwa ignorecase else ['Test.py'])
         self.assertEqual(filter(['Test.py', 'Test.rb', 'Test.PL'], '*.P*'),
-                         ['Test.py', 'Test.PL'] if ignorecase else ['Test.PL'])
+                         ['Test.py', 'Test.PL'] ikiwa ignorecase else ['Test.PL'])
 
-    def test_sep(self):
+    eleza test_sep(self):
         normsep = os.path.normcase('\\') == os.path.normcase('/')
         self.assertEqual(filter(['usr/bin', 'usr', 'usr\\lib'], 'usr/*'),
-                         ['usr/bin', 'usr\\lib'] if normsep else ['usr/bin'])
+                         ['usr/bin', 'usr\\lib'] ikiwa normsep else ['usr/bin'])
         self.assertEqual(filter(['usr/bin', 'usr', 'usr\\lib'], 'usr\\*'),
-                         ['usr/bin', 'usr\\lib'] if normsep else ['usr\\lib'])
+                         ['usr/bin', 'usr\\lib'] ikiwa normsep else ['usr\\lib'])
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

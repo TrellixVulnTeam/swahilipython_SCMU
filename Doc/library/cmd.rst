@@ -10,16 +10,16 @@
 
 --------------
 
-The :class:`Cmd` class provides a simple framework for writing line-oriented
+The :class:`Cmd` kundi provides a simple framework for writing line-oriented
 command interpreters.  These are often useful for test harnesses, administrative
 tools, and prototypes that will later be wrapped in a more sophisticated
 interface.
 
 .. class:: Cmd(completekey='tab', stdin=None, stdout=None)
 
-   A :class:`Cmd` instance or subclass instance is a line-oriented interpreter
+   A :class:`Cmd` instance or subkundi instance is a line-oriented interpreter
    framework.  There is no good reason to instantiate :class:`Cmd` itself; rather,
-   it's useful as a superclass of an interpreter class you define yourself in order
+   it's useful as a superkundi of an interpreter kundi you define yourself in order
    to inherit :class:`Cmd`'s methods and encapsulate action methods.
 
    The optional argument *completekey* is the :mod:`readline` name of a completion
@@ -27,7 +27,7 @@ interface.
    :mod:`readline` is available, command completion is done automatically.
 
    The optional arguments *stdin* and *stdout* specify the  input and output file
-   objects that the Cmd instance or subclass  instance will use for input and
+   objects that the Cmd instance or subkundi  instance will use for input and
    output. If not specified, they will default to :data:`sys.stdin` and
    :data:`sys.stdout`.
 
@@ -51,7 +51,7 @@ A :class:`Cmd` instance has the following methods:
    the line as argument.
 
    The optional argument is a banner or intro string to be issued before the first
-   prompt (this overrides the :attr:`intro` class attribute).
+   prompt (this overrides the :attr:`intro` kundi attribute).
 
    If the :mod:`readline` module is loaded, input will automatically inherit
    :program:`bash`\ -like history-list editing (e.g. :kbd:`Control-P` scrolls back
@@ -72,7 +72,7 @@ A :class:`Cmd` instance has the following methods:
    method :meth:`do_shell` (if such a method is defined).
 
    This method will return when the :meth:`postcmd` method returns a true value.
-   The *stop* argument to :meth:`postcmd` is the return value from the command's
+   The *stop* argument to :meth:`postcmd` is the return value kutoka the command's
    corresponding :meth:`do_\*` method.
 
    If completion is enabled, completing commands will be done automatically, and
@@ -100,7 +100,7 @@ A :class:`Cmd` instance has the following methods:
    return value is a flag indicating whether interpretation of commands by the
    interpreter should stop.  If there is a :meth:`do_\*` method for the command
    *str*, the return value of that method is returned, otherwise the return value
-   from the :meth:`default` method is returned.
+   kutoka the :meth:`default` method is returned.
 
 
 .. method:: Cmd.emptyline()
@@ -232,7 +232,7 @@ This section presents a simple example of how to build a shell around a few of
 the commands in the :mod:`turtle` module.
 
 Basic turtle commands such as :meth:`~turtle.forward` are added to a
-:class:`Cmd` subclass with method named :meth:`do_forward`.  The argument is
+:class:`Cmd` subkundi with method named :meth:`do_forward`.  The argument is
 converted to a number and dispatched to the turtle module.  The docstring is
 used in the help utility provided by the shell.
 
@@ -242,10 +242,10 @@ lowercase and writing the commands to a file.  The :meth:`do_playback` method
 reads the file and adds the recorded commands to the :attr:`cmdqueue` for
 immediate playback::
 
-    import cmd, sys
-    from turtle import *
+    agiza cmd, sys
+    kutoka turtle agiza *
 
-    class TurtleShell(cmd.Cmd):
+    kundi TurtleShell(cmd.Cmd):
         intro = 'Welcome to the turtle shell.   Type help or ? to list commands.\n'
         prompt = '(turtle) '
         file = None
@@ -295,7 +295,7 @@ immediate playback::
             'Save future commands to filename:  RECORD rose.cmd'
             self.file = open(arg, 'w')
         def do_playback(self, arg):
-            'Playback commands from a file:  PLAYBACK rose.cmd'
+            'Playback commands kutoka a file:  PLAYBACK rose.cmd'
             self.close()
             with open(arg) as f:
                 self.cmdqueue.extend(f.read().splitlines())

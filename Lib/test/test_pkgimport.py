@@ -6,24 +6,24 @@ agiza random
 agiza tempfile
 agiza unittest
 
-kutoka importlib.util agiza cache_from_source
+kutoka importlib.util agiza cache_kutoka_source
 kutoka test.support agiza create_empty_file
 
-class TestImport(unittest.TestCase):
+kundi TestImport(unittest.TestCase):
 
-    def __init__(self, *args, **kw):
+    eleza __init__(self, *args, **kw):
         self.package_name = 'PACKAGE_'
         while self.package_name in sys.modules:
             self.package_name += random.choose(string.ascii_letters)
         self.module_name = self.package_name + '.foo'
         unittest.TestCase.__init__(self, *args, **kw)
 
-    def remove_modules(self):
+    eleza remove_modules(self):
         for module_name in (self.package_name, self.module_name):
-            if module_name in sys.modules:
+            ikiwa module_name in sys.modules:
                 del sys.modules[module_name]
 
-    def setUp(self):
+    eleza setUp(self):
         self.test_dir = tempfile.mkdtemp()
         sys.path.append(self.test_dir)
         self.package_dir = os.path.join(self.test_dir,
@@ -32,20 +32,20 @@ class TestImport(unittest.TestCase):
         create_empty_file(os.path.join(self.package_dir, '__init__.py'))
         self.module_path = os.path.join(self.package_dir, 'foo.py')
 
-    def tearDown(self):
+    eleza tearDown(self):
         shutil.rmtree(self.test_dir)
         self.assertNotEqual(sys.path.count(self.test_dir), 0)
         sys.path.remove(self.test_dir)
         self.remove_modules()
 
-    def rewrite_file(self, contents):
-        compiled_path = cache_from_source(self.module_path)
-        if os.path.exists(compiled_path):
+    eleza rewrite_file(self, contents):
+        compiled_path = cache_kutoka_source(self.module_path)
+        ikiwa os.path.exists(compiled_path):
             os.remove(compiled_path)
         with open(self.module_path, 'w') as f:
             f.write(contents)
 
-    def test_package_import__semantics(self):
+    eleza test_package_import__semantics(self):
 
         # Generate a couple of broken modules to try agizaing.
 
@@ -76,5 +76,5 @@ class TestImport(unittest.TestCase):
         self.assertEqual(getattr(module, var), 1)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

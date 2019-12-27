@@ -34,7 +34,7 @@ The :mod:`runpy` module provides two functions:
 
    Execute the code of the specified module and return the resulting module
    globals dictionary. The module's code is first located using the standard
-   import mechanism (refer to :pep:`302` for details) and then executed in a
+   agiza mechanism (refer to :pep:`302` for details) and then executed in a
    fresh module namespace.
 
    The *mod_name* argument should be an absolute module name.
@@ -75,10 +75,10 @@ The :mod:`runpy` module provides two functions:
    Note that this manipulation of :mod:`sys` is not thread-safe. Other threads
    may see the partially initialised module, as well as the altered list of
    arguments. It is recommended that the :mod:`sys` module be left alone when
-   invoking this function from threaded code.
+   invoking this function kutoka threaded code.
 
    .. seealso::
-      The :option:`-m` option offering equivalent functionality from the
+      The :option:`-m` option offering equivalent functionality kutoka the
       command line.
 
    .. versionchanged:: 3.1
@@ -149,7 +149,7 @@ The :mod:`runpy` module provides two functions:
    are not optional in this function as these adjustments are essential to
    allowing the execution of sys.path entries. As the thread-safety
    limitations still apply, use of this function in threaded code should be
-   either serialised with the import lock or delegated to a separate process.
+   either serialised with the agiza lock or delegated to a separate process.
 
    .. seealso::
       :ref:`using-on-interface-options` for equivalent functionality on the
@@ -160,7 +160,7 @@ The :mod:`runpy` module provides two functions:
    .. versionchanged:: 3.4
       Updated to take advantage of the module spec feature added by
       :pep:`451`. This allows ``__cached__`` to be set correctly in the
-      case where ``__main__`` is imported from a valid sys.path entry rather
+      case where ``__main__`` is imported kutoka a valid sys.path entry rather
       than being executed directly.
 
 .. seealso::

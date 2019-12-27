@@ -1,7 +1,7 @@
 import unittest, sys
 
 from ctypes import *
-import _ctypes_test
+agiza _ctypes_test
 
 ctype_types = [c_byte, c_ubyte, c_short, c_ushort, c_int, c_uint,
                  c_long, c_ulong, c_longlong, c_ulonglong, c_double, c_float]
@@ -130,7 +130,7 @@ class PointersTestCase(unittest.TestCase):
 
         pt.contents.c = 33
 
-        from ctypes import _pointer_type_cache
+        from ctypes agiza _pointer_type_cache
         del _pointer_type_cache[Table]
 
     def test_basic(self):
@@ -172,7 +172,7 @@ class PointersTestCase(unittest.TestCase):
                                  c_void_p(-1).value)
             self.assertEqual(c_void_p(0xFFFFFFFFFFFFFFFF).value,
                                  c_void_p(-1).value)
-        elif sizeof(c_void_p) == 8:
+        lasivyo sizeof(c_void_p) == 8:
             self.assertEqual(c_void_p(0xFFFFFFFF).value,
                                  0xFFFFFFFF)
             self.assertEqual(c_void_p(0xFFFFFFFFFFFFFFFF).value,
@@ -201,7 +201,7 @@ class PointersTestCase(unittest.TestCase):
         self.assertTrue(POINTER(LargeNamedType))
 
         # to not leak references, we must clean _pointer_type_cache
-        from ctypes import _pointer_type_cache
+        from ctypes agiza _pointer_type_cache
         del _pointer_type_cache[LargeNamedType]
 
     def test_pointer_type_str_name(self):
@@ -210,11 +210,11 @@ class PointersTestCase(unittest.TestCase):
         self.assertTrue(P)
 
         # to not leak references, we must clean _pointer_type_cache
-        from ctypes import _pointer_type_cache
+        from ctypes agiza _pointer_type_cache
         del _pointer_type_cache[id(P)]
 
     def test_abstract(self):
-        from ctypes import _Pointer
+        from ctypes agiza _Pointer
 
         self.assertRaises(TypeError, _Pointer.set_type, 42)
 

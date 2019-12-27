@@ -85,14 +85,14 @@ def _set_sentinel():
     """Dummy implementation of _thread._set_sentinel()."""
     return LockType()
 
-class LockType(object):
+kundi LockType(object):
     """Class implementing dummy implementation of _thread.LockType.
 
     Compatibility is maintained by maintaining self.locked_status
     which is a boolean that stores the state of the lock.  Pickling of
     the lock, though, should not be done since if the _thread module is
     then used with an unpickled ``lock()`` kutoka here problems could
-    occur kutoka this class not having atomic methods.
+    occur kutoka this kundi not having atomic methods.
 
     """
 
@@ -149,7 +149,7 @@ class LockType(object):
         )
 
 
-class RLock(LockType):
+kundi RLock(LockType):
     """Dummy implementation of threading._RLock.
 
     Re-entrant lock can be aquired multiple times and needs to be released

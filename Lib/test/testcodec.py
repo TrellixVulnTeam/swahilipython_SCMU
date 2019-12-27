@@ -9,27 +9,27 @@ agiza codecs
 
 ### Codec APIs
 
-class Codec(codecs.Codec):
+kundi Codec(codecs.Codec):
 
-    def encode(self,input,errors='strict'):
+    eleza encode(self,input,errors='strict'):
 
-        return codecs.charmap_encode(input,errors,encoding_map)
+        rudisha codecs.charmap_encode(input,errors,encoding_map)
 
-    def decode(self,input,errors='strict'):
+    eleza decode(self,input,errors='strict'):
 
-        return codecs.charmap_decode(input,errors,decoding_map)
+        rudisha codecs.charmap_decode(input,errors,decoding_map)
 
-class StreamWriter(Codec,codecs.StreamWriter):
+kundi StreamWriter(Codec,codecs.StreamWriter):
     pass
 
-class StreamReader(Codec,codecs.StreamReader):
+kundi StreamReader(Codec,codecs.StreamReader):
     pass
 
 ### encodings module API
 
-def getregentry():
+eleza getregentry():
 
-    return (Codec().encode,Codec().decode,StreamReader,StreamWriter)
+    rudisha (Codec().encode,Codec().decode,StreamReader,StreamWriter)
 
 ### Decoding Map
 

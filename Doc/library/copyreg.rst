@@ -16,7 +16,7 @@ The :mod:`copyreg` module offers a way to define functions used while pickling
 specific objects.  The :mod:`pickle` and :mod:`copy` modules use those functions
 when pickling/copying those objects.  The module provides configuration
 information about object constructors which are not classes.
-Such constructors may be factory functions or class instances.
+Such constructors may be factory functions or kundi instances.
 
 
 .. function:: constructor(object)
@@ -34,12 +34,12 @@ Such constructors may be factory functions or class instances.
    The optional *constructor* parameter, if provided, is a callable object which
    can be used to reconstruct the object when called with the tuple of arguments
    returned by *function* at pickling time.  :exc:`TypeError` will be raised if
-   *object* is a class or *constructor* is not callable.
+   *object* is a kundi or *constructor* is not callable.
 
    See the :mod:`pickle` module for more details on the interface
    expected of *function* and *constructor*.  Note that the
    :attr:`~pickle.Pickler.dispatch_table` attribute of a pickler
-   object or subclass of :class:`pickle.Pickler` can also be used for
+   object or subkundi of :class:`pickle.Pickler` can also be used for
    declaring reduction functions.
 
 Example
@@ -48,8 +48,8 @@ Example
 The example below would like to show how to register a pickle function and how
 it will be used:
 
-   >>> import copyreg, copy, pickle
-   >>> class C(object):
+   >>> agiza copyreg, copy, pickle
+   >>> kundi C(object):
    ...     def __init__(self, a):
    ...         self.a = a
    ...

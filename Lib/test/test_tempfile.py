@@ -23,7 +23,7 @@ has_spawnl = hasattr(os, 'spawnl')
 
 # TEST_FILES may need to be tweaked for systems depending on the maximum
 # number of files that can be opened at one time (see ulimit -n)
-if sys.platform.startswith('openbsd'):
+ikiwa sys.platform.startswith('openbsd'):
     TEST_FILES = 48
 else:
     TEST_FILES = 100
@@ -32,13 +32,13 @@ else:
 # in order of their appearance in the file.  Testing which requires
 # threads is not done here.
 
-class TestLowLevelInternals(unittest.TestCase):
-    def test_infer_return_type_singles(self):
+kundi TestLowLevelInternals(unittest.TestCase):
+    eleza test_infer_return_type_singles(self):
         self.assertIs(str, tempfile._infer_return_type(''))
         self.assertIs(bytes, tempfile._infer_return_type(b''))
         self.assertIs(str, tempfile._infer_return_type(None))
 
-    def test_infer_return_type_multiples(self):
+    eleza test_infer_return_type_multiples(self):
         self.assertIs(str, tempfile._infer_return_type('', ''))
         self.assertIs(bytes, tempfile._infer_return_type(b'', b''))
         with self.assertRaises(TypeError):
@@ -46,7 +46,7 @@ class TestLowLevelInternals(unittest.TestCase):
         with self.assertRaises(TypeError):
             tempfile._infer_return_type(b'', '')
 
-    def test_infer_return_type_multiples_and_none(self):
+    eleza test_infer_return_type_multiples_and_none(self):
         self.assertIs(str, tempfile._infer_return_type(None, ''))
         self.assertIs(str, tempfile._infer_return_type('', None))
         self.assertIs(str, tempfile._infer_return_type(None, None))
@@ -57,47 +57,47 @@ class TestLowLevelInternals(unittest.TestCase):
         with self.assertRaises(TypeError):
             tempfile._infer_return_type(b'', None, '')
 
-    def test_infer_return_type_pathlib(self):
+    eleza test_infer_return_type_pathlib(self):
         self.assertIs(str, tempfile._infer_return_type(pathlib.Path('/')))
 
 
 # Common functionality.
 
-class BaseTestCase(unittest.TestCase):
+kundi BaseTestCase(unittest.TestCase):
 
     str_check = re.compile(r"^[a-z0-9_-]{8}$")
     b_check = re.compile(br"^[a-z0-9_-]{8}$")
 
-    def setUp(self):
+    eleza setUp(self):
         self._warnings_manager = support.check_warnings()
         self._warnings_manager.__enter__()
         warnings.filterwarnings("ignore", category=RuntimeWarning,
                                 message="mktemp", module=__name__)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self._warnings_manager.__exit__(None, None, None)
 
-    def nameCheck(self, name, dir, pre, suf):
+    eleza nameCheck(self, name, dir, pre, suf):
         (ndir, nbase) = os.path.split(name)
         npre  = nbase[:len(pre)]
         nsuf  = nbase[len(nbase)-len(suf):]
 
-        if dir is not None:
+        ikiwa dir is not None:
             self.assertIs(
                 type(name),
                 str
-                if type(dir) is str or isinstance(dir, os.PathLike) else
+                ikiwa type(dir) is str or isinstance(dir, os.PathLike) else
                 bytes,
-                "unexpected return type",
+                "unexpected rudisha type",
             )
-        if pre is not None:
-            self.assertIs(type(name), str if type(pre) is str else bytes,
-                          "unexpected return type")
-        if suf is not None:
-            self.assertIs(type(name), str if type(suf) is str else bytes,
-                          "unexpected return type")
-        if (dir, pre, suf) == (None, None, None):
-            self.assertIs(type(name), str, "default return type must be str")
+        ikiwa pre is not None:
+            self.assertIs(type(name), str ikiwa type(pre) is str else bytes,
+                          "unexpected rudisha type")
+        ikiwa suf is not None:
+            self.assertIs(type(name), str ikiwa type(suf) is str else bytes,
+                          "unexpected rudisha type")
+        ikiwa (dir, pre, suf) == (None, None, None):
+            self.assertIs(type(name), str, "default rudisha type must be str")
 
         # check for equality of the absolute paths!
         self.assertEqual(os.path.abspath(ndir), os.path.abspath(dir),
@@ -108,14 +108,14 @@ class BaseTestCase(unittest.TestCase):
                          "file %r does not end with %r" % (nbase, suf))
 
         nbase = nbase[len(pre):len(nbase)-len(suf)]
-        check = self.str_check if isinstance(nbase, str) else self.b_check
+        check = self.str_check ikiwa isinstance(nbase, str) else self.b_check
         self.assertTrue(check.match(nbase),
                         "random characters %r do not match %r"
                         % (nbase, check.pattern))
 
 
-class TestExports(BaseTestCase):
-    def test_exports(self):
+kundi TestExports(BaseTestCase):
+    eleza test_exports(self):
         # There are no surprising symbols in the tempfile module
         dict = tempfile.__dict__
 
@@ -138,25 +138,25 @@ class TestExports(BaseTestCase):
 
         unexp = []
         for key in dict:
-            if key[0] != '_' and key not in expected:
+            ikiwa key[0] != '_' and key not in expected:
                 unexp.append(key)
         self.assertTrue(len(unexp) == 0,
                         "unexpected keys: %s" % unexp)
 
 
-class TestRandomNameSequence(BaseTestCase):
+kundi TestRandomNameSequence(BaseTestCase):
     """Test the internal iterator object _RandomNameSequence."""
 
-    def setUp(self):
+    eleza setUp(self):
         self.r = tempfile._RandomNameSequence()
         super().setUp()
 
-    def test_get_six_char_str(self):
+    eleza test_get_six_char_str(self):
         # _RandomNameSequence returns a six-character string
         s = next(self.r)
         self.nameCheck(s, '', '', '')
 
-    def test_many(self):
+    eleza test_many(self):
         # _RandomNameSequence returns no duplicate strings (stochastic)
 
         dict = {}
@@ -167,26 +167,26 @@ class TestRandomNameSequence(BaseTestCase):
             self.assertNotIn(s, dict)
             dict[s] = 1
 
-    def supports_iter(self):
+    eleza supports_iter(self):
         # _RandomNameSequence supports the iterator protocol
 
         i = 0
         r = self.r
         for s in r:
             i += 1
-            if i == 20:
+            ikiwa i == 20:
                 break
 
     @unittest.skipUnless(hasattr(os, 'fork'),
         "os.fork is required for this test")
-    def test_process_awareness(self):
+    eleza test_process_awareness(self):
         # ensure that the random source differs between
         # child and parent.
         read_fd, write_fd = os.pipe()
         pid = None
         try:
             pid = os.fork()
-            if not pid:
+            ikiwa not pid:
                 # child process
                 os.close(read_fd)
                 os.write(write_fd, next(self.r).encode("ascii"))
@@ -199,7 +199,7 @@ class TestRandomNameSequence(BaseTestCase):
             parent_value = next(self.r)
             child_value = os.read(read_fd, len(parent_value)).decode("ascii")
         finally:
-            if pid:
+            ikiwa pid:
                 # best effort to ensure the process can't bleed out
                 # via any bugs above
                 try:
@@ -216,10 +216,10 @@ class TestRandomNameSequence(BaseTestCase):
 
 
 
-class TestCandidateTempdirList(BaseTestCase):
+kundi TestCandidateTempdirList(BaseTestCase):
     """Test the internal function _candidate_tempdir_list."""
 
-    def test_nonempty_list(self):
+    eleza test_nonempty_list(self):
         # _candidate_tempdir_list returns a nonempty list of strings
 
         cand = tempfile._candidate_tempdir_list()
@@ -228,21 +228,21 @@ class TestCandidateTempdirList(BaseTestCase):
         for c in cand:
             self.assertIsInstance(c, str)
 
-    def test_wanted_dirs(self):
+    eleza test_wanted_dirs(self):
         # _candidate_tempdir_list contains the expected directories
 
         # Make sure the interesting environment variables are all set.
         with support.EnvironmentVarGuard() as env:
             for envname in 'TMPDIR', 'TEMP', 'TMP':
                 dirname = os.getenv(envname)
-                if not dirname:
+                ikiwa not dirname:
                     env[envname] = os.path.abspath(envname)
 
             cand = tempfile._candidate_tempdir_list()
 
             for envname in 'TMPDIR', 'TEMP', 'TMP':
                 dirname = os.getenv(envname)
-                if not dirname: raise ValueError
+                ikiwa not dirname: raise ValueError
                 self.assertIn(dirname, cand)
 
             try:
@@ -258,15 +258,15 @@ class TestCandidateTempdirList(BaseTestCase):
 
 # We test _get_default_tempdir some more by testing gettempdir.
 
-class TestGetDefaultTempdir(BaseTestCase):
+kundi TestGetDefaultTempdir(BaseTestCase):
     """Test _get_default_tempdir()."""
 
-    def test_no_files_left_behind(self):
+    eleza test_no_files_left_behind(self):
         # use a private empty directory
         with tempfile.TemporaryDirectory() as our_temp_directory:
             # force _get_default_tempdir() to consider our empty directory
-            def our_candidate_list():
-                return [our_temp_directory]
+            eleza our_candidate_list():
+                rudisha [our_temp_directory]
 
             with support.swap_attr(tempfile, "_candidate_tempdir_list",
                                    our_candidate_list):
@@ -274,7 +274,7 @@ class TestGetDefaultTempdir(BaseTestCase):
                 tempfile._get_default_tempdir()
                 self.assertEqual(os.listdir(our_temp_directory), [])
 
-                def raise_OSError(*args, **kwargs):
+                eleza raise_OSError(*args, **kwargs):
                     raise OSError()
 
                 with support.swap_attr(io, "open", raise_OSError):
@@ -283,10 +283,10 @@ class TestGetDefaultTempdir(BaseTestCase):
                         tempfile._get_default_tempdir()
                     self.assertEqual(os.listdir(our_temp_directory), [])
 
-                def bad_writer(*args, **kwargs):
+                eleza bad_writer(*args, **kwargs):
                     fp = orig_open(*args, **kwargs)
                     fp.write = raise_OSError
-                    return fp
+                    rudisha fp
 
                 with support.swap_attr(io, "open", bad_writer) as orig_open:
                     # test again with failing write()
@@ -295,15 +295,15 @@ class TestGetDefaultTempdir(BaseTestCase):
                     self.assertEqual(os.listdir(our_temp_directory), [])
 
 
-class TestGetCandidateNames(BaseTestCase):
+kundi TestGetCandidateNames(BaseTestCase):
     """Test the internal function _get_candidate_names."""
 
-    def test_retval(self):
+    eleza test_retval(self):
         # _get_candidate_names returns a _RandomNameSequence object
         obj = tempfile._get_candidate_names()
         self.assertIsInstance(obj, tempfile._RandomNameSequence)
 
-    def test_same_thing(self):
+    eleza test_same_thing(self):
         # _get_candidate_names always returns the same object
         a = tempfile._get_candidate_names()
         b = tempfile._get_candidate_names()
@@ -312,7 +312,7 @@ class TestGetCandidateNames(BaseTestCase):
 
 
 @contextlib.contextmanager
-def _inside_empty_temp_dir():
+eleza _inside_empty_temp_dir():
     dir = tempfile.mkdtemp()
     try:
         with support.swap_attr(tempfile, 'tempdir', dir):
@@ -321,21 +321,21 @@ def _inside_empty_temp_dir():
         support.rmtree(dir)
 
 
-def _mock_candidate_names(*names):
-    return support.swap_attr(tempfile,
+eleza _mock_candidate_names(*names):
+    rudisha support.swap_attr(tempfile,
                              '_get_candidate_names',
                              lambda: iter(names))
 
 
-class TestBadTempdir:
+kundi TestBadTempdir:
 
-    def test_read_only_directory(self):
+    eleza test_read_only_directory(self):
         with _inside_empty_temp_dir():
             oldmode = mode = os.stat(tempfile.tempdir).st_mode
             mode &= ~(stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH)
             os.chmod(tempfile.tempdir, mode)
             try:
-                if os.access(tempfile.tempdir, os.W_OK):
+                ikiwa os.access(tempfile.tempdir, os.W_OK):
                     self.skipTest("can't set the directory read-only")
                 with self.assertRaises(PermissionError):
                     self.make_temp()
@@ -343,14 +343,14 @@ class TestBadTempdir:
             finally:
                 os.chmod(tempfile.tempdir, oldmode)
 
-    def test_nonexisting_directory(self):
+    eleza test_nonexisting_directory(self):
         with _inside_empty_temp_dir():
             tempdir = os.path.join(tempfile.tempdir, 'nonexistent')
             with support.swap_attr(tempfile, 'tempdir', tempdir):
                 with self.assertRaises(FileNotFoundError):
                     self.make_temp()
 
-    def test_non_directory(self):
+    eleza test_non_directory(self):
         with _inside_empty_temp_dir():
             tempdir = os.path.join(tempfile.tempdir, 'file')
             open(tempdir, 'wb').close()
@@ -359,46 +359,46 @@ class TestBadTempdir:
                     self.make_temp()
 
 
-class TestMkstempInner(TestBadTempdir, BaseTestCase):
+kundi TestMkstempInner(TestBadTempdir, BaseTestCase):
     """Test the internal function _mkstemp_inner."""
 
-    class mkstemped:
+    kundi mkstemped:
         _bflags = tempfile._bin_openflags
         _tflags = tempfile._text_openflags
         _close = os.close
         _unlink = os.unlink
 
-        def __init__(self, dir, pre, suf, bin):
-            if bin: flags = self._bflags
+        eleza __init__(self, dir, pre, suf, bin):
+            ikiwa bin: flags = self._bflags
             else:   flags = self._tflags
 
             output_type = tempfile._infer_return_type(dir, pre, suf)
             (self.fd, self.name) = tempfile._mkstemp_inner(dir, pre, suf, flags, output_type)
 
-        def write(self, str):
+        eleza write(self, str):
             os.write(self.fd, str)
 
-        def __del__(self):
+        eleza __del__(self):
             self._close(self.fd)
             self._unlink(self.name)
 
-    def do_create(self, dir=None, pre=None, suf=None, bin=1):
+    eleza do_create(self, dir=None, pre=None, suf=None, bin=1):
         output_type = tempfile._infer_return_type(dir, pre, suf)
-        if dir is None:
-            if output_type is str:
+        ikiwa dir is None:
+            ikiwa output_type is str:
                 dir = tempfile.gettempdir()
             else:
                 dir = tempfile.gettempdirb()
-        if pre is None:
+        ikiwa pre is None:
             pre = output_type()
-        if suf is None:
+        ikiwa suf is None:
             suf = output_type()
         file = self.mkstemped(dir, pre, suf, bin)
 
         self.nameCheck(file.name, dir, pre, suf)
-        return file
+        rudisha file
 
-    def test_basic(self):
+    eleza test_basic(self):
         # _mkstemp_inner can create files
         self.do_create().write(b"blat")
         self.do_create(pre="a").write(b"blat")
@@ -406,7 +406,7 @@ class TestMkstempInner(TestBadTempdir, BaseTestCase):
         self.do_create(pre="a", suf="b").write(b"blat")
         self.do_create(pre="aa", suf=".txt").write(b"blat")
 
-    def test_basic_with_bytes_names(self):
+    eleza test_basic_with_bytes_names(self):
         # _mkstemp_inner can create files when given name parts all
         # specified as bytes.
         dir_b = tempfile.gettempdirb()
@@ -423,13 +423,13 @@ class TestMkstempInner(TestBadTempdir, BaseTestCase):
         with self.assertRaises(TypeError):
             self.do_create(dir=dir_b, pre=b"", suf="").write(b"blat")
 
-    def test_basic_many(self):
+    eleza test_basic_many(self):
         # _mkstemp_inner can create many files (stochastic)
         extant = list(range(TEST_FILES))
         for i in extant:
             extant[i] = self.do_create(pre="aa")
 
-    def test_choose_directory(self):
+    eleza test_choose_directory(self):
         # _mkstemp_inner can create files in a user-selected directory
         dir = tempfile.mkdtemp()
         try:
@@ -438,13 +438,13 @@ class TestMkstempInner(TestBadTempdir, BaseTestCase):
         finally:
             os.rmdir(dir)
 
-    def test_file_mode(self):
+    eleza test_file_mode(self):
         # _mkstemp_inner creates files with the proper mode
 
         file = self.do_create()
         mode = stat.S_IMODE(os.stat(file.name).st_mode)
         expected = 0o600
-        if sys.platform == 'win32':
+        ikiwa sys.platform == 'win32':
             # There's no distinction among 'user', 'group' and 'world';
             # replicate the 'user' bits.
             user = expected >> 6
@@ -452,10 +452,10 @@ class TestMkstempInner(TestBadTempdir, BaseTestCase):
         self.assertEqual(mode, expected)
 
     @unittest.skipUnless(has_spawnl, 'os.spawnl not available')
-    def test_noinherit(self):
+    eleza test_noinherit(self):
         # _mkstemp_inner file handles are not inherited by child processes
 
-        if support.verbose:
+        ikiwa support.verbose:
             v="v"
         else:
             v="q"
@@ -478,7 +478,7 @@ class TestMkstempInner(TestBadTempdir, BaseTestCase):
         # On Windows a spawn* /path/ with embedded spaces shouldn't be quoted,
         # but an arg with embedded spaces should be decorated with double
         # quotes on each end
-        if sys.platform == 'win32':
+        ikiwa sys.platform == 'win32':
             decorated = '"%s"' % sys.executable
             tester = '"%s"' % tester
         else:
@@ -490,7 +490,7 @@ class TestMkstempInner(TestBadTempdir, BaseTestCase):
         self.assertFalse(retval > 0, "child process reports failure %d"%retval)
 
     @unittest.skipUnless(has_textmode, "text mode not available")
-    def test_textmode(self):
+    eleza test_textmode(self):
         # _mkstemp_inner can create files in text mode
 
         # A text file is truncated at the first Ctrl+Z byte
@@ -500,14 +500,14 @@ class TestMkstempInner(TestBadTempdir, BaseTestCase):
         os.lseek(f.fd, 0, os.SEEK_SET)
         self.assertEqual(os.read(f.fd, 20), b"blat")
 
-    def make_temp(self):
-        return tempfile._mkstemp_inner(tempfile.gettempdir(),
+    eleza make_temp(self):
+        rudisha tempfile._mkstemp_inner(tempfile.gettempdir(),
                                        tempfile.gettempprefix(),
                                        '',
                                        tempfile._bin_openflags,
                                        str)
 
-    def test_collision_with_existing_file(self):
+    eleza test_collision_with_existing_file(self):
         # _mkstemp_inner tries another name when a file with
         # the chosen name already exists
         with _inside_empty_temp_dir(), \
@@ -520,7 +520,7 @@ class TestMkstempInner(TestBadTempdir, BaseTestCase):
             os.close(fd2)
             self.assertTrue(name2.endswith('bbb'))
 
-    def test_collision_with_existing_directory(self):
+    eleza test_collision_with_existing_directory(self):
         # _mkstemp_inner tries another name when a directory with
         # the chosen name already exists
         with _inside_empty_temp_dir(), \
@@ -533,10 +533,10 @@ class TestMkstempInner(TestBadTempdir, BaseTestCase):
             self.assertTrue(name.endswith('bbb'))
 
 
-class TestGetTempPrefix(BaseTestCase):
+kundi TestGetTempPrefix(BaseTestCase):
     """Test gettempprefix()."""
 
-    def test_sane_template(self):
+    eleza test_sane_template(self):
         # gettempprefix returns a nonempty prefix string
         p = tempfile.gettempprefix()
 
@@ -548,7 +548,7 @@ class TestGetTempPrefix(BaseTestCase):
         self.assertIsInstance(pb, bytes)
         self.assertGreater(len(pb), 0)
 
-    def test_usable_template(self):
+    eleza test_usable_template(self):
         # gettempprefix returns a usable prefix string
 
         # Create a temp directory, avoiding use of the prefix.
@@ -565,10 +565,10 @@ class TestGetTempPrefix(BaseTestCase):
             os.rmdir(d)
 
 
-class TestGetTempDir(BaseTestCase):
+kundi TestGetTempDir(BaseTestCase):
     """Test gettempdir()."""
 
-    def test_directory_exists(self):
+    eleza test_directory_exists(self):
         # gettempdir returns a directory which exists
 
         for d in (tempfile.gettempdir(), tempfile.gettempdirb()):
@@ -577,7 +577,7 @@ class TestGetTempDir(BaseTestCase):
             self.assertTrue(os.path.isdir(d),
                             "%r is not a directory" % d)
 
-    def test_directory_writable(self):
+    eleza test_directory_writable(self):
         # gettempdir returns a directory writable by the user
 
         # sneaky: just instantiate a NamedTemporaryFile, which
@@ -586,7 +586,7 @@ class TestGetTempDir(BaseTestCase):
         with tempfile.NamedTemporaryFile() as file:
             file.write(b"blat")
 
-    def test_same_thing(self):
+    eleza test_same_thing(self):
         # gettempdir always returns the same object
         a = tempfile.gettempdir()
         b = tempfile.gettempdir()
@@ -596,7 +596,7 @@ class TestGetTempDir(BaseTestCase):
         self.assertNotEqual(type(a), type(c))
         self.assertEqual(a, os.fsdecode(c))
 
-    def test_case_sensitive(self):
+    eleza test_case_sensitive(self):
         # gettempdir should not flatten its case
         # even on a case-insensitive file system
         case_sensitive_tempdir = tempfile.mkdtemp("-Temp")
@@ -611,19 +611,19 @@ class TestGetTempDir(BaseTestCase):
             support.rmdir(case_sensitive_tempdir)
 
 
-class TestMkstemp(BaseTestCase):
+kundi TestMkstemp(BaseTestCase):
     """Test mkstemp()."""
 
-    def do_create(self, dir=None, pre=None, suf=None):
+    eleza do_create(self, dir=None, pre=None, suf=None):
         output_type = tempfile._infer_return_type(dir, pre, suf)
-        if dir is None:
-            if output_type is str:
+        ikiwa dir is None:
+            ikiwa output_type is str:
                 dir = tempfile.gettempdir()
             else:
                 dir = tempfile.gettempdirb()
-        if pre is None:
+        ikiwa pre is None:
             pre = output_type()
-        if suf is None:
+        ikiwa suf is None:
             suf = output_type()
         (fd, name) = tempfile.mkstemp(dir=dir, prefix=pre, suffix=suf)
         (ndir, nbase) = os.path.split(name)
@@ -637,7 +637,7 @@ class TestMkstemp(BaseTestCase):
             os.close(fd)
             os.unlink(name)
 
-    def test_basic(self):
+    eleza test_basic(self):
         # mkstemp can create files
         self.do_create()
         self.do_create(pre="a")
@@ -646,7 +646,7 @@ class TestMkstemp(BaseTestCase):
         self.do_create(pre="aa", suf=".txt")
         self.do_create(dir=".")
 
-    def test_basic_with_bytes_names(self):
+    eleza test_basic_with_bytes_names(self):
         # mkstemp can create files when given name parts all
         # specified as bytes.
         d = tempfile.gettempdirb()
@@ -664,7 +664,7 @@ class TestMkstemp(BaseTestCase):
             self.do_create(dir=b".", pre=b"aa", suf=".txt")
 
 
-    def test_choose_directory(self):
+    eleza test_choose_directory(self):
         # mkstemp can create directories in a user-selected directory
         dir = tempfile.mkdtemp()
         try:
@@ -674,33 +674,33 @@ class TestMkstemp(BaseTestCase):
             os.rmdir(dir)
 
 
-class TestMkdtemp(TestBadTempdir, BaseTestCase):
+kundi TestMkdtemp(TestBadTempdir, BaseTestCase):
     """Test mkdtemp()."""
 
-    def make_temp(self):
-        return tempfile.mkdtemp()
+    eleza make_temp(self):
+        rudisha tempfile.mkdtemp()
 
-    def do_create(self, dir=None, pre=None, suf=None):
+    eleza do_create(self, dir=None, pre=None, suf=None):
         output_type = tempfile._infer_return_type(dir, pre, suf)
-        if dir is None:
-            if output_type is str:
+        ikiwa dir is None:
+            ikiwa output_type is str:
                 dir = tempfile.gettempdir()
             else:
                 dir = tempfile.gettempdirb()
-        if pre is None:
+        ikiwa pre is None:
             pre = output_type()
-        if suf is None:
+        ikiwa suf is None:
             suf = output_type()
         name = tempfile.mkdtemp(dir=dir, prefix=pre, suffix=suf)
 
         try:
             self.nameCheck(name, dir, pre, suf)
-            return name
+            rudisha name
         except:
             os.rmdir(name)
             raise
 
-    def test_basic(self):
+    eleza test_basic(self):
         # mkdtemp can create directories
         os.rmdir(self.do_create())
         os.rmdir(self.do_create(pre="a"))
@@ -708,7 +708,7 @@ class TestMkdtemp(TestBadTempdir, BaseTestCase):
         os.rmdir(self.do_create(pre="a", suf="b"))
         os.rmdir(self.do_create(pre="aa", suf=".txt"))
 
-    def test_basic_with_bytes_names(self):
+    eleza test_basic_with_bytes_names(self):
         # mkdtemp can create directories when given all binary parts
         d = tempfile.gettempdirb()
         os.rmdir(self.do_create(dir=d))
@@ -723,7 +723,7 @@ class TestMkdtemp(TestBadTempdir, BaseTestCase):
         with self.assertRaises(TypeError):
             os.rmdir(self.do_create(dir="", pre=b"aa", suf=b".txt"))
 
-    def test_basic_many(self):
+    eleza test_basic_many(self):
         # mkdtemp can create many directories (stochastic)
         extant = list(range(TEST_FILES))
         try:
@@ -734,7 +734,7 @@ class TestMkdtemp(TestBadTempdir, BaseTestCase):
                 if(isinstance(i, str)):
                     os.rmdir(i)
 
-    def test_choose_directory(self):
+    eleza test_choose_directory(self):
         # mkdtemp can create directories in a user-selected directory
         dir = tempfile.mkdtemp()
         try:
@@ -743,7 +743,7 @@ class TestMkdtemp(TestBadTempdir, BaseTestCase):
         finally:
             os.rmdir(dir)
 
-    def test_mode(self):
+    eleza test_mode(self):
         # mkdtemp creates directories with the proper mode
 
         dir = self.do_create()
@@ -751,7 +751,7 @@ class TestMkdtemp(TestBadTempdir, BaseTestCase):
             mode = stat.S_IMODE(os.stat(dir).st_mode)
             mode &= 0o777 # Mask off sticky bits inherited kutoka /tmp
             expected = 0o700
-            if sys.platform == 'win32':
+            ikiwa sys.platform == 'win32':
                 # There's no distinction among 'user', 'group' and 'world';
                 # replicate the 'user' bits.
                 user = expected >> 6
@@ -760,7 +760,7 @@ class TestMkdtemp(TestBadTempdir, BaseTestCase):
         finally:
             os.rmdir(dir)
 
-    def test_collision_with_existing_file(self):
+    eleza test_collision_with_existing_file(self):
         # mkdtemp tries another name when a file with
         # the chosen name already exists
         with _inside_empty_temp_dir(), \
@@ -771,7 +771,7 @@ class TestMkdtemp(TestBadTempdir, BaseTestCase):
             dir = tempfile.mkdtemp()
             self.assertTrue(dir.endswith('bbb'))
 
-    def test_collision_with_existing_directory(self):
+    eleza test_collision_with_existing_directory(self):
         # mkdtemp tries another name when a directory with
         # the chosen name already exists
         with _inside_empty_temp_dir(), \
@@ -782,41 +782,41 @@ class TestMkdtemp(TestBadTempdir, BaseTestCase):
             self.assertTrue(dir2.endswith('bbb'))
 
 
-class TestMktemp(BaseTestCase):
+kundi TestMktemp(BaseTestCase):
     """Test mktemp()."""
 
     # For safety, all use of mktemp must occur in a private directory.
     # We must also suppress the RuntimeWarning it generates.
-    def setUp(self):
+    eleza setUp(self):
         self.dir = tempfile.mkdtemp()
         super().setUp()
 
-    def tearDown(self):
-        if self.dir:
+    eleza tearDown(self):
+        ikiwa self.dir:
             os.rmdir(self.dir)
             self.dir = None
         super().tearDown()
 
-    class mktemped:
+    kundi mktemped:
         _unlink = os.unlink
         _bflags = tempfile._bin_openflags
 
-        def __init__(self, dir, pre, suf):
+        eleza __init__(self, dir, pre, suf):
             self.name = tempfile.mktemp(dir=dir, prefix=pre, suffix=suf)
-            # Create the file.  This will raise an exception if it's
+            # Create the file.  This will raise an exception ikiwa it's
             # mysteriously appeared in the meanwhile.
             os.close(os.open(self.name, self._bflags, 0o600))
 
-        def __del__(self):
+        eleza __del__(self):
             self._unlink(self.name)
 
-    def do_create(self, pre="", suf=""):
+    eleza do_create(self, pre="", suf=""):
         file = self.mktemped(self.dir, pre, suf)
 
         self.nameCheck(file.name, self.dir, pre, suf)
-        return file
+        rudisha file
 
-    def test_basic(self):
+    eleza test_basic(self):
         # mktemp can choose usable file names
         self.do_create()
         self.do_create(pre="a")
@@ -824,13 +824,13 @@ class TestMktemp(BaseTestCase):
         self.do_create(pre="a", suf="b")
         self.do_create(pre="aa", suf=".txt")
 
-    def test_many(self):
+    eleza test_many(self):
         # mktemp can choose many usable file names (stochastic)
         extant = list(range(TEST_FILES))
         for i in extant:
             extant[i] = self.do_create(pre="aa")
 
-##     def test_warning(self):
+##     eleza test_warning(self):
 ##         # mktemp issues a warning when used
 ##         warnings.filterwarnings("error",
 ##                                 category=RuntimeWarning,
@@ -842,20 +842,20 @@ class TestMktemp(BaseTestCase):
 # We test _TemporaryFileWrapper by testing NamedTemporaryFile.
 
 
-class TestNamedTemporaryFile(BaseTestCase):
+kundi TestNamedTemporaryFile(BaseTestCase):
     """Test NamedTemporaryFile()."""
 
-    def do_create(self, dir=None, pre="", suf="", delete=True):
-        if dir is None:
+    eleza do_create(self, dir=None, pre="", suf="", delete=True):
+        ikiwa dir is None:
             dir = tempfile.gettempdir()
         file = tempfile.NamedTemporaryFile(dir=dir, prefix=pre, suffix=suf,
                                            delete=delete)
 
         self.nameCheck(file.name, dir, pre, suf)
-        return file
+        rudisha file
 
 
-    def test_basic(self):
+    eleza test_basic(self):
         # NamedTemporaryFile can create files
         self.do_create()
         self.do_create(pre="a")
@@ -863,7 +863,7 @@ class TestNamedTemporaryFile(BaseTestCase):
         self.do_create(pre="a", suf="b")
         self.do_create(pre="aa", suf=".txt")
 
-    def test_method_lookup(self):
+    eleza test_method_lookup(self):
         # Issue #18879: Looking up a temporary file method should keep it
         # alive long enough.
         f = self.do_create()
@@ -875,30 +875,30 @@ class TestNamedTemporaryFile(BaseTestCase):
         del write
         write2(b'bar')
         del write2
-        if support.check_impl_detail(cpython=True):
+        ikiwa support.check_impl_detail(cpython=True):
             # No reference cycle was created.
             self.assertIsNone(wr())
 
-    def test_iter(self):
+    eleza test_iter(self):
         # Issue #23700: getting iterator kutoka a temporary file should keep
         # it alive as long as it's being iterated over
         lines = [b'spam\n', b'eggs\n', b'beans\n']
-        def make_file():
+        eleza make_file():
             f = tempfile.NamedTemporaryFile(mode='w+b')
             f.write(b''.join(lines))
             f.seek(0)
-            return f
+            rudisha f
         for i, l in enumerate(make_file()):
             self.assertEqual(l, lines[i])
         self.assertEqual(i, len(lines) - 1)
 
-    def test_creates_named(self):
+    eleza test_creates_named(self):
         # NamedTemporaryFile creates files with names
         f = tempfile.NamedTemporaryFile()
         self.assertTrue(os.path.exists(f.name),
                         "NamedTemporaryFile %s does not exist" % f.name)
 
-    def test_del_on_close(self):
+    eleza test_del_on_close(self):
         # A NamedTemporaryFile is deleted when closed
         dir = tempfile.mkdtemp()
         try:
@@ -909,7 +909,7 @@ class TestNamedTemporaryFile(BaseTestCase):
         finally:
             os.rmdir(dir)
 
-    def test_dis_del_on_close(self):
+    eleza test_dis_del_on_close(self):
         # Tests that delete-on-close can be disabled
         dir = tempfile.mkdtemp()
         tmp = None
@@ -921,11 +921,11 @@ class TestNamedTemporaryFile(BaseTestCase):
             self.assertTrue(os.path.exists(f.name),
                         "NamedTemporaryFile %s missing after close" % f.name)
         finally:
-            if tmp is not None:
+            ikiwa tmp is not None:
                 os.unlink(tmp)
             os.rmdir(dir)
 
-    def test_multiple_close(self):
+    eleza test_multiple_close(self):
         # A NamedTemporaryFile can be closed many times without error
         f = tempfile.NamedTemporaryFile()
         f.write(b'abc\n')
@@ -933,21 +933,21 @@ class TestNamedTemporaryFile(BaseTestCase):
         f.close()
         f.close()
 
-    def test_context_manager(self):
+    eleza test_context_manager(self):
         # A NamedTemporaryFile can be used as a context manager
         with tempfile.NamedTemporaryFile() as f:
             self.assertTrue(os.path.exists(f.name))
         self.assertFalse(os.path.exists(f.name))
-        def use_closed():
+        eleza use_closed():
             with f:
                 pass
         self.assertRaises(ValueError, use_closed)
 
-    def test_no_leak_fd(self):
+    eleza test_no_leak_fd(self):
         # Issue #21058: don't leak file descriptor when io.open() fails
         closed = []
         os_close = os.close
-        def close(fd):
+        eleza close(fd):
             closed.append(fd)
             os_close(fd)
 
@@ -956,7 +956,7 @@ class TestNamedTemporaryFile(BaseTestCase):
                 self.assertRaises(ValueError, tempfile.NamedTemporaryFile)
                 self.assertEqual(len(closed), 1)
 
-    def test_bad_mode(self):
+    eleza test_bad_mode(self):
         dir = tempfile.mkdtemp()
         self.addCleanup(support.rmtree, dir)
         with self.assertRaises(ValueError):
@@ -967,25 +967,25 @@ class TestNamedTemporaryFile(BaseTestCase):
 
     # How to test the mode and bufsize parameters?
 
-class TestSpooledTemporaryFile(BaseTestCase):
+kundi TestSpooledTemporaryFile(BaseTestCase):
     """Test SpooledTemporaryFile()."""
 
-    def do_create(self, max_size=0, dir=None, pre="", suf=""):
-        if dir is None:
+    eleza do_create(self, max_size=0, dir=None, pre="", suf=""):
+        ikiwa dir is None:
             dir = tempfile.gettempdir()
         file = tempfile.SpooledTemporaryFile(max_size=max_size, dir=dir, prefix=pre, suffix=suf)
 
-        return file
+        rudisha file
 
 
-    def test_basic(self):
+    eleza test_basic(self):
         # SpooledTemporaryFile can create files
         f = self.do_create()
         self.assertFalse(f._rolled)
         f = self.do_create(max_size=100, pre="a", suf=".txt")
         self.assertFalse(f._rolled)
 
-    def test_del_on_close(self):
+    eleza test_del_on_close(self):
         # A SpooledTemporaryFile is deleted when closed
         dir = tempfile.mkdtemp()
         try:
@@ -1000,7 +1000,7 @@ class TestSpooledTemporaryFile(BaseTestCase):
         finally:
             os.rmdir(dir)
 
-    def test_rewrite_small(self):
+    eleza test_rewrite_small(self):
         # A SpooledTemporaryFile can be written to multiple within the max_size
         f = self.do_create(max_size=30)
         self.assertFalse(f._rolled)
@@ -1009,7 +1009,7 @@ class TestSpooledTemporaryFile(BaseTestCase):
             f.write(b'x' * 20)
         self.assertFalse(f._rolled)
 
-    def test_write_sequential(self):
+    eleza test_write_sequential(self):
         # A SpooledTemporaryFile should hold exactly max_size bytes, and roll
         # over afterward
         f = self.do_create(max_size=30)
@@ -1021,7 +1021,7 @@ class TestSpooledTemporaryFile(BaseTestCase):
         f.write(b'x')
         self.assertTrue(f._rolled)
 
-    def test_writelines(self):
+    eleza test_writelines(self):
         # Verify writelines with a SpooledTemporaryFile
         f = self.do_create()
         f.writelines((b'x', b'y', b'z'))
@@ -1029,7 +1029,7 @@ class TestSpooledTemporaryFile(BaseTestCase):
         buf = f.read()
         self.assertEqual(buf, b'xyz')
 
-    def test_writelines_sequential(self):
+    eleza test_writelines_sequential(self):
         # A SpooledTemporaryFile should hold exactly max_size bytes, and roll
         # over afterward
         f = self.do_create(max_size=35)
@@ -1038,7 +1038,7 @@ class TestSpooledTemporaryFile(BaseTestCase):
         f.write(b'x')
         self.assertTrue(f._rolled)
 
-    def test_sparse(self):
+    eleza test_sparse(self):
         # A SpooledTemporaryFile that is written late in the file will extend
         # when that occurs
         f = self.do_create(max_size=30)
@@ -1048,14 +1048,14 @@ class TestSpooledTemporaryFile(BaseTestCase):
         f.write(b'x')
         self.assertTrue(f._rolled)
 
-    def test_fileno(self):
+    eleza test_fileno(self):
         # A SpooledTemporaryFile should roll over to a real file on fileno()
         f = self.do_create(max_size=30)
         self.assertFalse(f._rolled)
         self.assertTrue(f.fileno() > 0)
         self.assertTrue(f._rolled)
 
-    def test_multiple_close_before_rollover(self):
+    eleza test_multiple_close_before_rollover(self):
         # A SpooledTemporaryFile can be closed many times without error
         f = tempfile.SpooledTemporaryFile()
         f.write(b'abc\n')
@@ -1064,7 +1064,7 @@ class TestSpooledTemporaryFile(BaseTestCase):
         f.close()
         f.close()
 
-    def test_multiple_close_after_rollover(self):
+    eleza test_multiple_close_after_rollover(self):
         # A SpooledTemporaryFile can be closed many times without error
         f = tempfile.SpooledTemporaryFile(max_size=1)
         f.write(b'abc\n')
@@ -1073,7 +1073,7 @@ class TestSpooledTemporaryFile(BaseTestCase):
         f.close()
         f.close()
 
-    def test_bound_methods(self):
+    eleza test_bound_methods(self):
         # It should be OK to steal a bound method kutoka a SpooledTemporaryFile
         # and use it independently; when the file rolls over, those bound
         # methods should continue to function
@@ -1087,7 +1087,7 @@ class TestSpooledTemporaryFile(BaseTestCase):
         seek(0, 0)
         self.assertEqual(read(70), b'a'*35 + b'b'*35)
 
-    def test_properties(self):
+    eleza test_properties(self):
         f = tempfile.SpooledTemporaryFile(max_size=10)
         f.write(b'x' * 10)
         self.assertFalse(f._rolled)
@@ -1111,7 +1111,7 @@ class TestSpooledTemporaryFile(BaseTestCase):
         with self.assertRaises(AttributeError):
             f.errors
 
-    def test_text_mode(self):
+    eleza test_text_mode(self):
         # Creating a SpooledTemporaryFile with a text mode should produce
         # a file object reading and writing (Unicode) text strings.
         f = tempfile.SpooledTemporaryFile(mode='w+', max_size=10)
@@ -1142,7 +1142,7 @@ class TestSpooledTemporaryFile(BaseTestCase):
         self.assertIsNotNone(f.encoding)
         self.assertIsNotNone(f.errors)
 
-    def test_text_newline_and_encoding(self):
+    eleza test_text_newline_and_encoding(self):
         f = tempfile.SpooledTemporaryFile(mode='w+', max_size=10,
                                           newline='', encoding='utf-8',
                                           errors='ignore')
@@ -1166,18 +1166,18 @@ class TestSpooledTemporaryFile(BaseTestCase):
         self.assertEqual(f.encoding, 'utf-8')
         self.assertEqual(f.errors, 'ignore')
 
-    def test_context_manager_before_rollover(self):
+    eleza test_context_manager_before_rollover(self):
         # A SpooledTemporaryFile can be used as a context manager
         with tempfile.SpooledTemporaryFile(max_size=1) as f:
             self.assertFalse(f._rolled)
             self.assertFalse(f.closed)
         self.assertTrue(f.closed)
-        def use_closed():
+        eleza use_closed():
             with f:
                 pass
         self.assertRaises(ValueError, use_closed)
 
-    def test_context_manager_during_rollover(self):
+    eleza test_context_manager_during_rollover(self):
         # A SpooledTemporaryFile can be used as a context manager
         with tempfile.SpooledTemporaryFile(max_size=1) as f:
             self.assertFalse(f._rolled)
@@ -1186,12 +1186,12 @@ class TestSpooledTemporaryFile(BaseTestCase):
             self.assertTrue(f._rolled)
             self.assertFalse(f.closed)
         self.assertTrue(f.closed)
-        def use_closed():
+        eleza use_closed():
             with f:
                 pass
         self.assertRaises(ValueError, use_closed)
 
-    def test_context_manager_after_rollover(self):
+    eleza test_context_manager_after_rollover(self):
         # A SpooledTemporaryFile can be used as a context manager
         f = tempfile.SpooledTemporaryFile(max_size=1)
         f.write(b'abc\n')
@@ -1200,12 +1200,12 @@ class TestSpooledTemporaryFile(BaseTestCase):
         with f:
             self.assertFalse(f.closed)
         self.assertTrue(f.closed)
-        def use_closed():
+        eleza use_closed():
             with f:
                 pass
         self.assertRaises(ValueError, use_closed)
 
-    def test_truncate_with_size_parameter(self):
+    eleza test_truncate_with_size_parameter(self):
         # A SpooledTemporaryFile can be truncated to zero size
         f = tempfile.SpooledTemporaryFile(max_size=10)
         f.write(b'abcdefg\n')
@@ -1219,7 +1219,7 @@ class TestSpooledTemporaryFile(BaseTestCase):
         f.truncate(4)
         self.assertFalse(f._rolled)
         self.assertEqual(f._file.getvalue(), b'abcd')
-        # A SpooledTemporaryFile rolls over if truncated to large size
+        # A SpooledTemporaryFile rolls over ikiwa truncated to large size
         f = tempfile.SpooledTemporaryFile(max_size=10)
         f.write(b'abcdefg\n')
         f.truncate(20)
@@ -1227,17 +1227,17 @@ class TestSpooledTemporaryFile(BaseTestCase):
         self.assertEqual(os.fstat(f.fileno()).st_size, 20)
 
 
-if tempfile.NamedTemporaryFile is not tempfile.TemporaryFile:
+ikiwa tempfile.NamedTemporaryFile is not tempfile.TemporaryFile:
 
-    class TestTemporaryFile(BaseTestCase):
+    kundi TestTemporaryFile(BaseTestCase):
         """Test TemporaryFile()."""
 
-        def test_basic(self):
+        eleza test_basic(self):
             # TemporaryFile can create files
             # No point in testing the name params - the file has no name.
             tempfile.TemporaryFile()
 
-        def test_has_no_name(self):
+        eleza test_has_no_name(self):
             # TemporaryFile creates files with no names (on this system)
             dir = tempfile.mkdtemp()
             f = tempfile.TemporaryFile(dir=dir)
@@ -1253,7 +1253,7 @@ if tempfile.NamedTemporaryFile is not tempfile.TemporaryFile:
                 os.rmdir(dir)
                 raise
 
-        def test_multiple_close(self):
+        eleza test_multiple_close(self):
             # A TemporaryFile can be closed many times without error
             f = tempfile.TemporaryFile()
             f.write(b'abc\n')
@@ -1262,9 +1262,9 @@ if tempfile.NamedTemporaryFile is not tempfile.TemporaryFile:
             f.close()
 
         # How to test the mode and bufsize parameters?
-        def test_mode_and_encoding(self):
+        eleza test_mode_and_encoding(self):
 
-            def roundtrip(input, *args, **kwargs):
+            eleza roundtrip(input, *args, **kwargs):
                 with tempfile.TemporaryFile(*args, **kwargs) as fileobj:
                     fileobj.write(input)
                     fileobj.seek(0)
@@ -1275,11 +1275,11 @@ if tempfile.NamedTemporaryFile is not tempfile.TemporaryFile:
             roundtrip("\u039B", "w+", encoding="utf-16")
             roundtrip("foo\r\n", "w+", newline="")
 
-        def test_no_leak_fd(self):
+        eleza test_no_leak_fd(self):
             # Issue #21058: don't leak file descriptor when io.open() fails
             closed = []
             os_close = os.close
-            def close(fd):
+            eleza close(fd):
                 closed.append(fd)
                 os_close(fd)
 
@@ -1291,35 +1291,35 @@ if tempfile.NamedTemporaryFile is not tempfile.TemporaryFile:
 
 
 # Helper for test_del_on_shutdown
-class NulledModules:
-    def __init__(self, *modules):
+kundi NulledModules:
+    eleza __init__(self, *modules):
         self.refs = [mod.__dict__ for mod in modules]
         self.contents = [ref.copy() for ref in self.refs]
 
-    def __enter__(self):
+    eleza __enter__(self):
         for d in self.refs:
             for key in d:
                 d[key] = None
 
-    def __exit__(self, *exc_info):
+    eleza __exit__(self, *exc_info):
         for d, c in zip(self.refs, self.contents):
             d.clear()
             d.update(c)
 
-class TestTemporaryDirectory(BaseTestCase):
+kundi TestTemporaryDirectory(BaseTestCase):
     """Test TemporaryDirectory()."""
 
-    def do_create(self, dir=None, pre="", suf="", recurse=1, dirs=1, files=1):
-        if dir is None:
+    eleza do_create(self, dir=None, pre="", suf="", recurse=1, dirs=1, files=1):
+        ikiwa dir is None:
             dir = tempfile.gettempdir()
         tmp = tempfile.TemporaryDirectory(dir=dir, prefix=pre, suffix=suf)
         self.nameCheck(tmp.name, dir, pre, suf)
         self.do_create2(tmp.name, recurse, dirs, files)
-        return tmp
+        rudisha tmp
 
-    def do_create2(self, path, recurse=1, dirs=1, files=1):
+    eleza do_create2(self, path, recurse=1, dirs=1, files=1):
         # Create subdirectories and some files
-        if recurse:
+        ikiwa recurse:
             for i in range(dirs):
                 name = os.path.join(path, "dir%d" % i)
                 os.mkdir(name)
@@ -1328,8 +1328,8 @@ class TestTemporaryDirectory(BaseTestCase):
             with open(os.path.join(path, "test%d.txt" % i), "wb") as f:
                 f.write(b"Hello world!")
 
-    def test_mkdtemp_failure(self):
-        # Check no additional exception if mkdtemp fails
+    eleza test_mkdtemp_failure(self):
+        # Check no additional exception ikiwa mkdtemp fails
         # Previously would raise AttributeError instead
         # (noted as part of Issue #10188)
         with tempfile.TemporaryDirectory() as nonexistent:
@@ -1338,7 +1338,7 @@ class TestTemporaryDirectory(BaseTestCase):
             tempfile.TemporaryDirectory(dir=nonexistent)
         self.assertEqual(cm.exception.errno, errno.ENOENT)
 
-    def test_explicit_cleanup(self):
+    eleza test_explicit_cleanup(self):
         # A TemporaryDirectory is deleted when cleaned up
         dir = tempfile.mkdtemp()
         try:
@@ -1352,7 +1352,7 @@ class TestTemporaryDirectory(BaseTestCase):
             os.rmdir(dir)
 
     @support.skip_unless_symlink
-    def test_cleanup_with_symlink_to_a_directory(self):
+    eleza test_cleanup_with_symlink_to_a_directory(self):
         # cleanup() should not follow symlinks to directories (issue #12464)
         d1 = self.do_create()
         d2 = self.do_create(recurse=0)
@@ -1373,7 +1373,7 @@ class TestTemporaryDirectory(BaseTestCase):
         d2.cleanup()
 
     @support.cpython_only
-    def test_del_on_collection(self):
+    eleza test_del_on_collection(self):
         # A TemporaryDirectory is deleted when garbage collected
         dir = tempfile.mkdtemp()
         try:
@@ -1385,11 +1385,11 @@ class TestTemporaryDirectory(BaseTestCase):
         finally:
             os.rmdir(dir)
 
-    def test_del_on_shutdown(self):
+    eleza test_del_on_shutdown(self):
         # A TemporaryDirectory may be cleaned up during shutdown
         with self.do_create() as dir:
             for mod in ('builtins', 'os', 'shutil', 'sys', 'tempfile', 'warnings'):
-                code = """if True:
+                code = """ikiwa True:
                     agiza builtins
                     agiza os
                     agiza shutil
@@ -1417,15 +1417,15 @@ class TestTemporaryDirectory(BaseTestCase):
                 self.assertNotIn("Exception ", err)
                 self.assertIn("ResourceWarning: Implicitly cleaning up", err)
 
-    def test_exit_on_shutdown(self):
+    eleza test_exit_on_shutdown(self):
         # Issue #22427
         with self.do_create() as dir:
-            code = """if True:
+            code = """ikiwa True:
                 agiza sys
                 agiza tempfile
                 agiza warnings
 
-                def generator():
+                eleza generator():
                     with tempfile.TemporaryDirectory(dir={dir!r}) as tmp:
                         yield tmp
                 g = generator()
@@ -1441,7 +1441,7 @@ class TestTemporaryDirectory(BaseTestCase):
             self.assertNotIn("Exception ", err)
             self.assertIn("ResourceWarning: Implicitly cleaning up", err)
 
-    def test_warnings_on_cleanup(self):
+    eleza test_warnings_on_cleanup(self):
         # ResourceWarning will be triggered by __del__
         with self.do_create() as dir:
             d = self.do_create(dir=dir, recurse=3)
@@ -1455,14 +1455,14 @@ class TestTemporaryDirectory(BaseTestCase):
             self.assertFalse(os.path.exists(name),
                         "TemporaryDirectory %s exists after __del__" % name)
 
-    def test_multiple_close(self):
+    eleza test_multiple_close(self):
         # Can be cleaned-up many times without error
         d = self.do_create()
         d.cleanup()
         d.cleanup()
         d.cleanup()
 
-    def test_context_manager(self):
+    eleza test_context_manager(self):
         # Can be used as a context manager
         d = self.do_create()
         with d as name:
@@ -1470,7 +1470,7 @@ class TestTemporaryDirectory(BaseTestCase):
             self.assertEqual(name, d.name)
         self.assertFalse(os.path.exists(name))
 
-    def test_modes(self):
+    eleza test_modes(self):
         for mode in range(8):
             mode <<= 6
             with self.subTest(mode=format(mode, '03o')):
@@ -1485,7 +1485,7 @@ class TestTemporaryDirectory(BaseTestCase):
                 self.assertFalse(os.path.exists(d.name))
 
     @unittest.skipUnless(hasattr(os, 'chflags'), 'requires os.lchflags')
-    def test_flags(self):
+    eleza test_flags(self):
         flags = stat.UF_IMMUTABLE | stat.UF_NOUNLINK
         d = self.do_create(recurse=3, dirs=2, files=2)
         with d:
@@ -1498,5 +1498,5 @@ class TestTemporaryDirectory(BaseTestCase):
         self.assertFalse(os.path.exists(d.name))
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

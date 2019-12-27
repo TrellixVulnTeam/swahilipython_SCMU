@@ -57,30 +57,30 @@ assert list(map(ord, i)) == [92, 85, 48, 48, 48, 49, 100, 49, 50, 48]
 """
 
 
-def byte(i):
-    return bytes([i])
+eleza byte(i):
+    rudisha bytes([i])
 
 
-class TestLiterals(unittest.TestCase):
+kundi TestLiterals(unittest.TestCase):
 
     kutoka test.support agiza check_syntax_warning
 
-    def setUp(self):
+    eleza setUp(self):
         self.save_path = sys.path[:]
         self.tmpdir = tempfile.mkdtemp()
         sys.path.insert(0, self.tmpdir)
 
-    def tearDown(self):
+    eleza tearDown(self):
         sys.path[:] = self.save_path
         shutil.rmtree(self.tmpdir, ignore_errors=True)
 
-    def test_template(self):
+    eleza test_template(self):
         # Check that the template doesn't contain any non-printables
         # except for \n.
         for c in TEMPLATE:
             assert c == '\n' or ' ' <= c <= '~', repr(c)
 
-    def test_eval_str_normal(self):
+    eleza test_eval_str_normal(self):
         self.assertEqual(eval(""" 'x' """), 'x')
         self.assertEqual(eval(r""" '\x01' """), chr(1))
         self.assertEqual(eval(""" '\x01' """), chr(1))
@@ -91,7 +91,7 @@ class TestLiterals(unittest.TestCase):
         self.assertEqual(eval(r""" '\U0001d120' """), chr(0x1d120))
         self.assertEqual(eval(""" '\U0001d120' """), chr(0x1d120))
 
-    def test_eval_str_incomplete(self):
+    eleza test_eval_str_incomplete(self):
         self.assertRaises(SyntaxError, eval, r""" '\x' """)
         self.assertRaises(SyntaxError, eval, r""" '\x0' """)
         self.assertRaises(SyntaxError, eval, r""" '\u' """)
@@ -107,9 +107,9 @@ class TestLiterals(unittest.TestCase):
         self.assertRaises(SyntaxError, eval, r""" '\U000000' """)
         self.assertRaises(SyntaxError, eval, r""" '\U0000000' """)
 
-    def test_eval_str_invalid_escape(self):
+    eleza test_eval_str_invalid_escape(self):
         for b in range(1, 128):
-            if b in b"""\n\r"'01234567NU\\abfnrtuvx""":
+            ikiwa b in b"""\n\r"'01234567NU\\abfnrtuvx""":
                 continue
             with self.assertWarns(DeprecationWarning):
                 self.assertEqual(eval(r"'\%c'" % b), '\\' + chr(b))
@@ -130,7 +130,7 @@ class TestLiterals(unittest.TestCase):
         self.assertEqual(exc.filename, '<string>')
         self.assertEqual(exc.lineno, 1)
 
-    def test_eval_str_raw(self):
+    eleza test_eval_str_raw(self):
         self.assertEqual(eval(""" r'x' """), 'x')
         self.assertEqual(eval(r""" r'\x01' """), '\\' + 'x01')
         self.assertEqual(eval(""" r'\x01' """), chr(1))
@@ -141,7 +141,7 @@ class TestLiterals(unittest.TestCase):
         self.assertEqual(eval(r""" r'\U0001d120' """), '\\' + 'U0001d120')
         self.assertEqual(eval(""" r'\U0001d120' """), chr(0x1d120))
 
-    def test_eval_bytes_normal(self):
+    eleza test_eval_bytes_normal(self):
         self.assertEqual(eval(""" b'x' """), b'x')
         self.assertEqual(eval(r""" b'\x01' """), byte(1))
         self.assertEqual(eval(""" b'\x01' """), byte(1))
@@ -152,13 +152,13 @@ class TestLiterals(unittest.TestCase):
         self.assertEqual(eval(r""" br'\U0001d120' """), b'\\' + b'U0001d120')
         self.assertRaises(SyntaxError, eval, """ b'\U0001d120' """)
 
-    def test_eval_bytes_incomplete(self):
+    eleza test_eval_bytes_incomplete(self):
         self.assertRaises(SyntaxError, eval, r""" b'\x' """)
         self.assertRaises(SyntaxError, eval, r""" b'\x0' """)
 
-    def test_eval_bytes_invalid_escape(self):
+    eleza test_eval_bytes_invalid_escape(self):
         for b in range(1, 128):
-            if b in b"""\n\r"'01234567\\abfnrtvx""":
+            ikiwa b in b"""\n\r"'01234567\\abfnrtvx""":
                 continue
             with self.assertWarns(DeprecationWarning):
                 self.assertEqual(eval(r"b'\%c'" % b), b'\\' + bytes([b]))
@@ -179,7 +179,7 @@ class TestLiterals(unittest.TestCase):
         self.assertEqual(exc.filename, '<string>')
         self.assertEqual(exc.lineno, 1)
 
-    def test_eval_bytes_raw(self):
+    eleza test_eval_bytes_raw(self):
         self.assertEqual(eval(""" br'x' """), b'x')
         self.assertEqual(eval(""" rb'x' """), b'x')
         self.assertEqual(eval(r""" br'\x01' """), b'\\' + b'x01')
@@ -205,7 +205,7 @@ class TestLiterals(unittest.TestCase):
         self.assertRaises(SyntaxError, eval, """ rrb'' """)
         self.assertRaises(SyntaxError, eval, """ rbb'' """)
 
-    def test_eval_str_u(self):
+    eleza test_eval_str_u(self):
         self.assertEqual(eval(""" u'x' """), 'x')
         self.assertEqual(eval(""" U'\u00e4' """), 'ä')
         self.assertEqual(eval(""" u'\N{LATIN SMALL LETTER A WITH DIAERESIS}' """), 'ä')
@@ -214,7 +214,7 @@ class TestLiterals(unittest.TestCase):
         self.assertRaises(SyntaxError, eval, """ bu'' """)
         self.assertRaises(SyntaxError, eval, """ ub'' """)
 
-    def check_encoding(self, encoding, extra=""):
+    eleza check_encoding(self, encoding, extra=""):
         modname = "xx_" + encoding.replace("-", "_")
         fn = os.path.join(self.tmpdir, modname + ".py")
         f = open(fn, "w", encoding=encoding)
@@ -226,26 +226,26 @@ class TestLiterals(unittest.TestCase):
         __import__(modname)
         del sys.modules[modname]
 
-    def test_file_utf_8(self):
+    eleza test_file_utf_8(self):
         extra = "z = '\u1234'; assert ord(z) == 0x1234\n"
         self.check_encoding("utf-8", extra)
 
-    def test_file_utf_8_error(self):
+    eleza test_file_utf_8_error(self):
         extra = "b'\x80'\n"
         self.assertRaises(SyntaxError, self.check_encoding, "utf-8", extra)
 
-    def test_file_utf8(self):
+    eleza test_file_utf8(self):
         self.check_encoding("utf-8")
 
-    def test_file_iso_8859_1(self):
+    eleza test_file_iso_8859_1(self):
         self.check_encoding("iso-8859-1")
 
-    def test_file_latin_1(self):
+    eleza test_file_latin_1(self):
         self.check_encoding("latin-1")
 
-    def test_file_latin9(self):
+    eleza test_file_latin9(self):
         self.check_encoding("latin9")
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

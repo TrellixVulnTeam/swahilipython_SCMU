@@ -15,7 +15,7 @@ The data compression is provided by the :mod:`zlib` module.
 
 The :mod:`gzip` module provides the :class:`GzipFile` class, as well as the
 :func:`.open`, :func:`compress` and :func:`decompress` convenience functions.
-The :class:`GzipFile` class reads and writes :program:`gzip`\ -format files,
+The :class:`GzipFile` kundi reads and writes :program:`gzip`\ -format files,
 automatically compressing or decompressing the data so that it looks like an
 ordinary :term:`file object`.
 
@@ -32,13 +32,13 @@ The module defines the following items:
    object`.
 
    The *filename* argument can be an actual filename (a :class:`str` or
-   :class:`bytes` object), or an existing file object to read from or write to.
+   :class:`bytes` object), or an existing file object to read kutoka or write to.
 
    The *mode* argument can be any of ``'r'``, ``'rb'``, ``'a'``, ``'ab'``,
    ``'w'``, ``'wb'``, ``'x'`` or ``'xb'`` for binary mode, or ``'rt'``,
    ``'at'``, ``'wt'``, or ``'xt'`` for text mode. The default is ``'rb'``.
 
-   The *compresslevel* argument is an integer from 0 to 9, as for the
+   The *compresslevel* argument is an integer kutoka 0 to 9, as for the
    :class:`GzipFile` constructor.
 
    For binary mode, this function is equivalent to the :class:`GzipFile`
@@ -74,7 +74,7 @@ The module defines the following items:
    method.  At least one of *fileobj* and *filename* must be given a non-trivial
    value.
 
-   The new class instance is based on *fileobj*, which can be a regular file, an
+   The new kundi instance is based on *fileobj*, which can be a regular file, an
    :class:`io.BytesIO` object, or any other object which simulates a file.  It
    defaults to ``None``, in which case *filename* is opened to provide a file
    object.
@@ -94,7 +94,7 @@ The module defines the following items:
    in text mode, use :func:`.open` (or wrap your :class:`GzipFile` with an
    :class:`io.TextIOWrapper`).
 
-   The *compresslevel* argument is an integer from ``0`` to ``9`` controlling
+   The *compresslevel* argument is an integer kutoka ``0`` to ``9`` controlling
    the level of compression; ``1`` is fastest and produces the least
    compression, and ``9`` is slowest and produces the most compression. ``0``
    is no compression. The default is ``9``.
@@ -133,7 +133,7 @@ The module defines the following items:
    .. attribute:: mtime
 
       When decompressing, the value of the last modification time field in
-      the most recently read header may be read from this attribute, as an
+      the most recently read header may be read kutoka this attribute, as an
       integer.  The initial value before reading any headers is ``None``.
 
       All :program:`gzip` compressed streams are required to contain this
@@ -190,28 +190,28 @@ Examples of usage
 
 Example of how to read a compressed file::
 
-   import gzip
+   agiza gzip
    with gzip.open('/home/joe/file.txt.gz', 'rb') as f:
        file_content = f.read()
 
 Example of how to create a compressed GZIP file::
 
-   import gzip
+   agiza gzip
    content = b"Lots of content here"
    with gzip.open('/home/joe/file.txt.gz', 'wb') as f:
        f.write(content)
 
 Example of how to GZIP compress an existing file::
 
-   import gzip
-   import shutil
+   agiza gzip
+   agiza shutil
    with open('/home/joe/file.txt', 'rb') as f_in:
        with gzip.open('/home/joe/file.txt.gz', 'wb') as f_out:
            shutil.copyfileobj(f_in, f_out)
 
 Example of how to GZIP compress a binary string::
 
-   import gzip
+   agiza gzip
    s_in = b"Lots of content here"
    s_out = gzip.compress(s_in)
 
@@ -242,7 +242,7 @@ Command line options
 
 .. cmdoption:: file
 
-   If *file* is not specified, read from :attr:`sys.stdin`.
+   If *file* is not specified, read kutoka :attr:`sys.stdin`.
 
 .. cmdoption:: --fast
 

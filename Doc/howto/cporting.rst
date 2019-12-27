@@ -8,11 +8,11 @@ Porting Extension Modules to Python 3
 
 We recommend the following resources for porting extension modules to Python 3:
 
-* The `Migrating C extensions`_ chapter from
-  *Supporting Python 3: An in-depth guide*, a book on moving from Python 2
+* The `Migrating C extensions`_ chapter kutoka
+  *Supporting Python 3: An in-depth guide*, a book on moving kutoka Python 2
   to Python 3 in general, guides the reader through porting an extension
   module.
-* The `Porting guide`_ from the *py3c* project provides opinionated
+* The `Porting guide`_ kutoka the *py3c* project provides opinionated
   suggestions with supporting code.
 * The `Cython`_ and `CFFI`_ libraries offer abstractions over
   Python's C API.

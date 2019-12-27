@@ -106,7 +106,7 @@ This module defines the following functions:
 .. function:: main_thread()
 
    Return the main :class:`Thread` object.  In normal conditions, the
-   main thread is the thread from which the Python interpreter was
+   main thread is the thread kutoka which the Python interpreter was
    started.
 
    .. versionadded:: 3.4
@@ -116,7 +116,7 @@ This module defines the following functions:
 
    .. index:: single: trace function
 
-   Set a trace function for all threads started from the :mod:`threading` module.
+   Set a trace function for all threads started kutoka the :mod:`threading` module.
    The *func* will be passed to  :func:`sys.settrace` for each thread, before its
    :meth:`~Thread.run` method is called.
 
@@ -125,7 +125,7 @@ This module defines the following functions:
 
    .. index:: single: profile function
 
-   Set a profile function for all threads started from the :mod:`threading` module.
+   Set a profile function for all threads started kutoka the :mod:`threading` module.
    The *func* will be passed to  :func:`sys.setprofile` for each thread, before its
    :meth:`~Thread.run` method is called.
 
@@ -167,7 +167,7 @@ below.
 
 The design of this module is loosely based on Java's threading model. However,
 where Java makes locks and condition variables basic behavior of every object,
-they are separate objects in Python.  Python's :class:`Thread` class supports a
+they are separate objects in Python.  Python's :class:`Thread` kundi supports a
 subset of the behavior of Java's Thread class; currently, there are no
 priorities, no thread groups, and threads cannot be destroyed, stopped,
 suspended, resumed, or interrupted.  The static methods of Java's Thread class,
@@ -191,7 +191,7 @@ The instance's values will be different for separate threads.
 
 .. class:: local()
 
-   A class that represents thread-local data.
+   A kundi that represents thread-local data.
 
    For more details and extensive examples, see the documentation string of the
    :mod:`_threading_local` module.
@@ -202,7 +202,7 @@ The instance's values will be different for separate threads.
 Thread Objects
 --------------
 
-The :class:`Thread` class represents an activity that is run in a separate
+The :class:`Thread` kundi represents an activity that is run in a separate
 thread of control.  There are two ways to specify the activity: by passing a
 callable object to the constructor, or by overriding the :meth:`~Thread.run`
 method in a subclass.  No other methods (except for the constructor) should be
@@ -231,7 +231,7 @@ If the :meth:`~Thread.run` method raises an exception,
 
 A thread can be flagged as a "daemon thread".  The significance of this flag is
 that the entire Python program exits when only daemon threads are left.  The
-initial value is inherited from the creating thread.  The flag can be set
+initial value is inherited kutoka the creating thread.  The flag can be set
 through the :attr:`~Thread.daemon` property or the *daemon* constructor
 argument.
 
@@ -246,7 +246,7 @@ control in the Python program.  It is not a daemon thread.
 
 There is the possibility that "dummy thread objects" are created. These are
 thread objects corresponding to "alien threads", which are threads of control
-started outside the threading module, such as directly from C code.  Dummy
+started outside the threading module, such as directly kutoka C code.  Dummy
 thread objects have limited functionality; they are always considered alive and
 daemonic, and cannot be :meth:`~Thread.join`\ ed.  They are never deleted,
 since it is impossible to detect the termination of alien threads.
@@ -259,7 +259,7 @@ since it is impossible to detect the termination of alien threads.
    are:
 
    *group* should be ``None``; reserved for future extension when a
-   :class:`ThreadGroup` class is implemented.
+   :class:`ThreadGroup` kundi is implemented.
 
    *target* is the callable object to be invoked by the :meth:`run` method.
    Defaults to ``None``, meaning nothing is called.
@@ -273,11 +273,11 @@ since it is impossible to detect the termination of alien threads.
    Defaults to ``{}``.
 
    If not ``None``, *daemon* explicitly sets whether the thread is daemonic.
-   If ``None`` (the default), the daemonic property is inherited from the
+   If ``None`` (the default), the daemonic property is inherited kutoka the
    current thread.
 
-   If the subclass overrides the constructor, it must make sure to invoke the
-   base class constructor (``Thread.__init__()``) before doing anything else to
+   If the subkundi overrides the constructor, it must make sure to invoke the
+   base kundi constructor (``Thread.__init__()``) before doing anything else to
    the thread.
 
    .. versionchanged:: 3.3
@@ -301,7 +301,7 @@ since it is impossible to detect the termination of alien threads.
       You may override this method in a subclass.  The standard :meth:`run`
       method invokes the callable object passed to the object's constructor as
       the *target* argument, if any, with positional and keyword arguments taken
-      from the *args* and *kwargs* arguments, respectively.
+      kutoka the *args* and *kwargs* arguments, respectively.
 
    .. method:: join(timeout=None)
 
@@ -360,7 +360,7 @@ since it is impossible to detect the termination of alien threads.
       .. note::
 
          Similar to Process IDs, Thread IDs are only valid (guaranteed unique
-         system-wide) from the time the thread is created until the thread
+         system-wide) kutoka the time the thread is created until the thread
          has been terminated.
 
       .. availability:: Requires :func:`get_native_id` function.
@@ -380,7 +380,7 @@ since it is impossible to detect the termination of alien threads.
       A boolean value indicating whether this thread is a daemon thread (True)
       or not (False).  This must be set before :meth:`~Thread.start` is called,
       otherwise :exc:`RuntimeError` is raised.  Its initial value is inherited
-      from the creating thread; the main thread is not a daemon thread and
+      kutoka the creating thread; the main thread is not a daemon thread and
       therefore all threads created in the main thread default to
       :attr:`~Thread.daemon` = ``False``.
 
@@ -438,12 +438,12 @@ All methods are executed atomically.
 
 .. class:: Lock()
 
-   The class implementing primitive lock objects.  Once a thread has acquired a
+   The kundi implementing primitive lock objects.  Once a thread has acquired a
    lock, subsequent attempts to acquire it block, until it is released; any
    thread may release it.
 
    Note that ``Lock`` is actually a factory function which returns an instance
-   of the most efficient version of the concrete Lock class that is supported
+   of the most efficient version of the concrete Lock kundi that is supported
    by the platform.
 
 
@@ -477,7 +477,7 @@ All methods are executed atomically.
 
    .. method:: release()
 
-      Release a lock.  This can be called from any thread, not only the thread
+      Release a lock.  This can be called kutoka any thread, not only the thread
       which has acquired the lock.
 
       When the lock is locked, reset it to unlocked, and return.  If any other threads
@@ -512,13 +512,13 @@ Reentrant locks also support the :ref:`context management protocol <with-locks>`
 
 .. class:: RLock()
 
-   This class implements reentrant lock objects.  A reentrant lock must be
+   This kundi implements reentrant lock objects.  A reentrant lock must be
    released by the thread that acquired it.  Once a thread has acquired a
    reentrant lock, the same thread may acquire it again without blocking; the
    thread must release it once for each time it has acquired it.
 
    Note that ``RLock`` is actually a factory function which returns an instance
-   of the most efficient version of the concrete RLock class that is supported
+   of the most efficient version of the concrete RLock kundi that is supported
    by the platform.
 
 
@@ -593,7 +593,7 @@ method wakes up all threads waiting for the condition variable.
 
 Note: the :meth:`~Condition.notify` and :meth:`~Condition.notify_all` methods
 don't release the lock; this means that the thread or threads awakened will
-not return from their :meth:`~Condition.wait` call immediately, but only when
+not return kutoka their :meth:`~Condition.wait` call immediately, but only when
 the thread that called :meth:`~Condition.notify` or :meth:`~Condition.notify_all`
 finally relinquishes ownership of the lock.
 
@@ -637,7 +637,7 @@ item to the buffer only needs to wake up one consumer thread.
 
 .. class:: Condition(lock=None)
 
-   This class implements condition variable objects.  A condition variable
+   This kundi implements condition variable objects.  A condition variable
    allows one or more threads to wait until they are notified by another thread.
 
    If the *lock* argument is given and not ``None``, it must be a :class:`Lock`
@@ -645,7 +645,7 @@ item to the buffer only needs to wake up one consumer thread.
    a new :class:`RLock` object is created and used as the underlying lock.
 
    .. versionchanged:: 3.3
-      changed from a factory function to a class.
+      changed kutoka a factory function to a class.
 
    .. method:: acquire(*args)
 
@@ -675,7 +675,7 @@ item to the buffer only needs to wake up one consumer thread.
       When the underlying lock is an :class:`RLock`, it is not released using
       its :meth:`release` method, since this may not actually unlock the lock
       when it was acquired multiple times recursively.  Instead, an internal
-      interface of the :class:`RLock` class is used, which really unlocks it
+      interface of the :class:`RLock` kundi is used, which really unlocks it
       even when it has been recursively acquired several times. Another internal
       interface is then used to restore the recursion level when the lock is
       reacquired.
@@ -723,7 +723,7 @@ item to the buffer only needs to wake up one consumer thread.
       A future, optimized implementation may occasionally wake up more than
       *n* threads.
 
-      Note: an awakened thread does not actually return from its :meth:`wait`
+      Note: an awakened thread does not actually return kutoka its :meth:`wait`
       call until it can reacquire the lock.  Since :meth:`notify` does not
       release the lock, its caller should.
 
@@ -756,7 +756,7 @@ Semaphores also support the :ref:`context management protocol <with-locks>`.
 
 .. class:: Semaphore(value=1)
 
-   This class implements semaphore objects.  A semaphore manages an atomic
+   This kundi implements semaphore objects.  A semaphore manages an atomic
    counter representing the number of :meth:`release` calls minus the number of
    :meth:`acquire` calls, plus an initial value.  The :meth:`acquire` method
    blocks if necessary until it can return without making the counter negative.
@@ -767,7 +767,7 @@ Semaphores also support the :ref:`context management protocol <with-locks>`.
    raised.
 
    .. versionchanged:: 3.3
-      changed from a factory function to a class.
+      changed kutoka a factory function to a class.
 
    .. method:: acquire(blocking=True, timeout=None)
 
@@ -810,7 +810,7 @@ Semaphores also support the :ref:`context management protocol <with-locks>`.
    it's a sign of a bug.  If not given, *value* defaults to 1.
 
    .. versionchanged:: 3.3
-      changed from a factory function to a class.
+      changed kutoka a factory function to a class.
 
 
 .. _semaphore-examples:
@@ -862,7 +862,7 @@ method.  The :meth:`~Event.wait` method blocks until the flag is true.
    The flag is initially false.
 
    .. versionchanged:: 3.3
-      changed from a factory function to a class.
+      changed kutoka a factory function to a class.
 
    .. method:: is_set()
 
@@ -904,8 +904,8 @@ method.  The :meth:`~Event.wait` method blocks until the flag is true.
 Timer Objects
 -------------
 
-This class represents an action that should be run only after a certain amount
-of time has passed --- a timer.  :class:`Timer` is a subclass of :class:`Thread`
+This kundi represents an action that should be run only after a certain amount
+of time has passed --- a timer.  :class:`Timer` is a subkundi of :class:`Thread`
 and as such also functions as an example of creating custom threads.
 
 Timers are started, as with threads, by calling their :meth:`~Timer.start`
@@ -931,7 +931,7 @@ For example::
    If *kwargs* is ``None`` (the default) then an empty dict will be used.
 
    .. versionchanged:: 3.3
-      changed from a factory function to a class.
+      changed kutoka a factory function to a class.
 
    .. method:: cancel()
 
@@ -944,7 +944,7 @@ Barrier Objects
 
 .. versionadded:: 3.2
 
-This class provides a simple synchronization primitive for use by a fixed number
+This kundi provides a simple synchronization primitive for use by a fixed number
 of threads that need to wait for each other.  Each of the threads tries to pass
 the barrier by calling the :meth:`~Barrier.wait` method and will block until
 all of the threads have made their :meth:`~Barrier.wait` calls. At this point,
@@ -1037,7 +1037,7 @@ As an example, here is a simple way to synchronize a client and server thread::
 
 .. exception:: BrokenBarrierError
 
-   This exception, a subclass of :exc:`RuntimeError`, is raised when the
+   This exception, a subkundi of :exc:`RuntimeError`, is raised when the
    :class:`Barrier` object is reset or broken.
 
 

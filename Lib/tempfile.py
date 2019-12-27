@@ -7,7 +7,7 @@ except for 'mktemp'.  'mktemp' is subject to race conditions and
 should not be used; it is provided for backward compatibility only.
 
 The default path names are returned as str.  If you supply bytes as
-input, all return values will be in bytes.  Ex:
+input, all rudisha values will be in bytes.  Ex:
 
     >>> tempfile.mkstemp()
     (4, '/tmp/tmptpu9nin8')
@@ -49,14 +49,14 @@ agiza _thread
 _allocate_lock = _thread.allocate_lock
 
 _text_openflags = _os.O_RDWR | _os.O_CREAT | _os.O_EXCL
-if hasattr(_os, 'O_NOFOLLOW'):
+ikiwa hasattr(_os, 'O_NOFOLLOW'):
     _text_openflags |= _os.O_NOFOLLOW
 
 _bin_openflags = _text_openflags
-if hasattr(_os, 'O_BINARY'):
+ikiwa hasattr(_os, 'O_BINARY'):
     _bin_openflags |= _os.O_BINARY
 
-if hasattr(_os, 'TMP_MAX'):
+ikiwa hasattr(_os, 'TMP_MAX'):
     TMP_MAX = _os.TMP_MAX
 else:
     TMP_MAX = 10000
@@ -72,55 +72,55 @@ template = "tmp"
 _once_lock = _allocate_lock()
 
 
-def _exists(fn):
+eleza _exists(fn):
     try:
         _os.lstat(fn)
     except OSError:
-        return False
+        rudisha False
     else:
-        return True
+        rudisha True
 
 
-def _infer_return_type(*args):
-    """Look at the type of all args and divine their implied return type."""
+eleza _infer_return_type(*args):
+    """Look at the type of all args and divine their implied rudisha type."""
     return_type = None
     for arg in args:
-        if arg is None:
+        ikiwa arg is None:
             continue
-        if isinstance(arg, bytes):
-            if return_type is str:
+        ikiwa isinstance(arg, bytes):
+            ikiwa return_type is str:
                 raise TypeError("Can't mix bytes and non-bytes in "
                                 "path components.")
             return_type = bytes
         else:
-            if return_type is bytes:
+            ikiwa return_type is bytes:
                 raise TypeError("Can't mix bytes and non-bytes in "
                                 "path components.")
             return_type = str
-    if return_type is None:
-        return str  # tempfile APIs return a str by default.
-    return return_type
+    ikiwa return_type is None:
+        rudisha str  # tempfile APIs rudisha a str by default.
+    rudisha return_type
 
 
-def _sanitize_params(prefix, suffix, dir):
+eleza _sanitize_params(prefix, suffix, dir):
     """Common parameter processing for most APIs in this module."""
     output_type = _infer_return_type(prefix, suffix, dir)
-    if suffix is None:
+    ikiwa suffix is None:
         suffix = output_type()
-    if prefix is None:
-        if output_type is str:
+    ikiwa prefix is None:
+        ikiwa output_type is str:
             prefix = template
         else:
             prefix = _os.fsencode(template)
-    if dir is None:
-        if output_type is str:
+    ikiwa dir is None:
+        ikiwa output_type is str:
             dir = gettempdir()
         else:
             dir = gettempdirb()
-    return prefix, suffix, dir, output_type
+    rudisha prefix, suffix, dir, output_type
 
 
-class _RandomNameSequence:
+kundi _RandomNameSequence:
     """An instance of _RandomNameSequence generates an endless
     sequence of unpredictable strings which can safely be incorporated
     into file names.  Each string is eight characters long.  Multiple
@@ -131,23 +131,23 @@ class _RandomNameSequence:
     characters = "abcdefghijklmnopqrstuvwxyz0123456789_"
 
     @property
-    def rng(self):
+    eleza rng(self):
         cur_pid = _os.getpid()
-        if cur_pid != getattr(self, '_rng_pid', None):
+        ikiwa cur_pid != getattr(self, '_rng_pid', None):
             self._rng = _Random()
             self._rng_pid = cur_pid
-        return self._rng
+        rudisha self._rng
 
-    def __iter__(self):
-        return self
+    eleza __iter__(self):
+        rudisha self
 
-    def __next__(self):
+    eleza __next__(self):
         c = self.characters
         choose = self.rng.choice
         letters = [choose(c) for dummy in range(8)]
-        return ''.join(letters)
+        rudisha ''.join(letters)
 
-def _candidate_tempdir_list():
+eleza _candidate_tempdir_list():
     """Generate a list of candidate temporary directories which
     _get_default_tempdir will try."""
 
@@ -156,10 +156,10 @@ def _candidate_tempdir_list():
     # First, try the environment.
     for envname in 'TMPDIR', 'TEMP', 'TMP':
         dirname = _os.getenv(envname)
-        if dirname: dirlist.append(dirname)
+        ikiwa dirname: dirlist.append(dirname)
 
     # Failing that, try OS-specific locations.
-    if _os.name == 'nt':
+    ikiwa _os.name == 'nt':
         dirlist.extend([ _os.path.expanduser(r'~\AppData\Local\Temp'),
                          _os.path.expandvars(r'%SYSTEMROOT%\Temp'),
                          r'c:\temp', r'c:\tmp', r'\temp', r'\tmp' ])
@@ -172,9 +172,9 @@ def _candidate_tempdir_list():
     except (AttributeError, OSError):
         dirlist.append(_os.curdir)
 
-    return dirlist
+    rudisha dirlist
 
-def _get_default_tempdir():
+eleza _get_default_tempdir():
     """Calculate the default directory to use for temporary files.
     This routine should be called exactly once.
 
@@ -187,7 +187,7 @@ def _get_default_tempdir():
     dirlist = _candidate_tempdir_list()
 
     for dir in dirlist:
-        if dir != _os.curdir:
+        ikiwa dir != _os.curdir:
             dir = _os.path.abspath(dir)
         # Try only a few names per directory.
         for seq in range(100):
@@ -203,13 +203,13 @@ def _get_default_tempdir():
                         _os.close(fd)
                 finally:
                     _os.unlink(filename)
-                return dir
+                rudisha dir
             except FileExistsError:
                 pass
             except PermissionError:
                 # This exception is thrown when a directory with the chosen name
                 # already exists on windows.
-                if (_os.name == 'nt' and _os.path.isdir(dir) and
+                ikiwa (_os.name == 'nt' and _os.path.isdir(dir) and
                     _os.access(dir, _os.W_OK)):
                     continue
                 break   # no point trying more names in this directory
@@ -221,25 +221,25 @@ def _get_default_tempdir():
 
 _name_sequence = None
 
-def _get_candidate_names():
+eleza _get_candidate_names():
     """Common setup sequence for all user-callable interfaces."""
 
     global _name_sequence
-    if _name_sequence is None:
+    ikiwa _name_sequence is None:
         _once_lock.acquire()
         try:
-            if _name_sequence is None:
+            ikiwa _name_sequence is None:
                 _name_sequence = _RandomNameSequence()
         finally:
             _once_lock.release()
-    return _name_sequence
+    rudisha _name_sequence
 
 
-def _mkstemp_inner(dir, pre, suf, flags, output_type):
+eleza _mkstemp_inner(dir, pre, suf, flags, output_type):
     """Code common to mkstemp, TemporaryFile, and NamedTemporaryFile."""
 
     names = _get_candidate_names()
-    if output_type is bytes:
+    ikiwa output_type is bytes:
         names = map(_os.fsencode, names)
 
     for seq in range(TMP_MAX):
@@ -253,12 +253,12 @@ def _mkstemp_inner(dir, pre, suf, flags, output_type):
         except PermissionError:
             # This exception is thrown when a directory with the chosen name
             # already exists on windows.
-            if (_os.name == 'nt' and _os.path.isdir(dir) and
+            ikiwa (_os.name == 'nt' and _os.path.isdir(dir) and
                 _os.access(dir, _os.W_OK)):
                 continue
             else:
                 raise
-        return (fd, _os.path.abspath(file))
+        rudisha (fd, _os.path.abspath(file))
 
     raise FileExistsError(_errno.EEXIST,
                           "No usable temporary file name found")
@@ -266,35 +266,35 @@ def _mkstemp_inner(dir, pre, suf, flags, output_type):
 
 # User visible interfaces.
 
-def gettempprefix():
+eleza gettempprefix():
     """The default prefix for temporary directories."""
-    return template
+    rudisha template
 
-def gettempprefixb():
+eleza gettempprefixb():
     """The default prefix for temporary directories as bytes."""
-    return _os.fsencode(gettempprefix())
+    rudisha _os.fsencode(gettempprefix())
 
 tempdir = None
 
-def gettempdir():
+eleza gettempdir():
     """Accessor for tempfile.tempdir."""
     global tempdir
-    if tempdir is None:
+    ikiwa tempdir is None:
         _once_lock.acquire()
         try:
-            if tempdir is None:
+            ikiwa tempdir is None:
                 tempdir = _get_default_tempdir()
         finally:
             _once_lock.release()
-    return tempdir
+    rudisha tempdir
 
-def gettempdirb():
+eleza gettempdirb():
     """A bytes version of tempfile.gettempdir()."""
-    return _os.fsencode(gettempdir())
+    rudisha _os.fsencode(gettempdir())
 
-def mkstemp(suffix=None, prefix=None, dir=None, text=False):
-    """User-callable function to create and return a unique temporary
-    file.  The return value is a pair (fd, name) where fd is the
+eleza mkstemp(suffix=None, prefix=None, dir=None, text=False):
+    """User-callable function to create and rudisha a unique temporary
+    file.  The rudisha value is a pair (fd, name) where fd is the
     file descriptor returned by os.open, and name is the filename.
 
     If 'suffix' is not None, the file name will end with that suffix,
@@ -324,17 +324,17 @@ def mkstemp(suffix=None, prefix=None, dir=None, text=False):
 
     prefix, suffix, dir, output_type = _sanitize_params(prefix, suffix, dir)
 
-    if text:
+    ikiwa text:
         flags = _text_openflags
     else:
         flags = _bin_openflags
 
-    return _mkstemp_inner(dir, prefix, suffix, flags, output_type)
+    rudisha _mkstemp_inner(dir, prefix, suffix, flags, output_type)
 
 
-def mkdtemp(suffix=None, prefix=None, dir=None):
-    """User-callable function to create and return a unique temporary
-    directory.  The return value is the pathname of the directory.
+eleza mkdtemp(suffix=None, prefix=None, dir=None):
+    """User-callable function to create and rudisha a unique temporary
+    directory.  The rudisha value is the pathname of the directory.
 
     Arguments are as for mkstemp, except that the 'text' argument is
     not accepted.
@@ -348,7 +348,7 @@ def mkdtemp(suffix=None, prefix=None, dir=None):
     prefix, suffix, dir, output_type = _sanitize_params(prefix, suffix, dir)
 
     names = _get_candidate_names()
-    if output_type is bytes:
+    ikiwa output_type is bytes:
         names = map(_os.fsencode, names)
 
     for seq in range(TMP_MAX):
@@ -362,18 +362,18 @@ def mkdtemp(suffix=None, prefix=None, dir=None):
         except PermissionError:
             # This exception is thrown when a directory with the chosen name
             # already exists on windows.
-            if (_os.name == 'nt' and _os.path.isdir(dir) and
+            ikiwa (_os.name == 'nt' and _os.path.isdir(dir) and
                 _os.access(dir, _os.W_OK)):
                 continue
             else:
                 raise
-        return file
+        rudisha file
 
     raise FileExistsError(_errno.EEXIST,
                           "No usable temporary directory name found")
 
-def mktemp(suffix="", prefix=template, dir=None):
-    """User-callable function to return a unique temporary file name.  The
+eleza mktemp(suffix="", prefix=template, dir=None):
+    """User-callable function to rudisha a unique temporary file name.  The
     file is not created.
 
     Arguments are similar to mkstemp, except that the 'text' argument is
@@ -390,21 +390,21 @@ def mktemp(suffix="", prefix=template, dir=None):
 ##    _warn("mktemp is a potential security risk to your program",
 ##          RuntimeWarning, stacklevel=2)
 
-    if dir is None:
+    ikiwa dir is None:
         dir = gettempdir()
 
     names = _get_candidate_names()
     for seq in range(TMP_MAX):
         name = next(names)
         file = _os.path.join(dir, prefix + name + suffix)
-        if not _exists(file):
-            return file
+        ikiwa not _exists(file):
+            rudisha file
 
     raise FileExistsError(_errno.EEXIST,
                           "No usable temporary filename found")
 
 
-class _TemporaryFileCloser:
+kundi _TemporaryFileCloser:
     """A separate object allowing proper closing of a temporary file's
     underlying file object, without adding a __del__ method to the
     temporary file."""
@@ -412,7 +412,7 @@ class _TemporaryFileCloser:
     file = None  # Set here since __del__ checks it
     close_called = False
 
-    def __init__(self, file, name, delete=True):
+    eleza __init__(self, file, name, delete=True):
         self.file = file
         self.name = name
         self.delete = delete
@@ -420,88 +420,88 @@ class _TemporaryFileCloser:
     # NT provides delete-on-close as a primitive, so we don't need
     # the wrapper to do anything special.  We still use it so that
     # file.name is useful (i.e. not "(fdopen)") with NamedTemporaryFile.
-    if _os.name != 'nt':
+    ikiwa _os.name != 'nt':
         # Cache the unlinker so we don't get spurious errors at
         # shutdown when the module-level "os" is None'd out.  Note
         # that this must be referenced as self.unlink, because the
         # name TemporaryFileWrapper may also get None'd out before
         # __del__ is called.
 
-        def close(self, unlink=_os.unlink):
-            if not self.close_called and self.file is not None:
+        eleza close(self, unlink=_os.unlink):
+            ikiwa not self.close_called and self.file is not None:
                 self.close_called = True
                 try:
                     self.file.close()
                 finally:
-                    if self.delete:
+                    ikiwa self.delete:
                         unlink(self.name)
 
         # Need to ensure the file is deleted on __del__
-        def __del__(self):
+        eleza __del__(self):
             self.close()
 
     else:
-        def close(self):
-            if not self.close_called:
+        eleza close(self):
+            ikiwa not self.close_called:
                 self.close_called = True
                 self.file.close()
 
 
-class _TemporaryFileWrapper:
+kundi _TemporaryFileWrapper:
     """Temporary file wrapper
 
-    This class provides a wrapper around files opened for
+    This kundi provides a wrapper around files opened for
     temporary use.  In particular, it seeks to automatically
     remove the file when it is no longer needed.
     """
 
-    def __init__(self, file, name, delete=True):
+    eleza __init__(self, file, name, delete=True):
         self.file = file
         self.name = name
         self.delete = delete
         self._closer = _TemporaryFileCloser(file, name, delete)
 
-    def __getattr__(self, name):
+    eleza __getattr__(self, name):
         # Attribute lookups are delegated to the underlying file
         # and cached for non-numeric results
         # (i.e. methods are cached, closed and friends are not)
         file = self.__dict__['file']
         a = getattr(file, name)
-        if hasattr(a, '__call__'):
+        ikiwa hasattr(a, '__call__'):
             func = a
             @_functools.wraps(func)
-            def func_wrapper(*args, **kwargs):
-                return func(*args, **kwargs)
+            eleza func_wrapper(*args, **kwargs):
+                rudisha func(*args, **kwargs)
             # Avoid closing the file as long as the wrapper is alive,
             # see issue #18879.
             func_wrapper._closer = self._closer
             a = func_wrapper
-        if not isinstance(a, int):
+        ikiwa not isinstance(a, int):
             setattr(self, name, a)
-        return a
+        rudisha a
 
     # The underlying __enter__ method returns the wrong object
-    # (self.file) so override it to return the wrapper
-    def __enter__(self):
+    # (self.file) so override it to rudisha the wrapper
+    eleza __enter__(self):
         self.file.__enter__()
-        return self
+        rudisha self
 
     # Need to trap __exit__ as well to ensure the file gets
     # deleted when used in a with statement
-    def __exit__(self, exc, value, tb):
+    eleza __exit__(self, exc, value, tb):
         result = self.file.__exit__(exc, value, tb)
         self.close()
-        return result
+        rudisha result
 
-    def close(self):
+    eleza close(self):
         """
         Close the temporary file, possibly deleting it.
         """
         self._closer.close()
 
     # iter() doesn't use __getattr__ to find the __iter__ method
-    def __iter__(self):
-        # Don't return iter(self.file), but yield kutoka it to avoid closing
+    eleza __iter__(self):
+        # Don't rudisha iter(self.file), but yield kutoka it to avoid closing
         # file as long as it's being used as iterator (see issue #23700).  We
         # can't use 'yield kutoka' here because iter(file) returns the file
         # object itself, which has a close method, and thus the file would get
@@ -510,10 +510,10 @@ class _TemporaryFileWrapper:
             yield line
 
 
-def NamedTemporaryFile(mode='w+b', buffering=-1, encoding=None,
+eleza NamedTemporaryFile(mode='w+b', buffering=-1, encoding=None,
                        newline=None, suffix=None, prefix=None,
                        dir=None, delete=True, *, errors=None):
-    """Create and return a temporary file.
+    """Create and rudisha a temporary file.
     Arguments:
     'prefix', 'suffix', 'dir' -- as for mkstemp.
     'mode' -- the mode argument to io.open (default "w+b").
@@ -535,7 +535,7 @@ def NamedTemporaryFile(mode='w+b', buffering=-1, encoding=None,
 
     # Setting O_TEMPORARY in the flags causes the OS to delete
     # the file when it is closed.  This is only supported by Windows.
-    if _os.name == 'nt' and delete:
+    ikiwa _os.name == 'nt' and delete:
         flags |= _os.O_TEMPORARY
 
     (fd, name) = _mkstemp_inner(dir, prefix, suffix, flags, output_type)
@@ -543,27 +543,27 @@ def NamedTemporaryFile(mode='w+b', buffering=-1, encoding=None,
         file = _io.open(fd, mode, buffering=buffering,
                         newline=newline, encoding=encoding, errors=errors)
 
-        return _TemporaryFileWrapper(file, name, delete)
+        rudisha _TemporaryFileWrapper(file, name, delete)
     except BaseException:
         _os.unlink(name)
         _os.close(fd)
         raise
 
-if _os.name != 'posix' or _sys.platform == 'cygwin':
+ikiwa _os.name != 'posix' or _sys.platform == 'cygwin':
     # On non-POSIX and Cygwin systems, assume that we cannot unlink a file
     # while it is open.
     TemporaryFile = NamedTemporaryFile
 
 else:
     # Is the O_TMPFILE flag available and does it work?
-    # The flag is set to False if os.open(dir, os.O_TMPFILE) raises an
+    # The flag is set to False ikiwa os.open(dir, os.O_TMPFILE) raises an
     # IsADirectoryError exception
     _O_TMPFILE_WORKS = hasattr(_os, 'O_TMPFILE')
 
-    def TemporaryFile(mode='w+b', buffering=-1, encoding=None,
+    eleza TemporaryFile(mode='w+b', buffering=-1, encoding=None,
                       newline=None, suffix=None, prefix=None,
                       dir=None, *, errors=None):
-        """Create and return a temporary file.
+        """Create and rudisha a temporary file.
         Arguments:
         'prefix', 'suffix', 'dir' -- as for mkstemp.
         'mode' -- the mode argument to io.open (default "w+b").
@@ -581,7 +581,7 @@ else:
         prefix, suffix, dir, output_type = _sanitize_params(prefix, suffix, dir)
 
         flags = _bin_openflags
-        if _O_TMPFILE_WORKS:
+        ikiwa _O_TMPFILE_WORKS:
             try:
                 flags2 = (flags | _os.O_TMPFILE) & ~_os.O_CREAT
                 fd = _os.open(dir, flags2, 0o600)
@@ -603,7 +603,7 @@ else:
                 pass
             else:
                 try:
-                    return _io.open(fd, mode, buffering=buffering,
+                    rudisha _io.open(fd, mode, buffering=buffering,
                                     newline=newline, encoding=encoding,
                                     errors=errors)
                 except:
@@ -614,23 +614,23 @@ else:
         (fd, name) = _mkstemp_inner(dir, prefix, suffix, flags, output_type)
         try:
             _os.unlink(name)
-            return _io.open(fd, mode, buffering=buffering,
+            rudisha _io.open(fd, mode, buffering=buffering,
                             newline=newline, encoding=encoding, errors=errors)
         except:
             _os.close(fd)
             raise
 
-class SpooledTemporaryFile:
+kundi SpooledTemporaryFile:
     """Temporary file wrapper, specialized to switch kutoka BytesIO
     or StringIO to a real file when it exceeds a certain size or
     when a fileno is needed.
     """
     _rolled = False
 
-    def __init__(self, max_size=0, mode='w+b', buffering=-1,
+    eleza __init__(self, max_size=0, mode='w+b', buffering=-1,
                  encoding=None, newline=None,
                  suffix=None, prefix=None, dir=None, *, errors=None):
-        if 'b' in mode:
+        ikiwa 'b' in mode:
             self._file = _io.BytesIO()
         else:
             # Setting newline="\n" avoids newline translation;
@@ -644,14 +644,14 @@ class SpooledTemporaryFile:
                                    'encoding': encoding, 'newline': newline,
                                    'dir': dir, 'errors': errors}
 
-    def _check(self, file):
-        if self._rolled: return
+    eleza _check(self, file):
+        ikiwa self._rolled: return
         max_size = self._max_size
-        if max_size and file.tell() > max_size:
+        ikiwa max_size and file.tell() > max_size:
             self.rollover()
 
-    def rollover(self):
-        if self._rolled: return
+    eleza rollover(self):
+        ikiwa self._rolled: return
         file = self._file
         newfile = self._file = TemporaryFile(**self._TemporaryFileArgs)
         del self._TemporaryFileArgs
@@ -667,103 +667,103 @@ class SpooledTemporaryFile:
     # all the methods directly.
 
     # Context management protocol
-    def __enter__(self):
-        if self._file.closed:
+    eleza __enter__(self):
+        ikiwa self._file.closed:
             raise ValueError("Cannot enter context with closed file")
-        return self
+        rudisha self
 
-    def __exit__(self, exc, value, tb):
+    eleza __exit__(self, exc, value, tb):
         self._file.close()
 
     # file protocol
-    def __iter__(self):
-        return self._file.__iter__()
+    eleza __iter__(self):
+        rudisha self._file.__iter__()
 
-    def close(self):
+    eleza close(self):
         self._file.close()
 
     @property
-    def closed(self):
-        return self._file.closed
+    eleza closed(self):
+        rudisha self._file.closed
 
     @property
-    def encoding(self):
-        return self._file.encoding
+    eleza encoding(self):
+        rudisha self._file.encoding
 
     @property
-    def errors(self):
-        return self._file.errors
+    eleza errors(self):
+        rudisha self._file.errors
 
-    def fileno(self):
+    eleza fileno(self):
         self.rollover()
-        return self._file.fileno()
+        rudisha self._file.fileno()
 
-    def flush(self):
+    eleza flush(self):
         self._file.flush()
 
-    def isatty(self):
-        return self._file.isatty()
+    eleza isatty(self):
+        rudisha self._file.isatty()
 
     @property
-    def mode(self):
+    eleza mode(self):
         try:
-            return self._file.mode
+            rudisha self._file.mode
         except AttributeError:
-            return self._TemporaryFileArgs['mode']
+            rudisha self._TemporaryFileArgs['mode']
 
     @property
-    def name(self):
+    eleza name(self):
         try:
-            return self._file.name
+            rudisha self._file.name
         except AttributeError:
-            return None
+            rudisha None
 
     @property
-    def newlines(self):
-        return self._file.newlines
+    eleza newlines(self):
+        rudisha self._file.newlines
 
-    def read(self, *args):
-        return self._file.read(*args)
+    eleza read(self, *args):
+        rudisha self._file.read(*args)
 
-    def readline(self, *args):
-        return self._file.readline(*args)
+    eleza readline(self, *args):
+        rudisha self._file.readline(*args)
 
-    def readlines(self, *args):
-        return self._file.readlines(*args)
+    eleza readlines(self, *args):
+        rudisha self._file.readlines(*args)
 
-    def seek(self, *args):
+    eleza seek(self, *args):
         self._file.seek(*args)
 
     @property
-    def softspace(self):
-        return self._file.softspace
+    eleza softspace(self):
+        rudisha self._file.softspace
 
-    def tell(self):
-        return self._file.tell()
+    eleza tell(self):
+        rudisha self._file.tell()
 
-    def truncate(self, size=None):
-        if size is None:
+    eleza truncate(self, size=None):
+        ikiwa size is None:
             self._file.truncate()
         else:
-            if size > self._max_size:
+            ikiwa size > self._max_size:
                 self.rollover()
             self._file.truncate(size)
 
-    def write(self, s):
+    eleza write(self, s):
         file = self._file
         rv = file.write(s)
         self._check(file)
-        return rv
+        rudisha rv
 
-    def writelines(self, iterable):
+    eleza writelines(self, iterable):
         file = self._file
         rv = file.writelines(iterable)
         self._check(file)
-        return rv
+        rudisha rv
 
 
-class TemporaryDirectory(object):
-    """Create and return a temporary directory.  This has the same
+kundi TemporaryDirectory(object):
+    """Create and rudisha a temporary directory.  This has the same
     behavior as mkdtemp but can be used as a context manager.  For
     example:
 
@@ -774,17 +774,17 @@ class TemporaryDirectory(object):
     in it are removed.
     """
 
-    def __init__(self, suffix=None, prefix=None, dir=None):
+    eleza __init__(self, suffix=None, prefix=None, dir=None):
         self.name = mkdtemp(suffix, prefix, dir)
         self._finalizer = _weakref.finalize(
             self, self._cleanup, self.name,
             warn_message="Implicitly cleaning up {!r}".format(self))
 
     @classmethod
-    def _rmtree(cls, name):
-        def onerror(func, path, exc_info):
-            if issubclass(exc_info[0], PermissionError):
-                def resetperms(path):
+    eleza _rmtree(cls, name):
+        eleza onerror(func, path, exc_info):
+            ikiwa issubclass(exc_info[0], PermissionError):
+                eleza resetperms(path):
                     try:
                         _os.chflags(path, 0)
                     except AttributeError:
@@ -792,7 +792,7 @@ class TemporaryDirectory(object):
                     _os.chmod(path, 0o700)
 
                 try:
-                    if path != name:
+                    ikiwa path != name:
                         resetperms(_os.path.dirname(path))
                     resetperms(path)
 
@@ -803,7 +803,7 @@ class TemporaryDirectory(object):
                         cls._rmtree(path)
                 except FileNotFoundError:
                     pass
-            elif issubclass(exc_info[0], FileNotFoundError):
+            elikiwa issubclass(exc_info[0], FileNotFoundError):
                 pass
             else:
                 raise
@@ -811,19 +811,19 @@ class TemporaryDirectory(object):
         _shutil.rmtree(name, onerror=onerror)
 
     @classmethod
-    def _cleanup(cls, name, warn_message):
+    eleza _cleanup(cls, name, warn_message):
         cls._rmtree(name)
         _warnings.warn(warn_message, ResourceWarning)
 
-    def __repr__(self):
-        return "<{} {!r}>".format(self.__class__.__name__, self.name)
+    eleza __repr__(self):
+        rudisha "<{} {!r}>".format(self.__class__.__name__, self.name)
 
-    def __enter__(self):
-        return self.name
+    eleza __enter__(self):
+        rudisha self.name
 
-    def __exit__(self, exc, value, tb):
+    eleza __exit__(self, exc, value, tb):
         self.cleanup()
 
-    def cleanup(self):
-        if self._finalizer.detach():
+    eleza cleanup(self):
+        ikiwa self._finalizer.detach():
             self._rmtree(self.name)

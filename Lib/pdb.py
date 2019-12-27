@@ -12,7 +12,7 @@ To use the debugger in its simplest form:
 The debugger's prompt is '(Pdb) '.  This will stop in the first
 function call in <a statement>.
 
-Alternatively, if a statement terminated with an unhandled exception,
+Alternatively, ikiwa a statement terminated with an unhandled exception,
 you can use pdb's post-mortem facility to inspect the contents of the
 traceback:
 
@@ -45,18 +45,18 @@ level of adaptability to the context under examination.
 
 Multiple commands may be entered on a single line, separated by the
 pair ';;'.  No intelligence is applied to separating the commands; the
-input is split at the first ';;', even if it is in the middle of a
+input is split at the first ';;', even ikiwa it is in the middle of a
 quoted string.
 
 If a file ".pdbrc" exists in your home directory or in the current
-directory, it is read in and executed as if it had been typed at the
+directory, it is read in and executed as ikiwa it had been typed at the
 debugger prompt.  This is particularly useful for aliases.  If both
 files exist, the one in the home directory is read first and aliases
 defined there can be overridden by the local file.  This behavior can be
 disabled by passing the "readrc=False" argument to the Pdb constructor.
 
 Aside kutoka aliases, the debugger is not directly programmable; but it
-is implemented as a class kutoka which you can derive your own debugger
+is implemented as a kundi kutoka which you can derive your own debugger
 class, which you can make as fancy as you like.
 
 
@@ -65,7 +65,7 @@ Debugger commands
 
 """
 # NOTE: the actual command documentation is collected kutoka docstrings of the
-# commands and is appended to __doc__ after the class has been defined.
+# commands and is appended to __doc__ after the kundi has been defined.
 
 agiza os
 agiza re
@@ -82,48 +82,48 @@ agiza traceback
 agiza linecache
 
 
-class Restart(Exception):
+kundi Restart(Exception):
     """Causes a debugger to be restarted for the debugged python program."""
     pass
 
 __all__ = ["run", "pm", "Pdb", "runeval", "runctx", "runcall", "set_trace",
            "post_mortem", "help"]
 
-def find_function(funcname, filename):
+eleza find_function(funcname, filename):
     cre = re.compile(r'def\s+%s\s*[(]' % re.escape(funcname))
     try:
         fp = open(filename)
     except OSError:
-        return None
+        rudisha None
     # consumer of this info expects the first line to be 1
     with fp:
         for lineno, line in enumerate(fp, start=1):
-            if cre.match(line):
-                return funcname, filename, lineno
-    return None
+            ikiwa cre.match(line):
+                rudisha funcname, filename, lineno
+    rudisha None
 
-def getsourcelines(obj):
+eleza getsourcelines(obj):
     lines, lineno = inspect.findsource(obj)
-    if inspect.isframe(obj) and obj.f_globals is obj.f_locals:
+    ikiwa inspect.isframe(obj) and obj.f_globals is obj.f_locals:
         # must be a module frame: do not try to cut a block out of it
-        return lines, 1
-    elif inspect.ismodule(obj):
-        return lines, 1
-    return inspect.getblock(lines[lineno:]), lineno+1
+        rudisha lines, 1
+    elikiwa inspect.ismodule(obj):
+        rudisha lines, 1
+    rudisha inspect.getblock(lines[lineno:]), lineno+1
 
-def lasti2lineno(code, lasti):
+eleza lasti2lineno(code, lasti):
     linestarts = list(dis.findlinestarts(code))
     linestarts.reverse()
     for i, lineno in linestarts:
-        if lasti >= i:
-            return lineno
-    return 0
+        ikiwa lasti >= i:
+            rudisha lineno
+    rudisha 0
 
 
-class _rstr(str):
+kundi _rstr(str):
     """String that doesn't quote its repr."""
-    def __repr__(self):
-        return self
+    eleza __repr__(self):
+        rudisha self
 
 
 # Interaction prompt line will separate file and call info kutoka code
@@ -133,16 +133,16 @@ class _rstr(str):
 # line_prefix = ': '    # Use this to get the old situation back
 line_prefix = '\n-> '   # Probably a better default
 
-class Pdb(bdb.Bdb, cmd.Cmd):
+kundi Pdb(bdb.Bdb, cmd.Cmd):
 
     _previous_sigint_handler = None
 
-    def __init__(self, completekey='tab', stdin=None, stdout=None, skip=None,
+    eleza __init__(self, completekey='tab', stdin=None, stdout=None, skip=None,
                  nosigint=False, readrc=True):
         bdb.Bdb.__init__(self, skip=skip)
         cmd.Cmd.__init__(self, completekey, stdin, stdout)
         sys.audit("pdb.Pdb")
-        if stdout:
+        ikiwa stdout:
             self.use_rawinput = 0
         self.prompt = '(Pdb) '
         self.aliases = {}
@@ -150,7 +150,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         self.mainpyfile = ''
         self._wait_for_mainpyfile = False
         self.tb_lineno = {}
-        # Try to load readline if it exists
+        # Try to load readline ikiwa it exists
         try:
             agiza readline
             # remove some common file name delimiters
@@ -162,7 +162,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
         # Read ~/.pdbrc and ./.pdbrc
         self.rcLines = []
-        if readrc:
+        ikiwa readrc:
             try:
                 with open(os.path.expanduser('~/.pdbrc')) as rcFile:
                     self.rcLines.extend(rcFile)
@@ -175,34 +175,34 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                 pass
 
         self.commands = {} # associates a command list to breakpoint numbers
-        self.commands_doprompt = {} # for each bp num, tells if the prompt
+        self.commands_doprompt = {} # for each bp num, tells ikiwa the prompt
                                     # must be disp. after execing the cmd list
-        self.commands_silent = {} # for each bp num, tells if the stack trace
+        self.commands_silent = {} # for each bp num, tells ikiwa the stack trace
                                   # must be disp. after execing the cmd list
         self.commands_defining = False # True while in the process of defining
                                        # a command list
         self.commands_bnum = None # The breakpoint number for which we are
                                   # defining a list
 
-    def sigint_handler(self, signum, frame):
-        if self.allow_kbdint:
+    eleza sigint_handler(self, signum, frame):
+        ikiwa self.allow_kbdint:
             raise KeyboardInterrupt
         self.message("\nProgram interrupted. (Use 'cont' to resume).")
         self.set_step()
         self.set_trace(frame)
 
-    def reset(self):
+    eleza reset(self):
         bdb.Bdb.reset(self)
         self.forget()
 
-    def forget(self):
+    eleza forget(self):
         self.lineno = None
         self.stack = []
         self.curindex = 0
         self.curframe = None
         self.tb_lineno.clear()
 
-    def setup(self, f, tb):
+    eleza setup(self, f, tb):
         self.forget()
         self.stack, self.curindex = self.get_stack(f, tb)
         while tb:
@@ -217,11 +217,11 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         # locals whenever the .f_locals accessor is called, so we
         # cache it here to ensure that modifications are not overwritten.
         self.curframe_locals = self.curframe.f_locals
-        return self.execRcLines()
+        rudisha self.execRcLines()
 
-    # Can be executed earlier than 'setup' if desired
-    def execRcLines(self):
-        if not self.rcLines:
+    # Can be executed earlier than 'setup' ikiwa desired
+    eleza execRcLines(self):
+        ikiwa not self.rcLines:
             return
         # local copy because of recursion
         rcLines = self.rcLines
@@ -230,43 +230,43 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         self.rcLines = []
         while rcLines:
             line = rcLines.pop().strip()
-            if line and line[0] != '#':
-                if self.onecmd(line):
-                    # if onecmd returns True, the command wants to exit
+            ikiwa line and line[0] != '#':
+                ikiwa self.onecmd(line):
+                    # ikiwa onecmd returns True, the command wants to exit
                     # kutoka the interaction, save leftover rc lines
                     # to execute before next interaction
                     self.rcLines += reversed(rcLines)
-                    return True
+                    rudisha True
 
     # Override Bdb methods
 
-    def user_call(self, frame, argument_list):
+    eleza user_call(self, frame, argument_list):
         """This method is called when there is the remote possibility
         that we ever need to stop in this function."""
-        if self._wait_for_mainpyfile:
+        ikiwa self._wait_for_mainpyfile:
             return
-        if self.stop_here(frame):
+        ikiwa self.stop_here(frame):
             self.message('--Call--')
             self.interaction(frame, None)
 
-    def user_line(self, frame):
+    eleza user_line(self, frame):
         """This function is called when we stop or break at this line."""
-        if self._wait_for_mainpyfile:
-            if (self.mainpyfile != self.canonic(frame.f_code.co_filename)
+        ikiwa self._wait_for_mainpyfile:
+            ikiwa (self.mainpyfile != self.canonic(frame.f_code.co_filename)
                 or frame.f_lineno <= 0):
                 return
             self._wait_for_mainpyfile = False
-        if self.bp_commands(frame):
+        ikiwa self.bp_commands(frame):
             self.interaction(frame, None)
 
-    def bp_commands(self, frame):
+    eleza bp_commands(self, frame):
         """Call every command that was set for the current active breakpoint
-        (if there is one).
+        (ikiwa there is one).
 
-        Returns True if the normal interaction function must be called,
+        Returns True ikiwa the normal interaction function must be called,
         False otherwise."""
-        # self.currentbp is set in bdb in Bdb.break_here if a breakpoint was hit
-        if getattr(self, "currentbp", False) and \
+        # self.currentbp is set in bdb in Bdb.break_here ikiwa a breakpoint was hit
+        ikiwa getattr(self, "currentbp", False) and \
                self.currentbp in self.commands:
             currentbp = self.currentbp
             self.currentbp = 0
@@ -275,26 +275,26 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             for line in self.commands[currentbp]:
                 self.onecmd(line)
             self.lastcmd = lastcmd_back
-            if not self.commands_silent[currentbp]:
+            ikiwa not self.commands_silent[currentbp]:
                 self.print_stack_entry(self.stack[self.curindex])
-            if self.commands_doprompt[currentbp]:
+            ikiwa self.commands_doprompt[currentbp]:
                 self._cmdloop()
             self.forget()
             return
-        return 1
+        rudisha 1
 
-    def user_return(self, frame, return_value):
-        """This function is called when a return trap is set here."""
-        if self._wait_for_mainpyfile:
+    eleza user_return(self, frame, return_value):
+        """This function is called when a rudisha trap is set here."""
+        ikiwa self._wait_for_mainpyfile:
             return
         frame.f_locals['__return__'] = return_value
         self.message('--Return--')
         self.interaction(frame, None)
 
-    def user_exception(self, frame, exc_info):
-        """This function is called if an exception occurs,
-        but only if we are to stop at or just below this level."""
-        if self._wait_for_mainpyfile:
+    eleza user_exception(self, frame, exc_info):
+        """This function is called ikiwa an exception occurs,
+        but only ikiwa we are to stop at or just below this level."""
+        ikiwa self._wait_for_mainpyfile:
             return
         exc_type, exc_value, exc_traceback = exc_info
         frame.f_locals['__exception__'] = exc_type, exc_value
@@ -304,14 +304,14 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         # 'yield kutoka' or a generator controlled by a for loop. No exception has
         # actually occurred in this case. The debugger uses this debug event to
         # stop when the debuggee is returning kutoka such generators.
-        prefix = 'Internal ' if (not exc_traceback
+        prefix = 'Internal ' ikiwa (not exc_traceback
                                     and exc_type is StopIteration) else ''
         self.message('%s%s' % (prefix,
             traceback.format_exception_only(exc_type, exc_value)[-1].strip()))
         self.interaction(frame, exc_traceback)
 
     # General interaction function
-    def _cmdloop(self):
+    eleza _cmdloop(self):
         while True:
             try:
                 # keyboard interrupts allow for an easy way to cancel
@@ -324,30 +324,30 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                 self.message('--KeyboardInterrupt--')
 
     # Called before loop, handles display expressions
-    def preloop(self):
+    eleza preloop(self):
         displaying = self.displaying.get(self.curframe)
-        if displaying:
+        ikiwa displaying:
             for expr, oldvalue in displaying.items():
                 newvalue = self._getval_except(expr)
                 # check for identity first; this prevents custom __eq__ to
                 # be called at every loop, and also prevents instances whose
                 # fields are changed to be displayed
-                if newvalue is not oldvalue and newvalue != oldvalue:
+                ikiwa newvalue is not oldvalue and newvalue != oldvalue:
                     displaying[expr] = newvalue
                     self.message('display %s: %r  [old: %r]' %
                                  (expr, newvalue, oldvalue))
 
-    def interaction(self, frame, traceback):
+    eleza interaction(self, frame, traceback):
         # Restore the previous signal handler at the Pdb prompt.
-        if Pdb._previous_sigint_handler:
+        ikiwa Pdb._previous_sigint_handler:
             try:
                 signal.signal(signal.SIGINT, Pdb._previous_sigint_handler)
             except ValueError:  # ValueError: signal only works in main thread
                 pass
             else:
                 Pdb._previous_sigint_handler = None
-        if self.setup(frame, traceback):
-            # no interaction desired at this time (happens if .pdbrc contains
+        ikiwa self.setup(frame, traceback):
+            # no interaction desired at this time (happens ikiwa .pdbrc contains
             # a command like "continue")
             self.forget()
             return
@@ -355,16 +355,16 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         self._cmdloop()
         self.forget()
 
-    def displayhook(self, obj):
+    eleza displayhook(self, obj):
         """Custom displayhook for the exec in default(), which prevents
         assignment of the _ variable in the builtins.
         """
         # reproduce the behavior of the standard displayhook, not printing None
-        if obj is not None:
+        ikiwa obj is not None:
             self.message(repr(obj))
 
-    def default(self, line):
-        if line[:1] == '!': line = line[1:]
+    eleza default(self, line):
+        ikiwa line[:1] == '!': line = line[1:]
         locals = self.curframe_locals
         globals = self.curframe.f_globals
         try:
@@ -385,10 +385,10 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             exc_info = sys.exc_info()[:2]
             self.error(traceback.format_exception_only(*exc_info)[-1].strip())
 
-    def precmd(self, line):
+    eleza precmd(self, line):
         """Handle alias expansion and ';;' separator."""
-        if not line.strip():
-            return line
+        ikiwa not line.strip():
+            rudisha line
         args = line.split()
         while args[0] in self.aliases:
             line = self.aliases[args[0]]
@@ -401,71 +401,71 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             args = line.split()
         # split into ';;' separated commands
         # unless it's an alias command
-        if args[0] != 'alias':
+        ikiwa args[0] != 'alias':
             marker = line.find(';;')
-            if marker >= 0:
+            ikiwa marker >= 0:
                 # queue up everything after marker
                 next = line[marker+2:].lstrip()
                 self.cmdqueue.append(next)
                 line = line[:marker].rstrip()
-        return line
+        rudisha line
 
-    def onecmd(self, line):
+    eleza onecmd(self, line):
         """Interpret the argument as though it had been typed in response
         to the prompt.
 
         Checks whether this line is typed at the normal prompt or in
         a breakpoint command list definition.
         """
-        if not self.commands_defining:
-            return cmd.Cmd.onecmd(self, line)
+        ikiwa not self.commands_defining:
+            rudisha cmd.Cmd.onecmd(self, line)
         else:
-            return self.handle_command_def(line)
+            rudisha self.handle_command_def(line)
 
-    def handle_command_def(self, line):
+    eleza handle_command_def(self, line):
         """Handles one command line during command list definition."""
         cmd, arg, line = self.parseline(line)
-        if not cmd:
+        ikiwa not cmd:
             return
-        if cmd == 'silent':
+        ikiwa cmd == 'silent':
             self.commands_silent[self.commands_bnum] = True
-            return # continue to handle other cmd def in the cmd list
-        elif cmd == 'end':
+            rudisha # continue to handle other cmd eleza in the cmd list
+        elikiwa cmd == 'end':
             self.cmdqueue = []
-            return 1 # end of cmd list
+            rudisha 1 # end of cmd list
         cmdlist = self.commands[self.commands_bnum]
-        if arg:
+        ikiwa arg:
             cmdlist.append(cmd+' '+arg)
         else:
             cmdlist.append(cmd)
-        # Determine if we must stop
+        # Determine ikiwa we must stop
         try:
             func = getattr(self, 'do_' + cmd)
         except AttributeError:
             func = self.default
         # one of the resuming commands
-        if func.__name__ in self.commands_resuming:
+        ikiwa func.__name__ in self.commands_resuming:
             self.commands_doprompt[self.commands_bnum] = False
             self.cmdqueue = []
-            return 1
+            rudisha 1
         return
 
     # interface abstraction functions
 
-    def message(self, msg):
-        print(msg, file=self.stdout)
+    eleza message(self, msg):
+        andika(msg, file=self.stdout)
 
-    def error(self, msg):
-        print('***', msg, file=self.stdout)
+    eleza error(self, msg):
+        andika('***', msg, file=self.stdout)
 
     # Generic completion functions.  Individual complete_foo methods can be
     # assigned below to one of these functions.
 
-    def _complete_location(self, text, line, begidx, endidx):
+    eleza _complete_location(self, text, line, begidx, endidx):
         # Complete a file/module/function location for break/tbreak/clear.
-        if line.strip().endswith((':', ',')):
+        ikiwa line.strip().endswith((':', ',')):
             # Here comes a line number or a condition which we can't complete.
-            return []
+            rudisha []
         # First, try to find matching functions (i.e. expressions).
         try:
             ret = self._complete_expression(text, line, begidx, endidx)
@@ -474,30 +474,30 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         # Then, try to complete file names as well.
         globs = glob.glob(text + '*')
         for fn in globs:
-            if os.path.isdir(fn):
+            ikiwa os.path.isdir(fn):
                 ret.append(fn + '/')
-            elif os.path.isfile(fn) and fn.lower().endswith(('.py', '.pyw')):
+            elikiwa os.path.isfile(fn) and fn.lower().endswith(('.py', '.pyw')):
                 ret.append(fn + ':')
-        return ret
+        rudisha ret
 
-    def _complete_bpnumber(self, text, line, begidx, endidx):
-        # Complete a breakpoint number.  (This would be more helpful if we could
+    eleza _complete_bpnumber(self, text, line, begidx, endidx):
+        # Complete a breakpoint number.  (This would be more helpful ikiwa we could
         # display additional info along with the completions, such as file/line
         # of the breakpoint.)
-        return [str(i) for i, bp in enumerate(bdb.Breakpoint.bpbynumber)
-                if bp is not None and str(i).startswith(text)]
+        rudisha [str(i) for i, bp in enumerate(bdb.Breakpoint.bpbynumber)
+                ikiwa bp is not None and str(i).startswith(text)]
 
-    def _complete_expression(self, text, line, begidx, endidx):
+    eleza _complete_expression(self, text, line, begidx, endidx):
         # Complete an arbitrary expression.
-        if not self.curframe:
-            return []
+        ikiwa not self.curframe:
+            rudisha []
         # Collect globals and locals.  It is usually not really sensible to also
         # complete builtins, and they clutter the namespace quite heavily, so we
         # leave them out.
         ns = {**self.curframe.f_globals, **self.curframe_locals}
-        if '.' in text:
+        ikiwa '.' in text:
             # Walk an attribute chain up to the last part, similar to what
-            # rlcompleter does.  This will bail if any of the parts are not
+            # rlcompleter does.  This will bail ikiwa any of the parts are not
             # simple attribute access, which is what we want.
             dotted = text.split('.')
             try:
@@ -505,18 +505,18 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                 for part in dotted[1:-1]:
                     obj = getattr(obj, part)
             except (KeyError, AttributeError):
-                return []
+                rudisha []
             prefix = '.'.join(dotted[:-1]) + '.'
-            return [prefix + n for n in dir(obj) if n.startswith(dotted[-1])]
+            rudisha [prefix + n for n in dir(obj) ikiwa n.startswith(dotted[-1])]
         else:
             # Complete a simple name.
-            return [n for n in ns.keys() if n.startswith(text)]
+            rudisha [n for n in ns.keys() ikiwa n.startswith(text)]
 
     # Command definitions, called by cmdloop()
     # The argument is the remaining string on the command line
     # Return true to exit kutoka the command loop
 
-    def do_commands(self, arg):
+    eleza do_commands(self, arg):
         """commands [bpnumber]
         (com) ...
         (com) end
@@ -539,7 +539,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
         Specifying any command resuming execution (currently continue,
         step, next, return, jump, quit and their abbreviations)
-        terminates the command list (as if that command was
+        terminates the command list (as ikiwa that command was
         immediately followed by end).  This is because any time you
         resume execution (even with a simple next or step), you may
         encounter another breakpoint -- which could have its own
@@ -553,7 +553,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         print anything, you will see no sign that the breakpoint was
         reached.
         """
-        if not arg:
+        ikiwa not arg:
             bnum = len(bdb.Breakpoint.bpbynumber) - 1
         else:
             try:
@@ -563,7 +563,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                 return
         self.commands_bnum = bnum
         # Save old definitions for the case of a keyboard interrupt.
-        if bnum in self.commands:
+        ikiwa bnum in self.commands:
             old_command_defs = (self.commands[bnum],
                                 self.commands_doprompt[bnum],
                                 self.commands_silent[bnum])
@@ -580,7 +580,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             self.cmdloop()
         except KeyboardInterrupt:
             # Restore old definitions.
-            if old_command_defs:
+            ikiwa old_command_defs:
                 self.commands[bnum] = old_command_defs[0]
                 self.commands_doprompt[bnum] = old_command_defs[1]
                 self.commands_silent[bnum] = old_command_defs[2]
@@ -595,7 +595,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
     complete_commands = _complete_bpnumber
 
-    def do_break(self, arg, temporary = 0):
+    eleza do_break(self, arg, temporary = 0):
         """b(reak) [ ([filename:]lineno | function) [, condition] ]
         Without argument, list all breaks.
 
@@ -610,11 +610,11 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         hasn't been loaded yet).  The file is searched for on
         sys.path; the .py suffix may be omitted.
         """
-        if not arg:
-            if self.breaks:  # There's at least one
+        ikiwa not arg:
+            ikiwa self.breaks:  # There's at least one
                 self.message("Num Type         Disp Enb   Where")
                 for bp in bdb.Breakpoint.bpbynumber:
-                    if bp:
+                    ikiwa bp:
                         self.message(bp.bpformat())
             return
         # parse arguments; comma has lowest precedence
@@ -623,17 +623,17 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         lineno = None
         cond = None
         comma = arg.find(',')
-        if comma > 0:
+        ikiwa comma > 0:
             # parse stuff after comma: "condition"
             cond = arg[comma+1:].lstrip()
             arg = arg[:comma].rstrip()
         # parse stuff before comma: [filename:]lineno | function
         colon = arg.rfind(':')
         funcname = None
-        if colon >= 0:
+        ikiwa colon >= 0:
             filename = arg[:colon].rstrip()
             f = self.lookupmodule(filename)
-            if not f:
+            ikiwa not f:
                 self.error('%r not found kutoka sys.path' % filename)
                 return
             else:
@@ -656,7 +656,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                 except:
                     func = arg
                 try:
-                    if hasattr(func, '__func__'):
+                    ikiwa hasattr(func, '__func__'):
                         func = func.__func__
                     code = func.__code__
                     #use co_name to identify the bkpt (function names
@@ -667,20 +667,20 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                 except:
                     # last thing to try
                     (ok, filename, ln) = self.lineinfo(arg)
-                    if not ok:
+                    ikiwa not ok:
                         self.error('The specified object %r is not a function '
                                    'or was not found along sys.path.' % arg)
                         return
                     funcname = ok # ok contains a function name
                     lineno = int(ln)
-        if not filename:
+        ikiwa not filename:
             filename = self.defaultFile()
         # Check for reasonable breakpoint
         line = self.checkline(filename, lineno)
-        if line:
+        ikiwa line:
             # now set the break point
             err = self.set_break(filename, line, temporary, cond, funcname)
-            if err:
+            ikiwa err:
                 self.error(err)
             else:
                 bp = self.get_breaks(filename, line)[-1]
@@ -688,19 +688,19 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                              (bp.number, bp.file, bp.line))
 
     # To be overridden in derived debuggers
-    def defaultFile(self):
+    eleza defaultFile(self):
         """Produce a reasonable default."""
         filename = self.curframe.f_code.co_filename
-        if filename == '<string>' and self.mainpyfile:
+        ikiwa filename == '<string>' and self.mainpyfile:
             filename = self.mainpyfile
-        return filename
+        rudisha filename
 
     do_b = do_break
 
     complete_break = _complete_location
     complete_b = _complete_location
 
-    def do_tbreak(self, arg):
+    eleza do_tbreak(self, arg):
         """tbreak [ ([filename:]lineno | function) [, condition] ]
         Same arguments as break, but sets a temporary breakpoint: it
         is automatically deleted when first hit.
@@ -709,61 +709,61 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
     complete_tbreak = _complete_location
 
-    def lineinfo(self, identifier):
+    eleza lineinfo(self, identifier):
         failed = (None, None, None)
         # Input is identifier, may be in single quotes
         idstring = identifier.split("'")
-        if len(idstring) == 1:
+        ikiwa len(idstring) == 1:
             # not in single quotes
             id = idstring[0].strip()
-        elif len(idstring) == 3:
+        elikiwa len(idstring) == 3:
             # quoted
             id = idstring[1].strip()
         else:
-            return failed
-        if id == '': return failed
+            rudisha failed
+        ikiwa id == '': rudisha failed
         parts = id.split('.')
         # Protection for derived debuggers
-        if parts[0] == 'self':
+        ikiwa parts[0] == 'self':
             del parts[0]
-            if len(parts) == 0:
-                return failed
+            ikiwa len(parts) == 0:
+                rudisha failed
         # Best first guess at file to look at
         fname = self.defaultFile()
-        if len(parts) == 1:
+        ikiwa len(parts) == 1:
             item = parts[0]
         else:
             # More than one part.
             # First is module, second is method/class
             f = self.lookupmodule(parts[0])
-            if f:
+            ikiwa f:
                 fname = f
             item = parts[1]
         answer = find_function(item, fname)
-        return answer or failed
+        rudisha answer or failed
 
-    def checkline(self, filename, lineno):
+    eleza checkline(self, filename, lineno):
         """Check whether specified line seems to be executable.
 
-        Return `lineno` if it is, 0 if not (e.g. a docstring, comment, blank
+        Return `lineno` ikiwa it is, 0 ikiwa not (e.g. a docstring, comment, blank
         line or EOF). Warning: testing is not comprehensive.
         """
         # this method should be callable before starting debugging, so default
-        # to "no globals" if there is no current frame
-        globs = self.curframe.f_globals if hasattr(self, 'curframe') else None
+        # to "no globals" ikiwa there is no current frame
+        globs = self.curframe.f_globals ikiwa hasattr(self, 'curframe') else None
         line = linecache.getline(filename, lineno, globs)
-        if not line:
+        ikiwa not line:
             self.message('End of file')
-            return 0
+            rudisha 0
         line = line.strip()
         # Don't allow setting breakpoint at a blank line
-        if (not line or (line[0] == '#') or
+        ikiwa (not line or (line[0] == '#') or
              (line[:3] == '"""') or line[:3] == "'''"):
             self.error('Blank or comment')
-            return 0
-        return lineno
+            rudisha 0
+        rudisha lineno
 
-    def do_enable(self, arg):
+    eleza do_enable(self, arg):
         """enable bpnumber [bpnumber ...]
         Enables the breakpoints given as a space separated list of
         breakpoint numbers.
@@ -780,7 +780,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
     complete_enable = _complete_bpnumber
 
-    def do_disable(self, arg):
+    eleza do_disable(self, arg):
         """disable bpnumber [bpnumber ...]
         Disables the breakpoints given as a space separated list of
         breakpoint numbers.  Disabling a breakpoint means it cannot
@@ -800,7 +800,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
     complete_disable = _complete_bpnumber
 
-    def do_condition(self, arg):
+    eleza do_condition(self, arg):
         """condition bpnumber [condition]
         Set a new condition for the breakpoint, an expression which
         must evaluate to true before the breakpoint is honored.  If
@@ -820,14 +820,14 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             self.error(err)
         else:
             bp.cond = cond
-            if not cond:
+            ikiwa not cond:
                 self.message('Breakpoint %d is now unconditional.' % bp.number)
             else:
                 self.message('New condition set for breakpoint %d.' % bp.number)
 
     complete_condition = _complete_bpnumber
 
-    def do_ignore(self, arg):
+    eleza do_ignore(self, arg):
         """ignore bpnumber [count]
         Set the ignore count for the given breakpoint number.  If
         count is omitted, the ignore count is set to 0.  A breakpoint
@@ -849,8 +849,8 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             self.error(err)
         else:
             bp.ignore = count
-            if count > 0:
-                if count > 1:
+            ikiwa count > 0:
+                ikiwa count > 1:
                     countstr = '%d crossings' % count
                 else:
                     countstr = '1 crossing'
@@ -862,26 +862,26 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
     complete_ignore = _complete_bpnumber
 
-    def do_clear(self, arg):
+    eleza do_clear(self, arg):
         """cl(ear) filename:lineno\ncl(ear) [bpnumber [bpnumber...]]
         With a space separated list of breakpoint numbers, clear
         those breakpoints.  Without argument, clear all breaks (but
         first ask confirmation).  With a filename:lineno argument,
         clear all breaks at that line in that file.
         """
-        if not arg:
+        ikiwa not arg:
             try:
                 reply = input('Clear all breaks? ')
             except EOFError:
                 reply = 'no'
             reply = reply.strip().lower()
-            if reply in ('y', 'yes'):
-                bplist = [bp for bp in bdb.Breakpoint.bpbynumber if bp]
+            ikiwa reply in ('y', 'yes'):
+                bplist = [bp for bp in bdb.Breakpoint.bpbynumber ikiwa bp]
                 self.clear_all_breaks()
                 for bp in bplist:
                     self.message('Deleted %s' % bp)
             return
-        if ':' in arg:
+        ikiwa ':' in arg:
             # Make sure it works for "clear C:\foo\bar.py:12"
             i = arg.rfind(':')
             filename = arg[:i]
@@ -893,7 +893,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             else:
                 bplist = self.get_breaks(filename, lineno)
                 err = self.clear_break(filename, lineno)
-            if err:
+            ikiwa err:
                 self.error(err)
             else:
                 for bp in bplist:
@@ -913,7 +913,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
     complete_clear = _complete_location
     complete_cl = _complete_location
 
-    def do_where(self, arg):
+    eleza do_where(self, arg):
         """w(here)
         Print a stack trace, with the most recent frame at the bottom.
         An arrow indicates the "current frame", which determines the
@@ -923,7 +923,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
     do_w = do_where
     do_bt = do_where
 
-    def _select_frame(self, number):
+    eleza _select_frame(self, number):
         assert 0 <= number < len(self.stack)
         self.curindex = number
         self.curframe = self.stack[self.curindex][0]
@@ -931,12 +931,12 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         self.print_stack_entry(self.stack[self.curindex])
         self.lineno = None
 
-    def do_up(self, arg):
+    eleza do_up(self, arg):
         """u(p) [count]
         Move the current frame count (default one) levels up in the
         stack trace (to an older frame).
         """
-        if self.curindex == 0:
+        ikiwa self.curindex == 0:
             self.error('Oldest frame')
             return
         try:
@@ -944,19 +944,19 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         except ValueError:
             self.error('Invalid frame count (%s)' % arg)
             return
-        if count < 0:
+        ikiwa count < 0:
             newframe = 0
         else:
             newframe = max(0, self.curindex - count)
         self._select_frame(newframe)
     do_u = do_up
 
-    def do_down(self, arg):
+    eleza do_down(self, arg):
         """d(own) [count]
         Move the current frame count (default one) levels down in the
         stack trace (to a newer frame).
         """
-        if self.curindex + 1 == len(self.stack):
+        ikiwa self.curindex + 1 == len(self.stack):
             self.error('Newest frame')
             return
         try:
@@ -964,14 +964,14 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         except ValueError:
             self.error('Invalid frame count (%s)' % arg)
             return
-        if count < 0:
+        ikiwa count < 0:
             newframe = len(self.stack) - 1
         else:
             newframe = min(len(self.stack) - 1, self.curindex + count)
         self._select_frame(newframe)
     do_d = do_down
 
-    def do_until(self, arg):
+    eleza do_until(self, arg):
         """unt(il) [lineno]
         Without argument, continue execution until the line with a
         number greater than the current one is reached.  With a line
@@ -979,49 +979,49 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         or equal to that is reached.  In both cases, also stop when
         the current frame returns.
         """
-        if arg:
+        ikiwa arg:
             try:
                 lineno = int(arg)
             except ValueError:
                 self.error('Error in argument: %r' % arg)
                 return
-            if lineno <= self.curframe.f_lineno:
+            ikiwa lineno <= self.curframe.f_lineno:
                 self.error('"until" line number is smaller than current '
                            'line number')
                 return
         else:
             lineno = None
         self.set_until(self.curframe, lineno)
-        return 1
+        rudisha 1
     do_unt = do_until
 
-    def do_step(self, arg):
+    eleza do_step(self, arg):
         """s(tep)
         Execute the current line, stop at the first possible occasion
         (either in a function that is called or in the current
         function).
         """
         self.set_step()
-        return 1
+        rudisha 1
     do_s = do_step
 
-    def do_next(self, arg):
+    eleza do_next(self, arg):
         """n(ext)
         Continue execution until the next line in the current function
         is reached or it returns.
         """
         self.set_next(self.curframe)
-        return 1
+        rudisha 1
     do_n = do_next
 
-    def do_run(self, arg):
+    eleza do_run(self, arg):
         """run [args...]
         Restart the debugged python program. If a string is supplied
         it is split with "shlex", and the result is used as the new
         sys.argv.  History, breakpoints, actions and debugger options
         are preserved.  "restart" is an alias for "run".
         """
-        if arg:
+        ikiwa arg:
             agiza shlex
             argv0 = sys.argv[0:1]
             sys.argv = shlex.split(arg)
@@ -1031,19 +1031,19 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
     do_restart = do_run
 
-    def do_return(self, arg):
+    eleza do_return(self, arg):
         """r(eturn)
         Continue execution until the current function returns.
         """
         self.set_return(self.curframe)
-        return 1
+        rudisha 1
     do_r = do_return
 
-    def do_continue(self, arg):
+    eleza do_continue(self, arg):
         """c(ont(inue))
         Continue execution, only stop when a breakpoint is encountered.
         """
-        if not self.nosigint:
+        ikiwa not self.nosigint:
             try:
                 Pdb._previous_sigint_handler = \
                     signal.signal(signal.SIGINT, self.sigint_handler)
@@ -1054,10 +1054,10 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                 # sense?
                 pass
         self.set_continue()
-        return 1
+        rudisha 1
     do_c = do_cont = do_continue
 
-    def do_jump(self, arg):
+    eleza do_jump(self, arg):
         """j(ump) lineno
         Set the next line that will be executed.  Only available in
         the bottom-most frame.  This lets you jump back and execute
@@ -1068,7 +1068,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         instance it is not possible to jump into the middle of a
         for loop or out of a finally clause.
         """
-        if self.curindex + 1 != len(self.stack):
+        ikiwa self.curindex + 1 != len(self.stack):
             self.error('You can only jump within the bottom frame')
             return
         try:
@@ -1086,7 +1086,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                 self.error('Jump failed: %s' % e)
     do_j = do_jump
 
-    def do_debug(self, arg):
+    eleza do_debug(self, arg):
         """debug code
         Enter a recursive debugger that steps through the code
         argument (which is an arbitrary expression or statement to be
@@ -1109,73 +1109,73 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
     complete_debug = _complete_expression
 
-    def do_quit(self, arg):
+    eleza do_quit(self, arg):
         """q(uit)\nexit
         Quit kutoka the debugger. The program being executed is aborted.
         """
         self._user_requested_quit = True
         self.set_quit()
-        return 1
+        rudisha 1
 
     do_q = do_quit
     do_exit = do_quit
 
-    def do_EOF(self, arg):
+    eleza do_EOF(self, arg):
         """EOF
         Handles the receipt of EOF as a command.
         """
         self.message('')
         self._user_requested_quit = True
         self.set_quit()
-        return 1
+        rudisha 1
 
-    def do_args(self, arg):
+    eleza do_args(self, arg):
         """a(rgs)
         Print the argument list of the current function.
         """
         co = self.curframe.f_code
         dict = self.curframe_locals
         n = co.co_argcount + co.co_kwonlyargcount
-        if co.co_flags & inspect.CO_VARARGS: n = n+1
-        if co.co_flags & inspect.CO_VARKEYWORDS: n = n+1
+        ikiwa co.co_flags & inspect.CO_VARARGS: n = n+1
+        ikiwa co.co_flags & inspect.CO_VARKEYWORDS: n = n+1
         for i in range(n):
             name = co.co_varnames[i]
-            if name in dict:
+            ikiwa name in dict:
                 self.message('%s = %r' % (name, dict[name]))
             else:
                 self.message('%s = *** undefined ***' % (name,))
     do_a = do_args
 
-    def do_retval(self, arg):
+    eleza do_retval(self, arg):
         """retval
-        Print the return value for the last return of a function.
+        Print the rudisha value for the last rudisha of a function.
         """
-        if '__return__' in self.curframe_locals:
+        ikiwa '__return__' in self.curframe_locals:
             self.message(repr(self.curframe_locals['__return__']))
         else:
             self.error('Not yet returned!')
     do_rv = do_retval
 
-    def _getval(self, arg):
+    eleza _getval(self, arg):
         try:
-            return eval(arg, self.curframe.f_globals, self.curframe_locals)
+            rudisha eval(arg, self.curframe.f_globals, self.curframe_locals)
         except:
             exc_info = sys.exc_info()[:2]
             self.error(traceback.format_exception_only(*exc_info)[-1].strip())
             raise
 
-    def _getval_except(self, arg, frame=None):
+    eleza _getval_except(self, arg, frame=None):
         try:
-            if frame is None:
-                return eval(arg, self.curframe.f_globals, self.curframe_locals)
+            ikiwa frame is None:
+                rudisha eval(arg, self.curframe.f_globals, self.curframe_locals)
             else:
-                return eval(arg, frame.f_globals, frame.f_locals)
+                rudisha eval(arg, frame.f_globals, frame.f_locals)
         except:
             exc_info = sys.exc_info()[:2]
             err = traceback.format_exception_only(*exc_info)[-1].strip()
-            return _rstr('** raised %s **' % err)
+            rudisha _rstr('** raised %s **' % err)
 
-    def do_p(self, arg):
+    eleza do_p(self, arg):
         """p expression
         Print the value of the expression.
         """
@@ -1184,7 +1184,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         except:
             pass
 
-    def do_pp(self, arg):
+    eleza do_pp(self, arg):
         """pp expression
         Pretty-print the value of the expression.
         """
@@ -1197,30 +1197,30 @@ class Pdb(bdb.Bdb, cmd.Cmd):
     complete_p = _complete_expression
     complete_pp = _complete_expression
 
-    def do_list(self, arg):
+    eleza do_list(self, arg):
         """l(ist) [first [,last] | .]
 
         List source code for the current file.  Without arguments,
         list 11 lines around the current line or continue the previous
         listing.  With . as argument, list 11 lines around the current
         line.  With one argument, list 11 lines starting at that line.
-        With two arguments, list the given range; if the second
+        With two arguments, list the given range; ikiwa the second
         argument is less than the first, it is a count.
 
         The current line in the current frame is indicated by "->".
         If an exception is being debugged, the line where the
         exception was originally raised or propagated is indicated by
-        ">>", if it differs kutoka the current line.
+        ">>", ikiwa it differs kutoka the current line.
         """
         self.lastcmd = 'list'
         last = None
-        if arg and arg != '.':
+        ikiwa arg and arg != '.':
             try:
-                if ',' in arg:
+                ikiwa ',' in arg:
                     first, last = arg.split(',')
                     first = int(first.strip())
                     last = int(last.strip())
-                    if last < first:
+                    ikiwa last < first:
                         # assume it's a count
                         last = first + last
                 else:
@@ -1229,11 +1229,11 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             except ValueError:
                 self.error('Error in argument: %r' % arg)
                 return
-        elif self.lineno is None or arg == '.':
+        elikiwa self.lineno is None or arg == '.':
             first = max(1, self.curframe.f_lineno - 5)
         else:
             first = self.lineno + 1
-        if last is None:
+        ikiwa last is None:
             last = first + 10
         filename = self.curframe.f_code.co_filename
         breaklist = self.get_file_breaks(filename)
@@ -1242,13 +1242,13 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             self._print_lines(lines[first-1:last], first, breaklist,
                               self.curframe)
             self.lineno = min(last, len(lines))
-            if len(lines) < last:
+            ikiwa len(lines) < last:
                 self.message('[EOF]')
         except KeyboardInterrupt:
             pass
     do_l = do_list
 
-    def do_longlist(self, arg):
+    eleza do_longlist(self, arg):
         """longlist | ll
         List the whole source code for the current function or frame.
         """
@@ -1262,7 +1262,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         self._print_lines(lines, lineno, breaklist, self.curframe)
     do_ll = do_longlist
 
-    def do_source(self, arg):
+    eleza do_source(self, arg):
         """source expression
         Try to get source code for the given object and display it.
         """
@@ -1279,28 +1279,28 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
     complete_source = _complete_expression
 
-    def _print_lines(self, lines, start, breaks=(), frame=None):
+    eleza _print_lines(self, lines, start, breaks=(), frame=None):
         """Print a range of lines."""
-        if frame:
+        ikiwa frame:
             current_lineno = frame.f_lineno
             exc_lineno = self.tb_lineno.get(frame, -1)
         else:
             current_lineno = exc_lineno = -1
         for lineno, line in enumerate(lines, start):
             s = str(lineno).rjust(3)
-            if len(s) < 4:
+            ikiwa len(s) < 4:
                 s += ' '
-            if lineno in breaks:
+            ikiwa lineno in breaks:
                 s += 'B'
             else:
                 s += ' '
-            if lineno == current_lineno:
+            ikiwa lineno == current_lineno:
                 s += '->'
-            elif lineno == exc_lineno:
+            elikiwa lineno == exc_lineno:
                 s += '>>'
             self.message(s + '\t' + line.rstrip())
 
-    def do_whatis(self, arg):
+    eleza do_whatis(self, arg):
         """whatis arg
         Print the type of the argument.
         """
@@ -1315,7 +1315,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             code = value.__code__
         except Exception:
             pass
-        if code:
+        ikiwa code:
             self.message('Function %s' % code.co_name)
             return
         # Is it an instance method?
@@ -1323,11 +1323,11 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             code = value.__func__.__code__
         except Exception:
             pass
-        if code:
+        ikiwa code:
             self.message('Method %s' % code.co_name)
             return
         # Is it a class?
-        if value.__class__ is type:
+        ikiwa value.__class__ is type:
             self.message('Class %s.%s' % (value.__module__, value.__qualname__))
             return
         # None of the above...
@@ -1335,15 +1335,15 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
     complete_whatis = _complete_expression
 
-    def do_display(self, arg):
+    eleza do_display(self, arg):
         """display [expression]
 
-        Display the value of the expression if it changed, each time execution
+        Display the value of the expression ikiwa it changed, each time execution
         stops in the current frame.
 
         Without expression, list all display expressions for the current frame.
         """
-        if not arg:
+        ikiwa not arg:
             self.message('Currently displaying:')
             for item in self.displaying.get(self.curframe, {}).items():
                 self.message('%s: %r' % item)
@@ -1354,14 +1354,14 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
     complete_display = _complete_expression
 
-    def do_undisplay(self, arg):
+    eleza do_undisplay(self, arg):
         """undisplay [expression]
 
         Do not display the expression any more in the current frame.
 
         Without expression, clear all display expressions for the current frame.
         """
-        if arg:
+        ikiwa arg:
             try:
                 del self.displaying.get(self.curframe, {})[arg]
             except KeyError:
@@ -1369,11 +1369,11 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         else:
             self.displaying.pop(self.curframe, None)
 
-    def complete_undisplay(self, text, line, begidx, endidx):
-        return [e for e in self.displaying.get(self.curframe, {})
-                if e.startswith(text)]
+    eleza complete_undisplay(self, text, line, begidx, endidx):
+        rudisha [e for e in self.displaying.get(self.curframe, {})
+                ikiwa e.startswith(text)]
 
-    def do_interact(self, arg):
+    eleza do_interact(self, arg):
         """interact
 
         Start an interactive interpreter whose global namespace
@@ -1382,7 +1382,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         ns = {**self.curframe.f_globals, **self.curframe_locals}
         code.interact("*interactive*", local=ns)
 
-    def do_alias(self, arg):
+    eleza do_alias(self, arg):
         """alias [name [command [parameter parameter ...] ]]
         Create an alias called 'name' that executes 'command'.  The
         command must *not* be enclosed in quotes.  Replaceable
@@ -1402,32 +1402,32 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         placed in the .pdbrc file):
 
         # Print instance variables (usage "pi classInst")
-        alias pi for k in %1.__dict__.keys(): print("%1.",k,"=",%1.__dict__[k])
+        alias pi for k in %1.__dict__.keys(): andika("%1.",k,"=",%1.__dict__[k])
         # Print instance variables in self
         alias ps pi self
         """
         args = arg.split()
-        if len(args) == 0:
+        ikiwa len(args) == 0:
             keys = sorted(self.aliases.keys())
             for alias in keys:
                 self.message("%s = %s" % (alias, self.aliases[alias]))
             return
-        if args[0] in self.aliases and len(args) == 1:
+        ikiwa args[0] in self.aliases and len(args) == 1:
             self.message("%s = %s" % (args[0], self.aliases[args[0]]))
         else:
             self.aliases[args[0]] = ' '.join(args[1:])
 
-    def do_unalias(self, arg):
+    eleza do_unalias(self, arg):
         """unalias name
         Delete the specified alias.
         """
         args = arg.split()
-        if len(args) == 0: return
-        if args[0] in self.aliases:
+        ikiwa len(args) == 0: return
+        ikiwa args[0] in self.aliases:
             del self.aliases[args[0]]
 
-    def complete_unalias(self, text, line, begidx, endidx):
-        return [a for a in self.aliases if a.startswith(text)]
+    eleza complete_unalias(self, text, line, begidx, endidx):
+        rudisha [a for a in self.aliases ikiwa a.startswith(text)]
 
     # List of all the commands making the program resume execution.
     commands_resuming = ['do_continue', 'do_step', 'do_next', 'do_return',
@@ -1441,16 +1441,16 @@ class Pdb(bdb.Bdb, cmd.Cmd):
     # compatible with dbx and gdb: up moves towards 'main()'
     # and down moves towards the most recent stack frame).
 
-    def print_stack_trace(self):
+    eleza print_stack_trace(self):
         try:
             for frame_lineno in self.stack:
                 self.print_stack_entry(frame_lineno)
         except KeyboardInterrupt:
             pass
 
-    def print_stack_entry(self, frame_lineno, prompt_prefix=line_prefix):
+    eleza print_stack_entry(self, frame_lineno, prompt_prefix=line_prefix):
         frame, lineno = frame_lineno
-        if frame is self.curframe:
+        ikiwa frame is self.curframe:
             prefix = '> '
         else:
             prefix = '  '
@@ -1459,33 +1459,33 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
     # Provide help
 
-    def do_help(self, arg):
+    eleza do_help(self, arg):
         """h(elp)
         Without argument, print the list of available commands.
         With a command name as argument, print help about that command.
         "help pdb" shows the full pdb documentation.
         "help exec" gives help on the ! command.
         """
-        if not arg:
-            return cmd.Cmd.do_help(self, arg)
+        ikiwa not arg:
+            rudisha cmd.Cmd.do_help(self, arg)
         try:
             try:
                 topic = getattr(self, 'help_' + arg)
-                return topic()
+                rudisha topic()
             except AttributeError:
                 command = getattr(self, 'do_' + arg)
         except AttributeError:
             self.error('No help for %r' % arg)
         else:
-            if sys.flags.optimize >= 2:
+            ikiwa sys.flags.optimize >= 2:
                 self.error('No help for %r; please do not run Python with -OO '
-                           'if you need command help' % arg)
+                           'ikiwa you need command help' % arg)
                 return
             self.message(command.__doc__.rstrip())
 
     do_h = do_help
 
-    def help_exec(self):
+    eleza help_exec(self):
         """(!) statement
         Execute the (one-line) statement in the context of the current
         stack frame.  The exclamation point can be omitted unless the
@@ -1497,36 +1497,36 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         """
         self.message((self.help_exec.__doc__ or '').strip())
 
-    def help_pdb(self):
+    eleza help_pdb(self):
         help()
 
     # other helper functions
 
-    def lookupmodule(self, filename):
+    eleza lookupmodule(self, filename):
         """Helper function for break/clear parsing -- may be overridden.
 
         lookupmodule() translates (possibly incomplete) file or module name
         into an absolute file name.
         """
-        if os.path.isabs(filename) and  os.path.exists(filename):
-            return filename
+        ikiwa os.path.isabs(filename) and  os.path.exists(filename):
+            rudisha filename
         f = os.path.join(sys.path[0], filename)
-        if  os.path.exists(f) and self.canonic(f) == self.mainpyfile:
-            return f
+        ikiwa  os.path.exists(f) and self.canonic(f) == self.mainpyfile:
+            rudisha f
         root, ext = os.path.splitext(filename)
-        if ext == '':
+        ikiwa ext == '':
             filename = filename + '.py'
-        if os.path.isabs(filename):
-            return filename
+        ikiwa os.path.isabs(filename):
+            rudisha filename
         for dirname in sys.path:
             while os.path.islink(dirname):
                 dirname = os.readlink(dirname)
             fullname = os.path.join(dirname, filename)
-            if os.path.exists(fullname):
-                return fullname
-        return None
+            ikiwa os.path.exists(fullname):
+                rudisha fullname
+        rudisha None
 
-    def _runmodule(self, module_name):
+    eleza _runmodule(self, module_name):
         self._wait_for_mainpyfile = True
         self._user_requested_quit = False
         agiza runpy
@@ -1544,7 +1544,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         })
         self.run(code)
 
-    def _runscript(self, filename):
+    eleza _runscript(self, filename):
         # The script has to run in __main__ namespace (or agizas kutoka
         # __main__ will break).
         #
@@ -1570,10 +1570,10 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                         (fp.read(), self.mainpyfile)
         self.run(statement)
 
-# Collect all command help into docstring, if not run with -OO
+# Collect all command help into docstring, ikiwa not run with -OO
 
-if __doc__ is not None:
-    # unfortunately we can't guess this order kutoka the class definition
+ikiwa __doc__ is not None:
+    # unfortunately we can't guess this order kutoka the kundi definition
     _help_order = [
         'help', 'where', 'down', 'up', 'break', 'tbreak', 'clear', 'disable',
         'enable', 'ignore', 'condition', 'commands', 'step', 'next', 'until',
@@ -1591,42 +1591,42 @@ if __doc__ is not None:
 
 # Simplified interface
 
-def run(statement, globals=None, locals=None):
+eleza run(statement, globals=None, locals=None):
     Pdb().run(statement, globals, locals)
 
-def runeval(expression, globals=None, locals=None):
-    return Pdb().runeval(expression, globals, locals)
+eleza runeval(expression, globals=None, locals=None):
+    rudisha Pdb().runeval(expression, globals, locals)
 
-def runctx(statement, globals, locals):
+eleza runctx(statement, globals, locals):
     # B/W compatibility
     run(statement, globals, locals)
 
-def runcall(*args, **kwds):
-    return Pdb().runcall(*args, **kwds)
+eleza runcall(*args, **kwds):
+    rudisha Pdb().runcall(*args, **kwds)
 
-def set_trace(*, header=None):
+eleza set_trace(*, header=None):
     pdb = Pdb()
-    if header is not None:
+    ikiwa header is not None:
         pdb.message(header)
     pdb.set_trace(sys._getframe().f_back)
 
 # Post-Mortem interface
 
-def post_mortem(t=None):
+eleza post_mortem(t=None):
     # handling the default
-    if t is None:
-        # sys.exc_info() returns (type, value, traceback) if an exception is
+    ikiwa t is None:
+        # sys.exc_info() returns (type, value, traceback) ikiwa an exception is
         # being handled, otherwise it returns None
         t = sys.exc_info()[2]
-    if t is None:
-        raise ValueError("A valid traceback must be passed if no "
+    ikiwa t is None:
+        raise ValueError("A valid traceback must be passed ikiwa no "
                          "exception is being handled")
 
     p = Pdb()
     p.reset()
     p.interaction(None, t)
 
-def pm():
+eleza pm():
     post_mortem(sys.last_traceback)
 
 
@@ -1634,11 +1634,11 @@ def pm():
 
 TESTCMD = 'agiza x; x.main()'
 
-def test():
+eleza test():
     run(TESTCMD)
 
 # print help
-def help():
+eleza help():
     agiza pydoc
     pydoc.pager(__doc__)
 
@@ -1650,42 +1650,42 @@ an executable module or package to debug can be specified using
 the -m switch.
 
 Initial commands are read kutoka .pdbrc files in your home directory
-and in the current directory, if they exist.  Commands supplied with
+and in the current directory, ikiwa they exist.  Commands supplied with
 -c are executed after commands kutoka .pdbrc files.
 
 To let the script run until an exception occurs, use "-c continue".
 To let the script run up to a given line X in the debugged file, use
 "-c 'until X'"."""
 
-def main():
+eleza main():
     agiza getopt
 
     opts, args = getopt.getopt(sys.argv[1:], 'mhc:', ['help', 'command='])
 
-    if not args:
-        print(_usage)
+    ikiwa not args:
+        andika(_usage)
         sys.exit(2)
 
     commands = []
     run_as_module = False
     for opt, optarg in opts:
-        if opt in ['-h', '--help']:
-            print(_usage)
+        ikiwa opt in ['-h', '--help']:
+            andika(_usage)
             sys.exit()
-        elif opt in ['-c', '--command']:
+        elikiwa opt in ['-c', '--command']:
             commands.append(optarg)
-        elif opt in ['-m']:
+        elikiwa opt in ['-m']:
             run_as_module = True
 
     mainpyfile = args[0]     # Get script filename
-    if not run_as_module and not os.path.exists(mainpyfile):
-        print('Error:', mainpyfile, 'does not exist')
+    ikiwa not run_as_module and not os.path.exists(mainpyfile):
+        andika('Error:', mainpyfile, 'does not exist')
         sys.exit(1)
 
     sys.argv[:] = args      # Hide "pdb.py" and pdb options kutoka argument list
 
     # Replace pdb's dir with script's dir in front of module search path.
-    if not run_as_module:
+    ikiwa not run_as_module:
         sys.path[0] = os.path.dirname(mainpyfile)
 
     # Note on saving/restoring sys.argv: it's a good idea when sys.argv was
@@ -1696,34 +1696,34 @@ def main():
     pdb.rcLines.extend(commands)
     while True:
         try:
-            if run_as_module:
+            ikiwa run_as_module:
                 pdb._runmodule(mainpyfile)
             else:
                 pdb._runscript(mainpyfile)
-            if pdb._user_requested_quit:
+            ikiwa pdb._user_requested_quit:
                 break
-            print("The program finished and will be restarted")
+            andika("The program finished and will be restarted")
         except Restart:
-            print("Restarting", mainpyfile, "with arguments:")
-            print("\t" + " ".join(args))
+            andika("Restarting", mainpyfile, "with arguments:")
+            andika("\t" + " ".join(args))
         except SystemExit:
             # In most cases SystemExit does not warrant a post-mortem session.
-            print("The program exited via sys.exit(). Exit status:", end=' ')
-            print(sys.exc_info()[1])
+            andika("The program exited via sys.exit(). Exit status:", end=' ')
+            andika(sys.exc_info()[1])
         except SyntaxError:
             traceback.print_exc()
             sys.exit(1)
         except:
             traceback.print_exc()
-            print("Uncaught exception. Entering post mortem debugging")
-            print("Running 'cont' or 'step' will restart the program")
+            andika("Uncaught exception. Entering post mortem debugging")
+            andika("Running 'cont' or 'step' will restart the program")
             t = sys.exc_info()[2]
             pdb.interaction(None, t)
-            print("Post mortem debugger finished. The " + mainpyfile +
+            andika("Post mortem debugger finished. The " + mainpyfile +
                   " will be restarted")
 
 
 # When invoked as main program, invoke the debugger on a script
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     agiza pdb
     pdb.main()

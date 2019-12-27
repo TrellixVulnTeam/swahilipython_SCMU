@@ -13,14 +13,14 @@ and time
 kutoka turtle agiza *
 kutoka datetime agiza datetime
 
-def jump(distanz, winkel=0):
+eleza jump(distanz, winkel=0):
     penup()
     right(winkel)
     forward(distanz)
     left(winkel)
     pendown()
 
-def hand(laenge, spitze):
+eleza hand(laenge, spitze):
     fd(laenge*1.15)
     rt(90)
     fd(spitze/2.0)
@@ -31,7 +31,7 @@ def hand(laenge, spitze):
     lt(120)
     fd(spitze/2.0)
 
-def make_hand_shape(name, laenge, spitze):
+eleza make_hand_shape(name, laenge, spitze):
     reset()
     jump(-laenge*0.15)
     begin_poly()
@@ -40,12 +40,12 @@ def make_hand_shape(name, laenge, spitze):
     hand_form = get_poly()
     register_shape(name, hand_form)
 
-def clockface(radius):
+eleza clockface(radius):
     reset()
     pensize(7)
     for i in range(60):
         jump(radius)
-        if i % 5 == 0:
+        ikiwa i % 5 == 0:
             fd(25)
             jump(-radius-25)
         else:
@@ -53,7 +53,7 @@ def clockface(radius):
             jump(-radius)
         rt(6)
 
-def setup():
+eleza setup():
     global second_hand, minute_hand, hour_hand, writer
     mode("logo")
     make_hand_shape("second_hand", 125, 25)
@@ -80,20 +80,20 @@ def setup():
     writer.pu()
     writer.bk(85)
 
-def wochentag(t):
+eleza wochentag(t):
     wochentag = ["Monday", "Tuesday", "Wednesday",
         "Thursday", "Friday", "Saturday", "Sunday"]
-    return wochentag[t.weekday()]
+    rudisha wochentag[t.weekday()]
 
-def datum(z):
+eleza datum(z):
     monat = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "June",
              "July", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."]
     j = z.year
     m = monat[z.month - 1]
     t = z.day
-    return "%s %d %d" % (m, t, j)
+    rudisha "%s %d %d" % (m, t, j)
 
-def tick():
+eleza tick():
     t = datetime.today()
     sekunde = t.second + t.microsecond*0.000001
     minute = t.minute + sekunde/60.0
@@ -118,15 +118,15 @@ def tick():
     except Terminator:
         pass  # turtledemo user pressed STOP
 
-def main():
+eleza main():
     tracer(False)
     setup()
     tracer(True)
     tick()
-    return "EVENTLOOP"
+    rudisha "EVENTLOOP"
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     mode("logo")
     msg = main()
-    print(msg)
+    andika(msg)
     mainloop()

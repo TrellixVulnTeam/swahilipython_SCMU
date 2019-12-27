@@ -4,7 +4,7 @@ agiza operator
 
 ##
 
-class Foo:
+kundi Foo:
     def f(self):
         print('you called Foo.f()')
     def g(self):
@@ -18,7 +18,7 @@ def baz():
         yield i*i
 
 # Proxy type for generator objects
-class GeneratorProxy(BaseProxy):
+kundi GeneratorProxy(BaseProxy):
     _exposed_ = ['__next__']
     def __iter__(self):
         return self
@@ -31,7 +31,7 @@ def get_operator_module():
 
 ##
 
-class MyManager(BaseManager):
+kundi MyManager(BaseManager):
     pass
 
 # register the Foo class; make `f()` and `g()` accessible via proxy

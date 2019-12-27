@@ -21,22 +21,22 @@ kutoka turtle agiza Shape, Turtle, mainloop, Vec2D as Vec
 
 G = 8
 
-class GravSys(object):
-    def __init__(self):
+kundi GravSys(object):
+    eleza __init__(self):
         self.planets = []
         self.t = 0
         self.dt = 0.01
-    def init(self):
+    eleza init(self):
         for p in self.planets:
             p.init()
-    def start(self):
+    eleza start(self):
         for i in range(10000):
             self.t += self.dt
             for p in self.planets:
                 p.step()
 
-class Star(Turtle):
-    def __init__(self, m, x, v, gravSys, shape):
+kundi Star(Turtle):
+    eleza __init__(self, m, x, v, gravSys, shape):
         Turtle.__init__(self, shape=shape)
         self.penup()
         self.m = m
@@ -46,28 +46,28 @@ class Star(Turtle):
         self.gravSys = gravSys
         self.resizemode("user")
         self.pendown()
-    def init(self):
+    eleza init(self):
         dt = self.gravSys.dt
         self.a = self.acc()
         self.v = self.v + 0.5*dt*self.a
-    def acc(self):
+    eleza acc(self):
         a = Vec(0,0)
         for planet in self.gravSys.planets:
-            if planet != self:
+            ikiwa planet != self:
                 v = planet.pos()-self.pos()
                 a += (G*planet.m/abs(v)**3)*v
-        return a
-    def step(self):
+        rudisha a
+    eleza step(self):
         dt = self.gravSys.dt
         self.setpos(self.pos() + dt*self.v)
-        if self.gravSys.planets.index(self) != 0:
+        ikiwa self.gravSys.planets.index(self) != 0:
             self.setheading(self.towards(self.gravSys.planets[0]))
         self.a = self.acc()
         self.v = self.v + dt*self.a
 
 ## create compound yellow/blue turtleshape for planets
 
-def main():
+eleza main():
     s = Turtle()
     s.reset()
     s.getscreen().tracer(0,0)
@@ -104,8 +104,8 @@ def main():
     moon.shapesize(0.5)
     gs.init()
     gs.start()
-    return "Done!"
+    rudisha "Done!"
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()
     mainloop()

@@ -13,25 +13,25 @@ agiza time
 support.requires('network')
 
 
-class URLTimeoutTest(unittest.TestCase):
+kundi URLTimeoutTest(unittest.TestCase):
     # XXX this test doesn't seem to test anything useful.
 
     TIMEOUT = 30.0
 
-    def setUp(self):
+    eleza setUp(self):
         socket.setdefaulttimeout(self.TIMEOUT)
 
-    def tearDown(self):
+    eleza tearDown(self):
         socket.setdefaulttimeout(None)
 
-    def testURLread(self):
+    eleza testURLread(self):
         domain = urllib.parse.urlparse(support.TEST_HTTP_URL).netloc
         with support.transient_internet(domain):
             f = urllib.request.urlopen(support.TEST_HTTP_URL)
             f.read()
 
 
-class urlopenNetworkTests(unittest.TestCase):
+kundi urlopenNetworkTests(unittest.TestCase):
     """Tests urllib.request.urlopen using the network.
 
     These tests are not exhaustive.  Assuming that testing using files does a
@@ -49,7 +49,7 @@ class urlopenNetworkTests(unittest.TestCase):
     url = 'http://www.pythontest.net/'
 
     @contextlib.contextmanager
-    def urlopen(self, *args, **kwargs):
+    eleza urlopen(self, *args, **kwargs):
         resource = args[0]
         with support.transient_internet(resource):
             r = urllib.request.urlopen(*args, **kwargs)
@@ -58,7 +58,7 @@ class urlopenNetworkTests(unittest.TestCase):
             finally:
                 r.close()
 
-    def test_basic(self):
+    eleza test_basic(self):
         # Simple test expected to pass.
         with self.urlopen(self.url) as open_url:
             for attr in ("read", "readline", "readlines", "fileno", "close",
@@ -67,15 +67,15 @@ class urlopenNetworkTests(unittest.TestCase):
                                 "urlopen lacks the %s attribute" % attr)
             self.assertTrue(open_url.read(), "calling 'read' failed")
 
-    def test_readlines(self):
+    eleza test_readlines(self):
         # Test both readline and readlines.
         with self.urlopen(self.url) as open_url:
             self.assertIsInstance(open_url.readline(), bytes,
-                                  "readline did not return a string")
+                                  "readline did not rudisha a string")
             self.assertIsInstance(open_url.readlines(), list,
-                                  "readlines did not return a list")
+                                  "readlines did not rudisha a list")
 
-    def test_info(self):
+    eleza test_info(self):
         # Test 'info'.
         with self.urlopen(self.url) as open_url:
             info_obj = open_url.info()
@@ -84,13 +84,13 @@ class urlopenNetworkTests(unittest.TestCase):
                                   "instance of email.message.Message")
             self.assertEqual(info_obj.get_content_subtype(), "html")
 
-    def test_geturl(self):
+    eleza test_geturl(self):
         # Make sure same URL as opened is returned by geturl.
         with self.urlopen(self.url) as open_url:
             gotten_url = open_url.geturl()
             self.assertEqual(gotten_url, self.url)
 
-    def test_getcode(self):
+    eleza test_getcode(self):
         # test getcode() with the fancy opener to get 404 error codes
         URL = self.url + "XXXinvalidXXX"
         with support.transient_internet(URL):
@@ -102,7 +102,7 @@ class urlopenNetworkTests(unittest.TestCase):
                 open_url.close()
             self.assertEqual(code, 404)
 
-    def test_bad_address(self):
+    eleza test_bad_address(self):
         # Make sure proper exception is raised when connecting to a bogus
         # address.
 
@@ -116,11 +116,11 @@ class urlopenNetworkTests(unittest.TestCase):
         # TLDs are likely to remain invalid, so this seems to
         # be the best choice. The trailing '.' prevents a
         # related problem: The normal DNS resolver appends
-        # the domain names kutoka the search path if there is
-        # no '.' the end and, and if one of those domains
+        # the domain names kutoka the search path ikiwa there is
+        # no '.' the end and, and ikiwa one of those domains
         # implements a '*' rule a result is returned.
         # However, none of this will prevent the test kutoka
-        # failing if the ISP hijacks all invalid domain
+        # failing ikiwa the ISP hijacks all invalid domain
         # requests.  The real solution would be to be able to
         # parameterize the framework with a mock resolver.
         bogus_domain = "sadflkjsasf.i.nvali.d."
@@ -141,11 +141,11 @@ class urlopenNetworkTests(unittest.TestCase):
             urllib.request.urlopen("http://{}/".format(bogus_domain))
 
 
-class urlretrieveNetworkTests(unittest.TestCase):
+kundi urlretrieveNetworkTests(unittest.TestCase):
     """Tests urllib.request.urlretrieve using the network."""
 
     @contextlib.contextmanager
-    def urlretrieve(self, *args, **kwargs):
+    eleza urlretrieve(self, *args, **kwargs):
         resource = args[0]
         with support.transient_internet(resource):
             file_location, info = urllib.request.urlretrieve(*args, **kwargs)
@@ -154,7 +154,7 @@ class urlretrieveNetworkTests(unittest.TestCase):
             finally:
                 support.unlink(file_location)
 
-    def test_basic(self):
+    eleza test_basic(self):
         # Test basic functionality.
         with self.urlretrieve(self.logo) as (file_location, info):
             self.assertTrue(os.path.exists(file_location), "file location returned by"
@@ -163,7 +163,7 @@ class urlretrieveNetworkTests(unittest.TestCase):
                 self.assertTrue(f.read(), "reading kutoka the file location returned"
                                 " by urlretrieve failed")
 
-    def test_specified_path(self):
+    eleza test_specified_path(self):
         # Make sure that specifying the location of the file to write to works.
         with self.urlretrieve(self.logo,
                               support.TESTFN) as (file_location, info):
@@ -172,7 +172,7 @@ class urlretrieveNetworkTests(unittest.TestCase):
             with open(file_location, 'rb') as f:
                 self.assertTrue(f.read(), "reading kutoka temporary file failed")
 
-    def test_header(self):
+    eleza test_header(self):
         # Make sure header returned as 2nd value kutoka urlretrieve is good.
         with self.urlretrieve(self.logo) as (file_location, info):
             self.assertIsInstance(info, email.message.Message,
@@ -180,7 +180,7 @@ class urlretrieveNetworkTests(unittest.TestCase):
 
     logo = "http://www.pythontest.net/"
 
-    def test_data_header(self):
+    eleza test_data_header(self):
         with self.urlretrieve(self.logo) as (file_location, fileheaders):
             datevalue = fileheaders.get('Date')
             dateformat = '%a, %d %b %Y %H:%M:%S GMT'
@@ -189,10 +189,10 @@ class urlretrieveNetworkTests(unittest.TestCase):
             except ValueError:
                 self.fail('Date value not in %r format' % dateformat)
 
-    def test_reporthook(self):
+    eleza test_reporthook(self):
         records = []
 
-        def recording_reporthook(blocks, block_size, total_size):
+        eleza recording_reporthook(blocks, block_size, total_size):
             records.append((blocks, block_size, total_size))
 
         with self.urlretrieve(self.logo, reporthook=recording_reporthook) as (
@@ -216,5 +216,5 @@ class urlretrieveNetworkTests(unittest.TestCase):
                                 " >= total size in %s" % records_repr)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

@@ -15,7 +15,7 @@ PyAPI_DATA(PyObject) _Py_EllipsisObject; /* Don't use this directly */
 /*
 
 A slice object containing start, stop, and step data members (the
-names are from range).  After much talk with Guido, it was decided to
+names are kutoka range).  After much talk with Guido, it was decided to
 let these be any arbitrary python type.  Py_None stands for omitted values.
 */
 #ifndef Py_LIMITED_API

@@ -9,7 +9,7 @@ Written by:   Fred L. Drake, Jr.
 Email:        <fdrake@acm.org>
 """
 
-import _imp
+agiza _imp
 import os
 import re
 import sys
@@ -112,7 +112,7 @@ def get_python_inc(plat_specific=0, prefix=None):
                 return os.path.normpath(incdir)
         python_dir = 'python' + get_python_version() + build_flags
         return os.path.join(prefix, "include", python_dir)
-    elif os.name == "nt":
+    lasivyo os.name == "nt":
         if python_build:
             # Include both the include and PC dir to ensure we can find
             # pyconfig.h
@@ -152,7 +152,7 @@ def get_python_lib(plat_specific=0, standard_lib=0, prefix=None):
             return libpython
         else:
             return os.path.join(libpython, "site-packages")
-    elif os.name == "nt":
+    lasivyo os.name == "nt":
         if standard_lib:
             return os.path.join(prefix, "Lib")
         else:
@@ -183,7 +183,7 @@ def customize_compiler(compiler):
             global _config_vars
             # Use get_config_var() to ensure _config_vars is initialized.
             if not get_config_var('CUSTOMIZED_OSX_COMPILER'):
-                import _osx_support
+                agiza _osx_support
                 _osx_support.customize_compiler(_config_vars)
                 _config_vars['CUSTOMIZED_OSX_COMPILER'] = 'True'
 
@@ -349,18 +349,18 @@ def parse_makefile(fn, g=None):
                 found = True
                 if n in done:
                     item = str(done[n])
-                elif n in notdone:
+                lasivyo n in notdone:
                     # get it on a subsequent round
                     found = False
-                elif n in os.environ:
+                lasivyo n in os.environ:
                     # do it like make: fall back to environment
                     item = os.environ[n]
 
-                elif n in renamed_variables:
+                lasivyo n in renamed_variables:
                     if name.startswith('PY_') and name[3:] in renamed_variables:
                         item = ""
 
-                    elif 'PY_' + n in notdone:
+                    lasivyo 'PY_' + n in notdone:
                         found = False
 
                     else:
@@ -527,7 +527,7 @@ def get_config_vars(*args):
         # OS X platforms require special customization to handle
         # multi-architecture, multi-os-version installers
         if sys.platform == 'darwin':
-            import _osx_support
+            agiza _osx_support
             _osx_support.customize_config_vars(_config_vars)
 
     if args:

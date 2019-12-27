@@ -10,81 +10,81 @@ kutoka pickle agiza loads, dumps
 kutoka test agiza support
 
 
-def evaluate_slice_index(arg):
+eleza evaluate_slice_index(arg):
     """
     Helper function to convert a slice argument to an integer, and raise
     TypeError with a suitable message on failure.
 
     """
-    if hasattr(arg, '__index__'):
-        return operator.index(arg)
+    ikiwa hasattr(arg, '__index__'):
+        rudisha operator.index(arg)
     else:
         raise TypeError(
             "slice indices must be integers or "
             "None or have an __index__ method")
 
-def slice_indices(slice, length):
+eleza slice_indices(slice, length):
     """
     Reference implementation for the slice.indices method.
 
     """
     # Compute step and length as integers.
     length = operator.index(length)
-    step = 1 if slice.step is None else evaluate_slice_index(slice.step)
+    step = 1 ikiwa slice.step is None else evaluate_slice_index(slice.step)
 
     # Raise ValueError for negative length or zero step.
-    if length < 0:
+    ikiwa length < 0:
         raise ValueError("length should not be negative")
-    if step == 0:
+    ikiwa step == 0:
         raise ValueError("slice step cannot be zero")
 
     # Find lower and upper bounds for start and stop.
-    lower = -1 if step < 0 else 0
-    upper = length - 1 if step < 0 else length
+    lower = -1 ikiwa step < 0 else 0
+    upper = length - 1 ikiwa step < 0 else length
 
     # Compute start.
-    if slice.start is None:
-        start = upper if step < 0 else lower
+    ikiwa slice.start is None:
+        start = upper ikiwa step < 0 else lower
     else:
         start = evaluate_slice_index(slice.start)
-        start = max(start + length, lower) if start < 0 else min(start, upper)
+        start = max(start + length, lower) ikiwa start < 0 else min(start, upper)
 
     # Compute stop.
-    if slice.stop is None:
-        stop = lower if step < 0 else upper
+    ikiwa slice.stop is None:
+        stop = lower ikiwa step < 0 else upper
     else:
         stop = evaluate_slice_index(slice.stop)
-        stop = max(stop + length, lower) if stop < 0 else min(stop, upper)
+        stop = max(stop + length, lower) ikiwa stop < 0 else min(stop, upper)
 
-    return start, stop, step
+    rudisha start, stop, step
 
 
 # Class providing an __index__ method.  Used for testing slice.indices.
 
-class MyIndexable(object):
-    def __init__(self, value):
+kundi MyIndexable(object):
+    eleza __init__(self, value):
         self.value = value
 
-    def __index__(self):
-        return self.value
+    eleza __index__(self):
+        rudisha self.value
 
 
-class SliceTest(unittest.TestCase):
+kundi SliceTest(unittest.TestCase):
 
-    def test_constructor(self):
+    eleza test_constructor(self):
         self.assertRaises(TypeError, slice)
         self.assertRaises(TypeError, slice, 1, 2, 3, 4)
 
-    def test_repr(self):
+    eleza test_repr(self):
         self.assertEqual(repr(slice(1, 2, 3)), "slice(1, 2, 3)")
 
-    def test_hash(self):
+    eleza test_hash(self):
         # Verify clearing of SF bug #800796
         self.assertRaises(TypeError, hash, slice(5))
         with self.assertRaises(TypeError):
             slice(5).__hash__()
 
-    def test_cmp(self):
+    eleza test_cmp(self):
         s1 = slice(1, 2, 3)
         s2 = slice(1, 2, 3)
         s3 = slice(1, 2, 4)
@@ -94,11 +94,11 @@ class SliceTest(unittest.TestCase):
         self.assertNotEqual(s1, (1, 2, 3))
         self.assertNotEqual(s1, "")
 
-        class Exc(Exception):
+        kundi Exc(Exception):
             pass
 
-        class BadCmp(object):
-            def __eq__(self, other):
+        kundi BadCmp(object):
+            eleza __eq__(self, other):
                 raise Exc
 
         s1 = slice(BadCmp())
@@ -116,7 +116,7 @@ class SliceTest(unittest.TestCase):
         self.assertEqual(s1, s1)
         self.assertRaises(Exc, lambda: s1 == s2)
 
-    def test_members(self):
+    eleza test_members(self):
         s = slice(1)
         self.assertEqual(s.start, None)
         self.assertEqual(s.stop, 1)
@@ -132,14 +132,14 @@ class SliceTest(unittest.TestCase):
         self.assertEqual(s.stop, 2)
         self.assertEqual(s.step, 3)
 
-        class AnyClass:
+        kundi AnyClass:
             pass
 
         obj = AnyClass()
         s = slice(obj)
         self.assertTrue(s.stop is obj)
 
-    def check_indices(self, slice, length):
+    eleza check_indices(self, slice, length):
         try:
             actual = slice.indices(length)
         except ValueError:
@@ -150,12 +150,12 @@ class SliceTest(unittest.TestCase):
             expected = "valueerror"
         self.assertEqual(actual, expected)
 
-        if length >= 0 and slice.step != 0:
+        ikiwa length >= 0 and slice.step != 0:
             actual = range(*slice.indices(length))
             expected = range(length)[slice]
             self.assertEqual(actual, expected)
 
-    def test_indices(self):
+    eleza test_indices(self):
         self.assertEqual(slice(None           ).indices(10), (0, 10,  1))
         self.assertEqual(slice(None,  None,  2).indices(10), (0, 10,  2))
         self.assertEqual(slice(1,     None,  2).indices(10), (1, 10,  2))
@@ -217,24 +217,24 @@ class SliceTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             slice(0, 10, 1).indices(5.0)
 
-        # ... but it should be fine to use a custom class that provides index.
+        # ... but it should be fine to use a custom kundi that provides index.
         self.assertEqual(slice(0, 10, 1).indices(5), (0, 5, 1))
         self.assertEqual(slice(MyIndexable(0), 10, 1).indices(5), (0, 5, 1))
         self.assertEqual(slice(0, MyIndexable(10), 1).indices(5), (0, 5, 1))
         self.assertEqual(slice(0, 10, MyIndexable(1)).indices(5), (0, 5, 1))
         self.assertEqual(slice(0, 10, 1).indices(MyIndexable(5)), (0, 5, 1))
 
-    def test_setslice_without_getslice(self):
+    eleza test_setslice_without_getslice(self):
         tmp = []
-        class X(object):
-            def __setitem__(self, i, k):
+        kundi X(object):
+            eleza __setitem__(self, i, k):
                 tmp.append((i, k))
 
         x = X()
         x[1:2] = 42
         self.assertEqual(tmp, [(slice(1, 2), 42)])
 
-    def test_pickle(self):
+    eleza test_pickle(self):
         s = slice(10, 20, 3)
         for protocol in (0,1,2):
             t = loads(dumps(s, protocol))
@@ -242,8 +242,8 @@ class SliceTest(unittest.TestCase):
             self.assertEqual(s.indices(15), t.indices(15))
             self.assertNotEqual(id(s), id(t))
 
-    def test_cycle(self):
-        class myobj(): pass
+    eleza test_cycle(self):
+        kundi myobj(): pass
         o = myobj()
         o.s = slice(o)
         w = weakref.ref(o)
@@ -251,5 +251,5 @@ class SliceTest(unittest.TestCase):
         support.gc_collect()
         self.assertIsNone(w())
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

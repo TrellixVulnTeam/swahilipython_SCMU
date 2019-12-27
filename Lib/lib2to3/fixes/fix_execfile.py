@@ -12,7 +12,7 @@ kutoka ..fixer_util agiza (Comma, Name, Call, LParen, RParen, Dot, Node,
                           ArgList, String, syms)
 
 
-class FixExecfile(fixer_base.BaseFix):
+kundi FixExecfile(fixer_base.BaseFix):
     BM_compatible = True
 
     PATTERN = """
@@ -21,7 +21,7 @@ class FixExecfile(fixer_base.BaseFix):
     power< 'execfile' trailer< '(' filename=any ')' > >
     """
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         assert results
         filename = results["filename"]
         globals = results.get("globals")
@@ -46,8 +46,8 @@ class FixExecfile(fixer_base.BaseFix):
         compile_call = Call(Name("compile"), compile_args, "")
         # Finally, replace the execfile call with an exec call.
         args = [compile_call]
-        if globals is not None:
+        ikiwa globals is not None:
             args.extend([Comma(), globals.clone()])
-        if locals is not None:
+        ikiwa locals is not None:
             args.extend([Comma(), locals.clone()])
-        return Call(Name("exec"), args, prefix=node.prefix)
+        rudisha Call(Name("exec"), args, prefix=node.prefix)

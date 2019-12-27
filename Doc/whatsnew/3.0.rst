@@ -166,7 +166,7 @@ Some well-known APIs no longer return lists:
 
   If the input sequences are not of equal length, :func:`map` will
   stop at the termination of the shortest of the sequences. For full
-  compatibility with :func:`map` from Python 2.x, also wrap the sequences in
+  compatibility with :func:`map` kutoka Python 2.x, also wrap the sequences in
   :func:`itertools.zip_longest`, e.g. ``map(func, *sequences)`` becomes
   ``list(map(func, itertools.zip_longest(*sequences)))``.
 
@@ -260,8 +260,8 @@ changed.
 
 * As the :class:`str` and :class:`bytes` types cannot be mixed, you
   must always explicitly convert between them.  Use :meth:`str.encode`
-  to go from :class:`str` to :class:`bytes`, and :meth:`bytes.decode`
-  to go from :class:`bytes` to :class:`str`.  You can also use
+  to go kutoka :class:`str` to :class:`bytes`, and :meth:`bytes.decode`
+  to go kutoka :class:`bytes` to :class:`str`.  You can also use
   ``bytes(s, encoding=...)`` and ``str(b, encoding=...)``,
   respectively.
 
@@ -307,7 +307,7 @@ changed.
   with these streams, you need to use their :data:`io.TextIOBase.buffer`
   attribute.
 
-* Filenames are passed to and returned from APIs as (Unicode) strings.
+* Filenames are passed to and returned kutoka APIs as (Unicode) strings.
   This can present platform-specific problems because on some
   platforms filenames are arbitrary byte strings.  (On the other hand,
   on Windows filenames are natively stored as Unicode.)  As a
@@ -338,7 +338,7 @@ changed.
   of contributor names in comments.)
 
 * The :mod:`StringIO` and :mod:`cStringIO` modules are gone.  Instead,
-  import the :mod:`io` module and use :class:`io.StringIO` or
+  agiza the :mod:`io` module and use :class:`io.StringIO` or
   :class:`io.BytesIO` for text and data respectively.
 
 * See also the :ref:`unicode-howto`, which was updated for Python 3.0.
@@ -367,9 +367,9 @@ New Syntax
   argument list, but you do have keyword-only arguments.
 
 * Keyword arguments are allowed after the list of base classes in a
-  class definition.  This is used by the new convention for specifying
-  a metaclass (see next section), but can be used for other purposes
-  as well, as long as the metaclass supports it.
+  kundi definition.  This is used by the new convention for specifying
+  a metakundi (see next section), but can be used for other purposes
+  as well, as long as the metakundi supports it.
 
 * :pep:`3104`: :keyword:`nonlocal` statement.  Using ``nonlocal x``
   you can now assign directly to a variable in an outer (but
@@ -406,7 +406,7 @@ Changed Syntax
 --------------
 
 * :pep:`3109` and :pep:`3134`: new :keyword:`raise` statement syntax:
-  :samp:`raise [{expr} [from {expr}]]`.  See below.
+  :samp:`raise [{expr} [kutoka {expr}]]`.  See below.
 
 * :keyword:`!as` and :keyword:`with` are now reserved words.  (Since
   2.6, actually.)
@@ -414,23 +414,23 @@ Changed Syntax
 * ``True``, ``False``, and ``None`` are reserved words.  (2.6 partially enforced
   the restrictions on ``None`` already.)
 
-* Change from :keyword:`except` *exc*, *var* to
+* Change kutoka :keyword:`except` *exc*, *var* to
   :keyword:`!except` *exc* :keyword:`!as` *var*.  See :pep:`3110`.
 
-* :pep:`3115`: New Metaclass Syntax.  Instead of::
+* :pep:`3115`: New Metakundi Syntax.  Instead of::
 
-    class C:
+    kundi C:
         __metaclass__ = M
         ...
 
   you must now use::
 
-    class C(metaclass=M):
+    kundi C(metaclass=M):
         ...
 
   The module-global :data:`__metaclass__` variable is no longer
   supported.  (It was a crutch to make it easier to default to
-  new-style classes without deriving every class from
+  new-style classes without deriving every kundi kutoka
   :class:`object`.)
 
 * List comprehensions no longer support the syntactic form
@@ -466,11 +466,11 @@ Removed Syntax
 
 * String literals no longer support a leading ``u`` or ``U``.
 
-* The :keyword:`from` *module* :keyword:`import` ``*`` syntax is only
+* The :keyword:`kutoka` *module* :keyword:`import` ``*`` syntax is only
   allowed at the module level, no longer inside functions.
 
-* The only acceptable syntax for relative imports is :samp:`from .[{module}]
-  import {name}`.  All :keyword:`import` forms not starting with ``.`` are
+* The only acceptable syntax for relative imports is :samp:`kutoka .[{module}]
+  agiza {name}`.  All :keyword:`import` forms not starting with ``.`` are
   interpreted as absolute imports.  (:pep:`328`)
 
 * Classic classes are gone.
@@ -479,14 +479,14 @@ Removed Syntax
 Changes Already Present In Python 2.6
 =====================================
 
-Since many users presumably make the jump straight from Python 2.5 to
+Since many users presumably make the jump straight kutoka Python 2.5 to
 Python 3.0, this section reminds the reader of new features that were
 originally designed for Python 3.0 but that were back-ported to Python
 2.6.  The corresponding sections in :ref:`whats-new-in-2.6` should be
 consulted for longer descriptions.
 
 * :ref:`pep-0343`.  The :keyword:`with` statement is now a standard
-  feature and no longer needs to be imported from the :mod:`__future__`.
+  feature and no longer needs to be imported kutoka the :mod:`__future__`.
   Also check out :ref:`new-26-context-managers` and
   :ref:`new-module-contextlib`.
 
@@ -505,7 +505,7 @@ consulted for longer descriptions.
   start deprecating the ``%`` operator in Python 3.1.
 
 * :ref:`pep-3105`.  This is now a standard feature and no longer needs
-  to be imported from :mod:`__future__`.  More details were given above.
+  to be imported kutoka :mod:`__future__`.  More details were given above.
 
 * :ref:`pep-3110`.  The :keyword:`except` *exc* :keyword:`!as` *var*
   syntax is now standard and :keyword:`!except` *exc*, *var* is no
@@ -592,11 +592,11 @@ review:
   version and falling back on the pure Python version on each user of
   these modules.  In Python 3.0, the accelerated versions are
   considered implementation details of the pure Python versions.
-  Users should always import the standard version, which attempts to
-  import the accelerated version and falls back to the pure Python
+  Users should always agiza the standard version, which attempts to
+  agiza the accelerated version and falls back to the pure Python
   version.  The :mod:`pickle` / :mod:`cPickle` pair received this
   treatment.  The :mod:`profile` module is on the list for 3.1.  The
-  :mod:`StringIO` module has been turned into a class in the :mod:`io`
+  :mod:`StringIO` module has been turned into a kundi in the :mod:`io`
   module.
 
 * Some related modules have been grouped into packages, and usually
@@ -634,7 +634,7 @@ Some other changes to standard library modules, not covered by
   etc. remain.)
 
 * Cleanup of the :class:`array.array` type: the :meth:`read` and
-  :meth:`write` methods are gone; use :meth:`fromfile` and
+  :meth:`write` methods are gone; use :meth:`kutokafile` and
   :meth:`tofile` instead.  Also, the ``'c'`` typecode for array is
   gone -- use either ``'b'`` for bytes or ``'u'`` for Unicode
   characters.
@@ -677,7 +677,7 @@ Some other changes to standard library modules, not covered by
 * A new system for  built-in string formatting operations replaces the
   ``%`` string  formatting operator.   (However, the ``%``  operator is
   still supported;  it will  be deprecated in  Python 3.1  and removed
-  from the language at some later time.)  Read :pep:`3101` for the full
+  kutoka the language at some later time.)  Read :pep:`3101` for the full
   scoop.
 
 
@@ -688,15 +688,15 @@ The APIs for raising and catching exception have been cleaned up and
 new powerful features added:
 
 * :pep:`352`: All exceptions must be derived (directly or indirectly)
-  from :exc:`BaseException`.  This is the root of the exception
+  kutoka :exc:`BaseException`.  This is the root of the exception
   hierarchy.  This is not new as a recommendation, but the
-  *requirement* to inherit from :exc:`BaseException` is new.  (Python
+  *requirement* to inherit kutoka :exc:`BaseException` is new.  (Python
   2.6 still allowed classic classes to be raised, and placed no
   restriction on what you can catch.)  As a consequence, string
   exceptions are finally truly and utterly dead.
 
-* Almost all exceptions should actually derive from :exc:`Exception`;
-  :exc:`BaseException` should only be used as a base class for
+* Almost all exceptions should actually derive kutoka :exc:`Exception`;
+  :exc:`BaseException` should only be used as a base kundi for
   exceptions that should only be handled at the top level, such as
   :exc:`SystemExit` or :exc:`KeyboardInterrupt`.  The recommended
   idiom for handling all exceptions except for this latter category is
@@ -728,7 +728,7 @@ new powerful features added:
   :attr:`__context__` attribute of the secondary exception.
   Explicit chaining is invoked with this syntax::
 
-    raise SecondaryException() from primary_exception
+    raise SecondaryException() kutoka primary_exception
 
   (where *primary_exception* is any expression that produces an
   exception object, probably an exception that was previously caught).
@@ -760,8 +760,8 @@ Operators And Special Methods
 * ``!=`` now returns the opposite of ``==``, unless ``==`` returns
   :data:`NotImplemented`.
 
-* The concept of "unbound methods" has been removed from the language.
-  When referencing a method as a class attribute, you now get a plain
+* The concept of "unbound methods" has been removed kutoka the language.
+  When referencing a method as a kundi attribute, you now get a plain
   function object.
 
 * :meth:`__getslice__`, :meth:`__setslice__` and :meth:`__delslice__`
@@ -796,12 +796,12 @@ Builtins
 
 * :pep:`3135`: New :func:`super`.  You can now invoke :func:`super`
   without arguments and (assuming this is in a regular instance method
-  defined inside a :keyword:`class` statement) the right class and
+  defined inside a :keyword:`class` statement) the right kundi and
   instance will automatically be chosen.  With arguments, the behavior
   of :func:`super` is unchanged.
 
 * :pep:`3111`: :func:`raw_input` was renamed to :func:`input`.  That
-  is, the new :func:`input` function reads a line from
+  is, the new :func:`input` function reads a line kutoka
   :data:`sys.stdin` and returns it with the trailing newline stripped.
   It raises :exc:`EOFError` if the input is terminated prematurely.
   To get the old behavior of :func:`input`, use ``eval(input())``.
@@ -811,7 +811,7 @@ Builtins
 
 * The :func:`round` function rounding strategy and return type have
   changed.  Exact halfway cases are now rounded to the nearest even
-  result instead of away from zero.  (For example, ``round(2.5)`` now
+  result instead of away kutoka zero.  (For example, ``round(2.5)`` now
   returns ``2`` rather than ``3``.)  ``round(x[, n])`` now
   delegates to ``x.__round__([n])`` instead of always returning a
   float.  It generally returns an integer when called with a single
@@ -869,13 +869,13 @@ to the C API.
   :c:func:`PyMember_Get`, and :c:func:`PyMember_Set` C APIs are removed.
 
 * New C API :c:func:`PyImport_ImportModuleNoBlock`, works like
-  :c:func:`PyImport_ImportModule` but won't block on the import lock
+  :c:func:`PyImport_ImportModule` but won't block on the agiza lock
   (returning an error instead).
 
 * Renamed the boolean conversion C-level slot and method:
   ``nb_nonzero`` is now ``nb_bool``.
 
-* Removed :c:macro:`METH_OLDARGS` and :c:macro:`WITH_CYCLE_GC` from the C API.
+* Removed :c:macro:`METH_OLDARGS` and :c:macro:`WITH_CYCLE_GC` kutoka the C API.
 
 .. ======================================================================
 
@@ -901,7 +901,7 @@ best strategy is the following:
 0. (Prerequisite:) Start with excellent test coverage.
 
 1. Port to Python 2.6.  This should be no more work than the average
-   port from Python 2.x to Python 2.(x+1).  Make sure all your tests
+   port kutoka Python 2.x to Python 2.(x+1).  Make sure all your tests
    pass.
 
 2. (Still using 2.6:) Turn on the :option:`!-3` command line switch.

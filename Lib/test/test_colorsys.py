@@ -1,21 +1,21 @@
 agiza unittest
 agiza colorsys
 
-def frange(start, stop, step):
+eleza frange(start, stop, step):
     while start <= stop:
         yield start
         start += step
 
-class ColorsysTest(unittest.TestCase):
+kundi ColorsysTest(unittest.TestCase):
 
-    def assertTripleEqual(self, tr1, tr2):
+    eleza assertTripleEqual(self, tr1, tr2):
         self.assertEqual(len(tr1), 3)
         self.assertEqual(len(tr2), 3)
         self.assertAlmostEqual(tr1[0], tr2[0])
         self.assertAlmostEqual(tr1[1], tr2[1])
         self.assertAlmostEqual(tr1[2], tr2[2])
 
-    def test_hsv_roundtrip(self):
+    eleza test_hsv_roundtrip(self):
         for r in frange(0.0, 1.0, 0.2):
             for g in frange(0.0, 1.0, 0.2):
                 for b in frange(0.0, 1.0, 0.2):
@@ -25,7 +25,7 @@ class ColorsysTest(unittest.TestCase):
                         colorsys.hsv_to_rgb(*colorsys.rgb_to_hsv(*rgb))
                     )
 
-    def test_hsv_values(self):
+    eleza test_hsv_values(self):
         values = [
             # rgb, hsv
             ((0.0, 0.0, 0.0), (  0  , 0.0, 0.0)), # black
@@ -42,7 +42,7 @@ class ColorsysTest(unittest.TestCase):
             self.assertTripleEqual(hsv, colorsys.rgb_to_hsv(*rgb))
             self.assertTripleEqual(rgb, colorsys.hsv_to_rgb(*hsv))
 
-    def test_hls_roundtrip(self):
+    eleza test_hls_roundtrip(self):
         for r in frange(0.0, 1.0, 0.2):
             for g in frange(0.0, 1.0, 0.2):
                 for b in frange(0.0, 1.0, 0.2):
@@ -52,7 +52,7 @@ class ColorsysTest(unittest.TestCase):
                         colorsys.hls_to_rgb(*colorsys.rgb_to_hls(*rgb))
                     )
 
-    def test_hls_values(self):
+    eleza test_hls_values(self):
         values = [
             # rgb, hls
             ((0.0, 0.0, 0.0), (  0  , 0.0, 0.0)), # black
@@ -69,7 +69,7 @@ class ColorsysTest(unittest.TestCase):
             self.assertTripleEqual(hls, colorsys.rgb_to_hls(*rgb))
             self.assertTripleEqual(rgb, colorsys.hls_to_rgb(*hls))
 
-    def test_yiq_roundtrip(self):
+    eleza test_yiq_roundtrip(self):
         for r in frange(0.0, 1.0, 0.2):
             for g in frange(0.0, 1.0, 0.2):
                 for b in frange(0.0, 1.0, 0.2):
@@ -79,7 +79,7 @@ class ColorsysTest(unittest.TestCase):
                         colorsys.yiq_to_rgb(*colorsys.rgb_to_yiq(*rgb))
                     )
 
-    def test_yiq_values(self):
+    eleza test_yiq_values(self):
         values = [
             # rgb, yiq
             ((0.0, 0.0, 0.0), (0.0, 0.0, 0.0)), # black
@@ -96,5 +96,5 @@ class ColorsysTest(unittest.TestCase):
             self.assertTripleEqual(yiq, colorsys.rgb_to_yiq(*rgb))
             self.assertTripleEqual(rgb, colorsys.yiq_to_rgb(*yiq))
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

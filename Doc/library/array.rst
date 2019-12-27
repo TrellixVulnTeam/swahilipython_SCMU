@@ -67,12 +67,12 @@ The module defines the following type:
 .. class:: array(typecode[, initializer])
 
    A new array whose items are restricted by *typecode*, and initialized
-   from the optional *initializer* value, which must be a list, a
+   kutoka the optional *initializer* value, which must be a list, a
    :term:`bytes-like object`, or iterable over elements of the
    appropriate type.
 
    If given a list or string, the initializer is passed to the new array's
-   :meth:`fromlist`, :meth:`frombytes`, or :meth:`fromunicode` method (see below)
+   :meth:`kutokalist`, :meth:`kutokabytes`, or :meth:`kutokaunicode` method (see below)
    to add initial items to the array.  Otherwise, the iterable initializer is
    passed to the :meth:`extend` method.
 
@@ -117,7 +117,7 @@ The following data items and methods are also supported:
 
    .. note::
 
-      When using array objects from code written in C or C++ (the only way to
+      When using array objects kutoka code written in C or C++ (the only way to
       effectively make use of this information), it makes more sense to use the buffer
       interface supported by array objects.  This method is maintained for backward
       compatibility and should be avoided in new code.  The buffer interface is
@@ -128,7 +128,7 @@ The following data items and methods are also supported:
 
    "Byteswap" all items of the array.  This is only supported for values which are
    1, 2, 4, or 8 bytes in size; for other types of values, :exc:`RuntimeError` is
-   raised.  It is useful when reading data from a file written on a machine with a
+   raised.  It is useful when reading data kutoka a file written on a machine with a
    different byte order.
 
 
@@ -139,46 +139,46 @@ The following data items and methods are also supported:
 
 .. method:: array.extend(iterable)
 
-   Append items from *iterable* to the end of the array.  If *iterable* is another
+   Append items kutoka *iterable* to the end of the array.  If *iterable* is another
    array, it must have *exactly* the same type code; if not, :exc:`TypeError` will
    be raised.  If *iterable* is not an array, it must be iterable and its elements
    must be the right type to be appended to the array.
 
 
-.. method:: array.frombytes(s)
+.. method:: array.kutokabytes(s)
 
-   Appends items from the string, interpreting the string as an array of machine
-   values (as if it had been read from a file using the :meth:`fromfile` method).
+   Appends items kutoka the string, interpreting the string as an array of machine
+   values (as if it had been read kutoka a file using the :meth:`kutokafile` method).
 
    .. versionadded:: 3.2
-      :meth:`fromstring` is renamed to :meth:`frombytes` for clarity.
+      :meth:`kutokastring` is renamed to :meth:`kutokabytes` for clarity.
 
 
-.. method:: array.fromfile(f, n)
+.. method:: array.kutokafile(f, n)
 
-   Read *n* items (as machine values) from the :term:`file object` *f* and append
+   Read *n* items (as machine values) kutoka the :term:`file object` *f* and append
    them to the end of the array.  If less than *n* items are available,
    :exc:`EOFError` is raised, but the items that were available are still
    inserted into the array. *f* must be a real built-in file object; something
    else with a :meth:`read` method won't do.
 
 
-.. method:: array.fromlist(list)
+.. method:: array.kutokalist(list)
 
-   Append items from the list.  This is equivalent to ``for x in list:
+   Append items kutoka the list.  This is equivalent to ``for x in list:
    a.append(x)`` except that if there is a type error, the array is unchanged.
 
 
-.. method:: array.fromstring()
+.. method:: array.kutokastring()
 
-   Deprecated alias for :meth:`frombytes`.
+   Deprecated alias for :meth:`kutokabytes`.
 
 
-.. method:: array.fromunicode(s)
+.. method:: array.kutokaunicode(s)
 
-   Extends this array with data from the given unicode string.  The array must
+   Extends this array with data kutoka the given unicode string.  The array must
    be a type ``'u'`` array; otherwise a :exc:`ValueError` is raised.  Use
-   ``array.frombytes(unicodestring.encode(enc))`` to append Unicode data to an
+   ``array.kutokabytes(unicodestring.encode(enc))`` to append Unicode data to an
    array of some other type.
 
 
@@ -196,14 +196,14 @@ The following data items and methods are also supported:
 
 .. method:: array.pop([i])
 
-   Removes the item with the index *i* from the array and returns it. The optional
+   Removes the item with the index *i* kutoka the array and returns it. The optional
    argument defaults to ``-1``, so that by default the last item is removed and
    returned.
 
 
 .. method:: array.remove(x)
 
-   Remove the first occurrence of *x* from the array.
+   Remove the first occurrence of *x* kutoka the array.
 
 
 .. method:: array.reverse()
@@ -240,7 +240,7 @@ The following data items and methods are also supported:
 
    Convert the array to a unicode string.  The array must be a type ``'u'`` array;
    otherwise a :exc:`ValueError` is raised. Use ``array.tobytes().decode(enc)`` to
-   obtain a unicode string from an array of some other type.
+   obtain a unicode string kutoka an array of some other type.
 
 
 When an array object is printed or converted to a string, it is represented as
@@ -248,7 +248,7 @@ When an array object is printed or converted to a string, it is represented as
 empty, otherwise it is a string if the *typecode* is ``'u'``, otherwise it is a
 list of numbers.  The string is guaranteed to be able to be converted back to an
 array with the same type and value using :func:`eval`, so long as the
-:class:`~array.array` class has been imported using ``from array import array``.
+:class:`~array.array` kundi has been imported using ``kutoka array agiza array``.
 Examples::
 
    array('l')

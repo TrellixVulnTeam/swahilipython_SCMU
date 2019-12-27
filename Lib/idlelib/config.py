@@ -1,10 +1,10 @@
 """idlelib.config -- Manage IDLE configuration information.
 
-The comments at the beginning of config-main.def describe the
+The comments at the beginning of config-main.eleza describe the
 configuration files and the design implemented to update user
 configuration information.  In particular, user configuration choices
 which duplicate the defaults will be removed kutoka the user's
-configuration files, and if a user file becomes empty, it will be
+configuration files, and ikiwa a user file becomes empty, it will be
 deleted.
 
 The configuration database maps options to values.  Conceptually, the
@@ -32,106 +32,106 @@ agiza sys
 kutoka tkinter.font agiza Font
 agiza idlelib
 
-class InvalidConfigType(Exception): pass
-class InvalidConfigSet(Exception): pass
-class InvalidTheme(Exception): pass
+kundi InvalidConfigType(Exception): pass
+kundi InvalidConfigSet(Exception): pass
+kundi InvalidTheme(Exception): pass
 
-class IdleConfParser(ConfigParser):
+kundi IdleConfParser(ConfigParser):
     """
     A ConfigParser specialised for idle configuration file handling
     """
-    def __init__(self, cfgFile, cfgDefaults=None):
+    eleza __init__(self, cfgFile, cfgDefaults=None):
         """
         cfgFile - string, fully specified configuration file name
         """
         self.file = cfgFile  # This is currently '' when testing.
         ConfigParser.__init__(self, defaults=cfgDefaults, strict=False)
 
-    def Get(self, section, option, type=None, default=None, raw=False):
+    eleza Get(self, section, option, type=None, default=None, raw=False):
         """
-        Get an option value for given section/option or return default.
-        If type is specified, return as type.
+        Get an option value for given section/option or rudisha default.
+        If type is specified, rudisha as type.
         """
-        # TODO Use default as fallback, at least if not None
+        # TODO Use default as fallback, at least ikiwa not None
         # Should also print Warning(file, section, option).
         # Currently may raise ValueError
-        if not self.has_option(section, option):
-            return default
-        if type == 'bool':
-            return self.getboolean(section, option)
-        elif type == 'int':
-            return self.getint(section, option)
+        ikiwa not self.has_option(section, option):
+            rudisha default
+        ikiwa type == 'bool':
+            rudisha self.getboolean(section, option)
+        elikiwa type == 'int':
+            rudisha self.getint(section, option)
         else:
-            return self.get(section, option, raw=raw)
+            rudisha self.get(section, option, raw=raw)
 
-    def GetOptionList(self, section):
+    eleza GetOptionList(self, section):
         "Return a list of options for given section, else []."
-        if self.has_section(section):
-            return self.options(section)
-        else:  #return a default value
-            return []
+        ikiwa self.has_section(section):
+            rudisha self.options(section)
+        else:  #rudisha a default value
+            rudisha []
 
-    def Load(self):
+    eleza Load(self):
         "Load the configuration file kutoka disk."
-        if self.file:
+        ikiwa self.file:
             self.read(self.file)
 
-class IdleUserConfParser(IdleConfParser):
+kundi IdleUserConfParser(IdleConfParser):
     """
     IdleConfigParser specialised for user configuration handling.
     """
 
-    def SetOption(self, section, option, value):
-        """Return True if option is added or changed to value, else False.
+    eleza SetOption(self, section, option, value):
+        """Return True ikiwa option is added or changed to value, else False.
 
-        Add section if required.  False means option already had value.
+        Add section ikiwa required.  False means option already had value.
         """
-        if self.has_option(section, option):
-            if self.get(section, option) == value:
-                return False
+        ikiwa self.has_option(section, option):
+            ikiwa self.get(section, option) == value:
+                rudisha False
             else:
                 self.set(section, option, value)
-                return True
+                rudisha True
         else:
-            if not self.has_section(section):
+            ikiwa not self.has_section(section):
                 self.add_section(section)
             self.set(section, option, value)
-            return True
+            rudisha True
 
-    def RemoveOption(self, section, option):
-        """Return True if option is removed kutoka section, else False.
+    eleza RemoveOption(self, section, option):
+        """Return True ikiwa option is removed kutoka section, else False.
 
-        False if either section does not exist or did not have option.
+        False ikiwa either section does not exist or did not have option.
         """
-        if self.has_section(section):
-            return self.remove_option(section, option)
-        return False
+        ikiwa self.has_section(section):
+            rudisha self.remove_option(section, option)
+        rudisha False
 
-    def AddSection(self, section):
+    eleza AddSection(self, section):
         "If section doesn't exist, add it."
-        if not self.has_section(section):
+        ikiwa not self.has_section(section):
             self.add_section(section)
 
-    def RemoveEmptySections(self):
+    eleza RemoveEmptySections(self):
         "Remove any sections that have no options."
         for section in self.sections():
-            if not self.GetOptionList(section):
+            ikiwa not self.GetOptionList(section):
                 self.remove_section(section)
 
-    def IsEmpty(self):
-        "Return True if no sections after removing empty sections."
+    eleza IsEmpty(self):
+        "Return True ikiwa no sections after removing empty sections."
         self.RemoveEmptySections()
-        return not self.sections()
+        rudisha not self.sections()
 
-    def Save(self):
+    eleza Save(self):
         """Update user configuration file.
 
         If self not empty after removing empty sections, write the file
-        to disk. Otherwise, remove the file kutoka disk if it exists.
+        to disk. Otherwise, remove the file kutoka disk ikiwa it exists.
         """
         fname = self.file
-        if fname and fname[0] != '#':
-            if not self.IsEmpty():
+        ikiwa fname and fname[0] != '#':
+            ikiwa not self.IsEmpty():
                 try:
                     cfgFile = open(fname, 'w')
                 except OSError:
@@ -139,10 +139,10 @@ class IdleUserConfParser(IdleConfParser):
                     cfgFile = open(fname, 'w')
                 with cfgFile:
                     self.write(cfgFile)
-            elif os.path.exists(self.file):
+            elikiwa os.path.exists(self.file):
                 os.remove(self.file)
 
-class IdleConf:
+kundi IdleConf:
     """Hold config parsers for all idle config files in singleton instance.
 
     Default config files, self.defaultCfg --
@@ -153,78 +153,78 @@ class IdleConf:
         for config_type in self.config_types:
         (user home dir)/.idlerc/config-{config-type}.cfg
     """
-    def __init__(self, _utest=False):
+    eleza __init__(self, _utest=False):
         self.config_types = ('main', 'highlight', 'keys', 'extensions')
         self.defaultCfg = {}
         self.userCfg = {}
         self.cfg = {}  # TODO use to select userCfg vs defaultCfg
 
-        if not _utest:
+        ikiwa not _utest:
             self.CreateConfigHandlers()
             self.LoadCfgFiles()
 
-    def CreateConfigHandlers(self):
+    eleza CreateConfigHandlers(self):
         "Populate default and user config parser dictionaries."
         idledir = os.path.dirname(__file__)
-        self.userdir = userdir = '' if idlelib.testing else self.GetUserCfgDir()
+        self.userdir = userdir = '' ikiwa idlelib.testing else self.GetUserCfgDir()
         for cfg_type in self.config_types:
             self.defaultCfg[cfg_type] = IdleConfParser(
                 os.path.join(idledir, f'config-{cfg_type}.def'))
             self.userCfg[cfg_type] = IdleUserConfParser(
                 os.path.join(userdir or '#', f'config-{cfg_type}.cfg'))
 
-    def GetUserCfgDir(self):
+    eleza GetUserCfgDir(self):
         """Return a filesystem directory for storing user config files.
 
-        Creates it if required.
+        Creates it ikiwa required.
         """
         cfgDir = '.idlerc'
         userDir = os.path.expanduser('~')
-        if userDir != '~': # expanduser() found user home dir
-            if not os.path.exists(userDir):
-                if not idlelib.testing:
+        ikiwa userDir != '~': # expanduser() found user home dir
+            ikiwa not os.path.exists(userDir):
+                ikiwa not idlelib.testing:
                     warn = ('\n Warning: os.path.expanduser("~") points to\n ' +
                             userDir + ',\n but the path does not exist.')
                     try:
-                        print(warn, file=sys.stderr)
+                        andika(warn, file=sys.stderr)
                     except OSError:
                         pass
                 userDir = '~'
-        if userDir == "~": # still no path to home!
+        ikiwa userDir == "~": # still no path to home!
             # traditionally IDLE has defaulted to os.getcwd(), is this adequate?
             userDir = os.getcwd()
         userDir = os.path.join(userDir, cfgDir)
-        if not os.path.exists(userDir):
+        ikiwa not os.path.exists(userDir):
             try:
                 os.mkdir(userDir)
             except OSError:
-                if not idlelib.testing:
+                ikiwa not idlelib.testing:
                     warn = ('\n Warning: unable to create user config directory\n' +
                             userDir + '\n Check path and permissions.\n Exiting!\n')
                     try:
-                        print(warn, file=sys.stderr)
+                        andika(warn, file=sys.stderr)
                     except OSError:
                         pass
                 raise SystemExit
         # TODO continue without userDIr instead of exit
-        return userDir
+        rudisha userDir
 
-    def GetOption(self, configType, section, option, default=None, type=None,
+    eleza GetOption(self, configType, section, option, default=None, type=None,
                   warn_on_default=True, raw=False):
         """Return a value for configType section option, or default.
 
-        If type is not None, return a value of that type.  Also pass raw
-        to the config parser.  First try to return a valid value
+        If type is not None, rudisha a value of that type.  Also pass raw
+        to the config parser.  First try to rudisha a valid value
         (including type) kutoka a user configuration. If that fails, try
-        the default configuration. If that fails, return default, with a
+        the default configuration. If that fails, rudisha default, with a
         default of None.
 
-        Warn if either user or default configurations have an invalid value.
-        Warn if default is returned and warn_on_default is True.
+        Warn ikiwa either user or default configurations have an invalid value.
+        Warn ikiwa default is returned and warn_on_default is True.
         """
         try:
-            if self.userCfg[configType].has_option(section, option):
-                return self.userCfg[configType].Get(section, option,
+            ikiwa self.userCfg[configType].has_option(section, option):
+                rudisha self.userCfg[configType].Get(section, option,
                                                     type=type, raw=raw)
         except ValueError:
             warning = ('\n Warning: config.py - IdleConf.GetOption -\n'
@@ -234,57 +234,57 @@ class IdleConf:
                        self.userCfg[configType].Get(section, option, raw=raw)))
             _warn(warning, configType, section, option)
         try:
-            if self.defaultCfg[configType].has_option(section,option):
-                return self.defaultCfg[configType].Get(
+            ikiwa self.defaultCfg[configType].has_option(section,option):
+                rudisha self.defaultCfg[configType].Get(
                         section, option, type=type, raw=raw)
         except ValueError:
             pass
         #returning default, print warning
-        if warn_on_default:
+        ikiwa warn_on_default:
             warning = ('\n Warning: config.py - IdleConf.GetOption -\n'
                        ' problem retrieving configuration option %r\n'
                        ' kutoka section %r.\n'
                        ' returning default value: %r' %
                        (option, section, default))
             _warn(warning, configType, section, option)
-        return default
+        rudisha default
 
-    def SetOption(self, configType, section, option, value):
+    eleza SetOption(self, configType, section, option, value):
         """Set section option to value in user config file."""
         self.userCfg[configType].SetOption(section, option, value)
 
-    def GetSectionList(self, configSet, configType):
+    eleza GetSectionList(self, configSet, configType):
         """Return sections for configSet configType configuration.
 
         configSet must be either 'user' or 'default'
         configType must be in self.config_types.
         """
-        if not (configType in self.config_types):
+        ikiwa not (configType in self.config_types):
             raise InvalidConfigType('Invalid configType specified')
-        if configSet == 'user':
+        ikiwa configSet == 'user':
             cfgParser = self.userCfg[configType]
-        elif configSet == 'default':
+        elikiwa configSet == 'default':
             cfgParser=self.defaultCfg[configType]
         else:
             raise InvalidConfigSet('Invalid configSet specified')
-        return cfgParser.sections()
+        rudisha cfgParser.sections()
 
-    def GetHighlight(self, theme, element):
+    eleza GetHighlight(self, theme, element):
         """Return dict of theme element highlight colors.
 
         The keys are 'foreground' and 'background'.  The values are
         tkinter color strings for configuring backgrounds and tags.
         """
-        cfg = ('default' if self.defaultCfg['highlight'].has_section(theme)
+        cfg = ('default' ikiwa self.defaultCfg['highlight'].has_section(theme)
                else 'user')
         theme_dict = self.GetThemeDict(cfg, theme)
         fore = theme_dict[element + '-foreground']
-        if element == 'cursor':
+        ikiwa element == 'cursor':
             element = 'normal'
         back = theme_dict[element + '-background']
-        return {"foreground": fore, "background": back}
+        rudisha {"foreground": fore, "background": back}
 
-    def GetThemeDict(self, type, themeName):
+    eleza GetThemeDict(self, type, themeName):
         """Return {option:value} dict for elements in themeName.
 
         type - string, 'default' or 'user' theme type
@@ -292,9 +292,9 @@ class IdleConf:
         Values are loaded over ultimate fallback defaults to guarantee
         that all theme elements are present in a newly created theme.
         """
-        if type == 'user':
+        ikiwa type == 'user':
             cfgParser = self.userCfg['highlight']
-        elif type == 'default':
+        elikiwa type == 'default':
             cfgParser = self.defaultCfg['highlight']
         else:
             raise InvalidTheme('Invalid theme type specified')
@@ -302,7 +302,7 @@ class IdleConf:
         # element (other than cursor) even though some values are not
         # yet used by idle, to allow for their use in the future.
         # Default values are generally black and white.
-        # TODO copy theme kutoka a class attribute.
+        # TODO copy theme kutoka a kundi attribute.
         theme ={'normal-foreground':'#000000',
                 'normal-background':'#ffffff',
                 'keyword-foreground':'#000000',
@@ -338,10 +338,10 @@ class IdleConf:
                 'console-background':'#ffffff',
                 }
         for element in theme:
-            if not (cfgParser.has_option(themeName, element) or
+            ikiwa not (cfgParser.has_option(themeName, element) or
                     # Skip warning for new elements.
                     element.startswith(('context-', 'linenumber-'))):
-                # Print warning that will return a default color
+                # Print warning that will rudisha a default color
                 warning = ('\n Warning: config.IdleConf.GetThemeDict'
                            ' -\n problem retrieving theme element %r'
                            '\n kutoka theme %r.\n'
@@ -350,20 +350,20 @@ class IdleConf:
                 _warn(warning, 'highlight', themeName, element)
             theme[element] = cfgParser.Get(
                     themeName, element, default=theme[element])
-        return theme
+        rudisha theme
 
-    def CurrentTheme(self):
+    eleza CurrentTheme(self):
         "Return the name of the currently active text color theme."
-        return self.current_colors_and_keys('Theme')
+        rudisha self.current_colors_and_keys('Theme')
 
-    def CurrentKeys(self):
+    eleza CurrentKeys(self):
         """Return the name of the currently active key set."""
-        return self.current_colors_and_keys('Keys')
+        rudisha self.current_colors_and_keys('Keys')
 
-    def current_colors_and_keys(self, section):
+    eleza current_colors_and_keys(self, section):
         """Return the currently active name for Theme or Keys section.
 
-        idlelib.config-main.def ('default') includes these sections
+        idlelib.config-main.eleza ('default') includes these sections
 
         [Theme]
         default= 1
@@ -384,75 +384,75 @@ class IdleConf:
         while older IDLEs will just use name.  When default = False,
         'name2' may still be set, but it is ignored.
         """
-        cfgname = 'highlight' if section == 'Theme' else 'keys'
+        cfgname = 'highlight' ikiwa section == 'Theme' else 'keys'
         default = self.GetOption('main', section, 'default',
                                  type='bool', default=True)
         name = ''
-        if default:
+        ikiwa default:
             name = self.GetOption('main', section, 'name2', default='')
-        if not name:
+        ikiwa not name:
             name = self.GetOption('main', section, 'name', default='')
-        if name:
-            source = self.defaultCfg if default else self.userCfg
-            if source[cfgname].has_section(name):
-                return name
-        return "IDLE Classic" if section == 'Theme' else self.default_keys()
+        ikiwa name:
+            source = self.defaultCfg ikiwa default else self.userCfg
+            ikiwa source[cfgname].has_section(name):
+                rudisha name
+        rudisha "IDLE Classic" ikiwa section == 'Theme' else self.default_keys()
 
     @staticmethod
-    def default_keys():
-        if sys.platform[:3] == 'win':
-            return 'IDLE Classic Windows'
-        elif sys.platform == 'darwin':
-            return 'IDLE Classic OSX'
+    eleza default_keys():
+        ikiwa sys.platform[:3] == 'win':
+            rudisha 'IDLE Classic Windows'
+        elikiwa sys.platform == 'darwin':
+            rudisha 'IDLE Classic OSX'
         else:
-            return 'IDLE Modern Unix'
+            rudisha 'IDLE Modern Unix'
 
-    def GetExtensions(self, active_only=True,
+    eleza GetExtensions(self, active_only=True,
                       editor_only=False, shell_only=False):
         """Return extensions in default and user config-extensions files.
 
-        If active_only True, only return active (enabled) extensions
+        If active_only True, only rudisha active (enabled) extensions
         and optionally only editor or shell extensions.
-        If active_only False, return all extensions.
+        If active_only False, rudisha all extensions.
         """
         extns = self.RemoveKeyBindNames(
                 self.GetSectionList('default', 'extensions'))
         userExtns = self.RemoveKeyBindNames(
                 self.GetSectionList('user', 'extensions'))
         for extn in userExtns:
-            if extn not in extns: #user has added own extension
+            ikiwa extn not in extns: #user has added own extension
                 extns.append(extn)
         for extn in ('AutoComplete','CodeContext',
                      'FormatParagraph','ParenMatch'):
             extns.remove(extn)
             # specific exclusions because we are storing config for mainlined old
-            # extensions in config-extensions.def for backward compatibility
-        if active_only:
+            # extensions in config-extensions.eleza for backward compatibility
+        ikiwa active_only:
             activeExtns = []
             for extn in extns:
-                if self.GetOption('extensions', extn, 'enable', default=True,
+                ikiwa self.GetOption('extensions', extn, 'enable', default=True,
                                   type='bool'):
                     #the extension is enabled
-                    if editor_only or shell_only:  # TODO both True contradict
-                        if editor_only:
+                    ikiwa editor_only or shell_only:  # TODO both True contradict
+                        ikiwa editor_only:
                             option = "enable_editor"
                         else:
                             option = "enable_shell"
-                        if self.GetOption('extensions', extn,option,
+                        ikiwa self.GetOption('extensions', extn,option,
                                           default=True, type='bool',
                                           warn_on_default=False):
                             activeExtns.append(extn)
                     else:
                         activeExtns.append(extn)
-            return activeExtns
+            rudisha activeExtns
         else:
-            return extns
+            rudisha extns
 
-    def RemoveKeyBindNames(self, extnNameList):
+    eleza RemoveKeyBindNames(self, extnNameList):
         "Return extnNameList with keybinding section names removed."
-        return [n for n in extnNameList if not n.endswith(('_bindings', '_cfgBindings'))]
+        rudisha [n for n in extnNameList ikiwa not n.endswith(('_bindings', '_cfgBindings'))]
 
-    def GetExtnNameForEvent(self, virtualEvent):
+    eleza GetExtnNameForEvent(self, virtualEvent):
         """Return the name of the extension binding virtualEvent, or None.
 
         virtualEvent - string, name of the virtual event to test for,
@@ -462,11 +462,11 @@ class IdleConf:
         vEvent = '<<' + virtualEvent + '>>'
         for extn in self.GetExtensions(active_only=0):
             for event in self.GetExtensionKeys(extn):
-                if event == vEvent:
-                    extName = extn  # TODO return here?
-        return extName
+                ikiwa event == vEvent:
+                    extName = extn  # TODO rudisha here?
+        rudisha extName
 
-    def GetExtensionKeys(self, extensionName):
+    eleza GetExtensionKeys(self, extensionName):
         """Return dict: {configurable extensionName event : active keybinding}.
 
         Events come kutoka default config extension_cfgBindings section.
@@ -476,15 +476,15 @@ class IdleConf:
         keysName = extensionName + '_cfgBindings'
         activeKeys = self.GetCurrentKeySet()
         extKeys = {}
-        if self.defaultCfg['extensions'].has_section(keysName):
+        ikiwa self.defaultCfg['extensions'].has_section(keysName):
             eventNames = self.defaultCfg['extensions'].GetOptionList(keysName)
             for eventName in eventNames:
                 event = '<<' + eventName + '>>'
                 binding = activeKeys[event]
                 extKeys[event] = binding
-        return extKeys
+        rudisha extKeys
 
-    def __GetRawExtensionKeys(self,extensionName):
+    eleza __GetRawExtensionKeys(self,extensionName):
         """Return dict {configurable extensionName event : keybinding list}.
 
         Events come kutoka default config extension_cfgBindings section.
@@ -493,16 +493,16 @@ class IdleConf:
         """
         keysName = extensionName+'_cfgBindings'
         extKeys = {}
-        if self.defaultCfg['extensions'].has_section(keysName):
+        ikiwa self.defaultCfg['extensions'].has_section(keysName):
             eventNames = self.defaultCfg['extensions'].GetOptionList(keysName)
             for eventName in eventNames:
                 binding = self.GetOption(
                         'extensions', keysName, eventName, default='').split()
                 event = '<<' + eventName + '>>'
                 extKeys[event] = binding
-        return extKeys
+        rudisha extKeys
 
-    def GetExtensionBindings(self, extensionName):
+    eleza GetExtensionBindings(self, extensionName):
         """Return dict {extensionName event : active or defined keybinding}.
 
         Augment self.GetExtensionKeys(extensionName) with mapping of non-
@@ -512,7 +512,7 @@ class IdleConf:
         bindsName = extensionName + '_bindings'
         extBinds = self.GetExtensionKeys(extensionName)
         #add the non-configurable bindings
-        if self.defaultCfg['extensions'].has_section(bindsName):
+        ikiwa self.defaultCfg['extensions'].has_section(bindsName):
             eventNames = self.defaultCfg['extensions'].GetOptionList(bindsName)
             for eventName in eventNames:
                 binding = self.GetOption(
@@ -520,9 +520,9 @@ class IdleConf:
                 event = '<<' + eventName + '>>'
                 extBinds[event] = binding
 
-        return extBinds
+        rudisha extBinds
 
-    def GetKeyBinding(self, keySetName, eventStr):
+    eleza GetKeyBinding(self, keySetName, eventStr):
         """Return the keybinding list for keySetName eventStr.
 
         keySetName - name of key binding set (config-keys section).
@@ -531,13 +531,13 @@ class IdleConf:
         eventName = eventStr[2:-2] #trim off the angle brackets
         binding = self.GetOption('keys', keySetName, eventName, default='',
                                  warn_on_default=False).split()
-        return binding
+        rudisha binding
 
-    def GetCurrentKeySet(self):
+    eleza GetCurrentKeySet(self):
         "Return CurrentKeys with 'darwin' modifications."
         result = self.GetKeySet(self.CurrentKeys())
 
-        if sys.platform == "darwin":
+        ikiwa sys.platform == "darwin":
             # macOS (OS X) Tk variants do not support the "Alt"
             # keyboard modifier.  Replace it with "Option".
             # TODO (Ned?): the "Option" modifier does not work properly
@@ -545,12 +545,12 @@ class IdleConf:
             #     in the default 'OSX' keyset.
             for k, v in result.items():
                 v2 = [ x.replace('<Alt-', '<Option-') for x in v ]
-                if v != v2:
+                ikiwa v != v2:
                     result[k] = v2
 
-        return result
+        rudisha result
 
-    def GetKeySet(self, keySetName):
+    eleza GetKeySet(self, keySetName):
         """Return event-key dict for keySetName core plus active extensions.
 
         If a binding defined in an extension is already in use, the
@@ -560,23 +560,23 @@ class IdleConf:
         activeExtns = self.GetExtensions(active_only=1)
         for extn in activeExtns:
             extKeys = self.__GetRawExtensionKeys(extn)
-            if extKeys: #the extension defines keybindings
+            ikiwa extKeys: #the extension defines keybindings
                 for event in extKeys:
-                    if extKeys[event] in keySet.values():
+                    ikiwa extKeys[event] in keySet.values():
                         #the binding is already in use
                         extKeys[event] = '' #disable this binding
                     keySet[event] = extKeys[event] #add binding
-        return keySet
+        rudisha keySet
 
-    def IsCoreBinding(self, virtualEvent):
-        """Return True if the virtual event is one of the core idle key events.
+    eleza IsCoreBinding(self, virtualEvent):
+        """Return True ikiwa the virtual event is one of the core idle key events.
 
         virtualEvent - string, name of the virtual event to test for,
                        without the enclosing '<< >>'
         """
-        return ('<<'+virtualEvent+'>>') in self.GetCoreKeys()
+        rudisha ('<<'+virtualEvent+'>>') in self.GetCoreKeys()
 
-# TODO make keyBindins a file or class attribute used for test above
+# TODO make keyBindins a file or kundi attribute used for test above
 # and copied in function below.
 
     former_extension_events = {  #  Those with user-configurable keys.
@@ -586,12 +586,12 @@ class IdleConf:
          '<<run-custom>>',
          }
 
-    def GetCoreKeys(self, keySetName=None):
+    eleza GetCoreKeys(self, keySetName=None):
         """Return dict of core virtual-key keybindings for keySetName.
 
         The default keySetName None corresponds to the keyBindings base
         dict. If keySetName is not None, bindings kutoka the config
-        file(s) are loaded _over_ these defaults, so if there is a
+        file(s) are loaded _over_ these defaults, so ikiwa there is a
         problem getting any core binding there will be an 'ultimate last
         resort fallback' to the CUA-ish bindings defined here.
         """
@@ -656,8 +656,8 @@ class IdleConf:
             '<<zoom-height>>': ['<Alt-Key-2>'],
             }
 
-        if keySetName:
-            if not (self.userCfg['keys'].has_section(keySetName) or
+        ikiwa keySetName:
+            ikiwa not (self.userCfg['keys'].has_section(keySetName) or
                     self.defaultCfg['keys'].has_section(keySetName)):
                 warning = (
                     '\n Warning: config.py - IdleConf.GetCoreKeys -\n'
@@ -668,10 +668,10 @@ class IdleConf:
             else:
                 for event in keyBindings:
                     binding = self.GetKeyBinding(keySetName, event)
-                    if binding:
+                    ikiwa binding:
                         keyBindings[event] = binding
-                    # Otherwise return default in keyBindings.
-                    elif event not in self.former_extension_events:
+                    # Otherwise rudisha default in keyBindings.
+                    elikiwa event not in self.former_extension_events:
                         warning = (
                             '\n Warning: config.py - IdleConf.GetCoreKeys -\n'
                             ' problem retrieving key binding for event %r\n'
@@ -680,53 +680,53 @@ class IdleConf:
                             (event, keySetName, keyBindings[event])
                         )
                         _warn(warning, 'keys', keySetName, event)
-        return keyBindings
+        rudisha keyBindings
 
-    def GetExtraHelpSourceList(self, configSet):
+    eleza GetExtraHelpSourceList(self, configSet):
         """Return list of extra help sources kutoka a given configSet.
 
         Valid configSets are 'user' or 'default'.  Return a list of tuples of
-        the form (menu_item , path_to_help_file , option), or return the empty
+        the form (menu_item , path_to_help_file , option), or rudisha the empty
         list.  'option' is the sequence number of the help resource.  'option'
         values determine the position of the menu items on the Help menu,
         therefore the returned list must be sorted by 'option'.
 
         """
         helpSources = []
-        if configSet == 'user':
+        ikiwa configSet == 'user':
             cfgParser = self.userCfg['main']
-        elif configSet == 'default':
+        elikiwa configSet == 'default':
             cfgParser = self.defaultCfg['main']
         else:
             raise InvalidConfigSet('Invalid configSet specified')
         options=cfgParser.GetOptionList('HelpFiles')
         for option in options:
             value=cfgParser.Get('HelpFiles', option, default=';')
-            if value.find(';') == -1: #malformed config entry with no ';'
+            ikiwa value.find(';') == -1: #malformed config entry with no ';'
                 menuItem = '' #make these empty
                 helpPath = '' #so value won't be added to list
             else: #config entry contains ';' as expected
                 value=value.split(';')
                 menuItem=value[0].strip()
                 helpPath=value[1].strip()
-            if menuItem and helpPath: #neither are empty strings
+            ikiwa menuItem and helpPath: #neither are empty strings
                 helpSources.append( (menuItem,helpPath,option) )
         helpSources.sort(key=lambda x: x[2])
-        return helpSources
+        rudisha helpSources
 
-    def GetAllExtraHelpSourcesList(self):
+    eleza GetAllExtraHelpSourcesList(self):
         """Return a list of the details of all additional help sources.
 
         Tuples in the list are those of GetExtraHelpSourceList.
         """
         allHelpSources = (self.GetExtraHelpSourceList('default') +
                 self.GetExtraHelpSourceList('user') )
-        return allHelpSources
+        rudisha allHelpSources
 
-    def GetFont(self, root, configType, section):
+    eleza GetFont(self, root, configType, section):
         """Retrieve a font kutoka configuration (font, font-size, font-bold)
         Intercept the special value 'TkFixedFont' and substitute
-        the actual font, factoring in some tweaks if needed for
+        the actual font, factoring in some tweaks ikiwa needed for
         appearance sakes.
 
         The 'root' parameter can normally be any valid Tkinter widget.
@@ -739,23 +739,23 @@ class IdleConf:
                               default='10')
         bold = self.GetOption(configType, section, 'font-bold', default=0,
                               type='bool')
-        if (family == 'TkFixedFont'):
+        ikiwa (family == 'TkFixedFont'):
             f = Font(name='TkFixedFont', exists=True, root=root)
             actualFont = Font.actual(f)
             family = actualFont['family']
             size = actualFont['size']
-            if size <= 0:
-                size = 10  # if font in pixels, ignore actual size
+            ikiwa size <= 0:
+                size = 10  # ikiwa font in pixels, ignore actual size
             bold = actualFont['weight'] == 'bold'
-        return (family, size, 'bold' if bold else 'normal')
+        rudisha (family, size, 'bold' ikiwa bold else 'normal')
 
-    def LoadCfgFiles(self):
+    eleza LoadCfgFiles(self):
         "Load all configuration files."
         for key in self.defaultCfg:
             self.defaultCfg[key].Load()
             self.userCfg[key].Load() #same keys
 
-    def SaveUserCfgFiles(self):
+    eleza SaveUserCfgFiles(self):
         "Write all loaded user configuration files to disk."
         for key in self.userCfg:
             self.userCfg[key].Save()
@@ -764,17 +764,17 @@ class IdleConf:
 idleConf = IdleConf()
 
 _warned = set()
-def _warn(msg, *key):
+eleza _warn(msg, *key):
     key = (msg,) + key
-    if key not in _warned:
+    ikiwa key not in _warned:
         try:
-            print(msg, file=sys.stderr)
+            andika(msg, file=sys.stderr)
         except OSError:
             pass
         _warned.add(key)
 
 
-class ConfigChanges(dict):
+kundi ConfigChanges(dict):
     """Manage a user's proposed configuration option changes.
 
     Names used across multiple methods:
@@ -793,35 +793,35 @@ class ConfigChanges(dict):
                         delete kutoka changes, userCfg, and file.
         clear: Clear all changes by clearing each page.
     """
-    def __init__(self):
+    eleza __init__(self):
         "Create a page for each configuration file"
         self.pages = []  # List of unhashable dicts.
         for config_type in idleConf.config_types:
             self[config_type] = {}
             self.pages.append(self[config_type])
 
-    def add_option(self, config_type, section, item, value):
+    eleza add_option(self, config_type, section, item, value):
         "Add item/value pair for config_type and section."
         page = self[config_type]
         value = str(value)  # Make sure we use a string.
-        if section not in page:
+        ikiwa section not in page:
             page[section] = {}
         page[section][item] = value
 
     @staticmethod
-    def save_option(config_type, section, item, value):
-        """Return True if the configuration value was added or changed.
+    eleza save_option(config_type, section, item, value):
+        """Return True ikiwa the configuration value was added or changed.
 
         Helper for save_all.
         """
-        if idleConf.defaultCfg[config_type].has_option(section, item):
-            if idleConf.defaultCfg[config_type].Get(section, item) == value:
+        ikiwa idleConf.defaultCfg[config_type].has_option(section, item):
+            ikiwa idleConf.defaultCfg[config_type].Get(section, item) == value:
                 # The setting equals a default setting, remove it kutoka user cfg.
-                return idleConf.userCfg[config_type].RemoveOption(section, item)
+                rudisha idleConf.userCfg[config_type].RemoveOption(section, item)
         # If we got here, set the option.
-        return idleConf.userCfg[config_type].SetOption(section, item, value)
+        rudisha idleConf.userCfg[config_type].SetOption(section, item, value)
 
-    def save_all(self):
+    eleza save_all(self):
         """Save configuration changes to the user config file.
 
         Clear self in preparation for additional changes.
@@ -834,35 +834,35 @@ class ConfigChanges(dict):
             cfg_type_changed = False
             page = self[config_type]
             for section in page:
-                if section == 'HelpFiles':  # Remove it for replacement.
+                ikiwa section == 'HelpFiles':  # Remove it for replacement.
                     idleConf.userCfg['main'].remove_section('HelpFiles')
                     cfg_type_changed = True
                 for item, value in page[section].items():
-                    if self.save_option(config_type, section, item, value):
+                    ikiwa self.save_option(config_type, section, item, value):
                         cfg_type_changed = True
-            if cfg_type_changed:
+            ikiwa cfg_type_changed:
                 idleConf.userCfg[config_type].Save()
                 changed = True
         for config_type in ['keys', 'highlight']:
-            # Save these even if unchanged!
+            # Save these even ikiwa unchanged!
             idleConf.userCfg[config_type].Save()
         self.clear()
         # ConfigDialog caller must add the following call
         # self.save_all_changed_extensions()  # Uses a different mechanism.
-        return changed
+        rudisha changed
 
-    def delete_section(self, config_type, section):
+    eleza delete_section(self, config_type, section):
         """Delete a section kutoka self, userCfg, and file.
 
         Used to delete custom themes and keysets.
         """
-        if section in self[config_type]:
+        ikiwa section in self[config_type]:
             del self[config_type][section]
         configpage = idleConf.userCfg[config_type]
         configpage.remove_section(section)
         configpage.Save()
 
-    def clear(self):
+    eleza clear(self):
         """Clear all 4 pages.
 
         Called in save_all after saving to idleConf.
@@ -873,36 +873,36 @@ class ConfigChanges(dict):
 
 
 # TODO Revise test output, write expanded unittest
-def _dump():  # htest # (not really, but ignore in coverage)
+eleza _dump():  # htest # (not really, but ignore in coverage)
     kutoka zlib agiza crc32
     line, crc = 0, 0
 
-    def sprint(obj):
+    eleza sandika(obj):
         global line, crc
         txt = str(obj)
         line += 1
         crc = crc32(txt.encode(encoding='utf-8'), crc)
-        print(txt)
-        #print('***', line, crc, '***')  # Uncomment for diagnosis.
+        andika(txt)
+        #andika('***', line, crc, '***')  # Uncomment for diagnosis.
 
-    def dumpCfg(cfg):
-        print('\n', cfg, '\n')  # Cfg has variable '0xnnnnnnnn' address.
+    eleza dumpCfg(cfg):
+        andika('\n', cfg, '\n')  # Cfg has variable '0xnnnnnnnn' address.
         for key in sorted(cfg.keys()):
             sections = cfg[key].sections()
-            sprint(key)
-            sprint(sections)
+            sandika(key)
+            sandika(sections)
             for section in sections:
                 options = cfg[key].options(section)
-                sprint(section)
-                sprint(options)
+                sandika(section)
+                sandika(options)
                 for option in options:
-                    sprint(option + ' = ' + cfg[key].Get(section, option))
+                    sandika(option + ' = ' + cfg[key].Get(section, option))
 
     dumpCfg(idleConf.defaultCfg)
     dumpCfg(idleConf.userCfg)
-    print('\nlines = ', line, ', crc = ', crc, sep='')
+    andika('\nlines = ', line, ', crc = ', crc, sep='')
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_config', verbosity=2, exit=False)
 

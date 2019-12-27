@@ -68,7 +68,7 @@ Here's a *very* brief summary of what started it all, written by Guido van
 Rossum:
 
    I had extensive experience with implementing an interpreted language in the
-   ABC group at CWI, and from working with this group I had learned a lot about
+   ABC group at CWI, and kutoka working with this group I had learned a lot about
    language design.  This is the origin of many Python features, including the
    use of indentation for statement grouping and the inclusion of
    very-high-level data types (although the details are all different in
@@ -85,7 +85,7 @@ Rossum:
    I was working in the Amoeba distributed operating system group at CWI.  We
    needed a better way to do system administration than by writing either C
    programs or Bourne shell scripts, since Amoeba had its own system call
-   interface which wasn't easily accessible from the Bourne shell.  My
+   interface which wasn't easily accessible kutoka the Bourne shell.  My
    experience with error handling in Amoeba made me acutely aware of the
    importance of exceptions as a programming language feature.
 
@@ -97,7 +97,7 @@ Rossum:
    During the 1989 Christmas holidays, I had a lot of time on my hand, so I
    decided to give it a try.  During the next year, while still mostly working
    on it in my own time, Python was used in the Amoeba project with increasing
-   success, and the feedback from colleagues made me add many early
+   success, and the feedback kutoka colleagues made me add many early
    improvements.
 
    In February 1991, after just over a year of development, I decided to post to
@@ -146,7 +146,7 @@ labeled 2.0aN precede the versions labeled 2.0bN, which precede versions labeled
 2.0cN, and *those* precede 2.0.
 
 You may also find version numbers with a "+" suffix, e.g. "2.2+".  These are
-unreleased versions, built directly from the CPython development repository.  In
+unreleased versions, built directly kutoka the CPython development repository.  In
 practice, after a final minor release is made, the version is incremented to the
 next minor version, which becomes the "a0" version, e.g. "2.4a0".
 
@@ -157,7 +157,7 @@ See also the documentation for :data:`sys.version`, :data:`sys.hexversion`, and
 How do I obtain a copy of the Python source?
 --------------------------------------------
 
-The latest Python source distribution is always available from python.org, at
+The latest Python source distribution is always available kutoka python.org, at
 https://www.python.org/downloads/.  The latest development sources can be obtained
 at https://github.com/python/cpython/.
 
@@ -217,7 +217,7 @@ can be found at https://www.python.org/community/lists/.
 How do I get a beta test version of Python?
 -------------------------------------------
 
-Alpha and beta releases are available from https://www.python.org/downloads/.  All
+Alpha and beta releases are available kutoka https://www.python.org/downloads/.  All
 releases are announced on the comp.lang.python and comp.lang.python.announce
 newsgroups and on the Python home page at https://www.python.org/; an RSS feed of
 news is available.
@@ -276,8 +276,8 @@ Why is it called Python?
 ------------------------
 
 When he began implementing Python, Guido van Rossum was also reading the
-published scripts from `"Monty Python's Flying Circus"
-<https://en.wikipedia.org/wiki/Monty_Python>`__, a BBC comedy series from the 1970s.  Van Rossum
+published scripts kutoka `"Monty Python's Flying Circus"
+<https://en.wikipedia.org/wiki/Monty_Python>`__, a BBC comedy series kutoka the 1970s.  Van Rossum
 thought he needed a name that was short, unique, and slightly mysterious, so he
 decided to call the language Python.
 
@@ -318,7 +318,7 @@ There are probably tens of thousands of users, though it's difficult to obtain
 an exact count.
 
 Python is available for free download, so there are no sales figures, and it's
-available from many different sites and packaged with many Linux distributions,
+available kutoka many different sites and packaged with many Linux distributions,
 so download statistics don't tell the whole story either.
 
 The comp.lang.python newsgroup is very active, but not all Python users post to
@@ -330,7 +330,7 @@ Have any significant projects been done in Python?
 
 See https://www.python.org/about/success for a list of projects that use Python.
 Consulting the proceedings for `past Python conferences
-<https://www.python.org/community/workshops/>`_ will reveal contributions from many
+<https://www.python.org/community/workshops/>`_ will reveal contributions kutoka many
 different companies and organizations.
 
 High-profile Python projects include `the Mailman mailing list manager
@@ -430,7 +430,7 @@ remember the methods for a list, they can do something like this::
    >>> L
    [1]
 
-With the interpreter, documentation is never far from the student as they are
+With the interpreter, documentation is never far kutoka the student as they are
 programming.
 
 There are also good IDEs for Python.  IDLE is a cross-platform IDE for Python

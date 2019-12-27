@@ -100,7 +100,7 @@ NULL pointer for use in a ``return`` statement.
    This is the most common way to set the error indicator.  The first argument
    specifies the exception type; it is normally one of the standard exceptions,
    e.g. :c:data:`PyExc_RuntimeError`.  You need not increment its reference count.
-   The second argument is an error message; it is decoded from ``'utf-8``'.
+   The second argument is an error message; it is decoded kutoka ``'utf-8``'.
 
 
 .. c:function:: void PyErr_SetObject(PyObject *type, PyObject *value)
@@ -152,7 +152,7 @@ NULL pointer for use in a ``return`` statement.
    This is a convenience function to raise an exception when a C library function
    has returned an error and set the C variable :c:data:`errno`.  It constructs a
    tuple object whose first item is the integer :c:data:`errno` value and whose
-   second item is the corresponding error message (gotten from :c:func:`strerror`),
+   second item is the corresponding error message (gotten kutoka :c:func:`strerror`),
    and then calls ``PyErr_SetObject(type, object)``.  On Unix, when the
    :c:data:`errno` value is :const:`EINTR`, indicating an interrupted system call,
    this calls :c:func:`PyErr_CheckSignals`, and if that set the error indicator,
@@ -182,7 +182,7 @@ NULL pointer for use in a ``return`` statement.
 .. c:function:: PyObject* PyErr_SetFromErrnoWithFilename(PyObject *type, const char *filename)
 
    Similar to :c:func:`PyErr_SetFromErrnoWithFilenameObject`, but the filename
-   is given as a C string.  *filename* is decoded from the filesystem encoding
+   is given as a C string.  *filename* is decoded kutoka the filesystem encoding
    (:func:`os.fsdecode`).
 
 
@@ -193,7 +193,7 @@ NULL pointer for use in a ``return`` statement.
    is used instead.  It calls the Win32 function :c:func:`FormatMessage` to retrieve
    the Windows description of error code given by *ierr* or :c:func:`GetLastError`,
    then it constructs a tuple object whose first item is the *ierr* value and whose
-   second item is the corresponding error message (gotten from
+   second item is the corresponding error message (gotten kutoka
    :c:func:`FormatMessage`), and then calls ``PyErr_SetObject(PyExc_WindowsError,
    object)``. This function always returns *NULL*.
 
@@ -211,7 +211,7 @@ NULL pointer for use in a ``return`` statement.
 .. c:function:: PyObject* PyErr_SetFromWindowsErrWithFilename(int ierr, const char *filename)
 
    Similar to :c:func:`PyErr_SetFromWindowsErrWithFilenameObject`, but the
-   filename is given as a C string.  *filename* is decoded from the filesystem
+   filename is given as a C string.  *filename* is decoded kutoka the filesystem
    encoding (:func:`os.fsdecode`).
 
    .. availability:: Windows.
@@ -266,7 +266,7 @@ NULL pointer for use in a ``return`` statement.
 .. c:function:: void PyErr_SyntaxLocationEx(const char *filename, int lineno, int col_offset)
 
    Like :c:func:`PyErr_SyntaxLocationObject`, but *filename* is a byte string
-   decoded from the filesystem encoding (:func:`os.fsdecode`).
+   decoded kutoka the filesystem encoding (:func:`os.fsdecode`).
 
    .. versionadded:: 3.2
 
@@ -288,7 +288,7 @@ NULL pointer for use in a ``return`` statement.
 Issuing warnings
 ================
 
-Use these functions to issue warnings from C code.  They mirror similar
+Use these functions to issue warnings kutoka C code.  They mirror similar
 functions exported by the Python :mod:`warnings` module.  They normally
 print a warning message to *sys.stderr*; however, it is
 also possible that the user has specified that warnings are to be turned into
@@ -305,13 +305,13 @@ an error value).
 
    Issue a warning message.  The *category* argument is a warning category (see
    below) or *NULL*; the *message* argument is a UTF-8 encoded string.  *stack_level* is a
-   positive number giving a number of stack frames; the warning will be issued from
+   positive number giving a number of stack frames; the warning will be issued kutoka
    the  currently executing line of code in that stack frame.  A *stack_level* of 1
    is the function calling :c:func:`PyErr_WarnEx`, 2 is  the function above that,
    and so forth.
 
    Warning categories must be subclasses of :c:data:`PyExc_Warning`;
-   :c:data:`PyExc_Warning` is a subclass of :c:data:`PyExc_Exception`;
+   :c:data:`PyExc_Warning` is a subkundi of :c:data:`PyExc_Exception`;
    the default warning category is :c:data:`PyExc_RuntimeWarning`. The standard
    Python warning categories are available as global variables whose names are
    enumerated at :ref:`standardwarningcategories`.
@@ -323,7 +323,7 @@ an error value).
 .. c:function:: PyObject* PyErr_SetImportErrorSubclass(PyObject *exception, PyObject *msg, PyObject *name, PyObject *path)
 
    Much like :c:func:`PyErr_SetImportError` but this function allows for
-   specifying a subclass of :exc:`ImportError` to raise.
+   specifying a subkundi of :exc:`ImportError` to raise.
 
    .. versionadded:: 3.6
 
@@ -342,7 +342,7 @@ an error value).
 .. c:function:: int PyErr_WarnExplicit(PyObject *category, const char *message, const char *filename, int lineno, const char *module, PyObject *registry)
 
    Similar to :c:func:`PyErr_WarnExplicitObject` except that *message* and
-   *module* are UTF-8 encoded strings, and *filename* is decoded from the
+   *module* are UTF-8 encoded strings, and *filename* is decoded kutoka the
    filesystem encoding (:func:`os.fsdecode`).
 
 
@@ -379,7 +379,7 @@ Querying the error indicator
       Do not compare the return value to a specific exception; use
       :c:func:`PyErr_ExceptionMatches` instead, shown below.  (The comparison could
       easily fail since the exception may be an instance instead of a class, in the
-      case of a class exception, or it may be a subclass of the expected exception.)
+      case of a kundi exception, or it may be a subkundi of the expected exception.)
 
 
 .. c:function:: int PyErr_ExceptionMatches(PyObject *exc)
@@ -392,7 +392,7 @@ Querying the error indicator
 .. c:function:: int PyErr_GivenExceptionMatches(PyObject *given, PyObject *exc)
 
    Return true if the *given* exception matches the exception type in *exc*.  If
-   *exc* is a class object, this also returns true when *given* is an instance
+   *exc* is a kundi object, this also returns true when *given* is an instance
    of a subclass.  If *exc* is a tuple, all exception types in the tuple (and
    recursively in subtuples) are searched for a match.
 
@@ -421,7 +421,7 @@ Querying the error indicator
 
 .. c:function:: void PyErr_Restore(PyObject *type, PyObject *value, PyObject *traceback)
 
-   Set  the error indicator from the three objects.  If the error indicator is
+   Set  the error indicator kutoka the three objects.  If the error indicator is
    already set, it is cleared first.  If the objects are *NULL*, the error
    indicator is cleared.  Do not pass a *NULL* type and non-*NULL* value or
    traceback.  The exception type should be a class.  Do not pass an invalid
@@ -441,9 +441,9 @@ Querying the error indicator
 .. c:function:: void PyErr_NormalizeException(PyObject**exc, PyObject**val, PyObject**tb)
 
    Under certain circumstances, the values returned by :c:func:`PyErr_Fetch` below
-   can be "unnormalized", meaning that ``*exc`` is a class object but ``*val`` is
+   can be "unnormalized", meaning that ``*exc`` is a kundi object but ``*val`` is
    not an instance of the  same class.  This function can be used to instantiate
-   the class in that case.  If the values are already normalized, nothing happens.
+   the kundi in that case.  If the values are already normalized, nothing happens.
    The delayed normalization is implemented to improve performance.
 
    .. note::
@@ -459,7 +459,7 @@ Querying the error indicator
 
 .. c:function:: void PyErr_GetExcInfo(PyObject **ptype, PyObject **pvalue, PyObject **ptraceback)
 
-   Retrieve the exception info, as known from ``sys.exc_info()``.  This refers
+   Retrieve the exception info, as known kutoka ``sys.exc_info()``.  This refers
    to an exception that was *already caught*, not to an exception that was
    freshly raised.  Returns new references for the three objects, any of which
    may be *NULL*.  Does not modify the exception info state.
@@ -476,7 +476,7 @@ Querying the error indicator
 
 .. c:function:: void PyErr_SetExcInfo(PyObject *type, PyObject *value, PyObject *traceback)
 
-   Set the exception info, as known from ``sys.exc_info()``.  This refers
+   Set the exception info, as known kutoka ``sys.exc_info()``.  This refers
    to an exception that was *already caught*, not to an exception that was
    freshly raised.  This function steals the references of the arguments.
    To clear the exception state, pass *NULL* for all three arguments.
@@ -536,7 +536,7 @@ Signal Handling
    The value ``-1`` disables the feature; this is the initial state.
    This is equivalent to :func:`signal.set_wakeup_fd` in Python, but without any
    error checking.  *fd* should be a valid file descriptor.  The function should
-   only be called from the main thread.
+   only be called kutoka the main thread.
 
    .. versionchanged:: 3.5
       On Windows, the function now also supports socket handles.
@@ -550,19 +550,19 @@ Exception Classes
    This utility function creates and returns a new exception class. The *name*
    argument must be the name of the new exception, a C string of the form
    ``module.classname``.  The *base* and *dict* arguments are normally *NULL*.
-   This creates a class object derived from :exc:`Exception` (accessible in C as
+   This creates a kundi object derived kutoka :exc:`Exception` (accessible in C as
    :c:data:`PyExc_Exception`).
 
-   The :attr:`__module__` attribute of the new class is set to the first part (up
-   to the last dot) of the *name* argument, and the class name is set to the last
+   The :attr:`__module__` attribute of the new kundi is set to the first part (up
+   to the last dot) of the *name* argument, and the kundi name is set to the last
    part (after the last dot).  The *base* argument can be used to specify alternate
-   base classes; it can either be only one class or a tuple of classes. The *dict*
-   argument can be used to specify a dictionary of class variables and methods.
+   base classes; it can either be only one kundi or a tuple of classes. The *dict*
+   argument can be used to specify a dictionary of kundi variables and methods.
 
 
 .. c:function:: PyObject* PyErr_NewExceptionWithDoc(const char *name, const char *doc, PyObject *base, PyObject *dict)
 
-   Same as :c:func:`PyErr_NewException`, except that the new exception class can
+   Same as :c:func:`PyErr_NewException`, except that the new exception kundi can
    easily be given a docstring: If *doc* is non-*NULL*, it will be used as the
    docstring for the exception class.
 
@@ -575,7 +575,7 @@ Exception Objects
 .. c:function:: PyObject* PyException_GetTraceback(PyObject *ex)
 
    Return the traceback associated with the exception as a new reference, as
-   accessible from Python through :attr:`__traceback__`.  If there is no
+   accessible kutoka Python through :attr:`__traceback__`.  If there is no
    traceback associated, this returns *NULL*.
 
 
@@ -588,7 +588,7 @@ Exception Objects
 .. c:function:: PyObject* PyException_GetContext(PyObject *ex)
 
    Return the context (another exception instance during whose handling *ex* was
-   raised) associated with the exception as a new reference, as accessible from
+   raised) associated with the exception as a new reference, as accessible kutoka
    Python through :attr:`__context__`.  If there is no context associated, this
    returns *NULL*.
 
@@ -603,8 +603,8 @@ Exception Objects
 .. c:function:: PyObject* PyException_GetCause(PyObject *ex)
 
    Return the cause (either an exception instance, or :const:`None`,
-   set by ``raise ... from ...``) associated with the exception as a new
-   reference, as accessible from Python through :attr:`__cause__`.
+   set by ``raise ... kutoka ...``) associated with the exception as a new
+   reference, as accessible kutoka Python through :attr:`__cause__`.
 
 
 .. c:function:: void PyException_SetCause(PyObject *ex, PyObject *cause)
@@ -621,7 +621,7 @@ Exception Objects
 Unicode Exception Objects
 =========================
 
-The following functions are used to create and modify Unicode exceptions from C.
+The following functions are used to create and modify Unicode exceptions kutoka C.
 
 .. c:function:: PyObject* PyUnicodeDecodeError_Create(const char *encoding, const char *object, Py_ssize_t length, Py_ssize_t start, Py_ssize_t end, const char *reason)
 
@@ -761,7 +761,7 @@ Standard Exceptions
 
 All standard Python exceptions are available as global variables whose names are
 ``PyExc_`` followed by the Python exception name.  These have the type
-:c:type:`PyObject\*`; they are all class objects.  For completeness, here are all
+:c:type:`PyObject\*`; they are all kundi objects.  For completeness, here are all
 the variables:
 
 .. index::
@@ -968,7 +968,7 @@ These are compatibility aliases to :c:data:`PyExc_OSError`:
 Notes:
 
 (1)
-   This is a base class for other standard exceptions.
+   This is a base kundi for other standard exceptions.
 
 (2)
    This is the same as :exc:`weakref.ReferenceError`.
@@ -984,7 +984,7 @@ Standard Warning Categories
 
 All standard Python warning categories are available as global variables whose
 names are ``PyExc_`` followed by the Python exception name. These have the type
-:c:type:`PyObject\*`; they are all class objects. For completeness, here are all
+:c:type:`PyObject\*`; they are all kundi objects. For completeness, here are all
 the variables:
 
 .. index::
@@ -1032,4 +1032,4 @@ the variables:
 Notes:
 
 (1)
-   This is a base class for other standard warning categories.
+   This is a base kundi for other standard warning categories.

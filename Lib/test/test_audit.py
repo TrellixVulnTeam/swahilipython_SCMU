@@ -6,14 +6,14 @@ agiza sys
 agiza unittest
 kutoka test agiza support
 
-if not hasattr(sys, "addaudithook") or not hasattr(sys, "audit"):
+ikiwa not hasattr(sys, "addaudithook") or not hasattr(sys, "audit"):
     raise unittest.SkipTest("test only relevant when sys.audit is available")
 
 AUDIT_TESTS_PY = support.findfile("audit-tests.py")
 
 
-class AuditTest(unittest.TestCase):
-    def do_test(self, *args):
+kundi AuditTest(unittest.TestCase):
+    eleza do_test(self, *args):
         with subprocess.Popen(
             [sys.executable, "-X utf8", AUDIT_TESTS_PY, *args],
             encoding="utf-8",
@@ -23,19 +23,19 @@ class AuditTest(unittest.TestCase):
             p.wait()
             sys.stdout.writelines(p.stdout)
             sys.stderr.writelines(p.stderr)
-            if p.returncode:
+            ikiwa p.returncode:
                 self.fail(''.join(p.stderr))
 
-    def test_basic(self):
+    eleza test_basic(self):
         self.do_test("test_basic")
 
-    def test_block_add_hook(self):
+    eleza test_block_add_hook(self):
         self.do_test("test_block_add_hook")
 
-    def test_block_add_hook_baseexception(self):
+    eleza test_block_add_hook_baseexception(self):
         self.do_test("test_block_add_hook_baseexception")
 
-    def test_finalize_hooks(self):
+    eleza test_finalize_hooks(self):
         events = []
         with subprocess.Popen(
             [sys.executable, "-X utf8", AUDIT_TESTS_PY, "test_finalize_hooks"],
@@ -47,7 +47,7 @@ class AuditTest(unittest.TestCase):
             for line in p.stdout:
                 events.append(line.strip().partition(" "))
             sys.stderr.writelines(p.stderr)
-            if p.returncode:
+            ikiwa p.returncode:
                 self.fail(''.join(p.stderr))
 
         firstId = events[0][2]
@@ -59,23 +59,23 @@ class AuditTest(unittest.TestCase):
             events,
         )
 
-    def test_pickle(self):
+    eleza test_pickle(self):
         support.import_module("pickle")
 
         self.do_test("test_pickle")
 
-    def test_monkeypatch(self):
+    eleza test_monkeypatch(self):
         self.do_test("test_monkeypatch")
 
-    def test_open(self):
+    eleza test_open(self):
         self.do_test("test_open", support.TESTFN)
 
-    def test_cantrace(self):
+    eleza test_cantrace(self):
         self.do_test("test_cantrace")
 
-    def test_mmap(self):
+    eleza test_mmap(self):
         self.do_test("test_mmap")
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

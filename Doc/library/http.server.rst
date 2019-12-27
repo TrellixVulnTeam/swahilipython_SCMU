@@ -34,14 +34,14 @@ handler.  Code to create and run the server looks like this::
 
 .. class:: HTTPServer(server_address, RequestHandlerClass)
 
-   This class builds on the :class:`~socketserver.TCPServer` class by storing
+   This kundi builds on the :class:`~socketserver.TCPServer` kundi by storing
    the server address as instance variables named :attr:`server_name` and
    :attr:`server_port`. The server is accessible by the handler, typically
    through the handler's :attr:`server` instance variable.
 
 .. class:: ThreadingHTTPServer(server_address, RequestHandlerClass)
 
-   This class is identical to HTTPServer but uses threads to handle
+   This kundi is identical to HTTPServer but uses threads to handle
    requests by using the :class:`~socketserver.ThreadingMixIn`. This
    is useful to handle web browsers pre-opening sockets, on which
    :class:`HTTPServer` would wait indefinitely.
@@ -55,14 +55,14 @@ provides three different variants:
 
 .. class:: BaseHTTPRequestHandler(request, client_address, server)
 
-   This class is used to handle the HTTP requests that arrive at the server.  By
+   This kundi is used to handle the HTTP requests that arrive at the server.  By
    itself, it cannot respond to any actual HTTP requests; it must be subclassed
    to handle each request method (e.g. GET or POST).
-   :class:`BaseHTTPRequestHandler` provides a number of class and instance
+   :class:`BaseHTTPRequestHandler` provides a number of kundi and instance
    variables, and methods for use by subclasses.
 
    The handler will parse the request and the headers, then call a method
-   specific to the request type. The method name is constructed from the
+   specific to the request type. The method name is constructed kutoka the
    request. For example, for the request method ``SPAM``, the :meth:`do_SPAM`
    method will be called with no arguments. All of the relevant information is
    stored in instance variables of the handler.  Subclasses should not need to
@@ -102,19 +102,19 @@ provides three different variants:
 
    .. attribute:: request_version
 
-      Contains the version string from the request. For example, ``'HTTP/1.0'``.
+      Contains the version string kutoka the request. For example, ``'HTTP/1.0'``.
 
    .. attribute:: headers
 
-      Holds an instance of the class specified by the :attr:`MessageClass` class
+      Holds an instance of the kundi specified by the :attr:`MessageClass` class
       variable. This instance parses and manages the headers in the HTTP
-      request. The :func:`~http.client.parse_headers` function from
+      request. The :func:`~http.client.parse_headers` function kutoka
       :mod:`http.client` is used to parse the headers and it requires that the
       HTTP request provide a valid :rfc:`2822` style header.
 
    .. attribute:: rfile
 
-      An :class:`io.BufferedIOBase` input stream, ready to read from
+      An :class:`io.BufferedIOBase` input stream, ready to read kutoka
       the start of the optional input data.
 
    .. attribute:: wfile
@@ -145,7 +145,7 @@ provides three different variants:
 
       Specifies a format string that should be used by :meth:`send_error` method
       for building an error response to the client. The string is filled by
-      default with variables from :attr:`responses` based on the status code
+      default with variables kutoka :attr:`responses` based on the status code
       that passed to :meth:`send_error`.
 
    .. attribute:: error_content_type
@@ -163,7 +163,7 @@ provides three different variants:
 
    .. attribute:: MessageClass
 
-      Specifies an :class:`email.message.Message`\ -like class to parse HTTP
+      Specifies an :class:`email.message.Message`\ -like kundi to parse HTTP
       headers.  Typically, this is not overridden, and it defaults to
       :class:`http.client.HTTPMessage`.
 
@@ -223,7 +223,7 @@ provides three different variants:
       Adds a response header to the headers buffer and logs the accepted
       request. The HTTP response line is written to the internal buffer,
       followed by *Server* and *Date* headers. The values for these two headers
-      are picked up from the :meth:`version_string` and
+      are picked up kutoka the :meth:`version_string` and
       :meth:`date_time_string` methods, respectively. If the server does not
       intend to send any other headers using the :meth:`send_header` method,
       then :meth:`send_response` should be followed by an :meth:`end_headers`
@@ -318,11 +318,11 @@ provides three different variants:
 
 .. class:: SimpleHTTPRequestHandler(request, client_address, server, directory=None)
 
-   This class serves files from the current directory and below, directly
+   This kundi serves files kutoka the current directory and below, directly
    mapping the directory structure to HTTP requests.
 
    A lot of the work, such as parsing the request, is done by the base class
-   :class:`BaseHTTPRequestHandler`.  This class implements the :func:`do_GET`
+   :class:`BaseHTTPRequestHandler`.  This kundi implements the :func:`do_GET`
    and :func:`do_HEAD` functions.
 
    The following are defined as class-level attributes of
@@ -344,7 +344,7 @@ provides three different variants:
 
       If not specified, the directory to serve is the current working directory.
 
-   The :class:`SimpleHTTPRequestHandler` class defines the following methods:
+   The :class:`SimpleHTTPRequestHandler` kundi defines the following methods:
 
    .. method:: do_HEAD()
 
@@ -386,12 +386,12 @@ provides three different variants:
       .. versionchanged:: 3.7
          Support of the ``'If-Modified-Since'`` header.
 
-The :class:`SimpleHTTPRequestHandler` class can be used in the following
+The :class:`SimpleHTTPRequestHandler` kundi can be used in the following
 manner in order to create a very basic webserver serving files relative to
 the current directory::
 
-   import http.server
-   import socketserver
+   agiza http.server
+   agiza socketserver
 
    PORT = 8000
 
@@ -433,18 +433,18 @@ the following command uses a specific directory::
 
 .. class:: CGIHTTPRequestHandler(request, client_address, server)
 
-   This class is used to serve either files or output of CGI scripts from the
+   This kundi is used to serve either files or output of CGI scripts kutoka the
    current directory and below. Note that mapping HTTP hierarchic structure to
    local directory structure is exactly as in :class:`SimpleHTTPRequestHandler`.
 
    .. note::
 
-      CGI scripts run by the :class:`CGIHTTPRequestHandler` class cannot execute
+      CGI scripts run by the :class:`CGIHTTPRequestHandler` kundi cannot execute
       redirects (HTTP code 302), because code 200 (script output follows) is
       sent prior to execution of the CGI script.  This pre-empts the status
       code.
 
-   The class will however, run the CGI script, instead of serving it as a file,
+   The kundi will however, run the CGI script, instead of serving it as a file,
    if it guesses it to be a CGI script.  Only directory-based CGI are used ---
    the other common server configuration is to treat special extensions as
    denoting CGI scripts.

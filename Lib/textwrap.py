@@ -14,7 +14,7 @@ __all__ = ['TextWrapper', 'wrap', 'fill', 'dedent', 'indent', 'shorten']
 # some Unicode spaces (like \u00a0) are non-breaking whitespaces.
 _whitespace = '\t\n\x0b\x0c\r '
 
-class TextWrapper:
+kundi TextWrapper:
     """
     Object for wrapping/filling text.  The public interface consists of
     the wrap() and fill() methods; the other methods are just there for
@@ -221,7 +221,7 @@ class TextWrapper:
         # Otherwise, we have to preserve the long word intact.  Only add
         # it to the current line if there's nothing already there --
         # that minimizes how much we violate the width constraint.
-        elif not cur_line:
+        lasivyo not cur_line:
             cur_line.append(reversed_chunks.pop())
 
         # If we're not allowed to break long words, and there's already
@@ -372,7 +372,7 @@ def wrap(text, width=70, **kwargs):
     more than 'width' columns, and return a list of wrapped lines.  By
     default, tabs in 'text' are expanded with string.expandtabs(), and
     all other whitespace characters (including newline) are converted to
-    space.  See TextWrapper class for available keyword args to customize
+    space.  See TextWrapper kundi for available keyword args to customize
     wrapping behaviour.
     """
     w = TextWrapper(width=width, **kwargs)
@@ -384,7 +384,7 @@ def fill(text, width=70, **kwargs):
     Reformat the single paragraph in 'text' to fit in lines of no more
     than 'width' columns, and return a new string containing the entire
     wrapped paragraph.  As with wrap(), tabs are expanded and other
-    whitespace characters converted to space.  See TextWrapper class for
+    whitespace characters converted to space.  See TextWrapper kundi for
     available keyword args to customize wrapping behaviour.
     """
     w = TextWrapper(width=width, **kwargs)
@@ -435,12 +435,12 @@ def dedent(text):
 
         # Current line more deeply indented than previous winner:
         # no change (previous winner is still on top).
-        elif indent.startswith(margin):
+        lasivyo indent.startswith(margin):
             pass
 
         # Current line consistent with and no deeper than previous winner:
         # it's the new winner.
-        elif margin.startswith(indent):
+        lasivyo margin.startswith(indent):
             margin = indent
 
         # Find the largest common whitespace between current line and previous

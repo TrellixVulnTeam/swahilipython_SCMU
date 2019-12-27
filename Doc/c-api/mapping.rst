@@ -43,14 +43,14 @@ See also :c:func:`PyObject_GetItem`, :c:func:`PyObject_SetItem` and
 
 .. c:function:: int PyMapping_DelItem(PyObject *o, PyObject *key)
 
-   Remove the mapping for the object *key* from the object *o*.  Return ``-1``
+   Remove the mapping for the object *key* kutoka the object *o*.  Return ``-1``
    on failure.  This is equivalent to the Python statement ``del o[key]``.
    This is an alias of :c:func:`PyObject_DelItem`.
 
 
 .. c:function:: int PyMapping_DelItemString(PyObject *o, const char *key)
 
-   Remove the mapping for the string *key* from the object *o*.  Return ``-1``
+   Remove the mapping for the string *key* kutoka the object *o*.  Return ``-1``
    on failure.  This is equivalent to the Python statement ``del o[key]``.
 
 

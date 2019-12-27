@@ -664,7 +664,7 @@ PyDoc_STRVAR(builtin_input__doc__,
 "If the user hits EOF (*nix: Ctrl-D, Windows: Ctrl-Z+Return), raise EOFError.\n"
 "On *nix systems, readline is used if available.");
 
-#define BUILTIN_INPUT_METHODDEF    \
+#define BUILTIN_ULIZA_METHODDEF    \
     {"input", (PyCFunction)(void(*)(void))builtin_input, METH_FASTCALL, builtin_input__doc__},
 
 static PyObject *

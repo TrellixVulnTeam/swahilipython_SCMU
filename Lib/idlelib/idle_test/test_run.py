@@ -9,12 +9,12 @@ agiza io
 agiza sys
 
 
-class RunTest(unittest.TestCase):
+kundi RunTest(unittest.TestCase):
 
-    def test_print_exception_unhashable(self):
-        class UnhashableException(Exception):
-            def __eq__(self, other):
-                return True
+    eleza test_print_exception_unhashable(self):
+        kundi UnhashableException(Exception):
+            eleza __eq__(self, other):
+                rudisha True
 
         ex1 = UnhashableException('ex1')
         ex2 = UnhashableException('ex2')
@@ -38,39 +38,39 @@ class RunTest(unittest.TestCase):
 
 # StdioFile tests.
 
-class S(str):
-    def __str__(self):
-        return '%s:str' % type(self).__name__
-    def __unicode__(self):
-        return '%s:unicode' % type(self).__name__
-    def __len__(self):
-        return 3
-    def __iter__(self):
-        return iter('abc')
-    def __getitem__(self, *args):
-        return '%s:item' % type(self).__name__
-    def __getslice__(self, *args):
-        return '%s:slice' % type(self).__name__
+kundi S(str):
+    eleza __str__(self):
+        rudisha '%s:str' % type(self).__name__
+    eleza __unicode__(self):
+        rudisha '%s:unicode' % type(self).__name__
+    eleza __len__(self):
+        rudisha 3
+    eleza __iter__(self):
+        rudisha iter('abc')
+    eleza __getitem__(self, *args):
+        rudisha '%s:item' % type(self).__name__
+    eleza __getslice__(self, *args):
+        rudisha '%s:slice' % type(self).__name__
 
 
-class MockShell:
-    def __init__(self):
+kundi MockShell:
+    eleza __init__(self):
         self.reset()
-    def write(self, *args):
+    eleza write(self, *args):
         self.written.append(args)
-    def readline(self):
-        return self.lines.pop()
-    def close(self):
+    eleza readline(self):
+        rudisha self.lines.pop()
+    eleza close(self):
         pass
-    def reset(self):
+    eleza reset(self):
         self.written = []
-    def push(self, lines):
+    eleza push(self, lines):
         self.lines = list(lines)[::-1]
 
 
-class StdInputFilesTest(unittest.TestCase):
+kundi StdInputFilesTest(unittest.TestCase):
 
-    def test_misc(self):
+    eleza test_misc(self):
         shell = MockShell()
         f = run.StdInputFile(shell, 'stdin')
         self.assertIsInstance(f, io.TextIOBase)
@@ -84,7 +84,7 @@ class StdInputFilesTest(unittest.TestCase):
         self.assertFalse(f.writable())
         self.assertFalse(f.seekable())
 
-    def test_unsupported(self):
+    eleza test_unsupported(self):
         shell = MockShell()
         f = run.StdInputFile(shell, 'stdin')
         self.assertRaises(OSError, f.fileno)
@@ -93,7 +93,7 @@ class StdInputFilesTest(unittest.TestCase):
         self.assertRaises(OSError, f.write, 'x')
         self.assertRaises(OSError, f.writelines, ['x'])
 
-    def test_read(self):
+    eleza test_read(self):
         shell = MockShell()
         f = run.StdInputFile(shell, 'stdin')
         shell.push(['one\n', 'two\n', ''])
@@ -113,7 +113,7 @@ class StdInputFilesTest(unittest.TestCase):
         self.assertRaises(TypeError, f.read, '1')
         self.assertRaises(TypeError, f.read, 1, 1)
 
-    def test_readline(self):
+    eleza test_readline(self):
         shell = MockShell()
         f = run.StdInputFile(shell, 'stdin')
         shell.push(['one\n', 'two\n', 'three\n', 'four\n'])
@@ -138,7 +138,7 @@ class StdInputFilesTest(unittest.TestCase):
         self.assertRaises(TypeError, f.readlines, '1')
         self.assertRaises(TypeError, f.readlines, 1, 1)
 
-    def test_readlines(self):
+    eleza test_readlines(self):
         shell = MockShell()
         f = run.StdInputFile(shell, 'stdin')
         shell.push(['one\n', 'two\n', ''])
@@ -159,7 +159,7 @@ class StdInputFilesTest(unittest.TestCase):
         self.assertRaises(TypeError, f.readlines, '1')
         self.assertRaises(TypeError, f.readlines, 1, 1)
 
-    def test_close(self):
+    eleza test_close(self):
         shell = MockShell()
         f = run.StdInputFile(shell, 'stdin')
         shell.push(['one\n', 'two\n', ''])
@@ -171,9 +171,9 @@ class StdInputFilesTest(unittest.TestCase):
         self.assertRaises(TypeError, f.close, 1)
 
 
-class StdOutputFilesTest(unittest.TestCase):
+kundi StdOutputFilesTest(unittest.TestCase):
 
-    def test_misc(self):
+    eleza test_misc(self):
         shell = MockShell()
         f = run.StdOutputFile(shell, 'stdout')
         self.assertIsInstance(f, io.TextIOBase)
@@ -187,7 +187,7 @@ class StdOutputFilesTest(unittest.TestCase):
         self.assertTrue(f.writable())
         self.assertFalse(f.seekable())
 
-    def test_unsupported(self):
+    eleza test_unsupported(self):
         shell = MockShell()
         f = run.StdOutputFile(shell, 'stdout')
         self.assertRaises(OSError, f.fileno)
@@ -196,7 +196,7 @@ class StdOutputFilesTest(unittest.TestCase):
         self.assertRaises(OSError, f.read, 0)
         self.assertRaises(OSError, f.readline, 0)
 
-    def test_write(self):
+    eleza test_write(self):
         shell = MockShell()
         f = run.StdOutputFile(shell, 'stdout')
         f.write('test')
@@ -219,7 +219,7 @@ class StdOutputFilesTest(unittest.TestCase):
         self.assertRaises(TypeError, f.write, 'test', 'spam')
         self.assertEqual(shell.written, [])
 
-    def test_write_stderr_nonencodable(self):
+    eleza test_write_stderr_nonencodable(self):
         shell = MockShell()
         f = run.StdOutputFile(shell, 'stderr', 'iso-8859-15', 'backslashreplace')
         f.write('t\xe8\u015b\U0001d599\xa4')
@@ -239,7 +239,7 @@ class StdOutputFilesTest(unittest.TestCase):
         self.assertRaises(TypeError, f.write, 'test', 'spam')
         self.assertEqual(shell.written, [])
 
-    def test_writelines(self):
+    eleza test_writelines(self):
         shell = MockShell()
         f = run.StdOutputFile(shell, 'stdout')
         f.writelines([])
@@ -269,7 +269,7 @@ class StdOutputFilesTest(unittest.TestCase):
         self.assertRaises(TypeError, f.writelines, [], [])
         self.assertEqual(shell.written, [])
 
-    def test_close(self):
+    eleza test_close(self):
         shell = MockShell()
         f = run.StdOutputFile(shell, 'stdout')
         self.assertFalse(f.closed)
@@ -282,9 +282,9 @@ class StdOutputFilesTest(unittest.TestCase):
         self.assertRaises(TypeError, f.close, 1)
 
 
-class TestSysRecursionLimitWrappers(unittest.TestCase):
+kundi TestSysRecursionLimitWrappers(unittest.TestCase):
 
-    def test_bad_setrecursionlimit_calls(self):
+    eleza test_bad_setrecursionlimit_calls(self):
         run.install_recursionlimit_wrappers()
         self.addCleanup(run.uninstall_recursionlimit_wrappers)
         f = sys.setrecursionlimit
@@ -292,7 +292,7 @@ class TestSysRecursionLimitWrappers(unittest.TestCase):
         self.assertRaises(TypeError, f, 100, 1000)
         self.assertRaises(ValueError, f, 0)
 
-    def test_roundtrip(self):
+    eleza test_roundtrip(self):
         run.install_recursionlimit_wrappers()
         self.addCleanup(run.uninstall_recursionlimit_wrappers)
 
@@ -305,15 +305,15 @@ class TestSysRecursionLimitWrappers(unittest.TestCase):
         new_reclimit = sys.getrecursionlimit()
         self.assertEqual(new_reclimit, orig_reclimit + 3)
 
-    def test_default_recursion_limit_preserved(self):
+    eleza test_default_recursion_limit_preserved(self):
         orig_reclimit = sys.getrecursionlimit()
         run.install_recursionlimit_wrappers()
         self.addCleanup(run.uninstall_recursionlimit_wrappers)
         new_reclimit = sys.getrecursionlimit()
         self.assertEqual(new_reclimit, orig_reclimit)
 
-    def test_fixdoc(self):
-        def func(): "docstring"
+    eleza test_fixdoc(self):
+        eleza func(): "docstring"
         run.fixdoc(func, "more")
         self.assertEqual(func.__doc__, "docstring\n\nmore")
         func.__doc__ = None
@@ -321,5 +321,5 @@ class TestSysRecursionLimitWrappers(unittest.TestCase):
         self.assertEqual(func.__doc__, "more")
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -5,37 +5,37 @@ agiza unittest
 kutoka collections agiza namedtuple
 
 
-class ParseMapTest(unittest.TestCase):
+kundi ParseMapTest(unittest.TestCase):
 
-    def test_parsemap(self):
+    eleza test_parsemap(self):
         keepwhite = {ord(c): ord(c) for c in ' \t\n\r'}
         mapping = pyparse.ParseMap(keepwhite)
         self.assertEqual(mapping[ord('\t')], ord('\t'))
         self.assertEqual(mapping[ord('a')], ord('x'))
         self.assertEqual(mapping[1000], ord('x'))
 
-    def test_trans(self):
+    eleza test_trans(self):
         # trans is the production instance of ParseMap, used in _study1
         parser = pyparse.Parser(4, 4)
         self.assertEqual('\t a([{b}])b"c\'d\n'.translate(pyparse.trans),
                           'xxx(((x)))x"x\'x\n')
 
 
-class PyParseTest(unittest.TestCase):
+kundi PyParseTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.parser = pyparse.Parser(indentwidth=4, tabwidth=4)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         del cls.parser
 
-    def test_init(self):
+    eleza test_init(self):
         self.assertEqual(self.parser.indentwidth, 4)
         self.assertEqual(self.parser.tabwidth, 4)
 
-    def test_set_code(self):
+    eleza test_set_code(self):
         eq = self.assertEqual
         p = self.parser
         setcode = p.set_code
@@ -53,16 +53,16 @@ class PyParseTest(unittest.TestCase):
                 eq(p.code, string)
                 eq(p.study_level, 0)
 
-    def test_find_good_parse_start(self):
+    eleza test_find_good_parse_start(self):
         eq = self.assertEqual
         p = self.parser
         setcode = p.set_code
         start = p.find_good_parse_start
 
-        # Split def across lines.
+        # Split eleza across lines.
         setcode('"""This is a module docstring"""\n'
-               'class C():\n'
-               '    def __init__(self, a,\n'
+               'kundi C():\n'
+               '    eleza __init__(self, a,\n'
                '                 b=True):\n'
                '        pass\n'
                )
@@ -78,35 +78,35 @@ class PyParseTest(unittest.TestCase):
         # found a good start position.
         eq(start(is_char_in_string=lambda index: False), 44)
 
-        # If the beginning of the def line is not in a string, then it
+        # If the beginning of the eleza line is not in a string, then it
         # returns that as the index.
         eq(start(is_char_in_string=lambda index: index > 44), 44)
-        # If the beginning of the def line is in a string, then it
+        # If the beginning of the eleza line is in a string, then it
         # looks for a previous index.
         eq(start(is_char_in_string=lambda index: index >= 44), 33)
         # If everything before the 'def' is in a string, then returns None.
-        # The non-continuation def line returns 44 (see below).
+        # The non-continuation eleza line returns 44 (see below).
         eq(start(is_char_in_string=lambda index: index < 44), None)
 
-        # Code without extra line break in def line - mostly returns the same
+        # Code without extra line break in eleza line - mostly returns the same
         # values.
         setcode('"""This is a module docstring"""\n'
-               'class C():\n'
-               '    def __init__(self, a, b=True):\n'
+               'kundi C():\n'
+               '    eleza __init__(self, a, b=True):\n'
                '        pass\n'
                )
         eq(start(is_char_in_string=lambda index: False), 44)
         eq(start(is_char_in_string=lambda index: index > 44), 44)
         eq(start(is_char_in_string=lambda index: index >= 44), 33)
-        # When the def line isn't split, this returns which doesn't match the
+        # When the eleza line isn't split, this returns which doesn't match the
         # split line test.
         eq(start(is_char_in_string=lambda index: index < 44), 44)
 
-    def test_set_lo(self):
+    eleza test_set_lo(self):
         code = (
                 '"""This is a module docstring"""\n'
-                'class C():\n'
-                '    def __init__(self, a,\n'
+                'kundi C():\n'
+                '    eleza __init__(self, a,\n'
                 '                 b=True):\n'
                 '        pass\n'
                 )
@@ -125,7 +125,7 @@ class PyParseTest(unittest.TestCase):
         p.set_lo(44)
         self.assertEqual(p.code, code[44:])
 
-    def test_study1(self):
+    eleza test_study1(self):
         eq = self.assertEqual
         p = self.parser
         setcode = p.set_code
@@ -154,10 +154,10 @@ class PyParseTest(unittest.TestCase):
             TestInfo('("""Complete string in bracket"""\n', [0, 1], BRACKET),
             TestInfo('("""Open string in bracket\n', [0, 1], FIRST),
             TestInfo('a = (1 + 2) - 5 *\\\n', [0, 1], BACKSLASH),  # No bracket.
-            TestInfo('\n   def function1(self, a,\n                 b):\n',
+            TestInfo('\n   eleza function1(self, a,\n                 b):\n',
                      [0, 1, 3], NONE),
-            TestInfo('\n   def function1(self, a,\\\n', [0, 1, 2], BRACKET),
-            TestInfo('\n   def function1(self, a,\n', [0, 1, 2], BRACKET),
+            TestInfo('\n   eleza function1(self, a,\\\n', [0, 1, 2], BRACKET),
+            TestInfo('\n   eleza function1(self, a,\n', [0, 1, 2], BRACKET),
             TestInfo('())\n', [0, 1], NONE),                    # Extra closer.
             TestInfo(')(\n', [0, 1], BRACKET),                  # Extra closer.
             # For the mismatched example, it doesn't look like continuation.
@@ -175,7 +175,7 @@ class PyParseTest(unittest.TestCase):
         # Called again, just returns without reprocessing.
         self.assertIsNone(study())
 
-    def test_get_continuation_type(self):
+    eleza test_get_continuation_type(self):
         eq = self.assertEqual
         p = self.parser
         setcode = p.set_code
@@ -188,7 +188,7 @@ class PyParseTest(unittest.TestCase):
             TestInfo('"""This is a continuation docstring.\n', FIRST),
             TestInfo("'''This is a multiline-continued docstring.\n\n", NEXT),
             TestInfo('a = (1 + 2) - 5 *\\\n', BACKSLASH),
-            TestInfo('\n   def function1(self, a,\\\n', BRACKET)
+            TestInfo('\n   eleza function1(self, a,\\\n', BRACKET)
             )
 
         for test in tests:
@@ -196,7 +196,7 @@ class PyParseTest(unittest.TestCase):
                 setcode(test.string)
                 eq(gettype(), test.continuation)
 
-    def test_study2(self):
+    eleza test_study2(self):
         eq = self.assertEqual
         p = self.parser
         setcode = p.set_code
@@ -217,16 +217,16 @@ class PyParseTest(unittest.TestCase):
             TestInfo('a = (1 + 2) - 5 *\\\n',
                      0, 19, '*', None, ((0, 0), (4, 1), (11, 0))),
             # Bracket continuation with close.
-            TestInfo('\n   def function1(self, a,\n                 b):\n',
+            TestInfo('\n   eleza function1(self, a,\n                 b):\n',
                      1, 48, ':', None, ((1, 0), (17, 1), (46, 0))),
             # Bracket continuation with unneeded backslash.
-            TestInfo('\n   def function1(self, a,\\\n',
+            TestInfo('\n   eleza function1(self, a,\\\n',
                      1, 28, ',', 17, ((1, 0), (17, 1))),
             # Bracket continuation.
-            TestInfo('\n   def function1(self, a,\n',
+            TestInfo('\n   eleza function1(self, a,\n',
                      1, 27, ',', 17, ((1, 0), (17, 1))),
             # Bracket continuation with comment at end of line with text.
-            TestInfo('\n   def function1(self, a,  # End of line comment.\n',
+            TestInfo('\n   eleza function1(self, a,  # End of line comment.\n',
                      1, 51, ',', 17, ((1, 0), (17, 1), (28, 2), (51, 1))),
             # Multi-line statement with comment line in between code lines.
             TestInfo('  a = ["first item",\n  # Comment line\n    "next item",\n',
@@ -257,7 +257,7 @@ class PyParseTest(unittest.TestCase):
         # Called again, just returns without reprocessing.
         self.assertIsNone(study())
 
-    def test_get_num_lines_in_stmt(self):
+    eleza test_get_num_lines_in_stmt(self):
         eq = self.assertEqual
         p = self.parser
         setcode = p.set_code
@@ -285,7 +285,7 @@ class PyParseTest(unittest.TestCase):
                 setcode(test.string)
                 eq(getlines(), test.lines)
 
-    def test_compute_bracket_indent(self):
+    eleza test_compute_bracket_indent(self):
         eq = self.assertEqual
         p = self.parser
         setcode = p.set_code
@@ -293,14 +293,14 @@ class PyParseTest(unittest.TestCase):
 
         TestInfo = namedtuple('TestInfo', ['string', 'spaces'])
         tests = (
-            TestInfo('def function1(self, a,\n', 14),
+            TestInfo('eleza function1(self, a,\n', 14),
             # Characters after bracket.
-            TestInfo('\n    def function1(self, a,\n', 18),
-            TestInfo('\n\tdef function1(self, a,\n', 18),
+            TestInfo('\n    eleza function1(self, a,\n', 18),
+            TestInfo('\n\teleza function1(self, a,\n', 18),
             # No characters after bracket.
-            TestInfo('\n    def function1(\n', 8),
-            TestInfo('\n\tdef function1(\n', 8),
-            TestInfo('\n    def function1(  \n', 8),  # Ignore extra spaces.
+            TestInfo('\n    eleza function1(\n', 8),
+            TestInfo('\n\teleza function1(\n', 8),
+            TestInfo('\n    eleza function1(  \n', 8),  # Ignore extra spaces.
             TestInfo('[\n"first item",\n  # Comment line\n    "next item",\n', 0),
             TestInfo('[\n  "first item",\n  # Comment line\n    "next item",\n', 2),
             TestInfo('["first item",\n  # Comment line\n    "next item",\n', 1),
@@ -309,7 +309,7 @@ class PyParseTest(unittest.TestCase):
              )
 
         # Must be C_BRACKET continuation type.
-        setcode('def function1(self, a, b):\n')
+        setcode('eleza function1(self, a, b):\n')
         with self.assertRaises(AssertionError):
             indent()
 
@@ -317,14 +317,14 @@ class PyParseTest(unittest.TestCase):
             setcode(test.string)
             eq(indent(), test.spaces)
 
-    def test_compute_backslash_indent(self):
+    eleza test_compute_backslash_indent(self):
         eq = self.assertEqual
         p = self.parser
         setcode = p.set_code
         indent = p.compute_backslash_indent
 
         # Must be C_BACKSLASH continuation type.
-        errors = (('def function1(self, a, b\\\n'),  # Bracket.
+        errors = (('eleza function1(self, a, b\\\n'),  # Bracket.
                   ('    """ (\\\n'),                 # Docstring.
                   ('a = #\\\n'),                     # Inline comment.
                   )
@@ -356,7 +356,7 @@ class PyParseTest(unittest.TestCase):
                 setcode(test.string)
                 eq(indent(), test.spaces)
 
-    def test_get_base_indent_string(self):
+    eleza test_get_base_indent_string(self):
         eq = self.assertEqual
         p = self.parser
         setcode = p.set_code
@@ -364,11 +364,11 @@ class PyParseTest(unittest.TestCase):
 
         TestInfo = namedtuple('TestInfo', ['string', 'indent'])
         tests = (TestInfo('', ''),
-                 TestInfo('def a():\n', ''),
-                 TestInfo('\tdef a():\n', '\t'),
-                 TestInfo('    def a():\n', '    '),
-                 TestInfo('    def a(\n', '    '),
-                 TestInfo('\t\n    def a(\n', '    '),
+                 TestInfo('eleza a():\n', ''),
+                 TestInfo('\teleza a():\n', '\t'),
+                 TestInfo('    eleza a():\n', '    '),
+                 TestInfo('    eleza a(\n', '    '),
+                 TestInfo('\t\n    eleza a(\n', '    '),
                  TestInfo('\t\n    # Comment.\n', '    '),
                  )
 
@@ -377,7 +377,7 @@ class PyParseTest(unittest.TestCase):
                 setcode(test.string)
                 eq(baseindent(), test.indent)
 
-    def test_is_block_opener(self):
+    eleza test_is_block_opener(self):
         yes = self.assertTrue
         no = self.assertFalse
         p = self.parser
@@ -386,15 +386,15 @@ class PyParseTest(unittest.TestCase):
 
         TestInfo = namedtuple('TestInfo', ['string', 'assert_'])
         tests = (
-            TestInfo('def a():\n', yes),
-            TestInfo('\n   def function1(self, a,\n                 b):\n', yes),
+            TestInfo('eleza a():\n', yes),
+            TestInfo('\n   eleza function1(self, a,\n                 b):\n', yes),
             TestInfo(':\n', yes),
             TestInfo('a:\n', yes),
             TestInfo('):\n', yes),
             TestInfo('(:\n', yes),
             TestInfo('":\n', no),
-            TestInfo('\n   def function1(self, a,\n', no),
-            TestInfo('def function1(self, a):\n    pass\n', no),
+            TestInfo('\n   eleza function1(self, a,\n', no),
+            TestInfo('eleza function1(self, a):\n    pass\n', no),
             TestInfo('# A comment:\n', no),
             TestInfo('"""A docstring:\n', no),
             TestInfo('"""A docstring:\n', no),
@@ -405,7 +405,7 @@ class PyParseTest(unittest.TestCase):
                 setcode(test.string)
                 test.assert_(opener())
 
-    def test_is_block_closer(self):
+    eleza test_is_block_closer(self):
         yes = self.assertTrue
         no = self.assertFalse
         p = self.parser
@@ -420,13 +420,13 @@ class PyParseTest(unittest.TestCase):
             TestInfo('     raise\n', yes),
             TestInfo('pass    \n', yes),
             TestInfo('pass\t\n', yes),
-            TestInfo('return #\n', yes),
+            TestInfo('rudisha #\n', yes),
             TestInfo('raised\n', no),
             TestInfo('returning\n', no),
             TestInfo('# return\n', no),
             TestInfo('"""break\n', no),
             TestInfo('"continue\n', no),
-            TestInfo('def function1(self, a):\n    pass\n', yes),
+            TestInfo('eleza function1(self, a):\n    pass\n', yes),
             )
 
         for test in tests:
@@ -434,7 +434,7 @@ class PyParseTest(unittest.TestCase):
                 setcode(test.string)
                 test.assert_(closer())
 
-    def test_get_last_stmt_bracketing(self):
+    eleza test_get_last_stmt_bracketing(self):
         eq = self.assertEqual
         p = self.parser
         setcode = p.set_code
@@ -462,5 +462,5 @@ class PyParseTest(unittest.TestCase):
                 eq(bracketing(), test.bracket)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

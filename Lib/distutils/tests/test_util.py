@@ -15,7 +15,7 @@ from distutils import util # used to patch _environ_checked
 from distutils.sysconfig import get_config_vars
 from distutils import sysconfig
 from distutils.tests import support
-import _osx_support
+agiza _osx_support
 
 class UtilTestCase(support.EnvironGuard, unittest.TestCase):
 

@@ -6,14 +6,14 @@ agiza copy
 
 kutoka tkinter agiza OptionMenu, _setit, StringVar, Button
 
-class DynOptionMenu(OptionMenu):
+kundi DynOptionMenu(OptionMenu):
     """
     unlike OptionMenu, our kwargs can include highlightthickness
     """
-    def __init__(self, master, variable, value, *values, **kwargs):
+    eleza __init__(self, master, variable, value, *values, **kwargs):
         # TODO copy value instead of whole dict
         kwargsCopy=copy.copy(kwargs)
-        if 'highlightthickness' in list(kwargs.keys()):
+        ikiwa 'highlightthickness' in list(kwargs.keys()):
             del(kwargs['highlightthickness'])
         OptionMenu.__init__(self, master, variable, value, *values, **kwargs)
         self.config(highlightthickness=kwargsCopy.get('highlightthickness'))
@@ -21,7 +21,7 @@ class DynOptionMenu(OptionMenu):
         self.variable=variable
         self.command=kwargs.get('command')
 
-    def SetMenu(self,valueList,value=None):
+    eleza SetMenu(self,valueList,value=None):
         """
         clear and reload the menu with a new set of options.
         valueList - list of new options
@@ -31,10 +31,10 @@ class DynOptionMenu(OptionMenu):
         for item in valueList:
             self['menu'].add_command(label=item,
                     command=_setit(self.variable,item,self.command))
-        if value:
+        ikiwa value:
             self.variable.set(value)
 
-def _dyn_option_menu(parent):  # htest #
+eleza _dyn_option_menu(parent):  # htest #
     kutoka tkinter agiza Toplevel # + StringVar, Button
 
     top = Toplevel(parent)
@@ -48,11 +48,11 @@ def _dyn_option_menu(parent):  # htest #
     dyn = DynOptionMenu(top,var, "old1","old2","old3","old4")
     dyn.pack()
 
-    def update():
+    eleza update():
         dyn.SetMenu(["new1","new2","new3","new4"], value="new option set")
     button = Button(top, text="Change option set", command=update)
     button.pack()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka idlelib.idle_test.htest agiza run
     run(_dyn_option_menu)

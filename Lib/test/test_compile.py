@@ -9,28 +9,28 @@ agiza types
 kutoka test agiza support
 kutoka test.support agiza script_helper, FakePath
 
-class TestSpecifics(unittest.TestCase):
+kundi TestSpecifics(unittest.TestCase):
 
-    def compile_single(self, source):
+    eleza compile_single(self, source):
         compile(source, "<single>", "single")
 
-    def assertInvalidSingle(self, source):
+    eleza assertInvalidSingle(self, source):
         self.assertRaises(SyntaxError, self.compile_single, source)
 
-    def test_no_ending_newline(self):
+    eleza test_no_ending_newline(self):
         compile("hi", "<test>", "exec")
         compile("hi\r", "<test>", "exec")
 
-    def test_empty(self):
+    eleza test_empty(self):
         compile("", "<test>", "exec")
 
-    def test_other_newlines(self):
+    eleza test_other_newlines(self):
         compile("\r\n", "<test>", "exec")
         compile("\r", "<test>", "exec")
-        compile("hi\r\nstuff\r\ndef f():\n    pass\r", "<test>", "exec")
-        compile("this_is\rreally_old_mac\rdef f():\n    pass", "<test>", "exec")
+        compile("hi\r\nstuff\r\neleza f():\n    pass\r", "<test>", "exec")
+        compile("this_is\rreally_old_mac\releza f():\n    pass", "<test>", "exec")
 
-    def test_debug_assignment(self):
+    eleza test_debug_assignment(self):
         # catch assignments to __debug__
         self.assertRaises(SyntaxError, compile, '__debug__ = 1', '?', 'single')
         agiza builtins
@@ -39,36 +39,36 @@ class TestSpecifics(unittest.TestCase):
         self.assertEqual(__debug__, prev)
         setattr(builtins, '__debug__', prev)
 
-    def test_argument_handling(self):
+    eleza test_argument_handling(self):
         # detect duplicate positional and keyword arguments
         self.assertRaises(SyntaxError, eval, 'lambda a,a:0')
         self.assertRaises(SyntaxError, eval, 'lambda a,a=1:0')
         self.assertRaises(SyntaxError, eval, 'lambda a=1,a=1:0')
-        self.assertRaises(SyntaxError, exec, 'def f(a, a): pass')
-        self.assertRaises(SyntaxError, exec, 'def f(a = 0, a = 1): pass')
-        self.assertRaises(SyntaxError, exec, 'def f(a): global a; a = 1')
+        self.assertRaises(SyntaxError, exec, 'eleza f(a, a): pass')
+        self.assertRaises(SyntaxError, exec, 'eleza f(a = 0, a = 1): pass')
+        self.assertRaises(SyntaxError, exec, 'eleza f(a): global a; a = 1')
 
-    def test_syntax_error(self):
+    eleza test_syntax_error(self):
         self.assertRaises(SyntaxError, compile, "1+*3", "filename", "exec")
 
-    def test_none_keyword_arg(self):
+    eleza test_none_keyword_arg(self):
         self.assertRaises(SyntaxError, compile, "f(None=1)", "<string>", "exec")
 
-    def test_duplicate_global_local(self):
-        self.assertRaises(SyntaxError, exec, 'def f(a): global a; a = 1')
+    eleza test_duplicate_global_local(self):
+        self.assertRaises(SyntaxError, exec, 'eleza f(a): global a; a = 1')
 
-    def test_exec_with_general_mapping_for_locals(self):
+    eleza test_exec_with_general_mapping_for_locals(self):
 
-        class M:
+        kundi M:
             "Test mapping interface versus possible calls kutoka eval()."
-            def __getitem__(self, key):
-                if key == 'a':
-                    return 12
+            eleza __getitem__(self, key):
+                ikiwa key == 'a':
+                    rudisha 12
                 raise KeyError
-            def __setitem__(self, key, value):
+            eleza __setitem__(self, key, value):
                 self.results = (key, value)
-            def keys(self):
-                return list('xyz')
+            eleza keys(self):
+                rudisha list('xyz')
 
         m = M()
         g = globals()
@@ -88,27 +88,27 @@ class TestSpecifics(unittest.TestCase):
         self.assertEqual(m.results, ('z', m))
         self.assertRaises(TypeError, exec, 'z = b', m)
 
-        class A:
+        kundi A:
             "Non-mapping"
             pass
         m = A()
         self.assertRaises(TypeError, exec, 'z = a', g, m)
 
         # Verify that dict subclasses work as well
-        class D(dict):
-            def __getitem__(self, key):
-                if key == 'a':
-                    return 12
-                return dict.__getitem__(self, key)
+        kundi D(dict):
+            eleza __getitem__(self, key):
+                ikiwa key == 'a':
+                    rudisha 12
+                rudisha dict.__getitem__(self, key)
         d = D()
         exec('z = a', g, d)
         self.assertEqual(d['z'], 12)
 
-    def test_extended_arg(self):
+    eleza test_extended_arg(self):
         longexpr = 'x = x or ' + '-x' * 2500
         g = {}
         code = '''
-def f(x):
+eleza f(x):
     %s
     %s
     %s
@@ -123,26 +123,26 @@ def f(x):
     while x:
         x -= 1
         # EXTENDED_ARG/JUMP_ABSOLUTE here
-    return x
+    rudisha x
 ''' % ((longexpr,)*10)
         exec(code, g)
         self.assertEqual(g['f'](5), 0)
 
-    def test_argument_order(self):
-        self.assertRaises(SyntaxError, exec, 'def f(a=1, b): pass')
+    eleza test_argument_order(self):
+        self.assertRaises(SyntaxError, exec, 'eleza f(a=1, b): pass')
 
-    def test_float_literals(self):
+    eleza test_float_literals(self):
         # testing bad float literals
         self.assertRaises(SyntaxError, eval, "2e")
         self.assertRaises(SyntaxError, eval, "2.0e+")
         self.assertRaises(SyntaxError, eval, "1e-")
         self.assertRaises(SyntaxError, eval, "3-4e/21")
 
-    def test_indentation(self):
+    eleza test_indentation(self):
         # testing compile() of indented block w/o trailing newline"
         s = """
-if 1:
-    if 2:
+ikiwa 1:
+    ikiwa 2:
         pass"""
         compile(s, "<string>", "exec")
 
@@ -150,13 +150,13 @@ if 1:
     # to other implementations.  We are trying to ensure that when
     # the first line of code starts after 256, correct line numbers
     # in tracebacks are still produced.
-    def test_leading_newlines(self):
+    eleza test_leading_newlines(self):
         s256 = "".join(["\n"] * 256 + ["spam"])
         co = compile(s256, 'fn', 'exec')
         self.assertEqual(co.co_firstlineno, 257)
         self.assertEqual(co.co_lnotab, bytes())
 
-    def test_literals_with_leading_zeroes(self):
+    eleza test_literals_with_leading_zeroes(self):
         for arg in ["077787", "0xj", "0x.", "0e",  "090000000000000",
                     "080000000000000", "000000000000009", "000000000000008",
                     "0b42", "0BADCAFE", "0o123456789", "0b1.1", "0o4.2",
@@ -189,14 +189,14 @@ if 1:
         self.assertEqual(eval("0o777"), 511)
         self.assertEqual(eval("-0o0000010"), -8)
 
-    def test_unary_minus(self):
+    eleza test_unary_minus(self):
         # Verify treatment of unary minus on negative numbers SF bug #660455
-        if sys.maxsize == 2147483647:
+        ikiwa sys.maxsize == 2147483647:
             # 32-bit machine
             all_one_bits = '0xffffffff'
             self.assertEqual(eval(all_one_bits), 4294967295)
             self.assertEqual(eval("-" + all_one_bits), -4294967295)
-        elif sys.maxsize == 9223372036854775807:
+        elikiwa sys.maxsize == 9223372036854775807:
             # 64-bit machine
             all_one_bits = '0xffffffffffffffff'
             self.assertEqual(eval(all_one_bits), 18446744073709551615)
@@ -204,12 +204,12 @@ if 1:
         else:
             self.fail("How many bits *does* this machine have???")
         # Verify treatment of constant folding on -(sys.maxsize+1)
-        # i.e. -2147483648 on 32 bit platforms.  Should return int.
+        # i.e. -2147483648 on 32 bit platforms.  Should rudisha int.
         self.assertIsInstance(eval("%s" % (-sys.maxsize - 1)), int)
         self.assertIsInstance(eval("%s" % (-sys.maxsize - 2)), int)
 
-    if sys.maxsize == 9223372036854775807:
-        def test_32_63_bit_values(self):
+    ikiwa sys.maxsize == 9223372036854775807:
+        eleza test_32_63_bit_values(self):
             a = +4294967296  # 1 << 32
             b = -4294967296  # 1 << 32
             c = +281474976710656  # 1 << 48
@@ -220,25 +220,25 @@ if 1:
             h = -9223372036854775807  # 1 << 63 - 1
 
             for variable in self.test_32_63_bit_values.__code__.co_consts:
-                if variable is not None:
+                ikiwa variable is not None:
                     self.assertIsInstance(variable, int)
 
-    def test_sequence_unpacking_error(self):
+    eleza test_sequence_unpacking_error(self):
         # Verify sequence packing/unpacking with "or".  SF bug #757818
         i,j = (1, -1) or (-1, 1)
         self.assertEqual(i, 1)
         self.assertEqual(j, -1)
 
-    def test_none_assignment(self):
+    eleza test_none_assignment(self):
         stmts = [
             'None = 0',
             'None += 0',
             '__builtins__.None = 0',
-            'def None(): pass',
-            'class None: pass',
+            'eleza None(): pass',
+            'kundi None: pass',
             '(a, None) = 0, 0',
             'for None in range(10): pass',
-            'def f(None): pass',
+            'eleza f(None): pass',
             'agiza None',
             'agiza x as None',
             'kutoka x agiza None',
@@ -249,7 +249,7 @@ if 1:
             self.assertRaises(SyntaxError, compile, stmt, 'tmp', 'single')
             self.assertRaises(SyntaxError, compile, stmt, 'tmp', 'exec')
 
-    def test_agiza(self):
+    eleza test_agiza(self):
         succeed = [
             'agiza sys',
             'agiza os, sys',
@@ -296,20 +296,20 @@ if 1:
         for stmt in fail:
             self.assertRaises(SyntaxError, compile, stmt, 'tmp', 'exec')
 
-    def test_for_distinct_code_objects(self):
+    eleza test_for_distinct_code_objects(self):
         # SF bug 1048870
-        def f():
+        eleza f():
             f1 = lambda x=1: x
             f2 = lambda x=2: x
-            return f1, f2
+            rudisha f1, f2
         f1, f2 = f()
         self.assertNotEqual(id(f1.__code__), id(f2.__code__))
 
-    def test_lambda_doc(self):
+    eleza test_lambda_doc(self):
         l = lambda: "foo"
         self.assertIsNone(l.__doc__)
 
-    def test_encoding(self):
+    eleza test_encoding(self):
         code = b'# -*- coding: badencoding -*-\npass\n'
         self.assertRaises(SyntaxError, compile, code, 'tmp', 'exec')
         code = '# -*- coding: badencoding -*-\n"\xc2\xa4"\n'
@@ -330,20 +330,20 @@ if 1:
         code = b'"""\\\n# -*- coding: iso8859-15 -*-\n\xc2\xa4"""\n'
         self.assertEqual(eval(code), '# -*- coding: iso8859-15 -*-\n\xa4')
 
-    def test_subscripts(self):
+    eleza test_subscripts(self):
         # SF bug 1448804
         # Class to make testing subscript results easy
-        class str_map(object):
-            def __init__(self):
+        kundi str_map(object):
+            eleza __init__(self):
                 self.data = {}
-            def __getitem__(self, key):
-                return self.data[str(key)]
-            def __setitem__(self, key, value):
+            eleza __getitem__(self, key):
+                rudisha self.data[str(key)]
+            eleza __setitem__(self, key, value):
                 self.data[str(key)] = value
-            def __delitem__(self, key):
+            eleza __delitem__(self, key):
                 del self.data[str(key)]
-            def __contains__(self, key):
-                return str(key) in self.data
+            eleza __contains__(self, key):
+                rudisha str(key) in self.data
         d = str_map()
         # Index
         d[1] = 1
@@ -402,15 +402,15 @@ if 1:
         del d[..., ...]
         self.assertNotIn((Ellipsis, Ellipsis), d)
 
-    def test_annotation_limit(self):
+    eleza test_annotation_limit(self):
         # more than 255 annotations, should compile ok
-        s = "def f(%s): pass"
+        s = "eleza f(%s): pass"
         s %= ', '.join('a%d:%d' % (i,i) for i in range(300))
         compile(s, '?', 'exec')
 
-    def test_mangling(self):
-        class A:
-            def f():
+    eleza test_mangling(self):
+        kundi A:
+            eleza f():
                 __mangled = 1
                 __not_mangled__ = 2
                 agiza __mangled_mod
@@ -421,17 +421,17 @@ if 1:
         self.assertIn("_A__mangled_mod", A.f.__code__.co_varnames)
         self.assertIn("__package__", A.f.__code__.co_varnames)
 
-    def test_compile_ast(self):
+    eleza test_compile_ast(self):
         fname = __file__
-        if fname.lower().endswith('pyc'):
+        ikiwa fname.lower().endswith('pyc'):
             fname = fname[:-1]
         with open(fname, 'r') as f:
             fcontents = f.read()
         sample_code = [
             ['<assign>', 'x = 5'],
-            ['<ifblock>', """if True:\n    pass\n"""],
-            ['<forblock>', """for n in [1, 2, 3]:\n    print(n)\n"""],
-            ['<deffunc>', """def foo():\n    pass\nfoo()\n"""],
+            ['<ifblock>', """ikiwa True:\n    pass\n"""],
+            ['<forblock>', """for n in [1, 2, 3]:\n    andika(n)\n"""],
+            ['<deffunc>', """eleza foo():\n    pass\nfoo()\n"""],
             [fname, fcontents],
         ]
 
@@ -445,7 +445,7 @@ if 1:
             self.assertEqual(co2.co_filename, '%s3' % fname)
 
         # raise exception when node type doesn't match with compile mode
-        co1 = compile('print(1)', '<string>', 'exec', _ast.PyCF_ONLY_AST)
+        co1 = compile('andika(1)', '<string>', 'exec', _ast.PyCF_ONLY_AST)
         self.assertRaises(TypeError, compile, co1, '<ast>', 'eval')
 
         # raise exception when node type is no start node
@@ -456,18 +456,18 @@ if 1:
         ast.body = [_ast.BoolOp()]
         self.assertRaises(TypeError, compile, ast, '<ast>', 'exec')
 
-    def test_dict_evaluation_order(self):
+    eleza test_dict_evaluation_order(self):
         i = 0
 
-        def f():
+        eleza f():
             nonlocal i
             i += 1
-            return i
+            rudisha i
 
         d = {f(): f(), f(): f()}
         self.assertEqual(d, {1: 2, 3: 4})
 
-    def test_compile_filename(self):
+    eleza test_compile_filename(self):
         for filename in 'file.py', b'file.py':
             code = compile('pass', filename, 'exec')
             self.assertEqual(code.co_filename, 'file.py')
@@ -478,14 +478,14 @@ if 1:
         self.assertRaises(TypeError, compile, 'pass', list(b'file.py'), 'exec')
 
     @support.cpython_only
-    def test_same_filename_used(self):
-        s = """def f(): pass\ndef g(): pass"""
+    eleza test_same_filename_used(self):
+        s = """eleza f(): pass\neleza g(): pass"""
         c = compile(s, "myfile", "exec")
         for obj in c.co_consts:
-            if isinstance(obj, types.CodeType):
+            ikiwa isinstance(obj, types.CodeType):
                 self.assertIs(obj.co_filename, c.co_filename)
 
-    def test_single_statement(self):
+    eleza test_single_statement(self):
         self.compile_single("1 + 2")
         self.compile_single("\n1 + 2")
         self.compile_single("1 + 2\n")
@@ -495,15 +495,15 @@ if 1:
         self.compile_single("1 + 2 # one plus two")
         self.compile_single("1; 2")
         self.compile_single("agiza sys; sys")
-        self.compile_single("def f():\n   pass")
+        self.compile_single("eleza f():\n   pass")
         self.compile_single("while False:\n   pass")
-        self.compile_single("if x:\n   f(x)")
-        self.compile_single("if x:\n   f(x)\nelse:\n   g(x)")
-        self.compile_single("class T:\n   pass")
+        self.compile_single("ikiwa x:\n   f(x)")
+        self.compile_single("ikiwa x:\n   f(x)\nelse:\n   g(x)")
+        self.compile_single("kundi T:\n   pass")
 
-    def test_bad_single_statement(self):
+    eleza test_bad_single_statement(self):
         self.assertInvalidSingle('1\n2')
-        self.assertInvalidSingle('def f(): pass')
+        self.assertInvalidSingle('eleza f(): pass')
         self.assertInvalidSingle('a = 13\nb = 187')
         self.assertInvalidSingle('del x\ndel y')
         self.assertInvalidSingle('f()\ng()')
@@ -511,7 +511,7 @@ if 1:
         self.assertInvalidSingle('f()\nxy # blah\nblah()')
         self.assertInvalidSingle('x = 5 # comment\nx = 6\n')
 
-    def test_particularly_evil_undecodable(self):
+    eleza test_particularly_evil_undecodable(self):
         # Issue 24022
         src = b'0000\x00\n00000000000\n\x00\n\x9e\n'
         with tempfile.TemporaryDirectory() as tmpd:
@@ -521,7 +521,7 @@ if 1:
             res = script_helper.run_python_until_end(fn)[0]
         self.assertIn(b"Non-UTF-8", res.err)
 
-    def test_yet_more_evil_still_undecodable(self):
+    eleza test_yet_more_evil_still_undecodable(self):
         # Issue #25388
         src = b"#\x00\n#\xfd\n"
         with tempfile.TemporaryDirectory() as tmpd:
@@ -532,7 +532,7 @@ if 1:
         self.assertIn(b"Non-UTF-8", res.err)
 
     @support.cpython_only
-    def test_compiler_recursion_limit(self):
+    eleza test_compiler_recursion_limit(self):
         # Expected limit is sys.getrecursionlimit() * the scaling factor
         # in symtable.c (currently 3)
         # We expect to fail *at* that limit, because we use up some of
@@ -543,7 +543,7 @@ if 1:
         fail_depth = sys.getrecursionlimit() * 3
         success_depth = int(fail_depth * 0.75)
 
-        def check_limit(prefix, repeated):
+        eleza check_limit(prefix, repeated):
             expect_ok = prefix + repeated * success_depth
             self.compile_single(expect_ok)
             broken = prefix + repeated * fail_depth
@@ -557,7 +557,7 @@ if 1:
         check_limit("a", "[0]")
         check_limit("a", "*a")
 
-    def test_null_terminated(self):
+    eleza test_null_terminated(self):
         # The source code is null-terminated internally, but bytes-like
         # objects are accepted, which could be not terminated.
         with self.assertRaisesRegex(ValueError, "cannot contain null"):
@@ -577,9 +577,9 @@ if 1:
         exec(memoryview(b"ax = 123")[1:-1], namespace)
         self.assertEqual(namespace['x'], 12)
 
-    def check_constant(self, func, expected):
+    eleza check_constant(self, func, expected):
         for const in func.__code__.co_consts:
-            if repr(const) == repr(expected):
+            ikiwa repr(const) == repr(expected):
                 break
         else:
             self.fail("unable to find constant %r in %r"
@@ -588,11 +588,11 @@ if 1:
     # Merging equal constants is not a strict requirement for the Python
     # semantics, it's a more an implementation detail.
     @support.cpython_only
-    def test_merge_constants(self):
+    eleza test_merge_constants(self):
         # Issue #25843: compile() must merge constants which are equal
         # and have the same type.
 
-        def check_same_constant(const):
+        eleza check_same_constant(const):
             ns = {}
             code = "f1, f2 = lambda: %r, lambda: %r" % (const, const)
             exec(code, ns)
@@ -635,10 +635,10 @@ if 1:
     # that peephole optimization was actually done though that isn't an
     # indication of the bugs presence or not (crashing is).
     @support.cpython_only
-    def test_peephole_opt_unreachable_code_array_access_in_bounds(self):
+    eleza test_peephole_opt_unreachable_code_array_access_in_bounds(self):
         """Regression test for issue35193 when run under clang msan."""
-        def unused_code_at_end():
-            return 3
+        eleza unused_code_at_end():
+            rudisha 3
             raise RuntimeError("unreachable")
         # The above function definition will trigger the out of bounds
         # bug in the peephole optimizer as it scans opcodes past the
@@ -648,11 +648,11 @@ if 1:
             'RETURN_VALUE',
             list(dis.get_instructions(unused_code_at_end))[-1].opname)
 
-    def test_dont_merge_constants(self):
+    eleza test_dont_merge_constants(self):
         # Issue #25843: compile() must not merge constants which are equal
         # but have a different type.
 
-        def check_different_constants(const1, const2):
+        eleza check_different_constants(const1, const2):
             ns = {}
             exec("f1, f2 = lambda: %r, lambda: %r" % (const1, const2), ns)
             f1 = ns['f1']
@@ -688,38 +688,38 @@ if 1:
         self.assertTrue(f1(0))
         self.assertTrue(f2(0.0))
 
-    def test_path_like_objects(self):
+    eleza test_path_like_objects(self):
         # An implicit test for PyUnicode_FSDecoder().
         compile("42", FakePath("test_compile_pathlike"), "single")
 
-    def test_stack_overflow(self):
+    eleza test_stack_overflow(self):
         # bpo-31113: Stack overflow when compile a long sequence of
         # complex statements.
-        compile("if a: b\n" * 200000, "<dummy>", "exec")
+        compile("ikiwa a: b\n" * 200000, "<dummy>", "exec")
 
     # Multiple users rely on the fact that CPython does not generate
     # bytecode for dead code blocks. See bpo-37500 for more context.
     @support.cpython_only
-    def test_dead_blocks_do_not_generate_bytecode(self):
-        def unused_block_if():
-            if 0:
-                return 42
+    eleza test_dead_blocks_do_not_generate_bytecode(self):
+        eleza unused_block_if():
+            ikiwa 0:
+                rudisha 42
 
-        def unused_block_while():
+        eleza unused_block_while():
             while 0:
-                return 42
+                rudisha 42
 
-        def unused_block_if_else():
-            if 1:
-                return None
+        eleza unused_block_if_else():
+            ikiwa 1:
+                rudisha None
             else:
-                return 42
+                rudisha 42
 
-        def unused_block_while_else():
+        eleza unused_block_while_else():
             while 1:
-                return None
+                rudisha None
             else:
-                return 42
+                rudisha 42
 
         funcs = [unused_block_if, unused_block_while,
                  unused_block_if_else, unused_block_while_else]
@@ -732,85 +732,85 @@ if 1:
             self.assertEqual('RETURN_VALUE', opcodes[1].opname)
 
 
-class TestExpressionStackSize(unittest.TestCase):
+kundi TestExpressionStackSize(unittest.TestCase):
     # These tests check that the computed stack size for a code object
     # stays within reasonable bounds (see issue #21523 for an example
     # dysfunction).
     N = 100
 
-    def check_stack_size(self, code):
+    eleza check_stack_size(self, code):
         # To assert that the alleged stack size is not O(N), we
         # check that it is smaller than log(N).
-        if isinstance(code, str):
+        ikiwa isinstance(code, str):
             code = compile(code, "<foo>", "single")
         max_size = math.ceil(math.log(len(code.co_code)))
         self.assertLessEqual(code.co_stacksize, max_size)
 
-    def test_and(self):
+    eleza test_and(self):
         self.check_stack_size("x and " * self.N + "x")
 
-    def test_or(self):
+    eleza test_or(self):
         self.check_stack_size("x or " * self.N + "x")
 
-    def test_and_or(self):
+    eleza test_and_or(self):
         self.check_stack_size("x and x or " * self.N + "x")
 
-    def test_chained_comparison(self):
+    eleza test_chained_comparison(self):
         self.check_stack_size("x < " * self.N + "x")
 
-    def test_if_else(self):
-        self.check_stack_size("x if x else " * self.N + "x")
+    eleza test_if_else(self):
+        self.check_stack_size("x ikiwa x else " * self.N + "x")
 
-    def test_binop(self):
+    eleza test_binop(self):
         self.check_stack_size("x + " * self.N + "x")
 
-    def test_func_and(self):
-        code = "def f(x):\n"
+    eleza test_func_and(self):
+        code = "eleza f(x):\n"
         code += "   x and x\n" * self.N
         self.check_stack_size(code)
 
 
-class TestStackSizeStability(unittest.TestCase):
+kundi TestStackSizeStability(unittest.TestCase):
     # Check that repeating certain snippets doesn't increase the stack size
     # beyond what a single snippet requires.
 
-    def check_stack_size(self, snippet, async_=False):
-        def compile_snippet(i):
+    eleza check_stack_size(self, snippet, async_=False):
+        eleza compile_snippet(i):
             ns = {}
-            script = """def func():\n""" + i * snippet
-            if async_:
+            script = """eleza func():\n""" + i * snippet
+            ikiwa async_:
                 script = "async " + script
             code = compile(script, "<script>", "exec")
             exec(code, ns, ns)
-            return ns['func'].__code__
+            rudisha ns['func'].__code__
 
         sizes = [compile_snippet(i).co_stacksize for i in range(2, 5)]
-        if len(set(sizes)) != 1:
+        ikiwa len(set(sizes)) != 1:
             agiza dis, io
             out = io.StringIO()
             dis.dis(compile_snippet(1), file=out)
             self.fail("stack sizes diverge with # of consecutive snippets: "
                       "%s\n%s\n%s" % (sizes, snippet, out.getvalue()))
 
-    def test_if(self):
+    eleza test_if(self):
         snippet = """
-            if x:
+            ikiwa x:
                 a
             """
         self.check_stack_size(snippet)
 
-    def test_if_else(self):
+    eleza test_if_else(self):
         snippet = """
-            if x:
+            ikiwa x:
                 a
-            elif y:
+            elikiwa y:
                 b
             else:
                 c
             """
         self.check_stack_size(snippet)
 
-    def test_try_except_bare(self):
+    eleza test_try_except_bare(self):
         snippet = """
             try:
                 a
@@ -819,7 +819,7 @@ class TestStackSizeStability(unittest.TestCase):
             """
         self.check_stack_size(snippet)
 
-    def test_try_except_qualified(self):
+    eleza test_try_except_qualified(self):
         snippet = """
             try:
                 a
@@ -832,7 +832,7 @@ class TestStackSizeStability(unittest.TestCase):
             """
         self.check_stack_size(snippet)
 
-    def test_try_except_as(self):
+    eleza test_try_except_as(self):
         snippet = """
             try:
                 a
@@ -845,7 +845,7 @@ class TestStackSizeStability(unittest.TestCase):
             """
         self.check_stack_size(snippet)
 
-    def test_try_finally(self):
+    eleza test_try_finally(self):
         snippet = """
                 try:
                     a
@@ -854,14 +854,14 @@ class TestStackSizeStability(unittest.TestCase):
             """
         self.check_stack_size(snippet)
 
-    def test_with(self):
+    eleza test_with(self):
         snippet = """
             with x as y:
                 a
             """
         self.check_stack_size(snippet)
 
-    def test_while_else(self):
+    eleza test_while_else(self):
         snippet = """
             while x:
                 a
@@ -870,14 +870,14 @@ class TestStackSizeStability(unittest.TestCase):
             """
         self.check_stack_size(snippet)
 
-    def test_for(self):
+    eleza test_for(self):
         snippet = """
             for x in y:
                 a
             """
         self.check_stack_size(snippet)
 
-    def test_for_else(self):
+    eleza test_for_else(self):
         snippet = """
             for x in y:
                 a
@@ -886,12 +886,12 @@ class TestStackSizeStability(unittest.TestCase):
             """
         self.check_stack_size(snippet)
 
-    def test_for_break_continue(self):
+    eleza test_for_break_continue(self):
         snippet = """
             for x in y:
-                if z:
+                ikiwa z:
                     break
-                elif u:
+                elikiwa u:
                     continue
                 else:
                     a
@@ -900,13 +900,13 @@ class TestStackSizeStability(unittest.TestCase):
             """
         self.check_stack_size(snippet)
 
-    def test_for_break_continue_inside_try_finally_block(self):
+    eleza test_for_break_continue_inside_try_finally_block(self):
         snippet = """
             for x in y:
                 try:
-                    if z:
+                    ikiwa z:
                         break
-                    elif u:
+                    elikiwa u:
                         continue
                     else:
                         a
@@ -917,15 +917,15 @@ class TestStackSizeStability(unittest.TestCase):
             """
         self.check_stack_size(snippet)
 
-    def test_for_break_continue_inside_finally_block(self):
+    eleza test_for_break_continue_inside_finally_block(self):
         snippet = """
             for x in y:
                 try:
                     t
                 finally:
-                    if z:
+                    ikiwa z:
                         break
-                    elif u:
+                    elikiwa u:
                         continue
                     else:
                         a
@@ -934,15 +934,15 @@ class TestStackSizeStability(unittest.TestCase):
             """
         self.check_stack_size(snippet)
 
-    def test_for_break_continue_inside_except_block(self):
+    eleza test_for_break_continue_inside_except_block(self):
         snippet = """
             for x in y:
                 try:
                     t
                 except:
-                    if z:
+                    ikiwa z:
                         break
-                    elif u:
+                    elikiwa u:
                         continue
                     else:
                         a
@@ -951,13 +951,13 @@ class TestStackSizeStability(unittest.TestCase):
             """
         self.check_stack_size(snippet)
 
-    def test_for_break_continue_inside_with_block(self):
+    eleza test_for_break_continue_inside_with_block(self):
         snippet = """
             for x in y:
                 with c:
-                    if z:
+                    ikiwa z:
                         break
-                    elif u:
+                    elikiwa u:
                         continue
                     else:
                         a
@@ -966,10 +966,10 @@ class TestStackSizeStability(unittest.TestCase):
             """
         self.check_stack_size(snippet)
 
-    def test_return_inside_try_finally_block(self):
+    eleza test_return_inside_try_finally_block(self):
         snippet = """
             try:
-                if z:
+                ikiwa z:
                     return
                 else:
                     a
@@ -978,55 +978,55 @@ class TestStackSizeStability(unittest.TestCase):
             """
         self.check_stack_size(snippet)
 
-    def test_return_inside_finally_block(self):
+    eleza test_return_inside_finally_block(self):
         snippet = """
             try:
                 t
             finally:
-                if z:
+                ikiwa z:
                     return
                 else:
                     a
             """
         self.check_stack_size(snippet)
 
-    def test_return_inside_except_block(self):
+    eleza test_return_inside_except_block(self):
         snippet = """
             try:
                 t
             except:
-                if z:
+                ikiwa z:
                     return
                 else:
                     a
             """
         self.check_stack_size(snippet)
 
-    def test_return_inside_with_block(self):
+    eleza test_return_inside_with_block(self):
         snippet = """
             with c:
-                if z:
+                ikiwa z:
                     return
                 else:
                     a
             """
         self.check_stack_size(snippet)
 
-    def test_async_with(self):
+    eleza test_async_with(self):
         snippet = """
             async with x as y:
                 a
             """
         self.check_stack_size(snippet, async_=True)
 
-    def test_async_for(self):
+    eleza test_async_for(self):
         snippet = """
             async for x in y:
                 a
             """
         self.check_stack_size(snippet, async_=True)
 
-    def test_async_for_else(self):
+    eleza test_async_for_else(self):
         snippet = """
             async for x in y:
                 a
@@ -1035,13 +1035,13 @@ class TestStackSizeStability(unittest.TestCase):
             """
         self.check_stack_size(snippet, async_=True)
 
-    def test_for_break_continue_inside_async_with_block(self):
+    eleza test_for_break_continue_inside_async_with_block(self):
         snippet = """
             for x in y:
                 async with c:
-                    if z:
+                    ikiwa z:
                         break
-                    elif u:
+                    elikiwa u:
                         continue
                     else:
                         a
@@ -1050,10 +1050,10 @@ class TestStackSizeStability(unittest.TestCase):
             """
         self.check_stack_size(snippet, async_=True)
 
-    def test_return_inside_async_with_block(self):
+    eleza test_return_inside_async_with_block(self):
         snippet = """
             async with c:
-                if z:
+                ikiwa z:
                     return
                 else:
                     a
@@ -1061,5 +1061,5 @@ class TestStackSizeStability(unittest.TestCase):
         self.check_stack_size(snippet, async_=True)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

@@ -12,7 +12,7 @@
 
 --------------
 
-This module defines the class :class:`NNTP` which implements the client side of
+This module defines the kundi :class:`NNTP` which implements the client side of
 the Network News Transfer Protocol.  It can be used to implement a news reader
 or poster, or automated news processors.  It is compatible with :rfc:`3977`
 as well as the older :rfc:`977` and :rfc:`2980`.
@@ -41,7 +41,7 @@ about a newsgroup and print the subjects of the last 10 articles::
    >>> s.quit()
    '205 Bye!'
 
-To post an article from a binary file (this assumes that the article has valid
+To post an article kutoka a binary file (this assumes that the article has valid
 headers, and that you have right to post on the particular newsgroup)::
 
    >>> s = nntplib.NNTP('news.gmane.org')
@@ -68,11 +68,11 @@ The module itself defines the following classes:
    connecting to an NNTP server on the local machine and intend to call
    reader-specific commands, such as ``group``.  If you get unexpected
    :exc:`NNTPPermanentError`\ s, you might need to set *readermode*.
-   The :class:`NNTP` class supports the :keyword:`with` statement to
+   The :class:`NNTP` kundi supports the :keyword:`with` statement to
    unconditionally consume :exc:`OSError` exceptions and to close the NNTP
    connection when done, e.g.:
 
-    >>> from nntplib import NNTP
+    >>> kutoka nntplib agiza NNTP
     >>> with NNTP('news.gmane.org') as n:
     ...     n.group('gmane.comp.python.committers')
     ... # doctest: +SKIP
@@ -118,15 +118,15 @@ The module itself defines the following classes:
    .. versionadded:: 3.2
 
    .. versionchanged:: 3.4
-      The class now supports hostname check with
+      The kundi now supports hostname check with
       :attr:`ssl.SSLContext.check_hostname` and *Server Name Indication* (see
       :data:`ssl.HAS_SNI`).
 
 .. exception:: NNTPError
 
-   Derived from the standard exception :exc:`Exception`, this is the base
-   class for all exceptions raised by the :mod:`nntplib` module.  Instances
-   of this class have the following attribute:
+   Derived kutoka the standard exception :exc:`Exception`, this is the base
+   kundi for all exceptions raised by the :mod:`nntplib` module.  Instances
+   of this kundi have the following attribute:
 
    .. attribute:: response
 
@@ -135,7 +135,7 @@ The module itself defines the following classes:
 
 .. exception:: NNTPReplyError
 
-   Exception raised when an unexpected reply is received from the server.
+   Exception raised when an unexpected reply is received kutoka the server.
 
 
 .. exception:: NNTPTemporaryError
@@ -150,7 +150,7 @@ The module itself defines the following classes:
 
 .. exception:: NNTPProtocolError
 
-   Exception raised when a reply is received from the server that does not begin
+   Exception raised when a reply is received kutoka the server that does not begin
    with a digit in the range 1--5.
 
 
@@ -235,7 +235,7 @@ tuples or objects that the method normally returns will be empty.
 .. method:: NNTP.login(user=None, password=None, usenetrc=True)
 
    Send ``AUTHINFO`` commands with the user name and password.  If *user*
-   and *password* are ``None`` and *usenetrc* is true, credentials from
+   and *password* are ``None`` and *usenetrc* is true, credentials kutoka
    ``~/.netrc`` will be used if possible.
 
    Unless intentionally delayed, login is normally performed during the
@@ -274,7 +274,7 @@ tuples or objects that the method normally returns will be empty.
    the groups that are new since the given *date*. If *file* is supplied,
    though, then *groups* will be empty.
 
-      >>> from datetime import date, timedelta
+      >>> kutoka datetime agiza date, timedelta
       >>> resp, groups = s.newgroups(date.today() - timedelta(days=3))
       >>> len(groups) # doctest: +SKIP
       85
@@ -295,17 +295,17 @@ tuples or objects that the method normally returns will be empty.
 
    Send a ``LIST`` or ``LIST ACTIVE`` command.  Return a pair
    ``(response, list)`` where *list* is a list of tuples representing all
-   the groups available from this NNTP server, optionally matching the
+   the groups available kutoka this NNTP server, optionally matching the
    pattern string *group_pattern*.  Each tuple has the form
    ``(group, last, first, flag)``, where *group* is a group name, *last*
    and *first* are the last and first article numbers, and *flag* usually
    takes one of these values:
 
-   * ``y``: Local postings and articles from peers are allowed.
+   * ``y``: Local postings and articles kutoka peers are allowed.
    * ``m``: The group is moderated and all postings must be approved.
-   * ``n``: No local postings are allowed, only articles from peers.
-   * ``j``: Articles from peers are filed in the junk group instead.
-   * ``x``: No local postings, and articles from peers are ignored.
+   * ``n``: No local postings are allowed, only articles kutoka peers.
+   * ``j``: Articles kutoka peers are filed in the junk group instead.
+   * ``x``: No local postings, and articles kutoka peers are ignored.
    * ``=foo.bar``: Articles are filed in the ``foo.bar`` group instead.
 
    If *flag* has another value, then the status of the newsgroup should be
@@ -339,7 +339,7 @@ tuples or objects that the method normally returns will be empty.
    (if 'group' is a real wildmat string), return the first match.   If no group
    matches, return an empty string.
 
-   This elides the response code from the server.  If the response code is needed,
+   This elides the response code kutoka the server.  If the response code is needed,
    use :meth:`descriptions`.
 
 
@@ -359,7 +359,7 @@ tuples or objects that the method normally returns will be empty.
    *message_spec* can be either a string representing a message id, or
    a ``(first, last)`` tuple of numbers indicating a range of articles in
    the current group, or a ``(first, None)`` tuple indicating a range of
-   articles starting from *first* to the last article in the current group,
+   articles starting kutoka *first* to the last article in the current group,
    or :const:`None` to select the current article in the current group.
 
    Return a pair ``(response, overviews)``.  *overviews* is a list of
@@ -370,7 +370,7 @@ tuples or objects that the method normally returns will be empty.
    items (the key is then the metadata name prepended with ``":"``).  The
    following items are guaranteed to be present by the NNTP specification:
 
-   * the ``subject``, ``from``, ``date``, ``message-id`` and ``references``
+   * the ``subject``, ``kutoka``, ``date``, ``message-id`` and ``references``
      headers
    * the ``:bytes`` metadata: the number of bytes in the entire raw article
      (including headers and body)
@@ -387,10 +387,10 @@ tuples or objects that the method normally returns will be empty.
       >>> art_num
       117216
       >>> list(over.keys())
-      ['xref', 'from', ':lines', ':bytes', 'references', 'date', 'message-id', 'subject']
-      >>> over['from']
+      ['xref', 'kutoka', ':lines', ':bytes', 'references', 'date', 'message-id', 'subject']
+      >>> over['kutoka']
       '=?UTF-8?B?Ik1hcnRpbiB2LiBMw7Z3aXMi?= <martin@v.loewis.de>'
-      >>> nntplib.decode_header(over['from'])
+      >>> nntplib.decode_header(over['kutoka'])
       '"Martin v. Löwis" <martin@v.loewis.de>'
 
    .. versionadded:: 3.2

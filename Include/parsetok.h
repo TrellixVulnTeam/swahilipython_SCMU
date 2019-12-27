@@ -47,7 +47,7 @@ PyAPI_FUNC(node *) PyParser_ParseStringFlags(const char *, grammar *, int,
                                               perrdetail *, int);
 PyAPI_FUNC(node *) PyParser_ParseFileFlags(
     FILE *fp,
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     const char *enc,
     grammar *g,
     int start,
@@ -57,7 +57,7 @@ PyAPI_FUNC(node *) PyParser_ParseFileFlags(
     int flags);
 PyAPI_FUNC(node *) PyParser_ParseFileFlagsEx(
     FILE *fp,
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     const char *enc,
     grammar *g,
     int start,
@@ -78,14 +78,14 @@ PyAPI_FUNC(node *) PyParser_ParseFileObject(
 
 PyAPI_FUNC(node *) PyParser_ParseStringFlagsFilename(
     const char *s,
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     grammar *g,
     int start,
     perrdetail *err_ret,
     int flags);
 PyAPI_FUNC(node *) PyParser_ParseStringFlagsFilenameEx(
     const char *s,
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     grammar *g,
     int start,
     perrdetail *err_ret,

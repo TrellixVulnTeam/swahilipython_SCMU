@@ -83,7 +83,7 @@ class-based API instead.
    languages have more than two plural forms). If no translation is found, return
    *singular* if *n* is 1; return *plural* otherwise.
 
-   The Plural formula is taken from the catalog header. It is a C or Python
+   The Plural formula is taken kutoka the catalog header. It is a C or Python
    expression that has a free variable *n*; the expression evaluates to the index
    of the plural in the catalog. See
    `the GNU gettext documentation <https://www.gnu.org/software/gettext/manual/gettext.html>`__
@@ -136,7 +136,7 @@ this was deemed not useful and so it is currently unimplemented.
 
 Here's an example of typical usage for this API::
 
-   import gettext
+   agiza gettext
    gettext.bindtextdomain('myapplication', '/path/to/my/language/directory')
    gettext.textdomain('myapplication')
    _ = gettext.gettext
@@ -150,8 +150,8 @@ Class-based API
 The class-based API of the :mod:`gettext` module gives you more flexibility and
 greater convenience than the GNU :program:`gettext` API.  It is the recommended
 way of localizing your Python applications and modules.  :mod:`!gettext` defines
-a :class:`GNUTranslations` class which implements the parsing of GNU :file:`.mo` format
-files, and has methods for returning strings. Instances of this class can also
+a :class:`GNUTranslations` kundi which implements the parsing of GNU :file:`.mo` format
+files, and has methods for returning strings. Instances of this kundi can also
 install themselves in the built-in namespace as the function :func:`_`.
 
 
@@ -186,7 +186,7 @@ install themselves in the built-in namespace as the function :func:`_`.
    Return a :class:`*Translations` instance based on the *domain*, *localedir*,
    and *languages*, which are first passed to :func:`find` to get a list of the
    associated :file:`.mo` file paths.  Instances with identical :file:`.mo` file
-   names are cached.  The actual class instantiated is *class_* if
+   names are cached.  The actual kundi instantiated is *class_* if
    provided, otherwise :class:`GNUTranslations`.  The class's constructor must
    take a single :term:`file object` argument.  If provided, *codeset* will change
    the charset used to encode translated strings in the
@@ -195,7 +195,7 @@ install themselves in the built-in namespace as the function :func:`_`.
 
    If multiple files are found, later files are used as fallbacks for earlier ones.
    To allow setting the fallback, :func:`copy.copy` is used to clone each
-   translation object from the cache; the actual instance data is still shared with
+   translation object kutoka the cache; the actual instance data is still shared with
    the cache.
 
    If no :file:`.mo` file is found, this function raises :exc:`OSError` if
@@ -236,7 +236,7 @@ The :class:`NullTranslations` class
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Translation classes are what actually implement the translation of original
-source file message strings to translated message strings. The base class used
+source file message strings to translated message strings. The base kundi used
 by all translation classes is :class:`NullTranslations`; this provides the basic
 interface you can use to write your own specialized translation classes.  Here
 are the methods of :class:`!NullTranslations`:
@@ -253,7 +253,7 @@ are the methods of :class:`!NullTranslations`:
    .. method:: _parse(fp)
 
       No-op in the base class, this method takes file object *fp*, and reads
-      the data from the file, initializing its message catalog.  If you have an
+      the data kutoka the file, initializing its message catalog.  If you have an
       unsupported message catalog file format, you should override this method
       to parse your format.
 
@@ -352,7 +352,7 @@ are the methods of :class:`!NullTranslations`:
       localized modules should never install :func:`_`. Instead, they should use
       this code to make :func:`_` available to their module::
 
-         import gettext
+         agiza gettext
          t = gettext.translation('mymodule', ...)
          _ = t.gettext
 
@@ -366,8 +366,8 @@ are the methods of :class:`!NullTranslations`:
 The :class:`GNUTranslations` class
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The :mod:`gettext` module provides one additional class derived from
-:class:`NullTranslations`: :class:`GNUTranslations`.  This class overrides
+The :mod:`gettext` module provides one additional kundi derived kutoka
+:class:`NullTranslations`: :class:`GNUTranslations`.  This kundi overrides
 :meth:`_parse` to enable reading GNU :program:`gettext` format :file:`.mo` files
 in both big-endian and little-endian format.
 
@@ -378,7 +378,7 @@ the translation for the empty string. This metadata is in :rfc:`822`\ -style
 key ``Content-Type`` is found, then the ``charset`` property is used to
 initialize the "protected" :attr:`_charset` instance variable, defaulting to
 ``None`` if not found.  If the charset encoding is specified, then all message
-ids and message strings read from the catalog are converted to Unicode using
+ids and message strings read kutoka the catalog are converted to Unicode using
 this encoding, else ASCII is assumed.
 
 Since message ids are read as Unicode strings too, all :meth:`*gettext` methods
@@ -389,11 +389,11 @@ The entire set of key/value pairs are placed into a dictionary and set as the
 
 If the :file:`.mo` file's magic number is invalid, the major version number is
 unexpected, or if other problems occur while reading the file, instantiating a
-:class:`GNUTranslations` class can raise :exc:`OSError`.
+:class:`GNUTranslations` kundi can raise :exc:`OSError`.
 
 .. class:: GNUTranslations
 
-   The following methods are overridden from the base class implementation:
+   The following methods are overridden kutoka the base kundi implementation:
 
    .. method:: gettext(message)
 
@@ -482,7 +482,7 @@ The Catalog constructor
 GNOME uses a version of the :mod:`gettext` module by James Henstridge, but this
 version has a slightly different API.  Its documented usage was::
 
-   import gettext
+   agiza gettext
    cat = gettext.Catalog(domain, localedir)
    _ = cat.gettext
    print(_('hello world'))
@@ -578,7 +578,7 @@ translation :file:`.mo` files reside in :file:`/usr/share/locale` in GNU
 :program:`gettext` format.  Here's what you would put at the top of your
 module::
 
-   import gettext
+   agiza gettext
    t = gettext.translation('spam', '/usr/share/locale')
    _ = t.gettext
 
@@ -594,13 +594,13 @@ application.  This will let all your application-specific files just use
 In the simple case then, you need only add the following bit of code to the main
 driver file of your application::
 
-   import gettext
+   agiza gettext
    gettext.install('myapplication')
 
 If you need to set the locale directory, you can pass it into the
 :func:`install` function::
 
-   import gettext
+   agiza gettext
    gettext.install('myapplication', '/usr/share/locale')
 
 
@@ -611,7 +611,7 @@ If your program needs to support many languages at the same time, you may want
 to create multiple translation instances and then switch between them
 explicitly, like so::
 
-   import gettext
+   agiza gettext
 
    lang1 = gettext.translation('myapplication', languages=['en'])
    lang2 = gettext.translation('myapplication', languages=['fr'])

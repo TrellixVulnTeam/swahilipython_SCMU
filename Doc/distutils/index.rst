@@ -22,7 +22,7 @@
    recommendations section <https://packaging.python.org/guides/tool-recommendations/>`__
    in the Python Packaging User Guide for more information.
 
-This document describes the Python Distribution Utilities ("Distutils") from
+This document describes the Python Distribution Utilities ("Distutils") kutoka
 the module developer's point of view, describing the underlying capabilities
 that ``setuptools`` builds on to allow Python developers to make Python modules
 and extensions readily available to a wider audience.

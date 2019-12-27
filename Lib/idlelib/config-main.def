@@ -6,10 +6,10 @@
 #
 #     default configuration files in idlelib
 #     --------------------------------------
-#     config-main.def         default general config file
-#     config-extensions.def   default extension config file
-#     config-highlight.def    default highlighting config file
-#     config-keys.def         default keybinding config file
+#     config-main.eleza         default general config file
+#     config-extensions.eleza   default extension config file
+#     config-highlight.eleza    default highlighting config file
+#     config-keys.eleza         default keybinding config file
 #
 #     user configuration files in ~/.idlerc
 #     -------------------------------------
@@ -46,7 +46,7 @@
 # platform specific because of path separators, drive specs etc.
 #
 # The default files should not be edited except to add new sections to
-# config-extensions.def for added extensions.  The user files should be
+# config-extensions.eleza for added extensions.  The user files should be
 # modified through the Settings dialog.
 
 [General]

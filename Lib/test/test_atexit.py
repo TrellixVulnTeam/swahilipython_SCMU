@@ -7,43 +7,43 @@ kutoka test agiza support
 kutoka test.support agiza script_helper
 
 ### helpers
-def h1():
-    print("h1")
+eleza h1():
+    andika("h1")
 
-def h2():
-    print("h2")
+eleza h2():
+    andika("h2")
 
-def h3():
-    print("h3")
+eleza h3():
+    andika("h3")
 
-def h4(*args, **kwargs):
-    print("h4", args, kwargs)
+eleza h4(*args, **kwargs):
+    andika("h4", args, kwargs)
 
-def raise1():
+eleza raise1():
     raise TypeError
 
-def raise2():
+eleza raise2():
     raise SystemError
 
-def exit():
+eleza exit():
     raise SystemExit
 
 
-class GeneralTest(unittest.TestCase):
+kundi GeneralTest(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.save_stdout = sys.stdout
         self.save_stderr = sys.stderr
         self.stream = io.StringIO()
         sys.stdout = sys.stderr = self.stream
         atexit._clear()
 
-    def tearDown(self):
+    eleza tearDown(self):
         sys.stdout = self.save_stdout
         sys.stderr = self.save_stderr
         atexit._clear()
 
-    def test_args(self):
+    eleza test_args(self):
         # be sure args are handled properly
         atexit.register(h1)
         atexit.register(h4)
@@ -53,11 +53,11 @@ class GeneralTest(unittest.TestCase):
         self.assertEqual(self.stream.getvalue(),
                             "h4 (4,) {'kw': 'abc'}\nh4 () {}\nh1\n")
 
-    def test_badargs(self):
+    eleza test_badargs(self):
         atexit.register(lambda: 1, 0, 0, (x for x in (1,2)), 0, 0)
         self.assertRaises(TypeError, atexit._run_exitfuncs)
 
-    def test_order(self):
+    eleza test_order(self):
         # be sure handlers are executed in reverse order
         atexit.register(h1)
         atexit.register(h2)
@@ -66,14 +66,14 @@ class GeneralTest(unittest.TestCase):
 
         self.assertEqual(self.stream.getvalue(), "h3\nh2\nh1\n")
 
-    def test_raise(self):
+    eleza test_raise(self):
         # be sure raises are handled properly
         atexit.register(raise1)
         atexit.register(raise2)
 
         self.assertRaises(TypeError, atexit._run_exitfuncs)
 
-    def test_raise_unnormalized(self):
+    eleza test_raise_unnormalized(self):
         # Issue #10756: Make sure that an unnormalized exception is
         # handled properly
         atexit.register(lambda: 1 / 0)
@@ -81,20 +81,20 @@ class GeneralTest(unittest.TestCase):
         self.assertRaises(ZeroDivisionError, atexit._run_exitfuncs)
         self.assertIn("ZeroDivisionError", self.stream.getvalue())
 
-    def test_exit(self):
+    eleza test_exit(self):
         # be sure a SystemExit is handled properly
         atexit.register(exit)
 
         self.assertRaises(SystemExit, atexit._run_exitfuncs)
         self.assertEqual(self.stream.getvalue(), '')
 
-    def test_print_tracebacks(self):
+    eleza test_print_tracebacks(self):
         # Issue #18776: the tracebacks should be printed when errors occur.
-        def f():
+        eleza f():
             1/0  # one
-        def g():
+        eleza g():
             1/0  # two
-        def h():
+        eleza h():
             1/0  # three
         atexit.register(f)
         atexit.register(g)
@@ -107,9 +107,9 @@ class GeneralTest(unittest.TestCase):
         self.assertIn("# two", stderr)
         self.assertIn("# three", stderr)
 
-    def test_stress(self):
+    eleza test_stress(self):
         a = [0]
-        def inc():
+        eleza inc():
             a[0] += 1
 
         for i in range(128):
@@ -118,9 +118,9 @@ class GeneralTest(unittest.TestCase):
 
         self.assertEqual(a[0], 128)
 
-    def test_clear(self):
+    eleza test_clear(self):
         a = [0]
-        def inc():
+        eleza inc():
             a[0] += 1
 
         atexit.register(inc)
@@ -129,11 +129,11 @@ class GeneralTest(unittest.TestCase):
 
         self.assertEqual(a[0], 0)
 
-    def test_unregister(self):
+    eleza test_unregister(self):
         a = [0]
-        def inc():
+        eleza inc():
             a[0] += 1
-        def dec():
+        eleza dec():
             a[0] -= 1
 
         for i in range(4):
@@ -144,7 +144,7 @@ class GeneralTest(unittest.TestCase):
 
         self.assertEqual(a[0], -1)
 
-    def test_bound_methods(self):
+    eleza test_bound_methods(self):
         l = []
         atexit.register(l.append, 5)
         atexit._run_exitfuncs()
@@ -154,13 +154,13 @@ class GeneralTest(unittest.TestCase):
         atexit._run_exitfuncs()
         self.assertEqual(l, [5])
 
-    def test_shutdown(self):
+    eleza test_shutdown(self):
         # Actually test the shutdown mechanism in a subprocess
-        code = """if 1:
+        code = """ikiwa 1:
             agiza atexit
 
-            def f(msg):
-                print(msg)
+            eleza f(msg):
+                andika(msg)
 
             atexit.register(f, "one")
             atexit.register(f, "two")
@@ -171,16 +171,16 @@ class GeneralTest(unittest.TestCase):
 
 
 @support.cpython_only
-class SubinterpreterTest(unittest.TestCase):
+kundi SubinterpreterTest(unittest.TestCase):
 
-    def test_callbacks_leak(self):
-        # This test shows a leak in refleak mode if atexit doesn't
+    eleza test_callbacks_leak(self):
+        # This test shows a leak in refleak mode ikiwa atexit doesn't
         # take care to free callbacks in its per-subinterpreter module
         # state.
         n = atexit._ncallbacks()
-        code = r"""if 1:
+        code = r"""ikiwa 1:
             agiza atexit
-            def f():
+            eleza f():
                 pass
             atexit.register(f)
             del atexit
@@ -189,13 +189,13 @@ class SubinterpreterTest(unittest.TestCase):
         self.assertEqual(ret, 0)
         self.assertEqual(atexit._ncallbacks(), n)
 
-    def test_callbacks_leak_refcycle(self):
+    eleza test_callbacks_leak_refcycle(self):
         # Similar to the above, but with a refcycle through the atexit
         # module.
         n = atexit._ncallbacks()
-        code = r"""if 1:
+        code = r"""ikiwa 1:
             agiza atexit
-            def f():
+            eleza f():
                 pass
             atexit.register(f)
             atexit.__atexit = atexit
@@ -204,16 +204,16 @@ class SubinterpreterTest(unittest.TestCase):
         self.assertEqual(ret, 0)
         self.assertEqual(atexit._ncallbacks(), n)
 
-    def test_callback_on_subinterpreter_teardown(self):
-        # This tests if a callback is called on
+    eleza test_callback_on_subinterpreter_teardown(self):
+        # This tests ikiwa a callback is called on
         # subinterpreter teardown.
         expected = b"The test has passed!"
         r, w = os.pipe()
 
-        code = r"""if 1:
+        code = r"""ikiwa 1:
             agiza os
             agiza atexit
-            def callback():
+            eleza callback():
                 os.write({:d}, b"The test has passed!")
             atexit.register(callback)
         """.format(w)
@@ -223,5 +223,5 @@ class SubinterpreterTest(unittest.TestCase):
         os.close(r)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

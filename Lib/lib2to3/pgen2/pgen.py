@@ -4,14 +4,14 @@
 # Pgen agizas
 kutoka . agiza grammar, token, tokenize
 
-class PgenGrammar(grammar.Grammar):
+kundi PgenGrammar(grammar.Grammar):
     pass
 
-class ParserGenerator(object):
+kundi ParserGenerator(object):
 
-    def __init__(self, filename, stream=None):
+    eleza __init__(self, filename, stream=None):
         close_stream = None
-        if stream is None:
+        ikiwa stream is None:
             stream = open(filename)
             close_stream = stream.close
         self.filename = filename
@@ -19,12 +19,12 @@ class ParserGenerator(object):
         self.generator = tokenize.generate_tokens(stream.readline)
         self.gettoken() # Initialize lookahead
         self.dfas, self.startsymbol = self.parse()
-        if close_stream is not None:
+        ikiwa close_stream is not None:
             close_stream()
         self.first = {} # map kutoka symbol name to set of tokens
         self.addfirstsets()
 
-    def make_grammar(self):
+    eleza make_grammar(self):
         c = PgenGrammar()
         names = list(self.dfas.keys())
         names.sort()
@@ -41,88 +41,88 @@ class ParserGenerator(object):
                 arcs = []
                 for label, next in sorted(state.arcs.items()):
                     arcs.append((self.make_label(c, label), dfa.index(next)))
-                if state.isfinal:
+                ikiwa state.isfinal:
                     arcs.append((0, dfa.index(state)))
                 states.append(arcs)
             c.states.append(states)
             c.dfas[c.symbol2number[name]] = (states, self.make_first(c, name))
         c.start = c.symbol2number[self.startsymbol]
-        return c
+        rudisha c
 
-    def make_first(self, c, name):
+    eleza make_first(self, c, name):
         rawfirst = self.first[name]
         first = {}
         for label in sorted(rawfirst):
             ilabel = self.make_label(c, label)
             ##assert ilabel not in first # XXX failed on <> ... !=
             first[ilabel] = 1
-        return first
+        rudisha first
 
-    def make_label(self, c, label):
-        # XXX Maybe this should be a method on a subclass of converter?
+    eleza make_label(self, c, label):
+        # XXX Maybe this should be a method on a subkundi of converter?
         ilabel = len(c.labels)
-        if label[0].isalpha():
+        ikiwa label[0].isalpha():
             # Either a symbol name or a named token
-            if label in c.symbol2number:
+            ikiwa label in c.symbol2number:
                 # A symbol name (a non-terminal)
-                if label in c.symbol2label:
-                    return c.symbol2label[label]
+                ikiwa label in c.symbol2label:
+                    rudisha c.symbol2label[label]
                 else:
                     c.labels.append((c.symbol2number[label], None))
                     c.symbol2label[label] = ilabel
-                    return ilabel
+                    rudisha ilabel
             else:
                 # A named token (NAME, NUMBER, STRING)
                 itoken = getattr(token, label, None)
                 assert isinstance(itoken, int), label
                 assert itoken in token.tok_name, label
-                if itoken in c.tokens:
-                    return c.tokens[itoken]
+                ikiwa itoken in c.tokens:
+                    rudisha c.tokens[itoken]
                 else:
                     c.labels.append((itoken, None))
                     c.tokens[itoken] = ilabel
-                    return ilabel
+                    rudisha ilabel
         else:
             # Either a keyword or an operator
             assert label[0] in ('"', "'"), label
             value = eval(label)
-            if value[0].isalpha():
+            ikiwa value[0].isalpha():
                 # A keyword
-                if value in c.keywords:
-                    return c.keywords[value]
+                ikiwa value in c.keywords:
+                    rudisha c.keywords[value]
                 else:
                     c.labels.append((token.NAME, value))
                     c.keywords[value] = ilabel
-                    return ilabel
+                    rudisha ilabel
             else:
                 # An operator (any non-numeric token)
-                itoken = grammar.opmap[value] # Fails if unknown token
-                if itoken in c.tokens:
-                    return c.tokens[itoken]
+                itoken = grammar.opmap[value] # Fails ikiwa unknown token
+                ikiwa itoken in c.tokens:
+                    rudisha c.tokens[itoken]
                 else:
                     c.labels.append((itoken, None))
                     c.tokens[itoken] = ilabel
-                    return ilabel
+                    rudisha ilabel
 
-    def addfirstsets(self):
+    eleza addfirstsets(self):
         names = list(self.dfas.keys())
         names.sort()
         for name in names:
-            if name not in self.first:
+            ikiwa name not in self.first:
                 self.calcfirst(name)
             #print name, self.first[name].keys()
 
-    def calcfirst(self, name):
+    eleza calcfirst(self, name):
         dfa = self.dfas[name]
         self.first[name] = None # dummy to detect left recursion
         state = dfa[0]
         totalset = {}
         overlapcheck = {}
         for label, next in state.arcs.items():
-            if label in self.dfas:
-                if label in self.first:
+            ikiwa label in self.dfas:
+                ikiwa label in self.first:
                     fset = self.first[label]
-                    if fset is None:
+                    ikiwa fset is None:
                         raise ValueError("recursion for rule %r" % name)
                 else:
                     self.calcfirst(label)
@@ -135,14 +135,14 @@ class ParserGenerator(object):
         inverse = {}
         for label, itsfirst in overlapcheck.items():
             for symbol in itsfirst:
-                if symbol in inverse:
+                ikiwa symbol in inverse:
                     raise ValueError("rule %s is ambiguous; %s is in the"
                                      " first sets of %s as well as %s" %
                                      (name, symbol, label, inverse[symbol]))
                 inverse[symbol] = label
         self.first[name] = totalset
 
-    def parse(self):
+    eleza parse(self):
         dfas = {}
         startsymbol = None
         # MSTART: (NEWLINE | RULE)* ENDMARKER
@@ -162,70 +162,70 @@ class ParserGenerator(object):
             newlen = len(dfa)
             dfas[name] = dfa
             #print name, oldlen, newlen
-            if startsymbol is None:
+            ikiwa startsymbol is None:
                 startsymbol = name
-        return dfas, startsymbol
+        rudisha dfas, startsymbol
 
-    def make_dfa(self, start, finish):
+    eleza make_dfa(self, start, finish):
         # To turn an NFA into a DFA, we define the states of the DFA
         # to correspond to *sets* of states of the NFA.  Then do some
         # state reduction.  Let's represent sets as dicts with 1 for
         # values.
         assert isinstance(start, NFAState)
         assert isinstance(finish, NFAState)
-        def closure(state):
+        eleza closure(state):
             base = {}
             addclosure(state, base)
-            return base
-        def addclosure(state, base):
+            rudisha base
+        eleza addclosure(state, base):
             assert isinstance(state, NFAState)
-            if state in base:
+            ikiwa state in base:
                 return
             base[state] = 1
             for label, next in state.arcs:
-                if label is None:
+                ikiwa label is None:
                     addclosure(next, base)
         states = [DFAState(closure(start), finish)]
         for state in states: # NB states grows while we're iterating
             arcs = {}
             for nfastate in state.nfaset:
                 for label, next in nfastate.arcs:
-                    if label is not None:
+                    ikiwa label is not None:
                         addclosure(next, arcs.setdefault(label, {}))
             for label, nfaset in sorted(arcs.items()):
                 for st in states:
-                    if st.nfaset == nfaset:
+                    ikiwa st.nfaset == nfaset:
                         break
                 else:
                     st = DFAState(nfaset, finish)
                     states.append(st)
                 state.addarc(st, label)
-        return states # List of DFAState instances; first one is start
+        rudisha states # List of DFAState instances; first one is start
 
-    def dump_nfa(self, name, start, finish):
-        print("Dump of NFA for", name)
+    eleza dump_nfa(self, name, start, finish):
+        andika("Dump of NFA for", name)
         todo = [start]
         for i, state in enumerate(todo):
-            print("  State", i, state is finish and "(final)" or "")
+            andika("  State", i, state is finish and "(final)" or "")
             for label, next in state.arcs:
-                if next in todo:
+                ikiwa next in todo:
                     j = todo.index(next)
                 else:
                     j = len(todo)
                     todo.append(next)
-                if label is None:
-                    print("    -> %d" % j)
+                ikiwa label is None:
+                    andika("    -> %d" % j)
                 else:
-                    print("    %s -> %d" % (label, j))
+                    andika("    %s -> %d" % (label, j))
 
-    def dump_dfa(self, name, dfa):
-        print("Dump of DFA for", name)
+    eleza dump_dfa(self, name, dfa):
+        andika("Dump of DFA for", name)
         for i, state in enumerate(dfa):
-            print("  State", i, state.isfinal and "(final)" or "")
+            andika("  State", i, state.isfinal and "(final)" or "")
             for label, next in sorted(state.arcs.items()):
-                print("    %s -> %d" % (label, dfa.index(next)))
+                andika("    %s -> %d" % (label, dfa.index(next)))
 
-    def simplify_dfa(self, dfa):
+    eleza simplify_dfa(self, dfa):
         # This is not theoretically optimal, but works well enough.
         # Algorithm: repeatedly look for two states that have the same
         # set of arcs (same labels pointing to the same nodes) and
@@ -238,7 +238,7 @@ class ParserGenerator(object):
             for i, state_i in enumerate(dfa):
                 for j in range(i+1, len(dfa)):
                     state_j = dfa[j]
-                    if state_i == state_j:
+                    ikiwa state_i == state_j:
                         #print "  unify", i, j
                         del dfa[j]
                         for state in dfa:
@@ -246,11 +246,11 @@ class ParserGenerator(object):
                         changes = True
                         break
 
-    def parse_rhs(self):
+    eleza parse_rhs(self):
         # RHS: ALT ('|' ALT)*
         a, z = self.parse_alt()
-        if self.value != "|":
-            return a, z
+        ikiwa self.value != "|":
+            rudisha a, z
         else:
             aa = NFAState()
             zz = NFAState()
@@ -261,9 +261,9 @@ class ParserGenerator(object):
                 a, z = self.parse_alt()
                 aa.addarc(a)
                 z.addarc(zz)
-            return aa, zz
+            rudisha aa, zz
 
-    def parse_alt(self):
+    eleza parse_alt(self):
         # ALT: ITEM+
         a, b = self.parse_item()
         while (self.value in ("(", "[") or
@@ -271,62 +271,62 @@ class ParserGenerator(object):
             c, d = self.parse_item()
             b.addarc(c)
             b = d
-        return a, b
+        rudisha a, b
 
-    def parse_item(self):
+    eleza parse_item(self):
         # ITEM: '[' RHS ']' | ATOM ['+' | '*']
-        if self.value == "[":
+        ikiwa self.value == "[":
             self.gettoken()
             a, z = self.parse_rhs()
             self.expect(token.OP, "]")
             a.addarc(z)
-            return a, z
+            rudisha a, z
         else:
             a, z = self.parse_atom()
             value = self.value
-            if value not in ("+", "*"):
-                return a, z
+            ikiwa value not in ("+", "*"):
+                rudisha a, z
             self.gettoken()
             z.addarc(a)
-            if value == "+":
-                return a, z
+            ikiwa value == "+":
+                rudisha a, z
             else:
-                return a, a
+                rudisha a, a
 
-    def parse_atom(self):
+    eleza parse_atom(self):
         # ATOM: '(' RHS ')' | NAME | STRING
-        if self.value == "(":
+        ikiwa self.value == "(":
             self.gettoken()
             a, z = self.parse_rhs()
             self.expect(token.OP, ")")
-            return a, z
-        elif self.type in (token.NAME, token.STRING):
+            rudisha a, z
+        elikiwa self.type in (token.NAME, token.STRING):
             a = NFAState()
             z = NFAState()
             a.addarc(z, self.value)
             self.gettoken()
-            return a, z
+            rudisha a, z
         else:
             self.raise_error("expected (...) or NAME or STRING, got %s/%s",
                              self.type, self.value)
 
-    def expect(self, type, value=None):
-        if self.type != type or (value is not None and self.value != value):
+    eleza expect(self, type, value=None):
+        ikiwa self.type != type or (value is not None and self.value != value):
             self.raise_error("expected %s/%s, got %s/%s",
                              type, value, self.type, self.value)
         value = self.value
         self.gettoken()
-        return value
+        rudisha value
 
-    def gettoken(self):
+    eleza gettoken(self):
         tup = next(self.generator)
         while tup[0] in (tokenize.COMMENT, tokenize.NL):
             tup = next(self.generator)
         self.type, self.value, self.begin, self.end, self.line = tup
         #print token.tok_name[self.type], repr(self.value)
 
-    def raise_error(self, msg, *args):
-        if args:
+    eleza raise_error(self, msg, *args):
+        ikiwa args:
             try:
                 msg = msg % args
             except:
@@ -334,19 +334,19 @@ class ParserGenerator(object):
         raise SyntaxError(msg, (self.filename, self.end[0],
                                 self.end[1], self.line))
 
-class NFAState(object):
+kundi NFAState(object):
 
-    def __init__(self):
+    eleza __init__(self):
         self.arcs = [] # list of (label, NFAState) pairs
 
-    def addarc(self, next, label=None):
+    eleza addarc(self, next, label=None):
         assert label is None or isinstance(label, str)
         assert isinstance(next, NFAState)
         self.arcs.append((label, next))
 
-class DFAState(object):
+kundi DFAState(object):
 
-    def __init__(self, nfaset, final):
+    eleza __init__(self, nfaset, final):
         assert isinstance(nfaset, dict)
         assert isinstance(next(iter(nfaset)), NFAState)
         assert isinstance(final, NFAState)
@@ -354,33 +354,33 @@ class DFAState(object):
         self.isfinal = final in nfaset
         self.arcs = {} # map kutoka label to DFAState
 
-    def addarc(self, next, label):
+    eleza addarc(self, next, label):
         assert isinstance(label, str)
         assert label not in self.arcs
         assert isinstance(next, DFAState)
         self.arcs[label] = next
 
-    def unifystate(self, old, new):
+    eleza unifystate(self, old, new):
         for label, next in self.arcs.items():
-            if next is old:
+            ikiwa next is old:
                 self.arcs[label] = new
 
-    def __eq__(self, other):
+    eleza __eq__(self, other):
         # Equality test -- ignore the nfaset instance variable
         assert isinstance(other, DFAState)
-        if self.isfinal != other.isfinal:
-            return False
-        # Can't just return self.arcs == other.arcs, because that
+        ikiwa self.isfinal != other.isfinal:
+            rudisha False
+        # Can't just rudisha self.arcs == other.arcs, because that
         # would invoke this method recursively, with cycles...
-        if len(self.arcs) != len(other.arcs):
-            return False
+        ikiwa len(self.arcs) != len(other.arcs):
+            rudisha False
         for label, next in self.arcs.items():
-            if next is not other.arcs.get(label):
-                return False
-        return True
+            ikiwa next is not other.arcs.get(label):
+                rudisha False
+        rudisha True
 
     __hash__ = None # For Py3 compatibility.
 
-def generate_grammar(filename="Grammar.txt"):
+eleza generate_grammar(filename="Grammar.txt"):
     p = ParserGenerator(filename)
-    return p.make_grammar()
+    rudisha p.make_grammar()

@@ -10,7 +10,7 @@ import sysconfig
 import tempfile
 import time
 import unittest
-from test.libregrtest.cmdline import _parse_args
+from test.libregrtest.cmdline agiza _parse_args
 from test.libregrtest.runtest import (
     findtests, runtest, get_abs_module,
     STDTESTS, NOTTESTS, PASSED, FAILED, ENV_CHANGED, SKIPPED, RESOURCE_DENIED,
@@ -107,21 +107,21 @@ class Regrtest:
 
         if ok == PASSED:
             self.good.append(test_name)
-        elif ok in (FAILED, CHILD_ERROR):
+        lasivyo ok in (FAILED, CHILD_ERROR):
             if not rerun:
                 self.bad.append(test_name)
-        elif ok == ENV_CHANGED:
+        lasivyo ok == ENV_CHANGED:
             self.environment_changed.append(test_name)
-        elif ok == SKIPPED:
+        lasivyo ok == SKIPPED:
             self.skipped.append(test_name)
-        elif ok == RESOURCE_DENIED:
+        lasivyo ok == RESOURCE_DENIED:
             self.skipped.append(test_name)
             self.resource_denieds.append(test_name)
-        elif ok == TEST_DID_NOT_RUN:
+        lasivyo ok == TEST_DID_NOT_RUN:
             self.run_no_tests.append(test_name)
-        elif ok == INTERRUPTED:
+        lasivyo ok == INTERRUPTED:
             self.interrupted = True
-        elif ok == TIMEOUT:
+        lasivyo ok == TIMEOUT:
             self.bad.append(test_name)
         else:
             raise ValueError("invalid test result: %r" % ok)
@@ -281,7 +281,7 @@ class Regrtest:
                 continue
             if isinstance(test, unittest.TestSuite):
                 self._list_cases(test)
-            elif isinstance(test, unittest.TestCase):
+            lasivyo isinstance(test, unittest.TestCase):
                 if support.match_test(test):
                     print(test.id())
 
@@ -424,7 +424,7 @@ class Regrtest:
             test_time = time.monotonic() - start_time
             if test_time >= PROGRESS_MIN_TIME:
                 previous_test = "%s in %s" % (previous_test, format_duration(test_time))
-            elif result.result == PASSED:
+            lasivyo result.result == PASSED:
                 # be quiet: say nothing if the test passed shortly
                 previous_test = None
 
@@ -465,9 +465,9 @@ class Regrtest:
         result = []
         if self.bad:
             result.append("FAILURE")
-        elif self.ns.fail_env_changed and self.environment_changed:
+        lasivyo self.ns.fail_env_changed and self.environment_changed:
             result.append("ENV CHANGED")
-        elif not any((self.good, self.bad, self.skipped, self.interrupted,
+        lasivyo not any((self.good, self.bad, self.skipped, self.interrupted,
             self.environment_changed)):
             result.append("NO TEST RUN")
 

@@ -14,43 +14,43 @@ kutoka test.test_importlib agiza util as test_importlib_util
 StaticMethodType = type(staticmethod(lambda: None))
 ClassMethodType = type(classmethod(lambda c: None))
 
-# Here we test the python class browser code.
+# Here we test the python kundi browser code.
 #
 # The main function in this suite, 'testModule', compares the output
 # of pyclbr with the introspected members of a module.  Because pyclbr
 # is imperfect (as designed), testModule is called with a set of
 # members to ignore.
 
-class PyclbrTest(TestCase):
+kundi PyclbrTest(TestCase):
 
-    def assertListEq(self, l1, l2, ignore):
+    eleza assertListEq(self, l1, l2, ignore):
         ''' succeed iff {l1} - {ignore} == {l2} - {ignore} '''
         missing = (set(l1) ^ set(l2)) - set(ignore)
-        if missing:
-            print("l1=%r\nl2=%r\nignore=%r" % (l1, l2, ignore), file=sys.stderr)
+        ikiwa missing:
+            andika("l1=%r\nl2=%r\nignore=%r" % (l1, l2, ignore), file=sys.stderr)
             self.fail("%r missing" % missing.pop())
 
-    def assertHasattr(self, obj, attr, ignore):
+    eleza assertHasattr(self, obj, attr, ignore):
         ''' succeed iff hasattr(obj,attr) or attr in ignore. '''
-        if attr in ignore: return
-        if not hasattr(obj, attr): print("???", attr)
+        ikiwa attr in ignore: return
+        ikiwa not hasattr(obj, attr): andika("???", attr)
         self.assertTrue(hasattr(obj, attr),
                         'expected hasattr(%r, %r)' % (obj, attr))
 
 
-    def assertHaskey(self, obj, key, ignore):
+    eleza assertHaskey(self, obj, key, ignore):
         ''' succeed iff key in obj or key in ignore. '''
-        if key in ignore: return
-        if key not in obj:
-            print("***",key, file=sys.stderr)
+        ikiwa key in ignore: return
+        ikiwa key not in obj:
+            andika("***",key, file=sys.stderr)
         self.assertIn(key, obj)
 
-    def assertEqualsOrIgnored(self, a, b, ignore):
+    eleza assertEqualsOrIgnored(self, a, b, ignore):
         ''' succeed iff a == b or a in ignore or b in ignore '''
-        if a not in ignore and b not in ignore:
+        ikiwa a not in ignore and b not in ignore:
             self.assertEqual(a, b)
 
-    def checkModule(self, moduleName, module=None, ignore=()):
+    eleza checkModule(self, moduleName, module=None, ignore=()):
         ''' succeed iff pyclbr.readmodule_ex(modulename) corresponds
             to the actual module object, module.  Any identifiers in
             ignore are ignored.   If no module is provided, the appropriate
@@ -58,42 +58,42 @@ class PyclbrTest(TestCase):
 
         ignore = set(ignore) | set(['object'])
 
-        if module is None:
+        ikiwa module is None:
             # Import it.
             # ('<silly>' is to work around an API silliness in __import__)
             module = __import__(moduleName, globals(), {}, ['<silly>'])
 
         dict = pyclbr.readmodule_ex(moduleName)
 
-        def ismethod(oclass, obj, name):
+        eleza ismethod(oclass, obj, name):
             classdict = oclass.__dict__
-            if isinstance(obj, MethodType):
+            ikiwa isinstance(obj, MethodType):
                 # could be a classmethod
-                if (not isinstance(classdict[name], ClassMethodType) or
+                ikiwa (not isinstance(classdict[name], ClassMethodType) or
                     obj.__self__ is not oclass):
-                    return False
-            elif not isinstance(obj, FunctionType):
-                return False
+                    rudisha False
+            elikiwa not isinstance(obj, FunctionType):
+                rudisha False
 
             objname = obj.__name__
-            if objname.startswith("__") and not objname.endswith("__"):
+            ikiwa objname.startswith("__") and not objname.endswith("__"):
                 objname = "_%s%s" % (oclass.__name__, objname)
-            return objname == name
+            rudisha objname == name
 
         # Make sure the toplevel functions and classes are the same.
         for name, value in dict.items():
-            if name in ignore:
+            ikiwa name in ignore:
                 continue
             self.assertHasattr(module, name, ignore)
             py_item = getattr(module, name)
-            if isinstance(value, pyclbr.Function):
+            ikiwa isinstance(value, pyclbr.Function):
                 self.assertIsInstance(py_item, (FunctionType, BuiltinFunctionType))
-                if py_item.__module__ != moduleName:
+                ikiwa py_item.__module__ != moduleName:
                     continue   # skip functions that came kutoka somewhere else
                 self.assertEqual(py_item.__module__, value.module)
             else:
                 self.assertIsInstance(py_item, type)
-                if py_item.__module__ != moduleName:
+                ikiwa py_item.__module__ != moduleName:
                     continue   # skip classes that came kutoka somewhere else
 
                 real_bases = [base.__name__ for base in py_item.__bases__]
@@ -103,16 +103,16 @@ class PyclbrTest(TestCase):
                 try:
                     self.assertListEq(real_bases, pyclbr_bases, ignore)
                 except:
-                    print("class=%s" % py_item, file=sys.stderr)
+                    andika("class=%s" % py_item, file=sys.stderr)
                     raise
 
                 actualMethods = []
                 for m in py_item.__dict__.keys():
-                    if ismethod(py_item, getattr(py_item, m), m):
+                    ikiwa ismethod(py_item, getattr(py_item, m), m):
                         actualMethods.append(m)
                 foundMethods = []
                 for m in value.methods.keys():
-                    if m[:2] == '__' and m[-2:] != '__':
+                    ikiwa m[:2] == '__' and m[-2:] != '__':
                         foundMethods.append('_'+name+m)
                     else:
                         foundMethods.append(m)
@@ -125,23 +125,23 @@ class PyclbrTest(TestCase):
                                                ignore)
                     # can't check file or lineno
                 except:
-                    print("class=%s" % py_item, file=sys.stderr)
+                    andika("class=%s" % py_item, file=sys.stderr)
                     raise
 
         # Now check for missing stuff.
-        def defined_in(item, module):
-            if isinstance(item, type):
-                return item.__module__ == module.__name__
-            if isinstance(item, FunctionType):
-                return item.__globals__ is module.__dict__
-            return False
+        eleza defined_in(item, module):
+            ikiwa isinstance(item, type):
+                rudisha item.__module__ == module.__name__
+            ikiwa isinstance(item, FunctionType):
+                rudisha item.__globals__ is module.__dict__
+            rudisha False
         for name in dir(module):
             item = getattr(module, name)
-            if isinstance(item,  (type, FunctionType)):
-                if defined_in(item, module):
+            ikiwa isinstance(item,  (type, FunctionType)):
+                ikiwa defined_in(item, module):
                     self.assertHaskey(dict, name, ignore)
 
-    def test_easy(self):
+    eleza test_easy(self):
         self.checkModule('pyclbr')
         # XXX: Metaclasses are not supported
         # self.checkModule('ast')
@@ -149,31 +149,31 @@ class PyclbrTest(TestCase):
                                             "DocTestCase", '_DocTestSuite'))
         self.checkModule('difflib', ignore=("Match",))
 
-    def test_decorators(self):
+    eleza test_decorators(self):
         # XXX: See comment in pyclbr_input.py for a test that would fail
-        #      if it were not commented out.
+        #      ikiwa it were not commented out.
         #
         self.checkModule('test.pyclbr_input', ignore=['om'])
 
-    def test_nested(self):
+    eleza test_nested(self):
         mb = pyclbr
         # Set arguments for descriptor creation and _creat_tree call.
         m, p, f, t, i = 'test', '', 'test.py', {}, None
         source = dedent("""\
-        def f0:
-            def f1(a,b,c):
-                def f2(a=1, b=2, c=3): pass
-                    return f1(a,b,d)
-            class c1: pass
-        class C0:
+        eleza f0:
+            eleza f1(a,b,c):
+                eleza f2(a=1, b=2, c=3): pass
+                    rudisha f1(a,b,d)
+            kundi c1: pass
+        kundi C0:
             "Test class."
-            def F1():
+            eleza F1():
                 "Method."
-                return 'return'
-            class C1():
-                class C2:
+                rudisha 'return'
+            kundi C1():
+                kundi C2:
                     "Class nested within nested class."
-                    def F3(): return 1+1
+                    eleza F3(): rudisha 1+1
 
         """)
         actual = mb._create_tree(m, p, f, source, t, i)
@@ -190,7 +190,7 @@ class PyclbrTest(TestCase):
         F3 = mb._nest_function(C2, 'F3', 14)
         expected = {'f0':f0, 'C0':C0}
 
-        def compare(parent1, children1, parent2, children2):
+        eleza compare(parent1, children1, parent2, children2):
             """Return equality of tree pairs.
 
             Each parent,children pair define a tree.  The parents are
@@ -209,14 +209,14 @@ class PyclbrTest(TestCase):
                 t1 = type(o1), o1.name, o1.file, o1.module, o1.lineno
                 t2 = type(o2), o2.name, o2.file, o2.module, o2.lineno
                 self.assertEqual(t1, t2)
-                if type(o1) is mb.Class:
+                ikiwa type(o1) is mb.Class:
                     self.assertEqual(o1.methods, o2.methods)
                 # Skip superclasses for now as not part of example
                 compare(o1, o1.children, o2, o2.children)
 
         compare(None, actual, None, expected)
 
-    def test_others(self):
+    eleza test_others(self):
         cm = self.checkModule
 
         # These were once about the 10 longest modules
@@ -235,23 +235,23 @@ class PyclbrTest(TestCase):
         cm('test.test_pyclbr')
 
 
-class ReadmoduleTests(TestCase):
+kundi ReadmoduleTests(TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self._modules = pyclbr._modules.copy()
 
-    def tearDown(self):
+    eleza tearDown(self):
         pyclbr._modules = self._modules
 
 
-    def test_dotted_name_not_a_package(self):
+    eleza test_dotted_name_not_a_package(self):
         # test ImportError is raised when the first part of a dotted name is
         # not a package.
         #
         # Issue #14798.
         self.assertRaises(ImportError, pyclbr.readmodule_ex, 'asyncore.foo')
 
-    def test_module_has_no_spec(self):
+    eleza test_module_has_no_spec(self):
         module_name = "doesnotexist"
         assert module_name not in pyclbr._modules
         with test_importlib_util.uncache(module_name):
@@ -259,5 +259,5 @@ class ReadmoduleTests(TestCase):
                 pyclbr.readmodule_ex(module_name)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest_main()

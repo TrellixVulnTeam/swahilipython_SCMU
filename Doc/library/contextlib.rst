@@ -45,7 +45,7 @@ Functions and classes provided:
 
    This function is a :term:`decorator` that can be used to define a factory
    function for :keyword:`with` statement context managers, without needing to
-   create a class or separate :meth:`__enter__` and :meth:`__exit__` methods.
+   create a kundi or separate :meth:`__enter__` and :meth:`__exit__` methods.
 
    While many objects natively support use in with statements, sometimes a
    resource needs to be managed that isn't a context manager in its own right,
@@ -54,7 +54,7 @@ Functions and classes provided:
    An abstract example would be the following to ensure correct resource
    management::
 
-      from contextlib import contextmanager
+      kutoka contextlib agiza contextmanager
 
       @contextmanager
       def managed_resource(*args, **kwds):
@@ -104,13 +104,13 @@ Functions and classes provided:
 
    This function is a :term:`decorator` that can be used to define a factory
    function for :keyword:`async with` statement asynchronous context managers,
-   without needing to create a class or separate :meth:`__aenter__` and
+   without needing to create a kundi or separate :meth:`__aenter__` and
    :meth:`__aexit__` methods. It must be applied to an :term:`asynchronous
    generator` function.
 
    A simple example::
 
-      from contextlib import asynccontextmanager
+      kutoka contextlib agiza asynccontextmanager
 
       @asynccontextmanager
       async def get_connection():
@@ -132,7 +132,7 @@ Functions and classes provided:
    Return a context manager that closes *thing* upon completion of the block.  This
    is basically equivalent to::
 
-      from contextlib import contextmanager
+      kutoka contextlib agiza contextmanager
 
       @contextmanager
       def closing(thing):
@@ -143,8 +143,8 @@ Functions and classes provided:
 
    And lets you write code like this::
 
-      from contextlib import closing
-      from urllib.request import urlopen
+      kutoka contextlib agiza closing
+      kutoka urllib.request agiza urlopen
 
       with closing(urlopen('http://www.python.org')) as page:
           for line in page:
@@ -158,7 +158,7 @@ Functions and classes provided:
 
 .. function:: nullcontext(enter_result=None)
 
-   Return a context manager that returns *enter_result* from ``__enter__``, but
+   Return a context manager that returns *enter_result* kutoka ``__enter__``, but
    otherwise does nothing. It is intended to be used as a stand-in for an
    optional context manager, for example::
 
@@ -201,7 +201,7 @@ Functions and classes provided:
 
    For example::
 
-       from contextlib import suppress
+       kutoka contextlib agiza suppress
 
        with suppress(FileNotFoundError):
            os.remove('somefile.tmp')
@@ -277,9 +277,9 @@ Functions and classes provided:
 
 .. class:: ContextDecorator()
 
-   A base class that enables a context manager to also be used as a decorator.
+   A base kundi that enables a context manager to also be used as a decorator.
 
-   Context managers inheriting from ``ContextDecorator`` have to implement
+   Context managers inheriting kutoka ``ContextDecorator`` have to implement
    ``__enter__`` and ``__exit__`` as normal. ``__exit__`` retains its optional
    exception handling even when used as a decorator.
 
@@ -288,9 +288,9 @@ Functions and classes provided:
 
    Example of ``ContextDecorator``::
 
-      from contextlib import ContextDecorator
+      kutoka contextlib agiza ContextDecorator
 
-      class mycontext(ContextDecorator):
+      kundi mycontext(ContextDecorator):
           def __enter__(self):
               print('Starting')
               return self
@@ -330,12 +330,12 @@ Functions and classes provided:
    It makes it clear that the ``cm`` applies to the whole function, rather than
    just a piece of it (and saving an indentation level is nice, too).
 
-   Existing context managers that already have a base class can be extended by
+   Existing context managers that already have a base kundi can be extended by
    using ``ContextDecorator`` as a mixin class::
 
-      from contextlib import ContextDecorator
+      kutoka contextlib agiza ContextDecorator
 
-      class mycontext(ContextBaseClass, ContextDecorator):
+      kundi mycontext(ContextBaseClass, ContextDecorator):
           def __enter__(self):
               return self
 
@@ -413,7 +413,7 @@ Functions and classes provided:
       By returning true values, these callbacks can suppress exceptions the
       same way context manager :meth:`__exit__` methods can.
 
-      The passed in object is returned from the function, allowing this
+      The passed in object is returned kutoka the function, allowing this
       method to be used as a function decorator.
 
    .. method:: callback(callback, *args, **kwds)
@@ -424,7 +424,7 @@ Functions and classes provided:
       Unlike the other methods, callbacks added this way cannot suppress
       exceptions (as they are never passed the exception details).
 
-      The passed in callback is returned from the function, allowing this
+      The passed in callback is returned kutoka the function, allowing this
       method to be used as a function decorator.
 
    .. method:: pop_all()
@@ -505,8 +505,8 @@ Supporting a variable number of context managers
 The primary use case for :class:`ExitStack` is the one given in the class
 documentation: supporting a variable number of context managers and other
 cleanup operations in a single :keyword:`with` statement. The variability
-may come from the number of context managers needed being driven by user
-input (such as opening a user specified collection of files), or from
+may come kutoka the number of context managers needed being driven by user
+input (such as opening a user specified collection of files), or kutoka
 some of the context managers being optional::
 
     with ExitStack() as stack:
@@ -522,11 +522,11 @@ statements to manage arbitrary resources that don't natively support the
 context management protocol.
 
 
-Catching exceptions from ``__enter__`` methods
+Catching exceptions kutoka ``__enter__`` methods
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-It is occasionally desirable to catch exceptions from an ``__enter__``
-method implementation, *without* inadvertently catching exceptions from
+It is occasionally desirable to catch exceptions kutoka an ``__enter__``
+method implementation, *without* inadvertently catching exceptions kutoka
 the :keyword:`with` statement body or the context manager's ``__exit__``
 method. By using :class:`ExitStack` the steps in the context management
 protocol can be separated slightly in order to allow this::
@@ -560,9 +560,9 @@ Here's an example of doing this for a context manager that accepts resource
 acquisition and release functions, along with an optional validation function,
 and maps them to the context management protocol::
 
-   from contextlib import contextmanager, AbstractContextManager, ExitStack
+   kutoka contextlib agiza contextmanager, AbstractContextManager, ExitStack
 
-   class ResourceManager(AbstractContextManager):
+   kundi ResourceManager(AbstractContextManager):
 
        def __init__(self, acquire_resource, release_resource, check_resource_ok=None):
            self.acquire_resource = acquire_resource
@@ -620,7 +620,7 @@ up being separated by arbitrarily long sections of code.
 execution at the end of a ``with`` statement, and then later decide to skip
 executing that callback::
 
-   from contextlib import ExitStack
+   kutoka contextlib agiza ExitStack
 
    with ExitStack() as stack:
        stack.callback(cleanup_resources)
@@ -634,9 +634,9 @@ rather than requiring a separate flag variable.
 If a particular application uses this pattern a lot, it can be simplified
 even further by means of a small helper class::
 
-   from contextlib import ExitStack
+   kutoka contextlib agiza ExitStack
 
-   class Callback(ExitStack):
+   kundi Callback(ExitStack):
        def __init__(self, callback, /, *args, **kwds):
            super(Callback, self).__init__()
            self.callback(callback, *args, **kwds)
@@ -654,7 +654,7 @@ function, then it is still possible to use the decorator form of
 :meth:`ExitStack.callback` to declare the resource cleanup in
 advance::
 
-   from contextlib import ExitStack
+   kutoka contextlib agiza ExitStack
 
    with ExitStack() as stack:
        @stack.callback
@@ -678,15 +678,15 @@ both an ordinary ``with`` statement and also as a function decorator.
 For example, it is sometimes useful to wrap functions or groups of statements
 with a logger that can track the time of entry and time of exit.  Rather than
 writing both a function decorator and a context manager for the task,
-inheriting from :class:`ContextDecorator` provides both capabilities in a
+inheriting kutoka :class:`ContextDecorator` provides both capabilities in a
 single definition::
 
-    from contextlib import ContextDecorator
-    import logging
+    kutoka contextlib agiza ContextDecorator
+    agiza logging
 
     logging.basicConfig(level=logging.INFO)
 
-    class track_entry_and_exit(ContextDecorator):
+    kundi track_entry_and_exit(ContextDecorator):
         def __init__(self, name):
             self.name = name
 
@@ -696,7 +696,7 @@ single definition::
         def __exit__(self, exc_type, exc, exc_tb):
             logging.info('Exiting: %s', self.name)
 
-Instances of this class can be used as both a context manager::
+Instances of this kundi can be used as both a context manager::
 
     with track_entry_and_exit('widget loader'):
         print('Some time consuming activity goes here')
@@ -743,7 +743,7 @@ Context managers created using :func:`contextmanager` are also single use
 context managers, and will complain about the underlying generator failing
 to yield if an attempt is made to use them a second time::
 
-    >>> from contextlib import contextmanager
+    >>> kutoka contextlib agiza contextmanager
     >>> @contextmanager
     ... def singleuse():
     ...     print("Before")
@@ -778,8 +778,8 @@ using the same context manager.
 :func:`suppress` and :func:`redirect_stdout`. Here's a very simple example of
 reentrant use::
 
-    >>> from contextlib import redirect_stdout
-    >>> from io import StringIO
+    >>> kutoka contextlib agiza redirect_stdout
+    >>> kutoka io agiza StringIO
     >>> stream = StringIO()
     >>> write_to_stream = redirect_stdout(stream)
     >>> with write_to_stream:
@@ -808,7 +808,7 @@ to a different stream.
 Reusable context managers
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Distinct from both single use and reentrant context managers are "reusable"
+Distinct kutoka both single use and reentrant context managers are "reusable"
 context managers (or, to be completely explicit, "reusable, but not
 reentrant" context managers, since reentrant context managers are also
 reusable). These context managers support being used multiple times, but
@@ -824,33 +824,33 @@ Another example of a reusable, but not reentrant, context manager is
 when leaving any with statement, regardless of where those callbacks
 were added::
 
-    >>> from contextlib import ExitStack
+    >>> kutoka contextlib agiza ExitStack
     >>> stack = ExitStack()
     >>> with stack:
-    ...     stack.callback(print, "Callback: from first context")
+    ...     stack.callback(print, "Callback: kutoka first context")
     ...     print("Leaving first context")
     ...
     Leaving first context
-    Callback: from first context
+    Callback: kutoka first context
     >>> with stack:
-    ...     stack.callback(print, "Callback: from second context")
+    ...     stack.callback(print, "Callback: kutoka second context")
     ...     print("Leaving second context")
     ...
     Leaving second context
-    Callback: from second context
+    Callback: kutoka second context
     >>> with stack:
-    ...     stack.callback(print, "Callback: from outer context")
+    ...     stack.callback(print, "Callback: kutoka outer context")
     ...     with stack:
-    ...         stack.callback(print, "Callback: from inner context")
+    ...         stack.callback(print, "Callback: kutoka inner context")
     ...         print("Leaving inner context")
     ...     print("Leaving outer context")
     ...
     Leaving inner context
-    Callback: from inner context
-    Callback: from outer context
+    Callback: kutoka inner context
+    Callback: kutoka outer context
     Leaving outer context
 
-As the output from the example shows, reusing a single stack object across
+As the output kutoka the example shows, reusing a single stack object across
 multiple with statements works correctly, but attempting to nest them
 will cause the stack to be cleared at the end of the innermost with
 statement, which is unlikely to be desirable behaviour.
@@ -858,15 +858,15 @@ statement, which is unlikely to be desirable behaviour.
 Using separate :class:`ExitStack` instances instead of reusing a single
 instance avoids that problem::
 
-    >>> from contextlib import ExitStack
+    >>> kutoka contextlib agiza ExitStack
     >>> with ExitStack() as outer_stack:
-    ...     outer_stack.callback(print, "Callback: from outer context")
+    ...     outer_stack.callback(print, "Callback: kutoka outer context")
     ...     with ExitStack() as inner_stack:
-    ...         inner_stack.callback(print, "Callback: from inner context")
+    ...         inner_stack.callback(print, "Callback: kutoka inner context")
     ...         print("Leaving inner context")
     ...     print("Leaving outer context")
     ...
     Leaving inner context
-    Callback: from inner context
+    Callback: kutoka inner context
     Leaving outer context
-    Callback: from outer context
+    Callback: kutoka outer context

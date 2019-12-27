@@ -188,11 +188,11 @@ class _Database(collections.abc.MutableMapping):
             raise error('The database is opened for reading only')
         if isinstance(key, str):
             key = key.encode('utf-8')
-        elif not isinstance(key, (bytes, bytearray)):
+        lasivyo not isinstance(key, (bytes, bytearray)):
             raise TypeError("keys must be bytes or strings")
         if isinstance(val, str):
             val = val.encode('utf-8')
-        elif not isinstance(val, (bytes, bytearray)):
+        lasivyo not isinstance(val, (bytes, bytearray)):
             raise TypeError("values must be bytes or strings")
         self._verify_open()
         self._modified = True

@@ -27,15 +27,15 @@ Cultures
 
 kutoka turtle agiza *
 
-def replace( seq, replacementRules, n ):
+eleza replace( seq, replacementRules, n ):
     for i in range(n):
         newseq = ""
         for element in seq:
             newseq = newseq + replacementRules.get(element,element)
         seq = newseq
-    return seq
+    rudisha seq
 
-def draw( commands, rules ):
+eleza draw( commands, rules ):
     for b in commands:
         try:
             rules[b]()
@@ -46,19 +46,19 @@ def draw( commands, rules ):
                 pass
 
 
-def main():
+eleza main():
     ################################
     # Example 1: Snake kolam
     ################################
 
 
-    def r():
+    eleza r():
         right(45)
 
-    def l():
+    eleza l():
         left(45)
 
-    def f():
+    eleza f():
         forward(7.5)
 
     snake_rules = {"-":r, "+":l, "f":f, "b":"f+f+f--f--f+f+f"}
@@ -83,11 +83,11 @@ def main():
     # Example 2: Anklets of Krishna
     ################################
 
-    def A():
+    eleza A():
         color("red")
         circle(10,90)
 
-    def B():
+    eleza B():
         kutoka math agiza sqrt
         color("black")
         l = 5/sqrt(2)
@@ -95,7 +95,7 @@ def main():
         circle(l, 270)
         forward(l)
 
-    def F():
+    eleza F():
         color("green")
         forward(10)
 
@@ -111,9 +111,9 @@ def main():
     drawing = replace(krishna_start, krishna_replacementRules, 3)
     draw(drawing, krishna_rules)
     tracer(1)
-    return "Done!"
+    rudisha "Done!"
 
-if __name__=='__main__':
+ikiwa __name__=='__main__':
     msg = main()
-    print(msg)
+    andika(msg)
     mainloop()

@@ -11,18 +11,18 @@ agiza warnings
 kutoka . agiza futures
 
 
-class AsyncIOInteractiveConsole(code.InteractiveConsole):
+kundi AsyncIOInteractiveConsole(code.InteractiveConsole):
 
-    def __init__(self, locals, loop):
+    eleza __init__(self, locals, loop):
         super().__init__(locals)
         self.compile.compiler.flags |= ast.PyCF_ALLOW_TOP_LEVEL_AWAIT
 
         self.loop = loop
 
-    def runcode(self, code):
+    eleza runcode(self, code):
         future = concurrent.futures.Future()
 
-        def callback():
+        eleza callback():
             global repl_future
             global repl_future_interrupted
 
@@ -42,7 +42,7 @@ class AsyncIOInteractiveConsole(code.InteractiveConsole):
                 future.set_exception(ex)
                 return
 
-            if not inspect.iscoroutine(coro):
+            ikiwa not inspect.iscoroutine(coro):
                 future.set_result(coro)
                 return
 
@@ -55,19 +55,19 @@ class AsyncIOInteractiveConsole(code.InteractiveConsole):
         loop.call_soon_threadsafe(callback)
 
         try:
-            return future.result()
+            rudisha future.result()
         except SystemExit:
             raise
         except BaseException:
-            if repl_future_interrupted:
+            ikiwa repl_future_interrupted:
                 self.write("\nKeyboardInterrupt\n")
             else:
                 self.showtraceback()
 
 
-class REPLThread(threading.Thread):
+kundi REPLThread(threading.Thread):
 
-    def run(self):
+    eleza run(self):
         try:
             banner = (
                 f'asyncio REPL {sys.version} on {sys.platform}\n'
@@ -89,7 +89,7 @@ class REPLThread(threading.Thread):
             loop.call_soon_threadsafe(loop.stop)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
@@ -117,7 +117,7 @@ if __name__ == '__main__':
         try:
             loop.run_forever()
         except KeyboardInterrupt:
-            if repl_future and not repl_future.done():
+            ikiwa repl_future and not repl_future.done():
                 repl_future.cancel()
                 repl_future_interrupted = True
             continue

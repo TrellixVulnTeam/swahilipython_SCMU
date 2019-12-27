@@ -10,7 +10,7 @@ kutoka idlelib.config agiza idleConf
 _openers = {')':'(',']':'[','}':'{'}
 CHECK_DELAY = 100 # milliseconds
 
-class ParenMatch:
+kundi ParenMatch:
     """Highlight matching openers and closers, (), [], and {}.
 
     There are three supported styles of paren matching.  When a right
@@ -32,12 +32,12 @@ class ParenMatch:
     """
 
     RESTORE_VIRTUAL_EVENT_NAME = "<<parenmatch-check-restore>>"
-    # We want the restore event be called before the usual return and
+    # We want the restore event be called before the usual rudisha and
     # backspace events.
     RESTORE_SEQUENCES = ("<KeyPress>", "<ButtonPress>",
                          "<Key-Return>", "<Key-BackSpace>")
 
-    def __init__(self, editwin):
+    eleza __init__(self, editwin):
         self.editwin = editwin
         self.text = editwin.text
         # Bind the check-restore event to the function restore_event,
@@ -49,7 +49,7 @@ class ParenMatch:
         self.is_restore_active = 0
 
     @classmethod
-    def reload(cls):
+    eleza reload(cls):
         cls.STYLE = idleConf.GetOption(
             'extensions','ParenMatch','style', default='opener')
         cls.FLASH_DELAY = idleConf.GetOption(
@@ -59,81 +59,81 @@ class ParenMatch:
         cls.HILITE_CONFIG = idleConf.GetHighlight(idleConf.CurrentTheme(),
                                                   'hilite')
 
-    def activate_restore(self):
+    eleza activate_restore(self):
         "Activate mechanism to restore text kutoka highlighting."
-        if not self.is_restore_active:
+        ikiwa not self.is_restore_active:
             for seq in self.RESTORE_SEQUENCES:
                 self.text.event_add(self.RESTORE_VIRTUAL_EVENT_NAME, seq)
             self.is_restore_active = True
 
-    def deactivate_restore(self):
+    eleza deactivate_restore(self):
         "Remove restore event bindings."
-        if self.is_restore_active:
+        ikiwa self.is_restore_active:
             for seq in self.RESTORE_SEQUENCES:
                 self.text.event_delete(self.RESTORE_VIRTUAL_EVENT_NAME, seq)
             self.is_restore_active = False
 
-    def flash_paren_event(self, event):
+    eleza flash_paren_event(self, event):
         "Handle editor 'show surrounding parens' event (menu or shortcut)."
         indices = (HyperParser(self.editwin, "insert")
                    .get_surrounding_brackets())
         self.finish_paren_event(indices)
-        return "break"
+        rudisha "break"
 
-    def paren_closed_event(self, event):
+    eleza paren_closed_event(self, event):
         "Handle user input of closer."
         # If user bound non-closer to <<paren-closed>>, quit.
         closer = self.text.get("insert-1c")
-        if closer not in _openers:
+        ikiwa closer not in _openers:
             return
         hp = HyperParser(self.editwin, "insert-1c")
-        if not hp.is_in_code():
+        ikiwa not hp.is_in_code():
             return
         indices = hp.get_surrounding_brackets(_openers[closer], True)
         self.finish_paren_event(indices)
-        return  # Allow calltips to see ')'
+        rudisha  # Allow calltips to see ')'
 
-    def finish_paren_event(self, indices):
-        if indices is None and self.BELL:
+    eleza finish_paren_event(self, indices):
+        ikiwa indices is None and self.BELL:
             self.text.bell()
             return
         self.activate_restore()
         # self.create_tag(indices)
         self.tagfuncs.get(self.STYLE, self.create_tag_expression)(self, indices)
         # self.set_timeout()
-        (self.set_timeout_last if self.FLASH_DELAY else
+        (self.set_timeout_last ikiwa self.FLASH_DELAY else
                             self.set_timeout_none)()
 
-    def restore_event(self, event=None):
+    eleza restore_event(self, event=None):
         "Remove effect of doing match."
         self.text.tag_delete("paren")
         self.deactivate_restore()
-        self.counter += 1   # disable the last timer, if there is one.
+        self.counter += 1   # disable the last timer, ikiwa there is one.
 
-    def handle_restore_timer(self, timer_count):
-        if timer_count == self.counter:
+    eleza handle_restore_timer(self, timer_count):
+        ikiwa timer_count == self.counter:
             self.restore_event()
 
     # any one of the create_tag_XXX methods can be used depending on
     # the style
 
-    def create_tag_opener(self, indices):
+    eleza create_tag_opener(self, indices):
         """Highlight the single paren that matches"""
         self.text.tag_add("paren", indices[0])
         self.text.tag_config("paren", self.HILITE_CONFIG)
 
-    def create_tag_parens(self, indices):
+    eleza create_tag_parens(self, indices):
         """Highlight the left and right parens"""
-        if self.text.get(indices[1]) in (')', ']', '}'):
+        ikiwa self.text.get(indices[1]) in (')', ']', '}'):
             rightindex = indices[1]+"+1c"
         else:
             rightindex = indices[1]
         self.text.tag_add("paren", indices[0], indices[0]+"+1c", rightindex+"-1c", rightindex)
         self.text.tag_config("paren", self.HILITE_CONFIG)
 
-    def create_tag_expression(self, indices):
+    eleza create_tag_expression(self, indices):
         """Highlight the entire expression"""
-        if self.text.get(indices[1]) in (')', ']', '}'):
+        ikiwa self.text.get(indices[1]) in (')', ']', '}'):
             rightindex = indices[1]+"+1c"
         else:
             rightindex = indices[1]
@@ -150,25 +150,25 @@ class ParenMatch:
     # any one of the set_timeout_XXX methods can be used depending on
     # the style
 
-    def set_timeout_none(self):
+    eleza set_timeout_none(self):
         """Highlight will remain until user input turns it off
         or the insert has moved"""
         # After CHECK_DELAY, call a function which disables the "paren" tag
-        # if the event is for the most recent timer and the insert has changed,
+        # ikiwa the event is for the most recent timer and the insert has changed,
         # or schedules another call for itself.
         self.counter += 1
-        def callme(callme, self=self, c=self.counter,
+        eleza callme(callme, self=self, c=self.counter,
                    index=self.text.index("insert")):
-            if index != self.text.index("insert"):
+            ikiwa index != self.text.index("insert"):
                 self.handle_restore_timer(c)
             else:
                 self.editwin.text_frame.after(CHECK_DELAY, callme, callme)
         self.editwin.text_frame.after(CHECK_DELAY, callme, callme)
 
-    def set_timeout_last(self):
+    eleza set_timeout_last(self):
         """The last highlight created will be removed after FLASH_DELAY millisecs"""
         # associate a counter with an event; only disable the "paren"
-        # tag if the event is for the most recent timer.
+        # tag ikiwa the event is for the most recent timer.
         self.counter += 1
         self.editwin.text_frame.after(
             self.FLASH_DELAY,
@@ -178,6 +178,6 @@ class ParenMatch:
 ParenMatch.reload()
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_parenmatch', verbosity=2)

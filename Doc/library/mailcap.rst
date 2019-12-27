@@ -10,7 +10,7 @@
 
 Mailcap files are used to configure how MIME-aware applications such as mail
 readers and Web browsers react to files with different MIME types. (The name
-"mailcap" is derived from the phrase "mail capability".)  For example, a mailcap
+"mailcap" is derived kutoka the phrase "mail capability".)  For example, a mailcap
 file might contain a line like ``video/mpeg; xmpeg %s``.  Then, if the user
 encounters an email message or Web document with the MIME type
 :mimetype:`video/mpeg`, ``%s`` will be replaced by a filename (usually one
@@ -62,14 +62,14 @@ standard.  However, mailcap files are supported on most Unix systems.
    as a list of dictionaries, but it shouldn't be necessary to know the details of
    this representation.
 
-   The information is derived from all of the mailcap files found on the system.
+   The information is derived kutoka all of the mailcap files found on the system.
    Settings in the user's mailcap file :file:`$HOME/.mailcap` will override
    settings in the system mailcap files :file:`/etc/mailcap`,
    :file:`/usr/etc/mailcap`, and :file:`/usr/local/etc/mailcap`.
 
 An example usage::
 
-   >>> import mailcap
+   >>> agiza mailcap
    >>> d = mailcap.getcaps()
    >>> mailcap.findmatch(d, 'video/mpeg', filename='tmp1223')
    ('xmpeg tmp1223', {'view': 'xmpeg %s'})

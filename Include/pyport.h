@@ -209,7 +209,7 @@ typedef int Py_ssize_clean_t;
 #include <ieeefp.h>  /* needed for 'finite' declaration on some platforms */
 #endif
 
-#include <math.h> /* Moved here from the math section, before extern "C" */
+#include <math.h> /* Moved here kutoka the math section, before extern "C" */
 
 /********************************************
  * WRAPPER FOR <time.h> and/or <sys/time.h> *
@@ -310,7 +310,7 @@ extern "C" {
 #define Py_FORCE_EXPANSION(X) X
 
 /* Py_SAFE_DOWNCAST(VALUE, WIDE, NARROW)
- * Cast VALUE to type NARROW from type WIDE.  In Py_DEBUG mode, this
+ * Cast VALUE to type NARROW kutoka type WIDE.  In Py_DEBUG mode, this
  * assert-fails if any information is lost.
  * Caution:
  *    VALUE may be evaluated more than once.
@@ -559,7 +559,7 @@ extern "C" {
 #endif
 
 /**************************************************************************
-Prototypes that are missing from the standard include files on some systems
+Prototypes that are missing kutoka the standard include files on some systems
 (and possibly only some versions of such systems.)
 
 Please be conservative with adding new ones, document them and enclose them
@@ -731,7 +731,7 @@ extern char * _getpty(int *, int, mode_t, int);
 #endif
 
 /*
- * Hide GCC attributes from compilers that don't support them.
+ * Hide GCC attributes kutoka compilers that don't support them.
  */
 #if (!defined(__GNUC__) || __GNUC__ < 2 || \
      (__GNUC__ == 2 && __GNUC_MINOR__ < 7) )
@@ -749,7 +749,7 @@ extern char * _getpty(int *, int, mode_t, int);
 #define Py_ALIGNED(x)
 #endif
 
-/* Eliminate end-of-loop code not reached warnings from SunPro C
+/* Eliminate end-of-loop code not reached warnings kutoka SunPro C
  * when using do{...}while(0) macros
  */
 #ifdef __SUNPRO_C

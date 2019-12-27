@@ -1,4 +1,4 @@
-:mod:`email.mime`: Creating email and MIME objects from scratch
+:mod:`email.mime`: Creating email and MIME objects kutoka scratch
 ---------------------------------------------------------------
 
 .. module:: email.mime
@@ -15,7 +15,7 @@ code.
 
 Ordinarily, you get a message object structure by passing a file or some text to
 a parser, which parses the text and returns the root message object.  However
-you can also build a complete message structure from scratch, or even individual
+you can also build a complete message structure kutoka scratch, or even individual
 :class:`~email.message.Message` objects by hand.  In fact, you can also take an
 existing structure and add new :class:`~email.message.Message` objects, move them
 around, etc.  This makes a very convenient interface for slicing-and-dicing MIME
@@ -34,10 +34,10 @@ Here are the classes:
 
    Module: :mod:`email.mime.base`
 
-   This is the base class for all the MIME-specific subclasses of
+   This is the base kundi for all the MIME-specific subclasses of
    :class:`~email.message.Message`.  Ordinarily you won't create instances
    specifically of :class:`MIMEBase`, although you could.  :class:`MIMEBase`
-   is provided primarily as a convenient base class for more specific
+   is provided primarily as a convenient base kundi for more specific
    MIME-aware subclasses.
 
    *_maintype* is the :mailheader:`Content-Type` major type (e.g. :mimetype:`text`
@@ -50,7 +50,7 @@ Here are the classes:
    :class:`compat32 <email.policy.Compat32>` policy) it will be passed to
    :class:`~email.message.Message`.
 
-   The :class:`MIMEBase` class always adds a :mailheader:`Content-Type` header
+   The :class:`MIMEBase` kundi always adds a :mailheader:`Content-Type` header
    (based on *_maintype*, *_subtype*, and *_params*), and a
    :mailheader:`MIME-Version` header (always set to ``1.0``).
 
@@ -64,9 +64,9 @@ Here are the classes:
 
    Module: :mod:`email.mime.nonmultipart`
 
-   A subclass of :class:`~email.mime.base.MIMEBase`, this is an intermediate base
-   class for MIME messages that are not :mimetype:`multipart`.  The primary
-   purpose of this class is to prevent the use of the
+   A subkundi of :class:`~email.mime.base.MIMEBase`, this is an intermediate base
+   kundi for MIME messages that are not :mimetype:`multipart`.  The primary
+   purpose of this kundi is to prevent the use of the
    :meth:`~email.message.Message.attach` method, which only makes sense for
    :mimetype:`multipart` messages.  If :meth:`~email.message.Message.attach`
    is called, a :exc:`~email.errors.MultipartConversionError` exception is raised.
@@ -79,8 +79,8 @@ Here are the classes:
 
    Module: :mod:`email.mime.multipart`
 
-   A subclass of :class:`~email.mime.base.MIMEBase`, this is an intermediate base
-   class for MIME messages that are :mimetype:`multipart`.  Optional *_subtype*
+   A subkundi of :class:`~email.mime.base.MIMEBase`, this is an intermediate base
+   kundi for MIME messages that are :mimetype:`multipart`.  Optional *_subtype*
    defaults to :mimetype:`mixed`, but can be used to specify the subtype of the
    message.  A :mailheader:`Content-Type` header of :mimetype:`multipart/_subtype`
    will be added to the message object.  A :mailheader:`MIME-Version` header will
@@ -97,7 +97,7 @@ Here are the classes:
 
    Optional *policy* argument defaults to :class:`compat32 <email.policy.Compat32>`.
 
-   Additional parameters for the :mailheader:`Content-Type` header are taken from
+   Additional parameters for the :mailheader:`Content-Type` header are taken kutoka
    the keyword arguments, or passed into the *_params* argument, which is a keyword
    dictionary.
 
@@ -112,8 +112,8 @@ Here are the classes:
 
    Module: :mod:`email.mime.application`
 
-   A subclass of :class:`~email.mime.nonmultipart.MIMENonMultipart`, the
-   :class:`MIMEApplication` class is used to represent MIME message objects of
+   A subkundi of :class:`~email.mime.nonmultipart.MIMENonMultipart`, the
+   :class:`MIMEApplication` kundi is used to represent MIME message objects of
    major type :mimetype:`application`.  *_data* is a string containing the raw
    byte data.  Optional *_subtype* specifies the MIME subtype and defaults to
    :mimetype:`octet-stream`.
@@ -130,7 +130,7 @@ Here are the classes:
 
    Optional *policy* argument defaults to :class:`compat32 <email.policy.Compat32>`.
 
-   *_params* are passed straight through to the base class constructor.
+   *_params* are passed straight through to the base kundi constructor.
 
    .. versionchanged:: 3.6
       Added *policy* keyword-only parameter.
@@ -143,8 +143,8 @@ Here are the classes:
 
    Module: :mod:`email.mime.audio`
 
-   A subclass of :class:`~email.mime.nonmultipart.MIMENonMultipart`, the
-   :class:`MIMEAudio` class is used to create MIME message objects of major type
+   A subkundi of :class:`~email.mime.nonmultipart.MIMENonMultipart`, the
+   :class:`MIMEAudio` kundi is used to create MIME message objects of major type
    :mimetype:`audio`. *_audiodata* is a string containing the raw audio data.  If
    this data can be decoded by the standard Python module :mod:`sndhdr`, then the
    subtype will be automatically included in the :mailheader:`Content-Type` header.
@@ -164,7 +164,7 @@ Here are the classes:
 
    Optional *policy* argument defaults to :class:`compat32 <email.policy.Compat32>`.
 
-   *_params* are passed straight through to the base class constructor.
+   *_params* are passed straight through to the base kundi constructor.
 
    .. versionchanged:: 3.6
       Added *policy* keyword-only parameter.
@@ -177,8 +177,8 @@ Here are the classes:
 
    Module: :mod:`email.mime.image`
 
-   A subclass of :class:`~email.mime.nonmultipart.MIMENonMultipart`, the
-   :class:`MIMEImage` class is used to create MIME message objects of major type
+   A subkundi of :class:`~email.mime.nonmultipart.MIMENonMultipart`, the
+   :class:`MIMEImage` kundi is used to create MIME message objects of major type
    :mimetype:`image`. *_imagedata* is a string containing the raw image data.  If
    this data can be decoded by the standard Python module :mod:`imghdr`, then the
    subtype will be automatically included in the :mailheader:`Content-Type` header.
@@ -210,10 +210,10 @@ Here are the classes:
 
    Module: :mod:`email.mime.message`
 
-   A subclass of :class:`~email.mime.nonmultipart.MIMENonMultipart`, the
-   :class:`MIMEMessage` class is used to create MIME objects of main type
+   A subkundi of :class:`~email.mime.nonmultipart.MIMENonMultipart`, the
+   :class:`MIMEMessage` kundi is used to create MIME objects of main type
    :mimetype:`message`. *_msg* is used as the payload, and must be an instance
-   of class :class:`~email.message.Message` (or a subclass thereof), otherwise
+   of kundi :class:`~email.message.Message` (or a subkundi thereof), otherwise
    a :exc:`TypeError` is raised.
 
    Optional *_subtype* sets the subtype of the message; it defaults to
@@ -230,8 +230,8 @@ Here are the classes:
 
    Module: :mod:`email.mime.text`
 
-   A subclass of :class:`~email.mime.nonmultipart.MIMENonMultipart`, the
-   :class:`MIMEText` class is used to create MIME objects of major type
+   A subkundi of :class:`~email.mime.nonmultipart.MIMENonMultipart`, the
+   :class:`MIMEText` kundi is used to create MIME objects of major type
    :mimetype:`text`. *_text* is the string for the payload.  *_subtype* is the
    minor type and defaults to :mimetype:`plain`.  *_charset* is the character
    set of the text and is passed as an argument to the

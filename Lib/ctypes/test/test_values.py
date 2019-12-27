@@ -6,7 +6,7 @@ import unittest
 import sys
 from ctypes import *
 
-import _ctypes_test
+agiza _ctypes_test
 
 class ValuesTestCase(unittest.TestCase):
 
@@ -90,7 +90,7 @@ class PythonValuesTestCase(unittest.TestCase):
         self.assertEqual(sorted(bootstrap_seen), bootstrap_expected,
             "frozen bootstrap modules did not match PyImport_FrozenModules")
 
-        from ctypes import _pointer_type_cache
+        from ctypes agiza _pointer_type_cache
         del _pointer_type_cache[struct_frozen]
 
     def test_undefined(self):

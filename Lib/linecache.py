@@ -1,6 +1,6 @@
 """Cache lines kutoka Python source files.
 
-This is intended to read lines kutoka modules imported -- hence if a filename
+This is intended to read lines kutoka modules imported -- hence ikiwa a filename
 is not found, it will look down the module search path for a file by
 that name.
 """
@@ -12,12 +12,12 @@ agiza tokenize
 
 __all__ = ["getline", "clearcache", "checkcache"]
 
-def getline(filename, lineno, module_globals=None):
+eleza getline(filename, lineno, module_globals=None):
     lines = getlines(filename, module_globals)
-    if 1 <= lineno <= len(lines):
-        return lines[lineno-1]
+    ikiwa 1 <= lineno <= len(lines):
+        rudisha lines[lineno-1]
     else:
-        return ''
+        rudisha ''
 
 
 # The cache
@@ -27,68 +27,68 @@ def getline(filename, lineno, module_globals=None):
 cache = {}
 
 
-def clearcache():
+eleza clearcache():
     """Clear the cache entirely."""
 
     global cache
     cache = {}
 
 
-def getlines(filename, module_globals=None):
+eleza getlines(filename, module_globals=None):
     """Get the lines for a Python source file kutoka the cache.
-    Update the cache if it doesn't contain an entry for this file already."""
+    Update the cache ikiwa it doesn't contain an entry for this file already."""
 
-    if filename in cache:
+    ikiwa filename in cache:
         entry = cache[filename]
-        if len(entry) != 1:
-            return cache[filename][2]
+        ikiwa len(entry) != 1:
+            rudisha cache[filename][2]
 
     try:
-        return updatecache(filename, module_globals)
+        rudisha updatecache(filename, module_globals)
     except MemoryError:
         clearcache()
-        return []
+        rudisha []
 
 
-def checkcache(filename=None):
+eleza checkcache(filename=None):
     """Discard cache entries that are out of date.
     (This is not checked upon each call!)"""
 
-    if filename is None:
+    ikiwa filename is None:
         filenames = list(cache.keys())
     else:
-        if filename in cache:
+        ikiwa filename in cache:
             filenames = [filename]
         else:
             return
 
     for filename in filenames:
         entry = cache[filename]
-        if len(entry) == 1:
+        ikiwa len(entry) == 1:
             # lazy cache entry, leave it lazy.
             continue
         size, mtime, lines, fullname = entry
-        if mtime is None:
+        ikiwa mtime is None:
             continue   # no-op for files loaded via a __loader__
         try:
             stat = os.stat(fullname)
         except OSError:
             del cache[filename]
             continue
-        if size != stat.st_size or mtime != stat.st_mtime:
+        ikiwa size != stat.st_size or mtime != stat.st_mtime:
             del cache[filename]
 
 
-def updatecache(filename, module_globals=None):
-    """Update a cache entry and return its list of lines.
+eleza updatecache(filename, module_globals=None):
+    """Update a cache entry and rudisha its list of lines.
     If something's wrong, print a message, discard the cache entry,
-    and return an empty list."""
+    and rudisha an empty list."""
 
-    if filename in cache:
-        if len(cache[filename]) != 1:
+    ikiwa filename in cache:
+        ikiwa len(cache[filename]) != 1:
             del cache[filename]
-    if not filename or (filename.startswith('<') and filename.endswith('>')):
-        return []
+    ikiwa not filename or (filename.startswith('<') and filename.endswith('>')):
+        rudisha []
 
     fullname = filename
     try:
@@ -96,28 +96,28 @@ def updatecache(filename, module_globals=None):
     except OSError:
         basename = filename
 
-        # Realise a lazy loader based lookup if there is one
+        # Realise a lazy loader based lookup ikiwa there is one
         # otherwise try to lookup right now.
-        if lazycache(filename, module_globals):
+        ikiwa lazycache(filename, module_globals):
             try:
                 data = cache[filename][0]()
             except (ImportError, OSError):
                 pass
             else:
-                if data is None:
+                ikiwa data is None:
                     # No luck, the PEP302 loader cannot find the source
                     # for this module.
-                    return []
+                    rudisha []
                 cache[filename] = (
                     len(data), None,
                     [line+'\n' for line in data.splitlines()], fullname
                 )
-                return cache[filename][2]
+                rudisha cache[filename][2]
 
         # Try looking through the module search path, which is only useful
         # when handling a relative filename.
-        if os.path.isabs(filename):
-            return []
+        ikiwa os.path.isabs(filename):
+            rudisha []
 
         for dirname in sys.path:
             try:
@@ -131,20 +131,20 @@ def updatecache(filename, module_globals=None):
             except OSError:
                 pass
         else:
-            return []
+            rudisha []
     try:
         with tokenize.open(fullname) as fp:
             lines = fp.readlines()
     except OSError:
-        return []
-    if lines and not lines[-1].endswith('\n'):
+        rudisha []
+    ikiwa lines and not lines[-1].endswith('\n'):
         lines[-1] += '\n'
     size, mtime = stat.st_size, stat.st_mtime
     cache[filename] = size, mtime, lines, fullname
-    return lines
+    rudisha lines
 
 
-def lazycache(filename, module_globals):
+eleza lazycache(filename, module_globals):
     """Seed the cache for filename with module_globals.
 
     The module loader will be asked for the source only when getlines is
@@ -152,26 +152,26 @@ def lazycache(filename, module_globals):
 
     If there is an entry in the cache already, it is not altered.
 
-    :return: True if a lazy load is registered in the cache,
+    :return: True ikiwa a lazy load is registered in the cache,
         otherwise False. To register such a load a module loader with a
         get_source method must be found, the filename must be a cachable
         filename, and the filename must not be already cached.
     """
-    if filename in cache:
-        if len(cache[filename]) == 1:
-            return True
+    ikiwa filename in cache:
+        ikiwa len(cache[filename]) == 1:
+            rudisha True
         else:
-            return False
-    if not filename or (filename.startswith('<') and filename.endswith('>')):
-        return False
-    # Try for a __loader__, if available
-    if module_globals and '__loader__' in module_globals:
+            rudisha False
+    ikiwa not filename or (filename.startswith('<') and filename.endswith('>')):
+        rudisha False
+    # Try for a __loader__, ikiwa available
+    ikiwa module_globals and '__loader__' in module_globals:
         name = module_globals.get('__name__')
         loader = module_globals['__loader__']
         get_source = getattr(loader, 'get_source', None)
 
-        if name and get_source:
+        ikiwa name and get_source:
             get_lines = functools.partial(get_source, name)
             cache[filename] = (get_lines,)
-            return True
-    return False
+            rudisha True
+    rudisha False

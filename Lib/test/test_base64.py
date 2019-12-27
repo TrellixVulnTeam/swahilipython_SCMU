@@ -7,10 +7,10 @@ kutoka array agiza array
 kutoka test.support agiza script_helper
 
 
-class LegacyBase64TestCase(unittest.TestCase):
+kundi LegacyBase64TestCase(unittest.TestCase):
 
     # Legacy API is not as permissive as the modern API
-    def check_type_errors(self, f):
+    eleza check_type_errors(self, f):
         self.assertRaises(TypeError, f, "")
         self.assertRaises(TypeError, f, [])
         multidimensional = memoryview(b"1234").cast('B', (2, 2))
@@ -18,15 +18,15 @@ class LegacyBase64TestCase(unittest.TestCase):
         int_data = memoryview(b"1234").cast('I')
         self.assertRaises(TypeError, f, int_data)
 
-    def test_encodestring_warns(self):
+    eleza test_encodestring_warns(self):
         with self.assertWarns(DeprecationWarning):
             base64.encodestring(b"www.python.org")
 
-    def test_decodestring_warns(self):
+    eleza test_decodestring_warns(self):
         with self.assertWarns(DeprecationWarning):
             base64.decodestring(b"d3d3LnB5dGhvbi5vcmc=\n")
 
-    def test_encodebytes(self):
+    eleza test_encodebytes(self):
         eq = self.assertEqual
         eq(base64.encodebytes(b"www.python.org"), b"d3d3LnB5dGhvbi5vcmc=\n")
         eq(base64.encodebytes(b"a"), b"YQ==\n")
@@ -45,7 +45,7 @@ class LegacyBase64TestCase(unittest.TestCase):
         eq(base64.encodebytes(array('B', b'abc')), b'YWJj\n')
         self.check_type_errors(base64.encodebytes)
 
-    def test_decodebytes(self):
+    eleza test_decodebytes(self):
         eq = self.assertEqual
         eq(base64.decodebytes(b"d3d3LnB5dGhvbi5vcmc=\n"), b"www.python.org")
         eq(base64.decodebytes(b"YQ==\n"), b"a")
@@ -64,7 +64,7 @@ class LegacyBase64TestCase(unittest.TestCase):
         eq(base64.decodebytes(array('B', b'YWJj\n')), b'abc')
         self.check_type_errors(base64.decodebytes)
 
-    def test_encode(self):
+    eleza test_encode(self):
         eq = self.assertEqual
         kutoka io agiza BytesIO, StringIO
         infp = BytesIO(b'abcdefghijklmnopqrstuvwxyz'
@@ -81,7 +81,7 @@ class LegacyBase64TestCase(unittest.TestCase):
         self.assertRaises(TypeError, base64.encode, BytesIO(b'abc'), StringIO())
         self.assertRaises(TypeError, base64.encode, StringIO('abc'), StringIO())
 
-    def test_decode(self):
+    eleza test_decode(self):
         kutoka io agiza BytesIO, StringIO
         infp = BytesIO(b'd3d3LnB5dGhvbi5vcmc=')
         outfp = BytesIO()
@@ -93,18 +93,18 @@ class LegacyBase64TestCase(unittest.TestCase):
         self.assertRaises(TypeError, base64.encode, StringIO('YWJj\n'), StringIO())
 
 
-class BaseXYTestCase(unittest.TestCase):
+kundi BaseXYTestCase(unittest.TestCase):
 
     # Modern API completely ignores exported dimension and format data and
     # treats any buffer as a stream of bytes
-    def check_encode_type_errors(self, f):
+    eleza check_encode_type_errors(self, f):
         self.assertRaises(TypeError, f, "")
         self.assertRaises(TypeError, f, [])
 
-    def check_decode_type_errors(self, f):
+    eleza check_decode_type_errors(self, f):
         self.assertRaises(TypeError, f, [])
 
-    def check_other_types(self, f, bytes_data, expected):
+    eleza check_other_types(self, f, bytes_data, expected):
         eq = self.assertEqual
         b = bytearray(bytes_data)
         eq(f(b), expected)
@@ -116,21 +116,21 @@ class BaseXYTestCase(unittest.TestCase):
         self.check_nonbyte_element_format(base64.b64encode, bytes_data)
         self.check_multidimensional(base64.b64encode, bytes_data)
 
-    def check_multidimensional(self, f, data):
-        padding = b"\x00" if len(data) % 2 else b""
+    eleza check_multidimensional(self, f, data):
+        padding = b"\x00" ikiwa len(data) % 2 else b""
         bytes_data = data + padding # Make sure cast works
         shape = (len(bytes_data) // 2, 2)
         multidimensional = memoryview(bytes_data).cast('B', shape)
         self.assertEqual(f(multidimensional), f(bytes_data))
 
-    def check_nonbyte_element_format(self, f, data):
+    eleza check_nonbyte_element_format(self, f, data):
         padding = b"\x00" * ((4 - len(data)) % 4)
         bytes_data = data + padding # Make sure cast works
         int_data = memoryview(bytes_data).cast('I')
         self.assertEqual(f(int_data), f(bytes_data))
 
 
-    def test_b64encode(self):
+    eleza test_b64encode(self):
         eq = self.assertEqual
         # Test default alphabet
         eq(base64.b64encode(b"www.python.org"), b"d3d3LnB5dGhvbi5vcmc=")
@@ -180,7 +180,7 @@ class BaseXYTestCase(unittest.TestCase):
                                b'\xd3V\xbeo\xf7\x1d', b'01a-b_cd')
         self.check_encode_type_errors(base64.urlsafe_b64encode)
 
-    def test_b64decode(self):
+    eleza test_b64decode(self):
         eq = self.assertEqual
 
         tests = {b"d3d3LnB5dGhvbi5vcmc=": b"www.python.org",
@@ -236,11 +236,11 @@ class BaseXYTestCase(unittest.TestCase):
                                b'\xd3V\xbeo\xf7\x1d')
         self.check_decode_type_errors(base64.urlsafe_b64decode)
 
-    def test_b64decode_padding_error(self):
+    eleza test_b64decode_padding_error(self):
         self.assertRaises(binascii.Error, base64.b64decode, b'abc')
         self.assertRaises(binascii.Error, base64.b64decode, 'abc')
 
-    def test_b64decode_invalid_chars(self):
+    eleza test_b64decode_invalid_chars(self):
         # issue 1466065: Test some invalid characters.
         tests = ((b'%3d==', b'\xdd'),
                  (b'$3d==', b'\xdd'),
@@ -271,7 +271,7 @@ class BaseXYTestCase(unittest.TestCase):
         self.assertEqual(base64.b64decode(b'++[[//]]', b'[]'), res)
         self.assertEqual(base64.urlsafe_b64decode(b'++--//__'), res)
 
-    def test_b32encode(self):
+    eleza test_b32encode(self):
         eq = self.assertEqual
         eq(base64.b32encode(b''), b'')
         eq(base64.b32encode(b'\x00'), b'AA======')
@@ -284,7 +284,7 @@ class BaseXYTestCase(unittest.TestCase):
         self.check_other_types(base64.b32encode, b'abcd', b'MFRGGZA=')
         self.check_encode_type_errors(base64.b32encode)
 
-    def test_b32decode(self):
+    eleza test_b32decode(self):
         eq = self.assertEqual
         tests = {b'': b'',
                  b'AA======': b'\x00',
@@ -301,7 +301,7 @@ class BaseXYTestCase(unittest.TestCase):
         self.check_other_types(base64.b32decode, b'MFRGG===', b"abc")
         self.check_decode_type_errors(base64.b32decode)
 
-    def test_b32decode_casefold(self):
+    eleza test_b32decode_casefold(self):
         eq = self.assertEqual
         tests = {b'': b'',
                  b'ME======': b'a',
@@ -342,14 +342,14 @@ class BaseXYTestCase(unittest.TestCase):
             self.assertRaises(binascii.Error, base64.b32decode, data)
             self.assertRaises(binascii.Error, base64.b32decode, data_str)
 
-    def test_b32decode_error(self):
+    eleza test_b32decode_error(self):
         tests = [b'abc', b'ABCDEF==', b'==ABCDEF']
         prefixes = [b'M', b'ME', b'MFRA', b'MFRGG', b'MFRGGZA', b'MFRGGZDF']
         for i in range(0, 17):
-            if i:
+            ikiwa i:
                 tests.append(b'='*i)
             for prefix in prefixes:
-                if len(prefix) + i != 8:
+                ikiwa len(prefix) + i != 8:
                     tests.append(prefix + b'='*i)
         for data in tests:
             with self.subTest(data=data):
@@ -358,7 +358,7 @@ class BaseXYTestCase(unittest.TestCase):
                 with self.assertRaises(binascii.Error):
                     base64.b32decode(data.decode('ascii'))
 
-    def test_b16encode(self):
+    eleza test_b16encode(self):
         eq = self.assertEqual
         eq(base64.b16encode(b'\x01\x02\xab\xcd\xef'), b'0102ABCDEF')
         eq(base64.b16encode(b'\x00'), b'00')
@@ -367,7 +367,7 @@ class BaseXYTestCase(unittest.TestCase):
                                b'0102ABCDEF')
         self.check_encode_type_errors(base64.b16encode)
 
-    def test_b16decode(self):
+    eleza test_b16decode(self):
         eq = self.assertEqual
         eq(base64.b16decode(b'0102ABCDEF'), b'\x01\x02\xab\xcd\xef')
         eq(base64.b16decode('0102ABCDEF'), b'\x01\x02\xab\xcd\xef')
@@ -394,7 +394,7 @@ class BaseXYTestCase(unittest.TestCase):
         # Incorrect "padding"
         self.assertRaises(binascii.Error, base64.b16decode, '010')
 
-    def test_a85encode(self):
+    eleza test_a85encode(self):
         eq = self.assertEqual
 
         tests = {
@@ -444,7 +444,7 @@ class BaseXYTestCase(unittest.TestCase):
         eq(base64.a85encode(b' '*6, foldspaces=True, adobe=False), b'y+<U')
         eq(base64.a85encode(b' '*5, foldspaces=True, adobe=False), b'y+9')
 
-    def test_b85encode(self):
+    eleza test_b85encode(self):
         eq = self.assertEqual
 
         tests = {
@@ -478,7 +478,7 @@ class BaseXYTestCase(unittest.TestCase):
         self.check_other_types(base64.b85encode, b"www.python.org",
                                b'cXxL#aCvlSZ*DGca%T')
 
-    def test_a85decode(self):
+    eleza test_a85decode(self):
         eq = self.assertEqual
 
         tests = {
@@ -523,7 +523,7 @@ class BaseXYTestCase(unittest.TestCase):
         self.check_other_types(base64.a85decode, b'GB\\6`E-ZP=Df.1GEb>',
                                b"www.python.org")
 
-    def test_b85decode(self):
+    eleza test_b85decode(self):
         eq = self.assertEqual
 
         tests = {
@@ -558,7 +558,7 @@ class BaseXYTestCase(unittest.TestCase):
         self.check_other_types(base64.b85decode, b'cXxL#aCvlSZ*DGca%T',
                                b"www.python.org")
 
-    def test_a85_padding(self):
+    eleza test_a85_padding(self):
         eq = self.assertEqual
 
         eq(base64.a85encode(b"x", pad=True), b'GQ7^D')
@@ -573,7 +573,7 @@ class BaseXYTestCase(unittest.TestCase):
         eq(base64.a85decode(b'G^+IX'), b"xxxx")
         eq(base64.a85decode(b'G^+IXGQ7^D'), b"xxxxx\x00\x00\x00")
 
-    def test_b85_padding(self):
+    eleza test_b85_padding(self):
         eq = self.assertEqual
 
         eq(base64.b85encode(b"x", pad=True), b'cmMzZ')
@@ -588,7 +588,7 @@ class BaseXYTestCase(unittest.TestCase):
         eq(base64.b85decode(b'czAet'), b"xxxx")
         eq(base64.b85decode(b'czAetcmMzZ'), b"xxxxx\x00\x00\x00")
 
-    def test_a85decode_errors(self):
+    eleza test_a85decode_errors(self):
         illegal = (set(range(32)) | set(range(118, 256))) - set(b' \t\n\r\v')
         for c in illegal:
             with self.assertRaises(ValueError, msg=bytes([c])):
@@ -623,7 +623,7 @@ class BaseXYTestCase(unittest.TestCase):
         self.assertRaises(ValueError, base64.a85decode, b's8W-', adobe=False)
         self.assertRaises(ValueError, base64.a85decode, b's8W-"', adobe=False)
 
-    def test_b85decode_errors(self):
+    eleza test_b85decode_errors(self):
         illegal = list(range(33)) + \
                   list(b'"\',./:[\\]') + \
                   list(range(128, 256))
@@ -637,7 +637,7 @@ class BaseXYTestCase(unittest.TestCase):
         self.assertRaises(ValueError, base64.b85decode, b'|NsC')
         self.assertRaises(ValueError, base64.b85decode, b'|NsC1')
 
-    def test_decode_nonascii_str(self):
+    eleza test_decode_nonascii_str(self):
         decode_funcs = (base64.b64decode,
                         base64.standard_b64decode,
                         base64.urlsafe_b64decode,
@@ -648,19 +648,19 @@ class BaseXYTestCase(unittest.TestCase):
         for f in decode_funcs:
             self.assertRaises(ValueError, f, 'with non-ascii \xcb')
 
-    def test_ErrorHeritage(self):
+    eleza test_ErrorHeritage(self):
         self.assertTrue(issubclass(binascii.Error, ValueError))
 
 
-class TestMain(unittest.TestCase):
-    def tearDown(self):
-        if os.path.exists(support.TESTFN):
+kundi TestMain(unittest.TestCase):
+    eleza tearDown(self):
+        ikiwa os.path.exists(support.TESTFN):
             os.unlink(support.TESTFN)
 
-    def get_output(self, *args):
-        return script_helper.assert_python_ok('-m', 'base64', *args).out
+    eleza get_output(self, *args):
+        rudisha script_helper.assert_python_ok('-m', 'base64', *args).out
 
-    def test_encode_decode(self):
+    eleza test_encode_decode(self):
         output = self.get_output('-t')
         self.assertSequenceEqual(output.splitlines(), (
             b"b'Aladdin:open sesame'",
@@ -668,23 +668,23 @@ class TestMain(unittest.TestCase):
             b"b'Aladdin:open sesame'",
         ))
 
-    def test_encode_file(self):
+    eleza test_encode_file(self):
         with open(support.TESTFN, 'wb') as fp:
             fp.write(b'a\xffb\n')
         output = self.get_output('-e', support.TESTFN)
         self.assertEqual(output.rstrip(), b'Yf9iCg==')
 
-    def test_encode_from_stdin(self):
+    eleza test_encode_kutoka_stdin(self):
         with script_helper.spawn_python('-m', 'base64', '-e') as proc:
             out, err = proc.communicate(b'a\xffb\n')
         self.assertEqual(out.rstrip(), b'Yf9iCg==')
         self.assertIsNone(err)
 
-    def test_decode(self):
+    eleza test_decode(self):
         with open(support.TESTFN, 'wb') as fp:
             fp.write(b'Yf9iCg==')
         output = self.get_output('-d', support.TESTFN)
         self.assertEqual(output.rstrip(), b'a\xffb')
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

@@ -1,7 +1,7 @@
 import unittest
 
 from ctypes import *
-import _ctypes_test
+agiza _ctypes_test
 
 lib = CDLL(_ctypes_test.__file__)
 

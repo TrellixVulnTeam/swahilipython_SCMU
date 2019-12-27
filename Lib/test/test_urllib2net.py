@@ -13,19 +13,19 @@ support.requires("network")
 TIMEOUT = 60  # seconds
 
 
-def _retry_thrice(func, exc, *args, **kwargs):
+eleza _retry_thrice(func, exc, *args, **kwargs):
     for i in range(3):
         try:
-            return func(*args, **kwargs)
+            rudisha func(*args, **kwargs)
         except exc as e:
             last_exc = e
             continue
     raise last_exc
 
-def _wrap_with_retry_thrice(func, exc):
-    def wrapped(*args, **kwargs):
-        return _retry_thrice(func, exc, *args, **kwargs)
-    return wrapped
+eleza _wrap_with_retry_thrice(func, exc):
+    eleza wrapped(*args, **kwargs):
+        rudisha _retry_thrice(func, exc, *args, **kwargs)
+    rudisha wrapped
 
 # bpo-35411: FTP tests of test_urllib2net randomly fail
 # with "425 Security: Bad IP connecting" on Travis CI
@@ -40,13 +40,13 @@ _urlopen_with_retry = _wrap_with_retry_thrice(urllib.request.urlopen,
                                               urllib.error.URLError)
 
 
-class AuthTests(unittest.TestCase):
+kundi AuthTests(unittest.TestCase):
     """Tests urllib2 authentication features."""
 
 ## Disabled at the moment since there is no page under python.org which
 ## could be used to HTTP authentication.
 #
-#    def test_basic_auth(self):
+#    eleza test_basic_auth(self):
 #        agiza http.client
 #
 #        test_url = "http://www.python.org/test/test_urllib2/basic_auth"
@@ -79,9 +79,9 @@ class AuthTests(unittest.TestCase):
 #                          urllib2.urlopen, "http://evil:thing@example.com")
 
 
-class CloseSocketTest(unittest.TestCase):
+kundi CloseSocketTest(unittest.TestCase):
 
-    def test_close(self):
+    eleza test_close(self):
         # calling .close() on urllib2's response objects should close the
         # underlying socket
         url = support.TEST_HTTP_URL
@@ -92,9 +92,9 @@ class CloseSocketTest(unittest.TestCase):
             response.close()
             self.assertTrue(sock.closed)
 
-class OtherNetworkTests(unittest.TestCase):
-    def setUp(self):
-        if 0:  # for debugging
+kundi OtherNetworkTests(unittest.TestCase):
+    eleza setUp(self):
+        ikiwa 0:  # for debugging
             agiza logging
             logger = logging.getLogger("test_urllib2net")
             logger.addHandler(logging.StreamHandler())
@@ -103,7 +103,7 @@ class OtherNetworkTests(unittest.TestCase):
     # They do sometimes catch some major disasters, though.
 
     @skip_ftp_test_on_travis
-    def test_ftp(self):
+    eleza test_ftp(self):
         urls = [
             'ftp://www.pythontest.net/README',
             ('ftp://www.pythontest.net/non-existent-file',
@@ -111,7 +111,7 @@ class OtherNetworkTests(unittest.TestCase):
             ]
         self._test_urls(urls, self._extra_handlers())
 
-    def test_file(self):
+    eleza test_file(self):
         TESTFN = support.TESTFN
         f = open(TESTFN, 'w')
         try:
@@ -132,14 +132,14 @@ class OtherNetworkTests(unittest.TestCase):
     # to CNRI.  Need to set up a public server with the right authentication
     # configuration for test purposes.
 
-##     def test_cnri(self):
-##         if socket.gethostname() == 'bitdiddle':
+##     eleza test_cnri(self):
+##         ikiwa socket.gethostname() == 'bitdiddle':
 ##             localhost = 'bitdiddle.cnri.reston.va.us'
-##         elif socket.gethostname() == 'bitdiddle.concentric.net':
+##         elikiwa socket.gethostname() == 'bitdiddle.concentric.net':
 ##             localhost = 'localhost'
 ##         else:
 ##             localhost = None
-##         if localhost is not None:
+##         ikiwa localhost is not None:
 ##             urls = [
 ##                 'file://%s/etc/passwd' % localhost,
 ##                 'http://%s/simple/' % localhost,
@@ -156,7 +156,7 @@ class OtherNetworkTests(unittest.TestCase):
 
 ##             self._test_urls(urls, self._extra_handlers()+[bauth, dauth])
 
-    def test_urlwithfrag(self):
+    eleza test_urlwithfrag(self):
         urlwith_frag = "http://www.pythontest.net/index.html#frag"
         with support.transient_internet(urlwith_frag):
             req = urllib.request.Request(urlwith_frag)
@@ -164,7 +164,7 @@ class OtherNetworkTests(unittest.TestCase):
             self.assertEqual(res.geturl(),
                     "http://www.pythontest.net/index.html#frag")
 
-    def test_redirect_url_withfrag(self):
+    eleza test_redirect_url_withfrag(self):
         redirect_url_with_frag = "http://www.pythontest.net/redir/with_frag/"
         with support.transient_internet(redirect_url_with_frag):
             req = urllib.request.Request(redirect_url_with_frag)
@@ -172,7 +172,7 @@ class OtherNetworkTests(unittest.TestCase):
             self.assertEqual(res.geturl(),
                     "http://www.pythontest.net/elsewhere/#frag")
 
-    def test_custom_headers(self):
+    eleza test_custom_headers(self):
         url = support.TEST_HTTP_URL
         with support.transient_internet(url):
             opener = urllib.request.build_opener()
@@ -186,7 +186,7 @@ class OtherNetworkTests(unittest.TestCase):
             self.assertEqual(request.get_header('User-agent'),'Test-Agent')
 
     @unittest.skip('XXX: http://www.imdb.com is gone')
-    def test_sites_no_connection_close(self):
+    eleza test_sites_no_connection_close(self):
         # Some sites do not send Connection: close header.
         # Verify that those work properly. (#issue12576)
 
@@ -206,18 +206,18 @@ class OtherNetworkTests(unittest.TestCase):
             res = req.read()
             self.assertTrue(res)
 
-    def _test_urls(self, urls, handlers, retry=True):
+    eleza _test_urls(self, urls, handlers, retry=True):
         agiza time
         agiza logging
         debug = logging.getLogger("test_urllib2").debug
 
         urlopen = urllib.request.build_opener(*handlers).open
-        if retry:
+        ikiwa retry:
             urlopen = _wrap_with_retry_thrice(urlopen, urllib.error.URLError)
 
         for url in urls:
             with self.subTest(url=url):
-                if isinstance(url, tuple):
+                ikiwa isinstance(url, tuple):
                     url, req, expected_err = url
                 else:
                     req = expected_err = None
@@ -225,9 +225,9 @@ class OtherNetworkTests(unittest.TestCase):
                 with support.transient_internet(url):
                     try:
                         f = urlopen(url, req, TIMEOUT)
-                    # urllib.error.URLError is a subclass of OSError
+                    # urllib.error.URLError is a subkundi of OSError
                     except OSError as err:
-                        if expected_err:
+                        ikiwa expected_err:
                             msg = ("Didn't get expected error(s) %s for %s %s, got %s: %s" %
                                    (expected_err, url, req, type(err), err))
                             self.assertIsInstance(err, expected_err, msg)
@@ -241,11 +241,11 @@ class OtherNetworkTests(unittest.TestCase):
                                 buf = f.read()
                                 debug("read %d bytes" % len(buf))
                         except socket.timeout:
-                            print("<timeout: %s>" % url, file=sys.stderr)
+                            andika("<timeout: %s>" % url, file=sys.stderr)
                         f.close()
                 time.sleep(0.1)
 
-    def _extra_handlers(self):
+    eleza _extra_handlers(self):
         handlers = []
 
         cfh = urllib.request.CacheFTPHandler()
@@ -253,11 +253,11 @@ class OtherNetworkTests(unittest.TestCase):
         cfh.setTimeout(1)
         handlers.append(cfh)
 
-        return handlers
+        rudisha handlers
 
 
-class TimeoutTest(unittest.TestCase):
-    def test_http_basic(self):
+kundi TimeoutTest(unittest.TestCase):
+    eleza test_http_basic(self):
         self.assertIsNone(socket.getdefaulttimeout())
         url = support.TEST_HTTP_URL
         with support.transient_internet(url, timeout=None):
@@ -265,7 +265,7 @@ class TimeoutTest(unittest.TestCase):
             self.addCleanup(u.close)
             self.assertIsNone(u.fp.raw._sock.gettimeout())
 
-    def test_http_default_timeout(self):
+    eleza test_http_default_timeout(self):
         self.assertIsNone(socket.getdefaulttimeout())
         url = support.TEST_HTTP_URL
         with support.transient_internet(url):
@@ -277,7 +277,7 @@ class TimeoutTest(unittest.TestCase):
                 socket.setdefaulttimeout(None)
             self.assertEqual(u.fp.raw._sock.gettimeout(), 60)
 
-    def test_http_no_timeout(self):
+    eleza test_http_no_timeout(self):
         self.assertIsNone(socket.getdefaulttimeout())
         url = support.TEST_HTTP_URL
         with support.transient_internet(url):
@@ -289,7 +289,7 @@ class TimeoutTest(unittest.TestCase):
                 socket.setdefaulttimeout(None)
             self.assertIsNone(u.fp.raw._sock.gettimeout())
 
-    def test_http_timeout(self):
+    eleza test_http_timeout(self):
         url = support.TEST_HTTP_URL
         with support.transient_internet(url):
             u = _urlopen_with_retry(url, timeout=120)
@@ -299,7 +299,7 @@ class TimeoutTest(unittest.TestCase):
     FTP_HOST = 'ftp://www.pythontest.net/'
 
     @skip_ftp_test_on_travis
-    def test_ftp_basic(self):
+    eleza test_ftp_basic(self):
         self.assertIsNone(socket.getdefaulttimeout())
         with support.transient_internet(self.FTP_HOST, timeout=None):
             u = _urlopen_with_retry(self.FTP_HOST)
@@ -307,7 +307,7 @@ class TimeoutTest(unittest.TestCase):
             self.assertIsNone(u.fp.fp.raw._sock.gettimeout())
 
     @skip_ftp_test_on_travis
-    def test_ftp_default_timeout(self):
+    eleza test_ftp_default_timeout(self):
         self.assertIsNone(socket.getdefaulttimeout())
         with support.transient_internet(self.FTP_HOST):
             socket.setdefaulttimeout(60)
@@ -319,7 +319,7 @@ class TimeoutTest(unittest.TestCase):
             self.assertEqual(u.fp.fp.raw._sock.gettimeout(), 60)
 
     @skip_ftp_test_on_travis
-    def test_ftp_no_timeout(self):
+    eleza test_ftp_no_timeout(self):
         self.assertIsNone(socket.getdefaulttimeout())
         with support.transient_internet(self.FTP_HOST):
             socket.setdefaulttimeout(60)
@@ -331,12 +331,12 @@ class TimeoutTest(unittest.TestCase):
             self.assertIsNone(u.fp.fp.raw._sock.gettimeout())
 
     @skip_ftp_test_on_travis
-    def test_ftp_timeout(self):
+    eleza test_ftp_timeout(self):
         with support.transient_internet(self.FTP_HOST):
             u = _urlopen_with_retry(self.FTP_HOST, timeout=60)
             self.addCleanup(u.close)
             self.assertEqual(u.fp.fp.raw._sock.gettimeout(), 60)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

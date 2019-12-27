@@ -155,21 +155,21 @@ are interned by the interpreter) and make startup time faster.
 Usability-wise, annotations now support forward references, making the
 following syntax valid::
 
-    class C:
+    kundi C:
         @classmethod
-        def from_string(cls, source: str) -> C:
+        def kutoka_string(cls, source: str) -> C:
             ...
 
         def validate_b(self, obj: B) -> bool:
             ...
 
-    class B:
+    kundi B:
         ...
 
 Since this change breaks compatibility, the new behavior needs to be enabled
 on a per-module basis in Python 3.7 using a :mod:`__future__` import::
 
-    from __future__ import annotations
+    kutoka __future__ agiza annotations
 
 It will become the default in Python 4.0.
 
@@ -412,7 +412,7 @@ The PEP introduces two special methods :meth:`__class_getitem__` and
 ``__mro_entries__``, these methods are now used by most classes and special
 constructs in :mod:`typing`. As a result, the speed of various operations
 with types increased up to 7 times, the generic types can be used without
-metaclass conflicts, and several long standing bugs in :mod:`typing` module are
+metakundi conflicts, and several long standing bugs in :mod:`typing` module are
 fixed.
 
 .. seealso::
@@ -497,7 +497,7 @@ Other Language Changes
   now have more than 255 parameters. (Contributed by Serhiy Storchaka in
   :issue:`12844` and :issue:`18896`.)
 
-* :meth:`bytes.fromhex` and :meth:`bytearray.fromhex` now ignore all ASCII
+* :meth:`bytes.kutokahex` and :meth:`bytearray.kutokahex` now ignore all ASCII
   whitespace, not only spaces. (Contributed by Robert Xiao in :issue:`28927`.)
 
 * :class:`str`, :class:`bytes`, and :class:`bytearray` gained support for
@@ -506,7 +506,7 @@ Other Language Changes
   (Contributed by INADA Naoki in :issue:`32677`.)
 
 * :exc:`ImportError` now displays module name and module ``__file__`` path when
-  ``from ... import ...`` fails. (Contributed by Matthias Bussonnier in
+  ``kutoka ... agiza ...`` fails. (Contributed by Matthias Bussonnier in
   :issue:`29546`.)
 
 * Circular imports involving absolute imports with binding a submodule to
@@ -518,15 +518,15 @@ Other Language Changes
   (Contributed by Serhiy Storchaka in :issue:`28974`.)
 
 * In order to better support dynamic creation of stack traces,
-  :class:`types.TracebackType` can now be instantiated from Python code, and
+  :class:`types.TracebackType` can now be instantiated kutoka Python code, and
   the ``tb_next`` attribute on :ref:`tracebacks <traceback-objects>` is now
   writable.
   (Contributed by Nathaniel J. Smith in :issue:`30579`.)
 
 * When using the :option:`-m` switch, ``sys.path[0]`` is now eagerly expanded
   to the full starting directory path, rather than being left as the empty
-  directory (which allows imports from the *current* working directory at the
-  time when an import occurs)
+  directory (which allows imports kutoka the *current* working directory at the
+  time when an agiza occurs)
   (Contributed by Nick Coghlan in :issue:`33053`.)
 
 * The new :option:`-X` ``importtime`` option or the
@@ -566,7 +566,7 @@ dataclasses
 -----------
 
 The new :func:`~dataclasses.dataclass` decorator provides a way to declare
-*data classes*.  A data class describes its attributes using class variable
+*data classes*.  A data kundi describes its attributes using kundi variable
 annotations.  Its constructor and other magic methods, such as
 :meth:`~object.__repr__`, :meth:`~object.__eq__`, and
 :meth:`~object.__hash__` are generated automatically.
@@ -574,7 +574,7 @@ annotations.  Its constructor and other magic methods, such as
 Example::
 
     @dataclass
-    class Point:
+    kundi Point:
         x: float
         y: float
         z: float = 0.0
@@ -632,7 +632,7 @@ The :mod:`asyncio` module has received many new features, usability and
 include:
 
 * The new :term:`provisional <provisional api>` :func:`asyncio.run` function can
-  be used to run a coroutine from synchronous code by automatically creating and
+  be used to run a coroutine kutoka synchronous code by automatically creating and
   destroying the event loop.
   (Contributed by Yury Selivanov in :issue:`32314`.)
 
@@ -656,7 +656,7 @@ include:
   (Contributed by Yury Selivanov in :issue:`23749`.)
 
 * The new :meth:`loop.sock_recv_into() <asyncio.loop.sock_recv_into>`
-  method allows reading data from a socket directly into a provided buffer making
+  method allows reading data kutoka a socket directly into a provided buffer making
   it possible to reduce data copies.
   (Contributed by Antoine Pitrou in :issue:`31819`.)
 
@@ -667,7 +667,7 @@ include:
   :meth:`Task.all_tasks() <asyncio.Task.all_tasks>` methods have been deprecated.
   (Contributed by Andrew Svetlov in :issue:`32250`.)
 
-* The new *provisional* :class:`~asyncio.BufferedProtocol` class allows
+* The new *provisional* :class:`~asyncio.BufferedProtocol` kundi allows
   implementing streaming protocols with manual control over the receive buffer.
   (Contributed by Yury Selivanov in :issue:`32251`.)
 
@@ -781,7 +781,7 @@ instead of spaces.  (Contributed by Xiang Zhang in :issue:`30103`.)
 calendar
 --------
 
-The :class:`~calendar.HTMLCalendar` class has new class attributes which ease
+The :class:`~calendar.HTMLCalendar` kundi has new kundi attributes which ease
 the customization of CSS classes in the produced HTML calendar.
 (Contributed by Oz Tiram in :issue:`30095`.)
 
@@ -852,13 +852,13 @@ for hashing.  (Contributed by Serhiy Storchaka in :issue:`31702`.)
 datetime
 --------
 
-The new :meth:`datetime.fromisoformat() <datetime.datetime.fromisoformat>`
-method constructs a :class:`~datetime.datetime` object from a string
+The new :meth:`datetime.kutokaisoformat() <datetime.datetime.kutokaisoformat>`
+method constructs a :class:`~datetime.datetime` object kutoka a string
 in one of the formats output by
 :meth:`datetime.isoformat() <datetime.datetime.isoformat>`.
 (Contributed by Paul Ganssle in :issue:`15873`.)
 
-The :class:`tzinfo <datetime.tzinfo>` class now supports sub-minute offsets.
+The :class:`tzinfo <datetime.tzinfo>` kundi now supports sub-minute offsets.
 (Contributed by Alexander Belopolsky in :issue:`5288`.)
 
 
@@ -899,7 +899,7 @@ therefore included in source distributions.
 enum
 ----
 
-The :class:`Enum <enum.Enum>` learned the new ``_ignore_`` class property,
+The :class:`Enum <enum.Enum>` learned the new ``_ignore_`` kundi property,
 which allows listing the names of properties which should not become
 enum members.
 (Contributed by Ethan Furman in :issue:`31801`.)
@@ -924,7 +924,7 @@ gc
 --
 
 The new :func:`gc.freeze` function allows freezing all objects tracked
-by the garbage collector and excluding them from future collections.
+by the garbage collector and excluding them kutoka future collections.
 This can be used before a POSIX ``fork()`` call to make the GC copy-on-write
 friendly or to speed up collection.  The new :func:`gc.unfreeze` functions
 reverses this operation.  Additionally, :func:`gc.get_freeze_count` can
@@ -990,7 +990,7 @@ The sample can be edited to include other characters.
 (Contributed by Serhiy Storchaka in :issue:`31860`.)
 
 The IDLE features formerly implemented as extensions have been reimplemented
-as normal features.  Their settings have been moved from the Extensions tab
+as normal features.  Their settings have been moved kutoka the Extensions tab
 to other dialog tabs.
 (Contributed by Charles Wohlganger and Terry Jan Reedy in :issue:`27099`.)
 
@@ -1038,7 +1038,7 @@ importlib
 ---------
 
 The :class:`importlib.abc.ResourceReader` ABC was introduced to
-support the loading of resources from packages.  See also
+support the loading of resources kutoka packages.  See also
 :ref:`whatsnew37_importlib_resources`.
 (Contributed by Barry Warsaw, Brett Cannon in :issue:`32248`.)
 
@@ -1119,7 +1119,7 @@ operation.  (Contributed by Mark Dickinson in :issue:`29962`.)
 mimetypes
 ---------
 
-The MIME type of .bmp has been changed from ``'image/x-ms-bmp'`` to
+The MIME type of .bmp has been changed kutoka ``'image/x-ms-bmp'`` to
 ``'image/bmp'``.
 (Contributed by Nitish Chandra in :issue:`22589`.)
 
@@ -1223,7 +1223,7 @@ new ``-n`` command-line argument.
 queue
 -----
 
-The new :class:`~queue.SimpleQueue` class is an unbounded :abbr:`FIFO` queue.
+The new :class:`~queue.SimpleQueue` kundi is an unbounded :abbr:`FIFO` queue.
 (Contributed by Antoine Pitrou in :issue:`14976`.)
 
 
@@ -1284,7 +1284,7 @@ Support for :data:`socket.AF_VSOCK` sockets has been added to allow
 communication between virtual machines and their hosts.
 (Contributed by Cathy Avery in :issue:`27584`.)
 
-Sockets now auto-detect family, type and protocol from file descriptor
+Sockets now auto-detect family, type and protocol kutoka file descriptor
 by default.
 (Contributed by Christian Heimes in :issue:`28134`.)
 
@@ -1296,9 +1296,9 @@ socketserver
 threads complete. :meth:`socketserver.ForkingMixIn.server_close` now waits
 until all child processes complete.
 
-Add a new :attr:`socketserver.ForkingMixIn.block_on_close` class attribute to
+Add a new :attr:`socketserver.ForkingMixIn.block_on_close` kundi attribute to
 :class:`socketserver.ForkingMixIn` and :class:`socketserver.ThreadingMixIn`
-classes. Set the class attribute to ``False`` to get the pre-3.7 behaviour.
+classes. Set the kundi attribute to ``False`` to get the pre-3.7 behaviour.
 
 
 sqlite3
@@ -1397,7 +1397,7 @@ now accept the *text* keyword argument as an alias
 to *universal_newlines*.
 (Contributed by Andrew Clegg in :issue:`31756`.)
 
-On Windows the default for *close_fds* was changed from ``False`` to
+On Windows the default for *close_fds* was changed kutoka ``False`` to
 ``True`` when redirecting the standard handles.  It's now possible to set
 *close_fds* to true when redirecting the standard handles.  See
 :class:`subprocess.Popen`.  This means that *close_fds* now defaults to
@@ -1467,7 +1467,7 @@ of the thread-specific CPU-time clock.
 tkinter
 -------
 
-The new :class:`tkinter.ttk.Spinbox` class is now available.
+The new :class:`tkinter.ttk.Spinbox` kundi is now available.
 (Contributed by Alan Moore in :issue:`32585`.)
 
 
@@ -1475,7 +1475,7 @@ tracemalloc
 -----------
 
 :class:`tracemalloc.Traceback` behaves more like regular tracebacks,
-sorting the frames from oldest to most recent.
+sorting the frames kutoka oldest to most recent.
 :meth:`Traceback.format() <tracemalloc.Traceback.format>`
 now accepts negative *limit*, truncating the result to the
 ``abs(limit)`` oldest frames.  To get the old behaviour, use
@@ -1533,7 +1533,7 @@ are themselves mocks.
 urllib.parse
 ------------
 
-:func:`urllib.parse.quote` has been updated from :rfc:`2396` to :rfc:`3986`,
+:func:`urllib.parse.quote` has been updated kutoka :rfc:`2396` to :rfc:`3986`,
 adding ``~`` to the set of characters that are never quoted by default.
 (Contributed by Christian Theune and Ratnadeep Debnath in :issue:`16285`.)
 
@@ -1550,14 +1550,14 @@ uuid
 ----
 
 The new :attr:`UUID.is_safe <uuid.UUID.is_safe>` attribute relays information
-from the platform about whether generated UUIDs are generated with a
+kutoka the platform about whether generated UUIDs are generated with a
 multiprocessing-safe method.
 (Contributed by Barry Warsaw in :issue:`22807`.)
 
 :func:`uuid.getnode` now prefers universally administered
 MAC addresses over locally administered MAC addresses.
 This makes a better guarantee for global uniqueness of UUIDs returned
-from :func:`uuid.uuid1`.  If only locally administered MAC addresses are
+kutoka :func:`uuid.uuid1`.  If only locally administered MAC addresses are
 available, the first such one found is returned.
 (Contributed by Barry Warsaw in :issue:`32107`.)
 
@@ -1702,7 +1702,7 @@ Contributed by Paul Ganssle in :issue:`10381`.
 
 The type of results of :c:func:`PyThread_start_new_thread` and
 :c:func:`PyThread_get_thread_ident`, and the *id* parameter of
-:c:func:`PyThreadState_SetAsyncExc` changed from :c:type:`long` to
+:c:func:`PyThreadState_SetAsyncExc` changed kutoka :c:type:`long` to
 :c:type:`unsigned long`.
 (Contributed by Serhiy Storchaka in :issue:`6532`.)
 
@@ -1748,7 +1748,7 @@ of libffi is now required when building ``_ctypes`` on such platforms.
 (Contributed by Zachary Ware in :issue:`27979`.)
 
 The Windows build process no longer depends on Subversion to pull in external
-sources, a Python script is used to download zipfiles from GitHub instead.
+sources, a Python script is used to download zipfiles kutoka GitHub instead.
 If Python 3.6 is not found on the system (via ``py -3.6``), NuGet is used to
 download a copy of 32-bit Python for this purpose.  (Contributed by Zachary
 Ware in :issue:`30450`.)
@@ -1801,7 +1801,7 @@ commonly used functions:
 * The performance overhead of asyncio debug mode has been reduced.
   (Contributed by Antoine Pitrou in :issue:`31970`.)
 
-As a result of :ref:`PEP 560 work <whatsnew37-pep560>`, the import time
+As a result of :ref:`PEP 560 work <whatsnew37-pep560>`, the agiza time
 of :mod:`typing` has been reduced by a factor of 7, and many typing operations
 are now faster.
 (Contributed by Ivan Levkivskyi in :issue:`32226`.)
@@ -1828,7 +1828,7 @@ make the creation of named tuples 4 to 6 times faster.
 (Contributed by Jelle Zijlstra with further improvements by INADA Naoki,
 Serhiy Storchaka, and Raymond Hettinger in :issue:`28638`.)
 
-:meth:`date.fromordinal` and :meth:`date.fromtimestamp` are now up to
+:meth:`date.kutokaordinal` and :meth:`date.kutokatimestamp` are now up to
 30% faster in the common case.
 (Contributed by Paul Ganssle in :issue:`32403`.)
 
@@ -1854,7 +1854,7 @@ The :meth:`~selectors.BaseSelector.modify` methods of classes
 and :class:`selectors.DevpollSelector` may be around 10% faster under
 heavy loads.  (Contributed by Giampaolo Rodola' in :issue:`30014`)
 
-Constant folding has been moved from the peephole optimizer to the new AST
+Constant folding has been moved kutoka the peephole optimizer to the new AST
 optimizer, which is able perform optimizations more consistently.
 (Contributed by Eugene Toder and INADA Naoki in :issue:`29469` and
 :issue:`11549`.)
@@ -1871,7 +1871,7 @@ constructors when not constructing subclasses. (Contributed by Paul Ganssle
 in :issue:`32403`)
 
 The speed of comparison of :class:`array.array` instances has been
-improved considerably in certain cases.  It is now from 10x to 70x faster
+improved considerably in certain cases.  It is now kutoka 10x to 70x faster
 when comparing arrays holding values of the same integer type.
 (Contributed by Adrian Wielgosik in :issue:`24700`.)
 
@@ -1884,7 +1884,7 @@ Other CPython Implementation Changes
 ====================================
 
 * Trace hooks may now opt out of receiving the ``line`` and opt into receiving
-  the ``opcode`` events from the interpreter by setting the corresponding new
+  the ``opcode`` events kutoka the interpreter by setting the corresponding new
   ``f_trace_lines`` and ``f_trace_opcodes`` attributes on the
   frame being traced. (Contributed by Nick Coghlan in :issue:`31344`.)
 
@@ -1909,18 +1909,18 @@ Other CPython Implementation Changes
 Deprecated Python Behavior
 ==========================
 
-Yield expressions (both ``yield`` and ``yield from`` clauses) are now deprecated
-in comprehensions and generator expressions (aside from the iterable expression
+Yield expressions (both ``yield`` and ``yield kutoka`` clauses) are now deprecated
+in comprehensions and generator expressions (aside kutoka the iterable expression
 in the leftmost :keyword:`!for` clause). This ensures that comprehensions
 always immediately return a container of the appropriate type (rather than
 potentially returning a :term:`generator iterator` object), while generator
 expressions won't attempt to interleave their implicit output with the output
-from any explicit yield expressions.  In Python 3.7, such expressions emit
+kutoka any explicit yield expressions.  In Python 3.7, such expressions emit
 :exc:`DeprecationWarning` when compiled, in Python 3.8 this will be a
 :exc:`SyntaxError`.
 (Contributed by Serhiy Storchaka in :issue:`10544`.)
 
-Returning a subclass of :class:`complex` from :meth:`object.__complex__` is
+Returning a subkundi of :class:`complex` kutoka :meth:`object.__complex__` is
 deprecated and will be an error in future Python versions.  This makes
 ``__complex__()`` consistent with :meth:`object.__int__` and
 :meth:`object.__float__`.
@@ -2124,7 +2124,7 @@ Platform Support Removals
 API and Feature Removals
 ========================
 
-The following features and APIs have been removed from Python 3.7:
+The following features and APIs have been removed kutoka Python 3.7:
 
 * The ``os.stat_float_times()`` function has been removed. It was introduced in
   Python 2.3 for backward compatibility with Python 2.2, and was deprecated
@@ -2144,7 +2144,7 @@ The following features and APIs have been removed from Python 3.7:
 * :func:`collections.namedtuple` no longer supports the *verbose* parameter
   or ``_source`` attribute which showed the generated source code for the
   named tuple class.  This was part of an optimization designed to speed-up
-  class creation.  (Contributed by Jelle Zijlstra with further improvements
+  kundi creation.  (Contributed by Jelle Zijlstra with further improvements
   by INADA Naoki, Serhiy Storchaka, and Raymond Hettinger in :issue:`28638`.)
 
 * Functions :func:`bool`, :func:`float`, :func:`list` and :func:`tuple` no
@@ -2165,8 +2165,8 @@ The following features and APIs have been removed from Python 3.7:
 
 * :mod:`asyncio` no longer exports the :mod:`selectors` and
   :mod:`_overlapped` modules as ``asyncio.selectors`` and
-  ``asyncio._overlapped``. Replace ``from asyncio import selectors`` with
-  ``import selectors``.
+  ``asyncio._overlapped``. Replace ``kutoka asyncio agiza selectors`` with
+  ``agiza selectors``.
 
 * Direct instantiation of :class:`ssl.SSLSocket` and :class:`ssl.SSLObject`
   objects is now prohibited. The constructors were never documented, tested,
@@ -2234,7 +2234,7 @@ Changes in Python Behavior
 
       f(1 for x in [1],)
 
-      class C(1 for x in [1]):
+      kundi C(1 for x in [1]):
           pass
 
   Python 3.7 now correctly raises a :exc:`SyntaxError`, as a generator
@@ -2257,13 +2257,13 @@ Changes in the Python API
 
 * :meth:`socketserver.ThreadingMixIn.server_close` now waits until all
   non-daemon threads complete.  Set the new
-  :attr:`socketserver.ThreadingMixIn.block_on_close` class attribute to
+  :attr:`socketserver.ThreadingMixIn.block_on_close` kundi attribute to
   ``False`` to get the pre-3.7 behaviour.
   (Contributed by Victor Stinner in :issue:`31233` and :issue:`33540`.)
 
 * :meth:`socketserver.ForkingMixIn.server_close` now waits until all
   child processes complete. Set the new
-  :attr:`socketserver.ForkingMixIn.block_on_close` class attribute to ``False``
+  :attr:`socketserver.ForkingMixIn.block_on_close` kundi attribute to ``False``
   to get the pre-3.7 behaviour.
   (Contributed by Victor Stinner in :issue:`31151` and :issue:`33540`.)
 
@@ -2303,7 +2303,7 @@ Changes in the Python API
   is a list of strings, not bytes.
   (Contributed by Pierre Quentel in :issue:`29979`.)
 
-* Due to internal changes in :mod:`socket`, calling :func:`socket.fromshare`
+* Due to internal changes in :mod:`socket`, calling :func:`socket.kutokashare`
   on a socket created by :func:`socket.share <socket.socket.share>` in older
   Python versions is not supported.
 
@@ -2358,7 +2358,7 @@ Changes in the Python API
   of escaping all characters other than ASCII letters, numbers, and ``'_'``.
   (Contributed by Serhiy Storchaka in :issue:`29995`.)
 
-* :class:`tracemalloc.Traceback` frames are now sorted from oldest to most
+* :class:`tracemalloc.Traceback` frames are now sorted kutoka oldest to most
   recent to be more consistent with :mod:`traceback`.
   (Contributed by Jesse Bakker in :issue:`32121`.)
 
@@ -2370,7 +2370,7 @@ Changes in the Python API
   (Contributed by Yury Selivanov in :issue:`32331`.)
 
 * On Windows the default for the *close_fds* argument of
-  :class:`subprocess.Popen` was changed from :const:`False` to :const:`True`
+  :class:`subprocess.Popen` was changed kutoka :const:`False` to :const:`True`
   when redirecting the standard handles. If you previously depended on handles
   being inherited when using :class:`subprocess.Popen` with standard io
   redirection, you will have to pass ``close_fds=False`` to preserve the
@@ -2434,7 +2434,7 @@ Changes in the Python API
   (Contributed by James Tocknell in :issue:`23835`.)
 
 * Several undocumented internal imports were removed.
-  One example is that ``os.errno`` is no longer available; use ``import errno``
+  One example is that ``os.errno`` is no longer available; use ``agiza errno``
   directly instead.
   Note that such undocumented internal imports may be removed any time without
   notice, even in micro version releases.
@@ -2508,7 +2508,7 @@ implicit ``return None`` in a function body consisting solely of a docstring
 is now marked as occurring on the same line as the docstring, not on the
 function's header line.
 
-The current exception state has been moved from the frame object to the co-routine.
+The current exception state has been moved kutoka the frame object to the co-routine.
 This simplified the interpreter and fixed a couple of obscure bugs caused by
 having swap exception state when entering or exiting a generator.
 (Contributed by Mark Shannon in :issue:`25612`.)

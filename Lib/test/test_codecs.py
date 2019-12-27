@@ -22,20 +22,20 @@ except ImportError:
 else:
     SIZEOF_WCHAR_T = ctypes.sizeof(ctypes.c_wchar)
 
-def coding_checker(self, coder):
-    def check(input, expect):
+eleza coding_checker(self, coder):
+    eleza check(input, expect):
         self.assertEqual(coder(input), (expect, len(input)))
-    return check
+    rudisha check
 
 # On small versions of Windows like Windows IoT or Windows Nano Server not all codepages are present
-def is_code_page_present(cp):
+eleza is_code_page_present(cp):
     kutoka ctypes agiza POINTER, WINFUNCTYPE, WinDLL
     kutoka ctypes.wintypes agiza BOOL, UINT, BYTE, WCHAR, UINT, DWORD
 
     MAX_LEADBYTES = 12  # 5 ranges, 2 bytes ea., 0 term.
     MAX_DEFAULTCHAR = 2 # single or double byte
     MAX_PATH = 260
-    class CPINFOEXW(ctypes.Structure):
+    kundi CPINFOEXW(ctypes.Structure):
         _fields_ = [("MaxCharSize", UINT),
                     ("DefaultChar", BYTE*MAX_DEFAULTCHAR),
                     ("LeadByte", BYTE*MAX_LEADBYTES),
@@ -46,31 +46,31 @@ def is_code_page_present(cp):
     prototype = WINFUNCTYPE(BOOL, UINT, DWORD, POINTER(CPINFOEXW))
     GetCPInfoEx = prototype(("GetCPInfoExW", WinDLL("kernel32")))
     info = CPINFOEXW()
-    return GetCPInfoEx(cp, 0, info)
+    rudisha GetCPInfoEx(cp, 0, info)
 
-class Queue(object):
+kundi Queue(object):
     """
     queue: write bytes at one end, read bytes kutoka the other end
     """
-    def __init__(self, buffer):
+    eleza __init__(self, buffer):
         self._buffer = buffer
 
-    def write(self, chars):
+    eleza write(self, chars):
         self._buffer += chars
 
-    def read(self, size=-1):
-        if size<0:
+    eleza read(self, size=-1):
+        ikiwa size<0:
             s = self._buffer
             self._buffer = self._buffer[:0] # make empty
-            return s
+            rudisha s
         else:
             s = self._buffer[:size]
             self._buffer = self._buffer[size:]
-            return s
+            rudisha s
 
 
-class MixInCheckStateHandling:
-    def check_state_handling_decode(self, encoding, u, s):
+kundi MixInCheckStateHandling:
+    eleza check_state_handling_decode(self, encoding, u, s):
         for i in range(len(s)+1):
             d = codecs.getincrementaldecoder(encoding)()
             part1 = d.decode(s[:i])
@@ -78,12 +78,12 @@ class MixInCheckStateHandling:
             self.assertIsInstance(state[1], int)
             # Check that the condition stated in the documentation for
             # IncrementalDecoder.getstate() holds
-            if not state[1]:
+            ikiwa not state[1]:
                 # reset decoder to the default state without anything buffered
                 d.setstate((state[0][:0], 0))
                 # Feeding the previous input may not produce any output
                 self.assertTrue(not d.decode(state[0]))
-                # The decoder must return to the same state
+                # The decoder must rudisha to the same state
                 self.assertEqual(state, d.getstate())
             # Create a new decoder and set it to the state
             # we extracted kutoka the old one
@@ -92,7 +92,7 @@ class MixInCheckStateHandling:
             part2 = d.decode(s[i:], True)
             self.assertEqual(u, part1+part2)
 
-    def check_state_handling_encode(self, encoding, u, s):
+    eleza check_state_handling_encode(self, encoding, u, s):
         for i in range(len(u)+1):
             d = codecs.getincrementalencoder(encoding)()
             part1 = d.encode(u[:i])
@@ -103,8 +103,8 @@ class MixInCheckStateHandling:
             self.assertEqual(s, part1+part2)
 
 
-class ReadTest(MixInCheckStateHandling):
-    def check_partial(self, input, partialresults):
+kundi ReadTest(MixInCheckStateHandling):
+    eleza check_partial(self, input, partialresults):
         # get a StreamReader for the encoding and feed the bytestring version
         # of input to the reader byte by byte. Read everything available kutoka
         # the StreamReader and check that the results equal the appropriate
@@ -147,20 +147,20 @@ class ReadTest(MixInCheckStateHandling):
             "".join(codecs.iterdecode([bytes([c]) for c in encoded], self.encoding))
         )
 
-    def test_readline(self):
-        def getreader(input):
+    eleza test_readline(self):
+        eleza getreader(input):
             stream = io.BytesIO(input.encode(self.encoding))
-            return codecs.getreader(self.encoding)(stream)
+            rudisha codecs.getreader(self.encoding)(stream)
 
-        def readalllines(input, keepends=True, size=None):
+        eleza readalllines(input, keepends=True, size=None):
             reader = getreader(input)
             lines = []
             while True:
                 line = reader.readline(size=size, keepends=keepends)
-                if not line:
+                ikiwa not line:
                     break
                 lines.append(line)
-            return "|".join(lines)
+            rudisha "|".join(lines)
 
         s = "foo\nbar\r\nbaz\rspam\u2028eggs"
         sexpected = "foo\n|bar\r\n|baz\r|spam\u2028|eggs"
@@ -206,15 +206,15 @@ class ReadTest(MixInCheckStateHandling):
                         "xxx",
                     )
 
-    def test_mixed_readline_and_read(self):
+    eleza test_mixed_readline_and_read(self):
         lines = ["Humpty Dumpty sat on a wall,\n",
                  "Humpty Dumpty had a great fall.\r\n",
                  "All the king's horses and all the king's men\r",
                  "Couldn't put Humpty together again."]
         data = ''.join(lines)
-        def getreader():
+        eleza getreader():
             stream = io.BytesIO(data.encode(self.encoding))
-            return codecs.getreader(self.encoding)(stream)
+            rudisha codecs.getreader(self.encoding)(stream)
 
         # Issue #8260: Test readline() followed by read()
         f = getreader()
@@ -254,7 +254,7 @@ class ReadTest(MixInCheckStateHandling):
         self.assertEqual(f.readlines(), [lines[0][5:]] + lines[1:])
         self.assertEqual(f.read(), '')
 
-    def test_bug1175396(self):
+    eleza test_bug1175396(self):
         s = [
             '<%!--===================================================\r\n',
             '    BLOG index page: show recent articles,\r\n',
@@ -275,13 +275,13 @@ class ReadTest(MixInCheckStateHandling):
             'storageEngine=self.SessionCtx.storageEngine\r\n',
             '\r\n',
             '\r\n',
-            'def readArticlesFromDate(date, count=None):\r\n',
+            'eleza readArticlesFromDate(date, count=None):\r\n',
             '    entryids=storageEngine.listBlogEntries(date)\r\n',
             '    entryids.reverse() # descending\r\n',
-            '    if count:\r\n',
+            '    ikiwa count:\r\n',
             '        entryids=entryids[:count]\r\n',
             '    try:\r\n',
-            '        return [ frog.objects.BlogEntry.load(storageEngine, date, Id) for Id in entryids ]\r\n',
+            '        rudisha [ frog.objects.BlogEntry.load(storageEngine, date, Id) for Id in entryids ]\r\n',
             '    except StorageError,x:\r\n',
             '        log.error("Error loading articles: "+str(x))\r\n',
             '        self.abort("cannot load articles")\r\n',
@@ -289,18 +289,18 @@ class ReadTest(MixInCheckStateHandling):
             'showdate=None\r\n',
             '\r\n',
             'arg=self.Request.getArg()\r\n',
-            'if arg=="today":\r\n',
+            'ikiwa arg=="today":\r\n',
             '    #-------------------- TODAY\'S ARTICLES\r\n',
             '    self.write("<h2>Today\'s articles</h2>")\r\n',
             '    showdate = frog.util.isodatestr() \r\n',
             '    entries = readArticlesFromDate(showdate)\r\n',
-            'elif arg=="active":\r\n',
+            'elikiwa arg=="active":\r\n',
             '    #-------------------- ACTIVE ARTICLES redirect\r\n',
             '    self.Yredirect("active.y")\r\n',
-            'elif arg=="login":\r\n',
+            'elikiwa arg=="login":\r\n',
             '    #-------------------- LOGIN PAGE redirect\r\n',
             '    self.Yredirect("login.y")\r\n',
-            'elif arg=="date":\r\n',
+            'elikiwa arg=="date":\r\n',
             '    #-------------------- ARTICLES OF A SPECIFIC DATE\r\n',
             '    showdate = self.Request.getParameter("date")\r\n',
             '    self.write("<h2>Articles written on %s</h2>"% frog.util.mediumdatestr(showdate))\r\n',
@@ -309,12 +309,12 @@ class ReadTest(MixInCheckStateHandling):
             '    #-------------------- RECENT ARTICLES\r\n',
             '    self.write("<h2>Recent articles</h2>")\r\n',
             '    dates=storageEngine.listBlogEntryDates()\r\n',
-            '    if dates:\r\n',
+            '    ikiwa dates:\r\n',
             '        entries=[]\r\n',
             '        SHOWAMOUNT=10\r\n',
             '        for showdate in dates:\r\n',
             '            entries.extend( readArticlesFromDate(showdate, SHOWAMOUNT-len(entries)) )\r\n',
-            '            if len(entries)>=SHOWAMOUNT:\r\n',
+            '            ikiwa len(entries)>=SHOWAMOUNT:\r\n',
             '                break\r\n',
             '                \r\n',
         ]
@@ -323,7 +323,7 @@ class ReadTest(MixInCheckStateHandling):
         for (i, line) in enumerate(reader):
             self.assertEqual(line, s[i])
 
-    def test_readlinequeue(self):
+    eleza test_readlinequeue(self):
         q = Queue(b"")
         writer = codecs.getwriter(self.encoding)(q)
         reader = codecs.getreader(self.encoding)(q)
@@ -350,7 +350,7 @@ class ReadTest(MixInCheckStateHandling):
         writer.write("foo\r\n")
         self.assertEqual(reader.readline(keepends=True), "foo\r\n")
 
-    def test_bug1098990_a(self):
+    eleza test_bug1098990_a(self):
         s1 = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy\r\n"
         s2 = "offending line: ladfj askldfj klasdj fskla dfzaskdj fasklfj laskd fjasklfzzzzaa%whereisthis!!!\r\n"
         s3 = "next line.\r\n"
@@ -363,7 +363,7 @@ class ReadTest(MixInCheckStateHandling):
         self.assertEqual(reader.readline(), s3)
         self.assertEqual(reader.readline(), "")
 
-    def test_bug1098990_b(self):
+    eleza test_bug1098990_b(self):
         s1 = "aaaaaaaaaaaaaaaaaaaaaaaa\r\n"
         s2 = "bbbbbbbbbbbbbbbbbbbbbbbb\r\n"
         s3 = "stillokay:bbbbxx\r\n"
@@ -382,7 +382,7 @@ class ReadTest(MixInCheckStateHandling):
 
     ill_formed_sequence_replace = "\ufffd"
 
-    def test_lone_surrogates(self):
+    eleza test_lone_surrogates(self):
         self.assertRaises(UnicodeEncodeError, "\ud800".encode, self.encoding)
         self.assertEqual("[\uDC80]".encode(self.encoding, "backslashreplace"),
                          "[\\udc80]".encode(self.encoding))
@@ -426,7 +426,7 @@ class ReadTest(MixInCheckStateHandling):
             self.assertEqual(test_sequence.decode(self.encoding, "backslashreplace"),
                              before + backslashreplace + after)
 
-    def test_incremental_surrogatepass(self):
+    eleza test_incremental_surrogatepass(self):
         # Test incremental decoder for surrogatepass handler:
         # see issue #24214
         # High surrogate
@@ -443,9 +443,9 @@ class ReadTest(MixInCheckStateHandling):
             self.assertEqual(dec.decode(data[i:]), '\uDC02')
 
 
-class UTF32Test(ReadTest, unittest.TestCase):
+kundi UTF32Test(ReadTest, unittest.TestCase):
     encoding = "utf-32"
-    if sys.byteorder == 'little':
+    ikiwa sys.byteorder == 'little':
         ill_formed_sequence = b"\x80\xdc\x00\x00"
     else:
         ill_formed_sequence = b"\x00\x00\xdc\x80"
@@ -457,7 +457,7 @@ class UTF32Test(ReadTest, unittest.TestCase):
               b'\x00\x00\x00s\x00\x00\x00p\x00\x00\x00a\x00\x00\x00m'
               b'\x00\x00\x00s\x00\x00\x00p\x00\x00\x00a\x00\x00\x00m')
 
-    def test_only_one_bom(self):
+    eleza test_only_one_bom(self):
         _,_,reader,writer = codecs.lookup(self.encoding)
         # encode some stream
         s = io.BytesIO()
@@ -472,7 +472,7 @@ class UTF32Test(ReadTest, unittest.TestCase):
         f = reader(s)
         self.assertEqual(f.read(), "spamspam")
 
-    def test_badbom(self):
+    eleza test_badbom(self):
         s = io.BytesIO(4*b"\xff")
         f = codecs.getreader(self.encoding)(s)
         self.assertRaises(UnicodeError, f.read)
@@ -481,7 +481,7 @@ class UTF32Test(ReadTest, unittest.TestCase):
         f = codecs.getreader(self.encoding)(s)
         self.assertRaises(UnicodeError, f.read)
 
-    def test_partial(self):
+    eleza test_partial(self):
         self.check_partial(
             "\x00\xff\u0100\uffff\U00010000",
             [
@@ -512,23 +512,23 @@ class UTF32Test(ReadTest, unittest.TestCase):
             ]
         )
 
-    def test_handlers(self):
+    eleza test_handlers(self):
         self.assertEqual(('\ufffd', 1),
                          codecs.utf_32_decode(b'\x01', 'replace', True))
         self.assertEqual(('', 1),
                          codecs.utf_32_decode(b'\x01', 'ignore', True))
 
-    def test_errors(self):
+    eleza test_errors(self):
         self.assertRaises(UnicodeDecodeError, codecs.utf_32_decode,
                           b"\xff", "strict", True)
 
-    def test_decoder_state(self):
+    eleza test_decoder_state(self):
         self.check_state_handling_decode(self.encoding,
                                          "spamspam", self.spamle)
         self.check_state_handling_decode(self.encoding,
                                          "spamspam", self.spambe)
 
-    def test_issue8941(self):
+    eleza test_issue8941(self):
         # Issue #8941: insufficient result allocation when decoding into
         # surrogate pairs on UCS-2 builds.
         encoded_le = b'\xff\xfe\x00\x00' + b'\x00\x00\x01\x00' * 1024
@@ -539,11 +539,11 @@ class UTF32Test(ReadTest, unittest.TestCase):
                          codecs.utf_32_decode(encoded_be)[0])
 
 
-class UTF32LETest(ReadTest, unittest.TestCase):
+kundi UTF32LETest(ReadTest, unittest.TestCase):
     encoding = "utf-32-le"
     ill_formed_sequence = b"\x80\xdc\x00\x00"
 
-    def test_partial(self):
+    eleza test_partial(self):
         self.check_partial(
             "\x00\xff\u0100\uffff\U00010000",
             [
@@ -570,14 +570,14 @@ class UTF32LETest(ReadTest, unittest.TestCase):
             ]
         )
 
-    def test_simple(self):
+    eleza test_simple(self):
         self.assertEqual("\U00010203".encode(self.encoding), b"\x03\x02\x01\x00")
 
-    def test_errors(self):
+    eleza test_errors(self):
         self.assertRaises(UnicodeDecodeError, codecs.utf_32_le_decode,
                           b"\xff", "strict", True)
 
-    def test_issue8941(self):
+    eleza test_issue8941(self):
         # Issue #8941: insufficient result allocation when decoding into
         # surrogate pairs on UCS-2 builds.
         encoded = b'\x00\x00\x01\x00' * 1024
@@ -585,11 +585,11 @@ class UTF32LETest(ReadTest, unittest.TestCase):
                          codecs.utf_32_le_decode(encoded)[0])
 
 
-class UTF32BETest(ReadTest, unittest.TestCase):
+kundi UTF32BETest(ReadTest, unittest.TestCase):
     encoding = "utf-32-be"
     ill_formed_sequence = b"\x00\x00\xdc\x80"
 
-    def test_partial(self):
+    eleza test_partial(self):
         self.check_partial(
             "\x00\xff\u0100\uffff\U00010000",
             [
@@ -616,14 +616,14 @@ class UTF32BETest(ReadTest, unittest.TestCase):
             ]
         )
 
-    def test_simple(self):
+    eleza test_simple(self):
         self.assertEqual("\U00010203".encode(self.encoding), b"\x00\x01\x02\x03")
 
-    def test_errors(self):
+    eleza test_errors(self):
         self.assertRaises(UnicodeDecodeError, codecs.utf_32_be_decode,
                           b"\xff", "strict", True)
 
-    def test_issue8941(self):
+    eleza test_issue8941(self):
         # Issue #8941: insufficient result allocation when decoding into
         # surrogate pairs on UCS-2 builds.
         encoded = b'\x00\x01\x00\x00' * 1024
@@ -631,9 +631,9 @@ class UTF32BETest(ReadTest, unittest.TestCase):
                          codecs.utf_32_be_decode(encoded)[0])
 
 
-class UTF16Test(ReadTest, unittest.TestCase):
+kundi UTF16Test(ReadTest, unittest.TestCase):
     encoding = "utf-16"
-    if sys.byteorder == 'little':
+    ikiwa sys.byteorder == 'little':
         ill_formed_sequence = b"\x80\xdc"
     else:
         ill_formed_sequence = b"\xdc\x80"
@@ -641,7 +641,7 @@ class UTF16Test(ReadTest, unittest.TestCase):
     spamle = b'\xff\xfes\x00p\x00a\x00m\x00s\x00p\x00a\x00m\x00'
     spambe = b'\xfe\xff\x00s\x00p\x00a\x00m\x00s\x00p\x00a\x00m'
 
-    def test_only_one_bom(self):
+    eleza test_only_one_bom(self):
         _,_,reader,writer = codecs.lookup(self.encoding)
         # encode some stream
         s = io.BytesIO()
@@ -656,7 +656,7 @@ class UTF16Test(ReadTest, unittest.TestCase):
         f = reader(s)
         self.assertEqual(f.read(), "spamspam")
 
-    def test_badbom(self):
+    eleza test_badbom(self):
         s = io.BytesIO(b"\xff\xff")
         f = codecs.getreader(self.encoding)(s)
         self.assertRaises(UnicodeError, f.read)
@@ -665,7 +665,7 @@ class UTF16Test(ReadTest, unittest.TestCase):
         f = codecs.getreader(self.encoding)(s)
         self.assertRaises(UnicodeError, f.read)
 
-    def test_partial(self):
+    eleza test_partial(self):
         self.check_partial(
             "\x00\xff\u0100\uffff\U00010000",
             [
@@ -686,24 +686,24 @@ class UTF16Test(ReadTest, unittest.TestCase):
             ]
         )
 
-    def test_handlers(self):
+    eleza test_handlers(self):
         self.assertEqual(('\ufffd', 1),
                          codecs.utf_16_decode(b'\x01', 'replace', True))
         self.assertEqual(('', 1),
                          codecs.utf_16_decode(b'\x01', 'ignore', True))
 
-    def test_errors(self):
+    eleza test_errors(self):
         self.assertRaises(UnicodeDecodeError, codecs.utf_16_decode,
                           b"\xff", "strict", True)
 
-    def test_decoder_state(self):
+    eleza test_decoder_state(self):
         self.check_state_handling_decode(self.encoding,
                                          "spamspam", self.spamle)
         self.check_state_handling_decode(self.encoding,
                                          "spamspam", self.spambe)
 
-    def test_bug691291(self):
-        # Files are always opened in binary mode, even if no binary mode was
+    eleza test_bug691291(self):
+        # Files are always opened in binary mode, even ikiwa no binary mode was
         # specified.  This means that no automatic conversion of '\n' is done
         # on reading and writing.
         s1 = 'Hello\r\nworld\r\n'
@@ -717,11 +717,11 @@ class UTF16Test(ReadTest, unittest.TestCase):
         with reader:
             self.assertEqual(reader.read(), s1)
 
-class UTF16LETest(ReadTest, unittest.TestCase):
+kundi UTF16LETest(ReadTest, unittest.TestCase):
     encoding = "utf-16-le"
     ill_formed_sequence = b"\x80\xdc"
 
-    def test_partial(self):
+    eleza test_partial(self):
         self.check_partial(
             "\x00\xff\u0100\uffff\U00010000",
             [
@@ -740,7 +740,7 @@ class UTF16LETest(ReadTest, unittest.TestCase):
             ]
         )
 
-    def test_errors(self):
+    eleza test_errors(self):
         tests = [
             (b'\xff', '\ufffd'),
             (b'A\x00Z', 'A\ufffd'),
@@ -755,17 +755,17 @@ class UTF16LETest(ReadTest, unittest.TestCase):
                               raw, 'strict', True)
             self.assertEqual(raw.decode('utf-16le', 'replace'), expected)
 
-    def test_nonbmp(self):
+    eleza test_nonbmp(self):
         self.assertEqual("\U00010203".encode(self.encoding),
                          b'\x00\xd8\x03\xde')
         self.assertEqual(b'\x00\xd8\x03\xde'.decode(self.encoding),
                          "\U00010203")
 
-class UTF16BETest(ReadTest, unittest.TestCase):
+kundi UTF16BETest(ReadTest, unittest.TestCase):
     encoding = "utf-16-be"
     ill_formed_sequence = b"\xdc\x80"
 
-    def test_partial(self):
+    eleza test_partial(self):
         self.check_partial(
             "\x00\xff\u0100\uffff\U00010000",
             [
@@ -784,7 +784,7 @@ class UTF16BETest(ReadTest, unittest.TestCase):
             ]
         )
 
-    def test_errors(self):
+    eleza test_errors(self):
         tests = [
             (b'\xff', '\ufffd'),
             (b'\x00A\xff', 'A\ufffd'),
@@ -799,19 +799,19 @@ class UTF16BETest(ReadTest, unittest.TestCase):
                               raw, 'strict', True)
             self.assertEqual(raw.decode('utf-16be', 'replace'), expected)
 
-    def test_nonbmp(self):
+    eleza test_nonbmp(self):
         self.assertEqual("\U00010203".encode(self.encoding),
                          b'\xd8\x00\xde\x03')
         self.assertEqual(b'\xd8\x00\xde\x03'.decode(self.encoding),
                          "\U00010203")
 
-class UTF8Test(ReadTest, unittest.TestCase):
+kundi UTF8Test(ReadTest, unittest.TestCase):
     encoding = "utf-8"
     ill_formed_sequence = b"\xed\xb2\x80"
     ill_formed_sequence_replace = "\ufffd" * 3
     BOM = b''
 
-    def test_partial(self):
+    eleza test_partial(self):
         self.check_partial(
             "\x00\xff\u07ff\u0800\uffff\U00010000",
             [
@@ -833,12 +833,12 @@ class UTF8Test(ReadTest, unittest.TestCase):
             ]
         )
 
-    def test_decoder_state(self):
+    eleza test_decoder_state(self):
         u = "\x00\x7f\x80\xff\u0100\u07ff\u0800\uffff\U0010ffff"
         self.check_state_handling_decode(self.encoding,
                                          u, u.encode(self.encoding))
 
-    def test_decode_error(self):
+    eleza test_decode_error(self):
         for data, error_handler, expected in (
             (b'[\x80\xff]', 'ignore', '[]'),
             (b'[\x80\xff]', 'replace', '[\ufffd\ufffd]'),
@@ -850,9 +850,9 @@ class UTF8Test(ReadTest, unittest.TestCase):
                 self.assertEqual(data.decode(self.encoding, error_handler),
                                  expected)
 
-    def test_lone_surrogates(self):
+    eleza test_lone_surrogates(self):
         super().test_lone_surrogates()
-        # not sure if this is making sense for
+        # not sure ikiwa this is making sense for
         # UTF-16 and UTF-32
         self.assertEqual("[\uDC80]".encode(self.encoding, "surrogateescape"),
                          self.BOM + b'[\x80]')
@@ -862,7 +862,7 @@ class UTF8Test(ReadTest, unittest.TestCase):
         exc = cm.exception
         self.assertEqual(exc.object[exc.start:exc.end], '\uD800\uDFFF')
 
-    def test_surrogatepass_handler(self):
+    eleza test_surrogatepass_handler(self):
         self.assertEqual("abc\ud800def".encode(self.encoding, "surrogatepass"),
                          self.BOM + b"abc\xed\xa0\x80def")
         self.assertEqual("\U00010fff\uD800".encode(self.encoding, "surrogatepass"),
@@ -881,7 +881,7 @@ class UTF8Test(ReadTest, unittest.TestCase):
         with self.assertRaises(UnicodeDecodeError):
             b"abc\xed\xa0z".decode(self.encoding, "surrogatepass")
 
-    def test_incremental_errors(self):
+    eleza test_incremental_errors(self):
         # Test that the incremental decoder can fail with final=False.
         # See issue #24214
         cases = [b'\x80', b'\xBF', b'\xC0', b'\xC1', b'\xF5', b'\xF6', b'\xFF']
@@ -899,10 +899,10 @@ class UTF8Test(ReadTest, unittest.TestCase):
                 self.assertRaises(UnicodeDecodeError, dec.decode, data)
 
 
-class UTF7Test(ReadTest, unittest.TestCase):
+kundi UTF7Test(ReadTest, unittest.TestCase):
     encoding = "utf-7"
 
-    def test_ascii(self):
+    eleza test_ascii(self):
         # Set D (directly encoded characters)
         set_d = ('ABCDEFGHIJKLMNOPQRSTUVWXYZ'
                  'abcdefghijklmnopqrstuvwxyz'
@@ -928,7 +928,7 @@ class UTF7Test(ReadTest, unittest.TestCase):
                          b'+AAAAAQACAAMABAAFAAYABwAIAAsADAAOAA8AEAARABIAEwAU'
                          b'ABUAFgAXABgAGQAaABsAHAAdAB4AHwBcAH4Afw-')
 
-    def test_partial(self):
+    eleza test_partial(self):
         self.check_partial(
             'a+-b\x00c\x80d\u0100e\U00010000f',
             [
@@ -967,7 +967,7 @@ class UTF7Test(ReadTest, unittest.TestCase):
             ]
         )
 
-    def test_errors(self):
+    eleza test_errors(self):
         tests = [
             (b'\xffb', '\ufffdb'),
             (b'a\xffb', 'a\ufffdb'),
@@ -997,7 +997,7 @@ class UTF7Test(ReadTest, unittest.TestCase):
                                 raw, 'strict', True)
                 self.assertEqual(raw.decode('utf-7', 'replace'), expected)
 
-    def test_nonbmp(self):
+    eleza test_nonbmp(self):
         self.assertEqual('\U000104A0'.encode(self.encoding), b'+2AHcoA-')
         self.assertEqual('\ud801\udca0'.encode(self.encoding), b'+2AHcoA-')
         self.assertEqual(b'+2AHcoA-'.decode(self.encoding), '\U000104A0')
@@ -1012,7 +1012,7 @@ class UTF7Test(ReadTest, unittest.TestCase):
         self.assertEqual(b'+IKwgrNgB3KA'.decode(self.encoding),
                          '\u20ac\u20ac\U000104A0')
 
-    def test_lone_surrogates(self):
+    eleza test_lone_surrogates(self):
         tests = [
             (b'a+2AE-b', 'a\ud801b'),
             (b'a+2AE\xffb', 'a\ufffdb'),
@@ -1033,35 +1033,35 @@ class UTF7Test(ReadTest, unittest.TestCase):
                 self.assertEqual(raw.decode('utf-7', 'replace'), expected)
 
 
-class UTF16ExTest(unittest.TestCase):
+kundi UTF16ExTest(unittest.TestCase):
 
-    def test_errors(self):
+    eleza test_errors(self):
         self.assertRaises(UnicodeDecodeError, codecs.utf_16_ex_decode, b"\xff", "strict", 0, True)
 
-    def test_bad_args(self):
+    eleza test_bad_args(self):
         self.assertRaises(TypeError, codecs.utf_16_ex_decode)
 
-class ReadBufferTest(unittest.TestCase):
+kundi ReadBufferTest(unittest.TestCase):
 
-    def test_array(self):
+    eleza test_array(self):
         agiza array
         self.assertEqual(
             codecs.readbuffer_encode(array.array("b", b"spam")),
             (b"spam", 4)
         )
 
-    def test_empty(self):
+    eleza test_empty(self):
         self.assertEqual(codecs.readbuffer_encode(""), (b"", 0))
 
-    def test_bad_args(self):
+    eleza test_bad_args(self):
         self.assertRaises(TypeError, codecs.readbuffer_encode)
         self.assertRaises(TypeError, codecs.readbuffer_encode, 42)
 
-class UTF8SigTest(UTF8Test, unittest.TestCase):
+kundi UTF8SigTest(UTF8Test, unittest.TestCase):
     encoding = "utf-8-sig"
     BOM = codecs.BOM_UTF8
 
-    def test_partial(self):
+    eleza test_partial(self):
         self.check_partial(
             "\ufeff\x00\xff\u07ff\u0800\uffff\U00010000",
             [
@@ -1089,16 +1089,16 @@ class UTF8SigTest(UTF8Test, unittest.TestCase):
             ]
         )
 
-    def test_bug1601501(self):
+    eleza test_bug1601501(self):
         # SF bug #1601501: check that the codec works with a buffer
         self.assertEqual(str(b"\xef\xbb\xbf", "utf-8-sig"), "")
 
-    def test_bom(self):
+    eleza test_bom(self):
         d = codecs.getincrementaldecoder("utf-8-sig")()
         s = "spam"
         self.assertEqual(d.decode(s.encode("utf-8-sig")), s)
 
-    def test_stream_bom(self):
+    eleza test_stream_bom(self):
         unistring = "ABC\u00A1\u2200XYZ"
         bytestring = codecs.BOM_UTF8 + b"ABC\xC2\xA1\xE2\x88\x80XYZ"
 
@@ -1108,19 +1108,19 @@ class UTF8SigTest(UTF8Test, unittest.TestCase):
             istream = reader(io.BytesIO(bytestring))
             ostream = io.StringIO()
             while 1:
-                if sizehint is not None:
+                ikiwa sizehint is not None:
                     data = istream.read(sizehint)
                 else:
                     data = istream.read()
 
-                if not data:
+                ikiwa not data:
                     break
                 ostream.write(data)
 
             got = ostream.getvalue()
             self.assertEqual(got, unistring)
 
-    def test_stream_bare(self):
+    eleza test_stream_bare(self):
         unistring = "ABC\u00A1\u2200XYZ"
         bytestring = b"ABC\xC2\xA1\xE2\x88\x80XYZ"
 
@@ -1130,31 +1130,31 @@ class UTF8SigTest(UTF8Test, unittest.TestCase):
             istream = reader(io.BytesIO(bytestring))
             ostream = io.StringIO()
             while 1:
-                if sizehint is not None:
+                ikiwa sizehint is not None:
                     data = istream.read(sizehint)
                 else:
                     data = istream.read()
 
-                if not data:
+                ikiwa not data:
                     break
                 ostream.write(data)
 
             got = ostream.getvalue()
             self.assertEqual(got, unistring)
 
-class EscapeDecodeTest(unittest.TestCase):
-    def test_empty(self):
+kundi EscapeDecodeTest(unittest.TestCase):
+    eleza test_empty(self):
         self.assertEqual(codecs.escape_decode(b""), (b"", 0))
         self.assertEqual(codecs.escape_decode(bytearray()), (b"", 0))
 
-    def test_raw(self):
+    eleza test_raw(self):
         decode = codecs.escape_decode
         for b in range(256):
             b = bytes([b])
-            if b != b'\\':
+            ikiwa b != b'\\':
                 self.assertEqual(decode(b + b'0'), (b + b'0', 2))
 
-    def test_escape(self):
+    eleza test_escape(self):
         decode = codecs.escape_decode
         check = coding_checker(self, decode)
         check(b"[\\\n]", b"[]")
@@ -1179,7 +1179,7 @@ class EscapeDecodeTest(unittest.TestCase):
         check(br"[\x410]", b"[A0]")
         for i in range(97, 123):
             b = bytes([i])
-            if b not in b'abfnrtvx':
+            ikiwa b not in b'abfnrtvx':
                 with self.assertWarns(DeprecationWarning):
                     check(b"\\" + b, b"\\" + b)
             with self.assertWarns(DeprecationWarning):
@@ -1191,7 +1191,7 @@ class EscapeDecodeTest(unittest.TestCase):
         with self.assertWarns(DeprecationWarning):
             check(b"\\\xfa", b"\\\xfa")
 
-    def test_errors(self):
+    eleza test_errors(self):
         decode = codecs.escape_decode
         self.assertRaises(ValueError, decode, br"\x")
         self.assertRaises(ValueError, decode, br"[\x]")
@@ -1308,12 +1308,12 @@ punycode_testcases = [
     ]
 
 for i in punycode_testcases:
-    if len(i)!=2:
-        print(repr(i))
+    ikiwa len(i)!=2:
+        andika(repr(i))
 
 
-class PunycodeTest(unittest.TestCase):
-    def test_encode(self):
+kundi PunycodeTest(unittest.TestCase):
+    eleza test_encode(self):
         for uni, puny in punycode_testcases:
             # Need to convert both strings to lower case, since
             # some of the extended encodings use upper case, but our
@@ -1325,7 +1325,7 @@ class PunycodeTest(unittest.TestCase):
                 str(puny, "ascii").lower()
             )
 
-    def test_decode(self):
+    eleza test_decode(self):
         for uni, puny in punycode_testcases:
             self.assertEqual(uni, puny.decode("punycode"))
             puny = puny.decode("ascii").encode("ascii")
@@ -1486,16 +1486,16 @@ nameprep_tests = [
     ]
 
 
-class NameprepTest(unittest.TestCase):
-    def test_nameprep(self):
+kundi NameprepTest(unittest.TestCase):
+    eleza test_nameprep(self):
         kutoka encodings.idna agiza nameprep
         for pos, (orig, prepped) in enumerate(nameprep_tests):
-            if orig is None:
+            ikiwa orig is None:
                 # Skipped
                 continue
             # The Unicode strings are given in UTF-8
             orig = str(orig, "utf-8", "surrogatepass")
-            if prepped is None:
+            ikiwa prepped is None:
                 # Input contains prohibited characters
                 self.assertRaises(UnicodeError, nameprep, orig)
             else:
@@ -1506,25 +1506,25 @@ class NameprepTest(unittest.TestCase):
                     raise support.TestFailed("Test 3.%d: %s" % (pos+1, str(e)))
 
 
-class IDNACodecTest(unittest.TestCase):
-    def test_builtin_decode(self):
+kundi IDNACodecTest(unittest.TestCase):
+    eleza test_builtin_decode(self):
         self.assertEqual(str(b"python.org", "idna"), "python.org")
         self.assertEqual(str(b"python.org.", "idna"), "python.org.")
         self.assertEqual(str(b"xn--pythn-mua.org", "idna"), "pyth\xf6n.org")
         self.assertEqual(str(b"xn--pythn-mua.org.", "idna"), "pyth\xf6n.org.")
 
-    def test_builtin_encode(self):
+    eleza test_builtin_encode(self):
         self.assertEqual("python.org".encode("idna"), b"python.org")
         self.assertEqual("python.org.".encode("idna"), b"python.org.")
         self.assertEqual("pyth\xf6n.org".encode("idna"), b"xn--pythn-mua.org")
         self.assertEqual("pyth\xf6n.org.".encode("idna"), b"xn--pythn-mua.org.")
 
-    def test_stream(self):
+    eleza test_stream(self):
         r = codecs.getreader("idna")(io.BytesIO(b"abc"))
         r.read(3)
         self.assertEqual(r.read(), "")
 
-    def test_incremental_decode(self):
+    eleza test_incremental_decode(self):
         self.assertEqual(
             "".join(codecs.iterdecode((bytes([c]) for c in b"python.org"), "idna")),
             "python.org"
@@ -1554,7 +1554,7 @@ class IDNACodecTest(unittest.TestCase):
         self.assertEqual(decoder.decode(b"rg."), "org.")
         self.assertEqual(decoder.decode(b"", True), "")
 
-    def test_incremental_encode(self):
+    eleza test_incremental_encode(self):
         self.assertEqual(
             b"".join(codecs.iterencode("python.org", "idna")),
             b"python.org"
@@ -1582,7 +1582,7 @@ class IDNACodecTest(unittest.TestCase):
         self.assertEqual(encoder.encode("ample.org."), b"xn--xample-9ta.org.")
         self.assertEqual(encoder.encode("", True), b"")
 
-    def test_errors(self):
+    eleza test_errors(self):
         """Only supports "strict" error handler"""
         "python.org".encode("idna", "strict")
         b"python.org".decode("idna", "strict")
@@ -1593,9 +1593,9 @@ class IDNACodecTest(unittest.TestCase):
                 b"python.org".decode, "idna", errors)
 
 
-class CodecsModuleTest(unittest.TestCase):
+kundi CodecsModuleTest(unittest.TestCase):
 
-    def test_decode(self):
+    eleza test_decode(self):
         self.assertEqual(codecs.decode(b'\xe4\xf6\xfc', 'latin-1'),
                          '\xe4\xf6\xfc')
         self.assertRaises(TypeError, codecs.decode)
@@ -1608,7 +1608,7 @@ class CodecsModuleTest(unittest.TestCase):
         self.assertEqual(codecs.decode(b'[\xff]', 'ascii', errors='ignore'),
                          '[]')
 
-    def test_encode(self):
+    eleza test_encode(self):
         self.assertEqual(codecs.encode('\xe4\xf6\xfc', 'latin-1'),
                          b'\xe4\xf6\xfc')
         self.assertRaises(TypeError, codecs.encode)
@@ -1622,32 +1622,32 @@ class CodecsModuleTest(unittest.TestCase):
         self.assertEqual(codecs.encode('[\xff]', 'ascii', errors='ignore'),
                          b'[]')
 
-    def test_register(self):
+    eleza test_register(self):
         self.assertRaises(TypeError, codecs.register)
         self.assertRaises(TypeError, codecs.register, 42)
 
-    def test_lookup(self):
+    eleza test_lookup(self):
         self.assertRaises(TypeError, codecs.lookup)
         self.assertRaises(LookupError, codecs.lookup, "__spam__")
         self.assertRaises(LookupError, codecs.lookup, " ")
 
-    def test_getencoder(self):
+    eleza test_getencoder(self):
         self.assertRaises(TypeError, codecs.getencoder)
         self.assertRaises(LookupError, codecs.getencoder, "__spam__")
 
-    def test_getdecoder(self):
+    eleza test_getdecoder(self):
         self.assertRaises(TypeError, codecs.getdecoder)
         self.assertRaises(LookupError, codecs.getdecoder, "__spam__")
 
-    def test_getreader(self):
+    eleza test_getreader(self):
         self.assertRaises(TypeError, codecs.getreader)
         self.assertRaises(LookupError, codecs.getreader, "__spam__")
 
-    def test_getwriter(self):
+    eleza test_getwriter(self):
         self.assertRaises(TypeError, codecs.getwriter)
         self.assertRaises(LookupError, codecs.getwriter, "__spam__")
 
-    def test_lookup_issue1813(self):
+    eleza test_lookup_issue1813(self):
         # Issue #1813: under Turkish locales, lookup of some codecs failed
         # because 'I' is lowercased as "ı" (dotless i)
         oldlocale = locale.setlocale(locale.LC_CTYPE)
@@ -1660,7 +1660,7 @@ class CodecsModuleTest(unittest.TestCase):
         c = codecs.lookup('ASCII')
         self.assertEqual(c.name, 'ascii')
 
-    def test_all(self):
+    eleza test_all(self):
         api = (
             "encode", "decode",
             "register", "CodecInfo", "Codec", "IncrementalEncoder",
@@ -1683,14 +1683,14 @@ class CodecsModuleTest(unittest.TestCase):
         for api in codecs.__all__:
             getattr(codecs, api)
 
-    def test_open(self):
+    eleza test_open(self):
         self.addCleanup(support.unlink, support.TESTFN)
         for mode in ('w', 'r', 'r+', 'w+', 'a', 'a+'):
             with self.subTest(mode), \
                     codecs.open(support.TESTFN, mode, 'ascii') as file:
                 self.assertIsInstance(file, codecs.StreamReaderWriter)
 
-    def test_undefined(self):
+    eleza test_undefined(self):
         self.assertRaises(UnicodeError, codecs.encode, 'abc', 'undefined')
         self.assertRaises(UnicodeError, codecs.decode, b'abc', 'undefined')
         self.assertRaises(UnicodeError, codecs.encode, '', 'undefined')
@@ -1702,20 +1702,20 @@ class CodecsModuleTest(unittest.TestCase):
                 codecs.decode, b'abc', 'undefined', errors)
 
 
-class StreamReaderTest(unittest.TestCase):
+kundi StreamReaderTest(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.reader = codecs.getreader('utf-8')
         self.stream = io.BytesIO(b'\xed\x95\x9c\n\xea\xb8\x80')
 
-    def test_readlines(self):
+    eleza test_readlines(self):
         f = self.reader(self.stream)
         self.assertEqual(f.readlines(), ['\ud55c\n', '\uae00'])
 
 
-class EncodedFileTest(unittest.TestCase):
+kundi EncodedFileTest(unittest.TestCase):
 
-    def test_basic(self):
+    eleza test_basic(self):
         f = io.BytesIO(b'\xed\x95\x9c\n\xea\xb8\x80')
         ef = codecs.EncodedFile(f, 'utf-16-le', 'utf-8')
         self.assertEqual(ef.read(), b'\\\xd5\n\x00\x00\xae')
@@ -1829,9 +1829,9 @@ all_unicode_encodings = [
     "utf_8",
 ]
 
-if hasattr(codecs, "mbcs_encode"):
+ikiwa hasattr(codecs, "mbcs_encode"):
     all_unicode_encodings.append("mbcs")
-if hasattr(codecs, "oem_encode"):
+ikiwa hasattr(codecs, "oem_encode"):
     all_unicode_encodings.append("oem")
 
 # The following encoding is not tested, because it's not supposed
@@ -1844,14 +1844,14 @@ broken_unicode_with_stateful = [
 ]
 
 
-class BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
-    def test_basics(self):
+kundi BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
+    eleza test_basics(self):
         s = "abc123"  # all codecs should be able to encode these
         for encoding in all_unicode_encodings:
             name = codecs.lookup(encoding).name
-            if encoding.endswith("_codec"):
+            ikiwa encoding.endswith("_codec"):
                 name += "_codec"
-            elif encoding == "latin_1":
+            elikiwa encoding == "latin_1":
                 name = "latin_1"
             self.assertEqual(encoding.replace("_", "-"), name.replace("_", "-"))
 
@@ -1860,7 +1860,7 @@ class BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
             (chars, size) = codecs.getdecoder(encoding)(b)
             self.assertEqual(chars, s, "encoding=%r" % encoding)
 
-            if encoding not in broken_unicode_with_stateful:
+            ikiwa encoding not in broken_unicode_with_stateful:
                 # check stream reader/writer
                 q = Queue(b"")
                 writer = codecs.getwriter(encoding)(q)
@@ -1878,7 +1878,7 @@ class BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
                     decodedresult += reader.read()
                 self.assertEqual(decodedresult, s, "encoding=%r" % encoding)
 
-            if encoding not in broken_unicode_with_stateful:
+            ikiwa encoding not in broken_unicode_with_stateful:
                 # check incremental decoder/encoder and iterencode()/iterdecode()
                 try:
                     encoder = codecs.getincrementalencoder(encoding)()
@@ -1908,7 +1908,7 @@ class BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
                             codecs.iterencode("", encoding), encoding))
                     self.assertEqual(result, "")
 
-                if encoding not in ("idna", "mbcs"):
+                ikiwa encoding not in ("idna", "mbcs"):
                     # check incremental decoder/encoder with errors argument
                     try:
                         encoder = codecs.getincrementalencoder(encoding)("ignore")
@@ -1923,10 +1923,10 @@ class BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
                                          "encoding=%r" % encoding)
 
     @support.cpython_only
-    def test_basics_capi(self):
+    eleza test_basics_capi(self):
         s = "abc123"  # all codecs should be able to encode these
         for encoding in all_unicode_encodings:
-            if encoding not in broken_unicode_with_stateful:
+            ikiwa encoding not in broken_unicode_with_stateful:
                 # check incremental decoder/encoder (fetched via the C API)
                 try:
                     cencoder = _testcapi.codec_incrementalencoder(encoding)
@@ -1946,7 +1946,7 @@ class BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
                     self.assertEqual(decodedresult, s,
                                      "encoding=%r" % encoding)
 
-                if encoding not in ("idna", "mbcs"):
+                ikiwa encoding not in ("idna", "mbcs"):
                     # check incremental decoder/encoder with errors argument
                     try:
                         cencoder = _testcapi.codec_incrementalencoder(encoding, "ignore")
@@ -1960,13 +1960,13 @@ class BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
                         self.assertEqual(decodedresult, s,
                                          "encoding=%r" % encoding)
 
-    def test_seek(self):
+    eleza test_seek(self):
         # all codecs should be able to encode these
         s = "%s\n%s\n" % (100*"abc123", 100*"def456")
         for encoding in all_unicode_encodings:
-            if encoding == "idna": # FIXME: See SF bug #1163178
+            ikiwa encoding == "idna": # FIXME: See SF bug #1163178
                 continue
-            if encoding in broken_unicode_with_stateful:
+            ikiwa encoding in broken_unicode_with_stateful:
                 continue
             reader = codecs.getreader(encoding)(io.BytesIO(s.encode(encoding)))
             for t in range(5):
@@ -1975,35 +1975,35 @@ class BasicUnicodeTest(unittest.TestCase, MixInCheckStateHandling):
                 data = reader.read()
                 self.assertEqual(s, data)
 
-    def test_bad_decode_args(self):
+    eleza test_bad_decode_args(self):
         for encoding in all_unicode_encodings:
             decoder = codecs.getdecoder(encoding)
             self.assertRaises(TypeError, decoder)
-            if encoding not in ("idna", "punycode"):
+            ikiwa encoding not in ("idna", "punycode"):
                 self.assertRaises(TypeError, decoder, 42)
 
-    def test_bad_encode_args(self):
+    eleza test_bad_encode_args(self):
         for encoding in all_unicode_encodings:
             encoder = codecs.getencoder(encoding)
             self.assertRaises(TypeError, encoder)
 
-    def test_encoding_map_type_initialized(self):
+    eleza test_encoding_map_type_initialized(self):
         kutoka encodings agiza cp1140
         # This used to crash, we are only verifying there's no crash.
         table_type = type(cp1140.encoding_table)
         self.assertEqual(table_type, table_type)
 
-    def test_decoder_state(self):
+    eleza test_decoder_state(self):
         # Check that getstate() and setstate() handle the state properly
         u = "abc123"
         for encoding in all_unicode_encodings:
-            if encoding not in broken_unicode_with_stateful:
+            ikiwa encoding not in broken_unicode_with_stateful:
                 self.check_state_handling_decode(encoding, u, u.encode(encoding))
                 self.check_state_handling_encode(encoding, u, u.encode(encoding))
 
 
-class CharmapTest(unittest.TestCase):
-    def test_decode_with_string_map(self):
+kundi CharmapTest(unittest.TestCase):
+    eleza test_decode_with_string_map(self):
         self.assertEqual(
             codecs.charmap_decode(b"\x00\x01\x02", "strict", "abc"),
             ("abc", 3)
@@ -2058,7 +2058,7 @@ class CharmapTest(unittest.TestCase):
             ("", len(allbytes))
         )
 
-    def test_decode_with_int2str_map(self):
+    eleza test_decode_with_int2str_map(self):
         self.assertEqual(
             codecs.charmap_decode(b"\x00\x01\x02", "strict",
                                   {0: 'a', 1: 'b', 2: 'c'}),
@@ -2162,7 +2162,7 @@ class CharmapTest(unittest.TestCase):
             ("", len(allbytes))
         )
 
-    def test_decode_with_int2int_map(self):
+    eleza test_decode_with_int2int_map(self):
         a = ord('a')
         b = ord('b')
         c = ord('c')
@@ -2238,14 +2238,14 @@ class CharmapTest(unittest.TestCase):
         )
 
 
-class WithStmtTest(unittest.TestCase):
-    def test_encodedfile(self):
+kundi WithStmtTest(unittest.TestCase):
+    eleza test_encodedfile(self):
         f = io.BytesIO(b"\xc3\xbc")
         with codecs.EncodedFile(f, "latin-1", "utf-8") as ef:
             self.assertEqual(ef.read(), b"\xfc")
         self.assertTrue(f.closed)
 
-    def test_streamreaderwriter(self):
+    eleza test_streamreaderwriter(self):
         f = io.BytesIO(b"\xc3\xbc")
         info = codecs.lookup("utf-8")
         with codecs.StreamReaderWriter(f, info.streamreader,
@@ -2253,8 +2253,8 @@ class WithStmtTest(unittest.TestCase):
             self.assertEqual(srw.read(), "\xfc")
 
 
-class TypesTest(unittest.TestCase):
-    def test_decode_unicode(self):
+kundi TypesTest(unittest.TestCase):
+    eleza test_decode_unicode(self):
         # Most decoders don't accept unicode input
         decoders = [
             codecs.utf_7_decode,
@@ -2270,12 +2270,12 @@ class TypesTest(unittest.TestCase):
             codecs.ascii_decode,
             codecs.charmap_decode,
         ]
-        if hasattr(codecs, "mbcs_decode"):
+        ikiwa hasattr(codecs, "mbcs_decode"):
             decoders.append(codecs.mbcs_decode)
         for decoder in decoders:
             self.assertRaises(TypeError, decoder, "xxx")
 
-    def test_unicode_escape(self):
+    eleza test_unicode_escape(self):
         # Escape-decoding a unicode string is supported and gives the same
         # result as decoding the equivalent ASCII bytes string.
         self.assertEqual(codecs.unicode_escape_decode(r"\u1234"), ("\u1234", 6))
@@ -2294,24 +2294,24 @@ class TypesTest(unittest.TestCase):
                          (r"\x5c\x55\x30\x30\x31\x31\x30\x30\x30\x30", 10))
 
 
-class UnicodeEscapeTest(unittest.TestCase):
-    def test_empty(self):
+kundi UnicodeEscapeTest(unittest.TestCase):
+    eleza test_empty(self):
         self.assertEqual(codecs.unicode_escape_encode(""), (b"", 0))
         self.assertEqual(codecs.unicode_escape_decode(b""), ("", 0))
 
-    def test_raw_encode(self):
+    eleza test_raw_encode(self):
         encode = codecs.unicode_escape_encode
         for b in range(32, 127):
-            if b != b'\\'[0]:
+            ikiwa b != b'\\'[0]:
                 self.assertEqual(encode(chr(b)), (bytes([b]), 1))
 
-    def test_raw_decode(self):
+    eleza test_raw_decode(self):
         decode = codecs.unicode_escape_decode
         for b in range(256):
-            if b != b'\\'[0]:
+            ikiwa b != b'\\'[0]:
                 self.assertEqual(decode(bytes([b]) + b'0'), (chr(b) + '0', 2))
 
-    def test_escape_encode(self):
+    eleza test_escape_encode(self):
         encode = codecs.unicode_escape_encode
         check = coding_checker(self, encode)
         check('\t', br'\t')
@@ -2319,14 +2319,14 @@ class UnicodeEscapeTest(unittest.TestCase):
         check('\r', br'\r')
         check('\\', br'\\')
         for b in range(32):
-            if chr(b) not in '\t\n\r':
+            ikiwa chr(b) not in '\t\n\r':
                 check(chr(b), ('\\x%02x' % b).encode())
         for b in range(127, 256):
             check(chr(b), ('\\x%02x' % b).encode())
         check('\u20ac', br'\u20ac')
         check('\U0001d120', br'\U0001d120')
 
-    def test_escape_decode(self):
+    eleza test_escape_decode(self):
         decode = codecs.unicode_escape_decode
         check = coding_checker(self, decode)
         check(b"[\\\n]", "[]")
@@ -2352,10 +2352,10 @@ class UnicodeEscapeTest(unittest.TestCase):
         check(br"\U0001d120", "\U0001d120")
         for i in range(97, 123):
             b = bytes([i])
-            if b not in b'abfnrtuvx':
+            ikiwa b not in b'abfnrtuvx':
                 with self.assertWarns(DeprecationWarning):
                     check(b"\\" + b, "\\" + chr(i))
-            if b.upper() not in b'UN':
+            ikiwa b.upper() not in b'UN':
                 with self.assertWarns(DeprecationWarning):
                     check(b"\\" + b.upper(), "\\" + chr(i-32))
         with self.assertWarns(DeprecationWarning):
@@ -2365,7 +2365,7 @@ class UnicodeEscapeTest(unittest.TestCase):
         with self.assertWarns(DeprecationWarning):
             check(b"\\\xfa", "\\\xfa")
 
-    def test_decode_errors(self):
+    eleza test_decode_errors(self):
         decode = codecs.unicode_escape_decode
         for c, d in (b'x', 2), (b'u', 4), (b'U', 4):
             for i in range(d):
@@ -2382,40 +2382,40 @@ class UnicodeEscapeTest(unittest.TestCase):
         self.assertEqual(decode(br"\U00110000", "replace"), ("\ufffd", 10))
 
 
-class RawUnicodeEscapeTest(unittest.TestCase):
-    def test_empty(self):
+kundi RawUnicodeEscapeTest(unittest.TestCase):
+    eleza test_empty(self):
         self.assertEqual(codecs.raw_unicode_escape_encode(""), (b"", 0))
         self.assertEqual(codecs.raw_unicode_escape_decode(b""), ("", 0))
 
-    def test_raw_encode(self):
+    eleza test_raw_encode(self):
         encode = codecs.raw_unicode_escape_encode
         for b in range(256):
             self.assertEqual(encode(chr(b)), (bytes([b]), 1))
 
-    def test_raw_decode(self):
+    eleza test_raw_decode(self):
         decode = codecs.raw_unicode_escape_decode
         for b in range(256):
             self.assertEqual(decode(bytes([b]) + b'0'), (chr(b) + '0', 2))
 
-    def test_escape_encode(self):
+    eleza test_escape_encode(self):
         encode = codecs.raw_unicode_escape_encode
         check = coding_checker(self, encode)
         for b in range(256):
-            if b not in b'uU':
+            ikiwa b not in b'uU':
                 check('\\' + chr(b), b'\\' + bytes([b]))
         check('\u20ac', br'\u20ac')
         check('\U0001d120', br'\U0001d120')
 
-    def test_escape_decode(self):
+    eleza test_escape_decode(self):
         decode = codecs.raw_unicode_escape_decode
         check = coding_checker(self, decode)
         for b in range(256):
-            if b not in b'uU':
+            ikiwa b not in b'uU':
                 check(b'\\' + bytes([b]), '\\' + chr(b))
         check(br"\u20ac", "\u20ac")
         check(br"\U0001d120", "\U0001d120")
 
-    def test_decode_errors(self):
+    eleza test_decode_errors(self):
         decode = codecs.raw_unicode_escape_decode
         for c, d in (b'u', 4), (b'U', 4):
             for i in range(d):
@@ -2432,9 +2432,9 @@ class RawUnicodeEscapeTest(unittest.TestCase):
         self.assertEqual(decode(br"\U00110000", "replace"), ("\ufffd", 10))
 
 
-class EscapeEncodeTest(unittest.TestCase):
+kundi EscapeEncodeTest(unittest.TestCase):
 
-    def test_escape_encode(self):
+    eleza test_escape_encode(self):
         tests = [
             (b'', (b'', 0)),
             (b'foobar', (b'foobar', 6)),
@@ -2452,9 +2452,9 @@ class EscapeEncodeTest(unittest.TestCase):
         self.assertRaises(TypeError, codecs.escape_encode, bytearray(b'spam'))
 
 
-class SurrogateEscapeTest(unittest.TestCase):
+kundi SurrogateEscapeTest(unittest.TestCase):
 
-    def test_utf8(self):
+    eleza test_utf8(self):
         # Bad byte
         self.assertEqual(b"foo\x80bar".decode("utf-8", "surrogateescape"),
                          "foo\udc80bar")
@@ -2466,28 +2466,28 @@ class SurrogateEscapeTest(unittest.TestCase):
         self.assertEqual("\udced\udcb0\udc80".encode("utf-8", "surrogateescape"),
                          b"\xed\xb0\x80")
 
-    def test_ascii(self):
+    eleza test_ascii(self):
         # bad byte
         self.assertEqual(b"foo\x80bar".decode("ascii", "surrogateescape"),
                          "foo\udc80bar")
         self.assertEqual("foo\udc80bar".encode("ascii", "surrogateescape"),
                          b"foo\x80bar")
 
-    def test_charmap(self):
+    eleza test_charmap(self):
         # bad byte: \xa5 is unmapped in iso-8859-3
         self.assertEqual(b"foo\xa5bar".decode("iso-8859-3", "surrogateescape"),
                          "foo\udca5bar")
         self.assertEqual("foo\udca5bar".encode("iso-8859-3", "surrogateescape"),
                          b"foo\xa5bar")
 
-    def test_latin1(self):
+    eleza test_latin1(self):
         # Issue6373
         self.assertEqual("\udce4\udceb\udcef\udcf6\udcfc".encode("latin-1", "surrogateescape"),
                          b"\xe4\xeb\xef\xf6\xfc")
 
 
-class BomTest(unittest.TestCase):
-    def test_seek0(self):
+kundi BomTest(unittest.TestCase):
+    eleza test_seek0(self):
         data = "1234567890"
         tests = ("utf-16",
                  "utf-16-le",
@@ -2497,7 +2497,7 @@ class BomTest(unittest.TestCase):
                  "utf-32-be")
         self.addCleanup(support.unlink, support.TESTFN)
         for encoding in tests:
-            # Check if the BOM is written only once
+            # Check ikiwa the BOM is written only once
             with codecs.open(support.TESTFN, 'w+', encoding=encoding) as f:
                 f.write(data)
                 f.write(data)
@@ -2574,9 +2574,9 @@ else:
     transform_aliases["bz2_codec"] = ["bz2"]
 
 
-class TransformCodecTest(unittest.TestCase):
+kundi TransformCodecTest(unittest.TestCase):
 
-    def test_basics(self):
+    eleza test_basics(self):
         binput = bytes(range(256))
         for encoding in bytes_transform_encodings:
             with self.subTest(encoding=encoding):
@@ -2587,7 +2587,7 @@ class TransformCodecTest(unittest.TestCase):
                 self.assertEqual(size, len(o))
                 self.assertEqual(i, binput)
 
-    def test_read(self):
+    eleza test_read(self):
         for encoding in bytes_transform_encodings:
             with self.subTest(encoding=encoding):
                 sin = codecs.encode(b"\x80", encoding)
@@ -2595,7 +2595,7 @@ class TransformCodecTest(unittest.TestCase):
                 sout = reader.read()
                 self.assertEqual(sout, b"\x80")
 
-    def test_readline(self):
+    eleza test_readline(self):
         for encoding in bytes_transform_encodings:
             with self.subTest(encoding=encoding):
                 sin = codecs.encode(b"\x80", encoding)
@@ -2603,7 +2603,7 @@ class TransformCodecTest(unittest.TestCase):
                 sout = reader.readline()
                 self.assertEqual(sout, b"\x80")
 
-    def test_buffer_api_usage(self):
+    eleza test_buffer_api_usage(self):
         # We check all the transform codecs accept memoryview input
         # for encoding and decoding
         # and also that they roundtrip correctly
@@ -2621,7 +2621,7 @@ class TransformCodecTest(unittest.TestCase):
                 view_decoded = codecs.decode(view, encoding)
                 self.assertEqual(view_decoded, data)
 
-    def test_text_to_binary_blacklists_binary_transforms(self):
+    eleza test_text_to_binary_blacklists_binary_transforms(self):
         # Check binary -> binary codecs give a good error for str input
         bad_input = "bad input type"
         for encoding in bytes_transform_encodings:
@@ -2633,14 +2633,14 @@ class TransformCodecTest(unittest.TestCase):
                     bad_input.encode(encoding)
                 self.assertIsNone(failure.exception.__cause__)
 
-    def test_text_to_binary_blacklists_text_transforms(self):
+    eleza test_text_to_binary_blacklists_text_transforms(self):
         # Check str.encode gives a good error message for str -> str codecs
         msg = (r"^'rot_13' is not a text encoding; "
                r"use codecs.encode\(\) to handle arbitrary codecs")
         with self.assertRaisesRegex(LookupError, msg):
             "just an example message".encode("rot_13")
 
-    def test_binary_to_text_blacklists_binary_transforms(self):
+    eleza test_binary_to_text_blacklists_binary_transforms(self):
         # Check bytes.decode and bytearray.decode give a good error
         # message for binary -> binary codecs
         data = b"encode first to ensure we meet any format restrictions"
@@ -2655,7 +2655,7 @@ class TransformCodecTest(unittest.TestCase):
                 with self.assertRaisesRegex(LookupError, msg):
                     bytearray(encoded_data).decode(encoding)
 
-    def test_binary_to_text_blacklists_text_transforms(self):
+    eleza test_binary_to_text_blacklists_text_transforms(self):
         # Check str -> str codec gives a good error for binary input
         for bad_input in (b"immutable", bytearray(b"mutable")):
             with self.subTest(bad_input=bad_input):
@@ -2666,7 +2666,7 @@ class TransformCodecTest(unittest.TestCase):
                 self.assertIsNone(failure.exception.__cause__)
 
     @unittest.skipUnless(zlib, "Requires zlib support")
-    def test_custom_zlib_error_is_wrapped(self):
+    eleza test_custom_zlib_error_is_wrapped(self):
         # Check zlib codec gives a good error for malformed input
         msg = "^decoding with 'zlib_codec' codec failed"
         with self.assertRaisesRegex(Exception, msg) as failure:
@@ -2674,7 +2674,7 @@ class TransformCodecTest(unittest.TestCase):
         self.assertIsInstance(failure.exception.__cause__,
                                                 type(failure.exception))
 
-    def test_custom_hex_error_is_wrapped(self):
+    eleza test_custom_hex_error_is_wrapped(self):
         # Check hex codec gives a good error for malformed input
         msg = "^decoding with 'hex_codec' codec failed"
         with self.assertRaisesRegex(Exception, msg) as failure:
@@ -2686,7 +2686,7 @@ class TransformCodecTest(unittest.TestCase):
     # machinery currently can't wrap :(
 
     # Ensure codec aliases kutoka http://bugs.python.org/issue7475 work
-    def test_aliases(self):
+    eleza test_aliases(self):
         for codec_name, aliases in transform_aliases.items():
             expected_name = codecs.lookup(codec_name).name
             for alias in aliases:
@@ -2694,7 +2694,7 @@ class TransformCodecTest(unittest.TestCase):
                     info = codecs.lookup(alias)
                     self.assertEqual(info.name, expected_name)
 
-    def test_quopri_stateless(self):
+    eleza test_quopri_stateless(self):
         # Should encode with quotetabs=True
         encoded = codecs.encode(b"space tab\teol \n", "quopri-codec")
         self.assertEqual(encoded, b"space=20tab=09eol=20\n")
@@ -2702,7 +2702,7 @@ class TransformCodecTest(unittest.TestCase):
         unescaped = b"space tab eol\n"
         self.assertEqual(codecs.decode(unescaped, "quopri-codec"), unescaped)
 
-    def test_uu_invalid(self):
+    eleza test_uu_invalid(self):
         # Missing "begin" line
         self.assertRaises(ValueError, codecs.decode, b"", "uu-codec")
 
@@ -2717,21 +2717,21 @@ class TransformCodecTest(unittest.TestCase):
 # registering multiple search functions
 _TEST_CODECS = {}
 
-def _get_test_codec(codec_name):
-    return _TEST_CODECS.get(codec_name)
+eleza _get_test_codec(codec_name):
+    rudisha _TEST_CODECS.get(codec_name)
 codecs.register(_get_test_codec) # Returns None, not usable as a decorator
 
 try:
     # Issue #22166: Also need to clear the internal cache in CPython
     kutoka _codecs agiza _forget_codec
 except ImportError:
-    def _forget_codec(codec_name):
+    eleza _forget_codec(codec_name):
         pass
 
 
-class ExceptionChainingTest(unittest.TestCase):
+kundi ExceptionChainingTest(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         # There's no way to unregister a codec search function, so we just
         # ensure we render this one fairly harmless after the test
         # case finishes by using the test case repr as the codec name
@@ -2752,7 +2752,7 @@ class ExceptionChainingTest(unittest.TestCase):
         # closure to an object that may change on the next run
         self.obj_to_raise = RuntimeError
 
-    def tearDown(self):
+    eleza tearDown(self):
         _TEST_CODECS.pop(self.codec_name, None)
         # Issue #22166: Also pop kutoka caches to avoid appearance of ref leaks
         encodings._cache.pop(self.codec_name, None)
@@ -2761,13 +2761,13 @@ class ExceptionChainingTest(unittest.TestCase):
         except KeyError:
             pass
 
-    def set_codec(self, encode, decode):
+    eleza set_codec(self, encode, decode):
         codec_info = codecs.CodecInfo(encode, decode,
                                       name=self.codec_name)
         _TEST_CODECS[self.codec_name] = codec_info
 
     @contextlib.contextmanager
-    def assertWrapped(self, operation, exc_type, msg):
+    eleza assertWrapped(self, operation, exc_type, msg):
         full_msg = r"{} with {!r} codec failed \({}: {}\)".format(
                   operation, self.codec_name, exc_type.__name__, msg)
         with self.assertRaisesRegex(exc_type, full_msg) as caught:
@@ -2775,11 +2775,11 @@ class ExceptionChainingTest(unittest.TestCase):
         self.assertIsInstance(caught.exception.__cause__, exc_type)
         self.assertIsNotNone(caught.exception.__cause__.__traceback__)
 
-    def raise_obj(self, *args, **kwds):
+    eleza raise_obj(self, *args, **kwds):
         # Helper to dynamically change the object raised by a test codec
         raise self.obj_to_raise
 
-    def check_wrapped(self, obj_to_raise, msg, exc_type=RuntimeError):
+    eleza check_wrapped(self, obj_to_raise, msg, exc_type=RuntimeError):
         self.obj_to_raise = obj_to_raise
         self.set_codec(self.raise_obj, self.raise_obj)
         with self.assertWrapped("encoding", exc_type, msg):
@@ -2791,27 +2791,27 @@ class ExceptionChainingTest(unittest.TestCase):
         with self.assertWrapped("decoding", exc_type, msg):
             codecs.decode(b"bytes input", self.codec_name)
 
-    def test_raise_by_type(self):
+    eleza test_raise_by_type(self):
         self.check_wrapped(RuntimeError, "")
 
-    def test_raise_by_value(self):
+    eleza test_raise_by_value(self):
         msg = "This should be wrapped"
         self.check_wrapped(RuntimeError(msg), msg)
 
-    def test_raise_grandchild_subclass_exact_size(self):
+    eleza test_raise_grandchild_subclass_exact_size(self):
         msg = "This should be wrapped"
-        class MyRuntimeError(RuntimeError):
+        kundi MyRuntimeError(RuntimeError):
             __slots__ = ()
         self.check_wrapped(MyRuntimeError(msg), msg, MyRuntimeError)
 
-    def test_raise_subclass_with_weakref_support(self):
+    eleza test_raise_subclass_with_weakref_support(self):
         msg = "This should be wrapped"
-        class MyRuntimeError(RuntimeError):
+        kundi MyRuntimeError(RuntimeError):
             pass
         self.check_wrapped(MyRuntimeError(msg), msg, MyRuntimeError)
 
-    def check_not_wrapped(self, obj_to_raise, msg):
-        def raise_obj(*args, **kwds):
+    eleza check_not_wrapped(self, obj_to_raise, msg):
+        eleza raise_obj(*args, **kwds):
             raise obj_to_raise
         self.set_codec(raise_obj, raise_obj)
         with self.assertRaisesRegex(RuntimeError, msg):
@@ -2823,33 +2823,33 @@ class ExceptionChainingTest(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, msg):
             codecs.decode(b"bytes input", self.codec_name)
 
-    def test_init_override_is_not_wrapped(self):
-        class CustomInit(RuntimeError):
-            def __init__(self):
+    eleza test_init_override_is_not_wrapped(self):
+        kundi CustomInit(RuntimeError):
+            eleza __init__(self):
                 pass
         self.check_not_wrapped(CustomInit, "")
 
-    def test_new_override_is_not_wrapped(self):
-        class CustomNew(RuntimeError):
-            def __new__(cls):
-                return super().__new__(cls)
+    eleza test_new_override_is_not_wrapped(self):
+        kundi CustomNew(RuntimeError):
+            eleza __new__(cls):
+                rudisha super().__new__(cls)
         self.check_not_wrapped(CustomNew, "")
 
-    def test_instance_attribute_is_not_wrapped(self):
+    eleza test_instance_attribute_is_not_wrapped(self):
         msg = "This should NOT be wrapped"
         exc = RuntimeError(msg)
         exc.attr = 1
         self.check_not_wrapped(exc, "^{}$".format(msg))
 
-    def test_non_str_arg_is_not_wrapped(self):
+    eleza test_non_str_arg_is_not_wrapped(self):
         self.check_not_wrapped(RuntimeError(1), "1")
 
-    def test_multiple_args_is_not_wrapped(self):
+    eleza test_multiple_args_is_not_wrapped(self):
         msg_re = r"^\('a', 'b', 'c'\)$"
         self.check_not_wrapped(RuntimeError('a', 'b', 'c'), msg_re)
 
     # http://bugs.python.org/issue19609
-    def test_codec_lookup_failure_not_wrapped(self):
+    eleza test_codec_lookup_failure_not_wrapped(self):
         msg = "^unknown encoding: {}$".format(self.codec_name)
         # The initial codec lookup should not be wrapped
         with self.assertRaisesRegex(LookupError, msg):
@@ -2861,16 +2861,16 @@ class ExceptionChainingTest(unittest.TestCase):
         with self.assertRaisesRegex(LookupError, msg):
             codecs.decode(b"bytes input", self.codec_name)
 
-    def test_unflagged_non_text_codec_handling(self):
+    eleza test_unflagged_non_text_codec_handling(self):
         # The stdlib non-text codecs are now marked so they're
         # pre-emptively skipped by the text model related methods
         # However, third party codecs won't be flagged, so we still make
         # sure the case where an inappropriate output type is produced is
         # handled appropriately
-        def encode_to_str(*args, **kwds):
-            return "not bytes!", 0
-        def decode_to_bytes(*args, **kwds):
-            return b"not str!", 0
+        eleza encode_to_str(*args, **kwds):
+            rudisha "not bytes!", 0
+        eleza decode_to_bytes(*args, **kwds):
+            rudisha b"not str!", 0
         self.set_codec(encode_to_str, decode_to_bytes)
         # No input or output type checks on the codecs module functions
         encoded = codecs.encode(None, self.codec_name)
@@ -2893,16 +2893,16 @@ class ExceptionChainingTest(unittest.TestCase):
 
 @unittest.skipUnless(sys.platform == 'win32',
                      'code pages are specific to Windows')
-class CodePageTest(unittest.TestCase):
+kundi CodePageTest(unittest.TestCase):
     CP_UTF8 = 65001
 
-    def test_invalid_code_page(self):
+    eleza test_invalid_code_page(self):
         self.assertRaises(ValueError, codecs.code_page_encode, -1, 'a')
         self.assertRaises(ValueError, codecs.code_page_decode, -1, b'a')
         self.assertRaises(OSError, codecs.code_page_encode, 123, 'a')
         self.assertRaises(OSError, codecs.code_page_decode, 123, b'a')
 
-    def test_code_page_name(self):
+    eleza test_code_page_name(self):
         self.assertRaisesRegex(UnicodeEncodeError, 'cp932',
             codecs.code_page_encode, 932, '\xff')
         self.assertRaisesRegex(UnicodeDecodeError, 'cp932',
@@ -2910,9 +2910,9 @@ class CodePageTest(unittest.TestCase):
         self.assertRaisesRegex(UnicodeDecodeError, 'CP_UTF8',
             codecs.code_page_decode, self.CP_UTF8, b'\xff', 'strict', True)
 
-    def check_decode(self, cp, tests):
+    eleza check_decode(self, cp, tests):
         for raw, errors, expected in tests:
-            if expected is not None:
+            ikiwa expected is not None:
                 try:
                     decoded = codecs.code_page_decode(cp, raw, errors, True)
                 except UnicodeDecodeError as err:
@@ -2928,9 +2928,9 @@ class CodePageTest(unittest.TestCase):
                 self.assertRaises(UnicodeDecodeError,
                     codecs.code_page_decode, cp, raw, errors, True)
 
-    def check_encode(self, cp, tests):
+    eleza check_encode(self, cp, tests):
         for text, errors, expected in tests:
-            if expected is not None:
+            ikiwa expected is not None:
                 try:
                     encoded = codecs.code_page_encode(cp, text, errors)
                 except UnicodeEncodeError as err:
@@ -2944,7 +2944,7 @@ class CodePageTest(unittest.TestCase):
                 self.assertRaises(UnicodeEncodeError,
                     codecs.code_page_encode, cp, text, errors)
 
-    def test_cp932(self):
+    eleza test_cp932(self):
         self.check_encode(932, (
             ('abc', 'strict', b'abc'),
             ('\uff44\u9a3e', 'strict', b'\x82\x84\xe9\x80'),
@@ -2977,7 +2977,7 @@ class CodePageTest(unittest.TestCase):
             (b'\x81\x00abc', 'backslashreplace', '\\x81\x00abc'),
         ))
 
-    def test_cp1252(self):
+    eleza test_cp1252(self):
         self.check_encode(1252, (
             ('abc', 'strict', b'abc'),
             ('\xe9\u20ac', 'strict',  b'\xe9\x80'),
@@ -2995,7 +2995,7 @@ class CodePageTest(unittest.TestCase):
             (b'\xff', 'strict', '\xff'),
         ))
 
-    def test_cp_utf7(self):
+    eleza test_cp_utf7(self):
         cp = 65000
         self.check_encode(cp, (
             ('abc', 'strict', b'abc'),
@@ -3015,7 +3015,7 @@ class CodePageTest(unittest.TestCase):
             (b'[\xff]', 'strict', '[\xff]'),
         ))
 
-    def test_multibyte_encoding(self):
+    eleza test_multibyte_encoding(self):
         self.check_decode(932, (
             (b'\x84\xe9\x80', 'ignore', '\u9a3e'),
             (b'\x84\xe9\x80', 'replace', '\ufffd\u9a3e'),
@@ -3029,10 +3029,10 @@ class CodePageTest(unittest.TestCase):
             ('[\U0010ffff\uDC80]', 'replace', b'[\xf4\x8f\xbf\xbf?]'),
         ))
 
-    def test_code_page_decode_flags(self):
+    eleza test_code_page_decode_flags(self):
         # Issue #36312: For some code pages (e.g. UTF-7) flags for
         # MultiByteToWideChar() must be set to 0.
-        if support.verbose:
+        ikiwa support.verbose:
             sys.stdout.write('\n')
         for cp in (50220, 50221, 50222, 50225, 50227, 50229,
                    *range(57002, 57011+1), 65000):
@@ -3040,15 +3040,15 @@ class CodePageTest(unittest.TestCase):
             # not all codepages are present.
             # A missing codepage causes an OSError exception
             # so check for the codepage before decoding
-            if is_code_page_present(cp):
+            ikiwa is_code_page_present(cp):
                 self.assertEqual(codecs.code_page_decode(cp, b'abc'), ('abc', 3), f'cp{cp}')
             else:
-                if support.verbose:
-                    print(f"  skipping cp={cp}")
+                ikiwa support.verbose:
+                    andika(f"  skipping cp={cp}")
         self.assertEqual(codecs.code_page_decode(42, b'abc'),
                          ('\uf061\uf062\uf063', 3))
 
-    def test_incremental(self):
+    eleza test_incremental(self):
         decoded = codecs.code_page_decode(932, b'\x82', 'strict', False)
         self.assertEqual(decoded, ('', 0))
 
@@ -3067,7 +3067,7 @@ class CodePageTest(unittest.TestCase):
                                           False)
         self.assertEqual(decoded, ('abc', 3))
 
-    def test_mbcs_alias(self):
+    eleza test_mbcs_alias(self):
         # Check that looking up our 'default' codepage will return
         # mbcs when we don't have a more specific one available
         with mock.patch('_winapi.GetACP', return_value=123):
@@ -3075,7 +3075,7 @@ class CodePageTest(unittest.TestCase):
             self.assertEqual(codec.name, 'mbcs')
 
     @support.bigmemtest(size=2**31, memuse=7, dry_run=False)
-    def test_large_input(self, size):
+    eleza test_large_input(self, size):
         # Test input longer than INT_MAX.
         # Input should contain undecodable bytes before and after
         # the INT_MAX limit.
@@ -3093,7 +3093,7 @@ class CodePageTest(unittest.TestCase):
                          '\udcef\udcfc\udcfd\udcfe\udcff')
 
     @support.bigmemtest(size=2**31, memuse=6, dry_run=False)
-    def test_large_utf8_input(self, size):
+    eleza test_large_utf8_input(self, size):
         # Test input longer than INT_MAX.
         # Input should contain a decodable multi-byte character
         # surrounding INT_MAX
@@ -3107,11 +3107,11 @@ class CodePageTest(unittest.TestCase):
         self.assertEqual(decoded[0][-11:], '56\ud1000123456\ud100')
 
 
-class ASCIITest(unittest.TestCase):
-    def test_encode(self):
+kundi ASCIITest(unittest.TestCase):
+    eleza test_encode(self):
         self.assertEqual('abc123'.encode('ascii'), b'abc123')
 
-    def test_encode_error(self):
+    eleza test_encode_error(self):
         for data, error_handler, expected in (
             ('[\x80\xff\u20ac]', 'ignore', b'[]'),
             ('[\x80\xff\u20ac]', 'replace', b'[???]'),
@@ -3125,15 +3125,15 @@ class ASCIITest(unittest.TestCase):
                 self.assertEqual(data.encode('ascii', error_handler),
                                  expected)
 
-    def test_encode_surrogateescape_error(self):
+    eleza test_encode_surrogateescape_error(self):
         with self.assertRaises(UnicodeEncodeError):
             # the first character can be decoded, but not the second
             '\udc80\xff'.encode('ascii', 'surrogateescape')
 
-    def test_decode(self):
+    eleza test_decode(self):
         self.assertEqual(b'abc'.decode('ascii'), 'abc')
 
-    def test_decode_error(self):
+    eleza test_decode_error(self):
         for data, error_handler, expected in (
             (b'[\x80\xff]', 'ignore', '[]'),
             (b'[\x80\xff]', 'replace', '[\ufffd\ufffd]'),
@@ -3146,8 +3146,8 @@ class ASCIITest(unittest.TestCase):
                                  expected)
 
 
-class Latin1Test(unittest.TestCase):
-    def test_encode(self):
+kundi Latin1Test(unittest.TestCase):
+    eleza test_encode(self):
         for data, expected in (
             ('abc', b'abc'),
             ('\x80\xe9\xff', b'\x80\xe9\xff'),
@@ -3155,7 +3155,7 @@ class Latin1Test(unittest.TestCase):
             with self.subTest(data=data, expected=expected):
                 self.assertEqual(data.encode('latin1'), expected)
 
-    def test_encode_errors(self):
+    eleza test_encode_errors(self):
         for data, error_handler, expected in (
             ('[\u20ac\udc80]', 'ignore', b'[]'),
             ('[\u20ac\udc80]', 'replace', b'[??]'),
@@ -3169,12 +3169,12 @@ class Latin1Test(unittest.TestCase):
                 self.assertEqual(data.encode('latin1', error_handler),
                                  expected)
 
-    def test_encode_surrogateescape_error(self):
+    eleza test_encode_surrogateescape_error(self):
         with self.assertRaises(UnicodeEncodeError):
             # the first character can be decoded, but not the second
             '\udc80\u20ac'.encode('latin1', 'surrogateescape')
 
-    def test_decode(self):
+    eleza test_decode(self):
         for data, expected in (
             (b'abc', 'abc'),
             (b'[\x80\xff]', '[\x80\xff]'),
@@ -3183,8 +3183,8 @@ class Latin1Test(unittest.TestCase):
                 self.assertEqual(data.decode('latin1'), expected)
 
 
-class StreamRecoderTest(unittest.TestCase):
-    def test_writelines(self):
+kundi StreamRecoderTest(unittest.TestCase):
+    eleza test_writelines(self):
         bio = io.BytesIO()
         codec = codecs.lookup('ascii')
         sr = codecs.StreamRecoder(bio, codec.encode, codec.decode,
@@ -3192,7 +3192,7 @@ class StreamRecoderTest(unittest.TestCase):
         sr.writelines([b'a', b'b'])
         self.assertEqual(bio.getvalue(), b'ab')
 
-    def test_write(self):
+    eleza test_write(self):
         bio = io.BytesIO()
         codec = codecs.lookup('latin1')
         # Recode kutoka Latin-1 to utf-8.
@@ -3203,7 +3203,7 @@ class StreamRecoderTest(unittest.TestCase):
         sr.write(text.encode('latin1'))
         self.assertEqual(bio.getvalue(), text.encode('utf-8'))
 
-    def test_seeking_read(self):
+    eleza test_seeking_read(self):
         bio = io.BytesIO('line1\nline2\nline3\n'.encode('utf-16-le'))
         sr = codecs.EncodedFile(bio, 'utf-8', 'utf-16-le')
 
@@ -3214,7 +3214,7 @@ class StreamRecoderTest(unittest.TestCase):
         self.assertEqual(sr.readline(), b'line3\n')
         self.assertEqual(sr.readline(), b'')
 
-    def test_seeking_write(self):
+    eleza test_seeking_write(self):
         bio = io.BytesIO('123456789\n'.encode('utf-16-le'))
         sr = codecs.EncodedFile(bio, 'utf-8', 'utf-16-le')
 
@@ -3230,7 +3230,7 @@ class StreamRecoderTest(unittest.TestCase):
 
 
 @unittest.skipIf(_testcapi is None, 'need _testcapi module')
-class LocaleCodecTest(unittest.TestCase):
+kundi LocaleCodecTest(unittest.TestCase):
     """
     Test indirectly _Py_DecodeUTF8Ex() and _Py_EncodeUTF8Ex().
     """
@@ -3242,10 +3242,10 @@ class LocaleCodecTest(unittest.TestCase):
     BYTES_STRINGS = (b"blatin1:\xa7\xe9", b"b255:\xff")
     SURROGATES = "\uDC80\uDCFF"
 
-    def encode(self, text, errors="strict"):
-        return _testcapi.EncodeLocaleEx(text, 0, errors)
+    eleza encode(self, text, errors="strict"):
+        rudisha _testcapi.EncodeLocaleEx(text, 0, errors)
 
-    def check_encode_strings(self, errors):
+    eleza check_encode_strings(self, errors):
         for text in self.STRINGS:
             with self.subTest(text=text):
                 try:
@@ -3259,17 +3259,17 @@ class LocaleCodecTest(unittest.TestCase):
                     encoded = self.encode(text, errors)
                     self.assertEqual(encoded, expected)
 
-    def test_encode_strict(self):
+    eleza test_encode_strict(self):
         self.check_encode_strings("strict")
 
-    def test_encode_surrogateescape(self):
+    eleza test_encode_surrogateescape(self):
         self.check_encode_strings("surrogateescape")
 
-    def test_encode_surrogatepass(self):
+    eleza test_encode_surrogatepass(self):
         try:
             self.encode('', 'surrogatepass')
         except ValueError as exc:
-            if str(exc) == 'unsupported error handler':
+            ikiwa str(exc) == 'unsupported error handler':
                 self.skipTest(f"{self.ENCODING!r} encoder doesn't support "
                               f"surrogatepass error handler")
             else:
@@ -3277,17 +3277,17 @@ class LocaleCodecTest(unittest.TestCase):
 
         self.check_encode_strings("surrogatepass")
 
-    def test_encode_unsupported_error_handler(self):
+    eleza test_encode_unsupported_error_handler(self):
         with self.assertRaises(ValueError) as cm:
             self.encode('', 'backslashreplace')
         self.assertEqual(str(cm.exception), 'unsupported error handler')
 
-    def decode(self, encoded, errors="strict"):
-        return _testcapi.DecodeLocaleEx(encoded, 0, errors)
+    eleza decode(self, encoded, errors="strict"):
+        rudisha _testcapi.DecodeLocaleEx(encoded, 0, errors)
 
-    def check_decode_strings(self, errors):
+    eleza check_decode_strings(self, errors):
         is_utf8 = (self.ENCODING == "utf-8")
-        if is_utf8:
+        ikiwa is_utf8:
             encode_errors = 'surrogateescape'
         else:
             encode_errors = 'strict'
@@ -3296,14 +3296,14 @@ class LocaleCodecTest(unittest.TestCase):
         for text in self.STRINGS:
             try:
                 encoded = text.encode(self.ENCODING, encode_errors)
-                if encoded not in strings:
+                ikiwa encoded not in strings:
                     strings.append(encoded)
             except UnicodeEncodeError:
                 encoded = None
 
-            if is_utf8:
+            ikiwa is_utf8:
                 encoded2 = text.encode(self.ENCODING, 'surrogatepass')
-                if encoded2 != encoded:
+                ikiwa encoded2 != encoded:
                     strings.append(encoded2)
 
         for encoded in strings:
@@ -3319,17 +3319,17 @@ class LocaleCodecTest(unittest.TestCase):
                     decoded = self.decode(encoded, errors)
                     self.assertEqual(decoded, expected)
 
-    def test_decode_strict(self):
+    eleza test_decode_strict(self):
         self.check_decode_strings("strict")
 
-    def test_decode_surrogateescape(self):
+    eleza test_decode_surrogateescape(self):
         self.check_decode_strings("surrogateescape")
 
-    def test_decode_surrogatepass(self):
+    eleza test_decode_surrogatepass(self):
         try:
             self.decode(b'', 'surrogatepass')
         except ValueError as exc:
-            if str(exc) == 'unsupported error handler':
+            ikiwa str(exc) == 'unsupported error handler':
                 self.skipTest(f"{self.ENCODING!r} decoder doesn't support "
                               f"surrogatepass error handler")
             else:
@@ -3337,39 +3337,39 @@ class LocaleCodecTest(unittest.TestCase):
 
         self.check_decode_strings("surrogatepass")
 
-    def test_decode_unsupported_error_handler(self):
+    eleza test_decode_unsupported_error_handler(self):
         with self.assertRaises(ValueError) as cm:
             self.decode(b'', 'backslashreplace')
         self.assertEqual(str(cm.exception), 'unsupported error handler')
 
 
-class Rot13Test(unittest.TestCase):
+kundi Rot13Test(unittest.TestCase):
     """Test the educational ROT-13 codec."""
-    def test_encode(self):
+    eleza test_encode(self):
         ciphertext = codecs.encode("Caesar liked ciphers", 'rot-13')
         self.assertEqual(ciphertext, 'Pnrfne yvxrq pvcuref')
 
-    def test_decode(self):
+    eleza test_decode(self):
         plaintext = codecs.decode('Rg gh, Oehgr?', 'rot-13')
         self.assertEqual(plaintext, 'Et tu, Brute?')
 
-    def test_incremental_encode(self):
+    eleza test_incremental_encode(self):
         encoder = codecs.getincrementalencoder('rot-13')()
         ciphertext = encoder.encode('ABBA nag Cheryl Baker')
         self.assertEqual(ciphertext, 'NOON ant Purely Onxre')
 
-    def test_incremental_decode(self):
+    eleza test_incremental_decode(self):
         decoder = codecs.getincrementaldecoder('rot-13')()
         plaintext = decoder.decode('terra Ares envy tha')
         self.assertEqual(plaintext, 'green Nerf rail gun')
 
 
-class Rot13UtilTest(unittest.TestCase):
+kundi Rot13UtilTest(unittest.TestCase):
     """Test the ROT-13 codec via rot13 function,
     i.e. the user has done something like:
     $ echo "Hello World" | python -m encodings.rot_13
     """
-    def test_rot13_func(self):
+    eleza test_rot13_func(self):
         infile = io.StringIO('Gb or, be abg gb or, gung vf gur dhrfgvba')
         outfile = io.StringIO()
         encodings.rot_13.rot13(infile, outfile)
@@ -3380,5 +3380,5 @@ class Rot13UtilTest(unittest.TestCase):
             'To be, or not to be, that is the question')
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

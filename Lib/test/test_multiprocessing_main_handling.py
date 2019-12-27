@@ -1,6 +1,6 @@
 # tests __main__ module handling in multiprocessing
 kutoka test agiza support
-# Skip tests if _multiprocessing wasn't built.
+# Skip tests ikiwa _multiprocessing wasn't built.
 support.import_module('_multiprocessing')
 
 agiza importlib
@@ -15,14 +15,14 @@ kutoka test.support.script_helper agiza (
     make_pkg, make_script, make_zip_pkg, make_zip_script,
     assert_python_ok)
 
-if support.PGO:
+ikiwa support.PGO:
     raise unittest.SkipTest("test is not helpful for PGO")
 
 # Look up which start methods are available to test
 agiza multiprocessing
 AVAILABLE_START_METHODS = set(multiprocessing.get_all_start_methods())
 
-# Issue #22332: Skip tests if sem_open implementation is broken.
+# Issue #22332: Skip tests ikiwa sem_open implementation is broken.
 support.import_module('multiprocessing.synchronize')
 
 verbose = support.verbose
@@ -42,16 +42,16 @@ kutoka multiprocessing agiza Pool, set_start_method
 # We use this __main__ defined function in the map call below in order to
 # check that multiprocessing in correctly running the unguarded
 # code in child processes and then making it available as __main__
-def f(x):
-    return x*x
+eleza f(x):
+    rudisha x*x
 
 # Check explicit relative agizas
-if "check_sibling" in __file__:
+ikiwa "check_sibling" in __file__:
     # We're inside a package and not in a __main__.py file
     # so make sure explicit relative agizas work correctly
     kutoka . agiza sibling
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     start_method = sys.argv[1]
     set_start_method(start_method)
     results = []
@@ -62,23 +62,23 @@ if __name__ == '__main__':
             time.sleep(0.05)
             # up to 1 min to report the results
             dt = time.monotonic() - start_time
-            if dt > 60.0:
+            ikiwa dt > 60.0:
                 raise RuntimeError("Timed out waiting for results (%.1f sec)" % dt)
 
     results.sort()
-    print(start_method, "->", results)
+    andika(start_method, "->", results)
 
     pool.join()
 """
 
 test_source_main_skipped_in_children = """\
-# __main__.py files have an implied "if __name__ == '__main__'" so
+# __main__.py files have an implied "ikiwa __name__ == '__main__'" so
 # multiprocessing should always skip running them in child processes
 
 # This means we can't use __main__ defined functions in child processes,
 # so we just use "int" as a passthrough operation below
 
-if __name__ != "__main__":
+ikiwa __name__ != "__main__":
     raise RuntimeError("Should only be called as __main__!")
 
 agiza sys
@@ -95,33 +95,33 @@ with Pool(5) as pool:
         time.sleep(0.05)
         # up to 1 min to report the results
         dt = time.monotonic() - start_time
-        if dt > 60.0:
+        ikiwa dt > 60.0:
             raise RuntimeError("Timed out waiting for results (%.1f sec)" % dt)
 
 results.sort()
-print(start_method, "->", results)
+andika(start_method, "->", results)
 
 pool.join()
 """
 
 # These helpers were copied kutoka test_cmd_line_script & tweaked a bit...
 
-def _make_test_script(script_dir, script_basename,
+eleza _make_test_script(script_dir, script_basename,
                       source=test_source, omit_suffix=False):
-    to_return = make_script(script_dir, script_basename,
+    to_rudisha = make_script(script_dir, script_basename,
                             source, omit_suffix)
     # Hack to check explicit relative agizas
-    if script_basename == "check_sibling":
+    ikiwa script_basename == "check_sibling":
         make_script(script_dir, "sibling", "")
     importlib.invalidate_caches()
-    return to_return
+    rudisha to_return
 
-def _make_test_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
+eleza _make_test_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
                        source=test_source, depth=1):
-    to_return = make_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
+    to_rudisha = make_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
                              source, depth)
     importlib.invalidate_caches()
-    return to_return
+    rudisha to_return
 
 # There's no easy way to pass the script directory in to get
 # -m to work (avoiding that is the whole point of making
@@ -133,51 +133,51 @@ sys.path.insert(0, %s)
 runpy._run_module_as_main(%r)
 """
 
-def _make_launch_script(script_dir, script_basename, module_name, path=None):
-    if path is None:
+eleza _make_launch_script(script_dir, script_basename, module_name, path=None):
+    ikiwa path is None:
         path = "os.path.dirname(__file__)"
     else:
         path = repr(path)
     source = launch_source % (path, module_name)
-    to_return = make_script(script_dir, script_basename, source)
+    to_rudisha = make_script(script_dir, script_basename, source)
     importlib.invalidate_caches()
-    return to_return
+    rudisha to_return
 
-class MultiProcessingCmdLineMixin():
+kundi MultiProcessingCmdLineMixin():
     maxDiff = None # Show full tracebacks on subprocess failure
 
-    def setUp(self):
-        if self.start_method not in AVAILABLE_START_METHODS:
+    eleza setUp(self):
+        ikiwa self.start_method not in AVAILABLE_START_METHODS:
             self.skipTest("%r start method not available" % self.start_method)
 
-    def _check_output(self, script_name, exit_code, out, err):
-        if verbose > 1:
-            print("Output kutoka test script %r:" % script_name)
-            print(repr(out))
+    eleza _check_output(self, script_name, exit_code, out, err):
+        ikiwa verbose > 1:
+            andika("Output kutoka test script %r:" % script_name)
+            andika(repr(out))
         self.assertEqual(exit_code, 0)
         self.assertEqual(err.decode('utf-8'), '')
         expected_results = "%s -> [1, 4, 9]" % self.start_method
         self.assertEqual(out.decode('utf-8').strip(), expected_results)
 
-    def _check_script(self, script_name, *cmd_line_switches):
-        if not __debug__:
+    eleza _check_script(self, script_name, *cmd_line_switches):
+        ikiwa not __debug__:
             cmd_line_switches += ('-' + 'O' * sys.flags.optimize,)
         run_args = cmd_line_switches + (script_name, self.start_method)
         rc, out, err = assert_python_ok(*run_args, __isolated=False)
         self._check_output(script_name, rc, out, err)
 
-    def test_basic_script(self):
+    eleza test_basic_script(self):
         with support.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, 'script')
             self._check_script(script_name)
 
-    def test_basic_script_no_suffix(self):
+    eleza test_basic_script_no_suffix(self):
         with support.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, 'script',
                                             omit_suffix=True)
             self._check_script(script_name)
 
-    def test_ipython_workaround(self):
+    eleza test_ipython_workaround(self):
         # Some versions of the IPython launch script are missing the
         # __name__ = "__main__" guard, and multiprocessing has long had
         # a workaround for that case
@@ -192,7 +192,7 @@ class MultiProcessingCmdLineMixin():
                                                  omit_suffix=True)
             self._check_script(script_no_suffix)
 
-    def test_script_compiled(self):
+    eleza test_script_compiled(self):
         with support.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, 'script')
             py_compile.compile(script_name, doraise=True)
@@ -200,14 +200,14 @@ class MultiProcessingCmdLineMixin():
             pyc_file = support.make_legacy_pyc(script_name)
             self._check_script(pyc_file)
 
-    def test_directory(self):
+    eleza test_directory(self):
         source = self.main_in_children_source
         with support.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, '__main__',
                                             source=source)
             self._check_script(script_dir)
 
-    def test_directory_compiled(self):
+    eleza test_directory_compiled(self):
         source = self.main_in_children_source
         with support.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, '__main__',
@@ -217,7 +217,7 @@ class MultiProcessingCmdLineMixin():
             pyc_file = support.make_legacy_pyc(script_name)
             self._check_script(script_dir)
 
-    def test_zipfile(self):
+    eleza test_zipfile(self):
         source = self.main_in_children_source
         with support.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, '__main__',
@@ -225,7 +225,7 @@ class MultiProcessingCmdLineMixin():
             zip_name, run_name = make_zip_script(script_dir, 'test_zip', script_name)
             self._check_script(zip_name)
 
-    def test_zipfile_compiled(self):
+    eleza test_zipfile_compiled(self):
         source = self.main_in_children_source
         with support.temp_dir() as script_dir:
             script_name = _make_test_script(script_dir, '__main__',
@@ -234,7 +234,7 @@ class MultiProcessingCmdLineMixin():
             zip_name, run_name = make_zip_script(script_dir, 'test_zip', compiled_name)
             self._check_script(zip_name)
 
-    def test_module_in_package(self):
+    eleza test_module_in_package(self):
         with support.temp_dir() as script_dir:
             pkg_dir = os.path.join(script_dir, 'test_pkg')
             make_pkg(pkg_dir)
@@ -243,19 +243,19 @@ class MultiProcessingCmdLineMixin():
                                               'test_pkg.check_sibling')
             self._check_script(launch_name)
 
-    def test_module_in_package_in_zipfile(self):
+    eleza test_module_in_package_in_zipfile(self):
         with support.temp_dir() as script_dir:
             zip_name, run_name = _make_test_zip_pkg(script_dir, 'test_zip', 'test_pkg', 'script')
             launch_name = _make_launch_script(script_dir, 'launch', 'test_pkg.script', zip_name)
             self._check_script(launch_name)
 
-    def test_module_in_subpackage_in_zipfile(self):
+    eleza test_module_in_subpackage_in_zipfile(self):
         with support.temp_dir() as script_dir:
             zip_name, run_name = _make_test_zip_pkg(script_dir, 'test_zip', 'test_pkg', 'script', depth=2)
             launch_name = _make_launch_script(script_dir, 'launch', 'test_pkg.test_pkg.script', zip_name)
             self._check_script(launch_name)
 
-    def test_package(self):
+    eleza test_package(self):
         source = self.main_in_children_source
         with support.temp_dir() as script_dir:
             pkg_dir = os.path.join(script_dir, 'test_pkg')
@@ -265,7 +265,7 @@ class MultiProcessingCmdLineMixin():
             launch_name = _make_launch_script(script_dir, 'launch', 'test_pkg')
             self._check_script(launch_name)
 
-    def test_package_compiled(self):
+    eleza test_package_compiled(self):
         source = self.main_in_children_source
         with support.temp_dir() as script_dir:
             pkg_dir = os.path.join(script_dir, 'test_pkg')
@@ -280,20 +280,20 @@ class MultiProcessingCmdLineMixin():
 
 # Test all supported start methods (setupClass skips as appropriate)
 
-class SpawnCmdLineTest(MultiProcessingCmdLineMixin, unittest.TestCase):
+kundi SpawnCmdLineTest(MultiProcessingCmdLineMixin, unittest.TestCase):
     start_method = 'spawn'
     main_in_children_source = test_source_main_skipped_in_children
 
-class ForkCmdLineTest(MultiProcessingCmdLineMixin, unittest.TestCase):
+kundi ForkCmdLineTest(MultiProcessingCmdLineMixin, unittest.TestCase):
     start_method = 'fork'
     main_in_children_source = test_source
 
-class ForkServerCmdLineTest(MultiProcessingCmdLineMixin, unittest.TestCase):
+kundi ForkServerCmdLineTest(MultiProcessingCmdLineMixin, unittest.TestCase):
     start_method = 'forkserver'
     main_in_children_source = test_source_main_skipped_in_children
 
-def tearDownModule():
+eleza tearDownModule():
     support.reap_children()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

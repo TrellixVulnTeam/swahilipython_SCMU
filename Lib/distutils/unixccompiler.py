@@ -24,7 +24,7 @@ from distutils.errors import \
 from distutils import log
 
 if sys.platform == 'darwin':
-    import _osx_support
+    agiza _osx_support
 
 # XXX Things not currently handled:
 #   * optimization/debug/warning flags; we just use whatever's in Python's
@@ -235,9 +235,9 @@ class UnixCCompiler(CCompiler):
         if sys.platform[:6] == "darwin":
             # MacOSX's linker doesn't understand the -R flag at all
             return "-L" + dir
-        elif sys.platform[:7] == "freebsd":
+        lasivyo sys.platform[:7] == "freebsd":
             return "-Wl,-rpath=" + dir
-        elif sys.platform[:5] == "hp-ux":
+        lasivyo sys.platform[:5] == "hp-ux":
             if self._is_gcc(compiler):
                 return ["-Wl,+s", "-L" + dir]
             return ["+s", "-L" + dir]
@@ -317,11 +317,11 @@ class UnixCCompiler(CCompiler):
             # ignoring even GCC's "-static" option.  So sue me.
             if os.path.exists(dylib):
                 return dylib
-            elif os.path.exists(xcode_stub):
+            lasivyo os.path.exists(xcode_stub):
                 return xcode_stub
-            elif os.path.exists(shared):
+            lasivyo os.path.exists(shared):
                 return shared
-            elif os.path.exists(static):
+            lasivyo os.path.exists(static):
                 return static
 
         # Oops, didn't find it in *any* of 'dirs'

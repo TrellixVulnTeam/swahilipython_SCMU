@@ -7,10 +7,10 @@ Built-in Exceptions
    statement: try
    statement: except
 
-In Python, all exceptions must be instances of a class that derives from
+In Python, all exceptions must be instances of a kundi that derives kutoka
 :class:`BaseException`.  In a :keyword:`try` statement with an :keyword:`except`
 clause that mentions a particular class, that clause also handles any exception
-classes derived from that class (but not exception classes from which *it* is
+classes derived kutoka that kundi (but not exception classes kutoka which *it* is
 derived).  Two exception classes that are not related via subclassing are never
 equivalent, even if they have the same name.
 
@@ -26,11 +26,11 @@ class's constructor.
 User code can raise built-in exceptions.  This can be used to test an exception
 handler or to report an error condition "just like" the situation in which the
 interpreter raises the same exception; but beware that there is nothing to
-prevent user code from raising an inappropriate error.
+prevent user code kutoka raising an inappropriate error.
 
 The built-in exception classes can be subclassed to define new exceptions;
-programmers are encouraged to derive new exceptions from the :exc:`Exception`
-class or one of its subclasses, and not from :exc:`BaseException`.  More
+programmers are encouraged to derive new exceptions kutoka the :exc:`Exception`
+kundi or one of its subclasses, and not kutoka :exc:`BaseException`.  More
 information on defining exceptions is available in the Python Tutorial under
 :ref:`tut-userexceptions`.
 
@@ -42,15 +42,15 @@ include the originating exception(s) and the final exception.
 
 When raising a new exception (rather than using a bare ``raise`` to re-raise
 the exception currently being handled), the implicit exception context can be
-supplemented with an explicit cause by using :keyword:`from` with
+supplemented with an explicit cause by using :keyword:`kutoka` with
 :keyword:`raise`::
 
-   raise new_exc from original_exc
+   raise new_exc kutoka original_exc
 
-The expression following :keyword:`from` must be an exception or ``None``. It
+The expression following :keyword:`kutoka` must be an exception or ``None``. It
 will be set as :attr:`__cause__` on the raised exception. Setting
 :attr:`__cause__` also implicitly sets the :attr:`__suppress_context__`
-attribute to ``True``, so that using ``raise new_exc from None``
+attribute to ``True``, so that using ``raise new_exc kutoka None``
 effectively replaces the old exception with the new one for display
 purposes (e.g. converting :exc:`KeyError` to :exc:`AttributeError`), while
 leaving the old exception available in :attr:`__context__` for introspection
@@ -74,7 +74,7 @@ The following exceptions are used mostly as base classes for other exceptions.
 
 .. exception:: BaseException
 
-   The base class for all built-in exceptions.  It is not meant to be directly
+   The base kundi for all built-in exceptions.  It is not meant to be directly
    inherited by user-defined classes (for that, use :exc:`Exception`).  If
    :func:`str` is called on an instance of this class, the representation of
    the argument(s) to the instance are returned, or the empty string when
@@ -102,13 +102,13 @@ The following exceptions are used mostly as base classes for other exceptions.
 
 .. exception:: Exception
 
-   All built-in, non-system-exiting exceptions are derived from this class.  All
-   user-defined exceptions should also be derived from this class.
+   All built-in, non-system-exiting exceptions are derived kutoka this class.  All
+   user-defined exceptions should also be derived kutoka this class.
 
 
 .. exception:: ArithmeticError
 
-   The base class for those built-in exceptions that are raised for various
+   The base kundi for those built-in exceptions that are raised for various
    arithmetic errors: :exc:`OverflowError`, :exc:`ZeroDivisionError`,
    :exc:`FloatingPointError`.
 
@@ -121,7 +121,7 @@ The following exceptions are used mostly as base classes for other exceptions.
 
 .. exception:: LookupError
 
-   The base class for the exceptions that are raised when a key or index used on
+   The base kundi for the exceptions that are raised when a key or index used on
    a mapping or sequence is invalid: :exc:`IndexError`, :exc:`KeyError`.  This
    can be raised directly by :func:`codecs.lookup`.
 
@@ -161,14 +161,14 @@ The following exceptions are the exceptions that are usually raised.
 
    Raised when a :term:`generator` or :term:`coroutine` is closed;
    see :meth:`generator.close` and :meth:`coroutine.close`.  It
-   directly inherits from :exc:`BaseException` instead of :exc:`Exception` since
+   directly inherits kutoka :exc:`BaseException` instead of :exc:`Exception` since
    it is technically not an error.
 
 
 .. exception:: ImportError
 
    Raised when the :keyword:`import` statement has troubles trying to
-   load a module.  Also raised when the "from list" in ``from ... import``
+   load a module.  Also raised when the "kutoka list" in ``kutoka ... import``
    has a name that cannot be found.
 
    The :attr:`name` and :attr:`path` attributes can be set using keyword-only
@@ -181,7 +181,7 @@ The following exceptions are the exceptions that are usually raised.
 
 .. exception:: ModuleNotFoundError
 
-   A subclass of :exc:`ImportError` which is raised by :keyword:`import`
+   A subkundi of :exc:`ImportError` which is raised by :keyword:`import`
    when a module could not be located.  It is also raised when ``None``
    is found in :data:`sys.modules`.
 
@@ -208,9 +208,9 @@ The following exceptions are the exceptions that are usually raised.
 
    Raised when the user hits the interrupt key (normally :kbd:`Control-C` or
    :kbd:`Delete`).  During execution, a check for interrupts is made
-   regularly. The exception inherits from :exc:`BaseException` so as to not be
+   regularly. The exception inherits kutoka :exc:`BaseException` so as to not be
    accidentally caught by code that catches :exc:`Exception` and thus prevent
-   the interpreter from exiting.
+   the interpreter kutoka exiting.
 
 
 .. exception:: MemoryError
@@ -219,7 +219,7 @@ The following exceptions are the exceptions that are usually raised.
    rescued (by deleting some objects).  The associated value is a string indicating
    what kind of (internal) operation ran out of memory. Note that because of the
    underlying memory management architecture (C's :c:func:`malloc` function), the
-   interpreter may not always be able to completely recover from this situation; it
+   interpreter may not always be able to completely recover kutoka this situation; it
    nevertheless raises an exception so that a stack traceback can be printed, in
    case a run-away program was the cause.
 
@@ -233,9 +233,9 @@ The following exceptions are the exceptions that are usually raised.
 
 .. exception:: NotImplementedError
 
-   This exception is derived from :exc:`RuntimeError`.  In user defined base
+   This exception is derived kutoka :exc:`RuntimeError`.  In user defined base
    classes, abstract methods should raise this exception when they require
-   derived classes to override the method, or while the class is being
+   derived classes to override the method, or while the kundi is being
    developed to indicate that the real implementation still needs to be added.
 
    .. note::
@@ -265,15 +265,15 @@ The following exceptions are the exceptions that are usually raised.
    the :attr:`~BaseException.args` attribute contains only a 2-tuple
    of the first two constructor arguments.
 
-   The constructor often actually returns a subclass of :exc:`OSError`, as
-   described in `OS exceptions`_ below.  The particular subclass depends on
+   The constructor often actually returns a subkundi of :exc:`OSError`, as
+   described in `OS exceptions`_ below.  The particular subkundi depends on
    the final :attr:`.errno` value.  This behaviour only occurs when
    constructing :exc:`OSError` directly or via an alias, and is not
    inherited when subclassing.
 
    .. attribute:: errno
 
-      A numeric error code from the C variable :c:data:`errno`.
+      A numeric error code kutoka the C variable :c:data:`errno`.
 
    .. attribute:: winerror
 
@@ -282,7 +282,7 @@ The following exceptions are the exceptions that are usually raised.
       translation, in POSIX terms, of that native error code.
 
       Under Windows, if the *winerror* constructor argument is an integer,
-      the :attr:`.errno` attribute is determined from the Windows error code,
+      the :attr:`.errno` attribute is determined kutoka the Windows error code,
       and the *errno* argument is ignored.  On other platforms, the
       *winerror* argument is ignored, and the :attr:`winerror` attribute
       does not exist.
@@ -312,7 +312,7 @@ The following exceptions are the exceptions that are usually raised.
 
    .. versionchanged:: 3.4
       The :attr:`filename` attribute is now the original file name passed to
-      the function, instead of the name encoded to or decoded from the
+      the function, instead of the name encoded to or decoded kutoka the
       filesystem encoding.  Also, the *filename2* constructor argument and
       attribute was added.
 
@@ -329,7 +329,7 @@ The following exceptions are the exceptions that are usually raised.
 
 .. exception:: RecursionError
 
-   This exception is derived from :exc:`RuntimeError`.  It is raised when the
+   This exception is derived kutoka :exc:`RuntimeError`.  It is raised when the
    interpreter detects that the maximum recursion depth (see
    :func:`sys.getrecursionlimit`) is exceeded.
 
@@ -377,7 +377,7 @@ The following exceptions are the exceptions that are usually raised.
 
    .. versionchanged:: 3.5
       Introduced the RuntimeError transformation via
-      ``from __future__ import generator_stop``, see :pep:`479`.
+      ``kutoka __future__ agiza generator_stop``, see :pep:`479`.
 
    .. versionchanged:: 3.7
       Enable :pep:`479` for all code by default: a :exc:`StopIteration`
@@ -397,21 +397,21 @@ The following exceptions are the exceptions that are usually raised.
    or :func:`eval`, or when reading the initial script or standard input
    (also interactively).
 
-   Instances of this class have attributes :attr:`filename`, :attr:`lineno`,
+   Instances of this kundi have attributes :attr:`filename`, :attr:`lineno`,
    :attr:`offset` and :attr:`text` for easier access to the details.  :func:`str`
    of the exception instance returns only the message.
 
 
 .. exception:: IndentationError
 
-   Base class for syntax errors related to incorrect indentation.  This is a
-   subclass of :exc:`SyntaxError`.
+   Base kundi for syntax errors related to incorrect indentation.  This is a
+   subkundi of :exc:`SyntaxError`.
 
 
 .. exception:: TabError
 
    Raised when indentation contains an inconsistent use of tabs and spaces.
-   This is a subclass of :exc:`IndentationError`.
+   This is a subkundi of :exc:`IndentationError`.
 
 
 .. exception:: SystemError
@@ -429,7 +429,7 @@ The following exceptions are the exceptions that are usually raised.
 
 .. exception:: SystemExit
 
-   This exception is raised by the :func:`sys.exit` function.  It inherits from
+   This exception is raised by the :func:`sys.exit` function.  It inherits kutoka
    :exc:`BaseException` instead of :exc:`Exception` so that it is not accidentally
    caught by code that catches :exc:`Exception`.  This allows the exception to
    properly propagate up and cause the interpreter to exit.  When it is not
@@ -471,14 +471,14 @@ The following exceptions are the exceptions that are usually raised.
 .. exception:: UnboundLocalError
 
    Raised when a reference is made to a local variable in a function or method, but
-   no value has been bound to that variable.  This is a subclass of
+   no value has been bound to that variable.  This is a subkundi of
    :exc:`NameError`.
 
 
 .. exception:: UnicodeError
 
    Raised when a Unicode-related encoding or decoding error occurs.  It is a
-   subclass of :exc:`ValueError`.
+   subkundi of :exc:`ValueError`.
 
    :exc:`UnicodeError` has attributes that describe the encoding or decoding
    error.  For example, ``err.object[err.start:err.end]`` gives the particular
@@ -507,13 +507,13 @@ The following exceptions are the exceptions that are usually raised.
 
 .. exception:: UnicodeEncodeError
 
-   Raised when a Unicode-related error occurs during encoding.  It is a subclass of
+   Raised when a Unicode-related error occurs during encoding.  It is a subkundi of
    :exc:`UnicodeError`.
 
 
 .. exception:: UnicodeDecodeError
 
-   Raised when a Unicode-related error occurs during decoding.  It is a subclass of
+   Raised when a Unicode-related error occurs during decoding.  It is a subkundi of
    :exc:`UnicodeError`.
 
 
@@ -538,7 +538,7 @@ The following exceptions are the exceptions that are usually raised.
 
 
 The following exceptions are kept for compatibility with previous versions;
-starting from Python 3.3, they are aliases of :exc:`OSError`.
+starting kutoka Python 3.3, they are aliases of :exc:`OSError`.
 
 .. exception:: EnvironmentError
 
@@ -569,7 +569,7 @@ depending on the system error code.
 
       An integer containing the number of characters written to the stream
       before it blocked.  This attribute is available when using the
-      buffered I/O classes from the :mod:`io` module.
+      buffered I/O classes kutoka the :mod:`io` module.
 
 .. exception:: ChildProcessError
 
@@ -578,33 +578,33 @@ depending on the system error code.
 
 .. exception:: ConnectionError
 
-   A base class for connection-related issues.
+   A base kundi for connection-related issues.
 
    Subclasses are :exc:`BrokenPipeError`, :exc:`ConnectionAbortedError`,
    :exc:`ConnectionRefusedError` and :exc:`ConnectionResetError`.
 
 .. exception:: BrokenPipeError
 
-   A subclass of :exc:`ConnectionError`, raised when trying to write on a
+   A subkundi of :exc:`ConnectionError`, raised when trying to write on a
    pipe while the other end has been closed, or trying to write on a socket
    which has been shutdown for writing.
    Corresponds to :c:data:`errno` ``EPIPE`` and ``ESHUTDOWN``.
 
 .. exception:: ConnectionAbortedError
 
-   A subclass of :exc:`ConnectionError`, raised when a connection attempt
+   A subkundi of :exc:`ConnectionError`, raised when a connection attempt
    is aborted by the peer.
    Corresponds to :c:data:`errno` ``ECONNABORTED``.
 
 .. exception:: ConnectionRefusedError
 
-   A subclass of :exc:`ConnectionError`, raised when a connection attempt
+   A subkundi of :exc:`ConnectionError`, raised when a connection attempt
    is refused by the peer.
    Corresponds to :c:data:`errno` ``ECONNREFUSED``.
 
 .. exception:: ConnectionResetError
 
-   A subclass of :exc:`ConnectionError`, raised when a connection is
+   A subkundi of :exc:`ConnectionError`, raised when a connection is
    reset by the peer.
    Corresponds to :c:data:`errno` ``ECONNRESET``.
 
@@ -675,65 +675,65 @@ The following exceptions are used as warning categories; see the
 
 .. exception:: Warning
 
-   Base class for warning categories.
+   Base kundi for warning categories.
 
 
 .. exception:: UserWarning
 
-   Base class for warnings generated by user code.
+   Base kundi for warnings generated by user code.
 
 
 .. exception:: DeprecationWarning
 
-   Base class for warnings about deprecated features when those warnings are
+   Base kundi for warnings about deprecated features when those warnings are
    intended for other Python developers.
 
 
 .. exception:: PendingDeprecationWarning
 
-   Base class for warnings about features which are obsolete and
+   Base kundi for warnings about features which are obsolete and
    expected to be deprecated in the future, but are not deprecated
    at the moment.
 
-   This class is rarely used as emitting a warning about a possible
+   This kundi is rarely used as emitting a warning about a possible
    upcoming deprecation is unusual, and :exc:`DeprecationWarning`
    is preferred for already active deprecations.
 
 
 .. exception:: SyntaxWarning
 
-   Base class for warnings about dubious syntax.
+   Base kundi for warnings about dubious syntax.
 
 
 .. exception:: RuntimeWarning
 
-   Base class for warnings about dubious runtime behavior.
+   Base kundi for warnings about dubious runtime behavior.
 
 
 .. exception:: FutureWarning
 
-   Base class for warnings about deprecated features when those warnings are
+   Base kundi for warnings about deprecated features when those warnings are
    intended for end users of applications that are written in Python.
 
 
 .. exception:: ImportWarning
 
-   Base class for warnings about probable mistakes in module imports.
+   Base kundi for warnings about probable mistakes in module imports.
 
 
 .. exception:: UnicodeWarning
 
-   Base class for warnings related to Unicode.
+   Base kundi for warnings related to Unicode.
 
 
 .. exception:: BytesWarning
 
-   Base class for warnings related to :class:`bytes` and :class:`bytearray`.
+   Base kundi for warnings related to :class:`bytes` and :class:`bytearray`.
 
 
 .. exception:: ResourceWarning
 
-   Base class for warnings related to resource usage. Ignored by the default
+   Base kundi for warnings related to resource usage. Ignored by the default
    warning filters.
 
    .. versionadded:: 3.2
@@ -743,6 +743,6 @@ The following exceptions are used as warning categories; see the
 Exception hierarchy
 -------------------
 
-The class hierarchy for built-in exceptions is:
+The kundi hierarchy for built-in exceptions is:
 
 .. literalinclude:: ../../Lib/test/exception_hierarchy.txt

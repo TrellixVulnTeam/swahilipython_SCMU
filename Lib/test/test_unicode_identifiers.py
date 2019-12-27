@@ -1,9 +1,9 @@
 agiza unittest
 
-class PEP3131Test(unittest.TestCase):
+kundi PEP3131Test(unittest.TestCase):
 
-    def test_valid(self):
-        class T:
+    eleza test_valid(self):
+        kundi T:
             ä = 1
             µ = 2 # this is a compatibility character
             蟒 = 3
@@ -13,11 +13,11 @@ class PEP3131Test(unittest.TestCase):
         self.assertEqual(getattr(T, '\u87d2'), 3)
         self.assertEqual(getattr(T, 'x\U000E0100'), 4)
 
-    def test_non_bmp_normalized(self):
+    eleza test_non_bmp_normalized(self):
         𝔘𝔫𝔦𝔠𝔬𝔡𝔢 = 1
         self.assertIn("Unicode", dir())
 
-    def test_invalid(self):
+    eleza test_invalid(self):
         try:
             kutoka test agiza badsyntax_3131
         except SyntaxError as s:
@@ -26,5 +26,5 @@ class PEP3131Test(unittest.TestCase):
         else:
             self.fail("expected exception didn't occur")
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

@@ -13,7 +13,7 @@
 
 --------------
 
-The :class:`~shlex.shlex` class makes it easy to write lexical analyzers for
+The :class:`~shlex.shlex` kundi makes it easy to write lexical analyzers for
 simple syntaxes resembling that of the Unix shell.  This will often be useful
 for writing minilanguages, (for example, in run control files for Python
 applications) or for parsing quoted strings.
@@ -33,7 +33,7 @@ The :mod:`shlex` module defines the following functions:
    .. note::
 
       Since the :func:`split` function instantiates a :class:`~shlex.shlex`
-      instance, passing ``None`` for *s* will read the string to split from
+      instance, passing ``None`` for *s* will read the string to split kutoka
       standard input.
 
 
@@ -42,7 +42,7 @@ The :mod:`shlex` module defines the following functions:
    Concatenate the tokens of the list *split_command* and return a string.
    This function is the inverse of :func:`split`.
 
-      >>> from shlex import join
+      >>> kutoka shlex agiza join
       >>> print(join(['echo', '-n', 'Multiple words']))
       echo -n 'Multiple words'
 
@@ -67,7 +67,7 @@ The :mod:`shlex` module defines the following functions:
 
    :func:`quote` lets you plug the security hole:
 
-      >>> from shlex import quote
+      >>> kutoka shlex agiza quote
       >>> command = 'ls -l {}'.format(quote(filename))
       >>> print(command)
       ls -l 'somefile; rm -rf ~'
@@ -77,7 +77,7 @@ The :mod:`shlex` module defines the following functions:
 
    The quoting is compatible with UNIX shells and with :func:`split`:
 
-      >>> from shlex import split
+      >>> kutoka shlex agiza split
       >>> remote_command = split(remote_command)
       >>> remote_command
       ['ssh', 'home', "ls -l 'somefile; rm -rf ~'"]
@@ -92,11 +92,11 @@ The :mod:`shlex` module defines the following class:
 
 .. class:: shlex(instream=None, infile=None, posix=False, punctuation_chars=False)
 
-   A :class:`~shlex.shlex` instance or subclass instance is a lexical analyzer
+   A :class:`~shlex.shlex` instance or subkundi instance is a lexical analyzer
    object.  The initialization argument, if present, specifies where to read
-   characters from.  It must be a file-/stream-like object with
+   characters kutoka.  It must be a file-/stream-like object with
    :meth:`~io.TextIOBase.read` and :meth:`~io.TextIOBase.readline` methods, or
-   a string.  If no argument is given, input will be taken from ``sys.stdin``.
+   a string.  If no argument is given, input will be taken kutoka ``sys.stdin``.
    The second optional argument is a filename string, which sets the initial
    value of the :attr:`~shlex.infile` attribute.  If the *instream*
    argument is omitted or equal to ``sys.stdin``, this second argument
@@ -112,7 +112,7 @@ The :mod:`shlex` module defines the following class:
    characters) is returned as a single token.  If set to a non-empty string of
    characters, those characters will be used as the punctuation characters.  Any
    characters in the :attr:`wordchars` attribute that appear in
-   *punctuation_chars* will be removed from :attr:`wordchars`.  See
+   *punctuation_chars* will be removed kutoka :attr:`wordchars`.  See
    :ref:`improved-shell-compatibility` for more information. *punctuation_chars*
    can be set only upon :class:`~shlex.shlex` instance creation and can't be
    modified later.
@@ -137,7 +137,7 @@ A :class:`~shlex.shlex` instance has the following methods:
 .. method:: shlex.get_token()
 
    Return a token.  If tokens have been stacked using :meth:`push_token`, pop a
-   token off the stack.  Otherwise, read one from the input stream.  If reading
+   token off the stack.  Otherwise, read one kutoka the input stream.  If reading
    encounters an immediate end-of-file, :attr:`eof` is returned (the empty
    string (``''``) in non-POSIX mode, and ``None`` in POSIX mode).
 
@@ -192,7 +192,7 @@ A :class:`~shlex.shlex` instance has the following methods:
 
 .. method:: shlex.pop_source()
 
-   Pop the last-pushed input source from the input stack. This is the same method
+   Pop the last-pushed input source kutoka the input stack. This is the same method
    used internally when the lexer reaches EOF on a stacked input stream.
 
 
@@ -214,7 +214,7 @@ variables which either control lexical analysis or can be used for debugging:
 .. attribute:: shlex.commenters
 
    The string of characters that are recognized as comment beginners. All
-   characters from the comment beginner to end of line are ignored. Includes just
+   characters kutoka the comment beginner to end of line are ignored. Includes just
    ``'#'`` by default.
 
 
@@ -226,7 +226,7 @@ variables which either control lexical analysis or can be used for debugging:
    :attr:`punctuation_chars` is not empty, the characters ``~-./*?=``, which can
    appear in filename specifications and command line parameters, will also be
    included in this attribute, and any characters which appear in
-   ``punctuation_chars`` will be removed from ``wordchars`` if they are present
+   ``punctuation_chars`` will be removed kutoka ``wordchars`` if they are present
    there. If :attr:`whitespace_split` is set to ``True``, this will have no
    effect.
 
@@ -272,14 +272,14 @@ variables which either control lexical analysis or can be used for debugging:
 
 .. attribute:: shlex.infile
 
-   The name of the current input file, as initially set at class instantiation time
+   The name of the current input file, as initially set at kundi instantiation time
    or stacked by later source requests.  It may be useful to examine this when
    constructing error messages.
 
 
 .. attribute:: shlex.instream
 
-   The input stream from which this :class:`~shlex.shlex` instance is reading
+   The input stream kutoka which this :class:`~shlex.shlex` instance is reading
    characters.
 
 
@@ -288,7 +288,7 @@ variables which either control lexical analysis or can be used for debugging:
    This attribute is ``None`` by default.  If you assign a string to it, that
    string will be recognized as a lexical-level inclusion request similar to the
    ``source`` keyword in various shells.  That is, the immediately following token
-   will be opened as a filename and input will be taken from that stream until
+   will be opened as a filename and input will be taken kutoka that stream until
    EOF, at which point the :meth:`~io.IOBase.close` method of that stream will be
    called and the input source will again become the original input stream.  Source
    requests may be stacked any number of levels deep.
@@ -387,7 +387,7 @@ Improved Compatibility with Shells
 
 .. versionadded:: 3.6
 
-The :class:`shlex` class provides compatibility with the parsing performed by
+The :class:`shlex` kundi provides compatibility with the parsing performed by
 common Unix shells like ``bash``, ``dash``, and ``sh``.  To take advantage of
 this compatibility, specify the ``punctuation_chars`` argument in the
 constructor.  This defaults to ``False``, which preserves pre-3.6 behaviour.
@@ -401,7 +401,7 @@ otherwise.  To illustrate, you can see the difference in the following snippet:
 .. doctest::
    :options: +NORMALIZE_WHITESPACE
 
-    >>> import shlex
+    >>> agiza shlex
     >>> text = "a && b; c && d || e; f >'abc'; (def \"ghi\")"
     >>> s = shlex.shlex(text, posix=True)
     >>> s.whitespace_split = True
@@ -420,7 +420,7 @@ Instead of passing ``True`` as the value for the punctuation_chars parameter,
 you can pass a string with specific characters, which will be used to determine
 which characters constitute punctuation. For example::
 
-    >>> import shlex
+    >>> agiza shlex
     >>> s = shlex.shlex("a && b || c", punctuation_chars="|")
     >>> list(s)
     ['a', '&', '&', 'b', '||', 'c']
@@ -430,7 +430,7 @@ which characters constitute punctuation. For example::
    characters can appear in file names (including wildcards) and command-line
    arguments (e.g. ``--color=auto``). Hence::
 
-      >>> import shlex
+      >>> agiza shlex
       >>> s = shlex.shlex('~/a && b-c --color=auto || d *.py?',
       ...                 punctuation_chars=True)
       >>> list(s)

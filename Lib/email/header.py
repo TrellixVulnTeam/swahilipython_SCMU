@@ -115,10 +115,10 @@ def decode_header(header):
         if encoding is None:
             # This is an unencoded word.
             decoded_words.append((encoded_string, charset))
-        elif encoding == 'q':
+        lasivyo encoding == 'q':
             word = email.quoprimime.header_decode(encoded_string)
             decoded_words.append((word, charset))
-        elif encoding == 'b':
+        lasivyo encoding == 'b':
             paderr = len(encoded_string) % 4   # Postel's law: add missing padding
             if paderr:
                 encoded_string += '==='[:4 - paderr]
@@ -140,11 +140,11 @@ def decode_header(header):
         if last_word is None:
             last_word = word
             last_charset = charset
-        elif charset != last_charset:
+        lasivyo charset != last_charset:
             collapsed.append((last_word, last_charset))
             last_word = word
             last_charset = charset
-        elif last_charset is None:
+        lasivyo last_charset is None:
             last_word += BSPACE + word
         else:
             last_word += word
@@ -208,7 +208,7 @@ class Header:
         """
         if charset is None:
             charset = USASCII
-        elif not isinstance(charset, Charset):
+        lasivyo not isinstance(charset, Charset):
             charset = Charset(charset)
         self._charset = charset
         self._continuation_ws = continuation_ws
@@ -247,7 +247,7 @@ class Header:
                     if nextcs in (None, 'us-ascii') and not hasspace:
                         uchunks.append(SPACE)
                         nextcs = None
-                elif nextcs not in (None, 'us-ascii') and not lastspace:
+                lasivyo nextcs not in (None, 'us-ascii') and not lastspace:
                     uchunks.append(SPACE)
             lastspace = string and self._nonctext(string[-1])
             lastcs = nextcs
@@ -285,7 +285,7 @@ class Header:
         """
         if charset is None:
             charset = self._charset
-        elif not isinstance(charset, Charset):
+        lasivyo not isinstance(charset, Charset):
             charset = Charset(charset)
         if not isinstance(s, str):
             input_charset = charset.input_codec or 'us-ascii'
@@ -361,7 +361,7 @@ class Header:
                 if lastcs not in (None, 'us-ascii'):
                     if not hasspace or charset not in (None, 'us-ascii'):
                         formatter.add_transition()
-                elif charset not in (None, 'us-ascii') and not lastspace:
+                lasivyo charset not in (None, 'us-ascii') and not lastspace:
                     formatter.add_transition()
             lastspace = string and self._nonctext(string[-1])
             lastcs = charset

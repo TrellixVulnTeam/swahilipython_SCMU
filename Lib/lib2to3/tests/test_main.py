@@ -16,18 +16,18 @@ TEST_DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 PY2_TEST_MODULE = os.path.join(TEST_DATA_DIR, "py2_test_grammar.py")
 
 
-class TestMain(unittest.TestCase):
+kundi TestMain(unittest.TestCase):
 
-    def setUp(self):
-        self.temp_dir = None  # tearDown() will rmtree this directory if set.
+    eleza setUp(self):
+        self.temp_dir = None  # tearDown() will rmtree this directory ikiwa set.
 
-    def tearDown(self):
+    eleza tearDown(self):
         # Clean up logging configuration down by main.
         del logging.root.handlers[:]
-        if self.temp_dir:
+        ikiwa self.temp_dir:
             shutil.rmtree(self.temp_dir)
 
-    def run_2to3_capture(self, args, in_capture, out_capture, err_capture):
+    eleza run_2to3_capture(self, args, in_capture, out_capture, err_capture):
         save_stdin = sys.stdin
         save_stdout = sys.stdout
         save_stderr = sys.stderr
@@ -35,13 +35,13 @@ class TestMain(unittest.TestCase):
         sys.stdout = out_capture
         sys.stderr = err_capture
         try:
-            return main.main("lib2to3.fixes", args)
+            rudisha main.main("lib2to3.fixes", args)
         finally:
             sys.stdin = save_stdin
             sys.stdout = save_stdout
             sys.stderr = save_stderr
 
-    def test_unencodable_diff(self):
+    eleza test_unencodable_diff(self):
         input_stream = io.StringIO("print 'nothing'\nprint u'über'\n")
         out = io.BytesIO()
         out_enc = codecs.getwriter("ascii")(out)
@@ -53,7 +53,7 @@ class TestMain(unittest.TestCase):
         self.assertIn("WARNING: couldn't encode <stdin>'s diff for "
                       "your terminal", err.getvalue())
 
-    def setup_test_source_trees(self):
+    eleza setup_test_source_trees(self):
         """Setup a test source tree and output destination tree."""
         self.temp_dir = tempfile.mkdtemp()  # tearDown() cleans this up.
         self.py2_src_dir = os.path.join(self.temp_dir, "python2_project")
@@ -72,7 +72,7 @@ class TestMain(unittest.TestCase):
             trivial.write("print 'I need a simple conversion.'")
         self.setup_files.append("trivial.py")
 
-    def test_filename_changing_on_output_single_dir(self):
+    eleza test_filename_changing_on_output_single_dir(self):
         """2to3 a single directory with a new output dir and suffix."""
         self.setup_test_source_trees()
         out = io.StringIO()
@@ -101,7 +101,7 @@ class TestMain(unittest.TestCase):
         self.assertNotRegex(
                 stderr, r"No changes to .*/trivial\.py".replace("/", sep))
 
-    def test_filename_changing_on_output_two_files(self):
+    eleza test_filename_changing_on_output_two_files(self):
         """2to3 two files in one directory with a new output dir."""
         self.setup_test_source_trees()
         err = io.StringIO()
@@ -118,7 +118,7 @@ class TestMain(unittest.TestCase):
                         self.py3_dest_dir, self.py2_src_dir), stderr)
         self.assertEqual(expected_files, set(os.listdir(self.py3_dest_dir)))
 
-    def test_filename_changing_on_output_single_file(self):
+    eleza test_filename_changing_on_output_single_file(self):
         """2to3 a single file with a new output dir."""
         self.setup_test_source_trees()
         err = io.StringIO()
@@ -135,5 +135,5 @@ class TestMain(unittest.TestCase):
                          set(os.listdir(self.py3_dest_dir)))
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

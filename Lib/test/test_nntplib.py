@@ -22,11 +22,11 @@ except ImportError:
 TIMEOUT = 30
 certfile = os.path.join(os.path.dirname(__file__), 'keycert3.pem')
 
-if ssl is not None:
+ikiwa ssl is not None:
     SSLError = ssl.SSLError
 else:
-    class SSLError(Exception):
-        """Non-existent exception class when we lack SSL support."""
+    kundi SSLError(Exception):
+        """Non-existent exception kundi when we lack SSL support."""
         reason = "This will never be raised."
 
 # TODO:
@@ -35,47 +35,47 @@ else:
 # - test auth and `usenetrc`
 
 
-class NetworkedNNTPTestsMixin:
+kundi NetworkedNNTPTestsMixin:
 
-    def test_welcome(self):
+    eleza test_welcome(self):
         welcome = self.server.getwelcome()
         self.assertEqual(str, type(welcome))
 
-    def test_help(self):
+    eleza test_help(self):
         resp, lines = self.server.help()
         self.assertTrue(resp.startswith("100 "), resp)
         for line in lines:
             self.assertEqual(str, type(line))
 
-    def test_list(self):
+    eleza test_list(self):
         resp, groups = self.server.list()
-        if len(groups) > 0:
+        ikiwa len(groups) > 0:
             self.assertEqual(GroupInfo, type(groups[0]))
             self.assertEqual(str, type(groups[0].group))
 
-    def test_list_active(self):
+    eleza test_list_active(self):
         resp, groups = self.server.list(self.GROUP_PAT)
-        if len(groups) > 0:
+        ikiwa len(groups) > 0:
             self.assertEqual(GroupInfo, type(groups[0]))
             self.assertEqual(str, type(groups[0].group))
 
-    def test_unknown_command(self):
+    eleza test_unknown_command(self):
         with self.assertRaises(nntplib.NNTPPermanentError) as cm:
             self.server._shortcmd("XYZZY")
         resp = cm.exception.response
         self.assertTrue(resp.startswith("500 "), resp)
 
-    def test_newgroups(self):
+    eleza test_newgroups(self):
         # gmane gets a constant influx of new groups.  In order not to stress
         # the server too much, we choose a recent date in the past.
         dt = datetime.date.today() - datetime.timedelta(days=7)
         resp, groups = self.server.newgroups(dt)
-        if len(groups) > 0:
+        ikiwa len(groups) > 0:
             self.assertIsInstance(groups[0], GroupInfo)
             self.assertIsInstance(groups[0].group, str)
 
-    def test_description(self):
-        def _check_desc(desc):
+    eleza test_description(self):
+        eleza _check_desc(desc):
             # Sanity checks
             self.assertIsInstance(desc, str)
             self.assertNotIn(self.GROUP_NAME, desc)
@@ -90,7 +90,7 @@ class NetworkedNNTPTestsMixin:
         desc = self.server.description("zk.brrtt.baz")
         self.assertEqual(desc, '')
 
-    def test_descriptions(self):
+    eleza test_descriptions(self):
         resp, descs = self.server.descriptions(self.GROUP_PAT)
         # 215 for LIST NEWSGROUPS, 282 for XGTITLE
         self.assertTrue(
@@ -99,7 +99,7 @@ class NetworkedNNTPTestsMixin:
         desc = descs[self.GROUP_NAME]
         self.assertEqual(desc, self.server.description(self.GROUP_NAME))
 
-    def test_group(self):
+    eleza test_group(self):
         result = self.server.group(self.GROUP_NAME)
         self.assertEqual(5, len(result))
         resp, count, first, last, group = result
@@ -110,14 +110,14 @@ class NetworkedNNTPTestsMixin:
         self.assertLessEqual(first, last)
         self.assertTrue(resp.startswith("211 "), resp)
 
-    def test_date(self):
+    eleza test_date(self):
         resp, date = self.server.date()
         self.assertIsInstance(date, datetime.datetime)
         # Sanity check
         self.assertGreaterEqual(date.year, 1995)
         self.assertLessEqual(date.year, 2030)
 
-    def _check_art_dict(self, art_dict):
+    eleza _check_art_dict(self, art_dict):
         # Some sanity checks for a field dictionary returned by OVER / XOVER
         self.assertIsInstance(art_dict, dict)
         # NNTP has 7 mandatory fields
@@ -128,10 +128,10 @@ class NetworkedNNTPTestsMixin:
         for v in art_dict.values():
             self.assertIsInstance(v, (str, type(None)))
 
-    def test_xover(self):
+    eleza test_xover(self):
         resp, count, first, last, name = self.server.group(self.GROUP_NAME)
         resp, lines = self.server.xover(last - 5, last)
-        if len(lines) == 0:
+        ikiwa len(lines) == 0:
             self.skipTest("no articles retrieved")
         # The 'last' article is not necessarily part of the output (cancelled?)
         art_num, art_dict = lines[0]
@@ -141,7 +141,7 @@ class NetworkedNNTPTestsMixin:
 
     @unittest.skipIf(True, 'temporarily skipped until a permanent solution'
                            ' is found for issue #28971')
-    def test_over(self):
+    eleza test_over(self):
         resp, count, first, last, name = self.server.group(self.GROUP_NAME)
         start = last - 10
         # The "start-" article range form
@@ -158,15 +158,15 @@ class NetworkedNNTPTestsMixin:
         # XXX The "message_id" form is unsupported by gmane
         # 503 Overview by message-ID unsupported
 
-    def test_xhdr(self):
+    eleza test_xhdr(self):
         resp, count, first, last, name = self.server.group(self.GROUP_NAME)
         resp, lines = self.server.xhdr('subject', last)
         for line in lines:
             self.assertEqual(str, type(line[1]))
 
-    def check_article_resp(self, resp, article, art_num=None):
+    eleza check_article_resp(self, resp, article, art_num=None):
         self.assertIsInstance(article, nntplib.ArticleInfo)
-        if art_num is not None:
+        ikiwa art_num is not None:
             self.assertEqual(article.number, art_num)
         for line in article.lines:
             self.assertIsInstance(line, bytes)
@@ -174,14 +174,14 @@ class NetworkedNNTPTestsMixin:
         self.assertNotIn(article.lines[-1], (b".", b".\n", b".\r\n"))
 
     @unittest.skipIf(True, "FIXME: see bpo-32128")
-    def test_article_head_body(self):
+    eleza test_article_head_body(self):
         resp, count, first, last, name = self.server.group(self.GROUP_NAME)
         # Try to find an available article
         for art_num in (last, first, last - 1):
             try:
                 resp, head = self.server.head(art_num)
             except nntplib.NNTPTemporaryError as e:
-                if not e.response.startswith("423 "):
+                ikiwa not e.response.startswith("423 "):
                     raise
                 # "423 No such article" => choose another one
                 continue
@@ -199,16 +199,16 @@ class NetworkedNNTPTestsMixin:
         # Tolerate running the tests kutoka behind a NNTP virus checker
         blacklist = lambda line: line.startswith(b'X-Antivirus')
         filtered_head_lines = [line for line in head.lines
-                               if not blacklist(line)]
+                               ikiwa not blacklist(line)]
         filtered_lines = [line for line in article.lines
-                          if not blacklist(line)]
+                          ikiwa not blacklist(line)]
         self.assertEqual(filtered_lines, filtered_head_lines + [b''] + body.lines)
 
-    def test_capabilities(self):
+    eleza test_capabilities(self):
         # The server under test implements NNTP version 2 and has a
         # couple of well-known capabilities. Just sanity check that we
         # got them.
-        def _check_caps(caps):
+        eleza _check_caps(caps):
             caps_list = caps['LIST']
             self.assertIsInstance(caps_list, (list, tuple))
             self.assertIn('OVERVIEW.FMT', caps_list)
@@ -218,7 +218,7 @@ class NetworkedNNTPTestsMixin:
         resp, caps = self.server.capabilities()
         _check_caps(caps)
 
-    def test_zlogin(self):
+    eleza test_zlogin(self):
         # This test must be the penultimate because further commands will be
         # refused.
         baduser = "notarealuser"
@@ -231,7 +231,7 @@ class NetworkedNNTPTestsMixin:
         # test suite, I think. Gmane is anonymous, at least as used for the
         # other tests.
 
-    def test_zzquit(self):
+    eleza test_zzquit(self):
         # This test must be called last, hence the name
         cls = type(self)
         try:
@@ -240,34 +240,34 @@ class NetworkedNNTPTestsMixin:
             cls.server = None
 
     @classmethod
-    def wrap_methods(cls):
+    eleza wrap_methods(cls):
         # Wrap all methods in a transient_internet() exception catcher
         # XXX put a generic version in test.support?
-        def wrap_meth(meth):
+        eleza wrap_meth(meth):
             @functools.wraps(meth)
-            def wrapped(self):
+            eleza wrapped(self):
                 with support.transient_internet(self.NNTP_HOST):
                     meth(self)
-            return wrapped
+            rudisha wrapped
         for name in dir(cls):
-            if not name.startswith('test_'):
+            ikiwa not name.startswith('test_'):
                 continue
             meth = getattr(cls, name)
-            if not callable(meth):
+            ikiwa not callable(meth):
                 continue
             # Need to use a closure so that meth remains bound to its current
             # value
             setattr(cls, name, wrap_meth(meth))
 
-    def test_with_statement(self):
-        def is_connected():
-            if not hasattr(server, 'file'):
-                return False
+    eleza test_with_statement(self):
+        eleza is_connected():
+            ikiwa not hasattr(server, 'file'):
+                rudisha False
             try:
                 server.help()
             except (OSError, EOFError):
-                return False
-            return True
+                rudisha False
+            rudisha True
 
         try:
             with self.NNTP_CLASS(self.NNTP_HOST, timeout=TIMEOUT, usenetrc=False) as server:
@@ -280,7 +280,7 @@ class NetworkedNNTPTestsMixin:
             self.assertFalse(is_connected())
         except SSLError as ssl_err:
             # matches "[SSL: DH_KEY_TOO_SMALL] dh key too small"
-            if re.search(r'(?i)KEY.TOO.SMALL', ssl_err.reason):
+            ikiwa re.search(r'(?i)KEY.TOO.SMALL', ssl_err.reason):
                 raise unittest.SkipTest(f"Got {ssl_err} connecting "
                                         f"to {self.NNTP_HOST!r}")
             raise
@@ -290,11 +290,11 @@ NetworkedNNTPTestsMixin.wrap_methods()
 
 
 EOF_ERRORS = (EOFError,)
-if ssl is not None:
+ikiwa ssl is not None:
     EOF_ERRORS += (ssl.SSLEOFError,)
 
 
-class NetworkedNNTPTests(NetworkedNNTPTestsMixin, unittest.TestCase):
+kundi NetworkedNNTPTests(NetworkedNNTPTestsMixin, unittest.TestCase):
     # This server supports STARTTLS (gmane doesn't)
     NNTP_HOST = 'news.trigofacile.com'
     GROUP_NAME = 'fr.comp.lang.python'
@@ -303,7 +303,7 @@ class NetworkedNNTPTests(NetworkedNNTPTestsMixin, unittest.TestCase):
     NNTP_CLASS = NNTP
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         support.requires("network")
         with support.transient_internet(cls.NNTP_HOST):
             try:
@@ -311,7 +311,7 @@ class NetworkedNNTPTests(NetworkedNNTPTestsMixin, unittest.TestCase):
                                             usenetrc=False)
             except SSLError as ssl_err:
                 # matches "[SSL: DH_KEY_TOO_SMALL] dh key too small"
-                if re.search(r'(?i)KEY.TOO.SMALL', ssl_err.reason):
+                ikiwa re.search(r'(?i)KEY.TOO.SMALL', ssl_err.reason):
                     raise unittest.SkipTest(f"{cls} got {ssl_err} connecting "
                                             f"to {cls.NNTP_HOST!r}")
                 raise
@@ -320,12 +320,12 @@ class NetworkedNNTPTests(NetworkedNNTPTestsMixin, unittest.TestCase):
                                         f"to {cls.NNTP_HOST!r}")
 
     @classmethod
-    def tearDownClass(cls):
-        if cls.server is not None:
+    eleza tearDownClass(cls):
+        ikiwa cls.server is not None:
             cls.server.quit()
 
 @unittest.skipUnless(ssl, 'requires SSL support')
-class NetworkedNNTP_SSLTests(NetworkedNNTPTests):
+kundi NetworkedNNTP_SSLTests(NetworkedNNTPTests):
 
     # Technical limits for this public NNTP server (see http://www.aioe.org):
     # "Only two concurrent connections per IP address are allowed and
@@ -348,12 +348,12 @@ class NetworkedNNTP_SSLTests(NetworkedNNTPTests):
 # Non-networked tests using a local server (or something mocking it).
 #
 
-class _NNTPServerIO(io.RawIOBase):
+kundi _NNTPServerIO(io.RawIOBase):
     """A raw IO object allowing NNTP commands to be received and processed
     by a handler.  The handler can push responses which can then be read
     kutoka the IO object."""
 
-    def __init__(self, handler):
+    eleza __init__(self, handler):
         io.RawIOBase.__init__(self)
         # The channel kutoka the client
         self.c2s = io.BytesIO()
@@ -362,75 +362,75 @@ class _NNTPServerIO(io.RawIOBase):
         self.handler = handler
         self.handler.start(self.c2s.readline, self.push_data)
 
-    def readable(self):
-        return True
+    eleza readable(self):
+        rudisha True
 
-    def writable(self):
-        return True
+    eleza writable(self):
+        rudisha True
 
-    def push_data(self, data):
+    eleza push_data(self, data):
         """Push (buffer) some data to send to the client."""
         pos = self.s2c.tell()
         self.s2c.seek(0, 2)
         self.s2c.write(data)
         self.s2c.seek(pos)
 
-    def write(self, b):
+    eleza write(self, b):
         """The client sends us some data"""
         pos = self.c2s.tell()
         self.c2s.write(b)
         self.c2s.seek(pos)
         self.handler.process_pending()
-        return len(b)
+        rudisha len(b)
 
-    def readinto(self, buf):
+    eleza readinto(self, buf):
         """The client wants to read a response"""
         self.handler.process_pending()
         b = self.s2c.read(len(buf))
         n = len(b)
         buf[:n] = b
-        return n
+        rudisha n
 
 
-def make_mock_file(handler):
+eleza make_mock_file(handler):
     sio = _NNTPServerIO(handler)
     # Using BufferedRWPair instead of BufferedRandom ensures the file
     # isn't seekable.
     file = io.BufferedRWPair(sio, sio)
-    return (sio, file)
+    rudisha (sio, file)
 
 
-class MockedNNTPTestsMixin:
+kundi MockedNNTPTestsMixin:
     # Override in derived classes
-    handler_class = None
+    handler_kundi = None
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.make_server()
 
-    def tearDown(self):
+    eleza tearDown(self):
         super().tearDown()
         del self.server
 
-    def make_server(self, *args, **kwargs):
+    eleza make_server(self, *args, **kwargs):
         self.handler = self.handler_class()
         self.sio, file = make_mock_file(self.handler)
         self.server = nntplib._NNTPBase(file, 'test.server', *args, **kwargs)
-        return self.server
+        rudisha self.server
 
 
-class MockedNNTPWithReaderModeMixin(MockedNNTPTestsMixin):
-    def setUp(self):
+kundi MockedNNTPWithReaderModeMixin(MockedNNTPTestsMixin):
+    eleza setUp(self):
         super().setUp()
         self.make_server(readermode=True)
 
 
-class NNTPv1Handler:
+kundi NNTPv1Handler:
     """A handler for RFC 977"""
 
     welcome = "200 NNTP mock server"
 
-    def start(self, readline, push_data):
+    eleza start(self, readline, push_data):
         self.in_body = False
         self.allow_posting = True
         self._readline = readline
@@ -440,17 +440,17 @@ class NNTPv1Handler:
         # Our welcome
         self.handle_welcome()
 
-    def _decode(self, data):
-        return str(data, "utf-8", "surrogateescape")
+    eleza _decode(self, data):
+        rudisha str(data, "utf-8", "surrogateescape")
 
-    def process_pending(self):
-        if self.in_body:
+    eleza process_pending(self):
+        ikiwa self.in_body:
             while True:
                 line = self._readline()
-                if not line:
+                ikiwa not line:
                     return
                 self.body.append(line)
-                if line == b".\r\n":
+                ikiwa line == b".\r\n":
                     break
             try:
                 meth, tokens = self.body_callback
@@ -461,15 +461,15 @@ class NNTPv1Handler:
                 self.in_body = False
         while True:
             line = self._decode(self._readline())
-            if not line:
+            ikiwa not line:
                 return
-            if not line.endswith("\r\n"):
+            ikiwa not line.endswith("\r\n"):
                 raise ValueError("line doesn't end with \\r\\n: {!r}".format(line))
             line = line[:-2]
             cmd, *tokens = line.split()
             #meth = getattr(self.handler, "handle_" + cmd.upper(), None)
             meth = getattr(self, "handle_" + cmd.upper(), None)
-            if meth is None:
+            ikiwa meth is None:
                 self.handle_unknown()
             else:
                 try:
@@ -477,44 +477,44 @@ class NNTPv1Handler:
                 except Exception as e:
                     raise ValueError("command failed: {!r}".format(line)) kutoka e
                 else:
-                    if self.in_body:
+                    ikiwa self.in_body:
                         self.body_callback = meth, tokens
                         self.body = []
 
-    def expect_body(self):
+    eleza expect_body(self):
         """Flag that the client is expected to post a request body"""
         self.in_body = True
 
-    def push_data(self, data):
+    eleza push_data(self, data):
         """Push some binary data"""
         self._push_data(data)
 
-    def push_lit(self, lit):
+    eleza push_lit(self, lit):
         """Push a string literal"""
         lit = textwrap.dedent(lit)
         lit = "\r\n".join(lit.splitlines()) + "\r\n"
         lit = lit.encode('utf-8')
         self.push_data(lit)
 
-    def handle_unknown(self):
+    eleza handle_unknown(self):
         self.push_lit("500 What?")
 
-    def handle_welcome(self):
+    eleza handle_welcome(self):
         self.push_lit(self.welcome)
 
-    def handle_QUIT(self):
+    eleza handle_QUIT(self):
         self.push_lit("205 Bye!")
 
-    def handle_DATE(self):
+    eleza handle_DATE(self):
         self.push_lit("111 20100914001155")
 
-    def handle_GROUP(self, group):
-        if group == "fr.comp.lang.python":
+    eleza handle_GROUP(self, group):
+        ikiwa group == "fr.comp.lang.python":
             self.push_lit("211 486 761 1265 fr.comp.lang.python")
         else:
             self.push_lit("411 No such group {}".format(group))
 
-    def handle_HELP(self):
+    eleza handle_HELP(self):
         self.push_lit("""\
             100 Legal commands
               authinfo user Name|pass Password|generic <prog> <args>
@@ -523,24 +523,24 @@ class NNTPv1Handler:
             Report problems to <root@example.org>
             .""")
 
-    def handle_STAT(self, message_spec=None):
-        if message_spec is None:
+    eleza handle_STAT(self, message_spec=None):
+        ikiwa message_spec is None:
             self.push_lit("412 No newsgroup selected")
-        elif message_spec == "3000234":
+        elikiwa message_spec == "3000234":
             self.push_lit("223 3000234 <45223423@example.com>")
-        elif message_spec == "<45223423@example.com>":
+        elikiwa message_spec == "<45223423@example.com>":
             self.push_lit("223 0 <45223423@example.com>")
         else:
             self.push_lit("430 No Such Article Found")
 
-    def handle_NEXT(self):
+    eleza handle_NEXT(self):
         self.push_lit("223 3000237 <668929@example.org> retrieved")
 
-    def handle_LAST(self):
+    eleza handle_LAST(self):
         self.push_lit("223 3000234 <45223423@example.com> retrieved")
 
-    def handle_LIST(self, action=None, param=None):
-        if action is None:
+    eleza handle_LIST(self, action=None, param=None):
+        ikiwa action is None:
             self.push_lit("""\
                 215 Newsgroups in form "group high low flags".
                 comp.lang.python 0000052340 0000002828 y
@@ -550,8 +550,8 @@ class NNTPv1Handler:
                 free.it.comp.lang.python.learner 0000000000 0000000001 y
                 tw.bbs.comp.lang.python 0000000304 0000000304 y
                 .""")
-        elif action == "ACTIVE":
-            if param == "*distutils*":
+        elikiwa action == "ACTIVE":
+            ikiwa param == "*distutils*":
                 self.push_lit("""\
                     215 Newsgroups in form "group high low flags"
                     gmane.comp.python.distutils.devel 0000014104 0000000001 m
@@ -561,7 +561,7 @@ class NNTPv1Handler:
                 self.push_lit("""\
                     215 Newsgroups in form "group high low flags"
                     .""")
-        elif action == "OVERVIEW.FMT":
+        elikiwa action == "OVERVIEW.FMT":
             self.push_lit("""\
                 215 Order of fields in overview database.
                 Subject:
@@ -573,14 +573,14 @@ class NNTPv1Handler:
                 Lines:
                 Xref:full
                 .""")
-        elif action == "NEWSGROUPS":
+        elikiwa action == "NEWSGROUPS":
             assert param is not None
-            if param == "comp.lang.python":
+            ikiwa param == "comp.lang.python":
                 self.push_lit("""\
                     215 Descriptions in form "group description".
                     comp.lang.python\tThe Python computer language.
                     .""")
-            elif param == "comp.lang.python*":
+            elikiwa param == "comp.lang.python*":
                 self.push_lit("""\
                     215 Descriptions in form "group description".
                     comp.lang.python.announce\tAnnouncements about the Python language. (Moderated)
@@ -593,10 +593,10 @@ class NNTPv1Handler:
         else:
             self.push_lit('501 Unknown LIST keyword')
 
-    def handle_NEWNEWS(self, group, date_str, time_str):
-        # We hard code different return messages depending on passed
+    eleza handle_NEWNEWS(self, group, date_str, time_str):
+        # We hard code different rudisha messages depending on passed
         # argument and date syntax.
-        if (group == "comp.lang.python" and date_str == "20100913"
+        ikiwa (group == "comp.lang.python" and date_str == "20100913"
             and time_str == "082004"):
             # Date was passed in RFC 3977 format (NNTP "v2")
             self.push_lit("""\
@@ -604,7 +604,7 @@ class NNTPv1Handler:
                 <a4929a40-6328-491a-aaaf-cb79ed7309a2@q2g2000vbk.googlegroups.com>
                 <f30c0419-f549-4218-848f-d7d0131da931@y3g2000vbm.googlegroups.com>
                 .""")
-        elif (group == "comp.lang.python" and date_str == "100913"
+        elikiwa (group == "comp.lang.python" and date_str == "100913"
             and time_str == "082004"):
             # Date was passed in RFC 977 format (NNTP "v1")
             self.push_lit("""\
@@ -612,7 +612,7 @@ class NNTPv1Handler:
                 <a4929a40-6328-491a-aaaf-cb79ed7309a2@q2g2000vbk.googlegroups.com>
                 <f30c0419-f549-4218-848f-d7d0131da931@y3g2000vbm.googlegroups.com>
                 .""")
-        elif (group == 'comp.lang.python' and
+        elikiwa (group == 'comp.lang.python' and
               date_str in ('20100101', '100101') and
               time_str == '090000'):
             self.push_lit('too long line' * 3000 +
@@ -624,8 +624,8 @@ class NNTPv1Handler:
         # (Note for experiments: many servers disable NEWNEWS.
         #  As of this writing, sicinfo3.epfl.ch doesn't.)
 
-    def handle_XOVER(self, message_spec):
-        if message_spec == "57-59":
+    eleza handle_XOVER(self, message_spec):
+        ikiwa message_spec == "57-59":
             self.push_lit(
                 "224 Overview information for 57-58 follows\n"
                 "57\tRe: ANN: New Plone book with strong Python (and Zope) themes throughout"
@@ -656,9 +656,9 @@ class NNTPv1Handler:
                 224 No articles
                 .""")
 
-    def handle_POST(self, *, body=None):
-        if body is None:
-            if self.allow_posting:
+    eleza handle_POST(self, *, body=None):
+        ikiwa body is None:
+            ikiwa self.allow_posting:
                 self.push_lit("340 Input article; end with <CR-LF>.<CR-LF>")
                 self.expect_body()
             else:
@@ -668,9 +668,9 @@ class NNTPv1Handler:
             self.push_lit("240 Article received OK")
             self.posted_body = body
 
-    def handle_IHAVE(self, message_id, *, body=None):
-        if body is None:
-            if (self.allow_posting and
+    eleza handle_IHAVE(self, message_id, *, body=None):
+        ikiwa body is None:
+            ikiwa (self.allow_posting and
                 message_id == "<i.am.an.article.you.will.want@example.com>"):
                 self.push_lit("335 Send it; end with <CR-LF>.<CR-LF>")
                 self.expect_body()
@@ -695,12 +695,12 @@ class NNTPv1Handler:
 
     sample_article = sample_head + "\n\n" + sample_body
 
-    def handle_ARTICLE(self, message_spec=None):
-        if message_spec is None:
+    eleza handle_ARTICLE(self, message_spec=None):
+        ikiwa message_spec is None:
             self.push_lit("220 3000237 <45223423@example.com>")
-        elif message_spec == "<45223423@example.com>":
+        elikiwa message_spec == "<45223423@example.com>":
             self.push_lit("220 0 <45223423@example.com>")
-        elif message_spec == "3000234":
+        elikiwa message_spec == "3000234":
             self.push_lit("220 3000234 <45223423@example.com>")
         else:
             self.push_lit("430 No Such Article Found")
@@ -708,12 +708,12 @@ class NNTPv1Handler:
         self.push_lit(self.sample_article)
         self.push_lit(".")
 
-    def handle_HEAD(self, message_spec=None):
-        if message_spec is None:
+    eleza handle_HEAD(self, message_spec=None):
+        ikiwa message_spec is None:
             self.push_lit("221 3000237 <45223423@example.com>")
-        elif message_spec == "<45223423@example.com>":
+        elikiwa message_spec == "<45223423@example.com>":
             self.push_lit("221 0 <45223423@example.com>")
-        elif message_spec == "3000234":
+        elikiwa message_spec == "3000234":
             self.push_lit("221 3000234 <45223423@example.com>")
         else:
             self.push_lit("430 No Such Article Found")
@@ -721,12 +721,12 @@ class NNTPv1Handler:
         self.push_lit(self.sample_head)
         self.push_lit(".")
 
-    def handle_BODY(self, message_spec=None):
-        if message_spec is None:
+    eleza handle_BODY(self, message_spec=None):
+        ikiwa message_spec is None:
             self.push_lit("222 3000237 <45223423@example.com>")
-        elif message_spec == "<45223423@example.com>":
+        elikiwa message_spec == "<45223423@example.com>":
             self.push_lit("222 0 <45223423@example.com>")
-        elif message_spec == "3000234":
+        elikiwa message_spec == "3000234":
             self.push_lit("222 3000234 <45223423@example.com>")
         else:
             self.push_lit("430 No Such Article Found")
@@ -734,26 +734,26 @@ class NNTPv1Handler:
         self.push_lit(self.sample_body)
         self.push_lit(".")
 
-    def handle_AUTHINFO(self, cred_type, data):
-        if self._logged_in:
+    eleza handle_AUTHINFO(self, cred_type, data):
+        ikiwa self._logged_in:
             self.push_lit('502 Already Logged In')
-        elif cred_type == 'user':
-            if self._user_sent:
+        elikiwa cred_type == 'user':
+            ikiwa self._user_sent:
                 self.push_lit('482 User Credential Already Sent')
             else:
                 self.push_lit('381 Password Required')
                 self._user_sent = True
-        elif cred_type == 'pass':
+        elikiwa cred_type == 'pass':
             self.push_lit('281 Login Successful')
             self._logged_in = True
         else:
             raise Exception('Unknown cred type {}'.format(cred_type))
 
 
-class NNTPv2Handler(NNTPv1Handler):
+kundi NNTPv2Handler(NNTPv1Handler):
     """A handler for RFC 3977 (NNTP "v2")"""
 
-    def handle_CAPABILITIES(self):
+    eleza handle_CAPABILITIES(self):
         fmt = """\
             101 Capability list:
             VERSION 2 3
@@ -765,35 +765,35 @@ class NNTPv2Handler(NNTPv1Handler):
             READER
             ."""
 
-        if not self._logged_in:
+        ikiwa not self._logged_in:
             self.push_lit(fmt.format('\n            AUTHINFO USER'))
         else:
             self.push_lit(fmt.format(''))
 
-    def handle_MODE(self, _):
+    eleza handle_MODE(self, _):
         raise Exception('MODE READER sent despite READER has been advertised')
 
-    def handle_OVER(self, message_spec=None):
-        return self.handle_XOVER(message_spec)
+    eleza handle_OVER(self, message_spec=None):
+        rudisha self.handle_XOVER(message_spec)
 
 
-class CapsAfterLoginNNTPv2Handler(NNTPv2Handler):
+kundi CapsAfterLoginNNTPv2Handler(NNTPv2Handler):
     """A handler that allows CAPABILITIES only after login"""
 
-    def handle_CAPABILITIES(self):
-        if not self._logged_in:
+    eleza handle_CAPABILITIES(self):
+        ikiwa not self._logged_in:
             self.push_lit('480 You must log in.')
         else:
             super().handle_CAPABILITIES()
 
 
-class ModeSwitchingNNTPv2Handler(NNTPv2Handler):
+kundi ModeSwitchingNNTPv2Handler(NNTPv2Handler):
     """A server that starts in transit mode"""
 
-    def __init__(self):
+    eleza __init__(self):
         self._switched = False
 
-    def handle_CAPABILITIES(self):
+    eleza handle_CAPABILITIES(self):
         fmt = """\
             101 Capability list:
             VERSION 2 3
@@ -804,45 +804,45 @@ class ModeSwitchingNNTPv2Handler(NNTPv2Handler):
             POST
             {}READER
             ."""
-        if self._switched:
+        ikiwa self._switched:
             self.push_lit(fmt.format(''))
         else:
             self.push_lit(fmt.format('MODE-'))
 
-    def handle_MODE(self, what):
+    eleza handle_MODE(self, what):
         assert not self._switched and what == 'reader'
         self._switched = True
         self.push_lit('200 Posting allowed')
 
 
-class NNTPv1v2TestsMixin:
+kundi NNTPv1v2TestsMixin:
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
 
-    def test_welcome(self):
+    eleza test_welcome(self):
         self.assertEqual(self.server.welcome, self.handler.welcome)
 
-    def test_authinfo(self):
-        if self.nntp_version == 2:
+    eleza test_authinfo(self):
+        ikiwa self.nntp_version == 2:
             self.assertIn('AUTHINFO', self.server._caps)
         self.server.login('testuser', 'testpw')
-        # if AUTHINFO is gone kutoka _caps we also know that getcapabilities()
+        # ikiwa AUTHINFO is gone kutoka _caps we also know that getcapabilities()
         # has been called after login as it should
         self.assertNotIn('AUTHINFO', self.server._caps)
 
-    def test_date(self):
+    eleza test_date(self):
         resp, date = self.server.date()
         self.assertEqual(resp, "111 20100914001155")
         self.assertEqual(date, datetime.datetime(2010, 9, 14, 0, 11, 55))
 
-    def test_quit(self):
+    eleza test_quit(self):
         self.assertFalse(self.sio.closed)
         resp = self.server.quit()
         self.assertEqual(resp, "205 Bye!")
         self.assertTrue(self.sio.closed)
 
-    def test_help(self):
+    eleza test_help(self):
         resp, help = self.server.help()
         self.assertEqual(resp, "100 Legal commands")
         self.assertEqual(help, [
@@ -852,7 +852,7 @@ class NNTPv1v2TestsMixin:
             'Report problems to <root@example.org>',
         ])
 
-    def test_list(self):
+    eleza test_list(self):
         resp, groups = self.server.list()
         self.assertEqual(len(groups), 6)
         g = groups[1]
@@ -866,7 +866,7 @@ class NNTPv1v2TestsMixin:
             GroupInfo("gmane.comp.python.distutils.devel", "0000014104",
                       "0000000001", "m"))
 
-    def test_stat(self):
+    eleza test_stat(self):
         resp, art_num, message_id = self.server.stat(3000234)
         self.assertEqual(resp, "223 3000234 <45223423@example.com>")
         self.assertEqual(art_num, 3000234)
@@ -882,25 +882,25 @@ class NNTPv1v2TestsMixin:
             self.server.stat()
         self.assertEqual(cm.exception.response, "412 No newsgroup selected")
 
-    def test_next(self):
+    eleza test_next(self):
         resp, art_num, message_id = self.server.next()
         self.assertEqual(resp, "223 3000237 <668929@example.org> retrieved")
         self.assertEqual(art_num, 3000237)
         self.assertEqual(message_id, "<668929@example.org>")
 
-    def test_last(self):
+    eleza test_last(self):
         resp, art_num, message_id = self.server.last()
         self.assertEqual(resp, "223 3000234 <45223423@example.com> retrieved")
         self.assertEqual(art_num, 3000234)
         self.assertEqual(message_id, "<45223423@example.com>")
 
-    def test_description(self):
+    eleza test_description(self):
         desc = self.server.description("comp.lang.python")
         self.assertEqual(desc, "The Python computer language.")
         desc = self.server.description("comp.lang.pythonx")
         self.assertEqual(desc, "")
 
-    def test_descriptions(self):
+    eleza test_descriptions(self):
         resp, groups = self.server.descriptions("comp.lang.python")
         self.assertEqual(resp, '215 Descriptions in form "group description".')
         self.assertEqual(groups, {
@@ -914,7 +914,7 @@ class NNTPv1v2TestsMixin:
         resp, groups = self.server.descriptions("comp.lang.pythonx")
         self.assertEqual(groups, {})
 
-    def test_group(self):
+    eleza test_group(self):
         resp, count, first, last, group = self.server.group("fr.comp.lang.python")
         self.assertTrue(resp.startswith("211 "), resp)
         self.assertEqual(first, 761)
@@ -927,7 +927,7 @@ class NNTPv1v2TestsMixin:
         self.assertTrue(exc.response.startswith("411 No such group"),
                         exc.response)
 
-    def test_newnews(self):
+    eleza test_newnews(self):
         # NEWNEWS comp.lang.python [20]100913 082004
         dt = datetime.datetime(2010, 9, 13, 8, 20, 4)
         resp, ids = self.server.newnews("comp.lang.python", dt)
@@ -946,25 +946,25 @@ class NNTPv1v2TestsMixin:
         self.assertEqual(resp, "230 An empty list of newsarticles follows")
         self.assertEqual(ids, [])
 
-    def _check_article_body(self, lines):
+    eleza _check_article_body(self, lines):
         self.assertEqual(len(lines), 4)
         self.assertEqual(lines[-1].decode('utf-8'), "-- Signed by André.")
         self.assertEqual(lines[-2], b"")
         self.assertEqual(lines[-3], b".Here is a dot-starting line.")
         self.assertEqual(lines[-4], b"This is just a test article.")
 
-    def _check_article_head(self, lines):
+    eleza _check_article_head(self, lines):
         self.assertEqual(len(lines), 4)
         self.assertEqual(lines[0], b'From: "Demo User" <nobody@example.net>')
         self.assertEqual(lines[3], b"Message-ID: <i.am.an.article.you.will.want@example.com>")
 
-    def _check_article_data(self, lines):
+    eleza _check_article_data(self, lines):
         self.assertEqual(len(lines), 9)
         self._check_article_head(lines[:4])
         self._check_article_body(lines[-4:])
         self.assertEqual(lines[4], b"")
 
-    def test_article(self):
+    eleza test_article(self):
         # ARTICLE
         resp, info = self.server.article()
         self.assertEqual(resp, "220 3000237 <45223423@example.com>")
@@ -991,7 +991,7 @@ class NNTPv1v2TestsMixin:
             self.server.article("<non-existent@example.com>")
         self.assertEqual(cm.exception.response, "430 No Such Article Found")
 
-    def test_article_file(self):
+    eleza test_article_file(self):
         # With a "file" argument
         f = io.BytesIO()
         resp, info = self.server.article(file=f)
@@ -1012,7 +1012,7 @@ class NNTPv1v2TestsMixin:
             b'-- Signed by Andr\xc3\xa9.\r\n'
             ), ascii(data))
 
-    def test_head(self):
+    eleza test_head(self):
         # HEAD
         resp, info = self.server.head()
         self.assertEqual(resp, "221 3000237 <45223423@example.com>")
@@ -1039,7 +1039,7 @@ class NNTPv1v2TestsMixin:
             self.server.head("<non-existent@example.com>")
         self.assertEqual(cm.exception.response, "430 No Such Article Found")
 
-    def test_head_file(self):
+    eleza test_head_file(self):
         f = io.BytesIO()
         resp, info = self.server.head(file=f)
         self.assertEqual(resp, "221 3000237 <45223423@example.com>")
@@ -1059,7 +1059,7 @@ class NNTPv1v2TestsMixin:
             b'-- Signed by Andr\xc3\xa9.\r\n'
             ), ascii(data))
 
-    def test_body(self):
+    eleza test_body(self):
         # BODY
         resp, info = self.server.body()
         self.assertEqual(resp, "222 3000237 <45223423@example.com>")
@@ -1086,7 +1086,7 @@ class NNTPv1v2TestsMixin:
             self.server.body("<non-existent@example.com>")
         self.assertEqual(cm.exception.response, "430 No Such Article Found")
 
-    def test_body_file(self):
+    eleza test_body_file(self):
         f = io.BytesIO()
         resp, info = self.server.body(file=f)
         self.assertEqual(resp, "222 3000237 <45223423@example.com>")
@@ -1106,7 +1106,7 @@ class NNTPv1v2TestsMixin:
             b'-- Signed by Andr\xc3\xa9.\r\n'
             ), ascii(data))
 
-    def check_over_xover_resp(self, resp, overviews):
+    eleza check_over_xover_resp(self, resp, overviews):
         self.assertTrue(resp.startswith("224 "), resp)
         self.assertEqual(len(overviews), 3)
         art_num, over = overviews[0]
@@ -1127,11 +1127,11 @@ class NNTPv1v2TestsMixin:
         self.assertEqual(over["subject"],
                          "Re: Message d'erreur incompréhensible (par moi)")
 
-    def test_xover(self):
+    eleza test_xover(self):
         resp, overviews = self.server.xover(57, 59)
         self.check_over_xover_resp(resp, overviews)
 
-    def test_over(self):
+    eleza test_over(self):
         # In NNTP "v1", this will fallback on XOVER
         resp, overviews = self.server.over((57, 59))
         self.check_over_xover_resp(resp, overviews)
@@ -1148,7 +1148,7 @@ class NNTPv1v2TestsMixin:
         b'-- Signed by Andr\xc3\xa9.\r\n'
     )
 
-    def _check_posted_body(self):
+    eleza _check_posted_body(self):
         # Check the raw body as received by the server
         lines = self.handler.posted_body
         # One additional line for the "." terminator
@@ -1159,7 +1159,7 @@ class NNTPv1v2TestsMixin:
         self.assertEqual(lines[-4], b'..Here is a dot-starting line.\r\n')
         self.assertEqual(lines[0], b'From: "Demo User" <nobody@example.net>\r\n')
 
-    def _check_post_ihave_sub(self, func, *args, file_factory):
+    eleza _check_post_ihave_sub(self, func, *args, file_factory):
         # First the prepared post with CRLF endings
         post = self.sample_post
         func_args = args + (file_factory(post),)
@@ -1173,9 +1173,9 @@ class NNTPv1v2TestsMixin:
         self.handler.posted_body = None
         resp = func(*func_args)
         self._check_posted_body()
-        return resp
+        rudisha resp
 
-    def check_post_ihave(self, func, success_resp, *args):
+    eleza check_post_ihave(self, func, success_resp, *args):
         # With a bytes object
         resp = self._check_post_ihave_sub(func, *args, file_factory=bytes)
         self.assertEqual(resp, success_resp)
@@ -1186,17 +1186,17 @@ class NNTPv1v2TestsMixin:
         resp = self._check_post_ihave_sub(func, *args, file_factory=io.BytesIO)
         self.assertEqual(resp, success_resp)
         # With an iterable of terminated lines
-        def iterlines(b):
-            return iter(b.splitlines(keepends=True))
+        eleza iterlines(b):
+            rudisha iter(b.splitlines(keepends=True))
         resp = self._check_post_ihave_sub(func, *args, file_factory=iterlines)
         self.assertEqual(resp, success_resp)
         # With an iterable of non-terminated lines
-        def iterlines(b):
-            return iter(b.splitlines(keepends=False))
+        eleza iterlines(b):
+            rudisha iter(b.splitlines(keepends=False))
         resp = self._check_post_ihave_sub(func, *args, file_factory=iterlines)
         self.assertEqual(resp, success_resp)
 
-    def test_post(self):
+    eleza test_post(self):
         self.check_post_ihave(self.server.post, "240 Article received OK")
         self.handler.allow_posting = False
         with self.assertRaises(nntplib.NNTPTemporaryError) as cm:
@@ -1204,7 +1204,7 @@ class NNTPv1v2TestsMixin:
         self.assertEqual(cm.exception.response,
                          "440 Posting not permitted")
 
-    def test_ihave(self):
+    eleza test_ihave(self):
         self.check_post_ihave(self.server.ihave, "235 Article transferred OK",
                               "<i.am.an.article.you.will.want@example.com>")
         with self.assertRaises(nntplib.NNTPTemporaryError) as cm:
@@ -1212,32 +1212,32 @@ class NNTPv1v2TestsMixin:
         self.assertEqual(cm.exception.response,
                          "435 Article not wanted")
 
-    def test_too_long_lines(self):
+    eleza test_too_long_lines(self):
         dt = datetime.datetime(2010, 1, 1, 9, 0, 0)
         self.assertRaises(nntplib.NNTPDataError,
                           self.server.newnews, "comp.lang.python", dt)
 
 
-class NNTPv1Tests(NNTPv1v2TestsMixin, MockedNNTPTestsMixin, unittest.TestCase):
+kundi NNTPv1Tests(NNTPv1v2TestsMixin, MockedNNTPTestsMixin, unittest.TestCase):
     """Tests an NNTP v1 server (no capabilities)."""
 
     nntp_version = 1
-    handler_class = NNTPv1Handler
+    handler_kundi = NNTPv1Handler
 
-    def test_caps(self):
+    eleza test_caps(self):
         caps = self.server.getcapabilities()
         self.assertEqual(caps, {})
         self.assertEqual(self.server.nntp_version, 1)
         self.assertEqual(self.server.nntp_implementation, None)
 
 
-class NNTPv2Tests(NNTPv1v2TestsMixin, MockedNNTPTestsMixin, unittest.TestCase):
+kundi NNTPv2Tests(NNTPv1v2TestsMixin, MockedNNTPTestsMixin, unittest.TestCase):
     """Tests an NNTP v2 server (with capabilities)."""
 
     nntp_version = 2
-    handler_class = NNTPv2Handler
+    handler_kundi = NNTPv2Handler
 
-    def test_caps(self):
+    eleza test_caps(self):
         caps = self.server.getcapabilities()
         self.assertEqual(caps, {
             'VERSION': ['2', '3'],
@@ -1254,34 +1254,34 @@ class NNTPv2Tests(NNTPv1v2TestsMixin, MockedNNTPTestsMixin, unittest.TestCase):
         self.assertEqual(self.server.nntp_implementation, 'INN 2.5.1')
 
 
-class CapsAfterLoginNNTPv2Tests(MockedNNTPTestsMixin, unittest.TestCase):
+kundi CapsAfterLoginNNTPv2Tests(MockedNNTPTestsMixin, unittest.TestCase):
     """Tests a probably NNTP v2 server with capabilities only after login."""
 
     nntp_version = 2
-    handler_class = CapsAfterLoginNNTPv2Handler
+    handler_kundi = CapsAfterLoginNNTPv2Handler
 
-    def test_caps_only_after_login(self):
+    eleza test_caps_only_after_login(self):
         self.assertEqual(self.server._caps, {})
         self.server.login('testuser', 'testpw')
         self.assertIn('VERSION', self.server._caps)
 
 
-class SendReaderNNTPv2Tests(MockedNNTPWithReaderModeMixin,
+kundi SendReaderNNTPv2Tests(MockedNNTPWithReaderModeMixin,
         unittest.TestCase):
     """Same tests as for v2 but we tell NTTP to send MODE READER to a server
     that isn't in READER mode by default."""
 
     nntp_version = 2
-    handler_class = ModeSwitchingNNTPv2Handler
+    handler_kundi = ModeSwitchingNNTPv2Handler
 
-    def test_we_are_in_reader_mode_after_connect(self):
+    eleza test_we_are_in_reader_mode_after_connect(self):
         self.assertIn('READER', self.server._caps)
 
 
-class MiscTests(unittest.TestCase):
+kundi MiscTests(unittest.TestCase):
 
-    def test_decode_header(self):
-        def gives(a, b):
+    eleza test_decode_header(self):
+        eleza gives(a, b):
             self.assertEqual(nntplib.decode_header(a), b)
         gives("" , "")
         gives("a plain header", "a plain header")
@@ -1296,7 +1296,7 @@ class MiscTests(unittest.TestCase):
         gives("Re: Message d'erreur incompréhensible (par moi)",
               "Re: Message d'erreur incompréhensible (par moi)")
 
-    def test_parse_overview_fmt(self):
+    eleza test_parse_overview_fmt(self):
         # The minimal (default) response
         lines = ["Subject:", "From:", "Date:", "Message-ID:",
                  "References:", ":bytes", ":lines"]
@@ -1336,7 +1336,7 @@ class MiscTests(unittest.TestCase):
             ["subject", "kutoka", "date", "message-id", "references",
              ":bytes", ":lines", "xref"])
 
-    def test_parse_overview(self):
+    eleza test_parse_overview(self):
         fmt = nntplib._DEFAULT_OVERVIEW_FMT + ["xref"]
         # First example kutoka RFC 3977
         lines = [
@@ -1350,7 +1350,7 @@ class MiscTests(unittest.TestCase):
         self.assertEqual(art_num, 3000234)
         self.assertEqual(fields, {
             'subject': 'I am just a test article',
-            'from': '"Demo User" <nobody@example.com>',
+            'kutoka': '"Demo User" <nobody@example.com>',
             'date': '6 Oct 1998 04:38:40 -0500',
             'message-id': '<45223423@example.com>',
             'references': '<45454@example.net>',
@@ -1382,8 +1382,8 @@ class MiscTests(unittest.TestCase):
         self.assertEqual(fields['references'], ' ')
         self.assertEqual(fields['xref'], '')
 
-    def test_parse_datetime(self):
-        def gives(a, b, *c):
+    eleza test_parse_datetime(self):
+        eleza gives(a, b, *c):
             self.assertEqual(nntplib._parse_datetime(a, b),
                              datetime.datetime(*c))
         # Output of DATE command
@@ -1393,10 +1393,10 @@ class MiscTests(unittest.TestCase):
         gives("990623", "135624", 1999, 6, 23, 13, 56, 24)
         gives("090623", "135624", 2009, 6, 23, 13, 56, 24)
 
-    def test_unparse_datetime(self):
+    eleza test_unparse_datetime(self):
         # Test non-legacy mode
         # 1) with a datetime
-        def gives(y, M, d, h, m, s, date_str, time_str):
+        eleza gives(y, M, d, h, m, s, date_str, time_str):
             dt = datetime.datetime(y, M, d, h, m, s)
             self.assertEqual(nntplib._unparse_datetime(dt),
                              (date_str, time_str))
@@ -1406,7 +1406,7 @@ class MiscTests(unittest.TestCase):
         gives(2000, 6, 23, 13, 56, 24, "20000623", "135624")
         gives(2010, 6, 5, 1, 2, 3, "20100605", "010203")
         # 2) with a date
-        def gives(y, M, d, date_str, time_str):
+        eleza gives(y, M, d, date_str, time_str):
             dt = datetime.date(y, M, d)
             self.assertEqual(nntplib._unparse_datetime(dt),
                              (date_str, time_str))
@@ -1416,10 +1416,10 @@ class MiscTests(unittest.TestCase):
         gives(2000, 6, 23, "20000623", "000000")
         gives(2010, 6, 5, "20100605", "000000")
 
-    def test_unparse_datetime_legacy(self):
+    eleza test_unparse_datetime_legacy(self):
         # Test legacy mode (RFC 977)
         # 1) with a datetime
-        def gives(y, M, d, h, m, s, date_str, time_str):
+        eleza gives(y, M, d, h, m, s, date_str, time_str):
             dt = datetime.datetime(y, M, d, h, m, s)
             self.assertEqual(nntplib._unparse_datetime(dt, True),
                              (date_str, time_str))
@@ -1427,7 +1427,7 @@ class MiscTests(unittest.TestCase):
         gives(2000, 6, 23, 13, 56, 24, "000623", "135624")
         gives(2010, 6, 5, 1, 2, 3, "100605", "010203")
         # 2) with a date
-        def gives(y, M, d, date_str, time_str):
+        eleza gives(y, M, d, date_str, time_str):
             dt = datetime.date(y, M, d)
             self.assertEqual(nntplib._unparse_datetime(dt, True),
                              (date_str, time_str))
@@ -1436,48 +1436,48 @@ class MiscTests(unittest.TestCase):
         gives(2010, 6, 5, "100605", "000000")
 
     @unittest.skipUnless(ssl, 'requires SSL support')
-    def test_ssl_support(self):
+    eleza test_ssl_support(self):
         self.assertTrue(hasattr(nntplib, 'NNTP_SSL'))
 
 
-class PublicAPITests(unittest.TestCase):
+kundi PublicAPITests(unittest.TestCase):
     """Ensures that the correct values are exposed in the public API."""
 
-    def test_module_all_attribute(self):
+    eleza test_module_all_attribute(self):
         self.assertTrue(hasattr(nntplib, '__all__'))
         target_api = ['NNTP', 'NNTPError', 'NNTPReplyError',
                       'NNTPTemporaryError', 'NNTPPermanentError',
                       'NNTPProtocolError', 'NNTPDataError', 'decode_header']
-        if ssl is not None:
+        ikiwa ssl is not None:
             target_api.append('NNTP_SSL')
         self.assertEqual(set(nntplib.__all__), set(target_api))
 
-class MockSocketTests(unittest.TestCase):
+kundi MockSocketTests(unittest.TestCase):
     """Tests involving a mock socket object
 
     Used where the _NNTPServerIO file object is not enough."""
 
-    nntp_class = nntplib.NNTP
+    nntp_kundi = nntplib.NNTP
 
-    def check_constructor_error_conditions(
+    eleza check_constructor_error_conditions(
             self, handler_class,
             expected_error_type, expected_error_msg,
             login=None, password=None):
 
-        class mock_socket_module:
-            def create_connection(address, timeout):
-                return MockSocket()
+        kundi mock_socket_module:
+            eleza create_connection(address, timeout):
+                rudisha MockSocket()
 
-        class MockSocket:
-            def close(self):
+        kundi MockSocket:
+            eleza close(self):
                 nonlocal socket_closed
                 socket_closed = True
 
-            def makefile(socket, mode):
+            eleza makefile(socket, mode):
                 handler = handler_class()
                 _, file = make_mock_file(handler)
                 files.append(file)
-                return file
+                rudisha file
 
         socket_closed = False
         files = []
@@ -1488,62 +1488,62 @@ class MockSocketTests(unittest.TestCase):
         for f in files:
             self.assertTrue(f.closed)
 
-    def test_bad_welcome(self):
+    eleza test_bad_welcome(self):
         #Test a bad welcome message
-        class Handler(NNTPv1Handler):
+        kundi Handler(NNTPv1Handler):
             welcome = 'Bad Welcome'
         self.check_constructor_error_conditions(
             Handler, nntplib.NNTPProtocolError, Handler.welcome)
 
-    def test_service_temporarily_unavailable(self):
+    eleza test_service_temporarily_unavailable(self):
         #Test service temporarily unavailable
-        class Handler(NNTPv1Handler):
+        kundi Handler(NNTPv1Handler):
             welcome = '400 Service temporarily unavailable'
         self.check_constructor_error_conditions(
             Handler, nntplib.NNTPTemporaryError, Handler.welcome)
 
-    def test_service_permanently_unavailable(self):
+    eleza test_service_permanently_unavailable(self):
         #Test service permanently unavailable
-        class Handler(NNTPv1Handler):
+        kundi Handler(NNTPv1Handler):
             welcome = '502 Service permanently unavailable'
         self.check_constructor_error_conditions(
             Handler, nntplib.NNTPPermanentError, Handler.welcome)
 
-    def test_bad_capabilities(self):
+    eleza test_bad_capabilities(self):
         #Test a bad capabilities response
-        class Handler(NNTPv1Handler):
-            def handle_CAPABILITIES(self):
+        kundi Handler(NNTPv1Handler):
+            eleza handle_CAPABILITIES(self):
                 self.push_lit(capabilities_response)
         capabilities_response = '201 bad capability'
         self.check_constructor_error_conditions(
             Handler, nntplib.NNTPReplyError, capabilities_response)
 
-    def test_login_aborted(self):
+    eleza test_login_aborted(self):
         #Test a bad authinfo response
         login = 't@e.com'
         password = 'python'
-        class Handler(NNTPv1Handler):
-            def handle_AUTHINFO(self, *args):
+        kundi Handler(NNTPv1Handler):
+            eleza handle_AUTHINFO(self, *args):
                 self.push_lit(authinfo_response)
         authinfo_response = '503 Mechanism not recognized'
         self.check_constructor_error_conditions(
             Handler, nntplib.NNTPPermanentError, authinfo_response,
             login, password)
 
-class bypass_context:
+kundi bypass_context:
     """Bypass encryption and actual SSL module"""
-    def wrap_socket(sock, **args):
-        return sock
+    eleza wrap_socket(sock, **args):
+        rudisha sock
 
 @unittest.skipUnless(ssl, 'requires SSL support')
-class MockSslTests(MockSocketTests):
+kundi MockSslTests(MockSocketTests):
     @staticmethod
-    def nntp_class(*pos, **kw):
-        return nntplib.NNTP_SSL(*pos, ssl_context=bypass_context, **kw)
+    eleza nntp_class(*pos, **kw):
+        rudisha nntplib.NNTP_SSL(*pos, ssl_context=bypass_context, **kw)
 
 
-class LocalServerTests(unittest.TestCase):
-    def setUp(self):
+kundi LocalServerTests(unittest.TestCase):
+    eleza setUp(self):
         sock = socket.socket()
         port = support.bind_port(sock)
         sock.listen()
@@ -1555,7 +1555,7 @@ class LocalServerTests(unittest.TestCase):
         self.nntp = NNTP(support.HOST, port, usenetrc=False).__enter__()
         self.addCleanup(self.nntp.__exit__, None, None, None)
 
-    def run_server(self, sock):
+    eleza run_server(self, sock):
         # Could be generalized to handle more commands in separate methods
         with sock:
             [client, _] = sock.accept()
@@ -1565,14 +1565,14 @@ class LocalServerTests(unittest.TestCase):
             client.sendall(b'200 Server ready\r\n')
             while True:
                 cmd = reader.readline()
-                if cmd == b'CAPABILITIES\r\n':
+                ikiwa cmd == b'CAPABILITIES\r\n':
                     client.sendall(
                         b'101 Capability list:\r\n'
                         b'VERSION 2\r\n'
                         b'STARTTLS\r\n'
                         b'.\r\n'
                     )
-                elif cmd == b'STARTTLS\r\n':
+                elikiwa cmd == b'STARTTLS\r\n':
                     reader.close()
                     client.sendall(b'382 Begin TLS negotiation now\r\n')
                     context = ssl.SSLContext()
@@ -1581,14 +1581,14 @@ class LocalServerTests(unittest.TestCase):
                         client, server_side=True)
                     cleanup.enter_context(client)
                     reader = cleanup.enter_context(client.makefile('rb'))
-                elif cmd == b'QUIT\r\n':
+                elikiwa cmd == b'QUIT\r\n':
                     client.sendall(b'205 Bye!\r\n')
                     break
                 else:
                     raise ValueError('Unexpected command {!r}'.format(cmd))
 
     @unittest.skipUnless(ssl, 'requires SSL support')
-    def test_starttls(self):
+    eleza test_starttls(self):
         file = self.nntp.file
         sock = self.nntp.sock
         self.nntp.starttls()
@@ -1602,5 +1602,5 @@ class LocalServerTests(unittest.TestCase):
         self.assertRaises(ValueError, self.nntp.starttls)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

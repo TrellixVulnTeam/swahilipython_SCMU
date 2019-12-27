@@ -8,18 +8,18 @@ agiza unittest
 kutoka unittest agiza mock
 
 
-class TestScriptHelper(unittest.TestCase):
+kundi TestScriptHelper(unittest.TestCase):
 
-    def test_assert_python_ok(self):
+    eleza test_assert_python_ok(self):
         t = script_helper.assert_python_ok('-c', 'agiza sys; sys.exit(0)')
-        self.assertEqual(0, t[0], 'return code was not 0')
+        self.assertEqual(0, t[0], 'rudisha code was not 0')
 
-    def test_assert_python_failure(self):
+    eleza test_assert_python_failure(self):
         # I didn't agiza the sys module so this child will fail.
         rc, out, err = script_helper.assert_python_failure('-c', 'sys.exit(0)')
-        self.assertNotEqual(0, rc, 'return code should not be 0')
+        self.assertNotEqual(0, rc, 'rudisha code should not be 0')
 
-    def test_assert_python_ok_raises(self):
+    eleza test_assert_python_ok_raises(self):
         # I didn't agiza the sys module so this child will fail.
         with self.assertRaises(AssertionError) as error_context:
             script_helper.assert_python_ok('-c', 'sys.exit(0)')
@@ -27,16 +27,16 @@ class TestScriptHelper(unittest.TestCase):
         self.assertIn('command line:', error_msg)
         self.assertIn('sys.exit(0)', error_msg, msg='unexpected command line')
 
-    def test_assert_python_failure_raises(self):
+    eleza test_assert_python_failure_raises(self):
         with self.assertRaises(AssertionError) as error_context:
             script_helper.assert_python_failure('-c', 'agiza sys; sys.exit(0)')
         error_msg = str(error_context.exception)
-        self.assertIn('Process return code is 0\n', error_msg)
+        self.assertIn('Process rudisha code is 0\n', error_msg)
         self.assertIn('agiza sys; sys.exit(0)', error_msg,
                       msg='unexpected command line.')
 
     @mock.patch('subprocess.Popen')
-    def test_assert_python_isolated_when_env_not_required(self, mock_popen):
+    eleza test_assert_python_isolated_when_env_not_required(self, mock_popen):
         with mock.patch.object(script_helper,
                                'interpreter_requires_environment',
                                return_value=False) as mock_ire_func:
@@ -54,7 +54,7 @@ class TestScriptHelper(unittest.TestCase):
             self.assertNotIn('-E', popen_command)  # -I overrides this
 
     @mock.patch('subprocess.Popen')
-    def test_assert_python_not_isolated_when_env_is_required(self, mock_popen):
+    eleza test_assert_python_not_isolated_when_env_is_required(self, mock_popen):
         """Ensure that -I is not passed when the environment is required."""
         with mock.patch.object(script_helper,
                                'interpreter_requires_environment',
@@ -69,21 +69,21 @@ class TestScriptHelper(unittest.TestCase):
             self.assertNotIn('-E', popen_command)
 
 
-class TestScriptHelperEnvironment(unittest.TestCase):
+kundi TestScriptHelperEnvironment(unittest.TestCase):
     """Code coverage for interpreter_requires_environment()."""
 
-    def setUp(self):
+    eleza setUp(self):
         self.assertTrue(
             hasattr(script_helper, '__cached_interp_requires_environment'))
         # Reset the private cached state.
         script_helper.__dict__['__cached_interp_requires_environment'] = None
 
-    def tearDown(self):
+    eleza tearDown(self):
         # Reset the private cached state.
         script_helper.__dict__['__cached_interp_requires_environment'] = None
 
     @mock.patch('subprocess.check_call')
-    def test_interpreter_requires_environment_true(self, mock_check_call):
+    eleza test_interpreter_requires_environment_true(self, mock_check_call):
         with mock.patch.dict(os.environ):
             os.environ.pop('PYTHONHOME', None)
             mock_check_call.side_effect = subprocess.CalledProcessError('', '')
@@ -92,7 +92,7 @@ class TestScriptHelperEnvironment(unittest.TestCase):
             self.assertEqual(1, mock_check_call.call_count)
 
     @mock.patch('subprocess.check_call')
-    def test_interpreter_requires_environment_false(self, mock_check_call):
+    eleza test_interpreter_requires_environment_false(self, mock_check_call):
         with mock.patch.dict(os.environ):
             os.environ.pop('PYTHONHOME', None)
             # The mocked subprocess.check_call fakes a no-error process.
@@ -101,7 +101,7 @@ class TestScriptHelperEnvironment(unittest.TestCase):
             self.assertEqual(1, mock_check_call.call_count)
 
     @mock.patch('subprocess.check_call')
-    def test_interpreter_requires_environment_details(self, mock_check_call):
+    eleza test_interpreter_requires_environment_details(self, mock_check_call):
         with mock.patch.dict(os.environ):
             os.environ.pop('PYTHONHOME', None)
             script_helper.interpreter_requires_environment()
@@ -113,7 +113,7 @@ class TestScriptHelperEnvironment(unittest.TestCase):
             self.assertIn('-E', check_call_command)
 
     @mock.patch('subprocess.check_call')
-    def test_interpreter_requires_environment_with_pythonhome(self, mock_check_call):
+    eleza test_interpreter_requires_environment_with_pythonhome(self, mock_check_call):
         with mock.patch.dict(os.environ):
             os.environ['PYTHONHOME'] = 'MockedHome'
             self.assertTrue(script_helper.interpreter_requires_environment())
@@ -121,5 +121,5 @@ class TestScriptHelperEnvironment(unittest.TestCase):
             self.assertEqual(0, mock_check_call.call_count)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

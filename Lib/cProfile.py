@@ -24,7 +24,7 @@ runctx.__doc__ = _pyprofile.runctx.__doc__
 
 # ____________________________________________________________
 
-class Profile(_lsprof.Profiler):
+kundi Profile(_lsprof.Profiler):
     """Profile(timer=None, timeunit=None, subcalls=True, builtins=True)
 
     Builds a profiler object using the specified timer function.
@@ -35,7 +35,7 @@ class Profile(_lsprof.Profiler):
     """
 
     # Most of the functionality is in the base class.
-    # This subclass only adds convenient and backward-compatible methods.
+    # This subkundi only adds convenient and backward-compatible methods.
 
     def print_stats(self, sort=-1):
         agiza pstats
@@ -106,10 +106,10 @@ class Profile(_lsprof.Profiler):
     def runcall(*args, **kw):
         if len(args) >= 2:
             self, func, *args = args
-        elif not args:
+        lasivyo not args:
             raise TypeError("descriptor 'runcall' of 'Profile' object "
                             "needs an argument")
-        elif 'func' in kw:
+        lasivyo 'func' in kw:
             func = kw.pop('func')
             self, *args = args
             agiza warnings

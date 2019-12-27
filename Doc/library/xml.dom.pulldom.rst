@@ -2,7 +2,7 @@
 =================================================================
 
 .. module:: xml.dom.pulldom
-   :synopsis: Support for building partial DOM trees from SAX events.
+   :synopsis: Support for building partial DOM trees kutoka SAX events.
 
 .. moduleauthor:: Paul Prescod <paul@prescod.net>
 
@@ -12,10 +12,10 @@
 
 The :mod:`xml.dom.pulldom` module provides a "pull parser" which can also be
 asked to produce DOM-accessible fragments of the document where necessary. The
-basic concept involves pulling "events" from a stream of incoming XML and
+basic concept involves pulling "events" kutoka a stream of incoming XML and
 processing them. In contrast to SAX which also employs an event-driven
 processing model together with callbacks, the user of a pull parser is
-responsible for explicitly pulling events from the stream, looping over those
+responsible for explicitly pulling events kutoka the stream, looping over those
 events until either processing is finished or an error condition occurs.
 
 
@@ -31,9 +31,9 @@ events until either processing is finished or an error condition occurs.
    increase security by default. To enable processing of external entities,
    pass a custom parser instance in::
 
-      from xml.dom.pulldom import parse
-      from xml.sax import make_parser
-      from xml.sax.handler import feature_external_ges
+      kutoka xml.dom.pulldom agiza parse
+      kutoka xml.sax agiza make_parser
+      kutoka xml.sax.handler agiza feature_external_ges
 
       parser = make_parser()
       parser.setFeature(feature_external_ges, True)
@@ -42,7 +42,7 @@ events until either processing is finished or an error condition occurs.
 
 Example::
 
-   from xml.dom import pulldom
+   kutoka xml.dom agiza pulldom
 
    doc = pulldom.parse('sales_items.xml')
    for event, node in doc:
@@ -77,17 +77,17 @@ and switch to DOM-related processing.
 
 .. class:: PullDom(documentFactory=None)
 
-   Subclass of :class:`xml.sax.handler.ContentHandler`.
+   Subkundi of :class:`xml.sax.handler.ContentHandler`.
 
 
 .. class:: SAX2DOM(documentFactory=None)
 
-   Subclass of :class:`xml.sax.handler.ContentHandler`.
+   Subkundi of :class:`xml.sax.handler.ContentHandler`.
 
 
 .. function:: parse(stream_or_string, parser=None, bufsize=None)
 
-   Return a :class:`DOMEventStream` from the given input. *stream_or_string* may be
+   Return a :class:`DOMEventStream` kutoka the given input. *stream_or_string* may be
    either a file name, or a file-like object. *parser*, if given, must be an
    :class:`~xml.sax.xmlreader.XMLReader` object. This function will change the
    document handler of the
@@ -131,7 +131,7 @@ DOMEventStream Objects
 
       Expands all children of *node* into *node*. Example::
 
-          from xml.dom import pulldom
+          kutoka xml.dom agiza pulldom
 
           xml = '<html><title>Foo</title> <p>Some text <div>and more</div></p> </html>'
           doc = pulldom.parseString(xml)

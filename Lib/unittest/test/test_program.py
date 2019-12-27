@@ -8,43 +8,43 @@ agiza unittest
 agiza unittest.test
 
 
-class Test_TestProgram(unittest.TestCase):
+kundi Test_TestProgram(unittest.TestCase):
 
-    def test_discovery_from_dotted_path(self):
+    eleza test_discovery_kutoka_dotted_path(self):
         loader = unittest.TestLoader()
 
         tests = [self]
         expectedPath = os.path.abspath(os.path.dirname(unittest.test.__file__))
 
         self.wasRun = False
-        def _find_tests(start_dir, pattern):
+        eleza _find_tests(start_dir, pattern):
             self.wasRun = True
             self.assertEqual(start_dir, expectedPath)
-            return tests
+            rudisha tests
         loader._find_tests = _find_tests
         suite = loader.discover('unittest.test')
         self.assertTrue(self.wasRun)
         self.assertEqual(suite._tests, tests)
 
     # Horrible white box test
-    def testNoExit(self):
+    eleza testNoExit(self):
         result = object()
         test = object()
 
-        class FakeRunner(object):
-            def run(self, test):
+        kundi FakeRunner(object):
+            eleza run(self, test):
                 self.test = test
-                return result
+                rudisha result
 
         runner = FakeRunner()
 
         oldParseArgs = unittest.TestProgram.parseArgs
-        def restoreParseArgs():
+        eleza restoreParseArgs():
             unittest.TestProgram.parseArgs = oldParseArgs
         unittest.TestProgram.parseArgs = lambda *args: None
         self.addCleanup(restoreParseArgs)
 
-        def removeTest():
+        eleza removeTest():
             del unittest.TestProgram.test
         unittest.TestProgram.test = test
         self.addCleanup(removeTest)
@@ -55,27 +55,27 @@ class Test_TestProgram(unittest.TestCase):
         self.assertEqual(runner.test, test)
         self.assertEqual(program.verbosity, 2)
 
-    class FooBar(unittest.TestCase):
-        def testPass(self):
+    kundi FooBar(unittest.TestCase):
+        eleza testPass(self):
             assert True
-        def testFail(self):
+        eleza testFail(self):
             assert False
 
-    class FooBarLoader(unittest.TestLoader):
+    kundi FooBarLoader(unittest.TestLoader):
         """Test loader that returns a suite containing FooBar."""
-        def loadTestsFromModule(self, module):
-            return self.suiteClass(
+        eleza loadTestsFromModule(self, module):
+            rudisha self.suiteClass(
                 [self.loadTestsFromTestCase(Test_TestProgram.FooBar)])
 
-        def loadTestsFromNames(self, names, module):
-            return self.suiteClass(
+        eleza loadTestsFromNames(self, names, module):
+            rudisha self.suiteClass(
                 [self.loadTestsFromTestCase(Test_TestProgram.FooBar)])
 
-    def test_defaultTest_with_string(self):
-        class FakeRunner(object):
-            def run(self, test):
+    eleza test_defaultTest_with_string(self):
+        kundi FakeRunner(object):
+            eleza run(self, test):
                 self.test = test
-                return True
+                rudisha True
 
         old_argv = sys.argv
         sys.argv = ['faketest']
@@ -86,11 +86,11 @@ class Test_TestProgram(unittest.TestCase):
         sys.argv = old_argv
         self.assertEqual(('unittest.test',), program.testNames)
 
-    def test_defaultTest_with_iterable(self):
-        class FakeRunner(object):
-            def run(self, test):
+    eleza test_defaultTest_with_iterable(self):
+        kundi FakeRunner(object):
+            eleza run(self, test):
                 self.test = test
-                return True
+                rudisha True
 
         old_argv = sys.argv
         sys.argv = ['faketest']
@@ -103,7 +103,7 @@ class Test_TestProgram(unittest.TestCase):
         self.assertEqual(['unittest.test', 'unittest.test2'],
                           program.testNames)
 
-    def test_NonExit(self):
+    eleza test_NonExit(self):
         program = unittest.main(exit=False,
                                 argv=["foobar"],
                                 testRunner=unittest.TextTestRunner(stream=io.StringIO()),
@@ -111,7 +111,7 @@ class Test_TestProgram(unittest.TestCase):
         self.assertTrue(hasattr(program, 'result'))
 
 
-    def test_Exit(self):
+    eleza test_Exit(self):
         self.assertRaises(
             SystemExit,
             unittest.main,
@@ -121,7 +121,7 @@ class Test_TestProgram(unittest.TestCase):
             testLoader=self.FooBarLoader())
 
 
-    def test_ExitAsDefault(self):
+    eleza test_ExitAsDefault(self):
         self.assertRaises(
             SystemExit,
             unittest.main,
@@ -130,7 +130,7 @@ class Test_TestProgram(unittest.TestCase):
             testLoader=self.FooBarLoader())
 
 
-class InitialisableProgram(unittest.TestProgram):
+kundi InitialisableProgram(unittest.TestProgram):
     exit = False
     result = None
     verbosity = 1
@@ -141,37 +141,37 @@ class InitialisableProgram(unittest.TestProgram):
     module = '__main__'
     progName = 'test'
     test = 'test'
-    def __init__(self, *args):
+    eleza __init__(self, *args):
         pass
 
 RESULT = object()
 
-class FakeRunner(object):
+kundi FakeRunner(object):
     initArgs = None
     test = None
     raiseError = 0
 
-    def __init__(self, **kwargs):
+    eleza __init__(self, **kwargs):
         FakeRunner.initArgs = kwargs
-        if FakeRunner.raiseError:
+        ikiwa FakeRunner.raiseError:
             FakeRunner.raiseError -= 1
             raise TypeError
 
-    def run(self, test):
+    eleza run(self, test):
         FakeRunner.test = test
-        return RESULT
+        rudisha RESULT
 
 
-class TestCommandLineArgs(unittest.TestCase):
+kundi TestCommandLineArgs(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.program = InitialisableProgram()
         self.program.createTests = lambda: None
         FakeRunner.initArgs = None
         FakeRunner.test = None
         FakeRunner.raiseError = 0
 
-    def testVerbosity(self):
+    eleza testVerbosity(self):
         program = self.program
 
         for opt in '-q', '--quiet':
@@ -184,11 +184,11 @@ class TestCommandLineArgs(unittest.TestCase):
             program.parseArgs([None, opt])
             self.assertEqual(program.verbosity, 2)
 
-    def testBufferCatchFailfast(self):
+    eleza testBufferCatchFailfast(self):
         program = self.program
         for arg, attr in (('buffer', 'buffer'), ('failfast', 'failfast'),
                       ('catch', 'catchbreak')):
-            if attr == 'catch' and not hasInstallHandler:
+            ikiwa attr == 'catch' and not hasInstallHandler:
                 continue
 
             setattr(program, attr, None)
@@ -224,12 +224,12 @@ class TestCommandLineArgs(unittest.TestCase):
                     program.parseArgs([None, opt])
                 self.assertEqual(cm.exception.args, (2,))
 
-    def testWarning(self):
+    eleza testWarning(self):
         """Test the warnings argument"""
         # see #10535
-        class FakeTP(unittest.TestProgram):
-            def parseArgs(self, *args, **kw): pass
-            def runTests(self, *args, **kw): pass
+        kundi FakeTP(unittest.TestProgram):
+            eleza parseArgs(self, *args, **kw): pass
+            eleza runTests(self, *args, **kw): pass
         warnoptions = sys.warnoptions[:]
         try:
             sys.warnoptions[:] = []
@@ -245,7 +245,7 @@ class TestCommandLineArgs(unittest.TestCase):
         finally:
             sys.warnoptions[:] = warnoptions
 
-    def testRunTestsRunnerClass(self):
+    eleza testRunTestsRunnerClass(self):
         program = self.program
 
         program.testRunner = FakeRunner
@@ -264,7 +264,7 @@ class TestCommandLineArgs(unittest.TestCase):
         self.assertEqual(FakeRunner.test, 'test')
         self.assertIs(program.result, RESULT)
 
-    def testRunTestsRunnerInstance(self):
+    eleza testRunTestsRunnerInstance(self):
         program = self.program
 
         program.testRunner = FakeRunner()
@@ -278,7 +278,7 @@ class TestCommandLineArgs(unittest.TestCase):
         self.assertEqual(FakeRunner.test, 'test')
         self.assertIs(program.result, RESULT)
 
-    def test_locals(self):
+    eleza test_locals(self):
         program = self.program
 
         program.testRunner = FakeRunner
@@ -291,7 +291,7 @@ class TestCommandLineArgs(unittest.TestCase):
                                                'verbosity': 1,
                                                'warnings': None})
 
-    def testRunTestsOldRunnerClass(self):
+    eleza testRunTestsOldRunnerClass(self):
         program = self.program
 
         # Two TypeErrors are needed to fall all the way back to old-style
@@ -311,15 +311,15 @@ class TestCommandLineArgs(unittest.TestCase):
         self.assertEqual(FakeRunner.test, 'test')
         self.assertIs(program.result, RESULT)
 
-    def testCatchBreakInstallsHandler(self):
+    eleza testCatchBreakInstallsHandler(self):
         module = sys.modules['unittest.main']
         original = module.installHandler
-        def restore():
+        eleza restore():
             module.installHandler = original
         self.addCleanup(restore)
 
         self.installed = False
-        def fakeInstallHandler():
+        eleza fakeInstallHandler():
             self.installed = True
         module.installHandler = fakeInstallHandler
 
@@ -331,17 +331,17 @@ class TestCommandLineArgs(unittest.TestCase):
         program.runTests()
         self.assertTrue(self.installed)
 
-    def _patch_isfile(self, names, exists=True):
-        def isfile(path):
-            return path in names
+    eleza _patch_isfile(self, names, exists=True):
+        eleza isfile(path):
+            rudisha path in names
         original = os.path.isfile
         os.path.isfile = isfile
-        def restore():
+        eleza restore():
             os.path.isfile = original
         self.addCleanup(restore)
 
 
-    def testParseArgsFileNames(self):
+    eleza testParseArgsFileNames(self):
         # running tests with filenames instead of module names
         program = self.program
         argv = ['progname', 'foo.py', 'bar.Py', 'baz.PY', 'wing.txt']
@@ -356,7 +356,7 @@ class TestCommandLineArgs(unittest.TestCase):
         self.assertEqual(program.testNames, expected)
 
 
-    def testParseArgsFilePaths(self):
+    eleza testParseArgsFilePaths(self):
         program = self.program
         argv = ['progname', 'foo/bar/baz.py', 'green\\red.py']
         self._patch_isfile(argv)
@@ -368,7 +368,7 @@ class TestCommandLineArgs(unittest.TestCase):
         self.assertEqual(program.testNames, expected)
 
 
-    def testParseArgsNonExistentFiles(self):
+    eleza testParseArgsNonExistentFiles(self):
         program = self.program
         argv = ['progname', 'foo/bar/baz.py', 'green\\red.py']
         self._patch_isfile([])
@@ -378,11 +378,11 @@ class TestCommandLineArgs(unittest.TestCase):
 
         self.assertEqual(program.testNames, argv[1:])
 
-    def testParseArgsAbsolutePathsThatCanBeConverted(self):
+    eleza testParseArgsAbsolutePathsThatCanBeConverted(self):
         cur_dir = os.getcwd()
         program = self.program
-        def _join(name):
-            return os.path.join(cur_dir, name)
+        eleza _join(name):
+            rudisha os.path.join(cur_dir, name)
         argv = ['progname', _join('foo/bar/baz.py'), _join('green\\red.py')]
         self._patch_isfile(argv)
 
@@ -392,7 +392,7 @@ class TestCommandLineArgs(unittest.TestCase):
         expected = ['foo.bar.baz', 'green.red']
         self.assertEqual(program.testNames, expected)
 
-    def testParseArgsAbsolutePathsThatCannotBeConverted(self):
+    eleza testParseArgsAbsolutePathsThatCannotBeConverted(self):
         program = self.program
         # even on Windows '/...' is considered absolute by os.path.abspath
         argv = ['progname', '/foo/bar/baz.py', '/green/red.py']
@@ -410,7 +410,7 @@ class TestCommandLineArgs(unittest.TestCase):
         # for invalid filenames should we raise a useful error rather than
         # leaving the current error message (agiza of filename fails) in place?
 
-    def testParseArgsSelectedTestNames(self):
+    eleza testParseArgsSelectedTestNames(self):
         program = self.program
         argv = ['progname', '-k', 'foo', '-k', 'bar', '-k', '*pat*']
 
@@ -419,13 +419,13 @@ class TestCommandLineArgs(unittest.TestCase):
 
         self.assertEqual(program.testNamePatterns, ['*foo*', '*bar*', '*pat*'])
 
-    def testSelectedTestNamesFunctionalTest(self):
-        def run_unittest(args):
+    eleza testSelectedTestNamesFunctionalTest(self):
+        eleza run_unittest(args):
             p = subprocess.Popen([sys.executable, '-m', 'unittest'] + args,
                 stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, cwd=os.path.dirname(__file__))
             with p:
                 _, stderr = p.communicate()
-            return stderr.decode()
+            rudisha stderr.decode()
 
         t = '_test_warnings'
         self.assertIn('Ran 7 tests', run_unittest([t]))
@@ -438,5 +438,5 @@ class TestCommandLineArgs(unittest.TestCase):
         self.assertIn('Ran 1 test', run_unittest(['-k', '*test_warnings.*warning*', t]))
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

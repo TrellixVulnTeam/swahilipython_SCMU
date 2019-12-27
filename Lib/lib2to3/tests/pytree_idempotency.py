@@ -23,32 +23,32 @@ kutoka ..pgen2 agiza driver
 
 logging.basicConfig()
 
-def main():
+eleza main():
     gr = driver.load_grammar("Grammar.txt")
     dr = driver.Driver(gr, convert=pytree.convert)
 
     fn = "example.py"
     tree = dr.parse_file(fn, debug=True)
-    if not diff(fn, tree):
-        print("No diffs.")
-    if not sys.argv[1:]:
-        return # Pass a dummy argument to run the complete test suite below
+    ikiwa not diff(fn, tree):
+        andika("No diffs.")
+    ikiwa not sys.argv[1:]:
+        rudisha # Pass a dummy argument to run the complete test suite below
 
     problems = []
 
     # Process every imported module
     for name in sys.modules:
         mod = sys.modules[name]
-        if mod is None or not hasattr(mod, "__file__"):
+        ikiwa mod is None or not hasattr(mod, "__file__"):
             continue
         fn = mod.__file__
-        if fn.endswith(".pyc"):
+        ikiwa fn.endswith(".pyc"):
             fn = fn[:-1]
-        if not fn.endswith(".py"):
+        ikiwa not fn.endswith(".py"):
             continue
-        print("Parsing", fn, file=sys.stderr)
+        andika("Parsing", fn, file=sys.stderr)
         tree = dr.parse_file(fn, debug=True)
-        if diff(fn, tree):
+        ikiwa diff(fn, tree):
             problems.append(fn)
 
     # Process every single module on sys.path (but not in packages)
@@ -57,38 +57,38 @@ def main():
             names = os.listdir(dir)
         except OSError:
             continue
-        print("Scanning", dir, "...", file=sys.stderr)
+        andika("Scanning", dir, "...", file=sys.stderr)
         for name in names:
-            if not name.endswith(".py"):
+            ikiwa not name.endswith(".py"):
                 continue
-            print("Parsing", name, file=sys.stderr)
+            andika("Parsing", name, file=sys.stderr)
             fn = os.path.join(dir, name)
             try:
                 tree = dr.parse_file(fn, debug=True)
             except pgen2.parse.ParseError as err:
-                print("ParseError:", err)
+                andika("ParseError:", err)
             else:
-                if diff(fn, tree):
+                ikiwa diff(fn, tree):
                     problems.append(fn)
 
     # Show summary of problem files
-    if not problems:
-        print("No problems.  Congratulations!")
+    ikiwa not problems:
+        andika("No problems.  Congratulations!")
     else:
-        print("Problems in following files:")
+        andika("Problems in following files:")
         for fn in problems:
-            print("***", fn)
+            andika("***", fn)
 
-def diff(fn, tree):
+eleza diff(fn, tree):
     f = open("@", "w")
     try:
         f.write(str(tree))
     finally:
         f.close()
     try:
-        return os.system("diff -u %s @" % fn)
+        rudisha os.system("diff -u %s @" % fn)
     finally:
         os.remove("@")
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     main()

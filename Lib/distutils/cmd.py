@@ -209,7 +209,7 @@ class Command:
         if val is None:
             setattr(self, option, default)
             return default
-        elif not isinstance(val, str):
+        lasivyo not isinstance(val, str):
             raise DistutilsOptionError("'%s' must be a %s (got `%s`)"
                                        % (option, what, val))
         return val
@@ -229,7 +229,7 @@ class Command:
         val = getattr(self, option)
         if val is None:
             return
-        elif isinstance(val, str):
+        lasivyo isinstance(val, str):
             setattr(self, option, re.split(r',\s*|\s+', val))
         else:
             if isinstance(val, list):
@@ -386,7 +386,7 @@ class Command:
         # Allow 'infiles' to be a single string
         if isinstance(infiles, str):
             infiles = (infiles,)
-        elif not isinstance(infiles, (list, tuple)):
+        lasivyo not isinstance(infiles, (list, tuple)):
             raise TypeError(
                   "'infiles' must be a string, or a list or tuple of strings")
 

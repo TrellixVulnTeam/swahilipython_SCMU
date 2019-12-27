@@ -17,7 +17,7 @@ Function unified_diff(a, b):
     For two lists of strings, return a delta in unified diff format.
 
 Class SequenceMatcher:
-    A flexible class for comparing pairs of sequences of any type.
+    A flexible kundi for comparing pairs of sequences of any type.
 
 Class Differ:
     For producing human-readable deltas kutoka sequences of lines of text.
@@ -40,10 +40,10 @@ def _calculate_ratio(matches, length):
         return 2.0 * matches / length
     return 1.0
 
-class SequenceMatcher:
+kundi SequenceMatcher:
 
     """
-    SequenceMatcher is a flexible class for comparing pairs of sequences of
+    SequenceMatcher is a flexible kundi for comparing pairs of sequences of
     any type, so long as the sequence elements are hashable.  The basic
     algorithm predates, and is a little fancier than, an algorithm
     published in the late 1980's by Ratcliff and Obershelp under the
@@ -103,7 +103,7 @@ class SequenceMatcher:
     insert a[8:8] b[8:17]
      equal a[8:29] b[17:38]
 
-    See the Differ class for a fancy human-friendly file differencer, which
+    See the Differ kundi for a fancy human-friendly file differencer, which
     uses SequenceMatcher both to compare sequences of lines, and to compare
     sequences of characters within similar (near-matching) lines.
 
@@ -556,9 +556,9 @@ class SequenceMatcher:
             tag = ''
             if i < ai and j < bj:
                 tag = 'replace'
-            elif i < ai:
+            lasivyo i < ai:
                 tag = 'delete'
-            elif j < bj:
+            lasivyo j < bj:
                 tag = 'insert'
             if tag:
                 answer.append( (tag, i, ai, j, bj) )
@@ -743,9 +743,9 @@ def _keep_original_ws(s, tag_s):
 
 
 
-class Differ:
+kundi Differ:
     r"""
-    Differ is a class for comparing sequences of lines of text, and
+    Differ is a kundi for comparing sequences of lines of text, and
     producing human-readable differences or deltas.  Differ uses
     SequenceMatcher both to compare sequences of lines, and to compare
     sequences of characters within similar (near-matching) lines.
@@ -847,7 +847,7 @@ class Differ:
           and return true iff the string is junk. The module-level function
           `IS_LINE_JUNK` may be used to filter out lines without visible
           characters, except for at most one splat ('#').  It is recommended
-          to leave linejunk None; the underlying SequenceMatcher class has
+          to leave linejunk None; the underlying SequenceMatcher kundi has
           an adaptive notion of "noise" lines that's better than any static
           definition the author has ever been able to craft.
 
@@ -890,11 +890,11 @@ class Differ:
         for tag, alo, ahi, blo, bhi in cruncher.get_opcodes():
             if tag == 'replace':
                 g = self._fancy_replace(a, alo, ahi, b, blo, bhi)
-            elif tag == 'delete':
+            lasivyo tag == 'delete':
                 g = self._dump('-', a, alo, ahi)
-            elif tag == 'insert':
+            lasivyo tag == 'insert':
                 g = self._dump('+', b, blo, bhi)
-            elif tag == 'equal':
+            lasivyo tag == 'equal':
                 g = self._dump(' ', a, alo, ahi)
             else:
                 raise ValueError('unknown tag %r' % (tag,))
@@ -997,11 +997,11 @@ class Differ:
                 if tag == 'replace':
                     atags += '^' * la
                     btags += '^' * lb
-                elif tag == 'delete':
+                lasivyo tag == 'delete':
                     atags += '-' * la
-                elif tag == 'insert':
+                lasivyo tag == 'insert':
                     btags += '+' * lb
-                elif tag == 'equal':
+                lasivyo tag == 'equal':
                     atags += ' ' * la
                     btags += ' ' * lb
                 else:
@@ -1021,7 +1021,7 @@ class Differ:
                 g = self._fancy_replace(a, alo, ahi, b, blo, bhi)
             else:
                 g = self._dump('-', a, alo, ahi)
-        elif blo < bhi:
+        lasivyo blo < bhi:
             g = self._dump('+', b, blo, bhi)
 
         yield kutoka g
@@ -1122,7 +1122,7 @@ def _format_range_unified(start, stop):
         beginning -= 1        # empty ranges begin at line just before the range
     return '{},{}'.format(beginning, length)
 
-def unified_diff(a, b, fromfile='', tofile='', fromfiledate='',
+def unified_diff(a, b, kutokafile='', tofile='', kutokafiledate='',
                  tofiledate='', n=3, lineterm='\n'):
     r"""
     Compare two sequences of lines; generate the delta as a unified diff.
@@ -1142,7 +1142,7 @@ def unified_diff(a, b, fromfile='', tofile='', fromfiledate='',
 
     The unidiff format normally has a header for filenames and modification
     times.  Any or all of these may be specified using strings for
-    'fromfile', 'tofile', 'fromfiledate', and 'tofiledate'.
+    'kutokafile', 'tofile', 'kutokafiledate', and 'tofiledate'.
     The modification times are normally expressed in the ISO 8601 format.
 
     Example:
@@ -1163,14 +1163,14 @@ def unified_diff(a, b, fromfile='', tofile='', fromfiledate='',
      four
     """
 
-    _check_types(a, b, fromfile, tofile, fromfiledate, tofiledate, lineterm)
+    _check_types(a, b, kutokafile, tofile, kutokafiledate, tofiledate, lineterm)
     started = False
     for group in SequenceMatcher(None,a,b).get_grouped_opcodes(n):
         if not started:
             started = True
-            fromdate = '\t{}'.format(fromfiledate) if fromfiledate else ''
+            kutokadate = '\t{}'.format(kutokafiledate) if kutokafiledate else ''
             todate = '\t{}'.format(tofiledate) if tofiledate else ''
-            yield '--- {}{}{}'.format(fromfile, fromdate, lineterm)
+            yield '--- {}{}{}'.format(kutokafile, kutokadate, lineterm)
             yield '+++ {}{}{}'.format(tofile, todate, lineterm)
 
         first, last = group[0], group[-1]
@@ -1207,8 +1207,8 @@ def _format_range_context(start, stop):
     return '{},{}'.format(beginning, beginning + length - 1)
 
 # See http://www.unix.org/single_unix_specification/
-def context_diff(a, b, fromfile='', tofile='',
-                 fromfiledate='', tofiledate='', n=3, lineterm='\n'):
+def context_diff(a, b, kutokafile='', tofile='',
+                 kutokafiledate='', tofiledate='', n=3, lineterm='\n'):
     r"""
     Compare two sequences of lines; generate the delta as a context diff.
 
@@ -1227,7 +1227,7 @@ def context_diff(a, b, fromfile='', tofile='',
 
     The context diff format normally has a header for filenames and
     modification times.  Any or all of these may be specified using
-    strings for 'fromfile', 'tofile', 'fromfiledate', and 'tofiledate'.
+    strings for 'kutokafile', 'tofile', 'kutokafiledate', and 'tofiledate'.
     The modification times are normally expressed in the ISO 8601 format.
     If not specified, the strings default to blanks.
 
@@ -1251,15 +1251,15 @@ def context_diff(a, b, fromfile='', tofile='',
       four
     """
 
-    _check_types(a, b, fromfile, tofile, fromfiledate, tofiledate, lineterm)
+    _check_types(a, b, kutokafile, tofile, kutokafiledate, tofiledate, lineterm)
     prefix = dict(insert='+ ', delete='- ', replace='! ', equal='  ')
     started = False
     for group in SequenceMatcher(None,a,b).get_grouped_opcodes(n):
         if not started:
             started = True
-            fromdate = '\t{}'.format(fromfiledate) if fromfiledate else ''
+            kutokadate = '\t{}'.format(kutokafiledate) if kutokafiledate else ''
             todate = '\t{}'.format(tofiledate) if tofiledate else ''
-            yield '*** {}{}{}'.format(fromfile, fromdate, lineterm)
+            yield '*** {}{}{}'.format(kutokafile, kutokadate, lineterm)
             yield '--- {}{}{}'.format(tofile, todate, lineterm)
 
         first, last = group[0], group[-1]
@@ -1300,8 +1300,8 @@ def _check_types(a, b, *args):
         if not isinstance(arg, str):
             raise TypeError('all arguments must be str, not: %r' % (arg,))
 
-def diff_bytes(dfunc, a, b, fromfile=b'', tofile=b'',
-               fromfiledate=b'', tofiledate=b'', n=3, lineterm=b'\n'):
+def diff_bytes(dfunc, a, b, kutokafile=b'', tofile=b'',
+               kutokafiledate=b'', tofiledate=b'', n=3, lineterm=b'\n'):
     r"""
     Compare `a` and `b`, two sequences of lines represented as bytes rather
     than str. This is a wrapper for `dfunc`, which is typically either
@@ -1320,13 +1320,13 @@ def diff_bytes(dfunc, a, b, fromfile=b'', tofile=b'',
             raise TypeError(msg) kutoka err
     a = list(map(decode, a))
     b = list(map(decode, b))
-    fromfile = decode(fromfile)
+    kutokafile = decode(kutokafile)
     tofile = decode(tofile)
-    fromfiledate = decode(fromfiledate)
+    kutokafiledate = decode(kutokafiledate)
     tofiledate = decode(tofiledate)
     lineterm = decode(lineterm)
 
-    lines = dfunc(a, b, fromfile, tofile, fromfiledate, tofiledate, n, lineterm)
+    lines = dfunc(a, b, kutokafile, tofile, kutokafiledate, tofiledate, n, lineterm)
     for line in lines:
         yield line.encode('ascii', 'surrogateescape')
 
@@ -1339,7 +1339,7 @@ def ndiff(a, b, linejunk=None, charjunk=IS_CHARACTER_JUNK):
 
     - linejunk: A function that should accept a single string argument and
       return true iff the string is junk.  The default is None, and is
-      recommended; the underlying SequenceMatcher class has an adaptive
+      recommended; the underlying SequenceMatcher kundi has an adaptive
       notion of "noise" lines.
 
     - charjunk: A function that accepts a character (string of length
@@ -1367,13 +1367,13 @@ def ndiff(a, b, linejunk=None, charjunk=IS_CHARACTER_JUNK):
     """
     return Differ(linejunk, charjunk).compare(a, b)
 
-def _mdiff(fromlines, tolines, context=None, linejunk=None,
+def _mdiff(kutokalines, tolines, context=None, linejunk=None,
            charjunk=IS_CHARACTER_JUNK):
     r"""Returns generator yielding marked up kutoka/to side by side differences.
 
     Arguments:
-    fromlines -- list of text lines to compared to tolines
-    tolines -- list of text lines to be compared to fromlines
+    kutokalines -- list of text lines to compared to tolines
+    tolines -- list of text lines to be compared to kutokalines
     context -- number of context lines to display on each side of difference,
                if None, all kutoka/to text lines will be generated.
     linejunk -- passed on to ndiff (see ndiff documentation)
@@ -1394,7 +1394,7 @@ def _mdiff(fromlines, tolines, context=None, linejunk=None,
         either "kutoka" or "to" line contains a change, otherwise False.
 
     This function/iterator was originally developed to generate side by side
-    file difference for making HTML pages (see HtmlDiff class for example
+    file difference for making HTML pages (see HtmlDiff kundi for example
     usage).
 
     Note, this function utilizes the ndiff function to generate the side by
@@ -1407,7 +1407,7 @@ def _mdiff(fromlines, tolines, context=None, linejunk=None,
     change_re = re.compile(r'(\++|\-+|\^+)')
 
     # create the difference iterator to generate the differences
-    diff_lines_iterator = ndiff(fromlines,tolines,linejunk,charjunk)
+    diff_lines_iterator = ndiff(kutokalines,tolines,linejunk,charjunk)
 
     def _make_line(lines, format_key, side, num_lines=[0,0]):
         """Returns line of text with user's change markup and line formatting.
@@ -1493,50 +1493,50 @@ def _mdiff(fromlines, tolines, context=None, linejunk=None,
                 # corresponding add/delete lines get a matching blank line so
                 # all line pairs get yielded at the next level.
                 num_blanks_to_yield = num_blanks_pending
-            elif s.startswith('-?+?'):
+            lasivyo s.startswith('-?+?'):
                 # simple intraline change
                 yield _make_line(lines,'?',0), _make_line(lines,'?',1), True
                 continue
-            elif s.startswith('--++'):
+            lasivyo s.startswith('--++'):
                 # in delete block, add block coming: we do NOT want to get
                 # caught up on blank lines yet, just process the delete line
                 num_blanks_pending -= 1
                 yield _make_line(lines,'-',0), None, True
                 continue
-            elif s.startswith(('--?+', '--+', '- ')):
+            lasivyo s.startswith(('--?+', '--+', '- ')):
                 # in delete block and see an intraline change or unchanged line
                 # coming: yield the delete line and then blanks
-                from_line,to_line = _make_line(lines,'-',0), None
+                kutoka_line,to_line = _make_line(lines,'-',0), None
                 num_blanks_to_yield,num_blanks_pending = num_blanks_pending-1,0
-            elif s.startswith('-+?'):
+            lasivyo s.startswith('-+?'):
                 # intraline change
                 yield _make_line(lines,None,0), _make_line(lines,'?',1), True
                 continue
-            elif s.startswith('-?+'):
+            lasivyo s.startswith('-?+'):
                 # intraline change
                 yield _make_line(lines,'?',0), _make_line(lines,None,1), True
                 continue
-            elif s.startswith('-'):
+            lasivyo s.startswith('-'):
                 # delete FROM line
                 num_blanks_pending -= 1
                 yield _make_line(lines,'-',0), None, True
                 continue
-            elif s.startswith('+--'):
+            lasivyo s.startswith('+--'):
                 # in add block, delete block coming: we do NOT want to get
                 # caught up on blank lines yet, just process the add line
                 num_blanks_pending += 1
                 yield None, _make_line(lines,'+',1), True
                 continue
-            elif s.startswith(('+ ', '+-')):
+            lasivyo s.startswith(('+ ', '+-')):
                 # will be leaving an add block: yield blanks then add line
-                from_line, to_line = None, _make_line(lines,'+',1)
+                kutoka_line, to_line = None, _make_line(lines,'+',1)
                 num_blanks_to_yield,num_blanks_pending = num_blanks_pending+1,0
-            elif s.startswith('+'):
+            lasivyo s.startswith('+'):
                 # inside an add block, yield the add line
                 num_blanks_pending += 1
                 yield None, _make_line(lines,'+',1), True
                 continue
-            elif s.startswith(' '):
+            lasivyo s.startswith(' '):
                 # unchanged text, yield it to both sides
                 yield _make_line(lines[:],None,0),_make_line(lines,None,1),False
                 continue
@@ -1551,7 +1551,7 @@ def _mdiff(fromlines, tolines, context=None, linejunk=None,
             if s.startswith('X'):
                 return
             else:
-                yield from_line,to_line,True
+                yield kutoka_line,to_line,True
 
     def _line_pair_iterator():
         """Yields kutoka/to lines of text with a change indication.
@@ -1567,22 +1567,22 @@ def _mdiff(fromlines, tolines, context=None, linejunk=None,
         is defined) does not need to be of module scope.
         """
         line_iterator = _line_iterator()
-        fromlines,tolines=[],[]
+        kutokalines,tolines=[],[]
         while True:
             # Collecting lines of text until we have a kutoka/to pair
-            while (len(fromlines)==0 or len(tolines)==0):
+            while (len(kutokalines)==0 or len(tolines)==0):
                 try:
-                    from_line, to_line, found_diff = next(line_iterator)
+                    kutoka_line, to_line, found_diff = next(line_iterator)
                 except StopIteration:
                     return
-                if from_line is not None:
-                    fromlines.append((from_line,found_diff))
+                if kutoka_line is not None:
+                    kutokalines.append((kutoka_line,found_diff))
                 if to_line is not None:
                     tolines.append((to_line,found_diff))
             # Once we have a pair, remove them kutoka the collection and yield it
-            from_line, fromDiff = fromlines.pop(0)
+            kutoka_line, kutokaDiff = kutokalines.pop(0)
             to_line, to_diff = tolines.pop(0)
-            yield (from_line,to_line,fromDiff or to_diff)
+            yield (kutoka_line,to_line,kutokaDiff or to_diff)
 
     # Handle case where user does not want context differencing, just yield
     # them up without doing anything else with them.
@@ -1602,11 +1602,11 @@ def _mdiff(fromlines, tolines, context=None, linejunk=None,
             found_diff = False
             while(found_diff is False):
                 try:
-                    from_line, to_line, found_diff = next(line_pair_iterator)
+                    kutoka_line, to_line, found_diff = next(line_pair_iterator)
                 except StopIteration:
                     return
                 i = index % context
-                contextLines[i] = (from_line, to_line, found_diff)
+                contextLines[i] = (kutoka_line, to_line, found_diff)
                 index += 1
             # Yield lines that we have collected so far, but first yield
             # the user's separator.
@@ -1625,13 +1625,13 @@ def _mdiff(fromlines, tolines, context=None, linejunk=None,
             lines_to_write = context-1
             try:
                 while(lines_to_write):
-                    from_line, to_line, found_diff = next(line_pair_iterator)
+                    kutoka_line, to_line, found_diff = next(line_pair_iterator)
                     # If another change within the context, extend the context
                     if found_diff:
                         lines_to_write = context-1
                     else:
                         lines_to_write -= 1
-                    yield from_line, to_line, found_diff
+                    yield kutoka_line, to_line, found_diff
             except StopIteration:
                 # Catch exception kutoka next() and return normally
                 return
@@ -1693,10 +1693,10 @@ _legend = """
                   </table></td> </tr>
     </table>"""
 
-class HtmlDiff(object):
+kundi HtmlDiff(object):
     """For producing HTML side by side comparison with change highlights.
 
-    This class can be used to create an HTML table (or a complete HTML file
+    This kundi can be used to create an HTML table (or a complete HTML file
     containing the table) showing a side by side, line by line comparison
     of text with inter-line and intra-line change highlights.  The table can
     be generated in either full or contextual difference mode.
@@ -1732,14 +1732,14 @@ class HtmlDiff(object):
         self._linejunk = linejunk
         self._charjunk = charjunk
 
-    def make_file(self, fromlines, tolines, fromdesc='', todesc='',
+    def make_file(self, kutokalines, tolines, kutokadesc='', todesc='',
                   context=False, numlines=5, *, charset='utf-8'):
         """Returns HTML file of side by side comparison with change highlights
 
         Arguments:
-        fromlines -- list of "kutoka" lines
+        kutokalines -- list of "kutoka" lines
         tolines -- list of "to" lines
-        fromdesc -- "kutoka" file column header string
+        kutokadesc -- "kutoka" file column header string
         todesc -- "to" file column header string
         context -- set to True for contextual differences (defaults to False
             which shows full differences).
@@ -1754,12 +1754,12 @@ class HtmlDiff(object):
         return (self._file_template % dict(
             styles=self._styles,
             legend=self._legend,
-            table=self.make_table(fromlines, tolines, fromdesc, todesc,
+            table=self.make_table(kutokalines, tolines, kutokadesc, todesc,
                                   context=context, numlines=numlines),
             charset=charset
         )).encode(charset, 'xmlcharrefreplace').decode(charset)
 
-    def _tab_newline_replace(self,fromlines,tolines):
+    def _tab_newline_replace(self,kutokalines,tolines):
         """Returns kutoka/to line lists with tabs expanded and newlines removed.
 
         Instead of tab characters being replaced by the number of spaces
@@ -1778,9 +1778,9 @@ class HtmlDiff(object):
             # (we'll replace them with markup after we do differencing)
             line = line.replace(' ','\t')
             return line.replace('\0',' ').rstrip('\n')
-        fromlines = [expand_tabs(line) for line in fromlines]
+        kutokalines = [expand_tabs(line) for line in kutokalines]
         tolines = [expand_tabs(line) for line in tolines]
-        return fromlines,tolines
+        return kutokalines,tolines
 
     def _split_line(self,data_list,line_num,text):
         """Builds list of text lines by splitting text lines at wrap point
@@ -1813,7 +1813,7 @@ class HtmlDiff(object):
                 i += 1
                 mark = text[i]
                 i += 1
-            elif text[i] == '\1':
+            lasivyo text[i] == '\1':
                 i += 1
                 mark = ''
             else:
@@ -1841,29 +1841,29 @@ class HtmlDiff(object):
         """Returns iterator that splits (wraps) mdiff text lines"""
 
         # pull kutoka/to data and flags kutoka mdiff iterator
-        for fromdata,todata,flag in diffs:
+        for kutokadata,todata,flag in diffs:
             # check for context separators and pass them through
             if flag is None:
-                yield fromdata,todata,flag
+                yield kutokadata,todata,flag
                 continue
-            (fromline,fromtext),(toline,totext) = fromdata,todata
+            (kutokaline,kutokatext),(toline,totext) = kutokadata,todata
             # for each kutoka/to line split it at the wrap column to form
             # list of text lines.
-            fromlist,tolist = [],[]
-            self._split_line(fromlist,fromline,fromtext)
+            kutokalist,tolist = [],[]
+            self._split_line(kutokalist,kutokaline,kutokatext)
             self._split_line(tolist,toline,totext)
             # yield kutoka/to line in pairs inserting blank lines as
             # necessary when one side has more wrapped lines
-            while fromlist or tolist:
-                if fromlist:
-                    fromdata = fromlist.pop(0)
+            while kutokalist or tolist:
+                if kutokalist:
+                    kutokadata = kutokalist.pop(0)
                 else:
-                    fromdata = ('',' ')
+                    kutokadata = ('',' ')
                 if tolist:
                     todata = tolist.pop(0)
                 else:
                     todata = ('',' ')
-                yield fromdata,todata,flag
+                yield kutokadata,todata,flag
 
     def _collect_lines(self,diffs):
         """Collects mdiff output into separate lists
@@ -1872,19 +1872,19 @@ class HtmlDiff(object):
         into a single line of text with HTML markup.
         """
 
-        fromlist,tolist,flaglist = [],[],[]
+        kutokalist,tolist,flaglist = [],[],[]
         # pull kutoka/to data and flags kutoka mdiff style iterator
-        for fromdata,todata,flag in diffs:
+        for kutokadata,todata,flag in diffs:
             try:
                 # store HTML markup of the lines into the lists
-                fromlist.append(self._format_line(0,flag,*fromdata))
+                kutokalist.append(self._format_line(0,flag,*kutokadata))
                 tolist.append(self._format_line(1,flag,*todata))
             except TypeError:
                 # exceptions occur for lines where context separators go
-                fromlist.append(None)
+                kutokalist.append(None)
                 tolist.append(None)
             flaglist.append(flag)
-        return fromlist,tolist,flaglist
+        return kutokalist,tolist,flaglist
 
     def _format_line(self,side,flag,linenum,text):
         """Returns HTML markup of "kutoka" / "to" text lines
@@ -1914,13 +1914,13 @@ class HtmlDiff(object):
 
         # Generate a unique anchor prefix so multiple tables
         # can exist on the same HTML page without conflicts.
-        fromprefix = "kutoka%d_" % HtmlDiff._default_prefix
+        kutokaprefix = "kutoka%d_" % HtmlDiff._default_prefix
         toprefix = "to%d_" % HtmlDiff._default_prefix
         HtmlDiff._default_prefix += 1
         # store prefixes so line format method has access
-        self._prefix = [fromprefix,toprefix]
+        self._prefix = [kutokaprefix,toprefix]
 
-    def _convert_flags(self,fromlist,tolist,flaglist,context,numlines):
+    def _convert_flags(self,kutokalist,tolist,flaglist,context,numlines):
         """Makes list of "next" links"""
 
         # all anchor names will be generated using the unique "to" prefix
@@ -1955,26 +1955,26 @@ class HtmlDiff(object):
             next_href = ['']
             last = 0
             if context:
-                fromlist = ['<td></td><td>&nbsp;No Differences Found&nbsp;</td>']
-                tolist = fromlist
+                kutokalist = ['<td></td><td>&nbsp;No Differences Found&nbsp;</td>']
+                tolist = kutokalist
             else:
-                fromlist = tolist = ['<td></td><td>&nbsp;Empty File&nbsp;</td>']
+                kutokalist = tolist = ['<td></td><td>&nbsp;Empty File&nbsp;</td>']
         # if not a change on first line, drop a link
         if not flaglist[0]:
             next_href[0] = '<a href="#difflib_chg_%s_0">f</a>' % toprefix
         # redo the last link to link to the top
         next_href[last] = '<a href="#difflib_chg_%s_top">t</a>' % (toprefix)
 
-        return fromlist,tolist,flaglist,next_href,next_id
+        return kutokalist,tolist,flaglist,next_href,next_id
 
-    def make_table(self,fromlines,tolines,fromdesc='',todesc='',context=False,
+    def make_table(self,kutokalines,tolines,kutokadesc='',todesc='',context=False,
                    numlines=5):
         """Returns HTML table of side by side comparison with change highlights
 
         Arguments:
-        fromlines -- list of "kutoka" lines
+        kutokalines -- list of "kutoka" lines
         tolines -- list of "to" lines
-        fromdesc -- "kutoka" file column header string
+        kutokadesc -- "kutoka" file column header string
         todesc -- "to" file column header string
         context -- set to True for contextual differences (defaults to False
             which shows full differences).
@@ -1991,14 +1991,14 @@ class HtmlDiff(object):
 
         # change tabs to spaces before it gets more difficult after we insert
         # markup
-        fromlines,tolines = self._tab_newline_replace(fromlines,tolines)
+        kutokalines,tolines = self._tab_newline_replace(kutokalines,tolines)
 
         # create diffs iterator which generates side by side kutoka/to data
         if context:
             context_lines = numlines
         else:
             context_lines = None
-        diffs = _mdiff(fromlines,tolines,context_lines,linejunk=self._linejunk,
+        diffs = _mdiff(kutokalines,tolines,context_lines,linejunk=self._linejunk,
                       charjunk=self._charjunk)
 
         # set up iterator to wrap lines that exceed desired width
@@ -2006,11 +2006,11 @@ class HtmlDiff(object):
             diffs = self._line_wrapper(diffs)
 
         # collect up kutoka/to lines and flags into lists (also format the lines)
-        fromlist,tolist,flaglist = self._collect_lines(diffs)
+        kutokalist,tolist,flaglist = self._collect_lines(diffs)
 
         # process change flags, generating middle column of next anchors/links
-        fromlist,tolist,flaglist,next_href,next_id = self._convert_flags(
-            fromlist,tolist,flaglist,context,numlines)
+        kutokalist,tolist,flaglist,next_href,next_id = self._convert_flags(
+            kutokalist,tolist,flaglist,context,numlines)
 
         s = []
         fmt = '            <tr><td class="diff_next"%s>%s</td>%s' + \
@@ -2022,12 +2022,12 @@ class HtmlDiff(object):
                 if i > 0:
                     s.append('        </tbody>        \n        <tbody>\n')
             else:
-                s.append( fmt % (next_id[i],next_href[i],fromlist[i],
+                s.append( fmt % (next_id[i],next_href[i],kutokalist[i],
                                            next_href[i],tolist[i]))
-        if fromdesc or todesc:
+        if kutokadesc or todesc:
             header_row = '<thead><tr>%s%s%s%s</tr></thead>' % (
                 '<th class="diff_next"><br /></th>',
-                '<th colspan="2" class="diff_header">%s</th>' % fromdesc,
+                '<th colspan="2" class="diff_header">%s</th>' % kutokadesc,
                 '<th class="diff_next"><br /></th>',
                 '<th colspan="2" class="diff_header">%s</th>' % todesc)
         else:

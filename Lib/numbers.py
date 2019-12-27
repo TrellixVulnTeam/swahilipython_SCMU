@@ -9,10 +9,10 @@ kutoka abc agiza ABCMeta, abstractmethod
 
 __all__ = ["Number", "Complex", "Real", "Rational", "Integral"]
 
-class Number(metaclass=ABCMeta):
+kundi Number(metaclass=ABCMeta):
     """All numbers inherit kutoka this class.
 
-    If you just want to check if an argument x is a number, without
+    If you just want to check ikiwa an argument x is a number, without
     caring what kind, use isinstance(x, Number).
     """
     __slots__ = ()
@@ -27,9 +27,9 @@ class Number(metaclass=ABCMeta):
 ## not be registered as a Real because decimals do not interoperate with
 ## binary floats (i.e.  Decimal('3.14') + 2.71828 is undefined).  But,
 ## abstract reals are expected to interoperate (i.e. R1 + R2 should be
-## expected to work if R1 and R2 are both Reals).
+## expected to work ikiwa R1 and R2 are both Reals).
 
-class Complex(Number):
+kundi Complex(Number):
     """Complex defines the operations that work on the builtin complex type.
 
     In short, those are: a conversion to complex, .real, .imag, +, -,
@@ -43,108 +43,108 @@ class Complex(Number):
     __slots__ = ()
 
     @abstractmethod
-    def __complex__(self):
+    eleza __complex__(self):
         """Return a builtin complex instance. Called for complex(self)."""
 
-    def __bool__(self):
-        """True if self != 0. Called for bool(self)."""
-        return self != 0
+    eleza __bool__(self):
+        """True ikiwa self != 0. Called for bool(self)."""
+        rudisha self != 0
 
     @property
     @abstractmethod
-    def real(self):
+    eleza real(self):
         """Retrieve the real component of this number.
 
-        This should subclass Real.
+        This should subkundi Real.
         """
         raise NotImplementedError
 
     @property
     @abstractmethod
-    def imag(self):
+    eleza imag(self):
         """Retrieve the imaginary component of this number.
 
-        This should subclass Real.
+        This should subkundi Real.
         """
         raise NotImplementedError
 
     @abstractmethod
-    def __add__(self, other):
+    eleza __add__(self, other):
         """self + other"""
         raise NotImplementedError
 
     @abstractmethod
-    def __radd__(self, other):
+    eleza __radd__(self, other):
         """other + self"""
         raise NotImplementedError
 
     @abstractmethod
-    def __neg__(self):
+    eleza __neg__(self):
         """-self"""
         raise NotImplementedError
 
     @abstractmethod
-    def __pos__(self):
+    eleza __pos__(self):
         """+self"""
         raise NotImplementedError
 
-    def __sub__(self, other):
+    eleza __sub__(self, other):
         """self - other"""
-        return self + -other
+        rudisha self + -other
 
-    def __rsub__(self, other):
+    eleza __rsub__(self, other):
         """other - self"""
-        return -self + other
+        rudisha -self + other
 
     @abstractmethod
-    def __mul__(self, other):
+    eleza __mul__(self, other):
         """self * other"""
         raise NotImplementedError
 
     @abstractmethod
-    def __rmul__(self, other):
+    eleza __rmul__(self, other):
         """other * self"""
         raise NotImplementedError
 
     @abstractmethod
-    def __truediv__(self, other):
+    eleza __truediv__(self, other):
         """self / other: Should promote to float when necessary."""
         raise NotImplementedError
 
     @abstractmethod
-    def __rtruediv__(self, other):
+    eleza __rtruediv__(self, other):
         """other / self"""
         raise NotImplementedError
 
     @abstractmethod
-    def __pow__(self, exponent):
+    eleza __pow__(self, exponent):
         """self**exponent; should promote to float or complex when necessary."""
         raise NotImplementedError
 
     @abstractmethod
-    def __rpow__(self, base):
+    eleza __rpow__(self, base):
         """base ** self"""
         raise NotImplementedError
 
     @abstractmethod
-    def __abs__(self):
+    eleza __abs__(self):
         """Returns the Real distance kutoka 0. Called for abs(self)."""
         raise NotImplementedError
 
     @abstractmethod
-    def conjugate(self):
+    eleza conjugate(self):
         """(x+y*i).conjugate() returns (x-y*i)."""
         raise NotImplementedError
 
     @abstractmethod
-    def __eq__(self, other):
+    eleza __eq__(self, other):
         """self == other"""
         raise NotImplementedError
 
 Complex.register(complex)
 
 
-class Real(Complex):
+kundi Real(Complex):
     """To Complex, Real adds the operations that work on real numbers.
 
     In short, those are: a conversion to float, trunc(), divmod,
@@ -156,14 +156,14 @@ class Real(Complex):
     __slots__ = ()
 
     @abstractmethod
-    def __float__(self):
+    eleza __float__(self):
         """Any Real can be converted to a native float object.
 
         Called for float(self)."""
         raise NotImplementedError
 
     @abstractmethod
-    def __trunc__(self):
+    eleza __trunc__(self):
         """trunc(self): Truncates self to an Integral.
 
         Returns an Integral i such that:
@@ -176,17 +176,17 @@ class Real(Complex):
         raise NotImplementedError
 
     @abstractmethod
-    def __floor__(self):
+    eleza __floor__(self):
         """Finds the greatest Integral <= self."""
         raise NotImplementedError
 
     @abstractmethod
-    def __ceil__(self):
+    eleza __ceil__(self):
         """Finds the least Integral >= self."""
         raise NotImplementedError
 
     @abstractmethod
-    def __round__(self, ndigits=None):
+    eleza __round__(self, ndigits=None):
         """Rounds self to ndigits decimal places, defaulting to 0.
 
         If ndigits is omitted or None, returns an Integral, otherwise
@@ -194,93 +194,93 @@ class Real(Complex):
         """
         raise NotImplementedError
 
-    def __divmod__(self, other):
+    eleza __divmod__(self, other):
         """divmod(self, other): The pair (self // other, self % other).
 
         Sometimes this can be computed faster than the pair of
         operations.
         """
-        return (self // other, self % other)
+        rudisha (self // other, self % other)
 
-    def __rdivmod__(self, other):
+    eleza __rdivmod__(self, other):
         """divmod(other, self): The pair (self // other, self % other).
 
         Sometimes this can be computed faster than the pair of
         operations.
         """
-        return (other // self, other % self)
+        rudisha (other // self, other % self)
 
     @abstractmethod
-    def __floordiv__(self, other):
+    eleza __floordiv__(self, other):
         """self // other: The floor() of self/other."""
         raise NotImplementedError
 
     @abstractmethod
-    def __rfloordiv__(self, other):
+    eleza __rfloordiv__(self, other):
         """other // self: The floor() of other/self."""
         raise NotImplementedError
 
     @abstractmethod
-    def __mod__(self, other):
+    eleza __mod__(self, other):
         """self % other"""
         raise NotImplementedError
 
     @abstractmethod
-    def __rmod__(self, other):
+    eleza __rmod__(self, other):
         """other % self"""
         raise NotImplementedError
 
     @abstractmethod
-    def __lt__(self, other):
+    eleza __lt__(self, other):
         """self < other
 
         < on Reals defines a total ordering, except perhaps for NaN."""
         raise NotImplementedError
 
     @abstractmethod
-    def __le__(self, other):
+    eleza __le__(self, other):
         """self <= other"""
         raise NotImplementedError
 
     # Concrete implementations of Complex abstract methods.
-    def __complex__(self):
+    eleza __complex__(self):
         """complex(self) == complex(float(self), 0)"""
-        return complex(float(self))
+        rudisha complex(float(self))
 
     @property
-    def real(self):
+    eleza real(self):
         """Real numbers are their real component."""
-        return +self
+        rudisha +self
 
     @property
-    def imag(self):
+    eleza imag(self):
         """Real numbers have no imaginary component."""
-        return 0
+        rudisha 0
 
-    def conjugate(self):
+    eleza conjugate(self):
         """Conjugate is a no-op for Reals."""
-        return +self
+        rudisha +self
 
 Real.register(float)
 
 
-class Rational(Real):
+kundi Rational(Real):
     """.numerator and .denominator should be in lowest terms."""
 
     __slots__ = ()
 
     @property
     @abstractmethod
-    def numerator(self):
+    eleza numerator(self):
         raise NotImplementedError
 
     @property
     @abstractmethod
-    def denominator(self):
+    eleza denominator(self):
         raise NotImplementedError
 
     # Concrete implementation of Real's conversion to float.
-    def __float__(self):
+    eleza __float__(self):
         """float(self) = self.numerator / self.denominator
 
         It's agizaant that this conversion use the integer's "true"
@@ -288,102 +288,102 @@ class Rational(Real):
         so that ratios of huge integers convert without overflowing.
 
         """
-        return self.numerator / self.denominator
+        rudisha self.numerator / self.denominator
 
 
-class Integral(Rational):
+kundi Integral(Rational):
     """Integral adds a conversion to int and the bit-string operations."""
 
     __slots__ = ()
 
     @abstractmethod
-    def __int__(self):
+    eleza __int__(self):
         """int(self)"""
         raise NotImplementedError
 
-    def __index__(self):
+    eleza __index__(self):
         """Called whenever an index is needed, such as in slicing"""
-        return int(self)
+        rudisha int(self)
 
     @abstractmethod
-    def __pow__(self, exponent, modulus=None):
+    eleza __pow__(self, exponent, modulus=None):
         """self ** exponent % modulus, but maybe faster.
 
-        Accept the modulus argument if you want to support the
-        3-argument version of pow(). Raise a TypeError if exponent < 0
+        Accept the modulus argument ikiwa you want to support the
+        3-argument version of pow(). Raise a TypeError ikiwa exponent < 0
         or any argument isn't Integral. Otherwise, just implement the
         2-argument version described in Complex.
         """
         raise NotImplementedError
 
     @abstractmethod
-    def __lshift__(self, other):
+    eleza __lshift__(self, other):
         """self << other"""
         raise NotImplementedError
 
     @abstractmethod
-    def __rlshift__(self, other):
+    eleza __rlshift__(self, other):
         """other << self"""
         raise NotImplementedError
 
     @abstractmethod
-    def __rshift__(self, other):
+    eleza __rshift__(self, other):
         """self >> other"""
         raise NotImplementedError
 
     @abstractmethod
-    def __rrshift__(self, other):
+    eleza __rrshift__(self, other):
         """other >> self"""
         raise NotImplementedError
 
     @abstractmethod
-    def __and__(self, other):
+    eleza __and__(self, other):
         """self & other"""
         raise NotImplementedError
 
     @abstractmethod
-    def __rand__(self, other):
+    eleza __rand__(self, other):
         """other & self"""
         raise NotImplementedError
 
     @abstractmethod
-    def __xor__(self, other):
+    eleza __xor__(self, other):
         """self ^ other"""
         raise NotImplementedError
 
     @abstractmethod
-    def __rxor__(self, other):
+    eleza __rxor__(self, other):
         """other ^ self"""
         raise NotImplementedError
 
     @abstractmethod
-    def __or__(self, other):
+    eleza __or__(self, other):
         """self | other"""
         raise NotImplementedError
 
     @abstractmethod
-    def __ror__(self, other):
+    eleza __ror__(self, other):
         """other | self"""
         raise NotImplementedError
 
     @abstractmethod
-    def __invert__(self):
+    eleza __invert__(self):
         """~self"""
         raise NotImplementedError
 
     # Concrete implementations of Rational and Real abstract methods.
-    def __float__(self):
+    eleza __float__(self):
         """float(self) == float(int(self))"""
-        return float(int(self))
+        rudisha float(int(self))
 
     @property
-    def numerator(self):
+    eleza numerator(self):
         """Integers are their own numerators."""
-        return +self
+        rudisha +self
 
     @property
-    def denominator(self):
+    eleza denominator(self):
         """Integers have a denominator of 1."""
-        return 1
+        rudisha 1
 
 Integral.register(int)

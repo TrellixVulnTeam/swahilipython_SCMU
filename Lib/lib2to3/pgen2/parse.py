@@ -13,10 +13,10 @@ how this parsing engine works.
 # Local agizas
 kutoka . agiza token
 
-class ParseError(Exception):
+kundi ParseError(Exception):
     """Exception to signal the parser is stuck."""
 
-    def __init__(self, msg, type, value, context):
+    eleza __init__(self, msg, type, value, context):
         Exception.__init__(self, "%s: type=%r, value=%r, context=%r" %
                            (msg, type, value, context))
         self.msg = msg
@@ -24,10 +24,10 @@ class ParseError(Exception):
         self.value = value
         self.context = context
 
-    def __reduce__(self):
-        return type(self), (self.msg, self.type, self.value, self.context)
+    eleza __reduce__(self):
+        rudisha type(self), (self.msg, self.type, self.value, self.context)
 
-class Parser(object):
+kundi Parser(object):
     """Parser engine.
 
     The proper usage sequence is:
@@ -35,7 +35,7 @@ class Parser(object):
     p = Parser(grammar, [converter])  # create instance
     p.setup([start])                  # prepare for parsing
     <for each input token>:
-        if p.addtoken(...):           # parse a token; may raise ParseError
+        ikiwa p.addtoken(...):           # parse a token; may raise ParseError
             break
     root = p.rootnode                 # root of abstract syntax tree
 
@@ -57,7 +57,7 @@ class Parser(object):
 
     """
 
-    def __init__(self, grammar, convert=None):
+    eleza __init__(self, grammar, convert=None):
         """Constructor.
 
         The grammar argument is a grammar.Grammar instance; see the
@@ -89,7 +89,7 @@ class Parser(object):
         self.grammar = grammar
         self.convert = convert or (lambda grammar, node: node)
 
-    def setup(self, start=None):
+    eleza setup(self, start=None):
         """Prepare for parsing.
 
         This *must* be called before starting to parse.
@@ -102,7 +102,7 @@ class Parser(object):
         state determined by the (implicit or explicit) start symbol.
 
         """
-        if start is None:
+        ikiwa start is None:
             start = self.grammar.start
         # Each stack entry is a tuple: (dfa, state, node).
         # A node is a tuple: (type, value, context, children),
@@ -113,8 +113,8 @@ class Parser(object):
         self.rootnode = None
         self.used_names = set() # Aliased to self.rootnode.used_names in pop()
 
-    def addtoken(self, type, value, context):
-        """Add a token; return True iff this is the end of the program."""
+    eleza addtoken(self, type, value, context):
+        """Add a token; rudisha True iff this is the end of the program."""
         # Map kutoka token to label
         ilabel = self.classify(type, value, context)
         # Loop until the token is shifted; may raise exceptions
@@ -125,7 +125,7 @@ class Parser(object):
             # Look for a state with this label
             for i, newstate in arcs:
                 t, v = self.grammar.labels[i]
-                if ilabel == i:
+                ikiwa ilabel == i:
                     # Look it up in the list of labels
                     assert t < 256
                     # Shift a token; we're done with it
@@ -134,26 +134,26 @@ class Parser(object):
                     state = newstate
                     while states[state] == [(0, state)]:
                         self.pop()
-                        if not self.stack:
+                        ikiwa not self.stack:
                             # Done parsing!
-                            return True
+                            rudisha True
                         dfa, state, node = self.stack[-1]
                         states, first = dfa
                     # Done with this token
-                    return False
-                elif t >= 256:
-                    # See if it's a symbol and if we're in its first set
+                    rudisha False
+                elikiwa t >= 256:
+                    # See ikiwa it's a symbol and ikiwa we're in its first set
                     itsdfa = self.grammar.dfas[t]
                     itsstates, itsfirst = itsdfa
-                    if ilabel in itsfirst:
+                    ikiwa ilabel in itsfirst:
                         # Push a symbol
                         self.push(t, self.grammar.dfas[t], newstate, context)
                         break # To continue the outer while loop
             else:
-                if (0, state) in arcs:
+                ikiwa (0, state) in arcs:
                     # An accepting state, pop it and try something else
                     self.pop()
-                    if not self.stack:
+                    ikiwa not self.stack:
                         # Done parsing, but another token is input
                         raise ParseError("too much input",
                                          type, value, context)
@@ -161,42 +161,42 @@ class Parser(object):
                     # No success finding a transition
                     raise ParseError("bad input", type, value, context)
 
-    def classify(self, type, value, context):
+    eleza classify(self, type, value, context):
         """Turn a token into a label.  (Internal)"""
-        if type == token.NAME:
+        ikiwa type == token.NAME:
             # Keep a listing of all used names
             self.used_names.add(value)
             # Check for reserved words
             ilabel = self.grammar.keywords.get(value)
-            if ilabel is not None:
-                return ilabel
+            ikiwa ilabel is not None:
+                rudisha ilabel
         ilabel = self.grammar.tokens.get(type)
-        if ilabel is None:
+        ikiwa ilabel is None:
             raise ParseError("bad token", type, value, context)
-        return ilabel
+        rudisha ilabel
 
-    def shift(self, type, value, newstate, context):
+    eleza shift(self, type, value, newstate, context):
         """Shift a token.  (Internal)"""
         dfa, state, node = self.stack[-1]
         newnode = (type, value, context, None)
         newnode = self.convert(self.grammar, newnode)
-        if newnode is not None:
+        ikiwa newnode is not None:
             node[-1].append(newnode)
         self.stack[-1] = (dfa, newstate, node)
 
-    def push(self, type, newdfa, newstate, context):
+    eleza push(self, type, newdfa, newstate, context):
         """Push a nonterminal.  (Internal)"""
         dfa, state, node = self.stack[-1]
         newnode = (type, None, context, [])
         self.stack[-1] = (dfa, newstate, node)
         self.stack.append((newdfa, 0, newnode))
 
-    def pop(self):
+    eleza pop(self):
         """Pop a nonterminal.  (Internal)"""
         popdfa, popstate, popnode = self.stack.pop()
         newnode = self.convert(self.grammar, popnode)
-        if newnode is not None:
-            if self.stack:
+        ikiwa newnode is not None:
+            ikiwa self.stack:
                 dfa, state, node = self.stack[-1]
                 node[-1].append(newnode)
             else:

@@ -195,7 +195,7 @@ typedef struct {
     /* Command line arguments (sys.argv).
 
        Set parse_argv to 1 to parse argv as Python command line arguments
-       and then strip Python arguments from argv.
+       and then strip Python arguments kutoka argv.
 
        If argv is empty, an empty string is added to ensure that sys.argv
        always exists and is never empty. */
@@ -277,7 +277,7 @@ typedef struct {
 
     /* If greater than 0, enable the verbose mode: print a message each time a
        module is initialized, showing the place (filename or built-in module)
-       from which it is loaded.
+       kutoka which it is loaded.
 
        If greater or equal to 2, print a message for each file that is checked
        for when searching for a module. Also provides information on module
@@ -319,13 +319,13 @@ typedef struct {
     int buffered_stdio;
 
     /* Encoding of sys.stdin, sys.stdout and sys.stderr.
-       Value set from PYTHONIOENCODING environment variable and
+       Value set kutoka PYTHONIOENCODING environment variable and
        Py_SetStandardStreamEncoding() function.
        See also 'stdio_errors' attribute. */
     wchar_t *stdio_encoding;
 
     /* Error handler of sys.stdin and sys.stdout.
-       Value set from PYTHONIOENCODING environment variable and
+       Value set kutoka PYTHONIOENCODING environment variable and
        Py_SetStandardStreamEncoding() function.
        See also 'stdio_encoding' attribute. */
     wchar_t *stdio_errors;

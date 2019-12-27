@@ -7,7 +7,7 @@ agiza sys
 
 
 
-class TestIsInstanceExceptions(unittest.TestCase):
+kundi TestIsInstanceExceptions(unittest.TestCase):
     # Test to make sure that an AttributeError when accessing the instance's
     # class's bases is masked.  This was actually a bug in Python 2.2 and
     # 2.2.1 where the exception wasn't caught but it also wasn't being cleared
@@ -21,48 +21,48 @@ class TestIsInstanceExceptions(unittest.TestCase):
     #
     # Sounds complicated, I know, but this mimics a situation where an
     # extension type raises an AttributeError when its __bases__ attribute is
-    # gotten.  In that case, isinstance() should return False.
-    def test_class_has_no_bases(self):
-        class I(object):
-            def getclass(self):
-                # This must return an object that has no __bases__ attribute
-                return None
+    # gotten.  In that case, isinstance() should rudisha False.
+    eleza test_class_has_no_bases(self):
+        kundi I(object):
+            eleza getclass(self):
+                # This must rudisha an object that has no __bases__ attribute
+                rudisha None
             __class__ = property(getclass)
 
-        class C(object):
-            def getbases(self):
-                return ()
+        kundi C(object):
+            eleza getbases(self):
+                rudisha ()
             __bases__ = property(getbases)
 
         self.assertEqual(False, isinstance(I(), C()))
 
     # Like above except that inst.__class__.__bases__ raises an exception
     # other than AttributeError
-    def test_bases_raises_other_than_attribute_error(self):
-        class E(object):
-            def getbases(self):
+    eleza test_bases_raises_other_than_attribute_error(self):
+        kundi E(object):
+            eleza getbases(self):
                 raise RuntimeError
             __bases__ = property(getbases)
 
-        class I(object):
-            def getclass(self):
-                return E()
+        kundi I(object):
+            eleza getclass(self):
+                rudisha E()
             __class__ = property(getclass)
 
-        class C(object):
-            def getbases(self):
-                return ()
+        kundi C(object):
+            eleza getbases(self):
+                rudisha ()
             __bases__ = property(getbases)
 
         self.assertRaises(RuntimeError, isinstance, I(), C())
 
     # Here's a situation where getattr(cls, '__bases__') raises an exception.
     # If that exception is not AttributeError, it should not get masked
-    def test_dont_mask_non_attribute_error(self):
-        class I: pass
+    eleza test_dont_mask_non_attribute_error(self):
+        kundi I: pass
 
-        class C(object):
-            def getbases(self):
+        kundi C(object):
+            eleza getbases(self):
                 raise RuntimeError
             __bases__ = property(getbases)
 
@@ -70,11 +70,11 @@ class TestIsInstanceExceptions(unittest.TestCase):
 
     # Like above, except that getattr(cls, '__bases__') raises an
     # AttributeError, which /should/ get masked as a TypeError
-    def test_mask_attribute_error(self):
-        class I: pass
+    eleza test_mask_attribute_error(self):
+        kundi I: pass
 
-        class C(object):
-            def getbases(self):
+        kundi C(object):
+            eleza getbases(self):
                 raise AttributeError
             __bases__ = property(getbases)
 
@@ -82,9 +82,9 @@ class TestIsInstanceExceptions(unittest.TestCase):
 
     # check that we don't mask non AttributeErrors
     # see: http://bugs.python.org/issue1574217
-    def test_isinstance_dont_mask_non_attribute_error(self):
-        class C(object):
-            def getclass(self):
+    eleza test_isinstance_dont_mask_non_attribute_error(self):
+        kundi C(object):
+            eleza getclass(self):
                 raise RuntimeError
             __class__ = property(getclass)
 
@@ -92,53 +92,53 @@ class TestIsInstanceExceptions(unittest.TestCase):
         self.assertRaises(RuntimeError, isinstance, c, bool)
 
         # test another code path
-        class D: pass
+        kundi D: pass
         self.assertRaises(RuntimeError, isinstance, c, D)
 
 
 # These tests are similar to above, but tickle certain code paths in
 # issubclass() instead of isinstance() -- really PyObject_IsSubclass()
 # vs. PyObject_IsInstance().
-class TestIsSubclassExceptions(unittest.TestCase):
-    def test_dont_mask_non_attribute_error(self):
-        class C(object):
-            def getbases(self):
+kundi TestIsSubclassExceptions(unittest.TestCase):
+    eleza test_dont_mask_non_attribute_error(self):
+        kundi C(object):
+            eleza getbases(self):
                 raise RuntimeError
             __bases__ = property(getbases)
 
-        class S(C): pass
+        kundi S(C): pass
 
         self.assertRaises(RuntimeError, issubclass, C(), S())
 
-    def test_mask_attribute_error(self):
-        class C(object):
-            def getbases(self):
+    eleza test_mask_attribute_error(self):
+        kundi C(object):
+            eleza getbases(self):
                 raise AttributeError
             __bases__ = property(getbases)
 
-        class S(C): pass
+        kundi S(C): pass
 
         self.assertRaises(TypeError, issubclass, C(), S())
 
     # Like above, but test the second branch, where the __bases__ of the
     # second arg (the cls arg) is tested.  This means the first arg must
-    # return a valid __bases__, and it's okay for it to be a normal --
+    # rudisha a valid __bases__, and it's okay for it to be a normal --
     # unrelated by inheritance -- class.
-    def test_dont_mask_non_attribute_error_in_cls_arg(self):
-        class B: pass
+    eleza test_dont_mask_non_attribute_error_in_cls_arg(self):
+        kundi B: pass
 
-        class C(object):
-            def getbases(self):
+        kundi C(object):
+            eleza getbases(self):
                 raise RuntimeError
             __bases__ = property(getbases)
 
         self.assertRaises(RuntimeError, issubclass, B, C())
 
-    def test_mask_attribute_error_in_cls_arg(self):
-        class B: pass
+    eleza test_mask_attribute_error_in_cls_arg(self):
+        kundi B: pass
 
-        class C(object):
-            def getbases(self):
+        kundi C(object):
+            eleza getbases(self):
                 raise AttributeError
             __bases__ = property(getbases)
 
@@ -147,23 +147,23 @@ class TestIsSubclassExceptions(unittest.TestCase):
 
 
 # meta classes for creating abstract classes and instances
-class AbstractClass(object):
-    def __init__(self, bases):
+kundi AbstractClass(object):
+    eleza __init__(self, bases):
         self.bases = bases
 
-    def getbases(self):
-        return self.bases
+    eleza getbases(self):
+        rudisha self.bases
     __bases__ = property(getbases)
 
-    def __call__(self):
-        return AbstractInstance(self)
+    eleza __call__(self):
+        rudisha AbstractInstance(self)
 
-class AbstractInstance(object):
-    def __init__(self, klass):
+kundi AbstractInstance(object):
+    eleza __init__(self, klass):
         self.klass = klass
 
-    def getclass(self):
-        return self.klass
+    eleza getclass(self):
+        rudisha self.klass
     __class__ = property(getclass)
 
 # abstract classes
@@ -172,21 +172,21 @@ AbstractSuper = AbstractClass(bases=())
 AbstractChild = AbstractClass(bases=(AbstractSuper,))
 
 # normal classes
-class Super:
+kundi Super:
     pass
 
-class Child(Super):
+kundi Child(Super):
     pass
 
-class TestIsInstanceIsSubclass(unittest.TestCase):
-    # Tests to ensure that isinstance and issubclass work on abstract
+kundi TestIsInstanceIsSubclass(unittest.TestCase):
+    # Tests to ensure that isinstance and issubkundi work on abstract
     # classes and instances.  Before the 2.2 release, TypeErrors were
     # raised when boolean values should have been returned.  The bug was
     # triggered by mixing 'normal' classes and instances were with
     # 'abstract' classes and instances.  This case tries to test all
     # combinations.
 
-    def test_isinstance_normal(self):
+    eleza test_isinstance_normal(self):
         # normal instances
         self.assertEqual(True, isinstance(Super(), Super))
         self.assertEqual(False, isinstance(Super(), Child))
@@ -196,7 +196,7 @@ class TestIsInstanceIsSubclass(unittest.TestCase):
         self.assertEqual(True, isinstance(Child(), Super))
         self.assertEqual(False, isinstance(Child(), AbstractSuper))
 
-    def test_isinstance_abstract(self):
+    eleza test_isinstance_abstract(self):
         # abstract instances
         self.assertEqual(True, isinstance(AbstractSuper(), AbstractSuper))
         self.assertEqual(False, isinstance(AbstractSuper(), AbstractChild))
@@ -208,7 +208,7 @@ class TestIsInstanceIsSubclass(unittest.TestCase):
         self.assertEqual(False, isinstance(AbstractChild(), Super))
         self.assertEqual(False, isinstance(AbstractChild(), Child))
 
-    def test_subclass_normal(self):
+    eleza test_subclass_normal(self):
         # normal classes
         self.assertEqual(True, issubclass(Super, Super))
         self.assertEqual(False, issubclass(Super, AbstractSuper))
@@ -218,7 +218,7 @@ class TestIsInstanceIsSubclass(unittest.TestCase):
         self.assertEqual(True, issubclass(Child, Super))
         self.assertEqual(False, issubclass(Child, AbstractSuper))
 
-    def test_subclass_abstract(self):
+    eleza test_subclass_abstract(self):
         # abstract classes
         self.assertEqual(True, issubclass(AbstractSuper, AbstractSuper))
         self.assertEqual(False, issubclass(AbstractSuper, AbstractChild))
@@ -229,7 +229,7 @@ class TestIsInstanceIsSubclass(unittest.TestCase):
         self.assertEqual(False, issubclass(AbstractChild, Super))
         self.assertEqual(False, issubclass(AbstractChild, Child))
 
-    def test_subclass_tuple(self):
+    eleza test_subclass_tuple(self):
         # test with a tuple as the second argument classes
         self.assertEqual(True, issubclass(Child, (Child,)))
         self.assertEqual(True, issubclass(Child, (Super,)))
@@ -241,17 +241,17 @@ class TestIsInstanceIsSubclass(unittest.TestCase):
         self.assertEqual(True, issubclass(int, (int, (float, int))))
         self.assertEqual(True, issubclass(str, (str, (Child, str))))
 
-    def test_subclass_recursion_limit(self):
-        # make sure that issubclass raises RecursionError before the C stack is
+    eleza test_subclass_recursion_limit(self):
+        # make sure that issubkundi raises RecursionError before the C stack is
         # blown
         self.assertRaises(RecursionError, blowstack, issubclass, str, str)
 
-    def test_isinstance_recursion_limit(self):
-        # make sure that issubclass raises RecursionError before the C stack is
+    eleza test_isinstance_recursion_limit(self):
+        # make sure that issubkundi raises RecursionError before the C stack is
         # blown
         self.assertRaises(RecursionError, blowstack, isinstance, '', str)
 
-def blowstack(fxn, arg, compare_to):
+eleza blowstack(fxn, arg, compare_to):
     # Make sure that calling isinstance with a deeply nested tuple for its
     # argument will raise RecursionError eventually.
     tuple_arg = (compare_to,)
@@ -260,5 +260,5 @@ def blowstack(fxn, arg, compare_to):
         fxn(arg, tuple_arg)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

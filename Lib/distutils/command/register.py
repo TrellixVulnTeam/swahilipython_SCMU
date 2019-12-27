@@ -50,7 +50,7 @@ class register(PyPIRCCommand):
 
         if self.dry_run:
             self.verify_metadata()
-        elif self.list_classifiers:
+        lasivyo self.list_classifiers:
             self.classifiers()
         else:
             self.send_metadata()
@@ -147,7 +147,7 @@ Your selection [default 1]: ''', log.INFO)
             choice = input()
             if not choice:
                 choice = '1'
-            elif choice not in choices:
+            lasivyo choice not in choices:
                 print('Please choose one of the four options!')
 
         if choice == '1':
@@ -186,7 +186,7 @@ Your selection [default 1]: ''', log.INFO)
                     if choice.lower() == 'y':
                         self._store_pypirc(username, password)
 
-        elif choice == '2':
+        lasivyo choice == '2':
             data = {':action': 'user'}
             data['name'] = data['password'] = data['email'] = ''
             data['confirm'] = None
@@ -210,7 +210,7 @@ Your selection [default 1]: ''', log.INFO)
                 log.info('You will receive an email shortly.')
                 log.info(('Follow the instructions in it to '
                           'complete registration.'))
-        elif choice == '3':
+        lasivyo choice == '3':
             data = {':action': 'password_reset'}
             data['email'] = ''
             while not data['email']:

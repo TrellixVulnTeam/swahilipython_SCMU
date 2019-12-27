@@ -15,7 +15,7 @@ The :keyword:`if`, :keyword:`while` and :keyword:`for` statements implement
 traditional control flow constructs.  :keyword:`try` specifies exception
 handlers and/or cleanup code for a group of statements, while the
 :keyword:`with` statement allows the execution of initialization and
-finalization code around a block of code.  Function and class definitions are
+finalization code around a block of code.  Function and kundi definitions are
 also syntactically compound statements.
 
 .. index::
@@ -205,7 +205,7 @@ returns the list ``[0, 1, 2]``.
    to keep track of which item is used next, and this is incremented on each
    iteration.  When this counter has reached the length of the sequence the loop
    terminates.  This means that if the suite deletes the current (or a previous)
-   item from the sequence, the next item will be skipped (since it gets the
+   item kutoka the sequence, the next item will be skipped (since it gets the
    index of the current item which has already been treated).  Likewise, if the
    suite inserts an item in the sequence before the current item, the current
    item will be treated again the next time through the loop. This can lead to
@@ -252,7 +252,7 @@ is found that matches the exception.  An expression-less except clause, if
 present, must be last; it matches any exception.  For an except clause with an
 expression, that expression is evaluated, and the clause matches the exception
 if the resulting object is "compatible" with the exception.  An object is
-compatible with an exception if it is the class or a base class of the exception
+compatible with an exception if it is the kundi or a base kundi of the exception
 object or a tuple containing an item compatible with the exception.
 
 If no except clause matches the exception, the search for an exception handler
@@ -302,7 +302,7 @@ stored in the :mod:`sys` module and can be accessed via :func:`sys.exc_info`.
 exception instance and a traceback object (see section :ref:`types`) identifying
 the point in the program where the exception occurred.  :func:`sys.exc_info`
 values are restored to their previous values (before the call) when returning
-from a function that handled an exception.
+kutoka a function that handled an exception.
 
 .. index::
    keyword: else
@@ -404,7 +404,7 @@ The execution of the :keyword:`with` statement with one "item" proceeds as follo
 #. The context manager's :meth:`__enter__` method is invoked.
 
 #. If a target was included in the :keyword:`with` statement, the return value
-   from :meth:`__enter__` is assigned to it.
+   kutoka :meth:`__enter__` is assigned to it.
 
    .. note::
 
@@ -421,13 +421,13 @@ The execution of the :keyword:`with` statement with one "item" proceeds as follo
    arguments to :meth:`__exit__`. Otherwise, three :const:`None` arguments are
    supplied.
 
-   If the suite was exited due to an exception, and the return value from the
+   If the suite was exited due to an exception, and the return value kutoka the
    :meth:`__exit__` method was false, the exception is reraised.  If the return
    value was true, the exception is suppressed, and execution continues with the
    statement following the :keyword:`with` statement.
 
    If the suite was exited for any reason other than an exception, the return
-   value from :meth:`__exit__` is ignored, and execution proceeds at the normal
+   value kutoka :meth:`__exit__` is ignored, and execution proceeds at the normal
    location for the kind of exit that was taken.
 
 With more than one item, the context managers are processed as if multiple
@@ -532,12 +532,12 @@ except that the original function is not temporarily bound to the name ``func``.
 When one or more :term:`parameters <parameter>` have the form *parameter* ``=``
 *expression*, the function is said to have "default parameter values."  For a
 parameter with a default value, the corresponding :term:`argument` may be
-omitted from a call, in which
+omitted kutoka a call, in which
 case the parameter's default value is substituted.  If a parameter has a default
 value, all following parameters up until the "``*``" must also have a default
 value --- this is a syntactic restriction that is not expressed by the grammar.
 
-**Default parameter values are evaluated from left to right when the function
+**Default parameter values are evaluated kutoka left to right when the function
 definition is executed.** This means that the expression is evaluated once, when
 the function is defined, and that the same "pre-computed" value is used for each
 call.  This is especially important to understand when a default parameter is a
@@ -559,7 +559,7 @@ e.g.::
 
 Function call semantics are described in more detail in section :ref:`calls`. A
 function call always assigns values to all parameters mentioned in the parameter
-list, either from position arguments, from keyword arguments, or from default
+list, either kutoka position arguments, kutoka keyword arguments, or kutoka default
 values.  If the form "``*identifier``" is present, it is initialized to a tuple
 receiving any excess positional parameters, defaulting to the empty tuple.
 If the form "``**identifier``" is present, it is initialized to a new
@@ -580,7 +580,7 @@ the form "``-> expression``" after the parameter list.  These annotations can be
 any valid Python expression.  The presence of annotations does not change the
 semantics of a function.  The annotation values are available as values of
 a dictionary keyed by the parameters' names in the :attr:`__annotations__`
-attribute of the function object.  If the ``annotations`` import from
+attribute of the function object.  If the ``annotations`` agiza kutoka
 :mod:`__future__` is used, annotations are preserved as strings at runtime which
 enables postponed evaluation.  Otherwise, they are evaluated when the function
 definition is executed.  In this case annotations may be evaluated in
@@ -596,7 +596,7 @@ statement can be passed around or assigned to another name just like a function
 defined by a lambda expression.  The ":keyword:`!def`" form is actually more powerful
 since it allows the execution of multiple statements and annotations.
 
-**Programmer's note:** Functions are first-class objects.  A "``def``" statement
+**Programmer's note:** Functions are first-kundi objects.  A "``def``" statement
 executed inside a function definition defines a local function that can be
 returned or passed around.  Free variables used in the nested function can
 access the local variables of the function containing the def.  See section
@@ -633,69 +633,69 @@ Class definitions
    pair: execution; frame
    single: inheritance
    single: docstring
-   single: () (parentheses); class definition
+   single: () (parentheses); kundi definition
    single: , (comma); expression list
    single: : (colon); compound statement
 
-A class definition defines a class object (see section :ref:`types`):
+A kundi definition defines a kundi object (see section :ref:`types`):
 
 .. productionlist::
    classdef: [`decorators`] "class" `classname` [`inheritance`] ":" `suite`
    inheritance: "(" [`argument_list`] ")"
    classname: `identifier`
 
-A class definition is an executable statement.  The inheritance list usually
+A kundi definition is an executable statement.  The inheritance list usually
 gives a list of base classes (see :ref:`metaclasses` for more advanced uses), so
-each item in the list should evaluate to a class object which allows
-subclassing.  Classes without an inheritance list inherit, by default, from the
-base class :class:`object`; hence, ::
+each item in the list should evaluate to a kundi object which allows
+subclassing.  Classes without an inheritance list inherit, by default, kutoka the
+base kundi :class:`object`; hence, ::
 
-   class Foo:
+   kundi Foo:
        pass
 
 is equivalent to ::
 
-   class Foo(object):
+   kundi Foo(object):
        pass
 
 The class's suite is then executed in a new execution frame (see :ref:`naming`),
 using a newly created local namespace and the original global namespace.
 (Usually, the suite contains mostly function definitions.)  When the class's
 suite finishes execution, its execution frame is discarded but its local
-namespace is saved. [#]_ A class object is then created using the inheritance
+namespace is saved. [#]_ A kundi object is then created using the inheritance
 list for the base classes and the saved local namespace for the attribute
-dictionary.  The class name is bound to this class object in the original local
+dictionary.  The kundi name is bound to this kundi object in the original local
 namespace.
 
-The order in which attributes are defined in the class body is preserved
+The order in which attributes are defined in the kundi body is preserved
 in the new class's ``__dict__``.  Note that this is reliable only right
-after the class is created and only for classes that were defined using
+after the kundi is created and only for classes that were defined using
 the definition syntax.
 
 Class creation can be customized heavily using :ref:`metaclasses <metaclasses>`.
 
 .. index::
-   single: @ (at); class definition
+   single: @ (at); kundi definition
 
 Classes can also be decorated: just like when decorating functions, ::
 
    @f1(arg)
    @f2
-   class Foo: pass
+   kundi Foo: pass
 
 is roughly equivalent to ::
 
-   class Foo: pass
+   kundi Foo: pass
    Foo = f1(arg)(f2(Foo))
 
 The evaluation rules for the decorator expressions are the same as for function
-decorators.  The result is then bound to the class name.
+decorators.  The result is then bound to the kundi name.
 
-**Programmer's note:** Variables defined in the class definition are class
+**Programmer's note:** Variables defined in the kundi definition are class
 attributes; they are shared by instances.  Instance attributes can be set in a
-method with ``self.name = value``.  Both class and instance attributes are
+method with ``self.name = value``.  Both kundi and instance attributes are
 accessible through the notation "``self.name``", and an instance attribute hides
-a class attribute with the same name when accessed in this way.  Class
+a kundi attribute with the same name when accessed in this way.  Class
 attributes can be used as defaults for instance attributes, but using mutable
 values there can lead to unexpected results.  :ref:`Descriptors <descriptors>`
 can be used to create instance variables with different implementation details.
@@ -709,7 +709,7 @@ can be used to create instance variables with different implementation details.
       constructed.
 
    :pep:`3129` - Class Decorators
-      The proposal that added class decorators.  Function and method decorators
+      The proposal that added kundi decorators.  Function and method decorators
       were introduced in :pep:`318`.
 
 
@@ -743,7 +743,7 @@ coroutine function bodies.
 Functions defined with ``async def`` syntax are always coroutine functions,
 even if they do not contain ``await`` or ``async`` keywords.
 
-It is a :exc:`SyntaxError` to use a ``yield from`` expression inside the body
+It is a :exc:`SyntaxError` to use a ``yield kutoka`` expression inside the body
 of a coroutine function.
 
 An example of a coroutine function::
@@ -851,6 +851,6 @@ body of a coroutine function.
    transformed into the function's ``__doc__`` attribute and therefore the
    function's :term:`docstring`.
 
-.. [#] A string literal appearing as the first statement in the class body is
+.. [#] A string literal appearing as the first statement in the kundi body is
    transformed into the namespace's ``__doc__`` item and therefore the class's
    :term:`docstring`.

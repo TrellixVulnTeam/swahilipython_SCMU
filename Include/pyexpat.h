@@ -1,4 +1,4 @@
-/* Stuff to export relevant 'expat' entry points from pyexpat to other
+/* Stuff to export relevant 'expat' entry points kutoka pyexpat to other
  * parser modules, such as cElementTree. */
 
 /* note: you must import expat.h before importing this module! */

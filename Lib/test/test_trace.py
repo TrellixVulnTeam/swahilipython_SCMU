@@ -12,117 +12,117 @@ kutoka test.tracedmodules agiza testmod
 
 #------------------------------- Utilities -----------------------------------#
 
-def fix_ext_py(filename):
+eleza fix_ext_py(filename):
     """Given a .pyc filename converts it to the appropriate .py"""
-    if filename.endswith('.pyc'):
+    ikiwa filename.endswith('.pyc'):
         filename = filename[:-1]
-    return filename
+    rudisha filename
 
-def my_file_and_modname():
+eleza my_file_and_modname():
     """The .py file and module name of this file (__file__)"""
     modname = os.path.splitext(os.path.basename(__file__))[0]
-    return fix_ext_py(__file__), modname
+    rudisha fix_ext_py(__file__), modname
 
-def get_firstlineno(func):
-    return func.__code__.co_firstlineno
+eleza get_firstlineno(func):
+    rudisha func.__code__.co_firstlineno
 
 #-------------------- Target functions for tracing ---------------------------#
 #
 # The relative line numbers of lines in these functions matter for verifying
-# tracing. Please modify the appropriate tests if you change one of the
+# tracing. Please modify the appropriate tests ikiwa you change one of the
 # functions. Absolute line numbers don't matter.
 #
 
-def traced_func_linear(x, y):
+eleza traced_func_linear(x, y):
     a = x
     b = y
     c = a + b
-    return c
+    rudisha c
 
-def traced_func_loop(x, y):
+eleza traced_func_loop(x, y):
     c = x
     for i in range(5):
         c += y
-    return c
+    rudisha c
 
-def traced_func_agizaing(x, y):
-    return x + y + testmod.func(1)
+eleza traced_func_agizaing(x, y):
+    rudisha x + y + testmod.func(1)
 
-def traced_func_simple_caller(x):
+eleza traced_func_simple_caller(x):
     c = traced_func_linear(x, x)
-    return c + x
+    rudisha c + x
 
-def traced_func_agizaing_caller(x):
+eleza traced_func_agizaing_caller(x):
     k = traced_func_simple_caller(x)
     k += traced_func_agizaing(k, x)
-    return k
+    rudisha k
 
-def traced_func_generator(num):
+eleza traced_func_generator(num):
     c = 5       # executed once
     for i in range(num):
         yield i + c
 
-def traced_func_calling_generator():
+eleza traced_func_calling_generator():
     k = 0
     for i in traced_func_generator(10):
         k += i
 
-def traced_doubler(num):
-    return num * 2
+eleza traced_doubler(num):
+    rudisha num * 2
 
-def traced_capturer(*args, **kwargs):
-    return args, kwargs
+eleza traced_capturer(*args, **kwargs):
+    rudisha args, kwargs
 
-def traced_caller_list_comprehension():
+eleza traced_caller_list_comprehension():
     k = 10
     mylist = [traced_doubler(i) for i in range(k)]
-    return mylist
+    rudisha mylist
 
-def traced_decorated_function():
-    def decorator1(f):
-        return f
-    def decorator_fabric():
-        def decorator2(f):
-            return f
-        return decorator2
+eleza traced_decorated_function():
+    eleza decorator1(f):
+        rudisha f
+    eleza decorator_fabric():
+        eleza decorator2(f):
+            rudisha f
+        rudisha decorator2
     @decorator1
     @decorator_fabric()
-    def func():
+    eleza func():
         pass
     func()
 
 
-class TracedClass(object):
-    def __init__(self, x):
+kundi TracedClass(object):
+    eleza __init__(self, x):
         self.a = x
 
-    def inst_method_linear(self, y):
-        return self.a + y
+    eleza inst_method_linear(self, y):
+        rudisha self.a + y
 
-    def inst_method_calling(self, x):
+    eleza inst_method_calling(self, x):
         c = self.inst_method_linear(x)
-        return c + traced_func_linear(x, c)
+        rudisha c + traced_func_linear(x, c)
 
     @classmethod
-    def class_method_linear(cls, y):
-        return y * 2
+    eleza class_method_linear(cls, y):
+        rudisha y * 2
 
     @staticmethod
-    def static_method_linear(y):
-        return y * 2
+    eleza static_method_linear(y):
+        rudisha y * 2
 
 
 #------------------------------ Test cases -----------------------------------#
 
 
-class TestLineCounts(unittest.TestCase):
+kundi TestLineCounts(unittest.TestCase):
     """White-box testing of line-counting, via runfunc"""
-    def setUp(self):
+    eleza setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
         self.tracer = Trace(count=1, trace=0, countfuncs=0, countcallers=0)
         self.my_py_filename = fix_ext_py(__file__)
 
-    def test_traced_func_linear(self):
+    eleza test_traced_func_linear(self):
         result = self.tracer.runfunc(traced_func_linear, 2, 5)
         self.assertEqual(result, 7)
 
@@ -134,7 +134,7 @@ class TestLineCounts(unittest.TestCase):
 
         self.assertEqual(self.tracer.results().counts, expected)
 
-    def test_traced_func_loop(self):
+    eleza test_traced_func_loop(self):
         self.tracer.runfunc(traced_func_loop, 2, 3)
 
         firstlineno = get_firstlineno(traced_func_loop)
@@ -146,7 +146,7 @@ class TestLineCounts(unittest.TestCase):
         }
         self.assertEqual(self.tracer.results().counts, expected)
 
-    def test_traced_func_agizaing(self):
+    eleza test_traced_func_agizaing(self):
         self.tracer.runfunc(traced_func_agizaing, 2, 5)
 
         firstlineno = get_firstlineno(traced_func_agizaing)
@@ -158,7 +158,7 @@ class TestLineCounts(unittest.TestCase):
 
         self.assertEqual(self.tracer.results().counts, expected)
 
-    def test_trace_func_generator(self):
+    eleza test_trace_func_generator(self):
         self.tracer.runfunc(traced_func_calling_generator)
 
         firstlineno_calling = get_firstlineno(traced_func_calling_generator)
@@ -173,7 +173,7 @@ class TestLineCounts(unittest.TestCase):
         }
         self.assertEqual(self.tracer.results().counts, expected)
 
-    def test_trace_list_comprehension(self):
+    eleza test_trace_list_comprehension(self):
         self.tracer.runfunc(traced_caller_list_comprehension)
 
         firstlineno_calling = get_firstlineno(traced_caller_list_comprehension)
@@ -188,7 +188,7 @@ class TestLineCounts(unittest.TestCase):
         }
         self.assertEqual(self.tracer.results().counts, expected)
 
-    def test_traced_decorated_function(self):
+    eleza test_traced_decorated_function(self):
         self.tracer.runfunc(traced_decorated_function)
 
         firstlineno = get_firstlineno(traced_decorated_function)
@@ -207,7 +207,7 @@ class TestLineCounts(unittest.TestCase):
         }
         self.assertEqual(self.tracer.results().counts, expected)
 
-    def test_linear_methods(self):
+    eleza test_linear_methods(self):
         # XXX todo: later add 'static_method_linear' and 'class_method_linear'
         # here, once issue1764286 is resolved
         #
@@ -224,13 +224,13 @@ class TestLineCounts(unittest.TestCase):
             self.assertEqual(tracer.results().counts, expected)
 
 
-class TestRunExecCounts(unittest.TestCase):
+kundi TestRunExecCounts(unittest.TestCase):
     """A simple sanity test of line-counting, via runctx (exec)"""
-    def setUp(self):
+    eleza setUp(self):
         self.my_py_filename = fix_ext_py(__file__)
         self.addCleanup(sys.settrace, sys.gettrace())
 
-    def test_exec_counts(self):
+    eleza test_exec_counts(self):
         self.tracer = Trace(count=1, trace=0, countfuncs=0, countcallers=0)
         code = r'''traced_func_loop(2, 5)'''
         code = compile(code, __file__, 'exec')
@@ -252,19 +252,19 @@ class TestRunExecCounts(unittest.TestCase):
             self.assertEqual(self.tracer.results().counts[k], expected[k])
 
 
-class TestFuncs(unittest.TestCase):
+kundi TestFuncs(unittest.TestCase):
     """White-box testing of funcs tracing"""
-    def setUp(self):
+    eleza setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
         self.tracer = Trace(count=0, trace=0, countfuncs=1)
         self.filemod = my_file_and_modname()
         self._saved_tracefunc = sys.gettrace()
 
-    def tearDown(self):
-        if self._saved_tracefunc is not None:
+    eleza tearDown(self):
+        ikiwa self._saved_tracefunc is not None:
             sys.settrace(self._saved_tracefunc)
 
-    def test_simple_caller(self):
+    eleza test_simple_caller(self):
         self.tracer.runfunc(traced_func_simple_caller, 1)
 
         expected = {
@@ -273,7 +273,7 @@ class TestFuncs(unittest.TestCase):
         }
         self.assertEqual(self.tracer.results().calledfuncs, expected)
 
-    def test_arg_errors(self):
+    eleza test_arg_errors(self):
         res = self.tracer.runfunc(traced_capturer, 1, 2, self=3, func=4)
         self.assertEqual(res, ((1, 2), {'self': 3, 'func': 4}))
         with self.assertWarns(DeprecationWarning):
@@ -282,7 +282,7 @@ class TestFuncs(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.tracer.runfunc()
 
-    def test_loop_caller_agizaing(self):
+    eleza test_loop_caller_agizaing(self):
         self.tracer.runfunc(traced_func_agizaing_caller, 1)
 
         expected = {
@@ -296,7 +296,7 @@ class TestFuncs(unittest.TestCase):
 
     @unittest.skipIf(hasattr(sys, 'gettrace') and sys.gettrace(),
                      'pre-existing trace function throws off measurements')
-    def test_inst_method_calling(self):
+    eleza test_inst_method_calling(self):
         obj = TracedClass(20)
         self.tracer.runfunc(obj.inst_method_calling, 1)
 
@@ -307,7 +307,7 @@ class TestFuncs(unittest.TestCase):
         }
         self.assertEqual(self.tracer.results().calledfuncs, expected)
 
-    def test_traced_decorated_function(self):
+    eleza test_traced_decorated_function(self):
         self.tracer.runfunc(traced_decorated_function)
 
         expected = {
@@ -320,16 +320,16 @@ class TestFuncs(unittest.TestCase):
         self.assertEqual(self.tracer.results().calledfuncs, expected)
 
 
-class TestCallers(unittest.TestCase):
+kundi TestCallers(unittest.TestCase):
     """White-box testing of callers tracing"""
-    def setUp(self):
+    eleza setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
         self.tracer = Trace(count=0, trace=0, countcallers=1)
         self.filemod = my_file_and_modname()
 
     @unittest.skipIf(hasattr(sys, 'gettrace') and sys.gettrace(),
                      'pre-existing trace function throws off measurements')
-    def test_loop_caller_agizaing(self):
+    eleza test_loop_caller_agizaing(self):
         self.tracer.runfunc(traced_func_agizaing_caller, 1)
 
         expected = {
@@ -348,22 +348,22 @@ class TestCallers(unittest.TestCase):
 
 
 # Created separately for issue #3821
-class TestCoverage(unittest.TestCase):
-    def setUp(self):
+kundi TestCoverage(unittest.TestCase):
+    eleza setUp(self):
         self.addCleanup(sys.settrace, sys.gettrace())
 
-    def tearDown(self):
+    eleza tearDown(self):
         rmtree(TESTFN)
         unlink(TESTFN)
 
-    def _coverage(self, tracer,
+    eleza _coverage(self, tracer,
                   cmd='agiza test.support, test.test_pprint;'
                       'test.support.run_unittest(test.test_pprint.QueryTestCase)'):
         tracer.run(cmd)
         r = tracer.results()
         r.write_results(show_missing=True, summary=True, coverdir=TESTFN)
 
-    def test_coverage(self):
+    eleza test_coverage(self):
         tracer = trace.Trace(trace=0, count=1)
         with captured_stdout() as stdout:
             self._coverage(tracer)
@@ -374,7 +374,7 @@ class TestCoverage(unittest.TestCase):
         self.assertIn("pprint.cover", files)
         self.assertIn("unittest.case.cover", files)
 
-    def test_coverage_ignore(self):
+    eleza test_coverage_ignore(self):
         # Ignore all files, nothing should be traced nor printed
         libpath = os.path.normpath(os.path.dirname(os.__file__))
         # sys.prefix does not work when running kutoka a checkout
@@ -382,15 +382,15 @@ class TestCoverage(unittest.TestCase):
                              libpath], trace=0, count=1)
         with captured_stdout() as stdout:
             self._coverage(tracer)
-        if os.path.exists(TESTFN):
+        ikiwa os.path.exists(TESTFN):
             files = os.listdir(TESTFN)
             self.assertEqual(files, ['_importlib.cover'])  # Ignore __import__
 
-    def test_issue9936(self):
+    eleza test_issue9936(self):
         tracer = trace.Trace(trace=0, count=1)
         modname = 'test.tracedmodules.testmod'
         # Ensure that the module is executed in agiza
-        if modname in sys.modules:
+        ikiwa modname in sys.modules:
             del sys.modules[modname]
         cmd = ("agiza test.tracedmodules.testmod as t;"
                "t.func(0); t.func2();")
@@ -410,8 +410,8 @@ class TestCoverage(unittest.TestCase):
 ### Tests that don't mess with sys.settrace and can be traced
 ### themselves TODO: Skip tests that do mess with sys.settrace when
 ### regrtest is invoked with -T option.
-class Test_Ignore(unittest.TestCase):
-    def test_ignored(self):
+kundi Test_Ignore(unittest.TestCase):
+    eleza test_ignored(self):
         jn = os.path.join
         ignore = trace._Ignore(['x', 'y.z'], [jn('foo', 'bar')])
         self.assertTrue(ignore.names('x.py', 'x'))
@@ -423,24 +423,24 @@ class Test_Ignore(unittest.TestCase):
         self.assertTrue(ignore.names(jn('bar', 'baz.py'), 'baz'))
 
 # Created for Issue 31908 -- CLI utility not writing cover files
-class TestCoverageCommandLineOutput(unittest.TestCase):
+kundi TestCoverageCommandLineOutput(unittest.TestCase):
 
     codefile = 'tmp.py'
     coverfile = 'tmp.cover'
 
-    def setUp(self):
+    eleza setUp(self):
         with open(self.codefile, 'w') as f:
             f.write(textwrap.dedent('''\
                 x = 42
-                if []:
-                    print('unreachable')
+                ikiwa []:
+                    andika('unreachable')
             '''))
 
-    def tearDown(self):
+    eleza tearDown(self):
         unlink(self.codefile)
         unlink(self.coverfile)
 
-    def test_cover_files_written_no_highlight(self):
+    eleza test_cover_files_written_no_highlight(self):
         # Test also that the cover file for the trace module is not created
         # (issue #34171).
         tracedir = os.path.dirname(os.path.abspath(trace.__file__))
@@ -455,24 +455,24 @@ class TestCoverageCommandLineOutput(unittest.TestCase):
         with open(self.coverfile) as f:
             self.assertEqual(f.read(),
                 "    1: x = 42\n"
-                "    1: if []:\n"
-                "           print('unreachable')\n"
+                "    1: ikiwa []:\n"
+                "           andika('unreachable')\n"
             )
 
-    def test_cover_files_written_with_highlight(self):
+    eleza test_cover_files_written_with_highlight(self):
         argv = '-m trace --count --missing'.split() + [self.codefile]
         status, stdout, stderr = assert_python_ok(*argv)
         self.assertTrue(os.path.exists(self.coverfile))
         with open(self.coverfile) as f:
             self.assertEqual(f.read(), textwrap.dedent('''\
                     1: x = 42
-                    1: if []:
-                >>>>>>     print('unreachable')
+                    1: ikiwa []:
+                >>>>>>     andika('unreachable')
             '''))
 
-class TestCommandLine(unittest.TestCase):
+kundi TestCommandLine(unittest.TestCase):
 
-    def test_failures(self):
+    eleza test_failures(self):
         _errors = (
             (b'progname is missing: required with the main options', '-l', '-T'),
             (b'cannot specify both --listfuncs and (--trace or --count)', '-lc'),
@@ -485,24 +485,24 @@ class TestCommandLine(unittest.TestCase):
             *_, stderr = assert_python_failure('-m', 'trace', *args)
             self.assertIn(message, stderr)
 
-    def test_listfuncs_flag_success(self):
+    eleza test_listfuncs_flag_success(self):
         with open(TESTFN, 'w') as fd:
             self.addCleanup(unlink, TESTFN)
             fd.write("a = 1\n")
             status, stdout, stderr = assert_python_ok('-m', 'trace', '-l', TESTFN)
             self.assertIn(b'functions called:', stdout)
 
-    def test_sys_argv_list(self):
+    eleza test_sys_argv_list(self):
         with open(TESTFN, 'w') as fd:
             self.addCleanup(unlink, TESTFN)
             fd.write("agiza sys\n")
-            fd.write("print(type(sys.argv))\n")
+            fd.write("andika(type(sys.argv))\n")
 
         status, direct_stdout, stderr = assert_python_ok(TESTFN)
         status, trace_stdout, stderr = assert_python_ok('-m', 'trace', '-l', TESTFN)
         self.assertIn(direct_stdout.strip(), trace_stdout)
 
-    def test_count_and_summary(self):
+    eleza test_count_and_summary(self):
         filename = f'{TESTFN}.py'
         coverfilename = f'{TESTFN}.cover'
         with open(filename, 'w') as fd:
@@ -512,8 +512,8 @@ class TestCommandLine(unittest.TestCase):
                 x = 1
                 y = 2
 
-                def f():
-                    return x + y
+                eleza f():
+                    rudisha x + y
 
                 for i in range(10):
                     f()
@@ -524,10 +524,10 @@ class TestCommandLine(unittest.TestCase):
         self.assertIn('lines   cov%   module   (path)', stdout)
         self.assertIn(f'6   100%   {TESTFN}   ({filename})', stdout)
 
-    def test_run_as_module(self):
+    eleza test_run_as_module(self):
         assert_python_ok('-m', 'trace', '-l', '--module', 'timeit', '-n', '1')
         assert_python_failure('-m', 'trace', '-l', '--module', 'not_a_module_zzz')
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

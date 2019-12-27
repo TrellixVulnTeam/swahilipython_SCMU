@@ -10429,7 +10429,7 @@ Tests
 - Issue #12096: Fix a race condition in test_threading.test_waitfor(). Patch
   written by Charles-François Natali.
 
-- Issue #11614: import __hello__ prints "Hello World!". Patch written by
+- Issue #11614: agiza __hello__ prints "Hello World!". Patch written by
   Andreas Stührk.
 
 - Issue #5723: Improve json tests to be executed with and without accelerations.

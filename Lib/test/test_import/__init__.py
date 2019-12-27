@@ -34,7 +34,7 @@ skip_if_dont_write_bytecode = unittest.skipIf(
         sys.dont_write_bytecode,
         "test meaningful only when writing bytecode")
 
-def remove_files(name):
+eleza remove_files(name):
     for f in (name + ".py",
               name + ".pyc",
               name + ".pyw",
@@ -44,10 +44,10 @@ def remove_files(name):
 
 
 @contextlib.contextmanager
-def _ready_to_agiza(name=None, source=""):
+eleza _ready_to_agiza(name=None, source=""):
     # sets up a temporary directory and removes it
     # creates the module file
-    # temporarily clears the module kutoka sys.modules (if any)
+    # temporarily clears the module kutoka sys.modules (ikiwa any)
     # reverts or removes the module when cleaning up
     name = name or "spam"
     with temp_dir() as tempdir:
@@ -58,34 +58,34 @@ def _ready_to_agiza(name=None, source=""):
             yield name, path
             sys.path.remove(tempdir)
         finally:
-            if old_module is not None:
+            ikiwa old_module is not None:
                 sys.modules[name] = old_module
-            elif name in sys.modules:
+            elikiwa name in sys.modules:
                 del sys.modules[name]
 
 
-class ImportTests(unittest.TestCase):
+kundi ImportTests(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         remove_files(TESTFN)
         importlib.invalidate_caches()
 
-    def tearDown(self):
+    eleza tearDown(self):
         unload(TESTFN)
 
-    def test_import_raises_ModuleNotFoundError(self):
+    eleza test_import_raises_ModuleNotFoundError(self):
         with self.assertRaises(ModuleNotFoundError):
             agiza something_that_should_not_exist_anywhere
 
-    def test_from_import_missing_module_raises_ModuleNotFoundError(self):
+    eleza test_kutoka_import_missing_module_raises_ModuleNotFoundError(self):
         with self.assertRaises(ModuleNotFoundError):
             kutoka something_that_should_not_exist_anywhere agiza blah
 
-    def test_from_import_missing_attr_raises_ImportError(self):
+    eleza test_kutoka_import_missing_attr_raises_ImportError(self):
         with self.assertRaises(ImportError):
             kutoka importlib agiza something_that_should_not_exist_anywhere
 
-    def test_from_import_missing_attr_has_name_and_path(self):
+    eleza test_kutoka_import_missing_attr_has_name_and_path(self):
         with self.assertRaises(ImportError) as cm:
             kutoka os agiza i_dont_exist
         self.assertEqual(cm.exception.name, 'os')
@@ -93,7 +93,7 @@ class ImportTests(unittest.TestCase):
         self.assertRegex(str(cm.exception), r"cannot agiza name 'i_dont_exist' kutoka 'os' \(.*os.py\)")
 
     @cpython_only
-    def test_from_import_missing_attr_has_name_and_so_path(self):
+    eleza test_kutoka_import_missing_attr_has_name_and_so_path(self):
         agiza _testcapi
         with self.assertRaises(ImportError) as cm:
             kutoka _testcapi agiza i_dont_exist
@@ -101,20 +101,20 @@ class ImportTests(unittest.TestCase):
         self.assertEqual(cm.exception.path, _testcapi.__file__)
         self.assertRegex(str(cm.exception), r"cannot agiza name 'i_dont_exist' kutoka '_testcapi' \(.*\.(so|pyd)\)")
 
-    def test_from_import_missing_attr_has_name(self):
+    eleza test_kutoka_import_missing_attr_has_name(self):
         with self.assertRaises(ImportError) as cm:
             # _warning has no path as it's a built-in module.
             kutoka _warning agiza i_dont_exist
         self.assertEqual(cm.exception.name, '_warning')
         self.assertIsNone(cm.exception.path)
 
-    def test_from_import_missing_attr_path_is_canonical(self):
+    eleza test_kutoka_import_missing_attr_path_is_canonical(self):
         with self.assertRaises(ImportError) as cm:
             kutoka os.path agiza i_dont_exist
         self.assertIn(cm.exception.name, {'posixpath', 'ntpath'})
         self.assertIsNotNone(cm.exception)
 
-    def test_from_import_star_invalid_type(self):
+    eleza test_kutoka_import_star_invalid_type(self):
         agiza re
         with _ready_to_agiza() as (name, path):
             with open(path, 'w') as f:
@@ -135,35 +135,35 @@ class ImportTests(unittest.TestCase):
                 exec(f"kutoka {name} agiza *", globals)
             self.assertNotIn(b"invalid_type", globals)
 
-    def test_case_sensitivity(self):
-        # Brief digression to test that agiza is case-sensitive:  if we got
+    eleza test_case_sensitivity(self):
+        # Brief digression to test that agiza is case-sensitive:  ikiwa we got
         # this far, we know for sure that "random" exists.
         with self.assertRaises(ImportError):
             agiza RAnDoM
 
-    def test_double_const(self):
+    eleza test_double_const(self):
         # Another brief digression to test the accuracy of manifest float
         # constants.
         kutoka test agiza double_const  # don't blink -- that *was* the test
 
-    def test_agiza(self):
-        def test_with_extension(ext):
+    eleza test_agiza(self):
+        eleza test_with_extension(ext):
             # The extension is normally ".py", perhaps ".pyw".
             source = TESTFN + ext
-            if is_jython:
+            ikiwa is_jython:
                 pyc = TESTFN + "$py.class"
             else:
                 pyc = TESTFN + ".pyc"
 
             with open(source, "w") as f:
-                print("# This tests Python's ability to agiza a",
+                andika("# This tests Python's ability to agiza a",
                       ext, "file.", file=f)
                 a = random.randrange(1000)
                 b = random.randrange(1000)
-                print("a =", a, file=f)
-                print("b =", b, file=f)
+                andika("a =", a, file=f)
+                andika("b =", b, file=f)
 
-            if TESTFN in sys.modules:
+            ikiwa TESTFN in sys.modules:
                 del sys.modules[TESTFN]
             importlib.invalidate_caches()
             try:
@@ -184,13 +184,13 @@ class ImportTests(unittest.TestCase):
         sys.path.insert(0, os.curdir)
         try:
             test_with_extension(".py")
-            if sys.platform.startswith("win"):
+            ikiwa sys.platform.startswith("win"):
                 for ext in [".PY", ".Py", ".pY", ".pyw", ".PYW", ".pYw"]:
                     test_with_extension(ext)
         finally:
             del sys.path[0]
 
-    def test_module_with_large_stack(self, module='longlist'):
+    eleza test_module_with_large_stack(self, module='longlist'):
         # Regression test for http://bugs.python.org/issue561858.
         filename = module + '.py'
 
@@ -230,16 +230,16 @@ class ImportTests(unittest.TestCase):
             except KeyError:
                 pass
 
-    def test_failing_import_sticks(self):
+    eleza test_failing_import_sticks(self):
         source = TESTFN + ".py"
         with open(source, "w") as f:
-            print("a = 1/0", file=f)
+            andika("a = 1/0", file=f)
 
         # New in 2.4, we shouldn't be able to agiza that no matter how often
         # we try.
         sys.path.insert(0, os.curdir)
         importlib.invalidate_caches()
-        if TESTFN in sys.modules:
+        ikiwa TESTFN in sys.modules:
             del sys.modules[TESTFN]
         try:
             for i in [1, 2, 3]:
@@ -250,7 +250,7 @@ class ImportTests(unittest.TestCase):
             del sys.path[0]
             remove_files(TESTFN)
 
-    def test_import_name_binding(self):
+    eleza test_import_name_binding(self):
         # agiza x.y.z binds x in the current namespace
         agiza test as x
         agiza test.support
@@ -261,7 +261,7 @@ class ImportTests(unittest.TestCase):
         agiza test.support as y
         self.assertIs(y, test.support, y.__name__)
 
-    def test_issue31286(self):
+    eleza test_issue31286(self):
         # agiza in a 'finally' block resulted in SystemError
         try:
             x = ...
@@ -278,7 +278,7 @@ class ImportTests(unittest.TestCase):
         for i in range(2):
             agiza test.support.script_helper as x
 
-    def test_failing_reload(self):
+    eleza test_failing_reload(self):
         # A failing reload should leave the module object in sys.modules.
         source = TESTFN + os.extsep + "py"
         with open(source, "w") as f:
@@ -317,8 +317,8 @@ class ImportTests(unittest.TestCase):
             unload(TESTFN)
 
     @skip_if_dont_write_bytecode
-    def test_file_to_source(self):
-        # check if __file__ points to the source file where available
+    eleza test_file_to_source(self):
+        # check ikiwa __file__ points to the source file where available
         source = TESTFN + ".py"
         with open(source, "w") as f:
             f.write("test = None\n")
@@ -337,10 +337,10 @@ class ImportTests(unittest.TestCase):
         finally:
             del sys.path[0]
             remove_files(TESTFN)
-            if TESTFN in sys.modules:
+            ikiwa TESTFN in sys.modules:
                 del sys.modules[TESTFN]
 
-    def test_import_by_filename(self):
+    eleza test_import_by_filename(self):
         path = os.path.abspath(TESTFN)
         encoding = sys.getfilesystemencoding()
         try:
@@ -350,25 +350,25 @@ class ImportTests(unittest.TestCase):
         with self.assertRaises(ImportError) as c:
             __import__(path)
 
-    def test_import_in_del_does_not_crash(self):
+    eleza test_import_in_del_does_not_crash(self):
         # Issue 4236
         testfn = script_helper.make_script('', TESTFN, textwrap.dedent("""\
             agiza sys
-            class C:
-               def __del__(self):
+            kundi C:
+               eleza __del__(self):
                   agiza importlib
             sys.argv.insert(0, C())
             """))
         script_helper.assert_python_ok(testfn)
 
     @skip_if_dont_write_bytecode
-    def test_timestamp_overflow(self):
+    eleza test_timestamp_overflow(self):
         # A modification timestamp larger than 2**32 should not be a problem
         # when agizaing a module (issue #11235).
         sys.path.insert(0, os.curdir)
         try:
             source = TESTFN + ".py"
-            compiled = importlib.util.cache_from_source(source)
+            compiled = importlib.util.cache_kutoka_source(source)
             with open(source, 'w') as f:
                 pass
             try:
@@ -376,7 +376,7 @@ class ImportTests(unittest.TestCase):
             except OverflowError:
                 self.skipTest("cannot set modification time to large integer")
             except OSError as e:
-                if e.errno not in (getattr(errno, 'EOVERFLOW', None),
+                ikiwa e.errno not in (getattr(errno, 'EOVERFLOW', None),
                                    getattr(errno, 'EINVAL', None)):
                     raise
                 self.skipTest("cannot set modification time to large integer ({})".format(e))
@@ -387,45 +387,45 @@ class ImportTests(unittest.TestCase):
             del sys.path[0]
             remove_files(TESTFN)
 
-    def test_bogus_fromlist(self):
+    eleza test_bogus_kutokalist(self):
         try:
-            __import__('http', fromlist=['blah'])
+            __import__('http', kutokalist=['blah'])
         except ImportError:
-            self.fail("fromlist must allow bogus names")
+            self.fail("kutokalist must allow bogus names")
 
     @cpython_only
-    def test_delete_builtins_agiza(self):
+    eleza test_delete_builtins_agiza(self):
         args = ["-c", "del __builtins__.__import__; agiza os"]
         popen = script_helper.spawn_python(*args)
         stdout, stderr = popen.communicate()
         self.assertIn(b"ImportError", stdout)
 
-    def test_from_import_message_for_nonexistent_module(self):
+    eleza test_kutoka_import_message_for_nonexistent_module(self):
         with self.assertRaisesRegex(ImportError, "^No module named 'bogus'"):
             kutoka bogus agiza foo
 
-    def test_from_import_message_for_existing_module(self):
+    eleza test_kutoka_import_message_for_existing_module(self):
         with self.assertRaisesRegex(ImportError, "^cannot agiza name 'bogus'"):
             kutoka re agiza bogus
 
-    def test_from_import_AttributeError(self):
+    eleza test_kutoka_import_AttributeError(self):
         # Issue #24492: trying to agiza an attribute that raises an
         # AttributeError should lead to an ImportError.
-        class AlwaysAttributeError:
-            def __getattr__(self, _):
+        kundi AlwaysAttributeError:
+            eleza __getattr__(self, _):
                 raise AttributeError
 
-        module_name = 'test_from_import_AttributeError'
+        module_name = 'test_kutoka_import_AttributeError'
         self.addCleanup(unload, module_name)
         sys.modules[module_name] = AlwaysAttributeError()
         with self.assertRaises(ImportError) as cm:
-            kutoka test_from_import_AttributeError agiza does_not_exist
+            kutoka test_kutoka_import_AttributeError agiza does_not_exist
 
         self.assertEqual(str(cm.exception),
             "cannot agiza name 'does_not_exist' kutoka '<unknown module name>' (unknown location)")
 
     @cpython_only
-    def test_issue31492(self):
+    eleza test_issue31492(self):
         # There shouldn't be an assertion failure in case of failing to agiza
         # kutoka a module with a bad __name__ attribute, or in case of failing
         # to access an attribute of such a module.
@@ -436,11 +436,11 @@ class ImportTests(unittest.TestCase):
             with self.assertRaises(AttributeError):
                 os.does_not_exist
 
-    def test_concurrency(self):
+    eleza test_concurrency(self):
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'data'))
         try:
             exc = None
-            def run():
+            eleza run():
                 event.wait()
                 try:
                     agiza package
@@ -457,19 +457,19 @@ class ImportTests(unittest.TestCase):
                 finally:
                     sys.modules.pop('package', None)
                     sys.modules.pop('package.submodule', None)
-                if exc is not None:
+                ikiwa exc is not None:
                     raise exc
         finally:
             del sys.path[0]
 
     @unittest.skipUnless(sys.platform == "win32", "Windows-specific")
-    def test_dll_dependency_agiza(self):
+    eleza test_dll_dependency_agiza(self):
         kutoka _winapi agiza GetModuleFileName
         dllname = GetModuleFileName(sys.dllhandle)
         pydname = importlib.util.find_spec("_sqlite3").origin
         depname = os.path.join(
             os.path.dirname(pydname),
-            "sqlite3{}.dll".format("_d" if "_d" in pydname else ""))
+            "sqlite3{}.dll".format("_d" ikiwa "_d" in pydname else ""))
 
         with test.support.temp_dir() as tmp:
             tmp2 = os.path.join(tmp, "DLLs")
@@ -509,17 +509,17 @@ class ImportTests(unittest.TestCase):
 
 
 @skip_if_dont_write_bytecode
-class FilePermissionTests(unittest.TestCase):
+kundi FilePermissionTests(unittest.TestCase):
     # tests for file mode on cached .pyc files
 
     @unittest.skipUnless(os.name == 'posix',
                          "test meaningful only on posix systems")
-    def test_creation_mode(self):
+    eleza test_creation_mode(self):
         mask = 0o022
         with temp_umask(mask), _ready_to_agiza() as (name, path):
-            cached_path = importlib.util.cache_from_source(path)
+            cached_path = importlib.util.cache_kutoka_source(path)
             module = __import__(name)
-            if not os.path.exists(cached_path):
+            ikiwa not os.path.exists(cached_path):
                 self.fail("__import__ did not result in creation of "
                           "a .pyc file")
             stat_info = os.stat(cached_path)
@@ -531,14 +531,14 @@ class FilePermissionTests(unittest.TestCase):
 
     @unittest.skipUnless(os.name == 'posix',
                          "test meaningful only on posix systems")
-    def test_cached_mode_issue_2051(self):
+    eleza test_cached_mode_issue_2051(self):
         # permissions of .pyc should match those of .py, regardless of mask
         mode = 0o600
         with temp_umask(0o022), _ready_to_agiza() as (name, path):
-            cached_path = importlib.util.cache_from_source(path)
+            cached_path = importlib.util.cache_kutoka_source(path)
             os.chmod(path, mode)
             __import__(name)
-            if not os.path.exists(cached_path):
+            ikiwa not os.path.exists(cached_path):
                 self.fail("__import__ did not result in creation of "
                           "a .pyc file")
             stat_info = os.stat(cached_path)
@@ -547,13 +547,13 @@ class FilePermissionTests(unittest.TestCase):
 
     @unittest.skipUnless(os.name == 'posix',
                          "test meaningful only on posix systems")
-    def test_cached_readonly(self):
+    eleza test_cached_readonly(self):
         mode = 0o400
         with temp_umask(0o022), _ready_to_agiza() as (name, path):
-            cached_path = importlib.util.cache_from_source(path)
+            cached_path = importlib.util.cache_kutoka_source(path)
             os.chmod(path, mode)
             __import__(name)
-            if not os.path.exists(cached_path):
+            ikiwa not os.path.exists(cached_path):
                 self.fail("__import__ did not result in creation of "
                           "a .pyc file")
             stat_info = os.stat(cached_path)
@@ -561,7 +561,7 @@ class FilePermissionTests(unittest.TestCase):
         expected = mode | 0o200 # Account for fix for issue #6074
         self.assertEqual(oct(stat.S_IMODE(stat_info.st_mode)), oct(expected))
 
-    def test_pyc_always_writable(self):
+    eleza test_pyc_always_writable(self):
         # Initially read-only .pyc files on Windows used to cause problems
         # with later updates, see issue #6074 for details
         with _ready_to_agiza() as (name, path):
@@ -587,12 +587,12 @@ class FilePermissionTests(unittest.TestCase):
             unload(name)
             importlib.invalidate_caches()
             bytecode_only = path + "c"
-            os.rename(importlib.util.cache_from_source(path), bytecode_only)
+            os.rename(importlib.util.cache_kutoka_source(path), bytecode_only)
             m = __import__(name)
             self.assertEqual(m.x, 'rewritten')
 
 
-class PycRewritingTests(unittest.TestCase):
+kundi PycRewritingTests(unittest.TestCase):
     # Test that the `co_filename` attribute on code objects always points
     # to the right file, even when various things happen (e.g. both the .py
     # and the .pyc file are renamed).
@@ -603,15 +603,15 @@ agiza sys
 code_filename = sys._getframe().f_code.co_filename
 module_filename = __file__
 constant = 1
-def func():
+eleza func():
     pass
 func_filename = func.__code__.co_filename
 """
     dir_name = os.path.abspath(TESTFN)
     file_name = os.path.join(dir_name, module_name) + os.extsep + "py"
-    compiled_name = importlib.util.cache_from_source(file_name)
+    compiled_name = importlib.util.cache_kutoka_source(file_name)
 
-    def setUp(self):
+    eleza setUp(self):
         self.sys_path = sys.path[:]
         self.orig_module = sys.modules.pop(self.module_name, None)
         os.mkdir(self.dir_name)
@@ -620,9 +620,9 @@ func_filename = func.__code__.co_filename
         sys.path.insert(0, self.dir_name)
         importlib.invalidate_caches()
 
-    def tearDown(self):
+    eleza tearDown(self):
         sys.path[:] = self.sys_path
-        if self.orig_module is not None:
+        ikiwa self.orig_module is not None:
             sys.modules[self.module_name] = self.orig_module
         else:
             unload(self.module_name)
@@ -630,12 +630,12 @@ func_filename = func.__code__.co_filename
         unlink(self.compiled_name)
         rmtree(self.dir_name)
 
-    def import_module(self):
+    eleza import_module(self):
         ns = globals()
         __import__(self.module_name, ns, ns)
-        return sys.modules[self.module_name]
+        rudisha sys.modules[self.module_name]
 
-    def test_basics(self):
+    eleza test_basics(self):
         mod = self.import_module()
         self.assertEqual(mod.module_filename, self.file_name)
         self.assertEqual(mod.code_filename, self.file_name)
@@ -646,14 +646,14 @@ func_filename = func.__code__.co_filename
         self.assertEqual(mod.code_filename, self.file_name)
         self.assertEqual(mod.func_filename, self.file_name)
 
-    def test_incorrect_code_name(self):
+    eleza test_incorrect_code_name(self):
         py_compile.compile(self.file_name, dfile="another_module.py")
         mod = self.import_module()
         self.assertEqual(mod.module_filename, self.file_name)
         self.assertEqual(mod.code_filename, self.file_name)
         self.assertEqual(mod.func_filename, self.file_name)
 
-    def test_module_without_source(self):
+    eleza test_module_without_source(self):
         target = "another_module.py"
         py_compile.compile(self.file_name, dfile=target)
         os.remove(self.file_name)
@@ -664,7 +664,7 @@ func_filename = func.__code__.co_filename
         self.assertEqual(mod.code_filename, target)
         self.assertEqual(mod.func_filename, target)
 
-    def test_foreign_code(self):
+    eleza test_foreign_code(self):
         py_compile.compile(self.file_name)
         with open(self.compiled_name, "rb") as f:
             header = f.read(16)
@@ -681,21 +681,21 @@ func_filename = func.__code__.co_filename
         self.assertEqual(mod.constant.co_filename, foreign_code.co_filename)
 
 
-class PathsTests(unittest.TestCase):
+kundi PathsTests(unittest.TestCase):
     SAMPLES = ('test', 'test\u00e4\u00f6\u00fc\u00df', 'test\u00e9\u00e8',
                'test\u00b0\u00b3\u00b2')
     path = TESTFN
 
-    def setUp(self):
+    eleza setUp(self):
         os.mkdir(self.path)
         self.syspath = sys.path[:]
 
-    def tearDown(self):
+    eleza tearDown(self):
         rmtree(self.path)
         sys.path[:] = self.syspath
 
     # Regression test for http://bugs.python.org/issue1293.
-    def test_trailing_slash(self):
+    eleza test_trailing_slash(self):
         with open(os.path.join(self.path, 'test_trailing_slash.py'), 'w') as f:
             f.write("testdata = 'test_trailing_slash'")
         sys.path.append(self.path+'/')
@@ -705,7 +705,7 @@ class PathsTests(unittest.TestCase):
 
     # Regression test for http://bugs.python.org/issue3677.
     @unittest.skipUnless(sys.platform == 'win32', 'Windows-specific')
-    def test_UNC_path(self):
+    eleza test_UNC_path(self):
         with open(os.path.join(self.path, 'test_unc_path.py'), 'w') as f:
             f.write("testdata = 'test_unc_path'")
         importlib.invalidate_caches()
@@ -719,7 +719,7 @@ class PathsTests(unittest.TestCase):
         try:
             os.listdir(unc)
         except OSError as e:
-            if e.errno in (errno.EPERM, errno.EACCES, errno.ENOENT):
+            ikiwa e.errno in (errno.EPERM, errno.EACCES, errno.ENOENT):
                 # See issue #15338
                 self.skipTest("cannot access administrative share %r" % (unc,))
             raise
@@ -734,24 +734,24 @@ class PathsTests(unittest.TestCase):
         unload("test_unc_path")
 
 
-class RelativeImportTests(unittest.TestCase):
+kundi RelativeImportTests(unittest.TestCase):
 
-    def tearDown(self):
+    eleza tearDown(self):
         unload("test.relimport")
     setUp = tearDown
 
-    def test_relimport_star(self):
+    eleza test_relimport_star(self):
         # This will agiza * kutoka .test_agiza.
         kutoka .. agiza relimport
         self.assertTrue(hasattr(relimport, "RelativeImportTests"))
 
-    def test_issue3221(self):
+    eleza test_issue3221(self):
         # Note for mergers: the 'absolute' tests kutoka the 2.x branch
         # are missing in Py3k because implicit relative agizas are
         # a thing of the past
         #
         # Regression test for http://bugs.python.org/issue3221.
-        def check_relative():
+        eleza check_relative():
             exec("kutoka . agiza relimport", ns)
 
         # Check relative agiza OK with __package__ and __name__ correct
@@ -774,12 +774,12 @@ class RelativeImportTests(unittest.TestCase):
         ns = dict(__package__=object())
         self.assertRaises(TypeError, check_relative)
 
-    def test_parentless_import_shadowed_by_global(self):
-        # Test as if this were done kutoka the REPL where this error most commonly occurs (bpo-37409).
+    eleza test_parentless_import_shadowed_by_global(self):
+        # Test as ikiwa this were done kutoka the REPL where this error most commonly occurs (bpo-37409).
         script_helper.assert_python_failure('-W', 'ignore', '-c',
             "foo = 1; kutoka . agiza foo")
 
-    def test_absolute_import_without_future(self):
+    eleza test_absolute_import_without_future(self):
         # If explicit relative agiza syntax is used, then do not try
         # to perform an absolute agiza in the face of failure.
         # Issue #7902.
@@ -788,7 +788,7 @@ class RelativeImportTests(unittest.TestCase):
             self.fail("explicit relative agiza triggered an "
                       "implicit absolute agiza")
 
-    def test_import_from_non_package(self):
+    eleza test_import_kutoka_non_package(self):
         path = os.path.join(os.path.dirname(__file__), 'data', 'package2')
         with uncache('submodule1', 'submodule2'), DirsOnSysPath(path):
             with self.assertRaises(ImportError):
@@ -796,60 +796,60 @@ class RelativeImportTests(unittest.TestCase):
             self.assertNotIn('submodule1', sys.modules)
             self.assertNotIn('submodule2', sys.modules)
 
-    def test_import_from_unloaded_package(self):
+    eleza test_import_kutoka_unloaded_package(self):
         with uncache('package2', 'package2.submodule1', 'package2.submodule2'), \
              DirsOnSysPath(os.path.join(os.path.dirname(__file__), 'data')):
             agiza package2.submodule1
             package2.submodule1.submodule2
 
 
-class OverridingImportBuiltinTests(unittest.TestCase):
-    def test_override_builtin(self):
+kundi OverridingImportBuiltinTests(unittest.TestCase):
+    eleza test_override_builtin(self):
         # Test that overriding builtins.__import__ can bypass sys.modules.
         agiza os
 
-        def foo():
+        eleza foo():
             agiza os
-            return os
+            rudisha os
         self.assertEqual(foo(), os)  # Quick sanity check.
 
         with swap_attr(builtins, "__import__", lambda *x: 5):
             self.assertEqual(foo(), 5)
 
         # Test what happens when we shadow __import__ in globals(); this
-        # currently does not impact the agiza process, but if this changes,
+        # currently does not impact the agiza process, but ikiwa this changes,
         # other code will need to change, so keep this test as a tripwire.
         with swap_item(globals(), "__import__", lambda *x: 5):
             self.assertEqual(foo(), os)
 
 
-class PycacheTests(unittest.TestCase):
+kundi PycacheTests(unittest.TestCase):
     # Test the various PEP 3147/488-related behaviors.
 
-    def _clean(self):
+    eleza _clean(self):
         forget(TESTFN)
         rmtree('__pycache__')
         unlink(self.source)
 
-    def setUp(self):
+    eleza setUp(self):
         self.source = TESTFN + '.py'
         self._clean()
         with open(self.source, 'w') as fp:
-            print('# This is a test file written by test_agiza.py', file=fp)
+            andika('# This is a test file written by test_agiza.py', file=fp)
         sys.path.insert(0, os.curdir)
         importlib.invalidate_caches()
 
-    def tearDown(self):
+    eleza tearDown(self):
         assert sys.path[0] == os.curdir, 'Unexpected sys.path[0]'
         del sys.path[0]
         self._clean()
 
     @skip_if_dont_write_bytecode
-    def test_import_pyc_path(self):
+    eleza test_import_pyc_path(self):
         self.assertFalse(os.path.exists('__pycache__'))
         __import__(TESTFN)
         self.assertTrue(os.path.exists('__pycache__'))
-        pyc_path = importlib.util.cache_from_source(self.source)
+        pyc_path = importlib.util.cache_kutoka_source(self.source)
         self.assertTrue(os.path.exists(pyc_path),
                         'bytecode file {!r} for {!r} does not '
                         'exist'.format(pyc_path, TESTFN))
@@ -859,23 +859,23 @@ class PycacheTests(unittest.TestCase):
     @unittest.skipIf(hasattr(os, 'geteuid') and os.geteuid() == 0,
             "due to varying filesystem permission semantics (issue #11956)")
     @skip_if_dont_write_bytecode
-    def test_unwritable_directory(self):
+    eleza test_unwritable_directory(self):
         # When the umask causes the new __pycache__ directory to be
         # unwritable, the agiza still succeeds but no .pyc file is written.
         with temp_umask(0o222):
             __import__(TESTFN)
         self.assertTrue(os.path.exists('__pycache__'))
-        pyc_path = importlib.util.cache_from_source(self.source)
+        pyc_path = importlib.util.cache_kutoka_source(self.source)
         self.assertFalse(os.path.exists(pyc_path),
                         'bytecode file {!r} for {!r} '
                         'exists'.format(pyc_path, TESTFN))
 
     @skip_if_dont_write_bytecode
-    def test_missing_source(self):
+    eleza test_missing_source(self):
         # With PEP 3147 cache layout, removing the source but leaving the pyc
         # file does not satisfy the agiza.
         __import__(TESTFN)
-        pyc_file = importlib.util.cache_from_source(self.source)
+        pyc_file = importlib.util.cache_kutoka_source(self.source)
         self.assertTrue(os.path.exists(pyc_file))
         os.remove(self.source)
         forget(TESTFN)
@@ -883,7 +883,7 @@ class PycacheTests(unittest.TestCase):
         self.assertRaises(ImportError, __import__, TESTFN)
 
     @skip_if_dont_write_bytecode
-    def test_missing_source_legacy(self):
+    eleza test_missing_source_legacy(self):
         # Like test_missing_source() except that for backward compatibility,
         # when the pyc file lives where the py file would have been (and named
         # without the tag), it is agizaable.  The __file__ of the imported
@@ -901,14 +901,14 @@ class PycacheTests(unittest.TestCase):
         finally:
             os.remove(pyc_file)
 
-    def test___cached__(self):
+    eleza test___cached__(self):
         # Modules now also have an __cached__ that points to the pyc file.
         m = __import__(TESTFN)
-        pyc_file = importlib.util.cache_from_source(TESTFN + '.py')
+        pyc_file = importlib.util.cache_kutoka_source(TESTFN + '.py')
         self.assertEqual(m.__cached__, os.path.join(os.curdir, pyc_file))
 
     @skip_if_dont_write_bytecode
-    def test___cached___legacy_pyc(self):
+    eleza test___cached___legacy_pyc(self):
         # Like test___cached__() except that for backward compatibility,
         # when the pyc file lives where the py file would have been (and named
         # without the tag), it is agizaable.  The __cached__ of the imported
@@ -924,9 +924,9 @@ class PycacheTests(unittest.TestCase):
                          os.path.join(os.curdir, os.path.relpath(pyc_file)))
 
     @skip_if_dont_write_bytecode
-    def test_package___cached__(self):
+    eleza test_package___cached__(self):
         # Like test___cached__ but for packages.
-        def cleanup():
+        eleza cleanup():
             rmtree('pep3147')
             unload('pep3147.foo')
             unload('pep3147')
@@ -939,17 +939,17 @@ class PycacheTests(unittest.TestCase):
             pass
         importlib.invalidate_caches()
         m = __import__('pep3147.foo')
-        init_pyc = importlib.util.cache_from_source(
+        init_pyc = importlib.util.cache_kutoka_source(
             os.path.join('pep3147', '__init__.py'))
         self.assertEqual(m.__cached__, os.path.join(os.curdir, init_pyc))
-        foo_pyc = importlib.util.cache_from_source(os.path.join('pep3147', 'foo.py'))
+        foo_pyc = importlib.util.cache_kutoka_source(os.path.join('pep3147', 'foo.py'))
         self.assertEqual(sys.modules['pep3147.foo'].__cached__,
                          os.path.join(os.curdir, foo_pyc))
 
-    def test_package___cached___from_pyc(self):
+    eleza test_package___cached___kutoka_pyc(self):
         # Like test___cached__ but ensuring __cached__ when imported kutoka a
         # PEP 3147 pyc file.
-        def cleanup():
+        eleza cleanup():
             rmtree('pep3147')
             unload('pep3147.foo')
             unload('pep3147')
@@ -966,29 +966,29 @@ class PycacheTests(unittest.TestCase):
         unload('pep3147')
         importlib.invalidate_caches()
         m = __import__('pep3147.foo')
-        init_pyc = importlib.util.cache_from_source(
+        init_pyc = importlib.util.cache_kutoka_source(
             os.path.join('pep3147', '__init__.py'))
         self.assertEqual(m.__cached__, os.path.join(os.curdir, init_pyc))
-        foo_pyc = importlib.util.cache_from_source(os.path.join('pep3147', 'foo.py'))
+        foo_pyc = importlib.util.cache_kutoka_source(os.path.join('pep3147', 'foo.py'))
         self.assertEqual(sys.modules['pep3147.foo'].__cached__,
                          os.path.join(os.curdir, foo_pyc))
 
-    def test_recompute_pyc_same_second(self):
+    eleza test_recompute_pyc_same_second(self):
         # Even when the source file doesn't change timestamp, a change in
         # source size is enough to trigger recomputation of the pyc file.
         __import__(TESTFN)
         unload(TESTFN)
         with open(self.source, 'a') as fp:
-            print("x = 5", file=fp)
+            andika("x = 5", file=fp)
         m = __import__(TESTFN)
         self.assertEqual(m.x, 5)
 
 
-class TestSymbolicallyLinkedPackage(unittest.TestCase):
+kundi TestSymbolicallyLinkedPackage(unittest.TestCase):
     package_name = 'sample'
     tagged = package_name + '-tagged'
 
-    def setUp(self):
+    eleza setUp(self):
         test.support.rmtree(self.tagged)
         test.support.rmtree(self.package_name)
         self.orig_sys_path = sys.path[:]
@@ -1011,7 +1011,7 @@ class TestSymbolicallyLinkedPackage(unittest.TestCase):
 
         assert os.path.isfile(os.path.join(self.package_name, '__init__.py'))
 
-    def tearDown(self):
+    eleza tearDown(self):
         sys.path[:] = self.orig_sys_path
 
     # regression test for issue6727
@@ -1020,7 +1020,7 @@ class TestSymbolicallyLinkedPackage(unittest.TestCase):
         or sys.getwindowsversion() >= (6, 0),
         "Windows Vista or later required")
     @test.support.skip_unless_symlink
-    def test_symlinked_dir_agizaable(self):
+    eleza test_symlinked_dir_agizaable(self):
         # make sure sample can only be imported kutoka the current directory.
         sys.path[:] = ['.']
         assert os.path.exists(self.package_name)
@@ -1031,14 +1031,14 @@ class TestSymbolicallyLinkedPackage(unittest.TestCase):
 
 
 @cpython_only
-class ImportlibBootstrapTests(unittest.TestCase):
+kundi ImportlibBootstrapTests(unittest.TestCase):
     # These tests check that importlib is bootstrapped.
 
-    def test_frozen_importlib(self):
+    eleza test_frozen_importlib(self):
         mod = sys.modules['_frozen_importlib']
         self.assertTrue(mod)
 
-    def test_frozen_importlib_is_bootstrap(self):
+    eleza test_frozen_importlib_is_bootstrap(self):
         kutoka importlib agiza _bootstrap
         mod = sys.modules['_frozen_importlib']
         self.assertIs(mod, _bootstrap)
@@ -1046,7 +1046,7 @@ class ImportlibBootstrapTests(unittest.TestCase):
         self.assertEqual(mod.__package__, 'importlib')
         self.assertTrue(mod.__file__.endswith('_bootstrap.py'), mod.__file__)
 
-    def test_frozen_importlib_external_is_bootstrap_external(self):
+    eleza test_frozen_importlib_external_is_bootstrap_external(self):
         kutoka importlib agiza _bootstrap_external
         mod = sys.modules['_frozen_importlib_external']
         self.assertIs(mod, _bootstrap_external)
@@ -1054,7 +1054,7 @@ class ImportlibBootstrapTests(unittest.TestCase):
         self.assertEqual(mod.__package__, 'importlib')
         self.assertTrue(mod.__file__.endswith('_bootstrap_external.py'), mod.__file__)
 
-    def test_there_can_be_only_one(self):
+    eleza test_there_can_be_only_one(self):
         # Issue #15386 revealed a tricky loophole in the bootstrapping
         # This test is technically redundant, since the bug caused agizaing
         # this test module to crash completely, but it helps prove the point
@@ -1064,7 +1064,7 @@ class ImportlibBootstrapTests(unittest.TestCase):
 
 
 @cpython_only
-class GetSourcefileTests(unittest.TestCase):
+kundi GetSourcefileTests(unittest.TestCase):
 
     """Test importlib._bootstrap_external._get_sourcefile() as used by the C API.
 
@@ -1073,62 +1073,62 @@ class GetSourcefileTests(unittest.TestCase):
 
     """
 
-    def test_get_sourcefile(self):
-        # Given a valid bytecode path, return the path to the corresponding
-        # source file if it exists.
+    eleza test_get_sourcefile(self):
+        # Given a valid bytecode path, rudisha the path to the corresponding
+        # source file ikiwa it exists.
         with mock.patch('importlib._bootstrap_external._path_isfile') as _path_isfile:
             _path_isfile.return_value = True;
             path = TESTFN + '.pyc'
             expect = TESTFN + '.py'
             self.assertEqual(_get_sourcefile(path), expect)
 
-    def test_get_sourcefile_no_source(self):
+    eleza test_get_sourcefile_no_source(self):
         # Given a valid bytecode path without a corresponding source path,
-        # return the original bytecode path.
+        # rudisha the original bytecode path.
         with mock.patch('importlib._bootstrap_external._path_isfile') as _path_isfile:
             _path_isfile.return_value = False;
             path = TESTFN + '.pyc'
             self.assertEqual(_get_sourcefile(path), path)
 
-    def test_get_sourcefile_bad_ext(self):
-        # Given a path with an invalid bytecode extension, return the
+    eleza test_get_sourcefile_bad_ext(self):
+        # Given a path with an invalid bytecode extension, rudisha the
         # bytecode path passed as the argument.
         path = TESTFN + '.bad_ext'
         self.assertEqual(_get_sourcefile(path), path)
 
 
-class ImportTracebackTests(unittest.TestCase):
+kundi ImportTracebackTests(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         os.mkdir(TESTFN)
         self.old_path = sys.path[:]
         sys.path.insert(0, TESTFN)
 
-    def tearDown(self):
+    eleza tearDown(self):
         sys.path[:] = self.old_path
         rmtree(TESTFN)
 
-    def create_module(self, mod, contents, ext=".py"):
+    eleza create_module(self, mod, contents, ext=".py"):
         fname = os.path.join(TESTFN, mod + ext)
         with open(fname, "w") as f:
             f.write(contents)
         self.addCleanup(unload, mod)
         importlib.invalidate_caches()
-        return fname
+        rudisha fname
 
-    def assert_traceback(self, tb, files):
+    eleza assert_traceback(self, tb, files):
         deduped_files = []
         while tb:
             code = tb.tb_frame.f_code
             fn = code.co_filename
-            if not deduped_files or fn != deduped_files[-1]:
+            ikiwa not deduped_files or fn != deduped_files[-1]:
                 deduped_files.append(fn)
             tb = tb.tb_next
         self.assertEqual(len(deduped_files), len(files), deduped_files)
         for fn, pat in zip(deduped_files, files):
             self.assertIn(pat, fn)
 
-    def test_nonexistent_module(self):
+    eleza test_nonexistent_module(self):
         try:
             # assertRaises() clears __traceback__
             agiza nonexistent_xyzzy
@@ -1138,7 +1138,7 @@ class ImportTracebackTests(unittest.TestCase):
             self.fail("ImportError should have been raised")
         self.assert_traceback(tb, [__file__])
 
-    def test_nonexistent_module_nested(self):
+    eleza test_nonexistent_module_nested(self):
         self.create_module("foo", "agiza nonexistent_xyzzy")
         try:
             agiza foo
@@ -1148,7 +1148,7 @@ class ImportTracebackTests(unittest.TestCase):
             self.fail("ImportError should have been raised")
         self.assert_traceback(tb, [__file__, 'foo.py'])
 
-    def test_exec_failure(self):
+    eleza test_exec_failure(self):
         self.create_module("foo", "1/0")
         try:
             agiza foo
@@ -1158,7 +1158,7 @@ class ImportTracebackTests(unittest.TestCase):
             self.fail("ZeroDivisionError should have been raised")
         self.assert_traceback(tb, [__file__, 'foo.py'])
 
-    def test_exec_failure_nested(self):
+    eleza test_exec_failure_nested(self):
         self.create_module("foo", "agiza bar")
         self.create_module("bar", "1/0")
         try:
@@ -1170,7 +1170,7 @@ class ImportTracebackTests(unittest.TestCase):
         self.assert_traceback(tb, [__file__, 'foo.py', 'bar.py'])
 
     # A few more examples kutoka issue #15425
-    def test_syntax_error(self):
+    eleza test_syntax_error(self):
         self.create_module("foo", "invalid syntax is invalid")
         try:
             agiza foo
@@ -1180,7 +1180,7 @@ class ImportTracebackTests(unittest.TestCase):
             self.fail("SyntaxError should have been raised")
         self.assert_traceback(tb, [__file__])
 
-    def _setup_broken_package(self, parent, child):
+    eleza _setup_broken_package(self, parent, child):
         pkg_name = "_parent_foo"
         self.addCleanup(unload, pkg_name)
         pkg_path = os.path.join(TESTFN, pkg_name)
@@ -1193,9 +1193,9 @@ class ImportTracebackTests(unittest.TestCase):
         with open(bar_path, 'w') as f:
             f.write(child)
         importlib.invalidate_caches()
-        return init_path, bar_path
+        rudisha init_path, bar_path
 
-    def test_broken_submodule(self):
+    eleza test_broken_submodule(self):
         init_path, bar_path = self._setup_broken_package("", "1/0")
         try:
             agiza _parent_foo.bar
@@ -1205,7 +1205,7 @@ class ImportTracebackTests(unittest.TestCase):
             self.fail("ZeroDivisionError should have been raised")
         self.assert_traceback(tb, [__file__, bar_path])
 
-    def test_broken_from(self):
+    eleza test_broken_kutoka(self):
         init_path, bar_path = self._setup_broken_package("", "1/0")
         try:
             kutoka _parent_foo agiza bar
@@ -1215,7 +1215,7 @@ class ImportTracebackTests(unittest.TestCase):
             self.fail("ImportError should have been raised")
         self.assert_traceback(tb, [__file__, bar_path])
 
-    def test_broken_parent(self):
+    eleza test_broken_parent(self):
         init_path, bar_path = self._setup_broken_package("1/0", "")
         try:
             agiza _parent_foo.bar
@@ -1225,7 +1225,7 @@ class ImportTracebackTests(unittest.TestCase):
             self.fail("ZeroDivisionError should have been raised")
         self.assert_traceback(tb, [__file__, init_path])
 
-    def test_broken_parent_from(self):
+    eleza test_broken_parent_kutoka(self):
         init_path, bar_path = self._setup_broken_package("1/0", "")
         try:
             kutoka _parent_foo agiza bar
@@ -1236,17 +1236,17 @@ class ImportTracebackTests(unittest.TestCase):
         self.assert_traceback(tb, [__file__, init_path])
 
     @cpython_only
-    def test_import_bug(self):
+    eleza test_import_bug(self):
         # We simulate a bug in importlib and check that it's not stripped
         # away kutoka the traceback.
         self.create_module("foo", "")
         importlib = sys.modules['_frozen_importlib_external']
-        if 'load_module' in vars(importlib.SourceLoader):
+        ikiwa 'load_module' in vars(importlib.SourceLoader):
             old_exec_module = importlib.SourceLoader.exec_module
         else:
             old_exec_module = None
         try:
-            def exec_module(*args):
+            eleza exec_module(*args):
                 1/0
             importlib.SourceLoader.exec_module = exec_module
             try:
@@ -1257,13 +1257,13 @@ class ImportTracebackTests(unittest.TestCase):
                 self.fail("ZeroDivisionError should have been raised")
             self.assert_traceback(tb, [__file__, '<frozen importlib', __file__])
         finally:
-            if old_exec_module is None:
+            ikiwa old_exec_module is None:
                 del importlib.SourceLoader.exec_module
             else:
                 importlib.SourceLoader.exec_module = old_exec_module
 
     @unittest.skipUnless(TESTFN_UNENCODABLE, 'need TESTFN_UNENCODABLE')
-    def test_unencodable_filename(self):
+    eleza test_unencodable_filename(self):
         # Issue #11619: The Python parser and the agiza machinery must not
         # encode filenames, especially on Windows
         pyname = script_helper.make_script('', TESTFN_UNENCODABLE, 'pass')
@@ -1273,38 +1273,38 @@ class ImportTracebackTests(unittest.TestCase):
                                        __isolated=False)
 
 
-class CircularImportTests(unittest.TestCase):
+kundi CircularImportTests(unittest.TestCase):
 
     """See the docstrings of the modules being imported for the purpose of the
     test."""
 
-    def tearDown(self):
+    eleza tearDown(self):
         """Make sure no modules pre-exist in sys.modules which are being used to
         test."""
         for key in list(sys.modules.keys()):
-            if key.startswith('test.test_agiza.data.circular_agizas'):
+            ikiwa key.startswith('test.test_agiza.data.circular_agizas'):
                 del sys.modules[key]
 
-    def test_direct(self):
+    eleza test_direct(self):
         try:
             agiza test.test_agiza.data.circular_agizas.basic
         except ImportError:
             self.fail('circular agiza through relative agizas failed')
 
-    def test_indirect(self):
+    eleza test_indirect(self):
         try:
             agiza test.test_agiza.data.circular_agizas.indirect
         except ImportError:
             self.fail('relative agiza in module contributing to circular '
                       'agiza failed')
 
-    def test_subpackage(self):
+    eleza test_subpackage(self):
         try:
             agiza test.test_agiza.data.circular_agizas.subpackage
         except ImportError:
             self.fail('circular agiza involving a subpackage failed')
 
-    def test_rebinding(self):
+    eleza test_rebinding(self):
         try:
             agiza test.test_agiza.data.circular_agizas.rebinding as rebinding
         except ImportError:
@@ -1312,17 +1312,17 @@ class CircularImportTests(unittest.TestCase):
         kutoka test.test_agiza.data.circular_agizas.subpkg agiza util
         self.assertIs(util.util, rebinding.util)
 
-    def test_binding(self):
+    eleza test_binding(self):
         try:
             agiza test.test_agiza.data.circular_agizas.binding
         except ImportError:
             self.fail('circular agiza with binding a submodule to a name failed')
 
-    def test_crossreference1(self):
+    eleza test_crossreference1(self):
         agiza test.test_agiza.data.circular_agizas.use
         agiza test.test_agiza.data.circular_agizas.source
 
-    def test_crossreference2(self):
+    eleza test_crossreference2(self):
         with self.assertRaises(AttributeError) as cm:
             agiza test.test_agiza.data.circular_agizas.source
         errmsg = str(cm.exception)
@@ -1331,17 +1331,17 @@ class CircularImportTests(unittest.TestCase):
         self.assertIn('partially initialized module', errmsg)
         self.assertIn('circular agiza', errmsg)
 
-    def test_circular_from_agiza(self):
+    eleza test_circular_kutoka_agiza(self):
         with self.assertRaises(ImportError) as cm:
-            agiza test.test_agiza.data.circular_agizas.from_cycle1
+            agiza test.test_agiza.data.circular_agizas.kutoka_cycle1
         self.assertIn(
             "cannot agiza name 'b' kutoka partially initialized module "
-            "'test.test_agiza.data.circular_agizas.from_cycle1' "
+            "'test.test_agiza.data.circular_agizas.kutoka_cycle1' "
             "(most likely due to a circular agiza)",
             str(cm.exception),
         )
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     # Test needs to be a package, so we can do relative agizas.
     unittest.main()

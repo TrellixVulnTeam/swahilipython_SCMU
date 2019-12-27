@@ -17,9 +17,9 @@ _PATTERN_GRAMMAR_FILE = os.path.join(os.path.dirname(__file__),
                                      "PatternGrammar.txt")
 
 
-class Symbols(object):
+kundi Symbols(object):
 
-    def __init__(self, grammar):
+    eleza __init__(self, grammar):
         """Initializer.
 
         Creates an attribute for each grammar symbol (nonterminal),

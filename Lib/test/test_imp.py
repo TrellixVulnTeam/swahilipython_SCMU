@@ -14,25 +14,25 @@ with warnings.catch_warnings():
 agiza _imp
 
 
-def requires_load_dynamic(meth):
-    """Decorator to skip a test if not running under CPython or lacking
+eleza requires_load_dynamic(meth):
+    """Decorator to skip a test ikiwa not running under CPython or lacking
     imp.load_dynamic()."""
     meth = support.cpython_only(meth)
-    return unittest.skipIf(not hasattr(imp, 'load_dynamic'),
+    rudisha unittest.skipIf(not hasattr(imp, 'load_dynamic'),
                            'imp.load_dynamic() required')(meth)
 
 
-class LockTests(unittest.TestCase):
+kundi LockTests(unittest.TestCase):
 
     """Very basic test of agiza lock functions."""
 
-    def verify_lock_state(self, expected):
+    eleza verify_lock_state(self, expected):
         self.assertEqual(imp.lock_held(), expected,
                              "expected imp.lock_held() to be %r" % expected)
-    def testLock(self):
+    eleza testLock(self):
         LOOPS = 50
 
-        # The agiza lock may already be held, e.g. if the test suite is run
+        # The agiza lock may already be held, e.g. ikiwa the test suite is run
         # via "agiza test.autotest".
         lock_held_at_start = imp.lock_held()
         self.verify_lock_state(lock_held_at_start)
@@ -47,7 +47,7 @@ class LockTests(unittest.TestCase):
         # The original state should be restored now.
         self.verify_lock_state(lock_held_at_start)
 
-        if not lock_held_at_start:
+        ikiwa not lock_held_at_start:
             try:
                 imp.release_lock()
             except RuntimeError:
@@ -56,19 +56,19 @@ class LockTests(unittest.TestCase):
                 self.fail("release_lock() without lock should raise "
                             "RuntimeError")
 
-class ImportTests(unittest.TestCase):
-    def setUp(self):
+kundi ImportTests(unittest.TestCase):
+    eleza setUp(self):
         mod = importlib.import_module('test.encoded_modules')
         self.test_strings = mod.test_strings
         self.test_path = mod.__path__
 
-    def test_import_encoded_module(self):
+    eleza test_import_encoded_module(self):
         for modname, encoding, teststr in self.test_strings:
             mod = importlib.import_module('test.encoded_modules.'
                                           'module_' + modname)
             self.assertEqual(teststr, mod.test)
 
-    def test_find_module_encoding(self):
+    eleza test_find_module_encoding(self):
         for mod, encoding, _ in self.test_strings:
             with imp.find_module('module_' + mod, self.test_path)[0] as fd:
                 self.assertEqual(fd.encoding, encoding)
@@ -77,7 +77,7 @@ class ImportTests(unittest.TestCase):
         with self.assertRaises(SyntaxError):
             imp.find_module('badsyntax_pep3120', path)
 
-    def test_issue1267(self):
+    eleza test_issue1267(self):
         for mod, encoding, _ in self.test_strings:
             fp, filename, info  = imp.find_module('module_' + mod,
                                                   self.test_path)
@@ -96,7 +96,7 @@ class ImportTests(unittest.TestCase):
             self.assertEqual(fp.readline(),
                              '"""Tokenization help for Python programs.\n')
 
-    def test_issue3594(self):
+    eleza test_issue3594(self):
         temp_mod_name = 'test_imp_helper'
         sys.path.insert(0, '.')
         try:
@@ -110,14 +110,14 @@ class ImportTests(unittest.TestCase):
             support.unlink(temp_mod_name + '.py')
             support.unlink(temp_mod_name + '.pyc')
 
-    def test_issue5604(self):
+    eleza test_issue5604(self):
         # Test cannot cover imp.load_compiled function.
         # Martin von Loewis note what shared library cannot have non-ascii
         # character because init_xxx function cannot be compiled
         # and issue never happens for dynamic modules.
         # But sources modified to follow generic way for processing paths.
 
-        # the return encoding could be uppercase or None
+        # the rudisha encoding could be uppercase or None
         fs_encoding = sys.getfilesystemencoding()
 
         # covers utf-8 and Windows ANSI code pages
@@ -136,7 +136,7 @@ class ImportTests(unittest.TestCase):
             'cp1258' : b'\xc0',
             }
 
-        if sys.platform == 'darwin':
+        ikiwa sys.platform == 'darwin':
             self.assertEqual(fs_encoding, 'utf-8')
             # Mac OS X uses the Normal Form D decomposition
             # http://developer.apple.com/mac/library/qa/qa2001/qa1173.html
@@ -144,7 +144,7 @@ class ImportTests(unittest.TestCase):
         else:
             special_char = known_locales.get(fs_encoding)
 
-        if not special_char:
+        ikiwa not special_char:
             self.skipTest("can't run this test with %s as filesystem encoding"
                           % fs_encoding)
         decoded_char = special_char.decode(fs_encoding)
@@ -152,7 +152,7 @@ class ImportTests(unittest.TestCase):
         test_package_name = 'test_imp_helper_package_' + decoded_char
         init_file_name = os.path.join(test_package_name, '__init__.py')
         try:
-            # if the curdir is not in sys.path the test fails when run with
+            # ikiwa the curdir is not in sys.path the test fails when run with
             # ./python ./Lib/test/regrtest.py test_imp
             sys.path.insert(0, os.curdir)
             with open(temp_mod_name + '.py', 'w') as file:
@@ -175,13 +175,13 @@ class ImportTests(unittest.TestCase):
 
             with warnings.catch_warnings():
                 warnings.simplefilter('ignore')
-                if not sys.dont_write_bytecode:
+                ikiwa not sys.dont_write_bytecode:
                     mod = imp.load_compiled(
                         temp_mod_name,
-                        imp.cache_from_source(temp_mod_name + '.py'))
+                        imp.cache_kutoka_source(temp_mod_name + '.py'))
             self.assertEqual(mod.a, 1)
 
-            if not os.path.exists(test_package_name):
+            ikiwa not os.path.exists(test_package_name):
                 os.mkdir(test_package_name)
             with open(init_file_name, 'w') as file:
                 file.write('b = 2\n')
@@ -197,12 +197,12 @@ class ImportTests(unittest.TestCase):
             support.rmtree(test_package_name)
             support.rmtree('__pycache__')
 
-    def test_issue9319(self):
+    eleza test_issue9319(self):
         path = os.path.dirname(__file__)
         self.assertRaises(SyntaxError,
                           imp.find_module, "badsyntax_pep3120", [path])
 
-    def test_load_from_source(self):
+    eleza test_load_kutoka_source(self):
         # Verify that the imp module can correctly load and find .py files
         # XXX (ncoghlan): It would be nice to use support.CleanImport
         # here, but that breaks because the os module registers some
@@ -222,19 +222,19 @@ class ImportTests(unittest.TestCase):
             self.assertIsNot(orig_getenv, new_os.getenv)
 
     @requires_load_dynamic
-    def test_issue15828_load_extensions(self):
+    eleza test_issue15828_load_extensions(self):
         # Issue 15828 picked up that the adapter between the old imp API
         # and importlib couldn't handle C extensions
         example = "_heapq"
         x = imp.find_module(example)
         file_ = x[0]
-        if file_ is not None:
+        ikiwa file_ is not None:
             self.addCleanup(file_.close)
         mod = imp.load_module(example, *x)
         self.assertEqual(mod.__name__, example)
 
     @requires_load_dynamic
-    def test_issue16421_multiple_modules_in_one_dll(self):
+    eleza test_issue16421_multiple_modules_in_one_dll(self):
         # Issue 16421: loading several modules kutoka the same compiled file fails
         m = '_testagizamultiple'
         fileobj, pathname, description = imp.find_module(m)
@@ -249,7 +249,7 @@ class ImportTests(unittest.TestCase):
             imp.load_dynamic('nonexistent', pathname)
 
     @requires_load_dynamic
-    def test_load_dynamic_ImportError_path(self):
+    eleza test_load_dynamic_ImportError_path(self):
         # Issue #1559549 added `name` and `path` attributes to ImportError
         # in order to provide better detail. Issue #10854 implemented those
         # attributes on agiza failures of extensions on Windows.
@@ -261,20 +261,20 @@ class ImportTests(unittest.TestCase):
         self.assertEqual(name, err.exception.name)
 
     @requires_load_dynamic
-    def test_load_module_extension_file_is_None(self):
+    eleza test_load_module_extension_file_is_None(self):
         # When loading an extension module and the file is None, open one
         # on the behalf of imp.load_dynamic().
         # Issue #15902
         name = '_testagizamultiple'
         found = imp.find_module(name)
-        if found[0] is not None:
+        ikiwa found[0] is not None:
             found[0].close()
-        if found[2][2] != imp.C_EXTENSION:
+        ikiwa found[2][2] != imp.C_EXTENSION:
             self.skipTest("found module doesn't appear to be a C extension")
         imp.load_module(name, None, *found[1:])
 
     @requires_load_dynamic
-    def test_issue24748_load_module_skips_sys_modules_check(self):
+    eleza test_issue24748_load_module_skips_sys_modules_check(self):
         name = 'test.imp_dummy'
         try:
             del sys.modules[name]
@@ -298,21 +298,21 @@ class ImportTests(unittest.TestCase):
 
     @unittest.skipIf(sys.dont_write_bytecode,
         "test meaningful only when writing bytecode")
-    def test_bug7732(self):
+    eleza test_bug7732(self):
         with support.temp_cwd():
             source = support.TESTFN + '.py'
             os.mkdir(source)
             self.assertRaisesRegex(ImportError, '^No module',
                 imp.find_module, support.TESTFN, ["."])
 
-    def test_multiple_calls_to_get_data(self):
+    eleza test_multiple_calls_to_get_data(self):
         # Issue #18755: make sure multiple calls to get_data() can succeed.
         loader = imp._LoadSourceCompatibility('imp', imp.__file__,
                                               open(imp.__file__))
         loader.get_data(imp.__file__)  # File should be closed
         loader.get_data(imp.__file__)  # Will need to create a newly opened file
 
-    def test_load_source(self):
+    eleza test_load_source(self):
         # Create a temporary module since load_source(name) modifies
         # sys.modules[name] attributes like __loader___
         modname = f"tmp{__name__}"
@@ -322,17 +322,17 @@ class ImportTests(unittest.TestCase):
                 imp.load_source(modname, __file__ + "\0")
 
     @support.cpython_only
-    def test_issue31315(self):
+    eleza test_issue31315(self):
         # There shouldn't be an assertion failure in imp.create_dynamic(),
         # when spec.name is not a string.
         create_dynamic = support.get_attribute(imp, 'create_dynamic')
-        class BadSpec:
+        kundi BadSpec:
             name = None
             origin = 'foo'
         with self.assertRaises(TypeError):
             create_dynamic(BadSpec())
 
-    def test_issue_35321(self):
+    eleza test_issue_35321(self):
         # Both _frozen_importlib and _frozen_importlib_external
         # should have a spec origin of "frozen" and
         # no need to clean up agizas in this case.
@@ -343,11 +343,11 @@ class ImportTests(unittest.TestCase):
         agiza _frozen_importlib
         self.assertEqual(_frozen_importlib.__spec__.origin, "frozen")
 
-    def test_source_hash(self):
+    eleza test_source_hash(self):
         self.assertEqual(_imp.source_hash(42, b'hi'), b'\xc6\xe7Z\r\x03:}\xab')
         self.assertEqual(_imp.source_hash(43, b'hi'), b'\x85\x9765\xf8\x9a\x8b9')
 
-    def test_pyc_invalidation_mode_from_cmdline(self):
+    eleza test_pyc_invalidation_mode_kutoka_cmdline(self):
         cases = [
             ([], "default"),
             (["--check-hash-based-pycs", "default"], "default"),
@@ -357,12 +357,12 @@ class ImportTests(unittest.TestCase):
         for interp_args, expected in cases:
             args = interp_args + [
                 "-c",
-                "agiza _imp; print(_imp.check_hash_based_pycs)",
+                "agiza _imp; andika(_imp.check_hash_based_pycs)",
             ]
             res = script_helper.assert_python_ok(*args)
             self.assertEqual(res.out.strip().decode('utf-8'), expected)
 
-    def test_find_and_load_checked_pyc(self):
+    eleza test_find_and_load_checked_pyc(self):
         # issue 34056
         with support.temp_cwd():
             with open('mymod.py', 'wb') as fp:
@@ -377,12 +377,12 @@ class ImportTests(unittest.TestCase):
         self.assertEqual(mod.x, 42)
 
 
-class ReloadTests(unittest.TestCase):
+kundi ReloadTests(unittest.TestCase):
 
     """Very basic tests to make sure that imp.reload() operates just like
     reload()."""
 
-    def test_source(self):
+    eleza test_source(self):
         # XXX (ncoghlan): It would be nice to use test.support.CleanImport
         # here, but that breaks because the os module registers some
         # handlers in copy_reg on agiza. Since CleanImport doesn't
@@ -394,58 +394,58 @@ class ReloadTests(unittest.TestCase):
             agiza os
             imp.reload(os)
 
-    def test_extension(self):
+    eleza test_extension(self):
         with support.CleanImport('time'):
             agiza time
             imp.reload(time)
 
-    def test_builtin(self):
+    eleza test_builtin(self):
         with support.CleanImport('marshal'):
             agiza marshal
             imp.reload(marshal)
 
-    def test_with_deleted_parent(self):
+    eleza test_with_deleted_parent(self):
         # see #18681
         kutoka html agiza parser
         html = sys.modules.pop('html')
-        def cleanup():
+        eleza cleanup():
             sys.modules['html'] = html
         self.addCleanup(cleanup)
         with self.assertRaisesRegex(ImportError, 'html'):
             imp.reload(parser)
 
 
-class PEP3147Tests(unittest.TestCase):
+kundi PEP3147Tests(unittest.TestCase):
     """Tests of PEP 3147."""
 
     tag = imp.get_tag()
 
     @unittest.skipUnless(sys.implementation.cache_tag is not None,
                          'requires sys.implementation.cache_tag not be None')
-    def test_cache_from_source(self):
-        # Given the path to a .py file, return the path to its PEP 3147
+    eleza test_cache_kutoka_source(self):
+        # Given the path to a .py file, rudisha the path to its PEP 3147
         # defined .pyc file (i.e. under __pycache__).
         path = os.path.join('foo', 'bar', 'baz', 'qux.py')
         expect = os.path.join('foo', 'bar', 'baz', '__pycache__',
                               'qux.{}.pyc'.format(self.tag))
-        self.assertEqual(imp.cache_from_source(path, True), expect)
+        self.assertEqual(imp.cache_kutoka_source(path, True), expect)
 
     @unittest.skipUnless(sys.implementation.cache_tag is not None,
                          'requires sys.implementation.cache_tag to not be '
                          'None')
-    def test_source_from_cache(self):
-        # Given the path to a PEP 3147 defined .pyc file, return the path to
+    eleza test_source_kutoka_cache(self):
+        # Given the path to a PEP 3147 defined .pyc file, rudisha the path to
         # its source.  This tests the good path.
         path = os.path.join('foo', 'bar', 'baz', '__pycache__',
                             'qux.{}.pyc'.format(self.tag))
         expect = os.path.join('foo', 'bar', 'baz', 'qux.py')
-        self.assertEqual(imp.source_from_cache(path), expect)
+        self.assertEqual(imp.source_kutoka_cache(path), expect)
 
 
-class NullImporterTests(unittest.TestCase):
+kundi NullImporterTests(unittest.TestCase):
     @unittest.skipIf(support.TESTFN_UNENCODABLE is None,
                      "Need an undecodeable filename")
-    def test_unencodeable(self):
+    eleza test_unencodeable(self):
         name = support.TESTFN_UNENCODABLE
         os.mkdir(name)
         try:
@@ -454,5 +454,5 @@ class NullImporterTests(unittest.TestCase):
             os.rmdir(name)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

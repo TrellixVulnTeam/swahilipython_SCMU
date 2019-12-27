@@ -27,7 +27,7 @@ So if you are embedding Python, you are providing your own main program.  One of
 the things this main program has to do is initialize the Python interpreter.  At
 the very least, you have to call the function :c:func:`Py_Initialize`.  There are
 optional calls to pass command line arguments to Python.  Then later you can
-call the interpreter from any part of the application.
+call the interpreter kutoka any part of the application.
 
 There are several different ways to call the interpreter: you can pass a string
 containing Python statements to :c:func:`PyRun_SimpleString`, or you can pass a
@@ -66,7 +66,7 @@ perform some operation on a file. ::
        }
        Py_SetProgramName(program);  /* optional but recommended */
        Py_Initialize();
-       PyRun_SimpleString("from time import time,ctime\n"
+       PyRun_SimpleString("kutoka time agiza time,ctime\n"
                           "print('Today is', ctime(time()))\n");
        if (Py_FinalizeEx() < 0) {
            exit(120);
@@ -81,8 +81,8 @@ libraries.  Next, the Python interpreter is initialized with
 :c:func:`Py_Initialize`, followed by the execution of a hard-coded Python script
 that prints the date and time.  Afterwards, the :c:func:`Py_FinalizeEx` call shuts
 the interpreter down, followed by the end of the program.  In a real program,
-you may want to get the Python script from another source, perhaps a text-editor
-routine, a file, or a database.  Getting the Python code from a file can better
+you may want to get the Python script kutoka another source, perhaps a text-editor
+routine, a file, or a database.  Getting the Python code kutoka a file can better
 be done by using the :c:func:`PyRun_SimpleFile` function, which saves you the
 trouble of allocating memory space and loading the file contents.
 
@@ -93,38 +93,38 @@ Beyond Very High Level Embedding: An overview
 =============================================
 
 The high level interface gives you the ability to execute arbitrary pieces of
-Python code from your application, but exchanging data values is quite
+Python code kutoka your application, but exchanging data values is quite
 cumbersome to say the least. If you want that, you should use lower level calls.
 At the cost of having to write more C code, you can achieve almost anything.
 
 It should be noted that extending Python and embedding Python is quite the same
 activity, despite the different intent. Most topics discussed in the previous
-chapters are still valid. To show this, consider what the extension code from
+chapters are still valid. To show this, consider what the extension code kutoka
 Python to C really does:
 
-#. Convert data values from Python to C,
+#. Convert data values kutoka Python to C,
 
 #. Perform a function call to a C routine using the converted values, and
 
-#. Convert the data values from the call from C to Python.
+#. Convert the data values kutoka the call kutoka C to Python.
 
 When embedding Python, the interface code does:
 
-#. Convert data values from C to Python,
+#. Convert data values kutoka C to Python,
 
 #. Perform a function call to a Python interface routine using the converted
    values, and
 
-#. Convert the data values from the call from Python to C.
+#. Convert the data values kutoka the call kutoka Python to C.
 
 As you can see, the data conversion steps are simply swapped to accommodate the
 different direction of the cross-language transfer. The only difference is the
 routine that you call between both data conversions. When extending, you call a
 C routine, when embedding, you call a Python routine.
 
-This chapter will not discuss how to convert data from Python to C and vice
+This chapter will not discuss how to convert data kutoka Python to C and vice
 versa.  Also, proper use of references and dealing with errors is assumed to be
-understood.  Since these aspects do not differ from extending the interpreter,
+understood.  Since these aspects do not differ kutoka extending the interpreter,
 you can refer to earlier chapters for the required information.
 
 
@@ -206,7 +206,7 @@ after examining the value.
 Extending Embedded Python
 =========================
 
-Until now, the embedded Python interpreter had no access to functionality from
+Until now, the embedded Python interpreter had no access to functionality kutoka
 the application itself.  The Python API allows this by extending the embedded
 interpreter.  That is, the embedded interpreter gets extended with routines
 provided by the application. While it sounds complex, it is not so bad.  Simply
@@ -255,7 +255,7 @@ With these extensions, the Python script can do things like
 
 .. code-block:: python
 
-   import emb
+   agiza emb
    print("Number of arguments", emb.numargs())
 
 In a real application, the methods will expose an API of the application to
@@ -326,7 +326,7 @@ combine together.  For example:
 
 .. code-block:: pycon
 
-   >>> import sysconfig
+   >>> agiza sysconfig
    >>> sysconfig.get_config_var('LIBS')
    '-lpthread -ldl  -lutil'
    >>> sysconfig.get_config_var('LINKFORSHARED')

@@ -5,8 +5,8 @@ kutoka . agiza events
 kutoka . agiza tasks
 
 
-def run(main, *, debug=False):
-    """Execute the coroutine and return the result.
+eleza run(main, *, debug=False):
+    """Execute the coroutine and rudisha the result.
 
     This function runs the passed coroutine, taking care of
     managing the asyncio event loop and finalizing asynchronous
@@ -23,24 +23,24 @@ def run(main, *, debug=False):
 
     Example:
 
-        async def main():
+        async eleza main():
             await asyncio.sleep(1)
-            print('hello')
+            andika('hello')
 
         asyncio.run(main())
     """
-    if events._get_running_loop() is not None:
+    ikiwa events._get_running_loop() is not None:
         raise RuntimeError(
             "asyncio.run() cannot be called kutoka a running event loop")
 
-    if not coroutines.iscoroutine(main):
+    ikiwa not coroutines.iscoroutine(main):
         raise ValueError("a coroutine was expected, got {!r}".format(main))
 
     loop = events.new_event_loop()
     try:
         events.set_event_loop(loop)
         loop.set_debug(debug)
-        return loop.run_until_complete(main)
+        rudisha loop.run_until_complete(main)
     finally:
         try:
             _cancel_all_tasks(loop)
@@ -50,9 +50,9 @@ def run(main, *, debug=False):
             loop.close()
 
 
-def _cancel_all_tasks(loop):
+eleza _cancel_all_tasks(loop):
     to_cancel = tasks.all_tasks(loop)
-    if not to_cancel:
+    ikiwa not to_cancel:
         return
 
     for task in to_cancel:
@@ -62,9 +62,9 @@ def _cancel_all_tasks(loop):
         tasks.gather(*to_cancel, loop=loop, return_exceptions=True))
 
     for task in to_cancel:
-        if task.cancelled():
+        ikiwa task.cancelled():
             continue
-        if task.exception() is not None:
+        ikiwa task.exception() is not None:
             loop.call_exception_handler({
                 'message': 'unhandled exception during asyncio.run() shutdown',
                 'exception': task.exception(),

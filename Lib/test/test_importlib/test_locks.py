@@ -10,7 +10,7 @@ kutoka test agiza support
 kutoka test agiza lock_tests
 
 
-class ModuleLockAsRLockTests:
+kundi ModuleLockAsRLockTests:
     locktype = classmethod(lambda cls: cls.LockType("some_lock"))
 
     # _is_owned() unsupported
@@ -37,55 +37,55 @@ LOCK_TYPES = {kind: splitinit._bootstrap._ModuleLock
                          LockType=LOCK_TYPES)
 
 
-class DeadlockAvoidanceTests:
+kundi DeadlockAvoidanceTests:
 
-    def setUp(self):
+    eleza setUp(self):
         try:
             self.old_switchinterval = sys.getswitchinterval()
             support.setswitchinterval(0.000001)
         except AttributeError:
             self.old_switchinterval = None
 
-    def tearDown(self):
-        if self.old_switchinterval is not None:
+    eleza tearDown(self):
+        ikiwa self.old_switchinterval is not None:
             sys.setswitchinterval(self.old_switchinterval)
 
-    def run_deadlock_avoidance_test(self, create_deadlock):
+    eleza run_deadlock_avoidance_test(self, create_deadlock):
         NLOCKS = 10
         locks = [self.LockType(str(i)) for i in range(NLOCKS)]
         pairs = [(locks[i], locks[(i+1)%NLOCKS]) for i in range(NLOCKS)]
-        if create_deadlock:
+        ikiwa create_deadlock:
             NTHREADS = NLOCKS
         else:
             NTHREADS = NLOCKS - 1
         barrier = threading.Barrier(NTHREADS)
         results = []
 
-        def _acquire(lock):
+        eleza _acquire(lock):
             """Try to acquire the lock. Return True on success,
             False on deadlock."""
             try:
                 lock.acquire()
             except self.DeadlockError:
-                return False
+                rudisha False
             else:
-                return True
+                rudisha True
 
-        def f():
+        eleza f():
             a, b = pairs.pop()
             ra = _acquire(a)
             barrier.wait()
             rb = _acquire(b)
             results.append((ra, rb))
-            if rb:
+            ikiwa rb:
                 b.release()
-            if ra:
+            ikiwa ra:
                 a.release()
         lock_tests.Bunch(f, NTHREADS).wait_for_finished()
         self.assertEqual(len(results), NTHREADS)
-        return results
+        rudisha results
 
-    def test_deadlock(self):
+    eleza test_deadlock(self):
         results = self.run_deadlock_avoidance_test(True)
         # At least one of the threads detected a potential deadlock on its
         # second acquire() call.  It may be several of them, because the
@@ -94,7 +94,7 @@ class DeadlockAvoidanceTests:
         self.assertGreaterEqual(nb_deadlocks, 1)
         self.assertEqual(results.count((True, True)), len(results) - nb_deadlocks)
 
-    def test_no_deadlock(self):
+    eleza test_no_deadlock(self):
         results = self.run_deadlock_avoidance_test(False)
         self.assertEqual(results.count((True, False)), 0)
         self.assertEqual(results.count((True, True)), len(results))
@@ -110,13 +110,13 @@ DEADLOCK_ERRORS = {kind: splitinit._bootstrap._DeadlockError
                          DeadlockError=DEADLOCK_ERRORS)
 
 
-class LifetimeTests:
+kundi LifetimeTests:
 
     @property
-    def bootstrap(self):
-        return self.init._bootstrap
+    eleza bootstrap(self):
+        rudisha self.init._bootstrap
 
-    def test_lock_lifetime(self):
+    eleza test_lock_lifetime(self):
         name = "xyzzy"
         self.assertNotIn(name, self.bootstrap._module_locks)
         lock = self.bootstrap._get_module_lock(name)
@@ -127,7 +127,7 @@ class LifetimeTests:
         self.assertNotIn(name, self.bootstrap._module_locks)
         self.assertIsNone(wr())
 
-    def test_all_locks(self):
+    eleza test_all_locks(self):
         support.gc_collect()
         self.assertEqual(0, len(self.bootstrap._module_locks),
                          self.bootstrap._module_locks)
@@ -139,7 +139,7 @@ class LifetimeTests:
 
 
 @support.reap_threads
-def test_main():
+eleza test_main():
     support.run_unittest(Frozen_ModuleLockAsRLockTests,
                          Source_ModuleLockAsRLockTests,
                          Frozen_DeadlockAvoidanceTests,
@@ -148,5 +148,5 @@ def test_main():
                          Source_LifetimeTests)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test_main()

@@ -34,7 +34,7 @@ kutoka ..fixer_util agiza Call, Comma, Name, Node, BlankLine, syms
 CMP = "(n='!=' | '==' | 'is' | n=comp_op< 'is' 'not' >)"
 TYPE = "power< 'type' trailer< '(' x=any ')' > >"
 
-class FixIdioms(fixer_base.BaseFix):
+kundi FixIdioms(fixer_base.BaseFix):
     explicit = True # The user must ask for this fixer
 
     PATTERN = r"""
@@ -76,52 +76,52 @@ class FixIdioms(fixer_base.BaseFix):
         >
     """ % (TYPE, CMP, CMP, TYPE)
 
-    def match(self, node):
+    eleza match(self, node):
         r = super(FixIdioms, self).match(node)
         # If we've matched one of the sort/sorted subpatterns above, we
         # want to reject matches where the initial assignment and the
         # subsequent .sort() call involve different identifiers.
-        if r and "sorted" in r:
-            if r["id1"] == r["id2"]:
-                return r
-            return None
-        return r
+        ikiwa r and "sorted" in r:
+            ikiwa r["id1"] == r["id2"]:
+                rudisha r
+            rudisha None
+        rudisha r
 
-    def transform(self, node, results):
-        if "isinstance" in results:
-            return self.transform_isinstance(node, results)
-        elif "while" in results:
-            return self.transform_while(node, results)
-        elif "sorted" in results:
-            return self.transform_sort(node, results)
+    eleza transform(self, node, results):
+        ikiwa "isinstance" in results:
+            rudisha self.transform_isinstance(node, results)
+        elikiwa "while" in results:
+            rudisha self.transform_while(node, results)
+        elikiwa "sorted" in results:
+            rudisha self.transform_sort(node, results)
         else:
             raise RuntimeError("Invalid match")
 
-    def transform_isinstance(self, node, results):
+    eleza transform_isinstance(self, node, results):
         x = results["x"].clone() # The thing inside of type()
         T = results["T"].clone() # The type being compared against
         x.prefix = ""
         T.prefix = " "
         test = Call(Name("isinstance"), [x, Comma(), T])
-        if "n" in results:
+        ikiwa "n" in results:
             test.prefix = " "
             test = Node(syms.not_test, [Name("not"), test])
         test.prefix = node.prefix
-        return test
+        rudisha test
 
-    def transform_while(self, node, results):
+    eleza transform_while(self, node, results):
         one = results["while"]
         one.replace(Name("True", prefix=one.prefix))
 
-    def transform_sort(self, node, results):
+    eleza transform_sort(self, node, results):
         sort_stmt = results["sort"]
         next_stmt = results["next"]
         list_call = results.get("list")
         simple_expr = results.get("expr")
 
-        if list_call:
+        ikiwa list_call:
             list_call.replace(Name("sorted", prefix=list_call.prefix))
-        elif simple_expr:
+        elikiwa simple_expr:
             new = simple_expr.clone()
             new.prefix = ""
             simple_expr.replace(Call(Name("sorted"), [new],
@@ -133,8 +133,8 @@ class FixIdioms(fixer_base.BaseFix):
         btwn = sort_stmt.prefix
         # Keep any prefix lines between the sort_stmt and the list_call and
         # shove them right after the sorted() call.
-        if "\n" in btwn:
-            if next_stmt:
+        ikiwa "\n" in btwn:
+            ikiwa next_stmt:
                 # The new prefix should be everything kutoka the sort_stmt's
                 # prefix up to the last newline, then the old prefix after a new
                 # line.

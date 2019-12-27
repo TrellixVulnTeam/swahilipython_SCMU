@@ -19,7 +19,7 @@ version = '2.0beta'
 
 # ===== ERRORHANDLER =====
 
-class ErrorHandler:
+kundi ErrorHandler:
     """Basic interface for SAX error handlers.
 
     If you create an object that implements this interface, then
@@ -29,62 +29,62 @@ class ErrorHandler:
     recoverable errors, and unrecoverable errors. All methods take a
     SAXParseException as the only parameter."""
 
-    def error(self, exception):
+    eleza error(self, exception):
         "Handle a recoverable error."
         raise exception
 
-    def fatalError(self, exception):
+    eleza fatalError(self, exception):
         "Handle a non-recoverable error."
         raise exception
 
-    def warning(self, exception):
+    eleza warning(self, exception):
         "Handle a warning."
-        print(exception)
+        andika(exception)
 
 
 # ===== CONTENTHANDLER =====
 
-class ContentHandler:
+kundi ContentHandler:
     """Interface for receiving logical document content events.
 
     This is the main callback interface in SAX, and the one most
     agizaant to applications. The order of events in this interface
     mirrors the order of the information in the document."""
 
-    def __init__(self):
+    eleza __init__(self):
         self._locator = None
 
-    def setDocumentLocator(self, locator):
+    eleza setDocumentLocator(self, locator):
         """Called by the parser to give the application a locator for
         locating the origin of document events.
 
         SAX parsers are strongly encouraged (though not absolutely
-        required) to supply a locator: if it does so, it must supply
+        required) to supply a locator: ikiwa it does so, it must supply
         the locator to the application by invoking this method before
         invoking any of the other methods in the DocumentHandler
         interface.
 
         The locator allows the application to determine the end
-        position of any document-related event, even if the parser is
+        position of any document-related event, even ikiwa the parser is
         not reporting an error. Typically, the application will use
         this information for reporting its own errors (such as
         character content that does not match an application's
         business rules). The information returned by the locator is
         probably not sufficient for use with a search engine.
 
-        Note that the locator will return correct information only
+        Note that the locator will rudisha correct information only
         during the invocation of the events in this interface. The
         application should not attempt to use it at any other time."""
         self._locator = locator
 
-    def startDocument(self):
+    eleza startDocument(self):
         """Receive notification of the beginning of a document.
 
         The SAX parser will invoke this method only once, before any
         other methods in this interface or in DTDHandler (except for
         setDocumentLocator)."""
 
-    def endDocument(self):
+    eleza endDocument(self):
         """Receive notification of the end of a document.
 
         The SAX parser will invoke this method only once, and it will
@@ -93,7 +93,7 @@ class ContentHandler:
         (because of an unrecoverable error) or reached the end of
         input."""
 
-    def startPrefixMapping(self, prefix, uri):
+    eleza startPrefixMapping(self, prefix, uri):
         """Begin the scope of a prefix-URI Namespace mapping.
 
         The information kutoka this event is not necessary for normal
@@ -116,70 +116,70 @@ class ContentHandler:
         after the corresponding endElement event, but their order is
         not guaranteed."""
 
-    def endPrefixMapping(self, prefix):
+    eleza endPrefixMapping(self, prefix):
         """End the scope of a prefix-URI mapping.
 
         See startPrefixMapping for details. This event will always
         occur after the corresponding endElement event, but the order
         of endPrefixMapping events is not otherwise guaranteed."""
 
-    def startElement(self, name, attrs):
+    eleza startElement(self, name, attrs):
         """Signals the start of an element in non-namespace mode.
 
         The name parameter contains the raw XML 1.0 name of the
         element type as a string and the attrs parameter holds an
-        instance of the Attributes class containing the attributes of
+        instance of the Attributes kundi containing the attributes of
         the element."""
 
-    def endElement(self, name):
+    eleza endElement(self, name):
         """Signals the end of an element in non-namespace mode.
 
         The name parameter contains the name of the element type, just
         as with the startElement event."""
 
-    def startElementNS(self, name, qname, attrs):
+    eleza startElementNS(self, name, qname, attrs):
         """Signals the start of an element in namespace mode.
 
         The name parameter contains the name of the element type as a
         (uri, localname) tuple, the qname parameter the raw XML 1.0
         name used in the source document, and the attrs parameter
-        holds an instance of the Attributes class containing the
+        holds an instance of the Attributes kundi containing the
         attributes of the element.
 
         The uri part of the name tuple is None for elements which have
         no namespace."""
 
-    def endElementNS(self, name, qname):
+    eleza endElementNS(self, name, qname):
         """Signals the end of an element in namespace mode.
 
         The name parameter contains the name of the element type, just
         as with the startElementNS event."""
 
-    def characters(self, content):
+    eleza characters(self, content):
         """Receive notification of character data.
 
         The Parser will call this method to report each chunk of
-        character data. SAX parsers may return all contiguous
+        character data. SAX parsers may rudisha all contiguous
         character data in a single chunk, or they may split it into
         several chunks; however, all of the characters in any single
         event must come kutoka the same external entity so that the
         Locator provides useful information."""
 
-    def ignorableWhitespace(self, whitespace):
+    eleza ignorableWhitespace(self, whitespace):
         """Receive notification of ignorable whitespace in element content.
 
         Validating Parsers must use this method to report each chunk
         of ignorable whitespace (see the W3C XML 1.0 recommendation,
         section 2.10): non-validating parsers may also use this method
-        if they are capable of parsing and using content models.
+        ikiwa they are capable of parsing and using content models.
 
-        SAX parsers may return all contiguous whitespace in a single
+        SAX parsers may rudisha all contiguous whitespace in a single
         chunk, or they may split it into several chunks; however, all
         of the characters in any single event must come kutoka the same
         external entity, so that the Locator provides useful
         information."""
 
-    def processingInstruction(self, target, data):
+    eleza processingInstruction(self, target, data):
         """Receive notification of a processing instruction.
 
         The Parser will invoke this method once for each processing
@@ -190,11 +190,11 @@ class ContentHandler:
         section 2.8) or a text declaration (XML 1.0, section 4.3.1)
         using this method."""
 
-    def skippedEntity(self, name):
+    eleza skippedEntity(self, name):
         """Receive notification of a skipped entity.
 
         The Parser will invoke this method once for each entity
-        skipped. Non-validating processors may skip entities if they
+        skipped. Non-validating processors may skip entities ikiwa they
         have not seen the declarations (because, for example, the
         entity was declared in an external DTD subset). All processors
         may skip external entities, depending on the values of the
@@ -205,33 +205,33 @@ class ContentHandler:
 
 # ===== DTDHandler =====
 
-class DTDHandler:
+kundi DTDHandler:
     """Handle DTD events.
 
     This interface specifies only those DTD events required for basic
     parsing (unparsed entities and attributes)."""
 
-    def notationDecl(self, name, publicId, systemId):
+    eleza notationDecl(self, name, publicId, systemId):
         "Handle a notation declaration event."
 
-    def unparsedEntityDecl(self, name, publicId, systemId, ndata):
+    eleza unparsedEntityDecl(self, name, publicId, systemId, ndata):
         "Handle an unparsed entity declaration event."
 
 
 # ===== ENTITYRESOLVER =====
 
-class EntityResolver:
+kundi EntityResolver:
     """Basic interface for resolving entities. If you create an object
     implementing this interface, then register the object with your
     Parser, the parser will call the method in your object to
     resolve all external entities. Note that DefaultHandler implements
     this interface with the default behaviour."""
 
-    def resolveEntity(self, publicId, systemId):
-        """Resolve the system identifier of an entity and return either
+    eleza resolveEntity(self, publicId, systemId):
+        """Resolve the system identifier of an entity and rudisha either
         the system identifier to read kutoka as a string, or an InputSource
         to read kutoka."""
-        return systemId
+        rudisha systemId
 
 
 #============================================================================
@@ -304,7 +304,7 @@ property_declaration_handler = "http://xml.org/sax/properties/declaration-handle
 
 property_dom_node = "http://xml.org/sax/properties/dom-node"
 # data type: org.w3c.dom.Node
-# description: When parsing, the current DOM node being visited if this is
+# description: When parsing, the current DOM node being visited ikiwa this is
 #              a DOM iterator; when not parsing, the root DOM node for
 #              iteration.
 # access: (parsing) read-only; (not parsing) read/write
@@ -321,7 +321,7 @@ property_encoding = "http://www.python.org/sax/properties/encoding"
 # access: write: set the encoding, e.g. established by a higher-level
 #                protocol. May change during parsing (e.g. after
 #                processing a META tag)
-#         read:  return the current encoding (possibly established through
+#         read:  rudisha the current encoding (possibly established through
 #                auto-detection.
 # initial value: UTF-8
 #
@@ -331,7 +331,7 @@ property_interning_dict = "http://www.python.org/sax/properties/interning-dict"
 # description: The dictionary used to intern common strings in the document
 # access: write: Request that the parser uses a specific dictionary, to
 #                allow interning across different documents
-#         read:  return the current interning dictionary, or None
+#         read:  rudisha the current interning dictionary, or None
 #
 
 all_properties = [property_lexical_handler,

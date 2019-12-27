@@ -62,7 +62,7 @@ and many other improvements.
 
 Python 2.7 is planned to be the last of the 2.x releases, so we worked
 on making it a good release for the long term.  To help with porting
-to Python 3, several new features from the Python 3.x series have been
+to Python 3, several new features kutoka the Python 3.x series have been
 included in 2.7.
 
 This article doesn't attempt to provide a complete specification of
@@ -110,11 +110,11 @@ Some key consequences of the long-term significance of 2.7 are:
   Python Package Index (either directly or via a redistributor) becomes
   more important for Python 2 users. In addition to a wide variety of third
   party packages for various tasks, the available packages include backports
-  of new modules and features from the Python 3 standard library that are
+  of new modules and features kutoka the Python 3 standard library that are
   compatible with Python 2, as well as various tools and libraries that can
   make it easier to migrate to Python 3. The `Python Packaging User Guide
   <https://packaging.python.org>`__ provides guidance on downloading and
-  installing software from the Python Package Index.
+  installing software kutoka the Python Package Index.
 
 * While the preferred approach to enhancing Python 2 is now the publication
   of new packages on the Python Package Index, this approach doesn't
@@ -126,7 +126,7 @@ Some key consequences of the long-term significance of 2.7 are:
   maintenance releases where they were added, will be noted in the
   :ref:`py27-maintenance-enhancements` section below.
 
-For projects wishing to migrate from Python 2 to Python 3, or for library
+For projects wishing to migrate kutoka Python 2 to Python 3, or for library
 and framework developers wishing to support users on both Python 2 and
 Python 3, there are a variety of tools and guides available to help decide
 on a suitable approach and manage some of the technical details involved.
@@ -139,7 +139,7 @@ Changes to the Handling of Deprecation Warnings
 For Python 2.7, a policy decision was made to silence warnings only of
 interest to developers by default.  :exc:`DeprecationWarning` and its
 descendants are now ignored unless otherwise requested, preventing
-users from seeing warnings triggered by an application.  This change
+users kutoka seeing warnings triggered by an application.  This change
 was also made in the branch that became Python 3.2. (Discussed
 on stdlib-sig and carried out in :issue:`7319`.)
 
@@ -169,7 +169,7 @@ when running tests.
 Python 3.1 Features
 =======================
 
-Much as Python 2.6 incorporated features from Python 3.0,
+Much as Python 2.6 incorporated features kutoka Python 3.0,
 version 2.7 incorporates some of the new features
 in Python 3.1.  The 2.x series continues to provide tools
 for migrating to the 3.x series.
@@ -216,14 +216,14 @@ PEP 372: Adding an Ordered Dictionary to collections
 Regular Python dictionaries iterate over key/value pairs in arbitrary order.
 Over the years, a number of authors have written alternative implementations
 that remember the order that the keys were originally inserted.  Based on
-the experiences from those implementations, 2.7 introduces a new
-:class:`~collections.OrderedDict` class in the :mod:`collections` module.
+the experiences kutoka those implementations, 2.7 introduces a new
+:class:`~collections.OrderedDict` kundi in the :mod:`collections` module.
 
 The :class:`~collections.OrderedDict` API provides the same interface as regular
 dictionaries but iterates over keys and values in a guaranteed order
 depending on when a key was first inserted::
 
-    >>> from collections import OrderedDict
+    >>> kutoka collections agiza OrderedDict
     >>> d = OrderedDict([('first', 1),
     ...                  ('second', 2),
     ...                  ('third', 3)])
@@ -369,7 +369,7 @@ about compatibility with earlier versions of Python, use
 
 Here's an example::
 
-    import argparse
+    agiza argparse
 
     parser = argparse.ArgumentParser(description='Command-line example.')
 
@@ -461,7 +461,7 @@ configuring filters, and it's messier to generate programmatically.
 
 Python 2.7 adds a :func:`~logging.dictConfig` function that
 uses a dictionary to configure logging.  There are many ways to
-produce a dictionary from different sources: construct one with code;
+produce a dictionary kutoka different sources: construct one with code;
 parse a file containing JSON; or use a YAML parsing library if one is
 installed.  For more information see :ref:`logging-config-api`.
 
@@ -473,8 +473,8 @@ that will be rotated once the log reaches 1MB.
 
 ::
 
-    import logging
-    import logging.config
+    agiza logging
+    agiza logging.config
 
     configdict = {
      'version': 1,    # Configuration schema in use; must be 1 for now
@@ -520,7 +520,7 @@ implemented by Vinay Sajip, are:
 
 .. rev79293
 
-* The :class:`~logging.handlers.SysLogHandler` class now supports
+* The :class:`~logging.handlers.SysLogHandler` kundi now supports
   syslogging over TCP.  The constructor has a *socktype* parameter
   giving the type of socket to use, either :const:`socket.SOCK_DGRAM`
   for UDP or :const:`socket.SOCK_STREAM` for TCP.  The default
@@ -532,12 +532,12 @@ implemented by Vinay Sajip, are:
   calling ``log.getChild('network.listen')`` is equivalent to
   ``getLogger('app.network.listen')``.
 
-* The :class:`~logging.LoggerAdapter` class gained an
+* The :class:`~logging.LoggerAdapter` kundi gained an
   :meth:`~logging.LoggerAdapter.isEnabledFor` method that takes a
   *level* and returns whether the underlying logger would
   process a message of that level of importance.
 
-.. XXX: Logger objects don't have a class declaration so the link don't work
+.. XXX: Logger objects don't have a kundi declaration so the link don't work
 
 .. seealso::
 
@@ -616,7 +616,7 @@ memory content that matches the :class:`bytes` type's interface.
 .. doctest::
     :options: +SKIP
 
-    >>> import string
+    >>> agiza string
     >>> m = memoryview(string.letters)
     >>> m
     <memory at 0x37f850>
@@ -673,10 +673,10 @@ Other Language Changes
 
 Some smaller changes made to the core Python language are:
 
-* The syntax for set literals has been backported from Python 3.x.
+* The syntax for set literals has been backported kutoka Python 3.x.
   Curly brackets are used to surround the contents of the resulting
   mutable set; set literals are
-  distinguished from dictionaries by not containing colons and values.
+  distinguished kutoka dictionaries by not containing colons and values.
   ``{}`` continues to represent an empty dictionary; use
   ``set()`` for an empty set.
 
@@ -692,7 +692,7 @@ Some smaller changes made to the core Python language are:
 
   Backported by Alexandre Vassalotti; :issue:`2335`.
 
-* Dictionary and set comprehensions are another feature backported from
+* Dictionary and set comprehensions are another feature backported kutoka
   3.x, generalizing list/generator comprehensions to use
   the literal syntax for sets and dictionaries.
 
@@ -707,7 +707,7 @@ Some smaller changes made to the core Python language are:
   Backported by Alexandre Vassalotti; :issue:`2333`.
 
 * The :keyword:`with` statement can now use multiple context managers
-  in one statement.  Context managers are processed from left to right
+  in one statement.  Context managers are processed kutoka left to right
   and each one is treated as beginning a new :keyword:`!with` statement.
   This means that::
 
@@ -757,7 +757,7 @@ Some smaller changes made to the core Python language are:
   Implemented by Eric Smith and Mark Dickinson, using David Gay's
   :file:`dtoa.c` library; :issue:`7117`.
 
-* Conversions from long integers and regular integers to floating
+* Conversions kutoka long integers and regular integers to floating
   point now round differently, returning the floating-point number
   closest to the number.  This doesn't matter for small integers that
   can be converted exactly, but for large numbers that will
@@ -797,7 +797,7 @@ Some smaller changes made to the core Python language are:
     >>> '{}:{}:{day}'.format(2009, 4, day='Sunday')
     '2009:4:Sunday'
 
-  The auto-numbering takes the fields from left to right, so the first ``{...}``
+  The auto-numbering takes the fields kutoka left to right, so the first ``{...}``
   specifier will use the first argument to :meth:`str.format`, the next
   specifier will use the next argument, and so on.  You can't mix auto-numbering
   and explicit numbering -- either number all of your specifier fields or none
@@ -843,12 +843,12 @@ Some smaller changes made to the core Python language are:
   (Contributed by Fredrik Johansson and Victor Stinner; :issue:`3439`.)
 
 * The :keyword:`import` statement will no longer try an absolute import
-  if a relative import (e.g. ``from .os import sep``) fails.  This
+  if a relative agiza (e.g. ``kutoka .os agiza sep``) fails.  This
   fixes a bug, but could possibly break certain :keyword:`!import`
   statements that were only working by accident.  (Fixed by Meador Inge;
   :issue:`7902`.)
 
-* It's now possible for a subclass of the built-in :class:`unicode` type
+* It's now possible for a subkundi of the built-in :class:`unicode` type
   to override the :meth:`__unicode__` method.  (Implemented by
   Victor Stinner; :issue:`1583863`.)
 
@@ -859,7 +859,7 @@ Some smaller changes made to the core Python language are:
   .. XXX bytearray doesn't seem to be documented
 
 * When using ``@classmethod`` and ``@staticmethod`` to wrap
-  methods as class or static methods, the wrapper object now
+  methods as kundi or static methods, the wrapper object now
   exposes the wrapped function as their :attr:`__func__` attribute.
   (Contributed by Amaury Forgeot d'Arc, after a suggestion by
   George Sakkis; :issue:`5982`.)
@@ -887,7 +887,7 @@ Some smaller changes made to the core Python language are:
   code end in a newline.
 
 * Extra parentheses in function definitions are illegal in Python 3.x,
-  meaning that you get a syntax error from ``def f((x)): pass``.  In
+  meaning that you get a syntax error kutoka ``def f((x)): pass``.  In
   Python3-warning mode, Python 2.7 will now warn about this odd usage.
   (Noted by James Lingard; :issue:`7362`.)
 
@@ -913,7 +913,7 @@ used with the :option:`-W` switch, separated by commas.
 (Contributed by Brian Curtin; :issue:`7301`.)
 
 For example, the following setting will print warnings every time
-they occur, but turn warnings from the :mod:`Cookie` module into an
+they occur, but turn warnings kutoka the :mod:`Cookie` module into an
 error.  (The exact syntax for setting an environment variable varies
 across operating systems and shells.)
 
@@ -940,7 +940,7 @@ Several performance enhancements have been added:
   is reduced as the number of objects on the heap grows.
   The new logic only performs a full garbage collection pass when
   the middle generation has been collected 10 times and when the
-  number of survivor objects from the middle generation exceeds 10% of
+  number of survivor objects kutoka the middle generation exceeds 10% of
   the number of objects in the oldest generation.  (Suggested by Martin
   von Löwis and implemented by Antoine Pitrou; :issue:`4074`.)
 
@@ -962,14 +962,14 @@ Several performance enhancements have been added:
   on 32-bit machines; on Unix, there's a new configure option
   :option:`!--enable-big-digits` that can be used to override this default.
 
-  Apart from the performance improvements this change should be
+  Apart kutoka the performance improvements this change should be
   invisible to end users, with one exception: for testing and
   debugging purposes there's a new structseq :data:`sys.long_info` that
   provides information about the internal format, giving the number of
   bits per digit and the size in bytes of the C type used to store
   each digit::
 
-     >>> import sys
+     >>> agiza sys
      >>> sys.long_info
      sys.long_info(bits_per_digit=30, sizeof_digit=4)
 
@@ -1012,7 +1012,7 @@ Several performance enhancements have been added:
 
 * The :mod:`pickle` and :mod:`cPickle` modules now automatically
   intern the strings used for attribute names, reducing memory usage
-  of the objects resulting from unpickling.  (Contributed by Jake
+  of the objects resulting kutoka unpickling.  (Contributed by Jake
   McGuire; :issue:`5084`.)
 
 * The :mod:`cPickle` module now special-cases dictionaries,
@@ -1030,19 +1030,19 @@ changes, sorted alphabetically by module name. Consult the
 :file:`Misc/NEWS` file in the source tree for a more complete list of
 changes, or look through the Subversion logs for all the details.
 
-* The :mod:`bdb` module's base debugging class :class:`~bdb.Bdb`
+* The :mod:`bdb` module's base debugging kundi :class:`~bdb.Bdb`
   gained a feature for skipping modules.  The constructor
   now takes an iterable containing glob-style patterns such as
   ``django.*``; the debugger will not step into stack frames
-  from a module that matches one of these patterns.
+  kutoka a module that matches one of these patterns.
   (Contributed by Maru Newby after a suggestion by
   Senthil Kumaran; :issue:`5142`.)
 
 * The :mod:`binascii` module now supports the buffer API, so it can be
   used with :class:`memoryview` instances and other similar buffer objects.
-  (Backported from 3.x by Florent Xicluna; :issue:`7703`.)
+  (Backported kutoka 3.x by Florent Xicluna; :issue:`7703`.)
 
-* Updated module: the :mod:`bsddb` module has been updated from 4.7.2devel9
+* Updated module: the :mod:`bsddb` module has been updated kutoka 4.7.2devel9
   to version 4.8.4 of
   `the pybsddb package <https://www.jcea.es/programacion/pybsddb.htm>`__.
   The new version features better Python 3.x compatibility, various bug fixes,
@@ -1054,7 +1054,7 @@ changes, or look through the Subversion logs for all the details.
   management protocol, so you can write ``with bz2.BZ2File(...) as f:``.
   (Contributed by Hagen Fürstenau; :issue:`3860`.)
 
-* New class: the :class:`~collections.Counter` class in the :mod:`collections`
+* New class: the :class:`~collections.Counter` kundi in the :mod:`collections`
   module is useful for tallying data.  :class:`~collections.Counter` instances
   behave mostly like dictionaries but return zero for missing keys instead of
   raising a :exc:`KeyError`:
@@ -1062,7 +1062,7 @@ changes, or look through the Subversion logs for all the details.
   .. doctest::
      :options: +NORMALIZE_WHITESPACE
 
-     >>> from collections import Counter
+     >>> kutoka collections agiza Counter
      >>> c = Counter()
      >>> for letter in 'here is a sample of english text':
      ...   c[letter] += 1
@@ -1114,20 +1114,20 @@ changes, or look through the Subversion logs for all the details.
   length as the read-only :attr:`~collections.deque.maxlen` attribute.
   (Both features added by Raymond Hettinger.)
 
-  The :class:`~collections.namedtuple` class now has an optional *rename* parameter.
+  The :class:`~collections.namedtuple` kundi now has an optional *rename* parameter.
   If *rename* is true, field names that are invalid because they've
   been repeated or aren't legal Python identifiers will be
-  renamed to legal names that are derived from the field's
+  renamed to legal names that are derived kutoka the field's
   position within the list of fields:
 
-     >>> from collections import namedtuple
+     >>> kutoka collections agiza namedtuple
      >>> T = namedtuple('T', ['field1', '$illegal', 'for', 'field2'], rename=True)
      >>> T._fields
      ('field1', '_1', '_2', 'field2')
 
   (Added by Raymond Hettinger; :issue:`1818`.)
 
-  Finally, the :class:`~collections.Mapping` abstract base class now
+  Finally, the :class:`~collections.Mapping` abstract base kundi now
   returns :const:`NotImplemented` if a mapping is compared to
   another type that isn't a :class:`Mapping`.
   (Fixed by Daniel Stutzbach; :issue:`8729`.)
@@ -1136,7 +1136,7 @@ changes, or look through the Subversion logs for all the details.
   take an *allow_no_value* parameter, defaulting to false; if true,
   options without values will be allowed.  For example::
 
-    >>> import ConfigParser, StringIO
+    >>> agiza ConfigParser, StringIO
     >>> sample_config = """
     ... [mysqld]
     ... user = mysql
@@ -1180,14 +1180,14 @@ changes, or look through the Subversion logs for all the details.
   gained a :meth:`~datetime.timedelta.total_seconds` method that returns the
   number of seconds in the duration.  (Contributed by Brian Quinlan; :issue:`5788`.)
 
-* New method: the :class:`~decimal.Decimal` class gained a
-  :meth:`~decimal.Decimal.from_float` class method that performs an exact
+* New method: the :class:`~decimal.Decimal` kundi gained a
+  :meth:`~decimal.Decimal.kutoka_float` kundi method that performs an exact
   conversion of a floating-point number to a :class:`~decimal.Decimal`.
   This exact conversion strives for the
   closest decimal approximation to the floating-point representation's value;
   the resulting decimal value will therefore still include the inaccuracy,
   if any.
-  For example, ``Decimal.from_float(0.1)`` returns
+  For example, ``Decimal.kutoka_float(0.1)`` returns
   ``Decimal('0.1000000000000000055511151231257827021181583404541015625')``.
   (Implemented by Raymond Hettinger; :issue:`4796`.)
 
@@ -1205,7 +1205,7 @@ changes, or look through the Subversion logs for all the details.
   and non-European Unicode characters such as Arabic-Indic digits
   (contributed by Mark Dickinson; :issue:`6595`).
 
-  Most of the methods of the :class:`~decimal.Context` class now accept integers
+  Most of the methods of the :class:`~decimal.Context` kundi now accept integers
   as well as :class:`~decimal.Decimal` instances; the only exceptions are the
   :meth:`~decimal.Context.canonical` and :meth:`~decimal.Context.is_canonical`
   methods.  (Patch by Juan José Conti; :issue:`7633`.)
@@ -1237,12 +1237,12 @@ changes, or look through the Subversion logs for all the details.
   will now ignore the name of the module containing the exception
   being tested.  (Patch by Lennart Regebro; :issue:`7490`.)
 
-* The :mod:`email` module's :class:`~email.message.Message` class will
+* The :mod:`email` module's :class:`~email.message.Message` kundi will
   now accept a Unicode-valued payload, automatically converting the
   payload to the encoding specified by :attr:`output_charset`.
   (Added by R. David Murray; :issue:`1368247`.)
 
-* The :class:`~fractions.Fraction` class now accepts a single float or
+* The :class:`~fractions.Fraction` kundi now accepts a single float or
   :class:`~decimal.Decimal` instance, or two rational numbers, as
   arguments to its constructor.  (Implemented by Mark Dickinson;
   rationals added in :issue:`5812`, and float/decimal in
@@ -1265,8 +1265,8 @@ changes, or look through the Subversion logs for all the details.
   uploads thanks to an added *rest* parameter (patch by Pablo Mouzo;
   :issue:`6845`.)
 
-* New class decorator: :func:`~functools.total_ordering` in the :mod:`functools`
-  module takes a class that defines an :meth:`__eq__` method and one of
+* New kundi decorator: :func:`~functools.total_ordering` in the :mod:`functools`
+  module takes a kundi that defines an :meth:`__eq__` method and one of
   :meth:`__lt__`, :meth:`__le__`, :meth:`__gt__`, or :meth:`__ge__`,
   and generates the missing comparison methods.  Since the
   :meth:`__cmp__` method is being deprecated in Python 3.x,
@@ -1304,7 +1304,7 @@ changes, or look through the Subversion logs for all the details.
   ``('md5', 'sha1', 'sha224', 'sha256', 'sha384', 'sha512')``.
   (Contributed by Carl Chenet; :issue:`7418`.)
 
-* The default :class:`~httplib.HTTPResponse` class used by the :mod:`httplib` module now
+* The default :class:`~httplib.HTTPResponse` kundi used by the :mod:`httplib` module now
   supports buffering, resulting in much faster reading of HTTP responses.
   (Contributed by Kristján Valur Jónsson; :issue:`4879`.)
 
@@ -1316,7 +1316,7 @@ changes, or look through the Subversion logs for all the details.
 * The :mod:`ihooks` module now supports relative imports.  Note that
   :mod:`ihooks` is an older module for customizing imports,
   superseded by the :mod:`imputil` module added in Python 2.0.
-  (Relative import support added by Neil Schemenauer.)
+  (Relative agiza support added by Neil Schemenauer.)
 
   .. revision 75423
 
@@ -1328,7 +1328,7 @@ changes, or look through the Subversion logs for all the details.
   and figures out which of the callable's parameters will receive each argument,
   returning a dictionary mapping argument names to their values.  For example::
 
-    >>> from inspect import getcallargs
+    >>> kutoka inspect agiza getcallargs
     >>> def f(a, b=1, *pos, **named):
     ...     pass
     >>> getcallargs(f, 1, 2, 3)
@@ -1347,12 +1347,12 @@ changes, or look through the Subversion logs for all the details.
   and is 2 to 20 times faster depending on the task being performed.  The
   original Python version was renamed to the :mod:`_pyio` module.
 
-  One minor resulting change: the :class:`io.TextIOBase` class now
+  One minor resulting change: the :class:`io.TextIOBase` kundi now
   has an :attr:`errors` attribute giving the error setting
   used for encoding and decoding errors (one of ``'strict'``, ``'replace'``,
   ``'ignore'``).
 
-  The :class:`io.FileIO` class now raises an :exc:`OSError` when passed
+  The :class:`io.FileIO` kundi now raises an :exc:`OSError` when passed
   an invalid file descriptor.  (Implemented by Benjamin Peterson;
   :issue:`4991`.)  The :meth:`~io.IOBase.truncate` method now preserves the
   file position; previously it would change the file position to the
@@ -1368,7 +1368,7 @@ changes, or look through the Subversion logs for all the details.
   .. maybe here is better to use >>> list(itertools.compress(...)) instead
 
   New function: ``itertools.combinations_with_replacement(iter, r)``
-  returns all the possible *r*-length combinations of elements from the
+  returns all the possible *r*-length combinations of elements kutoka the
   iterable *iter*.  Unlike :func:`~itertools.combinations`, individual elements
   can be repeated in the generated combinations::
 
@@ -1400,7 +1400,7 @@ changes, or look through the Subversion logs for all the details.
   with any object literal that decodes to a list of pairs.
   (Contributed by Raymond Hettinger; :issue:`5381`.)
 
-* The :mod:`mailbox` module's :class:`~mailbox.Maildir` class now records the
+* The :mod:`mailbox` module's :class:`~mailbox.Maildir` kundi now records the
   timestamp on the directories it reads, and only re-reads them if the
   modification time has subsequently changed.  This improves
   performance by avoiding unneeded directory scans.  (Fixed by
@@ -1441,9 +1441,9 @@ changes, or look through the Subversion logs for all the details.
   contributed by Travis H.; :issue:`6508`.  Support for initgroups added
   by Jean-Paul Calderone; :issue:`7333`.)
 
-  The :func:`os.fork` function now re-initializes the import lock in
+  The :func:`os.fork` function now re-initializes the agiza lock in
   the child process; this fixes problems on Solaris when :func:`~os.fork`
-  is called from a thread.  (Fixed by Zsolt Cserna; :issue:`7242`.)
+  is called kutoka a thread.  (Fixed by Zsolt Cserna; :issue:`7242`.)
 
 * In the :mod:`os.path` module, the :func:`~os.path.normpath` and
   :func:`~os.path.abspath` functions now preserve Unicode; if their input path
@@ -1467,7 +1467,7 @@ changes, or look through the Subversion logs for all the details.
   directory or zip path is provided, it will be added to the front of
   ``sys.path`` and the module :mod:`__main__` will be imported.  It's
   expected that the directory or zip contains a :file:`__main__.py`;
-  if it doesn't, some other :file:`__main__.py` might be imported from
+  if it doesn't, some other :file:`__main__.py` might be imported kutoka
   a location later in ``sys.path``.  This makes more of the machinery
   of :mod:`runpy` available to scripts that want to mimic the way
   Python's command line processes an explicit path name.
@@ -1510,18 +1510,18 @@ changes, or look through the Subversion logs for all the details.
   giving the source address that will be used for the connection.
   (Contributed by Eldon Ziegler; :issue:`3972`.)
 
-  The :meth:`~socket.socket.recv_into` and :meth:`~socket.socket.recvfrom_into`
+  The :meth:`~socket.socket.recv_into` and :meth:`~socket.socket.recvkutoka_into`
   methods will now write into objects that support the buffer API, most usefully
   the :class:`bytearray` and :class:`memoryview` objects.  (Implemented by
   Antoine Pitrou; :issue:`8104`.)
 
-* The :mod:`SocketServer` module's :class:`~SocketServer.TCPServer` class now
+* The :mod:`SocketServer` module's :class:`~SocketServer.TCPServer` kundi now
   supports socket timeouts and disabling the Nagle algorithm.
-  The :attr:`~SocketServer.TCPServer.disable_nagle_algorithm` class attribute
+  The :attr:`~SocketServer.TCPServer.disable_nagle_algorithm` kundi attribute
   defaults to ``False``; if overridden to be true,
   new request connections will have the TCP_NODELAY option set to
   prevent buffering many small sends into a single TCP packet.
-  The :attr:`~SocketServer.BaseServer.timeout` class attribute can hold
+  The :attr:`~SocketServer.BaseServer.timeout` kundi attribute can hold
   a timeout in seconds that will be applied to the request socket; if
   no request is received within that time, :meth:`~SocketServer.BaseServer.handle_timeout`
   will be called and :meth:`~SocketServer.BaseServer.handle_request` will return.
@@ -1529,7 +1529,7 @@ changes, or look through the Subversion logs for all the details.
 
 * Updated module: the :mod:`sqlite3` module has been updated to
   version 2.6.0 of the `pysqlite package <https://github.com/ghaering/pysqlite>`__. Version 2.6.0 includes a number of bugfixes, and adds
-  the ability to load SQLite extensions from shared libraries.
+  the ability to load SQLite extensions kutoka shared libraries.
   Call the ``enable_load_extension(True)`` method to enable extensions,
   and then call :meth:`~sqlite3.Connection.load_extension` to load a particular shared library.
   (Updated by Gerhard Häring.)
@@ -1538,7 +1538,7 @@ changes, or look through the Subversion logs for all the details.
   buffer API, which fixed a test suite failure (fix by Antoine Pitrou;
   :issue:`7133`) and automatically set
   OpenSSL's :c:macro:`SSL_MODE_AUTO_RETRY`, which will prevent an error
-  code being returned from :meth:`recv` operations that trigger an SSL
+  code being returned kutoka :meth:`recv` operations that trigger an SSL
   renegotiation (fix by Antoine Pitrou; :issue:`8222`).
 
   The :func:`ssl.wrap_socket` constructor function now takes a
@@ -1623,11 +1623,11 @@ changes, or look through the Subversion logs for all the details.
   you may supply an optional *filter* argument
   that's a callable.  The *filter* callable will be passed the
   :class:`~tarfile.TarInfo` for every file being added, and can modify and return it.
-  If the callable returns ``None``, the file will be excluded from the
+  If the callable returns ``None``, the file will be excluded kutoka the
   resulting archive.  This is more powerful than the existing
   *exclude* argument, which has therefore been deprecated.
   (Added by Lars Gustäbel; :issue:`6856`.)
-  The :class:`~tarfile.TarFile` class also now supports the context management protocol.
+  The :class:`~tarfile.TarFile` kundi also now supports the context management protocol.
   (Added by Lars Gustäbel; :issue:`7232`.)
 
 * The :meth:`~threading.Event.wait` method of the :class:`threading.Event` class
@@ -1640,7 +1640,7 @@ changes, or look through the Subversion logs for all the details.
 * The Unicode database provided by the :mod:`unicodedata` module is
   now used internally to determine which characters are numeric,
   whitespace, or represent line breaks.  The database also
-  includes information from the :file:`Unihan.txt` data file (patch
+  includes information kutoka the :file:`Unihan.txt` data file (patch
   by Anders Chrigström and Amaury Forgeot d'Arc; :issue:`1571184`)
   and has been updated to version 5.2.0 (updated by
   Florent Xicluna; :issue:`8024`).
@@ -1656,7 +1656,7 @@ changes, or look through the Subversion logs for all the details.
   .. doctest::
     :options: +SKIP
 
-    >>> import urlparse
+    >>> agiza urlparse
     >>> urlparse.urlsplit('invented://host/filename?query')
     ('invented', '', '//host/filename?query', '', '')
 
@@ -1665,7 +1665,7 @@ changes, or look through the Subversion logs for all the details.
   .. doctest::
     :options: +SKIP
 
-    >>> import urlparse
+    >>> agiza urlparse
     >>> urlparse.urlsplit('invented://host/filename?query')
     ('invented', 'host', '/filename?query', '', '')
 
@@ -1682,7 +1682,7 @@ changes, or look through the Subversion logs for all the details.
     ParseResult(scheme='http', netloc='[1080::8:800:200C:417A]',
                 path='/foo', params='', query='', fragment='')
 
-* New class: the :class:`~weakref.WeakSet` class in the :mod:`weakref`
+* New class: the :class:`~weakref.WeakSet` kundi in the :mod:`weakref`
   module is a set that only holds weak references to its elements; elements
   will be removed once there are no references pointing to them.
   (Originally implemented in Python 3.x by Raymond Hettinger, and backported
@@ -1736,7 +1736,7 @@ Python 3.1 includes the :mod:`importlib` package, a re-implementation
 of the logic underlying Python's :keyword:`import` statement.
 :mod:`importlib` is useful for implementors of Python interpreters and
 to users who wish to write new importers that can participate in the
-import process.  Python 2.7 doesn't contain the complete
+agiza process.  Python 2.7 doesn't contain the complete
 :mod:`importlib` package, but instead has a tiny subset that contains
 a single function, :func:`~importlib.import_module`.
 
@@ -1751,14 +1751,14 @@ module into ``sys.modules`` and returns the module object.
 
 Here are some examples::
 
-    >>> from importlib import import_module
+    >>> kutoka importlib agiza import_module
     >>> anydbm = import_module('anydbm')  # Standard absolute import
     >>> anydbm
-    <module 'anydbm' from '/p/python/Lib/anydbm.py'>
+    <module 'anydbm' kutoka '/p/python/Lib/anydbm.py'>
     >>> # Relative import
     >>> file_util = import_module('..file_util', 'distutils.command')
     >>> file_util
-    <module 'distutils.file_util' from '/python/Lib/distutils/file_util.pyc'>
+    <module 'distutils.file_util' kutoka '/python/Lib/distutils/file_util.pyc'>
 
 :mod:`importlib` was implemented by Brett Cannon and introduced in
 Python 3.1.
@@ -1771,12 +1771,12 @@ The :mod:`sysconfig` module has been pulled out of the Distutils
 package, becoming a new top-level module in its own right.
 :mod:`sysconfig` provides functions for getting information about
 Python's build process: compiler switches, installation paths, the
-platform name, and whether Python is running from its source
+platform name, and whether Python is running kutoka its source
 directory.
 
 Some of the functions in the module are:
 
-* :func:`~sysconfig.get_config_var` returns variables from Python's
+* :func:`~sysconfig.get_config_var` returns variables kutoka Python's
   Makefile and the :file:`pyconfig.h` file.
 * :func:`~sysconfig.get_config_vars` returns a dictionary containing
   all of the configuration variables.
@@ -1784,7 +1784,7 @@ Some of the functions in the module are:
   a particular type of module: the standard library,
   site-specific modules, platform-specific modules, etc.
 * :func:`~sysconfig.is_python_build` returns true if you're running a
-  binary from a Python source tree, and false otherwise.
+  binary kutoka a Python source tree, and false otherwise.
 
 Consult the :mod:`sysconfig` documentation for more details and for
 a complete list of functions.
@@ -1827,10 +1827,10 @@ The :mod:`unittest` module was greatly enhanced; many
 new features were added.  Most of these features were implemented
 by Michael Foord, unless otherwise noted.  The enhanced version of
 the module is downloadable separately for use with Python versions 2.4 to 2.6,
-packaged as the :mod:`unittest2` package, from
+packaged as the :mod:`unittest2` package, kutoka
 https://pypi.org/project/unittest2.
 
-When used from the command line, the module can automatically discover
+When used kutoka the command line, the module can automatically discover
 tests.  It's not as fancy as `py.test <http://pytest.org>`__ or
 `nose <https://nose.readthedocs.io/>`__, but provides a
 simple way to run tests kept within a set of package directories.  For example,
@@ -1896,7 +1896,7 @@ object to run.  For example, you can write this::
 Module- and class-level setup and teardown fixtures are now supported.
 Modules can contain :func:`~unittest.setUpModule` and :func:`~unittest.tearDownModule`
 functions.  Classes can have :meth:`~unittest.TestCase.setUpClass` and
-:meth:`~unittest.TestCase.tearDownClass` methods that must be defined as class methods
+:meth:`~unittest.TestCase.tearDownClass` methods that must be defined as kundi methods
 (using ``@classmethod`` or equivalent).  These functions and
 methods are invoked when the test runner switches to a test case in a
 different module or class.
@@ -1987,7 +1987,7 @@ GvR worked on merging them into Python's version of :mod:`unittest`.
 
 :func:`unittest.main` now takes an optional ``exit`` argument.  If
 false, :func:`~unittest.main` doesn't call :func:`sys.exit`, allowing
-:func:`~unittest.main` to be used from the interactive interpreter.
+:func:`~unittest.main` to be used kutoka the interactive interpreter.
 (Contributed by J. Pablo Fernández; :issue:`3379`.)
 
 :class:`~unittest.TestResult` has new :meth:`~unittest.TestResult.startTestRun` and
@@ -2045,12 +2045,12 @@ version 1.3.  Some of the new features are:
   XML declaration.
 
 * New :class:`~xml.etree.ElementTree.Element` method:
-  :meth:`~xml.etree.ElementTree.Element.extend` appends the items from a
+  :meth:`~xml.etree.ElementTree.Element.extend` appends the items kutoka a
   sequence to the element's children.  Elements themselves behave like
-  sequences, so it's easy to move children from one element to
+  sequences, so it's easy to move children kutoka one element to
   another::
 
-    from xml.etree import ElementTree as ET
+    kutoka xml.etree agiza ElementTree as ET
 
     t = ET.XML("""<list>
       <item>1</item> <item>2</item>  <item>3</item>
@@ -2149,7 +2149,7 @@ Changes to Python's build process and to the C API include:
   the output type, an *overflow* flag is set and returned to the caller.
   (Contributed by Case Van Horsen; :issue:`7528` and :issue:`7767`.)
 
-* New function: stemming from the rewrite of string-to-float conversion,
+* New function: stemming kutoka the rewrite of string-to-float conversion,
   a new :c:func:`PyOS_string_to_double` function was added.  The old
   :c:func:`PyOS_ascii_strtod` and :c:func:`PyOS_ascii_atof` functions
   are now deprecated.
@@ -2165,7 +2165,7 @@ Changes to Python's build process and to the C API include:
   directory.  This meant that, if you ran an application embedding
   Python in a directory controlled by someone else, attackers could
   put a Trojan-horse module in the directory (say, a file named
-  :file:`os.py`) that your application would then import and run.
+  :file:`os.py`) that your application would then agiza and run.
 
   If you maintain a C/C++ application that embeds Python, check
   whether you're calling :c:func:`PySys_SetArgv` and carefully consider
@@ -2209,22 +2209,22 @@ Changes to Python's build process and to the C API include:
   been changed.  Previously, the child process created by
   :func:`os.fork` might fail because the child is created with only a
   single thread running, the thread performing the :func:`os.fork`.
-  If other threads were holding a lock, such as Python's import lock,
+  If other threads were holding a lock, such as Python's agiza lock,
   when the fork was performed, the lock would still be marked as
   "held" in the new process.  But in the child process nothing would
   ever release the lock, since the other threads weren't replicated,
   and the child process would no longer be able to perform imports.
 
-  Python 2.7 acquires the import lock before performing an
+  Python 2.7 acquires the agiza lock before performing an
   :func:`os.fork`, and will also clean up any locks created using the
   :mod:`threading` module.  C extension modules that have internal
   locks, or that call :c:func:`fork()` themselves, will not benefit
-  from this clean-up.
+  kutoka this clean-up.
 
   (Fixed by Thomas Wouters; :issue:`1590864`.)
 
 * The :c:func:`Py_Finalize` function now calls the internal
-  :func:`threading._shutdown` function; this prevents some exceptions from
+  :func:`threading._shutdown` function; this prevents some exceptions kutoka
   being raised when an interpreter shuts down.
   (Patch by Adam Olsen; :issue:`1722344`.)
 
@@ -2281,14 +2281,14 @@ C API to an extension module.  A capsule is essentially the holder of
 a C ``void *`` pointer, and is made available as a module attribute; for
 example, the :mod:`socket` module's API is exposed as ``socket.CAPI``,
 and :mod:`unicodedata` exposes ``ucnhash_CAPI``.  Other extensions
-can import the module, access its dictionary to get the capsule
+can agiza the module, access its dictionary to get the capsule
 object, and then get the ``void *`` pointer, which will usually point
 to an array of pointers to the module's various API functions.
 
 There is an existing data type already used for this,
 :c:type:`PyCObject`, but it doesn't provide type safety.  Evil code
 written in pure Python could cause a segmentation fault by taking a
-:c:type:`PyCObject` from module A and somehow substituting it for the
+:c:type:`PyCObject` kutoka module A and somehow substituting it for the
 :c:type:`PyCObject` in module B.   Capsules know their own name,
 and getting the pointer requires providing the name:
 
@@ -2324,7 +2324,7 @@ discussed in :issue:`5630`.
 Port-Specific Changes: Windows
 -----------------------------------
 
-* The :mod:`msvcrt` module now contains some constants from
+* The :mod:`msvcrt` module now contains some constants kutoka
   the :file:`crtassem.h` header file:
   :data:`CRT_ASSEMBLY_VERSION`,
   :data:`VC_ASSEMBLY_PUBLICKEYTOKEN`,
@@ -2353,7 +2353,7 @@ Port-Specific Changes: Windows
 * The :func:`os.listdir` function now correctly fails
   for an empty path.  (Fixed by Hirokazu Yamamoto; :issue:`5913`.)
 
-* The :mod:`mimelib` module will now read the MIME database from
+* The :mod:`mimelib` module will now read the MIME database kutoka
   the Windows registry when initializing.
   (Patch by Gabriel Genellina; :issue:`4969`.)
 
@@ -2372,7 +2372,7 @@ Port-Specific Changes: Mac OS X
      As of 2.7.13, this change was removed.
      ``/Library/Python/2.7/site-packages``, the site-packages directory
      used by the Apple-supplied system Python 2.7 is no longer appended to
-     ``sys.path`` for user-installed Pythons such as from the python.org
+     ``sys.path`` for user-installed Pythons such as kutoka the python.org
      installers.  As of macOS 10.12, Apple changed how the system
      site-packages directory is configured, which could cause installation
      of pip components, like setuptools, to fail.  Packages installed for
@@ -2402,7 +2402,7 @@ Other Changes and Fixes
   forms in :file:`.po` files.  (Fixed by Martin von Löwis;
   :issue:`5464`.)
 
-* When importing a module from a :file:`.pyc` or :file:`.pyo` file
+* When importing a module kutoka a :file:`.pyc` or :file:`.pyo` file
   with an existing :file:`.py` counterpart, the :attr:`co_filename`
   attributes of the resulting code objects are overwritten when the
   original filename is obsolete.  This can happen if the file has been
@@ -2443,14 +2443,14 @@ that may require changes to your code:
   Belopolsky; :issue:`1533`.)
 
 * The string :meth:`format` method changed the default precision used
-  for floating-point and complex numbers from 6 decimal
+  for floating-point and complex numbers kutoka 6 decimal
   places to 12, which matches the precision used by :func:`str`.
   (Changed by Eric Smith; :issue:`5920`.)
 
 * Because of an optimization for the :keyword:`with` statement, the special
   methods :meth:`__enter__` and :meth:`__exit__` must belong to the object's
   type, and cannot be directly attached to the object's instance.  This
-  affects new-style classes (derived from :class:`object`) and C extension
+  affects new-style classes (derived kutoka :class:`object`) and C extension
   types.  (:issue:`6101`.)
 
 * Due to a bug in Python 2.6, the *exc_value* parameter to
@@ -2516,7 +2516,7 @@ In the standard library:
   .. doctest::
     :options: +SKIP
 
-    >>> import urlparse
+    >>> agiza urlparse
     >>> urlparse.urlsplit('invented://host/filename?query')
     ('invented', '', '//host/filename?query', '', '')
 
@@ -2525,7 +2525,7 @@ In the standard library:
   .. doctest::
     :options: +SKIP
 
-    >>> import urlparse
+    >>> agiza urlparse
     >>> urlparse.urlsplit('invented://host/filename?query')
     ('invented', 'host', '/filename?query', '', '')
 
@@ -2606,7 +2606,7 @@ with the first of those changes appearing in the Python 2.7.7 release.
 
 :pep:`466` related features added in Python 2.7.7:
 
-* :func:`hmac.compare_digest` was backported from Python 3 to make a timing
+* :func:`hmac.compare_digest` was backported kutoka Python 3 to make a timing
   attack resistant comparison operation available to Python 2 applications.
   (Contributed by Alex Gaynor; :issue:`21306`.)
 
@@ -2615,7 +2615,7 @@ with the first of those changes appearing in the Python 2.7.7 release.
 
 :pep:`466` related features added in Python 2.7.8:
 
-* :func:`hashlib.pbkdf2_hmac` was backported from Python 3 to make a hashing
+* :func:`hashlib.pbkdf2_hmac` was backported kutoka Python 3 to make a hashing
   algorithm suitable for secure password storage broadly available to Python
   2 applications. (Contributed by Alex Gaynor; :issue:`21304`.)
 
@@ -2637,7 +2637,7 @@ with the first of those changes appearing in the Python 2.7.7 release.
   Gaynor; :issue:`21305`.)
 
 * :data:`hashlib.algorithms_guaranteed` and
-  :data:`hashlib.algorithms_available` were backported from Python 3 to make
+  :data:`hashlib.algorithms_available` were backported kutoka Python 3 to make
   it easier for Python 2 applications to select the strongest available hash
   algorithm. (Contributed by Alex Gaynor in :issue:`21307`)
 
@@ -2672,7 +2672,7 @@ overridden through Makefile options.
 On Windows and Mac OS X, the CPython installers now default to installing
 ``pip`` along with CPython itself (users may opt out of installing it
 during the installation process). Window users will need to opt in to the
-automatic ``PATH`` modifications to have ``pip`` available from the command
+automatic ``PATH`` modifications to have ``pip`` available kutoka the command
 line by default, otherwise it can still be accessed through the Python
 launcher for Windows as ``py -m pip``.
 
@@ -2718,8 +2718,8 @@ change was made in the Python 2.7.9 release.
 For applications which require the old previous behavior, they can pass an
 alternate context::
 
-    import urllib2
-    import ssl
+    agiza urllib2
+    agiza ssl
 
     # This disables all verification
     context = ssl._create_unverified_context()

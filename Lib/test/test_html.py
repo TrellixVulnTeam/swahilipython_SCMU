@@ -6,8 +6,8 @@ agiza html
 agiza unittest
 
 
-class HtmlTests(unittest.TestCase):
-    def test_escape(self):
+kundi HtmlTests(unittest.TestCase):
+    eleza test_escape(self):
         self.assertEqual(
             html.escape('\'<script>"&foo;"</script>\''),
             '&#x27;&lt;script&gt;&quot;&amp;foo;&quot;&lt;/script&gt;&#x27;')
@@ -15,13 +15,13 @@ class HtmlTests(unittest.TestCase):
             html.escape('\'<script>"&foo;"</script>\'', False),
             '\'&lt;script&gt;"&amp;foo;"&lt;/script&gt;\'')
 
-    def test_unescape(self):
+    eleza test_unescape(self):
         numeric_formats = ['&#%d', '&#%d;', '&#x%x', '&#x%x;']
         errmsg = 'unescape(%r) should have returned %r'
-        def check(text, expected):
+        eleza check(text, expected):
             self.assertEqual(html.unescape(text), expected,
                              msg=errmsg % (text, expected))
-        def check_num(num, expected):
+        eleza check_num(num, expected):
             for format in numeric_formats:
                 text = format % num
                 self.assertEqual(html.unescape(text), expected,
@@ -99,5 +99,5 @@ class HtmlTests(unittest.TestCase):
         check('&co;', '&co;')
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

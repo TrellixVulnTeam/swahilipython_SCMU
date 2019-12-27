@@ -13,7 +13,7 @@ command.
 
 kutoka turtle agiza *
 
-def yin(radius, color1, color2):
+eleza yin(radius, color1, color2):
     width(3)
     color("black", color1)
     begin_fill()
@@ -37,13 +37,13 @@ def yin(radius, color1, color2):
     down()
     left(90)
 
-def main():
+eleza main():
     reset()
     yin(200, "black", "white")
     yin(200, "white", "black")
     ht()
-    return "Done!"
+    rudisha "Done!"
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()
     mainloop()

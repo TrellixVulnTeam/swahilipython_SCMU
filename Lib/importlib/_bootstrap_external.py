@@ -17,7 +17,7 @@ work. One should use importlib as the public-facing version of this module.
 
 # When editing this code be aware that code executed at agiza time CANNOT
 # reference any injected objects! This includes not only global code but also
-# anything specified at the class level.
+# anything specified at the kundi level.
 
 # Bootstrap-related code ######################################################
 _CASE_INSENSITIVE_PLATFORMS_STR_KEY = 'win',
@@ -26,100 +26,100 @@ _CASE_INSENSITIVE_PLATFORMS =  (_CASE_INSENSITIVE_PLATFORMS_BYTES_KEY
                                 + _CASE_INSENSITIVE_PLATFORMS_STR_KEY)
 
 
-def _make_relax_case():
-    if sys.platform.startswith(_CASE_INSENSITIVE_PLATFORMS):
-        if sys.platform.startswith(_CASE_INSENSITIVE_PLATFORMS_STR_KEY):
+eleza _make_relax_case():
+    ikiwa sys.platform.startswith(_CASE_INSENSITIVE_PLATFORMS):
+        ikiwa sys.platform.startswith(_CASE_INSENSITIVE_PLATFORMS_STR_KEY):
             key = 'PYTHONCASEOK'
         else:
             key = b'PYTHONCASEOK'
 
-        def _relax_case():
-            """True if filenames must be checked case-insensitively."""
-            return key in _os.environ
+        eleza _relax_case():
+            """True ikiwa filenames must be checked case-insensitively."""
+            rudisha key in _os.environ
     else:
-        def _relax_case():
-            """True if filenames must be checked case-insensitively."""
-            return False
-    return _relax_case
+        eleza _relax_case():
+            """True ikiwa filenames must be checked case-insensitively."""
+            rudisha False
+    rudisha _relax_case
 
 
-def _pack_uint32(x):
+eleza _pack_uint32(x):
     """Convert a 32-bit integer to little-endian."""
-    return (int(x) & 0xFFFFFFFF).to_bytes(4, 'little')
+    rudisha (int(x) & 0xFFFFFFFF).to_bytes(4, 'little')
 
 
-def _unpack_uint32(data):
+eleza _unpack_uint32(data):
     """Convert 4 bytes in little-endian to an integer."""
     assert len(data) == 4
-    return int.from_bytes(data, 'little')
+    rudisha int.kutoka_bytes(data, 'little')
 
-def _unpack_uint16(data):
+eleza _unpack_uint16(data):
     """Convert 2 bytes in little-endian to an integer."""
     assert len(data) == 2
-    return int.from_bytes(data, 'little')
+    rudisha int.kutoka_bytes(data, 'little')
 
 
-def _path_join(*path_parts):
+eleza _path_join(*path_parts):
     """Replacement for os.path.join()."""
-    return path_sep.join([part.rstrip(path_separators)
-                          for part in path_parts if part])
+    rudisha path_sep.join([part.rstrip(path_separators)
+                          for part in path_parts ikiwa part])
 
 
-def _path_split(path):
+eleza _path_split(path):
     """Replacement for os.path.split()."""
-    if len(path_separators) == 1:
+    ikiwa len(path_separators) == 1:
         front, _, tail = path.rpartition(path_sep)
-        return front, tail
+        rudisha front, tail
     for x in reversed(path):
-        if x in path_separators:
+        ikiwa x in path_separators:
             front, tail = path.rsplit(x, maxsplit=1)
-            return front, tail
-    return '', path
+            rudisha front, tail
+    rudisha '', path
 
 
-def _path_stat(path):
+eleza _path_stat(path):
     """Stat the path.
 
     Made a separate function to make it easier to override in experiments
     (e.g. cache stat results).
 
     """
-    return _os.stat(path)
+    rudisha _os.stat(path)
 
 
-def _path_is_mode_type(path, mode):
+eleza _path_is_mode_type(path, mode):
     """Test whether the path is the specified mode type."""
     try:
         stat_info = _path_stat(path)
     except OSError:
-        return False
-    return (stat_info.st_mode & 0o170000) == mode
+        rudisha False
+    rudisha (stat_info.st_mode & 0o170000) == mode
 
 
-def _path_isfile(path):
+eleza _path_isfile(path):
     """Replacement for os.path.isfile."""
-    return _path_is_mode_type(path, 0o100000)
+    rudisha _path_is_mode_type(path, 0o100000)
 
 
-def _path_isdir(path):
+eleza _path_isdir(path):
     """Replacement for os.path.isdir."""
-    if not path:
+    ikiwa not path:
         path = _os.getcwd()
-    return _path_is_mode_type(path, 0o040000)
+    rudisha _path_is_mode_type(path, 0o040000)
 
 
-def _path_isabs(path):
+eleza _path_isabs(path):
     """Replacement for os.path.isabs.
 
     Considers a Windows drive-relative path (no drive, but starts with slash) to
     still be "absolute".
     """
-    return path.startswith(path_separators) or path[1:3] in _pathseps_with_colon
+    rudisha path.startswith(path_separators) or path[1:3] in _pathseps_with_colon
 
 
-def _write_atomic(path, data, mode=0o666):
+eleza _write_atomic(path, data, mode=0o666):
     """Best-effort function to write data to a path atomically.
-    Be prepared to handle a FileExistsError if concurrent writing of the
+    Be prepared to handle a FileExistsError ikiwa concurrent writing of the
     temporary file is attempted."""
     # id() is used to generate a pseudo-random filename.
     path_tmp = '{}.{}'.format(path, id(path))
@@ -147,7 +147,7 @@ _code_type = type(_write_atomic.__code__)
 # Magic word to reject .pyc files generated by other Python versions.
 # It should change for each incompatible change to the bytecode.
 #
-# The value of CR and LF is incorporated so if you ever read or write
+# The value of CR and LF is incorporated so ikiwa you ever read or write
 # a .pyc file in text mode the magic number will be wrong; also, the
 # Apple MPW compiler swaps their values, botching string constants.
 #
@@ -204,7 +204,7 @@ _code_type = type(_write_atomic.__code__)
 #                    3030 (added keyword-only parameters)
 #                    3040 (added signature annotations)
 #                    3050 (print becomes a function)
-#                    3060 (PEP 3115 metaclass syntax)
+#                    3060 (PEP 3115 metakundi syntax)
 #                    3061 (string literals become unicode)
 #                    3071 (PEP 3109 raise changes)
 #                    3081 (PEP 3137 make __file__ and __name__ unicode)
@@ -231,10 +231,10 @@ _code_type = type(_write_atomic.__code__)
 #     Python 3.3a4  3230 (revert changes to implicit __class__ closure #14857)
 #     Python 3.4a1  3250 (evaluate positional default arguments before
 #                        keyword-only defaults #16967)
-#     Python 3.4a1  3260 (add LOAD_CLASSDEREF; allow locals of class to override
+#     Python 3.4a1  3260 (add LOAD_CLASSDEREF; allow locals of kundi to override
 #                        free vars #17853)
 #     Python 3.4a1  3270 (various tweaks to the __class__ closure #12370)
-#     Python 3.4a1  3280 (remove implicit class argument)
+#     Python 3.4a1  3280 (remove implicit kundi argument)
 #     Python 3.4a4  3290 (changes to __qualname__ computation #19301)
 #     Python 3.4a4  3300 (more changes to __qualname__ computation #19301)
 #     Python 3.4rc2 3310 (alter __qualname__ computation #20625)
@@ -280,7 +280,7 @@ _code_type = type(_write_atomic.__code__)
 # in PC/launcher.c must also be updated.
 
 MAGIC_NUMBER = (3413).to_bytes(2, 'little') + b'\r\n'
-_RAW_MAGIC_NUMBER = int.from_bytes(MAGIC_NUMBER, 'little')  # For agiza.c
+_RAW_MAGIC_NUMBER = int.kutoka_bytes(MAGIC_NUMBER, 'little')  # For agiza.c
 
 _PYCACHE = '__pycache__'
 _OPT = 'opt-'
@@ -291,11 +291,11 @@ BYTECODE_SUFFIXES = ['.pyc']
 # Deprecated.
 DEBUG_BYTECODE_SUFFIXES = OPTIMIZED_BYTECODE_SUFFIXES = BYTECODE_SUFFIXES
 
-def cache_from_source(path, debug_override=None, *, optimization=None):
-    """Given the path to a .py file, return the path to its .pyc file.
+eleza cache_kutoka_source(path, debug_override=None, *, optimization=None):
+    """Given the path to a .py file, rudisha the path to its .pyc file.
 
     The .py file does not need to exist; this simply returns the path to the
-    .pyc file calculated as if the .py file were imported.
+    .pyc file calculated as ikiwa the .py file were imported.
 
     The 'optimization' parameter controls the presumed optimization level of
     the bytecode file. If 'optimization' is not None, the string representation
@@ -309,61 +309,61 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
     If sys.implementation.cache_tag is None then NotImplementedError is raised.
 
     """
-    if debug_override is not None:
+    ikiwa debug_override is not None:
         _warnings.warn('the debug_override parameter is deprecated; use '
                        "'optimization' instead", DeprecationWarning)
-        if optimization is not None:
+        ikiwa optimization is not None:
             message = 'debug_override or optimization must be set to None'
             raise TypeError(message)
-        optimization = '' if debug_override else 1
+        optimization = '' ikiwa debug_override else 1
     path = _os.fspath(path)
     head, tail = _path_split(path)
     base, sep, rest = tail.rpartition('.')
     tag = sys.implementation.cache_tag
-    if tag is None:
+    ikiwa tag is None:
         raise NotImplementedError('sys.implementation.cache_tag is None')
-    almost_filename = ''.join([(base if base else rest), sep, tag])
-    if optimization is None:
-        if sys.flags.optimize == 0:
+    almost_filename = ''.join([(base ikiwa base else rest), sep, tag])
+    ikiwa optimization is None:
+        ikiwa sys.flags.optimize == 0:
             optimization = ''
         else:
             optimization = sys.flags.optimize
     optimization = str(optimization)
-    if optimization != '':
-        if not optimization.isalnum():
+    ikiwa optimization != '':
+        ikiwa not optimization.isalnum():
             raise ValueError('{!r} is not alphanumeric'.format(optimization))
         almost_filename = '{}.{}{}'.format(almost_filename, _OPT, optimization)
     filename = almost_filename + BYTECODE_SUFFIXES[0]
-    if sys.pycache_prefix is not None:
+    ikiwa sys.pycache_prefix is not None:
         # We need an absolute path to the py file to avoid the possibility of
-        # collisions within sys.pycache_prefix, if someone has two different
+        # collisions within sys.pycache_prefix, ikiwa someone has two different
         # `foo/bar.py` on their system and they agiza both of them using the
         # same sys.pycache_prefix. Let's say sys.pycache_prefix is
-        # `C:\Bytecode`; the idea here is that if we get `Foo\Bar`, we first
+        # `C:\Bytecode`; the idea here is that ikiwa we get `Foo\Bar`, we first
         # make it absolute (`C:\Somewhere\Foo\Bar`), then make it root-relative
         # (`Somewhere\Foo\Bar`), so we end up placing the bytecode file in an
         # unambiguous `C:\Bytecode\Somewhere\Foo\Bar\`.
-        if not _path_isabs(head):
+        ikiwa not _path_isabs(head):
             head = _path_join(_os.getcwd(), head)
 
         # Strip initial drive kutoka a Windows path. We know we have an absolute
         # path here, so the second part of the check rules out a POSIX path that
         # happens to contain a colon at the second character.
-        if head[1] == ':' and head[0] not in path_separators:
+        ikiwa head[1] == ':' and head[0] not in path_separators:
             head = head[2:]
 
         # Strip initial path separator kutoka `head` to complete the conversion
         # back to a root-relative path before joining.
-        return _path_join(
+        rudisha _path_join(
             sys.pycache_prefix,
             head.lstrip(path_separators),
             filename,
         )
-    return _path_join(head, _PYCACHE, filename)
+    rudisha _path_join(head, _PYCACHE, filename)
 
 
-def source_from_cache(path):
-    """Given the path to a .pyc. file, return the path to its .py file.
+eleza source_kutoka_cache(path):
+    """Given the path to a .pyc. file, rudisha the path to its .py file.
 
     The .pyc file does not need to exist; this simply returns the path to
     the .py file calculated to correspond to the .pyc file.  If path does
@@ -371,69 +371,69 @@ def source_from_cache(path):
     sys.implementation.cache_tag is None then NotImplementedError is raised.
 
     """
-    if sys.implementation.cache_tag is None:
+    ikiwa sys.implementation.cache_tag is None:
         raise NotImplementedError('sys.implementation.cache_tag is None')
     path = _os.fspath(path)
     head, pycache_filename = _path_split(path)
     found_in_pycache_prefix = False
-    if sys.pycache_prefix is not None:
+    ikiwa sys.pycache_prefix is not None:
         stripped_path = sys.pycache_prefix.rstrip(path_separators)
-        if head.startswith(stripped_path + path_sep):
+        ikiwa head.startswith(stripped_path + path_sep):
             head = head[len(stripped_path):]
             found_in_pycache_prefix = True
-    if not found_in_pycache_prefix:
+    ikiwa not found_in_pycache_prefix:
         head, pycache = _path_split(head)
-        if pycache != _PYCACHE:
+        ikiwa pycache != _PYCACHE:
             raise ValueError(f'{_PYCACHE} not bottom-level directory in '
                              f'{path!r}')
     dot_count = pycache_filename.count('.')
-    if dot_count not in {2, 3}:
+    ikiwa dot_count not in {2, 3}:
         raise ValueError(f'expected only 2 or 3 dots in {pycache_filename!r}')
-    elif dot_count == 3:
+    elikiwa dot_count == 3:
         optimization = pycache_filename.rsplit('.', 2)[-2]
-        if not optimization.startswith(_OPT):
+        ikiwa not optimization.startswith(_OPT):
             raise ValueError("optimization portion of filename does not start "
                              f"with {_OPT!r}")
         opt_level = optimization[len(_OPT):]
-        if not opt_level.isalnum():
+        ikiwa not opt_level.isalnum():
             raise ValueError(f"optimization level {optimization!r} is not an "
                              "alphanumeric value")
     base_filename = pycache_filename.partition('.')[0]
-    return _path_join(head, base_filename + SOURCE_SUFFIXES[0])
+    rudisha _path_join(head, base_filename + SOURCE_SUFFIXES[0])
 
 
-def _get_sourcefile(bytecode_path):
-    """Convert a bytecode file path to a source path (if possible).
+eleza _get_sourcefile(bytecode_path):
+    """Convert a bytecode file path to a source path (ikiwa possible).
 
     This function exists purely for backwards-compatibility for
     PyImport_ExecCodeModuleWithFilenames() in the C API.
 
     """
-    if len(bytecode_path) == 0:
-        return None
+    ikiwa len(bytecode_path) == 0:
+        rudisha None
     rest, _, extension = bytecode_path.rpartition('.')
-    if not rest or extension.lower()[-3:-1] != 'py':
-        return bytecode_path
+    ikiwa not rest or extension.lower()[-3:-1] != 'py':
+        rudisha bytecode_path
     try:
-        source_path = source_from_cache(bytecode_path)
+        source_path = source_kutoka_cache(bytecode_path)
     except (NotImplementedError, ValueError):
         source_path = bytecode_path[:-1]
-    return source_path if _path_isfile(source_path) else bytecode_path
+    rudisha source_path ikiwa _path_isfile(source_path) else bytecode_path
 
 
-def _get_cached(filename):
-    if filename.endswith(tuple(SOURCE_SUFFIXES)):
+eleza _get_cached(filename):
+    ikiwa filename.endswith(tuple(SOURCE_SUFFIXES)):
         try:
-            return cache_from_source(filename)
+            rudisha cache_kutoka_source(filename)
         except NotImplementedError:
             pass
-    elif filename.endswith(tuple(BYTECODE_SUFFIXES)):
-        return filename
+    elikiwa filename.endswith(tuple(BYTECODE_SUFFIXES)):
+        rudisha filename
     else:
-        return None
+        rudisha None
 
 
-def _calc_mode(path):
+eleza _calc_mode(path):
     """Calculate the mode permissions for a bytecode file."""
     try:
         mode = _path_stat(path).st_mode
@@ -442,10 +442,10 @@ def _calc_mode(path):
     # We always ensure write access so we can update cached files
     # later even when the source files are read-only on Windows (#6074)
     mode |= 0o200
-    return mode
+    rudisha mode
 
 
-def _check_name(method):
+eleza _check_name(method):
     """Decorator to verify that the module being requested matches the one the
     loader can handle.
 
@@ -453,27 +453,27 @@ def _check_name(method):
     compared against. If the comparison fails then ImportError is raised.
 
     """
-    def _check_name_wrapper(self, name=None, *args, **kwargs):
-        if name is None:
+    eleza _check_name_wrapper(self, name=None, *args, **kwargs):
+        ikiwa name is None:
             name = self.name
-        elif self.name != name:
+        elikiwa self.name != name:
             raise ImportError('loader for %s cannot handle %s' %
                                 (self.name, name), name=name)
-        return method(self, name, *args, **kwargs)
+        rudisha method(self, name, *args, **kwargs)
     try:
         _wrap = _bootstrap._wrap
     except NameError:
         # XXX yuck
-        def _wrap(new, old):
+        eleza _wrap(new, old):
             for replace in ['__module__', '__name__', '__qualname__', '__doc__']:
-                if hasattr(old, replace):
+                ikiwa hasattr(old, replace):
                     setattr(new, replace, getattr(old, replace))
             new.__dict__.update(old.__dict__)
     _wrap(_check_name_wrapper, method)
-    return _check_name_wrapper
+    rudisha _check_name_wrapper
 
 
-def _find_module_shim(self, fullname):
+eleza _find_module_shim(self, fullname):
     """Try to find a loader for the specified module by delegating to
     self.find_loader().
 
@@ -482,16 +482,16 @@ def _find_module_shim(self, fullname):
     """
     # Call find_loader(). If it returns a string (indicating this
     # is a namespace package portion), generate a warning and
-    # return None.
+    # rudisha None.
     loader, portions = self.find_loader(fullname)
-    if loader is None and len(portions):
+    ikiwa loader is None and len(portions):
         msg = 'Not agizaing directory {}: missing __init__'
         _warnings.warn(msg.format(portions[0]), ImportWarning)
-    return loader
+    rudisha loader
 
 
-def _classify_pyc(data, name, exc_details):
-    """Perform basic validity checking of a pyc header and return the flags field,
+eleza _classify_pyc(data, name, exc_details):
+    """Perform basic validity checking of a pyc header and rudisha the flags field,
     which determines how the pyc should be further validated against the source.
 
     *data* is the contents of the pyc file. (Only the first 16 bytes are
@@ -499,7 +499,7 @@ def _classify_pyc(data, name, exc_details):
 
     *name* is the name of the module being imported. It is used for logging.
 
-    *exc_details* is a dictionary passed to ImportError if it raised for
+    *exc_details* is a dictionary passed to ImportError ikiwa it raised for
     improved debugging.
 
     ImportError is raised when the magic number is incorrect or when the flags
@@ -507,23 +507,23 @@ def _classify_pyc(data, name, exc_details):
 
     """
     magic = data[:4]
-    if magic != MAGIC_NUMBER:
+    ikiwa magic != MAGIC_NUMBER:
         message = f'bad magic number in {name!r}: {magic!r}'
         _bootstrap._verbose_message('{}', message)
         raise ImportError(message, **exc_details)
-    if len(data) < 16:
+    ikiwa len(data) < 16:
         message = f'reached EOF while reading pyc header of {name!r}'
         _bootstrap._verbose_message('{}', message)
         raise EOFError(message)
     flags = _unpack_uint32(data[4:8])
     # Only the first two flags are defined.
-    if flags & ~0b11:
+    ikiwa flags & ~0b11:
         message = f'invalid flags {flags!r} in {name!r}'
         raise ImportError(message, **exc_details)
-    return flags
+    rudisha flags
 
 
-def _validate_timestamp_pyc(data, source_mtime, source_size, name,
+eleza _validate_timestamp_pyc(data, source_mtime, source_size, name,
                             exc_details):
     """Validate a pyc against the source last-modified time.
 
@@ -536,22 +536,22 @@ def _validate_timestamp_pyc(data, source_mtime, source_size, name,
 
     *name* is the name of the module being imported. It is used for logging.
 
-    *exc_details* is a dictionary passed to ImportError if it raised for
+    *exc_details* is a dictionary passed to ImportError ikiwa it raised for
     improved debugging.
 
-    An ImportError is raised if the bytecode is stale.
+    An ImportError is raised ikiwa the bytecode is stale.
 
     """
-    if _unpack_uint32(data[8:12]) != (source_mtime & 0xFFFFFFFF):
+    ikiwa _unpack_uint32(data[8:12]) != (source_mtime & 0xFFFFFFFF):
         message = f'bytecode is stale for {name!r}'
         _bootstrap._verbose_message('{}', message)
         raise ImportError(message, **exc_details)
-    if (source_size is not None and
+    ikiwa (source_size is not None and
         _unpack_uint32(data[12:16]) != (source_size & 0xFFFFFFFF)):
         raise ImportError(f'bytecode is stale for {name!r}', **exc_details)
 
 
-def _validate_hash_pyc(data, source_hash, name, exc_details):
+eleza _validate_hash_pyc(data, source_hash, name, exc_details):
     """Validate a hash-based pyc by checking the real source hash against the one in
     the pyc header.
 
@@ -562,43 +562,43 @@ def _validate_hash_pyc(data, source_hash, name, exc_details):
 
     *name* is the name of the module being imported. It is used for logging.
 
-    *exc_details* is a dictionary passed to ImportError if it raised for
+    *exc_details* is a dictionary passed to ImportError ikiwa it raised for
     improved debugging.
 
-    An ImportError is raised if the bytecode is stale.
+    An ImportError is raised ikiwa the bytecode is stale.
 
     """
-    if data[8:16] != source_hash:
+    ikiwa data[8:16] != source_hash:
         raise ImportError(
             f'hash in bytecode doesn\'t match hash of source {name!r}',
             **exc_details,
         )
 
 
-def _compile_bytecode(data, name=None, bytecode_path=None, source_path=None):
+eleza _compile_bytecode(data, name=None, bytecode_path=None, source_path=None):
     """Compile bytecode as found in a pyc."""
     code = marshal.loads(data)
-    if isinstance(code, _code_type):
+    ikiwa isinstance(code, _code_type):
         _bootstrap._verbose_message('code object kutoka {!r}', bytecode_path)
-        if source_path is not None:
+        ikiwa source_path is not None:
             _imp._fix_co_filename(code, source_path)
-        return code
+        rudisha code
     else:
         raise ImportError('Non-code object in {!r}'.format(bytecode_path),
                           name=name, path=bytecode_path)
 
 
-def _code_to_timestamp_pyc(code, mtime=0, source_size=0):
+eleza _code_to_timestamp_pyc(code, mtime=0, source_size=0):
     "Produce the data for a timestamp-based pyc."
     data = bytearray(MAGIC_NUMBER)
     data.extend(_pack_uint32(0))
     data.extend(_pack_uint32(mtime))
     data.extend(_pack_uint32(source_size))
     data.extend(marshal.dumps(code))
-    return data
+    rudisha data
 
 
-def _code_to_hash_pyc(code, source_hash, checked=True):
+eleza _code_to_hash_pyc(code, source_hash, checked=True):
     "Produce the data for a hash-based pyc."
     data = bytearray(MAGIC_NUMBER)
     flags = 0b1 | checked << 1
@@ -606,11 +606,11 @@ def _code_to_hash_pyc(code, source_hash, checked=True):
     assert len(source_hash) == 8
     data.extend(source_hash)
     data.extend(marshal.dumps(code))
-    return data
+    rudisha data
 
 
-def decode_source(source_bytes):
-    """Decode bytes representing source code and return the string.
+eleza decode_source(source_bytes):
+    """Decode bytes representing source code and rudisha the string.
 
     Universal newline support is used in the decoding.
     """
@@ -618,7 +618,7 @@ def decode_source(source_bytes):
     source_bytes_readline = _io.BytesIO(source_bytes).readline
     encoding = tokenize.detect_encoding(source_bytes_readline)
     newline_decoder = _io.IncrementalNewlineDecoder(None, True)
-    return newline_decoder.decode(source_bytes.decode(encoding[0]))
+    rudisha newline_decoder.decode(source_bytes.decode(encoding[0]))
 
 
 # Module specifications #######################################################
@@ -626,7 +626,7 @@ def decode_source(source_bytes):
 _POPULATE = object()
 
 
-def spec_from_file_location(name, location=None, *, loader=None,
+eleza spec_kutoka_file_location(name, location=None, *, loader=None,
                             submodule_search_locations=_POPULATE):
     """Return a module spec based on a file location.
 
@@ -638,12 +638,12 @@ def spec_from_file_location(name, location=None, *, loader=None,
     The loader must take a spec as its only __init__() arg.
 
     """
-    if location is None:
+    ikiwa location is None:
         # The caller may simply want a partially populated location-
         # oriented spec.  So we set the location to a bogus value and
         # fill in as much as we can.
         location = '<unknown>'
-        if hasattr(loader, 'get_filename'):
+        ikiwa hasattr(loader, 'get_filename'):
             # ExecutionLoader
             try:
                 location = loader.get_filename(name)
@@ -653,7 +653,7 @@ def spec_from_file_location(name, location=None, *, loader=None,
         location = _os.fspath(location)
 
     # If the location is on the filesystem, but doesn't actually exist,
-    # we could return None here, indicating that the location is not
+    # we could rudisha None here, indicating that the location is not
     # valid.  However, we don't have a good way of testing since an
     # indirect location (e.g. a zip file or URL) will look like a
     # non-existent file relative to the filesystem.
@@ -661,40 +661,40 @@ def spec_from_file_location(name, location=None, *, loader=None,
     spec = _bootstrap.ModuleSpec(name, loader, origin=location)
     spec._set_fileattr = True
 
-    # Pick a loader if one wasn't provided.
-    if loader is None:
+    # Pick a loader ikiwa one wasn't provided.
+    ikiwa loader is None:
         for loader_class, suffixes in _get_supported_file_loaders():
-            if location.endswith(tuple(suffixes)):
+            ikiwa location.endswith(tuple(suffixes)):
                 loader = loader_class(name, location)
                 spec.loader = loader
                 break
         else:
-            return None
+            rudisha None
 
     # Set submodule_search_paths appropriately.
-    if submodule_search_locations is _POPULATE:
+    ikiwa submodule_search_locations is _POPULATE:
         # Check the loader.
-        if hasattr(loader, 'is_package'):
+        ikiwa hasattr(loader, 'is_package'):
             try:
                 is_package = loader.is_package(name)
             except ImportError:
                 pass
             else:
-                if is_package:
+                ikiwa is_package:
                     spec.submodule_search_locations = []
     else:
         spec.submodule_search_locations = submodule_search_locations
-    if spec.submodule_search_locations == []:
-        if location:
+    ikiwa spec.submodule_search_locations == []:
+        ikiwa location:
             dirname = _path_split(location)[0]
             spec.submodule_search_locations.append(dirname)
 
-    return spec
+    rudisha spec
 
 
 # Loaders #####################################################################
 
-class WindowsRegistryFinder:
+kundi WindowsRegistryFinder:
 
     """Meta path finder for modules declared in the Windows registry."""
 
@@ -707,15 +707,15 @@ class WindowsRegistryFinder:
     DEBUG_BUILD = False  # Changed in _setup()
 
     @classmethod
-    def _open_registry(cls, key):
+    eleza _open_registry(cls, key):
         try:
-            return _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, key)
+            rudisha _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, key)
         except OSError:
-            return _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, key)
+            rudisha _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, key)
 
     @classmethod
-    def _search_registry(cls, fullname):
-        if cls.DEBUG_BUILD:
+    eleza _search_registry(cls, fullname):
+        ikiwa cls.DEBUG_BUILD:
             registry_key = cls.REGISTRY_KEY_DEBUG
         else:
             registry_key = cls.REGISTRY_KEY
@@ -725,71 +725,71 @@ class WindowsRegistryFinder:
             with cls._open_registry(key) as hkey:
                 filepath = _winreg.QueryValue(hkey, '')
         except OSError:
-            return None
-        return filepath
+            rudisha None
+        rudisha filepath
 
     @classmethod
-    def find_spec(cls, fullname, path=None, target=None):
+    eleza find_spec(cls, fullname, path=None, target=None):
         filepath = cls._search_registry(fullname)
-        if filepath is None:
-            return None
+        ikiwa filepath is None:
+            rudisha None
         try:
             _path_stat(filepath)
         except OSError:
-            return None
+            rudisha None
         for loader, suffixes in _get_supported_file_loaders():
-            if filepath.endswith(tuple(suffixes)):
-                spec = _bootstrap.spec_from_loader(fullname,
+            ikiwa filepath.endswith(tuple(suffixes)):
+                spec = _bootstrap.spec_kutoka_loader(fullname,
                                                    loader(fullname, filepath),
                                                    origin=filepath)
-                return spec
+                rudisha spec
 
     @classmethod
-    def find_module(cls, fullname, path=None):
+    eleza find_module(cls, fullname, path=None):
         """Find module named in the registry.
 
         This method is deprecated.  Use exec_module() instead.
 
         """
         spec = cls.find_spec(fullname, path)
-        if spec is not None:
-            return spec.loader
+        ikiwa spec is not None:
+            rudisha spec.loader
         else:
-            return None
+            rudisha None
 
 
-class _LoaderBasics:
+kundi _LoaderBasics:
 
-    """Base class of common code needed by both SourceLoader and
+    """Base kundi of common code needed by both SourceLoader and
     SourcelessFileLoader."""
 
-    def is_package(self, fullname):
+    eleza is_package(self, fullname):
         """Concrete implementation of InspectLoader.is_package by checking if
         the path returned by get_filename has a filename of '__init__.py'."""
         filename = _path_split(self.get_filename(fullname))[1]
         filename_base = filename.rsplit('.', 1)[0]
         tail_name = fullname.rpartition('.')[2]
-        return filename_base == '__init__' and tail_name != '__init__'
+        rudisha filename_base == '__init__' and tail_name != '__init__'
 
-    def create_module(self, spec):
+    eleza create_module(self, spec):
         """Use default semantics for module creation."""
 
-    def exec_module(self, module):
+    eleza exec_module(self, module):
         """Execute the module."""
         code = self.get_code(module.__name__)
-        if code is None:
+        ikiwa code is None:
             raise ImportError('cannot load module {!r} when get_code() '
                               'returns None'.format(module.__name__))
         _bootstrap._call_with_frames_removed(exec, code, module.__dict__)
 
-    def load_module(self, fullname):
+    eleza load_module(self, fullname):
         """This module is deprecated."""
-        return _bootstrap._load_module_shim(self, fullname)
+        rudisha _bootstrap._load_module_shim(self, fullname)
 
 
-class SourceLoader(_LoaderBasics):
+kundi SourceLoader(_LoaderBasics):
 
-    def path_mtime(self, path):
+    eleza path_mtime(self, path):
         """Optional method that returns the modification time (an int) for the
         specified path (a str).
 
@@ -797,7 +797,7 @@ class SourceLoader(_LoaderBasics):
         """
         raise OSError
 
-    def path_stats(self, path):
+    eleza path_stats(self, path):
         """Optional method returning a metadata dict for the specified
         path (a str).
 
@@ -809,9 +809,9 @@ class SourceLoader(_LoaderBasics):
         Implementing this method allows the loader to read bytecode files.
         Raises OSError when the path cannot be handled.
         """
-        return {'mtime': self.path_mtime(path)}
+        rudisha {'mtime': self.path_mtime(path)}
 
-    def _cache_bytecode(self, source_path, cache_path, data):
+    eleza _cache_bytecode(self, source_path, cache_path, data):
         """Optional method which writes data (bytes) to a file path (a str).
 
         Implementing this method allows for the writing of bytecode files.
@@ -819,16 +819,16 @@ class SourceLoader(_LoaderBasics):
         The source path is needed in order to correctly transfer permissions
         """
         # For backwards compatibility, we delegate to set_data()
-        return self.set_data(cache_path, data)
+        rudisha self.set_data(cache_path, data)
 
-    def set_data(self, path, data):
+    eleza set_data(self, path, data):
         """Optional method which writes data (bytes) to a file path (a str).
 
         Implementing this method allows for the writing of bytecode files.
         """
 
 
-    def get_source(self, fullname):
+    eleza get_source(self, fullname):
         """Concrete implementation of InspectLoader.get_source."""
         path = self.get_filename(fullname)
         try:
@@ -836,17 +836,17 @@ class SourceLoader(_LoaderBasics):
         except OSError as exc:
             raise ImportError('source not available through get_data()',
                               name=fullname) kutoka exc
-        return decode_source(source_bytes)
+        rudisha decode_source(source_bytes)
 
-    def source_to_code(self, data, path, *, _optimize=-1):
+    eleza source_to_code(self, data, path, *, _optimize=-1):
         """Return the code object compiled kutoka source.
 
         The 'data' argument can be any object type that compile() supports.
         """
-        return _bootstrap._call_with_frames_removed(compile, data, path, 'exec',
+        rudisha _bootstrap._call_with_frames_removed(compile, data, path, 'exec',
                                         dont_inherit=True, optimize=_optimize)
 
-    def get_code(self, fullname):
+    eleza get_code(self, fullname):
         """Concrete implementation of InspectLoader.get_code.
 
         Reading of bytecode requires path_stats to be implemented. To write
@@ -860,7 +860,7 @@ class SourceLoader(_LoaderBasics):
         hash_based = False
         check_source = True
         try:
-            bytecode_path = cache_from_source(source_path)
+            bytecode_path = cache_kutoka_source(source_path)
         except NotImplementedError:
             bytecode_path = None
         else:
@@ -883,9 +883,9 @@ class SourceLoader(_LoaderBasics):
                         flags = _classify_pyc(data, fullname, exc_details)
                         bytes_data = memoryview(data)[16:]
                         hash_based = flags & 0b1 != 0
-                        if hash_based:
+                        ikiwa hash_based:
                             check_source = flags & 0b10 != 0
-                            if (_imp.check_hash_based_pycs != 'never' and
+                            ikiwa (_imp.check_hash_based_pycs != 'never' and
                                 (check_source or
                                  _imp.check_hash_based_pycs == 'always')):
                                 source_bytes = self.get_data(source_path)
@@ -908,17 +908,17 @@ class SourceLoader(_LoaderBasics):
                     else:
                         _bootstrap._verbose_message('{} matches {}', bytecode_path,
                                                     source_path)
-                        return _compile_bytecode(bytes_data, name=fullname,
+                        rudisha _compile_bytecode(bytes_data, name=fullname,
                                                  bytecode_path=bytecode_path,
                                                  source_path=source_path)
-        if source_bytes is None:
+        ikiwa source_bytes is None:
             source_bytes = self.get_data(source_path)
         code_object = self.source_to_code(source_bytes, source_path)
         _bootstrap._verbose_message('code object kutoka {}', source_path)
-        if (not sys.dont_write_bytecode and bytecode_path is not None and
+        ikiwa (not sys.dont_write_bytecode and bytecode_path is not None and
                 source_mtime is not None):
-            if hash_based:
-                if source_hash is None:
+            ikiwa hash_based:
+                ikiwa source_hash is None:
                     source_hash = _imp.source_hash(source_bytes)
                 data = _code_to_hash_pyc(code_object, source_hash, check_source)
             else:
@@ -928,29 +928,29 @@ class SourceLoader(_LoaderBasics):
                 self._cache_bytecode(source_path, bytecode_path, data)
             except NotImplementedError:
                 pass
-        return code_object
+        rudisha code_object
 
 
-class FileLoader:
+kundi FileLoader:
 
-    """Base file loader class which implements the loader protocol methods that
+    """Base file loader kundi which implements the loader protocol methods that
     require file system usage."""
 
-    def __init__(self, fullname, path):
+    eleza __init__(self, fullname, path):
         """Cache the module name and the path to the file found by the
         finder."""
         self.name = fullname
         self.path = path
 
-    def __eq__(self, other):
-        return (self.__class__ == other.__class__ and
+    eleza __eq__(self, other):
+        rudisha (self.__class__ == other.__class__ and
                 self.__dict__ == other.__dict__)
 
-    def __hash__(self):
-        return hash(self.name) ^ hash(self.path)
+    eleza __hash__(self):
+        rudisha hash(self.name) ^ hash(self.path)
 
     @_check_name
-    def load_module(self, fullname):
+    eleza load_module(self, fullname):
         """Load a module kutoka a file.
 
         This method is deprecated.  Use exec_module() instead.
@@ -959,65 +959,65 @@ class FileLoader:
         # The only reason for this method is for the name check.
         # Issue #14857: Avoid the zero-argument form of super so the implementation
         # of that form can be updated without breaking the frozen module
-        return super(FileLoader, self).load_module(fullname)
+        rudisha super(FileLoader, self).load_module(fullname)
 
     @_check_name
-    def get_filename(self, fullname):
+    eleza get_filename(self, fullname):
         """Return the path to the source file as found by the finder."""
-        return self.path
+        rudisha self.path
 
-    def get_data(self, path):
+    eleza get_data(self, path):
         """Return the data kutoka path as raw bytes."""
-        if isinstance(self, (SourceLoader, ExtensionFileLoader)):
+        ikiwa isinstance(self, (SourceLoader, ExtensionFileLoader)):
             with _io.open_code(str(path)) as file:
-                return file.read()
+                rudisha file.read()
         else:
             with _io.FileIO(path, 'r') as file:
-                return file.read()
+                rudisha file.read()
 
     # ResourceReader ABC API.
 
     @_check_name
-    def get_resource_reader(self, module):
-        if self.is_package(module):
-            return self
-        return None
+    eleza get_resource_reader(self, module):
+        ikiwa self.is_package(module):
+            rudisha self
+        rudisha None
 
-    def open_resource(self, resource):
+    eleza open_resource(self, resource):
         path = _path_join(_path_split(self.path)[0], resource)
-        return _io.FileIO(path, 'r')
+        rudisha _io.FileIO(path, 'r')
 
-    def resource_path(self, resource):
-        if not self.is_resource(resource):
+    eleza resource_path(self, resource):
+        ikiwa not self.is_resource(resource):
             raise FileNotFoundError
         path = _path_join(_path_split(self.path)[0], resource)
-        return path
+        rudisha path
 
-    def is_resource(self, name):
-        if path_sep in name:
-            return False
+    eleza is_resource(self, name):
+        ikiwa path_sep in name:
+            rudisha False
         path = _path_join(_path_split(self.path)[0], name)
-        return _path_isfile(path)
+        rudisha _path_isfile(path)
 
-    def contents(self):
-        return iter(_os.listdir(_path_split(self.path)[0]))
+    eleza contents(self):
+        rudisha iter(_os.listdir(_path_split(self.path)[0]))
 
 
-class SourceFileLoader(FileLoader, SourceLoader):
+kundi SourceFileLoader(FileLoader, SourceLoader):
 
     """Concrete implementation of SourceLoader using the file system."""
 
-    def path_stats(self, path):
+    eleza path_stats(self, path):
         """Return the metadata for the path."""
         st = _path_stat(path)
-        return {'mtime': st.st_mtime, 'size': st.st_size}
+        rudisha {'mtime': st.st_mtime, 'size': st.st_size}
 
-    def _cache_bytecode(self, source_path, bytecode_path, data):
+    eleza _cache_bytecode(self, source_path, bytecode_path, data):
         # Adapt between the two APIs
         mode = _calc_mode(source_path)
-        return self.set_data(bytecode_path, data, _mode=mode)
+        rudisha self.set_data(bytecode_path, data, _mode=mode)
 
-    def set_data(self, path, data, *, _mode=0o666):
+    eleza set_data(self, path, data, *, _mode=0o666):
         """Write bytes data to a file."""
         parent, filename = _path_split(path)
         path_parts = []
@@ -1048,11 +1048,11 @@ class SourceFileLoader(FileLoader, SourceLoader):
                                         exc)
 
 
-class SourcelessFileLoader(FileLoader, _LoaderBasics):
+kundi SourcelessFileLoader(FileLoader, _LoaderBasics):
 
     """Loader which handles sourceless file agizas."""
 
-    def get_code(self, fullname):
+    eleza get_code(self, fullname):
         path = self.get_filename(fullname)
         data = self.get_data(path)
         # Call _classify_pyc to do basic validation of the pyc but ignore the
@@ -1062,22 +1062,22 @@ class SourcelessFileLoader(FileLoader, _LoaderBasics):
             'path': path,
         }
         _classify_pyc(data, fullname, exc_details)
-        return _compile_bytecode(
+        rudisha _compile_bytecode(
             memoryview(data)[16:],
             name=fullname,
             bytecode_path=path,
         )
 
-    def get_source(self, fullname):
+    eleza get_source(self, fullname):
         """Return None as there is no source code."""
-        return None
+        rudisha None
 
 
 # Filled in by _setup().
 EXTENSION_SUFFIXES = []
 
 
-class ExtensionFileLoader(FileLoader, _LoaderBasics):
+kundi ExtensionFileLoader(FileLoader, _LoaderBasics):
 
     """Loader for extension modules.
 
@@ -1085,143 +1085,143 @@ class ExtensionFileLoader(FileLoader, _LoaderBasics):
 
     """
 
-    def __init__(self, name, path):
+    eleza __init__(self, name, path):
         self.name = name
         self.path = path
 
-    def __eq__(self, other):
-        return (self.__class__ == other.__class__ and
+    eleza __eq__(self, other):
+        rudisha (self.__class__ == other.__class__ and
                 self.__dict__ == other.__dict__)
 
-    def __hash__(self):
-        return hash(self.name) ^ hash(self.path)
+    eleza __hash__(self):
+        rudisha hash(self.name) ^ hash(self.path)
 
-    def create_module(self, spec):
+    eleza create_module(self, spec):
         """Create an unitialized extension module"""
         module = _bootstrap._call_with_frames_removed(
             _imp.create_dynamic, spec)
         _bootstrap._verbose_message('extension module {!r} loaded kutoka {!r}',
                          spec.name, self.path)
-        return module
+        rudisha module
 
-    def exec_module(self, module):
+    eleza exec_module(self, module):
         """Initialize an extension module"""
         _bootstrap._call_with_frames_removed(_imp.exec_dynamic, module)
         _bootstrap._verbose_message('extension module {!r} executed kutoka {!r}',
                          self.name, self.path)
 
-    def is_package(self, fullname):
-        """Return True if the extension module is a package."""
+    eleza is_package(self, fullname):
+        """Return True ikiwa the extension module is a package."""
         file_name = _path_split(self.path)[1]
-        return any(file_name == '__init__' + suffix
+        rudisha any(file_name == '__init__' + suffix
                    for suffix in EXTENSION_SUFFIXES)
 
-    def get_code(self, fullname):
+    eleza get_code(self, fullname):
         """Return None as an extension module cannot create a code object."""
-        return None
+        rudisha None
 
-    def get_source(self, fullname):
+    eleza get_source(self, fullname):
         """Return None as extension modules have no source code."""
-        return None
+        rudisha None
 
     @_check_name
-    def get_filename(self, fullname):
+    eleza get_filename(self, fullname):
         """Return the path to the source file as found by the finder."""
-        return self.path
+        rudisha self.path
 
 
-class _NamespacePath:
+kundi _NamespacePath:
     """Represents a namespace package's path.  It uses the module name
     to find its parent module, and kutoka there it looks up the parent's
     __path__.  When this changes, the module's own path is recomputed,
     using path_finder.  For top-level modules, the parent module's path
     is sys.path."""
 
-    def __init__(self, name, path, path_finder):
+    eleza __init__(self, name, path, path_finder):
         self._name = name
         self._path = path
         self._last_parent_path = tuple(self._get_parent_path())
         self._path_finder = path_finder
 
-    def _find_parent_path_names(self):
+    eleza _find_parent_path_names(self):
         """Returns a tuple of (parent-module-name, parent-path-attr-name)"""
         parent, dot, me = self._name.rpartition('.')
-        if dot == '':
+        ikiwa dot == '':
             # This is a top-level module. sys.path contains the parent path.
-            return 'sys', 'path'
+            rudisha 'sys', 'path'
         # Not a top-level module. parent-module.__path__ contains the
         #  parent path.
-        return parent, '__path__'
+        rudisha parent, '__path__'
 
-    def _get_parent_path(self):
+    eleza _get_parent_path(self):
         parent_module_name, path_attr_name = self._find_parent_path_names()
-        return getattr(sys.modules[parent_module_name], path_attr_name)
+        rudisha getattr(sys.modules[parent_module_name], path_attr_name)
 
-    def _recalculate(self):
+    eleza _recalculate(self):
         # If the parent's path has changed, recalculate _path
         parent_path = tuple(self._get_parent_path()) # Make a copy
-        if parent_path != self._last_parent_path:
+        ikiwa parent_path != self._last_parent_path:
             spec = self._path_finder(self._name, parent_path)
-            # Note that no changes are made if a loader is returned, but we
+            # Note that no changes are made ikiwa a loader is returned, but we
             #  do remember the new parent path
-            if spec is not None and spec.loader is None:
-                if spec.submodule_search_locations:
+            ikiwa spec is not None and spec.loader is None:
+                ikiwa spec.submodule_search_locations:
                     self._path = spec.submodule_search_locations
             self._last_parent_path = parent_path     # Save the copy
-        return self._path
+        rudisha self._path
 
-    def __iter__(self):
-        return iter(self._recalculate())
+    eleza __iter__(self):
+        rudisha iter(self._recalculate())
 
-    def __getitem__(self, index):
-        return self._recalculate()[index]
+    eleza __getitem__(self, index):
+        rudisha self._recalculate()[index]
 
-    def __setitem__(self, index, path):
+    eleza __setitem__(self, index, path):
         self._path[index] = path
 
-    def __len__(self):
-        return len(self._recalculate())
+    eleza __len__(self):
+        rudisha len(self._recalculate())
 
-    def __repr__(self):
-        return '_NamespacePath({!r})'.format(self._path)
+    eleza __repr__(self):
+        rudisha '_NamespacePath({!r})'.format(self._path)
 
-    def __contains__(self, item):
-        return item in self._recalculate()
+    eleza __contains__(self, item):
+        rudisha item in self._recalculate()
 
-    def append(self, item):
+    eleza append(self, item):
         self._path.append(item)
 
 
-# We use this exclusively in module_from_spec() for backward-compatibility.
-class _NamespaceLoader:
-    def __init__(self, name, path, path_finder):
+# We use this exclusively in module_kutoka_spec() for backward-compatibility.
+kundi _NamespaceLoader:
+    eleza __init__(self, name, path, path_finder):
         self._path = _NamespacePath(name, path, path_finder)
 
     @classmethod
-    def module_repr(cls, module):
+    eleza module_repr(cls, module):
         """Return repr for the module.
 
         The method is deprecated.  The agiza machinery does the job itself.
 
         """
-        return '<module {!r} (namespace)>'.format(module.__name__)
+        rudisha '<module {!r} (namespace)>'.format(module.__name__)
 
-    def is_package(self, fullname):
-        return True
+    eleza is_package(self, fullname):
+        rudisha True
 
-    def get_source(self, fullname):
-        return ''
+    eleza get_source(self, fullname):
+        rudisha ''
 
-    def get_code(self, fullname):
-        return compile('', '<string>', 'exec', dont_inherit=True)
+    eleza get_code(self, fullname):
+        rudisha compile('', '<string>', 'exec', dont_inherit=True)
 
-    def create_module(self, spec):
+    eleza create_module(self, spec):
         """Use default semantics for module creation."""
 
-    def exec_module(self, module):
+    eleza exec_module(self, module):
         pass
 
-    def load_module(self, fullname):
+    eleza load_module(self, fullname):
         """Load a namespace module.
 
         This method is deprecated.  Use exec_module() instead.
@@ -1230,133 +1230,133 @@ class _NamespaceLoader:
         # The agiza system never calls this method.
         _bootstrap._verbose_message('namespace module loaded with path {!r}',
                                     self._path)
-        return _bootstrap._load_module_shim(self, fullname)
+        rudisha _bootstrap._load_module_shim(self, fullname)
 
 
 # Finders #####################################################################
 
-class PathFinder:
+kundi PathFinder:
 
     """Meta path finder for sys.path and package __path__ attributes."""
 
     @classmethod
-    def invalidate_caches(cls):
+    eleza invalidate_caches(cls):
         """Call the invalidate_caches() method on all path entry finders
         stored in sys.path_importer_caches (where implemented)."""
         for name, finder in list(sys.path_importer_cache.items()):
-            if finder is None:
+            ikiwa finder is None:
                 del sys.path_importer_cache[name]
-            elif hasattr(finder, 'invalidate_caches'):
+            elikiwa hasattr(finder, 'invalidate_caches'):
                 finder.invalidate_caches()
 
     @classmethod
-    def _path_hooks(cls, path):
+    eleza _path_hooks(cls, path):
         """Search sys.path_hooks for a finder for 'path'."""
-        if sys.path_hooks is not None and not sys.path_hooks:
+        ikiwa sys.path_hooks is not None and not sys.path_hooks:
             _warnings.warn('sys.path_hooks is empty', ImportWarning)
         for hook in sys.path_hooks:
             try:
-                return hook(path)
+                rudisha hook(path)
             except ImportError:
                 continue
         else:
-            return None
+            rudisha None
 
     @classmethod
-    def _path_importer_cache(cls, path):
+    eleza _path_importer_cache(cls, path):
         """Get the finder for the path entry kutoka sys.path_importer_cache.
 
         If the path entry is not in the cache, find the appropriate finder
         and cache it. If no finder is available, store None.
 
         """
-        if path == '':
+        ikiwa path == '':
             try:
                 path = _os.getcwd()
             except FileNotFoundError:
                 # Don't cache the failure as the cwd can easily change to
                 # a valid directory later on.
-                return None
+                rudisha None
         try:
             finder = sys.path_importer_cache[path]
         except KeyError:
             finder = cls._path_hooks(path)
             sys.path_importer_cache[path] = finder
-        return finder
+        rudisha finder
 
     @classmethod
-    def _legacy_get_spec(cls, fullname, finder):
+    eleza _legacy_get_spec(cls, fullname, finder):
         # This would be a good place for a DeprecationWarning if
         # we ended up going that route.
-        if hasattr(finder, 'find_loader'):
+        ikiwa hasattr(finder, 'find_loader'):
             loader, portions = finder.find_loader(fullname)
         else:
             loader = finder.find_module(fullname)
             portions = []
-        if loader is not None:
-            return _bootstrap.spec_from_loader(fullname, loader)
+        ikiwa loader is not None:
+            rudisha _bootstrap.spec_kutoka_loader(fullname, loader)
         spec = _bootstrap.ModuleSpec(fullname, None)
         spec.submodule_search_locations = portions
-        return spec
+        rudisha spec
 
     @classmethod
-    def _get_spec(cls, fullname, path, target=None):
+    eleza _get_spec(cls, fullname, path, target=None):
         """Find the loader or namespace_path for this module/package name."""
         # If this ends up being a namespace package, namespace_path is
         #  the list of paths that will become its __path__
         namespace_path = []
         for entry in path:
-            if not isinstance(entry, (str, bytes)):
+            ikiwa not isinstance(entry, (str, bytes)):
                 continue
             finder = cls._path_importer_cache(entry)
-            if finder is not None:
-                if hasattr(finder, 'find_spec'):
+            ikiwa finder is not None:
+                ikiwa hasattr(finder, 'find_spec'):
                     spec = finder.find_spec(fullname, target)
                 else:
                     spec = cls._legacy_get_spec(fullname, finder)
-                if spec is None:
+                ikiwa spec is None:
                     continue
-                if spec.loader is not None:
-                    return spec
+                ikiwa spec.loader is not None:
+                    rudisha spec
                 portions = spec.submodule_search_locations
-                if portions is None:
+                ikiwa portions is None:
                     raise ImportError('spec missing loader')
                 # This is possibly part of a namespace package.
-                #  Remember these path entries (if any) for when we
+                #  Remember these path entries (ikiwa any) for when we
                 #  create a namespace package, and continue iterating
                 #  on path.
                 namespace_path.extend(portions)
         else:
             spec = _bootstrap.ModuleSpec(fullname, None)
             spec.submodule_search_locations = namespace_path
-            return spec
+            rudisha spec
 
     @classmethod
-    def find_spec(cls, fullname, path=None, target=None):
+    eleza find_spec(cls, fullname, path=None, target=None):
         """Try to find a spec for 'fullname' on sys.path or 'path'.
 
         The search is based on sys.path_hooks and sys.path_importer_cache.
         """
-        if path is None:
+        ikiwa path is None:
             path = sys.path
         spec = cls._get_spec(fullname, path, target)
-        if spec is None:
-            return None
-        elif spec.loader is None:
+        ikiwa spec is None:
+            rudisha None
+        elikiwa spec.loader is None:
             namespace_path = spec.submodule_search_locations
-            if namespace_path:
+            ikiwa namespace_path:
                 # We found at least one namespace path.  Return a spec which
                 # can create the namespace package.
                 spec.origin = None
                 spec.submodule_search_locations = _NamespacePath(fullname, namespace_path, cls._get_spec)
-                return spec
+                rudisha spec
             else:
-                return None
+                rudisha None
         else:
-            return spec
+            rudisha spec
 
     @classmethod
-    def find_module(cls, fullname, path=None):
+    eleza find_module(cls, fullname, path=None):
         """find the module on sys.path or 'path' based on sys.path_hooks and
         sys.path_importer_cache.
 
@@ -1364,25 +1364,25 @@ class PathFinder:
 
         """
         spec = cls.find_spec(fullname, path)
-        if spec is None:
-            return None
-        return spec.loader
+        ikiwa spec is None:
+            rudisha None
+        rudisha spec.loader
 
     @classmethod
-    def find_distributions(cls, *args, **kwargs):
+    eleza find_distributions(cls, *args, **kwargs):
         """
         Find distributions.
 
         Return an iterable of all Distribution instances capable of
         loading the metadata for packages matching ``context.name``
-        (or all names if ``None`` indicated) along the paths in the list
+        (or all names ikiwa ``None`` indicated) along the paths in the list
         of directories ``context.path``.
         """
         kutoka importlib.metadata agiza MetadataPathFinder
-        return MetadataPathFinder.find_distributions(*args, **kwargs)
+        rudisha MetadataPathFinder.find_distributions(*args, **kwargs)
 
 
-class FileFinder:
+kundi FileFinder:
 
     """File-based finder.
 
@@ -1391,7 +1391,7 @@ class FileFinder:
 
     """
 
-    def __init__(self, path, *loader_details):
+    eleza __init__(self, path, *loader_details):
         """Initialize with the path to search on and a variable number of
         2-tuples containing the loader and the file suffixes the loader
         recognizes."""
@@ -1405,13 +1405,13 @@ class FileFinder:
         self._path_cache = set()
         self._relaxed_path_cache = set()
 
-    def invalidate_caches(self):
+    eleza invalidate_caches(self):
         """Invalidate the directory mtime."""
         self._path_mtime = -1
 
     find_module = _find_module_shim
 
-    def find_loader(self, fullname):
+    eleza find_loader(self, fullname):
         """Try to find a loader for the specified module, or the namespace
         package portions. Returns (loader, list-of-portions).
 
@@ -1419,19 +1419,19 @@ class FileFinder:
 
         """
         spec = self.find_spec(fullname)
-        if spec is None:
-            return None, []
-        return spec.loader, spec.submodule_search_locations or []
+        ikiwa spec is None:
+            rudisha None, []
+        rudisha spec.loader, spec.submodule_search_locations or []
 
-    def _get_spec(self, loader_class, fullname, path, smsl, target):
+    eleza _get_spec(self, loader_class, fullname, path, smsl, target):
         loader = loader_class(fullname, path)
-        return spec_from_file_location(fullname, path, loader=loader,
+        rudisha spec_kutoka_file_location(fullname, path, loader=loader,
                                        submodule_search_locations=smsl)
 
-    def find_spec(self, fullname, target=None):
+    eleza find_spec(self, fullname, target=None):
         """Try to find a spec for the specified module.
 
-        Returns the matching spec, or None if not found.
+        Returns the matching spec, or None ikiwa not found.
         """
         is_namespace = False
         tail_module = fullname.rpartition('.')[2]
@@ -1439,44 +1439,44 @@ class FileFinder:
             mtime = _path_stat(self.path or _os.getcwd()).st_mtime
         except OSError:
             mtime = -1
-        if mtime != self._path_mtime:
+        ikiwa mtime != self._path_mtime:
             self._fill_cache()
             self._path_mtime = mtime
         # tail_module keeps the original casing, for __file__ and friends
-        if _relax_case():
+        ikiwa _relax_case():
             cache = self._relaxed_path_cache
             cache_module = tail_module.lower()
         else:
             cache = self._path_cache
             cache_module = tail_module
-        # Check if the module is the name of a directory (and thus a package).
-        if cache_module in cache:
+        # Check ikiwa the module is the name of a directory (and thus a package).
+        ikiwa cache_module in cache:
             base_path = _path_join(self.path, tail_module)
-            for suffix, loader_class in self._loaders:
+            for suffix, loader_kundi in self._loaders:
                 init_filename = '__init__' + suffix
                 full_path = _path_join(base_path, init_filename)
-                if _path_isfile(full_path):
-                    return self._get_spec(loader_class, fullname, full_path, [base_path], target)
+                ikiwa _path_isfile(full_path):
+                    rudisha self._get_spec(loader_class, fullname, full_path, [base_path], target)
             else:
-                # If a namespace package, return the path if we don't
+                # If a namespace package, rudisha the path ikiwa we don't
                 #  find a module in the next section.
                 is_namespace = _path_isdir(base_path)
         # Check for a file w/ a proper suffix exists.
-        for suffix, loader_class in self._loaders:
+        for suffix, loader_kundi in self._loaders:
             full_path = _path_join(self.path, tail_module + suffix)
             _bootstrap._verbose_message('trying {}', full_path, verbosity=2)
-            if cache_module + suffix in cache:
-                if _path_isfile(full_path):
-                    return self._get_spec(loader_class, fullname, full_path,
+            ikiwa cache_module + suffix in cache:
+                ikiwa _path_isfile(full_path):
+                    rudisha self._get_spec(loader_class, fullname, full_path,
                                           None, target)
-        if is_namespace:
+        ikiwa is_namespace:
             _bootstrap._verbose_message('possible namespace for {}', base_path)
             spec = _bootstrap.ModuleSpec(fullname, None)
             spec.submodule_search_locations = [base_path]
-            return spec
-        return None
+            rudisha spec
+        rudisha None
 
-    def _fill_cache(self):
+    eleza _fill_cache(self):
         """Fill the cache of potential modules and packages for this directory."""
         path = self.path
         try:
@@ -1487,7 +1487,7 @@ class FileFinder:
             contents = []
         # We store two cached versions, to handle runtime changes of the
         # PYTHONCASEOK environment variable.
-        if not sys.platform.startswith('win'):
+        ikiwa not sys.platform.startswith('win'):
             self._path_cache = set(contents)
         else:
             # Windows users can agiza modules with case-insensitive file
@@ -1498,52 +1498,52 @@ class FileFinder:
             lower_suffix_contents = set()
             for item in contents:
                 name, dot, suffix = item.partition('.')
-                if dot:
+                ikiwa dot:
                     new_name = '{}.{}'.format(name, suffix.lower())
                 else:
                     new_name = name
                 lower_suffix_contents.add(new_name)
             self._path_cache = lower_suffix_contents
-        if sys.platform.startswith(_CASE_INSENSITIVE_PLATFORMS):
+        ikiwa sys.platform.startswith(_CASE_INSENSITIVE_PLATFORMS):
             self._relaxed_path_cache = {fn.lower() for fn in contents}
 
     @classmethod
-    def path_hook(cls, *loader_details):
-        """A class method which returns a closure to use on sys.path_hook
-        which will return an instance using the specified loaders and the path
+    eleza path_hook(cls, *loader_details):
+        """A kundi method which returns a closure to use on sys.path_hook
+        which will rudisha an instance using the specified loaders and the path
         called on the closure.
 
         If the path called on the closure is not a directory, ImportError is
         raised.
 
         """
-        def path_hook_for_FileFinder(path):
+        eleza path_hook_for_FileFinder(path):
             """Path hook for importlib.machinery.FileFinder."""
-            if not _path_isdir(path):
+            ikiwa not _path_isdir(path):
                 raise ImportError('only directories are supported', path=path)
-            return cls(path, *loader_details)
+            rudisha cls(path, *loader_details)
 
-        return path_hook_for_FileFinder
+        rudisha path_hook_for_FileFinder
 
-    def __repr__(self):
-        return 'FileFinder({!r})'.format(self.path)
+    eleza __repr__(self):
+        rudisha 'FileFinder({!r})'.format(self.path)
 
 
 # Import setup ###############################################################
 
-def _fix_up_module(ns, name, pathname, cpathname=None):
+eleza _fix_up_module(ns, name, pathname, cpathname=None):
     # This function is used by PyImport_ExecCodeModuleObject().
     loader = ns.get('__loader__')
     spec = ns.get('__spec__')
-    if not loader:
-        if spec:
+    ikiwa not loader:
+        ikiwa spec:
             loader = spec.loader
-        elif pathname == cpathname:
+        elikiwa pathname == cpathname:
             loader = SourcelessFileLoader(name, pathname)
         else:
             loader = SourceFileLoader(name, pathname)
-    if not spec:
-        spec = spec_from_file_location(name, pathname, loader=loader)
+    ikiwa not spec:
+        spec = spec_kutoka_file_location(name, pathname, loader=loader)
     try:
         ns['__spec__'] = spec
         ns['__loader__'] = loader
@@ -1554,7 +1554,7 @@ def _fix_up_module(ns, name, pathname, cpathname=None):
         pass
 
 
-def _get_supported_file_loaders():
+eleza _get_supported_file_loaders():
     """Returns a list of file-based module loaders.
 
     Each item is a tuple (loader, suffixes).
@@ -1562,10 +1562,10 @@ def _get_supported_file_loaders():
     extensions = ExtensionFileLoader, _imp.extension_suffixes()
     source = SourceFileLoader, SOURCE_SUFFIXES
     bytecode = SourcelessFileLoader, BYTECODE_SUFFIXES
-    return [extensions, source, bytecode]
+    rudisha [extensions, source, bytecode]
 
 
-def _setup(_bootstrap_module):
+eleza _setup(_bootstrap_module):
     """Setup the path-based importers for importlib by agizaing needed
     built-in modules and injecting them into the global namespace.
 
@@ -1580,8 +1580,8 @@ def _setup(_bootstrap_module):
     # Directly load built-in modules needed during bootstrap.
     self_module = sys.modules[__name__]
     for builtin_name in ('_io', '_warnings', 'builtins', 'marshal'):
-        if builtin_name not in sys.modules:
-            builtin_module = _bootstrap._builtin_from_name(builtin_name)
+        ikiwa builtin_name not in sys.modules:
+            builtin_module = _bootstrap._builtin_kutoka_name(builtin_name)
         else:
             builtin_module = sys.modules[builtin_name]
         setattr(self_module, builtin_name, builtin_module)
@@ -1592,12 +1592,12 @@ def _setup(_bootstrap_module):
         # Assumption made in _path_join()
         assert all(len(sep) == 1 for sep in path_separators)
         path_sep = path_separators[0]
-        if builtin_os in sys.modules:
+        ikiwa builtin_os in sys.modules:
             os_module = sys.modules[builtin_os]
             break
         else:
             try:
-                os_module = _bootstrap._builtin_from_name(builtin_os)
+                os_module = _bootstrap._builtin_kutoka_name(builtin_os)
                 break
             except ImportError:
                 continue
@@ -1609,28 +1609,28 @@ def _setup(_bootstrap_module):
     setattr(self_module, '_pathseps_with_colon', {f':{s}' for s in path_separators})
 
     # Directly load the _thread module (needed during bootstrap).
-    thread_module = _bootstrap._builtin_from_name('_thread')
+    thread_module = _bootstrap._builtin_kutoka_name('_thread')
     setattr(self_module, '_thread', thread_module)
 
     # Directly load the _weakref module (needed during bootstrap).
-    weakref_module = _bootstrap._builtin_from_name('_weakref')
+    weakref_module = _bootstrap._builtin_kutoka_name('_weakref')
     setattr(self_module, '_weakref', weakref_module)
 
     # Directly load the winreg module (needed during bootstrap).
-    if builtin_os == 'nt':
-        winreg_module = _bootstrap._builtin_from_name('winreg')
+    ikiwa builtin_os == 'nt':
+        winreg_module = _bootstrap._builtin_kutoka_name('winreg')
         setattr(self_module, '_winreg', winreg_module)
 
     # Constants
     setattr(self_module, '_relax_case', _make_relax_case())
     EXTENSION_SUFFIXES.extend(_imp.extension_suffixes())
-    if builtin_os == 'nt':
+    ikiwa builtin_os == 'nt':
         SOURCE_SUFFIXES.append('.pyw')
-        if '_d.pyd' in EXTENSION_SUFFIXES:
+        ikiwa '_d.pyd' in EXTENSION_SUFFIXES:
             WindowsRegistryFinder.DEBUG_BUILD = True
 
 
-def _install(_bootstrap_module):
+eleza _install(_bootstrap_module):
     """Install the path-based agiza components."""
     _setup(_bootstrap_module)
     supported_loaders = _get_supported_file_loaders()

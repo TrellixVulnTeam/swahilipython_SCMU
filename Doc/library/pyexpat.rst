@@ -54,7 +54,7 @@ This module provides one exception and one type object:
 
 .. data:: XMLParserType
 
-   The type of the return values from the :func:`ParserCreate` function.
+   The type of the return values kutoka the :func:`ParserCreate` function.
 
 The :mod:`xml.parsers.expat` module contains two functions:
 
@@ -135,7 +135,7 @@ XMLParser Objects
 
 .. method:: xmlparser.ParseFile(file)
 
-   Parse XML data reading from the object *file*.  *file* only needs to provide
+   Parse XML data reading kutoka the object *file*.  *file* only needs to provide
    the ``read(nbytes)`` method, returning the empty string when there's no more
    data.
 
@@ -237,9 +237,9 @@ XMLParser Objects
 .. attribute:: xmlparser.specified_attributes
 
    If set to a non-zero integer, the parser will report only those attributes which
-   were specified in the document instance and not those which were derived from
+   were specified in the document instance and not those which were derived kutoka
    attribute declarations.  Applications which set this need to be especially
-   careful to use what additional information is available from the declarations as
+   careful to use what additional information is available kutoka the declarations as
    needed to comply with the standards for the behavior of XML processors.  By
    default, this attribute is false; it may be changed at any time.
 
@@ -295,7 +295,7 @@ callback).
 
 Here is the list of handlers that can be set.  To set a handler on an
 :class:`xmlparser` object *o*, use ``o.handlername = func``.  *handlername* must
-be taken from the following list, and *func* must be a callable object accepting
+be taken kutoka the following list, and *func* must be a callable object accepting
 the correct number of arguments.  The arguments are all strings, unless
 otherwise stated.
 
@@ -498,7 +498,7 @@ ExpatError Exceptions
    :data:`errors.messages <xml.parsers.expat.errors.messages>` dictionary maps
    these error numbers to Expat's error messages.  For example::
 
-      from xml.parsers.expat import ParserCreate, ExpatError, errors
+      kutoka xml.parsers.expat agiza ParserCreate, ExpatError, errors
 
       p = ParserCreate()
       try:
@@ -530,7 +530,7 @@ Example
 The following program defines three handlers that just print out their
 arguments. ::
 
-   import xml.parsers.expat
+   agiza xml.parsers.expat
 
    # 3 handler functions
    def start_element(name, attrs):
@@ -551,7 +551,7 @@ arguments. ::
    <child2 name="fred">More text</child2>
    </parent>""", 1)
 
-The output from this program is::
+The output kutoka this program is::
 
    Start element: parent {'id': 'top'}
    Start element: child1 {'name': 'paul'}
@@ -595,7 +595,7 @@ The constants in the model type group are:
 .. data:: XML_CTYPE_CHOICE
    :noindex:
 
-   The named element allows a choice from a number of options; this is used for
+   The named element allows a choice kutoka a number of options; this is used for
    content models such as ``(A | B | C)``.
 
 

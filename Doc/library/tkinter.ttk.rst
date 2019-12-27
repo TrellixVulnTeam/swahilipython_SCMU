@@ -20,7 +20,7 @@ rendering under X11 and window transparency (requiring a composition
 window manager on X11).
 
 The basic idea for :mod:`tkinter.ttk` is to separate, to the extent possible,
-the code implementing a widget's behavior from the code implementing its
+the code implementing a widget's behavior kutoka the code implementing its
 appearance.
 
 
@@ -33,14 +33,14 @@ appearance.
 Using Ttk
 ---------
 
-To start using Ttk, import its module::
+To start using Ttk, agiza its module::
 
-   from tkinter import ttk
+   kutoka tkinter agiza ttk
 
-To override the basic Tk widgets, the import should follow the Tk import::
+To override the basic Tk widgets, the agiza should follow the Tk import::
 
-   from tkinter import *
-   from tkinter.ttk import *
+   kutoka tkinter agiza *
+   kutoka tkinter.ttk agiza *
 
 That code causes several :mod:`tkinter.ttk` widgets (:class:`Button`,
 :class:`Checkbutton`, :class:`Entry`, :class:`Frame`, :class:`Label`,
@@ -111,7 +111,7 @@ All the :mod:`ttk` Widgets accepts the following options:
    +-----------+--------------------------------------------------------------+
    | Option    | Description                                                  |
    +===========+==============================================================+
-   | class     | Specifies the window class. The class is used when querying  |
+   | kundi     | Specifies the window class. The kundi is used when querying  |
    |           | the option database for the window's other options, to       |
    |           | determine the default bindtags for the window, and to select |
    |           | the widget's default layout and style. This option is        |
@@ -297,11 +297,11 @@ Combobox
 --------
 
 The :class:`ttk.Combobox` widget combines a text field with a pop-down list of
-values. This widget is a subclass of :class:`Entry`.
+values. This widget is a subkundi of :class:`Entry`.
 
-Besides the methods inherited from :class:`Widget`: :meth:`Widget.cget`,
+Besides the methods inherited kutoka :class:`Widget`: :meth:`Widget.cget`,
 :meth:`Widget.configure`, :meth:`Widget.identify`, :meth:`Widget.instate`
-and :meth:`Widget.state`, and the following inherited from :class:`Entry`:
+and :meth:`Widget.state`, and the following inherited kutoka :class:`Entry`:
 :meth:`Entry.bbox`, :meth:`Entry.delete`, :meth:`Entry.icursor`,
 :meth:`Entry.index`, :meth:`Entry.insert`, :meth:`Entry.selection`,
 :meth:`Entry.xview`, it has some other methods, described at
@@ -333,7 +333,7 @@ This widget accepts the following specific options:
    +-----------------+--------------------------------------------------------+
    | state           | One of "normal", "readonly", or "disabled". In the     |
    |                 | "readonly" state, the value may not be edited directly,|
-   |                 | and the user can only selection of the values from the |
+   |                 | and the user can only selection of the values kutoka the |
    |                 | dropdown list. In the "normal" state, the text field is|
    |                 | directly editable. In the "disabled" state, no         |
    |                 | interaction is possible.                               |
@@ -356,7 +356,7 @@ Virtual events
 ^^^^^^^^^^^^^^
 
 The combobox widgets generates a **<<ComboboxSelected>>** virtual event
-when the user selects an element from the list of values.
+when the user selects an element kutoka the list of values.
 
 
 ttk.Combobox
@@ -385,11 +385,11 @@ Spinbox
 -------
 The :class:`ttk.Spinbox` widget is a :class:`ttk.Entry` enhanced with increment
 and decrement arrows.  It can be used for numbers or lists of string values.
-This widget is a subclass of :class:`Entry`.
+This widget is a subkundi of :class:`Entry`.
 
-Besides the methods inherited from :class:`Widget`: :meth:`Widget.cget`,
+Besides the methods inherited kutoka :class:`Widget`: :meth:`Widget.cget`,
 :meth:`Widget.configure`, :meth:`Widget.identify`, :meth:`Widget.instate`
-and :meth:`Widget.state`, and the following inherited from :class:`Entry`:
+and :meth:`Widget.state`, and the following inherited kutoka :class:`Entry`:
 :meth:`Entry.bbox`, :meth:`Entry.delete`, :meth:`Entry.icursor`,
 :meth:`Entry.index`, :meth:`Entry.insert`, :meth:`Entry.xview`,
 it has some other methods, described at :class:`ttk.Spinbox`.
@@ -404,10 +404,10 @@ This widget accepts the following specific options:
 +----------------------+------------------------------------------------------+
 | Option               | Description                                          |
 +======================+======================================================+
-| from                 | Float value.  If set, this is the minimum value to   |
+| kutoka                 | Float value.  If set, this is the minimum value to   |
 |                      | which the decrement button will decrement.  Must be  |
-|                      | spelled as ``from_`` when used as an argument, since |
-|                      | ``from`` is a Python keyword.                        |
+|                      | spelled as ``kutoka_`` when used as an argument, since |
+|                      | ``kutoka`` is a Python keyword.                        |
 +----------------------+------------------------------------------------------+
 | to                   | Float value.  If set, this is the maximum value to   |
 |                      | which the increment button will increment.           |
@@ -423,8 +423,8 @@ This widget accepts the following specific options:
 |                      |                                                      |
 +----------------------+------------------------------------------------------+
 | wrap                 | Boolean value.  If ``True``, increment and decrement |
-|                      | buttons will cycle from the ``to`` value to the      |
-|                      | ``from`` value or the ``from`` value to the ``to``   |
+|                      | buttons will cycle kutoka the ``to`` value to the      |
+|                      | ``kutoka`` value or the ``kutoka`` value to the ``to``   |
 |                      | value, respectively.                                 |
 +----------------------+------------------------------------------------------+
 | format               | String value.  This specifies the format of numbers  |
@@ -728,7 +728,7 @@ Separator
 The :class:`ttk.Separator` widget displays a horizontal or vertical separator
 bar.
 
-It has no other methods besides the ones inherited from :class:`ttk.Widget`.
+It has no other methods besides the ones inherited kutoka :class:`ttk.Widget`.
 
 
 Options
@@ -753,7 +753,7 @@ The :class:`ttk.Sizegrip` widget (also known as a grow box) allows the user to
 resize the containing toplevel window by pressing and dragging the grip.
 
 This widget has neither specific options nor specific methods, besides the
-ones inherited from :class:`ttk.Widget`.
+ones inherited kutoka :class:`ttk.Widget`.
 
 
 Platform-specific notes
@@ -818,13 +818,13 @@ This widget accepts the following specific options:
    |                | string "#all".                                         |
    +----------------+--------------------------------------------------------+
    | height         | Specifies the number of rows which should be visible.  |
-   |                | Note: the requested width is determined from the sum   |
+   |                | Note: the requested width is determined kutoka the sum   |
    |                | of the column widths.                                  |
    +----------------+--------------------------------------------------------+
    | padding        | Specifies the internal padding for the widget. The     |
    |                | padding is a list of up to four length specifications. |
    +----------------+--------------------------------------------------------+
-   | selectmode     | Controls how the built-in class bindings manage the    |
+   | selectmode     | Controls how the built-in kundi bindings manage the    |
    |                | selection. One of "extended", "browse" or "none".      |
    |                | If set to "extended" (the default), multiple items may |
    |                | be selected. If "browse", only a single item will be   |
@@ -904,7 +904,7 @@ Column Identifiers
 
 Column identifiers take any of the following forms:
 
-* A symbolic name from the list of columns option.
+* A symbolic name kutoka the list of columns option.
 * An integer n, specifying the nth data column.
 * A string of the form #n, where n is an integer, specifying the nth display
   column.
@@ -973,7 +973,7 @@ ttk.Treeview
       Replaces *item*'s child with *newchildren*.
 
       Children present in *item* that are not present in *newchildren* are
-      detached from the tree. No items in *newchildren* may be an ancestor of
+      detached kutoka the tree. No items in *newchildren* may be an ancestor of
       *item*. Note that not specifying *newchildren* results in detaching
       *item*'s children.
 
@@ -1014,7 +1014,7 @@ ttk.Treeview
 
    .. method:: detach(*items)
 
-      Unlinks all of the specified *items* from the tree.
+      Unlinks all of the specified *items* kutoka the tree.
 
       The items and all of their descendants are still present, and may be
       reinserted at another point in the tree, but will not be displayed.
@@ -1202,7 +1202,7 @@ ttk.Treeview
 
    .. method:: selection_remove(*items)
 
-      Remove *items* from the selection.
+      Remove *items* kutoka the selection.
 
       .. versionchanged:: 3.6
          *items* can be passed as separate arguments, not just as a single tuple.
@@ -1268,8 +1268,8 @@ Ttk Styling
 Each widget in :mod:`ttk` is assigned a style, which specifies the set of
 elements making up the widget and how they are arranged, along with dynamic
 and default settings for element options. By default the style name is the
-same as the widget's class name, but it may be overridden by the widget's style
-option. If you don't know the class name of a widget, use the method
+same as the widget's kundi name, but it may be overridden by the widget's style
+option. If you don't know the kundi name of a widget, use the method
 :meth:`Misc.winfo_class` (somewidget.winfo_class()).
 
 .. seealso::
@@ -1280,7 +1280,7 @@ option. If you don't know the class name of a widget, use the method
 
 .. class:: Style
 
-   This class is used to manipulate the style database.
+   This kundi is used to manipulate the style database.
 
 
    .. method:: configure(style, query_opt=None, **kw)
@@ -1293,8 +1293,8 @@ option. If you don't know the class name of a widget, use the method
       For example, to change every default button to be a flat button with
       some padding and a different background color::
 
-         from tkinter import ttk
-         import tkinter
+         kutoka tkinter agiza ttk
+         agiza tkinter
 
          root = tkinter.Tk()
 
@@ -1318,8 +1318,8 @@ option. If you don't know the class name of a widget, use the method
 
       An example may make it more understandable::
 
-         import tkinter
-         from tkinter import ttk
+         agiza tkinter
+         kutoka tkinter agiza ttk
 
          root = tkinter.Tk()
 
@@ -1350,7 +1350,7 @@ option. If you don't know the class name of a widget, use the method
 
       To check what font a Button uses by default::
 
-         from tkinter import ttk
+         kutoka tkinter agiza ttk
 
          print(ttk.Style().lookup("TButton", "font"))
 
@@ -1368,8 +1368,8 @@ option. If you don't know the class name of a widget, use the method
       To understand the format, see the following example (it is not
       intended to do anything useful)::
 
-         from tkinter import ttk
-         import tkinter
+         kutoka tkinter agiza ttk
+         agiza tkinter
 
          root = tkinter.Tk()
 
@@ -1393,7 +1393,7 @@ option. If you don't know the class name of a widget, use the method
    .. method:: element_create(elementname, etype, *args, **kw)
 
       Create a new element in the current theme, of the given *etype* which is
-      expected to be either "image", "from" or "vsapi". The latter is only
+      expected to be either "image", "kutoka" or "vsapi". The latter is only
       available in Tk 8.6a for Windows XP and Vista and is not described here.
 
       If "image" is used, *args* should contain the default image name followed
@@ -1420,11 +1420,11 @@ option. If you don't know the class name of a widget, use the method
           Specifies a minimum width for the element. If less than zero, the
           base image's width is used as a default.
 
-      If "from" is used as the value of *etype*,
+      If "kutoka" is used as the value of *etype*,
       :meth:`element_create` will clone an existing
-      element. *args* is expected to contain a themename, from which
-      the element will be cloned, and optionally an element to clone from.
-      If this element to clone from is not specified, an empty element will
+      element. *args* is expected to contain a themename, kutoka which
+      the element will be cloned, and optionally an element to clone kutoka.
+      If this element to clone kutoka is not specified, an empty element will
       be used. *kw* is discarded.
 
 
@@ -1443,7 +1443,7 @@ option. If you don't know the class name of a widget, use the method
       Create a new theme.
 
       It is an error if *themename* already exists. If *parent* is specified,
-      the new theme will inherit styles, elements and layouts from the parent
+      the new theme will inherit styles, elements and layouts kutoka the parent
       theme. If *settings* are present they are expected to have the same
       syntax used for :meth:`theme_settings`.
 
@@ -1461,8 +1461,8 @@ option. If you don't know the class name of a widget, use the method
 
       As an example, let's change the Combobox for the default theme a bit::
 
-         from tkinter import ttk
-         import tkinter
+         kutoka tkinter agiza ttk
+         agiza tkinter
 
          root = tkinter.Tk()
 

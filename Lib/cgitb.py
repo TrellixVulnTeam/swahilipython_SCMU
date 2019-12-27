@@ -6,8 +6,8 @@ To enable this module, do:
 
 at the top of your script.  The optional arguments to enable() are:
 
-    display     - if true, tracebacks are displayed in the web browser
-    logdir      - if set, tracebacks are written to files in this directory
+    display     - ikiwa true, tracebacks are displayed in the web browser
+    logdir      - ikiwa set, tracebacks are written to files in this directory
     context     - number of lines of source code to show for each stack frame
     format      - 'text' or 'html' controls the output format
 
@@ -15,7 +15,7 @@ By default, tracebacks are displayed but not saved, the context is 5 lines
 and the output format is 'html' (for backwards compatibility with the
 original use of this module)
 
-Alternatively, if you have caught an exception and want cgitb to display it
+Alternatively, ikiwa you have caught an exception and want cgitb to display it
 for you, call cgitb.handler().  The optional argument to handler() is a
 3-item tuple (etype, evalue, etb) just like the value of sys.exc_info().
 The default handler displays output as HTML.
@@ -32,9 +32,9 @@ agiza time
 agiza tokenize
 agiza traceback
 
-def reset():
+eleza reset():
     """Return a string that resets the CGI and browser to a known state."""
-    return '''<!--: spam
+    rudisha '''<!--: spam
 Content-Type: text/html
 
 <body bgcolor="#f0f0f8"><font color="#f0f0f8" size="-5"> -->
@@ -43,65 +43,65 @@ Content-Type: text/html
 </table> </table> </table> </table> </table> </font> </font> </font>'''
 
 __UNDEF__ = []                          # a special sentinel object
-def small(text):
-    if text:
-        return '<small>' + text + '</small>'
+eleza small(text):
+    ikiwa text:
+        rudisha '<small>' + text + '</small>'
     else:
-        return ''
+        rudisha ''
 
-def strong(text):
-    if text:
-        return '<strong>' + text + '</strong>'
+eleza strong(text):
+    ikiwa text:
+        rudisha '<strong>' + text + '</strong>'
     else:
-        return ''
+        rudisha ''
 
-def grey(text):
-    if text:
-        return '<font color="#909090">' + text + '</font>'
+eleza grey(text):
+    ikiwa text:
+        rudisha '<font color="#909090">' + text + '</font>'
     else:
-        return ''
+        rudisha ''
 
-def lookup(name, frame, locals):
+eleza lookup(name, frame, locals):
     """Find the value for a given name in the given environment."""
-    if name in locals:
-        return 'local', locals[name]
-    if name in frame.f_globals:
-        return 'global', frame.f_globals[name]
-    if '__builtins__' in frame.f_globals:
+    ikiwa name in locals:
+        rudisha 'local', locals[name]
+    ikiwa name in frame.f_globals:
+        rudisha 'global', frame.f_globals[name]
+    ikiwa '__builtins__' in frame.f_globals:
         builtins = frame.f_globals['__builtins__']
-        if type(builtins) is type({}):
-            if name in builtins:
-                return 'builtin', builtins[name]
+        ikiwa type(builtins) is type({}):
+            ikiwa name in builtins:
+                rudisha 'builtin', builtins[name]
         else:
-            if hasattr(builtins, name):
-                return 'builtin', getattr(builtins, name)
-    return None, __UNDEF__
+            ikiwa hasattr(builtins, name):
+                rudisha 'builtin', getattr(builtins, name)
+    rudisha None, __UNDEF__
 
-def scanvars(reader, frame, locals):
+eleza scanvars(reader, frame, locals):
     """Scan one logical line of Python and look up values of variables used."""
     vars, lasttoken, parent, prefix, value = [], None, None, '', __UNDEF__
     for ttype, token, start, end, line in tokenize.generate_tokens(reader):
-        if ttype == tokenize.NEWLINE: break
-        if ttype == tokenize.NAME and token not in keyword.kwlist:
-            if lasttoken == '.':
-                if parent is not __UNDEF__:
+        ikiwa ttype == tokenize.NEWLINE: break
+        ikiwa ttype == tokenize.NAME and token not in keyword.kwlist:
+            ikiwa lasttoken == '.':
+                ikiwa parent is not __UNDEF__:
                     value = getattr(parent, token, __UNDEF__)
                     vars.append((prefix + token, prefix, value))
             else:
                 where, value = lookup(token, frame, locals)
                 vars.append((token, where, value))
-        elif token == '.':
+        elikiwa token == '.':
             prefix += lasttoken + '.'
             parent = value
         else:
             parent, prefix = None, ''
         lasttoken = token
-    return vars
+    rudisha vars
 
-def html(einfo, context=5):
+eleza html(einfo, context=5):
     """Return a nice HTML document describing a given traceback."""
     etype, evalue, etb = einfo
-    if isinstance(etype, type):
+    ikiwa isinstance(etype, type):
         etype = etype.__name__
     pyver = 'Python ' + sys.version.split()[0] + ': ' + sys.executable
     date = time.ctime(time.time())
@@ -116,33 +116,33 @@ function calls leading up to the error, in the order they occurred.</p>'''
     frames = []
     records = inspect.getinnerframes(etb, context)
     for frame, file, lnum, func, lines, index in records:
-        if file:
+        ikiwa file:
             file = os.path.abspath(file)
             link = '<a href="file://%s">%s</a>' % (file, pydoc.html.escape(file))
         else:
             file = link = '?'
         args, varargs, varkw, locals = inspect.getargvalues(frame)
         call = ''
-        if func != '?':
+        ikiwa func != '?':
             call = 'in ' + strong(pydoc.html.escape(func))
-            if func != "<module>":
+            ikiwa func != "<module>":
                 call += inspect.formatargvalues(args, varargs, varkw, locals,
                     formatvalue=lambda value: '=' + pydoc.html.repr(value))
 
         highlight = {}
-        def reader(lnum=[lnum]):
+        eleza reader(lnum=[lnum]):
             highlight[lnum[0]] = 1
-            try: return linecache.getline(file, lnum[0])
+            try: rudisha linecache.getline(file, lnum[0])
             finally: lnum[0] += 1
         vars = scanvars(reader, frame, locals)
 
         rows = ['<tr><td bgcolor="#d8bbff">%s%s %s</td></tr>' %
                 ('<big>&nbsp;</big>', link, call)]
-        if index is not None:
+        ikiwa index is not None:
             i = lnum - index
             for line in lines:
                 num = small('&nbsp;' * (5-len(str(i))) + str(i)) + '&nbsp;'
-                if i in highlight:
+                ikiwa i in highlight:
                     line = '<tt>=&gt;%s%s</tt>' % (num, pydoc.html.preformat(line))
                     rows.append('<tr><td bgcolor="#ffccee">%s</td></tr>' % line)
                 else:
@@ -152,12 +152,12 @@ function calls leading up to the error, in the order they occurred.</p>'''
 
         done, dump = {}, []
         for name, where, value in vars:
-            if name in done: continue
+            ikiwa name in done: continue
             done[name] = 1
-            if value is not __UNDEF__:
-                if where in ('global', 'builtin'):
+            ikiwa value is not __UNDEF__:
+                ikiwa where in ('global', 'builtin'):
                     name = ('<em>%s</em> ' % where) + strong(name)
-                elif where == 'local':
+                elikiwa where == 'local':
                     name = strong(name)
                 else:
                     name = where + strong(name.split('.')[-1])
@@ -173,11 +173,11 @@ function calls leading up to the error, in the order they occurred.</p>'''
     exception = ['<p>%s: %s' % (strong(pydoc.html.escape(str(etype))),
                                 pydoc.html.escape(str(evalue)))]
     for name in dir(evalue):
-        if name[:1] == '_': continue
+        ikiwa name[:1] == '_': continue
         value = pydoc.html.repr(getattr(evalue, name))
         exception.append('\n<br>%s%s&nbsp;=\n%s' % (indent, name, value))
 
-    return head + ''.join(frames) + ''.join(exception) + '''
+    rudisha head + ''.join(frames) + ''.join(exception) + '''
 
 
 <!-- The above is a description of an error in a Python program, formatted
@@ -189,10 +189,10 @@ function calls leading up to the error, in the order they occurred.</p>'''
 ''' % pydoc.html.escape(
           ''.join(traceback.format_exception(etype, evalue, etb)))
 
-def text(einfo, context=5):
+eleza text(einfo, context=5):
     """Return a plain text document describing a given traceback."""
     etype, evalue, etb = einfo
-    if isinstance(etype, type):
+    ikiwa isinstance(etype, type):
         etype = etype.__name__
     pyver = 'Python ' + sys.version.split()[0] + ': ' + sys.executable
     date = time.ctime(time.time())
@@ -207,21 +207,21 @@ function calls leading up to the error, in the order they occurred.
         file = file and os.path.abspath(file) or '?'
         args, varargs, varkw, locals = inspect.getargvalues(frame)
         call = ''
-        if func != '?':
+        ikiwa func != '?':
             call = 'in ' + func
-            if func != "<module>":
+            ikiwa func != "<module>":
                 call += inspect.formatargvalues(args, varargs, varkw, locals,
                     formatvalue=lambda value: '=' + pydoc.text.repr(value))
 
         highlight = {}
-        def reader(lnum=[lnum]):
+        eleza reader(lnum=[lnum]):
             highlight[lnum[0]] = 1
-            try: return linecache.getline(file, lnum[0])
+            try: rudisha linecache.getline(file, lnum[0])
             finally: lnum[0] += 1
         vars = scanvars(reader, frame, locals)
 
         rows = [' %s %s' % (file, call)]
-        if index is not None:
+        ikiwa index is not None:
             i = lnum - index
             for line in lines:
                 num = '%5d ' % i
@@ -230,11 +230,11 @@ function calls leading up to the error, in the order they occurred.
 
         done, dump = {}, []
         for name, where, value in vars:
-            if name in done: continue
+            ikiwa name in done: continue
             done[name] = 1
-            if value is not __UNDEF__:
-                if where == 'global': name = 'global ' + name
-                elif where != 'local': name = where + name.split('.')[-1]
+            ikiwa value is not __UNDEF__:
+                ikiwa where == 'global': name = 'global ' + name
+                elikiwa where != 'local': name = where + name.split('.')[-1]
                 dump.append('%s = %s' % (name, pydoc.text.repr(value)))
             else:
                 dump.append(name + ' undefined')
@@ -247,7 +247,7 @@ function calls leading up to the error, in the order they occurred.
         value = pydoc.text.repr(getattr(evalue, name))
         exception.append('\n%s%s = %s' % (" "*4, name, value))
 
-    return head + ''.join(frames) + ''.join(exception) + '''
+    rudisha head + ''.join(frames) + ''.join(exception) + '''
 
 The above is a description of an error in a Python program.  Here is
 the original traceback:
@@ -255,23 +255,23 @@ the original traceback:
 %s
 ''' % ''.join(traceback.format_exception(etype, evalue, etb))
 
-class Hook:
+kundi Hook:
     """A hook to replace sys.excepthook that shows tracebacks in HTML."""
 
-    def __init__(self, display=1, logdir=None, context=5, file=None,
+    eleza __init__(self, display=1, logdir=None, context=5, file=None,
                  format="html"):
-        self.display = display          # send tracebacks to browser if true
-        self.logdir = logdir            # log tracebacks to files if not None
+        self.display = display          # send tracebacks to browser ikiwa true
+        self.logdir = logdir            # log tracebacks to files ikiwa not None
         self.context = context          # number of source code lines per frame
         self.file = file or sys.stdout  # place to send the output
         self.format = format
 
-    def __call__(self, etype, evalue, etb):
+    eleza __call__(self, etype, evalue, etb):
         self.handle((etype, evalue, etb))
 
-    def handle(self, info=None):
+    eleza handle(self, info=None):
         info = info or sys.exc_info()
-        if self.format == "html":
+        ikiwa self.format == "html":
             self.file.write(reset())
 
         formatter = (self.format=="html") and html or text
@@ -282,8 +282,8 @@ class Hook:
             doc = ''.join(traceback.format_exception(*info))
             plain = True
 
-        if self.display:
-            if plain:
+        ikiwa self.display:
+            ikiwa plain:
                 doc = pydoc.html.escape(doc)
                 self.file.write('<pre>' + doc + '</pre>\n')
             else:
@@ -291,7 +291,7 @@ class Hook:
         else:
             self.file.write('<p>A problem occurred in a Python script.\n')
 
-        if self.logdir is not None:
+        ikiwa self.logdir is not None:
             suffix = ['.txt', '.html'][self.format=="html"]
             (fd, path) = tempfile.mkstemp(suffix=suffix, dir=self.logdir)
 
@@ -302,7 +302,7 @@ class Hook:
             except:
                 msg = 'Tried to save traceback to %s, but failed.' % path
 
-            if self.format == 'html':
+            ikiwa self.format == 'html':
                 self.file.write('<p>%s</p>\n' % msg)
             else:
                 self.file.write(msg + '\n')
@@ -311,7 +311,7 @@ class Hook:
         except: pass
 
 handler = Hook().handle
-def enable(display=1, logdir=None, context=5, format="html"):
+eleza enable(display=1, logdir=None, context=5, format="html"):
     """Install an exception handler that formats tracebacks as HTML.
 
     The optional argument 'display' can be set to 0 to suppress sending the

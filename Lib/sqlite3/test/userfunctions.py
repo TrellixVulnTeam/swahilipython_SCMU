@@ -26,120 +26,120 @@ agiza unittest
 agiza unittest.mock
 agiza sqlite3 as sqlite
 
-def func_returntext():
-    return "foo"
-def func_returnunicode():
-    return "bar"
-def func_returnint():
-    return 42
-def func_returnfloat():
-    return 3.14
-def func_returnnull():
-    return None
-def func_returnblob():
-    return b"blob"
-def func_returnlonglong():
-    return 1<<31
-def func_raiseexception():
+eleza func_returntext():
+    rudisha "foo"
+eleza func_returnunicode():
+    rudisha "bar"
+eleza func_returnint():
+    rudisha 42
+eleza func_returnfloat():
+    rudisha 3.14
+eleza func_returnnull():
+    rudisha None
+eleza func_returnblob():
+    rudisha b"blob"
+eleza func_returnlonglong():
+    rudisha 1<<31
+eleza func_raiseexception():
     5/0
 
-def func_isstring(v):
-    return type(v) is str
-def func_isint(v):
-    return type(v) is int
-def func_isfloat(v):
-    return type(v) is float
-def func_isnone(v):
-    return type(v) is type(None)
-def func_isblob(v):
-    return isinstance(v, (bytes, memoryview))
-def func_islonglong(v):
-    return isinstance(v, int) and v >= 1<<31
+eleza func_isstring(v):
+    rudisha type(v) is str
+eleza func_isint(v):
+    rudisha type(v) is int
+eleza func_isfloat(v):
+    rudisha type(v) is float
+eleza func_isnone(v):
+    rudisha type(v) is type(None)
+eleza func_isblob(v):
+    rudisha isinstance(v, (bytes, memoryview))
+eleza func_islonglong(v):
+    rudisha isinstance(v, int) and v >= 1<<31
 
-def func(*args):
-    return len(args)
+eleza func(*args):
+    rudisha len(args)
 
-class AggrNoStep:
-    def __init__(self):
+kundi AggrNoStep:
+    eleza __init__(self):
         pass
 
-    def finalize(self):
-        return 1
+    eleza finalize(self):
+        rudisha 1
 
-class AggrNoFinalize:
-    def __init__(self):
+kundi AggrNoFinalize:
+    eleza __init__(self):
         pass
 
-    def step(self, x):
+    eleza step(self, x):
         pass
 
-class AggrExceptionInInit:
-    def __init__(self):
+kundi AggrExceptionInInit:
+    eleza __init__(self):
         5/0
 
-    def step(self, x):
+    eleza step(self, x):
         pass
 
-    def finalize(self):
+    eleza finalize(self):
         pass
 
-class AggrExceptionInStep:
-    def __init__(self):
+kundi AggrExceptionInStep:
+    eleza __init__(self):
         pass
 
-    def step(self, x):
+    eleza step(self, x):
         5/0
 
-    def finalize(self):
-        return 42
+    eleza finalize(self):
+        rudisha 42
 
-class AggrExceptionInFinalize:
-    def __init__(self):
+kundi AggrExceptionInFinalize:
+    eleza __init__(self):
         pass
 
-    def step(self, x):
+    eleza step(self, x):
         pass
 
-    def finalize(self):
+    eleza finalize(self):
         5/0
 
-class AggrCheckType:
-    def __init__(self):
+kundi AggrCheckType:
+    eleza __init__(self):
         self.val = None
 
-    def step(self, whichType, val):
+    eleza step(self, whichType, val):
         theType = {"str": str, "int": int, "float": float, "None": type(None),
                    "blob": bytes}
         self.val = int(theType[whichType] is type(val))
 
-    def finalize(self):
-        return self.val
+    eleza finalize(self):
+        rudisha self.val
 
-class AggrCheckTypes:
-    def __init__(self):
+kundi AggrCheckTypes:
+    eleza __init__(self):
         self.val = 0
 
-    def step(self, whichType, *vals):
+    eleza step(self, whichType, *vals):
         theType = {"str": str, "int": int, "float": float, "None": type(None),
                    "blob": bytes}
         for val in vals:
             self.val += int(theType[whichType] is type(val))
 
-    def finalize(self):
-        return self.val
+    eleza finalize(self):
+        rudisha self.val
 
-class AggrSum:
-    def __init__(self):
+kundi AggrSum:
+    eleza __init__(self):
         self.val = 0.0
 
-    def step(self, val):
+    eleza step(self, val):
         self.val += val
 
-    def finalize(self):
-        return self.val
+    eleza finalize(self):
+        rudisha self.val
 
-class FunctionTests(unittest.TestCase):
-    def setUp(self):
+kundi FunctionTests(unittest.TestCase):
+    eleza setUp(self):
         self.con = sqlite.connect(":memory:")
 
         self.con.create_function("returntext", 0, func_returntext)
@@ -159,18 +159,18 @@ class FunctionTests(unittest.TestCase):
         self.con.create_function("islonglong", 1, func_islonglong)
         self.con.create_function("spam", -1, func)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.con.close()
 
-    def CheckFuncErrorOnCreate(self):
+    eleza CheckFuncErrorOnCreate(self):
         with self.assertRaises(sqlite.OperationalError):
             self.con.create_function("bla", -100, lambda x: 2*x)
 
-    def CheckFuncRefCount(self):
-        def getfunc():
-            def f():
-                return 1
-            return f
+    eleza CheckFuncRefCount(self):
+        eleza getfunc():
+            eleza f():
+                rudisha 1
+            rudisha f
         f = getfunc()
         globals()["foo"] = f
         # self.con.create_function("reftest", 0, getfunc())
@@ -178,129 +178,129 @@ class FunctionTests(unittest.TestCase):
         cur = self.con.cursor()
         cur.execute("select reftest()")
 
-    def CheckFuncReturnText(self):
+    eleza CheckFuncReturnText(self):
         cur = self.con.cursor()
         cur.execute("select returntext()")
         val = cur.fetchone()[0]
         self.assertEqual(type(val), str)
         self.assertEqual(val, "foo")
 
-    def CheckFuncReturnUnicode(self):
+    eleza CheckFuncReturnUnicode(self):
         cur = self.con.cursor()
         cur.execute("select returnunicode()")
         val = cur.fetchone()[0]
         self.assertEqual(type(val), str)
         self.assertEqual(val, "bar")
 
-    def CheckFuncReturnInt(self):
+    eleza CheckFuncReturnInt(self):
         cur = self.con.cursor()
         cur.execute("select returnint()")
         val = cur.fetchone()[0]
         self.assertEqual(type(val), int)
         self.assertEqual(val, 42)
 
-    def CheckFuncReturnFloat(self):
+    eleza CheckFuncReturnFloat(self):
         cur = self.con.cursor()
         cur.execute("select returnfloat()")
         val = cur.fetchone()[0]
         self.assertEqual(type(val), float)
-        if val < 3.139 or val > 3.141:
+        ikiwa val < 3.139 or val > 3.141:
             self.fail("wrong value")
 
-    def CheckFuncReturnNull(self):
+    eleza CheckFuncReturnNull(self):
         cur = self.con.cursor()
         cur.execute("select returnnull()")
         val = cur.fetchone()[0]
         self.assertEqual(type(val), type(None))
         self.assertEqual(val, None)
 
-    def CheckFuncReturnBlob(self):
+    eleza CheckFuncReturnBlob(self):
         cur = self.con.cursor()
         cur.execute("select returnblob()")
         val = cur.fetchone()[0]
         self.assertEqual(type(val), bytes)
         self.assertEqual(val, b"blob")
 
-    def CheckFuncReturnLongLong(self):
+    eleza CheckFuncReturnLongLong(self):
         cur = self.con.cursor()
         cur.execute("select returnlonglong()")
         val = cur.fetchone()[0]
         self.assertEqual(val, 1<<31)
 
-    def CheckFuncException(self):
+    eleza CheckFuncException(self):
         cur = self.con.cursor()
         with self.assertRaises(sqlite.OperationalError) as cm:
             cur.execute("select raiseexception()")
             cur.fetchone()
         self.assertEqual(str(cm.exception), 'user-defined function raised exception')
 
-    def CheckParamString(self):
+    eleza CheckParamString(self):
         cur = self.con.cursor()
         cur.execute("select isstring(?)", ("foo",))
         val = cur.fetchone()[0]
         self.assertEqual(val, 1)
 
-    def CheckParamInt(self):
+    eleza CheckParamInt(self):
         cur = self.con.cursor()
         cur.execute("select isint(?)", (42,))
         val = cur.fetchone()[0]
         self.assertEqual(val, 1)
 
-    def CheckParamFloat(self):
+    eleza CheckParamFloat(self):
         cur = self.con.cursor()
         cur.execute("select isfloat(?)", (3.14,))
         val = cur.fetchone()[0]
         self.assertEqual(val, 1)
 
-    def CheckParamNone(self):
+    eleza CheckParamNone(self):
         cur = self.con.cursor()
         cur.execute("select isnone(?)", (None,))
         val = cur.fetchone()[0]
         self.assertEqual(val, 1)
 
-    def CheckParamBlob(self):
+    eleza CheckParamBlob(self):
         cur = self.con.cursor()
         cur.execute("select isblob(?)", (memoryview(b"blob"),))
         val = cur.fetchone()[0]
         self.assertEqual(val, 1)
 
-    def CheckParamLongLong(self):
+    eleza CheckParamLongLong(self):
         cur = self.con.cursor()
         cur.execute("select islonglong(?)", (1<<42,))
         val = cur.fetchone()[0]
         self.assertEqual(val, 1)
 
-    def CheckAnyArguments(self):
+    eleza CheckAnyArguments(self):
         cur = self.con.cursor()
         cur.execute("select spam(?, ?)", (1, 2))
         val = cur.fetchone()[0]
         self.assertEqual(val, 2)
 
-    def CheckFuncNonDeterministic(self):
+    eleza CheckFuncNonDeterministic(self):
         mock = unittest.mock.Mock(return_value=None)
         self.con.create_function("deterministic", 0, mock, deterministic=False)
         self.con.execute("select deterministic() = deterministic()")
         self.assertEqual(mock.call_count, 2)
 
     @unittest.skipIf(sqlite.sqlite_version_info < (3, 8, 3), "deterministic parameter not supported")
-    def CheckFuncDeterministic(self):
+    eleza CheckFuncDeterministic(self):
         mock = unittest.mock.Mock(return_value=None)
         self.con.create_function("deterministic", 0, mock, deterministic=True)
         self.con.execute("select deterministic() = deterministic()")
         self.assertEqual(mock.call_count, 1)
 
     @unittest.skipIf(sqlite.sqlite_version_info >= (3, 8, 3), "SQLite < 3.8.3 needed")
-    def CheckFuncDeterministicNotSupported(self):
+    eleza CheckFuncDeterministicNotSupported(self):
         with self.assertRaises(sqlite.NotSupportedError):
             self.con.create_function("deterministic", 0, int, deterministic=True)
 
-    def CheckFuncDeterministicKeywordOnly(self):
+    eleza CheckFuncDeterministicKeywordOnly(self):
         with self.assertRaises(TypeError):
             self.con.create_function("deterministic", 0, int, True)
 
 
-class AggregateTests(unittest.TestCase):
-    def setUp(self):
+kundi AggregateTests(unittest.TestCase):
+    eleza setUp(self):
         self.con = sqlite.connect(":memory:")
         cur = self.con.cursor()
         cur.execute("""
@@ -324,86 +324,86 @@ class AggregateTests(unittest.TestCase):
         self.con.create_aggregate("checkTypes", -1, AggrCheckTypes)
         self.con.create_aggregate("mysum", 1, AggrSum)
 
-    def tearDown(self):
+    eleza tearDown(self):
         #self.cur.close()
         #self.con.close()
         pass
 
-    def CheckAggrErrorOnCreate(self):
+    eleza CheckAggrErrorOnCreate(self):
         with self.assertRaises(sqlite.OperationalError):
             self.con.create_function("bla", -100, AggrSum)
 
-    def CheckAggrNoStep(self):
+    eleza CheckAggrNoStep(self):
         cur = self.con.cursor()
         with self.assertRaises(AttributeError) as cm:
             cur.execute("select nostep(t) kutoka test")
         self.assertEqual(str(cm.exception), "'AggrNoStep' object has no attribute 'step'")
 
-    def CheckAggrNoFinalize(self):
+    eleza CheckAggrNoFinalize(self):
         cur = self.con.cursor()
         with self.assertRaises(sqlite.OperationalError) as cm:
             cur.execute("select nofinalize(t) kutoka test")
             val = cur.fetchone()[0]
         self.assertEqual(str(cm.exception), "user-defined aggregate's 'finalize' method raised error")
 
-    def CheckAggrExceptionInInit(self):
+    eleza CheckAggrExceptionInInit(self):
         cur = self.con.cursor()
         with self.assertRaises(sqlite.OperationalError) as cm:
             cur.execute("select excInit(t) kutoka test")
             val = cur.fetchone()[0]
         self.assertEqual(str(cm.exception), "user-defined aggregate's '__init__' method raised error")
 
-    def CheckAggrExceptionInStep(self):
+    eleza CheckAggrExceptionInStep(self):
         cur = self.con.cursor()
         with self.assertRaises(sqlite.OperationalError) as cm:
             cur.execute("select excStep(t) kutoka test")
             val = cur.fetchone()[0]
         self.assertEqual(str(cm.exception), "user-defined aggregate's 'step' method raised error")
 
-    def CheckAggrExceptionInFinalize(self):
+    eleza CheckAggrExceptionInFinalize(self):
         cur = self.con.cursor()
         with self.assertRaises(sqlite.OperationalError) as cm:
             cur.execute("select excFinalize(t) kutoka test")
             val = cur.fetchone()[0]
         self.assertEqual(str(cm.exception), "user-defined aggregate's 'finalize' method raised error")
 
-    def CheckAggrCheckParamStr(self):
+    eleza CheckAggrCheckParamStr(self):
         cur = self.con.cursor()
         cur.execute("select checkType('str', ?)", ("foo",))
         val = cur.fetchone()[0]
         self.assertEqual(val, 1)
 
-    def CheckAggrCheckParamInt(self):
+    eleza CheckAggrCheckParamInt(self):
         cur = self.con.cursor()
         cur.execute("select checkType('int', ?)", (42,))
         val = cur.fetchone()[0]
         self.assertEqual(val, 1)
 
-    def CheckAggrCheckParamsInt(self):
+    eleza CheckAggrCheckParamsInt(self):
         cur = self.con.cursor()
         cur.execute("select checkTypes('int', ?, ?)", (42, 24))
         val = cur.fetchone()[0]
         self.assertEqual(val, 2)
 
-    def CheckAggrCheckParamFloat(self):
+    eleza CheckAggrCheckParamFloat(self):
         cur = self.con.cursor()
         cur.execute("select checkType('float', ?)", (3.14,))
         val = cur.fetchone()[0]
         self.assertEqual(val, 1)
 
-    def CheckAggrCheckParamNone(self):
+    eleza CheckAggrCheckParamNone(self):
         cur = self.con.cursor()
         cur.execute("select checkType('None', ?)", (None,))
         val = cur.fetchone()[0]
         self.assertEqual(val, 1)
 
-    def CheckAggrCheckParamBlob(self):
+    eleza CheckAggrCheckParamBlob(self):
         cur = self.con.cursor()
         cur.execute("select checkType('blob', ?)", (memoryview(b"blob"),))
         val = cur.fetchone()[0]
         self.assertEqual(val, 1)
 
-    def CheckAggrCheckAggrSum(self):
+    eleza CheckAggrCheckAggrSum(self):
         cur = self.con.cursor()
         cur.execute("delete kutoka test")
         cur.executemany("insert into test(i) values (?)", [(10,), (20,), (30,)])
@@ -411,16 +411,16 @@ class AggregateTests(unittest.TestCase):
         val = cur.fetchone()[0]
         self.assertEqual(val, 60)
 
-class AuthorizerTests(unittest.TestCase):
+kundi AuthorizerTests(unittest.TestCase):
     @staticmethod
-    def authorizer_cb(action, arg1, arg2, dbname, source):
-        if action != sqlite.SQLITE_SELECT:
-            return sqlite.SQLITE_DENY
-        if arg2 == 'c2' or arg1 == 't2':
-            return sqlite.SQLITE_DENY
-        return sqlite.SQLITE_OK
+    eleza authorizer_cb(action, arg1, arg2, dbname, source):
+        ikiwa action != sqlite.SQLITE_SELECT:
+            rudisha sqlite.SQLITE_DENY
+        ikiwa arg2 == 'c2' or arg1 == 't2':
+            rudisha sqlite.SQLITE_DENY
+        rudisha sqlite.SQLITE_OK
 
-    def setUp(self):
+    eleza setUp(self):
         self.con = sqlite.connect(":memory:")
         self.con.executescript("""
             create table t1 (c1, c2);
@@ -434,52 +434,52 @@ class AuthorizerTests(unittest.TestCase):
 
         self.con.set_authorizer(self.authorizer_cb)
 
-    def tearDown(self):
+    eleza tearDown(self):
         pass
 
-    def test_table_access(self):
+    eleza test_table_access(self):
         with self.assertRaises(sqlite.DatabaseError) as cm:
             self.con.execute("select * kutoka t2")
         self.assertIn('prohibited', str(cm.exception))
 
-    def test_column_access(self):
+    eleza test_column_access(self):
         with self.assertRaises(sqlite.DatabaseError) as cm:
             self.con.execute("select c2 kutoka t1")
         self.assertIn('prohibited', str(cm.exception))
 
-class AuthorizerRaiseExceptionTests(AuthorizerTests):
+kundi AuthorizerRaiseExceptionTests(AuthorizerTests):
     @staticmethod
-    def authorizer_cb(action, arg1, arg2, dbname, source):
-        if action != sqlite.SQLITE_SELECT:
+    eleza authorizer_cb(action, arg1, arg2, dbname, source):
+        ikiwa action != sqlite.SQLITE_SELECT:
             raise ValueError
-        if arg2 == 'c2' or arg1 == 't2':
+        ikiwa arg2 == 'c2' or arg1 == 't2':
             raise ValueError
-        return sqlite.SQLITE_OK
+        rudisha sqlite.SQLITE_OK
 
-class AuthorizerIllegalTypeTests(AuthorizerTests):
+kundi AuthorizerIllegalTypeTests(AuthorizerTests):
     @staticmethod
-    def authorizer_cb(action, arg1, arg2, dbname, source):
-        if action != sqlite.SQLITE_SELECT:
-            return 0.0
-        if arg2 == 'c2' or arg1 == 't2':
-            return 0.0
-        return sqlite.SQLITE_OK
+    eleza authorizer_cb(action, arg1, arg2, dbname, source):
+        ikiwa action != sqlite.SQLITE_SELECT:
+            rudisha 0.0
+        ikiwa arg2 == 'c2' or arg1 == 't2':
+            rudisha 0.0
+        rudisha sqlite.SQLITE_OK
 
-class AuthorizerLargeIntegerTests(AuthorizerTests):
+kundi AuthorizerLargeIntegerTests(AuthorizerTests):
     @staticmethod
-    def authorizer_cb(action, arg1, arg2, dbname, source):
-        if action != sqlite.SQLITE_SELECT:
-            return 2**32
-        if arg2 == 'c2' or arg1 == 't2':
-            return 2**32
-        return sqlite.SQLITE_OK
+    eleza authorizer_cb(action, arg1, arg2, dbname, source):
+        ikiwa action != sqlite.SQLITE_SELECT:
+            rudisha 2**32
+        ikiwa arg2 == 'c2' or arg1 == 't2':
+            rudisha 2**32
+        rudisha sqlite.SQLITE_OK
 
 
-def suite():
+eleza suite():
     function_suite = unittest.makeSuite(FunctionTests, "Check")
     aggregate_suite = unittest.makeSuite(AggregateTests, "Check")
     authorizer_suite = unittest.makeSuite(AuthorizerTests)
-    return unittest.TestSuite((
+    rudisha unittest.TestSuite((
             function_suite,
             aggregate_suite,
             authorizer_suite,
@@ -488,9 +488,9 @@ def suite():
             unittest.makeSuite(AuthorizerLargeIntegerTests),
         ))
 
-def test():
+eleza test():
     runner = unittest.TextTestRunner()
     runner.run(suite())
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test()

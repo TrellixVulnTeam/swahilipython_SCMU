@@ -2,7 +2,7 @@
 =================================================
 
 .. module:: py_compile
-   :synopsis: Generate byte-code files from Python source files.
+   :synopsis: Generate byte-code files kutoka Python source files.
 
 .. sectionauthor:: Fred L. Drake, Jr. <fdrake@acm.org>
 .. documentation based on module docstrings
@@ -14,7 +14,7 @@
 --------------
 
 The :mod:`py_compile` module provides a function to generate a byte-code file
-from a source file, and another function used when the module source file is
+kutoka a source file, and another function used when the module source file is
 invoked as a script.
 
 Though not often needed, this function can be useful when installing modules for
@@ -30,7 +30,7 @@ byte-code cache files in the directory containing the source code.
 .. function:: compile(file, cfile=None, dfile=None, doraise=False, optimize=-1, invalidation_mode=PycInvalidationMode.TIMESTAMP)
 
    Compile a source file to byte-code and write out the byte-code cache file.
-   The source code is loaded from the file named *file*.  The byte-code is
+   The source code is loaded kutoka the file named *file*.  The byte-code is
    written to *cfile*, which defaults to the :pep:`3147`/:pep:`488` path, ending
    in ``.pyc``.
    For example, if *file* is ``/foo/bar/baz.py`` *cfile* will default to
@@ -51,9 +51,9 @@ byte-code cache files in the directory containing the source code.
 
    If the path that *cfile* becomes (either explicitly specified or computed)
    is a symlink or non-regular file, :exc:`FileExistsError` will be raised.
-   This is to act as a warning that import will turn those paths into regular
+   This is to act as a warning that agiza will turn those paths into regular
    files if it is allowed to write byte-compiled files to those paths. This is
-   a side-effect of import using file renaming to place the final byte-compiled
+   a side-effect of agiza using file renaming to place the final byte-compiled
    file into place to prevent concurrent file writing issues.
 
    *optimize* controls the optimization level and is passed to the built-in
@@ -131,7 +131,7 @@ byte-code cache files in the directory containing the source code.
    line, if *args* is ``None``) are compiled and the resulting byte-code is
    cached in the normal manner.  This function does not search a directory
    structure to locate source files; it only compiles files named explicitly.
-   If ``'-'`` is the only parameter in args, the list of files is taken from
+   If ``'-'`` is the only parameter in args, the list of files is taken kutoka
    standard input.
 
    .. versionchanged:: 3.2

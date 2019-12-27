@@ -14,26 +14,26 @@ except ImportError:
     _testcapi = None
 
 
-# This tests to make sure that if a SIGINT arrives just before we send into a
+# This tests to make sure that ikiwa a SIGINT arrives just before we send into a
 # yield kutoka chain, the KeyboardInterrupt is raised in the innermost
 # generator (see bpo-30039).
 @unittest.skipUnless(_testcapi is not None and
                      hasattr(_testcapi, "raise_SIGINT_then_send_None"),
                      "needs _testcapi.raise_SIGINT_then_send_None")
-class SignalAndYieldFromTest(unittest.TestCase):
+kundi SignalAndYieldFromTest(unittest.TestCase):
 
-    def generator1(self):
-        return (yield kutoka self.generator2())
+    eleza generator1(self):
+        rudisha (yield kutoka self.generator2())
 
-    def generator2(self):
+    eleza generator2(self):
         try:
             yield
         except KeyboardInterrupt:
-            return "PASSED"
+            rudisha "PASSED"
         else:
-            return "FAILED"
+            rudisha "FAILED"
 
-    def test_raise_and_yield_from(self):
+    eleza test_raise_and_yield_kutoka(self):
         gen = self.generator1()
         gen.send(None)
         try:
@@ -44,11 +44,11 @@ class SignalAndYieldFromTest(unittest.TestCase):
         self.assertEqual(exc.value, "PASSED")
 
 
-class FinalizationTest(unittest.TestCase):
+kundi FinalizationTest(unittest.TestCase):
 
-    def test_frame_resurrect(self):
+    eleza test_frame_resurrect(self):
         # A generator frame can be resurrected by a generator's finalization.
-        def gen():
+        eleza gen():
             nonlocal frame
             try:
                 yield
@@ -65,11 +65,11 @@ class FinalizationTest(unittest.TestCase):
         del frame
         support.gc_collect()
 
-    def test_refcycle(self):
+    eleza test_refcycle(self):
         # A generator caught in a refcycle gets finalized anyway.
         old_garbage = gc.garbage[:]
         finalized = False
-        def gen():
+        eleza gen():
             nonlocal finalized
             try:
                 g = yield
@@ -87,18 +87,18 @@ class FinalizationTest(unittest.TestCase):
         self.assertTrue(finalized)
         self.assertEqual(gc.garbage, old_garbage)
 
-    def test_lambda_generator(self):
+    eleza test_lambda_generator(self):
         # Issue #23192: Test that a lambda returning a generator behaves
         # like the equivalent function
         f = lambda: (yield 1)
-        def g(): return (yield 1)
+        eleza g(): rudisha (yield 1)
 
         # test 'yield kutoka'
         f2 = lambda: (yield kutoka g())
-        def g2(): return (yield kutoka g())
+        eleza g2(): rudisha (yield kutoka g())
 
         f3 = lambda: (yield kutoka f())
-        def g3(): return (yield kutoka f())
+        eleza g3(): rudisha (yield kutoka f())
 
         for gen_fun in (f, g, f2, g2, f3, g3):
             gen = gen_fun()
@@ -108,10 +108,10 @@ class FinalizationTest(unittest.TestCase):
             self.assertEqual(cm.exception.value, 2)
 
 
-class GeneratorTest(unittest.TestCase):
+kundi GeneratorTest(unittest.TestCase):
 
-    def test_name(self):
-        def func():
+    eleza test_name(self):
+        eleza func():
             yield 1
 
         # check generator names
@@ -146,15 +146,15 @@ class GeneratorTest(unittest.TestCase):
         self.assertEqual(gen.__qualname__,
                          "GeneratorTest.test_name.<locals>.<genexpr>")
 
-    def test_copy(self):
-        def f():
+    eleza test_copy(self):
+        eleza f():
             yield 1
         g = f()
         with self.assertRaises(TypeError):
             copy.copy(g)
 
-    def test_pickle(self):
-        def f():
+    eleza test_pickle(self):
+        eleza f():
             yield 1
         g = f()
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -162,12 +162,12 @@ class GeneratorTest(unittest.TestCase):
                 pickle.dumps(g, proto)
 
 
-class ExceptionTest(unittest.TestCase):
+kundi ExceptionTest(unittest.TestCase):
     # Tests for the issue #23353: check that the currently handled exception
     # is correctly saved/restored in PyEval_EvalFrameEx().
 
-    def test_except_throw(self):
-        def store_raise_exc_generator():
+    eleza test_except_throw(self):
+        eleza store_raise_exc_generator():
             try:
                 self.assertEqual(sys.exc_info()[0], None)
                 yield
@@ -202,8 +202,8 @@ class ExceptionTest(unittest.TestCase):
 
         self.assertEqual(sys.exc_info(), (None, None, None))
 
-    def test_except_next(self):
-        def gen():
+    eleza test_except_next(self):
+        eleza gen():
             self.assertEqual(sys.exc_info()[0], ValueError)
             yield "done"
 
@@ -214,8 +214,8 @@ class ExceptionTest(unittest.TestCase):
             self.assertEqual(next(g), "done")
         self.assertEqual(sys.exc_info(), (None, None, None))
 
-    def test_except_gen_except(self):
-        def gen():
+    eleza test_except_gen_except(self):
+        eleza gen():
             try:
                 self.assertEqual(sys.exc_info()[0], None)
                 yield
@@ -241,8 +241,8 @@ class ExceptionTest(unittest.TestCase):
         self.assertEqual(next(g), "done")
         self.assertEqual(sys.exc_info(), (None, None, None))
 
-    def test_except_throw_exception_context(self):
-        def gen():
+    eleza test_except_throw_exception_context(self):
+        eleza gen():
             try:
                 try:
                     self.assertEqual(sys.exc_info()[0], None)
@@ -270,20 +270,20 @@ class ExceptionTest(unittest.TestCase):
         self.assertEqual(next(g), "done")
         self.assertEqual(sys.exc_info(), (None, None, None))
 
-    def test_stopiteration_error(self):
+    eleza test_stopiteration_error(self):
         # See also PEP 479.
 
-        def gen():
+        eleza gen():
             raise StopIteration
             yield
 
         with self.assertRaisesRegex(RuntimeError, 'raised StopIteration'):
             next(gen())
 
-    def test_tutorial_stopiteration(self):
+    eleza test_tutorial_stopiteration(self):
         # Raise StopIteration" stops the generator too:
 
-        def f():
+        eleza f():
             yield 1
             raise StopIteration
             yield 2 # never reached
@@ -294,9 +294,9 @@ class ExceptionTest(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, 'raised StopIteration'):
             next(g)
 
-    def test_return_tuple(self):
-        def g():
-            return (yield 1)
+    eleza test_return_tuple(self):
+        eleza g():
+            rudisha (yield 1)
 
         gen = g()
         self.assertEqual(next(gen), 1)
@@ -304,9 +304,9 @@ class ExceptionTest(unittest.TestCase):
             gen.send((2,))
         self.assertEqual(cm.exception.value, (2,))
 
-    def test_return_stopiteration(self):
-        def g():
-            return (yield 1)
+    eleza test_return_stopiteration(self):
+        eleza g():
+            rudisha (yield 1)
 
         gen = g()
         self.assertEqual(next(gen), 1)
@@ -316,48 +316,48 @@ class ExceptionTest(unittest.TestCase):
         self.assertEqual(cm.exception.value.value, 2)
 
 
-class YieldFromTests(unittest.TestCase):
-    def test_generator_gi_yieldfrom(self):
-        def a():
+kundi YieldFromTests(unittest.TestCase):
+    eleza test_generator_gi_yieldkutoka(self):
+        eleza a():
             self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_RUNNING)
-            self.assertIsNone(gen_b.gi_yieldfrom)
+            self.assertIsNone(gen_b.gi_yieldkutoka)
             yield
             self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_RUNNING)
-            self.assertIsNone(gen_b.gi_yieldfrom)
+            self.assertIsNone(gen_b.gi_yieldkutoka)
 
-        def b():
-            self.assertIsNone(gen_b.gi_yieldfrom)
+        eleza b():
+            self.assertIsNone(gen_b.gi_yieldkutoka)
             yield kutoka a()
-            self.assertIsNone(gen_b.gi_yieldfrom)
+            self.assertIsNone(gen_b.gi_yieldkutoka)
             yield
-            self.assertIsNone(gen_b.gi_yieldfrom)
+            self.assertIsNone(gen_b.gi_yieldkutoka)
 
         gen_b = b()
         self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_CREATED)
-        self.assertIsNone(gen_b.gi_yieldfrom)
+        self.assertIsNone(gen_b.gi_yieldkutoka)
 
         gen_b.send(None)
         self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_SUSPENDED)
-        self.assertEqual(gen_b.gi_yieldfrom.gi_code.co_name, 'a')
+        self.assertEqual(gen_b.gi_yieldkutoka.gi_code.co_name, 'a')
 
         gen_b.send(None)
         self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_SUSPENDED)
-        self.assertIsNone(gen_b.gi_yieldfrom)
+        self.assertIsNone(gen_b.gi_yieldkutoka)
 
         [] = gen_b  # Exhaust generator
         self.assertEqual(inspect.getgeneratorstate(gen_b), inspect.GEN_CLOSED)
-        self.assertIsNone(gen_b.gi_yieldfrom)
+        self.assertIsNone(gen_b.gi_yieldkutoka)
 
 
 tutorial_tests = """
 Let's try a simple generator:
 
-    >>> def f():
+    >>> eleza f():
     ...    yield 1
     ...    yield 2
 
     >>> for i in f():
-    ...     print(i)
+    ...     andika(i)
     1
     2
     >>> g = f()
@@ -376,7 +376,7 @@ Let's try a simple generator:
 
 "return" also stops the generator:
 
-    >>> def f():
+    >>> eleza f():
     ...     yield 1
     ...     return
     ...     yield 2 # never reached
@@ -396,7 +396,7 @@ Let's try a simple generator:
 
 However, "return" and StopIteration are not exactly equivalent:
 
-    >>> def g1():
+    >>> eleza g1():
     ...     try:
     ...         return
     ...     except:
@@ -405,17 +405,17 @@ However, "return" and StopIteration are not exactly equivalent:
     >>> list(g1())
     []
 
-    >>> def g2():
+    >>> eleza g2():
     ...     try:
     ...         raise StopIteration
     ...     except:
     ...         yield 42
-    >>> print(list(g2()))
+    >>> andika(list(g2()))
     [42]
 
 This may be surprising at first:
 
-    >>> def g3():
+    >>> eleza g3():
     ...     try:
     ...         return
     ...     finally:
@@ -426,24 +426,24 @@ This may be surprising at first:
 
 Let's create an alternate range() function implemented as a generator:
 
-    >>> def yrange(n):
+    >>> eleza yrange(n):
     ...     for i in range(n):
     ...         yield i
     ...
     >>> list(yrange(5))
     [0, 1, 2, 3, 4]
 
-Generators always return to the most recent caller:
+Generators always rudisha to the most recent caller:
 
-    >>> def creator():
+    >>> eleza creator():
     ...     r = yrange(5)
-    ...     print("creator", next(r))
-    ...     return r
+    ...     andika("creator", next(r))
+    ...     rudisha r
     ...
-    >>> def caller():
+    >>> eleza caller():
     ...     r = creator()
     ...     for i in r:
-    ...             print("caller", i)
+    ...             andika("caller", i)
     ...
     >>> caller()
     creator 0
@@ -454,7 +454,7 @@ Generators always return to the most recent caller:
 
 Generators can call other generators:
 
-    >>> def zrange(n):
+    >>> eleza zrange(n):
     ...     for i in yrange(n):
     ...         yield i
     ...
@@ -472,7 +472,7 @@ Specification:  Yield
     Restriction:  A generator cannot be resumed while it is actively
     running:
 
-    >>> def g():
+    >>> eleza g():
     ...     i = next(me)
     ...     yield i
     >>> me = g()
@@ -484,26 +484,26 @@ Specification:  Yield
 
 Specification: Return
 
-    Note that return isn't always equivalent to raising StopIteration:  the
+    Note that rudisha isn't always equivalent to raising StopIteration:  the
     difference lies in how enclosing try/except constructs are treated.
     For example,
 
-        >>> def f1():
+        >>> eleza f1():
         ...     try:
         ...         return
         ...     except:
         ...        yield 1
-        >>> print(list(f1()))
+        >>> andika(list(f1()))
         []
 
-    because, as in any function, return simply exits, but
+    because, as in any function, rudisha simply exits, but
 
-        >>> def f2():
+        >>> eleza f2():
         ...     try:
         ...         raise StopIteration
         ...     except:
         ...         yield 42
-        >>> print(list(f2()))
+        >>> andika(list(f2()))
         [42]
 
     because StopIteration is captured by a bare "except", as is any
@@ -511,9 +511,9 @@ Specification: Return
 
 Specification: Generators and Exception Propagation
 
-    >>> def f():
-    ...     return 1//0
-    >>> def g():
+    >>> eleza f():
+    ...     rudisha 1//0
+    >>> eleza g():
     ...     yield f()  # the zero division exception propagates
     ...     yield 42   # and we'll never get here
     >>> k = g()
@@ -531,7 +531,7 @@ Specification: Generators and Exception Propagation
 
 Specification: Try/Except/Finally
 
-    >>> def f():
+    >>> eleza f():
     ...     try:
     ...         yield 1
     ...         try:
@@ -553,45 +553,45 @@ Specification: Try/Except/Finally
     ...     finally:
     ...         yield 10
     ...     yield 11
-    >>> print(list(f()))
+    >>> andika(list(f()))
     [1, 2, 4, 5, 8, 9, 10, 11]
     >>>
 
 Guido's binary tree example.
 
     >>> # A binary tree class.
-    >>> class Tree:
+    >>> kundi Tree:
     ...
-    ...     def __init__(self, label, left=None, right=None):
+    ...     eleza __init__(self, label, left=None, right=None):
     ...         self.label = label
     ...         self.left = left
     ...         self.right = right
     ...
-    ...     def __repr__(self, level=0, indent="    "):
+    ...     eleza __repr__(self, level=0, indent="    "):
     ...         s = level*indent + repr(self.label)
-    ...         if self.left:
+    ...         ikiwa self.left:
     ...             s = s + "\\n" + self.left.__repr__(level+1, indent)
-    ...         if self.right:
+    ...         ikiwa self.right:
     ...             s = s + "\\n" + self.right.__repr__(level+1, indent)
-    ...         return s
+    ...         rudisha s
     ...
-    ...     def __iter__(self):
-    ...         return inorder(self)
+    ...     eleza __iter__(self):
+    ...         rudisha inorder(self)
 
     >>> # Create a Tree kutoka a list.
-    >>> def tree(list):
+    >>> eleza tree(list):
     ...     n = len(list)
-    ...     if n == 0:
-    ...         return []
+    ...     ikiwa n == 0:
+    ...         rudisha []
     ...     i = n // 2
-    ...     return Tree(list[i], tree(list[:i]), tree(list[i+1:]))
+    ...     rudisha Tree(list[i], tree(list[:i]), tree(list[i+1:]))
 
     >>> # Show it off: create a tree.
     >>> t = tree("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
     >>> # A recursive generator that generates Tree labels in in-order.
-    >>> def inorder(t):
-    ...     if t:
+    >>> eleza inorder(t):
+    ...     ikiwa t:
     ...         for x in inorder(t.left):
     ...             yield x
     ...         yield t.label
@@ -602,11 +602,11 @@ Guido's binary tree example.
     >>> t = tree("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
     >>> # Print the nodes of the tree in in-order.
     >>> for x in t:
-    ...     print(' '+x, end='')
+    ...     andika(' '+x, end='')
      A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
 
     >>> # A non-recursive generator.
-    >>> def inorder(node):
+    >>> eleza inorder(node):
     ...     stack = []
     ...     while node:
     ...         while node.left:
@@ -623,7 +623,7 @@ Guido's binary tree example.
 
     >>> # Exercise the non-recursive generator.
     >>> for x in t:
-    ...     print(' '+x, end='')
+    ...     andika(' '+x, end='')
      A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
 
 """
@@ -634,7 +634,7 @@ email_tests = """
 
 The difference between yielding None and returning it.
 
->>> def g():
+>>> eleza g():
 ...     for i in range(3):
 ...         yield None
 ...     yield None
@@ -645,7 +645,7 @@ The difference between yielding None and returning it.
 Ensure that explicitly raising StopIteration acts like any other exception
 in try/except, not like a return.
 
->>> def g():
+>>> eleza g():
 ...     yield 1
 ...     try:
 ...         raise StopIteration
@@ -657,12 +657,12 @@ in try/except, not like a return.
 
 Next one was posted to c.l.py.
 
->>> def gcomb(x, k):
+>>> eleza gcomb(x, k):
 ...     "Generate all combinations of k elements kutoka list x."
 ...
-...     if k > len(x):
+...     ikiwa k > len(x):
 ...         return
-...     if k == 0:
+...     ikiwa k == 0:
 ...         yield []
 ...     else:
 ...         first, rest = x[0], x[1:]
@@ -677,9 +677,9 @@ Next one was posted to c.l.py.
 
 >>> seq = list(range(1, 5))
 >>> for k in range(len(seq) + 2):
-...     print("%d-combs of %s:" % (k, seq))
+...     andika("%d-combs of %s:" % (k, seq))
 ...     for c in gcomb(seq, k):
-...         print("   ", c)
+...         andika("   ", c)
 0-combs of [1, 2, 3, 4]:
     []
 1-combs of [1, 2, 3, 4]:
@@ -705,18 +705,18 @@ Next one was posted to c.l.py.
 
 From the Iterators list, about the types of these things.
 
->>> def g():
+>>> eleza g():
 ...     yield 1
 ...
 >>> type(g)
-<class 'function'>
+<kundi 'function'>
 >>> i = g()
 >>> type(i)
-<class 'generator'>
->>> [s for s in dir(i) if not s.startswith('_')]
-['close', 'gi_code', 'gi_frame', 'gi_running', 'gi_yieldfrom', 'send', 'throw']
+<kundi 'generator'>
+>>> [s for s in dir(i) ikiwa not s.startswith('_')]
+['close', 'gi_code', 'gi_frame', 'gi_running', 'gi_yieldkutoka', 'send', 'throw']
 >>> kutoka test.support agiza HAVE_DOCSTRINGS
->>> print(i.__next__.__doc__ if HAVE_DOCSTRINGS else 'Implement next(self).')
+>>> andika(i.__next__.__doc__ ikiwa HAVE_DOCSTRINGS else 'Implement next(self).')
 Implement next(self).
 >>> iter(i) is i
 True
@@ -729,12 +729,12 @@ And more, added later.
 >>> i.gi_running
 0
 >>> type(i.gi_frame)
-<class 'frame'>
+<kundi 'frame'>
 >>> i.gi_running = 42
 Traceback (most recent call last):
   ...
 AttributeError: readonly attribute
->>> def g():
+>>> eleza g():
 ...     yield me.gi_running
 >>> me = g()
 >>> me.gi_running
@@ -749,28 +749,28 @@ Sent: Friday, June 29, 2001 12:16 PM
 To: python-list@python.org
 Subject: Re: PEP 255: Simple Generators
 
->>> class disjointSet:
-...     def __init__(self, name):
+>>> kundi disjointSet:
+...     eleza __init__(self, name):
 ...         self.name = name
 ...         self.parent = None
 ...         self.generator = self.generate()
 ...
-...     def generate(self):
+...     eleza generate(self):
 ...         while not self.parent:
 ...             yield self
 ...         for x in self.parent.generator:
 ...             yield x
 ...
-...     def find(self):
-...         return next(self.generator)
+...     eleza find(self):
+...         rudisha next(self.generator)
 ...
-...     def union(self, parent):
-...         if self.parent:
+...     eleza union(self, parent):
+...         ikiwa self.parent:
 ...             raise ValueError("Sorry, I'm not a root!")
 ...         self.parent = parent
 ...
-...     def __str__(self):
-...         return self.name
+...     eleza __str__(self):
+...         rudisha self.name
 
 >>> names = "ABCDEFGHIJKLM"
 >>> sets = [disjointSet(name) for name in names]
@@ -780,14 +780,14 @@ Subject: Re: PEP 255: Simple Generators
 >>> gen = random.Random(42)
 >>> while 1:
 ...     for s in sets:
-...         print(" %s->%s" % (s, s.find()), end='')
-...     print()
-...     if len(roots) > 1:
+...         andika(" %s->%s" % (s, s.find()), end='')
+...     andika()
+...     ikiwa len(roots) > 1:
 ...         s1 = gen.choice(roots)
 ...         roots.remove(s1)
 ...         s2 = gen.choice(roots)
 ...         s1.union(s2)
-...         print("merged", s1, "into", s2)
+...         andika("merged", s1, "into", s2)
 ...     else:
 ...         break
  A->A B->B C->C D->D E->E F->F G->G H->H I->I J->J K->K L->L M->M
@@ -825,33 +825,33 @@ fun_tests = """
 
 Build up to a recursive Sieve of Eratosthenes generator.
 
->>> def firstn(g, n):
-...     return [next(g) for i in range(n)]
+>>> eleza firstn(g, n):
+...     rudisha [next(g) for i in range(n)]
 
->>> def intsfrom(i):
+>>> eleza intskutoka(i):
 ...     while 1:
 ...         yield i
 ...         i += 1
 
->>> firstn(intsfrom(5), 7)
+>>> firstn(intskutoka(5), 7)
 [5, 6, 7, 8, 9, 10, 11]
 
->>> def exclude_multiples(n, ints):
+>>> eleza exclude_multiples(n, ints):
 ...     for i in ints:
-...         if i % n:
+...         ikiwa i % n:
 ...             yield i
 
->>> firstn(exclude_multiples(3, intsfrom(1)), 6)
+>>> firstn(exclude_multiples(3, intskutoka(1)), 6)
 [1, 2, 4, 5, 7, 8]
 
->>> def sieve(ints):
+>>> eleza sieve(ints):
 ...     prime = next(ints)
 ...     yield prime
 ...     not_divisible_by_prime = exclude_multiples(prime, ints)
 ...     for p in sieve(not_divisible_by_prime):
 ...         yield p
 
->>> primes = sieve(intsfrom(2))
+>>> primes = sieve(intskutoka(2))
 >>> firstn(primes, 20)
 [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71]
 
@@ -862,20 +862,20 @@ in increasing order, where i,j,k >= 0.  Trickier than it may look at first!
 Try writing it without generators, and correctly, and without generating
 3 internal results for each result output.
 
->>> def times(n, g):
+>>> eleza times(n, g):
 ...     for i in g:
 ...         yield n * i
->>> firstn(times(10, intsfrom(1)), 10)
+>>> firstn(times(10, intskutoka(1)), 10)
 [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 
->>> def merge(g, h):
+>>> eleza merge(g, h):
 ...     ng = next(g)
 ...     nh = next(h)
 ...     while 1:
-...         if ng < nh:
+...         ikiwa ng < nh:
 ...             yield ng
 ...             ng = next(g)
-...         elif ng > nh:
+...         elikiwa ng > nh:
 ...             yield nh
 ...             nh = next(h)
 ...         else:
@@ -889,7 +889,7 @@ generator.  Note that me_times2 (etc) each need to see every element in the
 result sequence.  So this is an example where lazy lists are more natural
 (you can look at the head of a lazy list any number of times).
 
->>> def m235():
+>>> eleza m235():
 ...     yield 1
 ...     me_times2 = times(2, m235())
 ...     me_times3 = times(3, m235())
@@ -909,7 +909,7 @@ address space, and it *looked* like a very slow leak.
 
 >>> result = m235()
 >>> for i in range(3):
-...     print(firstn(result, 15))
+...     andika(firstn(result, 15))
 [1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24]
 [25, 27, 30, 32, 36, 40, 45, 48, 50, 54, 60, 64, 72, 75, 80]
 [81, 90, 96, 100, 108, 120, 125, 128, 135, 144, 150, 160, 162, 180, 192]
@@ -919,18 +919,18 @@ namespace renaming trick.  The *pretty* part is that the times() and merge()
 functions can be reused as-is, because they only assume their stream
 arguments are iterable -- a LazyList is the same as a generator to times().
 
->>> class LazyList:
-...     def __init__(self, g):
+>>> kundi LazyList:
+...     eleza __init__(self, g):
 ...         self.sofar = []
 ...         self.fetch = g.__next__
 ...
-...     def __getitem__(self, i):
+...     eleza __getitem__(self, i):
 ...         sofar, fetch = self.sofar, self.fetch
 ...         while i >= len(sofar):
 ...             sofar.append(fetch())
-...         return sofar[i]
+...         rudisha sofar[i]
 
->>> def m235():
+>>> eleza m235():
 ...     yield 1
 ...     # Gack:  m235 below actually refers to a LazyList.
 ...     me_times2 = times(2, m235)
@@ -946,7 +946,7 @@ efficient.
 
 >>> m235 = LazyList(m235())
 >>> for i in range(5):
-...     print([m235[j] for j in range(15*i, 15*(i+1))])
+...     andika([m235[j] for j in range(15*i, 15*(i+1))])
 [1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24]
 [25, 27, 30, 32, 36, 40, 45, 48, 50, 54, 60, 64, 72, 75, 80]
 [81, 90, 96, 100, 108, 120, 125, 128, 135, 144, 150, 160, 162, 180, 192]
@@ -955,13 +955,13 @@ efficient.
 
 Ye olde Fibonacci generator, LazyList style.
 
->>> def fibgen(a, b):
+>>> eleza fibgen(a, b):
 ...
-...     def sum(g, h):
+...     eleza sum(g, h):
 ...         while 1:
 ...             yield next(g) + next(h)
 ...
-...     def tail(g):
+...     eleza tail(g):
 ...         next(g)    # throw first away
 ...         for x in g:
 ...             yield x
@@ -995,7 +995,7 @@ In python, we have to explicitly maintain a list of already computed results
 and abandon genuine recursivity.
 
 This is what had been attempted above with the LazyList class. One problem
-with that class is that it keeps a list of all of the generated results and
+with that kundi is that it keeps a list of all of the generated results and
 therefore continually grows. This partially defeats the goal of the generator
 concept, viz. produce the results only as needed instead of producing them
 all and thereby wasting memory.
@@ -1004,8 +1004,8 @@ Thanks to itertools.tee, it is now clear "how to get the internal uses of
 m235 to share a single generator".
 
 >>> kutoka itertools agiza tee
->>> def m235():
-...     def _m235():
+>>> eleza m235():
+...     eleza _m235():
 ...         yield 1
 ...         for n in merge(times(2, m2),
 ...                        merge(times(3, m3),
@@ -1013,11 +1013,11 @@ m235 to share a single generator".
 ...             yield n
 ...     m1 = _m235()
 ...     m2, m3, m5, mRes = tee(m1, 4)
-...     return mRes
+...     rudisha mRes
 
 >>> it = m235()
 >>> for i in range(5):
-...     print(firstn(it, 15))
+...     andika(firstn(it, 15))
 [1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24]
 [25, 27, 30, 32, 36, 40, 45, 48, 50, 54, 60, 64, 72, 75, 80]
 [81, 90, 96, 100, 108, 120, 125, 128, 135, 144, 150, 160, 162, 180, 192]
@@ -1034,13 +1034,13 @@ are quite straightforwardly expressed with this Python idiom.
 
 Ye olde Fibonacci generator, tee style.
 
->>> def fib():
+>>> eleza fib():
 ...
-...     def _isum(g, h):
+...     eleza _isum(g, h):
 ...         while 1:
 ...             yield next(g) + next(h)
 ...
-...     def _fib():
+...     eleza _fib():
 ...         yield 1
 ...         yield 2
 ...         next(fibTail) # throw first away
@@ -1049,31 +1049,31 @@ Ye olde Fibonacci generator, tee style.
 ...
 ...     realfib = _fib()
 ...     fibHead, fibTail, fibRes = tee(realfib, 3)
-...     return fibRes
+...     rudisha fibRes
 
 >>> firstn(fib(), 17)
 [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584]
 
 """
 
-# syntax_tests mostly provokes SyntaxErrors.  Also fiddling with #if 0
+# syntax_tests mostly provokes SyntaxErrors.  Also fiddling with #ikiwa 0
 # hackery.
 
 syntax_tests = """
 
 These are fine:
 
->>> def f():
+>>> eleza f():
 ...     yield 1
 ...     return
 
->>> def f():
+>>> eleza f():
 ...     try:
 ...         yield 1
 ...     finally:
 ...         pass
 
->>> def f():
+>>> eleza f():
 ...     try:
 ...         try:
 ...             1//0
@@ -1084,7 +1084,7 @@ These are fine:
 ...     finally:
 ...         pass
 
->>> def f():
+>>> eleza f():
 ...     try:
 ...         try:
 ...             yield 12
@@ -1101,43 +1101,43 @@ These are fine:
 >>> list(f())
 [12, 666]
 
->>> def f():
+>>> eleza f():
 ...    yield
 >>> type(f())
-<class 'generator'>
+<kundi 'generator'>
 
 
->>> def f():
-...    if 0:
+>>> eleza f():
+...    ikiwa 0:
 ...        yield
 >>> type(f())
-<class 'generator'>
+<kundi 'generator'>
 
 
->>> def f():
-...     if 0:
+>>> eleza f():
+...     ikiwa 0:
 ...         yield 1
 >>> type(f())
-<class 'generator'>
+<kundi 'generator'>
 
->>> def f():
-...    if "":
+>>> eleza f():
+...    ikiwa "":
 ...        yield None
 >>> type(f())
-<class 'generator'>
+<kundi 'generator'>
 
->>> def f():
+>>> eleza f():
 ...     return
 ...     try:
-...         if x==4:
+...         ikiwa x==4:
 ...             pass
-...         elif 0:
+...         elikiwa 0:
 ...             try:
 ...                 1//0
 ...             except SyntaxError:
 ...                 pass
 ...             else:
-...                 if 0:
+...                 ikiwa 0:
 ...                     while 12:
 ...                         x += 1
 ...                         yield 2 # don't blink
@@ -1148,37 +1148,37 @@ These are fine:
 ...         x = 1
 ...     return
 >>> type(f())
-<class 'generator'>
+<kundi 'generator'>
 
->>> def f():
-...     if 0:
-...         def g():
+>>> eleza f():
+...     ikiwa 0:
+...         eleza g():
 ...             yield 1
 ...
 >>> type(f())
-<class 'NoneType'>
+<kundi 'NoneType'>
 
->>> def f():
-...     if 0:
-...         class C:
-...             def __init__(self):
+>>> eleza f():
+...     ikiwa 0:
+...         kundi C:
+...             eleza __init__(self):
 ...                 yield 1
-...             def f(self):
+...             eleza f(self):
 ...                 yield 2
 >>> type(f())
-<class 'NoneType'>
+<kundi 'NoneType'>
 
->>> def f():
-...     if 0:
+>>> eleza f():
+...     ikiwa 0:
 ...         return
-...     if 0:
+...     ikiwa 0:
 ...         yield 2
 >>> type(f())
-<class 'generator'>
+<kundi 'generator'>
 
 This one caused a crash (see SF bug 567538):
 
->>> def f():
+>>> eleza f():
 ...     for i in range(3):
 ...         try:
 ...             continue
@@ -1186,20 +1186,20 @@ This one caused a crash (see SF bug 567538):
 ...             yield i
 ...
 >>> g = f()
->>> print(next(g))
+>>> andika(next(g))
 0
->>> print(next(g))
+>>> andika(next(g))
 1
->>> print(next(g))
+>>> andika(next(g))
 2
->>> print(next(g))
+>>> andika(next(g))
 Traceback (most recent call last):
 StopIteration
 
 
 Test the gi_code attribute
 
->>> def f():
+>>> eleza f():
 ...     yield 5
 ...
 >>> g = f()
@@ -1216,7 +1216,7 @@ True
 
 Test the __name__ attribute and the repr()
 
->>> def f():
+>>> eleza f():
 ...    yield 5
 ...
 >>> g = f()
@@ -1225,7 +1225,7 @@ Test the __name__ attribute and the repr()
 >>> repr(g)  # doctest: +ELLIPSIS
 '<generator object f at ...>'
 
-Lambdas shouldn't have their usual return behavior.
+Lambdas shouldn't have their usual rudisha behavior.
 
 >>> x = lambda: (yield 1)
 >>> list(x())
@@ -1238,10 +1238,10 @@ Lambdas shouldn't have their usual return behavior.
 
 # conjoin is a simple backtracking generator, named in honor of Icon's
 # "conjunction" control structure.  Pass a list of no-argument functions
-# that return iterable objects.  Easiest to explain by example:  assume the
+# that rudisha iterable objects.  Easiest to explain by example:  assume the
 # function list [x, y, z] is passed.  Then conjoin acts like:
 #
-# def g():
+# eleza g():
 #     values = [None] * 3
 #     for values[0] in x():
 #         for values[1] in y():
@@ -1256,12 +1256,12 @@ Lambdas shouldn't have their usual return behavior.
 # iterators have side-effects, so that which values *can* be generated at
 # each slot depend on the values iterated at previous slots.
 
-def simple_conjoin(gs):
+eleza simple_conjoin(gs):
 
     values = [None] * len(gs)
 
-    def gen(i):
-        if i >= len(gs):
+    eleza gen(i):
+        ikiwa i >= len(gs):
             yield values
         else:
             for values[i] in gs[i]():
@@ -1277,7 +1277,7 @@ def simple_conjoin(gs):
 # This isn't worth the bother *in general* for generators, but conjoin() is
 # a core building block for some CPU-intensive generator applications.
 
-def conjoin(gs):
+eleza conjoin(gs):
 
     n = len(gs)
     values = [None] * n
@@ -1285,11 +1285,11 @@ def conjoin(gs):
     # Do one loop nest at time recursively, until the # of loop nests
     # remaining is divisible by 3.
 
-    def gen(i):
-        if i >= n:
+    eleza gen(i):
+        ikiwa i >= n:
             yield values
 
-        elif (n-i) % 3:
+        elikiwa (n-i) % 3:
             ip1 = i+1
             for values[i] in gs[i]():
                 for x in gen(ip1):
@@ -1299,16 +1299,16 @@ def conjoin(gs):
             for x in _gen3(i):
                 yield x
 
-    # Do three loop nests at a time, recursing only if at least three more
+    # Do three loop nests at a time, recursing only ikiwa at least three more
     # remain.  Don't call directly:  this is an internal optimization for
     # gen's use.
 
-    def _gen3(i):
+    eleza _gen3(i):
         assert i < n and (n-i) % 3 == 0
         ip1, ip2, ip3 = i+1, i+2, i+3
         g, g1, g2 = gs[i : ip3]
 
-        if ip3 >= n:
+        ikiwa ip3 >= n:
             # These are the last three, so we can yield values directly.
             for values[i] in g():
                 for values[ip1] in g1():
@@ -1338,7 +1338,7 @@ def conjoin(gs):
 # much harder to achieve.  OTOH, this is much slower (up to a factor of 2)
 # than the fancy unrolled recursive conjoin.
 
-def flat_conjoin(gs):  # rename to conjoin to run tests with this instead
+eleza flat_conjoin(gs):  # rename to conjoin to run tests with this instead
     n = len(gs)
     values = [None] * n
     iters  = [None] * n
@@ -1374,8 +1374,8 @@ def flat_conjoin(gs):  # rename to conjoin to run tests with this instead
 
 # A conjoin-based N-Queens solver.
 
-class Queens:
-    def __init__(self, n):
+kundi Queens:
+    eleza __init__(self, n):
         self.n = n
         rangen = range(n)
 
@@ -1397,10 +1397,10 @@ class Queens:
                        (1 << (n + 2*n-1 + i+j))    # NE-SW ordinal
                             for j in rangen]
 
-            def rowgen(rowuses=rowuses):
+            eleza rowgen(rowuses=rowuses):
                 for j in rangen:
                     uses = rowuses[j]
-                    if uses & self.used == 0:
+                    ikiwa uses & self.used == 0:
                         self.used |= uses
                         yield j
                         self.used &= ~uses
@@ -1408,29 +1408,29 @@ class Queens:
             self.rowgenerators.append(rowgen)
 
     # Generate solutions.
-    def solve(self):
+    eleza solve(self):
         self.used = 0
         for row2col in conjoin(self.rowgenerators):
             yield row2col
 
-    def printsolution(self, row2col):
+    eleza printsolution(self, row2col):
         n = self.n
         assert n == len(row2col)
         sep = "+" + "-+" * n
-        print(sep)
+        andika(sep)
         for i in range(n):
             squares = [" " for j in range(n)]
             squares[row2col[i]] = "Q"
-            print("|" + "|".join(squares) + "|")
-            print(sep)
+            andika("|" + "|".join(squares) + "|")
+            andika(sep)
 
 # A conjoin-based Knight's Tour solver.  This is pretty sophisticated
 # (e.g., when used with flat_conjoin above, and passing hard=1 to the
 # constructor, a 200x200 Knight's Tour was found quickly -- note that we're
 # creating 10s of thousands of generators then!), and is lengthy.
 
-class Knights:
-    def __init__(self, m, n, hard=0):
+kundi Knights:
+    eleza __init__(self, m, n, hard=0):
         self.m, self.n = m, n
 
         # solve() will set up succs[i] to be a list of square #i's
@@ -1438,16 +1438,16 @@ class Knights:
         succs = self.succs = []
 
         # Remove i0 kutoka each of its successor's successor lists, i.e.
-        # successors can't go back to i0 again.  Return 0 if we can
-        # detect this makes a solution impossible, else return 1.
+        # successors can't go back to i0 again.  Return 0 ikiwa we can
+        # detect this makes a solution impossible, else rudisha 1.
 
-        def remove_from_successors(i0, len=len):
+        eleza remove_kutoka_successors(i0, len=len):
             # If we remove all exits kutoka a free square, we're dead:
-            # even if we move to it next, we can't leave it again.
+            # even ikiwa we move to it next, we can't leave it again.
             # If we create a square with one exit, we must visit it next;
             # else somebody else will have to visit it, and since there's
             # only one adjacent, there won't be a way to leave it again.
-            # Finally, if we create more than one free square with a
+            # Finally, ikiwa we create more than one free square with a
             # single exit, we can only move to one of them next, leaving
             # the other one a dead end.
             ne0 = ne1 = 0
@@ -1455,36 +1455,36 @@ class Knights:
                 s = succs[i]
                 s.remove(i0)
                 e = len(s)
-                if e == 0:
+                ikiwa e == 0:
                     ne0 += 1
-                elif e == 1:
+                elikiwa e == 1:
                     ne1 += 1
-            return ne0 == 0 and ne1 < 2
+            rudisha ne0 == 0 and ne1 < 2
 
         # Put i0 back in each of its successor's successor lists.
 
-        def add_to_successors(i0):
+        eleza add_to_successors(i0):
             for i in succs[i0]:
                 succs[i].append(i0)
 
         # Generate the first move.
-        def first():
-            if m < 1 or n < 1:
+        eleza first():
+            ikiwa m < 1 or n < 1:
                 return
 
             # Since we're looking for a cycle, it doesn't matter where we
             # start.  Starting in a corner makes the 2nd move easy.
             corner = self.coords2index(0, 0)
-            remove_from_successors(corner)
+            remove_kutoka_successors(corner)
             self.lastij = corner
             yield corner
             add_to_successors(corner)
 
         # Generate the second moves.
-        def second():
+        eleza second():
             corner = self.coords2index(0, 0)
             assert self.lastij == corner  # i.e., we started in the corner
-            if m < 3 or n < 3:
+            ikiwa m < 3 or n < 3:
                 return
             assert len(succs[corner]) == 2
             assert self.coords2index(1, 2) in succs[corner]
@@ -1498,7 +1498,7 @@ class Knights:
                 final = self.coords2index(3-i, 3-j)
                 self.final = final
 
-                remove_from_successors(this)
+                remove_kutoka_successors(this)
                 succs[final].append(corner)
                 self.lastij = this
                 yield this
@@ -1506,14 +1506,14 @@ class Knights:
                 add_to_successors(this)
 
         # Generate moves 3 through m*n-1.
-        def advance(len=len):
+        eleza advance(len=len):
             # If some successor has only one exit, must take it.
             # Else favor successors with fewer exits.
             candidates = []
             for i in succs[self.lastij]:
                 e = len(succs[i])
-                assert e > 0, "else remove_from_successors() pruning flawed"
-                if e == 1:
+                assert e > 0, "else remove_kutoka_successors() pruning flawed"
+                ikiwa e == 1:
                     candidates = [(e, i)]
                     break
                 candidates.append((e, i))
@@ -1521,8 +1521,8 @@ class Knights:
                 candidates.sort()
 
             for e, i in candidates:
-                if i != self.final:
-                    if remove_from_successors(i):
+                ikiwa i != self.final:
+                    ikiwa remove_kutoka_successors(i):
                         self.lastij = i
                         yield i
                     add_to_successors(i)
@@ -1532,7 +1532,7 @@ class Knights:
         # Since the # of backtracking levels is m*n, a poor move early on
         # can take eons to undo.  Smallest square board for which this
         # matters a lot is 52x52.
-        def advance_hard(vmid=(m-1)/2.0, hmid=(n-1)/2.0, len=len):
+        eleza advance_hard(vmid=(m-1)/2.0, hmid=(n-1)/2.0, len=len):
             # If some successor has only one exit, must take it.
             # Else favor successors with fewer exits.
             # Break ties via max distance kutoka board centerpoint (favor
@@ -1540,8 +1540,8 @@ class Knights:
             candidates = []
             for i in succs[self.lastij]:
                 e = len(succs[i])
-                assert e > 0, "else remove_from_successors() pruning flawed"
-                if e == 1:
+                assert e > 0, "else remove_kutoka_successors() pruning flawed"
+                ikiwa e == 1:
                     candidates = [(e, 0, i)]
                     break
                 i1, j1 = self.index2coords(i)
@@ -1551,34 +1551,34 @@ class Knights:
                 candidates.sort()
 
             for e, d, i in candidates:
-                if i != self.final:
-                    if remove_from_successors(i):
+                ikiwa i != self.final:
+                    ikiwa remove_kutoka_successors(i):
                         self.lastij = i
                         yield i
                     add_to_successors(i)
 
         # Generate the last move.
-        def last():
+        eleza last():
             assert self.final in succs[self.lastij]
             yield self.final
 
-        if m*n < 4:
+        ikiwa m*n < 4:
             self.squaregenerators = [first]
         else:
             self.squaregenerators = [first, second] + \
                 [hard and advance_hard or advance] * (m*n - 3) + \
                 [last]
 
-    def coords2index(self, i, j):
+    eleza coords2index(self, i, j):
         assert 0 <= i < self.m
         assert 0 <= j < self.n
-        return i * self.n + j
+        rudisha i * self.n + j
 
-    def index2coords(self, index):
+    eleza index2coords(self, index):
         assert 0 <= index < self.m * self.n
-        return divmod(index, self.n)
+        rudisha divmod(index, self.n)
 
-    def _init_board(self):
+    eleza _init_board(self):
         succs = self.succs
         del succs[:]
         m, n = self.m, self.n
@@ -1590,17 +1590,17 @@ class Knights:
         for i in range(m):
             for j in rangen:
                 s = [c2i(i+io, j+jo) for io, jo in offsets
-                                     if 0 <= i+io < m and
+                                     ikiwa 0 <= i+io < m and
                                         0 <= j+jo < n]
                 succs.append(s)
 
     # Generate solutions.
-    def solve(self):
+    eleza solve(self):
         self._init_board()
         for x in conjoin(self.squaregenerators):
             yield x
 
-    def printsolution(self, x):
+    eleza printsolution(self, x):
         m, n = self.m, self.n
         assert len(x) == m*n
         w = len(str(m*n))
@@ -1614,11 +1614,11 @@ class Knights:
             k += 1
 
         sep = "+" + ("-" * w + "+") * n
-        print(sep)
+        andika(sep)
         for i in range(m):
             row = squares[i]
-            print("|" + "|".join(row) + "|")
-            print(sep)
+            andika("|" + "|".join(row) + "|")
+            andika(sep)
 
 conjoin_tests = """
 
@@ -1626,7 +1626,7 @@ Generate the 3-bit binary numbers in order.  This illustrates dumbest-
 possible use of conjoin, just to generate the full cross-product.
 
 >>> for c in conjoin([lambda: iter((0, 1))] * 3):
-...     print(c)
+...     andika(c)
 [0, 0, 0]
 [0, 0, 1]
 [0, 1, 0]
@@ -1637,16 +1637,16 @@ possible use of conjoin, just to generate the full cross-product.
 [1, 1, 1]
 
 For efficiency in typical backtracking apps, conjoin() yields the same list
-object each time.  So if you want to save away a full account of its
+object each time.  So ikiwa you want to save away a full account of its
 generated sequence, you need to copy its results.
 
->>> def gencopy(iterator):
+>>> eleza gencopy(iterator):
 ...     for x in iterator:
 ...         yield x[:]
 
 >>> for n in range(10):
 ...     all = list(gencopy(conjoin([lambda: iter((0, 1))] * n)))
-...     print(n, len(all), all[0] == [0] * n, all[-1] == [1] * n)
+...     andika(n, len(all), all[0] == [0] * n, all[-1] == [1] * n)
 0 1 True True
 1 2 True True
 2 4 True True
@@ -1665,8 +1665,8 @@ And run an 8-queens solver.
 >>> count = 0
 >>> for row2col in q.solve():
 ...     count += 1
-...     if count <= LIMIT:
-...         print("Solution", count)
+...     ikiwa count <= LIMIT:
+...         andika("Solution", count)
 ...         q.printsolution(row2col)
 Solution 1
 +-+-+-+-+-+-+-+-+
@@ -1705,7 +1705,7 @@ Solution 2
 | | | | |Q| | | |
 +-+-+-+-+-+-+-+-+
 
->>> print(count, "solutions in all.")
+>>> andika(count, "solutions in all.")
 92 solutions in all.
 
 And run a Knight's Tour on a 10x10 board.  Note that there are about
@@ -1716,8 +1716,8 @@ And run a Knight's Tour on a 10x10 board.  Note that there are about
 >>> count = 0
 >>> for x in k.solve():
 ...     count += 1
-...     if count <= LIMIT:
-...         print("Solution", count)
+...     ikiwa count <= LIMIT:
+...         andika("Solution", count)
 ...         k.printsolution(x)
 ...     else:
 ...         break
@@ -1771,7 +1771,7 @@ weakref_tests = """\
 Generators are weakly referencable:
 
 >>> agiza weakref
->>> def gen():
+>>> eleza gen():
 ...     yield 'foo!'
 ...
 >>> wr = weakref.ref(gen)
@@ -1794,8 +1794,8 @@ True
 coroutine_tests = """\
 Sending a value into a started generator:
 
->>> def f():
-...     print((yield 1))
+>>> eleza f():
+...     andika((yield 1))
 ...     yield 2
 >>> g = f()
 >>> next(g)
@@ -1814,21 +1814,21 @@ TypeError: can't send non-None value to a just-started generator
 
 Yield by itself yields None:
 
->>> def f(): yield
+>>> eleza f(): yield
 >>> list(f())
 [None]
 
 
 Yield is allowed only in the outermost iterable in generator expression:
 
->>> def f(): list(i for i in [(yield 26)])
+>>> eleza f(): list(i for i in [(yield 26)])
 >>> type(f())
-<class 'generator'>
+<kundi 'generator'>
 
 
 A yield expression with augmented assignment.
 
->>> def coroutine(seq):
+>>> eleza coroutine(seq):
 ...     count = 0
 ...     while count < 200:
 ...         count += yield
@@ -1836,16 +1836,16 @@ A yield expression with augmented assignment.
 >>> seq = []
 >>> c = coroutine(seq)
 >>> next(c)
->>> print(seq)
+>>> andika(seq)
 []
 >>> c.send(10)
->>> print(seq)
+>>> andika(seq)
 [10]
 >>> c.send(10)
->>> print(seq)
+>>> andika(seq)
 [10, 20]
 >>> c.send(10)
->>> print(seq)
+>>> andika(seq)
 [10, 20, 30]
 
 
@@ -1856,17 +1856,17 @@ Traceback (most recent call last):
   ...
 SyntaxError: 'yield' outside function
 
->>> def f(): x = yield = y
+>>> eleza f(): x = yield = y
 Traceback (most recent call last):
   ...
 SyntaxError: assignment to yield expression not possible
 
->>> def f(): (yield bar) = y
+>>> eleza f(): (yield bar) = y
 Traceback (most recent call last):
   ...
 SyntaxError: cannot assign to yield expression
 
->>> def f(): (yield bar) += y
+>>> eleza f(): (yield bar) += y
 Traceback (most recent call last):
   ...
 SyntaxError: cannot assign to yield expression
@@ -1874,12 +1874,12 @@ SyntaxError: cannot assign to yield expression
 
 Now check some throw() conditions:
 
->>> def f():
+>>> eleza f():
 ...     while True:
 ...         try:
-...             print((yield))
+...             andika((yield))
 ...         except ValueError as v:
-...             print("caught ValueError (%s)" % (v))
+...             andika("caught ValueError (%s)" % (v))
 >>> agiza sys
 >>> g = f()
 >>> next(g)
@@ -1924,7 +1924,7 @@ Traceback (most recent call last):
   ...
 TypeError: exceptions must be classes or instances deriving kutoka BaseException, not type
 
->>> def throw(g,exc):
+>>> eleza throw(g,exc):
 ...     try:
 ...         raise exc
 ...     except:
@@ -1940,7 +1940,7 @@ Traceback (most recent call last):
   ...
 TypeError
 
->>> print(g.gi_frame)
+>>> andika(g.gi_frame)
 None
 
 >>> g.send(2)
@@ -1964,7 +1964,7 @@ The traceback should have 3 levels:
 - f()
 - 1/0
 
->>> def f():
+>>> eleza f():
 ...     try:
 ...         yield
 ...     except:
@@ -1986,10 +1986,10 @@ The traceback should have 3 levels:
 
 Now let's try closing a generator:
 
->>> def f():
+>>> eleza f():
 ...     try: yield
 ...     except GeneratorExit:
-...         print("exiting")
+...         andika("exiting")
 
 >>> g = f()
 >>> next(g)
@@ -1999,7 +1999,7 @@ exiting
 
 >>> f().close()  # close on just-opened generator should be fine
 
->>> def f(): yield      # an even simpler generator
+>>> eleza f(): yield      # an even simpler generator
 >>> f().close()         # close before opening
 >>> g = f()
 >>> next(g)
@@ -2007,10 +2007,10 @@ exiting
 
 And finalization:
 
->>> def f():
+>>> eleza f():
 ...     try: yield
 ...     finally:
-...         print("exiting")
+...         andika("exiting")
 
 >>> g = f()
 >>> next(g)
@@ -2020,12 +2020,12 @@ exiting
 
 GeneratorExit is not caught by except Exception:
 
->>> def f():
+>>> eleza f():
 ...     try: yield
 ...     except Exception:
-...         print('except')
+...         andika('except')
 ...     finally:
-...         print('finally')
+...         andika('finally')
 
 >>> g = f()
 >>> next(g)
@@ -2035,7 +2035,7 @@ finally
 
 Now let's try some ill-behaved generators:
 
->>> def f():
+>>> eleza f():
 ...     try: yield
 ...     except GeneratorExit:
 ...         yield "foo!"
@@ -2064,7 +2064,7 @@ True
 
 And errors thrown during closing should propagate:
 
->>> def f():
+>>> eleza f():
 ...     try: yield
 ...     except GeneratorExit:
 ...         raise TypeError("fie!")
@@ -2079,23 +2079,23 @@ TypeError: fie!
 Ensure that various yield expression constructs make their
 enclosing function a generator:
 
->>> def f(): x += yield
+>>> eleza f(): x += yield
 >>> type(f())
-<class 'generator'>
+<kundi 'generator'>
 
->>> def f(): x = yield
+>>> eleza f(): x = yield
 >>> type(f())
-<class 'generator'>
+<kundi 'generator'>
 
->>> def f(): lambda x=(yield): 1
+>>> eleza f(): lambda x=(yield): 1
 >>> type(f())
-<class 'generator'>
+<kundi 'generator'>
 
->>> def f(d): d[(yield "a")] = d[(yield "b")] = 27
+>>> eleza f(d): d[(yield "a")] = d[(yield "b")] = 27
 >>> data = [1,2]
 >>> g = f(data)
 >>> type(g)
-<class 'generator'>
+<kundi 'generator'>
 >>> g.send(None)
 'a'
 >>> data
@@ -2114,19 +2114,19 @@ enclosing function a generator:
 refleaks_tests = """
 Prior to adding cycle-GC support to itertools.tee, this code would leak
 references. We add it to the standard suite so the routine refleak-tests
-would trigger if it starts being uncleanable again.
+would trigger ikiwa it starts being uncleanable again.
 
 >>> agiza itertools
->>> def leak():
-...     class gen:
-...         def __iter__(self):
-...             return self
-...         def __next__(self):
-...             return self.item
+>>> eleza leak():
+...     kundi gen:
+...         eleza __iter__(self):
+...             rudisha self
+...         eleza __next__(self):
+...             rudisha self.item
 ...     g = gen()
 ...     head, tail = itertools.tee(g)
 ...     g.item = head
-...     return head
+...     rudisha head
 >>> it = leak()
 
 Make sure to also test the involvement of the tee-internal teedataobject,
@@ -2140,8 +2140,8 @@ This test leaked at one point due to generator finalization/destruction.
 It was copied kutoka Lib/test/leakers/test_generator_cycle.py before the file
 was removed.
 
->>> def leak():
-...    def gen():
+>>> eleza leak():
+...    eleza gen():
 ...        while True:
 ...            yield g
 ...    g = gen()
@@ -2158,9 +2158,9 @@ printing warnings and to doublecheck that we actually tested what we wanted
 to test.
 
 >>> kutoka test agiza support
->>> class Leaker:
-...     def __del__(self):
-...         def invoke(message):
+>>> kundi Leaker:
+...     eleza __del__(self):
+...         eleza invoke(message):
 ...             raise RuntimeError(message)
 ...         invoke("del failed")
 ...
@@ -2198,11 +2198,11 @@ __test__ = {"tut":      tutorial_tests,
 # This worms around a bootstrap problem.
 # Note that doctest and regrtest both look in sys.argv for a "-v" argument,
 # so this works as expected in both ways of running regrtest.
-def test_main(verbose=None):
+eleza test_main(verbose=None):
     kutoka test agiza support, test_generators
     support.run_unittest(__name__)
     support.run_doctest(test_generators, verbose)
 
 # This part isn't needed for regrtest, but for running the test directly.
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main(1)

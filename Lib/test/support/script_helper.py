@@ -97,7 +97,7 @@ def run_python_until_end(*args, **env_vars):
         # isolated mode: ignore Python environment variables, ignore user
         # site-packages, and don't add the current directory to sys.path
         cmd_line.append('-I')
-    elif not env_vars and not env_required:
+    lasivyo not env_vars and not env_required:
         # ignore Python environment variables
         cmd_line.append('-E')
 

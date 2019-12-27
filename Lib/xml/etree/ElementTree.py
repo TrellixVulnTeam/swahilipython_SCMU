@@ -28,7 +28,7 @@
  To create an element instance, use the Element constructor,
  or the SubElement factory function.
 
- You can also use the ElementTree class to wrap an element structure
+ You can also use the ElementTree kundi to wrap an element structure
  and convert it to and kutoka XML.
 
 """
@@ -75,7 +75,7 @@ __all__ = [
     "Comment",
     "dump",
     "Element", "ElementTree",
-    "fromstring", "fromstringlist",
+    "kutokastring", "kutokastringlist",
     "iselement", "iterparse",
     "parse", "ParseError",
     "PI", "ProcessingInstruction",
@@ -103,7 +103,7 @@ agiza contextlib
 kutoka . agiza ElementPath
 
 
-class ParseError(SyntaxError):
+kundi ParseError(SyntaxError):
     """An error when parsing an XML document.
 
     In addition to its exception value, a ParseError contains
@@ -117,18 +117,18 @@ class ParseError(SyntaxError):
 # --------------------------------------------------------------------
 
 
-def iselement(element):
-    """Return True if *element* appears to be an Element."""
-    return hasattr(element, 'tag')
+eleza iselement(element):
+    """Return True ikiwa *element* appears to be an Element."""
+    rudisha hasattr(element, 'tag')
 
 
-class Element:
+kundi Element:
     """An XML element.
 
-    This class is the reference implementation of the Element interface.
+    This kundi is the reference implementation of the Element interface.
 
-    An element's length is its number of subelements.  That means if you
-    want to check if an element is truly empty, you should check BOTH
+    An element's length is its number of subelements.  That means ikiwa you
+    want to check ikiwa an element is truly empty, you should check BOTH
     its length AND its text attribute.
 
     The element tag, attribute names, and attribute values can be either
@@ -152,7 +152,7 @@ class Element:
     text = None
     """
     Text before first subelement. This is either a string or the value None.
-    Note that if there is no text, this attribute may be either
+    Note that ikiwa there is no text, this attribute may be either
     None or the empty string, depending on the parser.
 
     """
@@ -160,24 +160,24 @@ class Element:
     tail = None
     """
     Text after this element's end tag, but before the next sibling element's
-    start tag.  This is either a string or the value None.  Note that if there
+    start tag.  This is either a string or the value None.  Note that ikiwa there
     was no text, this attribute may be either None or an empty string,
     depending on the parser.
 
     """
 
-    def __init__(self, tag, attrib={}, **extra):
-        if not isinstance(attrib, dict):
+    eleza __init__(self, tag, attrib={}, **extra):
+        ikiwa not isinstance(attrib, dict):
             raise TypeError("attrib must be dict, not %s" % (
                 attrib.__class__.__name__,))
         self.tag = tag
         self.attrib = {**attrib, **extra}
         self._children = []
 
-    def __repr__(self):
-        return "<%s %r at %#x>" % (self.__class__.__name__, self.tag, id(self))
+    eleza __repr__(self):
+        rudisha "<%s %r at %#x>" % (self.__class__.__name__, self.tag, id(self))
 
-    def makeelement(self, tag, attrib):
+    eleza makeelement(self, tag, attrib):
         """Create a new element with the same type.
 
         *tag* is a string containing the element name.
@@ -186,9 +186,9 @@ class Element:
         Do not call this method, use the SubElement factory function instead.
 
         """
-        return self.__class__(tag, attrib)
+        rudisha self.__class__(tag, attrib)
 
-    def copy(self):
+    eleza copy(self):
         """Return copy of current element.
 
         This creates a shallow copy. Subelements will be shared with the
@@ -199,45 +199,45 @@ class Element:
         elem.text = self.text
         elem.tail = self.tail
         elem[:] = self
-        return elem
+        rudisha elem
 
-    def __len__(self):
-        return len(self._children)
+    eleza __len__(self):
+        rudisha len(self._children)
 
-    def __bool__(self):
+    eleza __bool__(self):
         warnings.warn(
             "The behavior of this method will change in future versions.  "
             "Use specific 'len(elem)' or 'elem is not None' test instead.",
             FutureWarning, stacklevel=2
             )
-        return len(self._children) != 0 # emulate old behaviour, for now
+        rudisha len(self._children) != 0 # emulate old behaviour, for now
 
-    def __getitem__(self, index):
-        return self._children[index]
+    eleza __getitem__(self, index):
+        rudisha self._children[index]
 
-    def __setitem__(self, index, element):
-        if isinstance(index, slice):
+    eleza __setitem__(self, index, element):
+        ikiwa isinstance(index, slice):
             for elt in element:
                 self._assert_is_element(elt)
         else:
             self._assert_is_element(element)
         self._children[index] = element
 
-    def __delitem__(self, index):
+    eleza __delitem__(self, index):
         del self._children[index]
 
-    def append(self, subelement):
+    eleza append(self, subelement):
         """Add *subelement* to the end of this element.
 
         The new element will appear in document order after the last existing
-        subelement (or directly after the text, if it's the first subelement),
+        subelement (or directly after the text, ikiwa it's the first subelement),
         but before the end tag for this element.
 
         """
         self._assert_is_element(subelement)
         self._children.append(subelement)
 
-    def extend(self, elements):
+    eleza extend(self, elements):
         """Append subelements kutoka a sequence.
 
         *elements* is a sequence with zero or more elements.
@@ -247,18 +247,18 @@ class Element:
             self._assert_is_element(element)
         self._children.extend(elements)
 
-    def insert(self, index, subelement):
+    eleza insert(self, index, subelement):
         """Insert *subelement* at position *index*."""
         self._assert_is_element(subelement)
         self._children.insert(index, subelement)
 
-    def _assert_is_element(self, e):
+    eleza _assert_is_element(self, e):
         # Need to refer to the actual Python implementation, not the
         # shadowing C implementation.
-        if not isinstance(e, _Element_Py):
+        ikiwa not isinstance(e, _Element_Py):
             raise TypeError('expected an Element, not %s' % type(e).__name__)
 
-    def remove(self, subelement):
+    eleza remove(self, subelement):
         """Remove matching subelement.
 
         Unlike the find methods, this method compares elements based on
@@ -267,13 +267,13 @@ class Element:
         select what elements to keep, and then use slice assignment to update
         the parent element.
 
-        ValueError is raised if a matching element could not be found.
+        ValueError is raised ikiwa a matching element could not be found.
 
         """
         # assert iselement(element)
         self._children.remove(subelement)
 
-    def getchildren(self):
+    eleza getchildren(self):
         """(Deprecated) Return all subelements.
 
         Elements are returned in document order.
@@ -284,34 +284,34 @@ class Element:
             "Use 'list(elem)' or iteration over elem instead.",
             DeprecationWarning, stacklevel=2
             )
-        return self._children
+        rudisha self._children
 
-    def find(self, path, namespaces=None):
+    eleza find(self, path, namespaces=None):
         """Find first matching element by tag name or path.
 
         *path* is a string having either an element tag or an XPath,
         *namespaces* is an optional mapping kutoka namespace prefix to full name.
 
-        Return the first matching element, or None if no element was found.
+        Return the first matching element, or None ikiwa no element was found.
 
         """
-        return ElementPath.find(self, path, namespaces)
+        rudisha ElementPath.find(self, path, namespaces)
 
-    def findtext(self, path, default=None, namespaces=None):
+    eleza findtext(self, path, default=None, namespaces=None):
         """Find text for first matching element by tag name or path.
 
         *path* is a string having either an element tag or an XPath,
-        *default* is the value to return if the element was not found,
+        *default* is the value to rudisha ikiwa the element was not found,
         *namespaces* is an optional mapping kutoka namespace prefix to full name.
 
         Return text content of first matching element, or default value if
-        none was found.  Note that if an element is found having no text
+        none was found.  Note that ikiwa an element is found having no text
         content, the empty string is returned.
 
         """
-        return ElementPath.findtext(self, path, default, namespaces)
+        rudisha ElementPath.findtext(self, path, default, namespaces)
 
-    def findall(self, path, namespaces=None):
+    eleza findall(self, path, namespaces=None):
         """Find all matching subelements by tag name or path.
 
         *path* is a string having either an element tag or an XPath,
@@ -320,9 +320,9 @@ class Element:
         Returns list containing all matching elements in document order.
 
         """
-        return ElementPath.findall(self, path, namespaces)
+        rudisha ElementPath.findall(self, path, namespaces)
 
-    def iterfind(self, path, namespaces=None):
+    eleza iterfind(self, path, namespaces=None):
         """Find all matching subelements by tag name or path.
 
         *path* is a string having either an element tag or an XPath,
@@ -331,9 +331,9 @@ class Element:
         Return an iterable yielding all matching elements in document order.
 
         """
-        return ElementPath.iterfind(self, path, namespaces)
+        rudisha ElementPath.iterfind(self, path, namespaces)
 
-    def clear(self):
+    eleza clear(self):
         """Reset element.
 
         This function removes all subelements, clears all attributes, and sets
@@ -344,20 +344,20 @@ class Element:
         self._children = []
         self.text = self.tail = None
 
-    def get(self, key, default=None):
+    eleza get(self, key, default=None):
         """Get element attribute.
 
         Equivalent to attrib.get, but some implementations may handle this a
         bit more efficiently.  *key* is what attribute to look for, and
-        *default* is what to return if the attribute was not found.
+        *default* is what to rudisha ikiwa the attribute was not found.
 
         Returns a string containing the attribute value, or the default if
         attribute was not found.
 
         """
-        return self.attrib.get(key, default)
+        rudisha self.attrib.get(key, default)
 
-    def set(self, key, value):
+    eleza set(self, key, value):
         """Set element attribute.
 
         Equivalent to attrib[key] = value, but some implementations may handle
@@ -367,16 +367,16 @@ class Element:
         """
         self.attrib[key] = value
 
-    def keys(self):
+    eleza keys(self):
         """Get list of attribute names.
 
         Names are returned in an arbitrary order, just like an ordinary
         Python dict.  Equivalent to attrib.keys()
 
         """
-        return self.attrib.keys()
+        rudisha self.attrib.keys()
 
-    def items(self):
+    eleza items(self):
         """Get element attributes as a sequence.
 
         The attributes are returned in arbitrary order.  Equivalent to
@@ -385,9 +385,9 @@ class Element:
         Return a list of (name, value) tuples.
 
         """
-        return self.attrib.items()
+        rudisha self.attrib.items()
 
-    def iter(self, tag=None):
+    eleza iter(self, tag=None):
         """Create tree iterator.
 
         The iterator loops over the element and all subelements in document
@@ -397,28 +397,28 @@ class Element:
         elements may or may not be included.  To get a stable set, use the
         list() function on the iterator, and loop over the resulting list.
 
-        *tag* is what tags to look for (default is to return all elements)
+        *tag* is what tags to look for (default is to rudisha all elements)
 
         Return an iterator containing all the matching elements.
 
         """
-        if tag == "*":
+        ikiwa tag == "*":
             tag = None
-        if tag is None or self.tag == tag:
+        ikiwa tag is None or self.tag == tag:
             yield self
         for e in self._children:
             yield kutoka e.iter(tag)
 
     # compatibility
-    def getiterator(self, tag=None):
+    eleza getiterator(self, tag=None):
         warnings.warn(
             "This method will be removed in future versions.  "
             "Use 'elem.iter()' or 'list(elem.iter())' instead.",
             DeprecationWarning, stacklevel=2
         )
-        return list(self.iter(tag))
+        rudisha list(self.iter(tag))
 
-    def itertext(self):
+    eleza itertext(self):
         """Create text iterator.
 
         The iterator loops over the element and all subelements in document
@@ -426,19 +426,19 @@ class Element:
 
         """
         tag = self.tag
-        if not isinstance(tag, str) and tag is not None:
+        ikiwa not isinstance(tag, str) and tag is not None:
             return
         t = self.text
-        if t:
+        ikiwa t:
             yield t
         for e in self:
             yield kutoka e.itertext()
             t = e.tail
-            if t:
+            ikiwa t:
                 yield t
 
 
-def SubElement(parent, tag, attrib={}, **extra):
+eleza SubElement(parent, tag, attrib={}, **extra):
     """Subelement factory which creates an element instance, and appends it
     to an existing parent.
 
@@ -453,10 +453,10 @@ def SubElement(parent, tag, attrib={}, **extra):
     attrib = {**attrib, **extra}
     element = parent.makeelement(tag, attrib)
     parent.append(element)
-    return element
+    rudisha element
 
 
-def Comment(text=None):
+eleza Comment(text=None):
     """Comment element factory.
 
     This function creates a special element which the standard serializer
@@ -467,80 +467,80 @@ def Comment(text=None):
     """
     element = Element(Comment)
     element.text = text
-    return element
+    rudisha element
 
 
-def ProcessingInstruction(target, text=None):
+eleza ProcessingInstruction(target, text=None):
     """Processing Instruction element factory.
 
     This function creates a special element which the standard serializer
     serializes as an XML comment.
 
     *target* is a string containing the processing instruction, *text* is a
-    string containing the processing instruction contents, if any.
+    string containing the processing instruction contents, ikiwa any.
 
     """
     element = Element(ProcessingInstruction)
     element.text = target
-    if text:
+    ikiwa text:
         element.text = element.text + " " + text
-    return element
+    rudisha element
 
 PI = ProcessingInstruction
 
 
-class QName:
+kundi QName:
     """Qualified name wrapper.
 
-    This class can be used to wrap a QName attribute value in order to get
+    This kundi can be used to wrap a QName attribute value in order to get
     proper namespace handing on output.
 
     *text_or_uri* is a string containing the QName value either in the form
-    {uri}local, or if the tag argument is given, the URI part of a QName.
+    {uri}local, or ikiwa the tag argument is given, the URI part of a QName.
 
-    *tag* is an optional argument which if given, will make the first
+    *tag* is an optional argument which ikiwa given, will make the first
     argument (text_or_uri) be interpreted as a URI, and this argument (tag)
     be interpreted as a local name.
 
     """
-    def __init__(self, text_or_uri, tag=None):
-        if tag:
+    eleza __init__(self, text_or_uri, tag=None):
+        ikiwa tag:
             text_or_uri = "{%s}%s" % (text_or_uri, tag)
         self.text = text_or_uri
-    def __str__(self):
-        return self.text
-    def __repr__(self):
-        return '<%s %r>' % (self.__class__.__name__, self.text)
-    def __hash__(self):
-        return hash(self.text)
-    def __le__(self, other):
-        if isinstance(other, QName):
-            return self.text <= other.text
-        return self.text <= other
-    def __lt__(self, other):
-        if isinstance(other, QName):
-            return self.text < other.text
-        return self.text < other
-    def __ge__(self, other):
-        if isinstance(other, QName):
-            return self.text >= other.text
-        return self.text >= other
-    def __gt__(self, other):
-        if isinstance(other, QName):
-            return self.text > other.text
-        return self.text > other
-    def __eq__(self, other):
-        if isinstance(other, QName):
-            return self.text == other.text
-        return self.text == other
+    eleza __str__(self):
+        rudisha self.text
+    eleza __repr__(self):
+        rudisha '<%s %r>' % (self.__class__.__name__, self.text)
+    eleza __hash__(self):
+        rudisha hash(self.text)
+    eleza __le__(self, other):
+        ikiwa isinstance(other, QName):
+            rudisha self.text <= other.text
+        rudisha self.text <= other
+    eleza __lt__(self, other):
+        ikiwa isinstance(other, QName):
+            rudisha self.text < other.text
+        rudisha self.text < other
+    eleza __ge__(self, other):
+        ikiwa isinstance(other, QName):
+            rudisha self.text >= other.text
+        rudisha self.text >= other
+    eleza __gt__(self, other):
+        ikiwa isinstance(other, QName):
+            rudisha self.text > other.text
+        rudisha self.text > other
+    eleza __eq__(self, other):
+        ikiwa isinstance(other, QName):
+            rudisha self.text == other.text
+        rudisha self.text == other
 
 # --------------------------------------------------------------------
 
 
-class ElementTree:
+kundi ElementTree:
     """An XML element hierarchy.
 
-    This class also provides support for serialization to and kutoka
+    This kundi also provides support for serialization to and kutoka
     standard XML.
 
     *element* is an optional root element node,
@@ -548,17 +548,17 @@ class ElementTree:
     contents will be used to initialize the tree with.
 
     """
-    def __init__(self, element=None, file=None):
+    eleza __init__(self, element=None, file=None):
         # assert element is None or iselement(element)
         self._root = element # first node
-        if file:
+        ikiwa file:
             self.parse(file)
 
-    def getroot(self):
+    eleza getroot(self):
         """Return root element of this tree."""
-        return self._root
+        rudisha self._root
 
-    def _setroot(self, element):
+    eleza _setroot(self, element):
         """Replace root element of this tree.
 
         This will discard the current contents of the tree and replace it
@@ -568,65 +568,65 @@ class ElementTree:
         # assert iselement(element)
         self._root = element
 
-    def parse(self, source, parser=None):
+    eleza parse(self, source, parser=None):
         """Load external XML document into element tree.
 
         *source* is a file name or file object, *parser* is an optional parser
         instance that defaults to XMLParser.
 
-        ParseError is raised if the parser fails to parse the document.
+        ParseError is raised ikiwa the parser fails to parse the document.
 
         Returns the root element of the given source document.
 
         """
         close_source = False
-        if not hasattr(source, "read"):
+        ikiwa not hasattr(source, "read"):
             source = open(source, "rb")
             close_source = True
         try:
-            if parser is None:
+            ikiwa parser is None:
                 # If no parser was specified, create a default XMLParser
                 parser = XMLParser()
-                if hasattr(parser, '_parse_whole'):
+                ikiwa hasattr(parser, '_parse_whole'):
                     # The default XMLParser, when it comes kutoka an accelerator,
                     # can define an internal _parse_whole API for efficiency.
                     # It can be used to parse the whole source without feeding
                     # it with chunks.
                     self._root = parser._parse_whole(source)
-                    return self._root
+                    rudisha self._root
             while True:
                 data = source.read(65536)
-                if not data:
+                ikiwa not data:
                     break
                 parser.feed(data)
             self._root = parser.close()
-            return self._root
+            rudisha self._root
         finally:
-            if close_source:
+            ikiwa close_source:
                 source.close()
 
-    def iter(self, tag=None):
-        """Create and return tree iterator for the root element.
+    eleza iter(self, tag=None):
+        """Create and rudisha tree iterator for the root element.
 
         The iterator loops over all elements in this tree, in document order.
 
         *tag* is a string with the tag name to iterate over
-        (default is to return all elements).
+        (default is to rudisha all elements).
 
         """
         # assert self._root is not None
-        return self._root.iter(tag)
+        rudisha self._root.iter(tag)
 
     # compatibility
-    def getiterator(self, tag=None):
+    eleza getiterator(self, tag=None):
         warnings.warn(
             "This method will be removed in future versions.  "
             "Use 'tree.iter()' or 'list(tree.iter())' instead.",
             DeprecationWarning, stacklevel=2
         )
-        return list(self.iter(tag))
+        rudisha list(self.iter(tag))
 
-    def find(self, path, namespaces=None):
+    eleza find(self, path, namespaces=None):
         """Find first matching element by tag name or path.
 
         Same as getroot().find(path), which is Element.find()
@@ -634,11 +634,11 @@ class ElementTree:
         *path* is a string having either an element tag or an XPath,
         *namespaces* is an optional mapping kutoka namespace prefix to full name.
 
-        Return the first matching element, or None if no element was found.
+        Return the first matching element, or None ikiwa no element was found.
 
         """
         # assert self._root is not None
-        if path[:1] == "/":
+        ikiwa path[:1] == "/":
             path = "." + path
             warnings.warn(
                 "This search is broken in 1.3 and earlier, and will be "
@@ -646,9 +646,9 @@ class ElementTree:
                 "behaviour, change it to %r" % path,
                 FutureWarning, stacklevel=2
                 )
-        return self._root.find(path, namespaces)
+        rudisha self._root.find(path, namespaces)
 
-    def findtext(self, path, default=None, namespaces=None):
+    eleza findtext(self, path, default=None, namespaces=None):
         """Find first matching element by tag name or path.
 
         Same as getroot().findtext(path),  which is Element.findtext()
@@ -656,11 +656,11 @@ class ElementTree:
         *path* is a string having either an element tag or an XPath,
         *namespaces* is an optional mapping kutoka namespace prefix to full name.
 
-        Return the first matching element, or None if no element was found.
+        Return the first matching element, or None ikiwa no element was found.
 
         """
         # assert self._root is not None
-        if path[:1] == "/":
+        ikiwa path[:1] == "/":
             path = "." + path
             warnings.warn(
                 "This search is broken in 1.3 and earlier, and will be "
@@ -668,9 +668,9 @@ class ElementTree:
                 "behaviour, change it to %r" % path,
                 FutureWarning, stacklevel=2
                 )
-        return self._root.findtext(path, default, namespaces)
+        rudisha self._root.findtext(path, default, namespaces)
 
-    def findall(self, path, namespaces=None):
+    eleza findall(self, path, namespaces=None):
         """Find all matching subelements by tag name or path.
 
         Same as getroot().findall(path), which is Element.findall().
@@ -682,7 +682,7 @@ class ElementTree:
 
         """
         # assert self._root is not None
-        if path[:1] == "/":
+        ikiwa path[:1] == "/":
             path = "." + path
             warnings.warn(
                 "This search is broken in 1.3 and earlier, and will be "
@@ -690,9 +690,9 @@ class ElementTree:
                 "behaviour, change it to %r" % path,
                 FutureWarning, stacklevel=2
                 )
-        return self._root.findall(path, namespaces)
+        rudisha self._root.findall(path, namespaces)
 
-    def iterfind(self, path, namespaces=None):
+    eleza iterfind(self, path, namespaces=None):
         """Find all matching subelements by tag name or path.
 
         Same as getroot().iterfind(path), which is element.iterfind()
@@ -704,7 +704,7 @@ class ElementTree:
 
         """
         # assert self._root is not None
-        if path[:1] == "/":
+        ikiwa path[:1] == "/":
             path = "." + path
             warnings.warn(
                 "This search is broken in 1.3 and earlier, and will be "
@@ -712,9 +712,9 @@ class ElementTree:
                 "behaviour, change it to %r" % path,
                 FutureWarning, stacklevel=2
                 )
-        return self._root.iterfind(path, namespaces)
+        rudisha self._root.iterfind(path, namespaces)
 
-    def write(self, file_or_filename,
+    eleza write(self, file_or_filename,
               encoding=None,
               xml_declaration=None,
               default_namespace=None,
@@ -727,9 +727,9 @@ class ElementTree:
 
           *encoding* -- the output encoding (default: US-ASCII)
 
-          *xml_declaration* -- bool indicating if an XML declaration should be
+          *xml_declaration* -- bool indicating ikiwa an XML declaration should be
                                added to the output. If None, an XML declaration
-                               is added if encoding IS NOT either of:
+                               is added ikiwa encoding IS NOT either of:
                                US-ASCII, UTF-8, or Unicode
 
           *default_namespace* -- sets the default XML namespace (for "xmlns")
@@ -743,28 +743,28 @@ class ElementTree:
                                     of start/end tags
 
         """
-        if not method:
+        ikiwa not method:
             method = "xml"
-        elif method not in _serialize:
+        elikiwa method not in _serialize:
             raise ValueError("unknown method %r" % method)
-        if not encoding:
-            if method == "c14n":
+        ikiwa not encoding:
+            ikiwa method == "c14n":
                 encoding = "utf-8"
             else:
                 encoding = "us-ascii"
         enc_lower = encoding.lower()
         with _get_writer(file_or_filename, enc_lower) as write:
-            if method == "xml" and (xml_declaration or
+            ikiwa method == "xml" and (xml_declaration or
                     (xml_declaration is None and
                      enc_lower not in ("utf-8", "us-ascii", "unicode"))):
                 declared_encoding = encoding
-                if enc_lower == "unicode":
+                ikiwa enc_lower == "unicode":
                     # Retrieve the default encoding for the xml declaration
                     agiza locale
                     declared_encoding = locale.getpreferredencoding()
                 write("<?xml version='1.0' encoding='%s'?>\n" % (
                     declared_encoding,))
-            if method == "text":
+            ikiwa method == "text":
                 _serialize_text(write, self._root)
             else:
                 qnames, namespaces = _namespaces(self._root, default_namespace)
@@ -772,21 +772,21 @@ class ElementTree:
                 serialize(write, self._root, qnames, namespaces,
                           short_empty_elements=short_empty_elements)
 
-    def write_c14n(self, file):
+    eleza write_c14n(self, file):
         # lxml.etree compatibility.  use output method instead
-        return self.write(file, method="c14n")
+        rudisha self.write(file, method="c14n")
 
 # --------------------------------------------------------------------
 # serialization support
 
 @contextlib.contextmanager
-def _get_writer(file_or_filename, encoding):
+eleza _get_writer(file_or_filename, encoding):
     # returns text write method and release all resources after using
     try:
         write = file_or_filename.write
     except AttributeError:
         # file_or_filename is a file name
-        if encoding == "unicode":
+        ikiwa encoding == "unicode":
             file = open(file_or_filename, "w")
         else:
             file = open(file_or_filename, "w", encoding=encoding,
@@ -795,16 +795,16 @@ def _get_writer(file_or_filename, encoding):
             yield file.write
     else:
         # file_or_filename is a file-like object
-        # encoding determines if it is a text or binary writer
-        if encoding == "unicode":
+        # encoding determines ikiwa it is a text or binary writer
+        ikiwa encoding == "unicode":
             # use a text writer as is
             yield write
         else:
             # wrap a binary writer with TextIOWrapper
             with contextlib.ExitStack() as stack:
-                if isinstance(file_or_filename, io.BufferedIOBase):
+                ikiwa isinstance(file_or_filename, io.BufferedIOBase):
                     file = file_or_filename
-                elif isinstance(file_or_filename, io.RawIOBase):
+                elikiwa isinstance(file_or_filename, io.RawIOBase):
                     file = io.BufferedWriter(file_or_filename)
                     # Keep the original file open when the BufferedWriter is
                     # destroyed
@@ -817,7 +817,7 @@ def _get_writer(file_or_filename, encoding):
                     file.write = write
                     try:
                         # TextIOWrapper uses this methods to determine
-                        # if BOM (for UTF-16, etc) should be added
+                        # ikiwa BOM (for UTF-16, etc) should be added
                         file.seekable = file_or_filename.seekable
                         file.tell = file_or_filename.tell
                     except AttributeError:
@@ -831,7 +831,7 @@ def _get_writer(file_or_filename, encoding):
                 stack.callback(file.detach)
                 yield file.write
 
-def _namespaces(elem, default_namespace=None):
+eleza _namespaces(elem, default_namespace=None):
     # identify namespaces used in this tree
 
     # maps qnames to *encoded* prefix:local names
@@ -839,27 +839,27 @@ def _namespaces(elem, default_namespace=None):
 
     # maps uri:s to prefixes
     namespaces = {}
-    if default_namespace:
+    ikiwa default_namespace:
         namespaces[default_namespace] = ""
 
-    def add_qname(qname):
+    eleza add_qname(qname):
         # calculate serialized qname representation
         try:
-            if qname[:1] == "{":
+            ikiwa qname[:1] == "{":
                 uri, tag = qname[1:].rsplit("}", 1)
                 prefix = namespaces.get(uri)
-                if prefix is None:
+                ikiwa prefix is None:
                     prefix = _namespace_map.get(uri)
-                    if prefix is None:
+                    ikiwa prefix is None:
                         prefix = "ns%d" % len(namespaces)
-                    if prefix != "xml":
+                    ikiwa prefix != "xml":
                         namespaces[uri] = prefix
-                if prefix:
+                ikiwa prefix:
                     qnames[qname] = "%s:%s" % (prefix, tag)
                 else:
                     qnames[qname] = tag # default element
             else:
-                if default_namespace:
+                ikiwa default_namespace:
                     # FIXME: can this be handled in XML 1.0?
                     raise ValueError(
                         "cannot use non-qualified names with "
@@ -872,38 +872,38 @@ def _namespaces(elem, default_namespace=None):
     # populate qname and namespaces table
     for elem in elem.iter():
         tag = elem.tag
-        if isinstance(tag, QName):
-            if tag.text not in qnames:
+        ikiwa isinstance(tag, QName):
+            ikiwa tag.text not in qnames:
                 add_qname(tag.text)
-        elif isinstance(tag, str):
-            if tag not in qnames:
+        elikiwa isinstance(tag, str):
+            ikiwa tag not in qnames:
                 add_qname(tag)
-        elif tag is not None and tag is not Comment and tag is not PI:
+        elikiwa tag is not None and tag is not Comment and tag is not PI:
             _raise_serialization_error(tag)
         for key, value in elem.items():
-            if isinstance(key, QName):
+            ikiwa isinstance(key, QName):
                 key = key.text
-            if key not in qnames:
+            ikiwa key not in qnames:
                 add_qname(key)
-            if isinstance(value, QName) and value.text not in qnames:
+            ikiwa isinstance(value, QName) and value.text not in qnames:
                 add_qname(value.text)
         text = elem.text
-        if isinstance(text, QName) and text.text not in qnames:
+        ikiwa isinstance(text, QName) and text.text not in qnames:
             add_qname(text.text)
-    return qnames, namespaces
+    rudisha qnames, namespaces
 
-def _serialize_xml(write, elem, qnames, namespaces,
+eleza _serialize_xml(write, elem, qnames, namespaces,
                    short_empty_elements, **kwargs):
     tag = elem.tag
     text = elem.text
-    if tag is Comment:
+    ikiwa tag is Comment:
         write("<!--%s-->" % text)
-    elif tag is ProcessingInstruction:
+    elikiwa tag is ProcessingInstruction:
         write("<?%s?>" % text)
     else:
         tag = qnames[tag]
-        if tag is None:
-            if text:
+        ikiwa tag is None:
+            ikiwa text:
                 write(_escape_cdata(text))
             for e in elem:
                 _serialize_xml(write, e, qnames, None,
@@ -911,27 +911,27 @@ def _serialize_xml(write, elem, qnames, namespaces,
         else:
             write("<" + tag)
             items = list(elem.items())
-            if items or namespaces:
-                if namespaces:
+            ikiwa items or namespaces:
+                ikiwa namespaces:
                     for v, k in sorted(namespaces.items(),
                                        key=lambda x: x[1]):  # sort on prefix
-                        if k:
+                        ikiwa k:
                             k = ":" + k
                         write(" xmlns%s=\"%s\"" % (
                             k,
                             _escape_attrib(v)
                             ))
                 for k, v in items:
-                    if isinstance(k, QName):
+                    ikiwa isinstance(k, QName):
                         k = k.text
-                    if isinstance(v, QName):
+                    ikiwa isinstance(v, QName):
                         v = qnames[v.text]
                     else:
                         v = _escape_attrib(v)
                     write(" %s=\"%s\"" % (qnames[k], v))
-            if text or len(elem) or not short_empty_elements:
+            ikiwa text or len(elem) or not short_empty_elements:
                 write(">")
-                if text:
+                ikiwa text:
                     write(_escape_cdata(text))
                 for e in elem:
                     _serialize_xml(write, e, qnames, None,
@@ -939,7 +939,7 @@ def _serialize_xml(write, elem, qnames, namespaces,
                 write("</" + tag + ">")
             else:
                 write(" />")
-    if elem.tail:
+    ikiwa elem.tail:
         write(_escape_cdata(elem.tail))
 
 HTML_EMPTY = ("area", "base", "basefont", "br", "col", "frame", "hr",
@@ -950,37 +950,37 @@ try:
 except NameError:
     pass
 
-def _serialize_html(write, elem, qnames, namespaces, **kwargs):
+eleza _serialize_html(write, elem, qnames, namespaces, **kwargs):
     tag = elem.tag
     text = elem.text
-    if tag is Comment:
+    ikiwa tag is Comment:
         write("<!--%s-->" % _escape_cdata(text))
-    elif tag is ProcessingInstruction:
+    elikiwa tag is ProcessingInstruction:
         write("<?%s?>" % _escape_cdata(text))
     else:
         tag = qnames[tag]
-        if tag is None:
-            if text:
+        ikiwa tag is None:
+            ikiwa text:
                 write(_escape_cdata(text))
             for e in elem:
                 _serialize_html(write, e, qnames, None)
         else:
             write("<" + tag)
             items = list(elem.items())
-            if items or namespaces:
-                if namespaces:
+            ikiwa items or namespaces:
+                ikiwa namespaces:
                     for v, k in sorted(namespaces.items(),
                                        key=lambda x: x[1]):  # sort on prefix
-                        if k:
+                        ikiwa k:
                             k = ":" + k
                         write(" xmlns%s=\"%s\"" % (
                             k,
                             _escape_attrib(v)
                             ))
                 for k, v in items:
-                    if isinstance(k, QName):
+                    ikiwa isinstance(k, QName):
                         k = k.text
-                    if isinstance(v, QName):
+                    ikiwa isinstance(v, QName):
                         v = qnames[v.text]
                     else:
                         v = _escape_attrib_html(v)
@@ -988,22 +988,22 @@ def _serialize_html(write, elem, qnames, namespaces, **kwargs):
                     write(" %s=\"%s\"" % (qnames[k], v))
             write(">")
             ltag = tag.lower()
-            if text:
-                if ltag == "script" or ltag == "style":
+            ikiwa text:
+                ikiwa ltag == "script" or ltag == "style":
                     write(text)
                 else:
                     write(_escape_cdata(text))
             for e in elem:
                 _serialize_html(write, e, qnames, None)
-            if ltag not in HTML_EMPTY:
+            ikiwa ltag not in HTML_EMPTY:
                 write("</" + tag + ">")
-    if elem.tail:
+    ikiwa elem.tail:
         write(_escape_cdata(elem.tail))
 
-def _serialize_text(write, elem):
+eleza _serialize_text(write, elem):
     for part in elem.itertext():
         write(part)
-    if elem.tail:
+    ikiwa elem.tail:
         write(elem.tail)
 
 _serialize = {
@@ -1015,22 +1015,22 @@ _serialize = {
 }
 
 
-def register_namespace(prefix, uri):
+eleza register_namespace(prefix, uri):
     """Register a namespace prefix.
 
     The registry is global, and any existing mapping for either the
     given prefix or the namespace URI will be removed.
 
     *prefix* is the namespace prefix, *uri* is a namespace uri. Tags and
-    attributes in this namespace will be serialized with prefix if possible.
+    attributes in this namespace will be serialized with prefix ikiwa possible.
 
-    ValueError is raised if prefix is reserved or is invalid.
+    ValueError is raised ikiwa prefix is reserved or is invalid.
 
     """
-    if re.match(r"ns\d+$", prefix):
+    ikiwa re.match(r"ns\d+$", prefix):
         raise ValueError("Prefix format reserved for internal use")
     for k, v in list(_namespace_map.items()):
-        if k == uri or v == prefix:
+        ikiwa k == uri or v == prefix:
             del _namespace_map[k]
     _namespace_map[uri] = prefix
 
@@ -1049,71 +1049,71 @@ _namespace_map = {
 # For tests and troubleshooting
 register_namespace._namespace_map = _namespace_map
 
-def _raise_serialization_error(text):
+eleza _raise_serialization_error(text):
     raise TypeError(
         "cannot serialize %r (type %s)" % (text, type(text).__name__)
         )
 
-def _escape_cdata(text):
+eleza _escape_cdata(text):
     # escape character data
     try:
         # it's worth avoiding do-nothing calls for strings that are
         # shorter than 500 characters, or so.  assume that's, by far,
         # the most common case in most applications.
-        if "&" in text:
+        ikiwa "&" in text:
             text = text.replace("&", "&amp;")
-        if "<" in text:
+        ikiwa "<" in text:
             text = text.replace("<", "&lt;")
-        if ">" in text:
+        ikiwa ">" in text:
             text = text.replace(">", "&gt;")
-        return text
+        rudisha text
     except (TypeError, AttributeError):
         _raise_serialization_error(text)
 
-def _escape_attrib(text):
+eleza _escape_attrib(text):
     # escape attribute value
     try:
-        if "&" in text:
+        ikiwa "&" in text:
             text = text.replace("&", "&amp;")
-        if "<" in text:
+        ikiwa "<" in text:
             text = text.replace("<", "&lt;")
-        if ">" in text:
+        ikiwa ">" in text:
             text = text.replace(">", "&gt;")
-        if "\"" in text:
+        ikiwa "\"" in text:
             text = text.replace("\"", "&quot;")
         # The following business with carriage returns is to satisfy
         # Section 2.11 of the XML specification, stating that
         # CR or CR LN should be replaced with just LN
         # http://www.w3.org/TR/REC-xml/#sec-line-ends
-        if "\r\n" in text:
+        ikiwa "\r\n" in text:
             text = text.replace("\r\n", "\n")
-        if "\r" in text:
+        ikiwa "\r" in text:
             text = text.replace("\r", "\n")
         #The following four lines are issue 17582
-        if "\n" in text:
+        ikiwa "\n" in text:
             text = text.replace("\n", "&#10;")
-        if "\t" in text:
+        ikiwa "\t" in text:
             text = text.replace("\t", "&#09;")
-        return text
+        rudisha text
     except (TypeError, AttributeError):
         _raise_serialization_error(text)
 
-def _escape_attrib_html(text):
+eleza _escape_attrib_html(text):
     # escape attribute value
     try:
-        if "&" in text:
+        ikiwa "&" in text:
             text = text.replace("&", "&amp;")
-        if ">" in text:
+        ikiwa ">" in text:
             text = text.replace(">", "&gt;")
-        if "\"" in text:
+        ikiwa "\"" in text:
             text = text.replace("\"", "&quot;")
-        return text
+        rudisha text
     except (TypeError, AttributeError):
         _raise_serialization_error(text)
 
 # --------------------------------------------------------------------
 
-def tostring(element, encoding=None, method=None, *,
+eleza tostring(element, encoding=None, method=None, *,
              xml_declaration=None, default_namespace=None,
              short_empty_elements=True):
     """Generate string representation of XML element.
@@ -1129,32 +1129,32 @@ def tostring(element, encoding=None, method=None, *,
     Returns an (optionally) encoded string containing the XML data.
 
     """
-    stream = io.StringIO() if encoding == 'unicode' else io.BytesIO()
+    stream = io.StringIO() ikiwa encoding == 'unicode' else io.BytesIO()
     ElementTree(element).write(stream, encoding,
                                xml_declaration=xml_declaration,
                                default_namespace=default_namespace,
                                method=method,
                                short_empty_elements=short_empty_elements)
-    return stream.getvalue()
+    rudisha stream.getvalue()
 
-class _ListDataStream(io.BufferedIOBase):
+kundi _ListDataStream(io.BufferedIOBase):
     """An auxiliary stream accumulating into a list reference."""
-    def __init__(self, lst):
+    eleza __init__(self, lst):
         self.lst = lst
 
-    def writable(self):
-        return True
+    eleza writable(self):
+        rudisha True
 
-    def seekable(self):
-        return True
+    eleza seekable(self):
+        rudisha True
 
-    def write(self, b):
+    eleza write(self, b):
         self.lst.append(b)
 
-    def tell(self):
-        return len(self.lst)
+    eleza tell(self):
+        rudisha len(self.lst)
 
-def tostringlist(element, encoding=None, method=None, *,
+eleza tostringlist(element, encoding=None, method=None, *,
                  xml_declaration=None, default_namespace=None,
                  short_empty_elements=True):
     lst = []
@@ -1164,10 +1164,10 @@ def tostringlist(element, encoding=None, method=None, *,
                                default_namespace=default_namespace,
                                method=method,
                                short_empty_elements=short_empty_elements)
-    return lst
+    rudisha lst
 
 
-def dump(elem):
+eleza dump(elem):
     """Write element tree or element structure to sys.stdout.
 
     This function should be used for debugging only.
@@ -1178,18 +1178,18 @@ def dump(elem):
 
     """
     # debugging
-    if not isinstance(elem, ElementTree):
+    ikiwa not isinstance(elem, ElementTree):
         elem = ElementTree(elem)
     elem.write(sys.stdout, encoding="unicode")
     tail = elem.getroot().tail
-    if not tail or tail[-1] != "\n":
+    ikiwa not tail or tail[-1] != "\n":
         sys.stdout.write("\n")
 
 # --------------------------------------------------------------------
 # parsing
 
 
-def parse(source, parser=None):
+eleza parse(source, parser=None):
     """Parse XML document into element tree.
 
     *source* is a filename or file object containing XML data,
@@ -1200,13 +1200,13 @@ def parse(source, parser=None):
     """
     tree = ElementTree()
     tree.parse(source, parser)
-    return tree
+    rudisha tree
 
 
-def iterparse(source, events=None, parser=None):
+eleza iterparse(source, events=None, parser=None):
     """Incrementally parse XML document into ElementTree.
 
-    This class also reports what's going on to the user based on the
+    This kundi also reports what's going on to the user based on the
     *events* it is initialized with.  The supported events are the strings
     "start", "end", "start-ns" and "end-ns" (the "ns" events are used to get
     detailed namespace information).  If *events* is omitted, only
@@ -1221,39 +1221,39 @@ def iterparse(source, events=None, parser=None):
     # Use the internal, undocumented _parser argument for now; When the
     # parser argument of iterparse is removed, this can be killed.
     pullparser = XMLPullParser(events=events, _parser=parser)
-    def iterator():
+    eleza iterator():
         try:
             while True:
                 yield kutoka pullparser.read_events()
                 # load event buffer
                 data = source.read(16 * 1024)
-                if not data:
+                ikiwa not data:
                     break
                 pullparser.feed(data)
             root = pullparser._close_and_return_root()
             yield kutoka pullparser.read_events()
             it.root = root
         finally:
-            if close_source:
+            ikiwa close_source:
                 source.close()
 
-    class IterParseIterator(collections.abc.Iterator):
+    kundi IterParseIterator(collections.abc.Iterator):
         __next__ = iterator().__next__
     it = IterParseIterator()
     it.root = None
     del iterator, IterParseIterator
 
     close_source = False
-    if not hasattr(source, "read"):
+    ikiwa not hasattr(source, "read"):
         source = open(source, "rb")
         close_source = True
 
-    return it
+    rudisha it
 
 
-class XMLPullParser:
+kundi XMLPullParser:
 
-    def __init__(self, events=None, *, _parser=None):
+    eleza __init__(self, events=None, *, _parser=None):
         # The _parser argument is for internal use only and must not be relied
         # upon in user code. It will be removed in a future release.
         # See http://bugs.python.org/issue17741 for more details.
@@ -1261,35 +1261,35 @@ class XMLPullParser:
         self._events_queue = collections.deque()
         self._parser = _parser or XMLParser(target=TreeBuilder())
         # wire up the parser for event reporting
-        if events is None:
+        ikiwa events is None:
             events = ("end",)
         self._parser._setevents(self._events_queue, events)
 
-    def feed(self, data):
+    eleza feed(self, data):
         """Feed encoded data to parser."""
-        if self._parser is None:
+        ikiwa self._parser is None:
             raise ValueError("feed() called after end of stream")
-        if data:
+        ikiwa data:
             try:
                 self._parser.feed(data)
             except SyntaxError as exc:
                 self._events_queue.append(exc)
 
-    def _close_and_return_root(self):
+    eleza _close_and_return_root(self):
         # iterparse needs this to set its root attribute properly :(
         root = self._parser.close()
         self._parser = None
-        return root
+        rudisha root
 
-    def close(self):
+    eleza close(self):
         """Finish feeding data to parser.
 
-        Unlike XMLParser, does not return the root element. Use
+        Unlike XMLParser, does not rudisha the root element. Use
         read_events() to consume elements kutoka XMLPullParser.
         """
         self._close_and_return_root()
 
-    def read_events(self):
+    eleza read_events(self):
         """Return an iterator over currently available (event, elem) pairs.
 
         Events are consumed kutoka the internal event queue as they are
@@ -1298,13 +1298,13 @@ class XMLPullParser:
         events = self._events_queue
         while events:
             event = events.popleft()
-            if isinstance(event, Exception):
+            ikiwa isinstance(event, Exception):
                 raise event
             else:
                 yield event
 
 
-def XML(text, parser=None):
+eleza XML(text, parser=None):
     """Parse XML document kutoka string constant.
 
     This function can be used to embed "XML Literals" in Python code.
@@ -1315,13 +1315,13 @@ def XML(text, parser=None):
     Returns an Element instance.
 
     """
-    if not parser:
+    ikiwa not parser:
         parser = XMLParser(target=TreeBuilder())
     parser.feed(text)
-    return parser.close()
+    rudisha parser.close()
 
 
-def XMLID(text, parser=None):
+eleza XMLID(text, parser=None):
     """Parse XML document kutoka string constant for its IDs.
 
     *text* is a string containing XML data, *parser* is an
@@ -1331,21 +1331,21 @@ def XMLID(text, parser=None):
     dict maps element id:s to elements.
 
     """
-    if not parser:
+    ikiwa not parser:
         parser = XMLParser(target=TreeBuilder())
     parser.feed(text)
     tree = parser.close()
     ids = {}
     for elem in tree.iter():
         id = elem.get("id")
-        if id:
+        ikiwa id:
             ids[id] = elem
-    return tree, ids
+    rudisha tree, ids
 
 # Parse XML document kutoka string constant.  Alias for XML().
-fromstring = XML
+kutokastring = XML
 
-def fromstringlist(sequence, parser=None):
+eleza kutokastringlist(sequence, parser=None):
     """Parse XML document kutoka sequence of string fragments.
 
     *sequence* is a list of other sequence, *parser* is an optional parser
@@ -1354,22 +1354,22 @@ def fromstringlist(sequence, parser=None):
     Returns an Element instance.
 
     """
-    if not parser:
+    ikiwa not parser:
         parser = XMLParser(target=TreeBuilder())
     for text in sequence:
         parser.feed(text)
-    return parser.close()
+    rudisha parser.close()
 
 # --------------------------------------------------------------------
 
 
-class TreeBuilder:
+kundi TreeBuilder:
     """Generic element structure builder.
 
     This builder converts a sequence of start, data, and end method
     calls to a well-formed element structure.
 
-    You can use this class to build an element structure using a custom XML
+    You can use this kundi to build an element structure using a custom XML
     parser, or a parser for some other XML-like format.
 
     *element_factory* is an optional element factory which is called
@@ -1383,37 +1383,37 @@ class TreeBuilder:
     instead of the standard factory.  If *insert_pis* is false (the default),
     processing instructions will not be inserted into the tree.
     """
-    def __init__(self, element_factory=None, *,
+    eleza __init__(self, element_factory=None, *,
                  comment_factory=None, pi_factory=None,
                  insert_comments=False, insert_pis=False):
         self._data = [] # data collector
         self._elem = [] # element stack
         self._last = None # last element
         self._root = None # root element
-        self._tail = None # true if we're after an end tag
-        if comment_factory is None:
+        self._tail = None # true ikiwa we're after an end tag
+        ikiwa comment_factory is None:
             comment_factory = Comment
         self._comment_factory = comment_factory
         self.insert_comments = insert_comments
-        if pi_factory is None:
+        ikiwa pi_factory is None:
             pi_factory = ProcessingInstruction
         self._pi_factory = pi_factory
         self.insert_pis = insert_pis
-        if element_factory is None:
+        ikiwa element_factory is None:
             element_factory = Element
         self._factory = element_factory
 
-    def close(self):
-        """Flush builder buffers and return toplevel document Element."""
+    eleza close(self):
+        """Flush builder buffers and rudisha toplevel document Element."""
         assert len(self._elem) == 0, "missing end tags"
         assert self._root is not None, "missing toplevel element"
-        return self._root
+        rudisha self._root
 
-    def _flush(self):
-        if self._data:
-            if self._last is not None:
+    eleza _flush(self):
+        ikiwa self._data:
+            ikiwa self._last is not None:
                 text = "".join(self._data)
-                if self._tail:
+                ikiwa self._tail:
                     assert self._last.tail is None, "internal error (tail)"
                     self._last.tail = text
                 else:
@@ -1421,12 +1421,12 @@ class TreeBuilder:
                     self._last.text = text
             self._data = []
 
-    def data(self, data):
+    eleza data(self, data):
         """Add text to current element."""
         self._data.append(data)
 
-    def start(self, tag, attrs):
-        """Open new element and return it.
+    eleza start(self, tag, attrs):
+        """Open new element and rudisha it.
 
         *tag* is the element name, *attrs* is a dict containing element
         attributes.
@@ -1434,16 +1434,16 @@ class TreeBuilder:
         """
         self._flush()
         self._last = elem = self._factory(tag, attrs)
-        if self._elem:
+        ikiwa self._elem:
             self._elem[-1].append(elem)
-        elif self._root is None:
+        elikiwa self._root is None:
             self._root = elem
         self._elem.append(elem)
         self._tail = 0
-        return elem
+        rudisha elem
 
-    def end(self, tag):
-        """Close and return current Element.
+    eleza end(self, tag):
+        """Close and rudisha current Element.
 
         *tag* is the element name.
 
@@ -1454,48 +1454,48 @@ class TreeBuilder:
                "end tag mismatch (expected %s, got %s)" % (
                    self._last.tag, tag)
         self._tail = 1
-        return self._last
+        rudisha self._last
 
-    def comment(self, text):
+    eleza comment(self, text):
         """Create a comment using the comment_factory.
 
         *text* is the text of the comment.
         """
-        return self._handle_single(
+        rudisha self._handle_single(
             self._comment_factory, self.insert_comments, text)
 
-    def pi(self, target, text=None):
+    eleza pi(self, target, text=None):
         """Create a processing instruction using the pi_factory.
 
         *target* is the target name of the processing instruction.
         *text* is the data of the processing instruction, or ''.
         """
-        return self._handle_single(
+        rudisha self._handle_single(
             self._pi_factory, self.insert_pis, target, text)
 
-    def _handle_single(self, factory, insert, *args):
+    eleza _handle_single(self, factory, insert, *args):
         elem = factory(*args)
-        if insert:
+        ikiwa insert:
             self._flush()
             self._last = elem
-            if self._elem:
+            ikiwa self._elem:
                 self._elem[-1].append(elem)
             self._tail = 1
-        return elem
+        rudisha elem
 
 
 # also see ElementTree and TreeBuilder
-class XMLParser:
+kundi XMLParser:
     """Element structure builder for XML source data based on the expat parser.
 
     *target* is an optional target object which defaults to an instance of the
     standard TreeBuilder class, *encoding* is an optional encoding string
-    which if given, overrides the encoding specified in the XML file:
+    which ikiwa given, overrides the encoding specified in the XML file:
     http://www.iana.org/assignments/character-sets
 
     """
 
-    def __init__(self, *, target=None, encoding=None):
+    eleza __init__(self, *, target=None, encoding=None):
         try:
             kutoka xml.parsers agiza expat
         except ImportError:
@@ -1506,7 +1506,7 @@ class XMLParser:
                     "No module named expat; use SimpleXMLTreeBuilder instead"
                     )
         parser = expat.ParserCreate(encoding, "}")
-        if target is None:
+        ikiwa target is None:
             target = TreeBuilder()
         # underscored names are provided for compatibility only
         self.parser = self._parser = parser
@@ -1515,20 +1515,20 @@ class XMLParser:
         self._names = {} # name memo cache
         # main callbacks
         parser.DefaultHandlerExpand = self._default
-        if hasattr(target, 'start'):
+        ikiwa hasattr(target, 'start'):
             parser.StartElementHandler = self._start
-        if hasattr(target, 'end'):
+        ikiwa hasattr(target, 'end'):
             parser.EndElementHandler = self._end
-        if hasattr(target, 'start_ns'):
+        ikiwa hasattr(target, 'start_ns'):
             parser.StartNamespaceDeclHandler = self._start_ns
-        if hasattr(target, 'end_ns'):
+        ikiwa hasattr(target, 'end_ns'):
             parser.EndNamespaceDeclHandler = self._end_ns
-        if hasattr(target, 'data'):
+        ikiwa hasattr(target, 'data'):
             parser.CharacterDataHandler = target.data
         # miscellaneous callbacks
-        if hasattr(target, 'comment'):
+        ikiwa hasattr(target, 'comment'):
             parser.CommentHandler = target.comment
-        if hasattr(target, 'pi'):
+        ikiwa hasattr(target, 'pi'):
             parser.ProcessingInstructionHandler = target.pi
         # Configure pyexpat: buffering, new-style attribute handling.
         parser.buffer_text = 1
@@ -1541,7 +1541,7 @@ class XMLParser:
         except AttributeError:
             pass # unknown
 
-    def _setevents(self, events_queue, events_to_report):
+    eleza _setevents(self, events_queue, events_to_report):
         # Internal API for XMLPullParser
         # events_to_report: a list of events to report during parsing (same as
         # the *events* of XMLPullParser's constructor.
@@ -1551,91 +1551,91 @@ class XMLParser:
         parser = self._parser
         append = events_queue.append
         for event_name in events_to_report:
-            if event_name == "start":
+            ikiwa event_name == "start":
                 parser.ordered_attributes = 1
                 parser.specified_attributes = 1
-                def handler(tag, attrib_in, event=event_name, append=append,
+                eleza handler(tag, attrib_in, event=event_name, append=append,
                             start=self._start):
                     append((event, start(tag, attrib_in)))
                 parser.StartElementHandler = handler
-            elif event_name == "end":
-                def handler(tag, event=event_name, append=append,
+            elikiwa event_name == "end":
+                eleza handler(tag, event=event_name, append=append,
                             end=self._end):
                     append((event, end(tag)))
                 parser.EndElementHandler = handler
-            elif event_name == "start-ns":
+            elikiwa event_name == "start-ns":
                 # TreeBuilder does not implement .start_ns()
-                if hasattr(self.target, "start_ns"):
-                    def handler(prefix, uri, event=event_name, append=append,
+                ikiwa hasattr(self.target, "start_ns"):
+                    eleza handler(prefix, uri, event=event_name, append=append,
                                 start_ns=self._start_ns):
                         append((event, start_ns(prefix, uri)))
                 else:
-                    def handler(prefix, uri, event=event_name, append=append):
+                    eleza handler(prefix, uri, event=event_name, append=append):
                         append((event, (prefix or '', uri or '')))
                 parser.StartNamespaceDeclHandler = handler
-            elif event_name == "end-ns":
+            elikiwa event_name == "end-ns":
                 # TreeBuilder does not implement .end_ns()
-                if hasattr(self.target, "end_ns"):
-                    def handler(prefix, event=event_name, append=append,
+                ikiwa hasattr(self.target, "end_ns"):
+                    eleza handler(prefix, event=event_name, append=append,
                                 end_ns=self._end_ns):
                         append((event, end_ns(prefix)))
                 else:
-                    def handler(prefix, event=event_name, append=append):
+                    eleza handler(prefix, event=event_name, append=append):
                         append((event, None))
                 parser.EndNamespaceDeclHandler = handler
-            elif event_name == 'comment':
-                def handler(text, event=event_name, append=append, self=self):
+            elikiwa event_name == 'comment':
+                eleza handler(text, event=event_name, append=append, self=self):
                     append((event, self.target.comment(text)))
                 parser.CommentHandler = handler
-            elif event_name == 'pi':
-                def handler(pi_target, data, event=event_name, append=append,
+            elikiwa event_name == 'pi':
+                eleza handler(pi_target, data, event=event_name, append=append,
                             self=self):
                     append((event, self.target.pi(pi_target, data)))
                 parser.ProcessingInstructionHandler = handler
             else:
                 raise ValueError("unknown event %r" % event_name)
 
-    def _raiseerror(self, value):
+    eleza _raiseerror(self, value):
         err = ParseError(value)
         err.code = value.code
         err.position = value.lineno, value.offset
         raise err
 
-    def _fixname(self, key):
-        # expand qname, and convert name string to ascii, if possible
+    eleza _fixname(self, key):
+        # expand qname, and convert name string to ascii, ikiwa possible
         try:
             name = self._names[key]
         except KeyError:
             name = key
-            if "}" in name:
+            ikiwa "}" in name:
                 name = "{" + name
             self._names[key] = name
-        return name
+        rudisha name
 
-    def _start_ns(self, prefix, uri):
-        return self.target.start_ns(prefix or '', uri or '')
+    eleza _start_ns(self, prefix, uri):
+        rudisha self.target.start_ns(prefix or '', uri or '')
 
-    def _end_ns(self, prefix):
-        return self.target.end_ns(prefix or '')
+    eleza _end_ns(self, prefix):
+        rudisha self.target.end_ns(prefix or '')
 
-    def _start(self, tag, attr_list):
+    eleza _start(self, tag, attr_list):
         # Handler for expat's StartElementHandler. Since ordered_attributes
         # is set, the attributes are reported as a list of alternating
         # attribute name,value.
         fixname = self._fixname
         tag = fixname(tag)
         attrib = {}
-        if attr_list:
+        ikiwa attr_list:
             for i in range(0, len(attr_list), 2):
                 attrib[fixname(attr_list[i])] = attr_list[i+1]
-        return self.target.start(tag, attrib)
+        rudisha self.target.start(tag, attrib)
 
-    def _end(self, tag):
-        return self.target.end(self._fixname(tag))
+    eleza _end(self, tag):
+        rudisha self.target.end(self._fixname(tag))
 
-    def _default(self, text):
+    eleza _default(self, text):
         prefix = text[:1]
-        if prefix == "&":
+        ikiwa prefix == "&":
             # deal with undefined entities
             try:
                 data_handler = self.target.data
@@ -1654,32 +1654,32 @@ class XMLParser:
                 err.lineno = self.parser.ErrorLineNumber
                 err.offset = self.parser.ErrorColumnNumber
                 raise err
-        elif prefix == "<" and text[:9] == "<!DOCTYPE":
+        elikiwa prefix == "<" and text[:9] == "<!DOCTYPE":
             self._doctype = [] # inside a doctype declaration
-        elif self._doctype is not None:
+        elikiwa self._doctype is not None:
             # parse doctype contents
-            if prefix == ">":
+            ikiwa prefix == ">":
                 self._doctype = None
                 return
             text = text.strip()
-            if not text:
+            ikiwa not text:
                 return
             self._doctype.append(text)
             n = len(self._doctype)
-            if n > 2:
+            ikiwa n > 2:
                 type = self._doctype[1]
-                if type == "PUBLIC" and n == 4:
+                ikiwa type == "PUBLIC" and n == 4:
                     name, type, pubid, system = self._doctype
-                    if pubid:
+                    ikiwa pubid:
                         pubid = pubid[1:-1]
-                elif type == "SYSTEM" and n == 3:
+                elikiwa type == "SYSTEM" and n == 3:
                     name, type, system = self._doctype
                     pubid = None
                 else:
                     return
-                if hasattr(self.target, "doctype"):
+                ikiwa hasattr(self.target, "doctype"):
                     self.target.doctype(name, pubid, system[1:-1])
-                elif hasattr(self, "doctype"):
+                elikiwa hasattr(self, "doctype"):
                     warnings.warn(
                         "The doctype() method of XMLParser is ignored.  "
                         "Define doctype() method on the TreeBuilder target.",
@@ -1687,15 +1687,15 @@ class XMLParser:
 
                 self._doctype = None
 
-    def feed(self, data):
+    eleza feed(self, data):
         """Feed encoded data to parser."""
         try:
             self.parser.Parse(data, 0)
         except self._error as v:
             self._raiseerror(v)
 
-    def close(self):
-        """Finish feeding data to parser and return element structure."""
+    eleza close(self):
+        """Finish feeding data to parser and rudisha element structure."""
         try:
             self.parser.Parse("", 1) # end of data
         except self._error as v:
@@ -1705,7 +1705,7 @@ class XMLParser:
         except AttributeError:
             pass
         else:
-            return close_handler()
+            rudisha close_handler()
         finally:
             # get rid of circular references
             del self.parser, self._parser
@@ -1715,7 +1715,7 @@ class XMLParser:
 # --------------------------------------------------------------------
 # C14N 2.0
 
-def canonicalize(xml_data=None, *, out=None, from_file=None, **options):
+eleza canonicalize(xml_data=None, *, out=None, kutoka_file=None, **options):
     """Convert XML to its C14N 2.0 serialised form.
 
     If *out* is provided, it must be a file or file-like object that receives
@@ -1723,32 +1723,32 @@ def canonicalize(xml_data=None, *, out=None, from_file=None, **options):
     method.  To write to a file, open it in text mode with encoding "utf-8".
     If *out* is not provided, this function returns the output as text string.
 
-    Either *xml_data* (an XML string) or *from_file* (a file path or
+    Either *xml_data* (an XML string) or *kutoka_file* (a file path or
     file-like object) must be provided as input.
 
     The configuration options are the same as for the ``C14NWriterTarget``.
     """
-    if xml_data is None and from_file is None:
-        raise ValueError("Either 'xml_data' or 'from_file' must be provided as input")
+    ikiwa xml_data is None and kutoka_file is None:
+        raise ValueError("Either 'xml_data' or 'kutoka_file' must be provided as input")
     sio = None
-    if out is None:
+    ikiwa out is None:
         sio = out = io.StringIO()
 
     parser = XMLParser(target=C14NWriterTarget(out.write, **options))
 
-    if xml_data is not None:
+    ikiwa xml_data is not None:
         parser.feed(xml_data)
         parser.close()
-    elif from_file is not None:
-        parse(from_file, parser=parser)
+    elikiwa kutoka_file is not None:
+        parse(kutoka_file, parser=parser)
 
-    return sio.getvalue() if sio is not None else None
+    rudisha sio.getvalue() ikiwa sio is not None else None
 
 
 _looks_like_prefix_name = re.compile(r'^\w+:\w+$', re.UNICODE).match
 
 
-class C14NWriterTarget:
+kundi C14NWriterTarget:
     """
     Canonicalization writer target for the XMLParser.
 
@@ -1770,7 +1770,7 @@ class C14NWriterTarget:
     - *exclude_attrs*: a set of attribute names that should not be serialised
     - *exclude_tags*: a set of tag names that should not be serialised
     """
-    def __init__(self, write, *,
+    eleza __init__(self, write, *,
                  with_comments=False, strip_text=False, rewrite_prefixes=False,
                  qname_aware_tags=None, qname_aware_attrs=None,
                  exclude_attrs=None, exclude_tags=None):
@@ -1778,15 +1778,15 @@ class C14NWriterTarget:
         self._data = []
         self._with_comments = with_comments
         self._strip_text = strip_text
-        self._exclude_attrs = set(exclude_attrs) if exclude_attrs else None
-        self._exclude_tags = set(exclude_tags) if exclude_tags else None
+        self._exclude_attrs = set(exclude_attrs) ikiwa exclude_attrs else None
+        self._exclude_tags = set(exclude_tags) ikiwa exclude_tags else None
 
         self._rewrite_prefixes = rewrite_prefixes
-        if qname_aware_tags:
+        ikiwa qname_aware_tags:
             self._qname_aware_tags = set(qname_aware_tags)
         else:
             self._qname_aware_tags = None
-        if qname_aware_attrs:
+        ikiwa qname_aware_attrs:
             self._find_qname_aware_attrs = set(qname_aware_attrs).intersection
         else:
             self._find_qname_aware_attrs = None
@@ -1797,7 +1797,7 @@ class C14NWriterTarget:
         ]]
         # Stack with user declared namespace prefixes as (uri, prefix) pairs.
         self._ns_stack = []
-        if not rewrite_prefixes:
+        ikiwa not rewrite_prefixes:
             self._ns_stack.append(list(_namespace_map.items()))
         self._ns_stack.append([])
         self._prefix_map = {}
@@ -1807,110 +1807,110 @@ class C14NWriterTarget:
         self._root_done = False
         self._ignored_depth = 0
 
-    def _iter_namespaces(self, ns_stack, _reversed=reversed):
+    eleza _iter_namespaces(self, ns_stack, _reversed=reversed):
         for namespaces in _reversed(ns_stack):
-            if namespaces:  # almost no element declares new namespaces
+            ikiwa namespaces:  # almost no element declares new namespaces
                 yield kutoka namespaces
 
-    def _resolve_prefix_name(self, prefixed_name):
+    eleza _resolve_prefix_name(self, prefixed_name):
         prefix, name = prefixed_name.split(':', 1)
         for uri, p in self._iter_namespaces(self._ns_stack):
-            if p == prefix:
-                return f'{{{uri}}}{name}'
+            ikiwa p == prefix:
+                rudisha f'{{{uri}}}{name}'
         raise ValueError(f'Prefix {prefix} of QName "{prefixed_name}" is not declared in scope')
 
-    def _qname(self, qname, uri=None):
-        if uri is None:
-            uri, tag = qname[1:].rsplit('}', 1) if qname[:1] == '{' else ('', qname)
+    eleza _qname(self, qname, uri=None):
+        ikiwa uri is None:
+            uri, tag = qname[1:].rsplit('}', 1) ikiwa qname[:1] == '{' else ('', qname)
         else:
             tag = qname
 
         prefixes_seen = set()
         for u, prefix in self._iter_namespaces(self._declared_ns_stack):
-            if u == uri and prefix not in prefixes_seen:
-                return f'{prefix}:{tag}' if prefix else tag, tag, uri
+            ikiwa u == uri and prefix not in prefixes_seen:
+                rudisha f'{prefix}:{tag}' ikiwa prefix else tag, tag, uri
             prefixes_seen.add(prefix)
 
         # Not declared yet => add new declaration.
-        if self._rewrite_prefixes:
-            if uri in self._prefix_map:
+        ikiwa self._rewrite_prefixes:
+            ikiwa uri in self._prefix_map:
                 prefix = self._prefix_map[uri]
             else:
                 prefix = self._prefix_map[uri] = f'n{len(self._prefix_map)}'
             self._declared_ns_stack[-1].append((uri, prefix))
-            return f'{prefix}:{tag}', tag, uri
+            rudisha f'{prefix}:{tag}', tag, uri
 
-        if not uri and '' not in prefixes_seen:
+        ikiwa not uri and '' not in prefixes_seen:
             # No default namespace declared => no prefix needed.
-            return tag, tag, uri
+            rudisha tag, tag, uri
 
         for u, prefix in self._iter_namespaces(self._ns_stack):
-            if u == uri:
+            ikiwa u == uri:
                 self._declared_ns_stack[-1].append((uri, prefix))
-                return f'{prefix}:{tag}' if prefix else tag, tag, uri
+                rudisha f'{prefix}:{tag}' ikiwa prefix else tag, tag, uri
 
         raise ValueError(f'Namespace "{uri}" is not declared in scope')
 
-    def data(self, data):
-        if not self._ignored_depth:
+    eleza data(self, data):
+        ikiwa not self._ignored_depth:
             self._data.append(data)
 
-    def _flush(self, _join_text=''.join):
+    eleza _flush(self, _join_text=''.join):
         data = _join_text(self._data)
         del self._data[:]
-        if self._strip_text and not self._preserve_space[-1]:
+        ikiwa self._strip_text and not self._preserve_space[-1]:
             data = data.strip()
-        if self._pending_start is not None:
+        ikiwa self._pending_start is not None:
             args, self._pending_start = self._pending_start, None
-            qname_text = data if data and _looks_like_prefix_name(data) else None
+            qname_text = data ikiwa data and _looks_like_prefix_name(data) else None
             self._start(*args, qname_text)
-            if qname_text is not None:
+            ikiwa qname_text is not None:
                 return
-        if data and self._root_seen:
+        ikiwa data and self._root_seen:
             self._write(_escape_cdata_c14n(data))
 
-    def start_ns(self, prefix, uri):
-        if self._ignored_depth:
+    eleza start_ns(self, prefix, uri):
+        ikiwa self._ignored_depth:
             return
         # we may have to resolve qnames in text content
-        if self._data:
+        ikiwa self._data:
             self._flush()
         self._ns_stack[-1].append((uri, prefix))
 
-    def start(self, tag, attrs):
-        if self._exclude_tags is not None and (
+    eleza start(self, tag, attrs):
+        ikiwa self._exclude_tags is not None and (
                 self._ignored_depth or tag in self._exclude_tags):
             self._ignored_depth += 1
             return
-        if self._data:
+        ikiwa self._data:
             self._flush()
 
         new_namespaces = []
         self._declared_ns_stack.append(new_namespaces)
 
-        if self._qname_aware_tags is not None and tag in self._qname_aware_tags:
-            # Need to parse text first to see if it requires a prefix declaration.
+        ikiwa self._qname_aware_tags is not None and tag in self._qname_aware_tags:
+            # Need to parse text first to see ikiwa it requires a prefix declaration.
             self._pending_start = (tag, attrs, new_namespaces)
             return
         self._start(tag, attrs, new_namespaces)
 
-    def _start(self, tag, attrs, new_namespaces, qname_text=None):
-        if self._exclude_attrs is not None and attrs:
-            attrs = {k: v for k, v in attrs.items() if k not in self._exclude_attrs}
+    eleza _start(self, tag, attrs, new_namespaces, qname_text=None):
+        ikiwa self._exclude_attrs is not None and attrs:
+            attrs = {k: v for k, v in attrs.items() ikiwa k not in self._exclude_attrs}
 
         qnames = {tag, *attrs}
         resolved_names = {}
 
         # Resolve prefixes in attribute and tag text.
-        if qname_text is not None:
+        ikiwa qname_text is not None:
             qname = resolved_names[qname_text] = self._resolve_prefix_name(qname_text)
             qnames.add(qname)
-        if self._find_qname_aware_attrs is not None and attrs:
+        ikiwa self._find_qname_aware_attrs is not None and attrs:
             qattrs = self._find_qname_aware_attrs(attrs)
-            if qattrs:
+            ikiwa qattrs:
                 for attr_name in qattrs:
                     value = attrs[attr_name]
-                    if _looks_like_prefix_name(value):
+                    ikiwa _looks_like_prefix_name(value):
                         qname = resolved_names[value] = self._resolve_prefix_name(value)
                         qnames.add(qname)
             else:
@@ -1924,9 +1924,9 @@ class C14NWriterTarget:
             qnames, key=lambda n: n.split('}', 1))}
 
         # Write namespace declarations in prefix order ...
-        if new_namespaces:
+        ikiwa new_namespaces:
             attr_list = [
-                ('xmlns:' + prefix if prefix else 'xmlns', uri)
+                ('xmlns:' + prefix ikiwa prefix else 'xmlns', uri)
                 for uri, prefix in new_namespaces
             ]
             attr_list.sort()
@@ -1935,39 +1935,39 @@ class C14NWriterTarget:
             attr_list = []
 
         # ... followed by attributes in URI+name order
-        if attrs:
+        ikiwa attrs:
             for k, v in sorted(attrs.items()):
-                if qattrs is not None and k in qattrs and v in resolved_names:
+                ikiwa qattrs is not None and k in qattrs and v in resolved_names:
                     v = parsed_qnames[resolved_names[v]][0]
                 attr_qname, attr_name, uri = parsed_qnames[k]
                 # No prefix for attributes in default ('') namespace.
-                attr_list.append((attr_qname if uri else attr_name, v))
+                attr_list.append((attr_qname ikiwa uri else attr_name, v))
 
         # Honour xml:space attributes.
         space_behaviour = attrs.get('{http://www.w3.org/XML/1998/namespace}space')
         self._preserve_space.append(
-            space_behaviour == 'preserve' if space_behaviour
+            space_behaviour == 'preserve' ikiwa space_behaviour
             else self._preserve_space[-1])
 
         # Write the tag.
         write = self._write
         write('<' + parsed_qnames[tag][0])
-        if attr_list:
+        ikiwa attr_list:
             write(''.join([f' {k}="{_escape_attrib_c14n(v)}"' for k, v in attr_list]))
         write('>')
 
         # Write the resolved qname text content.
-        if qname_text is not None:
+        ikiwa qname_text is not None:
             write(_escape_cdata_c14n(parsed_qnames[resolved_names[qname_text]][0]))
 
         self._root_seen = True
         self._ns_stack.append([])
 
-    def end(self, tag):
-        if self._ignored_depth:
+    eleza end(self, tag):
+        ikiwa self._ignored_depth:
             self._ignored_depth -= 1
             return
-        if self._data:
+        ikiwa self._data:
             self._flush()
         self._write(f'</{self._qname(tag)[0]}>')
         self._preserve_space.pop()
@@ -1975,67 +1975,67 @@ class C14NWriterTarget:
         self._declared_ns_stack.pop()
         self._ns_stack.pop()
 
-    def comment(self, text):
-        if not self._with_comments:
+    eleza comment(self, text):
+        ikiwa not self._with_comments:
             return
-        if self._ignored_depth:
+        ikiwa self._ignored_depth:
             return
-        if self._root_done:
+        ikiwa self._root_done:
             self._write('\n')
-        elif self._root_seen and self._data:
+        elikiwa self._root_seen and self._data:
             self._flush()
         self._write(f'<!--{_escape_cdata_c14n(text)}-->')
-        if not self._root_seen:
+        ikiwa not self._root_seen:
             self._write('\n')
 
-    def pi(self, target, data):
-        if self._ignored_depth:
+    eleza pi(self, target, data):
+        ikiwa self._ignored_depth:
             return
-        if self._root_done:
+        ikiwa self._root_done:
             self._write('\n')
-        elif self._root_seen and self._data:
+        elikiwa self._root_seen and self._data:
             self._flush()
         self._write(
-            f'<?{target} {_escape_cdata_c14n(data)}?>' if data else f'<?{target}?>')
-        if not self._root_seen:
+            f'<?{target} {_escape_cdata_c14n(data)}?>' ikiwa data else f'<?{target}?>')
+        ikiwa not self._root_seen:
             self._write('\n')
 
 
-def _escape_cdata_c14n(text):
+eleza _escape_cdata_c14n(text):
     # escape character data
     try:
         # it's worth avoiding do-nothing calls for strings that are
         # shorter than 500 character, or so.  assume that's, by far,
         # the most common case in most applications.
-        if '&' in text:
+        ikiwa '&' in text:
             text = text.replace('&', '&amp;')
-        if '<' in text:
+        ikiwa '<' in text:
             text = text.replace('<', '&lt;')
-        if '>' in text:
+        ikiwa '>' in text:
             text = text.replace('>', '&gt;')
-        if '\r' in text:
+        ikiwa '\r' in text:
             text = text.replace('\r', '&#xD;')
-        return text
+        rudisha text
     except (TypeError, AttributeError):
         _raise_serialization_error(text)
 
 
-def _escape_attrib_c14n(text):
+eleza _escape_attrib_c14n(text):
     # escape attribute value
     try:
-        if '&' in text:
+        ikiwa '&' in text:
             text = text.replace('&', '&amp;')
-        if '<' in text:
+        ikiwa '<' in text:
             text = text.replace('<', '&lt;')
-        if '"' in text:
+        ikiwa '"' in text:
             text = text.replace('"', '&quot;')
-        if '\t' in text:
+        ikiwa '\t' in text:
             text = text.replace('\t', '&#x9;')
-        if '\n' in text:
+        ikiwa '\n' in text:
             text = text.replace('\n', '&#xA;')
-        if '\r' in text:
+        ikiwa '\r' in text:
             text = text.replace('\r', '&#xD;')
-        return text
+        rudisha text
     except (TypeError, AttributeError):
         _raise_serialization_error(text)
 

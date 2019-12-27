@@ -36,11 +36,11 @@ Glossary
       providing a way to define interfaces when other techniques like
       :func:`hasattr` would be clumsy or subtly wrong (for example with
       :ref:`magic methods <special-lookup>`).  ABCs introduce virtual
-      subclasses, which are classes that don't inherit from a class but are
+      subclasses, which are classes that don't inherit kutoka a kundi but are
       still recognized by :func:`isinstance` and :func:`issubclass`; see the
       :mod:`abc` module documentation.  Python comes with many built-in ABCs for
       data structures (in the :mod:`collections.abc` module), numbers (in the
-      :mod:`numbers` module), streams (in the :mod:`io` module), import finders
+      :mod:`numbers` module), streams (in the :mod:`io` module), agiza finders
       and loaders (in the :mod:`importlib.abc` module).  You can create your own
       ABCs with the :mod:`abc` module.
 
@@ -50,7 +50,7 @@ Glossary
       used by convention as a :term:`type hint`.
 
       Annotations of local variables cannot be accessed at runtime, but
-      annotations of global variables, class attributes, and functions
+      annotations of global variables, kundi attributes, and functions
       are stored in the :attr:`__annotations__`
       special attribute of modules, classes, and functions,
       respectively.
@@ -123,7 +123,7 @@ Glossary
 
    asynchronous iterable
       An object, that can be used in an :keyword:`async for` statement.
-      Must return an :term:`asynchronous iterator` from its
+      Must return an :term:`asynchronous iterator` kutoka its
       :meth:`__aiter__` method.  Introduced by :pep:`492`.
 
    asynchronous iterator
@@ -179,7 +179,7 @@ Glossary
       Python source code is compiled into bytecode, the internal representation
       of a Python program in the CPython interpreter.  The bytecode is also
       cached in ``.pyc`` files so that executing the same file is
-      faster the second time (recompilation from source to bytecode can be
+      faster the second time (recompilation kutoka source to bytecode can be
       avoided).  This "intermediate language" is said to run on a
       :term:`virtual machine` that executes the machine code corresponding to
       each bytecode. Do note that bytecodes are not expected to work between
@@ -194,9 +194,9 @@ Glossary
       normally contain method definitions which operate on instances of the
       class.
 
-   class variable
-      A variable defined in a class and intended to be modified only at
-      class level (i.e., not in an instance of the class).
+   kundi variable
+      A variable defined in a kundi and intended to be modified only at
+      kundi level (i.e., not in an instance of the class).
 
    coercion
       The implicit conversion of an instance of one type to another during an
@@ -241,7 +241,7 @@ Glossary
       *C-contiguous* or *Fortran contiguous*.  Zero-dimensional buffers are
       C and Fortran contiguous.  In one-dimensional arrays, the items
       must be laid out in memory next to each other, in order of
-      increasing indexes starting from zero.  In multidimensional
+      increasing indexes starting kutoka zero.  In multidimensional
       C-contiguous arrays, the last index varies the fastest when
       visiting items in order of memory address.  However, in
       Fortran contiguous arrays, the first index varies the fastest.
@@ -263,7 +263,7 @@ Glossary
    CPython
       The canonical implementation of the Python programming language, as
       distributed on `python.org <https://www.python.org>`_.  The term "CPython"
-      is used when necessary to distinguish this implementation from others
+      is used when necessary to distinguish this implementation kutoka others
       such as Jython or IronPython.
 
    decorator
@@ -284,17 +284,17 @@ Glossary
 
       The same concept exists for classes, but is less commonly used there.  See
       the documentation for :ref:`function definitions <function>` and
-      :ref:`class definitions <class>` for more about decorators.
+      :ref:`kundi definitions <class>` for more about decorators.
 
    descriptor
       Any object which defines the methods :meth:`__get__`, :meth:`__set__`, or
-      :meth:`__delete__`.  When a class attribute is a descriptor, its special
+      :meth:`__delete__`.  When a kundi attribute is a descriptor, its special
       binding behavior is triggered upon attribute lookup.  Normally, using
       *a.b* to get, set or delete an attribute looks up the object named *b* in
-      the class dictionary for *a*, but if *b* is a descriptor, the respective
+      the kundi dictionary for *a*, but if *b* is a descriptor, the respective
       descriptor method gets called.  Understanding descriptors is a key to a
       deep understanding of Python because they are the basis for many features
-      including functions, methods, properties, class methods, static methods,
+      including functions, methods, properties, kundi methods, static methods,
       and reference to super classes.
 
       For more information about descriptors' methods, see :ref:`descriptors`.
@@ -305,7 +305,7 @@ Glossary
       Called a hash in Perl.
 
    dictionary view
-      The objects returned from :meth:`dict.keys`, :meth:`dict.values`, and
+      The objects returned kutoka :meth:`dict.keys`, :meth:`dict.values`, and
       :meth:`dict.items` are called dictionary views. They provide a dynamic
       view on the dictionary’s entries, which means that when the dictionary
       changes, the view reflects these changes. To force the
@@ -422,7 +422,7 @@ Glossary
       you can see when a new feature was first added to the language and when it
       becomes the default::
 
-         >>> import __future__
+         >>> agiza __future__
          >>> __future__.division
          _Feature((2, 2, 0, 'alpha', 2), (3, 0, 0, 'alpha', 0), 8192)
 
@@ -518,7 +518,7 @@ Glossary
       their elements are hashable.  Objects which are
       instances of user-defined classes are hashable by default.  They all
       compare unequal (except with themselves), and their hash value is derived
-      from their :func:`id`.
+      kutoka their :func:`id`.
 
    IDLE
       An Integrated Development Environment for Python.  IDLE is a basic editor
@@ -532,11 +532,11 @@ Glossary
       role in places where a constant hash value is needed, for example as a key
       in a dictionary.
 
-   import path
+   agiza path
       A list of locations (or :term:`path entries <path entry>`) that are
       searched by the :term:`path based finder` for modules to import. During
-      import, this list of locations usually comes from :data:`sys.path`, but
-      for subpackages it may also come from the parent package's ``__path__``
+      import, this list of locations usually comes kutoka :data:`sys.path`, but
+      for subpackages it may also come kutoka the parent package's ``__path__``
       attribute.
 
    importing
@@ -551,7 +551,7 @@ Glossary
       Python has an interactive interpreter which means you can enter
       statements and expressions at the interpreter prompt, immediately
       execute them and see their results.  Just launch ``python`` with no
-      arguments (possibly by selecting it from your computer's main
+      arguments (possibly by selecting it kutoka your computer's main
       menu). It is a very powerful way to test out new ideas or inspect
       modules and packages (remember ``help(x)``).
 
@@ -628,7 +628,7 @@ Glossary
 
       There are several ways to create a key function.  For example. the
       :meth:`str.lower` method can serve as a key function for case insensitive
-      sorts.  Alternatively, a key function can be built from a
+      sorts.  Alternatively, a key function can be built kutoka a
       :keyword:`lambda` expression such as ``lambda r: (r[0], r[2])``.  Also,
       the :mod:`operator` module provides three key function constructors:
       :func:`~operator.attrgetter`, :func:`~operator.itemgetter`, and
@@ -652,7 +652,7 @@ Glossary
       In a multi-threaded environment, the LBYL approach can risk introducing a
       race condition between "the looking" and "the leaping".  For example, the
       code, ``if key in mapping: return mapping[key]`` can fail if another
-      thread removes *key* from *mapping* after the test, but before the lookup.
+      thread removes *key* kutoka *mapping* after the test, but before the lookup.
       This issue can be solved with locks or by using the EAFP approach.
 
    list
@@ -664,7 +664,7 @@ Glossary
       A compact way to process all or part of the elements in a sequence and
       return a list with the results.  ``result = ['{:#04x}'.format(x) for x in
       range(256) if x % 2 == 0]`` generates a list of strings containing
-      even hex numbers (0x..) in the range from 0 to 255. The :keyword:`if`
+      even hex numbers (0x..) in the range kutoka 0 to 255. The :keyword:`if`
       clause is optional.  If omitted, all elements in ``range(256)`` are
       processed.
 
@@ -689,15 +689,15 @@ Glossary
 
    meta path finder
       A :term:`finder` returned by a search of :data:`sys.meta_path`.  Meta path
-      finders are related to, but different from :term:`path entry finders
+      finders are related to, but different kutoka :term:`path entry finders
       <path entry finder>`.
 
       See :class:`importlib.abc.MetaPathFinder` for the methods that meta path
       finders implement.
 
    metaclass
-      The class of a class.  Class definitions create a class name, a class
-      dictionary, and a list of base classes.  The metaclass is responsible for
+      The kundi of a class.  Class definitions create a kundi name, a class
+      dictionary, and a list of base classes.  The metakundi is responsible for
       taking those three arguments and creating the class.  Most object oriented
       programming languages provide a default implementation.  What makes Python
       special is that it is possible to create custom metaclasses.  Most users
@@ -709,7 +709,7 @@ Glossary
       More information can be found in :ref:`metaclasses`.
 
    method
-      A function which is defined inside a class body.  If called as an attribute
+      A function which is defined inside a kundi body.  If called as an attribute
       of an instance of that class, the method will get the instance object as
       its first :term:`argument` (which is usually called ``self``).
       See :term:`function` and :term:`nested scope`.
@@ -739,9 +739,9 @@ Glossary
       also :term:`immutable`.
 
    named tuple
-      The term "named tuple" applies to any type or class that inherits from
+      The term "named tuple" applies to any type or kundi that inherits kutoka
       tuple and whose indexable elements are also accessible using named
-      attributes.  The type or class may have other features as well.
+      attributes.  The type or kundi may have other features as well.
 
       Several built-in types are named tuples, including the values returned
       by :func:`time.localtime` and :func:`os.stat`.  Another example is
@@ -755,9 +755,9 @@ Glossary
            True
 
       Some named tuples are built-in types (such as the above examples).
-      Alternatively, a named tuple can be created from a regular class
-      definition that inherits from :class:`tuple` and that defines named
-      fields.  Such a class can be written by hand or it can be created with
+      Alternatively, a named tuple can be created kutoka a regular class
+      definition that inherits kutoka :class:`tuple` and that defines named
+      fields.  Such a kundi can be written by hand or it can be created with
       the factory function :func:`collections.namedtuple`.  The latter
       technique also adds some extra methods that may not be found in
       hand-written or built-in named tuples.
@@ -792,14 +792,14 @@ Glossary
       scopes.
 
    new-style class
-      Old name for the flavor of classes now used for all class objects.  In
+      Old name for the flavor of classes now used for all kundi objects.  In
       earlier Python versions, only new-style classes could use Python's newer,
       versatile features like :attr:`~object.__slots__`, descriptors,
-      properties, :meth:`__getattribute__`, class methods, and static methods.
+      properties, :meth:`__getattribute__`, kundi methods, and static methods.
 
    object
       Any data with state (attributes or value) and defined behavior
-      (methods).  Also the ultimate base class of any :term:`new-style
+      (methods).  Also the ultimate base kundi of any :term:`new-style
       class`.
 
    package
@@ -861,7 +861,7 @@ Glossary
       :ref:`function` section, and :pep:`362`.
 
    path entry
-      A single location on the :term:`import path` which the :term:`path
+      A single location on the :term:`agiza path` which the :term:`path
       based finder` consults to find modules for importing.
 
    path entry finder
@@ -879,7 +879,7 @@ Glossary
 
    path based finder
       One of the default :term:`meta path finders <meta path finder>` which
-      searches an :term:`import path` for modules.
+      searches an :term:`agiza path` for modules.
 
    path-like object
       An object representing a file system path. A path-like object is either
@@ -914,7 +914,7 @@ Glossary
       See :term:`argument`.
 
    provisional API
-      A provisional API is one which has been deliberately excluded from
+      A provisional API is one which has been deliberately excluded kutoka
       the standard library's backwards compatibility guarantees.  While major
       changes to such interfaces are not expected, as long as they are marked
       provisional, backwards incompatible changes (up to and including removal
@@ -956,13 +956,13 @@ Glossary
              print(piece)
 
    qualified name
-      A dotted name showing the "path" from a module's global scope to a
+      A dotted name showing the "path" kutoka a module's global scope to a
       class, function or method defined in that module, as defined in
       :pep:`3155`.  For top-level functions and classes, the qualified name
       is the same as the object's name::
 
-         >>> class C:
-         ...     class D:
+         >>> kundi C:
+         ...     kundi D:
          ...         def meth(self):
          ...             pass
          ...
@@ -977,7 +977,7 @@ Glossary
       entire dotted path to the module, including any parent packages,
       e.g. ``email.mime.text``::
 
-         >>> import email.mime.text
+         >>> agiza email.mime.text
          >>> email.mime.text.__name__
          'email.mime.text'
 
@@ -996,7 +996,7 @@ Glossary
       See also :term:`namespace package`.
 
    __slots__
-      A declaration inside a class that saves memory by pre-declaring space for
+      A declaration inside a kundi that saves memory by pre-declaring space for
       instance attributes and eliminating instance dictionaries.  Though
       popular, the technique is somewhat tricky to get right and is best
       reserved for rare cases where there are large numbers of instances in a
@@ -1078,7 +1078,7 @@ Glossary
       Type aliases are useful for simplifying :term:`type hints <type hint>`.
       For example::
 
-         from typing import List, Tuple
+         kutoka typing agiza List, Tuple
 
          def remove_gray_shades(
                  colors: List[Tuple[int, int, int]]) -> List[Tuple[int, int, int]]:
@@ -1086,7 +1086,7 @@ Glossary
 
       could be made more readable like this::
 
-         from typing import List, Tuple
+         kutoka typing agiza List, Tuple
 
          Color = Tuple[int, int, int]
 
@@ -1103,7 +1103,7 @@ Glossary
       they are useful to static type analysis tools, and aid IDEs with code
       completion and refactoring.
 
-      Type hints of global variables, class attributes, and functions,
+      Type hints of global variables, kundi attributes, and functions,
       but not local variables, can be accessed using
       :func:`typing.get_type_hints`.
 
@@ -1117,11 +1117,11 @@ Glossary
       :func:`bytes.splitlines` for an additional use.
 
    variable annotation
-      An :term:`annotation` of a variable or a class attribute.
+      An :term:`annotation` of a variable or a kundi attribute.
 
-      When annotating a variable or a class attribute, assignment is optional::
+      When annotating a variable or a kundi attribute, assignment is optional::
 
-         class C:
+         kundi C:
              field: 'annotation'
 
       Variable annotations are usually used for
@@ -1150,4 +1150,4 @@ Glossary
    Zen of Python
       Listing of Python design principles and philosophies that are helpful in
       understanding and using the language.  The listing can be found by typing
-      "``import this``" at the interactive prompt.
+      "``agiza this``" at the interactive prompt.

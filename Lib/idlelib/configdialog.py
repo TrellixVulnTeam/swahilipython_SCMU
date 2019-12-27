@@ -41,11 +41,11 @@ reloadables = (AutoComplete, CodeContext, ParenMatch, FormatParagraph,
                Squeezer)
 
 
-class ConfigDialog(Toplevel):
+kundi ConfigDialog(Toplevel):
     """Config dialog for IDLE.
     """
 
-    def __init__(self, parent, title='', *, _htest=False, _utest=False):
+    eleza __init__(self, parent, title='', *, _htest=False, _utest=False):
         """Show the tabbed dialog for user configuration.
 
         Args:
@@ -62,15 +62,15 @@ class ConfigDialog(Toplevel):
         """
         Toplevel.__init__(self, parent)
         self.parent = parent
-        if _htest:
+        ikiwa _htest:
             parent.instance_dict = {}
-        if not _utest:
+        ikiwa not _utest:
             self.withdraw()
 
         self.configure(borderwidth=5)
         self.title(title or 'IDLE Preferences')
         x = parent.winfo_rootx() + 20
-        y = parent.winfo_rooty() + (30 if not _htest else 150)
+        y = parent.winfo_rooty() + (30 ikiwa not _htest else 150)
         self.geometry(f'+{x}+{y}')
         # Each theme element key is its display name.
         # The first value of the tuple is the sample area tag name.
@@ -88,12 +88,12 @@ class ConfigDialog(Toplevel):
         # Attach callbacks after loading config to avoid calling them.
         tracers.attach()
 
-        if not _utest:
+        ikiwa not _utest:
             self.grab_set()
             self.wm_deiconify()
             self.wait_window()
 
-    def create_widgets(self):
+    eleza create_widgets(self):
         """Create and place widgets for tabbed dialog.
 
         Widgets Bound to self:
@@ -124,7 +124,7 @@ class ConfigDialog(Toplevel):
         note.pack(side=TOP, expand=TRUE, fill=BOTH)
         self.create_action_buttons().pack(side=BOTTOM)
 
-    def create_action_buttons(self):
+    eleza create_action_buttons(self):
         """Return frame of action buttons for dialog.
 
         Methods:
@@ -142,7 +142,7 @@ class ConfigDialog(Toplevel):
                     (no assignment): Button (help)
                 (no assignment): Frame
         """
-        if macosx.isAquaTk():
+        ikiwa macosx.isAquaTk():
             # Changing the default padding on OSX results in unreadable
             # text in the buttons.
             padding_args = {}
@@ -160,9 +160,9 @@ class ConfigDialog(Toplevel):
         # Add space above buttons.
         Frame(outer, height=2, borderwidth=0).pack(side=TOP)
         buttons.pack(side=BOTTOM)
-        return outer
+        rudisha outer
 
-    def ok(self):
+    eleza ok(self):
         """Apply config changes, then dismiss dialog.
 
         Methods:
@@ -172,7 +172,7 @@ class ConfigDialog(Toplevel):
         self.apply()
         self.destroy()
 
-    def apply(self):
+    eleza apply(self):
         """Apply config changes and leave dialog open.
 
         Methods:
@@ -185,7 +185,7 @@ class ConfigDialog(Toplevel):
         self.save_all_changed_extensions()
         self.activate_config_changes()
 
-    def cancel(self):
+    eleza cancel(self):
         """Dismiss config dialog.
 
         Methods:
@@ -193,13 +193,13 @@ class ConfigDialog(Toplevel):
         """
         self.destroy()
 
-    def destroy(self):
+    eleza destroy(self):
         global font_sample_text
         font_sample_text = self.fontpage.font_sample.get('1.0', 'end')
         self.grab_release()
         super().destroy()
 
-    def help(self):
+    eleza help(self):
         """Create textview for config dialog help.
 
         Attributes accessed:
@@ -212,7 +212,7 @@ class ConfigDialog(Toplevel):
         view_text(self, title='Help for IDLE preferences',
                  text=help_common+help_pages.get(page, ''))
 
-    def deactivate_current_config(self):
+    eleza deactivate_current_config(self):
         """Remove current key bindings.
         Iterate over window instances defined in parent and remove
         the keybindings.
@@ -223,7 +223,7 @@ class ConfigDialog(Toplevel):
         for instance in win_instances:
             instance.RemoveKeybindings()
 
-    def activate_config_changes(self):
+    eleza activate_config_changes(self):
         """Apply configuration changes to current windows.
 
         Dynamically update the current parent window instances
@@ -239,7 +239,7 @@ class ConfigDialog(Toplevel):
         for klass in reloadables:
             klass.reload()
 
-    def create_page_extensions(self):
+    eleza create_page_extensions(self):
         """Part of the config dialog used for configuring IDLE extensions.
 
         This code is generic - it works for any and all IDLE extensions.
@@ -299,9 +299,9 @@ class ConfigDialog(Toplevel):
         self.extension_list.selection_set(0)
         self.extension_selected(None)
 
-        return frame
+        rudisha frame
 
-    def load_extensions(self):
+    eleza load_extensions(self):
         "Fill self.extensions with data kutoka the default and user configs."
         self.extensions = {}
         for ext_name in idleConf.GetExtensions(active_only=False):
@@ -313,7 +313,7 @@ class ConfigDialog(Toplevel):
 
             # Bring 'enable' options to the beginning of the list.
             enables = [opt_name for opt_name in opt_list
-                       if opt_name.startswith('enable')]
+                       ikiwa opt_name.startswith('enable')]
             for opt_name in enables:
                 opt_list.remove(opt_name)
             opt_list = enables + opt_list
@@ -347,22 +347,22 @@ class ConfigDialog(Toplevel):
                                                   'var': var,
                                                  })
 
-    def extension_selected(self, event):
+    eleza extension_selected(self, event):
         "Handle selection of an extension kutoka the list."
         newsel = self.extension_list.curselection()
-        if newsel:
+        ikiwa newsel:
             newsel = self.extension_list.get(newsel)
-        if newsel is None or newsel != self.current_extension:
-            if self.current_extension:
+        ikiwa newsel is None or newsel != self.current_extension:
+            ikiwa self.current_extension:
                 self.details_frame.config(text='')
                 self.config_frame[self.current_extension].grid_forget()
                 self.current_extension = None
-        if newsel:
+        ikiwa newsel:
             self.details_frame.config(text=newsel)
             self.config_frame[newsel].grid(column=0, row=0, sticky='nsew')
             self.current_extension = newsel
 
-    def create_extension_frame(self, ext_name):
+    eleza create_extension_frame(self, ext_name):
         """Create a frame holding the widgets to configure one extension"""
         f = VerticalScrolledFrame(self.details_frame, height=250, width=250)
         self.config_frame[ext_name] = f
@@ -373,11 +373,11 @@ class ConfigDialog(Toplevel):
             label = Label(entry_area, text=opt['name'])
             label.grid(row=row, column=0, sticky=NW)
             var = opt['var']
-            if opt['type'] == 'bool':
+            ikiwa opt['type'] == 'bool':
                 Checkbutton(entry_area, variable=var,
                             onvalue='True', offvalue='False', width=8
                             ).grid(row=row, column=1, sticky=W, padx=7)
-            elif opt['type'] == 'int':
+            elikiwa opt['type'] == 'int':
                 Entry(entry_area, textvariable=var, validate='key',
                       validatecommand=(self.is_int, '%P'), width=10
                       ).grid(row=row, column=1, sticky=NSEW, padx=7)
@@ -388,8 +388,8 @@ class ConfigDialog(Toplevel):
                       ).grid(row=row, column=1, sticky=NSEW, padx=7)
         return
 
-    def set_extension_value(self, section, opt):
-        """Return True if the configuration was added or changed.
+    eleza set_extension_value(self, section, opt):
+        """Return True ikiwa the configuration was added or changed.
 
         If the value is the same as the default, then remove it
         kutoka user config file.
@@ -398,14 +398,14 @@ class ConfigDialog(Toplevel):
         default = opt['default']
         value = opt['var'].get().strip() or default
         opt['var'].set(value)
-        # if self.defaultCfg.has_section(section):
-        # Currently, always true; if not, indent to return.
-        if (value == default):
-            return self.ext_userCfg.RemoveOption(section, name)
+        # ikiwa self.defaultCfg.has_section(section):
+        # Currently, always true; ikiwa not, indent to return.
+        ikiwa (value == default):
+            rudisha self.ext_userCfg.RemoveOption(section, name)
         # Set the option.
-        return self.ext_userCfg.SetOption(section, name, value)
+        rudisha self.ext_userCfg.SetOption(section, name, value)
 
-    def save_all_changed_extensions(self):
+    eleza save_all_changed_extensions(self):
         """Save configuration changes to the user config file.
 
         Attributes accessed:
@@ -418,26 +418,26 @@ class ConfigDialog(Toplevel):
         for ext_name in self.extensions:
             options = self.extensions[ext_name]
             for opt in options:
-                if self.set_extension_value(ext_name, opt):
+                ikiwa self.set_extension_value(ext_name, opt):
                     has_changes = True
-        if has_changes:
+        ikiwa has_changes:
             self.ext_userCfg.Save()
 
 
-# class TabPage(Frame):  # A template for Page classes.
-#     def __init__(self, master):
+# kundi TabPage(Frame):  # A template for Page classes.
+#     eleza __init__(self, master):
 #         super().__init__(master)
 #         self.create_page_tab()
 #         self.load_tab_cfg()
-#     def create_page_tab(self):
+#     eleza create_page_tab(self):
 #         # Define tk vars and register var and callback with tracers.
 #         # Create subframes and widgets.
 #         # Pack widgets.
-#     def load_tab_cfg(self):
+#     eleza load_tab_cfg(self):
 #         # Initialize widgets with data kutoka idleConf.
-#     def var_changed_var_name():
+#     eleza var_changed_var_name():
 #         # For each tk var that needs other than default callback.
-#     def other_methods():
+#     eleza other_methods():
 #         # Define tab-specific behavior.
 
 font_sample_text = (
@@ -470,16 +470,16 @@ font_sample_text = (
     )
 
 
-class FontPage(Frame):
+kundi FontPage(Frame):
 
-    def __init__(self, master, highpage):
+    eleza __init__(self, master, highpage):
         super().__init__(master)
         self.highlight_sample = highpage.highlight_sample
         self.create_page_font_tab()
         self.load_font_cfg()
         self.load_tab_cfg()
 
-    def create_page_font_tab(self):
+    eleza create_page_font_tab(self):
         """Return frame of widgets for Font/Tabs tab.
 
         Fonts: Enable users to provisionally change font face, size, or
@@ -495,7 +495,7 @@ class FontPage(Frame):
         on_fontlist_select(), which sets var font_name.
 
         Sizelist: clicking the menubutton opens the dropdown menu. A
-        mouse button 1 click or return key sets var font_size.
+        mouse button 1 click or rudisha key sets var font_size.
 
         Bold_toggle: clicking the box toggles var font_bold.
 
@@ -567,7 +567,7 @@ class FontPage(Frame):
                 text='Python Standard: 4 Spaces!')
         self.indent_scale = Scale(
                 frame_indent, variable=self.space_num,
-                orient='horizontal', tickinterval=2, from_=2, to=16)
+                orient='horizontal', tickinterval=2, kutoka_=2, to=16)
 
         # Grid and pack widgets:
         self.columnconfigure(1, weight=1)
@@ -591,7 +591,7 @@ class FontPage(Frame):
         indent_title.pack(side=TOP, anchor=W, padx=5)
         self.indent_scale.pack(side=TOP, padx=5, fill=X)
 
-    def load_font_cfg(self):
+    eleza load_font_cfg(self):
         """Load current configuration settings for the font options.
 
         Retrieve current font with idleConf.GetFont and font families
@@ -626,7 +626,7 @@ class FontPage(Frame):
         self.font_bold.set(font_bold)
         self.set_samples()
 
-    def var_changed_font(self, *params):
+    eleza var_changed_font(self, *params):
         """Store changes to font attributes.
 
         When one font attribute changes, save them all, as they are
@@ -641,17 +641,17 @@ class FontPage(Frame):
         changes.add_option('main', 'EditorWindow', 'font-bold', value)
         self.set_samples()
 
-    def on_fontlist_select(self, event):
+    eleza on_fontlist_select(self, event):
         """Handle selecting a font kutoka the list.
 
         Event can result kutoka either mouse click or Up or Down key.
         Set font_name and example displays to selection.
         """
         font = self.fontlist.get(
-                ACTIVE if event.type.name == 'KeyRelease' else ANCHOR)
+                ACTIVE ikiwa event.type.name == 'KeyRelease' else ANCHOR)
         self.font_name.set(font.lower())
 
-    def set_samples(self, event=None):
+    eleza set_samples(self, event=None):
         """Update update both screen samples with the font settings.
 
         Called on font initialization and change events.
@@ -659,12 +659,12 @@ class FontPage(Frame):
         Updates font_sample and highlight page highlight_sample.
         """
         font_name = self.font_name.get()
-        font_weight = tkFont.BOLD if self.font_bold.get() else tkFont.NORMAL
+        font_weight = tkFont.BOLD ikiwa self.font_bold.get() else tkFont.NORMAL
         new_font = (font_name, self.font_size.get(), font_weight)
         self.font_sample['font'] = new_font
         self.highlight_sample['font'] = new_font
 
-    def load_tab_cfg(self):
+    eleza load_tab_cfg(self):
         """Load current configuration settings for the tab options.
 
         Attributes updated:
@@ -675,35 +675,35 @@ class FontPage(Frame):
             'main', 'Indent', 'num-spaces', default=4, type='int')
         self.space_num.set(space_num)
 
-    def var_changed_space_num(self, *params):
+    eleza var_changed_space_num(self, *params):
         "Store change to indentation size."
         value = self.space_num.get()
         changes.add_option('main', 'Indent', 'num-spaces', value)
 
 
-class HighPage(Frame):
+kundi HighPage(Frame):
 
-    def __init__(self, master):
+    eleza __init__(self, master):
         super().__init__(master)
         self.cd = master.master
         self.style = Style(master)
         self.create_page_highlight()
         self.load_theme_cfg()
 
-    def create_page_highlight(self):
+    eleza create_page_highlight(self):
         """Return frame of widgets for Highlighting tab.
 
         Enable users to provisionally change foreground and background
         colors applied to textual tags.  Color mappings are stored in
         complete listings called themes.  Built-in themes in
-        idlelib/config-highlight.def are fixed as far as the dialog is
+        idlelib/config-highlight.eleza are fixed as far as the dialog is
         concerned. Any theme can be used as the base for a new custom
         theme, stored in .idlerc/config-highlight.cfg.
 
         Function load_theme_cfg() initializes tk variables and theme
         lists and calls paint_theme_sample() and set_highlight_target()
         for the current theme.  Radiobuttons builtin_theme_on and
-        custom_theme_on toggle var theme_source, which controls if the
+        custom_theme_on toggle var theme_source, which controls ikiwa the
         current set of colors are kutoka a builtin or custom theme.
         DynOptionMenus builtinlist and customlist contain lists of the
         builtin and custom themes, respectively, and the current item
@@ -732,7 +732,7 @@ class HighPage(Frame):
         and its colors to idleConf.userCfg['highlight'].
 
         Radiobuttons fg_on and bg_on toggle var fg_bg_toggle to control
-        if the current selected color for a tag is for the foreground or
+        ikiwa the current selected color for a tag is for the foreground or
         background.
 
         DynOptionMenu targetlist contains a readable description of the
@@ -878,7 +878,7 @@ class HighPage(Frame):
                         f'{lineno:{len(str(n_lines))}d} ',
                         'linenumber')
         for element in self.theme_elements:
-            def tem(event, elem=element):
+            eleza tem(event, elem=element):
                 # event.widget.winfo_top_level().highlight_target.set(elem)
                 self.highlight_target.set(elem)
             text.tag_bind(
@@ -943,7 +943,7 @@ class HighPage(Frame):
         self.button_delete_custom.pack(side=TOP, fill=X, padx=5, pady=5)
         self.theme_message.pack(side=TOP, fill=X, pady=5)
 
-    def load_theme_cfg(self):
+    eleza load_theme_cfg(self):
         """Load current configuration settings for the theme options.
 
         Based on the theme_source toggle, the theme is set as
@@ -954,7 +954,7 @@ class HighPage(Frame):
             theme_source: Set kutoka idleConf.
             builtinlist: List of default themes kutoka idleConf.
             customlist: List of custom themes kutoka idleConf.
-            custom_theme_on: Disabled if there are no custom themes.
+            custom_theme_on: Disabled ikiwa there are no custom themes.
             custom_theme: Message with additional information.
             targetlist: Create menu kutoka self.theme_elements.
 
@@ -969,13 +969,13 @@ class HighPage(Frame):
         # Set current theme.
         current_option = idleConf.CurrentTheme()
         # Load available theme option menus.
-        if self.theme_source.get():  # Default theme selected.
+        ikiwa self.theme_source.get():  # Default theme selected.
             item_list = idleConf.GetSectionList('default', 'highlight')
             item_list.sort()
             self.builtinlist.SetMenu(item_list, current_option)
             item_list = idleConf.GetSectionList('user', 'highlight')
             item_list.sort()
-            if not item_list:
+            ikiwa not item_list:
                 self.custom_theme_on.state(('disabled',))
                 self.custom_name.set('- no custom themes -')
             else:
@@ -995,7 +995,7 @@ class HighPage(Frame):
         self.paint_theme_sample()
         self.set_highlight_target()
 
-    def var_changed_builtin_name(self, *params):
+    eleza var_changed_builtin_name(self, *params):
         """Process new builtin theme selection.
 
         Add the changed theme's name to the changed_items and recreate
@@ -1003,8 +1003,8 @@ class HighPage(Frame):
         """
         old_themes = ('IDLE Classic', 'IDLE New')
         value = self.builtin_name.get()
-        if value not in old_themes:
-            if idleConf.GetOption('main', 'Theme', 'name') not in old_themes:
+        ikiwa value not in old_themes:
+            ikiwa idleConf.GetOption('main', 'Theme', 'name') not in old_themes:
                 changes.add_option('main', 'Theme', 'name', old_themes[0])
             changes.add_option('main', 'Theme', 'name2', value)
             self.theme_message['text'] = 'New theme, see Help'
@@ -1014,18 +1014,18 @@ class HighPage(Frame):
             self.theme_message['text'] = ''
         self.paint_theme_sample()
 
-    def var_changed_custom_name(self, *params):
+    eleza var_changed_custom_name(self, *params):
         """Process new custom theme selection.
 
         If a new custom theme is selected, add the name to the
         changed_items and apply the theme to the sample.
         """
         value = self.custom_name.get()
-        if value != '- no custom themes -':
+        ikiwa value != '- no custom themes -':
             changes.add_option('main', 'Theme', 'name', value)
             self.paint_theme_sample()
 
-    def var_changed_theme_source(self, *params):
+    eleza var_changed_theme_source(self, *params):
         """Process toggle between builtin and custom theme.
 
         Update the default toggle value and apply the newly
@@ -1033,20 +1033,20 @@ class HighPage(Frame):
         """
         value = self.theme_source.get()
         changes.add_option('main', 'Theme', 'default', value)
-        if value:
+        ikiwa value:
             self.var_changed_builtin_name()
         else:
             self.var_changed_custom_name()
 
-    def var_changed_color(self, *params):
+    eleza var_changed_color(self, *params):
         "Process change to color choice."
         self.on_new_color_set()
 
-    def var_changed_highlight_target(self, *params):
+    eleza var_changed_highlight_target(self, *params):
         "Process selection of new target tag for highlighting."
         self.set_highlight_target()
 
-    def set_theme_type(self):
+    eleza set_theme_type(self):
         """Set available screen options based on builtin or custom theme.
 
         Attributes accessed:
@@ -1064,7 +1064,7 @@ class HighPage(Frame):
             create_new
             load_theme_cfg
         """
-        if self.theme_source.get():
+        ikiwa self.theme_source.get():
             self.builtinlist['state'] = 'normal'
             self.customlist['state'] = 'disabled'
             self.button_delete_custom.state(('disabled',))
@@ -1074,7 +1074,7 @@ class HighPage(Frame):
             self.customlist['state'] = 'normal'
             self.button_delete_custom.state(('!disabled',))
 
-    def get_color(self):
+    eleza get_color(self):
         """Handle button to select a new color for the target tag.
 
         If a new color is selected while using a builtin theme, a
@@ -1098,13 +1098,13 @@ class HighPage(Frame):
         rgbTuplet, color_string = tkColorChooser.askcolor(
                 parent=self, title='Pick new color for : '+target,
                 initialcolor=prev_color)
-        if color_string and (color_string != prev_color):
+        ikiwa color_string and (color_string != prev_color):
             # User didn't cancel and they chose a new color.
-            if self.theme_source.get():  # Current theme is a built-in.
+            ikiwa self.theme_source.get():  # Current theme is a built-in.
                 message = ('Your changes will be saved as a new Custom Theme. '
                            'Enter a name for your new Custom Theme below.')
                 new_theme = self.get_new_theme_name(message)
-                if not new_theme:  # User cancelled custom theme creation.
+                ikiwa not new_theme:  # User cancelled custom theme creation.
                     return
                 else:  # Create new custom theme based on previously active theme.
                     self.create_new(new_theme)
@@ -1112,26 +1112,26 @@ class HighPage(Frame):
             else:  # Current theme is user defined.
                 self.color.set(color_string)
 
-    def on_new_color_set(self):
+    eleza on_new_color_set(self):
         "Display sample of new color selection on the dialog."
         new_color = self.color.get()
         self.style.configure('frame_color_set.TFrame', background=new_color)
-        plane = 'foreground' if self.fg_bg_toggle.get() else 'background'
+        plane = 'foreground' ikiwa self.fg_bg_toggle.get() else 'background'
         sample_element = self.theme_elements[self.highlight_target.get()][0]
         self.highlight_sample.tag_config(sample_element, **{plane: new_color})
         theme = self.custom_name.get()
         theme_element = sample_element + '-' + plane
         changes.add_option('highlight', theme, theme_element, new_color)
 
-    def get_new_theme_name(self, message):
+    eleza get_new_theme_name(self, message):
         "Return name of new theme kutoka query popup."
         used_names = (idleConf.GetSectionList('user', 'highlight') +
                 idleConf.GetSectionList('default', 'highlight'))
         new_theme = SectionName(
                 self, 'New Custom Theme', message, used_names).result
-        return new_theme
+        rudisha new_theme
 
-    def save_as_new_theme(self):
+    eleza save_as_new_theme(self):
         """Prompt for new theme name and create the theme.
 
         Methods:
@@ -1139,10 +1139,10 @@ class HighPage(Frame):
             create_new
         """
         new_theme_name = self.get_new_theme_name('New Theme Name:')
-        if new_theme_name:
+        ikiwa new_theme_name:
             self.create_new(new_theme_name)
 
-    def create_new(self, new_theme_name):
+    eleza create_new(self, new_theme_name):
         """Create a new custom theme with the given name.
 
         Create the new theme based on the previously active theme
@@ -1161,7 +1161,7 @@ class HighPage(Frame):
             save_new
             set_theme_type
         """
-        if self.theme_source.get():
+        ikiwa self.theme_source.get():
             theme_type = 'default'
             theme_name = self.builtin_name.get()
         else:
@@ -1169,7 +1169,7 @@ class HighPage(Frame):
             theme_name = self.custom_name.get()
         new_theme = idleConf.GetThemeDict(theme_type, theme_name)
         # Apply any of the old theme's unsaved changes to the new theme.
-        if theme_name in changes['highlight']:
+        ikiwa theme_name in changes['highlight']:
             theme_changes = changes['highlight'][theme_name]
             for element in theme_changes:
                 new_theme[element] = theme_changes[element]
@@ -1182,7 +1182,7 @@ class HighPage(Frame):
         self.theme_source.set(0)
         self.set_theme_type()
 
-    def set_highlight_target(self):
+    eleza set_highlight_target(self):
         """Set fg/bg toggle and color based on highlight tag target.
 
         Instance variables accessed:
@@ -1200,7 +1200,7 @@ class HighPage(Frame):
             var_changed_highlight_target
             load_theme_cfg
         """
-        if self.highlight_target.get() == 'Cursor':  # bg not possible
+        ikiwa self.highlight_target.get() == 'Cursor':  # bg not possible
             self.fg_on.state(('disabled',))
             self.bg_on.state(('disabled',))
             self.fg_bg_toggle.set(1)
@@ -1210,7 +1210,7 @@ class HighPage(Frame):
             self.fg_bg_toggle.set(1)
         self.set_color_sample()
 
-    def set_color_sample_binding(self, *args):
+    eleza set_color_sample_binding(self, *args):
         """Change color sample based on foreground/background toggle.
 
         Methods:
@@ -1218,7 +1218,7 @@ class HighPage(Frame):
         """
         self.set_color_sample()
 
-    def set_color_sample(self):
+    eleza set_color_sample(self):
         """Set the color of the frame background to reflect the selected target.
 
         Instance variables accessed:
@@ -1232,11 +1232,11 @@ class HighPage(Frame):
         """
         # Set the color sample area.
         tag = self.theme_elements[self.highlight_target.get()][0]
-        plane = 'foreground' if self.fg_bg_toggle.get() else 'background'
+        plane = 'foreground' ikiwa self.fg_bg_toggle.get() else 'background'
         color = self.highlight_sample.tag_cget(tag, plane)
         self.style.configure('frame_color_set.TFrame', background=color)
 
-    def paint_theme_sample(self):
+    eleza paint_theme_sample(self):
         """Apply the theme colors to each element tag in the sample text.
 
         Instance attributes accessed:
@@ -1256,43 +1256,43 @@ class HighPage(Frame):
             var_changed_custom_name
             load_theme_cfg
         """
-        if self.theme_source.get():  # Default theme
+        ikiwa self.theme_source.get():  # Default theme
             theme = self.builtin_name.get()
         else:  # User theme
             theme = self.custom_name.get()
         for element_title in self.theme_elements:
             element = self.theme_elements[element_title][0]
             colors = idleConf.GetHighlight(theme, element)
-            if element == 'cursor':  # Cursor sample needs special painting.
+            ikiwa element == 'cursor':  # Cursor sample needs special painting.
                 colors['background'] = idleConf.GetHighlight(
                         theme, 'normal')['background']
             # Handle any unsaved changes to this theme.
-            if theme in changes['highlight']:
+            ikiwa theme in changes['highlight']:
                 theme_dict = changes['highlight'][theme]
-                if element + '-foreground' in theme_dict:
+                ikiwa element + '-foreground' in theme_dict:
                     colors['foreground'] = theme_dict[element + '-foreground']
-                if element + '-background' in theme_dict:
+                ikiwa element + '-background' in theme_dict:
                     colors['background'] = theme_dict[element + '-background']
             self.highlight_sample.tag_config(element, **colors)
         self.set_color_sample()
 
-    def save_new(self, theme_name, theme):
+    eleza save_new(self, theme_name, theme):
         """Save a newly created theme to idleConf.
 
         theme_name - string, the name of the new theme
         theme - dictionary containing the new theme
         """
-        if not idleConf.userCfg['highlight'].has_section(theme_name):
+        ikiwa not idleConf.userCfg['highlight'].has_section(theme_name):
             idleConf.userCfg['highlight'].add_section(theme_name)
         for element in theme:
             value = theme[element]
             idleConf.userCfg['highlight'].SetOption(theme_name, element, value)
 
-    def askyesno(self, *args, **kwargs):
+    eleza askyesno(self, *args, **kwargs):
         # Make testing easier.  Could change implementation.
-        return messagebox.askyesno(*args, **kwargs)
+        rudisha messagebox.askyesno(*args, **kwargs)
 
-    def delete_custom(self):
+    eleza delete_custom(self):
         """Handle event to delete custom theme.
 
         The current theme is deactivated and the default theme is
@@ -1316,7 +1316,7 @@ class HighPage(Frame):
         """
         theme_name = self.custom_name.get()
         delmsg = 'Are you sure you wish to delete the theme %r ?'
-        if not self.askyesno(
+        ikiwa not self.askyesno(
                 'Delete Theme',  delmsg % theme_name, parent=self):
             return
         self.cd.deactivate_current_config()
@@ -1325,7 +1325,7 @@ class HighPage(Frame):
         # Reload user theme list.
         item_list = idleConf.GetSectionList('user', 'highlight')
         item_list.sort()
-        if not item_list:
+        ikiwa not item_list:
             self.custom_theme_on.state(('disabled',))
             self.customlist.SetMenu(item_list, '- no custom themes -')
         else:
@@ -1340,28 +1340,28 @@ class HighPage(Frame):
         self.set_theme_type()
 
 
-class KeysPage(Frame):
+kundi KeysPage(Frame):
 
-    def __init__(self, master):
+    eleza __init__(self, master):
         super().__init__(master)
         self.cd = master.master
         self.create_page_keys()
         self.load_key_cfg()
 
-    def create_page_keys(self):
+    eleza create_page_keys(self):
         """Return frame of widgets for Keys tab.
 
         Enable users to provisionally change both individual and sets of
         keybindings (shortcut keys). Except for features implemented as
         extensions, keybindings are stored in complete sets called
-        keysets. Built-in keysets in idlelib/config-keys.def are fixed
+        keysets. Built-in keysets in idlelib/config-keys.eleza are fixed
         as far as the dialog is concerned. Any keyset can be used as the
         base for a new custom keyset, stored in .idlerc/config-keys.cfg.
 
         Function load_key_cfg() initializes tk variables and keyset
         lists and calls load_keys_list for the current keyset.
         Radiobuttons builtin_keyset_on and custom_keyset_on toggle var
-        keyset_source, which controls if the current set of keybindings
+        keyset_source, which controls ikiwa the current set of keybindings
         are kutoka a builtin or custom keyset. DynOptionMenus builtinlist
         and customlist contain lists of the builtin and custom keysets,
         respectively, and the current item kutoka each list is stored in
@@ -1391,7 +1391,7 @@ class KeysPage(Frame):
         is a builtin, function get_new_keys_name() will be called
         for input of a custom keyset name.  If no name is given, then the
         change to the keybinding will abort and no updates will be made.  If
-        a custom name is entered in the prompt or if the current keyset was
+        a custom name is entered in the prompt or ikiwa the current keyset was
         already custom (and thus didn't require a prompt), then
         idleConf.userCfg['keys'] is updated in function create_new_key_set()
         with the change to the event binding.  The item listing in bindingslist
@@ -1508,7 +1508,7 @@ class KeysPage(Frame):
         frames[0].pack(side=TOP, fill=BOTH, expand=True)
         frames[1].pack(side=TOP, fill=X, expand=True, pady=2)
 
-    def load_key_cfg(self):
+    eleza load_key_cfg(self):
         "Load current configuration settings for the keybinding options."
         # Set current keys type radiobutton.
         self.keyset_source.set(idleConf.GetOption(
@@ -1516,13 +1516,13 @@ class KeysPage(Frame):
         # Set current keys.
         current_option = idleConf.CurrentKeys()
         # Load available keyset option menus.
-        if self.keyset_source.get():  # Default theme selected.
+        ikiwa self.keyset_source.get():  # Default theme selected.
             item_list = idleConf.GetSectionList('default', 'keys')
             item_list.sort()
             self.builtinlist.SetMenu(item_list, current_option)
             item_list = idleConf.GetSectionList('user', 'keys')
             item_list.sort()
-            if not item_list:
+            ikiwa not item_list:
                 self.custom_keyset_on.state(('disabled',))
                 self.custom_name.set('- no custom keys -')
             else:
@@ -1539,7 +1539,7 @@ class KeysPage(Frame):
         keyset_name = idleConf.CurrentKeys()
         self.load_keys_list(keyset_name)
 
-    def var_changed_builtin_name(self, *params):
+    eleza var_changed_builtin_name(self, *params):
         "Process selection of builtin key set."
         old_keys = (
             'IDLE Classic Windows',
@@ -1548,8 +1548,8 @@ class KeysPage(Frame):
             'IDLE Classic OSX',
         )
         value = self.builtin_name.get()
-        if value not in old_keys:
-            if idleConf.GetOption('main', 'Keys', 'name') not in old_keys:
+        ikiwa value not in old_keys:
+            ikiwa idleConf.GetOption('main', 'Keys', 'name') not in old_keys:
                 changes.add_option('main', 'Keys', 'name', old_keys[0])
             changes.add_option('main', 'Keys', 'name2', value)
             self.keys_message['text'] = 'New key set, see Help'
@@ -1559,37 +1559,37 @@ class KeysPage(Frame):
             self.keys_message['text'] = ''
         self.load_keys_list(value)
 
-    def var_changed_custom_name(self, *params):
+    eleza var_changed_custom_name(self, *params):
         "Process selection of custom key set."
         value = self.custom_name.get()
-        if value != '- no custom keys -':
+        ikiwa value != '- no custom keys -':
             changes.add_option('main', 'Keys', 'name', value)
             self.load_keys_list(value)
 
-    def var_changed_keyset_source(self, *params):
+    eleza var_changed_keyset_source(self, *params):
         "Process toggle between builtin key set and custom key set."
         value = self.keyset_source.get()
         changes.add_option('main', 'Keys', 'default', value)
-        if value:
+        ikiwa value:
             self.var_changed_builtin_name()
         else:
             self.var_changed_custom_name()
 
-    def var_changed_keybinding(self, *params):
+    eleza var_changed_keybinding(self, *params):
         "Store change to a keybinding."
         value = self.keybinding.get()
         key_set = self.custom_name.get()
         event = self.bindingslist.get(ANCHOR).split()[0]
-        if idleConf.IsCoreBinding(event):
+        ikiwa idleConf.IsCoreBinding(event):
             changes.add_option('keys', key_set, event, value)
         else:  # Event is an extension binding.
             ext_name = idleConf.GetExtnNameForEvent(event)
             ext_keybind_section = ext_name + '_cfgBindings'
             changes.add_option('extensions', ext_keybind_section, event, value)
 
-    def set_keys_type(self):
+    eleza set_keys_type(self):
         "Set available screen options based on builtin or custom key set."
-        if self.keyset_source.get():
+        ikiwa self.keyset_source.get():
             self.builtinlist['state'] = 'normal'
             self.customlist['state'] = 'disabled'
             self.button_delete_custom_keys.state(('disabled',))
@@ -1599,7 +1599,7 @@ class KeysPage(Frame):
             self.customlist['state'] = 'normal'
             self.button_delete_custom_keys.state(('!disabled',))
 
-    def get_new_keys(self):
+    eleza get_new_keys(self):
         """Handle event to change key binding for selected line.
 
         A selection of a key/binding in the list of current
@@ -1611,24 +1611,24 @@ class KeysPage(Frame):
         list_index = self.bindingslist.index(ANCHOR)
         binding = self.bindingslist.get(list_index)
         bind_name = binding.split()[0]
-        if self.keyset_source.get():
+        ikiwa self.keyset_source.get():
             current_key_set_name = self.builtin_name.get()
         else:
             current_key_set_name = self.custom_name.get()
         current_bindings = idleConf.GetCurrentKeySet()
-        if current_key_set_name in changes['keys']:  # unsaved changes
+        ikiwa current_key_set_name in changes['keys']:  # unsaved changes
             key_set_changes = changes['keys'][current_key_set_name]
             for event in key_set_changes:
                 current_bindings[event] = key_set_changes[event].split()
         current_key_sequences = list(current_bindings.values())
         new_keys = GetKeysDialog(self, 'Get New Keys', bind_name,
                 current_key_sequences).result
-        if new_keys:
-            if self.keyset_source.get():  # Current key set is a built-in.
+        ikiwa new_keys:
+            ikiwa self.keyset_source.get():  # Current key set is a built-in.
                 message = ('Your changes will be saved as a new Custom Key Set.'
                            ' Enter a name for your new Custom Key Set below.')
                 new_keyset = self.get_new_keys_name(message)
-                if not new_keyset:  # User cancelled custom key set creation.
+                ikiwa not new_keyset:  # User cancelled custom key set creation.
                     self.bindingslist.select_set(list_index)
                     self.bindingslist.select_anchor(list_index)
                     return
@@ -1643,31 +1643,31 @@ class KeysPage(Frame):
             self.bindingslist.select_set(list_index)
             self.bindingslist.select_anchor(list_index)
 
-    def get_new_keys_name(self, message):
+    eleza get_new_keys_name(self, message):
         "Return new key set name kutoka query popup."
         used_names = (idleConf.GetSectionList('user', 'keys') +
                 idleConf.GetSectionList('default', 'keys'))
         new_keyset = SectionName(
                 self, 'New Custom Key Set', message, used_names).result
-        return new_keyset
+        rudisha new_keyset
 
-    def save_as_new_key_set(self):
+    eleza save_as_new_key_set(self):
         "Prompt for name of new key set and save changes using that name."
         new_keys_name = self.get_new_keys_name('New Key Set Name:')
-        if new_keys_name:
+        ikiwa new_keys_name:
             self.create_new_key_set(new_keys_name)
 
-    def on_bindingslist_select(self, event):
+    eleza on_bindingslist_select(self, event):
         "Activate button to assign new keys to selected action."
         self.button_new_keys.state(('!disabled',))
 
-    def create_new_key_set(self, new_key_set_name):
+    eleza create_new_key_set(self, new_key_set_name):
         """Create a new custom key set with the given name.
 
         Copy the bindings/keys kutoka the previously active keyset
         to the new keyset and activate the new custom keyset.
         """
-        if self.keyset_source.get():
+        ikiwa self.keyset_source.get():
             prev_key_set_name = self.builtin_name.get()
         else:
             prev_key_set_name = self.custom_name.get()
@@ -1678,7 +1678,7 @@ class KeysPage(Frame):
             binding = ' '.join(prev_keys[event])
             new_keys[event_name] = binding
         # Handle any unsaved changes to prev key set.
-        if prev_key_set_name in changes['keys']:
+        ikiwa prev_key_set_name in changes['keys']:
             key_set_changes = changes['keys'][prev_key_set_name]
             for event in key_set_changes:
                 new_keys[event] = key_set_changes[event]
@@ -1691,13 +1691,13 @@ class KeysPage(Frame):
         self.keyset_source.set(0)
         self.set_keys_type()
 
-    def load_keys_list(self, keyset_name):
+    eleza load_keys_list(self, keyset_name):
         """Reload the list of action/key binding pairs for the active key set.
 
         An action/key binding can be selected to change the key binding.
         """
         reselect = False
-        if self.bindingslist.curselection():
+        ikiwa self.bindingslist.curselection():
             reselect = True
             list_index = self.bindingslist.index(ANCHOR)
         keyset = idleConf.GetKeySet(keyset_name)
@@ -1707,18 +1707,18 @@ class KeysPage(Frame):
         for bind_name in bind_names:
             key = ' '.join(keyset[bind_name])
             bind_name = bind_name[2:-2]  # Trim off the angle brackets.
-            if keyset_name in changes['keys']:
+            ikiwa keyset_name in changes['keys']:
                 # Handle any unsaved changes to this key set.
-                if bind_name in changes['keys'][keyset_name]:
+                ikiwa bind_name in changes['keys'][keyset_name]:
                     key = changes['keys'][keyset_name][bind_name]
             self.bindingslist.insert(END, bind_name+' - '+key)
-        if reselect:
+        ikiwa reselect:
             self.bindingslist.see(list_index)
             self.bindingslist.select_set(list_index)
             self.bindingslist.select_anchor(list_index)
 
     @staticmethod
-    def save_new_key_set(keyset_name, keyset):
+    eleza save_new_key_set(keyset_name, keyset):
         """Save a newly created core key set.
 
         Add keyset to idleConf.userCfg['keys'], not to disk.
@@ -1728,17 +1728,17 @@ class KeysPage(Frame):
         keyset_name - string, the name of the new key set
         keyset - dictionary containing the new keybindings
         """
-        if not idleConf.userCfg['keys'].has_section(keyset_name):
+        ikiwa not idleConf.userCfg['keys'].has_section(keyset_name):
             idleConf.userCfg['keys'].add_section(keyset_name)
         for event in keyset:
             value = keyset[event]
             idleConf.userCfg['keys'].SetOption(keyset_name, event, value)
 
-    def askyesno(self, *args, **kwargs):
+    eleza askyesno(self, *args, **kwargs):
         # Make testing easier.  Could change implementation.
-        return messagebox.askyesno(*args, **kwargs)
+        rudisha messagebox.askyesno(*args, **kwargs)
 
-    def delete_custom_keys(self):
+    eleza delete_custom_keys(self):
         """Handle event to delete a custom key set.
 
         Applying the delete deactivates the current configuration and
@@ -1747,7 +1747,7 @@ class KeysPage(Frame):
         """
         keyset_name = self.custom_name.get()
         delmsg = 'Are you sure you wish to delete the key set %r ?'
-        if not self.askyesno(
+        ikiwa not self.askyesno(
                 'Delete Key Set',  delmsg % keyset_name, parent=self):
             return
         self.cd.deactivate_current_config()
@@ -1756,7 +1756,7 @@ class KeysPage(Frame):
         # Reload user key set list.
         item_list = idleConf.GetSectionList('user', 'keys')
         item_list.sort()
-        if not item_list:
+        ikiwa not item_list:
             self.custom_keyset_on.state(('disabled',))
             self.customlist.SetMenu(item_list, '- no custom keys -')
         else:
@@ -1773,23 +1773,23 @@ class KeysPage(Frame):
         self.set_keys_type()
 
 
-class GenPage(Frame):
+kundi GenPage(Frame):
 
-    def __init__(self, master):
+    eleza __init__(self, master):
         super().__init__(master)
 
         self.init_validators()
         self.create_page_general()
         self.load_general_cfg()
 
-    def init_validators(self):
+    eleza init_validators(self):
         digits_or_empty_re = re.compile(r'[0-9]*')
-        def is_digits_or_empty(s):
+        eleza is_digits_or_empty(s):
             "Return 's is blank or contains only digits'"
-            return digits_or_empty_re.fullmatch(s) is not None
+            rudisha digits_or_empty_re.fullmatch(s) is not None
         self.digits_only = (self.register(is_digits_or_empty), '%P',)
 
-    def create_page_general(self):
+    eleza create_page_general(self):
         """Return frame of widgets for General tab.
 
         Enable users to provisionally change general options. Function
@@ -2069,7 +2069,7 @@ class GenPage(Frame):
         self.button_helplist_add.pack(side=TOP, anchor=W)
         self.button_helplist_remove.pack(side=TOP, anchor=W, pady=5)
 
-    def load_general_cfg(self):
+    eleza load_general_cfg(self):
         "Load current configuration settings for the general options."
         # Set variables for all windows.
         self.startup_edit.set(idleConf.GetOption(
@@ -2108,40 +2108,40 @@ class GenPage(Frame):
             self.helplist.insert(END, help_item[0])
         self.set_add_delete_state()
 
-    def help_source_selected(self, event):
+    eleza help_source_selected(self, event):
         "Handle event for selecting additional help."
         self.set_add_delete_state()
 
-    def set_add_delete_state(self):
+    eleza set_add_delete_state(self):
         "Toggle the state for the help list buttons based on list entries."
-        if self.helplist.size() < 1:  # No entries in list.
+        ikiwa self.helplist.size() < 1:  # No entries in list.
             self.button_helplist_edit.state(('disabled',))
             self.button_helplist_remove.state(('disabled',))
         else:  # Some entries.
-            if self.helplist.curselection():  # There currently is a selection.
+            ikiwa self.helplist.curselection():  # There currently is a selection.
                 self.button_helplist_edit.state(('!disabled',))
                 self.button_helplist_remove.state(('!disabled',))
             else:  # There currently is not a selection.
                 self.button_helplist_edit.state(('disabled',))
                 self.button_helplist_remove.state(('disabled',))
 
-    def helplist_item_add(self):
+    eleza helplist_item_add(self):
         """Handle add button for the help list.
 
         Query for name and location of new help sources and add
         them to the list.
         """
         help_source = HelpSource(self, 'New Help Source').result
-        if help_source:
+        ikiwa help_source:
             self.user_helplist.append(help_source)
             self.helplist.insert(END, help_source[0])
             self.update_help_changes()
 
-    def helplist_item_edit(self):
+    eleza helplist_item_edit(self):
         """Handle edit button for the help list.
 
         Query with existing help source information and update
-        config if the values are changed.
+        config ikiwa the values are changed.
         """
         item_index = self.helplist.index(ANCHOR)
         help_source = self.user_helplist[item_index]
@@ -2150,14 +2150,14 @@ class GenPage(Frame):
                 menuitem=help_source[0],
                 filepath=help_source[1],
                 ).result
-        if new_help_source and new_help_source != help_source:
+        ikiwa new_help_source and new_help_source != help_source:
             self.user_helplist[item_index] = new_help_source
             self.helplist.delete(item_index)
             self.helplist.insert(item_index, new_help_source[0])
             self.update_help_changes()
             self.set_add_delete_state()  # Selected will be un-selected
 
-    def helplist_item_remove(self):
+    eleza helplist_item_remove(self):
         """Handle remove button for the help list.
 
         Delete the help list item kutoka config.
@@ -2168,7 +2168,7 @@ class GenPage(Frame):
         self.update_help_changes()
         self.set_add_delete_state()
 
-    def update_help_changes(self):
+    eleza update_help_changes(self):
         "Clear and rebuild the HelpFiles section in changes"
         changes['main']['HelpFiles'] = {}
         for num in range(1, len(self.user_helplist) + 1):
@@ -2177,10 +2177,10 @@ class GenPage(Frame):
                     ';'.join(self.user_helplist[num-1][:2]))
 
 
-class VarTrace:
+kundi VarTrace:
     """Maintain Tk variables trace state."""
 
-    def __init__(self):
+    eleza __init__(self):
         """Store Tk variables and callbacks.
 
         untraced: List of tuples (var, callback)
@@ -2192,13 +2192,13 @@ class VarTrace:
         self.untraced = []
         self.traced = []
 
-    def clear(self):
+    eleza clear(self):
         "Clear lists (for tests)."
         # Call after all tests in a module to avoid memory leaks.
         self.untraced.clear()
         self.traced.clear()
 
-    def add(self, var, callback):
+    eleza add(self, var, callback):
         """Add (var, callback) tuple to untraced list.
 
         Args:
@@ -2210,27 +2210,27 @@ class VarTrace:
         Return:
             Tk variable instance.
         """
-        if isinstance(callback, tuple):
+        ikiwa isinstance(callback, tuple):
             callback = self.make_callback(var, callback)
         self.untraced.append((var, callback))
-        return var
+        rudisha var
 
     @staticmethod
-    def make_callback(var, config):
+    eleza make_callback(var, config):
         "Return default callback function to add values to changes instance."
-        def default_callback(*params):
+        eleza default_callback(*params):
             "Add config values to changes instance."
             changes.add_option(*config, var.get())
-        return default_callback
+        rudisha default_callback
 
-    def attach(self):
+    eleza attach(self):
         "Attach callback to all vars that are not traced."
         while self.untraced:
             var, callback = self.untraced.pop()
             var.trace_add('write', callback)
             self.traced.append((var, callback))
 
-    def detach(self):
+    eleza detach(self):
         "Remove callback kutoka traced vars."
         while self.traced:
             var, callback = self.traced.pop()
@@ -2268,13 +2268,13 @@ You can edit the font sample. Changes remain until IDLE is closed.
     'Highlights': '''
 Highlighting:
 The IDLE Dark color theme is new in October 2015.  It can only
-be used with older IDLE releases if it is saved as a custom
+be used with older IDLE releases ikiwa it is saved as a custom
 theme, with a different name.
 ''',
     'Keys': '''
 Keys:
 The IDLE Modern Unix key set is new in June 2016.  It can only
-be used with older IDLE releases if it is saved as a custom
+be used with older IDLE releases ikiwa it is saved as a custom
 key set, with a different name.
 ''',
      'General': '''
@@ -2290,7 +2290,7 @@ Use with paragraphs in both strings and comment blocks.
 ParenMatch: Style indicates what is highlighted when closer is entered:
 'opener' - opener '({[' corresponding to closer; 'parens' - both chars;
 'expression' (default) - also everything in between.  Flash-delay is how
-long to highlight if cursor is not moved (0 means forever).
+long to highlight ikiwa cursor is not moved (0 means forever).
 
 CodeContext: Maxlines is the maximum number of code context lines to
 display when Code Context is turned on for an editor window.
@@ -2301,25 +2301,25 @@ of output to automatically "squeeze".
 }
 
 
-def is_int(s):
+eleza is_int(s):
     "Return 's is blank or represents an int'"
-    if not s:
-        return True
+    ikiwa not s:
+        rudisha True
     try:
         int(s)
-        return True
+        rudisha True
     except ValueError:
-        return False
+        rudisha False
 
 
-class VerticalScrolledFrame(Frame):
+kundi VerticalScrolledFrame(Frame):
     """A pure Tkinter vertically scrollable frame.
 
     * Use the 'interior' attribute to place widgets inside the scrollable frame
     * Construct and pack/place/grid normally
     * This frame only allows vertical scrolling
     """
-    def __init__(self, parent, *args, **kw):
+    eleza __init__(self, parent, *args, **kw):
         Frame.__init__(self, parent, *args, **kw)
 
         # Create a canvas object and a vertical scrollbar for scrolling it.
@@ -2340,14 +2340,14 @@ class VerticalScrolledFrame(Frame):
 
         # Track changes to the canvas and frame width and sync them,
         # also updating the scrollbar.
-        def _configure_interior(event):
+        eleza _configure_interior(event):
             # Update the scrollbars to match the size of the inner frame.
             size = (interior.winfo_reqwidth(), interior.winfo_reqheight())
             canvas.config(scrollregion="0 0 %s %s" % size)
         interior.bind('<Configure>', _configure_interior)
 
-        def _configure_canvas(event):
-            if interior.winfo_reqwidth() != canvas.winfo_width():
+        eleza _configure_canvas(event):
+            ikiwa interior.winfo_reqwidth() != canvas.winfo_width():
                 # Update the inner frame's width to fill the canvas.
                 canvas.itemconfigure(interior_id, width=canvas.winfo_width())
         canvas.bind('<Configure>', _configure_canvas)
@@ -2355,7 +2355,7 @@ class VerticalScrolledFrame(Frame):
         return
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_configdialog', verbosity=2, exit=False)
 

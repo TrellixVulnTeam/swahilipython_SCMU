@@ -17,12 +17,12 @@ This module offers classes representing filesystem paths with semantics
 appropriate for different operating systems.  Path classes are divided
 between :ref:`pure paths <pure-paths>`, which provide purely computational
 operations without I/O, and :ref:`concrete paths <concrete-paths>`, which
-inherit from pure paths but also provide I/O operations.
+inherit kutoka pure paths but also provide I/O operations.
 
 .. image:: pathlib-inheritance.png
    :align: center
 
-If you've never used this module before or just aren't sure which class is
+If you've never used this module before or just aren't sure which kundi is
 right for your task, :class:`Path` is most likely what you need. It instantiates
 a :ref:`concrete path <concrete-paths>` for the platform the code is running on.
 
@@ -48,7 +48,7 @@ Basic use
 
 Importing the main class::
 
-   >>> from pathlib import Path
+   >>> kutoka pathlib agiza Path
 
 Listing subdirectories::
 
@@ -98,7 +98,7 @@ we also call *flavours*:
 
 .. class:: PurePath(*pathsegments)
 
-   A generic class that represents the system's path flavour (instantiating
+   A generic kundi that represents the system's path flavour (instantiating
    it creates either a :class:`PurePosixPath` or a :class:`PureWindowsPath`)::
 
       >>> PurePath('setup.py')      # Running on a Unix machine
@@ -155,7 +155,7 @@ we also call *flavours*:
 
 .. class:: PurePosixPath(*pathsegments)
 
-   A subclass of :class:`PurePath`, this path flavour represents non-Windows
+   A subkundi of :class:`PurePath`, this path flavour represents non-Windows
    filesystem paths::
 
       >>> PurePosixPath('/etc')
@@ -165,7 +165,7 @@ we also call *flavours*:
 
 .. class:: PureWindowsPath(*pathsegments)
 
-   A subclass of :class:`PurePath`, this path flavour represents Windows
+   A subkundi of :class:`PurePath`, this path flavour represents Windows
    filesystem paths::
 
       >>> PureWindowsPath('c:/Program Files/')
@@ -220,7 +220,7 @@ The slash operator helps create child paths, similarly to :func:`os.path.join`::
 A path object can be used anywhere an object implementing :class:`os.PathLike`
 is accepted::
 
-   >>> import os
+   >>> agiza os
    >>> p = PurePath('/etc')
    >>> os.fspath(p)
    '/etc'
@@ -273,7 +273,7 @@ Methods and properties
 
 .. testsetup::
 
-   from pathlib import PurePosixPath, PureWindowsPath
+   kutoka pathlib agiza PurePosixPath, PureWindowsPath
 
 Pure paths provide the following methods and properties:
 
@@ -498,7 +498,7 @@ Pure paths provide the following methods and properties:
    if matching is successful, ``False`` otherwise.
 
    If *pattern* is relative, the path can be either relative or absolute,
-   and matching is done from the right::
+   and matching is done kutoka the right::
 
       >>> PurePath('a/b.py').match('*.py')
       True
@@ -585,7 +585,7 @@ calls on path objects.  There are three ways to instantiate concrete paths:
 
 .. class:: Path(*pathsegments)
 
-   A subclass of :class:`PurePath`, this class represents concrete paths of
+   A subkundi of :class:`PurePath`, this kundi represents concrete paths of
    the system's path flavour (instantiating it creates either a
    :class:`PosixPath` or a :class:`WindowsPath`)::
 
@@ -596,7 +596,7 @@ calls on path objects.  There are three ways to instantiate concrete paths:
 
 .. class:: PosixPath(*pathsegments)
 
-   A subclass of :class:`Path` and :class:`PurePosixPath`, this class
+   A subkundi of :class:`Path` and :class:`PurePosixPath`, this class
    represents concrete non-Windows filesystem paths::
 
       >>> PosixPath('/etc')
@@ -606,7 +606,7 @@ calls on path objects.  There are three ways to instantiate concrete paths:
 
 .. class:: WindowsPath(*pathsegments)
 
-   A subclass of :class:`Path` and :class:`PureWindowsPath`, this class
+   A subkundi of :class:`Path` and :class:`PureWindowsPath`, this class
    represents concrete Windows filesystem paths::
 
       >>> WindowsPath('c:/Program Files/')
@@ -614,11 +614,11 @@ calls on path objects.  There are three ways to instantiate concrete paths:
 
    *pathsegments* is specified similarly to :class:`PurePath`.
 
-You can only instantiate the class flavour that corresponds to your system
+You can only instantiate the kundi flavour that corresponds to your system
 (allowing system calls on non-compatible path flavours could lead to
 bugs or failures in your application)::
 
-   >>> import os
+   >>> agiza os
    >>> os.name
    'posix'
    >>> Path('setup.py')

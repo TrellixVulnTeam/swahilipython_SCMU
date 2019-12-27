@@ -38,7 +38,7 @@ XML is an inherently hierarchical data format, and the most natural way to
 represent it is with a tree.  ``ET`` has two classes for this purpose -
 :class:`ElementTree` represents the whole XML document as a tree, and
 :class:`Element` represents a single node in this tree.  Interactions with
-the whole document (reading and writing to/from files) are usually done
+the whole document (reading and writing to/kutoka files) are usually done
 on the :class:`ElementTree` level.  Interactions with a single XML element
 and its sub-elements are done on the :class:`Element` level.
 
@@ -75,17 +75,17 @@ We'll be using the following XML document as the sample data for this section:
        </country>
    </data>
 
-We can import this data by reading from a file::
+We can agiza this data by reading kutoka a file::
 
-   import xml.etree.ElementTree as ET
+   agiza xml.etree.ElementTree as ET
    tree = ET.parse('country_data.xml')
    root = tree.getroot()
 
-Or directly from a string::
+Or directly kutoka a string::
 
-   root = ET.fromstring(country_data_as_string)
+   root = ET.kutokastring(country_data_as_string)
 
-:func:`fromstring` parses XML from a string directly into an :class:`Element`,
+:func:`kutokastring` parses XML kutoka a string directly into an :class:`Element`,
 which is the root element of the parsed tree.  Other parsing functions may
 create an :class:`ElementTree`.  Check the documentation to be sure.
 
@@ -117,7 +117,7 @@ Children are nested, and we can access specific child nodes by index::
    parsed tree. Currently, this module skips over any XML comments,
    processing instructions, and document type declarations in the
    input. Nevertheless, trees built using this module's API rather
-   than parsing from XML text can have comments and processing
+   than parsing kutoka XML text can have comments and processing
    instructions in them; they will be included when generating XML
    output. A document type declaration may be accessed by passing a
    custom :class:`TreeBuilder` instance to the :class:`XMLParser`
@@ -154,7 +154,7 @@ elements, call :meth:`XMLPullParser.read_events`.  Here is an example::
    end
 
 The obvious use case is applications that operate in a non-blocking fashion
-where the XML data is being received from a socket or read incrementally from
+where the XML data is being received kutoka a socket or read incrementally kutoka
 some storage device.  In such cases, blocking reads are unacceptable.
 
 Because it's so flexible, :class:`XMLPullParser` can be inconvenient to use for
@@ -325,7 +325,7 @@ One way to search and explore this XML example is to manually add the
 URI to every tag or attribute in the xpath of a
 :meth:`~Element.find` or :meth:`~Element.findall`::
 
-    root = fromstring(xml_text)
+    root = kutokastring(xml_text)
     for actor in root.findall('{http://people.example.com}actor'):
         name = actor.find('{http://people.example.com}name')
         print(name.text)
@@ -376,12 +376,12 @@ Example
 ^^^^^^^
 
 Here's an example that demonstrates some of the XPath capabilities of the
-module.  We'll be using the ``countrydata`` XML document from the
+module.  We'll be using the ``countrydata`` XML document kutoka the
 :ref:`Parsing XML <elementtree-parsing-xml>` section::
 
-   import xml.etree.ElementTree as ET
+   agiza xml.etree.ElementTree as ET
 
-   root = ET.fromstring(countrydata)
+   root = ET.kutokastring(countrydata)
 
    # Top-level elements
    root.findall(".")
@@ -478,7 +478,7 @@ Reference
 Functions
 ^^^^^^^^^
 
-.. function:: canonicalize(xml_data=None, *, out=None, from_file=None, **options)
+.. function:: canonicalize(xml_data=None, *, out=None, kutoka_file=None, **options)
 
    `C14N 2.0 <https://www.w3.org/TR/xml-c14n2/>`_ transformation function.
 
@@ -489,7 +489,7 @@ Functions
    declarations, the ordering of attributes, and ignorable whitespace.
 
    This function takes an XML data string (*xml_data*) or a file path or
-   file-like object (*from_file*) as input, converts it to the canonical
+   file-like object (*kutoka_file*) as input, converts it to the canonical
    form, and writes it out using the *out* file(-like) object, if provided,
    or returns it as a text string if not.  The output file receives text,
    not bytes.  It should therefore be opened in text mode with ``utf-8``
@@ -504,7 +504,7 @@ Functions
           canonicalize(xml_data, out=out_file)
 
       with open("c14n_output.xml", mode='w', encoding='utf-8') as out_file:
-          canonicalize(from_file="inputfile.xml", out=out_file)
+          canonicalize(kutoka_file="inputfile.xml", out=out_file)
 
    The configuration *options* are as follows:
 
@@ -554,17 +554,17 @@ Functions
       by the user.
 
 
-.. function:: fromstring(text, parser=None)
+.. function:: kutokastring(text, parser=None)
 
-   Parses an XML section from a string constant.  Same as :func:`XML`.  *text*
+   Parses an XML section kutoka a string constant.  Same as :func:`XML`.  *text*
    is a string containing XML data.  *parser* is an optional parser instance.
    If not given, the standard :class:`XMLParser` parser is used.
    Returns an :class:`Element` instance.
 
 
-.. function:: fromstringlist(sequence, parser=None)
+.. function:: kutokastringlist(sequence, parser=None)
 
-   Parses an XML document from a sequence of string fragments.  *sequence* is a
+   Parses an XML document kutoka a sequence of string fragments.  *sequence* is a
    list or other sequence containing XML data fragments.  *parser* is an
    optional parser instance.  If not given, the standard :class:`XMLParser`
    parser is used.  Returns an :class:`Element` instance.
@@ -588,7 +588,7 @@ Functions
    (the "ns" events are used to get detailed namespace
    information).  If *events* is omitted, only ``"end"`` events are reported.
    *parser* is an optional parser instance.  If not given, the standard
-   :class:`XMLParser` parser is used.  *parser* must be a subclass of
+   :class:`XMLParser` parser is used.  *parser* must be a subkundi of
    :class:`XMLParser` and can only use the default :class:`TreeBuilder` as a
    target.  Returns an :term:`iterator` providing ``(event, elem)`` pairs.
 
@@ -711,7 +711,7 @@ Functions
 
 .. function:: XML(text, parser=None)
 
-   Parses an XML section from a string constant.  This function can be used to
+   Parses an XML section kutoka a string constant.  This function can be used to
    embed "XML literals" in Python code.  *text* is a string containing XML
    data.  *parser* is an optional parser instance.  If not given, the standard
    :class:`XMLParser` parser is used.  Returns an :class:`Element` instance.
@@ -719,8 +719,8 @@ Functions
 
 .. function:: XMLID(text, parser=None)
 
-   Parses an XML section from a string constant, and also returns a dictionary
-   which maps from element id:s to elements.  *text* is a string containing XML
+   Parses an XML section kutoka a string constant, and also returns a dictionary
+   which maps kutoka element id:s to elements.  *text* is a string containing XML
    data.  *parser* is an optional parser instance.  If not given, the standard
    :class:`XMLParser` parser is used.  Returns a tuple containing an
    :class:`Element` instance and a dictionary.
@@ -752,14 +752,14 @@ To process this file, load it as usual, and pass the root element to the :mod:`x
 
 .. code-block:: python
 
-   from xml.etree import ElementTree, ElementInclude
+   kutoka xml.etree agiza ElementTree, ElementInclude
 
    tree = ElementTree.parse("document.xml")
    root = tree.getroot()
 
    ElementInclude.include(root)
 
-The ElementInclude module replaces the ``{http://www.w3.org/2001/XInclude}include`` element with the root element from the **source.xml** document. The result might look something like this:
+The ElementInclude module replaces the ``{http://www.w3.org/2001/XInclude}include`` element with the root element kutoka the **source.xml** document. The result might look something like this:
 
 .. code-block:: xml
 
@@ -796,7 +796,7 @@ Functions
 
 .. function:: xml.etree.ElementInclude.default_loader( href, parse, encoding=None)
 
-   Default loader. This default loader reads an included resource from disk.  *href* is a URL.
+   Default loader. This default loader reads an included resource kutoka disk.  *href* is a URL.
    *parse* is for parse mode either "xml" or "text".  *encoding*
    is an optional text encoding.  If not given, encoding is ``utf-8``.  Returns the
    expanded resource.  If the parse mode is ``"xml"``, this is an ElementTree
@@ -822,7 +822,7 @@ Element Objects
 
 .. class:: Element(tag, attrib={}, **extra)
 
-   Element class.  This class defines the Element interface, and provides a
+   Element class.  This kundi defines the Element interface, and provides a
    reference implementation of this interface.
 
    The element name, attribute names, and attribute values can be either
@@ -842,7 +842,7 @@ Element Objects
 
       These attributes can be used to hold additional data associated with
       the element.  Their values are usually strings but may be any
-      application-specific object.  If the element is created from
+      application-specific object.  If the element is created kutoka
       an XML file, the *text* attribute holds either the text between
       the element's start tag and its first child or end tag, or ``None``, and
       the *tail* attribute holds either the text between the element's
@@ -915,7 +915,7 @@ Element Objects
 
    .. method:: extend(subelements)
 
-      Appends *subelements* from a sequence object with zero or more elements.
+      Appends *subelements* kutoka a sequence object with zero or more elements.
       Raises :exc:`TypeError` if a subelement is not an :class:`Element`.
 
       .. versionadded:: 3.2
@@ -925,7 +925,7 @@ Element Objects
 
       Finds the first subelement matching *match*.  *match* may be a tag name
       or a :ref:`path <elementtree-xpath>`.  Returns an element instance
-      or ``None``.  *namespaces* is an optional mapping from namespace prefix
+      or ``None``.  *namespaces* is an optional mapping kutoka namespace prefix
       to full name.  Pass ``''`` as prefix to move all unprefixed tag names
       in the expression into the given namespace.
 
@@ -934,7 +934,7 @@ Element Objects
 
       Finds all matching subelements, by tag name or
       :ref:`path <elementtree-xpath>`.  Returns a list containing all matching
-      elements in document order.  *namespaces* is an optional mapping from
+      elements in document order.  *namespaces* is an optional mapping kutoka
       namespace prefix to full name.  Pass ``''`` as prefix to move all
       unprefixed tag names in the expression into the given namespace.
 
@@ -945,7 +945,7 @@ Element Objects
       a tag name or a :ref:`path <elementtree-xpath>`.  Returns the text content
       of the first matching element, or *default* if no element was found.
       Note that if the matching element has no text content an empty string
-      is returned. *namespaces* is an optional mapping from namespace prefix
+      is returned. *namespaces* is an optional mapping kutoka namespace prefix
       to full name.  Pass ``''`` as prefix to move all unprefixed tag names
       in the expression into the given namespace.
 
@@ -973,7 +973,7 @@ Element Objects
       Creates a tree :term:`iterator` with the current element as the root.
       The iterator iterates over this element and all elements below it, in
       document (depth first) order.  If *tag* is not ``None`` or ``'*'``, only
-      elements whose tag equals *tag* are returned from the iterator.  If the
+      elements whose tag equals *tag* are returned kutoka the iterator.  If the
       tree structure is modified during iteration, the result is undefined.
 
       .. versionadded:: 3.2
@@ -984,7 +984,7 @@ Element Objects
       Finds all matching subelements, by tag name or
       :ref:`path <elementtree-xpath>`.  Returns an iterable yielding all
       matching elements in document order. *namespaces* is an optional mapping
-      from namespace prefix to full name.
+      kutoka namespace prefix to full name.
 
 
       .. versionadded:: 3.2
@@ -1006,7 +1006,7 @@ Element Objects
 
    .. method:: remove(subelement)
 
-      Removes *subelement* from the element.  Unlike the find\* methods this
+      Removes *subelement* kutoka the element.  Unlike the find\* methods this
       method compares elements based on the instance identity, not on tag value
       or contents.
 
@@ -1036,7 +1036,7 @@ Element Objects
    In general, user code should try not to depend on a specific ordering of
    attributes, given that the `XML Information Set
    <https://www.w3.org/TR/xml-infoset/>`_ explicitly excludes the attribute
-   order from conveying information. Code should be prepared to deal with
+   order kutoka conveying information. Code should be prepared to deal with
    any ordering on input. In cases where deterministic XML output is required,
    e.g. for cryptographic signing or test data sets, canonical serialisation
    is available with the :func:`canonicalize` function.
@@ -1046,7 +1046,7 @@ Element Objects
    attributes directly in the desired order, to avoid perceptual mismatches
    for readers of the code. In cases where this is difficult to achieve, a
    recipe like the following can be applied prior to serialisation to enforce
-   an order independently from the Element creation::
+   an order independently kutoka the Element creation::
 
      def reorder_attributes(root):
          for el in root.iter():
@@ -1066,8 +1066,8 @@ ElementTree Objects
 
 .. class:: ElementTree(element=None, file=None)
 
-   ElementTree wrapper class.  This class represents an entire element
-   hierarchy, and adds some extra support for serialization to and from
+   ElementTree wrapper class.  This kundi represents an entire element
+   hierarchy, and adds some extra support for serialization to and kutoka
    standard XML.
 
    *element* is the root element.  The tree is initialized with the contents
@@ -1176,7 +1176,7 @@ This is the XML file that is going to be manipulated::
 
 Example of changing the attribute "target" of every link in first paragraph::
 
-    >>> from xml.etree.ElementTree import ElementTree
+    >>> kutoka xml.etree.ElementTree agiza ElementTree
     >>> tree = ElementTree()
     >>> tree.parse("index.xhtml")
     <Element 'html' at 0xb77e6fac>
@@ -1218,7 +1218,7 @@ TreeBuilder Objects
 
    Generic element structure builder.  This builder converts a sequence of
    start, data, end, comment and pi method calls to a well-formed element
-   structure.  You can use this class to build an element structure using
+   structure.  You can use this kundi to build an element structure using
    a custom XML parser, or a parser for some other XML-like format.
 
    *element_factory*, when given, must be a callable accepting two positional
@@ -1307,7 +1307,7 @@ TreeBuilder Objects
              exclude_attrs=None, exclude_tags=None)
 
    A `C14N 2.0 <https://www.w3.org/TR/xml-c14n2/>`_ writer.  Arguments are the
-   same as for the :func:`canonicalize` function.  This class does not build a
+   same as for the :func:`canonicalize` function.  This kundi does not build a
    tree but translates the callback events directly into a serialised form
    using the *write* function.
 
@@ -1322,7 +1322,7 @@ XMLParser Objects
 
 .. class:: XMLParser(*, target=None, encoding=None)
 
-   This class is the low-level building block of the module.  It uses
+   This kundi is the low-level building block of the module.  It uses
    :mod:`xml.parsers.expat` for efficient, event-based parsing of XML.  It can
    be fed XML data incrementally with the :meth:`feed` method, and parsing
    events are translated to a push API - by invoking callbacks on the *target*
@@ -1354,8 +1354,8 @@ XMLParser Objects
    building a tree structure. This is an example of counting the maximum depth
    of an XML file::
 
-    >>> from xml.etree.ElementTree import XMLParser
-    >>> class MaxDepth:                     # The target object of the parser
+    >>> kutoka xml.etree.ElementTree agiza XMLParser
+    >>> kundi MaxDepth:                     # The target object of the parser
     ...     maxDepth = 0
     ...     depth = 0
     ...     def start(self, tag, attrib):   # Called for each opening tag.
@@ -1397,7 +1397,7 @@ XMLPullParser Objects
    A pull parser suitable for non-blocking applications.  Its input-side API is
    similar to that of :class:`XMLParser`, but instead of pushing calls to a
    callback target, :class:`XMLPullParser` collects an internal list of parsing
-   events and lets the user read from it. *events* is a sequence of events to
+   events and lets the user read kutoka it. *events* is a sequence of events to
    report back.  The supported events are the strings ``"start"``, ``"end"``,
    ``"comment"``, ``"pi"``, ``"start-ns"`` and ``"end-ns"`` (the "ns" events
    are used to get detailed namespace information).  If *events* is omitted,
@@ -1429,9 +1429,9 @@ XMLPullParser Objects
       * ``end-ns``: :const:`None` (this may change in a future version)
 
       Events provided in a previous call to :meth:`read_events` will not be
-      yielded again.  Events are consumed from the internal queue only when
-      they are retrieved from the iterator, so multiple readers iterating in
-      parallel over iterators obtained from :meth:`read_events` will have
+      yielded again.  Events are consumed kutoka the internal queue only when
+      they are retrieved kutoka the iterator, so multiple readers iterating in
+      parallel over iterators obtained kutoka :meth:`read_events` will have
       unpredictable results.
 
    .. note::
@@ -1462,7 +1462,7 @@ Exceptions
 
    .. attribute:: code
 
-      A numeric error code from the expat parser. See the documentation of
+      A numeric error code kutoka the expat parser. See the documentation of
       :mod:`xml.parsers.expat` for the list of error codes and their meanings.
 
    .. attribute:: position

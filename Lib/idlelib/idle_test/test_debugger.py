@@ -7,23 +7,23 @@ requires('gui')
 kutoka tkinter agiza Tk
 
 
-class NameSpaceTest(unittest.TestCase):
+kundi NameSpaceTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.root = Tk()
         cls.root.withdraw()
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         cls.root.destroy()
         del cls.root
 
-    def test_init(self):
+    eleza test_init(self):
         debugger.NamespaceViewer(self.root, 'Test')
 
 
 # Other classes are Idb, Debugger, and StackViewer.
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

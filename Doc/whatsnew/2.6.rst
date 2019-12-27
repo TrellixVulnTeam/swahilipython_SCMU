@@ -54,7 +54,7 @@ This article explains the new features in Python 2.6, released on October 1
 
 The major theme of Python 2.6 is preparing the migration path to
 Python 3.0, a major redesign of the language.  Whenever possible,
-Python 2.6 incorporates new features and syntax from 3.0 while
+Python 2.6 incorporates new features and syntax kutoka 3.0 while
 remaining compatible with existing code by not removing older features
 or syntax.  When it's not possible to do that, Python 2.6 tries to do
 what it can, adding compatibility functions in a
@@ -113,7 +113,7 @@ semantics of some existing builtins.  Functions that are new in 3.0
 such as :func:`bin` have simply been added to Python 2.6, but existing
 builtins haven't been changed; instead, the :mod:`future_builtins`
 module has versions with the new 3.0 semantics.  Code written to be
-compatible with 3.0 can do ``from future_builtins import hex, map`` as
+compatible with 3.0 can do ``kutoka future_builtins agiza hex, map`` as
 necessary.
 
 A new command-line switch, :option:`!-3`, enables warnings
@@ -136,9 +136,9 @@ Changes to the Development Process
 ==================================================
 
 While 2.6 was being developed, the Python development process
-underwent two significant changes: we switched from SourceForge's
+underwent two significant changes: we switched kutoka SourceForge's
 issue tracker to a customized Roundup installation, and the
-documentation was converted from LaTeX to reStructuredText.
+documentation was converted kutoka LaTeX to reStructuredText.
 
 
 New Issue Tracker: Roundup
@@ -151,7 +151,7 @@ customize the life cycle of issues.
 
 The infrastructure committee of the Python Software Foundation
 therefore posted a call for issue trackers, asking volunteers to set
-up different products and import some of the bugs and patches from
+up different products and agiza some of the bugs and patches kutoka
 SourceForge.  Four different trackers were examined: `Jira
 <https://www.atlassian.com/software/jira/>`__,
 `Launchpad <https://launchpad.net/>`__,
@@ -174,10 +174,10 @@ item for each change.
 Hosting of the Python bug tracker is kindly provided by
 `Upfront Systems <http://www.upfrontsoftware.co.za>`__
 of Stellenbosch, South Africa.  Martin von Löwis put a
-lot of effort into importing existing bugs and patches from
-SourceForge; his scripts for this import operation are at
+lot of effort into importing existing bugs and patches kutoka
+SourceForge; his scripts for this agiza operation are at
 http://svn.python.org/view/tracker/importer/ and may be useful to
-other projects wishing to move from SourceForge to Roundup.
+other projects wishing to move kutoka SourceForge to Roundup.
 
 .. seealso::
 
@@ -216,7 +216,7 @@ the time required to finish the job.
 
 During the 2.6 development cycle, Georg Brandl put a lot of effort
 into building a new toolchain for processing the documentation.  The
-resulting package is called Sphinx, and is available from
+resulting package is called Sphinx, and is available kutoka
 http://sphinx-doc.org/.
 
 Sphinx concentrates on HTML output, producing attractively styled and
@@ -248,13 +248,13 @@ PEP 343: The 'with' statement
 =============================
 
 The previous version, Python 2.5, added the ':keyword:`with`'
-statement as an optional feature, to be enabled by a ``from __future__
-import with_statement`` directive.  In 2.6 the statement no longer needs to
+statement as an optional feature, to be enabled by a ``kutoka __future__
+agiza with_statement`` directive.  In 2.6 the statement no longer needs to
 be specially enabled; this means that :keyword:`!with` is now always a
 keyword.  The rest of this section is a copy of the corresponding
-section from the "What's New in Python 2.5" document; if you're
+section kutoka the "What's New in Python 2.5" document; if you're
 familiar with the ':keyword:`!with`' statement
-from Python 2.5, you can skip this section.
+kutoka Python 2.5, you can skip this section.
 
 The ':keyword:`with`' statement clarifies code that previously would use
 ``try...finally`` blocks to ensure that clean-up code is executed.  In this
@@ -313,7 +313,7 @@ The :func:`localcontext` function in the :mod:`decimal` module makes it easy
 to save and restore the current decimal context, which encapsulates the desired
 precision and rounding characteristics for computations::
 
-   from decimal import Decimal, Context, localcontext
+   kutoka decimal agiza Decimal, Context, localcontext
 
    # Displays with default precision of 28 digits
    v = Decimal('578')
@@ -375,14 +375,14 @@ be to let the user write code like this::
    db_connection = DatabaseConnection()
    with db_connection as cursor:
        cursor.execute('insert into ...')
-       cursor.execute('delete from ...')
+       cursor.execute('delete kutoka ...')
        # ... more operations ...
 
 The transaction should be committed if the code in the block runs flawlessly or
 rolled back if there's an exception. Here's the basic interface for
 :class:`DatabaseConnection` that I'll assume::
 
-   class DatabaseConnection:
+   kundi DatabaseConnection:
        # Database interface
        def cursor(self):
            "Returns a cursor object and starts a new transaction"
@@ -396,7 +396,7 @@ transaction.  For this application the resulting cursor object would be a useful
 result, so the method will return it.  The user can then add ``as cursor`` to
 their ':keyword:`with`' statement to bind the cursor to a variable name. ::
 
-   class DatabaseConnection:
+   kundi DatabaseConnection:
        ...
        def __enter__(self):
            # Code to start a new transaction
@@ -413,7 +413,7 @@ returning the default value of ``None``.  ``None`` is false, so the exception
 will be re-raised automatically.  If you wished, you could be more explicit and
 add a :keyword:`return` statement at the marked location. ::
 
-   class DatabaseConnection:
+   kundi DatabaseConnection:
        ...
        def __exit__(self, type, value, tb):
            if tb is None:
@@ -442,10 +442,10 @@ value that will get bound to the variable in the ':keyword:`with`' statement's
 executed in the :meth:`__exit__` method.  Any exception raised in the block will
 be raised by the :keyword:`!yield` statement.
 
-Using this decorator, our database example from the previous section
+Using this decorator, our database example kutoka the previous section
 could be written as::
 
-   from contextlib import contextmanager
+   kutoka contextlib agiza contextmanager
 
    @contextmanager
    def db_transaction(connection):
@@ -475,8 +475,8 @@ Finally, the :func:`closing` function returns its argument so that it can be
 bound to a variable, and calls the argument's ``.close()`` method at the end
 of the block. ::
 
-   import urllib, sys
-   from contextlib import closing
+   agiza urllib, sys
+   kutoka contextlib agiza closing
 
    with closing(urllib.urlopen('http://www.yahoo.com')) as f:
        for line in f:
@@ -512,7 +512,7 @@ relative to the value of this attribute instead of the
 PEP 302-style importers can then set :attr:`__package__` as necessary.
 The :mod:`runpy` module that implements the :option:`-m` switch now
 does this, so relative imports will now work correctly in scripts
-running from inside a package.
+running kutoka inside a package.
 
 .. ======================================================================
 
@@ -583,8 +583,8 @@ multiple of 4.
 
 ::
 
-    import time
-    from multiprocessing import Process, Queue
+    agiza time
+    kutoka multiprocessing agiza Process, Queue
 
 
     def factorial(queue, N):
@@ -629,7 +629,7 @@ and :meth:`map` or :meth:`map_async` to add a number of
 requests.  The following code uses a :class:`Pool` to spread requests
 across 5 worker processes and retrieve a list of results::
 
-    from multiprocessing import Pool
+    kutoka multiprocessing agiza Pool
 
     def factorial(N, dictionary):
         "Compute a factorial."
@@ -660,8 +660,8 @@ and :meth:`Semaphore` to create shared locks.)
 
 ::
 
-    import time
-    from multiprocessing import Pool, Manager
+    agiza time
+    kutoka multiprocessing agiza Pool, Manager
 
     def factorial(N, dictionary):
         "Compute a factorial."
@@ -743,13 +743,13 @@ Field names can be integers indicating positional arguments, such as
 ``{0}``, ``{1}``, etc. or names of keyword arguments.  You can also
 supply compound field names that read attributes or access dictionary keys::
 
-    >>> import sys
+    >>> agiza sys
     >>> print 'Platform: {0.platform}\nPython version: {0.version}'.format(sys)
     Platform: darwin
     Python version: 2.6a1+ (trunk:61261M, Mar  5 2008, 20:29:41)
     [GCC 4.0.1 (Apple Computer, Inc. build 5367)]'
 
-    >>> import mimetypes
+    >>> agiza mimetypes
     >>> 'Content-type: {0[.mp4]}'.format(mimetypes.types_map)
     'Content-type: video/mp4'
 
@@ -860,12 +860,12 @@ PEP 3105: ``print`` As a Function
 
 The ``print`` statement becomes the :func:`print` function in Python 3.0.
 Making :func:`print` a function makes it possible to replace the function
-by doing ``def print(...)`` or importing a new function from somewhere else.
+by doing ``def print(...)`` or importing a new function kutoka somewhere else.
 
-Python 2.6 has a ``__future__`` import that removes ``print`` as language
+Python 2.6 has a ``__future__`` agiza that removes ``print`` as language
 syntax, letting you use the functional form instead.  For example::
 
-    >>> from __future__ import print_function
+    >>> kutoka __future__ agiza print_function
     >>> print('# of entries', len(dictionary), file=sys.stderr)
 
 The signature of the new function is::
@@ -951,7 +951,7 @@ Python 2.6 adds :class:`bytes` as a synonym for the :class:`str` type,
 and it also supports the ``b''`` notation.
 
 
-The 2.6 :class:`str` differs from 3.0's :class:`bytes` type in various
+The 2.6 :class:`str` differs kutoka 3.0's :class:`bytes` type in various
 ways; most notably, the constructor is completely different.  In 3.0,
 ``bytes([65, 66, 67])`` is 3 elements long, containing the bytes
 representing ``ABC``; in 2.6, ``bytes([65, 66, 67])`` returns the
@@ -964,12 +964,12 @@ contain either characters or 8-bit bytes; you can now
 use either :class:`bytes` or :class:`str` to represent your intention
 exactly, and the resulting code will also be correct in Python 3.0.
 
-There's also a ``__future__`` import that causes all string literals
+There's also a ``__future__`` agiza that causes all string literals
 to become Unicode strings.  This means that ``\u`` escape sequences
 can be used to include Unicode characters::
 
 
-    from __future__ import unicode_literals
+    kutoka __future__ agiza unicode_literals
 
     s = ('\u751f\u3080\u304e\u3000\u751f\u3054'
          '\u3081\u3000\u751f\u305f\u307e\u3054')
@@ -1033,7 +1033,7 @@ file-like objects don't necessarily support all of them.  Objects that
 imitate files usually support :meth:`read` and :meth:`write`, but they
 may not support :meth:`readline`, for example.  Python 3.0 introduces
 a layered I/O library in the :mod:`io` module that separates buffering
-and text-handling features from the fundamental read and write
+and text-handling features kutoka the fundamental read and write
 operations.
 
 There are three levels of abstract base classes provided by
@@ -1043,17 +1043,17 @@ the :mod:`io` module:
   :meth:`readinto`,
   :meth:`write`, :meth:`seek`, :meth:`tell`, :meth:`truncate`,
   and :meth:`close`.
-  Most of the methods of this class will often map to a single system call.
+  Most of the methods of this kundi will often map to a single system call.
   There are also :meth:`readable`, :meth:`writable`, and :meth:`seekable`
   methods for determining what operations a given object will allow.
 
-  Python 3.0 has concrete implementations of this class for files and
+  Python 3.0 has concrete implementations of this kundi for files and
   sockets, but Python 2.6 hasn't restructured its file and socket objects
   in this way.
 
   .. XXX should 2.6 register them in io.py?
 
-* :class:`BufferedIOBase` is an abstract base class that
+* :class:`BufferedIOBase` is an abstract base kundi that
   buffers data in memory to reduce the number of
   system calls used, making I/O processing more efficient.
   It supports all of the methods of :class:`RawIOBase`,
@@ -1066,7 +1066,7 @@ the :mod:`io` module:
   read and write access upon the same underlying stream, and
   :class:`BufferedRWPair` is for objects such as TTYs that have both
   read and write operations acting upon unconnected streams of data.
-  The :class:`BytesIO` class supports reading, writing, and seeking
+  The :class:`BytesIO` kundi supports reading, writing, and seeking
   over an in-memory buffer.
 
   .. index::
@@ -1120,7 +1120,7 @@ The primary users of the buffer protocol are numeric-processing
 packages such as NumPy, which expose the internal representation
 of arrays so that callers can write data directly into an array instead
 of going through a slower API.  This PEP updates the buffer protocol in light of experience
-from NumPy development, adding a number of new features
+kutoka NumPy development, adding a number of new features
 such as indicating the shape of an array or locking a memory region.
 
 The most important new C API function is
@@ -1164,16 +1164,16 @@ PEP 3119: Abstract Base Classes
 =====================================================
 
 Some object-oriented languages such as Java support interfaces,
-declaring that a class has a given set of methods or supports a given
+declaring that a kundi has a given set of methods or supports a given
 access protocol.  Abstract Base Classes (or ABCs) are an equivalent
 feature for Python. The ABC support consists of an :mod:`abc` module
-containing a metaclass called :class:`ABCMeta`, special handling of
-this metaclass by the :func:`isinstance` and :func:`issubclass`
+containing a metakundi called :class:`ABCMeta`, special handling of
+this metakundi by the :func:`isinstance` and :func:`issubclass`
 builtins, and a collection of basic ABCs that the Python developers
 think will be widely useful.  Future versions of Python will probably
 add more ABCs.
 
-Let's say you have a particular class and wish to know whether it supports
+Let's say you have a particular kundi and wish to know whether it supports
 dictionary-style access.  The phrase "dictionary-style" is vague, however.
 It probably means that accessing items with ``obj[1]`` works.
 Does it imply that setting items with ``obj[2] = value`` works?
@@ -1183,37 +1183,37 @@ and :meth:`update`?  Iterating over the object with :func:`iter`?
 
 The Python 2.6 :mod:`collections` module includes a number of
 different ABCs that represent these distinctions.  :class:`Iterable`
-indicates that a class defines :meth:`__iter__`, and
-:class:`Container` means the class defines a :meth:`__contains__`
+indicates that a kundi defines :meth:`__iter__`, and
+:class:`Container` means the kundi defines a :meth:`__contains__`
 method and therefore supports ``x in y`` expressions.  The basic
 dictionary interface of getting items, setting items, and
 :meth:`keys`, :meth:`values`, and :meth:`items`, is defined by the
 :class:`MutableMapping` ABC.
 
-You can derive your own classes from a particular ABC
+You can derive your own classes kutoka a particular ABC
 to indicate they support that ABC's interface::
 
-    import collections
+    agiza collections
 
-    class Storage(collections.MutableMapping):
+    kundi Storage(collections.MutableMapping):
         ...
 
 
-Alternatively, you could write the class without deriving from
-the desired ABC and instead register the class by
+Alternatively, you could write the kundi without deriving kutoka
+the desired ABC and instead register the kundi by
 calling the ABC's :meth:`register` method::
 
-    import collections
+    agiza collections
 
-    class Storage:
+    kundi Storage:
         ...
 
     collections.MutableMapping.register(Storage)
 
-For classes that you write, deriving from the ABC is probably clearer.
+For classes that you write, deriving kutoka the ABC is probably clearer.
 The :meth:`register`  method is useful when you've written a new
 ABC that can describe an existing type or class, or if you want
-to declare that some third-party class implements an ABC.
+to declare that some third-party kundi implements an ABC.
 For example, if you defined a :class:`PrintableType` ABC,
 it's legal to do::
 
@@ -1223,7 +1223,7 @@ it's legal to do::
   PrintableType.register(str)
 
 Classes should obey the semantics specified by an ABC, but
-Python can't check this; it's up to the class author to
+Python can't check this; it's up to the kundi author to
 understand the ABC's requirements and to implement the code accordingly.
 
 To check whether an object supports a particular interface, you can
@@ -1241,11 +1241,11 @@ exception if they aren't.  Be judicious in checking for ABCs and only
 do it where it's absolutely necessary.
 
 You can write your own ABCs by using ``abc.ABCMeta`` as the
-metaclass in a class definition::
+metakundi in a kundi definition::
 
-    from abc import ABCMeta, abstractmethod
+    kutoka abc agiza ABCMeta, abstractmethod
 
-    class Drawable():
+    kundi Drawable():
         __metaclass__ = ABCMeta
 
         @abstractmethod
@@ -1256,7 +1256,7 @@ metaclass in a class definition::
             self.draw(x, y, scale=2.0)
 
 
-    class Square(Drawable):
+    kundi Square(Drawable):
         def draw(self, x, y, scale):
             ...
 
@@ -1273,21 +1273,21 @@ You can apply the ``@abstractmethod`` decorator to methods such as
 :meth:`draw` that must be implemented; Python will then raise an
 exception for classes that don't define the method.
 Note that the exception is only raised when you actually
-try to create an instance of a subclass lacking the method::
+try to create an instance of a subkundi lacking the method::
 
-    >>> class Circle(Drawable):
+    >>> kundi Circle(Drawable):
     ...     pass
     ...
     >>> c = Circle()
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
-    TypeError: Can't instantiate abstract class Circle with abstract methods draw
+    TypeError: Can't instantiate abstract kundi Circle with abstract methods draw
     >>>
 
 Abstract data attributes can be declared using the
 ``@abstractproperty`` decorator::
 
-    from abc import abstractproperty
+    kutoka abc agiza abstractproperty
     ...
 
     @abstractproperty
@@ -1337,7 +1337,7 @@ builtin returns the binary representation for a number::
 The :func:`int` and :func:`long` builtins will now accept the "0o"
 and "0b" prefixes when base-8 or base-2 are requested, or when the
 *base* argument is zero (signalling that the base used should be
-determined from the string)::
+determined kutoka the string)::
 
     >>> int ('0o52', 0)
     42
@@ -1362,17 +1362,17 @@ determined from the string)::
 PEP 3129: Class Decorators
 =====================================================
 
-Decorators have been extended from functions to classes.  It's now legal to
+Decorators have been extended kutoka functions to classes.  It's now legal to
 write::
 
   @foo
   @bar
-  class A:
+  kundi A:
     pass
 
 This is equivalent to::
 
-  class A:
+  kundi A:
     pass
 
   A = foo(bar(A))
@@ -1397,25 +1397,25 @@ The most general ABC is :class:`Number`.  It defines no operations at
 all, and only exists to allow checking if an object is a number by
 doing ``isinstance(obj, Number)``.
 
-:class:`Complex` is a subclass of :class:`Number`.  Complex numbers
+:class:`Complex` is a subkundi of :class:`Number`.  Complex numbers
 can undergo the basic operations of addition, subtraction,
 multiplication, division, and exponentiation, and you can retrieve the
 real and imaginary parts and obtain a number's conjugate.  Python's built-in
 complex type is an implementation of :class:`Complex`.
 
-:class:`Real` further derives from :class:`Complex`, and adds
+:class:`Real` further derives kutoka :class:`Complex`, and adds
 operations that only work on real numbers: :func:`floor`, :func:`trunc`,
 rounding, taking the remainder mod N, floor division,
 and comparisons.
 
-:class:`Rational` numbers derive from :class:`Real`, have
+:class:`Rational` numbers derive kutoka :class:`Real`, have
 :attr:`numerator` and :attr:`denominator` properties, and can be
 converted to floats.  Python 2.6 adds a simple rational-number class,
 :class:`Fraction`, in the :mod:`fractions` module.  (It's called
 :class:`Fraction` instead of :class:`Rational` to avoid
 a name clash with :class:`numbers.Rational`.)
 
-:class:`Integral` numbers derive from :class:`Rational`, and
+:class:`Integral` numbers derive kutoka :class:`Rational`, and
 can be shifted left and right with ``<<`` and ``>>``,
 combined using bitwise operations such as ``&`` and ``|``,
 and can be used as array indexes and slice boundaries.
@@ -1431,9 +1431,9 @@ one, :func:`math.trunc`, that's been backported to Python 2.6.
    :pep:`3141` - A Type Hierarchy for Numbers
       PEP written by Jeffrey Yasskin.
 
-   `Scheme's numerical tower <https://www.gnu.org/software/guile/manual/html_node/Numerical-Tower.html#Numerical-Tower>`__, from the Guile manual.
+   `Scheme's numerical tower <https://www.gnu.org/software/guile/manual/html_node/Numerical-Tower.html#Numerical-Tower>`__, kutoka the Guile manual.
 
-   `Scheme's number datatypes <http://schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-9.html#%_sec_6.2>`__ from the R5RS Scheme specification.
+   `Scheme's number datatypes <http://schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-9.html#%_sec_6.2>`__ kutoka the R5RS Scheme specification.
 
 
 The :mod:`fractions` Module
@@ -1448,7 +1448,7 @@ can only approximate.
 The :class:`Fraction` constructor takes two :class:`Integral` values
 that will be the numerator and denominator of the resulting fraction. ::
 
-    >>> from fractions import Fraction
+    >>> kutoka fractions agiza Fraction
     >>> a = Fraction(2, 3)
     >>> b = Fraction(2, 5)
     >>> float(a), float(b)
@@ -1529,7 +1529,7 @@ Some smaller changes made to the core Python language are:
   (Contributed by Amaury Forgeot d'Arc; :issue:`3473`.)
 
 * A new builtin, ``next(iterator, [default])`` returns the next item
-  from the specified iterator.  If the *default* argument is supplied,
+  kutoka the specified iterator.  If the *default* argument is supplied,
   it will be returned if *iterator* has been exhausted; otherwise,
   the :exc:`StopIteration` exception will be raised.  (Backported
   in :issue:`2719`.)
@@ -1557,7 +1557,7 @@ Some smaller changes made to the core Python language are:
   for adding a getter, setter or deleter function to an existing
   property. You would use them like this::
 
-    class C(object):
+    kundi C(object):
         @property
         def x(self):
             return self._x
@@ -1570,7 +1570,7 @@ Some smaller changes made to the core Python language are:
         def x(self):
             del self._x
 
-    class D(C):
+    kundi D(C):
         @C.x.getter
         def x(self):
             return self._x * 2
@@ -1607,37 +1607,37 @@ Some smaller changes made to the core Python language are:
 
   Conversion functions were added to convert floating-point numbers
   into hexadecimal strings (:issue:`3008`).  These functions
-  convert floats to and from a string representation without
-  introducing rounding errors from the conversion between decimal and
+  convert floats to and kutoka a string representation without
+  introducing rounding errors kutoka the conversion between decimal and
   binary.  Floats have a :meth:`hex` method that returns a string
-  representation, and the ``float.fromhex()`` method converts a string
+  representation, and the ``float.kutokahex()`` method converts a string
   back into a number::
 
       >>> a = 3.75
       >>> a.hex()
       '0x1.e000000000000p+1'
-      >>> float.fromhex('0x1.e000000000000p+1')
+      >>> float.kutokahex('0x1.e000000000000p+1')
       3.75
       >>> b=1./3
       >>> b.hex()
       '0x1.5555555555555p-2'
 
-* A numerical nicety: when creating a complex number from two floats
+* A numerical nicety: when creating a complex number kutoka two floats
   on systems that support signed zeros (-0 and +0), the
   :func:`complex` constructor will now preserve the sign
   of the zero.  (Fixed by Mark T. Dickinson; :issue:`1507`.)
 
-* Classes that inherit a :meth:`__hash__` method from a parent class
-  can set ``__hash__ = None`` to indicate that the class isn't
+* Classes that inherit a :meth:`__hash__` method kutoka a parent class
+  can set ``__hash__ = None`` to indicate that the kundi isn't
   hashable.  This will make ``hash(obj)`` raise a :exc:`TypeError`
-  and the class will not be indicated as implementing the
+  and the kundi will not be indicated as implementing the
   :class:`Hashable` ABC.
 
   You should do this when you've defined a :meth:`__cmp__` or
   :meth:`__eq__` method that compares objects by their value rather
   than by identity.  All objects have a default hash method that uses
   ``id(obj)`` as the hash value.  There's no tidy way to remove the
-  :meth:`__hash__` method inherited from a parent class, so
+  :meth:`__hash__` method inherited kutoka a parent class, so
   assigning ``None`` was implemented as an override.  At the
   C level, extensions can set ``tp_hash`` to
   :c:func:`PyObject_HashNotImplemented`.
@@ -1693,7 +1693,7 @@ Optimizations
 -------------
 
 * The :mod:`warnings` module has been rewritten in C.  This makes
-  it possible to invoke warnings from the parser, and may also
+  it possible to invoke warnings kutoka the parser, and may also
   make the interpreter's startup faster.
   (Contributed by Neal Norwitz and Brett Cannon; :issue:`1631171`.)
 
@@ -1701,7 +1701,7 @@ Optimizations
   the work required to find the correct method implementation
   for a particular class; once cached, the interpreter doesn't need to
   traverse base classes to figure out the right method to call.
-  The cache is cleared if a base class or the class itself is modified,
+  The cache is cleared if a base kundi or the kundi itself is modified,
   so the cache should remain correct even in the face of Python's dynamic
   nature.
   (Original optimization implemented by Armin Rigo, updated for
@@ -1728,7 +1728,7 @@ Optimizations
   (Contributed by Raymond Hettinger.)
 
 * Some of the standard built-in types now set a bit in their type
-  objects.  This speeds up checking whether an object is a subclass of
+  objects.  This speeds up checking whether an object is a subkundi of
   one of these types.  (Contributed by Neal Norwitz.)
 
 * Unicode strings now use faster code for detecting
@@ -1759,7 +1759,7 @@ specific to a particular implementation of Python such as CPython,
 Jython, or IronPython.  If either option is used with Python 2.6, the
 interpreter will report that the option isn't currently used.
 
-Python can now be prevented from writing :file:`.pyc` or :file:`.pyo`
+Python can now be prevented kutoka writing :file:`.pyc` or :file:`.pyo`
 files by supplying the :option:`-B` switch to the Python interpreter,
 or by setting the :envvar:`PYTHONDONTWRITEBYTECODE` environment
 variable before running the interpreter.  This setting is available to
@@ -1797,7 +1797,7 @@ changes, or look through the Subversion logs for all the details.
   is now available as a standalone package.  The web page for the package is
   `www.jcea.es/programacion/pybsddb.htm
   <https://www.jcea.es/programacion/pybsddb.htm>`__.
-  The plan is to remove the package from the standard library
+  The plan is to remove the package kutoka the standard library
   in Python 3.0, because its pace of releases is much more frequent than
   Python's.
 
@@ -1805,14 +1805,14 @@ changes, or look through the Subversion logs for all the details.
   available, instead of restricting itself to protocol 1.
   (Contributed by W. Barnes.)
 
-* The :mod:`cgi` module will now read variables from the query string
+* The :mod:`cgi` module will now read variables kutoka the query string
   of an HTTP POST request.  This makes it possible to use form actions
   with URLs that include query strings such as
   "/cgi-bin/add.py?category=1".  (Contributed by Alexandre Fiori and
   Nubis; :issue:`1817`.)
 
   The :func:`parse_qs` and :func:`parse_qsl` functions have been
-  relocated from the :mod:`cgi` module to the :mod:`urlparse` module.
+  relocated kutoka the :mod:`cgi` module to the :mod:`urlparse` module.
   The versions still available in the :mod:`cgi` module will
   trigger :exc:`PendingDeprecationWarning` messages in 2.6
   (:issue:`600362`).
@@ -1887,7 +1887,7 @@ changes, or look through the Subversion logs for all the details.
 
   ::
 
-    >>> from collections import deque
+    >>> kutoka collections agiza deque
     >>> dq=deque(maxlen=3)
     >>> dq
     deque([], maxlen=3)
@@ -1915,7 +1915,7 @@ changes, or look through the Subversion logs for all the details.
      # and affecting the rest of the line.
      stdscr.chgat(0, 21, curses.A_BOLD)
 
-  The :class:`Textbox` class in the :mod:`curses.textpad` module
+  The :class:`Textbox` kundi in the :mod:`curses.textpad` module
   now supports editing in insert mode as well as overwrite mode.
   Insert mode is enabled by supplying a true value for the *insert_mode*
   parameter when creating the :class:`Textbox` instance.
@@ -1949,7 +1949,7 @@ changes, or look through the Subversion logs for all the details.
   (Contributed by Raymond Hettinger.)
 
 * An optional ``timeout`` parameter, specifying a timeout measured in
-  seconds, was added to the :class:`ftplib.FTP` class constructor as
+  seconds, was added to the :class:`ftplib.FTP` kundi constructor as
   well as the :meth:`connect` method.  (Added by Facundo Batista.)
   Also, the :class:`FTP` class's :meth:`storbinary` and
   :meth:`storlines` now take an optional *callback* parameter that
@@ -1958,7 +1958,7 @@ changes, or look through the Subversion logs for all the details.
 
 * The :func:`reduce` built-in function is also available in the
   :mod:`functools` module.  In Python 3.0, the builtin has been
-  dropped and :func:`reduce` is only available from :mod:`functools`;
+  dropped and :func:`reduce` is only available kutoka :mod:`functools`;
   currently there are no plans to drop the builtin in the 2.x series.
   (Patched by Christian Heimes; :issue:`1739906`.)
 
@@ -1993,7 +1993,7 @@ changes, or look through the Subversion logs for all the details.
 
 * An optional ``timeout`` parameter, specifying a timeout measured in
   seconds, was added to the :class:`httplib.HTTPConnection` and
-  :class:`HTTPSConnection` class constructors.  (Added by Facundo
+  :class:`HTTPSConnection` kundi constructors.  (Added by Facundo
   Batista.)
 
 * Most of the :mod:`inspect` module's functions, such as
@@ -2008,7 +2008,7 @@ changes, or look through the Subversion logs for all the details.
 
 * The :mod:`itertools` module gained several new functions.
 
-  ``izip_longest(iter1, iter2, ...[, fillvalue])`` makes tuples from
+  ``izip_longest(iter1, iter2, ...[, fillvalue])`` makes tuples kutoka
   each of the elements; if some of the iterables are shorter than
   others, the missing values are set to *fillvalue*.  For example::
 
@@ -2017,7 +2017,7 @@ changes, or look through the Subversion logs for all the details.
 
   ``product(iter1, iter2, ..., [repeat=N])`` returns the Cartesian product
   of the supplied iterables, a set of tuples containing
-  every possible combination of the elements returned from each iterable. ::
+  every possible combination of the elements returned kutoka each iterable. ::
 
      >>> list(itertools.product([1,2,3], [4,5,6]))
      [(1, 4), (1, 5), (1, 6),
@@ -2041,7 +2041,7 @@ changes, or look through the Subversion logs for all the details.
       (2, 3, 1, 3), (2, 3, 1, 4), (2, 3, 2, 3), (2, 3, 2, 4),
       (2, 4, 1, 3), (2, 4, 1, 4), (2, 4, 2, 3), (2, 4, 2, 4)]
 
-  ``combinations(iterable, r)`` returns sub-sequences of length *r* from
+  ``combinations(iterable, r)`` returns sub-sequences of length *r* kutoka
   the elements of *iterable*. ::
 
     >>> list(itertools.combinations('123', 2))
@@ -2064,12 +2064,12 @@ changes, or look through the Subversion logs for all the details.
 
   ``itertools.chain(*iterables)`` is an existing function in
   :mod:`itertools` that gained a new constructor in Python 2.6.
-  ``itertools.chain.from_iterable(iterable)`` takes a single
+  ``itertools.chain.kutoka_iterable(iterable)`` takes a single
   iterable that should return other iterables.  :func:`chain` will
   then return all the elements of the first iterable, then
   all the elements of the second, and so on. ::
 
-    >>> list(itertools.chain.from_iterable([[1,2,3], [4,5,6]]))
+    >>> list(itertools.chain.kutoka_iterable([[1,2,3], [4,5,6]]))
     [1, 2, 3, 4, 5, 6]
 
   (All contributed by Raymond Hettinger.)
@@ -2099,7 +2099,7 @@ changes, or look through the Subversion logs for all the details.
   * :func:`~math.factorial` computes the factorial of a number.
     (Contributed by Raymond Hettinger; :issue:`2138`.)
 
-  * :func:`~math.fsum` adds up the stream of numbers from an iterable,
+  * :func:`~math.fsum` adds up the stream of numbers kutoka an iterable,
     and is careful to avoid loss of precision through using partial sums.
     (Contributed by Jean Brouwers, Raymond Hettinger, and Mark Dickinson;
     :issue:`2819`.)
@@ -2176,7 +2176,7 @@ changes, or look through the Subversion logs for all the details.
   file.  (Contributed by M. Levinson.)
 
   ``os.closerange(low, high)`` efficiently closes all file descriptors
-  from *low* to *high*, ignoring any errors and not including *high* itself.
+  kutoka *low* to *high*, ignoring any errors and not including *high* itself.
   This function is now used by the :mod:`subprocess` module to make starting
   processes faster.  (Contributed by Georg Brandl; :issue:`1663329`.)
 
@@ -2199,7 +2199,7 @@ changes, or look through the Subversion logs for all the details.
   (:issue:`1115886`)
 
   A new function, ``os.path.relpath(path, start='.')``, returns a relative path
-  from the ``start`` path, if it's supplied, or from the current
+  kutoka the ``start`` path, if it's supplied, or kutoka the current
   working directory to the destination ``path``.  (Contributed by
   Richard Barran; :issue:`1339796`.)
 
@@ -2227,7 +2227,7 @@ changes, or look through the Subversion logs for all the details.
   module that returns the contents of resource files included
   with an installed Python package.  For example::
 
-    >>> import pkgutil
+    >>> agiza pkgutil
     >>> print pkgutil.get_data('test', 'exception_hierarchy.txt')
     BaseException
      +-- SystemExit
@@ -2246,7 +2246,7 @@ changes, or look through the Subversion logs for all the details.
   (Contributed by Achim Gaedke; :issue:`1137`.)
 
 * The :mod:`Queue` module now provides queue variants that retrieve entries
-  in different orders.  The :class:`PriorityQueue` class stores
+  in different orders.  The :class:`PriorityQueue` kundi stores
   queued items in a heap and retrieves them in priority order,
   and :class:`LifoQueue` retrieves the most recently added entries first,
   meaning that it behaves like a stack.
@@ -2275,7 +2275,7 @@ changes, or look through the Subversion logs for all the details.
   for a tiny regex-specific virtual machine.  Untrusted code
   could create malicious strings of bytecode directly and cause crashes,
   so Python 2.6 includes a verifier for the regex bytecode.
-  (Contributed by Guido van Rossum from work for Google App Engine;
+  (Contributed by Guido van Rossum kutoka work for Google App Engine;
   :issue:`3487`.)
 
 * The :mod:`rlcompleter` module's :meth:`Completer.complete()` method
@@ -2334,7 +2334,7 @@ changes, or look through the Subversion logs for all the details.
 
   (Contributed by Adam Olsen; :issue:`1583`.)
 
-  The :func:`siginterrupt` function is now available from Python code,
+  The :func:`siginterrupt` function is now available kutoka Python code,
   and allows changing whether signals can interrupt system calls or not.
   (Contributed by Ralf Schmitt.)
 
@@ -2346,9 +2346,9 @@ changes, or look through the Subversion logs for all the details.
   time.  (Contributed by Guilherme Polo; :issue:`2240`.)
 
 * The :mod:`smtplib` module now supports SMTP over SSL thanks to the
-  addition of the :class:`SMTP_SSL` class. This class supports an
+  addition of the :class:`SMTP_SSL` class. This kundi supports an
   interface identical to the existing :class:`SMTP` class.
-  (Contributed by Monty Taylor.)  Both class constructors also have an
+  (Contributed by Monty Taylor.)  Both kundi constructors also have an
   optional ``timeout`` parameter that specifies a timeout for the
   initial connection attempt, measured in seconds.  (Contributed by
   Facundo Batista.)
@@ -2359,7 +2359,7 @@ changes, or look through the Subversion logs for all the details.
   implemented by Leif Hedstrom; :issue:`957003`.)
 
   :meth:`SMTP.starttls` now complies with :rfc:`3207` and forgets any
-  knowledge obtained from the server not obtained from the TLS
+  knowledge obtained kutoka the server not obtained kutoka the TLS
   negotiation itself.  (Patch contributed by Bill Fenner;
   :issue:`829951`.)
 
@@ -2386,7 +2386,7 @@ changes, or look through the Subversion logs for all the details.
   :issue:`742598`, :issue:`1193577`.)
 
 * The :mod:`sqlite3` module, maintained by Gerhard Häring,
-  has been updated from version 2.3.2 in Python 2.5 to
+  has been updated kutoka version 2.3.2 in Python 2.5 to
   version 2.4.1.
 
 * The :mod:`struct` module now supports the C99 :c:type:`_Bool` type,
@@ -2401,7 +2401,7 @@ changes, or look through the Subversion logs for all the details.
   (Contributed by Christian Heimes.)
 
 * A new variable in the :mod:`sys` module, :attr:`float_info`, is an
-  object containing information derived from the :file:`float.h` file
+  object containing information derived kutoka the :file:`float.h` file
   about the platform's floating-point support.  Attributes of this
   object include :attr:`mant_dig` (number of digits in the mantissa),
   :attr:`epsilon` (smallest difference between 1.0 and the next
@@ -2455,7 +2455,7 @@ changes, or look through the Subversion logs for all the details.
   PAX format supports Unicode filenames, defaulting to UTF-8 encoding.)
 
   The :meth:`TarFile.add` method now accepts an ``exclude`` argument that's
-  a function that can be used to exclude certain filenames from
+  a function that can be used to exclude certain filenames kutoka
   an archive.
   The function must take a filename and return true if the file
   should be excluded or false if it should be archived.
@@ -2465,10 +2465,10 @@ changes, or look through the Subversion logs for all the details.
   (All changes contributed by Lars Gustäbel).
 
 * An optional ``timeout`` parameter was added to the
-  :class:`telnetlib.Telnet` class constructor, specifying a timeout
+  :class:`telnetlib.Telnet` kundi constructor, specifying a timeout
   measured in seconds.  (Added by Facundo Batista.)
 
-* The :class:`tempfile.NamedTemporaryFile` class usually deletes
+* The :class:`tempfile.NamedTemporaryFile` kundi usually deletes
   the temporary file it created when the file is closed.  This
   behaviour can now be changed by passing ``delete=False`` to the
   constructor.  (Contributed by Damien Miller; :issue:`1537850`.)
@@ -2583,7 +2583,7 @@ changes, or look through the Subversion logs for all the details.
 
 * An optional ``timeout`` parameter was added to the
   :func:`urllib.urlopen` function and the
-  :class:`urllib.ftpwrapper` class constructor, as well as the
+  :class:`urllib.ftpwrapper` kundi constructor, as well as the
   :func:`urllib2.urlopen` function.  The parameter specifies a timeout
   measured in seconds.   For example::
 
@@ -2610,7 +2610,7 @@ changes, or look through the Subversion logs for all the details.
   warning filters and then restore their original values (:issue:`3781`).
 
 * The XML-RPC :class:`SimpleXMLRPCServer` and :class:`DocXMLRPCServer`
-  classes can now be prevented from immediately opening and binding to
+  classes can now be prevented kutoka immediately opening and binding to
   their socket by passing ``False`` as the *bind_and_activate*
   constructor parameter.  This can be used to modify the instance's
   :attr:`allow_reuse_address` attribute before calling the
@@ -2636,7 +2636,7 @@ changes, or look through the Subversion logs for all the details.
   and 64-bit integers represented by using ``<i8>`` in XML-RPC responses
   (contributed by Riku Lindblad; :issue:`2985`).
 
-* The :mod:`zipfile` module's :class:`ZipFile` class now has
+* The :mod:`zipfile` module's :class:`ZipFile` kundi now has
   :meth:`extract` and :meth:`extractall` methods that will unpack
   a single file or all the files in the archive to the current directory, or
   to a specified directory::
@@ -2677,7 +2677,7 @@ The :func:`parse` function takes an expression and returns an AST.
 The :func:`dump` function outputs a representation of a tree, suitable
 for debugging::
 
-    import ast
+    agiza ast
 
     t = ast.parse("""
     d = {}
@@ -2782,7 +2782,7 @@ http://www.json.org.
 :mod:`json` comes with support for decoding and encoding most built-in Python
 types. The following example encodes and decodes a dictionary::
 
-       >>> import json
+       >>> agiza json
        >>> data = {"spam": "foo", "parrot": 42}
        >>> in_json = json.dumps(data) # Encode the data
        >>> in_json
@@ -2814,9 +2814,9 @@ has been promoted to the standard library.
 
 Using the module is simple::
 
-    import sys
-    import plistlib
-    import datetime
+    agiza sys
+    agiza plistlib
+    agiza datetime
 
     # Create data structure
     data_struct = dict(lastAccessed=datetime.datetime.now(),
@@ -2856,11 +2856,11 @@ where various combinations of ``(start, stop, step)`` are supplied.
 .. Revision 57769
 
 All :mod:`ctypes` data types now support
-:meth:`from_buffer` and :meth:`from_buffer_copy`
+:meth:`kutoka_buffer` and :meth:`kutoka_buffer_copy`
 methods that create a ctypes instance based on a
-provided buffer object.  :meth:`from_buffer_copy` copies
+provided buffer object.  :meth:`kutoka_buffer_copy` copies
 the contents of the object,
-while :meth:`from_buffer` will share the same memory area.
+while :meth:`kutoka_buffer` will share the same memory area.
 
 A new calling convention tells :mod:`ctypes` to clear the ``errno`` or
 Win32 LastError variables at the outset of each wrapped call.
@@ -3010,7 +3010,7 @@ Changes to Python's build process and to the C API include:
 * Python's use of the C stdio library is now thread-safe, or at least
   as thread-safe as the underlying library is.  A long-standing potential
   bug occurred if one thread closed a file object while another thread
-  was reading from or writing to the object.  In 2.6 file objects
+  was reading kutoka or writing to the object.  In 2.6 file objects
   have a reference count, manipulated by the
   :c:func:`PyFile_IncUseCount` and :c:func:`PyFile_DecUseCount`
   functions.  File objects can't be closed unless the reference count
@@ -3023,8 +3023,8 @@ Changes to Python's build process and to the C API include:
 * Importing modules simultaneously in two different threads no longer
   deadlocks; it will now raise an :exc:`ImportError`.  A new API
   function, :c:func:`PyImport_ImportModuleNoBlock`, will look for a
-  module in ``sys.modules`` first, then try to import it after
-  acquiring an import lock.  If the import lock is held by another
+  module in ``sys.modules`` first, then try to agiza it after
+  acquiring an agiza lock.  If the agiza lock is held by another
   thread, an :exc:`ImportError` is raised.
   (Contributed by Christian Heimes.)
 
@@ -3033,7 +3033,7 @@ Changes to Python's build process and to the C API include:
   the maximum representable floating point value,
   and :c:func:`PyFloat_GetMin` returns the minimum
   positive value.  :c:func:`PyFloat_GetInfo` returns an object
-  containing more information from the :file:`float.h` file, such as
+  containing more information kutoka the :file:`float.h` file, such as
   ``"mant_dig"`` (number of digits in the mantissa), ``"epsilon"``
   (smallest difference between 1.0 and the next largest value
   representable), and several others.
@@ -3105,7 +3105,7 @@ Port-Specific Changes: Windows
   :file:`PCbuild` directory supports cross compilation for X64, debug
   builds and Profile Guided Optimization (PGO). PGO builds are roughly
   10% faster than normal builds.  (Contributed by Christian Heimes
-  with help from Amaury Forgeot d'Arc and Martin von Löwis.)
+  with help kutoka Amaury Forgeot d'Arc and Martin von Löwis.)
 
 * The :mod:`msvcrt` module now supports
   both the normal and wide char variants of the console I/O
@@ -3243,7 +3243,7 @@ that may require changes to your code:
 
 * The :meth:`__init__` method of :class:`collections.deque`
   now clears any existing contents of the deque
-  before adding elements from the iterable.  This change makes the
+  before adding elements kutoka the iterable.  This change makes the
   behavior match ``list.__init__()``.
 
 * :meth:`object.__init__` previously accepted arbitrary arguments and
@@ -3268,14 +3268,14 @@ that may require changes to your code:
 
 * C API: the :c:func:`PyImport_Import` and :c:func:`PyImport_ImportModule`
   functions now default to absolute imports, not relative imports.
-  This will affect C extensions that import other modules.
+  This will affect C extensions that agiza other modules.
 
 * C API: extension data types that shouldn't be hashable
   should define their ``tp_hash`` slot to
   :c:func:`PyObject_HashNotImplemented`.
 
 * The :mod:`socket` module exception :exc:`socket.error` now inherits
-  from :exc:`IOError`.  Previously it wasn't a subclass of
+  kutoka :exc:`IOError`.  Previously it wasn't a subkundi of
   :exc:`StandardError` but now it is, through :exc:`IOError`.
   (Implemented by Gregory P. Smith; :issue:`1706815`.)
 
@@ -3286,7 +3286,7 @@ that may require changes to your code:
   :mod:`xmlrpclib` should convert :class:`date` and :class:`~datetime.time`
   instances. (:issue:`1330538`)
 
-* (3.0-warning mode) The :class:`Exception` class now warns
+* (3.0-warning mode) The :class:`Exception` kundi now warns
   when accessed using slicing or index access; having
   :class:`Exception` behave like a tuple is being phased out.
 

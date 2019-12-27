@@ -36,7 +36,7 @@ from test.support import import_fresh_module
 from randdec import randfloat, all_unary, all_binary, all_ternary
 from randdec import unary_optarg, binary_optarg, ternary_optarg
 from formathelper import rand_format, rand_locale
-from _pydecimal import _dec_from_triple
+from _pydecimal agiza _dec_from_triple
 
 C = import_fresh_module('decimal', fresh=['_decimal'])
 P = import_fresh_module('decimal', blocked=['_decimal'])

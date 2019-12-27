@@ -6,29 +6,29 @@ agiza unittest
 
 maxsize = support.MAX_Py_ssize_t
 
-# test string formatting operator (I am not sure if this is being tested
+# test string formatting operator (I am not sure ikiwa this is being tested
 # elsewhere but, surely, some of the given cases are *not* tested because
 # they crash python)
 # test on bytes object as well
 
-def testformat(formatstr, args, output=None, limit=None, overflowok=False):
-    if verbose:
-        if output:
-            print("{!a} % {!a} =? {!a} ...".format(formatstr, args, output),
+eleza testformat(formatstr, args, output=None, limit=None, overflowok=False):
+    ikiwa verbose:
+        ikiwa output:
+            andika("{!a} % {!a} =? {!a} ...".format(formatstr, args, output),
                   end=' ')
         else:
-            print("{!a} % {!a} works? ...".format(formatstr, args), end=' ')
+            andika("{!a} % {!a} works? ...".format(formatstr, args), end=' ')
     try:
         result = formatstr % args
     except OverflowError:
-        if not overflowok:
+        ikiwa not overflowok:
             raise
-        if verbose:
-            print('overflow (this is fine)')
+        ikiwa verbose:
+            andika('overflow (this is fine)')
     else:
-        if output and limit is None and result != output:
-            if verbose:
-                print('no')
+        ikiwa output and limit is None and result != output:
+            ikiwa verbose:
+                andika('no')
             raise AssertionError("%r %% %r == %r != %r" %
                                 (formatstr, args, result, output))
         # when 'limit' is specified, it determines how many characters
@@ -36,33 +36,33 @@ def testformat(formatstr, args, output=None, limit=None, overflowok=False):
         # ex: limit=5, '12345678' matches '12345___'
         # (mainly for floating point format tests for which an exact match
         # can't be guaranteed due to rounding and representation errors)
-        elif output and limit is not None and (
+        elikiwa output and limit is not None and (
                 len(result)!=len(output) or result[:limit]!=output[:limit]):
-            if verbose:
-                print('no')
-            print("%s %% %s == %s != %s" % \
+            ikiwa verbose:
+                andika('no')
+            andika("%s %% %s == %s != %s" % \
                   (repr(formatstr), repr(args), repr(result), repr(output)))
         else:
-            if verbose:
-                print('yes')
+            ikiwa verbose:
+                andika('yes')
 
-def testcommon(formatstr, args, output=None, limit=None, overflowok=False):
-    # if formatstr is a str, test str, bytes, and bytearray;
+eleza testcommon(formatstr, args, output=None, limit=None, overflowok=False):
+    # ikiwa formatstr is a str, test str, bytes, and bytearray;
     # otherwise, test bytes and bytearray
-    if isinstance(formatstr, str):
+    ikiwa isinstance(formatstr, str):
         testformat(formatstr, args, output, limit, overflowok)
         b_format = formatstr.encode('ascii')
     else:
         b_format = formatstr
     ba_format = bytearray(b_format)
     b_args = []
-    if not isinstance(args, tuple):
+    ikiwa not isinstance(args, tuple):
         args = (args, )
     b_args = tuple(args)
-    if output is None:
+    ikiwa output is None:
         b_output = ba_output = None
     else:
-        if isinstance(output, str):
+        ikiwa isinstance(output, str):
             b_output = output.encode('ascii')
         else:
             b_output = output
@@ -70,31 +70,31 @@ def testcommon(formatstr, args, output=None, limit=None, overflowok=False):
     testformat(b_format, b_args, b_output, limit, overflowok)
     testformat(ba_format, b_args, ba_output, limit, overflowok)
 
-def test_exc(formatstr, args, exception, excmsg):
+eleza test_exc(formatstr, args, exception, excmsg):
     try:
         testformat(formatstr, args)
     except exception as exc:
-        if str(exc) == excmsg:
-            if verbose:
-                print("yes")
+        ikiwa str(exc) == excmsg:
+            ikiwa verbose:
+                andika("yes")
         else:
-            if verbose: print('no')
-            print('Unexpected ', exception, ':', repr(str(exc)))
+            ikiwa verbose: andika('no')
+            andika('Unexpected ', exception, ':', repr(str(exc)))
     except:
-        if verbose: print('no')
-        print('Unexpected exception')
+        ikiwa verbose: andika('no')
+        andika('Unexpected exception')
         raise
     else:
         raise TestFailed('did not get expected exception: %s' % excmsg)
 
-def test_exc_common(formatstr, args, exception, excmsg):
+eleza test_exc_common(formatstr, args, exception, excmsg):
     # test str and bytes
     test_exc(formatstr, args, exception, excmsg)
     test_exc(formatstr.encode('ascii'), args, exception, excmsg)
 
-class FormatTest(unittest.TestCase):
+kundi FormatTest(unittest.TestCase):
 
-    def test_common_format(self):
+    eleza test_common_format(self):
         # test the format identifiers that work the same across
         # str, bytes, and bytearrays (integer, float, oct, hex)
         testcommon("%%", (), "%")
@@ -114,7 +114,7 @@ class FormatTest(unittest.TestCase):
 
         testcommon("%f", (1.0,), "1.000000")
         # these are trying to test the limits of the internal magic-number-length
-        # formatting buffer, if that number changes then these tests are less
+        # formatting buffer, ikiwa that number changes then these tests are less
         # effective
         testcommon("%#.*g", (109, -1.e+49/3.))
         testcommon("%#.*g", (110, -1.e+49/3.))
@@ -268,8 +268,8 @@ class FormatTest(unittest.TestCase):
         testcommon('%g', 1.1, '1.1')
         testcommon('%#g', 1.1, '1.10000')
 
-        if verbose:
-            print('Testing exceptions')
+        ikiwa verbose:
+            andika('Testing exceptions')
         test_exc_common('%', (), ValueError, "incomplete format")
         test_exc_common('% %s', 1, ValueError,
                         "unsupported format character '%' (0x25) at index 2")
@@ -282,15 +282,15 @@ class FormatTest(unittest.TestCase):
         test_exc_common('%x', 3.14, TypeError,
                         "%x format: an integer is required, not float")
 
-    def test_str_format(self):
+    eleza test_str_format(self):
         testformat("%r", "\u0378", "'\\u0378'")  # non printable
         testformat("%a", "\u0378", "'\\u0378'")  # non printable
         testformat("%r", "\u0374", "'\u0374'")   # printable
         testformat("%a", "\u0374", "'\\u0374'")  # printable
 
         # Test exception for unknown format characters, etc.
-        if verbose:
-            print('Testing exceptions')
+        ikiwa verbose:
+            andika('Testing exceptions')
         test_exc('abc %b', 1, ValueError,
                  "unsupported format character 'b' (0x62) at index 5")
         #test_exc(unicode('abc %\u3000','raw-unicode-escape'), 1, ValueError,
@@ -306,7 +306,7 @@ class FormatTest(unittest.TestCase):
         test_exc('%c', 'ab', TypeError, "%c requires int or char")
         test_exc('%c', b'x', TypeError, "%c requires int or char")
 
-        if maxsize == 2**31-1:
+        ikiwa maxsize == 2**31-1:
             # crashes 2.2.1 and earlier:
             try:
                 "%*d"%(maxsize, -127)
@@ -315,7 +315,7 @@ class FormatTest(unittest.TestCase):
             else:
                 raise TestFailed('"%*d"%(maxsize, -127) should fail')
 
-    def test_bytes_and_bytearray_format(self):
+    eleza test_bytes_and_bytearray_format(self):
         # %c will insert a single byte, either kutoka an int in range(256), or
         # kutoka a bytes argument of length 1, not kutoka a str.
         testcommon(b"%c", 7, b"\x07")
@@ -325,9 +325,9 @@ class FormatTest(unittest.TestCase):
         testcommon(b"%-5c", 65, b"A    ")
         # %b will insert a series of bytes, either kutoka a type that supports
         # the Py_buffer protocol, or something that has a __bytes__ method
-        class FakeBytes(object):
-            def __bytes__(self):
-                return b'123'
+        kundi FakeBytes(object):
+            eleza __bytes__(self):
+                rudisha b'123'
         fb = FakeBytes()
         testcommon(b"%b", b"abc", b"abc")
         testcommon(b"%b", bytearray(b"def"), b"def")
@@ -351,8 +351,8 @@ class FormatTest(unittest.TestCase):
         testcommon(b"%r", "\u0544", b"'\\u0544'")
 
         # Test exception for unknown format characters, etc.
-        if verbose:
-            print('Testing exceptions')
+        ikiwa verbose:
+            andika('Testing exceptions')
         test_exc(b'%g', '1', TypeError, "float argument required, not str")
         test_exc(b'%g', b'1', TypeError, "float argument required, not bytes")
         test_exc(b'no format', 7, TypeError,
@@ -380,7 +380,7 @@ class FormatTest(unittest.TestCase):
                 "%b requires a bytes-like object, "
                  "or an object that implements __bytes__, not 'str'")
 
-        if maxsize == 2**31-1:
+        ikiwa maxsize == 2**31-1:
             # crashes 2.2.1 and earlier:
             try:
                 "%*d"%(maxsize, -127)
@@ -389,14 +389,14 @@ class FormatTest(unittest.TestCase):
             else:
                 raise TestFailed('"%*d"%(maxsize, -127) should fail')
 
-    def test_nul(self):
+    eleza test_nul(self):
         # test the null character
         testcommon("a\0b", (), 'a\0b')
         testcommon("a%cb", (0,), 'a\0b')
         testformat("a%sb", ('c\0d',), 'ac\0db')
         testcommon(b"a%sb", (b'c\0d',), b'ac\0db')
 
-    def test_non_ascii(self):
+    eleza test_non_ascii(self):
         testformat("\u20ac=%f", (1.0,), "\u20ac=1.000000")
 
         self.assertEqual(format("abc", "\u2007<5"), "abc\u2007\u2007")
@@ -417,7 +417,7 @@ class FormatTest(unittest.TestCase):
         self.assertEqual(format(1+2j, "\u2007^8"), "\u2007(1+2j)\u2007")
         self.assertEqual(format(0j, "\u2007^4"), "\u20070j\u2007")
 
-    def test_locale(self):
+    eleza test_locale(self):
         try:
             oldloc = locale.setlocale(locale.LC_ALL)
             locale.setlocale(locale.LC_ALL, '')
@@ -440,7 +440,7 @@ class FormatTest(unittest.TestCase):
             locale.setlocale(locale.LC_ALL, oldloc)
 
     @support.cpython_only
-    def test_optimisations(self):
+    eleza test_optimisations(self):
         text = "abcde" # 5 characters
 
         self.assertIs("%s" % text, text)
@@ -459,7 +459,7 @@ class FormatTest(unittest.TestCase):
         self.assertIs(text % (), text)
         self.assertIs(text.format(), text)
 
-    def test_precision(self):
+    eleza test_precision(self):
         f = 1.2
         self.assertEqual(format(f, ".0f"), "1")
         self.assertEqual(format(f, ".3f"), "1.200")
@@ -473,7 +473,7 @@ class FormatTest(unittest.TestCase):
             format(c, ".%sf" % (sys.maxsize + 1))
 
     @support.cpython_only
-    def test_precision_c_limits(self):
+    eleza test_precision_c_limits(self):
         kutoka _testcapi agiza INT_MAX
 
         f = 1.2
@@ -485,5 +485,5 @@ class FormatTest(unittest.TestCase):
             format(c, ".%sf" % (INT_MAX + 1))
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

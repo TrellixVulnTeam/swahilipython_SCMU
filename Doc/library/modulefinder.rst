@@ -10,7 +10,7 @@
 
 --------------
 
-This module provides a :class:`ModuleFinder` class that can be used to determine
+This module provides a :class:`ModuleFinder` kundi that can be used to determine
 the set of modules imported by a script. ``modulefinder.py`` can also be run as
 a script, giving the filename of a Python script as its argument, after which a
 report of the imported modules will be printed.
@@ -29,11 +29,11 @@ report of the imported modules will be printed.
 
 .. class:: ModuleFinder(path=None, debug=0, excludes=[], replace_paths=[])
 
-   This class provides :meth:`run_script` and :meth:`report` methods to determine
+   This kundi provides :meth:`run_script` and :meth:`report` methods to determine
    the set of modules imported by a script. *path* can be a list of directories to
    search for modules; if not specified, ``sys.path`` is used.  *debug* sets the
-   debugging level; higher values make the class print debugging messages about
-   what it's doing. *excludes* is a list of module names to exclude from the
+   debugging level; higher values make the kundi print debugging messages about
+   what it's doing. *excludes* is a list of module names to exclude kutoka the
    analysis. *replace_paths* is a list of ``(oldpath, newpath)`` tuples that will
    be replaced in module paths.
 
@@ -62,22 +62,22 @@ Example usage of :class:`ModuleFinder`
 
 The script that is going to get analyzed later on (bacon.py)::
 
-   import re, itertools
+   agiza re, itertools
 
    try:
-       import baconhameggs
+       agiza baconhameggs
    except ImportError:
        pass
 
    try:
-       import guido.python.ham
+       agiza guido.python.ham
    except ImportError:
        pass
 
 
 The script that will output the report of bacon.py::
 
-   from modulefinder import ModuleFinder
+   kutoka modulefinder agiza ModuleFinder
 
    finder = ModuleFinder()
    finder.run_script('bacon.py')

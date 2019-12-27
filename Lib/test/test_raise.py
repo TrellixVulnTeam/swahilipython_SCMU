@@ -9,22 +9,22 @@ agiza types
 agiza unittest
 
 
-def get_tb():
+eleza get_tb():
     try:
         raise OSError()
     except:
-        return sys.exc_info()[2]
+        rudisha sys.exc_info()[2]
 
 
-class Context:
-    def __enter__(self):
-        return self
-    def __exit__(self, exc_type, exc_value, exc_tb):
-        return True
+kundi Context:
+    eleza __enter__(self):
+        rudisha self
+    eleza __exit__(self, exc_type, exc_value, exc_tb):
+        rudisha True
 
 
-class TestRaise(unittest.TestCase):
-    def test_invalid_reraise(self):
+kundi TestRaise(unittest.TestCase):
+    eleza test_invalid_reraise(self):
         try:
             raise
         except RuntimeError as e:
@@ -32,7 +32,7 @@ class TestRaise(unittest.TestCase):
         else:
             self.fail("No exception raised")
 
-    def test_reraise(self):
+    eleza test_reraise(self):
         try:
             try:
                 raise IndexError()
@@ -44,8 +44,8 @@ class TestRaise(unittest.TestCase):
         else:
             self.fail("No exception raised")
 
-    def test_except_reraise(self):
-        def reraise():
+    eleza test_except_reraise(self):
+        eleza reraise():
             try:
                 raise TypeError("foo")
             except:
@@ -56,8 +56,8 @@ class TestRaise(unittest.TestCase):
                 raise
         self.assertRaises(TypeError, reraise)
 
-    def test_finally_reraise(self):
-        def reraise():
+    eleza test_finally_reraise(self):
+        eleza reraise():
             try:
                 raise TypeError("foo")
             except:
@@ -67,17 +67,17 @@ class TestRaise(unittest.TestCase):
                     raise
         self.assertRaises(KeyError, reraise)
 
-    def test_nested_reraise(self):
-        def nested_reraise():
+    eleza test_nested_reraise(self):
+        eleza nested_reraise():
             raise
-        def reraise():
+        eleza reraise():
             try:
                 raise TypeError("foo")
             except:
                 nested_reraise()
         self.assertRaises(TypeError, reraise)
 
-    def test_raise_from_None(self):
+    eleza test_raise_kutoka_None(self):
         try:
             try:
                 raise TypeError("foo")
@@ -87,8 +87,8 @@ class TestRaise(unittest.TestCase):
             self.assertIsInstance(e.__context__, TypeError)
             self.assertIsNone(e.__cause__)
 
-    def test_with_reraise1(self):
-        def reraise():
+    eleza test_with_reraise1(self):
+        eleza reraise():
             try:
                 raise TypeError("foo")
             except:
@@ -97,8 +97,8 @@ class TestRaise(unittest.TestCase):
                 raise
         self.assertRaises(TypeError, reraise)
 
-    def test_with_reraise2(self):
-        def reraise():
+    eleza test_with_reraise2(self):
+        eleza reraise():
             try:
                 raise TypeError("foo")
             except:
@@ -107,8 +107,8 @@ class TestRaise(unittest.TestCase):
                 raise
         self.assertRaises(TypeError, reraise)
 
-    def test_yield_reraise(self):
-        def reraise():
+    eleza test_yield_reraise(self):
+        eleza reraise():
             try:
                 raise TypeError("foo")
             except:
@@ -119,9 +119,9 @@ class TestRaise(unittest.TestCase):
         self.assertRaises(TypeError, lambda: next(g))
         self.assertRaises(StopIteration, lambda: next(g))
 
-    def test_erroneous_exception(self):
-        class MyException(Exception):
-            def __init__(self):
+    eleza test_erroneous_exception(self):
+        kundi MyException(Exception):
+            eleza __init__(self):
                 raise RuntimeError()
 
         try:
@@ -131,16 +131,16 @@ class TestRaise(unittest.TestCase):
         else:
             self.fail("No exception raised")
 
-    def test_new_returns_invalid_instance(self):
+    eleza test_new_returns_invalid_instance(self):
         # See issue #11627.
-        class MyException(Exception):
-            def __new__(cls, *args):
-                return object()
+        kundi MyException(Exception):
+            eleza __new__(cls, *args):
+                rudisha object()
 
         with self.assertRaises(TypeError):
             raise MyException
 
-    def test_assert_with_tuple_arg(self):
+    eleza test_assert_with_tuple_arg(self):
         try:
             assert False, (3,)
         except AssertionError as e:
@@ -148,9 +148,9 @@ class TestRaise(unittest.TestCase):
 
 
 
-class TestCause(unittest.TestCase):
+kundi TestCause(unittest.TestCase):
 
-    def testCauseSyntax(self):
+    eleza testCauseSyntax(self):
         try:
             try:
                 try:
@@ -169,7 +169,7 @@ class TestCause(unittest.TestCase):
         self.assertFalse(e.__suppress_context__)
         self.assertIsInstance(e.__context__, TypeError)
 
-    def test_invalid_cause(self):
+    eleza test_invalid_cause(self):
         try:
             raise IndexError kutoka 5
         except TypeError as e:
@@ -177,7 +177,7 @@ class TestCause(unittest.TestCase):
         else:
             self.fail("No exception raised")
 
-    def test_class_cause(self):
+    eleza test_class_cause(self):
         try:
             raise IndexError kutoka KeyError
         except IndexError as e:
@@ -185,7 +185,7 @@ class TestCause(unittest.TestCase):
         else:
             self.fail("No exception raised")
 
-    def test_instance_cause(self):
+    eleza test_instance_cause(self):
         cause = KeyError()
         try:
             raise IndexError kutoka cause
@@ -194,9 +194,9 @@ class TestCause(unittest.TestCase):
         else:
             self.fail("No exception raised")
 
-    def test_erroneous_cause(self):
-        class MyException(Exception):
-            def __init__(self):
+    eleza test_erroneous_cause(self):
+        kundi MyException(Exception):
+            eleza __init__(self):
                 raise RuntimeError()
 
         try:
@@ -207,9 +207,9 @@ class TestCause(unittest.TestCase):
             self.fail("No exception raised")
 
 
-class TestTraceback(unittest.TestCase):
+kundi TestTraceback(unittest.TestCase):
 
-    def test_sets_traceback(self):
+    eleza test_sets_traceback(self):
         try:
             raise IndexError()
         except IndexError as e:
@@ -217,7 +217,7 @@ class TestTraceback(unittest.TestCase):
         else:
             self.fail("No exception raised")
 
-    def test_accepts_traceback(self):
+    eleza test_accepts_traceback(self):
         tb = get_tb()
         try:
             raise IndexError().with_traceback(tb)
@@ -228,12 +228,12 @@ class TestTraceback(unittest.TestCase):
             self.fail("No exception raised")
 
 
-class TestTracebackType(unittest.TestCase):
+kundi TestTracebackType(unittest.TestCase):
 
-    def raiser(self):
+    eleza raiser(self):
         raise ValueError
 
-    def test_attrs(self):
+    eleza test_attrs(self):
         try:
             self.raiser()
         except Exception as exc:
@@ -268,7 +268,7 @@ class TestTracebackType(unittest.TestCase):
         tb.tb_next = new_tb
         self.assertIs(tb.tb_next, new_tb)
 
-    def test_constructor(self):
+    eleza test_constructor(self):
         other_tb = get_tb()
         frame = sys._getframe()
 
@@ -294,8 +294,8 @@ class TestTracebackType(unittest.TestCase):
             types.TracebackType(other_tb, frame, 1, "nuh-uh")
 
 
-class TestContext(unittest.TestCase):
-    def test_instance_context_instance_raise(self):
+kundi TestContext(unittest.TestCase):
+    eleza test_instance_context_instance_raise(self):
         context = IndexError()
         try:
             try:
@@ -307,7 +307,7 @@ class TestContext(unittest.TestCase):
         else:
             self.fail("No exception raised")
 
-    def test_class_context_instance_raise(self):
+    eleza test_class_context_instance_raise(self):
         context = IndexError
         try:
             try:
@@ -320,7 +320,7 @@ class TestContext(unittest.TestCase):
         else:
             self.fail("No exception raised")
 
-    def test_class_context_class_raise(self):
+    eleza test_class_context_class_raise(self):
         context = IndexError
         try:
             try:
@@ -333,7 +333,7 @@ class TestContext(unittest.TestCase):
         else:
             self.fail("No exception raised")
 
-    def test_c_exception_context(self):
+    eleza test_c_exception_context(self):
         try:
             try:
                 1/0
@@ -344,7 +344,7 @@ class TestContext(unittest.TestCase):
         else:
             self.fail("No exception raised")
 
-    def test_c_exception_raise(self):
+    eleza test_c_exception_raise(self):
         try:
             try:
                 1/0
@@ -355,7 +355,7 @@ class TestContext(unittest.TestCase):
         else:
             self.fail("No exception raised")
 
-    def test_noraise_finally(self):
+    eleza test_noraise_finally(self):
         try:
             try:
                 pass
@@ -366,7 +366,7 @@ class TestContext(unittest.TestCase):
         else:
             self.fail("No exception raised")
 
-    def test_raise_finally(self):
+    eleza test_raise_finally(self):
         try:
             try:
                 1/0
@@ -377,11 +377,11 @@ class TestContext(unittest.TestCase):
         else:
             self.fail("No exception raised")
 
-    def test_context_manager(self):
-        class ContextManager:
-            def __enter__(self):
+    eleza test_context_manager(self):
+        kundi ContextManager:
+            eleza __enter__(self):
                 pass
-            def __exit__(self, t, v, tb):
+            eleza __exit__(self, t, v, tb):
                 xyzzy
         try:
             with ContextManager():
@@ -391,7 +391,7 @@ class TestContext(unittest.TestCase):
         else:
             self.fail("No exception raised")
 
-    def test_cycle_broken(self):
+    eleza test_cycle_broken(self):
         # Self-cycles (when re-raising a caught exception) are broken
         try:
             try:
@@ -401,7 +401,7 @@ class TestContext(unittest.TestCase):
         except ZeroDivisionError as e:
             self.assertIsNone(e.__context__)
 
-    def test_reraise_cycle_broken(self):
+    eleza test_reraise_cycle_broken(self):
         # Non-trivial context cycles (through re-raising a previous exception)
         # are broken too.
         try:
@@ -415,15 +415,15 @@ class TestContext(unittest.TestCase):
         except NameError as e:
             self.assertIsNone(e.__context__.__context__)
 
-    def test_3118(self):
+    eleza test_3118(self):
         # deleting the generator caused the __context__ to be cleared
-        def gen():
+        eleza gen():
             try:
                 yield 1
             finally:
                 pass
 
-        def f():
+        eleza f():
             g = gen()
             next(g)
             try:
@@ -437,17 +437,17 @@ class TestContext(unittest.TestCase):
 
         f()
 
-    def test_3611(self):
+    eleza test_3611(self):
         # A re-raised exception in a __del__ caused the __context__
         # to be cleared
-        class C:
-            def __del__(self):
+        kundi C:
+            eleza __del__(self):
                 try:
                     1/0
                 except:
                     raise
 
-        def f():
+        eleza f():
             x = C()
             try:
                 try:
@@ -465,8 +465,8 @@ class TestContext(unittest.TestCase):
             self.assertEqual(ZeroDivisionError, cm.unraisable.exc_type)
 
 
-class TestRemovedFunctionality(unittest.TestCase):
-    def test_tuples(self):
+kundi TestRemovedFunctionality(unittest.TestCase):
+    eleza test_tuples(self):
         try:
             raise (IndexError, KeyError) # This should be a tuple!
         except TypeError:
@@ -474,7 +474,7 @@ class TestRemovedFunctionality(unittest.TestCase):
         else:
             self.fail("No exception raised")
 
-    def test_strings(self):
+    eleza test_strings(self):
         try:
             raise "foo"
         except TypeError:
@@ -483,5 +483,5 @@ class TestRemovedFunctionality(unittest.TestCase):
             self.fail("No exception raised")
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

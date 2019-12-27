@@ -29,7 +29,7 @@ not already proficient with the DOM should consider using the
 DOM applications typically start by parsing some XML into a DOM.  With
 :mod:`xml.dom.minidom`, this is done through the parse functions::
 
-   from xml.dom.minidom import parse, parseString
+   kutoka xml.dom.minidom agiza parse, parseString
 
    dom1 = parse('c:\\temp\\mydata.xml')  # parse an XML file by name
 
@@ -43,7 +43,7 @@ The :func:`parse` function can take either a filename or an open file object.
 
 .. function:: parse(filename_or_file, parser=None, bufsize=None)
 
-   Return a :class:`Document` from the given input. *filename_or_file* may be
+   Return a :class:`Document` kutoka the given input. *filename_or_file* may be
    either a file name, or a file-like object. *parser*, if given, must be a SAX2
    parser object. This function will change the document handler of the parser and
    activate namespace support; other parser configuration (like setting an entity
@@ -62,7 +62,7 @@ Both functions return a :class:`Document` object representing the content of the
 document.
 
 What the :func:`parse` and :func:`parseString` functions do is connect an XML
-parser with a "DOM builder" that can accept parse events from any SAX parser and
+parser with a "DOM builder" that can accept parse events kutoka any SAX parser and
 convert them into a DOM tree.  The name of the functions are perhaps misleading,
 but are easy to grasp when learning the interfaces.  The parsing of the document
 will be completed before these functions return; it's simply that these
@@ -74,7 +74,7 @@ Implementation" object.  You can get this object either by calling the
 :mod:`xml.dom.minidom` module.  Once you have a :class:`Document`, you
 can add child nodes to it to populate the DOM::
 
-   from xml.dom.minidom import getDOMImplementation
+   kutoka xml.dom.minidom agiza getDOMImplementation
 
    impl = getDOMImplementation()
 
@@ -203,10 +203,10 @@ rules apply:
 * Interfaces are accessed through instance objects. Applications should not
   instantiate the classes themselves; they should use the creator functions
   available on the :class:`Document` object. Derived interfaces support all
-  operations (and attributes) from the base interfaces, plus any new operations.
+  operations (and attributes) kutoka the base interfaces, plus any new operations.
 
 * Operations are used as methods. Since the DOM uses only :keyword:`in`
-  parameters, the arguments are passed in normal order (from left to right).
+  parameters, the arguments are passed in normal order (kutoka left to right).
   There are no optional arguments. ``void`` operations return ``None``.
 
 * IDL attributes map to instance attributes. For compatibility with the OMG IDL
@@ -220,7 +220,7 @@ rules apply:
 * The type ``DOMString`` maps to Python strings. :mod:`xml.dom.minidom` supports
   either bytes or strings, but will normally produce strings.
   Values of type ``DOMString`` may also be ``None`` where allowed to have the IDL
-  ``null`` value by the DOM specification from the W3C.
+  ``null`` value by the DOM specification kutoka the W3C.
 
 * ``const`` declarations map to variables in their respective scope (e.g.
   ``xml.dom.minidom.Node.PROCESSING_INSTRUCTION_NODE``); they must not be changed.

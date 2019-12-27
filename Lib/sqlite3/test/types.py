@@ -30,43 +30,43 @@ except ImportError:
     zlib = None
 
 
-class SqliteTypeTests(unittest.TestCase):
-    def setUp(self):
+kundi SqliteTypeTests(unittest.TestCase):
+    eleza setUp(self):
         self.con = sqlite.connect(":memory:")
         self.cur = self.con.cursor()
         self.cur.execute("create table test(i integer, s varchar, f number, b blob)")
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.cur.close()
         self.con.close()
 
-    def CheckString(self):
+    eleza CheckString(self):
         self.cur.execute("insert into test(s) values (?)", ("Österreich",))
         self.cur.execute("select s kutoka test")
         row = self.cur.fetchone()
         self.assertEqual(row[0], "Österreich")
 
-    def CheckSmallInt(self):
+    eleza CheckSmallInt(self):
         self.cur.execute("insert into test(i) values (?)", (42,))
         self.cur.execute("select i kutoka test")
         row = self.cur.fetchone()
         self.assertEqual(row[0], 42)
 
-    def CheckLargeInt(self):
+    eleza CheckLargeInt(self):
         num = 2**40
         self.cur.execute("insert into test(i) values (?)", (num,))
         self.cur.execute("select i kutoka test")
         row = self.cur.fetchone()
         self.assertEqual(row[0], num)
 
-    def CheckFloat(self):
+    eleza CheckFloat(self):
         val = 3.14
         self.cur.execute("insert into test(f) values (?)", (val,))
         self.cur.execute("select f kutoka test")
         row = self.cur.fetchone()
         self.assertEqual(row[0], val)
 
-    def CheckBlob(self):
+    eleza CheckBlob(self):
         sample = b"Guglhupf"
         val = memoryview(sample)
         self.cur.execute("insert into test(b) values (?)", (val,))
@@ -74,46 +74,46 @@ class SqliteTypeTests(unittest.TestCase):
         row = self.cur.fetchone()
         self.assertEqual(row[0], sample)
 
-    def CheckUnicodeExecute(self):
+    eleza CheckUnicodeExecute(self):
         self.cur.execute("select 'Österreich'")
         row = self.cur.fetchone()
         self.assertEqual(row[0], "Österreich")
 
-class DeclTypesTests(unittest.TestCase):
-    class Foo:
-        def __init__(self, _val):
-            if isinstance(_val, bytes):
+kundi DeclTypesTests(unittest.TestCase):
+    kundi Foo:
+        eleza __init__(self, _val):
+            ikiwa isinstance(_val, bytes):
                 # sqlite3 always calls __init__ with a bytes created kutoka a
                 # UTF-8 string when __conform__ was used to store the object.
                 _val = _val.decode('utf-8')
             self.val = _val
 
-        def __eq__(self, other):
-            if not isinstance(other, DeclTypesTests.Foo):
-                return NotImplemented
-            return self.val == other.val
+        eleza __eq__(self, other):
+            ikiwa not isinstance(other, DeclTypesTests.Foo):
+                rudisha NotImplemented
+            rudisha self.val == other.val
 
-        def __conform__(self, protocol):
-            if protocol is sqlite.PrepareProtocol:
-                return self.val
+        eleza __conform__(self, protocol):
+            ikiwa protocol is sqlite.PrepareProtocol:
+                rudisha self.val
             else:
-                return None
+                rudisha None
 
-        def __str__(self):
-            return "<%s>" % self.val
+        eleza __str__(self):
+            rudisha "<%s>" % self.val
 
-    class BadConform:
-        def __init__(self, exc):
+    kundi BadConform:
+        eleza __init__(self, exc):
             self.exc = exc
-        def __conform__(self, protocol):
+        eleza __conform__(self, protocol):
             raise self.exc
 
-    def setUp(self):
+    eleza setUp(self):
         self.con = sqlite.connect(":memory:", detect_types=sqlite.PARSE_DECLTYPES)
         self.cur = self.con.cursor()
         self.cur.execute("create table test(i int, s str, f float, b bool, u unicode, foo foo, bin blob, n1 number, n2 number(5), bad bad)")
 
-        # override float, make them always return the same number
+        # override float, make them always rudisha the same number
         sqlite.converters["FLOAT"] = lambda x: 47.2
 
         # and implement two custom ones
@@ -123,7 +123,7 @@ class DeclTypesTests(unittest.TestCase):
         sqlite.converters["WRONG"] = lambda x: "WRONG"
         sqlite.converters["NUMBER"] = float
 
-    def tearDown(self):
+    eleza tearDown(self):
         del sqlite.converters["FLOAT"]
         del sqlite.converters["BOOL"]
         del sqlite.converters["FOO"]
@@ -133,21 +133,21 @@ class DeclTypesTests(unittest.TestCase):
         self.cur.close()
         self.con.close()
 
-    def CheckString(self):
+    eleza CheckString(self):
         # default
         self.cur.execute("insert into test(s) values (?)", ("foo",))
         self.cur.execute('select s as "s [WRONG]" kutoka test')
         row = self.cur.fetchone()
         self.assertEqual(row[0], "foo")
 
-    def CheckSmallInt(self):
+    eleza CheckSmallInt(self):
         # default
         self.cur.execute("insert into test(i) values (?)", (42,))
         self.cur.execute("select i kutoka test")
         row = self.cur.fetchone()
         self.assertEqual(row[0], 42)
 
-    def CheckLargeInt(self):
+    eleza CheckLargeInt(self):
         # default
         num = 2**40
         self.cur.execute("insert into test(i) values (?)", (num,))
@@ -155,7 +155,7 @@ class DeclTypesTests(unittest.TestCase):
         row = self.cur.fetchone()
         self.assertEqual(row[0], num)
 
-    def CheckFloat(self):
+    eleza CheckFloat(self):
         # custom
         val = 3.14
         self.cur.execute("insert into test(f) values (?)", (val,))
@@ -163,7 +163,7 @@ class DeclTypesTests(unittest.TestCase):
         row = self.cur.fetchone()
         self.assertEqual(row[0], 47.2)
 
-    def CheckBool(self):
+    eleza CheckBool(self):
         # custom
         self.cur.execute("insert into test(b) values (?)", (False,))
         self.cur.execute("select b kutoka test")
@@ -176,7 +176,7 @@ class DeclTypesTests(unittest.TestCase):
         row = self.cur.fetchone()
         self.assertIs(row[0], True)
 
-    def CheckUnicode(self):
+    eleza CheckUnicode(self):
         # default
         val = "\xd6sterreich"
         self.cur.execute("insert into test(u) values (?)", (val,))
@@ -184,14 +184,14 @@ class DeclTypesTests(unittest.TestCase):
         row = self.cur.fetchone()
         self.assertEqual(row[0], val)
 
-    def CheckFoo(self):
+    eleza CheckFoo(self):
         val = DeclTypesTests.Foo("bla")
         self.cur.execute("insert into test(foo) values (?)", (val,))
         self.cur.execute("select foo kutoka test")
         row = self.cur.fetchone()
         self.assertEqual(row[0], val)
 
-    def CheckErrorInConform(self):
+    eleza CheckErrorInConform(self):
         val = DeclTypesTests.BadConform(TypeError)
         with self.assertRaises(sqlite.InterfaceError):
             self.cur.execute("insert into test(bad) values (?)", (val,))
@@ -204,19 +204,19 @@ class DeclTypesTests(unittest.TestCase):
         with self.assertRaises(KeyboardInterrupt):
             self.cur.execute("insert into test(bad) values (:val)", {"val": val})
 
-    def CheckUnsupportedSeq(self):
-        class Bar: pass
+    eleza CheckUnsupportedSeq(self):
+        kundi Bar: pass
         val = Bar()
         with self.assertRaises(sqlite.InterfaceError):
             self.cur.execute("insert into test(f) values (?)", (val,))
 
-    def CheckUnsupportedDict(self):
-        class Bar: pass
+    eleza CheckUnsupportedDict(self):
+        kundi Bar: pass
         val = Bar()
         with self.assertRaises(sqlite.InterfaceError):
             self.cur.execute("insert into test(f) values (:val)", {"val": val})
 
-    def CheckBlob(self):
+    eleza CheckBlob(self):
         # default
         sample = b"Guglhupf"
         val = memoryview(sample)
@@ -225,21 +225,21 @@ class DeclTypesTests(unittest.TestCase):
         row = self.cur.fetchone()
         self.assertEqual(row[0], sample)
 
-    def CheckNumber1(self):
+    eleza CheckNumber1(self):
         self.cur.execute("insert into test(n1) values (5)")
         value = self.cur.execute("select n1 kutoka test").fetchone()[0]
-        # if the converter is not used, it's an int instead of a float
+        # ikiwa the converter is not used, it's an int instead of a float
         self.assertEqual(type(value), float)
 
-    def CheckNumber2(self):
+    eleza CheckNumber2(self):
         """Checks whether converter names are cut off at '(' characters"""
         self.cur.execute("insert into test(n2) values (5)")
         value = self.cur.execute("select n2 kutoka test").fetchone()[0]
-        # if the converter is not used, it's an int instead of a float
+        # ikiwa the converter is not used, it's an int instead of a float
         self.assertEqual(type(value), float)
 
-class ColNamesTests(unittest.TestCase):
-    def setUp(self):
+kundi ColNamesTests(unittest.TestCase):
+    eleza setUp(self):
         self.con = sqlite.connect(":memory:", detect_types=sqlite.PARSE_COLNAMES)
         self.cur = self.con.cursor()
         self.cur.execute("create table test(x foo)")
@@ -249,7 +249,7 @@ class ColNamesTests(unittest.TestCase):
         sqlite.converters["EXC"] = lambda x: 5/0
         sqlite.converters["B1B1"] = lambda x: "MARKER"
 
-    def tearDown(self):
+    eleza tearDown(self):
         del sqlite.converters["FOO"]
         del sqlite.converters["BAR"]
         del sqlite.converters["EXC"]
@@ -257,7 +257,7 @@ class ColNamesTests(unittest.TestCase):
         self.cur.close()
         self.con.close()
 
-    def CheckDeclTypeNotUsed(self):
+    eleza CheckDeclTypeNotUsed(self):
         """
         Assures that the declared type is not used when PARSE_DECLTYPES
         is not set.
@@ -267,28 +267,28 @@ class ColNamesTests(unittest.TestCase):
         val = self.cur.fetchone()[0]
         self.assertEqual(val, "xxx")
 
-    def CheckNone(self):
+    eleza CheckNone(self):
         self.cur.execute("insert into test(x) values (?)", (None,))
         self.cur.execute("select x kutoka test")
         val = self.cur.fetchone()[0]
         self.assertEqual(val, None)
 
-    def CheckColName(self):
+    eleza CheckColName(self):
         self.cur.execute("insert into test(x) values (?)", ("xxx",))
         self.cur.execute('select x as "x [bar]" kutoka test')
         val = self.cur.fetchone()[0]
         self.assertEqual(val, "<xxx>")
 
-        # Check if the stripping of colnames works. Everything after the first
+        # Check ikiwa the stripping of colnames works. Everything after the first
         # whitespace should be stripped.
         self.assertEqual(self.cur.description[0][0], "x")
 
-    def CheckCaseInConverterName(self):
+    eleza CheckCaseInConverterName(self):
         self.cur.execute("select 'other' as \"x [b1b1]\"")
         val = self.cur.fetchone()[0]
         self.assertEqual(val, "MARKER")
 
-    def CheckCursorDescriptionNoRow(self):
+    eleza CheckCursorDescriptionNoRow(self):
         """
         cursor.description should at least provide the column name(s), even if
         no row returned.
@@ -296,36 +296,36 @@ class ColNamesTests(unittest.TestCase):
         self.cur.execute("select * kutoka test where 0 = 1")
         self.assertEqual(self.cur.description[0][0], "x")
 
-    def CheckCursorDescriptionInsert(self):
+    eleza CheckCursorDescriptionInsert(self):
         self.cur.execute("insert into test values (1)")
         self.assertIsNone(self.cur.description)
 
 
 @unittest.skipIf(sqlite.sqlite_version_info < (3, 8, 3), "CTEs not supported")
-class CommonTableExpressionTests(unittest.TestCase):
+kundi CommonTableExpressionTests(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.con = sqlite.connect(":memory:")
         self.cur = self.con.cursor()
         self.cur.execute("create table test(x foo)")
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.cur.close()
         self.con.close()
 
-    def CheckCursorDescriptionCTESimple(self):
+    eleza CheckCursorDescriptionCTESimple(self):
         self.cur.execute("with one as (select 1) select * kutoka one")
         self.assertIsNotNone(self.cur.description)
         self.assertEqual(self.cur.description[0][0], "1")
 
-    def CheckCursorDescriptionCTESMultipleColumns(self):
+    eleza CheckCursorDescriptionCTESMultipleColumns(self):
         self.cur.execute("insert into test values(1)")
         self.cur.execute("insert into test values(2)")
         self.cur.execute("with testCTE as (select * kutoka test) select * kutoka testCTE")
         self.assertIsNotNone(self.cur.description)
         self.assertEqual(self.cur.description[0][0], "x")
 
-    def CheckCursorDescriptionCTE(self):
+    eleza CheckCursorDescriptionCTE(self):
         self.cur.execute("insert into test values (1)")
         self.cur.execute("with bar as (select * kutoka test) select * kutoka test where x = 1")
         self.assertIsNotNone(self.cur.description)
@@ -335,12 +335,12 @@ class CommonTableExpressionTests(unittest.TestCase):
         self.assertEqual(self.cur.description[0][0], "x")
 
 
-class ObjectAdaptationTests(unittest.TestCase):
-    def cast(obj):
-        return float(obj)
+kundi ObjectAdaptationTests(unittest.TestCase):
+    eleza cast(obj):
+        rudisha float(obj)
     cast = staticmethod(cast)
 
-    def setUp(self):
+    eleza setUp(self):
         self.con = sqlite.connect(":memory:")
         try:
             del sqlite.adapters[int]
@@ -349,52 +349,52 @@ class ObjectAdaptationTests(unittest.TestCase):
         sqlite.register_adapter(int, ObjectAdaptationTests.cast)
         self.cur = self.con.cursor()
 
-    def tearDown(self):
+    eleza tearDown(self):
         del sqlite.adapters[(int, sqlite.PrepareProtocol)]
         self.cur.close()
         self.con.close()
 
-    def CheckCasterIsUsed(self):
+    eleza CheckCasterIsUsed(self):
         self.cur.execute("select ?", (4,))
         val = self.cur.fetchone()[0]
         self.assertEqual(type(val), float)
 
 @unittest.skipUnless(zlib, "requires zlib")
-class BinaryConverterTests(unittest.TestCase):
-    def convert(s):
-        return zlib.decompress(s)
+kundi BinaryConverterTests(unittest.TestCase):
+    eleza convert(s):
+        rudisha zlib.decompress(s)
     convert = staticmethod(convert)
 
-    def setUp(self):
+    eleza setUp(self):
         self.con = sqlite.connect(":memory:", detect_types=sqlite.PARSE_COLNAMES)
         sqlite.register_converter("bin", BinaryConverterTests.convert)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.con.close()
 
-    def CheckBinaryInputForConverter(self):
+    eleza CheckBinaryInputForConverter(self):
         testdata = b"abcdefg" * 10
         result = self.con.execute('select ? as "x [bin]"', (memoryview(zlib.compress(testdata)),)).fetchone()[0]
         self.assertEqual(testdata, result)
 
-class DateTimeTests(unittest.TestCase):
-    def setUp(self):
+kundi DateTimeTests(unittest.TestCase):
+    eleza setUp(self):
         self.con = sqlite.connect(":memory:", detect_types=sqlite.PARSE_DECLTYPES)
         self.cur = self.con.cursor()
         self.cur.execute("create table test(d date, ts timestamp)")
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.cur.close()
         self.con.close()
 
-    def CheckSqliteDate(self):
+    eleza CheckSqliteDate(self):
         d = sqlite.Date(2004, 2, 14)
         self.cur.execute("insert into test(d) values (?)", (d,))
         self.cur.execute("select d kutoka test")
         d2 = self.cur.fetchone()[0]
         self.assertEqual(d, d2)
 
-    def CheckSqliteTimestamp(self):
+    eleza CheckSqliteTimestamp(self):
         ts = sqlite.Timestamp(2004, 2, 14, 7, 15, 0)
         self.cur.execute("insert into test(ts) values (?)", (ts,))
         self.cur.execute("select ts kutoka test")
@@ -403,7 +403,7 @@ class DateTimeTests(unittest.TestCase):
 
     @unittest.skipIf(sqlite.sqlite_version_info < (3, 1),
                      'the date functions are available on 3.1 or later')
-    def CheckSqlTimestamp(self):
+    eleza CheckSqlTimestamp(self):
         now = datetime.datetime.utcnow()
         self.cur.execute("insert into test(ts) values (current_timestamp)")
         self.cur.execute("select ts kutoka test")
@@ -411,21 +411,21 @@ class DateTimeTests(unittest.TestCase):
         self.assertEqual(type(ts), datetime.datetime)
         self.assertEqual(ts.year, now.year)
 
-    def CheckDateTimeSubSeconds(self):
+    eleza CheckDateTimeSubSeconds(self):
         ts = sqlite.Timestamp(2004, 2, 14, 7, 15, 0, 500000)
         self.cur.execute("insert into test(ts) values (?)", (ts,))
         self.cur.execute("select ts kutoka test")
         ts2 = self.cur.fetchone()[0]
         self.assertEqual(ts, ts2)
 
-    def CheckDateTimeSubSecondsFloatingPoint(self):
+    eleza CheckDateTimeSubSecondsFloatingPoint(self):
         ts = sqlite.Timestamp(2004, 2, 14, 7, 15, 0, 510241)
         self.cur.execute("insert into test(ts) values (?)", (ts,))
         self.cur.execute("select ts kutoka test")
         ts2 = self.cur.fetchone()[0]
         self.assertEqual(ts, ts2)
 
-def suite():
+eleza suite():
     sqlite_type_suite = unittest.makeSuite(SqliteTypeTests, "Check")
     decltypes_type_suite = unittest.makeSuite(DeclTypesTests, "Check")
     colnames_type_suite = unittest.makeSuite(ColNamesTests, "Check")
@@ -433,11 +433,11 @@ def suite():
     bin_suite = unittest.makeSuite(BinaryConverterTests, "Check")
     date_suite = unittest.makeSuite(DateTimeTests, "Check")
     cte_suite = unittest.makeSuite(CommonTableExpressionTests, "Check")
-    return unittest.TestSuite((sqlite_type_suite, decltypes_type_suite, colnames_type_suite, adaptation_suite, bin_suite, date_suite, cte_suite))
+    rudisha unittest.TestSuite((sqlite_type_suite, decltypes_type_suite, colnames_type_suite, adaptation_suite, bin_suite, date_suite, cte_suite))
 
-def test():
+eleza test():
     runner = unittest.TextTestRunner()
     runner.run(suite())
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test()

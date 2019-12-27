@@ -8,7 +8,7 @@ kutoka test agiza support
 agiza _thread as thread
 agiza time
 
-if (sys.platform[:3] == 'win'):
+ikiwa (sys.platform[:3] == 'win'):
     raise unittest.SkipTest("Can't test signal on %s" % sys.platform)
 
 process_pid = os.getpid()
@@ -17,28 +17,28 @@ signalled_all=thread.allocate_lock()
 USING_PTHREAD_COND = (sys.thread_info.name == 'pthread'
                       and sys.thread_info.lock == 'mutex+cond')
 
-def registerSignals(for_usr1, for_usr2, for_alrm):
+eleza registerSignals(for_usr1, for_usr2, for_alrm):
     usr1 = signal.signal(signal.SIGUSR1, for_usr1)
     usr2 = signal.signal(signal.SIGUSR2, for_usr2)
     alrm = signal.signal(signal.SIGALRM, for_alrm)
-    return usr1, usr2, alrm
+    rudisha usr1, usr2, alrm
 
 
 # The signal handler. Just note that the signal occurred and
 # kutoka who.
-def handle_signals(sig,frame):
+eleza handle_signals(sig,frame):
     signal_blackboard[sig]['tripped'] += 1
     signal_blackboard[sig]['tripped_by'] = thread.get_ident()
 
 # a function that will be spawned as a separate thread.
-def send_signals():
+eleza send_signals():
     os.kill(process_pid, signal.SIGUSR1)
     os.kill(process_pid, signal.SIGUSR2)
     signalled_all.release()
 
-class ThreadSignals(unittest.TestCase):
+kundi ThreadSignals(unittest.TestCase):
 
-    def test_signals(self):
+    eleza test_signals(self):
         with support.wait_threads_exit():
             # Test signal handling semantics of threads.
             # We spawn a thread, have the thread send two signals, and
@@ -54,7 +54,7 @@ class ThreadSignals(unittest.TestCase):
         # and might be out of order.)  If we haven't seen
         # the signals yet, send yet another signal and
         # wait for it return.
-        if signal_blackboard[signal.SIGUSR1]['tripped'] == 0 \
+        ikiwa signal_blackboard[signal.SIGUSR1]['tripped'] == 0 \
            or signal_blackboard[signal.SIGUSR2]['tripped'] == 0:
             try:
                 signal.alarm(1)
@@ -70,10 +70,10 @@ class ThreadSignals(unittest.TestCase):
                            thread.get_ident())
         signalled_all.release()
 
-    def spawnSignallingThread(self):
+    eleza spawnSignallingThread(self):
         thread.start_new_thread(send_signals, ())
 
-    def alarm_interrupt(self, sig, frame):
+    eleza alarm_interrupt(self, sig, frame):
         raise KeyboardInterrupt
 
     @unittest.skipIf(USING_PTHREAD_COND,
@@ -85,7 +85,7 @@ class ThreadSignals(unittest.TestCase):
     # Issue #20564: sem_timedwait() cannot be interrupted on OpenBSD
     @unittest.skipIf(sys.platform.startswith('openbsd'),
                      'lock cannot be interrupted on OpenBSD')
-    def test_lock_acquire_interruption(self):
+    eleza test_lock_acquire_interruption(self):
         # Mimic receiving a SIGINT (KeyboardInterrupt) with SIGALRM while stuck
         # in a deadlock.
         # XXX this test can fail when the legacy (non-semaphore) implementation
@@ -101,7 +101,7 @@ class ThreadSignals(unittest.TestCase):
             # Checking that KeyboardInterrupt was raised is not sufficient.
             # We want to assert that lock.acquire() was interrupted because
             # of the signal, not that the signal handler was called immediately
-            # after timeout return of lock.acquire() (which can fool assertRaises).
+            # after timeout rudisha of lock.acquire() (which can fool assertRaises).
             self.assertLess(dt, 3.0)
         finally:
             signal.alarm(0)
@@ -116,7 +116,7 @@ class ThreadSignals(unittest.TestCase):
     # Issue #20564: sem_timedwait() cannot be interrupted on OpenBSD
     @unittest.skipIf(sys.platform.startswith('openbsd'),
                      'lock cannot be interrupted on OpenBSD')
-    def test_rlock_acquire_interruption(self):
+    eleza test_rlock_acquire_interruption(self):
         # Mimic receiving a SIGINT (KeyboardInterrupt) with SIGALRM while stuck
         # in a deadlock.
         # XXX this test can fail when the legacy (non-semaphore) implementation
@@ -126,7 +126,7 @@ class ThreadSignals(unittest.TestCase):
             rlock = thread.RLock()
             # For reentrant locks, the initial acquisition must be in another
             # thread.
-            def other_thread():
+            eleza other_thread():
                 rlock.acquire()
 
             with support.wait_threads_exit():
@@ -145,14 +145,14 @@ class ThreadSignals(unittest.TestCase):
             signal.alarm(0)
             signal.signal(signal.SIGALRM, oldalrm)
 
-    def acquire_retries_on_intr(self, lock):
+    eleza acquire_retries_on_intr(self, lock):
         self.sig_recvd = False
-        def my_handler(signal, frame):
+        eleza my_handler(signal, frame):
             self.sig_recvd = True
 
         old_handler = signal.signal(signal.SIGUSR1, my_handler)
         try:
-            def other_thread():
+            eleza other_thread():
                 # Acquire the lock in a non-main thread, so this test works for
                 # RLocks.
                 lock.acquire()
@@ -177,18 +177,18 @@ class ThreadSignals(unittest.TestCase):
         finally:
             signal.signal(signal.SIGUSR1, old_handler)
 
-    def test_lock_acquire_retries_on_intr(self):
+    eleza test_lock_acquire_retries_on_intr(self):
         self.acquire_retries_on_intr(thread.allocate_lock())
 
-    def test_rlock_acquire_retries_on_intr(self):
+    eleza test_rlock_acquire_retries_on_intr(self):
         self.acquire_retries_on_intr(thread.RLock())
 
-    def test_interrupted_timed_acquire(self):
+    eleza test_interrupted_timed_acquire(self):
         # Test to make sure we recompute lock acquisition timeouts when we
         # receive a signal.  Check this by repeatedly interrupting a lock
         # acquire in the main thread, and make sure that the lock acquire times
         # out after the right amount of time.
-        # NOTE: this test only behaves as expected if C signals get delivered
+        # NOTE: this test only behaves as expected ikiwa C signals get delivered
         # to the main thread.  Otherwise lock.acquire() itself doesn't get
         # interrupted and the test trivially succeeds.
         self.start = None
@@ -198,15 +198,15 @@ class ThreadSignals(unittest.TestCase):
         done.acquire()
         lock = thread.allocate_lock()
         lock.acquire()
-        def my_handler(signum, frame):
+        eleza my_handler(signum, frame):
             self.sigs_recvd += 1
         old_handler = signal.signal(signal.SIGUSR1, my_handler)
         try:
-            def timed_acquire():
+            eleza timed_acquire():
                 self.start = time.monotonic()
                 lock.acquire(timeout=0.5)
                 self.end = time.monotonic()
-            def send_signals():
+            eleza send_signals():
                 for _ in range(40):
                     time.sleep(0.02)
                     os.kill(process_pid, signal.SIGUSR1)
@@ -230,7 +230,7 @@ class ThreadSignals(unittest.TestCase):
             signal.signal(signal.SIGUSR1, old_handler)
 
 
-def test_main():
+eleza test_main():
     global signal_blackboard
 
     signal_blackboard = { signal.SIGUSR1 : {'tripped': 0, 'tripped_by': 0 },
@@ -243,5 +243,5 @@ def test_main():
     finally:
         registerSignals(*oldsigs)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test_main()

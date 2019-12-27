@@ -9,7 +9,7 @@ kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza LParen, RParen
 
 # XXX This doesn't support nested for loops like [x for x in 1, 2 for x in 1, 2]
-class FixParen(fixer_base.BaseFix):
+kundi FixParen(fixer_base.BaseFix):
     BM_compatible = True
 
     PATTERN = """
@@ -34,7 +34,7 @@ class FixParen(fixer_base.BaseFix):
         (']' | ')') >
     """
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         target = results["target"]
 
         lparen = LParen()

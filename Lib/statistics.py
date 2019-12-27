@@ -35,16 +35,16 @@ Calculate the standard median of discrete data:
 3.5
 
 
-Calculate the median, or 50th percentile, of data grouped into class intervals
-centred on the data values provided. E.g. if your data points are rounded to
+Calculate the median, or 50th percentile, of data grouped into kundi intervals
+centred on the data values provided. E.g. ikiwa your data points are rounded to
 the nearest whole number:
 
 >>> median_grouped([2, 2, 3, 3, 3, 4])  #doctest: +ELLIPSIS
 2.8333333333...
 
 This should be interpreted in this way: you have two data points in the class
-interval 1.5-2.5, three data points in the class interval 2.5-3.5, and one in
-the class interval 3.5-4.5. The median of these data points is 2.8333...
+interval 1.5-2.5, three data points in the kundi interval 2.5-3.5, and one in
+the kundi interval 3.5-4.5. The median of these data points is 2.8333...
 
 
 Calculating variability or spread
@@ -76,7 +76,7 @@ second argument to the four "spread" functions to avoid recalculating it:
 Exceptions
 ----------
 
-A single exception is defined: StatisticsError is a subclass of ValueError.
+A single exception is defined: StatisticsError is a subkundi of ValueError.
 
 """
 
@@ -114,13 +114,13 @@ kutoka collections agiza Counter
 
 # === Exceptions ===
 
-class StatisticsError(ValueError):
+kundi StatisticsError(ValueError):
     pass
 
 
 # === Private utilities ===
 
-def _sum(data, start=0):
+eleza _sum(data, start=0):
     """_sum(data [, start]) -> (type, sum, count)
 
     Return a high-precision sum of the given numeric data as a fraction,
@@ -134,24 +134,24 @@ def _sum(data, start=0):
     --------
 
     >>> _sum([3, 2.25, 4.5, -0.5, 1.0], 0.75)
-    (<class 'float'>, Fraction(11, 1), 5)
+    (<kundi 'float'>, Fraction(11, 1), 5)
 
     Some sources of round-off error will be avoided:
 
     # Built-in sum returns zero.
     >>> _sum([1e50, 1, -1e50] * 1000)
-    (<class 'float'>, Fraction(1000, 1), 3000)
+    (<kundi 'float'>, Fraction(1000, 1), 3000)
 
     Fractions and Decimals are also supported:
 
     >>> kutoka fractions agiza Fraction as F
     >>> _sum([F(2, 3), F(7, 5), F(1, 4), F(5, 6)])
-    (<class 'fractions.Fraction'>, Fraction(63, 20), 4)
+    (<kundi 'fractions.Fraction'>, Fraction(63, 20), 4)
 
     >>> kutoka decimal agiza Decimal as D
     >>> data = [D("0.1375"), D("0.2108"), D("0.3061"), D("0.0419")]
     >>> _sum(data)
-    (<class 'decimal.Decimal'>, Fraction(6963, 10000), 4)
+    (<kundi 'decimal.Decimal'>, Fraction(6963, 10000), 4)
 
     Mixed types are currently treated as an error, except that int is
     allowed.
@@ -166,57 +166,57 @@ def _sum(data, start=0):
         for n,d in map(_exact_ratio, values):
             count += 1
             partials[d] = partials_get(d, 0) + n
-    if None in partials:
+    ikiwa None in partials:
         # The sum will be a NAN or INF. We can ignore all the finite
         # partials, and just look at this special one.
         total = partials[None]
         assert not _isfinite(total)
     else:
         # Sum all the partial sums using builtin sum.
-        # FIXME is this faster if we sum them in order of the denominator?
+        # FIXME is this faster ikiwa we sum them in order of the denominator?
         total = sum(Fraction(n, d) for d, n in sorted(partials.items()))
-    return (T, total, count)
+    rudisha (T, total, count)
 
 
-def _isfinite(x):
+eleza _isfinite(x):
     try:
-        return x.is_finite()  # Likely a Decimal.
+        rudisha x.is_finite()  # Likely a Decimal.
     except AttributeError:
-        return math.isfinite(x)  # Coerces to float first.
+        rudisha math.isfinite(x)  # Coerces to float first.
 
 
-def _coerce(T, S):
+eleza _coerce(T, S):
     """Coerce types T and S to a common type, or raise TypeError.
 
     Coercion rules are currently an implementation detail. See the CoerceTest
-    test class in test_statistics for details.
+    test kundi in test_statistics for details.
     """
     # See http://bugs.python.org/issue24068.
     assert T is not bool, "initial type T is bool"
     # If the types are the same, no need to coerce anything. Put this
     # first, so that the usual case (no coercion needed) happens as soon
     # as possible.
-    if T is S:  return T
+    ikiwa T is S:  rudisha T
     # Mixed int & other coerce to the other type.
-    if S is int or S is bool:  return T
-    if T is int:  return S
-    # If one is a (strict) subclass of the other, coerce to the subclass.
-    if issubclass(S, T):  return S
-    if issubclass(T, S):  return T
+    ikiwa S is int or S is bool:  rudisha T
+    ikiwa T is int:  rudisha S
+    # If one is a (strict) subkundi of the other, coerce to the subclass.
+    ikiwa issubclass(S, T):  rudisha S
+    ikiwa issubclass(T, S):  rudisha T
     # Ints coerce to the other type.
-    if issubclass(T, int):  return S
-    if issubclass(S, int):  return T
+    ikiwa issubclass(T, int):  rudisha S
+    ikiwa issubclass(S, int):  rudisha T
     # Mixed fraction & float coerces to float (or float subclass).
-    if issubclass(T, Fraction) and issubclass(S, float):
-        return S
-    if issubclass(T, float) and issubclass(S, Fraction):
-        return T
+    ikiwa issubclass(T, Fraction) and issubclass(S, float):
+        rudisha S
+    ikiwa issubclass(T, float) and issubclass(S, Fraction):
+        rudisha T
     # Any other combination is disallowed.
     msg = "don't know how to coerce %s and %s"
     raise TypeError(msg % (T.__name__, S.__name__))
 
 
-def _exact_ratio(x):
+eleza _exact_ratio(x):
     """Return Real number x to exact (numerator, denominator) pair.
 
     >>> _exact_ratio(0.25)
@@ -228,71 +228,71 @@ def _exact_ratio(x):
         # Optimise the common case of floats. We expect that the most often
         # used numeric type will be builtin floats, so try to make this as
         # fast as possible.
-        if type(x) is float or type(x) is Decimal:
-            return x.as_integer_ratio()
+        ikiwa type(x) is float or type(x) is Decimal:
+            rudisha x.as_integer_ratio()
         try:
             # x may be an int, Fraction, or Integral ABC.
-            return (x.numerator, x.denominator)
+            rudisha (x.numerator, x.denominator)
         except AttributeError:
             try:
                 # x may be a float or Decimal subclass.
-                return x.as_integer_ratio()
+                rudisha x.as_integer_ratio()
             except AttributeError:
                 # Just give up?
                 pass
     except (OverflowError, ValueError):
         # float NAN or INF.
         assert not _isfinite(x)
-        return (x, None)
+        rudisha (x, None)
     msg = "can't convert type '{}' to numerator/denominator"
     raise TypeError(msg.format(type(x).__name__))
 
 
-def _convert(value, T):
+eleza _convert(value, T):
     """Convert value to given numeric type T."""
-    if type(value) is T:
+    ikiwa type(value) is T:
         # This covers the cases where T is Fraction, or where value is
         # a NAN or INF (Decimal or float).
-        return value
-    if issubclass(T, int) and value.denominator != 1:
+        rudisha value
+    ikiwa issubclass(T, int) and value.denominator != 1:
         T = float
     try:
-        # FIXME: what do we do if this overflows?
-        return T(value)
+        # FIXME: what do we do ikiwa this overflows?
+        rudisha T(value)
     except TypeError:
-        if issubclass(T, Decimal):
-            return T(value.numerator)/T(value.denominator)
+        ikiwa issubclass(T, Decimal):
+            rudisha T(value.numerator)/T(value.denominator)
         else:
             raise
 
 
-def _find_lteq(a, x):
+eleza _find_lteq(a, x):
     'Locate the leftmost value exactly equal to x'
     i = bisect_left(a, x)
-    if i != len(a) and a[i] == x:
-        return i
+    ikiwa i != len(a) and a[i] == x:
+        rudisha i
     raise ValueError
 
 
-def _find_rteq(a, l, x):
+eleza _find_rteq(a, l, x):
     'Locate the rightmost value exactly equal to x'
     i = bisect_right(a, x, lo=l)
-    if i != (len(a)+1) and a[i-1] == x:
-        return i-1
+    ikiwa i != (len(a)+1) and a[i-1] == x:
+        rudisha i-1
     raise ValueError
 
 
-def _fail_neg(values, errmsg='negative value'):
-    """Iterate over values, failing if any are less than zero."""
+eleza _fail_neg(values, errmsg='negative value'):
+    """Iterate over values, failing ikiwa any are less than zero."""
     for x in values:
-        if x < 0:
+        ikiwa x < 0:
             raise StatisticsError(errmsg)
         yield x
 
 
 # === Measures of central tendency (averages) ===
 
-def mean(data):
+eleza mean(data):
     """Return the sample arithmetic mean of data.
 
     >>> mean([1, 2, 3, 4, 4])
@@ -308,17 +308,17 @@ def mean(data):
 
     If ``data`` is empty, StatisticsError will be raised.
     """
-    if iter(data) is data:
+    ikiwa iter(data) is data:
         data = list(data)
     n = len(data)
-    if n < 1:
+    ikiwa n < 1:
         raise StatisticsError('mean requires at least one data point')
     T, total, count = _sum(data)
     assert count == n
-    return _convert(total/n, T)
+    rudisha _convert(total/n, T)
 
 
-def fmean(data):
+eleza fmean(data):
     """Convert data to floats and compute the arithmetic mean.
 
     This runs faster than the mean() function and it always returns a float.
@@ -332,7 +332,7 @@ def fmean(data):
     except TypeError:
         # Handle iterators that do not define __len__().
         n = 0
-        def count(iterable):
+        eleza count(iterable):
             nonlocal n
             for n, x in enumerate(iterable, start=1):
                 yield x
@@ -340,16 +340,16 @@ def fmean(data):
     else:
         total = fsum(data)
     try:
-        return total / n
+        rudisha total / n
     except ZeroDivisionError:
         raise StatisticsError('fmean requires at least one data point') kutoka None
 
 
-def geometric_mean(data):
+eleza geometric_mean(data):
     """Convert data to floats and compute the geometric mean.
 
-    Raises a StatisticsError if the input dataset is empty,
-    if it contains a zero, or if it contains a negative value.
+    Raises a StatisticsError ikiwa the input dataset is empty,
+    ikiwa it contains a zero, or ikiwa it contains a negative value.
 
     No special efforts are made to achieve exact results.
     (However, this may change in the future.)
@@ -358,13 +358,13 @@ def geometric_mean(data):
     36.0
     """
     try:
-        return exp(fmean(map(log, data)))
+        rudisha exp(fmean(map(log, data)))
     except ValueError:
         raise StatisticsError('geometric mean requires a non-empty dataset '
                               ' containing positive numbers') kutoka None
 
 
-def harmonic_mean(data):
+eleza harmonic_mean(data):
     """Return the harmonic mean of data.
 
     The harmonic mean, sometimes called the subcontrary mean, is the
@@ -388,33 +388,33 @@ def harmonic_mean(data):
     # For a justification for using harmonic mean for P/E ratios, see
     # http://fixthepitch.pellucid.com/comps-analysis-the-missing-harmony-of-summary-statistics/
     # http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2621087
-    if iter(data) is data:
+    ikiwa iter(data) is data:
         data = list(data)
     errmsg = 'harmonic mean does not support negative values'
     n = len(data)
-    if n < 1:
+    ikiwa n < 1:
         raise StatisticsError('harmonic_mean requires at least one data point')
-    elif n == 1:
+    elikiwa n == 1:
         x = data[0]
-        if isinstance(x, (numbers.Real, Decimal)):
-            if x < 0:
+        ikiwa isinstance(x, (numbers.Real, Decimal)):
+            ikiwa x < 0:
                 raise StatisticsError(errmsg)
-            return x
+            rudisha x
         else:
             raise TypeError('unsupported type')
     try:
         T, total, count = _sum(1/x for x in _fail_neg(data, errmsg))
     except ZeroDivisionError:
-        return 0
+        rudisha 0
     assert count == n
-    return _convert(n/total, T)
+    rudisha _convert(n/total, T)
 
 
 # FIXME: investigate ways to calculate medians without sorting? Quickselect?
-def median(data):
+eleza median(data):
     """Return the median (middle value) of numeric data.
 
-    When the number of data points is odd, return the middle data point.
+    When the number of data points is odd, rudisha the middle data point.
     When the number of data points is even, the median is interpolated by
     taking the average of the two middle values:
 
@@ -426,16 +426,16 @@ def median(data):
     """
     data = sorted(data)
     n = len(data)
-    if n == 0:
+    ikiwa n == 0:
         raise StatisticsError("no median for empty data")
-    if n%2 == 1:
-        return data[n//2]
+    ikiwa n%2 == 1:
+        rudisha data[n//2]
     else:
         i = n//2
-        return (data[i - 1] + data[i])/2
+        rudisha (data[i - 1] + data[i])/2
 
 
-def median_low(data):
+eleza median_low(data):
     """Return the low median of numeric data.
 
     When the number of data points is odd, the middle value is returned.
@@ -449,15 +449,15 @@ def median_low(data):
     """
     data = sorted(data)
     n = len(data)
-    if n == 0:
+    ikiwa n == 0:
         raise StatisticsError("no median for empty data")
-    if n%2 == 1:
-        return data[n//2]
+    ikiwa n%2 == 1:
+        rudisha data[n//2]
     else:
-        return data[n//2 - 1]
+        rudisha data[n//2 - 1]
 
 
-def median_high(data):
+eleza median_high(data):
     """Return the high median of data.
 
     When the number of data points is odd, the middle value is returned.
@@ -471,12 +471,12 @@ def median_high(data):
     """
     data = sorted(data)
     n = len(data)
-    if n == 0:
+    ikiwa n == 0:
         raise StatisticsError("no median for empty data")
-    return data[n//2]
+    rudisha data[n//2]
 
 
-def median_grouped(data, interval=1):
+eleza median_grouped(data, interval=1):
     """Return the 50th percentile (median) of grouped continuous data.
 
     >>> median_grouped([1, 2, 2, 3, 4, 4, 4, 4, 4, 5])
@@ -488,10 +488,10 @@ def median_grouped(data, interval=1):
     used when your data is continuous and grouped. In the above example,
     the values 1, 2, 3, etc. actually represent the midpoint of classes
     0.5-1.5, 1.5-2.5, 2.5-3.5, etc. The middle value falls somewhere in
-    class 3.5-4.5, and interpolation is used to estimate it.
+    kundi 3.5-4.5, and interpolation is used to estimate it.
 
-    Optional argument ``interval`` represents the class interval, and
-    defaults to 1. Changing the class interval naturally will change the
+    Optional argument ``interval`` represents the kundi interval, and
+    defaults to 1. Changing the kundi interval naturally will change the
     interpolated 50th percentile value:
 
     >>> median_grouped([1, 3, 3, 5, 7], interval=1)
@@ -504,15 +504,15 @@ def median_grouped(data, interval=1):
     """
     data = sorted(data)
     n = len(data)
-    if n == 0:
+    ikiwa n == 0:
         raise StatisticsError("no median for empty data")
-    elif n == 1:
-        return data[0]
+    elikiwa n == 1:
+        rudisha data[0]
     # Find the value at the midpoint. Remember this corresponds to the
-    # centre of the class interval.
+    # centre of the kundi interval.
     x = data[n//2]
     for obj in (x, interval):
-        if isinstance(obj, (str, bytes)):
+        ikiwa isinstance(obj, (str, bytes)):
             raise TypeError('expected number but got %r' % obj)
     try:
         L = x - interval/2  # The lower limit of the median interval.
@@ -528,10 +528,10 @@ def median_grouped(data, interval=1):
     l2 = _find_rteq(data, l1, x)
     cf = l1
     f = l2 - l1 + 1
-    return L + interval*(n/2 - cf)/f
+    rudisha L + interval*(n/2 - cf)/f
 
 
-def mode(data):
+eleza mode(data):
     """Return the most common data point kutoka discrete or nominal data.
 
     ``mode`` assumes discrete data, and returns a single value. This is the
@@ -545,7 +545,7 @@ def mode(data):
         >>> mode(["red", "blue", "blue", "red", "green", "red", "red"])
         'red'
 
-    If there are multiple modes with same frequency, return the first one
+    If there are multiple modes with same frequency, rudisha the first one
     encountered:
 
         >>> mode(['red', 'red', 'green', 'blue', 'blue'])
@@ -557,16 +557,16 @@ def mode(data):
     data = iter(data)
     pairs = Counter(data).most_common(1)
     try:
-        return pairs[0][0]
+        rudisha pairs[0][0]
     except IndexError:
         raise StatisticsError('no mode for empty data') kutoka None
 
 
-def multimode(data):
+eleza multimode(data):
     """Return a list of the most frequently occurring values.
 
-    Will return more than one result if there are multiple modes
-    or an empty list if *data* is empty.
+    Will rudisha more than one result ikiwa there are multiple modes
+    or an empty list ikiwa *data* is empty.
 
     >>> multimode('aabbbbbbbbcc')
     ['b']
@@ -577,7 +577,7 @@ def multimode(data):
     """
     counts = Counter(iter(data)).most_common()
     maxcount, mode_items = next(groupby(counts, key=itemgetter(1)), (0, []))
-    return list(map(itemgetter(0), mode_items))
+    rudisha list(map(itemgetter(0), mode_items))
 
 
 # Notes on methods for computing quantiles
@@ -617,7 +617,7 @@ def multimode(data):
 # position is that fewer options make for easier choices and that
 # external packages can be used for anything more advanced.
 
-def quantiles(data, *, n=4, method='exclusive'):
+eleza quantiles(data, *, n=4, method='exclusive'):
     """Divide *data* into *n* continuous intervals with equal probability.
 
     Returns a list of (n - 1) cut points separating the intervals.
@@ -633,13 +633,13 @@ def quantiles(data, *, n=4, method='exclusive'):
     data.  The minimum value is treated as the 0th percentile and the
     maximum value is treated as the 100th percentile.
     """
-    if n < 1:
+    ikiwa n < 1:
         raise StatisticsError('n must be at least 1')
     data = sorted(data)
     ld = len(data)
-    if ld < 2:
+    ikiwa ld < 2:
         raise StatisticsError('must have at least two data points')
-    if method == 'inclusive':
+    ikiwa method == 'inclusive':
         m = ld - 1
         result = []
         for i in range(1, n):
@@ -647,17 +647,17 @@ def quantiles(data, *, n=4, method='exclusive'):
             delta = i*m - j*n
             interpolated = (data[j] * (n - delta) + data[j+1] * delta) / n
             result.append(interpolated)
-        return result
-    if method == 'exclusive':
+        rudisha result
+    ikiwa method == 'exclusive':
         m = ld + 1
         result = []
         for i in range(1, n):
             j = i * m // n                               # rescale i to m/n
-            j = 1 if j < 1 else ld-1 if j > ld-1 else j  # clamp to 1 .. ld-1
+            j = 1 ikiwa j < 1 else ld-1 ikiwa j > ld-1 else j  # clamp to 1 .. ld-1
             delta = i*m - j*n                            # exact integer math
             interpolated = (data[j-1] * (n - delta) + data[j] * delta) / n
             result.append(interpolated)
-        return result
+        rudisha result
     raise ValueError(f'Unknown method: {method!r}')
 
 
@@ -674,7 +674,7 @@ def quantiles(data, *, n=4, method='exclusive'):
 # See a comparison of three computational methods here:
 # http://www.johndcook.com/blog/2008/09/26/comparing-three-methods-of-computing-standard-deviation/
 
-def _ss(data, c=None):
+eleza _ss(data, c=None):
     """Return sum of square deviations of sequence data.
 
     If ``c`` is None, the mean is calculated in one pass, and the deviations
@@ -682,7 +682,7 @@ def _ss(data, c=None):
     calculated kutoka ``c`` as given. Use the second case with care, as it can
     lead to garbage results.
     """
-    if c is None:
+    ikiwa c is None:
         c = mean(data)
     T, total, count = _sum((x-c)**2 for x in data)
     # The following sum should mathematically equal zero, but due to rounding
@@ -691,14 +691,14 @@ def _ss(data, c=None):
     assert T == U and count == count2
     total -=  total2**2/len(data)
     assert not total < 0, 'negative sum of square deviations: %f' % total
-    return (T, total)
+    rudisha (T, total)
 
 
-def variance(data, xbar=None):
+eleza variance(data, xbar=None):
     """Return the sample variance of data.
 
     data should be an iterable of Real-valued numbers, with at least two
-    values. The optional argument xbar, if given, should be the mean of
+    values. The optional argument xbar, ikiwa given, should be the mean of
     the data. If it is missing or None, the mean is automatically calculated.
 
     Use this function when your data is a sample kutoka a population. To
@@ -732,20 +732,20 @@ def variance(data, xbar=None):
     Fraction(67, 108)
 
     """
-    if iter(data) is data:
+    ikiwa iter(data) is data:
         data = list(data)
     n = len(data)
-    if n < 2:
+    ikiwa n < 2:
         raise StatisticsError('variance requires at least two data points')
     T, ss = _ss(data, xbar)
-    return _convert(ss/(n-1), T)
+    rudisha _convert(ss/(n-1), T)
 
 
-def pvariance(data, mu=None):
+eleza pvariance(data, mu=None):
     """Return the population variance of ``data``.
 
     data should be a sequence or iterator of Real-valued numbers, with at least one
-    value. The optional argument mu, if given, should be the mean of
+    value. The optional argument mu, ikiwa given, should be the mean of
     the data. If it is missing or None, the mean is automatically calculated.
 
     Use this function to calculate the variance kutoka the entire population.
@@ -776,16 +776,16 @@ def pvariance(data, mu=None):
     Fraction(13, 72)
 
     """
-    if iter(data) is data:
+    ikiwa iter(data) is data:
         data = list(data)
     n = len(data)
-    if n < 1:
+    ikiwa n < 1:
         raise StatisticsError('pvariance requires at least one data point')
     T, ss = _ss(data, mu)
-    return _convert(ss/n, T)
+    rudisha _convert(ss/n, T)
 
 
-def stdev(data, xbar=None):
+eleza stdev(data, xbar=None):
     """Return the square root of the sample variance.
 
     See ``variance`` for arguments and other details.
@@ -796,12 +796,12 @@ def stdev(data, xbar=None):
     """
     var = variance(data, xbar)
     try:
-        return var.sqrt()
+        rudisha var.sqrt()
     except AttributeError:
-        return math.sqrt(var)
+        rudisha math.sqrt(var)
 
 
-def pstdev(data, mu=None):
+eleza pstdev(data, mu=None):
     """Return the square root of the population variance.
 
     See ``pvariance`` for arguments and other details.
@@ -812,22 +812,22 @@ def pstdev(data, mu=None):
     """
     var = pvariance(data, mu)
     try:
-        return var.sqrt()
+        rudisha var.sqrt()
     except AttributeError:
-        return math.sqrt(var)
+        rudisha math.sqrt(var)
 
 
 ## Normal Distribution #####################################################
 
 
-def _normal_dist_inv_cdf(p, mu, sigma):
+eleza _normal_dist_inv_cdf(p, mu, sigma):
     # There is no closed-form solution to the inverse CDF for the normal
     # distribution, so we use a rational approximation instead:
     # Wichura, M.J. (1988). "Algorithm AS241: The Percentage Points of the
     # Normal Distribution".  Applied Statistics. Blackwell Publishing. 37
     # (3): 477–484. doi:10.2307/2347330. JSTOR 2347330.
     q = p - 0.5
-    if fabs(q) <= 0.425:
+    ikiwa fabs(q) <= 0.425:
         r = 0.180625 - q * q
         # Hash sum: 55.88319_28806_14901_4439
         num = (((((((2.50908_09287_30122_6727e+3 * r +
@@ -847,10 +847,10 @@ def _normal_dist_inv_cdf(p, mu, sigma):
                      4.23133_30701_60091_1252e+1) * r +
                      1.0)
         x = num / den
-        return mu + (x * sigma)
-    r = p if q <= 0.0 else 1.0 - p
+        rudisha mu + (x * sigma)
+    r = p ikiwa q <= 0.0 else 1.0 - p
     r = sqrt(-log(r))
-    if r <= 5.0:
+    ikiwa r <= 5.0:
         r = r - 1.6
         # Hash sum: 49.33206_50330_16102_89036
         num = (((((((7.74545_01427_83414_07640e-4 * r +
@@ -889,12 +889,12 @@ def _normal_dist_inv_cdf(p, mu, sigma):
                      5.99832_20655_58879_37690e-1) * r +
                      1.0)
     x = num / den
-    if q < 0.0:
+    ikiwa q < 0.0:
         x = -x
-    return mu + (x * sigma)
+    rudisha mu + (x * sigma)
 
 
-class NormalDist:
+kundi NormalDist:
     "Normal distribution of a random variable"
     # https://en.wikipedia.org/wiki/Normal_distribution
     # https://en.wikipedia.org/wiki/Variance#Properties
@@ -904,41 +904,41 @@ class NormalDist:
         '_sigma': 'Standard deviation of a normal distribution',
     }
 
-    def __init__(self, mu=0.0, sigma=1.0):
+    eleza __init__(self, mu=0.0, sigma=1.0):
         "NormalDist where mu is the mean and sigma is the standard deviation."
-        if sigma < 0.0:
+        ikiwa sigma < 0.0:
             raise StatisticsError('sigma must be non-negative')
         self._mu = float(mu)
         self._sigma = float(sigma)
 
     @classmethod
-    def from_samples(cls, data):
+    eleza kutoka_samples(cls, data):
         "Make a normal distribution instance kutoka sample data."
-        if not isinstance(data, (list, tuple)):
+        ikiwa not isinstance(data, (list, tuple)):
             data = list(data)
         xbar = fmean(data)
-        return cls(xbar, stdev(data, xbar))
+        rudisha cls(xbar, stdev(data, xbar))
 
-    def samples(self, n, *, seed=None):
+    eleza samples(self, n, *, seed=None):
         "Generate *n* samples for a given mean and standard deviation."
-        gauss = random.gauss if seed is None else random.Random(seed).gauss
+        gauss = random.gauss ikiwa seed is None else random.Random(seed).gauss
         mu, sigma = self._mu, self._sigma
-        return [gauss(mu, sigma) for i in range(n)]
+        rudisha [gauss(mu, sigma) for i in range(n)]
 
-    def pdf(self, x):
+    eleza pdf(self, x):
         "Probability density function.  P(x <= X < x+dx) / dx"
         variance = self._sigma ** 2.0
-        if not variance:
+        ikiwa not variance:
             raise StatisticsError('pdf() not defined when sigma is zero')
-        return exp((x - self._mu)**2.0 / (-2.0*variance)) / sqrt(tau*variance)
+        rudisha exp((x - self._mu)**2.0 / (-2.0*variance)) / sqrt(tau*variance)
 
-    def cdf(self, x):
+    eleza cdf(self, x):
         "Cumulative distribution function.  P(X <= x)"
-        if not self._sigma:
+        ikiwa not self._sigma:
             raise StatisticsError('cdf() not defined when sigma is zero')
-        return 0.5 * (1.0 + erf((x - self._mu) / (self._sigma * sqrt(2.0))))
+        rudisha 0.5 * (1.0 + erf((x - self._mu) / (self._sigma * sqrt(2.0))))
 
-    def inv_cdf(self, p):
+    eleza inv_cdf(self, p):
         """Inverse cumulative distribution function.  x : P(X <= x) = p
 
         Finds the value of the random variable such that the probability of
@@ -948,13 +948,13 @@ class NormalDist:
         This function is also called the percent point function or quantile
         function.
         """
-        if p <= 0.0 or p >= 1.0:
+        ikiwa p <= 0.0 or p >= 1.0:
             raise StatisticsError('p must be in the range 0.0 < p < 1.0')
-        if self._sigma <= 0.0:
+        ikiwa self._sigma <= 0.0:
             raise StatisticsError('cdf() not defined when sigma at or below zero')
-        return _normal_dist_inv_cdf(p, self._mu, self._sigma)
+        rudisha _normal_dist_inv_cdf(p, self._mu, self._sigma)
 
-    def quantiles(self, n=4):
+    eleza quantiles(self, n=4):
         """Divide into *n* continuous intervals with equal probability.
 
         Returns a list of (n - 1) cut points separating the intervals.
@@ -963,9 +963,9 @@ class NormalDist:
         Set *n* to 100 for percentiles which gives the 99 cuts points that
         separate the normal distribution in to 100 equal sized groups.
         """
-        return [self.inv_cdf(i / n) for i in range(1, n)]
+        rudisha [self.inv_cdf(i / n) for i in range(1, n)]
 
-    def overlap(self, other):
+    eleza overlap(self, other):
         """Compute the overlapping coefficient (OVL) between two normal distributions.
 
         Measures the agreement between two normal probability distributions.
@@ -981,125 +981,125 @@ class NormalDist:
         # probability distributions and point estimation of the overlap of two
         # normal densities" -- Henry F. Inman and Edwin L. Bradley Jr
         # http://dx.doi.org/10.1080/03610928908830127
-        if not isinstance(other, NormalDist):
+        ikiwa not isinstance(other, NormalDist):
             raise TypeError('Expected another NormalDist instance')
         X, Y = self, other
-        if (Y._sigma, Y._mu) < (X._sigma, X._mu):   # sort to assure commutativity
+        ikiwa (Y._sigma, Y._mu) < (X._sigma, X._mu):   # sort to assure commutativity
             X, Y = Y, X
         X_var, Y_var = X.variance, Y.variance
-        if not X_var or not Y_var:
+        ikiwa not X_var or not Y_var:
             raise StatisticsError('overlap() not defined when sigma is zero')
         dv = Y_var - X_var
         dm = fabs(Y._mu - X._mu)
-        if not dv:
-            return 1.0 - erf(dm / (2.0 * X._sigma * sqrt(2.0)))
+        ikiwa not dv:
+            rudisha 1.0 - erf(dm / (2.0 * X._sigma * sqrt(2.0)))
         a = X._mu * Y_var - Y._mu * X_var
         b = X._sigma * Y._sigma * sqrt(dm**2.0 + dv * log(Y_var / X_var))
         x1 = (a + b) / dv
         x2 = (a - b) / dv
-        return 1.0 - (fabs(Y.cdf(x1) - X.cdf(x1)) + fabs(Y.cdf(x2) - X.cdf(x2)))
+        rudisha 1.0 - (fabs(Y.cdf(x1) - X.cdf(x1)) + fabs(Y.cdf(x2) - X.cdf(x2)))
 
     @property
-    def mean(self):
+    eleza mean(self):
         "Arithmetic mean of the normal distribution."
-        return self._mu
+        rudisha self._mu
 
     @property
-    def median(self):
+    eleza median(self):
         "Return the median of the normal distribution"
-        return self._mu
+        rudisha self._mu
 
     @property
-    def mode(self):
+    eleza mode(self):
         """Return the mode of the normal distribution
 
         The mode is the value x where which the probability density
         function (pdf) takes its maximum value.
         """
-        return self._mu
+        rudisha self._mu
 
     @property
-    def stdev(self):
+    eleza stdev(self):
         "Standard deviation of the normal distribution."
-        return self._sigma
+        rudisha self._sigma
 
     @property
-    def variance(self):
+    eleza variance(self):
         "Square of the standard deviation."
-        return self._sigma ** 2.0
+        rudisha self._sigma ** 2.0
 
-    def __add__(x1, x2):
+    eleza __add__(x1, x2):
         """Add a constant or another NormalDist instance.
 
         If *other* is a constant, translate mu by the constant,
         leaving sigma unchanged.
 
         If *other* is a NormalDist, add both the means and the variances.
-        Mathematically, this works only if the two distributions are
-        independent or if they are jointly normally distributed.
+        Mathematically, this works only ikiwa the two distributions are
+        independent or ikiwa they are jointly normally distributed.
         """
-        if isinstance(x2, NormalDist):
-            return NormalDist(x1._mu + x2._mu, hypot(x1._sigma, x2._sigma))
-        return NormalDist(x1._mu + x2, x1._sigma)
+        ikiwa isinstance(x2, NormalDist):
+            rudisha NormalDist(x1._mu + x2._mu, hypot(x1._sigma, x2._sigma))
+        rudisha NormalDist(x1._mu + x2, x1._sigma)
 
-    def __sub__(x1, x2):
+    eleza __sub__(x1, x2):
         """Subtract a constant or another NormalDist instance.
 
         If *other* is a constant, translate by the constant mu,
         leaving sigma unchanged.
 
         If *other* is a NormalDist, subtract the means and add the variances.
-        Mathematically, this works only if the two distributions are
-        independent or if they are jointly normally distributed.
+        Mathematically, this works only ikiwa the two distributions are
+        independent or ikiwa they are jointly normally distributed.
         """
-        if isinstance(x2, NormalDist):
-            return NormalDist(x1._mu - x2._mu, hypot(x1._sigma, x2._sigma))
-        return NormalDist(x1._mu - x2, x1._sigma)
+        ikiwa isinstance(x2, NormalDist):
+            rudisha NormalDist(x1._mu - x2._mu, hypot(x1._sigma, x2._sigma))
+        rudisha NormalDist(x1._mu - x2, x1._sigma)
 
-    def __mul__(x1, x2):
+    eleza __mul__(x1, x2):
         """Multiply both mu and sigma by a constant.
 
         Used for rescaling, perhaps to change measurement units.
         Sigma is scaled with the absolute value of the constant.
         """
-        return NormalDist(x1._mu * x2, x1._sigma * fabs(x2))
+        rudisha NormalDist(x1._mu * x2, x1._sigma * fabs(x2))
 
-    def __truediv__(x1, x2):
+    eleza __truediv__(x1, x2):
         """Divide both mu and sigma by a constant.
 
         Used for rescaling, perhaps to change measurement units.
         Sigma is scaled with the absolute value of the constant.
         """
-        return NormalDist(x1._mu / x2, x1._sigma / fabs(x2))
+        rudisha NormalDist(x1._mu / x2, x1._sigma / fabs(x2))
 
-    def __pos__(x1):
+    eleza __pos__(x1):
         "Return a copy of the instance."
-        return NormalDist(x1._mu, x1._sigma)
+        rudisha NormalDist(x1._mu, x1._sigma)
 
-    def __neg__(x1):
+    eleza __neg__(x1):
         "Negates mu while keeping sigma the same."
-        return NormalDist(-x1._mu, x1._sigma)
+        rudisha NormalDist(-x1._mu, x1._sigma)
 
     __radd__ = __add__
 
-    def __rsub__(x1, x2):
+    eleza __rsub__(x1, x2):
         "Subtract a NormalDist kutoka a constant or another NormalDist."
-        return -(x1 - x2)
+        rudisha -(x1 - x2)
 
     __rmul__ = __mul__
 
-    def __eq__(x1, x2):
-        "Two NormalDist objects are equal if their mu and sigma are both equal."
-        if not isinstance(x2, NormalDist):
-            return NotImplemented
-        return (x1._mu, x2._sigma) == (x2._mu, x2._sigma)
+    eleza __eq__(x1, x2):
+        "Two NormalDist objects are equal ikiwa their mu and sigma are both equal."
+        ikiwa not isinstance(x2, NormalDist):
+            rudisha NotImplemented
+        rudisha (x1._mu, x2._sigma) == (x2._mu, x2._sigma)
 
-    def __hash__(self):
-        "NormalDist objects hash equal if their mu and sigma are both equal."
-        return hash((self._mu, self._sigma))
+    eleza __hash__(self):
+        "NormalDist objects hash equal ikiwa their mu and sigma are both equal."
+        rudisha hash((self._mu, self._sigma))
 
-    def __repr__(self):
-        return f'{type(self).__name__}(mu={self._mu!r}, sigma={self._sigma!r})'
+    eleza __repr__(self):
+        rudisha f'{type(self).__name__}(mu={self._mu!r}, sigma={self._sigma!r})'
 
 # If available, use C implementation
 try:
@@ -1108,7 +1108,7 @@ except ImportError:
     pass
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
 
     # Show math operations computed analytically in comparsion
     # to a monte carlo simulation of the same operations
@@ -1130,23 +1130,23 @@ if __name__ == '__main__':
     G2 = g2.samples(n)
 
     for func in (add, sub):
-        print(f'\nTest {func.__name__} with another NormalDist:')
-        print(func(g1, g2))
-        print(NormalDist.from_samples(map(func, G1, G2)))
+        andika(f'\nTest {func.__name__} with another NormalDist:')
+        andika(func(g1, g2))
+        andika(NormalDist.kutoka_samples(map(func, G1, G2)))
 
     const = 11
     for func in (add, sub, mul, truediv):
-        print(f'\nTest {func.__name__} with a constant:')
-        print(func(g1, const))
-        print(NormalDist.from_samples(map(func, G1, repeat(const))))
+        andika(f'\nTest {func.__name__} with a constant:')
+        andika(func(g1, const))
+        andika(NormalDist.kutoka_samples(map(func, G1, repeat(const))))
 
     const = 19
     for func in (add, sub, mul):
-        print(f'\nTest constant with {func.__name__}:')
-        print(func(const, g1))
-        print(NormalDist.from_samples(map(func, repeat(const), G1)))
+        andika(f'\nTest constant with {func.__name__}:')
+        andika(func(const, g1))
+        andika(NormalDist.kutoka_samples(map(func, repeat(const), G1)))
 
-    def assert_close(G1, G2):
+    eleza assert_close(G1, G2):
         assert isclose(G1.mean, G1.mean, rel_tol=0.01), (G1, G2)
         assert isclose(G1.stdev, G2.stdev, rel_tol=0.01), (G1, G2)
 
@@ -1155,24 +1155,24 @@ if __name__ == '__main__':
     s = 32.75
     n = 100_000
 
-    S = NormalDist.from_samples([x + s for x in X.samples(n)])
+    S = NormalDist.kutoka_samples([x + s for x in X.samples(n)])
     assert_close(X + s, S)
 
-    S = NormalDist.from_samples([x - s for x in X.samples(n)])
+    S = NormalDist.kutoka_samples([x - s for x in X.samples(n)])
     assert_close(X - s, S)
 
-    S = NormalDist.from_samples([x * s for x in X.samples(n)])
+    S = NormalDist.kutoka_samples([x * s for x in X.samples(n)])
     assert_close(X * s, S)
 
-    S = NormalDist.from_samples([x / s for x in X.samples(n)])
+    S = NormalDist.kutoka_samples([x / s for x in X.samples(n)])
     assert_close(X / s, S)
 
-    S = NormalDist.from_samples([x + y for x, y in zip(X.samples(n),
+    S = NormalDist.kutoka_samples([x + y for x, y in zip(X.samples(n),
                                                        Y.samples(n))])
     assert_close(X + Y, S)
 
-    S = NormalDist.from_samples([x - y for x, y in zip(X.samples(n),
+    S = NormalDist.kutoka_samples([x - y for x, y in zip(X.samples(n),
                                                        Y.samples(n))])
     assert_close(X - Y, S)
 
-    print(doctest.testmod())
+    andika(doctest.testmod())

@@ -113,7 +113,7 @@ compatibility with older versions, see the :ref:`call-function-trio` section.
 
 .. class:: CompletedProcess
 
-   The return value from :func:`run`, representing a process that has finished.
+   The return value kutoka :func:`run`, representing a process that has finished.
 
    .. attribute:: args
 
@@ -129,7 +129,7 @@ compatibility with older versions, see the :ref:`call-function-trio` section.
 
    .. attribute:: stdout
 
-      Captured stdout from the child process. A bytes sequence, or a string if
+      Captured stdout kutoka the child process. A bytes sequence, or a string if
       :func:`run` was called with an encoding, errors, or text=True.
       ``None`` if stdout was not captured.
 
@@ -139,7 +139,7 @@ compatibility with older versions, see the :ref:`call-function-trio` section.
 
    .. attribute:: stderr
 
-      Captured stderr from the child process. A bytes sequence, or a string if
+      Captured stderr kutoka the child process. A bytes sequence, or a string if
       :func:`run` was called with an encoding, errors, or text=True.
       ``None`` if stderr was not captured.
 
@@ -174,14 +174,14 @@ compatibility with older versions, see the :ref:`call-function-trio` section.
 
 .. exception:: SubprocessError
 
-    Base class for all other exceptions from this module.
+    Base kundi for all other exceptions kutoka this module.
 
     .. versionadded:: 3.3
 
 
 .. exception:: TimeoutExpired
 
-    Subclass of :exc:`SubprocessError`, raised when a timeout expires
+    Subkundi of :exc:`SubprocessError`, raised when a timeout expires
     while waiting for a child process.
 
     .. attribute:: cmd
@@ -213,7 +213,7 @@ compatibility with older versions, see the :ref:`call-function-trio` section.
 
 .. exception:: CalledProcessError
 
-    Subclass of :exc:`SubprocessError`, raised when a process run by
+    Subkundi of :exc:`SubprocessError`, raised when a process run by
     :func:`check_call` or :func:`check_output` returns a non-zero exit status.
 
     .. attribute:: returncode
@@ -268,8 +268,8 @@ default values. The arguments that are most commonly needed are:
    that a new pipe to the child should be created.  :data:`DEVNULL` indicates
    that the special file :data:`os.devnull` will be used.  With the default
    settings of ``None``, no redirection will occur; the child's file handles
-   will be inherited from the parent.  Additionally, *stderr* can be
-   :data:`STDOUT`, which indicates that the stderr data from the child
+   will be inherited kutoka the parent.  Additionally, *stderr* can be
+   :data:`STDOUT`, which indicates that the stderr data kutoka the child
    process should be captured into the same file handle as for *stdout*.
 
    .. index::
@@ -313,10 +313,10 @@ default values. The arguments that are most commonly needed are:
    :func:`os.path.expanduser`, and :mod:`shutil`).
 
    .. versionchanged:: 3.3
-      When *universal_newlines* is ``True``, the class uses the encoding
+      When *universal_newlines* is ``True``, the kundi uses the encoding
       :func:`locale.getpreferredencoding(False) <locale.getpreferredencoding>`
       instead of ``locale.getpreferredencoding()``.  See the
-      :class:`io.TextIOWrapper` class for more information on this change.
+      :class:`io.TextIOWrapper` kundi for more information on this change.
 
    .. note::
 
@@ -342,9 +342,9 @@ functions.
                  start_new_session=False, pass_fds=(), *, \
                  encoding=None, errors=None, text=None)
 
-   Execute a child program in a new process.  On POSIX, the class uses
+   Execute a child program in a new process.  On POSIX, the kundi uses
    :meth:`os.execvp`-like behavior to execute the child program.  On Windows,
-   the class uses the Windows ``CreateProcess()`` function.  The arguments to
+   the kundi uses the Windows ``CreateProcess()`` function.  The arguments to
    :class:`Popen` are as follows.
 
    *args* should be a sequence of program arguments or else a single string
@@ -352,7 +352,7 @@ functions.
    By default, the program to execute is the first item in *args* if *args* is
    a sequence.  If *args* is a string, the interpretation is
    platform-dependent and described below.  See the *shell* and *executable*
-   arguments for additional differences from the default behavior.  Unless
+   arguments for additional differences kutoka the default behavior.  Unless
    otherwise stated, it is recommended to pass *args* as a sequence.
 
    On POSIX, if *args* is a string, the string is interpreted as the name or
@@ -364,7 +364,7 @@ functions.
       :meth:`shlex.split` can be useful when determining the correct
       tokenization for *args*, especially in complex cases::
 
-         >>> import shlex, subprocess
+         >>> agiza shlex, subprocess
          >>> command_line = input()
          /bin/vikings -input eggs.txt -output "spam spam.txt" -cmd "echo '$MONEY'"
          >>> args = shlex.split(command_line)
@@ -440,7 +440,7 @@ functions.
    is very seldom needed.  When ``shell=False``, *executable* replaces the
    program to execute specified by *args*.  However, the original *args* is
    still passed to the program.  Most programs treat the program specified
-   by *args* as the command name, which can then be different from the program
+   by *args* as the command name, which can then be different kutoka the program
    actually executed.  On POSIX, the *args* name
    becomes the display name for the executable in utilities such as
    :program:`ps`.  If ``shell=True``, on POSIX the *executable* argument
@@ -460,8 +460,8 @@ functions.
    indicates that a new pipe to the child should be created.  :data:`DEVNULL`
    indicates that the special file :data:`os.devnull` will be used. With the
    default settings of ``None``, no redirection will occur; the child's file
-   handles will be inherited from the parent.  Additionally, *stderr* can be
-   :data:`STDOUT`, which indicates that the stderr data from the applications
+   handles will be inherited kutoka the parent.  Additionally, *stderr* can be
+   :data:`STDOUT`, which indicates that the stderr data kutoka the applications
    should be captured into the same file handle as for stdout.
 
    If *preexec_fn* is set to a callable object, this object will be called in the
@@ -500,11 +500,11 @@ functions.
    :attr:`STARTUPINFO.lpAttributeList`, or by standard handle redirection.
 
    .. versionchanged:: 3.2
-      The default for *close_fds* was changed from :const:`False` to
+      The default for *close_fds* was changed kutoka :const:`False` to
       what is described above.
 
    .. versionchanged:: 3.7
-      On Windows the default for *close_fds* was changed from :const:`False` to
+      On Windows the default for *close_fds* was changed kutoka :const:`False` to
       :const:`True` when redirecting the standard handles. It's now possible to
       set *close_fds* to :const:`True` when redirecting the standard handles.
 
@@ -635,10 +635,10 @@ All of the functions and methods that accept a *timeout* parameter, such as
 :func:`call` and :meth:`Popen.communicate` will raise :exc:`TimeoutExpired` if
 the timeout expires before the process exits.
 
-Exceptions defined in this module all inherit from :exc:`SubprocessError`.
+Exceptions defined in this module all inherit kutoka :exc:`SubprocessError`.
 
    .. versionadded:: 3.3
-      The :exc:`SubprocessError` base class was added.
+      The :exc:`SubprocessError` base kundi was added.
 
 
 Security Considerations
@@ -661,7 +661,7 @@ that are going to be used to construct shell commands.
 Popen Objects
 -------------
 
-Instances of the :class:`Popen` class have the following methods:
+Instances of the :class:`Popen` kundi have the following methods:
 
 
 .. method:: Popen.poll()
@@ -697,7 +697,7 @@ Instances of the :class:`Popen` class have the following methods:
 
 .. method:: Popen.communicate(input=None, timeout=None)
 
-   Interact with process: Send data to stdin.  Read data from stdout and stderr,
+   Interact with process: Send data to stdin.  Read data kutoka stdout and stderr,
    until end-of-file is reached.  Wait for process to terminate.  The optional
    *input* argument should be data to be sent to the child process, or
    ``None``, if no data should be sent to the child.  If streams were opened in
@@ -781,8 +781,8 @@ The following attributes are also available:
 .. attribute:: Popen.stdout
 
    If the *stdout* argument was :data:`PIPE`, this attribute is a readable
-   stream object as returned by :func:`open`. Reading from the stream provides
-   output from the child process. If the *encoding* or *errors* arguments were
+   stream object as returned by :func:`open`. Reading kutoka the stream provides
+   output kutoka the child process. If the *encoding* or *errors* arguments were
    specified or the *universal_newlines* argument was ``True``, the stream is a
    text stream, otherwise it is a byte stream. If the *stdout* argument was not
    :data:`PIPE`, this attribute is ``None``.
@@ -791,8 +791,8 @@ The following attributes are also available:
 .. attribute:: Popen.stderr
 
    If the *stderr* argument was :data:`PIPE`, this attribute is a readable
-   stream object as returned by :func:`open`. Reading from the stream provides
-   error output from the child process. If the *encoding* or *errors* arguments
+   stream object as returned by :func:`open`. Reading kutoka the stream provides
+   error output kutoka the child process. If the *encoding* or *errors* arguments
    were specified or the *universal_newlines* argument was ``True``, the stream
    is a text stream, otherwise it is a byte stream. If the *stderr* argument was
    not :data:`PIPE`, this attribute is ``None``.
@@ -826,7 +826,7 @@ The following attributes are also available:
 Windows Popen Helpers
 ---------------------
 
-The :class:`STARTUPINFO` class and following constants are only available
+The :class:`STARTUPINFO` kundi and following constants are only available
 on Windows.
 
 .. class:: STARTUPINFO(*, dwFlags=0, hStdInput=None, hStdOutput=None, \
@@ -997,7 +997,7 @@ The :mod:`subprocess` module exposes the following constants.
    will have realtime priority.
    You should almost never use REALTIME_PRIORITY_CLASS, because this interrupts
    system threads that manage mouse input, keyboard input, and background disk
-   flushing. This class can be appropriate for applications that "talk" directly
+   flushing. This kundi can be appropriate for applications that "talk" directly
    to hardware or that perform brief tasks that should have limited interruptions.
 
    .. versionadded:: 3.7
@@ -1064,7 +1064,7 @@ calls these functions.
       Do not use ``stdout=PIPE`` or ``stderr=PIPE`` with this
       function.  The child process will block if it generates enough
       output to a pipe to fill up the OS pipe buffer as the pipes are
-      not being read from.
+      not being read kutoka.
 
    .. versionchanged:: 3.3
       *timeout* was added.
@@ -1092,7 +1092,7 @@ calls these functions.
       Do not use ``stdout=PIPE`` or ``stderr=PIPE`` with this
       function.  The child process will block if it generates enough
       output to a pipe to fill up the OS pipe buffer as the pipes are
-      not being read from.
+      not being read kutoka.
 
    .. versionchanged:: 3.3
       *timeout* was added.
@@ -1170,7 +1170,7 @@ In this section, "a becomes b" means that b can be used as a replacement for a.
    :attr:`~CalledProcessError.output` attribute of the raised exception.
 
 In the following examples, we assume that the relevant functions have already
-been imported from the :mod:`subprocess` module.
+been imported kutoka the :mod:`subprocess` module.
 
 
 Replacing :program:`/bin/sh` shell command substitution
@@ -1313,7 +1313,7 @@ Return code handling translates as follows::
        print("There were some errors")
 
 
-Replacing functions from the :mod:`popen2` module
+Replacing functions kutoka the :mod:`popen2` module
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. note::
@@ -1354,7 +1354,7 @@ Replacing functions from the :mod:`popen2` module
 Legacy Shell Invocation Functions
 ---------------------------------
 
-This module also provides the following legacy functions from the 2.x
+This module also provides the following legacy functions kutoka the 2.x
 ``commands`` module. These operations implicitly invoke the system shell and
 none of the guarantees described above regarding security and exception
 handling consistency are valid for these functions.
@@ -1367,7 +1367,7 @@ handling consistency are valid for these functions.
    return a 2-tuple ``(exitcode, output)``. The locale encoding is used;
    see the notes on :ref:`frequently-used-arguments` for more details.
 
-   A trailing newline is stripped from the output.
+   A trailing newline is stripped kutoka the output.
    The exit code for the command can be interpreted as the return code
    of subprocess.  Example::
 

@@ -98,7 +98,7 @@ Simple example
 
 A simple set of examples::
 
-   import syslog
+   agiza syslog
 
    syslog.syslog('Processing started')
    if error:

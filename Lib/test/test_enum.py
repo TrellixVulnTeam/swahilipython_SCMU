@@ -14,7 +14,7 @@ kutoka datetime agiza timedelta
 
 # for pickle tests
 try:
-    class Stooges(Enum):
+    kundi Stooges(Enum):
         LARRY = 1
         CURLY = 2
         MOE = 3
@@ -22,7 +22,7 @@ except Exception as exc:
     Stooges = exc
 
 try:
-    class IntStooges(int, Enum):
+    kundi IntStooges(int, Enum):
         LARRY = 1
         CURLY = 2
         MOE = 3
@@ -30,7 +30,7 @@ except Exception as exc:
     IntStooges = exc
 
 try:
-    class FloatStooges(float, Enum):
+    kundi FloatStooges(float, Enum):
         LARRY = 1.39
         CURLY = 2.72
         MOE = 3.142596
@@ -38,18 +38,18 @@ except Exception as exc:
     FloatStooges = exc
 
 try:
-    class FlagStooges(Flag):
+    kundi FlagStooges(Flag):
         LARRY = 1
         CURLY = 2
         MOE = 3
 except Exception as exc:
     FlagStooges = exc
 
-# for pickle test and subclass tests
+# for pickle test and subkundi tests
 try:
-    class StrEnum(str, Enum):
+    kundi StrEnum(str, Enum):
         'accepts only string values'
-    class Name(StrEnum):
+    kundi Name(StrEnum):
         BDFL = 'Guido van Rossum'
         FLUFL = 'Barry Warsaw'
 except Exception as exc:
@@ -72,29 +72,29 @@ except Exception as exc:
 
 # for doctests
 try:
-    class Fruit(Enum):
+    kundi Fruit(Enum):
         TOMATO = 1
         BANANA = 2
         CHERRY = 3
 except Exception:
     pass
 
-def test_pickle_dump_load(assertion, source, target=None):
-    if target is None:
+eleza test_pickle_dump_load(assertion, source, target=None):
+    ikiwa target is None:
         target = source
     for protocol in range(HIGHEST_PROTOCOL + 1):
         assertion(loads(dumps(source, protocol=protocol)), target)
 
-def test_pickle_exception(assertion, exception, obj):
+eleza test_pickle_exception(assertion, exception, obj):
     for protocol in range(HIGHEST_PROTOCOL + 1):
         with assertion(exception):
             dumps(obj, protocol=protocol)
 
-class TestHelpers(unittest.TestCase):
+kundi TestHelpers(unittest.TestCase):
     # _is_descriptor, _is_sunder, _is_dunder
 
-    def test_is_descriptor(self):
-        class foo:
+    eleza test_is_descriptor(self):
+        kundi foo:
             pass
         for attr in ('__get__','__set__','__delete__'):
             obj = foo()
@@ -102,7 +102,7 @@ class TestHelpers(unittest.TestCase):
             setattr(obj, attr, 1)
             self.assertTrue(enum._is_descriptor(obj))
 
-    def test_is_sunder(self):
+    eleza test_is_sunder(self):
         for s in ('_a_', '_aa_'):
             self.assertTrue(enum._is_sunder(s))
 
@@ -110,7 +110,7 @@ class TestHelpers(unittest.TestCase):
                 '__', '___', '____', '_____',):
             self.assertFalse(enum._is_sunder(s))
 
-    def test_is_dunder(self):
+    eleza test_is_dunder(self):
         for s in ('__a__', '__aa__'):
             self.assertTrue(enum._is_dunder(s))
         for s in ('a', 'a_', '_a', '__a', 'a__', '_a_', '_a__', '__a_', '_',
@@ -119,39 +119,39 @@ class TestHelpers(unittest.TestCase):
 
 # for subclassing tests
 
-class classproperty:
+kundi classproperty:
 
-    def __init__(self, fget=None, fset=None, fdel=None, doc=None):
+    eleza __init__(self, fget=None, fset=None, fdel=None, doc=None):
         self.fget = fget
         self.fset = fset
         self.fdel = fdel
-        if doc is None and fget is not None:
+        ikiwa doc is None and fget is not None:
             doc = fget.__doc__
         self.__doc__ = doc
 
-    def __get__(self, instance, ownerclass):
-        return self.fget(ownerclass)
+    eleza __get__(self, instance, ownerclass):
+        rudisha self.fget(ownerclass)
 
 
 # tests
 
-class TestEnum(unittest.TestCase):
+kundi TestEnum(unittest.TestCase):
 
-    def setUp(self):
-        class Season(Enum):
+    eleza setUp(self):
+        kundi Season(Enum):
             SPRING = 1
             SUMMER = 2
             AUTUMN = 3
             WINTER = 4
         self.Season = Season
 
-        class Konstants(float, Enum):
+        kundi Konstants(float, Enum):
             E = 2.7182818
             PI = 3.1415926
             TAU = 2 * PI
         self.Konstants = Konstants
 
-        class Grades(IntEnum):
+        kundi Grades(IntEnum):
             A = 5
             B = 4
             C = 3
@@ -159,7 +159,7 @@ class TestEnum(unittest.TestCase):
             F = 0
         self.Grades = Grades
 
-        class Directional(str, Enum):
+        kundi Directional(str, Enum):
             EAST = 'east'
             WEST = 'west'
             NORTH = 'north'
@@ -167,12 +167,12 @@ class TestEnum(unittest.TestCase):
         self.Directional = Directional
 
         kutoka datetime agiza date
-        class Holiday(date, Enum):
+        kundi Holiday(date, Enum):
             NEW_YEAR = 2013, 1, 1
             IDES_OF_MARCH = 2013, 3, 15
         self.Holiday = Holiday
 
-    def test_dir_on_class(self):
+    eleza test_dir_on_class(self):
         Season = self.Season
         self.assertEqual(
             set(dir(Season)),
@@ -180,19 +180,19 @@ class TestEnum(unittest.TestCase):
                 'SPRING', 'SUMMER', 'AUTUMN', 'WINTER']),
             )
 
-    def test_dir_on_item(self):
+    eleza test_dir_on_item(self):
         Season = self.Season
         self.assertEqual(
             set(dir(Season.WINTER)),
             set(['__class__', '__doc__', '__module__', 'name', 'value']),
             )
 
-    def test_dir_with_added_behavior(self):
-        class Test(Enum):
+    eleza test_dir_with_added_behavior(self):
+        kundi Test(Enum):
             this = 'that'
             these = 'those'
-            def wowser(self):
-                return ("Wowser! I'm %s!" % self.name)
+            eleza wowser(self):
+                rudisha ("Wowser! I'm %s!" % self.name)
         self.assertEqual(
                 set(dir(Test)),
                 set(['__class__', '__doc__', '__members__', '__module__', 'this', 'these']),
@@ -202,30 +202,30 @@ class TestEnum(unittest.TestCase):
                 set(['__class__', '__doc__', '__module__', 'name', 'value', 'wowser']),
                 )
 
-    def test_dir_on_sub_with_behavior_on_super(self):
+    eleza test_dir_on_sub_with_behavior_on_super(self):
         # see issue22506
-        class SuperEnum(Enum):
-            def invisible(self):
-                return "did you see me?"
-        class SubEnum(SuperEnum):
+        kundi SuperEnum(Enum):
+            eleza invisible(self):
+                rudisha "did you see me?"
+        kundi SubEnum(SuperEnum):
             sample = 5
         self.assertEqual(
                 set(dir(SubEnum.sample)),
                 set(['__class__', '__doc__', '__module__', 'name', 'value', 'invisible']),
                 )
 
-    def test_enum_in_enum_out(self):
+    eleza test_enum_in_enum_out(self):
         Season = self.Season
         self.assertIs(Season(Season.WINTER), Season.WINTER)
 
-    def test_enum_value(self):
+    eleza test_enum_value(self):
         Season = self.Season
         self.assertEqual(Season.SPRING.value, 1)
 
-    def test_intenum_value(self):
+    eleza test_intenum_value(self):
         self.assertEqual(IntStooges.CURLY.value, 2)
 
-    def test_enum(self):
+    eleza test_enum(self):
         Season = self.Season
         lst = list(Season)
         self.assertEqual(len(lst), len(Season))
@@ -248,7 +248,7 @@ class TestEnum(unittest.TestCase):
                     '<Season.{0}: {1}>'.format(season, i),
                     )
 
-    def test_value_name(self):
+    eleza test_value_name(self):
         Season = self.Season
         self.assertEqual(Season.SPRING.name, 'SPRING')
         self.assertEqual(Season.SPRING.value, 1)
@@ -257,19 +257,19 @@ class TestEnum(unittest.TestCase):
         with self.assertRaises(AttributeError):
             Season.SPRING.value = 2
 
-    def test_changing_member(self):
+    eleza test_changing_member(self):
         Season = self.Season
         with self.assertRaises(AttributeError):
             Season.WINTER = 'really cold'
 
-    def test_attribute_deletion(self):
-        class Season(Enum):
+    eleza test_attribute_deletion(self):
+        kundi Season(Enum):
             SPRING = 1
             SUMMER = 2
             AUTUMN = 3
             WINTER = 4
 
-            def spam(cls):
+            eleza spam(cls):
                 pass
 
         self.assertTrue(hasattr(Season, 'spam'))
@@ -283,59 +283,59 @@ class TestEnum(unittest.TestCase):
         with self.assertRaises(AttributeError):
             del Season.SPRING.name
 
-    def test_bool_of_class(self):
-        class Empty(Enum):
+    eleza test_bool_of_class(self):
+        kundi Empty(Enum):
             pass
         self.assertTrue(bool(Empty))
 
-    def test_bool_of_member(self):
-        class Count(Enum):
+    eleza test_bool_of_member(self):
+        kundi Count(Enum):
             zero = 0
             one = 1
             two = 2
         for member in Count:
             self.assertTrue(bool(member))
 
-    def test_invalid_names(self):
+    eleza test_invalid_names(self):
         with self.assertRaises(ValueError):
-            class Wrong(Enum):
+            kundi Wrong(Enum):
                 mro = 9
         with self.assertRaises(ValueError):
-            class Wrong(Enum):
+            kundi Wrong(Enum):
                 _create_= 11
         with self.assertRaises(ValueError):
-            class Wrong(Enum):
+            kundi Wrong(Enum):
                 _get_mixins_ = 9
         with self.assertRaises(ValueError):
-            class Wrong(Enum):
+            kundi Wrong(Enum):
                 _find_new_ = 1
         with self.assertRaises(ValueError):
-            class Wrong(Enum):
+            kundi Wrong(Enum):
                 _any_name_ = 9
 
-    def test_bool(self):
+    eleza test_bool(self):
         # plain Enum members are always True
-        class Logic(Enum):
+        kundi Logic(Enum):
             true = True
             false = False
         self.assertTrue(Logic.true)
         self.assertTrue(Logic.false)
         # unless overridden
-        class RealLogic(Enum):
+        kundi RealLogic(Enum):
             true = True
             false = False
-            def __bool__(self):
-                return bool(self._value_)
+            eleza __bool__(self):
+                rudisha bool(self._value_)
         self.assertTrue(RealLogic.true)
         self.assertFalse(RealLogic.false)
         # mixed Enums depend on mixed-in type
-        class IntLogic(int, Enum):
+        kundi IntLogic(int, Enum):
             true = 1
             false = 0
         self.assertTrue(IntLogic.true)
         self.assertFalse(IntLogic.false)
 
-    def test_contains(self):
+    eleza test_contains(self):
         Season = self.Season
         self.assertIn(Season.AUTUMN, Season)
         with self.assertRaises(TypeError):
@@ -346,11 +346,11 @@ class TestEnum(unittest.TestCase):
         val = Season(3)
         self.assertIn(val, Season)
 
-        class OtherEnum(Enum):
+        kundi OtherEnum(Enum):
             one = 1; two = 2
         self.assertNotIn(OtherEnum.two, Season)
 
-    def test_comparisons(self):
+    eleza test_comparisons(self):
         Season = self.Season
         with self.assertRaises(TypeError):
             Season.SPRING < Season.WINTER
@@ -359,7 +359,7 @@ class TestEnum(unittest.TestCase):
 
         self.assertNotEqual(Season.SPRING, 1)
 
-        class Part(Enum):
+        kundi Part(Enum):
             SPRING = 1
             CLIP = 2
             BARREL = 3
@@ -368,8 +368,8 @@ class TestEnum(unittest.TestCase):
         with self.assertRaises(TypeError):
             Season.SPRING < Part.CLIP
 
-    def test_enum_duplicates(self):
-        class Season(Enum):
+    eleza test_enum_duplicates(self):
+        kundi Season(Enum):
             SPRING = 1
             SUMMER = 2
             AUTUMN = FALL = 3
@@ -388,38 +388,38 @@ class TestEnum(unittest.TestCase):
         self.assertIs(Season(1), Season.SPRING)
         self.assertEqual(Season.FALL.name, 'AUTUMN')
         self.assertEqual(
-                [k for k,v in Season.__members__.items() if v.name != k],
+                [k for k,v in Season.__members__.items() ikiwa v.name != k],
                 ['FALL', 'ANOTHER_SPRING'],
                 )
 
-    def test_duplicate_name(self):
+    eleza test_duplicate_name(self):
         with self.assertRaises(TypeError):
-            class Color(Enum):
+            kundi Color(Enum):
                 red = 1
                 green = 2
                 blue = 3
                 red = 4
 
         with self.assertRaises(TypeError):
-            class Color(Enum):
+            kundi Color(Enum):
                 red = 1
                 green = 2
                 blue = 3
-                def red(self):
-                    return 'red'
+                eleza red(self):
+                    rudisha 'red'
 
         with self.assertRaises(TypeError):
-            class Color(Enum):
+            kundi Color(Enum):
                 @property
-                def red(self):
-                    return 'redder'
+                eleza red(self):
+                    rudisha 'redder'
                 red = 1
                 green = 2
                 blue = 3
 
 
-    def test_enum_with_value_name(self):
-        class Huh(Enum):
+    eleza test_enum_with_value_name(self):
+        kundi Huh(Enum):
             name = 1
             value = 2
         self.assertEqual(
@@ -430,7 +430,7 @@ class TestEnum(unittest.TestCase):
         self.assertEqual(Huh.name.name, 'name')
         self.assertEqual(Huh.name.value, 1)
 
-    def test_format_enum(self):
+    eleza test_format_enum(self):
         Season = self.Season
         self.assertEqual('{}'.format(Season.SPRING),
                          '{}'.format(str(Season.SPRING)))
@@ -445,18 +445,18 @@ class TestEnum(unittest.TestCase):
         self.assertEqual('{:<20}'.format(Season.SPRING),
                          '{:<20}'.format(str(Season.SPRING)))
 
-    def test_format_enum_custom(self):
-        class TestFloat(float, Enum):
+    eleza test_format_enum_custom(self):
+        kundi TestFloat(float, Enum):
             one = 1.0
             two = 2.0
-            def __format__(self, spec):
-                return 'TestFloat success!'
+            eleza __format__(self, spec):
+                rudisha 'TestFloat success!'
         self.assertEqual('{}'.format(TestFloat.one), 'TestFloat success!')
 
-    def assertFormatIsValue(self, spec, member):
+    eleza assertFormatIsValue(self, spec, member):
         self.assertEqual(spec.format(member), spec.format(member.value))
 
-    def test_format_enum_date(self):
+    eleza test_format_enum_date(self):
         Holiday = self.Holiday
         self.assertFormatIsValue('{}', Holiday.IDES_OF_MARCH)
         self.assertFormatIsValue('{:}', Holiday.IDES_OF_MARCH)
@@ -467,7 +467,7 @@ class TestEnum(unittest.TestCase):
         self.assertFormatIsValue('{:%Y %m}', Holiday.IDES_OF_MARCH)
         self.assertFormatIsValue('{:%Y %m %M:00}', Holiday.IDES_OF_MARCH)
 
-    def test_format_enum_float(self):
+    eleza test_format_enum_float(self):
         Konstants = self.Konstants
         self.assertFormatIsValue('{}', Konstants.TAU)
         self.assertFormatIsValue('{:}', Konstants.TAU)
@@ -479,7 +479,7 @@ class TestEnum(unittest.TestCase):
         self.assertFormatIsValue('{:5.2}', Konstants.TAU)
         self.assertFormatIsValue('{:f}', Konstants.TAU)
 
-    def test_format_enum_int(self):
+    eleza test_format_enum_int(self):
         Grades = self.Grades
         self.assertFormatIsValue('{}', Grades.C)
         self.assertFormatIsValue('{:}', Grades.C)
@@ -491,7 +491,7 @@ class TestEnum(unittest.TestCase):
         self.assertFormatIsValue('{:08X}', Grades.C)
         self.assertFormatIsValue('{:b}', Grades.C)
 
-    def test_format_enum_str(self):
+    eleza test_format_enum_str(self):
         Directional = self.Directional
         self.assertFormatIsValue('{}', Directional.WEST)
         self.assertFormatIsValue('{:}', Directional.WEST)
@@ -500,7 +500,7 @@ class TestEnum(unittest.TestCase):
         self.assertFormatIsValue('{:>20}', Directional.WEST)
         self.assertFormatIsValue('{:<20}', Directional.WEST)
 
-    def test_hash(self):
+    eleza test_hash(self):
         Season = self.Season
         dates = {}
         dates[Season.WINTER] = '1225'
@@ -509,51 +509,51 @@ class TestEnum(unittest.TestCase):
         dates[Season.AUTUMN] = '1031'
         self.assertEqual(dates[Season.AUTUMN], '1031')
 
-    def test_intenum_from_scratch(self):
-        class phy(int, Enum):
+    eleza test_intenum_kutoka_scratch(self):
+        kundi phy(int, Enum):
             pi = 3
             tau = 2 * pi
         self.assertTrue(phy.pi < phy.tau)
 
-    def test_intenum_inherited(self):
-        class IntEnum(int, Enum):
+    eleza test_intenum_inherited(self):
+        kundi IntEnum(int, Enum):
             pass
-        class phy(IntEnum):
+        kundi phy(IntEnum):
             pi = 3
             tau = 2 * pi
         self.assertTrue(phy.pi < phy.tau)
 
-    def test_floatenum_from_scratch(self):
-        class phy(float, Enum):
+    eleza test_floatenum_kutoka_scratch(self):
+        kundi phy(float, Enum):
             pi = 3.1415926
             tau = 2 * pi
         self.assertTrue(phy.pi < phy.tau)
 
-    def test_floatenum_inherited(self):
-        class FloatEnum(float, Enum):
+    eleza test_floatenum_inherited(self):
+        kundi FloatEnum(float, Enum):
             pass
-        class phy(FloatEnum):
+        kundi phy(FloatEnum):
             pi = 3.1415926
             tau = 2 * pi
         self.assertTrue(phy.pi < phy.tau)
 
-    def test_strenum_from_scratch(self):
-        class phy(str, Enum):
+    eleza test_strenum_kutoka_scratch(self):
+        kundi phy(str, Enum):
             pi = 'Pi'
             tau = 'Tau'
         self.assertTrue(phy.pi < phy.tau)
 
-    def test_strenum_inherited(self):
-        class StrEnum(str, Enum):
+    eleza test_strenum_inherited(self):
+        kundi StrEnum(str, Enum):
             pass
-        class phy(StrEnum):
+        kundi phy(StrEnum):
             pi = 'Pi'
             tau = 'Tau'
         self.assertTrue(phy.pi < phy.tau)
 
 
-    def test_intenum(self):
-        class WeekDay(IntEnum):
+    eleza test_intenum(self):
+        kundi WeekDay(IntEnum):
             SUNDAY = 1
             MONDAY = 2
             TUESDAY = 3
@@ -582,8 +582,8 @@ class TestEnum(unittest.TestCase):
             self.assertIsInstance(e, int)
             self.assertIsInstance(e, Enum)
 
-    def test_intenum_duplicates(self):
-        class WeekDay(IntEnum):
+    eleza test_intenum_duplicates(self):
+        kundi WeekDay(IntEnum):
             SUNDAY = 1
             MONDAY = 2
             TUESDAY = TEUSDAY = 3
@@ -594,58 +594,58 @@ class TestEnum(unittest.TestCase):
         self.assertIs(WeekDay.TEUSDAY, WeekDay.TUESDAY)
         self.assertEqual(WeekDay(3).name, 'TUESDAY')
         self.assertEqual([k for k,v in WeekDay.__members__.items()
-                if v.name != k], ['TEUSDAY', ])
+                ikiwa v.name != k], ['TEUSDAY', ])
 
-    def test_intenum_from_bytes(self):
-        self.assertIs(IntStooges.from_bytes(b'\x00\x03', 'big'), IntStooges.MOE)
+    eleza test_intenum_kutoka_bytes(self):
+        self.assertIs(IntStooges.kutoka_bytes(b'\x00\x03', 'big'), IntStooges.MOE)
         with self.assertRaises(ValueError):
-            IntStooges.from_bytes(b'\x00\x05', 'big')
+            IntStooges.kutoka_bytes(b'\x00\x05', 'big')
 
-    def test_floatenum_fromhex(self):
+    eleza test_floatenum_kutokahex(self):
         h = float.hex(FloatStooges.MOE.value)
-        self.assertIs(FloatStooges.fromhex(h), FloatStooges.MOE)
+        self.assertIs(FloatStooges.kutokahex(h), FloatStooges.MOE)
         h = float.hex(FloatStooges.MOE.value + 0.01)
         with self.assertRaises(ValueError):
-            FloatStooges.fromhex(h)
+            FloatStooges.kutokahex(h)
 
-    def test_pickle_enum(self):
-        if isinstance(Stooges, Exception):
+    eleza test_pickle_enum(self):
+        ikiwa isinstance(Stooges, Exception):
             raise Stooges
         test_pickle_dump_load(self.assertIs, Stooges.CURLY)
         test_pickle_dump_load(self.assertIs, Stooges)
 
-    def test_pickle_int(self):
-        if isinstance(IntStooges, Exception):
+    eleza test_pickle_int(self):
+        ikiwa isinstance(IntStooges, Exception):
             raise IntStooges
         test_pickle_dump_load(self.assertIs, IntStooges.CURLY)
         test_pickle_dump_load(self.assertIs, IntStooges)
 
-    def test_pickle_float(self):
-        if isinstance(FloatStooges, Exception):
+    eleza test_pickle_float(self):
+        ikiwa isinstance(FloatStooges, Exception):
             raise FloatStooges
         test_pickle_dump_load(self.assertIs, FloatStooges.CURLY)
         test_pickle_dump_load(self.assertIs, FloatStooges)
 
-    def test_pickle_enum_function(self):
-        if isinstance(Answer, Exception):
+    eleza test_pickle_enum_function(self):
+        ikiwa isinstance(Answer, Exception):
             raise Answer
         test_pickle_dump_load(self.assertIs, Answer.him)
         test_pickle_dump_load(self.assertIs, Answer)
 
-    def test_pickle_enum_function_with_module(self):
-        if isinstance(Question, Exception):
+    eleza test_pickle_enum_function_with_module(self):
+        ikiwa isinstance(Question, Exception):
             raise Question
         test_pickle_dump_load(self.assertIs, Question.who)
         test_pickle_dump_load(self.assertIs, Question)
 
-    def test_enum_function_with_qualname(self):
-        if isinstance(Theory, Exception):
+    eleza test_enum_function_with_qualname(self):
+        ikiwa isinstance(Theory, Exception):
             raise Theory
         self.assertEqual(Theory.__qualname__, 'spanish_inquisition')
 
-    def test_class_nested_enum_and_pickle_protocol_four(self):
-        # would normally just have this directly in the class namespace
-        class NestedEnum(Enum):
+    eleza test_class_nested_enum_and_pickle_protocol_four(self):
+        # would normally just have this directly in the kundi namespace
+        kundi NestedEnum(Enum):
             twigs = 'common'
             shiny = 'rare'
 
@@ -653,15 +653,15 @@ class TestEnum(unittest.TestCase):
         self.NestedEnum.__qualname__ = '%s.NestedEnum' % self.__class__.__name__
         test_pickle_dump_load(self.assertIs, self.NestedEnum.twigs)
 
-    def test_pickle_by_name(self):
-        class ReplaceGlobalInt(IntEnum):
+    eleza test_pickle_by_name(self):
+        kundi ReplaceGlobalInt(IntEnum):
             ONE = 1
             TWO = 2
         ReplaceGlobalInt.__reduce_ex__ = enum._reduce_ex_by_name
         for proto in range(HIGHEST_PROTOCOL):
             self.assertEqual(ReplaceGlobalInt.TWO.__reduce_ex__(proto), 'TWO')
 
-    def test_exploding_pickle(self):
+    eleza test_exploding_pickle(self):
         BadPickle = Enum(
                 'BadPickle', 'dill sweet bread-n-butter', module=__name__)
         globals()['BadPickle'] = BadPickle
@@ -670,15 +670,15 @@ class TestEnum(unittest.TestCase):
         test_pickle_exception(self.assertRaises, TypeError, BadPickle.dill)
         test_pickle_exception(self.assertRaises, PicklingError, BadPickle)
 
-    def test_string_enum(self):
-        class SkillLevel(str, Enum):
+    eleza test_string_enum(self):
+        kundi SkillLevel(str, Enum):
             master = 'what is the sound of one hand clapping?'
             journeyman = 'why did the chicken cross the road?'
             apprentice = 'knock, knock!'
         self.assertEqual(SkillLevel.apprentice, 'knock, knock!')
 
-    def test_getattr_getitem(self):
-        class Period(Enum):
+    eleza test_getattr_getitem(self):
+        kundi Period(Enum):
             morning = 1
             noon = 2
             evening = 3
@@ -687,12 +687,12 @@ class TestEnum(unittest.TestCase):
         self.assertIs(getattr(Period, 'night'), Period.night)
         self.assertIs(Period['morning'], Period.morning)
 
-    def test_getattr_dunder(self):
+    eleza test_getattr_dunder(self):
         Season = self.Season
         self.assertTrue(getattr(Season, '__eq__'))
 
-    def test_iteration_order(self):
-        class Season(Enum):
+    eleza test_iteration_order(self):
+        kundi Season(Enum):
             SUMMER = 2
             WINTER = 4
             AUTUMN = 3
@@ -702,14 +702,14 @@ class TestEnum(unittest.TestCase):
                 [Season.SUMMER, Season.WINTER, Season.AUTUMN, Season.SPRING],
                 )
 
-    def test_reversed_iteration_order(self):
+    eleza test_reversed_iteration_order(self):
         self.assertEqual(
                 list(reversed(self.Season)),
                 [self.Season.WINTER, self.Season.AUTUMN, self.Season.SUMMER,
                  self.Season.SPRING]
                 )
 
-    def test_programmatic_function_string(self):
+    eleza test_programmatic_function_string(self):
         SummerMonth = Enum('SummerMonth', 'june july august')
         lst = list(SummerMonth)
         self.assertEqual(len(lst), len(SummerMonth))
@@ -726,7 +726,7 @@ class TestEnum(unittest.TestCase):
             self.assertIn(e, SummerMonth)
             self.assertIs(type(e), SummerMonth)
 
-    def test_programmatic_function_string_with_start(self):
+    eleza test_programmatic_function_string_with_start(self):
         SummerMonth = Enum('SummerMonth', 'june july august', start=10)
         lst = list(SummerMonth)
         self.assertEqual(len(lst), len(SummerMonth))
@@ -743,7 +743,7 @@ class TestEnum(unittest.TestCase):
             self.assertIn(e, SummerMonth)
             self.assertIs(type(e), SummerMonth)
 
-    def test_programmatic_function_string_list(self):
+    eleza test_programmatic_function_string_list(self):
         SummerMonth = Enum('SummerMonth', ['june', 'july', 'august'])
         lst = list(SummerMonth)
         self.assertEqual(len(lst), len(SummerMonth))
@@ -760,7 +760,7 @@ class TestEnum(unittest.TestCase):
             self.assertIn(e, SummerMonth)
             self.assertIs(type(e), SummerMonth)
 
-    def test_programmatic_function_string_list_with_start(self):
+    eleza test_programmatic_function_string_list_with_start(self):
         SummerMonth = Enum('SummerMonth', ['june', 'july', 'august'], start=20)
         lst = list(SummerMonth)
         self.assertEqual(len(lst), len(SummerMonth))
@@ -777,7 +777,7 @@ class TestEnum(unittest.TestCase):
             self.assertIn(e, SummerMonth)
             self.assertIs(type(e), SummerMonth)
 
-    def test_programmatic_function_iterable(self):
+    eleza test_programmatic_function_iterable(self):
         SummerMonth = Enum(
                 'SummerMonth',
                 (('june', 1), ('july', 2), ('august', 3))
@@ -797,7 +797,7 @@ class TestEnum(unittest.TestCase):
             self.assertIn(e, SummerMonth)
             self.assertIs(type(e), SummerMonth)
 
-    def test_programmatic_function_from_dict(self):
+    eleza test_programmatic_function_kutoka_dict(self):
         SummerMonth = Enum(
                 'SummerMonth',
                 OrderedDict((('june', 1), ('july', 2), ('august', 3)))
@@ -817,7 +817,7 @@ class TestEnum(unittest.TestCase):
             self.assertIn(e, SummerMonth)
             self.assertIs(type(e), SummerMonth)
 
-    def test_programmatic_function_type(self):
+    eleza test_programmatic_function_type(self):
         SummerMonth = Enum('SummerMonth', 'june july august', type=int)
         lst = list(SummerMonth)
         self.assertEqual(len(lst), len(SummerMonth))
@@ -833,7 +833,7 @@ class TestEnum(unittest.TestCase):
             self.assertIn(e, SummerMonth)
             self.assertIs(type(e), SummerMonth)
 
-    def test_programmatic_function_type_with_start(self):
+    eleza test_programmatic_function_type_with_start(self):
         SummerMonth = Enum('SummerMonth', 'june july august', type=int, start=30)
         lst = list(SummerMonth)
         self.assertEqual(len(lst), len(SummerMonth))
@@ -849,7 +849,7 @@ class TestEnum(unittest.TestCase):
             self.assertIn(e, SummerMonth)
             self.assertIs(type(e), SummerMonth)
 
-    def test_programmatic_function_type_from_subclass(self):
+    eleza test_programmatic_function_type_kutoka_subclass(self):
         SummerMonth = IntEnum('SummerMonth', 'june july august')
         lst = list(SummerMonth)
         self.assertEqual(len(lst), len(SummerMonth))
@@ -865,7 +865,7 @@ class TestEnum(unittest.TestCase):
             self.assertIn(e, SummerMonth)
             self.assertIs(type(e), SummerMonth)
 
-    def test_programmatic_function_type_from_subclass_with_start(self):
+    eleza test_programmatic_function_type_kutoka_subclass_with_start(self):
         SummerMonth = IntEnum('SummerMonth', 'june july august', start=40)
         lst = list(SummerMonth)
         self.assertEqual(len(lst), len(SummerMonth))
@@ -881,45 +881,45 @@ class TestEnum(unittest.TestCase):
             self.assertIn(e, SummerMonth)
             self.assertIs(type(e), SummerMonth)
 
-    def test_subclassing(self):
-        if isinstance(Name, Exception):
+    eleza test_subclassing(self):
+        ikiwa isinstance(Name, Exception):
             raise Name
         self.assertEqual(Name.BDFL, 'Guido van Rossum')
         self.assertTrue(Name.BDFL, Name('Guido van Rossum'))
         self.assertIs(Name.BDFL, getattr(Name, 'BDFL'))
         test_pickle_dump_load(self.assertIs, Name.BDFL)
 
-    def test_extending(self):
-        class Color(Enum):
+    eleza test_extending(self):
+        kundi Color(Enum):
             red = 1
             green = 2
             blue = 3
         with self.assertRaises(TypeError):
-            class MoreColor(Color):
+            kundi MoreColor(Color):
                 cyan = 4
                 magenta = 5
                 yellow = 6
 
-    def test_exclude_methods(self):
-        class whatever(Enum):
+    eleza test_exclude_methods(self):
+        kundi whatever(Enum):
             this = 'that'
             these = 'those'
-            def really(self):
-                return 'no, not %s' % self.value
+            eleza really(self):
+                rudisha 'no, not %s' % self.value
         self.assertIsNot(type(whatever.really), whatever)
         self.assertEqual(whatever.this.really(), 'no, not that')
 
-    def test_wrong_inheritance_order(self):
+    eleza test_wrong_inheritance_order(self):
         with self.assertRaises(TypeError):
-            class Wrong(Enum, str):
+            kundi Wrong(Enum, str):
                 NotHere = 'error before this point'
 
-    def test_intenum_transitivity(self):
-        class number(IntEnum):
+    eleza test_intenum_transitivity(self):
+        kundi number(IntEnum):
             one = 1
             two = 2
             three = 3
-        class numero(IntEnum):
+        kundi numero(IntEnum):
             uno = 1
             dos = 2
             tres = 3
@@ -927,72 +927,72 @@ class TestEnum(unittest.TestCase):
         self.assertEqual(number.two, numero.dos)
         self.assertEqual(number.three, numero.tres)
 
-    def test_wrong_enum_in_call(self):
-        class Monochrome(Enum):
+    eleza test_wrong_enum_in_call(self):
+        kundi Monochrome(Enum):
             black = 0
             white = 1
-        class Gender(Enum):
+        kundi Gender(Enum):
             male = 0
             female = 1
         self.assertRaises(ValueError, Monochrome, Gender.male)
 
-    def test_wrong_enum_in_mixed_call(self):
-        class Monochrome(IntEnum):
+    eleza test_wrong_enum_in_mixed_call(self):
+        kundi Monochrome(IntEnum):
             black = 0
             white = 1
-        class Gender(Enum):
+        kundi Gender(Enum):
             male = 0
             female = 1
         self.assertRaises(ValueError, Monochrome, Gender.male)
 
-    def test_mixed_enum_in_call_1(self):
-        class Monochrome(IntEnum):
+    eleza test_mixed_enum_in_call_1(self):
+        kundi Monochrome(IntEnum):
             black = 0
             white = 1
-        class Gender(IntEnum):
+        kundi Gender(IntEnum):
             male = 0
             female = 1
         self.assertIs(Monochrome(Gender.female), Monochrome.white)
 
-    def test_mixed_enum_in_call_2(self):
-        class Monochrome(Enum):
+    eleza test_mixed_enum_in_call_2(self):
+        kundi Monochrome(Enum):
             black = 0
             white = 1
-        class Gender(IntEnum):
+        kundi Gender(IntEnum):
             male = 0
             female = 1
         self.assertIs(Monochrome(Gender.male), Monochrome.black)
 
-    def test_flufl_enum(self):
-        class Fluflnum(Enum):
-            def __int__(self):
-                return int(self.value)
-        class MailManOptions(Fluflnum):
+    eleza test_flufl_enum(self):
+        kundi Fluflnum(Enum):
+            eleza __int__(self):
+                rudisha int(self.value)
+        kundi MailManOptions(Fluflnum):
             option1 = 1
             option2 = 2
             option3 = 3
         self.assertEqual(int(MailManOptions.option1), 1)
 
-    def test_introspection(self):
-        class Number(IntEnum):
+    eleza test_introspection(self):
+        kundi Number(IntEnum):
             one = 100
             two = 200
         self.assertIs(Number.one._member_type_, int)
         self.assertIs(Number._member_type_, int)
-        class String(str, Enum):
+        kundi String(str, Enum):
             yarn = 'soft'
             rope = 'rough'
             wire = 'hard'
         self.assertIs(String.yarn._member_type_, str)
         self.assertIs(String._member_type_, str)
-        class Plain(Enum):
+        kundi Plain(Enum):
             vanilla = 'white'
             one = 1
         self.assertIs(Plain.vanilla._member_type_, object)
         self.assertIs(Plain._member_type_, object)
 
-    def test_no_such_enum_member(self):
-        class Color(Enum):
+    eleza test_no_such_enum_member(self):
+        kundi Color(Enum):
             red = 1
             green = 2
             blue = 3
@@ -1001,105 +1001,105 @@ class TestEnum(unittest.TestCase):
         with self.assertRaises(KeyError):
             Color['chartreuse']
 
-    def test_new_repr(self):
-        class Color(Enum):
+    eleza test_new_repr(self):
+        kundi Color(Enum):
             red = 1
             green = 2
             blue = 3
-            def __repr__(self):
-                return "don't you just love shades of %s?" % self.name
+            eleza __repr__(self):
+                rudisha "don't you just love shades of %s?" % self.name
         self.assertEqual(
                 repr(Color.blue),
                 "don't you just love shades of blue?",
                 )
 
-    def test_inherited_repr(self):
-        class MyEnum(Enum):
-            def __repr__(self):
-                return "My name is %s." % self.name
-        class MyIntEnum(int, MyEnum):
+    eleza test_inherited_repr(self):
+        kundi MyEnum(Enum):
+            eleza __repr__(self):
+                rudisha "My name is %s." % self.name
+        kundi MyIntEnum(int, MyEnum):
             this = 1
             that = 2
             theother = 3
         self.assertEqual(repr(MyIntEnum.that), "My name is that.")
 
-    def test_multiple_mixin_mro(self):
-        class auto_enum(type(Enum)):
-            def __new__(metacls, cls, bases, classdict):
+    eleza test_multiple_mixin_mro(self):
+        kundi auto_enum(type(Enum)):
+            eleza __new__(metacls, cls, bases, classdict):
                 temp = type(classdict)()
                 names = set(classdict._member_names)
                 i = 0
                 for k in classdict._member_names:
                     v = classdict[k]
-                    if v is Ellipsis:
+                    ikiwa v is Ellipsis:
                         v = i
                     else:
                         i = v
                     i += 1
                     temp[k] = v
                 for k, v in classdict.items():
-                    if k not in names:
+                    ikiwa k not in names:
                         temp[k] = v
-                return super(auto_enum, metacls).__new__(
+                rudisha super(auto_enum, metacls).__new__(
                         metacls, cls, bases, temp)
 
-        class AutoNumberedEnum(Enum, metaclass=auto_enum):
+        kundi AutoNumberedEnum(Enum, metaclass=auto_enum):
             pass
 
-        class AutoIntEnum(IntEnum, metaclass=auto_enum):
+        kundi AutoIntEnum(IntEnum, metaclass=auto_enum):
             pass
 
-        class TestAutoNumber(AutoNumberedEnum):
+        kundi TestAutoNumber(AutoNumberedEnum):
             a = ...
             b = 3
             c = ...
 
-        class TestAutoInt(AutoIntEnum):
+        kundi TestAutoInt(AutoIntEnum):
             a = ...
             b = 3
             c = ...
 
-    def test_subclasses_with_getnewargs(self):
-        class NamedInt(int):
+    eleza test_subclasses_with_getnewargs(self):
+        kundi NamedInt(int):
             __qualname__ = 'NamedInt'       # needed for pickle protocol 4
-            def __new__(cls, *args):
+            eleza __new__(cls, *args):
                 _args = args
                 name, *args = args
-                if len(args) == 0:
+                ikiwa len(args) == 0:
                     raise TypeError("name and value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
-                return self
-            def __getnewargs__(self):
-                return self._args
+                rudisha self
+            eleza __getnewargs__(self):
+                rudisha self._args
             @property
-            def __name__(self):
-                return self._intname
-            def __repr__(self):
+            eleza __name__(self):
+                rudisha self._intname
+            eleza __repr__(self):
                 # repr() is updated to include the name and type info
-                return "{}({!r}, {})".format(type(self).__name__,
+                rudisha "{}({!r}, {})".format(type(self).__name__,
                                              self.__name__,
                                              int.__repr__(self))
-            def __str__(self):
-                # str() is unchanged, even if it relies on the repr() fallback
+            eleza __str__(self):
+                # str() is unchanged, even ikiwa it relies on the repr() fallback
                 base = int
                 base_str = base.__str__
-                if base_str.__objclass__ is object:
-                    return base.__repr__(self)
-                return base_str(self)
+                ikiwa base_str.__objclass__ is object:
+                    rudisha base.__repr__(self)
+                rudisha base_str(self)
             # for simplicity, we only define one operator that
             # propagates expressions
-            def __add__(self, other):
+            eleza __add__(self, other):
                 temp = int(self) + int( other)
-                if isinstance(self, NamedInt) and isinstance(other, NamedInt):
-                    return NamedInt(
+                ikiwa isinstance(self, NamedInt) and isinstance(other, NamedInt):
+                    rudisha NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp )
                 else:
-                    return temp
+                    rudisha temp
 
-        class NEI(NamedInt, Enum):
+        kundi NEI(NamedInt, Enum):
             __qualname__ = 'NEI'      # needed for pickle protocol 4
             x = ('the-x', 1)
             y = ('the-y', 2)
@@ -1116,47 +1116,47 @@ class TestEnum(unittest.TestCase):
         test_pickle_dump_load(self.assertIs, NEI.y)
         test_pickle_dump_load(self.assertIs, NEI)
 
-    def test_subclasses_with_getnewargs_ex(self):
-        class NamedInt(int):
+    eleza test_subclasses_with_getnewargs_ex(self):
+        kundi NamedInt(int):
             __qualname__ = 'NamedInt'       # needed for pickle protocol 4
-            def __new__(cls, *args):
+            eleza __new__(cls, *args):
                 _args = args
                 name, *args = args
-                if len(args) == 0:
+                ikiwa len(args) == 0:
                     raise TypeError("name and value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
-                return self
-            def __getnewargs_ex__(self):
-                return self._args, {}
+                rudisha self
+            eleza __getnewargs_ex__(self):
+                rudisha self._args, {}
             @property
-            def __name__(self):
-                return self._intname
-            def __repr__(self):
+            eleza __name__(self):
+                rudisha self._intname
+            eleza __repr__(self):
                 # repr() is updated to include the name and type info
-                return "{}({!r}, {})".format(type(self).__name__,
+                rudisha "{}({!r}, {})".format(type(self).__name__,
                                              self.__name__,
                                              int.__repr__(self))
-            def __str__(self):
-                # str() is unchanged, even if it relies on the repr() fallback
+            eleza __str__(self):
+                # str() is unchanged, even ikiwa it relies on the repr() fallback
                 base = int
                 base_str = base.__str__
-                if base_str.__objclass__ is object:
-                    return base.__repr__(self)
-                return base_str(self)
+                ikiwa base_str.__objclass__ is object:
+                    rudisha base.__repr__(self)
+                rudisha base_str(self)
             # for simplicity, we only define one operator that
             # propagates expressions
-            def __add__(self, other):
+            eleza __add__(self, other):
                 temp = int(self) + int( other)
-                if isinstance(self, NamedInt) and isinstance(other, NamedInt):
-                    return NamedInt(
+                ikiwa isinstance(self, NamedInt) and isinstance(other, NamedInt):
+                    rudisha NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp )
                 else:
-                    return temp
+                    rudisha temp
 
-        class NEI(NamedInt, Enum):
+        kundi NEI(NamedInt, Enum):
             __qualname__ = 'NEI'      # needed for pickle protocol 4
             x = ('the-x', 1)
             y = ('the-y', 2)
@@ -1173,47 +1173,47 @@ class TestEnum(unittest.TestCase):
         test_pickle_dump_load(self.assertIs, NEI.y)
         test_pickle_dump_load(self.assertIs, NEI)
 
-    def test_subclasses_with_reduce(self):
-        class NamedInt(int):
+    eleza test_subclasses_with_reduce(self):
+        kundi NamedInt(int):
             __qualname__ = 'NamedInt'       # needed for pickle protocol 4
-            def __new__(cls, *args):
+            eleza __new__(cls, *args):
                 _args = args
                 name, *args = args
-                if len(args) == 0:
+                ikiwa len(args) == 0:
                     raise TypeError("name and value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
-                return self
-            def __reduce__(self):
-                return self.__class__, self._args
+                rudisha self
+            eleza __reduce__(self):
+                rudisha self.__class__, self._args
             @property
-            def __name__(self):
-                return self._intname
-            def __repr__(self):
+            eleza __name__(self):
+                rudisha self._intname
+            eleza __repr__(self):
                 # repr() is updated to include the name and type info
-                return "{}({!r}, {})".format(type(self).__name__,
+                rudisha "{}({!r}, {})".format(type(self).__name__,
                                              self.__name__,
                                              int.__repr__(self))
-            def __str__(self):
-                # str() is unchanged, even if it relies on the repr() fallback
+            eleza __str__(self):
+                # str() is unchanged, even ikiwa it relies on the repr() fallback
                 base = int
                 base_str = base.__str__
-                if base_str.__objclass__ is object:
-                    return base.__repr__(self)
-                return base_str(self)
+                ikiwa base_str.__objclass__ is object:
+                    rudisha base.__repr__(self)
+                rudisha base_str(self)
             # for simplicity, we only define one operator that
             # propagates expressions
-            def __add__(self, other):
+            eleza __add__(self, other):
                 temp = int(self) + int( other)
-                if isinstance(self, NamedInt) and isinstance(other, NamedInt):
-                    return NamedInt(
+                ikiwa isinstance(self, NamedInt) and isinstance(other, NamedInt):
+                    rudisha NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp )
                 else:
-                    return temp
+                    rudisha temp
 
-        class NEI(NamedInt, Enum):
+        kundi NEI(NamedInt, Enum):
             __qualname__ = 'NEI'      # needed for pickle protocol 4
             x = ('the-x', 1)
             y = ('the-y', 2)
@@ -1230,47 +1230,47 @@ class TestEnum(unittest.TestCase):
         test_pickle_dump_load(self.assertIs, NEI.y)
         test_pickle_dump_load(self.assertIs, NEI)
 
-    def test_subclasses_with_reduce_ex(self):
-        class NamedInt(int):
+    eleza test_subclasses_with_reduce_ex(self):
+        kundi NamedInt(int):
             __qualname__ = 'NamedInt'       # needed for pickle protocol 4
-            def __new__(cls, *args):
+            eleza __new__(cls, *args):
                 _args = args
                 name, *args = args
-                if len(args) == 0:
+                ikiwa len(args) == 0:
                     raise TypeError("name and value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
-                return self
-            def __reduce_ex__(self, proto):
-                return self.__class__, self._args
+                rudisha self
+            eleza __reduce_ex__(self, proto):
+                rudisha self.__class__, self._args
             @property
-            def __name__(self):
-                return self._intname
-            def __repr__(self):
+            eleza __name__(self):
+                rudisha self._intname
+            eleza __repr__(self):
                 # repr() is updated to include the name and type info
-                return "{}({!r}, {})".format(type(self).__name__,
+                rudisha "{}({!r}, {})".format(type(self).__name__,
                                              self.__name__,
                                              int.__repr__(self))
-            def __str__(self):
-                # str() is unchanged, even if it relies on the repr() fallback
+            eleza __str__(self):
+                # str() is unchanged, even ikiwa it relies on the repr() fallback
                 base = int
                 base_str = base.__str__
-                if base_str.__objclass__ is object:
-                    return base.__repr__(self)
-                return base_str(self)
+                ikiwa base_str.__objclass__ is object:
+                    rudisha base.__repr__(self)
+                rudisha base_str(self)
             # for simplicity, we only define one operator that
             # propagates expressions
-            def __add__(self, other):
+            eleza __add__(self, other):
                 temp = int(self) + int( other)
-                if isinstance(self, NamedInt) and isinstance(other, NamedInt):
-                    return NamedInt(
+                ikiwa isinstance(self, NamedInt) and isinstance(other, NamedInt):
+                    rudisha NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp )
                 else:
-                    return temp
+                    rudisha temp
 
-        class NEI(NamedInt, Enum):
+        kundi NEI(NamedInt, Enum):
             __qualname__ = 'NEI'      # needed for pickle protocol 4
             x = ('the-x', 1)
             y = ('the-y', 2)
@@ -1287,45 +1287,45 @@ class TestEnum(unittest.TestCase):
         test_pickle_dump_load(self.assertIs, NEI.y)
         test_pickle_dump_load(self.assertIs, NEI)
 
-    def test_subclasses_without_direct_pickle_support(self):
-        class NamedInt(int):
+    eleza test_subclasses_without_direct_pickle_support(self):
+        kundi NamedInt(int):
             __qualname__ = 'NamedInt'
-            def __new__(cls, *args):
+            eleza __new__(cls, *args):
                 _args = args
                 name, *args = args
-                if len(args) == 0:
+                ikiwa len(args) == 0:
                     raise TypeError("name and value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
-                return self
+                rudisha self
             @property
-            def __name__(self):
-                return self._intname
-            def __repr__(self):
+            eleza __name__(self):
+                rudisha self._intname
+            eleza __repr__(self):
                 # repr() is updated to include the name and type info
-                return "{}({!r}, {})".format(type(self).__name__,
+                rudisha "{}({!r}, {})".format(type(self).__name__,
                                              self.__name__,
                                              int.__repr__(self))
-            def __str__(self):
-                # str() is unchanged, even if it relies on the repr() fallback
+            eleza __str__(self):
+                # str() is unchanged, even ikiwa it relies on the repr() fallback
                 base = int
                 base_str = base.__str__
-                if base_str.__objclass__ is object:
-                    return base.__repr__(self)
-                return base_str(self)
+                ikiwa base_str.__objclass__ is object:
+                    rudisha base.__repr__(self)
+                rudisha base_str(self)
             # for simplicity, we only define one operator that
             # propagates expressions
-            def __add__(self, other):
+            eleza __add__(self, other):
                 temp = int(self) + int( other)
-                if isinstance(self, NamedInt) and isinstance(other, NamedInt):
-                    return NamedInt(
+                ikiwa isinstance(self, NamedInt) and isinstance(other, NamedInt):
+                    rudisha NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp )
                 else:
-                    return temp
+                    rudisha temp
 
-        class NEI(NamedInt, Enum):
+        kundi NEI(NamedInt, Enum):
             __qualname__ = 'NEI'
             x = ('the-x', 1)
             y = ('the-y', 2)
@@ -1340,50 +1340,50 @@ class TestEnum(unittest.TestCase):
         test_pickle_exception(self.assertRaises, TypeError, NEI.x)
         test_pickle_exception(self.assertRaises, PicklingError, NEI)
 
-    def test_subclasses_without_direct_pickle_support_using_name(self):
-        class NamedInt(int):
+    eleza test_subclasses_without_direct_pickle_support_using_name(self):
+        kundi NamedInt(int):
             __qualname__ = 'NamedInt'
-            def __new__(cls, *args):
+            eleza __new__(cls, *args):
                 _args = args
                 name, *args = args
-                if len(args) == 0:
+                ikiwa len(args) == 0:
                     raise TypeError("name and value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
-                return self
+                rudisha self
             @property
-            def __name__(self):
-                return self._intname
-            def __repr__(self):
+            eleza __name__(self):
+                rudisha self._intname
+            eleza __repr__(self):
                 # repr() is updated to include the name and type info
-                return "{}({!r}, {})".format(type(self).__name__,
+                rudisha "{}({!r}, {})".format(type(self).__name__,
                                              self.__name__,
                                              int.__repr__(self))
-            def __str__(self):
-                # str() is unchanged, even if it relies on the repr() fallback
+            eleza __str__(self):
+                # str() is unchanged, even ikiwa it relies on the repr() fallback
                 base = int
                 base_str = base.__str__
-                if base_str.__objclass__ is object:
-                    return base.__repr__(self)
-                return base_str(self)
+                ikiwa base_str.__objclass__ is object:
+                    rudisha base.__repr__(self)
+                rudisha base_str(self)
             # for simplicity, we only define one operator that
             # propagates expressions
-            def __add__(self, other):
+            eleza __add__(self, other):
                 temp = int(self) + int( other)
-                if isinstance(self, NamedInt) and isinstance(other, NamedInt):
-                    return NamedInt(
+                ikiwa isinstance(self, NamedInt) and isinstance(other, NamedInt):
+                    rudisha NamedInt(
                         '({0} + {1})'.format(self.__name__, other.__name__),
                         temp )
                 else:
-                    return temp
+                    rudisha temp
 
-        class NEI(NamedInt, Enum):
+        kundi NEI(NamedInt, Enum):
             __qualname__ = 'NEI'
             x = ('the-x', 1)
             y = ('the-y', 2)
-            def __reduce_ex__(self, proto):
-                return getattr, (self.__class__, self._name_)
+            eleza __reduce_ex__(self, proto):
+                rudisha getattr, (self.__class__, self._name_)
 
         self.assertIs(NEI.__new__, Enum.__new__)
         self.assertEqual(repr(NEI.x + NEI.y), "NamedInt('(the-x + the-y)', 3)")
@@ -1395,8 +1395,8 @@ class TestEnum(unittest.TestCase):
         test_pickle_dump_load(self.assertIs, NEI.y)
         test_pickle_dump_load(self.assertIs, NEI)
 
-    def test_tuple_subclass(self):
-        class SomeTuple(tuple, Enum):
+    eleza test_tuple_subclass(self):
+        kundi SomeTuple(tuple, Enum):
             __qualname__ = 'SomeTuple'      # needed for pickle protocol 4
             first = (1, 'for the money')
             second = (2, 'for the show')
@@ -1407,18 +1407,18 @@ class TestEnum(unittest.TestCase):
         globals()['SomeTuple'] = SomeTuple
         test_pickle_dump_load(self.assertIs, SomeTuple.first)
 
-    def test_duplicate_values_give_unique_enum_items(self):
-        class AutoNumber(Enum):
+    eleza test_duplicate_values_give_unique_enum_items(self):
+        kundi AutoNumber(Enum):
             first = ()
             second = ()
             third = ()
-            def __new__(cls):
+            eleza __new__(cls):
                 value = len(cls.__members__) + 1
                 obj = object.__new__(cls)
                 obj._value_ = value
-                return obj
-            def __int__(self):
-                return int(self._value_)
+                rudisha obj
+            eleza __int__(self):
+                rudisha int(self._value_)
         self.assertEqual(
                 list(AutoNumber),
                 [AutoNumber.first, AutoNumber.second, AutoNumber.third],
@@ -1427,64 +1427,64 @@ class TestEnum(unittest.TestCase):
         self.assertEqual(AutoNumber.third.value, 3)
         self.assertIs(AutoNumber(1), AutoNumber.first)
 
-    def test_inherited_new_from_enhanced_enum(self):
-        class AutoNumber(Enum):
-            def __new__(cls):
+    eleza test_inherited_new_kutoka_enhanced_enum(self):
+        kundi AutoNumber(Enum):
+            eleza __new__(cls):
                 value = len(cls.__members__) + 1
                 obj = object.__new__(cls)
                 obj._value_ = value
-                return obj
-            def __int__(self):
-                return int(self._value_)
-        class Color(AutoNumber):
+                rudisha obj
+            eleza __int__(self):
+                rudisha int(self._value_)
+        kundi Color(AutoNumber):
             red = ()
             green = ()
             blue = ()
         self.assertEqual(list(Color), [Color.red, Color.green, Color.blue])
         self.assertEqual(list(map(int, Color)), [1, 2, 3])
 
-    def test_inherited_new_from_mixed_enum(self):
-        class AutoNumber(IntEnum):
-            def __new__(cls):
+    eleza test_inherited_new_kutoka_mixed_enum(self):
+        kundi AutoNumber(IntEnum):
+            eleza __new__(cls):
                 value = len(cls.__members__) + 1
                 obj = int.__new__(cls, value)
                 obj._value_ = value
-                return obj
-        class Color(AutoNumber):
+                rudisha obj
+        kundi Color(AutoNumber):
             red = ()
             green = ()
             blue = ()
         self.assertEqual(list(Color), [Color.red, Color.green, Color.blue])
         self.assertEqual(list(map(int, Color)), [1, 2, 3])
 
-    def test_equality(self):
-        class AlwaysEqual:
-            def __eq__(self, other):
-                return True
-        class OrdinaryEnum(Enum):
+    eleza test_equality(self):
+        kundi AlwaysEqual:
+            eleza __eq__(self, other):
+                rudisha True
+        kundi OrdinaryEnum(Enum):
             a = 1
         self.assertEqual(AlwaysEqual(), OrdinaryEnum.a)
         self.assertEqual(OrdinaryEnum.a, AlwaysEqual())
 
-    def test_ordered_mixin(self):
-        class OrderedEnum(Enum):
-            def __ge__(self, other):
-                if self.__class__ is other.__class__:
-                    return self._value_ >= other._value_
-                return NotImplemented
-            def __gt__(self, other):
-                if self.__class__ is other.__class__:
-                    return self._value_ > other._value_
-                return NotImplemented
-            def __le__(self, other):
-                if self.__class__ is other.__class__:
-                    return self._value_ <= other._value_
-                return NotImplemented
-            def __lt__(self, other):
-                if self.__class__ is other.__class__:
-                    return self._value_ < other._value_
-                return NotImplemented
-        class Grade(OrderedEnum):
+    eleza test_ordered_mixin(self):
+        kundi OrderedEnum(Enum):
+            eleza __ge__(self, other):
+                ikiwa self.__class__ is other.__class__:
+                    rudisha self._value_ >= other._value_
+                rudisha NotImplemented
+            eleza __gt__(self, other):
+                ikiwa self.__class__ is other.__class__:
+                    rudisha self._value_ > other._value_
+                rudisha NotImplemented
+            eleza __le__(self, other):
+                ikiwa self.__class__ is other.__class__:
+                    rudisha self._value_ <= other._value_
+                rudisha NotImplemented
+            eleza __lt__(self, other):
+                ikiwa self.__class__ is other.__class__:
+                    rudisha self._value_ < other._value_
+                rudisha NotImplemented
+        kundi Grade(OrderedEnum):
             A = 5
             B = 4
             C = 3
@@ -1497,75 +1497,75 @@ class TestEnum(unittest.TestCase):
         self.assertEqual(Grade.B, Grade.B)
         self.assertNotEqual(Grade.C, Grade.D)
 
-    def test_extending2(self):
-        class Shade(Enum):
-            def shade(self):
-                print(self.name)
-        class Color(Shade):
+    eleza test_extending2(self):
+        kundi Shade(Enum):
+            eleza shade(self):
+                andika(self.name)
+        kundi Color(Shade):
             red = 1
             green = 2
             blue = 3
         with self.assertRaises(TypeError):
-            class MoreColor(Color):
+            kundi MoreColor(Color):
                 cyan = 4
                 magenta = 5
                 yellow = 6
 
-    def test_extending3(self):
-        class Shade(Enum):
-            def shade(self):
-                return self.name
-        class Color(Shade):
-            def hex(self):
-                return '%s hexlified!' % self.value
-        class MoreColor(Color):
+    eleza test_extending3(self):
+        kundi Shade(Enum):
+            eleza shade(self):
+                rudisha self.name
+        kundi Color(Shade):
+            eleza hex(self):
+                rudisha '%s hexlified!' % self.value
+        kundi MoreColor(Color):
             cyan = 4
             magenta = 5
             yellow = 6
         self.assertEqual(MoreColor.magenta.hex(), '5 hexlified!')
 
-    def test_subclass_duplicate_name(self):
-        class Base(Enum):
-            def test(self):
+    eleza test_subclass_duplicate_name(self):
+        kundi Base(Enum):
+            eleza test(self):
                 pass
-        class Test(Base):
+        kundi Test(Base):
             test = 1
         self.assertIs(type(Test.test), Test)
 
-    def test_subclass_duplicate_name_dynamic(self):
+    eleza test_subclass_duplicate_name_dynamic(self):
         kutoka types agiza DynamicClassAttribute
-        class Base(Enum):
+        kundi Base(Enum):
             @DynamicClassAttribute
-            def test(self):
-                return 'dynamic'
-        class Test(Base):
+            eleza test(self):
+                rudisha 'dynamic'
+        kundi Test(Base):
             test = 1
         self.assertEqual(Test.test.test, 'dynamic')
 
-    def test_no_duplicates(self):
-        class UniqueEnum(Enum):
-            def __init__(self, *args):
+    eleza test_no_duplicates(self):
+        kundi UniqueEnum(Enum):
+            eleza __init__(self, *args):
                 cls = self.__class__
-                if any(self.value == e.value for e in cls):
+                ikiwa any(self.value == e.value for e in cls):
                     a = self.name
                     e = cls(self.value).name
                     raise ValueError(
                             "aliases not allowed in UniqueEnum:  %r --> %r"
                             % (a, e)
                             )
-        class Color(UniqueEnum):
+        kundi Color(UniqueEnum):
             red = 1
             green = 2
             blue = 3
         with self.assertRaises(ValueError):
-            class Color(UniqueEnum):
+            kundi Color(UniqueEnum):
                 red = 1
                 green = 2
                 blue = 3
                 grene = 2
 
-    def test_init(self):
-        class Planet(Enum):
+    eleza test_init(self):
+        kundi Planet(Enum):
             MERCURY = (3.303e+23, 2.4397e6)
             VENUS   = (4.869e+24, 6.0518e6)
             EARTH   = (5.976e+24, 6.37814e6)
@@ -1574,27 +1574,27 @@ class TestEnum(unittest.TestCase):
             SATURN  = (5.688e+26, 6.0268e7)
             URANUS  = (8.686e+25, 2.5559e7)
             NEPTUNE = (1.024e+26, 2.4746e7)
-            def __init__(self, mass, radius):
+            eleza __init__(self, mass, radius):
                 self.mass = mass       # in kilograms
                 self.radius = radius   # in meters
             @property
-            def surface_gravity(self):
+            eleza surface_gravity(self):
                 # universal gravitational constant  (m3 kg-1 s-2)
                 G = 6.67300E-11
-                return G * self.mass / (self.radius * self.radius)
+                rudisha G * self.mass / (self.radius * self.radius)
         self.assertEqual(round(Planet.EARTH.surface_gravity, 2), 9.80)
         self.assertEqual(Planet.EARTH.value, (5.976e+24, 6.37814e6))
 
-    def test_ignore(self):
-        class Period(timedelta, Enum):
+    eleza test_ignore(self):
+        kundi Period(timedelta, Enum):
             '''
             different lengths of time
             '''
-            def __new__(cls, value, period):
+            eleza __new__(cls, value, period):
                 obj = timedelta.__new__(cls, value)
                 obj._value_ = value
                 obj.period = period
-                return obj
+                rudisha obj
             _ignore_ = 'Period i'
             Period = vars()
             for i in range(13):
@@ -1613,14 +1613,14 @@ class TestEnum(unittest.TestCase):
         self.assertTrue(Period.month_1 is Period.day_30)
         self.assertTrue(Period.week_4 is Period.day_28)
 
-    def test_nonhash_value(self):
-        class AutoNumberInAList(Enum):
-            def __new__(cls):
+    eleza test_nonhash_value(self):
+        kundi AutoNumberInAList(Enum):
+            eleza __new__(cls):
                 value = [len(cls.__members__) + 1]
                 obj = object.__new__(cls)
                 obj._value_ = value
-                return obj
-        class ColorInAList(AutoNumberInAList):
+                rudisha obj
+        kundi ColorInAList(AutoNumberInAList):
             red = ()
             green = ()
             blue = ()
@@ -1630,16 +1630,16 @@ class TestEnum(unittest.TestCase):
             self.assertEqual(enum.value, [value])
             self.assertIs(ColorInAList([value]), enum)
 
-    def test_conflicting_types_resolved_in_new(self):
-        class LabelledIntEnum(int, Enum):
-            def __new__(cls, *args):
+    eleza test_conflicting_types_resolved_in_new(self):
+        kundi LabelledIntEnum(int, Enum):
+            eleza __new__(cls, *args):
                 value, label = args
                 obj = int.__new__(cls, value)
                 obj.label = label
                 obj._value_ = value
-                return obj
+                rudisha obj
 
-        class LabelledList(LabelledIntEnum):
+        kundi LabelledList(LabelledIntEnum):
             unprocessed = (1, "Unprocessed")
             payment_complete = (2, "Payment Complete")
 
@@ -1647,8 +1647,8 @@ class TestEnum(unittest.TestCase):
         self.assertEqual(LabelledList.unprocessed, 1)
         self.assertEqual(LabelledList(1), LabelledList.unprocessed)
 
-    def test_auto_number(self):
-        class Color(Enum):
+    eleza test_auto_number(self):
+        kundi Color(Enum):
             red = auto()
             blue = auto()
             green = auto()
@@ -1658,10 +1658,10 @@ class TestEnum(unittest.TestCase):
         self.assertEqual(Color.blue.value, 2)
         self.assertEqual(Color.green.value, 3)
 
-    def test_auto_name(self):
-        class Color(Enum):
-            def _generate_next_value_(name, start, count, last):
-                return name
+    eleza test_auto_name(self):
+        kundi Color(Enum):
+            eleza _generate_next_value_(name, start, count, last):
+                rudisha name
             red = auto()
             blue = auto()
             green = auto()
@@ -1671,11 +1671,11 @@ class TestEnum(unittest.TestCase):
         self.assertEqual(Color.blue.value, 'blue')
         self.assertEqual(Color.green.value, 'green')
 
-    def test_auto_name_inherit(self):
-        class AutoNameEnum(Enum):
-            def _generate_next_value_(name, start, count, last):
-                return name
-        class Color(AutoNameEnum):
+    eleza test_auto_name_inherit(self):
+        kundi AutoNameEnum(Enum):
+            eleza _generate_next_value_(name, start, count, last):
+                rudisha name
+        kundi Color(AutoNameEnum):
             red = auto()
             blue = auto()
             green = auto()
@@ -1685,14 +1685,14 @@ class TestEnum(unittest.TestCase):
         self.assertEqual(Color.blue.value, 'blue')
         self.assertEqual(Color.green.value, 'green')
 
-    def test_auto_garbage(self):
-        class Color(Enum):
+    eleza test_auto_garbage(self):
+        kundi Color(Enum):
             red = 'red'
             blue = auto()
         self.assertEqual(Color.blue.value, 1)
 
-    def test_auto_garbage_corrected(self):
-        class Color(Enum):
+    eleza test_auto_garbage_corrected(self):
+        kundi Color(Enum):
             red = 'red'
             blue = 2
             green = auto()
@@ -1702,30 +1702,30 @@ class TestEnum(unittest.TestCase):
         self.assertEqual(Color.blue.value, 2)
         self.assertEqual(Color.green.value, 3)
 
-    def test_duplicate_auto(self):
-        class Dupes(Enum):
+    eleza test_duplicate_auto(self):
+        kundi Dupes(Enum):
             first = primero = auto()
             second = auto()
             third = auto()
         self.assertEqual([Dupes.first, Dupes.second, Dupes.third], list(Dupes))
 
-    def test_missing(self):
-        class Color(Enum):
+    eleza test_missing(self):
+        kundi Color(Enum):
             red = 1
             green = 2
             blue = 3
             @classmethod
-            def _missing_(cls, item):
-                if item == 'three':
-                    return cls.blue
-                elif item == 'bad return':
+            eleza _missing_(cls, item):
+                ikiwa item == 'three':
+                    rudisha cls.blue
+                elikiwa item == 'bad return':
                     # trigger internal error
-                    return 5
-                elif item == 'error out':
+                    rudisha 5
+                elikiwa item == 'error out':
                     raise ZeroDivisionError
                 else:
                     # trigger not found
-                    return None
+                    rudisha None
         self.assertIs(Color('three'), Color.blue)
         self.assertRaises(ValueError, Color, 7)
         try:
@@ -1741,25 +1741,25 @@ class TestEnum(unittest.TestCase):
         else:
             raise Exception('Exception not raised.')
 
-    def test_multiple_mixin(self):
-        class MaxMixin:
+    eleza test_multiple_mixin(self):
+        kundi MaxMixin:
             @classproperty
-            def MAX(cls):
+            eleza MAX(cls):
                 max = len(cls)
                 cls.MAX = max
-                return max
-        class StrMixin:
-            def __str__(self):
-                return self._name_.lower()
-        class SomeEnum(Enum):
-            def behavior(self):
-                return 'booyah'
-        class AnotherEnum(Enum):
-            def behavior(self):
-                return 'nuhuh!'
-            def social(self):
-                return "what's up?"
-        class Color(MaxMixin, Enum):
+                rudisha max
+        kundi StrMixin:
+            eleza __str__(self):
+                rudisha self._name_.lower()
+        kundi SomeEnum(Enum):
+            eleza behavior(self):
+                rudisha 'booyah'
+        kundi AnotherEnum(Enum):
+            eleza behavior(self):
+                rudisha 'nuhuh!'
+            eleza social(self):
+                rudisha "what's up?"
+        kundi Color(MaxMixin, Enum):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
@@ -1768,7 +1768,7 @@ class TestEnum(unittest.TestCase):
         self.assertEqual(Color.BLUE.value, 3)
         self.assertEqual(Color.MAX, 3)
         self.assertEqual(str(Color.BLUE), 'Color.BLUE')
-        class Color(MaxMixin, StrMixin, Enum):
+        kundi Color(MaxMixin, StrMixin, Enum):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
@@ -1777,7 +1777,7 @@ class TestEnum(unittest.TestCase):
         self.assertEqual(Color.BLUE.value, 3)
         self.assertEqual(Color.MAX, 3)
         self.assertEqual(str(Color.BLUE), 'blue')
-        class Color(StrMixin, MaxMixin, Enum):
+        kundi Color(StrMixin, MaxMixin, Enum):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
@@ -1786,7 +1786,7 @@ class TestEnum(unittest.TestCase):
         self.assertEqual(Color.BLUE.value, 3)
         self.assertEqual(Color.MAX, 3)
         self.assertEqual(str(Color.BLUE), 'blue')
-        class CoolColor(StrMixin, SomeEnum, Enum):
+        kundi CoolColor(StrMixin, SomeEnum, Enum):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
@@ -1795,7 +1795,7 @@ class TestEnum(unittest.TestCase):
         self.assertEqual(CoolColor.BLUE.value, 3)
         self.assertEqual(str(CoolColor.BLUE), 'blue')
         self.assertEqual(CoolColor.RED.behavior(), 'booyah')
-        class CoolerColor(StrMixin, AnotherEnum, Enum):
+        kundi CoolerColor(StrMixin, AnotherEnum, Enum):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
@@ -1805,7 +1805,7 @@ class TestEnum(unittest.TestCase):
         self.assertEqual(str(CoolerColor.BLUE), 'blue')
         self.assertEqual(CoolerColor.RED.behavior(), 'nuhuh!')
         self.assertEqual(CoolerColor.RED.social(), "what's up?")
-        class CoolestColor(StrMixin, SomeEnum, AnotherEnum):
+        kundi CoolestColor(StrMixin, SomeEnum, AnotherEnum):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
@@ -1815,7 +1815,7 @@ class TestEnum(unittest.TestCase):
         self.assertEqual(str(CoolestColor.BLUE), 'blue')
         self.assertEqual(CoolestColor.RED.behavior(), 'booyah')
         self.assertEqual(CoolestColor.RED.social(), "what's up?")
-        class ConfusedColor(StrMixin, AnotherEnum, SomeEnum):
+        kundi ConfusedColor(StrMixin, AnotherEnum, SomeEnum):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
@@ -1825,7 +1825,7 @@ class TestEnum(unittest.TestCase):
         self.assertEqual(str(ConfusedColor.BLUE), 'blue')
         self.assertEqual(ConfusedColor.RED.behavior(), 'nuhuh!')
         self.assertEqual(ConfusedColor.RED.social(), "what's up?")
-        class ReformedColor(StrMixin, IntEnum, SomeEnum, AnotherEnum):
+        kundi ReformedColor(StrMixin, IntEnum, SomeEnum, AnotherEnum):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
@@ -1837,28 +1837,28 @@ class TestEnum(unittest.TestCase):
         self.assertEqual(ConfusedColor.RED.social(), "what's up?")
         self.assertTrue(issubclass(ReformedColor, int))
 
-    def test_multiple_inherited_mixin(self):
-        class StrEnum(str, Enum):
-            def __new__(cls, *args, **kwargs):
+    eleza test_multiple_inherited_mixin(self):
+        kundi StrEnum(str, Enum):
+            eleza __new__(cls, *args, **kwargs):
                 for a in args:
-                    if not isinstance(a, str):
+                    ikiwa not isinstance(a, str):
                         raise TypeError("Enumeration '%s' (%s) is not"
                                         " a string" % (a, type(a).__name__))
-                return str.__new__(cls, *args, **kwargs)
+                rudisha str.__new__(cls, *args, **kwargs)
         @unique
-        class Decision1(StrEnum):
+        kundi Decision1(StrEnum):
             REVERT = "REVERT"
             REVERT_ALL = "REVERT_ALL"
             RETRY = "RETRY"
-        class MyEnum(StrEnum):
+        kundi MyEnum(StrEnum):
             pass
         @unique
-        class Decision2(MyEnum):
+        kundi Decision2(MyEnum):
             REVERT = "REVERT"
             REVERT_ALL = "REVERT_ALL"
             RETRY = "RETRY"
 
-    def test_empty_globals(self):
+    eleza test_empty_globals(self):
         # bpo-35717: sys._getframe(2).f_globals['__name__'] fails with KeyError
         # when using compile and exec because f_globals is empty
         code = "kutoka enum agiza Enum; Enum('Animal', 'ANT BEE CAT DOG')"
@@ -1868,60 +1868,60 @@ class TestEnum(unittest.TestCase):
         exec(code, global_ns, local_ls)
 
 
-class TestOrder(unittest.TestCase):
+kundi TestOrder(unittest.TestCase):
 
-    def test_same_members(self):
-        class Color(Enum):
+    eleza test_same_members(self):
+        kundi Color(Enum):
             _order_ = 'red green blue'
             red = 1
             green = 2
             blue = 3
 
-    def test_same_members_with_aliases(self):
-        class Color(Enum):
+    eleza test_same_members_with_aliases(self):
+        kundi Color(Enum):
             _order_ = 'red green blue'
             red = 1
             green = 2
             blue = 3
             verde = green
 
-    def test_same_members_wrong_order(self):
+    eleza test_same_members_wrong_order(self):
         with self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
-            class Color(Enum):
+            kundi Color(Enum):
                 _order_ = 'red green blue'
                 red = 1
                 blue = 3
                 green = 2
 
-    def test_order_has_extra_members(self):
+    eleza test_order_has_extra_members(self):
         with self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
-            class Color(Enum):
+            kundi Color(Enum):
                 _order_ = 'red green blue purple'
                 red = 1
                 green = 2
                 blue = 3
 
-    def test_order_has_extra_members_with_aliases(self):
+    eleza test_order_has_extra_members_with_aliases(self):
         with self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
-            class Color(Enum):
+            kundi Color(Enum):
                 _order_ = 'red green blue purple'
                 red = 1
                 green = 2
                 blue = 3
                 verde = green
 
-    def test_enum_has_extra_members(self):
+    eleza test_enum_has_extra_members(self):
         with self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
-            class Color(Enum):
+            kundi Color(Enum):
                 _order_ = 'red green blue'
                 red = 1
                 green = 2
                 blue = 3
                 purple = 4
 
-    def test_enum_has_extra_members_with_aliases(self):
+    eleza test_enum_has_extra_members_with_aliases(self):
         with self.assertRaisesRegex(TypeError, 'member order does not match _order_'):
-            class Color(Enum):
+            kundi Color(Enum):
                 _order_ = 'red green blue'
                 red = 1
                 green = 2
@@ -1930,27 +1930,27 @@ class TestOrder(unittest.TestCase):
                 verde = green
 
 
-class TestFlag(unittest.TestCase):
+kundi TestFlag(unittest.TestCase):
     """Tests of the Flags."""
 
-    class Perm(Flag):
+    kundi Perm(Flag):
         R, W, X = 4, 2, 1
 
-    class Open(Flag):
+    kundi Open(Flag):
         RO = 0
         WO = 1
         RW = 2
         AC = 3
         CE = 1<<19
 
-    class Color(Flag):
+    kundi Color(Flag):
         BLACK = 0
         RED = 1
         GREEN = 2
         BLUE = 4
         PURPLE = RED|BLUE
 
-    def test_str(self):
+    eleza test_str(self):
         Perm = self.Perm
         self.assertEqual(str(Perm.R), 'Perm.R')
         self.assertEqual(str(Perm.W), 'Perm.W')
@@ -1977,7 +1977,7 @@ class TestFlag(unittest.TestCase):
         self.assertEqual(str(~(Open.RO | Open.CE)), 'Open.AC')
         self.assertEqual(str(~(Open.WO | Open.CE)), 'Open.RW')
 
-    def test_repr(self):
+    eleza test_repr(self):
         Perm = self.Perm
         self.assertEqual(repr(Perm.R), '<Perm.R: 4>')
         self.assertEqual(repr(Perm.W), '<Perm.W: 2>')
@@ -2004,7 +2004,7 @@ class TestFlag(unittest.TestCase):
         self.assertEqual(repr(~(Open.RO | Open.CE)), '<Open.AC: 3>')
         self.assertEqual(repr(~(Open.WO | Open.CE)), '<Open.RW: 2>')
 
-    def test_or(self):
+    eleza test_or(self):
         Perm = self.Perm
         for i in Perm:
             for j in Perm:
@@ -2016,7 +2016,7 @@ class TestFlag(unittest.TestCase):
         Open = self.Open
         self.assertIs(Open.RO | Open.CE, Open.CE)
 
-    def test_and(self):
+    eleza test_and(self):
         Perm = self.Perm
         RW = Perm.R | Perm.W
         RX = Perm.R | Perm.X
@@ -2034,7 +2034,7 @@ class TestFlag(unittest.TestCase):
         Open = self.Open
         self.assertIs(Open.RO & Open.CE, Open.RO)
 
-    def test_xor(self):
+    eleza test_xor(self):
         Perm = self.Perm
         for i in Perm:
             for j in Perm:
@@ -2047,7 +2047,7 @@ class TestFlag(unittest.TestCase):
         self.assertIs(Open.RO ^ Open.CE, Open.CE)
         self.assertIs(Open.CE ^ Open.CE, Open.RO)
 
-    def test_invert(self):
+    eleza test_invert(self):
         Perm = self.Perm
         RW = Perm.R | Perm.W
         RX = Perm.R | Perm.X
@@ -2063,7 +2063,7 @@ class TestFlag(unittest.TestCase):
         self.assertIs(Open.WO & ~Open.WO, Open.RO)
         self.assertIs((Open.WO|Open.CE) & ~Open.WO, Open.CE)
 
-    def test_bool(self):
+    eleza test_bool(self):
         Perm = self.Perm
         for f in Perm:
             self.assertTrue(f)
@@ -2071,7 +2071,7 @@ class TestFlag(unittest.TestCase):
         for f in Open:
             self.assertEqual(bool(f.value), bool(f))
 
-    def test_programatic_function_string(self):
+    eleza test_programatic_function_string(self):
         Perm = Flag('Perm', 'R W X')
         lst = list(Perm)
         self.assertEqual(len(lst), len(Perm))
@@ -2086,7 +2086,7 @@ class TestFlag(unittest.TestCase):
             self.assertIn(e, Perm)
             self.assertIs(type(e), Perm)
 
-    def test_programatic_function_string_with_start(self):
+    eleza test_programatic_function_string_with_start(self):
         Perm = Flag('Perm', 'R W X', start=8)
         lst = list(Perm)
         self.assertEqual(len(lst), len(Perm))
@@ -2101,7 +2101,7 @@ class TestFlag(unittest.TestCase):
             self.assertIn(e, Perm)
             self.assertIs(type(e), Perm)
 
-    def test_programatic_function_string_list(self):
+    eleza test_programatic_function_string_list(self):
         Perm = Flag('Perm', ['R', 'W', 'X'])
         lst = list(Perm)
         self.assertEqual(len(lst), len(Perm))
@@ -2116,7 +2116,7 @@ class TestFlag(unittest.TestCase):
             self.assertIn(e, Perm)
             self.assertIs(type(e), Perm)
 
-    def test_programatic_function_iterable(self):
+    eleza test_programatic_function_iterable(self):
         Perm = Flag('Perm', (('R', 2), ('W', 8), ('X', 32)))
         lst = list(Perm)
         self.assertEqual(len(lst), len(Perm))
@@ -2131,7 +2131,7 @@ class TestFlag(unittest.TestCase):
             self.assertIn(e, Perm)
             self.assertIs(type(e), Perm)
 
-    def test_programatic_function_from_dict(self):
+    eleza test_programatic_function_kutoka_dict(self):
         Perm = Flag('Perm', OrderedDict((('R', 2), ('W', 8), ('X', 32))))
         lst = list(Perm)
         self.assertEqual(len(lst), len(Perm))
@@ -2146,13 +2146,13 @@ class TestFlag(unittest.TestCase):
             self.assertIn(e, Perm)
             self.assertIs(type(e), Perm)
 
-    def test_pickle(self):
-        if isinstance(FlagStooges, Exception):
+    eleza test_pickle(self):
+        ikiwa isinstance(FlagStooges, Exception):
             raise FlagStooges
         test_pickle_dump_load(self.assertIs, FlagStooges.CURLY|FlagStooges.MOE)
         test_pickle_dump_load(self.assertIs, FlagStooges)
 
-    def test_contains(self):
+    eleza test_contains(self):
         Open = self.Open
         Color = self.Color
         self.assertFalse(Color.BLACK in Open)
@@ -2166,7 +2166,7 @@ class TestFlag(unittest.TestCase):
         with self.assertRaises(TypeError):
             1 in Open
 
-    def test_member_contains(self):
+    eleza test_member_contains(self):
         Perm = self.Perm
         R, W, X = Perm
         RW = R | W
@@ -2186,8 +2186,8 @@ class TestFlag(unittest.TestCase):
         self.assertFalse(W in RX)
         self.assertFalse(X in RW)
 
-    def test_auto_number(self):
-        class Color(Flag):
+    eleza test_auto_number(self):
+        kundi Color(Flag):
             red = auto()
             blue = auto()
             green = auto()
@@ -2197,14 +2197,14 @@ class TestFlag(unittest.TestCase):
         self.assertEqual(Color.blue.value, 2)
         self.assertEqual(Color.green.value, 4)
 
-    def test_auto_number_garbage(self):
+    eleza test_auto_number_garbage(self):
         with self.assertRaisesRegex(TypeError, 'Invalid Flag value: .not an int.'):
-            class Color(Flag):
+            kundi Color(Flag):
                 red = 'not an int'
                 blue = auto()
 
-    def test_cascading_failure(self):
-        class Bizarre(Flag):
+    eleza test_cascading_failure(self):
+        kundi Bizarre(Flag):
             c = 3
             d = 4
             f = 6
@@ -2216,36 +2216,36 @@ class TestFlag(unittest.TestCase):
         self.assertRaisesRegex(ValueError, "1 is not a valid Bizarre", Bizarre, 1)
         self.assertRaisesRegex(ValueError, "1 is not a valid Bizarre", Bizarre, 1)
 
-    def test_duplicate_auto(self):
-        class Dupes(Enum):
+    eleza test_duplicate_auto(self):
+        kundi Dupes(Enum):
             first = primero = auto()
             second = auto()
             third = auto()
         self.assertEqual([Dupes.first, Dupes.second, Dupes.third], list(Dupes))
 
-    def test_bizarre(self):
-        class Bizarre(Flag):
+    eleza test_bizarre(self):
+        kundi Bizarre(Flag):
             b = 3
             c = 4
             d = 6
         self.assertEqual(repr(Bizarre(7)), '<Bizarre.d|c|b: 7>')
 
-    def test_multiple_mixin(self):
-        class AllMixin:
+    eleza test_multiple_mixin(self):
+        kundi AllMixin:
             @classproperty
-            def ALL(cls):
+            eleza ALL(cls):
                 members = list(cls)
                 all_value = None
-                if members:
+                ikiwa members:
                     all_value = members[0]
                     for member in members[1:]:
                         all_value |= member
                 cls.ALL = all_value
-                return all_value
-        class StrMixin:
-            def __str__(self):
-                return self._name_.lower()
-        class Color(AllMixin, Flag):
+                rudisha all_value
+        kundi StrMixin:
+            eleza __str__(self):
+                rudisha self._name_.lower()
+        kundi Color(AllMixin, Flag):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
@@ -2254,7 +2254,7 @@ class TestFlag(unittest.TestCase):
         self.assertEqual(Color.BLUE.value, 4)
         self.assertEqual(Color.ALL.value, 7)
         self.assertEqual(str(Color.BLUE), 'Color.BLUE')
-        class Color(AllMixin, StrMixin, Flag):
+        kundi Color(AllMixin, StrMixin, Flag):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
@@ -2263,7 +2263,7 @@ class TestFlag(unittest.TestCase):
         self.assertEqual(Color.BLUE.value, 4)
         self.assertEqual(Color.ALL.value, 7)
         self.assertEqual(str(Color.BLUE), 'blue')
-        class Color(StrMixin, AllMixin, Flag):
+        kundi Color(StrMixin, AllMixin, Flag):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
@@ -2274,9 +2274,9 @@ class TestFlag(unittest.TestCase):
         self.assertEqual(str(Color.BLUE), 'blue')
 
     @support.reap_threads
-    def test_unique_composite(self):
+    eleza test_unique_composite(self):
         # override __eq__ to be identity only
-        class TestFlag(Flag):
+        kundi TestFlag(Flag):
             one = auto()
             two = auto()
             three = auto()
@@ -2285,14 +2285,14 @@ class TestFlag(unittest.TestCase):
             six = auto()
             seven = auto()
             eight = auto()
-            def __eq__(self, other):
-                return self is other
-            def __hash__(self):
-                return hash(self._value_)
+            eleza __eq__(self, other):
+                rudisha self is other
+            eleza __hash__(self):
+                rudisha hash(self._value_)
         # have multiple threads competing to complete the composite members
         seen = set()
         failed = False
-        def cycle_enum():
+        eleza cycle_enum():
             nonlocal failed
             try:
                 for i in range(256):
@@ -2312,29 +2312,29 @@ class TestFlag(unittest.TestCase):
         self.assertEqual(256, len(seen), 'too many composite members created')
 
 
-class TestIntFlag(unittest.TestCase):
+kundi TestIntFlag(unittest.TestCase):
     """Tests of the IntFlags."""
 
-    class Perm(IntFlag):
+    kundi Perm(IntFlag):
         X = 1 << 0
         W = 1 << 1
         R = 1 << 2
 
-    class Open(IntFlag):
+    kundi Open(IntFlag):
         RO = 0
         WO = 1
         RW = 2
         AC = 3
         CE = 1<<19
 
-    class Color(IntFlag):
+    kundi Color(IntFlag):
         BLACK = 0
         RED = 1
         GREEN = 2
         BLUE = 4
         PURPLE = RED|BLUE
 
-    def test_type(self):
+    eleza test_type(self):
         Perm = self.Perm
         Open = self.Open
         for f in Perm:
@@ -2349,7 +2349,7 @@ class TestIntFlag(unittest.TestCase):
         self.assertEqual(Open.WO | Open.RW, 3)
 
 
-    def test_str(self):
+    eleza test_str(self):
         Perm = self.Perm
         self.assertEqual(str(Perm.R), 'Perm.R')
         self.assertEqual(str(Perm.W), 'Perm.W')
@@ -2382,7 +2382,7 @@ class TestIntFlag(unittest.TestCase):
         self.assertEqual(str(~(Open.WO | Open.CE)), 'Open.RW')
         self.assertEqual(str(Open(~4)), 'Open.CE|AC|RW|WO')
 
-    def test_repr(self):
+    eleza test_repr(self):
         Perm = self.Perm
         self.assertEqual(repr(Perm.R), '<Perm.R: 4>')
         self.assertEqual(repr(Perm.W), '<Perm.W: 2>')
@@ -2415,7 +2415,7 @@ class TestIntFlag(unittest.TestCase):
         self.assertEqual(repr(~(Open.WO | Open.CE)), '<Open.RW: -524290>')
         self.assertEqual(repr(Open(~4)), '<Open.CE|AC|RW|WO: -5>')
 
-    def test_or(self):
+    eleza test_or(self):
         Perm = self.Perm
         for i in Perm:
             for j in Perm:
@@ -2436,7 +2436,7 @@ class TestIntFlag(unittest.TestCase):
         Open = self.Open
         self.assertIs(Open.RO | Open.CE, Open.CE)
 
-    def test_and(self):
+    eleza test_and(self):
         Perm = self.Perm
         RW = Perm.R | Perm.W
         RX = Perm.R | Perm.X
@@ -2462,7 +2462,7 @@ class TestIntFlag(unittest.TestCase):
         Open = self.Open
         self.assertIs(Open.RO & Open.CE, Open.RO)
 
-    def test_xor(self):
+    eleza test_xor(self):
         Perm = self.Perm
         for i in Perm:
             for j in Perm:
@@ -2483,7 +2483,7 @@ class TestIntFlag(unittest.TestCase):
         self.assertIs(Open.RO ^ Open.CE, Open.CE)
         self.assertIs(Open.CE ^ Open.CE, Open.RO)
 
-    def test_invert(self):
+    eleza test_invert(self):
         Perm = self.Perm
         RW = Perm.R | Perm.W
         RX = Perm.R | Perm.X
@@ -2501,7 +2501,7 @@ class TestIntFlag(unittest.TestCase):
         self.assertIs(Open.WO & ~Open.WO, Open.RO)
         self.assertIs((Open.WO|Open.CE) & ~Open.WO, Open.CE)
 
-    def test_programatic_function_string(self):
+    eleza test_programatic_function_string(self):
         Perm = IntFlag('Perm', 'R W X')
         lst = list(Perm)
         self.assertEqual(len(lst), len(Perm))
@@ -2517,7 +2517,7 @@ class TestIntFlag(unittest.TestCase):
             self.assertIn(e, Perm)
             self.assertIs(type(e), Perm)
 
-    def test_programatic_function_string_with_start(self):
+    eleza test_programatic_function_string_with_start(self):
         Perm = IntFlag('Perm', 'R W X', start=8)
         lst = list(Perm)
         self.assertEqual(len(lst), len(Perm))
@@ -2533,7 +2533,7 @@ class TestIntFlag(unittest.TestCase):
             self.assertIn(e, Perm)
             self.assertIs(type(e), Perm)
 
-    def test_programatic_function_string_list(self):
+    eleza test_programatic_function_string_list(self):
         Perm = IntFlag('Perm', ['R', 'W', 'X'])
         lst = list(Perm)
         self.assertEqual(len(lst), len(Perm))
@@ -2549,7 +2549,7 @@ class TestIntFlag(unittest.TestCase):
             self.assertIn(e, Perm)
             self.assertIs(type(e), Perm)
 
-    def test_programatic_function_iterable(self):
+    eleza test_programatic_function_iterable(self):
         Perm = IntFlag('Perm', (('R', 2), ('W', 8), ('X', 32)))
         lst = list(Perm)
         self.assertEqual(len(lst), len(Perm))
@@ -2565,7 +2565,7 @@ class TestIntFlag(unittest.TestCase):
             self.assertIn(e, Perm)
             self.assertIs(type(e), Perm)
 
-    def test_programatic_function_from_dict(self):
+    eleza test_programatic_function_kutoka_dict(self):
         Perm = IntFlag('Perm', OrderedDict((('R', 2), ('W', 8), ('X', 32))))
         lst = list(Perm)
         self.assertEqual(len(lst), len(Perm))
@@ -2582,7 +2582,7 @@ class TestIntFlag(unittest.TestCase):
             self.assertIs(type(e), Perm)
 
 
-    def test_programatic_function_from_empty_list(self):
+    eleza test_programatic_function_kutoka_empty_list(self):
         Perm = enum.IntFlag('Perm', [])
         lst = list(Perm)
         self.assertEqual(len(lst), len(Perm))
@@ -2593,7 +2593,7 @@ class TestIntFlag(unittest.TestCase):
         self.assertEqual(len(Thing), 0, Thing)
 
 
-    def test_programatic_function_from_empty_tuple(self):
+    eleza test_programatic_function_kutoka_empty_tuple(self):
         Perm = enum.IntFlag('Perm', ())
         lst = list(Perm)
         self.assertEqual(len(lst), len(Perm))
@@ -2602,7 +2602,7 @@ class TestIntFlag(unittest.TestCase):
         self.assertEqual(len(lst), len(Thing))
         self.assertEqual(len(Thing), 0, Thing)
 
-    def test_contains(self):
+    eleza test_contains(self):
         Open = self.Open
         Color = self.Color
         self.assertTrue(Color.GREEN in Color)
@@ -2618,7 +2618,7 @@ class TestIntFlag(unittest.TestCase):
         with self.assertRaises(TypeError):
             2 in Open
 
-    def test_member_contains(self):
+    eleza test_member_contains(self):
         Perm = self.Perm
         R, W, X = Perm
         RW = R | W
@@ -2640,7 +2640,7 @@ class TestIntFlag(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.assertFalse('test' in RW)
 
-    def test_bool(self):
+    eleza test_bool(self):
         Perm = self.Perm
         for f in Perm:
             self.assertTrue(f)
@@ -2648,22 +2648,22 @@ class TestIntFlag(unittest.TestCase):
         for f in Open:
             self.assertEqual(bool(f.value), bool(f))
 
-    def test_multiple_mixin(self):
-        class AllMixin:
+    eleza test_multiple_mixin(self):
+        kundi AllMixin:
             @classproperty
-            def ALL(cls):
+            eleza ALL(cls):
                 members = list(cls)
                 all_value = None
-                if members:
+                ikiwa members:
                     all_value = members[0]
                     for member in members[1:]:
                         all_value |= member
                 cls.ALL = all_value
-                return all_value
-        class StrMixin:
-            def __str__(self):
-                return self._name_.lower()
-        class Color(AllMixin, IntFlag):
+                rudisha all_value
+        kundi StrMixin:
+            eleza __str__(self):
+                rudisha self._name_.lower()
+        kundi Color(AllMixin, IntFlag):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
@@ -2672,7 +2672,7 @@ class TestIntFlag(unittest.TestCase):
         self.assertEqual(Color.BLUE.value, 4)
         self.assertEqual(Color.ALL.value, 7)
         self.assertEqual(str(Color.BLUE), 'Color.BLUE')
-        class Color(AllMixin, StrMixin, IntFlag):
+        kundi Color(AllMixin, StrMixin, IntFlag):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
@@ -2681,7 +2681,7 @@ class TestIntFlag(unittest.TestCase):
         self.assertEqual(Color.BLUE.value, 4)
         self.assertEqual(Color.ALL.value, 7)
         self.assertEqual(str(Color.BLUE), 'blue')
-        class Color(StrMixin, AllMixin, IntFlag):
+        kundi Color(StrMixin, AllMixin, IntFlag):
             RED = auto()
             GREEN = auto()
             BLUE = auto()
@@ -2692,9 +2692,9 @@ class TestIntFlag(unittest.TestCase):
         self.assertEqual(str(Color.BLUE), 'blue')
 
     @support.reap_threads
-    def test_unique_composite(self):
+    eleza test_unique_composite(self):
         # override __eq__ to be identity only
-        class TestFlag(IntFlag):
+        kundi TestFlag(IntFlag):
             one = auto()
             two = auto()
             three = auto()
@@ -2703,14 +2703,14 @@ class TestIntFlag(unittest.TestCase):
             six = auto()
             seven = auto()
             eight = auto()
-            def __eq__(self, other):
-                return self is other
-            def __hash__(self):
-                return hash(self._value_)
+            eleza __eq__(self, other):
+                rudisha self is other
+            eleza __hash__(self):
+                rudisha hash(self._value_)
         # have multiple threads competing to complete the composite members
         seen = set()
         failed = False
-        def cycle_enum():
+        eleza cycle_enum():
             nonlocal failed
             try:
                 for i in range(256):
@@ -2730,41 +2730,41 @@ class TestIntFlag(unittest.TestCase):
         self.assertEqual(256, len(seen), 'too many composite members created')
 
 
-class TestEmptyAndNonLatinStrings(unittest.TestCase):
+kundi TestEmptyAndNonLatinStrings(unittest.TestCase):
 
-    def test_empty_string(self):
+    eleza test_empty_string(self):
         with self.assertRaises(ValueError):
             empty_abc = Enum('empty_abc', ('', 'B', 'C'))
 
-    def test_non_latin_character_string(self):
+    eleza test_non_latin_character_string(self):
         greek_abc = Enum('greek_abc', ('\u03B1', 'B', 'C'))
         item = getattr(greek_abc, '\u03B1')
         self.assertEqual(item.value, 1)
 
-    def test_non_latin_number_string(self):
+    eleza test_non_latin_number_string(self):
         hebrew_123 = Enum('hebrew_123', ('\u05D0', '2', '3'))
         item = getattr(hebrew_123, '\u05D0')
         self.assertEqual(item.value, 1)
 
 
-class TestUnique(unittest.TestCase):
+kundi TestUnique(unittest.TestCase):
 
-    def test_unique_clean(self):
+    eleza test_unique_clean(self):
         @unique
-        class Clean(Enum):
+        kundi Clean(Enum):
             one = 1
             two = 'dos'
             tres = 4.0
         @unique
-        class Cleaner(IntEnum):
+        kundi Cleaner(IntEnum):
             single = 1
             double = 2
             triple = 3
 
-    def test_unique_dirty(self):
+    eleza test_unique_dirty(self):
         with self.assertRaisesRegex(ValueError, 'tres.*one'):
             @unique
-            class Dirty(Enum):
+            kundi Dirty(Enum):
                 one = 1
                 two = 'dos'
                 tres = 1
@@ -2773,20 +2773,20 @@ class TestUnique(unittest.TestCase):
                 'double.*single.*turkey.*triple',
                 ):
             @unique
-            class Dirtier(IntEnum):
+            kundi Dirtier(IntEnum):
                 single = 1
                 double = 1
                 triple = 3
                 turkey = 3
 
-    def test_unique_with_name(self):
+    eleza test_unique_with_name(self):
         @unique
-        class Silly(Enum):
+        kundi Silly(Enum):
             one = 1
             two = 'dos'
             name = 3
         @unique
-        class Sillier(IntEnum):
+        kundi Sillier(IntEnum):
             single = 1
             name = 2
             triple = 3
@@ -2795,9 +2795,9 @@ class TestUnique(unittest.TestCase):
 
 
 expected_help_output_with_docs = """\
-Help on class Color in module %s:
+Help on kundi Color in module %s:
 
-class Color(enum.Enum)
+kundi Color(enum.Enum)
  |  Color(value, names=None, *, module=None, qualname=None, type=None, start=1)
  |\x20\x20
  |  An enumeration.
@@ -2834,9 +2834,9 @@ class Color(enum.Enum)
  |      is a read-only view of the internal mapping."""
 
 expected_help_output_without_docs = """\
-Help on class Color in module %s:
+Help on kundi Color in module %s:
 
-class Color(enum.Enum)
+kundi Color(enum.Enum)
  |  Color(value, names=None, *, module=None, qualname=None, type=None, start=1)
  |\x20\x20
  |  Method resolution order:
@@ -2864,18 +2864,18 @@ class Color(enum.Enum)
  |\x20\x20
  |  __members__"""
 
-class TestStdLib(unittest.TestCase):
+kundi TestStdLib(unittest.TestCase):
 
     maxDiff = None
 
-    class Color(Enum):
+    kundi Color(Enum):
         red = 1
         green = 2
         blue = 3
 
-    def test_pydoc(self):
+    eleza test_pydoc(self):
         # indirectly test __objclass__
-        if StrEnum.__doc__ is None:
+        ikiwa StrEnum.__doc__ is None:
             expected_text = expected_help_output_without_docs % __name__
         else:
             expected_text = expected_help_output_with_docs % __name__
@@ -2885,7 +2885,7 @@ class TestStdLib(unittest.TestCase):
         result = output.getvalue().strip()
         self.assertEqual(result, expected_text)
 
-    def test_inspect_getmembers(self):
+    eleza test_inspect_getmembers(self):
         values = dict((
                 ('__class__', EnumMeta),
                 ('__doc__', 'An enumeration.'),
@@ -2901,15 +2901,15 @@ class TestStdLib(unittest.TestCase):
         self.assertEqual(values.keys(), result.keys())
         failed = False
         for k in values.keys():
-            if result[k] != values[k]:
-                print()
-                print('\n%s\n     key: %s\n  result: %s\nexpected: %s\n%s\n' %
+            ikiwa result[k] != values[k]:
+                andika()
+                andika('\n%s\n     key: %s\n  result: %s\nexpected: %s\n%s\n' %
                         ('=' * 75, k, result[k], values[k], '=' * 75), sep='')
                 failed = True
-        if failed:
+        ikiwa failed:
             self.fail("result does not equal expected, see print above")
 
-    def test_inspect_classify_class_attrs(self):
+    eleza test_inspect_classify_class_attrs(self):
         # indirectly test __objclass__
         kutoka inspect agiza Attribute
         values = [
@@ -2937,15 +2937,15 @@ class TestStdLib(unittest.TestCase):
         result.sort(key=lambda item: item.name)
         failed = False
         for v, r in zip(values, result):
-            if r != v:
-                print('\n%s\n%s\n%s\n%s\n' % ('=' * 75, r, v, '=' * 75), sep='')
+            ikiwa r != v:
+                andika('\n%s\n%s\n%s\n%s\n' % ('=' * 75, r, v, '=' * 75), sep='')
                 failed = True
-        if failed:
+        ikiwa failed:
             self.fail("result does not equal expected, see print above")
 
 
-class MiscTestCase(unittest.TestCase):
-    def test__all__(self):
+kundi MiscTestCase(unittest.TestCase):
+    eleza test__all__(self):
         support.check__all__(self, enum)
 
 
@@ -2958,8 +2958,8 @@ CONVERT_TEST_NAME_A = 5  # This one should sort first.
 CONVERT_TEST_NAME_E = 5
 CONVERT_TEST_NAME_F = 5
 
-class TestIntEnumConvert(unittest.TestCase):
-    def test_convert_value_lookup_priority(self):
+kundi TestIntEnumConvert(unittest.TestCase):
+    eleza test_convert_value_lookup_priority(self):
         test_type = enum.IntEnum._convert_(
                 'UnittestConvert',
                 ('test.test_enum', '__main__')[__name__=='__main__'],
@@ -2969,7 +2969,7 @@ class TestIntEnumConvert(unittest.TestCase):
         # report the first lexigraphical name in that case.
         self.assertEqual(test_type(5).name, 'CONVERT_TEST_NAME_A')
 
-    def test_convert(self):
+    eleza test_convert(self):
         test_type = enum.IntEnum._convert_(
                 'UnittestConvert',
                 ('test.test_enum', '__main__')[__name__=='__main__'],
@@ -2983,12 +2983,12 @@ class TestIntEnumConvert(unittest.TestCase):
         self.assertEqual(test_type.CONVERT_TEST_NAME_E, 5)
         # Ensure that test_type only picked up names matching the filter.
         self.assertEqual([name for name in dir(test_type)
-                          if name[0:2] not in ('CO', '__')],
+                          ikiwa name[0:2] not in ('CO', '__')],
                          [], msg='Names other than CONVERT_TEST_* found.')
 
     @unittest.skipUnless(sys.version_info[:2] == (3, 8),
                          '_convert was deprecated in 3.8')
-    def test_convert_warn(self):
+    eleza test_convert_warn(self):
         with self.assertWarns(DeprecationWarning):
             enum.IntEnum._convert(
                 'UnittestConvert',
@@ -2997,7 +2997,7 @@ class TestIntEnumConvert(unittest.TestCase):
 
     @unittest.skipUnless(sys.version_info >= (3, 9),
                          '_convert was removed in 3.9')
-    def test_convert_raise(self):
+    eleza test_convert_raise(self):
         with self.assertRaises(AttributeError):
             enum.IntEnum._convert(
                 'UnittestConvert',
@@ -3005,5 +3005,5 @@ class TestIntEnumConvert(unittest.TestCase):
                 filter=lambda x: x.startswith('CONVERT_TEST_'))
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

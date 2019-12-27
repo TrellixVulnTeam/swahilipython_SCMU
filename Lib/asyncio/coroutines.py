@@ -15,7 +15,7 @@ kutoka . agiza format_helpers
 kutoka .log agiza logger
 
 
-def _is_debug_mode():
+eleza _is_debug_mode():
     # If you set _DEBUG to true, @coroutine will wrap the resulting
     # generator objects in a CoroWrapper instance (defined below).  That
     # instance will log a message when the generator is never iterated
@@ -26,17 +26,17 @@ def _is_debug_mode():
     # before you define your coroutines.  A downside of using this feature
     # is that tracebacks show entries for the CoroWrapper.__next__ method
     # when _DEBUG is true.
-    return sys.flags.dev_mode or (not sys.flags.ignore_environment and
+    rudisha sys.flags.dev_mode or (not sys.flags.ignore_environment and
                                   bool(os.environ.get('PYTHONASYNCIODEBUG')))
 
 
 _DEBUG = _is_debug_mode()
 
 
-class CoroWrapper:
+kundi CoroWrapper:
     # Wrapper for coroutine object in _DEBUG mode.
 
-    def __init__(self, gen, func=None):
+    eleza __init__(self, gen, func=None):
         assert inspect.isgenerator(gen) or inspect.iscoroutine(gen), gen
         self.gen = gen
         self.func = func  # Used to unwrap @coroutine decorator
@@ -44,56 +44,56 @@ class CoroWrapper:
         self.__name__ = getattr(gen, '__name__', None)
         self.__qualname__ = getattr(gen, '__qualname__', None)
 
-    def __repr__(self):
+    eleza __repr__(self):
         coro_repr = _format_coroutine(self)
-        if self._source_traceback:
+        ikiwa self._source_traceback:
             frame = self._source_traceback[-1]
             coro_repr += f', created at {frame[0]}:{frame[1]}'
 
-        return f'<{self.__class__.__name__} {coro_repr}>'
+        rudisha f'<{self.__class__.__name__} {coro_repr}>'
 
-    def __iter__(self):
-        return self
+    eleza __iter__(self):
+        rudisha self
 
-    def __next__(self):
-        return self.gen.send(None)
+    eleza __next__(self):
+        rudisha self.gen.send(None)
 
-    def send(self, value):
-        return self.gen.send(value)
+    eleza send(self, value):
+        rudisha self.gen.send(value)
 
-    def throw(self, type, value=None, traceback=None):
-        return self.gen.throw(type, value, traceback)
+    eleza throw(self, type, value=None, traceback=None):
+        rudisha self.gen.throw(type, value, traceback)
 
-    def close(self):
-        return self.gen.close()
-
-    @property
-    def gi_frame(self):
-        return self.gen.gi_frame
+    eleza close(self):
+        rudisha self.gen.close()
 
     @property
-    def gi_running(self):
-        return self.gen.gi_running
+    eleza gi_frame(self):
+        rudisha self.gen.gi_frame
 
     @property
-    def gi_code(self):
-        return self.gen.gi_code
-
-    def __await__(self):
-        return self
+    eleza gi_running(self):
+        rudisha self.gen.gi_running
 
     @property
-    def gi_yieldfrom(self):
-        return self.gen.gi_yieldfrom
+    eleza gi_code(self):
+        rudisha self.gen.gi_code
 
-    def __del__(self):
+    eleza __await__(self):
+        rudisha self
+
+    @property
+    eleza gi_yieldkutoka(self):
+        rudisha self.gen.gi_yieldkutoka
+
+    eleza __del__(self):
         # Be careful accessing self.gen.frame -- self.gen might not exist.
         gen = getattr(self, 'gen', None)
         frame = getattr(gen, 'gi_frame', None)
-        if frame is not None and frame.f_lasti == -1:
+        ikiwa frame is not None and frame.f_lasti == -1:
             msg = f'{self!r} was never yielded kutoka'
             tb = getattr(self, '_source_traceback', ())
-            if tb:
+            ikiwa tb:
                 tb = ''.join(traceback.format_list(tb))
                 msg += (f'\nCoroutine object created at '
                         f'(most recent call last, truncated to '
@@ -102,7 +102,7 @@ class CoroWrapper:
             logger.error(msg)
 
 
-def coroutine(func):
+eleza coroutine(func):
     """Decorator to mark coroutines.
 
     If the coroutine is not yielded kutoka before it is destroyed,
@@ -111,18 +111,18 @@ def coroutine(func):
     warnings.warn('"@coroutine" decorator is deprecated since Python 3.8, use "async def" instead',
                   DeprecationWarning,
                   stacklevel=2)
-    if inspect.iscoroutinefunction(func):
+    ikiwa inspect.iscoroutinefunction(func):
         # In Python 3.5 that's all we need to do for coroutines
         # defined with "async def".
-        return func
+        rudisha func
 
-    if inspect.isgeneratorfunction(func):
+    ikiwa inspect.isgeneratorfunction(func):
         coro = func
     else:
         @functools.wraps(func)
-        def coro(*args, **kw):
+        eleza coro(*args, **kw):
             res = func(*args, **kw)
-            if (base_futures.isfuture(res) or inspect.isgenerator(res) or
+            ikiwa (base_futures.isfuture(res) or inspect.isgenerator(res) or
                     isinstance(res, CoroWrapper)):
                 res = yield kutoka res
             else:
@@ -132,18 +132,18 @@ def coroutine(func):
                 except AttributeError:
                     pass
                 else:
-                    if isinstance(res, collections.abc.Awaitable):
+                    ikiwa isinstance(res, collections.abc.Awaitable):
                         res = yield kutoka await_meth()
-            return res
+            rudisha res
 
     coro = types.coroutine(coro)
-    if not _DEBUG:
+    ikiwa not _DEBUG:
         wrapper = coro
     else:
         @functools.wraps(func)
-        def wrapper(*args, **kwds):
+        eleza wrapper(*args, **kwds):
             w = CoroWrapper(coro(*args, **kwds), func=func)
-            if w._source_traceback:
+            ikiwa w._source_traceback:
                 del w._source_traceback[-1]
             # Python < 3.5 does not implement __qualname__
             # on generator objects, so we set it manually.
@@ -151,19 +151,19 @@ def coroutine(func):
             # functools.partial may lack __qualname__).
             w.__name__ = getattr(func, '__name__', None)
             w.__qualname__ = getattr(func, '__qualname__', None)
-            return w
+            rudisha w
 
     wrapper._is_coroutine = _is_coroutine  # For iscoroutinefunction().
-    return wrapper
+    rudisha wrapper
 
 
 # A marker for iscoroutinefunction.
 _is_coroutine = object()
 
 
-def iscoroutinefunction(func):
-    """Return True if func is a decorated coroutine function."""
-    return (inspect.iscoroutinefunction(func) or
+eleza iscoroutinefunction(func):
+    """Return True ikiwa func is a decorated coroutine function."""
+    rudisha (inspect.iscoroutinefunction(func) or
             getattr(func, '_is_coroutine', None) is _is_coroutine)
 
 
@@ -174,72 +174,72 @@ _COROUTINE_TYPES = (types.CoroutineType, types.GeneratorType,
 _iscoroutine_typecache = set()
 
 
-def iscoroutine(obj):
-    """Return True if obj is a coroutine object."""
-    if type(obj) in _iscoroutine_typecache:
-        return True
+eleza iscoroutine(obj):
+    """Return True ikiwa obj is a coroutine object."""
+    ikiwa type(obj) in _iscoroutine_typecache:
+        rudisha True
 
-    if isinstance(obj, _COROUTINE_TYPES):
+    ikiwa isinstance(obj, _COROUTINE_TYPES):
         # Just in case we don't want to cache more than 100
         # positive types.  That shouldn't ever happen, unless
         # someone stressing the system on purpose.
-        if len(_iscoroutine_typecache) < 100:
+        ikiwa len(_iscoroutine_typecache) < 100:
             _iscoroutine_typecache.add(type(obj))
-        return True
+        rudisha True
     else:
-        return False
+        rudisha False
 
 
-def _format_coroutine(coro):
+eleza _format_coroutine(coro):
     assert iscoroutine(coro)
 
     is_corowrapper = isinstance(coro, CoroWrapper)
 
-    def get_name(coro):
+    eleza get_name(coro):
         # Coroutines compiled with Cython sometimes don't have
         # proper __qualname__ or __name__.  While that is a bug
         # in Cython, asyncio shouldn't crash with an AttributeError
         # in its __repr__ functions.
-        if is_corowrapper:
-            return format_helpers._format_callback(coro.func, (), {})
+        ikiwa is_corowrapper:
+            rudisha format_helpers._format_callback(coro.func, (), {})
 
-        if hasattr(coro, '__qualname__') and coro.__qualname__:
+        ikiwa hasattr(coro, '__qualname__') and coro.__qualname__:
             coro_name = coro.__qualname__
-        elif hasattr(coro, '__name__') and coro.__name__:
+        elikiwa hasattr(coro, '__name__') and coro.__name__:
             coro_name = coro.__name__
         else:
             # Stop masking Cython bugs, expose them in a friendly way.
             coro_name = f'<{type(coro).__name__} without __name__>'
-        return f'{coro_name}()'
+        rudisha f'{coro_name}()'
 
-    def is_running(coro):
+    eleza is_running(coro):
         try:
-            return coro.cr_running
+            rudisha coro.cr_running
         except AttributeError:
             try:
-                return coro.gi_running
+                rudisha coro.gi_running
             except AttributeError:
-                return False
+                rudisha False
 
     coro_code = None
-    if hasattr(coro, 'cr_code') and coro.cr_code:
+    ikiwa hasattr(coro, 'cr_code') and coro.cr_code:
         coro_code = coro.cr_code
-    elif hasattr(coro, 'gi_code') and coro.gi_code:
+    elikiwa hasattr(coro, 'gi_code') and coro.gi_code:
         coro_code = coro.gi_code
 
     coro_name = get_name(coro)
 
-    if not coro_code:
+    ikiwa not coro_code:
         # Built-in types might not have __qualname__ or __name__.
-        if is_running(coro):
-            return f'{coro_name} running'
+        ikiwa is_running(coro):
+            rudisha f'{coro_name} running'
         else:
-            return coro_name
+            rudisha coro_name
 
     coro_frame = None
-    if hasattr(coro, 'gi_frame') and coro.gi_frame:
+    ikiwa hasattr(coro, 'gi_frame') and coro.gi_frame:
         coro_frame = coro.gi_frame
-    elif hasattr(coro, 'cr_frame') and coro.cr_frame:
+    elikiwa hasattr(coro, 'cr_frame') and coro.cr_frame:
         coro_frame = coro.cr_frame
 
     # If Cython's coroutine has a fake code object without proper
@@ -247,18 +247,18 @@ def _format_coroutine(coro):
     filename = coro_code.co_filename or '<empty co_filename>'
 
     lineno = 0
-    if (is_corowrapper and
+    ikiwa (is_corowrapper and
             coro.func is not None and
             not inspect.isgeneratorfunction(coro.func)):
         source = format_helpers._get_function_source(coro.func)
-        if source is not None:
+        ikiwa source is not None:
             filename, lineno = source
-        if coro_frame is None:
+        ikiwa coro_frame is None:
             coro_repr = f'{coro_name} done, defined at {filename}:{lineno}'
         else:
             coro_repr = f'{coro_name} running, defined at {filename}:{lineno}'
 
-    elif coro_frame is not None:
+    elikiwa coro_frame is not None:
         lineno = coro_frame.f_lineno
         coro_repr = f'{coro_name} running at {filename}:{lineno}'
 
@@ -266,4 +266,4 @@ def _format_coroutine(coro):
         lineno = coro_code.co_firstlineno
         coro_repr = f'{coro_name} done, defined at {filename}:{lineno}'
 
-    return coro_repr
+    rudisha coro_repr

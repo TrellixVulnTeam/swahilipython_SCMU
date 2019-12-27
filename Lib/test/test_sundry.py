@@ -5,8 +5,8 @@ agiza sys
 kutoka test agiza support
 agiza unittest
 
-class TestUntestedModules(unittest.TestCase):
-    def test_untested_modules_can_be_imported(self):
+kundi TestUntestedModules(unittest.TestCase):
+    eleza test_untested_modules_can_be_imported(self):
         untested = ('encodings', 'formatter')
         with support.check_warnings(quiet=True):
             for name in untested:
@@ -26,7 +26,7 @@ class TestUntestedModules(unittest.TestCase):
             agiza distutils.unixccompiler
 
             agiza distutils.command.bdist_dumb
-            if sys.platform.startswith('win') and not platform.win32_is_iot():
+            ikiwa sys.platform.startswith('win') and not platform.win32_is_iot():
                 agiza distutils.command.bdist_msi
             agiza distutils.command.bdist
             agiza distutils.command.bdist_rpm
@@ -49,9 +49,9 @@ class TestUntestedModules(unittest.TestCase):
             try:
                 agiza tty  # Not available on Windows
             except ImportError:
-                if support.verbose:
-                    print("skipping tty")
+                ikiwa support.verbose:
+                    andika("skipping tty")
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

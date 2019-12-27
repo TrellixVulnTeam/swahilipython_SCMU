@@ -2,9 +2,9 @@
 
 agiza unittest
 
-class PEP3120Test(unittest.TestCase):
+kundi PEP3120Test(unittest.TestCase):
 
-    def test_pep3120(self):
+    eleza test_pep3120(self):
         self.assertEqual(
             "Питон".encode("utf-8"),
             b'\xd0\x9f\xd0\xb8\xd1\x82\xd0\xbe\xd0\xbd'
@@ -14,7 +14,7 @@ class PEP3120Test(unittest.TestCase):
             b'\\\xd0\x9f'
         )
 
-    def test_badsyntax(self):
+    eleza test_badsyntax(self):
         try:
             agiza test.badsyntax_pep3120
         except SyntaxError as msg:
@@ -24,10 +24,10 @@ class PEP3120Test(unittest.TestCase):
             self.fail("expected exception didn't occur")
 
 
-class BuiltinCompileTests(unittest.TestCase):
+kundi BuiltinCompileTests(unittest.TestCase):
 
     # Issue 3574.
-    def test_latin1(self):
+    eleza test_latin1(self):
         # Allow compile() to read Latin-1 source.
         source_code = '# coding: Latin-1\nu = "Ç"\n'.encode("Latin-1")
         try:
@@ -39,5 +39,5 @@ class BuiltinCompileTests(unittest.TestCase):
         self.assertEqual('Ç', ns['u'])
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

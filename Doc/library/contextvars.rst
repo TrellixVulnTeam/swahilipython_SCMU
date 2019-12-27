@@ -9,13 +9,13 @@
 --------------
 
 This module provides APIs to manage, store, and access context-local
-state.  The :class:`~contextvars.ContextVar` class is used to declare
+state.  The :class:`~contextvars.ContextVar` kundi is used to declare
 and work with *Context Variables*.  The :func:`~contextvars.copy_context`
-function and the :class:`~contextvars.Context` class should be used to
+function and the :class:`~contextvars.Context` kundi should be used to
 manage the current context in asynchronous frameworks.
 
 Context managers that have state should use Context Variables
-instead of :func:`threading.local()` to prevent their state from
+instead of :func:`threading.local()` to prevent their state kutoka
 bleeding to other code unexpectedly, when used in concurrent code.
 
 See also :pep:`567` for additional details.
@@ -28,7 +28,7 @@ Context Variables
 
 .. class:: ContextVar(name, [\*, default])
 
-   This class is used to declare a new Context Variable, e.g.::
+   This kundi is used to declare a new Context Variable, e.g.::
 
        var: ContextVar[int] = ContextVar('var', default=42)
 
@@ -42,7 +42,7 @@ Context Variables
    **Important:** Context Variables should be created at the top module
    level and never in closures.  :class:`Context` objects hold strong
    references to context variables which prevents context variables
-   from being properly garbage collected.
+   kutoka being properly garbage collected.
 
    .. attribute:: ContextVar.name
 
@@ -182,7 +182,7 @@ Manual Context Management
         # var.get() == 'spam'
 
       The method raises a :exc:`RuntimeError` when called on the same
-      context object from more than one OS thread, or when called
+      context object kutoka more than one OS thread, or when called
       recursively.
 
    .. method:: copy()
@@ -239,8 +239,8 @@ is a simple echo server, that uses a context variable to make the
 address of a remote client available in the Task that handles that
 client::
 
-    import asyncio
-    import contextvars
+    agiza asyncio
+    agiza contextvars
 
     client_addr_var = contextvars.ContextVar('client_addr')
 

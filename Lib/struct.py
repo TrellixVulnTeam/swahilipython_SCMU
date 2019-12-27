@@ -1,6 +1,6 @@
 __all__ = [
     # Functions
-    'calcsize', 'pack', 'pack_into', 'unpack', 'unpack_from',
+    'calcsize', 'pack', 'pack_into', 'unpack', 'unpack_kutoka',
     'iter_unpack',
 
     # Classes

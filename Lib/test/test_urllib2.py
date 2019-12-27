@@ -27,15 +27,15 @@ agiza http.client
 # parse_keqv_list, parse_http_list, HTTPDigestAuthHandler
 
 
-class TrivialTests(unittest.TestCase):
+kundi TrivialTests(unittest.TestCase):
 
-    def test___all__(self):
+    eleza test___all__(self):
         # Verify which names are exposed
         for module in 'request', 'response', 'parse', 'error', 'robotparser':
             context = {}
             exec('kutoka urllib.%s agiza *' % module, context)
             del context['__builtins__']
-            if module == 'request' and os.name == 'nt':
+            ikiwa module == 'request' and os.name == 'nt':
                 u, p = context.pop('url2pathname'), context.pop('pathname2url')
                 self.assertEqual(u.__module__, 'nturl2path')
                 self.assertEqual(p.__module__, 'nturl2path')
@@ -44,7 +44,7 @@ class TrivialTests(unittest.TestCase):
                     "%r is exposed in 'urllib.%s' but defined in %r" %
                     (k, module, v.__module__))
 
-    def test_trivial(self):
+    eleza test_trivial(self):
         # A couple trivial tests
 
         self.assertRaises(ValueError, urllib.request.urlopen, 'bogus url')
@@ -52,7 +52,7 @@ class TrivialTests(unittest.TestCase):
         # XXX Name hacking to get this to work on Windows.
         fname = os.path.abspath(urllib.request.__file__).replace(os.sep, '/')
 
-        if os.name == 'nt':
+        ikiwa os.name == 'nt':
             file_url = "file:///%s" % fname
         else:
             file_url = "file://%s" % fname
@@ -60,7 +60,7 @@ class TrivialTests(unittest.TestCase):
         with urllib.request.urlopen(file_url) as f:
             f.read()
 
-    def test_parse_http_list(self):
+    eleza test_parse_http_list(self):
         tests = [
             ('a,b,c', ['a', 'b', 'c']),
             ('path"o,l"og"i"cal, example', ['path"o,l"og"i"cal', 'example']),
@@ -71,14 +71,14 @@ class TrivialTests(unittest.TestCase):
         for string, list in tests:
             self.assertEqual(urllib.request.parse_http_list(string), list)
 
-    def test_URLError_reasonstr(self):
+    eleza test_URLError_reasonstr(self):
         err = urllib.error.URLError('reason')
         self.assertIn(err.reason, str(err))
 
 
-class RequestHdrsTests(unittest.TestCase):
+kundi RequestHdrsTests(unittest.TestCase):
 
-    def test_request_headers_dict(self):
+    eleza test_request_headers_dict(self):
         """
         The Request.headers dictionary is not a documented interface.  It
         should stay that way, because the complete set of headers are only
@@ -99,7 +99,7 @@ class RequestHdrsTests(unittest.TestCase):
                                  headers={"spam-EggS": "blah"}
                                  ).headers["Spam-eggs"], "blah")
 
-    def test_request_headers_methods(self):
+    eleza test_request_headers_methods(self):
         """
         Note the case normalization of header names here, to
         .capitalize()-case.  This should be preserved for
@@ -135,7 +135,7 @@ class RequestHdrsTests(unittest.TestCase):
         req.remove_header("Unredirected-spam")
         self.assertFalse(req.has_header("Unredirected-spam"))
 
-    def test_password_manager(self):
+    eleza test_password_manager(self):
         mgr = urllib.request.HTTPPasswordMgr()
         add = mgr.add_password
         find_user_pass = mgr.find_user_password
@@ -205,7 +205,7 @@ class RequestHdrsTests(unittest.TestCase):
         self.assertEqual(find_user_pass("Some Realm", "e.example.com:3128"),
                          ('5', 'e'))
 
-    def test_password_manager_default_port(self):
+    eleza test_password_manager_default_port(self):
         """
         The point to note here is that we can't guess the default port if
         there's no scheme.  This applies to both add_password and
@@ -247,82 +247,82 @@ class RequestHdrsTests(unittest.TestCase):
                          (None, None))
 
 
-class MockOpener:
+kundi MockOpener:
     addheaders = []
 
-    def open(self, req, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
+    eleza open(self, req, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
         self.req, self.data, self.timeout = req, data, timeout
 
-    def error(self, proto, *args):
+    eleza error(self, proto, *args):
         self.proto, self.args = proto, args
 
 
-class MockFile:
-    def read(self, count=None):
+kundi MockFile:
+    eleza read(self, count=None):
         pass
 
-    def readline(self, count=None):
+    eleza readline(self, count=None):
         pass
 
-    def close(self):
+    eleza close(self):
         pass
 
 
-class MockHeaders(dict):
-    def getheaders(self, name):
-        return list(self.values())
+kundi MockHeaders(dict):
+    eleza getheaders(self, name):
+        rudisha list(self.values())
 
 
-class MockResponse(io.StringIO):
-    def __init__(self, code, msg, headers, data, url=None):
+kundi MockResponse(io.StringIO):
+    eleza __init__(self, code, msg, headers, data, url=None):
         io.StringIO.__init__(self, data)
         self.code, self.msg, self.headers, self.url = code, msg, headers, url
 
-    def info(self):
-        return self.headers
+    eleza info(self):
+        rudisha self.headers
 
-    def geturl(self):
-        return self.url
+    eleza geturl(self):
+        rudisha self.url
 
 
-class MockCookieJar:
-    def add_cookie_header(self, request):
+kundi MockCookieJar:
+    eleza add_cookie_header(self, request):
         self.ach_req = request
 
-    def extract_cookies(self, response, request):
+    eleza extract_cookies(self, response, request):
         self.ec_req, self.ec_r = request, response
 
 
-class FakeMethod:
-    def __init__(self, meth_name, action, handle):
+kundi FakeMethod:
+    eleza __init__(self, meth_name, action, handle):
         self.meth_name = meth_name
         self.handle = handle
         self.action = action
 
-    def __call__(self, *args):
-        return self.handle(self.meth_name, self.action, *args)
+    eleza __call__(self, *args):
+        rudisha self.handle(self.meth_name, self.action, *args)
 
 
-class MockHTTPResponse(io.IOBase):
-    def __init__(self, fp, msg, status, reason):
+kundi MockHTTPResponse(io.IOBase):
+    eleza __init__(self, fp, msg, status, reason):
         self.fp = fp
         self.msg = msg
         self.status = status
         self.reason = reason
         self.code = 200
 
-    def read(self):
-        return ''
+    eleza read(self):
+        rudisha ''
 
-    def info(self):
-        return {}
+    eleza info(self):
+        rudisha {}
 
-    def geturl(self):
-        return self.url
+    eleza geturl(self):
+        rudisha self.url
 
 
-class MockHTTPClass:
-    def __init__(self):
+kundi MockHTTPClass:
+    eleza __init__(self):
         self.level = 0
         self.req_headers = []
         self.data = None
@@ -330,97 +330,97 @@ class MockHTTPClass:
         self.sock = None
         self._tunnel_headers = {}
 
-    def __call__(self, host, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
+    eleza __call__(self, host, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
         self.host = host
         self.timeout = timeout
-        return self
+        rudisha self
 
-    def set_debuglevel(self, level):
+    eleza set_debuglevel(self, level):
         self.level = level
 
-    def set_tunnel(self, host, port=None, headers=None):
+    eleza set_tunnel(self, host, port=None, headers=None):
         self._tunnel_host = host
         self._tunnel_port = port
-        if headers:
+        ikiwa headers:
             self._tunnel_headers = headers
         else:
             self._tunnel_headers.clear()
 
-    def request(self, method, url, body=None, headers=None, *,
+    eleza request(self, method, url, body=None, headers=None, *,
                 encode_chunked=False):
         self.method = method
         self.selector = url
-        if headers is not None:
+        ikiwa headers is not None:
             self.req_headers += headers.items()
         self.req_headers.sort()
-        if body:
+        ikiwa body:
             self.data = body
         self.encode_chunked = encode_chunked
-        if self.raise_on_endheaders:
+        ikiwa self.raise_on_endheaders:
             raise OSError()
 
-    def getresponse(self):
-        return MockHTTPResponse(MockFile(), {}, 200, "OK")
+    eleza getresponse(self):
+        rudisha MockHTTPResponse(MockFile(), {}, 200, "OK")
 
-    def close(self):
+    eleza close(self):
         pass
 
 
-class MockHandler:
+kundi MockHandler:
     # useful for testing handler machinery
     # see add_ordered_mock_handlers() docstring
     handler_order = 500
 
-    def __init__(self, methods):
+    eleza __init__(self, methods):
         self._define_methods(methods)
 
-    def _define_methods(self, methods):
+    eleza _define_methods(self, methods):
         for spec in methods:
-            if len(spec) == 2:
+            ikiwa len(spec) == 2:
                 name, action = spec
             else:
                 name, action = spec, None
             meth = FakeMethod(name, action, self.handle)
             setattr(self.__class__, name, meth)
 
-    def handle(self, fn_name, action, *args, **kwds):
+    eleza handle(self, fn_name, action, *args, **kwds):
         self.parent.calls.append((self, fn_name, args, kwds))
-        if action is None:
-            return None
-        elif action == "return self":
-            return self
-        elif action == "return response":
+        ikiwa action is None:
+            rudisha None
+        elikiwa action == "rudisha self":
+            rudisha self
+        elikiwa action == "rudisha response":
             res = MockResponse(200, "OK", {}, "")
-            return res
-        elif action == "return request":
-            return Request("http://blah/")
-        elif action.startswith("error"):
+            rudisha res
+        elikiwa action == "rudisha request":
+            rudisha Request("http://blah/")
+        elikiwa action.startswith("error"):
             code = action[action.rfind(" ")+1:]
             try:
                 code = int(code)
             except ValueError:
                 pass
             res = MockResponse(200, "OK", {}, "")
-            return self.parent.error("http", args[0], res, code, "", {})
-        elif action == "raise":
+            rudisha self.parent.error("http", args[0], res, code, "", {})
+        elikiwa action == "raise":
             raise urllib.error.URLError("blah")
         assert False
 
-    def close(self):
+    eleza close(self):
         pass
 
-    def add_parent(self, parent):
+    eleza add_parent(self, parent):
         self.parent = parent
         self.parent.calls = []
 
-    def __lt__(self, other):
-        if not hasattr(other, "handler_order"):
+    eleza __lt__(self, other):
+        ikiwa not hasattr(other, "handler_order"):
             # No handler_order, leave in original order.  Yuck.
-            return True
-        return self.handler_order < other.handler_order
+            rudisha True
+        rudisha self.handler_order < other.handler_order
 
 
-def add_ordered_mock_handlers(opener, meth_spec):
+eleza add_ordered_mock_handlers(opener, meth_spec):
     """Create MockHandlers and add them to an OpenerDirector.
 
     meth_spec: list of lists of tuples and strings defining methods to define
@@ -430,10 +430,10 @@ def add_ordered_mock_handlers(opener, meth_spec):
 
     defines methods .http_error() and .ftp_open() on one handler, and
     .http_open() on another.  These methods just record their arguments and
-    return None.  Using a tuple instead of a string causes the method to
+    rudisha None.  Using a tuple instead of a string causes the method to
     perform some action (see MockHandler.handle()), eg:
 
-    [["http_error"], [("http_open", "return request")]]
+    [["http_error"], [("http_open", "rudisha request")]]
 
     defines .http_error() on one handler (which simply returns None), and
     .http_open() on another handler, which returns a Request object.
@@ -442,7 +442,7 @@ def add_ordered_mock_handlers(opener, meth_spec):
     handlers = []
     count = 0
     for meths in meth_spec:
-        class MockHandlerSubclass(MockHandler):
+        kundi MockHandlerSubclass(MockHandler):
             pass
 
         h = MockHandlerSubclass(meths)
@@ -451,97 +451,97 @@ def add_ordered_mock_handlers(opener, meth_spec):
         count = count + 1
         handlers.append(h)
         opener.add_handler(h)
-    return handlers
+    rudisha handlers
 
 
-def build_test_opener(*handler_instances):
+eleza build_test_opener(*handler_instances):
     opener = OpenerDirector()
     for h in handler_instances:
         opener.add_handler(h)
-    return opener
+    rudisha opener
 
 
-class MockHTTPHandler(urllib.request.BaseHandler):
+kundi MockHTTPHandler(urllib.request.BaseHandler):
     # useful for testing redirections and auth
     # sends supplied headers and code as first response
     # sends 200 OK as second response
-    def __init__(self, code, headers):
+    eleza __init__(self, code, headers):
         self.code = code
         self.headers = headers
         self.reset()
 
-    def reset(self):
+    eleza reset(self):
         self._count = 0
         self.requests = []
 
-    def http_open(self, req):
+    eleza http_open(self, req):
         agiza email, copy
         self.requests.append(copy.deepcopy(req))
-        if self._count == 0:
+        ikiwa self._count == 0:
             self._count = self._count + 1
             name = http.client.responses[self.code]
-            msg = email.message_from_string(self.headers)
-            return self.parent.error(
+            msg = email.message_kutoka_string(self.headers)
+            rudisha self.parent.error(
                 "http", req, MockFile(), self.code, name, msg)
         else:
             self.req = req
-            msg = email.message_from_string("\r\n\r\n")
-            return MockResponse(200, "OK", msg, "", req.get_full_url())
+            msg = email.message_kutoka_string("\r\n\r\n")
+            rudisha MockResponse(200, "OK", msg, "", req.get_full_url())
 
 
-class MockHTTPSHandler(urllib.request.AbstractHTTPHandler):
+kundi MockHTTPSHandler(urllib.request.AbstractHTTPHandler):
     # Useful for testing the Proxy-Authorization request by verifying the
     # properties of httpcon
 
-    def __init__(self, debuglevel=0):
+    eleza __init__(self, debuglevel=0):
         urllib.request.AbstractHTTPHandler.__init__(self, debuglevel=debuglevel)
         self.httpconn = MockHTTPClass()
 
-    def https_open(self, req):
-        return self.do_open(self.httpconn, req)
+    eleza https_open(self, req):
+        rudisha self.do_open(self.httpconn, req)
 
 
-class MockHTTPHandlerCheckAuth(urllib.request.BaseHandler):
+kundi MockHTTPHandlerCheckAuth(urllib.request.BaseHandler):
     # useful for testing auth
     # sends supplied code response
-    # checks if auth header is specified in request
-    def __init__(self, code):
+    # checks ikiwa auth header is specified in request
+    eleza __init__(self, code):
         self.code = code
         self.has_auth_header = False
 
-    def reset(self):
+    eleza reset(self):
         self.has_auth_header = False
 
-    def http_open(self, req):
-        if req.has_header('Authorization'):
+    eleza http_open(self, req):
+        ikiwa req.has_header('Authorization'):
             self.has_auth_header = True
         name = http.client.responses[self.code]
-        return MockResponse(self.code, name, MockFile(), "", req.get_full_url())
+        rudisha MockResponse(self.code, name, MockFile(), "", req.get_full_url())
 
 
 
-class MockPasswordManager:
-    def add_password(self, realm, uri, user, password):
+kundi MockPasswordManager:
+    eleza add_password(self, realm, uri, user, password):
         self.realm = realm
         self.url = uri
         self.user = user
         self.password = password
 
-    def find_user_password(self, realm, authuri):
+    eleza find_user_password(self, realm, authuri):
         self.target_realm = realm
         self.target_url = authuri
-        return self.user, self.password
+        rudisha self.user, self.password
 
 
-class OpenerDirectorTests(unittest.TestCase):
+kundi OpenerDirectorTests(unittest.TestCase):
 
-    def test_add_non_handler(self):
-        class NonHandler(object):
+    eleza test_add_non_handler(self):
+        kundi NonHandler(object):
             pass
         self.assertRaises(TypeError,
                           OpenerDirector().add_handler, NonHandler())
 
-    def test_badly_named_methods(self):
+    eleza test_badly_named_methods(self):
         # test work-around for three methods that accidentally follow the
         # naming conventions for handler methods
         # (*_open() / *_request() / *_response())
@@ -554,22 +554,22 @@ class OpenerDirectorTests(unittest.TestCase):
 
         o = OpenerDirector()
         meth_spec = [
-            [("do_open", "return self"), ("proxy_open", "return self")],
-            [("redirect_request", "return self")],
+            [("do_open", "rudisha self"), ("proxy_open", "rudisha self")],
+            [("redirect_request", "rudisha self")],
             ]
         add_ordered_mock_handlers(o, meth_spec)
         o.add_handler(urllib.request.UnknownHandler())
         for scheme in "do", "proxy", "redirect":
             self.assertRaises(URLError, o.open, scheme+"://example.com/")
 
-    def test_handled(self):
+    eleza test_handled(self):
         # handler returning non-None means no more handlers will be called
         o = OpenerDirector()
         meth_spec = [
             ["http_open", "ftp_open", "http_error_302"],
             ["ftp_open"],
-            [("http_open", "return self")],
-            [("http_open", "return self")],
+            [("http_open", "rudisha self")],
+            [("http_open", "rudisha self")],
             ]
         handlers = add_ordered_mock_handlers(o, meth_spec)
 
@@ -588,12 +588,12 @@ class OpenerDirectorTests(unittest.TestCase):
             self.assertEqual((handler, name), expected)
             self.assertEqual(args, (req,))
 
-    def test_handler_order(self):
+    eleza test_handler_order(self):
         o = OpenerDirector()
         handlers = []
-        for meths, handler_order in [([("http_open", "return self")], 500),
+        for meths, handler_order in [([("http_open", "rudisha self")], 500),
                                      (["http_open"], 0)]:
-            class MockHandlerSubclass(MockHandler):
+            kundi MockHandlerSubclass(MockHandler):
                 pass
 
             h = MockHandlerSubclass(meths)
@@ -606,12 +606,12 @@ class OpenerDirectorTests(unittest.TestCase):
         self.assertEqual(o.calls[0][0], handlers[1])
         self.assertEqual(o.calls[1][0], handlers[0])
 
-    def test_raise(self):
+    eleza test_raise(self):
         # raising URLError stops processing of request
         o = OpenerDirector()
         meth_spec = [
             [("http_open", "raise")],
-            [("http_open", "return self")],
+            [("http_open", "rudisha self")],
             ]
         handlers = add_ordered_mock_handlers(o, meth_spec)
 
@@ -619,22 +619,22 @@ class OpenerDirectorTests(unittest.TestCase):
         self.assertRaises(urllib.error.URLError, o.open, req)
         self.assertEqual(o.calls, [(handlers[0], "http_open", (req,), {})])
 
-    def test_http_error(self):
+    eleza test_http_error(self):
         # XXX http_error_default
         # http errors are a special case
         o = OpenerDirector()
         meth_spec = [
             [("http_open", "error 302")],
             [("http_error_400", "raise"), "http_open"],
-            [("http_error_302", "return response"), "http_error_303",
+            [("http_error_302", "rudisha response"), "http_error_303",
              "http_error"],
             [("http_error_302")],
             ]
         handlers = add_ordered_mock_handlers(o, meth_spec)
 
-        class Unknown:
-            def __eq__(self, other):
-                return True
+        kundi Unknown:
+            eleza __eq__(self, other):
+                rudisha True
 
         req = Request("http://example.com/")
         o.open(req)
@@ -647,14 +647,14 @@ class OpenerDirectorTests(unittest.TestCase):
             self.assertEqual((handler, method_name), got[:2])
             self.assertEqual(args, got[2])
 
-    def test_processors(self):
+    eleza test_processors(self):
         # *_request / *_response methods get called appropriately
         o = OpenerDirector()
         meth_spec = [
-            [("http_request", "return request"),
-             ("http_response", "return response")],
-            [("http_request", "return request"),
-             ("http_response", "return response")],
+            [("http_request", "rudisha request"),
+             ("http_response", "rudisha response")],
+            [("http_request", "rudisha request"),
+             ("http_response", "rudisha response")],
             ]
         handlers = add_ordered_mock_handlers(o, meth_spec)
 
@@ -667,7 +667,7 @@ class OpenerDirectorTests(unittest.TestCase):
             (handlers[0], "http_response"), (handlers[1], "http_response")]
 
         for i, (handler, name, args, kwds) in enumerate(o.calls):
-            if i < 2:
+            ikiwa i < 2:
                 # *_request
                 self.assertEqual((handler, name), calls[i])
                 self.assertEqual(len(args), 1)
@@ -679,47 +679,47 @@ class OpenerDirectorTests(unittest.TestCase):
                 self.assertIsInstance(args[0], Request)
                 # response kutoka opener.open is None, because there's no
                 # handler that defines http_open to handle it
-                if args[1] is not None:
+                ikiwa args[1] is not None:
                     self.assertIsInstance(args[1], MockResponse)
 
 
-def sanepathname2url(path):
+eleza sanepathname2url(path):
     try:
         path.encode("utf-8")
     except UnicodeEncodeError:
         raise unittest.SkipTest("path is not encodable to utf8")
     urlpath = urllib.request.pathname2url(path)
-    if os.name == "nt" and urlpath.startswith("///"):
+    ikiwa os.name == "nt" and urlpath.startswith("///"):
         urlpath = urlpath[2:]
     # XXX don't ask me about the mac...
-    return urlpath
+    rudisha urlpath
 
 
-class HandlerTests(unittest.TestCase):
+kundi HandlerTests(unittest.TestCase):
 
-    def test_ftp(self):
-        class MockFTPWrapper:
-            def __init__(self, data):
+    eleza test_ftp(self):
+        kundi MockFTPWrapper:
+            eleza __init__(self, data):
                 self.data = data
 
-            def retrfile(self, filename, filetype):
+            eleza retrfile(self, filename, filetype):
                 self.filename, self.filetype = filename, filetype
-                return io.StringIO(self.data), len(self.data)
+                rudisha io.StringIO(self.data), len(self.data)
 
-            def close(self):
+            eleza close(self):
                 pass
 
-        class NullFTPHandler(urllib.request.FTPHandler):
-            def __init__(self, data):
+        kundi NullFTPHandler(urllib.request.FTPHandler):
+            eleza __init__(self, data):
                 self.data = data
 
-            def connect_ftp(self, user, passwd, host, port, dirs,
+            eleza connect_ftp(self, user, passwd, host, port, dirs,
                             timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
                 self.user, self.passwd = user, passwd
                 self.host, self.port = host, port
                 self.dirs = dirs
                 self.ftpwrapper = MockFTPWrapper(self.data)
-                return self.ftpwrapper
+                rudisha self.ftpwrapper
 
         agiza ftplib
         data = "rheum rhaponicum"
@@ -761,7 +761,7 @@ class HandlerTests(unittest.TestCase):
             self.assertEqual(headers.get("Content-type"), mimetype)
             self.assertEqual(int(headers["Content-length"]), len(data))
 
-    def test_file(self):
+    eleza test_file(self):
         agiza email.utils
         h = urllib.request.FileHandler()
         o = h.parent = MockOpener()
@@ -778,7 +778,7 @@ class HandlerTests(unittest.TestCase):
             localaddr = socket.gethostbyname(socket.gethostname())
         except socket.gaierror:
             localaddr = ''
-        if localaddr:
+        ikiwa localaddr:
             urls.append("file://%s%s" % (localaddr, urlpath))
 
         for url in urls:
@@ -853,7 +853,7 @@ class HandlerTests(unittest.TestCase):
                 self.assertEqual(req.type, "ftp")
             self.assertEqual(req.type == "ftp", ftp)
 
-    def test_http(self):
+    eleza test_http(self):
 
         h = urllib.request.AbstractHTTPHandler()
         o = h.parent = MockOpener()
@@ -897,7 +897,7 @@ class HandlerTests(unittest.TestCase):
             req = Request("http://example.com/", data)
             r = MockResponse(200, "OK", {}, "")
             newreq = h.do_request_(req)
-            if data is None:  # GET
+            ikiwa data is None:  # GET
                 self.assertNotIn("Content-length", req.unredirected_hdrs)
                 self.assertNotIn("Content-type", req.unredirected_hdrs)
             else:  # POST
@@ -919,7 +919,7 @@ class HandlerTests(unittest.TestCase):
             self.assertEqual(req.unredirected_hdrs["Host"], "baz")
             self.assertEqual(req.unredirected_hdrs["Spam"], "foo")
 
-    def test_http_body_file(self):
+    eleza test_http_body_file(self):
         # A regular file - chunked encoding is used unless Content Length is
         # already set.
 
@@ -944,7 +944,7 @@ class HandlerTests(unittest.TestCase):
             self.assertEqual(int(newreq.get_header('Content-length')), 30)
             self.assertFalse(newreq.has_header("Transfer-encoding"))
 
-    def test_http_body_fileobj(self):
+    eleza test_http_body_fileobj(self):
         # A file object - chunked encoding is used
         # unless Content Length is already set.
         # (Note that there are some subtle differences to a regular
@@ -967,7 +967,7 @@ class HandlerTests(unittest.TestCase):
 
         file_obj.close()
 
-    def test_http_body_pipe(self):
+    eleza test_http_body_pipe(self):
         # A file reading kutoka a pipe.
         # A pipe cannot be seek'ed.  There is no way to determine the
         # content length up front.  Thus, do_request_() should fall
@@ -981,7 +981,7 @@ class HandlerTests(unittest.TestCase):
             with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
                 req = Request("http://example.com/", proc.stdout, headers)
                 newreq = h.do_request_(req)
-                if not headers:
+                ikiwa not headers:
                     self.assertEqual(newreq.get_header('Content-length'), None)
                     self.assertEqual(newreq.get_header('Transfer-encoding'),
                                      'chunked')
@@ -989,27 +989,27 @@ class HandlerTests(unittest.TestCase):
                     self.assertEqual(int(newreq.get_header('Content-length')),
                                      30)
 
-    def test_http_body_iterable(self):
+    eleza test_http_body_iterable(self):
         # Generic iterable.  There is no way to determine the content
         # length up front.  Fall back to Transfer-encoding chunked.
 
         h = urllib.request.AbstractHTTPHandler()
         o = h.parent = MockOpener()
 
-        def iterable_body():
+        eleza iterable_body():
             yield b"one"
 
         for headers in {}, {"Content-Length": 11}:
             req = Request("http://example.com/", iterable_body(), headers)
             newreq = h.do_request_(req)
-            if not headers:
+            ikiwa not headers:
                 self.assertEqual(newreq.get_header('Content-length'), None)
                 self.assertEqual(newreq.get_header('Transfer-encoding'),
                                  'chunked')
             else:
                 self.assertEqual(int(newreq.get_header('Content-length')), 11)
 
-    def test_http_body_empty_seq(self):
+    eleza test_http_body_empty_seq(self):
         # Zero-length iterable body should be treated like any other iterable
         h = urllib.request.AbstractHTTPHandler()
         h.parent = MockOpener()
@@ -1017,7 +1017,7 @@ class HandlerTests(unittest.TestCase):
         self.assertEqual(req.get_header("Transfer-encoding"), "chunked")
         self.assertFalse(req.has_header("Content-length"))
 
-    def test_http_body_array(self):
+    eleza test_http_body_array(self):
         # array.array Iterable - Content Length is calculated
 
         h = urllib.request.AbstractHTTPHandler()
@@ -1030,14 +1030,14 @@ class HandlerTests(unittest.TestCase):
             newreq = h.do_request_(req)
             self.assertEqual(int(newreq.get_header('Content-length')),16)
 
-    def test_http_handler_debuglevel(self):
+    eleza test_http_handler_debuglevel(self):
         o = OpenerDirector()
         h = MockHTTPSHandler(debuglevel=1)
         o.add_handler(h)
         o.open("https://www.example.com")
         self.assertEqual(h._debuglevel, 1)
 
-    def test_http_doubleslash(self):
+    eleza test_http_doubleslash(self):
         # Checks the presence of any unnecessary double slash in url does not
         # break anything. Previously, a double slash directly after the host
         # could cause incorrect parsing.
@@ -1055,16 +1055,16 @@ class HandlerTests(unittest.TestCase):
         for ds_url in ds_urls:
             ds_req = Request(ds_url, data)
 
-            # Check whether host is determined correctly if there is no proxy
+            # Check whether host is determined correctly ikiwa there is no proxy
             np_ds_req = h.do_request_(ds_req)
             self.assertEqual(np_ds_req.unredirected_hdrs["Host"], "example.com")
 
-            # Check whether host is determined correctly if there is a proxy
+            # Check whether host is determined correctly ikiwa there is a proxy
             ds_req.set_proxy("someproxy:3128", None)
             p_ds_req = h.do_request_(ds_req)
             self.assertEqual(p_ds_req.unredirected_hdrs["Host"], "example.com")
 
-    def test_full_url_setter(self):
+    eleza test_full_url_setter(self):
         # Checks to ensure that components are set correctly after setting the
         # full_url of a Request object
 
@@ -1087,14 +1087,14 @@ class HandlerTests(unittest.TestCase):
             self.assertEqual(r.fragment or '', parsed.fragment)
             self.assertEqual(urlparse(r.get_full_url()).query, parsed.query)
 
-    def test_full_url_deleter(self):
+    eleza test_full_url_deleter(self):
         r = Request('http://www.example.com')
         del r.full_url
         self.assertIsNone(r.full_url)
         self.assertIsNone(r.fragment)
         self.assertEqual(r.selector, '')
 
-    def test_fixpath_in_weirdurls(self):
+    eleza test_fixpath_in_weirdurls(self):
         # Issue4493: urllib2 to supply '/' when to urls where path does not
         # start with'/'
 
@@ -1113,7 +1113,7 @@ class HandlerTests(unittest.TestCase):
         self.assertEqual(newreq.host, 'www.python.org')
         self.assertEqual(newreq.selector, '')
 
-    def test_errors(self):
+    eleza test_errors(self):
         h = urllib.request.HTTPErrorProcessor()
         o = h.parent = MockOpener()
 
@@ -1138,7 +1138,7 @@ class HandlerTests(unittest.TestCase):
         self.assertEqual(o.proto, "http")  # o.error called
         self.assertEqual(o.args, (req, r, 502, "Bad gateway", {}))
 
-    def test_cookies(self):
+    eleza test_cookies(self):
         cj = MockCookieJar()
         h = urllib.request.HTTPCookieProcessor(cj)
         h.parent = MockOpener()
@@ -1155,8 +1155,8 @@ class HandlerTests(unittest.TestCase):
         self.assertIs(cj.ec_r, r)
         self.assertIs(r, newr)
 
-    def test_redirect(self):
-        from_url = "http://example.com/a.html"
+    eleza test_redirect(self):
+        kutoka_url = "http://example.com/a.html"
         to_url = "http://example.com/b.html"
         h = urllib.request.HTTPRedirectHandler()
         o = h.parent = MockOpener()
@@ -1165,10 +1165,10 @@ class HandlerTests(unittest.TestCase):
         for code in 301, 302, 303, 307:
             for data in None, "blah\nblah\n":
                 method = getattr(h, "http_error_%s" % code)
-                req = Request(from_url, data)
+                req = Request(kutoka_url, data)
                 req.timeout = socket._GLOBAL_DEFAULT_TIMEOUT
                 req.add_header("Nonsense", "viking=withhold")
-                if data is not None:
+                ikiwa data is not None:
                     req.add_header("Content-Length", str(len(data)))
                 req.add_unredirected_header("Spam", "spam")
                 try:
@@ -1196,17 +1196,17 @@ class HandlerTests(unittest.TestCase):
                 self.assertNotIn("Spam", o.req.unredirected_hdrs)
 
         # loop detection
-        req = Request(from_url)
+        req = Request(kutoka_url)
         req.timeout = socket._GLOBAL_DEFAULT_TIMEOUT
 
-        def redirect(h, req, url=to_url):
+        eleza redirect(h, req, url=to_url):
             h.http_error_302(req, MockFile(), 302, "Blah",
                              MockHeaders({"location": url}))
         # Note that the *original* request shares the same record of
         # redirections with the sub-requests caused by the redirections.
 
         # detect infinite loop redirect of a URL to itself
-        req = Request(from_url, origin_req_host="example.com")
+        req = Request(kutoka_url, origin_req_host="example.com")
         count = 0
         req.timeout = socket._GLOBAL_DEFAULT_TIMEOUT
         try:
@@ -1218,7 +1218,7 @@ class HandlerTests(unittest.TestCase):
             self.assertEqual(count, urllib.request.HTTPRedirectHandler.max_repeats)
 
         # detect endless non-repeating chain of redirects
-        req = Request(from_url, origin_req_host="example.com")
+        req = Request(kutoka_url, origin_req_host="example.com")
         count = 0
         req.timeout = socket._GLOBAL_DEFAULT_TIMEOUT
         try:
@@ -1229,14 +1229,14 @@ class HandlerTests(unittest.TestCase):
             self.assertEqual(count,
                              urllib.request.HTTPRedirectHandler.max_redirections)
 
-    def test_invalid_redirect(self):
-        from_url = "http://example.com/a.html"
+    eleza test_invalid_redirect(self):
+        kutoka_url = "http://example.com/a.html"
         valid_schemes = ['http','https','ftp']
         invalid_schemes = ['file','imap','ldap']
         schemeless_url = "example.com/b.html"
         h = urllib.request.HTTPRedirectHandler()
         o = h.parent = MockOpener()
-        req = Request(from_url)
+        req = Request(kutoka_url)
         req.timeout = socket._GLOBAL_DEFAULT_TIMEOUT
 
         for scheme in invalid_schemes:
@@ -1251,20 +1251,20 @@ class HandlerTests(unittest.TestCase):
                 MockHeaders({"location": valid_url}))
             self.assertEqual(o.req.get_full_url(), valid_url)
 
-    def test_relative_redirect(self):
-        from_url = "http://example.com/a.html"
+    eleza test_relative_redirect(self):
+        kutoka_url = "http://example.com/a.html"
         relative_url = "/b.html"
         h = urllib.request.HTTPRedirectHandler()
         o = h.parent = MockOpener()
-        req = Request(from_url)
+        req = Request(kutoka_url)
         req.timeout = socket._GLOBAL_DEFAULT_TIMEOUT
 
-        valid_url = urllib.parse.urljoin(from_url,relative_url)
+        valid_url = urllib.parse.urljoin(kutoka_url,relative_url)
         h.http_error_302(req, MockFile(), 302, "That's fine",
             MockHeaders({"location": valid_url}))
         self.assertEqual(o.req.get_full_url(), valid_url)
 
-    def test_cookie_redirect(self):
+    eleza test_cookie_redirect(self):
         # cookies shouldn't leak into redirected requests
         kutoka http.cookiejar agiza CookieJar
         kutoka test.test_http_cookiejar agiza interact_netscape
@@ -1279,7 +1279,7 @@ class HandlerTests(unittest.TestCase):
         o.open("http://www.example.com/")
         self.assertFalse(hh.req.has_header("Cookie"))
 
-    def test_redirect_fragment(self):
+    eleza test_redirect_fragment(self):
         redirected_url = 'http://www.example.com/index.html#OK\r\n\r\n'
         hh = MockHTTPHandler(302, 'Location: ' + redirected_url)
         hdeh = urllib.request.HTTPDefaultErrorHandler()
@@ -1288,14 +1288,14 @@ class HandlerTests(unittest.TestCase):
         fp = o.open('http://www.example.com')
         self.assertEqual(fp.geturl(), redirected_url.strip())
 
-    def test_redirect_no_path(self):
+    eleza test_redirect_no_path(self):
         # Issue 14132: Relative redirect strips original path
-        real_class = http.client.HTTPConnection
+        real_kundi = http.client.HTTPConnection
         response1 = b"HTTP/1.1 302 Found\r\nLocation: ?query\r\n\r\n"
         http.client.HTTPConnection = test_urllib.fakehttp(response1)
         self.addCleanup(setattr, http.client, "HTTPConnection", real_class)
         urls = iter(("/path", "/path?query"))
-        def request(conn, method, url, *pos, **kw):
+        eleza request(conn, method, url, *pos, **kw):
             self.assertEqual(url, next(urls))
             real_class.request(conn, method, url, *pos, **kw)
             # Change response for subsequent connection
@@ -1304,11 +1304,11 @@ class HandlerTests(unittest.TestCase):
         fp = urllib.request.urlopen("http://python.org/path")
         self.assertEqual(fp.geturl(), "http://python.org/path?query")
 
-    def test_redirect_encoding(self):
+    eleza test_redirect_encoding(self):
         # Some characters in the redirect target may need special handling,
         # but most ASCII characters should be treated as already encoded
-        class Handler(urllib.request.HTTPHandler):
-            def http_open(self, req):
+        kundi Handler(urllib.request.HTTPHandler):
+            eleza http_open(self, req):
                 result = self.do_open(self.connection, req)
                 self.last_buf = self.connection.buf
                 # Set up a normal response for the next request
@@ -1318,7 +1318,7 @@ class HandlerTests(unittest.TestCase):
                     b'\r\n'
                     b'123'
                 )
-                return result
+                rudisha result
         handler = Handler()
         opener = urllib.request.build_opener(handler)
         tests = (
@@ -1339,14 +1339,14 @@ class HandlerTests(unittest.TestCase):
                 request = handler.last_buf
                 self.assertTrue(request.startswith(expected), repr(request))
 
-    def test_proxy(self):
+    eleza test_proxy(self):
         u = "proxy.example.com:3128"
         for d in dict(http=u), dict(HTTP=u):
             o = OpenerDirector()
             ph = urllib.request.ProxyHandler(d)
             o.add_handler(ph)
             meth_spec = [
-                [("http_open", "return response")]
+                [("http_open", "rudisha response")]
                 ]
             handlers = add_ordered_mock_handlers(o, meth_spec)
 
@@ -1357,7 +1357,7 @@ class HandlerTests(unittest.TestCase):
             self.assertEqual([(handlers[0], "http_open")],
                              [tup[0:2] for tup in o.calls])
 
-    def test_proxy_no_proxy(self):
+    eleza test_proxy_no_proxy(self):
         os.environ['no_proxy'] = 'python.org'
         o = OpenerDirector()
         ph = urllib.request.ProxyHandler(dict(http="proxy.example.com"))
@@ -1372,7 +1372,7 @@ class HandlerTests(unittest.TestCase):
         self.assertEqual(req.host, "www.python.org")
         del os.environ['no_proxy']
 
-    def test_proxy_no_proxy_all(self):
+    eleza test_proxy_no_proxy_all(self):
         os.environ['no_proxy'] = '*'
         o = OpenerDirector()
         ph = urllib.request.ProxyHandler(dict(http="proxy.example.com"))
@@ -1383,12 +1383,12 @@ class HandlerTests(unittest.TestCase):
         self.assertEqual(req.host, "www.python.org")
         del os.environ['no_proxy']
 
-    def test_proxy_https(self):
+    eleza test_proxy_https(self):
         o = OpenerDirector()
         ph = urllib.request.ProxyHandler(dict(https="proxy.example.com:3128"))
         o.add_handler(ph)
         meth_spec = [
-            [("https_open", "return response")]
+            [("https_open", "rudisha response")]
         ]
         handlers = add_ordered_mock_handlers(o, meth_spec)
 
@@ -1399,7 +1399,7 @@ class HandlerTests(unittest.TestCase):
         self.assertEqual([(handlers[0], "https_open")],
                          [tup[0:2] for tup in o.calls])
 
-    def test_proxy_https_proxy_authorization(self):
+    eleza test_proxy_https_proxy_authorization(self):
         o = OpenerDirector()
         ph = urllib.request.ProxyHandler(dict(https='proxy.example.com:3128'))
         o.add_handler(ph)
@@ -1423,7 +1423,7 @@ class HandlerTests(unittest.TestCase):
         self.assertEqual(req.get_header("Proxy-authorization"), "FooBar")
 
     @unittest.skipUnless(sys.platform == 'darwin', "only relevant for OSX")
-    def test_osx_proxy_bypass(self):
+    eleza test_osx_proxy_bypass(self):
         bypass = {
             'exclude_simple': False,
             'exceptions': ['foo.bar', '*.bar.com', '127.0.0.1', '10.10',
@@ -1444,7 +1444,7 @@ class HandlerTests(unittest.TestCase):
         bypass = {'exclude_simple': True, 'exceptions': []}
         self.assertTrue(_proxy_bypass_macosx_sysconf('test', bypass))
 
-    def test_basic_auth(self, quote_char='"'):
+    eleza test_basic_auth(self, quote_char='"'):
         opener = OpenerDirector()
         password_manager = MockPasswordManager()
         auth_handler = urllib.request.HTTPBasicAuthHandler(password_manager)
@@ -1460,10 +1460,10 @@ class HandlerTests(unittest.TestCase):
                               "http://acme.example.com/protected",
                               )
 
-    def test_basic_auth_with_single_quoted_realm(self):
+    eleza test_basic_auth_with_single_quoted_realm(self):
         self.test_basic_auth(quote_char="'")
 
-    def test_basic_auth_with_unquoted_realm(self):
+    eleza test_basic_auth_with_unquoted_realm(self):
         opener = OpenerDirector()
         password_manager = MockPasswordManager()
         auth_handler = urllib.request.HTTPBasicAuthHandler(password_manager)
@@ -1479,7 +1479,7 @@ class HandlerTests(unittest.TestCase):
                                 "http://acme.example.com/protected",
                                 )
 
-    def test_proxy_basic_auth(self):
+    eleza test_proxy_basic_auth(self):
         opener = OpenerDirector()
         ph = urllib.request.ProxyHandler(dict(http="proxy.example.com:3128"))
         opener.add_handler(ph)
@@ -1496,31 +1496,31 @@ class HandlerTests(unittest.TestCase):
                               "proxy.example.com:3128",
                               )
 
-    def test_basic_and_digest_auth_handlers(self):
-        # HTTPDigestAuthHandler raised an exception if it couldn't handle a 40*
+    eleza test_basic_and_digest_auth_handlers(self):
+        # HTTPDigestAuthHandler raised an exception ikiwa it couldn't handle a 40*
         # response (http://python.org/sf/1479302), where it should instead
-        # return None to allow another handler (especially
+        # rudisha None to allow another handler (especially
         # HTTPBasicAuthHandler) to handle the response.
 
         # Also (http://python.org/sf/14797027, RFC 2617 section 1.2), we must
         # try digest first (since it's the strongest auth scheme), so we record
         # order of calls here to check digest comes first:
-        class RecordingOpenerDirector(OpenerDirector):
-            def __init__(self):
+        kundi RecordingOpenerDirector(OpenerDirector):
+            eleza __init__(self):
                 OpenerDirector.__init__(self)
                 self.recorded = []
 
-            def record(self, info):
+            eleza record(self, info):
                 self.recorded.append(info)
 
-        class TestDigestAuthHandler(urllib.request.HTTPDigestAuthHandler):
-            def http_error_401(self, *args, **kwds):
+        kundi TestDigestAuthHandler(urllib.request.HTTPDigestAuthHandler):
+            eleza http_error_401(self, *args, **kwds):
                 self.parent.record("digest")
                 urllib.request.HTTPDigestAuthHandler.http_error_401(self,
                                                              *args, **kwds)
 
-        class TestBasicAuthHandler(urllib.request.HTTPBasicAuthHandler):
-            def http_error_401(self, *args, **kwds):
+        kundi TestBasicAuthHandler(urllib.request.HTTPBasicAuthHandler):
+            eleza http_error_401(self, *args, **kwds):
                 self.parent.record("basic")
                 urllib.request.HTTPBasicAuthHandler.http_error_401(self,
                                                             *args, **kwds)
@@ -1546,7 +1546,7 @@ class HandlerTests(unittest.TestCase):
         # _test_basic_auth called .open() twice)
         self.assertEqual(opener.recorded, ["digest", "basic"]*2)
 
-    def test_unsupported_auth_digest_handler(self):
+    eleza test_unsupported_auth_digest_handler(self):
         opener = OpenerDirector()
         # While using DigestAuthHandler
         digest_auth_handler = urllib.request.HTTPDigestAuthHandler(None)
@@ -1556,7 +1556,7 @@ class HandlerTests(unittest.TestCase):
         opener.add_handler(http_handler)
         self.assertRaises(ValueError, opener.open, "http://www.example.com")
 
-    def test_unsupported_auth_basic_handler(self):
+    eleza test_unsupported_auth_basic_handler(self):
         # While using BasicAuthHandler
         opener = OpenerDirector()
         basic_auth_handler = urllib.request.HTTPBasicAuthHandler(None)
@@ -1566,7 +1566,7 @@ class HandlerTests(unittest.TestCase):
         opener.add_handler(http_handler)
         self.assertRaises(ValueError, opener.open, "http://www.example.com")
 
-    def _test_basic_auth(self, opener, auth_handler, auth_header,
+    eleza _test_basic_auth(self, opener, auth_handler, auth_header,
                          realm, http_handler, password_manager,
                          request_url, protected_url):
         agiza base64
@@ -1595,7 +1595,7 @@ class HandlerTests(unittest.TestCase):
                          auth_hdr_value)
         self.assertEqual(http_handler.requests[1].unredirected_hdrs[auth_header],
                          auth_hdr_value)
-        # if the password manager can't find a password, the handler won't
+        # ikiwa the password manager can't find a password, the handler won't
         # handle the HTTP auth error
         password_manager.user = password_manager.password = None
         http_handler.reset()
@@ -1603,9 +1603,9 @@ class HandlerTests(unittest.TestCase):
         self.assertEqual(len(http_handler.requests), 1)
         self.assertFalse(http_handler.requests[0].has_header(auth_header))
 
-    def test_basic_prior_auth_auto_send(self):
-        # Assume already authenticated if is_authenticated=True
-        # for APIs like Github that don't return 401
+    eleza test_basic_prior_auth_auto_send(self):
+        # Assume already authenticated ikiwa is_authenticated=True
+        # for APIs like Github that don't rudisha 401
 
         user, password = "wile", "coyote"
         request_url = "http://acme.example.com/protected"
@@ -1629,7 +1629,7 @@ class HandlerTests(unittest.TestCase):
         # expect request to be sent with auth header
         self.assertTrue(http_handler.has_auth_header)
 
-    def test_basic_prior_auth_send_after_first_success(self):
+    eleza test_basic_prior_auth_send_after_first_success(self):
         # Auto send auth header after authentication is successful once
 
         user, password = 'wile', 'coyote'
@@ -1669,7 +1669,7 @@ class HandlerTests(unittest.TestCase):
         # expect request to be sent with auth header
         self.assertTrue(http_handler.has_auth_header)
 
-    def test_http_closed(self):
+    eleza test_http_closed(self):
         """Test the connection is cleaned up when the response is closed"""
         for (transfer, data) in (
             ("Connection: close", b"data"),
@@ -1686,7 +1686,7 @@ class HandlerTests(unittest.TestCase):
             self.assertTrue(conn.fakesock.closed,
                 "Connection not closed with {!r}".format(transfer))
 
-    def test_invalid_closed(self):
+    eleza test_invalid_closed(self):
         """Test the connection is cleaned up after an invalid response"""
         conn = test_urllib.fakehttp(b"")
         handler = urllib.request.AbstractHTTPHandler()
@@ -1697,22 +1697,22 @@ class HandlerTests(unittest.TestCase):
         self.assertTrue(conn.fakesock.closed, "Connection not closed")
 
 
-class MiscTests(unittest.TestCase):
+kundi MiscTests(unittest.TestCase):
 
-    def opener_has_handler(self, opener, handler_class):
+    eleza opener_has_handler(self, opener, handler_class):
         self.assertTrue(any(h.__class__ == handler_class
                             for h in opener.handlers))
 
-    def test_build_opener(self):
-        class MyHTTPHandler(urllib.request.HTTPHandler):
+    eleza test_build_opener(self):
+        kundi MyHTTPHandler(urllib.request.HTTPHandler):
             pass
 
-        class FooHandler(urllib.request.BaseHandler):
-            def foo_open(self):
+        kundi FooHandler(urllib.request.BaseHandler):
+            eleza foo_open(self):
                 pass
 
-        class BarHandler(urllib.request.BaseHandler):
-            def bar_open(self):
+        kundi BarHandler(urllib.request.BaseHandler):
+            eleza bar_open(self):
                 pass
 
         build_opener = urllib.request.build_opener
@@ -1740,7 +1740,7 @@ class MiscTests(unittest.TestCase):
         self.opener_has_handler(o, urllib.request.HTTPHandler)
 
         # Issue2670: multiple handlers sharing the same base class
-        class MyOtherHTTPHandler(urllib.request.HTTPHandler):
+        kundi MyOtherHTTPHandler(urllib.request.HTTPHandler):
             pass
 
         o = build_opener(MyHTTPHandler, MyOtherHTTPHandler)
@@ -1749,7 +1749,7 @@ class MiscTests(unittest.TestCase):
 
     @unittest.skipUnless(support.is_resource_enabled('network'),
                          'test requires network access')
-    def test_issue16464(self):
+    eleza test_issue16464(self):
         with support.transient_internet("http://www.example.com/"):
             opener = urllib.request.build_opener()
             request = urllib.request.Request("http://www.example.com/")
@@ -1763,10 +1763,10 @@ class MiscTests(unittest.TestCase):
             self.assertEqual(b"1234567890", request.data)
             self.assertEqual("10", request.get_header("Content-length"))
 
-    def test_HTTPError_interface(self):
+    eleza test_HTTPError_interface(self):
         """
         Issue 13211 reveals that HTTPError didn't implement the URLError
-        interface even though HTTPError is a subclass of URLError.
+        interface even though HTTPError is a subkundi of URLError.
         """
         msg = 'something bad happened'
         url = code = fp = None
@@ -1781,7 +1781,7 @@ class MiscTests(unittest.TestCase):
         expected_errmsg = '<HTTPError %s: %r>' % (err.code, err.msg)
         self.assertEqual(repr(err), expected_errmsg)
 
-    def test_parse_proxy(self):
+    eleza test_parse_proxy(self):
         parse_proxy_test_cases = [
             ('proxy.example.com',
              (None, None, None, 'proxy.example.com')),
@@ -1818,7 +1818,7 @@ class MiscTests(unittest.TestCase):
 
         self.assertRaises(ValueError, _parse_proxy, 'file:/ftp.example.com'),
 
-    def test_unsupported_algorithm(self):
+    eleza test_unsupported_algorithm(self):
         handler = AbstractDigestAuthHandler()
         with self.assertRaises(ValueError) as exc:
             handler.get_algorithm_impls('invalid')
@@ -1828,11 +1828,11 @@ class MiscTests(unittest.TestCase):
         )
 
 
-class RequestTests(unittest.TestCase):
-    class PutRequest(Request):
+kundi RequestTests(unittest.TestCase):
+    kundi PutRequest(Request):
         method = 'PUT'
 
-    def setUp(self):
+    eleza setUp(self):
         self.get = Request("http://www.python.org/~jeremy/")
         self.post = Request("http://www.python.org/~jeremy/",
                             "data",
@@ -1842,14 +1842,14 @@ class RequestTests(unittest.TestCase):
         self.force_post = self.PutRequest("http://www.python.org/~jeremy/",
             method="POST")
 
-    def test_method(self):
+    eleza test_method(self):
         self.assertEqual("POST", self.post.get_method())
         self.assertEqual("GET", self.get.get_method())
         self.assertEqual("HEAD", self.head.get_method())
         self.assertEqual("PUT", self.put.get_method())
         self.assertEqual("POST", self.force_post.get_method())
 
-    def test_data(self):
+    eleza test_data(self):
         self.assertFalse(self.get.data)
         self.assertEqual("GET", self.get.get_method())
         self.get.data = "spam"
@@ -1857,9 +1857,9 @@ class RequestTests(unittest.TestCase):
         self.assertEqual("POST", self.get.get_method())
 
     # issue 16464
-    # if we change data we need to remove content-length header
+    # ikiwa we change data we need to remove content-length header
     # (cause it's most probably calculated for previous value)
-    def test_setting_data_should_remove_content_length(self):
+    eleza test_setting_data_should_remove_content_length(self):
         self.assertNotIn("Content-length", self.get.unredirected_hdrs)
         self.get.add_unredirected_header("Content-length", 42)
         self.assertEqual(42, self.get.unredirected_hdrs["Content-length"])
@@ -1867,7 +1867,7 @@ class RequestTests(unittest.TestCase):
         self.assertNotIn("Content-length", self.get.unredirected_hdrs)
 
     # issue 17485 same for deleting data.
-    def test_deleting_data_should_remove_content_length(self):
+    eleza test_deleting_data_should_remove_content_length(self):
         self.assertNotIn("Content-length", self.get.unredirected_hdrs)
         self.get.data = 'foo'
         self.get.add_unredirected_header("Content-length", 3)
@@ -1875,37 +1875,37 @@ class RequestTests(unittest.TestCase):
         del self.get.data
         self.assertNotIn("Content-length", self.get.unredirected_hdrs)
 
-    def test_get_full_url(self):
+    eleza test_get_full_url(self):
         self.assertEqual("http://www.python.org/~jeremy/",
                          self.get.get_full_url())
 
-    def test_selector(self):
+    eleza test_selector(self):
         self.assertEqual("/~jeremy/", self.get.selector)
         req = Request("http://www.python.org/")
         self.assertEqual("/", req.selector)
 
-    def test_get_type(self):
+    eleza test_get_type(self):
         self.assertEqual("http", self.get.type)
 
-    def test_get_host(self):
+    eleza test_get_host(self):
         self.assertEqual("www.python.org", self.get.host)
 
-    def test_get_host_unquote(self):
+    eleza test_get_host_unquote(self):
         req = Request("http://www.%70ython.org/")
         self.assertEqual("www.python.org", req.host)
 
-    def test_proxy(self):
+    eleza test_proxy(self):
         self.assertFalse(self.get.has_proxy())
         self.get.set_proxy("www.perl.org", "http")
         self.assertTrue(self.get.has_proxy())
         self.assertEqual("www.python.org", self.get.origin_req_host)
         self.assertEqual("www.perl.org", self.get.host)
 
-    def test_wrapped_url(self):
+    eleza test_wrapped_url(self):
         req = Request("<URL:http://www.python.org>")
         self.assertEqual("www.python.org", req.host)
 
-    def test_url_fragment(self):
+    eleza test_url_fragment(self):
         req = Request("http://www.python.org/?qs=query#fragment=true")
         self.assertEqual("/?qs=query", req.selector)
         req = Request("http://www.python.org/#fun=true")
@@ -1916,7 +1916,7 @@ class RequestTests(unittest.TestCase):
         req = Request(url)
         self.assertEqual(req.get_full_url(), url)
 
-    def test_url_fullurl_get_full_url(self):
+    eleza test_url_fullurl_get_full_url(self):
         urls = ['http://docs.python.org',
                 'http://docs.python.org/library/urllib2.html#OK',
                 'http://www.python.org/?qs=query#fragment=true']
@@ -1925,5 +1925,5 @@ class RequestTests(unittest.TestCase):
             self.assertEqual(req.get_full_url(), req.full_url)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

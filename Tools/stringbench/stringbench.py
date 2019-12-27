@@ -1444,7 +1444,7 @@ def main():
                 if not options.unicode_only:
                     try:
                         bytes_time = BenchTimer("__main__.%s(__main__.BYTES)" % (k,),
-                                                "import __main__").best(REPEAT)
+                                                "agiza __main__").best(REPEAT)
                         bytes_time_s = "%.2f" % (1000 * bytes_time)
                         bytes_total += bytes_time
                     except UnsupportedType:
@@ -1454,7 +1454,7 @@ def main():
                 if not options.bytes_only:
                     try:
                         uni_time = BenchTimer("__main__.%s(__main__.UNICODE)" % (k,),
-                                              "import __main__").best(REPEAT)
+                                              "agiza __main__").best(REPEAT)
                         uni_time_s = "%.2f" % (1000 * uni_time)
                         uni_total += uni_time
                     except UnsupportedType:

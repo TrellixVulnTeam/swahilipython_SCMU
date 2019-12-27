@@ -12,20 +12,20 @@ agiza warnings
 agiza zipagiza
 
 
-class FinderTests:
+kundi FinderTests:
 
     """Tests for PathFinder."""
 
     find = None
     check_found = None
 
-    def test_failure(self):
+    eleza test_failure(self):
         # Test None returned upon not finding a suitable loader.
         module = '<test module>'
         with util.import_state():
             self.assertIsNone(self.find(module))
 
-    def test_sys_path(self):
+    eleza test_sys_path(self):
         # Test that sys.path is used when 'path' is None.
         # Implicitly tests that sys.path_importer_cache is used.
         module = '<test module>'
@@ -36,7 +36,7 @@ class FinderTests:
             found = self.find(module)
             self.check_found(found, importer)
 
-    def test_path(self):
+    eleza test_path(self):
         # Test that 'path' is used when set.
         # Implicitly tests that sys.path_importer_cache is used.
         module = '<test module>'
@@ -46,7 +46,7 @@ class FinderTests:
             found = self.find(module, [path])
             self.check_found(found, importer)
 
-    def test_empty_list(self):
+    eleza test_empty_list(self):
         # An empty list should not count as asking for sys.path.
         module = 'module'
         path = '<test path>'
@@ -55,7 +55,7 @@ class FinderTests:
                                path=[path]):
             self.assertIsNone(self.find('module', []))
 
-    def test_path_hooks(self):
+    eleza test_path_hooks(self):
         # Test that sys.path_hooks is used.
         # Test that sys.path_importer_cache is set.
         module = '<test module>'
@@ -68,8 +68,8 @@ class FinderTests:
             self.assertIn(path, sys.path_importer_cache)
             self.assertIs(sys.path_importer_cache[path], importer)
 
-    def test_empty_path_hooks(self):
-        # Test that if sys.path_hooks is empty a warning is raised,
+    eleza test_empty_path_hooks(self):
+        # Test that ikiwa sys.path_hooks is empty a warning is raised,
         # sys.path_importer_cache gets None set, and PathFinder returns None.
         path_entry = 'bogus_path'
         with util.import_state(path_importer_cache={}, path_hooks=[],
@@ -81,7 +81,7 @@ class FinderTests:
                 self.assertEqual(len(w), 1)
                 self.assertTrue(issubclass(w[-1].category, ImportWarning))
 
-    def test_path_importer_cache_empty_string(self):
+    eleza test_path_importer_cache_empty_string(self):
         # The empty string should create a finder using the cwd.
         path = ''
         module = '<test module>'
@@ -92,7 +92,7 @@ class FinderTests:
             self.check_found(found, importer)
             self.assertIn(os.getcwd(), sys.path_importer_cache)
 
-    def test_None_on_sys_path(self):
+    eleza test_None_on_sys_path(self):
         # Putting None in sys.path[0] caused an agiza regression kutoka Python
         # 3.2: http://bugs.python.org/issue16514
         new_path = sys.path[:]
@@ -112,31 +112,31 @@ class FinderTests:
                 module = self.importlib.import_module('email')
                 self.assertIsInstance(module, ModuleType)
         finally:
-            if email is not missing:
+            ikiwa email is not missing:
                 sys.modules['email'] = email
 
-    def test_finder_with_find_module(self):
-        class TestFinder:
-            def find_module(self, fullname):
-                return self.to_return
+    eleza test_finder_with_find_module(self):
+        kundi TestFinder:
+            eleza find_module(self, fullname):
+                rudisha self.to_return
         failing_finder = TestFinder()
-        failing_finder.to_return = None
+        failing_finder.to_rudisha = None
         path = 'testing path'
         with util.import_state(path_importer_cache={path: failing_finder}):
             self.assertIsNone(
                     self.machinery.PathFinder.find_spec('whatever', [path]))
         success_finder = TestFinder()
-        success_finder.to_return = __loader__
+        success_finder.to_rudisha = __loader__
         with util.import_state(path_importer_cache={path: success_finder}):
             spec = self.machinery.PathFinder.find_spec('whatever', [path])
         self.assertEqual(spec.loader, __loader__)
 
-    def test_finder_with_find_loader(self):
-        class TestFinder:
+    eleza test_finder_with_find_loader(self):
+        kundi TestFinder:
             loader = None
             portions = []
-            def find_loader(self, fullname):
-                return self.loader, self.portions
+            eleza find_loader(self, fullname):
+                rudisha self.loader, self.portions
         path = 'testing path'
         with util.import_state(path_importer_cache={path: TestFinder()}):
             self.assertIsNone(
@@ -147,11 +147,11 @@ class FinderTests:
             spec = self.machinery.PathFinder.find_spec('whatever', [path])
         self.assertEqual(spec.loader, __loader__)
 
-    def test_finder_with_find_spec(self):
-        class TestFinder:
+    eleza test_finder_with_find_spec(self):
+        kundi TestFinder:
             spec = None
-            def find_spec(self, fullname, target=None):
-                return self.spec
+            eleza find_spec(self, fullname, target=None):
+                rudisha self.spec
         path = 'testing path'
         with util.import_state(path_importer_cache={path: TestFinder()}):
             self.assertIsNone(
@@ -162,7 +162,7 @@ class FinderTests:
             got = self.machinery.PathFinder.find_spec('whatever', [path])
         self.assertEqual(got, success_finder.spec)
 
-    def test_deleted_cwd(self):
+    eleza test_deleted_cwd(self):
         # Issue #22834
         old_dir = os.getcwd()
         self.addCleanup(os.chdir, old_dir)
@@ -184,13 +184,13 @@ class FinderTests:
             # Do not want FileNotFoundError raised.
             self.assertIsNone(self.machinery.PathFinder.find_spec('whatever'))
 
-    def test_invalidate_caches_finders(self):
+    eleza test_invalidate_caches_finders(self):
         # Finders with an invalidate_caches() method have it called.
-        class FakeFinder:
-            def __init__(self):
+        kundi FakeFinder:
+            eleza __init__(self):
                 self.called = False
 
-            def invalidate_caches(self):
+            eleza invalidate_caches(self):
                 self.called = True
 
         cache = {'leave_alone': object(), 'finder_to_invalidate': FakeFinder()}
@@ -198,7 +198,7 @@ class FinderTests:
             self.machinery.PathFinder.invalidate_caches()
         self.assertTrue(cache['finder_to_invalidate'].called)
 
-    def test_invalidate_caches_clear_out_None(self):
+    eleza test_invalidate_caches_clear_out_None(self):
         # Clear out None in sys.path_importer_cache() when invalidating caches.
         cache = {'clear_out': None}
         with util.import_state(path_importer_cache=cache):
@@ -206,10 +206,10 @@ class FinderTests:
         self.assertEqual(len(cache), 0)
 
 
-class FindModuleTests(FinderTests):
-    def find(self, *args, **kwargs):
-        return self.machinery.PathFinder.find_module(*args, **kwargs)
-    def check_found(self, found, importer):
+kundi FindModuleTests(FinderTests):
+    eleza find(self, *args, **kwargs):
+        rudisha self.machinery.PathFinder.find_module(*args, **kwargs)
+    eleza check_found(self, found, importer):
         self.assertIs(found, importer)
 
 
@@ -218,10 +218,10 @@ class FindModuleTests(FinderTests):
 ) = util.test_both(FindModuleTests, importlib=importlib, machinery=machinery)
 
 
-class FindSpecTests(FinderTests):
-    def find(self, *args, **kwargs):
-        return self.machinery.PathFinder.find_spec(*args, **kwargs)
-    def check_found(self, found, importer):
+kundi FindSpecTests(FinderTests):
+    eleza find(self, *args, **kwargs):
+        rudisha self.machinery.PathFinder.find_spec(*args, **kwargs)
+    eleza check_found(self, found, importer):
         self.assertIs(found.loader, importer)
 
 
@@ -230,38 +230,38 @@ class FindSpecTests(FinderTests):
  ) = util.test_both(FindSpecTests, importlib=importlib, machinery=machinery)
 
 
-class PathEntryFinderTests:
+kundi PathEntryFinderTests:
 
-    def test_finder_with_failing_find_spec(self):
+    eleza test_finder_with_failing_find_spec(self):
         # PathEntryFinder with find_module() defined should work.
         # Issue #20763.
-        class Finder:
+        kundi Finder:
             path_location = 'test_finder_with_find_module'
-            def __init__(self, path):
-                if path != self.path_location:
+            eleza __init__(self, path):
+                ikiwa path != self.path_location:
                     raise ImportError
 
             @staticmethod
-            def find_module(fullname):
-                return None
+            eleza find_module(fullname):
+                rudisha None
 
 
         with util.import_state(path=[Finder.path_location]+sys.path[:],
                                path_hooks=[Finder]):
             self.machinery.PathFinder.find_spec('importlib')
 
-    def test_finder_with_failing_find_module(self):
+    eleza test_finder_with_failing_find_module(self):
         # PathEntryFinder with find_module() defined should work.
         # Issue #20763.
-        class Finder:
+        kundi Finder:
             path_location = 'test_finder_with_find_module'
-            def __init__(self, path):
-                if path != self.path_location:
+            eleza __init__(self, path):
+                ikiwa path != self.path_location:
                     raise ImportError
 
             @staticmethod
-            def find_module(fullname):
-                return None
+            eleza find_module(fullname):
+                rudisha None
 
 
         with util.import_state(path=[Finder.path_location]+sys.path[:],
@@ -274,5 +274,5 @@ class PathEntryFinderTests:
  ) = util.test_both(PathEntryFinderTests, machinery=machinery)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

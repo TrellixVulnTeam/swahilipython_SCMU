@@ -1,12 +1,12 @@
 kutoka test agiza support
 agiza unittest
 
-# Skip test if nis module does not exist.
+# Skip test ikiwa nis module does not exist.
 nis = support.import_module('nis')
 
 
-class NisTests(unittest.TestCase):
-    def test_maps(self):
+kundi NisTests(unittest.TestCase):
+    eleza test_maps(self):
         try:
             maps = nis.maps()
         except nis.error as msg:
@@ -23,17 +23,17 @@ class NisTests(unittest.TestCase):
         for nismap in maps:
             mapping = nis.cat(nismap)
             for k, v in mapping.items():
-                if not k:
+                ikiwa not k:
                     continue
-                if nis.match(k, nismap) != v:
+                ikiwa nis.match(k, nismap) != v:
                     self.fail("NIS match failed for key `%s' in map `%s'" % (k, nismap))
                 else:
                     # just test the one key, otherwise this test could take a
                     # very long time
                     done = 1
                     break
-            if done:
+            ikiwa done:
                 break
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

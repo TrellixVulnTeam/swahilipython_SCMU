@@ -17,7 +17,7 @@ need to completely control the character sets used when encoding headers.
 The remaining text in this section is the original documentation of the module.
 
 :rfc:`2822` is the base standard that describes the format of email messages.
-It derives from the older :rfc:`822` standard which came into widespread use at
+It derives kutoka the older :rfc:`822` standard which came into widespread use at
 a time when most email was composed of ASCII characters only.  :rfc:`2822` is a
 specification written assuming email contains only 7-bit ASCII characters.
 
@@ -32,13 +32,13 @@ in its :mod:`email.header` and :mod:`email.charset` modules.
 
 If you want to include non-ASCII characters in your email headers, say in the
 :mailheader:`Subject` or :mailheader:`To` fields, you should use the
-:class:`Header` class and assign the field in the :class:`~email.message.Message`
+:class:`Header` kundi and assign the field in the :class:`~email.message.Message`
 object to an instance of :class:`Header` instead of using a string for the header
-value.  Import the :class:`Header` class from the :mod:`email.header` module.
+value.  Import the :class:`Header` kundi kutoka the :mod:`email.header` module.
 For example::
 
-   >>> from email.message import Message
-   >>> from email.header import Header
+   >>> kutoka email.message agiza Message
+   >>> kutoka email.header agiza Header
    >>> msg = Message()
    >>> h = Header('p\xf6stal', 'iso-8859-1')
    >>> msg['Subject'] = h
@@ -54,7 +54,7 @@ the character set that the byte string was encoded in.  When the subsequent
 field was properly :rfc:`2047` encoded.  MIME-aware mail readers would show this
 header using the embedded ISO-8859-1 character.
 
-Here is the :class:`Header` class description:
+Here is the :class:`Header` kundi description:
 
 
 .. class:: Header(s=None, charset=None, maxlinelen=None, header_name=None, continuation_ws=' ', errors='strict')
@@ -144,7 +144,7 @@ Here is the :class:`Header` class description:
          Added the *linesep* argument.
 
 
-   The :class:`Header` class also provides a number of methods to support
+   The :class:`Header` kundi also provides a number of methods to support
    standard operators and built-in functions.
 
    .. method:: __str__()
@@ -185,14 +185,14 @@ The :mod:`email.header` module also provides the following convenient functions.
 
    Here's an example::
 
-      >>> from email.header import decode_header
+      >>> kutoka email.header agiza decode_header
       >>> decode_header('=?iso-8859-1?q?p=F6stal?=')
       [(b'p\xf6stal', 'iso-8859-1')]
 
 
 .. function:: make_header(decoded_seq, maxlinelen=None, header_name=None, continuation_ws=' ')
 
-   Create a :class:`Header` instance from a sequence of pairs as returned by
+   Create a :class:`Header` instance kutoka a sequence of pairs as returned by
    :func:`decode_header`.
 
    :func:`decode_header` takes a header value string and returns a sequence of

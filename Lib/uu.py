@@ -36,22 +36,22 @@ agiza sys
 
 __all__ = ["Error", "encode", "decode"]
 
-class Error(Exception):
+kundi Error(Exception):
     pass
 
-def encode(in_file, out_file, name=None, mode=None, *, backtick=False):
+eleza encode(in_file, out_file, name=None, mode=None, *, backtick=False):
     """Uuencode file"""
     #
     # If in_file is a pathname open it and change defaults
     #
     opened_files = []
     try:
-        if in_file == '-':
+        ikiwa in_file == '-':
             in_file = sys.stdin.buffer
-        elif isinstance(in_file, str):
-            if name is None:
+        elikiwa isinstance(in_file, str):
+            ikiwa name is None:
                 name = os.path.basename(in_file)
-            if mode is None:
+            ikiwa mode is None:
                 try:
                     mode = os.stat(in_file).st_mode
                 except AttributeError:
@@ -59,19 +59,19 @@ def encode(in_file, out_file, name=None, mode=None, *, backtick=False):
             in_file = open(in_file, 'rb')
             opened_files.append(in_file)
         #
-        # Open out_file if it is a pathname
+        # Open out_file ikiwa it is a pathname
         #
-        if out_file == '-':
+        ikiwa out_file == '-':
             out_file = sys.stdout.buffer
-        elif isinstance(out_file, str):
+        elikiwa isinstance(out_file, str):
             out_file = open(out_file, 'wb')
             opened_files.append(out_file)
         #
         # Set defaults for name and mode
         #
-        if name is None:
+        ikiwa name is None:
             name = '-'
-        if mode is None:
+        ikiwa mode is None:
             mode = 0o666
         #
         # Write the data
@@ -81,7 +81,7 @@ def encode(in_file, out_file, name=None, mode=None, *, backtick=False):
         while len(data) > 0:
             out_file.write(binascii.b2a_uu(data, backtick=backtick))
             data = in_file.read(45)
-        if backtick:
+        ikiwa backtick:
             out_file.write(b'`\nend\n')
         else:
             out_file.write(b' \nend\n')
@@ -90,15 +90,15 @@ def encode(in_file, out_file, name=None, mode=None, *, backtick=False):
             f.close()
 
 
-def decode(in_file, out_file=None, mode=None, quiet=False):
+eleza decode(in_file, out_file=None, mode=None, quiet=False):
     """Decode uuencoded file"""
     #
-    # Open the input file, if needed.
+    # Open the input file, ikiwa needed.
     #
     opened_files = []
-    if in_file == '-':
+    ikiwa in_file == '-':
         in_file = sys.stdin.buffer
-    elif isinstance(in_file, str):
+    elikiwa isinstance(in_file, str):
         in_file = open(in_file, 'rb')
         opened_files.append(in_file)
 
@@ -108,30 +108,30 @@ def decode(in_file, out_file=None, mode=None, quiet=False):
         #
         while True:
             hdr = in_file.readline()
-            if not hdr:
+            ikiwa not hdr:
                 raise Error('No valid begin line found in input file')
-            if not hdr.startswith(b'begin'):
+            ikiwa not hdr.startswith(b'begin'):
                 continue
             hdrfields = hdr.split(b' ', 2)
-            if len(hdrfields) == 3 and hdrfields[0] == b'begin':
+            ikiwa len(hdrfields) == 3 and hdrfields[0] == b'begin':
                 try:
                     int(hdrfields[1], 8)
                     break
                 except ValueError:
                     pass
-        if out_file is None:
+        ikiwa out_file is None:
             # If the filename isn't ASCII, what's up with that?!?
             out_file = hdrfields[2].rstrip(b' \t\r\n\f').decode("ascii")
-            if os.path.exists(out_file):
+            ikiwa os.path.exists(out_file):
                 raise Error('Cannot overwrite existing file: %s' % out_file)
-        if mode is None:
+        ikiwa mode is None:
             mode = int(hdrfields[1], 8)
         #
         # Open the output file
         #
-        if out_file == '-':
+        ikiwa out_file == '-':
             out_file = sys.stdout.buffer
-        elif isinstance(out_file, str):
+        elikiwa isinstance(out_file, str):
             fp = open(out_file, 'wb')
             os.chmod(out_file, mode)
             out_file = fp
@@ -147,17 +147,17 @@ def decode(in_file, out_file=None, mode=None, quiet=False):
                 # Workaround for broken uuencoders by /Fredrik Lundh
                 nbytes = (((s[0]-32) & 63) * 4 + 5) // 3
                 data = binascii.a2b_uu(s[:nbytes])
-                if not quiet:
+                ikiwa not quiet:
                     sys.stderr.write("Warning: %s\n" % v)
             out_file.write(data)
             s = in_file.readline()
-        if not s:
+        ikiwa not s:
             raise Error('Truncated input file')
     finally:
         for f in opened_files:
             f.close()
 
-def test():
+eleza test():
     """uuencode/uudecode main program"""
 
     agiza optparse
@@ -166,34 +166,34 @@ def test():
     parser.add_option('-t', '--text', dest='text', help='data is text, encoded format unix-compatible text?', default=False, action='store_true')
 
     (options, args) = parser.parse_args()
-    if len(args) > 2:
+    ikiwa len(args) > 2:
         parser.error('incorrect number of arguments')
         sys.exit(1)
 
     # Use the binary streams underlying stdin/stdout
     input = sys.stdin.buffer
     output = sys.stdout.buffer
-    if len(args) > 0:
+    ikiwa len(args) > 0:
         input = args[0]
-    if len(args) > 1:
+    ikiwa len(args) > 1:
         output = args[1]
 
-    if options.decode:
-        if options.text:
-            if isinstance(output, str):
+    ikiwa options.decode:
+        ikiwa options.text:
+            ikiwa isinstance(output, str):
                 output = open(output, 'wb')
             else:
-                print(sys.argv[0], ': cannot do -t to stdout')
+                andika(sys.argv[0], ': cannot do -t to stdout')
                 sys.exit(1)
         decode(input, output)
     else:
-        if options.text:
-            if isinstance(input, str):
+        ikiwa options.text:
+            ikiwa isinstance(input, str):
                 input = open(input, 'rb')
             else:
-                print(sys.argv[0], ': cannot do -t kutoka stdin')
+                andika(sys.argv[0], ': cannot do -t kutoka stdin')
                 sys.exit(1)
         encode(input, output)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test()

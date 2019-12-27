@@ -2,8 +2,8 @@ agiza sys
 kutoka test.test_json agiza PyTest, CTest
 
 
-class TestScanstring:
-    def test_scanstring(self):
+kundi TestScanstring:
+    eleza test_scanstring(self):
         scanstring = self.json.decoder.scanstring
         self.assertEqual(
             scanstring('"z\U0001d120x"', 1, True),
@@ -85,9 +85,9 @@ class TestScanstring:
             scanstring('["Bad value", truth]', 2, True),
             ('Bad value', 12))
 
-    def test_surrogates(self):
+    eleza test_surrogates(self):
         scanstring = self.json.decoder.scanstring
-        def assertScan(given, expect):
+        eleza assertScan(given, expect):
             self.assertEqual(scanstring(given, 1, True),
                              (expect, len(given)))
 
@@ -101,7 +101,7 @@ class TestScanstring:
         assertScan('"z\ud834\\udd20x"', 'z\ud834\udd20x')
         assertScan('"z\ud834x"', 'z\ud834x')
 
-    def test_bad_escapes(self):
+    eleza test_bad_escapes(self):
         scanstring = self.json.decoder.scanstring
         bad_escapes = [
             '"\\"',
@@ -132,10 +132,10 @@ class TestScanstring:
             with self.assertRaises(self.JSONDecodeError, msg=s):
                 scanstring(s, 1, True)
 
-    def test_overflow(self):
+    eleza test_overflow(self):
         with self.assertRaises(OverflowError):
             self.json.decoder.scanstring(b"xxx", sys.maxsize+1)
 
 
-class TestPyScanstring(TestScanstring, PyTest): pass
-class TestCScanstring(TestScanstring, CTest): pass
+kundi TestPyScanstring(TestScanstring, PyTest): pass
+kundi TestCScanstring(TestScanstring, CTest): pass

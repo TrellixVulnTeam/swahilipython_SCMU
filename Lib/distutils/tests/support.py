@@ -196,7 +196,7 @@ def fixup_build_ext(cmd):
     """
     if os.name == 'nt':
         cmd.debug = sys.executable.endswith('_d.exe')
-    elif sysconfig.get_config_var('Py_ENABLE_SHARED'):
+    lasivyo sysconfig.get_config_var('Py_ENABLE_SHARED'):
         # To further add to the shared builds fun on Unix, we can't just add
         # library_dirs to the Extension() instance because that doesn't get
         # plumbed through to the final compiler command.

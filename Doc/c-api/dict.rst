@@ -40,7 +40,7 @@ Dictionary Objects
 
    Return a :class:`types.MappingProxyType` object for a mapping which
    enforces read-only behavior.  This is normally used to create a view to
-   prevent modification of the dictionary for non-dynamic class types.
+   prevent modification of the dictionary for non-dynamic kundi types.
 
 
 .. c:function:: void PyDict_Clear(PyObject *p)
@@ -92,7 +92,7 @@ Dictionary Objects
 
 .. c:function:: PyObject* PyDict_GetItem(PyObject *p, PyObject *key)
 
-   Return the object from dictionary *p* which has a key *key*.  Return *NULL*
+   Return the object kutoka dictionary *p* which has a key *key*.  Return *NULL*
    if the key *key* is not present, but *without* setting an exception.
 
    Note that exceptions which occur while calling :meth:`__hash__` and
@@ -122,7 +122,7 @@ Dictionary Objects
 .. c:function:: PyObject* PyDict_SetDefault(PyObject *p, PyObject *key, PyObject *defaultobj)
 
    This is the same as the Python-level :meth:`dict.setdefault`.  If present, it
-   returns the value corresponding to *key* from the dictionary *p*.  If the key
+   returns the value corresponding to *key* kutoka the dictionary *p*.  If the key
    is not in the dict, it is inserted with value *defaultobj* and *defaultobj*
    is returned.  This function evaluates the hash function of *key* only once,
    instead of evaluating it independently for the lookup and the insertion.
@@ -131,17 +131,17 @@ Dictionary Objects
 
 .. c:function:: PyObject* PyDict_Items(PyObject *p)
 
-   Return a :c:type:`PyListObject` containing all the items from the dictionary.
+   Return a :c:type:`PyListObject` containing all the items kutoka the dictionary.
 
 
 .. c:function:: PyObject* PyDict_Keys(PyObject *p)
 
-   Return a :c:type:`PyListObject` containing all the keys from the dictionary.
+   Return a :c:type:`PyListObject` containing all the keys kutoka the dictionary.
 
 
 .. c:function:: PyObject* PyDict_Values(PyObject *p)
 
-   Return a :c:type:`PyListObject` containing all the values from the dictionary
+   Return a :c:type:`PyListObject` containing all the values kutoka the dictionary
    *p*.
 
 
@@ -220,7 +220,7 @@ Dictionary Objects
 
 .. c:function:: int PyDict_MergeFromSeq2(PyObject *a, PyObject *seq2, int override)
 
-   Update or merge into dictionary *a*, from the key-value pairs in *seq2*.
+   Update or merge into dictionary *a*, kutoka the key-value pairs in *seq2*.
    *seq2* must be an iterable object producing iterable objects of length 2,
    viewed as key-value pairs.  In case of duplicate keys, the last wins if
    *override* is true, else the first wins. Return ``0`` on success or ``-1``

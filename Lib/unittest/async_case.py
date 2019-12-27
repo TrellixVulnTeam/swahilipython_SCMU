@@ -5,12 +5,12 @@ kutoka .case agiza TestCase
 
 
 
-class IsolatedAsyncioTestCase(TestCase):
+kundi IsolatedAsyncioTestCase(TestCase):
     # Names intentionally have a long prefix
     # to reduce a chance of clashing with user-defined attributes
     # kutoka inherited test case
     #
-    # The class doesn't call loop.run_until_complete(self.setUp()) and family
+    # The kundi doesn't call loop.run_until_complete(self.setUp()) and family
     # but uses a different approach:
     # 1. create a long-running task that reads self.setUp()
     #    awaitable kutoka queue along with a future
@@ -23,7 +23,7 @@ class IsolatedAsyncioTestCase(TestCase):
     # To share contextvars between setUp(), test and tearDown() we need to execute
     # them inside the same task.
 
-    # Note: the test case modifies event loop policy if the policy was not instantiated
+    # Note: the test case modifies event loop policy ikiwa the policy was not instantiated
     # yet.
     # asyncio.get_event_loop_policy() creates a default policy on demand but never
     # returns None
@@ -31,18 +31,18 @@ class IsolatedAsyncioTestCase(TestCase):
     # should reset a policy in every test module
     # by calling asyncio.set_event_loop_policy(None) in tearDownModule()
 
-    def __init__(self, methodName='runTest'):
+    eleza __init__(self, methodName='runTest'):
         super().__init__(methodName)
         self._asyncioTestLoop = None
         self._asyncioCallsQueue = None
 
-    async def asyncSetUp(self):
+    async eleza asyncSetUp(self):
         pass
 
-    async def asyncTearDown(self):
+    async eleza asyncTearDown(self):
         pass
 
-    def addAsyncCleanup(self, func, /, *args, **kwargs):
+    eleza addAsyncCleanup(self, func, /, *args, **kwargs):
         # A trivial trampoline to addCleanup()
         # the function exists because it has a different semantics
         # and signature:
@@ -52,63 +52,63 @@ class IsolatedAsyncioTestCase(TestCase):
         # We intentionally don't add inspect.iscoroutinefunction() check
         # for func argument because there is no way
         # to check for async function reliably:
-        # 1. It can be "async def func()" iself
-        # 2. Class can implement "async def __call__()" method
-        # 3. Regular "def func()" that returns awaitable object
+        # 1. It can be "async eleza func()" iself
+        # 2. Class can implement "async eleza __call__()" method
+        # 3. Regular "eleza func()" that returns awaitable object
         self.addCleanup(*(func, *args), **kwargs)
 
-    def _callSetUp(self):
+    eleza _callSetUp(self):
         self.setUp()
         self._callAsync(self.asyncSetUp)
 
-    def _callTestMethod(self, method):
+    eleza _callTestMethod(self, method):
         self._callMaybeAsync(method)
 
-    def _callTearDown(self):
+    eleza _callTearDown(self):
         self._callAsync(self.asyncTearDown)
         self.tearDown()
 
-    def _callCleanup(self, function, *args, **kwargs):
+    eleza _callCleanup(self, function, *args, **kwargs):
         self._callMaybeAsync(function, *args, **kwargs)
 
-    def _callAsync(self, func, /, *args, **kwargs):
+    eleza _callAsync(self, func, /, *args, **kwargs):
         assert self._asyncioTestLoop is not None
         ret = func(*args, **kwargs)
         assert inspect.isawaitable(ret)
         fut = self._asyncioTestLoop.create_future()
         self._asyncioCallsQueue.put_nowait((fut, ret))
-        return self._asyncioTestLoop.run_until_complete(fut)
+        rudisha self._asyncioTestLoop.run_until_complete(fut)
 
-    def _callMaybeAsync(self, func, /, *args, **kwargs):
+    eleza _callMaybeAsync(self, func, /, *args, **kwargs):
         assert self._asyncioTestLoop is not None
         ret = func(*args, **kwargs)
-        if inspect.isawaitable(ret):
+        ikiwa inspect.isawaitable(ret):
             fut = self._asyncioTestLoop.create_future()
             self._asyncioCallsQueue.put_nowait((fut, ret))
-            return self._asyncioTestLoop.run_until_complete(fut)
+            rudisha self._asyncioTestLoop.run_until_complete(fut)
         else:
-            return ret
+            rudisha ret
 
-    async def _asyncioLoopRunner(self, fut):
+    async eleza _asyncioLoopRunner(self, fut):
         self._asyncioCallsQueue = queue = asyncio.Queue()
         fut.set_result(None)
         while True:
             query = await queue.get()
             queue.task_done()
-            if query is None:
+            ikiwa query is None:
                 return
             fut, awaitable = query
             try:
                 ret = await awaitable
-                if not fut.cancelled():
+                ikiwa not fut.cancelled():
                     fut.set_result(ret)
             except asyncio.CancelledError:
                 raise
             except Exception as ex:
-                if not fut.cancelled():
+                ikiwa not fut.cancelled():
                     fut.set_exception(ex)
 
-    def _setupAsyncioLoop(self):
+    eleza _setupAsyncioLoop(self):
         assert self._asyncioTestLoop is None
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
@@ -118,7 +118,7 @@ class IsolatedAsyncioTestCase(TestCase):
         self._asyncioCallsTask = loop.create_task(self._asyncioLoopRunner(fut))
         loop.run_until_complete(fut)
 
-    def _tearDownAsyncioLoop(self):
+    eleza _tearDownAsyncioLoop(self):
         assert self._asyncioTestLoop is not None
         loop = self._asyncioTestLoop
         self._asyncioTestLoop = None
@@ -128,7 +128,7 @@ class IsolatedAsyncioTestCase(TestCase):
         try:
             # cancel all tasks
             to_cancel = asyncio.all_tasks(loop)
-            if not to_cancel:
+            ikiwa not to_cancel:
                 return
 
             for task in to_cancel:
@@ -138,9 +138,9 @@ class IsolatedAsyncioTestCase(TestCase):
                 asyncio.gather(*to_cancel, loop=loop, return_exceptions=True))
 
             for task in to_cancel:
-                if task.cancelled():
+                ikiwa task.cancelled():
                     continue
-                if task.exception() is not None:
+                ikiwa task.exception() is not None:
                     loop.call_exception_handler({
                         'message': 'unhandled exception during test shutdown',
                         'exception': task.exception(),
@@ -152,9 +152,9 @@ class IsolatedAsyncioTestCase(TestCase):
             asyncio.set_event_loop(None)
             loop.close()
 
-    def run(self, result=None):
+    eleza run(self, result=None):
         self._setupAsyncioLoop()
         try:
-            return super().run(result)
+            rudisha super().run(result)
         finally:
             self._tearDownAsyncioLoop()

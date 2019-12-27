@@ -12,7 +12,7 @@
 
 --------------
 
-The :mod:`telnetlib` module provides a :class:`Telnet` class that implements the
+The :mod:`telnetlib` module provides a :class:`Telnet` kundi that implements the
 Telnet protocol.  See :rfc:`854` for details about the protocol. In addition, it
 provides symbolic constants for the protocol characters (see below), and for the
 telnet options. The symbolic names of the telnet options follow the definitions
@@ -39,7 +39,7 @@ Character), EL (Erase Line), GA (Go Ahead), SB (Subnegotiation Begin).
 
    Do not reopen an already connected instance.
 
-   This class has many :meth:`read_\*` methods.  Note that some of them  raise
+   This kundi has many :meth:`read_\*` methods.  Note that some of them  raise
    :exc:`EOFError` when the end of the connection is read, because they can return
    an empty string for other reasons.  See the individual descriptions below.
 
@@ -47,7 +47,7 @@ Character), EL (Erase Line), GA (Go Ahead), SB (Subnegotiation Begin).
    :keyword:`with` statement.  When the :keyword:`!with` block ends, the
    :meth:`close` method is called::
 
-       >>> from telnetlib import Telnet
+       >>> kutoka telnetlib agiza Telnet
        >>> with Telnet('localhost', 23) as tn:
        ...     tn.interact()
        ...
@@ -197,7 +197,7 @@ Telnet Objects
 
 .. method:: Telnet.expect(list, timeout=None)
 
-   Read until one from a list of a regular expressions matches.
+   Read until one kutoka a list of a regular expressions matches.
 
    The first argument is a list of regular expressions, either compiled
    (:ref:`regex objects <re-objects>`) or uncompiled (byte strings). The
@@ -234,8 +234,8 @@ Telnet Example
 
 A simple example illustrating typical use::
 
-   import getpass
-   import telnetlib
+   agiza getpass
+   agiza telnetlib
 
    HOST = "localhost"
    user = input("Enter your remote account: ")

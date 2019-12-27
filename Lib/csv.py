@@ -20,7 +20,7 @@ __all__ = ["QUOTE_MINIMAL", "QUOTE_ALL", "QUOTE_NONNUMERIC", "QUOTE_NONE",
            "unregister_dialect", "__version__", "DictReader", "DictWriter",
            "unix_dialect"]
 
-class Dialect:
+kundi Dialect:
     """Describe a CSV dialect.
 
     This must be subclassed (see csv.excel).  Valid attributes are:
@@ -51,7 +51,7 @@ class Dialect:
             # We do this for compatibility with py2.3
             raise Error(str(e))
 
-class excel(Dialect):
+kundi excel(Dialect):
     """Describe the usual properties of Excel-generated CSV files."""
     delimiter = ','
     quotechar = '"'
@@ -61,12 +61,12 @@ class excel(Dialect):
     quoting = QUOTE_MINIMAL
 register_dialect("excel", excel)
 
-class excel_tab(excel):
+kundi excel_tab(excel):
     """Describe the usual properties of Excel-generated TAB-delimited files."""
     delimiter = '\t'
 register_dialect("excel-tab", excel_tab)
 
-class unix_dialect(Dialect):
+kundi unix_dialect(Dialect):
     """Describe the usual properties of Unix-generated CSV files."""
     delimiter = ','
     quotechar = '"'
@@ -77,7 +77,7 @@ class unix_dialect(Dialect):
 register_dialect("unix", unix_dialect)
 
 
-class DictReader:
+kundi DictReader:
     def __init__(self, f, fieldnames=None, restkey=None, restval=None,
                  dialect="excel", *args, **kwds):
         self._fieldnames = fieldnames   # list of keys for the dict
@@ -121,13 +121,13 @@ class DictReader:
         lr = len(row)
         if lf < lr:
             d[self.restkey] = row[lf:]
-        elif lf > lr:
+        lasivyo lf > lr:
             for key in self.fieldnames[lr:]:
                 d[key] = self.restval
         return d
 
 
-class DictWriter:
+kundi DictWriter:
     def __init__(self, f, fieldnames, restval="", extrasaction="raise",
                  dialect="excel", *args, **kwds):
         self.fieldnames = fieldnames    # list of keys for the dict
@@ -162,7 +162,7 @@ try:
 except NameError:
     complex = float
 
-class Sniffer:
+kundi Sniffer:
     '''
     "Sniffs" the format of a CSV file (i.e. delimiter, quotechar)
     Returns a Dialect object.
@@ -186,7 +186,7 @@ class Sniffer:
         if not delimiter:
             raise Error("Could not determine delimiter")
 
-        class dialect(Dialect):
+        kundi dialect(Dialect):
             _name = "sniffed"
             lineterminator = '\r\n'
             quoting = QUOTE_MINIMAL

@@ -66,22 +66,22 @@ compatible_formats = ["1.0",            # Original protocol 0
 HIGHEST_PROTOCOL = 5
 
 # The protocol we write by default.  May be less than HIGHEST_PROTOCOL.
-# Only bump this if the oldest still supported version of Python already
+# Only bump this ikiwa the oldest still supported version of Python already
 # includes it.
 DEFAULT_PROTOCOL = 4
 
-class PickleError(Exception):
-    """A common base class for the other pickling exceptions."""
+kundi PickleError(Exception):
+    """A common base kundi for the other pickling exceptions."""
     pass
 
-class PicklingError(PickleError):
+kundi PicklingError(PickleError):
     """This exception is raised when an unpicklable object is passed to the
     dump() method.
 
     """
     pass
 
-class UnpicklingError(PickleError):
+kundi UnpicklingError(PickleError):
     """This exception is raised when there is a problem unpickling an object,
     such as a security violation.
 
@@ -94,11 +94,11 @@ class UnpicklingError(PickleError):
 
 # An instance of _Stop is raised by Unpickler.load_stop() in response to
 # the STOP opcode, passing the object that is the result of unpickling.
-class _Stop(Exception):
-    def __init__(self, value):
+kundi _Stop(Exception):
+    eleza __init__(self, value):
         self.value = value
 
-# Jython has PyStringMap; it's a dict subclass with string keys
+# Jython has PyStringMap; it's a dict subkundi with string keys
 try:
     kutoka org.python.core agiza PyStringMap
 except ImportError:
@@ -136,11 +136,11 @@ EMPTY_DICT     = b'}'   # push empty dict
 APPENDS        = b'e'   # extend list on stack by topmost stack slice
 GET            = b'g'   # push item kutoka memo on stack; index is string arg
 BINGET         = b'h'   #   "    "    "    "   "   "  ;   "    " 1-byte arg
-INST           = b'i'   # build & push class instance
+INST           = b'i'   # build & push kundi instance
 LONG_BINGET    = b'j'   # push item kutoka memo on stack; index is 4-byte arg
 LIST           = b'l'   # build list kutoka topmost stack items
 EMPTY_LIST     = b']'   # push empty list
-OBJ            = b'o'   # build & push class instance
+OBJ            = b'o'   # build & push kundi instance
 PUT            = b'p'   # store stack top in memo; index is string arg
 BINPUT         = b'q'   #   "     "    "   "   " ;   "    " 1-byte arg
 LONG_BINPUT    = b'r'   #   "     "    "   "   " ;   "    " 4-byte arg
@@ -194,33 +194,33 @@ BYTEARRAY8       = b'\x96'  # push bytearray
 NEXT_BUFFER      = b'\x97'  # push next out-of-band buffer
 READONLY_BUFFER  = b'\x98'  # make top of stack readonly
 
-__all__.extend([x for x in dir() if re.match("[A-Z][A-Z0-9_]+$", x)])
+__all__.extend([x for x in dir() ikiwa re.match("[A-Z][A-Z0-9_]+$", x)])
 
 
-class _Framer:
+kundi _Framer:
 
     _FRAME_SIZE_MIN = 4
     _FRAME_SIZE_TARGET = 64 * 1024
 
-    def __init__(self, file_write):
+    eleza __init__(self, file_write):
         self.file_write = file_write
         self.current_frame = None
 
-    def start_framing(self):
+    eleza start_framing(self):
         self.current_frame = io.BytesIO()
 
-    def end_framing(self):
-        if self.current_frame and self.current_frame.tell() > 0:
+    eleza end_framing(self):
+        ikiwa self.current_frame and self.current_frame.tell() > 0:
             self.commit_frame(force=True)
             self.current_frame = None
 
-    def commit_frame(self, force=False):
-        if self.current_frame:
+    eleza commit_frame(self, force=False):
+        ikiwa self.current_frame:
             f = self.current_frame
-            if f.tell() >= self._FRAME_SIZE_TARGET or force:
+            ikiwa f.tell() >= self._FRAME_SIZE_TARGET or force:
                 data = f.getbuffer()
                 write = self.file_write
-                if len(data) >= self._FRAME_SIZE_MIN:
+                ikiwa len(data) >= self._FRAME_SIZE_MIN:
                     # Issue a single call to the write method of the underlying
                     # file object for the frame opcode with the size of the
                     # frame. The concatenation is expected to be less expensive
@@ -238,15 +238,15 @@ class _Framer:
                 # io.BytesIO instance.
                 self.current_frame = io.BytesIO()
 
-    def write(self, data):
-        if self.current_frame:
-            return self.current_frame.write(data)
+    eleza write(self, data):
+        ikiwa self.current_frame:
+            rudisha self.current_frame.write(data)
         else:
-            return self.file_write(data)
+            rudisha self.file_write(data)
 
-    def write_large_bytes(self, header, payload):
+    eleza write_large_bytes(self, header, payload):
         write = self.file_write
-        if self.current_frame:
+        ikiwa self.current_frame:
             # Terminate the current frame and flush it to the file.
             self.commit_frame(force=True)
 
@@ -260,58 +260,58 @@ class _Framer:
         write(payload)
 
 
-class _Unframer:
+kundi _Unframer:
 
-    def __init__(self, file_read, file_readline, file_tell=None):
+    eleza __init__(self, file_read, file_readline, file_tell=None):
         self.file_read = file_read
         self.file_readline = file_readline
         self.current_frame = None
 
-    def readinto(self, buf):
-        if self.current_frame:
+    eleza readinto(self, buf):
+        ikiwa self.current_frame:
             n = self.current_frame.readinto(buf)
-            if n == 0 and len(buf) != 0:
+            ikiwa n == 0 and len(buf) != 0:
                 self.current_frame = None
                 n = len(buf)
                 buf[:] = self.file_read(n)
-                return n
-            if n < len(buf):
+                rudisha n
+            ikiwa n < len(buf):
                 raise UnpicklingError(
                     "pickle exhausted before end of frame")
-            return n
+            rudisha n
         else:
             n = len(buf)
             buf[:] = self.file_read(n)
-            return n
+            rudisha n
 
-    def read(self, n):
-        if self.current_frame:
+    eleza read(self, n):
+        ikiwa self.current_frame:
             data = self.current_frame.read(n)
-            if not data and n != 0:
+            ikiwa not data and n != 0:
                 self.current_frame = None
-                return self.file_read(n)
-            if len(data) < n:
+                rudisha self.file_read(n)
+            ikiwa len(data) < n:
                 raise UnpicklingError(
                     "pickle exhausted before end of frame")
-            return data
+            rudisha data
         else:
-            return self.file_read(n)
+            rudisha self.file_read(n)
 
-    def readline(self):
-        if self.current_frame:
+    eleza readline(self):
+        ikiwa self.current_frame:
             data = self.current_frame.readline()
-            if not data:
+            ikiwa not data:
                 self.current_frame = None
-                return self.file_readline()
-            if data[-1] != b'\n'[0]:
+                rudisha self.file_readline()
+            ikiwa data[-1] != b'\n'[0]:
                 raise UnpicklingError(
                     "pickle exhausted before end of frame")
-            return data
+            rudisha data
         else:
-            return self.file_readline()
+            rudisha self.file_readline()
 
-    def load_frame(self, frame_size):
-        if self.current_frame and self.current_frame.read() != b'':
+    eleza load_frame(self, frame_size):
+        ikiwa self.current_frame and self.current_frame.read() != b'':
             raise UnpicklingError(
                 "beginning of a new frame before end of current frame")
         self.current_frame = io.BytesIO(self.file_read(frame_size))
@@ -319,9 +319,9 @@ class _Unframer:
 
 # Tools used for pickling.
 
-def _getattribute(obj, name):
+eleza _getattribute(obj, name):
     for subpath in name.split('.'):
-        if subpath == '<locals>':
+        ikiwa subpath == '<locals>':
             raise AttributeError("Can't get local attribute {!r} on {!r}"
                                  .format(name, obj))
         try:
@@ -330,26 +330,26 @@ def _getattribute(obj, name):
         except AttributeError:
             raise AttributeError("Can't get attribute {!r} on {!r}"
                                  .format(name, obj)) kutoka None
-    return obj, parent
+    rudisha obj, parent
 
-def whichmodule(obj, name):
+eleza whichmodule(obj, name):
     """Find the module an object belong to."""
     module_name = getattr(obj, '__module__', None)
-    if module_name is not None:
-        return module_name
+    ikiwa module_name is not None:
+        rudisha module_name
     # Protect the iteration by using a list copy of sys.modules against dynamic
     # modules that trigger agizas of other modules upon calls to getattr.
     for module_name, module in list(sys.modules.items()):
-        if module_name == '__main__' or module is None:
+        ikiwa module_name == '__main__' or module is None:
             continue
         try:
-            if _getattribute(module, name)[0] is obj:
-                return module_name
+            ikiwa _getattribute(module, name)[0] is obj:
+                rudisha module_name
         except AttributeError:
             pass
-    return '__main__'
+    rudisha '__main__'
 
-def encode_long(x):
+eleza encode_long(x):
     r"""Encode a long to a two's complement little-endian binary string.
     Note that 0 is a special case, returning an empty string, to save a
     byte in the LONG1 pickling context.
@@ -370,16 +370,16 @@ def encode_long(x):
     b'\x7f'
     >>>
     """
-    if x == 0:
-        return b''
+    ikiwa x == 0:
+        rudisha b''
     nbytes = (x.bit_length() >> 3) + 1
     result = x.to_bytes(nbytes, byteorder='little', signed=True)
-    if x < 0 and nbytes > 1:
-        if result[-1] == 0xff and (result[-2] & 0x80) != 0:
+    ikiwa x < 0 and nbytes > 1:
+        ikiwa result[-1] == 0xff and (result[-2] & 0x80) != 0:
             result = result[:-1]
-    return result
+    rudisha result
 
-def decode_long(data):
+eleza decode_long(data):
     r"""Decode a long kutoka a two's complement little-endian binary string.
 
     >>> decode_long(b'')
@@ -397,14 +397,14 @@ def decode_long(data):
     >>> decode_long(b"\x7f")
     127
     """
-    return int.from_bytes(data, byteorder='little', signed=True)
+    rudisha int.kutoka_bytes(data, byteorder='little', signed=True)
 
 
 # Pickling machinery
 
-class _Pickler:
+kundi _Pickler:
 
-    def __init__(self, file, protocol=None, *, fix_agizas=True,
+    eleza __init__(self, file, protocol=None, *, fix_agizas=True,
                  buffer_callback=None):
         """This takes a binary file for writing a pickle data stream.
 
@@ -436,16 +436,16 @@ class _Pickler:
         (such as None), the given buffer is out-of-band; otherwise the
         buffer is serialized in-band, i.e. inside the pickle stream.
 
-        It is an error if *buffer_callback* is not None and *protocol*
+        It is an error ikiwa *buffer_callback* is not None and *protocol*
         is None or smaller than 5.
         """
-        if protocol is None:
+        ikiwa protocol is None:
             protocol = DEFAULT_PROTOCOL
-        if protocol < 0:
+        ikiwa protocol < 0:
             protocol = HIGHEST_PROTOCOL
-        elif not 0 <= protocol <= HIGHEST_PROTOCOL:
+        elikiwa not 0 <= protocol <= HIGHEST_PROTOCOL:
             raise ValueError("pickle protocol must be <= %d" % HIGHEST_PROTOCOL)
-        if buffer_callback is not None and protocol < 5:
+        ikiwa buffer_callback is not None and protocol < 5:
             raise ValueError("buffer_callback needs protocol >= 5")
         self._buffer_callback = buffer_callback
         try:
@@ -461,7 +461,7 @@ class _Pickler:
         self.fast = 0
         self.fix_agizas = fix_agizas and protocol < 3
 
-    def clear_memo(self):
+    eleza clear_memo(self):
         """Clears the pickler's "memo".
 
         The memo is the data structure that remembers which objects the
@@ -471,22 +471,22 @@ class _Pickler:
         """
         self.memo.clear()
 
-    def dump(self, obj):
+    eleza dump(self, obj):
         """Write a pickled representation of obj to the open file."""
         # Check whether Pickler was initialized correctly. This is
         # only needed to mimic the behavior of _pickle.Pickler.dump().
-        if not hasattr(self, "_file_write"):
+        ikiwa not hasattr(self, "_file_write"):
             raise PicklingError("Pickler.__init__() was not called by "
                                 "%s.__init__()" % (self.__class__.__name__,))
-        if self.proto >= 2:
+        ikiwa self.proto >= 2:
             self.write(PROTO + pack("<B", self.proto))
-        if self.proto >= 4:
+        ikiwa self.proto >= 4:
             self.framer.start_framing()
         self.save(obj)
         self.write(STOP)
         self.framer.end_framing()
 
-    def memoize(self, obj):
+    eleza memoize(self, obj):
         """Store an object in the memo."""
 
         # The Pickler memo is a dictionary mapping object ids to 2-tuples
@@ -501,7 +501,7 @@ class _Pickler:
         # But there appears no advantage to any other scheme, and this
         # scheme allows the Unpickler memo to be implemented as a plain (but
         # growable) array, indexed by memo key.
-        if self.fast:
+        ikiwa self.fast:
             return
         assert id(obj) not in self.memo
         idx = len(self.memo)
@@ -509,104 +509,104 @@ class _Pickler:
         self.memo[id(obj)] = idx, obj
 
     # Return a PUT (BINPUT, LONG_BINPUT) opcode string, with argument i.
-    def put(self, idx):
-        if self.proto >= 4:
-            return MEMOIZE
-        elif self.bin:
-            if idx < 256:
-                return BINPUT + pack("<B", idx)
+    eleza put(self, idx):
+        ikiwa self.proto >= 4:
+            rudisha MEMOIZE
+        elikiwa self.bin:
+            ikiwa idx < 256:
+                rudisha BINPUT + pack("<B", idx)
             else:
-                return LONG_BINPUT + pack("<I", idx)
+                rudisha LONG_BINPUT + pack("<I", idx)
         else:
-            return PUT + repr(idx).encode("ascii") + b'\n'
+            rudisha PUT + repr(idx).encode("ascii") + b'\n'
 
     # Return a GET (BINGET, LONG_BINGET) opcode string, with argument i.
-    def get(self, i):
-        if self.bin:
-            if i < 256:
-                return BINGET + pack("<B", i)
+    eleza get(self, i):
+        ikiwa self.bin:
+            ikiwa i < 256:
+                rudisha BINGET + pack("<B", i)
             else:
-                return LONG_BINGET + pack("<I", i)
+                rudisha LONG_BINGET + pack("<I", i)
 
-        return GET + repr(i).encode("ascii") + b'\n'
+        rudisha GET + repr(i).encode("ascii") + b'\n'
 
-    def save(self, obj, save_persistent_id=True):
+    eleza save(self, obj, save_persistent_id=True):
         self.framer.commit_frame()
 
         # Check for persistent id (defined by a subclass)
         pid = self.persistent_id(obj)
-        if pid is not None and save_persistent_id:
+        ikiwa pid is not None and save_persistent_id:
             self.save_pers(pid)
             return
 
         # Check the memo
         x = self.memo.get(id(obj))
-        if x is not None:
+        ikiwa x is not None:
             self.write(self.get(x[0]))
             return
 
         rv = NotImplemented
         reduce = getattr(self, "reducer_override", None)
-        if reduce is not None:
+        ikiwa reduce is not None:
             rv = reduce(obj)
 
-        if rv is NotImplemented:
+        ikiwa rv is NotImplemented:
             # Check the type dispatch table
             t = type(obj)
             f = self.dispatch.get(t)
-            if f is not None:
+            ikiwa f is not None:
                 f(self, obj)  # Call unbound method with explicit self
                 return
 
-            # Check private dispatch table if any, or else
+            # Check private dispatch table ikiwa any, or else
             # copyreg.dispatch_table
             reduce = getattr(self, 'dispatch_table', dispatch_table).get(t)
-            if reduce is not None:
+            ikiwa reduce is not None:
                 rv = reduce(obj)
             else:
-                # Check for a class with a custom metaclass; treat as regular
+                # Check for a kundi with a custom metaclass; treat as regular
                 # class
-                if issubclass(t, type):
+                ikiwa issubclass(t, type):
                     self.save_global(obj)
                     return
 
                 # Check for a __reduce_ex__ method, fall back to __reduce__
                 reduce = getattr(obj, "__reduce_ex__", None)
-                if reduce is not None:
+                ikiwa reduce is not None:
                     rv = reduce(self.proto)
                 else:
                     reduce = getattr(obj, "__reduce__", None)
-                    if reduce is not None:
+                    ikiwa reduce is not None:
                         rv = reduce()
                     else:
                         raise PicklingError("Can't pickle %r object: %r" %
                                             (t.__name__, obj))
 
         # Check for string returned by reduce(), meaning "save as global"
-        if isinstance(rv, str):
+        ikiwa isinstance(rv, str):
             self.save_global(obj, rv)
             return
 
         # Assert that reduce() returned a tuple
-        if not isinstance(rv, tuple):
-            raise PicklingError("%s must return string or tuple" % reduce)
+        ikiwa not isinstance(rv, tuple):
+            raise PicklingError("%s must rudisha string or tuple" % reduce)
 
         # Assert that it returned an appropriately sized tuple
         l = len(rv)
-        if not (2 <= l <= 6):
+        ikiwa not (2 <= l <= 6):
             raise PicklingError("Tuple returned by %s must have "
                                 "two to six elements" % reduce)
 
         # Save the reduce() output and finally memoize the object
         self.save_reduce(obj=obj, *rv)
 
-    def persistent_id(self, obj):
-        # This exists so a subclass can override it
-        return None
+    eleza persistent_id(self, obj):
+        # This exists so a subkundi can override it
+        rudisha None
 
-    def save_pers(self, pid):
+    eleza save_pers(self, pid):
         # Save a persistent id reference
-        if self.bin:
+        ikiwa self.bin:
             self.save(pid, save_persistent_id=False)
             self.write(BINPERSID)
         else:
@@ -616,28 +616,28 @@ class _Pickler:
                 raise PicklingError(
                     "persistent IDs in protocol 0 must be ASCII strings")
 
-    def save_reduce(self, func, args, state=None, listitems=None,
+    eleza save_reduce(self, func, args, state=None, listitems=None,
                     dictitems=None, state_setter=None, obj=None):
         # This API is called by some subclasses
 
-        if not isinstance(args, tuple):
+        ikiwa not isinstance(args, tuple):
             raise PicklingError("args kutoka save_reduce() must be a tuple")
-        if not callable(func):
+        ikiwa not callable(func):
             raise PicklingError("func kutoka save_reduce() must be callable")
 
         save = self.save
         write = self.write
 
         func_name = getattr(func, "__name__", "")
-        if self.proto >= 2 and func_name == "__newobj_ex__":
+        ikiwa self.proto >= 2 and func_name == "__newobj_ex__":
             cls, args, kwargs = args
-            if not hasattr(cls, "__new__"):
+            ikiwa not hasattr(cls, "__new__"):
                 raise PicklingError("args[0] kutoka {} args has no __new__"
                                     .format(func_name))
-            if obj is not None and cls is not obj.__class__:
+            ikiwa obj is not None and cls is not obj.__class__:
                 raise PicklingError("args[0] kutoka {} args has the wrong class"
                                     .format(func_name))
-            if self.proto >= 4:
+            ikiwa self.proto >= 4:
                 save(cls)
                 save(args)
                 save(kwargs)
@@ -647,7 +647,7 @@ class _Pickler:
                 save(func)
                 save(())
                 write(REDUCE)
-        elif self.proto >= 2 and func_name == "__newobj__":
+        elikiwa self.proto >= 2 and func_name == "__newobj__":
             # A __reduce__ implementation can direct protocol 2 or newer to
             # use the more efficient NEWOBJ opcode, while still
             # allowing protocol 0 and 1 to work normally.  For this to
@@ -657,8 +657,8 @@ class _Pickler:
             # should be as follows, although pickle has no way to
             # verify this:
             #
-            # def __newobj__(cls, *args):
-            #     return cls.__new__(cls, *args)
+            # eleza __newobj__(cls, *args):
+            #     rudisha cls.__new__(cls, *args)
             #
             # Protocols 0 and 1 will pickle a reference to __newobj__,
             # while protocol 2 (and above) will pickle a reference to
@@ -675,10 +675,10 @@ class _Pickler:
             # protocol 0 or 1 in Python 2.3 should be unpicklable by
             # Python 2.2).
             cls = args[0]
-            if not hasattr(cls, "__new__"):
+            ikiwa not hasattr(cls, "__new__"):
                 raise PicklingError(
                     "args[0] kutoka __newobj__ args has no __new__")
-            if obj is not None and cls is not obj.__class__:
+            ikiwa obj is not None and cls is not obj.__class__:
                 raise PicklingError(
                     "args[0] kutoka __newobj__ args has the wrong class")
             args = args[1:]
@@ -690,11 +690,11 @@ class _Pickler:
             save(args)
             write(REDUCE)
 
-        if obj is not None:
+        ikiwa obj is not None:
             # If the object is already in the memo, this means it is
             # recursive. In this case, throw away everything we put on the
             # stack, and fetch the object back kutoka the memo.
-            if id(obj) in self.memo:
+            ikiwa id(obj) in self.memo:
                 write(POP + self.get(self.memo[id(obj)][0]))
             else:
                 self.memoize(obj)
@@ -704,14 +704,14 @@ class _Pickler:
         # the 4th and 5th item should be iterators that provide list
         # items and dict items (as (key, value) tuples), or None.
 
-        if listitems is not None:
+        ikiwa listitems is not None:
             self._batch_appends(listitems)
 
-        if dictitems is not None:
+        ikiwa dictitems is not None:
             self._batch_setitems(dictitems)
 
-        if state is not None:
-            if state_setter is None:
+        ikiwa state is not None:
+            ikiwa state_setter is None:
                 save(state)
                 write(BUILD)
             else:
@@ -735,125 +735,125 @@ class _Pickler:
 
     dispatch = {}
 
-    def save_none(self, obj):
+    eleza save_none(self, obj):
         self.write(NONE)
     dispatch[type(None)] = save_none
 
-    def save_bool(self, obj):
-        if self.proto >= 2:
-            self.write(NEWTRUE if obj else NEWFALSE)
+    eleza save_bool(self, obj):
+        ikiwa self.proto >= 2:
+            self.write(NEWTRUE ikiwa obj else NEWFALSE)
         else:
-            self.write(TRUE if obj else FALSE)
+            self.write(TRUE ikiwa obj else FALSE)
     dispatch[bool] = save_bool
 
-    def save_long(self, obj):
-        if self.bin:
+    eleza save_long(self, obj):
+        ikiwa self.bin:
             # If the int is small enough to fit in a signed 4-byte 2's-comp
             # format, we can store it more efficiently than the general
             # case.
             # First one- and two-byte unsigned ints:
-            if obj >= 0:
-                if obj <= 0xff:
+            ikiwa obj >= 0:
+                ikiwa obj <= 0xff:
                     self.write(BININT1 + pack("<B", obj))
                     return
-                if obj <= 0xffff:
+                ikiwa obj <= 0xffff:
                     self.write(BININT2 + pack("<H", obj))
                     return
             # Next check for 4-byte signed ints:
-            if -0x80000000 <= obj <= 0x7fffffff:
+            ikiwa -0x80000000 <= obj <= 0x7fffffff:
                 self.write(BININT + pack("<i", obj))
                 return
-        if self.proto >= 2:
+        ikiwa self.proto >= 2:
             encoded = encode_long(obj)
             n = len(encoded)
-            if n < 256:
+            ikiwa n < 256:
                 self.write(LONG1 + pack("<B", n) + encoded)
             else:
                 self.write(LONG4 + pack("<i", n) + encoded)
             return
-        if -0x80000000 <= obj <= 0x7fffffff:
+        ikiwa -0x80000000 <= obj <= 0x7fffffff:
             self.write(INT + repr(obj).encode("ascii") + b'\n')
         else:
             self.write(LONG + repr(obj).encode("ascii") + b'L\n')
     dispatch[int] = save_long
 
-    def save_float(self, obj):
-        if self.bin:
+    eleza save_float(self, obj):
+        ikiwa self.bin:
             self.write(BINFLOAT + pack('>d', obj))
         else:
             self.write(FLOAT + repr(obj).encode("ascii") + b'\n')
     dispatch[float] = save_float
 
-    def save_bytes(self, obj):
-        if self.proto < 3:
-            if not obj: # bytes object is empty
+    eleza save_bytes(self, obj):
+        ikiwa self.proto < 3:
+            ikiwa not obj: # bytes object is empty
                 self.save_reduce(bytes, (), obj=obj)
             else:
                 self.save_reduce(codecs.encode,
                                  (str(obj, 'latin1'), 'latin1'), obj=obj)
             return
         n = len(obj)
-        if n <= 0xff:
+        ikiwa n <= 0xff:
             self.write(SHORT_BINBYTES + pack("<B", n) + obj)
-        elif n > 0xffffffff and self.proto >= 4:
+        elikiwa n > 0xffffffff and self.proto >= 4:
             self._write_large_bytes(BINBYTES8 + pack("<Q", n), obj)
-        elif n >= self.framer._FRAME_SIZE_TARGET:
+        elikiwa n >= self.framer._FRAME_SIZE_TARGET:
             self._write_large_bytes(BINBYTES + pack("<I", n), obj)
         else:
             self.write(BINBYTES + pack("<I", n) + obj)
         self.memoize(obj)
     dispatch[bytes] = save_bytes
 
-    def save_bytearray(self, obj):
-        if self.proto < 5:
-            if not obj:  # bytearray is empty
+    eleza save_bytearray(self, obj):
+        ikiwa self.proto < 5:
+            ikiwa not obj:  # bytearray is empty
                 self.save_reduce(bytearray, (), obj=obj)
             else:
                 self.save_reduce(bytearray, (bytes(obj),), obj=obj)
             return
         n = len(obj)
-        if n >= self.framer._FRAME_SIZE_TARGET:
+        ikiwa n >= self.framer._FRAME_SIZE_TARGET:
             self._write_large_bytes(BYTEARRAY8 + pack("<Q", n), obj)
         else:
             self.write(BYTEARRAY8 + pack("<Q", n) + obj)
     dispatch[bytearray] = save_bytearray
 
-    if _HAVE_PICKLE_BUFFER:
-        def save_picklebuffer(self, obj):
-            if self.proto < 5:
+    ikiwa _HAVE_PICKLE_BUFFER:
+        eleza save_picklebuffer(self, obj):
+            ikiwa self.proto < 5:
                 raise PicklingError("PickleBuffer can only pickled with "
                                     "protocol >= 5")
             with obj.raw() as m:
-                if not m.contiguous:
+                ikiwa not m.contiguous:
                     raise PicklingError("PickleBuffer can not be pickled when "
                                         "pointing to a non-contiguous buffer")
                 in_band = True
-                if self._buffer_callback is not None:
+                ikiwa self._buffer_callback is not None:
                     in_band = bool(self._buffer_callback(obj))
-                if in_band:
+                ikiwa in_band:
                     # Write data in-band
                     # XXX The C implementation avoids a copy here
-                    if m.readonly:
+                    ikiwa m.readonly:
                         self.save_bytes(m.tobytes())
                     else:
                         self.save_bytearray(m.tobytes())
                 else:
                     # Write data out-of-band
                     self.write(NEXT_BUFFER)
-                    if m.readonly:
+                    ikiwa m.readonly:
                         self.write(READONLY_BUFFER)
 
         dispatch[PickleBuffer] = save_picklebuffer
 
-    def save_str(self, obj):
-        if self.bin:
+    eleza save_str(self, obj):
+        ikiwa self.bin:
             encoded = obj.encode('utf-8', 'surrogatepass')
             n = len(encoded)
-            if n <= 0xff and self.proto >= 4:
+            ikiwa n <= 0xff and self.proto >= 4:
                 self.write(SHORT_BINUNICODE + pack("<B", n) + encoded)
-            elif n > 0xffffffff and self.proto >= 4:
+            elikiwa n > 0xffffffff and self.proto >= 4:
                 self._write_large_bytes(BINUNICODE8 + pack("<Q", n), encoded)
-            elif n >= self.framer._FRAME_SIZE_TARGET:
+            elikiwa n >= self.framer._FRAME_SIZE_TARGET:
                 self._write_large_bytes(BINUNICODE + pack("<I", n), encoded)
             else:
                 self.write(BINUNICODE + pack("<I", n) + encoded)
@@ -868,9 +868,9 @@ class _Pickler:
         self.memoize(obj)
     dispatch[str] = save_str
 
-    def save_tuple(self, obj):
-        if not obj: # tuple is empty
-            if self.bin:
+    eleza save_tuple(self, obj):
+        ikiwa not obj: # tuple is empty
+            ikiwa self.bin:
                 self.write(EMPTY_TUPLE)
             else:
                 self.write(MARK + TUPLE)
@@ -879,11 +879,11 @@ class _Pickler:
         n = len(obj)
         save = self.save
         memo = self.memo
-        if n <= 3 and self.proto >= 2:
+        ikiwa n <= 3 and self.proto >= 2:
             for element in obj:
                 save(element)
             # Subtle.  Same as in the big comment below.
-            if id(obj) in memo:
+            ikiwa id(obj) in memo:
                 get = self.get(memo[id(obj)][0])
                 self.write(POP * n + get)
             else:
@@ -898,7 +898,7 @@ class _Pickler:
         for element in obj:
             save(element)
 
-        if id(obj) in memo:
+        ikiwa id(obj) in memo:
             # Subtle.  d was not in memo when we entered save_tuple(), so
             # the process of saving the tuple's elements must have saved
             # the tuple itself:  the tuple is recursive.  The proper action
@@ -907,7 +907,7 @@ class _Pickler:
             # could have been done in the "for element" loop instead, but
             # recursive tuples are a rare thing.
             get = self.get(memo[id(obj)][0])
-            if self.bin:
+            ikiwa self.bin:
                 write(POP_MARK + get)
             else:   # proto 0 -- POP_MARK not available
                 write(POP * (n+1) + get)
@@ -919,8 +919,8 @@ class _Pickler:
 
     dispatch[tuple] = save_tuple
 
-    def save_list(self, obj):
-        if self.bin:
+    eleza save_list(self, obj):
+        ikiwa self.bin:
             self.write(EMPTY_LIST)
         else:   # proto 0 -- can't use EMPTY_LIST
             self.write(MARK + LIST)
@@ -932,12 +932,12 @@ class _Pickler:
 
     _BATCHSIZE = 1000
 
-    def _batch_appends(self, items):
+    eleza _batch_appends(self, items):
         # Helper to batch up APPENDS sequences
         save = self.save
         write = self.write
 
-        if not self.bin:
+        ikiwa not self.bin:
             for x in items:
                 save(x)
                 write(APPEND)
@@ -947,20 +947,20 @@ class _Pickler:
         while True:
             tmp = list(islice(it, self._BATCHSIZE))
             n = len(tmp)
-            if n > 1:
+            ikiwa n > 1:
                 write(MARK)
                 for x in tmp:
                     save(x)
                 write(APPENDS)
-            elif n:
+            elikiwa n:
                 save(tmp[0])
                 write(APPEND)
             # else tmp is empty, and we're done
-            if n < self._BATCHSIZE:
+            ikiwa n < self._BATCHSIZE:
                 return
 
-    def save_dict(self, obj):
-        if self.bin:
+    eleza save_dict(self, obj):
+        ikiwa self.bin:
             self.write(EMPTY_DICT)
         else:   # proto 0 -- can't use EMPTY_DICT
             self.write(MARK + DICT)
@@ -969,15 +969,15 @@ class _Pickler:
         self._batch_setitems(obj.items())
 
     dispatch[dict] = save_dict
-    if PyStringMap is not None:
+    ikiwa PyStringMap is not None:
         dispatch[PyStringMap] = save_dict
 
-    def _batch_setitems(self, items):
+    eleza _batch_setitems(self, items):
         # Helper to batch up SETITEMS sequences; proto >= 1 only
         save = self.save
         write = self.write
 
-        if not self.bin:
+        ikiwa not self.bin:
             for k, v in items:
                 save(k)
                 save(v)
@@ -988,26 +988,26 @@ class _Pickler:
         while True:
             tmp = list(islice(it, self._BATCHSIZE))
             n = len(tmp)
-            if n > 1:
+            ikiwa n > 1:
                 write(MARK)
                 for k, v in tmp:
                     save(k)
                     save(v)
                 write(SETITEMS)
-            elif n:
+            elikiwa n:
                 k, v = tmp[0]
                 save(k)
                 save(v)
                 write(SETITEM)
             # else tmp is empty, and we're done
-            if n < self._BATCHSIZE:
+            ikiwa n < self._BATCHSIZE:
                 return
 
-    def save_set(self, obj):
+    eleza save_set(self, obj):
         save = self.save
         write = self.write
 
-        if self.proto < 4:
+        ikiwa self.proto < 4:
             self.save_reduce(set, (list(obj),), obj=obj)
             return
 
@@ -1018,20 +1018,20 @@ class _Pickler:
         while True:
             batch = list(islice(it, self._BATCHSIZE))
             n = len(batch)
-            if n > 0:
+            ikiwa n > 0:
                 write(MARK)
                 for item in batch:
                     save(item)
                 write(ADDITEMS)
-            if n < self._BATCHSIZE:
+            ikiwa n < self._BATCHSIZE:
                 return
     dispatch[set] = save_set
 
-    def save_frozenset(self, obj):
+    eleza save_frozenset(self, obj):
         save = self.save
         write = self.write
 
-        if self.proto < 4:
+        ikiwa self.proto < 4:
             self.save_reduce(frozenset, (list(obj),), obj=obj)
             return
 
@@ -1039,7 +1039,7 @@ class _Pickler:
         for item in obj:
             save(item)
 
-        if id(obj) in self.memo:
+        ikiwa id(obj) in self.memo:
             # If the object is already in the memo, this means it is
             # recursive. In this case, throw away everything we put on the
             # stack, and fetch the object back kutoka the memo.
@@ -1050,13 +1050,13 @@ class _Pickler:
         self.memoize(obj)
     dispatch[frozenset] = save_frozenset
 
-    def save_global(self, obj, name=None):
+    eleza save_global(self, obj, name=None):
         write = self.write
         memo = self.memo
 
-        if name is None:
+        ikiwa name is None:
             name = getattr(obj, '__qualname__', None)
-        if name is None:
+        ikiwa name is None:
             name = obj.__name__
 
         module_name = whichmodule(obj, name)
@@ -1069,42 +1069,42 @@ class _Pickler:
                 "Can't pickle %r: it's not found as %s.%s" %
                 (obj, module_name, name)) kutoka None
         else:
-            if obj2 is not obj:
+            ikiwa obj2 is not obj:
                 raise PicklingError(
                     "Can't pickle %r: it's not the same object as %s.%s" %
                     (obj, module_name, name))
 
-        if self.proto >= 2:
+        ikiwa self.proto >= 2:
             code = _extension_registry.get((module_name, name))
-            if code:
+            ikiwa code:
                 assert code > 0
-                if code <= 0xff:
+                ikiwa code <= 0xff:
                     write(EXT1 + pack("<B", code))
-                elif code <= 0xffff:
+                elikiwa code <= 0xffff:
                     write(EXT2 + pack("<H", code))
                 else:
                     write(EXT4 + pack("<i", code))
                 return
         lastname = name.rpartition('.')[2]
-        if parent is module:
+        ikiwa parent is module:
             name = lastname
         # Non-ASCII identifiers are supported only with protocols >= 3.
-        if self.proto >= 4:
+        ikiwa self.proto >= 4:
             self.save(module_name)
             self.save(name)
             write(STACK_GLOBAL)
-        elif parent is not module:
+        elikiwa parent is not module:
             self.save_reduce(getattr, (parent, lastname))
-        elif self.proto >= 3:
+        elikiwa self.proto >= 3:
             write(GLOBAL + bytes(module_name, "utf-8") + b'\n' +
                   bytes(name, "utf-8") + b'\n')
         else:
-            if self.fix_agizas:
+            ikiwa self.fix_agizas:
                 r_name_mapping = _compat_pickle.REVERSE_NAME_MAPPING
                 r_import_mapping = _compat_pickle.REVERSE_IMPORT_MAPPING
-                if (module_name, name) in r_name_mapping:
+                ikiwa (module_name, name) in r_name_mapping:
                     module_name, name = r_name_mapping[(module_name, name)]
-                elif module_name in r_import_mapping:
+                elikiwa module_name in r_import_mapping:
                     module_name = r_import_mapping[module_name]
             try:
                 write(GLOBAL + bytes(module_name, "ascii") + b'\n' +
@@ -1116,14 +1116,14 @@ class _Pickler:
 
         self.memoize(obj)
 
-    def save_type(self, obj):
-        if obj is type(None):
-            return self.save_reduce(type, (None,), obj=obj)
-        elif obj is type(NotImplemented):
-            return self.save_reduce(type, (NotImplemented,), obj=obj)
-        elif obj is type(...):
-            return self.save_reduce(type, (...,), obj=obj)
-        return self.save_global(obj)
+    eleza save_type(self, obj):
+        ikiwa obj is type(None):
+            rudisha self.save_reduce(type, (None,), obj=obj)
+        elikiwa obj is type(NotImplemented):
+            rudisha self.save_reduce(type, (NotImplemented,), obj=obj)
+        elikiwa obj is type(...):
+            rudisha self.save_reduce(type, (...,), obj=obj)
+        rudisha self.save_global(obj)
 
     dispatch[FunctionType] = save_global
     dispatch[type] = save_type
@@ -1131,9 +1131,9 @@ class _Pickler:
 
 # Unpickling machinery
 
-class _Unpickler:
+kundi _Unpickler:
 
-    def __init__(self, file, *, fix_agizas=True,
+    eleza __init__(self, file, *, fix_agizas=True,
                  encoding="ASCII", errors="strict", buffers=None):
         """This takes a binary file for reading a pickle data stream.
 
@@ -1142,13 +1142,13 @@ class _Unpickler:
 
         The argument *file* must have two methods, a read() method that
         takes an integer argument, and a readline() method that requires
-        no arguments.  Both methods should return bytes.  Thus *file*
+        no arguments.  Both methods should rudisha bytes.  Thus *file*
         can be a binary file object opened for reading, an io.BytesIO
         object, or any other custom object that meets this interface.
 
         The file-like object must have two methods, a read() method
         that takes an integer argument, and a readline() method that
-        requires no arguments.  Both methods should return bytes.
+        requires no arguments.  Both methods should rudisha bytes.
         Thus file-like object can be a binary file object opened for
         reading, a BytesIO object, or any other custom object that
         meets this interface.
@@ -1160,7 +1160,7 @@ class _Unpickler:
 
         If *buffers* is None (the default), then the buffers are taken
         kutoka the pickle stream, assuming they are serialized there.
-        It is an error for *buffers* to be None if the pickle stream
+        It is an error for *buffers* to be None ikiwa the pickle stream
         was produced with a non-None *buffer_callback*.
 
         Other optional arguments are *fix_agizas*, *encoding* and
@@ -1172,7 +1172,7 @@ class _Unpickler:
         default to 'ASCII' and 'strict', respectively. *encoding* can be
         'bytes' to read theses 8-bit string instances as bytes objects.
         """
-        self._buffers = iter(buffers) if buffers is not None else None
+        self._buffers = iter(buffers) ikiwa buffers is not None else None
         self._file_readline = file.readline
         self._file_read = file.read
         self.memo = {}
@@ -1181,14 +1181,14 @@ class _Unpickler:
         self.proto = 0
         self.fix_agizas = fix_agizas
 
-    def load(self):
+    eleza load(self):
         """Read a pickled object representation kutoka the open file.
 
         Return the reconstituted object hierarchy specified in the file.
         """
         # Check whether Unpickler was initialized correctly. This is
         # only needed to mimic the behavior of _pickle.Unpickler.dump().
-        if not hasattr(self, "_file_read"):
+        ikiwa not hasattr(self, "_file_read"):
             raise UnpicklingError("Unpickler.__init__() was not called by "
                                   "%s.__init__()" % (self.__class__.__name__,))
         self._unframer = _Unframer(self._file_read, self._file_readline)
@@ -1204,40 +1204,40 @@ class _Unpickler:
         try:
             while True:
                 key = read(1)
-                if not key:
+                ikiwa not key:
                     raise EOFError
                 assert isinstance(key, bytes_types)
                 dispatch[key[0]](self)
         except _Stop as stopinst:
-            return stopinst.value
+            rudisha stopinst.value
 
     # Return a list of items pushed in the stack after last MARK instruction.
-    def pop_mark(self):
+    eleza pop_mark(self):
         items = self.stack
         self.stack = self.metastack.pop()
         self.append = self.stack.append
-        return items
+        rudisha items
 
-    def persistent_load(self, pid):
+    eleza persistent_load(self, pid):
         raise UnpicklingError("unsupported persistent id encountered")
 
     dispatch = {}
 
-    def load_proto(self):
+    eleza load_proto(self):
         proto = self.read(1)[0]
-        if not 0 <= proto <= HIGHEST_PROTOCOL:
+        ikiwa not 0 <= proto <= HIGHEST_PROTOCOL:
             raise ValueError("unsupported pickle protocol: %d" % proto)
         self.proto = proto
     dispatch[PROTO[0]] = load_proto
 
-    def load_frame(self):
+    eleza load_frame(self):
         frame_size, = unpack('<Q', self.read(8))
-        if frame_size > sys.maxsize:
+        ikiwa frame_size > sys.maxsize:
             raise ValueError("frame size > sys.maxsize: %d" % frame_size)
         self._unframer.load_frame(frame_size)
     dispatch[FRAME[0]] = load_frame
 
-    def load_persid(self):
+    eleza load_persid(self):
         try:
             pid = self.readline()[:-1].decode("ascii")
         except UnicodeDecodeError:
@@ -1246,143 +1246,143 @@ class _Unpickler:
         self.append(self.persistent_load(pid))
     dispatch[PERSID[0]] = load_persid
 
-    def load_binpersid(self):
+    eleza load_binpersid(self):
         pid = self.stack.pop()
         self.append(self.persistent_load(pid))
     dispatch[BINPERSID[0]] = load_binpersid
 
-    def load_none(self):
+    eleza load_none(self):
         self.append(None)
     dispatch[NONE[0]] = load_none
 
-    def load_false(self):
+    eleza load_false(self):
         self.append(False)
     dispatch[NEWFALSE[0]] = load_false
 
-    def load_true(self):
+    eleza load_true(self):
         self.append(True)
     dispatch[NEWTRUE[0]] = load_true
 
-    def load_int(self):
+    eleza load_int(self):
         data = self.readline()
-        if data == FALSE[1:]:
+        ikiwa data == FALSE[1:]:
             val = False
-        elif data == TRUE[1:]:
+        elikiwa data == TRUE[1:]:
             val = True
         else:
             val = int(data, 0)
         self.append(val)
     dispatch[INT[0]] = load_int
 
-    def load_binint(self):
+    eleza load_binint(self):
         self.append(unpack('<i', self.read(4))[0])
     dispatch[BININT[0]] = load_binint
 
-    def load_binint1(self):
+    eleza load_binint1(self):
         self.append(self.read(1)[0])
     dispatch[BININT1[0]] = load_binint1
 
-    def load_binint2(self):
+    eleza load_binint2(self):
         self.append(unpack('<H', self.read(2))[0])
     dispatch[BININT2[0]] = load_binint2
 
-    def load_long(self):
+    eleza load_long(self):
         val = self.readline()[:-1]
-        if val and val[-1] == b'L'[0]:
+        ikiwa val and val[-1] == b'L'[0]:
             val = val[:-1]
         self.append(int(val, 0))
     dispatch[LONG[0]] = load_long
 
-    def load_long1(self):
+    eleza load_long1(self):
         n = self.read(1)[0]
         data = self.read(n)
         self.append(decode_long(data))
     dispatch[LONG1[0]] = load_long1
 
-    def load_long4(self):
+    eleza load_long4(self):
         n, = unpack('<i', self.read(4))
-        if n < 0:
+        ikiwa n < 0:
             # Corrupt or hostile pickle -- we never write one like this
             raise UnpicklingError("LONG pickle has negative byte count")
         data = self.read(n)
         self.append(decode_long(data))
     dispatch[LONG4[0]] = load_long4
 
-    def load_float(self):
+    eleza load_float(self):
         self.append(float(self.readline()[:-1]))
     dispatch[FLOAT[0]] = load_float
 
-    def load_binfloat(self):
+    eleza load_binfloat(self):
         self.append(unpack('>d', self.read(8))[0])
     dispatch[BINFLOAT[0]] = load_binfloat
 
-    def _decode_string(self, value):
+    eleza _decode_string(self, value):
         # Used to allow strings kutoka Python 2 to be decoded either as
         # bytes or Unicode strings.  This should be used only with the
         # STRING, BINSTRING and SHORT_BINSTRING opcodes.
-        if self.encoding == "bytes":
-            return value
+        ikiwa self.encoding == "bytes":
+            rudisha value
         else:
-            return value.decode(self.encoding, self.errors)
+            rudisha value.decode(self.encoding, self.errors)
 
-    def load_string(self):
+    eleza load_string(self):
         data = self.readline()[:-1]
         # Strip outermost quotes
-        if len(data) >= 2 and data[0] == data[-1] and data[0] in b'"\'':
+        ikiwa len(data) >= 2 and data[0] == data[-1] and data[0] in b'"\'':
             data = data[1:-1]
         else:
             raise UnpicklingError("the STRING opcode argument must be quoted")
         self.append(self._decode_string(codecs.escape_decode(data)[0]))
     dispatch[STRING[0]] = load_string
 
-    def load_binstring(self):
+    eleza load_binstring(self):
         # Deprecated BINSTRING uses signed 32-bit length
         len, = unpack('<i', self.read(4))
-        if len < 0:
+        ikiwa len < 0:
             raise UnpicklingError("BINSTRING pickle has negative byte count")
         data = self.read(len)
         self.append(self._decode_string(data))
     dispatch[BINSTRING[0]] = load_binstring
 
-    def load_binbytes(self):
+    eleza load_binbytes(self):
         len, = unpack('<I', self.read(4))
-        if len > maxsize:
+        ikiwa len > maxsize:
             raise UnpicklingError("BINBYTES exceeds system's maximum size "
                                   "of %d bytes" % maxsize)
         self.append(self.read(len))
     dispatch[BINBYTES[0]] = load_binbytes
 
-    def load_unicode(self):
+    eleza load_unicode(self):
         self.append(str(self.readline()[:-1], 'raw-unicode-escape'))
     dispatch[UNICODE[0]] = load_unicode
 
-    def load_binunicode(self):
+    eleza load_binunicode(self):
         len, = unpack('<I', self.read(4))
-        if len > maxsize:
+        ikiwa len > maxsize:
             raise UnpicklingError("BINUNICODE exceeds system's maximum size "
                                   "of %d bytes" % maxsize)
         self.append(str(self.read(len), 'utf-8', 'surrogatepass'))
     dispatch[BINUNICODE[0]] = load_binunicode
 
-    def load_binunicode8(self):
+    eleza load_binunicode8(self):
         len, = unpack('<Q', self.read(8))
-        if len > maxsize:
+        ikiwa len > maxsize:
             raise UnpicklingError("BINUNICODE8 exceeds system's maximum size "
                                   "of %d bytes" % maxsize)
         self.append(str(self.read(len), 'utf-8', 'surrogatepass'))
     dispatch[BINUNICODE8[0]] = load_binunicode8
 
-    def load_binbytes8(self):
+    eleza load_binbytes8(self):
         len, = unpack('<Q', self.read(8))
-        if len > maxsize:
+        ikiwa len > maxsize:
             raise UnpicklingError("BINBYTES8 exceeds system's maximum size "
                                   "of %d bytes" % maxsize)
         self.append(self.read(len))
     dispatch[BINBYTES8[0]] = load_binbytes8
 
-    def load_bytearray8(self):
+    eleza load_bytearray8(self):
         len, = unpack('<Q', self.read(8))
-        if len > maxsize:
+        ikiwa len > maxsize:
             raise UnpicklingError("BYTEARRAY8 exceeds system's maximum size "
                                   "of %d bytes" % maxsize)
         b = bytearray(len)
@@ -1390,8 +1390,8 @@ class _Unpickler:
         self.append(b)
     dispatch[BYTEARRAY8[0]] = load_bytearray8
 
-    def load_next_buffer(self):
-        if self._buffers is None:
+    eleza load_next_buffer(self):
+        ikiwa self._buffers is None:
             raise UnpicklingError("pickle stream refers to out-of-band data "
                                   "but no *buffers* argument was given")
         try:
@@ -1401,86 +1401,86 @@ class _Unpickler:
         self.append(buf)
     dispatch[NEXT_BUFFER[0]] = load_next_buffer
 
-    def load_readonly_buffer(self):
+    eleza load_readonly_buffer(self):
         buf = self.stack[-1]
         with memoryview(buf) as m:
-            if not m.readonly:
+            ikiwa not m.readonly:
                 self.stack[-1] = m.toreadonly()
     dispatch[READONLY_BUFFER[0]] = load_readonly_buffer
 
-    def load_short_binstring(self):
+    eleza load_short_binstring(self):
         len = self.read(1)[0]
         data = self.read(len)
         self.append(self._decode_string(data))
     dispatch[SHORT_BINSTRING[0]] = load_short_binstring
 
-    def load_short_binbytes(self):
+    eleza load_short_binbytes(self):
         len = self.read(1)[0]
         self.append(self.read(len))
     dispatch[SHORT_BINBYTES[0]] = load_short_binbytes
 
-    def load_short_binunicode(self):
+    eleza load_short_binunicode(self):
         len = self.read(1)[0]
         self.append(str(self.read(len), 'utf-8', 'surrogatepass'))
     dispatch[SHORT_BINUNICODE[0]] = load_short_binunicode
 
-    def load_tuple(self):
+    eleza load_tuple(self):
         items = self.pop_mark()
         self.append(tuple(items))
     dispatch[TUPLE[0]] = load_tuple
 
-    def load_empty_tuple(self):
+    eleza load_empty_tuple(self):
         self.append(())
     dispatch[EMPTY_TUPLE[0]] = load_empty_tuple
 
-    def load_tuple1(self):
+    eleza load_tuple1(self):
         self.stack[-1] = (self.stack[-1],)
     dispatch[TUPLE1[0]] = load_tuple1
 
-    def load_tuple2(self):
+    eleza load_tuple2(self):
         self.stack[-2:] = [(self.stack[-2], self.stack[-1])]
     dispatch[TUPLE2[0]] = load_tuple2
 
-    def load_tuple3(self):
+    eleza load_tuple3(self):
         self.stack[-3:] = [(self.stack[-3], self.stack[-2], self.stack[-1])]
     dispatch[TUPLE3[0]] = load_tuple3
 
-    def load_empty_list(self):
+    eleza load_empty_list(self):
         self.append([])
     dispatch[EMPTY_LIST[0]] = load_empty_list
 
-    def load_empty_dictionary(self):
+    eleza load_empty_dictionary(self):
         self.append({})
     dispatch[EMPTY_DICT[0]] = load_empty_dictionary
 
-    def load_empty_set(self):
+    eleza load_empty_set(self):
         self.append(set())
     dispatch[EMPTY_SET[0]] = load_empty_set
 
-    def load_frozenset(self):
+    eleza load_frozenset(self):
         items = self.pop_mark()
         self.append(frozenset(items))
     dispatch[FROZENSET[0]] = load_frozenset
 
-    def load_list(self):
+    eleza load_list(self):
         items = self.pop_mark()
         self.append(items)
     dispatch[LIST[0]] = load_list
 
-    def load_dict(self):
+    eleza load_dict(self):
         items = self.pop_mark()
         d = {items[i]: items[i+1]
              for i in range(0, len(items), 2)}
         self.append(d)
     dispatch[DICT[0]] = load_dict
 
-    # INST and OBJ differ only in how they get a class object.  It's not
+    # INST and OBJ differ only in how they get a kundi object.  It's not
     # only sensible to do the rest in a common routine, the two routines
     # previously diverged and grew different bugs.
-    # klass is the class to instantiate, and k points to the topmost mark
+    # klass is the kundi to instantiate, and k points to the topmost mark
     # object, following which are the arguments for klass.__init__.
-    def _instantiate(self, klass, args):
-        if (args or not isinstance(klass, type) or
+    eleza _instantiate(self, klass, args):
+        ikiwa (args or not isinstance(klass, type) or
             hasattr(klass, "__getinitargs__")):
             try:
                 value = klass(*args)
@@ -1491,28 +1491,28 @@ class _Unpickler:
             value = klass.__new__(klass)
         self.append(value)
 
-    def load_inst(self):
+    eleza load_inst(self):
         module = self.readline()[:-1].decode("ascii")
         name = self.readline()[:-1].decode("ascii")
         klass = self.find_class(module, name)
         self._instantiate(klass, self.pop_mark())
     dispatch[INST[0]] = load_inst
 
-    def load_obj(self):
+    eleza load_obj(self):
         # Stack is ... markobject classobject arg1 arg2 ...
         args = self.pop_mark()
         cls = args.pop(0)
         self._instantiate(cls, args)
     dispatch[OBJ[0]] = load_obj
 
-    def load_newobj(self):
+    eleza load_newobj(self):
         args = self.stack.pop()
         cls = self.stack.pop()
         obj = cls.__new__(cls, *args)
         self.append(obj)
     dispatch[NEWOBJ[0]] = load_newobj
 
-    def load_newobj_ex(self):
+    eleza load_newobj_ex(self):
         kwargs = self.stack.pop()
         args = self.stack.pop()
         cls = self.stack.pop()
@@ -1520,45 +1520,45 @@ class _Unpickler:
         self.append(obj)
     dispatch[NEWOBJ_EX[0]] = load_newobj_ex
 
-    def load_global(self):
+    eleza load_global(self):
         module = self.readline()[:-1].decode("utf-8")
         name = self.readline()[:-1].decode("utf-8")
         klass = self.find_class(module, name)
         self.append(klass)
     dispatch[GLOBAL[0]] = load_global
 
-    def load_stack_global(self):
+    eleza load_stack_global(self):
         name = self.stack.pop()
         module = self.stack.pop()
-        if type(name) is not str or type(module) is not str:
+        ikiwa type(name) is not str or type(module) is not str:
             raise UnpicklingError("STACK_GLOBAL requires str")
         self.append(self.find_class(module, name))
     dispatch[STACK_GLOBAL[0]] = load_stack_global
 
-    def load_ext1(self):
+    eleza load_ext1(self):
         code = self.read(1)[0]
         self.get_extension(code)
     dispatch[EXT1[0]] = load_ext1
 
-    def load_ext2(self):
+    eleza load_ext2(self):
         code, = unpack('<H', self.read(2))
         self.get_extension(code)
     dispatch[EXT2[0]] = load_ext2
 
-    def load_ext4(self):
+    eleza load_ext4(self):
         code, = unpack('<i', self.read(4))
         self.get_extension(code)
     dispatch[EXT4[0]] = load_ext4
 
-    def get_extension(self, code):
+    eleza get_extension(self, code):
         nil = []
         obj = _extension_cache.get(code, nil)
-        if obj is not nil:
+        ikiwa obj is not nil:
             self.append(obj)
             return
         key = _inverted_registry.get(code)
-        if not key:
-            if code <= 0: # note that 0 is forbidden
+        ikiwa not key:
+            ikiwa code <= 0: # note that 0 is forbidden
                 # Corrupt or hostile pickle.
                 raise UnpicklingError("EXT specifies code <= 0")
             raise ValueError("unregistered extension code %d" % code)
@@ -1566,91 +1566,91 @@ class _Unpickler:
         _extension_cache[code] = obj
         self.append(obj)
 
-    def find_class(self, module, name):
+    eleza find_class(self, module, name):
         # Subclasses may override this.
         sys.audit('pickle.find_class', module, name)
-        if self.proto < 3 and self.fix_agizas:
-            if (module, name) in _compat_pickle.NAME_MAPPING:
+        ikiwa self.proto < 3 and self.fix_agizas:
+            ikiwa (module, name) in _compat_pickle.NAME_MAPPING:
                 module, name = _compat_pickle.NAME_MAPPING[(module, name)]
-            elif module in _compat_pickle.IMPORT_MAPPING:
+            elikiwa module in _compat_pickle.IMPORT_MAPPING:
                 module = _compat_pickle.IMPORT_MAPPING[module]
         __import__(module, level=0)
-        if self.proto >= 4:
-            return _getattribute(sys.modules[module], name)[0]
+        ikiwa self.proto >= 4:
+            rudisha _getattribute(sys.modules[module], name)[0]
         else:
-            return getattr(sys.modules[module], name)
+            rudisha getattr(sys.modules[module], name)
 
-    def load_reduce(self):
+    eleza load_reduce(self):
         stack = self.stack
         args = stack.pop()
         func = stack[-1]
         stack[-1] = func(*args)
     dispatch[REDUCE[0]] = load_reduce
 
-    def load_pop(self):
-        if self.stack:
+    eleza load_pop(self):
+        ikiwa self.stack:
             del self.stack[-1]
         else:
             self.pop_mark()
     dispatch[POP[0]] = load_pop
 
-    def load_pop_mark(self):
+    eleza load_pop_mark(self):
         self.pop_mark()
     dispatch[POP_MARK[0]] = load_pop_mark
 
-    def load_dup(self):
+    eleza load_dup(self):
         self.append(self.stack[-1])
     dispatch[DUP[0]] = load_dup
 
-    def load_get(self):
+    eleza load_get(self):
         i = int(self.readline()[:-1])
         self.append(self.memo[i])
     dispatch[GET[0]] = load_get
 
-    def load_binget(self):
+    eleza load_binget(self):
         i = self.read(1)[0]
         self.append(self.memo[i])
     dispatch[BINGET[0]] = load_binget
 
-    def load_long_binget(self):
+    eleza load_long_binget(self):
         i, = unpack('<I', self.read(4))
         self.append(self.memo[i])
     dispatch[LONG_BINGET[0]] = load_long_binget
 
-    def load_put(self):
+    eleza load_put(self):
         i = int(self.readline()[:-1])
-        if i < 0:
+        ikiwa i < 0:
             raise ValueError("negative PUT argument")
         self.memo[i] = self.stack[-1]
     dispatch[PUT[0]] = load_put
 
-    def load_binput(self):
+    eleza load_binput(self):
         i = self.read(1)[0]
-        if i < 0:
+        ikiwa i < 0:
             raise ValueError("negative BINPUT argument")
         self.memo[i] = self.stack[-1]
     dispatch[BINPUT[0]] = load_binput
 
-    def load_long_binput(self):
+    eleza load_long_binput(self):
         i, = unpack('<I', self.read(4))
-        if i > maxsize:
+        ikiwa i > maxsize:
             raise ValueError("negative LONG_BINPUT argument")
         self.memo[i] = self.stack[-1]
     dispatch[LONG_BINPUT[0]] = load_long_binput
 
-    def load_memoize(self):
+    eleza load_memoize(self):
         memo = self.memo
         memo[len(memo)] = self.stack[-1]
     dispatch[MEMOIZE[0]] = load_memoize
 
-    def load_append(self):
+    eleza load_append(self):
         stack = self.stack
         value = stack.pop()
         list = stack[-1]
         list.append(value)
     dispatch[APPEND[0]] = load_append
 
-    def load_appends(self):
+    eleza load_appends(self):
         items = self.pop_mark()
         list_obj = self.stack[-1]
         try:
@@ -1660,15 +1660,15 @@ class _Unpickler:
         else:
             extend(items)
             return
-        # Even if the PEP 307 requires extend() and append() methods,
-        # fall back on append() if the object has no extend() method
+        # Even ikiwa the PEP 307 requires extend() and append() methods,
+        # fall back on append() ikiwa the object has no extend() method
         # for backward compatibility.
         append = list_obj.append
         for item in items:
             append(item)
     dispatch[APPENDS[0]] = load_appends
 
-    def load_setitem(self):
+    eleza load_setitem(self):
         stack = self.stack
         value = stack.pop()
         key = stack.pop()
@@ -1676,17 +1676,17 @@ class _Unpickler:
         dict[key] = value
     dispatch[SETITEM[0]] = load_setitem
 
-    def load_setitems(self):
+    eleza load_setitems(self):
         items = self.pop_mark()
         dict = self.stack[-1]
         for i in range(0, len(items), 2):
             dict[items[i]] = items[i + 1]
     dispatch[SETITEMS[0]] = load_setitems
 
-    def load_additems(self):
+    eleza load_additems(self):
         items = self.pop_mark()
         set_obj = self.stack[-1]
-        if isinstance(set_obj, set):
+        ikiwa isinstance(set_obj, set):
             set_obj.update(items)
         else:
             add = set_obj.add
@@ -1694,37 +1694,37 @@ class _Unpickler:
                 add(item)
     dispatch[ADDITEMS[0]] = load_additems
 
-    def load_build(self):
+    eleza load_build(self):
         stack = self.stack
         state = stack.pop()
         inst = stack[-1]
         setstate = getattr(inst, "__setstate__", None)
-        if setstate is not None:
+        ikiwa setstate is not None:
             setstate(state)
             return
         slotstate = None
-        if isinstance(state, tuple) and len(state) == 2:
+        ikiwa isinstance(state, tuple) and len(state) == 2:
             state, slotstate = state
-        if state:
+        ikiwa state:
             inst_dict = inst.__dict__
             intern = sys.intern
             for k, v in state.items():
-                if type(k) is str:
+                ikiwa type(k) is str:
                     inst_dict[intern(k)] = v
                 else:
                     inst_dict[k] = v
-        if slotstate:
+        ikiwa slotstate:
             for k, v in slotstate.items():
                 setattr(inst, k, v)
     dispatch[BUILD[0]] = load_build
 
-    def load_mark(self):
+    eleza load_mark(self):
         self.metastack.append(self.stack)
         self.stack = []
         self.append = self.stack.append
     dispatch[MARK[0]] = load_mark
 
-    def load_stop(self):
+    eleza load_stop(self):
         value = self.stack.pop()
         raise _Stop(value)
     dispatch[STOP[0]] = load_stop
@@ -1732,32 +1732,32 @@ class _Unpickler:
 
 # Shorthands
 
-def _dump(obj, file, protocol=None, *, fix_agizas=True, buffer_callback=None):
+eleza _dump(obj, file, protocol=None, *, fix_agizas=True, buffer_callback=None):
     _Pickler(file, protocol, fix_agizas=fix_agizas,
              buffer_callback=buffer_callback).dump(obj)
 
-def _dumps(obj, protocol=None, *, fix_agizas=True, buffer_callback=None):
+eleza _dumps(obj, protocol=None, *, fix_agizas=True, buffer_callback=None):
     f = io.BytesIO()
     _Pickler(f, protocol, fix_agizas=fix_agizas,
              buffer_callback=buffer_callback).dump(obj)
     res = f.getvalue()
     assert isinstance(res, bytes_types)
-    return res
+    rudisha res
 
-def _load(file, *, fix_agizas=True, encoding="ASCII", errors="strict",
+eleza _load(file, *, fix_agizas=True, encoding="ASCII", errors="strict",
           buffers=None):
-    return _Unpickler(file, fix_agizas=fix_agizas, buffers=buffers,
+    rudisha _Unpickler(file, fix_agizas=fix_agizas, buffers=buffers,
                      encoding=encoding, errors=errors).load()
 
-def _loads(s, *, fix_agizas=True, encoding="ASCII", errors="strict",
+eleza _loads(s, *, fix_agizas=True, encoding="ASCII", errors="strict",
            buffers=None):
-    if isinstance(s, str):
+    ikiwa isinstance(s, str):
         raise TypeError("Can't load pickle kutoka unicode string")
     file = io.BytesIO(s)
-    return _Unpickler(file, fix_agizas=fix_agizas, buffers=buffers,
+    rudisha _Unpickler(file, fix_agizas=fix_agizas, buffers=buffers,
                       encoding=encoding, errors=errors).load()
 
-# Use the faster _pickle if possible
+# Use the faster _pickle ikiwa possible
 try:
     kutoka _pickle agiza (
         PickleError,
@@ -1775,11 +1775,11 @@ except ImportError:
     dump, dumps, load, loads = _dump, _dumps, _load, _loads
 
 # Doctest
-def _test():
+eleza _test():
     agiza doctest
-    return doctest.testmod()
+    rudisha doctest.testmod()
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     agiza argparse
     parser = argparse.ArgumentParser(
         description='display contents of the pickle files')
@@ -1793,13 +1793,13 @@ if __name__ == "__main__":
         '-v', action='store_true',
         help='run verbosely; only affects self-test run')
     args = parser.parse_args()
-    if args.test:
+    ikiwa args.test:
         _test()
     else:
-        if not args.pickle_file:
+        ikiwa not args.pickle_file:
             parser.print_help()
         else:
             agiza pprint
             for f in args.pickle_file:
                 obj = load(f)
-                pprint.pprint(obj)
+                pprint.pandika(obj)

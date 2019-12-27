@@ -53,7 +53,7 @@ typedef struct {
 
     /* The table points to a fixed-size smalltable for small tables
      * or to additional malloc'ed memory for bigger tables.
-     * The table pointer is never NULL which saves us from repeated
+     * The table pointer is never NULL which saves us kutoka repeated
      * runtime null-tests.
      */
     setentry *table;

@@ -25,11 +25,11 @@ all_test_classes = []
 for module, suffix in zip(test_modules, test_suffixes):
     test_classes = []
     for name, cls in module.__dict__.items():
-        if not isinstance(cls, type):
+        ikiwa not isinstance(cls, type):
             continue
-        if issubclass(cls, unittest.TestCase):
+        ikiwa issubclass(cls, unittest.TestCase):
             test_classes.append(cls)
-        elif issubclass(cls, unittest.TestSuite):
+        elikiwa issubclass(cls, unittest.TestSuite):
             suit = cls()
             test_classes.extend(type(test) for test in suit)
     test_classes = sorted(set(test_classes), key=lambda cls: cls.__qualname__)
@@ -37,21 +37,21 @@ for module, suffix in zip(test_modules, test_suffixes):
         cls.__name__ += suffix
         cls.__qualname__ += suffix
         @classmethod
-        def setUpClass(cls_, module=module):
+        eleza setUpClass(cls_, module=module):
             cls_._save_sys_modules = sys.modules.copy()
             sys.modules[TESTS] = module
             sys.modules['datetime'] = module.datetime_module
             sys.modules['_strptime'] = module._strptime
         @classmethod
-        def tearDownClass(cls_):
+        eleza tearDownClass(cls_):
             sys.modules.clear()
             sys.modules.update(cls_._save_sys_modules)
         cls.setUpClass = setUpClass
         cls.tearDownClass = tearDownClass
     all_test_classes.extend(test_classes)
 
-def test_main():
+eleza test_main():
     run_unittest(*all_test_classes)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

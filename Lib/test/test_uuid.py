@@ -16,18 +16,18 @@ py_uuid = support.import_fresh_module('uuid', blocked=['_uuid'])
 c_uuid = support.import_fresh_module('uuid', fresh=['_uuid'])
 
 
-def agizaable(name):
+eleza agizaable(name):
     try:
         __import__(name)
-        return True
+        rudisha True
     except:
-        return False
+        rudisha False
 
 
-class BaseTestUUID:
+kundi BaseTestUUID:
     uuid = None
 
-    def test_UUID(self):
+    eleza test_UUID(self):
         equal = self.assertEqual
         ascending = []
         for (string, curly, hex, bytes, bytes_le, fields, integer, urn,
@@ -213,7 +213,7 @@ class BaseTestUUID:
         resorted.sort()
         equal(ascending, resorted)
 
-    def test_exceptions(self):
+    eleza test_exceptions(self):
         badvalue = lambda f: self.assertRaises(ValueError, f)
         badtype = lambda f: self.assertRaises(TypeError, f)
 
@@ -284,9 +284,9 @@ class BaseTestUUID:
                     for ii in [[], [('int', i)]]:
                         for ff in [[], [('fields', f)]]:
                             args = dict(hh + bb + bble + ii + ff)
-                            if len(args) != 0:
+                            ikiwa len(args) != 0:
                                 badtype(lambda: self.uuid.UUID(h, **args))
-                            if len(args) != 1:
+                            ikiwa len(args) != 1:
                                 badtype(lambda: self.uuid.UUID(**args))
 
         # Immutability.
@@ -308,7 +308,7 @@ class BaseTestUUID:
         badtype(lambda: u < object())
         badtype(lambda: u > object())
 
-    def test_getnode(self):
+    eleza test_getnode(self):
         node1 = self.uuid.getnode()
         self.assertTrue(0 < node1 < (1 << 48), '%012x' % node1)
 
@@ -316,8 +316,8 @@ class BaseTestUUID:
         node2 = self.uuid.getnode()
         self.assertEqual(node1, node2, '%012x != %012x' % (node1, node2))
 
-    def test_pickle_roundtrip(self):
-        def check(actual, expected):
+    eleza test_pickle_roundtrip(self):
+        eleza check(actual, expected):
             self.assertEqual(actual, expected)
             self.assertEqual(actual.is_safe, expected.is_safe)
 
@@ -331,8 +331,8 @@ class BaseTestUUID:
                     with self.subTest(protocol=proto):
                         check(pickle.loads(pickle.dumps(u, proto)), u)
 
-    def test_unpickle_previous_python_versions(self):
-        def check(actual, expected):
+    eleza test_unpickle_previous_python_versions(self):
+        eleza check(actual, expected):
             self.assertEqual(actual, expected)
             self.assertEqual(actual.is_safe, expected.is_safe)
 
@@ -452,7 +452,7 @@ class BaseTestUUID:
 
     # bpo-32502: UUID1 requires a 48-bit identifier, but hardware identifiers
     # need not necessarily be 48 bits (e.g., EUI-64).
-    def test_uuid1_eui64(self):
+    eleza test_uuid1_eui64(self):
         # Confirm that uuid.getnode ignores hardware addresses larger than 48
         # bits. Mock out each platform's *_getnode helper functions to return
         # something just larger than 48 bits to test. This will cause
@@ -475,7 +475,7 @@ class BaseTestUUID:
         except ValueError as e:
             self.fail('uuid1 was given an invalid node ID')
 
-    def test_uuid1(self):
+    eleza test_uuid1(self):
         equal = self.assertEqual
 
         # Make sure uuid1() generates UUIDs that are actually version 1.
@@ -517,58 +517,58 @@ class BaseTestUUID:
     # self.uuid.SafeUUID.unknown
     @support.requires_mac_ver(10, 5)
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
-    def test_uuid1_safe(self):
-        if not self.uuid._has_uuid_generate_time_safe:
+    eleza test_uuid1_safe(self):
+        ikiwa not self.uuid._has_uuid_generate_time_safe:
             self.skipTest('requires uuid_generate_time_safe(3)')
 
         u = self.uuid.uuid1()
-        # uuid_generate_time_safe() may return 0 or -1 but what it returns is
+        # uuid_generate_time_safe() may rudisha 0 or -1 but what it returns is
         # dependent on the underlying platform support.  At least it cannot be
         # unknown (unless I suppose the platform is buggy).
         self.assertNotEqual(u.is_safe, self.uuid.SafeUUID.unknown)
 
     @contextlib.contextmanager
-    def mock_generate_time_safe(self, safe_value):
+    eleza mock_generate_time_safe(self, safe_value):
         """
-        Mock uuid._generate_time_safe() to return a given *safe_value*.
+        Mock uuid._generate_time_safe() to rudisha a given *safe_value*.
         """
-        if os.name != 'posix':
+        ikiwa os.name != 'posix':
             self.skipTest('POSIX-only test')
         self.uuid._load_system_functions()
         f = self.uuid._generate_time_safe
-        if f is None:
+        ikiwa f is None:
             self.skipTest('need uuid._generate_time_safe')
         with unittest.mock.patch.object(self.uuid, '_generate_time_safe',
                                         lambda: (f()[0], safe_value)):
             yield
 
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
-    def test_uuid1_unknown(self):
-        # Even if the platform has uuid_generate_time_safe(), let's mock it to
+    eleza test_uuid1_unknown(self):
+        # Even ikiwa the platform has uuid_generate_time_safe(), let's mock it to
         # be uuid_generate_time() and ensure the safety is unknown.
         with self.mock_generate_time_safe(None):
             u = self.uuid.uuid1()
             self.assertEqual(u.is_safe, self.uuid.SafeUUID.unknown)
 
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
-    def test_uuid1_is_safe(self):
+    eleza test_uuid1_is_safe(self):
         with self.mock_generate_time_safe(0):
             u = self.uuid.uuid1()
             self.assertEqual(u.is_safe, self.uuid.SafeUUID.safe)
 
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
-    def test_uuid1_is_unsafe(self):
+    eleza test_uuid1_is_unsafe(self):
         with self.mock_generate_time_safe(-1):
             u = self.uuid.uuid1()
             self.assertEqual(u.is_safe, self.uuid.SafeUUID.unsafe)
 
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
-    def test_uuid1_bogus_return_value(self):
+    eleza test_uuid1_bogus_return_value(self):
         with self.mock_generate_time_safe(3):
             u = self.uuid.uuid1()
             self.assertEqual(u.is_safe, self.uuid.SafeUUID.unknown)
 
-    def test_uuid1_time(self):
+    eleza test_uuid1_time(self):
         with mock.patch.object(self.uuid, '_has_uuid_generate_time_safe', False), \
              mock.patch.object(self.uuid, '_generate_time_safe', None), \
              mock.patch.object(self.uuid, '_last_timestamp', None), \
@@ -585,7 +585,7 @@ class BaseTestUUID:
             u = self.uuid.uuid1(node=93328246233727, clock_seq=5317)
             self.assertEqual(u, self.uuid.UUID('a7a55b92-01fc-11e9-94c5-54e1acf6da7f'))
 
-    def test_uuid3(self):
+    eleza test_uuid3(self):
         equal = self.assertEqual
 
         # Test some known version-3 UUIDs.
@@ -603,7 +603,7 @@ class BaseTestUUID:
             equal(u, self.uuid.UUID(v))
             equal(str(u), v)
 
-    def test_uuid4(self):
+    eleza test_uuid4(self):
         equal = self.assertEqual
 
         # Make sure uuid4() generates UUIDs that are actually version 4.
@@ -617,7 +617,7 @@ class BaseTestUUID:
             uuids[u] = 1
         equal(len(uuids.keys()), 1000)
 
-    def test_uuid5(self):
+    eleza test_uuid5(self):
         equal = self.assertEqual
 
         # Test some known version-5 UUIDs.
@@ -636,13 +636,13 @@ class BaseTestUUID:
             equal(str(u), v)
 
     @unittest.skipUnless(os.name == 'posix', 'requires Posix')
-    def testIssue8621(self):
+    eleza testIssue8621(self):
         # On at least some versions of OSX self.uuid.uuid4 generates
         # the same sequence of UUIDs in the parent and any
         # children started using fork.
         fds = os.pipe()
         pid = os.fork()
-        if pid == 0:
+        ikiwa pid == 0:
             os.close(fds[0])
             value = self.uuid.uuid4()
             os.write(fds[1], value.hex.encode('latin-1'))
@@ -657,25 +657,25 @@ class BaseTestUUID:
 
             self.assertNotEqual(parent_value, child_value)
 
-    def test_uuid_weakref(self):
+    eleza test_uuid_weakref(self):
         # bpo-35701: check that weak referencing to a UUID object can be created
         strong = self.uuid.uuid4()
         weak = weakref.ref(strong)
         self.assertIs(strong, weak())
 
-class TestUUIDWithoutExtModule(BaseTestUUID, unittest.TestCase):
+kundi TestUUIDWithoutExtModule(BaseTestUUID, unittest.TestCase):
     uuid = py_uuid
 
 @unittest.skipUnless(c_uuid, 'requires the C _uuid module')
-class TestUUIDWithExtModule(BaseTestUUID, unittest.TestCase):
+kundi TestUUIDWithExtModule(BaseTestUUID, unittest.TestCase):
     uuid = c_uuid
 
 
-class BaseTestInternals:
+kundi BaseTestInternals:
     _uuid = py_uuid
 
     @unittest.skipUnless(os.name == 'posix', 'requires Posix')
-    def test_find_mac(self):
+    eleza test_find_mac(self):
         data = '''
 fake hwaddr
 cscotun0  Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
@@ -698,57 +698,57 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
 
         self.assertEqual(mac, 0x1234567890ab)
 
-    def check_node(self, node, requires=None):
-        if requires and node is None:
+    eleza check_node(self, node, requires=None):
+        ikiwa requires and node is None:
             self.skipTest('requires ' + requires)
         hex = '%012x' % node
-        if support.verbose >= 2:
-            print(hex, end=' ')
+        ikiwa support.verbose >= 2:
+            andika(hex, end=' ')
         self.assertTrue(0 < node < (1 << 48),
                         "%s is not an RFC 4122 node ID" % hex)
 
     @unittest.skipUnless(_uuid._ifconfig_getnode in _uuid._GETTERS,
         "ifconfig is not used for introspection on this platform")
-    def test_ifconfig_getnode(self):
+    eleza test_ifconfig_getnode(self):
         node = self.uuid._ifconfig_getnode()
         self.check_node(node, 'ifconfig')
 
     @unittest.skipUnless(_uuid._ip_getnode in _uuid._GETTERS,
         "ip is not used for introspection on this platform")
-    def test_ip_getnode(self):
+    eleza test_ip_getnode(self):
         node = self.uuid._ip_getnode()
         self.check_node(node, 'ip')
 
     @unittest.skipUnless(_uuid._arp_getnode in _uuid._GETTERS,
         "arp is not used for introspection on this platform")
-    def test_arp_getnode(self):
+    eleza test_arp_getnode(self):
         node = self.uuid._arp_getnode()
         self.check_node(node, 'arp')
 
     @unittest.skipUnless(_uuid._lanscan_getnode in _uuid._GETTERS,
         "lanscan is not used for introspection on this platform")
-    def test_lanscan_getnode(self):
+    eleza test_lanscan_getnode(self):
         node = self.uuid._lanscan_getnode()
         self.check_node(node, 'lanscan')
 
     @unittest.skipUnless(_uuid._netstat_getnode in _uuid._GETTERS,
         "netstat is not used for introspection on this platform")
-    def test_netstat_getnode(self):
+    eleza test_netstat_getnode(self):
         node = self.uuid._netstat_getnode()
         self.check_node(node, 'netstat')
 
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
-    def test_ipconfig_getnode(self):
+    eleza test_ipconfig_getnode(self):
         node = self.uuid._ipconfig_getnode()
         self.check_node(node, 'ipconfig')
 
     @unittest.skipUnless(agizaable('win32wnet'), 'requires win32wnet')
     @unittest.skipUnless(agizaable('netbios'), 'requires netbios')
-    def test_netbios_getnode(self):
+    eleza test_netbios_getnode(self):
         node = self.uuid._netbios_getnode()
         self.check_node(node)
 
-    def test_random_getnode(self):
+    eleza test_random_getnode(self):
         node = self.uuid._random_getnode()
         # The multicast bit, i.e. the least significant bit of first octet,
         # must be set for randomly generated MAC addresses.  See RFC 4122,
@@ -760,8 +760,8 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
         self.assertNotEqual(node2, node, '%012x' % node)
 
     @unittest.skipUnless(os.name == 'posix', 'requires Posix')
-    def test_unix_getnode(self):
-        if not agizaable('_uuid') and not agizaable('ctypes'):
+    eleza test_unix_getnode(self):
+        ikiwa not agizaable('_uuid') and not agizaable('ctypes'):
             self.skipTest("neither _uuid extension nor ctypes available")
         try: # Issues 1481, 3581: _uuid_generate_time() might be None.
             node = self.uuid._unix_getnode()
@@ -771,18 +771,18 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
 
     @unittest.skipUnless(os.name == 'nt', 'requires Windows')
     @unittest.skipUnless(agizaable('ctypes'), 'requires ctypes')
-    def test_windll_getnode(self):
+    eleza test_windll_getnode(self):
         node = self.uuid._windll_getnode()
         self.check_node(node)
 
 
-class TestInternalsWithoutExtModule(BaseTestInternals, unittest.TestCase):
+kundi TestInternalsWithoutExtModule(BaseTestInternals, unittest.TestCase):
     uuid = py_uuid
 
 @unittest.skipUnless(c_uuid, 'requires the C _uuid module')
-class TestInternalsWithExtModule(BaseTestInternals, unittest.TestCase):
+kundi TestInternalsWithExtModule(BaseTestInternals, unittest.TestCase):
     uuid = c_uuid
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

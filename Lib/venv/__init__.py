@@ -15,9 +15,9 @@ agiza types
 logger = logging.getLogger(__name__)
 
 
-class EnvBuilder:
+kundi EnvBuilder:
     """
-    This class exists to allow virtual environment creation to be
+    This kundi exists to allow virtual environment creation to be
     customized. The constructor parameters determine the builder's
     behaviour when called upon to create a virtual environment.
 
@@ -40,7 +40,7 @@ class EnvBuilder:
     :param prompt: Alternative terminal prefix for the environment.
     """
 
-    def __init__(self, system_site_packages=False, clear=False,
+    eleza __init__(self, system_site_packages=False, clear=False,
                  symlinks=False, upgrade=False, with_pip=False, prompt=None):
         self.system_site_packages = system_site_packages
         self.clear = clear
@@ -49,7 +49,7 @@ class EnvBuilder:
         self.with_pip = with_pip
         self.prompt = prompt
 
-    def create(self, env_dir):
+    eleza create(self, env_dir):
         """
         Create a virtual environment in a directory.
 
@@ -64,26 +64,26 @@ class EnvBuilder:
         self.system_site_packages = False
         self.create_configuration(context)
         self.setup_python(context)
-        if self.with_pip:
+        ikiwa self.with_pip:
             self._setup_pip(context)
-        if not self.upgrade:
+        ikiwa not self.upgrade:
             self.setup_scripts(context)
             self.post_setup(context)
-        if true_system_site_packages:
+        ikiwa true_system_site_packages:
             # We had set it to False before, now
             # restore it and rewrite the configuration
             self.system_site_packages = True
             self.create_configuration(context)
 
-    def clear_directory(self, path):
+    eleza clear_directory(self, path):
         for fn in os.listdir(path):
             fn = os.path.join(path, fn)
-            if os.path.islink(fn) or os.path.isfile(fn):
+            ikiwa os.path.islink(fn) or os.path.isfile(fn):
                 os.remove(fn)
-            elif os.path.isdir(fn):
+            elikiwa os.path.isdir(fn):
                 shutil.rmtree(fn)
 
-    def ensure_directories(self, env_dir):
+    eleza ensure_directories(self, env_dir):
         """
         Create the directories for the environment.
 
@@ -91,18 +91,18 @@ class EnvBuilder:
         for use by subsequent logic.
         """
 
-        def create_if_needed(d):
-            if not os.path.exists(d):
+        eleza create_if_needed(d):
+            ikiwa not os.path.exists(d):
                 os.makedirs(d)
-            elif os.path.islink(d) or os.path.isfile(d):
+            elikiwa os.path.islink(d) or os.path.isfile(d):
                 raise ValueError('Unable to create directory %r' % d)
 
-        if os.path.exists(env_dir) and self.clear:
+        ikiwa os.path.exists(env_dir) and self.clear:
             self.clear_directory(env_dir)
         context = types.SimpleNamespace()
         context.env_dir = env_dir
         context.env_name = os.path.split(env_dir)[1]
-        prompt = self.prompt if self.prompt is not None else context.env_name
+        prompt = self.prompt ikiwa self.prompt is not None else context.env_name
         context.prompt = '(%s) ' % prompt
         create_if_needed(env_dir)
         executable = sys._base_executable
@@ -110,7 +110,7 @@ class EnvBuilder:
         context.executable = executable
         context.python_dir = dirname
         context.python_exe = exename
-        if sys.platform == 'win32':
+        ikiwa sys.platform == 'win32':
             binname = 'Scripts'
             incpath = 'Include'
             libpath = os.path.join(env_dir, 'Lib', 'site-packages')
@@ -124,18 +124,18 @@ class EnvBuilder:
         create_if_needed(path)
         create_if_needed(libpath)
         # Issue 21197: create lib64 as a symlink to lib on 64-bit non-OS X POSIX
-        if ((sys.maxsize > 2**32) and (os.name == 'posix') and
+        ikiwa ((sys.maxsize > 2**32) and (os.name == 'posix') and
             (sys.platform != 'darwin')):
             link_path = os.path.join(env_dir, 'lib64')
-            if not os.path.exists(link_path):   # Issue #21643
+            ikiwa not os.path.exists(link_path):   # Issue #21643
                 os.symlink('lib', link_path)
         context.bin_path = binpath = os.path.join(env_dir, binname)
         context.bin_name = binname
         context.env_exe = os.path.join(binpath, exename)
         create_if_needed(binpath)
-        return context
+        rudisha context
 
-    def create_configuration(self, context):
+    eleza create_configuration(self, context):
         """
         Create a configuration file indicating where the environment's Python
         was copied kutoka, and whether the system site-packages should be made
@@ -147,25 +147,25 @@ class EnvBuilder:
         context.cfg_path = path = os.path.join(context.env_dir, 'pyvenv.cfg')
         with open(path, 'w', encoding='utf-8') as f:
             f.write('home = %s\n' % context.python_dir)
-            if self.system_site_packages:
+            ikiwa self.system_site_packages:
                 incl = 'true'
             else:
                 incl = 'false'
             f.write('include-system-site-packages = %s\n' % incl)
             f.write('version = %d.%d.%d\n' % sys.version_info[:3])
-            if self.prompt is not None:
+            ikiwa self.prompt is not None:
                 f.write(f'prompt = {self.prompt!r}\n')
 
-    if os.name != 'nt':
-        def symlink_or_copy(self, src, dst, relative_symlinks_ok=False):
+    ikiwa os.name != 'nt':
+        eleza symlink_or_copy(self, src, dst, relative_symlinks_ok=False):
             """
-            Try symlinking a file, and if that fails, fall back to copying.
+            Try symlinking a file, and ikiwa that fails, fall back to copying.
             """
             force_copy = not self.symlinks
-            if not force_copy:
+            ikiwa not force_copy:
                 try:
-                    if not os.path.islink(dst): # can't link to itself!
-                        if relative_symlinks_ok:
+                    ikiwa not os.path.islink(dst): # can't link to itself!
+                        ikiwa relative_symlinks_ok:
                             assert os.path.dirname(src) == os.path.dirname(dst)
                             os.symlink(os.path.basename(src), dst)
                         else:
@@ -173,17 +173,17 @@ class EnvBuilder:
                 except Exception:   # may need to use a more specific exception
                     logger.warning('Unable to symlink %r to %r', src, dst)
                     force_copy = True
-            if force_copy:
+            ikiwa force_copy:
                 shutil.copyfile(src, dst)
     else:
-        def symlink_or_copy(self, src, dst, relative_symlinks_ok=False):
+        eleza symlink_or_copy(self, src, dst, relative_symlinks_ok=False):
             """
-            Try symlinking a file, and if that fails, fall back to copying.
+            Try symlinking a file, and ikiwa that fails, fall back to copying.
             """
             bad_src = os.path.lexists(src) and not os.path.exists(src)
-            if self.symlinks and not bad_src and not os.path.islink(dst):
+            ikiwa self.symlinks and not bad_src and not os.path.islink(dst):
                 try:
-                    if relative_symlinks_ok:
+                    ikiwa relative_symlinks_ok:
                         assert os.path.dirname(src) == os.path.dirname(dst)
                         os.symlink(os.path.basename(src), dst)
                     else:
@@ -201,25 +201,25 @@ class EnvBuilder:
                                  basename + ext)
             # Builds or venv's kutoka builds need to remap source file
             # locations, as we do not put them into Lib/venv/scripts
-            if sysconfig.is_python_build(True) or not os.path.isfile(srcfn):
-                if basename.endswith('_d'):
+            ikiwa sysconfig.is_python_build(True) or not os.path.isfile(srcfn):
+                ikiwa basename.endswith('_d'):
                     ext = '_d' + ext
                     basename = basename[:-2]
-                if basename == 'python':
+                ikiwa basename == 'python':
                     basename = 'venvlauncher'
-                elif basename == 'pythonw':
+                elikiwa basename == 'pythonw':
                     basename = 'venvwlauncher'
                 src = os.path.join(os.path.dirname(src), basename + ext)
             else:
                 src = srcfn
-            if not os.path.exists(src):
-                if not bad_src:
+            ikiwa not os.path.exists(src):
+                ikiwa not bad_src:
                     logger.warning('Unable to copy %r', src)
                 return
 
             shutil.copyfile(src, dst)
 
-    def setup_python(self, context):
+    eleza setup_python(self, context):
         """
         Set up a Python executable in the environment.
 
@@ -230,29 +230,29 @@ class EnvBuilder:
         path = context.env_exe
         copier = self.symlink_or_copy
         dirname = context.python_dir
-        if os.name != 'nt':
+        ikiwa os.name != 'nt':
             copier(context.executable, path)
-            if not os.path.islink(path):
+            ikiwa not os.path.islink(path):
                 os.chmod(path, 0o755)
             for suffix in ('python', 'python3'):
                 path = os.path.join(binpath, suffix)
-                if not os.path.exists(path):
+                ikiwa not os.path.exists(path):
                     # Issue 18807: make copies if
                     # symlinks are not wanted
                     copier(context.env_exe, path, relative_symlinks_ok=True)
-                    if not os.path.islink(path):
+                    ikiwa not os.path.islink(path):
                         os.chmod(path, 0o755)
         else:
-            if self.symlinks:
+            ikiwa self.symlinks:
                 # For symlinking, we need a complete copy of the root directory
                 # If symlinks fail, you'll get unnecessary copies of files, but
-                # we assume that if you've opted into symlinks on Windows then
+                # we assume that ikiwa you've opted into symlinks on Windows then
                 # you know what you're doing.
                 suffixes = [
                     f for f in os.listdir(dirname) if
                     os.path.normcase(os.path.splitext(f)[1]) in ('.exe', '.dll')
                 ]
-                if sysconfig.is_python_build(True):
+                ikiwa sysconfig.is_python_build(True):
                     suffixes = [
                         f for f in suffixes if
                         os.path.normcase(f).startswith(('python', 'vcruntime'))
@@ -263,23 +263,23 @@ class EnvBuilder:
 
             for suffix in suffixes:
                 src = os.path.join(dirname, suffix)
-                if os.path.lexists(src):
+                ikiwa os.path.lexists(src):
                     copier(src, os.path.join(binpath, suffix))
 
-            if sysconfig.is_python_build(True):
+            ikiwa sysconfig.is_python_build(True):
                 # copy init.tcl
                 for root, dirs, files in os.walk(context.python_dir):
-                    if 'init.tcl' in files:
+                    ikiwa 'init.tcl' in files:
                         tcldir = os.path.basename(root)
                         tcldir = os.path.join(context.env_dir, 'Lib', tcldir)
-                        if not os.path.exists(tcldir):
+                        ikiwa not os.path.exists(tcldir):
                             os.makedirs(tcldir)
                         src = os.path.join(root, 'init.tcl')
                         dst = os.path.join(tcldir, 'init.tcl')
                         shutil.copyfile(src, dst)
                         break
 
-    def _setup_pip(self, context):
+    eleza _setup_pip(self, context):
         """Installs or upgrades pip in a virtual environment"""
         # We run ensurepip in isolated mode to avoid side effects kutoka
         # environment vars, the current directory and anything else
@@ -288,13 +288,13 @@ class EnvBuilder:
                                                     '--default-pip']
         subprocess.check_output(cmd, stderr=subprocess.STDOUT)
 
-    def setup_scripts(self, context):
+    eleza setup_scripts(self, context):
         """
         Set up scripts into the created environment kutoka a directory.
 
         This method installs the default scripts into the environment
         being created. You can prevent the default installation by overriding
-        this method if you really need to, or if you need to specify
+        this method ikiwa you really need to, or ikiwa you need to specify
         a different location for the scripts to install. By default, the
         'scripts' directory in the venv package is used as the source of
         scripts to install.
@@ -303,7 +303,7 @@ class EnvBuilder:
         path = os.path.join(path, 'scripts')
         self.install_scripts(context, path)
 
-    def post_setup(self, context):
+    eleza post_setup(self, context):
         """
         Hook for post-setup modification of the venv. Subclasses may install
         additional packages or scripts here, add activation shell scripts, etc.
@@ -313,7 +313,7 @@ class EnvBuilder:
         """
         pass
 
-    def replace_variables(self, text, context):
+    eleza replace_variables(self, text, context):
         """
         Replace variable placeholders in script text with context-specific
         variables.
@@ -329,9 +329,9 @@ class EnvBuilder:
         text = text.replace('__VENV_PROMPT__', context.prompt)
         text = text.replace('__VENV_BIN_NAME__', context.bin_name)
         text = text.replace('__VENV_PYTHON__', context.env_exe)
-        return text
+        rudisha text
 
-    def install_scripts(self, context, path):
+    eleza install_scripts(self, context, path):
         """
         Install scripts into the created environment kutoka a directory.
 
@@ -347,27 +347,27 @@ class EnvBuilder:
         binpath = context.bin_path
         plen = len(path)
         for root, dirs, files in os.walk(path):
-            if root == path: # at top-level, remove irrelevant dirs
+            ikiwa root == path: # at top-level, remove irrelevant dirs
                 for d in dirs[:]:
-                    if d not in ('common', os.name):
+                    ikiwa d not in ('common', os.name):
                         dirs.remove(d)
                 continue # ignore files in top level
             for f in files:
-                if (os.name == 'nt' and f.startswith('python')
+                ikiwa (os.name == 'nt' and f.startswith('python')
                         and f.endswith(('.exe', '.pdb'))):
                     continue
                 srcfile = os.path.join(root, f)
                 suffix = root[plen:].split(os.sep)[2:]
-                if not suffix:
+                ikiwa not suffix:
                     dstdir = binpath
                 else:
                     dstdir = os.path.join(binpath, *suffix)
-                if not os.path.exists(dstdir):
+                ikiwa not os.path.exists(dstdir):
                     os.makedirs(dstdir)
                 dstfile = os.path.join(dstdir, f)
                 with open(srcfile, 'rb') as f:
                     data = f.read()
-                if not srcfile.endswith(('.exe', '.pdb')):
+                ikiwa not srcfile.endswith(('.exe', '.pdb')):
                     try:
                         data = data.decode('utf-8')
                         data = self.replace_variables(data, context)
@@ -376,13 +376,13 @@ class EnvBuilder:
                         data = None
                         logger.warning('unable to copy script %r, '
                                        'may be binary: %s', srcfile, e)
-                if data is not None:
+                ikiwa data is not None:
                     with open(dstfile, 'wb') as f:
                         f.write(data)
                     shutil.copymode(srcfile, dstfile)
 
 
-def create(env_dir, system_site_packages=False, clear=False,
+eleza create(env_dir, system_site_packages=False, clear=False,
                     symlinks=False, with_pip=False, prompt=None):
     """Create a virtual environment in a directory."""
     builder = EnvBuilder(system_site_packages=system_site_packages,
@@ -390,13 +390,13 @@ def create(env_dir, system_site_packages=False, clear=False,
                          prompt=prompt)
     builder.create(env_dir)
 
-def main(args=None):
+eleza main(args=None):
     compatible = True
-    if sys.version_info < (3, 3):
+    ikiwa sys.version_info < (3, 3):
         compatible = False
-    elif not hasattr(sys, 'base_prefix'):
+    elikiwa not hasattr(sys, 'base_prefix'):
         compatible = False
-    if not compatible:
+    ikiwa not compatible:
         raise ValueError('This script is only for use with Python >= 3.3')
     else:
         agiza argparse
@@ -417,7 +417,7 @@ def main(args=None):
                             action='store_true', dest='system_site',
                             help='Give the virtual environment access to the '
                                  'system site-packages dir.')
-        if os.name == 'nt':
+        ikiwa os.name == 'nt':
             use_symlinks = False
         else:
             use_symlinks = True
@@ -434,7 +434,7 @@ def main(args=None):
                                 'the platform.')
         parser.add_argument('--clear', default=False, action='store_true',
                             dest='clear', help='Delete the contents of the '
-                                               'environment directory if it '
+                                               'environment directory ikiwa it '
                                                'already exists, before '
                                                'environment creation.')
         parser.add_argument('--upgrade', default=False, action='store_true',
@@ -451,7 +451,7 @@ def main(args=None):
                             help='Provides an alternative prompt prefix for '
                                  'this environment.')
         options = parser.parse_args(args)
-        if options.upgrade and options.clear:
+        ikiwa options.upgrade and options.clear:
             raise ValueError('you cannot supply --upgrade and --clear together.')
         builder = EnvBuilder(system_site_packages=options.system_site,
                              clear=options.clear,
@@ -462,11 +462,11 @@ def main(args=None):
         for d in options.dirs:
             builder.create(d)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     rc = 1
     try:
         main()
         rc = 0
     except Exception as e:
-        print('Error: %s' % e, file=sys.stderr)
+        andika('Error: %s' % e, file=sys.stderr)
     sys.exit(rc)

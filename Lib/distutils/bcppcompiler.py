@@ -118,7 +118,7 @@ class BCPPCompiler(CCompiler) :
             # The next two are both for the real compiler.
             if ext in self._c_extensions:
                 input_opt = ""
-            elif ext in self._cpp_extensions:
+            lasivyo ext in self._cpp_extensions:
                 input_opt = "-P"
             else:
                 # Unknown file type -- no extra options.  The compiler
@@ -348,7 +348,7 @@ class BCPPCompiler(CCompiler) :
             if ext == '.res':
                 # these can go unchanged
                 obj_names.append (os.path.join (output_dir, base + ext))
-            elif ext == '.rc':
+            lasivyo ext == '.rc':
                 # these need to be compiled to .res-files
                 obj_names.append (os.path.join (output_dir, base + '.res'))
             else:

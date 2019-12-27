@@ -3,11 +3,11 @@ agiza multiprocessing
 multiprocessing.Lock()
 
 
-def f():
-    print("ok")
+eleza f():
+    andika("ok")
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     ctx = multiprocessing.get_context("forkserver")
     modname = "test.mp_preload"
     # Make sure it's agizaable

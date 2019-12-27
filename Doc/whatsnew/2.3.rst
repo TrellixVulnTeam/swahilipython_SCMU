@@ -14,14 +14,14 @@ on July 29, 2003.
 The main themes for Python 2.3 are polishing some of the features added in 2.2,
 adding various small but useful enhancements to the core language, and expanding
 the standard library.  The new object model introduced in the previous version
-has benefited from 18 months of bugfixes and from optimization efforts that have
+has benefited kutoka 18 months of bugfixes and kutoka optimization efforts that have
 improved the performance of new-style classes.  A few new built-in functions
 have been added such as :func:`sum` and :func:`enumerate`.  The :keyword:`in`
 operator can now be used for substring searches (e.g. ``"ab" in "abc"`` returns
 :const:`True`).
 
 Some of the many new library features include Boolean, set, heap, and date/time
-data types, the ability to import modules from ZIP-format archives, metadata
+data types, the ability to agiza modules kutoka ZIP-format archives, metadata
 support for the long-awaited Python catalog, an updated version of IDLE, and
 modules for logging messages, wrapping text, parsing CSV files, processing
 command-line options, using BerkeleyDB databases...  the list of new and
@@ -41,15 +41,15 @@ PEP 218: A Standard Set Datatype
 ================================
 
 The new :mod:`sets` module contains an implementation of a set datatype.  The
-:class:`Set` class is for mutable sets, sets that can have members added and
-removed.  The :class:`ImmutableSet` class is for sets that can't be modified,
+:class:`Set` kundi is for mutable sets, sets that can have members added and
+removed.  The :class:`ImmutableSet` kundi is for sets that can't be modified,
 and instances of :class:`ImmutableSet` can therefore be used as dictionary keys.
 Sets are built on top of dictionaries, so the elements within a set must be
 hashable.
 
 Here's a simple example::
 
-   >>> import sets
+   >>> agiza sets
    >>> S = sets.Set([1,2,3])
    >>> S
    Set([1, 2, 3])
@@ -126,10 +126,10 @@ PEP 255: Simple Generators
 ==========================
 
 In Python 2.2, generators were added as an optional feature, to be enabled by a
-``from __future__ import generators`` directive.  In 2.3 generators no longer
+``kutoka __future__ agiza generators`` directive.  In 2.3 generators no longer
 need to be specially enabled, and are now always present; this means that
 :keyword:`yield` is now always a keyword.  The rest of this section is a copy of
-the description of generators from the "What's New in Python 2.2" document; if
+the description of generators kutoka the "What's New in Python 2.2" document; if
 you read it back when Python 2.2 came out, you can skip the rest of this
 section.
 
@@ -217,10 +217,10 @@ the N-Queens problem (placing $N$ queens on an $NxN$ chess board so that no
 queen threatens another) and the Knight's Tour (a route that takes a knight to
 every square of an $NxN$ chessboard without visiting any square twice).
 
-The idea of generators comes from other programming languages, especially Icon
+The idea of generators comes kutoka other programming languages, especially Icon
 (https://www.cs.arizona.edu/icon/), where the idea of generators is central.  In
 Icon, every expression and function call behaves like a generator.  One example
-from "An Overview of the Icon Programming Language" at
+kutoka "An Overview of the Icon Programming Language" at
 https://www.cs.arizona.edu/icon/docs/ipd266.htm gives an idea of what this looks
 like::
 
@@ -246,7 +246,7 @@ a data structure.
 
    :pep:`255` - Simple Generators
       Written by Neil Schemenauer, Tim Peters, Magnus Lie Hetland.  Implemented mostly
-      by Neil Schemenauer and Tim Peters, with other fixes from the Python Labs crew.
+      by Neil Schemenauer and Tim Peters, with other fixes kutoka the Python Labs crew.
 
 .. ======================================================================
 
@@ -285,11 +285,11 @@ use characters outside of the usual alphanumerics.
 .. ======================================================================
 
 
-PEP 273: Importing Modules from ZIP Archives
+PEP 273: Importing Modules kutoka ZIP Archives
 ============================================
 
-The new :mod:`zipimport` module adds support for importing modules from a
-ZIP-format archive.  You don't need to import the module explicitly; it will be
+The new :mod:`zipimport` module adds support for importing modules kutoka a
+ZIP-format archive.  You don't need to agiza the module explicitly; it will be
 automatically imported if a ZIP archive's filename is added to ``sys.path``.
 For example:
 
@@ -304,9 +304,9 @@ For example:
         8467                   1 file
    amk@nyman:~/src/python$ ./python
    Python 2.3 (#1, Aug 1 2003, 19:54:32)
-   >>> import sys
+   >>> agiza sys
    >>> sys.path.insert(0, '/tmp/example.zip')  # Add .zip file to front of path
-   >>> import jwzthreading
+   >>> agiza jwzthreading
    >>> jwzthreading.__file__
    '/tmp/example.zip/jwzthreading.py'
    >>>
@@ -318,18 +318,18 @@ archive can contain any kind of files, but only files named :file:`\*.py`,
 corresponding :file:`\*.pyc` file, meaning that if a ZIP archive doesn't contain
 :file:`\*.pyc` files, importing may be rather slow.
 
-A path within the archive can also be specified to only import from a
+A path within the archive can also be specified to only agiza kutoka a
 subdirectory; for example, the path :file:`/tmp/example.zip/lib/` would only
-import from the :file:`lib/` subdirectory within the archive.
+agiza kutoka the :file:`lib/` subdirectory within the archive.
 
 
 .. seealso::
 
-   :pep:`273` - Import Modules from Zip Archives
+   :pep:`273` - Import Modules kutoka Zip Archives
       Written by James C. Ahlstrom,  who also provided an implementation. Python 2.3
       follows the specification in :pep:`273`,  but uses an implementation written by
-      Just van Rossum  that uses the import hooks described in :pep:`302`. See section
-      :ref:`section-pep302` for a description of the new import hooks.
+      Just van Rossum  that uses the agiza hooks described in :pep:`302`. See section
+      :ref:`section-pep302` for a description of the new agiza hooks.
 
 .. ======================================================================
 
@@ -450,7 +450,7 @@ records to standard error or to a file or socket, send them to the system log,
 or even e-mail them to a particular address; of course, it's also possible to
 write your own handler classes.
 
-The :class:`Logger` class is the primary class. Most application code will deal
+The :class:`Logger` kundi is the primary class. Most application code will deal
 with one or more :class:`Logger` objects, each one used by a particular
 subsystem of the application. Each :class:`Logger` is identified by a name, and
 names are organized into a hierarchy using ``.``  as the component separator.
@@ -464,7 +464,7 @@ There's also a root :class:`Logger` that's the parent of all other loggers.
 For simple uses, the :mod:`logging` package contains some convenience functions
 that always use the root log::
 
-   import logging
+   agiza logging
 
    logging.debug('Debugging information')
    logging.info('Informational message')
@@ -485,7 +485,7 @@ on the root logger.
 
 Notice the :func:`warning` call's use of string formatting operators; all of the
 functions for logging messages take the arguments ``(msg, arg1, arg2, ...)`` and
-log the string resulting from ``msg % (arg1, arg2, ...)``.
+log the string resulting kutoka ``msg % (arg1, arg2, ...)``.
 
 There's also an :func:`exception` function that records the most recent
 traceback.  Any of the other functions will also record the traceback if you
@@ -590,7 +590,7 @@ Booleans, and would require that the expression in an :keyword:`if` statement
 always evaluate to a Boolean result.  Python is not this strict and never will
 be, as :pep:`285` explicitly says.  This means you can still use any expression
 in an :keyword:`!if` statement, even ones that evaluate to a list or tuple or
-some random object.  The Boolean type is a subclass of the :class:`int` class so
+some random object.  The Boolean type is a subkundi of the :class:`int` kundi so
 that arithmetic using a Boolean still works. ::
 
    >>> True + 1
@@ -658,7 +658,7 @@ Support for the long-requested Python catalog makes its first appearance in 2.3.
 The heart of the catalog is the new Distutils :command:`register` command.
 Running ``python setup.py register`` will collect the metadata describing a
 package, such as its name, version, maintainer, description, &c., and send it to
-a central catalog server.  The resulting catalog is available from
+a central catalog server.  The resulting catalog is available kutoka
 https://pypi.org.
 
 To make the catalog a bit more useful, a new optional *classifiers* keyword
@@ -669,7 +669,7 @@ classify the software.
 Here's an example :file:`setup.py` with classifiers, written to be compatible
 with older versions of the Distutils::
 
-   from distutils import core
+   kutoka distutils agiza core
    kw = {'name': "Quixote",
          'version': "0.5.1",
          'description': "A highly Pythonic Web application framework",
@@ -702,20 +702,20 @@ register --list-classifiers``.
 PEP 302: New Import Hooks
 =========================
 
-While it's been possible to write custom import hooks ever since the
+While it's been possible to write custom agiza hooks ever since the
 :mod:`ihooks` module was introduced in Python 1.3, no one has ever been really
-happy with it because writing new import hooks is difficult and messy.  There
+happy with it because writing new agiza hooks is difficult and messy.  There
 have been various proposed alternatives such as the :mod:`imputil` and :mod:`iu`
 modules, but none of them has ever gained much acceptance, and none of them were
-easily usable from C code.
+easily usable kutoka C code.
 
-:pep:`302` borrows ideas from its predecessors, especially from Gordon
+:pep:`302` borrows ideas kutoka its predecessors, especially kutoka Gordon
 McMillan's :mod:`iu` module.  Three new items  are added to the :mod:`sys`
 module:
 
 * ``sys.path_hooks`` is a list of callable objects; most  often they'll be
   classes.  Each callable takes a string containing a path and either returns an
-  importer object that will handle imports from this path or raises an
+  importer object that will handle imports kutoka this path or raises an
   :exc:`ImportError` exception if it can't handle this path.
 
 * ``sys.path_importer_cache`` caches importer objects for each path, so
@@ -732,7 +732,7 @@ path=None)``.  *fullname* will be a module or package name, e.g. ``string`` or
 single method, ``load_module(fullname)``, that creates and returns the
 corresponding module object.
 
-Pseudo-code for Python's new import logic, therefore, looks something like this
+Pseudo-code for Python's new agiza logic, therefore, looks something like this
 (simplified a bit; see :pep:`302` for the full details)::
 
    for mp in sys.meta_path:
@@ -768,7 +768,7 @@ Pseudo-code for Python's new import logic, therefore, looks something like this
 PEP 305: Comma-separated Files
 ==============================
 
-Comma-separated files are a format frequently used for exporting data from
+Comma-separated files are a format frequently used for exporting data kutoka
 databases and spreadsheets.  Python 2.3 adds a parser for comma-separated files.
 
 Comma-separated format is deceptively simple at first glance::
@@ -783,7 +783,7 @@ string data that can contain commas, and things get more complicated::
 A big ugly regular expression can parse this, but using the new  :mod:`csv`
 package is much simpler::
 
-   import csv
+   agiza csv
 
    input = open('datafile', 'rb')
    reader = csv.reader(input)
@@ -796,7 +796,7 @@ can the quoting and line-ending characters.
 
 Different dialects of comma-separated files can be defined and registered;
 currently there are two dialects, both used by Microsoft Excel. A separate
-:class:`csv.writer` class will generate comma-separated files from a succession
+:class:`csv.writer` kundi will generate comma-separated files kutoka a succession
 of tuples or lists, quoting strings that contain the delimiter.
 
 
@@ -817,18 +817,18 @@ PEP 307: Pickle Enhancements
 The :mod:`pickle` and :mod:`cPickle` modules received some attention during the
 2.3 development cycle.  In 2.2, new-style classes could be pickled without
 difficulty, but they weren't pickled very compactly; :pep:`307` quotes a trivial
-example where a new-style class results in a pickled string three times longer
+example where a new-style kundi results in a pickled string three times longer
 than that for a classic class.
 
 The solution was to invent a new pickle protocol.  The :func:`pickle.dumps`
 function has supported a text-or-binary flag  for a long time.  In 2.3, this
-flag is redefined from a Boolean to an integer: 0 is the old text-mode pickle
+flag is redefined kutoka a Boolean to an integer: 0 is the old text-mode pickle
 format, 1 is the old binary format, and now 2 is a new 2.3-specific format.  A
 new constant, :const:`pickle.HIGHEST_PROTOCOL`, can be used to select the
 fanciest protocol available.
 
 Unpickling is no longer considered a safe operation.  2.2's :mod:`pickle`
-provided hooks for trying to prevent unsafe classes from being unpickled
+provided hooks for trying to prevent unsafe classes kutoka being unpickled
 (specifically, a :attr:`__safe_for_unpickling__` attribute), but none of this
 code was ever audited and therefore it's all been ripped out in 2.3.  You should
 not unpickle untrusted data in any version of Python.
@@ -943,7 +943,7 @@ returns a ``(start, stop, step)`` tuple that can be passed directly to
 manner consistent with regular slices (and this innocuous phrase hides a welter
 of confusing details!).  The method is intended to be used like this::
 
-   class FakeSeq:
+   kundi FakeSeq:
        ...
        def calc_item(self, i):
            ...
@@ -1001,7 +1001,7 @@ Here are all of the changes that Python 2.3 makes to the core Python language.
   to  only part of the list.
 
 * Dictionaries have a new method, ``pop(key[, *default*])``, that returns
-  the value corresponding to *key* and removes that key/value pair from the
+  the value corresponding to *key* and removes that key/value pair kutoka the
   dictionary.  If the requested key isn't present in the dictionary, *default* is
   returned if it's specified and :exc:`KeyError` raised if it isn't. ::
 
@@ -1022,8 +1022,8 @@ Here are all of the changes that Python 2.3 makes to the core Python language.
      {}
      >>>
 
-  There's also a new class method,  ``dict.fromkeys(iterable, value)``, that
-  creates a dictionary with keys taken from the supplied iterator *iterable* and
+  There's also a new kundi method,  ``dict.kutokakeys(iterable, value)``, that
+  creates a dictionary with keys taken kutoka the supplied iterator *iterable* and
   all values set to *value*, defaulting to ``None``.
 
   (Patches contributed by Raymond Hettinger.)
@@ -1049,7 +1049,7 @@ Here are all of the changes that Python 2.3 makes to the core Python language.
 
   ::
 
-     >>> import types
+     >>> agiza types
      >>> m = types.ModuleType('abc','docstring')
      >>> m
      <module 'abc' (built-in)>
@@ -1081,7 +1081,7 @@ Here are all of the changes that Python 2.3 makes to the core Python language.
   you'll only notice the difference if you have a really complicated inheritance
   hierarchy.  Classic classes are unaffected by this change.  Python 2.2
   originally used a topological sort of a class's ancestors, but 2.3 now uses the
-  C3 algorithm as described in the paper `"A Monotonic Superclass Linearization
+  C3 algorithm as described in the paper `"A Monotonic Superkundi Linearization
   for Dylan" <http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.19.3910>`_. To
   understand the motivation for this change,  read Michele Simionato's article
   `"Python 2.3 Method Resolution Order" <http://www.phyast.pitt.edu/~micheles/mro.html>`_, or
@@ -1091,7 +1091,7 @@ Here are all of the changes that Python 2.3 makes to the core Python language.
   C3 algorithm.
 
 * Python runs multithreaded programs by switching between threads after
-  executing N bytecodes.  The default value for N has been increased from 10 to
+  executing N bytecodes.  The default value for N has been increased kutoka 10 to
   100 bytecodes, speeding up single-threaded applications by reducing the
   switching overhead.  Some multithreaded applications may suffer slower response
   time, but that's easily fixed by setting the limit back to a lower number using
@@ -1174,12 +1174,12 @@ String Changes
   (Contributed by Walter Dörwald.)
 
 * A new type object, :class:`basestring`, has been added. Both 8-bit strings and
-  Unicode strings inherit from this type, so ``isinstance(obj, basestring)`` will
+  Unicode strings inherit kutoka this type, so ``isinstance(obj, basestring)`` will
   return :const:`True` for either kind of string.  It's a completely abstract
   type, so you can't create :class:`basestring` instances.
 
 * Interned strings are no longer immortal and will now be garbage-collected in
-  the usual way when the only reference to them is from the internal dictionary of
+  the usual way when the only reference to them is kutoka the internal dictionary of
   interned strings.  (Implemented by Oren Tirosh.)
 
 .. ======================================================================
@@ -1188,7 +1188,7 @@ String Changes
 Optimizations
 -------------
 
-* The creation of new-style class instances has been made much faster; they're
+* The creation of new-style kundi instances has been made much faster; they're
   now faster than classic classes!
 
 * The :meth:`sort` method of list objects has been extensively rewritten by Tim
@@ -1244,7 +1244,7 @@ complete list of changes, or look through the CVS logs for all the details.
   with the new scripts :file:`db2pickle.py` and :file:`pickle2db.py` which you
   will find in the distribution's :file:`Tools/scripts` directory.  If you've
   already been using the PyBSDDB package and importing it as :mod:`bsddb3`, you
-  will have to change your ``import`` statements to import it as :mod:`bsddb`.
+  will have to change your ``import`` statements to agiza it as :mod:`bsddb`.
 
 * The new :mod:`bz2` module is an interface to the bz2 data compression library.
   bz2-compressed data is usually smaller than  corresponding
@@ -1253,7 +1253,7 @@ complete list of changes, or look through the CVS logs for all the details.
 * A set of standard date/time types has been added in the new :mod:`datetime`
   module.  See the following section for more details.
 
-* The Distutils :class:`Extension` class now supports an extra constructor
+* The Distutils :class:`Extension` kundi now supports an extra constructor
   argument named *depends* for listing additional source files that an extension
   depends on.  This lets Distutils recompile the module if any of the dependency
   files are modified.  For example, if :file:`sampmodule.c` includes the header
@@ -1275,7 +1275,7 @@ complete list of changes, or look through the CVS logs for all the details.
 * Previously the :mod:`doctest` module would only search the docstrings of
   public methods and functions for test cases, but it now also examines private
   ones as well.  The :func:`DocTestSuite` function creates a
-  :class:`unittest.TestSuite` object from a set of :mod:`doctest` tests.
+  :class:`unittest.TestSuite` object kutoka a set of :mod:`doctest` tests.
 
 * The new ``gc.get_referents(object)`` function returns a list of all the
   objects referenced by *object*.
@@ -1296,7 +1296,7 @@ complete list of changes, or look through the CVS logs for all the details.
 * The :mod:`grp`, :mod:`pwd`, and :mod:`resource` modules now return enhanced
   tuples::
 
-     >>> import grp
+     >>> agiza grp
      >>> g = grp.getgrnam('amk')
      >>> g.gr_name, g.gr_gid
      ('amk', 500)
@@ -1315,7 +1315,7 @@ complete list of changes, or look through the CVS logs for all the details.
   for adding and removing items while maintaining the heap property on top of some
   other mutable Python sequence type.  Here's an example that uses a Python list::
 
-     >>> import heapq
+     >>> agiza heapq
      >>> heap = []
      >>> for item in [3, 7, 5, 11, 1]:
      ...    heapq.heappush(heap, item)
@@ -1332,7 +1332,7 @@ complete list of changes, or look through the CVS logs for all the details.
   (Contributed by Kevin O'Connor.)
 
 * The IDLE integrated development environment has been updated using the code
-  from the IDLEfork project (http://idlefork.sourceforge.net).  The most notable feature is
+  kutoka the IDLEfork project (http://idlefork.sourceforge.net).  The most notable feature is
   that the code being developed is now executed in a subprocess, meaning that
   there's no longer any need for manual ``reload()`` operations. IDLE's core code
   has been incorporated into the standard library as the :mod:`idlelib` package.
@@ -1409,7 +1409,7 @@ complete list of changes, or look through the CVS logs for all the details.
 
 * The ``sample(population, k)`` function was added to the :mod:`random`
   module.  *population* is a sequence or :class:`xrange` object containing the
-  elements of a population, and :func:`sample` chooses *k* elements from the
+  elements of a population, and :func:`sample` chooses *k* elements kutoka the
   population without replacing chosen elements.  *k* can be any value up to
   ``len(population)``. For example::
 
@@ -1440,7 +1440,7 @@ complete list of changes, or look through the CVS logs for all the details.
   :func:`redisplay`.
 
 * The :mod:`rexec` and :mod:`Bastion` modules have been declared dead, and
-  attempts to import them will fail with a :exc:`RuntimeError`.  New-style classes
+  attempts to agiza them will fail with a :exc:`RuntimeError`.  New-style classes
   provide new ways to break out of the restricted execution environment provided
   by :mod:`rexec`, and no one has interest in fixing them or time to do so.  If
   you have applications using :mod:`rexec`, rewrite them to use something else.
@@ -1478,7 +1478,7 @@ complete list of changes, or look through the CVS logs for all the details.
   Python level as ``sys.api_version``.  The current exception can be cleared by
   calling the new :func:`sys.exc_clear` function.
 
-* The new :mod:`tarfile` module  allows reading from and writing to
+* The new :mod:`tarfile` module  allows reading kutoka and writing to
   :program:`tar`\ -format archive files. (Contributed by Lars Gustäbel.)
 
 * The new :mod:`textwrap` module contains functions for wrapping strings
@@ -1488,7 +1488,7 @@ complete list of changes, or look through the CVS logs for all the details.
   string, reformatted to fit into lines no longer than the chosen width. (As you
   can guess, :func:`fill` is built on top of :func:`wrap`.  For example::
 
-     >>> import textwrap
+     >>> agiza textwrap
      >>> paragraph = "Not a whit, we defy augury: ... more text ..."
      >>> textwrap.wrap(paragraph, 60)
      ["Not a whit, we defy augury: there's a special providence in",
@@ -1503,8 +1503,8 @@ complete list of changes, or look through the CVS logs for all the details.
      it will come: the readiness is all.
      >>>
 
-  The module also contains a :class:`TextWrapper` class that actually implements
-  the text wrapping strategy.   Both the :class:`TextWrapper` class and the
+  The module also contains a :class:`TextWrapper` kundi that actually implements
+  the text wrapping strategy.   Both the :class:`TextWrapper` kundi and the
   :func:`wrap` and :func:`fill` functions support a number of additional keyword
   arguments for fine-tuning the formatting; consult the module's documentation
   for details. (Contributed by Greg Ward.)
@@ -1517,9 +1517,9 @@ complete list of changes, or look through the CVS logs for all the details.
   top::
 
      try:
-         import threading as _threading
+         agiza threading as _threading
      except ImportError:
-         import dummy_threading as _threading
+         agiza dummy_threading as _threading
 
   In this example, :mod:`_threading` is used as the module name to make it clear
   that the module being used is not necessarily the actual :mod:`threading`
@@ -1536,13 +1536,13 @@ complete list of changes, or look through the CVS logs for all the details.
   identically on all platforms.
 
 * The new :mod:`timeit` module helps measure how long snippets of Python code
-  take to execute.  The :file:`timeit.py` file can be run directly from the
-  command line, or the module's :class:`Timer` class can be imported and used
+  take to execute.  The :file:`timeit.py` file can be run directly kutoka the
+  command line, or the module's :class:`Timer` kundi can be imported and used
   directly.  Here's a short example that figures out whether it's faster to
   convert an 8-bit string to Unicode by appending an empty Unicode string to it or
   by using the :func:`unicode` function::
 
-     import timeit
+     agiza timeit
 
      timer1 = timeit.Timer('unicode("abc")')
      timer2 = timeit.Timer('"abc" + u""')
@@ -1559,10 +1559,10 @@ complete list of changes, or look through the CVS logs for all the details.
   current version of the Tix package.
 
 * The :mod:`Tkinter` module now works with a thread-enabled  version of Tcl.
-  Tcl's threading model requires that widgets only be accessed from the thread in
-  which they're created; accesses from another thread can cause Tcl to panic.  For
+  Tcl's threading model requires that widgets only be accessed kutoka the thread in
+  which they're created; accesses kutoka another thread can cause Tcl to panic.  For
   certain Tcl interfaces, :mod:`Tkinter` will now automatically avoid this  when a
-  widget is accessed from a different thread by marshalling a command, passing it
+  widget is accessed kutoka a different thread by marshalling a command, passing it
   to the correct thread, and waiting for the results.  Other interfaces can't be
   handled automatically but :mod:`Tkinter` will now raise an exception on such an
   access so that you can at least find out about the problem.  See
@@ -1584,23 +1584,23 @@ complete list of changes, or look through the CVS logs for all the details.
   the :attr:`wantobjects` variable in the :mod:`Tkinter` module to false before
   creating the first :class:`tkapp` object. ::
 
-     import Tkinter
+     agiza Tkinter
      Tkinter.wantobjects = 0
 
   Any breakage caused by this change should be reported as a bug.
 
-* The :mod:`UserDict` module has a new :class:`DictMixin` class which defines
+* The :mod:`UserDict` module has a new :class:`DictMixin` kundi which defines
   all dictionary methods for classes that already have a minimum mapping
   interface.  This greatly simplifies writing classes that need to be
   substitutable for dictionaries, such as the classes in  the :mod:`shelve`
   module.
 
-  Adding the mix-in as a superclass provides the full dictionary interface
-  whenever the class defines :meth:`__getitem__`, :meth:`__setitem__`,
+  Adding the mix-in as a superkundi provides the full dictionary interface
+  whenever the kundi defines :meth:`__getitem__`, :meth:`__setitem__`,
   :meth:`__delitem__`, and :meth:`keys`. For example::
 
-     >>> import UserDict
-     >>> class SeqDict(UserDict.DictMixin):
+     >>> agiza UserDict
+     >>> kundi SeqDict(UserDict.DictMixin):
      ...     """Dictionary lookalike implemented with lists."""
      ...     def __init__(self):
      ...         self.keylist = []
@@ -1685,20 +1685,20 @@ fancy features, and just stick to the basics of representing time.
 The three primary types are: :class:`date`, representing a day, month, and year;
 :class:`~datetime.time`, consisting of hour, minute, and second; and :class:`~datetime.datetime`,
 which contains all the attributes of both :class:`date` and :class:`~datetime.time`.
-There's also a :class:`timedelta` class representing differences between two
-points in time, and time zone logic is implemented by classes inheriting from
+There's also a :class:`timedelta` kundi representing differences between two
+points in time, and time zone logic is implemented by classes inheriting kutoka
 the abstract :class:`tzinfo` class.
 
 You can create instances of :class:`date` and :class:`~datetime.time` by either supplying
 keyword arguments to the appropriate constructor, e.g.
 ``datetime.date(year=1972, month=10, day=15)``, or by using one of a number of
-class methods.  For example, the :meth:`date.today` class method returns the
+kundi methods.  For example, the :meth:`date.today` kundi method returns the
 current local date.
 
 Once created, instances of the date/time classes are all immutable. There are a
-number of methods for producing formatted strings from objects::
+number of methods for producing formatted strings kutoka objects::
 
-   >>> import datetime
+   >>> agiza datetime
    >>> now = datetime.datetime.now()
    >>> now.isoformat()
    '2002-12-30T21:27:03.994956'
@@ -1719,7 +1719,7 @@ The :meth:`replace` method allows modifying one or more fields  of a
 
 Instances can be compared, hashed, and converted to strings (the result is the
 same as that of :meth:`isoformat`).  :class:`date` and :class:`~datetime.datetime`
-instances can be subtracted from each other, and added to :class:`timedelta`
+instances can be subtracted kutoka each other, and added to :class:`timedelta`
 instances.  The largest missing feature is that there's no standard library
 support for parsing strings and getting back a :class:`date` or
 :class:`~datetime.datetime`.
@@ -1742,8 +1742,8 @@ options.
 You start by creating an instance of :class:`OptionParser` and telling it what
 your program's options are. ::
 
-   import sys
-   from optparse import OptionParser
+   agiza sys
+   kutoka optparse agiza OptionParser
 
    op = OptionParser()
    op.add_option('-i', '--input',
@@ -1793,7 +1793,7 @@ The help message is automatically generated for you:
 See the module's documentation for more details.
 
 
-Optik was written by Greg Ward, with suggestions from the readers of the Getopt
+Optik was written by Greg Ward, with suggestions kutoka the readers of the Getopt
 SIG.
 
 .. ======================================================================
@@ -1808,7 +1808,7 @@ Pymalloc, a specialized object allocator written by Vladimir Marangozov, was a
 feature added to Python 2.1.  Pymalloc is intended to be faster than the system
 :c:func:`malloc` and to have less memory overhead for allocation patterns typical
 of Python programs. The allocator uses C's :c:func:`malloc` function to get large
-pools of memory and then fulfills smaller memory requests from these pools.
+pools of memory and then fulfills smaller memory requests kutoka these pools.
 
 In 2.1 and 2.2, pymalloc was an experimental feature and wasn't enabled by
 default; you had to explicitly enable it when compiling Python by providing the
@@ -1835,7 +1835,7 @@ problem.
 
 As part of this change, the confusing multiple interfaces for allocating memory
 have been consolidated down into two API families. Memory allocated with one
-family must not be manipulated with functions from the other family.  There is
+family must not be manipulated with functions kutoka the other family.  There is
 one family for allocating chunks of memory and another family of functions
 specifically for allocating Python objects.
 
@@ -1858,7 +1858,7 @@ version of the Python interpreter by running :program:`configure` with
 To aid extension writers, a header file :file:`Misc/pymemcompat.h` is
 distributed with the source to Python 2.3 that allows Python extensions to use
 the 2.3 interfaces to memory allocation while compiling against any version of
-Python since 1.5.2.  You would copy the file from Python's source distribution
+Python since 1.5.2.  You would copy the file kutoka Python's source distribution
 and bundle it with the source of your extension.
 
 
@@ -1914,10 +1914,10 @@ Changes to Python's build process and to the C API include:
 
 * File objects now manage their internal string buffer differently, increasing
   it exponentially when needed.  This results in the benchmark tests in
-  :file:`Lib/test/test_bufio.py` speeding up considerably (from 57 seconds to 1.7
+  :file:`Lib/test/test_bufio.py` speeding up considerably (kutoka 57 seconds to 1.7
   seconds, according to one measurement).
 
-* It's now possible to define class and static methods for a C extension type by
+* It's now possible to define kundi and static methods for a C extension type by
   setting either the :const:`METH_CLASS` or :const:`METH_STATIC` flags in a
   method's :c:type:`PyMethodDef` structure.
 
@@ -1943,7 +1943,7 @@ system APIs.  The Python port for EMX tries to support all the POSIX-like
 capability exposed by the EMX runtime, and mostly succeeds; :func:`fork` and
 :func:`fcntl` are restricted by the limitations of the underlying emulation
 layer.  The standard OS/2 port, which uses IBM's Visual Age compiler, also
-gained support for case-sensitive import semantics as part of the integration of
+gained support for case-sensitive agiza semantics as part of the integration of
 the EMX port into CVS.  (Contributed by Andrew MacIntyre.)
 
 On MacOS, most toolbox modules have been weaklinked to improve backward
@@ -1995,8 +1995,8 @@ Some of the more notable changes are:
   determine when to call the trace function, removing the need for ``SET_LINENO``
   entirely.
 
-  It would be difficult to detect any resulting difference from Python code, apart
-  from a slight speed up when Python is run without :option:`-O`.
+  It would be difficult to detect any resulting difference kutoka Python code, apart
+  kutoka a slight speed up when Python is run without :option:`-O`.
 
   C extensions that access the :attr:`f_lineno` field of frame objects should
   instead call ``PyCode_Addr2Line(f->f_code, f->f_lasti)``. This will have the
@@ -2055,7 +2055,7 @@ code:
   :func:`get_distutil_options` function in your :file:`setup.py` and only uses the
   new keywords with a version of the Distutils that supports them::
 
-     from distutils import core
+     kutoka distutils agiza core
 
      kw = {'sources': 'foo.c', ...}
      if hasattr(core, 'get_distutil_options'):

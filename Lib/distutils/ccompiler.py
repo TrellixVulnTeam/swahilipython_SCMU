@@ -312,19 +312,19 @@ class CCompiler:
         """Process arguments and decide which source files to compile."""
         if outdir is None:
             outdir = self.output_dir
-        elif not isinstance(outdir, str):
+        lasivyo not isinstance(outdir, str):
             raise TypeError("'output_dir' must be a string or None")
 
         if macros is None:
             macros = self.macros
-        elif isinstance(macros, list):
+        lasivyo isinstance(macros, list):
             macros = macros + (self.macros or [])
         else:
             raise TypeError("'macros' (if supplied) must be a list of tuples")
 
         if incdirs is None:
             incdirs = self.include_dirs
-        elif isinstance(incdirs, (list, tuple)):
+        lasivyo isinstance(incdirs, (list, tuple)):
             incdirs = list(incdirs) + (self.include_dirs or [])
         else:
             raise TypeError(
@@ -371,19 +371,19 @@ class CCompiler:
         """
         if output_dir is None:
             output_dir = self.output_dir
-        elif not isinstance(output_dir, str):
+        lasivyo not isinstance(output_dir, str):
             raise TypeError("'output_dir' must be a string or None")
 
         if macros is None:
             macros = self.macros
-        elif isinstance(macros, list):
+        lasivyo isinstance(macros, list):
             macros = macros + (self.macros or [])
         else:
             raise TypeError("'macros' (if supplied) must be a list of tuples")
 
         if include_dirs is None:
             include_dirs = self.include_dirs
-        elif isinstance(include_dirs, (list, tuple)):
+        lasivyo isinstance(include_dirs, (list, tuple)):
             include_dirs = list(include_dirs) + (self.include_dirs or [])
         else:
             raise TypeError(
@@ -419,7 +419,7 @@ class CCompiler:
 
         if output_dir is None:
             output_dir = self.output_dir
-        elif not isinstance(output_dir, str):
+        lasivyo not isinstance(output_dir, str):
             raise TypeError("'output_dir' must be a string or None")
 
         return (objects, output_dir)
@@ -433,7 +433,7 @@ class CCompiler:
         """
         if libraries is None:
             libraries = self.libraries
-        elif isinstance(libraries, (list, tuple)):
+        lasivyo isinstance(libraries, (list, tuple)):
             libraries = list (libraries) + (self.libraries or [])
         else:
             raise TypeError(
@@ -441,7 +441,7 @@ class CCompiler:
 
         if library_dirs is None:
             library_dirs = self.library_dirs
-        elif isinstance(library_dirs, (list, tuple)):
+        lasivyo isinstance(library_dirs, (list, tuple)):
             library_dirs = list (library_dirs) + (self.library_dirs or [])
         else:
             raise TypeError(
@@ -449,7 +449,7 @@ class CCompiler:
 
         if runtime_library_dirs is None:
             runtime_library_dirs = self.runtime_library_dirs
-        elif isinstance(runtime_library_dirs, (list, tuple)):
+        lasivyo isinstance(runtime_library_dirs, (list, tuple)):
             runtime_library_dirs = (list(runtime_library_dirs) +
                                     (self.runtime_library_dirs or []))
         else:
@@ -1063,7 +1063,7 @@ def gen_preprocess_options(macros, include_dirs):
 
         if len(macro) == 1:        # undefine this macro
             pp_opts.append("-U%s" % macro[0])
-        elif len(macro) == 2:
+        lasivyo len(macro) == 2:
             if macro[1] is None:    # define with no explicit value
                 pp_opts.append("-D%s" % macro[0])
             else:

@@ -33,21 +33,21 @@ __all__ = (
 )
 
 
-def __dir__():
-    return __all__ + ('__author__', '__doc__')
+eleza __dir__():
+    rudisha __all__ + ('__author__', '__doc__')
 
 
-def __getattr__(name):
+eleza __getattr__(name):
     global ProcessPoolExecutor, ThreadPoolExecutor
 
-    if name == 'ProcessPoolExecutor':
+    ikiwa name == 'ProcessPoolExecutor':
         kutoka .process agiza ProcessPoolExecutor as pe
         ProcessPoolExecutor = pe
-        return pe
+        rudisha pe
 
-    if name == 'ThreadPoolExecutor':
+    ikiwa name == 'ThreadPoolExecutor':
         kutoka .thread agiza ThreadPoolExecutor as te
         ThreadPoolExecutor = te
-        return te
+        rudisha te
 
     raise AttributeError(f"module {__name__} has no attribute {name}")

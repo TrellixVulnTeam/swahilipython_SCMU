@@ -21,28 +21,28 @@ kutoka . agiza pytree
 kutoka . agiza pygram
 
 
-class PatternSyntaxError(Exception):
+kundi PatternSyntaxError(Exception):
     pass
 
 
-def tokenize_wrapper(input):
+eleza tokenize_wrapper(input):
     """Tokenizes a string suppressing significant whitespace."""
     skip = {token.NEWLINE, token.INDENT, token.DEDENT}
     tokens = tokenize.generate_tokens(io.StringIO(input).readline)
     for quintuple in tokens:
         type, value, start, end, line_text = quintuple
-        if type not in skip:
+        ikiwa type not in skip:
             yield quintuple
 
 
-class PatternCompiler(object):
+kundi PatternCompiler(object):
 
-    def __init__(self, grammar_file=None):
+    eleza __init__(self, grammar_file=None):
         """Initializer.
 
         Takes an optional alternative filename for the pattern grammar.
         """
-        if grammar_file is None:
+        ikiwa grammar_file is None:
             self.grammar = pygram.pattern_grammar
             self.syms = pygram.pattern_symbols
         else:
@@ -52,127 +52,127 @@ class PatternCompiler(object):
         self.pysyms = pygram.python_symbols
         self.driver = driver.Driver(self.grammar, convert=pattern_convert)
 
-    def compile_pattern(self, input, debug=False, with_tree=False):
+    eleza compile_pattern(self, input, debug=False, with_tree=False):
         """Compiles a pattern string to a nested pytree.*Pattern object."""
         tokens = tokenize_wrapper(input)
         try:
             root = self.driver.parse_tokens(tokens, debug=debug)
         except parse.ParseError as e:
             raise PatternSyntaxError(str(e)) kutoka None
-        if with_tree:
-            return self.compile_node(root), root
+        ikiwa with_tree:
+            rudisha self.compile_node(root), root
         else:
-            return self.compile_node(root)
+            rudisha self.compile_node(root)
 
-    def compile_node(self, node):
+    eleza compile_node(self, node):
         """Compiles a node, recursively.
 
         This is one big switch on the node type.
         """
         # XXX Optimize certain Wildcard-containing-Wildcard patterns
         # that can be merged
-        if node.type == self.syms.Matcher:
+        ikiwa node.type == self.syms.Matcher:
             node = node.children[0] # Avoid unneeded recursion
 
-        if node.type == self.syms.Alternatives:
+        ikiwa node.type == self.syms.Alternatives:
             # Skip the odd children since they are just '|' tokens
             alts = [self.compile_node(ch) for ch in node.children[::2]]
-            if len(alts) == 1:
-                return alts[0]
+            ikiwa len(alts) == 1:
+                rudisha alts[0]
             p = pytree.WildcardPattern([[a] for a in alts], min=1, max=1)
-            return p.optimize()
+            rudisha p.optimize()
 
-        if node.type == self.syms.Alternative:
+        ikiwa node.type == self.syms.Alternative:
             units = [self.compile_node(ch) for ch in node.children]
-            if len(units) == 1:
-                return units[0]
+            ikiwa len(units) == 1:
+                rudisha units[0]
             p = pytree.WildcardPattern([units], min=1, max=1)
-            return p.optimize()
+            rudisha p.optimize()
 
-        if node.type == self.syms.NegatedUnit:
+        ikiwa node.type == self.syms.NegatedUnit:
             pattern = self.compile_basic(node.children[1:])
             p = pytree.NegatedPattern(pattern)
-            return p.optimize()
+            rudisha p.optimize()
 
         assert node.type == self.syms.Unit
 
         name = None
         nodes = node.children
-        if len(nodes) >= 3 and nodes[1].type == token.EQUAL:
+        ikiwa len(nodes) >= 3 and nodes[1].type == token.EQUAL:
             name = nodes[0].value
             nodes = nodes[2:]
         repeat = None
-        if len(nodes) >= 2 and nodes[-1].type == self.syms.Repeater:
+        ikiwa len(nodes) >= 2 and nodes[-1].type == self.syms.Repeater:
             repeat = nodes[-1]
             nodes = nodes[:-1]
 
         # Now we've reduced it to: STRING | NAME [Details] | (...) | [...]
         pattern = self.compile_basic(nodes, repeat)
 
-        if repeat is not None:
+        ikiwa repeat is not None:
             assert repeat.type == self.syms.Repeater
             children = repeat.children
             child = children[0]
-            if child.type == token.STAR:
+            ikiwa child.type == token.STAR:
                 min = 0
                 max = pytree.HUGE
-            elif child.type == token.PLUS:
+            elikiwa child.type == token.PLUS:
                 min = 1
                 max = pytree.HUGE
-            elif child.type == token.LBRACE:
+            elikiwa child.type == token.LBRACE:
                 assert children[-1].type == token.RBRACE
                 assert  len(children) in (3, 5)
                 min = max = self.get_int(children[1])
-                if len(children) == 5:
+                ikiwa len(children) == 5:
                     max = self.get_int(children[3])
             else:
                 assert False
-            if min != 1 or max != 1:
+            ikiwa min != 1 or max != 1:
                 pattern = pattern.optimize()
                 pattern = pytree.WildcardPattern([[pattern]], min=min, max=max)
 
-        if name is not None:
+        ikiwa name is not None:
             pattern.name = name
-        return pattern.optimize()
+        rudisha pattern.optimize()
 
-    def compile_basic(self, nodes, repeat=None):
+    eleza compile_basic(self, nodes, repeat=None):
         # Compile STRING | NAME [Details] | (...) | [...]
         assert len(nodes) >= 1
         node = nodes[0]
-        if node.type == token.STRING:
+        ikiwa node.type == token.STRING:
             value = str(literals.evalString(node.value))
-            return pytree.LeafPattern(_type_of_literal(value), value)
-        elif node.type == token.NAME:
+            rudisha pytree.LeafPattern(_type_of_literal(value), value)
+        elikiwa node.type == token.NAME:
             value = node.value
-            if value.isupper():
-                if value not in TOKEN_MAP:
+            ikiwa value.isupper():
+                ikiwa value not in TOKEN_MAP:
                     raise PatternSyntaxError("Invalid token: %r" % value)
-                if nodes[1:]:
+                ikiwa nodes[1:]:
                     raise PatternSyntaxError("Can't have details for token")
-                return pytree.LeafPattern(TOKEN_MAP[value])
+                rudisha pytree.LeafPattern(TOKEN_MAP[value])
             else:
-                if value == "any":
+                ikiwa value == "any":
                     type = None
-                elif not value.startswith("_"):
+                elikiwa not value.startswith("_"):
                     type = getattr(self.pysyms, value, None)
-                    if type is None:
+                    ikiwa type is None:
                         raise PatternSyntaxError("Invalid symbol: %r" % value)
-                if nodes[1:]: # Details present
+                ikiwa nodes[1:]: # Details present
                     content = [self.compile_node(nodes[1].children[1])]
                 else:
                     content = None
-                return pytree.NodePattern(type, content)
-        elif node.value == "(":
-            return self.compile_node(nodes[1])
-        elif node.value == "[":
+                rudisha pytree.NodePattern(type, content)
+        elikiwa node.value == "(":
+            rudisha self.compile_node(nodes[1])
+        elikiwa node.value == "[":
             assert repeat is None
             subpattern = self.compile_node(nodes[1])
-            return pytree.WildcardPattern([[subpattern]], min=0, max=1)
+            rudisha pytree.WildcardPattern([[subpattern]], min=0, max=1)
         assert False, node
 
-    def get_int(self, node):
+    eleza get_int(self, node):
         assert node.type == token.NUMBER
-        return int(node.value)
+        rudisha int(node.value)
 
 
 # Map named tokens to the type value for a LeafPattern
@@ -182,23 +182,23 @@ TOKEN_MAP = {"NAME": token.NAME,
              "TOKEN": None}
 
 
-def _type_of_literal(value):
-    if value[0].isalpha():
-        return token.NAME
-    elif value in grammar.opmap:
-        return grammar.opmap[value]
+eleza _type_of_literal(value):
+    ikiwa value[0].isalpha():
+        rudisha token.NAME
+    elikiwa value in grammar.opmap:
+        rudisha grammar.opmap[value]
     else:
-        return None
+        rudisha None
 
 
-def pattern_convert(grammar, raw_node_info):
+eleza pattern_convert(grammar, raw_node_info):
     """Converts raw node information to a Node or Leaf instance."""
     type, value, context, children = raw_node_info
-    if children or type in grammar.number2symbol:
-        return pytree.Node(type, children, context=context)
+    ikiwa children or type in grammar.number2symbol:
+        rudisha pytree.Node(type, children, context=context)
     else:
-        return pytree.Leaf(type, value, context=context)
+        rudisha pytree.Leaf(type, value, context=context)
 
 
-def compile_pattern(pattern):
-    return PatternCompiler().compile_pattern(pattern)
+eleza compile_pattern(pattern):
+    rudisha PatternCompiler().compile_pattern(pattern)

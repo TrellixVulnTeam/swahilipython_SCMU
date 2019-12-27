@@ -13,7 +13,7 @@ import random
 
 from copy import deepcopy
 from io import StringIO, BytesIO
-from email.utils import _has_surrogates
+from email.utils agiza _has_surrogates
 
 UNDERSCORE = '_'
 NL = '\n'  # XXX: no longer used by the code below.
@@ -259,11 +259,11 @@ class Generator:
         subparts = msg.get_payload()
         if subparts is None:
             subparts = []
-        elif isinstance(subparts, str):
+        lasivyo isinstance(subparts, str):
             # e.g. a non-strict parse of a message with no starting boundary.
             self.write(subparts)
             return
-        elif not isinstance(subparts, list):
+        lasivyo not isinstance(subparts, list):
             # Scalar payload
             subparts = [subparts]
         for part in subparts:
@@ -483,7 +483,7 @@ class DecodedGenerator(Generator):
             maintype = part.get_content_maintype()
             if maintype == 'text':
                 print(part.get_payload(decode=False), file=self)
-            elif maintype == 'multipart':
+            lasivyo maintype == 'multipart':
                 # Just skip this
                 pass
             else:

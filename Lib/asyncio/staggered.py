@@ -11,7 +11,7 @@ kutoka . agiza locks
 kutoka . agiza tasks
 
 
-async def staggered_race(
+async eleza staggered_race(
         coro_fns: typing.Iterable[typing.Callable[[], typing.Awaitable]],
         delay: typing.Optional[float],
         *,
@@ -32,10 +32,10 @@ async def staggered_race(
 
     The coroutines provided should be well-behaved in the following way:
 
-    * They should only ``return`` if completed successfully.
+    * They should only ``return`` ikiwa completed successfully.
 
-    * They should always raise an exception if they did not complete
-      successfully. In particular, if they handle cancellation, they should
+    * They should always raise an exception ikiwa they did not complete
+      successfully. In particular, ikiwa they handle cancellation, they should
       probably reraise, like this::
 
         try:
@@ -46,7 +46,7 @@ async def staggered_race(
 
     Args:
         coro_fns: an iterable of coroutine functions, i.e. callables that
-            return a coroutine object when called. Use ``functools.partial`` or
+            rudisha a coroutine object when called. Use ``functools.partial`` or
             lambdas to pass arguments.
 
         delay: amount of time, in seconds, between starting coroutines. If
@@ -58,11 +58,11 @@ async def staggered_race(
         tuple *(winner_result, winner_index, exceptions)* where
 
         - *winner_result*: the result of the winning coroutine, or ``None``
-          if no coroutines won.
+          ikiwa no coroutines won.
 
         - *winner_index*: the index of the winning coroutine in
-          ``coro_fns``, or ``None`` if no coroutines won. If the winning
-          coroutine may return None on success, *winner_index* can be used
+          ``coro_fns``, or ``None`` ikiwa no coroutines won. If the winning
+          coroutine may rudisha None on success, *winner_index* can be used
           to definitively determine whether any coroutine won.
 
         - *exceptions*: list of exceptions returned by the coroutines.
@@ -79,13 +79,13 @@ async def staggered_race(
     exceptions = []
     running_tasks = []
 
-    async def run_one_coro(
+    async eleza run_one_coro(
             previous_failed: typing.Optional[locks.Event]) -> None:
         # Wait for the previous task to finish, or for delay seconds
-        if previous_failed is not None:
+        ikiwa previous_failed is not None:
             with contextlib.suppress(futures.TimeoutError):
                 # Use asyncio.wait_for() instead of asyncio.wait() here, so
-                # that if we get cancelled at this point, Event.wait() is also
+                # that ikiwa we get cancelled at this point, Event.wait() is also
                 # cancelled, otherwise there will be a "Task destroyed but it is
                 # pending" later.
                 await tasks.wait_for(previous_failed.wait(), delay)
@@ -99,7 +99,7 @@ async def staggered_race(
         next_task = loop.create_task(run_one_coro(this_failed))
         running_tasks.append(next_task)
         assert len(running_tasks) == this_index + 2
-        # Prepare place to put this coroutine's exceptions if not won
+        # Prepare place to put this coroutine's exceptions ikiwa not won
         exceptions.append(None)
         assert len(exceptions) == this_index + 1
 
@@ -124,7 +124,7 @@ async def staggered_race(
             # asyncio.CancelledError. This behavior is specified in
             # https://bugs.python.org/issue30048
             for i, t in enumerate(running_tasks):
-                if i != this_index:
+                ikiwa i != this_index:
                     t.cancel()
 
     first_task = loop.create_task(run_one_coro(None))
@@ -138,12 +138,12 @@ async def staggered_race(
             done_count = len(done)
             # If run_one_coro raises an unhandled exception, it's probably a
             # programming error, and I want to see it.
-            if __debug__:
+            ikiwa __debug__:
                 for d in done:
-                    if d.done() and not d.cancelled() and d.exception():
+                    ikiwa d.done() and not d.cancelled() and d.exception():
                         raise d.exception()
-        return winner_result, winner_index, exceptions
+        rudisha winner_result, winner_index, exceptions
     finally:
-        # Make sure no tasks are left running if we leave this function
+        # Make sure no tasks are left running ikiwa we leave this function
         for t in running_tasks:
             t.cancel()

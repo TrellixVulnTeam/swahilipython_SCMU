@@ -24,9 +24,9 @@ LISTUPDATE_SEQUENCE = "<B1-ButtonRelease>"
 WINCONFIG_SEQUENCE = "<Configure>"
 DOUBLECLICK_SEQUENCE = "<B1-Double-ButtonRelease>"
 
-class AutoCompleteWindow:
+kundi AutoCompleteWindow:
 
-    def __init__(self, widget):
+    eleza __init__(self, widget):
         # The widget (Text) on which we place the AutoCompleteWindow
         self.widget = widget
         # The widgets we create
@@ -54,70 +54,70 @@ class AutoCompleteWindow:
         # event ids
         self.hideid = self.keypressid = self.listupdateid = \
             self.winconfigid = self.keyreleaseid = self.doubleclickid = None
-        # Flag set if last keypress was a tab
+        # Flag set ikiwa last keypress was a tab
         self.lastkey_was_tab = False
         # Flag set to avoid recursive <Configure> callback invocations.
         self.is_configuring = False
 
-    def _change_start(self, newstart):
+    eleza _change_start(self, newstart):
         min_len = min(len(self.start), len(newstart))
         i = 0
         while i < min_len and self.start[i] == newstart[i]:
             i += 1
-        if i < len(self.start):
+        ikiwa i < len(self.start):
             self.widget.delete("%s+%dc" % (self.startindex, i),
                                "%s+%dc" % (self.startindex, len(self.start)))
-        if i < len(newstart):
+        ikiwa i < len(newstart):
             self.widget.insert("%s+%dc" % (self.startindex, i),
                                newstart[i:])
         self.start = newstart
 
-    def _binary_search(self, s):
+    eleza _binary_search(self, s):
         """Find the first index in self.completions where completions[i] is
-        greater or equal to s, or the last index if there is no such.
+        greater or equal to s, or the last index ikiwa there is no such.
         """
         i = 0; j = len(self.completions)
         while j > i:
             m = (i + j) // 2
-            if self.completions[m] >= s:
+            ikiwa self.completions[m] >= s:
                 j = m
             else:
                 i = m + 1
-        return min(i, len(self.completions)-1)
+        rudisha min(i, len(self.completions)-1)
 
-    def _complete_string(self, s):
+    eleza _complete_string(self, s):
         """Assuming that s is the prefix of a string in self.completions,
-        return the longest string which is a prefix of all the strings which
-        s is a prefix of them. If s is not a prefix of a string, return s.
+        rudisha the longest string which is a prefix of all the strings which
+        s is a prefix of them. If s is not a prefix of a string, rudisha s.
         """
         first = self._binary_search(s)
-        if self.completions[first][:len(s)] != s:
+        ikiwa self.completions[first][:len(s)] != s:
             # There is not even one completion which s is a prefix of.
-            return s
+            rudisha s
         # Find the end of the range of completions where s is a prefix of.
         i = first + 1
         j = len(self.completions)
         while j > i:
             m = (i + j) // 2
-            if self.completions[m][:len(s)] != s:
+            ikiwa self.completions[m][:len(s)] != s:
                 j = m
             else:
                 i = m + 1
         last = i-1
 
-        if first == last: # only one possible completion
-            return self.completions[first]
+        ikiwa first == last: # only one possible completion
+            rudisha self.completions[first]
 
-        # We should return the maximum prefix of first and last
+        # We should rudisha the maximum prefix of first and last
         first_comp = self.completions[first]
         last_comp = self.completions[last]
         min_len = min(len(first_comp), len(last_comp))
         i = len(s)
         while i < min_len and first_comp[i] == last_comp[i]:
             i += 1
-        return first_comp[:i]
+        rudisha first_comp[:i]
 
-    def _selection_changed(self):
+    eleza _selection_changed(self):
         """Call when the selection of the Listbox has changed.
 
         Updates the Listbox display and calls _change_start.
@@ -128,7 +128,7 @@ class AutoCompleteWindow:
 
         lts = self.lasttypedstart
         selstart = self.completions[cursel]
-        if self._binary_search(lts) == cursel:
+        ikiwa self._binary_search(lts) == cursel:
             newstart = lts
         else:
             min_len = min(len(lts), len(selstart))
@@ -138,7 +138,7 @@ class AutoCompleteWindow:
             newstart = selstart[:i]
         self._change_start(newstart)
 
-        if self.completions[cursel][:len(self.start)] == self.start:
+        ikiwa self.completions[cursel][:len(self.start)] == self.start:
             # start is a prefix of the selected completion
             self.listbox.configure(selectbackground=self.origselbackground,
                                    selectforeground=self.origselforeground)
@@ -146,7 +146,7 @@ class AutoCompleteWindow:
             self.listbox.configure(selectbackground=self.listbox.cget("bg"),
                                    selectforeground=self.listbox.cget("fg"))
             # If there are more completions, show them, and call me again.
-            if self.morecompletions:
+            ikiwa self.morecompletions:
                 self.completions = self.morecompletions
                 self.morecompletions = None
                 self.listbox.delete(0, END)
@@ -155,10 +155,10 @@ class AutoCompleteWindow:
                 self.listbox.select_set(self._binary_search(self.start))
                 self._selection_changed()
 
-    def show_window(self, comp_lists, index, complete, mode, userWantsWin):
+    eleza show_window(self, comp_lists, index, complete, mode, userWantsWin):
         """Show the autocomplete list, bind events.
 
-        If complete is True, complete the text, and if there is exactly
+        If complete is True, complete the text, and ikiwa there is exactly
         one matching completion, don't open a list.
         """
         # Handle the start we already have
@@ -166,16 +166,16 @@ class AutoCompleteWindow:
         self.mode = mode
         self.startindex = self.widget.index(index)
         self.start = self.widget.get(self.startindex, "insert")
-        if complete:
+        ikiwa complete:
             completed = self._complete_string(self.start)
             start = self.start
             self._change_start(completed)
             i = self._binary_search(completed)
-            if self.completions[i] == completed and \
+            ikiwa self.completions[i] == completed and \
                (i == len(self.completions)-1 or
                 self.completions[i+1][:len(completed)] != completed):
                 # There is exactly one matching completion
-                return completed == start
+                rudisha completed == start
         self.userwantswindow = userWantsWin
         self.lasttypedstart = self.start
 
@@ -229,15 +229,15 @@ class AutoCompleteWindow:
         self.winconfigid = acw.bind(WINCONFIG_SEQUENCE, self.winconfig_event)
         self.doubleclickid = listbox.bind(DOUBLECLICK_SEQUENCE,
                                           self.doubleclick_event)
-        return None
+        rudisha None
 
-    def winconfig_event(self, event):
-        if self.is_configuring:
+    eleza winconfig_event(self, event):
+        ikiwa self.is_configuring:
             # Avoid running on recursive <Configure> callback invocations.
             return
 
         self.is_configuring = True
-        if not self.is_active():
+        ikiwa not self.is_active():
             return
         # Position the completion list window
         text = self.widget
@@ -249,7 +249,7 @@ class AutoCompleteWindow:
         text_width, text_height = text.winfo_width(), text.winfo_height()
         new_x = text.winfo_rootx() + min(x, max(0, text_width - acw_width))
         new_y = text.winfo_rooty() + y
-        if (text_height - (y + cy) >= acw_height # enough height below
+        ikiwa (text_height - (y + cy) >= acw_height # enough height below
             or y < acw_height): # not enough height above
             # place acw below current line
             new_y += cy
@@ -258,7 +258,7 @@ class AutoCompleteWindow:
             new_y -= acw_height
         acw.wm_geometry("+%d+%d" % (new_x, new_y))
 
-        if platform.system().startswith('Windows'):
+        ikiwa platform.system().startswith('Windows'):
             # See issue 15786. When on Windows platform, Tk will misbehave
             # to call winconfig_event multiple times, we need to prevent this,
             # otherwise mouse button double click will not be able to used.
@@ -267,84 +267,84 @@ class AutoCompleteWindow:
 
         self.is_configuring = False
 
-    def _hide_event_check(self):
-        if not self.autocompletewindow:
+    eleza _hide_event_check(self):
+        ikiwa not self.autocompletewindow:
             return
 
         try:
-            if not self.autocompletewindow.focus_get():
+            ikiwa not self.autocompletewindow.focus_get():
                 self.hide_window()
         except KeyError:
             # See issue 734176, when user click on menu, acw.focus_get()
             # will get KeyError.
             self.hide_window()
 
-    def hide_event(self, event):
-        # Hide autocomplete list if it exists and does not have focus or
+    eleza hide_event(self, event):
+        # Hide autocomplete list ikiwa it exists and does not have focus or
         # mouse click on widget / text area.
-        if self.is_active():
-            if event.type == EventType.FocusOut:
+        ikiwa self.is_active():
+            ikiwa event.type == EventType.FocusOut:
                 # On Windows platform, it will need to delay the check for
                 # acw.focus_get() when click on acw, otherwise it will return
                 # None and close the window
                 self.widget.after(1, self._hide_event_check)
-            elif event.type == EventType.ButtonPress:
+            elikiwa event.type == EventType.ButtonPress:
                 # ButtonPress event only bind to self.widget
                 self.hide_window()
 
-    def listselect_event(self, event):
-        if self.is_active():
+    eleza listselect_event(self, event):
+        ikiwa self.is_active():
             self.userwantswindow = True
             cursel = int(self.listbox.curselection()[0])
             self._change_start(self.completions[cursel])
 
-    def doubleclick_event(self, event):
+    eleza doubleclick_event(self, event):
         # Put the selected completion in the text, and close the list
         cursel = int(self.listbox.curselection()[0])
         self._change_start(self.completions[cursel])
         self.hide_window()
 
-    def keypress_event(self, event):
-        if not self.is_active():
-            return None
+    eleza keypress_event(self, event):
+        ikiwa not self.is_active():
+            rudisha None
         keysym = event.keysym
-        if hasattr(event, "mc_state"):
+        ikiwa hasattr(event, "mc_state"):
             state = event.mc_state
         else:
             state = 0
-        if keysym != "Tab":
+        ikiwa keysym != "Tab":
             self.lastkey_was_tab = False
-        if (len(keysym) == 1 or keysym in ("underscore", "BackSpace")
+        ikiwa (len(keysym) == 1 or keysym in ("underscore", "BackSpace")
             or (self.mode == FILES and keysym in
                 ("period", "minus"))) \
            and not (state & ~MC_SHIFT):
             # Normal editing of text
-            if len(keysym) == 1:
+            ikiwa len(keysym) == 1:
                 self._change_start(self.start + keysym)
-            elif keysym == "underscore":
+            elikiwa keysym == "underscore":
                 self._change_start(self.start + '_')
-            elif keysym == "period":
+            elikiwa keysym == "period":
                 self._change_start(self.start + '.')
-            elif keysym == "minus":
+            elikiwa keysym == "minus":
                 self._change_start(self.start + '-')
             else:
                 # keysym == "BackSpace"
-                if len(self.start) == 0:
+                ikiwa len(self.start) == 0:
                     self.hide_window()
-                    return None
+                    rudisha None
                 self._change_start(self.start[:-1])
             self.lasttypedstart = self.start
             self.listbox.select_clear(0, int(self.listbox.curselection()[0]))
             self.listbox.select_set(self._binary_search(self.start))
             self._selection_changed()
-            return "break"
+            rudisha "break"
 
-        elif keysym == "Return":
+        elikiwa keysym == "Return":
             self.complete()
             self.hide_window()
-            return 'break'
+            rudisha 'break'
 
-        elif (self.mode == ATTRS and keysym in
+        elikiwa (self.mode == ATTRS and keysym in
               ("period", "space", "parenleft", "parenright", "bracketleft",
                "bracketright")) or \
              (self.mode == FILES and keysym in
@@ -354,30 +354,30 @@ class AutoCompleteWindow:
             # completing file names, put the whole
             # selected completion. Anyway, close the list.
             cursel = int(self.listbox.curselection()[0])
-            if self.completions[cursel][:len(self.start)] == self.start \
+            ikiwa self.completions[cursel][:len(self.start)] == self.start \
                and (self.mode == ATTRS or self.start):
                 self._change_start(self.completions[cursel])
             self.hide_window()
-            return None
+            rudisha None
 
-        elif keysym in ("Home", "End", "Prior", "Next", "Up", "Down") and \
+        elikiwa keysym in ("Home", "End", "Prior", "Next", "Up", "Down") and \
              not state:
             # Move the selection in the listbox
             self.userwantswindow = True
             cursel = int(self.listbox.curselection()[0])
-            if keysym == "Home":
+            ikiwa keysym == "Home":
                 newsel = 0
-            elif keysym == "End":
+            elikiwa keysym == "End":
                 newsel = len(self.completions)-1
-            elif keysym in ("Prior", "Next"):
+            elikiwa keysym in ("Prior", "Next"):
                 jump = self.listbox.nearest(self.listbox.winfo_height()) - \
                        self.listbox.nearest(0)
-                if keysym == "Prior":
+                ikiwa keysym == "Prior":
                     newsel = max(0, cursel-jump)
                 else:
                     assert keysym == "Next"
                     newsel = min(len(self.completions)-1, cursel+jump)
-            elif keysym == "Up":
+            elikiwa keysym == "Up":
                 newsel = max(0, cursel-1)
             else:
                 assert keysym == "Down"
@@ -386,57 +386,57 @@ class AutoCompleteWindow:
             self.listbox.select_set(newsel)
             self._selection_changed()
             self._change_start(self.completions[newsel])
-            return "break"
+            rudisha "break"
 
-        elif (keysym == "Tab" and not state):
-            if self.lastkey_was_tab:
+        elikiwa (keysym == "Tab" and not state):
+            ikiwa self.lastkey_was_tab:
                 # two tabs in a row; insert current selection and close acw
                 cursel = int(self.listbox.curselection()[0])
                 self._change_start(self.completions[cursel])
                 self.hide_window()
-                return "break"
+                rudisha "break"
             else:
                 # first tab; let AutoComplete handle the completion
                 self.userwantswindow = True
                 self.lastkey_was_tab = True
-                return None
+                rudisha None
 
-        elif any(s in keysym for s in ("Shift", "Control", "Alt",
+        elikiwa any(s in keysym for s in ("Shift", "Control", "Alt",
                                        "Meta", "Command", "Option")):
             # A modifier key, so ignore
-            return None
+            rudisha None
 
-        elif event.char and event.char >= ' ':
+        elikiwa event.char and event.char >= ' ':
             # Regular character with a non-length-1 keycode
             self._change_start(self.start + event.char)
             self.lasttypedstart = self.start
             self.listbox.select_clear(0, int(self.listbox.curselection()[0]))
             self.listbox.select_set(self._binary_search(self.start))
             self._selection_changed()
-            return "break"
+            rudisha "break"
 
         else:
             # Unknown event, close the window and let it through.
             self.hide_window()
-            return None
+            rudisha None
 
-    def keyrelease_event(self, event):
-        if not self.is_active():
+    eleza keyrelease_event(self, event):
+        ikiwa not self.is_active():
             return
-        if self.widget.index("insert") != \
+        ikiwa self.widget.index("insert") != \
            self.widget.index("%s+%dc" % (self.startindex, len(self.start))):
             # If we didn't catch an event which moved the insert, close window
             self.hide_window()
 
-    def is_active(self):
-        return self.autocompletewindow is not None
+    eleza is_active(self):
+        rudisha self.autocompletewindow is not None
 
-    def complete(self):
+    eleza complete(self):
         self._change_start(self._complete_string(self.start))
         # The selection doesn't change.
 
-    def hide_window(self):
-        if not self.is_active():
+    eleza hide_window(self):
+        ikiwa not self.is_active():
             return
 
         # unbind events
@@ -459,7 +459,7 @@ class AutoCompleteWindow:
         self.keyreleaseid = None
         self.listbox.unbind(LISTUPDATE_SEQUENCE, self.listupdateid)
         self.listupdateid = None
-        if self.winconfigid:
+        ikiwa self.winconfigid:
             self.autocompletewindow.unbind(WINCONFIG_SEQUENCE, self.winconfigid)
             self.winconfigid = None
 
@@ -475,7 +475,7 @@ class AutoCompleteWindow:
         self.autocompletewindow = None
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_autocomplete_w', verbosity=2, exit=False)
 

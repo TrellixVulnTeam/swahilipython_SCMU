@@ -55,7 +55,7 @@
 #if (defined(__GNUC__) && !defined(__STRICT_ANSI__) && \
     (((__GNUC__ == 3) && (__GNUC_MINOR__ >= 1)) || (__GNUC__ >= 4)))
 /* Two gcc extensions.
-   &a[0] degrades to a pointer: a different type from an array */
+   &a[0] degrades to a pointer: a different type kutoka an array */
 #define Py_ARRAY_LENGTH(array) \
     (sizeof(array) / sizeof((array)[0]) \
      + Py_BUILD_ASSERT_EXPR(!__builtin_types_compatible_p(typeof(array), \

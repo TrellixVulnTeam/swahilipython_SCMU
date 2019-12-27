@@ -137,7 +137,7 @@ class SimpleTypesTestCase(unittest.TestCase):
         self.assertRaises(TypeError, LPINT.from_param, c_uint*3)
 
     def test_noctypes_argtype(self):
-        import _ctypes_test
+        agiza _ctypes_test
         from ctypes import CDLL, c_void_p, ArgumentError
 
         func = CDLL(_ctypes_test.__file__)._testfunc_p_p

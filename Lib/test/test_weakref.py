@@ -14,75 +14,75 @@ kutoka test agiza support
 kutoka test.support agiza script_helper
 
 # Used in ReferencesTestCase.test_ref_created_during_del() .
-ref_from_del = None
+ref_kutoka_del = None
 
 # Used by FinalizeTestCase as a global that may be replaced by None
 # when the interpreter shuts down.
 _global_var = 'foobar'
 
-class C:
-    def method(self):
+kundi C:
+    eleza method(self):
         pass
 
 
-class Callable:
+kundi Callable:
     bar = None
 
-    def __call__(self, x):
+    eleza __call__(self, x):
         self.bar = x
 
 
-def create_function():
-    def f(): pass
-    return f
+eleza create_function():
+    eleza f(): pass
+    rudisha f
 
-def create_bound_method():
-    return C().method
+eleza create_bound_method():
+    rudisha C().method
 
 
-class Object:
-    def __init__(self, arg):
+kundi Object:
+    eleza __init__(self, arg):
         self.arg = arg
-    def __repr__(self):
-        return "<Object %r>" % self.arg
-    def __eq__(self, other):
-        if isinstance(other, Object):
-            return self.arg == other.arg
-        return NotImplemented
-    def __lt__(self, other):
-        if isinstance(other, Object):
-            return self.arg < other.arg
-        return NotImplemented
-    def __hash__(self):
-        return hash(self.arg)
-    def some_method(self):
-        return 4
-    def other_method(self):
-        return 5
+    eleza __repr__(self):
+        rudisha "<Object %r>" % self.arg
+    eleza __eq__(self, other):
+        ikiwa isinstance(other, Object):
+            rudisha self.arg == other.arg
+        rudisha NotImplemented
+    eleza __lt__(self, other):
+        ikiwa isinstance(other, Object):
+            rudisha self.arg < other.arg
+        rudisha NotImplemented
+    eleza __hash__(self):
+        rudisha hash(self.arg)
+    eleza some_method(self):
+        rudisha 4
+    eleza other_method(self):
+        rudisha 5
 
 
-class RefCycle:
-    def __init__(self):
+kundi RefCycle:
+    eleza __init__(self):
         self.cycle = self
 
 
-class TestBase(unittest.TestCase):
+kundi TestBase(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.cbcalled = 0
 
-    def callback(self, ref):
+    eleza callback(self, ref):
         self.cbcalled += 1
 
 
 @contextlib.contextmanager
-def collect_in_thread(period=0.0001):
+eleza collect_in_thread(period=0.0001):
     """
     Ensure GC collections happen in a different thread, at a high frequency.
     """
     please_stop = False
 
-    def collect():
+    eleza collect():
         while not please_stop:
             time.sleep(period)
             gc.collect()
@@ -97,9 +97,9 @@ def collect_in_thread(period=0.0001):
             t.join()
 
 
-class ReferencesTestCase(TestBase):
+kundi ReferencesTestCase(TestBase):
 
-    def test_basic_ref(self):
+    eleza test_basic_ref(self):
         self.check_basic_ref(C)
         self.check_basic_ref(create_function)
         self.check_basic_ref(create_bound_method)
@@ -113,13 +113,13 @@ class ReferencesTestCase(TestBase):
         del o
         repr(wr)
 
-    def test_basic_callback(self):
+    eleza test_basic_callback(self):
         self.check_basic_callback(C)
         self.check_basic_callback(create_function)
         self.check_basic_callback(create_bound_method)
 
     @support.cpython_only
-    def test_cfunction(self):
+    eleza test_cfunction(self):
         agiza _testcapi
         create_cfunction = _testcapi.create_cfunction
         f = create_cfunction()
@@ -130,7 +130,7 @@ class ReferencesTestCase(TestBase):
         self.check_basic_ref(create_cfunction)
         self.check_basic_callback(create_cfunction)
 
-    def test_multiple_callbacks(self):
+    eleza test_multiple_callbacks(self):
         o = C()
         ref1 = weakref.ref(o, self.callback)
         ref2 = weakref.ref(o, self.callback)
@@ -140,7 +140,7 @@ class ReferencesTestCase(TestBase):
         self.assertEqual(self.cbcalled, 2,
                      "callback not called the right number of times")
 
-    def test_multiple_selfref_callbacks(self):
+    eleza test_multiple_selfref_callbacks(self):
         # Make sure all references are invalidated before callbacks are called
         #
         # What's agizaant here is that we're using the first
@@ -151,25 +151,25 @@ class ReferencesTestCase(TestBase):
         # have one invocation of _weakref.c:cleanup_helper() active
         # for a particular object at a time.
         #
-        def callback(object, self=self):
+        eleza callback(object, self=self):
             self.ref()
         c = C()
         self.ref = weakref.ref(c, callback)
         ref1 = weakref.ref(c, callback)
         del c
 
-    def test_constructor_kwargs(self):
+    eleza test_constructor_kwargs(self):
         c = C()
         self.assertRaises(TypeError, weakref.ref, c, callback=None)
 
-    def test_proxy_ref(self):
+    eleza test_proxy_ref(self):
         o = C()
         o.bar = 1
         ref1 = weakref.proxy(o, self.callback)
         ref2 = weakref.proxy(o, self.callback)
         del o
 
-        def check(proxy):
+        eleza check(proxy):
             proxy.bar
 
         self.assertRaises(ReferenceError, check, ref1)
@@ -177,16 +177,16 @@ class ReferencesTestCase(TestBase):
         self.assertRaises(ReferenceError, bool, weakref.proxy(C()))
         self.assertEqual(self.cbcalled, 2)
 
-    def check_basic_ref(self, factory):
+    eleza check_basic_ref(self, factory):
         o = factory()
         ref = weakref.ref(o)
         self.assertIsNotNone(ref(),
                      "weak reference to live object should be live")
         o2 = ref()
         self.assertIs(o, o2,
-                     "<ref>() should return original object if live")
+                     "<ref>() should rudisha original object ikiwa live")
 
-    def check_basic_callback(self, factory):
+    eleza check_basic_callback(self, factory):
         self.cbcalled = 0
         o = factory()
         ref = weakref.ref(o, self.callback)
@@ -196,7 +196,7 @@ class ReferencesTestCase(TestBase):
         self.assertIsNone(ref(),
                      "ref2 should be dead after deleting object reference")
 
-    def test_ref_reuse(self):
+    eleza test_ref_reuse(self):
         o = C()
         ref1 = weakref.ref(o)
         # create a proxy to make sure that there's an intervening creation
@@ -218,7 +218,7 @@ class ReferencesTestCase(TestBase):
         self.assertEqual(weakref.getweakrefcount(o), 1,
                      "wrong weak ref count for object after deleting proxy")
 
-    def test_proxy_reuse(self):
+    eleza test_proxy_reuse(self):
         o = C()
         proxy1 = weakref.proxy(o)
         ref = weakref.ref(o)
@@ -226,7 +226,7 @@ class ReferencesTestCase(TestBase):
         self.assertIs(proxy1, proxy2,
                      "proxy object w/out callback should have been re-used")
 
-    def test_basic_proxy(self):
+    eleza test_basic_proxy(self):
         o = C()
         self.check_proxy(o, weakref.proxy(o))
 
@@ -254,45 +254,45 @@ class ReferencesTestCase(TestBase):
         self.assertEqual(L3[:5], p3[:5])
         self.assertEqual(L3[2:5], p3[2:5])
 
-    def test_proxy_unicode(self):
+    eleza test_proxy_unicode(self):
         # See bug 5037
-        class C(object):
-            def __str__(self):
-                return "string"
-            def __bytes__(self):
-                return b"bytes"
+        kundi C(object):
+            eleza __str__(self):
+                rudisha "string"
+            eleza __bytes__(self):
+                rudisha b"bytes"
         instance = C()
         self.assertIn("__bytes__", dir(weakref.proxy(instance)))
         self.assertEqual(bytes(weakref.proxy(instance)), b"bytes")
 
-    def test_proxy_index(self):
-        class C:
-            def __index__(self):
-                return 10
+    eleza test_proxy_index(self):
+        kundi C:
+            eleza __index__(self):
+                rudisha 10
         o = C()
         p = weakref.proxy(o)
         self.assertEqual(operator.index(p), 10)
 
-    def test_proxy_div(self):
-        class C:
-            def __floordiv__(self, other):
-                return 42
-            def __ifloordiv__(self, other):
-                return 21
+    eleza test_proxy_div(self):
+        kundi C:
+            eleza __floordiv__(self, other):
+                rudisha 42
+            eleza __ifloordiv__(self, other):
+                rudisha 21
         o = C()
         p = weakref.proxy(o)
         self.assertEqual(p // 5, 42)
         p //= 5
         self.assertEqual(p, 21)
 
-    def test_proxy_matmul(self):
-        class C:
-            def __matmul__(self, other):
-                return 1729
-            def __rmatmul__(self, other):
-                return -163
-            def __imatmul__(self, other):
-                return 561
+    eleza test_proxy_matmul(self):
+        kundi C:
+            eleza __matmul__(self, other):
+                rudisha 1729
+            eleza __rmatmul__(self, other):
+                rudisha -163
+            eleza __imatmul__(self, other):
+                rudisha 561
         o = C()
         p = weakref.proxy(o)
         self.assertEqual(p @ 5, 1729)
@@ -308,13 +308,13 @@ class ReferencesTestCase(TestBase):
     # was not honored, and was broken in different ways for
     # PyWeakref_NewRef() and PyWeakref_NewProxy().  (Two tests.)
 
-    def test_shared_ref_without_callback(self):
+    eleza test_shared_ref_without_callback(self):
         self.check_shared_without_callback(weakref.ref)
 
-    def test_shared_proxy_without_callback(self):
+    eleza test_shared_proxy_without_callback(self):
         self.check_shared_without_callback(weakref.proxy)
 
-    def check_shared_without_callback(self, makeref):
+    eleza check_shared_without_callback(self, makeref):
         o = Object(1)
         p1 = makeref(o, None)
         p2 = makeref(o, None)
@@ -332,7 +332,7 @@ class ReferencesTestCase(TestBase):
         p2 = makeref(o)
         self.assertIs(p1, p2, "callbacks were None, NULL in the C API")
 
-    def test_callable_proxy(self):
+    eleza test_callable_proxy(self):
         o = Callable()
         ref1 = weakref.proxy(o)
 
@@ -353,7 +353,7 @@ class ReferencesTestCase(TestBase):
         # expect due to too many args
         self.assertRaises(TypeError, ref1, 1, 2, 3)
 
-    def check_proxy(self, o, proxy):
+    eleza check_proxy(self, o, proxy):
         o.foo = 1
         self.assertEqual(proxy.foo, 1,
                      "proxy does not reflect attribute addition")
@@ -374,34 +374,34 @@ class ReferencesTestCase(TestBase):
         self.assertFalse(hasattr(o, 'foo'),
                      "object does not reflect attribute removal via proxy")
 
-    def test_proxy_deletion(self):
+    eleza test_proxy_deletion(self):
         # Test clearing of SF bug #762891
-        class Foo:
+        kundi Foo:
             result = None
-            def __delitem__(self, accessor):
+            eleza __delitem__(self, accessor):
                 self.result = accessor
         g = Foo()
         f = weakref.proxy(g)
         del f[0]
         self.assertEqual(f.result, 0)
 
-    def test_proxy_bool(self):
+    eleza test_proxy_bool(self):
         # Test clearing of SF bug #1170766
-        class List(list): pass
+        kundi List(list): pass
         lyst = List()
         self.assertEqual(bool(weakref.proxy(lyst)), bool(lyst))
 
-    def test_proxy_iter(self):
+    eleza test_proxy_iter(self):
         # Test fails with a debug build of the interpreter
         # (see bpo-38395).
 
         obj = None
 
-        class MyObj:
-            def __iter__(self):
+        kundi MyObj:
+            eleza __iter__(self):
                 nonlocal obj
                 del obj
-                return NotImplemented
+                rudisha NotImplemented
 
         obj = MyObj()
         p = weakref.proxy(obj)
@@ -411,7 +411,7 @@ class ReferencesTestCase(TestBase):
             # can be killed in the middle of the call
             "blech" in p
 
-    def test_getweakrefcount(self):
+    eleza test_getweakrefcount(self):
         o = C()
         ref1 = weakref.ref(o)
         ref2 = weakref.ref(o, self.callback)
@@ -432,7 +432,7 @@ class ReferencesTestCase(TestBase):
         self.assertEqual(weakref.getweakrefcount(1), 0,
                      "got wrong number of weak reference objects for int")
 
-    def test_getweakrefs(self):
+    eleza test_getweakrefs(self):
         o = C()
         ref1 = weakref.ref(o, self.callback)
         ref2 = weakref.ref(o, self.callback)
@@ -455,23 +455,23 @@ class ReferencesTestCase(TestBase):
         self.assertEqual(weakref.getweakrefs(1), [],
                      "list of refs does not match for int")
 
-    def test_newstyle_number_ops(self):
-        class F(float):
+    eleza test_newstyle_number_ops(self):
+        kundi F(float):
             pass
         f = F(2.0)
         p = weakref.proxy(f)
         self.assertEqual(p + 1.0, 3.0)
         self.assertEqual(1.0 + p, 3.0)  # this used to SEGV
 
-    def test_callbacks_protected(self):
+    eleza test_callbacks_protected(self):
         # Callbacks protected kutoka already-set exceptions?
         # Regression test for SF bug #478534.
-        class BogusError(Exception):
+        kundi BogusError(Exception):
             pass
         data = {}
-        def remove(k):
+        eleza remove(k):
             del data[k]
-        def encapsulate():
+        eleza encapsulate():
             f = lambda : ()
             data[weakref.ref(f, remove)] = None
             raise BogusError
@@ -488,11 +488,11 @@ class ReferencesTestCase(TestBase):
         else:
             self.fail("exception not properly restored")
 
-    def test_sf_bug_840829(self):
+    eleza test_sf_bug_840829(self):
         # "weakref callbacks and gc corrupt memory"
         # subtype_dealloc erroneously exposed a new-style instance
         # already in the process of getting deallocated to gc,
-        # causing double-deallocation if the instance had a weakref
+        # causing double-deallocation ikiwa the instance had a weakref
         # callback that triggered gc.
         # If the bug exists, there probably won't be an obvious symptom
         # in a release build.  In a debug build, a segfault will occur
@@ -501,7 +501,7 @@ class ReferencesTestCase(TestBase):
 
         agiza gc
 
-        class C(object):
+        kundi C(object):
             pass
 
         c = C()
@@ -524,18 +524,18 @@ class ReferencesTestCase(TestBase):
         # with c2 execute (there are none in this 2nd half of the test, btw).
         # subtype_dealloc goes on to call the base classes' deallocs too,
         # so any gc triggered by weakref callbacks associated with anything
-        # torn down by a base class dealloc can also trigger double
+        # torn down by a base kundi dealloc can also trigger double
         # deallocation of c2.
         del c2
 
-    def test_callback_in_cycle_1(self):
+    eleza test_callback_in_cycle_1(self):
         agiza gc
 
-        class J(object):
+        kundi J(object):
             pass
 
-        class II(object):
-            def acallback(self, ignore):
+        kundi II(object):
+            eleza acallback(self, ignore):
                 self.J
 
         I = II()
@@ -555,25 +555,25 @@ class ReferencesTestCase(TestBase):
         # it does that is pretty accidental.  The exact order in which we
         # built up these things manages to provoke gc into running tp_clear
         # in just the right order (I last).  Calling tp_clear on II leaves
-        # behind an insane class object (its __mro__ becomes NULL).  Calling
+        # behind an insane kundi object (its __mro__ becomes NULL).  Calling
         # tp_clear on J breaks its self-cycle, but J doesn't get deleted
         # just then because of the strong reference kutoka I.J.  Calling
         # tp_clear on I starts to clear I's __dict__, and just happens to
         # clear I.J first -- I.wr is still intact.  That removes the last
         # reference to J, which triggers the weakref callback.  The callback
         # tries to do "self.J", and instances of new-style classes look up
-        # attributes ("J") in the class dict first.  The class (II) wants to
+        # attributes ("J") in the kundi dict first.  The kundi (II) wants to
         # search II.__mro__, but that's NULL.   The result was a segfault in
         # a release build, and an assert failure in a debug build.
         del I, J, II
         gc.collect()
 
-    def test_callback_in_cycle_2(self):
+    eleza test_callback_in_cycle_2(self):
         agiza gc
 
         # This is just like test_callback_in_cycle_1, except that II is an
         # old-style class.  The symptom is different then:  an instance of an
-        # old-style class looks in its own __dict__ first.  'J' happens to
+        # old-style kundi looks in its own __dict__ first.  'J' happens to
         # get cleared kutoka I.__dict__ before 'wr', and 'J' was never in II's
         # __dict__, so the attribute isn't found.  The difference is that
         # the old-style II doesn't have a NULL __mro__ (it doesn't have any
@@ -583,11 +583,11 @@ class ReferencesTestCase(TestBase):
         #   "II instance has no attribute 'J'" in <bound method II.acallback
         #       of <?.II instance at 0x00B9B4B8>> ignored
 
-        class J(object):
+        kundi J(object):
             pass
 
-        class II:
-            def acallback(self, ignore):
+        kundi II:
+            eleza acallback(self, ignore):
                 self.J
 
         I = II()
@@ -597,7 +597,7 @@ class ReferencesTestCase(TestBase):
         del I, J, II
         gc.collect()
 
-    def test_callback_in_cycle_3(self):
+    eleza test_callback_in_cycle_3(self):
         agiza gc
 
         # This one broke the first patch that fixed the last two.  In this
@@ -606,8 +606,8 @@ class ReferencesTestCase(TestBase):
         # c1 kutoka c2, but not vice-versa.  The result was that c2's __dict__
         # got tp_clear'ed by the time the c2.cb callback got invoked.
 
-        class C:
-            def cb(self, ignore):
+        kundi C:
+            eleza cb(self, ignore):
                 self.me
                 self.c1
                 self.wr
@@ -621,23 +621,23 @@ class ReferencesTestCase(TestBase):
         del c1, c2
         gc.collect()
 
-    def test_callback_in_cycle_4(self):
+    eleza test_callback_in_cycle_4(self):
         agiza gc
 
         # Like test_callback_in_cycle_3, except c2 and c1 have different
-        # classes.  c2's class (C) isn't reachable kutoka c1 then, so protecting
+        # classes.  c2's kundi (C) isn't reachable kutoka c1 then, so protecting
         # objects reachable kutoka the dying object (c1) isn't enough to stop
-        # c2's class (C) kutoka getting tp_clear'ed before c2.cb is invoked.
+        # c2's kundi (C) kutoka getting tp_clear'ed before c2.cb is invoked.
         # The result was a segfault (C.__mro__ was NULL when the callback
         # tried to look up self.me).
 
-        class C(object):
-            def cb(self, ignore):
+        kundi C(object):
+            eleza cb(self, ignore):
                 self.me
                 self.c1
                 self.wr
 
-        class D:
+        kundi D:
             pass
 
         c1, c2 = D(), C()
@@ -650,7 +650,7 @@ class ReferencesTestCase(TestBase):
         gc.collect()
 
     @support.requires_type_collecting
-    def test_callback_in_cycle_resurrection(self):
+    eleza test_callback_in_cycle_resurrection(self):
         agiza gc
 
         # Do something nasty in a weakref callback:  resurrect objects
@@ -663,11 +663,11 @@ class ReferencesTestCase(TestBase):
         # at all (and so nothing actually gets resurrected).
 
         alist = []
-        class C(object):
-            def __init__(self, value):
+        kundi C(object):
+            eleza __init__(self, value):
                 self.attribute = value
 
-            def acallback(self, ignore):
+            eleza acallback(self, ignore):
                 alist.append(self.c)
 
         c1, c2 = C(1), C(2)
@@ -676,7 +676,7 @@ class ReferencesTestCase(TestBase):
         c1.wr = weakref.ref(c2, c1.acallback)
         c2.wr = weakref.ref(c1, c2.acallback)
 
-        def C_went_away(ignore):
+        eleza C_went_away(ignore):
             alist.append("C went away")
         wr = weakref.ref(C, C_went_away)
 
@@ -696,16 +696,16 @@ class ReferencesTestCase(TestBase):
         gc.collect()
         self.assertEqual(alist, [])
 
-    def test_callbacks_on_callback(self):
+    eleza test_callbacks_on_callback(self):
         agiza gc
 
         # Set up weakref callbacks *on* weakref callbacks.
         alist = []
-        def safe_callback(ignore):
+        eleza safe_callback(ignore):
             alist.append("safe_callback called")
 
-        class C(object):
-            def cb(self, ignore):
+        kundi C(object):
+            eleza cb(self, ignore):
                 alist.append("cb called")
 
         c, d = C(), C()
@@ -734,20 +734,20 @@ class ReferencesTestCase(TestBase):
         gc.collect()
         self.assertEqual(alist, [])
 
-    def test_gc_during_ref_creation(self):
+    eleza test_gc_during_ref_creation(self):
         self.check_gc_during_creation(weakref.ref)
 
-    def test_gc_during_proxy_creation(self):
+    eleza test_gc_during_proxy_creation(self):
         self.check_gc_during_creation(weakref.proxy)
 
-    def check_gc_during_creation(self, makeref):
+    eleza check_gc_during_creation(self, makeref):
         thresholds = gc.get_threshold()
         gc.set_threshold(1, 1, 1)
         gc.collect()
-        class A:
+        kundi A:
             pass
 
-        def callback(*args):
+        eleza callback(*args):
             pass
 
         referenced = A()
@@ -765,19 +765,19 @@ class ReferencesTestCase(TestBase):
         finally:
             gc.set_threshold(*thresholds)
 
-    def test_ref_created_during_del(self):
+    eleza test_ref_created_during_del(self):
         # Bug #1377858
         # A weakref created in an object's __del__() would crash the
         # interpreter when the weakref was cleaned up since it would refer to
         # non-existent memory.  This test should not segfault the interpreter.
-        class Target(object):
-            def __del__(self):
-                global ref_from_del
-                ref_from_del = weakref.ref(self)
+        kundi Target(object):
+            eleza __del__(self):
+                global ref_kutoka_del
+                ref_kutoka_del = weakref.ref(self)
 
         w = Target()
 
-    def test_init(self):
+    eleza test_init(self):
         # Issue 3634
         # <weakref to class>.__init__() doesn't check errors correctly
         r = weakref.ref(Exception)
@@ -785,9 +785,9 @@ class ReferencesTestCase(TestBase):
         # No exception should be raised here
         gc.collect()
 
-    def test_classes(self):
+    eleza test_classes(self):
         # Check that classes are weakrefable.
-        class A(object):
+        kundi A(object):
             pass
         l = []
         weakref.ref(int)
@@ -797,7 +797,7 @@ class ReferencesTestCase(TestBase):
         self.assertEqual(a(), None)
         self.assertEqual(l, [a])
 
-    def test_equality(self):
+    eleza test_equality(self):
         # Alive weakrefs defer equality testing to their underlying object.
         x = Object(1)
         y = Object(1)
@@ -830,8 +830,8 @@ class ReferencesTestCase(TestBase):
         self.assertEqual(a == d, a is d)
         self.assertEqual(a != d, a is not d)
 
-    def test_ordering(self):
-        # weakrefs cannot be ordered, even if the underlying objects can.
+    eleza test_ordering(self):
+        # weakrefs cannot be ordered, even ikiwa the underlying objects can.
         ops = [operator.lt, operator.gt, operator.le, operator.ge]
         x = Object(1)
         y = Object(1)
@@ -845,7 +845,7 @@ class ReferencesTestCase(TestBase):
         for op in ops:
             self.assertRaises(TypeError, op, a, b)
 
-    def test_hashing(self):
+    eleza test_hashing(self):
         # Alive weakrefs hash the same as the underlying object
         x = Object(42)
         y = Object(42)
@@ -860,17 +860,17 @@ class ReferencesTestCase(TestBase):
         self.assertEqual(hash(a), hash(42))
         self.assertRaises(TypeError, hash, b)
 
-    def test_trashcan_16602(self):
+    eleza test_trashcan_16602(self):
         # Issue #16602: when a weakref's target was part of a long
         # deallocation chain, the trashcan mechanism could delay clearing
         # of the weakref and make the target object visible kutoka outside
         # code even though its refcount had dropped to 0.  A crash ensued.
-        class C:
-            def __init__(self, parent):
-                if not parent:
+        kundi C:
+            eleza __init__(self, parent):
+                ikiwa not parent:
                     return
                 wself = weakref.ref(self)
-                def cb(wparent):
+                eleza cb(wparent):
                     o = wself()
                 self.wparent = weakref.ref(parent, cb)
 
@@ -881,7 +881,7 @@ class ReferencesTestCase(TestBase):
         del root
         gc.collect()
 
-    def test_callback_attribute(self):
+    eleza test_callback_attribute(self):
         x = Object(1)
         callback = lambda ref: None
         ref1 = weakref.ref(x, callback)
@@ -890,7 +890,7 @@ class ReferencesTestCase(TestBase):
         ref2 = weakref.ref(x)
         self.assertIsNone(ref2.__callback__)
 
-    def test_callback_attribute_after_deletion(self):
+    eleza test_callback_attribute_after_deletion(self):
         x = Object(1)
         ref = weakref.ref(x, self.callback)
         self.assertIsNotNone(ref.__callback__)
@@ -898,32 +898,32 @@ class ReferencesTestCase(TestBase):
         support.gc_collect()
         self.assertIsNone(ref.__callback__)
 
-    def test_set_callback_attribute(self):
+    eleza test_set_callback_attribute(self):
         x = Object(1)
         callback = lambda ref: None
         ref1 = weakref.ref(x, callback)
         with self.assertRaises(AttributeError):
             ref1.__callback__ = lambda ref: None
 
-    def test_callback_gcs(self):
-        class ObjectWithDel(Object):
-            def __del__(self): pass
+    eleza test_callback_gcs(self):
+        kundi ObjectWithDel(Object):
+            eleza __del__(self): pass
         x = ObjectWithDel(1)
         ref1 = weakref.ref(x, lambda ref: support.gc_collect())
         del x
         support.gc_collect()
 
 
-class SubclassableWeakrefTestCase(TestBase):
+kundi SubclassableWeakrefTestCase(TestBase):
 
-    def test_subclass_refs(self):
-        class MyRef(weakref.ref):
-            def __init__(self, ob, callback=None, value=42):
+    eleza test_subclass_refs(self):
+        kundi MyRef(weakref.ref):
+            eleza __init__(self, ob, callback=None, value=42):
                 self.value = value
                 super().__init__(ob, callback)
-            def __call__(self):
+            eleza __call__(self):
                 self.called = True
-                return super().__call__()
+                rudisha super().__call__()
         o = Object("foo")
         mr = MyRef(o, value=24)
         self.assertIs(mr(), o)
@@ -933,8 +933,8 @@ class SubclassableWeakrefTestCase(TestBase):
         self.assertIsNone(mr())
         self.assertTrue(mr.called)
 
-    def test_subclass_refs_dont_replace_standard_refs(self):
-        class MyRef(weakref.ref):
+    eleza test_subclass_refs_dont_replace_standard_refs(self):
+        kundi MyRef(weakref.ref):
             pass
         o = Object(42)
         r1 = MyRef(o)
@@ -950,8 +950,8 @@ class SubclassableWeakrefTestCase(TestBase):
         self.assertIn(r1, refs[1:])
         self.assertIn(r3, refs[1:])
 
-    def test_subclass_refs_dont_conflate_callbacks(self):
-        class MyRef(weakref.ref):
+    eleza test_subclass_refs_dont_conflate_callbacks(self):
+        kundi MyRef(weakref.ref):
             pass
         o = Object(42)
         r1 = MyRef(o, id)
@@ -961,16 +961,16 @@ class SubclassableWeakrefTestCase(TestBase):
         self.assertIn(r1, refs)
         self.assertIn(r2, refs)
 
-    def test_subclass_refs_with_slots(self):
-        class MyRef(weakref.ref):
+    eleza test_subclass_refs_with_slots(self):
+        kundi MyRef(weakref.ref):
             __slots__ = "slot1", "slot2"
-            def __new__(type, ob, callback, slot1, slot2):
-                return weakref.ref.__new__(type, ob, callback)
-            def __init__(self, ob, callback, slot1, slot2):
+            eleza __new__(type, ob, callback, slot1, slot2):
+                rudisha weakref.ref.__new__(type, ob, callback)
+            eleza __init__(self, ob, callback, slot1, slot2):
                 self.slot1 = slot1
                 self.slot2 = slot2
-            def meth(self):
-                return self.slot1 + self.slot2
+            eleza meth(self):
+                rudisha self.slot1 + self.slot2
         o = Object(42)
         r = MyRef(o, None, "abc", "def")
         self.assertEqual(r.slot1, "abc")
@@ -978,19 +978,19 @@ class SubclassableWeakrefTestCase(TestBase):
         self.assertEqual(r.meth(), "abcdef")
         self.assertFalse(hasattr(r, "__dict__"))
 
-    def test_subclass_refs_with_cycle(self):
+    eleza test_subclass_refs_with_cycle(self):
         """Confirm https://bugs.python.org/issue3100 is fixed."""
-        # An instance of a weakref subclass can have attributes.
+        # An instance of a weakref subkundi can have attributes.
         # If such a weakref holds the only strong reference to the object,
         # deleting the weakref will delete the object. In this case,
         # the callback must not be called, because the ref object is
         # being deleted.
-        class MyRef(weakref.ref):
+        kundi MyRef(weakref.ref):
             pass
 
         # Use a local callback, for "regrtest -R::"
         # to detect refcounting problems
-        def callback(w):
+        eleza callback(w):
             self.cbcalled += 1
 
         o = C()
@@ -1017,16 +1017,16 @@ class SubclassableWeakrefTestCase(TestBase):
         self.assertEqual(self.cbcalled, 0)
 
 
-class WeakMethodTestCase(unittest.TestCase):
+kundi WeakMethodTestCase(unittest.TestCase):
 
-    def _subclass(self):
-        """Return an Object subclass overriding `some_method`."""
-        class C(Object):
-            def some_method(self):
-                return 6
-        return C
+    eleza _subclass(self):
+        """Return an Object subkundi overriding `some_method`."""
+        kundi C(Object):
+            eleza some_method(self):
+                rudisha 6
+        rudisha C
 
-    def test_alive(self):
+    eleza test_alive(self):
         o = Object(1)
         r = weakref.WeakMethod(o.some_method)
         self.assertIsInstance(r, weakref.ReferenceType)
@@ -1035,14 +1035,14 @@ class WeakMethodTestCase(unittest.TestCase):
         self.assertIs(r().__func__, o.some_method.__func__)
         self.assertEqual(r()(), 4)
 
-    def test_object_dead(self):
+    eleza test_object_dead(self):
         o = Object(1)
         r = weakref.WeakMethod(o.some_method)
         del o
         gc.collect()
         self.assertIs(r(), None)
 
-    def test_method_dead(self):
+    eleza test_method_dead(self):
         C = self._subclass()
         o = C(1)
         r = weakref.WeakMethod(o.some_method)
@@ -1050,11 +1050,11 @@ class WeakMethodTestCase(unittest.TestCase):
         gc.collect()
         self.assertIs(r(), None)
 
-    def test_callback_when_object_dead(self):
+    eleza test_callback_when_object_dead(self):
         # Test callback behaviour when object dies first.
         C = self._subclass()
         calls = []
-        def cb(arg):
+        eleza cb(arg):
             calls.append(arg)
         o = C(1)
         r = weakref.WeakMethod(o.some_method, cb)
@@ -1066,11 +1066,11 @@ class WeakMethodTestCase(unittest.TestCase):
         gc.collect()
         self.assertEqual(calls, [r])
 
-    def test_callback_when_method_dead(self):
+    eleza test_callback_when_method_dead(self):
         # Test callback behaviour when method dies first.
         C = self._subclass()
         calls = []
-        def cb(arg):
+        eleza cb(arg):
             calls.append(arg)
         o = C(1)
         r = weakref.WeakMethod(o.some_method, cb)
@@ -1083,21 +1083,21 @@ class WeakMethodTestCase(unittest.TestCase):
         self.assertEqual(calls, [r])
 
     @support.cpython_only
-    def test_no_cycles(self):
+    eleza test_no_cycles(self):
         # A WeakMethod doesn't create any reference cycle to itself.
         o = Object(1)
-        def cb(_):
+        eleza cb(_):
             pass
         r = weakref.WeakMethod(o.some_method, cb)
         wr = weakref.ref(r)
         del r
         self.assertIs(wr(), None)
 
-    def test_equality(self):
-        def _eq(a, b):
+    eleza test_equality(self):
+        eleza _eq(a, b):
             self.assertTrue(a == b)
             self.assertFalse(a != b)
-        def _ne(a, b):
+        eleza _ne(a, b):
             self.assertTrue(a != b)
             self.assertFalse(a == b)
         x = Object(1)
@@ -1131,8 +1131,8 @@ class WeakMethodTestCase(unittest.TestCase):
                 self.assertEqual(q == r, q is r)
                 self.assertEqual(q != r, q is not r)
 
-    def test_hashing(self):
-        # Alive WeakMethods are hashable if the underlying object is
+    eleza test_hashing(self):
+        # Alive WeakMethods are hashable ikiwa the underlying object is
         # hashable.
         x = Object(1)
         y = Object(1)
@@ -1151,11 +1151,11 @@ class WeakMethodTestCase(unittest.TestCase):
         self.assertRaises(TypeError, hash, c)
 
 
-class MappingTestCase(TestBase):
+kundi MappingTestCase(TestBase):
 
     COUNT = 10
 
-    def check_len_cycles(self, dict_type, cons):
+    eleza check_len_cycles(self, dict_type, cons):
         N = 20
         items = [RefCycle() for i in range(N)]
         dct = dict_type(cons(o) for o in items)
@@ -1175,13 +1175,13 @@ class MappingTestCase(TestBase):
         self.assertIn(n1, (0, 1))
         self.assertEqual(n2, 0)
 
-    def test_weak_keyed_len_cycles(self):
+    eleza test_weak_keyed_len_cycles(self):
         self.check_len_cycles(weakref.WeakKeyDictionary, lambda k: (k, 1))
 
-    def test_weak_valued_len_cycles(self):
+    eleza test_weak_valued_len_cycles(self):
         self.check_len_cycles(weakref.WeakValueDictionary, lambda k: (1, k))
 
-    def check_len_race(self, dict_type, cons):
+    eleza check_len_race(self, dict_type, cons):
         # Extended sanity checks for len() in the face of cyclic collection
         self.addCleanup(gc.set_threshold, *gc.get_threshold())
         for th in range(1, 100):
@@ -1205,13 +1205,13 @@ class MappingTestCase(TestBase):
             self.assertGreaterEqual(n2, 0)
             self.assertLessEqual(n2, n1)
 
-    def test_weak_keyed_len_race(self):
+    eleza test_weak_keyed_len_race(self):
         self.check_len_race(weakref.WeakKeyDictionary, lambda k: (k, 1))
 
-    def test_weak_valued_len_race(self):
+    eleza test_weak_valued_len_race(self):
         self.check_len_race(weakref.WeakValueDictionary, lambda k: (1, k))
 
-    def test_weak_values(self):
+    eleza test_weak_values(self):
         #
         #  This exercises d.copy(), d.items(), d[], del d[], len(d).
         #
@@ -1240,7 +1240,7 @@ class MappingTestCase(TestBase):
         dict[2] = C()
         self.assertRaises(KeyError, dict.__getitem__, 2)
 
-    def test_weak_keys(self):
+    eleza test_weak_keys(self):
         #
         #  This exercises d.copy(), d.items(), d[] = v, d[], del d[],
         #  len(d), k in d.
@@ -1268,7 +1268,7 @@ class MappingTestCase(TestBase):
         self.assertIn(o, dict)
         self.assertNotIn(34, dict)
 
-    def test_weak_keyed_iters(self):
+    eleza test_weak_keyed_iters(self):
         dict, objects = self.make_weak_keyed_dict()
         self.check_iters(dict)
 
@@ -1295,7 +1295,7 @@ class MappingTestCase(TestBase):
             objects2.remove(ob)
         self.assertEqual(len(objects2), 0)
 
-    def test_weak_valued_iters(self):
+    eleza test_weak_valued_iters(self):
         dict, objects = self.make_weak_valued_dict()
         self.check_iters(dict)
 
@@ -1320,7 +1320,7 @@ class MappingTestCase(TestBase):
             objects2.remove(ob)
         self.assertEqual(len(objects2), 0)
 
-    def check_iters(self, dict):
+    eleza check_iters(self, dict):
         # item iterator:
         items = list(dict.items())
         for item in dict.items():
@@ -1346,7 +1346,7 @@ class MappingTestCase(TestBase):
         self.assertFalse(values,
                      "itervalues() did not touch all values")
 
-    def check_weak_destroy_while_iterating(self, dict, objects, iter_name):
+    eleza check_weak_destroy_while_iterating(self, dict, objects, iter_name):
         n = len(dict)
         it = iter(getattr(dict, iter_name)())
         next(it)             # Trigger internal iteration
@@ -1359,11 +1359,11 @@ class MappingTestCase(TestBase):
         # The removal has been committed
         self.assertEqual(len(dict), n - 1)
 
-    def check_weak_destroy_and_mutate_while_iterating(self, dict, testcontext):
+    eleza check_weak_destroy_and_mutate_while_iterating(self, dict, testcontext):
         # Check that we can explicitly mutate the weak dict without
         # interfering with delayed removal.
         # `testcontext` should create an iterator, destroy one of the
-        # weakref'ed objects and then return a new key/value pair corresponding
+        # weakref'ed objects and then rudisha a new key/value pair corresponding
         # to the destroyed object.
         with testcontext() as (k, v):
             self.assertNotIn(k, dict)
@@ -1384,7 +1384,7 @@ class MappingTestCase(TestBase):
             dict.clear()
         self.assertEqual(len(dict), 0)
 
-    def check_weak_del_and_len_while_iterating(self, dict, testcontext):
+    eleza check_weak_del_and_len_while_iterating(self, dict, testcontext):
         # Check that len() works when both iterating and removing keys
         # explicitly through various means (.pop(), .clear()...), while
         # implicit mutation is deferred because an iterator is alive.
@@ -1417,7 +1417,7 @@ class MappingTestCase(TestBase):
             self.assertEqual(len(dict), 0)
         self.assertEqual(len(dict), 0)
 
-    def test_weak_keys_destroy_while_iterating(self):
+    eleza test_weak_keys_destroy_while_iterating(self):
         # Issue #7105: iterators shouldn't crash when a key is implicitly removed
         dict, objects = self.make_weak_keyed_dict()
         self.check_weak_destroy_while_iterating(dict, objects, 'keys')
@@ -1426,7 +1426,7 @@ class MappingTestCase(TestBase):
         self.check_weak_destroy_while_iterating(dict, objects, 'keyrefs')
         dict, objects = self.make_weak_keyed_dict()
         @contextlib.contextmanager
-        def testcontext():
+        eleza testcontext():
             try:
                 it = iter(dict.items())
                 next(it)
@@ -1443,7 +1443,7 @@ class MappingTestCase(TestBase):
         dict, objects = self.make_weak_keyed_dict()
         self.check_weak_del_and_len_while_iterating(dict, testcontext)
 
-    def test_weak_values_destroy_while_iterating(self):
+    eleza test_weak_values_destroy_while_iterating(self):
         # Issue #7105: iterators shouldn't crash when a key is implicitly removed
         dict, objects = self.make_weak_valued_dict()
         self.check_weak_destroy_while_iterating(dict, objects, 'keys')
@@ -1453,7 +1453,7 @@ class MappingTestCase(TestBase):
         self.check_weak_destroy_while_iterating(dict, objects, 'valuerefs')
         dict, objects = self.make_weak_valued_dict()
         @contextlib.contextmanager
-        def testcontext():
+        eleza testcontext():
             try:
                 it = iter(dict.items())
                 next(it)
@@ -1468,36 +1468,36 @@ class MappingTestCase(TestBase):
         dict, objects = self.make_weak_valued_dict()
         self.check_weak_del_and_len_while_iterating(dict, testcontext)
 
-    def test_make_weak_keyed_dict_from_dict(self):
+    eleza test_make_weak_keyed_dict_kutoka_dict(self):
         o = Object(3)
         dict = weakref.WeakKeyDictionary({o:364})
         self.assertEqual(dict[o], 364)
 
-    def test_make_weak_keyed_dict_from_weak_keyed_dict(self):
+    eleza test_make_weak_keyed_dict_kutoka_weak_keyed_dict(self):
         o = Object(3)
         dict = weakref.WeakKeyDictionary({o:364})
         dict2 = weakref.WeakKeyDictionary(dict)
         self.assertEqual(dict[o], 364)
 
-    def make_weak_keyed_dict(self):
+    eleza make_weak_keyed_dict(self):
         dict = weakref.WeakKeyDictionary()
         objects = list(map(Object, range(self.COUNT)))
         for o in objects:
             dict[o] = o.arg
-        return dict, objects
+        rudisha dict, objects
 
-    def test_make_weak_valued_dict_from_dict(self):
+    eleza test_make_weak_valued_dict_kutoka_dict(self):
         o = Object(3)
         dict = weakref.WeakValueDictionary({364:o})
         self.assertEqual(dict[364], o)
 
-    def test_make_weak_valued_dict_from_weak_valued_dict(self):
+    eleza test_make_weak_valued_dict_kutoka_weak_valued_dict(self):
         o = Object(3)
         dict = weakref.WeakValueDictionary({364:o})
         dict2 = weakref.WeakValueDictionary(dict)
         self.assertEqual(dict[364], o)
 
-    def test_make_weak_valued_dict_misc(self):
+    eleza test_make_weak_valued_dict_misc(self):
         # errors
         self.assertRaises(TypeError, weakref.WeakValueDictionary.__init__)
         self.assertRaises(TypeError, weakref.WeakValueDictionary, {}, {})
@@ -1509,40 +1509,40 @@ class MappingTestCase(TestBase):
             self.assertEqual(list(d.keys()), [kw])
             self.assertEqual(d[kw], o)
 
-    def make_weak_valued_dict(self):
+    eleza make_weak_valued_dict(self):
         dict = weakref.WeakValueDictionary()
         objects = list(map(Object, range(self.COUNT)))
         for o in objects:
             dict[o.arg] = o
-        return dict, objects
+        rudisha dict, objects
 
-    def check_popitem(self, klass, key1, value1, key2, value2):
+    eleza check_popitem(self, klass, key1, value1, key2, value2):
         weakdict = klass()
         weakdict[key1] = value1
         weakdict[key2] = value2
         self.assertEqual(len(weakdict), 2)
         k, v = weakdict.popitem()
         self.assertEqual(len(weakdict), 1)
-        if k is key1:
+        ikiwa k is key1:
             self.assertIs(v, value1)
         else:
             self.assertIs(v, value2)
         k, v = weakdict.popitem()
         self.assertEqual(len(weakdict), 0)
-        if k is key1:
+        ikiwa k is key1:
             self.assertIs(v, value1)
         else:
             self.assertIs(v, value2)
 
-    def test_weak_valued_dict_popitem(self):
+    eleza test_weak_valued_dict_popitem(self):
         self.check_popitem(weakref.WeakValueDictionary,
                            "key1", C(), "key2", C())
 
-    def test_weak_keyed_dict_popitem(self):
+    eleza test_weak_keyed_dict_popitem(self):
         self.check_popitem(weakref.WeakKeyDictionary,
                            C(), "value 1", C(), "value 2")
 
-    def check_setdefault(self, klass, key, value1, value2):
+    eleza check_setdefault(self, klass, key, value1, value2):
         self.assertIsNot(value1, value2,
                      "invalid test"
                      " -- value parameters must be distinct objects")
@@ -1559,15 +1559,15 @@ class MappingTestCase(TestBase):
         self.assertIs(weakdict.get(key), value1)
         self.assertIs(weakdict[key], value1)
 
-    def test_weak_valued_dict_setdefault(self):
+    eleza test_weak_valued_dict_setdefault(self):
         self.check_setdefault(weakref.WeakValueDictionary,
                               "key", C(), C())
 
-    def test_weak_keyed_dict_setdefault(self):
+    eleza test_weak_keyed_dict_setdefault(self):
         self.check_setdefault(weakref.WeakKeyDictionary,
                               C(), "value 1", "value 2")
 
-    def check_update(self, klass, dict):
+    eleza check_update(self, klass, dict):
         #
         #  This exercises d.update(), len(d), d.keys(), k in d,
         #  d.get(), d[].
@@ -1586,7 +1586,7 @@ class MappingTestCase(TestBase):
             self.assertIs(v, weakdict[k])
             self.assertIs(v, weakdict.get(k))
 
-    def test_weak_valued_dict_update(self):
+    eleza test_weak_valued_dict_update(self):
         self.check_update(weakref.WeakValueDictionary,
                           {1: C(), 'a': C(), C(): C()})
         # errors
@@ -1603,11 +1603,11 @@ class MappingTestCase(TestBase):
             self.assertEqual(list(d.keys()), [kw])
             self.assertEqual(d[kw], o)
 
-    def test_weak_keyed_dict_update(self):
+    eleza test_weak_keyed_dict_update(self):
         self.check_update(weakref.WeakKeyDictionary,
                           {C(): 1, C(): 2, C(): 3})
 
-    def test_weak_keyed_delitem(self):
+    eleza test_weak_keyed_delitem(self):
         d = weakref.WeakKeyDictionary()
         o1 = Object('1')
         o2 = Object('2')
@@ -1618,7 +1618,7 @@ class MappingTestCase(TestBase):
         self.assertEqual(len(d), 1)
         self.assertEqual(list(d.keys()), [o2])
 
-    def test_weak_valued_delitem(self):
+    eleza test_weak_valued_delitem(self):
         d = weakref.WeakValueDictionary()
         o1 = Object('1')
         o2 = Object('2')
@@ -1629,7 +1629,7 @@ class MappingTestCase(TestBase):
         self.assertEqual(len(d), 1)
         self.assertEqual(list(d.items()), [('something else', o2)])
 
-    def test_weak_keyed_bad_delitem(self):
+    eleza test_weak_keyed_bad_delitem(self):
         d = weakref.WeakKeyDictionary()
         o = Object('1')
         # An attempt to delete an object that isn't there should raise
@@ -1643,7 +1643,7 @@ class MappingTestCase(TestBase):
         self.assertRaises(TypeError, d.__getitem__,  13)
         self.assertRaises(TypeError, d.__setitem__,  13, 13)
 
-    def test_weak_keyed_cascading_deletes(self):
+    eleza test_weak_keyed_cascading_deletes(self):
         # SF bug 742860.  For some reason, before 2.3 __delitem__ iterated
         # over the keys via self.data.iterkeys().  If things vanished kutoka
         # the dict during this (or got added), that caused a RuntimeError.
@@ -1651,17 +1651,17 @@ class MappingTestCase(TestBase):
         d = weakref.WeakKeyDictionary()
         mutate = False
 
-        class C(object):
-            def __init__(self, i):
+        kundi C(object):
+            eleza __init__(self, i):
                 self.value = i
-            def __hash__(self):
-                return hash(self.value)
-            def __eq__(self, other):
-                if mutate:
+            eleza __hash__(self):
+                rudisha hash(self.value)
+            eleza __eq__(self, other):
+                ikiwa mutate:
                     # Side effect that mutates the dict, by removing the
                     # last strong reference to a key.
                     del objs[-1]
-                return self.value == other.value
+                rudisha self.value == other.value
 
         objs = [C(i) for i in range(4)]
         for o in objs:
@@ -1688,15 +1688,15 @@ class MappingTestCase(TestBase):
         self.assertEqual(len(d), 0)
         self.assertEqual(count, 2)
 
-    def test_make_weak_valued_dict_repr(self):
+    eleza test_make_weak_valued_dict_repr(self):
         dict = weakref.WeakValueDictionary()
         self.assertRegex(repr(dict), '<WeakValueDictionary at 0x.*>')
 
-    def test_make_weak_keyed_dict_repr(self):
+    eleza test_make_weak_keyed_dict_repr(self):
         dict = weakref.WeakKeyDictionary()
         self.assertRegex(repr(dict), '<WeakKeyDictionary at 0x.*>')
 
-    def test_threaded_weak_valued_setdefault(self):
+    eleza test_threaded_weak_valued_setdefault(self):
         d = weakref.WeakValueDictionary()
         with collect_in_thread():
             for i in range(100000):
@@ -1704,7 +1704,7 @@ class MappingTestCase(TestBase):
                 self.assertIsNot(x, None)  # we never put None in there!
                 del x
 
-    def test_threaded_weak_valued_pop(self):
+    eleza test_threaded_weak_valued_pop(self):
         d = weakref.WeakValueDictionary()
         with collect_in_thread():
             for i in range(100000):
@@ -1712,7 +1712,7 @@ class MappingTestCase(TestBase):
                 x = d.pop(10, 10)
                 self.assertIsNot(x, None)  # we never put None in there!
 
-    def test_threaded_weak_valued_consistency(self):
+    eleza test_threaded_weak_valued_consistency(self):
         # Issue #28427: old keys should not remove new values kutoka
         # WeakValueDictionary when collecting kutoka another thread.
         d = weakref.WeakValueDictionary()
@@ -1724,35 +1724,35 @@ class MappingTestCase(TestBase):
                 self.assertEqual(len(d), 1)
                 o = None  # lose ref
 
-    def check_threaded_weak_dict_copy(self, type_, deepcopy):
+    eleza check_threaded_weak_dict_copy(self, type_, deepcopy):
         # `type_` should be either WeakKeyDictionary or WeakValueDictionary.
         # `deepcopy` should be either True or False.
         exc = []
 
-        class DummyKey:
-            def __init__(self, ctr):
+        kundi DummyKey:
+            eleza __init__(self, ctr):
                 self.ctr = ctr
 
-        class DummyValue:
-            def __init__(self, ctr):
+        kundi DummyValue:
+            eleza __init__(self, ctr):
                 self.ctr = ctr
 
-        def dict_copy(d, exc):
+        eleza dict_copy(d, exc):
             try:
-                if deepcopy is True:
+                ikiwa deepcopy is True:
                     _ = copy.deepcopy(d)
                 else:
                     _ = d.copy()
             except Exception as ex:
                 exc.append(ex)
 
-        def pop_and_collect(lst):
+        eleza pop_and_collect(lst):
             gc_ctr = 0
             while lst:
                 i = random.randint(0, len(lst) - 1)
                 gc_ctr += 1
                 lst.pop(i)
-                if gc_ctr % 10000 == 0:
+                ikiwa gc_ctr % 10000 == 0:
                     gc.collect()  # just in case
 
         self.assertIn(type_, (weakref.WeakKeyDictionary, weakref.WeakValueDictionary))
@@ -1770,7 +1770,7 @@ class MappingTestCase(TestBase):
             del v
 
         t_copy = threading.Thread(target=dict_copy, args=(d, exc,))
-        if type_ is weakref.WeakKeyDictionary:
+        ikiwa type_ is weakref.WeakKeyDictionary:
             t_collect = threading.Thread(target=pop_and_collect, args=(keys,))
         else:  # weakref.WeakValueDictionary
             t_collect = threading.Thread(target=pop_and_collect, args=(values,))
@@ -1782,66 +1782,66 @@ class MappingTestCase(TestBase):
         t_collect.join()
 
         # Test exceptions
-        if exc:
+        ikiwa exc:
             raise exc[0]
 
-    def test_threaded_weak_key_dict_copy(self):
+    eleza test_threaded_weak_key_dict_copy(self):
         # Issue #35615: Weakref keys or values getting GC'ed during dict
         # copying should not result in a crash.
         self.check_threaded_weak_dict_copy(weakref.WeakKeyDictionary, False)
 
-    def test_threaded_weak_key_dict_deepcopy(self):
+    eleza test_threaded_weak_key_dict_deepcopy(self):
         # Issue #35615: Weakref keys or values getting GC'ed during dict
         # copying should not result in a crash.
         self.check_threaded_weak_dict_copy(weakref.WeakKeyDictionary, True)
 
-    def test_threaded_weak_value_dict_copy(self):
+    eleza test_threaded_weak_value_dict_copy(self):
         # Issue #35615: Weakref keys or values getting GC'ed during dict
         # copying should not result in a crash.
         self.check_threaded_weak_dict_copy(weakref.WeakValueDictionary, False)
 
-    def test_threaded_weak_value_dict_deepcopy(self):
+    eleza test_threaded_weak_value_dict_deepcopy(self):
         # Issue #35615: Weakref keys or values getting GC'ed during dict
         # copying should not result in a crash.
         self.check_threaded_weak_dict_copy(weakref.WeakValueDictionary, True)
 
     @support.cpython_only
-    def test_remove_closure(self):
+    eleza test_remove_closure(self):
         d = weakref.WeakValueDictionary()
         self.assertIsNone(d._remove.__closure__)
 
 
 kutoka test agiza mapping_tests
 
-class WeakValueDictionaryTestCase(mapping_tests.BasicTestMappingProtocol):
+kundi WeakValueDictionaryTestCase(mapping_tests.BasicTestMappingProtocol):
     """Check that WeakValueDictionary conforms to the mapping protocol"""
     __ref = {"key1":Object(1), "key2":Object(2), "key3":Object(3)}
     type2test = weakref.WeakValueDictionary
-    def _reference(self):
-        return self.__ref.copy()
+    eleza _reference(self):
+        rudisha self.__ref.copy()
 
-class WeakKeyDictionaryTestCase(mapping_tests.BasicTestMappingProtocol):
+kundi WeakKeyDictionaryTestCase(mapping_tests.BasicTestMappingProtocol):
     """Check that WeakKeyDictionary conforms to the mapping protocol"""
     __ref = {Object("key1"):1, Object("key2"):2, Object("key3"):3}
     type2test = weakref.WeakKeyDictionary
-    def _reference(self):
-        return self.__ref.copy()
+    eleza _reference(self):
+        rudisha self.__ref.copy()
 
 
-class FinalizeTestCase(unittest.TestCase):
+kundi FinalizeTestCase(unittest.TestCase):
 
-    class A:
+    kundi A:
         pass
 
-    def _collect_if_necessary(self):
+    eleza _collect_if_necessary(self):
         # we create no ref-cycles so in CPython no gc should be needed
-        if sys.implementation.name != 'cpython':
+        ikiwa sys.implementation.name != 'cpython':
             support.gc_collect()
 
-    def test_finalize(self):
-        def add(x,y,z):
+    eleza test_finalize(self):
+        eleza add(x,y,z):
             res.append(x + y + z)
-            return x + y + z
+            rudisha x + y + z
 
         a = self.A()
 
@@ -1879,8 +1879,8 @@ class FinalizeTestCase(unittest.TestCase):
         self.assertEqual(f.alive, False)
         self.assertEqual(res, [199])
 
-    def test_arg_errors(self):
-        def fin(*args, **kwargs):
+    eleza test_arg_errors(self):
+        eleza fin(*args, **kwargs):
             res.append((args, kwargs))
 
         a = self.A()
@@ -1908,7 +1908,7 @@ class FinalizeTestCase(unittest.TestCase):
         self.assertRaises(TypeError, weakref.finalize, a)
         self.assertRaises(TypeError, weakref.finalize)
 
-    def test_order(self):
+    eleza test_order(self):
         a = self.A()
         res = []
 
@@ -1947,14 +1947,14 @@ class FinalizeTestCase(unittest.TestCase):
         expected = ['A', 'f3', 'B', 'C', 'f4', 'f2', 'f1', 'D']
         self.assertEqual(res, expected)
 
-    def test_all_freed(self):
-        # we want a weakrefable subclass of weakref.finalize
-        class MyFinalizer(weakref.finalize):
+    eleza test_all_freed(self):
+        # we want a weakrefable subkundi of weakref.finalize
+        kundi MyFinalizer(weakref.finalize):
             pass
 
         a = self.A()
         res = []
-        def callback():
+        eleza callback():
             res.append(123)
         f = MyFinalizer(a, callback)
 
@@ -1973,12 +1973,12 @@ class FinalizeTestCase(unittest.TestCase):
         self.assertEqual(res, [123])
 
     @classmethod
-    def run_in_child(cls):
-        def error():
+    eleza run_in_child(cls):
+        eleza error():
             # Create an atexit finalizer kutoka inside a finalizer called
             # at exit.  This should be the next to be run.
             g1 = weakref.finalize(cls, print, 'g1')
-            print('f3 error')
+            andika('f3 error')
             1/0
 
         # cls should stay alive till atexit callbacks run
@@ -1992,7 +1992,7 @@ class FinalizeTestCase(unittest.TestCase):
         assert f3.atexit == True
         assert f4.atexit == True
 
-    def test_atexit(self):
+    eleza test_atexit(self):
         prog = ('kutoka test.test_weakref agiza FinalizeTestCase;'+
                 'FinalizeTestCase.run_in_child()')
         rc, out, err = script_helper.assert_python_ok('-c', prog)
@@ -2004,16 +2004,16 @@ class FinalizeTestCase(unittest.TestCase):
 libreftest = """ Doctest for examples in the library reference: weakref.rst
 
 >>> agiza weakref
->>> class Dict(dict):
+>>> kundi Dict(dict):
 ...     pass
 ...
 >>> obj = Dict(red=1, green=2, blue=3)   # this object is weak referencable
 >>> r = weakref.ref(obj)
->>> print(r() is obj)
+>>> andika(r() is obj)
 True
 
 >>> agiza weakref
->>> class Object:
+>>> kundi Object:
 ...     pass
 ...
 >>> o = Object()
@@ -2022,27 +2022,27 @@ True
 >>> o is o2
 True
 >>> del o, o2
->>> print(r())
+>>> andika(r())
 None
 
 >>> agiza weakref
->>> class ExtendedRef(weakref.ref):
-...     def __init__(self, ob, callback=None, **annotations):
+>>> kundi ExtendedRef(weakref.ref):
+...     eleza __init__(self, ob, callback=None, **annotations):
 ...         super().__init__(ob, callback)
 ...         self.__counter = 0
 ...         for k, v in annotations.items():
 ...             setattr(self, k, v)
-...     def __call__(self):
+...     eleza __call__(self):
 ...         '''Return a pair containing the referent and the number of
 ...         times the reference has been called.
 ...         '''
 ...         ob = super().__call__()
-...         if ob is not None:
+...         ikiwa ob is not None:
 ...             self.__counter += 1
 ...             ob = (ob, self.__counter)
-...         return ob
+...         rudisha ob
 ...
->>> class A:   # not in docs kutoka here, just testing the ExtendedRef
+>>> kundi A:   # not in docs kutoka here, just testing the ExtendedRef
 ...     pass
 ...
 >>> a = A()
@@ -2061,13 +2061,13 @@ True
 
 >>> agiza weakref
 >>> _id2obj_dict = weakref.WeakValueDictionary()
->>> def remember(obj):
+>>> eleza remember(obj):
 ...     oid = id(obj)
 ...     _id2obj_dict[oid] = obj
-...     return oid
+...     rudisha oid
 ...
->>> def id2obj(oid):
-...     return _id2obj_dict[oid]
+>>> eleza id2obj(oid):
+...     rudisha _id2obj_dict[oid]
 ...
 >>> a = A()             # kutoka here, just testing
 >>> a_id = remember(a)
@@ -2077,16 +2077,16 @@ True
 >>> try:
 ...     id2obj(a_id)
 ... except KeyError:
-...     print('OK')
+...     andika('OK')
 ... else:
-...     print('WeakValueDictionary error')
+...     andika('WeakValueDictionary error')
 OK
 
 """
 
 __test__ = {'libreftest' : libreftest}
 
-def test_main():
+eleza test_main():
     support.run_unittest(
         ReferencesTestCase,
         WeakMethodTestCase,
@@ -2099,5 +2099,5 @@ def test_main():
     support.run_doctest(sys.modules[__name__])
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

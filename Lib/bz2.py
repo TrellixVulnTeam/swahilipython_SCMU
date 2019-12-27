@@ -27,7 +27,7 @@ _MODE_WRITE    = 3
 _sentinel = object()
 
 
-class BZ2File(_compression.BaseStream):
+kundi BZ2File(_compression.BaseStream):
 
     """A file object providing transparent bzip2 (de)compression.
 
@@ -38,7 +38,7 @@ class BZ2File(_compression.BaseStream):
     returned as bytes, and data to be written should be given as bytes.
     """
 
-    def __init__(self, filename, mode="r", buffering=_sentinel, compresslevel=9):
+    eleza __init__(self, filename, mode="r", buffering=_sentinel, compresslevel=9):
         """Open a bzip2-compressed file.
 
         If filename is a str, bytes, or PathLike object, it gives the
@@ -65,68 +65,68 @@ class BZ2File(_compression.BaseStream):
         self._closefp = False
         self._mode = _MODE_CLOSED
 
-        if buffering is not _sentinel:
+        ikiwa buffering is not _sentinel:
             warnings.warn("Use of 'buffering' argument is deprecated and ignored "
                           "since Python 3.0.",
                           DeprecationWarning,
                           stacklevel=2)
 
-        if not (1 <= compresslevel <= 9):
+        ikiwa not (1 <= compresslevel <= 9):
             raise ValueError("compresslevel must be between 1 and 9")
 
-        if mode in ("", "r", "rb"):
+        ikiwa mode in ("", "r", "rb"):
             mode = "rb"
             mode_code = _MODE_READ
-        elif mode in ("w", "wb"):
+        elikiwa mode in ("w", "wb"):
             mode = "wb"
             mode_code = _MODE_WRITE
             self._compressor = BZ2Compressor(compresslevel)
-        elif mode in ("x", "xb"):
+        elikiwa mode in ("x", "xb"):
             mode = "xb"
             mode_code = _MODE_WRITE
             self._compressor = BZ2Compressor(compresslevel)
-        elif mode in ("a", "ab"):
+        elikiwa mode in ("a", "ab"):
             mode = "ab"
             mode_code = _MODE_WRITE
             self._compressor = BZ2Compressor(compresslevel)
         else:
             raise ValueError("Invalid mode: %r" % (mode,))
 
-        if isinstance(filename, (str, bytes, os.PathLike)):
+        ikiwa isinstance(filename, (str, bytes, os.PathLike)):
             self._fp = _builtin_open(filename, mode)
             self._closefp = True
             self._mode = mode_code
-        elif hasattr(filename, "read") or hasattr(filename, "write"):
+        elikiwa hasattr(filename, "read") or hasattr(filename, "write"):
             self._fp = filename
             self._mode = mode_code
         else:
             raise TypeError("filename must be a str, bytes, file or PathLike object")
 
-        if self._mode == _MODE_READ:
+        ikiwa self._mode == _MODE_READ:
             raw = _compression.DecompressReader(self._fp,
                 BZ2Decompressor, trailing_error=OSError)
             self._buffer = io.BufferedReader(raw)
         else:
             self._pos = 0
 
-    def close(self):
+    eleza close(self):
         """Flush and close the file.
 
         May be called more than once without error. Once the file is
         closed, any other operation on it will raise a ValueError.
         """
         with self._lock:
-            if self._mode == _MODE_CLOSED:
+            ikiwa self._mode == _MODE_CLOSED:
                 return
             try:
-                if self._mode == _MODE_READ:
+                ikiwa self._mode == _MODE_READ:
                     self._buffer.close()
-                elif self._mode == _MODE_WRITE:
+                elikiwa self._mode == _MODE_WRITE:
                     self._fp.write(self._compressor.flush())
                     self._compressor = None
             finally:
                 try:
-                    if self._closefp:
+                    ikiwa self._closefp:
                         self._fp.close()
                 finally:
                     self._fp = None
@@ -135,30 +135,30 @@ class BZ2File(_compression.BaseStream):
                     self._buffer = None
 
     @property
-    def closed(self):
-        """True if this file is closed."""
-        return self._mode == _MODE_CLOSED
+    eleza closed(self):
+        """True ikiwa this file is closed."""
+        rudisha self._mode == _MODE_CLOSED
 
-    def fileno(self):
+    eleza fileno(self):
         """Return the file descriptor for the underlying file."""
         self._check_not_closed()
-        return self._fp.fileno()
+        rudisha self._fp.fileno()
 
-    def seekable(self):
+    eleza seekable(self):
         """Return whether the file supports seeking."""
-        return self.readable() and self._buffer.seekable()
+        rudisha self.readable() and self._buffer.seekable()
 
-    def readable(self):
+    eleza readable(self):
         """Return whether the file was opened for reading."""
         self._check_not_closed()
-        return self._mode == _MODE_READ
+        rudisha self._mode == _MODE_READ
 
-    def writable(self):
+    eleza writable(self):
         """Return whether the file was opened for writing."""
         self._check_not_closed()
-        return self._mode == _MODE_WRITE
+        rudisha self._mode == _MODE_WRITE
 
-    def peek(self, n=0):
+    eleza peek(self, n=0):
         """Return buffered data without advancing the file position.
 
         Always returns at least one byte of data, unless at EOF.
@@ -169,71 +169,71 @@ class BZ2File(_compression.BaseStream):
             # Relies on the undocumented fact that BufferedReader.peek()
             # always returns at least one byte (except at EOF), independent
             # of the value of n
-            return self._buffer.peek(n)
+            rudisha self._buffer.peek(n)
 
-    def read(self, size=-1):
+    eleza read(self, size=-1):
         """Read up to size uncompressed bytes kutoka the file.
 
         If size is negative or omitted, read until EOF is reached.
-        Returns b'' if the file is already at EOF.
+        Returns b'' ikiwa the file is already at EOF.
         """
         with self._lock:
             self._check_can_read()
-            return self._buffer.read(size)
+            rudisha self._buffer.read(size)
 
-    def read1(self, size=-1):
+    eleza read1(self, size=-1):
         """Read up to size uncompressed bytes, while trying to avoid
         making multiple reads kutoka the underlying stream. Reads up to a
-        buffer's worth of data if size is negative.
+        buffer's worth of data ikiwa size is negative.
 
-        Returns b'' if the file is at EOF.
+        Returns b'' ikiwa the file is at EOF.
         """
         with self._lock:
             self._check_can_read()
-            if size < 0:
+            ikiwa size < 0:
                 size = io.DEFAULT_BUFFER_SIZE
-            return self._buffer.read1(size)
+            rudisha self._buffer.read1(size)
 
-    def readinto(self, b):
+    eleza readinto(self, b):
         """Read bytes into b.
 
         Returns the number of bytes read (0 for EOF).
         """
         with self._lock:
             self._check_can_read()
-            return self._buffer.readinto(b)
+            rudisha self._buffer.readinto(b)
 
-    def readline(self, size=-1):
+    eleza readline(self, size=-1):
         """Read a line of uncompressed bytes kutoka the file.
 
-        The terminating newline (if present) is retained. If size is
+        The terminating newline (ikiwa present) is retained. If size is
         non-negative, no more than size bytes will be read (in which
-        case the line may be incomplete). Returns b'' if already at EOF.
+        case the line may be incomplete). Returns b'' ikiwa already at EOF.
         """
-        if not isinstance(size, int):
-            if not hasattr(size, "__index__"):
+        ikiwa not isinstance(size, int):
+            ikiwa not hasattr(size, "__index__"):
                 raise TypeError("Integer argument expected")
             size = size.__index__()
         with self._lock:
             self._check_can_read()
-            return self._buffer.readline(size)
+            rudisha self._buffer.readline(size)
 
-    def readlines(self, size=-1):
+    eleza readlines(self, size=-1):
         """Read a list of lines of uncompressed bytes kutoka the file.
 
         size can be specified to control the number of lines read: no
         further lines will be read once the total size of the lines read
         so far equals or exceeds size.
         """
-        if not isinstance(size, int):
-            if not hasattr(size, "__index__"):
+        ikiwa not isinstance(size, int):
+            ikiwa not hasattr(size, "__index__"):
                 raise TypeError("Integer argument expected")
             size = size.__index__()
         with self._lock:
             self._check_can_read()
-            return self._buffer.readlines(size)
+            rudisha self._buffer.readlines(size)
 
-    def write(self, data):
+    eleza write(self, data):
         """Write a byte string to the file.
 
         Returns the number of uncompressed bytes written, which is
@@ -245,9 +245,9 @@ class BZ2File(_compression.BaseStream):
             compressed = self._compressor.compress(data)
             self._fp.write(compressed)
             self._pos += len(data)
-            return len(data)
+            rudisha len(data)
 
-    def writelines(self, seq):
+    eleza writelines(self, seq):
         """Write a sequence of byte strings to the file.
 
         Returns the number of uncompressed bytes written.
@@ -256,9 +256,9 @@ class BZ2File(_compression.BaseStream):
         Line separators are not added between the written byte strings.
         """
         with self._lock:
-            return _compression.BaseStream.writelines(self, seq)
+            rudisha _compression.BaseStream.writelines(self, seq)
 
-    def seek(self, offset, whence=io.SEEK_SET):
+    eleza seek(self, offset, whence=io.SEEK_SET):
         """Change the file position.
 
         The new position is specified by offset, relative to the
@@ -275,18 +275,18 @@ class BZ2File(_compression.BaseStream):
         """
         with self._lock:
             self._check_can_seek()
-            return self._buffer.seek(offset, whence)
+            rudisha self._buffer.seek(offset, whence)
 
-    def tell(self):
+    eleza tell(self):
         """Return the current file position."""
         with self._lock:
             self._check_not_closed()
-            if self._mode == _MODE_READ:
-                return self._buffer.tell()
-            return self._pos
+            ikiwa self._mode == _MODE_READ:
+                rudisha self._buffer.tell()
+            rudisha self._pos
 
 
-def open(filename, mode="rb", compresslevel=9,
+eleza open(filename, mode="rb", compresslevel=9,
          encoding=None, errors=None, newline=None):
     """Open a bzip2-compressed file in binary or text mode.
 
@@ -307,38 +307,38 @@ def open(filename, mode="rb", compresslevel=9,
     handling behavior, and line ending(s).
 
     """
-    if "t" in mode:
-        if "b" in mode:
+    ikiwa "t" in mode:
+        ikiwa "b" in mode:
             raise ValueError("Invalid mode: %r" % (mode,))
     else:
-        if encoding is not None:
+        ikiwa encoding is not None:
             raise ValueError("Argument 'encoding' not supported in binary mode")
-        if errors is not None:
+        ikiwa errors is not None:
             raise ValueError("Argument 'errors' not supported in binary mode")
-        if newline is not None:
+        ikiwa newline is not None:
             raise ValueError("Argument 'newline' not supported in binary mode")
 
     bz_mode = mode.replace("t", "")
     binary_file = BZ2File(filename, bz_mode, compresslevel=compresslevel)
 
-    if "t" in mode:
-        return io.TextIOWrapper(binary_file, encoding, errors, newline)
+    ikiwa "t" in mode:
+        rudisha io.TextIOWrapper(binary_file, encoding, errors, newline)
     else:
-        return binary_file
+        rudisha binary_file
 
 
-def compress(data, compresslevel=9):
+eleza compress(data, compresslevel=9):
     """Compress a block of data.
 
-    compresslevel, if given, must be a number between 1 and 9.
+    compresslevel, ikiwa given, must be a number between 1 and 9.
 
     For incremental compression, use a BZ2Compressor object instead.
     """
     comp = BZ2Compressor(compresslevel)
-    return comp.compress(data) + comp.flush()
+    rudisha comp.compress(data) + comp.flush()
 
 
-def decompress(data):
+eleza decompress(data):
     """Decompress a block of data.
 
     For incremental decompression, use a BZ2Decompressor object instead.
@@ -349,13 +349,13 @@ def decompress(data):
         try:
             res = decomp.decompress(data)
         except OSError:
-            if results:
+            ikiwa results:
                 break  # Leftover data is not a valid bzip2 stream; ignore it.
             else:
                 raise  # Error on the first iteration; bail out.
         results.append(res)
-        if not decomp.eof:
+        ikiwa not decomp.eof:
             raise ValueError("Compressed data ended before the "
                              "end-of-stream marker was reached")
         data = decomp.unused_data
-    return b"".join(results)
+    rudisha b"".join(results)

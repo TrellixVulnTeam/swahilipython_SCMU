@@ -63,13 +63,13 @@ JSON = r'''
 ,"rosebud"]
 '''
 
-class TestPass1:
-    def test_parse(self):
+kundi TestPass1:
+    eleza test_parse(self):
         # test in/out equivalence and parsing
         res = self.loads(JSON)
         out = self.dumps(res)
         self.assertEqual(res, self.loads(out))
 
 
-class TestPyPass1(TestPass1, PyTest): pass
-class TestCPass1(TestPass1, CTest): pass
+kundi TestPyPass1(TestPass1, PyTest): pass
+kundi TestCPass1(TestPass1, CTest): pass

@@ -7,10 +7,10 @@ kutoka tkinter agiza Tk, Text
 agiza idlelib.autocomplete_w as acw
 
 
-class AutoCompleteWindowTest(unittest.TestCase):
+kundi AutoCompleteWindowTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
@@ -18,15 +18,15 @@ class AutoCompleteWindowTest(unittest.TestCase):
         cls.acw = acw.AutoCompleteWindow(cls.text)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         del cls.text, cls.acw
         cls.root.update_idletasks()
         cls.root.destroy()
         del cls.root
 
-    def test_init(self):
+    eleza test_init(self):
         self.assertEqual(self.acw.widget, self.text)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

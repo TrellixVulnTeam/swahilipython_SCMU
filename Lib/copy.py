@@ -11,7 +11,7 @@ For module specific errors, copy.Error is raised.
 
 The difference between shallow and deep copying is only relevant for
 compound objects (objects that contain other objects, like lists or
-class instances).
+kundi instances).
 
 - A shallow copy constructs a new compound object and then (to the
   extent possible) inserts *the same objects* into it that the
@@ -52,7 +52,7 @@ agiza types
 agiza weakref
 kutoka copyreg agiza dispatch_table
 
-class Error(Exception):
+kundi Error(Exception):
     pass
 error = Error   # backward compatibility
 

@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-/* Dictionary object type -- mapping from hashable object to object */
+/* Dictionary object type -- mapping kutoka hashable object to object */
 
 /* The distribution includes a separate file, Objects/dictnotes.txt,
    describing explorations into dictionary design and optimization.
@@ -36,7 +36,7 @@ PyAPI_FUNC(int) PyDict_Contains(PyObject *mp, PyObject *key);
 /* PyDict_Update(mp, other) is equivalent to PyDict_Merge(mp, other, 1). */
 PyAPI_FUNC(int) PyDict_Update(PyObject *mp, PyObject *other);
 
-/* PyDict_Merge updates/merges from a mapping object (an object that
+/* PyDict_Merge updates/merges kutoka a mapping object (an object that
    supports PyMapping_Keys() and PyObject_GetItem()).  If override is true,
    the last occurrence of a key wins, else the first.  The Python
    dict.update(other) is equivalent to PyDict_Merge(dict, other, 1).
@@ -45,7 +45,7 @@ PyAPI_FUNC(int) PyDict_Merge(PyObject *mp,
                              PyObject *other,
                              int override);
 
-/* PyDict_MergeFromSeq2 updates/merges from an iterable object producing
+/* PyDict_MergeFromSeq2 updates/merges kutoka an iterable object producing
    iterable objects of length 2.  If override is true, the last occurrence
    of a key wins, else the first.  The Python dict constructor dict(seq2)
    is equivalent to dict={}; PyDict_MergeFromSeq(dict, seq2, 1).

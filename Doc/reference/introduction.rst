@@ -11,8 +11,8 @@ intended as a tutorial.
 While I am trying to be as precise as possible, I chose to use English rather
 than formal specifications for everything except syntax and lexical analysis.
 This should make the document more understandable to the average reader, but
-will leave room for ambiguities. Consequently, if you were coming from Mars and
-tried to re-implement Python from this document alone, you might have to guess
+will leave room for ambiguities. Consequently, if you were coming kutoka Mars and
+tried to re-implement Python kutoka this document alone, you might have to guess
 things and in fact you would probably end up implementing quite a different
 language. On the other hand, if you are using Python and wonder what the precise
 rules about a particular area of the language are, you should definitely be able
@@ -53,7 +53,7 @@ CPython
 Jython
    Python implemented in Java.  This implementation can be used as a scripting
    language for Java applications, or can be used to create applications using the
-   Java class libraries.  It is also often used to create tests for Java libraries.
+   Java kundi libraries.  It is also often used to create tests for Java libraries.
    More information can be found at `the Jython website <http://www.jython.org/>`_.
 
 Python for .NET
@@ -76,7 +76,7 @@ PyPy
    interpreter (since it is written in Python).  Additional information is
    available on `the PyPy project's home page <http://pypy.org/>`_.
 
-Each of these implementations varies in some way from the language as documented
+Each of these implementations varies in some way kutoka the language as documented
 in this manual, or introduces specific information beyond what's covered in the
 standard Python documentation.  Please refer to the implementation-specific
 documentation to determine what else you need to know about the specific

@@ -10,31 +10,31 @@ agiza re
 agiza types
 agiza contextlib
 
-def get_tb():
-    def _error():
+eleza get_tb():
+    eleza _error():
         try:
             1 / 0
         except Exception as e:
             tb = e.__traceback__
-        return tb
+        rudisha tb
 
     tb = _error()
     while tb.tb_next:
         tb = tb.tb_next
-    return tb
+    rudisha tb
 
 TRACEBACK_CODE = get_tb().tb_frame.f_code
 
-class _C:
-    def __init__(self, x):
+kundi _C:
+    eleza __init__(self, x):
         self.x = x == 1
 
     @staticmethod
-    def sm(x):
+    eleza sm(x):
         x = x == 1
 
     @classmethod
-    def cm(cls, x):
+    eleza cm(cls, x):
         cls.x = x == 1
 
 dis_c_instance_method = """\
@@ -88,9 +88,9 @@ Disassembly of %s:
        _C.cm.__name__, dis_c_class_method,
        _C.sm.__name__, dis_c_static_method)
 
-def _f(a):
-    print(a)
-    return 1
+eleza _f(a):
+    andika(a)
+    rudisha 1
 
 dis_f = """\
 %3d           0 LOAD_GLOBAL              0 (print)
@@ -114,7 +114,7 @@ dis_f_co_code = """\
 """
 
 
-def bug708901():
+eleza bug708901():
     for res in range(1,
                      10):
         pass
@@ -139,7 +139,7 @@ dis_bug708901 = """\
        bug708901.__code__.co_firstlineno + 3)
 
 
-def bug1333982(x=[]):
+eleza bug1333982(x=[]):
     assert 0, ([s for s in x] +
               1)
     pass
@@ -310,8 +310,8 @@ dis_traceback = """\
        TRACEBACK_CODE.co_firstlineno + 4,
        TRACEBACK_CODE.co_firstlineno + 5)
 
-def _fstring(a, b, c, d):
-    return f'{a} {b:4} {c!r} {d!r:4}'
+eleza _fstring(a, b, c, d):
+    rudisha f'{a} {b:4} {c!r} {d!r:4}'
 
 dis_fstring = """\
 %3d           0 LOAD_FAST                0 (a)
@@ -331,21 +331,21 @@ dis_fstring = """\
              28 RETURN_VALUE
 """ % (_fstring.__code__.co_firstlineno + 1,)
 
-def _g(x):
+eleza _g(x):
     yield x
 
-async def _ag(x):
+async eleza _ag(x):
     yield x
 
-async def _co(x):
+async eleza _co(x):
     async for item in _ag(x):
         pass
 
-def _h(y):
-    def foo(x):
+eleza _h(y):
+    eleza foo(x):
         '''funcdoc'''
-        return [x + z for z in y]
-    return foo
+        rudisha [x + z for z in y]
+    rudisha foo
 
 dis_nested_0 = """\
 %3d           0 LOAD_CLOSURE             0 (y)
@@ -401,75 +401,75 @@ Disassembly of <code object <listcomp> at 0x..., file "%s", line %d>:
 )
 
 
-class DisTests(unittest.TestCase):
+kundi DisTests(unittest.TestCase):
 
     maxDiff = None
 
-    def get_disassembly(self, func, lasti=-1, wrapper=True, **kwargs):
+    eleza get_disassembly(self, func, lasti=-1, wrapper=True, **kwargs):
         # We want to test the default printing behaviour, not the file arg
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
-            if wrapper:
+            ikiwa wrapper:
                 dis.dis(func, **kwargs)
             else:
                 dis.disassemble(func, lasti, **kwargs)
-        return output.getvalue()
+        rudisha output.getvalue()
 
-    def get_disassemble_as_string(self, func, lasti=-1):
-        return self.get_disassembly(func, lasti, False)
+    eleza get_disassemble_as_string(self, func, lasti=-1):
+        rudisha self.get_disassembly(func, lasti, False)
 
-    def strip_addresses(self, text):
-        return re.sub(r'\b0x[0-9A-Fa-f]+\b', '0x...', text)
+    eleza strip_addresses(self, text):
+        rudisha re.sub(r'\b0x[0-9A-Fa-f]+\b', '0x...', text)
 
-    def do_disassembly_test(self, func, expected):
+    eleza do_disassembly_test(self, func, expected):
         got = self.get_disassembly(func, depth=0)
-        if got != expected:
+        ikiwa got != expected:
             got = self.strip_addresses(got)
         self.assertEqual(got, expected)
 
-    def test_opmap(self):
+    eleza test_opmap(self):
         self.assertEqual(dis.opmap["NOP"], 9)
         self.assertIn(dis.opmap["LOAD_CONST"], dis.hasconst)
         self.assertIn(dis.opmap["STORE_NAME"], dis.hasname)
 
-    def test_opname(self):
+    eleza test_opname(self):
         self.assertEqual(dis.opname[dis.opmap["LOAD_FAST"]], "LOAD_FAST")
 
-    def test_boundaries(self):
+    eleza test_boundaries(self):
         self.assertEqual(dis.opmap["EXTENDED_ARG"], dis.EXTENDED_ARG)
         self.assertEqual(dis.opmap["STORE_NAME"], dis.HAVE_ARGUMENT)
 
-    def test_widths(self):
+    eleza test_widths(self):
         for opcode, opname in enumerate(dis.opname):
-            if opname in ('BUILD_MAP_UNPACK_WITH_CALL',
+            ikiwa opname in ('BUILD_MAP_UNPACK_WITH_CALL',
                           'BUILD_TUPLE_UNPACK_WITH_CALL'):
                 continue
             with self.subTest(opname=opname):
                 width = dis._OPNAME_WIDTH
-                if opcode < dis.HAVE_ARGUMENT:
+                ikiwa opcode < dis.HAVE_ARGUMENT:
                     width += 1 + dis._OPARG_WIDTH
                 self.assertLessEqual(len(opname), width)
 
-    def test_dis(self):
+    eleza test_dis(self):
         self.do_disassembly_test(_f, dis_f)
 
-    def test_bug_708901(self):
+    eleza test_bug_708901(self):
         self.do_disassembly_test(bug708901, dis_bug708901)
 
-    def test_bug_1333982(self):
+    eleza test_bug_1333982(self):
         # This one is checking bytecodes generated for an `assert` statement,
-        # so fails if the tests are run with -O.  Skip this test then.
-        if not __debug__:
+        # so fails ikiwa the tests are run with -O.  Skip this test then.
+        ikiwa not __debug__:
             self.skipTest('need asserts, run without -O')
 
         self.do_disassembly_test(bug1333982, dis_bug1333982)
 
-    def test_big_linenos(self):
-        def func(count):
+    eleza test_big_linenos(self):
+        eleza func(count):
             namespace = {}
-            func = "def foo():\n " + "".join(["\n "] * count + ["spam\n"])
+            func = "eleza foo():\n " + "".join(["\n "] * count + ["spam\n"])
             exec(func, namespace)
-            return namespace['foo']
+            rudisha namespace['foo']
 
         # Test all small ranges
         for i in range(1, 300):
@@ -488,14 +488,14 @@ class DisTests(unittest.TestCase):
         kutoka test agiza dis_module
         self.do_disassembly_test(dis_module, dis_module_expected_results)
 
-    def test_big_offsets(self):
-        def func(count):
+    eleza test_big_offsets(self):
+        eleza func(count):
             namespace = {}
-            func = "def foo(x):\n " + ";".join(["x = x + 1"] * count) + "\n return x"
+            func = "eleza foo(x):\n " + ";".join(["x = x + 1"] * count) + "\n rudisha x"
             exec(func, namespace)
-            return namespace['foo']
+            rudisha namespace['foo']
 
-        def expected(count, w):
+        eleza expected(count, w):
             s = ['''\
            %*d LOAD_FAST                0 (x)
            %*d LOAD_CONST               1 (1)
@@ -509,66 +509,66 @@ class DisTests(unittest.TestCase):
            %*d RETURN_VALUE
 ''' % (w, 8*count, w, 8*count + 2)]
             s[0] = '  2' + s[0][3:]
-            return ''.join(s)
+            rudisha ''.join(s)
 
         for i in range(1, 5):
             self.do_disassembly_test(func(i), expected(i, 4))
         self.do_disassembly_test(func(1249), expected(1249, 4))
         self.do_disassembly_test(func(1250), expected(1250, 5))
 
-    def test_disassemble_str(self):
+    eleza test_disassemble_str(self):
         self.do_disassembly_test(expr_str, dis_expr_str)
         self.do_disassembly_test(simple_stmt_str, dis_simple_stmt_str)
         self.do_disassembly_test(annot_stmt_str, dis_annot_stmt_str)
         self.do_disassembly_test(compound_stmt_str, dis_compound_stmt_str)
 
-    def test_disassemble_bytes(self):
+    eleza test_disassemble_bytes(self):
         self.do_disassembly_test(_f.__code__.co_code, dis_f_co_code)
 
-    def test_disassemble_class(self):
+    eleza test_disassemble_class(self):
         self.do_disassembly_test(_C, dis_c)
 
-    def test_disassemble_instance_method(self):
+    eleza test_disassemble_instance_method(self):
         self.do_disassembly_test(_C(1).__init__, dis_c_instance_method)
 
-    def test_disassemble_instance_method_bytes(self):
+    eleza test_disassemble_instance_method_bytes(self):
         method_bytecode = _C(1).__init__.__code__.co_code
         self.do_disassembly_test(method_bytecode, dis_c_instance_method_bytes)
 
-    def test_disassemble_static_method(self):
+    eleza test_disassemble_static_method(self):
         self.do_disassembly_test(_C.sm, dis_c_static_method)
 
-    def test_disassemble_class_method(self):
+    eleza test_disassemble_class_method(self):
         self.do_disassembly_test(_C.cm, dis_c_class_method)
 
-    def test_disassemble_generator(self):
+    eleza test_disassemble_generator(self):
         gen_func_disas = self.get_disassembly(_g)  # Generator function
         gen_disas = self.get_disassembly(_g(1))  # Generator iterator
         self.assertEqual(gen_disas, gen_func_disas)
 
-    def test_disassemble_async_generator(self):
+    eleza test_disassemble_async_generator(self):
         agen_func_disas = self.get_disassembly(_ag)  # Async generator function
         agen_disas = self.get_disassembly(_ag(1))  # Async generator iterator
         self.assertEqual(agen_disas, agen_func_disas)
 
-    def test_disassemble_coroutine(self):
+    eleza test_disassemble_coroutine(self):
         coro_func_disas = self.get_disassembly(_co)  # Coroutine function
         coro = _co(1)  # Coroutine object
         coro.close()  # Avoid a RuntimeWarning (never awaited)
         coro_disas = self.get_disassembly(coro)
         self.assertEqual(coro_disas, coro_func_disas)
 
-    def test_disassemble_fstring(self):
+    eleza test_disassemble_fstring(self):
         self.do_disassembly_test(_fstring, dis_fstring)
 
-    def test_dis_none(self):
+    eleza test_dis_none(self):
         try:
             del sys.last_traceback
         except AttributeError:
             pass
         self.assertRaises(RuntimeError, dis.dis, None)
 
-    def test_dis_traceback(self):
+    eleza test_dis_traceback(self):
         try:
             del sys.last_traceback
         except AttributeError:
@@ -583,11 +583,11 @@ class DisTests(unittest.TestCase):
         tb_dis = self.get_disassemble_as_string(tb.tb_frame.f_code, tb.tb_lasti)
         self.do_disassembly_test(None, tb_dis)
 
-    def test_dis_object(self):
+    eleza test_dis_object(self):
         self.assertRaises(TypeError, dis.dis, object())
 
-    def test_disassemble_recursive(self):
-        def check(expected, **kwargs):
+    eleza test_disassemble_recursive(self):
+        eleza check(expected, **kwargs):
             dis = self.get_disassembly(_h, **kwargs)
             dis = self.strip_addresses(dis)
             self.assertEqual(dis, expected)
@@ -600,16 +600,16 @@ class DisTests(unittest.TestCase):
         check(dis_nested_2)
 
 
-class DisWithFileTests(DisTests):
+kundi DisWithFileTests(DisTests):
 
     # Run the tests again, using the file arg instead of print
-    def get_disassembly(self, func, lasti=-1, wrapper=True, **kwargs):
+    eleza get_disassembly(self, func, lasti=-1, wrapper=True, **kwargs):
         output = io.StringIO()
-        if wrapper:
+        ikiwa wrapper:
             dis.dis(func, file=output, **kwargs)
         else:
             dis.disassemble(func, lasti, file=output, **kwargs)
-        return output.getvalue()
+        rudisha output.getvalue()
 
 
 
@@ -629,12 +629,12 @@ Names:
    1: _get_code_object
 Variable names:
    0: x""" % (('Formatted details of methods, functions, or code.',)
-              if sys.flags.optimize < 2 else (None,))
+              ikiwa sys.flags.optimize < 2 else (None,))
 
 @staticmethod
-def tricky(a, b, /, x, y, z=True, *args, c, d, e=[], **kwds):
-    def f(c=c):
-        print(a, b, x, y, z, c, d, e, f)
+eleza tricky(a, b, /, x, y, z=True, *args, c, d, e=[], **kwds):
+    eleza f(c=c):
+        andika(a, b, x, y, z, c, d, e, f)
     yield a, b, x, y, z, c, d, e, f
 
 code_info_tricky = """\
@@ -740,12 +740,12 @@ Names:
    0: x"""
 
 
-async def async_def():
+async eleza async_def():
     await 1
     async for a in b: pass
     async with c as d: pass
 
-code_info_async_def = """\
+code_info_async_eleza = """\
 Name:              async_def
 Filename:          (.*)
 Argument count:    0
@@ -764,7 +764,7 @@ Variable names:
    0: a
    1: d"""
 
-class CodeInfoTests(unittest.TestCase):
+kundi CodeInfoTests(unittest.TestCase):
     test_pairs = [
       (dis.code_info, code_info_code_info),
       (tricky, code_info_tricky),
@@ -775,12 +775,12 @@ class CodeInfoTests(unittest.TestCase):
       (async_def, code_info_async_def)
     ]
 
-    def test_code_info(self):
+    eleza test_code_info(self):
         self.maxDiff = 1000
         for x, expected in self.test_pairs:
             self.assertRegex(dis.code_info(x), expected)
 
-    def test_show_code(self):
+    eleza test_show_code(self):
         self.maxDiff = 1000
         for x, expected in self.test_pairs:
             with captured_stdout() as output:
@@ -790,52 +790,52 @@ class CodeInfoTests(unittest.TestCase):
             dis.show_code(x, file=output)
             self.assertRegex(output.getvalue(), expected)
 
-    def test_code_info_object(self):
+    eleza test_code_info_object(self):
         self.assertRaises(TypeError, dis.code_info, object())
 
-    def test_pretty_flags_no_flags(self):
+    eleza test_pretty_flags_no_flags(self):
         self.assertEqual(dis.pretty_flags(0), '0x0')
 
 
 # Fodder for instruction introspection tests
 #   Editing any of these may require recalculating the expected output
-def outer(a=1, b=2):
-    def f(c=3, d=4):
-        def inner(e=5, f=6):
-            print(a, b, c, d, e, f)
-        print(a, b, c, d)
-        return inner
-    print(a, b, '', 1, [], {}, "Hello world!")
-    return f
+eleza outer(a=1, b=2):
+    eleza f(c=3, d=4):
+        eleza inner(e=5, f=6):
+            andika(a, b, c, d, e, f)
+        andika(a, b, c, d)
+        rudisha inner
+    andika(a, b, '', 1, [], {}, "Hello world!")
+    rudisha f
 
-def jumpy():
+eleza jumpy():
     # This won't actually run (but that's OK, we only disassemble it)
     for i in range(10):
-        print(i)
-        if i < 4:
+        andika(i)
+        ikiwa i < 4:
             continue
-        if i > 6:
+        ikiwa i > 6:
             break
     else:
-        print("I can haz else clause?")
+        andika("I can haz else clause?")
     while i:
-        print(i)
+        andika(i)
         i -= 1
-        if i > 6:
+        ikiwa i > 6:
             continue
-        if i < 4:
+        ikiwa i < 4:
             break
     else:
-        print("Who let lolcatz into this test suite?")
+        andika("Who let lolcatz into this test suite?")
     try:
         1 / 0
     except ZeroDivisionError:
-        print("Here we go, here we go, here we go...")
+        andika("Here we go, here we go, here we go...")
     else:
         with i as dodgy:
-            print("Never reach this")
+            andika("Never reach this")
     finally:
-        print("OK, now we're done")
+        andika("OK, now we're done")
 
 # End fodder for opinfo generation tests
 expected_outer_line = 1
@@ -852,16 +852,16 @@ expected_jumpy_line = 1
 # code_object_inner before rerunning the tests
 
 #_instructions = dis.get_instructions(outer, first_line=expected_outer_line)
-#print('expected_opinfo_outer = [\n  ',
+#andika('expected_opinfo_outer = [\n  ',
       #',\n  '.join(map(str, _instructions)), ',\n]', sep='')
 #_instructions = dis.get_instructions(outer(), first_line=expected_f_line)
-#print('expected_opinfo_f = [\n  ',
+#andika('expected_opinfo_f = [\n  ',
       #',\n  '.join(map(str, _instructions)), ',\n]', sep='')
 #_instructions = dis.get_instructions(outer()(), first_line=expected_inner_line)
-#print('expected_opinfo_inner = [\n  ',
+#andika('expected_opinfo_inner = [\n  ',
       #',\n  '.join(map(str, _instructions)), ',\n]', sep='')
 #_instructions = dis.get_instructions(jumpy, first_line=expected_jumpy_line)
-#print('expected_opinfo_jumpy = [\n  ',
+#andika('expected_opinfo_jumpy = [\n  ',
       #',\n  '.join(map(str, _instructions)), ',\n]', sep='')
 
 
@@ -1023,47 +1023,47 @@ expected_opinfo_jumpy = [
 ]
 
 # One last piece of inspect fodder to check the default line number handling
-def simple(): pass
+eleza simple(): pass
 expected_opinfo_simple = [
   Instruction(opname='LOAD_CONST', opcode=100, arg=0, argval=None, argrepr='None', offset=0, starts_line=simple.__code__.co_firstlineno, is_jump_target=False),
   Instruction(opname='RETURN_VALUE', opcode=83, arg=None, argval=None, argrepr='', offset=2, starts_line=None, is_jump_target=False)
 ]
 
 
-class InstructionTests(BytecodeTestCase):
+kundi InstructionTests(BytecodeTestCase):
 
-    def test_default_first_line(self):
+    eleza test_default_first_line(self):
         actual = dis.get_instructions(simple)
         self.assertEqual(list(actual), expected_opinfo_simple)
 
-    def test_first_line_set_to_None(self):
+    eleza test_first_line_set_to_None(self):
         actual = dis.get_instructions(simple, first_line=None)
         self.assertEqual(list(actual), expected_opinfo_simple)
 
-    def test_outer(self):
+    eleza test_outer(self):
         actual = dis.get_instructions(outer, first_line=expected_outer_line)
         self.assertEqual(list(actual), expected_opinfo_outer)
 
-    def test_nested(self):
+    eleza test_nested(self):
         with captured_stdout():
             f = outer()
         actual = dis.get_instructions(f, first_line=expected_f_line)
         self.assertEqual(list(actual), expected_opinfo_f)
 
-    def test_doubly_nested(self):
+    eleza test_doubly_nested(self):
         with captured_stdout():
             inner = outer()()
         actual = dis.get_instructions(inner, first_line=expected_inner_line)
         self.assertEqual(list(actual), expected_opinfo_inner)
 
-    def test_jumpy(self):
+    eleza test_jumpy(self):
         actual = dis.get_instructions(jumpy, first_line=expected_jumpy_line)
         self.assertEqual(list(actual), expected_opinfo_jumpy)
 
 # get_instructions has its own tests above, so can rely on it to validate
 # the object oriented API
-class BytecodeTests(unittest.TestCase):
-    def test_instantiation(self):
+kundi BytecodeTests(unittest.TestCase):
+    eleza test_instantiation(self):
         # Test with function, method, code string and code object
         for obj in [_f, _C(1).__init__, "a=1", _f.__code__]:
             with self.subTest(obj=obj):
@@ -1072,18 +1072,18 @@ class BytecodeTests(unittest.TestCase):
 
         self.assertRaises(TypeError, dis.Bytecode, object())
 
-    def test_iteration(self):
+    eleza test_iteration(self):
         for obj in [_f, _C(1).__init__, "a=1", _f.__code__]:
             with self.subTest(obj=obj):
                 via_object = list(dis.Bytecode(obj))
                 via_generator = list(dis.get_instructions(obj))
                 self.assertEqual(via_object, via_generator)
 
-    def test_explicit_first_line(self):
+    eleza test_explicit_first_line(self):
         actual = dis.Bytecode(outer, first_line=expected_outer_line)
         self.assertEqual(list(actual), expected_opinfo_outer)
 
-    def test_source_line_in_disassembly(self):
+    eleza test_source_line_in_disassembly(self):
         # Use the line in the source code
         actual = dis.Bytecode(simple).dis()
         actual = actual.strip().partition(" ")[0]  # extract the line no
@@ -1094,27 +1094,27 @@ class BytecodeTests(unittest.TestCase):
         actual = actual.strip().partition(" ")[0]  # extract the line no
         self.assertEqual(actual, "350")
 
-    def test_info(self):
+    eleza test_info(self):
         self.maxDiff = 1000
         for x, expected in CodeInfoTests.test_pairs:
             b = dis.Bytecode(x)
             self.assertRegex(b.info(), expected)
 
-    def test_disassembled(self):
+    eleza test_disassembled(self):
         actual = dis.Bytecode(_f).dis()
         self.assertEqual(actual, dis_f)
 
-    def test_from_traceback(self):
+    eleza test_kutoka_traceback(self):
         tb = get_tb()
-        b = dis.Bytecode.from_traceback(tb)
+        b = dis.Bytecode.kutoka_traceback(tb)
         while tb.tb_next: tb = tb.tb_next
 
         self.assertEqual(b.current_offset, tb.tb_lasti)
 
-    def test_from_traceback_dis(self):
+    eleza test_kutoka_traceback_dis(self):
         tb = get_tb()
-        b = dis.Bytecode.from_traceback(tb)
+        b = dis.Bytecode.kutoka_traceback(tb)
         self.assertEqual(b.dis(), dis_traceback)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

@@ -4,7 +4,7 @@ import unittest
 from ctypes import *
 from ctypes.test import need_symbol
 from struct import calcsize
-import _ctypes_test
+agiza _ctypes_test
 from test import support
 
 class SubclassesTest(unittest.TestCase):
@@ -207,7 +207,7 @@ class StructureTestCase(unittest.TestCase):
     @support.cpython_only
     def test_packed_c_limits(self):
         # Issue 15989
-        import _testcapi
+        agiza _testcapi
         d = {"_fields_": [("a", c_byte)],
              "_pack_": _testcapi.INT_MAX + 1}
         self.assertRaises(ValueError, type(Structure), "X", (Structure,), d)

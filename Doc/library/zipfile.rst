@@ -48,7 +48,7 @@ The module defines the following items:
 .. class:: ZipFile
    :noindex:
 
-   The class for reading and writing ZIP files.  See section
+   The kundi for reading and writing ZIP files.  See section
    :ref:`zipfile-objects` for constructor details.
 
 
@@ -70,7 +70,7 @@ The module defines the following items:
 .. class:: ZipInfo(filename='NoName', date_time=(1980,1,1,0,0,0))
 
    Class used to represent information about a member of an archive. Instances
-   of this class are returned by the :meth:`.getinfo` and :meth:`.infolist`
+   of this kundi are returned by the :meth:`.getinfo` and :meth:`.infolist`
    methods of :class:`ZipFile` objects.  Most users of the :mod:`zipfile` module
    will not need to create these, but only use those created by this
    module. *filename* should be the full name of the archive member, and
@@ -300,7 +300,7 @@ ZipFile Objects
 
 .. method:: ZipFile.extract(member, path=None, pwd=None)
 
-   Extract a member from the archive to the current working directory; *member*
+   Extract a member kutoka the archive to the current working directory; *member*
    must be its full name or a :class:`ZipInfo` object.  Its file information is
    extracted as accurately as possible.  *path* specifies a different directory
    to extract to.  *member* can be a filename or a :class:`ZipInfo` object.
@@ -328,14 +328,14 @@ ZipFile Objects
 
 .. method:: ZipFile.extractall(path=None, members=None, pwd=None)
 
-   Extract all members from the archive to the current working directory.  *path*
+   Extract all members kutoka the archive to the current working directory.  *path*
    specifies a different directory to extract to.  *members* is optional and must
    be a subset of the list returned by :meth:`namelist`.  *pwd* is the password
    used for encrypted files.
 
    .. warning::
 
-      Never extract archives from untrusted sources without prior inspection.
+      Never extract archives kutoka untrusted sources without prior inspection.
       It is possible that files are created outside of *path*, e.g. members
       that have absolute filenames starting with ``"/"`` or filenames with two
       dots ``".."``.  This module attempts to prevent that.
@@ -452,7 +452,7 @@ The following data attributes are also available:
 
 .. attribute:: ZipFile.debug
 
-   The level of debug output to use.  This may be set from ``0`` (the default, no
+   The level of debug output to use.  This may be set kutoka ``0`` (the default, no
    output) to ``3`` (the most output).  Debugging information is written to
    ``sys.stdout``.
 
@@ -472,7 +472,7 @@ Path Objects
 
 .. class:: Path(root, at='')
 
-   Construct a Path object from a ``root`` zipfile (which may be a
+   Construct a Path object kutoka a ``root`` zipfile (which may be a
    :class:`ZipFile` instance or ``file`` suitable for passing to
    the :class:`ZipFile` constructor).
 
@@ -604,14 +604,14 @@ The :class:`PyZipFile` constructor takes the same parameters as the
 ZipInfo Objects
 ---------------
 
-Instances of the :class:`ZipInfo` class are returned by the :meth:`.getinfo` and
+Instances of the :class:`ZipInfo` kundi are returned by the :meth:`.getinfo` and
 :meth:`.infolist` methods of :class:`ZipFile` objects.  Each object stores
 information about a single member of the ZIP archive.
 
 There is one classmethod to make a :class:`ZipInfo` instance for a filesystem
 file:
 
-.. classmethod:: ZipInfo.from_file(filename, arcname=None, *, \
+.. classmethod:: ZipInfo.kutoka_file(filename, arcname=None, *, \
                                    strict_timestamps=True)
 
    Construct a :class:`ZipInfo` instance for a file on the filesystem, in
@@ -804,7 +804,7 @@ Command-line options
 .. cmdoption:: -c <zipfile> <source1> ... <sourceN>
                --create <zipfile> <source1> ... <sourceN>
 
-   Create zipfile from source files.
+   Create zipfile kutoka source files.
 
 .. cmdoption:: -e <zipfile> <output_dir>
                --extract <zipfile> <output_dir>

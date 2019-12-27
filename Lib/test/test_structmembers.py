@@ -1,7 +1,7 @@
 agiza unittest
 kutoka test agiza support
 
-# Skip this test if the _testcapi module isn't available.
+# Skip this test ikiwa the _testcapi module isn't available.
 support.import_module('_testcapi')
 kutoka _testcapi agiza _test_structmembersType, \
     CHAR_MAX, CHAR_MIN, UCHAR_MAX, \
@@ -26,16 +26,16 @@ ts=_test_structmembersType(False,  # T_BOOL
                           "hi" # T_STRING_INPLACE
                           )
 
-class ReadWriteTests(unittest.TestCase):
+kundi ReadWriteTests(unittest.TestCase):
 
-    def test_bool(self):
+    eleza test_bool(self):
         ts.T_BOOL = True
         self.assertEqual(ts.T_BOOL, True)
         ts.T_BOOL = False
         self.assertEqual(ts.T_BOOL, False)
         self.assertRaises(TypeError, setattr, ts, 'T_BOOL', 1)
 
-    def test_byte(self):
+    eleza test_byte(self):
         ts.T_BYTE = CHAR_MAX
         self.assertEqual(ts.T_BYTE, CHAR_MAX)
         ts.T_BYTE = CHAR_MIN
@@ -43,7 +43,7 @@ class ReadWriteTests(unittest.TestCase):
         ts.T_UBYTE = UCHAR_MAX
         self.assertEqual(ts.T_UBYTE, UCHAR_MAX)
 
-    def test_short(self):
+    eleza test_short(self):
         ts.T_SHORT = SHRT_MAX
         self.assertEqual(ts.T_SHORT, SHRT_MAX)
         ts.T_SHORT = SHRT_MIN
@@ -51,7 +51,7 @@ class ReadWriteTests(unittest.TestCase):
         ts.T_USHORT = USHRT_MAX
         self.assertEqual(ts.T_USHORT, USHRT_MAX)
 
-    def test_int(self):
+    eleza test_int(self):
         ts.T_INT = INT_MAX
         self.assertEqual(ts.T_INT, INT_MAX)
         ts.T_INT = INT_MIN
@@ -59,7 +59,7 @@ class ReadWriteTests(unittest.TestCase):
         ts.T_UINT = UINT_MAX
         self.assertEqual(ts.T_UINT, UINT_MAX)
 
-    def test_long(self):
+    eleza test_long(self):
         ts.T_LONG = LONG_MAX
         self.assertEqual(ts.T_LONG, LONG_MAX)
         ts.T_LONG = LONG_MIN
@@ -67,14 +67,14 @@ class ReadWriteTests(unittest.TestCase):
         ts.T_ULONG = ULONG_MAX
         self.assertEqual(ts.T_ULONG, ULONG_MAX)
 
-    def test_py_ssize_t(self):
+    eleza test_py_ssize_t(self):
         ts.T_PYSSIZET = PY_SSIZE_T_MAX
         self.assertEqual(ts.T_PYSSIZET, PY_SSIZE_T_MAX)
         ts.T_PYSSIZET = PY_SSIZE_T_MIN
         self.assertEqual(ts.T_PYSSIZET, PY_SSIZE_T_MIN)
 
     @unittest.skipUnless(hasattr(ts, "T_LONGLONG"), "long long not present")
-    def test_longlong(self):
+    eleza test_longlong(self):
         ts.T_LONGLONG = LLONG_MAX
         self.assertEqual(ts.T_LONGLONG, LLONG_MAX)
         ts.T_LONGLONG = LLONG_MIN
@@ -89,7 +89,7 @@ class ReadWriteTests(unittest.TestCase):
         ts.T_ULONGLONG = 4
         self.assertEqual(ts.T_ULONGLONG, 4)
 
-    def test_bad_assignments(self):
+    eleza test_bad_assignments(self):
         integer_attributes = [
             'T_BOOL',
             'T_BYTE', 'T_UBYTE',
@@ -98,7 +98,7 @@ class ReadWriteTests(unittest.TestCase):
             'T_LONG', 'T_ULONG',
             'T_PYSSIZET'
             ]
-        if hasattr(ts, 'T_LONGLONG'):
+        ikiwa hasattr(ts, 'T_LONGLONG'):
             integer_attributes.extend(['T_LONGLONG', 'T_ULONGLONG'])
 
         # issue8014: this produced 'bad argument to internal function'
@@ -107,38 +107,38 @@ class ReadWriteTests(unittest.TestCase):
             for attr in integer_attributes:
                 self.assertRaises(TypeError, setattr, ts, attr, nonint)
 
-    def test_inplace_string(self):
+    eleza test_inplace_string(self):
         self.assertEqual(ts.T_STRING_INPLACE, "hi")
         self.assertRaises(TypeError, setattr, ts, "T_STRING_INPLACE", "s")
         self.assertRaises(TypeError, delattr, ts, "T_STRING_INPLACE")
 
 
-class TestWarnings(unittest.TestCase):
+kundi TestWarnings(unittest.TestCase):
 
-    def test_byte_max(self):
+    eleza test_byte_max(self):
         with support.check_warnings(('', RuntimeWarning)):
             ts.T_BYTE = CHAR_MAX+1
 
-    def test_byte_min(self):
+    eleza test_byte_min(self):
         with support.check_warnings(('', RuntimeWarning)):
             ts.T_BYTE = CHAR_MIN-1
 
-    def test_ubyte_max(self):
+    eleza test_ubyte_max(self):
         with support.check_warnings(('', RuntimeWarning)):
             ts.T_UBYTE = UCHAR_MAX+1
 
-    def test_short_max(self):
+    eleza test_short_max(self):
         with support.check_warnings(('', RuntimeWarning)):
             ts.T_SHORT = SHRT_MAX+1
 
-    def test_short_min(self):
+    eleza test_short_min(self):
         with support.check_warnings(('', RuntimeWarning)):
             ts.T_SHORT = SHRT_MIN-1
 
-    def test_ushort_max(self):
+    eleza test_ushort_max(self):
         with support.check_warnings(('', RuntimeWarning)):
             ts.T_USHORT = USHRT_MAX+1
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

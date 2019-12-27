@@ -75,7 +75,7 @@ objects.
 Several built-in types such as :class:`list` and :class:`dict` do not directly
 support weak references but can add support through subclassing::
 
-   class Dict(dict):
+   kundi Dict(dict):
        pass
 
    obj = Dict(red=1, green=2, blue=3)   # this object is weak referenceable
@@ -100,12 +100,12 @@ Extension types can easily be made to support weak references; see
    parameter to the callback; the referent will no longer be available.
 
    It is allowable for many weak references to be constructed for the same object.
-   Callbacks registered for each weak reference will be called from the most
+   Callbacks registered for each weak reference will be called kutoka the most
    recently registered callback to the oldest registered callback.
 
    Exceptions raised by the callback will be noted on the standard error output,
    but cannot be propagated; they are handled in exactly the same way as exceptions
-   raised from an object's :meth:`__del__` method.
+   raised kutoka an object's :meth:`__del__` method.
 
    Weak references are :term:`hashable` if the *object* is hashable.  They will
    maintain their hash value even after the *object* was deleted.  If
@@ -157,7 +157,7 @@ Extension types can easily be made to support weak references; see
 
 .. class:: WeakKeyDictionary([dict])
 
-   Mapping class that references keys weakly.  Entries in the dictionary will be
+   Mapping kundi that references keys weakly.  Entries in the dictionary will be
    discarded when there is no longer a strong reference to the key.  This can be
    used to associate additional data with an object owned by other parts of an
    application without adding attributes to those objects.  This can be especially
@@ -186,7 +186,7 @@ than needed.
 
 .. class:: WeakValueDictionary([dict])
 
-   Mapping class that references values weakly.  Entries in the dictionary will be
+   Mapping kundi that references values weakly.  Entries in the dictionary will be
    discarded when no strong reference to the value exists any more.
 
    .. note::
@@ -209,19 +209,19 @@ objects.
 
 .. class:: WeakSet([elements])
 
-   Set class that keeps weak references to its elements.  An element will be
+   Set kundi that keeps weak references to its elements.  An element will be
    discarded when no strong reference to it exists any more.
 
 
 .. class:: WeakMethod(method)
 
-   A custom :class:`ref` subclass which simulates a weak reference to a bound
-   method (i.e., a method defined on a class and looked up on an instance).
+   A custom :class:`ref` subkundi which simulates a weak reference to a bound
+   method (i.e., a method defined on a kundi and looked up on an instance).
    Since a bound method is ephemeral, a standard weak reference cannot keep
    hold of it.  :class:`WeakMethod` has special code to recreate the bound
    method until either the object or the original function dies::
 
-      >>> class C:
+      >>> kundi C:
       ...     def method(self):
       ...         print("method called!")
       ...
@@ -256,7 +256,7 @@ objects.
    Exceptions raised by finalizer callbacks during garbage collection
    will be shown on the standard error output, but cannot be
    propagated.  They are handled in the same way as exceptions raised
-   from an object's :meth:`__del__` method or a weak reference's
+   kutoka an object's :meth:`__del__` method or a weak reference's
    callback.
 
    When the program exits, each remaining live finalizer is called
@@ -349,8 +349,8 @@ Weak reference objects have no methods and no attributes besides
 :attr:`ref.__callback__`. A weak reference object allows the referent to be
 obtained, if it still exists, by calling it:
 
-   >>> import weakref
-   >>> class Object:
+   >>> agiza weakref
+   >>> kundi Object:
    ...     pass
    ...
    >>> o = Object()
@@ -390,13 +390,13 @@ the memory overhead for each entry in the mapping.  This may be most useful to
 associate additional information with a reference, but could also be used to
 insert additional processing on calls to retrieve the referent.
 
-This example shows how a subclass of :class:`ref` can be used to store
+This example shows how a subkundi of :class:`ref` can be used to store
 additional information about an object and affect the value that's returned when
 the referent is accessed::
 
-   import weakref
+   agiza weakref
 
-   class ExtendedRef(weakref.ref):
+   kundi ExtendedRef(weakref.ref):
        def __init__(self, ob, callback=None, /, **annotations):
            super(ExtendedRef, self).__init__(ob, callback)
            self.__counter = 0
@@ -428,7 +428,7 @@ objects can still be retrieved by ID if they do.
 
 ::
 
-   import weakref
+   agiza weakref
 
    _id2obj_dict = weakref.WeakValueDictionary()
 
@@ -450,8 +450,8 @@ The main benefit of using :class:`finalize` is that it makes it simple
 to register a callback without needing to preserve the returned finalizer
 object.  For instance
 
-    >>> import weakref
-    >>> class Object:
+    >>> agiza weakref
+    >>> kundi Object:
     ...     pass
     ...
     >>> kenny = Object()
@@ -507,7 +507,7 @@ is still alive.  For instance
 Comparing finalizers with :meth:`__del__` methods
 -------------------------------------------------
 
-Suppose we want to create a class whose instances represent temporary
+Suppose we want to create a kundi whose instances represent temporary
 directories.  The directories should be deleted with their contents
 when the first of the following events occurs:
 
@@ -515,10 +515,10 @@ when the first of the following events occurs:
 * the object's :meth:`remove` method is called, or
 * the program exits.
 
-We might try to implement the class using a :meth:`__del__` method as
+We might try to implement the kundi using a :meth:`__del__` method as
 follows::
 
-    class TempDir:
+    kundi TempDir:
         def __init__(self):
             self.name = tempfile.mkdtemp()
 
@@ -535,7 +535,7 @@ follows::
             self.remove()
 
 Starting with Python 3.4, :meth:`__del__` methods no longer prevent
-reference cycles from being garbage collected, and module globals are
+reference cycles kutoka being garbage collected, and module globals are
 no longer forced to :const:`None` during :term:`interpreter shutdown`.
 So this code should work without any issues on CPython.
 
@@ -547,7 +547,7 @@ A more robust alternative can be to define a finalizer which only references
 the specific functions and objects that it needs, rather than having access
 to the full state of the object::
 
-    class TempDir:
+    kundi TempDir:
         def __init__(self):
             self.name = tempfile.mkdtemp()
             self._finalizer = weakref.finalize(self, shutil.rmtree, self.name)
@@ -567,9 +567,9 @@ The other advantage of weakref based finalizers is that they can be used to
 register finalizers for classes where the definition is controlled by a
 third party, such as running code when a module is unloaded::
 
-    import weakref, sys
+    agiza weakref, sys
     def unloading_module():
-        # implicit reference to the module globals from the function body
+        # implicit reference to the module globals kutoka the function body
     weakref.finalize(sys.modules[__name__], unloading_module)
 
 

@@ -12,39 +12,39 @@ agiza textwrap
 kutoka contextlib agiza ExitStack
 kutoka io agiza StringIO
 kutoka test agiza support
-# This little helper class is essential for testing pdb under doctest.
+# This little helper kundi is essential for testing pdb under doctest.
 kutoka test.test_doctest agiza _FakeInput
 kutoka unittest.mock agiza patch
 
 
-class PdbTestInput(object):
+kundi PdbTestInput(object):
     """Context manager that makes testing Pdb in doctests easier."""
 
-    def __init__(self, input):
+    eleza __init__(self, input):
         self.input = input
 
-    def __enter__(self):
+    eleza __enter__(self):
         self.real_stdin = sys.stdin
         sys.stdin = _FakeInput(self.input)
-        self.orig_trace = sys.gettrace() if hasattr(sys, 'gettrace') else None
+        self.orig_trace = sys.gettrace() ikiwa hasattr(sys, 'gettrace') else None
 
-    def __exit__(self, *exc):
+    eleza __exit__(self, *exc):
         sys.stdin = self.real_stdin
-        if self.orig_trace:
+        ikiwa self.orig_trace:
             sys.settrace(self.orig_trace)
 
 
-def test_pdb_displayhook():
+eleza test_pdb_displayhook():
     """This tests the custom displayhook for pdb.
 
-    >>> def test_function(foo, bar):
+    >>> eleza test_function(foo, bar):
     ...     agiza pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
     ...     pass
 
     >>> with PdbTestInput([
     ...     'foo',
     ...     'bar',
-    ...     'for i in range(5): print(i)',
+    ...     'for i in range(5): andika(i)',
     ...     'continue',
     ... ]):
     ...     test_function(1, None)
@@ -53,7 +53,7 @@ def test_pdb_displayhook():
     (Pdb) foo
     1
     (Pdb) bar
-    (Pdb) for i in range(5): print(i)
+    (Pdb) for i in range(5): andika(i)
     0
     1
     2
@@ -63,32 +63,32 @@ def test_pdb_displayhook():
     """
 
 
-def test_pdb_basic_commands():
+eleza test_pdb_basic_commands():
     """Test the basic commands of pdb.
 
-    >>> def test_function_2(foo, bar='default'):
-    ...     print(foo)
+    >>> eleza test_function_2(foo, bar='default'):
+    ...     andika(foo)
     ...     for i in range(5):
-    ...         print(i)
-    ...     print(bar)
+    ...         andika(i)
+    ...     andika(bar)
     ...     for i in range(10):
     ...         never_executed
-    ...     print('after for')
-    ...     print('...')
-    ...     return foo.upper()
+    ...     andika('after for')
+    ...     andika('...')
+    ...     rudisha foo.upper()
 
-    >>> def test_function3(arg=None, *, kwonly=None):
+    >>> eleza test_function3(arg=None, *, kwonly=None):
     ...     pass
 
-    >>> def test_function4(a, b, c, /):
+    >>> eleza test_function4(a, b, c, /):
     ...     pass
 
-    >>> def test_function():
+    >>> eleza test_function():
     ...     agiza pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
     ...     ret = test_function_2('baz')
     ...     test_function3(kwonly=True)
     ...     test_function4(1, 2, 3)
-    ...     print(ret)
+    ...     andika(ret)
 
     >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...     'step',       # entering the function call
@@ -97,18 +97,18 @@ def test_pdb_basic_commands():
     ...     'bt',         # display backtrace
     ...     'up',         # step up to test_function()
     ...     'down',       # step down to test_function_2() again
-    ...     'next',       # stepping to print(foo)
+    ...     'next',       # stepping to andika(foo)
     ...     'next',       # stepping to the for loop
     ...     'step',       # stepping into the for loop
     ...     'until',      # continuing until out of the for loop
-    ...     'next',       # executing the print(bar)
+    ...     'next',       # executing the andika(bar)
     ...     'jump 8',     # jump over second for loop
-    ...     'return',     # return out of function
-    ...     'retval',     # display return value
+    ...     'return',     # rudisha out of function
+    ...     'retval',     # display rudisha value
     ...     'next',       # step to test_function3()
     ...     'step',       # stepping into test_function3()
     ...     'args',       # display function args
-    ...     'return',     # return out of function
+    ...     'return',     # rudisha out of function
     ...     'next',       # step to test_function4()
     ...     'step',       # stepping to test_function4()
     ...     'args',       # display function args
@@ -120,21 +120,21 @@ def test_pdb_basic_commands():
     (Pdb) step
     --Call--
     > <doctest test.test_pdb.test_pdb_basic_commands[0]>(1)test_function_2()
-    -> def test_function_2(foo, bar='default'):
+    -> eleza test_function_2(foo, bar='default'):
     (Pdb) args
     foo = 'baz'
     bar = 'default'
     (Pdb) list
-      1  ->     def test_function_2(foo, bar='default'):
-      2             print(foo)
+      1  ->     eleza test_function_2(foo, bar='default'):
+      2             andika(foo)
       3             for i in range(5):
-      4                 print(i)
-      5             print(bar)
+      4                 andika(i)
+      5             andika(bar)
       6             for i in range(10):
       7                 never_executed
-      8             print('after for')
-      9             print('...')
-     10             return foo.upper()
+      8             andika('after for')
+      9             andika('...')
+     10             rudisha foo.upper()
     [EOF]
     (Pdb) bt
     ...
@@ -143,23 +143,23 @@ def test_pdb_basic_commands():
       <doctest test.test_pdb.test_pdb_basic_commands[3]>(3)test_function()
     -> ret = test_function_2('baz')
     > <doctest test.test_pdb.test_pdb_basic_commands[0]>(1)test_function_2()
-    -> def test_function_2(foo, bar='default'):
+    -> eleza test_function_2(foo, bar='default'):
     (Pdb) up
     > <doctest test.test_pdb.test_pdb_basic_commands[3]>(3)test_function()
     -> ret = test_function_2('baz')
     (Pdb) down
     > <doctest test.test_pdb.test_pdb_basic_commands[0]>(1)test_function_2()
-    -> def test_function_2(foo, bar='default'):
+    -> eleza test_function_2(foo, bar='default'):
     (Pdb) next
     > <doctest test.test_pdb.test_pdb_basic_commands[0]>(2)test_function_2()
-    -> print(foo)
+    -> andika(foo)
     (Pdb) next
     baz
     > <doctest test.test_pdb.test_pdb_basic_commands[0]>(3)test_function_2()
     -> for i in range(5):
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_basic_commands[0]>(4)test_function_2()
-    -> print(i)
+    -> andika(i)
     (Pdb) until
     0
     1
@@ -167,20 +167,20 @@ def test_pdb_basic_commands():
     3
     4
     > <doctest test.test_pdb.test_pdb_basic_commands[0]>(5)test_function_2()
-    -> print(bar)
+    -> andika(bar)
     (Pdb) next
     default
     > <doctest test.test_pdb.test_pdb_basic_commands[0]>(6)test_function_2()
     -> for i in range(10):
     (Pdb) jump 8
     > <doctest test.test_pdb.test_pdb_basic_commands[0]>(8)test_function_2()
-    -> print('after for')
+    -> andika('after for')
     (Pdb) return
     after for
     ...
     --Return--
     > <doctest test.test_pdb.test_pdb_basic_commands[0]>(10)test_function_2()->'BAZ'
-    -> return foo.upper()
+    -> rudisha foo.upper()
     (Pdb) retval
     'BAZ'
     (Pdb) next
@@ -189,7 +189,7 @@ def test_pdb_basic_commands():
     (Pdb) step
     --Call--
     > <doctest test.test_pdb.test_pdb_basic_commands[1]>(1)test_function3()
-    -> def test_function3(arg=None, *, kwonly=None):
+    -> eleza test_function3(arg=None, *, kwonly=None):
     (Pdb) args
     arg = None
     kwonly = True
@@ -203,7 +203,7 @@ def test_pdb_basic_commands():
     (Pdb) step
     --Call--
     > <doctest test.test_pdb.test_pdb_basic_commands[2]>(1)test_function4()
-    -> def test_function4(a, b, c, /):
+    -> eleza test_function4(a, b, c, /):
     (Pdb) args
     a = 1
     b = 2
@@ -213,15 +213,15 @@ def test_pdb_basic_commands():
     """
 
 
-def test_pdb_breakpoint_commands():
+eleza test_pdb_breakpoint_commands():
     """Test basic commands related to breakpoints.
 
-    >>> def test_function():
+    >>> eleza test_function():
     ...     agiza pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
-    ...     print(1)
-    ...     print(2)
-    ...     print(3)
-    ...     print(4)
+    ...     andika(1)
+    ...     andika(2)
+    ...     andika(3)
+    ...     andika(4)
 
     First, need to clear bdb state that might be left over kutoka previous tests.
     Otherwise, the new breakpoints might get assigned different numbers.
@@ -250,7 +250,7 @@ def test_pdb_breakpoint_commands():
     ...     'clear 1',
     ...     'commands 2',
     ...     'p "42"',
-    ...     'print("42", 7*6)',     # Issue 18764 (not about breakpoints)
+    ...     'andika("42", 7*6)',     # Issue 18764 (not about breakpoints)
     ...     'end',
     ...     'continue',  # will stop at breakpoint 2 (line 4)
     ...     'clear',     # clear all!
@@ -262,7 +262,7 @@ def test_pdb_breakpoint_commands():
     ... ]):
     ...    test_function()
     > <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>(3)test_function()
-    -> print(1)
+    -> andika(1)
     (Pdb) break 3
     Breakpoint 1 at <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>:3
     (Pdb) disable 1
@@ -278,7 +278,7 @@ def test_pdb_breakpoint_commands():
     (Pdb) break
     Num Type         Disp Enb   Where
     1   breakpoint   keep no    at <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>:3
-            stop only if 1 < 2
+            stop only ikiwa 1 < 2
             ignore next 10 hits
     2   breakpoint   keep yes   at <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>:4
     3   breakpoint   keep yes   at <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>:4
@@ -287,7 +287,7 @@ def test_pdb_breakpoint_commands():
     (Pdb) break
     Num Type         Disp Enb   Where
     1   breakpoint   keep no    at <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>:3
-            stop only if 1 < 2
+            stop only ikiwa 1 < 2
             ignore next 10 hits
     2   breakpoint   keep yes   at <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>:4
     (Pdb) condition 1
@@ -298,14 +298,14 @@ def test_pdb_breakpoint_commands():
     Deleted breakpoint 1 at <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>:3
     (Pdb) commands 2
     (com) p "42"
-    (com) print("42", 7*6)
+    (com) andika("42", 7*6)
     (com) end
     (Pdb) continue
     1
     '42'
     42 42
     > <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>(4)test_function()
-    -> print(2)
+    -> andika(2)
     (Pdb) clear
     Clear all breaks? y
     Deleted breakpoint 2 at <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>:4
@@ -315,7 +315,7 @@ def test_pdb_breakpoint_commands():
     2
     Deleted breakpoint 4 at <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>:5
     > <doctest test.test_pdb.test_pdb_breakpoint_commands[0]>(5)test_function()
-    -> print(3)
+    -> andika(3)
     (Pdb) break
     (Pdb) continue
     3
@@ -323,16 +323,16 @@ def test_pdb_breakpoint_commands():
     """
 
 
-def do_nothing():
+eleza do_nothing():
     pass
 
-def do_something():
-    print(42)
+eleza do_something():
+    andika(42)
 
-def test_list_commands():
+eleza test_list_commands():
     """Test the list and source commands of pdb.
 
-    >>> def test_function_2(foo):
+    >>> eleza test_function_2(foo):
     ...     agiza test.test_pdb
     ...     test.test_pdb.do_nothing()
     ...     'some...'
@@ -346,9 +346,9 @@ def test_list_commands():
     ...     'useful...'
     ...     '...'
     ...     '...'
-    ...     return foo
+    ...     rudisha foo
 
-    >>> def test_function():
+    >>> eleza test_function():
     ...     agiza pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
     ...     ret = test_function_2('baz')
 
@@ -371,16 +371,16 @@ def test_list_commands():
     > <doctest test.test_pdb.test_list_commands[1]>(3)test_function()
     -> ret = test_function_2('baz')
     (Pdb) list
-      1         def test_function():
+      1         eleza test_function():
       2             agiza pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
       3  ->         ret = test_function_2('baz')
     [EOF]
     (Pdb) step
     --Call--
     > <doctest test.test_pdb.test_list_commands[0]>(1)test_function_2()
-    -> def test_function_2(foo):
+    -> eleza test_function_2(foo):
     (Pdb) list
-      1  ->     def test_function_2(foo):
+      1  ->     eleza test_function_2(foo):
       2             agiza test.test_pdb
       3             test.test_pdb.do_nothing()
       4             'some...'
@@ -395,10 +395,10 @@ def test_list_commands():
      12             'useful...'
      13             '...'
      14             '...'
-     15             return foo
+     15             rudisha foo
     [EOF]
     (Pdb) list 1,3
-      1  ->     def test_function_2(foo):
+      1  ->     eleza test_function_2(foo):
       2             agiza test.test_pdb
       3             test.test_pdb.do_nothing()
     (Pdb) list x
@@ -412,32 +412,32 @@ def test_list_commands():
     (Pdb) step
     --Call--
     > ...test_pdb.py(...)do_nothing()
-    -> def do_nothing():
+    -> eleza do_nothing():
     (Pdb) longlist
-    ...  ->     def do_nothing():
+    ...  ->     eleza do_nothing():
     ...             pass
     (Pdb) source do_something
-    ...         def do_something():
-    ...             print(42)
+    ...         eleza do_something():
+    ...             andika(42)
     (Pdb) source fooxxx
     *** ...
     (Pdb) continue
     """
 
 
-def test_post_mortem():
+eleza test_post_mortem():
     """Test post mortem traceback debugging.
 
-    >>> def test_function_2():
+    >>> eleza test_function_2():
     ...     try:
     ...         1/0
     ...     finally:
-    ...         print('Exception!')
+    ...         andika('Exception!')
 
-    >>> def test_function():
+    >>> eleza test_function():
     ...     agiza pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
     ...     test_function_2()
-    ...     print('Not reached.')
+    ...     andika('Not reached.')
 
     >>> with PdbTestInput([  # doctest: +ELLIPSIS, +NORMALIZE_WHITESPACE
     ...     'next',      # step over exception-raising call
@@ -450,7 +450,7 @@ def test_post_mortem():
     ...    try:
     ...        test_function()
     ...    except ZeroDivisionError:
-    ...        print('Correctly reraised.')
+    ...        andika('Correctly reraised.')
     > <doctest test.test_pdb.test_post_mortem[1]>(3)test_function()
     -> test_function_2()
     (Pdb) next
@@ -467,30 +467,30 @@ def test_post_mortem():
       <doctest test.test_pdb.test_post_mortem[0]>(3)test_function_2()
     -> 1/0
     (Pdb) list
-      1         def test_function():
+      1         eleza test_function():
       2             agiza pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
       3  ->         test_function_2()
-      4             print('Not reached.')
+      4             andika('Not reached.')
     [EOF]
     (Pdb) down
     > <doctest test.test_pdb.test_post_mortem[0]>(3)test_function_2()
     -> 1/0
     (Pdb) list
-      1         def test_function_2():
+      1         eleza test_function_2():
       2             try:
       3  >>             1/0
       4             finally:
-      5  ->             print('Exception!')
+      5  ->             andika('Exception!')
     [EOF]
     (Pdb) continue
     Correctly reraised.
     """
 
 
-def test_pdb_skip_modules():
+eleza test_pdb_skip_modules():
     """This illustrates the simple case of module skipping.
 
-    >>> def skip_module():
+    >>> eleza skip_module():
     ...     agiza string
     ...     agiza pdb; pdb.Pdb(skip=['stri*'], nosigint=True, readrc=False).set_trace()
     ...     string.capwords('FOO')
@@ -512,15 +512,15 @@ def test_pdb_skip_modules():
 
 # Module for testing skipping of module that makes a callback
 mod = types.ModuleType('module_to_skip')
-exec('def foo_pony(callback): x = 1; callback(); return None', mod.__dict__)
+exec('eleza foo_pony(callback): x = 1; callback(); rudisha None', mod.__dict__)
 
 
-def test_pdb_skip_modules_with_callback():
+eleza test_pdb_skip_modules_with_callback():
     """This illustrates skipping of modules that call into other code.
 
-    >>> def skip_module():
-    ...     def callback():
-    ...         return None
+    >>> eleza skip_module():
+    ...     eleza callback():
+    ...         rudisha None
     ...     agiza pdb; pdb.Pdb(skip=['module_to_skip*'], nosigint=True, readrc=False).set_trace()
     ...     mod.foo_pony(callback)
 
@@ -539,14 +539,14 @@ def test_pdb_skip_modules_with_callback():
     (Pdb) step
     --Call--
     > <doctest test.test_pdb.test_pdb_skip_modules_with_callback[0]>(2)callback()
-    -> def callback():
+    -> eleza callback():
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_skip_modules_with_callback[0]>(3)callback()
-    -> return None
+    -> rudisha None
     (Pdb) step
     --Return--
     > <doctest test.test_pdb.test_pdb_skip_modules_with_callback[0]>(3)callback()->None
-    -> return None
+    -> rudisha None
     (Pdb) step
     --Return--
     > <doctest test.test_pdb.test_pdb_skip_modules_with_callback[0]>(5)skip_module()->None
@@ -558,17 +558,17 @@ def test_pdb_skip_modules_with_callback():
     """
 
 
-def test_pdb_continue_in_bottomframe():
+eleza test_pdb_continue_in_bottomframe():
     """Test that "continue" and "next" work properly in bottom frame (issue #5294).
 
-    >>> def test_function():
+    >>> eleza test_function():
     ...     agiza pdb, sys; inst = pdb.Pdb(nosigint=True, readrc=False)
     ...     inst.set_trace()
     ...     inst.botframe = sys._getframe()  # hackery to get the right botframe
-    ...     print(1)
-    ...     print(2)
-    ...     print(3)
-    ...     print(4)
+    ...     andika(1)
+    ...     andika(2)
+    ...     andika(3)
+    ...     andika(4)
 
     >>> with PdbTestInput([  # doctest: +ELLIPSIS
     ...     'next',
@@ -583,29 +583,29 @@ def test_pdb_continue_in_bottomframe():
     -> inst.botframe = sys._getframe()  # hackery to get the right botframe
     (Pdb) next
     > <doctest test.test_pdb.test_pdb_continue_in_bottomframe[0]>(5)test_function()
-    -> print(1)
+    -> andika(1)
     (Pdb) break 7
     Breakpoint ... at <doctest test.test_pdb.test_pdb_continue_in_bottomframe[0]>:7
     (Pdb) continue
     1
     2
     > <doctest test.test_pdb.test_pdb_continue_in_bottomframe[0]>(7)test_function()
-    -> print(3)
+    -> andika(3)
     (Pdb) next
     3
     > <doctest test.test_pdb.test_pdb_continue_in_bottomframe[0]>(8)test_function()
-    -> print(4)
+    -> andika(4)
     (Pdb) continue
     4
     """
 
 
-def pdb_invoke(method, arg):
+eleza pdb_invoke(method, arg):
     """Run pdb.method(arg)."""
     getattr(pdb.Pdb(nosigint=True, readrc=False), method)(arg)
 
 
-def test_pdb_run_with_incorrect_argument():
+eleza test_pdb_run_with_incorrect_argument():
     """Testing run and runeval with incorrect first argument.
 
     >>> pti = PdbTestInput(['continue',])
@@ -621,7 +621,7 @@ def test_pdb_run_with_incorrect_argument():
     """
 
 
-def test_pdb_run_with_code_object():
+eleza test_pdb_run_with_code_object():
     """Testing run and runeval with code object as a first argument.
 
     >>> with PdbTestInput(['step','x', 'continue']):  # doctest: +ELLIPSIS
@@ -643,14 +643,14 @@ def test_pdb_run_with_code_object():
     (Pdb) continue
     """
 
-def test_next_until_return_at_return_event():
-    """Test that pdb stops after a next/until/return issued at a return debug event.
+eleza test_next_until_return_at_return_event():
+    """Test that pdb stops after a next/until/rudisha issued at a rudisha debug event.
 
-    >>> def test_function_2():
+    >>> eleza test_function_2():
     ...     x = 1
     ...     x = 2
 
-    >>> def test_function():
+    >>> eleza test_function():
     ...     agiza pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
     ...     test_function_2()
     ...     test_function_2()
@@ -708,25 +708,25 @@ def test_next_until_return_at_return_event():
     (Pdb) continue
     """
 
-def test_pdb_next_command_for_generator():
+eleza test_pdb_next_command_for_generator():
     """Testing skip unwindng stack on yield for generators for "next" command
 
-    >>> def test_gen():
+    >>> eleza test_gen():
     ...     yield 0
-    ...     return 1
+    ...     rudisha 1
     ...     yield 2
 
-    >>> def test_function():
+    >>> eleza test_function():
     ...     agiza pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
     ...     it = test_gen()
     ...     try:
-    ...         if next(it) != 0:
+    ...         ikiwa next(it) != 0:
     ...             raise AssertionError
     ...         next(it)
     ...     except StopIteration as ex:
-    ...         if ex.value != 1:
+    ...         ikiwa ex.value != 1:
     ...             raise AssertionError
-    ...     print("finished")
+    ...     andika("finished")
 
     >>> with PdbTestInput(['step',
     ...                    'step',
@@ -744,21 +744,21 @@ def test_pdb_next_command_for_generator():
     -> try:
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_next_command_for_generator[1]>(5)test_function()
-    -> if next(it) != 0:
+    -> ikiwa next(it) != 0:
     (Pdb) step
     --Call--
     > <doctest test.test_pdb.test_pdb_next_command_for_generator[0]>(1)test_gen()
-    -> def test_gen():
+    -> eleza test_gen():
     (Pdb) next
     > <doctest test.test_pdb.test_pdb_next_command_for_generator[0]>(2)test_gen()
     -> yield 0
     (Pdb) next
     > <doctest test.test_pdb.test_pdb_next_command_for_generator[0]>(3)test_gen()
-    -> return 1
+    -> rudisha 1
     (Pdb) step
     --Return--
     > <doctest test.test_pdb.test_pdb_next_command_for_generator[0]>(3)test_gen()->1
-    -> return 1
+    -> rudisha 1
     (Pdb) step
     StopIteration: 1
     > <doctest test.test_pdb.test_pdb_next_command_for_generator[1]>(7)test_function()
@@ -767,26 +767,26 @@ def test_pdb_next_command_for_generator():
     finished
     """
 
-def test_pdb_next_command_for_coroutine():
+eleza test_pdb_next_command_for_coroutine():
     """Testing skip unwindng stack on yield for coroutines for "next" command
 
     >>> agiza asyncio
 
-    >>> async def test_coro():
+    >>> async eleza test_coro():
     ...     await asyncio.sleep(0)
     ...     await asyncio.sleep(0)
     ...     await asyncio.sleep(0)
 
-    >>> async def test_main():
+    >>> async eleza test_main():
     ...     agiza pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
     ...     await test_coro()
 
-    >>> def test_function():
+    >>> eleza test_function():
     ...     loop = asyncio.new_event_loop()
     ...     loop.run_until_complete(test_main())
     ...     loop.close()
     ...     asyncio.set_event_loop_policy(None)
-    ...     print("finished")
+    ...     andika("finished")
 
     >>> with PdbTestInput(['step',
     ...                    'step',
@@ -801,7 +801,7 @@ def test_pdb_next_command_for_coroutine():
     (Pdb) step
     --Call--
     > <doctest test.test_pdb.test_pdb_next_command_for_coroutine[1]>(1)test_coro()
-    -> async def test_coro():
+    -> async eleza test_coro():
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_next_command_for_coroutine[1]>(2)test_coro()
     -> await asyncio.sleep(0)
@@ -823,30 +823,30 @@ def test_pdb_next_command_for_coroutine():
     finished
     """
 
-def test_pdb_next_command_for_asyncgen():
+eleza test_pdb_next_command_for_asyncgen():
     """Testing skip unwindng stack on yield for coroutines for "next" command
 
     >>> agiza asyncio
 
-    >>> async def agen():
+    >>> async eleza agen():
     ...     yield 1
     ...     await asyncio.sleep(0)
     ...     yield 2
 
-    >>> async def test_coro():
+    >>> async eleza test_coro():
     ...     async for x in agen():
-    ...         print(x)
+    ...         andika(x)
 
-    >>> async def test_main():
+    >>> async eleza test_main():
     ...     agiza pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
     ...     await test_coro()
 
-    >>> def test_function():
+    >>> eleza test_function():
     ...     loop = asyncio.new_event_loop()
     ...     loop.run_until_complete(test_main())
     ...     loop.close()
     ...     asyncio.set_event_loop_policy(None)
-    ...     print("finished")
+    ...     andika("finished")
 
     >>> with PdbTestInput(['step',
     ...                    'step',
@@ -861,13 +861,13 @@ def test_pdb_next_command_for_asyncgen():
     (Pdb) step
     --Call--
     > <doctest test.test_pdb.test_pdb_next_command_for_asyncgen[2]>(1)test_coro()
-    -> async def test_coro():
+    -> async eleza test_coro():
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_next_command_for_asyncgen[2]>(2)test_coro()
     -> async for x in agen():
     (Pdb) next
     > <doctest test.test_pdb.test_pdb_next_command_for_asyncgen[2]>(3)test_coro()
-    -> print(x)
+    -> andika(x)
     (Pdb) next
     1
     > <doctest test.test_pdb.test_pdb_next_command_for_asyncgen[2]>(2)test_coro()
@@ -884,26 +884,26 @@ def test_pdb_next_command_for_asyncgen():
     finished
     """
 
-def test_pdb_return_command_for_generator():
+eleza test_pdb_return_command_for_generator():
     """Testing no unwindng stack on yield for generators
        for "return" command
 
-    >>> def test_gen():
+    >>> eleza test_gen():
     ...     yield 0
-    ...     return 1
+    ...     rudisha 1
     ...     yield 2
 
-    >>> def test_function():
+    >>> eleza test_function():
     ...     agiza pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
     ...     it = test_gen()
     ...     try:
-    ...         if next(it) != 0:
+    ...         ikiwa next(it) != 0:
     ...             raise AssertionError
     ...         next(it)
     ...     except StopIteration as ex:
-    ...         if ex.value != 1:
+    ...         ikiwa ex.value != 1:
     ...             raise AssertionError
-    ...     print("finished")
+    ...     andika("finished")
 
     >>> with PdbTestInput(['step',
     ...                    'step',
@@ -920,11 +920,11 @@ def test_pdb_return_command_for_generator():
     -> try:
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(5)test_function()
-    -> if next(it) != 0:
+    -> ikiwa next(it) != 0:
     (Pdb) step
     --Call--
     > <doctest test.test_pdb.test_pdb_return_command_for_generator[0]>(1)test_gen()
-    -> def test_gen():
+    -> eleza test_gen():
     (Pdb) return
     StopIteration: 1
     > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(7)test_function()
@@ -934,31 +934,31 @@ def test_pdb_return_command_for_generator():
     -> except StopIteration as ex:
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_return_command_for_generator[1]>(9)test_function()
-    -> if ex.value != 1:
+    -> ikiwa ex.value != 1:
     (Pdb) continue
     finished
     """
 
-def test_pdb_return_command_for_coroutine():
+eleza test_pdb_return_command_for_coroutine():
     """Testing no unwindng stack on yield for coroutines for "return" command
 
     >>> agiza asyncio
 
-    >>> async def test_coro():
+    >>> async eleza test_coro():
     ...     await asyncio.sleep(0)
     ...     await asyncio.sleep(0)
     ...     await asyncio.sleep(0)
 
-    >>> async def test_main():
+    >>> async eleza test_main():
     ...     agiza pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
     ...     await test_coro()
 
-    >>> def test_function():
+    >>> eleza test_function():
     ...     loop = asyncio.new_event_loop()
     ...     loop.run_until_complete(test_main())
     ...     loop.close()
     ...     asyncio.set_event_loop_policy(None)
-    ...     print("finished")
+    ...     andika("finished")
 
     >>> with PdbTestInput(['step',
     ...                    'step',
@@ -970,7 +970,7 @@ def test_pdb_return_command_for_coroutine():
     (Pdb) step
     --Call--
     > <doctest test.test_pdb.test_pdb_return_command_for_coroutine[1]>(1)test_coro()
-    -> async def test_coro():
+    -> async eleza test_coro():
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_return_command_for_coroutine[1]>(2)test_coro()
     -> await asyncio.sleep(0)
@@ -981,20 +981,20 @@ def test_pdb_return_command_for_coroutine():
     finished
     """
 
-def test_pdb_until_command_for_generator():
+eleza test_pdb_until_command_for_generator():
     """Testing no unwindng stack on yield for generators
-       for "until" command if target breakpoing is not reached
+       for "until" command ikiwa target breakpoing is not reached
 
-    >>> def test_gen():
+    >>> eleza test_gen():
     ...     yield 0
     ...     yield 1
     ...     yield 2
 
-    >>> def test_function():
+    >>> eleza test_function():
     ...     agiza pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
     ...     for i in test_gen():
-    ...         print(i)
-    ...     print("finished")
+    ...         andika(i)
+    ...     andika("finished")
 
     >>> with PdbTestInput(['step',
     ...                    'until 4',
@@ -1007,7 +1007,7 @@ def test_pdb_until_command_for_generator():
     (Pdb) step
     --Call--
     > <doctest test.test_pdb.test_pdb_until_command_for_generator[0]>(1)test_gen()
-    -> def test_gen():
+    -> eleza test_gen():
     (Pdb) until 4
     0
     1
@@ -1019,37 +1019,37 @@ def test_pdb_until_command_for_generator():
     -> yield 2
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_until_command_for_generator[1]>(4)test_function()
-    -> print(i)
+    -> andika(i)
     (Pdb) continue
     2
     finished
     """
 
-def test_pdb_until_command_for_coroutine():
+eleza test_pdb_until_command_for_coroutine():
     """Testing no unwindng stack for coroutines
-       for "until" command if target breakpoing is not reached
+       for "until" command ikiwa target breakpoing is not reached
 
     >>> agiza asyncio
 
-    >>> async def test_coro():
-    ...     print(0)
+    >>> async eleza test_coro():
+    ...     andika(0)
     ...     await asyncio.sleep(0)
-    ...     print(1)
+    ...     andika(1)
     ...     await asyncio.sleep(0)
-    ...     print(2)
+    ...     andika(2)
     ...     await asyncio.sleep(0)
-    ...     print(3)
+    ...     andika(3)
 
-    >>> async def test_main():
+    >>> async eleza test_main():
     ...     agiza pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
     ...     await test_coro()
 
-    >>> def test_function():
+    >>> eleza test_function():
     ...     loop = asyncio.new_event_loop()
     ...     loop.run_until_complete(test_main())
     ...     loop.close()
     ...     asyncio.set_event_loop_policy(None)
-    ...     print("finished")
+    ...     andika("finished")
 
     >>> with PdbTestInput(['step',
     ...                    'until 8',
@@ -1060,29 +1060,29 @@ def test_pdb_until_command_for_coroutine():
     (Pdb) step
     --Call--
     > <doctest test.test_pdb.test_pdb_until_command_for_coroutine[1]>(1)test_coro()
-    -> async def test_coro():
+    -> async eleza test_coro():
     (Pdb) until 8
     0
     1
     2
     > <doctest test.test_pdb.test_pdb_until_command_for_coroutine[1]>(8)test_coro()
-    -> print(3)
+    -> andika(3)
     (Pdb) continue
     3
     finished
     """
 
-def test_pdb_next_command_in_generator_for_loop():
+eleza test_pdb_next_command_in_generator_for_loop():
     """The next command on returning kutoka a generator controlled by a for loop.
 
-    >>> def test_gen():
+    >>> eleza test_gen():
     ...     yield 0
-    ...     return 1
+    ...     rudisha 1
 
-    >>> def test_function():
+    >>> eleza test_function():
     ...     agiza pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
     ...     for i in test_gen():
-    ...         print('value', i)
+    ...         andika('value', i)
     ...     x = 123
 
     >>> with PdbTestInput(['break test_gen',
@@ -1102,7 +1102,7 @@ def test_pdb_next_command_in_generator_for_loop():
     (Pdb) next
     value 0
     > <doctest test.test_pdb.test_pdb_next_command_in_generator_for_loop[0]>(3)test_gen()
-    -> return 1
+    -> rudisha 1
     (Pdb) next
     Internal StopIteration: 1
     > <doctest test.test_pdb.test_pdb_next_command_in_generator_for_loop[1]>(3)test_function()
@@ -1113,21 +1113,21 @@ def test_pdb_next_command_in_generator_for_loop():
     (Pdb) continue
     """
 
-def test_pdb_next_command_subiterator():
+eleza test_pdb_next_command_subiterator():
     """The next command in a generator with a subiterator.
 
-    >>> def test_subgenerator():
+    >>> eleza test_subgenerator():
     ...     yield 0
-    ...     return 1
+    ...     rudisha 1
 
-    >>> def test_gen():
+    >>> eleza test_gen():
     ...     x = yield kutoka test_subgenerator()
-    ...     return x
+    ...     rudisha x
 
-    >>> def test_function():
+    >>> eleza test_function():
     ...     agiza pdb; pdb.Pdb(nosigint=True, readrc=False).set_trace()
     ...     for i in test_gen():
-    ...         print('value', i)
+    ...         andika('value', i)
     ...     x = 123
 
     >>> with PdbTestInput(['step',
@@ -1142,14 +1142,14 @@ def test_pdb_next_command_subiterator():
     (Pdb) step
     --Call--
     > <doctest test.test_pdb.test_pdb_next_command_subiterator[1]>(1)test_gen()
-    -> def test_gen():
+    -> eleza test_gen():
     (Pdb) step
     > <doctest test.test_pdb.test_pdb_next_command_subiterator[1]>(2)test_gen()
     -> x = yield kutoka test_subgenerator()
     (Pdb) next
     value 0
     > <doctest test.test_pdb.test_pdb_next_command_subiterator[1]>(3)test_gen()
-    -> return x
+    -> rudisha x
     (Pdb) next
     Internal StopIteration: 1
     > <doctest test.test_pdb.test_pdb_next_command_subiterator[2]>(3)test_function()
@@ -1160,22 +1160,22 @@ def test_pdb_next_command_subiterator():
     (Pdb) continue
     """
 
-def test_pdb_issue_20766():
+eleza test_pdb_issue_20766():
     """Test for reference leaks when the SIGINT handler is set.
 
-    >>> def test_function():
+    >>> eleza test_function():
     ...     i = 1
     ...     while i <= 2:
     ...         sess = pdb.Pdb()
     ...         sess.set_trace(sys._getframe())
-    ...         print('pdb %d: %s' % (i, sess._previous_sigint_handler))
+    ...         andika('pdb %d: %s' % (i, sess._previous_sigint_handler))
     ...         i += 1
 
     >>> with PdbTestInput(['continue',
     ...                    'continue']):
     ...     test_function()
     > <doctest test.test_pdb.test_pdb_issue_20766[0]>(6)test_function()
-    -> print('pdb %d: %s' % (i, sess._previous_sigint_handler))
+    -> andika('pdb %d: %s' % (i, sess._previous_sigint_handler))
     (Pdb) continue
     pdb 1: <built-in function default_int_handler>
     > <doctest test.test_pdb.test_pdb_issue_20766[0]>(5)test_function()
@@ -1185,11 +1185,11 @@ def test_pdb_issue_20766():
     """
 
 
-class PdbTestCase(unittest.TestCase):
-    def tearDown(self):
+kundi PdbTestCase(unittest.TestCase):
+    eleza tearDown(self):
         support.unlink(support.TESTFN)
 
-    def _run_pdb(self, pdb_args, commands):
+    eleza _run_pdb(self, pdb_args, commands):
         self.addCleanup(support.rmtree, '__pycache__')
         cmd = [sys.executable, '-m', 'pdb'] + pdb_args
         with subprocess.Popen(
@@ -1201,17 +1201,17 @@ class PdbTestCase(unittest.TestCase):
             stdout, stderr = proc.communicate(str.encode(commands))
         stdout = stdout and bytes.decode(stdout)
         stderr = stderr and bytes.decode(stderr)
-        return stdout, stderr
+        rudisha stdout, stderr
 
-    def run_pdb_script(self, script, commands):
+    eleza run_pdb_script(self, script, commands):
         """Run 'script' lines with pdb and the pdb 'commands'."""
         filename = 'main.py'
         with open(filename, 'w') as f:
             f.write(textwrap.dedent(script))
         self.addCleanup(support.unlink, filename)
-        return self._run_pdb([filename], commands)
+        rudisha self._run_pdb([filename], commands)
 
-    def run_pdb_module(self, script, commands):
+    eleza run_pdb_module(self, script, commands):
         """Runs the script code as part of a module"""
         self.module_name = 't_main'
         support.rmtree(self.module_name)
@@ -1223,42 +1223,42 @@ class PdbTestCase(unittest.TestCase):
         with open(main_file, 'w') as f:
             f.write(textwrap.dedent(script))
         self.addCleanup(support.rmtree, self.module_name)
-        return self._run_pdb(['-m', self.module_name], commands)
+        rudisha self._run_pdb(['-m', self.module_name], commands)
 
-    def _assert_find_function(self, file_content, func_name, expected):
+    eleza _assert_find_function(self, file_content, func_name, expected):
         file_content = textwrap.dedent(file_content)
 
         with open(support.TESTFN, 'w') as f:
             f.write(file_content)
 
-        expected = None if not expected else (
+        expected = None ikiwa not expected else (
             expected[0], support.TESTFN, expected[1])
         self.assertEqual(
             expected, pdb.find_function(func_name, support.TESTFN))
 
-    def test_find_function_empty_file(self):
+    eleza test_find_function_empty_file(self):
         self._assert_find_function('', 'foo', None)
 
-    def test_find_function_found(self):
+    eleza test_find_function_found(self):
         self._assert_find_function(
             """\
-            def foo():
+            eleza foo():
                 pass
 
-            def bar():
+            eleza bar():
                 pass
 
-            def quux():
+            eleza quux():
                 pass
             """,
             'bar',
             ('bar', 4),
         )
 
-    def test_issue7964(self):
+    eleza test_issue7964(self):
         # open the file as binary so we can force \r\n newline
         with open(support.TESTFN, 'wb') as f:
-            f.write(b'print("testing my pdb")\r\n')
+            f.write(b'andika("testing my pdb")\r\n')
         cmd = [sys.executable, '-m', 'pdb', support.TESTFN]
         proc = subprocess.Popen(cmd,
             stdout=subprocess.PIPE,
@@ -1270,17 +1270,17 @@ class PdbTestCase(unittest.TestCase):
         self.assertNotIn(b'SyntaxError', stdout,
                          "Got a syntax error running test script under PDB")
 
-    def test_issue13183(self):
+    eleza test_issue13183(self):
         script = """
             kutoka bar agiza bar
 
-            def foo():
+            eleza foo():
                 bar()
 
-            def nope():
+            eleza nope():
                 pass
 
-            def foobar():
+            eleza foobar():
                 foo()
                 nope()
 
@@ -1295,7 +1295,7 @@ class PdbTestCase(unittest.TestCase):
             quit
         """
         bar = """
-            def bar():
+            eleza bar():
                 pass
         """
         with open('bar.py', 'w') as f:
@@ -1306,7 +1306,7 @@ class PdbTestCase(unittest.TestCase):
             any('main.py(5)foo()->None' in l for l in stdout.splitlines()),
             'Fail to step into the caller after a return')
 
-    def test_issue13120(self):
+    eleza test_issue13120(self):
         # Invoking "continue" on a non-main thread triggered an exception
         # inside signal.signal.
 
@@ -1315,7 +1315,7 @@ class PdbTestCase(unittest.TestCase):
                 agiza threading
                 agiza pdb
 
-                def start_pdb():
+                eleza start_pdb():
                     pdb.Pdb(readrc=False).set_trace()
                     x = 1
                     y = 1
@@ -1333,7 +1333,7 @@ class PdbTestCase(unittest.TestCase):
         self.assertNotIn('Error', stdout.decode(),
                          "Got an error running test script under PDB")
 
-    def test_issue36250(self):
+    eleza test_issue36250(self):
 
         with open(support.TESTFN, 'wb') as f:
             f.write(textwrap.dedent("""
@@ -1342,7 +1342,7 @@ class PdbTestCase(unittest.TestCase):
 
                 evt = threading.Event()
 
-                def start_pdb():
+                eleza start_pdb():
                     evt.wait()
                     pdb.Pdb(readrc=False).set_trace()
 
@@ -1362,9 +1362,9 @@ class PdbTestCase(unittest.TestCase):
         self.assertNotIn('Error', stdout.decode(),
                          "Got an error running test script under PDB")
 
-    def test_issue16180(self):
+    eleza test_issue16180(self):
         # A syntax error in the debuggee.
-        script = "def f: pass\n"
+        script = "eleza f: pass\n"
         commands = ''
         expected = "SyntaxError:"
         stdout, stderr = self.run_pdb_script(script, commands)
@@ -1374,11 +1374,11 @@ class PdbTestCase(unittest.TestCase):
             .format(expected, stdout))
 
 
-    def test_readrc_kwarg(self):
+    eleza test_readrc_kwarg(self):
         script = textwrap.dedent("""
             agiza pdb; pdb.Pdb(readrc=False).set_trace()
 
-            print('hello')
+            andika('hello')
         """)
 
         save_home = os.environ.pop('HOME', None)
@@ -1403,10 +1403,10 @@ class PdbTestCase(unittest.TestCase):
                                   stdout.decode())
 
         finally:
-            if save_home is not None:
+            ikiwa save_home is not None:
                 os.environ['HOME'] = save_home
 
-    def test_readrc_homedir(self):
+    eleza test_readrc_homedir(self):
         save_home = os.environ.pop("HOME", None)
         with support.temp_dir() as temp_dir, patch("os.path.expanduser"):
             rc_path = os.path.join(temp_dir, ".pdbrc")
@@ -1416,10 +1416,10 @@ class PdbTestCase(unittest.TestCase):
                     f.write("invalid")
                 self.assertEqual(pdb.Pdb().rcLines[0], "invalid")
             finally:
-                if save_home is not None:
+                ikiwa save_home is not None:
                     os.environ["HOME"] = save_home
 
-    def test_header(self):
+    eleza test_header(self):
         stdout = StringIO()
         header = 'Nobody expects... blah, blah, blah'
         with ExitStack() as resources:
@@ -1428,8 +1428,8 @@ class PdbTestCase(unittest.TestCase):
             pdb.set_trace(header=header)
         self.assertEqual(stdout.getvalue(), header + '\n')
 
-    def test_run_module(self):
-        script = """print("SUCCESS")"""
+    eleza test_run_module(self):
+        script = """andika("SUCCESS")"""
         commands = """
             continue
             quit
@@ -1437,10 +1437,10 @@ class PdbTestCase(unittest.TestCase):
         stdout, stderr = self.run_pdb_module(script, commands)
         self.assertTrue(any("SUCCESS" in l for l in stdout.splitlines()), stdout)
 
-    def test_module_is_run_as_main(self):
+    eleza test_module_is_run_as_main(self):
         script = """
-            if __name__ == '__main__':
-                print("SUCCESS")
+            ikiwa __name__ == '__main__':
+                andika("SUCCESS")
         """
         commands = """
             continue
@@ -1449,11 +1449,11 @@ class PdbTestCase(unittest.TestCase):
         stdout, stderr = self.run_pdb_module(script, commands)
         self.assertTrue(any("SUCCESS" in l for l in stdout.splitlines()), stdout)
 
-    def test_breakpoint(self):
+    eleza test_breakpoint(self):
         script = """
-            if __name__ == '__main__':
+            ikiwa __name__ == '__main__':
                 pass
-                print("SUCCESS")
+                andika("SUCCESS")
                 pass
         """
         commands = """
@@ -1464,7 +1464,7 @@ class PdbTestCase(unittest.TestCase):
         self.assertTrue(any("Breakpoint 1 at" in l for l in stdout.splitlines()), stdout)
         self.assertTrue(all("SUCCESS" not in l for l in stdout.splitlines()), stdout)
 
-    def test_run_pdb_with_pdb(self):
+    eleza test_run_pdb_with_pdb(self):
         commands = """
             c
             quit
@@ -1475,7 +1475,7 @@ class PdbTestCase(unittest.TestCase):
             stdout.replace('\r', '')  # remove \r for windows
         )
 
-    def test_module_without_a_main(self):
+    eleza test_module_without_a_main(self):
         module_name = 't_main'
         support.rmtree(module_name)
         init_file = module_name + '/__init__.py'
@@ -1487,11 +1487,11 @@ class PdbTestCase(unittest.TestCase):
         self.assertIn("ImportError: No module named t_main.__main__",
                       stdout.splitlines())
 
-    def test_blocks_at_first_code_line(self):
+    eleza test_blocks_at_first_code_line(self):
         script = """
                 #This is a comment, on line 2
 
-                print("SUCCESS")
+                andika("SUCCESS")
         """
         commands = """
             quit
@@ -1500,7 +1500,7 @@ class PdbTestCase(unittest.TestCase):
         self.assertTrue(any("__main__.py(4)<module>()"
                             in l for l in stdout.splitlines()), stdout)
 
-    def test_relative_agizas(self):
+    eleza test_relative_agizas(self):
         self.module_name = 't_main'
         support.rmtree(self.module_name)
         main_file = self.module_name + '/__main__.py'
@@ -1537,7 +1537,7 @@ class PdbTestCase(unittest.TestCase):
         self.assertTrue(any("VAR kutoka top" in l for l in stdout.splitlines()))
         self.assertTrue(any("second var" in l for l in stdout.splitlines()))
 
-    def test_relative_agizas_on_plain_module(self):
+    eleza test_relative_agizas_on_plain_module(self):
         # Validates running a plain module. See bpo32691
         self.module_name = 't_main'
         support.rmtree(self.module_name)
@@ -1568,10 +1568,10 @@ class PdbTestCase(unittest.TestCase):
         stdout, _ = self._run_pdb(['-m', self.module_name + '.runme'], commands)
         self.assertTrue(any("VAR kutoka module" in l for l in stdout.splitlines()), stdout)
 
-    def test_errors_in_command(self):
+    eleza test_errors_in_command(self):
         commands = "\n".join([
-            'print(',
-            'debug print(',
+            'andika(',
+            'debug andika(',
             'debug doesnotexist',
             'c',
         ])
@@ -1591,14 +1591,14 @@ class PdbTestCase(unittest.TestCase):
             '(Pdb) ',
         ])
 
-def load_tests(*args):
+eleza load_tests(*args):
     kutoka test agiza test_pdb
     suites = [
         unittest.makeSuite(PdbTestCase),
         doctest.DocTestSuite(test_pdb)
     ]
-    return unittest.TestSuite(suites)
+    rudisha unittest.TestSuite(suites)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

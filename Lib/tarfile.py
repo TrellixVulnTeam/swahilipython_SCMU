@@ -59,7 +59,7 @@ except ImportError:
 # os.symlink on Windows prior to 6.0 raises NotImplementedError
 symlink_exception = (AttributeError, NotImplementedError)
 try:
-    # OSError (winerror=1314) will be raised if the caller does not hold the
+    # OSError (winerror=1314) will be raised ikiwa the caller does not hold the
     # SeCreateSymbolicLinkPrivilege privilege
     symlink_exception += (OSError,)
 except NameError:
@@ -146,7 +146,7 @@ PAX_NUMBER_FIELDS = {
 #---------------------------------------------------------
 # initialization
 #---------------------------------------------------------
-if os.name == "nt":
+ikiwa os.name == "nt":
     ENCODING = "utf-8"
 else:
     ENCODING = sys.getfilesystemencoding()
@@ -155,31 +155,31 @@ else:
 # Some useful functions
 #---------------------------------------------------------
 
-def stn(s, length, encoding, errors):
+eleza stn(s, length, encoding, errors):
     """Convert a string to a null-terminated bytes object.
     """
     s = s.encode(encoding, errors)
-    return s[:length] + (length - len(s)) * NUL
+    rudisha s[:length] + (length - len(s)) * NUL
 
-def nts(s, encoding, errors):
+eleza nts(s, encoding, errors):
     """Convert a null-terminated bytes object to a string.
     """
     p = s.find(b"\0")
-    if p != -1:
+    ikiwa p != -1:
         s = s[:p]
-    return s.decode(encoding, errors)
+    rudisha s.decode(encoding, errors)
 
-def nti(s):
+eleza nti(s):
     """Convert a number field to a python number.
     """
     # There are two possible encodings for a number field, see
     # itn() below.
-    if s[0] in (0o200, 0o377):
+    ikiwa s[0] in (0o200, 0o377):
         n = 0
         for i in range(len(s) - 1):
             n <<= 8
             n += s[i + 1]
-        if s[0] == 0o377:
+        ikiwa s[0] == 0o377:
             n = -(256 ** (len(s) - 1) - n)
     else:
         try:
@@ -187,24 +187,24 @@ def nti(s):
             n = int(s.strip() or "0", 8)
         except ValueError:
             raise InvalidHeaderError("invalid header")
-    return n
+    rudisha n
 
-def itn(n, digits=8, format=DEFAULT_FORMAT):
+eleza itn(n, digits=8, format=DEFAULT_FORMAT):
     """Convert a python number to a number field.
     """
     # POSIX 1003.1-1988 requires numbers to be encoded as a string of
     # octal digits followed by a null-byte, this allows values up to
     # (8**(digits-1))-1. GNU tar allows storing numbers greater than
-    # that if necessary. A leading 0o200 or 0o377 byte indicate this
+    # that ikiwa necessary. A leading 0o200 or 0o377 byte indicate this
     # particular encoding, the following digits-1 bytes are a big-endian
     # base-256 representation. This allows values up to (256**(digits-1))-1.
     # A 0o200 byte indicates a positive number, a 0o377 byte a negative
     # number.
     n = int(n)
-    if 0 <= n < 8 ** (digits - 1):
+    ikiwa 0 <= n < 8 ** (digits - 1):
         s = bytes("%0*o" % (digits - 1, n), "ascii") + NUL
-    elif format == GNU_FORMAT and -256 ** (digits - 1) <= n < 256 ** (digits - 1):
-        if n >= 0:
+    elikiwa format == GNU_FORMAT and -256 ** (digits - 1) <= n < 256 ** (digits - 1):
+        ikiwa n >= 0:
             s = bytearray([0o200])
         else:
             s = bytearray([0o377])
@@ -216,115 +216,115 @@ def itn(n, digits=8, format=DEFAULT_FORMAT):
     else:
         raise ValueError("overflow in number field")
 
-    return s
+    rudisha s
 
-def calc_chksums(buf):
+eleza calc_chksums(buf):
     """Calculate the checksum for a member's header by summing up all
        characters except for the chksum field which is treated as if
        it was filled with spaces. According to the GNU tar sources,
        some tars (Sun and NeXT) calculate chksum with signed char,
-       which will be different if there are chars in the buffer with
+       which will be different ikiwa there are chars in the buffer with
        the high bit set. So we calculate two checksums, unsigned and
        signed.
     """
-    unsigned_chksum = 256 + sum(struct.unpack_from("148B8x356B", buf))
-    signed_chksum = 256 + sum(struct.unpack_from("148b8x356b", buf))
-    return unsigned_chksum, signed_chksum
+    unsigned_chksum = 256 + sum(struct.unpack_kutoka("148B8x356B", buf))
+    signed_chksum = 256 + sum(struct.unpack_kutoka("148b8x356b", buf))
+    rudisha unsigned_chksum, signed_chksum
 
-def copyfileobj(src, dst, length=None, exception=OSError, bufsize=None):
+eleza copyfileobj(src, dst, length=None, exception=OSError, bufsize=None):
     """Copy length bytes kutoka fileobj src to fileobj dst.
        If length is None, copy the entire content.
     """
     bufsize = bufsize or 16 * 1024
-    if length == 0:
+    ikiwa length == 0:
         return
-    if length is None:
+    ikiwa length is None:
         shutil.copyfileobj(src, dst, bufsize)
         return
 
     blocks, remainder = divmod(length, bufsize)
     for b in range(blocks):
         buf = src.read(bufsize)
-        if len(buf) < bufsize:
+        ikiwa len(buf) < bufsize:
             raise exception("unexpected end of data")
         dst.write(buf)
 
-    if remainder != 0:
+    ikiwa remainder != 0:
         buf = src.read(remainder)
-        if len(buf) < remainder:
+        ikiwa len(buf) < remainder:
             raise exception("unexpected end of data")
         dst.write(buf)
     return
 
-def _safe_print(s):
+eleza _safe_andika(s):
     encoding = getattr(sys.stdout, 'encoding', None)
-    if encoding is not None:
+    ikiwa encoding is not None:
         s = s.encode(encoding, 'backslashreplace').decode(encoding)
-    print(s, end=' ')
+    andika(s, end=' ')
 
 
-class TarError(Exception):
+kundi TarError(Exception):
     """Base exception."""
     pass
-class ExtractError(TarError):
+kundi ExtractError(TarError):
     """General exception for extract errors."""
     pass
-class ReadError(TarError):
+kundi ReadError(TarError):
     """Exception for unreadable tar archives."""
     pass
-class CompressionError(TarError):
+kundi CompressionError(TarError):
     """Exception for unavailable compression methods."""
     pass
-class StreamError(TarError):
+kundi StreamError(TarError):
     """Exception for unsupported operations on stream-like TarFiles."""
     pass
-class HeaderError(TarError):
+kundi HeaderError(TarError):
     """Base exception for header errors."""
     pass
-class EmptyHeaderError(HeaderError):
+kundi EmptyHeaderError(HeaderError):
     """Exception for empty headers."""
     pass
-class TruncatedHeaderError(HeaderError):
+kundi TruncatedHeaderError(HeaderError):
     """Exception for truncated headers."""
     pass
-class EOFHeaderError(HeaderError):
+kundi EOFHeaderError(HeaderError):
     """Exception for end of file headers."""
     pass
-class InvalidHeaderError(HeaderError):
+kundi InvalidHeaderError(HeaderError):
     """Exception for invalid headers."""
     pass
-class SubsequentHeaderError(HeaderError):
+kundi SubsequentHeaderError(HeaderError):
     """Exception for missing and invalid extended headers."""
     pass
 
 #---------------------------
 # internal stream interface
 #---------------------------
-class _LowLevelFile:
+kundi _LowLevelFile:
     """Low-level file object. Supports reading and writing.
        It is used instead of a regular file object for streaming
        access.
     """
 
-    def __init__(self, name, mode):
+    eleza __init__(self, name, mode):
         mode = {
             "r": os.O_RDONLY,
             "w": os.O_WRONLY | os.O_CREAT | os.O_TRUNC,
         }[mode]
-        if hasattr(os, "O_BINARY"):
+        ikiwa hasattr(os, "O_BINARY"):
             mode |= os.O_BINARY
         self.fd = os.open(name, mode, 0o666)
 
-    def close(self):
+    eleza close(self):
         os.close(self.fd)
 
-    def read(self, size):
-        return os.read(self.fd, size)
+    eleza read(self, size):
+        rudisha os.read(self.fd, size)
 
-    def write(self, s):
+    eleza write(self, s):
         os.write(self.fd, s)
 
-class _Stream:
+kundi _Stream:
     """Class that serves as an adapter between TarFile and
        a stream-like object.  The stream-like object only
        needs to have a read() or write() method and is accessed
@@ -335,15 +335,15 @@ class _Stream:
        _Stream is intended to be used only internally.
     """
 
-    def __init__(self, name, mode, comptype, fileobj, bufsize):
+    eleza __init__(self, name, mode, comptype, fileobj, bufsize):
         """Construct a _Stream object.
         """
         self._extfileobj = True
-        if fileobj is None:
+        ikiwa fileobj is None:
             fileobj = _LowLevelFile(name, mode)
             self._extfileobj = False
 
-        if comptype == '*':
+        ikiwa comptype == '*':
             # Enable transparent compression detection for the
             # stream interface
             fileobj = _StreamProxy(fileobj)
@@ -359,57 +359,57 @@ class _Stream:
         self.closed   = False
 
         try:
-            if comptype == "gz":
+            ikiwa comptype == "gz":
                 try:
                     agiza zlib
                 except ImportError:
                     raise CompressionError("zlib module is not available")
                 self.zlib = zlib
                 self.crc = zlib.crc32(b"")
-                if mode == "r":
+                ikiwa mode == "r":
                     self._init_read_gz()
                     self.exception = zlib.error
                 else:
                     self._init_write_gz()
 
-            elif comptype == "bz2":
+            elikiwa comptype == "bz2":
                 try:
                     agiza bz2
                 except ImportError:
                     raise CompressionError("bz2 module is not available")
-                if mode == "r":
+                ikiwa mode == "r":
                     self.dbuf = b""
                     self.cmp = bz2.BZ2Decompressor()
                     self.exception = OSError
                 else:
                     self.cmp = bz2.BZ2Compressor()
 
-            elif comptype == "xz":
+            elikiwa comptype == "xz":
                 try:
                     agiza lzma
                 except ImportError:
                     raise CompressionError("lzma module is not available")
-                if mode == "r":
+                ikiwa mode == "r":
                     self.dbuf = b""
                     self.cmp = lzma.LZMADecompressor()
                     self.exception = lzma.LZMAError
                 else:
                     self.cmp = lzma.LZMACompressor()
 
-            elif comptype != "tar":
+            elikiwa comptype != "tar":
                 raise CompressionError("unknown compression type %r" % comptype)
 
         except:
-            if not self._extfileobj:
+            ikiwa not self._extfileobj:
                 self.fileobj.close()
             self.closed = True
             raise
 
-    def __del__(self):
-        if hasattr(self, "closed") and not self.closed:
+    eleza __del__(self):
+        ikiwa hasattr(self, "closed") and not self.closed:
             self.close()
 
-    def _init_write_gz(self):
+    eleza _init_write_gz(self):
         """Initialize for writing with gzip compression.
         """
         self.cmp = self.zlib.compressobj(9, self.zlib.DEFLATED,
@@ -418,23 +418,23 @@ class _Stream:
                                             0)
         timestamp = struct.pack("<L", int(time.time()))
         self.__write(b"\037\213\010\010" + timestamp + b"\002\377")
-        if self.name.endswith(".gz"):
+        ikiwa self.name.endswith(".gz"):
             self.name = self.name[:-3]
         # RFC1952 says we must use ISO-8859-1 for the FNAME field.
         self.__write(self.name.encode("iso-8859-1", "replace") + NUL)
 
-    def write(self, s):
+    eleza write(self, s):
         """Write string s to the stream.
         """
-        if self.comptype == "gz":
+        ikiwa self.comptype == "gz":
             self.crc = self.zlib.crc32(s, self.crc)
         self.pos += len(s)
-        if self.comptype != "tar":
+        ikiwa self.comptype != "tar":
             s = self.cmp.compress(s)
         self.__write(s)
 
-    def __write(self, s):
-        """Write string s to the stream if a whole new block
+    eleza __write(self, s):
+        """Write string s to the stream ikiwa a whole new block
            is ready to be written.
         """
         self.buf += s
@@ -442,100 +442,100 @@ class _Stream:
             self.fileobj.write(self.buf[:self.bufsize])
             self.buf = self.buf[self.bufsize:]
 
-    def close(self):
+    eleza close(self):
         """Close the _Stream object. No operation should be
            done on it afterwards.
         """
-        if self.closed:
+        ikiwa self.closed:
             return
 
         self.closed = True
         try:
-            if self.mode == "w" and self.comptype != "tar":
+            ikiwa self.mode == "w" and self.comptype != "tar":
                 self.buf += self.cmp.flush()
 
-            if self.mode == "w" and self.buf:
+            ikiwa self.mode == "w" and self.buf:
                 self.fileobj.write(self.buf)
                 self.buf = b""
-                if self.comptype == "gz":
+                ikiwa self.comptype == "gz":
                     self.fileobj.write(struct.pack("<L", self.crc))
                     self.fileobj.write(struct.pack("<L", self.pos & 0xffffFFFF))
         finally:
-            if not self._extfileobj:
+            ikiwa not self._extfileobj:
                 self.fileobj.close()
 
-    def _init_read_gz(self):
+    eleza _init_read_gz(self):
         """Initialize for reading a gzip compressed fileobj.
         """
         self.cmp = self.zlib.decompressobj(-self.zlib.MAX_WBITS)
         self.dbuf = b""
 
         # taken kutoka gzip.GzipFile with some alterations
-        if self.__read(2) != b"\037\213":
+        ikiwa self.__read(2) != b"\037\213":
             raise ReadError("not a gzip file")
-        if self.__read(1) != b"\010":
+        ikiwa self.__read(1) != b"\010":
             raise CompressionError("unsupported compression method")
 
         flag = ord(self.__read(1))
         self.__read(6)
 
-        if flag & 4:
+        ikiwa flag & 4:
             xlen = ord(self.__read(1)) + 256 * ord(self.__read(1))
             self.read(xlen)
-        if flag & 8:
+        ikiwa flag & 8:
             while True:
                 s = self.__read(1)
-                if not s or s == NUL:
+                ikiwa not s or s == NUL:
                     break
-        if flag & 16:
+        ikiwa flag & 16:
             while True:
                 s = self.__read(1)
-                if not s or s == NUL:
+                ikiwa not s or s == NUL:
                     break
-        if flag & 2:
+        ikiwa flag & 2:
             self.__read(2)
 
-    def tell(self):
+    eleza tell(self):
         """Return the stream's file pointer position.
         """
-        return self.pos
+        rudisha self.pos
 
-    def seek(self, pos=0):
+    eleza seek(self, pos=0):
         """Set the stream's file pointer to pos. Negative seeking
            is forbidden.
         """
-        if pos - self.pos >= 0:
+        ikiwa pos - self.pos >= 0:
             blocks, remainder = divmod(pos - self.pos, self.bufsize)
             for i in range(blocks):
                 self.read(self.bufsize)
             self.read(remainder)
         else:
             raise StreamError("seeking backwards is not allowed")
-        return self.pos
+        rudisha self.pos
 
-    def read(self, size):
+    eleza read(self, size):
         """Return the next size number of bytes kutoka the stream."""
         assert size is not None
         buf = self._read(size)
         self.pos += len(buf)
-        return buf
+        rudisha buf
 
-    def _read(self, size):
+    eleza _read(self, size):
         """Return size bytes kutoka the stream.
         """
-        if self.comptype == "tar":
-            return self.__read(size)
+        ikiwa self.comptype == "tar":
+            rudisha self.__read(size)
 
         c = len(self.dbuf)
         t = [self.dbuf]
         while c < size:
             # Skip underlying buffer to avoid unaligned double buffering.
-            if self.buf:
+            ikiwa self.buf:
                 buf = self.buf
                 self.buf = b""
             else:
                 buf = self.fileobj.read(self.bufsize)
-                if not buf:
+                ikiwa not buf:
                     break
             try:
                 buf = self.cmp.decompress(buf)
@@ -545,9 +545,9 @@ class _Stream:
             c += len(buf)
         t = b"".join(t)
         self.dbuf = t[size:]
-        return t[:size]
+        rudisha t[:size]
 
-    def __read(self, size):
+    eleza __read(self, size):
         """Return size bytes kutoka stream. If internal buffer is empty,
            read another block kutoka the stream.
         """
@@ -555,52 +555,52 @@ class _Stream:
         t = [self.buf]
         while c < size:
             buf = self.fileobj.read(self.bufsize)
-            if not buf:
+            ikiwa not buf:
                 break
             t.append(buf)
             c += len(buf)
         t = b"".join(t)
         self.buf = t[size:]
-        return t[:size]
-# class _Stream
+        rudisha t[:size]
+# kundi _Stream
 
-class _StreamProxy(object):
-    """Small proxy class that enables transparent compression
+kundi _StreamProxy(object):
+    """Small proxy kundi that enables transparent compression
        detection for the Stream interface (mode 'r|*').
     """
 
-    def __init__(self, fileobj):
+    eleza __init__(self, fileobj):
         self.fileobj = fileobj
         self.buf = self.fileobj.read(BLOCKSIZE)
 
-    def read(self, size):
+    eleza read(self, size):
         self.read = self.fileobj.read
-        return self.buf
+        rudisha self.buf
 
-    def getcomptype(self):
-        if self.buf.startswith(b"\x1f\x8b\x08"):
-            return "gz"
-        elif self.buf[0:3] == b"BZh" and self.buf[4:10] == b"1AY&SY":
-            return "bz2"
-        elif self.buf.startswith((b"\x5d\x00\x00\x80", b"\xfd7zXZ")):
-            return "xz"
+    eleza getcomptype(self):
+        ikiwa self.buf.startswith(b"\x1f\x8b\x08"):
+            rudisha "gz"
+        elikiwa self.buf[0:3] == b"BZh" and self.buf[4:10] == b"1AY&SY":
+            rudisha "bz2"
+        elikiwa self.buf.startswith((b"\x5d\x00\x00\x80", b"\xfd7zXZ")):
+            rudisha "xz"
         else:
-            return "tar"
+            rudisha "tar"
 
-    def close(self):
+    eleza close(self):
         self.fileobj.close()
-# class StreamProxy
+# kundi StreamProxy
 
 #------------------------
 # Extraction file object
 #------------------------
-class _FileInFile(object):
+kundi _FileInFile(object):
     """A thin wrapper around an existing file object that
        provides a part of its data as an individual file
        object.
     """
 
-    def __init__(self, fileobj, offset, size, blockinfo=None):
+    eleza __init__(self, fileobj, offset, size, blockinfo=None):
         self.fileobj = fileobj
         self.offset = offset
         self.size = size
@@ -608,7 +608,7 @@ class _FileInFile(object):
         self.name = getattr(fileobj, "name", None)
         self.closed = False
 
-        if blockinfo is None:
+        ikiwa blockinfo is None:
             blockinfo = [(0, size)]
 
         # Construct a map with data and zero blocks.
@@ -617,51 +617,51 @@ class _FileInFile(object):
         lastpos = 0
         realpos = self.offset
         for offset, size in blockinfo:
-            if offset > lastpos:
+            ikiwa offset > lastpos:
                 self.map.append((False, lastpos, offset, None))
             self.map.append((True, offset, offset + size, realpos))
             realpos += size
             lastpos = offset + size
-        if lastpos < self.size:
+        ikiwa lastpos < self.size:
             self.map.append((False, lastpos, self.size, None))
 
-    def flush(self):
+    eleza flush(self):
         pass
 
-    def readable(self):
-        return True
+    eleza readable(self):
+        rudisha True
 
-    def writable(self):
-        return False
+    eleza writable(self):
+        rudisha False
 
-    def seekable(self):
-        return self.fileobj.seekable()
+    eleza seekable(self):
+        rudisha self.fileobj.seekable()
 
-    def tell(self):
+    eleza tell(self):
         """Return the current file position.
         """
-        return self.position
+        rudisha self.position
 
-    def seek(self, position, whence=io.SEEK_SET):
+    eleza seek(self, position, whence=io.SEEK_SET):
         """Seek to a position in the file.
         """
-        if whence == io.SEEK_SET:
+        ikiwa whence == io.SEEK_SET:
             self.position = min(max(position, 0), self.size)
-        elif whence == io.SEEK_CUR:
-            if position < 0:
+        elikiwa whence == io.SEEK_CUR:
+            ikiwa position < 0:
                 self.position = max(self.position + position, 0)
             else:
                 self.position = min(self.position + position, self.size)
-        elif whence == io.SEEK_END:
+        elikiwa whence == io.SEEK_END:
             self.position = max(min(self.size + position, self.size), 0)
         else:
             raise ValueError("Invalid argument")
-        return self.position
+        rudisha self.position
 
-    def read(self, size=None):
+    eleza read(self, size=None):
         """Read data kutoka the file.
         """
-        if size is None:
+        ikiwa size is None:
             size = self.size - self.position
         else:
             size = min(size, self.size - self.position)
@@ -670,47 +670,47 @@ class _FileInFile(object):
         while size > 0:
             while True:
                 data, start, stop, offset = self.map[self.map_index]
-                if start <= self.position < stop:
+                ikiwa start <= self.position < stop:
                     break
                 else:
                     self.map_index += 1
-                    if self.map_index == len(self.map):
+                    ikiwa self.map_index == len(self.map):
                         self.map_index = 0
             length = min(size, stop - self.position)
-            if data:
+            ikiwa data:
                 self.fileobj.seek(offset + (self.position - start))
                 b = self.fileobj.read(length)
-                if len(b) != length:
+                ikiwa len(b) != length:
                     raise ReadError("unexpected end of data")
                 buf += b
             else:
                 buf += NUL * length
             size -= length
             self.position += length
-        return buf
+        rudisha buf
 
-    def readinto(self, b):
+    eleza readinto(self, b):
         buf = self.read(len(b))
         b[:len(buf)] = buf
-        return len(buf)
+        rudisha len(buf)
 
-    def close(self):
+    eleza close(self):
         self.closed = True
-#class _FileInFile
+#kundi _FileInFile
 
-class ExFileObject(io.BufferedReader):
+kundi ExFileObject(io.BufferedReader):
 
-    def __init__(self, tarfile, tarinfo):
+    eleza __init__(self, tarfile, tarinfo):
         fileobj = _FileInFile(tarfile.fileobj, tarinfo.offset_data,
                 tarinfo.size, tarinfo.sparse)
         super().__init__(fileobj)
-#class ExFileObject
+#kundi ExFileObject
 
 #------------------
 # Exported Classes
 #------------------
-class TarInfo(object):
-    """Informational class which holds the details about an
+kundi TarInfo(object):
+    """Informational kundi which holds the details about an
        archive member given by a tar header block.
        TarInfo objects are returned by TarFile.getmember(),
        TarFile.getmembers() and TarFile.gettarinfo() and are
@@ -744,7 +744,7 @@ class TarInfo(object):
         _link_target = None,
         )
 
-    def __init__(self, name=""):
+    eleza __init__(self, name=""):
         """Construct a TarInfo object. name is the optional name
            of the member.
         """
@@ -769,27 +769,27 @@ class TarInfo(object):
         self.pax_headers = {}   # pax header information
 
     @property
-    def path(self):
+    eleza path(self):
         'In pax headers, "name" is called "path".'
-        return self.name
+        rudisha self.name
 
     @path.setter
-    def path(self, name):
+    eleza path(self, name):
         self.name = name
 
     @property
-    def linkpath(self):
+    eleza linkpath(self):
         'In pax headers, "linkname" is called "linkpath".'
-        return self.linkname
+        rudisha self.linkname
 
     @linkpath.setter
-    def linkpath(self, linkname):
+    eleza linkpath(self, linkname):
         self.linkname = linkname
 
-    def __repr__(self):
-        return "<%s %r at %#x>" % (self.__class__.__name__,self.name,id(self))
+    eleza __repr__(self):
+        rudisha "<%s %r at %#x>" % (self.__class__.__name__,self.name,id(self))
 
-    def get_info(self):
+    eleza get_info(self):
         """Return the TarInfo's attributes as a dictionary.
         """
         info = {
@@ -808,53 +808,53 @@ class TarInfo(object):
             "devminor": self.devminor
         }
 
-        if info["type"] == DIRTYPE and not info["name"].endswith("/"):
+        ikiwa info["type"] == DIRTYPE and not info["name"].endswith("/"):
             info["name"] += "/"
 
-        return info
+        rudisha info
 
-    def tobuf(self, format=DEFAULT_FORMAT, encoding=ENCODING, errors="surrogateescape"):
+    eleza tobuf(self, format=DEFAULT_FORMAT, encoding=ENCODING, errors="surrogateescape"):
         """Return a tar header as a string of 512 byte blocks.
         """
         info = self.get_info()
 
-        if format == USTAR_FORMAT:
-            return self.create_ustar_header(info, encoding, errors)
-        elif format == GNU_FORMAT:
-            return self.create_gnu_header(info, encoding, errors)
-        elif format == PAX_FORMAT:
-            return self.create_pax_header(info, encoding)
+        ikiwa format == USTAR_FORMAT:
+            rudisha self.create_ustar_header(info, encoding, errors)
+        elikiwa format == GNU_FORMAT:
+            rudisha self.create_gnu_header(info, encoding, errors)
+        elikiwa format == PAX_FORMAT:
+            rudisha self.create_pax_header(info, encoding)
         else:
             raise ValueError("invalid format")
 
-    def create_ustar_header(self, info, encoding, errors):
+    eleza create_ustar_header(self, info, encoding, errors):
         """Return the object as a ustar header block.
         """
         info["magic"] = POSIX_MAGIC
 
-        if len(info["linkname"].encode(encoding, errors)) > LENGTH_LINK:
+        ikiwa len(info["linkname"].encode(encoding, errors)) > LENGTH_LINK:
             raise ValueError("linkname is too long")
 
-        if len(info["name"].encode(encoding, errors)) > LENGTH_NAME:
+        ikiwa len(info["name"].encode(encoding, errors)) > LENGTH_NAME:
             info["prefix"], info["name"] = self._posix_split_name(info["name"], encoding, errors)
 
-        return self._create_header(info, USTAR_FORMAT, encoding, errors)
+        rudisha self._create_header(info, USTAR_FORMAT, encoding, errors)
 
-    def create_gnu_header(self, info, encoding, errors):
+    eleza create_gnu_header(self, info, encoding, errors):
         """Return the object as a GNU header block sequence.
         """
         info["magic"] = GNU_MAGIC
 
         buf = b""
-        if len(info["linkname"].encode(encoding, errors)) > LENGTH_LINK:
+        ikiwa len(info["linkname"].encode(encoding, errors)) > LENGTH_LINK:
             buf += self._create_gnu_long_header(info["linkname"], GNUTYPE_LONGLINK, encoding, errors)
 
-        if len(info["name"].encode(encoding, errors)) > LENGTH_NAME:
+        ikiwa len(info["name"].encode(encoding, errors)) > LENGTH_NAME:
             buf += self._create_gnu_long_header(info["name"], GNUTYPE_LONGNAME, encoding, errors)
 
-        return buf + self._create_header(info, GNU_FORMAT, encoding, errors)
+        rudisha buf + self._create_header(info, GNU_FORMAT, encoding, errors)
 
-    def create_pax_header(self, info, encoding):
+    eleza create_pax_header(self, info, encoding):
         """Return the object as a ustar header block. If it cannot be
            represented this way, prepend a pax extended header sequence
            with supplement information.
@@ -868,7 +868,7 @@ class TarInfo(object):
                 ("name", "path", LENGTH_NAME), ("linkname", "linkpath", LENGTH_LINK),
                 ("uname", "uname", 32), ("gname", "gname", 32)):
 
-            if hname in pax_headers:
+            ikiwa hname in pax_headers:
                 # The pax header has priority.
                 continue
 
@@ -879,37 +879,37 @@ class TarInfo(object):
                 pax_headers[hname] = info[name]
                 continue
 
-            if len(info[name]) > length:
+            ikiwa len(info[name]) > length:
                 pax_headers[hname] = info[name]
 
         # Test number fields for values that exceed the field limit or values
         # that like to be stored as float.
         for name, digits in (("uid", 8), ("gid", 8), ("size", 12), ("mtime", 12)):
-            if name in pax_headers:
+            ikiwa name in pax_headers:
                 # The pax header has priority. Avoid overflow.
                 info[name] = 0
                 continue
 
             val = info[name]
-            if not 0 <= val < 8 ** (digits - 1) or isinstance(val, float):
+            ikiwa not 0 <= val < 8 ** (digits - 1) or isinstance(val, float):
                 pax_headers[name] = str(val)
                 info[name] = 0
 
-        # Create a pax extended header if necessary.
-        if pax_headers:
+        # Create a pax extended header ikiwa necessary.
+        ikiwa pax_headers:
             buf = self._create_pax_generic_header(pax_headers, XHDTYPE, encoding)
         else:
             buf = b""
 
-        return buf + self._create_header(info, USTAR_FORMAT, "ascii", "replace")
+        rudisha buf + self._create_header(info, USTAR_FORMAT, "ascii", "replace")
 
     @classmethod
-    def create_pax_global_header(cls, pax_headers):
+    eleza create_pax_global_header(cls, pax_headers):
         """Return the object as a pax global header block sequence.
         """
-        return cls._create_pax_generic_header(pax_headers, XGLTYPE, "utf-8")
+        rudisha cls._create_pax_generic_header(pax_headers, XGLTYPE, "utf-8")
 
-    def _posix_split_name(self, name, encoding, errors):
+    eleza _posix_split_name(self, name, encoding, errors):
         """Split a name longer than 100 chars into a prefix
            and a name part.
         """
@@ -917,16 +917,16 @@ class TarInfo(object):
         for i in range(1, len(components)):
             prefix = "/".join(components[:i])
             name = "/".join(components[i:])
-            if len(prefix.encode(encoding, errors)) <= LENGTH_PREFIX and \
+            ikiwa len(prefix.encode(encoding, errors)) <= LENGTH_PREFIX and \
                     len(name.encode(encoding, errors)) <= LENGTH_NAME:
                 break
         else:
             raise ValueError("name is too long")
 
-        return prefix, name
+        rudisha prefix, name
 
     @staticmethod
-    def _create_header(info, format, encoding, errors):
+    eleza _create_header(info, format, encoding, errors):
         """Return a header block. info is a dictionary with file
            information, format must be one of the *_FORMAT constants.
         """
@@ -951,20 +951,20 @@ class TarInfo(object):
         buf = struct.pack("%ds" % BLOCKSIZE, b"".join(parts))
         chksum = calc_chksums(buf[-BLOCKSIZE:])[0]
         buf = buf[:-364] + bytes("%06o\0" % chksum, "ascii") + buf[-357:]
-        return buf
+        rudisha buf
 
     @staticmethod
-    def _create_payload(payload):
+    eleza _create_payload(payload):
         """Return the string payload filled with zero bytes
            up to the next 512 byte border.
         """
         blocks, remainder = divmod(len(payload), BLOCKSIZE)
-        if remainder > 0:
+        ikiwa remainder > 0:
             payload += (BLOCKSIZE - remainder) * NUL
-        return payload
+        rudisha payload
 
     @classmethod
-    def _create_gnu_long_header(cls, name, type, encoding, errors):
+    eleza _create_gnu_long_header(cls, name, type, encoding, errors):
         """Return a GNUTYPE_LONGNAME or GNUTYPE_LONGLINK sequence
            for name.
         """
@@ -977,16 +977,16 @@ class TarInfo(object):
         info["magic"] = GNU_MAGIC
 
         # create extended header + name blocks.
-        return cls._create_header(info, USTAR_FORMAT, encoding, errors) + \
+        rudisha cls._create_header(info, USTAR_FORMAT, encoding, errors) + \
                 cls._create_payload(name)
 
     @classmethod
-    def _create_pax_generic_header(cls, pax_headers, type, encoding):
+    eleza _create_pax_generic_header(cls, pax_headers, type, encoding):
         """Return a POSIX.1-2008 extended or global header sequence
            that contains a list of keyword, value pairs. The values
            must be strings.
         """
-        # Check if one of the fields contains surrogate characters and thereby
+        # Check ikiwa one of the fields contains surrogate characters and thereby
         # forces hdrcharset=BINARY, see _proc_pax() for more information.
         binary = False
         for keyword, value in pax_headers.items():
@@ -997,13 +997,13 @@ class TarInfo(object):
                 break
 
         records = b""
-        if binary:
+        ikiwa binary:
             # Put the hdrcharset field at the beginning of the header.
             records += b"21 hdrcharset=BINARY\n"
 
         for keyword, value in pax_headers.items():
             keyword = keyword.encode("utf-8")
-            if binary:
+            ikiwa binary:
                 # Try to restore the original byte representation of `value'.
                 # Needless to say, that the encoding must match the string.
                 value = value.encode(encoding, "surrogateescape")
@@ -1014,7 +1014,7 @@ class TarInfo(object):
             n = p = 0
             while True:
                 n = l + len(str(p))
-                if n == p:
+                ikiwa n == p:
                     break
                 p = n
             records += bytes(str(p), "ascii") + b" " + keyword + b"=" + value + b"\n"
@@ -1028,22 +1028,22 @@ class TarInfo(object):
         info["magic"] = POSIX_MAGIC
 
         # Create pax header + record blocks.
-        return cls._create_header(info, USTAR_FORMAT, "ascii", "replace") + \
+        rudisha cls._create_header(info, USTAR_FORMAT, "ascii", "replace") + \
                 cls._create_payload(records)
 
     @classmethod
-    def frombuf(cls, buf, encoding, errors):
+    eleza kutokabuf(cls, buf, encoding, errors):
         """Construct a TarInfo object kutoka a 512 byte bytes object.
         """
-        if len(buf) == 0:
+        ikiwa len(buf) == 0:
             raise EmptyHeaderError("empty header")
-        if len(buf) != BLOCKSIZE:
+        ikiwa len(buf) != BLOCKSIZE:
             raise TruncatedHeaderError("truncated header")
-        if buf.count(NUL) == BLOCKSIZE:
+        ikiwa buf.count(NUL) == BLOCKSIZE:
             raise EOFHeaderError("end of file header")
 
         chksum = nti(buf[148:156])
-        if chksum not in calc_chksums(buf):
+        ikiwa chksum not in calc_chksums(buf):
             raise InvalidHeaderError("bad checksum")
 
         obj = cls()
@@ -1064,13 +1064,13 @@ class TarInfo(object):
 
         # Old V7 tar format represents a directory as a regular
         # file with a trailing slash.
-        if obj.type == AREGTYPE and obj.name.endswith("/"):
+        ikiwa obj.type == AREGTYPE and obj.name.endswith("/"):
             obj.type = DIRTYPE
 
         # The old GNU sparse format occupies some of the unused
         # space in the buffer for up to 4 sparse structures.
         # Save them for later processing in _proc_sparse().
-        if obj.type == GNUTYPE_SPARSE:
+        ikiwa obj.type == GNUTYPE_SPARSE:
             pos = 386
             structs = []
             for i in range(4):
@@ -1086,55 +1086,55 @@ class TarInfo(object):
             obj._sparse_structs = (structs, isextended, origsize)
 
         # Remove redundant slashes kutoka directories.
-        if obj.isdir():
+        ikiwa obj.isdir():
             obj.name = obj.name.rstrip("/")
 
         # Reconstruct a ustar longname.
-        if prefix and obj.type not in GNU_TYPES:
+        ikiwa prefix and obj.type not in GNU_TYPES:
             obj.name = prefix + "/" + obj.name
-        return obj
+        rudisha obj
 
     @classmethod
-    def fromtarfile(cls, tarfile):
+    eleza kutokatarfile(cls, tarfile):
         """Return the next TarInfo object kutoka TarFile object
            tarfile.
         """
         buf = tarfile.fileobj.read(BLOCKSIZE)
-        obj = cls.frombuf(buf, tarfile.encoding, tarfile.errors)
+        obj = cls.kutokabuf(buf, tarfile.encoding, tarfile.errors)
         obj.offset = tarfile.fileobj.tell() - BLOCKSIZE
-        return obj._proc_member(tarfile)
+        rudisha obj._proc_member(tarfile)
 
     #--------------------------------------------------------------------------
     # The following are methods that are called depending on the type of a
     # member. The entry point is _proc_member() which can be overridden in a
-    # subclass to add custom _proc_*() methods. A _proc_*() method MUST
+    # subkundi to add custom _proc_*() methods. A _proc_*() method MUST
     # implement the following
     # operations:
     # 1. Set self.offset_data to the position where the data blocks begin,
-    #    if there is data that follows.
+    #    ikiwa there is data that follows.
     # 2. Set tarfile.offset to the position where the next member's header will
     #    begin.
     # 3. Return self or another valid TarInfo object.
-    def _proc_member(self, tarfile):
+    eleza _proc_member(self, tarfile):
         """Choose the right processing method depending on
            the type and call it.
         """
-        if self.type in (GNUTYPE_LONGNAME, GNUTYPE_LONGLINK):
-            return self._proc_gnulong(tarfile)
-        elif self.type == GNUTYPE_SPARSE:
-            return self._proc_sparse(tarfile)
-        elif self.type in (XHDTYPE, XGLTYPE, SOLARIS_XHDTYPE):
-            return self._proc_pax(tarfile)
+        ikiwa self.type in (GNUTYPE_LONGNAME, GNUTYPE_LONGLINK):
+            rudisha self._proc_gnulong(tarfile)
+        elikiwa self.type == GNUTYPE_SPARSE:
+            rudisha self._proc_sparse(tarfile)
+        elikiwa self.type in (XHDTYPE, XGLTYPE, SOLARIS_XHDTYPE):
+            rudisha self._proc_pax(tarfile)
         else:
-            return self._proc_builtin(tarfile)
+            rudisha self._proc_builtin(tarfile)
 
-    def _proc_builtin(self, tarfile):
+    eleza _proc_builtin(self, tarfile):
         """Process a builtin type or an unknown type which
            will be treated as a regular file.
         """
         self.offset_data = tarfile.fileobj.tell()
         offset = self.offset_data
-        if self.isreg() or self.type not in SUPPORTED_TYPES:
+        ikiwa self.isreg() or self.type not in SUPPORTED_TYPES:
             # Skip the following data blocks.
             offset += self._block(self.size)
         tarfile.offset = offset
@@ -1143,9 +1143,9 @@ class TarInfo(object):
         # header information.
         self._apply_pax_info(tarfile.pax_headers, tarfile.encoding, tarfile.errors)
 
-        return self
+        rudisha self
 
-    def _proc_gnulong(self, tarfile):
+    eleza _proc_gnulong(self, tarfile):
         """Process the blocks that hold a GNU longname
            or longlink member.
         """
@@ -1153,24 +1153,24 @@ class TarInfo(object):
 
         # Fetch the next header and process it.
         try:
-            next = self.fromtarfile(tarfile)
+            next = self.kutokatarfile(tarfile)
         except HeaderError:
             raise SubsequentHeaderError("missing or bad subsequent header")
 
         # Patch the TarInfo object kutoka the next header with
         # the longname information.
         next.offset = self.offset
-        if self.type == GNUTYPE_LONGNAME:
+        ikiwa self.type == GNUTYPE_LONGNAME:
             next.name = nts(buf, tarfile.encoding, tarfile.errors)
-        elif self.type == GNUTYPE_LONGLINK:
+        elikiwa self.type == GNUTYPE_LONGLINK:
             next.linkname = nts(buf, tarfile.encoding, tarfile.errors)
 
-        return next
+        rudisha next
 
-    def _proc_sparse(self, tarfile):
+    eleza _proc_sparse(self, tarfile):
         """Process a GNU sparse header plus extra headers.
         """
-        # We already collected some sparse structures in frombuf().
+        # We already collected some sparse structures in kutokabuf().
         structs, isextended, origsize = self._sparse_structs
         del self._sparse_structs
 
@@ -1184,7 +1184,7 @@ class TarInfo(object):
                     numbytes = nti(buf[pos + 12:pos + 24])
                 except ValueError:
                     break
-                if offset and numbytes:
+                ikiwa offset and numbytes:
                     structs.append((offset, numbytes))
                 pos += 24
             isextended = bool(buf[504])
@@ -1193,9 +1193,9 @@ class TarInfo(object):
         self.offset_data = tarfile.fileobj.tell()
         tarfile.offset = self.offset_data + self._block(self.size)
         self.size = origsize
-        return self
+        rudisha self
 
-    def _proc_pax(self, tarfile):
+    eleza _proc_pax(self, tarfile):
         """Process an extended or global header as described in
            POSIX.1-2008.
         """
@@ -1205,25 +1205,25 @@ class TarInfo(object):
         # A pax header stores supplemental information for either
         # the following file (extended) or all following files
         # (global).
-        if self.type == XGLTYPE:
+        ikiwa self.type == XGLTYPE:
             pax_headers = tarfile.pax_headers
         else:
             pax_headers = tarfile.pax_headers.copy()
 
-        # Check if the pax header contains a hdrcharset field. This tells us
+        # Check ikiwa the pax header contains a hdrcharset field. This tells us
         # the encoding of the path, linkpath, uname and gname fields. Normally,
         # these fields are UTF-8 encoded but since POSIX.1-2008 tar
         # implementations are allowed to store them as raw binary strings if
         # the translation to UTF-8 fails.
         match = re.search(br"\d+ hdrcharset=([^\n]+)\n", buf)
-        if match is not None:
+        ikiwa match is not None:
             pax_headers["hdrcharset"] = match.group(1).decode("utf-8")
 
         # For the time being, we don't care about anything other than "BINARY".
         # The only other value that is currently allowed by the standard is
         # "ISO-IR 10646 2000 UTF-8" in other words UTF-8.
         hdrcharset = pax_headers.get("hdrcharset")
-        if hdrcharset == "BINARY":
+        ikiwa hdrcharset == "BINARY":
             encoding = tarfile.encoding
         else:
             encoding = "utf-8"
@@ -1236,7 +1236,7 @@ class TarInfo(object):
         pos = 0
         while True:
             match = regex.match(buf, pos)
-            if not match:
+            ikiwa not match:
                 break
 
             length, keyword = match.groups()
@@ -1248,11 +1248,11 @@ class TarInfo(object):
             # example, GNU tar <= 1.23 is known to store filenames it cannot
             # translate to UTF-8 as raw strings (unfortunately without a
             # hdrcharset=BINARY header).
-            # We first try the strict standard encoding, and if that fails we
+            # We first try the strict standard encoding, and ikiwa that fails we
             # fall back on the user's encoding and error handler.
             keyword = self._decode_pax_field(keyword, "utf-8", "utf-8",
                     tarfile.errors)
-            if keyword in PAX_NAME_FIELDS:
+            ikiwa keyword in PAX_NAME_FIELDS:
                 value = self._decode_pax_field(value, encoding, tarfile.encoding,
                         tarfile.errors)
             else:
@@ -1264,40 +1264,40 @@ class TarInfo(object):
 
         # Fetch the next header.
         try:
-            next = self.fromtarfile(tarfile)
+            next = self.kutokatarfile(tarfile)
         except HeaderError:
             raise SubsequentHeaderError("missing or bad subsequent header")
 
         # Process GNU sparse information.
-        if "GNU.sparse.map" in pax_headers:
+        ikiwa "GNU.sparse.map" in pax_headers:
             # GNU extended sparse format version 0.1.
             self._proc_gnusparse_01(next, pax_headers)
 
-        elif "GNU.sparse.size" in pax_headers:
+        elikiwa "GNU.sparse.size" in pax_headers:
             # GNU extended sparse format version 0.0.
             self._proc_gnusparse_00(next, pax_headers, buf)
 
-        elif pax_headers.get("GNU.sparse.major") == "1" and pax_headers.get("GNU.sparse.minor") == "0":
+        elikiwa pax_headers.get("GNU.sparse.major") == "1" and pax_headers.get("GNU.sparse.minor") == "0":
             # GNU extended sparse format version 1.0.
             self._proc_gnusparse_10(next, pax_headers, tarfile)
 
-        if self.type in (XHDTYPE, SOLARIS_XHDTYPE):
+        ikiwa self.type in (XHDTYPE, SOLARIS_XHDTYPE):
             # Patch the TarInfo object with the extended header info.
             next._apply_pax_info(pax_headers, tarfile.encoding, tarfile.errors)
             next.offset = self.offset
 
-            if "size" in pax_headers:
+            ikiwa "size" in pax_headers:
                 # If the extended header replaces the size field,
                 # we need to recalculate the offset where the next
                 # header starts.
                 offset = next.offset_data
-                if next.isreg() or next.type not in SUPPORTED_TYPES:
+                ikiwa next.isreg() or next.type not in SUPPORTED_TYPES:
                     offset += next._block(next.size)
                 tarfile.offset = offset
 
-        return next
+        rudisha next
 
-    def _proc_gnusparse_00(self, next, pax_headers, buf):
+    eleza _proc_gnusparse_00(self, next, pax_headers, buf):
         """Process a GNU tar extended sparse header, version 0.0.
         """
         offsets = []
@@ -1308,13 +1308,13 @@ class TarInfo(object):
             numbytes.append(int(match.group(1)))
         next.sparse = list(zip(offsets, numbytes))
 
-    def _proc_gnusparse_01(self, next, pax_headers):
+    eleza _proc_gnusparse_01(self, next, pax_headers):
         """Process a GNU tar extended sparse header, version 0.1.
         """
         sparse = [int(x) for x in pax_headers["GNU.sparse.map"].split(",")]
         next.sparse = list(zip(sparse[::2], sparse[1::2]))
 
-    def _proc_gnusparse_10(self, next, pax_headers, tarfile):
+    eleza _proc_gnusparse_10(self, next, pax_headers, tarfile):
         """Process a GNU tar extended sparse header, version 1.0.
         """
         fields = None
@@ -1323,94 +1323,94 @@ class TarInfo(object):
         fields, buf = buf.split(b"\n", 1)
         fields = int(fields)
         while len(sparse) < fields * 2:
-            if b"\n" not in buf:
+            ikiwa b"\n" not in buf:
                 buf += tarfile.fileobj.read(BLOCKSIZE)
             number, buf = buf.split(b"\n", 1)
             sparse.append(int(number))
         next.offset_data = tarfile.fileobj.tell()
         next.sparse = list(zip(sparse[::2], sparse[1::2]))
 
-    def _apply_pax_info(self, pax_headers, encoding, errors):
+    eleza _apply_pax_info(self, pax_headers, encoding, errors):
         """Replace fields with supplemental information kutoka a previous
            pax extended or global header.
         """
         for keyword, value in pax_headers.items():
-            if keyword == "GNU.sparse.name":
+            ikiwa keyword == "GNU.sparse.name":
                 setattr(self, "path", value)
-            elif keyword == "GNU.sparse.size":
+            elikiwa keyword == "GNU.sparse.size":
                 setattr(self, "size", int(value))
-            elif keyword == "GNU.sparse.realsize":
+            elikiwa keyword == "GNU.sparse.realsize":
                 setattr(self, "size", int(value))
-            elif keyword in PAX_FIELDS:
-                if keyword in PAX_NUMBER_FIELDS:
+            elikiwa keyword in PAX_FIELDS:
+                ikiwa keyword in PAX_NUMBER_FIELDS:
                     try:
                         value = PAX_NUMBER_FIELDS[keyword](value)
                     except ValueError:
                         value = 0
-                if keyword == "path":
+                ikiwa keyword == "path":
                     value = value.rstrip("/")
                 setattr(self, keyword, value)
 
         self.pax_headers = pax_headers.copy()
 
-    def _decode_pax_field(self, value, encoding, fallback_encoding, fallback_errors):
+    eleza _decode_pax_field(self, value, encoding, fallback_encoding, fallback_errors):
         """Decode a single field kutoka a pax record.
         """
         try:
-            return value.decode(encoding, "strict")
+            rudisha value.decode(encoding, "strict")
         except UnicodeDecodeError:
-            return value.decode(fallback_encoding, fallback_errors)
+            rudisha value.decode(fallback_encoding, fallback_errors)
 
-    def _block(self, count):
-        """Round up a byte count by BLOCKSIZE and return it,
+    eleza _block(self, count):
+        """Round up a byte count by BLOCKSIZE and rudisha it,
            e.g. _block(834) => 1024.
         """
         blocks, remainder = divmod(count, BLOCKSIZE)
-        if remainder:
+        ikiwa remainder:
             blocks += 1
-        return blocks * BLOCKSIZE
+        rudisha blocks * BLOCKSIZE
 
-    def isreg(self):
-        'Return True if the Tarinfo object is a regular file.'
-        return self.type in REGULAR_TYPES
+    eleza isreg(self):
+        'Return True ikiwa the Tarinfo object is a regular file.'
+        rudisha self.type in REGULAR_TYPES
 
-    def isfile(self):
-        'Return True if the Tarinfo object is a regular file.'
-        return self.isreg()
+    eleza isfile(self):
+        'Return True ikiwa the Tarinfo object is a regular file.'
+        rudisha self.isreg()
 
-    def isdir(self):
-        'Return True if it is a directory.'
-        return self.type == DIRTYPE
+    eleza isdir(self):
+        'Return True ikiwa it is a directory.'
+        rudisha self.type == DIRTYPE
 
-    def issym(self):
-        'Return True if it is a symbolic link.'
-        return self.type == SYMTYPE
+    eleza issym(self):
+        'Return True ikiwa it is a symbolic link.'
+        rudisha self.type == SYMTYPE
 
-    def islnk(self):
-        'Return True if it is a hard link.'
-        return self.type == LNKTYPE
+    eleza islnk(self):
+        'Return True ikiwa it is a hard link.'
+        rudisha self.type == LNKTYPE
 
-    def ischr(self):
-        'Return True if it is a character device.'
-        return self.type == CHRTYPE
+    eleza ischr(self):
+        'Return True ikiwa it is a character device.'
+        rudisha self.type == CHRTYPE
 
-    def isblk(self):
-        'Return True if it is a block device.'
-        return self.type == BLKTYPE
+    eleza isblk(self):
+        'Return True ikiwa it is a block device.'
+        rudisha self.type == BLKTYPE
 
-    def isfifo(self):
-        'Return True if it is a FIFO.'
-        return self.type == FIFOTYPE
+    eleza isfifo(self):
+        'Return True ikiwa it is a FIFO.'
+        rudisha self.type == FIFOTYPE
 
-    def issparse(self):
-        return self.sparse is not None
+    eleza issparse(self):
+        rudisha self.sparse is not None
 
-    def isdev(self):
-        'Return True if it is one of character device, block device or FIFO.'
-        return self.type in (CHRTYPE, BLKTYPE, FIFOTYPE)
-# class TarInfo
+    eleza isdev(self):
+        'Return True ikiwa it is one of character device, block device or FIFO.'
+        rudisha self.type in (CHRTYPE, BLKTYPE, FIFOTYPE)
+# kundi TarInfo
 
-class TarFile(object):
+kundi TarFile(object):
     """The TarFile Class provides an interface to tar archives.
     """
 
@@ -1423,7 +1423,7 @@ class TarFile(object):
                                 # continues processing.
 
     errorlevel = 1              # If 0, fatal errors only appear in debug
-                                # messages (if debug >= 0). If > 0, errors
+                                # messages (ikiwa debug >= 0). If > 0, errors
                                 # are passed to the caller as exceptions.
 
     format = DEFAULT_FORMAT     # The format to use when creating an archive.
@@ -1432,11 +1432,11 @@ class TarFile(object):
 
     errors = None               # Error handler for unicode conversion.
 
-    tarinfo = TarInfo           # The default TarInfo class to use.
+    tarinfo = TarInfo           # The default TarInfo kundi to use.
 
     fileobject = ExFileObject   # The file-object for extractfile().
 
-    def __init__(self, name=None, mode="r", fileobj=None, format=None,
+    eleza __init__(self, name=None, mode="r", fileobj=None, format=None,
             tarinfo=None, dereference=None, ignore_zeros=None, encoding=None,
             errors="surrogateescape", pax_headers=None, debug=None,
             errorlevel=None, copybufsize=None):
@@ -1449,73 +1449,73 @@ class TarFile(object):
            `fileobj' is not closed, when TarFile is closed.
         """
         modes = {"r": "rb", "a": "r+b", "w": "wb", "x": "xb"}
-        if mode not in modes:
+        ikiwa mode not in modes:
             raise ValueError("mode must be 'r', 'a', 'w' or 'x'")
         self.mode = mode
         self._mode = modes[mode]
 
-        if not fileobj:
-            if self.mode == "a" and not os.path.exists(name):
+        ikiwa not fileobj:
+            ikiwa self.mode == "a" and not os.path.exists(name):
                 # Create nonexistent files in append mode.
                 self.mode = "w"
                 self._mode = "wb"
             fileobj = bltn_open(name, self._mode)
             self._extfileobj = False
         else:
-            if (name is None and hasattr(fileobj, "name") and
+            ikiwa (name is None and hasattr(fileobj, "name") and
                 isinstance(fileobj.name, (str, bytes))):
                 name = fileobj.name
-            if hasattr(fileobj, "mode"):
+            ikiwa hasattr(fileobj, "mode"):
                 self._mode = fileobj.mode
             self._extfileobj = True
-        self.name = os.path.abspath(name) if name else None
+        self.name = os.path.abspath(name) ikiwa name else None
         self.fileobj = fileobj
 
         # Init attributes.
-        if format is not None:
+        ikiwa format is not None:
             self.format = format
-        if tarinfo is not None:
+        ikiwa tarinfo is not None:
             self.tarinfo = tarinfo
-        if dereference is not None:
+        ikiwa dereference is not None:
             self.dereference = dereference
-        if ignore_zeros is not None:
+        ikiwa ignore_zeros is not None:
             self.ignore_zeros = ignore_zeros
-        if encoding is not None:
+        ikiwa encoding is not None:
             self.encoding = encoding
         self.errors = errors
 
-        if pax_headers is not None and self.format == PAX_FORMAT:
+        ikiwa pax_headers is not None and self.format == PAX_FORMAT:
             self.pax_headers = pax_headers
         else:
             self.pax_headers = {}
 
-        if debug is not None:
+        ikiwa debug is not None:
             self.debug = debug
-        if errorlevel is not None:
+        ikiwa errorlevel is not None:
             self.errorlevel = errorlevel
 
         # Init datastructures.
         self.copybufsize = copybufsize
         self.closed = False
         self.members = []       # list of members as TarInfo objects
-        self._loaded = False    # flag if all members have been read
+        self._loaded = False    # flag ikiwa all members have been read
         self.offset = self.fileobj.tell()
                                 # current position in the archive file
         self.inodes = {}        # dictionary caching the inodes of
                                 # archive members already added
 
         try:
-            if self.mode == "r":
+            ikiwa self.mode == "r":
                 self.firstmember = None
                 self.firstmember = self.next()
 
-            if self.mode == "a":
+            ikiwa self.mode == "a":
                 # Move to the end of the archive,
                 # before the first empty block.
                 while True:
                     self.fileobj.seek(self.offset)
                     try:
-                        tarinfo = self.tarinfo.fromtarfile(self)
+                        tarinfo = self.tarinfo.kutokatarfile(self)
                         self.members.append(tarinfo)
                     except EOFHeaderError:
                         self.fileobj.seek(self.offset)
@@ -1523,15 +1523,15 @@ class TarFile(object):
                     except HeaderError as e:
                         raise ReadError(str(e))
 
-            if self.mode in ("a", "w", "x"):
+            ikiwa self.mode in ("a", "w", "x"):
                 self._loaded = True
 
-                if self.pax_headers:
+                ikiwa self.pax_headers:
                     buf = self.tarinfo.create_pax_global_header(self.pax_headers.copy())
                     self.fileobj.write(buf)
                     self.offset += len(buf)
         except:
-            if not self._extfileobj:
+            ikiwa not self._extfileobj:
                 self.fileobj.close()
             self.closed = True
             raise
@@ -1543,12 +1543,12 @@ class TarFile(object):
     # adequate "sub"-constructor for a particular compression using the mapping
     # kutoka OPEN_METH.
     #
-    # This concept allows one to subclass TarFile without losing the comfort of
+    # This concept allows one to subkundi TarFile without losing the comfort of
     # the super-constructor. A sub-constructor is registered and made available
     # by adding it to the mapping in OPEN_METH.
 
     @classmethod
-    def open(cls, name=None, mode="r", fileobj=None, bufsize=RECORDSIZE, **kwargs):
+    eleza open(cls, name=None, mode="r", fileobj=None, bufsize=RECORDSIZE, **kwargs):
         """Open a tar archive for reading, writing or appending. Return
            an appropriate TarFile class.
 
@@ -1558,20 +1558,20 @@ class TarFile(object):
            'r:gz'       open for reading with gzip compression
            'r:bz2'      open for reading with bzip2 compression
            'r:xz'       open for reading with lzma compression
-           'a' or 'a:'  open for appending, creating the file if necessary
+           'a' or 'a:'  open for appending, creating the file ikiwa necessary
            'w' or 'w:'  open for writing without compression
            'w:gz'       open for writing with gzip compression
            'w:bz2'      open for writing with bzip2 compression
            'w:xz'       open for writing with lzma compression
 
            'x' or 'x:'  create a tarfile exclusively without compression, raise
-                        an exception if the file is already created
+                        an exception ikiwa the file is already created
            'x:gz'       create a gzip compressed tarfile, raise an exception
-                        if the file is already created
+                        ikiwa the file is already created
            'x:bz2'      create a bzip2 compressed tarfile, raise an exception
-                        if the file is already created
+                        ikiwa the file is already created
            'x:xz'       create an lzma compressed tarfile, raise an exception
-                        if the file is already created
+                        ikiwa the file is already created
 
            'r|*'        open a stream of tar blocks with transparent compression
            'r|'         open an uncompressed stream of tar blocks for reading
@@ -1584,44 +1584,44 @@ class TarFile(object):
            'w|xz'       open an lzma compressed stream for writing
         """
 
-        if not name and not fileobj:
+        ikiwa not name and not fileobj:
             raise ValueError("nothing to open")
 
-        if mode in ("r", "r:*"):
+        ikiwa mode in ("r", "r:*"):
             # Find out which *open() is appropriate for opening the file.
-            def not_compressed(comptype):
-                return cls.OPEN_METH[comptype] == 'taropen'
+            eleza not_compressed(comptype):
+                rudisha cls.OPEN_METH[comptype] == 'taropen'
             for comptype in sorted(cls.OPEN_METH, key=not_compressed):
                 func = getattr(cls, cls.OPEN_METH[comptype])
-                if fileobj is not None:
+                ikiwa fileobj is not None:
                     saved_pos = fileobj.tell()
                 try:
-                    return func(name, "r", fileobj, **kwargs)
+                    rudisha func(name, "r", fileobj, **kwargs)
                 except (ReadError, CompressionError):
-                    if fileobj is not None:
+                    ikiwa fileobj is not None:
                         fileobj.seek(saved_pos)
                     continue
             raise ReadError("file could not be opened successfully")
 
-        elif ":" in mode:
+        elikiwa ":" in mode:
             filemode, comptype = mode.split(":", 1)
             filemode = filemode or "r"
             comptype = comptype or "tar"
 
             # Select the *open() function according to
             # given compression.
-            if comptype in cls.OPEN_METH:
+            ikiwa comptype in cls.OPEN_METH:
                 func = getattr(cls, cls.OPEN_METH[comptype])
             else:
                 raise CompressionError("unknown compression type %r" % comptype)
-            return func(name, filemode, fileobj, **kwargs)
+            rudisha func(name, filemode, fileobj, **kwargs)
 
-        elif "|" in mode:
+        elikiwa "|" in mode:
             filemode, comptype = mode.split("|", 1)
             filemode = filemode or "r"
             comptype = comptype or "tar"
 
-            if filemode not in ("r", "w"):
+            ikiwa filemode not in ("r", "w"):
                 raise ValueError("mode must be 'r' or 'w'")
 
             stream = _Stream(name, filemode, comptype, fileobj, bufsize)
@@ -1631,27 +1631,27 @@ class TarFile(object):
                 stream.close()
                 raise
             t._extfileobj = False
-            return t
+            rudisha t
 
-        elif mode in ("a", "w", "x"):
-            return cls.taropen(name, mode, fileobj, **kwargs)
+        elikiwa mode in ("a", "w", "x"):
+            rudisha cls.taropen(name, mode, fileobj, **kwargs)
 
         raise ValueError("undiscernible mode")
 
     @classmethod
-    def taropen(cls, name, mode="r", fileobj=None, **kwargs):
+    eleza taropen(cls, name, mode="r", fileobj=None, **kwargs):
         """Open uncompressed tar archive name for reading or writing.
         """
-        if mode not in ("r", "a", "w", "x"):
+        ikiwa mode not in ("r", "a", "w", "x"):
             raise ValueError("mode must be 'r', 'a', 'w' or 'x'")
-        return cls(name, mode, fileobj, **kwargs)
+        rudisha cls(name, mode, fileobj, **kwargs)
 
     @classmethod
-    def gzopen(cls, name, mode="r", fileobj=None, compresslevel=9, **kwargs):
+    eleza gzopen(cls, name, mode="r", fileobj=None, compresslevel=9, **kwargs):
         """Open gzip compressed tar archive name for reading or writing.
            Appending is not allowed.
         """
-        if mode not in ("r", "w", "x"):
+        ikiwa mode not in ("r", "w", "x"):
             raise ValueError("mode must be 'r', 'w' or 'x'")
 
         try:
@@ -1663,7 +1663,7 @@ class TarFile(object):
         try:
             fileobj = gzip.GzipFile(name, mode + "b", compresslevel, fileobj)
         except OSError:
-            if fileobj is not None and mode == 'r':
+            ikiwa fileobj is not None and mode == 'r':
                 raise ReadError("not a gzip file")
             raise
 
@@ -1671,21 +1671,21 @@ class TarFile(object):
             t = cls.taropen(name, mode, fileobj, **kwargs)
         except OSError:
             fileobj.close()
-            if mode == 'r':
+            ikiwa mode == 'r':
                 raise ReadError("not a gzip file")
             raise
         except:
             fileobj.close()
             raise
         t._extfileobj = False
-        return t
+        rudisha t
 
     @classmethod
-    def bz2open(cls, name, mode="r", fileobj=None, compresslevel=9, **kwargs):
+    eleza bz2open(cls, name, mode="r", fileobj=None, compresslevel=9, **kwargs):
         """Open bzip2 compressed tar archive name for reading or writing.
            Appending is not allowed.
         """
-        if mode not in ("r", "w", "x"):
+        ikiwa mode not in ("r", "w", "x"):
             raise ValueError("mode must be 'r', 'w' or 'x'")
 
         try:
@@ -1700,21 +1700,21 @@ class TarFile(object):
             t = cls.taropen(name, mode, fileobj, **kwargs)
         except (OSError, EOFError):
             fileobj.close()
-            if mode == 'r':
+            ikiwa mode == 'r':
                 raise ReadError("not a bzip2 file")
             raise
         except:
             fileobj.close()
             raise
         t._extfileobj = False
-        return t
+        rudisha t
 
     @classmethod
-    def xzopen(cls, name, mode="r", fileobj=None, preset=None, **kwargs):
+    eleza xzopen(cls, name, mode="r", fileobj=None, preset=None, **kwargs):
         """Open lzma compressed tar archive name for reading or writing.
            Appending is not allowed.
         """
-        if mode not in ("r", "w", "x"):
+        ikiwa mode not in ("r", "w", "x"):
             raise ValueError("mode must be 'r', 'w' or 'x'")
 
         try:
@@ -1728,14 +1728,14 @@ class TarFile(object):
             t = cls.taropen(name, mode, fileobj, **kwargs)
         except (lzma.LZMAError, EOFError):
             fileobj.close()
-            if mode == 'r':
+            ikiwa mode == 'r':
                 raise ReadError("not an lzma file")
             raise
         except:
             fileobj.close()
             raise
         t._extfileobj = False
-        return t
+        rudisha t
 
     # All *open() methods are registered here.
     OPEN_METH = {
@@ -1748,55 +1748,55 @@ class TarFile(object):
     #--------------------------------------------------------------------------
     # The public methods which TarFile provides:
 
-    def close(self):
+    eleza close(self):
         """Close the TarFile. In write-mode, two finishing zero blocks are
            appended to the archive.
         """
-        if self.closed:
+        ikiwa self.closed:
             return
 
         self.closed = True
         try:
-            if self.mode in ("a", "w", "x"):
+            ikiwa self.mode in ("a", "w", "x"):
                 self.fileobj.write(NUL * (BLOCKSIZE * 2))
                 self.offset += (BLOCKSIZE * 2)
                 # fill up the end with zero-blocks
                 # (like option -b20 for tar does)
                 blocks, remainder = divmod(self.offset, RECORDSIZE)
-                if remainder > 0:
+                ikiwa remainder > 0:
                     self.fileobj.write(NUL * (RECORDSIZE - remainder))
         finally:
-            if not self._extfileobj:
+            ikiwa not self._extfileobj:
                 self.fileobj.close()
 
-    def getmember(self, name):
+    eleza getmember(self, name):
         """Return a TarInfo object for member `name'. If `name' can not be
            found in the archive, KeyError is raised. If a member occurs more
            than once in the archive, its last occurrence is assumed to be the
            most up-to-date version.
         """
         tarinfo = self._getmember(name)
-        if tarinfo is None:
+        ikiwa tarinfo is None:
             raise KeyError("filename %r not found" % name)
-        return tarinfo
+        rudisha tarinfo
 
-    def getmembers(self):
+    eleza getmembers(self):
         """Return the members of the archive as a list of TarInfo objects. The
            list has the same order as the members in the archive.
         """
         self._check()
-        if not self._loaded:    # if we want to obtain a list of
+        ikiwa not self._loaded:    # ikiwa we want to obtain a list of
             self._load()        # all members, we first have to
                                 # scan the whole archive.
-        return self.members
+        rudisha self.members
 
-    def getnames(self):
+    eleza getnames(self):
         """Return the members of the archive as a list of their names. It has
            the same order as the list returned by getmembers().
         """
-        return [tarinfo.name for tarinfo in self.getmembers()]
+        rudisha [tarinfo.name for tarinfo in self.getmembers()]
 
-    def gettarinfo(self, name=None, arcname=None, fileobj=None):
+    eleza gettarinfo(self, name=None, arcname=None, fileobj=None):
         """Create a TarInfo object kutoka the result of os.stat or equivalent
            on an existing file. The file is either named by `name', or
            specified as a file object `fileobj' with a file descriptor. If
@@ -1809,13 +1809,13 @@ class TarFile(object):
 
         # When fileobj is given, replace name by
         # fileobj's real name.
-        if fileobj is not None:
+        ikiwa fileobj is not None:
             name = fileobj.name
 
         # Building the name of the member in the archive.
         # Backward slashes are converted to forward slashes,
         # Absolute paths are turned to relative paths.
-        if arcname is None:
+        ikiwa arcname is None:
             arcname = name
         drv, arcname = os.path.splitdrive(arcname)
         arcname = arcname.replace(os.sep, "/")
@@ -1826,9 +1826,9 @@ class TarFile(object):
         tarinfo = self.tarinfo()
         tarinfo.tarfile = self  # Not needed
 
-        # Use os.stat or os.lstat, depending on if symlinks shall be resolved.
-        if fileobj is None:
-            if not self.dereference:
+        # Use os.stat or os.lstat, depending on ikiwa symlinks shall be resolved.
+        ikiwa fileobj is None:
+            ikiwa not self.dereference:
                 statres = os.lstat(name)
             else:
                 statres = os.stat(name)
@@ -1837,33 +1837,33 @@ class TarFile(object):
         linkname = ""
 
         stmd = statres.st_mode
-        if stat.S_ISREG(stmd):
+        ikiwa stat.S_ISREG(stmd):
             inode = (statres.st_ino, statres.st_dev)
-            if not self.dereference and statres.st_nlink > 1 and \
+            ikiwa not self.dereference and statres.st_nlink > 1 and \
                     inode in self.inodes and arcname != self.inodes[inode]:
                 # Is it a hardlink to an already
                 # archived file?
                 type = LNKTYPE
                 linkname = self.inodes[inode]
             else:
-                # The inode is added only if its valid.
+                # The inode is added only ikiwa its valid.
                 # For win32 it is always 0.
                 type = REGTYPE
-                if inode[0]:
+                ikiwa inode[0]:
                     self.inodes[inode] = arcname
-        elif stat.S_ISDIR(stmd):
+        elikiwa stat.S_ISDIR(stmd):
             type = DIRTYPE
-        elif stat.S_ISFIFO(stmd):
+        elikiwa stat.S_ISFIFO(stmd):
             type = FIFOTYPE
-        elif stat.S_ISLNK(stmd):
+        elikiwa stat.S_ISLNK(stmd):
             type = SYMTYPE
             linkname = os.readlink(name)
-        elif stat.S_ISCHR(stmd):
+        elikiwa stat.S_ISCHR(stmd):
             type = CHRTYPE
-        elif stat.S_ISBLK(stmd):
+        elikiwa stat.S_ISBLK(stmd):
             type = BLKTYPE
         else:
-            return None
+            rudisha None
 
         # Fill the TarInfo object with all
         # information we can get.
@@ -1871,31 +1871,31 @@ class TarFile(object):
         tarinfo.mode = stmd
         tarinfo.uid = statres.st_uid
         tarinfo.gid = statres.st_gid
-        if type == REGTYPE:
+        ikiwa type == REGTYPE:
             tarinfo.size = statres.st_size
         else:
             tarinfo.size = 0
         tarinfo.mtime = statres.st_mtime
         tarinfo.type = type
         tarinfo.linkname = linkname
-        if pwd:
+        ikiwa pwd:
             try:
                 tarinfo.uname = pwd.getpwuid(tarinfo.uid)[0]
             except KeyError:
                 pass
-        if grp:
+        ikiwa grp:
             try:
                 tarinfo.gname = grp.getgrgid(tarinfo.gid)[0]
             except KeyError:
                 pass
 
-        if type in (CHRTYPE, BLKTYPE):
-            if hasattr(os, "major") and hasattr(os, "minor"):
+        ikiwa type in (CHRTYPE, BLKTYPE):
+            ikiwa hasattr(os, "major") and hasattr(os, "minor"):
                 tarinfo.devmajor = os.major(statres.st_rdev)
                 tarinfo.devminor = os.minor(statres.st_rdev)
-        return tarinfo
+        rudisha tarinfo
 
-    def list(self, verbose=True, *, members=None):
+    eleza list(self, verbose=True, *, members=None):
         """Print a table of contents to sys.stdout. If `verbose' is False, only
            the names of the members are printed. If it is True, an `ls -l'-like
            output is produced. `members' is optional and must be a subset of the
@@ -1903,47 +1903,47 @@ class TarFile(object):
         """
         self._check()
 
-        if members is None:
+        ikiwa members is None:
             members = self
         for tarinfo in members:
-            if verbose:
-                _safe_print(stat.filemode(tarinfo.mode))
-                _safe_print("%s/%s" % (tarinfo.uname or tarinfo.uid,
+            ikiwa verbose:
+                _safe_andika(stat.filemode(tarinfo.mode))
+                _safe_andika("%s/%s" % (tarinfo.uname or tarinfo.uid,
                                        tarinfo.gname or tarinfo.gid))
-                if tarinfo.ischr() or tarinfo.isblk():
-                    _safe_print("%10s" %
+                ikiwa tarinfo.ischr() or tarinfo.isblk():
+                    _safe_andika("%10s" %
                             ("%d,%d" % (tarinfo.devmajor, tarinfo.devminor)))
                 else:
-                    _safe_print("%10d" % tarinfo.size)
-                _safe_print("%d-%02d-%02d %02d:%02d:%02d" \
+                    _safe_andika("%10d" % tarinfo.size)
+                _safe_andika("%d-%02d-%02d %02d:%02d:%02d" \
                             % time.localtime(tarinfo.mtime)[:6])
 
-            _safe_print(tarinfo.name + ("/" if tarinfo.isdir() else ""))
+            _safe_andika(tarinfo.name + ("/" ikiwa tarinfo.isdir() else ""))
 
-            if verbose:
-                if tarinfo.issym():
-                    _safe_print("-> " + tarinfo.linkname)
-                if tarinfo.islnk():
-                    _safe_print("link to " + tarinfo.linkname)
-            print()
+            ikiwa verbose:
+                ikiwa tarinfo.issym():
+                    _safe_andika("-> " + tarinfo.linkname)
+                ikiwa tarinfo.islnk():
+                    _safe_andika("link to " + tarinfo.linkname)
+            andika()
 
-    def add(self, name, arcname=None, recursive=True, *, filter=None):
+    eleza add(self, name, arcname=None, recursive=True, *, filter=None):
         """Add the file `name' to the archive. `name' may be any type of file
            (directory, fifo, symbolic link, etc.). If given, `arcname'
            specifies an alternative name for the file in the archive.
            Directories are added recursively by default. This can be avoided by
            setting `recursive' to False. `filter' is a function
            that expects a TarInfo object argument and returns the changed
-           TarInfo object, if it returns None the TarInfo object will be
+           TarInfo object, ikiwa it returns None the TarInfo object will be
            excluded kutoka the archive.
         """
         self._check("awx")
 
-        if arcname is None:
+        ikiwa arcname is None:
             arcname = name
 
-        # Skip if somebody tries to archive the archive...
-        if self.name is not None and os.path.abspath(name) == self.name:
+        # Skip ikiwa somebody tries to archive the archive...
+        ikiwa self.name is not None and os.path.abspath(name) == self.name:
             self._dbg(2, "tarfile: Skipped %r" % name)
             return
 
@@ -1952,25 +1952,25 @@ class TarFile(object):
         # Create a TarInfo object kutoka the file.
         tarinfo = self.gettarinfo(name, arcname)
 
-        if tarinfo is None:
+        ikiwa tarinfo is None:
             self._dbg(1, "tarfile: Unsupported type %r" % name)
             return
 
         # Change or exclude the TarInfo object.
-        if filter is not None:
+        ikiwa filter is not None:
             tarinfo = filter(tarinfo)
-            if tarinfo is None:
+            ikiwa tarinfo is None:
                 self._dbg(2, "tarfile: Excluded %r" % name)
                 return
 
         # Append the tar header and data to the archive.
-        if tarinfo.isreg():
+        ikiwa tarinfo.isreg():
             with bltn_open(name, "rb") as f:
                 self.addfile(tarinfo, f)
 
-        elif tarinfo.isdir():
+        elikiwa tarinfo.isdir():
             self.addfile(tarinfo)
-            if recursive:
+            ikiwa recursive:
                 for f in sorted(os.listdir(name)):
                     self.add(os.path.join(name, f), os.path.join(arcname, f),
                             recursive, filter=filter)
@@ -1978,7 +1978,7 @@ class TarFile(object):
         else:
             self.addfile(tarinfo)
 
-    def addfile(self, tarinfo, fileobj=None):
+    eleza addfile(self, tarinfo, fileobj=None):
         """Add the TarInfo object `tarinfo' to the archive. If `fileobj' is
            given, it should be a binary file, and tarinfo.size bytes are read
            kutoka it and added to the archive. You can create TarInfo objects
@@ -1993,17 +1993,17 @@ class TarFile(object):
         self.offset += len(buf)
         bufsize=self.copybufsize
         # If there's data to follow, append it.
-        if fileobj is not None:
+        ikiwa fileobj is not None:
             copyfileobj(fileobj, self.fileobj, tarinfo.size, bufsize=bufsize)
             blocks, remainder = divmod(tarinfo.size, BLOCKSIZE)
-            if remainder > 0:
+            ikiwa remainder > 0:
                 self.fileobj.write(NUL * (BLOCKSIZE - remainder))
                 blocks += 1
             self.offset += blocks * BLOCKSIZE
 
         self.members.append(tarinfo)
 
-    def extractall(self, path=".", members=None, *, numeric_owner=False):
+    eleza extractall(self, path=".", members=None, *, numeric_owner=False):
         """Extract all members kutoka the archive to the current working
            directory and set owner, modification time and permissions on
            directories afterwards. `path' specifies a different directory
@@ -2013,11 +2013,11 @@ class TarFile(object):
         """
         directories = []
 
-        if members is None:
+        ikiwa members is None:
             members = self
 
         for tarinfo in members:
-            if tarinfo.isdir():
+            ikiwa tarinfo.isdir():
                 # Extract directories with a safe mode.
                 directories.append(tarinfo)
                 tarinfo = copy.copy(tarinfo)
@@ -2038,12 +2038,12 @@ class TarFile(object):
                 self.utime(tarinfo, dirpath)
                 self.chmod(tarinfo, dirpath)
             except ExtractError as e:
-                if self.errorlevel > 1:
+                ikiwa self.errorlevel > 1:
                     raise
                 else:
                     self._dbg(1, "tarfile: %s" % e)
 
-    def extract(self, member, path="", set_attrs=True, *, numeric_owner=False):
+    eleza extract(self, member, path="", set_attrs=True, *, numeric_owner=False):
         """Extract a member kutoka the archive to the current working directory,
            using its full name. Its file information is extracted as accurately
            as possible. `member' may be a filename or a TarInfo object. You can
@@ -2054,13 +2054,13 @@ class TarFile(object):
         """
         self._check("r")
 
-        if isinstance(member, str):
+        ikiwa isinstance(member, str):
             tarinfo = self.getmember(member)
         else:
             tarinfo = member
 
         # Prepare the link target for makelink().
-        if tarinfo.islnk():
+        ikiwa tarinfo.islnk():
             tarinfo._link_target = os.path.join(path, tarinfo.linkname)
 
         try:
@@ -2068,20 +2068,20 @@ class TarFile(object):
                                  set_attrs=set_attrs,
                                  numeric_owner=numeric_owner)
         except OSError as e:
-            if self.errorlevel > 0:
+            ikiwa self.errorlevel > 0:
                 raise
             else:
-                if e.filename is None:
+                ikiwa e.filename is None:
                     self._dbg(1, "tarfile: %s" % e.strerror)
                 else:
                     self._dbg(1, "tarfile: %s %r" % (e.strerror, e.filename))
         except ExtractError as e:
-            if self.errorlevel > 1:
+            ikiwa self.errorlevel > 1:
                 raise
             else:
                 self._dbg(1, "tarfile: %s" % e)
 
-    def extractfile(self, member):
+    eleza extractfile(self, member):
         """Extract a member kutoka the archive as a file object. `member' may be
            a filename or a TarInfo object. If `member' is a regular file or a
            link, an io.BufferedReader object is returned. Otherwise, None is
@@ -2089,30 +2089,30 @@ class TarFile(object):
         """
         self._check("r")
 
-        if isinstance(member, str):
+        ikiwa isinstance(member, str):
             tarinfo = self.getmember(member)
         else:
             tarinfo = member
 
-        if tarinfo.isreg() or tarinfo.type not in SUPPORTED_TYPES:
+        ikiwa tarinfo.isreg() or tarinfo.type not in SUPPORTED_TYPES:
             # Members with unknown types are treated as regular files.
-            return self.fileobject(self, tarinfo)
+            rudisha self.fileobject(self, tarinfo)
 
-        elif tarinfo.islnk() or tarinfo.issym():
-            if isinstance(self.fileobj, _Stream):
+        elikiwa tarinfo.islnk() or tarinfo.issym():
+            ikiwa isinstance(self.fileobj, _Stream):
                 # A small but ugly workaround for the case that someone tries
                 # to extract a (sym)link as a file-object kutoka a non-seekable
                 # stream of tar blocks.
                 raise StreamError("cannot extract (sym)link as file object")
             else:
                 # A (sym)link's file object is its target's file object.
-                return self.extractfile(self._find_link_target(tarinfo))
+                rudisha self.extractfile(self._find_link_target(tarinfo))
         else:
             # If there's no data associated with the member (directory, chrdev,
-            # blkdev, etc.), return None instead of a file object.
-            return None
+            # blkdev, etc.), rudisha None instead of a file object.
+            rudisha None
 
-    def _extract_member(self, tarinfo, targetpath, set_attrs=True,
+    eleza _extract_member(self, tarinfo, targetpath, set_attrs=True,
                         numeric_owner=False):
         """Extract the TarInfo object tarinfo to a physical
            file called targetpath.
@@ -2125,43 +2125,43 @@ class TarFile(object):
 
         # Create all upper directories.
         upperdirs = os.path.dirname(targetpath)
-        if upperdirs and not os.path.exists(upperdirs):
+        ikiwa upperdirs and not os.path.exists(upperdirs):
             # Create directories that are not part of the archive with
             # default permissions.
             os.makedirs(upperdirs)
 
-        if tarinfo.islnk() or tarinfo.issym():
+        ikiwa tarinfo.islnk() or tarinfo.issym():
             self._dbg(1, "%s -> %s" % (tarinfo.name, tarinfo.linkname))
         else:
             self._dbg(1, tarinfo.name)
 
-        if tarinfo.isreg():
+        ikiwa tarinfo.isreg():
             self.makefile(tarinfo, targetpath)
-        elif tarinfo.isdir():
+        elikiwa tarinfo.isdir():
             self.makedir(tarinfo, targetpath)
-        elif tarinfo.isfifo():
+        elikiwa tarinfo.isfifo():
             self.makefifo(tarinfo, targetpath)
-        elif tarinfo.ischr() or tarinfo.isblk():
+        elikiwa tarinfo.ischr() or tarinfo.isblk():
             self.makedev(tarinfo, targetpath)
-        elif tarinfo.islnk() or tarinfo.issym():
+        elikiwa tarinfo.islnk() or tarinfo.issym():
             self.makelink(tarinfo, targetpath)
-        elif tarinfo.type not in SUPPORTED_TYPES:
+        elikiwa tarinfo.type not in SUPPORTED_TYPES:
             self.makeunknown(tarinfo, targetpath)
         else:
             self.makefile(tarinfo, targetpath)
 
-        if set_attrs:
+        ikiwa set_attrs:
             self.chown(tarinfo, targetpath, numeric_owner)
-            if not tarinfo.issym():
+            ikiwa not tarinfo.issym():
                 self.chmod(tarinfo, targetpath)
                 self.utime(tarinfo, targetpath)
 
     #--------------------------------------------------------------------------
     # Below are the different file methods. They are called via
     # _extract_member() when extract() is called. They can be replaced in a
-    # subclass to implement other functionality.
+    # subkundi to implement other functionality.
 
-    def makedir(self, tarinfo, targetpath):
+    eleza makedir(self, tarinfo, targetpath):
         """Make a directory called targetpath.
         """
         try:
@@ -2171,14 +2171,14 @@ class TarFile(object):
         except FileExistsError:
             pass
 
-    def makefile(self, tarinfo, targetpath):
+    eleza makefile(self, tarinfo, targetpath):
         """Make a file called targetpath.
         """
         source = self.fileobj
         source.seek(tarinfo.offset_data)
         bufsize = self.copybufsize
         with bltn_open(targetpath, "wb") as target:
-            if tarinfo.sparse is not None:
+            ikiwa tarinfo.sparse is not None:
                 for offset, size in tarinfo.sparse:
                     target.seek(offset)
                     copyfileobj(source, target, size, ReadError, bufsize)
@@ -2187,7 +2187,7 @@ class TarFile(object):
             else:
                 copyfileobj(source, target, tarinfo.size, ReadError, bufsize)
 
-    def makeunknown(self, tarinfo, targetpath):
+    eleza makeunknown(self, tarinfo, targetpath):
         """Make a file kutoka a TarInfo object with an unknown type
            at targetpath.
         """
@@ -2195,22 +2195,22 @@ class TarFile(object):
         self._dbg(1, "tarfile: Unknown file type %r, " \
                      "extracted as regular file." % tarinfo.type)
 
-    def makefifo(self, tarinfo, targetpath):
+    eleza makefifo(self, tarinfo, targetpath):
         """Make a fifo called targetpath.
         """
-        if hasattr(os, "mkfifo"):
+        ikiwa hasattr(os, "mkfifo"):
             os.mkfifo(targetpath)
         else:
             raise ExtractError("fifo not supported by system")
 
-    def makedev(self, tarinfo, targetpath):
+    eleza makedev(self, tarinfo, targetpath):
         """Make a character or block device called targetpath.
         """
-        if not hasattr(os, "mknod") or not hasattr(os, "makedev"):
+        ikiwa not hasattr(os, "mknod") or not hasattr(os, "makedev"):
             raise ExtractError("special devices not supported by system")
 
         mode = tarinfo.mode
-        if tarinfo.isblk():
+        ikiwa tarinfo.isblk():
             mode |= stat.S_IFBLK
         else:
             mode |= stat.S_IFCHR
@@ -2218,18 +2218,18 @@ class TarFile(object):
         os.mknod(targetpath, mode,
                  os.makedev(tarinfo.devmajor, tarinfo.devminor))
 
-    def makelink(self, tarinfo, targetpath):
+    eleza makelink(self, tarinfo, targetpath):
         """Make a (symbolic) link called targetpath. If it cannot be created
           (platform limitation), we try to make a copy of the referenced file
           instead of a link.
         """
         try:
             # For systems that support symbolic and hard links.
-            if tarinfo.issym():
+            ikiwa tarinfo.issym():
                 os.symlink(tarinfo.linkname, targetpath)
             else:
                 # See extract().
-                if os.path.exists(tarinfo._link_target):
+                ikiwa os.path.exists(tarinfo._link_target):
                     os.link(tarinfo._link_target, targetpath)
                 else:
                     self._extract_member(self._find_link_target(tarinfo),
@@ -2241,36 +2241,36 @@ class TarFile(object):
             except KeyError:
                 raise ExtractError("unable to resolve link inside archive")
 
-    def chown(self, tarinfo, targetpath, numeric_owner):
+    eleza chown(self, tarinfo, targetpath, numeric_owner):
         """Set owner of targetpath according to tarinfo. If numeric_owner
            is True, use .gid/.uid instead of .gname/.uname. If numeric_owner
            is False, fall back to .gid/.uid when the search based on name
            fails.
         """
-        if hasattr(os, "geteuid") and os.geteuid() == 0:
+        ikiwa hasattr(os, "geteuid") and os.geteuid() == 0:
             # We have to be root to do so.
             g = tarinfo.gid
             u = tarinfo.uid
-            if not numeric_owner:
+            ikiwa not numeric_owner:
                 try:
-                    if grp:
+                    ikiwa grp:
                         g = grp.getgrnam(tarinfo.gname)[2]
                 except KeyError:
                     pass
                 try:
-                    if pwd:
+                    ikiwa pwd:
                         u = pwd.getpwnam(tarinfo.uname)[2]
                 except KeyError:
                     pass
             try:
-                if tarinfo.issym() and hasattr(os, "lchown"):
+                ikiwa tarinfo.issym() and hasattr(os, "lchown"):
                     os.lchown(targetpath, u, g)
                 else:
                     os.chown(targetpath, u, g)
             except OSError:
                 raise ExtractError("could not change owner")
 
-    def chmod(self, tarinfo, targetpath):
+    eleza chmod(self, tarinfo, targetpath):
         """Set file permissions of targetpath according to tarinfo.
         """
         try:
@@ -2278,10 +2278,10 @@ class TarFile(object):
         except OSError:
             raise ExtractError("could not change mode")
 
-    def utime(self, tarinfo, targetpath):
+    eleza utime(self, tarinfo, targetpath):
         """Set modification time of targetpath according to tarinfo.
         """
-        if not hasattr(os, 'utime'):
+        ikiwa not hasattr(os, 'utime'):
             return
         try:
             os.utime(targetpath, (tarinfo.mtime, tarinfo.mtime))
@@ -2289,61 +2289,61 @@ class TarFile(object):
             raise ExtractError("could not change modification time")
 
     #--------------------------------------------------------------------------
-    def next(self):
+    eleza next(self):
         """Return the next member of the archive as a TarInfo object, when
-           TarFile is opened for reading. Return None if there is no more
+           TarFile is opened for reading. Return None ikiwa there is no more
            available.
         """
         self._check("ra")
-        if self.firstmember is not None:
+        ikiwa self.firstmember is not None:
             m = self.firstmember
             self.firstmember = None
-            return m
+            rudisha m
 
         # Advance the file pointer.
-        if self.offset != self.fileobj.tell():
+        ikiwa self.offset != self.fileobj.tell():
             self.fileobj.seek(self.offset - 1)
-            if not self.fileobj.read(1):
+            ikiwa not self.fileobj.read(1):
                 raise ReadError("unexpected end of data")
 
         # Read the next block.
         tarinfo = None
         while True:
             try:
-                tarinfo = self.tarinfo.fromtarfile(self)
+                tarinfo = self.tarinfo.kutokatarfile(self)
             except EOFHeaderError as e:
-                if self.ignore_zeros:
+                ikiwa self.ignore_zeros:
                     self._dbg(2, "0x%X: %s" % (self.offset, e))
                     self.offset += BLOCKSIZE
                     continue
             except InvalidHeaderError as e:
-                if self.ignore_zeros:
+                ikiwa self.ignore_zeros:
                     self._dbg(2, "0x%X: %s" % (self.offset, e))
                     self.offset += BLOCKSIZE
                     continue
-                elif self.offset == 0:
+                elikiwa self.offset == 0:
                     raise ReadError(str(e))
             except EmptyHeaderError:
-                if self.offset == 0:
+                ikiwa self.offset == 0:
                     raise ReadError("empty file")
             except TruncatedHeaderError as e:
-                if self.offset == 0:
+                ikiwa self.offset == 0:
                     raise ReadError(str(e))
             except SubsequentHeaderError as e:
                 raise ReadError(str(e))
             break
 
-        if tarinfo is not None:
+        ikiwa tarinfo is not None:
             self.members.append(tarinfo)
         else:
             self._loaded = True
 
-        return tarinfo
+        rudisha tarinfo
 
     #--------------------------------------------------------------------------
     # Little helper methods:
 
-    def _getmember(self, name, tarinfo=None, normalize=False):
+    eleza _getmember(self, name, tarinfo=None, normalize=False):
         """Find an archive member by name kutoka bottom to top.
            If tarinfo is given, it is used as the starting point.
         """
@@ -2351,45 +2351,45 @@ class TarFile(object):
         members = self.getmembers()
 
         # Limit the member search list up to tarinfo.
-        if tarinfo is not None:
+        ikiwa tarinfo is not None:
             members = members[:members.index(tarinfo)]
 
-        if normalize:
+        ikiwa normalize:
             name = os.path.normpath(name)
 
         for member in reversed(members):
-            if normalize:
+            ikiwa normalize:
                 member_name = os.path.normpath(member.name)
             else:
                 member_name = member.name
 
-            if name == member_name:
-                return member
+            ikiwa name == member_name:
+                rudisha member
 
-    def _load(self):
+    eleza _load(self):
         """Read through the entire archive file and look for readable
            members.
         """
         while True:
             tarinfo = self.next()
-            if tarinfo is None:
+            ikiwa tarinfo is None:
                 break
         self._loaded = True
 
-    def _check(self, mode=None):
-        """Check if TarFile is still open, and if the operation's mode
+    eleza _check(self, mode=None):
+        """Check ikiwa TarFile is still open, and ikiwa the operation's mode
            corresponds to TarFile's mode.
         """
-        if self.closed:
+        ikiwa self.closed:
             raise OSError("%s is closed" % self.__class__.__name__)
-        if mode is not None and self.mode not in mode:
+        ikiwa mode is not None and self.mode not in mode:
             raise OSError("bad operation for mode %r" % self.mode)
 
-    def _find_link_target(self, tarinfo):
+    eleza _find_link_target(self, tarinfo):
         """Find the target member of a symlink or hardlink member in the
            archive.
         """
-        if tarinfo.issym():
+        ikiwa tarinfo.issym():
             # Always search the entire archive.
             linkname = "/".join(filter(None, (os.path.dirname(tarinfo.name), tarinfo.linkname)))
             limit = None
@@ -2400,14 +2400,14 @@ class TarFile(object):
             limit = tarinfo
 
         member = self._getmember(linkname, tarinfo=limit, normalize=True)
-        if member is None:
+        ikiwa member is None:
             raise KeyError("linkname %r not found" % linkname)
-        return member
+        rudisha member
 
-    def __iter__(self):
+    eleza __iter__(self):
         """Provide an iterator object.
         """
-        if self._loaded:
+        ikiwa self._loaded:
             yield kutoka self.members
             return
 
@@ -2417,17 +2417,17 @@ class TarFile(object):
         # Fix for SF #1100429: Under rare circumstances it can
         # happen that getmembers() is called during iteration,
         # which will have already exhausted the next() method.
-        if self.firstmember is not None:
+        ikiwa self.firstmember is not None:
             tarinfo = self.next()
             index += 1
             yield tarinfo
 
         while True:
-            if index < len(self.members):
+            ikiwa index < len(self.members):
                 tarinfo = self.members[index]
-            elif not self._loaded:
+            elikiwa not self._loaded:
                 tarinfo = self.next()
-                if not tarinfo:
+                ikiwa not tarinfo:
                     self._loaded = True
                     return
             else:
@@ -2435,44 +2435,44 @@ class TarFile(object):
             index += 1
             yield tarinfo
 
-    def _dbg(self, level, msg):
+    eleza _dbg(self, level, msg):
         """Write debugging output to sys.stderr.
         """
-        if level <= self.debug:
-            print(msg, file=sys.stderr)
+        ikiwa level <= self.debug:
+            andika(msg, file=sys.stderr)
 
-    def __enter__(self):
+    eleza __enter__(self):
         self._check()
-        return self
+        rudisha self
 
-    def __exit__(self, type, value, traceback):
-        if type is None:
+    eleza __exit__(self, type, value, traceback):
+        ikiwa type is None:
             self.close()
         else:
             # An exception occurred. We must not call close() because
             # it would try to write end-of-archive blocks and padding.
-            if not self._extfileobj:
+            ikiwa not self._extfileobj:
                 self.fileobj.close()
             self.closed = True
 
 #--------------------
 # exported functions
 #--------------------
-def is_tarfile(name):
-    """Return True if name points to a tar archive that we
-       are able to handle, else return False.
+eleza is_tarfile(name):
+    """Return True ikiwa name points to a tar archive that we
+       are able to handle, else rudisha False.
     """
     try:
         t = open(name)
         t.close()
-        return True
+        rudisha True
     except TarError:
-        return False
+        rudisha False
 
 open = TarFile.open
 
 
-def main():
+eleza main():
     agiza argparse
 
     description = 'A simple command-line interface for tarfile module.'
@@ -2489,51 +2489,51 @@ def main():
                        metavar=('<name>', '<file>'),
                        help='Create tarfile kutoka sources')
     group.add_argument('-t', '--test', metavar='<tarfile>',
-                       help='Test if a tarfile is valid')
+                       help='Test ikiwa a tarfile is valid')
     args = parser.parse_args()
 
-    if args.test is not None:
+    ikiwa args.test is not None:
         src = args.test
-        if is_tarfile(src):
+        ikiwa is_tarfile(src):
             with open(src, 'r') as tar:
                 tar.getmembers()
-                print(tar.getmembers(), file=sys.stderr)
-            if args.verbose:
-                print('{!r} is a tar archive.'.format(src))
+                andika(tar.getmembers(), file=sys.stderr)
+            ikiwa args.verbose:
+                andika('{!r} is a tar archive.'.format(src))
         else:
             parser.exit(1, '{!r} is not a tar archive.\n'.format(src))
 
-    elif args.list is not None:
+    elikiwa args.list is not None:
         src = args.list
-        if is_tarfile(src):
+        ikiwa is_tarfile(src):
             with TarFile.open(src, 'r:*') as tf:
                 tf.list(verbose=args.verbose)
         else:
             parser.exit(1, '{!r} is not a tar archive.\n'.format(src))
 
-    elif args.extract is not None:
-        if len(args.extract) == 1:
+    elikiwa args.extract is not None:
+        ikiwa len(args.extract) == 1:
             src = args.extract[0]
             curdir = os.curdir
-        elif len(args.extract) == 2:
+        elikiwa len(args.extract) == 2:
             src, curdir = args.extract
         else:
             parser.exit(1, parser.format_help())
 
-        if is_tarfile(src):
+        ikiwa is_tarfile(src):
             with TarFile.open(src, 'r:*') as tf:
                 tf.extractall(path=curdir)
-            if args.verbose:
-                if curdir == '.':
+            ikiwa args.verbose:
+                ikiwa curdir == '.':
                     msg = '{!r} file is extracted.'.format(src)
                 else:
                     msg = ('{!r} file is extracted '
                            'into {!r} directory.').format(src, curdir)
-                print(msg)
+                andika(msg)
         else:
             parser.exit(1, '{!r} is not a tar archive.\n'.format(src))
 
-    elif args.create is not None:
+    elikiwa args.create is not None:
         tar_name = args.create.pop(0)
         _, ext = os.path.splitext(tar_name)
         compressions = {
@@ -2549,15 +2549,15 @@ def main():
             '.tbz2': 'bz2',
             '.tb2': 'bz2',
         }
-        tar_mode = 'w:' + compressions[ext] if ext in compressions else 'w'
+        tar_mode = 'w:' + compressions[ext] ikiwa ext in compressions else 'w'
         tar_files = args.create
 
         with TarFile.open(tar_name, tar_mode) as tf:
             for file_name in tar_files:
                 tf.add(file_name)
 
-        if args.verbose:
-            print('{!r} file created.'.format(tar_name))
+        ikiwa args.verbose:
+            andika('{!r} file created.'.format(tar_name))
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

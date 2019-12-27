@@ -17,8 +17,8 @@ PosInf = float('inf')
 NegInf = float('-inf')
 
 
-class JSONDecodeError(ValueError):
-    """Subclass of ValueError with the following additional properties:
+kundi JSONDecodeError(ValueError):
+    """Subkundi of ValueError with the following additional properties:
 
     msg: The unformatted error message
     doc: The JSON document being parsed
@@ -28,7 +28,7 @@ class JSONDecodeError(ValueError):
 
     """
     # Note that this exception is used kutoka _json
-    def __init__(self, msg, doc, pos):
+    eleza __init__(self, msg, doc, pos):
         lineno = doc.count('\n', 0, pos) + 1
         colno = pos - doc.rfind('\n', 0, pos)
         errmsg = '%s: line %d column %d (char %d)' % (msg, lineno, colno, pos)
@@ -39,8 +39,8 @@ class JSONDecodeError(ValueError):
         self.lineno = lineno
         self.colno = colno
 
-    def __reduce__(self):
-        return self.__class__, (self.msg, self.doc, self.pos)
+    eleza __reduce__(self):
+        rudisha self.__class__, (self.msg, self.doc, self.pos)
 
 
 _CONSTANTS = {
@@ -56,17 +56,17 @@ BACKSLASH = {
     'b': '\b', 'f': '\f', 'n': '\n', 'r': '\r', 't': '\t',
 }
 
-def _decode_uXXXX(s, pos):
+eleza _decode_uXXXX(s, pos):
     esc = s[pos + 1:pos + 5]
-    if len(esc) == 4 and esc[1] not in 'xX':
+    ikiwa len(esc) == 4 and esc[1] not in 'xX':
         try:
-            return int(esc, 16)
+            rudisha int(esc, 16)
         except ValueError:
             pass
     msg = "Invalid \\uXXXX escape"
     raise JSONDecodeError(msg, s, pos)
 
-def py_scanstring(s, end, strict=True,
+eleza py_scanstring(s, end, strict=True,
         _b=BACKSLASH, _m=STRINGCHUNK.match):
     """Scan the string s for a JSON string. End is the index of the
     character in s after the quote that started the JSON string.
@@ -81,19 +81,19 @@ def py_scanstring(s, end, strict=True,
     begin = end - 1
     while 1:
         chunk = _m(s, end)
-        if chunk is None:
+        ikiwa chunk is None:
             raise JSONDecodeError("Unterminated string starting at", s, begin)
         end = chunk.end()
         content, terminator = chunk.groups()
         # Content is contains zero or more unescaped string characters
-        if content:
+        ikiwa content:
             _append(content)
         # Terminator is the end of string, a literal control character,
         # or a backslash denoting that an escape sequence follows
-        if terminator == '"':
+        ikiwa terminator == '"':
             break
-        elif terminator != '\\':
-            if strict:
+        elikiwa terminator != '\\':
+            ikiwa strict:
                 #msg = "Invalid control character %r at" % (terminator,)
                 msg = "Invalid control character {0!r} at".format(terminator)
                 raise JSONDecodeError(msg, s, end)
@@ -106,7 +106,7 @@ def py_scanstring(s, end, strict=True,
             raise JSONDecodeError("Unterminated string starting at",
                                   s, begin) kutoka None
         # If not a unicode escape sequence, must be in the lookup table
-        if esc != 'u':
+        ikiwa esc != 'u':
             try:
                 char = _b[esc]
             except KeyError:
@@ -116,50 +116,50 @@ def py_scanstring(s, end, strict=True,
         else:
             uni = _decode_uXXXX(s, end)
             end += 5
-            if 0xd800 <= uni <= 0xdbff and s[end:end + 2] == '\\u':
+            ikiwa 0xd800 <= uni <= 0xdbff and s[end:end + 2] == '\\u':
                 uni2 = _decode_uXXXX(s, end + 1)
-                if 0xdc00 <= uni2 <= 0xdfff:
+                ikiwa 0xdc00 <= uni2 <= 0xdfff:
                     uni = 0x10000 + (((uni - 0xd800) << 10) | (uni2 - 0xdc00))
                     end += 6
             char = chr(uni)
         _append(char)
-    return ''.join(chunks), end
+    rudisha ''.join(chunks), end
 
 
-# Use speedup if available
+# Use speedup ikiwa available
 scanstring = c_scanstring or py_scanstring
 
 WHITESPACE = re.compile(r'[ \t\n\r]*', FLAGS)
 WHITESPACE_STR = ' \t\n\r'
 
 
-def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
+eleza JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
                memo=None, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
     s, end = s_and_end
     pairs = []
     pairs_append = pairs.append
     # Backwards compatibility
-    if memo is None:
+    ikiwa memo is None:
         memo = {}
     memo_get = memo.setdefault
     # Use a slice to prevent IndexError kutoka being raised, the following
-    # check will raise a more specific ValueError if the string is empty
+    # check will raise a more specific ValueError ikiwa the string is empty
     nextchar = s[end:end + 1]
     # Normally we expect nextchar == '"'
-    if nextchar != '"':
-        if nextchar in _ws:
+    ikiwa nextchar != '"':
+        ikiwa nextchar in _ws:
             end = _w(s, end).end()
             nextchar = s[end:end + 1]
         # Trivial empty object
-        if nextchar == '}':
-            if object_pairs_hook is not None:
+        ikiwa nextchar == '}':
+            ikiwa object_pairs_hook is not None:
                 result = object_pairs_hook(pairs)
-                return result, end + 1
+                rudisha result, end + 1
             pairs = {}
-            if object_hook is not None:
+            ikiwa object_hook is not None:
                 pairs = object_hook(pairs)
-            return pairs, end + 1
-        elif nextchar != '"':
+            rudisha pairs, end + 1
+        elikiwa nextchar != '"':
             raise JSONDecodeError(
                 "Expecting property name enclosed in double quotes", s, end)
     end += 1
@@ -168,16 +168,16 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
         key = memo_get(key, key)
         # To skip some function call overhead we optimize the fast paths where
         # the JSON key separator is ": " or just ":".
-        if s[end:end + 1] != ':':
+        ikiwa s[end:end + 1] != ':':
             end = _w(s, end).end()
-            if s[end:end + 1] != ':':
+            ikiwa s[end:end + 1] != ':':
                 raise JSONDecodeError("Expecting ':' delimiter", s, end)
         end += 1
 
         try:
-            if s[end] in _ws:
+            ikiwa s[end] in _ws:
                 end += 1
-                if s[end] in _ws:
+                ikiwa s[end] in _ws:
                     end = _w(s, end + 1).end()
         except IndexError:
             pass
@@ -189,41 +189,41 @@ def JSONObject(s_and_end, strict, scan_once, object_hook, object_pairs_hook,
         pairs_append((key, value))
         try:
             nextchar = s[end]
-            if nextchar in _ws:
+            ikiwa nextchar in _ws:
                 end = _w(s, end + 1).end()
                 nextchar = s[end]
         except IndexError:
             nextchar = ''
         end += 1
 
-        if nextchar == '}':
+        ikiwa nextchar == '}':
             break
-        elif nextchar != ',':
+        elikiwa nextchar != ',':
             raise JSONDecodeError("Expecting ',' delimiter", s, end - 1)
         end = _w(s, end).end()
         nextchar = s[end:end + 1]
         end += 1
-        if nextchar != '"':
+        ikiwa nextchar != '"':
             raise JSONDecodeError(
                 "Expecting property name enclosed in double quotes", s, end - 1)
-    if object_pairs_hook is not None:
+    ikiwa object_pairs_hook is not None:
         result = object_pairs_hook(pairs)
-        return result, end
+        rudisha result, end
     pairs = dict(pairs)
-    if object_hook is not None:
+    ikiwa object_hook is not None:
         pairs = object_hook(pairs)
-    return pairs, end
+    rudisha pairs, end
 
-def JSONArray(s_and_end, scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
+eleza JSONArray(s_and_end, scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
     s, end = s_and_end
     values = []
     nextchar = s[end:end + 1]
-    if nextchar in _ws:
+    ikiwa nextchar in _ws:
         end = _w(s, end + 1).end()
         nextchar = s[end:end + 1]
     # Look-ahead for trivial empty array
-    if nextchar == ']':
-        return values, end + 1
+    ikiwa nextchar == ']':
+        rudisha values, end + 1
     _append = values.append
     while True:
         try:
@@ -232,26 +232,26 @@ def JSONArray(s_and_end, scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
             raise JSONDecodeError("Expecting value", s, err.value) kutoka None
         _append(value)
         nextchar = s[end:end + 1]
-        if nextchar in _ws:
+        ikiwa nextchar in _ws:
             end = _w(s, end + 1).end()
             nextchar = s[end:end + 1]
         end += 1
-        if nextchar == ']':
+        ikiwa nextchar == ']':
             break
-        elif nextchar != ',':
+        elikiwa nextchar != ',':
             raise JSONDecodeError("Expecting ',' delimiter", s, end - 1)
         try:
-            if s[end] in _ws:
+            ikiwa s[end] in _ws:
                 end += 1
-                if s[end] in _ws:
+                ikiwa s[end] in _ws:
                     end = _w(s, end + 1).end()
         except IndexError:
             pass
 
-    return values, end
+    rudisha values, end
 
 
-class JSONDecoder(object):
+kundi JSONDecoder(object):
     """Simple JSON <http://json.org> decoder
 
     Performs the following translations in decoding by default:
@@ -281,34 +281,34 @@ class JSONDecoder(object):
 
     """
 
-    def __init__(self, *, object_hook=None, parse_float=None,
+    eleza __init__(self, *, object_hook=None, parse_float=None,
             parse_int=None, parse_constant=None, strict=True,
             object_pairs_hook=None):
-        """``object_hook``, if specified, will be called with the result
-        of every JSON object decoded and its return value will be used in
+        """``object_hook``, ikiwa specified, will be called with the result
+        of every JSON object decoded and its rudisha value will be used in
         place of the given ``dict``.  This can be used to provide custom
-        deserializations (e.g. to support JSON-RPC class hinting).
+        deserializations (e.g. to support JSON-RPC kundi hinting).
 
-        ``object_pairs_hook``, if specified will be called with the result of
+        ``object_pairs_hook``, ikiwa specified will be called with the result of
         every JSON object decoded with an ordered list of pairs.  The return
         value of ``object_pairs_hook`` will be used instead of the ``dict``.
         This feature can be used to implement custom decoders.
         If ``object_hook`` is also defined, the ``object_pairs_hook`` takes
         priority.
 
-        ``parse_float``, if specified, will be called with the string
+        ``parse_float``, ikiwa specified, will be called with the string
         of every JSON float to be decoded. By default this is equivalent to
         float(num_str). This can be used to use another datatype or parser
         for JSON floats (e.g. decimal.Decimal).
 
-        ``parse_int``, if specified, will be called with the string
+        ``parse_int``, ikiwa specified, will be called with the string
         of every JSON int to be decoded. By default this is equivalent to
         int(num_str). This can be used to use another datatype or parser
         for JSON integers (e.g. float).
 
-        ``parse_constant``, if specified, will be called with one of the
+        ``parse_constant``, ikiwa specified, will be called with one of the
         following strings: -Infinity, Infinity, NaN.
-        This can be used to raise an exception if invalid JSON numbers
+        This can be used to raise an exception ikiwa invalid JSON numbers
         are encountered.
 
         If ``strict`` is false (true is the default), then control
@@ -329,20 +329,20 @@ class JSONDecoder(object):
         self.scan_once = scanner.make_scanner(self)
 
 
-    def decode(self, s, _w=WHITESPACE.match):
+    eleza decode(self, s, _w=WHITESPACE.match):
         """Return the Python representation of ``s`` (a ``str`` instance
         containing a JSON document).
 
         """
         obj, end = self.raw_decode(s, idx=_w(s, 0).end())
         end = _w(s, end).end()
-        if end != len(s):
+        ikiwa end != len(s):
             raise JSONDecodeError("Extra data", s, end)
-        return obj
+        rudisha obj
 
-    def raw_decode(self, s, idx=0):
+    eleza raw_decode(self, s, idx=0):
         """Decode a JSON document kutoka ``s`` (a ``str`` beginning with
-        a JSON document) and return a 2-tuple of the Python
+        a JSON document) and rudisha a 2-tuple of the Python
         representation and the index in ``s`` where the document ended.
 
         This can be used to decode a JSON document kutoka a string that may
@@ -353,4 +353,4 @@ class JSONDecoder(object):
             obj, end = self.scan_once(s, idx)
         except StopIteration as err:
             raise JSONDecodeError("Expecting value", s, err.value) kutoka None
-        return obj, end
+        rudisha obj, end

@@ -142,7 +142,7 @@ Macros to create objects:
    .. versionadded:: 3.7
 
 
-Macros to extract fields from date objects.  The argument must be an instance of
+Macros to extract fields kutoka date objects.  The argument must be an instance of
 :c:data:`PyDateTime_Date`, including subclasses (such as
 :c:data:`PyDateTime_DateTime`).  The argument must not be *NULL*, and the type is
 not checked:
@@ -154,83 +154,83 @@ not checked:
 
 .. c:function:: int PyDateTime_GET_MONTH(PyDateTime_Date *o)
 
-   Return the month, as an int from 1 through 12.
+   Return the month, as an int kutoka 1 through 12.
 
 
 .. c:function:: int PyDateTime_GET_DAY(PyDateTime_Date *o)
 
-   Return the day, as an int from 1 through 31.
+   Return the day, as an int kutoka 1 through 31.
 
 
-Macros to extract fields from datetime objects.  The argument must be an
+Macros to extract fields kutoka datetime objects.  The argument must be an
 instance of :c:data:`PyDateTime_DateTime`, including subclasses. The argument
 must not be *NULL*, and the type is not checked:
 
 .. c:function:: int PyDateTime_DATE_GET_HOUR(PyDateTime_DateTime *o)
 
-   Return the hour, as an int from 0 through 23.
+   Return the hour, as an int kutoka 0 through 23.
 
 
 .. c:function:: int PyDateTime_DATE_GET_MINUTE(PyDateTime_DateTime *o)
 
-   Return the minute, as an int from 0 through 59.
+   Return the minute, as an int kutoka 0 through 59.
 
 
 .. c:function:: int PyDateTime_DATE_GET_SECOND(PyDateTime_DateTime *o)
 
-   Return the second, as an int from 0 through 59.
+   Return the second, as an int kutoka 0 through 59.
 
 
 .. c:function:: int PyDateTime_DATE_GET_MICROSECOND(PyDateTime_DateTime *o)
 
-   Return the microsecond, as an int from 0 through 999999.
+   Return the microsecond, as an int kutoka 0 through 999999.
 
 
-Macros to extract fields from time objects.  The argument must be an instance of
+Macros to extract fields kutoka time objects.  The argument must be an instance of
 :c:data:`PyDateTime_Time`, including subclasses. The argument must not be *NULL*,
 and the type is not checked:
 
 .. c:function:: int PyDateTime_TIME_GET_HOUR(PyDateTime_Time *o)
 
-   Return the hour, as an int from 0 through 23.
+   Return the hour, as an int kutoka 0 through 23.
 
 
 .. c:function:: int PyDateTime_TIME_GET_MINUTE(PyDateTime_Time *o)
 
-   Return the minute, as an int from 0 through 59.
+   Return the minute, as an int kutoka 0 through 59.
 
 
 .. c:function:: int PyDateTime_TIME_GET_SECOND(PyDateTime_Time *o)
 
-   Return the second, as an int from 0 through 59.
+   Return the second, as an int kutoka 0 through 59.
 
 
 .. c:function:: int PyDateTime_TIME_GET_MICROSECOND(PyDateTime_Time *o)
 
-   Return the microsecond, as an int from 0 through 999999.
+   Return the microsecond, as an int kutoka 0 through 999999.
 
 
-Macros to extract fields from time delta objects.  The argument must be an
+Macros to extract fields kutoka time delta objects.  The argument must be an
 instance of :c:data:`PyDateTime_Delta`, including subclasses. The argument must
 not be *NULL*, and the type is not checked:
 
 .. c:function:: int PyDateTime_DELTA_GET_DAYS(PyDateTime_Delta *o)
 
-   Return the number of days, as an int from -999999999 to 999999999.
+   Return the number of days, as an int kutoka -999999999 to 999999999.
 
    .. versionadded:: 3.3
 
 
 .. c:function:: int PyDateTime_DELTA_GET_SECONDS(PyDateTime_Delta *o)
 
-   Return the number of seconds, as an int from 0 through 86399.
+   Return the number of seconds, as an int kutoka 0 through 86399.
 
    .. versionadded:: 3.3
 
 
 .. c:function:: int PyDateTime_DELTA_GET_MICROSECONDS(PyDateTime_Delta *o)
 
-   Return the number of microseconds, as an int from 0 through 999999.
+   Return the number of microseconds, as an int kutoka 0 through 999999.
 
    .. versionadded:: 3.3
 
@@ -240,10 +240,10 @@ Macros for the convenience of modules implementing the DB API:
 .. c:function:: PyObject* PyDateTime_FromTimestamp(PyObject *args)
 
    Create and return a new :class:`datetime.datetime` object given an argument
-   tuple suitable for passing to :meth:`datetime.datetime.fromtimestamp()`.
+   tuple suitable for passing to :meth:`datetime.datetime.kutokatimestamp()`.
 
 
 .. c:function:: PyObject* PyDate_FromTimestamp(PyObject *args)
 
    Create and return a new :class:`datetime.date` object given an argument
-   tuple suitable for passing to :meth:`datetime.date.fromtimestamp()`.
+   tuple suitable for passing to :meth:`datetime.date.kutokatimestamp()`.

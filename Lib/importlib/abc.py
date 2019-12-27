@@ -5,7 +5,7 @@ kutoka . agiza machinery
 try:
     agiza _frozen_importlib
 except ImportError as exc:
-    if exc.name != '_frozen_importlib':
+    ikiwa exc.name != '_frozen_importlib':
         raise
     _frozen_importlib = None
 try:
@@ -16,10 +16,10 @@ agiza abc
 agiza warnings
 
 
-def _register(abstract_cls, *classes):
+eleza _register(abstract_cls, *classes):
     for cls in classes:
         abstract_cls.register(cls)
-        if _frozen_importlib is not None:
+        ikiwa _frozen_importlib is not None:
             try:
                 frozen_cls = getattr(_frozen_importlib, cls.__name__)
             except AttributeError:
@@ -27,9 +27,9 @@ def _register(abstract_cls, *classes):
             abstract_cls.register(frozen_cls)
 
 
-class Finder(metaclass=abc.ABCMeta):
+kundi Finder(metaclass=abc.ABCMeta):
 
-    """Legacy abstract base class for agiza finders.
+    """Legacy abstract base kundi for agiza finders.
 
     It may be subclassed for compatibility with legacy third party
     reimplementations of the agiza system.  Otherwise, finder
@@ -40,24 +40,24 @@ class Finder(metaclass=abc.ABCMeta):
     """
 
     @abc.abstractmethod
-    def find_module(self, fullname, path=None):
+    eleza find_module(self, fullname, path=None):
         """An abstract method that should find a module.
         The fullname is a str and the optional path is a str or None.
         Returns a Loader object or None.
         """
 
 
-class MetaPathFinder(Finder):
+kundi MetaPathFinder(Finder):
 
-    """Abstract base class for agiza finders on sys.meta_path."""
+    """Abstract base kundi for agiza finders on sys.meta_path."""
 
     # We don't define find_spec() here since that would break
     # hasattr checks we do to support backward compatibility.
 
-    def find_module(self, fullname, path):
+    eleza find_module(self, fullname, path):
         """Return a loader for the module.
 
-        If no module is found, return None.  The fullname is a str and
+        If no module is found, rudisha None.  The fullname is a str and
         the path is a list of strings or None.
 
         This method is deprecated since Python 3.4 in favor of
@@ -70,13 +70,13 @@ class MetaPathFinder(Finder):
                       "(available since 3.4)",
                       DeprecationWarning,
                       stacklevel=2)
-        if not hasattr(self, 'find_spec'):
-            return None
+        ikiwa not hasattr(self, 'find_spec'):
+            rudisha None
         found = self.find_spec(fullname, path)
-        return found.loader if found is not None else None
+        rudisha found.loader ikiwa found is not None else None
 
-    def invalidate_caches(self):
-        """An optional method for clearing the finder's cache, if any.
+    eleza invalidate_caches(self):
+        """An optional method for clearing the finder's cache, ikiwa any.
         This method is used by importlib.invalidate_caches().
         """
 
@@ -84,14 +84,14 @@ _register(MetaPathFinder, machinery.BuiltinImporter, machinery.FrozenImporter,
           machinery.PathFinder, machinery.WindowsRegistryFinder)
 
 
-class PathEntryFinder(Finder):
+kundi PathEntryFinder(Finder):
 
-    """Abstract base class for path entry finders used by PathFinder."""
+    """Abstract base kundi for path entry finders used by PathFinder."""
 
     # We don't define find_spec() here since that would break
     # hasattr checks we do to support backward compatibility.
 
-    def find_loader(self, fullname):
+    eleza find_loader(self, fullname):
         """Return (loader, namespace portion) for the path entry.
 
         The fullname is a str.  The namespace portion is a sequence of
@@ -99,7 +99,7 @@ class PathEntryFinder(Finder):
         sequence may be empty.  If loader is not None, the portion will
         be ignored.
 
-        The portion will be discarded if another path entry finder
+        The portion will be discarded ikiwa another path entry finder
         locates the module as a normal module or package.
 
         This method is deprecated since Python 3.4 in favor of
@@ -111,46 +111,46 @@ class PathEntryFinder(Finder):
                       "(available since 3.4)",
                       DeprecationWarning,
                       stacklevel=2)
-        if not hasattr(self, 'find_spec'):
-            return None, []
+        ikiwa not hasattr(self, 'find_spec'):
+            rudisha None, []
         found = self.find_spec(fullname)
-        if found is not None:
-            if not found.submodule_search_locations:
+        ikiwa found is not None:
+            ikiwa not found.submodule_search_locations:
                 portions = []
             else:
                 portions = found.submodule_search_locations
-            return found.loader, portions
+            rudisha found.loader, portions
         else:
-            return None, []
+            rudisha None, []
 
     find_module = _bootstrap_external._find_module_shim
 
-    def invalidate_caches(self):
-        """An optional method for clearing the finder's cache, if any.
+    eleza invalidate_caches(self):
+        """An optional method for clearing the finder's cache, ikiwa any.
         This method is used by PathFinder.invalidate_caches().
         """
 
 _register(PathEntryFinder, machinery.FileFinder)
 
 
-class Loader(metaclass=abc.ABCMeta):
+kundi Loader(metaclass=abc.ABCMeta):
 
-    """Abstract base class for agiza loaders."""
+    """Abstract base kundi for agiza loaders."""
 
-    def create_module(self, spec):
+    eleza create_module(self, spec):
         """Return a module to initialize and into which to load.
 
-        This method should raise ImportError if anything prevents it
-        kutoka creating a new module.  It may return None to indicate
+        This method should raise ImportError ikiwa anything prevents it
+        kutoka creating a new module.  It may rudisha None to indicate
         that the spec should create the new module.
         """
         # By default, defer to default semantics for the new module.
-        return None
+        rudisha None
 
     # We don't define exec_module() here since that would break
     # hasattr checks we do to support backward compatibility.
 
-    def load_module(self, fullname):
+    eleza load_module(self, fullname):
         """Return the loaded module.
 
         The module must be added to sys.modules and have agiza-related
@@ -163,11 +163,11 @@ class Loader(metaclass=abc.ABCMeta):
         functionality for this method.
 
         """
-        if not hasattr(self, 'exec_module'):
+        ikiwa not hasattr(self, 'exec_module'):
             raise ImportError
-        return _bootstrap._load_module_shim(self, fullname)
+        rudisha _bootstrap._load_module_shim(self, fullname)
 
-    def module_repr(self, module):
+    eleza module_repr(self, module):
         """Return a module's repr.
 
         Used by the module type when the method does not raise
@@ -180,9 +180,9 @@ class Loader(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
 
-class ResourceLoader(Loader):
+kundi ResourceLoader(Loader):
 
-    """Abstract base class for loaders which can return data kutoka their
+    """Abstract base kundi for loaders which can rudisha data kutoka their
     back-end storage.
 
     This ABC represents one of the optional protocols specified by PEP 302.
@@ -190,58 +190,58 @@ class ResourceLoader(Loader):
     """
 
     @abc.abstractmethod
-    def get_data(self, path):
-        """Abstract method which when implemented should return the bytes for
+    eleza get_data(self, path):
+        """Abstract method which when implemented should rudisha the bytes for
         the specified path.  The path must be a str."""
         raise OSError
 
 
-class InspectLoader(Loader):
+kundi InspectLoader(Loader):
 
-    """Abstract base class for loaders which support inspection about the
+    """Abstract base kundi for loaders which support inspection about the
     modules they can load.
 
     This ABC represents one of the optional protocols specified by PEP 302.
 
     """
 
-    def is_package(self, fullname):
-        """Optional method which when implemented should return whether the
+    eleza is_package(self, fullname):
+        """Optional method which when implemented should rudisha whether the
         module is a package.  The fullname is a str.  Returns a bool.
 
-        Raises ImportError if the module cannot be found.
+        Raises ImportError ikiwa the module cannot be found.
         """
         raise ImportError
 
-    def get_code(self, fullname):
+    eleza get_code(self, fullname):
         """Method which returns the code object for the module.
 
-        The fullname is a str.  Returns a types.CodeType if possible, else
-        returns None if a code object does not make sense
-        (e.g. built-in module). Raises ImportError if the module cannot be
+        The fullname is a str.  Returns a types.CodeType ikiwa possible, else
+        returns None ikiwa a code object does not make sense
+        (e.g. built-in module). Raises ImportError ikiwa the module cannot be
         found.
         """
         source = self.get_source(fullname)
-        if source is None:
-            return None
-        return self.source_to_code(source)
+        ikiwa source is None:
+            rudisha None
+        rudisha self.source_to_code(source)
 
     @abc.abstractmethod
-    def get_source(self, fullname):
-        """Abstract method which should return the source code for the
+    eleza get_source(self, fullname):
+        """Abstract method which should rudisha the source code for the
         module.  The fullname is a str.  Returns a str.
 
-        Raises ImportError if the module cannot be found.
+        Raises ImportError ikiwa the module cannot be found.
         """
         raise ImportError
 
     @staticmethod
-    def source_to_code(data, path='<string>'):
+    eleza source_to_code(data, path='<string>'):
         """Compile 'data' into a code object.
 
         The 'data' argument can be anything that compile() can handle. The'path'
         argument should be where the data was retrieved (when applicable)."""
-        return compile(data, path, 'exec', dont_inherit=True)
+        rudisha compile(data, path, 'exec', dont_inherit=True)
 
     exec_module = _bootstrap_external._LoaderBasics.exec_module
     load_module = _bootstrap_external._LoaderBasics.load_module
@@ -249,9 +249,9 @@ class InspectLoader(Loader):
 _register(InspectLoader, machinery.BuiltinImporter, machinery.FrozenImporter)
 
 
-class ExecutionLoader(InspectLoader):
+kundi ExecutionLoader(InspectLoader):
 
-    """Abstract base class for loaders that wish to support the execution of
+    """Abstract base kundi for loaders that wish to support the execution of
     modules as scripts.
 
     This ABC represents one of the optional protocols specified in PEP 302.
@@ -259,45 +259,45 @@ class ExecutionLoader(InspectLoader):
     """
 
     @abc.abstractmethod
-    def get_filename(self, fullname):
-        """Abstract method which should return the value that __file__ is to be
+    eleza get_filename(self, fullname):
+        """Abstract method which should rudisha the value that __file__ is to be
         set to.
 
-        Raises ImportError if the module cannot be found.
+        Raises ImportError ikiwa the module cannot be found.
         """
         raise ImportError
 
-    def get_code(self, fullname):
-        """Method to return the code object for fullname.
+    eleza get_code(self, fullname):
+        """Method to rudisha the code object for fullname.
 
-        Should return None if not applicable (e.g. built-in module).
-        Raise ImportError if the module cannot be found.
+        Should rudisha None ikiwa not applicable (e.g. built-in module).
+        Raise ImportError ikiwa the module cannot be found.
         """
         source = self.get_source(fullname)
-        if source is None:
-            return None
+        ikiwa source is None:
+            rudisha None
         try:
             path = self.get_filename(fullname)
         except ImportError:
-            return self.source_to_code(source)
+            rudisha self.source_to_code(source)
         else:
-            return self.source_to_code(source, path)
+            rudisha self.source_to_code(source, path)
 
 _register(ExecutionLoader, machinery.ExtensionFileLoader)
 
 
-class FileLoader(_bootstrap_external.FileLoader, ResourceLoader, ExecutionLoader):
+kundi FileLoader(_bootstrap_external.FileLoader, ResourceLoader, ExecutionLoader):
 
-    """Abstract base class partially implementing the ResourceLoader and
+    """Abstract base kundi partially implementing the ResourceLoader and
     ExecutionLoader ABCs."""
 
 _register(FileLoader, machinery.SourceFileLoader,
             machinery.SourcelessFileLoader)
 
 
-class SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionLoader):
+kundi SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionLoader):
 
-    """Abstract base class for loading source code (and optionally any
+    """Abstract base kundi for loading source code (and optionally any
     corresponding bytecode).
 
     To support loading kutoka source code, the abstractmethods inherited kutoka
@@ -312,25 +312,25 @@ class SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionLo
 
     """
 
-    def path_mtime(self, path):
+    eleza path_mtime(self, path):
         """Return the (int) modification time for the path (str)."""
-        if self.path_stats.__func__ is SourceLoader.path_stats:
+        ikiwa self.path_stats.__func__ is SourceLoader.path_stats:
             raise OSError
-        return int(self.path_stats(path)['mtime'])
+        rudisha int(self.path_stats(path)['mtime'])
 
-    def path_stats(self, path):
+    eleza path_stats(self, path):
         """Return a metadata dict for the source pointed to by the path (str).
         Possible keys:
         - 'mtime' (mandatory) is the numeric timestamp of last source
           code modification;
         - 'size' (optional) is the size in bytes of the source code.
         """
-        if self.path_mtime.__func__ is SourceLoader.path_mtime:
+        ikiwa self.path_mtime.__func__ is SourceLoader.path_mtime:
             raise OSError
-        return {'mtime': self.path_mtime(path)}
+        rudisha {'mtime': self.path_mtime(path)}
 
-    def set_data(self, path, data):
-        """Write the bytes to the path (if possible).
+    eleza set_data(self, path, data):
+        """Write the bytes to the path (ikiwa possible).
 
         Accepts a str path and data as bytes.
 
@@ -342,17 +342,17 @@ class SourceLoader(_bootstrap_external.SourceLoader, ResourceLoader, ExecutionLo
 _register(SourceLoader, machinery.SourceFileLoader)
 
 
-class ResourceReader(metaclass=abc.ABCMeta):
+kundi ResourceReader(metaclass=abc.ABCMeta):
 
-    """Abstract base class to provide resource-reading support.
+    """Abstract base kundi to provide resource-reading support.
 
     Loaders that support resource reading are expected to implement
-    the ``get_resource_reader(fullname)`` method and have it either return None
+    the ``get_resource_reader(fullname)`` method and have it either rudisha None
     or an object compatible with this ABC.
     """
 
     @abc.abstractmethod
-    def open_resource(self, resource):
+    eleza open_resource(self, resource):
         """Return an opened, file-like object for binary reading.
 
         The 'resource' argument is expected to represent only a file name
@@ -363,7 +363,7 @@ class ResourceReader(metaclass=abc.ABCMeta):
         raise FileNotFoundError
 
     @abc.abstractmethod
-    def resource_path(self, resource):
+    eleza resource_path(self, resource):
         """Return the file system path to the specified resource.
 
         The 'resource' argument is expected to represent only a file name
@@ -375,14 +375,14 @@ class ResourceReader(metaclass=abc.ABCMeta):
         raise FileNotFoundError
 
     @abc.abstractmethod
-    def is_resource(self, name):
-        """Return True if the named 'name' is consider a resource."""
+    eleza is_resource(self, name):
+        """Return True ikiwa the named 'name' is consider a resource."""
         raise FileNotFoundError
 
     @abc.abstractmethod
-    def contents(self):
+    eleza contents(self):
         """Return an iterable of strings over the contents of the package."""
-        return []
+        rudisha []
 
 
 _register(ResourceReader, machinery.SourceFileLoader)

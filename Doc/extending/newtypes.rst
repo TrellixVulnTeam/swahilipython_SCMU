@@ -84,10 +84,10 @@ One important requirement of the deallocator function is that it leaves any
 pending exceptions alone.  This is important since deallocators are frequently
 called as the interpreter unwinds the Python stack; when the stack is unwound
 due to an exception (rather than normal returns), nothing is done to protect the
-deallocators from seeing that an exception has already been set.  Any actions
+deallocators kutoka seeing that an exception has already been set.  Any actions
 which a deallocator performs which may cause additional Python code to be
 executed may detect that an exception has been set.  This can lead to misleading
-errors from the interpreter.  The proper way to protect against this is to save
+errors kutoka the interpreter.  The proper way to protect against this is to save
 a pending exception before performing the unsafe action, and restoring it when
 done.  This can be done using the :c:func:`PyErr_Fetch` and
 :c:func:`PyErr_Restore` functions::
@@ -234,7 +234,7 @@ When :c:func:`PyType_Ready` is called, it uses three tables referenced by the
 type object to create :term:`descriptor`\s which are placed in the dictionary of the
 type object.  Each descriptor controls access to one attribute of the instance
 object.  Each of the tables is optional; if all three are *NULL*, instances of
-the type will only have attributes that are inherited from their base type, and
+the type will only have attributes that are inherited kutoka their base type, and
 should leave the :c:member:`~PyTypeObject.tp_getattro` and :c:member:`~PyTypeObject.tp_setattro` fields *NULL* as
 well, allowing the base type to handle attributes.
 
@@ -256,7 +256,7 @@ structure::
    } PyMethodDef;
 
 One entry should be defined for each method provided by the type; no entries are
-needed for methods inherited from a base type.  One additional entry is needed
+needed for methods inherited kutoka a base type.  One additional entry is needed
 at the end; it is a sentinel that marks the end of the array.  The
 :attr:`ml_name` field of the sentinel must be *NULL*.
 
@@ -273,10 +273,10 @@ be read-only or read-write.  The structures in the table are defined as::
    } PyMemberDef;
 
 For each entry in the table, a :term:`descriptor` will be constructed and added to the
-type which will be able to extract a value from the instance structure.  The
+type which will be able to extract a value kutoka the instance structure.  The
 :attr:`type` field should contain one of the type codes defined in the
 :file:`structmember.h` header; the value will be used to determine how to
-convert Python values to and from C values.  The :attr:`flags` field is used to
+convert Python values to and kutoka C values.  The :attr:`flags` field is used to
 store flags which control how the attribute can be accessed.
 
 The following flag constants are defined in :file:`structmember.h`; they may be
@@ -303,8 +303,8 @@ combined using bitwise-OR.
 An interesting advantage of using the :c:member:`~PyTypeObject.tp_members` table to build
 descriptors that are used at runtime is that any attribute defined this way can
 have an associated doc string simply by providing the text in the table.  An
-application can use the introspection API to retrieve the descriptor from the
-class object, and get the doc string using its :attr:`__doc__` attribute.
+application can use the introspection API to retrieve the descriptor kutoka the
+kundi object, and get the doc string using its :attr:`__doc__` attribute.
 
 As with the :c:member:`~PyTypeObject.tp_methods` table, a sentinel entry with a :attr:`name` value
 of *NULL* is required.
@@ -332,7 +332,7 @@ what needs to be done.
 
 The :c:member:`~PyTypeObject.tp_getattr` handler is called when the object requires an attribute
 look-up.  It is called in the same situations where the :meth:`__getattr__`
-method of a class would be called.
+method of a kundi would be called.
 
 Here is an example::
 
@@ -351,7 +351,7 @@ Here is an example::
    }
 
 The :c:member:`~PyTypeObject.tp_setattr` handler is called when the :meth:`__setattr__` or
-:meth:`__delattr__` method of a class instance would be called.  When an
+:meth:`__delattr__` method of a kundi instance would be called.  When an
 attribute should be deleted, the third parameter will be *NULL*.  Here is an
 example that simply raises an exception; if this were really all you wanted, the
 :c:member:`~PyTypeObject.tp_setattr` handler should be set to *NULL*. ::
@@ -423,7 +423,7 @@ A number of these abstract interfaces were defined early in the development of
 the Python implementation.  In particular, the number, mapping, and sequence
 protocols have been part of Python since the beginning.  Other protocols have
 been added over time.  For protocols which depend on several handler routines
-from the type implementation, the older protocols have been defined as optional
+kutoka the type implementation, the older protocols have been defined as optional
 blocks of handlers referenced by the type object.  For newer protocols there are
 additional slots in the main type object, with a flag bit being set to indicate
 that the slots are present and should be checked by the interpreter.  (The flag
@@ -457,7 +457,7 @@ instance of your data type. Here is a simple example::
    }
 
 :c:type:`Py_hash_t` is a signed integer type with a platform-varying width.
-Returning ``-1`` from :c:member:`~PyTypeObject.tp_hash` indicates an error,
+Returning ``-1`` kutoka :c:member:`~PyTypeObject.tp_hash` indicates an error,
 which is why you should be careful to avoid returning it when hash computation
 is successful, as seen above.
 

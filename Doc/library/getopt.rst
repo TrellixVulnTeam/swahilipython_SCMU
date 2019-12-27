@@ -92,7 +92,7 @@ exception:
 
 An example using only Unix style options:
 
-   >>> import getopt
+   >>> agiza getopt
    >>> args = '-a -b -cfoo -d bar a1 a2'.split()
    >>> args
    ['-a', '-b', '-cfoo', '-d', 'bar', 'a1', 'a2']
@@ -117,7 +117,7 @@ Using long option names is equally easy:
 
 In a script, typical usage is something like this::
 
-   import getopt, sys
+   agiza getopt, sys
 
    def main():
        try:
@@ -147,7 +147,7 @@ In a script, typical usage is something like this::
 Note that an equivalent command line interface could be produced with less code
 and more informative help and error messages by using the :mod:`argparse` module::
 
-   import argparse
+   agiza argparse
 
    if __name__ == '__main__':
        parser = argparse.ArgumentParser()

@@ -26,7 +26,7 @@ class SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
     def cleanup_testfn(self):
         if os.path.isfile(TESTFN):
             os.remove(TESTFN)
-        elif os.path.isdir(TESTFN):
+        lasivyo os.path.isdir(TESTFN):
             shutil.rmtree(TESTFN)
 
     def test_get_config_h_filename(self):
@@ -58,7 +58,7 @@ class SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
             Python_h = os.path.join(srcdir, 'Include', 'Python.h')
             self.assertTrue(os.path.exists(Python_h), Python_h)
             self.assertTrue(sysconfig._is_python_source_dir(srcdir))
-        elif os.name == 'posix':
+        lasivyo os.name == 'posix':
             self.assertEqual(
                 os.path.dirname(sysconfig.get_makefile_filename()),
                 srcdir)

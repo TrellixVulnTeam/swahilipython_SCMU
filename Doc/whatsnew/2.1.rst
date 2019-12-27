@@ -80,14 +80,14 @@ function that contains further function definitions. This seems rather unlikely
 though, since such code would have been pretty confusing to read in the first
 place.
 
-One side effect of the change is that the ``from module import *`` and
+One side effect of the change is that the ``kutoka module agiza *`` and
 ``exec`` statements have been made illegal inside a function scope under
-certain conditions.  The Python reference manual has said all along that ``from
-module import *`` is only legal at the top level of a module, but the CPython
+certain conditions.  The Python reference manual has said all along that ``kutoka
+module agiza *`` is only legal at the top level of a module, but the CPython
 interpreter has never enforced this before.  As part of the implementation of
 nested scopes, the compiler which turns Python source into bytecodes has to
-generate different code to access variables in a containing scope.  ``from
-module import *`` and ``exec`` make it impossible for the compiler to
+generate different code to access variables in a containing scope.  ``kutoka
+module agiza *`` and ``exec`` make it impossible for the compiler to
 figure this out, because they add names to the local namespace that are
 unknowable at compile time. Therefore, if a function contains function
 definitions or :keyword:`lambda` expressions with free variables, the compiler
@@ -115,7 +115,7 @@ Python 2.1, they aren't enabled by default, but can be turned on within a module
 by using a future statement as described in :pep:`236`.  (See the following section
 for further discussion of :pep:`236`.)  In Python 2.2, nested scopes will become
 the default and there will be no way to turn them off, but users will have had
-all of 2.1's lifetime to fix any breakage resulting from their introduction.
+all of 2.1's lifetime to fix any breakage resulting kutoka their introduction.
 
 
 .. seealso::
@@ -135,10 +135,10 @@ Pythoneers take a more conservative approach.  This approach consists of
 introducing a convention for enabling optional functionality in release N that
 will become compulsory in release N+1.
 
-The syntax uses a ``from...import`` statement using the reserved module name
+The syntax uses a ``kutoka...import`` statement using the reserved module name
 :mod:`__future__`.  Nested scopes can be enabled by the following statement::
 
-   from __future__ import nested_scopes
+   kutoka __future__ agiza nested_scopes
 
 While it looks like a normal :keyword:`import` statement, it's not; there are
 strict rules on where such a future statement can be put. They can only be at
@@ -248,7 +248,7 @@ support.
 For example, in Python 2.1 the :mod:`regex` module is deprecated, so importing
 it causes a warning to be printed::
 
-   >>> import regex
+   >>> agiza regex
    __main__:1: DeprecationWarning: the regex module
             is deprecated; please use the re module
    >>>
@@ -266,7 +266,7 @@ warning.  For example, you may have a program that uses the :mod:`regex` module
 and not want to spare the time to convert it to use the :mod:`re` module right
 now.  The warning can be suppressed by calling ::
 
-   import warnings
+   agiza warnings
    warnings.filterwarnings(action = 'ignore',
                            message='.*regex module is deprecated',
                            category=DeprecationWarning,
@@ -288,8 +288,8 @@ Functions were also added to Python's C API for issuing warnings; refer to PEP
 
    :pep:`5` - Guidelines for Language Evolution
       Written by Paul Prescod, to specify procedures to be followed when removing old
-      features from Python.  The policy described in this PEP hasn't been officially
-      adopted, but the eventual policy probably won't be too different from Prescod's
+      features kutoka Python.  The policy described in this PEP hasn't been officially
+      adopted, but the eventual policy probably won't be too different kutoka Prescod's
       proposal.
 
    :pep:`230` - Warning Framework
@@ -442,7 +442,7 @@ Python syntax::
    f.grammar = "A ::= B (C D)*"
 
 The dictionary containing attributes can be accessed as the function's
-:attr:`~object.__dict__`. Unlike the :attr:`~object.__dict__` attribute of class instances, in
+:attr:`~object.__dict__`. Unlike the :attr:`~object.__dict__` attribute of kundi instances, in
 functions you can actually assign a new dictionary to :attr:`~object.__dict__`, though
 the new value is restricted to a regular Python dictionary; you *can't* be
 tricky and set it to a :class:`UserDict` instance, or any other random object
@@ -468,7 +468,7 @@ the file's name  in its original case (they're case-preserving, too).
 In Python 2.1, the :keyword:`import` statement will work to simulate case-sensitivity
 on case-insensitive platforms.  Python will now search for the first
 case-sensitive match by default, raising an :exc:`ImportError` if no such file
-is found, so ``import file`` will not import a module named ``FILE.PY``.
+is found, so ``agiza file`` will not agiza a module named ``FILE.PY``.
 Case-insensitive matching can be requested by setting the :envvar:`PYTHONCASEOK`
 environment variable before starting the Python interpreter.
 
@@ -490,7 +490,7 @@ pretty-printing function::
    >>> L # Show Python's default output
    [1, 2, 3, [...]]
    >>> # Use pprint.pprint() as the display function
-   ... import sys, pprint
+   ... agiza sys, pprint
    >>> sys.displayhook = pprint.pprint
    >>> L
    [1, 2, 3,  <Recursion on list with id=135143996>]
@@ -540,7 +540,7 @@ object's numeric methods).
 PEP 241: Metadata in Python Packages
 ====================================
 
-A common complaint from Python users is that there's no single catalog of all
+A common complaint kutoka Python users is that there's no single catalog of all
 the Python modules in existence.  T. Middleton's Vaults of Parnassus at
 http://www.vex.net/parnassus/ are the largest catalog of Python modules, but
 registering software at the Vaults is optional, and many people don't bother.
@@ -562,7 +562,7 @@ You can start creating packages containing :file:`PKG-INFO` even if you're not
 using Python 2.1, since a new release of the Distutils will be made for users of
 earlier Python versions.  Version 1.0.2 of the Distutils includes the changes
 described in :pep:`241`, as well as various bugfixes and enhancements.  It will be
-available from the Distutils SIG at https://www.python.org/community/sigs/current/distutils-sig/.
+available kutoka the Distutils SIG at https://www.python.org/community/sigs/current/distutils-sig/.
 
 
 .. seealso::
@@ -585,7 +585,7 @@ New and Improved Modules
   interactively converting docstrings to HTML or text.  As a bonus,
   :file:`Tools/scripts/pydoc`, which is now automatically installed, uses
   :mod:`pydoc.py` to display documentation given a Python module, package, or
-  class name.  For example, ``pydoc xml.dom`` displays the following::
+  kundi name.  For example, ``pydoc xml.dom`` displays the following::
 
      Python Library Documentation: package xml.dom in xml
 
@@ -651,9 +651,9 @@ New and Improved Modules
   This change was proposed and implemented by Thomas Wouters.
 
 * The :mod:`ftplib` module now defaults to retrieving files in passive mode,
-  because passive mode is more likely to work from behind a firewall.  This
-  request came from the Debian bug tracking system, since other Debian packages
-  use :mod:`ftplib` to retrieve files and then don't work from behind a firewall.
+  because passive mode is more likely to work kutoka behind a firewall.  This
+  request came kutoka the Debian bug tracking system, since other Debian packages
+  use :mod:`ftplib` to retrieve files and then don't work kutoka behind a firewall.
   It's deemed unlikely that this will cause problems for anyone, because Netscape
   defaults to passive mode and few people complain, but if passive mode is
   unsuitable for your application or network setup, call ``set_pasv(0)`` on
@@ -667,7 +667,7 @@ New and Improved Modules
   run as a script.  Contributed by  Eric S. Raymond.
 
 * A new implementation-dependent function, ``sys._getframe([depth])``, has
-  been added to return a given frame object from the current call stack.
+  been added to return a given frame object kutoka the current call stack.
   :func:`sys._getframe` returns the frame at the top of the call stack;  if the
   optional integer argument *depth* is supplied, the function returns the frame
   that is *depth* calls below the top of the stack.  For example,
@@ -691,7 +691,7 @@ of the more notable changes are:
 * A specialized object allocator is now optionally available, that should be
   faster than the system :func:`malloc` and have less memory overhead.  The
   allocator uses C's :func:`malloc` function to get large pools of memory, and
-  then fulfills smaller memory requests from these pools.  It can be enabled by
+  then fulfills smaller memory requests kutoka these pools.  It can be enabled by
   providing the :option:`!--with-pymalloc` option to the :program:`configure`
   script; see :file:`Objects/obmalloc.c` for the implementation details.
 
@@ -713,7 +713,7 @@ of the more notable changes are:
 * The speed of line-oriented file I/O has been improved because people often
   complain about its lack of speed, and because it's often been used as a naïve
   benchmark.  The :meth:`readline` method of file objects has therefore been
-  rewritten to be much faster.  The exact amount of the speedup will vary from
+  rewritten to be much faster.  The exact amount of the speedup will vary kutoka
   platform to platform depending on how slow the C library's :func:`getc` was, but
   is around 66%, and potentially much faster on some particular operating systems.
   Tim Peters did much of the benchmarking and coding for this change, motivated by
@@ -737,14 +737,14 @@ of the more notable changes are:
   destructively iterating through the contents of a dictionary; this can be faster
   for large dictionaries because there's no need to construct a list containing
   all the keys or values. ``D.popitem()`` removes a random ``(key, value)`` pair
-  from the dictionary ``D`` and returns it as a 2-tuple.  This was implemented
+  kutoka the dictionary ``D`` and returns it as a 2-tuple.  This was implemented
   mostly by Tim Peters and Guido van Rossum, after a suggestion and preliminary
   patch by Moshe Zadka.
 
-* Modules can now control which names are imported when ``from module import *``
+* Modules can now control which names are imported when ``kutoka module agiza *``
   is used, by defining an ``__all__`` attribute containing a list of names that
   will be imported.  One common complaint is that if the module imports other
-  modules such as :mod:`sys` or :mod:`string`, ``from module import *`` will add
+  modules such as :mod:`sys` or :mod:`string`, ``kutoka module agiza *`` will add
   them to the importing module's namespace.  To fix this, simply list the public
   names in ``__all__``::
 
@@ -766,10 +766,10 @@ of the more notable changes are:
   filename and line number of the error, a pleasant side effect of the compiler
   reorganization done by Jeremy Hylton.
 
-* C extensions which import other modules have been changed to use
-  :func:`PyImport_ImportModule`, which means that they will use any import hooks
+* C extensions which agiza other modules have been changed to use
+  :func:`PyImport_ImportModule`, which means that they will use any agiza hooks
   that have been installed.  This is also encouraged for third-party extensions
-  that need to import some other module from C code.
+  that need to agiza some other module kutoka C code.
 
 * The size of the Unicode character database was shrunk by another 340K thanks
   to Fredrik Lundh.

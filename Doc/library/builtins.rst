@@ -18,13 +18,13 @@ but in which the built-in of that name is also needed.  For example, in a module
 that wants to implement an :func:`open` function that wraps the built-in
 :func:`open`, this module can be used directly::
 
-   import builtins
+   agiza builtins
 
    def open(path):
        f = builtins.open(path, 'r')
        return UpperCaser(f)
 
-   class UpperCaser:
+   kundi UpperCaser:
        '''Wrapper around a file that converts output to upper-case.'''
 
        def __init__(self, f):

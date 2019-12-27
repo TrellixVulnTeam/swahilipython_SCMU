@@ -6,7 +6,7 @@ Supporting Cyclic Garbage Collection
 ====================================
 
 Python's support for detecting and collecting garbage which involves circular
-references requires support from object types which are "containers" for other
+references requires support kutoka object types which are "containers" for other
 objects which may also be containers.  Types which do not store references to
 other objects, or which only store references to atomic types (such as numbers
 or strings), do not need to provide any explicit support for garbage
@@ -78,7 +78,7 @@ rules:
 
 .. c:function:: void PyObject_GC_UnTrack(void *op)
 
-   Remove the object *op* from the set of container objects tracked by the
+   Remove the object *op* kutoka the set of container objects tracked by the
    collector.  Note that :c:func:`PyObject_GC_Track` can be called again on
    this object to add it back to the set of tracked objects.  The deallocator
    (:c:member:`~PyTypeObject.tp_dealloc` handler) should call this for the object before any of
@@ -88,7 +88,7 @@ rules:
 .. versionchanged:: 3.8
 
    The :c:func:`_PyObject_GC_TRACK` and :c:func:`_PyObject_GC_UNTRACK` macros
-   have been removed from the public C API.
+   have been removed kutoka the public C API.
 
 The :c:member:`~PyTypeObject.tp_traverse` handler accepts a function parameter of this type:
 

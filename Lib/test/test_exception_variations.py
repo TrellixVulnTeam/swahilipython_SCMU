@@ -1,8 +1,8 @@
 
 agiza unittest
 
-class ExceptionTestCase(unittest.TestCase):
-    def test_try_except_else_finally(self):
+kundi ExceptionTestCase(unittest.TestCase):
+    eleza test_try_except_else_finally(self):
         hit_except = False
         hit_else = False
         hit_finally = False
@@ -20,7 +20,7 @@ class ExceptionTestCase(unittest.TestCase):
         self.assertTrue(hit_finally)
         self.assertFalse(hit_else)
 
-    def test_try_except_else_finally_no_exception(self):
+    eleza test_try_except_else_finally_no_exception(self):
         hit_except = False
         hit_else = False
         hit_finally = False
@@ -38,7 +38,7 @@ class ExceptionTestCase(unittest.TestCase):
         self.assertTrue(hit_finally)
         self.assertTrue(hit_else)
 
-    def test_try_except_finally(self):
+    eleza test_try_except_finally(self):
         hit_except = False
         hit_finally = False
 
@@ -52,7 +52,7 @@ class ExceptionTestCase(unittest.TestCase):
         self.assertTrue(hit_except)
         self.assertTrue(hit_finally)
 
-    def test_try_except_finally_no_exception(self):
+    eleza test_try_except_finally_no_exception(self):
         hit_except = False
         hit_finally = False
 
@@ -66,7 +66,7 @@ class ExceptionTestCase(unittest.TestCase):
         self.assertFalse(hit_except)
         self.assertTrue(hit_finally)
 
-    def test_try_except(self):
+    eleza test_try_except(self):
         hit_except = False
 
         try:
@@ -76,7 +76,7 @@ class ExceptionTestCase(unittest.TestCase):
 
         self.assertTrue(hit_except)
 
-    def test_try_except_no_exception(self):
+    eleza test_try_except_no_exception(self):
         hit_except = False
 
         try:
@@ -86,7 +86,7 @@ class ExceptionTestCase(unittest.TestCase):
 
         self.assertFalse(hit_except)
 
-    def test_try_except_else(self):
+    eleza test_try_except_else(self):
         hit_except = False
         hit_else = False
 
@@ -100,7 +100,7 @@ class ExceptionTestCase(unittest.TestCase):
         self.assertFalse(hit_else)
         self.assertTrue(hit_except)
 
-    def test_try_except_else_no_exception(self):
+    eleza test_try_except_else_no_exception(self):
         hit_except = False
         hit_else = False
 
@@ -114,7 +114,7 @@ class ExceptionTestCase(unittest.TestCase):
         self.assertFalse(hit_except)
         self.assertTrue(hit_else)
 
-    def test_try_finally_no_exception(self):
+    eleza test_try_finally_no_exception(self):
         hit_finally = False
 
         try:
@@ -124,7 +124,7 @@ class ExceptionTestCase(unittest.TestCase):
 
         self.assertTrue(hit_finally)
 
-    def test_nested(self):
+    eleza test_nested(self):
         hit_finally = False
         hit_inner_except = False
         hit_inner_finally = False
@@ -143,7 +143,7 @@ class ExceptionTestCase(unittest.TestCase):
         self.assertTrue(hit_inner_finally)
         self.assertTrue(hit_finally)
 
-    def test_nested_else(self):
+    eleza test_nested_else(self):
         hit_else = False
         hit_finally = False
         hit_except = False
@@ -172,5 +172,5 @@ class ExceptionTestCase(unittest.TestCase):
         self.assertTrue(hit_finally)
         self.assertTrue(hit_except)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

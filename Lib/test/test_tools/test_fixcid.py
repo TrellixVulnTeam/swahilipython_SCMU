@@ -10,8 +10,8 @@ agiza unittest
 
 skip_if_missing()
 
-class Test(unittest.TestCase):
-    def test_parse_strings(self):
+kundi Test(unittest.TestCase):
+    eleza test_parse_strings(self):
         old1 = 'int xx = "xx\\"xx"[xx];\n'
         old2 = "int xx = 'x\\'xx' + xx;\n"
         output = self.run_script(old1 + old2)
@@ -28,7 +28,7 @@ class Test(unittest.TestCase):
             "{new2}".format(old1=old1, old2=old2, new1=new1, new2=new2)
         )
 
-    def test_alter_comments(self):
+    eleza test_alter_comments(self):
         output = self.run_script(
             substfile=
                 "xx yy\n"
@@ -56,7 +56,7 @@ class Test(unittest.TestCase):
             "int bb;\n"
         )
 
-    def test_directory(self):
+    eleza test_directory(self):
         os.mkdir(support.TESTFN)
         self.addCleanup(support.rmtree, support.TESTFN)
         c_filename = os.path.join(support.TESTFN, "file.c")
@@ -73,7 +73,7 @@ class Test(unittest.TestCase):
             '> int yy;\n'.format(c_filename)
         )
 
-    def run_script(self, input="", *, args=("-",), substfile="xx yy\n"):
+    eleza run_script(self, input="", *, args=("-",), substfile="xx yy\n"):
         substfilename = support.TESTFN + ".subst"
         with open(substfilename, "w") as file:
             file.write(substfile)
@@ -89,4 +89,4 @@ class Test(unittest.TestCase):
                 runpy.run_path(script, run_name="__main__")
             except SystemExit as exit:
                 self.assertEqual(exit.code, 0)
-        return output.getvalue()
+        rudisha output.getvalue()

@@ -5,7 +5,7 @@ command ``venv``::
 
 Running this command creates the target directory (creating any parent
 directories that don't exist already) and places a ``pyvenv.cfg`` file in it
-with a ``home`` key pointing to the Python installation from which the command
+with a ``home`` key pointing to the Python installation kutoka which the command
 was run (a common name for the target directory is ``.venv``).  It also creates
 a ``bin`` (or ``Scripts`` on Windows) subdirectory containing a copy/symlink
 of the Python binary/binaries (as appropriate for the platform or arguments

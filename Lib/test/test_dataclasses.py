@@ -17,44 +17,44 @@ agiza typing       # Needed for the string "typing.ClassVar[int]" to work as an 
 agiza dataclasses  # Needed for the string "dataclasses.InitVar[int]" to work as an annotation.
 
 # Just any custom exception we can catch.
-class CustomError(Exception): pass
+kundi CustomError(Exception): pass
 
-class TestCase(unittest.TestCase):
-    def test_no_fields(self):
+kundi TestCase(unittest.TestCase):
+    eleza test_no_fields(self):
         @dataclass
-        class C:
+        kundi C:
             pass
 
         o = C()
         self.assertEqual(len(fields(C)), 0)
 
-    def test_no_fields_but_member_variable(self):
+    eleza test_no_fields_but_member_variable(self):
         @dataclass
-        class C:
+        kundi C:
             i = 0
 
         o = C()
         self.assertEqual(len(fields(C)), 0)
 
-    def test_one_field_no_default(self):
+    eleza test_one_field_no_default(self):
         @dataclass
-        class C:
+        kundi C:
             x: int
 
         o = C(42)
         self.assertEqual(o.x, 42)
 
-    def test_named_init_params(self):
+    eleza test_named_init_params(self):
         @dataclass
-        class C:
+        kundi C:
             x: int
 
         o = C(x=32)
         self.assertEqual(o.x, 32)
 
-    def test_two_fields_one_default(self):
+    eleza test_two_fields_one_default(self):
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: int = 0
 
@@ -66,53 +66,53 @@ class TestCase(unittest.TestCase):
                                     "non-default argument 'y' follows "
                                     "default argument"):
             @dataclass
-            class C:
+            kundi C:
                 x: int = 0
                 y: int
 
-        # A derived class adds a non-default field after a default one.
+        # A derived kundi adds a non-default field after a default one.
         with self.assertRaisesRegex(TypeError,
                                     "non-default argument 'y' follows "
                                     "default argument"):
             @dataclass
-            class B:
+            kundi B:
                 x: int = 0
 
             @dataclass
-            class C(B):
+            kundi C(B):
                 y: int
 
-        # Override a base class field and add a default to
+        # Override a base kundi field and add a default to
         #  a field which didn't use to have a default.
         with self.assertRaisesRegex(TypeError,
                                     "non-default argument 'y' follows "
                                     "default argument"):
             @dataclass
-            class B:
+            kundi B:
                 x: int
                 y: int
 
             @dataclass
-            class C(B):
+            kundi C(B):
                 x: int = 0
 
-    def test_overwrite_hash(self):
-        # Test that declaring this class isn't an error.  It should
+    eleza test_overwrite_hash(self):
+        # Test that declaring this kundi isn't an error.  It should
         #  use the user-provided __hash__.
         @dataclass(frozen=True)
-        class C:
+        kundi C:
             x: int
-            def __hash__(self):
-                return 301
+            eleza __hash__(self):
+                rudisha 301
         self.assertEqual(hash(C(100)), 301)
 
-        # Test that declaring this class isn't an error.  It should
+        # Test that declaring this kundi isn't an error.  It should
         #  use the generated __hash__.
         @dataclass(frozen=True)
-        class C:
+        kundi C:
             x: int
-            def __eq__(self, other):
-                return False
+            eleza __eq__(self, other):
+                rudisha False
         self.assertEqual(hash(C(100)), hash((100,)))
 
         # But this one should generate an exception, because with
@@ -120,45 +120,45 @@ class TestCase(unittest.TestCase):
         with self.assertRaisesRegex(TypeError,
                                     'Cannot overwrite attribute __hash__'):
             @dataclass(unsafe_hash=True)
-            class C:
-                def __hash__(self):
+            kundi C:
+                eleza __hash__(self):
                     pass
 
-        # Creating this class should not generate an exception,
-        #  because even though __hash__ exists before @dataclass is
+        # Creating this kundi should not generate an exception,
+        #  because even though __hash__ exists before @datakundi is
         #  called, (due to __eq__ being defined), since it's None
         #  that's okay.
         @dataclass(unsafe_hash=True)
-        class C:
+        kundi C:
             x: int
-            def __eq__(self):
+            eleza __eq__(self):
                 pass
         # The generated hash function works as we'd expect.
         self.assertEqual(hash(C(10)), hash((10,)))
 
-        # Creating this class should generate an exception, because
-        #  __hash__ exists and is not None, which it would be if it
+        # Creating this kundi should generate an exception, because
+        #  __hash__ exists and is not None, which it would be ikiwa it
         #  had been auto-generated due to __eq__ being defined.
         with self.assertRaisesRegex(TypeError,
                                     'Cannot overwrite attribute __hash__'):
             @dataclass(unsafe_hash=True)
-            class C:
+            kundi C:
                 x: int
-                def __eq__(self):
+                eleza __eq__(self):
                     pass
-                def __hash__(self):
+                eleza __hash__(self):
                     pass
 
-    def test_overwrite_fields_in_derived_class(self):
+    eleza test_overwrite_fields_in_derived_class(self):
         # Note that x kutoka C1 replaces x in Base, but the order remains
         #  the same as defined in Base.
         @dataclass
-        class Base:
+        kundi Base:
             x: Any = 15.0
             y: int = 0
 
         @dataclass
-        class C1(Base):
+        kundi C1(Base):
             z: int = 10
             x: int = 15
 
@@ -171,9 +171,9 @@ class TestCase(unittest.TestCase):
         o = C1(x=5)
         self.assertEqual(repr(o), 'TestCase.test_overwrite_fields_in_derived_class.<locals>.C1(x=5, y=0, z=10)')
 
-    def test_field_named_self(self):
+    eleza test_field_named_self(self):
         @dataclass
-        class C:
+        kundi C:
             self: str
         c=C('foo')
         self.assertEqual(c.self, 'foo')
@@ -183,9 +183,9 @@ class TestCase(unittest.TestCase):
         first = next(iter(sig.parameters))
         self.assertNotEqual('self', first)
 
-        # But we do use 'self' if no field named self.
+        # But we do use 'self' ikiwa no field named self.
         @dataclass
-        class C:
+        kundi C:
             selfx: str
 
         # Make sure the first parameter is named 'self'.
@@ -193,28 +193,28 @@ class TestCase(unittest.TestCase):
         first = next(iter(sig.parameters))
         self.assertEqual('self', first)
 
-    def test_field_named_object(self):
+    eleza test_field_named_object(self):
         @dataclass
-        class C:
+        kundi C:
             object: str
         c = C('foo')
         self.assertEqual(c.object, 'foo')
 
-    def test_field_named_object_frozen(self):
+    eleza test_field_named_object_frozen(self):
         @dataclass(frozen=True)
-        class C:
+        kundi C:
             object: str
         c = C('foo')
         self.assertEqual(c.object, 'foo')
 
-    def test_field_named_like_builtin(self):
+    eleza test_field_named_like_builtin(self):
         # Attribute names can shadow built-in names
         # since code generation is used.
         # Ensure that this is not happening.
         exclusions = {'None', 'True', 'False'}
         builtins_names = sorted(
             b for b in builtins.__dict__.keys()
-            if not b.startswith('__') and b not in exclusions
+            ikiwa not b.startswith('__') and b not in exclusions
         )
         attributes = [(name, str) for name in builtins_names]
         C = make_dataclass('C', attributes)
@@ -224,7 +224,7 @@ class TestCase(unittest.TestCase):
         for name in builtins_names:
             self.assertEqual(getattr(c, name), name)
 
-    def test_field_named_like_builtin_frozen(self):
+    eleza test_field_named_like_builtin_frozen(self):
         # Attribute names can shadow built-in names
         # since code generation is used.
         # Ensure that this is not happening
@@ -232,7 +232,7 @@ class TestCase(unittest.TestCase):
         exclusions = {'None', 'True', 'False'}
         builtins_names = sorted(
             b for b in builtins.__dict__.keys()
-            if not b.startswith('__') and b not in exclusions
+            ikiwa not b.startswith('__') and b not in exclusions
         )
         attributes = [(name, str) for name in builtins_names]
         C = make_dataclass('C', attributes, frozen=True)
@@ -242,14 +242,14 @@ class TestCase(unittest.TestCase):
         for name in builtins_names:
             self.assertEqual(getattr(c, name), name)
 
-    def test_0_field_compare(self):
+    eleza test_0_field_compare(self):
         # Ensure that order=False is the default.
         @dataclass
-        class C0:
+        kundi C0:
             pass
 
         @dataclass(order=False)
-        class C1:
+        kundi C1:
             pass
 
         for cls in [C0, C1]:
@@ -265,19 +265,19 @@ class TestCase(unittest.TestCase):
                             fn(cls(), cls())
 
         @dataclass(order=True)
-        class C:
+        kundi C:
             pass
         self.assertLessEqual(C(), C())
         self.assertGreaterEqual(C(), C())
 
-    def test_1_field_compare(self):
+    eleza test_1_field_compare(self):
         # Ensure that order=False is the default.
         @dataclass
-        class C0:
+        kundi C0:
             x: int
 
         @dataclass(order=False)
-        class C1:
+        kundi C1:
             x: int
 
         for cls in [C0, C1]:
@@ -294,7 +294,7 @@ class TestCase(unittest.TestCase):
                             fn(cls(0), cls(0))
 
         @dataclass(order=True)
-        class C:
+        kundi C:
             x: int
         self.assertLess(C(0), C(1))
         self.assertLessEqual(C(0), C(1))
@@ -303,15 +303,15 @@ class TestCase(unittest.TestCase):
         self.assertGreaterEqual(C(1), C(0))
         self.assertGreaterEqual(C(1), C(1))
 
-    def test_simple_compare(self):
+    eleza test_simple_compare(self):
         # Ensure that order=False is the default.
         @dataclass
-        class C0:
+        kundi C0:
             x: int
             y: int
 
         @dataclass(order=False)
-        class C1:
+        kundi C1:
             x: int
             y: int
 
@@ -331,7 +331,7 @@ class TestCase(unittest.TestCase):
                             fn(cls(0, 0), cls(0, 0))
 
         @dataclass(order=True)
-        class C:
+        kundi C:
             x: int
             y: int
 
@@ -357,15 +357,15 @@ class TestCase(unittest.TestCase):
                 self.assertTrue(fn(C(1, 0), C(0, 1)))
                 self.assertTrue(fn(C(1, 1), C(1, 0)))
 
-    def test_compare_subclasses(self):
-        # Comparisons fail for subclasses, even if no fields
+    eleza test_compare_subclasses(self):
+        # Comparisons fail for subclasses, even ikiwa no fields
         #  are added.
         @dataclass
-        class B:
+        kundi B:
             i: int
 
         @dataclass
-        class C(B):
+        kundi C(B):
             pass
 
         for idx, (fn, expected) in enumerate([(lambda a, b: a == b, False),
@@ -382,7 +382,7 @@ class TestCase(unittest.TestCase):
                                             "not supported between instances of 'B' and 'C'"):
                     fn(B(0), C(0))
 
-    def test_eq_order(self):
+    eleza test_eq_order(self):
         # Test combining eq and order.
         for (eq,    order, result   ) in [
             (False, False, 'neither'),
@@ -391,29 +391,29 @@ class TestCase(unittest.TestCase):
             (True,  True,  'both'),
         ]:
             with self.subTest(eq=eq, order=order):
-                if result == 'exception':
-                    with self.assertRaisesRegex(ValueError, 'eq must be true if order is true'):
+                ikiwa result == 'exception':
+                    with self.assertRaisesRegex(ValueError, 'eq must be true ikiwa order is true'):
                         @dataclass(eq=eq, order=order)
-                        class C:
+                        kundi C:
                             pass
                 else:
                     @dataclass(eq=eq, order=order)
-                    class C:
+                    kundi C:
                         pass
 
-                    if result == 'neither':
+                    ikiwa result == 'neither':
                         self.assertNotIn('__eq__', C.__dict__)
                         self.assertNotIn('__lt__', C.__dict__)
                         self.assertNotIn('__le__', C.__dict__)
                         self.assertNotIn('__gt__', C.__dict__)
                         self.assertNotIn('__ge__', C.__dict__)
-                    elif result == 'both':
+                    elikiwa result == 'both':
                         self.assertIn('__eq__', C.__dict__)
                         self.assertIn('__lt__', C.__dict__)
                         self.assertIn('__le__', C.__dict__)
                         self.assertIn('__gt__', C.__dict__)
                         self.assertIn('__ge__', C.__dict__)
-                    elif result == 'eq_only':
+                    elikiwa result == 'eq_only':
                         self.assertIn('__eq__', C.__dict__)
                         self.assertNotIn('__lt__', C.__dict__)
                         self.assertNotIn('__le__', C.__dict__)
@@ -422,9 +422,9 @@ class TestCase(unittest.TestCase):
                     else:
                         assert False, f'unknown result {result!r}'
 
-    def test_field_no_default(self):
+    eleza test_field_no_default(self):
         @dataclass
-        class C:
+        kundi C:
             x: int = field()
 
         self.assertEqual(C(5).x, 5)
@@ -434,10 +434,10 @@ class TestCase(unittest.TestCase):
                                     "positional argument: 'x'"):
             C()
 
-    def test_field_default(self):
+    eleza test_field_default(self):
         default = object()
         @dataclass
-        class C:
+        kundi C:
             x: object = field(default=default)
 
         self.assertIs(C.x, default)
@@ -445,15 +445,15 @@ class TestCase(unittest.TestCase):
         self.assertEqual(c.x, 10)
 
         # If we delete the instance attribute, we should then see the
-        #  class attribute.
+        #  kundi attribute.
         del c.x
         self.assertIs(c.x, default)
 
         self.assertIs(C().x, default)
 
-    def test_not_in_repr(self):
+    eleza test_not_in_repr(self):
         @dataclass
-        class C:
+        kundi C:
             x: int = field(repr=False)
         with self.assertRaises(TypeError):
             C()
@@ -461,15 +461,15 @@ class TestCase(unittest.TestCase):
         self.assertEqual(repr(c), 'TestCase.test_not_in_repr.<locals>.C()')
 
         @dataclass
-        class C:
+        kundi C:
             x: int = field(repr=False)
             y: int
         c = C(10, 20)
         self.assertEqual(repr(c), 'TestCase.test_not_in_repr.<locals>.C(y=20)')
 
-    def test_not_in_compare(self):
+    eleza test_not_in_compare(self):
         @dataclass
-        class C:
+        kundi C:
             x: int = 0
             y: int = field(compare=False, default=4)
 
@@ -478,7 +478,7 @@ class TestCase(unittest.TestCase):
         self.assertNotEqual(C(3), C(4, 10))
         self.assertNotEqual(C(3, 10), C(4, 10))
 
-    def test_hash_field_rules(self):
+    eleza test_hash_field_rules(self):
         # Test all 6 cases of:
         #  hash=True/False/None
         #  compare=True/False
@@ -492,29 +492,29 @@ class TestCase(unittest.TestCase):
             ]:
             with self.subTest(hash=hash_, compare=compare):
                 @dataclass(unsafe_hash=True)
-                class C:
+                kundi C:
                     x: int = field(compare=compare, hash=hash_, default=5)
 
-                if result == 'field':
+                ikiwa result == 'field':
                     # __hash__ contains the field.
                     self.assertEqual(hash(C(5)), hash((5,)))
-                elif result == 'absent':
+                elikiwa result == 'absent':
                     # The field is not present in the hash.
                     self.assertEqual(hash(C(5)), hash(()))
                 else:
                     assert False, f'unknown result {result!r}'
 
-    def test_init_false_no_default(self):
+    eleza test_init_false_no_default(self):
         # If init=False and no default value, then the field won't be
         #  present in the instance.
         @dataclass
-        class C:
+        kundi C:
             x: int = field(init=False)
 
         self.assertNotIn('x', C().__dict__)
 
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: int = 0
             z: int = field(init=False)
@@ -523,9 +523,9 @@ class TestCase(unittest.TestCase):
         self.assertNotIn('z', C(0).__dict__)
         self.assertEqual(vars(C(5)), {'t': 10, 'x': 5, 'y': 0})
 
-    def test_class_marker(self):
+    eleza test_class_marker(self):
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: str = field(init=False, default=None)
             z: str = field(repr=False)
@@ -556,15 +556,15 @@ class TestCase(unittest.TestCase):
         self.assertTrue (the_fields[2].init)
         self.assertFalse(the_fields[2].repr)
 
-    def test_field_order(self):
+    eleza test_field_order(self):
         @dataclass
-        class B:
+        kundi B:
             a: str = 'B:a'
             b: str = 'B:b'
             c: str = 'B:c'
 
         @dataclass
-        class C(B):
+        kundi C(B):
             b: str = 'C:b'
 
         self.assertEqual([(f.name, f.default) for f in fields(C)],
@@ -573,7 +573,7 @@ class TestCase(unittest.TestCase):
                           ('c', 'B:c')])
 
         @dataclass
-        class D(B):
+        kundi D(B):
             c: str = 'D:c'
 
         self.assertEqual([(f.name, f.default) for f in fields(D)],
@@ -582,7 +582,7 @@ class TestCase(unittest.TestCase):
                           ('c', 'D:c')])
 
         @dataclass
-        class E(D):
+        kundi E(D):
             a: str = 'E:a'
             d: str = 'E:d'
 
@@ -592,12 +592,12 @@ class TestCase(unittest.TestCase):
                           ('c', 'D:c'),
                           ('d', 'E:d')])
 
-    def test_class_attrs(self):
-        # We only have a class attribute if a default value is
+    eleza test_class_attrs(self):
+        # We only have a kundi attribute ikiwa a default value is
         #  specified, either directly or via a field with a default.
         default = object()
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: int = field(repr=False)
             z: object = default
@@ -608,7 +608,7 @@ class TestCase(unittest.TestCase):
         self.assertIs   (C.z, default)
         self.assertEqual(C.t, 100)
 
-    def test_disallowed_mutable_defaults(self):
+    eleza test_disallowed_mutable_defaults(self):
         # For the known types, don't allow mutable default values.
         for typ, empty, non_empty in [(list, [], [1]),
                                       (dict, {}, {0:1}),
@@ -620,7 +620,7 @@ class TestCase(unittest.TestCase):
                                             f'mutable default {typ} for field '
                                             'x is not allowed'):
                     @dataclass
-                    class Point:
+                    kundi Point:
                         x: typ = empty
 
 
@@ -629,39 +629,39 @@ class TestCase(unittest.TestCase):
                                             f'mutable default {typ} for field '
                                             'y is not allowed'):
                     @dataclass
-                    class Point:
+                    kundi Point:
                         y: typ = non_empty
 
                 # Check subtypes also fail.
-                class Subclass(typ): pass
+                kundi Subclass(typ): pass
 
                 with self.assertRaisesRegex(ValueError,
                                             f"mutable default .*Subclass'>"
                                             ' for field z is not allowed'
                                             ):
                     @dataclass
-                    class Point:
+                    kundi Point:
                         z: typ = Subclass()
 
                 # Because this is a ClassVar, it can be mutable.
                 @dataclass
-                class C:
+                kundi C:
                     z: ClassVar[typ] = typ()
 
                 # Because this is a ClassVar, it can be mutable.
                 @dataclass
-                class C:
+                kundi C:
                     x: ClassVar[typ] = Subclass()
 
-    def test_deliberately_mutable_defaults(self):
+    eleza test_deliberately_mutable_defaults(self):
         # If a mutable default isn't in the known list of
         #  (list, dict, set), then it's okay.
-        class Mutable:
-            def __init__(self):
+        kundi Mutable:
+            eleza __init__(self):
                 self.l = []
 
         @dataclass
-        class C:
+        kundi C:
             x: Mutable
 
         # These 2 instances will share this value of x.
@@ -674,40 +674,40 @@ class TestCase(unittest.TestCase):
         self.assertEqual(o1.x.l, [1, 2])
         self.assertIs(o1.x, o2.x)
 
-    def test_no_options(self):
+    eleza test_no_options(self):
         # Call with dataclass().
         @dataclass()
-        class C:
+        kundi C:
             x: int
 
         self.assertEqual(C(42).x, 42)
 
-    def test_not_tuple(self):
+    eleza test_not_tuple(self):
         # Make sure we can't be compared to a tuple.
         @dataclass
-        class Point:
+        kundi Point:
             x: int
             y: int
         self.assertNotEqual(Point(1, 2), (1, 2))
 
         # And that we can't compare to another unrelated dataclass.
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: int
         self.assertNotEqual(Point(1, 3), C(1, 3))
 
-    def test_not_other_dataclass(self):
+    eleza test_not_other_dataclass(self):
         # Test that some of the problems with namedtuple don't happen
         #  here.
         @dataclass
-        class Point3D:
+        kundi Point3D:
             x: int
             y: int
             z: int
 
         @dataclass
-        class Date:
+        kundi Date:
             year: int
             month: int
             day: int
@@ -719,22 +719,22 @@ class TestCase(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, 'unpack'):
             x, y, z = Point3D(4, 5, 6)
 
-        # Make sure another class with the same field names isn't
+        # Make sure another kundi with the same field names isn't
         #  equal.
         @dataclass
-        class Point3Dv1:
+        kundi Point3Dv1:
             x: int = 0
             y: int = 0
             z: int = 0
         self.assertNotEqual(Point3D(0, 0, 0), Point3Dv1())
 
-    def test_function_annotations(self):
-        # Some dummy class and instance to use as a default.
-        class F:
+    eleza test_function_annotations(self):
+        # Some dummy kundi and instance to use as a default.
+        kundi F:
             pass
         f = F()
 
-        def validate_class(cls):
+        eleza validate_class(cls):
             # First, check __annotations__, even though they're not
             #  function annotations.
             self.assertEqual(cls.__annotations__['i'], int)
@@ -746,7 +746,7 @@ class TestCase(unittest.TestCase):
             # Verify __init__.
 
             signature = inspect.signature(cls.__init__)
-            # Check the return type, should be None.
+            # Check the rudisha type, should be None.
             self.assertIs(signature.return_annotation, None)
 
             # Check each parameter.
@@ -778,7 +778,7 @@ class TestCase(unittest.TestCase):
 
 
         @dataclass
-        class C:
+        kundi C:
             i: int
             j: str
             k: F = f
@@ -789,7 +789,7 @@ class TestCase(unittest.TestCase):
 
         # Now repeat with __hash__.
         @dataclass(frozen=True, unsafe_hash=True)
-        class C:
+        kundi C:
             i: int
             j: str
             k: F = f
@@ -798,11 +798,11 @@ class TestCase(unittest.TestCase):
 
         validate_class(C)
 
-    def test_missing_default(self):
+    eleza test_missing_default(self):
         # Test that MISSING works the same as a default not being
         #  specified.
         @dataclass
-        class C:
+        kundi C:
             x: int=field(default=MISSING)
         with self.assertRaisesRegex(TypeError,
                                     r'__init__\(\) missing 1 required '
@@ -811,7 +811,7 @@ class TestCase(unittest.TestCase):
         self.assertNotIn('x', C.__dict__)
 
         @dataclass
-        class D:
+        kundi D:
             x: int
         with self.assertRaisesRegex(TypeError,
                                     r'__init__\(\) missing 1 required '
@@ -819,12 +819,12 @@ class TestCase(unittest.TestCase):
             D()
         self.assertNotIn('x', D.__dict__)
 
-    def test_missing_default_factory(self):
+    eleza test_missing_default_factory(self):
         # Test that MISSING works the same as a default factory not
         #  being specified (which is really the same as a default not
         #  being specified, too).
         @dataclass
-        class C:
+        kundi C:
             x: int=field(default_factory=MISSING)
         with self.assertRaisesRegex(TypeError,
                                     r'__init__\(\) missing 1 required '
@@ -833,7 +833,7 @@ class TestCase(unittest.TestCase):
         self.assertNotIn('x', C.__dict__)
 
         @dataclass
-        class D:
+        kundi D:
             x: int=field(default=MISSING, default_factory=MISSING)
         with self.assertRaisesRegex(TypeError,
                                     r'__init__\(\) missing 1 required '
@@ -841,37 +841,37 @@ class TestCase(unittest.TestCase):
             D()
         self.assertNotIn('x', D.__dict__)
 
-    def test_missing_repr(self):
+    eleza test_missing_repr(self):
         self.assertIn('MISSING_TYPE object', repr(MISSING))
 
-    def test_dont_include_other_annotations(self):
+    eleza test_dont_include_other_annotations(self):
         @dataclass
-        class C:
+        kundi C:
             i: int
-            def foo(self) -> int:
-                return 4
+            eleza foo(self) -> int:
+                rudisha 4
             @property
-            def bar(self) -> int:
-                return 5
+            eleza bar(self) -> int:
+                rudisha 5
         self.assertEqual(list(C.__annotations__), ['i'])
         self.assertEqual(C(10).foo(), 4)
         self.assertEqual(C(10).bar, 5)
         self.assertEqual(C(10).i, 10)
 
-    def test_post_init(self):
+    eleza test_post_init(self):
         # Just make sure it gets called
         @dataclass
-        class C:
-            def __post_init__(self):
+        kundi C:
+            eleza __post_init__(self):
                 raise CustomError()
         with self.assertRaises(CustomError):
             C()
 
         @dataclass
-        class C:
+        kundi C:
             i: int = 10
-            def __post_init__(self):
-                if self.i == 10:
+            eleza __post_init__(self):
+                ikiwa self.i == 10:
                     raise CustomError()
         with self.assertRaises(CustomError):
             C()
@@ -881,69 +881,69 @@ class TestCase(unittest.TestCase):
 
         # If there's not an __init__, then post-init won't get called.
         @dataclass(init=False)
-        class C:
-            def __post_init__(self):
+        kundi C:
+            eleza __post_init__(self):
                 raise CustomError()
-        # Creating the class won't raise
+        # Creating the kundi won't raise
         C()
 
         @dataclass
-        class C:
+        kundi C:
             x: int = 0
-            def __post_init__(self):
+            eleza __post_init__(self):
                 self.x *= 2
         self.assertEqual(C().x, 0)
         self.assertEqual(C(2).x, 4)
 
-        # Make sure that if we're frozen, post-init can't set
+        # Make sure that ikiwa we're frozen, post-init can't set
         #  attributes.
         @dataclass(frozen=True)
-        class C:
+        kundi C:
             x: int = 0
-            def __post_init__(self):
+            eleza __post_init__(self):
                 self.x *= 2
         with self.assertRaises(FrozenInstanceError):
             C()
 
-    def test_post_init_super(self):
+    eleza test_post_init_super(self):
         # Make sure super() post-init isn't called by default.
-        class B:
-            def __post_init__(self):
+        kundi B:
+            eleza __post_init__(self):
                 raise CustomError()
 
         @dataclass
-        class C(B):
-            def __post_init__(self):
+        kundi C(B):
+            eleza __post_init__(self):
                 self.x = 5
 
         self.assertEqual(C().x, 5)
 
         # Now call super(), and it will raise.
         @dataclass
-        class C(B):
-            def __post_init__(self):
+        kundi C(B):
+            eleza __post_init__(self):
                 super().__post_init__()
 
         with self.assertRaises(CustomError):
             C()
 
-        # Make sure post-init is called, even if not defined in our
+        # Make sure post-init is called, even ikiwa not defined in our
         #  class.
         @dataclass
-        class C(B):
+        kundi C(B):
             pass
 
         with self.assertRaises(CustomError):
             C()
 
-    def test_post_init_staticmethod(self):
+    eleza test_post_init_staticmethod(self):
         flag = False
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: int
             @staticmethod
-            def __post_init__():
+            eleza __post_init__():
                 nonlocal flag
                 flag = True
 
@@ -952,14 +952,14 @@ class TestCase(unittest.TestCase):
         self.assertEqual((c.x, c.y), (3, 4))
         self.assertTrue(flag)
 
-    def test_post_init_classmethod(self):
+    eleza test_post_init_classmethod(self):
         @dataclass
-        class C:
+        kundi C:
             flag = False
             x: int
             y: int
             @classmethod
-            def __post_init__(cls):
+            eleza __post_init__(cls):
                 cls.flag = True
 
         self.assertFalse(C.flag)
@@ -967,10 +967,10 @@ class TestCase(unittest.TestCase):
         self.assertEqual((c.x, c.y), (3, 4))
         self.assertTrue(C.flag)
 
-    def test_class_var(self):
+    eleza test_class_var(self):
         # Make sure ClassVars are ignored in __init__, __repr__, etc.
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: int = 10
             z: ClassVar[int] = 1000
@@ -995,41 +995,41 @@ class TestCase(unittest.TestCase):
         self.assertEqual(c.t, 3000)
         self.assertEqual(c.s, 4000)
 
-    def test_class_var_no_default(self):
+    eleza test_class_var_no_default(self):
         # If a ClassVar has no default value, it should not be set on the class.
         @dataclass
-        class C:
+        kundi C:
             x: ClassVar[int]
 
         self.assertNotIn('x', C.__dict__)
 
-    def test_class_var_default_factory(self):
+    eleza test_class_var_default_factory(self):
         # It makes no sense for a ClassVar to have a default factory. When
         #  would it be called? Call it yourself, since it's class-wide.
         with self.assertRaisesRegex(TypeError,
                                     'cannot have a default factory'):
             @dataclass
-            class C:
+            kundi C:
                 x: ClassVar[int] = field(default_factory=int)
 
             self.assertNotIn('x', C.__dict__)
 
-    def test_class_var_with_default(self):
+    eleza test_class_var_with_default(self):
         # If a ClassVar has a default value, it should be set on the class.
         @dataclass
-        class C:
+        kundi C:
             x: ClassVar[int] = 10
         self.assertEqual(C.x, 10)
 
         @dataclass
-        class C:
+        kundi C:
             x: ClassVar[int] = field(default=10)
         self.assertEqual(C.x, 10)
 
-    def test_class_var_frozen(self):
-        # Make sure ClassVars work even if we're frozen.
+    eleza test_class_var_frozen(self):
+        # Make sure ClassVars work even ikiwa we're frozen.
         @dataclass(frozen=True)
-        class C:
+        kundi C:
             x: int
             y: int = 10
             z: ClassVar[int] = 1000
@@ -1053,51 +1053,51 @@ class TestCase(unittest.TestCase):
         self.assertEqual(c.w, 2000)
         self.assertEqual(c.t, 3000)
 
-    def test_init_var_no_default(self):
+    eleza test_init_var_no_default(self):
         # If an InitVar has no default value, it should not be set on the class.
         @dataclass
-        class C:
+        kundi C:
             x: InitVar[int]
 
         self.assertNotIn('x', C.__dict__)
 
-    def test_init_var_default_factory(self):
+    eleza test_init_var_default_factory(self):
         # It makes no sense for an InitVar to have a default factory. When
         #  would it be called? Call it yourself, since it's class-wide.
         with self.assertRaisesRegex(TypeError,
                                     'cannot have a default factory'):
             @dataclass
-            class C:
+            kundi C:
                 x: InitVar[int] = field(default_factory=int)
 
             self.assertNotIn('x', C.__dict__)
 
-    def test_init_var_with_default(self):
+    eleza test_init_var_with_default(self):
         # If an InitVar has a default value, it should be set on the class.
         @dataclass
-        class C:
+        kundi C:
             x: InitVar[int] = 10
         self.assertEqual(C.x, 10)
 
         @dataclass
-        class C:
+        kundi C:
             x: InitVar[int] = field(default=10)
         self.assertEqual(C.x, 10)
 
-    def test_init_var(self):
+    eleza test_init_var(self):
         @dataclass
-        class C:
+        kundi C:
             x: int = None
             init_param: InitVar[int] = None
 
-            def __post_init__(self, init_param):
-                if self.x is None:
+            eleza __post_init__(self, init_param):
+                ikiwa self.x is None:
                     self.x = init_param*2
 
         c = C(init_param=10)
         self.assertEqual(c.x, 20)
 
-    def test_init_var_preserve_type(self):
+    eleza test_init_var_preserve_type(self):
         self.assertEqual(InitVar[int].type, int)
 
         # Make sure the repr is correct.
@@ -1105,12 +1105,12 @@ class TestCase(unittest.TestCase):
         self.assertEqual(repr(InitVar[List[int]]),
                          'dataclasses.InitVar[typing.List[int]]')
 
-    def test_init_var_inheritance(self):
-        # Note that this deliberately tests that a dataclass need not
-        #  have a __post_init__ function if it has an InitVar field.
+    eleza test_init_var_inheritance(self):
+        # Note that this deliberately tests that a datakundi need not
+        #  have a __post_init__ function ikiwa it has an InitVar field.
         #  It could just be used in a derived class, as shown here.
         @dataclass
-        class Base:
+        kundi Base:
             x: int
             init_base: InitVar[int]
 
@@ -1120,21 +1120,21 @@ class TestCase(unittest.TestCase):
         self.assertEqual(vars(b), {'x': 0})
 
         @dataclass
-        class C(Base):
+        kundi C(Base):
             y: int
             init_derived: InitVar[int]
 
-            def __post_init__(self, init_base, init_derived):
+            eleza __post_init__(self, init_base, init_derived):
                 self.x = self.x + init_base
                 self.y = self.y + init_derived
 
         c = C(10, 11, 50, 51)
         self.assertEqual(vars(c), {'x': 21, 'y': 101})
 
-    def test_default_factory(self):
+    eleza test_default_factory(self):
         # Test a factory that returns a new list.
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: list = field(default_factory=list)
 
@@ -1149,7 +1149,7 @@ class TestCase(unittest.TestCase):
         # Test a factory that returns a shared list.
         l = []
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: list = field(default_factory=lambda: l)
 
@@ -1164,36 +1164,36 @@ class TestCase(unittest.TestCase):
         # Test various other field flags.
         # repr
         @dataclass
-        class C:
+        kundi C:
             x: list = field(default_factory=list, repr=False)
         self.assertEqual(repr(C()), 'TestCase.test_default_factory.<locals>.C()')
         self.assertEqual(C().x, [])
 
         # hash
         @dataclass(unsafe_hash=True)
-        class C:
+        kundi C:
             x: list = field(default_factory=list, hash=False)
         self.assertEqual(astuple(C()), ([],))
         self.assertEqual(hash(C()), hash(()))
 
         # init (see also test_default_factory_with_no_init)
         @dataclass
-        class C:
+        kundi C:
             x: list = field(default_factory=list, init=False)
         self.assertEqual(astuple(C()), ([],))
 
         # compare
         @dataclass
-        class C:
+        kundi C:
             x: list = field(default_factory=list, compare=False)
         self.assertEqual(C(), C([1]))
 
-    def test_default_factory_with_no_init(self):
+    eleza test_default_factory_with_no_init(self):
         # We need a factory with a side effect.
         factory = Mock()
 
         @dataclass
-        class C:
+        kundi C:
             x: list = field(default_factory=factory, init=False)
 
         # Make sure the default factory is called for each new instance.
@@ -1202,16 +1202,16 @@ class TestCase(unittest.TestCase):
         C().x
         self.assertEqual(factory.call_count, 2)
 
-    def test_default_factory_not_called_if_value_given(self):
-        # We need a factory that we can test if it's been called.
+    eleza test_default_factory_not_called_if_value_given(self):
+        # We need a factory that we can test ikiwa it's been called.
         factory = Mock()
 
         @dataclass
-        class C:
+        kundi C:
             x: int = field(default_factory=factory)
 
-        # Make sure that if a field has a default factory function,
-        #  it's not called if a value is specified.
+        # Make sure that ikiwa a field has a default factory function,
+        #  it's not called ikiwa a value is specified.
         C().x
         self.assertEqual(factory.call_count, 1)
         self.assertEqual(C(10).x, 10)
@@ -1219,14 +1219,14 @@ class TestCase(unittest.TestCase):
         C().x
         self.assertEqual(factory.call_count, 2)
 
-    def test_default_factory_derived(self):
+    eleza test_default_factory_derived(self):
         # See bpo-32896.
         @dataclass
-        class Foo:
+        kundi Foo:
             x: dict = field(default_factory=dict)
 
         @dataclass
-        class Bar(Foo):
+        kundi Bar(Foo):
             y: int = 1
 
         self.assertEqual(Foo().x, {})
@@ -1234,23 +1234,23 @@ class TestCase(unittest.TestCase):
         self.assertEqual(Bar().y, 1)
 
         @dataclass
-        class Baz(Foo):
+        kundi Baz(Foo):
             pass
         self.assertEqual(Baz().x, {})
 
-    def test_intermediate_non_dataclass(self):
-        # Test that an intermediate class that defines
+    eleza test_intermediate_non_dataclass(self):
+        # Test that an intermediate kundi that defines
         #  annotations does not define fields.
 
         @dataclass
-        class A:
+        kundi A:
             x: int
 
-        class B(A):
+        kundi B(A):
             y: int
 
         @dataclass
-        class C(B):
+        kundi C(B):
             z: int
 
         c = C(1, 3)
@@ -1261,22 +1261,22 @@ class TestCase(unittest.TestCase):
                                     'object has no attribute'):
             c.y
 
-        # And if we again derive a non-dataclass, no fields are added.
-        class D(C):
+        # And ikiwa we again derive a non-dataclass, no fields are added.
+        kundi D(C):
             t: int
         d = D(4, 5)
         self.assertEqual((d.x, d.z), (4, 5))
 
-    def test_classvar_default_factory(self):
+    eleza test_classvar_default_factory(self):
         # It's an error for a ClassVar to have a factory function.
         with self.assertRaisesRegex(TypeError,
                                     'cannot have a default factory'):
             @dataclass
-            class C:
+            kundi C:
                 x: ClassVar[int] = field(default_factory=int)
 
-    def test_is_dataclass(self):
-        class NotDataClass:
+    eleza test_is_dataclass(self):
+        kundi NotDataClass:
             pass
 
         self.assertFalse(is_dataclass(0))
@@ -1285,11 +1285,11 @@ class TestCase(unittest.TestCase):
         self.assertFalse(is_dataclass(NotDataClass()))
 
         @dataclass
-        class C:
+        kundi C:
             x: int
 
         @dataclass
-        class D:
+        kundi D:
             d: C
             e: int
 
@@ -1302,16 +1302,16 @@ class TestCase(unittest.TestCase):
         self.assertTrue(is_dataclass(d.d))
         self.assertFalse(is_dataclass(d.e))
 
-    def test_is_dataclass_when_getattr_always_returns(self):
+    eleza test_is_dataclass_when_getattr_always_returns(self):
         # See bpo-37868.
-        class A:
-            def __getattr__(self, key):
-                return 0
+        kundi A:
+            eleza __getattr__(self, key):
+                rudisha 0
         self.assertFalse(is_dataclass(A))
         a = A()
 
         # Also test for an instance attribute.
-        class B:
+        kundi B:
             pass
         b = B()
         b.__dataclass_fields__ = []
@@ -1321,39 +1321,39 @@ class TestCase(unittest.TestCase):
                 self.assertFalse(is_dataclass(obj))
 
                 # Indirect tests for _is_dataclass_instance().
-                with self.assertRaisesRegex(TypeError, 'should be called on dataclass instances'):
+                with self.assertRaisesRegex(TypeError, 'should be called on datakundi instances'):
                     asdict(obj)
-                with self.assertRaisesRegex(TypeError, 'should be called on dataclass instances'):
+                with self.assertRaisesRegex(TypeError, 'should be called on datakundi instances'):
                     astuple(obj)
-                with self.assertRaisesRegex(TypeError, 'should be called on dataclass instances'):
+                with self.assertRaisesRegex(TypeError, 'should be called on datakundi instances'):
                     replace(obj, x=0)
 
-    def test_helper_fields_with_class_instance(self):
-        # Check that we can call fields() on either a class or instance,
+    eleza test_helper_fields_with_class_instance(self):
+        # Check that we can call fields() on either a kundi or instance,
         #  and get back the same thing.
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: float
 
         self.assertEqual(fields(C), fields(C(0, 0.0)))
 
-    def test_helper_fields_exception(self):
-        # Check that TypeError is raised if not passed a dataclass or
+    eleza test_helper_fields_exception(self):
+        # Check that TypeError is raised ikiwa not passed a datakundi or
         #  instance.
-        with self.assertRaisesRegex(TypeError, 'dataclass type or instance'):
+        with self.assertRaisesRegex(TypeError, 'datakundi type or instance'):
             fields(0)
 
-        class C: pass
-        with self.assertRaisesRegex(TypeError, 'dataclass type or instance'):
+        kundi C: pass
+        with self.assertRaisesRegex(TypeError, 'datakundi type or instance'):
             fields(C)
-        with self.assertRaisesRegex(TypeError, 'dataclass type or instance'):
+        with self.assertRaisesRegex(TypeError, 'datakundi type or instance'):
             fields(C())
 
-    def test_helper_asdict(self):
-        # Basic tests for asdict(), it should return a new dictionary.
+    eleza test_helper_asdict(self):
+        # Basic tests for asdict(), it should rudisha a new dictionary.
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: int
         c = C(1, 2)
@@ -1365,20 +1365,20 @@ class TestCase(unittest.TestCase):
         self.assertEqual(asdict(c), {'x': 42, 'y': 2})
         self.assertIs(type(asdict(c)), dict)
 
-    def test_helper_asdict_raises_on_classes(self):
-        # asdict() should raise on a class object.
+    eleza test_helper_asdict_raises_on_classes(self):
+        # asdict() should raise on a kundi object.
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: int
-        with self.assertRaisesRegex(TypeError, 'dataclass instance'):
+        with self.assertRaisesRegex(TypeError, 'datakundi instance'):
             asdict(C)
-        with self.assertRaisesRegex(TypeError, 'dataclass instance'):
+        with self.assertRaisesRegex(TypeError, 'datakundi instance'):
             asdict(int)
 
-    def test_helper_asdict_copy_values(self):
+    eleza test_helper_asdict_copy_values(self):
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: List[int] = field(default_factory=list)
         initial = []
@@ -1391,13 +1391,13 @@ class TestCase(unittest.TestCase):
         d['y'].append(1)
         self.assertEqual(c.y, [])
 
-    def test_helper_asdict_nested(self):
+    eleza test_helper_asdict_nested(self):
         @dataclass
-        class UserId:
+        kundi UserId:
             token: int
             group: int
         @dataclass
-        class User:
+        kundi User:
             name: str
             id: UserId
         u = User('Joe', UserId(123, 1))
@@ -1408,21 +1408,21 @@ class TestCase(unittest.TestCase):
         self.assertEqual(asdict(u), {'name': 'Joe',
                                      'id': {'token': 123, 'group': 2}})
 
-    def test_helper_asdict_builtin_containers(self):
+    eleza test_helper_asdict_builtin_containers(self):
         @dataclass
-        class User:
+        kundi User:
             name: str
             id: int
         @dataclass
-        class GroupList:
+        kundi GroupList:
             id: int
             users: List[User]
         @dataclass
-        class GroupTuple:
+        kundi GroupTuple:
             id: int
             users: Tuple[User, ...]
         @dataclass
-        class GroupDict:
+        kundi GroupDict:
             id: int
             users: Dict[str, User]
         a = User('Alice', 1)
@@ -1437,21 +1437,21 @@ class TestCase(unittest.TestCase):
         self.assertEqual(asdict(gd), {'id': 0, 'users': {'first': {'name': 'Alice', 'id': 1},
                                                          'second': {'name': 'Bob', 'id': 2}}})
 
-    def test_helper_asdict_builtin_object_containers(self):
+    eleza test_helper_asdict_builtin_object_containers(self):
         @dataclass
-        class Child:
+        kundi Child:
             d: object
 
         @dataclass
-        class Parent:
+        kundi Parent:
             child: Child
 
         self.assertEqual(asdict(Parent(Child([1]))), {'child': {'d': [1]}})
         self.assertEqual(asdict(Parent(Child({1: 2}))), {'child': {'d': {1: 2}}})
 
-    def test_helper_asdict_factory(self):
+    eleza test_helper_asdict_factory(self):
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: int
         c = C(1, 2)
@@ -1463,10 +1463,10 @@ class TestCase(unittest.TestCase):
         self.assertEqual(d, OrderedDict([('x', 42), ('y', 2)]))
         self.assertIs(type(d), OrderedDict)
 
-    def test_helper_asdict_namedtuple(self):
+    eleza test_helper_asdict_namedtuple(self):
         T = namedtuple('T', 'a b c')
         @dataclass
-        class C:
+        kundi C:
             x: str
             y: T
         c = C('outer', T(1, C('inner', T(11, 12, 13)), 2))
@@ -1496,12 +1496,12 @@ class TestCase(unittest.TestCase):
         self.assertIs(type(d), OrderedDict)
         self.assertIs(type(d['y'][1]), OrderedDict)
 
-    def test_helper_asdict_namedtuple_key(self):
+    eleza test_helper_asdict_namedtuple_key(self):
         # Ensure that a field that contains a dict which has a
         # namedtuple as a key works with asdict().
 
         @dataclass
-        class C:
+        kundi C:
             f: dict
         T = namedtuple('T', 'a')
 
@@ -1509,13 +1509,13 @@ class TestCase(unittest.TestCase):
 
         self.assertEqual(asdict(c), {'f': {T(a='an a'): 0}})
 
-    def test_helper_asdict_namedtuple_derived(self):
-        class T(namedtuple('Tbase', 'a')):
-            def my_a(self):
-                return self.a
+    eleza test_helper_asdict_namedtuple_derived(self):
+        kundi T(namedtuple('Tbase', 'a')):
+            eleza my_a(self):
+                rudisha self.a
 
         @dataclass
-        class C:
+        kundi C:
             f: T
 
         t = T(6)
@@ -1527,10 +1527,10 @@ class TestCase(unittest.TestCase):
         self.assertIsNot(d['f'], t)
         self.assertEqual(d['f'].my_a(), 6)
 
-    def test_helper_astuple(self):
-        # Basic tests for astuple(), it should return a new tuple.
+    eleza test_helper_astuple(self):
+        # Basic tests for astuple(), it should rudisha a new tuple.
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: int = 0
         c = C(1)
@@ -1542,20 +1542,20 @@ class TestCase(unittest.TestCase):
         self.assertEqual(astuple(c), (1, 42))
         self.assertIs(type(astuple(c)), tuple)
 
-    def test_helper_astuple_raises_on_classes(self):
-        # astuple() should raise on a class object.
+    eleza test_helper_astuple_raises_on_classes(self):
+        # astuple() should raise on a kundi object.
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: int
-        with self.assertRaisesRegex(TypeError, 'dataclass instance'):
+        with self.assertRaisesRegex(TypeError, 'datakundi instance'):
             astuple(C)
-        with self.assertRaisesRegex(TypeError, 'dataclass instance'):
+        with self.assertRaisesRegex(TypeError, 'datakundi instance'):
             astuple(int)
 
-    def test_helper_astuple_copy_values(self):
+    eleza test_helper_astuple_copy_values(self):
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: List[int] = field(default_factory=list)
         initial = []
@@ -1568,13 +1568,13 @@ class TestCase(unittest.TestCase):
         t[1].append(1)
         self.assertEqual(c.y, [])
 
-    def test_helper_astuple_nested(self):
+    eleza test_helper_astuple_nested(self):
         @dataclass
-        class UserId:
+        kundi UserId:
             token: int
             group: int
         @dataclass
-        class User:
+        kundi User:
             name: str
             id: UserId
         u = User('Joe', UserId(123, 1))
@@ -1584,21 +1584,21 @@ class TestCase(unittest.TestCase):
         u.id.group = 2
         self.assertEqual(astuple(u), ('Joe', (123, 2)))
 
-    def test_helper_astuple_builtin_containers(self):
+    eleza test_helper_astuple_builtin_containers(self):
         @dataclass
-        class User:
+        kundi User:
             name: str
             id: int
         @dataclass
-        class GroupList:
+        kundi GroupList:
             id: int
             users: List[User]
         @dataclass
-        class GroupTuple:
+        kundi GroupTuple:
             id: int
             users: Tuple[User, ...]
         @dataclass
-        class GroupDict:
+        kundi GroupDict:
             id: int
             users: Dict[str, User]
         a = User('Alice', 1)
@@ -1610,26 +1610,26 @@ class TestCase(unittest.TestCase):
         self.assertEqual(astuple(gt), (0, (('Alice', 1), ('Bob', 2))))
         self.assertEqual(astuple(gd), (0, {'first': ('Alice', 1), 'second': ('Bob', 2)}))
 
-    def test_helper_astuple_builtin_object_containers(self):
+    eleza test_helper_astuple_builtin_object_containers(self):
         @dataclass
-        class Child:
+        kundi Child:
             d: object
 
         @dataclass
-        class Parent:
+        kundi Parent:
             child: Child
 
         self.assertEqual(astuple(Parent(Child([1]))), (([1],),))
         self.assertEqual(astuple(Parent(Child({1: 2}))), (({1: 2},),))
 
-    def test_helper_astuple_factory(self):
+    eleza test_helper_astuple_factory(self):
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: int
         NT = namedtuple('NT', 'x y')
-        def nt(lst):
-            return NT(*lst)
+        eleza nt(lst):
+            rudisha NT(*lst)
         c = C(1, 2)
         t = astuple(c, tuple_factory=nt)
         self.assertEqual(t, NT(1, 2))
@@ -1639,10 +1639,10 @@ class TestCase(unittest.TestCase):
         self.assertEqual(t, NT(42, 2))
         self.assertIs(type(t), NT)
 
-    def test_helper_astuple_namedtuple(self):
+    eleza test_helper_astuple_namedtuple(self):
         T = namedtuple('T', 'a b c')
         @dataclass
-        class C:
+        kundi C:
             x: str
             y: T
         c = C('outer', T(1, C('inner', T(11, 12, 13)), 2))
@@ -1654,7 +1654,7 @@ class TestCase(unittest.TestCase):
         t = astuple(c, tuple_factory=list)
         self.assertEqual(t, ['outer', T(1, ['inner', T(11, 12, 13)], 2)])
 
-    def test_dynamic_class_creation(self):
+    eleza test_dynamic_class_creation(self):
         cls_dict = {'__annotations__': {'x': int, 'y': int},
                     }
 
@@ -1667,7 +1667,7 @@ class TestCase(unittest.TestCase):
         self.assertEqual(cls1, cls)
         self.assertEqual(asdict(cls(1, 2)), {'x': 1, 'y': 2})
 
-    def test_dynamic_class_creation_using_field(self):
+    eleza test_dynamic_class_creation_using_field(self):
         cls_dict = {'__annotations__': {'x': int, 'y': int},
                     'y': field(default=5),
                     }
@@ -1681,9 +1681,9 @@ class TestCase(unittest.TestCase):
         self.assertEqual(cls1, cls)
         self.assertEqual(asdict(cls1(1)), {'x': 1, 'y': 5})
 
-    def test_init_in_order(self):
+    eleza test_init_in_order(self):
         @dataclass
-        class C:
+        kundi C:
             a: int
             b: int = field()
             c: list = field(default_factory=list, init=False)
@@ -1692,7 +1692,7 @@ class TestCase(unittest.TestCase):
             f: int = 4
 
         calls = []
-        def setattr(self, name, value):
+        eleza setattr(self, name, value):
             calls.append((name, value))
 
         C.__setattr__ = setattr
@@ -1704,9 +1704,9 @@ class TestCase(unittest.TestCase):
         self.assertNotIn(('e', 4), calls)
         self.assertEqual(('f', 4), calls[4])
 
-    def test_items_in_dicts(self):
+    eleza test_items_in_dicts(self):
         @dataclass
-        class C:
+        kundi C:
             a: int
             b: list = field(default_factory=list, init=False)
             c: list = field(default_factory=list)
@@ -1733,27 +1733,27 @@ class TestCase(unittest.TestCase):
         self.assertIn('e', c.__dict__)
         self.assertEqual(c.e, 0)
 
-    def test_alternate_classmethod_constructor(self):
+    eleza test_alternate_classmethod_constructor(self):
         # Since __post_init__ can't take params, use a classmethod
         #  alternate constructor.  This is mostly an example to show
         #  how to use this technique.
         @dataclass
-        class C:
+        kundi C:
             x: int
             @classmethod
-            def from_file(cls, filename):
+            eleza kutoka_file(cls, filename):
                 # In a real example, create a new instance
                 #  and populate 'x' kutoka contents of a file.
                 value_in_file = 20
-                return cls(value_in_file)
+                rudisha cls(value_in_file)
 
-        self.assertEqual(C.from_file('filename').x, 20)
+        self.assertEqual(C.kutoka_file('filename').x, 20)
 
-    def test_field_metadata_default(self):
+    eleza test_field_metadata_default(self):
         # Make sure the default metadata is read-only and of
         #  zero length.
         @dataclass
-        class C:
+        kundi C:
             i: int
 
         self.assertFalse(fields(C)[0].metadata)
@@ -1762,18 +1762,18 @@ class TestCase(unittest.TestCase):
                                     'does not support item assignment'):
             fields(C)[0].metadata['test'] = 3
 
-    def test_field_metadata_mapping(self):
+    eleza test_field_metadata_mapping(self):
         # Make sure only a mapping can be passed as metadata
         #  zero length.
         with self.assertRaises(TypeError):
             @dataclass
-            class C:
+            kundi C:
                 i: int = field(metadata=0)
 
         # Make sure an empty dict works.
         d = {}
         @dataclass
-        class C:
+        kundi C:
             i: int = field(metadata=d)
         self.assertFalse(fields(C)[0].metadata)
         self.assertEqual(len(fields(C)[0].metadata), 0)
@@ -1788,7 +1788,7 @@ class TestCase(unittest.TestCase):
         # Make sure a non-empty dict works.
         d = {'test': 10, 'bar': '42', 3: 'three'}
         @dataclass
-        class C:
+        kundi C:
             i: int = field(metadata=d)
         self.assertEqual(len(fields(C)[0].metadata), 3)
         self.assertEqual(fields(C)[0].metadata['test'], 10)
@@ -1805,22 +1805,22 @@ class TestCase(unittest.TestCase):
                                     'does not support item assignment'):
             fields(C)[0].metadata['test'] = 3
 
-    def test_field_metadata_custom_mapping(self):
+    eleza test_field_metadata_custom_mapping(self):
         # Try a custom mapping.
-        class SimpleNameSpace:
-            def __init__(self, **kw):
+        kundi SimpleNameSpace:
+            eleza __init__(self, **kw):
                 self.__dict__.update(kw)
 
-            def __getitem__(self, item):
-                if item == 'xyzzy':
-                    return 'plugh'
-                return getattr(self, item)
+            eleza __getitem__(self, item):
+                ikiwa item == 'xyzzy':
+                    rudisha 'plugh'
+                rudisha getattr(self, item)
 
-            def __len__(self):
-                return self.__dict__.__len__()
+            eleza __len__(self):
+                rudisha self.__dict__.__len__()
 
         @dataclass
-        class C:
+        kundi C:
             i: int = field(metadata=SimpleNameSpace(a=10))
 
         self.assertEqual(len(fields(C)[0].metadata), 1)
@@ -1830,11 +1830,11 @@ class TestCase(unittest.TestCase):
         # Make sure we're still talking to our custom mapping.
         self.assertEqual(fields(C)[0].metadata['xyzzy'], 'plugh')
 
-    def test_generic_dataclasses(self):
+    eleza test_generic_dataclasses(self):
         T = TypeVar('T')
 
         @dataclass
-        class LabeledBox(Generic[T]):
+        kundi LabeledBox(Generic[T]):
             content: T
             label: str = '<unknown>'
 
@@ -1842,37 +1842,37 @@ class TestCase(unittest.TestCase):
         self.assertEqual(box.content, 42)
         self.assertEqual(box.label, '<unknown>')
 
-        # Subscripting the resulting class should work, etc.
+        # Subscripting the resulting kundi should work, etc.
         Alias = List[LabeledBox[int]]
 
-    def test_generic_extending(self):
+    eleza test_generic_extending(self):
         S = TypeVar('S')
         T = TypeVar('T')
 
         @dataclass
-        class Base(Generic[T, S]):
+        kundi Base(Generic[T, S]):
             x: T
             y: S
 
         @dataclass
-        class DataDerived(Base[int, T]):
+        kundi DataDerived(Base[int, T]):
             new_field: str
         Alias = DataDerived[str]
         c = Alias(0, 'test1', 'test2')
         self.assertEqual(astuple(c), (0, 'test1', 'test2'))
 
-        class NonDataDerived(Base[int, T]):
-            def new_method(self):
-                return self.y
+        kundi NonDataDerived(Base[int, T]):
+            eleza new_method(self):
+                rudisha self.y
         Alias = NonDataDerived[float]
         c = Alias(10, 1.0)
         self.assertEqual(c.new_method(), 1.0)
 
-    def test_generic_dynamic(self):
+    eleza test_generic_dynamic(self):
         T = TypeVar('T')
 
         @dataclass
-        class Parent(Generic[T]):
+        kundi Parent(Generic[T]):
             x: T
         Child = make_dataclass('Child', [('y', T), ('z', Optional[T], None)],
                                bases=(Parent[int], Generic[T]), namespace={'other': 42})
@@ -1885,18 +1885,18 @@ class TestCase(unittest.TestCase):
         # Check MRO resolution.
         self.assertEqual(Child.__mro__, (Child, Parent, Generic, object))
 
-    def test_dataclassses_pickleable(self):
+    eleza test_dataclassses_pickleable(self):
         global P, Q, R
         @dataclass
-        class P:
+        kundi P:
             x: int
             y: int = 0
         @dataclass
-        class Q:
+        kundi Q:
             x: int
             y: int = field(default=0, init=False)
         @dataclass
-        class R:
+        kundi R:
             x: int
             y: List[int] = field(default_factory=list)
         q = Q(1)
@@ -1915,17 +1915,17 @@ class TestCase(unittest.TestCase):
                     self.assertEqual(sample.y, another_new_sample.y)
 
 
-class TestFieldNoAnnotation(unittest.TestCase):
-    def test_field_without_annotation(self):
+kundi TestFieldNoAnnotation(unittest.TestCase):
+    eleza test_field_without_annotation(self):
         with self.assertRaisesRegex(TypeError,
                                     "'f' is a field but has no type annotation"):
             @dataclass
-            class C:
+            kundi C:
                 f = field()
 
-    def test_field_without_annotation_but_annotation_in_base(self):
+    eleza test_field_without_annotation_but_annotation_in_base(self):
         @dataclass
-        class B:
+        kundi B:
             f: int
 
         with self.assertRaisesRegex(TypeError,
@@ -1933,12 +1933,12 @@ class TestFieldNoAnnotation(unittest.TestCase):
             # This is still an error: make sure we don't pick up the
             #  type annotation in the base class.
             @dataclass
-            class C(B):
+            kundi C(B):
                 f = field()
 
-    def test_field_without_annotation_but_annotation_in_base_not_dataclass(self):
-        # Same test, but with the base class not a dataclass.
-        class B:
+    eleza test_field_without_annotation_but_annotation_in_base_not_dataclass(self):
+        # Same test, but with the base kundi not a dataclass.
+        kundi B:
             f: int
 
         with self.assertRaisesRegex(TypeError,
@@ -1946,304 +1946,304 @@ class TestFieldNoAnnotation(unittest.TestCase):
             # This is still an error: make sure we don't pick up the
             #  type annotation in the base class.
             @dataclass
-            class C(B):
+            kundi C(B):
                 f = field()
 
 
-class TestDocString(unittest.TestCase):
-    def assertDocStrEqual(self, a, b):
+kundi TestDocString(unittest.TestCase):
+    eleza assertDocStrEqual(self, a, b):
         # Because 3.6 and 3.7 differ in how inspect.signature work
         #  (see bpo #32108), for the time being just compare them with
         #  whitespace stripped.
         self.assertEqual(a.replace(' ', ''), b.replace(' ', ''))
 
-    def test_existing_docstring_not_overridden(self):
+    eleza test_existing_docstring_not_overridden(self):
         @dataclass
-        class C:
+        kundi C:
             """Lorem ipsum"""
             x: int
 
         self.assertEqual(C.__doc__, "Lorem ipsum")
 
-    def test_docstring_no_fields(self):
+    eleza test_docstring_no_fields(self):
         @dataclass
-        class C:
+        kundi C:
             pass
 
         self.assertDocStrEqual(C.__doc__, "C()")
 
-    def test_docstring_one_field(self):
+    eleza test_docstring_one_field(self):
         @dataclass
-        class C:
+        kundi C:
             x: int
 
         self.assertDocStrEqual(C.__doc__, "C(x:int)")
 
-    def test_docstring_two_fields(self):
+    eleza test_docstring_two_fields(self):
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: int
 
         self.assertDocStrEqual(C.__doc__, "C(x:int, y:int)")
 
-    def test_docstring_three_fields(self):
+    eleza test_docstring_three_fields(self):
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: int
             z: str
 
         self.assertDocStrEqual(C.__doc__, "C(x:int, y:int, z:str)")
 
-    def test_docstring_one_field_with_default(self):
+    eleza test_docstring_one_field_with_default(self):
         @dataclass
-        class C:
+        kundi C:
             x: int = 3
 
         self.assertDocStrEqual(C.__doc__, "C(x:int=3)")
 
-    def test_docstring_one_field_with_default_none(self):
+    eleza test_docstring_one_field_with_default_none(self):
         @dataclass
-        class C:
+        kundi C:
             x: Union[int, type(None)] = None
 
         self.assertDocStrEqual(C.__doc__, "C(x:Union[int, NoneType]=None)")
 
-    def test_docstring_list_field(self):
+    eleza test_docstring_list_field(self):
         @dataclass
-        class C:
+        kundi C:
             x: List[int]
 
         self.assertDocStrEqual(C.__doc__, "C(x:List[int])")
 
-    def test_docstring_list_field_with_default_factory(self):
+    eleza test_docstring_list_field_with_default_factory(self):
         @dataclass
-        class C:
+        kundi C:
             x: List[int] = field(default_factory=list)
 
         self.assertDocStrEqual(C.__doc__, "C(x:List[int]=<factory>)")
 
-    def test_docstring_deque_field(self):
+    eleza test_docstring_deque_field(self):
         @dataclass
-        class C:
+        kundi C:
             x: deque
 
         self.assertDocStrEqual(C.__doc__, "C(x:collections.deque)")
 
-    def test_docstring_deque_field_with_default_factory(self):
+    eleza test_docstring_deque_field_with_default_factory(self):
         @dataclass
-        class C:
+        kundi C:
             x: deque = field(default_factory=deque)
 
         self.assertDocStrEqual(C.__doc__, "C(x:collections.deque=<factory>)")
 
 
-class TestInit(unittest.TestCase):
-    def test_base_has_init(self):
-        class B:
-            def __init__(self):
+kundi TestInit(unittest.TestCase):
+    eleza test_base_has_init(self):
+        kundi B:
+            eleza __init__(self):
                 self.z = 100
                 pass
 
-        # Make sure that declaring this class doesn't raise an error.
+        # Make sure that declaring this kundi doesn't raise an error.
         #  The issue is that we can't override __init__ in our class,
-        #  but it should be okay to add __init__ to us if our base has
+        #  but it should be okay to add __init__ to us ikiwa our base has
         #  an __init__.
         @dataclass
-        class C(B):
+        kundi C(B):
             x: int = 0
         c = C(10)
         self.assertEqual(c.x, 10)
         self.assertNotIn('z', vars(c))
 
-        # Make sure that if we don't add an init, the base __init__
+        # Make sure that ikiwa we don't add an init, the base __init__
         #  gets called.
         @dataclass(init=False)
-        class C(B):
+        kundi C(B):
             x: int = 10
         c = C()
         self.assertEqual(c.x, 10)
         self.assertEqual(c.z, 100)
 
-    def test_no_init(self):
+    eleza test_no_init(self):
         dataclass(init=False)
-        class C:
+        kundi C:
             i: int = 0
         self.assertEqual(C().i, 0)
 
         dataclass(init=False)
-        class C:
+        kundi C:
             i: int = 2
-            def __init__(self):
+            eleza __init__(self):
                 self.i = 3
         self.assertEqual(C().i, 3)
 
-    def test_overwriting_init(self):
-        # If the class has __init__, use it no matter the value of
+    eleza test_overwriting_init(self):
+        # If the kundi has __init__, use it no matter the value of
         #  init=.
 
         @dataclass
-        class C:
+        kundi C:
             x: int
-            def __init__(self, x):
+            eleza __init__(self, x):
                 self.x = 2 * x
         self.assertEqual(C(3).x, 6)
 
         @dataclass(init=True)
-        class C:
+        kundi C:
             x: int
-            def __init__(self, x):
+            eleza __init__(self, x):
                 self.x = 2 * x
         self.assertEqual(C(4).x, 8)
 
         @dataclass(init=False)
-        class C:
+        kundi C:
             x: int
-            def __init__(self, x):
+            eleza __init__(self, x):
                 self.x = 2 * x
         self.assertEqual(C(5).x, 10)
 
 
-class TestRepr(unittest.TestCase):
-    def test_repr(self):
+kundi TestRepr(unittest.TestCase):
+    eleza test_repr(self):
         @dataclass
-        class B:
+        kundi B:
             x: int
 
         @dataclass
-        class C(B):
+        kundi C(B):
             y: int = 10
 
         o = C(4)
         self.assertEqual(repr(o), 'TestRepr.test_repr.<locals>.C(x=4, y=10)')
 
         @dataclass
-        class D(C):
+        kundi D(C):
             x: int = 20
         self.assertEqual(repr(D()), 'TestRepr.test_repr.<locals>.D(x=20, y=10)')
 
         @dataclass
-        class C:
+        kundi C:
             @dataclass
-            class D:
+            kundi D:
                 i: int
             @dataclass
-            class E:
+            kundi E:
                 pass
         self.assertEqual(repr(C.D(0)), 'TestRepr.test_repr.<locals>.C.D(i=0)')
         self.assertEqual(repr(C.E()), 'TestRepr.test_repr.<locals>.C.E()')
 
-    def test_no_repr(self):
-        # Test a class with no __repr__ and repr=False.
+    eleza test_no_repr(self):
+        # Test a kundi with no __repr__ and repr=False.
         @dataclass(repr=False)
-        class C:
+        kundi C:
             x: int
         self.assertIn(f'{__name__}.TestRepr.test_no_repr.<locals>.C object at',
                       repr(C(3)))
 
-        # Test a class with a __repr__ and repr=False.
+        # Test a kundi with a __repr__ and repr=False.
         @dataclass(repr=False)
-        class C:
+        kundi C:
             x: int
-            def __repr__(self):
-                return 'C-class'
+            eleza __repr__(self):
+                rudisha 'C-class'
         self.assertEqual(repr(C(3)), 'C-class')
 
-    def test_overwriting_repr(self):
-        # If the class has __repr__, use it no matter the value of
+    eleza test_overwriting_repr(self):
+        # If the kundi has __repr__, use it no matter the value of
         #  repr=.
 
         @dataclass
-        class C:
+        kundi C:
             x: int
-            def __repr__(self):
-                return 'x'
+            eleza __repr__(self):
+                rudisha 'x'
         self.assertEqual(repr(C(0)), 'x')
 
         @dataclass(repr=True)
-        class C:
+        kundi C:
             x: int
-            def __repr__(self):
-                return 'x'
+            eleza __repr__(self):
+                rudisha 'x'
         self.assertEqual(repr(C(0)), 'x')
 
         @dataclass(repr=False)
-        class C:
+        kundi C:
             x: int
-            def __repr__(self):
-                return 'x'
+            eleza __repr__(self):
+                rudisha 'x'
         self.assertEqual(repr(C(0)), 'x')
 
 
-class TestEq(unittest.TestCase):
-    def test_no_eq(self):
-        # Test a class with no __eq__ and eq=False.
+kundi TestEq(unittest.TestCase):
+    eleza test_no_eq(self):
+        # Test a kundi with no __eq__ and eq=False.
         @dataclass(eq=False)
-        class C:
+        kundi C:
             x: int
         self.assertNotEqual(C(0), C(0))
         c = C(3)
         self.assertEqual(c, c)
 
-        # Test a class with an __eq__ and eq=False.
+        # Test a kundi with an __eq__ and eq=False.
         @dataclass(eq=False)
-        class C:
+        kundi C:
             x: int
-            def __eq__(self, other):
-                return other == 10
+            eleza __eq__(self, other):
+                rudisha other == 10
         self.assertEqual(C(3), 10)
 
-    def test_overwriting_eq(self):
-        # If the class has __eq__, use it no matter the value of
+    eleza test_overwriting_eq(self):
+        # If the kundi has __eq__, use it no matter the value of
         #  eq=.
 
         @dataclass
-        class C:
+        kundi C:
             x: int
-            def __eq__(self, other):
-                return other == 3
+            eleza __eq__(self, other):
+                rudisha other == 3
         self.assertEqual(C(1), 3)
         self.assertNotEqual(C(1), 1)
 
         @dataclass(eq=True)
-        class C:
+        kundi C:
             x: int
-            def __eq__(self, other):
-                return other == 4
+            eleza __eq__(self, other):
+                rudisha other == 4
         self.assertEqual(C(1), 4)
         self.assertNotEqual(C(1), 1)
 
         @dataclass(eq=False)
-        class C:
+        kundi C:
             x: int
-            def __eq__(self, other):
-                return other == 5
+            eleza __eq__(self, other):
+                rudisha other == 5
         self.assertEqual(C(1), 5)
         self.assertNotEqual(C(1), 1)
 
 
-class TestOrdering(unittest.TestCase):
-    def test_functools_total_ordering(self):
+kundi TestOrdering(unittest.TestCase):
+    eleza test_functools_total_ordering(self):
         # Test that functools.total_ordering works with this class.
         @total_ordering
         @dataclass
-        class C:
+        kundi C:
             x: int
-            def __lt__(self, other):
+            eleza __lt__(self, other):
                 # Perform the test "backward", just to make
                 #  sure this is being called.
-                return self.x >= other
+                rudisha self.x >= other
 
         self.assertLess(C(0), -1)
         self.assertLessEqual(C(0), -1)
         self.assertGreater(C(0), 1)
         self.assertGreaterEqual(C(0), 1)
 
-    def test_no_order(self):
+    eleza test_no_order(self):
         # Test that no ordering functions are added by default.
         @dataclass(order=False)
-        class C:
+        kundi C:
             x: int
         # Make sure no order methods are added.
         self.assertNotIn('__le__', C.__dict__)
@@ -2253,108 +2253,108 @@ class TestOrdering(unittest.TestCase):
 
         # Test that __lt__ is still called
         @dataclass(order=False)
-        class C:
+        kundi C:
             x: int
-            def __lt__(self, other):
-                return False
+            eleza __lt__(self, other):
+                rudisha False
         # Make sure other methods aren't added.
         self.assertNotIn('__le__', C.__dict__)
         self.assertNotIn('__ge__', C.__dict__)
         self.assertNotIn('__gt__', C.__dict__)
 
-    def test_overwriting_order(self):
+    eleza test_overwriting_order(self):
         with self.assertRaisesRegex(TypeError,
                                     'Cannot overwrite attribute __lt__'
                                     '.*using functools.total_ordering'):
             @dataclass(order=True)
-            class C:
+            kundi C:
                 x: int
-                def __lt__(self):
+                eleza __lt__(self):
                     pass
 
         with self.assertRaisesRegex(TypeError,
                                     'Cannot overwrite attribute __le__'
                                     '.*using functools.total_ordering'):
             @dataclass(order=True)
-            class C:
+            kundi C:
                 x: int
-                def __le__(self):
+                eleza __le__(self):
                     pass
 
         with self.assertRaisesRegex(TypeError,
                                     'Cannot overwrite attribute __gt__'
                                     '.*using functools.total_ordering'):
             @dataclass(order=True)
-            class C:
+            kundi C:
                 x: int
-                def __gt__(self):
+                eleza __gt__(self):
                     pass
 
         with self.assertRaisesRegex(TypeError,
                                     'Cannot overwrite attribute __ge__'
                                     '.*using functools.total_ordering'):
             @dataclass(order=True)
-            class C:
+            kundi C:
                 x: int
-                def __ge__(self):
+                eleza __ge__(self):
                     pass
 
-class TestHash(unittest.TestCase):
-    def test_unsafe_hash(self):
+kundi TestHash(unittest.TestCase):
+    eleza test_unsafe_hash(self):
         @dataclass(unsafe_hash=True)
-        class C:
+        kundi C:
             x: int
             y: str
         self.assertEqual(hash(C(1, 'foo')), hash((1, 'foo')))
 
-    def test_hash_rules(self):
-        def non_bool(value):
+    eleza test_hash_rules(self):
+        eleza non_bool(value):
             # Map to something else that's True, but not a bool.
-            if value is None:
-                return None
-            if value:
-                return (3,)
-            return 0
+            ikiwa value is None:
+                rudisha None
+            ikiwa value:
+                rudisha (3,)
+            rudisha 0
 
-        def test(case, unsafe_hash, eq, frozen, with_hash, result):
+        eleza test(case, unsafe_hash, eq, frozen, with_hash, result):
             with self.subTest(case=case, unsafe_hash=unsafe_hash, eq=eq,
                               frozen=frozen):
-                if result != 'exception':
-                    if with_hash:
+                ikiwa result != 'exception':
+                    ikiwa with_hash:
                         @dataclass(unsafe_hash=unsafe_hash, eq=eq, frozen=frozen)
-                        class C:
-                            def __hash__(self):
-                                return 0
+                        kundi C:
+                            eleza __hash__(self):
+                                rudisha 0
                     else:
                         @dataclass(unsafe_hash=unsafe_hash, eq=eq, frozen=frozen)
-                        class C:
+                        kundi C:
                             pass
 
-                # See if the result matches what's expected.
-                if result == 'fn':
+                # See ikiwa the result matches what's expected.
+                ikiwa result == 'fn':
                     # __hash__ contains the function we generated.
                     self.assertIn('__hash__', C.__dict__)
                     self.assertIsNotNone(C.__dict__['__hash__'])
 
-                elif result == '':
+                elikiwa result == '':
                     # __hash__ is not present in our class.
-                    if not with_hash:
+                    ikiwa not with_hash:
                         self.assertNotIn('__hash__', C.__dict__)
 
-                elif result == 'none':
+                elikiwa result == 'none':
                     # __hash__ is set to None.
                     self.assertIn('__hash__', C.__dict__)
                     self.assertIsNone(C.__dict__['__hash__'])
 
-                elif result == 'exception':
-                    # Creating the class should cause an exception.
+                elikiwa result == 'exception':
+                    # Creating the kundi should cause an exception.
                     #  This only happens with with_hash==True.
                     assert(with_hash)
                     with self.assertRaisesRegex(TypeError, 'Cannot overwrite attribute __hash__'):
                         @dataclass(unsafe_hash=unsafe_hash, eq=eq, frozen=frozen)
-                        class C:
-                            def __hash__(self):
-                                return 0
+                        kundi C:
+                            eleza __hash__(self):
+                                rudisha 0
 
                 else:
                     assert False, f'unknown result {result!r}'
@@ -2385,74 +2385,74 @@ class TestHash(unittest.TestCase):
             test(case, non_bool(unsafe_hash), non_bool(eq), non_bool(frozen), True,  res_defined_hash)
 
 
-    def test_eq_only(self):
-        # If a class defines __eq__, __hash__ is automatically added
+    eleza test_eq_only(self):
+        # If a kundi defines __eq__, __hash__ is automatically added
         #  and set to None.  This is normal Python behavior, not
         #  related to dataclasses.  Make sure we don't interfere with
         #  that (see bpo=32546).
 
         @dataclass
-        class C:
+        kundi C:
             i: int
-            def __eq__(self, other):
-                return self.i == other.i
+            eleza __eq__(self, other):
+                rudisha self.i == other.i
         self.assertEqual(C(1), C(1))
         self.assertNotEqual(C(1), C(4))
 
-        # And make sure things work in this case if we specify
+        # And make sure things work in this case ikiwa we specify
         #  unsafe_hash=True.
         @dataclass(unsafe_hash=True)
-        class C:
+        kundi C:
             i: int
-            def __eq__(self, other):
-                return self.i == other.i
+            eleza __eq__(self, other):
+                rudisha self.i == other.i
         self.assertEqual(C(1), C(1.0))
         self.assertEqual(hash(C(1)), hash(C(1.0)))
 
         # And check that the classes __eq__ is being used, despite
         #  specifying eq=True.
         @dataclass(unsafe_hash=True, eq=True)
-        class C:
+        kundi C:
             i: int
-            def __eq__(self, other):
-                return self.i == 3 and self.i == other.i
+            eleza __eq__(self, other):
+                rudisha self.i == 3 and self.i == other.i
         self.assertEqual(C(3), C(3))
         self.assertNotEqual(C(1), C(1))
         self.assertEqual(hash(C(1)), hash(C(1.0)))
 
-    def test_0_field_hash(self):
+    eleza test_0_field_hash(self):
         @dataclass(frozen=True)
-        class C:
+        kundi C:
             pass
         self.assertEqual(hash(C()), hash(()))
 
         @dataclass(unsafe_hash=True)
-        class C:
+        kundi C:
             pass
         self.assertEqual(hash(C()), hash(()))
 
-    def test_1_field_hash(self):
+    eleza test_1_field_hash(self):
         @dataclass(frozen=True)
-        class C:
+        kundi C:
             x: int
         self.assertEqual(hash(C(4)), hash((4,)))
         self.assertEqual(hash(C(42)), hash((42,)))
 
         @dataclass(unsafe_hash=True)
-        class C:
+        kundi C:
             x: int
         self.assertEqual(hash(C(4)), hash((4,)))
         self.assertEqual(hash(C(42)), hash((42,)))
 
-    def test_hash_no_args(self):
+    eleza test_hash_no_args(self):
         # Test dataclasses with no hash= argument.  This exists to
-        #  make sure that if the @dataclass parameter name is changed
+        #  make sure that ikiwa the @datakundi parameter name is changed
         #  or the non-default hashing behavior changes, the default
         #  hashability keeps working the same way.
 
-        class Base:
-            def __hash__(self):
-                return 301
+        kundi Base:
+            eleza __hash__(self):
+                rudisha 301
 
         # If frozen or eq is None, then use the default value (do not
         #  specify any value in the decorator).
@@ -2479,50 +2479,50 @@ class TestHash(unittest.TestCase):
 
             with self.subTest(frozen=frozen, eq=eq, base=base, expected=expected):
                 # First, create the class.
-                if frozen is None and eq is None:
+                ikiwa frozen is None and eq is None:
                     @dataclass
-                    class C(base):
+                    kundi C(base):
                         i: int
-                elif frozen is None:
+                elikiwa frozen is None:
                     @dataclass(eq=eq)
-                    class C(base):
+                    kundi C(base):
                         i: int
-                elif eq is None:
+                elikiwa eq is None:
                     @dataclass(frozen=frozen)
-                    class C(base):
+                    kundi C(base):
                         i: int
                 else:
                     @dataclass(frozen=frozen, eq=eq)
-                    class C(base):
+                    kundi C(base):
                         i: int
 
                 # Now, make sure it hashes as expected.
-                if expected == 'unhashable':
+                ikiwa expected == 'unhashable':
                     c = C(10)
                     with self.assertRaisesRegex(TypeError, 'unhashable type'):
                         hash(c)
 
-                elif expected == 'base':
+                elikiwa expected == 'base':
                     self.assertEqual(hash(C(10)), 301)
 
-                elif expected == 'object':
+                elikiwa expected == 'object':
                     # I'm not sure what test to use here.  object's
                     #  hash isn't based on id(), so calling hash()
                     #  won't tell us much.  So, just check the
                     #  function used is object's.
                     self.assertIs(C.__hash__, object.__hash__)
 
-                elif expected == 'tuple':
+                elikiwa expected == 'tuple':
                     self.assertEqual(hash(C(42)), hash((42,)))
 
                 else:
                     assert False, f'unknown value for expected={expected!r}'
 
 
-class TestFrozen(unittest.TestCase):
-    def test_frozen(self):
+kundi TestFrozen(unittest.TestCase):
+    eleza test_frozen(self):
         @dataclass(frozen=True)
-        class C:
+        kundi C:
             i: int
 
         c = C(10)
@@ -2531,13 +2531,13 @@ class TestFrozen(unittest.TestCase):
             c.i = 5
         self.assertEqual(c.i, 10)
 
-    def test_inherit(self):
+    eleza test_inherit(self):
         @dataclass(frozen=True)
-        class C:
+        kundi C:
             i: int
 
         @dataclass(frozen=True)
-        class D(C):
+        kundi D(C):
             j: int
 
         d = D(0, 10)
@@ -2549,71 +2549,71 @@ class TestFrozen(unittest.TestCase):
         self.assertEqual(d.j, 10)
 
     # Test both ways: with an intermediate normal (non-dataclass)
-    #  class and without an intermediate class.
-    def test_inherit_nonfrozen_from_frozen(self):
-        for intermediate_class in [True, False]:
+    #  kundi and without an intermediate class.
+    eleza test_inherit_nonfrozen_kutoka_frozen(self):
+        for intermediate_kundi in [True, False]:
             with self.subTest(intermediate_class=intermediate_class):
                 @dataclass(frozen=True)
-                class C:
+                kundi C:
                     i: int
 
-                if intermediate_class:
-                    class I(C): pass
+                ikiwa intermediate_class:
+                    kundi I(C): pass
                 else:
                     I = C
 
                 with self.assertRaisesRegex(TypeError,
-                                            'cannot inherit non-frozen dataclass kutoka a frozen one'):
+                                            'cannot inherit non-frozen datakundi kutoka a frozen one'):
                     @dataclass
-                    class D(I):
+                    kundi D(I):
                         pass
 
-    def test_inherit_frozen_from_nonfrozen(self):
-        for intermediate_class in [True, False]:
+    eleza test_inherit_frozen_kutoka_nonfrozen(self):
+        for intermediate_kundi in [True, False]:
             with self.subTest(intermediate_class=intermediate_class):
                 @dataclass
-                class C:
+                kundi C:
                     i: int
 
-                if intermediate_class:
-                    class I(C): pass
+                ikiwa intermediate_class:
+                    kundi I(C): pass
                 else:
                     I = C
 
                 with self.assertRaisesRegex(TypeError,
-                                            'cannot inherit frozen dataclass kutoka a non-frozen one'):
+                                            'cannot inherit frozen datakundi kutoka a non-frozen one'):
                     @dataclass(frozen=True)
-                    class D(I):
+                    kundi D(I):
                         pass
 
-    def test_inherit_from_normal_class(self):
-        for intermediate_class in [True, False]:
+    eleza test_inherit_kutoka_normal_class(self):
+        for intermediate_kundi in [True, False]:
             with self.subTest(intermediate_class=intermediate_class):
-                class C:
+                kundi C:
                     pass
 
-                if intermediate_class:
-                    class I(C): pass
+                ikiwa intermediate_class:
+                    kundi I(C): pass
                 else:
                     I = C
 
                 @dataclass(frozen=True)
-                class D(I):
+                kundi D(I):
                     i: int
 
             d = D(10)
             with self.assertRaises(FrozenInstanceError):
                 d.i = 5
 
-    def test_non_frozen_normal_derived(self):
+    eleza test_non_frozen_normal_derived(self):
         # See bpo-32953.
 
         @dataclass(frozen=True)
-        class D:
+        kundi D:
             x: int
             y: int = 10
 
-        class S(D):
+        kundi S(D):
             pass
 
         s = S(3)
@@ -2630,34 +2630,34 @@ class TestFrozen(unittest.TestCase):
         self.assertEqual(s.y, 10)
         self.assertEqual(s.cached, True)
 
-    def test_overwriting_frozen(self):
+    eleza test_overwriting_frozen(self):
         # frozen uses __setattr__ and __delattr__.
         with self.assertRaisesRegex(TypeError,
                                     'Cannot overwrite attribute __setattr__'):
             @dataclass(frozen=True)
-            class C:
+            kundi C:
                 x: int
-                def __setattr__(self):
+                eleza __setattr__(self):
                     pass
 
         with self.assertRaisesRegex(TypeError,
                                     'Cannot overwrite attribute __delattr__'):
             @dataclass(frozen=True)
-            class C:
+            kundi C:
                 x: int
-                def __delattr__(self):
+                eleza __delattr__(self):
                     pass
 
         @dataclass(frozen=False)
-        class C:
+        kundi C:
             x: int
-            def __setattr__(self, name, value):
+            eleza __setattr__(self, name, value):
                 self.__dict__['x'] = value * 2
         self.assertEqual(C(10).x, 20)
 
-    def test_frozen_hash(self):
+    eleza test_frozen_hash(self):
         @dataclass(frozen=True)
-        class C:
+        kundi C:
             x: Any
 
         # If x is immutable, we can compute the hash.  No exception is
@@ -2669,10 +2669,10 @@ class TestFrozen(unittest.TestCase):
             hash(C({}))
 
 
-class TestSlots(unittest.TestCase):
-    def test_simple(self):
+kundi TestSlots(unittest.TestCase):
+    eleza test_simple(self):
         @dataclass
-        class C:
+        kundi C:
             __slots__ = ('x',)
             x: Any
 
@@ -2693,15 +2693,15 @@ class TestSlots(unittest.TestCase):
         with self.assertRaisesRegex(AttributeError, "'C' object has no attribute 'y'"):
             c.y = 5
 
-    def test_derived_added_field(self):
+    eleza test_derived_added_field(self):
         # See bpo-33100.
         @dataclass
-        class Base:
+        kundi Base:
             __slots__ = ('x',)
             x: Any
 
         @dataclass
-        class Derived(Base):
+        kundi Derived(Base):
             x: int
             y: int
 
@@ -2711,23 +2711,23 @@ class TestSlots(unittest.TestCase):
         # We can add a new field to the derived instance.
         d.z = 10
 
-class TestDescriptors(unittest.TestCase):
-    def test_set_name(self):
+kundi TestDescriptors(unittest.TestCase):
+    eleza test_set_name(self):
         # See bpo-33141.
 
         # Create a descriptor.
-        class D:
-            def __set_name__(self, owner, name):
+        kundi D:
+            eleza __set_name__(self, owner, name):
                 self.name = name + 'x'
-            def __get__(self, instance, owner):
-                if instance is not None:
-                    return 1
-                return self
+            eleza __get__(self, instance, owner):
+                ikiwa instance is not None:
+                    rudisha 1
+                rudisha self
 
         # This is the case of just normal descriptor behavior, no
-        #  dataclass code is involved in initializing the descriptor.
+        #  datakundi code is involved in initializing the descriptor.
         @dataclass
-        class C:
+        kundi C:
             c: int=D()
         self.assertEqual(C.c.name, 'cx')
 
@@ -2735,27 +2735,27 @@ class TestDescriptors(unittest.TestCase):
         #  only time this is really meaningful.  If not using
         #  init=False, then the descriptor will be overwritten, anyway.
         @dataclass
-        class C:
+        kundi C:
             c: int=field(default=D(), init=False)
         self.assertEqual(C.c.name, 'cx')
         self.assertEqual(C().c, 1)
 
-    def test_non_descriptor(self):
+    eleza test_non_descriptor(self):
         # PEP 487 says __set_name__ should work on non-descriptors.
         # Create a descriptor.
 
-        class D:
-            def __set_name__(self, owner, name):
+        kundi D:
+            eleza __set_name__(self, owner, name):
                 self.name = name + 'x'
 
         @dataclass
-        class C:
+        kundi C:
             c: int=field(default=D(), init=False)
         self.assertEqual(C.c.name, 'cx')
 
-    def test_lookup_on_instance(self):
+    eleza test_lookup_on_instance(self):
         # See bpo-33175.
-        class D:
+        kundi D:
             pass
 
         d = D()
@@ -2764,29 +2764,29 @@ class TestDescriptors(unittest.TestCase):
 
         # Make sure d.__set_name__ is not called.
         @dataclass
-        class C:
+        kundi C:
             i: int=field(default=d, init=False)
 
         self.assertEqual(d.__set_name__.call_count, 0)
 
-    def test_lookup_on_class(self):
+    eleza test_lookup_on_class(self):
         # See bpo-33175.
-        class D:
+        kundi D:
             pass
         D.__set_name__ = Mock()
 
         # Make sure D.__set_name__ is called.
         @dataclass
-        class C:
+        kundi C:
             i: int=field(default=D(), init=False)
 
         self.assertEqual(D.__set_name__.call_count, 1)
 
 
-class TestStringAnnotations(unittest.TestCase):
-    def test_classvar(self):
+kundi TestStringAnnotations(unittest.TestCase):
+    eleza test_classvar(self):
         # Some expressions recognized as ClassVar really aren't.  But
-        #  if you're using string annotations, it's not an exact
+        #  ikiwa you're using string annotations, it's not an exact
         #  science.
         # These tests assume that both "agiza typing" and "kutoka
         # typing agiza *" have been run in this file.
@@ -2810,7 +2810,7 @@ class TestStringAnnotations(unittest.TestCase):
                         ):
             with self.subTest(typestr=typestr):
                 @dataclass
-                class C:
+                kundi C:
                     x: typestr
 
                 # x is a ClassVar, so C() takes no args.
@@ -2820,7 +2820,7 @@ class TestStringAnnotations(unittest.TestCase):
                 # have a default.
                 self.assertNotIn('x', C.__dict__)
 
-    def test_isnt_classvar(self):
+    eleza test_isnt_classvar(self):
         for typestr in ('CV',
                         't.ClassVar',
                         't.ClassVar[int]',
@@ -2834,13 +2834,13 @@ class TestStringAnnotations(unittest.TestCase):
                         ):
             with self.subTest(typestr=typestr):
                 @dataclass
-                class C:
+                kundi C:
                     x: typestr
 
                 # x is not a ClassVar, so C() takes one arg.
                 self.assertEqual(C(10).x, 10)
 
-    def test_initvar(self):
+    eleza test_initvar(self):
         # These tests assume that both "agiza dataclasses" and "kutoka
         #  dataclasses agiza *" have been run in this file.
         for typestr in ('InitVar[int]',
@@ -2863,7 +2863,7 @@ class TestStringAnnotations(unittest.TestCase):
                         ):
             with self.subTest(typestr=typestr):
                 @dataclass
-                class C:
+                kundi C:
                     x: typestr
 
                 # x is an InitVar, so doesn't create a member.
@@ -2871,7 +2871,7 @@ class TestStringAnnotations(unittest.TestCase):
                                             "object has no attribute 'x'"):
                     C(1).x
 
-    def test_isnt_initvar(self):
+    eleza test_isnt_initvar(self):
         for typestr in ('IV',
                         'dc.InitVar',
                         'xdataclasses.xInitVar',
@@ -2879,13 +2879,13 @@ class TestStringAnnotations(unittest.TestCase):
                         ):
             with self.subTest(typestr=typestr):
                 @dataclass
-                class C:
+                kundi C:
                     x: typestr
 
                 # x is not an InitVar, so there will be a member x.
                 self.assertEqual(C(10).x, 10)
 
-    def test_classvar_module_level_agiza(self):
+    eleza test_classvar_module_level_agiza(self):
         kutoka test agiza dataclass_module_1
         kutoka test agiza dataclass_module_1_str
         kutoka test agiza dataclass_module_2
@@ -2898,7 +2898,7 @@ class TestStringAnnotations(unittest.TestCase):
                 # There's a difference in how the ClassVars are
                 # interpreted when using string annotations or
                 # not. See the imported modules for details.
-                if m.USING_STRINGS:
+                ikiwa m.USING_STRINGS:
                     c = m.CV(10)
                 else:
                     c = m.CV()
@@ -2917,7 +2917,7 @@ class TestStringAnnotations(unittest.TestCase):
                             # not an instance field.
                             getattr(c, field_name)
 
-                if m.USING_STRINGS:
+                ikiwa m.USING_STRINGS:
                     # iv4 is interpreted as a normal field.
                     self.assertIn('not_iv4', c.__dict__)
                     self.assertEqual(c.not_iv4, 4)
@@ -2927,8 +2927,8 @@ class TestStringAnnotations(unittest.TestCase):
                     self.assertNotIn('not_iv4', c.__dict__)
 
 
-class TestMakeDataclass(unittest.TestCase):
-    def test_simple(self):
+kundi TestMakeDataclass(unittest.TestCase):
+    eleza test_simple(self):
         C = make_dataclass('C',
                            [('x', int),
                             ('y', int, field(default=5))],
@@ -2938,7 +2938,7 @@ class TestMakeDataclass(unittest.TestCase):
         self.assertEqual(c.add_one(), 11)
 
 
-    def test_no_mutate_namespace(self):
+    eleza test_no_mutate_namespace(self):
         # Make sure a provided namespace isn't mutated.
         ns = {}
         C = make_dataclass('C',
@@ -2947,10 +2947,10 @@ class TestMakeDataclass(unittest.TestCase):
                            namespace=ns)
         self.assertEqual(ns, {})
 
-    def test_base(self):
-        class Base1:
+    eleza test_base(self):
+        kundi Base1:
             pass
-        class Base2:
+        kundi Base2:
             pass
         C = make_dataclass('C',
                            [('x', int)],
@@ -2960,11 +2960,11 @@ class TestMakeDataclass(unittest.TestCase):
         self.assertIsInstance(c, Base1)
         self.assertIsInstance(c, Base2)
 
-    def test_base_dataclass(self):
+    eleza test_base_dataclass(self):
         @dataclass
-        class Base1:
+        kundi Base1:
             x: int
-        class Base2:
+        kundi Base2:
             pass
         C = make_dataclass('C',
                            [('y', int)],
@@ -2978,8 +2978,8 @@ class TestMakeDataclass(unittest.TestCase):
 
         self.assertEqual((c.x, c.y), (1, 2))
 
-    def test_init_var(self):
-        def post_init(self, y):
+    eleza test_init_var(self):
+        eleza post_init(self, y):
             self.x *= y
 
         C = make_dataclass('C',
@@ -2992,7 +2992,7 @@ class TestMakeDataclass(unittest.TestCase):
         self.assertEqual(vars(c), {'x': 6})
         self.assertEqual(len(fields(c)), 1)
 
-    def test_class_var(self):
+    eleza test_class_var(self):
         C = make_dataclass('C',
                            [('x', int),
                             ('y', ClassVar[int], 10),
@@ -3004,7 +3004,7 @@ class TestMakeDataclass(unittest.TestCase):
         self.assertEqual(C.y, 10)
         self.assertEqual(C.z, 20)
 
-    def test_other_params(self):
+    eleza test_other_params(self):
         C = make_dataclass('C',
                            [('x', int),
                             ('y', ClassVar[int], 10),
@@ -3021,7 +3021,7 @@ class TestMakeDataclass(unittest.TestCase):
                                [],
                                xxinit=False)
 
-    def test_no_types(self):
+    eleza test_no_types(self):
         C = make_dataclass('Point', ['x', 'y', 'z'])
         c = C(1, 2, 3)
         self.assertEqual(vars(c), {'x': 1, 'y': 2, 'z': 3})
@@ -3036,7 +3036,7 @@ class TestMakeDataclass(unittest.TestCase):
                                              'y': int,
                                              'z': 'typing.Any'})
 
-    def test_invalid_type_specification(self):
+    eleza test_invalid_type_specification(self):
         for bad_field in [(),
                           (1, 2, 3, 4),
                           ]:
@@ -3052,13 +3052,13 @@ class TestMakeDataclass(unittest.TestCase):
                 with self.assertRaisesRegex(TypeError, r'has no len\(\)'):
                     make_dataclass('C', ['a', bad_field])
 
-    def test_duplicate_field_names(self):
+    eleza test_duplicate_field_names(self):
         for field in ['a', 'ab']:
             with self.subTest(field=field):
                 with self.assertRaisesRegex(TypeError, 'Field name duplicated'):
                     make_dataclass('C', [field, 'a', field])
 
-    def test_keyword_field_names(self):
+    eleza test_keyword_field_names(self):
         for field in ['for', 'async', 'await', 'as']:
             with self.subTest(field=field):
                 with self.assertRaisesRegex(TypeError, 'must not be keywords'):
@@ -3068,7 +3068,7 @@ class TestMakeDataclass(unittest.TestCase):
                 with self.assertRaisesRegex(TypeError, 'must not be keywords'):
                     make_dataclass('C', [field, 'a'])
 
-    def test_non_identifier_field_names(self):
+    eleza test_non_identifier_field_names(self):
         for field in ['()', 'x,y', '*', '2@3', '', 'little johnny tables']:
             with self.subTest(field=field):
                 with self.assertRaisesRegex(TypeError, 'must be valid identifiers'):
@@ -3078,23 +3078,23 @@ class TestMakeDataclass(unittest.TestCase):
                 with self.assertRaisesRegex(TypeError, 'must be valid identifiers'):
                     make_dataclass('C', [field, 'a'])
 
-    def test_underscore_field_names(self):
-        # Unlike namedtuple, it's okay if dataclass field names have
+    eleza test_underscore_field_names(self):
+        # Unlike namedtuple, it's okay ikiwa datakundi field names have
         # an underscore.
         make_dataclass('C', ['_', '_a', 'a_a', 'a_'])
 
-    def test_funny_class_names_names(self):
-        # No reason to prevent weird class names, since
-        # types.new_class allows them.
+    eleza test_funny_class_names_names(self):
+        # No reason to prevent weird kundi names, since
+        # types.new_kundi allows them.
         for classname in ['()', 'x,y', '*', '2@3', '']:
             with self.subTest(classname=classname):
                 C = make_dataclass(classname, ['a', 'b'])
                 self.assertEqual(C.__name__, classname)
 
-class TestReplace(unittest.TestCase):
-    def test(self):
+kundi TestReplace(unittest.TestCase):
+    eleza test(self):
         @dataclass(frozen=True)
-        class C:
+        kundi C:
             x: int
             y: int
 
@@ -3110,9 +3110,9 @@ class TestReplace(unittest.TestCase):
         self.assertEqual(c1.x, 3)
         self.assertEqual(c1.y, 2)
 
-    def test_frozen(self):
+    eleza test_frozen(self):
         @dataclass(frozen=True)
-        class C:
+        kundi C:
             x: int
             y: int
             z: int = field(init=False, default=10)
@@ -3135,16 +3135,16 @@ class TestReplace(unittest.TestCase):
             c1.x = 3
 
         # Make sure we can't replace an attribute that doesn't exist,
-        #  if we're also replacing one that does exist.  Test this
+        #  ikiwa we're also replacing one that does exist.  Test this
         #  here, because setting attributes on frozen instances is
         #  handled slightly differently kutoka non-frozen ones.
         with self.assertRaisesRegex(TypeError, r"__init__\(\) got an unexpected "
                                              "keyword argument 'a'"):
             c1 = replace(c, x=20, a=5)
 
-    def test_invalid_field_name(self):
+    eleza test_invalid_field_name(self):
         @dataclass(frozen=True)
-        class C:
+        kundi C:
             x: int
             y: int
 
@@ -3153,21 +3153,21 @@ class TestReplace(unittest.TestCase):
                                     "keyword argument 'z'"):
             c1 = replace(c, z=3)
 
-    def test_invalid_object(self):
+    eleza test_invalid_object(self):
         @dataclass(frozen=True)
-        class C:
+        kundi C:
             x: int
             y: int
 
-        with self.assertRaisesRegex(TypeError, 'dataclass instance'):
+        with self.assertRaisesRegex(TypeError, 'datakundi instance'):
             replace(C, x=3)
 
-        with self.assertRaisesRegex(TypeError, 'dataclass instance'):
+        with self.assertRaisesRegex(TypeError, 'datakundi instance'):
             replace(0, x=3)
 
-    def test_no_init(self):
+    eleza test_no_init(self):
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: int = field(init=False, default=10)
 
@@ -3185,9 +3185,9 @@ class TestReplace(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'init=False'):
             replace(c, y=30)
 
-    def test_classvar(self):
+    eleza test_classvar(self):
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: ClassVar[int] = 1000
 
@@ -3204,13 +3204,13 @@ class TestReplace(unittest.TestCase):
 
         replace(c, x=5)
 
-    def test_initvar_is_specified(self):
+    eleza test_initvar_is_specified(self):
         @dataclass
-        class C:
+        kundi C:
             x: int
             y: InitVar[int]
 
-            def __post_init__(self, y):
+            eleza __post_init__(self, y):
                 self.x *= y
 
         c = C(1, 10)
@@ -3221,18 +3221,18 @@ class TestReplace(unittest.TestCase):
         c = replace(c, x=3, y=5)
         self.assertEqual(c.x, 15)
 
-    def test_recursive_repr(self):
+    eleza test_recursive_repr(self):
         @dataclass
-        class C:
+        kundi C:
             f: "C"
 
         c = C(None)
         c.f = c
         self.assertEqual(repr(c), "TestReplace.test_recursive_repr.<locals>.C(f=...)")
 
-    def test_recursive_repr_two_attrs(self):
+    eleza test_recursive_repr_two_attrs(self):
         @dataclass
-        class C:
+        kundi C:
             f: "C"
             g: "C"
 
@@ -3242,13 +3242,13 @@ class TestReplace(unittest.TestCase):
         self.assertEqual(repr(c), "TestReplace.test_recursive_repr_two_attrs"
                                   ".<locals>.C(f=..., g=...)")
 
-    def test_recursive_repr_indirection(self):
+    eleza test_recursive_repr_indirection(self):
         @dataclass
-        class C:
+        kundi C:
             f: "D"
 
         @dataclass
-        class D:
+        kundi D:
             f: "C"
 
         c = C(None)
@@ -3259,17 +3259,17 @@ class TestReplace(unittest.TestCase):
                                   ".<locals>.C(f=TestReplace.test_recursive_repr_indirection"
                                   ".<locals>.D(f=...))")
 
-    def test_recursive_repr_indirection_two(self):
+    eleza test_recursive_repr_indirection_two(self):
         @dataclass
-        class C:
+        kundi C:
             f: "D"
 
         @dataclass
-        class D:
+        kundi D:
             f: "E"
 
         @dataclass
-        class E:
+        kundi E:
             f: "C"
 
         c = C(None)
@@ -3283,9 +3283,9 @@ class TestReplace(unittest.TestCase):
                                   ".<locals>.D(f=TestReplace.test_recursive_repr_indirection_two"
                                   ".<locals>.E(f=...)))")
 
-    def test_recursive_repr_misc_attrs(self):
+    eleza test_recursive_repr_misc_attrs(self):
         @dataclass
-        class C:
+        kundi C:
             f: "C"
             g: int
 
@@ -3294,9 +3294,9 @@ class TestReplace(unittest.TestCase):
         self.assertEqual(repr(c), "TestReplace.test_recursive_repr_misc_attrs"
                                   ".<locals>.C(f=..., g=1)")
 
-    ## def test_initvar(self):
+    ## eleza test_initvar(self):
     ##     @dataclass
-    ##     class C:
+    ##     kundi C:
     ##         x: int
     ##         y: InitVar[int]
 
@@ -3309,5 +3309,5 @@ class TestReplace(unittest.TestCase):
     ##     replace(c, x=5)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

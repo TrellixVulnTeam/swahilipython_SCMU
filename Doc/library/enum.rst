@@ -30,28 +30,28 @@ helper, :class:`auto`.
 
 .. class:: Enum
 
-    Base class for creating enumerated constants.  See section
+    Base kundi for creating enumerated constants.  See section
     `Functional API`_ for an alternate construction syntax.
 
 .. class:: IntEnum
 
-    Base class for creating enumerated constants that are also
+    Base kundi for creating enumerated constants that are also
     subclasses of :class:`int`.
 
 .. class:: IntFlag
 
-    Base class for creating enumerated constants that can be combined using
+    Base kundi for creating enumerated constants that can be combined using
     the bitwise operators without losing their :class:`IntFlag` membership.
     :class:`IntFlag` members are also subclasses of :class:`int`.
 
 .. class:: Flag
 
-    Base class for creating enumerated constants that can be combined using
+    Base kundi for creating enumerated constants that can be combined using
     the bitwise operations without losing their :class:`Flag` membership.
 
 .. function:: unique
 
-    Enum class decorator that ensures only one name is bound to any one value.
+    Enum kundi decorator that ensures only one name is bound to any one value.
 
 .. class:: auto
 
@@ -65,11 +65,11 @@ Creating an Enum
 
 Enumerations are created using the :keyword:`class` syntax, which makes them
 easy to read and write.  An alternative creation method is described in
-`Functional API`_.  To define an enumeration, subclass :class:`Enum` as
+`Functional API`_.  To define an enumeration, subkundi :class:`Enum` as
 follows::
 
-    >>> from enum import Enum
-    >>> class Color(Enum):
+    >>> kutoka enum agiza Enum
+    >>> kundi Color(Enum):
     ...     RED = 1
     ...     GREEN = 2
     ...     BLUE = 3
@@ -84,7 +84,7 @@ follows::
 
 .. note:: Nomenclature
 
-  - The class :class:`Color` is an *enumeration* (or *enum*)
+  - The kundi :class:`Color` is an *enumeration* (or *enum*)
   - The attributes :attr:`Color.RED`, :attr:`Color.GREEN`, etc., are
     *enumeration members* (or *enum members*) and are functionally constants.
   - The enum members have *names* and *values* (the name of
@@ -122,7 +122,7 @@ Enum members also have a property that contains just their item name::
 
 Enumerations support iteration, in definition order::
 
-    >>> class Shake(Enum):
+    >>> kundi Shake(Enum):
     ...     VANILLA = 7
     ...     CHOCOLATE = 4
     ...     COOKIES = 9
@@ -178,7 +178,7 @@ Duplicating enum members and values
 
 Having two enum members with the same name is invalid::
 
-    >>> class Shape(Enum):
+    >>> kundi Shape(Enum):
     ...     SQUARE = 2
     ...     SQUARE = 3
     ...
@@ -191,7 +191,7 @@ A and B with the same value (and A defined first), B is an alias to A.  By-value
 lookup of the value of A and B will return A.  By-name lookup of B will also
 return A::
 
-    >>> class Shape(Enum):
+    >>> kundi Shape(Enum):
     ...     SQUARE = 2
     ...     DIAMOND = 1
     ...     CIRCLE = 3
@@ -224,9 +224,9 @@ A :keyword:`class` decorator specifically for enumerations.  It searches an
 enumeration's :attr:`__members__` gathering any aliases it finds; if any are
 found :exc:`ValueError` is raised with the details::
 
-    >>> from enum import Enum, unique
+    >>> kutoka enum agiza Enum, unique
     >>> @unique
-    ... class Mistake(Enum):
+    ... kundi Mistake(Enum):
     ...     ONE = 1
     ...     TWO = 2
     ...     THREE = 3
@@ -242,8 +242,8 @@ Using automatic values
 
 If the exact value is unimportant you can use :class:`auto`::
 
-    >>> from enum import Enum, auto
-    >>> class Color(Enum):
+    >>> kutoka enum agiza Enum, auto
+    >>> kundi Color(Enum):
     ...     RED = auto()
     ...     BLUE = auto()
     ...     GREEN = auto()
@@ -254,11 +254,11 @@ If the exact value is unimportant you can use :class:`auto`::
 The values are chosen by :func:`_generate_next_value_`, which can be
 overridden::
 
-    >>> class AutoName(Enum):
+    >>> kundi AutoName(Enum):
     ...     def _generate_next_value_(name, start, count, last_values):
     ...         return name
     ...
-    >>> class Ordinal(AutoName):
+    >>> kundi Ordinal(AutoName):
     ...     NORTH = auto()
     ...     SOUTH = auto()
     ...     EAST = auto()
@@ -349,7 +349,7 @@ enumerations can have arbitrary values.
 Enumerations are Python classes, and can have methods and special methods as
 usual.  If we have this enumeration::
 
-    >>> class Mood(Enum):
+    >>> kundi Mood(Enum):
     ...     FUNKY = 1
     ...     HAPPY = 3
     ...
@@ -390,17 +390,17 @@ methods.  See `Planet`_ for an example.
 Restricted Enum subclassing
 ---------------------------
 
-A new :class:`Enum` class must have one base Enum class, up to one concrete
+A new :class:`Enum` kundi must have one base Enum class, up to one concrete
 data type, and as many :class:`object`-based mixin classes as needed.  The
 order of these base classes is::
 
-    class EnumName([mix-in, ...,] [data-type,] base-enum):
+    kundi EnumName([mix-in, ...,] [data-type,] base-enum):
         pass
 
 Also, subclassing an enumeration is allowed only if the enumeration does not define
 any members.  So this is forbidden::
 
-    >>> class MoreColor(Color):
+    >>> kundi MoreColor(Color):
     ...     PINK = 17
     ...
     Traceback (most recent call last):
@@ -409,11 +409,11 @@ any members.  So this is forbidden::
 
 But this is allowed::
 
-    >>> class Foo(Enum):
+    >>> kundi Foo(Enum):
     ...     def some_behavior(self):
     ...         pass
     ...
-    >>> class Bar(Foo):
+    >>> kundi Bar(Foo):
     ...     HAPPY = 1
     ...     SAD = 2
     ...
@@ -429,14 +429,14 @@ Pickling
 
 Enumerations can be pickled and unpickled::
 
-    >>> from test.test_enum import Fruit
-    >>> from pickle import dumps, loads
+    >>> kutoka test.test_enum agiza Fruit
+    >>> kutoka pickle agiza dumps, loads
     >>> Fruit.TOMATO is loads(dumps(Fruit.TOMATO))
     True
 
 The usual restrictions for pickling apply: picklable enums must be defined in
 the top level of a module, since unpickling requires them to be importable
-from that module.
+kutoka that module.
 
 .. note::
 
@@ -450,7 +450,7 @@ It is possible to modify how Enum members are pickled/unpickled by defining
 Functional API
 --------------
 
-The :class:`Enum` class is callable, providing the following functional API::
+The :class:`Enum` kundi is callable, providing the following functional API::
 
     >>> Animal = Enum('Animal', 'ANT BEE CAT DOG')
     >>> Animal
@@ -471,10 +471,10 @@ whitespace-separated string of names, a sequence of names, a sequence of
 values.  The last two options enable assigning arbitrary values to
 enumerations; the others auto-assign increasing integers starting with 1 (use
 the ``start`` parameter to specify a different starting value).  A
-new class derived from :class:`Enum` is returned.  In other words, the above
+new kundi derived kutoka :class:`Enum` is returned.  In other words, the above
 assignment to :class:`Animal` is equivalent to::
 
-    >>> class Animal(Enum):
+    >>> kundi Animal(Enum):
     ...     ANT = 1
     ...     BEE = 2
     ...     CAT = 3
@@ -501,7 +501,7 @@ The solution is to specify the module name explicitly as follows::
 
 The new pickle protocol 4 also, in some circumstances, relies on
 :attr:`~definition.__qualname__` being set to the location where pickle will be able
-to find the class.  For example, if the class was made available in class
+to find the class.  For example, if the kundi was made available in class
 SomeData in the global scope::
 
     >>> Animal = Enum('Animal', 'ANT BEE CAT DOG', qualname='SomeData.Animal')
@@ -510,7 +510,7 @@ The complete signature is::
 
     Enum(value='NewEnumName', names=<...>, *, module='...', qualname='...', type=<mixed-in class>, start=1)
 
-:value: What the new Enum class will record as its name.
+:value: What the new Enum kundi will record as its name.
 
 :names: The Enum members.  This can be a whitespace or comma separated string
   (values will start at 1 unless otherwise specified)::
@@ -529,9 +529,9 @@ The complete signature is::
 
     {'CHARTREUSE': 7, 'SEA_GREEN': 11, 'ROSEMARY': 42}
 
-:module: name of module where new Enum class can be found.
+:module: name of module where new Enum kundi can be found.
 
-:qualname: where in module new Enum class can be found.
+:qualname: where in module new Enum kundi can be found.
 
 :type: type to mix in to new Enum class.
 
@@ -547,17 +547,17 @@ Derived Enumerations
 IntEnum
 ^^^^^^^
 
-The first variation of :class:`Enum` that is provided is also a subclass of
+The first variation of :class:`Enum` that is provided is also a subkundi of
 :class:`int`.  Members of an :class:`IntEnum` can be compared to integers;
 by extension, integer enumerations of different types can also be compared
 to each other::
 
-    >>> from enum import IntEnum
-    >>> class Shape(IntEnum):
+    >>> kutoka enum agiza IntEnum
+    >>> kundi Shape(IntEnum):
     ...     CIRCLE = 1
     ...     SQUARE = 2
     ...
-    >>> class Request(IntEnum):
+    >>> kundi Request(IntEnum):
     ...     POST = 1
     ...     GET = 2
     ...
@@ -570,11 +570,11 @@ to each other::
 
 However, they still can't be compared to standard :class:`Enum` enumerations::
 
-    >>> class Shape(IntEnum):
+    >>> kundi Shape(IntEnum):
     ...     CIRCLE = 1
     ...     SQUARE = 2
     ...
-    >>> class Color(Enum):
+    >>> kundi Color(Enum):
     ...     RED = 1
     ...     GREEN = 2
     ...
@@ -598,7 +598,7 @@ The next variation of :class:`Enum` provided, :class:`IntFlag`, is also based
 on :class:`int`.  The difference being :class:`IntFlag` members can be combined
 using the bitwise operators (&, \|, ^, ~) and the result is still an
 :class:`IntFlag` member.  However, as the name implies, :class:`IntFlag`
-members also subclass :class:`int` and can be used wherever an :class:`int` is
+members also subkundi :class:`int` and can be used wherever an :class:`int` is
 used.  Any operation on an :class:`IntFlag` member besides the bit-wise
 operations will lose the :class:`IntFlag` membership.
 
@@ -606,8 +606,8 @@ operations will lose the :class:`IntFlag` membership.
 
 Sample :class:`IntFlag` class::
 
-    >>> from enum import IntFlag
-    >>> class Perm(IntFlag):
+    >>> kutoka enum agiza IntFlag
+    >>> kundi Perm(IntFlag):
     ...     R = 4
     ...     W = 2
     ...     X = 1
@@ -622,7 +622,7 @@ Sample :class:`IntFlag` class::
 
 It is also possible to name the combinations::
 
-    >>> class Perm(IntFlag):
+    >>> kundi Perm(IntFlag):
     ...     R = 4
     ...     W = 2
     ...     X = 1
@@ -662,8 +662,8 @@ value and let :class:`Flag` select an appropriate value.
 Like :class:`IntFlag`, if a combination of :class:`Flag` members results in no
 flags being set, the boolean evaluation is :data:`False`::
 
-    >>> from enum import Flag, auto
-    >>> class Color(Flag):
+    >>> kutoka enum agiza Flag, auto
+    >>> kundi Color(Flag):
     ...     RED = auto()
     ...     BLUE = auto()
     ...     GREEN = auto()
@@ -676,7 +676,7 @@ flags being set, the boolean evaluation is :data:`False`::
 Individual flags should have values that are powers of two (1, 2, 4, 8, ...),
 while combinations of flags won't::
 
-    >>> class Color(Flag):
+    >>> kundi Color(Flag):
     ...     RED = auto()
     ...     BLUE = auto()
     ...     GREEN = auto()
@@ -688,7 +688,7 @@ while combinations of flags won't::
 Giving a name to the "no flags set" condition does not change its boolean
 value::
 
-    >>> class Color(Flag):
+    >>> kundi Color(Flag):
     ...     BLACK = 0
     ...     RED = auto()
     ...     BLUE = auto()
@@ -716,7 +716,7 @@ Others
 While :class:`IntEnum` is part of the :mod:`enum` module, it would be very
 simple to implement independently::
 
-    class IntEnum(int, Enum):
+    kundi IntEnum(int, Enum):
         pass
 
 This demonstrates how similar derived enumerations can be defined; for example
@@ -753,7 +753,7 @@ the :class:`Enum` member.  Any other modifications may go in either
 For example, if you want to pass several items to the constructor, but only
 want one of them to be the value::
 
-    >>> class Coordinate(bytes, Enum):
+    >>> kundi Coordinate(bytes, Enum):
     ...     """
     ...     Coordinate with binary codes that can be indexed by the int code.
     ...     """
@@ -803,7 +803,7 @@ having to renumber the remaining members.
 Whichever method you choose, you should provide a :meth:`repr` that also hides
 the (unimportant) value::
 
-    >>> class NoValue(Enum):
+    >>> kundi NoValue(Enum):
     ...     def __repr__(self):
     ...         return '<%s.%s>' % (self.__class__.__name__, self.name)
     ...
@@ -814,7 +814,7 @@ Using :class:`auto`
 
 Using :class:`auto` would look like::
 
-    >>> class Color(NoValue):
+    >>> kundi Color(NoValue):
     ...     RED = auto()
     ...     BLUE = auto()
     ...     GREEN = auto()
@@ -828,7 +828,7 @@ Using :class:`object`
 
 Using :class:`object` would look like::
 
-    >>> class Color(NoValue):
+    >>> kundi Color(NoValue):
     ...     RED = object()
     ...     GREEN = object()
     ...     BLUE = object()
@@ -842,7 +842,7 @@ Using a descriptive string
 
 Using a string as the value would look like::
 
-    >>> class Color(NoValue):
+    >>> kundi Color(NoValue):
     ...     RED = 'stop'
     ...     GREEN = 'go'
     ...     BLUE = 'too fast!'
@@ -858,14 +858,14 @@ Using a custom :meth:`__new__`
 
 Using an auto-numbering :meth:`__new__` would look like::
 
-    >>> class AutoNumber(NoValue):
+    >>> kundi AutoNumber(NoValue):
     ...     def __new__(cls):
     ...         value = len(cls.__members__) + 1
     ...         obj = object.__new__(cls)
     ...         obj._value_ = value
     ...         return obj
     ...
-    >>> class Color(AutoNumber):
+    >>> kundi Color(AutoNumber):
     ...     RED = ()
     ...     GREEN = ()
     ...     BLUE = ()
@@ -880,7 +880,7 @@ Using an auto-numbering :meth:`__new__` would look like::
 
     The :meth:`__new__` method, if defined, is used during creation of the Enum
     members; it is then replaced by Enum's :meth:`__new__` which is used after
-    class creation for lookup of existing members.
+    kundi creation for lookup of existing members.
 
 
 OrderedEnum
@@ -890,7 +890,7 @@ An ordered enumeration that is not based on :class:`IntEnum` and so maintains
 the normal :class:`Enum` invariants (such as not being comparable to other
 enumerations)::
 
-    >>> class OrderedEnum(Enum):
+    >>> kundi OrderedEnum(Enum):
     ...     def __ge__(self, other):
     ...         if self.__class__ is other.__class__:
     ...             return self.value >= other.value
@@ -908,7 +908,7 @@ enumerations)::
     ...             return self.value < other.value
     ...         return NotImplemented
     ...
-    >>> class Grade(OrderedEnum):
+    >>> kundi Grade(OrderedEnum):
     ...     A = 5
     ...     B = 4
     ...     C = 3
@@ -925,7 +925,7 @@ DuplicateFreeEnum
 Raises an error if a duplicate member name is found instead of creating an
 alias::
 
-    >>> class DuplicateFreeEnum(Enum):
+    >>> kundi DuplicateFreeEnum(Enum):
     ...     def __init__(self, *args):
     ...         cls = self.__class__
     ...         if any(self.value == e.value for e in cls):
@@ -935,7 +935,7 @@ alias::
     ...                 "aliases not allowed in DuplicateFreeEnum:  %r --> %r"
     ...                 % (a, e))
     ...
-    >>> class Color(DuplicateFreeEnum):
+    >>> kundi Color(DuplicateFreeEnum):
     ...     RED = 1
     ...     GREEN = 2
     ...     BLUE = 3
@@ -958,7 +958,7 @@ Planet
 If :meth:`__new__` or :meth:`__init__` is defined the value of the enum member
 will be passed to those methods::
 
-    >>> class Planet(Enum):
+    >>> kundi Planet(Enum):
     ...     MERCURY = (3.303e+23, 2.4397e6)
     ...     VENUS   = (4.869e+24, 6.0518e6)
     ...     EARTH   = (5.976e+24, 6.37814e6)
@@ -987,8 +987,8 @@ TimePeriod
 
 An example to show the :attr:`_ignore_` attribute in use::
 
-    >>> from datetime import timedelta
-    >>> class Period(timedelta, Enum):
+    >>> kutoka datetime agiza timedelta
+    >>> kundi Period(timedelta, Enum):
     ...     "different lengths of time"
     ...     _ignore_ = 'Period i'
     ...     Period = vars()
@@ -1004,19 +1004,19 @@ An example to show the :attr:`_ignore_` attribute in use::
 How are Enums different?
 ------------------------
 
-Enums have a custom metaclass that affects many aspects of both derived Enum
+Enums have a custom metakundi that affects many aspects of both derived Enum
 classes and their instances (members).
 
 
 Enum Classes
 ^^^^^^^^^^^^
 
-The :class:`EnumMeta` metaclass is responsible for providing the
+The :class:`EnumMeta` metakundi is responsible for providing the
 :meth:`__contains__`, :meth:`__dir__`, :meth:`__iter__` and other methods that
-allow one to do things with an :class:`Enum` class that fail on a typical
+allow one to do things with an :class:`Enum` kundi that fail on a typical
 class, such as `list(Color)` or `some_enum_var in Color`.  :class:`EnumMeta` is
 responsible for ensuring that various other methods on the final :class:`Enum`
-class are correct (such as :meth:`__new__`, :meth:`__getnewargs__`,
+kundi are correct (such as :meth:`__new__`, :meth:`__getnewargs__`,
 :meth:`__str__` and :meth:`__repr__`).
 
 
@@ -1025,7 +1025,7 @@ Enum Members (aka instances)
 
 The most interesting thing about Enum members is that they are singletons.
 :class:`EnumMeta` creates them all while it is creating the :class:`Enum`
-class itself, and then puts a custom :meth:`__new__` in place to ensure
+kundi itself, and then puts a custom :meth:`__new__` in place to ensure
 that no new ones are ever instantiated by returning only the existing
 member instances.
 
@@ -1053,10 +1053,10 @@ Supported ``_sunder_`` names
 - ``_missing_`` -- a lookup function used when a value is not found; may be
   overridden
 - ``_ignore_`` -- a list of names, either as a :func:`list` or a :func:`str`,
-  that will not be transformed into members, and will be removed from the final
+  that will not be transformed into members, and will be removed kutoka the final
   class
 - ``_order_`` -- used in Python 2/3 code to ensure member order is consistent
-  (class attribute, removed during class creation)
+  (kundi attribute, removed during kundi creation)
 - ``_generate_next_value_`` -- used by the `Functional API`_ and by
   :class:`auto` to get an appropriate value for an enum member; may be
   overridden
@@ -1068,7 +1068,7 @@ To help keep Python 2 / Python 3 code in sync an :attr:`_order_` attribute can
 be provided.  It will be checked against the actual order of the enumeration
 and raise an error if the two do not match::
 
-    >>> class Color(Enum):
+    >>> kundi Color(Enum):
     ...     _order_ = 'RED GREEN BLUE'
     ...     RED = 1
     ...     BLUE = 3
@@ -1093,7 +1093,7 @@ this as that lookup may fail or, worse, return something besides the
 :class:`Enum` member you are looking for (this is another good reason to use
 all-uppercase names for members)::
 
-    >>> class FieldTypes(Enum):
+    >>> kundi FieldTypes(Enum):
     ...     name = 0
     ...     value = 1
     ...     size = 2
@@ -1124,8 +1124,8 @@ your class::
 ``Enum`` classes with methods
 """""""""""""""""""""""""""""
 
-If you give your :class:`Enum` subclass extra methods, like the `Planet`_
-class above, those methods will show up in a :func:`dir` of the member,
+If you give your :class:`Enum` subkundi extra methods, like the `Planet`_
+kundi above, those methods will show up in a :func:`dir` of the member,
 but not of the class::
 
     >>> dir(Planet)
@@ -1140,7 +1140,7 @@ Combining members of ``Flag``
 If a combination of Flag members is not named, the :func:`repr` will include
 all named flags and all named combinations of flags that are in the value::
 
-    >>> class Color(Flag):
+    >>> kundi Color(Flag):
     ...     RED = auto()
     ...     GREEN = auto()
     ...     BLUE = auto()

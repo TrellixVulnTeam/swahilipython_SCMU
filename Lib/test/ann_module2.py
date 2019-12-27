@@ -9,14 +9,14 @@ i: int = 1
 j: int
 x: float = i/10
 
-def f():
-    class C: ...
-    return C()
+eleza f():
+    kundi C: ...
+    rudisha C()
 
 f().new_attr: object = object()
 
-class C:
-    def __init__(self, x: int) -> None:
+kundi C:
+    eleza __init__(self, x: int) -> None:
         self.x = x
 
 c = C(5)
@@ -26,11 +26,11 @@ __annotations__ = {}
 
 
 @no_type_check
-class NTC:
-    def meth(self, param: complex) -> None:
+kundi NTC:
+    eleza meth(self, param: complex) -> None:
         ...
 
-class CV:
+kundi CV:
     var: ClassVar['CV']
 
 CV.var = CV()

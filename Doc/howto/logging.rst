@@ -102,7 +102,7 @@ A simple example
 
 A very simple example is::
 
-   import logging
+   agiza logging
    logging.warning('Watch out!')  # will print a message to the console
    logging.info('I told you so')  # will not print anything
 
@@ -125,9 +125,9 @@ Logging to a file
 
 A very common situation is that of recording logging events in a file, so let's
 look at that next. Be sure to try the following in a newly-started Python
-interpreter, and don't just continue from the session described above::
+interpreter, and don't just continue kutoka the session described above::
 
-   import logging
+   agiza logging
    logging.basicConfig(filename='example.log',level=logging.DEBUG)
    logging.debug('This message should go to the log file')
    logging.info('So should this')
@@ -146,7 +146,7 @@ This example also shows how you can set the logging level which acts as the
 threshold for tracking. In this case, because we set the threshold to
 ``DEBUG``, all of the messages were printed.
 
-If you want to set the logging level from a command-line option such as:
+If you want to set the logging level kutoka a command-line option such as:
 
 .. code-block:: none
 
@@ -161,7 +161,7 @@ to get the value which you'll pass to :func:`basicConfig` via the *level*
 argument. You may want to error check any user input value, perhaps as in the
 following example::
 
-   # assuming loglevel is bound to the string value obtained from the
+   # assuming loglevel is bound to the string value obtained kutoka the
    # command line argument. Convert to upper case to allow the user to
    # specify --log=DEBUG or --log=debug
    numeric_level = getattr(logging, loglevel.upper(), None)
@@ -174,26 +174,26 @@ The call to :func:`basicConfig` should come *before* any calls to :func:`debug`,
 only the first call will actually do anything: subsequent calls are effectively
 no-ops.
 
-If you run the above script several times, the messages from successive runs
+If you run the above script several times, the messages kutoka successive runs
 are appended to the file *example.log*. If you want each run to start afresh,
-not remembering the messages from earlier runs, you can specify the *filemode*
+not remembering the messages kutoka earlier runs, you can specify the *filemode*
 argument, by changing the call in the above example to::
 
    logging.basicConfig(filename='example.log', filemode='w', level=logging.DEBUG)
 
 The output will be the same as before, but the log file is no longer appended
-to, so the messages from earlier runs are lost.
+to, so the messages kutoka earlier runs are lost.
 
 
-Logging from multiple modules
+Logging kutoka multiple modules
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If your program consists of multiple modules, here's an example of how you
 could organize logging in it::
 
    # myapp.py
-   import logging
-   import mylib
+   agiza logging
+   agiza mylib
 
    def main():
        logging.basicConfig(filename='myapp.log', level=logging.INFO)
@@ -207,7 +207,7 @@ could organize logging in it::
 ::
 
    # mylib.py
-   import logging
+   agiza logging
 
    def do_something():
        logging.info('Doing something')
@@ -223,7 +223,7 @@ If you run *myapp.py*, you should see this in *myapp.log*:
 which is hopefully what you were expecting to see. You can generalize this to
 multiple modules, using the pattern in *mylib.py*. Note that for this simple
 usage pattern, you won't know, by looking in the log file, *where* in your
-application your messages came from, apart from looking at the event
+application your messages came kutoka, apart kutoka looking at the event
 description. If you want to track the location of your messages, you'll need
 to refer to the documentation beyond the tutorial level -- see
 :ref:`logging-advanced-tutorial`.
@@ -235,7 +235,7 @@ Logging variable data
 To log variable data, use a format string for the event description message and
 append the variable data as arguments. For example::
 
-   import logging
+   agiza logging
    logging.warning('%s before you %s', 'Look', 'leap!')
 
 will display:
@@ -258,7 +258,7 @@ Changing the format of displayed messages
 To change the format which is used to display messages, you need to
 specify the format you want to use::
 
-   import logging
+   agiza logging
    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
    logging.debug('This message should appear on the console')
    logging.info('So should this')
@@ -286,7 +286,7 @@ Displaying the date/time in messages
 To display the date and time of an event, you would place '%(asctime)s' in
 your format string::
 
-   import logging
+   agiza logging
    logging.basicConfig(format='%(asctime)s %(message)s')
    logging.warning('is when this event was logged.')
 
@@ -300,7 +300,7 @@ The default format for date/time display (shown above) is like ISO8601 or
 :rfc:`3339`. If you need more control over the formatting of the date/time, provide
 a *datefmt* argument to ``basicConfig``, as in this example::
 
-   import logging
+   agiza logging
    logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
    logging.warning('is when this event was logged.')
 
@@ -353,7 +353,7 @@ Log event information is passed between loggers, handlers, filters and
 formatters in a :class:`LogRecord` instance.
 
 Logging is performed by calling methods on instances of the :class:`Logger`
-class (hereafter called :dfn:`loggers`). Each instance has a name, and they are
+kundi (hereafter called :dfn:`loggers`). Each instance has a name, and they are
 conceptually arranged in a namespace hierarchy using dots (periods) as
 separators. For example, a logger named 'scan' is the parent of loggers
 'scan.text', 'scan.html' and 'scan.pdf'. Logger names can be anything you want,
@@ -365,7 +365,7 @@ in each module which uses logging, named as follows::
    logger = logging.getLogger(__name__)
 
 This means that logger names track the package/module hierarchy, and it's
-intuitively obvious where events are logged just from the logger name.
+intuitively obvious where events are logged just kutoka the logger name.
 
 The root of the hierarchy of loggers is called the root logger. That's the
 logger used by the functions :func:`debug`, :func:`info`, :func:`warning`,
@@ -377,7 +377,7 @@ It is, of course, possible to log messages to different destinations. Support
 is included in the package for writing log messages to files, HTTP GET/POST
 locations, email via SMTP, generic sockets, queues, or OS-specific logging
 mechanisms such as syslog or the Windows NT event log. Destinations are served
-by :dfn:`handler` classes. You can create your own log destination class if
+by :dfn:`handler` classes. You can create your own log destination kundi if
 you have special requirements not met by any of the built-in handler classes.
 
 By default, no destination is set for any logging messages. You can specify
@@ -427,11 +427,11 @@ These are the most common configuration methods:
   and will ignore DEBUG messages.
 
 * :meth:`Logger.addHandler` and :meth:`Logger.removeHandler` add and remove
-  handler objects from the logger object.  Handlers are covered in more detail
+  handler objects kutoka the logger object.  Handlers are covered in more detail
   in :ref:`handler-basic`.
 
 * :meth:`Logger.addFilter` and :meth:`Logger.removeFilter` add and remove filter
-  objects from the logger object.  Filters are covered in more detail in
+  objects kutoka the logger object.  Filters are covered in more detail in
   :ref:`filter`.
 
 You don't need to always call these methods on every logger you create. See the
@@ -451,7 +451,7 @@ With the logger object configured, the following methods create log messages:
 
 * :meth:`Logger.exception` creates a log message similar to
   :meth:`Logger.error`.  The difference is that :meth:`Logger.exception` dumps a
-  stack trace along with it.  Call this method only from an exception handler.
+  stack trace along with it.  Call this method only kutoka an exception handler.
 
 * :meth:`Logger.log` takes a log level as an explicit argument.  This is a
   little more verbose for logging messages than using the log level convenience
@@ -518,7 +518,7 @@ custom handlers) are the following configuration methods:
   configure and deconfigure filter objects on handlers.
 
 Application code should not directly instantiate and use instances of
-:class:`Handler`.  Instead, the :class:`Handler` class is a base class that
+:class:`Handler`.  Instead, the :class:`Handler` kundi is a base kundi that
 defines the interface that all handlers should have and establishes some
 default behavior that child classes can use (or override).
 
@@ -528,7 +528,7 @@ Formatters
 
 Formatter objects configure the final order, structure, and contents of the log
 message.  Unlike the base :class:`logging.Handler` class, application code may
-instantiate formatter classes, although you could likely subclass the formatter
+instantiate formatter classes, although you could likely subkundi the formatter
 if your application needs special behavior.  The constructor takes three
 optional arguments -- a message format string, a date format string and a style
 indicator.
@@ -567,7 +567,7 @@ for a particular formatter instance, set the ``converter`` attribute of the
 instance to a function with the same signature as :func:`time.localtime` or
 :func:`time.gmtime`. To change it for all formatters, for example if you want
 all logging times to be shown in GMT, set the ``converter`` attribute in the
-Formatter class (to ``time.gmtime`` for GMT display).
+Formatter kundi (to ``time.gmtime`` for GMT display).
 
 
 Configuring Logging
@@ -588,7 +588,7 @@ For the reference documentation on the last two options, see
 :ref:`logging-config-api`.  The following example configures a very simple
 logger, a console handler, and a simple formatter using Python code::
 
-    import logging
+    agiza logging
 
     # create logger
     logger = logging.getLogger('simple_example')
@@ -614,7 +614,7 @@ logger, a console handler, and a simple formatter using Python code::
     logger.error('error message')
     logger.critical('critical message')
 
-Running this module from the command line produces the following output:
+Running this module kutoka the command line produces the following output:
 
 .. code-block:: shell-session
 
@@ -629,8 +629,8 @@ The following Python module creates a logger, handler, and formatter nearly
 identical to those in the example listed above, with the only difference being
 the names of the objects::
 
-    import logging
-    import logging.config
+    agiza logging
+    agiza logging.config
 
     logging.config.fileConfig('logging.conf')
 
@@ -710,11 +710,11 @@ noncoders to easily modify the logging properties.
 
 .. currentmodule:: logging
 
-Note that the class names referenced in config files need to be either relative
+Note that the kundi names referenced in config files need to be either relative
 to the logging module, or absolute values which can be resolved using normal
-import mechanisms. Thus, you could use either
+agiza mechanisms. Thus, you could use either
 :class:`~logging.handlers.WatchedFileHandler` (relative to the logging module) or
-``mypackage.mymodule.MyHandler`` (for a class defined in package ``mypackage``
+``mypackage.mymodule.MyHandler`` (for a kundi defined in package ``mypackage``
 and module ``mymodule``, where ``mypackage`` is available on the Python import
 path).
 
@@ -816,7 +816,7 @@ library (*if* you want to prevent your library's logged events being output to
 library *foo* is done using loggers with names matching 'foo.x', 'foo.x.y',
 etc. then the code::
 
-    import logging
+    agiza logging
     logging.getLogger('foo').addHandler(logging.NullHandler())
 
 should have the desired effect. If an organisation produces a number of
@@ -867,7 +867,7 @@ the verbosity of logging output.
 
 Logging messages are encoded as instances of the :class:`~logging.LogRecord`
 class. When a logger decides to actually log an event, a
-:class:`~logging.LogRecord` instance is created from the logging message.
+:class:`~logging.LogRecord` instance is created kutoka the logging message.
 
 Logging messages are subjected to a dispatch mechanism through the use of
 :dfn:`handlers`, which are instances of subclasses of the :class:`Handler`
@@ -900,7 +900,7 @@ However, if you are convinced that you need custom levels, great care should
 be exercised when doing this, and it is possibly *a very bad idea to define
 custom levels if you are developing a library*. That's because if multiple
 library authors all define their own custom levels, there is a chance that
-the logging output from such multiple libraries used together will be
+the logging output kutoka such multiple libraries used together will be
 difficult for the using developer to control and/or interpret, because a
 given numeric value might mean different things for different libraries.
 
@@ -917,7 +917,7 @@ provided:
 
 #. :class:`FileHandler` instances send messages to disk files.
 
-#. :class:`~handlers.BaseRotatingHandler` is the base class for handlers that
+#. :class:`~handlers.BaseRotatingHandler` is the base kundi for handlers that
    rotate log files at a certain point. It is not meant to be  instantiated
    directly. Instead, use :class:`~handlers.RotatingFileHandler` or
    :class:`~handlers.TimedRotatingFileHandler`.
@@ -1007,7 +1007,7 @@ cause the application using logging to terminate prematurely.
 
 :class:`SystemExit` and :class:`KeyboardInterrupt` exceptions are never
 swallowed. Other exceptions which occur during the :meth:`~Handler.emit` method
-of a :class:`Handler` subclass are passed to its :meth:`~Handler.handleError`
+of a :class:`Handler` subkundi are passed to its :meth:`~Handler.handleError`
 method.
 
 The default implementation of :meth:`~Handler.handleError` in :class:`Handler`
@@ -1072,7 +1072,7 @@ need:
 +-----------------------------------------------+----------------------------------------+
 | What you don't want to collect                | How to avoid collecting it             |
 +===============================================+========================================+
-| Information about where calls were made from. | Set ``logging._srcfile`` to ``None``.  |
+| Information about where calls were made kutoka. | Set ``logging._srcfile`` to ``None``.  |
 |                                               | This avoids calling                    |
 |                                               | :func:`sys._getframe`, which may help  |
 |                                               | to speed up your code in environments  |
@@ -1086,7 +1086,7 @@ need:
 +-----------------------------------------------+----------------------------------------+
 
 Also note that the core logging module only includes the basic handlers. If
-you don't import :mod:`logging.handlers` and :mod:`logging.config`, they won't
+you don't agiza :mod:`logging.handlers` and :mod:`logging.config`, they won't
 take up any memory.
 
 .. seealso::

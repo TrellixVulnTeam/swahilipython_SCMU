@@ -165,8 +165,8 @@ MAX_INTERPOLATION_DEPTH = 10
 
 
 # exception classes
-class Error(Exception):
-    """Base class for ConfigParser exceptions."""
+kundi Error(Exception):
+    """Base kundi for ConfigParser exceptions."""
 
     def __init__(self, msg=''):
         self.message = msg
@@ -178,7 +178,7 @@ class Error(Exception):
     __str__ = __repr__
 
 
-class NoSectionError(Error):
+kundi NoSectionError(Error):
     """Raised when no section matches a requested option."""
 
     def __init__(self, section):
@@ -187,7 +187,7 @@ class NoSectionError(Error):
         self.args = (section, )
 
 
-class DuplicateSectionError(Error):
+kundi DuplicateSectionError(Error):
     """Raised when a section is repeated in an input source.
 
     Possible repetitions that raise this exception are: multiple creation
@@ -213,7 +213,7 @@ class DuplicateSectionError(Error):
         self.args = (section, source, lineno)
 
 
-class DuplicateOptionError(Error):
+kundi DuplicateOptionError(Error):
     """Raised by strict parsers when an option is repeated in an input source.
 
     Current implementation raises this exception only when an option is found
@@ -240,7 +240,7 @@ class DuplicateOptionError(Error):
         self.args = (section, option, source, lineno)
 
 
-class NoOptionError(Error):
+kundi NoOptionError(Error):
     """A requested option was not found."""
 
     def __init__(self, option, section):
@@ -251,8 +251,8 @@ class NoOptionError(Error):
         self.args = (option, section)
 
 
-class InterpolationError(Error):
-    """Base class for interpolation-related exceptions."""
+kundi InterpolationError(Error):
+    """Base kundi for interpolation-related exceptions."""
 
     def __init__(self, option, section, msg):
         Error.__init__(self, msg)
@@ -261,7 +261,7 @@ class InterpolationError(Error):
         self.args = (option, section, msg)
 
 
-class InterpolationMissingOptionError(InterpolationError):
+kundi InterpolationMissingOptionError(InterpolationError):
     """A string substitution required a setting which was not available."""
 
     def __init__(self, option, section, rawval, reference):
@@ -273,7 +273,7 @@ class InterpolationMissingOptionError(InterpolationError):
         self.args = (option, section, rawval, reference)
 
 
-class InterpolationSyntaxError(InterpolationError):
+kundi InterpolationSyntaxError(InterpolationError):
     """Raised when the source text contains invalid syntax.
 
     Current implementation raises this exception when the source text into
@@ -281,7 +281,7 @@ class InterpolationSyntaxError(InterpolationError):
     """
 
 
-class InterpolationDepthError(InterpolationError):
+kundi InterpolationDepthError(InterpolationError):
     """Raised when substitutions are nested too deeply."""
 
     def __init__(self, option, section, rawval):
@@ -294,7 +294,7 @@ class InterpolationDepthError(InterpolationError):
         self.args = (option, section, rawval)
 
 
-class ParsingError(Error):
+kundi ParsingError(Error):
     """Raised when a configuration file does not follow legal syntax."""
 
     def __init__(self, source=None, filename=None):
@@ -303,9 +303,9 @@ class ParsingError(Error):
         if filename and source:
             raise ValueError("Cannot specify both `filename' and `source'. "
                              "Use `source'.")
-        elif not filename and not source:
+        lasivyo not filename and not source:
             raise ValueError("Required argument `source' not given.")
-        elif filename:
+        lasivyo filename:
             source = filename
         Error.__init__(self, 'Source contains parsing errors: %r' % source)
         self.source = source
@@ -337,7 +337,7 @@ class ParsingError(Error):
         self.message += '\n\t[line %2d]: %s' % (lineno, line)
 
 
-class MissingSectionHeaderError(ParsingError):
+kundi MissingSectionHeaderError(ParsingError):
     """Raised when a key-value pair is found before any section header."""
 
     def __init__(self, filename, lineno, line):
@@ -357,7 +357,7 @@ class MissingSectionHeaderError(ParsingError):
 _UNSET = object()
 
 
-class Interpolation:
+kundi Interpolation:
     """Dummy interpolation that passes the value through with no changes."""
 
     def before_get(self, parser, section, option, value, defaults):
@@ -373,7 +373,7 @@ class Interpolation:
         return value
 
 
-class BasicInterpolation(Interpolation):
+kundi BasicInterpolation(Interpolation):
     """Interpolation as implemented in the classic ConfigParser.
 
     The option values can contain format strings which refer to other values in
@@ -421,7 +421,7 @@ class BasicInterpolation(Interpolation):
             if c == "%":
                 accum.append("%")
                 rest = rest[2:]
-            elif c == "(":
+            lasivyo c == "(":
                 m = self._KEYCRE.match(rest)
                 if m is None:
                     raise InterpolationSyntaxError(option, section,
@@ -445,7 +445,7 @@ class BasicInterpolation(Interpolation):
                     "found: %r" % (rest,))
 
 
-class ExtendedInterpolation(Interpolation):
+kundi ExtendedInterpolation(Interpolation):
     """Advanced variant of interpolation, supports the syntax used by
     `zc.buildout'. Enables interpolation between sections."""
 
@@ -482,7 +482,7 @@ class ExtendedInterpolation(Interpolation):
             if c == "$":
                 accum.append("$")
                 rest = rest[2:]
-            elif c == "{":
+            lasivyo c == "{":
                 m = self._KEYCRE.match(rest)
                 if m is None:
                     raise InterpolationSyntaxError(option, section,
@@ -495,7 +495,7 @@ class ExtendedInterpolation(Interpolation):
                     if len(path) == 1:
                         opt = parser.optionxform(path[0])
                         v = map[opt]
-                    elif len(path) == 2:
+                    lasivyo len(path) == 2:
                         sect = path[0]
                         opt = parser.optionxform(path[1])
                         v = parser.get(sect, opt, raw=True)
@@ -519,7 +519,7 @@ class ExtendedInterpolation(Interpolation):
                     "found: %r" % (rest,))
 
 
-class LegacyInterpolation(Interpolation):
+kundi LegacyInterpolation(Interpolation):
     """Deprecated interpolation used in old versions of ConfigParser.
     Use BasicInterpolation or ExtendedInterpolation instead."""
 
@@ -557,7 +557,7 @@ class LegacyInterpolation(Interpolation):
             return "%%(%s)s" % parser.optionxform(s)
 
 
-class RawConfigParser(MutableMapping):
+kundi RawConfigParser(MutableMapping):
     """ConfigParser that does not do interpolation."""
 
     # Regular expressions for parsing section headers and options
@@ -881,7 +881,7 @@ class RawConfigParser(MutableMapping):
         if not section or section == self.default_section:
             option = self.optionxform(option)
             return option in self._defaults
-        elif section not in self._sections:
+        lasivyo section not in self._sections:
             return False
         else:
             option = self.optionxform(option)
@@ -969,7 +969,7 @@ class RawConfigParser(MutableMapping):
         # no update method in configparser is atomic in this implementation.
         if key == self.default_section:
             self._defaults.clear()
-        elif key in self._sections:
+        lasivyo key in self._sections:
             self._sections[key].clear()
         self.read_dict({key: value})
 
@@ -1068,7 +1068,7 @@ class RawConfigParser(MutableMapping):
                                                         lineno)
                         cursect = self._sections[sectname]
                         elements_added.add(sectname)
-                    elif sectname == self.default_section:
+                    lasivyo sectname == self.default_section:
                         cursect = self._defaults
                     else:
                         cursect = self._dict()
@@ -1078,7 +1078,7 @@ class RawConfigParser(MutableMapping):
                     # So sections can't start with a continuation line
                     optname = None
                 # no section header in the file?
-                elif cursect is None:
+                lasivyo cursect is None:
                     raise MissingSectionHeaderError(fpname, lineno, line)
                 # an option line?
                 else:
@@ -1189,7 +1189,7 @@ class RawConfigParser(MutableMapping):
         return self._converters
 
 
-class ConfigParser(RawConfigParser):
+kundi ConfigParser(RawConfigParser):
     """ConfigParser implementing interpolation."""
 
     _DEFAULT_INTERPOLATION = BasicInterpolation()
@@ -1221,20 +1221,20 @@ class ConfigParser(RawConfigParser):
             self._interpolation = hold_interpolation
 
 
-class SafeConfigParser(ConfigParser):
+kundi SafeConfigParser(ConfigParser):
     """ConfigParser alias for backwards compatibility purposes."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         warnings.warn(
-            "The SafeConfigParser class has been renamed to ConfigParser "
+            "The SafeConfigParser kundi has been renamed to ConfigParser "
             "in Python 3.2. This alias will be removed in future versions."
             " Use ConfigParser directly instead.",
             DeprecationWarning, stacklevel=2
         )
 
 
-class SectionProxy(MutableMapping):
+kundi SectionProxy(MutableMapping):
     """A proxy for a single section kutoka a parser."""
 
     def __init__(self, parser, name):
@@ -1304,10 +1304,10 @@ class SectionProxy(MutableMapping):
                      fallback=fallback, **kwargs)
 
 
-class ConverterMapping(MutableMapping):
+kundi ConverterMapping(MutableMapping):
     """Enables reuse of get*() methods between the parser and section proxies.
 
-    If a parser class implements a getter directly, the value for the given
+    If a parser kundi implements a getter directly, the value for the given
     key will be ``None``. The presence of the converter name here enables
     section proxies to find and use the implementation on the parser class.
     """
@@ -1321,7 +1321,7 @@ class ConverterMapping(MutableMapping):
             m = self.GETTERCRE.match(getter)
             if not m or not callable(getattr(self._parser, getter)):
                 continue
-            self._data[m.group('name')] = None   # See class docstring.
+            self._data[m.group('name')] = None   # See kundi docstring.
 
     def __getitem__(self, key):
         return self._data[key]

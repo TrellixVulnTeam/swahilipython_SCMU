@@ -166,12 +166,12 @@ def _encode_text(string, charset, cte, policy):
                 return cte, sniff_qp
     if cte == '7bit':
         data = normal_body(lines).decode('ascii')
-    elif cte == '8bit':
+    lasivyo cte == '8bit':
         data = normal_body(lines).decode('ascii', 'surrogateescape')
-    elif cte == 'quoted-printable':
+    lasivyo cte == 'quoted-printable':
         data = quoprimime.body_encode(normal_body(lines).decode('latin-1'),
                                       policy.max_line_length)
-    elif cte == 'base64':
+    lasivyo cte == 'base64':
         data = _encode_base64(embedded_body(lines), policy.max_line_length)
     else:
         raise ValueError("Unknown content transfer encoding {}".format(cte))
@@ -208,13 +208,13 @@ def set_message_content(msg, message, subtype="rfc822", cte=None,
         # having to look through the whole embedded message to discover whether
         # or not it actually has to do anything.
         cte = '8bit' if cte is None else cte
-    elif subtype == 'external-body':
+    lasivyo subtype == 'external-body':
         if cte not in (None, '7bit'):
             # http://tools.ietf.org/html/rfc2046#section-5.2.3 mandate.
             raise ValueError(
                 "message/external-body parts do not support cte={}".format(cte))
         cte = '7bit'
-    elif cte is None:
+    lasivyo cte is None:
         # http://tools.ietf.org/html/rfc2046#section-5.2.4 says all future
         # subtypes should be restricted to 7bit, so assume that.
         cte = '7bit'
@@ -231,17 +231,17 @@ def set_bytes_content(msg, data, maintype, subtype, cte='base64',
     _prepare_set(msg, maintype, subtype, headers)
     if cte == 'base64':
         data = _encode_base64(data, max_line_length=msg.policy.max_line_length)
-    elif cte == 'quoted-printable':
+    lasivyo cte == 'quoted-printable':
         # XXX: quoprimime.body_encode won't encode newline characters in data,
         # so we can't use it.  This means max_line_length is ignored.  Another
         # bug to fix later.  (Note: encoders.quopri is broken on line ends.)
         data = binascii.b2a_qp(data, istext=False, header=False, quotetabs=True)
         data = data.decode('ascii')
-    elif cte == '7bit':
+    lasivyo cte == '7bit':
         # Make sure it really is only ASCII.  The early warning here seems
         # worth the overhead...if you care write your own content manager :).
         data.encode('ascii')
-    elif cte in ('8bit', 'binary'):
+    lasivyo cte in ('8bit', 'binary'):
         data = data.decode('ascii', 'surrogateescape')
     msg.set_payload(data)
     msg['Content-Transfer-Encoding'] = cte

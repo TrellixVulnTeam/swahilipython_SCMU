@@ -28,17 +28,17 @@ Written by Marc-Andre Lemburg (mal@lemburg.com).
 
 """#"
 
-import codecs
-import sys
-from . import aliases
+agiza codecs
+agiza sys
+kutoka . agiza aliases
 
 _cache = {}
 _unknown = '--unknown--'
 _import_tail = ['*']
 _aliases = aliases.aliases
 
-class CodecRegistryError(LookupError, SystemError):
-    pass
+kundi CodecRegistryError(LookupError, SystemError):
+    pita
 
 def normalize_encoding(encoding):
 
@@ -157,7 +157,7 @@ codecs.register(search_function)
 if sys.platform == 'win32':
     def _alias_mbcs(encoding):
         try:
-            import _winapi
+            agiza _winapi
             ansi_code_page = "cp%s" % _winapi.GetACP()
             if encoding == ansi_code_page:
                 import encodings.mbcs

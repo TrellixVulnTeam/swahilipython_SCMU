@@ -9,7 +9,7 @@ MAPPING = {
           }
 
 
-class FixImports2(fix_agizas.FixImports):
+kundi FixImports2(fix_agizas.FixImports):
 
     run_order = 7
 

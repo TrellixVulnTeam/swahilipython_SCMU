@@ -8,12 +8,12 @@ Python IEEE 754 floating point support
 >>> E = e
 
 You must never compare two floats with == because you are not going to get
-what you expect. We treat two floats as equal if the difference between them
+what you expect. We treat two floats as equal ikiwa the difference between them
 is small than epsilon.
 >>> EPS = 1E-15
->>> def equal(x, y):
+>>> eleza equal(x, y):
 ...     """Almost equal helper for floats"""
-...     return abs(x - y) < EPS
+...     rudisha abs(x - y) < EPS
 
 
 NaNs and INFs
@@ -51,7 +51,7 @@ nan
 >>> INF / INF
 nan
 
-However unambigous operations with inf return inf:
+However unambigous operations with inf rudisha inf:
 >>> INF * INF
 inf
 >>> 1.5 * INF
@@ -72,7 +72,7 @@ False
 >>> NAN >= 0
 False
 
-All operations involving a NaN return a NaN except for nan**0 and 1**nan.
+All operations involving a NaN rudisha a NaN except for nan**0 and 1**nan.
 >>> 1 + NAN
 nan
 >>> 1 * NAN
@@ -103,7 +103,7 @@ infinity and NaN.
 >>> pow(1, NAN)
 1.0
 
-The power of 0 raised to x is defined as 0, if x is positive. Negative
+The power of 0 raised to x is defined as 0, ikiwa x is positive. Negative
 values are a domain error or zero division error and NaN result in a
 silent NaN.
 

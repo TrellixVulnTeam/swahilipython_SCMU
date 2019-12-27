@@ -13,23 +13,23 @@ The following exception classes are defined in the :mod:`email.errors` module:
 
 .. exception:: MessageError()
 
-   This is the base class for all exceptions that the :mod:`email` package can
-   raise.  It is derived from the standard :exc:`Exception` class and defines no
+   This is the base kundi for all exceptions that the :mod:`email` package can
+   raise.  It is derived kutoka the standard :exc:`Exception` kundi and defines no
    additional methods.
 
 
 .. exception:: MessageParseError()
 
-   This is the base class for exceptions raised by the
-   :class:`~email.parser.Parser` class.  It is derived from
-   :exc:`MessageError`.  This class is also used internally by the parser used
+   This is the base kundi for exceptions raised by the
+   :class:`~email.parser.Parser` class.  It is derived kutoka
+   :exc:`MessageError`.  This kundi is also used internally by the parser used
    by :mod:`~email.headerregistry`.
 
 
 .. exception:: HeaderParseError()
 
    Raised under some error conditions when parsing the :rfc:`5322` headers of a
-   message, this class is derived from :exc:`MessageParseError`.  The
+   message, this kundi is derived kutoka :exc:`MessageParseError`.  The
    :meth:`~email.message.EmailMessage.set_boundary` method will raise this
    error if the content type is unknown when the method is called.
    :class:`~email.header.Header` may raise this error for certain base64
@@ -49,12 +49,12 @@ The following exception classes are defined in the :mod:`email.errors` module:
    using :meth:`add_payload`, but the payload is already a scalar and the
    message's :mailheader:`Content-Type` main type is not either
    :mimetype:`multipart` or missing.  :exc:`MultipartConversionError` multiply
-   inherits from :exc:`MessageError` and the built-in :exc:`TypeError`.
+   inherits kutoka :exc:`MessageError` and the built-in :exc:`TypeError`.
 
    Since :meth:`Message.add_payload` is deprecated, this exception is rarely
    raised in practice.  However the exception may also be raised if the
    :meth:`~email.message.Message.attach`
-   method is called on an instance of a class derived from
+   method is called on an instance of a kundi derived kutoka
    :class:`~email.mime.nonmultipart.MIMENonMultipart` (e.g.
    :class:`~email.mime.image.MIMEImage`).
 
@@ -65,7 +65,7 @@ where the problem was found, so for example, if a message nested inside a
 :mimetype:`multipart/alternative` had a malformed header, that nested message
 object would have a defect, but the containing messages would not.
 
-All defect classes are subclassed from :class:`email.errors.MessageDefect`.
+All defect classes are subclassed kutoka :class:`email.errors.MessageDefect`.
 
 * :class:`NoBoundaryInMultipartDefect` -- A message claimed to be a multipart,
   but had no :mimetype:`boundary` parameter.

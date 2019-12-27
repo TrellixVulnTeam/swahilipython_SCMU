@@ -32,22 +32,22 @@ __all__ = ["run", "runctx", "Profile"]
 
 # Sample timer for use with
 #i_count = 0
-#def integer_timer():
+#eleza integer_timer():
 #       global i_count
 #       i_count = i_count + 1
-#       return i_count
+#       rudisha i_count
 #itimes = integer_timer # replace with C coded timer returning integers
 
-class _Utils:
-    """Support class for utility functions which are shared by
+kundi _Utils:
+    """Support kundi for utility functions which are shared by
     profile.py and cProfile.py modules.
     Not supposed to be used directly.
     """
 
-    def __init__(self, profiler):
+    eleza __init__(self, profiler):
         self.profiler = profiler
 
-    def run(self, statement, filename, sort):
+    eleza run(self, statement, filename, sort):
         prof = self.profiler()
         try:
             prof.run(statement)
@@ -56,7 +56,7 @@ class _Utils:
         finally:
             self._show(prof, filename, sort)
 
-    def runctx(self, statement, globals, locals, filename, sort):
+    eleza runctx(self, statement, globals, locals, filename, sort):
         prof = self.profiler()
         try:
             prof.runctx(statement, globals, locals)
@@ -65,8 +65,8 @@ class _Utils:
         finally:
             self._show(prof, filename, sort)
 
-    def _show(self, prof, filename, sort):
-        if filename is not None:
+    eleza _show(self, prof, filename, sort):
+        ikiwa filename is not None:
             prof.dump_stats(filename)
         else:
             prof.print_stats(sort)
@@ -77,7 +77,7 @@ class _Utils:
 # Note that an instance of Profile() is *not* needed to call them.
 #**************************************************************************
 
-def run(statement, filename=None, sort=-1):
+eleza run(statement, filename=None, sort=-1):
     """Run statement under profiler optionally saving results in filename
 
     This function takes a single argument that can be passed to the
@@ -88,18 +88,18 @@ def run(statement, filename=None, sort=-1):
     standard name string (file/line/function-name) that is presented in
     each line.
     """
-    return _Utils(Profile).run(statement, filename, sort)
+    rudisha _Utils(Profile).run(statement, filename, sort)
 
-def runctx(statement, globals, locals, filename=None, sort=-1):
+eleza runctx(statement, globals, locals, filename=None, sort=-1):
     """Run statement under profiler, supplying your own globals and locals,
     optionally saving results in filename.
 
     statement and filename have the same semantics as profile.run
     """
-    return _Utils(Profile).runctx(statement, globals, locals, filename, sort)
+    rudisha _Utils(Profile).runctx(statement, globals, locals, filename, sort)
 
 
-class Profile:
+kundi Profile:
     """Profiler class.
 
     self.cur is always a tuple.  Each such tuple corresponds to a stack
@@ -140,17 +140,17 @@ class Profile:
 
     bias = 0  # calibration constant
 
-    def __init__(self, timer=None, bias=None):
+    eleza __init__(self, timer=None, bias=None):
         self.timings = {}
         self.cur = None
         self.cmd = ""
         self.c_func_name = ""
 
-        if bias is None:
+        ikiwa bias is None:
             bias = self.bias
         self.bias = bias     # Materialize in local dict for lookup speed.
 
-        if not timer:
+        ikiwa not timer:
             self.timer = self.get_time = time.process_time
             self.dispatcher = self.trace_dispatch_i
         else:
@@ -162,7 +162,7 @@ class Profile:
                 self.get_time = timer
                 self.dispatcher = self.trace_dispatch_i
             else:
-                if length == 2:
+                ikiwa length == 2:
                     self.dispatcher = self.trace_dispatch
                 else:
                     self.dispatcher = self.trace_dispatch_l
@@ -171,40 +171,40 @@ class Profile:
                 # list (for performance).  Note that we can't assume
                 # the timer() result contains two values in all
                 # cases.
-                def get_time_timer(timer=timer, sum=sum):
-                    return sum(timer())
+                eleza get_time_timer(timer=timer, sum=sum):
+                    rudisha sum(timer())
                 self.get_time = get_time_timer
         self.t = self.get_time()
         self.simulate_call('profiler')
 
     # Heavily optimized dispatch routine for time.process_time() timer
 
-    def trace_dispatch(self, frame, event, arg):
+    eleza trace_dispatch(self, frame, event, arg):
         timer = self.timer
         t = timer()
         t = t[0] + t[1] - self.t - self.bias
 
-        if event == "c_call":
+        ikiwa event == "c_call":
             self.c_func_name = arg.__name__
 
-        if self.dispatch[event](self, frame,t):
+        ikiwa self.dispatch[event](self, frame,t):
             t = timer()
             self.t = t[0] + t[1]
         else:
             r = timer()
             self.t = r[0] + r[1] - t # put back unrecorded delta
 
-    # Dispatch routine for best timer program (return = scalar, fastest if
+    # Dispatch routine for best timer program (rudisha = scalar, fastest if
     # an integer but float works too -- and time.process_time() relies on that).
 
-    def trace_dispatch_i(self, frame, event, arg):
+    eleza trace_dispatch_i(self, frame, event, arg):
         timer = self.timer
         t = timer() - self.t - self.bias
 
-        if event == "c_call":
+        ikiwa event == "c_call":
             self.c_func_name = arg.__name__
 
-        if self.dispatch[event](self, frame, t):
+        ikiwa self.dispatch[event](self, frame, t):
             self.t = timer()
         else:
             self.t = timer() - t  # put back unrecorded delta
@@ -212,28 +212,28 @@ class Profile:
     # Dispatch routine for macintosh (timer returns time in ticks of
     # 1/60th second)
 
-    def trace_dispatch_mac(self, frame, event, arg):
+    eleza trace_dispatch_mac(self, frame, event, arg):
         timer = self.timer
         t = timer()/60.0 - self.t - self.bias
 
-        if event == "c_call":
+        ikiwa event == "c_call":
             self.c_func_name = arg.__name__
 
-        if self.dispatch[event](self, frame, t):
+        ikiwa self.dispatch[event](self, frame, t):
             self.t = timer()/60.0
         else:
             self.t = timer()/60.0 - t  # put back unrecorded delta
 
     # SLOW generic dispatch routine for timer returning lists of numbers
 
-    def trace_dispatch_l(self, frame, event, arg):
+    eleza trace_dispatch_l(self, frame, event, arg):
         get_time = self.get_time
         t = get_time() - self.t - self.bias
 
-        if event == "c_call":
+        ikiwa event == "c_call":
             self.c_func_name = arg.__name__
 
-        if self.dispatch[event](self, frame, t):
+        ikiwa self.dispatch[event](self, frame, t):
             self.t = get_time()
         else:
             self.t = get_time() - t # put back unrecorded delta
@@ -245,18 +245,18 @@ class Profile:
     #     _it  self.cur[1] "internal time" time spent directly in the function
     #     _et  self.cur[2] "external time" time spent in subfunctions
 
-    def trace_dispatch_exception(self, frame, t):
+    eleza trace_dispatch_exception(self, frame, t):
         rpt, rit, ret, rfn, rframe, rcur = self.cur
-        if (rframe is not frame) and rcur:
-            return self.trace_dispatch_return(rframe, t)
+        ikiwa (rframe is not frame) and rcur:
+            rudisha self.trace_dispatch_return(rframe, t)
         self.cur = rpt, rit+t, ret, rfn, rframe, rcur
-        return 1
+        rudisha 1
 
 
-    def trace_dispatch_call(self, frame, t):
-        if self.cur and frame.f_back is not self.cur[-2]:
+    eleza trace_dispatch_call(self, frame, t):
+        ikiwa self.cur and frame.f_back is not self.cur[-2]:
             rpt, rit, ret, rfn, rframe, rcur = self.cur
-            if not isinstance(rframe, Profile.fake_frame):
+            ikiwa not isinstance(rframe, Profile.fake_frame):
                 assert rframe.f_back is frame.f_back, ("Bad call", rfn,
                                                        rframe, rframe.f_back,
                                                        frame, frame.f_back)
@@ -268,26 +268,26 @@ class Profile:
         fn = (fcode.co_filename, fcode.co_firstlineno, fcode.co_name)
         self.cur = (t, 0, 0, fn, frame, self.cur)
         timings = self.timings
-        if fn in timings:
+        ikiwa fn in timings:
             cc, ns, tt, ct, callers = timings[fn]
             timings[fn] = cc, ns + 1, tt, ct, callers
         else:
             timings[fn] = 0, 0, 0, 0, {}
-        return 1
+        rudisha 1
 
-    def trace_dispatch_c_call (self, frame, t):
+    eleza trace_dispatch_c_call (self, frame, t):
         fn = ("", 0, self.c_func_name)
         self.cur = (t, 0, 0, fn, frame, self.cur)
         timings = self.timings
-        if fn in timings:
+        ikiwa fn in timings:
             cc, ns, tt, ct, callers = timings[fn]
             timings[fn] = cc, ns+1, tt, ct, callers
         else:
             timings[fn] = 0, 0, 0, 0, {}
-        return 1
+        rudisha 1
 
-    def trace_dispatch_return(self, frame, t):
-        if frame is not self.cur[-2]:
+    eleza trace_dispatch_return(self, frame, t):
+        ikiwa frame is not self.cur[-2]:
             assert frame is self.cur[-2].f_back, ("Bad return", self.cur[-3])
             self.trace_dispatch_return(self.cur[-2], 0)
 
@@ -303,7 +303,7 @@ class Profile:
 
         timings = self.timings
         cc, ns, tt, ct, callers = timings[rfn]
-        if not ns:
+        ikiwa not ns:
             # This is the only occurrence of the function on the stack.
             # Else this is a (directly or indirectly) recursive call, and
             # its cumulative time will get updated when the topmost call to
@@ -311,7 +311,7 @@ class Profile:
             ct = ct + frame_total
             cc = cc + 1
 
-        if pfn in callers:
+        ikiwa pfn in callers:
             callers[pfn] = callers[pfn] + 1  # hack: gather more
             # stats such as the amount of time added to ct courtesy
             # of this specific call, and the contribution to cc
@@ -321,7 +321,7 @@ class Profile:
 
         timings[rfn] = cc, ns - 1, tt + rit, ct, callers
 
-        return 1
+        rudisha 1
 
 
     dispatch = {
@@ -340,29 +340,29 @@ class Profile:
     # We use self.cmd as that string, and the resulting stats look
     # very nice :-).
 
-    def set_cmd(self, cmd):
-        if self.cur[-1]: return   # already set
+    eleza set_cmd(self, cmd):
+        ikiwa self.cur[-1]: rudisha   # already set
         self.cmd = cmd
         self.simulate_call(cmd)
 
-    class fake_code:
-        def __init__(self, filename, line, name):
+    kundi fake_code:
+        eleza __init__(self, filename, line, name):
             self.co_filename = filename
             self.co_line = line
             self.co_name = name
             self.co_firstlineno = 0
 
-        def __repr__(self):
-            return repr((self.co_filename, self.co_line, self.co_name))
+        eleza __repr__(self):
+            rudisha repr((self.co_filename, self.co_line, self.co_name))
 
-    class fake_frame:
-        def __init__(self, code, prior):
+    kundi fake_frame:
+        eleza __init__(self, code, prior):
             self.f_code = code
             self.f_back = prior
 
-    def simulate_call(self, name):
+    eleza simulate_call(self, name):
         code = self.fake_code('profile', 0, name)
-        if self.cur:
+        ikiwa self.cur:
             pframe = self.cur[-2]
         else:
             pframe = None
@@ -372,32 +372,32 @@ class Profile:
     # collect stats kutoka pending stack, including getting final
     # timings for self.cmd frame.
 
-    def simulate_cmd_complete(self):
+    eleza simulate_cmd_complete(self):
         get_time = self.get_time
         t = get_time() - self.t
         while self.cur[-1]:
             # We *can* cause assertion errors here if
-            # dispatch_trace_return checks for a frame match!
+            # dispatch_trace_rudisha checks for a frame match!
             self.dispatch['return'](self, self.cur[-2], t)
             t = 0
         self.t = get_time() - t
 
 
-    def print_stats(self, sort=-1):
+    eleza print_stats(self, sort=-1):
         agiza pstats
         pstats.Stats(self).strip_dirs().sort_stats(sort). \
                   print_stats()
 
-    def dump_stats(self, file):
+    eleza dump_stats(self, file):
         with open(file, 'wb') as f:
             self.create_stats()
             marshal.dump(self.stats, f)
 
-    def create_stats(self):
+    eleza create_stats(self):
         self.simulate_cmd_complete()
         self.snapshot_stats()
 
-    def snapshot_stats(self):
+    eleza snapshot_stats(self):
         self.stats = {}
         for func, (cc, ns, tt, ct, callers) in self.timings.items():
             callers = callers.copy()
@@ -410,28 +410,28 @@ class Profile:
     # The following two methods can be called by clients to use
     # a profiler to profile a statement, given as a string.
 
-    def run(self, cmd):
+    eleza run(self, cmd):
         agiza __main__
         dict = __main__.__dict__
-        return self.runctx(cmd, dict, dict)
+        rudisha self.runctx(cmd, dict, dict)
 
-    def runctx(self, cmd, globals, locals):
+    eleza runctx(self, cmd, globals, locals):
         self.set_cmd(cmd)
         sys.setprofile(self.dispatcher)
         try:
             exec(cmd, globals, locals)
         finally:
             sys.setprofile(None)
-        return self
+        rudisha self
 
     # This method is more useful to profile a single function call.
-    def runcall(*args, **kw):
-        if len(args) >= 2:
+    eleza runcall(*args, **kw):
+        ikiwa len(args) >= 2:
             self, func, *args = args
-        elif not args:
+        elikiwa not args:
             raise TypeError("descriptor 'runcall' of 'Profile' object "
                             "needs an argument")
-        elif 'func' in kw:
+        elikiwa 'func' in kw:
             func = kw.pop('func')
             self, *args = args
             agiza warnings
@@ -444,7 +444,7 @@ class Profile:
         self.set_cmd(repr(func))
         sys.setprofile(self.dispatcher)
         try:
-            return func(*args, **kw)
+            rudisha func(*args, **kw)
         finally:
             sys.setprofile(None)
     runcall.__text_signature__ = '($self, func, /, *args, **kw)'
@@ -459,15 +459,15 @@ class Profile:
     # continue.  The following code tries to measure the difference on
     # a per-event basis.
     #
-    # Note that this difference is only significant if there are a lot of
+    # Note that this difference is only significant ikiwa there are a lot of
     # events, and relatively little user code per event.  For example,
     # code with small functions will typically benefit kutoka having the
     # profiler calibrated for the current platform.  This *could* be
     # done on the fly during init() time, but it is not worth the
-    # effort.  Also note that if too large a value specified, then
+    # effort.  Also note that ikiwa too large a value specified, then
     # execution time on some functions will actually appear as a
     # negative number.  It is *normal* for some functions (with very
-    # low call counts) to have such negative stats, even if the
+    # low call counts) to have such negative stats, even ikiwa the
     # calibration figure is "correct."
     #
     # One alternative to profile-time calibration adjustments (i.e.,
@@ -475,7 +475,7 @@ class Profile:
     # more carefully the number of events (and cumulatively, the number
     # of events during sub functions) that are seen.  If this were
     # done, then the arithmetic could be done after the fact (i.e., at
-    # display time).  Currently, we track only call/return events.
+    # display time).  Currently, we track only call/rudisha events.
     # These values can be deduced by examining the callees and callers
     # vectors for each functions.  Hence we *can* almost correct the
     # internal time figure at print time (note that we currently don't
@@ -490,31 +490,31 @@ class Profile:
     # low "value added" feature.)
     #**************************************************************
 
-    def calibrate(self, m, verbose=0):
-        if self.__class__ is not Profile:
+    eleza calibrate(self, m, verbose=0):
+        ikiwa self.__class__ is not Profile:
             raise TypeError("Subclasses must override .calibrate().")
 
         saved_bias = self.bias
         self.bias = 0
         try:
-            return self._calibrate_inner(m, verbose)
+            rudisha self._calibrate_inner(m, verbose)
         finally:
             self.bias = saved_bias
 
-    def _calibrate_inner(self, m, verbose):
+    eleza _calibrate_inner(self, m, verbose):
         get_time = self.get_time
 
         # Set up a test case to be run with and without profiling.  Include
         # lots of calls, because we're trying to quantify stopwatch overhead.
         # Do not raise any exceptions, though, because we want to know
         # exactly how many profile events are generated (one call event, +
-        # one return event, per Python-level call).
+        # one rudisha event, per Python-level call).
 
-        def f1(n):
+        eleza f1(n):
             for i in range(n):
                 x = 1
 
-        def f(m, f1=f1):
+        eleza f(m, f1=f1):
             for i in range(m):
                 f1(100)
 
@@ -525,8 +525,8 @@ class Profile:
         f(m)
         t1 = get_time()
         elapsed_noprofile = t1 - t0
-        if verbose:
-            print("elapsed time without profiling =", elapsed_noprofile)
+        ikiwa verbose:
+            andika("elapsed time without profiling =", elapsed_noprofile)
 
         # elapsed_profile <- time f(m) takes with profiling.  The difference
         # is profiling overhead, only some of which the profiler subtracts
@@ -536,22 +536,22 @@ class Profile:
         p.runctx('f(m)', globals(), locals())
         t1 = get_time()
         elapsed_profile = t1 - t0
-        if verbose:
-            print("elapsed time with profiling =", elapsed_profile)
+        ikiwa verbose:
+            andika("elapsed time with profiling =", elapsed_profile)
 
         # reported_time <- "CPU seconds" the profiler charged to f and f1.
         total_calls = 0.0
         reported_time = 0.0
         for (filename, line, funcname), (cc, ns, tt, ct, callers) in \
                 p.timings.items():
-            if funcname in ("f", "f1"):
+            ikiwa funcname in ("f", "f1"):
                 total_calls += cc
                 reported_time += tt
 
-        if verbose:
-            print("'CPU seconds' profiler reported =", reported_time)
-            print("total # calls =", total_calls)
-        if total_calls != m + 1:
+        ikiwa verbose:
+            andika("'CPU seconds' profiler reported =", reported_time)
+            andika("total # calls =", total_calls)
+        ikiwa total_calls != m + 1:
             raise ValueError("internal error: total calls = %d" % total_calls)
 
         # reported_time - elapsed_noprofile = overhead the profiler wasn't
@@ -559,13 +559,13 @@ class Profile:
         # are two profiler events per call in this test) to get the hidden
         # overhead per event.
         mean = (reported_time - elapsed_noprofile) / 2.0 / total_calls
-        if verbose:
-            print("mean stopwatch overhead per profile event =", mean)
-        return mean
+        ikiwa verbose:
+            andika("mean stopwatch overhead per profile event =", mean)
+        rudisha mean
 
 #****************************************************************************
 
-def main():
+eleza main():
     agiza os
     kutoka optparse agiza OptionParser
 
@@ -580,15 +580,15 @@ def main():
         help="Sort order when printing to stdout, based on pstats.Stats class",
         default=-1)
 
-    if not sys.argv[1:]:
+    ikiwa not sys.argv[1:]:
         parser.print_usage()
         sys.exit(2)
 
     (options, args) = parser.parse_args()
     sys.argv[:] = args
 
-    if len(args) > 0:
-        if options.module:
+    ikiwa len(args) > 0:
+        ikiwa options.module:
             agiza runpy
             code = "run_module(modname, run_name='__main__')"
             globs = {
@@ -609,8 +609,8 @@ def main():
         runctx(code, globs, None, options.outfile, options.sort)
     else:
         parser.print_usage()
-    return parser
+    rudisha parser
 
 # When invoked as main program, invoke the profiler on a script
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

@@ -8,7 +8,7 @@ kutoka unittest agiza mock
 try:
     make_parser()
 except SAXReaderNotAvailable:
-    # don't try to test this module if we cannot create a parser
+    # don't try to test this module ikiwa we cannot create a parser
     raise unittest.SkipTest("no XML parsers available")
 kutoka xml.sax.saxutils agiza XMLGenerator, escape, unescape, quoteattr, \
                              XMLFilterBase, prepare_input_source
@@ -32,7 +32,7 @@ except UnicodeEncodeError:
     raise unittest.SkipTest("filename is not encodable to utf8")
 
 supports_nonascii_filenames = True
-if not os.path.supports_unicode_filenames:
+ikiwa not os.path.supports_unicode_filenames:
     try:
         support.TESTFN_UNICODE.encode(support.TESTFN_ENCODING)
     except (UnicodeError, TypeError):
@@ -45,8 +45,8 @@ requires_nonascii_filenames = unittest.skipUnless(
 
 ns_uri = "http://www.python.org/xml-ns/saxtest/"
 
-class XmlTestBase(unittest.TestCase):
-    def verify_empty_attrs(self, attrs):
+kundi XmlTestBase(unittest.TestCase):
+    eleza verify_empty_attrs(self, attrs):
         self.assertRaises(KeyError, attrs.getValue, "attr")
         self.assertRaises(KeyError, attrs.getValueByQName, "attr")
         self.assertRaises(KeyError, attrs.getNameByQName, "attr")
@@ -63,7 +63,7 @@ class XmlTestBase(unittest.TestCase):
         self.assertEqual(list(attrs.items()), [])
         self.assertEqual(list(attrs.values()), [])
 
-    def verify_empty_nsattrs(self, attrs):
+    eleza verify_empty_nsattrs(self, attrs):
         self.assertRaises(KeyError, attrs.getValue, (ns_uri, "attr"))
         self.assertRaises(KeyError, attrs.getValueByQName, "ns:attr")
         self.assertRaises(KeyError, attrs.getNameByQName, "ns:attr")
@@ -80,7 +80,7 @@ class XmlTestBase(unittest.TestCase):
         self.assertEqual(list(attrs.items()), [])
         self.assertEqual(list(attrs.values()), [])
 
-    def verify_attrs_wattr(self, attrs):
+    eleza verify_attrs_wattr(self, attrs):
         self.assertEqual(attrs.getLength(), 1)
         self.assertEqual(attrs.getNames(), ["attr"])
         self.assertEqual(attrs.getQNames(), ["attr"])
@@ -98,36 +98,36 @@ class XmlTestBase(unittest.TestCase):
         self.assertEqual(attrs.getQNameByName("attr"), "attr")
 
 
-def xml_str(doc, encoding=None):
-    if encoding is None:
-        return doc
-    return '<?xml version="1.0" encoding="%s"?>\n%s' % (encoding, doc)
+eleza xml_str(doc, encoding=None):
+    ikiwa encoding is None:
+        rudisha doc
+    rudisha '<?xml version="1.0" encoding="%s"?>\n%s' % (encoding, doc)
 
-def xml_bytes(doc, encoding, decl_encoding=...):
-    if decl_encoding is ...:
+eleza xml_bytes(doc, encoding, decl_encoding=...):
+    ikiwa decl_encoding is ...:
         decl_encoding = encoding
-    return xml_str(doc, decl_encoding).encode(encoding, 'xmlcharrefreplace')
+    rudisha xml_str(doc, decl_encoding).encode(encoding, 'xmlcharrefreplace')
 
-def make_xml_file(doc, encoding, decl_encoding=...):
-    if decl_encoding is ...:
+eleza make_xml_file(doc, encoding, decl_encoding=...):
+    ikiwa decl_encoding is ...:
         decl_encoding = encoding
     with open(TESTFN, 'w', encoding=encoding, errors='xmlcharrefreplace') as f:
         f.write(xml_str(doc, decl_encoding))
 
 
-class ParseTest(unittest.TestCase):
+kundi ParseTest(unittest.TestCase):
     data = '<money value="$\xa3\u20ac\U0001017b">$\xa3\u20ac\U0001017b</money>'
 
-    def tearDown(self):
+    eleza tearDown(self):
         support.unlink(TESTFN)
 
-    def check_parse(self, f):
+    eleza check_parse(self, f):
         kutoka xml.sax agiza parse
         result = StringIO()
         parse(f, XMLGenerator(result, 'utf-8'))
         self.assertEqual(result.getvalue(), xml_str(self.data, 'utf-8'))
 
-    def test_parse_text(self):
+    eleza test_parse_text(self):
         encodings = ('us-ascii', 'iso-8859-1', 'utf-8',
                      'utf-16', 'utf-16le', 'utf-16be')
         for encoding in encodings:
@@ -140,7 +140,7 @@ class ParseTest(unittest.TestCase):
             with open(TESTFN, 'r', encoding=encoding) as f:
                 self.check_parse(f)
 
-    def test_parse_bytes(self):
+    eleza test_parse_bytes(self):
         # UTF-8 is default encoding, US-ASCII is compatible with UTF-8,
         # UTF-16 is autodetected
         encodings = ('us-ascii', 'utf-8', 'utf-16', 'utf-16le', 'utf-16be')
@@ -182,11 +182,11 @@ class ParseTest(unittest.TestCase):
             with self.assertRaises(SAXException):
                 self.check_parse(f)
 
-    def test_parse_path_object(self):
+    eleza test_parse_path_object(self):
         make_xml_file(self.data, 'utf-8', None)
         self.check_parse(FakePath(TESTFN))
 
-    def test_parse_InputSource(self):
+    eleza test_parse_InputSource(self):
         # accept data without declared but with explicitly specified encoding
         make_xml_file(self.data, 'iso-8859-1', None)
         with open(TESTFN, 'rb') as f:
@@ -195,14 +195,14 @@ class ParseTest(unittest.TestCase):
             input.setEncoding('iso-8859-1')
             self.check_parse(input)
 
-    def test_parse_close_source(self):
+    eleza test_parse_close_source(self):
         builtin_open = open
         fileobj = None
 
-        def mock_open(*args):
+        eleza mock_open(*args):
             nonlocal fileobj
             fileobj = builtin_open(*args)
-            return fileobj
+            rudisha fileobj
 
         with mock.patch('xml.sax.saxutils.open', side_effect=mock_open):
             make_xml_file(self.data, 'iso-8859-1', None)
@@ -210,20 +210,20 @@ class ParseTest(unittest.TestCase):
                 self.check_parse(TESTFN)
             self.assertTrue(fileobj.closed)
 
-    def check_parseString(self, s):
+    eleza check_parseString(self, s):
         kutoka xml.sax agiza parseString
         result = StringIO()
         parseString(s, XMLGenerator(result, 'utf-8'))
         self.assertEqual(result.getvalue(), xml_str(self.data, 'utf-8'))
 
-    def test_parseString_text(self):
+    eleza test_parseString_text(self):
         encodings = ('us-ascii', 'iso-8859-1', 'utf-8',
                      'utf-16', 'utf-16le', 'utf-16be')
         for encoding in encodings:
             self.check_parseString(xml_str(self.data, encoding))
         self.check_parseString(self.data)
 
-    def test_parseString_bytes(self):
+    eleza test_parseString_bytes(self):
         # UTF-8 is default encoding, US-ASCII is compatible with UTF-8,
         # UTF-16 is autodetected
         encodings = ('us-ascii', 'utf-8', 'utf-16', 'utf-16le', 'utf-16be')
@@ -239,8 +239,8 @@ class ParseTest(unittest.TestCase):
         with self.assertRaises(SAXException):
             self.check_parseString(xml_bytes(self.data, 'iso-8859-1', None))
 
-class MakeParserTest(unittest.TestCase):
-    def test_make_parser2(self):
+kundi MakeParserTest(unittest.TestCase):
+    eleza test_make_parser2(self):
         # Creating parsers several times in a row should succeed.
         # Testing this because there have been failures of this kind
         # before.
@@ -257,7 +257,7 @@ class MakeParserTest(unittest.TestCase):
         kutoka xml.sax agiza make_parser
         p = make_parser()
 
-    def test_make_parser3(self):
+    eleza test_make_parser3(self):
         # Testing that make_parser can handle different types of
         # iterables.
         make_parser(['module'])
@@ -267,7 +267,7 @@ class MakeParserTest(unittest.TestCase):
         make_parser({'module': None})
         make_parser(iter(['module']))
 
-    def test_make_parser4(self):
+    eleza test_make_parser4(self):
         # Testing that make_parser can handle empty iterables.
         make_parser([])
         make_parser(tuple())
@@ -276,7 +276,7 @@ class MakeParserTest(unittest.TestCase):
         make_parser({})
         make_parser(iter([]))
 
-    def test_make_parser5(self):
+    eleza test_make_parser5(self):
         # Testing that make_parser can handle iterables with more than
         # one item.
         make_parser(['module1', 'module2'])
@@ -292,81 +292,81 @@ class MakeParserTest(unittest.TestCase):
 #
 # ===========================================================================
 
-class SaxutilsTest(unittest.TestCase):
+kundi SaxutilsTest(unittest.TestCase):
     # ===== escape
-    def test_escape_basic(self):
+    eleza test_escape_basic(self):
         self.assertEqual(escape("Donald Duck & Co"), "Donald Duck &amp; Co")
 
-    def test_escape_all(self):
+    eleza test_escape_all(self):
         self.assertEqual(escape("<Donald Duck & Co>"),
                          "&lt;Donald Duck &amp; Co&gt;")
 
-    def test_escape_extra(self):
+    eleza test_escape_extra(self):
         self.assertEqual(escape("Hei på deg", {"å" : "&aring;"}),
                          "Hei p&aring; deg")
 
     # ===== unescape
-    def test_unescape_basic(self):
+    eleza test_unescape_basic(self):
         self.assertEqual(unescape("Donald Duck &amp; Co"), "Donald Duck & Co")
 
-    def test_unescape_all(self):
+    eleza test_unescape_all(self):
         self.assertEqual(unescape("&lt;Donald Duck &amp; Co&gt;"),
                          "<Donald Duck & Co>")
 
-    def test_unescape_extra(self):
+    eleza test_unescape_extra(self):
         self.assertEqual(unescape("Hei på deg", {"å" : "&aring;"}),
                          "Hei p&aring; deg")
 
-    def test_unescape_amp_extra(self):
+    eleza test_unescape_amp_extra(self):
         self.assertEqual(unescape("&amp;foo;", {"&foo;": "splat"}), "&foo;")
 
     # ===== quoteattr
-    def test_quoteattr_basic(self):
+    eleza test_quoteattr_basic(self):
         self.assertEqual(quoteattr("Donald Duck & Co"),
                          '"Donald Duck &amp; Co"')
 
-    def test_single_quoteattr(self):
+    eleza test_single_quoteattr(self):
         self.assertEqual(quoteattr('Includes "double" quotes'),
                          '\'Includes "double" quotes\'')
 
-    def test_double_quoteattr(self):
+    eleza test_double_quoteattr(self):
         self.assertEqual(quoteattr("Includes 'single' quotes"),
                          "\"Includes 'single' quotes\"")
 
-    def test_single_double_quoteattr(self):
+    eleza test_single_double_quoteattr(self):
         self.assertEqual(quoteattr("Includes 'single' and \"double\" quotes"),
                          "\"Includes 'single' and &quot;double&quot; quotes\"")
 
     # ===== make_parser
-    def test_make_parser(self):
+    eleza test_make_parser(self):
         # Creating a parser should succeed - it should fall back
         # to the expatreader
         p = make_parser(['xml.parsers.no_such_parser'])
 
 
-class PrepareInputSourceTest(unittest.TestCase):
+kundi PrepareInputSourceTest(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.file = support.TESTFN
         with open(self.file, "w") as tmp:
             tmp.write("This was read kutoka a file.")
 
-    def tearDown(self):
+    eleza tearDown(self):
         support.unlink(self.file)
 
-    def make_byte_stream(self):
-        return BytesIO(b"This is a byte stream.")
+    eleza make_byte_stream(self):
+        rudisha BytesIO(b"This is a byte stream.")
 
-    def make_character_stream(self):
-        return StringIO("This is a character stream.")
+    eleza make_character_stream(self):
+        rudisha StringIO("This is a character stream.")
 
-    def checkContent(self, stream, content):
+    eleza checkContent(self, stream, content):
         self.assertIsNotNone(stream)
         self.assertEqual(stream.read(), content)
         stream.close()
 
 
-    def test_character_stream(self):
+    eleza test_character_stream(self):
         # If the source is an InputSource with a character stream, use it.
         src = InputSource(self.file)
         src.setCharacterStream(self.make_character_stream())
@@ -375,7 +375,7 @@ class PrepareInputSourceTest(unittest.TestCase):
         self.checkContent(prep.getCharacterStream(),
                           "This is a character stream.")
 
-    def test_byte_stream(self):
+    eleza test_byte_stream(self):
         # If the source is an InputSource that does not have a character
         # stream but does have a byte stream, use the byte stream.
         src = InputSource(self.file)
@@ -385,7 +385,7 @@ class PrepareInputSourceTest(unittest.TestCase):
         self.checkContent(prep.getByteStream(),
                           b"This is a byte stream.")
 
-    def test_system_id(self):
+    eleza test_system_id(self):
         # If the source is an InputSource that has neither a character
         # stream nor a byte stream, open the system ID.
         src = InputSource(self.file)
@@ -394,21 +394,21 @@ class PrepareInputSourceTest(unittest.TestCase):
         self.checkContent(prep.getByteStream(),
                           b"This was read kutoka a file.")
 
-    def test_string(self):
+    eleza test_string(self):
         # If the source is a string, use it as a system ID and open it.
         prep = prepare_input_source(self.file)
         self.assertIsNone(prep.getCharacterStream())
         self.checkContent(prep.getByteStream(),
                           b"This was read kutoka a file.")
 
-    def test_path_objects(self):
+    eleza test_path_objects(self):
         # If the source is a Path object, use it as a system ID and open it.
         prep = prepare_input_source(FakePath(self.file))
         self.assertIsNone(prep.getCharacterStream())
         self.checkContent(prep.getByteStream(),
                           b"This was read kutoka a file.")
 
-    def test_binary_file(self):
+    eleza test_binary_file(self):
         # If the source is a binary file-like object, use it as a byte
         # stream.
         prep = prepare_input_source(self.make_byte_stream())
@@ -416,7 +416,7 @@ class PrepareInputSourceTest(unittest.TestCase):
         self.checkContent(prep.getByteStream(),
                           b"This is a byte stream.")
 
-    def test_text_file(self):
+    eleza test_text_file(self):
         # If the source is a text file-like object, use it as a character
         # stream.
         prep = prepare_input_source(self.make_character_stream())
@@ -427,8 +427,8 @@ class PrepareInputSourceTest(unittest.TestCase):
 
 # ===== XMLGenerator
 
-class XmlgenTest:
-    def test_xmlgen_basic(self):
+kundi XmlgenTest:
+    eleza test_xmlgen_basic(self):
         result = self.ioclass()
         gen = XMLGenerator(result)
         gen.startDocument()
@@ -438,7 +438,7 @@ class XmlgenTest:
 
         self.assertEqual(result.getvalue(), self.xml("<doc></doc>"))
 
-    def test_xmlgen_basic_empty(self):
+    eleza test_xmlgen_basic_empty(self):
         result = self.ioclass()
         gen = XMLGenerator(result, short_empty_elements=True)
         gen.startDocument()
@@ -448,7 +448,7 @@ class XmlgenTest:
 
         self.assertEqual(result.getvalue(), self.xml("<doc/>"))
 
-    def test_xmlgen_content(self):
+    eleza test_xmlgen_content(self):
         result = self.ioclass()
         gen = XMLGenerator(result)
 
@@ -460,7 +460,7 @@ class XmlgenTest:
 
         self.assertEqual(result.getvalue(), self.xml("<doc>huhei</doc>"))
 
-    def test_xmlgen_content_empty(self):
+    eleza test_xmlgen_content_empty(self):
         result = self.ioclass()
         gen = XMLGenerator(result, short_empty_elements=True)
 
@@ -472,7 +472,7 @@ class XmlgenTest:
 
         self.assertEqual(result.getvalue(), self.xml("<doc>huhei</doc>"))
 
-    def test_xmlgen_pi(self):
+    eleza test_xmlgen_pi(self):
         result = self.ioclass()
         gen = XMLGenerator(result)
 
@@ -485,7 +485,7 @@ class XmlgenTest:
         self.assertEqual(result.getvalue(),
             self.xml("<?test data?><doc></doc>"))
 
-    def test_xmlgen_content_escape(self):
+    eleza test_xmlgen_content_escape(self):
         result = self.ioclass()
         gen = XMLGenerator(result)
 
@@ -498,7 +498,7 @@ class XmlgenTest:
         self.assertEqual(result.getvalue(),
             self.xml("<doc>&lt;huhei&amp;</doc>"))
 
-    def test_xmlgen_attr_escape(self):
+    eleza test_xmlgen_attr_escape(self):
         result = self.ioclass()
         gen = XMLGenerator(result)
 
@@ -518,7 +518,7 @@ class XmlgenTest:
             "<e a=\"'&quot;\"></e>"
             "<e a=\"&#10;&#13;&#9;\"></e></doc>"))
 
-    def test_xmlgen_encoding(self):
+    eleza test_xmlgen_encoding(self):
         encodings = ('iso-8859-15', 'utf-8', 'utf-8-sig',
                      'utf-16', 'utf-16be', 'utf-16le',
                      'utf-32', 'utf-32be', 'utf-32le')
@@ -535,7 +535,7 @@ class XmlgenTest:
             self.assertEqual(result.getvalue(),
                 self.xml('<doc a="\u20ac">\u20ac</doc>', encoding=encoding))
 
-    def test_xmlgen_unencodable(self):
+    eleza test_xmlgen_unencodable(self):
         result = self.ioclass()
         gen = XMLGenerator(result, encoding='ascii')
 
@@ -548,7 +548,7 @@ class XmlgenTest:
         self.assertEqual(result.getvalue(),
             self.xml('<doc a="&#8364;">&#8364;</doc>', encoding='ascii'))
 
-    def test_xmlgen_ignorable(self):
+    eleza test_xmlgen_ignorable(self):
         result = self.ioclass()
         gen = XMLGenerator(result)
 
@@ -560,7 +560,7 @@ class XmlgenTest:
 
         self.assertEqual(result.getvalue(), self.xml("<doc> </doc>"))
 
-    def test_xmlgen_ignorable_empty(self):
+    eleza test_xmlgen_ignorable_empty(self):
         result = self.ioclass()
         gen = XMLGenerator(result, short_empty_elements=True)
 
@@ -572,7 +572,7 @@ class XmlgenTest:
 
         self.assertEqual(result.getvalue(), self.xml("<doc> </doc>"))
 
-    def test_xmlgen_encoding_bytes(self):
+    eleza test_xmlgen_encoding_bytes(self):
         encodings = ('iso-8859-15', 'utf-8', 'utf-8-sig',
                      'utf-16', 'utf-16be', 'utf-16le',
                      'utf-32', 'utf-32be', 'utf-32le')
@@ -590,7 +590,7 @@ class XmlgenTest:
             self.assertEqual(result.getvalue(),
                 self.xml('<doc a="\u20ac">\u20ac </doc>', encoding=encoding))
 
-    def test_xmlgen_ns(self):
+    eleza test_xmlgen_ns(self):
         result = self.ioclass()
         gen = XMLGenerator(result)
 
@@ -608,7 +608,7 @@ class XmlgenTest:
            '<ns1:doc xmlns:ns1="%s"><udoc></udoc></ns1:doc>' %
                                          ns_uri))
 
-    def test_xmlgen_ns_empty(self):
+    eleza test_xmlgen_ns_empty(self):
         result = self.ioclass()
         gen = XMLGenerator(result, short_empty_elements=True)
 
@@ -626,7 +626,7 @@ class XmlgenTest:
            '<ns1:doc xmlns:ns1="%s"><udoc/></ns1:doc>' %
                                          ns_uri))
 
-    def test_1463026_1(self):
+    eleza test_1463026_1(self):
         result = self.ioclass()
         gen = XMLGenerator(result)
 
@@ -637,7 +637,7 @@ class XmlgenTest:
 
         self.assertEqual(result.getvalue(), self.xml('<a b="c"></a>'))
 
-    def test_1463026_1_empty(self):
+    eleza test_1463026_1_empty(self):
         result = self.ioclass()
         gen = XMLGenerator(result, short_empty_elements=True)
 
@@ -648,7 +648,7 @@ class XmlgenTest:
 
         self.assertEqual(result.getvalue(), self.xml('<a b="c"/>'))
 
-    def test_1463026_2(self):
+    eleza test_1463026_2(self):
         result = self.ioclass()
         gen = XMLGenerator(result)
 
@@ -661,7 +661,7 @@ class XmlgenTest:
 
         self.assertEqual(result.getvalue(), self.xml('<a xmlns="qux"></a>'))
 
-    def test_1463026_2_empty(self):
+    eleza test_1463026_2_empty(self):
         result = self.ioclass()
         gen = XMLGenerator(result, short_empty_elements=True)
 
@@ -674,7 +674,7 @@ class XmlgenTest:
 
         self.assertEqual(result.getvalue(), self.xml('<a xmlns="qux"/>'))
 
-    def test_1463026_3(self):
+    eleza test_1463026_3(self):
         result = self.ioclass()
         gen = XMLGenerator(result)
 
@@ -688,7 +688,7 @@ class XmlgenTest:
         self.assertEqual(result.getvalue(),
             self.xml('<my:a xmlns:my="qux" b="c"></my:a>'))
 
-    def test_1463026_3_empty(self):
+    eleza test_1463026_3_empty(self):
         result = self.ioclass()
         gen = XMLGenerator(result, short_empty_elements=True)
 
@@ -702,7 +702,7 @@ class XmlgenTest:
         self.assertEqual(result.getvalue(),
             self.xml('<my:a xmlns:my="qux" b="c"/>'))
 
-    def test_5027_1(self):
+    eleza test_5027_1(self):
         # The xml prefix (as in xml:lang below) is reserved and bound by
         # definition to http://www.w3.org/XML/1998/namespace.  XMLGenerator had
         # a bug whereby a KeyError is raised because this namespace is missing
@@ -728,7 +728,7 @@ class XmlgenTest:
                           '<a:g2 xml:lang="en">Hello</a:g2>'
                          '</a:g1>'))
 
-    def test_5027_2(self):
+    eleza test_5027_2(self):
         # The xml prefix (as in xml:lang below) is reserved and bound by
         # definition to http://www.w3.org/XML/1998/namespace.  XMLGenerator had
         # a bug whereby a KeyError is raised because this namespace is missing
@@ -756,16 +756,16 @@ class XmlgenTest:
                           '<a:g2 xml:lang="en">Hello</a:g2>'
                          '</a:g1>'))
 
-    def test_no_close_file(self):
+    eleza test_no_close_file(self):
         result = self.ioclass()
-        def func(out):
+        eleza func(out):
             gen = XMLGenerator(out)
             gen.startDocument()
             gen.startElement("doc", {})
         func(result)
         self.assertFalse(result.closed)
 
-    def test_xmlgen_fragment(self):
+    eleza test_xmlgen_fragment(self):
         result = self.ioclass()
         gen = XMLGenerator(result)
 
@@ -780,74 +780,74 @@ class XmlgenTest:
         self.assertEqual(result.getvalue(),
             self.xml('<foo a="1.0">Hello</foo><bar b="2.0"></bar>')[len(self.xml('')):])
 
-class StringXmlgenTest(XmlgenTest, unittest.TestCase):
-    ioclass = StringIO
+kundi StringXmlgenTest(XmlgenTest, unittest.TestCase):
+    iokundi = StringIO
 
-    def xml(self, doc, encoding='iso-8859-1'):
-        return '<?xml version="1.0" encoding="%s"?>\n%s' % (encoding, doc)
+    eleza xml(self, doc, encoding='iso-8859-1'):
+        rudisha '<?xml version="1.0" encoding="%s"?>\n%s' % (encoding, doc)
 
     test_xmlgen_unencodable = None
 
-class BytesXmlgenTest(XmlgenTest, unittest.TestCase):
-    ioclass = BytesIO
+kundi BytesXmlgenTest(XmlgenTest, unittest.TestCase):
+    iokundi = BytesIO
 
-    def xml(self, doc, encoding='iso-8859-1'):
-        return ('<?xml version="1.0" encoding="%s"?>\n%s' %
+    eleza xml(self, doc, encoding='iso-8859-1'):
+        rudisha ('<?xml version="1.0" encoding="%s"?>\n%s' %
                 (encoding, doc)).encode(encoding, 'xmlcharrefreplace')
 
-class WriterXmlgenTest(BytesXmlgenTest):
-    class ioclass(list):
+kundi WriterXmlgenTest(BytesXmlgenTest):
+    kundi ioclass(list):
         write = list.append
         closed = False
 
-        def seekable(self):
-            return True
+        eleza seekable(self):
+            rudisha True
 
-        def tell(self):
-            # return 0 at start and not 0 after start
-            return len(self)
+        eleza tell(self):
+            # rudisha 0 at start and not 0 after start
+            rudisha len(self)
 
-        def getvalue(self):
-            return b''.join(self)
+        eleza getvalue(self):
+            rudisha b''.join(self)
 
-class StreamWriterXmlgenTest(XmlgenTest, unittest.TestCase):
-    def ioclass(self):
+kundi StreamWriterXmlgenTest(XmlgenTest, unittest.TestCase):
+    eleza ioclass(self):
         raw = BytesIO()
         writer = codecs.getwriter('ascii')(raw, 'xmlcharrefreplace')
         writer.getvalue = raw.getvalue
-        return writer
+        rudisha writer
 
-    def xml(self, doc, encoding='iso-8859-1'):
-        return ('<?xml version="1.0" encoding="%s"?>\n%s' %
+    eleza xml(self, doc, encoding='iso-8859-1'):
+        rudisha ('<?xml version="1.0" encoding="%s"?>\n%s' %
                 (encoding, doc)).encode('ascii', 'xmlcharrefreplace')
 
-class StreamReaderWriterXmlgenTest(XmlgenTest, unittest.TestCase):
+kundi StreamReaderWriterXmlgenTest(XmlgenTest, unittest.TestCase):
     fname = support.TESTFN + '-codecs'
 
-    def ioclass(self):
+    eleza ioclass(self):
         writer = codecs.open(self.fname, 'w', encoding='ascii',
                              errors='xmlcharrefreplace', buffering=0)
-        def cleanup():
+        eleza cleanup():
             writer.close()
             support.unlink(self.fname)
         self.addCleanup(cleanup)
-        def getvalue():
+        eleza getvalue():
             # Windows will not let use reopen without first closing
             writer.close()
             with open(writer.name, 'rb') as f:
-                return f.read()
+                rudisha f.read()
         writer.getvalue = getvalue
-        return writer
+        rudisha writer
 
-    def xml(self, doc, encoding='iso-8859-1'):
-        return ('<?xml version="1.0" encoding="%s"?>\n%s' %
+    eleza xml(self, doc, encoding='iso-8859-1'):
+        rudisha ('<?xml version="1.0" encoding="%s"?>\n%s' %
                 (encoding, doc)).encode('ascii', 'xmlcharrefreplace')
 
 start = b'<?xml version="1.0" encoding="iso-8859-1"?>\n'
 
 
-class XMLFilterBaseTest(unittest.TestCase):
-    def test_filter_basic(self):
+kundi XMLFilterBaseTest(unittest.TestCase):
+    eleza test_filter_basic(self):
         result = BytesIO()
         gen = XMLGenerator(result)
         filter = XMLFilterBase()
@@ -871,11 +871,11 @@ class XMLFilterBaseTest(unittest.TestCase):
 with open(TEST_XMLFILE_OUT, 'rb') as f:
     xml_test_out = f.read()
 
-class ExpatReaderTest(XmlTestBase):
+kundi ExpatReaderTest(XmlTestBase):
 
     # ===== XMLReader support
 
-    def test_expat_binary_file(self):
+    eleza test_expat_binary_file(self):
         parser = create_parser()
         result = BytesIO()
         xmlgen = XMLGenerator(result)
@@ -886,7 +886,7 @@ class ExpatReaderTest(XmlTestBase):
 
         self.assertEqual(result.getvalue(), xml_test_out)
 
-    def test_expat_text_file(self):
+    eleza test_expat_text_file(self):
         parser = create_parser()
         result = BytesIO()
         xmlgen = XMLGenerator(result)
@@ -898,7 +898,7 @@ class ExpatReaderTest(XmlTestBase):
         self.assertEqual(result.getvalue(), xml_test_out)
 
     @requires_nonascii_filenames
-    def test_expat_binary_file_nonascii(self):
+    eleza test_expat_binary_file_nonascii(self):
         fname = support.TESTFN_UNICODE
         shutil.copyfile(TEST_XMLFILE, fname)
         self.addCleanup(support.unlink, fname)
@@ -912,7 +912,7 @@ class ExpatReaderTest(XmlTestBase):
 
         self.assertEqual(result.getvalue(), xml_test_out)
 
-    def test_expat_binary_file_bytes_name(self):
+    eleza test_expat_binary_file_bytes_name(self):
         fname = os.fsencode(TEST_XMLFILE)
         parser = create_parser()
         result = BytesIO()
@@ -924,7 +924,7 @@ class ExpatReaderTest(XmlTestBase):
 
         self.assertEqual(result.getvalue(), xml_test_out)
 
-    def test_expat_binary_file_int_name(self):
+    eleza test_expat_binary_file_int_name(self):
         parser = create_parser()
         result = BytesIO()
         xmlgen = XMLGenerator(result)
@@ -938,31 +938,31 @@ class ExpatReaderTest(XmlTestBase):
 
     # ===== DTDHandler support
 
-    class TestDTDHandler:
+    kundi TestDTDHandler:
 
-        def __init__(self):
+        eleza __init__(self):
             self._notations = []
             self._entities  = []
 
-        def notationDecl(self, name, publicId, systemId):
+        eleza notationDecl(self, name, publicId, systemId):
             self._notations.append((name, publicId, systemId))
 
-        def unparsedEntityDecl(self, name, publicId, systemId, ndata):
+        eleza unparsedEntityDecl(self, name, publicId, systemId, ndata):
             self._entities.append((name, publicId, systemId, ndata))
 
 
-    class TestEntityRecorder:
-        def __init__(self):
+    kundi TestEntityRecorder:
+        eleza __init__(self):
             self.entities = []
 
-        def resolveEntity(self, publicId, systemId):
+        eleza resolveEntity(self, publicId, systemId):
             self.entities.append((publicId, systemId))
             source = InputSource()
             source.setPublicId(publicId)
             source.setSystemId(systemId)
-            return source
+            rudisha source
 
-    def test_expat_dtdhandler(self):
+    eleza test_expat_dtdhandler(self):
         parser = create_parser()
         handler = self.TestDTDHandler()
         parser.setDTDHandler(handler)
@@ -978,7 +978,7 @@ class ExpatReaderTest(XmlTestBase):
             [("GIF", "-//CompuServe//NOTATION Graphics Interchange Format 89a//EN", None)])
         self.assertEqual(handler._entities, [("img", None, "expat.gif", "GIF")])
 
-    def test_expat_external_dtd_enabled(self):
+    eleza test_expat_external_dtd_enabled(self):
         parser = create_parser()
         parser.setFeature(feature_external_ges, True)
         resolver = self.TestEntityRecorder()
@@ -992,7 +992,7 @@ class ExpatReaderTest(XmlTestBase):
             resolver.entities, [(None, 'unsupported://non-existing')]
         )
 
-    def test_expat_external_dtd_default(self):
+    eleza test_expat_external_dtd_default(self):
         parser = create_parser()
         resolver = self.TestEntityRecorder()
         parser.setEntityResolver(resolver)
@@ -1006,14 +1006,14 @@ class ExpatReaderTest(XmlTestBase):
 
     # ===== EntityResolver support
 
-    class TestEntityResolver:
+    kundi TestEntityResolver:
 
-        def resolveEntity(self, publicId, systemId):
+        eleza resolveEntity(self, publicId, systemId):
             inpsrc = InputSource()
             inpsrc.setByteStream(BytesIO(b"<entity/>"))
-            return inpsrc
+            rudisha inpsrc
 
-    def test_expat_entityresolver_enabled(self):
+    eleza test_expat_entityresolver_enabled(self):
         parser = create_parser()
         parser.setFeature(feature_external_ges, True)
         parser.setEntityResolver(self.TestEntityResolver())
@@ -1029,7 +1029,7 @@ class ExpatReaderTest(XmlTestBase):
         self.assertEqual(result.getvalue(), start +
                          b"<doc><entity></entity></doc>")
 
-    def test_expat_entityresolver_default(self):
+    eleza test_expat_entityresolver_default(self):
         parser = create_parser()
         self.assertEqual(parser.getFeature(feature_external_ges), False)
         parser.setEntityResolver(self.TestEntityResolver())
@@ -1047,15 +1047,15 @@ class ExpatReaderTest(XmlTestBase):
 
     # ===== Attributes support
 
-    class AttrGatherer(ContentHandler):
+    kundi AttrGatherer(ContentHandler):
 
-        def startElement(self, name, attrs):
+        eleza startElement(self, name, attrs):
             self._attrs = attrs
 
-        def startElementNS(self, name, qname, attrs):
+        eleza startElementNS(self, name, qname, attrs):
             self._attrs = attrs
 
-    def test_expat_attrs_empty(self):
+    eleza test_expat_attrs_empty(self):
         parser = create_parser()
         gather = self.AttrGatherer()
         parser.setContentHandler(gather)
@@ -1065,7 +1065,7 @@ class ExpatReaderTest(XmlTestBase):
 
         self.verify_empty_attrs(gather._attrs)
 
-    def test_expat_attrs_wattr(self):
+    eleza test_expat_attrs_wattr(self):
         parser = create_parser()
         gather = self.AttrGatherer()
         parser.setContentHandler(gather)
@@ -1075,7 +1075,7 @@ class ExpatReaderTest(XmlTestBase):
 
         self.verify_attrs_wattr(gather._attrs)
 
-    def test_expat_nsattrs_empty(self):
+    eleza test_expat_nsattrs_empty(self):
         parser = create_parser(1)
         gather = self.AttrGatherer()
         parser.setContentHandler(gather)
@@ -1085,7 +1085,7 @@ class ExpatReaderTest(XmlTestBase):
 
         self.verify_empty_nsattrs(gather._attrs)
 
-    def test_expat_nsattrs_wattr(self):
+    eleza test_expat_nsattrs_wattr(self):
         parser = create_parser(1)
         gather = self.AttrGatherer()
         parser.setContentHandler(gather)
@@ -1110,7 +1110,7 @@ class ExpatReaderTest(XmlTestBase):
 
     # ===== InputSource support
 
-    def test_expat_inpsource_filename(self):
+    eleza test_expat_inpsource_filename(self):
         parser = create_parser()
         result = BytesIO()
         xmlgen = XMLGenerator(result)
@@ -1120,7 +1120,7 @@ class ExpatReaderTest(XmlTestBase):
 
         self.assertEqual(result.getvalue(), xml_test_out)
 
-    def test_expat_inpsource_sysid(self):
+    eleza test_expat_inpsource_sysid(self):
         parser = create_parser()
         result = BytesIO()
         xmlgen = XMLGenerator(result)
@@ -1131,7 +1131,7 @@ class ExpatReaderTest(XmlTestBase):
         self.assertEqual(result.getvalue(), xml_test_out)
 
     @requires_nonascii_filenames
-    def test_expat_inpsource_sysid_nonascii(self):
+    eleza test_expat_inpsource_sysid_nonascii(self):
         fname = support.TESTFN_UNICODE
         shutil.copyfile(TEST_XMLFILE, fname)
         self.addCleanup(support.unlink, fname)
@@ -1145,7 +1145,7 @@ class ExpatReaderTest(XmlTestBase):
 
         self.assertEqual(result.getvalue(), xml_test_out)
 
-    def test_expat_inpsource_byte_stream(self):
+    eleza test_expat_inpsource_byte_stream(self):
         parser = create_parser()
         result = BytesIO()
         xmlgen = XMLGenerator(result)
@@ -1158,7 +1158,7 @@ class ExpatReaderTest(XmlTestBase):
 
         self.assertEqual(result.getvalue(), xml_test_out)
 
-    def test_expat_inpsource_character_stream(self):
+    eleza test_expat_inpsource_character_stream(self):
         parser = create_parser()
         result = BytesIO()
         xmlgen = XMLGenerator(result)
@@ -1173,7 +1173,7 @@ class ExpatReaderTest(XmlTestBase):
 
     # ===== IncrementalParser support
 
-    def test_expat_incremental(self):
+    eleza test_expat_incremental(self):
         result = BytesIO()
         xmlgen = XMLGenerator(result)
         parser = create_parser()
@@ -1185,7 +1185,7 @@ class ExpatReaderTest(XmlTestBase):
 
         self.assertEqual(result.getvalue(), start + b"<doc></doc>")
 
-    def test_expat_incremental_reset(self):
+    eleza test_expat_incremental_reset(self):
         result = BytesIO()
         xmlgen = XMLGenerator(result)
         parser = create_parser()
@@ -1208,7 +1208,7 @@ class ExpatReaderTest(XmlTestBase):
 
     # ===== Locator support
 
-    def test_expat_locator_noinfo(self):
+    eleza test_expat_locator_noinfo(self):
         result = BytesIO()
         xmlgen = XMLGenerator(result)
         parser = create_parser()
@@ -1222,7 +1222,7 @@ class ExpatReaderTest(XmlTestBase):
         self.assertEqual(parser.getPublicId(), None)
         self.assertEqual(parser.getLineNumber(), 1)
 
-    def test_expat_locator_withinfo(self):
+    eleza test_expat_locator_withinfo(self):
         result = BytesIO()
         xmlgen = XMLGenerator(result)
         parser = create_parser()
@@ -1233,7 +1233,7 @@ class ExpatReaderTest(XmlTestBase):
         self.assertEqual(parser.getPublicId(), None)
 
     @requires_nonascii_filenames
-    def test_expat_locator_withinfo_nonascii(self):
+    eleza test_expat_locator_withinfo_nonascii(self):
         fname = support.TESTFN_UNICODE
         shutil.copyfile(TEST_XMLFILE, fname)
         self.addCleanup(support.unlink, fname)
@@ -1254,8 +1254,8 @@ class ExpatReaderTest(XmlTestBase):
 #
 # ===========================================================================
 
-class ErrorReportingTest(unittest.TestCase):
-    def test_expat_inpsource_location(self):
+kundi ErrorReportingTest(unittest.TestCase):
+    eleza test_expat_inpsource_location(self):
         parser = create_parser()
         parser.setContentHandler(ContentHandler()) # do nothing
         source = InputSource()
@@ -1268,14 +1268,14 @@ class ErrorReportingTest(unittest.TestCase):
         except SAXException as e:
             self.assertEqual(e.getSystemId(), name)
 
-    def test_expat_incomplete(self):
+    eleza test_expat_incomplete(self):
         parser = create_parser()
         parser.setContentHandler(ContentHandler()) # do nothing
         self.assertRaises(SAXParseException, parser.parse, StringIO("<foo>"))
         self.assertEqual(parser.getColumnNumber(), 5)
         self.assertEqual(parser.getLineNumber(), 1)
 
-    def test_sax_parse_exception_str(self):
+    eleza test_sax_parse_exception_str(self):
         # pass various values kutoka a locator to the SAXParseException to
         # make sure that the __str__() doesn't fall apart when None is
         # passed instead of an integer line and column number
@@ -1293,22 +1293,22 @@ class ErrorReportingTest(unittest.TestCase):
         str(SAXParseException("message", None,
                               self.DummyLocator(None, None)))
 
-    class DummyLocator:
-        def __init__(self, lineno, colno):
+    kundi DummyLocator:
+        eleza __init__(self, lineno, colno):
             self._lineno = lineno
             self._colno = colno
 
-        def getPublicId(self):
-            return "pubid"
+        eleza getPublicId(self):
+            rudisha "pubid"
 
-        def getSystemId(self):
-            return "sysid"
+        eleza getSystemId(self):
+            rudisha "sysid"
 
-        def getLineNumber(self):
-            return self._lineno
+        eleza getLineNumber(self):
+            rudisha self._lineno
 
-        def getColumnNumber(self):
-            return self._colno
+        eleza getColumnNumber(self):
+            rudisha self._colno
 
 # ===========================================================================
 #
@@ -1316,19 +1316,19 @@ class ErrorReportingTest(unittest.TestCase):
 #
 # ===========================================================================
 
-class XmlReaderTest(XmlTestBase):
+kundi XmlReaderTest(XmlTestBase):
 
     # ===== AttributesImpl
-    def test_attrs_empty(self):
+    eleza test_attrs_empty(self):
         self.verify_empty_attrs(AttributesImpl({}))
 
-    def test_attrs_wattr(self):
+    eleza test_attrs_wattr(self):
         self.verify_attrs_wattr(AttributesImpl({"attr" : "val"}))
 
-    def test_nsattrs_empty(self):
+    eleza test_nsattrs_empty(self):
         self.verify_empty_nsattrs(AttributesNSImpl({}, {}))
 
-    def test_nsattrs_wattr(self):
+    eleza test_nsattrs_wattr(self):
         attrs = AttributesNSImpl({(ns_uri, "attr") : "val"},
                                  {(ns_uri, "attr") : "ns:attr"})
 
@@ -1349,7 +1349,7 @@ class XmlReaderTest(XmlTestBase):
         self.assertEqual(attrs.getQNameByName((ns_uri, "attr")), "ns:attr")
 
 
-def test_main():
+eleza test_main():
     run_unittest(MakeParserTest,
                  ParseTest,
                  SaxutilsTest,
@@ -1363,5 +1363,5 @@ def test_main():
                  ErrorReportingTest,
                  XmlReaderTest)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

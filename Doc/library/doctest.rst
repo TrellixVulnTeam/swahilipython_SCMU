@@ -20,7 +20,7 @@ exactly as shown.  There are several common ways to use doctest:
 * To check that a module's docstrings are up-to-date by verifying that all
   interactive examples still work as documented.
 
-* To perform regression testing by verifying that interactive examples from a
+* To perform regression testing by verifying that interactive examples kutoka a
   test file or a test object work as expected.
 
 * To write tutorial documentation for a package, liberally illustrated with
@@ -66,7 +66,7 @@ Here's a complete but small example module::
        OverflowError: n too large
        """
 
-       import math
+       agiza math
        if not n >= 0:
            raise ValueError("n must be >= 0")
        if math.floor(n) != n:
@@ -82,10 +82,10 @@ Here's a complete but small example module::
 
 
    if __name__ == "__main__":
-       import doctest
+       agiza doctest
        doctest.testmod()
 
-If you run :file:`example.py` directly from the command line, :mod:`doctest`
+If you run :file:`example.py` directly kutoka the command line, :mod:`doctest`
 works its magic:
 
 .. code-block:: shell-session
@@ -146,7 +146,7 @@ The simplest way to start using doctest (but not necessarily the way you'll
 continue to do it) is to end each module :mod:`M` with::
 
    if __name__ == "__main__":
-       import doctest
+       agiza doctest
        doctest.testmod()
 
 :mod:`doctest` then examines docstrings in module :mod:`M`.
@@ -174,14 +174,14 @@ prohibit it by passing ``verbose=False``.  In either of those cases,
 has no effect).
 
 There is also a command line shortcut for running :func:`testmod`.  You can
-instruct the Python interpreter to run the doctest module directly from the
+instruct the Python interpreter to run the doctest module directly kutoka the
 standard library and pass the module name(s) on the command line::
 
    python -m doctest -v example.py
 
-This will import :file:`example.py` as a standalone module and run
+This will agiza :file:`example.py` as a standalone module and run
 :func:`testmod` on it.  Note that this may not work correctly if the file is
-part of a package and imports other submodules from that package.
+part of a package and imports other submodules kutoka that package.
 
 For more information on :func:`testmod`, see section :ref:`doctest-basic-api`.
 
@@ -194,7 +194,7 @@ Simple Usage: Checking Examples in a Text File
 Another simple application of doctest is testing interactive examples in a text
 file.  This can be done with the :func:`testfile` function::
 
-   import doctest
+   agiza doctest
    doctest.testfile("example.txt")
 
 That short script executes and verifies any interactive Python examples
@@ -211,9 +211,9 @@ program!   For example, perhaps :file:`example.txt` contains this:
    -------------------
 
    This is an example text file in reStructuredText format.  First import
-   ``factorial`` from the ``example`` module:
+   ``factorial`` kutoka the ``example`` module:
 
-       >>> from example import factorial
+       >>> kutoka example agiza factorial
 
    Now use it:
 
@@ -245,7 +245,7 @@ Like :func:`testmod`, :func:`testfile`'s verbosity can be set with the
 *verbose*.
 
 There is also a command line shortcut for running :func:`testfile`.  You can
-instruct the Python interpreter to run the doctest module directly from the
+instruct the Python interpreter to run the doctest module directly kutoka the
 standard library and pass the file name(s) on the command line::
 
    python -m doctest -v example.txt
@@ -274,12 +274,12 @@ sections.
 Which Docstrings Are Examined?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The module docstring, and all function, class and method docstrings are
+The module docstring, and all function, kundi and method docstrings are
 searched.  Objects imported into the module are not searched.
 
 In addition, if ``M.__test__`` exists and "is true", it must be a dict, and each
-entry maps a (string) name to a function object, class object, or string.
-Function and class object docstrings found from ``M.__test__`` are searched, and
+entry maps a (string) name to a function object, kundi object, or string.
+Function and kundi object docstrings found kutoka ``M.__test__`` are searched, and
 strings are treated as if they were docstrings.  In output, a key ``K`` in
 ``M.__test__`` appears with name ::
 
@@ -370,11 +370,11 @@ The fine print:
 * The starting column doesn't matter::
 
      >>> assert "Easy!"
-           >>> import math
+           >>> agiza math
                >>> math.floor(1.9)
                1
 
-  and as many leading whitespace characters are stripped from the expected output
+  and as many leading whitespace characters are stripped kutoka the expected output
   as appeared in the initial ``'>>> '`` line that started the example.
 
 
@@ -425,7 +425,7 @@ the example::
 
 The traceback header is followed by an optional traceback stack, whose contents
 are ignored by doctest.  The traceback stack is typically omitted, or copied
-verbatim from an interactive session.
+verbatim kutoka an interactive session.
 
 The traceback stack is followed by the most interesting part: the line(s)
 containing the exception type and detail.  This is usually the last line of a
@@ -460,8 +460,8 @@ transcript of a Monty Python skit.
 
 Some details you should read once, but won't need to remember:
 
-* Doctest can't guess whether your expected output came from an exception
-  traceback or from ordinary printing.  So, e.g., an example that expects
+* Doctest can't guess whether your expected output came kutoka an exception
+  traceback or kutoka ordinary printing.  So, e.g., an example that expects
   ``ValueError: 42 is prime`` will pass whether :exc:`ValueError` is actually
   raised or if the example merely prints that traceback text.  In practice,
   ordinary output rarely begins with a traceback header line, so this doesn't
@@ -479,7 +479,7 @@ Some details you should read once, but won't need to remember:
 
 * The interactive shell omits the traceback header line for some
   :exc:`SyntaxError`\ s.  But doctest uses the traceback header line to
-  distinguish exceptions from non-exceptions.  So in the rare case where you need
+  distinguish exceptions kutoka non-exceptions.  So in the rare case where you need
   to test a :exc:`SyntaxError` that omits the traceback header, you will need to
   manually add the traceback header line to your test example.
 
@@ -531,7 +531,7 @@ doctest decides whether actual output matches an example's expected output:
    block containing just ``1`` or just ``True`` is considered to be a match, and
    similarly for ``0`` versus ``False``.  When :const:`DONT_ACCEPT_TRUE_FOR_1` is
    specified, neither substitution is allowed.  The default behavior caters to that
-   Python changed the return type of many functions from integer to boolean;
+   Python changed the return type of many functions kutoka integer to boolean;
    doctests expecting "little integer" output still work in these cases.  This
    option will probably go away, but not for several years.
 
@@ -590,7 +590,7 @@ doctest decides whether actual output matches an example's expected output:
    details of the exception message, but such a test may still fail based
    on whether or not the module details are printed as part of the
    exception name. Using :const:`IGNORE_EXCEPTION_DETAIL` and the details
-   from Python 2.3 is also the only clear way to write a doctest that doesn't
+   kutoka Python 2.3 is also the only clear way to write a doctest that doesn't
    care about the exception detail yet continues to pass under Python 2.3 or
    earlier (those releases do not support :ref:`doctest directives
    <doctest-directives>` and ignore them as irrelevant comments). For example::
@@ -651,7 +651,7 @@ The second group of options controls how test failures are reported:
 .. data:: REPORT_ONLY_FIRST_FAILURE
 
    When specified, display the first failing example in each doctest, but suppress
-   output for all remaining examples.  This will prevent doctest from reporting
+   output for all remaining examples.  This will prevent doctest kutoka reporting
    correct examples that break because of earlier failures; but it might also hide
    incorrect examples that fail independently of the first failure.  When
    :const:`REPORT_ONLY_FIRST_FAILURE` is specified, the remaining examples are
@@ -797,7 +797,7 @@ Another bad idea is to print things that embed an object address, like ::
 
    >>> id(1.0) # certain to fail some of the time
    7948648
-   >>> class C: pass
+   >>> kundi C: pass
    >>> C()   # the default repr() for instances embeds an address
    <__main__.C instance at 0x00AC18F0>
 
@@ -881,7 +881,7 @@ and :ref:`doctest-simple-testfile`.
    is an advanced feature that allows parameterization of doctests.  For example, a
    doctest can be written for a base class, using a generic name for the class,
    then reused to test any number of subclasses by passing an *extraglobs* dict
-   mapping the generic name to the subclass to be tested.
+   mapping the generic name to the subkundi to be tested.
 
    Optional argument *verbose* prints lots of stuff if true, and prints only
    failures if false; by default, or if ``None``, it's true if and only if ``'-v'``
@@ -901,7 +901,7 @@ and :ref:`doctest-simple-testfile`.
    running examples.
 
    Optional argument *parser* specifies a :class:`DocTestParser` (or subclass) that
-   should be used to extract tests from the files.  It defaults to a normal parser
+   should be used to extract tests kutoka the files.  It defaults to a normal parser
    (i.e., ``DocTestParser()``).
 
    Optional argument *encoding* specifies an encoding that should be used to
@@ -913,13 +913,13 @@ and :ref:`doctest-simple-testfile`.
    All arguments are optional, and all except for *m* should be specified in
    keyword form.
 
-   Test examples in docstrings in functions and classes reachable from module *m*
+   Test examples in docstrings in functions and classes reachable kutoka module *m*
    (or module :mod:`__main__` if *m* is not supplied or is ``None``), starting with
    ``m.__doc__``.
 
-   Also test examples reachable from dict ``m.__test__``, if it exists and is not
+   Also test examples reachable kutoka dict ``m.__test__``, if it exists and is not
    ``None``.  ``m.__test__`` maps names (strings) to functions, classes and
-   strings; function and class docstrings are searched for examples; strings are
+   strings; function and kundi docstrings are searched for examples; strings are
    searched directly, as if they were docstrings.
 
    Only docstrings attached to objects belonging to module *m* are searched.
@@ -930,7 +930,7 @@ and :ref:`doctest-simple-testfile`.
    ``None``, ``m.__name__`` is used.
 
    Optional argument *exclude_empty* defaults to false.  If true, objects for which
-   no doctests are found are excluded from consideration. The default is a backward
+   no doctests are found are excluded kutoka consideration. The default is a backward
    compatibility hack, so that code still using :meth:`doctest.master.summarize` in
    conjunction with :func:`testmod` continues to get output for objects with no
    tests. The *exclude_empty* argument to the newer :class:`DocTestFinder`
@@ -944,7 +944,7 @@ and :ref:`doctest-simple-testfile`.
 .. function:: run_docstring_examples(f, globs, verbose=False, name="NoName", compileflags=None, optionflags=0)
 
    Test examples associated with object *f*; for example, *f* may be a string,
-   a module, a function, or a class object.
+   a module, a function, or a kundi object.
 
    A shallow copy of dictionary argument *globs* is used for the execution context.
 
@@ -968,25 +968,25 @@ Unittest API
 
 As your collection of doctest'ed modules grows, you'll want a way to run all
 their doctests systematically.  :mod:`doctest` provides two functions that can
-be used to create :mod:`unittest` test suites from modules and text files
+be used to create :mod:`unittest` test suites kutoka modules and text files
 containing doctests.  To integrate with :mod:`unittest` test discovery, include
 a :func:`load_tests` function in your test module::
 
-   import unittest
-   import doctest
-   import my_module_with_doctests
+   agiza unittest
+   agiza doctest
+   agiza my_module_with_doctests
 
    def load_tests(loader, tests, ignore):
        tests.addTests(doctest.DocTestSuite(my_module_with_doctests))
        return tests
 
 There are two main functions for creating :class:`unittest.TestSuite` instances
-from text files and modules with doctests:
+kutoka text files and modules with doctests:
 
 
 .. function:: DocFileSuite(*paths, module_relative=True, package=None, setUp=None, tearDown=None, globs=None, optionflags=0, parser=DocTestParser(), encoding=None)
 
-   Convert doctest tests from one or more text files to a
+   Convert doctest tests kutoka one or more text files to a
    :class:`unittest.TestSuite`.
 
    The returned :class:`unittest.TestSuite` is to be run by the unittest framework
@@ -1041,14 +1041,14 @@ from text files and modules with doctests:
    for a better way to set reporting options.
 
    Optional argument *parser* specifies a :class:`DocTestParser` (or subclass)
-   that should be used to extract tests from the files.  It defaults to a normal
+   that should be used to extract tests kutoka the files.  It defaults to a normal
    parser (i.e., ``DocTestParser()``).
 
    Optional argument *encoding* specifies an encoding that should be used to
    convert the file to unicode.
 
    The global ``__file__`` is added to the globals provided to doctests loaded
-   from a text file using :func:`DocFileSuite`.
+   kutoka a text file using :func:`DocFileSuite`.
 
 
 .. function:: DocTestSuite(module=None, globs=None, extraglobs=None, test_finder=None, setUp=None, tearDown=None, checker=None)
@@ -1073,7 +1073,7 @@ from text files and modules with doctests:
    is merged into *globs*.  By default, no extra globals are used.
 
    Optional argument *test_finder* is the :class:`DocTestFinder` object (or a
-   drop-in replacement) that is used to extract doctests from the module.
+   drop-in replacement) that is used to extract doctests kutoka the module.
 
    Optional arguments *setUp*, *tearDown*, and *optionflags* are the same as for
    function :func:`DocFileSuite` above.
@@ -1087,7 +1087,7 @@ from text files and modules with doctests:
 
 Under the covers, :func:`DocTestSuite` creates a :class:`unittest.TestSuite` out
 of :class:`doctest.DocTestCase` instances, and :class:`DocTestCase` is a
-subclass of :class:`unittest.TestCase`. :class:`DocTestCase` isn't documented
+subkundi of :class:`unittest.TestCase`. :class:`DocTestCase` isn't documented
 here (it's an internal detail), but studying its code can answer questions about
 the exact details of :mod:`unittest` integration.
 
@@ -1142,28 +1142,28 @@ require more fine-grained control over testing, or wish to extend doctest's
 capabilities, then you should use the advanced API.
 
 The advanced API revolves around two container classes, which are used to store
-the interactive examples extracted from doctest cases:
+the interactive examples extracted kutoka doctest cases:
 
 * :class:`Example`: A single Python :term:`statement`, paired with its expected
   output.
 
 * :class:`DocTest`: A collection of :class:`Example`\ s, typically extracted
-  from a single docstring or text file.
+  kutoka a single docstring or text file.
 
 Additional processing classes are defined to find, parse, and run, and check
 doctest examples:
 
 * :class:`DocTestFinder`: Finds all docstrings in a given module, and uses a
-  :class:`DocTestParser` to create a :class:`DocTest` from every docstring that
+  :class:`DocTestParser` to create a :class:`DocTest` kutoka every docstring that
   contains interactive examples.
 
-* :class:`DocTestParser`: Creates a :class:`DocTest` object from a string (such
+* :class:`DocTestParser`: Creates a :class:`DocTest` object kutoka a string (such
   as an object's docstring).
 
 * :class:`DocTestRunner`: Executes the examples in a :class:`DocTest`, and uses
   an :class:`OutputChecker` to verify their output.
 
-* :class:`OutputChecker`: Compares the actual output from a doctest example with
+* :class:`OutputChecker`: Compares the actual output kutoka a doctest example with
   the expected output, and decides whether they match.
 
 The relationships among these processing classes are summarized in the following
@@ -1212,14 +1212,14 @@ DocTest Objects
    .. attribute:: name
 
       A string name identifying the :class:`DocTest`.  Typically, this is the name
-      of the object or file that the test was extracted from.
+      of the object or file that the test was extracted kutoka.
 
 
    .. attribute:: filename
 
-      The name of the file that this :class:`DocTest` was extracted from; or
+      The name of the file that this :class:`DocTest` was extracted kutoka; or
       ``None`` if the filename is unknown, or if the :class:`DocTest` was not
-      extracted from a file.
+      extracted kutoka a file.
 
 
    .. attribute:: lineno
@@ -1231,8 +1231,8 @@ DocTest Objects
 
    .. attribute:: docstring
 
-      The string that the test was extracted from, or ``None`` if the string is
-      unavailable, or if the test was not extracted from a string.
+      The string that the test was extracted kutoka, or ``None`` if the string is
+      unavailable, or if the test was not extracted kutoka a string.
 
 
 .. _doctest-example:
@@ -1261,7 +1261,7 @@ Example Objects
 
    .. attribute:: want
 
-      The expected output from running the example's source code (either from
+      The expected output kutoka running the example's source code (either kutoka
       stdout, or a traceback in case of exception).  :attr:`want` ends with a
       newline unless no output is expected, in which case it's an empty string.  The
       constructor adds a newline when necessary.
@@ -1291,7 +1291,7 @@ Example Objects
 
    .. attribute:: options
 
-      A dictionary mapping from option flags to ``True`` or ``False``, which is used
+      A dictionary mapping kutoka option flags to ``True`` or ``False``, which is used
       to override default options for this example.  Any option flags not contained
       in this dictionary are left at their default value (as specified by the
       :class:`DocTestRunner`'s :attr:`optionflags`). By default, no options are set.
@@ -1305,16 +1305,16 @@ DocTestFinder objects
 
 .. class:: DocTestFinder(verbose=False, parser=DocTestParser(), recurse=True, exclude_empty=True)
 
-   A processing class used to extract the :class:`DocTest`\ s that are relevant to
-   a given object, from its docstring and the docstrings of its contained objects.
-   :class:`DocTest`\ s can be extracted from modules, classes, functions,
+   A processing kundi used to extract the :class:`DocTest`\ s that are relevant to
+   a given object, kutoka its docstring and the docstrings of its contained objects.
+   :class:`DocTest`\ s can be extracted kutoka modules, classes, functions,
    methods, staticmethods, classmethods, and properties.
 
    The optional argument *verbose* can be used to display the objects searched by
    the finder.  It defaults to ``False`` (no output).
 
    The optional argument *parser* specifies the :class:`DocTestParser` object (or a
-   drop-in replacement) that is used to extract doctests from docstrings.
+   drop-in replacement) that is used to extract doctests kutoka docstrings.
 
    If the optional argument *recurse* is false, then :meth:`DocTestFinder.find`
    will only examine the given object, and not any contained objects.
@@ -1341,8 +1341,8 @@ DocTestFinder objects
 
       * As a default namespace, if *globs* is not specified.
 
-      * To prevent the DocTestFinder from extracting DocTests from objects that are
-        imported from other modules.  (Contained objects with modules other than
+      * To prevent the DocTestFinder kutoka extracting DocTests kutoka objects that are
+        imported kutoka other modules.  (Contained objects with modules other than
         *module* are ignored.)
 
       * To find the name of the file containing the object.
@@ -1371,7 +1371,7 @@ DocTestParser objects
 
 .. class:: DocTestParser()
 
-   A processing class used to extract interactive examples from a string, and use
+   A processing kundi used to extract interactive examples kutoka a string, and use
    them to create a :class:`DocTest` object.
 
 
@@ -1380,7 +1380,7 @@ DocTestParser objects
 
    .. method:: get_doctest(string, globs, name, filename, lineno)
 
-      Extract all doctest examples from the given string, and collect them into a
+      Extract all doctest examples kutoka the given string, and collect them into a
       :class:`DocTest` object.
 
       *globs*, *name*, *filename*, and *lineno* are attributes for the new
@@ -1390,7 +1390,7 @@ DocTestParser objects
 
    .. method:: get_examples(string, name='<string>')
 
-      Extract all doctest examples from the given string, and return them as a list
+      Extract all doctest examples kutoka the given string, and return them as a list
       of :class:`Example` objects.  Line numbers are 0-based.  The optional argument
       *name* is a name identifying this string, and is only used for error messages.
 
@@ -1411,14 +1411,14 @@ DocTestRunner objects
 
 .. class:: DocTestRunner(checker=None, verbose=None, optionflags=0)
 
-   A processing class used to execute and verify the interactive examples in a
+   A processing kundi used to execute and verify the interactive examples in a
    :class:`DocTest`.
 
    The comparison between expected outputs and actual outputs is done by an
    :class:`OutputChecker`.  This comparison may be customized with a number of
    option flags; see section :ref:`doctest-options` for more information.  If the
    option flags are insufficient, then the comparison may also be customized by
-   passing a subclass of :class:`OutputChecker` to the constructor.
+   passing a subkundi of :class:`OutputChecker` to the constructor.
 
    The test runner's display output can be controlled in two ways. First, an output
    function can be passed to :meth:`TestRunner.run`; this function will be called
@@ -1464,7 +1464,7 @@ DocTestRunner objects
       should not be called directly.
 
       *example* is the example about to be processed.  *got* is the actual output
-      from the example.  *test* is the test containing *example*.  *out* is the
+      kutoka the example.  *test* is the test containing *example*.  *out* is the
       output function that was passed to :meth:`DocTestRunner.run`.
 
 
@@ -1475,7 +1475,7 @@ DocTestRunner objects
       be called directly.
 
       *example* is the example about to be processed.  *got* is the actual output
-      from the example.  *test* is the test containing *example*.  *out* is the
+      kutoka the example.  *test* is the test containing *example*.  *out* is the
       output function that was passed to :meth:`DocTestRunner.run`.
 
 
@@ -1503,7 +1503,7 @@ DocTestRunner objects
 
       *compileflags* gives the set of flags that should be used by the Python
       compiler when running the examples.  If not specified, then it will default to
-      the set of future-import flags that apply to *globs*.
+      the set of future-agiza flags that apply to *globs*.
 
       The output of each example is checked using the :class:`DocTestRunner`'s
       output checker, and the results are formatted by the
@@ -1527,7 +1527,7 @@ OutputChecker objects
 
 .. class:: OutputChecker()
 
-   A class used to check the whether the actual output from a doctest example
+   A kundi used to check the whether the actual output kutoka a doctest example
    matches the expected output.  :class:`OutputChecker` defines two methods:
    :meth:`check_output`, which compares a given pair of outputs, and returns true
    if they match; and :meth:`output_difference`, which returns a string describing
@@ -1538,7 +1538,7 @@ OutputChecker objects
 
    .. method:: check_output(want, got, optionflags)
 
-      Return ``True`` iff the actual output from an example (*got*) matches the
+      Return ``True`` iff the actual output kutoka an example (*got*) matches the
       expected output (*want*).  These strings are always considered to match if
       they are identical; but depending on what option flags the test runner is
       using, several non-exact match types are also possible.  See section
@@ -1562,7 +1562,7 @@ Doctest provides several mechanisms for debugging doctest examples:
 * Several functions convert doctests to executable Python programs, which can be
   run under the Python debugger, :mod:`pdb`.
 
-* The :class:`DebugRunner` class is a subclass of :class:`DocTestRunner` that
+* The :class:`DebugRunner` kundi is a subkundi of :class:`DocTestRunner` that
   raises an exception for the first failing example, containing information about
   that example. This information can be used to perform post-mortem debugging on
   the example.
@@ -1580,22 +1580,22 @@ Doctest provides several mechanisms for debugging doctest examples:
      ...     g(x*2)
      >>> def g(x):
      ...     print(x+3)
-     ...     import pdb; pdb.set_trace()
+     ...     agiza pdb; pdb.set_trace()
      >>> f(3)
      9
      """
 
   Then an interactive Python session may look like this::
 
-     >>> import a, doctest
+     >>> agiza a, doctest
      >>> doctest.testmod(a)
      --Return--
      > <doctest a[1]>(3)g()->None
-     -> import pdb; pdb.set_trace()
+     -> agiza pdb; pdb.set_trace()
      (Pdb) list
        1     def g(x):
        2         print(x+3)
-       3  ->     import pdb; pdb.set_trace()
+       3  ->     agiza pdb; pdb.set_trace()
      [EOF]
      (Pdb) p x
      6
@@ -1622,7 +1622,7 @@ Functions that convert doctests to Python code, and possibly run the synthesized
 code under the debugger:
 
 
-.. function:: script_from_examples(s)
+.. function:: script_kutoka_examples(s)
 
    Convert text with examples to a script.
 
@@ -1631,8 +1631,8 @@ code under the debugger:
    and everything else is converted to Python comments.  The generated script is
    returned as a string. For example, ::
 
-      import doctest
-      print(doctest.script_from_examples(r"""
+      agiza doctest
+      print(doctest.script_kutoka_examples(r"""
           Set x and y to 1 and 2.
           >>> x, y = 1, 2
 
@@ -1664,10 +1664,10 @@ code under the debugger:
    object whose doctests are of interest.  Argument *name* is the name (within the
    module) of the object with the doctests of interest.  The result is a string,
    containing the object's docstring converted to a Python script, as described for
-   :func:`script_from_examples` above.  For example, if module :file:`a.py`
+   :func:`script_kutoka_examples` above.  For example, if module :file:`a.py`
    contains a top-level function :func:`f`, then ::
 
-      import a, doctest
+      agiza a, doctest
       print(doctest.testsource(a, "a.f"))
 
    prints a script version of function :func:`f`'s docstring, with doctests
@@ -1690,8 +1690,8 @@ code under the debugger:
    has a true value, the script file is run directly, and the debugger gets
    involved only if the script terminates via raising an unhandled exception.  If
    it does, then post-mortem debugging is invoked, via :func:`pdb.post_mortem`,
-   passing the traceback object from the unhandled exception.  If *pm* is not
-   specified, or is false, the script is run under the debugger from the start, via
+   passing the traceback object kutoka the unhandled exception.  If *pm* is not
+   specified, or is false, the script is run under the debugger kutoka the start, via
    passing an appropriate :func:`exec` call to :func:`pdb.run`.
 
 
@@ -1717,7 +1717,7 @@ doctest!) for more details:
 
 .. class:: DebugRunner(checker=None, verbose=None, optionflags=0)
 
-   A subclass of :class:`DocTestRunner` that raises an exception as soon as a
+   A subkundi of :class:`DocTestRunner` that raises an exception as soon as a
    failure is encountered.  If an unexpected exception occurs, an
    :exc:`UnexpectedException` exception is raised, containing the test, the
    example, and the original exception.  If the output doesn't match, then a
@@ -1828,14 +1828,14 @@ several options for organizing tests:
 
 * Write text files containing test cases as interactive examples, and test the
   files using :func:`testfile` or :func:`DocFileSuite`.  This is recommended,
-  although is easiest to do for new projects, designed from the start to use
+  although is easiest to do for new projects, designed kutoka the start to use
   doctest.
 
 * Define functions named ``_regrtest_topic`` that consist of single docstrings,
   containing test cases for the named topics.  These functions can be included in
   the same file as the module, or separated out into a separate test file.
 
-* Define a ``__test__`` dictionary mapping from regression test topics to
+* Define a ``__test__`` dictionary mapping kutoka regression test topics to
   docstrings containing test cases.
 
 When you have placed your tests in a module, the module can itself be the test
@@ -1844,7 +1844,7 @@ the failing doctest while you debug the problem.  Here is a minimal example of
 such a test runner::
 
     if __name__ == '__main__':
-        import doctest
+        agiza doctest
         flags = doctest.REPORT_NDIFF|doctest.FAIL_FAST
         if len(sys.argv) > 1:
             name = sys.argv[1]

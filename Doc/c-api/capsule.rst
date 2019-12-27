@@ -18,7 +18,7 @@ Refer to :ref:`using-capsules` for more information on using these objects.
    extension modules who need to pass an opaque value (as a :c:type:`void\*`
    pointer) through Python code to other C code.  It is often used to make a C
    function pointer defined in one module available to other modules, so the
-   regular import mechanism can be used to access C APIs defined in dynamically
+   regular agiza mechanism can be used to access C APIs defined in dynamically
    loaded modules.
 
 
@@ -53,7 +53,7 @@ Refer to :ref:`using-capsules` for more information on using these objects.
 
    If this capsule will be stored as an attribute of a module, the *name* should
    be specified as ``modulename.attributename``.  This will enable other modules
-   to import the capsule using :c:func:`PyCapsule_Import`.
+   to agiza the capsule using :c:func:`PyCapsule_Import`.
 
 
 .. c:function:: void* PyCapsule_GetPointer(PyObject *capsule, const char *name)
@@ -99,12 +99,12 @@ Refer to :ref:`using-capsules` for more information on using these objects.
 
 .. c:function:: void* PyCapsule_Import(const char *name, int no_block)
 
-   Import a pointer to a C object from a capsule attribute in a module.  The
+   Import a pointer to a C object kutoka a capsule attribute in a module.  The
    *name* parameter should specify the full name to the attribute, as in
    ``module.attribute``.  The *name* stored in the capsule must match this
-   string exactly.  If *no_block* is true, import the module without blocking
+   string exactly.  If *no_block* is true, agiza the module without blocking
    (using :c:func:`PyImport_ImportModuleNoBlock`).  If *no_block* is false,
-   import the module conventionally (using :c:func:`PyImport_ImportModule`).
+   agiza the module conventionally (using :c:func:`PyImport_ImportModule`).
 
    Return the capsule's internal *pointer* on success.  On failure, set an
    exception and return *NULL*.

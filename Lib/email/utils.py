@@ -164,7 +164,7 @@ def format_datetime(dt, usegmt=False):
         if dt.tzinfo is None or dt.tzinfo != datetime.timezone.utc:
             raise ValueError("usegmt option requires a UTC datetime")
         zone = 'GMT'
-    elif dt.tzinfo is None:
+    lasivyo dt.tzinfo is None:
         zone = '-0000'
     else:
         zone = dt.strftime("%z")

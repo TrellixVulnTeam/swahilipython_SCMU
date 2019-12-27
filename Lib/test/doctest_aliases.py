@@ -1,13 +1,13 @@
 # Used by test_doctest.py.
 
-class TwoNames:
+kundi TwoNames:
     '''f() and g() are two names for the same method'''
 
-    def f(self):
+    eleza f(self):
         '''
-        >>> print(TwoNames().f())
+        >>> andika(TwoNames().f())
         f
         '''
-        return 'f'
+        rudisha 'f'
 
     g = f # define an alias for f

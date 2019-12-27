@@ -22,7 +22,7 @@ What's New in IDLEfork 0.8.1?
   B. Kaiser and Stephen M. Gava.
 
 - This release is basically functional but also contains some known breakages,
-  particularly with running things from the shell window. Also the debugger is
+  particularly with running things kutoka the shell window. Also the debugger is
   not working, but I believe this was the case with the previous IDLE fork
   release (0.7.1) as well.
 
@@ -73,7 +73,7 @@ IDLEfork 0.7.1 - 29 May 2000
     exclude system modules.  If, however, a system module calls back into the
     user program, that part of the traceback will be shown.
 
-  - The OnDemandOutputWindow class has been improved.  In particular, it now
+  - The OnDemandOutputWindow kundi has been improved.  In particular, it now
     supports a readline() function used to implement user input, and a
     scroll_clear() operation which is used to hide the output of a previous run
     by scrolling it out of the window.
@@ -89,7 +89,7 @@ IDLEfork 0.7.1 - 29 May 2000
   - The menus have been reorganized.  In particular, the excessively large
     'edit' menu has been split up into 'edit', 'format', and 'run'.
 
-  - 'Python Documentation' now works on Windows, if the win32api module is
+  - 'Python Documentation' now works on Windows, ikiwa the win32api module is
     present.
 
   - A few key bindings have been changed: F1 now loads Python Documentation
@@ -181,7 +181,7 @@ Viewer menu, not by the debugger.)
 them correctly (MH)
 
 - New version of pyclbr.py parses top-level functions and understands
-much more of Python's syntax; this is reflected in the class and path
+much more of Python's syntax; this is reflected in the kundi and path
 browsers (TP)
 
 - Much better auto-indent; knows how to indent the insides of
@@ -193,7 +193,7 @@ window to close the tip window (MH)
 
 - Comment out region now inserts ## to make it stand out more (TP)
 
-- New path and class browsers based on a tree widget that looks
+- New path and kundi browsers based on a tree widget that looks
 familiar to Windows users
 
 - Reworked script running commands to be more intuitive: I/O now
@@ -242,7 +242,7 @@ debugger though.)
 - Closing a window that is still colorizing now actually works.
 
 - Allow dragging of the separator between the two list boxes in the
-class browser.
+kundi browser.
 
 - Bind ESC to "close window" of the debugger, stack viewer and class
 browser.  It removes the selection highlighting in regular text
@@ -276,7 +276,7 @@ Command to format a paragraph.
 
 Debug menu:
 
-JIT (Just-In-Time) stack viewer toggle -- if set, the stack viewer
+JIT (Just-In-Time) stack viewer toggle -- ikiwa set, the stack viewer
 automaticall pops up when you get a traceback.
 
 Windows menu:
@@ -287,7 +287,7 @@ Zoom height -- make the window full height.
 Help menu:
 
 The help text now show up in a regular window so you can search and
-even edit it if you like.
+even edit it ikiwa you like.
 
 
 

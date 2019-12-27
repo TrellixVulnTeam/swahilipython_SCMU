@@ -24,7 +24,7 @@ An :exc:`OSError` is raised on syscall failure.
    A deprecated alias of :exc:`OSError`.
 
    .. versionchanged:: 3.3
-      Following :pep:`3151`, this class was made an alias of :exc:`OSError`.
+      Following :pep:`3151`, this kundi was made an alias of :exc:`OSError`.
 
 
 Resource Limits
@@ -106,7 +106,7 @@ these symbols are exactly the constants used by C programs.
 The Unix man page for :manpage:`getrlimit(2)` lists the available resources.
 Note that not all systems use the same symbol or same value to denote the same
 resource.  This module does not attempt to mask platform differences --- symbols
-not defined for a platform will not be available from this module on that
+not defined for a platform will not be available kutoka this module on that
 platform.
 
 
@@ -265,8 +265,8 @@ These functions are used to retrieve resource usage information:
 
    A simple example::
 
-      from resource import *
-      import time
+      kutoka resource agiza *
+      agiza time
 
       # a non CPU-bound task
       time.sleep(3)

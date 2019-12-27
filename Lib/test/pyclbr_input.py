@@ -1,17 +1,17 @@
 """Test cases for test_pyclbr.py"""
 
-def f(): pass
+eleza f(): pass
 
-class Other(object):
+kundi Other(object):
     @classmethod
-    def foo(c): pass
+    eleza foo(c): pass
 
-    def om(self): pass
+    eleza om(self): pass
 
-class B (object):
-    def bm(self): pass
+kundi B (object):
+    eleza bm(self): pass
 
-class C (B):
+kundi C (B):
     foo = Other().foo
     om = Other.om
 
@@ -24,10 +24,10 @@ class C (B):
     #
     #f = f
 
-    def m(self): pass
+    eleza m(self): pass
 
     @staticmethod
-    def sm(self): pass
+    eleza sm(self): pass
 
     @classmethod
-    def cm(self): pass
+    eleza cm(self): pass

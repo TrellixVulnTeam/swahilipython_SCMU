@@ -482,7 +482,7 @@ PyObject Slots
 
 The type object structure extends the :c:type:`PyVarObject` structure. The
 :attr:`ob_size` field is used for dynamic types (created by  :func:`type_new`,
-usually called from a class statement). Note that :c:data:`PyType_Type` (the
+usually called kutoka a kundi statement). Note that :c:data:`PyType_Type` (the
 metatype) initializes :c:member:`~PyTypeObject.tp_itemsize`, which means that its instances (i.e.
 type objects) *must* have the :attr:`ob_size` field.
 
@@ -701,7 +701,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
    as if :const:`_Py_TPFLAGS_HAVE_VECTORCALL` was not set: calling the instance
    falls back to :c:member:`~PyTypeObject.tp_call`.
 
-   Any class that sets ``_Py_TPFLAGS_HAVE_VECTORCALL`` must also set
+   Any kundi that sets ``_Py_TPFLAGS_HAVE_VECTORCALL`` must also set
    :c:member:`~PyTypeObject.tp_call` and make sure its behaviour is consistent
    with the *vectorcallfunc* function.
    This can be done by setting *tp_call* to ``PyVectorcall_Call``:
@@ -739,7 +739,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
 
    This field is inherited by subtypes together with
    :c:member:`~PyTypeObject.tp_call`: a subtype inherits
-   :c:member:`~PyTypeObject.tp_vectorcall_offset` from its base type when
+   :c:member:`~PyTypeObject.tp_vectorcall_offset` kutoka its base type when
    the subtype’s :c:member:`~PyTypeObject.tp_call` is NULL.
 
    Note that `heap types`_ (including subclasses defined in Python) do not
@@ -759,7 +759,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
    Group: :attr:`tp_getattr`, :attr:`tp_getattro`
 
    This field is inherited by subtypes together with :c:member:`~PyTypeObject.tp_getattro`: a subtype
-   inherits both :c:member:`~PyTypeObject.tp_getattr` and :c:member:`~PyTypeObject.tp_getattro` from its base type when
+   inherits both :c:member:`~PyTypeObject.tp_getattr` and :c:member:`~PyTypeObject.tp_getattro` kutoka its base type when
    the subtype's :c:member:`~PyTypeObject.tp_getattr` and :c:member:`~PyTypeObject.tp_getattro` are both *NULL*.
 
 
@@ -776,7 +776,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
    Group: :attr:`tp_setattr`, :attr:`tp_setattro`
 
    This field is inherited by subtypes together with :c:member:`~PyTypeObject.tp_setattro`: a subtype
-   inherits both :c:member:`~PyTypeObject.tp_setattr` and :c:member:`~PyTypeObject.tp_setattro` from its base type when
+   inherits both :c:member:`~PyTypeObject.tp_setattr` and :c:member:`~PyTypeObject.tp_setattro` kutoka its base type when
    the subtype's :c:member:`~PyTypeObject.tp_setattr` and :c:member:`~PyTypeObject.tp_setattro` are both *NULL*.
 
 
@@ -810,7 +810,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
    this function should return a string that, when passed to
    :func:`eval`, given a suitable environment, returns an object with the
    same value.  If this is not feasible, it should return a string starting with
-   ``'<'`` and ending with ``'>'`` from which both the type and the value of the
+   ``'<'`` and ending with ``'>'`` kutoka which both the type and the value of the
    object can be deduced.
 
    **Inheritance:**
@@ -880,10 +880,10 @@ and :c:type:`PyType_Type` effectively act as defaults.)
    This is the same as setting it to :c:func:`PyObject_HashNotImplemented`.
 
    This field can be set explicitly to :c:func:`PyObject_HashNotImplemented` to
-   block inheritance of the hash method from a parent type. This is interpreted
+   block inheritance of the hash method kutoka a parent type. This is interpreted
    as the equivalent of ``__hash__ = None`` at the Python level, causing
    ``isinstance(o, collections.Hashable)`` to correctly return ``False``. Note
-   that the converse is also true - setting ``__hash__ = None`` on a class at
+   that the converse is also true - setting ``__hash__ = None`` on a kundi at
    the Python level will result in the ``tp_hash`` slot being set to
    :c:func:`PyObject_HashNotImplemented`.
 
@@ -951,7 +951,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
    Group: :attr:`tp_getattr`, :attr:`tp_getattro`
 
    This field is inherited by subtypes together with :c:member:`~PyTypeObject.tp_getattr`: a subtype
-   inherits both :c:member:`~PyTypeObject.tp_getattr` and :c:member:`~PyTypeObject.tp_getattro` from its base type when
+   inherits both :c:member:`~PyTypeObject.tp_getattr` and :c:member:`~PyTypeObject.tp_getattro` kutoka its base type when
    the subtype's :c:member:`~PyTypeObject.tp_getattr` and :c:member:`~PyTypeObject.tp_getattro` are both *NULL*.
 
    **Default:**
@@ -977,7 +977,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
    Group: :attr:`tp_setattr`, :attr:`tp_setattro`
 
    This field is inherited by subtypes together with :c:member:`~PyTypeObject.tp_setattr`: a subtype
-   inherits both :c:member:`~PyTypeObject.tp_setattr` and :c:member:`~PyTypeObject.tp_setattro` from its base type when
+   inherits both :c:member:`~PyTypeObject.tp_setattr` and :c:member:`~PyTypeObject.tp_setattro` kutoka its base type when
    the subtype's :c:member:`~PyTypeObject.tp_setattr` and :c:member:`~PyTypeObject.tp_setattro` are both *NULL*.
 
    **Default:**
@@ -1052,7 +1052,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
    .. data:: Py_TPFLAGS_BASETYPE
 
       This bit is set when the type can be used as the base type of another type.  If
-      this bit is clear, the type cannot be subtyped (similar to a "final" class in
+      this bit is clear, the type cannot be subtyped (similar to a "final" kundi in
       Java).
 
       **Inheritance:**
@@ -1154,7 +1154,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
       :c:func:`PyLong_Check` to quickly determine if a type is a subclass
       of a built-in type; such specific checks are faster than a generic
       check, like :c:func:`PyObject_IsInstance`. Custom types that inherit
-      from built-ins should have their :c:member:`~PyTypeObject.tp_flags`
+      kutoka built-ins should have their :c:member:`~PyTypeObject.tp_flags`
       set appropriately, or the code that interacts with such types
       will behave differently depending on what kind of check is used.
 
@@ -1173,13 +1173,13 @@ and :c:type:`PyType_Type` effectively act as defaults.)
 
    .. data:: _Py_TPFLAGS_HAVE_VECTORCALL
 
-      This bit is set when the class implements the vectorcall protocol.
+      This bit is set when the kundi implements the vectorcall protocol.
       See :c:member:`~PyTypeObject.tp_vectorcall_offset` for details.
 
       **Inheritance:**
 
       This bit is set on *static* subtypes if ``tp_flags`` is not overridden:
-      a subtype inherits ``_Py_TPFLAGS_HAVE_VECTORCALL`` from its base type
+      a subtype inherits ``_Py_TPFLAGS_HAVE_VECTORCALL`` kutoka its base type
       when the subtype’s :c:member:`~PyTypeObject.tp_call` is NULL
       and the subtype's ``Py_TPFLAGS_HEAPTYPE`` is not set.
 
@@ -1218,7 +1218,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
    The :c:member:`~PyTypeObject.tp_traverse` pointer is used by the garbage collector to detect
    reference cycles. A typical implementation of a :c:member:`~PyTypeObject.tp_traverse` function
    simply calls :c:func:`Py_VISIT` on each of the instance's members that are Python
-   objects.  For example, this is function :c:func:`local_traverse` from the
+   objects.  For example, this is function :c:func:`local_traverse` kutoka the
    :mod:`_thread` extension module::
 
       static int
@@ -1248,7 +1248,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
 
    This field is inherited by subtypes together with :c:member:`~PyTypeObject.tp_clear` and the
    :const:`Py_TPFLAGS_HAVE_GC` flag bit: the flag bit, :c:member:`~PyTypeObject.tp_traverse`, and
-   :c:member:`~PyTypeObject.tp_clear` are all inherited from the base type if they are all zero in
+   :c:member:`~PyTypeObject.tp_clear` are all inherited kutoka the base type if they are all zero in
    the subtype.
 
 
@@ -1309,7 +1309,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
 
    This field is inherited by subtypes together with :c:member:`~PyTypeObject.tp_traverse` and the
    :const:`Py_TPFLAGS_HAVE_GC` flag bit: the flag bit, :c:member:`~PyTypeObject.tp_traverse`, and
-   :c:member:`~PyTypeObject.tp_clear` are all inherited from the base type if they are all zero in
+   :c:member:`~PyTypeObject.tp_clear` are all inherited kutoka the base type if they are all zero in
    the subtype.
 
 
@@ -1350,7 +1350,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
 
    .. c:function:: PyObject \*Py_RETURN_RICHCOMPARE(VAL_A, VAL_B, int op)
 
-      Return ``Py_True`` or ``Py_False`` from the function, depending on the
+      Return ``Py_True`` or ``Py_False`` kutoka the function, depending on the
       result of a comparison.
       VAL_A and VAL_B must be orderable by C comparison operators (for example,
       they may be C ints or floats). The third argument specifies the requested
@@ -1358,7 +1358,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
 
       The return value's reference count is properly incremented.
 
-      On error, sets an exception and returns *NULL* from the function.
+      On error, sets an exception and returns *NULL* kutoka the function.
 
       .. versionadded:: 3.7
 
@@ -1399,7 +1399,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
    reference list head than the base type.  Since the list head is always found via
    :c:member:`~PyTypeObject.tp_weaklistoffset`, this should not be a problem.
 
-   When a type defined by a class statement has no :attr:`~object.__slots__` declaration,
+   When a type defined by a kundi statement has no :attr:`~object.__slots__` declaration,
    and none of its base types are weakly referenceable, the type is made weakly
    referenceable by adding a weak reference list head slot to the instance layout
    and setting the :c:member:`~PyTypeObject.tp_weaklistoffset` of that slot's offset.
@@ -1410,7 +1410,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
    :c:member:`~PyTypeObject.tp_weaklistoffset`.
 
    When a type's :attr:`__slots__` declaration does not contain a slot named
-   :attr:`__weakref__`, the type inherits its :c:member:`~PyTypeObject.tp_weaklistoffset` from its
+   :attr:`__weakref__`, the type inherits its :c:member:`~PyTypeObject.tp_weaklistoffset` kutoka its
    base type.
 
 
@@ -1497,13 +1497,13 @@ and :c:type:`PyType_Type` effectively act as defaults.)
 
 .. c:member:: PyTypeObject* PyTypeObject.tp_base
 
-   An optional pointer to a base type from which type properties are inherited.  At
+   An optional pointer to a base type kutoka which type properties are inherited.  At
    this level, only single inheritance is supported; multiple inheritance require
    dynamically creating a type object by calling the metatype.
 
    .. note::
 
-       .. from Modules/xxmodule.c
+       .. kutoka Modules/xxmodule.c
 
        Slot initialization is subject to the rules of initializing globals.
        C99 requires the initializers to be "address constants".  Function
@@ -1598,9 +1598,9 @@ and :c:type:`PyType_Type` effectively act as defaults.)
    Do not confuse this field with :c:member:`~PyTypeObject.tp_dict`; that is the dictionary for
    attributes of the type object itself.
 
-   If the value of this field is greater than zero, it specifies the offset from
+   If the value of this field is greater than zero, it specifies the offset kutoka
    the start of the instance structure.  If the value is less than zero, it
-   specifies the offset from the *end* of the instance structure.  A negative
+   specifies the offset kutoka the *end* of the instance structure.  A negative
    offset is more expensive to use, and should only be used when the instance
    structure contains a variable-length part.  This is used for example to add an
    instance variable dictionary to subtypes of :class:`str` or :class:`tuple`. Note
@@ -1610,7 +1610,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
    :c:member:`~PyTypeObject.tp_dictoffset` should be set to ``-4`` to indicate that the dictionary is
    at the very end of the structure.
 
-   The real dictionary offset in an instance can be computed from a negative
+   The real dictionary offset in an instance can be computed kutoka a negative
    :c:member:`~PyTypeObject.tp_dictoffset` as follows::
 
       dictoffset = tp_basicsize + abs(ob_size)*tp_itemsize + tp_dictoffset
@@ -1618,7 +1618,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
           round up to sizeof(void*)
 
    where :c:member:`~PyTypeObject.tp_basicsize`, :c:member:`~PyTypeObject.tp_itemsize` and :c:member:`~PyTypeObject.tp_dictoffset` are
-   taken from the type object, and :attr:`ob_size` is taken from the instance.  The
+   taken kutoka the type object, and :attr:`ob_size` is taken kutoka the instance.  The
    absolute value is taken because ints use the sign of :attr:`ob_size` to
    store the sign of the number.  (There's never a need to do this calculation
    yourself; it is done for you by :c:func:`_PyObject_GetDictPtr`.)
@@ -1630,13 +1630,13 @@ and :c:type:`PyType_Type` effectively act as defaults.)
    dictionary at a difference offset than the base type.  Since the dictionary is
    always found via :c:member:`~PyTypeObject.tp_dictoffset`, this should not be a problem.
 
-   When a type defined by a class statement has no :attr:`~object.__slots__` declaration,
+   When a type defined by a kundi statement has no :attr:`~object.__slots__` declaration,
    and none of its base types has an instance variable dictionary, a dictionary
    slot is added to the instance layout and the :c:member:`~PyTypeObject.tp_dictoffset` is set to
    that slot's offset.
 
-   When a type defined by a class statement has a :attr:`__slots__` declaration,
-   the type inherits its :c:member:`~PyTypeObject.tp_dictoffset` from its base type.
+   When a type defined by a kundi statement has a :attr:`__slots__` declaration,
+   the type inherits its :c:member:`~PyTypeObject.tp_dictoffset` kutoka its base type.
 
    (Adding a slot named :attr:`~object.__dict__` to the :attr:`__slots__` declaration does
    not have the expected effect, it just causes confusion.  Maybe this should be
@@ -1694,7 +1694,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
    **Inheritance:**
 
    This field is inherited by static subtypes, but not by dynamic
-   subtypes (subtypes created by a class statement).
+   subtypes (subtypes created by a kundi statement).
 
    **Default:**
 
@@ -1753,7 +1753,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
    **Inheritance:**
 
    This field is inherited by static subtypes, but not by dynamic
-   subtypes (subtypes created by a class statement)
+   subtypes (subtypes created by a kundi statement)
 
    **Default:**
 
@@ -1796,7 +1796,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
 
    Tuple of base types.
 
-   This is set for types created by a class statement.  It should be *NULL* for
+   This is set for types created by a kundi statement.  It should be *NULL* for
    statically defined types.
 
    **Inheritance:**
@@ -1865,7 +1865,7 @@ and :c:type:`PyType_Type` effectively act as defaults.)
       void tp_finalize(PyObject *self);
 
    If :c:member:`~PyTypeObject.tp_finalize` is set, the interpreter calls it once when
-   finalizing an instance.  It is called either from the garbage
+   finalizing an instance.  It is called either kutoka the garbage
    collector (if the instance is part of an isolated reference cycle) or
    just before the object is deallocated.  Either way, it is guaranteed
    to be called before attempting to break reference cycles, ensuring
@@ -1925,12 +1925,12 @@ subtypes.
 
    Pointer to the next type object with a non-zero :c:member:`~PyTypeObject.tp_allocs` field.
 
-Also, note that, in a garbage collected Python, :c:member:`~PyTypeObject.tp_dealloc` may be called from
+Also, note that, in a garbage collected Python, :c:member:`~PyTypeObject.tp_dealloc` may be called kutoka
 any Python thread, not just the thread which created the object (if the object
 becomes part of a refcount cycle, that cycle might be collected by a garbage
 collection on any thread).  This is not a problem for Python API calls, since
 the thread on which tp_dealloc is called will own the Global Interpreter Lock
-(GIL). However, if the object being destroyed in turn destroys objects from some
+(GIL). However, if the object being destroyed in turn destroys objects kutoka some
 other C or C++ library, care should be taken to ensure that destroying those
 objects on the thread which called tp_dealloc will not violate any assumptions
 of the library.
@@ -1950,7 +1950,7 @@ This results in types that are limited relative to types defined in Python:
 * Static types are limited to one base, i.e. they cannot use multiple
   inheritance.
 * Static type objects (but not necessarily their instances) are immutable.
-  It is not possible to add or modify the type object's attributes from Python.
+  It is not possible to add or modify the type object's attributes kutoka Python.
 * Static type objects are shared across
   :ref:`sub-interpreters <sub-interpreter-support>`, so they should not
   include any subinterpreter-specific state.
@@ -2354,7 +2354,7 @@ Slot Type typedefs
 
 .. c:type:: PyObject *(*allocfunc)(PyTypeObject *cls, Py_ssize_t nitems)
 
-   The purpose of this function is to separate memory allocation from memory
+   The purpose of this function is to separate memory allocation kutoka memory
    initialization.  It should return a pointer to a block of memory of adequate
    length for the instance, suitably aligned, and initialized to zeros, but with
    :attr:`ob_refcnt` set to ``1`` and :attr:`ob_type` set to the type argument.  If
@@ -2558,7 +2558,7 @@ A type that supports weakrefs, instance dicts, and hashing::
        .tp_richcompare = PyBaseObject_Type.tp_richcompare,
    };
 
-A str subclass that cannot be subclassed and cannot be called
+A str subkundi that cannot be subclassed and cannot be called
 to create instances (e.g. uses a separate factory func)::
 
    typedef struct {

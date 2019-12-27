@@ -14,13 +14,13 @@ kutoka itertools agiza permutations
 kutoka textwrap agiza dedent
 kutoka collections agiza OrderedDict
 
-class Test_Csv(unittest.TestCase):
+kundi Test_Csv(unittest.TestCase):
     """
     Test the underlying C csv parser in ways that are not appropriate
     kutoka the high level interface. Further tests of this nature are done
     in TestDialectRegistry.
     """
-    def _test_arg_valid(self, ctor, arg):
+    eleza _test_arg_valid(self, ctor, arg):
         self.assertRaises(TypeError, ctor)
         self.assertRaises(TypeError, ctor, None)
         self.assertRaises(TypeError, ctor, arg, bad_attr = 0)
@@ -38,13 +38,13 @@ class Test_Csv(unittest.TestCase):
         self.assertRaises(TypeError, ctor, arg,
                           quoting=csv.QUOTE_ALL, quotechar=None)
 
-    def test_reader_arg_valid(self):
+    eleza test_reader_arg_valid(self):
         self._test_arg_valid(csv.reader, [])
 
-    def test_writer_arg_valid(self):
+    eleza test_writer_arg_valid(self):
         self._test_arg_valid(csv.writer, StringIO())
 
-    def _test_default_attrs(self, ctor, *args):
+    eleza _test_default_attrs(self, ctor, *args):
         obj = ctor(*args)
         # Check defaults
         self.assertEqual(obj.dialect.delimiter, ',')
@@ -62,13 +62,13 @@ class Test_Csv(unittest.TestCase):
         self.assertRaises(AttributeError, setattr, obj.dialect,
                           'quoting', None)
 
-    def test_reader_attrs(self):
+    eleza test_reader_attrs(self):
         self._test_default_attrs(csv.reader, [])
 
-    def test_writer_attrs(self):
+    eleza test_writer_attrs(self):
         self._test_default_attrs(csv.writer, StringIO())
 
-    def _test_kw_attrs(self, ctor, *args):
+    eleza _test_kw_attrs(self, ctor, *args):
         # Now try with alternate options
         kwargs = dict(delimiter=':', doublequote=False, escapechar='\\',
                       lineterminator='\r', quotechar='*',
@@ -84,15 +84,15 @@ class Test_Csv(unittest.TestCase):
         self.assertIs(obj.dialect.skipinitialspace, True)
         self.assertIs(obj.dialect.strict, True)
 
-    def test_reader_kw_attrs(self):
+    eleza test_reader_kw_attrs(self):
         self._test_kw_attrs(csv.reader, [])
 
-    def test_writer_kw_attrs(self):
+    eleza test_writer_kw_attrs(self):
         self._test_kw_attrs(csv.writer, StringIO())
 
-    def _test_dialect_attrs(self, ctor, *args):
+    eleza _test_dialect_attrs(self, ctor, *args):
         # Now try with dialect-derived options
-        class dialect:
+        kundi dialect:
             delimiter='-'
             doublequote=False
             escapechar='^'
@@ -112,14 +112,14 @@ class Test_Csv(unittest.TestCase):
         self.assertIs(obj.dialect.skipinitialspace, True)
         self.assertIs(obj.dialect.strict, False)
 
-    def test_reader_dialect_attrs(self):
+    eleza test_reader_dialect_attrs(self):
         self._test_dialect_attrs(csv.reader, [])
 
-    def test_writer_dialect_attrs(self):
+    eleza test_writer_dialect_attrs(self):
         self._test_dialect_attrs(csv.writer, StringIO())
 
 
-    def _write_test(self, fields, expect, **kwargs):
+    eleza _write_test(self, fields, expect, **kwargs):
         with TemporaryFile("w+", newline='') as fileobj:
             writer = csv.writer(fileobj, **kwargs)
             writer.writerow(fields)
@@ -127,7 +127,7 @@ class Test_Csv(unittest.TestCase):
             self.assertEqual(fileobj.read(),
                              expect + writer.dialect.lineterminator)
 
-    def _write_error_test(self, exc, fields, **kwargs):
+    eleza _write_error_test(self, exc, fields, **kwargs):
         with TemporaryFile("w+", newline='') as fileobj:
             writer = csv.writer(fileobj, **kwargs)
             with self.assertRaises(exc):
@@ -135,31 +135,31 @@ class Test_Csv(unittest.TestCase):
             fileobj.seek(0)
             self.assertEqual(fileobj.read(), '')
 
-    def test_write_arg_valid(self):
+    eleza test_write_arg_valid(self):
         self._write_error_test(csv.Error, None)
         self._write_test((), '')
         self._write_test([None], '""')
         self._write_error_test(csv.Error, [None], quoting = csv.QUOTE_NONE)
         # Check that exceptions are passed up the chain
-        class BadList:
-            def __len__(self):
-                return 10;
-            def __getitem__(self, i):
-                if i > 2:
+        kundi BadList:
+            eleza __len__(self):
+                rudisha 10;
+            eleza __getitem__(self, i):
+                ikiwa i > 2:
                     raise OSError
         self._write_error_test(OSError, BadList())
-        class BadItem:
-            def __str__(self):
+        kundi BadItem:
+            eleza __str__(self):
                 raise OSError
         self._write_error_test(OSError, [BadItem()])
 
-    def test_write_bigfield(self):
+    eleza test_write_bigfield(self):
         # This exercises the buffer realloc functionality
         bigstring = 'X' * 50000
         self._write_test([bigstring,bigstring], '%s,%s' % \
                          (bigstring, bigstring))
 
-    def test_write_quoting(self):
+    eleza test_write_quoting(self):
         self._write_test(['a',1,'p,q'], 'a,1,"p,q"')
         self._write_error_test(csv.Error, ['a',1,'p,q'],
                                quoting = csv.QUOTE_NONE)
@@ -172,7 +172,7 @@ class Test_Csv(unittest.TestCase):
         self._write_test(['a\nb',1], '"a\nb","1"',
                          quoting = csv.QUOTE_ALL)
 
-    def test_write_escape(self):
+    eleza test_write_escape(self):
         self._write_test(['a',1,'p,q'], 'a,1,"p,q"',
                          escapechar='\\')
         self._write_error_test(csv.Error, ['a',1,'p,"q"'],
@@ -189,7 +189,7 @@ class Test_Csv(unittest.TestCase):
         self._write_test(['a',1,'p,q'], 'a,1,p\\,q',
                          escapechar='\\', quoting = csv.QUOTE_NONE)
 
-    def test_write_iterable(self):
+    eleza test_write_iterable(self):
         self._write_test(iter(['a', 1, 'p,q']), 'a,1,"p,q"')
         self._write_test(iter(['a', 1, None]), 'a,1,')
         self._write_test(iter([]), '')
@@ -197,9 +197,9 @@ class Test_Csv(unittest.TestCase):
         self._write_error_test(csv.Error, iter([None]), quoting=csv.QUOTE_NONE)
         self._write_test(iter([None, None]), ',')
 
-    def test_writerows(self):
-        class BrokenFile:
-            def write(self, buf):
+    eleza test_writerows(self):
+        kundi BrokenFile:
+            eleza write(self, buf):
                 raise OSError
         writer = csv.writer(BrokenFile())
         self.assertRaises(OSError, writer.writerows, [['a']])
@@ -211,7 +211,7 @@ class Test_Csv(unittest.TestCase):
             fileobj.seek(0)
             self.assertEqual(fileobj.read(), "a,b\r\nc,d\r\n")
 
-    def test_writerows_with_none(self):
+    eleza test_writerows_with_none(self):
         with TemporaryFile("w+", newline='') as fileobj:
             writer = csv.writer(fileobj)
             writer.writerows([['a', None], [None, 'd']])
@@ -231,7 +231,7 @@ class Test_Csv(unittest.TestCase):
             self.assertEqual(fileobj.read(), 'a\r\n""\r\n')
 
     @support.cpython_only
-    def test_writerows_legacy_strings(self):
+    eleza test_writerows_legacy_strings(self):
         agiza _testcapi
 
         c = _testcapi.unicode_legacy_string('a')
@@ -241,12 +241,12 @@ class Test_Csv(unittest.TestCase):
             fileobj.seek(0)
             self.assertEqual(fileobj.read(), "a\r\n")
 
-    def _read_test(self, input, expect, **kwargs):
+    eleza _read_test(self, input, expect, **kwargs):
         reader = csv.reader(input, **kwargs)
         result = list(reader)
         self.assertEqual(result, expect)
 
-    def test_read_oddinputs(self):
+    eleza test_read_oddinputs(self):
         self._read_test([], [])
         self._read_test([''], [[]])
         self.assertRaises(csv.Error, self._read_test,
@@ -260,7 +260,7 @@ class Test_Csv(unittest.TestCase):
                           [b'ab\0c'], None)
 
 
-    def test_read_eol(self):
+    eleza test_read_eol(self):
         self._read_test(['a,b'], [['a','b']])
         self._read_test(['a,b\n'], [['a','b']])
         self._read_test(['a,b\r\n'], [['a','b']])
@@ -269,7 +269,7 @@ class Test_Csv(unittest.TestCase):
         self.assertRaises(csv.Error, self._read_test, ['a,b\nc,d'], [])
         self.assertRaises(csv.Error, self._read_test, ['a,b\r\nc,d'], [])
 
-    def test_read_eof(self):
+    eleza test_read_eof(self):
         self._read_test(['a,"'], [['a', '']])
         self._read_test(['"a'], [['a']])
         self._read_test(['^'], [['\n']], escapechar='^')
@@ -278,7 +278,7 @@ class Test_Csv(unittest.TestCase):
         self.assertRaises(csv.Error, self._read_test,
                           ['^'], [], escapechar='^', strict=True)
 
-    def test_read_escape(self):
+    eleza test_read_escape(self):
         self._read_test(['a,\\b,c'], [['a', 'b', 'c']], escapechar='\\')
         self._read_test(['a,b\\,c'], [['a', 'b,c']], escapechar='\\')
         self._read_test(['a,"b\\,c"'], [['a', 'b,c']], escapechar='\\')
@@ -286,7 +286,7 @@ class Test_Csv(unittest.TestCase):
         self._read_test(['a,"b,c\\""'], [['a', 'b,c"']], escapechar='\\')
         self._read_test(['a,"b,c"\\'], [['a', 'b,c\\']], escapechar='\\')
 
-    def test_read_quoting(self):
+    eleza test_read_quoting(self):
         self._read_test(['1,",3,",5'], [['1', ',3,', '5']])
         self._read_test(['1,",3,",5'], [['1', '"', '3', '"', '5']],
                         quotechar=None, escapechar='\\')
@@ -300,7 +300,7 @@ class Test_Csv(unittest.TestCase):
                           ['abc,3'], [[]],
                           quoting=csv.QUOTE_NONNUMERIC)
 
-    def test_read_bigfield(self):
+    eleza test_read_bigfield(self):
         # This exercises the buffer realloc functionality and field size
         # limits.
         limit = csv.field_size_limit()
@@ -319,7 +319,7 @@ class Test_Csv(unittest.TestCase):
         finally:
             csv.field_size_limit(limit)
 
-    def test_read_linenum(self):
+    eleza test_read_linenum(self):
         r = csv.reader(['line,1', 'line,2', 'line,3'])
         self.assertEqual(r.line_num, 0)
         next(r)
@@ -331,7 +331,7 @@ class Test_Csv(unittest.TestCase):
         self.assertRaises(StopIteration, next, r)
         self.assertEqual(r.line_num, 3)
 
-    def test_roundtrip_quoteed_newlines(self):
+    eleza test_roundtrip_quoteed_newlines(self):
         with TemporaryFile("w+", newline='') as fileobj:
             writer = csv.writer(fileobj)
             self.assertRaises(TypeError, writer.writerows, None)
@@ -341,7 +341,7 @@ class Test_Csv(unittest.TestCase):
             for i, row in enumerate(csv.reader(fileobj)):
                 self.assertEqual(row, rows[i])
 
-    def test_roundtrip_escaped_unquoted_newlines(self):
+    eleza test_roundtrip_escaped_unquoted_newlines(self):
         with TemporaryFile("w+", newline='') as fileobj:
             writer = csv.writer(fileobj,quoting=csv.QUOTE_NONE,escapechar="\\")
             rows = [['a\nb','b'],['c','x\r\nd']]
@@ -350,8 +350,8 @@ class Test_Csv(unittest.TestCase):
             for i, row in enumerate(csv.reader(fileobj,quoting=csv.QUOTE_NONE,escapechar="\\")):
                 self.assertEqual(row,rows[i])
 
-class TestDialectRegistry(unittest.TestCase):
-    def test_registry_badargs(self):
+kundi TestDialectRegistry(unittest.TestCase):
+    eleza test_registry_badargs(self):
         self.assertRaises(TypeError, csv.list_dialects, None)
         self.assertRaises(TypeError, csv.get_dialect)
         self.assertRaises(csv.Error, csv.get_dialect, None)
@@ -368,8 +368,8 @@ class TestDialectRegistry(unittest.TestCase):
                           quoting=None)
         self.assertRaises(TypeError, csv.register_dialect, [])
 
-    def test_registry(self):
-        class myexceltsv(csv.excel):
+    eleza test_registry(self):
+        kundi myexceltsv(csv.excel):
             delimiter = "\t"
         name = "myexceltsv"
         expected_dialects = csv.list_dialects() + [name]
@@ -380,20 +380,20 @@ class TestDialectRegistry(unittest.TestCase):
         got_dialects = sorted(csv.list_dialects())
         self.assertEqual(expected_dialects, got_dialects)
 
-    def test_register_kwargs(self):
+    eleza test_register_kwargs(self):
         name = 'fedcba'
         csv.register_dialect(name, delimiter=';')
         self.addCleanup(csv.unregister_dialect, name)
         self.assertEqual(csv.get_dialect(name).delimiter, ';')
         self.assertEqual([['X', 'Y', 'Z']], list(csv.reader(['X;Y;Z'], name)))
 
-    def test_incomplete_dialect(self):
-        class myexceltsv(csv.Dialect):
+    eleza test_incomplete_dialect(self):
+        kundi myexceltsv(csv.Dialect):
             delimiter = "\t"
         self.assertRaises(csv.Error, myexceltsv)
 
-    def test_space_dialect(self):
-        class space(csv.excel):
+    eleza test_space_dialect(self):
+        kundi space(csv.excel):
             delimiter = " "
             quoting = csv.QUOTE_NONE
             escapechar = "\\"
@@ -405,7 +405,7 @@ class TestDialectRegistry(unittest.TestCase):
             self.assertEqual(next(reader), ["abc", "def"])
             self.assertEqual(next(reader), ["c1ccccc1", "benzene"])
 
-    def compare_dialect_123(self, expected, *writeargs, **kwwriteargs):
+    eleza compare_dialect_123(self, expected, *writeargs, **kwwriteargs):
 
         with TemporaryFile("w+", newline='', encoding="utf-8") as fileobj:
 
@@ -414,14 +414,14 @@ class TestDialectRegistry(unittest.TestCase):
             fileobj.seek(0)
             self.assertEqual(fileobj.read(), expected)
 
-    def test_dialect_apply(self):
-        class testA(csv.excel):
+    eleza test_dialect_apply(self):
+        kundi testA(csv.excel):
             delimiter = "\t"
-        class testB(csv.excel):
+        kundi testB(csv.excel):
             delimiter = ":"
-        class testC(csv.excel):
+        kundi testC(csv.excel):
             delimiter = "|"
-        class testUni(csv.excel):
+        kundi testUni(csv.excel):
             delimiter = "\u039B"
 
         csv.register_dialect('testC', testC)
@@ -438,7 +438,7 @@ class TestDialectRegistry(unittest.TestCase):
         finally:
             csv.unregister_dialect('testC')
 
-    def test_bad_dialect(self):
+    eleza test_bad_dialect(self):
         # Unknown parameter
         self.assertRaises(TypeError, csv.reader, [], bad_attr = 0)
         # Bad values
@@ -446,19 +446,19 @@ class TestDialectRegistry(unittest.TestCase):
         self.assertRaises(TypeError, csv.reader, [], quoting = -1)
         self.assertRaises(TypeError, csv.reader, [], quoting = 100)
 
-    def test_copy(self):
+    eleza test_copy(self):
         for name in csv.list_dialects():
             dialect = csv.get_dialect(name)
             self.assertRaises(TypeError, copy.copy, dialect)
 
-    def test_pickle(self):
+    eleza test_pickle(self):
         for name in csv.list_dialects():
             dialect = csv.get_dialect(name)
             for proto in range(pickle.HIGHEST_PROTOCOL + 1):
                 self.assertRaises(TypeError, pickle.dumps, dialect, proto)
 
-class TestCsvBase(unittest.TestCase):
-    def readerAssertEqual(self, input, expected_result):
+kundi TestCsvBase(unittest.TestCase):
+    eleza readerAssertEqual(self, input, expected_result):
         with TemporaryFile("w+", newline='') as fileobj:
             fileobj.write(input)
             fileobj.seek(0)
@@ -466,78 +466,78 @@ class TestCsvBase(unittest.TestCase):
             fields = list(reader)
             self.assertEqual(fields, expected_result)
 
-    def writerAssertEqual(self, input, expected_result):
+    eleza writerAssertEqual(self, input, expected_result):
         with TemporaryFile("w+", newline='') as fileobj:
             writer = csv.writer(fileobj, dialect = self.dialect)
             writer.writerows(input)
             fileobj.seek(0)
             self.assertEqual(fileobj.read(), expected_result)
 
-class TestDialectExcel(TestCsvBase):
+kundi TestDialectExcel(TestCsvBase):
     dialect = 'excel'
 
-    def test_single(self):
+    eleza test_single(self):
         self.readerAssertEqual('abc', [['abc']])
 
-    def test_simple(self):
+    eleza test_simple(self):
         self.readerAssertEqual('1,2,3,4,5', [['1','2','3','4','5']])
 
-    def test_blankline(self):
+    eleza test_blankline(self):
         self.readerAssertEqual('', [])
 
-    def test_empty_fields(self):
+    eleza test_empty_fields(self):
         self.readerAssertEqual(',', [['', '']])
 
-    def test_singlequoted(self):
+    eleza test_singlequoted(self):
         self.readerAssertEqual('""', [['']])
 
-    def test_singlequoted_left_empty(self):
+    eleza test_singlequoted_left_empty(self):
         self.readerAssertEqual('"",', [['','']])
 
-    def test_singlequoted_right_empty(self):
+    eleza test_singlequoted_right_empty(self):
         self.readerAssertEqual(',""', [['','']])
 
-    def test_single_quoted_quote(self):
+    eleza test_single_quoted_quote(self):
         self.readerAssertEqual('""""', [['"']])
 
-    def test_quoted_quotes(self):
+    eleza test_quoted_quotes(self):
         self.readerAssertEqual('""""""', [['""']])
 
-    def test_inline_quote(self):
+    eleza test_inline_quote(self):
         self.readerAssertEqual('a""b', [['a""b']])
 
-    def test_inline_quotes(self):
+    eleza test_inline_quotes(self):
         self.readerAssertEqual('a"b"c', [['a"b"c']])
 
-    def test_quotes_and_more(self):
+    eleza test_quotes_and_more(self):
         # Excel would never write a field containing '"a"b', but when
-        # reading one, it will return 'ab'.
+        # reading one, it will rudisha 'ab'.
         self.readerAssertEqual('"a"b', [['ab']])
 
-    def test_lone_quote(self):
+    eleza test_lone_quote(self):
         self.readerAssertEqual('a"b', [['a"b']])
 
-    def test_quote_and_quote(self):
+    eleza test_quote_and_quote(self):
         # Excel would never write a field containing '"a" "b"', but when
-        # reading one, it will return 'a "b"'.
+        # reading one, it will rudisha 'a "b"'.
         self.readerAssertEqual('"a" "b"', [['a "b"']])
 
-    def test_space_and_quote(self):
+    eleza test_space_and_quote(self):
         self.readerAssertEqual(' "a"', [[' "a"']])
 
-    def test_quoted(self):
+    eleza test_quoted(self):
         self.readerAssertEqual('1,2,3,"I think, therefore I am",5,6',
                                [['1', '2', '3',
                                  'I think, therefore I am',
                                  '5', '6']])
 
-    def test_quoted_quote(self):
+    eleza test_quoted_quote(self):
         self.readerAssertEqual('1,2,3,"""I see,"" said the blind man","as he picked up his hammer and saw"',
                                [['1', '2', '3',
                                  '"I see," said the blind man',
                                  'as he picked up his hammer and saw']])
 
-    def test_quoted_nl(self):
+    eleza test_quoted_nl(self):
         input = '''\
 1,2,3,"""I see,""
 said the blind man","as he picked up his
@@ -549,72 +549,72 @@ hammer and saw"
                                    'as he picked up his\nhammer and saw'],
                                 ['9','8','7','6']])
 
-    def test_dubious_quote(self):
+    eleza test_dubious_quote(self):
         self.readerAssertEqual('12,12,1",', [['12', '12', '1"', '']])
 
-    def test_null(self):
+    eleza test_null(self):
         self.writerAssertEqual([], '')
 
-    def test_single_writer(self):
+    eleza test_single_writer(self):
         self.writerAssertEqual([['abc']], 'abc\r\n')
 
-    def test_simple_writer(self):
+    eleza test_simple_writer(self):
         self.writerAssertEqual([[1, 2, 'abc', 3, 4]], '1,2,abc,3,4\r\n')
 
-    def test_quotes(self):
+    eleza test_quotes(self):
         self.writerAssertEqual([[1, 2, 'a"bc"', 3, 4]], '1,2,"a""bc""",3,4\r\n')
 
-    def test_quote_fieldsep(self):
+    eleza test_quote_fieldsep(self):
         self.writerAssertEqual([['abc,def']], '"abc,def"\r\n')
 
-    def test_newlines(self):
+    eleza test_newlines(self):
         self.writerAssertEqual([[1, 2, 'a\nbc', 3, 4]], '1,2,"a\nbc",3,4\r\n')
 
-class EscapedExcel(csv.excel):
+kundi EscapedExcel(csv.excel):
     quoting = csv.QUOTE_NONE
     escapechar = '\\'
 
-class TestEscapedExcel(TestCsvBase):
+kundi TestEscapedExcel(TestCsvBase):
     dialect = EscapedExcel()
 
-    def test_escape_fieldsep(self):
+    eleza test_escape_fieldsep(self):
         self.writerAssertEqual([['abc,def']], 'abc\\,def\r\n')
 
-    def test_read_escape_fieldsep(self):
+    eleza test_read_escape_fieldsep(self):
         self.readerAssertEqual('abc\\,def\r\n', [['abc,def']])
 
-class TestDialectUnix(TestCsvBase):
+kundi TestDialectUnix(TestCsvBase):
     dialect = 'unix'
 
-    def test_simple_writer(self):
+    eleza test_simple_writer(self):
         self.writerAssertEqual([[1, 'abc def', 'abc']], '"1","abc def","abc"\n')
 
-    def test_simple_reader(self):
+    eleza test_simple_reader(self):
         self.readerAssertEqual('"1","abc def","abc"\n', [['1', 'abc def', 'abc']])
 
-class QuotedEscapedExcel(csv.excel):
+kundi QuotedEscapedExcel(csv.excel):
     quoting = csv.QUOTE_NONNUMERIC
     escapechar = '\\'
 
-class TestQuotedEscapedExcel(TestCsvBase):
+kundi TestQuotedEscapedExcel(TestCsvBase):
     dialect = QuotedEscapedExcel()
 
-    def test_write_escape_fieldsep(self):
+    eleza test_write_escape_fieldsep(self):
         self.writerAssertEqual([['abc,def']], '"abc,def"\r\n')
 
-    def test_read_escape_fieldsep(self):
+    eleza test_read_escape_fieldsep(self):
         self.readerAssertEqual('"abc\\,def"\r\n', [['abc,def']])
 
-class TestDictFields(unittest.TestCase):
+kundi TestDictFields(unittest.TestCase):
     ### "long" means the row is longer than the number of fieldnames
     ### "short" means there are fewer elements in the row than fieldnames
-    def test_writeheader_return_value(self):
+    eleza test_writeheader_return_value(self):
         with TemporaryFile("w+", newline='') as fileobj:
             writer = csv.DictWriter(fileobj, fieldnames = ["f1", "f2", "f3"])
             writeheader_return_value = writer.writeheader()
             self.assertEqual(writeheader_return_value, 10)
 
-    def test_write_simple_dict(self):
+    eleza test_write_simple_dict(self):
         with TemporaryFile("w+", newline='') as fileobj:
             writer = csv.DictWriter(fileobj, fieldnames = ["f1", "f2", "f3"])
             writer.writeheader()
@@ -625,7 +625,7 @@ class TestDictFields(unittest.TestCase):
             fileobj.readline() # header
             self.assertEqual(fileobj.read(), "10,,abc\r\n")
 
-    def test_write_multiple_dict_rows(self):
+    eleza test_write_multiple_dict_rows(self):
         fileobj = StringIO()
         writer = csv.DictWriter(fileobj, fieldnames=["f1", "f2", "f3"])
         writer.writeheader()
@@ -635,11 +635,11 @@ class TestDictFields(unittest.TestCase):
         self.assertEqual(fileobj.getvalue(),
                          "f1,f2,f3\r\n1,abc,f\r\n2,5,xyz\r\n")
 
-    def test_write_no_fields(self):
+    eleza test_write_no_fields(self):
         fileobj = StringIO()
         self.assertRaises(TypeError, csv.DictWriter, fileobj)
 
-    def test_write_fields_not_in_fieldnames(self):
+    eleza test_write_fields_not_in_fieldnames(self):
         with TemporaryFile("w+", newline='') as fileobj:
             writer = csv.DictWriter(fileobj, fieldnames = ["f1", "f2", "f3"])
             # Of special note is the non-string key (issue 19449)
@@ -651,25 +651,25 @@ class TestDictFields(unittest.TestCase):
             self.assertNotIn("'f2'", exception)
             self.assertIn("1", exception)
 
-    def test_typo_in_extrasaction_raises_error(self):
+    eleza test_typo_in_extrasaction_raises_error(self):
         fileobj = StringIO()
         self.assertRaises(ValueError, csv.DictWriter, fileobj, ['f1', 'f2'],
                           extrasaction="raised")
 
-    def test_write_field_not_in_field_names_raise(self):
+    eleza test_write_field_not_in_field_names_raise(self):
         fileobj = StringIO()
         writer = csv.DictWriter(fileobj, ['f1', 'f2'], extrasaction="raise")
         dictrow = {'f0': 0, 'f1': 1, 'f2': 2, 'f3': 3}
         self.assertRaises(ValueError, csv.DictWriter.writerow, writer, dictrow)
 
-    def test_write_field_not_in_field_names_ignore(self):
+    eleza test_write_field_not_in_field_names_ignore(self):
         fileobj = StringIO()
         writer = csv.DictWriter(fileobj, ['f1', 'f2'], extrasaction="ignore")
         dictrow = {'f0': 0, 'f1': 1, 'f2': 2, 'f3': 3}
         csv.DictWriter.writerow(writer, dictrow)
         self.assertEqual(fileobj.getvalue(), "1,2\r\n")
 
-    def test_read_dict_fields(self):
+    eleza test_read_dict_fields(self):
         with TemporaryFile("w+") as fileobj:
             fileobj.write("1,2,abc\r\n")
             fileobj.seek(0)
@@ -677,7 +677,7 @@ class TestDictFields(unittest.TestCase):
                                     fieldnames=["f1", "f2", "f3"])
             self.assertEqual(next(reader), {"f1": '1', "f2": '2', "f3": 'abc'})
 
-    def test_read_dict_no_fieldnames(self):
+    eleza test_read_dict_no_fieldnames(self):
         with TemporaryFile("w+") as fileobj:
             fileobj.write("f1,f2,f3\r\n1,2,abc\r\n")
             fileobj.seek(0)
@@ -687,7 +687,7 @@ class TestDictFields(unittest.TestCase):
 
     # Two test cases to make sure existing ways of implicitly setting
     # fieldnames continue to work.  Both arise kutoka discussion in issue3436.
-    def test_read_dict_fieldnames_from_file(self):
+    eleza test_read_dict_fieldnames_kutoka_file(self):
         with TemporaryFile("w+") as fileobj:
             fileobj.write("f1,f2,f3\r\n1,2,abc\r\n")
             fileobj.seek(0)
@@ -696,7 +696,7 @@ class TestDictFields(unittest.TestCase):
             self.assertEqual(reader.fieldnames, ["f1", "f2", "f3"])
             self.assertEqual(next(reader), {"f1": '1', "f2": '2', "f3": 'abc'})
 
-    def test_read_dict_fieldnames_chain(self):
+    eleza test_read_dict_fieldnames_chain(self):
         agiza itertools
         with TemporaryFile("w+") as fileobj:
             fileobj.write("f1,f2,f3\r\n1,2,abc\r\n")
@@ -707,7 +707,7 @@ class TestDictFields(unittest.TestCase):
                 self.assertEqual(reader.fieldnames, ["f1", "f2", "f3"])
                 self.assertEqual(row, {"f1": '1', "f2": '2', "f3": 'abc'})
 
-    def test_read_long(self):
+    eleza test_read_long(self):
         with TemporaryFile("w+") as fileobj:
             fileobj.write("1,2,abc,4,5,6\r\n")
             fileobj.seek(0)
@@ -716,7 +716,7 @@ class TestDictFields(unittest.TestCase):
             self.assertEqual(next(reader), {"f1": '1', "f2": '2',
                                              None: ["abc", "4", "5", "6"]})
 
-    def test_read_long_with_rest(self):
+    eleza test_read_long_with_rest(self):
         with TemporaryFile("w+") as fileobj:
             fileobj.write("1,2,abc,4,5,6\r\n")
             fileobj.seek(0)
@@ -725,7 +725,7 @@ class TestDictFields(unittest.TestCase):
             self.assertEqual(next(reader), {"f1": '1', "f2": '2',
                                              "_rest": ["abc", "4", "5", "6"]})
 
-    def test_read_long_with_rest_no_fieldnames(self):
+    eleza test_read_long_with_rest_no_fieldnames(self):
         with TemporaryFile("w+") as fileobj:
             fileobj.write("f1,f2\r\n1,2,abc,4,5,6\r\n")
             fileobj.seek(0)
@@ -734,7 +734,7 @@ class TestDictFields(unittest.TestCase):
             self.assertEqual(next(reader), {"f1": '1', "f2": '2',
                                              "_rest": ["abc", "4", "5", "6"]})
 
-    def test_read_short(self):
+    eleza test_read_short(self):
         with TemporaryFile("w+") as fileobj:
             fileobj.write("1,2,abc,4,5,6\r\n1,2,abc\r\n")
             fileobj.seek(0)
@@ -747,7 +747,7 @@ class TestDictFields(unittest.TestCase):
                                              "4": 'DEFAULT', "5": 'DEFAULT',
                                              "6": 'DEFAULT'})
 
-    def test_read_multi(self):
+    eleza test_read_multi(self):
         sample = [
             '2147483648,43.0e12,17,abc,def\r\n',
             '147483648,43.0e2,17,abc,def\r\n',
@@ -762,7 +762,7 @@ class TestDictFields(unittest.TestCase):
                                          "s1": 'abc',
                                          "s2": 'def'})
 
-    def test_read_with_blanks(self):
+    eleza test_read_with_blanks(self):
         reader = csv.DictReader(["1,2,abc,4,5,6\r\n","\r\n",
                                  "1,2,abc,4,5,6\r\n"],
                                 fieldnames="1 2 3 4 5 6".split())
@@ -771,15 +771,15 @@ class TestDictFields(unittest.TestCase):
         self.assertEqual(next(reader), {"1": '1', "2": '2', "3": 'abc',
                                          "4": '4', "5": '5', "6": '6'})
 
-    def test_read_semi_sep(self):
+    eleza test_read_semi_sep(self):
         reader = csv.DictReader(["1;2;abc;4;5;6\r\n"],
                                 fieldnames="1 2 3 4 5 6".split(),
                                 delimiter=';')
         self.assertEqual(next(reader), {"1": '1', "2": '2', "3": 'abc',
                                          "4": '4', "5": '5', "6": '6'})
 
-class TestArrayWrites(unittest.TestCase):
-    def test_int_write(self):
+kundi TestArrayWrites(unittest.TestCase):
+    eleza test_int_write(self):
         agiza array
         contents = [(20-i) for i in range(20)]
         a = array.array('i', contents)
@@ -791,7 +791,7 @@ class TestArrayWrites(unittest.TestCase):
             fileobj.seek(0)
             self.assertEqual(fileobj.read(), expected)
 
-    def test_double_write(self):
+    eleza test_double_write(self):
         agiza array
         contents = [(20-i)*0.1 for i in range(20)]
         a = array.array('d', contents)
@@ -802,7 +802,7 @@ class TestArrayWrites(unittest.TestCase):
             fileobj.seek(0)
             self.assertEqual(fileobj.read(), expected)
 
-    def test_float_write(self):
+    eleza test_float_write(self):
         agiza array
         contents = [(20-i)*0.1 for i in range(20)]
         a = array.array('f', contents)
@@ -813,7 +813,7 @@ class TestArrayWrites(unittest.TestCase):
             fileobj.seek(0)
             self.assertEqual(fileobj.read(), expected)
 
-    def test_char_write(self):
+    eleza test_char_write(self):
         agiza array, string
         a = array.array('u', string.ascii_letters)
 
@@ -824,9 +824,9 @@ class TestArrayWrites(unittest.TestCase):
             fileobj.seek(0)
             self.assertEqual(fileobj.read(), expected)
 
-class TestDialectValidity(unittest.TestCase):
-    def test_quoting(self):
-        class mydialect(csv.Dialect):
+kundi TestDialectValidity(unittest.TestCase):
+    eleza test_quoting(self):
+        kundi mydialect(csv.Dialect):
             delimiter = ";"
             escapechar = '\\'
             doublequote = False
@@ -859,8 +859,8 @@ class TestDialectValidity(unittest.TestCase):
         self.assertEqual(str(cm.exception),
                          '"quotechar" must be string, not int')
 
-    def test_delimiter(self):
-        class mydialect(csv.Dialect):
+    eleza test_delimiter(self):
+        kundi mydialect(csv.Dialect):
             delimiter = ";"
             escapechar = '\\'
             doublequote = False
@@ -894,8 +894,8 @@ class TestDialectValidity(unittest.TestCase):
         self.assertEqual(str(cm.exception),
                          '"delimiter" must be string, not int')
 
-    def test_lineterminator(self):
-        class mydialect(csv.Dialect):
+    eleza test_lineterminator(self):
+        kundi mydialect(csv.Dialect):
             delimiter = ";"
             escapechar = '\\'
             doublequote = False
@@ -915,9 +915,9 @@ class TestDialectValidity(unittest.TestCase):
         self.assertEqual(str(cm.exception),
                          '"lineterminator" must be a string')
 
-    def test_invalid_chars(self):
-        def create_invalid(field_name, value):
-            class mydialect(csv.Dialect):
+    eleza test_invalid_chars(self):
+        eleza create_invalid(field_name, value):
+            kundi mydialect(csv.Dialect):
                 pass
             setattr(mydialect, field_name, value)
             d = mydialect()
@@ -930,7 +930,7 @@ class TestDialectValidity(unittest.TestCase):
                 self.assertRaises(csv.Error, create_invalid, field_name, 5)
 
 
-class TestSniffer(unittest.TestCase):
+kundi TestSniffer(unittest.TestCase):
     sample1 = """\
 Harry's, Arlington Heights, IL, 2/1/03, Kimi Hayes
 Shark City, Glendale Heights, IL, 12/28/02, Prezence
@@ -980,17 +980,17 @@ Stonecutters Seafood and Chop House+ Lemont+ IL+ 12/19/02+ Week Back
 'Stonecutters ''Seafood'' and Chop House'+ 'Lemont'+ 'IL'+ '12/19/02'+ 'Week Back'
 """
 
-    def test_has_header(self):
+    eleza test_has_header(self):
         sniffer = csv.Sniffer()
         self.assertIs(sniffer.has_header(self.sample1), False)
         self.assertIs(sniffer.has_header(self.header1 + self.sample1), True)
 
-    def test_has_header_regex_special_delimiter(self):
+    eleza test_has_header_regex_special_delimiter(self):
         sniffer = csv.Sniffer()
         self.assertIs(sniffer.has_header(self.sample8), False)
         self.assertIs(sniffer.has_header(self.header2 + self.sample8), True)
 
-    def test_guess_quote_and_delimiter(self):
+    eleza test_guess_quote_and_delimiter(self):
         sniffer = csv.Sniffer()
         for header in (";'123;4';", "'123;4';", ";'123;4'", "'123;4'"):
             with self.subTest(header):
@@ -1000,7 +1000,7 @@ Stonecutters Seafood and Chop House+ Lemont+ IL+ 12/19/02+ Week Back
                 self.assertIs(dialect.doublequote, False)
                 self.assertIs(dialect.skipinitialspace, False)
 
-    def test_sniff(self):
+    eleza test_sniff(self):
         sniffer = csv.Sniffer()
         dialect = sniffer.sniff(self.sample1)
         self.assertEqual(dialect.delimiter, ",")
@@ -1012,7 +1012,7 @@ Stonecutters Seafood and Chop House+ Lemont+ IL+ 12/19/02+ Week Back
         self.assertEqual(dialect.quotechar, "'")
         self.assertIs(dialect.skipinitialspace, False)
 
-    def test_delimiters(self):
+    eleza test_delimiters(self):
         sniffer = csv.Sniffer()
         dialect = sniffer.sniff(self.sample3)
         # given that all three lines in sample3 are equal,
@@ -1038,7 +1038,7 @@ Stonecutters Seafood and Chop House+ Lemont+ IL+ 12/19/02+ Week Back
         self.assertEqual(dialect.delimiter, '+')
         self.assertEqual(dialect.quotechar, "'")
 
-    def test_doublequote(self):
+    eleza test_doublequote(self):
         sniffer = csv.Sniffer()
         dialect = sniffer.sniff(self.header1)
         self.assertFalse(dialect.doublequote)
@@ -1051,15 +1051,15 @@ Stonecutters Seafood and Chop House+ Lemont+ IL+ 12/19/02+ Week Back
         dialect = sniffer.sniff(self.sample9)
         self.assertTrue(dialect.doublequote)
 
-class NUL:
-    def write(s, *args):
+kundi NUL:
+    eleza write(s, *args):
         pass
     writelines = write
 
 @unittest.skipUnless(hasattr(sys, "gettotalrefcount"),
                      'requires sys.gettotalrefcount()')
-class TestLeaks(unittest.TestCase):
-    def test_create_read(self):
+kundi TestLeaks(unittest.TestCase):
+    eleza test_create_read(self):
         delta = 0
         lastrc = sys.gettotalrefcount()
         for i in range(20):
@@ -1071,10 +1071,10 @@ class TestLeaks(unittest.TestCase):
             csv.reader(["a,b,c\r\n"])
             delta = rc-lastrc
             lastrc = rc
-        # if csv.reader() leaks, last delta should be 3 or more
+        # ikiwa csv.reader() leaks, last delta should be 3 or more
         self.assertLess(delta, 3)
 
-    def test_create_write(self):
+    eleza test_create_write(self):
         delta = 0
         lastrc = sys.gettotalrefcount()
         s = NUL()
@@ -1087,10 +1087,10 @@ class TestLeaks(unittest.TestCase):
             csv.writer(s)
             delta = rc-lastrc
             lastrc = rc
-        # if csv.writer() leaks, last delta should be 3 or more
+        # ikiwa csv.writer() leaks, last delta should be 3 or more
         self.assertLess(delta, 3)
 
-    def test_read(self):
+    eleza test_read(self):
         delta = 0
         rows = ["a,b,c\r\n"]*5
         lastrc = sys.gettotalrefcount()
@@ -1103,10 +1103,10 @@ class TestLeaks(unittest.TestCase):
                 pass
             delta = rc-lastrc
             lastrc = rc
-        # if reader leaks during read, delta should be 5 or more
+        # ikiwa reader leaks during read, delta should be 5 or more
         self.assertLess(delta, 5)
 
-    def test_write(self):
+    eleza test_write(self):
         delta = 0
         rows = [[1,2,3]]*5
         s = NUL()
@@ -1120,17 +1120,17 @@ class TestLeaks(unittest.TestCase):
                 writer.writerow(row)
             delta = rc-lastrc
             lastrc = rc
-        # if writer leaks during write, last delta should be 5 or more
+        # ikiwa writer leaks during write, last delta should be 5 or more
         self.assertLess(delta, 5)
 
-class TestUnicode(unittest.TestCase):
+kundi TestUnicode(unittest.TestCase):
 
     names = ["Martin von Löwis",
              "Marc André Lemburg",
              "Guido van Rossum",
              "François Pinard"]
 
-    def test_unicode_read(self):
+    eleza test_unicode_read(self):
         with TemporaryFile("w+", newline='', encoding="utf-8") as fileobj:
             fileobj.write(",".join(self.names) + "\r\n")
             fileobj.seek(0)
@@ -1138,7 +1138,7 @@ class TestUnicode(unittest.TestCase):
             self.assertEqual(list(reader), [self.names])
 
 
-    def test_unicode_write(self):
+    eleza test_unicode_write(self):
         with TemporaryFile("w+", newline='', encoding="utf-8") as fileobj:
             writer = csv.writer(fileobj)
             writer.writerow(self.names)
@@ -1146,9 +1146,9 @@ class TestUnicode(unittest.TestCase):
             fileobj.seek(0)
             self.assertEqual(fileobj.read(), expected)
 
-class KeyOrderingTest(unittest.TestCase):
+kundi KeyOrderingTest(unittest.TestCase):
 
-    def test_ordering_for_the_dict_reader_and_writer(self):
+    eleza test_ordering_for_the_dict_reader_and_writer(self):
         resultset = set()
         for keys in permutations("abcde"):
             with TemporaryFile('w+', newline='', encoding="utf-8") as fileobject:
@@ -1162,7 +1162,7 @@ class KeyOrderingTest(unittest.TestCase):
         # Final sanity check: were all permutations unique?
         self.assertEqual(len(resultset), 120, "Key ordering: some key permutations not collected (expected 120)")
 
-    def test_ordered_dict_reader(self):
+    eleza test_ordered_dict_reader(self):
         data = dedent('''\
             FirstName,LastName
             Eric,Idle
@@ -1198,11 +1198,11 @@ class KeyOrderingTest(unittest.TestCase):
             ])
 
 
-class MiscTestCase(unittest.TestCase):
-    def test__all__(self):
+kundi MiscTestCase(unittest.TestCase):
+    eleza test__all__(self):
         extra = {'__doc__', '__version__'}
         support.check__all__(self, csv, ('csv', '_csv'), extra=extra)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

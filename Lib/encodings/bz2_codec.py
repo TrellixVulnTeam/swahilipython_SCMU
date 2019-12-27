@@ -7,7 +7,7 @@ Adapted by Raymond Hettinger from zlib_codec.py which was written
 by Marc-Andre Lemburg (mal@lemburg.com).
 """
 
-import codecs
+agiza codecs
 import bz2 # this codec needs the optional bz2 module !
 
 ### Codec APIs

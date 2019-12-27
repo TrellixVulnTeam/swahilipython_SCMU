@@ -44,11 +44,11 @@ Protocol) and :rfc:`1869` (SMTP Service Extensions).
    :meth:`sendmail`, and :meth:`SMTP.quit` methods.
    An example is included below.
 
-   The :class:`SMTP` class supports the :keyword:`with` statement.  When used
+   The :class:`SMTP` kundi supports the :keyword:`with` statement.  When used
    like this, the SMTP ``QUIT`` command is issued automatically when the
    :keyword:`!with` statement exits.  E.g.::
 
-    >>> from smtplib import SMTP
+    >>> kutoka smtplib agiza SMTP
     >>> with SMTP("domain.org") as smtp:
     ...     smtp.noop()
     ...
@@ -77,7 +77,7 @@ Protocol) and :rfc:`1869` (SMTP Service Extensions).
 
    An :class:`SMTP_SSL` instance behaves exactly the same as instances of
    :class:`SMTP`. :class:`SMTP_SSL` should be used for situations where SSL is
-   required from the beginning of the connection and using :meth:`starttls` is
+   required kutoka the beginning of the connection and using :meth:`starttls` is
    not appropriate. If *host* is not specified, the local host is used. If
    *port* is zero, the standard SMTP-over-SSL port (465) is used.  The optional
    arguments *local_hostname*, *timeout* and *source_address* have the same
@@ -97,7 +97,7 @@ Protocol) and :rfc:`1869` (SMTP Service Extensions).
       source_address argument was added.
 
    .. versionchanged:: 3.4
-      The class now supports hostname check with
+      The kundi now supports hostname check with
       :attr:`ssl.SSLContext.check_hostname` and *Server Name Indication* (see
       :data:`ssl.HAS_SNI`).
 
@@ -128,11 +128,11 @@ A nice selection of exceptions is defined as well:
 
 .. exception:: SMTPException
 
-   Subclass of :exc:`OSError` that is the base exception class for all
+   Subkundi of :exc:`OSError` that is the base exception kundi for all
    the other exceptions provided by this module.
 
    .. versionchanged:: 3.4
-      SMTPException became subclass of :exc:`OSError`
+      SMTPException became subkundi of :exc:`OSError`
 
 
 .. exception:: SMTPServerDisconnected
@@ -144,7 +144,7 @@ A nice selection of exceptions is defined as well:
 
 .. exception:: SMTPResponseException
 
-   Base class for all exceptions that include an SMTP error code. These exceptions
+   Base kundi for all exceptions that include an SMTP error code. These exceptions
    are generated in some instances when the SMTP server returns an error code.  The
    error code is stored in the :attr:`smtp_code` attribute of the error, and the
    :attr:`smtp_error` attribute is set to the error message.
@@ -215,7 +215,7 @@ An :class:`SMTP` instance has the following methods:
 .. method:: SMTP.set_debuglevel(level)
 
    Set the debug output level.  A value of 1 or ``True`` for *level* results in
-   debug messages for connection and for all messages sent to and received from
+   debug messages for connection and for all messages sent to and received kutoka
    the server.  A value of 2 for *level* results in these messages being
    timestamped.
 
@@ -366,7 +366,7 @@ An :class:`SMTP` instance has the following methods:
    should return ASCII ``str`` *data* that will be base64 encoded and sent to the
    server.
 
-   The ``SMTP`` class provides ``authobjects`` for the ``CRAM-MD5``, ``PLAIN``,
+   The ``SMTP`` kundi provides ``authobjects`` for the ``CRAM-MD5``, ``PLAIN``,
    and ``LOGIN`` mechanisms; they are named ``SMTP.auth_cram_md5``,
    ``SMTP.auth_plain``, and ``SMTP.auth_login`` respectively.  They all require
    that the ``user`` and ``password`` properties of the ``SMTP`` instance are
@@ -423,13 +423,13 @@ An :class:`SMTP` instance has the following methods:
 
    .. versionchanged:: 3.5
       The error raised for lack of STARTTLS support is now the
-      :exc:`SMTPNotSupportedError` subclass instead of the base
+      :exc:`SMTPNotSupportedError` subkundi instead of the base
       :exc:`SMTPException`.
 
 
-.. method:: SMTP.sendmail(from_addr, to_addrs, msg, mail_options=(), rcpt_options=())
+.. method:: SMTP.sendmail(kutoka_addr, to_addrs, msg, mail_options=(), rcpt_options=())
 
-   Send mail.  The required arguments are an :rfc:`822` from-address string, a list
+   Send mail.  The required arguments are an :rfc:`822` kutoka-address string, a list
    of :rfc:`822` to-address strings (a bare string will be treated as a list with 1
    address), and a message string.  The caller may pass a list of ESMTP options
    (such as ``8bitmime``) to be used in ``MAIL FROM`` commands as *mail_options*.
@@ -440,7 +440,7 @@ An :class:`SMTP` instance has the following methods:
 
    .. note::
 
-      The *from_addr* and *to_addrs* parameters are used to construct the message
+      The *kutoka_addr* and *to_addrs* parameters are used to construct the message
       envelope used by the transport agents.  ``sendmail`` does not modify the
       message headers in any way.
 
@@ -463,7 +463,7 @@ An :class:`SMTP` instance has the following methods:
    and the accompanying error message sent by the server.
 
    If ``SMTPUTF8`` is included in *mail_options*, and the server supports it,
-   *from_addr* and *to_addrs* may contain non-ASCII characters.
+   *kutoka_addr* and *to_addrs* may contain non-ASCII characters.
 
    This method may raise the following exceptions:
 
@@ -477,7 +477,7 @@ An :class:`SMTP` instance has the following methods:
       The server didn't reply properly to the ``HELO`` greeting.
 
    :exc:`SMTPSenderRefused`
-      The server didn't accept the *from_addr*.
+      The server didn't accept the *kutoka_addr*.
 
    :exc:`SMTPDataError`
       The server replied with an unexpected error code (other than a refusal of a
@@ -498,7 +498,7 @@ An :class:`SMTP` instance has the following methods:
       raised if ``SMTPUTF8`` is specified but the server does not support it.
 
 
-.. method:: SMTP.send_message(msg, from_addr=None, to_addrs=None, \
+.. method:: SMTP.send_message(msg, kutoka_addr=None, to_addrs=None, \
                               mail_options=(), rcpt_options=())
 
    This is a convenience method for calling :meth:`sendmail` with the message
@@ -506,12 +506,12 @@ An :class:`SMTP` instance has the following methods:
    the same meaning as for :meth:`sendmail`, except that *msg* is a ``Message``
    object.
 
-   If *from_addr* is ``None`` or *to_addrs* is ``None``, ``send_message`` fills
-   those arguments with addresses extracted from the headers of *msg* as
-   specified in :rfc:`5322`\: *from_addr* is set to the :mailheader:`Sender`
+   If *kutoka_addr* is ``None`` or *to_addrs* is ``None``, ``send_message`` fills
+   those arguments with addresses extracted kutoka the headers of *msg* as
+   specified in :rfc:`5322`\: *kutoka_addr* is set to the :mailheader:`Sender`
    field if it is present, and otherwise to the :mailheader:`From` field.
    *to_addrs* combines the values (if any) of the :mailheader:`To`,
-   :mailheader:`Cc`, and :mailheader:`Bcc` fields from *msg*.  If exactly one
+   :mailheader:`Cc`, and :mailheader:`Bcc` fields kutoka *msg*.  If exactly one
    set of :mailheader:`Resent-*` headers appear in the message, the regular
    headers are ignored and the :mailheader:`Resent-*` headers are used instead.
    If the message contains more than one set of :mailheader:`Resent-*` headers,
@@ -521,9 +521,9 @@ An :class:`SMTP` instance has the following methods:
    ``send_message`` serializes *msg* using
    :class:`~email.generator.BytesGenerator` with ``\r\n`` as the *linesep*, and
    calls :meth:`sendmail` to transmit the resulting message.  Regardless of the
-   values of *from_addr* and *to_addrs*, ``send_message`` does not transmit any
+   values of *kutoka_addr* and *to_addrs*, ``send_message`` does not transmit any
    :mailheader:`Bcc` or :mailheader:`Resent-Bcc` headers that may appear
-   in *msg*.  If any of the addresses in *from_addr* and *to_addrs* contain
+   in *msg*.  If any of the addresses in *kutoka_addr* and *to_addrs* contain
    non-ASCII characters and the server does not advertise ``SMTPUTF8`` support,
    an :exc:`SMTPNotSupported` error is raised.  Otherwise the ``Message`` is
    serialized with a clone of its :mod:`~email.policy` with the
@@ -559,18 +559,18 @@ to be included with the message must be included in the message as entered; this
 example doesn't do any processing of the :rfc:`822` headers.  In particular, the
 'To' and 'From' addresses must be included in the message headers explicitly. ::
 
-   import smtplib
+   agiza smtplib
 
    def prompt(prompt):
        return input(prompt).strip()
 
-   fromaddr = prompt("From: ")
+   kutokaaddr = prompt("From: ")
    toaddrs  = prompt("To: ").split()
    print("Enter message, end with ^D (Unix) or ^Z (Windows):")
 
    # Add the From: and To: headers at the start!
    msg = ("From: %s\r\nTo: %s\r\n\r\n"
-          % (fromaddr, ", ".join(toaddrs)))
+          % (kutokaaddr, ", ".join(toaddrs)))
    while True:
        try:
            line = input()
@@ -584,7 +584,7 @@ example doesn't do any processing of the :rfc:`822` headers.  In particular, the
 
    server = smtplib.SMTP('localhost')
    server.set_debuglevel(1)
-   server.sendmail(fromaddr, toaddrs, msg)
+   server.sendmail(kutokaaddr, toaddrs, msg)
    server.quit()
 
 .. note::

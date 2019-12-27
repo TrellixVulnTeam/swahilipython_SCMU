@@ -40,27 +40,27 @@ CONNECT_PIPE_INIT_DELAY = 0.001
 CONNECT_PIPE_MAX_DELAY = 0.100
 
 
-class _OverlappedFuture(futures.Future):
-    """Subclass of Future which represents an overlapped operation.
+kundi _OverlappedFuture(futures.Future):
+    """Subkundi of Future which represents an overlapped operation.
 
     Cancelling it will immediately cancel the overlapped operation.
     """
 
-    def __init__(self, ov, *, loop=None):
+    eleza __init__(self, ov, *, loop=None):
         super().__init__(loop=loop)
-        if self._source_traceback:
+        ikiwa self._source_traceback:
             del self._source_traceback[-1]
         self._ov = ov
 
-    def _repr_info(self):
+    eleza _repr_info(self):
         info = super()._repr_info()
-        if self._ov is not None:
-            state = 'pending' if self._ov.pending else 'completed'
+        ikiwa self._ov is not None:
+            state = 'pending' ikiwa self._ov.pending else 'completed'
             info.insert(1, f'overlapped=<{state}, {self._ov.address:#x}>')
-        return info
+        rudisha info
 
-    def _cancel_overlapped(self):
-        if self._ov is None:
+    eleza _cancel_overlapped(self):
+        ikiwa self._ov is None:
             return
         try:
             self._ov.cancel()
@@ -70,30 +70,30 @@ class _OverlappedFuture(futures.Future):
                 'exception': exc,
                 'future': self,
             }
-            if self._source_traceback:
+            ikiwa self._source_traceback:
                 context['source_traceback'] = self._source_traceback
             self._loop.call_exception_handler(context)
         self._ov = None
 
-    def cancel(self):
+    eleza cancel(self):
         self._cancel_overlapped()
-        return super().cancel()
+        rudisha super().cancel()
 
-    def set_exception(self, exception):
+    eleza set_exception(self, exception):
         super().set_exception(exception)
         self._cancel_overlapped()
 
-    def set_result(self, result):
+    eleza set_result(self, result):
         super().set_result(result)
         self._ov = None
 
 
-class _BaseWaitHandleFuture(futures.Future):
-    """Subclass of Future which represents a wait handle."""
+kundi _BaseWaitHandleFuture(futures.Future):
+    """Subkundi of Future which represents a wait handle."""
 
-    def __init__(self, ov, handle, wait_handle, *, loop=None):
+    eleza __init__(self, ov, handle, wait_handle, *, loop=None):
         super().__init__(loop=loop)
-        if self._source_traceback:
+        ikiwa self._source_traceback:
             del self._source_traceback[-1]
         # Keep a reference to the Overlapped object to keep it alive until the
         # wait is unregistered
@@ -101,32 +101,32 @@ class _BaseWaitHandleFuture(futures.Future):
         self._handle = handle
         self._wait_handle = wait_handle
 
-        # Should we call UnregisterWaitEx() if the wait completes
+        # Should we call UnregisterWaitEx() ikiwa the wait completes
         # or is cancelled?
         self._registered = True
 
-    def _poll(self):
+    eleza _poll(self):
         # non-blocking wait: use a timeout of 0 millisecond
-        return (_winapi.WaitForSingleObject(self._handle, 0) ==
+        rudisha (_winapi.WaitForSingleObject(self._handle, 0) ==
                 _winapi.WAIT_OBJECT_0)
 
-    def _repr_info(self):
+    eleza _repr_info(self):
         info = super()._repr_info()
         info.append(f'handle={self._handle:#x}')
-        if self._handle is not None:
-            state = 'signaled' if self._poll() else 'waiting'
+        ikiwa self._handle is not None:
+            state = 'signaled' ikiwa self._poll() else 'waiting'
             info.append(state)
-        if self._wait_handle is not None:
+        ikiwa self._wait_handle is not None:
             info.append(f'wait_handle={self._wait_handle:#x}')
-        return info
+        rudisha info
 
-    def _unregister_wait_cb(self, fut):
+    eleza _unregister_wait_cb(self, fut):
         # The wait was unregistered: it's not safe to destroy the Overlapped
         # object
         self._ov = None
 
-    def _unregister_wait(self):
-        if not self._registered:
+    eleza _unregister_wait(self):
+        ikiwa not self._registered:
             return
         self._registered = False
 
@@ -135,13 +135,13 @@ class _BaseWaitHandleFuture(futures.Future):
         try:
             _overlapped.UnregisterWait(wait_handle)
         except OSError as exc:
-            if exc.winerror != _overlapped.ERROR_IO_PENDING:
+            ikiwa exc.winerror != _overlapped.ERROR_IO_PENDING:
                 context = {
                     'message': 'Failed to unregister the wait handle',
                     'exception': exc,
                     'future': self,
                 }
-                if self._source_traceback:
+                ikiwa self._source_traceback:
                     context['source_traceback'] = self._source_traceback
                 self._loop.call_exception_handler(context)
                 return
@@ -149,53 +149,53 @@ class _BaseWaitHandleFuture(futures.Future):
 
         self._unregister_wait_cb(None)
 
-    def cancel(self):
+    eleza cancel(self):
         self._unregister_wait()
-        return super().cancel()
+        rudisha super().cancel()
 
-    def set_exception(self, exception):
+    eleza set_exception(self, exception):
         self._unregister_wait()
         super().set_exception(exception)
 
-    def set_result(self, result):
+    eleza set_result(self, result):
         self._unregister_wait()
         super().set_result(result)
 
 
-class _WaitCancelFuture(_BaseWaitHandleFuture):
-    """Subclass of Future which represents a wait for the cancellation of a
+kundi _WaitCancelFuture(_BaseWaitHandleFuture):
+    """Subkundi of Future which represents a wait for the cancellation of a
     _WaitHandleFuture using an event.
     """
 
-    def __init__(self, ov, event, wait_handle, *, loop=None):
+    eleza __init__(self, ov, event, wait_handle, *, loop=None):
         super().__init__(ov, event, wait_handle, loop=loop)
 
         self._done_callback = None
 
-    def cancel(self):
+    eleza cancel(self):
         raise RuntimeError("_WaitCancelFuture must not be cancelled")
 
-    def set_result(self, result):
+    eleza set_result(self, result):
         super().set_result(result)
-        if self._done_callback is not None:
+        ikiwa self._done_callback is not None:
             self._done_callback(self)
 
-    def set_exception(self, exception):
+    eleza set_exception(self, exception):
         super().set_exception(exception)
-        if self._done_callback is not None:
+        ikiwa self._done_callback is not None:
             self._done_callback(self)
 
 
-class _WaitHandleFuture(_BaseWaitHandleFuture):
-    def __init__(self, ov, handle, wait_handle, proactor, *, loop=None):
+kundi _WaitHandleFuture(_BaseWaitHandleFuture):
+    eleza __init__(self, ov, handle, wait_handle, proactor, *, loop=None):
         super().__init__(ov, handle, wait_handle, loop=loop)
         self._proactor = proactor
         self._unregister_proactor = True
         self._event = _overlapped.CreateEvent(None, True, False, None)
         self._event_fut = None
 
-    def _unregister_wait_cb(self, fut):
-        if self._event is not None:
+    eleza _unregister_wait_cb(self, fut):
+        ikiwa self._event is not None:
             _winapi.CloseHandle(self._event)
             self._event = None
             self._event_fut = None
@@ -212,8 +212,8 @@ class _WaitHandleFuture(_BaseWaitHandleFuture):
 
         super()._unregister_wait_cb(fut)
 
-    def _unregister_wait(self):
-        if not self._registered:
+    eleza _unregister_wait(self):
+        ikiwa not self._registered:
             return
         self._registered = False
 
@@ -222,13 +222,13 @@ class _WaitHandleFuture(_BaseWaitHandleFuture):
         try:
             _overlapped.UnregisterWaitEx(wait_handle, self._event)
         except OSError as exc:
-            if exc.winerror != _overlapped.ERROR_IO_PENDING:
+            ikiwa exc.winerror != _overlapped.ERROR_IO_PENDING:
                 context = {
                     'message': 'Failed to unregister the wait handle',
                     'exception': exc,
                     'future': self,
                 }
-                if self._source_traceback:
+                ikiwa self._source_traceback:
                     context['source_traceback'] = self._source_traceback
                 self._loop.call_exception_handler(context)
                 return
@@ -238,12 +238,12 @@ class _WaitHandleFuture(_BaseWaitHandleFuture):
                                                       self._unregister_wait_cb)
 
 
-class PipeServer(object):
+kundi PipeServer(object):
     """Class representing a pipe server.
 
     This is much like a bound, listening socket.
     """
-    def __init__(self, address):
+    eleza __init__(self, address):
         self._address = address
         self._free_instances = weakref.WeakSet()
         # initialize the pipe attribute before calling _server_pipe_handle()
@@ -253,20 +253,20 @@ class PipeServer(object):
         self._accept_pipe_future = None
         self._pipe = self._server_pipe_handle(True)
 
-    def _get_unconnected_pipe(self):
-        # Create new instance and return previous one.  This ensures
+    eleza _get_unconnected_pipe(self):
+        # Create new instance and rudisha previous one.  This ensures
         # that (until the server is closed) there is always at least
-        # one pipe handle for address.  Therefore if a client attempt
+        # one pipe handle for address.  Therefore ikiwa a client attempt
         # to connect it will not fail with FileNotFoundError.
         tmp, self._pipe = self._pipe, self._server_pipe_handle(False)
-        return tmp
+        rudisha tmp
 
-    def _server_pipe_handle(self, first):
+    eleza _server_pipe_handle(self, first):
         # Return a wrapper for a new pipe handle.
-        if self.closed():
-            return None
+        ikiwa self.closed():
+            rudisha None
         flags = _winapi.PIPE_ACCESS_DUPLEX | _winapi.FILE_FLAG_OVERLAPPED
-        if first:
+        ikiwa first:
             flags |= _winapi.FILE_FLAG_FIRST_PIPE_INSTANCE
         h = _winapi.CreateNamedPipe(
             self._address, flags,
@@ -277,17 +277,17 @@ class PipeServer(object):
             _winapi.NMPWAIT_WAIT_FOREVER, _winapi.NULL)
         pipe = windows_utils.PipeHandle(h)
         self._free_instances.add(pipe)
-        return pipe
+        rudisha pipe
 
-    def closed(self):
-        return (self._address is None)
+    eleza closed(self):
+        rudisha (self._address is None)
 
-    def close(self):
-        if self._accept_pipe_future is not None:
+    eleza close(self):
+        ikiwa self._accept_pipe_future is not None:
             self._accept_pipe_future.cancel()
             self._accept_pipe_future = None
         # Close all instances which have not been connected to by a client.
-        if self._address is not None:
+        ikiwa self._address is not None:
             for pipe in self._free_instances:
                 pipe.close()
             self._pipe = None
@@ -297,52 +297,52 @@ class PipeServer(object):
     __del__ = close
 
 
-class _WindowsSelectorEventLoop(selector_events.BaseSelectorEventLoop):
+kundi _WindowsSelectorEventLoop(selector_events.BaseSelectorEventLoop):
     """Windows version of selector event loop."""
 
 
-class ProactorEventLoop(proactor_events.BaseProactorEventLoop):
+kundi ProactorEventLoop(proactor_events.BaseProactorEventLoop):
     """Windows version of proactor event loop using IOCP."""
 
-    def __init__(self, proactor=None):
-        if proactor is None:
+    eleza __init__(self, proactor=None):
+        ikiwa proactor is None:
             proactor = IocpProactor()
         super().__init__(proactor)
 
-    def run_forever(self):
+    eleza run_forever(self):
         try:
             assert self._self_reading_future is None
             self.call_soon(self._loop_self_reading)
             super().run_forever()
         finally:
-            if self._self_reading_future is not None:
+            ikiwa self._self_reading_future is not None:
                 ov = self._self_reading_future._ov
                 self._self_reading_future.cancel()
                 # self_reading_future was just cancelled so it will never be signalled
                 # Unregister it otherwise IocpProactor.close will wait for it forever
-                if ov is not None:
+                ikiwa ov is not None:
                     self._proactor._unregister(ov)
                 self._self_reading_future = None
 
-    async def create_pipe_connection(self, protocol_factory, address):
+    async eleza create_pipe_connection(self, protocol_factory, address):
         f = self._proactor.connect_pipe(address)
         pipe = await f
         protocol = protocol_factory()
         trans = self._make_duplex_pipe_transport(pipe, protocol,
                                                  extra={'addr': address})
-        return trans, protocol
+        rudisha trans, protocol
 
-    async def start_serving_pipe(self, protocol_factory, address):
+    async eleza start_serving_pipe(self, protocol_factory, address):
         server = PipeServer(address)
 
-        def loop_accept_pipe(f=None):
+        eleza loop_accept_pipe(f=None):
             pipe = None
             try:
-                if f:
+                ikiwa f:
                     pipe = f.result()
                     server._free_instances.discard(pipe)
 
-                    if server.closed():
+                    ikiwa server.closed():
                         # A client connected before the server was closed:
                         # drop the client (close the pipe) and exit
                         pipe.close()
@@ -353,32 +353,32 @@ class ProactorEventLoop(proactor_events.BaseProactorEventLoop):
                         pipe, protocol, extra={'addr': address})
 
                 pipe = server._get_unconnected_pipe()
-                if pipe is None:
+                ikiwa pipe is None:
                     return
 
                 f = self._proactor.accept_pipe(pipe)
             except OSError as exc:
-                if pipe and pipe.fileno() != -1:
+                ikiwa pipe and pipe.fileno() != -1:
                     self.call_exception_handler({
                         'message': 'Pipe accept failed',
                         'exception': exc,
                         'pipe': pipe,
                     })
                     pipe.close()
-                elif self._debug:
+                elikiwa self._debug:
                     logger.warning("Accept pipe failed on pipe %r",
                                    pipe, exc_info=True)
             except exceptions.CancelledError:
-                if pipe:
+                ikiwa pipe:
                     pipe.close()
             else:
                 server._accept_pipe_future = f
                 f.add_done_callback(loop_accept_pipe)
 
         self.call_soon(loop_accept_pipe)
-        return [server]
+        rudisha [server]
 
-    async def _make_subprocess_transport(self, protocol, args, shell,
+    async eleza _make_subprocess_transport(self, protocol, args, shell,
                                          stdin, stdout, stderr, bufsize,
                                          extra=None, **kwargs):
         waiter = self.create_future()
@@ -395,13 +395,13 @@ class ProactorEventLoop(proactor_events.BaseProactorEventLoop):
             await transp._wait()
             raise
 
-        return transp
+        rudisha transp
 
 
-class IocpProactor:
+kundi IocpProactor:
     """Proactor implementation using IOCP."""
 
-    def __init__(self, concurrency=0xffffffff):
+    eleza __init__(self, concurrency=0xffffffff):
         self._loop = None
         self._results = []
         self._iocp = _overlapped.CreateIoCompletionPort(
@@ -411,153 +411,153 @@ class IocpProactor:
         self._unregistered = []
         self._stopped_serving = weakref.WeakSet()
 
-    def _check_closed(self):
-        if self._iocp is None:
+    eleza _check_closed(self):
+        ikiwa self._iocp is None:
             raise RuntimeError('IocpProactor is closed')
 
-    def __repr__(self):
+    eleza __repr__(self):
         info = ['overlapped#=%s' % len(self._cache),
                 'result#=%s' % len(self._results)]
-        if self._iocp is None:
+        ikiwa self._iocp is None:
             info.append('closed')
-        return '<%s %s>' % (self.__class__.__name__, " ".join(info))
+        rudisha '<%s %s>' % (self.__class__.__name__, " ".join(info))
 
-    def set_loop(self, loop):
+    eleza set_loop(self, loop):
         self._loop = loop
 
-    def select(self, timeout=None):
-        if not self._results:
+    eleza select(self, timeout=None):
+        ikiwa not self._results:
             self._poll(timeout)
         tmp = self._results
         self._results = []
-        return tmp
+        rudisha tmp
 
-    def _result(self, value):
+    eleza _result(self, value):
         fut = self._loop.create_future()
         fut.set_result(value)
-        return fut
+        rudisha fut
 
-    def recv(self, conn, nbytes, flags=0):
+    eleza recv(self, conn, nbytes, flags=0):
         self._register_with_iocp(conn)
         ov = _overlapped.Overlapped(NULL)
         try:
-            if isinstance(conn, socket.socket):
+            ikiwa isinstance(conn, socket.socket):
                 ov.WSARecv(conn.fileno(), nbytes, flags)
             else:
                 ov.ReadFile(conn.fileno(), nbytes)
         except BrokenPipeError:
-            return self._result(b'')
+            rudisha self._result(b'')
 
-        def finish_recv(trans, key, ov):
+        eleza finish_recv(trans, key, ov):
             try:
-                return ov.getresult()
+                rudisha ov.getresult()
             except OSError as exc:
-                if exc.winerror in (_overlapped.ERROR_NETNAME_DELETED,
+                ikiwa exc.winerror in (_overlapped.ERROR_NETNAME_DELETED,
                                     _overlapped.ERROR_OPERATION_ABORTED):
                     raise ConnectionResetError(*exc.args)
                 else:
                     raise
 
-        return self._register(ov, conn, finish_recv)
+        rudisha self._register(ov, conn, finish_recv)
 
-    def recv_into(self, conn, buf, flags=0):
+    eleza recv_into(self, conn, buf, flags=0):
         self._register_with_iocp(conn)
         ov = _overlapped.Overlapped(NULL)
         try:
-            if isinstance(conn, socket.socket):
+            ikiwa isinstance(conn, socket.socket):
                 ov.WSARecvInto(conn.fileno(), buf, flags)
             else:
                 ov.ReadFileInto(conn.fileno(), buf)
         except BrokenPipeError:
-            return self._result(b'')
+            rudisha self._result(b'')
 
-        def finish_recv(trans, key, ov):
+        eleza finish_recv(trans, key, ov):
             try:
-                return ov.getresult()
+                rudisha ov.getresult()
             except OSError as exc:
-                if exc.winerror in (_overlapped.ERROR_NETNAME_DELETED,
+                ikiwa exc.winerror in (_overlapped.ERROR_NETNAME_DELETED,
                                     _overlapped.ERROR_OPERATION_ABORTED):
                     raise ConnectionResetError(*exc.args)
                 else:
                     raise
 
-        return self._register(ov, conn, finish_recv)
+        rudisha self._register(ov, conn, finish_recv)
 
-    def recvfrom(self, conn, nbytes, flags=0):
+    eleza recvkutoka(self, conn, nbytes, flags=0):
         self._register_with_iocp(conn)
         ov = _overlapped.Overlapped(NULL)
         try:
             ov.WSARecvFrom(conn.fileno(), nbytes, flags)
         except BrokenPipeError:
-            return self._result((b'', None))
+            rudisha self._result((b'', None))
 
-        def finish_recv(trans, key, ov):
+        eleza finish_recv(trans, key, ov):
             try:
-                return ov.getresult()
+                rudisha ov.getresult()
             except OSError as exc:
-                if exc.winerror in (_overlapped.ERROR_NETNAME_DELETED,
+                ikiwa exc.winerror in (_overlapped.ERROR_NETNAME_DELETED,
                                     _overlapped.ERROR_OPERATION_ABORTED):
                     raise ConnectionResetError(*exc.args)
                 else:
                     raise
 
-        return self._register(ov, conn, finish_recv)
+        rudisha self._register(ov, conn, finish_recv)
 
-    def sendto(self, conn, buf, flags=0, addr=None):
+    eleza sendto(self, conn, buf, flags=0, addr=None):
         self._register_with_iocp(conn)
         ov = _overlapped.Overlapped(NULL)
 
         ov.WSASendTo(conn.fileno(), buf, flags, addr)
 
-        def finish_send(trans, key, ov):
+        eleza finish_send(trans, key, ov):
             try:
-                return ov.getresult()
+                rudisha ov.getresult()
             except OSError as exc:
-                if exc.winerror in (_overlapped.ERROR_NETNAME_DELETED,
+                ikiwa exc.winerror in (_overlapped.ERROR_NETNAME_DELETED,
                                     _overlapped.ERROR_OPERATION_ABORTED):
                     raise ConnectionResetError(*exc.args)
                 else:
                     raise
 
-        return self._register(ov, conn, finish_send)
+        rudisha self._register(ov, conn, finish_send)
 
-    def send(self, conn, buf, flags=0):
+    eleza send(self, conn, buf, flags=0):
         self._register_with_iocp(conn)
         ov = _overlapped.Overlapped(NULL)
-        if isinstance(conn, socket.socket):
+        ikiwa isinstance(conn, socket.socket):
             ov.WSASend(conn.fileno(), buf, flags)
         else:
             ov.WriteFile(conn.fileno(), buf)
 
-        def finish_send(trans, key, ov):
+        eleza finish_send(trans, key, ov):
             try:
-                return ov.getresult()
+                rudisha ov.getresult()
             except OSError as exc:
-                if exc.winerror in (_overlapped.ERROR_NETNAME_DELETED,
+                ikiwa exc.winerror in (_overlapped.ERROR_NETNAME_DELETED,
                                     _overlapped.ERROR_OPERATION_ABORTED):
                     raise ConnectionResetError(*exc.args)
                 else:
                     raise
 
-        return self._register(ov, conn, finish_send)
+        rudisha self._register(ov, conn, finish_send)
 
-    def accept(self, listener):
+    eleza accept(self, listener):
         self._register_with_iocp(listener)
         conn = self._get_accept_socket(listener.family)
         ov = _overlapped.Overlapped(NULL)
         ov.AcceptEx(listener.fileno(), conn.fileno())
 
-        def finish_accept(trans, key, ov):
+        eleza finish_accept(trans, key, ov):
             ov.getresult()
             # Use SO_UPDATE_ACCEPT_CONTEXT so getsockname() etc work.
             buf = struct.pack('@P', listener.fileno())
             conn.setsockopt(socket.SOL_SOCKET,
                             _overlapped.SO_UPDATE_ACCEPT_CONTEXT, buf)
             conn.settimeout(listener.gettimeout())
-            return conn, conn.getpeername()
+            rudisha conn, conn.getpeername()
 
-        async def accept_coro(future, conn):
-            # Coroutine closing the accept socket if the future is cancelled
+        async eleza accept_coro(future, conn):
+            # Coroutine closing the accept socket ikiwa the future is cancelled
             try:
                 await future
             except exceptions.CancelledError:
@@ -567,40 +567,40 @@ class IocpProactor:
         future = self._register(ov, listener, finish_accept)
         coro = accept_coro(future, conn)
         tasks.ensure_future(coro, loop=self._loop)
-        return future
+        rudisha future
 
-    def connect(self, conn, address):
-        if conn.type == socket.SOCK_DGRAM:
+    eleza connect(self, conn, address):
+        ikiwa conn.type == socket.SOCK_DGRAM:
             # WSAConnect will complete immediately for UDP sockets so we don't
             # need to register any IOCP operation
             _overlapped.WSAConnect(conn.fileno(), address)
             fut = self._loop.create_future()
             fut.set_result(None)
-            return fut
+            rudisha fut
 
         self._register_with_iocp(conn)
         # The socket needs to be locally bound before we call ConnectEx().
         try:
             _overlapped.BindLocal(conn.fileno(), conn.family)
         except OSError as e:
-            if e.winerror != errno.WSAEINVAL:
+            ikiwa e.winerror != errno.WSAEINVAL:
                 raise
             # Probably already locally bound; check using getsockname().
-            if conn.getsockname()[1] == 0:
+            ikiwa conn.getsockname()[1] == 0:
                 raise
         ov = _overlapped.Overlapped(NULL)
         ov.ConnectEx(conn.fileno(), address)
 
-        def finish_connect(trans, key, ov):
+        eleza finish_connect(trans, key, ov):
             ov.getresult()
             # Use SO_UPDATE_CONNECT_CONTEXT so getsockname() etc work.
             conn.setsockopt(socket.SOL_SOCKET,
                             _overlapped.SO_UPDATE_CONNECT_CONTEXT, 0)
-            return conn
+            rudisha conn
 
-        return self._register(ov, conn, finish_connect)
+        rudisha self._register(ov, conn, finish_connect)
 
-    def sendfile(self, sock, file, offset, count):
+    eleza sendfile(self, sock, file, offset, count):
         self._register_with_iocp(sock)
         ov = _overlapped.Overlapped(NULL)
         offset_low = offset & 0xffff_ffff
@@ -610,35 +610,35 @@ class IocpProactor:
                         offset_low, offset_high,
                         count, 0, 0)
 
-        def finish_sendfile(trans, key, ov):
+        eleza finish_sendfile(trans, key, ov):
             try:
-                return ov.getresult()
+                rudisha ov.getresult()
             except OSError as exc:
-                if exc.winerror in (_overlapped.ERROR_NETNAME_DELETED,
+                ikiwa exc.winerror in (_overlapped.ERROR_NETNAME_DELETED,
                                     _overlapped.ERROR_OPERATION_ABORTED):
                     raise ConnectionResetError(*exc.args)
                 else:
                     raise
-        return self._register(ov, sock, finish_sendfile)
+        rudisha self._register(ov, sock, finish_sendfile)
 
-    def accept_pipe(self, pipe):
+    eleza accept_pipe(self, pipe):
         self._register_with_iocp(pipe)
         ov = _overlapped.Overlapped(NULL)
         connected = ov.ConnectNamedPipe(pipe.fileno())
 
-        if connected:
+        ikiwa connected:
             # ConnectNamePipe() failed with ERROR_PIPE_CONNECTED which means
             # that the pipe is connected. There is no need to wait for the
             # completion of the connection.
-            return self._result(pipe)
+            rudisha self._result(pipe)
 
-        def finish_accept_pipe(trans, key, ov):
+        eleza finish_accept_pipe(trans, key, ov):
             ov.getresult()
-            return pipe
+            rudisha pipe
 
-        return self._register(ov, pipe, finish_accept_pipe)
+        rudisha self._register(ov, pipe, finish_accept_pipe)
 
-    async def connect_pipe(self, address):
+    async eleza connect_pipe(self, address):
         delay = CONNECT_PIPE_INIT_DELAY
         while True:
             # Unfortunately there is no way to do an overlapped connect to
@@ -648,34 +648,34 @@ class IocpProactor:
                 handle = _overlapped.ConnectPipe(address)
                 break
             except OSError as exc:
-                if exc.winerror != _overlapped.ERROR_PIPE_BUSY:
+                ikiwa exc.winerror != _overlapped.ERROR_PIPE_BUSY:
                     raise
 
             # ConnectPipe() failed with ERROR_PIPE_BUSY: retry later
             delay = min(delay * 2, CONNECT_PIPE_MAX_DELAY)
             await tasks.sleep(delay)
 
-        return windows_utils.PipeHandle(handle)
+        rudisha windows_utils.PipeHandle(handle)
 
-    def wait_for_handle(self, handle, timeout=None):
+    eleza wait_for_handle(self, handle, timeout=None):
         """Wait for a handle.
 
-        Return a Future object. The result of the future is True if the wait
-        completed, or False if the wait did not complete (on timeout).
+        Return a Future object. The result of the future is True ikiwa the wait
+        completed, or False ikiwa the wait did not complete (on timeout).
         """
-        return self._wait_for_handle(handle, timeout, False)
+        rudisha self._wait_for_handle(handle, timeout, False)
 
-    def _wait_cancel(self, event, done_callback):
+    eleza _wait_cancel(self, event, done_callback):
         fut = self._wait_for_handle(event, None, True)
         # add_done_callback() cannot be used because the wait may only complete
         # in IocpProactor.close(), while the event loop is not running.
         fut._done_callback = done_callback
-        return fut
+        rudisha fut
 
-    def _wait_for_handle(self, handle, timeout, _is_cancel):
+    eleza _wait_for_handle(self, handle, timeout, _is_cancel):
         self._check_closed()
 
-        if timeout is None:
+        ikiwa timeout is None:
             ms = _winapi.INFINITE
         else:
             # RegisterWaitForSingleObject() has a resolution of 1 millisecond,
@@ -686,48 +686,48 @@ class IocpProactor:
         ov = _overlapped.Overlapped(NULL)
         wait_handle = _overlapped.RegisterWaitWithQueue(
             handle, self._iocp, ov.address, ms)
-        if _is_cancel:
+        ikiwa _is_cancel:
             f = _WaitCancelFuture(ov, handle, wait_handle, loop=self._loop)
         else:
             f = _WaitHandleFuture(ov, handle, wait_handle, self,
                                   loop=self._loop)
-        if f._source_traceback:
+        ikiwa f._source_traceback:
             del f._source_traceback[-1]
 
-        def finish_wait_for_handle(trans, key, ov):
+        eleza finish_wait_for_handle(trans, key, ov):
             # Note that this second wait means that we should only use
             # this with handles types where a successful wait has no
             # effect.  So events or processes are all right, but locks
-            # or semaphores are not.  Also note if the handle is
+            # or semaphores are not.  Also note ikiwa the handle is
             # signalled and then quickly reset, then we may return
             # False even though we have not timed out.
-            return f._poll()
+            rudisha f._poll()
 
         self._cache[ov.address] = (f, ov, 0, finish_wait_for_handle)
-        return f
+        rudisha f
 
-    def _register_with_iocp(self, obj):
+    eleza _register_with_iocp(self, obj):
         # To get notifications of finished ops on this objects sent to the
         # completion port, were must register the handle.
-        if obj not in self._registered:
+        ikiwa obj not in self._registered:
             self._registered.add(obj)
             _overlapped.CreateIoCompletionPort(obj.fileno(), self._iocp, 0, 0)
             # XXX We could also use SetFileCompletionNotificationModes()
             # to avoid sending notifications to completion port of ops
             # that succeed immediately.
 
-    def _register(self, ov, obj, callback):
+    eleza _register(self, ov, obj, callback):
         self._check_closed()
 
         # Return a future which will be set with the result of the
         # operation when it completes.  The future's value is actually
         # the value returned by callback().
         f = _OverlappedFuture(ov, loop=self._loop)
-        if f._source_traceback:
+        ikiwa f._source_traceback:
             del f._source_traceback[-1]
-        if not ov.pending:
+        ikiwa not ov.pending:
             # The operation has completed, so no need to postpone the
-            # work.  We cannot take this short cut if we need the
+            # work.  We cannot take this short cut ikiwa we need the
             # NumberOfBytes, CompletionKey values returned by
             # PostQueuedCompletionStatus().
             try:
@@ -736,7 +736,7 @@ class IocpProactor:
                 f.set_exception(e)
             else:
                 f.set_result(value)
-            # Even if GetOverlappedResult() was called, we have to wait for the
+            # Even ikiwa GetOverlappedResult() was called, we have to wait for the
             # notification of the completion in GetQueuedCompletionStatus().
             # Register the overlapped operation to keep a reference to the
             # OVERLAPPED object, otherwise the memory is freed and Windows may
@@ -746,38 +746,38 @@ class IocpProactor:
         # we only store obj to prevent it kutoka being garbage
         # collected too early.
         self._cache[ov.address] = (f, ov, obj, callback)
-        return f
+        rudisha f
 
-    def _unregister(self, ov):
+    eleza _unregister(self, ov):
         """Unregister an overlapped object.
 
         Call this method when its future has been cancelled. The event can
         already be signalled (pending in the proactor event queue). It is also
-        safe if the event is never signalled (because it was cancelled).
+        safe ikiwa the event is never signalled (because it was cancelled).
         """
         self._check_closed()
         self._unregistered.append(ov)
 
-    def _get_accept_socket(self, family):
+    eleza _get_accept_socket(self, family):
         s = socket.socket(family)
         s.settimeout(0)
-        return s
+        rudisha s
 
-    def _poll(self, timeout=None):
-        if timeout is None:
+    eleza _poll(self, timeout=None):
+        ikiwa timeout is None:
             ms = INFINITE
-        elif timeout < 0:
+        elikiwa timeout < 0:
             raise ValueError("negative timeout")
         else:
             # GetQueuedCompletionStatus() has a resolution of 1 millisecond,
             # round away kutoka zero to wait *at least* timeout seconds.
             ms = math.ceil(timeout * 1e3)
-            if ms >= INFINITE:
+            ikiwa ms >= INFINITE:
                 raise ValueError("timeout too big")
 
         while True:
             status = _overlapped.GetQueuedCompletionStatus(self._iocp, ms)
-            if status is None:
+            ikiwa status is None:
                 break
             ms = 0
 
@@ -785,7 +785,7 @@ class IocpProactor:
             try:
                 f, ov, obj, callback = self._cache.pop(address)
             except KeyError:
-                if self._loop.get_debug():
+                ikiwa self._loop.get_debug():
                     self._loop.call_exception_handler({
                         'message': ('GetQueuedCompletionStatus() returned an '
                                     'unexpected event'),
@@ -793,17 +793,17 @@ class IocpProactor:
                                    % (err, transferred, key, address)),
                     })
 
-                # key is either zero, or it is used to return a pipe
+                # key is either zero, or it is used to rudisha a pipe
                 # handle which should be closed to avoid a leak.
-                if key not in (0, _overlapped.INVALID_HANDLE_VALUE):
+                ikiwa key not in (0, _overlapped.INVALID_HANDLE_VALUE):
                     _winapi.CloseHandle(key)
                 continue
 
-            if obj in self._stopped_serving:
+            ikiwa obj in self._stopped_serving:
                 f.cancel()
-            # Don't call the callback if _register() already read the result or
-            # if the overlapped has been cancelled
-            elif not f.done():
+            # Don't call the callback ikiwa _register() already read the result or
+            # ikiwa the overlapped has been cancelled
+            elikiwa not f.done():
                 try:
                     value = callback(transferred, key, ov)
                 except OSError as e:
@@ -818,47 +818,47 @@ class IocpProactor:
             self._cache.pop(ov.address, None)
         self._unregistered.clear()
 
-    def _stop_serving(self, obj):
+    eleza _stop_serving(self, obj):
         # obj is a socket or pipe handle.  It will be closed in
         # BaseProactorEventLoop._stop_serving() which will make any
         # pending operations fail quickly.
         self._stopped_serving.add(obj)
 
-    def close(self):
-        if self._iocp is None:
+    eleza close(self):
+        ikiwa self._iocp is None:
             # already closed
             return
 
         # Cancel remaining registered operations.
         for address, (fut, ov, obj, callback) in list(self._cache.items()):
-            if fut.cancelled():
+            ikiwa fut.cancelled():
                 # Nothing to do with cancelled futures
                 pass
-            elif isinstance(fut, _WaitCancelFuture):
+            elikiwa isinstance(fut, _WaitCancelFuture):
                 # _WaitCancelFuture must not be cancelled
                 pass
             else:
                 try:
                     fut.cancel()
                 except OSError as exc:
-                    if self._loop is not None:
+                    ikiwa self._loop is not None:
                         context = {
                             'message': 'Cancelling a future failed',
                             'exception': exc,
                             'future': fut,
                         }
-                        if fut._source_traceback:
+                        ikiwa fut._source_traceback:
                             context['source_traceback'] = fut._source_traceback
                         self._loop.call_exception_handler(context)
 
         # Wait until all cancelled overlapped complete: don't exit with running
-        # overlapped to prevent a crash. Display progress every second if the
+        # overlapped to prevent a crash. Display progress every second ikiwa the
         # loop is still running.
         msg_update = 1.0
         start_time = time.monotonic()
         next_msg = start_time + msg_update
         while self._cache:
-            if next_msg <= time.monotonic():
+            ikiwa next_msg <= time.monotonic():
                 logger.debug('%r is running after closing for %.1f seconds',
                              self, time.monotonic() - start_time)
                 next_msg = time.monotonic() + msg_update
@@ -871,18 +871,18 @@ class IocpProactor:
         _winapi.CloseHandle(self._iocp)
         self._iocp = None
 
-    def __del__(self):
+    eleza __del__(self):
         self.close()
 
 
-class _WindowsSubprocessTransport(base_subprocess.BaseSubprocessTransport):
+kundi _WindowsSubprocessTransport(base_subprocess.BaseSubprocessTransport):
 
-    def _start(self, args, shell, stdin, stdout, stderr, bufsize, **kwargs):
+    eleza _start(self, args, shell, stdin, stdout, stderr, bufsize, **kwargs):
         self._proc = windows_utils.Popen(
             args, shell=shell, stdin=stdin, stdout=stdout, stderr=stderr,
             bufsize=bufsize, **kwargs)
 
-        def callback(f):
+        eleza callback(f):
             returncode = self._proc.poll()
             self._process_exited(returncode)
 
@@ -893,11 +893,11 @@ class _WindowsSubprocessTransport(base_subprocess.BaseSubprocessTransport):
 SelectorEventLoop = _WindowsSelectorEventLoop
 
 
-class WindowsSelectorEventLoopPolicy(events.BaseDefaultEventLoopPolicy):
+kundi WindowsSelectorEventLoopPolicy(events.BaseDefaultEventLoopPolicy):
     _loop_factory = SelectorEventLoop
 
 
-class WindowsProactorEventLoopPolicy(events.BaseDefaultEventLoopPolicy):
+kundi WindowsProactorEventLoopPolicy(events.BaseDefaultEventLoopPolicy):
     _loop_factory = ProactorEventLoop
 
 

@@ -30,7 +30,7 @@ __uint64_t = c_ulonglong
 __darwin_intptr_t = c_long
 __darwin_natural_t = c_uint
 __darwin_ct_rune_t = c_int
-class __mbstate_t(Union):
+kundi __mbstate_t(Union):
     pass
 __mbstate_t._pack_ = 4
 __mbstate_t._fields_ = [
@@ -51,7 +51,7 @@ __darwin_socklen_t = __uint32_t
 __darwin_ssize_t = c_long
 __darwin_time_t = c_long
 sig_atomic_t = c_int
-class sigcontext(Structure):
+kundi sigcontext(Structure):
     pass
 sigcontext._fields_ = [
     ('sc_onstack', c_int),
@@ -91,7 +91,7 @@ user_time_t = int64_t
 syscall_arg_t = u_int64_t
 
 # values for unnamed enumeration
-class aes_key_st(Structure):
+kundi aes_key_st(Structure):
     pass
 aes_key_st._fields_ = [
     ('rd_key', c_ulong * 60),
@@ -100,7 +100,7 @@ aes_key_st._fields_ = [
 assert sizeof(aes_key_st) == 244, sizeof(aes_key_st)
 assert alignment(aes_key_st) == 4, alignment(aes_key_st)
 AES_KEY = aes_key_st
-class asn1_ctx_st(Structure):
+kundi asn1_ctx_st(Structure):
     pass
 asn1_ctx_st._fields_ = [
     ('p', POINTER(c_ubyte)),
@@ -118,7 +118,7 @@ asn1_ctx_st._fields_ = [
 assert sizeof(asn1_ctx_st) == 44, sizeof(asn1_ctx_st)
 assert alignment(asn1_ctx_st) == 4, alignment(asn1_ctx_st)
 ASN1_CTX = asn1_ctx_st
-class asn1_object_st(Structure):
+kundi asn1_object_st(Structure):
     pass
 asn1_object_st._fields_ = [
     ('sn', STRING),
@@ -131,7 +131,7 @@ asn1_object_st._fields_ = [
 assert sizeof(asn1_object_st) == 24, sizeof(asn1_object_st)
 assert alignment(asn1_object_st) == 4, alignment(asn1_object_st)
 ASN1_OBJECT = asn1_object_st
-class asn1_string_st(Structure):
+kundi asn1_string_st(Structure):
     pass
 asn1_string_st._fields_ = [
     ('length', c_int),
@@ -142,7 +142,7 @@ asn1_string_st._fields_ = [
 assert sizeof(asn1_string_st) == 16, sizeof(asn1_string_st)
 assert alignment(asn1_string_st) == 4, alignment(asn1_string_st)
 ASN1_STRING = asn1_string_st
-class ASN1_ENCODING_st(Structure):
+kundi ASN1_ENCODING_st(Structure):
     pass
 ASN1_ENCODING_st._fields_ = [
     ('enc', POINTER(c_ubyte)),
@@ -152,7 +152,7 @@ ASN1_ENCODING_st._fields_ = [
 assert sizeof(ASN1_ENCODING_st) == 12, sizeof(ASN1_ENCODING_st)
 assert alignment(ASN1_ENCODING_st) == 4, alignment(ASN1_ENCODING_st)
 ASN1_ENCODING = ASN1_ENCODING_st
-class asn1_string_table_st(Structure):
+kundi asn1_string_table_st(Structure):
     pass
 asn1_string_table_st._fields_ = [
     ('nid', c_int),
@@ -164,30 +164,30 @@ asn1_string_table_st._fields_ = [
 assert sizeof(asn1_string_table_st) == 20, sizeof(asn1_string_table_st)
 assert alignment(asn1_string_table_st) == 4, alignment(asn1_string_table_st)
 ASN1_STRING_TABLE = asn1_string_table_st
-class ASN1_TEMPLATE_st(Structure):
+kundi ASN1_TEMPLATE_st(Structure):
     pass
 ASN1_TEMPLATE_st._fields_ = [
 ]
 ASN1_TEMPLATE = ASN1_TEMPLATE_st
-class ASN1_ITEM_st(Structure):
+kundi ASN1_ITEM_st(Structure):
     pass
 ASN1_ITEM = ASN1_ITEM_st
 ASN1_ITEM_st._fields_ = [
 ]
-class ASN1_TLC_st(Structure):
+kundi ASN1_TLC_st(Structure):
     pass
 ASN1_TLC = ASN1_TLC_st
 ASN1_TLC_st._fields_ = [
 ]
-class ASN1_VALUE_st(Structure):
+kundi ASN1_VALUE_st(Structure):
     pass
 ASN1_VALUE_st._fields_ = [
 ]
 ASN1_VALUE = ASN1_VALUE_st
 ASN1_ITEM_EXP = ASN1_ITEM
-class asn1_type_st(Structure):
+kundi asn1_type_st(Structure):
     pass
-class N12asn1_type_st4DOLLAR_11E(Union):
+kundi N12asn1_type_st4DOLLAR_11E(Union):
     pass
 ASN1_BOOLEAN = c_int
 ASN1_INTEGER = asn1_string_st
@@ -235,7 +235,7 @@ asn1_type_st._fields_ = [
 assert sizeof(asn1_type_st) == 8, sizeof(asn1_type_st)
 assert alignment(asn1_type_st) == 4, alignment(asn1_type_st)
 ASN1_TYPE = asn1_type_st
-class asn1_method_st(Structure):
+kundi asn1_method_st(Structure):
     pass
 asn1_method_st._fields_ = [
     ('i2d', CFUNCTYPE(c_int)),
@@ -246,7 +246,7 @@ asn1_method_st._fields_ = [
 assert sizeof(asn1_method_st) == 16, sizeof(asn1_method_st)
 assert alignment(asn1_method_st) == 4, alignment(asn1_method_st)
 ASN1_METHOD = asn1_method_st
-class asn1_header_st(Structure):
+kundi asn1_header_st(Structure):
     pass
 asn1_header_st._fields_ = [
     ('header', POINTER(ASN1_OCTET_STRING)),
@@ -256,7 +256,7 @@ asn1_header_st._fields_ = [
 assert sizeof(asn1_header_st) == 12, sizeof(asn1_header_st)
 assert alignment(asn1_header_st) == 4, alignment(asn1_header_st)
 ASN1_HEADER = asn1_header_st
-class BIT_STRING_BITNAME_st(Structure):
+kundi BIT_STRING_BITNAME_st(Structure):
     pass
 BIT_STRING_BITNAME_st._fields_ = [
     ('bitnum', c_int),
@@ -266,11 +266,11 @@ BIT_STRING_BITNAME_st._fields_ = [
 assert sizeof(BIT_STRING_BITNAME_st) == 12, sizeof(BIT_STRING_BITNAME_st)
 assert alignment(BIT_STRING_BITNAME_st) == 4, alignment(BIT_STRING_BITNAME_st)
 BIT_STRING_BITNAME = BIT_STRING_BITNAME_st
-class bio_st(Structure):
+kundi bio_st(Structure):
     pass
 BIO = bio_st
 bio_info_cb = CFUNCTYPE(None, POINTER(bio_st), c_int, STRING, c_int, c_long, c_long)
-class bio_method_st(Structure):
+kundi bio_method_st(Structure):
     pass
 bio_method_st._fields_ = [
     ('type', c_int),
@@ -287,9 +287,9 @@ bio_method_st._fields_ = [
 assert sizeof(bio_method_st) == 40, sizeof(bio_method_st)
 assert alignment(bio_method_st) == 4, alignment(bio_method_st)
 BIO_METHOD = bio_method_st
-class crypto_ex_data_st(Structure):
+kundi crypto_ex_data_st(Structure):
     pass
-class stack_st(Structure):
+kundi stack_st(Structure):
     pass
 STACK = stack_st
 crypto_ex_data_st._fields_ = [
@@ -318,7 +318,7 @@ bio_st._fields_ = [
 ]
 assert sizeof(bio_st) == 64, sizeof(bio_st)
 assert alignment(bio_st) == 4, alignment(bio_st)
-class bio_f_buffer_ctx_struct(Structure):
+kundi bio_f_buffer_ctx_struct(Structure):
     pass
 bio_f_buffer_ctx_struct._fields_ = [
     ('ibuf_size', c_int),
@@ -333,11 +333,11 @@ bio_f_buffer_ctx_struct._fields_ = [
 assert sizeof(bio_f_buffer_ctx_struct) == 32, sizeof(bio_f_buffer_ctx_struct)
 assert alignment(bio_f_buffer_ctx_struct) == 4, alignment(bio_f_buffer_ctx_struct)
 BIO_F_BUFFER_CTX = bio_f_buffer_ctx_struct
-class hostent(Structure):
+kundi hostent(Structure):
     pass
 hostent._fields_ = [
 ]
-class bf_key_st(Structure):
+kundi bf_key_st(Structure):
     pass
 bf_key_st._fields_ = [
     ('P', c_uint * 18),
@@ -346,7 +346,7 @@ bf_key_st._fields_ = [
 assert sizeof(bf_key_st) == 4168, sizeof(bf_key_st)
 assert alignment(bf_key_st) == 4, alignment(bf_key_st)
 BF_KEY = bf_key_st
-class bignum_st(Structure):
+kundi bignum_st(Structure):
     pass
 bignum_st._fields_ = [
     ('d', POINTER(c_ulong)),
@@ -358,12 +358,12 @@ bignum_st._fields_ = [
 assert sizeof(bignum_st) == 20, sizeof(bignum_st)
 assert alignment(bignum_st) == 4, alignment(bignum_st)
 BIGNUM = bignum_st
-class bignum_ctx(Structure):
+kundi bignum_ctx(Structure):
     pass
 bignum_ctx._fields_ = [
 ]
 BN_CTX = bignum_ctx
-class bn_blinding_st(Structure):
+kundi bn_blinding_st(Structure):
     pass
 bn_blinding_st._fields_ = [
     ('init', c_int),
@@ -375,7 +375,7 @@ bn_blinding_st._fields_ = [
 assert sizeof(bn_blinding_st) == 20, sizeof(bn_blinding_st)
 assert alignment(bn_blinding_st) == 4, alignment(bn_blinding_st)
 BN_BLINDING = bn_blinding_st
-class bn_mont_ctx_st(Structure):
+kundi bn_mont_ctx_st(Structure):
     pass
 bn_mont_ctx_st._fields_ = [
     ('ri', c_int),
@@ -388,7 +388,7 @@ bn_mont_ctx_st._fields_ = [
 assert sizeof(bn_mont_ctx_st) == 72, sizeof(bn_mont_ctx_st)
 assert alignment(bn_mont_ctx_st) == 4, alignment(bn_mont_ctx_st)
 BN_MONT_CTX = bn_mont_ctx_st
-class bn_recp_ctx_st(Structure):
+kundi bn_recp_ctx_st(Structure):
     pass
 bn_recp_ctx_st._fields_ = [
     ('N', BIGNUM),
@@ -400,7 +400,7 @@ bn_recp_ctx_st._fields_ = [
 assert sizeof(bn_recp_ctx_st) == 52, sizeof(bn_recp_ctx_st)
 assert alignment(bn_recp_ctx_st) == 4, alignment(bn_recp_ctx_st)
 BN_RECP_CTX = bn_recp_ctx_st
-class buf_mem_st(Structure):
+kundi buf_mem_st(Structure):
     pass
 buf_mem_st._fields_ = [
     ('length', c_int),
@@ -410,7 +410,7 @@ buf_mem_st._fields_ = [
 assert sizeof(buf_mem_st) == 12, sizeof(buf_mem_st)
 assert alignment(buf_mem_st) == 4, alignment(buf_mem_st)
 BUF_MEM = buf_mem_st
-class cast_key_st(Structure):
+kundi cast_key_st(Structure):
     pass
 cast_key_st._fields_ = [
     ('data', c_ulong * 32),
@@ -419,7 +419,7 @@ cast_key_st._fields_ = [
 assert sizeof(cast_key_st) == 132, sizeof(cast_key_st)
 assert alignment(cast_key_st) == 4, alignment(cast_key_st)
 CAST_KEY = cast_key_st
-class comp_method_st(Structure):
+kundi comp_method_st(Structure):
     pass
 comp_method_st._fields_ = [
     ('type', c_int),
@@ -434,7 +434,7 @@ comp_method_st._fields_ = [
 assert sizeof(comp_method_st) == 32, sizeof(comp_method_st)
 assert alignment(comp_method_st) == 4, alignment(comp_method_st)
 COMP_METHOD = comp_method_st
-class comp_ctx_st(Structure):
+kundi comp_ctx_st(Structure):
     pass
 comp_ctx_st._fields_ = [
     ('meth', POINTER(COMP_METHOD)),
@@ -447,11 +447,11 @@ comp_ctx_st._fields_ = [
 assert sizeof(comp_ctx_st) == 28, sizeof(comp_ctx_st)
 assert alignment(comp_ctx_st) == 4, alignment(comp_ctx_st)
 COMP_CTX = comp_ctx_st
-class CRYPTO_dynlock_value(Structure):
+kundi CRYPTO_dynlock_value(Structure):
     pass
 CRYPTO_dynlock_value._fields_ = [
 ]
-class CRYPTO_dynlock(Structure):
+kundi CRYPTO_dynlock(Structure):
     pass
 CRYPTO_dynlock._fields_ = [
     ('references', c_int),
@@ -463,7 +463,7 @@ BIO_dummy = bio_st
 CRYPTO_EX_new = CFUNCTYPE(c_int, c_void_p, c_void_p, POINTER(CRYPTO_EX_DATA), c_int, c_long, c_void_p)
 CRYPTO_EX_free = CFUNCTYPE(None, c_void_p, c_void_p, POINTER(CRYPTO_EX_DATA), c_int, c_long, c_void_p)
 CRYPTO_EX_dup = CFUNCTYPE(c_int, POINTER(CRYPTO_EX_DATA), POINTER(CRYPTO_EX_DATA), c_void_p, c_int, c_long, c_void_p)
-class crypto_ex_data_func_st(Structure):
+kundi crypto_ex_data_func_st(Structure):
     pass
 crypto_ex_data_func_st._fields_ = [
     ('argl', c_long),
@@ -475,7 +475,7 @@ crypto_ex_data_func_st._fields_ = [
 assert sizeof(crypto_ex_data_func_st) == 20, sizeof(crypto_ex_data_func_st)
 assert alignment(crypto_ex_data_func_st) == 4, alignment(crypto_ex_data_func_st)
 CRYPTO_EX_DATA_FUNCS = crypto_ex_data_func_st
-class st_CRYPTO_EX_DATA_IMPL(Structure):
+kundi st_CRYPTO_EX_DATA_IMPL(Structure):
     pass
 CRYPTO_EX_DATA_IMPL = st_CRYPTO_EX_DATA_IMPL
 st_CRYPTO_EX_DATA_IMPL._fields_ = [
@@ -483,9 +483,9 @@ st_CRYPTO_EX_DATA_IMPL._fields_ = [
 CRYPTO_MEM_LEAK_CB = CFUNCTYPE(c_void_p, c_ulong, STRING, c_int, c_int, c_void_p)
 DES_cblock = c_ubyte * 8
 const_DES_cblock = c_ubyte * 8
-class DES_ks(Structure):
+kundi DES_ks(Structure):
     pass
-class N6DES_ks3DOLLAR_9E(Union):
+kundi N6DES_ks3DOLLAR_9E(Union):
     pass
 N6DES_ks3DOLLAR_9E._fields_ = [
     ('cblock', DES_cblock),
@@ -500,9 +500,9 @@ assert sizeof(DES_ks) == 128, sizeof(DES_ks)
 assert alignment(DES_ks) == 4, alignment(DES_ks)
 DES_key_schedule = DES_ks
 _ossl_old_des_cblock = c_ubyte * 8
-class _ossl_old_des_ks_struct(Structure):
+kundi _ossl_old_des_ks_struct(Structure):
     pass
-class N23_ossl_old_des_ks_struct4DOLLAR_10E(Union):
+kundi N23_ossl_old_des_ks_struct4DOLLAR_10E(Union):
     pass
 N23_ossl_old_des_ks_struct4DOLLAR_10E._fields_ = [
     ('_', _ossl_old_des_cblock),
@@ -516,10 +516,10 @@ _ossl_old_des_ks_struct._fields_ = [
 assert sizeof(_ossl_old_des_ks_struct) == 8, sizeof(_ossl_old_des_ks_struct)
 assert alignment(_ossl_old_des_ks_struct) == 4, alignment(_ossl_old_des_ks_struct)
 _ossl_old_des_key_schedule = _ossl_old_des_ks_struct * 16
-class dh_st(Structure):
+kundi dh_st(Structure):
     pass
 DH = dh_st
-class dh_method(Structure):
+kundi dh_method(Structure):
     pass
 dh_method._fields_ = [
     ('name', STRING),
@@ -534,7 +534,7 @@ dh_method._fields_ = [
 assert sizeof(dh_method) == 32, sizeof(dh_method)
 assert alignment(dh_method) == 4, alignment(dh_method)
 DH_METHOD = dh_method
-class engine_st(Structure):
+kundi engine_st(Structure):
     pass
 ENGINE = engine_st
 dh_st._fields_ = [
@@ -559,10 +559,10 @@ dh_st._fields_ = [
 ]
 assert sizeof(dh_st) == 76, sizeof(dh_st)
 assert alignment(dh_st) == 4, alignment(dh_st)
-class dsa_st(Structure):
+kundi dsa_st(Structure):
     pass
 DSA = dsa_st
-class DSA_SIG_st(Structure):
+kundi DSA_SIG_st(Structure):
     pass
 DSA_SIG_st._fields_ = [
     ('r', POINTER(BIGNUM)),
@@ -571,7 +571,7 @@ DSA_SIG_st._fields_ = [
 assert sizeof(DSA_SIG_st) == 8, sizeof(DSA_SIG_st)
 assert alignment(DSA_SIG_st) == 4, alignment(DSA_SIG_st)
 DSA_SIG = DSA_SIG_st
-class dsa_method(Structure):
+kundi dsa_method(Structure):
     pass
 dsa_method._fields_ = [
     ('name', STRING),
@@ -608,11 +608,11 @@ dsa_st._fields_ = [
 ]
 assert sizeof(dsa_st) == 68, sizeof(dsa_st)
 assert alignment(dsa_st) == 4, alignment(dsa_st)
-class evp_pkey_st(Structure):
+kundi evp_pkey_st(Structure):
     pass
-class N11evp_pkey_st4DOLLAR_12E(Union):
+kundi N11evp_pkey_st4DOLLAR_12E(Union):
     pass
-class rsa_st(Structure):
+kundi rsa_st(Structure):
     pass
 N11evp_pkey_st4DOLLAR_12E._fields_ = [
     ('ptr', STRING),
@@ -632,9 +632,9 @@ evp_pkey_st._fields_ = [
 ]
 assert sizeof(evp_pkey_st) == 24, sizeof(evp_pkey_st)
 assert alignment(evp_pkey_st) == 4, alignment(evp_pkey_st)
-class env_md_st(Structure):
+kundi env_md_st(Structure):
     pass
-class env_md_ctx_st(Structure):
+kundi env_md_ctx_st(Structure):
     pass
 EVP_MD_CTX = env_md_ctx_st
 env_md_st._fields_ = [
@@ -664,9 +664,9 @@ env_md_ctx_st._fields_ = [
 ]
 assert sizeof(env_md_ctx_st) == 16, sizeof(env_md_ctx_st)
 assert alignment(env_md_ctx_st) == 4, alignment(env_md_ctx_st)
-class evp_cipher_st(Structure):
+kundi evp_cipher_st(Structure):
     pass
-class evp_cipher_ctx_st(Structure):
+kundi evp_cipher_ctx_st(Structure):
     pass
 EVP_CIPHER_CTX = evp_cipher_ctx_st
 evp_cipher_st._fields_ = [
@@ -686,7 +686,7 @@ evp_cipher_st._fields_ = [
 ]
 assert sizeof(evp_cipher_st) == 52, sizeof(evp_cipher_st)
 assert alignment(evp_cipher_st) == 4, alignment(evp_cipher_st)
-class evp_cipher_info_st(Structure):
+kundi evp_cipher_info_st(Structure):
     pass
 EVP_CIPHER = evp_cipher_st
 evp_cipher_info_st._fields_ = [
@@ -715,7 +715,7 @@ evp_cipher_ctx_st._fields_ = [
 ]
 assert sizeof(evp_cipher_ctx_st) == 140, sizeof(evp_cipher_ctx_st)
 assert alignment(evp_cipher_ctx_st) == 4, alignment(evp_cipher_ctx_st)
-class evp_Encode_Ctx_st(Structure):
+kundi evp_Encode_Ctx_st(Structure):
     pass
 evp_Encode_Ctx_st._fields_ = [
     ('num', c_int),
@@ -728,7 +728,7 @@ assert sizeof(evp_Encode_Ctx_st) == 96, sizeof(evp_Encode_Ctx_st)
 assert alignment(evp_Encode_Ctx_st) == 4, alignment(evp_Encode_Ctx_st)
 EVP_ENCODE_CTX = evp_Encode_Ctx_st
 EVP_PBE_KEYGEN = CFUNCTYPE(c_int, POINTER(EVP_CIPHER_CTX), STRING, c_int, POINTER(ASN1_TYPE), POINTER(EVP_CIPHER), POINTER(EVP_MD), c_int)
-class lhash_node_st(Structure):
+kundi lhash_node_st(Structure):
     pass
 lhash_node_st._fields_ = [
     ('data', c_void_p),
@@ -742,7 +742,7 @@ LHASH_COMP_FN_TYPE = CFUNCTYPE(c_int, c_void_p, c_void_p)
 LHASH_HASH_FN_TYPE = CFUNCTYPE(c_ulong, c_void_p)
 LHASH_DOALL_FN_TYPE = CFUNCTYPE(None, c_void_p)
 LHASH_DOALL_ARG_FN_TYPE = CFUNCTYPE(None, c_void_p, c_void_p)
-class lhash_st(Structure):
+kundi lhash_st(Structure):
     pass
 lhash_st._fields_ = [
     ('b', POINTER(POINTER(LHASH_NODE))),
@@ -773,7 +773,7 @@ lhash_st._fields_ = [
 assert sizeof(lhash_st) == 96, sizeof(lhash_st)
 assert alignment(lhash_st) == 4, alignment(lhash_st)
 LHASH = lhash_st
-class MD2state_st(Structure):
+kundi MD2state_st(Structure):
     pass
 MD2state_st._fields_ = [
     ('num', c_int),
@@ -784,7 +784,7 @@ MD2state_st._fields_ = [
 assert sizeof(MD2state_st) == 148, sizeof(MD2state_st)
 assert alignment(MD2state_st) == 4, alignment(MD2state_st)
 MD2_CTX = MD2state_st
-class MD4state_st(Structure):
+kundi MD4state_st(Structure):
     pass
 MD4state_st._fields_ = [
     ('A', c_uint),
@@ -799,7 +799,7 @@ MD4state_st._fields_ = [
 assert sizeof(MD4state_st) == 92, sizeof(MD4state_st)
 assert alignment(MD4state_st) == 4, alignment(MD4state_st)
 MD4_CTX = MD4state_st
-class MD5state_st(Structure):
+kundi MD5state_st(Structure):
     pass
 MD5state_st._fields_ = [
     ('A', c_uint),
@@ -814,7 +814,7 @@ MD5state_st._fields_ = [
 assert sizeof(MD5state_st) == 92, sizeof(MD5state_st)
 assert alignment(MD5state_st) == 4, alignment(MD5state_st)
 MD5_CTX = MD5state_st
-class mdc2_ctx_st(Structure):
+kundi mdc2_ctx_st(Structure):
     pass
 mdc2_ctx_st._fields_ = [
     ('num', c_int),
@@ -826,7 +826,7 @@ mdc2_ctx_st._fields_ = [
 assert sizeof(mdc2_ctx_st) == 32, sizeof(mdc2_ctx_st)
 assert alignment(mdc2_ctx_st) == 4, alignment(mdc2_ctx_st)
 MDC2_CTX = mdc2_ctx_st
-class obj_name_st(Structure):
+kundi obj_name_st(Structure):
     pass
 obj_name_st._fields_ = [
     ('type', c_int),
@@ -840,27 +840,27 @@ OBJ_NAME = obj_name_st
 ASN1_TIME = asn1_string_st
 ASN1_NULL = c_int
 EVP_PKEY = evp_pkey_st
-class x509_st(Structure):
+kundi x509_st(Structure):
     pass
 X509 = x509_st
-class X509_algor_st(Structure):
+kundi X509_algor_st(Structure):
     pass
 X509_ALGOR = X509_algor_st
-class X509_crl_st(Structure):
+kundi X509_crl_st(Structure):
     pass
 X509_CRL = X509_crl_st
-class X509_name_st(Structure):
+kundi X509_name_st(Structure):
     pass
 X509_NAME = X509_name_st
-class x509_store_st(Structure):
+kundi x509_store_st(Structure):
     pass
 X509_STORE = x509_store_st
-class x509_store_ctx_st(Structure):
+kundi x509_store_ctx_st(Structure):
     pass
 X509_STORE_CTX = x509_store_ctx_st
 engine_st._fields_ = [
 ]
-class PEM_Encode_Seal_st(Structure):
+kundi PEM_Encode_Seal_st(Structure):
     pass
 PEM_Encode_Seal_st._fields_ = [
     ('encode', EVP_ENCODE_CTX),
@@ -870,7 +870,7 @@ PEM_Encode_Seal_st._fields_ = [
 assert sizeof(PEM_Encode_Seal_st) == 252, sizeof(PEM_Encode_Seal_st)
 assert alignment(PEM_Encode_Seal_st) == 4, alignment(PEM_Encode_Seal_st)
 PEM_ENCODE_SEAL_CTX = PEM_Encode_Seal_st
-class pem_recip_st(Structure):
+kundi pem_recip_st(Structure):
     pass
 pem_recip_st._fields_ = [
     ('name', STRING),
@@ -881,9 +881,9 @@ pem_recip_st._fields_ = [
 assert sizeof(pem_recip_st) == 16, sizeof(pem_recip_st)
 assert alignment(pem_recip_st) == 4, alignment(pem_recip_st)
 PEM_USER = pem_recip_st
-class pem_ctx_st(Structure):
+kundi pem_ctx_st(Structure):
     pass
-class N10pem_ctx_st4DOLLAR_16E(Structure):
+kundi N10pem_ctx_st4DOLLAR_16E(Structure):
     pass
 N10pem_ctx_st4DOLLAR_16E._fields_ = [
     ('version', c_int),
@@ -891,7 +891,7 @@ N10pem_ctx_st4DOLLAR_16E._fields_ = [
 ]
 assert sizeof(N10pem_ctx_st4DOLLAR_16E) == 8, sizeof(N10pem_ctx_st4DOLLAR_16E)
 assert alignment(N10pem_ctx_st4DOLLAR_16E) == 4, alignment(N10pem_ctx_st4DOLLAR_16E)
-class N10pem_ctx_st4DOLLAR_17E(Structure):
+kundi N10pem_ctx_st4DOLLAR_17E(Structure):
     pass
 N10pem_ctx_st4DOLLAR_17E._fields_ = [
     ('cipher', c_int),
@@ -922,7 +922,7 @@ assert sizeof(pem_ctx_st) == 76, sizeof(pem_ctx_st)
 assert alignment(pem_ctx_st) == 4, alignment(pem_ctx_st)
 PEM_CTX = pem_ctx_st
 pem_password_cb = CFUNCTYPE(c_int, STRING, c_int, c_int, c_void_p)
-class pkcs7_issuer_and_serial_st(Structure):
+kundi pkcs7_issuer_and_serial_st(Structure):
     pass
 pkcs7_issuer_and_serial_st._fields_ = [
     ('issuer', POINTER(X509_NAME)),
@@ -931,7 +931,7 @@ pkcs7_issuer_and_serial_st._fields_ = [
 assert sizeof(pkcs7_issuer_and_serial_st) == 8, sizeof(pkcs7_issuer_and_serial_st)
 assert alignment(pkcs7_issuer_and_serial_st) == 4, alignment(pkcs7_issuer_and_serial_st)
 PKCS7_ISSUER_AND_SERIAL = pkcs7_issuer_and_serial_st
-class pkcs7_signer_info_st(Structure):
+kundi pkcs7_signer_info_st(Structure):
     pass
 pkcs7_signer_info_st._fields_ = [
     ('version', POINTER(ASN1_INTEGER)),
@@ -946,7 +946,7 @@ pkcs7_signer_info_st._fields_ = [
 assert sizeof(pkcs7_signer_info_st) == 32, sizeof(pkcs7_signer_info_st)
 assert alignment(pkcs7_signer_info_st) == 4, alignment(pkcs7_signer_info_st)
 PKCS7_SIGNER_INFO = pkcs7_signer_info_st
-class pkcs7_recip_info_st(Structure):
+kundi pkcs7_recip_info_st(Structure):
     pass
 pkcs7_recip_info_st._fields_ = [
     ('version', POINTER(ASN1_INTEGER)),
@@ -958,9 +958,9 @@ pkcs7_recip_info_st._fields_ = [
 assert sizeof(pkcs7_recip_info_st) == 20, sizeof(pkcs7_recip_info_st)
 assert alignment(pkcs7_recip_info_st) == 4, alignment(pkcs7_recip_info_st)
 PKCS7_RECIP_INFO = pkcs7_recip_info_st
-class pkcs7_signed_st(Structure):
+kundi pkcs7_signed_st(Structure):
     pass
-class pkcs7_st(Structure):
+kundi pkcs7_st(Structure):
     pass
 pkcs7_signed_st._fields_ = [
     ('version', POINTER(ASN1_INTEGER)),
@@ -973,7 +973,7 @@ pkcs7_signed_st._fields_ = [
 assert sizeof(pkcs7_signed_st) == 24, sizeof(pkcs7_signed_st)
 assert alignment(pkcs7_signed_st) == 4, alignment(pkcs7_signed_st)
 PKCS7_SIGNED = pkcs7_signed_st
-class pkcs7_enc_content_st(Structure):
+kundi pkcs7_enc_content_st(Structure):
     pass
 pkcs7_enc_content_st._fields_ = [
     ('content_type', POINTER(ASN1_OBJECT)),
@@ -984,7 +984,7 @@ pkcs7_enc_content_st._fields_ = [
 assert sizeof(pkcs7_enc_content_st) == 16, sizeof(pkcs7_enc_content_st)
 assert alignment(pkcs7_enc_content_st) == 4, alignment(pkcs7_enc_content_st)
 PKCS7_ENC_CONTENT = pkcs7_enc_content_st
-class pkcs7_enveloped_st(Structure):
+kundi pkcs7_enveloped_st(Structure):
     pass
 pkcs7_enveloped_st._fields_ = [
     ('version', POINTER(ASN1_INTEGER)),
@@ -994,7 +994,7 @@ pkcs7_enveloped_st._fields_ = [
 assert sizeof(pkcs7_enveloped_st) == 12, sizeof(pkcs7_enveloped_st)
 assert alignment(pkcs7_enveloped_st) == 4, alignment(pkcs7_enveloped_st)
 PKCS7_ENVELOPE = pkcs7_enveloped_st
-class pkcs7_signedandenveloped_st(Structure):
+kundi pkcs7_signedandenveloped_st(Structure):
     pass
 pkcs7_signedandenveloped_st._fields_ = [
     ('version', POINTER(ASN1_INTEGER)),
@@ -1008,7 +1008,7 @@ pkcs7_signedandenveloped_st._fields_ = [
 assert sizeof(pkcs7_signedandenveloped_st) == 28, sizeof(pkcs7_signedandenveloped_st)
 assert alignment(pkcs7_signedandenveloped_st) == 4, alignment(pkcs7_signedandenveloped_st)
 PKCS7_SIGN_ENVELOPE = pkcs7_signedandenveloped_st
-class pkcs7_digest_st(Structure):
+kundi pkcs7_digest_st(Structure):
     pass
 pkcs7_digest_st._fields_ = [
     ('version', POINTER(ASN1_INTEGER)),
@@ -1019,7 +1019,7 @@ pkcs7_digest_st._fields_ = [
 assert sizeof(pkcs7_digest_st) == 16, sizeof(pkcs7_digest_st)
 assert alignment(pkcs7_digest_st) == 4, alignment(pkcs7_digest_st)
 PKCS7_DIGEST = pkcs7_digest_st
-class pkcs7_encrypted_st(Structure):
+kundi pkcs7_encrypted_st(Structure):
     pass
 pkcs7_encrypted_st._fields_ = [
     ('version', POINTER(ASN1_INTEGER)),
@@ -1028,7 +1028,7 @@ pkcs7_encrypted_st._fields_ = [
 assert sizeof(pkcs7_encrypted_st) == 8, sizeof(pkcs7_encrypted_st)
 assert alignment(pkcs7_encrypted_st) == 4, alignment(pkcs7_encrypted_st)
 PKCS7_ENCRYPT = pkcs7_encrypted_st
-class N8pkcs7_st4DOLLAR_15E(Union):
+kundi N8pkcs7_st4DOLLAR_15E(Union):
     pass
 N8pkcs7_st4DOLLAR_15E._fields_ = [
     ('ptr', STRING),
@@ -1053,7 +1053,7 @@ pkcs7_st._fields_ = [
 assert sizeof(pkcs7_st) == 24, sizeof(pkcs7_st)
 assert alignment(pkcs7_st) == 4, alignment(pkcs7_st)
 PKCS7 = pkcs7_st
-class rc2_key_st(Structure):
+kundi rc2_key_st(Structure):
     pass
 rc2_key_st._fields_ = [
     ('data', c_uint * 64),
@@ -1061,7 +1061,7 @@ rc2_key_st._fields_ = [
 assert sizeof(rc2_key_st) == 256, sizeof(rc2_key_st)
 assert alignment(rc2_key_st) == 4, alignment(rc2_key_st)
 RC2_KEY = rc2_key_st
-class rc4_key_st(Structure):
+kundi rc4_key_st(Structure):
     pass
 rc4_key_st._fields_ = [
     ('x', c_ubyte),
@@ -1071,7 +1071,7 @@ rc4_key_st._fields_ = [
 assert sizeof(rc4_key_st) == 258, sizeof(rc4_key_st)
 assert alignment(rc4_key_st) == 1, alignment(rc4_key_st)
 RC4_KEY = rc4_key_st
-class rc5_key_st(Structure):
+kundi rc5_key_st(Structure):
     pass
 rc5_key_st._fields_ = [
     ('rounds', c_int),
@@ -1080,7 +1080,7 @@ rc5_key_st._fields_ = [
 assert sizeof(rc5_key_st) == 140, sizeof(rc5_key_st)
 assert alignment(rc5_key_st) == 4, alignment(rc5_key_st)
 RC5_32_KEY = rc5_key_st
-class RIPEMD160state_st(Structure):
+kundi RIPEMD160state_st(Structure):
     pass
 RIPEMD160state_st._fields_ = [
     ('A', c_uint),
@@ -1097,7 +1097,7 @@ assert sizeof(RIPEMD160state_st) == 96, sizeof(RIPEMD160state_st)
 assert alignment(RIPEMD160state_st) == 4, alignment(RIPEMD160state_st)
 RIPEMD160_CTX = RIPEMD160state_st
 RSA = rsa_st
-class rsa_meth_st(Structure):
+kundi rsa_meth_st(Structure):
     pass
 rsa_meth_st._fields_ = [
     ('name', STRING),
@@ -1142,7 +1142,7 @@ rsa_st._fields_ = [
 assert sizeof(rsa_st) == 84, sizeof(rsa_st)
 assert alignment(rsa_st) == 4, alignment(rsa_st)
 openssl_fptr = CFUNCTYPE(None)
-class SHAstate_st(Structure):
+kundi SHAstate_st(Structure):
     pass
 SHAstate_st._fields_ = [
     ('h0', c_uint),
@@ -1158,10 +1158,10 @@ SHAstate_st._fields_ = [
 assert sizeof(SHAstate_st) == 96, sizeof(SHAstate_st)
 assert alignment(SHAstate_st) == 4, alignment(SHAstate_st)
 SHA_CTX = SHAstate_st
-class ssl_st(Structure):
+kundi ssl_st(Structure):
     pass
 ssl_crock_st = POINTER(ssl_st)
-class ssl_cipher_st(Structure):
+kundi ssl_cipher_st(Structure):
     pass
 ssl_cipher_st._fields_ = [
     ('valid', c_int),
@@ -1179,12 +1179,12 @@ assert sizeof(ssl_cipher_st) == 40, sizeof(ssl_cipher_st)
 assert alignment(ssl_cipher_st) == 4, alignment(ssl_cipher_st)
 SSL_CIPHER = ssl_cipher_st
 SSL = ssl_st
-class ssl_ctx_st(Structure):
+kundi ssl_ctx_st(Structure):
     pass
 SSL_CTX = ssl_ctx_st
-class ssl_method_st(Structure):
+kundi ssl_method_st(Structure):
     pass
-class ssl3_enc_method(Structure):
+kundi ssl3_enc_method(Structure):
     pass
 ssl_method_st._fields_ = [
     ('version', c_int),
@@ -1218,9 +1218,9 @@ assert alignment(ssl_method_st) == 4, alignment(ssl_method_st)
 ssl3_enc_method._fields_ = [
 ]
 SSL_METHOD = ssl_method_st
-class ssl_session_st(Structure):
+kundi ssl_session_st(Structure):
     pass
-class sess_cert_st(Structure):
+kundi sess_cert_st(Structure):
     pass
 ssl_session_st._fields_ = [
     ('ssl_version', c_int),
@@ -1253,7 +1253,7 @@ sess_cert_st._fields_ = [
 ]
 SSL_SESSION = ssl_session_st
 GEN_SESSION_CB = CFUNCTYPE(c_int, POINTER(SSL), POINTER(c_ubyte), POINTER(c_uint))
-class ssl_comp_st(Structure):
+kundi ssl_comp_st(Structure):
     pass
 ssl_comp_st._fields_ = [
     ('id', c_int),
@@ -1263,7 +1263,7 @@ ssl_comp_st._fields_ = [
 assert sizeof(ssl_comp_st) == 12, sizeof(ssl_comp_st)
 assert alignment(ssl_comp_st) == 4, alignment(ssl_comp_st)
 SSL_COMP = ssl_comp_st
-class N10ssl_ctx_st4DOLLAR_18E(Structure):
+kundi N10ssl_ctx_st4DOLLAR_18E(Structure):
     pass
 N10ssl_ctx_st4DOLLAR_18E._fields_ = [
     ('sess_connect', c_int),
@@ -1280,7 +1280,7 @@ N10ssl_ctx_st4DOLLAR_18E._fields_ = [
 ]
 assert sizeof(N10ssl_ctx_st4DOLLAR_18E) == 44, sizeof(N10ssl_ctx_st4DOLLAR_18E)
 assert alignment(N10ssl_ctx_st4DOLLAR_18E) == 4, alignment(N10ssl_ctx_st4DOLLAR_18E)
-class cert_st(Structure):
+kundi cert_st(Structure):
     pass
 ssl_ctx_st._fields_ = [
     ('method', POINTER(SSL_METHOD)),
@@ -1332,9 +1332,9 @@ assert sizeof(ssl_ctx_st) == 248, sizeof(ssl_ctx_st)
 assert alignment(ssl_ctx_st) == 4, alignment(ssl_ctx_st)
 cert_st._fields_ = [
 ]
-class ssl2_state_st(Structure):
+kundi ssl2_state_st(Structure):
     pass
-class ssl3_state_st(Structure):
+kundi ssl3_state_st(Structure):
     pass
 ssl_st._fields_ = [
     ('version', c_int),
@@ -1399,7 +1399,7 @@ ssl_st._fields_ = [
 ]
 assert sizeof(ssl_st) == 268, sizeof(ssl_st)
 assert alignment(ssl_st) == 4, alignment(ssl_st)
-class N13ssl2_state_st4DOLLAR_19E(Structure):
+kundi N13ssl2_state_st4DOLLAR_19E(Structure):
     pass
 N13ssl2_state_st4DOLLAR_19E._fields_ = [
     ('conn_id_length', c_uint),
@@ -1455,7 +1455,7 @@ ssl2_state_st._fields_ = [
 assert sizeof(ssl2_state_st) == 288, sizeof(ssl2_state_st)
 assert alignment(ssl2_state_st) == 4, alignment(ssl2_state_st)
 SSL2_STATE = ssl2_state_st
-class ssl3_record_st(Structure):
+kundi ssl3_record_st(Structure):
     pass
 ssl3_record_st._fields_ = [
     ('type', c_int),
@@ -1468,7 +1468,7 @@ ssl3_record_st._fields_ = [
 assert sizeof(ssl3_record_st) == 24, sizeof(ssl3_record_st)
 assert alignment(ssl3_record_st) == 4, alignment(ssl3_record_st)
 SSL3_RECORD = ssl3_record_st
-class ssl3_buffer_st(Structure):
+kundi ssl3_buffer_st(Structure):
     pass
 size_t = __darwin_size_t
 ssl3_buffer_st._fields_ = [
@@ -1480,7 +1480,7 @@ ssl3_buffer_st._fields_ = [
 assert sizeof(ssl3_buffer_st) == 16, sizeof(ssl3_buffer_st)
 assert alignment(ssl3_buffer_st) == 4, alignment(ssl3_buffer_st)
 SSL3_BUFFER = ssl3_buffer_st
-class N13ssl3_state_st4DOLLAR_20E(Structure):
+kundi N13ssl3_state_st4DOLLAR_20E(Structure):
     pass
 N13ssl3_state_st4DOLLAR_20E._fields_ = [
     ('cert_verify_md', c_ubyte * 72),
@@ -1557,17 +1557,17 @@ stack_st._fields_ = [
 ]
 assert sizeof(stack_st) == 20, sizeof(stack_st)
 assert alignment(stack_st) == 4, alignment(stack_st)
-class ui_st(Structure):
+kundi ui_st(Structure):
     pass
 ui_st._fields_ = [
 ]
 UI = ui_st
-class ui_method_st(Structure):
+kundi ui_method_st(Structure):
     pass
 ui_method_st._fields_ = [
 ]
 UI_METHOD = ui_method_st
-class ui_string_st(Structure):
+kundi ui_string_st(Structure):
     pass
 ui_string_st._fields_ = [
 ]
@@ -1575,7 +1575,7 @@ UI_STRING = ui_string_st
 
 # values for enumeration 'UI_string_types'
 UI_string_types = c_int # enum
-class X509_objects_st(Structure):
+kundi X509_objects_st(Structure):
     pass
 X509_objects_st._fields_ = [
     ('nid', c_int),
@@ -1591,7 +1591,7 @@ X509_algor_st._fields_ = [
 ]
 assert sizeof(X509_algor_st) == 8, sizeof(X509_algor_st)
 assert alignment(X509_algor_st) == 4, alignment(X509_algor_st)
-class X509_val_st(Structure):
+kundi X509_val_st(Structure):
     pass
 X509_val_st._fields_ = [
     ('notBefore', POINTER(ASN1_TIME)),
@@ -1600,7 +1600,7 @@ X509_val_st._fields_ = [
 assert sizeof(X509_val_st) == 8, sizeof(X509_val_st)
 assert alignment(X509_val_st) == 4, alignment(X509_val_st)
 X509_VAL = X509_val_st
-class X509_pubkey_st(Structure):
+kundi X509_pubkey_st(Structure):
     pass
 X509_pubkey_st._fields_ = [
     ('algor', POINTER(X509_ALGOR)),
@@ -1610,7 +1610,7 @@ X509_pubkey_st._fields_ = [
 assert sizeof(X509_pubkey_st) == 12, sizeof(X509_pubkey_st)
 assert alignment(X509_pubkey_st) == 4, alignment(X509_pubkey_st)
 X509_PUBKEY = X509_pubkey_st
-class X509_sig_st(Structure):
+kundi X509_sig_st(Structure):
     pass
 X509_sig_st._fields_ = [
     ('algor', POINTER(X509_ALGOR)),
@@ -1619,7 +1619,7 @@ X509_sig_st._fields_ = [
 assert sizeof(X509_sig_st) == 8, sizeof(X509_sig_st)
 assert alignment(X509_sig_st) == 4, alignment(X509_sig_st)
 X509_SIG = X509_sig_st
-class X509_name_entry_st(Structure):
+kundi X509_name_entry_st(Structure):
     pass
 X509_name_entry_st._fields_ = [
     ('object', POINTER(ASN1_OBJECT)),
@@ -1638,7 +1638,7 @@ X509_name_st._fields_ = [
 ]
 assert sizeof(X509_name_st) == 16, sizeof(X509_name_st)
 assert alignment(X509_name_st) == 4, alignment(X509_name_st)
-class X509_extension_st(Structure):
+kundi X509_extension_st(Structure):
     pass
 X509_extension_st._fields_ = [
     ('object', POINTER(ASN1_OBJECT)),
@@ -1648,9 +1648,9 @@ X509_extension_st._fields_ = [
 assert sizeof(X509_extension_st) == 12, sizeof(X509_extension_st)
 assert alignment(X509_extension_st) == 4, alignment(X509_extension_st)
 X509_EXTENSION = X509_extension_st
-class x509_attributes_st(Structure):
+kundi x509_attributes_st(Structure):
     pass
-class N18x509_attributes_st4DOLLAR_13E(Union):
+kundi N18x509_attributes_st4DOLLAR_13E(Union):
     pass
 N18x509_attributes_st4DOLLAR_13E._fields_ = [
     ('ptr', STRING),
@@ -1667,7 +1667,7 @@ x509_attributes_st._fields_ = [
 assert sizeof(x509_attributes_st) == 12, sizeof(x509_attributes_st)
 assert alignment(x509_attributes_st) == 4, alignment(x509_attributes_st)
 X509_ATTRIBUTE = x509_attributes_st
-class X509_req_info_st(Structure):
+kundi X509_req_info_st(Structure):
     pass
 X509_req_info_st._fields_ = [
     ('enc', ASN1_ENCODING),
@@ -1679,7 +1679,7 @@ X509_req_info_st._fields_ = [
 assert sizeof(X509_req_info_st) == 28, sizeof(X509_req_info_st)
 assert alignment(X509_req_info_st) == 4, alignment(X509_req_info_st)
 X509_REQ_INFO = X509_req_info_st
-class X509_req_st(Structure):
+kundi X509_req_st(Structure):
     pass
 X509_req_st._fields_ = [
     ('req_info', POINTER(X509_REQ_INFO)),
@@ -1690,7 +1690,7 @@ X509_req_st._fields_ = [
 assert sizeof(X509_req_st) == 16, sizeof(X509_req_st)
 assert alignment(X509_req_st) == 4, alignment(X509_req_st)
 X509_REQ = X509_req_st
-class x509_cinf_st(Structure):
+kundi x509_cinf_st(Structure):
     pass
 x509_cinf_st._fields_ = [
     ('version', POINTER(ASN1_INTEGER)),
@@ -1707,7 +1707,7 @@ x509_cinf_st._fields_ = [
 assert sizeof(x509_cinf_st) == 40, sizeof(x509_cinf_st)
 assert alignment(x509_cinf_st) == 4, alignment(x509_cinf_st)
 X509_CINF = x509_cinf_st
-class x509_cert_aux_st(Structure):
+kundi x509_cert_aux_st(Structure):
     pass
 x509_cert_aux_st._fields_ = [
     ('trust', POINTER(STACK)),
@@ -1719,7 +1719,7 @@ x509_cert_aux_st._fields_ = [
 assert sizeof(x509_cert_aux_st) == 20, sizeof(x509_cert_aux_st)
 assert alignment(x509_cert_aux_st) == 4, alignment(x509_cert_aux_st)
 X509_CERT_AUX = x509_cert_aux_st
-class AUTHORITY_KEYID_st(Structure):
+kundi AUTHORITY_KEYID_st(Structure):
     pass
 x509_st._fields_ = [
     ('cert_info', POINTER(X509_CINF)),
@@ -1743,7 +1743,7 @@ assert sizeof(x509_st) == 84, sizeof(x509_st)
 assert alignment(x509_st) == 4, alignment(x509_st)
 AUTHORITY_KEYID_st._fields_ = [
 ]
-class x509_trust_st(Structure):
+kundi x509_trust_st(Structure):
     pass
 x509_trust_st._fields_ = [
     ('trust', c_int),
@@ -1756,7 +1756,7 @@ x509_trust_st._fields_ = [
 assert sizeof(x509_trust_st) == 24, sizeof(x509_trust_st)
 assert alignment(x509_trust_st) == 4, alignment(x509_trust_st)
 X509_TRUST = x509_trust_st
-class X509_revoked_st(Structure):
+kundi X509_revoked_st(Structure):
     pass
 X509_revoked_st._fields_ = [
     ('serialNumber', POINTER(ASN1_INTEGER)),
@@ -1767,7 +1767,7 @@ X509_revoked_st._fields_ = [
 assert sizeof(X509_revoked_st) == 16, sizeof(X509_revoked_st)
 assert alignment(X509_revoked_st) == 4, alignment(X509_revoked_st)
 X509_REVOKED = X509_revoked_st
-class X509_crl_info_st(Structure):
+kundi X509_crl_info_st(Structure):
     pass
 X509_crl_info_st._fields_ = [
     ('version', POINTER(ASN1_INTEGER)),
@@ -1790,7 +1790,7 @@ X509_crl_st._fields_ = [
 ]
 assert sizeof(X509_crl_st) == 16, sizeof(X509_crl_st)
 assert alignment(X509_crl_st) == 4, alignment(X509_crl_st)
-class private_key_st(Structure):
+kundi private_key_st(Structure):
     pass
 private_key_st._fields_ = [
     ('version', c_int),
@@ -1806,7 +1806,7 @@ private_key_st._fields_ = [
 assert sizeof(private_key_st) == 52, sizeof(private_key_st)
 assert alignment(private_key_st) == 4, alignment(private_key_st)
 X509_PKEY = private_key_st
-class X509_info_st(Structure):
+kundi X509_info_st(Structure):
     pass
 X509_info_st._fields_ = [
     ('x509', POINTER(X509)),
@@ -1820,7 +1820,7 @@ X509_info_st._fields_ = [
 assert sizeof(X509_info_st) == 44, sizeof(X509_info_st)
 assert alignment(X509_info_st) == 4, alignment(X509_info_st)
 X509_INFO = X509_info_st
-class Netscape_spkac_st(Structure):
+kundi Netscape_spkac_st(Structure):
     pass
 Netscape_spkac_st._fields_ = [
     ('pubkey', POINTER(X509_PUBKEY)),
@@ -1829,7 +1829,7 @@ Netscape_spkac_st._fields_ = [
 assert sizeof(Netscape_spkac_st) == 8, sizeof(Netscape_spkac_st)
 assert alignment(Netscape_spkac_st) == 4, alignment(Netscape_spkac_st)
 NETSCAPE_SPKAC = Netscape_spkac_st
-class Netscape_spki_st(Structure):
+kundi Netscape_spki_st(Structure):
     pass
 Netscape_spki_st._fields_ = [
     ('spkac', POINTER(NETSCAPE_SPKAC)),
@@ -1839,7 +1839,7 @@ Netscape_spki_st._fields_ = [
 assert sizeof(Netscape_spki_st) == 12, sizeof(Netscape_spki_st)
 assert alignment(Netscape_spki_st) == 4, alignment(Netscape_spki_st)
 NETSCAPE_SPKI = Netscape_spki_st
-class Netscape_certificate_sequence(Structure):
+kundi Netscape_certificate_sequence(Structure):
     pass
 Netscape_certificate_sequence._fields_ = [
     ('type', POINTER(ASN1_OBJECT)),
@@ -1848,7 +1848,7 @@ Netscape_certificate_sequence._fields_ = [
 assert sizeof(Netscape_certificate_sequence) == 8, sizeof(Netscape_certificate_sequence)
 assert alignment(Netscape_certificate_sequence) == 4, alignment(Netscape_certificate_sequence)
 NETSCAPE_CERT_SEQUENCE = Netscape_certificate_sequence
-class PBEPARAM_st(Structure):
+kundi PBEPARAM_st(Structure):
     pass
 PBEPARAM_st._fields_ = [
     ('salt', POINTER(ASN1_OCTET_STRING)),
@@ -1857,7 +1857,7 @@ PBEPARAM_st._fields_ = [
 assert sizeof(PBEPARAM_st) == 8, sizeof(PBEPARAM_st)
 assert alignment(PBEPARAM_st) == 4, alignment(PBEPARAM_st)
 PBEPARAM = PBEPARAM_st
-class PBE2PARAM_st(Structure):
+kundi PBE2PARAM_st(Structure):
     pass
 PBE2PARAM_st._fields_ = [
     ('keyfunc', POINTER(X509_ALGOR)),
@@ -1866,7 +1866,7 @@ PBE2PARAM_st._fields_ = [
 assert sizeof(PBE2PARAM_st) == 8, sizeof(PBE2PARAM_st)
 assert alignment(PBE2PARAM_st) == 4, alignment(PBE2PARAM_st)
 PBE2PARAM = PBE2PARAM_st
-class PBKDF2PARAM_st(Structure):
+kundi PBKDF2PARAM_st(Structure):
     pass
 PBKDF2PARAM_st._fields_ = [
     ('salt', POINTER(ASN1_TYPE)),
@@ -1877,7 +1877,7 @@ PBKDF2PARAM_st._fields_ = [
 assert sizeof(PBKDF2PARAM_st) == 16, sizeof(PBKDF2PARAM_st)
 assert alignment(PBKDF2PARAM_st) == 4, alignment(PBKDF2PARAM_st)
 PBKDF2PARAM = PBKDF2PARAM_st
-class pkcs8_priv_key_info_st(Structure):
+kundi pkcs8_priv_key_info_st(Structure):
     pass
 pkcs8_priv_key_info_st._fields_ = [
     ('broken', c_int),
@@ -1889,7 +1889,7 @@ pkcs8_priv_key_info_st._fields_ = [
 assert sizeof(pkcs8_priv_key_info_st) == 20, sizeof(pkcs8_priv_key_info_st)
 assert alignment(pkcs8_priv_key_info_st) == 4, alignment(pkcs8_priv_key_info_st)
 PKCS8_PRIV_KEY_INFO = pkcs8_priv_key_info_st
-class x509_hash_dir_st(Structure):
+kundi x509_hash_dir_st(Structure):
     pass
 x509_hash_dir_st._fields_ = [
     ('num_dirs', c_int),
@@ -1900,7 +1900,7 @@ x509_hash_dir_st._fields_ = [
 assert sizeof(x509_hash_dir_st) == 16, sizeof(x509_hash_dir_st)
 assert alignment(x509_hash_dir_st) == 4, alignment(x509_hash_dir_st)
 X509_HASH_DIR_CTX = x509_hash_dir_st
-class x509_file_st(Structure):
+kundi x509_file_st(Structure):
     pass
 x509_file_st._fields_ = [
     ('num_paths', c_int),
@@ -1911,9 +1911,9 @@ x509_file_st._fields_ = [
 assert sizeof(x509_file_st) == 16, sizeof(x509_file_st)
 assert alignment(x509_file_st) == 4, alignment(x509_file_st)
 X509_CERT_FILE_CTX = x509_file_st
-class x509_object_st(Structure):
+kundi x509_object_st(Structure):
     pass
-class N14x509_object_st4DOLLAR_14E(Union):
+kundi N14x509_object_st4DOLLAR_14E(Union):
     pass
 N14x509_object_st4DOLLAR_14E._fields_ = [
     ('ptr', STRING),
@@ -1930,10 +1930,10 @@ x509_object_st._fields_ = [
 assert sizeof(x509_object_st) == 8, sizeof(x509_object_st)
 assert alignment(x509_object_st) == 4, alignment(x509_object_st)
 X509_OBJECT = x509_object_st
-class x509_lookup_st(Structure):
+kundi x509_lookup_st(Structure):
     pass
 X509_LOOKUP = x509_lookup_st
-class x509_lookup_method_st(Structure):
+kundi x509_lookup_method_st(Structure):
     pass
 x509_lookup_method_st._fields_ = [
     ('name', STRING),
@@ -2017,7 +2017,7 @@ assert alignment(x509_store_ctx_st) == 4, alignment(x509_store_ctx_st)
 va_list = __darwin_va_list
 __darwin_off_t = __int64_t
 fpos_t = __darwin_off_t
-class __sbuf(Structure):
+kundi __sbuf(Structure):
     pass
 __sbuf._fields_ = [
     ('_base', POINTER(c_ubyte)),
@@ -2025,11 +2025,11 @@ __sbuf._fields_ = [
 ]
 assert sizeof(__sbuf) == 8, sizeof(__sbuf)
 assert alignment(__sbuf) == 4, alignment(__sbuf)
-class __sFILEX(Structure):
+kundi __sFILEX(Structure):
     pass
 __sFILEX._fields_ = [
 ]
-class __sFILE(Structure):
+kundi __sFILE(Structure):
     pass
 __sFILE._pack_ = 4
 __sFILE._fields_ = [
@@ -2059,7 +2059,7 @@ assert alignment(__sFILE) == 4, alignment(__sFILE)
 FILE = __sFILE
 ct_rune_t = __darwin_ct_rune_t
 rune_t = __darwin_rune_t
-class div_t(Structure):
+kundi div_t(Structure):
     pass
 div_t._fields_ = [
     ('quot', c_int),
@@ -2067,7 +2067,7 @@ div_t._fields_ = [
 ]
 assert sizeof(div_t) == 8, sizeof(div_t)
 assert alignment(div_t) == 4, alignment(div_t)
-class ldiv_t(Structure):
+kundi ldiv_t(Structure):
     pass
 ldiv_t._fields_ = [
     ('quot', c_long),
@@ -2075,7 +2075,7 @@ ldiv_t._fields_ = [
 ]
 assert sizeof(ldiv_t) == 8, sizeof(ldiv_t)
 assert alignment(ldiv_t) == 4, alignment(ldiv_t)
-class lldiv_t(Structure):
+kundi lldiv_t(Structure):
     pass
 lldiv_t._pack_ = 4
 lldiv_t._fields_ = [
@@ -2088,15 +2088,15 @@ __darwin_dev_t = __int32_t
 dev_t = __darwin_dev_t
 __darwin_mode_t = __uint16_t
 mode_t = __darwin_mode_t
-class mcontext(Structure):
+kundi mcontext(Structure):
     pass
 mcontext._fields_ = [
 ]
-class mcontext64(Structure):
+kundi mcontext64(Structure):
     pass
 mcontext64._fields_ = [
 ]
-class __darwin_pthread_handler_rec(Structure):
+kundi __darwin_pthread_handler_rec(Structure):
     pass
 __darwin_pthread_handler_rec._fields_ = [
     ('__routine', CFUNCTYPE(None, c_void_p)),
@@ -2105,7 +2105,7 @@ __darwin_pthread_handler_rec._fields_ = [
 ]
 assert sizeof(__darwin_pthread_handler_rec) == 12, sizeof(__darwin_pthread_handler_rec)
 assert alignment(__darwin_pthread_handler_rec) == 4, alignment(__darwin_pthread_handler_rec)
-class _opaque_pthread_attr_t(Structure):
+kundi _opaque_pthread_attr_t(Structure):
     pass
 _opaque_pthread_attr_t._fields_ = [
     ('__sig', c_long),
@@ -2113,7 +2113,7 @@ _opaque_pthread_attr_t._fields_ = [
 ]
 assert sizeof(_opaque_pthread_attr_t) == 40, sizeof(_opaque_pthread_attr_t)
 assert alignment(_opaque_pthread_attr_t) == 4, alignment(_opaque_pthread_attr_t)
-class _opaque_pthread_cond_t(Structure):
+kundi _opaque_pthread_cond_t(Structure):
     pass
 _opaque_pthread_cond_t._fields_ = [
     ('__sig', c_long),
@@ -2121,7 +2121,7 @@ _opaque_pthread_cond_t._fields_ = [
 ]
 assert sizeof(_opaque_pthread_cond_t) == 28, sizeof(_opaque_pthread_cond_t)
 assert alignment(_opaque_pthread_cond_t) == 4, alignment(_opaque_pthread_cond_t)
-class _opaque_pthread_condattr_t(Structure):
+kundi _opaque_pthread_condattr_t(Structure):
     pass
 _opaque_pthread_condattr_t._fields_ = [
     ('__sig', c_long),
@@ -2129,7 +2129,7 @@ _opaque_pthread_condattr_t._fields_ = [
 ]
 assert sizeof(_opaque_pthread_condattr_t) == 8, sizeof(_opaque_pthread_condattr_t)
 assert alignment(_opaque_pthread_condattr_t) == 4, alignment(_opaque_pthread_condattr_t)
-class _opaque_pthread_mutex_t(Structure):
+kundi _opaque_pthread_mutex_t(Structure):
     pass
 _opaque_pthread_mutex_t._fields_ = [
     ('__sig', c_long),
@@ -2137,7 +2137,7 @@ _opaque_pthread_mutex_t._fields_ = [
 ]
 assert sizeof(_opaque_pthread_mutex_t) == 44, sizeof(_opaque_pthread_mutex_t)
 assert alignment(_opaque_pthread_mutex_t) == 4, alignment(_opaque_pthread_mutex_t)
-class _opaque_pthread_mutexattr_t(Structure):
+kundi _opaque_pthread_mutexattr_t(Structure):
     pass
 _opaque_pthread_mutexattr_t._fields_ = [
     ('__sig', c_long),
@@ -2145,7 +2145,7 @@ _opaque_pthread_mutexattr_t._fields_ = [
 ]
 assert sizeof(_opaque_pthread_mutexattr_t) == 12, sizeof(_opaque_pthread_mutexattr_t)
 assert alignment(_opaque_pthread_mutexattr_t) == 4, alignment(_opaque_pthread_mutexattr_t)
-class _opaque_pthread_once_t(Structure):
+kundi _opaque_pthread_once_t(Structure):
     pass
 _opaque_pthread_once_t._fields_ = [
     ('__sig', c_long),
@@ -2153,7 +2153,7 @@ _opaque_pthread_once_t._fields_ = [
 ]
 assert sizeof(_opaque_pthread_once_t) == 8, sizeof(_opaque_pthread_once_t)
 assert alignment(_opaque_pthread_once_t) == 4, alignment(_opaque_pthread_once_t)
-class _opaque_pthread_rwlock_t(Structure):
+kundi _opaque_pthread_rwlock_t(Structure):
     pass
 _opaque_pthread_rwlock_t._fields_ = [
     ('__sig', c_long),
@@ -2161,7 +2161,7 @@ _opaque_pthread_rwlock_t._fields_ = [
 ]
 assert sizeof(_opaque_pthread_rwlock_t) == 128, sizeof(_opaque_pthread_rwlock_t)
 assert alignment(_opaque_pthread_rwlock_t) == 4, alignment(_opaque_pthread_rwlock_t)
-class _opaque_pthread_rwlockattr_t(Structure):
+kundi _opaque_pthread_rwlockattr_t(Structure):
     pass
 _opaque_pthread_rwlockattr_t._fields_ = [
     ('__sig', c_long),
@@ -2169,7 +2169,7 @@ _opaque_pthread_rwlockattr_t._fields_ = [
 ]
 assert sizeof(_opaque_pthread_rwlockattr_t) == 16, sizeof(_opaque_pthread_rwlockattr_t)
 assert alignment(_opaque_pthread_rwlockattr_t) == 4, alignment(_opaque_pthread_rwlockattr_t)
-class _opaque_pthread_t(Structure):
+kundi _opaque_pthread_t(Structure):
     pass
 _opaque_pthread_t._fields_ = [
     ('__sig', c_long),
@@ -2205,7 +2205,7 @@ __darwin_suseconds_t = __int32_t
 __darwin_uid_t = __uint32_t
 __darwin_useconds_t = __uint32_t
 __darwin_uuid_t = c_ubyte * 16
-class sigaltstack(Structure):
+kundi sigaltstack(Structure):
     pass
 sigaltstack._fields_ = [
     ('ss_sp', c_void_p),
@@ -2215,7 +2215,7 @@ sigaltstack._fields_ = [
 assert sizeof(sigaltstack) == 12, sizeof(sigaltstack)
 assert alignment(sigaltstack) == 4, alignment(sigaltstack)
 __darwin_stack_t = sigaltstack
-class ucontext(Structure):
+kundi ucontext(Structure):
     pass
 ucontext._fields_ = [
     ('uc_onstack', c_int),
@@ -2228,7 +2228,7 @@ ucontext._fields_ = [
 assert sizeof(ucontext) == 32, sizeof(ucontext)
 assert alignment(ucontext) == 4, alignment(ucontext)
 __darwin_ucontext_t = ucontext
-class ucontext64(Structure):
+kundi ucontext64(Structure):
     pass
 ucontext64._fields_ = [
     ('uc_onstack', c_int),
@@ -2241,7 +2241,7 @@ ucontext64._fields_ = [
 assert sizeof(ucontext64) == 32, sizeof(ucontext64)
 assert alignment(ucontext64) == 4, alignment(ucontext64)
 __darwin_ucontext64_t = ucontext64
-class timeval(Structure):
+kundi timeval(Structure):
     pass
 timeval._fields_ = [
     ('tv_sec', __darwin_time_t),
@@ -2250,7 +2250,7 @@ timeval._fields_ = [
 assert sizeof(timeval) == 8, sizeof(timeval)
 assert alignment(timeval) == 4, alignment(timeval)
 rlim_t = __int64_t
-class rusage(Structure):
+kundi rusage(Structure):
     pass
 rusage._fields_ = [
     ('ru_utime', timeval),
@@ -2272,7 +2272,7 @@ rusage._fields_ = [
 ]
 assert sizeof(rusage) == 72, sizeof(rusage)
 assert alignment(rusage) == 4, alignment(rusage)
-class rlimit(Structure):
+kundi rlimit(Structure):
     pass
 rlimit._pack_ = 4
 rlimit._fields_ = [
@@ -2288,7 +2288,7 @@ sigset_t = __darwin_sigset_t
 ucontext_t = __darwin_ucontext_t
 ucontext64_t = __darwin_ucontext64_t
 uid_t = __darwin_uid_t
-class sigval(Union):
+kundi sigval(Union):
     pass
 sigval._fields_ = [
     ('sival_int', c_int),
@@ -2296,7 +2296,7 @@ sigval._fields_ = [
 ]
 assert sizeof(sigval) == 4, sizeof(sigval)
 assert alignment(sigval) == 4, alignment(sigval)
-class sigevent(Structure):
+kundi sigevent(Structure):
     pass
 sigevent._fields_ = [
     ('sigev_notify', c_int),
@@ -2307,7 +2307,7 @@ sigevent._fields_ = [
 ]
 assert sizeof(sigevent) == 20, sizeof(sigevent)
 assert alignment(sigevent) == 4, alignment(sigevent)
-class __siginfo(Structure):
+kundi __siginfo(Structure):
     pass
 pid_t = __darwin_pid_t
 __siginfo._fields_ = [
@@ -2325,7 +2325,7 @@ __siginfo._fields_ = [
 assert sizeof(__siginfo) == 64, sizeof(__siginfo)
 assert alignment(__siginfo) == 4, alignment(__siginfo)
 siginfo_t = __siginfo
-class __sigaction_u(Union):
+kundi __sigaction_u(Union):
     pass
 __sigaction_u._fields_ = [
     ('__sa_handler', CFUNCTYPE(None, c_int)),
@@ -2333,7 +2333,7 @@ __sigaction_u._fields_ = [
 ]
 assert sizeof(__sigaction_u) == 4, sizeof(__sigaction_u)
 assert alignment(__sigaction_u) == 4, alignment(__sigaction_u)
-class __sigaction(Structure):
+kundi __sigaction(Structure):
     pass
 __sigaction._fields_ = [
     ('__sigaction_u', __sigaction_u),
@@ -2343,7 +2343,7 @@ __sigaction._fields_ = [
 ]
 assert sizeof(__sigaction) == 16, sizeof(__sigaction)
 assert alignment(__sigaction) == 4, alignment(__sigaction)
-class sigaction(Structure):
+kundi sigaction(Structure):
     pass
 sigaction._fields_ = [
     ('__sigaction_u', __sigaction_u),
@@ -2354,7 +2354,7 @@ assert sizeof(sigaction) == 12, sizeof(sigaction)
 assert alignment(sigaction) == 4, alignment(sigaction)
 sig_t = CFUNCTYPE(None, c_int)
 stack_t = __darwin_stack_t
-class sigvec(Structure):
+kundi sigvec(Structure):
     pass
 sigvec._fields_ = [
     ('sv_handler', CFUNCTYPE(None, c_int)),
@@ -2363,7 +2363,7 @@ sigvec._fields_ = [
 ]
 assert sizeof(sigvec) == 12, sizeof(sigvec)
 assert alignment(sigvec) == 4, alignment(sigvec)
-class sigstack(Structure):
+kundi sigstack(Structure):
     pass
 sigstack._fields_ = [
     ('ss_sp', STRING),
@@ -2399,7 +2399,7 @@ ssize_t = __darwin_ssize_t
 useconds_t = __darwin_useconds_t
 suseconds_t = __darwin_suseconds_t
 fd_mask = __int32_t
-class fd_set(Structure):
+kundi fd_set(Structure):
     pass
 fd_set._fields_ = [
     ('fds_bits', __int32_t * 32),
@@ -2421,9 +2421,9 @@ fsfilcnt_t = __darwin_fsfilcnt_t
 # values for enumeration 'idtype_t'
 idtype_t = c_int # enum
 id_t = __darwin_id_t
-class wait(Union):
+kundi wait(Union):
     pass
-class N4wait3DOLLAR_3E(Structure):
+kundi N4wait3DOLLAR_3E(Structure):
     pass
 N4wait3DOLLAR_3E._fields_ = [
     ('w_Termsig', c_uint, 7),
@@ -2433,7 +2433,7 @@ N4wait3DOLLAR_3E._fields_ = [
 ]
 assert sizeof(N4wait3DOLLAR_3E) == 4, sizeof(N4wait3DOLLAR_3E)
 assert alignment(N4wait3DOLLAR_3E) == 4, alignment(N4wait3DOLLAR_3E)
-class N4wait3DOLLAR_4E(Structure):
+kundi N4wait3DOLLAR_4E(Structure):
     pass
 N4wait3DOLLAR_4E._fields_ = [
     ('w_Stopval', c_uint, 8),
@@ -2449,7 +2449,7 @@ wait._fields_ = [
 ]
 assert sizeof(wait) == 4, sizeof(wait)
 assert alignment(wait) == 4, alignment(wait)
-class timespec(Structure):
+kundi timespec(Structure):
     pass
 timespec._fields_ = [
     ('tv_sec', time_t),
@@ -2457,7 +2457,7 @@ timespec._fields_ = [
 ]
 assert sizeof(timespec) == 8, sizeof(timespec)
 assert alignment(timespec) == 4, alignment(timespec)
-class tm(Structure):
+kundi tm(Structure):
     pass
 tm._fields_ = [
     ('tm_sec', c_int),

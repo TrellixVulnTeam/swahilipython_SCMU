@@ -11,7 +11,7 @@ it only uses turtle commands.
 
 kutoka turtle agiza *
 
-def main():
+eleza main():
     peacecolors = ("red3",  "orange", "yellow",
                    "seagreen4", "orchid4",
                    "royalblue1", "dodgerblue4")
@@ -53,9 +53,9 @@ def main():
     forward(170)
     up()
 
-    goto(0,300) # vanish if hideturtle() is not available ;-)
-    return "Done!"
+    goto(0,300) # vanish ikiwa hideturtle() is not available ;-)
+    rudisha "Done!"
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     main()
     mainloop()

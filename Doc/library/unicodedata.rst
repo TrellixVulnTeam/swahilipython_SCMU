@@ -17,7 +17,7 @@
 
 This module provides access to the Unicode Character Database (UCD) which
 defines character properties for all Unicode characters. The data contained in
-this database is compiled from the `UCD version 12.1.0
+this database is compiled kutoka the `UCD version 12.1.0
 <http://www.unicode.org/Public/12.1.0/ucd>`_.
 
 The module uses the same names and symbols as defined by Unicode
@@ -71,14 +71,14 @@ following functions:
 
 .. function:: bidirectional(chr)
 
-   Returns the bidirectional class assigned to the character *chr* as
+   Returns the bidirectional kundi assigned to the character *chr* as
    string. If no such value is defined, an empty string is returned.
 
 
 .. function:: combining(chr)
 
-   Returns the canonical combining class assigned to the character *chr*
-   as integer. Returns ``0`` if no combining class is defined.
+   Returns the canonical combining kundi assigned to the character *chr*
+   as integer. Returns ``0`` if no combining kundi is defined.
 
 
 .. function:: east_asian_width(chr)
@@ -156,7 +156,7 @@ In addition, the module exposes the following constant:
 
 Examples:
 
-   >>> import unicodedata
+   >>> agiza unicodedata
    >>> unicodedata.lookup('LEFT CURLY BRACKET')
    '{'
    >>> unicodedata.name('/')

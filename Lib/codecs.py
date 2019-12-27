@@ -55,7 +55,7 @@ BOM_UTF32_LE = b'\xff\xfe\x00\x00'
 # UTF-32, big endian
 BOM_UTF32_BE = b'\x00\x00\xfe\xff'
 
-if sys.byteorder == 'little':
+ikiwa sys.byteorder == 'little':
 
     # UTF-16, native endianness
     BOM = BOM_UTF16 = BOM_UTF16_LE
@@ -80,7 +80,7 @@ BOM64_BE = BOM_UTF32_BE
 
 ### Codec base classes (defining the API)
 
-class CodecInfo(tuple):
+kundi CodecInfo(tuple):
     """Codec details when looking up the codec registry"""
 
     # Private API to allow Python 3.4 to blacklist the known non-Unicode
@@ -91,7 +91,7 @@ class CodecInfo(tuple):
     # See http://bugs.python.org/issue19619
     _is_text_encoding = True # Assume codecs are text encodings by default
 
-    def __new__(cls, encode, decode, streamreader=None, streamwriter=None,
+    eleza __new__(cls, encode, decode, streamreader=None, streamwriter=None,
         incrementalencoder=None, incrementaldecoder=None, name=None,
         *, _is_text_encoding=None):
         self = tuple.__new__(cls, (encode, decode, streamreader, streamwriter))
@@ -102,16 +102,16 @@ class CodecInfo(tuple):
         self.incrementaldecoder = incrementaldecoder
         self.streamwriter = streamwriter
         self.streamreader = streamreader
-        if _is_text_encoding is not None:
+        ikiwa _is_text_encoding is not None:
             self._is_text_encoding = _is_text_encoding
-        return self
+        rudisha self
 
-    def __repr__(self):
-        return "<%s.%s object for encoding %s at %#x>" % \
+    eleza __repr__(self):
+        rudisha "<%s.%s object for encoding %s at %#x>" % \
                 (self.__class__.__module__, self.__class__.__qualname__,
                  self.name, id(self))
 
-class Codec:
+kundi Codec:
 
     """ Defines the interface for stateless encoders/decoders.
 
@@ -135,7 +135,7 @@ class Codec:
         The set of allowed values can be extended via register_error.
 
     """
-    def encode(self, input, errors='strict'):
+    eleza encode(self, input, errors='strict'):
 
         """ Encodes the object input and returns a tuple (output
             object, length consumed).
@@ -148,13 +148,13 @@ class Codec:
             make encoding efficient.
 
             The encoder must be able to handle zero length input and
-            return an empty object of the output object type in this
+            rudisha an empty object of the output object type in this
             situation.
 
         """
         raise NotImplementedError
 
-    def decode(self, input, errors='strict'):
+    eleza decode(self, input, errors='strict'):
 
         """ Decodes the object input and returns a tuple (output
             object, length consumed).
@@ -171,19 +171,19 @@ class Codec:
             make decoding efficient.
 
             The decoder must be able to handle zero length input and
-            return an empty object of the output object type in this
+            rudisha an empty object of the output object type in this
             situation.
 
         """
         raise NotImplementedError
 
-class IncrementalEncoder(object):
+kundi IncrementalEncoder(object):
     """
     An IncrementalEncoder encodes an input in multiple steps. The input can
     be passed piece by piece to the encode() method. The IncrementalEncoder
     remembers the state of the encoding process between calls to encode().
     """
-    def __init__(self, errors='strict'):
+    eleza __init__(self, errors='strict'):
         """
         Creates an IncrementalEncoder instance.
 
@@ -194,70 +194,70 @@ class IncrementalEncoder(object):
         self.errors = errors
         self.buffer = ""
 
-    def encode(self, input, final=False):
+    eleza encode(self, input, final=False):
         """
         Encodes input and returns the resulting object.
         """
         raise NotImplementedError
 
-    def reset(self):
+    eleza reset(self):
         """
         Resets the encoder to the initial state.
         """
 
-    def getstate(self):
+    eleza getstate(self):
         """
         Return the current state of the encoder.
         """
-        return 0
+        rudisha 0
 
-    def setstate(self, state):
+    eleza setstate(self, state):
         """
         Set the current state of the encoder. state must have been
         returned by getstate().
         """
 
-class BufferedIncrementalEncoder(IncrementalEncoder):
+kundi BufferedIncrementalEncoder(IncrementalEncoder):
     """
-    This subclass of IncrementalEncoder can be used as the baseclass for an
-    incremental encoder if the encoder must keep some of the output in a
+    This subkundi of IncrementalEncoder can be used as the basekundi for an
+    incremental encoder ikiwa the encoder must keep some of the output in a
     buffer between calls to encode().
     """
-    def __init__(self, errors='strict'):
+    eleza __init__(self, errors='strict'):
         IncrementalEncoder.__init__(self, errors)
         # unencoded input that is kept between calls to encode()
         self.buffer = ""
 
-    def _buffer_encode(self, input, errors, final):
+    eleza _buffer_encode(self, input, errors, final):
         # Overwrite this method in subclasses: It must encode input
-        # and return an (output, length consumed) tuple
+        # and rudisha an (output, length consumed) tuple
         raise NotImplementedError
 
-    def encode(self, input, final=False):
+    eleza encode(self, input, final=False):
         # encode input (taking the buffer into account)
         data = self.buffer + input
         (result, consumed) = self._buffer_encode(data, self.errors, final)
         # keep unencoded input until the next call
         self.buffer = data[consumed:]
-        return result
+        rudisha result
 
-    def reset(self):
+    eleza reset(self):
         IncrementalEncoder.reset(self)
         self.buffer = ""
 
-    def getstate(self):
-        return self.buffer or 0
+    eleza getstate(self):
+        rudisha self.buffer or 0
 
-    def setstate(self, state):
+    eleza setstate(self, state):
         self.buffer = state or ""
 
-class IncrementalDecoder(object):
+kundi IncrementalDecoder(object):
     """
     An IncrementalDecoder decodes an input in multiple steps. The input can
     be passed piece by piece to the decode() method. The IncrementalDecoder
     remembers the state of the decoding process between calls to decode().
     """
-    def __init__(self, errors='strict'):
+    eleza __init__(self, errors='strict'):
         """
         Create an IncrementalDecoder instance.
 
@@ -267,18 +267,18 @@ class IncrementalDecoder(object):
         """
         self.errors = errors
 
-    def decode(self, input, final=False):
+    eleza decode(self, input, final=False):
         """
         Decode input and returns the resulting object.
         """
         raise NotImplementedError
 
-    def reset(self):
+    eleza reset(self):
         """
         Reset the decoder to the initial state.
         """
 
-    def getstate(self):
+    eleza getstate(self):
         """
         Return the current state of the decoder.
 
@@ -288,11 +288,11 @@ class IncrementalDecoder(object):
         additional_state_info must be a non-negative integer
         representing the state of the decoder WITHOUT yet having
         processed the contents of buffered_input.  In the initial state
-        and after reset(), getstate() must return (b"", 0).
+        and after reset(), getstate() must rudisha (b"", 0).
         """
-        return (b"", 0)
+        rudisha (b"", 0)
 
-    def setstate(self, state):
+    eleza setstate(self, state):
         """
         Set the current state of the decoder.
 
@@ -300,52 +300,52 @@ class IncrementalDecoder(object):
         setstate((b"", 0)) must be equivalent to reset().
         """
 
-class BufferedIncrementalDecoder(IncrementalDecoder):
+kundi BufferedIncrementalDecoder(IncrementalDecoder):
     """
-    This subclass of IncrementalDecoder can be used as the baseclass for an
-    incremental decoder if the decoder must be able to handle incomplete
+    This subkundi of IncrementalDecoder can be used as the basekundi for an
+    incremental decoder ikiwa the decoder must be able to handle incomplete
     byte sequences.
     """
-    def __init__(self, errors='strict'):
+    eleza __init__(self, errors='strict'):
         IncrementalDecoder.__init__(self, errors)
         # undecoded input that is kept between calls to decode()
         self.buffer = b""
 
-    def _buffer_decode(self, input, errors, final):
+    eleza _buffer_decode(self, input, errors, final):
         # Overwrite this method in subclasses: It must decode input
-        # and return an (output, length consumed) tuple
+        # and rudisha an (output, length consumed) tuple
         raise NotImplementedError
 
-    def decode(self, input, final=False):
+    eleza decode(self, input, final=False):
         # decode input (taking the buffer into account)
         data = self.buffer + input
         (result, consumed) = self._buffer_decode(data, self.errors, final)
         # keep undecoded input until the next call
         self.buffer = data[consumed:]
-        return result
+        rudisha result
 
-    def reset(self):
+    eleza reset(self):
         IncrementalDecoder.reset(self)
         self.buffer = b""
 
-    def getstate(self):
+    eleza getstate(self):
         # additional state info is always 0
-        return (self.buffer, 0)
+        rudisha (self.buffer, 0)
 
-    def setstate(self, state):
+    eleza setstate(self, state):
         # ignore additional state info
         self.buffer = state[0]
 
 #
-# The StreamWriter and StreamReader class provide generic working
+# The StreamWriter and StreamReader kundi provide generic working
 # interfaces which can be used to implement new encoding submodules
 # very easily. See encodings/utf_8.py for an example on how this is
 # done.
 #
 
-class StreamWriter(Codec):
+kundi StreamWriter(Codec):
 
-    def __init__(self, stream, errors='strict'):
+    eleza __init__(self, stream, errors='strict'):
 
         """ Creates a StreamWriter instance.
 
@@ -370,21 +370,21 @@ class StreamWriter(Codec):
         self.stream = stream
         self.errors = errors
 
-    def write(self, object):
+    eleza write(self, object):
 
         """ Writes the object's contents encoded to self.stream.
         """
         data, consumed = self.encode(object, self.errors)
         self.stream.write(data)
 
-    def writelines(self, list):
+    eleza writelines(self, list):
 
         """ Writes the concatenated list of strings to the stream
             using .write().
         """
         self.write(''.join(list))
 
-    def reset(self):
+    eleza reset(self):
 
         """ Flushes and resets the codec buffers used for keeping state.
 
@@ -396,31 +396,31 @@ class StreamWriter(Codec):
         """
         pass
 
-    def seek(self, offset, whence=0):
+    eleza seek(self, offset, whence=0):
         self.stream.seek(offset, whence)
-        if whence == 0 and offset == 0:
+        ikiwa whence == 0 and offset == 0:
             self.reset()
 
-    def __getattr__(self, name,
+    eleza __getattr__(self, name,
                     getattr=getattr):
 
         """ Inherit all other methods kutoka the underlying stream.
         """
-        return getattr(self.stream, name)
+        rudisha getattr(self.stream, name)
 
-    def __enter__(self):
-        return self
+    eleza __enter__(self):
+        rudisha self
 
-    def __exit__(self, type, value, tb):
+    eleza __exit__(self, type, value, tb):
         self.stream.close()
 
 ###
 
-class StreamReader(Codec):
+kundi StreamReader(Codec):
 
     charbuffertype = str
 
-    def __init__(self, stream, errors='strict'):
+    eleza __init__(self, stream, errors='strict'):
 
         """ Creates a StreamReader instance.
 
@@ -445,17 +445,17 @@ class StreamReader(Codec):
         self.charbuffer = self._empty_charbuffer
         self.linebuffer = None
 
-    def decode(self, input, errors='strict'):
+    eleza decode(self, input, errors='strict'):
         raise NotImplementedError
 
-    def read(self, size=-1, chars=-1, firstline=False):
+    eleza read(self, size=-1, chars=-1, firstline=False):
 
         """ Decodes data kutoka the stream self.stream and returns the
             resulting object.
 
             chars indicates the number of decoded code points or bytes to
-            return. read() will never return more data than requested,
-            but it might return less, if there is not enough available.
+            return. read() will never rudisha more data than requested,
+            but it might rudisha less, ikiwa there is not enough available.
 
             size indicates the approximate maximum number of decoded
             bytes or code points to read for decoding. The decoder
@@ -476,38 +476,38 @@ class StreamReader(Codec):
             on the stream, these should be read too.
         """
         # If we have lines cached, first merge them back into characters
-        if self.linebuffer:
+        ikiwa self.linebuffer:
             self.charbuffer = self._empty_charbuffer.join(self.linebuffer)
             self.linebuffer = None
 
-        if chars < 0:
+        ikiwa chars < 0:
             # For compatibility with other read() methods that take a
             # single argument
             chars = size
 
-        # read until we get the required number of characters (if available)
+        # read until we get the required number of characters (ikiwa available)
         while True:
             # can the request be satisfied kutoka the character buffer?
-            if chars >= 0:
-                if len(self.charbuffer) >= chars:
+            ikiwa chars >= 0:
+                ikiwa len(self.charbuffer) >= chars:
                     break
             # we need more data
-            if size < 0:
+            ikiwa size < 0:
                 newdata = self.stream.read()
             else:
                 newdata = self.stream.read(size)
             # decode bytes (those remaining kutoka the last call included)
             data = self.bytebuffer + newdata
-            if not data:
+            ikiwa not data:
                 break
             try:
                 newchars, decodedbytes = self.decode(data, self.errors)
             except UnicodeDecodeError as exc:
-                if firstline:
+                ikiwa firstline:
                     newchars, decodedbytes = \
                         self.decode(data[:exc.start], self.errors)
                     lines = newchars.splitlines(keepends=True)
-                    if len(lines)<=1:
+                    ikiwa len(lines)<=1:
                         raise
                 else:
                     raise
@@ -516,9 +516,9 @@ class StreamReader(Codec):
             # put new characters in the character buffer
             self.charbuffer += newchars
             # there was no data available
-            if not newdata:
+            ikiwa not newdata:
                 break
-        if chars < 0:
+        ikiwa chars < 0:
             # Return everything we've got
             result = self.charbuffer
             self.charbuffer = self._empty_charbuffer
@@ -526,53 +526,53 @@ class StreamReader(Codec):
             # Return the first chars characters
             result = self.charbuffer[:chars]
             self.charbuffer = self.charbuffer[chars:]
-        return result
+        rudisha result
 
-    def readline(self, size=None, keepends=True):
+    eleza readline(self, size=None, keepends=True):
 
-        """ Read one line kutoka the input stream and return the
+        """ Read one line kutoka the input stream and rudisha the
             decoded data.
 
-            size, if given, is passed as size argument to the
+            size, ikiwa given, is passed as size argument to the
             read() method.
 
         """
         # If we have lines cached kutoka an earlier read, return
         # them unconditionally
-        if self.linebuffer:
+        ikiwa self.linebuffer:
             line = self.linebuffer[0]
             del self.linebuffer[0]
-            if len(self.linebuffer) == 1:
+            ikiwa len(self.linebuffer) == 1:
                 # revert to charbuffer mode; we might need more data
                 # next time
                 self.charbuffer = self.linebuffer[0]
                 self.linebuffer = None
-            if not keepends:
+            ikiwa not keepends:
                 line = line.splitlines(keepends=False)[0]
-            return line
+            rudisha line
 
         readsize = size or 72
         line = self._empty_charbuffer
         # If size is given, we call read() only once
         while True:
             data = self.read(readsize, firstline=True)
-            if data:
+            ikiwa data:
                 # If we're at a "\r" read one extra character (which might
                 # be a "\n") to get a proper line ending. If the stream is
-                # temporarily exhausted we return the wrong line ending.
-                if (isinstance(data, str) and data.endswith("\r")) or \
+                # temporarily exhausted we rudisha the wrong line ending.
+                ikiwa (isinstance(data, str) and data.endswith("\r")) or \
                    (isinstance(data, bytes) and data.endswith(b"\r")):
                     data += self.read(size=1, chars=1)
 
             line += data
             lines = line.splitlines(keepends=True)
-            if lines:
-                if len(lines) > 1:
+            ikiwa lines:
+                ikiwa len(lines) > 1:
                     # More than one line result; the first line is a full line
                     # to return
                     line = lines[0]
                     del lines[0]
-                    if len(lines) > 1:
+                    ikiwa len(lines) > 1:
                         # cache the remaining lines
                         lines[-1] += self.charbuffer
                         self.linebuffer = lines
@@ -580,45 +580,45 @@ class StreamReader(Codec):
                     else:
                         # only one remaining line, put it back into charbuffer
                         self.charbuffer = lines[0] + self.charbuffer
-                    if not keepends:
+                    ikiwa not keepends:
                         line = line.splitlines(keepends=False)[0]
                     break
                 line0withend = lines[0]
                 line0withoutend = lines[0].splitlines(keepends=False)[0]
-                if line0withend != line0withoutend: # We really have a line end
+                ikiwa line0withend != line0withoutend: # We really have a line end
                     # Put the rest back together and keep it until the next call
                     self.charbuffer = self._empty_charbuffer.join(lines[1:]) + \
                                       self.charbuffer
-                    if keepends:
+                    ikiwa keepends:
                         line = line0withend
                     else:
                         line = line0withoutend
                     break
             # we didn't get anything or this was our only try
-            if not data or size is not None:
-                if line and not keepends:
+            ikiwa not data or size is not None:
+                ikiwa line and not keepends:
                     line = line.splitlines(keepends=False)[0]
                 break
-            if readsize < 8000:
+            ikiwa readsize < 8000:
                 readsize *= 2
-        return line
+        rudisha line
 
-    def readlines(self, sizehint=None, keepends=True):
+    eleza readlines(self, sizehint=None, keepends=True):
 
         """ Read all lines available on the input stream
-            and return them as a list.
+            and rudisha them as a list.
 
             Line breaks are implemented using the codec's decoder
             method and are included in the list entries.
 
-            sizehint, if given, is ignored since there is no efficient
+            sizehint, ikiwa given, is ignored since there is no efficient
             way to finding the true end-of-line.
 
         """
         data = self.read()
-        return data.splitlines(keepends)
+        rudisha data.splitlines(keepends)
 
-    def reset(self):
+    eleza reset(self):
 
         """ Resets the codec buffers used for keeping state.
 
@@ -631,7 +631,7 @@ class StreamReader(Codec):
         self.charbuffer = self._empty_charbuffer
         self.linebuffer = None
 
-    def seek(self, offset, whence=0):
+    eleza seek(self, offset, whence=0):
         """ Set the input stream's current position.
 
             Resets the codec buffers used for keeping state.
@@ -639,33 +639,33 @@ class StreamReader(Codec):
         self.stream.seek(offset, whence)
         self.reset()
 
-    def __next__(self):
+    eleza __next__(self):
 
         """ Return the next decoded line kutoka the input stream."""
         line = self.readline()
-        if line:
-            return line
+        ikiwa line:
+            rudisha line
         raise StopIteration
 
-    def __iter__(self):
-        return self
+    eleza __iter__(self):
+        rudisha self
 
-    def __getattr__(self, name,
+    eleza __getattr__(self, name,
                     getattr=getattr):
 
         """ Inherit all other methods kutoka the underlying stream.
         """
-        return getattr(self.stream, name)
+        rudisha getattr(self.stream, name)
 
-    def __enter__(self):
-        return self
+    eleza __enter__(self):
+        rudisha self
 
-    def __exit__(self, type, value, tb):
+    eleza __exit__(self, type, value, tb):
         self.stream.close()
 
 ###
 
-class StreamReaderWriter:
+kundi StreamReaderWriter:
 
     """ StreamReaderWriter instances allow wrapping streams which
         work in both read and write modes.
@@ -678,7 +678,7 @@ class StreamReaderWriter:
     # Optional attributes set by the file wrappers below
     encoding = 'unknown'
 
-    def __init__(self, stream, Reader, Writer, errors='strict'):
+    eleza __init__(self, stream, Reader, Writer, errors='strict'):
 
         """ Creates a StreamReaderWriter instance.
 
@@ -696,63 +696,63 @@ class StreamReaderWriter:
         self.writer = Writer(stream, errors)
         self.errors = errors
 
-    def read(self, size=-1):
+    eleza read(self, size=-1):
 
-        return self.reader.read(size)
+        rudisha self.reader.read(size)
 
-    def readline(self, size=None):
+    eleza readline(self, size=None):
 
-        return self.reader.readline(size)
+        rudisha self.reader.readline(size)
 
-    def readlines(self, sizehint=None):
+    eleza readlines(self, sizehint=None):
 
-        return self.reader.readlines(sizehint)
+        rudisha self.reader.readlines(sizehint)
 
-    def __next__(self):
+    eleza __next__(self):
 
         """ Return the next decoded line kutoka the input stream."""
-        return next(self.reader)
+        rudisha next(self.reader)
 
-    def __iter__(self):
-        return self
+    eleza __iter__(self):
+        rudisha self
 
-    def write(self, data):
+    eleza write(self, data):
 
-        return self.writer.write(data)
+        rudisha self.writer.write(data)
 
-    def writelines(self, list):
+    eleza writelines(self, list):
 
-        return self.writer.writelines(list)
+        rudisha self.writer.writelines(list)
 
-    def reset(self):
+    eleza reset(self):
 
         self.reader.reset()
         self.writer.reset()
 
-    def seek(self, offset, whence=0):
+    eleza seek(self, offset, whence=0):
         self.stream.seek(offset, whence)
         self.reader.reset()
-        if whence == 0 and offset == 0:
+        ikiwa whence == 0 and offset == 0:
             self.writer.reset()
 
-    def __getattr__(self, name,
+    eleza __getattr__(self, name,
                     getattr=getattr):
 
         """ Inherit all other methods kutoka the underlying stream.
         """
-        return getattr(self.stream, name)
+        rudisha getattr(self.stream, name)
 
     # these are needed to make "with StreamReaderWriter(...)" work properly
 
-    def __enter__(self):
-        return self
+    eleza __enter__(self):
+        rudisha self
 
-    def __exit__(self, type, value, tb):
+    eleza __exit__(self, type, value, tb):
         self.stream.close()
 
 ###
 
-class StreamRecoder:
+kundi StreamRecoder:
 
     """ StreamRecoder instances translate data kutoka one encoding to another.
 
@@ -772,7 +772,7 @@ class StreamRecoder:
     data_encoding = 'unknown'
     file_encoding = 'unknown'
 
-    def __init__(self, stream, encode, decode, Reader, Writer,
+    eleza __init__(self, stream, encode, decode, Reader, Writer,
                  errors='strict'):
 
         """ Creates a StreamRecoder instance which implements a two-way
@@ -800,75 +800,75 @@ class StreamRecoder:
         self.writer = Writer(stream, errors)
         self.errors = errors
 
-    def read(self, size=-1):
+    eleza read(self, size=-1):
 
         data = self.reader.read(size)
         data, bytesencoded = self.encode(data, self.errors)
-        return data
+        rudisha data
 
-    def readline(self, size=None):
+    eleza readline(self, size=None):
 
-        if size is None:
+        ikiwa size is None:
             data = self.reader.readline()
         else:
             data = self.reader.readline(size)
         data, bytesencoded = self.encode(data, self.errors)
-        return data
+        rudisha data
 
-    def readlines(self, sizehint=None):
+    eleza readlines(self, sizehint=None):
 
         data = self.reader.read()
         data, bytesencoded = self.encode(data, self.errors)
-        return data.splitlines(keepends=True)
+        rudisha data.splitlines(keepends=True)
 
-    def __next__(self):
+    eleza __next__(self):
 
         """ Return the next decoded line kutoka the input stream."""
         data = next(self.reader)
         data, bytesencoded = self.encode(data, self.errors)
-        return data
+        rudisha data
 
-    def __iter__(self):
-        return self
+    eleza __iter__(self):
+        rudisha self
 
-    def write(self, data):
+    eleza write(self, data):
 
         data, bytesdecoded = self.decode(data, self.errors)
-        return self.writer.write(data)
+        rudisha self.writer.write(data)
 
-    def writelines(self, list):
+    eleza writelines(self, list):
 
         data = b''.join(list)
         data, bytesdecoded = self.decode(data, self.errors)
-        return self.writer.write(data)
+        rudisha self.writer.write(data)
 
-    def reset(self):
+    eleza reset(self):
 
         self.reader.reset()
         self.writer.reset()
 
-    def seek(self, offset, whence=0):
+    eleza seek(self, offset, whence=0):
         # Seeks must be propagated to both the readers and writers
         # as they might need to reset their internal buffers.
         self.reader.seek(offset, whence)
         self.writer.seek(offset, whence)
 
-    def __getattr__(self, name,
+    eleza __getattr__(self, name,
                     getattr=getattr):
 
         """ Inherit all other methods kutoka the underlying stream.
         """
-        return getattr(self.stream, name)
+        rudisha getattr(self.stream, name)
 
-    def __enter__(self):
-        return self
+    eleza __enter__(self):
+        rudisha self
 
-    def __exit__(self, type, value, tb):
+    eleza __exit__(self, type, value, tb):
         self.stream.close()
 
 ### Shortcuts
 
-def open(filename, mode='r', encoding=None, errors='strict', buffering=-1):
+eleza open(filename, mode='r', encoding=None, errors='strict', buffering=-1):
 
     """ Open an encoded file using the given mode and return
         a wrapped version providing transparent encoding/decoding.
@@ -894,24 +894,24 @@ def open(filename, mode='r', encoding=None, errors='strict', buffering=-1):
 
         The returned wrapped file object provides an extra attribute
         .encoding which allows querying the used encoding. This
-        attribute is only available if an encoding was specified as
+        attribute is only available ikiwa an encoding was specified as
         parameter.
 
     """
-    if encoding is not None and \
+    ikiwa encoding is not None and \
        'b' not in mode:
         # Force opening of the file in binary mode
         mode = mode + 'b'
     file = builtins.open(filename, mode, buffering)
-    if encoding is None:
-        return file
+    ikiwa encoding is None:
+        rudisha file
     info = lookup(encoding)
     srw = StreamReaderWriter(file, info.streamreader, info.streamwriter, errors)
     # Add attributes to simplify introspection
     srw.encoding = encoding
-    return srw
+    rudisha srw
 
-def EncodedFile(file, data_encoding, file_encoding=None, errors='strict'):
+eleza EncodedFile(file, data_encoding, file_encoding=None, errors='strict'):
 
     """ Return a wrapped version of file which provides transparent
         encoding translation.
@@ -936,7 +936,7 @@ def EncodedFile(file, data_encoding, file_encoding=None, errors='strict'):
         introspection by Python programs.
 
     """
-    if file_encoding is None:
+    ikiwa file_encoding is None:
         file_encoding = data_encoding
     data_info = lookup(data_encoding)
     file_info = lookup(file_encoding)
@@ -945,11 +945,11 @@ def EncodedFile(file, data_encoding, file_encoding=None, errors='strict'):
     # Add attributes to simplify introspection
     sr.data_encoding = data_encoding
     sr.file_encoding = file_encoding
-    return sr
+    rudisha sr
 
 ### Helpers for codec lookup
 
-def getencoder(encoding):
+eleza getencoder(encoding):
 
     """ Lookup up the codec for the given encoding and return
         its encoder function.
@@ -957,9 +957,9 @@ def getencoder(encoding):
         Raises a LookupError in case the encoding cannot be found.
 
     """
-    return lookup(encoding).encode
+    rudisha lookup(encoding).encode
 
-def getdecoder(encoding):
+eleza getdecoder(encoding):
 
     """ Lookup up the codec for the given encoding and return
         its decoder function.
@@ -967,57 +967,57 @@ def getdecoder(encoding):
         Raises a LookupError in case the encoding cannot be found.
 
     """
-    return lookup(encoding).decode
+    rudisha lookup(encoding).decode
 
-def getincrementalencoder(encoding):
+eleza getincrementalencoder(encoding):
 
     """ Lookup up the codec for the given encoding and return
-        its IncrementalEncoder class or factory function.
+        its IncrementalEncoder kundi or factory function.
 
         Raises a LookupError in case the encoding cannot be found
         or the codecs doesn't provide an incremental encoder.
 
     """
     encoder = lookup(encoding).incrementalencoder
-    if encoder is None:
+    ikiwa encoder is None:
         raise LookupError(encoding)
-    return encoder
+    rudisha encoder
 
-def getincrementaldecoder(encoding):
+eleza getincrementaldecoder(encoding):
 
     """ Lookup up the codec for the given encoding and return
-        its IncrementalDecoder class or factory function.
+        its IncrementalDecoder kundi or factory function.
 
         Raises a LookupError in case the encoding cannot be found
         or the codecs doesn't provide an incremental decoder.
 
     """
     decoder = lookup(encoding).incrementaldecoder
-    if decoder is None:
+    ikiwa decoder is None:
         raise LookupError(encoding)
-    return decoder
+    rudisha decoder
 
-def getreader(encoding):
+eleza getreader(encoding):
 
     """ Lookup up the codec for the given encoding and return
-        its StreamReader class or factory function.
+        its StreamReader kundi or factory function.
 
         Raises a LookupError in case the encoding cannot be found.
 
     """
-    return lookup(encoding).streamreader
+    rudisha lookup(encoding).streamreader
 
-def getwriter(encoding):
+eleza getwriter(encoding):
 
     """ Lookup up the codec for the given encoding and return
-        its StreamWriter class or factory function.
+        its StreamWriter kundi or factory function.
 
         Raises a LookupError in case the encoding cannot be found.
 
     """
-    return lookup(encoding).streamwriter
+    rudisha lookup(encoding).streamwriter
 
-def iterencode(iterator, encoding, errors='strict', **kwargs):
+eleza iterencode(iterator, encoding, errors='strict', **kwargs):
     """
     Encoding iterator.
 
@@ -1029,13 +1029,13 @@ def iterencode(iterator, encoding, errors='strict', **kwargs):
     encoder = getincrementalencoder(encoding)(errors, **kwargs)
     for input in iterator:
         output = encoder.encode(input)
-        if output:
+        ikiwa output:
             yield output
     output = encoder.encode("", True)
-    if output:
+    ikiwa output:
         yield output
 
-def iterdecode(iterator, encoding, errors='strict', **kwargs):
+eleza iterdecode(iterator, encoding, errors='strict', **kwargs):
     """
     Decoding iterator.
 
@@ -1047,15 +1047,15 @@ def iterdecode(iterator, encoding, errors='strict', **kwargs):
     decoder = getincrementaldecoder(encoding)(errors, **kwargs)
     for input in iterator:
         output = decoder.decode(input)
-        if output:
+        ikiwa output:
             yield output
     output = decoder.decode(b"", True)
-    if output:
+    ikiwa output:
         yield output
 
 ### Helpers for charmap-based codecs
 
-def make_identity_dict(rng):
+eleza make_identity_dict(rng):
 
     """ make_identity_dict(rng) -> dict
 
@@ -1063,9 +1063,9 @@ def make_identity_dict(rng):
         mapped to themselves.
 
     """
-    return {i:i for i in rng}
+    rudisha {i:i for i in rng}
 
-def make_encoding_map(decoding_map):
+eleza make_encoding_map(decoding_map):
 
     """ Creates an encoding map kutoka a decoding map.
 
@@ -1080,11 +1080,11 @@ def make_encoding_map(decoding_map):
     """
     m = {}
     for k,v in decoding_map.items():
-        if not v in m:
+        ikiwa not v in m:
             m[v] = k
         else:
             m[v] = None
-    return m
+    rudisha m
 
 ### error handlers
 
@@ -1107,12 +1107,12 @@ except LookupError:
 # Tell modulefinder that using codecs probably needs the encodings
 # package
 _false = 0
-if _false:
+ikiwa _false:
     agiza encodings
 
 ### Tests
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
 
     # Make stdout translate Latin-1 output into UTF-8 output
     sys.stdout = EncodedFile(sys.stdout, 'latin-1', 'utf-8')

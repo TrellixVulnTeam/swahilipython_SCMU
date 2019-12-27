@@ -21,7 +21,7 @@ extern "C" {
 
    Never mix calls to PyMem_ with calls to the platform malloc/realloc/
    calloc/free.  For example, on Windows different DLLs may end up using
-   different heaps, and if you use PyMem_Malloc you'll get the memory from the
+   different heaps, and if you use PyMem_Malloc you'll get the memory kutoka the
    heap used by the Python DLL; it could be a disaster if you free()'ed that
    directly in your own extension.  Using PyMem_Free instead ensures Python
    can return the memory to the proper heap.  As another example, in
@@ -95,7 +95,7 @@ PyAPI_FUNC(void) PyMem_Free(void *ptr);
   ( (p) = ((size_t)(n) > PY_SSIZE_T_MAX / sizeof(type)) ? NULL :        \
         (type *) PyMem_REALLOC((p), (n) * sizeof(type)) )
 
-/* PyMem{Del,DEL} are left over from ancient days, and shouldn't be used
+/* PyMem{Del,DEL} are left over kutoka ancient days, and shouldn't be used
  * anymore.  They're just confusing aliases for PyMem_{Free,FREE} now.
  */
 #define PyMem_Del               PyMem_Free

@@ -32,7 +32,7 @@ an event loop:
    Return the running event loop in the current OS thread.
 
    If there is no running event loop a :exc:`RuntimeError` is raised.
-   This function can only be called from a coroutine or a callback.
+   This function can only be called kutoka a coroutine or a callback.
 
    .. versionadded:: 3.7
 
@@ -72,10 +72,10 @@ This documentation page contains the following sections:
   the event loop APIs;
 
 * The `Callback Handles`_ section documents the :class:`Handle` and
-  :class:`TimerHandle` instances which are returned from scheduling
+  :class:`TimerHandle` instances which are returned kutoka scheduling
   methods such as :meth:`loop.call_soon` and :meth:`loop.call_later`;
 
-* The `Server Objects`_ section documents types returned from
+* The `Server Objects`_ section documents types returned kutoka
   event loop methods like :meth:`loop.create_server`;
 
 * The `Event Loop Implementations`_ section documents the
@@ -195,7 +195,7 @@ Scheduling callbacks
 .. method:: loop.call_soon_threadsafe(callback, *args, context=None)
 
    A thread-safe variant of :meth:`call_soon`.  Must be used to
-   schedule callbacks *from another thread*.
+   schedule callbacks *kutoka another thread*.
 
    See the :ref:`concurrency and multithreading <asyncio-multithreading>`
    section of the documentation.
@@ -312,7 +312,7 @@ Creating Futures and Tasks
    Schedule the execution of a :ref:`coroutine`.
    Return a :class:`Task` object.
 
-   Third-party event loops can use their own subclass of :class:`Task`
+   Third-party event loops can use their own subkundi of :class:`Task`
    for interoperability. In this case, the result type is a subclass
    of :class:`Task`.
 
@@ -384,7 +384,7 @@ Opening network connections
      (by default a plain TCP transport is created).  If *ssl* is
      a :class:`ssl.SSLContext` object, this context is used to create
      the transport; if *ssl* is :const:`True`, a default context returned
-     from :func:`ssl.create_default_context` is used.
+     kutoka :func:`ssl.create_default_context` is used.
 
      .. seealso:: :ref:`SSL/TLS security considerations <ssl-security>`
 
@@ -398,7 +398,7 @@ Opening network connections
 
    * *family*, *proto*, *flags* are the optional address family, protocol
      and flags to be passed through to getaddrinfo() for *host* resolution.
-     If given, these should all be integers from the corresponding
+     If given, these should all be integers kutoka the corresponding
      :mod:`socket` module constants.
 
    * *happy_eyeballs_delay*, if given, enables Happy Eyeballs for this
@@ -486,7 +486,7 @@ Opening network connections
 
    * *family*, *proto*, *flags* are the optional address family, protocol
      and flags to be passed through to :meth:`getaddrinfo` for *host*
-     resolution. If given, these should all be integers from the
+     resolution. If given, these should all be integers kutoka the
      corresponding :mod:`socket` module constants.
 
    * *reuse_address* tells the kernel to reuse a local socket in
@@ -584,7 +584,7 @@ Creating network servers
 
    * *family* can be set to either :data:`socket.AF_INET` or
      :data:`~socket.AF_INET6` to force the socket to use IPv4 or IPv6.
-     If not set, the *family* will be determined from host name
+     If not set, the *family* will be determined kutoka host name
      (defaults to :data:`~socket.AF_UNSPEC`).
 
    * *flags* is a bitmask for :meth:`getaddrinfo`.
@@ -680,7 +680,7 @@ Creating network servers
    * *protocol_factory* must be a callable returning a
      :ref:`protocol <asyncio-protocol>` implementation.
 
-   * *sock* is a preexisting socket object returned from
+   * *sock* is a preexisting socket object returned kutoka
      :meth:`socket.accept <socket.socket.accept>`.
 
    * *ssl* can be set to an :class:`~ssl.SSLContext` to enable SSL over
@@ -712,7 +712,7 @@ Transferring files
 
    *file* must be a regular file object opened in binary mode.
 
-   *offset* tells from where to start reading the file. If specified,
+   *offset* tells kutoka where to start reading the file. If specified,
    *count* is the total number of bytes to transmit as opposed to
    sending the file until EOF is reached. File position is always updated,
    even when this method raises an error, and
@@ -805,7 +805,7 @@ convenient.
 
 .. coroutinemethod:: loop.sock_recv(sock, nbytes)
 
-   Receive up to *nbytes* from *sock*.  Asynchronous version of
+   Receive up to *nbytes* kutoka *sock*.  Asynchronous version of
    :meth:`socket.recv() <socket.socket.recv>`.
 
    Return the received data as a bytes object.
@@ -819,7 +819,7 @@ convenient.
 
 .. coroutinemethod:: loop.sock_recv_into(sock, buf)
 
-   Receive data from *sock* into the *buf* buffer.  Modeled after the blocking
+   Receive data kutoka *sock* into the *buf* buffer.  Modeled after the blocking
    :meth:`socket.recv_into() <socket.socket.recv_into>` method.
 
    Return the number of bytes written to the buffer.
@@ -902,7 +902,7 @@ convenient.
 
    *file* must be a regular file object open in binary mode.
 
-   *offset* tells from where to start reading the file. If specified,
+   *offset* tells kutoka where to start reading the file. If specified,
    *count* is the total number of bytes to transmit as opposed to
    sending the file until EOF is reached. File position is always updated,
    even when this method raises an error, and
@@ -1033,8 +1033,8 @@ Executing code in thread or process pools
 
    Example::
 
-      import asyncio
-      import concurrent.futures
+      agiza asyncio
+      agiza concurrent.futures
 
       def blocking_io():
           # File operations (such as logging) can block the
@@ -1198,7 +1198,7 @@ async/await code consider using the high-level
                       stdin=subprocess.PIPE, stdout=subprocess.PIPE, \
                       stderr=subprocess.PIPE, \*\*kwargs)
 
-   Create a subprocess from one or more string arguments specified by
+   Create a subprocess kutoka one or more string arguments specified by
    *args*.
 
    *args* must be a list of strings represented by:
@@ -1212,12 +1212,12 @@ async/await code consider using the high-level
    arguments form the ``argv`` of the program.
 
    This is similar to the standard library :class:`subprocess.Popen`
-   class called with ``shell=False`` and the list of strings passed as
+   kundi called with ``shell=False`` and the list of strings passed as
    the first argument; however, where :class:`~subprocess.Popen` takes
    a single argument which is list of strings, *subprocess_exec*
    takes multiple string arguments.
 
-   The *protocol_factory* must be a callable returning a subclass of the
+   The *protocol_factory* must be a callable returning a subkundi of the
    :class:`asyncio.SubprocessProtocol` class.
 
    Other parameters:
@@ -1230,7 +1230,7 @@ async/await code consider using the high-level
      * the :const:`subprocess.PIPE` constant (default) which will create a new
        pipe and connect it,
      * the value ``None`` which will make the subprocess inherit the file
-       descriptor from this process
+       descriptor kutoka this process
      * the :const:`subprocess.DEVNULL` constant which indicates that the
        special :data:`os.devnull` file will be used
 
@@ -1242,7 +1242,7 @@ async/await code consider using the high-level
      * the :const:`subprocess.PIPE` constant (default) which will create a new
        pipe and connect it,
      * the value ``None`` which will make the subprocess inherit the file
-       descriptor from this process
+       descriptor kutoka this process
      * the :const:`subprocess.DEVNULL` constant which indicates that the
        special :data:`os.devnull` file will be used
 
@@ -1254,7 +1254,7 @@ async/await code consider using the high-level
      * the :const:`subprocess.PIPE` constant (default) which will create a new
        pipe and connect it,
      * the value ``None`` which will make the subprocess inherit the file
-       descriptor from this process
+       descriptor kutoka this process
      * the :const:`subprocess.DEVNULL` constant which indicates that the
        special :data:`os.devnull` file will be used
      * the :const:`subprocess.STDOUT` constant which will connect the standard
@@ -1267,35 +1267,35 @@ async/await code consider using the high-level
 
      The ``asyncio`` subprocess API does not support decoding the streams
      as text. :func:`bytes.decode` can be used to convert the bytes returned
-     from the stream to text.
+     kutoka the stream to text.
 
    See the constructor of the :class:`subprocess.Popen` class
    for documentation on other arguments.
 
    Returns a pair of ``(transport, protocol)``, where *transport*
-   conforms to the :class:`asyncio.SubprocessTransport` base class and
+   conforms to the :class:`asyncio.SubprocessTransport` base kundi and
    *protocol* is an object instantiated by the *protocol_factory*.
 
 .. coroutinemethod:: loop.subprocess_shell(protocol_factory, cmd, \*, \
                         stdin=subprocess.PIPE, stdout=subprocess.PIPE, \
                         stderr=subprocess.PIPE, \*\*kwargs)
 
-   Create a subprocess from *cmd*, which can be a :class:`str` or a
+   Create a subprocess kutoka *cmd*, which can be a :class:`str` or a
    :class:`bytes` string encoded to the
    :ref:`filesystem encoding <filesystem-encoding>`,
    using the platform's "shell" syntax.
 
    This is similar to the standard library :class:`subprocess.Popen`
-   class called with ``shell=True``.
+   kundi called with ``shell=True``.
 
-   The *protocol_factory* must be a callable returning a subclass of the
+   The *protocol_factory* must be a callable returning a subkundi of the
    :class:`SubprocessProtocol` class.
 
    See :meth:`~loop.subprocess_exec` for more details about
    the remaining arguments.
 
    Returns a pair of ``(transport, protocol)``, where *transport*
-   conforms to the :class:`SubprocessTransport` base class and
+   conforms to the :class:`SubprocessTransport` base kundi and
    *protocol* is an object instantiated by the *protocol_factory*.
 
 .. note::
@@ -1331,7 +1331,7 @@ Callback Handles
    A callback wrapper object returned by :meth:`loop.call_later`,
    and :meth:`loop.call_at`.
 
-   This class is a subclass of :class:`Handle`.
+   This kundi is a subkundi of :class:`Handle`.
 
    .. method:: when()
 
@@ -1350,7 +1350,7 @@ Server objects are created by :meth:`loop.create_server`,
 :meth:`loop.create_unix_server`, :func:`start_server`,
 and :func:`start_unix_server` functions.
 
-Do not instantiate the class directly.
+Do not instantiate the kundi directly.
 
 .. class:: Server
 
@@ -1469,8 +1469,8 @@ on Unix and :class:`ProactorEventLoop` on Windows.
    platform.  It is also possible to manually configure the
    exact selector implementation to be used::
 
-      import asyncio
-      import selectors
+      agiza asyncio
+      agiza selectors
 
       selector = selectors.SelectSelector()
       loop = asyncio.SelectorEventLoop(selector)
@@ -1494,7 +1494,7 @@ on Unix and :class:`ProactorEventLoop` on Windows.
 
 .. class:: AbstractEventLoop
 
-   Abstract base class for asyncio-compliant event loops.
+   Abstract base kundi for asyncio-compliant event loops.
 
    The :ref:`Event Loop Methods <asyncio-event-loop>` section lists all
    methods that an alternative implementation of ``AbstractEventLoop``
@@ -1520,7 +1520,7 @@ An example using the :meth:`loop.call_soon` method to schedule a
 callback. The callback displays ``"Hello World"`` and then stops the
 event loop::
 
-    import asyncio
+    agiza asyncio
 
     def hello_world(loop):
         """A callback to print 'Hello World' and stop the event loop"""
@@ -1553,8 +1553,8 @@ An example of a callback displaying the current date every second. The
 callback uses the :meth:`loop.call_later` method to reschedule itself
 after 5 seconds, and then stops the event loop::
 
-    import asyncio
-    import datetime
+    agiza asyncio
+    agiza datetime
 
     def display_date(end_time, loop):
         print(datetime.datetime.now())
@@ -1589,8 +1589,8 @@ Watch a file descriptor for read events
 Wait until a file descriptor received some data using the
 :meth:`loop.add_reader` method and then close the event loop::
 
-    import asyncio
-    from socket import socketpair
+    agiza asyncio
+    kutoka socket agiza socketpair
 
     # Create a pair of connected file descriptors
     rsock, wsock = socketpair()
@@ -1610,7 +1610,7 @@ Wait until a file descriptor received some data using the
     # Register the file descriptor for read event
     loop.add_reader(rsock, reader)
 
-    # Simulate the reception of data from the network
+    # Simulate the reception of data kutoka the network
     loop.call_soon(wsock.send, 'abc'.encode())
 
     try:
@@ -1643,10 +1643,10 @@ Set signal handlers for SIGINT and SIGTERM
 Register handlers for signals :py:data:`SIGINT` and :py:data:`SIGTERM`
 using the :meth:`loop.add_signal_handler` method::
 
-    import asyncio
-    import functools
-    import os
-    import signal
+    agiza asyncio
+    agiza functools
+    agiza os
+    agiza signal
 
     def ask_exit(signame, loop):
         print("got signal %s: exit" % signame)

@@ -32,7 +32,7 @@ Allocating Objects on the Heap
    Allocate a new Python object using the C structure type *TYPE* and the
    Python type object *type*.  Fields not defined by the Python object header
    are not initialized; the object's reference count will be one.  The size of
-   the memory allocation is determined from the :c:member:`~PyTypeObject.tp_basicsize` field of
+   the memory allocation is determined kutoka the :c:member:`~PyTypeObject.tp_basicsize` field of
    the type object.
 
 
@@ -51,7 +51,7 @@ Allocating Objects on the Heap
 .. c:function:: void PyObject_Del(void *op)
 
    Releases memory allocated to an object using :c:func:`PyObject_New` or
-   :c:func:`PyObject_NewVar`.  This is normally called from the
+   :c:func:`PyObject_NewVar`.  This is normally called kutoka the
    :c:member:`~PyTypeObject.tp_dealloc` handler specified in the object's type.  The fields of
    the object should not be accessed after this call as the memory is no
    longer a valid Python object.

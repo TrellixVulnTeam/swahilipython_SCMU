@@ -6,7 +6,7 @@
 
 .. moduleauthor:: Guido van Rossum
 .. sectionauthor:: Georg Brandl
-.. much of the content adapted from docstrings
+.. much of the content adapted kutoka docstrings
 
 **Source code:** :source:`Lib/abc.py`
 
@@ -17,36 +17,36 @@ classes <abstract base class>` (ABCs) in Python, as outlined in :pep:`3119`;
 see the PEP for why this was added to Python. (See also :pep:`3141` and the
 :mod:`numbers` module regarding a type hierarchy for numbers based on ABCs.)
 
-The :mod:`collections` module has some concrete classes that derive from
+The :mod:`collections` module has some concrete classes that derive kutoka
 ABCs; these can, of course, be further derived. In addition, the
 :mod:`collections.abc` submodule has some ABCs that can be used to test whether
-a class or instance provides a particular interface, for example, if it is
+a kundi or instance provides a particular interface, for example, if it is
 hashable or if it is a mapping.
 
 
-This module provides the metaclass :class:`ABCMeta` for defining ABCs and
-a helper class :class:`ABC` to alternatively define ABCs through inheritance:
+This module provides the metakundi :class:`ABCMeta` for defining ABCs and
+a helper kundi :class:`ABC` to alternatively define ABCs through inheritance:
 
 .. class:: ABC
 
-   A helper class that has :class:`ABCMeta` as its metaclass.  With this class,
-   an abstract base class can be created by simply deriving from :class:`ABC`
-   avoiding sometimes confusing metaclass usage, for example::
+   A helper kundi that has :class:`ABCMeta` as its metaclass.  With this class,
+   an abstract base kundi can be created by simply deriving kutoka :class:`ABC`
+   avoiding sometimes confusing metakundi usage, for example::
 
-     from abc import ABC
+     kutoka abc agiza ABC
 
-     class MyABC(ABC):
+     kundi MyABC(ABC):
          pass
 
    Note that the type of :class:`ABC` is still :class:`ABCMeta`, therefore
-   inheriting from :class:`ABC` requires the usual precautions regarding
-   metaclass usage, as multiple inheritance may lead to metaclass conflicts.
-   One may also define an abstract base class by passing the metaclass
+   inheriting kutoka :class:`ABC` requires the usual precautions regarding
+   metakundi usage, as multiple inheritance may lead to metakundi conflicts.
+   One may also define an abstract base kundi by passing the metaclass
    keyword and using :class:`ABCMeta` directly, for example::
 
-     from abc import ABCMeta
+     kutoka abc agiza ABCMeta
 
-     class MyABC(metaclass=ABCMeta):
+     kundi MyABC(metaclass=ABCMeta):
          pass
 
    .. versionadded:: 3.4
@@ -54,9 +54,9 @@ a helper class :class:`ABC` to alternatively define ABCs through inheritance:
 
 .. class:: ABCMeta
 
-   Metaclass for defining Abstract Base Classes (ABCs).
+   Metakundi for defining Abstract Base Classes (ABCs).
 
-   Use this metaclass to create an ABC.  An ABC can be subclassed directly, and
+   Use this metakundi to create an ABC.  An ABC can be subclassed directly, and
    then acts as a mix-in class.  You can also register unrelated concrete
    classes (even built-in classes) and unrelated ABCs as "virtual subclasses" --
    these and their descendants will be considered subclasses of the registering
@@ -65,16 +65,16 @@ a helper class :class:`ABC` to alternatively define ABCs through inheritance:
    implementations defined by the registering ABC be callable (not even via
    :func:`super`). [#]_
 
-   Classes created with a metaclass of :class:`ABCMeta` have the following method:
+   Classes created with a metakundi of :class:`ABCMeta` have the following method:
 
    .. method:: register(subclass)
 
       Register *subclass* as a "virtual subclass" of this ABC. For
       example::
 
-         from abc import ABC
+         kutoka abc agiza ABC
 
-         class MyABC(ABC):
+         kundi MyABC(ABC):
              pass
 
          MyABC.register(tuple)
@@ -83,7 +83,7 @@ a helper class :class:`ABC` to alternatively define ABCs through inheritance:
          assert isinstance((), MyABC)
 
       .. versionchanged:: 3.3
-         Returns the registered subclass, to allow usage as a class decorator.
+         Returns the registered subclass, to allow usage as a kundi decorator.
 
       .. versionchanged:: 3.4
          To detect calls to :meth:`register`, you can use the
@@ -93,19 +93,19 @@ a helper class :class:`ABC` to alternatively define ABCs through inheritance:
 
    .. method:: __subclasshook__(subclass)
 
-      (Must be defined as a class method.)
+      (Must be defined as a kundi method.)
 
-      Check whether *subclass* is considered a subclass of this ABC.  This means
+      Check whether *subclass* is considered a subkundi of this ABC.  This means
       that you can customize the behavior of ``issubclass`` further without the
-      need to call :meth:`register` on every class you want to consider a
-      subclass of the ABC.  (This class method is called from the
+      need to call :meth:`register` on every kundi you want to consider a
+      subkundi of the ABC.  (This kundi method is called kutoka the
       :meth:`__subclasscheck__` method of the ABC.)
 
       This method should return ``True``, ``False`` or ``NotImplemented``.  If
-      it returns ``True``, the *subclass* is considered a subclass of this ABC.
-      If it returns ``False``, the *subclass* is not considered a subclass of
+      it returns ``True``, the *subclass* is considered a subkundi of this ABC.
+      If it returns ``False``, the *subclass* is not considered a subkundi of
       this ABC, even if it would normally be one.  If it returns
-      ``NotImplemented``, the subclass check is continued with the usual
+      ``NotImplemented``, the subkundi check is continued with the usual
       mechanism.
 
       .. XXX explain the "usual mechanism"
@@ -113,7 +113,7 @@ a helper class :class:`ABC` to alternatively define ABCs through inheritance:
 
    For a demonstration of these concepts, look at this example ABC definition::
 
-      class Foo:
+      kundi Foo:
           def __getitem__(self, index):
               ...
           def __len__(self):
@@ -121,7 +121,7 @@ a helper class :class:`ABC` to alternatively define ABCs through inheritance:
           def get_iterator(self):
               return iter(self)
 
-      class MyIterable(ABC):
+      kundi MyIterable(ABC):
 
           @abstractmethod
           def __iter__(self):
@@ -142,16 +142,16 @@ a helper class :class:`ABC` to alternatively define ABCs through inheritance:
 
    The ABC ``MyIterable`` defines the standard iterable method,
    :meth:`~iterator.__iter__`, as an abstract method.  The implementation given
-   here can still be called from subclasses.  The :meth:`get_iterator` method
+   here can still be called kutoka subclasses.  The :meth:`get_iterator` method
    is also part of the ``MyIterable`` abstract base class, but it does not have
    to be overridden in non-abstract derived classes.
 
-   The :meth:`__subclasshook__` class method defined here says that any class
+   The :meth:`__subclasshook__` kundi method defined here says that any class
    that has an :meth:`~iterator.__iter__` method in its
    :attr:`~object.__dict__` (or in that of one of its base classes, accessed
    via the :attr:`~class.__mro__` list) is considered a ``MyIterable`` too.
 
-   Finally, the last line makes ``Foo`` a virtual subclass of ``MyIterable``,
+   Finally, the last line makes ``Foo`` a virtual subkundi of ``MyIterable``,
    even though it does not define an :meth:`~iterator.__iter__` method (it uses
    the old-style iterable protocol, defined in terms of :meth:`__len__` and
    :meth:`__getitem__`).  Note that this will not make ``get_iterator``
@@ -166,15 +166,15 @@ The :mod:`abc` module also provides the following decorator:
 
    A decorator indicating abstract methods.
 
-   Using this decorator requires that the class's metaclass is :class:`ABCMeta`
-   or is derived from it.  A class that has a metaclass derived from
+   Using this decorator requires that the class's metakundi is :class:`ABCMeta`
+   or is derived kutoka it.  A kundi that has a metakundi derived kutoka
    :class:`ABCMeta` cannot be instantiated unless all of its abstract methods
    and properties are overridden.  The abstract methods can be called using any
    of the normal 'super' call mechanisms.  :func:`abstractmethod` may be used
    to declare abstract methods for properties and descriptors.
 
    Dynamically adding abstract methods to a class, or attempting to modify the
-   abstraction status of a method or class once it is created, are not
+   abstraction status of a method or kundi once it is created, are not
    supported.  The :func:`abstractmethod` only affects subclasses derived using
    regular inheritance; "virtual subclasses" registered with the ABC's
    :meth:`register` method are not affected.
@@ -183,7 +183,7 @@ The :mod:`abc` module also provides the following decorator:
    descriptors, it should be applied as the innermost decorator, as shown in
    the following usage examples::
 
-      class C(ABC):
+      kundi C(ABC):
           @abstractmethod
           def my_abstract_method(self, ...):
               ...
@@ -213,13 +213,13 @@ The :mod:`abc` module also provides the following decorator:
               ...
           x = property(_get_x, _set_x)
 
-   In order to correctly interoperate with the abstract base class machinery,
+   In order to correctly interoperate with the abstract base kundi machinery,
    the descriptor must identify itself as abstract using
    :attr:`__isabstractmethod__`. In general, this attribute should be ``True``
    if any of the methods used to compose the descriptor are abstract. For
    example, Python's built-in :class:`property` does the equivalent of::
 
-      class Descriptor:
+      kundi Descriptor:
           ...
           @property
           def __isabstractmethod__(self):
@@ -230,7 +230,7 @@ The :mod:`abc` module also provides the following decorator:
 
       Unlike Java abstract methods, these abstract
       methods may have an implementation. This implementation can be
-      called via the :func:`super` mechanism from the class that
+      called via the :func:`super` mechanism kutoka the kundi that
       overrides it.  This could be useful as an end-point for a
       super-call in a framework that uses cooperative
       multiple-inheritance.
@@ -245,14 +245,14 @@ The :mod:`abc` module also supports the following legacy decorators:
        It is now possible to use :class:`classmethod` with
        :func:`abstractmethod`, making this decorator redundant.
 
-   A subclass of the built-in :func:`classmethod`, indicating an abstract
+   A subkundi of the built-in :func:`classmethod`, indicating an abstract
    classmethod. Otherwise it is similar to :func:`abstractmethod`.
 
    This special case is deprecated, as the :func:`classmethod` decorator
    is now correctly identified as abstract when applied to an abstract
    method::
 
-      class C(ABC):
+      kundi C(ABC):
           @classmethod
           @abstractmethod
           def my_abstract_classmethod(cls, ...):
@@ -266,14 +266,14 @@ The :mod:`abc` module also supports the following legacy decorators:
        It is now possible to use :class:`staticmethod` with
        :func:`abstractmethod`, making this decorator redundant.
 
-   A subclass of the built-in :func:`staticmethod`, indicating an abstract
+   A subkundi of the built-in :func:`staticmethod`, indicating an abstract
    staticmethod. Otherwise it is similar to :func:`abstractmethod`.
 
    This special case is deprecated, as the :func:`staticmethod` decorator
    is now correctly identified as abstract when applied to an abstract
    method::
 
-      class C(ABC):
+      kundi C(ABC):
           @staticmethod
           @abstractmethod
           def my_abstract_staticmethod(...):
@@ -287,14 +287,14 @@ The :mod:`abc` module also supports the following legacy decorators:
        :meth:`property.setter` and :meth:`property.deleter` with
        :func:`abstractmethod`, making this decorator redundant.
 
-   A subclass of the built-in :func:`property`, indicating an abstract
+   A subkundi of the built-in :func:`property`, indicating an abstract
    property.
 
    This special case is deprecated, as the :func:`property` decorator
    is now correctly identified as abstract when applied to an abstract
    method::
 
-      class C(ABC):
+      kundi C(ABC):
           @property
           @abstractmethod
           def my_abstract_property(self):
@@ -304,7 +304,7 @@ The :mod:`abc` module also supports the following legacy decorators:
    read-write abstract property by appropriately marking one or more of the
    underlying methods as abstract::
 
-      class C(ABC):
+      kundi C(ABC):
           @property
           def x(self):
               ...
@@ -317,7 +317,7 @@ The :mod:`abc` module also supports the following legacy decorators:
    If only some components are abstract, only those components need to be
    updated to create a concrete property in a subclass::
 
-      class D(C):
+      kundi D(C):
           @C.x.setter
           def x(self, val):
               ...
@@ -327,10 +327,10 @@ The :mod:`abc` module also provides the following functions:
 
 .. function:: get_cache_token()
 
-   Returns the current abstract base class cache token.
+   Returns the current abstract base kundi cache token.
 
    The token is an opaque object (that supports equality testing) identifying
-   the current version of the abstract base class cache for virtual subclasses.
+   the current version of the abstract base kundi cache for virtual subclasses.
    The token changes with every call to :meth:`ABCMeta.register` on any ABC.
 
    .. versionadded:: 3.4

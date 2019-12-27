@@ -1,4 +1,4 @@
-"""An NNTP client class based on:
+"""An NNTP client kundi based on:
 - RFC 977: Network News Transfer Protocol
 - RFC 2980: Common NNTP Extensions
 - RFC 3977: Network News Transfer Protocol (version 2)
@@ -8,7 +8,7 @@ Example:
 >>> kutoka nntplib agiza NNTP
 >>> s = NNTP('news')
 >>> resp, count, first, last, name = s.group('comp.lang.python')
->>> print('Group', name, 'has', count, 'articles, range', first, 'to', last)
+>>> andika('Group', name, 'has', count, 'articles, range', first, 'to', last)
 Group comp.lang.python has 51 articles, range 5770 to 5821
 >>> resp, subs = s.xhdr('subject', '{0}-{1}'.format(first, last))
 >>> resp = s.quit()
@@ -23,7 +23,7 @@ To post an article kutoka a file:
 >>>
 
 For descriptions of all methods, read the comments in the code below.
-Note that all arguments and return values representing article numbers
+Note that all arguments and rudisha values representing article numbers
 are strings, not numbers, since they are rarely used for calculations.
 """
 
@@ -40,11 +40,11 @@ are strings, not numbers, since they are rarely used for calculations.
 # - NNTP.date() returns a datetime object
 # - NNTP.newgroups() and NNTP.newnews() take a datetime (or date) object,
 #   rather than a pair of (date, time) strings.
-# - NNTP.newgroups() and NNTP.list() return a list of GroupInfo named tuples
+# - NNTP.newgroups() and NNTP.list() rudisha a list of GroupInfo named tuples
 # - NNTP.descriptions() returns a dict mapping group names to descriptions
 # - NNTP.xover() returns a list of dicts mapping field names (header or metadata)
 #   to field values; each dict representing a message overview.
-# - NNTP.article(), NNTP.head() and NNTP.body() return a (response, ArticleInfo)
+# - NNTP.article(), NNTP.head() and NNTP.body() rudisha a (response, ArticleInfo)
 #   tuple.
 # - the "internal" methods have been marked private (they now start with
 #   an underscore)
@@ -59,7 +59,7 @@ are strings, not numbers, since they are rarely used for calculations.
 # - An extensive test suite :-)
 
 # TODO:
-# - return structured data (GroupInfo etc.) everywhere
+# - rudisha structured data (GroupInfo etc.) everywhere
 # - support HDR
 
 # Imports
@@ -94,32 +94,32 @@ _MAXLINE = 2048
 
 
 # Exceptions raised when an error or invalid response is received
-class NNTPError(Exception):
-    """Base class for all nntplib exceptions"""
-    def __init__(self, *args):
+kundi NNTPError(Exception):
+    """Base kundi for all nntplib exceptions"""
+    eleza __init__(self, *args):
         Exception.__init__(self, *args)
         try:
             self.response = args[0]
         except IndexError:
             self.response = 'No response given'
 
-class NNTPReplyError(NNTPError):
+kundi NNTPReplyError(NNTPError):
     """Unexpected [123]xx reply"""
     pass
 
-class NNTPTemporaryError(NNTPError):
+kundi NNTPTemporaryError(NNTPError):
     """4xx errors"""
     pass
 
-class NNTPPermanentError(NNTPError):
+kundi NNTPPermanentError(NNTPError):
     """5xx errors"""
     pass
 
-class NNTPProtocolError(NNTPError):
+kundi NNTPProtocolError(NNTPError):
     """Response does not begin with [1-5]"""
     pass
 
-class NNTPDataError(NNTPError):
+kundi NNTPDataError(NNTPError):
     """Error in response data"""
     pass
 
@@ -144,7 +144,7 @@ _LONGRESP = {
     '282',   # XGTITLE
 }
 
-# Default decoded value for LIST OVERVIEW.FMT if not supported
+# Default decoded value for LIST OVERVIEW.FMT ikiwa not supported
 _DEFAULT_OVERVIEW_FMT = [
     "subject", "kutoka", "date", "message-id", "references", ":bytes", ":lines"]
 
@@ -165,25 +165,25 @@ ArticleInfo = collections.namedtuple('ArticleInfo',
 
 
 # Helper function(s)
-def decode_header(header_str):
+eleza decode_header(header_str):
     """Takes a unicode string representing a munged header value
     and decodes it as a (possibly non-ASCII) readable value."""
     parts = []
     for v, enc in _email_decode_header(header_str):
-        if isinstance(v, bytes):
+        ikiwa isinstance(v, bytes):
             parts.append(v.decode(enc or 'ascii'))
         else:
             parts.append(v)
-    return ''.join(parts)
+    rudisha ''.join(parts)
 
-def _parse_overview_fmt(lines):
+eleza _parse_overview_fmt(lines):
     """Parse a list of string representing the response to LIST OVERVIEW.FMT
-    and return a list of header/metadata names.
-    Raises NNTPDataError if the response is not compliant
+    and rudisha a list of header/metadata names.
+    Raises NNTPDataError ikiwa the response is not compliant
     (cf. RFC 3977, section 8.4)."""
     fmt = []
     for line in lines:
-        if line[0] == ':':
+        ikiwa line[0] == ':':
             # Metadata name (e.g. ":bytes")
             name, _, suffix = line[1:].partition(':')
             name = ':' + name
@@ -195,13 +195,13 @@ def _parse_overview_fmt(lines):
         # Should we do something with the suffix?
         fmt.append(name)
     defaults = _DEFAULT_OVERVIEW_FMT
-    if len(fmt) < len(defaults):
+    ikiwa len(fmt) < len(defaults):
         raise NNTPDataError("LIST OVERVIEW.FMT response too short")
-    if fmt[:len(defaults)] != defaults:
+    ikiwa fmt[:len(defaults)] != defaults:
         raise NNTPDataError("LIST OVERVIEW.FMT redefines default fields")
-    return fmt
+    rudisha fmt
 
-def _parse_overview(lines, fmt, data_process_func=None):
+eleza _parse_overview(lines, fmt, data_process_func=None):
     """Parse the response to an OVER or XOVER command according to the
     overview format `fmt`."""
     n_defaults = len(_DEFAULT_OVERVIEW_FMT)
@@ -211,31 +211,31 @@ def _parse_overview(lines, fmt, data_process_func=None):
         article_number, *tokens = line.split('\t')
         article_number = int(article_number)
         for i, token in enumerate(tokens):
-            if i >= len(fmt):
+            ikiwa i >= len(fmt):
                 # XXX should we raise an error? Some servers might not
-                # support LIST OVERVIEW.FMT and still return additional
+                # support LIST OVERVIEW.FMT and still rudisha additional
                 # headers.
                 continue
             field_name = fmt[i]
             is_metadata = field_name.startswith(':')
-            if i >= n_defaults and not is_metadata:
+            ikiwa i >= n_defaults and not is_metadata:
                 # Non-default header names are included in full in the response
                 # (unless the field is totally empty)
                 h = field_name + ": "
-                if token and token[:len(h)].lower() != h:
+                ikiwa token and token[:len(h)].lower() != h:
                     raise NNTPDataError("OVER/XOVER response doesn't include "
                                         "names of additional headers")
-                token = token[len(h):] if token else None
+                token = token[len(h):] ikiwa token else None
             fields[fmt[i]] = token
         overview.append((article_number, fields))
-    return overview
+    rudisha overview
 
-def _parse_datetime(date_str, time_str=None):
-    """Parse a pair of (date, time) strings, and return a datetime object.
+eleza _parse_datetime(date_str, time_str=None):
+    """Parse a pair of (date, time) strings, and rudisha a datetime object.
     If only the date is given, it is assumed to be date and time
     concatenated together (e.g. response to the DATE command).
     """
-    if time_str is None:
+    ikiwa time_str is None:
         time_str = date_str[-6:]
         date_str = date_str[:-6]
     hours = int(time_str[:2])
@@ -246,55 +246,55 @@ def _parse_datetime(date_str, time_str=None):
     day = int(date_str[-2:])
     # RFC 3977 doesn't say how to interpret 2-char years.  Assume that
     # there are no dates before 1970 on Usenet.
-    if year < 70:
+    ikiwa year < 70:
         year += 2000
-    elif year < 100:
+    elikiwa year < 100:
         year += 1900
-    return datetime.datetime(year, month, day, hours, minutes, seconds)
+    rudisha datetime.datetime(year, month, day, hours, minutes, seconds)
 
-def _unparse_datetime(dt, legacy=False):
+eleza _unparse_datetime(dt, legacy=False):
     """Format a date or datetime object as a pair of (date, time) strings
     in the format required by the NEWNEWS and NEWGROUPS commands.  If a
     date object is passed, the time is assumed to be midnight (00h00).
 
     The returned representation depends on the legacy flag:
-    * if legacy is False (the default):
+    * ikiwa legacy is False (the default):
       date has the YYYYMMDD format and time the HHMMSS format
-    * if legacy is True:
+    * ikiwa legacy is True:
       date has the YYMMDD format and time the HHMMSS format.
     RFC 3977 compliant servers should understand both formats; therefore,
     legacy is only needed when talking to old servers.
     """
-    if not isinstance(dt, datetime.datetime):
+    ikiwa not isinstance(dt, datetime.datetime):
         time_str = "000000"
     else:
         time_str = "{0.hour:02d}{0.minute:02d}{0.second:02d}".format(dt)
     y = dt.year
-    if legacy:
+    ikiwa legacy:
         y = y % 100
         date_str = "{0:02d}{1.month:02d}{1.day:02d}".format(y, dt)
     else:
         date_str = "{0:04d}{1.month:02d}{1.day:02d}".format(y, dt)
-    return date_str, time_str
+    rudisha date_str, time_str
 
 
-if _have_ssl:
+ikiwa _have_ssl:
 
-    def _encrypt_on(sock, context, hostname):
+    eleza _encrypt_on(sock, context, hostname):
         """Wrap a socket in SSL/TLS. Arguments:
         - sock: Socket to wrap
         - context: SSL context to use for the encrypted connection
         Returns:
         - sock: New, encrypted socket.
         """
-        # Generate a default SSL context if none was passed.
-        if context is None:
+        # Generate a default SSL context ikiwa none was passed.
+        ikiwa context is None:
             context = ssl._create_stdlib_context()
-        return context.wrap_socket(sock, server_hostname=hostname)
+        rudisha context.wrap_socket(sock, server_hostname=hostname)
 
 
 # The classes themselves
-class _NNTPBase:
+kundi _NNTPBase:
     # UTF-8 is the character set for all NNTP commands and responses: they
     # are automatically encoded (when sending) and decoded (and receiving)
     # by this class.
@@ -310,16 +310,16 @@ class _NNTPBase:
     encoding = 'utf-8'
     errors = 'surrogateescape'
 
-    def __init__(self, file, host,
+    eleza __init__(self, file, host,
                  readermode=None, timeout=_GLOBAL_DEFAULT_TIMEOUT):
         """Initialize an instance.  Arguments:
         - file: file-like object (open for read/write in binary mode)
         - host: hostname of the server
-        - readermode: if true, send 'mode reader' command after
+        - readermode: ikiwa true, send 'mode reader' command after
                       connecting.
         - timeout: timeout (in seconds) used for socket connections
 
-        readermode is sometimes necessary if you are connecting to an
+        readermode is sometimes necessary ikiwa you are connecting to an
         NNTP server on the local machine and intend to call
         reader-specific commands, such as `group'.  If you get
         unexpected NNTPPermanentErrors, you might need to set
@@ -340,51 +340,51 @@ class _NNTPBase:
         # with an authorization failed error, it will set this to True;
         # the login() routine will interpret that as a request to try again
         # after performing its normal function.
-        # Enable only if we're not already in READER mode anyway.
+        # Enable only ikiwa we're not already in READER mode anyway.
         self.readermode_afterauth = False
-        if readermode and 'READER' not in self._caps:
+        ikiwa readermode and 'READER' not in self._caps:
             self._setreadermode()
-            if not self.readermode_afterauth:
+            ikiwa not self.readermode_afterauth:
                 # Capabilities might have changed after MODE READER
                 self._caps = None
                 self.getcapabilities()
 
-        # RFC 4642 2.2.2: Both the client and the server MUST know if there is
+        # RFC 4642 2.2.2: Both the client and the server MUST know ikiwa there is
         # a TLS session active.  A client MUST NOT attempt to start a TLS
-        # session if a TLS session is already active.
+        # session ikiwa a TLS session is already active.
         self.tls_on = False
 
         # Log in and encryption setup order is left to subclasses.
         self.authenticated = False
 
-    def __enter__(self):
-        return self
+    eleza __enter__(self):
+        rudisha self
 
-    def __exit__(self, *args):
+    eleza __exit__(self, *args):
         is_connected = lambda: hasattr(self, "file")
-        if is_connected():
+        ikiwa is_connected():
             try:
                 self.quit()
             except (OSError, EOFError):
                 pass
             finally:
-                if is_connected():
+                ikiwa is_connected():
                     self._close()
 
-    def getwelcome(self):
+    eleza getwelcome(self):
         """Get the welcome message kutoka the server
         (this is read and squirreled away by __init__()).
         If the response code is 200, posting is allowed;
-        if it 201, posting is not allowed."""
+        ikiwa it 201, posting is not allowed."""
 
-        if self.debugging: print('*welcome*', repr(self.welcome))
-        return self.welcome
+        ikiwa self.debugging: andika('*welcome*', repr(self.welcome))
+        rudisha self.welcome
 
-    def getcapabilities(self):
+    eleza getcapabilities(self):
         """Get the server capabilities, as read by __init__().
         If the CAPABILITIES command is not supported, an empty dict is
         returned."""
-        if self._caps is None:
+        ikiwa self._caps is None:
             self.nntp_version = 1
             self.nntp_implementation = None
             try:
@@ -394,15 +394,15 @@ class _NNTPBase:
                 self._caps = {}
             else:
                 self._caps = caps
-                if 'VERSION' in caps:
+                ikiwa 'VERSION' in caps:
                     # The server can advertise several supported versions,
                     # choose the highest.
                     self.nntp_version = max(map(int, caps['VERSION']))
-                if 'IMPLEMENTATION' in caps:
+                ikiwa 'IMPLEMENTATION' in caps:
                     self.nntp_implementation = ' '.join(caps['IMPLEMENTATION'])
-        return self._caps
+        rudisha self._caps
 
-    def set_debuglevel(self, level):
+    eleza set_debuglevel(self, level):
         """Set the debugging level.  Argument 'level' means:
         0: no debugging output (default)
         1: print commands and responses but not body text etc.
@@ -411,58 +411,58 @@ class _NNTPBase:
         self.debugging = level
     debug = set_debuglevel
 
-    def _putline(self, line):
+    eleza _putline(self, line):
         """Internal: send one line to the server, appending CRLF.
         The `line` must be a bytes-like object."""
         sys.audit("nntplib.putline", self, line)
         line = line + _CRLF
-        if self.debugging > 1: print('*put*', repr(line))
+        ikiwa self.debugging > 1: andika('*put*', repr(line))
         self.file.write(line)
         self.file.flush()
 
-    def _putcmd(self, line):
+    eleza _putcmd(self, line):
         """Internal: send one command to the server (through _putline()).
         The `line` must be a unicode string."""
-        if self.debugging: print('*cmd*', repr(line))
+        ikiwa self.debugging: andika('*cmd*', repr(line))
         line = line.encode(self.encoding, self.errors)
         self._putline(line)
 
-    def _getline(self, strip_crlf=True):
-        """Internal: return one line kutoka the server, stripping _CRLF.
-        Raise EOFError if the connection is closed.
+    eleza _getline(self, strip_crlf=True):
+        """Internal: rudisha one line kutoka the server, stripping _CRLF.
+        Raise EOFError ikiwa the connection is closed.
         Returns a bytes object."""
         line = self.file.readline(_MAXLINE +1)
-        if len(line) > _MAXLINE:
+        ikiwa len(line) > _MAXLINE:
             raise NNTPDataError('line too long')
-        if self.debugging > 1:
-            print('*get*', repr(line))
-        if not line: raise EOFError
-        if strip_crlf:
-            if line[-2:] == _CRLF:
+        ikiwa self.debugging > 1:
+            andika('*get*', repr(line))
+        ikiwa not line: raise EOFError
+        ikiwa strip_crlf:
+            ikiwa line[-2:] == _CRLF:
                 line = line[:-2]
-            elif line[-1:] in _CRLF:
+            elikiwa line[-1:] in _CRLF:
                 line = line[:-1]
-        return line
+        rudisha line
 
-    def _getresp(self):
+    eleza _getresp(self):
         """Internal: get a response kutoka the server.
-        Raise various errors if the response indicates an error.
+        Raise various errors ikiwa the response indicates an error.
         Returns a unicode string."""
         resp = self._getline()
-        if self.debugging: print('*resp*', repr(resp))
+        ikiwa self.debugging: andika('*resp*', repr(resp))
         resp = resp.decode(self.encoding, self.errors)
         c = resp[:1]
-        if c == '4':
+        ikiwa c == '4':
             raise NNTPTemporaryError(resp)
-        if c == '5':
+        ikiwa c == '5':
             raise NNTPPermanentError(resp)
-        if c not in '123':
+        ikiwa c not in '123':
             raise NNTPProtocolError(resp)
-        return resp
+        rudisha resp
 
-    def _getlongresp(self, file=None):
+    eleza _getlongresp(self, file=None):
         """Internal: get a response plus following text kutoka the server.
-        Raise various errors if the response indicates an error.
+        Raise various errors ikiwa the response indicates an error.
 
         Returns a (response, lines) tuple where `response` is a unicode
         string and `lines` is a list of bytes objects.
@@ -472,67 +472,67 @@ class _NNTPBase:
         openedFile = None
         try:
             # If a string was passed then open a file with that name
-            if isinstance(file, (str, bytes)):
+            ikiwa isinstance(file, (str, bytes)):
                 openedFile = file = open(file, "wb")
 
             resp = self._getresp()
-            if resp[:3] not in _LONGRESP:
+            ikiwa resp[:3] not in _LONGRESP:
                 raise NNTPReplyError(resp)
 
             lines = []
-            if file is not None:
+            ikiwa file is not None:
                 # XXX lines = None instead?
                 terminators = (b'.' + _CRLF, b'.\n')
                 while 1:
                     line = self._getline(False)
-                    if line in terminators:
+                    ikiwa line in terminators:
                         break
-                    if line.startswith(b'..'):
+                    ikiwa line.startswith(b'..'):
                         line = line[1:]
                     file.write(line)
             else:
                 terminator = b'.'
                 while 1:
                     line = self._getline()
-                    if line == terminator:
+                    ikiwa line == terminator:
                         break
-                    if line.startswith(b'..'):
+                    ikiwa line.startswith(b'..'):
                         line = line[1:]
                     lines.append(line)
         finally:
             # If this method created the file, then it must close it
-            if openedFile:
+            ikiwa openedFile:
                 openedFile.close()
 
-        return resp, lines
+        rudisha resp, lines
 
-    def _shortcmd(self, line):
+    eleza _shortcmd(self, line):
         """Internal: send a command and get the response.
-        Same return value as _getresp()."""
+        Same rudisha value as _getresp()."""
         self._putcmd(line)
-        return self._getresp()
+        rudisha self._getresp()
 
-    def _longcmd(self, line, file=None):
+    eleza _longcmd(self, line, file=None):
         """Internal: send a command and get the response plus following text.
-        Same return value as _getlongresp()."""
+        Same rudisha value as _getlongresp()."""
         self._putcmd(line)
-        return self._getlongresp(file)
+        rudisha self._getlongresp(file)
 
-    def _longcmdstring(self, line, file=None):
+    eleza _longcmdstring(self, line, file=None):
         """Internal: send a command and get the response plus following text.
         Same as _longcmd() and _getlongresp(), except that the returned `lines`
         are unicode strings rather than bytes objects.
         """
         self._putcmd(line)
         resp, list = self._getlongresp(file)
-        return resp, [line.decode(self.encoding, self.errors)
+        rudisha resp, [line.decode(self.encoding, self.errors)
                       for line in list]
 
-    def _getoverviewfmt(self):
-        """Internal: get the overview format. Queries the server if not
+    eleza _getoverviewfmt(self):
+        """Internal: get the overview format. Queries the server ikiwa not
         already done, else returns the cached value."""
         try:
-            return self._cachedoverviewfmt
+            rudisha self._cachedoverviewfmt
         except AttributeError:
             pass
         try:
@@ -543,16 +543,16 @@ class _NNTPBase:
         else:
             fmt = _parse_overview_fmt(lines)
         self._cachedoverviewfmt = fmt
-        return fmt
+        rudisha fmt
 
-    def _grouplist(self, lines):
+    eleza _grouplist(self, lines):
         # Parse lines into "group last first flag"
-        return [GroupInfo(*line.split()) for line in lines]
+        rudisha [GroupInfo(*line.split()) for line in lines]
 
-    def capabilities(self):
+    eleza capabilities(self):
         """Process a CAPABILITIES command.  Not supported by all servers.
         Return:
-        - resp: server response if successful
+        - resp: server response ikiwa successful
         - caps: a dictionary mapping capability names to lists of tokens
         (for example {'VERSION': ['2'], 'OVER': [], LIST: ['ACTIVE', 'HEADERS'] })
         """
@@ -561,60 +561,60 @@ class _NNTPBase:
         for line in lines:
             name, *tokens = line.split()
             caps[name] = tokens
-        return resp, caps
+        rudisha resp, caps
 
-    def newgroups(self, date, *, file=None):
+    eleza newgroups(self, date, *, file=None):
         """Process a NEWGROUPS command.  Arguments:
         - date: a date or datetime object
         Return:
-        - resp: server response if successful
+        - resp: server response ikiwa successful
         - list: list of newsgroup names
         """
-        if not isinstance(date, (datetime.date, datetime.date)):
+        ikiwa not isinstance(date, (datetime.date, datetime.date)):
             raise TypeError(
                 "the date parameter must be a date or datetime object, "
                 "not '{:40}'".format(date.__class__.__name__))
         date_str, time_str = _unparse_datetime(date, self.nntp_version < 2)
         cmd = 'NEWGROUPS {0} {1}'.format(date_str, time_str)
         resp, lines = self._longcmdstring(cmd, file)
-        return resp, self._grouplist(lines)
+        rudisha resp, self._grouplist(lines)
 
-    def newnews(self, group, date, *, file=None):
+    eleza newnews(self, group, date, *, file=None):
         """Process a NEWNEWS command.  Arguments:
         - group: group name or '*'
         - date: a date or datetime object
         Return:
-        - resp: server response if successful
+        - resp: server response ikiwa successful
         - list: list of message ids
         """
-        if not isinstance(date, (datetime.date, datetime.date)):
+        ikiwa not isinstance(date, (datetime.date, datetime.date)):
             raise TypeError(
                 "the date parameter must be a date or datetime object, "
                 "not '{:40}'".format(date.__class__.__name__))
         date_str, time_str = _unparse_datetime(date, self.nntp_version < 2)
         cmd = 'NEWNEWS {0} {1} {2}'.format(group, date_str, time_str)
-        return self._longcmdstring(cmd, file)
+        rudisha self._longcmdstring(cmd, file)
 
-    def list(self, group_pattern=None, *, file=None):
+    eleza list(self, group_pattern=None, *, file=None):
         """Process a LIST or LIST ACTIVE command. Arguments:
         - group_pattern: a pattern indicating which groups to query
         - file: Filename string or file object to store the result in
         Returns:
-        - resp: server response if successful
+        - resp: server response ikiwa successful
         - list: list of (group, last, first, flag) (strings)
         """
-        if group_pattern is not None:
+        ikiwa group_pattern is not None:
             command = 'LIST ACTIVE ' + group_pattern
         else:
             command = 'LIST'
         resp, lines = self._longcmdstring(command, file)
-        return resp, self._grouplist(lines)
+        rudisha resp, self._grouplist(lines)
 
-    def _getdescriptions(self, group_pattern, return_all):
+    eleza _getdescriptions(self, group_pattern, return_all):
         line_pat = re.compile('^(?P<group>[^ \t]+)[ \t]+(.*)$')
         # Try the more std (acc. to RFC2980) LIST NEWSGROUPS first
         resp, lines = self._longcmdstring('LIST NEWSGROUPS ' + group_pattern)
-        if not resp.startswith('215'):
+        ikiwa not resp.startswith('215'):
             # Now the deprecated XGTITLE.  This either raises an error
             # or succeeds with the same output structure as LIST
             # NEWSGROUPS.
@@ -622,21 +622,21 @@ class _NNTPBase:
         groups = {}
         for raw_line in lines:
             match = line_pat.search(raw_line.strip())
-            if match:
+            ikiwa match:
                 name, desc = match.group(1, 2)
-                if not return_all:
-                    return desc
+                ikiwa not return_all:
+                    rudisha desc
                 groups[name] = desc
-        if return_all:
-            return resp, groups
+        ikiwa return_all:
+            rudisha resp, groups
         else:
             # Nothing found
-            return ''
+            rudisha ''
 
-    def description(self, group):
+    eleza description(self, group):
         """Get a description for a single group.  If more than one
-        group matches ('group' is a pattern), return the first.  If no
-        group matches, return an empty string.
+        group matches ('group' is a pattern), rudisha the first.  If no
+        group matches, rudisha an empty string.
 
         This elides the response code kutoka the server, since it can
         only be '215' or '285' (for xgtitle) anyway.  If the response
@@ -644,201 +644,201 @@ class _NNTPBase:
 
         NOTE: This neither checks for a wildcard in 'group' nor does
         it check whether the group actually exists."""
-        return self._getdescriptions(group, False)
+        rudisha self._getdescriptions(group, False)
 
-    def descriptions(self, group_pattern):
+    eleza descriptions(self, group_pattern):
         """Get descriptions for a range of groups."""
-        return self._getdescriptions(group_pattern, True)
+        rudisha self._getdescriptions(group_pattern, True)
 
-    def group(self, name):
+    eleza group(self, name):
         """Process a GROUP command.  Argument:
         - group: the group name
         Returns:
-        - resp: server response if successful
+        - resp: server response ikiwa successful
         - count: number of articles
         - first: first article number
         - last: last article number
         - name: the group name
         """
         resp = self._shortcmd('GROUP ' + name)
-        if not resp.startswith('211'):
+        ikiwa not resp.startswith('211'):
             raise NNTPReplyError(resp)
         words = resp.split()
         count = first = last = 0
         n = len(words)
-        if n > 1:
+        ikiwa n > 1:
             count = words[1]
-            if n > 2:
+            ikiwa n > 2:
                 first = words[2]
-                if n > 3:
+                ikiwa n > 3:
                     last = words[3]
-                    if n > 4:
+                    ikiwa n > 4:
                         name = words[4].lower()
-        return resp, int(count), int(first), int(last), name
+        rudisha resp, int(count), int(first), int(last), name
 
-    def help(self, *, file=None):
+    eleza help(self, *, file=None):
         """Process a HELP command. Argument:
         - file: Filename string or file object to store the result in
         Returns:
-        - resp: server response if successful
+        - resp: server response ikiwa successful
         - list: list of strings returned by the server in response to the
                 HELP command
         """
-        return self._longcmdstring('HELP', file)
+        rudisha self._longcmdstring('HELP', file)
 
-    def _statparse(self, resp):
+    eleza _statparse(self, resp):
         """Internal: parse the response line of a STAT, NEXT, LAST,
         ARTICLE, HEAD or BODY command."""
-        if not resp.startswith('22'):
+        ikiwa not resp.startswith('22'):
             raise NNTPReplyError(resp)
         words = resp.split()
         art_num = int(words[1])
         message_id = words[2]
-        return resp, art_num, message_id
+        rudisha resp, art_num, message_id
 
-    def _statcmd(self, line):
+    eleza _statcmd(self, line):
         """Internal: process a STAT, NEXT or LAST command."""
         resp = self._shortcmd(line)
-        return self._statparse(resp)
+        rudisha self._statparse(resp)
 
-    def stat(self, message_spec=None):
+    eleza stat(self, message_spec=None):
         """Process a STAT command.  Argument:
-        - message_spec: article number or message id (if not specified,
+        - message_spec: article number or message id (ikiwa not specified,
           the current article is selected)
         Returns:
-        - resp: server response if successful
+        - resp: server response ikiwa successful
         - art_num: the article number
         - message_id: the message id
         """
-        if message_spec:
-            return self._statcmd('STAT {0}'.format(message_spec))
+        ikiwa message_spec:
+            rudisha self._statcmd('STAT {0}'.format(message_spec))
         else:
-            return self._statcmd('STAT')
+            rudisha self._statcmd('STAT')
 
-    def next(self):
+    eleza next(self):
         """Process a NEXT command.  No arguments.  Return as for STAT."""
-        return self._statcmd('NEXT')
+        rudisha self._statcmd('NEXT')
 
-    def last(self):
+    eleza last(self):
         """Process a LAST command.  No arguments.  Return as for STAT."""
-        return self._statcmd('LAST')
+        rudisha self._statcmd('LAST')
 
-    def _artcmd(self, line, file=None):
+    eleza _artcmd(self, line, file=None):
         """Internal: process a HEAD, BODY or ARTICLE command."""
         resp, lines = self._longcmd(line, file)
         resp, art_num, message_id = self._statparse(resp)
-        return resp, ArticleInfo(art_num, message_id, lines)
+        rudisha resp, ArticleInfo(art_num, message_id, lines)
 
-    def head(self, message_spec=None, *, file=None):
+    eleza head(self, message_spec=None, *, file=None):
         """Process a HEAD command.  Argument:
         - message_spec: article number or message id
         - file: filename string or file object to store the headers in
         Returns:
-        - resp: server response if successful
+        - resp: server response ikiwa successful
         - ArticleInfo: (article number, message id, list of header lines)
         """
-        if message_spec is not None:
+        ikiwa message_spec is not None:
             cmd = 'HEAD {0}'.format(message_spec)
         else:
             cmd = 'HEAD'
-        return self._artcmd(cmd, file)
+        rudisha self._artcmd(cmd, file)
 
-    def body(self, message_spec=None, *, file=None):
+    eleza body(self, message_spec=None, *, file=None):
         """Process a BODY command.  Argument:
         - message_spec: article number or message id
         - file: filename string or file object to store the body in
         Returns:
-        - resp: server response if successful
+        - resp: server response ikiwa successful
         - ArticleInfo: (article number, message id, list of body lines)
         """
-        if message_spec is not None:
+        ikiwa message_spec is not None:
             cmd = 'BODY {0}'.format(message_spec)
         else:
             cmd = 'BODY'
-        return self._artcmd(cmd, file)
+        rudisha self._artcmd(cmd, file)
 
-    def article(self, message_spec=None, *, file=None):
+    eleza article(self, message_spec=None, *, file=None):
         """Process an ARTICLE command.  Argument:
         - message_spec: article number or message id
         - file: filename string or file object to store the article in
         Returns:
-        - resp: server response if successful
+        - resp: server response ikiwa successful
         - ArticleInfo: (article number, message id, list of article lines)
         """
-        if message_spec is not None:
+        ikiwa message_spec is not None:
             cmd = 'ARTICLE {0}'.format(message_spec)
         else:
             cmd = 'ARTICLE'
-        return self._artcmd(cmd, file)
+        rudisha self._artcmd(cmd, file)
 
-    def slave(self):
+    eleza slave(self):
         """Process a SLAVE command.  Returns:
-        - resp: server response if successful
+        - resp: server response ikiwa successful
         """
-        return self._shortcmd('SLAVE')
+        rudisha self._shortcmd('SLAVE')
 
-    def xhdr(self, hdr, str, *, file=None):
+    eleza xhdr(self, hdr, str, *, file=None):
         """Process an XHDR command (optional server extension).  Arguments:
         - hdr: the header type (e.g. 'subject')
         - str: an article nr, a message id, or a range nr1-nr2
         - file: Filename string or file object to store the result in
         Returns:
-        - resp: server response if successful
+        - resp: server response ikiwa successful
         - list: list of (nr, value) strings
         """
         pat = re.compile('^([0-9]+) ?(.*)\n?')
         resp, lines = self._longcmdstring('XHDR {0} {1}'.format(hdr, str), file)
-        def remove_number(line):
+        eleza remove_number(line):
             m = pat.match(line)
-            return m.group(1, 2) if m else line
-        return resp, [remove_number(line) for line in lines]
+            rudisha m.group(1, 2) ikiwa m else line
+        rudisha resp, [remove_number(line) for line in lines]
 
-    def xover(self, start, end, *, file=None):
+    eleza xover(self, start, end, *, file=None):
         """Process an XOVER command (optional server extension) Arguments:
         - start: start of range
         - end: end of range
         - file: Filename string or file object to store the result in
         Returns:
-        - resp: server response if successful
+        - resp: server response ikiwa successful
         - list: list of dicts containing the response fields
         """
         resp, lines = self._longcmdstring('XOVER {0}-{1}'.format(start, end),
                                           file)
         fmt = self._getoverviewfmt()
-        return resp, _parse_overview(lines, fmt)
+        rudisha resp, _parse_overview(lines, fmt)
 
-    def over(self, message_spec, *, file=None):
+    eleza over(self, message_spec, *, file=None):
         """Process an OVER command.  If the command isn't supported, fall
         back to XOVER. Arguments:
         - message_spec:
             - either a message id, indicating the article to fetch
               information about
             - or a (start, end) tuple, indicating a range of article numbers;
-              if end is None, information up to the newest message will be
+              ikiwa end is None, information up to the newest message will be
               retrieved
             - or None, indicating the current article number must be used
         - file: Filename string or file object to store the result in
         Returns:
-        - resp: server response if successful
+        - resp: server response ikiwa successful
         - list: list of dicts containing the response fields
 
         NOTE: the "message id" form isn't supported by XOVER
         """
-        cmd = 'OVER' if 'OVER' in self._caps else 'XOVER'
-        if isinstance(message_spec, (tuple, list)):
+        cmd = 'OVER' ikiwa 'OVER' in self._caps else 'XOVER'
+        ikiwa isinstance(message_spec, (tuple, list)):
             start, end = message_spec
             cmd += ' {0}-{1}'.format(start, end or '')
-        elif message_spec is not None:
+        elikiwa message_spec is not None:
             cmd = cmd + ' ' + message_spec
         resp, lines = self._longcmdstring(cmd, file)
         fmt = self._getoverviewfmt()
-        return resp, _parse_overview(lines, fmt)
+        rudisha resp, _parse_overview(lines, fmt)
 
-    def xgtitle(self, group, *, file=None):
+    eleza xgtitle(self, group, *, file=None):
         """Process an XGTITLE command (optional server extension) Arguments:
         - group: group name wildcard (i.e. news.*)
         Returns:
-        - resp: server response if successful
+        - resp: server response ikiwa successful
         - list: list of (name,title) strings"""
         warnings.warn("The XGTITLE extension is not actively used, "
                       "use descriptions() instead",
@@ -848,164 +848,164 @@ class _NNTPBase:
         lines = []
         for raw_line in raw_lines:
             match = line_pat.search(raw_line.strip())
-            if match:
+            ikiwa match:
                 lines.append(match.group(1, 2))
-        return resp, lines
+        rudisha resp, lines
 
-    def xpath(self, id):
+    eleza xpath(self, id):
         """Process an XPATH command (optional server extension) Arguments:
         - id: Message id of article
         Returns:
-        resp: server response if successful
+        resp: server response ikiwa successful
         path: directory path to article
         """
         warnings.warn("The XPATH extension is not actively used",
                       DeprecationWarning, 2)
 
         resp = self._shortcmd('XPATH {0}'.format(id))
-        if not resp.startswith('223'):
+        ikiwa not resp.startswith('223'):
             raise NNTPReplyError(resp)
         try:
             [resp_num, path] = resp.split()
         except ValueError:
             raise NNTPReplyError(resp) kutoka None
         else:
-            return resp, path
+            rudisha resp, path
 
-    def date(self):
+    eleza date(self):
         """Process the DATE command.
         Returns:
-        - resp: server response if successful
+        - resp: server response ikiwa successful
         - date: datetime object
         """
         resp = self._shortcmd("DATE")
-        if not resp.startswith('111'):
+        ikiwa not resp.startswith('111'):
             raise NNTPReplyError(resp)
         elem = resp.split()
-        if len(elem) != 2:
+        ikiwa len(elem) != 2:
             raise NNTPDataError(resp)
         date = elem[1]
-        if len(date) != 14:
+        ikiwa len(date) != 14:
             raise NNTPDataError(resp)
-        return resp, _parse_datetime(date, None)
+        rudisha resp, _parse_datetime(date, None)
 
-    def _post(self, command, f):
+    eleza _post(self, command, f):
         resp = self._shortcmd(command)
-        # Raises a specific exception if posting is not allowed
-        if not resp.startswith('3'):
+        # Raises a specific exception ikiwa posting is not allowed
+        ikiwa not resp.startswith('3'):
             raise NNTPReplyError(resp)
-        if isinstance(f, (bytes, bytearray)):
+        ikiwa isinstance(f, (bytes, bytearray)):
             f = f.splitlines()
         # We don't use _putline() because:
-        # - we don't want additional CRLF if the file or iterable is already
+        # - we don't want additional CRLF ikiwa the file or iterable is already
         #   in the right format
         # - we don't want a spurious flush() after each line is written
         for line in f:
-            if not line.endswith(_CRLF):
+            ikiwa not line.endswith(_CRLF):
                 line = line.rstrip(b"\r\n") + _CRLF
-            if line.startswith(b'.'):
+            ikiwa line.startswith(b'.'):
                 line = b'.' + line
             self.file.write(line)
         self.file.write(b".\r\n")
         self.file.flush()
-        return self._getresp()
+        rudisha self._getresp()
 
-    def post(self, data):
+    eleza post(self, data):
         """Process a POST command.  Arguments:
         - data: bytes object, iterable or file containing the article
         Returns:
-        - resp: server response if successful"""
-        return self._post('POST', data)
+        - resp: server response ikiwa successful"""
+        rudisha self._post('POST', data)
 
-    def ihave(self, message_id, data):
+    eleza ihave(self, message_id, data):
         """Process an IHAVE command.  Arguments:
         - message_id: message-id of the article
         - data: file containing the article
         Returns:
-        - resp: server response if successful
-        Note that if the server refuses the article an exception is raised."""
-        return self._post('IHAVE {0}'.format(message_id), data)
+        - resp: server response ikiwa successful
+        Note that ikiwa the server refuses the article an exception is raised."""
+        rudisha self._post('IHAVE {0}'.format(message_id), data)
 
-    def _close(self):
+    eleza _close(self):
         self.file.close()
         del self.file
 
-    def quit(self):
+    eleza quit(self):
         """Process a QUIT command and close the socket.  Returns:
-        - resp: server response if successful"""
+        - resp: server response ikiwa successful"""
         try:
             resp = self._shortcmd('QUIT')
         finally:
             self._close()
-        return resp
+        rudisha resp
 
-    def login(self, user=None, password=None, usenetrc=True):
-        if self.authenticated:
+    eleza login(self, user=None, password=None, usenetrc=True):
+        ikiwa self.authenticated:
             raise ValueError("Already logged in.")
-        if not user and not usenetrc:
+        ikiwa not user and not usenetrc:
             raise ValueError(
                 "At least one of `user` and `usenetrc` must be specified")
         # If no login/password was specified but netrc was requested,
         # try to get them kutoka ~/.netrc
-        # Presume that if .netrc has an entry, NNRP authentication is required.
+        # Presume that ikiwa .netrc has an entry, NNRP authentication is required.
         try:
-            if usenetrc and not user:
+            ikiwa usenetrc and not user:
                 agiza netrc
                 credentials = netrc.netrc()
                 auth = credentials.authenticators(self.host)
-                if auth:
+                ikiwa auth:
                     user = auth[0]
                     password = auth[2]
         except OSError:
             pass
-        # Perform NNTP authentication if needed.
-        if not user:
+        # Perform NNTP authentication ikiwa needed.
+        ikiwa not user:
             return
         resp = self._shortcmd('authinfo user ' + user)
-        if resp.startswith('381'):
-            if not password:
+        ikiwa resp.startswith('381'):
+            ikiwa not password:
                 raise NNTPReplyError(resp)
             else:
                 resp = self._shortcmd('authinfo pass ' + password)
-                if not resp.startswith('281'):
+                ikiwa not resp.startswith('281'):
                     raise NNTPPermanentError(resp)
         # Capabilities might have changed after login
         self._caps = None
         self.getcapabilities()
-        # Attempt to send mode reader if it was requested after login.
-        # Only do so if we're not in reader mode already.
-        if self.readermode_afterauth and 'READER' not in self._caps:
+        # Attempt to send mode reader ikiwa it was requested after login.
+        # Only do so ikiwa we're not in reader mode already.
+        ikiwa self.readermode_afterauth and 'READER' not in self._caps:
             self._setreadermode()
             # Capabilities might have changed after MODE READER
             self._caps = None
             self.getcapabilities()
 
-    def _setreadermode(self):
+    eleza _setreadermode(self):
         try:
             self.welcome = self._shortcmd('mode reader')
         except NNTPPermanentError:
             # Error 5xx, probably 'not implemented'
             pass
         except NNTPTemporaryError as e:
-            if e.response.startswith('480'):
+            ikiwa e.response.startswith('480'):
                 # Need authorization before 'mode reader'
                 self.readermode_afterauth = True
             else:
                 raise
 
-    if _have_ssl:
-        def starttls(self, context=None):
+    ikiwa _have_ssl:
+        eleza starttls(self, context=None):
             """Process a STARTTLS command. Arguments:
             - context: SSL context to use for the encrypted connection
             """
             # Per RFC 4642, STARTTLS MUST NOT be sent after authentication or if
             # a TLS session already exists.
-            if self.tls_on:
+            ikiwa self.tls_on:
                 raise ValueError("TLS is already enabled.")
-            if self.authenticated:
+            ikiwa self.authenticated:
                 raise ValueError("TLS cannot be started after authentication.")
             resp = self._shortcmd('STARTTLS')
-            if resp.startswith('382'):
+            ikiwa resp.startswith('382'):
                 self.file.close()
                 self.sock = _encrypt_on(self.sock, context, self.host)
                 self.file = self.sock.makefile("rwb")
@@ -1018,9 +1018,9 @@ class _NNTPBase:
                 raise NNTPError("TLS failed to start.")
 
 
-class NNTP(_NNTPBase):
+kundi NNTP(_NNTPBase):
 
-    def __init__(self, host, port=NNTP_PORT, user=None, password=None,
+    eleza __init__(self, host, port=NNTP_PORT, user=None, password=None,
                  readermode=None, usenetrc=False,
                  timeout=_GLOBAL_DEFAULT_TIMEOUT):
         """Initialize an instance.  Arguments:
@@ -1028,13 +1028,13 @@ class NNTP(_NNTPBase):
         - port: port to connect to (default the standard NNTP port)
         - user: username to authenticate with
         - password: password to use with username
-        - readermode: if true, send 'mode reader' command after
+        - readermode: ikiwa true, send 'mode reader' command after
                       connecting.
         - usenetrc: allow loading username and password kutoka ~/.netrc file
-                    if not specified explicitly
+                    ikiwa not specified explicitly
         - timeout: timeout (in seconds) used for socket connections
 
-        readermode is sometimes necessary if you are connecting to an
+        readermode is sometimes necessary ikiwa you are connecting to an
         NNTP server on the local machine and intend to call
         reader-specific commands, such as `group'.  If you get
         unexpected NNTPPermanentErrors, you might need to set
@@ -1049,25 +1049,25 @@ class NNTP(_NNTPBase):
             file = self.sock.makefile("rwb")
             _NNTPBase.__init__(self, file, host,
                                readermode, timeout)
-            if user or usenetrc:
+            ikiwa user or usenetrc:
                 self.login(user, password, usenetrc)
         except:
-            if file:
+            ikiwa file:
                 file.close()
             self.sock.close()
             raise
 
-    def _close(self):
+    eleza _close(self):
         try:
             _NNTPBase._close(self)
         finally:
             self.sock.close()
 
 
-if _have_ssl:
-    class NNTP_SSL(_NNTPBase):
+ikiwa _have_ssl:
+    kundi NNTP_SSL(_NNTPBase):
 
-        def __init__(self, host, port=NNTP_SSL_PORT,
+        eleza __init__(self, host, port=NNTP_SSL_PORT,
                     user=None, password=None, ssl_context=None,
                     readermode=None, usenetrc=False,
                     timeout=_GLOBAL_DEFAULT_TIMEOUT):
@@ -1082,15 +1082,15 @@ if _have_ssl:
                 file = self.sock.makefile("rwb")
                 _NNTPBase.__init__(self, file, host,
                                    readermode=readermode, timeout=timeout)
-                if user or usenetrc:
+                ikiwa user or usenetrc:
                     self.login(user, password, usenetrc)
             except:
-                if file:
+                ikiwa file:
                     file.close()
                 self.sock.close()
                 raise
 
-        def _close(self):
+        eleza _close(self):
             try:
                 _NNTPBase._close(self)
             finally:
@@ -1100,7 +1100,7 @@ if _have_ssl:
 
 
 # Test retrieval when run as a script.
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     agiza argparse
 
     parser = argparse.ArgumentParser(description="""\
@@ -1118,33 +1118,33 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     port = args.port
-    if not args.ssl:
-        if port == -1:
+    ikiwa not args.ssl:
+        ikiwa port == -1:
             port = NNTP_PORT
         s = NNTP(host=args.server, port=port)
     else:
-        if port == -1:
+        ikiwa port == -1:
             port = NNTP_SSL_PORT
         s = NNTP_SSL(host=args.server, port=port)
 
     caps = s.getcapabilities()
-    if 'STARTTLS' in caps:
+    ikiwa 'STARTTLS' in caps:
         s.starttls()
     resp, count, first, last, name = s.group(args.group)
-    print('Group', name, 'has', count, 'articles, range', first, 'to', last)
+    andika('Group', name, 'has', count, 'articles, range', first, 'to', last)
 
-    def cut(s, lim):
-        if len(s) > lim:
+    eleza cut(s, lim):
+        ikiwa len(s) > lim:
             s = s[:lim - 4] + "..."
-        return s
+        rudisha s
 
     first = str(int(last) - args.nb_articles + 1)
     resp, overviews = s.xover(first, last)
     for artnum, over in overviews:
-        author = decode_header(over['from']).split('<', 1)[0]
+        author = decode_header(over['kutoka']).split('<', 1)[0]
         subject = decode_header(over['subject'])
         lines = int(over[':lines'])
-        print("{:7} {:20} {:42} ({})".format(
+        andika("{:7} {:20} {:42} ({})".format(
               artnum, cut(author, 20), cut(subject, 42), lines)
               )
 

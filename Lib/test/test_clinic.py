@@ -13,7 +13,7 @@ agiza unittest
 
 clinic_path = os.path.join(os.path.dirname(__file__), '..', '..', 'Tools', 'clinic')
 clinic_path = os.path.normpath(clinic_path)
-if not os.path.exists(clinic_path):
+ikiwa not os.path.exists(clinic_path):
     raise unittest.SkipTest(f'{clinic_path!r} path does not exist')
 sys.path.append(clinic_path)
 try:
@@ -23,31 +23,31 @@ finally:
     del sys.path[-1]
 
 
-class FakeConverter:
-    def __init__(self, name, args):
+kundi FakeConverter:
+    eleza __init__(self, name, args):
         self.name = name
         self.args = args
 
 
-class FakeConverterFactory:
-    def __init__(self, name):
+kundi FakeConverterFactory:
+    eleza __init__(self, name):
         self.name = name
 
-    def __call__(self, name, default, **kwargs):
-        return FakeConverter(self.name, kwargs)
+    eleza __call__(self, name, default, **kwargs):
+        rudisha FakeConverter(self.name, kwargs)
 
 
-class FakeConvertersDict:
-    def __init__(self):
+kundi FakeConvertersDict:
+    eleza __init__(self):
         self.used_converters = {}
 
-    def get(self, name, default):
-        return self.used_converters.setdefault(name, FakeConverterFactory(name))
+    eleza get(self, name, default):
+        rudisha self.used_converters.setdefault(name, FakeConverterFactory(name))
 
 c = clinic.Clinic(language='C', filename = "file")
 
-class FakeClinic:
-    def __init__(self):
+kundi FakeClinic:
+    eleza __init__(self):
         self.converters = FakeConvertersDict()
         self.legacy_converters = FakeConvertersDict()
         self.language = clinic.CLanguage(None)
@@ -74,30 +74,30 @@ class FakeClinic:
             ('impl_definition', d('block')),
         ))
 
-    def get_destination(self, name):
+    eleza get_destination(self, name):
         d = self.destinations.get(name)
-        if not d:
+        ikiwa not d:
             sys.exit("Destination does not exist: " + repr(name))
-        return d
+        rudisha d
 
-    def add_destination(self, name, type, *args):
-        if name in self.destinations:
+    eleza add_destination(self, name, type, *args):
+        ikiwa name in self.destinations:
             sys.exit("Destination already exists: " + repr(name))
         self.destinations[name] = clinic.Destination(name, type, self, *args)
 
-    def is_directive(self, name):
-        return name == "module"
+    eleza is_directive(self, name):
+        rudisha name == "module"
 
-    def directive(self, name, args):
+    eleza directive(self, name, args):
         self.called_directives[name] = args
 
-    _module_and_class = clinic.Clinic._module_and_class
+    _module_and_kundi = clinic.Clinic._module_and_class
 
-class ClinicWholeFileTest(TestCase):
-    def test_eol(self):
+kundi ClinicWholeFileTest(TestCase):
+    eleza test_eol(self):
         # regression test:
         # clinic's block parser didn't recognize
-        # the "end line" for the block if it
+        # the "end line" for the block ikiwa it
         # didn't end in "\n" (as in, the last)
         # byte of the file was '/'.
         # so it would spit out an end line for you.
@@ -114,12 +114,12 @@ class ClinicWholeFileTest(TestCase):
 
 
 
-class ClinicGroupPermuterTest(TestCase):
-    def _test(self, l, m, r, output):
+kundi ClinicGroupPermuterTest(TestCase):
+    eleza _test(self, l, m, r, output):
         computed = clinic.permute_optional_groups(l, m, r)
         self.assertEqual(output, computed)
 
-    def test_range(self):
+    eleza test_range(self):
         self._test([['start']], ['stop'], [['step']],
           (
             ('stop',),
@@ -127,7 +127,7 @@ class ClinicGroupPermuterTest(TestCase):
             ('start', 'stop', 'step',),
           ))
 
-    def test_add_window(self):
+    eleza test_add_window(self):
         self._test([['x', 'y']], ['ch'], [['attr']],
           (
             ('ch',),
@@ -136,7 +136,7 @@ class ClinicGroupPermuterTest(TestCase):
             ('x', 'y', 'ch', 'attr'),
           ))
 
-    def test_ludicrous(self):
+    eleza test_ludicrous(self):
         self._test([['a1', 'a2', 'a3'], ['b1', 'b2']], ['c1'], [['d1', 'd2'], ['e1', 'e2', 'e3']],
           (
           ('c1',),
@@ -147,7 +147,7 @@ class ClinicGroupPermuterTest(TestCase):
           ('a1', 'a2', 'a3', 'b1', 'b2', 'c1', 'd1', 'd2', 'e1', 'e2', 'e3'),
           ))
 
-    def test_right_only(self):
+    eleza test_right_only(self):
         self._test([], [], [['a'],['b'],['c']],
           (
           (),
@@ -156,31 +156,31 @@ class ClinicGroupPermuterTest(TestCase):
           ('a', 'b', 'c')
           ))
 
-    def test_have_left_options_but_required_is_empty(self):
-        def fn():
+    eleza test_have_left_options_but_required_is_empty(self):
+        eleza fn():
             clinic.permute_optional_groups(['a'], [], [])
         self.assertRaises(AssertionError, fn)
 
 
-class ClinicLinearFormatTest(TestCase):
-    def _test(self, input, output, **kwargs):
+kundi ClinicLinearFormatTest(TestCase):
+    eleza _test(self, input, output, **kwargs):
         computed = clinic.linear_format(input, **kwargs)
         self.assertEqual(output, computed)
 
-    def test_empty_strings(self):
+    eleza test_empty_strings(self):
         self._test('', '')
 
-    def test_solo_newline(self):
+    eleza test_solo_newline(self):
         self._test('\n', '\n')
 
-    def test_no_substitution(self):
+    eleza test_no_substitution(self):
         self._test("""
           abc
           """, """
           abc
           """)
 
-    def test_empty_substitution(self):
+    eleza test_empty_substitution(self):
         self._test("""
           abc
           {name}
@@ -190,7 +190,7 @@ class ClinicLinearFormatTest(TestCase):
           def
           """, name='')
 
-    def test_single_line_substitution(self):
+    eleza test_single_line_substitution(self):
         self._test("""
           abc
           {name}
@@ -201,7 +201,7 @@ class ClinicLinearFormatTest(TestCase):
           def
           """, name='GARGLE')
 
-    def test_multiline_substitution(self):
+    eleza test_multiline_substitution(self):
         self._test("""
           abc
           {name}
@@ -214,23 +214,23 @@ class ClinicLinearFormatTest(TestCase):
           def
           """, name='bingle\nbungle\n')
 
-class InertParser:
-    def __init__(self, clinic):
+kundi InertParser:
+    eleza __init__(self, clinic):
         pass
 
-    def parse(self, block):
+    eleza parse(self, block):
         pass
 
-class CopyParser:
-    def __init__(self, clinic):
+kundi CopyParser:
+    eleza __init__(self, clinic):
         pass
 
-    def parse(self, block):
+    eleza parse(self, block):
         block.output = block.input
 
 
-class ClinicBlockParserTest(TestCase):
-    def _test(self, input, output):
+kundi ClinicBlockParserTest(TestCase):
+    eleza _test(self, input, output):
         language = clinic.CLanguage(None)
 
         blocks = list(clinic.BlockParser(input, language))
@@ -240,15 +240,15 @@ class ClinicBlockParserTest(TestCase):
         output = writer.f.getvalue()
         assert output == input, "output != input!\n\noutput " + repr(output) + "\n\n input " + repr(input)
 
-    def round_trip(self, input):
-        return self._test(input, input)
+    eleza round_trip(self, input):
+        rudisha self._test(input, input)
 
-    def test_round_trip_1(self):
+    eleza test_round_trip_1(self):
         self.round_trip("""
     verbatim text here
     lah dee dah
 """)
-    def test_round_trip_2(self):
+    eleza test_round_trip_2(self):
         self.round_trip("""
     verbatim text here
     lah dee dah
@@ -260,7 +260,7 @@ def
 xyz
 """)
 
-    def _test_clinic(self, input, output):
+    eleza _test_clinic(self, input, output):
         language = clinic.CLanguage(None)
         c = clinic.Clinic(language, filename="file")
         c.parsers['inert'] = InertParser(c)
@@ -268,7 +268,7 @@ xyz
         computed = c.parse(input)
         self.assertEqual(output, computed)
 
-    def test_clinic_1(self):
+    eleza test_clinic_1(self):
         self._test_clinic("""
     verbatim text here
     lah dee dah
@@ -290,8 +290,8 @@ xyz
 """)
 
 
-class ClinicParserTest(TestCase):
-    def test_trivial(self):
+kundi ClinicParserTest(TestCase):
+    eleza test_trivial(self):
         parser = DSLParser(FakeClinic())
         block = clinic.Block("module os\nos.access")
         parser.parse(block)
@@ -299,13 +299,13 @@ class ClinicParserTest(TestCase):
         self.assertEqual("access", function.name)
         self.assertEqual("os", module.name)
 
-    def test_ignore_line(self):
+    eleza test_ignore_line(self):
         block = self.parse("#\nmodule os\nos.access")
         module, function = block.signatures
         self.assertEqual("access", function.name)
         self.assertEqual("os", module.name)
 
-    def test_param(self):
+    eleza test_param(self):
         function = self.parse_function("module os\nos.access\n   path: int")
         self.assertEqual("access", function.name)
         self.assertEqual(2, len(function.parameters))
@@ -313,17 +313,17 @@ class ClinicParserTest(TestCase):
         self.assertEqual('path', p.name)
         self.assertIsInstance(p.converter, clinic.int_converter)
 
-    def test_param_default(self):
+    eleza test_param_default(self):
         function = self.parse_function("module os\nos.access\n    follow_symlinks: bool = True")
         p = function.parameters['follow_symlinks']
         self.assertEqual(True, p.default)
 
-    def test_param_with_continuations(self):
+    eleza test_param_with_continuations(self):
         function = self.parse_function("module os\nos.access\n    follow_symlinks: \\\n   bool \\\n   =\\\n    True")
         p = function.parameters['follow_symlinks']
         self.assertEqual(True, p.default)
 
-    def test_param_default_expression(self):
+    eleza test_param_default_expression(self):
         function = self.parse_function("module os\nos.access\n    follow_symlinks: int(c_default='MAXSIZE') = sys.maxsize")
         p = function.parameters['follow_symlinks']
         self.assertEqual(sys.maxsize, p.default)
@@ -332,7 +332,7 @@ class ClinicParserTest(TestCase):
         s = self.parse_function_should_fail("module os\nos.access\n    follow_symlinks: int = sys.maxsize")
         self.assertEqual(s, "Error on line 0:\nWhen you specify a named constant ('sys.maxsize') as your default value,\nyou MUST specify a valid c_default.\n")
 
-    def test_param_no_docstring(self):
+    eleza test_param_no_docstring(self):
         function = self.parse_function("""
 module os
 os.access
@@ -342,7 +342,7 @@ os.access
         self.assertEqual(3, len(function.parameters))
         self.assertIsInstance(function.parameters['something_else'].converter, clinic.str_converter)
 
-    def test_param_default_parameters_out_of_order(self):
+    eleza test_param_default_parameters_out_of_order(self):
         s = self.parse_function_should_fail("""
 module os
 os.access
@@ -353,12 +353,12 @@ Can't have a parameter without a default ('something_else')
 after a parameter with a default!
 """)
 
-    def disabled_test_converter_arguments(self):
+    eleza disabled_test_converter_arguments(self):
         function = self.parse_function("module os\nos.access\n    path: path_t(allow_fd=1)")
         p = function.parameters['path']
         self.assertEqual(1, p.converter.args['allow_fd'])
 
-    def test_function_docstring(self):
+    eleza test_function_docstring(self):
         function = self.parse_function("""
 module os
 os.stat as os_stat_fn
@@ -377,7 +377,7 @@ Perform a stat system call on the given path.
     Path to be examined
 """.strip(), function.docstring)
 
-    def test_explicit_parameters_in_docstring(self):
+    eleza test_explicit_parameters_in_docstring(self):
         function = self.parse_function("""
 module foo
 foo.bar
@@ -401,7 +401,7 @@ This is the documentation for foo.
 Okay, we're done here.
 """.strip(), function.docstring)
 
-    def test_parser_regression_special_character_in_parameter_column_of_docstring_first_line(self):
+    eleza test_parser_regression_special_character_in_parameter_column_of_docstring_first_line(self):
         function = self.parse_function("""
 module os
 os.stat
@@ -410,26 +410,26 @@ This/used to break Clinic!
 """)
         self.assertEqual("stat($module, /, path)\n--\n\nThis/used to break Clinic!", function.docstring)
 
-    def test_c_name(self):
+    eleza test_c_name(self):
         function = self.parse_function("module os\nos.stat as os_stat_fn")
         self.assertEqual("os_stat_fn", function.c_basename)
 
-    def test_return_converter(self):
+    eleza test_return_converter(self):
         function = self.parse_function("module os\nos.stat -> int")
         self.assertIsInstance(function.return_converter, clinic.int_return_converter)
 
-    def test_star(self):
+    eleza test_star(self):
         function = self.parse_function("module os\nos.access\n    *\n    follow_symlinks: bool = True")
         p = function.parameters['follow_symlinks']
         self.assertEqual(inspect.Parameter.KEYWORD_ONLY, p.kind)
         self.assertEqual(0, p.group)
 
-    def test_group(self):
+    eleza test_group(self):
         function = self.parse_function("module window\nwindow.border\n [\n ls : int\n ]\n /\n")
         p = function.parameters['ls']
         self.assertEqual(1, p.group)
 
-    def test_left_group(self):
+    eleza test_left_group(self):
         function = self.parse_function("""
 module curses
 curses.addch
@@ -469,7 +469,7 @@ addch([y, x,] ch, [attr])
     Attributes for the character.
             """.strip())
 
-    def test_nested_groups(self):
+    eleza test_nested_groups(self):
         function = self.parse_function("""
 module curses
 curses.imaginary
@@ -545,13 +545,13 @@ imaginary([[y1, y2,] x1, x2,] ch, [attr1, attr2, attr3, [attr4, attr5,
     Attributes for the character.
                 """.strip())
 
-    def parse_function_should_fail(self, s):
+    eleza parse_function_should_fail(self, s):
         with support.captured_stdout() as stdout:
             with self.assertRaises(SystemExit):
                 self.parse_function(s)
-        return stdout.getvalue()
+        rudisha stdout.getvalue()
 
-    def test_disallowed_grouping__two_top_groups_on_left(self):
+    eleza test_disallowed_grouping__two_top_groups_on_left(self):
         s = self.parse_function_should_fail("""
 module foo
 foo.two_top_groups_on_left
@@ -567,7 +567,7 @@ foo.two_top_groups_on_left
             ('Error on line 0:\n'
             'Function two_top_groups_on_left has an unsupported group configuration. (Unexpected state 2.b)\n'))
 
-    def test_disallowed_grouping__two_top_groups_on_right(self):
+    eleza test_disallowed_grouping__two_top_groups_on_right(self):
         self.parse_function_should_fail("""
 module foo
 foo.two_top_groups_on_right
@@ -580,7 +580,7 @@ foo.two_top_groups_on_right
     ]
             """)
 
-    def test_disallowed_grouping__parameter_after_group_on_right(self):
+    eleza test_disallowed_grouping__parameter_after_group_on_right(self):
         self.parse_function_should_fail("""
 module foo
 foo.parameter_after_group_on_right
@@ -593,7 +593,7 @@ foo.parameter_after_group_on_right
     ]
             """)
 
-    def test_disallowed_grouping__group_after_parameter_on_left(self):
+    eleza test_disallowed_grouping__group_after_parameter_on_left(self):
         self.parse_function_should_fail("""
 module foo
 foo.group_after_parameter_on_left
@@ -606,7 +606,7 @@ foo.group_after_parameter_on_left
     param: int
             """)
 
-    def test_disallowed_grouping__empty_group_on_left(self):
+    eleza test_disallowed_grouping__empty_group_on_left(self):
         self.parse_function_should_fail("""
 module foo
 foo.empty_group
@@ -618,7 +618,7 @@ foo.empty_group
     param: int
             """)
 
-    def test_disallowed_grouping__empty_group_on_right(self):
+    eleza test_disallowed_grouping__empty_group_on_right(self):
         self.parse_function_should_fail("""
 module foo
 foo.empty_group
@@ -630,7 +630,7 @@ foo.empty_group
     ]
             """)
 
-    def test_no_parameters(self):
+    eleza test_no_parameters(self):
         function = self.parse_function("""
 module foo
 foo.bar
@@ -641,10 +641,10 @@ Docstring
         self.assertEqual("bar($module, /)\n--\n\nDocstring", function.docstring)
         self.assertEqual(1, len(function.parameters)) # self!
 
-    def test_init_with_no_parameters(self):
+    eleza test_init_with_no_parameters(self):
         function = self.parse_function("""
 module foo
-class foo.Bar "unused" "notneeded"
+kundi foo.Bar "unused" "notneeded"
 foo.Bar.__init__
 
 Docstring
@@ -655,21 +655,21 @@ Docstring
         # but it *is* a parameter
         self.assertEqual(1, len(function.parameters))
 
-    def test_illegal_module_line(self):
+    eleza test_illegal_module_line(self):
         self.parse_function_should_fail("""
 module foo
 foo.bar => int
     /
 """)
 
-    def test_illegal_c_basename(self):
+    eleza test_illegal_c_basename(self):
         self.parse_function_should_fail("""
 module foo
 foo.bar as 935
     /
 """)
 
-    def test_single_star(self):
+    eleza test_single_star(self):
         self.parse_function_should_fail("""
 module foo
 foo.bar
@@ -677,14 +677,14 @@ foo.bar
     *
 """)
 
-    def test_parameters_required_after_star_without_initial_parameters_or_docstring(self):
+    eleza test_parameters_required_after_star_without_initial_parameters_or_docstring(self):
         self.parse_function_should_fail("""
 module foo
 foo.bar
     *
 """)
 
-    def test_parameters_required_after_star_without_initial_parameters_with_docstring(self):
+    eleza test_parameters_required_after_star_without_initial_parameters_with_docstring(self):
         self.parse_function_should_fail("""
 module foo
 foo.bar
@@ -692,7 +692,7 @@ foo.bar
 Docstring here.
 """)
 
-    def test_parameters_required_after_star_with_initial_parameters_without_docstring(self):
+    eleza test_parameters_required_after_star_with_initial_parameters_without_docstring(self):
         self.parse_function_should_fail("""
 module foo
 foo.bar
@@ -700,7 +700,7 @@ foo.bar
     *
 """)
 
-    def test_parameters_required_after_star_with_initial_parameters_and_docstring(self):
+    eleza test_parameters_required_after_star_with_initial_parameters_and_docstring(self):
         self.parse_function_should_fail("""
 module foo
 foo.bar
@@ -709,7 +709,7 @@ foo.bar
 Docstring.
 """)
 
-    def test_single_slash(self):
+    eleza test_single_slash(self):
         self.parse_function_should_fail("""
 module foo
 foo.bar
@@ -717,7 +717,7 @@ foo.bar
     /
 """)
 
-    def test_mix_star_and_slash(self):
+    eleza test_mix_star_and_slash(self):
         self.parse_function_should_fail("""
 module foo
 foo.bar
@@ -728,7 +728,7 @@ foo.bar
    /
 """)
 
-    def test_parameters_not_permitted_after_slash_for_now(self):
+    eleza test_parameters_not_permitted_after_slash_for_now(self):
         self.parse_function_should_fail("""
 module foo
 foo.bar
@@ -736,7 +736,7 @@ foo.bar
     x: int
 """)
 
-    def test_function_not_at_column_0(self):
+    eleza test_function_not_at_column_0(self):
         function = self.parse_function("""
   module foo
   foo.bar
@@ -756,7 +756,7 @@ Not at column 0!
     Nested docstring here, goeth.
 """.strip(), function.docstring)
 
-    def test_directive(self):
+    eleza test_directive(self):
         c = FakeClinic()
         parser = DSLParser(c)
         parser.flag = False
@@ -765,27 +765,27 @@ Not at column 0!
         parser.parse(block)
         self.assertTrue(parser.flag)
 
-    def test_legacy_converters(self):
+    eleza test_legacy_converters(self):
         block = self.parse('module os\nos.access\n   path: "s"')
         module, function = block.signatures
         self.assertIsInstance((function.parameters['path']).converter, clinic.str_converter)
 
-    def parse(self, text):
+    eleza parse(self, text):
         c = FakeClinic()
         parser = DSLParser(c)
         block = clinic.Block(text)
         parser.parse(block)
-        return block
+        rudisha block
 
-    def parse_function(self, text, signatures_in_block=2, function_index=1):
+    eleza parse_function(self, text, signatures_in_block=2, function_index=1):
         block = self.parse(text)
         s = block.signatures
         self.assertEqual(len(s), signatures_in_block)
         assert isinstance(s[0], clinic.Module)
         assert isinstance(s[function_index], clinic.Function)
-        return s[function_index]
+        rudisha s[function_index]
 
-    def test_scaffolding(self):
+    eleza test_scaffolding(self):
         # test repr on special values
         self.assertEqual(repr(clinic.unspecified), '<Unspecified>')
         self.assertEqual(repr(clinic.NULL), '<Null>')
@@ -797,10 +797,10 @@ Not at column 0!
         self.assertEqual(stdout.getvalue(), 'Error in file "clown.txt" on line 69:\nThe igloos are melting!\n')
 
 
-class ClinicExternalTest(TestCase):
+kundi ClinicExternalTest(TestCase):
     maxDiff = None
 
-    def test_external(self):
+    eleza test_external(self):
         source = support.findfile('clinic.test')
         with open(source, 'r', encoding='utf-8') as f:
             original = f.read()
@@ -814,5 +814,5 @@ class ClinicExternalTest(TestCase):
             self.assertEqual(result, original)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

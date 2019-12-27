@@ -1,6 +1,6 @@
 """Interface to the liblzma compression library.
 
-This module provides a class for reading and writing compressed files,
+This module provides a kundi for reading and writing compressed files,
 classes for incremental (de)compression, and convenience functions for
 one-shot (de)compression.
 
@@ -35,7 +35,7 @@ _MODE_READ     = 1
 _MODE_WRITE    = 3
 
 
-class LZMAFile(_compression.BaseStream):
+kundi LZMAFile(_compression.BaseStream):
 
     """A file object providing transparent LZMA (de)compression.
 
@@ -46,7 +46,7 @@ class LZMAFile(_compression.BaseStream):
     is returned as bytes, and data to be written must be given as bytes.
     """
 
-    def __init__(self, filename=None, mode="r", *,
+    eleza __init__(self, filename=None, mode="r", *,
                  format=None, check=-1, preset=None, filters=None):
         """Open an LZMA-compressed file in binary mode.
 
@@ -83,10 +83,10 @@ class LZMAFile(_compression.BaseStream):
         chain; the raw compressor does not support preset compression
         levels.
 
-        preset (if provided) should be an integer in the range 0-9,
+        preset (ikiwa provided) should be an integer in the range 0-9,
         optionally OR-ed with the constant PRESET_EXTREME.
 
-        filters (if provided) should be a sequence of dicts. Each dict
+        filters (ikiwa provided) should be a sequence of dicts. Each dict
         should have an entry for "id" indicating ID of the filter, plus
         additional entries for options to the filter.
         """
@@ -94,18 +94,18 @@ class LZMAFile(_compression.BaseStream):
         self._closefp = False
         self._mode = _MODE_CLOSED
 
-        if mode in ("r", "rb"):
-            if check != -1:
+        ikiwa mode in ("r", "rb"):
+            ikiwa check != -1:
                 raise ValueError("Cannot specify an integrity check "
                                  "when opening a file for reading")
-            if preset is not None:
+            ikiwa preset is not None:
                 raise ValueError("Cannot specify a preset compression "
                                  "level when opening a file for reading")
-            if format is None:
+            ikiwa format is None:
                 format = FORMAT_AUTO
             mode_code = _MODE_READ
-        elif mode in ("w", "wb", "a", "ab", "x", "xb"):
-            if format is None:
+        elikiwa mode in ("w", "wb", "a", "ab", "x", "xb"):
+            ikiwa format is None:
                 format = FORMAT_XZ
             mode_code = _MODE_WRITE
             self._compressor = LZMACompressor(format=format, check=check,
@@ -114,41 +114,41 @@ class LZMAFile(_compression.BaseStream):
         else:
             raise ValueError("Invalid mode: {!r}".format(mode))
 
-        if isinstance(filename, (str, bytes, os.PathLike)):
-            if "b" not in mode:
+        ikiwa isinstance(filename, (str, bytes, os.PathLike)):
+            ikiwa "b" not in mode:
                 mode += "b"
             self._fp = builtins.open(filename, mode)
             self._closefp = True
             self._mode = mode_code
-        elif hasattr(filename, "read") or hasattr(filename, "write"):
+        elikiwa hasattr(filename, "read") or hasattr(filename, "write"):
             self._fp = filename
             self._mode = mode_code
         else:
             raise TypeError("filename must be a str, bytes, file or PathLike object")
 
-        if self._mode == _MODE_READ:
+        ikiwa self._mode == _MODE_READ:
             raw = _compression.DecompressReader(self._fp, LZMADecompressor,
                 trailing_error=LZMAError, format=format, filters=filters)
             self._buffer = io.BufferedReader(raw)
 
-    def close(self):
+    eleza close(self):
         """Flush and close the file.
 
         May be called more than once without error. Once the file is
         closed, any other operation on it will raise a ValueError.
         """
-        if self._mode == _MODE_CLOSED:
+        ikiwa self._mode == _MODE_CLOSED:
             return
         try:
-            if self._mode == _MODE_READ:
+            ikiwa self._mode == _MODE_READ:
                 self._buffer.close()
                 self._buffer = None
-            elif self._mode == _MODE_WRITE:
+            elikiwa self._mode == _MODE_WRITE:
                 self._fp.write(self._compressor.flush())
                 self._compressor = None
         finally:
             try:
-                if self._closefp:
+                ikiwa self._closefp:
                     self._fp.close()
             finally:
                 self._fp = None
@@ -156,30 +156,30 @@ class LZMAFile(_compression.BaseStream):
                 self._mode = _MODE_CLOSED
 
     @property
-    def closed(self):
-        """True if this file is closed."""
-        return self._mode == _MODE_CLOSED
+    eleza closed(self):
+        """True ikiwa this file is closed."""
+        rudisha self._mode == _MODE_CLOSED
 
-    def fileno(self):
+    eleza fileno(self):
         """Return the file descriptor for the underlying file."""
         self._check_not_closed()
-        return self._fp.fileno()
+        rudisha self._fp.fileno()
 
-    def seekable(self):
+    eleza seekable(self):
         """Return whether the file supports seeking."""
-        return self.readable() and self._buffer.seekable()
+        rudisha self.readable() and self._buffer.seekable()
 
-    def readable(self):
+    eleza readable(self):
         """Return whether the file was opened for reading."""
         self._check_not_closed()
-        return self._mode == _MODE_READ
+        rudisha self._mode == _MODE_READ
 
-    def writable(self):
+    eleza writable(self):
         """Return whether the file was opened for writing."""
         self._check_not_closed()
-        return self._mode == _MODE_WRITE
+        rudisha self._mode == _MODE_WRITE
 
-    def peek(self, size=-1):
+    eleza peek(self, size=-1):
         """Return buffered data without advancing the file position.
 
         Always returns at least one byte of data, unless at EOF.
@@ -188,40 +188,40 @@ class LZMAFile(_compression.BaseStream):
         self._check_can_read()
         # Relies on the undocumented fact that BufferedReader.peek() always
         # returns at least one byte (except at EOF)
-        return self._buffer.peek(size)
+        rudisha self._buffer.peek(size)
 
-    def read(self, size=-1):
+    eleza read(self, size=-1):
         """Read up to size uncompressed bytes kutoka the file.
 
         If size is negative or omitted, read until EOF is reached.
-        Returns b"" if the file is already at EOF.
+        Returns b"" ikiwa the file is already at EOF.
         """
         self._check_can_read()
-        return self._buffer.read(size)
+        rudisha self._buffer.read(size)
 
-    def read1(self, size=-1):
+    eleza read1(self, size=-1):
         """Read up to size uncompressed bytes, while trying to avoid
         making multiple reads kutoka the underlying stream. Reads up to a
-        buffer's worth of data if size is negative.
+        buffer's worth of data ikiwa size is negative.
 
-        Returns b"" if the file is at EOF.
+        Returns b"" ikiwa the file is at EOF.
         """
         self._check_can_read()
-        if size < 0:
+        ikiwa size < 0:
             size = io.DEFAULT_BUFFER_SIZE
-        return self._buffer.read1(size)
+        rudisha self._buffer.read1(size)
 
-    def readline(self, size=-1):
+    eleza readline(self, size=-1):
         """Read a line of uncompressed bytes kutoka the file.
 
-        The terminating newline (if present) is retained. If size is
+        The terminating newline (ikiwa present) is retained. If size is
         non-negative, no more than size bytes will be read (in which
-        case the line may be incomplete). Returns b'' if already at EOF.
+        case the line may be incomplete). Returns b'' ikiwa already at EOF.
         """
         self._check_can_read()
-        return self._buffer.readline(size)
+        rudisha self._buffer.readline(size)
 
-    def write(self, data):
+    eleza write(self, data):
         """Write a bytes object to the file.
 
         Returns the number of uncompressed bytes written, which is
@@ -232,9 +232,9 @@ class LZMAFile(_compression.BaseStream):
         compressed = self._compressor.compress(data)
         self._fp.write(compressed)
         self._pos += len(data)
-        return len(data)
+        rudisha len(data)
 
-    def seek(self, offset, whence=io.SEEK_SET):
+    eleza seek(self, offset, whence=io.SEEK_SET):
         """Change the file position.
 
         The new position is specified by offset, relative to the
@@ -250,17 +250,17 @@ class LZMAFile(_compression.BaseStream):
         this operation may be extremely slow.
         """
         self._check_can_seek()
-        return self._buffer.seek(offset, whence)
+        rudisha self._buffer.seek(offset, whence)
 
-    def tell(self):
+    eleza tell(self):
         """Return the current file position."""
         self._check_not_closed()
-        if self._mode == _MODE_READ:
-            return self._buffer.tell()
-        return self._pos
+        ikiwa self._mode == _MODE_READ:
+            rudisha self._buffer.tell()
+        rudisha self._pos
 
 
-def open(filename, mode="rb", *,
+eleza open(filename, mode="rb", *,
          format=None, check=-1, preset=None, filters=None,
          encoding=None, errors=None, newline=None):
     """Open an LZMA-compressed file in binary or text mode.
@@ -286,28 +286,28 @@ def open(filename, mode="rb", *,
     handling behavior, and line ending(s).
 
     """
-    if "t" in mode:
-        if "b" in mode:
+    ikiwa "t" in mode:
+        ikiwa "b" in mode:
             raise ValueError("Invalid mode: %r" % (mode,))
     else:
-        if encoding is not None:
+        ikiwa encoding is not None:
             raise ValueError("Argument 'encoding' not supported in binary mode")
-        if errors is not None:
+        ikiwa errors is not None:
             raise ValueError("Argument 'errors' not supported in binary mode")
-        if newline is not None:
+        ikiwa newline is not None:
             raise ValueError("Argument 'newline' not supported in binary mode")
 
     lz_mode = mode.replace("t", "")
     binary_file = LZMAFile(filename, lz_mode, format=format, check=check,
                            preset=preset, filters=filters)
 
-    if "t" in mode:
-        return io.TextIOWrapper(binary_file, encoding, errors, newline)
+    ikiwa "t" in mode:
+        rudisha io.TextIOWrapper(binary_file, encoding, errors, newline)
     else:
-        return binary_file
+        rudisha binary_file
 
 
-def compress(data, format=FORMAT_XZ, check=-1, preset=None, filters=None):
+eleza compress(data, format=FORMAT_XZ, check=-1, preset=None, filters=None):
     """Compress a block of data.
 
     Refer to LZMACompressor's docstring for a description of the
@@ -316,10 +316,10 @@ def compress(data, format=FORMAT_XZ, check=-1, preset=None, filters=None):
     For incremental compression, use an LZMACompressor instead.
     """
     comp = LZMACompressor(format, check, preset, filters)
-    return comp.compress(data) + comp.flush()
+    rudisha comp.compress(data) + comp.flush()
 
 
-def decompress(data, format=FORMAT_AUTO, memlimit=None, filters=None):
+eleza decompress(data, format=FORMAT_AUTO, memlimit=None, filters=None):
     """Decompress a block of data.
 
     Refer to LZMADecompressor's docstring for a description of the
@@ -333,15 +333,15 @@ def decompress(data, format=FORMAT_AUTO, memlimit=None, filters=None):
         try:
             res = decomp.decompress(data)
         except LZMAError:
-            if results:
+            ikiwa results:
                 break  # Leftover data is not a valid LZMA/XZ stream; ignore it.
             else:
                 raise  # Error on the first iteration; bail out.
         results.append(res)
-        if not decomp.eof:
+        ikiwa not decomp.eof:
             raise LZMAError("Compressed data ended before the "
                             "end-of-stream marker was reached")
         data = decomp.unused_data
-        if not data:
+        ikiwa not data:
             break
-    return b"".join(results)
+    rudisha b"".join(results)

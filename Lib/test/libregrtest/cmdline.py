@@ -378,7 +378,7 @@ def _parse_args(args, **kwargs):
                 if remove:
                     if r in ns.use_resources:
                         ns.use_resources.remove(r)
-                elif r not in ns.use_resources:
+                lasivyo r not in ns.use_resources:
                     ns.use_resources.append(r)
     if ns.random_seed is not None:
         ns.randomize = True

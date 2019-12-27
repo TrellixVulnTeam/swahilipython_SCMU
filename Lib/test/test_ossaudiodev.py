@@ -17,13 +17,13 @@ agiza unittest
 try:
     kutoka ossaudiodev agiza AFMT_S16_NE
 except ImportError:
-    if sys.byteorder == "little":
+    ikiwa sys.byteorder == "little":
         AFMT_S16_NE = ossaudiodev.AFMT_S16_LE
     else:
         AFMT_S16_NE = ossaudiodev.AFMT_S16_BE
 
 
-def read_sound_file(path):
+eleza read_sound_file(path):
     with open(path, 'rb') as fp:
         au = sunau.open(fp)
         rate = au.getframerate()
@@ -32,20 +32,20 @@ def read_sound_file(path):
         fp.seek(0)
         data = fp.read()
 
-    if encoding != sunau.AUDIO_FILE_ENCODING_MULAW_8:
+    ikiwa encoding != sunau.AUDIO_FILE_ENCODING_MULAW_8:
         raise RuntimeError("Expect .au file with 8-bit mu-law samples")
 
     # Convert the data to 16-bit signed.
     data = audioop.ulaw2lin(data, 2)
-    return (data, rate, 16, nchannels)
+    rudisha (data, rate, 16, nchannels)
 
-class OSSAudioDevTests(unittest.TestCase):
+kundi OSSAudioDevTests(unittest.TestCase):
 
-    def play_sound_file(self, data, rate, ssize, nchannels):
+    eleza play_sound_file(self, data, rate, ssize, nchannels):
         try:
             dsp = ossaudiodev.open('w')
         except OSError as msg:
-            if msg.args[0] in (errno.EACCES, errno.ENOENT,
+            ikiwa msg.args[0] in (errno.EACCES, errno.ENOENT,
                                errno.ENODEV, errno.EBUSY):
                 raise unittest.SkipTest(msg)
             raise
@@ -88,7 +88,7 @@ class OSSAudioDevTests(unittest.TestCase):
                         "elapsed time (%s) > 10%% off of expected time (%s)" %
                         (elapsed_time, expected_time))
 
-    def set_parameters(self, dsp):
+    eleza set_parameters(self, dsp):
         # Two configurations for testing:
         #   config1 (8-bit, mono, 8 kHz) should work on even the most
         #      ancient and crufty sound card, but maybe not on special-
@@ -100,7 +100,7 @@ class OSSAudioDevTests(unittest.TestCase):
 
         for config in [config1, config2]:
             (fmt, channels, rate) = config
-            if (dsp.setfmt(fmt) == fmt and
+            ikiwa (dsp.setfmt(fmt) == fmt and
                 dsp.channels(channels) == channels and
                 dsp.speed(rate) == rate):
                 break
@@ -118,7 +118,7 @@ class OSSAudioDevTests(unittest.TestCase):
         self.assertEqual(result, (fmt, channels, rate),
                          "setparameters%r: returned %r" % (config, result))
 
-    def set_bad_parameters(self, dsp):
+    eleza set_bad_parameters(self, dsp):
         # Now try some configurations that are presumably bogus: eg. 300
         # channels currently exceeds even Hollywood's ambitions, and
         # negative sampling rate is utter nonsense.  setparameters() should
@@ -143,11 +143,11 @@ class OSSAudioDevTests(unittest.TestCase):
             else:
                 self.fail("expected OSSAudioError")
 
-    def test_playback(self):
+    eleza test_playback(self):
         sound_info = read_sound_file(findfile('audiotest.au'))
         self.play_sound_file(*sound_info)
 
-    def test_set_parameters(self):
+    eleza test_set_parameters(self):
         dsp = ossaudiodev.open("w")
         try:
             self.set_parameters(dsp)
@@ -159,18 +159,18 @@ class OSSAudioDevTests(unittest.TestCase):
             dsp.close()
             self.assertTrue(dsp.closed)
 
-    def test_mixer_methods(self):
+    eleza test_mixer_methods(self):
         # Issue #8139: ossaudiodev didn't initialize its types properly,
         # therefore some methods were unavailable.
         with ossaudiodev.openmixer() as mixer:
             self.assertGreaterEqual(mixer.fileno(), 0)
 
-    def test_with(self):
+    eleza test_with(self):
         with ossaudiodev.open('w') as dsp:
             pass
         self.assertTrue(dsp.closed)
 
-    def test_on_closed(self):
+    eleza test_on_closed(self):
         dsp = ossaudiodev.open('w')
         dsp.close()
         self.assertRaises(ValueError, dsp.fileno)
@@ -187,16 +187,16 @@ class OSSAudioDevTests(unittest.TestCase):
         mixer.close()
         self.assertRaises(ValueError, mixer.fileno)
 
-def test_main():
+eleza test_main():
     try:
         dsp = ossaudiodev.open('w')
     except (ossaudiodev.error, OSError) as msg:
-        if msg.args[0] in (errno.EACCES, errno.ENOENT,
+        ikiwa msg.args[0] in (errno.EACCES, errno.ENOENT,
                            errno.ENODEV, errno.EBUSY):
             raise unittest.SkipTest(msg)
         raise
     dsp.close()
     support.run_unittest(__name__)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

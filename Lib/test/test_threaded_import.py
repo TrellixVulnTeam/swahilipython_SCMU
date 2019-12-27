@@ -18,43 +18,43 @@ kutoka test.support agiza (
     verbose, run_unittest, TESTFN, reap_threads,
     forget, unlink, rmtree, start_threads)
 
-def task(N, done, done_tasks, errors):
+eleza task(N, done, done_tasks, errors):
     try:
         # We don't use modulefinder but still agiza it in order to stress
         # agizaing of different modules kutoka several threads.
-        if len(done_tasks) % 2:
+        ikiwa len(done_tasks) % 2:
             agiza modulefinder
             agiza random
         else:
             agiza random
             agiza modulefinder
-        # This will fail if random is not completely initialized
+        # This will fail ikiwa random is not completely initialized
         x = random.randrange(1, 3)
     except Exception as e:
         errors.append(e.with_traceback(None))
     finally:
         done_tasks.append(threading.get_ident())
         finished = len(done_tasks) == N
-        if finished:
+        ikiwa finished:
             done.set()
 
-def mock_register_at_fork(func):
+eleza mock_register_at_fork(func):
     # bpo-30599: Mock os.register_at_fork() when agizaing the random module,
     # since this function doesn't allow to unregister callbacks and would leak
     # memory.
-    return mock.patch('os.register_at_fork', create=True)(func)
+    rudisha mock.patch('os.register_at_fork', create=True)(func)
 
 # Create a circular agiza structure: A -> C -> B -> D -> A
 # NOTE: `time` is already loaded and therefore doesn't threaten to deadlock.
 
 circular_agizas_modules = {
-    'A': """if 1:
+    'A': """ikiwa 1:
         agiza time
         time.sleep(%(delay)s)
         x = 'a'
         agiza C
         """,
-    'B': """if 1:
+    'B': """ikiwa 1:
         agiza time
         time.sleep(%(delay)s)
         x = 'b'
@@ -64,16 +64,16 @@ circular_agizas_modules = {
     'D': """agiza A""",
 }
 
-class Finder:
+kundi Finder:
     """A dummy finder to detect concurrent access to its find_spec()
     method."""
 
-    def __init__(self):
+    eleza __init__(self):
         self.numcalls = 0
         self.x = 0
         self.lock = threading.Lock()
 
-    def find_spec(self, name, path=None, target=None):
+    eleza find_spec(self, name, path=None, target=None):
         # Simulate some thread-unsafe behaviour. If calls to find_spec()
         # are properly serialized, `x` will end up the same as `numcalls`.
         # Otherwise not.
@@ -84,36 +84,36 @@ class Finder:
         time.sleep(0.01)
         self.x = x + 1
 
-class FlushingFinder:
+kundi FlushingFinder:
     """A dummy finder which flushes sys.path_importer_cache when it gets
     called."""
 
-    def find_spec(self, name, path=None, target=None):
+    eleza find_spec(self, name, path=None, target=None):
         sys.path_importer_cache.clear()
 
 
-class ThreadedImportTests(unittest.TestCase):
+kundi ThreadedImportTests(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.old_random = sys.modules.pop('random', None)
 
-    def tearDown(self):
+    eleza tearDown(self):
         # If the `random` module was already initialized, we restore the
         # old module at the end so that pickling tests don't fail.
         # See http://bugs.python.org/issue3657#msg110461
-        if self.old_random is not None:
+        ikiwa self.old_random is not None:
             sys.modules['random'] = self.old_random
 
     @mock_register_at_fork
-    def check_parallel_module_init(self, mock_os):
-        if imp.lock_held():
+    eleza check_parallel_module_init(self, mock_os):
+        ikiwa imp.lock_held():
             # This triggers on, e.g., kutoka test agiza autotest.
             raise unittest.SkipTest("can't run when agiza lock is held")
 
         done = threading.Event()
         for N in (20, 50) * 3:
-            if verbose:
-                print("Trying", N, "threads ...", end=' ')
+            ikiwa verbose:
+                andika("Trying", N, "threads ...", end=' ')
             # Make sure that random and modulefinder get reimported freshly
             for modname in ['random', 'modulefinder']:
                 try:
@@ -130,18 +130,18 @@ class ThreadedImportTests(unittest.TestCase):
                 pass
             completed = done.wait(10 * 60)
             dt = time.monotonic() - t0
-            if verbose:
-                print("%.1f ms" % (dt*1e3), flush=True, end=" ")
+            ikiwa verbose:
+                andika("%.1f ms" % (dt*1e3), flush=True, end=" ")
             dbg_info = 'done: %s/%s' % (len(done_tasks), N)
             self.assertFalse(errors, dbg_info)
             self.assertTrue(completed, dbg_info)
-            if verbose:
-                print("OK.")
+            ikiwa verbose:
+                andika("OK.")
 
-    def test_parallel_module_init(self):
+    eleza test_parallel_module_init(self):
         self.check_parallel_module_init()
 
-    def test_parallel_meta_path(self):
+    eleza test_parallel_meta_path(self):
         finder = Finder()
         sys.meta_path.insert(0, finder)
         try:
@@ -151,7 +151,7 @@ class ThreadedImportTests(unittest.TestCase):
         finally:
             sys.meta_path.remove(finder)
 
-    def test_parallel_path_hooks(self):
+    eleza test_parallel_path_hooks(self):
         # Here the Finder instance is only used to check concurrent calls
         # to path_hook().
         finder = Finder()
@@ -159,7 +159,7 @@ class ThreadedImportTests(unittest.TestCase):
         # to flush the path_importer_cache, which we do by registering a
         # dedicated meta_path entry.
         flushing_finder = FlushingFinder()
-        def path_hook(path):
+        eleza path_hook(path):
             finder.find_spec('')
             raise ImportError
         sys.path_hooks.insert(0, path_hook)
@@ -174,7 +174,7 @@ class ThreadedImportTests(unittest.TestCase):
             sys.meta_path.remove(flushing_finder)
             sys.path_hooks.remove(path_hook)
 
-    def test_import_hangers(self):
+    eleza test_import_hangers(self):
         # In case this test is run again, make sure the helper module
         # gets loaded kutoka scratch again.
         try:
@@ -184,7 +184,7 @@ class ThreadedImportTests(unittest.TestCase):
         agiza test.threaded_import_hangers
         self.assertFalse(test.threaded_import_hangers.errors)
 
-    def test_circular_agizas(self):
+    eleza test_circular_agizas(self):
         # The goal of this test is to exercise implementations of the agiza
         # lock which use a per-module lock, rather than a global lock.
         # In these implementations, there is a possible deadlock with
@@ -208,10 +208,10 @@ class ThreadedImportTests(unittest.TestCase):
 
         importlib.invalidate_caches()
         results = []
-        def import_ab():
+        eleza import_ab():
             agiza A
             results.append(getattr(A, 'x', None))
-        def import_ba():
+        eleza import_ba():
             agiza B
             results.append(getattr(B, 'x', None))
         t1 = threading.Thread(target=import_ab)
@@ -223,10 +223,10 @@ class ThreadedImportTests(unittest.TestCase):
         self.assertEqual(set(results), {'a', 'b'})
 
     @mock_register_at_fork
-    def test_side_effect_agiza(self, mock_os):
-        code = """if 1:
+    eleza test_side_effect_agiza(self, mock_os):
+        code = """ikiwa 1:
             agiza threading
-            def target():
+            eleza target():
                 agiza random
             t = threading.Thread(target=target)
             t.start()
@@ -246,7 +246,7 @@ class ThreadedImportTests(unittest.TestCase):
 
 
 @reap_threads
-def test_main():
+eleza test_main():
     old_switchinterval = None
     try:
         old_switchinterval = sys.getswitchinterval()
@@ -256,8 +256,8 @@ def test_main():
     try:
         run_unittest(ThreadedImportTests)
     finally:
-        if old_switchinterval is not None:
+        ikiwa old_switchinterval is not None:
             sys.setswitchinterval(old_switchinterval)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

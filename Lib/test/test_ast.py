@@ -9,19 +9,19 @@ kutoka textwrap agiza dedent
 
 kutoka test agiza support
 
-def to_tuple(t):
-    if t is None or isinstance(t, (str, int, complex)):
-        return t
-    elif isinstance(t, list):
-        return [to_tuple(e) for e in t]
+eleza to_tuple(t):
+    ikiwa t is None or isinstance(t, (str, int, complex)):
+        rudisha t
+    elikiwa isinstance(t, list):
+        rudisha [to_tuple(e) for e in t]
     result = [t.__class__.__name__]
-    if hasattr(t, 'lineno') and hasattr(t, 'col_offset'):
+    ikiwa hasattr(t, 'lineno') and hasattr(t, 'col_offset'):
         result.append((t.lineno, t.col_offset))
-    if t._fields is None:
-        return tuple(result)
+    ikiwa t._fields is None:
+        rudisha tuple(result)
     for f in t._fields:
         result.append(to_tuple(getattr(t, f)))
-    return tuple(result)
+    rudisha tuple(result)
 
 
 # These tests are compiled through "exec"
@@ -32,27 +32,27 @@ exec_tests = [
     # Module docstring
     "'module docstring'",
     # FunctionDef
-    "def f(): pass",
+    "eleza f(): pass",
     # FunctionDef with docstring
-    "def f(): 'function docstring'",
+    "eleza f(): 'function docstring'",
     # FunctionDef with arg
-    "def f(a): pass",
+    "eleza f(a): pass",
     # FunctionDef with arg and default value
-    "def f(a=0): pass",
+    "eleza f(a=0): pass",
     # FunctionDef with varargs
-    "def f(*args): pass",
+    "eleza f(*args): pass",
     # FunctionDef with kwargs
-    "def f(**kwargs): pass",
+    "eleza f(**kwargs): pass",
     # FunctionDef with all kind of args and docstring
-    "def f(a, b=1, c=None, d=[], e={}, *args, f=42, **kwargs): 'doc for f()'",
+    "eleza f(a, b=1, c=None, d=[], e={}, *args, f=42, **kwargs): 'doc for f()'",
     # ClassDef
-    "class C:pass",
+    "kundi C:pass",
     # ClassDef with docstring
-    "class C: 'docstring for class C'",
+    "kundi C: 'docstring for kundi C'",
     # ClassDef, new style class
-    "class C(object): pass",
+    "kundi C(object): pass",
     # Return
-    "def f():return 1",
+    "eleza f():rudisha 1",
     # Delete
     "del v",
     # Assign
@@ -67,7 +67,7 @@ exec_tests = [
     # While
     "while v:pass",
     # If
-    "if v:pass",
+    "ikiwa v:pass",
     # With
     "with x as y: pass",
     "with x as y, z as q: pass",
@@ -110,46 +110,46 @@ exec_tests = [
     Bb in Cc
     )""",
     # dictcomp
-    "{a : b for w in x for m in p if g}",
+    "{a : b for w in x for m in p ikiwa g}",
     # dictcomp with naked tuple
     "{a : b for v,w in x}",
     # setcomp
-    "{r for l in x if g}",
+    "{r for l in x ikiwa g}",
     # setcomp with naked tuple
     "{r for l,m in x}",
     # AsyncFunctionDef
-    "async def f():\n 'async function'\n await something()",
+    "async eleza f():\n 'async function'\n await something()",
     # AsyncFor
-    "async def f():\n async for e in i: 1\n else: 2",
+    "async eleza f():\n async for e in i: 1\n else: 2",
     # AsyncWith
-    "async def f():\n async with a as b: 1",
+    "async eleza f():\n async with a as b: 1",
     # PEP 448: Additional Unpacking Generalizations
     "{**{1:2}, 2:3}",
     "{*{1, 2}, 3}",
     # Asynchronous comprehensions
-    "async def f():\n [i async for b in c]",
+    "async eleza f():\n [i async for b in c]",
     # Decorated FunctionDef
-    "@deco1\n@deco2()\ndef f(): pass",
+    "@deco1\n@deco2()\neleza f(): pass",
     # Decorated AsyncFunctionDef
-    "@deco1\n@deco2()\nasync def f(): pass",
+    "@deco1\n@deco2()\nasync eleza f(): pass",
     # Decorated ClassDef
-    "@deco1\n@deco2()\nclass C: pass",
+    "@deco1\n@deco2()\nkundi C: pass",
     # Decorator with generator argument
-    "@deco(a for a in b)\ndef f(): pass",
+    "@deco(a for a in b)\neleza f(): pass",
     # Simple assignment expression
     "(a := 1)",
     # Positional-only arguments
-    "def f(a, /,): pass",
-    "def f(a, /, c, d, e): pass",
-    "def f(a, /, c, *, d, e): pass",
-    "def f(a, /, c, *, d, e, **kwargs): pass",
+    "eleza f(a, /,): pass",
+    "eleza f(a, /, c, d, e): pass",
+    "eleza f(a, /, c, *, d, e): pass",
+    "eleza f(a, /, c, *, d, e, **kwargs): pass",
     # Positional-only arguments with defaults
-    "def f(a=1, /,): pass",
-    "def f(a=1, /, b=2, c=4): pass",
-    "def f(a=1, /, b=2, *, c=4): pass",
-    "def f(a=1, /, b=2, *, c): pass",
-    "def f(a=1, /, b=2, *, c=4, **kwargs): pass",
-    "def f(a=1, /, b=2, *, c, **kwargs): pass",
+    "eleza f(a=1, /,): pass",
+    "eleza f(a=1, /, b=2, c=4): pass",
+    "eleza f(a=1, /, b=2, *, c=4): pass",
+    "eleza f(a=1, /, b=2, *, c): pass",
+    "eleza f(a=1, /, b=2, *, c=4, **kwargs): pass",
+    "eleza f(a=1, /, b=2, *, c, **kwargs): pass",
 
 ]
 
@@ -186,9 +186,9 @@ eval_tests = [
           2
      }""",
   # ListComp
-  "[a for b in c if d]",
+  "[a for b in c ikiwa d]",
   # GeneratorExp
-  "(a for b in c if d)",
+  "(a for b in c ikiwa d)",
   # Comprehensions with multiple for targets
   "[(a,b) for a,b in c]",
   "[(a,b) for (a,b) in c]",
@@ -235,27 +235,27 @@ eval_tests = [
 # TODO: expr_context, slice, boolop, operator, unaryop, cmpop, comprehension
 # excepthandler, arguments, keywords, alias
 
-class AST_Tests(unittest.TestCase):
+kundi AST_Tests(unittest.TestCase):
 
-    def _assertTrueorder(self, ast_node, parent_pos):
-        if not isinstance(ast_node, ast.AST) or ast_node._fields is None:
+    eleza _assertTrueorder(self, ast_node, parent_pos):
+        ikiwa not isinstance(ast_node, ast.AST) or ast_node._fields is None:
             return
-        if isinstance(ast_node, (ast.expr, ast.stmt, ast.excepthandler)):
+        ikiwa isinstance(ast_node, (ast.expr, ast.stmt, ast.excepthandler)):
             node_pos = (ast_node.lineno, ast_node.col_offset)
             self.assertGreaterEqual(node_pos, parent_pos)
             parent_pos = (ast_node.lineno, ast_node.col_offset)
         for name in ast_node._fields:
             value = getattr(ast_node, name)
-            if isinstance(value, list):
+            ikiwa isinstance(value, list):
                 first_pos = parent_pos
-                if value and name == 'decorator_list':
+                ikiwa value and name == 'decorator_list':
                     first_pos = (value[0].lineno, value[0].col_offset)
                 for child in value:
                     self._assertTrueorder(child, first_pos)
-            elif value is not None:
+            elikiwa value is not None:
                 self._assertTrueorder(value, parent_pos)
 
-    def test_AST_objects(self):
+    eleza test_AST_objects(self):
         x = ast.AST()
         self.assertEqual(x._fields, ())
         x.foobar = 42
@@ -269,8 +269,8 @@ class AST_Tests(unittest.TestCase):
             # "_ast.AST constructor takes 0 positional arguments"
             ast.AST(2)
 
-    def test_AST_garbage_collection(self):
-        class X:
+    eleza test_AST_garbage_collection(self):
+        kundi X:
             pass
         a = ast.AST()
         a.x = X()
@@ -280,7 +280,7 @@ class AST_Tests(unittest.TestCase):
         support.gc_collect()
         self.assertIsNone(ref())
 
-    def test_snippets(self):
+    eleza test_snippets(self):
         for input, output, kind in ((exec_tests, exec_results, "exec"),
                                     (single_tests, single_results, "single"),
                                     (eval_tests, eval_results, "eval")):
@@ -292,30 +292,30 @@ class AST_Tests(unittest.TestCase):
                 with self.subTest(action="compiling", input=i, kind=kind):
                     compile(ast_tree, "?", kind)
 
-    def test_ast_validation(self):
+    eleza test_ast_validation(self):
         # compile() is the only function that calls PyAST_Validate
         snippets_to_validate = exec_tests + single_tests + eval_tests
         for snippet in snippets_to_validate:
             tree = ast.parse(snippet)
             compile(tree, '<string>', 'exec')
 
-    def test_slice(self):
+    eleza test_slice(self):
         slc = ast.parse("x[::]").body[0].value.slice
         self.assertIsNone(slc.upper)
         self.assertIsNone(slc.lower)
         self.assertIsNone(slc.step)
 
-    def test_from_agiza(self):
+    eleza test_kutoka_agiza(self):
         im = ast.parse("kutoka . agiza y").body[0]
         self.assertIsNone(im.module)
 
-    def test_non_interned_future_from_ast(self):
+    eleza test_non_interned_future_kutoka_ast(self):
         mod = ast.parse("kutoka __future__ agiza division")
         self.assertIsInstance(mod.body[0], ast.ImportFrom)
         mod.body[0].module = " __future__ ".strip()
         compile(mod, "<test>", "exec")
 
-    def test_base_classes(self):
+    eleza test_base_classes(self):
         self.assertTrue(issubclass(ast.For, ast.stmt))
         self.assertTrue(issubclass(ast.Name, ast.expr))
         self.assertTrue(issubclass(ast.stmt, ast.AST))
@@ -323,14 +323,14 @@ class AST_Tests(unittest.TestCase):
         self.assertTrue(issubclass(ast.comprehension, ast.AST))
         self.assertTrue(issubclass(ast.Gt, ast.AST))
 
-    def test_field_attr_existence(self):
+    eleza test_field_attr_existence(self):
         for name, item in ast.__dict__.items():
-            if isinstance(item, type) and name != 'AST' and name[0].isupper():
+            ikiwa isinstance(item, type) and name != 'AST' and name[0].isupper():
                 x = item()
-                if isinstance(x, ast.AST):
+                ikiwa isinstance(x, ast.AST):
                     self.assertEqual(type(x._fields), tuple)
 
-    def test_arguments(self):
+    eleza test_arguments(self):
         x = ast.arguments()
         self.assertEqual(x._fields, ('posonlyargs', 'args', 'vararg', 'kwonlyargs',
                                      'kw_defaults', 'kwarg', 'defaults'))
@@ -341,13 +341,13 @@ class AST_Tests(unittest.TestCase):
         x = ast.arguments(*range(1, 8))
         self.assertEqual(x.vararg, 3)
 
-    def test_field_attr_writable(self):
+    eleza test_field_attr_writable(self):
         x = ast.Num()
         # We can assign to _fields
         x._fields = 666
         self.assertEqual(x._fields, 666)
 
-    def test_classattrs(self):
+    eleza test_classattrs(self):
         x = ast.Num()
         self.assertEqual(x._fields, ('value', 'kind'))
 
@@ -398,7 +398,7 @@ class AST_Tests(unittest.TestCase):
         self.assertIs(ast.Constant(None).value, None)
         self.assertIs(ast.Constant(...).value, ...)
 
-    def test_realtype(self):
+    eleza test_realtype(self):
         self.assertEqual(type(ast.Num(42)), ast.Constant)
         self.assertEqual(type(ast.Num(4.25)), ast.Constant)
         self.assertEqual(type(ast.Num(4.25j)), ast.Constant)
@@ -409,7 +409,7 @@ class AST_Tests(unittest.TestCase):
         self.assertEqual(type(ast.NameConstant(None)), ast.Constant)
         self.assertEqual(type(ast.Ellipsis()), ast.Constant)
 
-    def test_isinstance(self):
+    eleza test_isinstance(self):
         self.assertTrue(isinstance(ast.Num(42), ast.Num))
         self.assertTrue(isinstance(ast.Num(4.2), ast.Num))
         self.assertTrue(isinstance(ast.Num(4.2j), ast.Num))
@@ -452,16 +452,16 @@ class AST_Tests(unittest.TestCase):
         self.assertFalse(isinstance(ast.Constant(), ast.NameConstant))
         self.assertFalse(isinstance(ast.Constant(), ast.Ellipsis))
 
-        class S(str): pass
+        kundi S(str): pass
         self.assertTrue(isinstance(ast.Constant(S('42')), ast.Str))
         self.assertFalse(isinstance(ast.Constant(S('42')), ast.Num))
 
-    def test_subclasses(self):
-        class N(ast.Num):
-            def __init__(self, *args, **kwargs):
+    eleza test_subclasses(self):
+        kundi N(ast.Num):
+            eleza __init__(self, *args, **kwargs):
                 super().__init__(*args, **kwargs)
                 self.z = 'spam'
-        class N2(ast.Num):
+        kundi N2(ast.Num):
             pass
 
         n = N(42)
@@ -476,12 +476,12 @@ class AST_Tests(unittest.TestCase):
         self.assertEqual(n.n, 42)
         self.assertEqual(type(n), N)
 
-    def test_module(self):
+    eleza test_module(self):
         body = [ast.Num(42)]
         x = ast.Module(body, [])
         self.assertEqual(x.body, body)
 
-    def test_nodeclasses(self):
+    eleza test_nodeclasses(self):
         # Zero arguments constructor explicitly allowed
         x = ast.BinOp()
         self.assertEqual(x._fields, ('left', 'op', 'right'))
@@ -525,12 +525,12 @@ class AST_Tests(unittest.TestCase):
         x = ast.BinOp(1, 2, 3, foobarbaz=42)
         self.assertEqual(x.foobarbaz, 42)
 
-    def test_no_fields(self):
+    eleza test_no_fields(self):
         # this used to fail because Sub._fields was None
         x = ast.Sub()
         self.assertEqual(x._fields, ())
 
-    def test_pickling(self):
+    eleza test_pickling(self):
         agiza pickle
         mods = [pickle]
         try:
@@ -545,39 +545,39 @@ class AST_Tests(unittest.TestCase):
                     ast2 = mod.loads(mod.dumps(ast, protocol))
                     self.assertEqual(to_tuple(ast2), to_tuple(ast))
 
-    def test_invalid_sum(self):
+    eleza test_invalid_sum(self):
         pos = dict(lineno=2, col_offset=3)
         m = ast.Module([ast.Expr(ast.expr(**pos), **pos)], [])
         with self.assertRaises(TypeError) as cm:
             compile(m, "<test>", "exec")
         self.assertIn("but got <_ast.expr", str(cm.exception))
 
-    def test_invalid_identitifer(self):
+    eleza test_invalid_identitifer(self):
         m = ast.Module([ast.Expr(ast.Name(42, ast.Load()))], [])
         ast.fix_missing_locations(m)
         with self.assertRaises(TypeError) as cm:
             compile(m, "<test>", "exec")
         self.assertIn("identifier must be of type str", str(cm.exception))
 
-    def test_empty_yield_from(self):
+    eleza test_empty_yield_kutoka(self):
         # Issue 16546: yield kutoka value is not optional.
-        empty_yield_from = ast.parse("def f():\n yield kutoka g()")
-        empty_yield_from.body[0].body[0].value.value = None
+        empty_yield_kutoka = ast.parse("eleza f():\n yield kutoka g()")
+        empty_yield_kutoka.body[0].body[0].value.value = None
         with self.assertRaises(ValueError) as cm:
-            compile(empty_yield_from, "<test>", "exec")
+            compile(empty_yield_kutoka, "<test>", "exec")
         self.assertIn("field value is required", str(cm.exception))
 
     @support.cpython_only
-    def test_issue31592(self):
+    eleza test_issue31592(self):
         # There shouldn't be an assertion failure in case of a bad
         # unicodedata.normalize().
         agiza unicodedata
-        def bad_normalize(*args):
-            return None
+        eleza bad_normalize(*args):
+            rudisha None
         with support.swap_attr(unicodedata, 'normalize', bad_normalize):
             self.assertRaises(TypeError, ast.parse, '\u03D5')
 
-    def test_issue18374_binop_col_offset(self):
+    eleza test_issue18374_binop_col_offset(self):
         tree = ast.parse('4+5+6+7')
         parent_binop = tree.body[0].value
         child_binop = parent_binop.left
@@ -608,15 +608,15 @@ class AST_Tests(unittest.TestCase):
         self.assertEqual(grandchild_binop.end_col_offset, 3)
         self.assertEqual(grandchild_binop.end_lineno, 1)
 
-class ASTHelpers_Test(unittest.TestCase):
+kundi ASTHelpers_Test(unittest.TestCase):
     maxDiff = None
 
-    def test_parse(self):
+    eleza test_parse(self):
         a = ast.parse('foo(1 + 1)')
         b = compile('foo(1 + 1)', '<unknown>', 'exec', ast.PyCF_ONLY_AST)
         self.assertEqual(ast.dump(a), ast.dump(b))
 
-    def test_parse_in_error(self):
+    eleza test_parse_in_error(self):
         try:
             1/0
         except Exception:
@@ -624,7 +624,7 @@ class ASTHelpers_Test(unittest.TestCase):
                 ast.literal_eval(r"'\U'")
             self.assertIsNotNone(e.exception.__context__)
 
-    def test_dump(self):
+    eleza test_dump(self):
         node = ast.parse('spam(eggs, "and cheese")')
         self.assertEqual(ast.dump(node),
             "Module(body=[Expr(value=Call(func=Name(id='spam', ctx=Load()), "
@@ -645,7 +645,7 @@ class ASTHelpers_Test(unittest.TestCase):
             "lineno=1, col_offset=0, end_lineno=1, end_col_offset=24)], type_ignores=[])"
         )
 
-    def test_dump_incomplete(self):
+    eleza test_dump_incomplete(self):
         node = ast.Raise(lineno=3, col_offset=4)
         self.assertEqual(ast.dump(node),
             "Raise()"
@@ -674,7 +674,7 @@ class ASTHelpers_Test(unittest.TestCase):
             "Raise(cause=Name('e', Load()))"
         )
 
-    def test_copy_location(self):
+    eleza test_copy_location(self):
         src = ast.parse('1 + 1', mode='eval')
         src.body.right = ast.copy_location(ast.Num(2), src.body.right)
         self.assertEqual(ast.dump(src, include_attributes=True),
@@ -684,7 +684,7 @@ class ASTHelpers_Test(unittest.TestCase):
             'col_offset=0, end_lineno=1, end_col_offset=5))'
         )
 
-    def test_fix_missing_locations(self):
+    eleza test_fix_missing_locations(self):
         src = ast.parse('write("spam")')
         src.body.append(ast.Expr(ast.Call(ast.Name('spam', ast.Load()),
                                           [ast.Str('eggs')], [])))
@@ -704,7 +704,7 @@ class ASTHelpers_Test(unittest.TestCase):
             "type_ignores=[])"
         )
 
-    def test_increment_lineno(self):
+    eleza test_increment_lineno(self):
         src = ast.parse('1 + 1', mode='eval')
         self.assertEqual(ast.increment_lineno(src, n=3), src)
         self.assertEqual(ast.dump(src, include_attributes=True),
@@ -723,13 +723,13 @@ class ASTHelpers_Test(unittest.TestCase):
             'col_offset=0, end_lineno=4, end_col_offset=5))'
         )
 
-    def test_iter_fields(self):
+    eleza test_iter_fields(self):
         node = ast.parse('foo()', mode='eval')
         d = dict(ast.iter_fields(node.body))
         self.assertEqual(d.pop('func').id, 'foo')
         self.assertEqual(d, {'keywords': [], 'args': []})
 
-    def test_iter_child_nodes(self):
+    eleza test_iter_child_nodes(self):
         node = ast.parse("spam(23, 42, eggs='leek')", mode='eval')
         self.assertEqual(len(list(ast.iter_child_nodes(node.body))), 4)
         iterator = ast.iter_child_nodes(node.body)
@@ -740,51 +740,51 @@ class ASTHelpers_Test(unittest.TestCase):
             "keyword(arg='eggs', value=Constant(value='leek', kind=None))"
         )
 
-    def test_get_docstring(self):
+    eleza test_get_docstring(self):
         node = ast.parse('"""line one\n  line two"""')
         self.assertEqual(ast.get_docstring(node),
                          'line one\nline two')
 
-        node = ast.parse('class foo:\n  """line one\n  line two"""')
+        node = ast.parse('kundi foo:\n  """line one\n  line two"""')
         self.assertEqual(ast.get_docstring(node.body[0]),
                          'line one\nline two')
 
-        node = ast.parse('def foo():\n  """line one\n  line two"""')
+        node = ast.parse('eleza foo():\n  """line one\n  line two"""')
         self.assertEqual(ast.get_docstring(node.body[0]),
                          'line one\nline two')
 
-        node = ast.parse('async def foo():\n  """spam\n  ham"""')
+        node = ast.parse('async eleza foo():\n  """spam\n  ham"""')
         self.assertEqual(ast.get_docstring(node.body[0]), 'spam\nham')
 
-    def test_get_docstring_none(self):
+    eleza test_get_docstring_none(self):
         self.assertIsNone(ast.get_docstring(ast.parse('')))
         node = ast.parse('x = "not docstring"')
         self.assertIsNone(ast.get_docstring(node))
-        node = ast.parse('def foo():\n  pass')
+        node = ast.parse('eleza foo():\n  pass')
         self.assertIsNone(ast.get_docstring(node))
 
-        node = ast.parse('class foo:\n  pass')
+        node = ast.parse('kundi foo:\n  pass')
         self.assertIsNone(ast.get_docstring(node.body[0]))
-        node = ast.parse('class foo:\n  x = "not docstring"')
+        node = ast.parse('kundi foo:\n  x = "not docstring"')
         self.assertIsNone(ast.get_docstring(node.body[0]))
-        node = ast.parse('class foo:\n  def bar(self): pass')
-        self.assertIsNone(ast.get_docstring(node.body[0]))
-
-        node = ast.parse('def foo():\n  pass')
-        self.assertIsNone(ast.get_docstring(node.body[0]))
-        node = ast.parse('def foo():\n  x = "not docstring"')
+        node = ast.parse('kundi foo:\n  eleza bar(self): pass')
         self.assertIsNone(ast.get_docstring(node.body[0]))
 
-        node = ast.parse('async def foo():\n  pass')
+        node = ast.parse('eleza foo():\n  pass')
         self.assertIsNone(ast.get_docstring(node.body[0]))
-        node = ast.parse('async def foo():\n  x = "not docstring"')
+        node = ast.parse('eleza foo():\n  x = "not docstring"')
         self.assertIsNone(ast.get_docstring(node.body[0]))
 
-    def test_multi_line_docstring_col_offset_and_lineno_issue16806(self):
+        node = ast.parse('async eleza foo():\n  pass')
+        self.assertIsNone(ast.get_docstring(node.body[0]))
+        node = ast.parse('async eleza foo():\n  x = "not docstring"')
+        self.assertIsNone(ast.get_docstring(node.body[0]))
+
+    eleza test_multi_line_docstring_col_offset_and_lineno_issue16806(self):
         node = ast.parse(
             '"""line one\nline two"""\n\n'
-            'def foo():\n  """line one\n  line two"""\n\n'
-            '  def bar():\n    """line one\n    line two"""\n'
+            'eleza foo():\n  """line one\n  line two"""\n\n'
+            '  eleza bar():\n    """line one\n    line two"""\n'
             '  """line one\n  line two"""\n'
             '"""line one\nline two"""\n\n'
         )
@@ -799,7 +799,7 @@ class ASTHelpers_Test(unittest.TestCase):
         self.assertEqual(node.body[2].col_offset, 0)
         self.assertEqual(node.body[2].lineno, 13)
 
-    def test_literal_eval(self):
+    eleza test_literal_eval(self):
         self.assertEqual(ast.literal_eval('[1, 2, 3]'), [1, 2, 3])
         self.assertEqual(ast.literal_eval('{"foo": 42}'), {"foo": 42})
         self.assertEqual(ast.literal_eval('(True, False, None)'), (True, False, None))
@@ -817,7 +817,7 @@ class ASTHelpers_Test(unittest.TestCase):
         self.assertRaises(ValueError, ast.literal_eval, '+True')
         self.assertRaises(ValueError, ast.literal_eval, '2+3')
 
-    def test_literal_eval_complex(self):
+    eleza test_literal_eval_complex(self):
         # Issue #4907
         self.assertEqual(ast.literal_eval('6j'), 6j)
         self.assertEqual(ast.literal_eval('-6j'), -6j)
@@ -838,7 +838,7 @@ class ASTHelpers_Test(unittest.TestCase):
         self.assertRaises(ValueError, ast.literal_eval, '3+(0+6j)')
         self.assertRaises(ValueError, ast.literal_eval, '-(3+6j)')
 
-    def test_bad_integer(self):
+    eleza test_bad_integer(self):
         # issue13436: Bad error message with invalid numeric values
         body = [ast.ImportFrom(module='time',
                                names=[ast.alias(name='sleep')],
@@ -849,7 +849,7 @@ class ASTHelpers_Test(unittest.TestCase):
             compile(mod, 'test', 'exec')
         self.assertIn("invalid integer value: None", str(cm.exception))
 
-    def test_level_as_none(self):
+    eleza test_level_as_none(self):
         body = [ast.ImportFrom(module='time',
                                names=[ast.alias(name='sleep')],
                                level=None,
@@ -861,49 +861,49 @@ class ASTHelpers_Test(unittest.TestCase):
         self.assertIn('sleep', ns)
 
 
-class ASTValidatorTests(unittest.TestCase):
+kundi ASTValidatorTests(unittest.TestCase):
 
-    def mod(self, mod, msg=None, mode="exec", *, exc=ValueError):
+    eleza mod(self, mod, msg=None, mode="exec", *, exc=ValueError):
         mod.lineno = mod.col_offset = 0
         ast.fix_missing_locations(mod)
-        if msg is None:
+        ikiwa msg is None:
             compile(mod, "<test>", mode)
         else:
             with self.assertRaises(exc) as cm:
                 compile(mod, "<test>", mode)
             self.assertIn(msg, str(cm.exception))
 
-    def expr(self, node, msg=None, *, exc=ValueError):
+    eleza expr(self, node, msg=None, *, exc=ValueError):
         mod = ast.Module([ast.Expr(node)], [])
         self.mod(mod, msg, exc=exc)
 
-    def stmt(self, stmt, msg=None):
+    eleza stmt(self, stmt, msg=None):
         mod = ast.Module([stmt], [])
         self.mod(mod, msg)
 
-    def test_module(self):
+    eleza test_module(self):
         m = ast.Interactive([ast.Expr(ast.Name("x", ast.Store()))])
         self.mod(m, "must have Load context", "single")
         m = ast.Expression(ast.Name("x", ast.Store()))
         self.mod(m, "must have Load context", "eval")
 
-    def _check_arguments(self, fac, check):
-        def arguments(args=None, posonlyargs=None, vararg=None,
+    eleza _check_arguments(self, fac, check):
+        eleza arguments(args=None, posonlyargs=None, vararg=None,
                       kwonlyargs=None, kwarg=None,
                       defaults=None, kw_defaults=None):
-            if args is None:
+            ikiwa args is None:
                 args = []
-            if posonlyargs is None:
+            ikiwa posonlyargs is None:
                 posonlyargs = []
-            if kwonlyargs is None:
+            ikiwa kwonlyargs is None:
                 kwonlyargs = []
-            if defaults is None:
+            ikiwa defaults is None:
                 defaults = []
-            if kw_defaults is None:
+            ikiwa kw_defaults is None:
                 kw_defaults = []
             args = ast.arguments(args, posonlyargs, vararg, kwonlyargs,
                                  kw_defaults, kwarg, defaults)
-            return fac(args)
+            rudisha fac(args)
         args = [ast.arg("x", ast.Name("x", ast.Store()))]
         check(arguments(args=args), "must have Load context")
         check(arguments(posonlyargs=args), "must have Load context")
@@ -921,7 +921,7 @@ class ASTValidatorTests(unittest.TestCase):
                           kw_defaults=[None, ast.Name("x", ast.Store())]),
                           "must have Load context")
 
-    def test_funcdef(self):
+    eleza test_funcdef(self):
         a = ast.arguments([], [], None, [], [], None, [])
         f = ast.FunctionDef("x", a, [], [], None)
         self.stmt(f, "empty body on FunctionDef")
@@ -931,21 +931,21 @@ class ASTValidatorTests(unittest.TestCase):
         f = ast.FunctionDef("x", a, [ast.Pass()], [],
                             ast.Name("x", ast.Store()))
         self.stmt(f, "must have Load context")
-        def fac(args):
-            return ast.FunctionDef("x", args, [ast.Pass()], [], None)
+        eleza fac(args):
+            rudisha ast.FunctionDef("x", args, [ast.Pass()], [], None)
         self._check_arguments(fac, self.stmt)
 
-    def test_classdef(self):
-        def cls(bases=None, keywords=None, body=None, decorator_list=None):
-            if bases is None:
+    eleza test_classdef(self):
+        eleza cls(bases=None, keywords=None, body=None, decorator_list=None):
+            ikiwa bases is None:
                 bases = []
-            if keywords is None:
+            ikiwa keywords is None:
                 keywords = []
-            if body is None:
+            ikiwa body is None:
                 body = [ast.Pass()]
-            if decorator_list is None:
+            ikiwa decorator_list is None:
                 decorator_list = []
-            return ast.ClassDef("myclass", bases, keywords,
+            rudisha ast.ClassDef("myclass", bases, keywords,
                                 body, decorator_list)
         self.stmt(cls(bases=[ast.Name("x", ast.Store())]),
                   "must have Load context")
@@ -956,13 +956,13 @@ class ASTValidatorTests(unittest.TestCase):
         self.stmt(cls(decorator_list=[ast.Name("x", ast.Store())]),
                   "must have Load context")
 
-    def test_delete(self):
+    eleza test_delete(self):
         self.stmt(ast.Delete([]), "empty targets on Delete")
         self.stmt(ast.Delete([None]), "None disallowed")
         self.stmt(ast.Delete([ast.Name("x", ast.Load())]),
                   "must have Del context")
 
-    def test_assign(self):
+    eleza test_assign(self):
         self.stmt(ast.Assign([], ast.Num(3)), "empty targets on Assign")
         self.stmt(ast.Assign([None], ast.Num(3)), "None disallowed")
         self.stmt(ast.Assign([ast.Name("x", ast.Load())], ast.Num(3)),
@@ -971,7 +971,7 @@ class ASTValidatorTests(unittest.TestCase):
                                 ast.Name("y", ast.Store())),
                   "must have Load context")
 
-    def test_augassign(self):
+    eleza test_augassign(self):
         aug = ast.AugAssign(ast.Name("x", ast.Load()), ast.Add(),
                             ast.Name("y", ast.Load()))
         self.stmt(aug, "must have Store context")
@@ -979,7 +979,7 @@ class ASTValidatorTests(unittest.TestCase):
                             ast.Name("y", ast.Store()))
         self.stmt(aug, "must have Load context")
 
-    def test_for(self):
+    eleza test_for(self):
         x = ast.Name("x", ast.Store())
         y = ast.Name("y", ast.Load())
         p = ast.Pass()
@@ -992,7 +992,7 @@ class ASTValidatorTests(unittest.TestCase):
         self.stmt(ast.For(x, y, [e], []), "must have Load context")
         self.stmt(ast.For(x, y, [p], [e]), "must have Load context")
 
-    def test_while(self):
+    eleza test_while(self):
         self.stmt(ast.While(ast.Num(3), [], []), "empty body on While")
         self.stmt(ast.While(ast.Name("x", ast.Store()), [ast.Pass()], []),
                   "must have Load context")
@@ -1000,7 +1000,7 @@ class ASTValidatorTests(unittest.TestCase):
                              [ast.Expr(ast.Name("x", ast.Store()))]),
                              "must have Load context")
 
-    def test_if(self):
+    eleza test_if(self):
         self.stmt(ast.If(ast.Num(3), [], []), "empty body on If")
         i = ast.If(ast.Name("x", ast.Store()), [ast.Pass()], [])
         self.stmt(i, "must have Load context")
@@ -1010,7 +1010,7 @@ class ASTValidatorTests(unittest.TestCase):
                    [ast.Expr(ast.Name("x", ast.Store()))])
         self.stmt(i, "must have Load context")
 
-    def test_with(self):
+    eleza test_with(self):
         p = ast.Pass()
         self.stmt(ast.With([], [p]), "empty items on With")
         i = ast.withitem(ast.Num(3), None)
@@ -1020,7 +1020,7 @@ class ASTValidatorTests(unittest.TestCase):
         i = ast.withitem(ast.Num(3), ast.Name("x", ast.Load()))
         self.stmt(ast.With([i], [p]), "must have Store context")
 
-    def test_raise(self):
+    eleza test_raise(self):
         r = ast.Raise(None, ast.Num(3))
         self.stmt(r, "Raise with cause but no exception")
         r = ast.Raise(ast.Name("x", ast.Store()), None)
@@ -1028,7 +1028,7 @@ class ASTValidatorTests(unittest.TestCase):
         r = ast.Raise(ast.Num(4), ast.Name("x", ast.Store()))
         self.stmt(r, "must have Load context")
 
-    def test_try(self):
+    eleza test_try(self):
         p = ast.Pass()
         t = ast.Try([], [], [], [p])
         self.stmt(t, "empty body on Try")
@@ -1048,32 +1048,32 @@ class ASTValidatorTests(unittest.TestCase):
         t = ast.Try([p], e, [p], [ast.Expr(ast.Name("x", ast.Store()))])
         self.stmt(t, "must have Load context")
 
-    def test_assert(self):
+    eleza test_assert(self):
         self.stmt(ast.Assert(ast.Name("x", ast.Store()), None),
                   "must have Load context")
         assrt = ast.Assert(ast.Name("x", ast.Load()),
                            ast.Name("y", ast.Store()))
         self.stmt(assrt, "must have Load context")
 
-    def test_agiza(self):
+    eleza test_agiza(self):
         self.stmt(ast.Import([]), "empty names on Import")
 
-    def test_agizafrom(self):
+    eleza test_agizakutoka(self):
         imp = ast.ImportFrom(None, [ast.alias("x", None)], -42)
         self.stmt(imp, "Negative ImportFrom level")
         self.stmt(ast.ImportFrom(None, [], 0), "empty names on ImportFrom")
 
-    def test_global(self):
+    eleza test_global(self):
         self.stmt(ast.Global([]), "empty names on Global")
 
-    def test_nonlocal(self):
+    eleza test_nonlocal(self):
         self.stmt(ast.Nonlocal([]), "empty names on Nonlocal")
 
-    def test_expr(self):
+    eleza test_expr(self):
         e = ast.Expr(ast.Name("x", ast.Store()))
         self.stmt(e, "must have Load context")
 
-    def test_boolop(self):
+    eleza test_boolop(self):
         b = ast.BoolOp(ast.And(), [])
         self.expr(b, "less than 2 values")
         b = ast.BoolOp(ast.And(), [ast.Num(3)])
@@ -1083,36 +1083,36 @@ class ASTValidatorTests(unittest.TestCase):
         b = ast.BoolOp(ast.And(), [ast.Num(4), ast.Name("x", ast.Store())])
         self.expr(b, "must have Load context")
 
-    def test_unaryop(self):
+    eleza test_unaryop(self):
         u = ast.UnaryOp(ast.Not(), ast.Name("x", ast.Store()))
         self.expr(u, "must have Load context")
 
-    def test_lambda(self):
+    eleza test_lambda(self):
         a = ast.arguments([], [], None, [], [], None, [])
         self.expr(ast.Lambda(a, ast.Name("x", ast.Store())),
                   "must have Load context")
-        def fac(args):
-            return ast.Lambda(args, ast.Name("x", ast.Load()))
+        eleza fac(args):
+            rudisha ast.Lambda(args, ast.Name("x", ast.Load()))
         self._check_arguments(fac, self.expr)
 
-    def test_ifexp(self):
+    eleza test_ifexp(self):
         l = ast.Name("x", ast.Load())
         s = ast.Name("y", ast.Store())
         for args in (s, l, l), (l, s, l), (l, l, s):
             self.expr(ast.IfExp(*args), "must have Load context")
 
-    def test_dict(self):
+    eleza test_dict(self):
         d = ast.Dict([], [ast.Name("x", ast.Load())])
         self.expr(d, "same number of keys as values")
         d = ast.Dict([ast.Name("x", ast.Load())], [None])
         self.expr(d, "None disallowed")
 
-    def test_set(self):
+    eleza test_set(self):
         self.expr(ast.Set([None]), "None disallowed")
         s = ast.Set([ast.Name("x", ast.Store())])
         self.expr(s, "must have Load context")
 
-    def _check_comprehension(self, fac):
+    eleza _check_comprehension(self, fac):
         self.expr(fac([]), "comprehension with no generators")
         g = ast.comprehension(ast.Name("x", ast.Load()),
                               ast.Name("x", ast.Load()), [], 0)
@@ -1127,25 +1127,25 @@ class ASTValidatorTests(unittest.TestCase):
         g = ast.comprehension(x, y, [ast.Name("x", ast.Store())], 0)
         self.expr(fac([g]), "must have Load context")
 
-    def _simple_comp(self, fac):
+    eleza _simple_comp(self, fac):
         g = ast.comprehension(ast.Name("x", ast.Store()),
                               ast.Name("x", ast.Load()), [], 0)
         self.expr(fac(ast.Name("x", ast.Store()), [g]),
                   "must have Load context")
-        def wrap(gens):
-            return fac(ast.Name("x", ast.Store()), gens)
+        eleza wrap(gens):
+            rudisha fac(ast.Name("x", ast.Store()), gens)
         self._check_comprehension(wrap)
 
-    def test_listcomp(self):
+    eleza test_listcomp(self):
         self._simple_comp(ast.ListComp)
 
-    def test_setcomp(self):
+    eleza test_setcomp(self):
         self._simple_comp(ast.SetComp)
 
-    def test_generatorexp(self):
+    eleza test_generatorexp(self):
         self._simple_comp(ast.GeneratorExp)
 
-    def test_dictcomp(self):
+    eleza test_dictcomp(self):
         g = ast.comprehension(ast.Name("y", ast.Store()),
                               ast.Name("p", ast.Load()), [], 0)
         c = ast.DictComp(ast.Name("x", ast.Store()),
@@ -1154,17 +1154,17 @@ class ASTValidatorTests(unittest.TestCase):
         c = ast.DictComp(ast.Name("x", ast.Load()),
                          ast.Name("y", ast.Store()), [g])
         self.expr(c, "must have Load context")
-        def factory(comps):
+        eleza factory(comps):
             k = ast.Name("x", ast.Load())
             v = ast.Name("y", ast.Load())
-            return ast.DictComp(k, v, comps)
+            rudisha ast.DictComp(k, v, comps)
         self._check_comprehension(factory)
 
-    def test_yield(self):
+    eleza test_yield(self):
         self.expr(ast.Yield(ast.Name("x", ast.Store())), "must have Load")
         self.expr(ast.YieldFrom(ast.Name("x", ast.Store())), "must have Load")
 
-    def test_compare(self):
+    eleza test_compare(self):
         left = ast.Name("x", ast.Load())
         comp = ast.Compare(left, [ast.In()], [])
         self.expr(comp, "no comparators")
@@ -1175,7 +1175,7 @@ class ASTValidatorTests(unittest.TestCase):
         comp = ast.Compare(left, [ast.In()], [ast.Num("blah")])
         self.expr(comp)
 
-    def test_call(self):
+    eleza test_call(self):
         func = ast.Name("x", ast.Load())
         args = [ast.Name("y", ast.Load())]
         keywords = [ast.keyword("w", ast.Name("z", ast.Load()))]
@@ -1187,23 +1187,23 @@ class ASTValidatorTests(unittest.TestCase):
         call = ast.Call(func, args, bad_keywords)
         self.expr(call, "must have Load context")
 
-    def test_num(self):
-        class subint(int):
+    eleza test_num(self):
+        kundi subint(int):
             pass
-        class subfloat(float):
+        kundi subfloat(float):
             pass
-        class subcomplex(complex):
+        kundi subcomplex(complex):
             pass
         for obj in "0", "hello":
             self.expr(ast.Num(obj))
         for obj in subint(), subfloat(), subcomplex():
             self.expr(ast.Num(obj), "invalid type", exc=TypeError)
 
-    def test_attribute(self):
+    eleza test_attribute(self):
         attr = ast.Attribute(ast.Name("x", ast.Store()), "y", ast.Load())
         self.expr(attr, "must have Load context")
 
-    def test_subscript(self):
+    eleza test_subscript(self):
         sub = ast.Subscript(ast.Name("x", ast.Store()), ast.Index(ast.Num(3)),
                             ast.Load())
         self.expr(sub, "must have Load context")
@@ -1221,29 +1221,29 @@ class ASTValidatorTests(unittest.TestCase):
         sl = ast.ExtSlice([ast.Index(s)])
         self.expr(ast.Subscript(x, sl, ast.Load()), "must have Load context")
 
-    def test_starred(self):
+    eleza test_starred(self):
         left = ast.List([ast.Starred(ast.Name("x", ast.Load()), ast.Store())],
                         ast.Store())
         assign = ast.Assign([left], ast.Num(4))
         self.stmt(assign, "must have Store context")
 
-    def _sequence(self, fac):
+    eleza _sequence(self, fac):
         self.expr(fac([None], ast.Load()), "None disallowed")
         self.expr(fac([ast.Name("x", ast.Store())], ast.Load()),
                   "must have Load context")
 
-    def test_list(self):
+    eleza test_list(self):
         self._sequence(ast.List)
 
-    def test_tuple(self):
+    eleza test_tuple(self):
         self._sequence(ast.Tuple)
 
-    def test_nameconstant(self):
+    eleza test_nameconstant(self):
         self.expr(ast.NameConstant(4))
 
-    def test_stdlib_validates(self):
+    eleza test_stdlib_validates(self):
         stdlib = os.path.dirname(ast.__file__)
-        tests = [fn for fn in os.listdir(stdlib) if fn.endswith(".py")]
+        tests = [fn for fn in os.listdir(stdlib) ikiwa fn.endswith(".py")]
         tests.extend(["test/test_grammar.py", "test/test_unpack_ex.py"])
         for module in tests:
             with self.subTest(module):
@@ -1254,10 +1254,10 @@ class ASTValidatorTests(unittest.TestCase):
                 compile(mod, fn, "exec")
 
 
-class ConstantTests(unittest.TestCase):
+kundi ConstantTests(unittest.TestCase):
     """Tests on the ast.Constant node type."""
 
-    def compile_constant(self, value):
+    eleza compile_constant(self, value):
         tree = ast.parse("x = 123")
 
         node = tree.body[0].value
@@ -1269,21 +1269,21 @@ class ConstantTests(unittest.TestCase):
 
         ns = {}
         exec(code, ns)
-        return ns['x']
+        rudisha ns['x']
 
-    def test_validation(self):
+    eleza test_validation(self):
         with self.assertRaises(TypeError) as cm:
             self.compile_constant([1, 2, 3])
         self.assertEqual(str(cm.exception),
                          "got an invalid type in Constant: list")
 
-    def test_singletons(self):
+    eleza test_singletons(self):
         for const in (None, False, True, Ellipsis, b'', frozenset()):
             with self.subTest(const=const):
                 value = self.compile_constant(const)
                 self.assertIs(value, const)
 
-    def test_values(self):
+    eleza test_values(self):
         nested_tuple = (1,)
         nested_frozenset = frozenset({1})
         for level in range(3):
@@ -1298,7 +1298,7 @@ class ConstantTests(unittest.TestCase):
                 result = self.compile_constant(value)
                 self.assertEqual(result, value)
 
-    def test_assign_to_constant(self):
+    eleza test_assign_to_constant(self):
         tree = ast.parse("x = 1")
 
         target = tree.body[0].targets[0]
@@ -1312,22 +1312,22 @@ class ConstantTests(unittest.TestCase):
                          "expression which can't be assigned "
                          "to in Store context")
 
-    def test_get_docstring(self):
+    eleza test_get_docstring(self):
         tree = ast.parse("'docstring'\nx = 1")
         self.assertEqual(ast.get_docstring(tree), 'docstring')
 
-    def get_load_const(self, tree):
+    eleza get_load_const(self, tree):
         # Compile to bytecode, disassemble and get parameter of LOAD_CONST
         # instructions
         co = compile(tree, '<string>', 'exec')
         consts = []
         for instr in dis.get_instructions(co):
-            if instr.opname == 'LOAD_CONST':
+            ikiwa instr.opname == 'LOAD_CONST':
                 consts.append(instr.argval)
-        return consts
+        rudisha consts
 
     @support.cpython_only
-    def test_load_const(self):
+    eleza test_load_const(self):
         consts = [None,
                   True, False,
                   124,
@@ -1355,7 +1355,7 @@ class ConstantTests(unittest.TestCase):
         self.assertEqual(self.get_load_const(tree),
                          consts)
 
-    def test_literal_eval(self):
+    eleza test_literal_eval(self):
         tree = ast.parse("1 + 2")
         binop = tree.body[0].value
 
@@ -1369,7 +1369,7 @@ class ConstantTests(unittest.TestCase):
 
         self.assertEqual(ast.literal_eval(binop), 10+20j)
 
-    def test_string_kind(self):
+    eleza test_string_kind(self):
         c = ast.parse('"x"', mode='eval').body
         self.assertEqual(c.value, "x")
         self.assertEqual(c.kind, None)
@@ -1387,76 +1387,76 @@ class ConstantTests(unittest.TestCase):
         self.assertEqual(c.kind, None)
 
 
-class EndPositionTests(unittest.TestCase):
+kundi EndPositionTests(unittest.TestCase):
     """Tests for end position of AST nodes.
 
     Testing end positions of nodes requires a bit of extra care
     because of how LL parsers work.
     """
-    def _check_end_pos(self, ast_node, end_lineno, end_col_offset):
+    eleza _check_end_pos(self, ast_node, end_lineno, end_col_offset):
         self.assertEqual(ast_node.end_lineno, end_lineno)
         self.assertEqual(ast_node.end_col_offset, end_col_offset)
 
-    def _check_content(self, source, ast_node, content):
+    eleza _check_content(self, source, ast_node, content):
         self.assertEqual(ast.get_source_segment(source, ast_node), content)
 
-    def _parse_value(self, s):
+    eleza _parse_value(self, s):
         # Use duck-typing to support both single expression
         # and a right hand side of an assignment statement.
-        return ast.parse(s).body[0].value
+        rudisha ast.parse(s).body[0].value
 
-    def test_lambda(self):
+    eleza test_lambda(self):
         s = 'lambda x, *y: None'
         lam = self._parse_value(s)
         self._check_content(s, lam.body, 'None')
         self._check_content(s, lam.args.args[0], 'x')
         self._check_content(s, lam.args.vararg, 'y')
 
-    def test_func_def(self):
+    eleza test_func_def(self):
         s = dedent('''
-            def func(x: int,
+            eleza func(x: int,
                      *args: str,
                      z: float = 0,
                      **kwargs: Any) -> bool:
-                return True
+                rudisha True
             ''').strip()
-        fdef = ast.parse(s).body[0]
+        feleza = ast.parse(s).body[0]
         self._check_end_pos(fdef, 5, 15)
-        self._check_content(s, fdef.body[0], 'return True')
+        self._check_content(s, fdef.body[0], 'rudisha True')
         self._check_content(s, fdef.args.args[0], 'x: int')
         self._check_content(s, fdef.args.args[0].annotation, 'int')
         self._check_content(s, fdef.args.kwarg, 'kwargs: Any')
         self._check_content(s, fdef.args.kwarg.annotation, 'Any')
 
-    def test_call(self):
+    eleza test_call(self):
         s = 'func(x, y=2, **kw)'
         call = self._parse_value(s)
         self._check_content(s, call.func, 'func')
         self._check_content(s, call.keywords[0].value, '2')
         self._check_content(s, call.keywords[1].value, 'kw')
 
-    def test_call_noargs(self):
+    eleza test_call_noargs(self):
         s = 'x[0]()'
         call = self._parse_value(s)
         self._check_content(s, call.func, 'x[0]')
         self._check_end_pos(call, 1, 6)
 
-    def test_class_def(self):
+    eleza test_class_def(self):
         s = dedent('''
-            class C(A, B):
+            kundi C(A, B):
                 x: int = 0
         ''').strip()
-        cdef = ast.parse(s).body[0]
+        celeza = ast.parse(s).body[0]
         self._check_end_pos(cdef, 2, 14)
         self._check_content(s, cdef.bases[1], 'B')
         self._check_content(s, cdef.body[0], 'x: int = 0')
 
-    def test_class_kw(self):
-        s = 'class S(metaclass=abc.ABCMeta): pass'
-        cdef = ast.parse(s).body[0]
+    eleza test_class_kw(self):
+        s = 'kundi S(metaclass=abc.ABCMeta): pass'
+        celeza = ast.parse(s).body[0]
         self._check_content(s, cdef.keywords[0].value, 'abc.ABCMeta')
 
-    def test_multi_line_str(self):
+    eleza test_multi_line_str(self):
         s = dedent('''
             x = """Some multi-line text.
 
@@ -1466,7 +1466,7 @@ class EndPositionTests(unittest.TestCase):
         self._check_end_pos(assign, 3, 40)
         self._check_end_pos(assign.value, 3, 40)
 
-    def test_continued_str(self):
+    eleza test_continued_str(self):
         s = dedent('''
             x = "first part" \\
             "second part"
@@ -1475,16 +1475,16 @@ class EndPositionTests(unittest.TestCase):
         self._check_end_pos(assign, 2, 13)
         self._check_end_pos(assign.value, 2, 13)
 
-    def test_suites(self):
+    eleza test_suites(self):
         # We intentionally put these into the same string to check
         # that empty lines are not part of the suite.
         s = dedent('''
             while True:
                 pass
 
-            if one():
+            ikiwa one():
                 x = None
-            elif other():
+            elikiwa other():
                 y = None
             else:
                 z = None
@@ -1519,13 +1519,13 @@ class EndPositionTests(unittest.TestCase):
         self._check_content(s, try_stmt.body[0], 'raise RuntimeError')
         self._check_content(s, try_stmt.handlers[0].type, 'TypeError')
 
-    def test_fstring(self):
+    eleza test_fstring(self):
         s = 'x = f"abc {x + y} abc"'
         fstr = self._parse_value(s)
         binop = fstr.values[1].value
         self._check_content(s, binop, 'x + y')
 
-    def test_fstring_multi_line(self):
+    eleza test_fstring_multi_line(self):
         s = dedent('''
             f"""Some multi-line text.
             {
@@ -1541,7 +1541,7 @@ class EndPositionTests(unittest.TestCase):
         self._check_content(s, binop.left, 'arg_one')
         self._check_content(s, binop.right, 'arg_two')
 
-    def test_import_from_multi_line(self):
+    eleza test_import_kutoka_multi_line(self):
         s = dedent('''
             kutoka x.y.z agiza (
                 a, b, c as c
@@ -1550,7 +1550,7 @@ class EndPositionTests(unittest.TestCase):
         imp = ast.parse(s).body[0]
         self._check_end_pos(imp, 3, 1)
 
-    def test_slices(self):
+    eleza test_slices(self):
         s1 = 'f()[1, 2] [0]'
         s2 = 'x[ a.b: c.d]'
         sm = dedent('''
@@ -1567,7 +1567,7 @@ class EndPositionTests(unittest.TestCase):
         self._check_content(sm, im.slice.dims[1].lower, 'g ()')
         self._check_end_pos(im, 3, 3)
 
-    def test_binop(self):
+    eleza test_binop(self):
         s = dedent('''
             (1 * 2 + (3 ) +
                  4
@@ -1579,9 +1579,9 @@ class EndPositionTests(unittest.TestCase):
         self._check_content(s, binop.left, '1 * 2 + (3 )')
         self._check_content(s, binop.left.right, '3')
 
-    def test_boolop(self):
+    eleza test_boolop(self):
         s = dedent('''
-            if (one_condition and
+            ikiwa (one_condition and
                     (other_condition or yet_another_one)):
                 pass
         ''').strip()
@@ -1590,7 +1590,7 @@ class EndPositionTests(unittest.TestCase):
         self._check_content(s, bop.values[1],
                             'other_condition or yet_another_one')
 
-    def test_tuples(self):
+    eleza test_tuples(self):
         s1 = 'x = () ;'
         s2 = 'x = 1 , ;'
         s3 = 'x = (1 , 2 ) ;'
@@ -1605,13 +1605,13 @@ class EndPositionTests(unittest.TestCase):
         self._check_content(s3, t3, '(1 , 2 )')
         self._check_end_pos(tm, 3, 1)
 
-    def test_attribute_spaces(self):
+    eleza test_attribute_spaces(self):
         s = 'func(x. y .z)'
         call = self._parse_value(s)
         self._check_content(s, call, s)
         self._check_content(s, call.args[0], 'x. y .z')
 
-    def test_displays(self):
+    eleza test_displays(self):
         s1 = '[{}, {1, }, {1, 2,} ]'
         s2 = '{a: b, f (): g () ,}'
         c1 = self._parse_value(s1)
@@ -1622,10 +1622,10 @@ class EndPositionTests(unittest.TestCase):
         self._check_content(s2, c2.keys[1], 'f ()')
         self._check_content(s2, c2.values[1], 'g ()')
 
-    def test_comprehensions(self):
+    eleza test_comprehensions(self):
         s = dedent('''
             x = [{x for x, y in stuff
-                  if cond.x} for stuff in things]
+                  ikiwa cond.x} for stuff in things]
         ''').strip()
         cmp = self._parse_value(s)
         self._check_end_pos(cmp, 2, 37)
@@ -1634,17 +1634,17 @@ class EndPositionTests(unittest.TestCase):
         self._check_content(s, cmp.elt.generators[0].ifs[0], 'cond.x')
         self._check_content(s, cmp.elt.generators[0].target, 'x, y')
 
-    def test_yield_await(self):
+    eleza test_yield_await(self):
         s = dedent('''
-            async def f():
+            async eleza f():
                 yield x
                 await y
         ''').strip()
-        fdef = ast.parse(s).body[0]
+        feleza = ast.parse(s).body[0]
         self._check_content(s, fdef.body[0].value, 'yield x')
         self._check_content(s, fdef.body[1].value, 'await y')
 
-    def test_source_segment_multi(self):
+    eleza test_source_segment_multi(self):
         s_orig = dedent('''
             x = (
                 a, b,
@@ -1658,19 +1658,19 @@ class EndPositionTests(unittest.TestCase):
         binop = self._parse_value(s_orig)
         self.assertEqual(ast.get_source_segment(s_orig, binop.left), s_tuple)
 
-    def test_source_segment_padded(self):
+    eleza test_source_segment_padded(self):
         s_orig = dedent('''
-            class C:
-                def fun(self) -> None:
+            kundi C:
+                eleza fun(self) -> None:
                     "ЖЖЖЖЖ"
         ''').strip()
-        s_method = '    def fun(self) -> None:\n' \
+        s_method = '    eleza fun(self) -> None:\n' \
                    '        "ЖЖЖЖЖ"'
-        cdef = ast.parse(s_orig).body[0]
+        celeza = ast.parse(s_orig).body[0]
         self.assertEqual(ast.get_source_segment(s_orig, cdef.body[0], padded=True),
                          s_method)
 
-    def test_source_segment_endings(self):
+    eleza test_source_segment_endings(self):
         s = 'v = 1\r\nw = 1\nx = 1\n\ry = 1\rz = 1\r\n'
         v, w, x, y, z = ast.parse(s).body
         self._check_content(s, v, 'v = 1')
@@ -1679,31 +1679,31 @@ class EndPositionTests(unittest.TestCase):
         self._check_content(s, y, 'y = 1')
         self._check_content(s, z, 'z = 1')
 
-    def test_source_segment_tabs(self):
+    eleza test_source_segment_tabs(self):
         s = dedent('''
-            class C:
-              \t\f  def fun(self) -> None:
+            kundi C:
+              \t\f  eleza fun(self) -> None:
               \t\f      pass
         ''').strip()
-        s_method = '  \t\f  def fun(self) -> None:\n' \
+        s_method = '  \t\f  eleza fun(self) -> None:\n' \
                    '  \t\f      pass'
 
-        cdef = ast.parse(s).body[0]
+        celeza = ast.parse(s).body[0]
         self.assertEqual(ast.get_source_segment(s, cdef.body[0], padded=True), s_method)
 
 
-class NodeVisitorTests(unittest.TestCase):
-    def test_old_constant_nodes(self):
-        class Visitor(ast.NodeVisitor):
-            def visit_Num(self, node):
+kundi NodeVisitorTests(unittest.TestCase):
+    eleza test_old_constant_nodes(self):
+        kundi Visitor(ast.NodeVisitor):
+            eleza visit_Num(self, node):
                 log.append((node.lineno, 'Num', node.n))
-            def visit_Str(self, node):
+            eleza visit_Str(self, node):
                 log.append((node.lineno, 'Str', node.s))
-            def visit_Bytes(self, node):
+            eleza visit_Bytes(self, node):
                 log.append((node.lineno, 'Bytes', node.s))
-            def visit_NameConstant(self, node):
+            eleza visit_NameConstant(self, node):
                 log.append((node.lineno, 'NameConstant', node.value))
-            def visit_Ellipsis(self, node):
+            eleza visit_Ellipsis(self, node):
                 log.append((node.lineno, 'Ellipsis', ...))
         mod = ast.parse(dedent('''\
             i = 42
@@ -1742,18 +1742,18 @@ class NodeVisitorTests(unittest.TestCase):
         ])
 
 
-def main():
-    if __name__ != '__main__':
+eleza main():
+    ikiwa __name__ != '__main__':
         return
-    if sys.argv[1:] == ['-g']:
+    ikiwa sys.argv[1:] == ['-g']:
         for statements, kind in ((exec_tests, "exec"), (single_tests, "single"),
                                  (eval_tests, "eval")):
-            print(kind+"_results = [")
+            andika(kind+"_results = [")
             for statement in statements:
                 tree = ast.parse(statement, "?", kind)
-                print("%r," % (to_tuple(tree),))
-            print("]")
-        print("main()")
+                andika("%r," % (to_tuple(tree),))
+            andika("]")
+        andika("main()")
         raise SystemExit
     unittest.main()
 
@@ -1769,7 +1769,7 @@ exec_results = [
 ('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [], [], None, [], [], ('arg', (1, 8), 'kwargs', None, None), []), [('Pass', (1, 17))], [], None, None)], []),
 ('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [], [('arg', (1, 6), 'a', None, None), ('arg', (1, 9), 'b', None, None), ('arg', (1, 14), 'c', None, None), ('arg', (1, 22), 'd', None, None), ('arg', (1, 28), 'e', None, None)], ('arg', (1, 35), 'args', None, None), [('arg', (1, 41), 'f', None, None)], [('Constant', (1, 43), 42, None)], ('arg', (1, 49), 'kwargs', None, None), [('Constant', (1, 11), 1, None), ('Constant', (1, 16), None, None), ('List', (1, 24), [], ('Load',)), ('Dict', (1, 30), [], [])]), [('Expr', (1, 58), ('Constant', (1, 58), 'doc for f()', None))], [], None, None)], []),
 ('Module', [('ClassDef', (1, 0), 'C', [], [], [('Pass', (1, 8))], [])], []),
-('Module', [('ClassDef', (1, 0), 'C', [], [], [('Expr', (1, 9), ('Constant', (1, 9), 'docstring for class C', None))], [])], []),
+('Module', [('ClassDef', (1, 0), 'C', [], [], [('Expr', (1, 9), ('Constant', (1, 9), 'docstring for kundi C', None))], [])], []),
 ('Module', [('ClassDef', (1, 0), 'C', [('Name', (1, 8), 'object', ('Load',))], [], [('Pass', (1, 17))], [])], []),
 ('Module', [('FunctionDef', (1, 0), 'f', ('arguments', [], [], None, [], [], None, []), [('Return', (1, 8), ('Constant', (1, 15), 1, None))], [], None, None)], []),
 ('Module', [('Delete', (1, 0), [('Name', (1, 4), 'v', ('Del',))])], []),

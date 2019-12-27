@@ -22,12 +22,12 @@ How do I run a Python program under Windows?
 --------------------------------------------
 
 This is not necessarily a straightforward question. If you are already familiar
-with running programs from the Windows command line then everything will seem
+with running programs kutoka the Windows command line then everything will seem
 obvious; otherwise, you might need a little more guidance.
 
 Unless you use some sort of integrated development environment, you will end up
 *typing* Windows commands into what is variously referred to as a "DOS window"
-or "Command prompt window".  Usually you can create such a window from your
+or "Command prompt window".  Usually you can create such a window kutoka your
 search bar by searching for ``cmd``.  You should be able to recognize
 when you have started such a window because you will see a Windows "command
 prompt", which usually looks like this:
@@ -116,7 +116,7 @@ How do I make Python scripts executable?
 On Windows, the standard Python installer already associates the .py
 extension with a file type (Python.File) and gives that file type an open
 command that runs the interpreter (``D:\Program Files\Python\python.exe "%1"
-%*``).  This is enough to make scripts executable from the command prompt as
+%*``).  This is enough to make scripts executable kutoka the command prompt as
 'foo.py'.  If you'd rather be able to execute the script by simple typing 'foo'
 with no extension you need to add .py to the PATHEXT environment variable.
 
@@ -131,17 +131,17 @@ which appear to be configured identically.
 The problem may be caused by a misconfiguration of virus checking software on
 the problem machine.  Some virus scanners have been known to introduce startup
 overhead of two orders of magnitude when the scanner is configured to monitor
-all reads from the filesystem.  Try checking the configuration of virus scanning
+all reads kutoka the filesystem.  Try checking the configuration of virus scanning
 software on your systems to ensure that they are indeed configured identically.
 McAfee, when configured to scan all file system read activity, is a particular
 offender.
 
 
-How do I make an executable from a Python script?
+How do I make an executable kutoka a Python script?
 -------------------------------------------------
 
 See `cx_Freeze <https://anthony-tuininga.github.io/cx_Freeze/>`_ for a distutils extension
-that allows you to create console and GUI executables from Python code.
+that allows you to create console and GUI executables kutoka Python code.
 `py2exe <http://www.py2exe.org/>`_, the most popular extension for building
 Python 2.x-based executables, does not yet support Python 3 but a version that
 does is in development.
@@ -152,7 +152,7 @@ Is a ``*.pyd`` file the same as a DLL?
 
 Yes, .pyd files are dll's, but there are a few differences.  If you have a DLL
 named ``foo.pyd``, then it must have a function ``PyInit_foo()``.  You can then
-write Python "import foo", and Python will search for foo.pyd (as well as
+write Python "agiza foo", and Python will search for foo.pyd (as well as
 foo.py, foo.pyc) and if it finds it, will attempt to call ``PyInit_foo()`` to
 initialize it.  You do not link your .exe with foo.lib, as that would cause
 Windows to require the DLL to be present.
@@ -160,7 +160,7 @@ Windows to require the DLL to be present.
 Note that the search path for foo.pyd is PYTHONPATH, not the same as the path
 that Windows uses to search for foo.dll.  Also, foo.pyd need not be present to
 run your program, whereas if you linked your program with a dll, the dll is
-required.  Of course, foo.pyd is required if you want to say ``import foo``.  In
+required.  Of course, foo.pyd is required if you want to say ``agiza foo``.  In
 a DLL, linkage is declared in the source code with ``__declspec(dllexport)``.
 In a .pyd, linkage is defined in a list of available functions.
 
@@ -179,7 +179,7 @@ Embedding the Python interpreter in a Windows app can be summarized as follows:
    You can link to Python in two different ways.  Load-time linking means
    linking against :file:`python{NN}.lib`, while run-time linking means linking
    against :file:`python{NN}.dll`.  (General note: :file:`python{NN}.lib` is the
-   so-called "import lib" corresponding to :file:`python{NN}.dll`.  It merely
+   so-called "agiza lib" corresponding to :file:`python{NN}.dll`.  It merely
    defines symbols for the linker.)
 
    Run-time linking greatly simplifies link options; everything happens at run
@@ -204,7 +204,7 @@ Embedding the Python interpreter in a Windows app can be summarized as follows:
    name of the extension module.  For example, if the name of the module is leo,
    the init function will be called initleo().  If you use SWIG shadow classes,
    as you should, the init function will be called initleoc().  This initializes
-   a mostly hidden helper class used by the shadow class.
+   a mostly hidden helper kundi used by the shadow class.
 
    The reason you can link the C code in step 2 into your .exe file is that
    calling the initialization function is equivalent to importing the module
@@ -219,7 +219,7 @@ Embedding the Python interpreter in a Windows app can be summarized as follows:
       ...
       Py_Initialize();  // Initialize Python.
       initmyAppc();  // Initialize (import) the helper class.
-      PyRun_SimpleString("import myApp");  // Import the shadow class.
+      PyRun_SimpleString("agiza myApp");  // Import the shadow class.
 
 5. There are two problems with Python's C API which will become apparent if you
    use a compiler other than MSVC, the compiler used to build pythonNN.dll.
@@ -250,7 +250,7 @@ Embedding the Python interpreter in a Windows app can be summarized as follows:
    automatically, though I have not been able to get this to work (I'm a
    complete SWIG newbie).
 
-6. Using a Python shell script to put up a Python interpreter window from inside
+6. Using a Python shell script to put up a Python interpreter window kutoka inside
    your Windows app is not a good idea; the resulting window will be independent
    of your app's windowing system.  Rather, you (or the wxPythonWindow class)
    should create a "native" interpreter window.  It is easy to connect that
@@ -258,7 +258,7 @@ Embedding the Python interpreter in a Windows app can be summarized as follows:
    object that supports read and write, so all you need is a Python object
    (defined in your extension module) that contains read() and write() methods.
 
-How do I keep editors from inserting tabs into my Python source?
+How do I keep editors kutoka inserting tabs into my Python source?
 ----------------------------------------------------------------
 
 The FAQ does not recommend using tabs, and the Python style guide, :pep:`8`,

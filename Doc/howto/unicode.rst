@@ -36,7 +36,7 @@ A **character** is the smallest possible component of a text.  'A', 'B', 'C',
 etc., are all different characters.  So are 'È' and 'Í'.  Characters vary
 depending on the language or context you're talking
 about.  For example, there's a character for "Roman Numeral One", 'Ⅰ', that's
-separate from the uppercase letter 'I'.  They'll usually look the same,
+separate kutoka the uppercase letter 'I'.  They'll usually look the same,
 but these are two different characters that have different meanings.
 
 The Unicode standard describes how characters are represented by
@@ -86,7 +86,7 @@ Encodings
 ---------
 
 To summarize the previous section: a Unicode string is a sequence of
-code points, which are numbers from 0 through ``0x10FFFF`` (1,114,111
+code points, which are numbers kutoka 0 through ``0x10FFFF`` (1,114,111
 decimal).  This sequence of code points needs to be represented in
 memory as a set of **code units**, and **code units** are then mapped
 to 8-bit bytes.  The rules for translating a Unicode string into a
@@ -365,7 +365,7 @@ in bidirectional text.
 The following program displays some information about several characters, and
 prints the numeric value of one particular character::
 
-    import unicodedata
+    agiza unicodedata
 
     u = chr(233) + chr(0x0bf2) + chr(3972) + chr(6000) + chr(13231)
 
@@ -390,7 +390,7 @@ When run, this prints:
 The category codes are abbreviations describing the nature of the character.
 These are grouped into categories such as "Letter", "Number", "Punctuation", or
 "Symbol", which in turn are broken up into subcategories.  To take the codes
-from the above output, ``'Ll'`` means 'Letter, lowercase', ``'No'`` means
+kutoka the above output, ``'Ll'`` means 'Letter, lowercase', ``'No'`` means
 "Number, other", ``'Mn'`` is "Mark, nonspacing", and ``'So'`` is "Symbol,
 other".  See
 `the General Category Values section of the Unicode Character Database documentation <http://www.unicode.org/reports/tr44/#General_Category_Values>`_ for a
@@ -430,7 +430,7 @@ inequality if two strings use combining characters differently:
 
 ::
 
-    import unicodedata
+    agiza unicodedata
 
     def compare_strs(s1, s2):
         def NFD(s):
@@ -459,7 +459,7 @@ string giving the desired normalization form, which can be one of
 
 The Unicode Standard also specifies how to do caseless comparisons::
 
-    import unicodedata
+    agiza unicodedata
 
     def compare_caseless(s1, s2):
         def NFD(s):
@@ -492,7 +492,7 @@ in strings will match any character that's in the ``'Nd'`` category.
 The string in this example has the number 57 written in both Thai and
 Arabic numerals::
 
-   import re
+   agiza re
    p = re.compile(r'\d+')
 
    s = "Over \u0e55\u0e57 57 flavours"
@@ -544,11 +544,11 @@ It's possible that you may not need to do anything depending on your input
 sources and output destinations; you should check whether the libraries used in
 your application support Unicode natively.  XML parsers often return Unicode
 data, for example.  Many relational databases also support Unicode-valued
-columns and can return Unicode values from an SQL query.
+columns and can return Unicode values kutoka an SQL query.
 
 Unicode data is usually converted to a particular encoding before it gets
 written to disk or sent over a socket.  It's possible to do all the work
-yourself: open a file, read an 8-bit bytes object from it, and convert the bytes
+yourself: open a file, read an 8-bit bytes object kutoka it, and convert the bytes
 with ``bytes.decode(encoding)``.  However, the manual approach is not recommended.
 
 One problem is the multi-byte nature of encodings; one Unicode character can be
@@ -556,7 +556,7 @@ represented by several bytes.  If you want to read the file in arbitrary-sized
 chunks (say, 1024 or 4096 bytes), you need to write error-handling code to catch the case
 where only part of the bytes encoding a single Unicode character are read at the
 end of a chunk.  One solution would be to read the entire file into memory and
-then perform the decoding, but that prevents you from working with files that
+then perform the decoding, but that prevents you kutoka working with files that
 are extremely large; if you need to read a 2 GiB file, you need 2 GiB of RAM.
 (More, really, since for at least a moment you'd need to have both the encoded
 string and its Unicode version in memory.)
@@ -570,7 +570,7 @@ parameters for methods such as :meth:`~io.TextIOBase.read` and
 *errors* parameters which are interpreted just like those in :meth:`str.encode`
 and :meth:`bytes.decode`.
 
-Reading Unicode from a file is therefore simple::
+Reading Unicode kutoka a file is therefore simple::
 
     with open('unicode.txt', encoding='utf-8') as f:
         for line in f:
@@ -639,7 +639,7 @@ program::
    f = open(fn, 'w')
    f.close()
 
-   import os
+   agiza os
    print(os.listdir(b'.'))
    print(os.listdir('.'))
 
@@ -676,7 +676,7 @@ strings, you will find your program vulnerable to bugs wherever you combine the
 two different kinds of strings.  There is no automatic encoding or decoding: if
 you do e.g. ``str + bytes``, a :exc:`TypeError` will be raised.
 
-When using data coming from a web browser or some other untrusted source, a
+When using data coming kutoka a web browser or some other untrusted source, a
 common technique is to check for illegal characters in a string before using the
 string in a generated command line or storing it in a database.  If you're doing
 this, be careful to check the decoded string, not the encoded bytes data;
@@ -689,7 +689,7 @@ clever way to hide malicious text in the encoded bytestream.
 Converting Between File Encodings
 '''''''''''''''''''''''''''''''''
 
-The :class:`~codecs.StreamRecoder` class can transparently convert between
+The :class:`~codecs.StreamRecoder` kundi can transparently convert between
 encodings, taking a stream that returns data in encoding #1
 and behaving like a stream returning data in encoding #2.
 
@@ -724,7 +724,7 @@ with the ``surrogateescape`` error handler::
        f.write(data)
 
 The ``surrogateescape`` error handler will decode any non-ASCII bytes
-as code points in a special range running from U+DC80 to
+as code points in a special range running kutoka U+DC80 to
 U+DCFF.  These code points will then turn back into the
 same bytes when the ``surrogateescape`` error handler is used to
 encode the data and write it back out.

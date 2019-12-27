@@ -19,19 +19,19 @@ evaluation of arbitrary Python code in the context of any stack frame.  It also
 supports post-mortem debugging and can be called under program control.
 
 .. index::
-   single: Pdb (class in pdb)
+   single: Pdb (kundi in pdb)
    module: bdb
    module: cmd
 
-The debugger is extensible -- it is actually defined as the class :class:`Pdb`.
+The debugger is extensible -- it is actually defined as the kundi :class:`Pdb`.
 This is currently undocumented but easily understood by reading the source.  The
 extension interface uses the modules :mod:`bdb` and :mod:`cmd`.
 
 The debugger's prompt is ``(Pdb)``. Typical usage to run a program under control
 of the debugger is::
 
-   >>> import pdb
-   >>> import mymodule
+   >>> agiza pdb
+   >>> agiza mymodule
    >>> pdb.run('mymodule.test()')
    > <string>(0)?()
    (Pdb) continue
@@ -67,10 +67,10 @@ useful than quitting the debugger upon program's exit.
    before the first line of the module.
 
 
-The typical usage to break into the debugger from a running program is to
+The typical usage to break into the debugger kutoka a running program is to
 insert ::
 
-   import pdb; pdb.set_trace()
+   agiza pdb; pdb.set_trace()
 
 at the location you want to break into the debugger.  You can then step through
 the code following this statement, and continue running without the debugger
@@ -78,12 +78,12 @@ using the :pdbcmd:`continue` command.
 
 .. versionadded:: 3.7
    The built-in :func:`breakpoint()`, when called with defaults, can be used
-   instead of ``import pdb; pdb.set_trace()``.
+   instead of ``agiza pdb; pdb.set_trace()``.
 
 The typical usage to inspect a crashed program is::
 
-   >>> import pdb
-   >>> import mymodule
+   >>> agiza pdb
+   >>> agiza mymodule
    >>> mymodule.test()
    Traceback (most recent call last):
      File "<stdin>", line 1, in <module>
@@ -154,7 +154,7 @@ slightly different way:
 
 
 The ``run*`` functions and :func:`set_trace` are aliases for instantiating the
-:class:`Pdb` class and calling the method of the same name.  If you want to
+:class:`Pdb` kundi and calling the method of the same name.  If you want to
 access further features, you have to do this yourself:
 
 .. class:: Pdb(completekey='tab', stdin=None, stdout=None, skip=None, \
@@ -175,11 +175,11 @@ access further features, you have to do this yourself:
    want Pdb not to touch the SIGINT handler, set *nosigint* to true.
 
    The *readrc* argument defaults to true and controls whether Pdb will load
-   .pdbrc files from the filesystem.
+   .pdbrc files kutoka the filesystem.
 
    Example call to enable tracing with *skip*::
 
-      import pdb; pdb.Pdb(skip=['django.*']).set_trace()
+      agiza pdb; pdb.Pdb(skip=['django.*']).set_trace()
 
    .. audit-event:: pdb.Pdb "" pdb.Pdb
 
@@ -338,7 +338,7 @@ by the local file.
       (com) end
       (Pdb)
 
-   To remove all commands from a breakpoint, type ``commands`` and follow it
+   To remove all commands kutoka a breakpoint, type ``commands`` and follow it
    immediately with ``end``; that is, give no commands.
 
    With no *bpnumber* argument, ``commands`` refers to the last breakpoint set.
@@ -414,7 +414,7 @@ by the local file.
 
    The current line in the current frame is indicated by ``->``.  If an
    exception is being debugged, the line where the exception was originally
-   raised or propagated is indicated by ``>>``, if it differs from the current
+   raised or propagated is indicated by ``>>``, if it differs kutoka the current
    line.
 
    .. versionadded:: 3.2
@@ -529,7 +529,7 @@ by the local file.
 
 .. pdbcommand:: q(uit)
 
-   Quit from the debugger.  The program being executed is aborted.
+   Quit kutoka the debugger.  The program being executed is aborted.
 
 
 .. rubric:: Footnotes

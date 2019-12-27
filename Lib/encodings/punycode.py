@@ -3,7 +3,7 @@
 Written by Martin v. Löwis.
 """
 
-import codecs
+agiza codecs
 
 ##################### Encoding #####################################
 
@@ -42,7 +42,7 @@ def selective_find(str, char, index, pos):
         c = str[pos]
         if c == char:
             return index+1, pos
-        elif c < char:
+        lasivyo c < char:
             index += 1
 
 def insertion_unsort(str, extended):
@@ -139,9 +139,9 @@ def decode_generalized_number(extended, extpos, bias, errors):
         extpos += 1
         if 0x41 <= char <= 0x5A: # A-Z
             digit = char - 0x41
-        elif 0x30 <= char <= 0x39:
+        lasivyo 0x30 <= char <= 0x39:
             digit = char - 22 # 0x30-26
-        elif errors == "strict":
+        lasivyo errors == "strict":
             raise UnicodeError("Invalid extended code point '%s'"
                                % extended[extpos])
         else:

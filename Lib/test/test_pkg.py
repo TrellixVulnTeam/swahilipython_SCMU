@@ -9,22 +9,22 @@ agiza unittest
 
 # Helpers to create and destroy hierarchies.
 
-def cleanout(root):
+eleza cleanout(root):
     names = os.listdir(root)
     for name in names:
         fullname = os.path.join(root, name)
-        if os.path.isdir(fullname) and not os.path.islink(fullname):
+        ikiwa os.path.isdir(fullname) and not os.path.islink(fullname):
             cleanout(fullname)
         else:
             os.remove(fullname)
     os.rmdir(root)
 
-def fixdir(lst):
-    if "__builtins__" in lst:
+eleza fixdir(lst):
+    ikiwa "__builtins__" in lst:
         lst.remove("__builtins__")
-    if "__initializing__" in lst:
+    ikiwa "__initializing__" in lst:
         lst.remove("__initializing__")
-    return lst
+    rudisha lst
 
 
 # XXX Things to test
@@ -43,36 +43,36 @@ def fixdir(lst):
 # kutoka package agiza * (defined in __init__)
 
 
-class TestPkg(unittest.TestCase):
+kundi TestPkg(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.root = None
         self.pkgname = None
         self.syspath = list(sys.path)
         self.modules_to_cleanup = set()  # Populated by mkhier().
 
-    def tearDown(self):
+    eleza tearDown(self):
         sys.path[:] = self.syspath
         for modulename in self.modules_to_cleanup:
-            if modulename in sys.modules:
+            ikiwa modulename in sys.modules:
                 del sys.modules[modulename]
-        if self.root: # Only clean if the test was actually run
+        ikiwa self.root: # Only clean ikiwa the test was actually run
             cleanout(self.root)
 
         # delete all modules concerning the tested hierarchy
-        if self.pkgname:
+        ikiwa self.pkgname:
             modules = [name for name in sys.modules
-                       if self.pkgname in name.split('.')]
+                       ikiwa self.pkgname in name.split('.')]
             for name in modules:
                 del sys.modules[name]
 
-    def run_code(self, code):
+    eleza run_code(self, code):
         exec(textwrap.dedent(code), globals(), {"self": self})
 
-    def mkhier(self, descr):
+    eleza mkhier(self, descr):
         root = tempfile.mkdtemp()
         sys.path.insert(0, root)
-        if not os.path.isdir(root):
+        ikiwa not os.path.isdir(root):
             os.mkdir(root)
         for name, contents in descr:
             comps = name.split()
@@ -80,23 +80,23 @@ class TestPkg(unittest.TestCase):
             fullname = root
             for c in comps:
                 fullname = os.path.join(fullname, c)
-            if contents is None:
+            ikiwa contents is None:
                 os.mkdir(fullname)
             else:
                 with open(fullname, "w") as f:
                     f.write(contents)
-                    if not contents.endswith('\n'):
+                    ikiwa not contents.endswith('\n'):
                         f.write('\n')
         self.root = root
         # package name is the name of the first item
         self.pkgname = descr[0][0]
 
-    def test_1(self):
+    eleza test_1(self):
         hier = [("t1", None), ("t1 __init__.py", "")]
         self.mkhier(hier)
         agiza t1
 
-    def test_2(self):
+    eleza test_2(self):
         hier = [
          ("t2", None),
          ("t2 __init__.py", "'doc for t2'"),
@@ -143,7 +143,7 @@ class TestPkg(unittest.TestCase):
             """
         self.run_code(s)
 
-    def test_3(self):
+    eleza test_3(self):
         hier = [
                 ("t3", None),
                 ("t3 __init__.py", ""),
@@ -159,7 +159,7 @@ class TestPkg(unittest.TestCase):
         self.assertEqual(t3.sub.__name__, "t3.sub")
         self.assertEqual(t3.sub.subsub.__name__, "t3.sub.subsub")
 
-    def test_4(self):
+    eleza test_4(self):
         hier = [
         ("t4.py", "raise RuntimeError('Shouldnt load t4.py')"),
         ("t4", None),
@@ -180,7 +180,7 @@ class TestPkg(unittest.TestCase):
             """
         self.run_code(s)
 
-    def test_5(self):
+    eleza test_5(self):
         hier = [
         ("t5", None),
         ("t5 __init__.py", "agiza t5.foo"),
@@ -209,7 +209,7 @@ class TestPkg(unittest.TestCase):
                          ['__cached__', '__doc__', '__file__', '__loader__',
                           '__name__', '__package__', '__spec__', 'spam'])
 
-    def test_6(self):
+    eleza test_6(self):
         hier = [
                 ("t6", None),
                 ("t6 __init__.py",
@@ -236,7 +236,7 @@ class TestPkg(unittest.TestCase):
             """
         self.run_code(s)
 
-    def test_7(self):
+    eleza test_7(self):
         hier = [
                 ("t7.py", ""),
                 ("t7", None),
@@ -282,7 +282,7 @@ class TestPkg(unittest.TestCase):
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
-    def test_8(self):
+    eleza test_8(self):
         hier = [
                 ("t8", None),
                 ("t8 __init__"+os.extsep+"py", "'doc for t8'"),
@@ -292,5 +292,5 @@ class TestPkg(unittest.TestCase):
         agiza t8
         self.assertEqual(t8.__doc__, "doc for t8")
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

@@ -23,28 +23,28 @@ except ImportError:
     zlib = None
 
 test_src = """\
-def get_name():
-    return __name__
-def get_file():
-    return __file__
+eleza get_name():
+    rudisha __name__
+eleza get_file():
+    rudisha __file__
 """
 test_co = compile(test_src, "<???>", "exec")
-raise_src = 'def do_raise(): raise TypeError\n'
+raise_src = 'eleza do_raise(): raise TypeError\n'
 
-def make_pyc(co, mtime, size):
+eleza make_pyc(co, mtime, size):
     data = marshal.dumps(co)
-    if type(mtime) is type(0.0):
+    ikiwa type(mtime) is type(0.0):
         # Mac mtimes need a bit of special casing
-        if mtime < 0x7fffffff:
+        ikiwa mtime < 0x7fffffff:
             mtime = int(mtime)
         else:
             mtime = int(-0x100000000 + int(mtime))
     pyc = (importlib.util.MAGIC_NUMBER +
         struct.pack("<iii", 0, int(mtime), size & 0xFFFFFFFF) + data)
-    return pyc
+    rudisha pyc
 
-def module_path_to_dotted_name(path):
-    return path.replace(os.sep, '.')
+eleza module_path_to_dotted_name(path):
+    rudisha path.replace(os.sep, '.')
 
 NOW = time.time()
 test_pyc = make_pyc(test_co, NOW, len(test_src))
@@ -56,20 +56,20 @@ TESTPACK2 = "ziptestpackage2"
 TEMP_DIR = os.path.abspath("junk95142")
 TEMP_ZIP = os.path.abspath("junk95142.zip")
 
-pyc_file = importlib.util.cache_from_source(TESTMOD + '.py')
+pyc_file = importlib.util.cache_kutoka_source(TESTMOD + '.py')
 pyc_ext = '.pyc'
 
 
-class ImportHooksBaseTestCase(unittest.TestCase):
+kundi ImportHooksBaseTestCase(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.path = sys.path[:]
         self.meta_path = sys.meta_path[:]
         self.path_hooks = sys.path_hooks[:]
         sys.path_importer_cache.clear()
         self.modules_before = support.modules_setup()
 
-    def tearDown(self):
+    eleza tearDown(self):
         sys.path[:] = self.path
         sys.meta_path[:] = self.meta_path
         sys.path_hooks[:] = self.path_hooks
@@ -77,35 +77,35 @@ class ImportHooksBaseTestCase(unittest.TestCase):
         support.modules_cleanup(*self.modules_before)
 
 
-class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
+kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
     compression = ZIP_STORED
 
-    def setUp(self):
+    eleza setUp(self):
         # We're reusing the zip archive path, so we must clear the
         # cached directory info and linecache.
         linecache.clearcache()
         zipagiza._zip_directory_cache.clear()
         ImportHooksBaseTestCase.setUp(self)
 
-    def makeTree(self, files, dirName=TEMP_DIR):
+    eleza makeTree(self, files, dirName=TEMP_DIR):
         # Create a filesystem based set of modules/packages
         # defined by files under the directory dirName.
         self.addCleanup(support.rmtree, dirName)
 
         for name, (mtime, data) in files.items():
             path = os.path.join(dirName, name)
-            if path[-1] == os.sep:
-                if not os.path.isdir(path):
+            ikiwa path[-1] == os.sep:
+                ikiwa not os.path.isdir(path):
                     os.makedirs(path)
             else:
                 dname = os.path.dirname(path)
-                if not os.path.isdir(dname):
+                ikiwa not os.path.isdir(dname):
                     os.makedirs(dname)
                 with open(path, 'wb') as fp:
                     fp.write(data)
 
-    def makeZip(self, files, zipName=TEMP_ZIP, **kw):
+    eleza makeZip(self, files, zipName=TEMP_ZIP, **kw):
         # Create a zip archive based set of modules/packages
         # defined by files in the zip file zipName.  If the
         # key 'stuff' exists in kw it is prepended to the archive.
@@ -117,11 +117,11 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                 zinfo.compress_type = self.compression
                 z.writestr(zinfo, data)
             comment = kw.get("comment", None)
-            if comment is not None:
+            ikiwa comment is not None:
                 z.comment = comment
 
         stuff = kw.get("stuff", None)
-        if stuff is not None:
+        ikiwa stuff is not None:
             # Prepend 'stuff' to the start of the zipfile
             with open(zipName, "rb") as f:
                 data = f.read()
@@ -129,7 +129,7 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                 f.write(stuff)
                 f.write(data)
 
-    def doTest(self, expected_ext, files, *modules, **kw):
+    eleza doTest(self, expected_ext, files, *modules, **kw):
         self.makeZip(files, **kw)
 
         sys.path.insert(0, TEMP_ZIP)
@@ -137,15 +137,15 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         mod = importlib.import_module(".".join(modules))
 
         call = kw.get('call')
-        if call is not None:
+        ikiwa call is not None:
             call(mod)
 
-        if expected_ext:
+        ikiwa expected_ext:
             file = mod.get_file()
             self.assertEqual(file, os.path.join(TEMP_ZIP,
                                  *modules) + expected_ext)
 
-    def testAFakeZlib(self):
+    eleza testAFakeZlib(self):
         #
         # This could cause a stack overflow before: agizaing zlib.py
         # kutoka a compressed archive would cause zlib to be imported
@@ -163,34 +163,34 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         # occur in that case (builtin modules are always found first),
         # so we'll simply skip it then. Bug #765456.
         #
-        if "zlib" in sys.builtin_module_names:
+        ikiwa "zlib" in sys.builtin_module_names:
             self.skipTest('zlib is a builtin module')
-        if "zlib" in sys.modules:
+        ikiwa "zlib" in sys.modules:
             del sys.modules["zlib"]
         files = {"zlib.py": (NOW, test_src)}
         try:
             self.doTest(".py", files, "zlib")
         except ImportError:
-            if self.compression != ZIP_DEFLATED:
+            ikiwa self.compression != ZIP_DEFLATED:
                 self.fail("expected test to not raise ImportError")
         else:
-            if self.compression != ZIP_STORED:
+            ikiwa self.compression != ZIP_STORED:
                 self.fail("expected test to raise ImportError")
 
-    def testPy(self):
+    eleza testPy(self):
         files = {TESTMOD + ".py": (NOW, test_src)}
         self.doTest(".py", files, TESTMOD)
 
-    def testPyc(self):
+    eleza testPyc(self):
         files = {TESTMOD + pyc_ext: (NOW, test_pyc)}
         self.doTest(pyc_ext, files, TESTMOD)
 
-    def testBoth(self):
+    eleza testBoth(self):
         files = {TESTMOD + ".py": (NOW, test_src),
                  TESTMOD + pyc_ext: (NOW, test_pyc)}
         self.doTest(pyc_ext, files, TESTMOD)
 
-    def testUncheckedHashBasedPyc(self):
+    eleza testUncheckedHashBasedPyc(self):
         source = b"state = 'old'"
         source_hash = importlib.util.source_hash(source)
         bytecode = importlib._bootstrap_external._code_to_hash_pyc(
@@ -200,15 +200,15 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         )
         files = {TESTMOD + ".py": (NOW, "state = 'new'"),
                  TESTMOD + ".pyc": (NOW - 20, bytecode)}
-        def check(mod):
+        eleza check(mod):
             self.assertEqual(mod.state, 'old')
         self.doTest(None, files, TESTMOD, call=check)
 
-    def testEmptyPy(self):
+    eleza testEmptyPy(self):
         files = {TESTMOD + ".py": (NOW, "")}
         self.doTest(None, files, TESTMOD)
 
-    def testBadMagic(self):
+    eleza testBadMagic(self):
         # make pyc magic word invalid, forcing loading kutoka .py
         badmagic_pyc = bytearray(test_pyc)
         badmagic_pyc[0] ^= 0x04  # flip an arbitrary bit
@@ -216,7 +216,7 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                  TESTMOD + pyc_ext: (NOW, badmagic_pyc)}
         self.doTest(".py", files, TESTMOD)
 
-    def testBadMagic2(self):
+    eleza testBadMagic2(self):
         # make pyc magic word invalid, causing an ImportError
         badmagic_pyc = bytearray(test_pyc)
         badmagic_pyc[0] ^= 0x04  # flip an arbitrary bit
@@ -228,7 +228,7 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         else:
             self.fail("expected ImportError; agiza kutoka bad pyc")
 
-    def testBadMTime(self):
+    eleza testBadMTime(self):
         badtime_pyc = bytearray(test_pyc)
         # flip the second bit -- not the first as that one isn't stored in the
         # .py's mtime in the zip archive.
@@ -237,13 +237,13 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                  TESTMOD + pyc_ext: (NOW, badtime_pyc)}
         self.doTest(".py", files, TESTMOD)
 
-    def testPackage(self):
+    eleza testPackage(self):
         packdir = TESTPACK + os.sep
         files = {packdir + "__init__" + pyc_ext: (NOW, test_pyc),
                  packdir + TESTMOD + pyc_ext: (NOW, test_pyc)}
         self.doTest(pyc_ext, files, TESTPACK, TESTMOD)
 
-    def testSubPackage(self):
+    eleza testSubPackage(self):
         # Test that subpackages function when loaded kutoka zip
         # archives.
         packdir = TESTPACK + os.sep
@@ -253,7 +253,7 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                  packdir2 + TESTMOD + pyc_ext: (NOW, test_pyc)}
         self.doTest(pyc_ext, files, TESTPACK, TESTPACK2, TESTMOD)
 
-    def testSubNamespacePackage(self):
+    eleza testSubNamespacePackage(self):
         # Test that implicit namespace subpackages function
         # when loaded kutoka zip archives.
         packdir = TESTPACK + os.sep
@@ -264,7 +264,7 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
                  packdir2 + TESTMOD + pyc_ext: (NOW, test_pyc)}
         self.doTest(pyc_ext, files, TESTPACK, TESTPACK2, TESTMOD)
 
-    def testMixedNamespacePackage(self):
+    eleza testMixedNamespacePackage(self):
         # Test implicit namespace packages spread between a
         # real filesystem and a zip archive.
         packdir = TESTPACK + os.sep
@@ -295,7 +295,7 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
         mod = importlib.import_module(TESTPACK)
 
-        # if TESTPACK is functioning as a namespace pkg then
+        # ikiwa TESTPACK is functioning as a namespace pkg then
         # there should be two entries in the __path__.
         # First should be path2 and second path1.
         self.assertEqual(2, len(mod.__path__))
@@ -341,7 +341,7 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         mod = importlib.import_module('.'.join((subpkg, TESTMOD + '3')))
         self.assertEqual('path1.zip', mod.__file__.split(os.sep)[-4])
 
-    def testNamespacePackage(self):
+    eleza testNamespacePackage(self):
         # Test implicit namespace packages spread between multiple zip
         # archives.
         packdir = TESTPACK + os.sep
@@ -371,7 +371,7 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
 
         mod = importlib.import_module(TESTPACK)
 
-        # if TESTPACK is functioning as a namespace pkg then
+        # ikiwa TESTPACK is functioning as a namespace pkg then
         # there should be two entries in the __path__.
         # First should be path2 and second path1.
         self.assertEqual(2, len(mod.__path__))
@@ -414,7 +414,7 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         mod = importlib.import_module('.'.join((subpkg, TESTMOD + '3')))
         self.assertEqual('path1.zip', mod.__file__.split(os.sep)[-4])
 
-    def testZipImporterMethods(self):
+    eleza testZipImporterMethods(self):
         packdir = TESTPACK + os.sep
         packdir2 = packdir + TESTPACK2 + os.sep
         files = {packdir + "__init__" + pyc_ext: (NOW, test_pyc),
@@ -470,7 +470,7 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.assertEqual(zi2.archive, TEMP_ZIP)
         self.assertEqual(zi2.prefix, TESTPACK + os.sep)
 
-    def testZipImporterMethodsInSubDirectory(self):
+    eleza testZipImporterMethodsInSubDirectory(self):
         packdir = TESTPACK + os.sep
         packdir2 = packdir + TESTPACK2 + os.sep
         files = {packdir2 + "__init__" + pyc_ext: (NOW, test_pyc),
@@ -519,7 +519,7 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.assertEqual(loader.get_source(mod_name), None)
         self.assertEqual(loader.get_filename(mod_name), mod.__file__)
 
-    def testGetData(self):
+    eleza testGetData(self):
         self.addCleanup(support.unlink, TEMP_ZIP)
         with ZipFile(TEMP_ZIP, "w") as z:
             z.compression = self.compression
@@ -531,23 +531,23 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.assertEqual(data, zi.get_data(name))
         self.assertIn('zipimporter object', repr(zi))
 
-    def testImporterAttr(self):
-        src = """if 1:  # indent hack
-        def get_file():
-            return __file__
-        if __loader__.get_data("some.data") != b"some data":
+    eleza testImporterAttr(self):
+        src = """ikiwa 1:  # indent hack
+        eleza get_file():
+            rudisha __file__
+        ikiwa __loader__.get_data("some.data") != b"some data":
             raise AssertionError("bad data")\n"""
         pyc = make_pyc(compile(src, "<???>", "exec"), NOW, len(src))
         files = {TESTMOD + pyc_ext: (NOW, pyc),
                  "some.data": (NOW, "some data")}
         self.doTest(pyc_ext, files, TESTMOD)
 
-    def testDefaultOptimizationLevel(self):
+    eleza testDefaultOptimizationLevel(self):
         # zipagiza should use the default optimization level (#28131)
-        src = """if 1:  # indent hack
-        def test(val):
+        src = """ikiwa 1:  # indent hack
+        eleza test(val):
             assert(val)
-            return val\n"""
+            rudisha val\n"""
         files = {TESTMOD + '.py': (NOW, src)}
         self.makeZip(files)
         sys.path.insert(0, TEMP_ZIP)
@@ -555,32 +555,32 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         self.assertEqual(mod.test(1), 1)
         self.assertRaises(AssertionError, mod.test, False)
 
-    def testImport_WithStuff(self):
+    eleza testImport_WithStuff(self):
         # try agizaing kutoka a zipfile which contains additional
         # stuff at the beginning of the file
         files = {TESTMOD + ".py": (NOW, test_src)}
         self.doTest(".py", files, TESTMOD,
                     stuff=b"Some Stuff"*31)
 
-    def assertModuleSource(self, module):
+    eleza assertModuleSource(self, module):
         self.assertEqual(inspect.getsource(module), test_src)
 
-    def testGetSource(self):
+    eleza testGetSource(self):
         files = {TESTMOD + ".py": (NOW, test_src)}
         self.doTest(".py", files, TESTMOD, call=self.assertModuleSource)
 
-    def testGetCompiledSource(self):
+    eleza testGetCompiledSource(self):
         pyc = make_pyc(compile(test_src, "<???>", "exec"), NOW, len(test_src))
         files = {TESTMOD + ".py": (NOW, test_src),
                  TESTMOD + pyc_ext: (NOW, pyc)}
         self.doTest(pyc_ext, files, TESTMOD, call=self.assertModuleSource)
 
-    def runDoctest(self, callback):
+    eleza runDoctest(self, callback):
         files = {TESTMOD + ".py": (NOW, test_src),
                  "xyz.txt": (NOW, ">>> log.append(True)\n")}
         self.doTest(".py", files, TESTMOD, call=callback)
 
-    def doDoctestFile(self, module):
+    eleza doDoctestFile(self, module):
         log = []
         old_master, doctest.master = doctest.master, None
         try:
@@ -592,10 +592,10 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
             doctest.master = old_master
         self.assertEqual(log,[True])
 
-    def testDoctestFile(self):
+    eleza testDoctestFile(self):
         self.runDoctest(self.doDoctestFile)
 
-    def doDoctestSuite(self, module):
+    eleza doDoctestSuite(self, module):
         log = []
         doctest.DocFileTest(
             'xyz.txt', package=module, module_relative=True,
@@ -603,10 +603,10 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         ).run()
         self.assertEqual(log,[True])
 
-    def testDoctestSuite(self):
+    eleza testDoctestSuite(self):
         self.runDoctest(self.doDoctestSuite)
 
-    def doTraceback(self, module):
+    eleza doTraceback(self, module):
         try:
             module.do_raise()
         except:
@@ -624,13 +624,13 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         else:
             raise AssertionError("This ought to be impossible")
 
-    def testTraceback(self):
+    eleza testTraceback(self):
         files = {TESTMOD + ".py": (NOW, raise_src)}
         self.doTest(None, files, TESTMOD, call=self.doTraceback)
 
     @unittest.skipIf(support.TESTFN_UNENCODABLE is None,
                      "need an unencodable filename")
-    def testUnencodable(self):
+    eleza testUnencodable(self):
         filename = support.TESTFN_UNENCODABLE + ".zip"
         self.addCleanup(support.unlink, filename)
         with ZipFile(filename, "w") as z:
@@ -639,7 +639,7 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
             z.writestr(zinfo, test_src)
         zipagiza.zipimporter(filename).load_module(TESTMOD)
 
-    def testBytesPath(self):
+    eleza testBytesPath(self):
         filename = support.TESTFN + ".zip"
         self.addCleanup(support.unlink, filename)
         with ZipFile(filename, "w") as z:
@@ -654,50 +654,50 @@ class UncompressedZipImportTestCase(ImportHooksBaseTestCase):
         with self.assertRaises(TypeError):
             zipagiza.zipimporter(memoryview(os.fsencode(filename)))
 
-    def testComment(self):
+    eleza testComment(self):
         files = {TESTMOD + ".py": (NOW, test_src)}
         self.doTest(".py", files, TESTMOD, comment=b"comment")
 
-    def testBeginningCruftAndComment(self):
+    eleza testBeginningCruftAndComment(self):
         files = {TESTMOD + ".py": (NOW, test_src)}
         self.doTest(".py", files, TESTMOD, stuff=b"cruft" * 64, comment=b"hi")
 
-    def testLargestPossibleComment(self):
+    eleza testLargestPossibleComment(self):
         files = {TESTMOD + ".py": (NOW, test_src)}
         self.doTest(".py", files, TESTMOD, comment=b"c" * ((1 << 16) - 1))
 
 
 @support.requires_zlib
-class CompressedZipImportTestCase(UncompressedZipImportTestCase):
+kundi CompressedZipImportTestCase(UncompressedZipImportTestCase):
     compression = ZIP_DEFLATED
 
 
-class BadFileZipImportTestCase(unittest.TestCase):
-    def assertZipFailure(self, filename):
+kundi BadFileZipImportTestCase(unittest.TestCase):
+    eleza assertZipFailure(self, filename):
         self.assertRaises(zipagiza.ZipImportError,
                           zipagiza.zipimporter, filename)
 
-    def testNoFile(self):
+    eleza testNoFile(self):
         self.assertZipFailure('AdfjdkFJKDFJjdklfjs')
 
-    def testEmptyFilename(self):
+    eleza testEmptyFilename(self):
         self.assertZipFailure('')
 
-    def testBadArgs(self):
+    eleza testBadArgs(self):
         self.assertRaises(TypeError, zipagiza.zipimporter, None)
         self.assertRaises(TypeError, zipagiza.zipimporter, TESTMOD, kwd=None)
         self.assertRaises(TypeError, zipagiza.zipimporter,
                           list(os.fsencode(TESTMOD)))
 
-    def testFilenameTooLong(self):
+    eleza testFilenameTooLong(self):
         self.assertZipFailure('A' * 33000)
 
-    def testEmptyFile(self):
+    eleza testEmptyFile(self):
         support.unlink(TESTMOD)
         support.create_empty_file(TESTMOD)
         self.assertZipFailure(TESTMOD)
 
-    def testFileUnreadable(self):
+    eleza testFileUnreadable(self):
         support.unlink(TESTMOD)
         fd = os.open(TESTMOD, os.O_CREAT, 000)
         try:
@@ -711,7 +711,7 @@ class BadFileZipImportTestCase(unittest.TestCase):
             os.chmod(TESTMOD, 0o666)
             support.unlink(TESTMOD)
 
-    def testNotZipFile(self):
+    eleza testNotZipFile(self):
         support.unlink(TESTMOD)
         fp = open(TESTMOD, 'w+')
         fp.write('a' * 22)
@@ -719,7 +719,7 @@ class BadFileZipImportTestCase(unittest.TestCase):
         self.assertZipFailure(TESTMOD)
 
     # XXX: disabled until this works on Big-endian machines
-    def _testBogusZipFile(self):
+    eleza _testBogusZipFile(self):
         support.unlink(TESTMOD)
         fp = open(TESTMOD, 'w+')
         fp.write(struct.pack('=I', 0x06054B50))
@@ -747,7 +747,7 @@ class BadFileZipImportTestCase(unittest.TestCase):
             zipagiza._zip_directory_cache.clear()
 
 
-def test_main():
+eleza test_main():
     try:
         support.run_unittest(
               UncompressedZipImportTestCase,
@@ -757,5 +757,5 @@ def test_main():
     finally:
         support.unlink(TESTMOD)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

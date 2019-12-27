@@ -47,75 +47,75 @@ try:
 except ImportError:
     _socket = None
 
-def get_cid():
-    if fcntl is None:
-        return None
+eleza get_cid():
+    ikiwa fcntl is None:
+        rudisha None
     try:
         with open("/dev/vsock", "rb") as f:
             r = fcntl.ioctl(f, socket.IOCTL_VM_SOCKETS_GET_LOCAL_CID, "    ")
     except OSError:
-        return None
+        rudisha None
     else:
-        return struct.unpack("I", r)[0]
+        rudisha struct.unpack("I", r)[0]
 
-def _have_socket_can():
+eleza _have_socket_can():
     """Check whether CAN sockets are supported on this host."""
     try:
         s = socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
     except (AttributeError, OSError):
-        return False
+        rudisha False
     else:
         s.close()
-    return True
+    rudisha True
 
-def _have_socket_can_isotp():
+eleza _have_socket_can_isotp():
     """Check whether CAN ISOTP sockets are supported on this host."""
     try:
         s = socket.socket(socket.PF_CAN, socket.SOCK_DGRAM, socket.CAN_ISOTP)
     except (AttributeError, OSError):
-        return False
+        rudisha False
     else:
         s.close()
-    return True
+    rudisha True
 
-def _have_socket_rds():
+eleza _have_socket_rds():
     """Check whether RDS sockets are supported on this host."""
     try:
         s = socket.socket(socket.PF_RDS, socket.SOCK_SEQPACKET, 0)
     except (AttributeError, OSError):
-        return False
+        rudisha False
     else:
         s.close()
-    return True
+    rudisha True
 
-def _have_socket_alg():
+eleza _have_socket_alg():
     """Check whether AF_ALG sockets are supported on this host."""
     try:
         s = socket.socket(socket.AF_ALG, socket.SOCK_SEQPACKET, 0)
     except (AttributeError, OSError):
-        return False
+        rudisha False
     else:
         s.close()
-    return True
+    rudisha True
 
-def _have_socket_qipcrtr():
+eleza _have_socket_qipcrtr():
     """Check whether AF_QIPCRTR sockets are supported on this host."""
     try:
         s = socket.socket(socket.AF_QIPCRTR, socket.SOCK_DGRAM, 0)
     except (AttributeError, OSError):
-        return False
+        rudisha False
     else:
         s.close()
-    return True
+    rudisha True
 
-def _have_socket_vsock():
+eleza _have_socket_vsock():
     """Check whether AF_VSOCK sockets are supported on this host."""
     ret = get_cid() is not None
-    return ret
+    rudisha ret
 
 
 @contextlib.contextmanager
-def socket_setdefaulttimeout(timeout):
+eleza socket_setdefaulttimeout(timeout):
     old_timeout = socket.getdefaulttimeout()
     try:
         socket.setdefaulttimeout(timeout)
@@ -139,47 +139,47 @@ HAVE_SOCKET_VSOCK = _have_socket_vsock()
 # Size in bytes of the int type
 SIZEOF_INT = array.array("i").itemsize
 
-class SocketTCPTest(unittest.TestCase):
+kundi SocketTCPTest(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.port = support.bind_port(self.serv)
         self.serv.listen()
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.serv.close()
         self.serv = None
 
-class SocketUDPTest(unittest.TestCase):
+kundi SocketUDPTest(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.serv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.port = support.bind_port(self.serv)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.serv.close()
         self.serv = None
 
-class ThreadSafeCleanupTestCase(unittest.TestCase):
-    """Subclass of unittest.TestCase with thread-safe cleanup methods.
+kundi ThreadSafeCleanupTestCase(unittest.TestCase):
+    """Subkundi of unittest.TestCase with thread-safe cleanup methods.
 
-    This subclass protects the addCleanup() and doCleanups() methods
+    This subkundi protects the addCleanup() and doCleanups() methods
     with a recursive lock.
     """
 
-    def __init__(self, *args, **kwargs):
+    eleza __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._cleanup_lock = threading.RLock()
 
-    def addCleanup(self, *args, **kwargs):
+    eleza addCleanup(self, *args, **kwargs):
         with self._cleanup_lock:
-            return super().addCleanup(*args, **kwargs)
+            rudisha super().addCleanup(*args, **kwargs)
 
-    def doCleanups(self, *args, **kwargs):
+    eleza doCleanups(self, *args, **kwargs):
         with self._cleanup_lock:
-            return super().doCleanups(*args, **kwargs)
+            rudisha super().doCleanups(*args, **kwargs)
 
-class SocketCANTest(unittest.TestCase):
+kundi SocketCANTest(unittest.TestCase):
 
     """To be able to run this test, a `vcan0` CAN interface can be created with
     the following commands:
@@ -220,7 +220,7 @@ class SocketCANTest(unittest.TestCase):
     bcm_cmd_msg_fmt = "@3I4l2I"
     bcm_cmd_msg_fmt += "x" * (struct.calcsize(bcm_cmd_msg_fmt) % 8)
 
-    def setUp(self):
+    eleza setUp(self):
         self.s = socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
         self.addCleanup(self.s.close)
         try:
@@ -230,14 +230,14 @@ class SocketCANTest(unittest.TestCase):
                            self.interface)
 
 
-class SocketRDSTest(unittest.TestCase):
+kundi SocketRDSTest(unittest.TestCase):
 
     """To be able to run this test, the `rds` kernel module must be loaded:
     # modprobe rds
     """
     bufsize = 8192
 
-    def setUp(self):
+    eleza setUp(self):
         self.serv = socket.socket(socket.PF_RDS, socket.SOCK_SEQPACKET, 0)
         self.addCleanup(self.serv.close)
         try:
@@ -246,31 +246,31 @@ class SocketRDSTest(unittest.TestCase):
             self.skipTest('unable to bind RDS socket')
 
 
-class ThreadableTest:
+kundi ThreadableTest:
     """Threadable Test class
 
-    The ThreadableTest class makes it easy to create a threaded
+    The ThreadableTest kundi makes it easy to create a threaded
     client/server pair kutoka an existing unit test. To create a
-    new threaded class kutoka an existing unit test, use multiple
+    new threaded kundi kutoka an existing unit test, use multiple
     inheritance:
 
-        class NewClass (OldClass, ThreadableTest):
+        kundi NewClass (OldClass, ThreadableTest):
             pass
 
-    This class defines two new fixture functions with obvious
+    This kundi defines two new fixture functions with obvious
     purposes for overriding:
 
         clientSetUp ()
         clientTearDown ()
 
-    Any new test functions within the class must then define
+    Any new test functions within the kundi must then define
     tests in pairs, where the test name is preceded with a
     '_' to indicate the client portion of the test. Ex:
 
-        def testFoo(self):
+        eleza testFoo(self):
             # Server portion
 
-        def _testFoo(self):
+        eleza _testFoo(self):
             # Client portion
 
     Any exceptions raised by the clients during their tests
@@ -284,21 +284,21 @@ class ThreadableTest:
     connection and performing the accept() in setUp().
     """
 
-    def __init__(self):
+    eleza __init__(self):
         # Swap the true setup function
         self.__setUp = self.setUp
         self.__tearDown = self.tearDown
         self.setUp = self._setUp
         self.tearDown = self._tearDown
 
-    def serverExplicitReady(self):
+    eleza serverExplicitReady(self):
         """This method allows the server to explicitly indicate that
-        it wants the client thread to proceed. This is useful if the
+        it wants the client thread to proceed. This is useful ikiwa the
         server is about to execute a blocking routine that is
         dependent upon the client thread during its setup routine."""
         self.server_ready.set()
 
-    def _setUp(self):
+    eleza _setUp(self):
         self.wait_threads = support.wait_threads_exit()
         self.wait_threads.__enter__()
 
@@ -325,16 +325,16 @@ class ThreadableTest:
             self.server_ready.set()
         self.client_ready.wait()
 
-    def _tearDown(self):
+    eleza _tearDown(self):
         self.__tearDown()
         self.done.wait()
         self.wait_threads.__exit__(None, None, None)
 
-        if self.queue.qsize():
+        ikiwa self.queue.qsize():
             exc = self.queue.get()
             raise exc
 
-    def clientRun(self, test_func):
+    eleza clientRun(self, test_func):
         self.server_ready.wait()
         try:
             self.clientSetUp()
@@ -344,10 +344,10 @@ class ThreadableTest:
             return
         finally:
             self.client_ready.set()
-        if self.server_crashed:
+        ikiwa self.server_crashed:
             self.clientTearDown()
             return
-        if not hasattr(test_func, '__call__'):
+        ikiwa not hasattr(test_func, '__call__'):
             raise TypeError("test_func must be a callable function")
         try:
             test_func()
@@ -356,48 +356,48 @@ class ThreadableTest:
         finally:
             self.clientTearDown()
 
-    def clientSetUp(self):
+    eleza clientSetUp(self):
         raise NotImplementedError("clientSetUp must be implemented.")
 
-    def clientTearDown(self):
+    eleza clientTearDown(self):
         self.done.set()
         thread.exit()
 
-class ThreadedTCPSocketTest(SocketTCPTest, ThreadableTest):
+kundi ThreadedTCPSocketTest(SocketTCPTest, ThreadableTest):
 
-    def __init__(self, methodName='runTest'):
+    eleza __init__(self, methodName='runTest'):
         SocketTCPTest.__init__(self, methodName=methodName)
         ThreadableTest.__init__(self)
 
-    def clientSetUp(self):
+    eleza clientSetUp(self):
         self.cli = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    def clientTearDown(self):
+    eleza clientTearDown(self):
         self.cli.close()
         self.cli = None
         ThreadableTest.clientTearDown(self)
 
-class ThreadedUDPSocketTest(SocketUDPTest, ThreadableTest):
+kundi ThreadedUDPSocketTest(SocketUDPTest, ThreadableTest):
 
-    def __init__(self, methodName='runTest'):
+    eleza __init__(self, methodName='runTest'):
         SocketUDPTest.__init__(self, methodName=methodName)
         ThreadableTest.__init__(self)
 
-    def clientSetUp(self):
+    eleza clientSetUp(self):
         self.cli = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-    def clientTearDown(self):
+    eleza clientTearDown(self):
         self.cli.close()
         self.cli = None
         ThreadableTest.clientTearDown(self)
 
-class ThreadedCANSocketTest(SocketCANTest, ThreadableTest):
+kundi ThreadedCANSocketTest(SocketCANTest, ThreadableTest):
 
-    def __init__(self, methodName='runTest'):
+    eleza __init__(self, methodName='runTest'):
         SocketCANTest.__init__(self, methodName=methodName)
         ThreadableTest.__init__(self)
 
-    def clientSetUp(self):
+    eleza clientSetUp(self):
         self.cli = socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
         try:
             self.cli.bind((self.interface,))
@@ -406,18 +406,18 @@ class ThreadedCANSocketTest(SocketCANTest, ThreadableTest):
             # server instead
             pass
 
-    def clientTearDown(self):
+    eleza clientTearDown(self):
         self.cli.close()
         self.cli = None
         ThreadableTest.clientTearDown(self)
 
-class ThreadedRDSSocketTest(SocketRDSTest, ThreadableTest):
+kundi ThreadedRDSSocketTest(SocketRDSTest, ThreadableTest):
 
-    def __init__(self, methodName='runTest'):
+    eleza __init__(self, methodName='runTest'):
         SocketRDSTest.__init__(self, methodName=methodName)
         ThreadableTest.__init__(self)
 
-    def clientSetUp(self):
+    eleza clientSetUp(self):
         self.cli = socket.socket(socket.PF_RDS, socket.SOCK_SEQPACKET, 0)
         try:
             # RDS sockets must be bound explicitly to send or receive data
@@ -428,7 +428,7 @@ class ThreadedRDSSocketTest(SocketRDSTest, ThreadableTest):
             # server instead
             pass
 
-    def clientTearDown(self):
+    eleza clientTearDown(self):
         self.cli.close()
         self.cli = None
         ThreadableTest.clientTearDown(self)
@@ -438,13 +438,13 @@ class ThreadedRDSSocketTest(SocketRDSTest, ThreadableTest):
           'VSOCK sockets required for this test.')
 @unittest.skipUnless(get_cid() != 2,
           "This test can only be run on a virtual guest.")
-class ThreadedVSOCKSocketStreamTest(unittest.TestCase, ThreadableTest):
+kundi ThreadedVSOCKSocketStreamTest(unittest.TestCase, ThreadableTest):
 
-    def __init__(self, methodName='runTest'):
+    eleza __init__(self, methodName='runTest'):
         unittest.TestCase.__init__(self, methodName=methodName)
         ThreadableTest.__init__(self)
 
-    def setUp(self):
+    eleza setUp(self):
         self.serv = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
         self.addCleanup(self.serv.close)
         self.serv.bind((socket.VMADDR_CID_ANY, VSOCKPORT))
@@ -453,32 +453,32 @@ class ThreadedVSOCKSocketStreamTest(unittest.TestCase, ThreadableTest):
         self.conn, self.connaddr = self.serv.accept()
         self.addCleanup(self.conn.close)
 
-    def clientSetUp(self):
+    eleza clientSetUp(self):
         time.sleep(0.1)
         self.cli = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
         self.addCleanup(self.cli.close)
         cid = get_cid()
         self.cli.connect((cid, VSOCKPORT))
 
-    def testStream(self):
+    eleza testStream(self):
         msg = self.conn.recv(1024)
         self.assertEqual(msg, MSG)
 
-    def _testStream(self):
+    eleza _testStream(self):
         self.cli.send(MSG)
         self.cli.close()
 
-class SocketConnectedTest(ThreadedTCPSocketTest):
+kundi SocketConnectedTest(ThreadedTCPSocketTest):
     """Socket tests for client-server connection.
 
     self.cli_conn is a client socket connected to the server.  The
     setUp() method guarantees that it is connected to the server.
     """
 
-    def __init__(self, methodName='runTest'):
+    eleza __init__(self, methodName='runTest'):
         ThreadedTCPSocketTest.__init__(self, methodName=methodName)
 
-    def setUp(self):
+    eleza setUp(self):
         ThreadedTCPSocketTest.setUp(self)
         # Indicate explicitly we're ready for the client thread to
         # proceed and then perform the blocking call to accept
@@ -486,38 +486,38 @@ class SocketConnectedTest(ThreadedTCPSocketTest):
         conn, addr = self.serv.accept()
         self.cli_conn = conn
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.cli_conn.close()
         self.cli_conn = None
         ThreadedTCPSocketTest.tearDown(self)
 
-    def clientSetUp(self):
+    eleza clientSetUp(self):
         ThreadedTCPSocketTest.clientSetUp(self)
         self.cli.connect((HOST, self.port))
         self.serv_conn = self.cli
 
-    def clientTearDown(self):
+    eleza clientTearDown(self):
         self.serv_conn.close()
         self.serv_conn = None
         ThreadedTCPSocketTest.clientTearDown(self)
 
-class SocketPairTest(unittest.TestCase, ThreadableTest):
+kundi SocketPairTest(unittest.TestCase, ThreadableTest):
 
-    def __init__(self, methodName='runTest'):
+    eleza __init__(self, methodName='runTest'):
         unittest.TestCase.__init__(self, methodName=methodName)
         ThreadableTest.__init__(self)
 
-    def setUp(self):
+    eleza setUp(self):
         self.serv, self.cli = socket.socketpair()
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.serv.close()
         self.serv = None
 
-    def clientSetUp(self):
+    eleza clientSetUp(self):
         pass
 
-    def clientTearDown(self):
+    eleza clientTearDown(self):
         self.cli.close()
         self.cli = None
         ThreadableTest.clientTearDown(self)
@@ -529,38 +529,38 @@ class SocketPairTest(unittest.TestCase, ThreadableTest):
 # address families can be used, and the attributes serv_addr and
 # cli_addr will be set to the addresses of the endpoints.
 
-class SocketTestBase(unittest.TestCase):
-    """A base class for socket tests.
+kundi SocketTestBase(unittest.TestCase):
+    """A base kundi for socket tests.
 
-    Subclasses must provide methods newSocket() to return a new socket
+    Subclasses must provide methods newSocket() to rudisha a new socket
     and bindSock(sock) to bind it to an unused address.
 
     Creates a socket self.serv and sets self.serv_addr to its address.
     """
 
-    def setUp(self):
+    eleza setUp(self):
         self.serv = self.newSocket()
         self.bindServer()
 
-    def bindServer(self):
+    eleza bindServer(self):
         """Bind server socket and set self.serv_addr to its address."""
         self.bindSock(self.serv)
         self.serv_addr = self.serv.getsockname()
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.serv.close()
         self.serv = None
 
 
-class SocketListeningTestMixin(SocketTestBase):
+kundi SocketListeningTestMixin(SocketTestBase):
     """Mixin to listen on the server socket."""
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.serv.listen()
 
 
-class ThreadedSocketTestMixin(ThreadSafeCleanupTestCase, SocketTestBase,
+kundi ThreadedSocketTestMixin(ThreadSafeCleanupTestCase, SocketTestBase,
                               ThreadableTest):
     """Mixin to add client socket and allow client/server tests.
 
@@ -568,30 +568,30 @@ class ThreadedSocketTestMixin(ThreadSafeCleanupTestCase, SocketTestBase,
     ThreadableTest for usage information.
     """
 
-    def __init__(self, *args, **kwargs):
+    eleza __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         ThreadableTest.__init__(self)
 
-    def clientSetUp(self):
+    eleza clientSetUp(self):
         self.cli = self.newClientSocket()
         self.bindClient()
 
-    def newClientSocket(self):
+    eleza newClientSocket(self):
         """Return a new socket for use as client."""
-        return self.newSocket()
+        rudisha self.newSocket()
 
-    def bindClient(self):
+    eleza bindClient(self):
         """Bind client socket and set self.cli_addr to its address."""
         self.bindSock(self.cli)
         self.cli_addr = self.cli.getsockname()
 
-    def clientTearDown(self):
+    eleza clientTearDown(self):
         self.cli.close()
         self.cli = None
         ThreadableTest.clientTearDown(self)
 
 
-class ConnectedStreamTestMixin(SocketListeningTestMixin,
+kundi ConnectedStreamTestMixin(SocketListeningTestMixin,
                                ThreadedSocketTestMixin):
     """Mixin to allow client/server stream tests with connected client.
 
@@ -600,7 +600,7 @@ class ConnectedStreamTestMixin(SocketListeningTestMixin,
     SocketConnectedTest.)
     """
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         # Indicate explicitly we're ready for the client thread to
         # proceed and then perform the blocking call to accept
@@ -608,17 +608,17 @@ class ConnectedStreamTestMixin(SocketListeningTestMixin,
         conn, addr = self.serv.accept()
         self.cli_conn = conn
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.cli_conn.close()
         self.cli_conn = None
         super().tearDown()
 
-    def clientSetUp(self):
+    eleza clientSetUp(self):
         super().clientSetUp()
         self.cli.connect(self.serv_addr)
         self.serv_conn = self.cli
 
-    def clientTearDown(self):
+    eleza clientTearDown(self):
         try:
             self.serv_conn.close()
             self.serv_conn = None
@@ -627,124 +627,124 @@ class ConnectedStreamTestMixin(SocketListeningTestMixin,
         super().clientTearDown()
 
 
-class UnixSocketTestBase(SocketTestBase):
-    """Base class for Unix-domain socket tests."""
+kundi UnixSocketTestBase(SocketTestBase):
+    """Base kundi for Unix-domain socket tests."""
 
-    # This class is used for file descriptor passing tests, so we
+    # This kundi is used for file descriptor passing tests, so we
     # create the sockets in a private directory so that other users
     # can't send anything that might be problematic for a privileged
     # user running the tests.
 
-    def setUp(self):
+    eleza setUp(self):
         self.dir_path = tempfile.mkdtemp()
         self.addCleanup(os.rmdir, self.dir_path)
         super().setUp()
 
-    def bindSock(self, sock):
+    eleza bindSock(self, sock):
         path = tempfile.mktemp(dir=self.dir_path)
         support.bind_unix_socket(sock, path)
         self.addCleanup(support.unlink, path)
 
-class UnixStreamBase(UnixSocketTestBase):
-    """Base class for Unix-domain SOCK_STREAM tests."""
+kundi UnixStreamBase(UnixSocketTestBase):
+    """Base kundi for Unix-domain SOCK_STREAM tests."""
 
-    def newSocket(self):
-        return socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    eleza newSocket(self):
+        rudisha socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 
 
-class InetTestBase(SocketTestBase):
-    """Base class for IPv4 socket tests."""
+kundi InetTestBase(SocketTestBase):
+    """Base kundi for IPv4 socket tests."""
 
     host = HOST
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.port = self.serv_addr[1]
 
-    def bindSock(self, sock):
+    eleza bindSock(self, sock):
         support.bind_port(sock, host=self.host)
 
-class TCPTestBase(InetTestBase):
-    """Base class for TCP-over-IPv4 tests."""
+kundi TCPTestBase(InetTestBase):
+    """Base kundi for TCP-over-IPv4 tests."""
 
-    def newSocket(self):
-        return socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    eleza newSocket(self):
+        rudisha socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-class UDPTestBase(InetTestBase):
-    """Base class for UDP-over-IPv4 tests."""
+kundi UDPTestBase(InetTestBase):
+    """Base kundi for UDP-over-IPv4 tests."""
 
-    def newSocket(self):
-        return socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    eleza newSocket(self):
+        rudisha socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-class SCTPStreamBase(InetTestBase):
-    """Base class for SCTP tests in one-to-one (SOCK_STREAM) mode."""
+kundi SCTPStreamBase(InetTestBase):
+    """Base kundi for SCTP tests in one-to-one (SOCK_STREAM) mode."""
 
-    def newSocket(self):
-        return socket.socket(socket.AF_INET, socket.SOCK_STREAM,
+    eleza newSocket(self):
+        rudisha socket.socket(socket.AF_INET, socket.SOCK_STREAM,
                              socket.IPPROTO_SCTP)
 
 
-class Inet6TestBase(InetTestBase):
-    """Base class for IPv6 socket tests."""
+kundi Inet6TestBase(InetTestBase):
+    """Base kundi for IPv6 socket tests."""
 
     host = support.HOSTv6
 
-class UDP6TestBase(Inet6TestBase):
-    """Base class for UDP-over-IPv6 tests."""
+kundi UDP6TestBase(Inet6TestBase):
+    """Base kundi for UDP-over-IPv6 tests."""
 
-    def newSocket(self):
-        return socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
+    eleza newSocket(self):
+        rudisha socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
 
 
 # Test-skipping decorators for use with ThreadableTest.
 
-def skipWithClientIf(condition, reason):
-    """Skip decorated test if condition is true, add client_skip decorator.
+eleza skipWithClientIf(condition, reason):
+    """Skip decorated test ikiwa condition is true, add client_skip decorator.
 
     If the decorated object is not a class, sets its attribute
-    "client_skip" to a decorator which will return an empty function
-    if the test is to be skipped, or the original function if it is
+    "client_skip" to a decorator which will rudisha an empty function
+    ikiwa the test is to be skipped, or the original function ikiwa it is
     not.  This can be used to avoid running the client part of a
     skipped test when using ThreadableTest.
     """
-    def client_pass(*args, **kwargs):
+    eleza client_pass(*args, **kwargs):
         pass
-    def skipdec(obj):
+    eleza skipdec(obj):
         retval = unittest.skip(reason)(obj)
-        if not isinstance(obj, type):
+        ikiwa not isinstance(obj, type):
             retval.client_skip = lambda f: client_pass
-        return retval
-    def noskipdec(obj):
-        if not (isinstance(obj, type) or hasattr(obj, "client_skip")):
+        rudisha retval
+    eleza noskipdec(obj):
+        ikiwa not (isinstance(obj, type) or hasattr(obj, "client_skip")):
             obj.client_skip = lambda f: f
-        return obj
-    return skipdec if condition else noskipdec
+        rudisha obj
+    rudisha skipdec ikiwa condition else noskipdec
 
 
-def requireAttrs(obj, *attributes):
-    """Skip decorated test if obj is missing any of the given attributes.
+eleza requireAttrs(obj, *attributes):
+    """Skip decorated test ikiwa obj is missing any of the given attributes.
 
     Sets client_skip attribute as skipWithClientIf() does.
     """
-    missing = [name for name in attributes if not hasattr(obj, name)]
-    return skipWithClientIf(
+    missing = [name for name in attributes ikiwa not hasattr(obj, name)]
+    rudisha skipWithClientIf(
         missing, "don't have " + ", ".join(name for name in missing))
 
 
-def requireSocket(*args):
-    """Skip decorated test if a socket cannot be created with given arguments.
+eleza requireSocket(*args):
+    """Skip decorated test ikiwa a socket cannot be created with given arguments.
 
     When an argument is given as a string, will use the value of that
-    attribute of the socket module, or skip the test if it doesn't
+    attribute of the socket module, or skip the test ikiwa it doesn't
     exist.  Sets client_skip attribute as skipWithClientIf() does.
     """
     err = None
     missing = [obj for obj in args if
                isinstance(obj, str) and not hasattr(socket, obj)]
-    if missing:
+    ikiwa missing:
         err = "don't have " + ", ".join(name for name in missing)
     else:
-        callargs = [getattr(socket, obj) if isinstance(obj, str) else obj
+        callargs = [getattr(socket, obj) ikiwa isinstance(obj, str) else obj
                     for obj in args]
         try:
             s = socket.socket(*callargs)
@@ -753,7 +753,7 @@ def requireSocket(*args):
             err = str(e)
         else:
             s.close()
-    return skipWithClientIf(
+    rudisha skipWithClientIf(
         err is not None,
         "can't create socket({0}): {1}".format(
             ", ".join(str(o) for o in args), err))
@@ -762,16 +762,16 @@ def requireSocket(*args):
 #######################################################################
 ## Begin Tests
 
-class GeneralModuleTests(unittest.TestCase):
+kundi GeneralModuleTests(unittest.TestCase):
 
-    def test_SocketType_is_socketobject(self):
+    eleza test_SocketType_is_socketobject(self):
         agiza _socket
         self.assertTrue(socket.SocketType is _socket.socket)
         s = socket.socket()
         self.assertIsInstance(s, socket.SocketType)
         s.close()
 
-    def test_repr(self):
+    eleza test_repr(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         with s:
             self.assertIn('fd=%i' % s.fileno(), repr(s))
@@ -786,7 +786,7 @@ class GeneralModuleTests(unittest.TestCase):
         self.assertNotIn('laddr', repr(s))
 
     @unittest.skipUnless(_socket is not None, 'need _socket module')
-    def test_csocket_repr(self):
+    eleza test_csocket_repr(self):
         s = _socket.socket(_socket.AF_INET, _socket.SOCK_STREAM)
         try:
             expected = ('<socket object, fd=%s, family=%s, type=%s, proto=%s>'
@@ -798,7 +798,7 @@ class GeneralModuleTests(unittest.TestCase):
                     % (s.family, s.type, s.proto))
         self.assertEqual(repr(s), expected)
 
-    def test_weakref(self):
+    eleza test_weakref(self):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             p = proxy(s)
             self.assertEqual(p.fileno(), s.fileno())
@@ -810,7 +810,7 @@ class GeneralModuleTests(unittest.TestCase):
         else:
             self.fail('Socket proxy still exists')
 
-    def testSocketError(self):
+    eleza testSocketError(self):
         # Testing socket module exceptions
         msg = "Error raising socket exception (%s)."
         with self.assertRaises(OSError, msg=msg % 'OSError'):
@@ -820,7 +820,7 @@ class GeneralModuleTests(unittest.TestCase):
         with self.assertRaises(OSError, msg=msg % 'socket.gaierror'):
             raise socket.gaierror
 
-    def testSendtoErrors(self):
+    eleza testSendtoErrors(self):
         # Testing that sendto doesn't mask failures. See #10169.
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.addCleanup(s.close)
@@ -864,10 +864,10 @@ class GeneralModuleTests(unittest.TestCase):
             s.sendto(b'foo', 0, sockname, 4)
         self.assertIn('(4 given)', str(cm.exception))
 
-    def testCrucialConstants(self):
+    eleza testCrucialConstants(self):
         # Testing for mission critical constants
         socket.AF_INET
-        if socket.has_ipv6:
+        ikiwa socket.has_ipv6:
             socket.AF_INET6
         socket.SOCK_STREAM
         socket.SOCK_DGRAM
@@ -877,14 +877,14 @@ class GeneralModuleTests(unittest.TestCase):
         socket.SOL_SOCKET
         socket.SO_REUSEADDR
 
-    def testCrucialIpProtoConstants(self):
+    eleza testCrucialIpProtoConstants(self):
         socket.IPPROTO_TCP
         socket.IPPROTO_UDP
-        if socket.has_ipv6:
+        ikiwa socket.has_ipv6:
             socket.IPPROTO_IPV6
 
     @unittest.skipUnless(os.name == "nt", "Windows specific")
-    def testWindowsSpecificConstants(self):
+    eleza testWindowsSpecificConstants(self):
         socket.IPPROTO_ICLFXBM
         socket.IPPROTO_ST
         socket.IPPROTO_CBT
@@ -894,7 +894,7 @@ class GeneralModuleTests(unittest.TestCase):
         socket.IPPROTO_L2TP
         socket.IPPROTO_SCTP
 
-    def testHostnameRes(self):
+    eleza testHostnameRes(self):
         # Testing hostname resolution mechanisms
         hostname = socket.gethostname()
         try:
@@ -910,10 +910,10 @@ class GeneralModuleTests(unittest.TestCase):
             self.skipTest('name lookup failure')
         all_host_names = [hostname, hname] + aliases
         fqhn = socket.getfqdn(ip)
-        if not fqhn in all_host_names:
+        ikiwa not fqhn in all_host_names:
             self.fail("Error testing host resolution mechanisms. (fqdn: %s, all: %s)" % (fqhn, repr(all_host_names)))
 
-    def test_host_resolution(self):
+    eleza test_host_resolution(self):
         for addr in [support.HOSTv4, '10.0.0.1', '255.255.255.255']:
             self.assertEqual(socket.gethostbyname(addr), addr)
 
@@ -922,7 +922,7 @@ class GeneralModuleTests(unittest.TestCase):
         for host in [support.HOSTv4]:
             self.assertIn(host, socket.gethostbyaddr(host)[2])
 
-    def test_host_resolution_bad_address(self):
+    eleza test_host_resolution_bad_address(self):
         # These are all malformed IP addresses and expected not to resolve to
         # any result.  But some ISPs, e.g. AWS, may successfully resolve these
         # IPs.
@@ -939,12 +939,12 @@ class GeneralModuleTests(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(socket, 'sethostname'), "test needs socket.sethostname()")
     @unittest.skipUnless(hasattr(socket, 'gethostname'), "test needs socket.gethostname()")
-    def test_sethostname(self):
+    eleza test_sethostname(self):
         oldhn = socket.gethostname()
         try:
             socket.sethostname('new')
         except OSError as e:
-            if e.errno == errno.EPERM:
+            ikiwa e.errno == errno.EPERM:
                 self.skipTest("test should be run as root")
             else:
                 raise
@@ -959,7 +959,7 @@ class GeneralModuleTests(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(socket, 'if_nameindex'),
                          'socket.if_nameindex() not available.')
-    def testInterfaceNameIndex(self):
+    eleza testInterfaceNameIndex(self):
         interfaces = socket.if_nameindex()
         for index, name in interfaces:
             self.assertIsInstance(index, int)
@@ -975,29 +975,29 @@ class GeneralModuleTests(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(socket, 'if_indextoname'),
                          'socket.if_indextoname() not available.')
-    def testInvalidInterfaceIndexToName(self):
+    eleza testInvalidInterfaceIndexToName(self):
         self.assertRaises(OSError, socket.if_indextoname, 0)
         self.assertRaises(TypeError, socket.if_indextoname, '_DEADBEEF')
 
     @unittest.skipUnless(hasattr(socket, 'if_nametoindex'),
                          'socket.if_nametoindex() not available.')
-    def testInvalidInterfaceNameToIndex(self):
+    eleza testInvalidInterfaceNameToIndex(self):
         self.assertRaises(TypeError, socket.if_nametoindex, 0)
         self.assertRaises(OSError, socket.if_nametoindex, '_DEADBEEF')
 
     @unittest.skipUnless(hasattr(sys, 'getrefcount'),
                          'test needs sys.getrefcount()')
-    def testRefCountGetNameInfo(self):
+    eleza testRefCountGetNameInfo(self):
         # Testing reference count for getnameinfo
         try:
             # On some versions, this loses a reference
             orig = sys.getrefcount(__name__)
             socket.getnameinfo(__name__,0)
         except TypeError:
-            if sys.getrefcount(__name__) != orig:
+            ikiwa sys.getrefcount(__name__) != orig:
                 self.fail("socket.getnameinfo loses a reference")
 
-    def testInterpreterCrash(self):
+    eleza testInterpreterCrash(self):
         # Making sure getnameinfo doesn't crash the interpreter
         try:
             # On some versions, this crashes the interpreter.
@@ -1005,7 +1005,7 @@ class GeneralModuleTests(unittest.TestCase):
         except OSError:
             pass
 
-    def testNtoH(self):
+    eleza testNtoH(self):
         # This just checks that htons etc. are their own inverse,
         # when looking at the lower 16 or 32 bits.
         sizes = {socket.htonl: 32, socket.ntohl: 32,
@@ -1020,7 +1020,7 @@ class GeneralModuleTests(unittest.TestCase):
             self.assertRaises(OverflowError, func, 1<<34)
 
     @support.cpython_only
-    def testNtoHErrors(self):
+    eleza testNtoHErrors(self):
         agiza _testcapi
         s_good_values = [0, 1, 2, 0xffff]
         l_good_values = s_good_values + [0xffffffff]
@@ -1044,12 +1044,12 @@ class GeneralModuleTests(unittest.TestCase):
             self.assertWarns(DeprecationWarning, socket.ntohs, k)
             self.assertWarns(DeprecationWarning, socket.htons, k)
 
-    def testGetServBy(self):
+    eleza testGetServBy(self):
         eq = self.assertEqual
         # Find one service that exists, then check all the related interfaces.
         # I've ordered this by protocols that have both a tcp and udp
         # protocol, at least for modern Linuxes.
-        if (sys.platform.startswith(('freebsd', 'netbsd', 'gnukfreebsd'))
+        ikiwa (sys.platform.startswith(('freebsd', 'netbsd', 'gnukfreebsd'))
             or sys.platform in ('linux', 'darwin')):
             # avoid the 'echo' service on this platform, as there is an
             # assumption breaking non-standard port/protocol entry
@@ -1066,11 +1066,11 @@ class GeneralModuleTests(unittest.TestCase):
             raise OSError
         # Try same call with optional protocol omitted
         # Issue #26936: Android getservbyname() was broken before API 23.
-        if (not hasattr(sys, 'getandroidapilevel') or
+        ikiwa (not hasattr(sys, 'getandroidapilevel') or
                 sys.getandroidapilevel() >= 23):
             port2 = socket.getservbyname(service)
             eq(port, port2)
-        # Try udp, but don't barf if it doesn't exist
+        # Try udp, but don't barf ikiwa it doesn't exist
         try:
             udpport = socket.getservbyname(service, 'udp')
         except OSError:
@@ -1079,29 +1079,29 @@ class GeneralModuleTests(unittest.TestCase):
             eq(udpport, port)
         # Now make sure the lookup by port returns the same service name
         # Issue #26936: Android getservbyport() is broken.
-        if not support.is_android:
+        ikiwa not support.is_android:
             eq(socket.getservbyport(port2), service)
         eq(socket.getservbyport(port, 'tcp'), service)
-        if udpport is not None:
+        ikiwa udpport is not None:
             eq(socket.getservbyport(udpport, 'udp'), service)
         # Make sure getservbyport does not accept out of range ports.
         self.assertRaises(OverflowError, socket.getservbyport, -1)
         self.assertRaises(OverflowError, socket.getservbyport, 65536)
 
-    def testDefaultTimeout(self):
+    eleza testDefaultTimeout(self):
         # Testing default timeout
         # The default timeout should initially be None
         self.assertEqual(socket.getdefaulttimeout(), None)
         with socket.socket() as s:
             self.assertEqual(s.gettimeout(), None)
 
-        # Set the default timeout to 10, and see if it propagates
+        # Set the default timeout to 10, and see ikiwa it propagates
         with socket_setdefaulttimeout(10):
             self.assertEqual(socket.getdefaulttimeout(), 10)
             with socket.socket() as sock:
                 self.assertEqual(sock.gettimeout(), 10)
 
-            # Reset the default timeout to None, and see if it propagates
+            # Reset the default timeout to None, and see ikiwa it propagates
             socket.setdefaulttimeout(None)
             self.assertEqual(socket.getdefaulttimeout(), None)
             with socket.socket() as sock:
@@ -1115,15 +1115,15 @@ class GeneralModuleTests(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(socket, 'inet_aton'),
                          'test needs socket.inet_aton()')
-    def testIPv4_inet_aton_fourbytes(self):
+    eleza testIPv4_inet_aton_fourbytes(self):
         # Test that issue1008086 and issue767150 are fixed.
-        # It must return 4 bytes.
+        # It must rudisha 4 bytes.
         self.assertEqual(b'\x00'*4, socket.inet_aton('0.0.0.0'))
         self.assertEqual(b'\xff'*4, socket.inet_aton('255.255.255.255'))
 
     @unittest.skipUnless(hasattr(socket, 'inet_pton'),
                          'test needs socket.inet_pton()')
-    def testIPv4toString(self):
+    eleza testIPv4toString(self):
         kutoka socket agiza inet_aton as f, inet_pton, AF_INET
         g = lambda a: inet_pton(AF_INET, a)
 
@@ -1137,7 +1137,7 @@ class GeneralModuleTests(unittest.TestCase):
         self.assertEqual(b'\x01\x02\x03\x04', f('1.2.3.4'))
         self.assertEqual(b'\xff\xff\xff\xff', f('255.255.255.255'))
         # bpo-29972: inet_pton() doesn't fail on AIX
-        if not AIX:
+        ikiwa not AIX:
             assertInvalid(f, '0.0.0.')
         assertInvalid(f, '300.0.0.0')
         assertInvalid(f, 'a.0.0.0')
@@ -1156,19 +1156,19 @@ class GeneralModuleTests(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(socket, 'inet_pton'),
                          'test needs socket.inet_pton()')
-    def testIPv6toString(self):
+    eleza testIPv6toString(self):
         try:
             kutoka socket agiza inet_pton, AF_INET6, has_ipv6
-            if not has_ipv6:
+            ikiwa not has_ipv6:
                 self.skipTest('IPv6 not available')
         except ImportError:
             self.skipTest('could not agiza needed symbols kutoka socket')
 
-        if sys.platform == "win32":
+        ikiwa sys.platform == "win32":
             try:
                 inet_pton(AF_INET6, '::')
             except OSError as e:
-                if e.winerror == 10022:
+                ikiwa e.winerror == 10022:
                     self.skipTest('IPv6 might not be supported')
 
         f = lambda a: inet_pton(AF_INET6, a)
@@ -1197,7 +1197,7 @@ class GeneralModuleTests(unittest.TestCase):
         assertInvalid('1:2:3:4:5:6:')
         assertInvalid('1:2:3:4:5:6:7:8:0')
         # bpo-29972: inet_pton() doesn't fail on AIX
-        if not AIX:
+        ikiwa not AIX:
             assertInvalid('1:2:3:4:5:6:7:8:')
 
         self.assertEqual(b'\x00' * 12 + b'\xfe\x2a\x17\x40',
@@ -1220,7 +1220,7 @@ class GeneralModuleTests(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(socket, 'inet_ntop'),
                          'test needs socket.inet_ntop()')
-    def testStringToIPv4(self):
+    eleza testStringToIPv4(self):
         kutoka socket agiza inet_ntoa as f, inet_ntop, AF_INET
         g = lambda a: inet_ntop(AF_INET, a)
         assertInvalid = lambda func,a: self.assertRaises(
@@ -1246,19 +1246,19 @@ class GeneralModuleTests(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(socket, 'inet_ntop'),
                          'test needs socket.inet_ntop()')
-    def testStringToIPv6(self):
+    eleza testStringToIPv6(self):
         try:
             kutoka socket agiza inet_ntop, AF_INET6, has_ipv6
-            if not has_ipv6:
+            ikiwa not has_ipv6:
                 self.skipTest('IPv6 not available')
         except ImportError:
             self.skipTest('could not agiza needed symbols kutoka socket')
 
-        if sys.platform == "win32":
+        ikiwa sys.platform == "win32":
             try:
                 inet_ntop(AF_INET6, b'\x00' * 16)
             except OSError as e:
-                if e.winerror == 10022:
+                ikiwa e.winerror == 10022:
                     self.skipTest('IPv6 might not be supported')
 
         f = lambda a: inet_ntop(AF_INET6, a)
@@ -1280,7 +1280,7 @@ class GeneralModuleTests(unittest.TestCase):
 
     # XXX The following don't test module-level functionality...
 
-    def testSockName(self):
+    eleza testSockName(self):
         # Testing getsockname()
         port = support.find_unused_port()
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -1298,7 +1298,7 @@ class GeneralModuleTests(unittest.TestCase):
         self.assertIn(name[0], ("0.0.0.0", my_ip_addr), '%s invalid' % name[0])
         self.assertEqual(name[1], port)
 
-    def testGetSockOpt(self):
+    eleza testGetSockOpt(self):
         # Testing getsockopt()
         # We know a socket should start without reuse==0
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -1306,7 +1306,7 @@ class GeneralModuleTests(unittest.TestCase):
         reuse = sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR)
         self.assertFalse(reuse != 0, "initial mode is reuse")
 
-    def testSetSockOpt(self):
+    eleza testSetSockOpt(self):
         # Testing setsockopt()
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.addCleanup(sock.close)
@@ -1314,13 +1314,13 @@ class GeneralModuleTests(unittest.TestCase):
         reuse = sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR)
         self.assertFalse(reuse == 0, "failed to set reuse mode")
 
-    def testSendAfterClose(self):
+    eleza testSendAfterClose(self):
         # testing send() after close() with timeout
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.settimeout(1)
         self.assertRaises(OSError, sock.send, b"spam")
 
-    def testCloseException(self):
+    eleza testCloseException(self):
         sock = socket.socket()
         sock.bind((socket._LOCALHOST, 0))
         socket.socket(fileno=sock.fileno()).close()
@@ -1332,12 +1332,12 @@ class GeneralModuleTests(unittest.TestCase):
         else:
             self.fail("close() should raise EBADF/ENOTSOCK")
 
-    def testNewAttributes(self):
+    eleza testNewAttributes(self):
         # testing .family, .type and .protocol
 
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             self.assertEqual(sock.family, socket.AF_INET)
-            if hasattr(socket, 'SOCK_CLOEXEC'):
+            ikiwa hasattr(socket, 'SOCK_CLOEXEC'):
                 self.assertIn(sock.type,
                               (socket.SOCK_STREAM | socket.SOCK_CLOEXEC,
                                socket.SOCK_STREAM))
@@ -1345,7 +1345,7 @@ class GeneralModuleTests(unittest.TestCase):
                 self.assertEqual(sock.type, socket.SOCK_STREAM)
             self.assertEqual(sock.proto, 0)
 
-    def test_getsockaddrarg(self):
+    eleza test_getsockaddrarg(self):
         sock = socket.socket()
         self.addCleanup(sock.close)
         port = support.find_unused_port()
@@ -1354,19 +1354,19 @@ class GeneralModuleTests(unittest.TestCase):
         self.assertRaises(OverflowError, sock.bind, (HOST, big_port))
         self.assertRaises(OverflowError, sock.bind, (HOST, neg_port))
         # Since find_unused_port() is inherently subject to race conditions, we
-        # call it a couple times if necessary.
+        # call it a couple times ikiwa necessary.
         for i in itertools.count():
             port = support.find_unused_port()
             try:
                 sock.bind((HOST, port))
             except OSError as e:
-                if e.errno != errno.EADDRINUSE or i == 5:
+                ikiwa e.errno != errno.EADDRINUSE or i == 5:
                     raise
             else:
                 break
 
     @unittest.skipUnless(os.name == "nt", "Windows specific")
-    def test_sock_ioctl(self):
+    eleza test_sock_ioctl(self):
         self.assertTrue(hasattr(socket.socket, 'ioctl'))
         self.assertTrue(hasattr(socket, 'SIO_RCVALL'))
         self.assertTrue(hasattr(socket, 'RCVALL_ON'))
@@ -1380,24 +1380,24 @@ class GeneralModuleTests(unittest.TestCase):
     @unittest.skipUnless(os.name == "nt", "Windows specific")
     @unittest.skipUnless(hasattr(socket, 'SIO_LOOPBACK_FAST_PATH'),
                          'Loopback fast path support required for this test')
-    def test_sio_loopback_fast_path(self):
+    eleza test_sio_loopback_fast_path(self):
         s = socket.socket()
         self.addCleanup(s.close)
         try:
             s.ioctl(socket.SIO_LOOPBACK_FAST_PATH, True)
         except OSError as exc:
             WSAEOPNOTSUPP = 10045
-            if exc.winerror == WSAEOPNOTSUPP:
+            ikiwa exc.winerror == WSAEOPNOTSUPP:
                 self.skipTest("SIO_LOOPBACK_FAST_PATH is defined but "
                               "doesn't implemented in this Windows version")
             raise
         self.assertRaises(TypeError, s.ioctl, socket.SIO_LOOPBACK_FAST_PATH, None)
 
-    def testGetaddrinfo(self):
+    eleza testGetaddrinfo(self):
         try:
             socket.getaddrinfo('localhost', 80)
         except socket.gaierror as err:
-            if err.errno == socket.EAI_SERVICE:
+            ikiwa err.errno == socket.EAI_SERVICE:
                 # see http://bugs.python.org/issue1282647
                 self.skipTest("buggy libc version")
             raise
@@ -1409,12 +1409,12 @@ class GeneralModuleTests(unittest.TestCase):
         socket.getaddrinfo('localhost', 80)
         socket.getaddrinfo('127.0.0.1', 80)
         socket.getaddrinfo(None, 80)
-        if support.IPV6_ENABLED:
+        ikiwa support.IPV6_ENABLED:
             socket.getaddrinfo('::1', 80)
         # port can be a string service name such as "http", a numeric
         # port number or None
         # Issue #26936: Android getaddrinfo() was broken before API level 23.
-        if (not hasattr(sys, 'getandroidapilevel') or
+        ikiwa (not hasattr(sys, 'getandroidapilevel') or
                 sys.getandroidapilevel() >= 23):
             socket.getaddrinfo(HOST, "http")
         socket.getaddrinfo(HOST, 80)
@@ -1462,7 +1462,7 @@ class GeneralModuleTests(unittest.TestCase):
         self.assertRaises(UnicodeEncodeError, socket.getaddrinfo, 'localhost', '\uD800')
 
         # Issue 17269: test workaround for OS X platform bug segfault
-        if hasattr(socket, 'AI_NUMERICSERV'):
+        ikiwa hasattr(socket, 'AI_NUMERICSERV'):
             try:
                 # The arguments here are undefined and the call may succeed
                 # or fail.  All we care here is that it doesn't segfault.
@@ -1471,13 +1471,13 @@ class GeneralModuleTests(unittest.TestCase):
             except socket.gaierror:
                 pass
 
-    def test_getnameinfo(self):
+    eleza test_getnameinfo(self):
         # only IP addresses are allowed
         self.assertRaises(OSError, socket.getnameinfo, ('mail.python.org',0), 0)
 
     @unittest.skipUnless(support.is_resource_enabled('network'),
                          'network is not enabled')
-    def test_idna(self):
+    eleza test_idna(self):
         # Check for internet access before running test
         # (issue #12804, issue #25138).
         with support.transient_internet('python.org'):
@@ -1488,31 +1488,31 @@ class GeneralModuleTests(unittest.TestCase):
         socket.gethostbyname(domain)
         socket.gethostbyname_ex(domain)
         socket.getaddrinfo(domain,0,socket.AF_UNSPEC,socket.SOCK_STREAM)
-        # this may not work if the forward lookup chooses the IPv6 address, as that doesn't
+        # this may not work ikiwa the forward lookup chooses the IPv6 address, as that doesn't
         # have a reverse entry yet
         # socket.gethostbyaddr('испытание.python.org')
 
-    def check_sendall_interrupted(self, with_timeout):
+    eleza check_sendall_interrupted(self, with_timeout):
         # socketpair() is not strictly required, but it makes things easier.
-        if not hasattr(signal, 'alarm') or not hasattr(socket, 'socketpair'):
+        ikiwa not hasattr(signal, 'alarm') or not hasattr(socket, 'socketpair'):
             self.skipTest("signal.alarm and socket.socketpair required for this test")
         # Our signal handlers clobber the C errno by calling a math function
         # with an invalid domain value.
-        def ok_handler(*args):
+        eleza ok_handler(*args):
             self.assertRaises(ValueError, math.acosh, 0)
-        def raising_handler(*args):
+        eleza raising_handler(*args):
             self.assertRaises(ValueError, math.acosh, 0)
             1 // 0
         c, s = socket.socketpair()
         old_alarm = signal.signal(signal.SIGALRM, raising_handler)
         try:
-            if with_timeout:
+            ikiwa with_timeout:
                 # Just above the one second minimum for signal.alarm
                 c.settimeout(1.5)
             with self.assertRaises(ZeroDivisionError):
                 signal.alarm(1)
                 c.sendall(b"x" * support.SOCK_MAX_SIZE)
-            if with_timeout:
+            ikiwa with_timeout:
                 signal.signal(signal.SIGALRM, ok_handler)
                 signal.alarm(1)
                 self.assertRaises(socket.timeout, c.sendall,
@@ -1523,13 +1523,13 @@ class GeneralModuleTests(unittest.TestCase):
             c.close()
             s.close()
 
-    def test_sendall_interrupted(self):
+    eleza test_sendall_interrupted(self):
         self.check_sendall_interrupted(False)
 
-    def test_sendall_interrupted_with_timeout(self):
+    eleza test_sendall_interrupted_with_timeout(self):
         self.check_sendall_interrupted(True)
 
-    def test_dealloc_warn(self):
+    eleza test_dealloc_warn(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         r = repr(sock)
         with self.assertWarns(ResourceWarning) as cm:
@@ -1546,13 +1546,13 @@ class GeneralModuleTests(unittest.TestCase):
             f = None
             support.gc_collect()
 
-    def test_name_closed_socketio(self):
+    eleza test_name_closed_socketio(self):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             fp = sock.makefile("rb")
             fp.close()
             self.assertEqual(repr(fp), "<_io.BufferedReader name=-1>")
 
-    def test_unusable_closed_socketio(self):
+    eleza test_unusable_closed_socketio(self):
         with socket.socket() as sock:
             fp = sock.makefile("rb", buffering=0)
             self.assertTrue(fp.readable())
@@ -1563,7 +1563,7 @@ class GeneralModuleTests(unittest.TestCase):
             self.assertRaises(ValueError, fp.writable)
             self.assertRaises(ValueError, fp.seekable)
 
-    def test_socket_close(self):
+    eleza test_socket_close(self):
         sock = socket.socket()
         try:
             sock.bind((HOST, 0))
@@ -1579,21 +1579,21 @@ class GeneralModuleTests(unittest.TestCase):
         with self.assertRaises(OSError):
             socket.close(-1)
 
-    def test_makefile_mode(self):
+    eleza test_makefile_mode(self):
         for mode in 'r', 'rb', 'rw', 'w', 'wb':
             with self.subTest(mode=mode):
                 with socket.socket() as sock:
                     with sock.makefile(mode) as fp:
                         self.assertEqual(fp.mode, mode)
 
-    def test_makefile_invalid_mode(self):
+    eleza test_makefile_invalid_mode(self):
         for mode in 'rt', 'x', '+', 'a':
             with self.subTest(mode=mode):
                 with socket.socket() as sock:
                     with self.assertRaisesRegex(ValueError, 'invalid mode'):
                         sock.makefile(mode)
 
-    def test_pickle(self):
+    eleza test_pickle(self):
         sock = socket.socket()
         with sock:
             for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -1604,7 +1604,7 @@ class GeneralModuleTests(unittest.TestCase):
             type = pickle.loads(pickle.dumps(socket.SOCK_STREAM, protocol))
             self.assertEqual(type, socket.SOCK_STREAM)
 
-    def test_listen_backlog(self):
+    eleza test_listen_backlog(self):
         for backlog in 0, -1:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as srv:
                 srv.bind((HOST, 0))
@@ -1615,7 +1615,7 @@ class GeneralModuleTests(unittest.TestCase):
             srv.listen()
 
     @support.cpython_only
-    def test_listen_backlog_overflow(self):
+    eleza test_listen_backlog_overflow(self):
         # Issue 15989
         agiza _testcapi
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as srv:
@@ -1623,14 +1623,14 @@ class GeneralModuleTests(unittest.TestCase):
             self.assertRaises(OverflowError, srv.listen, _testcapi.INT_MAX + 1)
 
     @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required for this test.')
-    def test_flowinfo(self):
+    eleza test_flowinfo(self):
         self.assertRaises(OverflowError, socket.getnameinfo,
                           (support.HOSTv6, 0, 0xffffffff), 0)
         with socket.socket(socket.AF_INET6, socket.SOCK_STREAM) as s:
             self.assertRaises(OverflowError, s.bind, (support.HOSTv6, 0, -10))
 
     @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required for this test.')
-    def test_getaddrinfo_ipv6_basic(self):
+    eleza test_getaddrinfo_ipv6_basic(self):
         ((*_, sockaddr),) = socket.getaddrinfo(
             'ff02::1de:c0:face:8D',  # Note capital letter `D`.
             1234, socket.AF_INET6,
@@ -1642,7 +1642,7 @@ class GeneralModuleTests(unittest.TestCase):
     @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required for this test.')
     @unittest.skipIf(sys.platform == 'win32', 'does not work on Windows')
     @unittest.skipIf(AIX, 'Symbolic scope id does not work')
-    def test_getaddrinfo_ipv6_scopeid_symbolic(self):
+    eleza test_getaddrinfo_ipv6_scopeid_symbolic(self):
         # Just pick up any network interface (Linux, Mac OS X)
         (ifindex, test_interface) = socket.if_nameindex()[0]
         ((*_, sockaddr),) = socket.getaddrinfo(
@@ -1658,7 +1658,7 @@ class GeneralModuleTests(unittest.TestCase):
     @unittest.skipUnless(
         sys.platform == 'win32',
         'Numeric scope id does not work or undocumented')
-    def test_getaddrinfo_ipv6_scopeid_numeric(self):
+    eleza test_getaddrinfo_ipv6_scopeid_numeric(self):
         # Also works on Linux and Mac OS X, but is not documented (?)
         # Windows, Linux and Max OS X allow nonexistent interface numbers here.
         ifindex = 42
@@ -1674,7 +1674,7 @@ class GeneralModuleTests(unittest.TestCase):
     @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required for this test.')
     @unittest.skipIf(sys.platform == 'win32', 'does not work on Windows')
     @unittest.skipIf(AIX, 'Symbolic scope id does not work')
-    def test_getnameinfo_ipv6_scopeid_symbolic(self):
+    eleza test_getnameinfo_ipv6_scopeid_symbolic(self):
         # Just pick up any network interface.
         (ifindex, test_interface) = socket.if_nameindex()[0]
         sockaddr = ('ff02::1de:c0:face:8D', 1234, 0, ifindex)  # Note capital letter `D`.
@@ -1684,7 +1684,7 @@ class GeneralModuleTests(unittest.TestCase):
     @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required for this test.')
     @unittest.skipUnless( sys.platform == 'win32',
         'Numeric scope id does not work or undocumented')
-    def test_getnameinfo_ipv6_scopeid_numeric(self):
+    eleza test_getnameinfo_ipv6_scopeid_numeric(self):
         # Also works on Linux (undocumented), but does not work on Mac OS X
         # Windows and Linux allow nonexistent interface numbers here.
         ifindex = 42
@@ -1692,14 +1692,14 @@ class GeneralModuleTests(unittest.TestCase):
         nameinfo = socket.getnameinfo(sockaddr, socket.NI_NUMERICHOST | socket.NI_NUMERICSERV)
         self.assertEqual(nameinfo, ('ff02::1de:c0:face:8d%' + str(ifindex), '1234'))
 
-    def test_str_for_enums(self):
+    eleza test_str_for_enums(self):
         # Make sure that the AF_* and SOCK_* constants have enum-like string
         # reprs.
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             self.assertEqual(str(s.family), 'AddressFamily.AF_INET')
             self.assertEqual(str(s.type), 'SocketKind.SOCK_STREAM')
 
-    def test_socket_consistent_sock_type(self):
+    eleza test_socket_consistent_sock_type(self):
         SOCK_NONBLOCK = getattr(socket, 'SOCK_NONBLOCK', 0)
         SOCK_CLOEXEC = getattr(socket, 'SOCK_CLOEXEC', 0)
         sock_type = socket.SOCK_STREAM | SOCK_NONBLOCK | SOCK_CLOEXEC
@@ -1715,7 +1715,7 @@ class GeneralModuleTests(unittest.TestCase):
             s.setblocking(False)
             self.assertEqual(s.type, socket.SOCK_STREAM)
 
-    def test_unknown_socket_family_repr(self):
+    eleza test_unknown_socket_family_repr(self):
         # Test that when created with a family that's not one of the known
         # AF_*/SOCK_* constants, socket.family just returns the number.
         #
@@ -1729,7 +1729,7 @@ class GeneralModuleTests(unittest.TestCase):
         unknown_type = max(
             kind
             for name, kind in socket.SocketKind.__members__.items()
-            if name not in {'SOCK_NONBLOCK', 'SOCK_CLOEXEC'}
+            ikiwa name not in {'SOCK_NONBLOCK', 'SOCK_CLOEXEC'}
         ) + 1
 
         with socket.socket(
@@ -1741,13 +1741,13 @@ class GeneralModuleTests(unittest.TestCase):
             self.assertIn(s.proto, {0, 23})
 
     @unittest.skipUnless(hasattr(os, 'sendfile'), 'test needs os.sendfile()')
-    def test__sendfile_use_sendfile(self):
-        class File:
-            def __init__(self, fd):
+    eleza test__sendfile_use_sendfile(self):
+        kundi File:
+            eleza __init__(self, fd):
                 self.fd = fd
 
-            def fileno(self):
-                return self.fd
+            eleza fileno(self):
+                rudisha self.fd
         with socket.socket() as sock:
             fd = os.open(os.curdir, os.O_RDONLY)
             os.close(fd)
@@ -1758,7 +1758,7 @@ class GeneralModuleTests(unittest.TestCase):
             with self.assertRaises(TypeError):
                 sock._sendfile_use_sendfile(File(None))
 
-    def _test_socket_fileno(self, s, family, stype):
+    eleza _test_socket_fileno(self, s, family, stype):
         self.assertEqual(s.family, family)
         self.assertEqual(s.type, stype)
 
@@ -1771,25 +1771,25 @@ class GeneralModuleTests(unittest.TestCase):
         self.assertEqual(s2.type, stype)
         self.assertEqual(s2.fileno(), fd)
 
-    def test_socket_fileno(self):
+    eleza test_socket_fileno(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.addCleanup(s.close)
         s.bind((support.HOST, 0))
         self._test_socket_fileno(s, socket.AF_INET, socket.SOCK_STREAM)
 
-        if hasattr(socket, "SOCK_DGRAM"):
+        ikiwa hasattr(socket, "SOCK_DGRAM"):
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             self.addCleanup(s.close)
             s.bind((support.HOST, 0))
             self._test_socket_fileno(s, socket.AF_INET, socket.SOCK_DGRAM)
 
-        if support.IPV6_ENABLED:
+        ikiwa support.IPV6_ENABLED:
             s = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
             self.addCleanup(s.close)
             s.bind((support.HOSTv6, 0, 0, 0))
             self._test_socket_fileno(s, socket.AF_INET6, socket.SOCK_STREAM)
 
-        if hasattr(socket, "AF_UNIX"):
+        ikiwa hasattr(socket, "AF_UNIX"):
             tmpdir = tempfile.mkdtemp()
             self.addCleanup(shutil.rmtree, tmpdir)
             s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
@@ -1802,24 +1802,24 @@ class GeneralModuleTests(unittest.TestCase):
                 self._test_socket_fileno(s, socket.AF_UNIX,
                                          socket.SOCK_STREAM)
 
-    def test_socket_fileno_rejects_float(self):
+    eleza test_socket_fileno_rejects_float(self):
         with self.assertRaisesRegex(TypeError, "integer argument expected"):
             socket.socket(socket.AF_INET, socket.SOCK_STREAM, fileno=42.5)
 
-    def test_socket_fileno_rejects_other_types(self):
+    eleza test_socket_fileno_rejects_other_types(self):
         with self.assertRaisesRegex(TypeError, "integer is required"):
             socket.socket(socket.AF_INET, socket.SOCK_STREAM, fileno="foo")
 
-    def test_socket_fileno_rejects_invalid_socket(self):
+    eleza test_socket_fileno_rejects_invalid_socket(self):
         with self.assertRaisesRegex(ValueError, "negative file descriptor"):
             socket.socket(socket.AF_INET, socket.SOCK_STREAM, fileno=-1)
 
     @unittest.skipIf(os.name == "nt", "Windows disallows -1 only")
-    def test_socket_fileno_rejects_negative(self):
+    eleza test_socket_fileno_rejects_negative(self):
         with self.assertRaisesRegex(ValueError, "negative file descriptor"):
             socket.socket(socket.AF_INET, socket.SOCK_STREAM, fileno=-42)
 
-    def test_socket_fileno_requires_valid_fd(self):
+    eleza test_socket_fileno_requires_valid_fd(self):
         WSAENOTSOCK = 10038
         with self.assertRaises(OSError) as cm:
             socket.socket(fileno=support.make_bad_fd())
@@ -1832,7 +1832,7 @@ class GeneralModuleTests(unittest.TestCase):
                 fileno=support.make_bad_fd())
         self.assertIn(cm.exception.errno, (errno.EBADF, WSAENOTSOCK))
 
-    def test_socket_fileno_requires_socket_fd(self):
+    eleza test_socket_fileno_requires_socket_fd(self):
         with tempfile.NamedTemporaryFile() as afile:
             with self.assertRaises(OSError):
                 socket.socket(fileno=afile.fileno())
@@ -1846,16 +1846,16 @@ class GeneralModuleTests(unittest.TestCase):
 
 
 @unittest.skipUnless(HAVE_SOCKET_CAN, 'SocketCan required for this test.')
-class BasicCANTest(unittest.TestCase):
+kundi BasicCANTest(unittest.TestCase):
 
-    def testCrucialConstants(self):
+    eleza testCrucialConstants(self):
         socket.AF_CAN
         socket.PF_CAN
         socket.CAN_RAW
 
     @unittest.skipUnless(hasattr(socket, "CAN_BCM"),
                          'socket.CAN_BCM required for this test.')
-    def testBCMConstants(self):
+    eleza testBCMConstants(self):
         socket.CAN_BCM
 
         # opcodes
@@ -1885,23 +1885,23 @@ class BasicCANTest(unittest.TestCase):
         socket.CAN_BCM_TX_RESET_MULTI_IDX
         socket.CAN_BCM_RX_RTR_FRAME
 
-    def testCreateSocket(self):
+    eleza testCreateSocket(self):
         with socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW) as s:
             pass
 
     @unittest.skipUnless(hasattr(socket, "CAN_BCM"),
                          'socket.CAN_BCM required for this test.')
-    def testCreateBCMSocket(self):
+    eleza testCreateBCMSocket(self):
         with socket.socket(socket.PF_CAN, socket.SOCK_DGRAM, socket.CAN_BCM) as s:
             pass
 
-    def testBindAny(self):
+    eleza testBindAny(self):
         with socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW) as s:
             address = ('', )
             s.bind(address)
             self.assertEqual(s.getsockname(), address)
 
-    def testTooLongInterfaceName(self):
+    eleza testTooLongInterfaceName(self):
         # most systems limit IFNAMSIZ to 16, take 1024 to be sure
         with socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW) as s:
             self.assertRaisesRegex(OSError, 'interface name too long',
@@ -1909,7 +1909,7 @@ class BasicCANTest(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(socket, "CAN_RAW_LOOPBACK"),
                          'socket.CAN_RAW_LOOPBACK required for this test.')
-    def testLoopback(self):
+    eleza testLoopback(self):
         with socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW) as s:
             for loopback in (0, 1):
                 s.setsockopt(socket.SOL_CAN_RAW, socket.CAN_RAW_LOOPBACK,
@@ -1919,7 +1919,7 @@ class BasicCANTest(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(socket, "CAN_RAW_FILTER"),
                          'socket.CAN_RAW_FILTER required for this test.')
-    def testFilter(self):
+    eleza testFilter(self):
         can_id, can_mask = 0x200, 0x700
         can_filter = struct.pack("=II", can_id, can_mask)
         with socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW) as s:
@@ -1930,50 +1930,50 @@ class BasicCANTest(unittest.TestCase):
 
 
 @unittest.skipUnless(HAVE_SOCKET_CAN, 'SocketCan required for this test.')
-class CANTest(ThreadedCANSocketTest):
+kundi CANTest(ThreadedCANSocketTest):
 
-    def __init__(self, methodName='runTest'):
+    eleza __init__(self, methodName='runTest'):
         ThreadedCANSocketTest.__init__(self, methodName=methodName)
 
     @classmethod
-    def build_can_frame(cls, can_id, data):
+    eleza build_can_frame(cls, can_id, data):
         """Build a CAN frame."""
         can_dlc = len(data)
         data = data.ljust(8, b'\x00')
-        return struct.pack(cls.can_frame_fmt, can_id, can_dlc, data)
+        rudisha struct.pack(cls.can_frame_fmt, can_id, can_dlc, data)
 
     @classmethod
-    def dissect_can_frame(cls, frame):
+    eleza dissect_can_frame(cls, frame):
         """Dissect a CAN frame."""
         can_id, can_dlc, data = struct.unpack(cls.can_frame_fmt, frame)
-        return (can_id, can_dlc, data[:can_dlc])
+        rudisha (can_id, can_dlc, data[:can_dlc])
 
-    def testSendFrame(self):
-        cf, addr = self.s.recvfrom(self.bufsize)
+    eleza testSendFrame(self):
+        cf, addr = self.s.recvkutoka(self.bufsize)
         self.assertEqual(self.cf, cf)
         self.assertEqual(addr[0], self.interface)
         self.assertEqual(addr[1], socket.AF_CAN)
 
-    def _testSendFrame(self):
+    eleza _testSendFrame(self):
         self.cf = self.build_can_frame(0x00, b'\x01\x02\x03\x04\x05')
         self.cli.send(self.cf)
 
-    def testSendMaxFrame(self):
-        cf, addr = self.s.recvfrom(self.bufsize)
+    eleza testSendMaxFrame(self):
+        cf, addr = self.s.recvkutoka(self.bufsize)
         self.assertEqual(self.cf, cf)
 
-    def _testSendMaxFrame(self):
+    eleza _testSendMaxFrame(self):
         self.cf = self.build_can_frame(0x00, b'\x07' * 8)
         self.cli.send(self.cf)
 
-    def testSendMultiFrames(self):
-        cf, addr = self.s.recvfrom(self.bufsize)
+    eleza testSendMultiFrames(self):
+        cf, addr = self.s.recvkutoka(self.bufsize)
         self.assertEqual(self.cf1, cf)
 
-        cf, addr = self.s.recvfrom(self.bufsize)
+        cf, addr = self.s.recvkutoka(self.bufsize)
         self.assertEqual(self.cf2, cf)
 
-    def _testSendMultiFrames(self):
+    eleza _testSendMultiFrames(self):
         self.cf1 = self.build_can_frame(0x07, b'\x44\x33\x22\x11')
         self.cli.send(self.cf1)
 
@@ -1982,8 +1982,8 @@ class CANTest(ThreadedCANSocketTest):
 
     @unittest.skipUnless(hasattr(socket, "CAN_BCM"),
                          'socket.CAN_BCM required for this test.')
-    def _testBCM(self):
-        cf, addr = self.cli.recvfrom(self.bufsize)
+    eleza _testBCM(self):
+        cf, addr = self.cli.recvkutoka(self.bufsize)
         self.assertEqual(self.cf, cf)
         can_id, can_dlc, data = self.dissect_can_frame(cf)
         self.assertEqual(self.can_id, can_id)
@@ -1991,7 +1991,7 @@ class CANTest(ThreadedCANSocketTest):
 
     @unittest.skipUnless(hasattr(socket, "CAN_BCM"),
                          'socket.CAN_BCM required for this test.')
-    def testBCM(self):
+    eleza testBCM(self):
         bcm = socket.socket(socket.PF_CAN, socket.SOCK_DGRAM, socket.CAN_BCM)
         self.addCleanup(bcm.close)
         bcm.connect((self.interface,))
@@ -2022,42 +2022,42 @@ class CANTest(ThreadedCANSocketTest):
 
 
 @unittest.skipUnless(HAVE_SOCKET_CAN_ISOTP, 'CAN ISOTP required for this test.')
-class ISOTPTest(unittest.TestCase):
+kundi ISOTPTest(unittest.TestCase):
 
-    def __init__(self, *args, **kwargs):
+    eleza __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.interface = "vcan0"
 
-    def testCrucialConstants(self):
+    eleza testCrucialConstants(self):
         socket.AF_CAN
         socket.PF_CAN
         socket.CAN_ISOTP
         socket.SOCK_DGRAM
 
-    def testCreateSocket(self):
+    eleza testCreateSocket(self):
         with socket.socket(socket.PF_CAN, socket.SOCK_RAW, socket.CAN_RAW) as s:
             pass
 
     @unittest.skipUnless(hasattr(socket, "CAN_ISOTP"),
                          'socket.CAN_ISOTP required for this test.')
-    def testCreateISOTPSocket(self):
+    eleza testCreateISOTPSocket(self):
         with socket.socket(socket.PF_CAN, socket.SOCK_DGRAM, socket.CAN_ISOTP) as s:
             pass
 
-    def testTooLongInterfaceName(self):
+    eleza testTooLongInterfaceName(self):
         # most systems limit IFNAMSIZ to 16, take 1024 to be sure
         with socket.socket(socket.PF_CAN, socket.SOCK_DGRAM, socket.CAN_ISOTP) as s:
             with self.assertRaisesRegex(OSError, 'interface name too long'):
                 s.bind(('x' * 1024, 1, 2))
 
-    def testBind(self):
+    eleza testBind(self):
         try:
             with socket.socket(socket.PF_CAN, socket.SOCK_DGRAM, socket.CAN_ISOTP) as s:
                 addr = self.interface, 0x123, 0x456
                 s.bind(addr)
                 self.assertEqual(s.getsockname(), addr)
         except OSError as e:
-            if e.errno == errno.ENODEV:
+            ikiwa e.errno == errno.ENODEV:
                 self.skipTest('network interface `%s` does not exist' %
                            self.interface)
             else:
@@ -2065,17 +2065,17 @@ class ISOTPTest(unittest.TestCase):
 
 
 @unittest.skipUnless(HAVE_SOCKET_RDS, 'RDS sockets required for this test.')
-class BasicRDSTest(unittest.TestCase):
+kundi BasicRDSTest(unittest.TestCase):
 
-    def testCrucialConstants(self):
+    eleza testCrucialConstants(self):
         socket.AF_RDS
         socket.PF_RDS
 
-    def testCreateSocket(self):
+    eleza testCreateSocket(self):
         with socket.socket(socket.PF_RDS, socket.SOCK_SEQPACKET, 0) as s:
             pass
 
-    def testSocketBufferSize(self):
+    eleza testSocketBufferSize(self):
         bufsize = 16384
         with socket.socket(socket.PF_RDS, socket.SOCK_SEQPACKET, 0) as s:
             s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, bufsize)
@@ -2083,93 +2083,93 @@ class BasicRDSTest(unittest.TestCase):
 
 
 @unittest.skipUnless(HAVE_SOCKET_RDS, 'RDS sockets required for this test.')
-class RDSTest(ThreadedRDSSocketTest):
+kundi RDSTest(ThreadedRDSSocketTest):
 
-    def __init__(self, methodName='runTest'):
+    eleza __init__(self, methodName='runTest'):
         ThreadedRDSSocketTest.__init__(self, methodName=methodName)
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.evt = threading.Event()
 
-    def testSendAndRecv(self):
-        data, addr = self.serv.recvfrom(self.bufsize)
+    eleza testSendAndRecv(self):
+        data, addr = self.serv.recvkutoka(self.bufsize)
         self.assertEqual(self.data, data)
         self.assertEqual(self.cli_addr, addr)
 
-    def _testSendAndRecv(self):
+    eleza _testSendAndRecv(self):
         self.data = b'spam'
         self.cli.sendto(self.data, 0, (HOST, self.port))
 
-    def testPeek(self):
-        data, addr = self.serv.recvfrom(self.bufsize, socket.MSG_PEEK)
+    eleza testPeek(self):
+        data, addr = self.serv.recvkutoka(self.bufsize, socket.MSG_PEEK)
         self.assertEqual(self.data, data)
-        data, addr = self.serv.recvfrom(self.bufsize)
+        data, addr = self.serv.recvkutoka(self.bufsize)
         self.assertEqual(self.data, data)
 
-    def _testPeek(self):
+    eleza _testPeek(self):
         self.data = b'spam'
         self.cli.sendto(self.data, 0, (HOST, self.port))
 
     @requireAttrs(socket.socket, 'recvmsg')
-    def testSendAndRecvMsg(self):
+    eleza testSendAndRecvMsg(self):
         data, ancdata, msg_flags, addr = self.serv.recvmsg(self.bufsize)
         self.assertEqual(self.data, data)
 
     @requireAttrs(socket.socket, 'sendmsg')
-    def _testSendAndRecvMsg(self):
+    eleza _testSendAndRecvMsg(self):
         self.data = b'hello ' * 10
         self.cli.sendmsg([self.data], (), 0, (HOST, self.port))
 
-    def testSendAndRecvMulti(self):
-        data, addr = self.serv.recvfrom(self.bufsize)
+    eleza testSendAndRecvMulti(self):
+        data, addr = self.serv.recvkutoka(self.bufsize)
         self.assertEqual(self.data1, data)
 
-        data, addr = self.serv.recvfrom(self.bufsize)
+        data, addr = self.serv.recvkutoka(self.bufsize)
         self.assertEqual(self.data2, data)
 
-    def _testSendAndRecvMulti(self):
+    eleza _testSendAndRecvMulti(self):
         self.data1 = b'bacon'
         self.cli.sendto(self.data1, 0, (HOST, self.port))
 
         self.data2 = b'egg'
         self.cli.sendto(self.data2, 0, (HOST, self.port))
 
-    def testSelect(self):
+    eleza testSelect(self):
         r, w, x = select.select([self.serv], [], [], 3.0)
         self.assertIn(self.serv, r)
-        data, addr = self.serv.recvfrom(self.bufsize)
+        data, addr = self.serv.recvkutoka(self.bufsize)
         self.assertEqual(self.data, data)
 
-    def _testSelect(self):
+    eleza _testSelect(self):
         self.data = b'select'
         self.cli.sendto(self.data, 0, (HOST, self.port))
 
 @unittest.skipUnless(HAVE_SOCKET_QIPCRTR,
           'QIPCRTR sockets required for this test.')
-class BasicQIPCRTRTest(unittest.TestCase):
+kundi BasicQIPCRTRTest(unittest.TestCase):
 
-    def testCrucialConstants(self):
+    eleza testCrucialConstants(self):
         socket.AF_QIPCRTR
 
-    def testCreateSocket(self):
+    eleza testCreateSocket(self):
         with socket.socket(socket.AF_QIPCRTR, socket.SOCK_DGRAM) as s:
             pass
 
-    def testUnbound(self):
+    eleza testUnbound(self):
         with socket.socket(socket.AF_QIPCRTR, socket.SOCK_DGRAM) as s:
             self.assertEqual(s.getsockname()[1], 0)
 
-    def testBindSock(self):
+    eleza testBindSock(self):
         with socket.socket(socket.AF_QIPCRTR, socket.SOCK_DGRAM) as s:
             support.bind_port(s, host=s.getsockname()[0])
             self.assertNotEqual(s.getsockname()[1], 0)
 
-    def testInvalidBindSock(self):
+    eleza testInvalidBindSock(self):
         with socket.socket(socket.AF_QIPCRTR, socket.SOCK_DGRAM) as s:
             self.assertRaises(OSError, support.bind_port, s, host=-2)
 
-    def testAutoBindSock(self):
+    eleza testAutoBindSock(self):
         with socket.socket(socket.AF_QIPCRTR, socket.SOCK_DGRAM) as s:
             s.connect((123, 123))
             self.assertNotEqual(s.getsockname()[1], 0)
@@ -2177,12 +2177,12 @@ class BasicQIPCRTRTest(unittest.TestCase):
 @unittest.skipIf(fcntl is None, "need fcntl")
 @unittest.skipUnless(HAVE_SOCKET_VSOCK,
           'VSOCK sockets required for this test.')
-class BasicVSOCKTest(unittest.TestCase):
+kundi BasicVSOCKTest(unittest.TestCase):
 
-    def testCrucialConstants(self):
+    eleza testCrucialConstants(self):
         socket.AF_VSOCK
 
-    def testVSOCKConstants(self):
+    eleza testVSOCKConstants(self):
         socket.SO_VM_SOCKETS_BUFFER_SIZE
         socket.SO_VM_SOCKETS_BUFFER_MIN_SIZE
         socket.SO_VM_SOCKETS_BUFFER_MAX_SIZE
@@ -2192,11 +2192,11 @@ class BasicVSOCKTest(unittest.TestCase):
         socket.VM_SOCKETS_INVALID_VERSION
         socket.IOCTL_VM_SOCKETS_GET_LOCAL_CID
 
-    def testCreateSocket(self):
+    eleza testCreateSocket(self):
         with socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM) as s:
             pass
 
-    def testSocketBufferSize(self):
+    eleza testSocketBufferSize(self):
         with socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM) as s:
             orig_max = s.getsockopt(socket.AF_VSOCK,
                                     socket.SO_VM_SOCKETS_BUFFER_MAX_SIZE)
@@ -2223,84 +2223,84 @@ class BasicVSOCKTest(unittest.TestCase):
                              socket.SO_VM_SOCKETS_BUFFER_MIN_SIZE))
 
 
-class BasicTCPTest(SocketConnectedTest):
+kundi BasicTCPTest(SocketConnectedTest):
 
-    def __init__(self, methodName='runTest'):
+    eleza __init__(self, methodName='runTest'):
         SocketConnectedTest.__init__(self, methodName=methodName)
 
-    def testRecv(self):
+    eleza testRecv(self):
         # Testing large receive over TCP
         msg = self.cli_conn.recv(1024)
         self.assertEqual(msg, MSG)
 
-    def _testRecv(self):
+    eleza _testRecv(self):
         self.serv_conn.send(MSG)
 
-    def testOverFlowRecv(self):
+    eleza testOverFlowRecv(self):
         # Testing receive in chunks over TCP
         seg1 = self.cli_conn.recv(len(MSG) - 3)
         seg2 = self.cli_conn.recv(1024)
         msg = seg1 + seg2
         self.assertEqual(msg, MSG)
 
-    def _testOverFlowRecv(self):
+    eleza _testOverFlowRecv(self):
         self.serv_conn.send(MSG)
 
-    def testRecvFrom(self):
-        # Testing large recvfrom() over TCP
-        msg, addr = self.cli_conn.recvfrom(1024)
+    eleza testRecvFrom(self):
+        # Testing large recvkutoka() over TCP
+        msg, addr = self.cli_conn.recvkutoka(1024)
         self.assertEqual(msg, MSG)
 
-    def _testRecvFrom(self):
+    eleza _testRecvFrom(self):
         self.serv_conn.send(MSG)
 
-    def testOverFlowRecvFrom(self):
-        # Testing recvfrom() in chunks over TCP
-        seg1, addr = self.cli_conn.recvfrom(len(MSG)-3)
-        seg2, addr = self.cli_conn.recvfrom(1024)
+    eleza testOverFlowRecvFrom(self):
+        # Testing recvkutoka() in chunks over TCP
+        seg1, addr = self.cli_conn.recvkutoka(len(MSG)-3)
+        seg2, addr = self.cli_conn.recvkutoka(1024)
         msg = seg1 + seg2
         self.assertEqual(msg, MSG)
 
-    def _testOverFlowRecvFrom(self):
+    eleza _testOverFlowRecvFrom(self):
         self.serv_conn.send(MSG)
 
-    def testSendAll(self):
+    eleza testSendAll(self):
         # Testing sendall() with a 2048 byte string over TCP
         msg = b''
         while 1:
             read = self.cli_conn.recv(1024)
-            if not read:
+            ikiwa not read:
                 break
             msg += read
         self.assertEqual(msg, b'f' * 2048)
 
-    def _testSendAll(self):
+    eleza _testSendAll(self):
         big_chunk = b'f' * 2048
         self.serv_conn.sendall(big_chunk)
 
-    def testFromFd(self):
-        # Testing fromfd()
+    eleza testFromFd(self):
+        # Testing kutokafd()
         fd = self.cli_conn.fileno()
-        sock = socket.fromfd(fd, socket.AF_INET, socket.SOCK_STREAM)
+        sock = socket.kutokafd(fd, socket.AF_INET, socket.SOCK_STREAM)
         self.addCleanup(sock.close)
         self.assertIsInstance(sock, socket.socket)
         msg = sock.recv(1024)
         self.assertEqual(msg, MSG)
 
-    def _testFromFd(self):
+    eleza _testFromFd(self):
         self.serv_conn.send(MSG)
 
-    def testDup(self):
+    eleza testDup(self):
         # Testing dup()
         sock = self.cli_conn.dup()
         self.addCleanup(sock.close)
         msg = sock.recv(1024)
         self.assertEqual(msg, MSG)
 
-    def _testDup(self):
+    eleza _testDup(self):
         self.serv_conn.send(MSG)
 
-    def testShutdown(self):
+    eleza testShutdown(self):
         # Testing shutdown()
         msg = self.cli_conn.recv(1024)
         self.assertEqual(msg, MSG)
@@ -2309,14 +2309,14 @@ class BasicTCPTest(SocketConnectedTest):
         # and the client's shutdown call will fail. (Issue #4397.)
         self.done.wait()
 
-    def _testShutdown(self):
+    eleza _testShutdown(self):
         self.serv_conn.send(MSG)
         self.serv_conn.shutdown(2)
 
     testShutdown_overflow = support.cpython_only(testShutdown)
 
     @support.cpython_only
-    def _testShutdown_overflow(self):
+    eleza _testShutdown_overflow(self):
         agiza _testcapi
         self.serv_conn.send(MSG)
         # Issue 15989
@@ -2326,7 +2326,7 @@ class BasicTCPTest(SocketConnectedTest):
                           2 + (_testcapi.UINT_MAX + 1))
         self.serv_conn.shutdown(2)
 
-    def testDetach(self):
+    eleza testDetach(self):
         # Testing detach()
         fileno = self.cli_conn.fileno()
         f = self.cli_conn.detach()
@@ -2342,36 +2342,36 @@ class BasicTCPTest(SocketConnectedTest):
         msg = sock.recv(1024)
         self.assertEqual(msg, MSG)
 
-    def _testDetach(self):
+    eleza _testDetach(self):
         self.serv_conn.send(MSG)
 
 
-class BasicUDPTest(ThreadedUDPSocketTest):
+kundi BasicUDPTest(ThreadedUDPSocketTest):
 
-    def __init__(self, methodName='runTest'):
+    eleza __init__(self, methodName='runTest'):
         ThreadedUDPSocketTest.__init__(self, methodName=methodName)
 
-    def testSendtoAndRecv(self):
+    eleza testSendtoAndRecv(self):
         # Testing sendto() and Recv() over UDP
         msg = self.serv.recv(len(MSG))
         self.assertEqual(msg, MSG)
 
-    def _testSendtoAndRecv(self):
+    eleza _testSendtoAndRecv(self):
         self.cli.sendto(MSG, 0, (HOST, self.port))
 
-    def testRecvFrom(self):
-        # Testing recvfrom() over UDP
-        msg, addr = self.serv.recvfrom(len(MSG))
+    eleza testRecvFrom(self):
+        # Testing recvkutoka() over UDP
+        msg, addr = self.serv.recvkutoka(len(MSG))
         self.assertEqual(msg, MSG)
 
-    def _testRecvFrom(self):
+    eleza _testRecvFrom(self):
         self.cli.sendto(MSG, 0, (HOST, self.port))
 
-    def testRecvFromNegative(self):
-        # Negative lengths passed to recvfrom should give ValueError.
-        self.assertRaises(ValueError, self.serv.recvfrom, -1)
+    eleza testRecvFromNegative(self):
+        # Negative lengths passed to recvkutoka should give ValueError.
+        self.assertRaises(ValueError, self.serv.recvkutoka, -1)
 
-    def _testRecvFromNegative(self):
+    eleza _testRecvFromNegative(self):
         self.cli.sendto(MSG, 0, (HOST, self.port))
 
 # Tests for the sendmsg()/recvmsg() interface.  Where possible, the
@@ -2401,50 +2401,50 @@ class BasicUDPTest(ThreadedUDPSocketTest):
 # here assumes that datagram delivery on the local machine will be
 # reliable.
 
-class SendrecvmsgBase(ThreadSafeCleanupTestCase):
-    # Base class for sendmsg()/recvmsg() tests.
+kundi SendrecvmsgBase(ThreadSafeCleanupTestCase):
+    # Base kundi for sendmsg()/recvmsg() tests.
 
     # Time in seconds to wait before considering a test failed, or
     # None for no timeout.  Not all tests actually set a timeout.
     fail_timeout = 3.0
 
-    def setUp(self):
+    eleza setUp(self):
         self.misc_event = threading.Event()
         super().setUp()
 
-    def sendToServer(self, msg):
+    eleza sendToServer(self, msg):
         # Send msg to the server.
-        return self.cli_sock.send(msg)
+        rudisha self.cli_sock.send(msg)
 
     # Tuple of alternative default arguments for sendmsg() when called
     # via sendmsgToServer() (e.g. to include a destination address).
     sendmsg_to_server_defaults = ()
 
-    def sendmsgToServer(self, *args):
+    eleza sendmsgToServer(self, *args):
         # Call sendmsg() on self.cli_sock with the given arguments,
         # filling in any arguments which are not supplied with the
         # corresponding items of self.sendmsg_to_server_defaults, if
         # any.
-        return self.cli_sock.sendmsg(
+        rudisha self.cli_sock.sendmsg(
             *(args + self.sendmsg_to_server_defaults[len(args):]))
 
-    def doRecvmsg(self, sock, bufsize, *args):
-        # Call recvmsg() on sock with given arguments and return its
+    eleza doRecvmsg(self, sock, bufsize, *args):
+        # Call recvmsg() on sock with given arguments and rudisha its
         # result.  Should be used for tests which can use either
         # recvmsg() or recvmsg_into() - RecvmsgIntoMixin overrides
         # this method with one which emulates it using recvmsg_into(),
         # thus allowing the same test to be used for both methods.
         result = sock.recvmsg(bufsize, *args)
         self.registerRecvmsgResult(result)
-        return result
+        rudisha result
 
-    def registerRecvmsgResult(self, result):
-        # Called by doRecvmsg() with the return value of recvmsg() or
+    eleza registerRecvmsgResult(self, result):
+        # Called by doRecvmsg() with the rudisha value of recvmsg() or
         # recvmsg_into().  Can be overridden to arrange cleanup based
         # on the returned ancillary data, for instance.
         pass
 
-    def checkRecvmsgAddress(self, addr1, addr2):
+    eleza checkRecvmsgAddress(self, addr1, addr2):
         # Called to compare the received address with the address of
         # the peer.
         self.assertEqual(addr1, addr2)
@@ -2465,7 +2465,7 @@ class SendrecvmsgBase(ThreadSafeCleanupTestCase):
     # (e.g. MSG_TRUNC for datagram sockets)
     msg_flags_non_eor_indicator = 0
 
-    def checkFlags(self, flags, eor=None, checkset=0, checkunset=0, ignore=0):
+    eleza checkFlags(self, flags, eor=None, checkset=0, checkunset=0, ignore=0):
         # Method to check the value of msg_flags returned by recvmsg[_into]().
         #
         # Checks that all bits in msg_flags_common_set attribute are
@@ -2477,10 +2477,10 @@ class SendrecvmsgBase(ThreadSafeCleanupTestCase):
         # If "eor" is None, no checks are done; otherwise, checks
         # that:
         #
-        #  * if "eor" is true, all bits in msg_flags_eor_indicator are
+        #  * ikiwa "eor" is true, all bits in msg_flags_eor_indicator are
         #    set and all bits in msg_flags_non_eor_indicator are unset
         #
-        #  * if "eor" is false, all bits in msg_flags_non_eor_indicator
+        #  * ikiwa "eor" is false, all bits in msg_flags_non_eor_indicator
         #    are set and all bits in msg_flags_eor_indicator are unset
         #
         # If "checkset" and/or "checkunset" are supplied, they require
@@ -2490,16 +2490,16 @@ class SendrecvmsgBase(ThreadSafeCleanupTestCase):
         # If any bits are set in "ignore", they will not be checked,
         # regardless of the other inputs.
         #
-        # Will raise Exception if the inputs require a bit to be both
+        # Will raise Exception ikiwa the inputs require a bit to be both
         # set and unset, and it is not ignored.
 
         defaultset = self.msg_flags_common_set
         defaultunset = self.msg_flags_common_unset
 
-        if eor:
+        ikiwa eor:
             defaultset |= self.msg_flags_eor_indicator
             defaultunset |= self.msg_flags_non_eor_indicator
-        elif eor is not None:
+        elikiwa eor is not None:
             defaultset |= self.msg_flags_non_eor_indicator
             defaultunset |= self.msg_flags_eor_indicator
 
@@ -2511,7 +2511,7 @@ class SendrecvmsgBase(ThreadSafeCleanupTestCase):
         checkset |= defaultset
         checkunset |= defaultunset
         inboth = checkset & checkunset & ~ignore
-        if inboth:
+        ikiwa inboth:
             raise Exception("contradictory set, unset requirements for flags "
                             "{0:#x}".format(inboth))
 
@@ -2520,130 +2520,130 @@ class SendrecvmsgBase(ThreadSafeCleanupTestCase):
         self.assertEqual(flags & mask, checkset & mask)
 
 
-class RecvmsgIntoMixin(SendrecvmsgBase):
+kundi RecvmsgIntoMixin(SendrecvmsgBase):
     # Mixin to implement doRecvmsg() using recvmsg_into().
 
-    def doRecvmsg(self, sock, bufsize, *args):
+    eleza doRecvmsg(self, sock, bufsize, *args):
         buf = bytearray(bufsize)
         result = sock.recvmsg_into([buf], *args)
         self.registerRecvmsgResult(result)
         self.assertGreaterEqual(result[0], 0)
         self.assertLessEqual(result[0], bufsize)
-        return (bytes(buf[:result[0]]),) + result[1:]
+        rudisha (bytes(buf[:result[0]]),) + result[1:]
 
 
-class SendrecvmsgDgramFlagsBase(SendrecvmsgBase):
+kundi SendrecvmsgDgramFlagsBase(SendrecvmsgBase):
     # Defines flags to be checked in msg_flags for datagram sockets.
 
     @property
-    def msg_flags_non_eor_indicator(self):
-        return super().msg_flags_non_eor_indicator | socket.MSG_TRUNC
+    eleza msg_flags_non_eor_indicator(self):
+        rudisha super().msg_flags_non_eor_indicator | socket.MSG_TRUNC
 
 
-class SendrecvmsgSCTPFlagsBase(SendrecvmsgBase):
+kundi SendrecvmsgSCTPFlagsBase(SendrecvmsgBase):
     # Defines flags to be checked in msg_flags for SCTP sockets.
 
     @property
-    def msg_flags_eor_indicator(self):
-        return super().msg_flags_eor_indicator | socket.MSG_EOR
+    eleza msg_flags_eor_indicator(self):
+        rudisha super().msg_flags_eor_indicator | socket.MSG_EOR
 
 
-class SendrecvmsgConnectionlessBase(SendrecvmsgBase):
-    # Base class for tests on connectionless-mode sockets.  Users must
+kundi SendrecvmsgConnectionlessBase(SendrecvmsgBase):
+    # Base kundi for tests on connectionless-mode sockets.  Users must
     # supply sockets on attributes cli and serv to be mapped to
     # cli_sock and serv_sock respectively.
 
     @property
-    def serv_sock(self):
-        return self.serv
+    eleza serv_sock(self):
+        rudisha self.serv
 
     @property
-    def cli_sock(self):
-        return self.cli
+    eleza cli_sock(self):
+        rudisha self.cli
 
     @property
-    def sendmsg_to_server_defaults(self):
-        return ([], [], 0, self.serv_addr)
+    eleza sendmsg_to_server_defaults(self):
+        rudisha ([], [], 0, self.serv_addr)
 
-    def sendToServer(self, msg):
-        return self.cli_sock.sendto(msg, self.serv_addr)
+    eleza sendToServer(self, msg):
+        rudisha self.cli_sock.sendto(msg, self.serv_addr)
 
 
-class SendrecvmsgConnectedBase(SendrecvmsgBase):
-    # Base class for tests on connected sockets.  Users must supply
+kundi SendrecvmsgConnectedBase(SendrecvmsgBase):
+    # Base kundi for tests on connected sockets.  Users must supply
     # sockets on attributes serv_conn and cli_conn (representing the
     # connections *to* the server and the client), to be mapped to
     # cli_sock and serv_sock respectively.
 
     @property
-    def serv_sock(self):
-        return self.cli_conn
+    eleza serv_sock(self):
+        rudisha self.cli_conn
 
     @property
-    def cli_sock(self):
-        return self.serv_conn
+    eleza cli_sock(self):
+        rudisha self.serv_conn
 
-    def checkRecvmsgAddress(self, addr1, addr2):
+    eleza checkRecvmsgAddress(self, addr1, addr2):
         # Address is currently "unspecified" for a connected socket,
         # so we don't examine it
         pass
 
 
-class SendrecvmsgServerTimeoutBase(SendrecvmsgBase):
-    # Base class to set a timeout on server's socket.
+kundi SendrecvmsgServerTimeoutBase(SendrecvmsgBase):
+    # Base kundi to set a timeout on server's socket.
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.serv_sock.settimeout(self.fail_timeout)
 
 
-class SendmsgTests(SendrecvmsgServerTimeoutBase):
+kundi SendmsgTests(SendrecvmsgServerTimeoutBase):
     # Tests for sendmsg() which can use any socket type and do not
     # involve recvmsg() or recvmsg_into().
 
-    def testSendmsg(self):
+    eleza testSendmsg(self):
         # Send a simple message with sendmsg().
         self.assertEqual(self.serv_sock.recv(len(MSG)), MSG)
 
-    def _testSendmsg(self):
+    eleza _testSendmsg(self):
         self.assertEqual(self.sendmsgToServer([MSG]), len(MSG))
 
-    def testSendmsgDataGenerator(self):
+    eleza testSendmsgDataGenerator(self):
         # Send kutoka buffer obtained kutoka a generator (not a sequence).
         self.assertEqual(self.serv_sock.recv(len(MSG)), MSG)
 
-    def _testSendmsgDataGenerator(self):
+    eleza _testSendmsgDataGenerator(self):
         self.assertEqual(self.sendmsgToServer((o for o in [MSG])),
                          len(MSG))
 
-    def testSendmsgAncillaryGenerator(self):
+    eleza testSendmsgAncillaryGenerator(self):
         # Gather (empty) ancillary data kutoka a generator.
         self.assertEqual(self.serv_sock.recv(len(MSG)), MSG)
 
-    def _testSendmsgAncillaryGenerator(self):
+    eleza _testSendmsgAncillaryGenerator(self):
         self.assertEqual(self.sendmsgToServer([MSG], (o for o in [])),
                          len(MSG))
 
-    def testSendmsgArray(self):
+    eleza testSendmsgArray(self):
         # Send data kutoka an array instead of the usual bytes object.
         self.assertEqual(self.serv_sock.recv(len(MSG)), MSG)
 
-    def _testSendmsgArray(self):
+    eleza _testSendmsgArray(self):
         self.assertEqual(self.sendmsgToServer([array.array("B", MSG)]),
                          len(MSG))
 
-    def testSendmsgGather(self):
+    eleza testSendmsgGather(self):
         # Send message data kutoka more than one buffer (gather write).
         self.assertEqual(self.serv_sock.recv(len(MSG)), MSG)
 
-    def _testSendmsgGather(self):
+    eleza _testSendmsgGather(self):
         self.assertEqual(self.sendmsgToServer([MSG[:3], MSG[3:]]), len(MSG))
 
-    def testSendmsgBadArgs(self):
+    eleza testSendmsgBadArgs(self):
         # Check that sendmsg() rejects invalid arguments.
         self.assertEqual(self.serv_sock.recv(1000), b"done")
 
-    def _testSendmsgBadArgs(self):
+    eleza _testSendmsgBadArgs(self):
         self.assertRaises(TypeError, self.cli_sock.sendmsg)
         self.assertRaises(TypeError, self.sendmsgToServer,
                           b"not in an iterable")
@@ -2661,11 +2661,11 @@ class SendmsgTests(SendrecvmsgServerTimeoutBase):
                           [MSG], [], 0, object())
         self.sendToServer(b"done")
 
-    def testSendmsgBadCmsg(self):
+    eleza testSendmsgBadCmsg(self):
         # Check that invalid ancillary data items are rejected.
         self.assertEqual(self.serv_sock.recv(1000), b"done")
 
-    def _testSendmsgBadCmsg(self):
+    eleza _testSendmsgBadCmsg(self):
         self.assertRaises(TypeError, self.sendmsgToServer,
                           [MSG], [object()])
         self.assertRaises(TypeError, self.sendmsgToServer,
@@ -2681,58 +2681,58 @@ class SendmsgTests(SendrecvmsgServerTimeoutBase):
         self.sendToServer(b"done")
 
     @requireAttrs(socket, "CMSG_SPACE")
-    def testSendmsgBadMultiCmsg(self):
+    eleza testSendmsgBadMultiCmsg(self):
         # Check that invalid ancillary data items are rejected when
         # more than one item is present.
         self.assertEqual(self.serv_sock.recv(1000), b"done")
 
     @testSendmsgBadMultiCmsg.client_skip
-    def _testSendmsgBadMultiCmsg(self):
+    eleza _testSendmsgBadMultiCmsg(self):
         self.assertRaises(TypeError, self.sendmsgToServer,
                           [MSG], [0, 0, b""])
         self.assertRaises(TypeError, self.sendmsgToServer,
                           [MSG], [(0, 0, b""), object()])
         self.sendToServer(b"done")
 
-    def testSendmsgExcessCmsgReject(self):
+    eleza testSendmsgExcessCmsgReject(self):
         # Check that sendmsg() rejects excess ancillary data items
         # when the number that can be sent is limited.
         self.assertEqual(self.serv_sock.recv(1000), b"done")
 
-    def _testSendmsgExcessCmsgReject(self):
-        if not hasattr(socket, "CMSG_SPACE"):
+    eleza _testSendmsgExcessCmsgReject(self):
+        ikiwa not hasattr(socket, "CMSG_SPACE"):
             # Can only send one item
             with self.assertRaises(OSError) as cm:
                 self.sendmsgToServer([MSG], [(0, 0, b""), (0, 0, b"")])
             self.assertIsNone(cm.exception.errno)
         self.sendToServer(b"done")
 
-    def testSendmsgAfterClose(self):
+    eleza testSendmsgAfterClose(self):
         # Check that sendmsg() fails on a closed socket.
         pass
 
-    def _testSendmsgAfterClose(self):
+    eleza _testSendmsgAfterClose(self):
         self.cli_sock.close()
         self.assertRaises(OSError, self.sendmsgToServer, [MSG])
 
 
-class SendmsgStreamTests(SendmsgTests):
+kundi SendmsgStreamTests(SendmsgTests):
     # Tests for sendmsg() which require a stream socket and do not
     # involve recvmsg() or recvmsg_into().
 
-    def testSendmsgExplicitNoneAddr(self):
+    eleza testSendmsgExplicitNoneAddr(self):
         # Check that peer address can be specified as None.
         self.assertEqual(self.serv_sock.recv(len(MSG)), MSG)
 
-    def _testSendmsgExplicitNoneAddr(self):
+    eleza _testSendmsgExplicitNoneAddr(self):
         self.assertEqual(self.sendmsgToServer([MSG], [], 0, None), len(MSG))
 
-    def testSendmsgTimeout(self):
+    eleza testSendmsgTimeout(self):
         # Check that timeout works with sendmsg().
         self.assertEqual(self.serv_sock.recv(512), b"a"*512)
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
 
-    def _testSendmsgTimeout(self):
+    eleza _testSendmsgTimeout(self):
         try:
             self.cli_sock.settimeout(0.03)
             try:
@@ -2741,7 +2741,7 @@ class SendmsgStreamTests(SendmsgTests):
             except socket.timeout:
                 pass
             except OSError as exc:
-                if exc.errno != errno.ENOMEM:
+                ikiwa exc.errno != errno.ENOMEM:
                     raise
                 # bpo-33937 the test randomly fails on Travis CI with
                 # "OSError: [Errno 12] Cannot allocate memory"
@@ -2753,18 +2753,18 @@ class SendmsgStreamTests(SendmsgTests):
     # XXX: would be nice to have more tests for sendmsg flags argument.
 
     # Linux supports MSG_DONTWAIT when sending, but in general, it
-    # only works when receiving.  Could add other platforms if they
+    # only works when receiving.  Could add other platforms ikiwa they
     # support it too.
     @skipWithClientIf(sys.platform not in {"linux"},
                       "MSG_DONTWAIT not known to work on this platform when "
                       "sending")
-    def testSendmsgDontWait(self):
+    eleza testSendmsgDontWait(self):
         # Check that MSG_DONTWAIT in flags causes non-blocking behaviour.
         self.assertEqual(self.serv_sock.recv(512), b"a"*512)
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
 
     @testSendmsgDontWait.client_skip
-    def _testSendmsgDontWait(self):
+    eleza _testSendmsgDontWait(self):
         try:
             with self.assertRaises(OSError) as cm:
                 while True:
@@ -2777,28 +2777,28 @@ class SendmsgStreamTests(SendmsgTests):
             self.misc_event.set()
 
 
-class SendmsgConnectionlessTests(SendmsgTests):
+kundi SendmsgConnectionlessTests(SendmsgTests):
     # Tests for sendmsg() which require a connectionless-mode
     # (e.g. datagram) socket, and do not involve recvmsg() or
     # recvmsg_into().
 
-    def testSendmsgNoDestAddr(self):
+    eleza testSendmsgNoDestAddr(self):
         # Check that sendmsg() fails when no destination address is
         # given for unconnected socket.
         pass
 
-    def _testSendmsgNoDestAddr(self):
+    eleza _testSendmsgNoDestAddr(self):
         self.assertRaises(OSError, self.cli_sock.sendmsg,
                           [MSG])
         self.assertRaises(OSError, self.cli_sock.sendmsg,
                           [MSG], [], 0, None)
 
 
-class RecvmsgGenericTests(SendrecvmsgBase):
+kundi RecvmsgGenericTests(SendrecvmsgBase):
     # Tests for recvmsg() which can also be emulated using
     # recvmsg_into(), and can use any socket type.
 
-    def testRecvmsg(self):
+    eleza testRecvmsg(self):
         # Receive a simple message with recvmsg[_into]().
         msg, ancdata, flags, addr = self.doRecvmsg(self.serv_sock, len(MSG))
         self.assertEqual(msg, MSG)
@@ -2806,10 +2806,10 @@ class RecvmsgGenericTests(SendrecvmsgBase):
         self.assertEqual(ancdata, [])
         self.checkFlags(flags, eor=True)
 
-    def _testRecvmsg(self):
+    eleza _testRecvmsg(self):
         self.sendToServer(MSG)
 
-    def testRecvmsgExplicitDefaults(self):
+    eleza testRecvmsgExplicitDefaults(self):
         # Test recvmsg[_into]() with default arguments provided explicitly.
         msg, ancdata, flags, addr = self.doRecvmsg(self.serv_sock,
                                                    len(MSG), 0, 0)
@@ -2818,10 +2818,10 @@ class RecvmsgGenericTests(SendrecvmsgBase):
         self.assertEqual(ancdata, [])
         self.checkFlags(flags, eor=True)
 
-    def _testRecvmsgExplicitDefaults(self):
+    eleza _testRecvmsgExplicitDefaults(self):
         self.sendToServer(MSG)
 
-    def testRecvmsgShorter(self):
+    eleza testRecvmsgShorter(self):
         # Receive a message smaller than buffer.
         msg, ancdata, flags, addr = self.doRecvmsg(self.serv_sock,
                                                    len(MSG) + 42)
@@ -2830,10 +2830,10 @@ class RecvmsgGenericTests(SendrecvmsgBase):
         self.assertEqual(ancdata, [])
         self.checkFlags(flags, eor=True)
 
-    def _testRecvmsgShorter(self):
+    eleza _testRecvmsgShorter(self):
         self.sendToServer(MSG)
 
-    def testRecvmsgTrunc(self):
+    eleza testRecvmsgTrunc(self):
         # Receive part of message, check for truncation indicators.
         msg, ancdata, flags, addr = self.doRecvmsg(self.serv_sock,
                                                    len(MSG) - 3)
@@ -2842,10 +2842,10 @@ class RecvmsgGenericTests(SendrecvmsgBase):
         self.assertEqual(ancdata, [])
         self.checkFlags(flags, eor=False)
 
-    def _testRecvmsgTrunc(self):
+    eleza _testRecvmsgTrunc(self):
         self.sendToServer(MSG)
 
-    def testRecvmsgShortAncillaryBuf(self):
+    eleza testRecvmsgShortAncillaryBuf(self):
         # Test ancillary data buffer too small to hold any ancillary data.
         msg, ancdata, flags, addr = self.doRecvmsg(self.serv_sock,
                                                    len(MSG), 1)
@@ -2854,10 +2854,10 @@ class RecvmsgGenericTests(SendrecvmsgBase):
         self.assertEqual(ancdata, [])
         self.checkFlags(flags, eor=True)
 
-    def _testRecvmsgShortAncillaryBuf(self):
+    eleza _testRecvmsgShortAncillaryBuf(self):
         self.sendToServer(MSG)
 
-    def testRecvmsgLongAncillaryBuf(self):
+    eleza testRecvmsgLongAncillaryBuf(self):
         # Test large ancillary data buffer.
         msg, ancdata, flags, addr = self.doRecvmsg(self.serv_sock,
                                                    len(MSG), 10240)
@@ -2866,18 +2866,18 @@ class RecvmsgGenericTests(SendrecvmsgBase):
         self.assertEqual(ancdata, [])
         self.checkFlags(flags, eor=True)
 
-    def _testRecvmsgLongAncillaryBuf(self):
+    eleza _testRecvmsgLongAncillaryBuf(self):
         self.sendToServer(MSG)
 
-    def testRecvmsgAfterClose(self):
+    eleza testRecvmsgAfterClose(self):
         # Check that recvmsg[_into]() fails on a closed socket.
         self.serv_sock.close()
         self.assertRaises(OSError, self.doRecvmsg, self.serv_sock, 1024)
 
-    def _testRecvmsgAfterClose(self):
+    eleza _testRecvmsgAfterClose(self):
         pass
 
-    def testRecvmsgTimeout(self):
+    eleza testRecvmsgTimeout(self):
         # Check that timeout works.
         try:
             self.serv_sock.settimeout(0.03)
@@ -2886,11 +2886,11 @@ class RecvmsgGenericTests(SendrecvmsgBase):
         finally:
             self.misc_event.set()
 
-    def _testRecvmsgTimeout(self):
+    eleza _testRecvmsgTimeout(self):
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
 
     @requireAttrs(socket, "MSG_PEEK")
-    def testRecvmsgPeek(self):
+    eleza testRecvmsgPeek(self):
         # Check that MSG_PEEK in flags enables examination of pending
         # data without consuming it.
 
@@ -2925,11 +2925,11 @@ class RecvmsgGenericTests(SendrecvmsgBase):
         self.checkFlags(flags, eor=True)
 
     @testRecvmsgPeek.client_skip
-    def _testRecvmsgPeek(self):
+    eleza _testRecvmsgPeek(self):
         self.sendToServer(MSG)
 
     @requireAttrs(socket.socket, "sendmsg")
-    def testRecvmsgFromSendmsg(self):
+    eleza testRecvmsgFromSendmsg(self):
         # Test receiving with recvmsg[_into]() when message is sent
         # using sendmsg().
         self.serv_sock.settimeout(self.fail_timeout)
@@ -2940,15 +2940,15 @@ class RecvmsgGenericTests(SendrecvmsgBase):
         self.checkFlags(flags, eor=True)
 
     @testRecvmsgFromSendmsg.client_skip
-    def _testRecvmsgFromSendmsg(self):
+    eleza _testRecvmsgFromSendmsg(self):
         self.assertEqual(self.sendmsgToServer([MSG[:3], MSG[3:]]), len(MSG))
 
 
-class RecvmsgGenericStreamTests(RecvmsgGenericTests):
+kundi RecvmsgGenericStreamTests(RecvmsgGenericTests):
     # Tests which require a stream socket and can use either recvmsg()
     # or recvmsg_into().
 
-    def testRecvmsgEOF(self):
+    eleza testRecvmsgEOF(self):
         # Receive end-of-stream indicator (b"", peer socket closed).
         msg, ancdata, flags, addr = self.doRecvmsg(self.serv_sock, 1024)
         self.assertEqual(msg, b"")
@@ -2956,10 +2956,10 @@ class RecvmsgGenericStreamTests(RecvmsgGenericTests):
         self.assertEqual(ancdata, [])
         self.checkFlags(flags, eor=None) # Might not have end-of-record marker
 
-    def _testRecvmsgEOF(self):
+    eleza _testRecvmsgEOF(self):
         self.cli_sock.close()
 
-    def testRecvmsgOverflow(self):
+    eleza testRecvmsgOverflow(self):
         # Receive a message in more than one chunk.
         seg1, ancdata, flags, addr = self.doRecvmsg(self.serv_sock,
                                                     len(MSG) - 3)
@@ -2975,14 +2975,14 @@ class RecvmsgGenericStreamTests(RecvmsgGenericTests):
         msg = seg1 + seg2
         self.assertEqual(msg, MSG)
 
-    def _testRecvmsgOverflow(self):
+    eleza _testRecvmsgOverflow(self):
         self.sendToServer(MSG)
 
 
-class RecvmsgTests(RecvmsgGenericTests):
+kundi RecvmsgTests(RecvmsgGenericTests):
     # Tests for recvmsg() which can use any socket type.
 
-    def testRecvmsgBadArgs(self):
+    eleza testRecvmsgBadArgs(self):
         # Check that recvmsg() rejects invalid arguments.
         self.assertRaises(TypeError, self.serv_sock.recvmsg)
         self.assertRaises(ValueError, self.serv_sock.recvmsg,
@@ -3004,14 +3004,14 @@ class RecvmsgTests(RecvmsgGenericTests):
         self.assertEqual(ancdata, [])
         self.checkFlags(flags, eor=True)
 
-    def _testRecvmsgBadArgs(self):
+    eleza _testRecvmsgBadArgs(self):
         self.sendToServer(MSG)
 
 
-class RecvmsgIntoTests(RecvmsgIntoMixin, RecvmsgGenericTests):
+kundi RecvmsgIntoTests(RecvmsgIntoMixin, RecvmsgGenericTests):
     # Tests for recvmsg_into() which can use any socket type.
 
-    def testRecvmsgIntoBadArgs(self):
+    eleza testRecvmsgIntoBadArgs(self):
         # Check that recvmsg_into() rejects invalid arguments.
         buf = bytearray(len(MSG))
         self.assertRaises(TypeError, self.serv_sock.recvmsg_into)
@@ -3039,10 +3039,10 @@ class RecvmsgIntoTests(RecvmsgIntoMixin, RecvmsgGenericTests):
         self.assertEqual(ancdata, [])
         self.checkFlags(flags, eor=True)
 
-    def _testRecvmsgIntoBadArgs(self):
+    eleza _testRecvmsgIntoBadArgs(self):
         self.sendToServer(MSG)
 
-    def testRecvmsgIntoGenerator(self):
+    eleza testRecvmsgIntoGenerator(self):
         # Receive into buffer obtained kutoka a generator (not a sequence).
         buf = bytearray(len(MSG))
         nbytes, ancdata, flags, addr = self.serv_sock.recvmsg_into(
@@ -3053,10 +3053,10 @@ class RecvmsgIntoTests(RecvmsgIntoMixin, RecvmsgGenericTests):
         self.assertEqual(ancdata, [])
         self.checkFlags(flags, eor=True)
 
-    def _testRecvmsgIntoGenerator(self):
+    eleza _testRecvmsgIntoGenerator(self):
         self.sendToServer(MSG)
 
-    def testRecvmsgIntoArray(self):
+    eleza testRecvmsgIntoArray(self):
         # Receive into an array rather than the usual bytearray.
         buf = array.array("B", [0] * len(MSG))
         nbytes, ancdata, flags, addr = self.serv_sock.recvmsg_into([buf])
@@ -3066,10 +3066,10 @@ class RecvmsgIntoTests(RecvmsgIntoMixin, RecvmsgGenericTests):
         self.assertEqual(ancdata, [])
         self.checkFlags(flags, eor=True)
 
-    def _testRecvmsgIntoArray(self):
+    eleza _testRecvmsgIntoArray(self):
         self.sendToServer(MSG)
 
-    def testRecvmsgIntoScatter(self):
+    eleza testRecvmsgIntoScatter(self):
         # Receive into multiple buffers (scatter write).
         b1 = bytearray(b"----")
         b2 = bytearray(b"0123456789")
@@ -3084,11 +3084,11 @@ class RecvmsgIntoTests(RecvmsgIntoMixin, RecvmsgGenericTests):
         self.assertEqual(ancdata, [])
         self.checkFlags(flags, eor=True)
 
-    def _testRecvmsgIntoScatter(self):
+    eleza _testRecvmsgIntoScatter(self):
         self.sendToServer(b"Mary had a little lamb")
 
 
-class CmsgMacroTests(unittest.TestCase):
+kundi CmsgMacroTests(unittest.TestCase):
     # Test the functions CMSG_LEN() and CMSG_SPACE().  Tests
     # assumptions used by sendmsg() and recvmsg[_into](), which share
     # code with these functions.
@@ -3102,7 +3102,7 @@ class CmsgMacroTests(unittest.TestCase):
         socklen_t_limit = min(0x7fffffff, _testcapi.INT_MAX)
 
     @requireAttrs(socket, "CMSG_LEN")
-    def testCMSG_LEN(self):
+    eleza testCMSG_LEN(self):
         # Test CMSG_LEN() with various valid and invalid values,
         # checking the assumptions used by recvmsg() and sendmsg().
         toobig = self.socklen_t_limit - socket.CMSG_LEN(0) + 1
@@ -3123,7 +3123,7 @@ class CmsgMacroTests(unittest.TestCase):
         self.assertRaises(OverflowError, socket.CMSG_LEN, sys.maxsize)
 
     @requireAttrs(socket, "CMSG_SPACE")
-    def testCMSG_SPACE(self):
+    eleza testCMSG_SPACE(self):
         # Test CMSG_SPACE() with various valid and invalid values,
         # checking the assumptions used by sendmsg().
         toobig = self.socklen_t_limit - socket.CMSG_SPACE(1) + 1
@@ -3147,15 +3147,15 @@ class CmsgMacroTests(unittest.TestCase):
         self.assertRaises(OverflowError, socket.CMSG_SPACE, sys.maxsize)
 
 
-class SCMRightsTest(SendrecvmsgServerTimeoutBase):
+kundi SCMRightsTest(SendrecvmsgServerTimeoutBase):
     # Tests for file descriptor passing on Unix-domain sockets.
 
     # Invalid file descriptor value that's unlikely to evaluate to a
-    # real FD even if one of its bytes is replaced with a different
+    # real FD even ikiwa one of its bytes is replaced with a different
     # value (which shouldn't actually happen).
     badfd = -0x5555
 
-    def newFDs(self, n):
+    eleza newFDs(self, n):
         # Return a list of n file descriptors for newly-created files
         # containing their list indices as ASCII numbers.
         fds = []
@@ -3165,31 +3165,31 @@ class SCMRightsTest(SendrecvmsgServerTimeoutBase):
             self.addCleanup(os.close, fd)
             os.write(fd, str(i).encode())
             fds.append(fd)
-        return fds
+        rudisha fds
 
-    def checkFDs(self, fds):
+    eleza checkFDs(self, fds):
         # Check that the file descriptors in the given list contain
         # their correct list indices as ASCII numbers.
         for n, fd in enumerate(fds):
             os.lseek(fd, 0, os.SEEK_SET)
             self.assertEqual(os.read(fd, 1024), str(n).encode())
 
-    def registerRecvmsgResult(self, result):
+    eleza registerRecvmsgResult(self, result):
         self.addCleanup(self.closeRecvmsgFDs, result)
 
-    def closeRecvmsgFDs(self, recvmsg_result):
+    eleza closeRecvmsgFDs(self, recvmsg_result):
         # Close all file descriptors specified in the ancillary data
-        # of the given return value kutoka recvmsg() or recvmsg_into().
+        # of the given rudisha value kutoka recvmsg() or recvmsg_into().
         for cmsg_level, cmsg_type, cmsg_data in recvmsg_result[1]:
-            if (cmsg_level == socket.SOL_SOCKET and
+            ikiwa (cmsg_level == socket.SOL_SOCKET and
                     cmsg_type == socket.SCM_RIGHTS):
                 fds = array.array("i")
-                fds.frombytes(cmsg_data[:
+                fds.kutokabytes(cmsg_data[:
                         len(cmsg_data) - (len(cmsg_data) % fds.itemsize)])
                 for fd in fds:
                     os.close(fd)
 
-    def createAndSendFDs(self, n):
+    eleza createAndSendFDs(self, n):
         # Send n new file descriptors created by newFDs() to the
         # server, with the constant MSG as the non-ancillary data.
         self.assertEqual(
@@ -3199,7 +3199,7 @@ class SCMRightsTest(SendrecvmsgServerTimeoutBase):
                                    array.array("i", self.newFDs(n)))]),
             len(MSG))
 
-    def checkRecvmsgFDs(self, numfds, result, maxcmsgs=1, ignoreflags=0):
+    eleza checkRecvmsgFDs(self, numfds, result, maxcmsgs=1, ignoreflags=0):
         # Check that constant MSG was received with numfds file
         # descriptors in a maximum of maxcmsgs control messages (which
         # must contain only complete integers).  By default, check
@@ -3221,17 +3221,17 @@ class SCMRightsTest(SendrecvmsgServerTimeoutBase):
             self.assertEqual(cmsg_type, socket.SCM_RIGHTS)
             self.assertIsInstance(cmsg_data, bytes)
             self.assertEqual(len(cmsg_data) % SIZEOF_INT, 0)
-            fds.frombytes(cmsg_data)
+            fds.kutokabytes(cmsg_data)
 
         self.assertEqual(len(fds), numfds)
         self.checkFDs(fds)
 
-    def testFDPassSimple(self):
+    eleza testFDPassSimple(self):
         # Pass a single FD (array read kutoka bytes object).
         self.checkRecvmsgFDs(1, self.doRecvmsg(self.serv_sock,
                                                len(MSG), 10240))
 
-    def _testFDPassSimple(self):
+    eleza _testFDPassSimple(self):
         self.assertEqual(
             self.sendmsgToServer(
                 [MSG],
@@ -3240,42 +3240,42 @@ class SCMRightsTest(SendrecvmsgServerTimeoutBase):
                   array.array("i", self.newFDs(1)).tobytes())]),
             len(MSG))
 
-    def testMultipleFDPass(self):
+    eleza testMultipleFDPass(self):
         # Pass multiple FDs in a single array.
         self.checkRecvmsgFDs(4, self.doRecvmsg(self.serv_sock,
                                                len(MSG), 10240))
 
-    def _testMultipleFDPass(self):
+    eleza _testMultipleFDPass(self):
         self.createAndSendFDs(4)
 
     @requireAttrs(socket, "CMSG_SPACE")
-    def testFDPassCMSG_SPACE(self):
+    eleza testFDPassCMSG_SPACE(self):
         # Test using CMSG_SPACE() to calculate ancillary buffer size.
         self.checkRecvmsgFDs(
             4, self.doRecvmsg(self.serv_sock, len(MSG),
                               socket.CMSG_SPACE(4 * SIZEOF_INT)))
 
     @testFDPassCMSG_SPACE.client_skip
-    def _testFDPassCMSG_SPACE(self):
+    eleza _testFDPassCMSG_SPACE(self):
         self.createAndSendFDs(4)
 
-    def testFDPassCMSG_LEN(self):
+    eleza testFDPassCMSG_LEN(self):
         # Test using CMSG_LEN() to calculate ancillary buffer size.
         self.checkRecvmsgFDs(1,
                              self.doRecvmsg(self.serv_sock, len(MSG),
                                             socket.CMSG_LEN(4 * SIZEOF_INT)),
                              # RFC 3542 says implementations may set
-                             # MSG_CTRUNC if there isn't enough space
+                             # MSG_CTRUNC ikiwa there isn't enough space
                              # for trailing padding.
                              ignoreflags=socket.MSG_CTRUNC)
 
-    def _testFDPassCMSG_LEN(self):
+    eleza _testFDPassCMSG_LEN(self):
         self.createAndSendFDs(1)
 
     @unittest.skipIf(sys.platform == "darwin", "skipping, see issue #12958")
     @unittest.skipIf(AIX, "skipping, see issue #22397")
     @requireAttrs(socket, "CMSG_SPACE")
-    def testFDPassSeparate(self):
+    eleza testFDPassSeparate(self):
         # Pass two FDs in two separate arrays.  Arrays may be combined
         # into a single control message by the OS.
         self.checkRecvmsgFDs(2,
@@ -3285,7 +3285,7 @@ class SCMRightsTest(SendrecvmsgServerTimeoutBase):
     @testFDPassSeparate.client_skip
     @unittest.skipIf(sys.platform == "darwin", "skipping, see issue #12958")
     @unittest.skipIf(AIX, "skipping, see issue #22397")
-    def _testFDPassSeparate(self):
+    eleza _testFDPassSeparate(self):
         fd0, fd1 = self.newFDs(2)
         self.assertEqual(
             self.sendmsgToServer([MSG], [(socket.SOL_SOCKET,
@@ -3299,7 +3299,7 @@ class SCMRightsTest(SendrecvmsgServerTimeoutBase):
     @unittest.skipIf(sys.platform == "darwin", "skipping, see issue #12958")
     @unittest.skipIf(AIX, "skipping, see issue #22397")
     @requireAttrs(socket, "CMSG_SPACE")
-    def testFDPassSeparateMinSpace(self):
+    eleza testFDPassSeparateMinSpace(self):
         # Pass two FDs in two separate arrays, receiving them into the
         # minimum space for two arrays.
         num_fds = 2
@@ -3312,7 +3312,7 @@ class SCMRightsTest(SendrecvmsgServerTimeoutBase):
     @testFDPassSeparateMinSpace.client_skip
     @unittest.skipIf(sys.platform == "darwin", "skipping, see issue #12958")
     @unittest.skipIf(AIX, "skipping, see issue #22397")
-    def _testFDPassSeparateMinSpace(self):
+    eleza _testFDPassSeparateMinSpace(self):
         fd0, fd1 = self.newFDs(2)
         self.assertEqual(
             self.sendmsgToServer([MSG], [(socket.SOL_SOCKET,
@@ -3323,8 +3323,8 @@ class SCMRightsTest(SendrecvmsgServerTimeoutBase):
                                           array.array("i", [fd1]))]),
             len(MSG))
 
-    def sendAncillaryIfPossible(self, msg, ancdata):
-        # Try to send msg and ancdata to server, but if the system
+    eleza sendAncillaryIfPossible(self, msg, ancdata):
+        # Try to send msg and ancdata to server, but ikiwa the system
         # call fails, just send msg with no ancillary data.
         try:
             nbytes = self.sendmsgToServer([msg], ancdata)
@@ -3335,19 +3335,19 @@ class SCMRightsTest(SendrecvmsgServerTimeoutBase):
         self.assertEqual(nbytes, len(msg))
 
     @unittest.skipIf(sys.platform == "darwin", "see issue #24725")
-    def testFDPassEmpty(self):
+    eleza testFDPassEmpty(self):
         # Try to pass an empty FD array.  Can receive either no array
         # or an empty array.
         self.checkRecvmsgFDs(0, self.doRecvmsg(self.serv_sock,
                                                len(MSG), 10240),
                              ignoreflags=socket.MSG_CTRUNC)
 
-    def _testFDPassEmpty(self):
+    eleza _testFDPassEmpty(self):
         self.sendAncillaryIfPossible(MSG, [(socket.SOL_SOCKET,
                                             socket.SCM_RIGHTS,
                                             b"")])
 
-    def testFDPassPartialInt(self):
+    eleza testFDPassPartialInt(self):
         # Try to pass a truncated FD array.
         msg, ancdata, flags, addr = self.doRecvmsg(self.serv_sock,
                                                    len(MSG), 10240)
@@ -3360,7 +3360,7 @@ class SCMRightsTest(SendrecvmsgServerTimeoutBase):
             self.assertEqual(cmsg_type, socket.SCM_RIGHTS)
             self.assertLess(len(cmsg_data), SIZEOF_INT)
 
-    def _testFDPassPartialInt(self):
+    eleza _testFDPassPartialInt(self):
         self.sendAncillaryIfPossible(
             MSG,
             [(socket.SOL_SOCKET,
@@ -3368,7 +3368,7 @@ class SCMRightsTest(SendrecvmsgServerTimeoutBase):
               array.array("i", [self.badfd]).tobytes()[:-1])])
 
     @requireAttrs(socket, "CMSG_SPACE")
-    def testFDPassPartialIntInMiddle(self):
+    eleza testFDPassPartialIntInMiddle(self):
         # Try to pass two FD arrays, the first of which is truncated.
         msg, ancdata, flags, addr = self.doRecvmsg(self.serv_sock,
                                                    len(MSG), 10240)
@@ -3381,13 +3381,13 @@ class SCMRightsTest(SendrecvmsgServerTimeoutBase):
         for cmsg_level, cmsg_type, cmsg_data in ancdata:
             self.assertEqual(cmsg_level, socket.SOL_SOCKET)
             self.assertEqual(cmsg_type, socket.SCM_RIGHTS)
-            fds.frombytes(cmsg_data[:
+            fds.kutokabytes(cmsg_data[:
                     len(cmsg_data) - (len(cmsg_data) % fds.itemsize)])
         self.assertLessEqual(len(fds), 2)
         self.checkFDs(fds)
 
     @testFDPassPartialIntInMiddle.client_skip
-    def _testFDPassPartialIntInMiddle(self):
+    eleza _testFDPassPartialIntInMiddle(self):
         fd0, fd1 = self.newFDs(2)
         self.sendAncillaryIfPossible(
             MSG,
@@ -3398,7 +3398,7 @@ class SCMRightsTest(SendrecvmsgServerTimeoutBase):
               socket.SCM_RIGHTS,
               array.array("i", [fd1]))])
 
-    def checkTruncatedHeader(self, result, ignoreflags=0):
+    eleza checkTruncatedHeader(self, result, ignoreflags=0):
         # Check that no ancillary data items are returned when data is
         # truncated inside the cmsghdr structure.
         msg, ancdata, flags, addr = result
@@ -3408,56 +3408,56 @@ class SCMRightsTest(SendrecvmsgServerTimeoutBase):
         self.checkFlags(flags, eor=True, checkset=socket.MSG_CTRUNC,
                         ignore=ignoreflags)
 
-    def testCmsgTruncNoBufSize(self):
+    eleza testCmsgTruncNoBufSize(self):
         # Check that no ancillary data is received when no buffer size
         # is specified.
         self.checkTruncatedHeader(self.doRecvmsg(self.serv_sock, len(MSG)),
                                   # BSD seems to set MSG_CTRUNC only
-                                  # if an item has been partially
+                                  # ikiwa an item has been partially
                                   # received.
                                   ignoreflags=socket.MSG_CTRUNC)
 
-    def _testCmsgTruncNoBufSize(self):
+    eleza _testCmsgTruncNoBufSize(self):
         self.createAndSendFDs(1)
 
-    def testCmsgTrunc0(self):
+    eleza testCmsgTrunc0(self):
         # Check that no ancillary data is received when buffer size is 0.
         self.checkTruncatedHeader(self.doRecvmsg(self.serv_sock, len(MSG), 0),
                                   ignoreflags=socket.MSG_CTRUNC)
 
-    def _testCmsgTrunc0(self):
+    eleza _testCmsgTrunc0(self):
         self.createAndSendFDs(1)
 
     # Check that no ancillary data is returned for various non-zero
     # (but still too small) buffer sizes.
 
-    def testCmsgTrunc1(self):
+    eleza testCmsgTrunc1(self):
         self.checkTruncatedHeader(self.doRecvmsg(self.serv_sock, len(MSG), 1))
 
-    def _testCmsgTrunc1(self):
+    eleza _testCmsgTrunc1(self):
         self.createAndSendFDs(1)
 
-    def testCmsgTrunc2Int(self):
+    eleza testCmsgTrunc2Int(self):
         # The cmsghdr structure has at least three members, two of
         # which are ints, so we still shouldn't see any ancillary
         # data.
         self.checkTruncatedHeader(self.doRecvmsg(self.serv_sock, len(MSG),
                                                  SIZEOF_INT * 2))
 
-    def _testCmsgTrunc2Int(self):
+    eleza _testCmsgTrunc2Int(self):
         self.createAndSendFDs(1)
 
-    def testCmsgTruncLen0Minus1(self):
+    eleza testCmsgTruncLen0Minus1(self):
         self.checkTruncatedHeader(self.doRecvmsg(self.serv_sock, len(MSG),
                                                  socket.CMSG_LEN(0) - 1))
 
-    def _testCmsgTruncLen0Minus1(self):
+    eleza _testCmsgTruncLen0Minus1(self):
         self.createAndSendFDs(1)
 
     # The following tests try to truncate the control message in the
     # middle of the FD array.
 
-    def checkTruncatedArray(self, ancbuf, maxdata, mindata=0):
+    eleza checkTruncatedArray(self, ancbuf, maxdata, mindata=0):
         # Check that file descriptor data is truncated to between
         # mindata and maxdata bytes when received with buffer size
         # ancbuf, and that any complete file descriptor numbers are
@@ -3468,7 +3468,7 @@ class SCMRightsTest(SendrecvmsgServerTimeoutBase):
         self.checkRecvmsgAddress(addr, self.cli_addr)
         self.checkFlags(flags, eor=True, checkset=socket.MSG_CTRUNC)
 
-        if mindata == 0 and ancdata == []:
+        ikiwa mindata == 0 and ancdata == []:
             return
         self.assertEqual(len(ancdata), 1)
         cmsg_level, cmsg_type, cmsg_data = ancdata[0]
@@ -3477,38 +3477,38 @@ class SCMRightsTest(SendrecvmsgServerTimeoutBase):
         self.assertGreaterEqual(len(cmsg_data), mindata)
         self.assertLessEqual(len(cmsg_data), maxdata)
         fds = array.array("i")
-        fds.frombytes(cmsg_data[:
+        fds.kutokabytes(cmsg_data[:
                 len(cmsg_data) - (len(cmsg_data) % fds.itemsize)])
         self.checkFDs(fds)
 
-    def testCmsgTruncLen0(self):
+    eleza testCmsgTruncLen0(self):
         self.checkTruncatedArray(ancbuf=socket.CMSG_LEN(0), maxdata=0)
 
-    def _testCmsgTruncLen0(self):
+    eleza _testCmsgTruncLen0(self):
         self.createAndSendFDs(1)
 
-    def testCmsgTruncLen0Plus1(self):
+    eleza testCmsgTruncLen0Plus1(self):
         self.checkTruncatedArray(ancbuf=socket.CMSG_LEN(0) + 1, maxdata=1)
 
-    def _testCmsgTruncLen0Plus1(self):
+    eleza _testCmsgTruncLen0Plus1(self):
         self.createAndSendFDs(2)
 
-    def testCmsgTruncLen1(self):
+    eleza testCmsgTruncLen1(self):
         self.checkTruncatedArray(ancbuf=socket.CMSG_LEN(SIZEOF_INT),
                                  maxdata=SIZEOF_INT)
 
-    def _testCmsgTruncLen1(self):
+    eleza _testCmsgTruncLen1(self):
         self.createAndSendFDs(2)
 
-    def testCmsgTruncLen2Minus1(self):
+    eleza testCmsgTruncLen2Minus1(self):
         self.checkTruncatedArray(ancbuf=socket.CMSG_LEN(2 * SIZEOF_INT) - 1,
                                  maxdata=(2 * SIZEOF_INT) - 1)
 
-    def _testCmsgTruncLen2Minus1(self):
+    eleza _testCmsgTruncLen2Minus1(self):
         self.createAndSendFDs(2)
 
 
-class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
+kundi RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
     # Test sendmsg() and recvmsg[_into]() using the ancillary data
     # features of the RFC 3542 Advanced Sockets API for IPv6.
     # Currently we can only handle certain data items (e.g. traffic
@@ -3521,21 +3521,21 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
     # Test value to use when setting hop limit of packet
     hop_limit = 2
 
-    # Test value to use when setting traffic class of packet.
+    # Test value to use when setting traffic kundi of packet.
     # -1 means "use kernel default".
-    traffic_class = -1
+    traffic_kundi = -1
 
-    def ancillaryMapping(self, ancdata):
-        # Given ancillary data list ancdata, return a mapping kutoka
+    eleza ancillaryMapping(self, ancdata):
+        # Given ancillary data list ancdata, rudisha a mapping kutoka
         # pairs (cmsg_level, cmsg_type) to corresponding cmsg_data.
         # Check that no (level, type) pair appears more than once.
         d = {}
         for cmsg_level, cmsg_type, cmsg_data in ancdata:
             self.assertNotIn((cmsg_level, cmsg_type), d)
             d[(cmsg_level, cmsg_type)] = cmsg_data
-        return d
+        rudisha d
 
-    def checkHopLimit(self, ancbufsize, maxhop=255, ignoreflags=0):
+    eleza checkHopLimit(self, ancbufsize, maxhop=255, ignoreflags=0):
         # Receive hop limit into ancbufsize bytes of ancillary data
         # space.  Check that data is MSG, ancillary data is not
         # truncated (but ignore any flags in ignoreflags), and hop
@@ -3559,17 +3559,17 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
         self.assertIsInstance(cmsg_data, bytes)
         self.assertEqual(len(cmsg_data), SIZEOF_INT)
         a = array.array("i")
-        a.frombytes(cmsg_data)
+        a.kutokabytes(cmsg_data)
         self.assertGreaterEqual(a[0], 0)
         self.assertLessEqual(a[0], maxhop)
 
     @requireAttrs(socket, "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT")
-    def testRecvHopLimit(self):
+    eleza testRecvHopLimit(self):
         # Test receiving the packet hop limit as ancillary data.
         self.checkHopLimit(ancbufsize=10240)
 
     @testRecvHopLimit.client_skip
-    def _testRecvHopLimit(self):
+    eleza _testRecvHopLimit(self):
         # Need to wait until server has asked to receive ancillary
         # data, as implementations are not required to buffer it
         # otherwise.
@@ -3577,29 +3577,29 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
         self.sendToServer(MSG)
 
     @requireAttrs(socket, "CMSG_SPACE", "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT")
-    def testRecvHopLimitCMSG_SPACE(self):
+    eleza testRecvHopLimitCMSG_SPACE(self):
         # Test receiving hop limit, using CMSG_SPACE to calculate buffer size.
         self.checkHopLimit(ancbufsize=socket.CMSG_SPACE(SIZEOF_INT))
 
     @testRecvHopLimitCMSG_SPACE.client_skip
-    def _testRecvHopLimitCMSG_SPACE(self):
+    eleza _testRecvHopLimitCMSG_SPACE(self):
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
         self.sendToServer(MSG)
 
     # Could test receiving into buffer sized using CMSG_LEN, but RFC
     # 3542 says portable applications must provide space for trailing
-    # padding.  Implementations may set MSG_CTRUNC if there isn't
+    # padding.  Implementations may set MSG_CTRUNC ikiwa there isn't
     # enough space for the padding.
 
     @requireAttrs(socket.socket, "sendmsg")
     @requireAttrs(socket, "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT")
-    def testSetHopLimit(self):
+    eleza testSetHopLimit(self):
         # Test setting hop limit on outgoing packet and receiving it
         # at the other end.
         self.checkHopLimit(ancbufsize=10240, maxhop=self.hop_limit)
 
     @testSetHopLimit.client_skip
-    def _testSetHopLimit(self):
+    eleza _testSetHopLimit(self):
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
         self.assertEqual(
             self.sendmsgToServer([MSG],
@@ -3607,12 +3607,12 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
                                    array.array("i", [self.hop_limit]))]),
             len(MSG))
 
-    def checkTrafficClassAndHopLimit(self, ancbufsize, maxhop=255,
+    eleza checkTrafficClassAndHopLimit(self, ancbufsize, maxhop=255,
                                      ignoreflags=0):
-        # Receive traffic class and hop limit into ancbufsize bytes of
+        # Receive traffic kundi and hop limit into ancbufsize bytes of
         # ancillary data space.  Check that data is MSG, ancillary
         # data is not truncated (but ignore any flags in ignoreflags),
-        # and traffic class and hop limit are in range (hop limit no
+        # and traffic kundi and hop limit are in range (hop limit no
         # more than maxhop).
         self.serv_sock.setsockopt(socket.IPPROTO_IPV6,
                                   socket.IPV6_RECVHOPLIMIT, 1)
@@ -3632,52 +3632,52 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
         tcdata = ancmap[(socket.IPPROTO_IPV6, socket.IPV6_TCLASS)]
         self.assertEqual(len(tcdata), SIZEOF_INT)
         a = array.array("i")
-        a.frombytes(tcdata)
+        a.kutokabytes(tcdata)
         self.assertGreaterEqual(a[0], 0)
         self.assertLessEqual(a[0], 255)
 
         hldata = ancmap[(socket.IPPROTO_IPV6, socket.IPV6_HOPLIMIT)]
         self.assertEqual(len(hldata), SIZEOF_INT)
         a = array.array("i")
-        a.frombytes(hldata)
+        a.kutokabytes(hldata)
         self.assertGreaterEqual(a[0], 0)
         self.assertLessEqual(a[0], maxhop)
 
     @requireAttrs(socket, "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT",
                   "IPV6_RECVTCLASS", "IPV6_TCLASS")
-    def testRecvTrafficClassAndHopLimit(self):
-        # Test receiving traffic class and hop limit as ancillary data.
+    eleza testRecvTrafficClassAndHopLimit(self):
+        # Test receiving traffic kundi and hop limit as ancillary data.
         self.checkTrafficClassAndHopLimit(ancbufsize=10240)
 
     @testRecvTrafficClassAndHopLimit.client_skip
-    def _testRecvTrafficClassAndHopLimit(self):
+    eleza _testRecvTrafficClassAndHopLimit(self):
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
         self.sendToServer(MSG)
 
     @requireAttrs(socket, "CMSG_SPACE", "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT",
                   "IPV6_RECVTCLASS", "IPV6_TCLASS")
-    def testRecvTrafficClassAndHopLimitCMSG_SPACE(self):
-        # Test receiving traffic class and hop limit, using
+    eleza testRecvTrafficClassAndHopLimitCMSG_SPACE(self):
+        # Test receiving traffic kundi and hop limit, using
         # CMSG_SPACE() to calculate buffer size.
         self.checkTrafficClassAndHopLimit(
             ancbufsize=socket.CMSG_SPACE(SIZEOF_INT) * 2)
 
     @testRecvTrafficClassAndHopLimitCMSG_SPACE.client_skip
-    def _testRecvTrafficClassAndHopLimitCMSG_SPACE(self):
+    eleza _testRecvTrafficClassAndHopLimitCMSG_SPACE(self):
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
         self.sendToServer(MSG)
 
     @requireAttrs(socket.socket, "sendmsg")
     @requireAttrs(socket, "CMSG_SPACE", "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT",
                   "IPV6_RECVTCLASS", "IPV6_TCLASS")
-    def testSetTrafficClassAndHopLimit(self):
-        # Test setting traffic class and hop limit on outgoing packet,
+    eleza testSetTrafficClassAndHopLimit(self):
+        # Test setting traffic kundi and hop limit on outgoing packet,
         # and receiving them at the other end.
         self.checkTrafficClassAndHopLimit(ancbufsize=10240,
                                           maxhop=self.hop_limit)
 
     @testSetTrafficClassAndHopLimit.client_skip
-    def _testSetTrafficClassAndHopLimit(self):
+    eleza _testSetTrafficClassAndHopLimit(self):
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
         self.assertEqual(
             self.sendmsgToServer([MSG],
@@ -3690,15 +3690,15 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
     @requireAttrs(socket.socket, "sendmsg")
     @requireAttrs(socket, "CMSG_SPACE", "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT",
                   "IPV6_RECVTCLASS", "IPV6_TCLASS")
-    def testOddCmsgSize(self):
+    eleza testOddCmsgSize(self):
         # Try to send ancillary data with first item one byte too
-        # long.  Fall back to sending with correct size if this fails,
+        # long.  Fall back to sending with correct size ikiwa this fails,
         # and check that second item was handled correctly.
         self.checkTrafficClassAndHopLimit(ancbufsize=10240,
                                           maxhop=self.hop_limit)
 
     @testOddCmsgSize.client_skip
-    def _testOddCmsgSize(self):
+    eleza _testOddCmsgSize(self):
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
         try:
             nbytes = self.sendmsgToServer(
@@ -3719,17 +3719,17 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
 
     # Tests for proper handling of truncated ancillary data
 
-    def checkHopLimitTruncatedHeader(self, ancbufsize, ignoreflags=0):
+    eleza checkHopLimitTruncatedHeader(self, ancbufsize, ignoreflags=0):
         # Receive hop limit into ancbufsize bytes of ancillary data
         # space, which should be too small to contain the ancillary
-        # data header (if ancbufsize is None, pass no second argument
+        # data header (ikiwa ancbufsize is None, pass no second argument
         # to recvmsg()).  Check that data is MSG, MSG_CTRUNC is set
         # (unless included in ignoreflags), and no ancillary data is
         # returned.
         self.serv_sock.setsockopt(socket.IPPROTO_IPV6,
                                   socket.IPV6_RECVHOPLIMIT, 1)
         self.misc_event.set()
-        args = () if ancbufsize is None else (ancbufsize,)
+        args = () ikiwa ancbufsize is None else (ancbufsize,)
         msg, ancdata, flags, addr = self.doRecvmsg(self.serv_sock,
                                                    len(MSG), *args)
 
@@ -3740,30 +3740,30 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
                         ignore=ignoreflags)
 
     @requireAttrs(socket, "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT")
-    def testCmsgTruncNoBufSize(self):
+    eleza testCmsgTruncNoBufSize(self):
         # Check that no ancillary data is received when no ancillary
         # buffer size is provided.
         self.checkHopLimitTruncatedHeader(ancbufsize=None,
                                           # BSD seems to set
-                                          # MSG_CTRUNC only if an item
+                                          # MSG_CTRUNC only ikiwa an item
                                           # has been partially
                                           # received.
                                           ignoreflags=socket.MSG_CTRUNC)
 
     @testCmsgTruncNoBufSize.client_skip
-    def _testCmsgTruncNoBufSize(self):
+    eleza _testCmsgTruncNoBufSize(self):
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
         self.sendToServer(MSG)
 
     @requireAttrs(socket, "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT")
-    def testSingleCmsgTrunc0(self):
+    eleza testSingleCmsgTrunc0(self):
         # Check that no ancillary data is received when ancillary
         # buffer size is zero.
         self.checkHopLimitTruncatedHeader(ancbufsize=0,
                                           ignoreflags=socket.MSG_CTRUNC)
 
     @testSingleCmsgTrunc0.client_skip
-    def _testSingleCmsgTrunc0(self):
+    eleza _testSingleCmsgTrunc0(self):
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
         self.sendToServer(MSG)
 
@@ -3771,34 +3771,34 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
     # (but still too small) buffer sizes.
 
     @requireAttrs(socket, "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT")
-    def testSingleCmsgTrunc1(self):
+    eleza testSingleCmsgTrunc1(self):
         self.checkHopLimitTruncatedHeader(ancbufsize=1)
 
     @testSingleCmsgTrunc1.client_skip
-    def _testSingleCmsgTrunc1(self):
+    eleza _testSingleCmsgTrunc1(self):
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
         self.sendToServer(MSG)
 
     @requireAttrs(socket, "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT")
-    def testSingleCmsgTrunc2Int(self):
+    eleza testSingleCmsgTrunc2Int(self):
         self.checkHopLimitTruncatedHeader(ancbufsize=2 * SIZEOF_INT)
 
     @testSingleCmsgTrunc2Int.client_skip
-    def _testSingleCmsgTrunc2Int(self):
+    eleza _testSingleCmsgTrunc2Int(self):
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
         self.sendToServer(MSG)
 
     @requireAttrs(socket, "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT")
-    def testSingleCmsgTruncLen0Minus1(self):
+    eleza testSingleCmsgTruncLen0Minus1(self):
         self.checkHopLimitTruncatedHeader(ancbufsize=socket.CMSG_LEN(0) - 1)
 
     @testSingleCmsgTruncLen0Minus1.client_skip
-    def _testSingleCmsgTruncLen0Minus1(self):
+    eleza _testSingleCmsgTruncLen0Minus1(self):
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
         self.sendToServer(MSG)
 
     @requireAttrs(socket, "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT")
-    def testSingleCmsgTruncInData(self):
+    eleza testSingleCmsgTruncInData(self):
         # Test truncation of a control message inside its associated
         # data.  The message may be returned with its data truncated,
         # or not returned at all.
@@ -3813,19 +3813,19 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
         self.checkFlags(flags, eor=True, checkset=socket.MSG_CTRUNC)
 
         self.assertLessEqual(len(ancdata), 1)
-        if ancdata:
+        ikiwa ancdata:
             cmsg_level, cmsg_type, cmsg_data = ancdata[0]
             self.assertEqual(cmsg_level, socket.IPPROTO_IPV6)
             self.assertEqual(cmsg_type, socket.IPV6_HOPLIMIT)
             self.assertLess(len(cmsg_data), SIZEOF_INT)
 
     @testSingleCmsgTruncInData.client_skip
-    def _testSingleCmsgTruncInData(self):
+    eleza _testSingleCmsgTruncInData(self):
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
         self.sendToServer(MSG)
 
-    def checkTruncatedSecondHeader(self, ancbufsize, ignoreflags=0):
-        # Receive traffic class and hop limit into ancbufsize bytes of
+    eleza checkTruncatedSecondHeader(self, ancbufsize, ignoreflags=0):
+        # Receive traffic kundi and hop limit into ancbufsize bytes of
         # ancillary data space, which should be large enough to
         # contain the first item, but too small to contain the header
         # of the second.  Check that data is MSG, MSG_CTRUNC is set
@@ -3850,7 +3850,7 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
         self.assertIn(cmsg_type, {socket.IPV6_TCLASS, socket.IPV6_HOPLIMIT})
         self.assertEqual(len(cmsg_data), SIZEOF_INT)
         a = array.array("i")
-        a.frombytes(cmsg_data)
+        a.kutokabytes(cmsg_data)
         self.assertGreaterEqual(a[0], 0)
         self.assertLessEqual(a[0], 255)
 
@@ -3858,50 +3858,50 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
 
     @requireAttrs(socket, "CMSG_SPACE", "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT",
                   "IPV6_RECVTCLASS", "IPV6_TCLASS")
-    def testSecondCmsgTrunc0(self):
+    eleza testSecondCmsgTrunc0(self):
         self.checkTruncatedSecondHeader(socket.CMSG_SPACE(SIZEOF_INT),
                                         ignoreflags=socket.MSG_CTRUNC)
 
     @testSecondCmsgTrunc0.client_skip
-    def _testSecondCmsgTrunc0(self):
+    eleza _testSecondCmsgTrunc0(self):
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
         self.sendToServer(MSG)
 
     @requireAttrs(socket, "CMSG_SPACE", "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT",
                   "IPV6_RECVTCLASS", "IPV6_TCLASS")
-    def testSecondCmsgTrunc1(self):
+    eleza testSecondCmsgTrunc1(self):
         self.checkTruncatedSecondHeader(socket.CMSG_SPACE(SIZEOF_INT) + 1)
 
     @testSecondCmsgTrunc1.client_skip
-    def _testSecondCmsgTrunc1(self):
+    eleza _testSecondCmsgTrunc1(self):
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
         self.sendToServer(MSG)
 
     @requireAttrs(socket, "CMSG_SPACE", "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT",
                   "IPV6_RECVTCLASS", "IPV6_TCLASS")
-    def testSecondCmsgTrunc2Int(self):
+    eleza testSecondCmsgTrunc2Int(self):
         self.checkTruncatedSecondHeader(socket.CMSG_SPACE(SIZEOF_INT) +
                                         2 * SIZEOF_INT)
 
     @testSecondCmsgTrunc2Int.client_skip
-    def _testSecondCmsgTrunc2Int(self):
+    eleza _testSecondCmsgTrunc2Int(self):
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
         self.sendToServer(MSG)
 
     @requireAttrs(socket, "CMSG_SPACE", "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT",
                   "IPV6_RECVTCLASS", "IPV6_TCLASS")
-    def testSecondCmsgTruncLen0Minus1(self):
+    eleza testSecondCmsgTruncLen0Minus1(self):
         self.checkTruncatedSecondHeader(socket.CMSG_SPACE(SIZEOF_INT) +
                                         socket.CMSG_LEN(0) - 1)
 
     @testSecondCmsgTruncLen0Minus1.client_skip
-    def _testSecondCmsgTruncLen0Minus1(self):
+    eleza _testSecondCmsgTruncLen0Minus1(self):
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
         self.sendToServer(MSG)
 
     @requireAttrs(socket, "CMSG_SPACE", "IPV6_RECVHOPLIMIT", "IPV6_HOPLIMIT",
                   "IPV6_RECVTCLASS", "IPV6_TCLASS")
-    def testSecomdCmsgTruncInData(self):
+    eleza testSecomdCmsgTruncInData(self):
         # Test truncation of the second of two control messages inside
         # its associated data.
         self.serv_sock.setsockopt(socket.IPPROTO_IPV6,
@@ -3924,11 +3924,11 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
         cmsg_types.remove(cmsg_type)
         self.assertEqual(len(cmsg_data), SIZEOF_INT)
         a = array.array("i")
-        a.frombytes(cmsg_data)
+        a.kutokabytes(cmsg_data)
         self.assertGreaterEqual(a[0], 0)
         self.assertLessEqual(a[0], 255)
 
-        if ancdata:
+        ikiwa ancdata:
             cmsg_level, cmsg_type, cmsg_data = ancdata.pop(0)
             self.assertEqual(cmsg_level, socket.IPPROTO_IPV6)
             cmsg_types.remove(cmsg_type)
@@ -3937,36 +3937,36 @@ class RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
         self.assertEqual(ancdata, [])
 
     @testSecomdCmsgTruncInData.client_skip
-    def _testSecomdCmsgTruncInData(self):
+    eleza _testSecomdCmsgTruncInData(self):
         self.assertTrue(self.misc_event.wait(timeout=self.fail_timeout))
         self.sendToServer(MSG)
 
 
 # Derive concrete test classes for different socket types.
 
-class SendrecvmsgUDPTestBase(SendrecvmsgDgramFlagsBase,
+kundi SendrecvmsgUDPTestBase(SendrecvmsgDgramFlagsBase,
                              SendrecvmsgConnectionlessBase,
                              ThreadedSocketTestMixin, UDPTestBase):
     pass
 
 @requireAttrs(socket.socket, "sendmsg")
-class SendmsgUDPTest(SendmsgConnectionlessTests, SendrecvmsgUDPTestBase):
+kundi SendmsgUDPTest(SendmsgConnectionlessTests, SendrecvmsgUDPTestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg")
-class RecvmsgUDPTest(RecvmsgTests, SendrecvmsgUDPTestBase):
+kundi RecvmsgUDPTest(RecvmsgTests, SendrecvmsgUDPTestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg_into")
-class RecvmsgIntoUDPTest(RecvmsgIntoTests, SendrecvmsgUDPTestBase):
+kundi RecvmsgIntoUDPTest(RecvmsgIntoTests, SendrecvmsgUDPTestBase):
     pass
 
 
-class SendrecvmsgUDP6TestBase(SendrecvmsgDgramFlagsBase,
+kundi SendrecvmsgUDP6TestBase(SendrecvmsgDgramFlagsBase,
                               SendrecvmsgConnectionlessBase,
                               ThreadedSocketTestMixin, UDP6TestBase):
 
-    def checkRecvmsgAddress(self, addr1, addr2):
+    eleza checkRecvmsgAddress(self, addr1, addr2):
         # Called to compare the received address with the address of
         # the peer, ignoring scope ID
         self.assertEqual(addr1[:-1], addr2[:-1])
@@ -3974,26 +3974,26 @@ class SendrecvmsgUDP6TestBase(SendrecvmsgDgramFlagsBase,
 @requireAttrs(socket.socket, "sendmsg")
 @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required for this test.')
 @requireSocket("AF_INET6", "SOCK_DGRAM")
-class SendmsgUDP6Test(SendmsgConnectionlessTests, SendrecvmsgUDP6TestBase):
+kundi SendmsgUDP6Test(SendmsgConnectionlessTests, SendrecvmsgUDP6TestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg")
 @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required for this test.')
 @requireSocket("AF_INET6", "SOCK_DGRAM")
-class RecvmsgUDP6Test(RecvmsgTests, SendrecvmsgUDP6TestBase):
+kundi RecvmsgUDP6Test(RecvmsgTests, SendrecvmsgUDP6TestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg_into")
 @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required for this test.')
 @requireSocket("AF_INET6", "SOCK_DGRAM")
-class RecvmsgIntoUDP6Test(RecvmsgIntoTests, SendrecvmsgUDP6TestBase):
+kundi RecvmsgIntoUDP6Test(RecvmsgIntoTests, SendrecvmsgUDP6TestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg")
 @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required for this test.')
 @requireAttrs(socket, "IPPROTO_IPV6")
 @requireSocket("AF_INET6", "SOCK_DGRAM")
-class RecvmsgRFC3542AncillaryUDP6Test(RFC3542AncillaryTest,
+kundi RecvmsgRFC3542AncillaryUDP6Test(RFC3542AncillaryTest,
                                       SendrecvmsgUDP6TestBase):
     pass
 
@@ -4001,32 +4001,32 @@ class RecvmsgRFC3542AncillaryUDP6Test(RFC3542AncillaryTest,
 @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required for this test.')
 @requireAttrs(socket, "IPPROTO_IPV6")
 @requireSocket("AF_INET6", "SOCK_DGRAM")
-class RecvmsgIntoRFC3542AncillaryUDP6Test(RecvmsgIntoMixin,
+kundi RecvmsgIntoRFC3542AncillaryUDP6Test(RecvmsgIntoMixin,
                                           RFC3542AncillaryTest,
                                           SendrecvmsgUDP6TestBase):
     pass
 
 
-class SendrecvmsgTCPTestBase(SendrecvmsgConnectedBase,
+kundi SendrecvmsgTCPTestBase(SendrecvmsgConnectedBase,
                              ConnectedStreamTestMixin, TCPTestBase):
     pass
 
 @requireAttrs(socket.socket, "sendmsg")
-class SendmsgTCPTest(SendmsgStreamTests, SendrecvmsgTCPTestBase):
+kundi SendmsgTCPTest(SendmsgStreamTests, SendrecvmsgTCPTestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg")
-class RecvmsgTCPTest(RecvmsgTests, RecvmsgGenericStreamTests,
+kundi RecvmsgTCPTest(RecvmsgTests, RecvmsgGenericStreamTests,
                      SendrecvmsgTCPTestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg_into")
-class RecvmsgIntoTCPTest(RecvmsgIntoTests, RecvmsgGenericStreamTests,
+kundi RecvmsgIntoTCPTest(RecvmsgIntoTests, RecvmsgGenericStreamTests,
                          SendrecvmsgTCPTestBase):
     pass
 
 
-class SendrecvmsgSCTPStreamTestBase(SendrecvmsgSCTPFlagsBase,
+kundi SendrecvmsgSCTPStreamTestBase(SendrecvmsgSCTPFlagsBase,
                                     SendrecvmsgConnectedBase,
                                     ConnectedStreamTestMixin, SCTPStreamBase):
     pass
@@ -4034,67 +4034,67 @@ class SendrecvmsgSCTPStreamTestBase(SendrecvmsgSCTPFlagsBase,
 @requireAttrs(socket.socket, "sendmsg")
 @unittest.skipIf(AIX, "IPPROTO_SCTP: [Errno 62] Protocol not supported on AIX")
 @requireSocket("AF_INET", "SOCK_STREAM", "IPPROTO_SCTP")
-class SendmsgSCTPStreamTest(SendmsgStreamTests, SendrecvmsgSCTPStreamTestBase):
+kundi SendmsgSCTPStreamTest(SendmsgStreamTests, SendrecvmsgSCTPStreamTestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg")
 @unittest.skipIf(AIX, "IPPROTO_SCTP: [Errno 62] Protocol not supported on AIX")
 @requireSocket("AF_INET", "SOCK_STREAM", "IPPROTO_SCTP")
-class RecvmsgSCTPStreamTest(RecvmsgTests, RecvmsgGenericStreamTests,
+kundi RecvmsgSCTPStreamTest(RecvmsgTests, RecvmsgGenericStreamTests,
                             SendrecvmsgSCTPStreamTestBase):
 
-    def testRecvmsgEOF(self):
+    eleza testRecvmsgEOF(self):
         try:
             super(RecvmsgSCTPStreamTest, self).testRecvmsgEOF()
         except OSError as e:
-            if e.errno != errno.ENOTCONN:
+            ikiwa e.errno != errno.ENOTCONN:
                 raise
             self.skipTest("sporadic ENOTCONN (kernel issue?) - see issue #13876")
 
 @requireAttrs(socket.socket, "recvmsg_into")
 @unittest.skipIf(AIX, "IPPROTO_SCTP: [Errno 62] Protocol not supported on AIX")
 @requireSocket("AF_INET", "SOCK_STREAM", "IPPROTO_SCTP")
-class RecvmsgIntoSCTPStreamTest(RecvmsgIntoTests, RecvmsgGenericStreamTests,
+kundi RecvmsgIntoSCTPStreamTest(RecvmsgIntoTests, RecvmsgGenericStreamTests,
                                 SendrecvmsgSCTPStreamTestBase):
 
-    def testRecvmsgEOF(self):
+    eleza testRecvmsgEOF(self):
         try:
             super(RecvmsgIntoSCTPStreamTest, self).testRecvmsgEOF()
         except OSError as e:
-            if e.errno != errno.ENOTCONN:
+            ikiwa e.errno != errno.ENOTCONN:
                 raise
             self.skipTest("sporadic ENOTCONN (kernel issue?) - see issue #13876")
 
 
-class SendrecvmsgUnixStreamTestBase(SendrecvmsgConnectedBase,
+kundi SendrecvmsgUnixStreamTestBase(SendrecvmsgConnectedBase,
                                     ConnectedStreamTestMixin, UnixStreamBase):
     pass
 
 @requireAttrs(socket.socket, "sendmsg")
 @requireAttrs(socket, "AF_UNIX")
-class SendmsgUnixStreamTest(SendmsgStreamTests, SendrecvmsgUnixStreamTestBase):
+kundi SendmsgUnixStreamTest(SendmsgStreamTests, SendrecvmsgUnixStreamTestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg")
 @requireAttrs(socket, "AF_UNIX")
-class RecvmsgUnixStreamTest(RecvmsgTests, RecvmsgGenericStreamTests,
+kundi RecvmsgUnixStreamTest(RecvmsgTests, RecvmsgGenericStreamTests,
                             SendrecvmsgUnixStreamTestBase):
     pass
 
 @requireAttrs(socket.socket, "recvmsg_into")
 @requireAttrs(socket, "AF_UNIX")
-class RecvmsgIntoUnixStreamTest(RecvmsgIntoTests, RecvmsgGenericStreamTests,
+kundi RecvmsgIntoUnixStreamTest(RecvmsgIntoTests, RecvmsgGenericStreamTests,
                                 SendrecvmsgUnixStreamTestBase):
     pass
 
 @requireAttrs(socket.socket, "sendmsg", "recvmsg")
 @requireAttrs(socket, "AF_UNIX", "SOL_SOCKET", "SCM_RIGHTS")
-class RecvmsgSCMRightsStreamTest(SCMRightsTest, SendrecvmsgUnixStreamTestBase):
+kundi RecvmsgSCMRightsStreamTest(SCMRightsTest, SendrecvmsgUnixStreamTestBase):
     pass
 
 @requireAttrs(socket.socket, "sendmsg", "recvmsg_into")
 @requireAttrs(socket, "AF_UNIX", "SOL_SOCKET", "SCM_RIGHTS")
-class RecvmsgIntoSCMRightsStreamTest(RecvmsgIntoMixin, SCMRightsTest,
+kundi RecvmsgIntoSCMRightsStreamTest(RecvmsgIntoMixin, SCMRightsTest,
                                      SendrecvmsgUnixStreamTestBase):
     pass
 
@@ -4104,12 +4104,12 @@ class RecvmsgIntoSCMRightsStreamTest(RecvmsgIntoMixin, SCMRightsTest,
 # threads alive during the test so that the OS cannot deliver the
 # signal to the wrong one.
 
-class InterruptedTimeoutBase(unittest.TestCase):
-    # Base class for interrupted send/receive tests.  Installs an
+kundi InterruptedTimeoutBase(unittest.TestCase):
+    # Base kundi for interrupted send/receive tests.  Installs an
     # empty handler for SIGALRM and removes it on teardown, along with
     # any scheduled alarms.
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         orig_alrm_handler = signal.signal(signal.SIGALRM,
                                           lambda signum, frame: 1 / 0)
@@ -4119,18 +4119,18 @@ class InterruptedTimeoutBase(unittest.TestCase):
     timeout = 4.0
 
     # Provide setAlarm() method to schedule delivery of SIGALRM after
-    # given number of seconds, or cancel it if zero, and an
-    # appropriate time value to use.  Use setitimer() if available.
-    if hasattr(signal, "setitimer"):
+    # given number of seconds, or cancel it ikiwa zero, and an
+    # appropriate time value to use.  Use setitimer() ikiwa available.
+    ikiwa hasattr(signal, "setitimer"):
         alarm_time = 0.05
 
-        def setAlarm(self, seconds):
+        eleza setAlarm(self, seconds):
             signal.setitimer(signal.ITIMER_REAL, seconds)
     else:
         # Old systems may deliver the alarm up to one second early
         alarm_time = 2
 
-        def setAlarm(self, seconds):
+        eleza setAlarm(self, seconds):
             signal.alarm(seconds)
 
 
@@ -4139,15 +4139,15 @@ class InterruptedTimeoutBase(unittest.TestCase):
 @requireAttrs(signal, "siginterrupt")
 @unittest.skipUnless(hasattr(signal, "alarm") or hasattr(signal, "setitimer"),
                      "Don't have signal.alarm or signal.setitimer")
-class InterruptedRecvTimeoutTest(InterruptedTimeoutBase, UDPTestBase):
+kundi InterruptedRecvTimeoutTest(InterruptedTimeoutBase, UDPTestBase):
     # Test interrupting the recv*() methods with signals when a
     # timeout is set.
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.serv.settimeout(self.timeout)
 
-    def checkInterruptedRecv(self, func, *args, **kwargs):
+    eleza checkInterruptedRecv(self, func, *args, **kwargs):
         # Check that func(*args, **kwargs) raises
         # errno of EINTR when interrupted by a signal.
         try:
@@ -4157,24 +4157,24 @@ class InterruptedRecvTimeoutTest(InterruptedTimeoutBase, UDPTestBase):
         finally:
             self.setAlarm(0)
 
-    def testInterruptedRecvTimeout(self):
+    eleza testInterruptedRecvTimeout(self):
         self.checkInterruptedRecv(self.serv.recv, 1024)
 
-    def testInterruptedRecvIntoTimeout(self):
+    eleza testInterruptedRecvIntoTimeout(self):
         self.checkInterruptedRecv(self.serv.recv_into, bytearray(1024))
 
-    def testInterruptedRecvfromTimeout(self):
-        self.checkInterruptedRecv(self.serv.recvfrom, 1024)
+    eleza testInterruptedRecvkutokaTimeout(self):
+        self.checkInterruptedRecv(self.serv.recvkutoka, 1024)
 
-    def testInterruptedRecvfromIntoTimeout(self):
-        self.checkInterruptedRecv(self.serv.recvfrom_into, bytearray(1024))
+    eleza testInterruptedRecvkutokaIntoTimeout(self):
+        self.checkInterruptedRecv(self.serv.recvkutoka_into, bytearray(1024))
 
     @requireAttrs(socket.socket, "recvmsg")
-    def testInterruptedRecvmsgTimeout(self):
+    eleza testInterruptedRecvmsgTimeout(self):
         self.checkInterruptedRecv(self.serv.recvmsg, 1024)
 
     @requireAttrs(socket.socket, "recvmsg_into")
-    def testInterruptedRecvmsgIntoTimeout(self):
+    eleza testInterruptedRecvmsgIntoTimeout(self):
         self.checkInterruptedRecv(self.serv.recvmsg_into, [bytearray(1024)])
 
 
@@ -4183,13 +4183,13 @@ class InterruptedRecvTimeoutTest(InterruptedTimeoutBase, UDPTestBase):
 @requireAttrs(signal, "siginterrupt")
 @unittest.skipUnless(hasattr(signal, "alarm") or hasattr(signal, "setitimer"),
                      "Don't have signal.alarm or signal.setitimer")
-class InterruptedSendTimeoutTest(InterruptedTimeoutBase,
+kundi InterruptedSendTimeoutTest(InterruptedTimeoutBase,
                                  ThreadSafeCleanupTestCase,
                                  SocketListeningTestMixin, TCPTestBase):
     # Test interrupting the interruptible send*() methods with signals
     # when a timeout is set.
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self.serv_conn = self.newSocket()
         self.addCleanup(self.serv_conn.close)
@@ -4203,10 +4203,10 @@ class InterruptedSendTimeoutTest(InterruptedTimeoutBase,
         cli_thread.join()
         self.serv_conn.settimeout(self.timeout)
 
-    def doConnect(self):
+    eleza doConnect(self):
         self.serv_conn.connect(self.serv_addr)
 
-    def checkInterruptedSend(self, func, *args, **kwargs):
+    eleza checkInterruptedSend(self, func, *args, **kwargs):
         # Check that func(*args, **kwargs), run in a loop, raises
         # OSError with an errno of EINTR when interrupted by a
         # signal.
@@ -4220,11 +4220,11 @@ class InterruptedSendTimeoutTest(InterruptedTimeoutBase,
 
     # Issue #12958: The following tests have problems on OS X prior to 10.7
     @support.requires_mac_ver(10, 7)
-    def testInterruptedSendTimeout(self):
+    eleza testInterruptedSendTimeout(self):
         self.checkInterruptedSend(self.serv_conn.send, b"a"*512)
 
     @support.requires_mac_ver(10, 7)
-    def testInterruptedSendtoTimeout(self):
+    eleza testInterruptedSendtoTimeout(self):
         # Passing an actual address here as Python's wrapper for
         # sendto() doesn't allow passing a zero-length one; POSIX
         # requires that the address is ignored since the socket is
@@ -4234,13 +4234,13 @@ class InterruptedSendTimeoutTest(InterruptedTimeoutBase,
 
     @support.requires_mac_ver(10, 7)
     @requireAttrs(socket.socket, "sendmsg")
-    def testInterruptedSendmsgTimeout(self):
+    eleza testInterruptedSendmsgTimeout(self):
         self.checkInterruptedSend(self.serv_conn.sendmsg, [b"a"*512])
 
 
-class TCPCloserTest(ThreadedTCPSocketTest):
+kundi TCPCloserTest(ThreadedTCPSocketTest):
 
-    def testClose(self):
+    eleza testClose(self):
         conn, addr = self.serv.accept()
         conn.close()
 
@@ -4253,59 +4253,59 @@ class TCPCloserTest(ThreadedTCPSocketTest):
         conn.close()
         conn.close()
 
-    def _testClose(self):
+    eleza _testClose(self):
         self.cli.connect((HOST, self.port))
         time.sleep(1.0)
 
 
-class BasicSocketPairTest(SocketPairTest):
+kundi BasicSocketPairTest(SocketPairTest):
 
-    def __init__(self, methodName='runTest'):
+    eleza __init__(self, methodName='runTest'):
         SocketPairTest.__init__(self, methodName=methodName)
 
-    def _check_defaults(self, sock):
+    eleza _check_defaults(self, sock):
         self.assertIsInstance(sock, socket.socket)
-        if hasattr(socket, 'AF_UNIX'):
+        ikiwa hasattr(socket, 'AF_UNIX'):
             self.assertEqual(sock.family, socket.AF_UNIX)
         else:
             self.assertEqual(sock.family, socket.AF_INET)
         self.assertEqual(sock.type, socket.SOCK_STREAM)
         self.assertEqual(sock.proto, 0)
 
-    def _testDefaults(self):
+    eleza _testDefaults(self):
         self._check_defaults(self.cli)
 
-    def testDefaults(self):
+    eleza testDefaults(self):
         self._check_defaults(self.serv)
 
-    def testRecv(self):
+    eleza testRecv(self):
         msg = self.serv.recv(1024)
         self.assertEqual(msg, MSG)
 
-    def _testRecv(self):
+    eleza _testRecv(self):
         self.cli.send(MSG)
 
-    def testSend(self):
+    eleza testSend(self):
         self.serv.send(MSG)
 
-    def _testSend(self):
+    eleza _testSend(self):
         msg = self.cli.recv(1024)
         self.assertEqual(msg, MSG)
 
 
-class NonBlockingTCPTests(ThreadedTCPSocketTest):
+kundi NonBlockingTCPTests(ThreadedTCPSocketTest):
 
-    def __init__(self, methodName='runTest'):
+    eleza __init__(self, methodName='runTest'):
         self.event = threading.Event()
         ThreadedTCPSocketTest.__init__(self, methodName=methodName)
 
-    def assert_sock_timeout(self, sock, timeout):
+    eleza assert_sock_timeout(self, sock, timeout):
         self.assertEqual(self.serv.gettimeout(), timeout)
 
         blocking = (timeout != 0.0)
         self.assertEqual(sock.getblocking(), blocking)
 
-        if fcntl is not None:
+        ikiwa fcntl is not None:
             # When a Python socket has a non-zero timeout, it's switched
             # internally to a non-blocking mode. Later, sock.sendall(),
             # sock.recv(), and other socket operations use a select() call and
@@ -4316,7 +4316,7 @@ class NonBlockingTCPTests(ThreadedTCPSocketTest):
             flag = fcntl.fcntl(sock, fcntl.F_GETFL, os.O_NONBLOCK)
             self.assertEqual(not bool(flag & os.O_NONBLOCK), fd_blocking)
 
-    def testSetBlocking(self):
+    eleza testSetBlocking(self):
         # Test setblocking() and settimeout() methods
         self.serv.setblocking(True)
         self.assert_sock_timeout(self.serv, None)
@@ -4336,14 +4336,14 @@ class NonBlockingTCPTests(ThreadedTCPSocketTest):
         self.serv.settimeout(0)
         self.assert_sock_timeout(self.serv, 0)
 
-    def _testSetBlocking(self):
+    eleza _testSetBlocking(self):
         pass
 
     @support.cpython_only
-    def testSetBlocking_overflow(self):
+    eleza testSetBlocking_overflow(self):
         # Issue 15989
         agiza _testcapi
-        if _testcapi.UINT_MAX >= _testcapi.ULONG_MAX:
+        ikiwa _testcapi.UINT_MAX >= _testcapi.ULONG_MAX:
             self.skipTest('needs UINT_MAX < ULONG_MAX')
 
         self.serv.setblocking(False)
@@ -4357,17 +4357,17 @@ class NonBlockingTCPTests(ThreadedTCPSocketTest):
     @unittest.skipUnless(hasattr(socket, 'SOCK_NONBLOCK'),
                          'test needs socket.SOCK_NONBLOCK')
     @support.requires_linux_version(2, 6, 28)
-    def testInitNonBlocking(self):
+    eleza testInitNonBlocking(self):
         # create a socket with SOCK_NONBLOCK
         self.serv.close()
         self.serv = socket.socket(socket.AF_INET,
                                   socket.SOCK_STREAM | socket.SOCK_NONBLOCK)
         self.assert_sock_timeout(self.serv, 0)
 
-    def _testInitNonBlocking(self):
+    eleza _testInitNonBlocking(self):
         pass
 
-    def testInheritFlagsBlocking(self):
+    eleza testInheritFlagsBlocking(self):
         # bpo-7995: accept() on a listening socket with a timeout and the
         # default timeout is None, the resulting socket must be blocking.
         with socket_setdefaulttimeout(None):
@@ -4376,10 +4376,10 @@ class NonBlockingTCPTests(ThreadedTCPSocketTest):
             self.addCleanup(conn.close)
             self.assertIsNone(conn.gettimeout())
 
-    def _testInheritFlagsBlocking(self):
+    eleza _testInheritFlagsBlocking(self):
         self.cli.connect((HOST, self.port))
 
-    def testInheritFlagsTimeout(self):
+    eleza testInheritFlagsTimeout(self):
         # bpo-7995: accept() on a listening socket with a timeout and the
         # default timeout is None, the resulting socket must inherit
         # the default timeout.
@@ -4390,10 +4390,10 @@ class NonBlockingTCPTests(ThreadedTCPSocketTest):
             self.addCleanup(conn.close)
             self.assertEqual(conn.gettimeout(), default_timeout)
 
-    def _testInheritFlagsTimeout(self):
+    eleza _testInheritFlagsTimeout(self):
         self.cli.connect((HOST, self.port))
 
-    def testAccept(self):
+    eleza testAccept(self):
         # Testing non-blocking accept
         self.serv.setblocking(0)
 
@@ -4407,7 +4407,7 @@ class NonBlockingTCPTests(ThreadedTCPSocketTest):
         self.event.set()
 
         read, write, err = select.select([self.serv], [], [], MAIN_TIMEOUT)
-        if self.serv not in read:
+        ikiwa self.serv not in read:
             self.fail("Error trying to do accept after select.")
 
         # connect() completed: non-blocking accept() doesn't block
@@ -4415,14 +4415,14 @@ class NonBlockingTCPTests(ThreadedTCPSocketTest):
         self.addCleanup(conn.close)
         self.assertIsNone(conn.gettimeout())
 
-    def _testAccept(self):
+    eleza _testAccept(self):
         # don't connect before event is set to check
         # that non-blocking accept() raises BlockingIOError
         self.event.wait()
 
         self.cli.connect((HOST, self.port))
 
-    def testRecv(self):
+    eleza testRecv(self):
         # Testing non-blocking recv
         conn, addr = self.serv.accept()
         self.addCleanup(conn.close)
@@ -4435,14 +4435,14 @@ class NonBlockingTCPTests(ThreadedTCPSocketTest):
         self.event.set()
 
         read, write, err = select.select([conn], [], [], MAIN_TIMEOUT)
-        if conn not in read:
+        ikiwa conn not in read:
             self.fail("Error during select call to non-blocking socket.")
 
         # the server sent data yet: non-blocking recv() doesn't block
         msg = conn.recv(len(MSG))
         self.assertEqual(msg, MSG)
 
-    def _testRecv(self):
+    eleza _testRecv(self):
         self.cli.connect((HOST, self.port))
 
         # don't send anything before event is set to check
@@ -4453,7 +4453,7 @@ class NonBlockingTCPTests(ThreadedTCPSocketTest):
         self.cli.sendall(MSG)
 
 
-class FileObjectClassTestCase(SocketConnectedTest):
+kundi FileObjectClassTestCase(SocketConnectedTest):
     """Unit tests for the object returned by socket.makefile()
 
     self.read_file is the io object returned by makefile() on
@@ -4475,10 +4475,10 @@ class FileObjectClassTestCase(SocketConnectedTest):
     write_mode = 'wb'
     write_msg = MSG
 
-    def __init__(self, methodName='runTest'):
+    eleza __init__(self, methodName='runTest'):
         SocketConnectedTest.__init__(self, methodName=methodName)
 
-    def setUp(self):
+    eleza setUp(self):
         self.evt1, self.evt2, self.serv_finished, self.cli_finished = [
             threading.Event() for i in range(4)]
         SocketConnectedTest.setUp(self)
@@ -4488,14 +4488,14 @@ class FileObjectClassTestCase(SocketConnectedTest):
             errors = self.errors,
             newline = self.newline)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.serv_finished.set()
         self.read_file.close()
         self.assertTrue(self.read_file.closed)
         self.read_file = None
         SocketConnectedTest.tearDown(self)
 
-    def clientSetUp(self):
+    eleza clientSetUp(self):
         SocketConnectedTest.clientSetUp(self)
         self.write_file = self.serv_conn.makefile(
             self.write_mode, self.bufsize,
@@ -4503,14 +4503,14 @@ class FileObjectClassTestCase(SocketConnectedTest):
             errors = self.errors,
             newline = self.newline)
 
-    def clientTearDown(self):
+    eleza clientTearDown(self):
         self.cli_finished.set()
         self.write_file.close()
         self.assertTrue(self.write_file.closed)
         self.write_file = None
         SocketConnectedTest.clientTearDown(self)
 
-    def testReadAfterTimeout(self):
+    eleza testReadAfterTimeout(self):
         # Issue #7322: A file object must disallow further reads
         # after a timeout has occurred.
         self.cli_conn.settimeout(1)
@@ -4522,101 +4522,101 @@ class FileObjectClassTestCase(SocketConnectedTest):
             self.read_file.read(1)
         self.assertIn("cannot read kutoka timed out object", str(ctx.exception))
 
-    def _testReadAfterTimeout(self):
+    eleza _testReadAfterTimeout(self):
         self.write_file.write(self.write_msg[0:3])
         self.write_file.flush()
         self.serv_finished.wait()
 
-    def testSmallRead(self):
+    eleza testSmallRead(self):
         # Performing small file read test
         first_seg = self.read_file.read(len(self.read_msg)-3)
         second_seg = self.read_file.read(3)
         msg = first_seg + second_seg
         self.assertEqual(msg, self.read_msg)
 
-    def _testSmallRead(self):
+    eleza _testSmallRead(self):
         self.write_file.write(self.write_msg)
         self.write_file.flush()
 
-    def testFullRead(self):
+    eleza testFullRead(self):
         # read until EOF
         msg = self.read_file.read()
         self.assertEqual(msg, self.read_msg)
 
-    def _testFullRead(self):
+    eleza _testFullRead(self):
         self.write_file.write(self.write_msg)
         self.write_file.close()
 
-    def testUnbufferedRead(self):
+    eleza testUnbufferedRead(self):
         # Performing unbuffered file read test
         buf = type(self.read_msg)()
         while 1:
             char = self.read_file.read(1)
-            if not char:
+            ikiwa not char:
                 break
             buf += char
         self.assertEqual(buf, self.read_msg)
 
-    def _testUnbufferedRead(self):
+    eleza _testUnbufferedRead(self):
         self.write_file.write(self.write_msg)
         self.write_file.flush()
 
-    def testReadline(self):
+    eleza testReadline(self):
         # Performing file readline test
         line = self.read_file.readline()
         self.assertEqual(line, self.read_msg)
 
-    def _testReadline(self):
+    eleza _testReadline(self):
         self.write_file.write(self.write_msg)
         self.write_file.flush()
 
-    def testCloseAfterMakefile(self):
+    eleza testCloseAfterMakefile(self):
         # The file returned by makefile should keep the socket open.
         self.cli_conn.close()
         # read until EOF
         msg = self.read_file.read()
         self.assertEqual(msg, self.read_msg)
 
-    def _testCloseAfterMakefile(self):
+    eleza _testCloseAfterMakefile(self):
         self.write_file.write(self.write_msg)
         self.write_file.flush()
 
-    def testMakefileAfterMakefileClose(self):
+    eleza testMakefileAfterMakefileClose(self):
         self.read_file.close()
         msg = self.cli_conn.recv(len(MSG))
-        if isinstance(self.read_msg, str):
+        ikiwa isinstance(self.read_msg, str):
             msg = msg.decode()
         self.assertEqual(msg, self.read_msg)
 
-    def _testMakefileAfterMakefileClose(self):
+    eleza _testMakefileAfterMakefileClose(self):
         self.write_file.write(self.write_msg)
         self.write_file.flush()
 
-    def testClosedAttr(self):
+    eleza testClosedAttr(self):
         self.assertTrue(not self.read_file.closed)
 
-    def _testClosedAttr(self):
+    eleza _testClosedAttr(self):
         self.assertTrue(not self.write_file.closed)
 
-    def testAttributes(self):
+    eleza testAttributes(self):
         self.assertEqual(self.read_file.mode, self.read_mode)
         self.assertEqual(self.read_file.name, self.cli_conn.fileno())
 
-    def _testAttributes(self):
+    eleza _testAttributes(self):
         self.assertEqual(self.write_file.mode, self.write_mode)
         self.assertEqual(self.write_file.name, self.serv_conn.fileno())
 
-    def testRealClose(self):
+    eleza testRealClose(self):
         self.read_file.close()
         self.assertRaises(ValueError, self.read_file.fileno)
         self.cli_conn.close()
         self.assertRaises(OSError, self.cli_conn.getsockname)
 
-    def _testRealClose(self):
+    eleza _testRealClose(self):
         pass
 
 
-class UnbufferedFileObjectClassTestCase(FileObjectClassTestCase):
+kundi UnbufferedFileObjectClassTestCase(FileObjectClassTestCase):
 
     """Repeat the tests kutoka FileObjectClassTestCase with bufsize==0.
 
@@ -4628,7 +4628,7 @@ class UnbufferedFileObjectClassTestCase(FileObjectClassTestCase):
 
     bufsize = 0 # Use unbuffered mode
 
-    def testUnbufferedReadline(self):
+    eleza testUnbufferedReadline(self):
         # Read a line, create a new file object, read another line with it
         line = self.read_file.readline() # first line
         self.assertEqual(line, b"A. " + self.write_msg) # first line
@@ -4636,12 +4636,12 @@ class UnbufferedFileObjectClassTestCase(FileObjectClassTestCase):
         line = self.read_file.readline() # second line
         self.assertEqual(line, b"B. " + self.write_msg) # second line
 
-    def _testUnbufferedReadline(self):
+    eleza _testUnbufferedReadline(self):
         self.write_file.write(b"A. " + self.write_msg)
         self.write_file.write(b"B. " + self.write_msg)
         self.write_file.flush()
 
-    def testMakefileClose(self):
+    eleza testMakefileClose(self):
         # The file returned by makefile should keep the socket open...
         self.cli_conn.close()
         msg = self.cli_conn.recv(1024)
@@ -4650,31 +4650,31 @@ class UnbufferedFileObjectClassTestCase(FileObjectClassTestCase):
         self.read_file.close()
         self.assertRaises(OSError, self.cli_conn.recv, 1024)
 
-    def _testMakefileClose(self):
+    eleza _testMakefileClose(self):
         self.write_file.write(self.write_msg)
         self.write_file.flush()
 
-    def testMakefileCloseSocketDestroy(self):
+    eleza testMakefileCloseSocketDestroy(self):
         refcount_before = sys.getrefcount(self.cli_conn)
         self.read_file.close()
         refcount_after = sys.getrefcount(self.cli_conn)
         self.assertEqual(refcount_before - 1, refcount_after)
 
-    def _testMakefileCloseSocketDestroy(self):
+    eleza _testMakefileCloseSocketDestroy(self):
         pass
 
     # Non-blocking ops
     # NOTE: to set `read_file` as non-blocking, we must call
     # `cli_conn.setblocking` and vice-versa (see setUp / clientSetUp).
 
-    def testSmallReadNonBlocking(self):
+    eleza testSmallReadNonBlocking(self):
         self.cli_conn.setblocking(False)
         self.assertEqual(self.read_file.readinto(bytearray(10)), None)
         self.assertEqual(self.read_file.read(len(self.read_msg) - 3), None)
         self.evt1.set()
         self.evt2.wait(1.0)
         first_seg = self.read_file.read(len(self.read_msg) - 3)
-        if first_seg is None:
+        ikiwa first_seg is None:
             # Data not arrived (can happen under Windows), wait a bit
             time.sleep(0.5)
             first_seg = self.read_file.read(len(self.read_msg) - 3)
@@ -4686,23 +4686,23 @@ class UnbufferedFileObjectClassTestCase(FileObjectClassTestCase):
         self.assertEqual(self.read_file.readinto(bytearray(16)), None)
         self.assertEqual(self.read_file.read(1), None)
 
-    def _testSmallReadNonBlocking(self):
+    eleza _testSmallReadNonBlocking(self):
         self.evt1.wait(1.0)
         self.write_file.write(self.write_msg)
         self.write_file.flush()
         self.evt2.set()
         # Avoid closing the socket before the server test has finished,
-        # otherwise system recv() will return 0 instead of EWOULDBLOCK.
+        # otherwise system recv() will rudisha 0 instead of EWOULDBLOCK.
         self.serv_finished.wait(5.0)
 
-    def testWriteNonBlocking(self):
+    eleza testWriteNonBlocking(self):
         self.cli_finished.wait(5.0)
         # The client thread can't skip directly - the SkipTest exception
         # would appear as a failure.
-        if self.serv_skipped:
+        ikiwa self.serv_skipped:
             self.skipTest(self.serv_skipped)
 
-    def _testWriteNonBlocking(self):
+    eleza _testWriteNonBlocking(self):
         self.serv_skipped = None
         self.serv_conn.setblocking(False)
         # Try to saturate the socket buffer pipe with repeated large writes.
@@ -4713,28 +4713,28 @@ class UnbufferedFileObjectClassTestCase(FileObjectClassTestCase):
         self.assertGreater(n, 0)
         for i in range(LIMIT):
             n = self.write_file.write(BIG)
-            if n is None:
+            ikiwa n is None:
                 # Succeeded
                 break
             self.assertGreater(n, 0)
         else:
             # Let us know that this test didn't manage to establish
             # the expected conditions. This is not a failure in itself but,
-            # if it happens repeatedly, the test should be fixed.
+            # ikiwa it happens repeatedly, the test should be fixed.
             self.serv_skipped = "failed to saturate the socket buffer"
 
 
-class LineBufferedFileObjectClassTestCase(FileObjectClassTestCase):
+kundi LineBufferedFileObjectClassTestCase(FileObjectClassTestCase):
 
     bufsize = 1 # Default-buffered for reading; line-buffered for writing
 
 
-class SmallBufferedFileObjectClassTestCase(FileObjectClassTestCase):
+kundi SmallBufferedFileObjectClassTestCase(FileObjectClassTestCase):
 
     bufsize = 2 # Exercise the buffering code
 
 
-class UnicodeReadFileObjectClassTestCase(FileObjectClassTestCase):
+kundi UnicodeReadFileObjectClassTestCase(FileObjectClassTestCase):
     """Tests for socket.makefile() in text mode (rather than binary)"""
 
     read_mode = 'r'
@@ -4744,7 +4744,7 @@ class UnicodeReadFileObjectClassTestCase(FileObjectClassTestCase):
     newline = ''
 
 
-class UnicodeWriteFileObjectClassTestCase(FileObjectClassTestCase):
+kundi UnicodeWriteFileObjectClassTestCase(FileObjectClassTestCase):
     """Tests for socket.makefile() in text mode (rather than binary)"""
 
     read_mode = 'rb'
@@ -4754,7 +4754,7 @@ class UnicodeWriteFileObjectClassTestCase(FileObjectClassTestCase):
     newline = ''
 
 
-class UnicodeReadWriteFileObjectClassTestCase(FileObjectClassTestCase):
+kundi UnicodeReadWriteFileObjectClassTestCase(FileObjectClassTestCase):
     """Tests for socket.makefile() in text mode (rather than binary)"""
 
     read_mode = 'r'
@@ -4764,27 +4764,27 @@ class UnicodeReadWriteFileObjectClassTestCase(FileObjectClassTestCase):
     newline = ''
 
 
-class NetworkConnectionTest(object):
+kundi NetworkConnectionTest(object):
     """Prove network connection."""
 
-    def clientSetUp(self):
+    eleza clientSetUp(self):
         # We're inherited below by BasicTCPTest2, which also inherits
         # BasicTCPTest, which defines self.port referenced below.
         self.cli = socket.create_connection((HOST, self.port))
         self.serv_conn = self.cli
 
-class BasicTCPTest2(NetworkConnectionTest, BasicTCPTest):
+kundi BasicTCPTest2(NetworkConnectionTest, BasicTCPTest):
     """Tests that NetworkConnection does not break existing TCP functionality.
     """
 
-class NetworkConnectionNoServer(unittest.TestCase):
+kundi NetworkConnectionNoServer(unittest.TestCase):
 
-    class MockSocket(socket.socket):
-        def connect(self, *args):
+    kundi MockSocket(socket.socket):
+        eleza connect(self, *args):
             raise socket.timeout('timed out')
 
     @contextlib.contextmanager
-    def mocked_socket_module(self):
+    eleza mocked_socket_module(self):
         """Return a socket which times out on connect"""
         old_socket = socket.socket
         socket.socket = self.MockSocket
@@ -4793,7 +4793,7 @@ class NetworkConnectionNoServer(unittest.TestCase):
         finally:
             socket.socket = old_socket
 
-    def test_connect(self):
+    eleza test_connect(self):
         port = support.find_unused_port()
         cli = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.addCleanup(cli.close)
@@ -4801,7 +4801,7 @@ class NetworkConnectionNoServer(unittest.TestCase):
             cli.connect((HOST, port))
         self.assertEqual(cm.exception.errno, errno.ECONNREFUSED)
 
-    def test_create_connection(self):
+    eleza test_create_connection(self):
         # Issue #9792: errors raised by create_connection() should have
         # a proper errno attribute.
         port = support.find_unused_port()
@@ -4816,16 +4816,16 @@ class NetworkConnectionNoServer(unittest.TestCase):
         #        (26, 2, 0, '', ('::1', 41230, 0, 0))]
         #
         # create_connection() enumerates through all the addresses returned
-        # and if it doesn't successfully bind to any of them, it propagates
+        # and ikiwa it doesn't successfully bind to any of them, it propagates
         # the last exception it encountered.
         #
         # On Solaris, ENETUNREACH is returned in this circumstance instead
-        # of ECONNREFUSED.  So, if that errno exists, add it to our list of
+        # of ECONNREFUSED.  So, ikiwa that errno exists, add it to our list of
         # expected errnos.
         expected_errnos = support.get_socket_conn_refused_errs()
         self.assertIn(cm.exception.errno, expected_errnos)
 
-    def test_create_connection_timeout(self):
+    eleza test_create_connection_timeout(self):
         # Issue #9792: create_connection() should not recast timeout errors
         # as generic socket errors.
         with self.mocked_socket_module():
@@ -4834,38 +4834,38 @@ class NetworkConnectionNoServer(unittest.TestCase):
             except socket.timeout:
                 pass
             except OSError as exc:
-                if support.IPV6_ENABLED or exc.errno != errno.EAFNOSUPPORT:
+                ikiwa support.IPV6_ENABLED or exc.errno != errno.EAFNOSUPPORT:
                     raise
             else:
                 self.fail('socket.timeout not raised')
 
 
-class NetworkConnectionAttributesTest(SocketTCPTest, ThreadableTest):
+kundi NetworkConnectionAttributesTest(SocketTCPTest, ThreadableTest):
 
-    def __init__(self, methodName='runTest'):
+    eleza __init__(self, methodName='runTest'):
         SocketTCPTest.__init__(self, methodName=methodName)
         ThreadableTest.__init__(self)
 
-    def clientSetUp(self):
+    eleza clientSetUp(self):
         self.source_port = support.find_unused_port()
 
-    def clientTearDown(self):
+    eleza clientTearDown(self):
         self.cli.close()
         self.cli = None
         ThreadableTest.clientTearDown(self)
 
-    def _justAccept(self):
+    eleza _justAccept(self):
         conn, addr = self.serv.accept()
         conn.close()
 
     testFamily = _justAccept
-    def _testFamily(self):
+    eleza _testFamily(self):
         self.cli = socket.create_connection((HOST, self.port), timeout=30)
         self.addCleanup(self.cli.close)
         self.assertEqual(self.cli.family, 2)
 
     testSourceAddress = _justAccept
-    def _testSourceAddress(self):
+    eleza _testSourceAddress(self):
         self.cli = socket.create_connection((HOST, self.port), timeout=30,
                 source_address=('', self.source_port))
         self.addCleanup(self.cli.close)
@@ -4874,7 +4874,7 @@ class NetworkConnectionAttributesTest(SocketTCPTest, ThreadableTest):
         # call happened.
 
     testTimeoutDefault = _justAccept
-    def _testTimeoutDefault(self):
+    eleza _testTimeoutDefault(self):
         # passing no explicit timeout uses socket's global default
         self.assertTrue(socket.getdefaulttimeout() is None)
         socket.setdefaulttimeout(42)
@@ -4886,7 +4886,7 @@ class NetworkConnectionAttributesTest(SocketTCPTest, ThreadableTest):
         self.assertEqual(self.cli.gettimeout(), 42)
 
     testTimeoutNone = _justAccept
-    def _testTimeoutNone(self):
+    eleza _testTimeoutNone(self):
         # None timeout means the same as sock.settimeout(None)
         self.assertTrue(socket.getdefaulttimeout() is None)
         socket.setdefaulttimeout(30)
@@ -4898,58 +4898,58 @@ class NetworkConnectionAttributesTest(SocketTCPTest, ThreadableTest):
         self.assertEqual(self.cli.gettimeout(), None)
 
     testTimeoutValueNamed = _justAccept
-    def _testTimeoutValueNamed(self):
+    eleza _testTimeoutValueNamed(self):
         self.cli = socket.create_connection((HOST, self.port), timeout=30)
         self.assertEqual(self.cli.gettimeout(), 30)
 
     testTimeoutValueNonamed = _justAccept
-    def _testTimeoutValueNonamed(self):
+    eleza _testTimeoutValueNonamed(self):
         self.cli = socket.create_connection((HOST, self.port), 30)
         self.addCleanup(self.cli.close)
         self.assertEqual(self.cli.gettimeout(), 30)
 
 
-class NetworkConnectionBehaviourTest(SocketTCPTest, ThreadableTest):
+kundi NetworkConnectionBehaviourTest(SocketTCPTest, ThreadableTest):
 
-    def __init__(self, methodName='runTest'):
+    eleza __init__(self, methodName='runTest'):
         SocketTCPTest.__init__(self, methodName=methodName)
         ThreadableTest.__init__(self)
 
-    def clientSetUp(self):
+    eleza clientSetUp(self):
         pass
 
-    def clientTearDown(self):
+    eleza clientTearDown(self):
         self.cli.close()
         self.cli = None
         ThreadableTest.clientTearDown(self)
 
-    def testInsideTimeout(self):
+    eleza testInsideTimeout(self):
         conn, addr = self.serv.accept()
         self.addCleanup(conn.close)
         time.sleep(3)
         conn.send(b"done!")
     testOutsideTimeout = testInsideTimeout
 
-    def _testInsideTimeout(self):
+    eleza _testInsideTimeout(self):
         self.cli = sock = socket.create_connection((HOST, self.port))
         data = sock.recv(5)
         self.assertEqual(data, b"done!")
 
-    def _testOutsideTimeout(self):
+    eleza _testOutsideTimeout(self):
         self.cli = sock = socket.create_connection((HOST, self.port), timeout=1)
         self.assertRaises(socket.timeout, lambda: sock.recv(5))
 
 
-class TCPTimeoutTest(SocketTCPTest):
+kundi TCPTimeoutTest(SocketTCPTest):
 
-    def testTCPTimeout(self):
-        def raise_timeout(*args, **kwargs):
+    eleza testTCPTimeout(self):
+        eleza raise_timeout(*args, **kwargs):
             self.serv.settimeout(1.0)
             self.serv.accept()
         self.assertRaises(socket.timeout, raise_timeout,
                               "Error generating a timeout exception (TCP)")
 
-    def testTimeoutZero(self):
+    eleza testTimeoutZero(self):
         ok = False
         try:
             self.serv.settimeout(0.0)
@@ -4960,19 +4960,19 @@ class TCPTimeoutTest(SocketTCPTest):
             ok = True
         except:
             self.fail("caught unexpected exception (TCP)")
-        if not ok:
+        ikiwa not ok:
             self.fail("accept() returned success when we did not expect it")
 
     @unittest.skipUnless(hasattr(signal, 'alarm'),
                          'test needs signal.alarm()')
-    def testInterruptedTimeout(self):
+    eleza testInterruptedTimeout(self):
         # XXX I don't know how to do this test on MSWindows or any other
         # platform that doesn't support signal.alarm() or os.kill(), though
         # the bug should have existed on all platforms.
         self.serv.settimeout(5.0)   # must be longer than alarm
-        class Alarm(Exception):
+        kundi Alarm(Exception):
             pass
-        def alarm_handler(signal, frame):
+        eleza alarm_handler(signal, frame):
             raise Alarm
         old_alarm = signal.signal(signal.SIGALRM, alarm_handler)
         try:
@@ -4997,16 +4997,16 @@ class TCPTimeoutTest(SocketTCPTest):
             # no alarm can be pending.  Safe to restore old handler.
             signal.signal(signal.SIGALRM, old_alarm)
 
-class UDPTimeoutTest(SocketUDPTest):
+kundi UDPTimeoutTest(SocketUDPTest):
 
-    def testUDPTimeout(self):
-        def raise_timeout(*args, **kwargs):
+    eleza testUDPTimeout(self):
+        eleza raise_timeout(*args, **kwargs):
             self.serv.settimeout(1.0)
             self.serv.recv(1024)
         self.assertRaises(socket.timeout, raise_timeout,
                               "Error generating a timeout exception (UDP)")
 
-    def testTimeoutZero(self):
+    eleza testTimeoutZero(self):
         ok = False
         try:
             self.serv.settimeout(0.0)
@@ -5017,18 +5017,18 @@ class UDPTimeoutTest(SocketUDPTest):
             ok = True
         except:
             self.fail("caught unexpected exception (UDP)")
-        if not ok:
+        ikiwa not ok:
             self.fail("recv() returned success when we did not expect it")
 
-class TestExceptions(unittest.TestCase):
+kundi TestExceptions(unittest.TestCase):
 
-    def testExceptionTree(self):
+    eleza testExceptionTree(self):
         self.assertTrue(issubclass(OSError, Exception))
         self.assertTrue(issubclass(socket.herror, OSError))
         self.assertTrue(issubclass(socket.gaierror, OSError))
         self.assertTrue(issubclass(socket.timeout, OSError))
 
-    def test_setblocking_invalidfd(self):
+    eleza test_setblocking_invalidfd(self):
         # Regression test for issue #28471
 
         sock0 = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
@@ -5042,11 +5042,11 @@ class TestExceptions(unittest.TestCase):
 
 
 @unittest.skipUnless(sys.platform == 'linux', 'Linux specific test')
-class TestLinuxAbstractNamespace(unittest.TestCase):
+kundi TestLinuxAbstractNamespace(unittest.TestCase):
 
     UNIX_PATH_MAX = 108
 
-    def testLinuxAbstractNamespace(self):
+    eleza testLinuxAbstractNamespace(self):
         address = b"\x00python-test-hello\x00\xff"
         with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s1:
             s1.bind(address)
@@ -5057,18 +5057,18 @@ class TestLinuxAbstractNamespace(unittest.TestCase):
                     self.assertEqual(s1.getsockname(), address)
                     self.assertEqual(s2.getpeername(), address)
 
-    def testMaxName(self):
+    eleza testMaxName(self):
         address = b"\x00" + b"h" * (self.UNIX_PATH_MAX - 1)
         with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
             s.bind(address)
             self.assertEqual(s.getsockname(), address)
 
-    def testNameOverflow(self):
+    eleza testNameOverflow(self):
         address = "\x00" + "h" * self.UNIX_PATH_MAX
         with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
             self.assertRaises(OSError, s.bind, address)
 
-    def testStrName(self):
+    eleza testStrName(self):
         # Check that an abstract name can be passed as a string.
         s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         try:
@@ -5077,63 +5077,63 @@ class TestLinuxAbstractNamespace(unittest.TestCase):
         finally:
             s.close()
 
-    def testBytearrayName(self):
+    eleza testBytearrayName(self):
         # Check that an abstract name can be passed as a bytearray.
         with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
             s.bind(bytearray(b"\x00python\x00test\x00"))
             self.assertEqual(s.getsockname(), b"\x00python\x00test\x00")
 
 @unittest.skipUnless(hasattr(socket, 'AF_UNIX'), 'test needs socket.AF_UNIX')
-class TestUnixDomain(unittest.TestCase):
+kundi TestUnixDomain(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.sock.close()
 
-    def encoded(self, path):
+    eleza encoded(self, path):
         # Return the given path encoded in the file system encoding,
-        # or skip the test if this is not possible.
+        # or skip the test ikiwa this is not possible.
         try:
-            return os.fsencode(path)
+            rudisha os.fsencode(path)
         except UnicodeEncodeError:
             self.skipTest(
                 "Pathname {0!a} cannot be represented in file "
                 "system encoding {1!r}".format(
                     path, sys.getfilesystemencoding()))
 
-    def bind(self, sock, path):
+    eleza bind(self, sock, path):
         # Bind the socket
         try:
             support.bind_unix_socket(sock, path)
         except OSError as e:
-            if str(e) == "AF_UNIX path too long":
+            ikiwa str(e) == "AF_UNIX path too long":
                 self.skipTest(
                     "Pathname {0!a} is too long to serve as an AF_UNIX path"
                     .format(path))
             else:
                 raise
 
-    def testUnbound(self):
-        # Issue #30205 (note getsockname() can return None on OS X)
+    eleza testUnbound(self):
+        # Issue #30205 (note getsockname() can rudisha None on OS X)
         self.assertIn(self.sock.getsockname(), ('', None))
 
-    def testStrAddr(self):
+    eleza testStrAddr(self):
         # Test binding to and retrieving a normal string pathname.
         path = os.path.abspath(support.TESTFN)
         self.bind(self.sock, path)
         self.addCleanup(support.unlink, path)
         self.assertEqual(self.sock.getsockname(), path)
 
-    def testBytesAddr(self):
+    eleza testBytesAddr(self):
         # Test binding to a bytes pathname.
         path = os.path.abspath(support.TESTFN)
         self.bind(self.sock, self.encoded(path))
         self.addCleanup(support.unlink, path)
         self.assertEqual(self.sock.getsockname(), path)
 
-    def testSurrogateescapeBind(self):
+    eleza testSurrogateescapeBind(self):
         # Test binding to a valid non-ASCII pathname, with the
         # non-ASCII bytes supplied using surrogateescape encoding.
         path = os.path.abspath(support.TESTFN_UNICODE)
@@ -5142,10 +5142,10 @@ class TestUnixDomain(unittest.TestCase):
         self.addCleanup(support.unlink, path)
         self.assertEqual(self.sock.getsockname(), path)
 
-    def testUnencodableAddr(self):
+    eleza testUnencodableAddr(self):
         # Test binding to a pathname that cannot be encoded in the
         # file system encoding.
-        if support.TESTFN_UNENCODABLE is None:
+        ikiwa support.TESTFN_UNENCODABLE is None:
             self.skipTest("No unencodable filename available")
         path = os.path.abspath(support.TESTFN_UNENCODABLE)
         self.bind(self.sock, path)
@@ -5153,14 +5153,14 @@ class TestUnixDomain(unittest.TestCase):
         self.assertEqual(self.sock.getsockname(), path)
 
 
-class BufferIOTest(SocketConnectedTest):
+kundi BufferIOTest(SocketConnectedTest):
     """
     Test the buffer versions of socket.recv() and socket.send().
     """
-    def __init__(self, methodName='runTest'):
+    eleza __init__(self, methodName='runTest'):
         SocketConnectedTest.__init__(self, methodName=methodName)
 
-    def testRecvIntoArray(self):
+    eleza testRecvIntoArray(self):
         buf = array.array("B", [0] * len(MSG))
         nbytes = self.cli_conn.recv_into(buf)
         self.assertEqual(nbytes, len(MSG))
@@ -5168,11 +5168,11 @@ class BufferIOTest(SocketConnectedTest):
         msg = buf[:len(MSG)]
         self.assertEqual(msg, MSG)
 
-    def _testRecvIntoArray(self):
+    eleza _testRecvIntoArray(self):
         buf = bytes(MSG)
         self.serv_conn.send(buf)
 
-    def testRecvIntoBytearray(self):
+    eleza testRecvIntoBytearray(self):
         buf = bytearray(1024)
         nbytes = self.cli_conn.recv_into(buf)
         self.assertEqual(nbytes, len(MSG))
@@ -5181,7 +5181,7 @@ class BufferIOTest(SocketConnectedTest):
 
     _testRecvIntoBytearray = _testRecvIntoArray
 
-    def testRecvIntoMemoryview(self):
+    eleza testRecvIntoMemoryview(self):
         buf = bytearray(1024)
         nbytes = self.cli_conn.recv_into(memoryview(buf))
         self.assertEqual(nbytes, len(MSG))
@@ -5190,48 +5190,48 @@ class BufferIOTest(SocketConnectedTest):
 
     _testRecvIntoMemoryview = _testRecvIntoArray
 
-    def testRecvFromIntoArray(self):
+    eleza testRecvFromIntoArray(self):
         buf = array.array("B", [0] * len(MSG))
-        nbytes, addr = self.cli_conn.recvfrom_into(buf)
+        nbytes, addr = self.cli_conn.recvkutoka_into(buf)
         self.assertEqual(nbytes, len(MSG))
         buf = buf.tobytes()
         msg = buf[:len(MSG)]
         self.assertEqual(msg, MSG)
 
-    def _testRecvFromIntoArray(self):
+    eleza _testRecvFromIntoArray(self):
         buf = bytes(MSG)
         self.serv_conn.send(buf)
 
-    def testRecvFromIntoBytearray(self):
+    eleza testRecvFromIntoBytearray(self):
         buf = bytearray(1024)
-        nbytes, addr = self.cli_conn.recvfrom_into(buf)
+        nbytes, addr = self.cli_conn.recvkutoka_into(buf)
         self.assertEqual(nbytes, len(MSG))
         msg = buf[:len(MSG)]
         self.assertEqual(msg, MSG)
 
     _testRecvFromIntoBytearray = _testRecvFromIntoArray
 
-    def testRecvFromIntoMemoryview(self):
+    eleza testRecvFromIntoMemoryview(self):
         buf = bytearray(1024)
-        nbytes, addr = self.cli_conn.recvfrom_into(memoryview(buf))
+        nbytes, addr = self.cli_conn.recvkutoka_into(memoryview(buf))
         self.assertEqual(nbytes, len(MSG))
         msg = buf[:len(MSG)]
         self.assertEqual(msg, MSG)
 
     _testRecvFromIntoMemoryview = _testRecvFromIntoArray
 
-    def testRecvFromIntoSmallBuffer(self):
+    eleza testRecvFromIntoSmallBuffer(self):
         # See issue #20246.
         buf = bytearray(8)
-        self.assertRaises(ValueError, self.cli_conn.recvfrom_into, buf, 1024)
+        self.assertRaises(ValueError, self.cli_conn.recvkutoka_into, buf, 1024)
 
-    def _testRecvFromIntoSmallBuffer(self):
+    eleza _testRecvFromIntoSmallBuffer(self):
         self.serv_conn.send(MSG)
 
-    def testRecvFromIntoEmptyBuffer(self):
+    eleza testRecvFromIntoEmptyBuffer(self):
         buf = bytearray()
-        self.cli_conn.recvfrom_into(buf)
-        self.cli_conn.recvfrom_into(buf, 0)
+        self.cli_conn.recvkutoka_into(buf)
+        self.cli_conn.recvkutoka_into(buf, 0)
 
     _testRecvFromIntoEmptyBuffer = _testRecvFromIntoArray
 
@@ -5240,30 +5240,30 @@ TIPC_STYPE = 2000
 TIPC_LOWER = 200
 TIPC_UPPER = 210
 
-def isTipcAvailable():
-    """Check if the TIPC module is loaded
+eleza isTipcAvailable():
+    """Check ikiwa the TIPC module is loaded
 
     The TIPC module is not loaded automatically on Ubuntu and probably
     other Linux distros.
     """
-    if not hasattr(socket, "AF_TIPC"):
-        return False
+    ikiwa not hasattr(socket, "AF_TIPC"):
+        rudisha False
     try:
         f = open("/proc/modules")
     except (FileNotFoundError, IsADirectoryError, PermissionError):
-        # It's ok if the file does not exist, is a directory or if we
+        # It's ok ikiwa the file does not exist, is a directory or ikiwa we
         # have not the permission to read it.
-        return False
+        rudisha False
     with f:
         for line in f:
-            if line.startswith("tipc "):
-                return True
-    return False
+            ikiwa line.startswith("tipc "):
+                rudisha True
+    rudisha False
 
 @unittest.skipUnless(isTipcAvailable(),
                      "TIPC module is not loaded, please 'sudo modprobe tipc'")
-class TIPCTest(unittest.TestCase):
-    def testRDM(self):
+kundi TIPCTest(unittest.TestCase):
+    eleza testRDM(self):
         srv = socket.socket(socket.AF_TIPC, socket.SOCK_RDM)
         cli = socket.socket(socket.AF_TIPC, socket.SOCK_RDM)
         self.addCleanup(srv.close)
@@ -5278,7 +5278,7 @@ class TIPCTest(unittest.TestCase):
                 TIPC_LOWER + int((TIPC_UPPER - TIPC_LOWER) / 2), 0)
         cli.sendto(MSG, sendaddr)
 
-        msg, recvaddr = srv.recvfrom(1024)
+        msg, recvaddr = srv.recvkutoka(1024)
 
         self.assertEqual(cli.getsockname(), recvaddr)
         self.assertEqual(msg, MSG)
@@ -5286,12 +5286,12 @@ class TIPCTest(unittest.TestCase):
 
 @unittest.skipUnless(isTipcAvailable(),
                      "TIPC module is not loaded, please 'sudo modprobe tipc'")
-class TIPCThreadableTest(unittest.TestCase, ThreadableTest):
-    def __init__(self, methodName = 'runTest'):
+kundi TIPCThreadableTest(unittest.TestCase, ThreadableTest):
+    eleza __init__(self, methodName = 'runTest'):
         unittest.TestCase.__init__(self, methodName = methodName)
         ThreadableTest.__init__(self)
 
-    def setUp(self):
+    eleza setUp(self):
         self.srv = socket.socket(socket.AF_TIPC, socket.SOCK_STREAM)
         self.addCleanup(self.srv.close)
         self.srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -5303,7 +5303,7 @@ class TIPCThreadableTest(unittest.TestCase, ThreadableTest):
         self.conn, self.connaddr = self.srv.accept()
         self.addCleanup(self.conn.close)
 
-    def clientSetUp(self):
+    eleza clientSetUp(self):
         # There is a hittable race between serverExplicitReady() and the
         # accept() call; sleep a little while to avoid it, otherwise
         # we could get an exception
@@ -5315,19 +5315,19 @@ class TIPCThreadableTest(unittest.TestCase, ThreadableTest):
         self.cli.connect(addr)
         self.cliaddr = self.cli.getsockname()
 
-    def testStream(self):
+    eleza testStream(self):
         msg = self.conn.recv(1024)
         self.assertEqual(msg, MSG)
         self.assertEqual(self.cliaddr, self.connaddr)
 
-    def _testStream(self):
+    eleza _testStream(self):
         self.cli.send(MSG)
         self.cli.close()
 
 
-class ContextManagersTest(ThreadedTCPSocketTest):
+kundi ContextManagersTest(ThreadedTCPSocketTest):
 
-    def _testSocketClass(self):
+    eleza _testSocketClass(self):
         # base test
         with socket.socket() as sock:
             self.assertFalse(sock._closed)
@@ -5341,13 +5341,13 @@ class ContextManagersTest(ThreadedTCPSocketTest):
             self.assertRaises(OSError, sock.sendall, b'foo')
         self.assertTrue(sock._closed)
 
-    def testCreateConnectionBase(self):
+    eleza testCreateConnectionBase(self):
         conn, addr = self.serv.accept()
         self.addCleanup(conn.close)
         data = conn.recv(1024)
         conn.sendall(data)
 
-    def _testCreateConnectionBase(self):
+    eleza _testCreateConnectionBase(self):
         address = self.serv.getsockname()
         with socket.create_connection(address) as sock:
             self.assertFalse(sock._closed)
@@ -5355,13 +5355,13 @@ class ContextManagersTest(ThreadedTCPSocketTest):
             self.assertEqual(sock.recv(1024), b'foo')
         self.assertTrue(sock._closed)
 
-    def testCreateConnectionClose(self):
+    eleza testCreateConnectionClose(self):
         conn, addr = self.serv.accept()
         self.addCleanup(conn.close)
         data = conn.recv(1024)
         conn.sendall(data)
 
-    def _testCreateConnectionClose(self):
+    eleza _testCreateConnectionClose(self):
         address = self.serv.getsockname()
         with socket.create_connection(address) as sock:
             sock.close()
@@ -5369,22 +5369,22 @@ class ContextManagersTest(ThreadedTCPSocketTest):
         self.assertRaises(OSError, sock.sendall, b'foo')
 
 
-class InheritanceTest(unittest.TestCase):
+kundi InheritanceTest(unittest.TestCase):
     @unittest.skipUnless(hasattr(socket, "SOCK_CLOEXEC"),
                          "SOCK_CLOEXEC not defined")
     @support.requires_linux_version(2, 6, 28)
-    def test_SOCK_CLOEXEC(self):
+    eleza test_SOCK_CLOEXEC(self):
         with socket.socket(socket.AF_INET,
                            socket.SOCK_STREAM | socket.SOCK_CLOEXEC) as s:
             self.assertEqual(s.type, socket.SOCK_STREAM)
             self.assertFalse(s.get_inheritable())
 
-    def test_default_inheritable(self):
+    eleza test_default_inheritable(self):
         sock = socket.socket()
         with sock:
             self.assertEqual(sock.get_inheritable(), False)
 
-    def test_dup(self):
+    eleza test_dup(self):
         sock = socket.socket()
         with sock:
             newsock = sock.dup()
@@ -5392,7 +5392,7 @@ class InheritanceTest(unittest.TestCase):
             with newsock:
                 self.assertEqual(newsock.get_inheritable(), False)
 
-    def test_set_inheritable(self):
+    eleza test_set_inheritable(self):
         sock = socket.socket()
         with sock:
             sock.set_inheritable(True)
@@ -5402,7 +5402,7 @@ class InheritanceTest(unittest.TestCase):
             self.assertEqual(sock.get_inheritable(), False)
 
     @unittest.skipIf(fcntl is None, "need fcntl")
-    def test_get_inheritable_cloexec(self):
+    eleza test_get_inheritable_cloexec(self):
         sock = socket.socket()
         with sock:
             fd = sock.fileno()
@@ -5416,7 +5416,7 @@ class InheritanceTest(unittest.TestCase):
             self.assertEqual(sock.get_inheritable(), True)
 
     @unittest.skipIf(fcntl is None, "need fcntl")
-    def test_set_inheritable_cloexec(self):
+    eleza test_set_inheritable_cloexec(self):
         sock = socket.socket()
         with sock:
             fd = sock.fileno()
@@ -5428,7 +5428,7 @@ class InheritanceTest(unittest.TestCase):
                              0)
 
 
-    def test_socketpair(self):
+    eleza test_socketpair(self):
         s1, s2 = socket.socketpair()
         self.addCleanup(s1.close)
         self.addCleanup(s2.close)
@@ -5438,14 +5438,14 @@ class InheritanceTest(unittest.TestCase):
 
 @unittest.skipUnless(hasattr(socket, "SOCK_NONBLOCK"),
                      "SOCK_NONBLOCK not defined")
-class NonblockConstantTest(unittest.TestCase):
-    def checkNonblock(self, s, nonblock=True, timeout=0.0):
-        if nonblock:
+kundi NonblockConstantTest(unittest.TestCase):
+    eleza checkNonblock(self, s, nonblock=True, timeout=0.0):
+        ikiwa nonblock:
             self.assertEqual(s.type, socket.SOCK_STREAM)
             self.assertEqual(s.gettimeout(), timeout)
             self.assertTrue(
                 fcntl.fcntl(s, fcntl.F_GETFL, os.O_NONBLOCK) & os.O_NONBLOCK)
-            if timeout == 0:
+            ikiwa timeout == 0:
                 # timeout == 0: means that getblocking() must be False.
                 self.assertFalse(s.getblocking())
             else:
@@ -5465,7 +5465,7 @@ class NonblockConstantTest(unittest.TestCase):
             self.assertTrue(s.getblocking())
 
     @support.requires_linux_version(2, 6, 28)
-    def test_SOCK_NONBLOCK(self):
+    eleza test_SOCK_NONBLOCK(self):
         # a lot of it seems silly and redundant, but I wanted to test that
         # changing back and forth worked ok
         with socket.socket(socket.AF_INET,
@@ -5500,16 +5500,16 @@ class NonblockConstantTest(unittest.TestCase):
 
 @unittest.skipUnless(os.name == "nt", "Windows specific")
 @unittest.skipUnless(multiprocessing, "need multiprocessing")
-class TestSocketSharing(SocketTCPTest):
+kundi TestSocketSharing(SocketTCPTest):
     # This must be classmethod and not staticmethod or multiprocessing
     # won't be able to bootstrap it.
     @classmethod
-    def remoteProcessServer(cls, q):
+    eleza remoteProcessServer(cls, q):
         # Recreate socket kutoka shared data
         sdata = q.get()
         message = q.get()
 
-        s = socket.fromshare(sdata)
+        s = socket.kutokashare(sdata)
         s2, c = s.accept()
 
         # Send the message
@@ -5517,7 +5517,7 @@ class TestSocketSharing(SocketTCPTest):
         s2.close()
         s.close()
 
-    def testShare(self):
+    eleza testShare(self):
         # Transfer the listening server socket to another process
         # and service it kutoka there.
 
@@ -5544,7 +5544,7 @@ class TestSocketSharing(SocketTCPTest):
         m = []
         while True:
             data = s.recv(100)
-            if not data:
+            ikiwa not data:
                 break
             m.append(data)
         s.close()
@@ -5552,12 +5552,12 @@ class TestSocketSharing(SocketTCPTest):
         self.assertEqual(received, message)
         p.join()
 
-    def testShareLength(self):
+    eleza testShareLength(self):
         data = self.serv.share(os.getpid())
-        self.assertRaises(ValueError, socket.fromshare, data[:-1])
-        self.assertRaises(ValueError, socket.fromshare, data+b"foo")
+        self.assertRaises(ValueError, socket.kutokashare, data[:-1])
+        self.assertRaises(ValueError, socket.kutokashare, data+b"foo")
 
-    def compareSockets(self, org, other):
+    eleza compareSockets(self, org, other):
         # socket sharing is expected to work only for blocking socket
         # since the internal python timeout value isn't transferred.
         self.assertEqual(org.gettimeout(), None)
@@ -5570,18 +5570,18 @@ class TestSocketSharing(SocketTCPTest):
         # Python introspection on the socket however will still return
         # 0.  For the shared socket, the python value is recreated
         # kutoka the actual value, so it may not compare correctly.
-        if org.proto != 0:
+        ikiwa org.proto != 0:
             self.assertEqual(org.proto, other.proto)
 
-    def testShareLocal(self):
+    eleza testShareLocal(self):
         data = self.serv.share(os.getpid())
-        s = socket.fromshare(data)
+        s = socket.kutokashare(data)
         try:
             self.compareSockets(self.serv, s)
         finally:
             s.close()
 
-    def testTypes(self):
+    eleza testTypes(self):
         families = [socket.AF_INET, socket.AF_INET6]
         types = [socket.SOCK_STREAM, socket.SOCK_DGRAM]
         for f in families:
@@ -5592,7 +5592,7 @@ class TestSocketSharing(SocketTCPTest):
                     continue # This combination is not supported
                 try:
                     data = source.share(os.getpid())
-                    shared = socket.fromshare(data)
+                    shared = socket.kutokashare(data)
                     try:
                         self.compareSockets(source, shared)
                     finally:
@@ -5601,7 +5601,7 @@ class TestSocketSharing(SocketTCPTest):
                     source.close()
 
 
-class SendfileUsingSendTest(ThreadedTCPSocketTest):
+kundi SendfileUsingSendTest(ThreadedTCPSocketTest):
     """
     Test the send() implementation of socket.sendfile().
     """
@@ -5612,13 +5612,13 @@ class SendfileUsingSendTest(ThreadedTCPSocketTest):
     TIMEOUT = 2
 
     @classmethod
-    def setUpClass(cls):
-        def chunks(total, step):
+    eleza setUpClass(cls):
+        eleza chunks(total, step):
             assert total >= step
             while total > step:
                 yield step
                 total -= step
-            if total:
+            ikiwa total:
                 yield total
 
         chunk = b"".join([random.choice(string.ascii_letters).encode()
@@ -5631,42 +5631,42 @@ class SendfileUsingSendTest(ThreadedTCPSocketTest):
             assert len(cls.FILEDATA) == cls.FILESIZE
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         support.unlink(support.TESTFN)
 
-    def accept_conn(self):
+    eleza accept_conn(self):
         self.serv.settimeout(MAIN_TIMEOUT)
         conn, addr = self.serv.accept()
         conn.settimeout(self.TIMEOUT)
         self.addCleanup(conn.close)
-        return conn
+        rudisha conn
 
-    def recv_data(self, conn):
+    eleza recv_data(self, conn):
         received = []
         while True:
             chunk = conn.recv(self.BUFSIZE)
-            if not chunk:
+            ikiwa not chunk:
                 break
             received.append(chunk)
-        return b''.join(received)
+        rudisha b''.join(received)
 
-    def meth_from_sock(self, sock):
-        # Depending on the mixin class being run return either send()
+    eleza meth_kutoka_sock(self, sock):
+        # Depending on the mixin kundi being run rudisha either send()
         # or sendfile() method implementation.
-        return getattr(sock, "_sendfile_use_send")
+        rudisha getattr(sock, "_sendfile_use_send")
 
     # regular file
 
-    def _testRegularFile(self):
+    eleza _testRegularFile(self):
         address = self.serv.getsockname()
         file = open(support.TESTFN, 'rb')
         with socket.create_connection(address) as sock, file as file:
-            meth = self.meth_from_sock(sock)
+            meth = self.meth_kutoka_sock(sock)
             sent = meth(file)
             self.assertEqual(sent, self.FILESIZE)
             self.assertEqual(file.tell(), self.FILESIZE)
 
-    def testRegularFile(self):
+    eleza testRegularFile(self):
         conn = self.accept_conn()
         data = self.recv_data(conn)
         self.assertEqual(len(data), self.FILESIZE)
@@ -5674,7 +5674,7 @@ class SendfileUsingSendTest(ThreadedTCPSocketTest):
 
     # non regular file
 
-    def _testNonRegularFile(self):
+    eleza _testNonRegularFile(self):
         address = self.serv.getsockname()
         file = io.BytesIO(self.FILEDATA)
         with socket.create_connection(address) as sock, file as file:
@@ -5684,7 +5684,7 @@ class SendfileUsingSendTest(ThreadedTCPSocketTest):
             self.assertRaises(socket._GiveupOnSendfile,
                               sock._sendfile_use_sendfile, file)
 
-    def testNonRegularFile(self):
+    eleza testNonRegularFile(self):
         conn = self.accept_conn()
         data = self.recv_data(conn)
         self.assertEqual(len(data), self.FILESIZE)
@@ -5692,35 +5692,35 @@ class SendfileUsingSendTest(ThreadedTCPSocketTest):
 
     # empty file
 
-    def _testEmptyFileSend(self):
+    eleza _testEmptyFileSend(self):
         address = self.serv.getsockname()
         filename = support.TESTFN + "2"
         with open(filename, 'wb'):
             self.addCleanup(support.unlink, filename)
         file = open(filename, 'rb')
         with socket.create_connection(address) as sock, file as file:
-            meth = self.meth_from_sock(sock)
+            meth = self.meth_kutoka_sock(sock)
             sent = meth(file)
             self.assertEqual(sent, 0)
             self.assertEqual(file.tell(), 0)
 
-    def testEmptyFileSend(self):
+    eleza testEmptyFileSend(self):
         conn = self.accept_conn()
         data = self.recv_data(conn)
         self.assertEqual(data, b"")
 
     # offset
 
-    def _testOffset(self):
+    eleza _testOffset(self):
         address = self.serv.getsockname()
         file = open(support.TESTFN, 'rb')
         with socket.create_connection(address) as sock, file as file:
-            meth = self.meth_from_sock(sock)
+            meth = self.meth_kutoka_sock(sock)
             sent = meth(file, offset=5000)
             self.assertEqual(sent, self.FILESIZE - 5000)
             self.assertEqual(file.tell(), self.FILESIZE)
 
-    def testOffset(self):
+    eleza testOffset(self):
         conn = self.accept_conn()
         data = self.recv_data(conn)
         self.assertEqual(len(data), self.FILESIZE - 5000)
@@ -5728,17 +5728,17 @@ class SendfileUsingSendTest(ThreadedTCPSocketTest):
 
     # count
 
-    def _testCount(self):
+    eleza _testCount(self):
         address = self.serv.getsockname()
         file = open(support.TESTFN, 'rb')
         with socket.create_connection(address, timeout=2) as sock, file as file:
             count = 5000007
-            meth = self.meth_from_sock(sock)
+            meth = self.meth_kutoka_sock(sock)
             sent = meth(file, count=count)
             self.assertEqual(sent, count)
             self.assertEqual(file.tell(), count)
 
-    def testCount(self):
+    eleza testCount(self):
         count = 5000007
         conn = self.accept_conn()
         data = self.recv_data(conn)
@@ -5747,17 +5747,17 @@ class SendfileUsingSendTest(ThreadedTCPSocketTest):
 
     # count small
 
-    def _testCountSmall(self):
+    eleza _testCountSmall(self):
         address = self.serv.getsockname()
         file = open(support.TESTFN, 'rb')
         with socket.create_connection(address, timeout=2) as sock, file as file:
             count = 1
-            meth = self.meth_from_sock(sock)
+            meth = self.meth_kutoka_sock(sock)
             sent = meth(file, count=count)
             self.assertEqual(sent, count)
             self.assertEqual(file.tell(), count)
 
-    def testCountSmall(self):
+    eleza testCountSmall(self):
         count = 1
         conn = self.accept_conn()
         data = self.recv_data(conn)
@@ -5766,17 +5766,17 @@ class SendfileUsingSendTest(ThreadedTCPSocketTest):
 
     # count + offset
 
-    def _testCountWithOffset(self):
+    eleza _testCountWithOffset(self):
         address = self.serv.getsockname()
         file = open(support.TESTFN, 'rb')
         with socket.create_connection(address, timeout=2) as sock, file as file:
             count = 100007
-            meth = self.meth_from_sock(sock)
+            meth = self.meth_kutoka_sock(sock)
             sent = meth(file, offset=2007, count=count)
             self.assertEqual(sent, count)
             self.assertEqual(file.tell(), count + 2007)
 
-    def testCountWithOffset(self):
+    eleza testCountWithOffset(self):
         count = 100007
         conn = self.accept_conn()
         data = self.recv_data(conn)
@@ -5785,31 +5785,31 @@ class SendfileUsingSendTest(ThreadedTCPSocketTest):
 
     # non blocking sockets are not supposed to work
 
-    def _testNonBlocking(self):
+    eleza _testNonBlocking(self):
         address = self.serv.getsockname()
         file = open(support.TESTFN, 'rb')
         with socket.create_connection(address) as sock, file as file:
             sock.setblocking(False)
-            meth = self.meth_from_sock(sock)
+            meth = self.meth_kutoka_sock(sock)
             self.assertRaises(ValueError, meth, file)
             self.assertRaises(ValueError, sock.sendfile, file)
 
-    def testNonBlocking(self):
+    eleza testNonBlocking(self):
         conn = self.accept_conn()
-        if conn.recv(8192):
+        ikiwa conn.recv(8192):
             self.fail('was not supposed to receive any data')
 
     # timeout (non-triggered)
 
-    def _testWithTimeout(self):
+    eleza _testWithTimeout(self):
         address = self.serv.getsockname()
         file = open(support.TESTFN, 'rb')
         with socket.create_connection(address, timeout=2) as sock, file as file:
-            meth = self.meth_from_sock(sock)
+            meth = self.meth_kutoka_sock(sock)
             sent = meth(file)
             self.assertEqual(sent, self.FILESIZE)
 
-    def testWithTimeout(self):
+    eleza testWithTimeout(self):
         conn = self.accept_conn()
         data = self.recv_data(conn)
         self.assertEqual(len(data), self.FILESIZE)
@@ -5817,37 +5817,37 @@ class SendfileUsingSendTest(ThreadedTCPSocketTest):
 
     # timeout (triggered)
 
-    def _testWithTimeoutTriggeredSend(self):
+    eleza _testWithTimeoutTriggeredSend(self):
         address = self.serv.getsockname()
         with open(support.TESTFN, 'rb') as file:
             with socket.create_connection(address) as sock:
                 sock.settimeout(0.01)
-                meth = self.meth_from_sock(sock)
+                meth = self.meth_kutoka_sock(sock)
                 self.assertRaises(socket.timeout, meth, file)
 
-    def testWithTimeoutTriggeredSend(self):
+    eleza testWithTimeoutTriggeredSend(self):
         conn = self.accept_conn()
         conn.recv(88192)
 
     # errors
 
-    def _test_errors(self):
+    eleza _test_errors(self):
         pass
 
-    def test_errors(self):
+    eleza test_errors(self):
         with open(support.TESTFN, 'rb') as file:
             with socket.socket(type=socket.SOCK_DGRAM) as s:
-                meth = self.meth_from_sock(s)
+                meth = self.meth_kutoka_sock(s)
                 self.assertRaisesRegex(
                     ValueError, "SOCK_STREAM", meth, file)
         with open(support.TESTFN, 'rt') as file:
             with socket.socket() as s:
-                meth = self.meth_from_sock(s)
+                meth = self.meth_kutoka_sock(s)
                 self.assertRaisesRegex(
                     ValueError, "binary mode", meth, file)
         with open(support.TESTFN, 'rb') as file:
             with socket.socket() as s:
-                meth = self.meth_from_sock(s)
+                meth = self.meth_kutoka_sock(s)
                 self.assertRaisesRegex(TypeError, "positive integer",
                                        meth, file, count='2')
                 self.assertRaisesRegex(TypeError, "positive integer",
@@ -5860,18 +5860,18 @@ class SendfileUsingSendTest(ThreadedTCPSocketTest):
 
 @unittest.skipUnless(hasattr(os, "sendfile"),
                      'os.sendfile() required for this test.')
-class SendfileUsingSendfileTest(SendfileUsingSendTest):
+kundi SendfileUsingSendfileTest(SendfileUsingSendTest):
     """
     Test the sendfile() implementation of socket.sendfile().
     """
-    def meth_from_sock(self, sock):
-        return getattr(sock, "_sendfile_use_sendfile")
+    eleza meth_kutoka_sock(self, sock):
+        rudisha getattr(sock, "_sendfile_use_sendfile")
 
 
 @unittest.skipUnless(HAVE_SOCKET_ALG, 'AF_ALG required')
-class LinuxKernelCryptoAPI(unittest.TestCase):
+kundi LinuxKernelCryptoAPI(unittest.TestCase):
     # tests for AF_ALG
-    def create_alg(self, typ, name):
+    eleza create_alg(self, typ, name):
         sock = socket.socket(socket.AF_ALG, socket.SOCK_SEQPACKET, 0)
         try:
             sock.bind((typ, name))
@@ -5880,13 +5880,13 @@ class LinuxKernelCryptoAPI(unittest.TestCase):
             sock.close()
             raise unittest.SkipTest(str(e), typ, name)
         else:
-            return sock
+            rudisha sock
 
     # bpo-31705: On kernel older than 4.5, sendto() failed with ENOKEY,
     # at least on ppc64le architecture
     @support.requires_linux_version(4, 5)
-    def test_sha256(self):
-        expected = bytes.fromhex("ba7816bf8f01cfea414140de5dae2223b00361a396"
+    eleza test_sha256(self):
+        expected = bytes.kutokahex("ba7816bf8f01cfea414140de5dae2223b00361a396"
                                  "177a9cb410ff61f20015ad")
         with self.create_alg('hash', 'sha256') as algo:
             op, _ = algo.accept()
@@ -5902,8 +5902,8 @@ class LinuxKernelCryptoAPI(unittest.TestCase):
                 op.send(b'')
                 self.assertEqual(op.recv(512), expected)
 
-    def test_hmac_sha1(self):
-        expected = bytes.fromhex("effcdf6ae5eb2fa2d27416d5f184df9c259a7c79")
+    eleza test_hmac_sha1(self):
+        expected = bytes.kutokahex("effcdf6ae5eb2fa2d27416d5f184df9c259a7c79")
         with self.create_alg('hash', 'hmac(sha1)') as algo:
             algo.setsockopt(socket.SOL_ALG, socket.ALG_SET_KEY, b"Jefe")
             op, _ = algo.accept()
@@ -5914,11 +5914,11 @@ class LinuxKernelCryptoAPI(unittest.TestCase):
     # Although it should work with 3.19 and newer the test blocks on
     # Ubuntu 15.10 with Kernel 4.2.0-19.
     @support.requires_linux_version(4, 3)
-    def test_aes_cbc(self):
-        key = bytes.fromhex('06a9214036b8a15b512e03d534120006')
-        iv = bytes.fromhex('3dafba429d9eb430b422da802c9fac41')
+    eleza test_aes_cbc(self):
+        key = bytes.kutokahex('06a9214036b8a15b512e03d534120006')
+        iv = bytes.kutokahex('3dafba429d9eb430b422da802c9fac41')
         msg = b"Single block msg"
-        ciphertext = bytes.fromhex('e353779c1079aeb82708942dbe77181a')
+        ciphertext = bytes.kutokahex('e353779c1079aeb82708942dbe77181a')
         msglen = len(msg)
         with self.create_alg('skcipher', 'cbc(aes)') as algo:
             algo.setsockopt(socket.SOL_ALG, socket.ALG_SET_KEY, key)
@@ -5955,13 +5955,13 @@ class LinuxKernelCryptoAPI(unittest.TestCase):
             self.assertEqual(dec, msg * multiplier)
 
     @support.requires_linux_version(4, 9)  # see issue29324
-    def test_aead_aes_gcm(self):
-        key = bytes.fromhex('c939cc13397c1d37de6ae0e1cb7c423c')
-        iv = bytes.fromhex('b3d8cc017cbb89b39e0f67e2')
-        plain = bytes.fromhex('c3b3c41f113a31b73d9a5cd432103069')
-        assoc = bytes.fromhex('24825602bd12a984e0092d3e448eda5f')
-        expected_ct = bytes.fromhex('93fe7d9e9bfd10348a5606e5cafa7354')
-        expected_tag = bytes.fromhex('0032a1dc85f1c9786925a2e71d8272dd')
+    eleza test_aead_aes_gcm(self):
+        key = bytes.kutokahex('c939cc13397c1d37de6ae0e1cb7c423c')
+        iv = bytes.kutokahex('b3d8cc017cbb89b39e0f67e2')
+        plain = bytes.kutokahex('c3b3c41f113a31b73d9a5cd432103069')
+        assoc = bytes.kutokahex('24825602bd12a984e0092d3e448eda5f')
+        expected_ct = bytes.kutokahex('93fe7d9e9bfd10348a5606e5cafa7354')
+        expected_tag = bytes.kutokahex('0032a1dc85f1c9786925a2e71d8272dd')
 
         taglen = len(expected_tag)
         assoclen = len(assoc)
@@ -6018,7 +6018,7 @@ class LinuxKernelCryptoAPI(unittest.TestCase):
                 self.assertEqual(plain, res[assoclen:])
 
     @support.requires_linux_version(4, 3)  # see test_aes_cbc
-    def test_drbg_pr_sha256(self):
+    eleza test_drbg_pr_sha256(self):
         # deterministic random bit generator, prediction resistance, sha256
         with self.create_alg('rng', 'drbg_pr_sha256') as algo:
             extra_seed = os.urandom(32)
@@ -6028,7 +6028,7 @@ class LinuxKernelCryptoAPI(unittest.TestCase):
                 rn = op.recv(32)
                 self.assertEqual(len(rn), 32)
 
-    def test_sendmsg_afalg_args(self):
+    eleza test_sendmsg_afalg_args(self):
         sock = socket.socket(socket.AF_ALG, socket.SOCK_SEQPACKET, 0)
         with sock:
             with self.assertRaises(TypeError):
@@ -6046,7 +6046,7 @@ class LinuxKernelCryptoAPI(unittest.TestCase):
             with self.assertRaises(TypeError):
                 sock.sendmsg_afalg(op=socket.ALG_OP_ENCRYPT, assoclen=-1)
 
-    def test_length_restriction(self):
+    eleza test_length_restriction(self):
         # bpo-35050, off-by-one error in length check
         sock = socket.socket(socket.AF_ALG, socket.SOCK_SEQPACKET, 0)
         self.addCleanup(sock.close)
@@ -6065,7 +6065,7 @@ class LinuxKernelCryptoAPI(unittest.TestCase):
 
 
 @unittest.skipUnless(sys.platform.startswith("win"), "requires Windows")
-class TestMSWindowsTCPFlags(unittest.TestCase):
+kundi TestMSWindowsTCPFlags(unittest.TestCase):
     knownTCPFlags = {
                        # available since long time ago
                        'TCP_MAXSEG',
@@ -6079,38 +6079,38 @@ class TestMSWindowsTCPFlags(unittest.TestCase):
                        'TCP_KEEPINTVL'
                        }
 
-    def test_new_tcp_flags(self):
-        provided = [s for s in dir(socket) if s.startswith('TCP')]
-        unknown = [s for s in provided if s not in self.knownTCPFlags]
+    eleza test_new_tcp_flags(self):
+        provided = [s for s in dir(socket) ikiwa s.startswith('TCP')]
+        unknown = [s for s in provided ikiwa s not in self.knownTCPFlags]
 
         self.assertEqual([], unknown,
             "New TCP flags were discovered. See bpo-32394 for more information")
 
 
-class CreateServerTest(unittest.TestCase):
+kundi CreateServerTest(unittest.TestCase):
 
-    def test_address(self):
+    eleza test_address(self):
         port = support.find_unused_port()
         with socket.create_server(("127.0.0.1", port)) as sock:
             self.assertEqual(sock.getsockname()[0], "127.0.0.1")
             self.assertEqual(sock.getsockname()[1], port)
-        if support.IPV6_ENABLED:
+        ikiwa support.IPV6_ENABLED:
             with socket.create_server(("::1", port),
                                       family=socket.AF_INET6) as sock:
                 self.assertEqual(sock.getsockname()[0], "::1")
                 self.assertEqual(sock.getsockname()[1], port)
 
-    def test_family_and_type(self):
+    eleza test_family_and_type(self):
         with socket.create_server(("127.0.0.1", 0)) as sock:
             self.assertEqual(sock.family, socket.AF_INET)
             self.assertEqual(sock.type, socket.SOCK_STREAM)
-        if support.IPV6_ENABLED:
+        ikiwa support.IPV6_ENABLED:
             with socket.create_server(("::1", 0), family=socket.AF_INET6) as s:
                 self.assertEqual(s.family, socket.AF_INET6)
                 self.assertEqual(sock.type, socket.SOCK_STREAM)
 
-    def test_reuse_port(self):
-        if not hasattr(socket, "SO_REUSEPORT"):
+    eleza test_reuse_port(self):
+        ikiwa not hasattr(socket, "SO_REUSEPORT"):
             with self.assertRaises(ValueError):
                 socket.create_server(("localhost", 0), reuse_port=True)
         else:
@@ -6125,37 +6125,37 @@ class CreateServerTest(unittest.TestCase):
                      not hasattr(_socket, 'IPV6_V6ONLY'),
                      "IPV6_V6ONLY option not supported")
     @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required for this test')
-    def test_ipv6_only_default(self):
+    eleza test_ipv6_only_default(self):
         with socket.create_server(("::1", 0), family=socket.AF_INET6) as sock:
             assert sock.getsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY)
 
     @unittest.skipIf(not socket.has_dualstack_ipv6(),
                      "dualstack_ipv6 not supported")
     @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required for this test')
-    def test_dualstack_ipv6_family(self):
+    eleza test_dualstack_ipv6_family(self):
         with socket.create_server(("::1", 0), family=socket.AF_INET6,
                                   dualstack_ipv6=True) as sock:
             self.assertEqual(sock.family, socket.AF_INET6)
 
 
-class CreateServerFunctionalTest(unittest.TestCase):
+kundi CreateServerFunctionalTest(unittest.TestCase):
     timeout = 3
 
-    def setUp(self):
+    eleza setUp(self):
         self.thread = None
 
-    def tearDown(self):
-        if self.thread is not None:
+    eleza tearDown(self):
+        ikiwa self.thread is not None:
             self.thread.join(self.timeout)
 
-    def echo_server(self, sock):
-        def run(sock):
+    eleza echo_server(self, sock):
+        eleza run(sock):
             with sock:
                 conn, _ = sock.accept()
                 with conn:
                     event.wait(self.timeout)
                     msg = conn.recv(1024)
-                    if not msg:
+                    ikiwa not msg:
                         return
                     conn.sendall(msg)
 
@@ -6165,21 +6165,21 @@ class CreateServerFunctionalTest(unittest.TestCase):
         self.thread.start()
         event.set()
 
-    def echo_client(self, addr, family):
+    eleza echo_client(self, addr, family):
         with socket.socket(family=family) as sock:
             sock.settimeout(self.timeout)
             sock.connect(addr)
             sock.sendall(b'foo')
             self.assertEqual(sock.recv(1024), b'foo')
 
-    def test_tcp4(self):
+    eleza test_tcp4(self):
         port = support.find_unused_port()
         with socket.create_server(("", port)) as sock:
             self.echo_server(sock)
             self.echo_client(("127.0.0.1", port), socket.AF_INET)
 
     @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required for this test')
-    def test_tcp6(self):
+    eleza test_tcp6(self):
         port = support.find_unused_port()
         with socket.create_server(("", port),
                                   family=socket.AF_INET6) as sock:
@@ -6191,7 +6191,7 @@ class CreateServerFunctionalTest(unittest.TestCase):
     @unittest.skipIf(not socket.has_dualstack_ipv6(),
                      "dualstack_ipv6 not supported")
     @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required for this test')
-    def test_dual_stack_client_v4(self):
+    eleza test_dual_stack_client_v4(self):
         port = support.find_unused_port()
         with socket.create_server(("", port), family=socket.AF_INET6,
                                   dualstack_ipv6=True) as sock:
@@ -6201,7 +6201,7 @@ class CreateServerFunctionalTest(unittest.TestCase):
     @unittest.skipIf(not socket.has_dualstack_ipv6(),
                      "dualstack_ipv6 not supported")
     @unittest.skipUnless(support.IPV6_ENABLED, 'IPv6 required for this test')
-    def test_dual_stack_client_v6(self):
+    eleza test_dual_stack_client_v6(self):
         port = support.find_unused_port()
         with socket.create_server(("", port), family=socket.AF_INET6,
                                   dualstack_ipv6=True) as sock:
@@ -6209,7 +6209,7 @@ class CreateServerFunctionalTest(unittest.TestCase):
             self.echo_client(("::1", port), socket.AF_INET6)
 
 
-def test_main():
+eleza test_main():
     tests = [GeneralModuleTests, BasicTCPTest, TCPCloserTest, TCPTimeoutTest,
              TestExceptions, BufferIOTest, BasicTCPTest2, BasicUDPTest,
              UDPTimeoutTest, CreateServerTest, CreateServerFunctionalTest]
@@ -6276,5 +6276,5 @@ def test_main():
     support.run_unittest(*tests)
     support.threading_cleanup(*thread_info)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

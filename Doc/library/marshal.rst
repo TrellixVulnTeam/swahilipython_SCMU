@@ -31,13 +31,13 @@ supports a substantially wider range of objects than marshal.
 .. warning::
 
    The :mod:`marshal` module is not intended to be secure against erroneous or
-   maliciously constructed data.  Never unmarshal data received from an
+   maliciously constructed data.  Never unmarshal data received kutoka an
    untrusted or unauthenticated source.
 
 .. index:: object; code, code object
 
 Not all Python object types are supported; in general, only objects whose value
-is independent from a particular invocation of Python can be written and read by
+is independent kutoka a particular invocation of Python can be written and read by
 this module.  The following types are supported: booleans, integers, floating
 point numbers, complex numbers, strings, bytes, bytearrays, tuples, lists, sets,
 frozensets, dictionaries, and code objects, where it should be understood that
@@ -69,7 +69,7 @@ The module defines these functions:
 
 .. function:: load(file)
 
-   Read one value from the open file and return it.  If no valid value is read
+   Read one value kutoka the open file and return it.  If no valid value is read
    (e.g. because the data has a different Python version's incompatible marshal
    format), raise :exc:`EOFError`, :exc:`ValueError` or :exc:`TypeError`.  The
    file must be a readable :term:`binary file`.
@@ -110,9 +110,9 @@ In addition, the following constants are defined:
 
 .. rubric:: Footnotes
 
-.. [#] The name of this module stems from a bit of terminology used by the designers of
+.. [#] The name of this module stems kutoka a bit of terminology used by the designers of
    Modula-3 (amongst others), who use the term "marshalling" for shipping of data
    around in a self-contained form. Strictly speaking, "to marshal" means to
-   convert some data from internal to external form (in an RPC buffer for instance)
+   convert some data kutoka internal to external form (in an RPC buffer for instance)
    and "unmarshalling" for the reverse process.
 

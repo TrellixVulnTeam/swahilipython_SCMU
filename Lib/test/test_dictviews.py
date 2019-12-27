@@ -4,9 +4,9 @@ agiza pickle
 agiza sys
 agiza unittest
 
-class DictSetTest(unittest.TestCase):
+kundi DictSetTest(unittest.TestCase):
 
-    def test_constructors_not_callable(self):
+    eleza test_constructors_not_callable(self):
         kt = type({}.keys())
         self.assertRaises(TypeError, kt, {})
         self.assertRaises(TypeError, kt)
@@ -17,7 +17,7 @@ class DictSetTest(unittest.TestCase):
         self.assertRaises(TypeError, vt, {})
         self.assertRaises(TypeError, vt)
 
-    def test_dict_keys(self):
+    eleza test_dict_keys(self):
         d = {1: 10, "a": "ABC"}
         keys = d.keys()
         self.assertEqual(len(keys), 2)
@@ -37,7 +37,7 @@ class DictSetTest(unittest.TestCase):
         del e["a"]
         self.assertNotEqual(d.keys(), e.keys())
 
-    def test_dict_items(self):
+    eleza test_dict_items(self):
         d = {1: 10, "a": "ABC"}
         items = d.items()
         self.assertEqual(len(items), 2)
@@ -60,19 +60,19 @@ class DictSetTest(unittest.TestCase):
         e["a"] = "def"
         self.assertNotEqual(d.items(), e.items())
 
-    def test_dict_mixed_keys_items(self):
+    eleza test_dict_mixed_keys_items(self):
         d = {(1, 1): 11, (2, 2): 22}
         e = {1: 1, 2: 2}
         self.assertEqual(d.keys(), e.items())
         self.assertNotEqual(d.items(), e.keys())
 
-    def test_dict_values(self):
+    eleza test_dict_values(self):
         d = {1: 10, "a": "ABC"}
         values = d.values()
         self.assertEqual(set(values), {10, "ABC"})
         self.assertEqual(len(values), 2)
 
-    def test_dict_repr(self):
+    eleza test_dict_repr(self):
         d = {1: 10, "a": "ABC"}
         self.assertIsInstance(repr(d), str)
         r = repr(d.items())
@@ -88,7 +88,7 @@ class DictSetTest(unittest.TestCase):
         self.assertTrue(r == "dict_values(['ABC', 10])" or
                         r == "dict_values([10, 'ABC'])")
 
-    def test_keys_set_operations(self):
+    eleza test_keys_set_operations(self):
         d1 = {'a': 1, 'b': 2}
         d2 = {'b': 3, 'c': 2}
         d3 = {'d': 4, 'e': 5}
@@ -144,7 +144,7 @@ class DictSetTest(unittest.TestCase):
         self.assertTrue(de.keys().isdisjoint(de.keys()))
         self.assertTrue(de.keys().isdisjoint([1]))
 
-    def test_items_set_operations(self):
+    eleza test_items_set_operations(self):
         d1 = {'a': 1, 'b': 2}
         d2 = {'a': 2, 'b': 2}
         d3 = {'d': 4, 'e': 5}
@@ -200,7 +200,7 @@ class DictSetTest(unittest.TestCase):
         self.assertTrue(de.items().isdisjoint(de.items()))
         self.assertTrue(de.items().isdisjoint([1]))
 
-    def test_recursive_repr(self):
+    eleza test_recursive_repr(self):
         d = {}
         d[42] = d.values()
         r = repr(d)
@@ -213,26 +213,26 @@ class DictSetTest(unittest.TestCase):
         # Again.
         self.assertIsInstance(r, str)
 
-    def test_deeply_nested_repr(self):
+    eleza test_deeply_nested_repr(self):
         d = {}
         for i in range(sys.getrecursionlimit() + 100):
             d = {42: d.values()}
         self.assertRaises(RecursionError, repr, d)
 
-    def test_copy(self):
+    eleza test_copy(self):
         d = {1: 10, "a": "ABC"}
         self.assertRaises(TypeError, copy.copy, d.keys())
         self.assertRaises(TypeError, copy.copy, d.values())
         self.assertRaises(TypeError, copy.copy, d.items())
 
-    def test_compare_error(self):
-        class Exc(Exception):
+    eleza test_compare_error(self):
+        kundi Exc(Exception):
             pass
 
-        class BadEq:
-            def __hash__(self):
-                return 7
-            def __eq__(self, other):
+        kundi BadEq:
+            eleza __hash__(self):
+                rudisha 7
+            eleza __eq__(self, other):
                 raise Exc
 
         k1, k2 = BadEq(), BadEq()
@@ -251,7 +251,7 @@ class DictSetTest(unittest.TestCase):
         with self.assertRaises(Exc):
             v2 in d.values()
 
-    def test_pickle(self):
+    eleza test_pickle(self):
         d = {1: 10, "a": "ABC"}
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             self.assertRaises((TypeError, pickle.PicklingError),
@@ -261,7 +261,7 @@ class DictSetTest(unittest.TestCase):
             self.assertRaises((TypeError, pickle.PicklingError),
                 pickle.dumps, d.items(), proto)
 
-    def test_abc_registry(self):
+    eleza test_abc_registry(self):
         d = dict(a=1)
 
         self.assertIsInstance(d.keys(), collections.abc.KeysView)
@@ -283,5 +283,5 @@ class DictSetTest(unittest.TestCase):
         self.assertIsInstance(d.items(), collections.abc.Container)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

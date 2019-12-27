@@ -4,16 +4,16 @@ agiza os
 agiza sys
 
 
-class NoAll(RuntimeError):
+kundi NoAll(RuntimeError):
     pass
 
-class FailedImport(RuntimeError):
+kundi FailedImport(RuntimeError):
     pass
 
 
-class AllTest(unittest.TestCase):
+kundi AllTest(unittest.TestCase):
 
-    def check_all(self, modname):
+    eleza check_all(self, modname):
         names = {}
         with support.check_warnings(
             (".* (module|package)", DeprecationWarning),
@@ -26,7 +26,7 @@ class AllTest(unittest.TestCase):
                 # may not be available or not initialize properly in all
                 # environments.
                 raise FailedImport(modname)
-        if not hasattr(sys.modules[modname], "__all__"):
+        ikiwa not hasattr(sys.modules[modname], "__all__"):
             raise NoAll(modname)
         names = {}
         with self.subTest(module=modname):
@@ -40,11 +40,11 @@ class AllTest(unittest.TestCase):
                     # Include the module name in the exception string
                     self.fail("__all__ failure in {}: {}: {}".format(
                               modname, e.__class__.__name__, e))
-                if "__builtins__" in names:
+                ikiwa "__builtins__" in names:
                     del names["__builtins__"]
-                if '__annotations__' in names:
+                ikiwa '__annotations__' in names:
                     del names['__annotations__']
-                if "__warningregistry__" in names:
+                ikiwa "__warningregistry__" in names:
                     del names["__warningregistry__"]
                 keys = set(names)
                 all_list = sys.modules[modname].__all__
@@ -52,28 +52,28 @@ class AllTest(unittest.TestCase):
                 self.assertCountEqual(all_set, all_list, "in module {}".format(modname))
                 self.assertEqual(keys, all_set, "in module {}".format(modname))
 
-    def walk_modules(self, basedir, modpath):
+    eleza walk_modules(self, basedir, modpath):
         for fn in sorted(os.listdir(basedir)):
             path = os.path.join(basedir, fn)
-            if os.path.isdir(path):
+            ikiwa os.path.isdir(path):
                 pkg_init = os.path.join(path, '__init__.py')
-                if os.path.exists(pkg_init):
+                ikiwa os.path.exists(pkg_init):
                     yield pkg_init, modpath + fn
                     for p, m in self.walk_modules(path, modpath + fn + "."):
                         yield p, m
                 continue
-            if not fn.endswith('.py') or fn == '__init__.py':
+            ikiwa not fn.endswith('.py') or fn == '__init__.py':
                 continue
             yield path, modpath + fn[:-3]
 
-    def test_all(self):
+    eleza test_all(self):
         # Blacklisted modules and packages
         blacklist = set([
             # Will raise a SyntaxError when compiling the exec statement
             '__future__',
         ])
 
-        if not sys.platform.startswith('java'):
+        ikiwa not sys.platform.startswith('java'):
             # In case _socket fails to build, make this test fail more gracefully
             # than an AttributeError somewhere deep in CGIHTTPServer.
             agiza _socket
@@ -85,19 +85,19 @@ class AllTest(unittest.TestCase):
             m = modname
             blacklisted = False
             while m:
-                if m in blacklist:
+                ikiwa m in blacklist:
                     blacklisted = True
                     break
                 m = m.rpartition('.')[0]
-            if blacklisted:
+            ikiwa blacklisted:
                 continue
-            if support.verbose:
-                print(modname)
+            ikiwa support.verbose:
+                andika(modname)
             try:
                 # This heuristic speeds up the process by removing, de facto,
                 # most test modules (and avoiding the auto-executing ones).
                 with open(path, "rb") as f:
-                    if b"__all__" not in f.read():
+                    ikiwa b"__all__" not in f.read():
                         raise NoAll(modname)
                     self.check_all(modname)
             except NoAll:
@@ -105,11 +105,11 @@ class AllTest(unittest.TestCase):
             except FailedImport:
                 failed_agizas.append(modname)
 
-        if support.verbose:
-            print('Following modules have no __all__ and have been ignored:',
+        ikiwa support.verbose:
+            andika('Following modules have no __all__ and have been ignored:',
                   ignored)
-            print('Following modules failed to be imported:', failed_agizas)
+            andika('Following modules failed to be imported:', failed_agizas)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

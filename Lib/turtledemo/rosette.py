@@ -16,7 +16,7 @@ Followed by a complete undo().
 kutoka turtle agiza Screen, Turtle, mainloop
 kutoka time agiza perf_counter as clock, sleep
 
-def mn_eck(p, ne,sz):
+eleza mn_eck(p, ne,sz):
     turtlelist = [p]
     #create ne-1 additional turtles
     for i in range(1,ne):
@@ -33,7 +33,7 @@ def mn_eck(p, ne,sz):
             t.pencolor(1-c,0,c)
             t.fd(sz)
 
-def main():
+eleza main():
     s = Screen()
     s.bgcolor("black")
     p=Turtle()
@@ -56,10 +56,10 @@ def main():
         for t in s.turtles():
             t.undo()
     et = clock()
-    return "runtime: %.3f sec" % (z1+et-at)
+    rudisha "runtime: %.3f sec" % (z1+et-at)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     msg = main()
-    print(msg)
+    andika(msg)
     mainloop()

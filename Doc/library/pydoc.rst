@@ -16,20 +16,20 @@
 
 --------------
 
-The :mod:`pydoc` module automatically generates documentation from Python
+The :mod:`pydoc` module automatically generates documentation kutoka Python
 modules.  The documentation can be presented as pages of text on the console,
 served to a Web browser, or saved to HTML files.
 
 For modules, classes, functions and methods, the displayed documentation is
-derived from the docstring (i.e. the :attr:`__doc__` attribute) of the object,
+derived kutoka the docstring (i.e. the :attr:`__doc__` attribute) of the object,
 and recursively of its documentable members.  If there is no docstring,
-:mod:`pydoc` tries to obtain a description from the block of comment lines just
+:mod:`pydoc` tries to obtain a description kutoka the block of comment lines just
 above the definition of the class, function or method in the source file, or at
 the top of the module (see :func:`inspect.getcomments`).
 
 The built-in function :func:`help` invokes the online help system in the
 interactive interpreter, which uses :mod:`pydoc` to generate its documentation
-as text on the console.  The same text documentation can also be viewed from
+as text on the console.  The same text documentation can also be viewed kutoka
 outside the Python interpreter by running :program:`pydoc` as a script at the
 operating system's command prompt. For example, running ::
 
@@ -72,9 +72,9 @@ Specifying ``0`` as the port number will select an arbitrary unused port.
 
 :program:`pydoc -n <hostname>` will start the server listening at the given
 hostname.  By default the hostname is 'localhost' but if you want the server to
-be reached from other machines, you may want to change the host name that the
+be reached kutoka other machines, you may want to change the host name that the
 server responds to.  During development this is especially useful if you want
-to run pydoc from within a container.
+to run pydoc kutoka within a container.
 
 :program:`pydoc -b` will start the server and additionally open a web
 browser to a module index page.  Each served page has a navigation bar at the
@@ -85,7 +85,7 @@ keyword in their synopsis line, and go to the *Module index*, *Topics* and
 When :program:`pydoc` generates documentation, it uses the current environment
 and path to locate modules.  Thus, invoking :program:`pydoc spam`
 documents precisely the version of the module you would get if you started the
-Python interpreter and typed ``import spam``.
+Python interpreter and typed ``agiza spam``.
 
 Module docs for core modules are assumed to reside in
 ``https://docs.python.org/X.Y/library/`` where ``X`` and ``Y`` are the
@@ -102,7 +102,7 @@ Reference Manual pages.
 
 .. versionchanged:: 3.4
    :mod:`pydoc` now uses :func:`inspect.signature` rather than
-   :func:`inspect.getfullargspec` to extract signature information from
+   :func:`inspect.getfullargspec` to extract signature information kutoka
    callables.
 
 .. versionchanged:: 3.7

@@ -10,15 +10,15 @@ kutoka test.support.script_helper agiza assert_python_failure
 kutoka test agiza support
 
 
-class CProfileTest(ProfileTest):
-    profilerclass = cProfile.Profile
+kundi CProfileTest(ProfileTest):
+    profilerkundi = cProfile.Profile
     profilermodule = cProfile
     expected_max_output = "{built-in method builtins.max}"
 
-    def get_expected_output(self):
-        return _ProfileOutput
+    eleza get_expected_output(self):
+        rudisha _ProfileOutput
 
-    def test_bad_counter_during_dealloc(self):
+    eleza test_bad_counter_during_dealloc(self):
         # bpo-3895
         agiza _lsprof
 
@@ -31,9 +31,9 @@ class CProfileTest(ProfileTest):
 
             self.assertEqual(cm.unraisable.exc_type, TypeError)
 
-    def test_profile_enable_disable(self):
+    eleza test_profile_enable_disable(self):
         prof = self.profilerclass()
-        # Make sure we clean ourselves up if the test fails for some reason.
+        # Make sure we clean ourselves up ikiwa the test fails for some reason.
         self.addCleanup(prof.disable)
 
         prof.enable()
@@ -42,13 +42,13 @@ class CProfileTest(ProfileTest):
         prof.disable()
         self.assertIs(sys.getprofile(), None)
 
-    def test_profile_as_context_manager(self):
+    eleza test_profile_as_context_manager(self):
         prof = self.profilerclass()
-        # Make sure we clean ourselves up if the test fails for some reason.
+        # Make sure we clean ourselves up ikiwa the test fails for some reason.
         self.addCleanup(prof.disable)
 
         with prof as __enter__return_value:
-            # profile.__enter__ should return itself.
+            # profile.__enter__ should rudisha itself.
             self.assertIs(prof, __enter__return_value)
 
             # profile should be set as the global profiler inside the
@@ -58,15 +58,15 @@ class CProfileTest(ProfileTest):
         # profile shouldn't be set once we leave the with-block.
         self.assertIs(sys.getprofile(), None)
 
-class TestCommandLine(unittest.TestCase):
-    def test_sort(self):
+kundi TestCommandLine(unittest.TestCase):
+    eleza test_sort(self):
         rc, out, err = assert_python_failure('-m', 'cProfile', '-s', 'demo')
         self.assertGreater(rc, 0)
         self.assertIn(b"option -s: invalid choice: 'demo'", err)
 
 
-def main():
-    if '-r' not in sys.argv:
+eleza main():
+    ikiwa '-r' not in sys.argv:
         unittest.main()
     else:
         regenerate_expected_output(__file__, CProfileTest)
@@ -120,5 +120,5 @@ profilee.py:88(helper2)                           ->       8    0.064    0.080  
 profilee.py:98(subhelper)                         ->      16    0.016    0.016  profilee.py:110(__getattr__)
 {built-in method builtins.hasattr}                ->      12    0.012    0.012  profilee.py:110(__getattr__)"""
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     main()

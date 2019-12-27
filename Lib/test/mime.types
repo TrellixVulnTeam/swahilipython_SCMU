@@ -135,7 +135,7 @@ application/news-transmission
 application/nss
 application/ocsp-request			orq
 application/ocsp-response			ors
-application/octet-stream		bin lha lzh exe class so dll img iso
+application/octet-stream		bin lha lzh exe kundi so dll img iso
 application/oda					oda
 application/oebps-package+xml			opf
 application/ogg					ogx
@@ -1127,7 +1127,7 @@ image/jpx					jpx jpf
 image/ktx					ktx
 image/naplps
 image/png					png
-image/prs.btif					btif btf
+image/prs.btif					btikiwa btf
 image/prs.pti					pti
 image/svg+xml					svg svgz
 image/t38					t38
@@ -1152,7 +1152,7 @@ image/vnd.ms-modi				mdi
 image/vnd.net-fpx
 image/vnd.radiance				hdr rgbe xyze
 image/vnd.sealed.png				spng spn s1n
-image/vnd.sealedmedia.softseal.gif		sgif sgi s1g
+image/vnd.sealedmedia.softseal.gif		sgikiwa sgi s1g
 image/vnd.sealedmedia.softseal.jpg		sjpg sjp s1j
 image/vnd.svf
 image/vnd.wap.wbmp				wbmp
@@ -1401,7 +1401,7 @@ application/x-xpinstall				xpi
 application/x-xspf+xml				xspf
 application/x-xz				xz
 audio/midi					mid midi kar
-audio/x-aiff					aif aiff aifc
+audio/x-aiff					aikiwa aiff aifc
 audio/x-annodex					axa
 audio/x-flac					flac
 audio/x-mod					mod ult uni m15 mtm 669 med

@@ -45,20 +45,20 @@ kutoka test.test_agiza agiza _ready_to_agiza
 #       zipagiza in the test_zipimport_support test module.
 
 modfile = mod.__file__
-if modfile.endswith(('c', 'o')):
+ikiwa modfile.endswith(('c', 'o')):
     modfile = modfile[:-1]
 
 # Normalize file names: on Windows, the case of file names of compiled
 # modules depends on the path used to start the python executable.
 modfile = normcase(modfile)
 
-def revise(filename, *args):
-    return (normcase(filename),) + args
+eleza revise(filename, *args):
+    rudisha (normcase(filename),) + args
 
 git = mod.StupidGit()
 
 
-def signatures_with_lexicographic_keyword_only_parameters():
+eleza signatures_with_lexicographic_keyword_only_parameters():
     """
     Yields a whole bunch of functions with only keyword-only parameters,
     where those parameters are always in lexicographically sorted order.
@@ -68,21 +68,21 @@ def signatures_with_lexicographic_keyword_only_parameters():
         p = []
         bit = 1
         for j in range(len(parameters)):
-            if i & (bit << j):
+            ikiwa i & (bit << j):
                 p.append(parameters[j])
-        fn_text = "def foo(*, " + ", ".join(p) + "): pass"
+        fn_text = "eleza foo(*, " + ", ".join(p) + "): pass"
         symbols = {}
         exec(fn_text, symbols, symbols)
         yield symbols['foo']
 
 
-def unsorted_keyword_only_parameters_fn(*, throw, out, the, baby, with_,
+eleza unsorted_keyword_only_parameters_fn(*, throw, out, the, baby, with_,
                                         the_, bathwater):
     pass
 
 unsorted_keyword_only_parameters = 'throw out the baby with_ the_ bathwater'.split()
 
-class IsTestBase(unittest.TestCase):
+kundi IsTestBase(unittest.TestCase):
     predicates = set([inspect.isbuiltin, inspect.isclass, inspect.iscode,
                       inspect.isframe, inspect.isfunction, inspect.ismethod,
                       inspect.ismodule, inspect.istraceback,
@@ -90,41 +90,41 @@ class IsTestBase(unittest.TestCase):
                       inspect.iscoroutine, inspect.iscoroutinefunction,
                       inspect.isasyncgen, inspect.isasyncgenfunction])
 
-    def istest(self, predicate, exp):
+    eleza istest(self, predicate, exp):
         obj = eval(exp)
         self.assertTrue(predicate(obj), '%s(%s)' % (predicate.__name__, exp))
 
         for other in self.predicates - set([predicate]):
-            if (predicate == inspect.isgeneratorfunction or \
+            ikiwa (predicate == inspect.isgeneratorfunction or \
                predicate == inspect.isasyncgenfunction or \
                predicate == inspect.iscoroutinefunction) and \
                other == inspect.isfunction:
                 continue
             self.assertFalse(other(obj), 'not %s(%s)' % (other.__name__, exp))
 
-def generator_function_example(self):
+eleza generator_function_example(self):
     for i in range(2):
         yield i
 
-async def async_generator_function_example(self):
+async eleza async_generator_function_example(self):
     async for i in range(2):
         yield i
 
-async def coroutine_function_example(self):
-    return 'spam'
+async eleza coroutine_function_example(self):
+    rudisha 'spam'
 
 @types.coroutine
-def gen_coroutine_function_example(self):
+eleza gen_coroutine_function_example(self):
     yield
-    return 'spam'
+    rudisha 'spam'
 
-class EqualsToAll:
-    def __eq__(self, other):
-        return True
+kundi EqualsToAll:
+    eleza __eq__(self, other):
+        rudisha True
 
-class TestPredicates(IsTestBase):
+kundi TestPredicates(IsTestBase):
 
-    def test_excluding_predicates(self):
+    eleza test_excluding_predicates(self):
         global tb
         self.istest(inspect.isbuiltin, 'sys.exit')
         self.istest(inspect.isbuiltin, '[].append')
@@ -135,7 +135,7 @@ class TestPredicates(IsTestBase):
             tb = sys.exc_info()[2]
             self.istest(inspect.isframe, 'tb.tb_frame')
             self.istest(inspect.istraceback, 'tb')
-            if hasattr(types, 'GetSetDescriptorType'):
+            ikiwa hasattr(types, 'GetSetDescriptorType'):
                 self.istest(inspect.isgetsetdescriptor,
                             'type(tb.tb_frame).f_locals')
             else:
@@ -161,12 +161,12 @@ class TestPredicates(IsTestBase):
             self.istest(inspect.iscoroutine, 'coroutine_function_example(1)')
             self.istest(inspect.iscoroutinefunction, 'coroutine_function_example')
 
-        if hasattr(types, 'MemberDescriptorType'):
+        ikiwa hasattr(types, 'MemberDescriptorType'):
             self.istest(inspect.ismemberdescriptor, 'datetime.timedelta.days')
         else:
             self.assertFalse(inspect.ismemberdescriptor(datetime.timedelta.days))
 
-    def test_iscoroutine(self):
+    eleza test_iscoroutine(self):
         async_gen_coro = async_generator_function_example(1)
         gen_coro = gen_coroutine_function_example(1)
         coro = coroutine_function_example(1)
@@ -213,8 +213,8 @@ class TestPredicates(IsTestBase):
 
         coro.close(); gen_coro.close(); # silence warnings
 
-    def test_isawaitable(self):
-        def gen(): yield
+    eleza test_isawaitable(self):
+        eleza gen(): yield
         self.assertFalse(inspect.isawaitable(gen()))
 
         coro = coroutine_function_example(1)
@@ -223,34 +223,34 @@ class TestPredicates(IsTestBase):
         self.assertTrue(inspect.isawaitable(coro))
         self.assertTrue(inspect.isawaitable(gen_coro))
 
-        class Future:
-            def __await__():
+        kundi Future:
+            eleza __await__():
                 pass
         self.assertTrue(inspect.isawaitable(Future()))
         self.assertFalse(inspect.isawaitable(Future))
 
-        class NotFuture: pass
+        kundi NotFuture: pass
         not_fut = NotFuture()
         not_fut.__await__ = lambda: None
         self.assertFalse(inspect.isawaitable(not_fut))
 
         coro.close(); gen_coro.close() # silence warnings
 
-    def test_isroutine(self):
+    eleza test_isroutine(self):
         self.assertTrue(inspect.isroutine(mod.spam))
         self.assertTrue(inspect.isroutine([].count))
 
-    def test_isclass(self):
+    eleza test_isclass(self):
         self.istest(inspect.isclass, 'mod.StupidGit')
         self.assertTrue(inspect.isclass(list))
 
-        class CustomGetattr(object):
-            def __getattr__(self, attr):
-                return None
+        kundi CustomGetattr(object):
+            eleza __getattr__(self, attr):
+                rudisha None
         self.assertFalse(inspect.isclass(CustomGetattr()))
 
-    def test_get_slot_members(self):
-        class C(object):
+    eleza test_get_slot_members(self):
+        kundi C(object):
             __slots__ = ("a", "b")
         x = C()
         x.a = 42
@@ -258,17 +258,17 @@ class TestPredicates(IsTestBase):
         self.assertIn('a', members)
         self.assertNotIn('b', members)
 
-    def test_isabstract(self):
+    eleza test_isabstract(self):
         kutoka abc agiza ABCMeta, abstractmethod
 
-        class AbstractClassExample(metaclass=ABCMeta):
+        kundi AbstractClassExample(metaclass=ABCMeta):
 
             @abstractmethod
-            def foo(self):
+            eleza foo(self):
                 pass
 
-        class ClassExample(AbstractClassExample):
-            def foo(self):
+        kundi ClassExample(AbstractClassExample):
+            eleza foo(self):
                 pass
 
         a = ClassExample()
@@ -280,42 +280,42 @@ class TestPredicates(IsTestBase):
         self.assertFalse(inspect.isabstract(int))
         self.assertFalse(inspect.isabstract(5))
 
-    def test_isabstract_during_init_subclass(self):
+    eleza test_isabstract_during_init_subclass(self):
         kutoka abc agiza ABCMeta, abstractmethod
         isabstract_checks = []
-        class AbstractChecker(metaclass=ABCMeta):
-            def __init_subclass__(cls):
+        kundi AbstractChecker(metaclass=ABCMeta):
+            eleza __init_subclass__(cls):
                 isabstract_checks.append(inspect.isabstract(cls))
-        class AbstractClassExample(AbstractChecker):
+        kundi AbstractClassExample(AbstractChecker):
             @abstractmethod
-            def foo(self):
+            eleza foo(self):
                 pass
-        class ClassExample(AbstractClassExample):
-            def foo(self):
+        kundi ClassExample(AbstractClassExample):
+            eleza foo(self):
                 pass
         self.assertEqual(isabstract_checks, [True, False])
 
         isabstract_checks.clear()
-        class AbstractChild(AbstractClassExample):
+        kundi AbstractChild(AbstractClassExample):
             pass
-        class AbstractGrandchild(AbstractChild):
+        kundi AbstractGrandchild(AbstractChild):
             pass
-        class ConcreteGrandchild(ClassExample):
+        kundi ConcreteGrandchild(ClassExample):
             pass
         self.assertEqual(isabstract_checks, [True, True, False])
 
 
-class TestInterpreterStack(IsTestBase):
-    def __init__(self, *args, **kwargs):
+kundi TestInterpreterStack(IsTestBase):
+    eleza __init__(self, *args, **kwargs):
         unittest.TestCase.__init__(self, *args, **kwargs)
 
         git.abuse(7, 8, 9)
 
-    def test_abuse_done(self):
+    eleza test_abuse_done(self):
         self.istest(inspect.istraceback, 'git.ex[2]')
         self.istest(inspect.isframe, 'mod.fr')
 
-    def test_stack(self):
+    eleza test_stack(self):
         self.assertTrue(len(mod.st) >= 5)
         self.assertEqual(revise(*mod.st[0][1:]),
              (modfile, 16, 'eggs', ['    st = inspect.stack()\n'], 0))
@@ -334,7 +334,7 @@ class TestInterpreterStack(IsTestBase):
         self.assertIn('inspect.stack()', record.code_context[0])
         self.assertEqual(record.index, 0)
 
-    def test_trace(self):
+    eleza test_trace(self):
         self.assertEqual(len(git.tr), 3)
         self.assertEqual(revise(*git.tr[0][1:]),
              (modfile, 43, 'argue', ['            spam(a, b, c)\n'], 0))
@@ -343,7 +343,7 @@ class TestInterpreterStack(IsTestBase):
         self.assertEqual(revise(*git.tr[2][1:]),
              (modfile, 18, 'eggs', ['    q = y / 0\n'], 0))
 
-    def test_frame(self):
+    eleza test_frame(self):
         args, varargs, varkw, locals = inspect.getargvalues(mod.fr)
         self.assertEqual(args, ['x', 'y'])
         self.assertEqual(varargs, None)
@@ -352,7 +352,7 @@ class TestInterpreterStack(IsTestBase):
         self.assertEqual(inspect.formatargvalues(args, varargs, varkw, locals),
                          '(x=11, y=14)')
 
-    def test_previous_frame(self):
+    eleza test_previous_frame(self):
         args, varargs, varkw, locals = inspect.getargvalues(mod.fr.f_back)
         self.assertEqual(args, ['a', 'b', 'c', 'd', 'e', 'f'])
         self.assertEqual(varargs, 'g')
@@ -360,31 +360,31 @@ class TestInterpreterStack(IsTestBase):
         self.assertEqual(inspect.formatargvalues(args, varargs, varkw, locals),
              '(a=7, b=8, c=9, d=3, e=4, f=5, *g=(), **h={})')
 
-class GetSourceBase(unittest.TestCase):
+kundi GetSourceBase(unittest.TestCase):
     # Subclasses must override.
     fodderModule = None
 
-    def setUp(self):
+    eleza setUp(self):
         with open(inspect.getsourcefile(self.fodderModule)) as fp:
             self.source = fp.read()
 
-    def sourcerange(self, top, bottom):
+    eleza sourcerange(self, top, bottom):
         lines = self.source.split("\n")
-        return "\n".join(lines[top-1:bottom]) + ("\n" if bottom else "")
+        rudisha "\n".join(lines[top-1:bottom]) + ("\n" ikiwa bottom else "")
 
-    def assertSourceEqual(self, obj, top, bottom):
+    eleza assertSourceEqual(self, obj, top, bottom):
         self.assertEqual(inspect.getsource(obj),
                          self.sourcerange(top, bottom))
 
-class SlotUser:
+kundi SlotUser:
     'Docstrings for __slots__'
     __slots__ = {'power': 'measured in kilowatts',
                  'distance': 'measured in kilometers'}
 
-class TestRetrievingSourceCode(GetSourceBase):
+kundi TestRetrievingSourceCode(GetSourceBase):
     fodderModule = mod
 
-    def test_getclasses(self):
+    eleza test_getclasses(self):
         classes = inspect.getmembers(mod, inspect.isclass)
         self.assertEqual(classes,
                          [('FesteringGob', mod.FesteringGob),
@@ -421,7 +421,7 @@ class TestRetrievingSourceCode(GetSourceBase):
                            ]
                           ])
 
-    def test_getfunctions(self):
+    eleza test_getfunctions(self):
         functions = inspect.getmembers(mod, inspect.isfunction)
         self.assertEqual(functions, [('eggs', mod.eggs),
                                      ('lobbest', mod.lobbest),
@@ -429,7 +429,7 @@ class TestRetrievingSourceCode(GetSourceBase):
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
-    def test_getdoc(self):
+    eleza test_getdoc(self):
         self.assertEqual(inspect.getdoc(mod), 'A module docstring.')
         self.assertEqual(inspect.getdoc(mod.StupidGit),
                          'A longer,\n\nindented\n\ndocstring.')
@@ -442,7 +442,7 @@ class TestRetrievingSourceCode(GetSourceBase):
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
-    def test_getdoc_inherited(self):
+    eleza test_getdoc_inherited(self):
         self.assertEqual(inspect.getdoc(mod.FesteringGob),
                          'A longer,\n\nindented\n\ndocstring.')
         self.assertEqual(inspect.getdoc(mod.FesteringGob.abuse),
@@ -453,31 +453,31 @@ class TestRetrievingSourceCode(GetSourceBase):
                          'The automatic gainsaying.')
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS, "test requires docstrings")
-    def test_finddoc(self):
+    eleza test_finddoc(self):
         finddoc = inspect._finddoc
         self.assertEqual(finddoc(int), int.__doc__)
         self.assertEqual(finddoc(int.to_bytes), int.to_bytes.__doc__)
         self.assertEqual(finddoc(int().to_bytes), int.to_bytes.__doc__)
-        self.assertEqual(finddoc(int.from_bytes), int.from_bytes.__doc__)
+        self.assertEqual(finddoc(int.kutoka_bytes), int.kutoka_bytes.__doc__)
         self.assertEqual(finddoc(int.real), int.real.__doc__)
 
-    def test_cleandoc(self):
+    eleza test_cleandoc(self):
         self.assertEqual(inspect.cleandoc('An\n    indented\n    docstring.'),
                          'An\nindented\ndocstring.')
 
-    def test_getcomments(self):
+    eleza test_getcomments(self):
         self.assertEqual(inspect.getcomments(mod), '# line 1\n')
         self.assertEqual(inspect.getcomments(mod.StupidGit), '# line 20\n')
-        # If the object source file is not available, return None.
+        # If the object source file is not available, rudisha None.
         co = compile('x=1', '_non_existing_filename.py', 'exec')
         self.assertIsNone(inspect.getcomments(co))
-        # If the object has been defined in C, return None.
+        # If the object has been defined in C, rudisha None.
         self.assertIsNone(inspect.getcomments(list))
 
-    def test_getmodule(self):
+    eleza test_getmodule(self):
         # Check actual module
         self.assertEqual(inspect.getmodule(mod), mod)
-        # Check class (uses __module__ attribute)
+        # Check kundi (uses __module__ attribute)
         self.assertEqual(inspect.getmodule(mod.StupidGit), mod)
         # Check a method (no __module__ attribute, falls back to filename)
         self.assertEqual(inspect.getmodule(mod.StupidGit.abuse), mod)
@@ -488,17 +488,17 @@ class TestRetrievingSourceCode(GetSourceBase):
         # Check filename override
         self.assertEqual(inspect.getmodule(None, modfile), mod)
 
-    def test_getframeinfo_get_first_line(self):
+    eleza test_getframeinfo_get_first_line(self):
         frame_info = inspect.getframeinfo(self.fodderModule.fr, 50)
         self.assertEqual(frame_info.code_context[0], "# line 1\n")
         self.assertEqual(frame_info.code_context[1], "'A module docstring.'\n")
 
-    def test_getsource(self):
+    eleza test_getsource(self):
         self.assertSourceEqual(git.abuse, 29, 39)
         self.assertSourceEqual(mod.StupidGit, 21, 51)
         self.assertSourceEqual(mod.lobbest, 75, 76)
 
-    def test_getsourcefile(self):
+    eleza test_getsourcefile(self):
         self.assertEqual(normcase(inspect.getsourcefile(mod.spam)), modfile)
         self.assertEqual(normcase(inspect.getsourcefile(git.abuse)), modfile)
         fn = "_non_existing_filename_used_for_sourcefile_test.py"
@@ -510,20 +510,20 @@ class TestRetrievingSourceCode(GetSourceBase):
         finally:
             del linecache.cache[co.co_filename]
 
-    def test_getfile(self):
+    eleza test_getfile(self):
         self.assertEqual(inspect.getfile(mod.StupidGit), mod.__file__)
 
-    def test_getfile_builtin_module(self):
+    eleza test_getfile_builtin_module(self):
         with self.assertRaises(TypeError) as e:
             inspect.getfile(sys)
         self.assertTrue(str(e.exception).startswith('<module'))
 
-    def test_getfile_builtin_class(self):
+    eleza test_getfile_builtin_class(self):
         with self.assertRaises(TypeError) as e:
             inspect.getfile(int)
         self.assertTrue(str(e.exception).startswith('<class'))
 
-    def test_getfile_builtin_function_or_method(self):
+    eleza test_getfile_builtin_function_or_method(self):
         with self.assertRaises(TypeError) as e_abs:
             inspect.getfile(abs)
         self.assertIn('expected, got', str(e_abs.exception))
@@ -531,44 +531,44 @@ class TestRetrievingSourceCode(GetSourceBase):
             inspect.getfile(list.append)
         self.assertIn('expected, got', str(e_append.exception))
 
-    def test_getfile_class_without_module(self):
-        class CM(type):
+    eleza test_getfile_class_without_module(self):
+        kundi CM(type):
             @property
-            def __module__(cls):
+            eleza __module__(cls):
                 raise AttributeError
-        class C(metaclass=CM):
+        kundi C(metaclass=CM):
             pass
         with self.assertRaises(TypeError):
             inspect.getfile(C)
 
-    def test_getfile_broken_repr(self):
-        class ErrorRepr:
-            def __repr__(self):
+    eleza test_getfile_broken_repr(self):
+        kundi ErrorRepr:
+            eleza __repr__(self):
                 raise Exception('xyz')
         er = ErrorRepr()
         with self.assertRaises(TypeError):
             inspect.getfile(er)
 
-    def test_getmodule_recursion(self):
+    eleza test_getmodule_recursion(self):
         kutoka types agiza ModuleType
         name = '__inspect_dummy'
         m = sys.modules[name] = ModuleType(name)
         m.__file__ = "<string>" # hopefully not a real filename...
         m.__loader__ = "dummy"  # pretend the filename is understood by a loader
-        exec("def x(): pass", m.__dict__)
+        exec("eleza x(): pass", m.__dict__)
         self.assertEqual(inspect.getsourcefile(m.x.__code__), '<string>')
         del sys.modules[name]
         inspect.getmodule(compile('a=10','','single'))
 
-    def test_proceed_with_fake_filename(self):
+    eleza test_proceed_with_fake_filename(self):
         '''doctest monkeypatches linecache to enable inspection'''
-        fn, source = '<test>', 'def x(): pass\n'
+        fn, source = '<test>', 'eleza x(): pass\n'
         getlines = linecache.getlines
-        def monkey(filename, module_globals=None):
-            if filename == fn:
-                return source.splitlines(keepends=True)
+        eleza monkey(filename, module_globals=None):
+            ikiwa filename == fn:
+                rudisha source.splitlines(keepends=True)
             else:
-                return getlines(filename, module_globals)
+                rudisha getlines(filename, module_globals)
         linecache.getlines = monkey
         try:
             ns = {}
@@ -577,98 +577,98 @@ class TestRetrievingSourceCode(GetSourceBase):
         finally:
             linecache.getlines = getlines
 
-    def test_getsource_on_code_object(self):
+    eleza test_getsource_on_code_object(self):
         self.assertSourceEqual(mod.eggs.__code__, 12, 18)
 
-class TestGettingSourceOfToplevelFrames(GetSourceBase):
+kundi TestGettingSourceOfToplevelFrames(GetSourceBase):
     fodderModule = mod
 
-    def test_range_toplevel_frame(self):
+    eleza test_range_toplevel_frame(self):
         self.maxDiff = None
         self.assertSourceEqual(mod.currentframe, 1, None)
 
-    def test_range_traceback_toplevel_frame(self):
+    eleza test_range_traceback_toplevel_frame(self):
         self.assertSourceEqual(mod.tb, 1, None)
 
-class TestDecorators(GetSourceBase):
+kundi TestDecorators(GetSourceBase):
     fodderModule = mod2
 
-    def test_wrapped_decorator(self):
+    eleza test_wrapped_decorator(self):
         self.assertSourceEqual(mod2.wrapped, 14, 17)
 
-    def test_replacing_decorator(self):
+    eleza test_replacing_decorator(self):
         self.assertSourceEqual(mod2.gone, 9, 10)
 
-    def test_getsource_unwrap(self):
+    eleza test_getsource_unwrap(self):
         self.assertSourceEqual(mod2.real, 130, 132)
 
-    def test_decorator_with_lambda(self):
+    eleza test_decorator_with_lambda(self):
         self.assertSourceEqual(mod2.func114, 113, 115)
 
-class TestOneliners(GetSourceBase):
+kundi TestOneliners(GetSourceBase):
     fodderModule = mod2
-    def test_oneline_lambda(self):
+    eleza test_oneline_lambda(self):
         # Test inspect.getsource with a one-line lambda function.
         self.assertSourceEqual(mod2.oll, 25, 25)
 
-    def test_threeline_lambda(self):
+    eleza test_threeline_lambda(self):
         # Test inspect.getsource with a three-line lambda function,
         # where the second and third lines are _not_ indented.
         self.assertSourceEqual(mod2.tll, 28, 30)
 
-    def test_twoline_indented_lambda(self):
+    eleza test_twoline_indented_lambda(self):
         # Test inspect.getsource with a two-line lambda function,
         # where the second line _is_ indented.
         self.assertSourceEqual(mod2.tlli, 33, 34)
 
-    def test_onelinefunc(self):
+    eleza test_onelinefunc(self):
         # Test inspect.getsource with a regular one-line function.
         self.assertSourceEqual(mod2.onelinefunc, 37, 37)
 
-    def test_manyargs(self):
+    eleza test_manyargs(self):
         # Test inspect.getsource with a regular function where
         # the arguments are on two lines and _not_ indented and
         # the body on the second line with the last arguments.
         self.assertSourceEqual(mod2.manyargs, 40, 41)
 
-    def test_twolinefunc(self):
+    eleza test_twolinefunc(self):
         # Test inspect.getsource with a regular function where
         # the body is on two lines, following the argument list and
         # continued on the next line by a \\.
         self.assertSourceEqual(mod2.twolinefunc, 44, 45)
 
-    def test_lambda_in_list(self):
+    eleza test_lambda_in_list(self):
         # Test inspect.getsource with a one-line lambda function
         # defined in a list, indented.
         self.assertSourceEqual(mod2.a[1], 49, 49)
 
-    def test_anonymous(self):
+    eleza test_anonymous(self):
         # Test inspect.getsource with a lambda function defined
         # as argument to another function.
         self.assertSourceEqual(mod2.anonymous, 55, 55)
 
-class TestBuggyCases(GetSourceBase):
+kundi TestBuggyCases(GetSourceBase):
     fodderModule = mod2
 
-    def test_with_comment(self):
+    eleza test_with_comment(self):
         self.assertSourceEqual(mod2.with_comment, 58, 59)
 
-    def test_multiline_sig(self):
+    eleza test_multiline_sig(self):
         self.assertSourceEqual(mod2.multiline_sig[0], 63, 64)
 
-    def test_nested_class(self):
+    eleza test_nested_class(self):
         self.assertSourceEqual(mod2.func69().func71, 71, 72)
 
-    def test_one_liner_followed_by_non_name(self):
+    eleza test_one_liner_followed_by_non_name(self):
         self.assertSourceEqual(mod2.func77, 77, 77)
 
-    def test_one_liner_dedent_non_name(self):
+    eleza test_one_liner_dedent_non_name(self):
         self.assertSourceEqual(mod2.cls82.func83, 83, 83)
 
-    def test_with_comment_instead_of_docstring(self):
+    eleza test_with_comment_instead_of_docstring(self):
         self.assertSourceEqual(mod2.func88, 88, 90)
 
-    def test_method_in_dynamic_class(self):
+    eleza test_method_in_dynamic_class(self):
         self.assertSourceEqual(mod2.method_in_dynamic_class, 95, 97)
 
     # This should not skip for CPython, but might on a repackaged python where
@@ -676,11 +676,11 @@ class TestBuggyCases(GetSourceBase):
     @unittest.skipIf(not hasattr(unicodedata, '__file__') or
                                  unicodedata.__file__.endswith('.py'),
                      "unicodedata is not an external binary module")
-    def test_findsource_binary(self):
+    eleza test_findsource_binary(self):
         self.assertRaises(OSError, inspect.getsource, unicodedata)
         self.assertRaises(OSError, inspect.findsource, unicodedata)
 
-    def test_findsource_code_in_linecache(self):
+    eleza test_findsource_code_in_linecache(self):
         lines = ["x=1"]
         co = compile(lines[0], "_dynamically_created_file", "exec")
         self.assertRaises(OSError, inspect.findsource, co)
@@ -692,81 +692,81 @@ class TestBuggyCases(GetSourceBase):
         finally:
             del linecache.cache[co.co_filename]
 
-    def test_findsource_without_filename(self):
+    eleza test_findsource_without_filename(self):
         for fname in ['', '<string>']:
             co = compile('x=1', fname, "exec")
             self.assertRaises(IOError, inspect.findsource, co)
             self.assertRaises(IOError, inspect.getsource, co)
 
-    def test_getsource_on_method(self):
+    eleza test_getsource_on_method(self):
         self.assertSourceEqual(mod2.ClassWithMethod.method, 118, 119)
 
-    def test_nested_func(self):
+    eleza test_nested_func(self):
         self.assertSourceEqual(mod2.cls135.func136, 136, 139)
 
 
-class TestNoEOL(GetSourceBase):
-    def setUp(self):
+kundi TestNoEOL(GetSourceBase):
+    eleza setUp(self):
         self.tempdir = TESTFN + '_dir'
         os.mkdir(self.tempdir)
         with open(os.path.join(self.tempdir,
                                'inspect_fodder3%spy' % os.extsep), 'w') as f:
-            f.write("class X:\n    pass # No EOL")
+            f.write("kundi X:\n    pass # No EOL")
         with DirsOnSysPath(self.tempdir):
             agiza inspect_fodder3 as mod3
         self.fodderModule = mod3
         super().setUp()
 
-    def tearDown(self):
+    eleza tearDown(self):
         shutil.rmtree(self.tempdir)
 
-    def test_class(self):
+    eleza test_class(self):
         self.assertSourceEqual(self.fodderModule.X, 1, 2)
 
 
-class _BrokenDataDescriptor(object):
+kundi _BrokenDataDescriptor(object):
     """
     A broken data descriptor. See bug #1785.
     """
-    def __get__(*args):
+    eleza __get__(*args):
         raise AttributeError("broken data descriptor")
 
-    def __set__(*args):
+    eleza __set__(*args):
         raise RuntimeError
 
-    def __getattr__(*args):
+    eleza __getattr__(*args):
         raise AttributeError("broken data descriptor")
 
 
-class _BrokenMethodDescriptor(object):
+kundi _BrokenMethodDescriptor(object):
     """
     A broken method descriptor. See bug #1785.
     """
-    def __get__(*args):
+    eleza __get__(*args):
         raise AttributeError("broken method descriptor")
 
-    def __getattr__(*args):
+    eleza __getattr__(*args):
         raise AttributeError("broken method descriptor")
 
 
 # Helper for testing classify_class_attrs.
-def attrs_wo_objs(cls):
-    return [t[:3] for t in inspect.classify_class_attrs(cls)]
+eleza attrs_wo_objs(cls):
+    rudisha [t[:3] for t in inspect.classify_class_attrs(cls)]
 
 
-class TestClassesAndFunctions(unittest.TestCase):
-    def test_newstyle_mro(self):
-        # The same w/ new-class MRO.
-        class A(object):    pass
-        class B(A): pass
-        class C(A): pass
-        class D(B, C): pass
+kundi TestClassesAndFunctions(unittest.TestCase):
+    eleza test_newstyle_mro(self):
+        # The same w/ new-kundi MRO.
+        kundi A(object):    pass
+        kundi B(A): pass
+        kundi C(A): pass
+        kundi D(B, C): pass
 
         expected = (D, B, C, A, object)
         got = inspect.getmro(D)
         self.assertEqual(expected, got)
 
-    def assertArgSpecEquals(self, routine, args_e, varargs_e=None,
+    eleza assertArgSpecEquals(self, routine, args_e, varargs_e=None,
                             varkw_e=None, defaults_e=None, formatted=None):
         with self.assertWarns(DeprecationWarning):
             args, varargs, varkw, defaults = inspect.getargspec(routine)
@@ -774,12 +774,12 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertEqual(varargs, varargs_e)
         self.assertEqual(varkw, varkw_e)
         self.assertEqual(defaults, defaults_e)
-        if formatted is not None:
+        ikiwa formatted is not None:
             with self.assertWarns(DeprecationWarning):
                 self.assertEqual(inspect.formatargspec(args, varargs, varkw, defaults),
                                  formatted)
 
-    def assertFullArgSpecEquals(self, routine, args_e, varargs_e=None,
+    eleza assertFullArgSpecEquals(self, routine, args_e, varargs_e=None,
                                     varkw_e=None, defaults_e=None,
                                     posonlyargs_e=[], kwonlyargs_e=[],
                                     kwonlydefaults_e=None,
@@ -793,13 +793,13 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertEqual(kwonlyargs, kwonlyargs_e)
         self.assertEqual(kwonlydefaults, kwonlydefaults_e)
         self.assertEqual(ann, ann_e)
-        if formatted is not None:
+        ikiwa formatted is not None:
             with self.assertWarns(DeprecationWarning):
                 self.assertEqual(inspect.formatargspec(args, varargs, varkw, defaults,
                                                        kwonlyargs, kwonlydefaults, ann),
                                  formatted)
 
-    def test_getargspec(self):
+    eleza test_getargspec(self):
         self.assertArgSpecEquals(mod.eggs, ['x', 'y'], formatted='(x, y)')
 
         self.assertArgSpecEquals(mod.spam,
@@ -816,7 +816,7 @@ class TestClassesAndFunctions(unittest.TestCase):
                           mod2.keyword_only_arg, [])
 
 
-    def test_getfullargspec(self):
+    eleza test_getfullargspec(self):
         self.assertFullArgSpecEquals(mod2.keyworded, [], varargs_e='arg1',
                                      kwonlyargs_e=['arg2'],
                                      kwonlydefaults_e={'arg2':1},
@@ -846,10 +846,10 @@ class TestClassesAndFunctions(unittest.TestCase):
                                      kwonlydefaults_e={'e': 4, 'f': 5},
                                      formatted='(a, b=1, c=2, d=3, *, e=4, f=5)')
 
-    def test_argspec_api_ignores_wrapped(self):
+    eleza test_argspec_api_ignores_wrapped(self):
         # Issue 20684: low level introspection API must ignore __wrapped__
         @functools.wraps(mod.spam)
-        def ham(x, y):
+        eleza ham(x, y):
             pass
         # Basic check
         self.assertArgSpecEquals(ham, ['x', 'y'], formatted='(x, y)')
@@ -857,16 +857,16 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertFullArgSpecEquals(functools.partial(ham),
                                      ['x', 'y'], formatted='(x, y)')
         # Other variants
-        def check_method(f):
+        eleza check_method(f):
             self.assertArgSpecEquals(f, ['self', 'x', 'y'],
                                         formatted='(self, x, y)')
-        class C:
+        kundi C:
             @functools.wraps(mod.spam)
-            def ham(self, x, y):
+            eleza ham(self, x, y):
                 pass
             pham = functools.partialmethod(ham)
             @functools.wraps(mod.spam)
-            def __call__(self, x, y):
+            eleza __call__(self, x, y):
                 pass
         check_method(C())
         check_method(C.ham)
@@ -874,38 +874,38 @@ class TestClassesAndFunctions(unittest.TestCase):
         check_method(C.pham)
         check_method(C().pham)
 
-        class C_new:
+        kundi C_new:
             @functools.wraps(mod.spam)
-            def __new__(self, x, y):
+            eleza __new__(self, x, y):
                 pass
         check_method(C_new)
 
-        class C_init:
+        kundi C_init:
             @functools.wraps(mod.spam)
-            def __init__(self, x, y):
+            eleza __init__(self, x, y):
                 pass
         check_method(C_init)
 
-    def test_getfullargspec_signature_attr(self):
-        def test():
+    eleza test_getfullargspec_signature_attr(self):
+        eleza test():
             pass
         spam_param = inspect.Parameter('spam', inspect.Parameter.POSITIONAL_ONLY)
         test.__signature__ = inspect.Signature(parameters=(spam_param,))
 
         self.assertFullArgSpecEquals(test, ['spam'], formatted='(spam)')
 
-    def test_getfullargspec_signature_annos(self):
-        def test(a:'spam') -> 'ham': pass
+    eleza test_getfullargspec_signature_annos(self):
+        eleza test(a:'spam') -> 'ham': pass
         spec = inspect.getfullargspec(test)
         self.assertEqual(test.__annotations__, spec.annotations)
 
-        def test(): pass
+        eleza test(): pass
         spec = inspect.getfullargspec(test)
         self.assertEqual(test.__annotations__, spec.annotations)
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
                      "Signature information for builtins requires docstrings")
-    def test_getfullargspec_builtin_methods(self):
+    eleza test_getfullargspec_builtin_methods(self):
         self.assertFullArgSpecEquals(_pickle.Pickler.dump, ['self', 'obj'],
                                      formatted='(self, obj)')
 
@@ -922,7 +922,7 @@ class TestClassesAndFunctions(unittest.TestCase):
     @cpython_only
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
                      "Signature information for builtins requires docstrings")
-    def test_getfullargspec_builtin_func(self):
+    eleza test_getfullargspec_builtin_func(self):
         agiza _testcapi
         builtin = _testcapi.docstring_with_signature_with_defaults
         spec = inspect.getfullargspec(builtin)
@@ -931,13 +931,13 @@ class TestClassesAndFunctions(unittest.TestCase):
     @cpython_only
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
                      "Signature information for builtins requires docstrings")
-    def test_getfullargspec_builtin_func_no_signature(self):
+    eleza test_getfullargspec_builtin_func_no_signature(self):
         agiza _testcapi
         builtin = _testcapi.docstring_no_signature
         with self.assertRaises(TypeError):
             inspect.getfullargspec(builtin)
 
-    def test_getfullargspec_definition_order_preserved_on_kwonly(self):
+    eleza test_getfullargspec_definition_order_preserved_on_kwonly(self):
         for fn in signatures_with_lexicographic_keyword_only_parameters():
             signature = inspect.getfullargspec(fn)
             l = list(signature.kwonlyargs)
@@ -948,27 +948,27 @@ class TestClassesAndFunctions(unittest.TestCase):
         l = list(signature.kwonlyargs)
         self.assertEqual(l, unsorted_keyword_only_parameters)
 
-    def test_getargspec_method(self):
-        class A(object):
-            def m(self):
+    eleza test_getargspec_method(self):
+        kundi A(object):
+            eleza m(self):
                 pass
         self.assertArgSpecEquals(A.m, ['self'])
 
-    def test_classify_newstyle(self):
-        class A(object):
+    eleza test_classify_newstyle(self):
+        kundi A(object):
 
-            def s(): pass
+            eleza s(): pass
             s = staticmethod(s)
 
-            def c(cls): pass
+            eleza c(cls): pass
             c = classmethod(c)
 
-            def getp(self): pass
+            eleza getp(self): pass
             p = property(getp)
 
-            def m(self): pass
+            eleza m(self): pass
 
-            def m1(self): pass
+            eleza m1(self): pass
 
             datablob = '1'
 
@@ -982,7 +982,7 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertIn(('__init__', 'method', object), attrs, 'missing __init__')
 
         self.assertIn(('s', 'static method', A), attrs, 'missing static method')
-        self.assertIn(('c', 'class method', A), attrs, 'missing class method')
+        self.assertIn(('c', 'kundi method', A), attrs, 'missing kundi method')
         self.assertIn(('p', 'property', A), attrs, 'missing property')
         self.assertIn(('m', 'method', A), attrs,
                       'missing plain method: %r' % attrs)
@@ -991,13 +991,13 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertIn(('md', 'method', A), attrs, 'missing method descriptor')
         self.assertIn(('dd', 'data', A), attrs, 'missing data descriptor')
 
-        class B(A):
+        kundi B(A):
 
-            def m(self): pass
+            eleza m(self): pass
 
         attrs = attrs_wo_objs(B)
         self.assertIn(('s', 'static method', A), attrs, 'missing static method')
-        self.assertIn(('c', 'class method', A), attrs, 'missing class method')
+        self.assertIn(('c', 'kundi method', A), attrs, 'missing kundi method')
         self.assertIn(('p', 'property', A), attrs, 'missing property')
         self.assertIn(('m', 'method', B), attrs, 'missing plain method')
         self.assertIn(('m1', 'method', A), attrs, 'missing plain method')
@@ -1006,10 +1006,10 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertIn(('dd', 'data', A), attrs, 'missing data descriptor')
 
 
-        class C(A):
+        kundi C(A):
 
-            def m(self): pass
-            def c(self): pass
+            eleza m(self): pass
+            eleza c(self): pass
 
         attrs = attrs_wo_objs(C)
         self.assertIn(('s', 'static method', A), attrs, 'missing static method')
@@ -1021,9 +1021,9 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertIn(('md', 'method', A), attrs, 'missing method descriptor')
         self.assertIn(('dd', 'data', A), attrs, 'missing data descriptor')
 
-        class D(B, C):
+        kundi D(B, C):
 
-            def m1(self): pass
+            eleza m1(self): pass
 
         attrs = attrs_wo_objs(D)
         self.assertIn(('s', 'static method', A), attrs, 'missing static method')
@@ -1035,19 +1035,19 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertIn(('md', 'method', A), attrs, 'missing method descriptor')
         self.assertIn(('dd', 'data', A), attrs, 'missing data descriptor')
 
-    def test_classify_builtin_types(self):
+    eleza test_classify_builtin_types(self):
         # Simple sanity check that all built-in types can have their
         # attributes classified.
         for name in dir(__builtins__):
             builtin = getattr(__builtins__, name)
-            if isinstance(builtin, type):
+            ikiwa isinstance(builtin, type):
                 inspect.classify_class_attrs(builtin)
 
         attrs = attrs_wo_objs(bool)
         self.assertIn(('__new__', 'static method', bool), attrs,
                       'missing __new__')
-        self.assertIn(('from_bytes', 'class method', int), attrs,
-                      'missing class method')
+        self.assertIn(('kutoka_bytes', 'kundi method', int), attrs,
+                      'missing kundi method')
         self.assertIn(('to_bytes', 'method', int), attrs,
                       'missing plain method')
         self.assertIn(('__add__', 'method', int), attrs,
@@ -1055,85 +1055,85 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertIn(('__and__', 'method', bool), attrs,
                       'missing plain method')
 
-    def test_classify_DynamicClassAttribute(self):
-        class Meta(type):
-            def __getattr__(self, name):
-                if name == 'ham':
-                    return 'spam'
-                return super().__getattr__(name)
-        class VA(metaclass=Meta):
+    eleza test_classify_DynamicClassAttribute(self):
+        kundi Meta(type):
+            eleza __getattr__(self, name):
+                ikiwa name == 'ham':
+                    rudisha 'spam'
+                rudisha super().__getattr__(name)
+        kundi VA(metaclass=Meta):
             @types.DynamicClassAttribute
-            def ham(self):
-                return 'eggs'
+            eleza ham(self):
+                rudisha 'eggs'
         should_find_dca = inspect.Attribute('ham', 'data', VA, VA.__dict__['ham'])
         self.assertIn(should_find_dca, inspect.classify_class_attrs(VA))
         should_find_ga = inspect.Attribute('ham', 'data', Meta, 'spam')
         self.assertIn(should_find_ga, inspect.classify_class_attrs(VA))
 
-    def test_classify_overrides_bool(self):
-        class NoBool(object):
-            def __eq__(self, other):
-                return NoBool()
+    eleza test_classify_overrides_bool(self):
+        kundi NoBool(object):
+            eleza __eq__(self, other):
+                rudisha NoBool()
 
-            def __bool__(self):
+            eleza __bool__(self):
                 raise NotImplementedError(
                     "This object does not specify a boolean value")
 
-        class HasNB(object):
+        kundi HasNB(object):
             dd = NoBool()
 
         should_find_attr = inspect.Attribute('dd', 'data', HasNB, HasNB.dd)
         self.assertIn(should_find_attr, inspect.classify_class_attrs(HasNB))
 
-    def test_classify_metaclass_class_attribute(self):
-        class Meta(type):
+    eleza test_classify_metaclass_class_attribute(self):
+        kundi Meta(type):
             fish = 'slap'
-            def __dir__(self):
-                return ['__class__', '__module__', '__name__', 'fish']
-        class Class(metaclass=Meta):
+            eleza __dir__(self):
+                rudisha ['__class__', '__module__', '__name__', 'fish']
+        kundi Class(metaclass=Meta):
             pass
         should_find = inspect.Attribute('fish', 'data', Meta, 'slap')
         self.assertIn(should_find, inspect.classify_class_attrs(Class))
 
-    def test_classify_VirtualAttribute(self):
-        class Meta(type):
-            def __dir__(cls):
-                return ['__class__', '__module__', '__name__', 'BOOM']
-            def __getattr__(self, name):
-                if name =='BOOM':
-                    return 42
-                return super().__getattr(name)
-        class Class(metaclass=Meta):
+    eleza test_classify_VirtualAttribute(self):
+        kundi Meta(type):
+            eleza __dir__(cls):
+                rudisha ['__class__', '__module__', '__name__', 'BOOM']
+            eleza __getattr__(self, name):
+                ikiwa name =='BOOM':
+                    rudisha 42
+                rudisha super().__getattr(name)
+        kundi Class(metaclass=Meta):
             pass
         should_find = inspect.Attribute('BOOM', 'data', Meta, 42)
         self.assertIn(should_find, inspect.classify_class_attrs(Class))
 
-    def test_classify_VirtualAttribute_multi_classes(self):
-        class Meta1(type):
-            def __dir__(cls):
-                return ['__class__', '__module__', '__name__', 'one']
-            def __getattr__(self, name):
-                if name =='one':
-                    return 1
-                return super().__getattr__(name)
-        class Meta2(type):
-            def __dir__(cls):
-                return ['__class__', '__module__', '__name__', 'two']
-            def __getattr__(self, name):
-                if name =='two':
-                    return 2
-                return super().__getattr__(name)
-        class Meta3(Meta1, Meta2):
-            def __dir__(cls):
-                return list(sorted(set(['__class__', '__module__', '__name__', 'three'] +
+    eleza test_classify_VirtualAttribute_multi_classes(self):
+        kundi Meta1(type):
+            eleza __dir__(cls):
+                rudisha ['__class__', '__module__', '__name__', 'one']
+            eleza __getattr__(self, name):
+                ikiwa name =='one':
+                    rudisha 1
+                rudisha super().__getattr__(name)
+        kundi Meta2(type):
+            eleza __dir__(cls):
+                rudisha ['__class__', '__module__', '__name__', 'two']
+            eleza __getattr__(self, name):
+                ikiwa name =='two':
+                    rudisha 2
+                rudisha super().__getattr__(name)
+        kundi Meta3(Meta1, Meta2):
+            eleza __dir__(cls):
+                rudisha list(sorted(set(['__class__', '__module__', '__name__', 'three'] +
                     Meta1.__dir__(cls) + Meta2.__dir__(cls))))
-            def __getattr__(self, name):
-                if name =='three':
-                    return 3
-                return super().__getattr__(name)
-        class Class1(metaclass=Meta1):
+            eleza __getattr__(self, name):
+                ikiwa name =='three':
+                    rudisha 3
+                rudisha super().__getattr__(name)
+        kundi Class1(metaclass=Meta1):
             pass
-        class Class2(Class1, metaclass=Meta3):
+        kundi Class2(Class1, metaclass=Meta3):
             pass
 
         should_find1 = inspect.Attribute('one', 'data', Meta1, 1)
@@ -1143,30 +1143,30 @@ class TestClassesAndFunctions(unittest.TestCase):
         for sf in (should_find1, should_find2, should_find3):
             self.assertIn(sf, cca)
 
-    def test_classify_class_attrs_with_buggy_dir(self):
-        class M(type):
-            def __dir__(cls):
-                return ['__class__', '__name__', 'missing']
-        class C(metaclass=M):
+    eleza test_classify_class_attrs_with_buggy_dir(self):
+        kundi M(type):
+            eleza __dir__(cls):
+                rudisha ['__class__', '__name__', 'missing']
+        kundi C(metaclass=M):
             pass
         attrs = [a[0] for a in inspect.classify_class_attrs(C)]
         self.assertNotIn('missing', attrs)
 
-    def test_getmembers_descriptors(self):
-        class A(object):
+    eleza test_getmembers_descriptors(self):
+        kundi A(object):
             dd = _BrokenDataDescriptor()
             md = _BrokenMethodDescriptor()
 
-        def pred_wrapper(pred):
+        eleza pred_wrapper(pred):
             # A quick'n'dirty way to discard standard attributes of new-style
             # classes.
-            class Empty(object):
+            kundi Empty(object):
                 pass
-            def wrapped(x):
-                if '__name__' in dir(x) and hasattr(Empty, x.__name__):
-                    return False
-                return pred(x)
-            return wrapped
+            eleza wrapped(x):
+                ikiwa '__name__' in dir(x) and hasattr(Empty, x.__name__):
+                    rudisha False
+                rudisha pred(x)
+            rudisha wrapped
 
         ismethoddescriptor = pred_wrapper(inspect.ismethoddescriptor)
         isdatadescriptor = pred_wrapper(inspect.isdatadescriptor)
@@ -1176,7 +1176,7 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertEqual(inspect.getmembers(A, isdatadescriptor),
             [('dd', A.__dict__['dd'])])
 
-        class B(A):
+        kundi B(A):
             pass
 
         self.assertEqual(inspect.getmembers(B, ismethoddescriptor),
@@ -1184,9 +1184,9 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertEqual(inspect.getmembers(B, isdatadescriptor),
             [('dd', A.__dict__['dd'])])
 
-    def test_getmembers_method(self):
-        class B:
-            def f(self):
+    eleza test_getmembers_method(self):
+        kundi B:
+            eleza f(self):
                 pass
 
         self.assertIn(('f', B.f), inspect.getmembers(B))
@@ -1195,76 +1195,76 @@ class TestClassesAndFunctions(unittest.TestCase):
         self.assertIn(('f', b.f), inspect.getmembers(b))
         self.assertIn(('f', b.f), inspect.getmembers(b, inspect.ismethod))
 
-    def test_getmembers_VirtualAttribute(self):
-        class M(type):
-            def __getattr__(cls, name):
-                if name == 'eggs':
-                    return 'scrambled'
-                return super().__getattr__(name)
-        class A(metaclass=M):
+    eleza test_getmembers_VirtualAttribute(self):
+        kundi M(type):
+            eleza __getattr__(cls, name):
+                ikiwa name == 'eggs':
+                    rudisha 'scrambled'
+                rudisha super().__getattr__(name)
+        kundi A(metaclass=M):
             @types.DynamicClassAttribute
-            def eggs(self):
-                return 'spam'
+            eleza eggs(self):
+                rudisha 'spam'
         self.assertIn(('eggs', 'scrambled'), inspect.getmembers(A))
         self.assertIn(('eggs', 'spam'), inspect.getmembers(A()))
 
-    def test_getmembers_with_buggy_dir(self):
-        class M(type):
-            def __dir__(cls):
-                return ['__class__', '__name__', 'missing']
-        class C(metaclass=M):
+    eleza test_getmembers_with_buggy_dir(self):
+        kundi M(type):
+            eleza __dir__(cls):
+                rudisha ['__class__', '__name__', 'missing']
+        kundi C(metaclass=M):
             pass
         attrs = [a[0] for a in inspect.getmembers(C)]
         self.assertNotIn('missing', attrs)
 
-class TestIsDataDescriptor(unittest.TestCase):
+kundi TestIsDataDescriptor(unittest.TestCase):
 
-    def test_custom_descriptors(self):
-        class NonDataDescriptor:
-            def __get__(self, value, type=None): pass
-        class DataDescriptor0:
-            def __set__(self, name, value): pass
-        class DataDescriptor1:
-            def __delete__(self, name): pass
-        class DataDescriptor2:
+    eleza test_custom_descriptors(self):
+        kundi NonDataDescriptor:
+            eleza __get__(self, value, type=None): pass
+        kundi DataDescriptor0:
+            eleza __set__(self, name, value): pass
+        kundi DataDescriptor1:
+            eleza __delete__(self, name): pass
+        kundi DataDescriptor2:
             __set__ = None
         self.assertFalse(inspect.isdatadescriptor(NonDataDescriptor()),
-                         'class with only __get__ not a data descriptor')
+                         'kundi with only __get__ not a data descriptor')
         self.assertTrue(inspect.isdatadescriptor(DataDescriptor0()),
-                        'class with __set__ is a data descriptor')
+                        'kundi with __set__ is a data descriptor')
         self.assertTrue(inspect.isdatadescriptor(DataDescriptor1()),
-                        'class with __delete__ is a data descriptor')
+                        'kundi with __delete__ is a data descriptor')
         self.assertTrue(inspect.isdatadescriptor(DataDescriptor2()),
-                        'class with __set__ = None is a data descriptor')
+                        'kundi with __set__ = None is a data descriptor')
 
-    def test_slot(self):
-        class Slotted:
+    eleza test_slot(self):
+        kundi Slotted:
             __slots__ = 'foo',
         self.assertTrue(inspect.isdatadescriptor(Slotted.foo),
                         'a slot is a data descriptor')
 
-    def test_property(self):
-        class Propertied:
+    eleza test_property(self):
+        kundi Propertied:
             @property
-            def a_property(self):
+            eleza a_property(self):
                 pass
         self.assertTrue(inspect.isdatadescriptor(Propertied.a_property),
                         'a property is a data descriptor')
 
-    def test_functions(self):
-        class Test(object):
-            def instance_method(self): pass
+    eleza test_functions(self):
+        kundi Test(object):
+            eleza instance_method(self): pass
             @classmethod
-            def class_method(cls): pass
+            eleza class_method(cls): pass
             @staticmethod
-            def static_method(): pass
-        def function():
+            eleza static_method(): pass
+        eleza function():
             pass
         a_lambda = lambda: None
         self.assertFalse(inspect.isdatadescriptor(Test().instance_method),
                          'a instance method is not a data descriptor')
         self.assertFalse(inspect.isdatadescriptor(Test().class_method),
-                         'a class method is not a data descriptor')
+                         'a kundi method is not a data descriptor')
         self.assertFalse(inspect.isdatadescriptor(Test().static_method),
                          'a static method is not a data descriptor')
         self.assertFalse(inspect.isdatadescriptor(function),
@@ -1274,14 +1274,14 @@ class TestIsDataDescriptor(unittest.TestCase):
 
 
 _global_ref = object()
-class TestGetClosureVars(unittest.TestCase):
+kundi TestGetClosureVars(unittest.TestCase):
 
-    def test_name_resolution(self):
+    eleza test_name_resolution(self):
         # Basic test of the 4 different resolution mechanisms
-        def f(nonlocal_ref):
-            def g(local_ref):
-                print(local_ref, nonlocal_ref, _global_ref, unbound_ref)
-            return g
+        eleza f(nonlocal_ref):
+            eleza g(local_ref):
+                andika(local_ref, nonlocal_ref, _global_ref, unbound_ref)
+            rudisha g
         _arg = object()
         nonlocal_vars = {"nonlocal_ref": _arg}
         global_vars = {"_global_ref": _global_ref}
@@ -1291,12 +1291,12 @@ class TestGetClosureVars(unittest.TestCase):
                                        builtin_vars, unbound_names)
         self.assertEqual(inspect.getclosurevars(f(_arg)), expected)
 
-    def test_generator_closure(self):
-        def f(nonlocal_ref):
-            def g(local_ref):
-                print(local_ref, nonlocal_ref, _global_ref, unbound_ref)
+    eleza test_generator_closure(self):
+        eleza f(nonlocal_ref):
+            eleza g(local_ref):
+                andika(local_ref, nonlocal_ref, _global_ref, unbound_ref)
                 yield
-            return g
+            rudisha g
         _arg = object()
         nonlocal_vars = {"nonlocal_ref": _arg}
         global_vars = {"_global_ref": _global_ref}
@@ -1306,12 +1306,12 @@ class TestGetClosureVars(unittest.TestCase):
                                        builtin_vars, unbound_names)
         self.assertEqual(inspect.getclosurevars(f(_arg)), expected)
 
-    def test_method_closure(self):
-        class C:
-            def f(self, nonlocal_ref):
-                def g(local_ref):
-                    print(local_ref, nonlocal_ref, _global_ref, unbound_ref)
-                return g
+    eleza test_method_closure(self):
+        kundi C:
+            eleza f(self, nonlocal_ref):
+                eleza g(local_ref):
+                    andika(local_ref, nonlocal_ref, _global_ref, unbound_ref)
+                rudisha g
         _arg = object()
         nonlocal_vars = {"nonlocal_ref": _arg}
         global_vars = {"_global_ref": _global_ref}
@@ -1321,30 +1321,30 @@ class TestGetClosureVars(unittest.TestCase):
                                        builtin_vars, unbound_names)
         self.assertEqual(inspect.getclosurevars(C().f(_arg)), expected)
 
-    def test_nonlocal_vars(self):
+    eleza test_nonlocal_vars(self):
         # More complex tests of nonlocal resolution
-        def _nonlocal_vars(f):
-            return inspect.getclosurevars(f).nonlocals
+        eleza _nonlocal_vars(f):
+            rudisha inspect.getclosurevars(f).nonlocals
 
-        def make_adder(x):
-            def add(y):
-                return x + y
-            return add
+        eleza make_adder(x):
+            eleza add(y):
+                rudisha x + y
+            rudisha add
 
-        def curry(func, arg1):
-            return lambda arg2: func(arg1, arg2)
+        eleza curry(func, arg1):
+            rudisha lambda arg2: func(arg1, arg2)
 
-        def less_than(a, b):
-            return a < b
+        eleza less_than(a, b):
+            rudisha a < b
 
         # The infamous Y combinator.
-        def Y(le):
-            def g(f):
-                return le(lambda x: f(f)(x))
+        eleza Y(le):
+            eleza g(f):
+                rudisha le(lambda x: f(f)(x))
             Y.g_ref = g
-            return g(g)
+            rudisha g(g)
 
-        def check_y_combinator(func):
+        eleza check_y_combinator(func):
             self.assertEqual(_nonlocal_vars(func), {'f': Y.g_ref})
 
         inc = make_adder(1)
@@ -1359,53 +1359,53 @@ class TestGetClosureVars(unittest.TestCase):
                          {'x': 3})
         Y(check_y_combinator)
 
-    def test_getclosurevars_empty(self):
-        def foo(): pass
+    eleza test_getclosurevars_empty(self):
+        eleza foo(): pass
         _empty = inspect.ClosureVars({}, {}, {}, set())
         self.assertEqual(inspect.getclosurevars(lambda: True), _empty)
         self.assertEqual(inspect.getclosurevars(foo), _empty)
 
-    def test_getclosurevars_error(self):
-        class T: pass
+    eleza test_getclosurevars_error(self):
+        kundi T: pass
         self.assertRaises(TypeError, inspect.getclosurevars, 1)
         self.assertRaises(TypeError, inspect.getclosurevars, list)
         self.assertRaises(TypeError, inspect.getclosurevars, {})
 
-    def _private_globals(self):
-        code = """def f(): print(path)"""
+    eleza _private_globals(self):
+        code = """eleza f(): andika(path)"""
         ns = {}
         exec(code, ns)
-        return ns["f"], ns
+        rudisha ns["f"], ns
 
-    def test_builtins_fallback(self):
+    eleza test_builtins_fallback(self):
         f, ns = self._private_globals()
         ns.pop("__builtins__", None)
         expected = inspect.ClosureVars({}, {}, {"print":print}, {"path"})
         self.assertEqual(inspect.getclosurevars(f), expected)
 
-    def test_builtins_as_dict(self):
+    eleza test_builtins_as_dict(self):
         f, ns = self._private_globals()
         ns["__builtins__"] = {"path":1}
         expected = inspect.ClosureVars({}, {}, {"path":1}, {"print"})
         self.assertEqual(inspect.getclosurevars(f), expected)
 
-    def test_builtins_as_module(self):
+    eleza test_builtins_as_module(self):
         f, ns = self._private_globals()
         ns["__builtins__"] = os
         expected = inspect.ClosureVars({}, {}, {"path":os.path}, {"print"})
         self.assertEqual(inspect.getclosurevars(f), expected)
 
 
-class TestGetcallargsFunctions(unittest.TestCase):
+kundi TestGetcallargsFunctions(unittest.TestCase):
 
-    def assertEqualCallArgs(self, func, call_params_string, locs=None):
+    eleza assertEqualCallArgs(self, func, call_params_string, locs=None):
         locs = dict(locs or {}, func=func)
         r1 = eval('func(%s)' % call_params_string, None, locs)
         r2 = eval('inspect.getcallargs(func, %s)' % call_params_string, None,
                   locs)
         self.assertEqual(r1, r2)
 
-    def assertEqualException(self, func, call_param_string, locs=None):
+    eleza assertEqualException(self, func, call_param_string, locs=None):
         locs = dict(locs or {}, func=func)
         try:
             eval('func(%s)' % call_param_string, None, locs)
@@ -1424,12 +1424,12 @@ class TestGetcallargsFunctions(unittest.TestCase):
         self.assertEqual(str(ex1), str(ex2))
         del ex1, ex2
 
-    def makeCallable(self, signature):
+    eleza makeCallable(self, signature):
         """Create a function that returns its locals()"""
         code = "lambda %s: locals()"
-        return eval(code % signature)
+        rudisha eval(code % signature)
 
-    def test_plain(self):
+    eleza test_plain(self):
         f = self.makeCallable('a, b=1')
         self.assertEqualCallArgs(f, '2')
         self.assertEqualCallArgs(f, '2, 3')
@@ -1452,7 +1452,7 @@ class TestGetcallargsFunctions(unittest.TestCase):
         self.assertEqualCallArgs(f, '2, **collections.UserDict(b=3)')
         self.assertEqualCallArgs(f, 'b=2, **collections.UserDict(a=3)')
 
-    def test_varargs(self):
+    eleza test_varargs(self):
         f = self.makeCallable('a, b=1, *c')
         self.assertEqualCallArgs(f, '2')
         self.assertEqualCallArgs(f, '2, 3')
@@ -1461,7 +1461,7 @@ class TestGetcallargsFunctions(unittest.TestCase):
         self.assertEqualCallArgs(f, '2, *[3,4]')
         self.assertEqualCallArgs(f, '2, 3, *collections.UserList([4])')
 
-    def test_varkw(self):
+    eleza test_varkw(self):
         f = self.makeCallable('a, b=1, **c')
         self.assertEqualCallArgs(f, 'a=2')
         self.assertEqualCallArgs(f, '2, b=3, c=4')
@@ -1473,7 +1473,7 @@ class TestGetcallargsFunctions(unittest.TestCase):
         self.assertEqualCallArgs(f, '2, c=4, **collections.UserDict(b=3)')
         self.assertEqualCallArgs(f, 'b=2, **collections.UserDict(a=3, c=4)')
 
-    def test_varkw_only(self):
+    eleza test_varkw_only(self):
         # issue11256:
         f = self.makeCallable('**c')
         self.assertEqualCallArgs(f, '')
@@ -1483,7 +1483,7 @@ class TestGetcallargsFunctions(unittest.TestCase):
         self.assertEqualCallArgs(f, '**collections.UserDict(a=1, b=2)')
         self.assertEqualCallArgs(f, 'c=3, **collections.UserDict(a=1, b=2)')
 
-    def test_keyword_only(self):
+    eleza test_keyword_only(self):
         f = self.makeCallable('a=3, *, c, d=2')
         self.assertEqualCallArgs(f, 'c=3')
         self.assertEqualCallArgs(f, 'c=3, a=3')
@@ -1499,7 +1499,7 @@ class TestGetcallargsFunctions(unittest.TestCase):
         self.assertEqualCallArgs(f, 'c=3, d=4')
         self.assertEqualCallArgs(f, 'd=4, c=3')
 
-    def test_multiple_features(self):
+    eleza test_multiple_features(self):
         f = self.makeCallable('a, b=2, *f, **g')
         self.assertEqualCallArgs(f, '2, 3, 7')
         self.assertEqualCallArgs(f, '2, 3, x=8')
@@ -1523,7 +1523,7 @@ class TestGetcallargsFunctions(unittest.TestCase):
                                  '(4,[5,6])]), q=0, **collections.UserDict('
                                  'y=9, z=10)')
 
-    def test_errors(self):
+    eleza test_errors(self):
         f0 = self.makeCallable('')
         f1 = self.makeCallable('a, b')
         f2 = self.makeCallable('a, b=1')
@@ -1570,14 +1570,14 @@ class TestGetcallargsFunctions(unittest.TestCase):
 
         # issue #20816: getcallargs() fails to iterate over non-existent
         # kwonlydefaults and raises a wrong TypeError
-        def f5(*, a): pass
+        eleza f5(*, a): pass
         with self.assertRaisesRegex(TypeError,
                                     'missing 1 required keyword-only'):
             inspect.getcallargs(f5)
 
 
         # issue20817:
-        def f6(a, b, c):
+        eleza f6(a, b, c):
             pass
         with self.assertRaisesRegex(TypeError, "'a', 'b' and 'c'"):
             inspect.getcallargs(f6)
@@ -1596,44 +1596,44 @@ class TestGetcallargsFunctions(unittest.TestCase):
                                    'name must be a str, not a int'):
             inspect.Parameter(123, kind=4)
 
-class TestGetcallargsMethods(TestGetcallargsFunctions):
+kundi TestGetcallargsMethods(TestGetcallargsFunctions):
 
-    def setUp(self):
-        class Foo(object):
+    eleza setUp(self):
+        kundi Foo(object):
             pass
         self.cls = Foo
         self.inst = Foo()
 
-    def makeCallable(self, signature):
+    eleza makeCallable(self, signature):
         assert 'self' not in signature
         mk = super(TestGetcallargsMethods, self).makeCallable
         self.cls.method = mk('self, ' + signature)
-        return self.inst.method
+        rudisha self.inst.method
 
-class TestGetcallargsUnboundMethods(TestGetcallargsMethods):
+kundi TestGetcallargsUnboundMethods(TestGetcallargsMethods):
 
-    def makeCallable(self, signature):
+    eleza makeCallable(self, signature):
         super(TestGetcallargsUnboundMethods, self).makeCallable(signature)
-        return self.cls.method
+        rudisha self.cls.method
 
-    def assertEqualCallArgs(self, func, call_params_string, locs=None):
-        return super(TestGetcallargsUnboundMethods, self).assertEqualCallArgs(
+    eleza assertEqualCallArgs(self, func, call_params_string, locs=None):
+        rudisha super(TestGetcallargsUnboundMethods, self).assertEqualCallArgs(
             *self._getAssertEqualParams(func, call_params_string, locs))
 
-    def assertEqualException(self, func, call_params_string, locs=None):
-        return super(TestGetcallargsUnboundMethods, self).assertEqualException(
+    eleza assertEqualException(self, func, call_params_string, locs=None):
+        rudisha super(TestGetcallargsUnboundMethods, self).assertEqualException(
             *self._getAssertEqualParams(func, call_params_string, locs))
 
-    def _getAssertEqualParams(self, func, call_params_string, locs=None):
+    eleza _getAssertEqualParams(self, func, call_params_string, locs=None):
         assert 'inst' not in call_params_string
         locs = dict(locs or {}, inst=self.inst)
-        return (func, 'inst,' + call_params_string, locs)
+        rudisha (func, 'inst,' + call_params_string, locs)
 
 
-class TestGetattrStatic(unittest.TestCase):
+kundi TestGetattrStatic(unittest.TestCase):
 
-    def test_basic(self):
-        class Thing(object):
+    eleza test_basic(self):
+        kundi Thing(object):
             x = object()
 
         thing = Thing()
@@ -1644,71 +1644,71 @@ class TestGetattrStatic(unittest.TestCase):
 
         self.assertEqual(inspect.getattr_static(thing, 'y', 3), 3)
 
-    def test_inherited(self):
-        class Thing(object):
+    eleza test_inherited(self):
+        kundi Thing(object):
             x = object()
-        class OtherThing(Thing):
+        kundi OtherThing(Thing):
             pass
 
         something = OtherThing()
         self.assertEqual(inspect.getattr_static(something, 'x'), Thing.x)
 
-    def test_instance_attr(self):
-        class Thing(object):
+    eleza test_instance_attr(self):
+        kundi Thing(object):
             x = 2
-            def __init__(self, x):
+            eleza __init__(self, x):
                 self.x = x
         thing = Thing(3)
         self.assertEqual(inspect.getattr_static(thing, 'x'), 3)
         del thing.x
         self.assertEqual(inspect.getattr_static(thing, 'x'), 2)
 
-    def test_property(self):
-        class Thing(object):
+    eleza test_property(self):
+        kundi Thing(object):
             @property
-            def x(self):
+            eleza x(self):
                 raise AttributeError("I'm pretending not to exist")
         thing = Thing()
         self.assertEqual(inspect.getattr_static(thing, 'x'), Thing.x)
 
-    def test_descriptor_raises_AttributeError(self):
-        class descriptor(object):
-            def __get__(*_):
+    eleza test_descriptor_raises_AttributeError(self):
+        kundi descriptor(object):
+            eleza __get__(*_):
                 raise AttributeError("I'm pretending not to exist")
         desc = descriptor()
-        class Thing(object):
+        kundi Thing(object):
             x = desc
         thing = Thing()
         self.assertEqual(inspect.getattr_static(thing, 'x'), desc)
 
-    def test_classAttribute(self):
-        class Thing(object):
+    eleza test_classAttribute(self):
+        kundi Thing(object):
             x = object()
 
         self.assertEqual(inspect.getattr_static(Thing, 'x'), Thing.x)
 
-    def test_classVirtualAttribute(self):
-        class Thing(object):
+    eleza test_classVirtualAttribute(self):
+        kundi Thing(object):
             @types.DynamicClassAttribute
-            def x(self):
-                return self._x
+            eleza x(self):
+                rudisha self._x
             _x = object()
 
         self.assertEqual(inspect.getattr_static(Thing, 'x'), Thing.__dict__['x'])
 
-    def test_inherited_classattribute(self):
-        class Thing(object):
+    eleza test_inherited_classattribute(self):
+        kundi Thing(object):
             x = object()
-        class OtherThing(Thing):
+        kundi OtherThing(Thing):
             pass
 
         self.assertEqual(inspect.getattr_static(OtherThing, 'x'), Thing.x)
 
-    def test_slots(self):
-        class Thing(object):
+    eleza test_slots(self):
+        kundi Thing(object):
             y = 'bar'
             __slots__ = ['x']
-            def __init__(self):
+            eleza __init__(self):
                 self.x = 'foo'
         thing = Thing()
         self.assertEqual(inspect.getattr_static(thing, 'x'), Thing.x)
@@ -1717,211 +1717,211 @@ class TestGetattrStatic(unittest.TestCase):
         del thing.x
         self.assertEqual(inspect.getattr_static(thing, 'x'), Thing.x)
 
-    def test_metaclass(self):
-        class meta(type):
+    eleza test_metaclass(self):
+        kundi meta(type):
             attr = 'foo'
-        class Thing(object, metaclass=meta):
+        kundi Thing(object, metaclass=meta):
             pass
         self.assertEqual(inspect.getattr_static(Thing, 'attr'), 'foo')
 
-        class sub(meta):
+        kundi sub(meta):
             pass
-        class OtherThing(object, metaclass=sub):
+        kundi OtherThing(object, metaclass=sub):
             x = 3
         self.assertEqual(inspect.getattr_static(OtherThing, 'attr'), 'foo')
 
-        class OtherOtherThing(OtherThing):
+        kundi OtherOtherThing(OtherThing):
             pass
         # this test is odd, but it was added as it exposed a bug
         self.assertEqual(inspect.getattr_static(OtherOtherThing, 'x'), 3)
 
-    def test_no_dict_no_slots(self):
+    eleza test_no_dict_no_slots(self):
         self.assertEqual(inspect.getattr_static(1, 'foo', None), None)
         self.assertNotEqual(inspect.getattr_static('foo', 'lower'), None)
 
-    def test_no_dict_no_slots_instance_member(self):
+    eleza test_no_dict_no_slots_instance_member(self):
         # returns descriptor
         with open(__file__) as handle:
             self.assertEqual(inspect.getattr_static(handle, 'name'), type(handle).name)
 
-    def test_inherited_slots(self):
+    eleza test_inherited_slots(self):
         # returns descriptor
-        class Thing(object):
+        kundi Thing(object):
             __slots__ = ['x']
-            def __init__(self):
+            eleza __init__(self):
                 self.x = 'foo'
 
-        class OtherThing(Thing):
+        kundi OtherThing(Thing):
             pass
-        # it would be nice if this worked...
+        # it would be nice ikiwa this worked...
         # we get the descriptor instead of the instance attribute
         self.assertEqual(inspect.getattr_static(OtherThing(), 'x'), Thing.x)
 
-    def test_descriptor(self):
-        class descriptor(object):
-            def __get__(self, instance, owner):
-                return 3
-        class Foo(object):
+    eleza test_descriptor(self):
+        kundi descriptor(object):
+            eleza __get__(self, instance, owner):
+                rudisha 3
+        kundi Foo(object):
             d = descriptor()
 
         foo = Foo()
 
-        # for a non data descriptor we return the instance attribute
+        # for a non data descriptor we rudisha the instance attribute
         foo.__dict__['d'] = 1
         self.assertEqual(inspect.getattr_static(foo, 'd'), 1)
 
-        # if the descriptor is a data-descriptor we should return the
+        # ikiwa the descriptor is a data-descriptor we should rudisha the
         # descriptor
         descriptor.__set__ = lambda s, i, v: None
         self.assertEqual(inspect.getattr_static(foo, 'd'), Foo.__dict__['d'])
 
 
-    def test_metaclass_with_descriptor(self):
-        class descriptor(object):
-            def __get__(self, instance, owner):
-                return 3
-        class meta(type):
+    eleza test_metaclass_with_descriptor(self):
+        kundi descriptor(object):
+            eleza __get__(self, instance, owner):
+                rudisha 3
+        kundi meta(type):
             d = descriptor()
-        class Thing(object, metaclass=meta):
+        kundi Thing(object, metaclass=meta):
             pass
         self.assertEqual(inspect.getattr_static(Thing, 'd'), meta.__dict__['d'])
 
 
-    def test_class_as_property(self):
-        class Base(object):
+    eleza test_class_as_property(self):
+        kundi Base(object):
             foo = 3
 
-        class Something(Base):
+        kundi Something(Base):
             executed = False
             @property
-            def __class__(self):
+            eleza __class__(self):
                 self.executed = True
-                return object
+                rudisha object
 
         instance = Something()
         self.assertEqual(inspect.getattr_static(instance, 'foo'), 3)
         self.assertFalse(instance.executed)
         self.assertEqual(inspect.getattr_static(Something, 'foo'), 3)
 
-    def test_mro_as_property(self):
-        class Meta(type):
+    eleza test_mro_as_property(self):
+        kundi Meta(type):
             @property
-            def __mro__(self):
-                return (object,)
+            eleza __mro__(self):
+                rudisha (object,)
 
-        class Base(object):
+        kundi Base(object):
             foo = 3
 
-        class Something(Base, metaclass=Meta):
+        kundi Something(Base, metaclass=Meta):
             pass
 
         self.assertEqual(inspect.getattr_static(Something(), 'foo'), 3)
         self.assertEqual(inspect.getattr_static(Something, 'foo'), 3)
 
-    def test_dict_as_property(self):
+    eleza test_dict_as_property(self):
         test = self
         test.called = False
 
-        class Foo(dict):
+        kundi Foo(dict):
             a = 3
             @property
-            def __dict__(self):
+            eleza __dict__(self):
                 test.called = True
-                return {}
+                rudisha {}
 
         foo = Foo()
         foo.a = 4
         self.assertEqual(inspect.getattr_static(foo, 'a'), 3)
         self.assertFalse(test.called)
 
-    def test_custom_object_dict(self):
+    eleza test_custom_object_dict(self):
         test = self
         test.called = False
 
-        class Custom(dict):
-            def get(self, key, default=None):
+        kundi Custom(dict):
+            eleza get(self, key, default=None):
                 test.called = True
                 super().get(key, default)
 
-        class Foo(object):
+        kundi Foo(object):
             a = 3
         foo = Foo()
         foo.__dict__ = Custom()
         self.assertEqual(inspect.getattr_static(foo, 'a'), 3)
         self.assertFalse(test.called)
 
-    def test_metaclass_dict_as_property(self):
-        class Meta(type):
+    eleza test_metaclass_dict_as_property(self):
+        kundi Meta(type):
             @property
-            def __dict__(self):
+            eleza __dict__(self):
                 self.executed = True
 
-        class Thing(metaclass=Meta):
+        kundi Thing(metaclass=Meta):
             executed = False
 
-            def __init__(self):
+            eleza __init__(self):
                 self.spam = 42
 
         instance = Thing()
         self.assertEqual(inspect.getattr_static(instance, "spam"), 42)
         self.assertFalse(Thing.executed)
 
-    def test_module(self):
+    eleza test_module(self):
         sentinel = object()
         self.assertIsNot(inspect.getattr_static(sys, "version", sentinel),
                          sentinel)
 
-    def test_metaclass_with_metaclass_with_dict_as_property(self):
-        class MetaMeta(type):
+    eleza test_metaclass_with_metaclass_with_dict_as_property(self):
+        kundi MetaMeta(type):
             @property
-            def __dict__(self):
+            eleza __dict__(self):
                 self.executed = True
-                return dict(spam=42)
+                rudisha dict(spam=42)
 
-        class Meta(type, metaclass=MetaMeta):
+        kundi Meta(type, metaclass=MetaMeta):
             executed = False
 
-        class Thing(metaclass=Meta):
+        kundi Thing(metaclass=Meta):
             pass
 
         with self.assertRaises(AttributeError):
             inspect.getattr_static(Thing, "spam")
         self.assertFalse(Thing.executed)
 
-class TestGetGeneratorState(unittest.TestCase):
+kundi TestGetGeneratorState(unittest.TestCase):
 
-    def setUp(self):
-        def number_generator():
+    eleza setUp(self):
+        eleza number_generator():
             for number in range(5):
                 yield number
         self.generator = number_generator()
 
-    def _generatorstate(self):
-        return inspect.getgeneratorstate(self.generator)
+    eleza _generatorstate(self):
+        rudisha inspect.getgeneratorstate(self.generator)
 
-    def test_created(self):
+    eleza test_created(self):
         self.assertEqual(self._generatorstate(), inspect.GEN_CREATED)
 
-    def test_suspended(self):
+    eleza test_suspended(self):
         next(self.generator)
         self.assertEqual(self._generatorstate(), inspect.GEN_SUSPENDED)
 
-    def test_closed_after_exhaustion(self):
+    eleza test_closed_after_exhaustion(self):
         for i in self.generator:
             pass
         self.assertEqual(self._generatorstate(), inspect.GEN_CLOSED)
 
-    def test_closed_after_immediate_exception(self):
+    eleza test_closed_after_immediate_exception(self):
         with self.assertRaises(RuntimeError):
             self.generator.throw(RuntimeError)
         self.assertEqual(self._generatorstate(), inspect.GEN_CLOSED)
 
-    def test_running(self):
+    eleza test_running(self):
         # As mentioned on issue #10220, checking for the RUNNING state only
         # makes sense inside the generator itself.
         # The following generator checks for this by using the closure's
         # reference to self and the generator state checking helper method
-        def running_check_generator():
+        eleza running_check_generator():
             for number in range(5):
                 self.assertEqual(self._generatorstate(), inspect.GEN_RUNNING)
                 yield number
@@ -1932,7 +1932,7 @@ class TestGetGeneratorState(unittest.TestCase):
         # Running after the first yield
         next(self.generator)
 
-    def test_easy_debugging(self):
+    eleza test_easy_debugging(self):
         # repr() and str() of a generator state should contain the state name
         names = 'GEN_CREATED GEN_RUNNING GEN_SUSPENDED GEN_CLOSED'.split()
         for name in names:
@@ -1940,11 +1940,11 @@ class TestGetGeneratorState(unittest.TestCase):
             self.assertIn(name, repr(state))
             self.assertIn(name, str(state))
 
-    def test_getgeneratorlocals(self):
-        def each(lst, a=None):
+    eleza test_getgeneratorlocals(self):
+        eleza each(lst, a=None):
             b=(1, 2, 3)
             for v in lst:
-                if v == 3:
+                ikiwa v == 3:
                     c = 12
                 yield v
 
@@ -1969,8 +1969,8 @@ class TestGetGeneratorState(unittest.TestCase):
             pass
         self.assertEqual(inspect.getgeneratorlocals(numbers), {})
 
-    def test_getgeneratorlocals_empty(self):
-        def yield_one():
+    eleza test_getgeneratorlocals_empty(self):
+        eleza yield_one():
             yield 1
         one = yield_one()
         self.assertEqual(inspect.getgeneratorlocals(one), {})
@@ -1980,38 +1980,38 @@ class TestGetGeneratorState(unittest.TestCase):
             pass
         self.assertEqual(inspect.getgeneratorlocals(one), {})
 
-    def test_getgeneratorlocals_error(self):
+    eleza test_getgeneratorlocals_error(self):
         self.assertRaises(TypeError, inspect.getgeneratorlocals, 1)
         self.assertRaises(TypeError, inspect.getgeneratorlocals, lambda x: True)
         self.assertRaises(TypeError, inspect.getgeneratorlocals, set)
         self.assertRaises(TypeError, inspect.getgeneratorlocals, (2,3))
 
 
-class TestGetCoroutineState(unittest.TestCase):
+kundi TestGetCoroutineState(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         @types.coroutine
-        def number_coroutine():
+        eleza number_coroutine():
             for number in range(5):
                 yield number
-        async def coroutine():
+        async eleza coroutine():
             await number_coroutine()
         self.coroutine = coroutine()
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.coroutine.close()
 
-    def _coroutinestate(self):
-        return inspect.getcoroutinestate(self.coroutine)
+    eleza _coroutinestate(self):
+        rudisha inspect.getcoroutinestate(self.coroutine)
 
-    def test_created(self):
+    eleza test_created(self):
         self.assertEqual(self._coroutinestate(), inspect.CORO_CREATED)
 
-    def test_suspended(self):
+    eleza test_suspended(self):
         self.coroutine.send(None)
         self.assertEqual(self._coroutinestate(), inspect.CORO_SUSPENDED)
 
-    def test_closed_after_exhaustion(self):
+    eleza test_closed_after_exhaustion(self):
         while True:
             try:
                 self.coroutine.send(None)
@@ -2020,12 +2020,12 @@ class TestGetCoroutineState(unittest.TestCase):
 
         self.assertEqual(self._coroutinestate(), inspect.CORO_CLOSED)
 
-    def test_closed_after_immediate_exception(self):
+    eleza test_closed_after_immediate_exception(self):
         with self.assertRaises(RuntimeError):
             self.coroutine.throw(RuntimeError)
         self.assertEqual(self._coroutinestate(), inspect.CORO_CLOSED)
 
-    def test_easy_debugging(self):
+    eleza test_easy_debugging(self):
         # repr() and str() of a coroutine state should contain the state name
         names = 'CORO_CREATED CORO_RUNNING CORO_SUSPENDED CORO_CLOSED'.split()
         for name in names:
@@ -2033,13 +2033,13 @@ class TestGetCoroutineState(unittest.TestCase):
             self.assertIn(name, repr(state))
             self.assertIn(name, str(state))
 
-    def test_getcoroutinelocals(self):
+    eleza test_getcoroutinelocals(self):
         @types.coroutine
-        def gencoro():
+        eleza gencoro():
             yield
 
         gencoro = gencoro()
-        async def func(a=None):
+        async eleza func(a=None):
             b = 'spam'
             await gencoro
 
@@ -2051,38 +2051,38 @@ class TestGetCoroutineState(unittest.TestCase):
                          {'a': None, 'gencoro': gencoro, 'b': 'spam'})
 
 
-class MySignature(inspect.Signature):
+kundi MySignature(inspect.Signature):
     # Top-level to make it picklable;
     # used in test_signature_object_pickle
     pass
 
-class MyParameter(inspect.Parameter):
+kundi MyParameter(inspect.Parameter):
     # Top-level to make it picklable;
     # used in test_signature_object_pickle
     pass
 
 
 
-class TestSignatureObject(unittest.TestCase):
+kundi TestSignatureObject(unittest.TestCase):
     @staticmethod
-    def signature(func, **kw):
+    eleza signature(func, **kw):
         sig = inspect.signature(func, **kw)
-        return (tuple((param.name,
-                       (... if param.default is param.empty else param.default),
-                       (... if param.annotation is param.empty
+        rudisha (tuple((param.name,
+                       (... ikiwa param.default is param.empty else param.default),
+                       (... ikiwa param.annotation is param.empty
                                                         else param.annotation),
                        str(param.kind).lower())
                                     for param in sig.parameters.values()),
-                (... if sig.return_annotation is sig.empty
+                (... ikiwa sig.return_annotation is sig.empty
                                             else sig.return_annotation))
 
-    def test_signature_object(self):
+    eleza test_signature_object(self):
         S = inspect.Signature
         P = inspect.Parameter
 
         self.assertEqual(str(S()), '()')
 
-        def test(po, pk, pod=42, pkd=100, *args, ko, **kwargs):
+        eleza test(po, pk, pod=42, pkd=100, *args, ko, **kwargs):
             pass
         sig = inspect.signature(test)
         po = sig.parameters['po'].replace(kind=P.POSITIONAL_ONLY)
@@ -2123,8 +2123,8 @@ class TestSignatureObject(unittest.TestCase):
         self.assertTrue(repr(sig).startswith('<Signature'))
         self.assertTrue('(po, pk' in repr(sig))
 
-    def test_signature_object_pickle(self):
-        def foo(a, b, *, c:1={}, **kw) -> {42:'ham'}: pass
+    eleza test_signature_object_pickle(self):
+        eleza foo(a, b, *, c:1={}, **kw) -> {42:'ham'}: pass
         foo_partial = functools.partial(foo, a=1)
 
         sig = inspect.signature(foo_partial)
@@ -2151,8 +2151,8 @@ class TestSignatureObject(unittest.TestCase):
                 self.assertTrue(isinstance(sig_pickled.parameters['z'],
                                            MyParameter))
 
-    def test_signature_immutability(self):
-        def test(a):
+    eleza test_signature_immutability(self):
+        eleza test(a):
             pass
         sig = inspect.signature(test)
 
@@ -2162,29 +2162,29 @@ class TestSignatureObject(unittest.TestCase):
         with self.assertRaises(TypeError):
             sig.parameters['a'] = None
 
-    def test_signature_on_noarg(self):
-        def test():
+    eleza test_signature_on_noarg(self):
+        eleza test():
             pass
         self.assertEqual(self.signature(test), ((), ...))
 
-    def test_signature_on_wargs(self):
-        def test(a, b:'foo') -> 123:
+    eleza test_signature_on_wargs(self):
+        eleza test(a, b:'foo') -> 123:
             pass
         self.assertEqual(self.signature(test),
                          ((('a', ..., ..., "positional_or_keyword"),
                            ('b', ..., 'foo', "positional_or_keyword")),
                           123))
 
-    def test_signature_on_wkwonly(self):
-        def test(*, a:float, b:str) -> int:
+    eleza test_signature_on_wkwonly(self):
+        eleza test(*, a:float, b:str) -> int:
             pass
         self.assertEqual(self.signature(test),
                          ((('a', ..., float, "keyword_only"),
                            ('b', ..., str, "keyword_only")),
                            int))
 
-    def test_signature_on_complex_args(self):
-        def test(a, b:'foo'=10, *args:'bar', spam:'baz', ham=123, **kwargs:int):
+    eleza test_signature_on_complex_args(self):
+        eleza test(a, b:'foo'=10, *args:'bar', spam:'baz', ham=123, **kwargs:int):
             pass
         self.assertEqual(self.signature(test),
                          ((('a', ..., ..., "positional_or_keyword"),
@@ -2195,20 +2195,20 @@ class TestSignatureObject(unittest.TestCase):
                            ('kwargs', ..., int, "var_keyword")),
                           ...))
 
-    def test_signature_without_self(self):
-        def test_args_only(*args):  # NOQA
+    eleza test_signature_without_self(self):
+        eleza test_args_only(*args):  # NOQA
             pass
 
-        def test_args_kwargs_only(*args, **kwargs):  # NOQA
+        eleza test_args_kwargs_only(*args, **kwargs):  # NOQA
             pass
 
-        class A:
+        kundi A:
             @classmethod
-            def test_classmethod(*args):  # NOQA
+            eleza test_classmethod(*args):  # NOQA
                 pass
 
             @staticmethod
-            def test_staticmethod(*args):  # NOQA
+            eleza test_staticmethod(*args):  # NOQA
                 pass
 
             f1 = functools.partialmethod((test_classmethod), 1)
@@ -2233,26 +2233,26 @@ class TestSignatureObject(unittest.TestCase):
     @cpython_only
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
                      "Signature information for builtins requires docstrings")
-    def test_signature_on_builtins(self):
+    eleza test_signature_on_builtins(self):
         agiza _testcapi
 
-        def test_unbound_method(o):
+        eleza test_unbound_method(o):
             """Use this to test unbound methods (things that should have a self)"""
             signature = inspect.signature(o)
             self.assertTrue(isinstance(signature, inspect.Signature))
             self.assertEqual(list(signature.parameters.values())[0].name, 'self')
-            return signature
+            rudisha signature
 
-        def test_callable(o):
+        eleza test_callable(o):
             """Use this to test bound methods or normal callables (things that don't expect self)"""
             signature = inspect.signature(o)
             self.assertTrue(isinstance(signature, inspect.Signature))
-            if signature.parameters:
+            ikiwa signature.parameters:
                 self.assertNotEqual(list(signature.parameters.values())[0].name, 'self')
-            return signature
+            rudisha signature
 
         signature = test_callable(_testcapi.docstring_with_signature_with_defaults)
-        def p(name): return signature.parameters[name].default
+        eleza p(name): rudisha signature.parameters[name].default
         self.assertEqual(p('s'), 'avocado')
         self.assertEqual(p('b'), b'bytes')
         self.assertEqual(p('d'), 3.14)
@@ -2276,9 +2276,9 @@ class TestSignatureObject(unittest.TestCase):
         test_callable(bytes.maketrans)
         test_callable(b'abc'.maketrans)
 
-        # class method
-        test_callable(dict.fromkeys)
-        test_callable({}.fromkeys)
+        # kundi method
+        test_callable(dict.kutokakeys)
+        test_callable({}.kutokakeys)
 
         # wrapper around slot (PyWrapperDescr_Type, "wrapper_descriptor")
         test_unbound_method(type.__call__)
@@ -2292,7 +2292,7 @@ class TestSignatureObject(unittest.TestCase):
         # This doesn't work now.
         # (We don't have a valid signature for "type" in 3.4)
         with self.assertRaisesRegex(ValueError, "no signature found"):
-            class ThisWorksNow:
+            kundi ThisWorksNow:
                 __call__ = type
             test_callable(ThisWorksNow())
 
@@ -2306,28 +2306,28 @@ class TestSignatureObject(unittest.TestCase):
     @cpython_only
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
                      "Signature information for builtins requires docstrings")
-    def test_signature_on_decorated_builtins(self):
+    eleza test_signature_on_decorated_builtins(self):
         agiza _testcapi
         func = _testcapi.docstring_with_signature_with_defaults
 
-        def decorator(func):
+        eleza decorator(func):
             @functools.wraps(func)
-            def wrapper(*args, **kwargs) -> int:
-                return func(*args, **kwargs)
-            return wrapper
+            eleza wrapper(*args, **kwargs) -> int:
+                rudisha func(*args, **kwargs)
+            rudisha wrapper
 
         decorated_func = decorator(func)
 
         self.assertEqual(inspect.signature(func),
                          inspect.signature(decorated_func))
 
-        def wrapper_like(*args, **kwargs) -> int: pass
+        eleza wrapper_like(*args, **kwargs) -> int: pass
         self.assertEqual(inspect.signature(decorated_func,
                                            follow_wrapped=False),
                          inspect.signature(wrapper_like))
 
     @cpython_only
-    def test_signature_on_builtins_no_signature(self):
+    eleza test_signature_on_builtins_no_signature(self):
         agiza _testcapi
         with self.assertRaisesRegex(ValueError,
                                     'no signature found for builtin'):
@@ -2337,20 +2337,20 @@ class TestSignatureObject(unittest.TestCase):
                                     'no signature found for builtin'):
             inspect.signature(str)
 
-    def test_signature_on_non_function(self):
+    eleza test_signature_on_non_function(self):
         with self.assertRaisesRegex(TypeError, 'is not a callable object'):
             inspect.signature(42)
 
-    def test_signature_from_functionlike_object(self):
-        def func(a,b, *args, kwonly=True, kwonlyreq, **kwargs):
+    eleza test_signature_kutoka_functionlike_object(self):
+        eleza func(a,b, *args, kwonly=True, kwonlyreq, **kwargs):
             pass
 
-        class funclike:
+        kundi funclike:
             # Has to be callable, and have correct
             # __code__, __annotations__, __defaults__, __name__,
             # and __kwdefaults__ attributes
 
-            def __init__(self, func):
+            eleza __init__(self, func):
                 self.__name__ = func.__name__
                 self.__code__ = func.__code__
                 self.__annotations__ = func.__annotations__
@@ -2358,12 +2358,12 @@ class TestSignatureObject(unittest.TestCase):
                 self.__kwdefaults__ = func.__kwdefaults__
                 self.func = func
 
-            def __call__(self, *args, **kwargs):
-                return self.func(*args, **kwargs)
+            eleza __call__(self, *args, **kwargs):
+                rudisha self.func(*args, **kwargs)
 
-        sig_func = inspect.Signature.from_callable(func)
+        sig_func = inspect.Signature.kutoka_callable(func)
 
-        sig_funclike = inspect.Signature.from_callable(funclike(func))
+        sig_funclike = inspect.Signature.kutoka_callable(funclike(func))
         self.assertEqual(sig_funclike, sig_func)
 
         sig_funclike = inspect.signature(funclike(func))
@@ -2381,10 +2381,10 @@ class TestSignatureObject(unittest.TestCase):
 
         # Test with cython-like builtins:
         _orig_isdesc = inspect.ismethoddescriptor
-        def _isdesc(obj):
-            if hasattr(obj, '_builtinmock'):
-                return True
-            return _orig_isdesc(obj)
+        eleza _isdesc(obj):
+            ikiwa hasattr(obj, '_builtinmock'):
+                rudisha True
+            rudisha _orig_isdesc(obj)
 
         with unittest.mock.patch('inspect.ismethoddescriptor', _isdesc):
             builtin_func = funclike(func)
@@ -2394,15 +2394,15 @@ class TestSignatureObject(unittest.TestCase):
             self.assertTrue(inspect.ismethoddescriptor(builtin_func))
             self.assertEqual(inspect.signature(builtin_func), sig_func)
 
-    def test_signature_functionlike_class(self):
+    eleza test_signature_functionlike_class(self):
         # We only want to duck type function-like objects,
         # not classes.
 
-        def func(a,b, *args, kwonly=True, kwonlyreq, **kwargs):
+        eleza func(a,b, *args, kwonly=True, kwonlyreq, **kwargs):
             pass
 
-        class funclike:
-            def __init__(self, marker):
+        kundi funclike:
+            eleza __init__(self, marker):
                 pass
 
             __name__ = func.__name__
@@ -2413,15 +2413,15 @@ class TestSignatureObject(unittest.TestCase):
 
         self.assertEqual(str(inspect.signature(funclike)), '(marker)')
 
-    def test_signature_on_method(self):
-        class Test:
-            def __init__(*args):
+    eleza test_signature_on_method(self):
+        kundi Test:
+            eleza __init__(*args):
                 pass
-            def m1(self, arg1, arg2=1) -> int:
+            eleza m1(self, arg1, arg2=1) -> int:
                 pass
-            def m2(*args):
+            eleza m2(*args):
                 pass
-            def __call__(*, a):
+            eleza __call__(*, a):
                 pass
 
         self.assertEqual(self.signature(Test().m1),
@@ -2440,23 +2440,23 @@ class TestSignatureObject(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'invalid method signature'):
             self.signature(Test())
 
-    def test_signature_wrapped_bound_method(self):
+    eleza test_signature_wrapped_bound_method(self):
         # Issue 24298
-        class Test:
-            def m1(self, arg1, arg2=1) -> int:
+        kundi Test:
+            eleza m1(self, arg1, arg2=1) -> int:
                 pass
         @functools.wraps(Test().m1)
-        def m1d(*args, **kwargs):
+        eleza m1d(*args, **kwargs):
             pass
         self.assertEqual(self.signature(m1d),
                          ((('arg1', ..., ..., "positional_or_keyword"),
                            ('arg2', 1, ..., "positional_or_keyword")),
                           int))
 
-    def test_signature_on_classmethod(self):
-        class Test:
+    eleza test_signature_on_classmethod(self):
+        kundi Test:
             @classmethod
-            def foo(cls, arg1, *, arg2=1):
+            eleza foo(cls, arg1, *, arg2=1):
                 pass
 
         meth = Test().foo
@@ -2471,10 +2471,10 @@ class TestSignatureObject(unittest.TestCase):
                            ('arg2', 1, ..., "keyword_only")),
                           ...))
 
-    def test_signature_on_staticmethod(self):
-        class Test:
+    eleza test_signature_on_staticmethod(self):
+        kundi Test:
             @staticmethod
-            def foo(cls, *, arg):
+            eleza foo(cls, *, arg):
                 pass
 
         meth = Test().foo
@@ -2489,12 +2489,12 @@ class TestSignatureObject(unittest.TestCase):
                            ('arg', ..., ..., "keyword_only")),
                           ...))
 
-    def test_signature_on_partial(self):
+    eleza test_signature_on_partial(self):
         kutoka functools agiza partial
 
         Parameter = inspect.Parameter
 
-        def test():
+        eleza test():
             pass
 
         self.assertEqual(self.signature(partial(test)), ((), ...))
@@ -2505,7 +2505,7 @@ class TestSignatureObject(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "has incorrect arguments"):
             inspect.signature(partial(test, a=1))
 
-        def test(a, b, *, c, d):
+        eleza test(a, b, *, c, d):
             pass
 
         self.assertEqual(self.signature(partial(test)),
@@ -2547,7 +2547,7 @@ class TestSignatureObject(unittest.TestCase):
                            ('d', ..., ..., "keyword_only")),
                           ...))
 
-        def test(a, *args, b, **kwargs):
+        eleza test(a, *args, b, **kwargs):
             pass
 
         self.assertEqual(self.signature(partial(test, 1)),
@@ -2594,7 +2594,7 @@ class TestSignatureObject(unittest.TestCase):
                            ('kwargs', ..., ..., "var_keyword")),
                           ...))
 
-        def test(a, b, c:int) -> 42:
+        eleza test(a, b, c:int) -> 42:
             pass
 
         sig = test.__signature__ = inspect.signature(test)
@@ -2610,8 +2610,8 @@ class TestSignatureObject(unittest.TestCase):
 
         psig = inspect.signature(partial(partial(test, 1), 2))
 
-        def foo(a):
-            return a
+        eleza foo(a):
+            rudisha a
         _foo = partial(partial(foo, a=10), a=20)
         self.assertEqual(self.signature(_foo),
                          ((('a', 20, ..., "keyword_only"),),
@@ -2620,8 +2620,8 @@ class TestSignatureObject(unittest.TestCase):
         # and the partial object is still functioning
         self.assertEqual(_foo(), 20)
 
-        def foo(a, b, c):
-            return a, b, c
+        eleza foo(a, b, c):
+            rudisha a, b, c
         _foo = partial(partial(foo, 1, b=20), b=30)
 
         self.assertEqual(self.signature(_foo),
@@ -2630,8 +2630,8 @@ class TestSignatureObject(unittest.TestCase):
                           ...))
         self.assertEqual(_foo(c=10), (1, 30, 10))
 
-        def foo(a, b, c, *, d):
-            return a, b, c, d
+        eleza foo(a, b, c, *, d):
+            rudisha a, b, c, d
         _foo = partial(partial(foo, d=20, c=20), b=10, d=30)
         self.assertEqual(self.signature(_foo),
                          ((('a', ..., ..., "positional_or_keyword"),
@@ -2643,8 +2643,8 @@ class TestSignatureObject(unittest.TestCase):
         ba = inspect.signature(_foo).bind(a=200, b=11)
         self.assertEqual(_foo(*ba.args, **ba.kwargs), (200, 11, 20, 30))
 
-        def foo(a=1, b=2, c=3):
-            return a, b, c
+        eleza foo(a=1, b=2, c=3):
+            rudisha a, b, c
         _foo = partial(foo, c=13) # (a=1, b=2, *, c=13)
 
         ba = inspect.signature(_foo).bind(a=11)
@@ -2664,7 +2664,7 @@ class TestSignatureObject(unittest.TestCase):
         self.assertEqual(_foo(*ba.args, **ba.kwargs), (12, 10, 20))
 
 
-        def foo(a, b, c, d, **kwargs):
+        eleza foo(a, b, c, d, **kwargs):
             pass
         sig = inspect.signature(foo)
         params = sig.parameters.copy()
@@ -2705,19 +2705,19 @@ class TestSignatureObject(unittest.TestCase):
                            ('kwargs', ..., ..., 'var_keyword')),
                          ...))
 
-    def test_signature_on_partialmethod(self):
+    eleza test_signature_on_partialmethod(self):
         kutoka functools agiza partialmethod
 
-        class Spam:
-            def test():
+        kundi Spam:
+            eleza test():
                 pass
             ham = partialmethod(test)
 
         with self.assertRaisesRegex(ValueError, "has incorrect arguments"):
             inspect.signature(Spam.ham)
 
-        class Spam:
-            def test(it, a, *, c) -> 'spam':
+        kundi Spam:
+            eleza test(it, a, *, c) -> 'spam':
                 pass
             ham = partialmethod(test, c=1)
 
@@ -2732,8 +2732,8 @@ class TestSignatureObject(unittest.TestCase):
                            ('c', 1, ..., 'keyword_only')),
                           'spam'))
 
-        class Spam:
-            def test(self: 'anno', x):
+        kundi Spam:
+            eleza test(self: 'anno', x):
                 pass
 
             g = partialmethod(test, 1)
@@ -2742,23 +2742,23 @@ class TestSignatureObject(unittest.TestCase):
                          ((('self', ..., 'anno', 'positional_or_keyword'),),
                           ...))
 
-    def test_signature_on_fake_partialmethod(self):
-        def foo(a): pass
+    eleza test_signature_on_fake_partialmethod(self):
+        eleza foo(a): pass
         foo._partialmethod = 'spam'
         self.assertEqual(str(inspect.signature(foo)), '(a)')
 
-    def test_signature_on_decorated(self):
+    eleza test_signature_on_decorated(self):
         agiza functools
 
-        def decorator(func):
+        eleza decorator(func):
             @functools.wraps(func)
-            def wrapper(*args, **kwargs) -> int:
-                return func(*args, **kwargs)
-            return wrapper
+            eleza wrapper(*args, **kwargs) -> int:
+                rudisha func(*args, **kwargs)
+            rudisha wrapper
 
-        class Foo:
+        kundi Foo:
             @decorator
-            def bar(self, a, b):
+            eleza bar(self, a, b):
                 pass
 
         self.assertEqual(self.signature(Foo.bar),
@@ -2780,18 +2780,18 @@ class TestSignatureObject(unittest.TestCase):
                                 # return_annotation
 
         # Test that we handle method wrappers correctly
-        def decorator(func):
+        eleza decorator(func):
             @functools.wraps(func)
-            def wrapper(*args, **kwargs) -> int:
-                return func(42, *args, **kwargs)
+            eleza wrapper(*args, **kwargs) -> int:
+                rudisha func(42, *args, **kwargs)
             sig = inspect.signature(func)
             new_params = tuple(sig.parameters.values())[1:]
             wrapper.__signature__ = sig.replace(parameters=new_params)
-            return wrapper
+            rudisha wrapper
 
-        class Foo:
+        kundi Foo:
             @decorator
-            def __call__(self, a, b):
+            eleza __call__(self, a, b):
                 pass
 
         self.assertEqual(self.signature(Foo.__call__),
@@ -2804,7 +2804,7 @@ class TestSignatureObject(unittest.TestCase):
                           ...))
 
         # Test we handle __signature__ partway down the wrapper stack
-        def wrapped_foo_call():
+        eleza wrapped_foo_call():
             pass
         wrapped_foo_call.__wrapped__ = Foo.__call__
 
@@ -2814,31 +2814,31 @@ class TestSignatureObject(unittest.TestCase):
                           ...))
 
 
-    def test_signature_on_class(self):
-        class C:
-            def __init__(self, a):
+    eleza test_signature_on_class(self):
+        kundi C:
+            eleza __init__(self, a):
                 pass
 
         self.assertEqual(self.signature(C),
                          ((('a', ..., ..., "positional_or_keyword"),),
                           ...))
 
-        class CM(type):
-            def __call__(cls, a):
+        kundi CM(type):
+            eleza __call__(cls, a):
                 pass
-        class C(metaclass=CM):
-            def __init__(self, b):
+        kundi C(metaclass=CM):
+            eleza __init__(self, b):
                 pass
 
         self.assertEqual(self.signature(C),
                          ((('a', ..., ..., "positional_or_keyword"),),
                           ...))
 
-        class CM(type):
-            def __new__(mcls, name, bases, dct, *, foo=1):
-                return super().__new__(mcls, name, bases, dct)
-        class C(metaclass=CM):
-            def __init__(self, b):
+        kundi CM(type):
+            eleza __new__(mcls, name, bases, dct, *, foo=1):
+                rudisha super().__new__(mcls, name, bases, dct)
+        kundi C(metaclass=CM):
+            eleza __init__(self, b):
                 pass
 
         self.assertEqual(self.signature(C),
@@ -2852,16 +2852,16 @@ class TestSignatureObject(unittest.TestCase):
                            ('foo', 1, ..., "keyword_only")),
                           ...))
 
-        class CMM(type):
-            def __new__(mcls, name, bases, dct, *, foo=1):
-                return super().__new__(mcls, name, bases, dct)
-            def __call__(cls, nm, bs, dt):
-                return type(nm, bs, dt)
-        class CM(type, metaclass=CMM):
-            def __new__(mcls, name, bases, dct, *, bar=2):
-                return super().__new__(mcls, name, bases, dct)
-        class C(metaclass=CM):
-            def __init__(self, b):
+        kundi CMM(type):
+            eleza __new__(mcls, name, bases, dct, *, foo=1):
+                rudisha super().__new__(mcls, name, bases, dct)
+            eleza __call__(cls, nm, bs, dt):
+                rudisha type(nm, bs, dt)
+        kundi CM(type, metaclass=CMM):
+            eleza __new__(mcls, name, bases, dct, *, bar=2):
+                rudisha super().__new__(mcls, name, bases, dct)
+        kundi C(metaclass=CM):
+            eleza __init__(self, b):
                 pass
 
         self.assertEqual(self.signature(CMM),
@@ -2881,11 +2881,11 @@ class TestSignatureObject(unittest.TestCase):
                          ((('b', ..., ..., "positional_or_keyword"),),
                           ...))
 
-        class CM(type):
-            def __init__(cls, name, bases, dct, *, bar=2):
-                return super().__init__(name, bases, dct)
-        class C(metaclass=CM):
-            def __init__(self, b):
+        kundi CM(type):
+            eleza __init__(cls, name, bases, dct, *, bar=2):
+                rudisha super().__init__(name, bases, dct)
+        kundi C(metaclass=CM):
+            eleza __init__(self, b):
                 pass
 
         self.assertEqual(self.signature(CM),
@@ -2897,16 +2897,16 @@ class TestSignatureObject(unittest.TestCase):
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
                      "Signature information for builtins requires docstrings")
-    def test_signature_on_class_without_init(self):
+    eleza test_signature_on_class_without_init(self):
         # Test classes without user-defined __init__ or __new__
-        class C: pass
+        kundi C: pass
         self.assertEqual(str(inspect.signature(C)), '()')
-        class D(C): pass
+        kundi D(C): pass
         self.assertEqual(str(inspect.signature(D)), '()')
 
         # Test meta-classes without user-defined __init__ or __new__
-        class C(type): pass
-        class D(C): pass
+        kundi C(type): pass
+        kundi D(C): pass
         with self.assertRaisesRegex(ValueError, "callable.*is not supported"):
             self.assertEqual(inspect.signature(C), None)
         with self.assertRaisesRegex(ValueError, "callable.*is not supported"):
@@ -2914,51 +2914,51 @@ class TestSignatureObject(unittest.TestCase):
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
                      "Signature information for builtins requires docstrings")
-    def test_signature_on_builtin_class(self):
+    eleza test_signature_on_builtin_class(self):
         expected = ('(file, protocol=None, fix_agizas=True, '
                     'buffer_callback=None)')
         self.assertEqual(str(inspect.signature(_pickle.Pickler)), expected)
 
-        class P(_pickle.Pickler): pass
-        class EmptyTrait: pass
-        class P2(EmptyTrait, P): pass
+        kundi P(_pickle.Pickler): pass
+        kundi EmptyTrait: pass
+        kundi P2(EmptyTrait, P): pass
         self.assertEqual(str(inspect.signature(P)), expected)
         self.assertEqual(str(inspect.signature(P2)), expected)
 
-        class P3(P2):
-            def __init__(self, spam):
+        kundi P3(P2):
+            eleza __init__(self, spam):
                 pass
         self.assertEqual(str(inspect.signature(P3)), '(spam)')
 
-        class MetaP(type):
-            def __call__(cls, foo, bar):
+        kundi MetaP(type):
+            eleza __call__(cls, foo, bar):
                 pass
-        class P4(P2, metaclass=MetaP):
+        kundi P4(P2, metaclass=MetaP):
             pass
         self.assertEqual(str(inspect.signature(P4)), '(foo, bar)')
 
-    def test_signature_on_callable_objects(self):
-        class Foo:
-            def __call__(self, a):
+    eleza test_signature_on_callable_objects(self):
+        kundi Foo:
+            eleza __call__(self, a):
                 pass
 
         self.assertEqual(self.signature(Foo()),
                          ((('a', ..., ..., "positional_or_keyword"),),
                           ...))
 
-        class Spam:
+        kundi Spam:
             pass
         with self.assertRaisesRegex(TypeError, "is not a callable object"):
             inspect.signature(Spam())
 
-        class Bar(Spam, Foo):
+        kundi Bar(Spam, Foo):
             pass
 
         self.assertEqual(self.signature(Bar()),
                          ((('a', ..., ..., "positional_or_keyword"),),
                           ...))
 
-        class Wrapped:
+        kundi Wrapped:
             pass
         Wrapped.__wrapped__ = lambda a: None
         self.assertEqual(self.signature(Wrapped),
@@ -2969,99 +2969,99 @@ class TestSignatureObject(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'wrapper loop'):
             self.signature(Wrapped)
 
-    def test_signature_on_lambdas(self):
+    eleza test_signature_on_lambdas(self):
         self.assertEqual(self.signature((lambda a=10: a)),
                          ((('a', 10, ..., "positional_or_keyword"),),
                           ...))
 
-    def test_signature_equality(self):
-        def foo(a, *, b:int) -> float: pass
+    eleza test_signature_equality(self):
+        eleza foo(a, *, b:int) -> float: pass
         self.assertFalse(inspect.signature(foo) == 42)
         self.assertTrue(inspect.signature(foo) != 42)
         self.assertTrue(inspect.signature(foo) == EqualsToAll())
         self.assertFalse(inspect.signature(foo) != EqualsToAll())
 
-        def bar(a, *, b:int) -> float: pass
+        eleza bar(a, *, b:int) -> float: pass
         self.assertTrue(inspect.signature(foo) == inspect.signature(bar))
         self.assertFalse(inspect.signature(foo) != inspect.signature(bar))
         self.assertEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
 
-        def bar(a, *, b:int) -> int: pass
+        eleza bar(a, *, b:int) -> int: pass
         self.assertFalse(inspect.signature(foo) == inspect.signature(bar))
         self.assertTrue(inspect.signature(foo) != inspect.signature(bar))
         self.assertNotEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
 
-        def bar(a, *, b:int): pass
+        eleza bar(a, *, b:int): pass
         self.assertFalse(inspect.signature(foo) == inspect.signature(bar))
         self.assertTrue(inspect.signature(foo) != inspect.signature(bar))
         self.assertNotEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
 
-        def bar(a, *, b:int=42) -> float: pass
+        eleza bar(a, *, b:int=42) -> float: pass
         self.assertFalse(inspect.signature(foo) == inspect.signature(bar))
         self.assertTrue(inspect.signature(foo) != inspect.signature(bar))
         self.assertNotEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
 
-        def bar(a, *, c) -> float: pass
+        eleza bar(a, *, c) -> float: pass
         self.assertFalse(inspect.signature(foo) == inspect.signature(bar))
         self.assertTrue(inspect.signature(foo) != inspect.signature(bar))
         self.assertNotEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
 
-        def bar(a, b:int) -> float: pass
+        eleza bar(a, b:int) -> float: pass
         self.assertFalse(inspect.signature(foo) == inspect.signature(bar))
         self.assertTrue(inspect.signature(foo) != inspect.signature(bar))
         self.assertNotEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
-        def spam(b:int, a) -> float: pass
+        eleza spam(b:int, a) -> float: pass
         self.assertFalse(inspect.signature(spam) == inspect.signature(bar))
         self.assertTrue(inspect.signature(spam) != inspect.signature(bar))
         self.assertNotEqual(
             hash(inspect.signature(spam)), hash(inspect.signature(bar)))
 
-        def foo(*, a, b, c): pass
-        def bar(*, c, b, a): pass
+        eleza foo(*, a, b, c): pass
+        eleza bar(*, c, b, a): pass
         self.assertTrue(inspect.signature(foo) == inspect.signature(bar))
         self.assertFalse(inspect.signature(foo) != inspect.signature(bar))
         self.assertEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
 
-        def foo(*, a=1, b, c): pass
-        def bar(*, c, b, a=1): pass
+        eleza foo(*, a=1, b, c): pass
+        eleza bar(*, c, b, a=1): pass
         self.assertTrue(inspect.signature(foo) == inspect.signature(bar))
         self.assertFalse(inspect.signature(foo) != inspect.signature(bar))
         self.assertEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
 
-        def foo(pos, *, a=1, b, c): pass
-        def bar(pos, *, c, b, a=1): pass
+        eleza foo(pos, *, a=1, b, c): pass
+        eleza bar(pos, *, c, b, a=1): pass
         self.assertTrue(inspect.signature(foo) == inspect.signature(bar))
         self.assertFalse(inspect.signature(foo) != inspect.signature(bar))
         self.assertEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
 
-        def foo(pos, *, a, b, c): pass
-        def bar(pos, *, c, b, a=1): pass
+        eleza foo(pos, *, a, b, c): pass
+        eleza bar(pos, *, c, b, a=1): pass
         self.assertFalse(inspect.signature(foo) == inspect.signature(bar))
         self.assertTrue(inspect.signature(foo) != inspect.signature(bar))
         self.assertNotEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
 
-        def foo(pos, *args, a=42, b, c, **kwargs:int): pass
-        def bar(pos, *args, c, b, a=42, **kwargs:int): pass
+        eleza foo(pos, *args, a=42, b, c, **kwargs:int): pass
+        eleza bar(pos, *args, c, b, a=42, **kwargs:int): pass
         self.assertTrue(inspect.signature(foo) == inspect.signature(bar))
         self.assertFalse(inspect.signature(foo) != inspect.signature(bar))
         self.assertEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
 
-    def test_signature_hashable(self):
+    eleza test_signature_hashable(self):
         S = inspect.Signature
         P = inspect.Parameter
 
-        def foo(a): pass
+        eleza foo(a): pass
         foo_sig = inspect.signature(foo)
 
         manual_sig = S(parameters=[P('a', P.POSITIONAL_OR_KEYWORD)])
@@ -3070,38 +3070,38 @@ class TestSignatureObject(unittest.TestCase):
         self.assertNotEqual(hash(foo_sig),
                             hash(manual_sig.replace(return_annotation='spam')))
 
-        def bar(a) -> 1: pass
+        eleza bar(a) -> 1: pass
         self.assertNotEqual(hash(foo_sig), hash(inspect.signature(bar)))
 
-        def foo(a={}): pass
+        eleza foo(a={}): pass
         with self.assertRaisesRegex(TypeError, 'unhashable type'):
             hash(inspect.signature(foo))
 
-        def foo(a) -> {}: pass
+        eleza foo(a) -> {}: pass
         with self.assertRaisesRegex(TypeError, 'unhashable type'):
             hash(inspect.signature(foo))
 
-    def test_signature_str(self):
-        def foo(a:int=1, *, b, c=None, **kwargs) -> 42:
+    eleza test_signature_str(self):
+        eleza foo(a:int=1, *, b, c=None, **kwargs) -> 42:
             pass
         self.assertEqual(str(inspect.signature(foo)),
                          '(a: int = 1, *, b, c=None, **kwargs) -> 42')
 
-        def foo(a:int=1, *args, b, c=None, **kwargs) -> 42:
+        eleza foo(a:int=1, *args, b, c=None, **kwargs) -> 42:
             pass
         self.assertEqual(str(inspect.signature(foo)),
                          '(a: int = 1, *args, b, c=None, **kwargs) -> 42')
 
-        def foo():
+        eleza foo():
             pass
         self.assertEqual(str(inspect.signature(foo)), '()')
 
-    def test_signature_str_positional_only(self):
+    eleza test_signature_str_positional_only(self):
         P = inspect.Parameter
         S = inspect.Signature
 
-        def test(a_po, *, b, **kwargs):
-            return a_po, kwargs
+        eleza test(a_po, *, b, **kwargs):
+            rudisha a_po, kwargs
 
         sig = inspect.signature(test)
         new_params = list(sig.parameters.values())
@@ -3124,8 +3124,8 @@ class TestSignatureObject(unittest.TestCase):
                                 P('bar', P.VAR_POSITIONAL)])),
                          '(foo, /, *bar)')
 
-    def test_signature_replace_anno(self):
-        def test() -> 42:
+    eleza test_signature_replace_anno(self):
+        eleza test() -> 42:
             pass
 
         sig = inspect.signature(test)
@@ -3137,11 +3137,11 @@ class TestSignatureObject(unittest.TestCase):
         self.assertEqual(sig.return_annotation, 42)
         self.assertEqual(sig, inspect.signature(test))
 
-    def test_signature_on_mangled_parameters(self):
-        class Spam:
-            def foo(self, __p1:1=2, *, __p2:2=3):
+    eleza test_signature_on_mangled_parameters(self):
+        kundi Spam:
+            eleza foo(self, __p1:1=2, *, __p2:2=3):
                 pass
-        class Ham(Spam):
+        kundi Ham(Spam):
             pass
 
         self.assertEqual(self.signature(Spam.foo),
@@ -3153,27 +3153,27 @@ class TestSignatureObject(unittest.TestCase):
         self.assertEqual(self.signature(Spam.foo),
                          self.signature(Ham.foo))
 
-    def test_signature_from_callable_python_obj(self):
-        class MySignature(inspect.Signature): pass
-        def foo(a, *, b:1): pass
-        foo_sig = MySignature.from_callable(foo)
+    eleza test_signature_kutoka_callable_python_obj(self):
+        kundi MySignature(inspect.Signature): pass
+        eleza foo(a, *, b:1): pass
+        foo_sig = MySignature.kutoka_callable(foo)
         self.assertIsInstance(foo_sig, MySignature)
 
-    def test_signature_from_callable_class(self):
-        # A regression test for a class inheriting its signature kutoka `object`.
-        class MySignature(inspect.Signature): pass
-        class foo: pass
-        foo_sig = MySignature.from_callable(foo)
+    eleza test_signature_kutoka_callable_class(self):
+        # A regression test for a kundi inheriting its signature kutoka `object`.
+        kundi MySignature(inspect.Signature): pass
+        kundi foo: pass
+        foo_sig = MySignature.kutoka_callable(foo)
         self.assertIsInstance(foo_sig, MySignature)
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
                      "Signature information for builtins requires docstrings")
-    def test_signature_from_callable_builtin_obj(self):
-        class MySignature(inspect.Signature): pass
-        sig = MySignature.from_callable(_pickle.Pickler)
+    eleza test_signature_kutoka_callable_builtin_obj(self):
+        kundi MySignature(inspect.Signature): pass
+        sig = MySignature.kutoka_callable(_pickle.Pickler)
         self.assertIsInstance(sig, MySignature)
 
-    def test_signature_definition_order_preserved_on_kwonly(self):
+    eleza test_signature_definition_order_preserved_on_kwonly(self):
         for fn in signatures_with_lexicographic_keyword_only_parameters():
             signature = inspect.signature(fn)
             l = list(signature.parameters)
@@ -3185,8 +3185,8 @@ class TestSignatureObject(unittest.TestCase):
         self.assertEqual(l, unsorted_keyword_only_parameters)
 
 
-class TestParameterObject(unittest.TestCase):
-    def test_signature_parameter_kinds(self):
+kundi TestParameterObject(unittest.TestCase):
+    eleza test_signature_parameter_kinds(self):
         P = inspect.Parameter
         self.assertTrue(P.POSITIONAL_ONLY < P.POSITIONAL_OR_KEYWORD < \
                         P.VAR_POSITIONAL < P.KEYWORD_ONLY < P.VAR_KEYWORD)
@@ -3194,7 +3194,7 @@ class TestParameterObject(unittest.TestCase):
         self.assertEqual(str(P.POSITIONAL_ONLY), 'POSITIONAL_ONLY')
         self.assertTrue('POSITIONAL_ONLY' in repr(P.POSITIONAL_ONLY))
 
-    def test_signature_parameter_object(self):
+    eleza test_signature_parameter_object(self):
         p = inspect.Parameter('foo', default=10,
                               kind=inspect.Parameter.POSITIONAL_ONLY)
         self.assertEqual(p.name, 'foo')
@@ -3236,7 +3236,7 @@ class TestParameterObject(unittest.TestCase):
         self.assertTrue(repr(p).startswith('<Parameter'))
         self.assertTrue('"a=42"' in repr(p))
 
-    def test_signature_parameter_hashable(self):
+    eleza test_signature_parameter_hashable(self):
         P = inspect.Parameter
         foo = P('foo', kind=P.POSITIONAL_ONLY)
         self.assertEqual(hash(foo), hash(P('foo', kind=P.POSITIONAL_ONLY)))
@@ -3245,7 +3245,7 @@ class TestParameterObject(unittest.TestCase):
         self.assertNotEqual(hash(foo),
                             hash(foo.replace(kind=P.VAR_POSITIONAL)))
 
-    def test_signature_parameter_equality(self):
+    eleza test_signature_parameter_equality(self):
         P = inspect.Parameter
         p = P('foo', default=42, kind=inspect.Parameter.KEYWORD_ONLY)
 
@@ -3261,7 +3261,7 @@ class TestParameterObject(unittest.TestCase):
         self.assertFalse(p != P('foo', default=42,
                                 kind=inspect.Parameter.KEYWORD_ONLY))
 
-    def test_signature_parameter_replace(self):
+    eleza test_signature_parameter_replace(self):
         p = inspect.Parameter('foo', default=42,
                               kind=inspect.Parameter.KEYWORD_ONLY)
 
@@ -3294,19 +3294,19 @@ class TestParameterObject(unittest.TestCase):
         self.assertNotEqual(p2, p)
 
         with self.assertRaisesRegex(ValueError,
-                                    "value <class 'inspect._empty'> "
+                                    "value <kundi 'inspect._empty'> "
                                     "is not a valid Parameter.kind"):
             p2 = p2.replace(kind=p2.empty)
 
         p2 = p2.replace(kind=p2.KEYWORD_ONLY)
         self.assertEqual(p2, p)
 
-    def test_signature_parameter_positional_only(self):
+    eleza test_signature_parameter_positional_only(self):
         with self.assertRaisesRegex(TypeError, 'name must be a str'):
             inspect.Parameter(None, kind=inspect.Parameter.POSITIONAL_ONLY)
 
     @cpython_only
-    def test_signature_parameter_implicit(self):
+    eleza test_signature_parameter_implicit(self):
         with self.assertRaisesRegex(ValueError,
                                     'implicit arguments must be passed as '
                                     'positional or keyword arguments, '
@@ -3318,7 +3318,7 @@ class TestParameterObject(unittest.TestCase):
         self.assertEqual(param.kind, inspect.Parameter.POSITIONAL_ONLY)
         self.assertEqual(param.name, 'implicit0')
 
-    def test_signature_parameter_immutability(self):
+    eleza test_signature_parameter_immutability(self):
         p = inspect.Parameter('spam', kind=inspect.Parameter.KEYWORD_ONLY)
 
         with self.assertRaises(AttributeError):
@@ -3328,16 +3328,16 @@ class TestParameterObject(unittest.TestCase):
             p.kind = 123
 
 
-class TestSignatureBind(unittest.TestCase):
+kundi TestSignatureBind(unittest.TestCase):
     @staticmethod
-    def call(func, *args, **kwargs):
+    eleza call(func, *args, **kwargs):
         sig = inspect.signature(func)
         ba = sig.bind(*args, **kwargs)
-        return func(*ba.args, **ba.kwargs)
+        rudisha func(*ba.args, **ba.kwargs)
 
-    def test_signature_bind_empty(self):
-        def test():
-            return 42
+    eleza test_signature_bind_empty(self):
+        eleza test():
+            rudisha 42
 
         self.assertEqual(self.call(test), 42)
         with self.assertRaisesRegex(TypeError, 'too many positional arguments'):
@@ -3349,9 +3349,9 @@ class TestSignatureBind(unittest.TestCase):
 
             self.call(test, spam=1)
 
-    def test_signature_bind_var(self):
-        def test(*args, **kwargs):
-            return args, kwargs
+    eleza test_signature_bind_var(self):
+        eleza test(*args, **kwargs):
+            rudisha args, kwargs
 
         self.assertEqual(self.call(test), ((), {}))
         self.assertEqual(self.call(test, 1), ((1,), {}))
@@ -3362,9 +3362,9 @@ class TestSignatureBind(unittest.TestCase):
         self.assertEqual(self.call(test, 1, 2, foo='bar'),
                          ((1, 2), {'foo': 'bar'}))
 
-    def test_signature_bind_just_args(self):
-        def test(a, b, c):
-            return a, b, c
+    eleza test_signature_bind_just_args(self):
+        eleza test(a, b, c):
+            rudisha a, b, c
 
         self.assertEqual(self.call(test, 1, 2, 3), (1, 2, 3))
 
@@ -3379,27 +3379,27 @@ class TestSignatureBind(unittest.TestCase):
                                     "missing a required argument: 'a'"):
             self.call(test)
 
-        def test(a, b, c=10):
-            return a, b, c
+        eleza test(a, b, c=10):
+            rudisha a, b, c
         self.assertEqual(self.call(test, 1, 2, 3), (1, 2, 3))
         self.assertEqual(self.call(test, 1, 2), (1, 2, 10))
 
-        def test(a=1, b=2, c=3):
-            return a, b, c
+        eleza test(a=1, b=2, c=3):
+            rudisha a, b, c
         self.assertEqual(self.call(test, a=10, c=13), (10, 2, 13))
         self.assertEqual(self.call(test, a=10), (10, 2, 3))
         self.assertEqual(self.call(test, b=10), (1, 10, 3))
 
-    def test_signature_bind_varargs_order(self):
-        def test(*args):
-            return args
+    eleza test_signature_bind_varargs_order(self):
+        eleza test(*args):
+            rudisha args
 
         self.assertEqual(self.call(test), ())
         self.assertEqual(self.call(test, 1, 2, 3), (1, 2, 3))
 
-    def test_signature_bind_args_and_varargs(self):
-        def test(a, b, c=3, *args):
-            return a, b, c, args
+    eleza test_signature_bind_args_and_varargs(self):
+        eleza test(a, b, c=3, *args):
+            rudisha a, b, c, args
 
         self.assertEqual(self.call(test, 1, 2, 3, 4, 5), (1, 2, 3, (4, 5)))
         self.assertEqual(self.call(test, 1, 2), (1, 2, 3, ()))
@@ -3410,17 +3410,17 @@ class TestSignatureBind(unittest.TestCase):
                                      "multiple values for argument 'c'"):
             self.call(test, 1, 2, 3, c=4)
 
-    def test_signature_bind_just_kwargs(self):
-        def test(**kwargs):
-            return kwargs
+    eleza test_signature_bind_just_kwargs(self):
+        eleza test(**kwargs):
+            rudisha kwargs
 
         self.assertEqual(self.call(test), {})
         self.assertEqual(self.call(test, foo='bar', spam='ham'),
                          {'foo': 'bar', 'spam': 'ham'})
 
-    def test_signature_bind_args_and_kwargs(self):
-        def test(a, b, c=3, **kwargs):
-            return a, b, c, kwargs
+    eleza test_signature_bind_args_and_kwargs(self):
+        eleza test(a, b, c=3, **kwargs):
+            rudisha a, b, c, kwargs
 
         self.assertEqual(self.call(test, 1, 2), (1, 2, 3, {}))
         self.assertEqual(self.call(test, 1, 2, foo='bar', spam='ham'),
@@ -3438,22 +3438,22 @@ class TestSignatureBind(unittest.TestCase):
         self.assertEqual(self.call(test, c=5, a=4, b=3),
                          (4, 3, 5, {}))
 
-    def test_signature_bind_kwonly(self):
-        def test(*, foo):
-            return foo
+    eleza test_signature_bind_kwonly(self):
+        eleza test(*, foo):
+            rudisha foo
         with self.assertRaisesRegex(TypeError,
                                      'too many positional arguments'):
             self.call(test, 1)
         self.assertEqual(self.call(test, foo=1), 1)
 
-        def test(a, *, foo=1, bar):
-            return foo
+        eleza test(a, *, foo=1, bar):
+            rudisha foo
         with self.assertRaisesRegex(TypeError,
                                      "missing a required argument: 'bar'"):
             self.call(test, 1)
 
-        def test(foo, *, bar):
-            return foo, bar
+        eleza test(foo, *, bar):
+            rudisha foo, bar
         self.assertEqual(self.call(test, 1, bar=2), (1, 2))
         self.assertEqual(self.call(test, bar=2, foo=1), (1, 2))
 
@@ -3479,8 +3479,8 @@ class TestSignatureBind(unittest.TestCase):
                                      "missing a required argument: 'bar'"):
             self.call(test, 1)
 
-        def test(foo, *, bar, **bin):
-            return foo, bar, bin
+        eleza test(foo, *, bar, **bin):
+            rudisha foo, bar, bin
         self.assertEqual(self.call(test, 1, bar=2), (1, 2, {}))
         self.assertEqual(self.call(test, foo=1, bar=2), (1, 2, {}))
         self.assertEqual(self.call(test, 1, bar=2, spam='ham'),
@@ -3493,8 +3493,8 @@ class TestSignatureBind(unittest.TestCase):
         self.assertEqual(self.call(test, 1, bar=2, bin=1, spam=10),
                          (1, 2, {'bin': 1, 'spam': 10}))
 
-    def test_signature_bind_arguments(self):
-        def test(a, *args, b, z=100, **kwargs):
+    eleza test_signature_bind_arguments(self):
+        eleza test(a, *args, b, z=100, **kwargs):
             pass
         sig = inspect.signature(test)
         ba = sig.bind(10, 20, b=30, c=40, args=50, kwargs=60)
@@ -3507,11 +3507,11 @@ class TestSignatureBind(unittest.TestCase):
                          {'b': 30, 'c': 40, 'args': 50, 'kwargs': 60})
         self.assertEqual(ba.args, (10, 20))
 
-    def test_signature_bind_positional_only(self):
+    eleza test_signature_bind_positional_only(self):
         P = inspect.Parameter
 
-        def test(a_po, b_po, c_po=3, foo=42, *, bar=50, **kwargs):
-            return a_po, b_po, c_po, foo, bar, kwargs
+        eleza test(a_po, b_po, c_po=3, foo=42, *, bar=50, **kwargs):
+            rudisha a_po, b_po, c_po, foo, bar, kwargs
 
         sig = inspect.signature(test)
         new_params = collections.OrderedDict(tuple(sig.parameters.items()))
@@ -3538,9 +3538,9 @@ class TestSignatureBind(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, "parameter is positional only"):
             self.call(test, a_po=1, b_po=2)
 
-    def test_signature_bind_with_self_arg(self):
+    eleza test_signature_bind_with_self_arg(self):
         # Issue #17071: one of the parameters is named "self
-        def test(a, self, b):
+        eleza test(a, self, b):
             pass
         sig = inspect.signature(test)
         ba = sig.bind(1, 2, 3)
@@ -3548,9 +3548,9 @@ class TestSignatureBind(unittest.TestCase):
         ba = sig.bind(1, self=2, b=3)
         self.assertEqual(ba.args, (1, 2, 3))
 
-    def test_signature_bind_vararg_name(self):
-        def test(a, *args):
-            return a, args
+    eleza test_signature_bind_vararg_name(self):
+        eleza test(a, *args):
+            rudisha a, args
         sig = inspect.signature(test)
 
         with self.assertRaisesRegex(
@@ -3558,8 +3558,8 @@ class TestSignatureBind(unittest.TestCase):
 
             sig.bind(a=0, args=1)
 
-        def test(*args, **kwargs):
-            return args, kwargs
+        eleza test(*args, **kwargs):
+            rudisha args, kwargs
         self.assertEqual(self.call(test, args=1), ((), {'args': 1}))
 
         sig = inspect.signature(test)
@@ -3567,10 +3567,10 @@ class TestSignatureBind(unittest.TestCase):
         self.assertEqual(ba.arguments, {'kwargs': {'args': 1}})
 
     @cpython_only
-    def test_signature_bind_implicit_arg(self):
+    eleza test_signature_bind_implicit_arg(self):
         # Issue #19611: getcallargs should work with set comprehensions
-        def make_set():
-            return {z * z for z in range(5)}
+        eleza make_set():
+            rudisha {z * z for z in range(5)}
         setcomp_code = make_set.__code__.co_consts[1]
         setcomp_func = types.FunctionType(setcomp_code, {})
 
@@ -3578,16 +3578,16 @@ class TestSignatureBind(unittest.TestCase):
         self.assertEqual(self.call(setcomp_func, iterator), {0, 1, 4, 9, 16})
 
 
-class TestBoundArguments(unittest.TestCase):
-    def test_signature_bound_arguments_unhashable(self):
-        def foo(a): pass
+kundi TestBoundArguments(unittest.TestCase):
+    eleza test_signature_bound_arguments_unhashable(self):
+        eleza foo(a): pass
         ba = inspect.signature(foo).bind(1)
 
         with self.assertRaisesRegex(TypeError, 'unhashable type'):
             hash(ba)
 
-    def test_signature_bound_arguments_equality(self):
-        def foo(a): pass
+    eleza test_signature_bound_arguments_equality(self):
+        eleza foo(a): pass
         ba = inspect.signature(foo).bind(1)
         self.assertTrue(ba == ba)
         self.assertFalse(ba != ba)
@@ -3605,20 +3605,20 @@ class TestBoundArguments(unittest.TestCase):
         self.assertTrue(ba == ba3)
         self.assertFalse(ba != ba3)
 
-        def bar(b): pass
+        eleza bar(b): pass
         ba4 = inspect.signature(bar).bind(1)
         self.assertFalse(ba == ba4)
         self.assertTrue(ba != ba4)
 
-        def foo(*, a, b): pass
+        eleza foo(*, a, b): pass
         sig = inspect.signature(foo)
         ba1 = sig.bind(a=1, b=2)
         ba2 = sig.bind(b=2, a=1)
         self.assertTrue(ba1 == ba2)
         self.assertFalse(ba1 != ba2)
 
-    def test_signature_bound_arguments_pickle(self):
-        def foo(a, b, *, c:1={}, **kw) -> {42:'ham'}: pass
+    eleza test_signature_bound_arguments_pickle(self):
+        eleza foo(a, b, *, c:1={}, **kw) -> {42:'ham'}: pass
         sig = inspect.signature(foo)
         ba = sig.bind(20, 30, z={})
 
@@ -3627,14 +3627,14 @@ class TestBoundArguments(unittest.TestCase):
                 ba_pickled = pickle.loads(pickle.dumps(ba, ver))
                 self.assertEqual(ba, ba_pickled)
 
-    def test_signature_bound_arguments_repr(self):
-        def foo(a, b, *, c:1={}, **kw) -> {42:'ham'}: pass
+    eleza test_signature_bound_arguments_repr(self):
+        eleza foo(a, b, *, c:1={}, **kw) -> {42:'ham'}: pass
         sig = inspect.signature(foo)
         ba = sig.bind(20, 30, z={})
         self.assertRegex(repr(ba), r'<BoundArguments \(a=20,.*\}\}\)>')
 
-    def test_signature_bound_arguments_apply_defaults(self):
-        def foo(a, b=1, *args, c:1={}, **kw): pass
+    eleza test_signature_bound_arguments_apply_defaults(self):
+        eleza foo(a, b=1, *args, c:1={}, **kw): pass
         sig = inspect.signature(foo)
 
         ba = sig.bind(20)
@@ -3653,7 +3653,7 @@ class TestBoundArguments(unittest.TestCase):
 
         # Make sure that BoundArguments produced by bind_partial()
         # are supported.
-        def foo(a, b): pass
+        eleza foo(a, b): pass
         sig = inspect.signature(foo)
         ba = sig.bind_partial(20)
         ba.apply_defaults()
@@ -3662,29 +3662,29 @@ class TestBoundArguments(unittest.TestCase):
             [('a', 20)])
 
         # Test no args
-        def foo(): pass
+        eleza foo(): pass
         sig = inspect.signature(foo)
         ba = sig.bind()
         ba.apply_defaults()
         self.assertEqual(list(ba.arguments.items()), [])
 
         # Make sure a no-args binding still acquires proper defaults.
-        def foo(a='spam'): pass
+        eleza foo(a='spam'): pass
         sig = inspect.signature(foo)
         ba = sig.bind()
         ba.apply_defaults()
         self.assertEqual(list(ba.arguments.items()), [('a', 'spam')])
 
 
-class TestSignaturePrivateHelpers(unittest.TestCase):
-    def test_signature_get_bound_param(self):
+kundi TestSignaturePrivateHelpers(unittest.TestCase):
+    eleza test_signature_get_bound_param(self):
         getter = inspect._signature_get_bound_param
 
         self.assertEqual(getter('($self)'), 'self')
         self.assertEqual(getter('($self, obj)'), 'self')
         self.assertEqual(getter('($cls, /, obj)'), 'cls')
 
-    def _strip_non_python_syntax(self, input,
+    eleza _strip_non_python_syntax(self, input,
         clean_signature, self_parameter, last_positional_only):
         computed_clean_signature, \
             computed_self_parameter, \
@@ -3694,7 +3694,7 @@ class TestSignaturePrivateHelpers(unittest.TestCase):
         self.assertEqual(computed_self_parameter, self_parameter)
         self.assertEqual(computed_last_positional_only, last_positional_only)
 
-    def test_signature_strip_non_python_syntax(self):
+    eleza test_signature_strip_non_python_syntax(self):
         self._strip_non_python_syntax(
             "($module, /, path, mode, *, dir_fd=None, " +
                 "effective_ids=False,\n       follow_symlinks=True)",
@@ -3739,14 +3739,14 @@ class TestSignaturePrivateHelpers(unittest.TestCase):
             None,
             None)
 
-class TestSignatureDefinitions(unittest.TestCase):
+kundi TestSignatureDefinitions(unittest.TestCase):
     # This test case provides a home for checking that particular APIs
     # have signatures available for introspection
 
     @cpython_only
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
                      "Signature information for builtins requires docstrings")
-    def test_builtins_have_signatures(self):
+    eleza test_builtins_have_signatures(self):
         # This checks all builtin callables in CPython have signatures
         # A few have signatures Signature can't yet handle, so we skip those
         # since they will have to wait until PEP 457 adds the required
@@ -3776,13 +3776,13 @@ class TestSignatureDefinitions(unittest.TestCase):
         # Check the signatures we expect to be there
         ns = vars(builtins)
         for name, obj in sorted(ns.items()):
-            if not callable(obj):
+            ikiwa not callable(obj):
                 continue
             # The builtin types haven't been converted to AC yet
-            if isinstance(obj, type) and (name not in types_with_signatures):
+            ikiwa isinstance(obj, type) and (name not in types_with_signatures):
                 # Note that this also skips all the exception types
                 no_signature.add(name)
-            if (name in no_signature):
+            ikiwa (name in no_signature):
                 # Not yet converted
                 continue
             with self.subTest(builtin=name):
@@ -3795,8 +3795,8 @@ class TestSignatureDefinitions(unittest.TestCase):
             with self.subTest(builtin=name):
                 self.assertIsNone(obj.__text_signature__)
 
-    def test_python_function_override_signature(self):
-        def func(*args, **kwargs):
+    eleza test_python_function_override_signature(self):
+        eleza func(*args, **kwargs):
             pass
         func.__text_signature__ = '($self, a, b=1, *args, c, d=2, **kwargs)'
         sig = inspect.signature(func)
@@ -3807,59 +3807,59 @@ class TestSignatureDefinitions(unittest.TestCase):
         self.assertEqual(str(sig), '(self, a, b=1, /, *args, c, d=2, **kwargs)')
 
 
-class NTimesUnwrappable:
-    def __init__(self, n):
+kundi NTimesUnwrappable:
+    eleza __init__(self, n):
         self.n = n
         self._next = None
 
     @property
-    def __wrapped__(self):
-        if self.n <= 0:
+    eleza __wrapped__(self):
+        ikiwa self.n <= 0:
             raise Exception("Unwrapped too many times")
-        if self._next is None:
+        ikiwa self._next is None:
             self._next = NTimesUnwrappable(self.n - 1)
-        return self._next
+        rudisha self._next
 
-class TestUnwrap(unittest.TestCase):
+kundi TestUnwrap(unittest.TestCase):
 
-    def test_unwrap_one(self):
-        def func(a, b):
-            return a + b
+    eleza test_unwrap_one(self):
+        eleza func(a, b):
+            rudisha a + b
         wrapper = functools.lru_cache(maxsize=20)(func)
         self.assertIs(inspect.unwrap(wrapper), func)
 
-    def test_unwrap_several(self):
-        def func(a, b):
-            return a + b
+    eleza test_unwrap_several(self):
+        eleza func(a, b):
+            rudisha a + b
         wrapper = func
         for __ in range(10):
             @functools.wraps(wrapper)
-            def wrapper():
+            eleza wrapper():
                 pass
         self.assertIsNot(wrapper.__wrapped__, func)
         self.assertIs(inspect.unwrap(wrapper), func)
 
-    def test_stop(self):
-        def func1(a, b):
-            return a + b
+    eleza test_stop(self):
+        eleza func1(a, b):
+            rudisha a + b
         @functools.wraps(func1)
-        def func2():
+        eleza func2():
             pass
         @functools.wraps(func2)
-        def wrapper():
+        eleza wrapper():
             pass
         func2.stop_here = 1
         unwrapped = inspect.unwrap(wrapper,
                                    stop=(lambda f: hasattr(f, "stop_here")))
         self.assertIs(unwrapped, func2)
 
-    def test_cycle(self):
-        def func1(): pass
+    eleza test_cycle(self):
+        eleza func1(): pass
         func1.__wrapped__ = func1
         with self.assertRaisesRegex(ValueError, 'wrapper loop'):
             inspect.unwrap(func1)
 
-        def func2(): pass
+        eleza func2(): pass
         func2.__wrapped__ = func1
         func1.__wrapped__ = func2
         with self.assertRaisesRegex(ValueError, 'wrapper loop'):
@@ -3867,21 +3867,21 @@ class TestUnwrap(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'wrapper loop'):
             inspect.unwrap(func2)
 
-    def test_unhashable(self):
-        def func(): pass
+    eleza test_unhashable(self):
+        eleza func(): pass
         func.__wrapped__ = None
-        class C:
+        kundi C:
             __hash__ = None
             __wrapped__ = func
         self.assertIsNone(inspect.unwrap(C()))
 
-    def test_recursion_limit(self):
+    eleza test_recursion_limit(self):
         obj = NTimesUnwrappable(sys.getrecursionlimit() + 1)
         with self.assertRaisesRegex(ValueError, 'wrapper loop'):
             inspect.unwrap(obj)
 
-class TestMain(unittest.TestCase):
-    def test_only_source(self):
+kundi TestMain(unittest.TestCase):
+    eleza test_only_source(self):
         module = importlib.import_module('unittest')
         rc, out, err = assert_python_ok('-m', 'inspect',
                                         'unittest')
@@ -3890,8 +3890,8 @@ class TestMain(unittest.TestCase):
         self.assertEqual(lines[:-1], inspect.getsource(module).splitlines())
         self.assertEqual(err, b'')
 
-    def test_custom_getattr(self):
-        def foo():
+    eleza test_custom_getattr(self):
+        eleza foo():
             pass
         foo.__signature__ = 42
         with self.assertRaises(TypeError):
@@ -3899,7 +3899,7 @@ class TestMain(unittest.TestCase):
 
     @unittest.skipIf(ThreadPoolExecutor is None,
             'threads required to test __qualname__ for source files')
-    def test_qualname_source(self):
+    eleza test_qualname_source(self):
         rc, out, err = assert_python_ok('-m', 'inspect',
                                      'concurrent.futures:ThreadPoolExecutor')
         lines = out.decode().splitlines()
@@ -3908,16 +3908,16 @@ class TestMain(unittest.TestCase):
                          inspect.getsource(ThreadPoolExecutor).splitlines())
         self.assertEqual(err, b'')
 
-    def test_builtins(self):
+    eleza test_builtins(self):
         module = importlib.import_module('unittest')
         _, out, err = assert_python_failure('-m', 'inspect',
                                             'sys')
         lines = err.decode().splitlines()
         self.assertEqual(lines, ["Can't get info for builtin modules."])
 
-    def test_details(self):
+    eleza test_details(self):
         module = importlib.import_module('unittest')
-        args = support.optim_args_from_interpreter_flags()
+        args = support.optim_args_kutoka_interpreter_flags()
         rc, out, err = assert_python_ok(*args, '-m', 'inspect',
                                         'unittest', '--details')
         output = out.decode()
@@ -3928,19 +3928,19 @@ class TestMain(unittest.TestCase):
         self.assertEqual(err, b'')
 
 
-class TestReload(unittest.TestCase):
+kundi TestReload(unittest.TestCase):
 
     src_before = textwrap.dedent("""\
-def foo():
-    print("Bla")
+eleza foo():
+    andika("Bla")
     """)
 
     src_after = textwrap.dedent("""\
-def foo():
-    print("Oh no!")
+eleza foo():
+    andika("Oh no!")
     """)
 
-    def assertInspectEqual(self, path, source):
+    eleza assertInspectEqual(self, path, source):
         inspected_src = inspect.getsource(source)
         with open(path) as src:
             self.assertEqual(
@@ -3948,7 +3948,7 @@ def foo():
                 inspected_src.splitlines(True)
             )
 
-    def test_getsource_reload(self):
+    eleza test_getsource_reload(self):
         # see issue 1218234
         with _ready_to_agiza('reload_bug', self.src_before) as (name, path):
             module = importlib.import_module(name)
@@ -3958,7 +3958,7 @@ def foo():
             self.assertInspectEqual(path, module)
 
 
-def test_main():
+eleza test_main():
     run_unittest(
         TestDecorators, TestRetrievingSourceCode, TestOneliners, TestBuggyCases,
         TestInterpreterStack, TestClassesAndFunctions, TestPredicates,
@@ -3971,5 +3971,5 @@ def test_main():
         TestGetCoroutineState, TestGettingSourceOfToplevelFrames
     )
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

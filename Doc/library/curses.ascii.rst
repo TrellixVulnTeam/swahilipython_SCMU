@@ -90,7 +90,7 @@ supplied are names for control characters as follows:
 +--------------+----------------------------------------------+
 
 Note that many of these have little practical significance in modern usage.  The
-mnemonics derive from teleprinter conventions that predate digital computers.
+mnemonics derive kutoka teleprinter conventions that predate digital computers.
 
 The module supplies the following functions, patterned on those in the standard
 C library:
@@ -179,7 +179,7 @@ C library:
 These functions accept either integers or single-character strings; when the argument is a
 string, it is first converted using the built-in function :func:`ord`.
 
-Note that all these functions check ordinal bit values derived from the
+Note that all these functions check ordinal bit values derived kutoka the
 character of the string you pass in; they do not actually know anything about
 the host machine's character encoding.
 
@@ -224,6 +224,6 @@ it returns a string.
 .. data:: controlnames
 
    A 33-element string array that contains the ASCII mnemonics for the thirty-two
-   ASCII control characters from 0 (NUL) to 0x1f (US), in order, plus the mnemonic
+   ASCII control characters kutoka 0 (NUL) to 0x1f (US), in order, plus the mnemonic
    ``SP`` for the space character.
 

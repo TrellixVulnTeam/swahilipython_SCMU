@@ -178,7 +178,7 @@ class FileDialog:
             fullname = os.path.join(dir, name)
             if os.path.isdir(fullname):
                 subdirs.append(name)
-            elif fnmatch.fnmatch(name, pat):
+            lasivyo fnmatch.fnmatch(name, pat):
                 matchingfiles.append(name)
         self.dirs.delete(0, END)
         for name in subdirs:

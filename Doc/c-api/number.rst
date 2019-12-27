@@ -23,7 +23,7 @@ Number Protocol
 
 .. c:function:: PyObject* PyNumber_Subtract(PyObject *o1, PyObject *o2)
 
-   Returns the result of subtracting *o2* from *o1*, or *NULL* on failure.  This is
+   Returns the result of subtracting *o2* kutoka *o1*, or *NULL* on failure.  This is
    the equivalent of the Python expression ``o1 - o2``.
 
 
@@ -145,7 +145,7 @@ Number Protocol
 
 .. c:function:: PyObject* PyNumber_InPlaceSubtract(PyObject *o1, PyObject *o2)
 
-   Returns the result of subtracting *o2* from *o1*, or *NULL* on failure.  The
+   Returns the result of subtracting *o2* kutoka *o1*, or *NULL* on failure.  The
    operation is done *in-place* when *o1* supports it.  This is the equivalent of
    the Python statement ``o1 -= o2``.
 

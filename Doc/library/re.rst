@@ -68,7 +68,7 @@ and *B* are both regular expressions, then *AB* is also a regular expression.
 In general, if a string *p* matches *A* and another string *q* matches *B*, the
 string *pq* will match AB.  This holds unless *A* or *B* contain low precedence
 operations; boundary conditions between *A* and *B*; or have numbered group
-references.  Thus, complex expressions can easily be constructed from simpler
+references.  Thus, complex expressions can easily be constructed kutoka simpler
 primitive expressions like the ones described here.  For details of the theory
 and implementation of regular expressions, consult the Friedl book [Frie09]_,
 or almost any textbook about compiler construction.
@@ -163,16 +163,16 @@ The special characters are:
    exactly six ``'a'`` characters, but not five.
 
 ``{m,n}``
-   Causes the resulting RE to match from *m* to *n* repetitions of the preceding
+   Causes the resulting RE to match kutoka *m* to *n* repetitions of the preceding
    RE, attempting to match as many repetitions as possible.  For example,
-   ``a{3,5}`` will match from 3 to 5 ``'a'`` characters.  Omitting *m* specifies a
+   ``a{3,5}`` will match kutoka 3 to 5 ``'a'`` characters.  Omitting *m* specifies a
    lower bound of zero,  and omitting *n* specifies an infinite upper bound.  As an
    example, ``a{4,}b`` will match ``'aaaab'`` or a thousand ``'a'`` characters
    followed by a ``'b'``, but not ``'aaab'``. The comma may not be omitted or the
    modifier would be confused with the previously described form.
 
 ``{m,n}?``
-   Causes the resulting RE to match from *m* to *n* repetitions of the preceding
+   Causes the resulting RE to match kutoka *m* to *n* repetitions of the preceding
    RE, attempting to match as *few* repetitions as possible.  This is the
    non-greedy version of the previous qualifier.  For example, on the
    6-character string ``'aaaaaa'``, ``a{3,5}`` will match 5 ``'a'`` characters,
@@ -206,7 +206,7 @@ The special characters are:
 
    * Ranges of characters can be indicated by giving two characters and separating
      them by a ``'-'``, for example ``[a-z]`` will match any lowercase ASCII letter,
-     ``[0-5][0-9]`` will match all the two-digits numbers from ``00`` to ``59``, and
+     ``[0-5][0-9]`` will match all the two-digits numbers kutoka ``00`` to ``59``, and
      ``[0-9A-Fa-f]`` will match any hexadecimal digit.  If ``-`` is escaped (e.g.
      ``[a\-z]``) or if it's placed as the first or last character
      (e.g. ``[-a]`` or ``[a-]``), it will match a literal ``'-'``.
@@ -259,7 +259,7 @@ The special characters are:
    ``A|B``, where *A* and *B* can be arbitrary REs, creates a regular expression that
    will match either *A* or *B*.  An arbitrary number of REs can be separated by the
    ``'|'`` in this way.  This can be used inside groups (see below) as well.  As
-   the target string is scanned, REs separated by ``'|'`` are tried from left to
+   the target string is scanned, REs separated by ``'|'`` are tried kutoka left to
    right. When one pattern completely matches, that branch is accepted. This means
    that once *A* matches, *B* will not be tested further, even if it would
    produce a longer overall match.  In other words, the ``'|'`` operator is never
@@ -286,7 +286,7 @@ The special characters are:
    currently supported extensions.
 
 ``(?aiLmsux)``
-   (One or more letters from the set ``'a'``, ``'i'``, ``'L'``, ``'m'``,
+   (One or more letters kutoka the set ``'a'``, ``'i'``, ``'L'``, ``'m'``,
    ``'s'``, ``'u'``, ``'x'``.)  The group matches the empty string; the
    letters set the corresponding flags: :const:`re.A` (ASCII-only matching),
    :const:`re.I` (ignore case), :const:`re.L` (locale dependent),
@@ -308,9 +308,9 @@ The special characters are:
    pattern.
 
 ``(?aiLmsux-imsx:...)``
-   (Zero or more letters from the set ``'a'``, ``'i'``, ``'L'``, ``'m'``,
+   (Zero or more letters kutoka the set ``'a'``, ``'i'``, ``'L'``, ``'m'``,
    ``'s'``, ``'u'``, ``'x'``, optionally followed by ``'-'`` followed by
-   one or more letters from the ``'i'``, ``'m'``, ``'s'``, ``'x'``.)
+   one or more letters kutoka the ``'i'``, ``'m'``, ``'s'``, ``'x'``.)
    The letters set or remove the corresponding flags:
    :const:`re.A` (ASCII-only matching), :const:`re.I` (ignore case),
    :const:`re.L` (locale dependent), :const:`re.M` (multi-line),
@@ -398,7 +398,7 @@ The special characters are:
    beginning of the string being searched; you will most likely want to use the
    :func:`search` function rather than the :func:`match` function:
 
-      >>> import re
+      >>> agiza re
       >>> m = re.search('(?<=abc)def', 'abcdef')
       >>> m.group(0)
       'def'
@@ -430,7 +430,7 @@ The special characters are:
    not with ``'<user@host.com'`` nor ``'user@host.com>'``.
 
 
-The special sequences consist of ``'\'`` and a character from the list below.
+The special sequences consist of ``'\'`` and a character kutoka the list below.
 If the ordinary character is not an ASCII digit or an ASCII letter, then the
 resulting RE will match the second character.  For example, ``\$`` matches the
 character ``'$'``.
@@ -439,7 +439,7 @@ character ``'$'``.
 
 ``\number``
    Matches the contents of the group of the same number.  Groups are numbered
-   starting from 1.  For example, ``(.+) \1`` matches ``'the the'`` or ``'55 55'``,
+   starting kutoka 1.  For example, ``(.+) \1`` matches ``'the the'`` or ``'55 55'``,
    but not ``'thethe'`` (note the space after the group).  This special sequence
    can only be used to match one of the first 99 groups.  If the first digit of
    *number* is 0, or *number* is 3 octal digits long, it will not be interpreted as
@@ -603,7 +603,7 @@ regular expressions.  Most non-trivial applications always use the compiled
 form.
 
 .. versionchanged:: 3.6
-   Flag constants are now instances of :class:`RegexFlag`, which is a subclass of
+   Flag constants are now instances of :class:`RegexFlag`, which is a subkundi of
    :class:`enum.IntFlag`.
 
 .. function:: compile(pattern, flags=0)
@@ -729,8 +729,8 @@ form.
    pattern and add comments. Whitespace within the pattern is ignored, except
    when in a character class, or when preceded by an unescaped backslash,
    or within tokens like ``*?``, ``(?:`` or ``(?P<...>``.
-   When a line contains a ``#`` that is not in a character class and is not
-   preceded by an unescaped backslash, all characters from the leftmost such
+   When a line contains a ``#`` that is not in a character kundi and is not
+   preceded by an unescaped backslash, all characters kutoka the leftmost such
    ``#`` through the end of the line are ignored.
 
    This means that the two following regular expression objects that match a
@@ -749,7 +749,7 @@ form.
    Scan through *string* looking for the first location where the regular expression
    *pattern* produces a match, and return a corresponding :ref:`match object
    <match-objects>`.  Return ``None`` if no position in the string matches the
-   pattern; note that this is different from finding a zero-length match at some
+   pattern; note that this is different kutoka finding a zero-length match at some
    point in the string.
 
 
@@ -758,7 +758,7 @@ form.
    If zero or more characters at the beginning of *string* match the regular
    expression *pattern*, return a corresponding :ref:`match object
    <match-objects>`.  Return ``None`` if the string does not match the pattern;
-   note that this is different from a zero-length match.
+   note that this is different kutoka a zero-length match.
 
    Note that even in :const:`MULTILINE` mode, :func:`re.match` will only match
    at the beginning of the string and not at the beginning of each line.
@@ -771,7 +771,7 @@ form.
 
    If the whole *string* matches the regular expression *pattern*, return a
    corresponding :ref:`match object <match-objects>`.  Return ``None`` if the
-   string does not match the pattern; note that this is different from a
+   string does not match the pattern; note that this is different kutoka a
    zero-length match.
 
    .. versionadded:: 3.4
@@ -1009,7 +1009,7 @@ attributes:
    Scan through *string* looking for the first location where this regular
    expression produces a match, and return a corresponding :ref:`match object
    <match-objects>`.  Return ``None`` if no position in the string matches the
-   pattern; note that this is different from finding a zero-length match at some
+   pattern; note that this is different kutoka finding a zero-length match at some
    point in the string.
 
    The optional second parameter *pos* gives an index in the string where the
@@ -1020,7 +1020,7 @@ attributes:
 
    The optional parameter *endpos* limits how far the string will be searched; it
    will be as if the string is *endpos* characters long, so only the characters
-   from *pos* to ``endpos - 1`` will be searched for a match.  If *endpos* is less
+   kutoka *pos* to ``endpos - 1`` will be searched for a match.  If *endpos* is less
    than *pos*, no match will be found; otherwise, if *rx* is a compiled regular
    expression object, ``rx.search(string, 0, 50)`` is equivalent to
    ``rx.search(string[:50], 0)``. ::
@@ -1036,7 +1036,7 @@ attributes:
    If zero or more characters at the *beginning* of *string* match this regular
    expression, return a corresponding :ref:`match object <match-objects>`.
    Return ``None`` if the string does not match the pattern; note that this is
-   different from a zero-length match.
+   different kutoka a zero-length match.
 
    The optional *pos* and *endpos* parameters have the same meaning as for the
    :meth:`~Pattern.search` method. ::
@@ -1054,7 +1054,7 @@ attributes:
 
    If the whole *string* matches this regular expression, return a corresponding
    :ref:`match object <match-objects>`.  Return ``None`` if the string does not
-   match the pattern; note that this is different from a zero-length match.
+   match the pattern; note that this is different kutoka a zero-length match.
 
    The optional *pos* and *endpos* parameters have the same meaning as for the
    :meth:`~Pattern.search` method. ::
@@ -1118,7 +1118,7 @@ attributes:
 
 .. attribute:: Pattern.pattern
 
-   The pattern string from which the pattern object was compiled.
+   The pattern string kutoka which the pattern object was compiled.
 
 
 .. versionchanged:: 3.7
@@ -1209,7 +1209,7 @@ Match objects support the following methods and attributes:
 .. method:: Match.__getitem__(g)
 
    This is identical to ``m.group(g)``.  This allows easier access to
-   an individual group from a match::
+   an individual group kutoka a match::
 
       >>> m = re.match(r"(\w+) (\w+)", "Isaac Newton, physicist")
       >>> m[0]       # The entire match
@@ -1224,7 +1224,7 @@ Match objects support the following methods and attributes:
 
 .. method:: Match.groups(default=None)
 
-   Return a tuple containing all the subgroups of the match, from 1 up to however
+   Return a tuple containing all the subgroups of the match, kutoka 1 up to however
    many groups are in the pattern.  The *default* argument is used for groups that
    did not participate in the match; it defaults to ``None``.
 
@@ -1272,7 +1272,7 @@ Match objects support the following methods and attributes:
    ``m.start(0)`` is 1, ``m.end(0)`` is 2, ``m.start(1)`` and ``m.end(1)`` are both
    2, and ``m.start(2)`` raises an :exc:`IndexError` exception.
 
-   An example that will remove *remove_this* from email addresses::
+   An example that will remove *remove_this* kutoka email addresses::
 
       >>> email = "tony@tiremove_thisger.net"
       >>> m = re.search("remove_this", email)
@@ -1425,7 +1425,7 @@ expressions.
 | ``%x``, ``%X``                 | ``[-+]?(0[xX])?[\dA-Fa-f]+``                |
 +--------------------------------+---------------------------------------------+
 
-To extract the filename and numbers from a string like ::
+To extract the filename and numbers kutoka a string like ::
 
    /usr/sbin/sendmail - 0 errors, 4 warnings
 
@@ -1481,7 +1481,7 @@ method is invaluable for converting textual data into data structures that can b
 easily read and modified by Python as demonstrated in the following example that
 creates a phonebook.
 
-First, here is the input.  Normally it may come from a file, here we are using
+First, here is the input.  Normally it may come kutoka a file, here we are using
 triple-quoted string syntax
 
 .. doctest::
@@ -1522,7 +1522,7 @@ because the address has spaces, our splitting pattern, in it:
 
 The ``:?`` pattern matches the colon after the last name, so that it does not
 occur in the result list.  With a ``maxsplit`` of ``4``, we could separate the
-house number from the street name:
+house number kutoka the street name:
 
 .. doctest::
    :options: +NORMALIZE_WHITESPACE
@@ -1617,8 +1617,8 @@ The text categories are specified with regular expressions.  The technique is
 to combine those into a single master regular expression and to loop over
 successive matches::
 
-    import collections
-    import re
+    agiza collections
+    agiza re
 
     Token = collections.namedtuple('Token', ['type', 'value', 'line', 'column'])
 

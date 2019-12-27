@@ -9,105 +9,105 @@ agiza contextlib
 agiza sys
 
 
-class TestHook:
+kundi TestHook:
     """Used in standard hook tests to collect any logged events.
 
     Should be used in a with block to ensure that it has no impact
     after the test completes.
     """
 
-    def __init__(self, raise_on_events=None, exc_type=RuntimeError):
+    eleza __init__(self, raise_on_events=None, exc_type=RuntimeError):
         self.raise_on_events = raise_on_events or ()
         self.exc_type = exc_type
         self.seen = []
         self.closed = False
 
-    def __enter__(self, *a):
+    eleza __enter__(self, *a):
         sys.addaudithook(self)
-        return self
+        rudisha self
 
-    def __exit__(self, *a):
+    eleza __exit__(self, *a):
         self.close()
 
-    def close(self):
+    eleza close(self):
         self.closed = True
 
     @property
-    def seen_events(self):
-        return [i[0] for i in self.seen]
+    eleza seen_events(self):
+        rudisha [i[0] for i in self.seen]
 
-    def __call__(self, event, args):
-        if self.closed:
+    eleza __call__(self, event, args):
+        ikiwa self.closed:
             return
         self.seen.append((event, args))
-        if event in self.raise_on_events:
+        ikiwa event in self.raise_on_events:
             raise self.exc_type("saw event " + event)
 
 
-class TestFinalizeHook:
+kundi TestFinalizeHook:
     """Used in the test_finalize_hooks function to ensure that hooks
     are correctly cleaned up, that they are notified about the cleanup,
     and are unable to prevent it.
     """
 
-    def __init__(self):
-        print("Created", id(self), file=sys.stdout, flush=True)
+    eleza __init__(self):
+        andika("Created", id(self), file=sys.stdout, flush=True)
 
-    def __call__(self, event, args):
+    eleza __call__(self, event, args):
         # Avoid recursion when we call id() below
-        if event == "builtins.id":
+        ikiwa event == "builtins.id":
             return
 
-        print(event, id(self), file=sys.stdout, flush=True)
+        andika(event, id(self), file=sys.stdout, flush=True)
 
-        if event == "cpython._PySys_ClearAuditHooks":
+        ikiwa event == "cpython._PySys_ClearAuditHooks":
             raise RuntimeError("Should be ignored")
-        elif event == "cpython.PyInterpreterState_Clear":
+        elikiwa event == "cpython.PyInterpreterState_Clear":
             raise RuntimeError("Should be ignored")
 
 
 # Simple helpers, since we are not in unittest here
-def assertEqual(x, y):
-    if x != y:
+eleza assertEqual(x, y):
+    ikiwa x != y:
         raise AssertionError(f"{x!r} should equal {y!r}")
 
 
-def assertIn(el, series):
-    if el not in series:
+eleza assertIn(el, series):
+    ikiwa el not in series:
         raise AssertionError(f"{el!r} should be in {series!r}")
 
 
-def assertNotIn(el, series):
-    if el in series:
+eleza assertNotIn(el, series):
+    ikiwa el in series:
         raise AssertionError(f"{el!r} should not be in {series!r}")
 
 
-def assertSequenceEqual(x, y):
-    if len(x) != len(y):
+eleza assertSequenceEqual(x, y):
+    ikiwa len(x) != len(y):
         raise AssertionError(f"{x!r} should equal {y!r}")
-    if any(ix != iy for ix, iy in zip(x, y)):
+    ikiwa any(ix != iy for ix, iy in zip(x, y)):
         raise AssertionError(f"{x!r} should equal {y!r}")
 
 
 @contextlib.contextmanager
-def assertRaises(ex_type):
+eleza assertRaises(ex_type):
     try:
         yield
         assert False, f"expected {ex_type}"
     except BaseException as ex:
-        if isinstance(ex, AssertionError):
+        ikiwa isinstance(ex, AssertionError):
             raise
         assert type(ex) is ex_type, f"{ex} should be {ex_type}"
 
 
-def test_basic():
+eleza test_basic():
     with TestHook() as hook:
         sys.audit("test_event", 1, 2, 3)
         assertEqual(hook.seen[0][0], "test_event")
         assertEqual(hook.seen[0][1], (1, 2, 3))
 
 
-def test_block_add_hook():
+eleza test_block_add_hook():
     # Raising an exception should prevent a new hook kutoka being added,
     # but will not propagate out.
     with TestHook(raise_on_events="sys.addaudithook") as hook1:
@@ -117,7 +117,7 @@ def test_block_add_hook():
             assertNotIn("test_event", hook2.seen_events)
 
 
-def test_block_add_hook_baseexception():
+eleza test_block_add_hook_baseexception():
     # Raising BaseException will propagate out when adding a hook
     with assertRaises(BaseException):
         with TestHook(
@@ -128,16 +128,16 @@ def test_block_add_hook_baseexception():
                 pass
 
 
-def test_finalize_hooks():
+eleza test_finalize_hooks():
     sys.addaudithook(TestFinalizeHook())
 
 
-def test_pickle():
+eleza test_pickle():
     agiza pickle
 
-    class PicklePrint:
-        def __reduce_ex__(self, p):
-            return str, ("Pwned!",)
+    kundi PicklePrint:
+        eleza __reduce_ex__(self, p):
+            rudisha str, ("Pwned!",)
 
     payload_1 = pickle.dumps(PicklePrint())
     payload_2 = pickle.dumps(("a", "b", "c", 1, 2, 3))
@@ -153,14 +153,14 @@ def test_pickle():
         pickle.loads(payload_2)
 
 
-def test_monkeypatch():
-    class A:
+eleza test_monkeypatch():
+    kundi A:
         pass
 
-    class B:
+    kundi B:
         pass
 
-    class C(A):
+    kundi C(A):
         pass
 
     a = A()
@@ -176,16 +176,16 @@ def test_monkeypatch():
         C.__init__ = B.__init__
         # Catch attribute addition
         C.new_attr = 123
-        # Catch class changes
+        # Catch kundi changes
         a.__class__ = B
 
-    actual = [(a[0], a[1]) for e, a in hook.seen if e == "object.__setattr__"]
+    actual = [(a[0], a[1]) for e, a in hook.seen ikiwa e == "object.__setattr__"]
     assertSequenceEqual(
         [(C, "__name__"), (C, "__bases__"), (C, "__bases__"), (a, "__class__")], actual
     )
 
 
-def test_open():
+eleza test_open():
     # SSLContext.load_dh_params uses _Py_fopen_obj rather than normal open()
     try:
         agiza ssl
@@ -204,13 +204,13 @@ def test_open():
             (open, sys.argv[2], "w", -1, None, None, None, False, lambda *a: 1),
             (load_dh_params, sys.argv[2]),
         ]:
-            if not fn:
+            ikiwa not fn:
                 continue
             with assertRaises(RuntimeError):
                 fn(*args)
 
-    actual_mode = [(a[0], a[1]) for e, a in hook.seen if e == "open" and a[1]]
-    actual_flag = [(a[0], a[2]) for e, a in hook.seen if e == "open" and not a[1]]
+    actual_mode = [(a[0], a[1]) for e, a in hook.seen ikiwa e == "open" and a[1]]
+    actual_flag = [(a[0], a[2]) for e, a in hook.seen ikiwa e == "open" and not a[1]]
     assertSequenceEqual(
         [
             i
@@ -219,20 +219,20 @@ def test_open():
                 (sys.executable, "r"),
                 (3, "w"),
                 (sys.argv[2], "w"),
-                (sys.argv[2], "rb") if load_dh_params else None,
+                (sys.argv[2], "rb") ikiwa load_dh_params else None,
             ]
-            if i is not None
+            ikiwa i is not None
         ],
         actual_mode,
     )
     assertSequenceEqual([], actual_flag)
 
 
-def test_cantrace():
+eleza test_cantrace():
     traced = []
 
-    def trace(frame, event, *args):
-        if frame.f_code == TestHook.__call__.__code__:
+    eleza trace(frame, event, *args):
+        ikiwa frame.f_code == TestHook.__call__.__code__:
             traced.append(event)
 
     old = sys.settrace(trace)
@@ -261,14 +261,14 @@ def test_cantrace():
     assertSequenceEqual(["call"] * 4, traced)
 
 
-def test_mmap():
+eleza test_mmap():
     agiza mmap
     with TestHook() as hook:
         mmap.mmap(-1, 8)
         assertEqual(hook.seen[0][1][:2], (-1, 8))
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     kutoka test.libregrtest.setup agiza suppress_msvcrt_asserts
     suppress_msvcrt_asserts(False)
 

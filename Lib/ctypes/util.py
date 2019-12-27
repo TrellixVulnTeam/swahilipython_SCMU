@@ -39,7 +39,7 @@ if os.name == "nt":
             return None
         if version <= 6:
             clibname = 'msvcrt'
-        elif version <= 13:
+        lasivyo version <= 13:
             clibname = 'msvcr%d' % (version * 10)
         else:
             # CRT is no longer directly loadable. See issue23606 for the
@@ -67,7 +67,7 @@ if os.name == "nt":
                 return fname
         return None
 
-elif os.name == "posix" and sys.platform == "darwin":
+lasivyo os.name == "posix" and sys.platform == "darwin":
     from ctypes.macholib.dyld import dyld_find as _dyld_find
     def find_library(name):
         possible = ['lib%s.dylib' % name,
@@ -80,7 +80,7 @@ elif os.name == "posix" and sys.platform == "darwin":
                 continue
         return None
 
-elif sys.platform.startswith("aix"):
+lasivyo sys.platform.startswith("aix"):
     # AIX has two styles of storing shared libraries
     # GNU auto_tools refer to these as svr4 and aix
     # svr4 (System V Release 4) is a regular file, often with .so as suffix
@@ -89,7 +89,7 @@ elif sys.platform.startswith("aix"):
 
     from ctypes._aix import find_library
 
-elif os.name == "posix":
+lasivyo os.name == "posix":
     # Andreas Degert's find functions, using gcc, /sbin/ldconfig, objdump
     import re, tempfile
 
@@ -211,7 +211,7 @@ elif os.name == "posix":
             res.sort(key=_num_version)
             return os.fsdecode(res[-1])
 
-    elif sys.platform == "sunos5":
+    lasivyo sys.platform == "sunos5":
 
         def _findLib_crle(name, is64):
             if not os.path.exists('/usr/bin/crle'):
@@ -334,7 +334,7 @@ def test():
             print(cdll.LoadLibrary("libSystem.dylib"))
             print(cdll.LoadLibrary("System.framework/System"))
         # issue-26439 - fix broken test call for AIX
-        elif sys.platform.startswith("aix"):
+        lasivyo sys.platform.startswith("aix"):
             from ctypes import CDLL
             if sys.maxsize < 2**32:
                 print(f"Using CDLL(name, os.RTLD_MEMBER): {CDLL('libc.a(shr.o)', os.RTLD_MEMBER)}")

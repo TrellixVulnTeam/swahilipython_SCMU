@@ -19,17 +19,17 @@ try:
 except ImportError:
     INT_MAX = PY_SSIZE_T_MAX = UINT_MAX = 2**64 - 1
 
-class UnicodeNamesTest(unittest.TestCase):
+kundi UnicodeNamesTest(unittest.TestCase):
 
-    def checkletter(self, name, code):
+    eleza checkletter(self, name, code):
         # Helper that put all \N escapes inside eval'd raw strings,
-        # to make sure this script runs even if the compiler
+        # to make sure this script runs even ikiwa the compiler
         # chokes on \N escapes
         res = eval(r'"\N{%s}"' % name)
         self.assertEqual(res, code)
-        return res
+        rudisha res
 
-    def test_general(self):
+    eleza test_general(self):
         # General and case insensitivity test:
         chars = [
             "LATIN CAPITAL LETTER T",
@@ -66,13 +66,13 @@ class UnicodeNamesTest(unittest.TestCase):
             string
         )
 
-    def test_ascii_letters(self):
+    eleza test_ascii_letters(self):
         for char in "".join(map(chr, range(ord("a"), ord("z")))):
             name = "LATIN SMALL LETTER %s" % char.upper()
             code = unicodedata.lookup(name)
             self.assertEqual(unicodedata.name(code), name)
 
-    def test_hangul_syllables(self):
+    eleza test_hangul_syllables(self):
         self.checkletter("HANGUL SYLLABLE GA", "\uac00")
         self.checkletter("HANGUL SYLLABLE GGWEOSS", "\uafe8")
         self.checkletter("HANGUL SYLLABLE DOLS", "\ub3d0")
@@ -89,7 +89,7 @@ class UnicodeNamesTest(unittest.TestCase):
 
         self.assertRaises(ValueError, unicodedata.name, "\ud7a4")
 
-    def test_cjk_unified_ideographs(self):
+    eleza test_cjk_unified_ideographs(self):
         self.checkletter("CJK UNIFIED IDEOGRAPH-3400", "\u3400")
         self.checkletter("CJK UNIFIED IDEOGRAPH-4DB5", "\u4db5")
         self.checkletter("CJK UNIFIED IDEOGRAPH-4E00", "\u4e00")
@@ -101,20 +101,20 @@ class UnicodeNamesTest(unittest.TestCase):
         self.checkletter("CJK UNIFIED IDEOGRAPH-2B740", "\U0002B740")
         self.checkletter("CJK UNIFIED IDEOGRAPH-2B81D", "\U0002B81D")
 
-    def test_bmp_characters(self):
+    eleza test_bmp_characters(self):
         for code in range(0x10000):
             char = chr(code)
             name = unicodedata.name(char, None)
-            if name is not None:
+            ikiwa name is not None:
                 self.assertEqual(unicodedata.lookup(name), char)
 
-    def test_misc_symbols(self):
+    eleza test_misc_symbols(self):
         self.checkletter("PILCROW SIGN", "\u00b6")
         self.checkletter("REPLACEMENT CHARACTER", "\uFFFD")
         self.checkletter("HALFWIDTH KATAKANA SEMI-VOICED SOUND MARK", "\uFF9F")
         self.checkletter("FULLWIDTH LATIN SMALL LETTER A", "\uFF41")
 
-    def test_aliases(self):
+    eleza test_aliases(self):
         # Check that the aliases defined in the NameAliases.txt file work.
         # This should be updated when new aliases are added or the file
         # should be downloaded and parsed instead.  See #12753.
@@ -140,21 +140,21 @@ class UnicodeNamesTest(unittest.TestCase):
             with self.assertRaises(KeyError):
                 unicodedata.ucd_3_2_0.lookup(alias)
 
-    def test_aliases_names_in_pua_range(self):
+    eleza test_aliases_names_in_pua_range(self):
         # We are storing aliases in the PUA 15, but their names shouldn't leak
         for cp in range(0xf0000, 0xf0100):
             with self.assertRaises(ValueError) as cm:
                 unicodedata.name(chr(cp))
             self.assertEqual(str(cm.exception), 'no such name')
 
-    def test_named_sequences_names_in_pua_range(self):
+    eleza test_named_sequences_names_in_pua_range(self):
         # We are storing named seq in the PUA 15, but their names shouldn't leak
         for cp in range(0xf0100, 0xf0fff):
             with self.assertRaises(ValueError) as cm:
                 unicodedata.name(chr(cp))
             self.assertEqual(str(cm.exception), 'no such name')
 
-    def test_named_sequences_sample(self):
+    eleza test_named_sequences_sample(self):
         # Check a few named sequences.  See #12753.
         sequences = [
             ('LATIN SMALL LETTER R WITH TILDE', '\u0072\u0303'),
@@ -170,7 +170,7 @@ class UnicodeNamesTest(unittest.TestCase):
             with self.assertRaises(KeyError):
                 unicodedata.ucd_3_2_0.lookup(seqname)
 
-    def test_named_sequences_full(self):
+    eleza test_named_sequences_full(self):
         # Check all the named sequences
         url = ("http://www.pythontest.net/unicode/%s/NamedSequences.txt" %
                unicodedata.unidata_version)
@@ -182,7 +182,7 @@ class UnicodeNamesTest(unittest.TestCase):
         self.addCleanup(testdata.close)
         for line in testdata:
             line = line.strip()
-            if not line or line.startswith('#'):
+            ikiwa not line or line.startswith('#'):
                 continue
             seqname, codepoints = line.split(';')
             codepoints = ''.join(chr(int(cp, 16)) for cp in codepoints.split())
@@ -192,13 +192,13 @@ class UnicodeNamesTest(unittest.TestCase):
             with self.assertRaises(KeyError):
                 unicodedata.ucd_3_2_0.lookup(seqname)
 
-    def test_errors(self):
+    eleza test_errors(self):
         self.assertRaises(TypeError, unicodedata.name)
         self.assertRaises(TypeError, unicodedata.name, 'xx')
         self.assertRaises(TypeError, unicodedata.lookup)
         self.assertRaises(KeyError, unicodedata.lookup, 'unknown')
 
-    def test_strict_error_handling(self):
+    eleza test_strict_error_handling(self):
         # bogus character name
         self.assertRaises(
             UnicodeError,
@@ -223,7 +223,7 @@ class UnicodeNamesTest(unittest.TestCase):
     @support.cpython_only
     @unittest.skipUnless(INT_MAX < PY_SSIZE_T_MAX, "needs UINT_MAX < SIZE_MAX")
     @support.bigmemtest(size=UINT_MAX + 1, memuse=2 + 1, dry_run=False)
-    def test_issue16335(self, size):
+    eleza test_issue16335(self, size):
         # very very long bogus character name
         x = b'\\N{SPACE' + b'x' * (UINT_MAX + 1) + b'}'
         self.assertEqual(len(x), len(b'\\N{SPACE}') + (UINT_MAX + 1))
@@ -233,5 +233,5 @@ class UnicodeNamesTest(unittest.TestCase):
         )
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

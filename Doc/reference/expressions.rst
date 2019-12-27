@@ -85,13 +85,13 @@ exception.
 definition begins with two or more underscore characters and does not end in two
 or more underscores, it is considered a :dfn:`private name` of that class.
 Private names are transformed to a longer form before code is generated for
-them.  The transformation inserts the class name, with leading underscores
+them.  The transformation inserts the kundi name, with leading underscores
 removed and a single underscore inserted, in front of the name.  For example,
-the identifier ``__spam`` occurring in a class named ``Ham`` will be transformed
+the identifier ``__spam`` occurring in a kundi named ``Ham`` will be transformed
 to ``_Ham__spam``.  This transformation is independent of the syntactical
 context in which the identifier is used.  If the transformed name is extremely
 long (longer than 255 characters), implementation defined truncation may happen.
-If the class name consists only of underscores, no transformation is done.
+If the kundi name consists only of underscores, no transformation is done.
 
 
 .. _atom-literals:
@@ -187,10 +187,10 @@ The comprehension consists of a single expression followed by at least one
 :keyword:`!for` clause and zero or more :keyword:`!for` or :keyword:`!if` clauses.
 In this case, the elements of the new container are those that would be produced
 by considering each of the :keyword:`!for` or :keyword:`!if` clauses a block,
-nesting from left to right, and evaluating the expression to produce an element
+nesting kutoka left to right, and evaluating the expression to produce an element
 each time the innermost block is reached.
 
-However, aside from the iterable expression in the leftmost :keyword:`!for` clause,
+However, aside kutoka the iterable expression in the leftmost :keyword:`!for` clause,
 the comprehension is executed in a separate implicitly nested scope. This ensures
 that names assigned to in the target list don't "leak" into the enclosing scope.
 
@@ -198,11 +198,11 @@ The iterable expression in the leftmost :keyword:`!for` clause is evaluated
 directly in the enclosing scope and then passed as an argument to the implicitly
 nested scope. Subsequent :keyword:`!for` clauses and any filter condition in the
 leftmost :keyword:`!for` clause cannot be evaluated in the enclosing scope as
-they may depend on the values obtained from the leftmost iterable. For example:
+they may depend on the values obtained kutoka the leftmost iterable. For example:
 ``[x*y for x in range(10) for y in range(x, x+10)]``.
 
 To ensure the comprehension always results in a container of the appropriate
-type, ``yield`` and ``yield from`` expressions are prohibited in the implicitly
+type, ``yield`` and ``yield kutoka`` expressions are prohibited in the implicitly
 nested scope.
 
 .. index::
@@ -224,7 +224,7 @@ See also :pep:`530`.
    Asynchronous comprehensions were introduced.
 
 .. versionchanged:: 3.8
-   ``yield`` and ``yield from`` prohibited in the implicitly nested scope.
+   ``yield`` and ``yield kutoka`` prohibited in the implicitly nested scope.
 
 
 .. _lists:
@@ -248,9 +248,9 @@ brackets:
 
 A list display yields a new list object, the contents being specified by either
 a list of expressions or a comprehension.  When a comma-separated list of
-expressions is supplied, its elements are evaluated from left to right and
+expressions is supplied, its elements are evaluated kutoka left to right and
 placed into the list object in that order.  When a comprehension is supplied,
-the list is constructed from the elements resulting from the comprehension.
+the list is constructed kutoka the elements resulting kutoka the comprehension.
 
 
 .. _set:
@@ -264,7 +264,7 @@ Set displays
    single: {} (curly brackets); set expression
    single: , (comma); expression list
 
-A set display is denoted by curly braces and distinguishable from dictionary
+A set display is denoted by curly braces and distinguishable kutoka dictionary
 displays by the lack of colons separating keys and values:
 
 .. productionlist::
@@ -272,9 +272,9 @@ displays by the lack of colons separating keys and values:
 
 A set display yields a new mutable set object, the contents being specified by
 either a sequence of expressions or a comprehension.  When a comma-separated
-list of expressions is supplied, its elements are evaluated from left to right
+list of expressions is supplied, its elements are evaluated kutoka left to right
 and added to the set object.  When a comprehension is supplied, the set is
-constructed from the elements resulting from the comprehension.
+constructed kutoka the elements resulting kutoka the comprehension.
 
 An empty set cannot be constructed with ``{}``; this literal constructs an empty
 dictionary.
@@ -305,7 +305,7 @@ curly braces:
 A dictionary display yields a new dictionary object.
 
 If a comma-separated sequence of key/datum pairs is given, they are evaluated
-from left to right to define the entries of the dictionary: each key object is
+kutoka left to right to define the entries of the dictionary: each key object is
 used as a key into the dictionary to store the corresponding datum.  This means
 that you can specify the same key multiple times in the key/datum list, and the
 final dictionary's value for that key will be the last one given.
@@ -370,14 +370,14 @@ produced by it will be emitted at the point where the generator expression
 is defined, rather than at the point where the first value is retrieved.
 Subsequent :keyword:`!for` clauses and any filter condition in the leftmost
 :keyword:`!for` clause cannot be evaluated in the enclosing scope as they may
-depend on the values obtained from the leftmost iterable. For example:
+depend on the values obtained kutoka the leftmost iterable. For example:
 ``(x*y for x in range(10) for y in range(x, x+10))``.
 
 The parentheses can be omitted on calls with only one argument.  See section
 :ref:`calls` for details.
 
 To avoid interfering with the expected operation of the generator expression
-itself, ``yield`` and ``yield from`` expressions are prohibited in the
+itself, ``yield`` and ``yield kutoka`` expressions are prohibited in the
 implicitly defined generator.
 
 If a generator expression contains either :keyword:`!async for`
@@ -395,7 +395,7 @@ which is an asynchronous iterator (see :ref:`async-iterators`).
    with 3.7, any function can use asynchronous generator expressions.
 
 .. versionchanged:: 3.8
-   ``yield`` and ``yield from`` prohibited in the implicitly nested scope.
+   ``yield`` and ``yield kutoka`` prohibited in the implicitly nested scope.
 
 
 .. _yieldexpr:
@@ -405,13 +405,13 @@ Yield expressions
 
 .. index::
    keyword: yield
-   keyword: from
+   keyword: kutoka
    pair: yield; expression
    pair: generator; function
 
 .. productionlist::
    yield_atom: "(" `yield_expression` ")"
-   yield_expression: "yield" [`expression_list` | "from" `expression`]
+   yield_expression: "yield" [`expression_list` | "kutoka" `expression`]
 
 The yield expression is used when defining a :term:`generator` function
 or an :term:`asynchronous generator` function and
@@ -470,9 +470,9 @@ the generator-iterator's :meth:`~generator.close` method will be called,
 allowing any pending :keyword:`finally` clauses to execute.
 
 .. index::
-   single: from; yield from expression
+   single: kutoka; yield kutoka expression
 
-When ``yield from <expr>`` is used, it treats the supplied expression as
+When ``yield kutoka <expr>`` is used, it treats the supplied expression as
 a subiterator. All values produced by that subiterator are passed directly
 to the caller of the current generator's methods. Any values passed in with
 :meth:`~generator.send` and any exceptions passed in with
@@ -485,10 +485,10 @@ When the underlying iterator is complete, the :attr:`~StopIteration.value`
 attribute of the raised :exc:`StopIteration` instance becomes the value of
 the yield expression. It can be either set explicitly when raising
 :exc:`StopIteration`, or automatically when the subiterator is a generator
-(by returning a value from the subgenerator).
+(by returning a value kutoka the subgenerator).
 
    .. versionchanged:: 3.3
-      Added ``yield from <expr>`` to delegate control flow to a subiterator.
+      Added ``yield kutoka <expr>`` to delegate control flow to a subiterator.
 
 The parentheses may be omitted when the yield expression is the sole expression
 on the right hand side of an assignment statement.
@@ -503,7 +503,7 @@ on the right hand side of an assignment statement.
       usable as simple coroutines.
 
    :pep:`380` - Syntax for Delegating to a Subgenerator
-      The proposal to introduce the :token:`yield_from` syntax, making delegation
+      The proposal to introduce the :token:`yield_kutoka` syntax, making delegation
       to subgenerators easy.
 
    :pep:`525` - Asynchronous Generators
@@ -604,7 +604,7 @@ generator functions::
    >>> generator.close()
    Don't forget to clean up when 'close()' is called.
 
-For examples using ``yield from``, see :ref:`pep-380` in "What's New in
+For examples using ``yield kutoka``, see :ref:`pep-380` in "What's New in
 Python."
 
 .. _asynchronous-generator-functions:
@@ -659,7 +659,7 @@ registered *finalizer* to be called upon finalization. For a reference example
 of a *finalizer* method see the implementation of
 ``asyncio.Loop.shutdown_asyncgens`` in :source:`Lib/asyncio/base_events.py`.
 
-The expression ``yield from <expr>`` is a syntax error when used in an
+The expression ``yield kutoka <expr>`` is a syntax error when used in an
 asynchronous generator function.
 
 .. index:: object: asynchronous-generator
@@ -822,7 +822,7 @@ method that interprets negative indices by adding the length of the sequence
 to the index (so that ``x[-1]`` selects the last item of ``x``).  The
 resulting value must be a nonnegative integer less than the number of items in
 the sequence, and the subscription selects the item whose index is that value
-(counting from zero). Since the support for negative indices and slicing
+(counting kutoka zero). Since the support for negative indices and slicing
 occurs in the object's :meth:`__getitem__` method, subclasses overriding
 this method will need to explicitly add that support.
 
@@ -878,7 +878,7 @@ slice list contains no proper slice).
 
 The semantics for a slicing are as follows.  The primary is indexed (using the
 same :meth:`__getitem__` method as
-normal subscription) with a key that is constructed from the slice list, as
+normal subscription) with a key that is constructed kutoka the slice list, as
 follows.  If the slice list contains at least one comma, the key is a tuple
 containing the conversion of the slice items; otherwise, the conversion of the
 lone slice item is the key.  The conversion of a slice item that is an
@@ -925,7 +925,7 @@ but does not affect the semantics.
    single: parameter; call semantics
 
 The primary must evaluate to a callable object (user-defined functions, built-in
-functions, methods of built-in objects, class objects, methods of class
+functions, methods of built-in objects, kundi objects, methods of class
 instances, and all objects having a :meth:`__call__` method are callable).  All
 argument expressions are evaluated before the call is attempted.  Please refer
 to section :ref:`function` for the syntax of formal :term:`parameter` lists.
@@ -941,7 +941,7 @@ formal parameter name, the first slot is used, and so on).  If the slot is
 already filled, a :exc:`TypeError` exception is raised. Otherwise, the value of
 the argument is placed in the slot, filling it (even if the expression is
 ``None``, it fills the slot).  When all arguments have been processed, the slots
-that are still unfilled are filled with the corresponding default value from the
+that are still unfilled are filled with the corresponding default value kutoka the
 function definition.  (Default values are calculated, once, when the function is
 defined; thus, a mutable object such as a list or dictionary used as default
 value will be shared by all calls that don't specify an argument value for the
@@ -976,7 +976,7 @@ there were no excess keyword arguments.
    single: unpacking; in function calls
 
 If the syntax ``*expression`` appears in the function call, ``expression`` must
-evaluate to an :term:`iterable`.  Elements from these iterables are
+evaluate to an :term:`iterable`.  Elements kutoka these iterables are
 treated as if they were additional positional arguments.  For the call
 ``f(x1, x2, *y, x3, x4)``, if *y* evaluates to a sequence *y1*, ..., *yM*,
 this is equivalent to a call with M+4 positional arguments *x1*, *x2*,
@@ -1007,7 +1007,7 @@ used in the same call, so in practice this confusion does not arise.
 If the syntax ``**expression`` appears in the function call, ``expression`` must
 evaluate to a :term:`mapping`, the contents of which are treated as
 additional keyword arguments.  If a keyword is already present
-(as an explicit keyword argument, or from another unpacking),
+(as an explicit keyword argument, or kutoka another unpacking),
 a :exc:`TypeError` exception is raised.
 
 Formal parameters using the syntax ``*identifier`` or ``**identifier`` cannot be
@@ -1052,29 +1052,29 @@ a built-in function or method:
    The result is up to the interpreter; see :ref:`built-in-funcs` for the
    descriptions of built-in functions and methods.
 
-a class object:
+a kundi object:
    .. index::
       object: class
-      pair: class object; call
+      pair: kundi object; call
 
-   A new instance of that class is returned.
+   A new instance of that kundi is returned.
 
-a class instance method:
+a kundi instance method:
    .. index::
-      object: class instance
+      object: kundi instance
       object: instance
-      pair: class instance; call
+      pair: kundi instance; call
 
    The corresponding user-defined function is called, with an argument list that is
    one longer than the argument list of the call: the instance becomes the first
    argument.
 
-a class instance:
+a kundi instance:
    .. index::
       pair: instance; call
       single: __call__() (object method)
 
-   The class must define a :meth:`__call__` method; the effect is then the same as
+   The kundi must define a :meth:`__call__` method; the effect is then the same as
    if that method was called.
 
 
@@ -1109,7 +1109,7 @@ less tightly than unary operators on its right.  The syntax is:
    power: (`await_expr` | `primary`) ["**" `u_expr`]
 
 Thus, in an unparenthesized sequence of power and unary operators, the operators
-are evaluated from right to left (this does not constrain the evaluation order
+are evaluated kutoka right to left (this does not constrain the evaluation order
 for the operands): ``-1**2`` results in ``-1``.
 
 The power operator has the same semantics as the built-in :func:`pow` function,
@@ -1179,7 +1179,7 @@ Binary arithmetic operations
 
 The binary arithmetic operations have the conventional priority levels.  Note
 that some of these operations also apply to certain non-numeric types.  Apart
-from the power operator, there are only two levels, one for multiplicative
+kutoka the power operator, there are only two levels, one for multiplicative
 operators and one for additive operators:
 
 .. productionlist::
@@ -1224,7 +1224,7 @@ exception.
    single: modulo
    operator: % (percent)
 
-The ``%`` (modulo) operator yields the remainder from the division of the first
+The ``%`` (modulo) operator yields the remainder kutoka the division of the first
 argument by the second.  The numeric arguments are first converted to a common
 type.  A zero right argument raises the :exc:`ZeroDivisionError` exception.  The
 arguments may be floating point numbers, e.g., ``3.14%0.7`` equals ``0.34``
@@ -1386,7 +1386,7 @@ of them as defining the value of an object indirectly, by means of their
 comparison implementation.
 
 Because all types are (direct or indirect) subtypes of :class:`object`, they
-inherit the default comparison behavior from :class:`object`.  Types can
+inherit the default comparison behavior kutoka :class:`object`.  Types can
 customize their comparison behavior by implementing
 :dfn:`rich comparison methods` like :meth:`__lt__`, described in
 :ref:`customization`.
@@ -1561,7 +1561,7 @@ expression ``x is z or x == z`` is true, is produced while iterating over ``y``.
 If an exception is raised during the iteration, it is as if :keyword:`in` raised
 that exception.
 
-Lastly, the old-style iteration protocol is tried: if a class defines
+Lastly, the old-style iteration protocol is tried: if a kundi defines
 :meth:`__getitem__`, ``x in y`` is ``True`` if and only if there is a non-negative
 integer index *i* such that ``x is y[i] or x == y[i]``, and no lower integer index
 raises the :exc:`IndexError` exception.  (If any other exception is raised, it is as
@@ -1718,7 +1718,7 @@ Expression lists
 Except when part of a list or set display, an expression list
 containing at least one comma yields a tuple.  The length of
 the tuple is the number of expressions in the list.  The expressions are
-evaluated from left to right.
+evaluated kutoka left to right.
 
 .. index::
    pair: iterable; unpacking
@@ -1748,7 +1748,7 @@ Evaluation order
 
 .. index:: pair: evaluation; order
 
-Python evaluates expressions from left to right.  Notice that while evaluating
+Python evaluates expressions kutoka left to right.  Notice that while evaluating
 an assignment, the right-hand side is evaluated before the left-hand side.
 
 In the following lines, expressions will be evaluated in the arithmetic order of
@@ -1770,11 +1770,11 @@ Operator precedence
 .. index::
    pair: operator; precedence
 
-The following table summarizes the operator precedence in Python, from lowest
+The following table summarizes the operator precedence in Python, kutoka lowest
 precedence (least binding) to highest precedence (most binding).  Operators in
 the same box have the same precedence.  Unless the syntax is explicitly given,
 operators are binary.  Operators in the same box group left to right (except for
-exponentiation, which groups from right to left).
+exponentiation, which groups kutoka right to left).
 
 Note that comparisons, membership tests, and identity tests, all have the same
 precedence and have a left-to-right chaining feature as described in the

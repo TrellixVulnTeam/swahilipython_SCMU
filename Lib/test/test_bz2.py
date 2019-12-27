@@ -17,22 +17,22 @@ agiza _compression
 agiza sys
 
 
-# Skip tests if the bz2 module doesn't exist.
+# Skip tests ikiwa the bz2 module doesn't exist.
 bz2 = support.import_module('bz2')
 kutoka bz2 agiza BZ2File, BZ2Compressor, BZ2Decompressor
 
 has_cmdline_bunzip2 = None
 
-def ext_decompress(data):
+eleza ext_decompress(data):
     global has_cmdline_bunzip2
-    if has_cmdline_bunzip2 is None:
+    ikiwa has_cmdline_bunzip2 is None:
         has_cmdline_bunzip2 = bool(shutil.which('bunzip2'))
-    if has_cmdline_bunzip2:
-        return subprocess.check_output(['bunzip2'], input=data)
+    ikiwa has_cmdline_bunzip2:
+        rudisha subprocess.check_output(['bunzip2'], input=data)
     else:
-        return bz2.decompress(data)
+        rudisha bz2.decompress(data)
 
-class BaseTest(unittest.TestCase):
+kundi BaseTest(unittest.TestCase):
     "Base for other testcases."
 
     TEXT_LINES = [
@@ -72,27 +72,27 @@ class BaseTest(unittest.TestCase):
     for fname in glob.glob(os.path.join(os.path.dirname(__file__), '*.py')):
         with open(fname, 'rb') as fh:
             test_size += fh.readinto(memoryview(BIG_TEXT)[test_size:])
-        if test_size > 128*1024:
+        ikiwa test_size > 128*1024:
             break
     BIG_DATA = bz2.compress(BIG_TEXT, compresslevel=1)
 
-    def setUp(self):
+    eleza setUp(self):
         fd, self.filename = tempfile.mkstemp()
         os.close(fd)
 
-    def tearDown(self):
+    eleza tearDown(self):
         unlink(self.filename)
 
 
-class BZ2FileTest(BaseTest):
+kundi BZ2FileTest(BaseTest):
     "Test the BZ2File class."
 
-    def createTempFile(self, streams=1, suffix=b""):
+    eleza createTempFile(self, streams=1, suffix=b""):
         with open(self.filename, "wb") as f:
             f.write(self.DATA * streams)
             f.write(suffix)
 
-    def testBadArgs(self):
+    eleza testBadArgs(self):
         self.assertRaises(TypeError, BZ2File, 123.456)
         self.assertRaises(ValueError, BZ2File, os.devnull, "z")
         self.assertRaises(ValueError, BZ2File, os.devnull, "rx")
@@ -100,24 +100,24 @@ class BZ2FileTest(BaseTest):
         self.assertRaises(ValueError, BZ2File, os.devnull, compresslevel=0)
         self.assertRaises(ValueError, BZ2File, os.devnull, compresslevel=10)
 
-    def testRead(self):
+    eleza testRead(self):
         self.createTempFile()
         with BZ2File(self.filename) as bz2f:
             self.assertRaises(TypeError, bz2f.read, float())
             self.assertEqual(bz2f.read(), self.TEXT)
 
-    def testReadBadFile(self):
+    eleza testReadBadFile(self):
         self.createTempFile(streams=0, suffix=self.BAD_DATA)
         with BZ2File(self.filename) as bz2f:
             self.assertRaises(OSError, bz2f.read)
 
-    def testReadMultiStream(self):
+    eleza testReadMultiStream(self):
         self.createTempFile(streams=5)
         with BZ2File(self.filename) as bz2f:
             self.assertRaises(TypeError, bz2f.read, float())
             self.assertEqual(bz2f.read(), self.TEXT * 5)
 
-    def testReadMonkeyMultiStream(self):
+    eleza testReadMonkeyMultiStream(self):
         # Test BZ2File.read() on a multi-stream archive where a stream
         # boundary coincides with the end of the raw read buffer.
         buffer_size = _compression.BUFFER_SIZE
@@ -130,50 +130,50 @@ class BZ2FileTest(BaseTest):
         finally:
             _compression.BUFFER_SIZE = buffer_size
 
-    def testReadTrailingJunk(self):
+    eleza testReadTrailingJunk(self):
         self.createTempFile(suffix=self.BAD_DATA)
         with BZ2File(self.filename) as bz2f:
             self.assertEqual(bz2f.read(), self.TEXT)
 
-    def testReadMultiStreamTrailingJunk(self):
+    eleza testReadMultiStreamTrailingJunk(self):
         self.createTempFile(streams=5, suffix=self.BAD_DATA)
         with BZ2File(self.filename) as bz2f:
             self.assertEqual(bz2f.read(), self.TEXT * 5)
 
-    def testRead0(self):
+    eleza testRead0(self):
         self.createTempFile()
         with BZ2File(self.filename) as bz2f:
             self.assertRaises(TypeError, bz2f.read, float())
             self.assertEqual(bz2f.read(0), b"")
 
-    def testReadChunk10(self):
+    eleza testReadChunk10(self):
         self.createTempFile()
         with BZ2File(self.filename) as bz2f:
             text = b''
             while True:
                 str = bz2f.read(10)
-                if not str:
+                ikiwa not str:
                     break
                 text += str
             self.assertEqual(text, self.TEXT)
 
-    def testReadChunk10MultiStream(self):
+    eleza testReadChunk10MultiStream(self):
         self.createTempFile(streams=5)
         with BZ2File(self.filename) as bz2f:
             text = b''
             while True:
                 str = bz2f.read(10)
-                if not str:
+                ikiwa not str:
                     break
                 text += str
             self.assertEqual(text, self.TEXT * 5)
 
-    def testRead100(self):
+    eleza testRead100(self):
         self.createTempFile()
         with BZ2File(self.filename) as bz2f:
             self.assertEqual(bz2f.read(100), self.TEXT[:100])
 
-    def testPeek(self):
+    eleza testPeek(self):
         self.createTempFile()
         with BZ2File(self.filename) as bz2f:
             pdata = bz2f.peek()
@@ -181,7 +181,7 @@ class BZ2FileTest(BaseTest):
             self.assertTrue(self.TEXT.startswith(pdata))
             self.assertEqual(bz2f.read(), self.TEXT)
 
-    def testReadInto(self):
+    eleza testReadInto(self):
         self.createTempFile()
         with BZ2File(self.filename) as bz2f:
             n = 128
@@ -193,78 +193,78 @@ class BZ2FileTest(BaseTest):
             self.assertEqual(bz2f.readinto(b), n)
             self.assertEqual(b[:n], self.TEXT[-n:])
 
-    def testReadLine(self):
+    eleza testReadLine(self):
         self.createTempFile()
         with BZ2File(self.filename) as bz2f:
             self.assertRaises(TypeError, bz2f.readline, None)
             for line in self.TEXT_LINES:
                 self.assertEqual(bz2f.readline(), line)
 
-    def testReadLineMultiStream(self):
+    eleza testReadLineMultiStream(self):
         self.createTempFile(streams=5)
         with BZ2File(self.filename) as bz2f:
             self.assertRaises(TypeError, bz2f.readline, None)
             for line in self.TEXT_LINES * 5:
                 self.assertEqual(bz2f.readline(), line)
 
-    def testReadLines(self):
+    eleza testReadLines(self):
         self.createTempFile()
         with BZ2File(self.filename) as bz2f:
             self.assertRaises(TypeError, bz2f.readlines, None)
             self.assertEqual(bz2f.readlines(), self.TEXT_LINES)
 
-    def testReadLinesMultiStream(self):
+    eleza testReadLinesMultiStream(self):
         self.createTempFile(streams=5)
         with BZ2File(self.filename) as bz2f:
             self.assertRaises(TypeError, bz2f.readlines, None)
             self.assertEqual(bz2f.readlines(), self.TEXT_LINES * 5)
 
-    def testIterator(self):
+    eleza testIterator(self):
         self.createTempFile()
         with BZ2File(self.filename) as bz2f:
             self.assertEqual(list(iter(bz2f)), self.TEXT_LINES)
 
-    def testIteratorMultiStream(self):
+    eleza testIteratorMultiStream(self):
         self.createTempFile(streams=5)
         with BZ2File(self.filename) as bz2f:
             self.assertEqual(list(iter(bz2f)), self.TEXT_LINES * 5)
 
-    def testClosedIteratorDeadlock(self):
+    eleza testClosedIteratorDeadlock(self):
         # Issue #3309: Iteration on a closed BZ2File should release the lock.
         self.createTempFile()
         bz2f = BZ2File(self.filename)
         bz2f.close()
         self.assertRaises(ValueError, next, bz2f)
-        # This call will deadlock if the above call failed to release the lock.
+        # This call will deadlock ikiwa the above call failed to release the lock.
         self.assertRaises(ValueError, bz2f.readlines)
 
-    def testWrite(self):
+    eleza testWrite(self):
         with BZ2File(self.filename, "w") as bz2f:
             self.assertRaises(TypeError, bz2f.write)
             bz2f.write(self.TEXT)
         with open(self.filename, 'rb') as f:
             self.assertEqual(ext_decompress(f.read()), self.TEXT)
 
-    def testWriteChunks10(self):
+    eleza testWriteChunks10(self):
         with BZ2File(self.filename, "w") as bz2f:
             n = 0
             while True:
                 str = self.TEXT[n*10:(n+1)*10]
-                if not str:
+                ikiwa not str:
                     break
                 bz2f.write(str)
                 n += 1
         with open(self.filename, 'rb') as f:
             self.assertEqual(ext_decompress(f.read()), self.TEXT)
 
-    def testWriteNonDefaultCompressLevel(self):
+    eleza testWriteNonDefaultCompressLevel(self):
         expected = bz2.compress(self.TEXT, compresslevel=5)
         with BZ2File(self.filename, "w", compresslevel=5) as bz2f:
             bz2f.write(self.TEXT)
         with open(self.filename, "rb") as f:
             self.assertEqual(f.read(), expected)
 
-    def testWriteLines(self):
+    eleza testWriteLines(self):
         with BZ2File(self.filename, "w") as bz2f:
             self.assertRaises(TypeError, bz2f.writelines)
             bz2f.writelines(self.TEXT_LINES)
@@ -274,7 +274,7 @@ class BZ2FileTest(BaseTest):
         with open(self.filename, 'rb') as f:
             self.assertEqual(ext_decompress(f.read()), self.TEXT)
 
-    def testWriteMethodsOnReadOnlyFile(self):
+    eleza testWriteMethodsOnReadOnlyFile(self):
         with BZ2File(self.filename, "w") as bz2f:
             bz2f.write(b"abc")
 
@@ -282,7 +282,7 @@ class BZ2FileTest(BaseTest):
             self.assertRaises(OSError, bz2f.write, b"a")
             self.assertRaises(OSError, bz2f.writelines, [b"a"])
 
-    def testAppend(self):
+    eleza testAppend(self):
         with BZ2File(self.filename, "w") as bz2f:
             self.assertRaises(TypeError, bz2f.write)
             bz2f.write(self.TEXT)
@@ -292,28 +292,28 @@ class BZ2FileTest(BaseTest):
         with open(self.filename, 'rb') as f:
             self.assertEqual(ext_decompress(f.read()), self.TEXT * 2)
 
-    def testSeekForward(self):
+    eleza testSeekForward(self):
         self.createTempFile()
         with BZ2File(self.filename) as bz2f:
             self.assertRaises(TypeError, bz2f.seek)
             bz2f.seek(150)
             self.assertEqual(bz2f.read(), self.TEXT[150:])
 
-    def testSeekForwardAcrossStreams(self):
+    eleza testSeekForwardAcrossStreams(self):
         self.createTempFile(streams=2)
         with BZ2File(self.filename) as bz2f:
             self.assertRaises(TypeError, bz2f.seek)
             bz2f.seek(len(self.TEXT) + 150)
             self.assertEqual(bz2f.read(), self.TEXT[150:])
 
-    def testSeekBackwards(self):
+    eleza testSeekBackwards(self):
         self.createTempFile()
         with BZ2File(self.filename) as bz2f:
             bz2f.read(500)
             bz2f.seek(-150, 1)
             self.assertEqual(bz2f.read(), self.TEXT[500-150:])
 
-    def testSeekBackwardsAcrossStreams(self):
+    eleza testSeekBackwardsAcrossStreams(self):
         self.createTempFile(streams=2)
         with BZ2File(self.filename) as bz2f:
             readto = len(self.TEXT) + 100
@@ -322,33 +322,33 @@ class BZ2FileTest(BaseTest):
             bz2f.seek(-150, 1)
             self.assertEqual(bz2f.read(), self.TEXT[100-150:] + self.TEXT)
 
-    def testSeekBackwardsFromEnd(self):
+    eleza testSeekBackwardsFromEnd(self):
         self.createTempFile()
         with BZ2File(self.filename) as bz2f:
             bz2f.seek(-150, 2)
             self.assertEqual(bz2f.read(), self.TEXT[len(self.TEXT)-150:])
 
-    def testSeekBackwardsFromEndAcrossStreams(self):
+    eleza testSeekBackwardsFromEndAcrossStreams(self):
         self.createTempFile(streams=2)
         with BZ2File(self.filename) as bz2f:
             bz2f.seek(-1000, 2)
             self.assertEqual(bz2f.read(), (self.TEXT * 2)[-1000:])
 
-    def testSeekPostEnd(self):
+    eleza testSeekPostEnd(self):
         self.createTempFile()
         with BZ2File(self.filename) as bz2f:
             bz2f.seek(150000)
             self.assertEqual(bz2f.tell(), len(self.TEXT))
             self.assertEqual(bz2f.read(), b"")
 
-    def testSeekPostEndMultiStream(self):
+    eleza testSeekPostEndMultiStream(self):
         self.createTempFile(streams=5)
         with BZ2File(self.filename) as bz2f:
             bz2f.seek(150000)
             self.assertEqual(bz2f.tell(), len(self.TEXT) * 5)
             self.assertEqual(bz2f.read(), b"")
 
-    def testSeekPostEndTwice(self):
+    eleza testSeekPostEndTwice(self):
         self.createTempFile()
         with BZ2File(self.filename) as bz2f:
             bz2f.seek(150000)
@@ -356,7 +356,7 @@ class BZ2FileTest(BaseTest):
             self.assertEqual(bz2f.tell(), len(self.TEXT))
             self.assertEqual(bz2f.read(), b"")
 
-    def testSeekPostEndTwiceMultiStream(self):
+    eleza testSeekPostEndTwiceMultiStream(self):
         self.createTempFile(streams=5)
         with BZ2File(self.filename) as bz2f:
             bz2f.seek(150000)
@@ -364,21 +364,21 @@ class BZ2FileTest(BaseTest):
             self.assertEqual(bz2f.tell(), len(self.TEXT) * 5)
             self.assertEqual(bz2f.read(), b"")
 
-    def testSeekPreStart(self):
+    eleza testSeekPreStart(self):
         self.createTempFile()
         with BZ2File(self.filename) as bz2f:
             bz2f.seek(-150)
             self.assertEqual(bz2f.tell(), 0)
             self.assertEqual(bz2f.read(), self.TEXT)
 
-    def testSeekPreStartMultiStream(self):
+    eleza testSeekPreStartMultiStream(self):
         self.createTempFile(streams=2)
         with BZ2File(self.filename) as bz2f:
             bz2f.seek(-150)
             self.assertEqual(bz2f.tell(), 0)
             self.assertEqual(bz2f.read(), self.TEXT * 2)
 
-    def testFileno(self):
+    eleza testFileno(self):
         self.createTempFile()
         with open(self.filename, 'rb') as rawf:
             bz2f = BZ2File(rawf)
@@ -388,7 +388,7 @@ class BZ2FileTest(BaseTest):
                 bz2f.close()
         self.assertRaises(ValueError, bz2f.fileno)
 
-    def testSeekable(self):
+    eleza testSeekable(self):
         bz2f = BZ2File(BytesIO(self.DATA))
         try:
             self.assertTrue(bz2f.seekable())
@@ -414,7 +414,7 @@ class BZ2FileTest(BaseTest):
             bz2f.close()
         self.assertRaises(ValueError, bz2f.seekable)
 
-    def testReadable(self):
+    eleza testReadable(self):
         bz2f = BZ2File(BytesIO(self.DATA))
         try:
             self.assertTrue(bz2f.readable())
@@ -431,7 +431,7 @@ class BZ2FileTest(BaseTest):
             bz2f.close()
         self.assertRaises(ValueError, bz2f.readable)
 
-    def testWritable(self):
+    eleza testWritable(self):
         bz2f = BZ2File(BytesIO(self.DATA))
         try:
             self.assertFalse(bz2f.writable())
@@ -448,16 +448,16 @@ class BZ2FileTest(BaseTest):
             bz2f.close()
         self.assertRaises(ValueError, bz2f.writable)
 
-    def testOpenDel(self):
+    eleza testOpenDel(self):
         self.createTempFile()
         for i in range(10000):
             o = BZ2File(self.filename)
             del o
 
-    def testOpenNonexistent(self):
+    eleza testOpenNonexistent(self):
         self.assertRaises(OSError, BZ2File, "/non/existent")
 
-    def testReadlinesNoNewline(self):
+    eleza testReadlinesNoNewline(self):
         # Issue #1191043: readlines() fails on a file containing no newline.
         data = b'BZh91AY&SY\xd9b\x89]\x00\x00\x00\x03\x80\x04\x00\x02\x00\x0c\x00 \x00!\x9ah3M\x13<]\xc9\x14\xe1BCe\x8a%t'
         with open(self.filename, "wb") as f:
@@ -469,7 +469,7 @@ class BZ2FileTest(BaseTest):
             xlines = list(bz2f.readlines())
         self.assertEqual(xlines, [b'Test'])
 
-    def testContextProtocol(self):
+    eleza testContextProtocol(self):
         f = None
         with BZ2File(self.filename, "wb") as f:
             f.write(b"xxx")
@@ -490,19 +490,19 @@ class BZ2FileTest(BaseTest):
         else:
             self.fail("1/0 didn't raise an exception")
 
-    def testThreading(self):
+    eleza testThreading(self):
         # Issue #7205: Using a BZ2File kutoka several threads shouldn't deadlock.
         data = b"1" * 2**20
         nthreads = 10
         with BZ2File(self.filename, 'wb') as f:
-            def comp():
+            eleza comp():
                 for i in range(5):
                     f.write(data)
             threads = [threading.Thread(target=comp) for i in range(nthreads)]
             with support.start_threads(threads):
                 pass
 
-    def testMixedIterationAndReads(self):
+    eleza testMixedIterationAndReads(self):
         self.createTempFile()
         linelen = len(self.TEXT_LINES[0])
         halflen = linelen // 2
@@ -519,7 +519,7 @@ class BZ2FileTest(BaseTest):
             self.assertRaises(StopIteration, next, bz2f)
             self.assertEqual(bz2f.readlines(), [])
 
-    def testMultiStreamOrdering(self):
+    eleza testMultiStreamOrdering(self):
         # Test the ordering of streams when reading a multi-stream archive.
         data1 = b"foo" * 1000
         data2 = b"bar" * 1000
@@ -530,7 +530,7 @@ class BZ2FileTest(BaseTest):
         with BZ2File(self.filename) as bz2f:
             self.assertEqual(bz2f.read(), data1 + data2)
 
-    def testOpenBytesFilename(self):
+    eleza testOpenBytesFilename(self):
         str_filename = self.filename
         try:
             bytes_filename = str_filename.encode("ascii")
@@ -544,14 +544,14 @@ class BZ2FileTest(BaseTest):
         with BZ2File(str_filename, "rb") as f:
             self.assertEqual(f.read(), self.DATA)
 
-    def testOpenPathLikeFilename(self):
+    eleza testOpenPathLikeFilename(self):
         filename = pathlib.Path(self.filename)
         with BZ2File(filename, "wb") as f:
             f.write(self.DATA)
         with BZ2File(filename, "rb") as f:
             self.assertEqual(f.read(), self.DATA)
 
-    def testDecompressLimited(self):
+    eleza testDecompressLimited(self):
         """Decompressed data buffering should be limited"""
         bomb = bz2.compress(b'\0' * int(2e6), compresslevel=9)
         self.assertLess(len(bomb), _compression.BUFFER_SIZE)
@@ -565,14 +565,14 @@ class BZ2FileTest(BaseTest):
 
     # Tests for a BZ2File wrapping another file object:
 
-    def testReadBytesIO(self):
+    eleza testReadBytesIO(self):
         with BytesIO(self.DATA) as bio:
             with BZ2File(bio) as bz2f:
                 self.assertRaises(TypeError, bz2f.read, float())
                 self.assertEqual(bz2f.read(), self.TEXT)
             self.assertFalse(bio.closed)
 
-    def testPeekBytesIO(self):
+    eleza testPeekBytesIO(self):
         with BytesIO(self.DATA) as bio:
             with BZ2File(bio) as bz2f:
                 pdata = bz2f.peek()
@@ -580,7 +580,7 @@ class BZ2FileTest(BaseTest):
                 self.assertTrue(self.TEXT.startswith(pdata))
                 self.assertEqual(bz2f.read(), self.TEXT)
 
-    def testWriteBytesIO(self):
+    eleza testWriteBytesIO(self):
         with BytesIO() as bio:
             with BZ2File(bio, "w") as bz2f:
                 self.assertRaises(TypeError, bz2f.write)
@@ -588,21 +588,21 @@ class BZ2FileTest(BaseTest):
             self.assertEqual(ext_decompress(bio.getvalue()), self.TEXT)
             self.assertFalse(bio.closed)
 
-    def testSeekForwardBytesIO(self):
+    eleza testSeekForwardBytesIO(self):
         with BytesIO(self.DATA) as bio:
             with BZ2File(bio) as bz2f:
                 self.assertRaises(TypeError, bz2f.seek)
                 bz2f.seek(150)
                 self.assertEqual(bz2f.read(), self.TEXT[150:])
 
-    def testSeekBackwardsBytesIO(self):
+    eleza testSeekBackwardsBytesIO(self):
         with BytesIO(self.DATA) as bio:
             with BZ2File(bio) as bz2f:
                 bz2f.read(500)
                 bz2f.seek(-150, 1)
                 self.assertEqual(bz2f.read(), self.TEXT[500-150:])
 
-    def test_read_truncated(self):
+    eleza test_read_truncated(self):
         # Drop the eos_magic field (6 bytes) and CRC (4 bytes).
         truncated = self.DATA[:-10]
         with BZ2File(BytesIO(truncated)) as f:
@@ -616,27 +616,27 @@ class BZ2FileTest(BaseTest):
                 self.assertRaises(EOFError, f.read, 1)
 
 
-class BZ2CompressorTest(BaseTest):
-    def testCompress(self):
+kundi BZ2CompressorTest(BaseTest):
+    eleza testCompress(self):
         bz2c = BZ2Compressor()
         self.assertRaises(TypeError, bz2c.compress)
         data = bz2c.compress(self.TEXT)
         data += bz2c.flush()
         self.assertEqual(ext_decompress(data), self.TEXT)
 
-    def testCompressEmptyString(self):
+    eleza testCompressEmptyString(self):
         bz2c = BZ2Compressor()
         data = bz2c.compress(b'')
         data += bz2c.flush()
         self.assertEqual(data, self.EMPTY_DATA)
 
-    def testCompressChunks10(self):
+    eleza testCompressChunks10(self):
         bz2c = BZ2Compressor()
         n = 0
         data = b''
         while True:
             str = self.TEXT[n*10:(n+1)*10]
-            if not str:
+            ikiwa not str:
                 break
             data += bz2c.compress(str)
             n += 1
@@ -645,7 +645,7 @@ class BZ2CompressorTest(BaseTest):
 
     @support.skip_if_pgo_task
     @bigmemtest(size=_4G + 100, memuse=2)
-    def testCompress4G(self, size):
+    eleza testCompress4G(self, size):
         # "Test BZ2Compressor.compress()/flush() with >4GiB input"
         bz2c = BZ2Compressor()
         data = b"x" * size
@@ -661,42 +661,42 @@ class BZ2CompressorTest(BaseTest):
         finally:
             data = None
 
-    def testPickle(self):
+    eleza testPickle(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.assertRaises(TypeError):
                 pickle.dumps(BZ2Compressor(), proto)
 
 
-class BZ2DecompressorTest(BaseTest):
-    def test_Constructor(self):
+kundi BZ2DecompressorTest(BaseTest):
+    eleza test_Constructor(self):
         self.assertRaises(TypeError, BZ2Decompressor, 42)
 
-    def testDecompress(self):
+    eleza testDecompress(self):
         bz2d = BZ2Decompressor()
         self.assertRaises(TypeError, bz2d.decompress)
         text = bz2d.decompress(self.DATA)
         self.assertEqual(text, self.TEXT)
 
-    def testDecompressChunks10(self):
+    eleza testDecompressChunks10(self):
         bz2d = BZ2Decompressor()
         text = b''
         n = 0
         while True:
             str = self.DATA[n*10:(n+1)*10]
-            if not str:
+            ikiwa not str:
                 break
             text += bz2d.decompress(str)
             n += 1
         self.assertEqual(text, self.TEXT)
 
-    def testDecompressUnusedData(self):
+    eleza testDecompressUnusedData(self):
         bz2d = BZ2Decompressor()
         unused_data = b"this is unused data"
         text = bz2d.decompress(self.DATA+unused_data)
         self.assertEqual(text, self.TEXT)
         self.assertEqual(bz2d.unused_data, unused_data)
 
-    def testEOFError(self):
+    eleza testEOFError(self):
         bz2d = BZ2Decompressor()
         text = bz2d.decompress(self.DATA)
         self.assertRaises(EOFError, bz2d.decompress, b"anything")
@@ -704,7 +704,7 @@ class BZ2DecompressorTest(BaseTest):
 
     @support.skip_if_pgo_task
     @bigmemtest(size=_4G + 100, memuse=3.3)
-    def testDecompress4G(self, size):
+    eleza testDecompress4G(self, size):
         # "Test BZ2Decompressor.decompress() with >4GiB input"
         blocksize = 10 * 1024 * 1024
         block = random.getrandbits(blocksize * 8).to_bytes(blocksize, 'little')
@@ -719,12 +719,12 @@ class BZ2DecompressorTest(BaseTest):
             compressed = None
             decompressed = None
 
-    def testPickle(self):
+    eleza testPickle(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.assertRaises(TypeError):
                 pickle.dumps(BZ2Decompressor(), proto)
 
-    def testDecompressorChunksMaxsize(self):
+    eleza testDecompressorChunksMaxsize(self):
         bzd = BZ2Decompressor()
         max_length = 100
         out = []
@@ -755,7 +755,7 @@ class BZ2DecompressorTest(BaseTest):
         self.assertEqual(out, self.BIG_TEXT)
         self.assertEqual(bzd.unused_data, b"")
 
-    def test_decompressor_inputbuf_1(self):
+    eleza test_decompressor_inputbuf_1(self):
         # Test reusing input buffer after moving existing
         # contents to beginning
         bzd = BZ2Decompressor()
@@ -777,7 +777,7 @@ class BZ2DecompressorTest(BaseTest):
         out.append(bzd.decompress(self.DATA[105:]))
         self.assertEqual(b''.join(out), self.TEXT)
 
-    def test_decompressor_inputbuf_2(self):
+    eleza test_decompressor_inputbuf_2(self):
         # Test reusing input buffer by appending data at the
         # end right away
         bzd = BZ2Decompressor()
@@ -798,7 +798,7 @@ class BZ2DecompressorTest(BaseTest):
         out.append(bzd.decompress(self.DATA[300:]))
         self.assertEqual(b''.join(out), self.TEXT)
 
-    def test_decompressor_inputbuf_3(self):
+    eleza test_decompressor_inputbuf_3(self):
         # Test reusing input buffer after extending it
 
         bzd = BZ2Decompressor()
@@ -814,14 +814,14 @@ class BZ2DecompressorTest(BaseTest):
         out.append(bzd.decompress(self.DATA[300:]))
         self.assertEqual(b''.join(out), self.TEXT)
 
-    def test_failure(self):
+    eleza test_failure(self):
         bzd = BZ2Decompressor()
         self.assertRaises(Exception, bzd.decompress, self.BAD_DATA * 30)
         # Previously, a second call could crash due to internal inconsistency
         self.assertRaises(Exception, bzd.decompress, self.BAD_DATA * 30)
 
     @support.refcount_test
-    def test_refleaks_in___init__(self):
+    eleza test_refleaks_in___init__(self):
         gettotalrefcount = support.get_attribute(sys, 'gettotalrefcount')
         bzd = BZ2Decompressor()
         refs_before = gettotalrefcount()
@@ -830,55 +830,55 @@ class BZ2DecompressorTest(BaseTest):
         self.assertAlmostEqual(gettotalrefcount() - refs_before, 0, delta=10)
 
 
-class CompressDecompressTest(BaseTest):
-    def testCompress(self):
+kundi CompressDecompressTest(BaseTest):
+    eleza testCompress(self):
         data = bz2.compress(self.TEXT)
         self.assertEqual(ext_decompress(data), self.TEXT)
 
-    def testCompressEmptyString(self):
+    eleza testCompressEmptyString(self):
         text = bz2.compress(b'')
         self.assertEqual(text, self.EMPTY_DATA)
 
-    def testDecompress(self):
+    eleza testDecompress(self):
         text = bz2.decompress(self.DATA)
         self.assertEqual(text, self.TEXT)
 
-    def testDecompressEmpty(self):
+    eleza testDecompressEmpty(self):
         text = bz2.decompress(b"")
         self.assertEqual(text, b"")
 
-    def testDecompressToEmptyString(self):
+    eleza testDecompressToEmptyString(self):
         text = bz2.decompress(self.EMPTY_DATA)
         self.assertEqual(text, b'')
 
-    def testDecompressIncomplete(self):
+    eleza testDecompressIncomplete(self):
         self.assertRaises(ValueError, bz2.decompress, self.DATA[:-10])
 
-    def testDecompressBadData(self):
+    eleza testDecompressBadData(self):
         self.assertRaises(OSError, bz2.decompress, self.BAD_DATA)
 
-    def testDecompressMultiStream(self):
+    eleza testDecompressMultiStream(self):
         text = bz2.decompress(self.DATA * 5)
         self.assertEqual(text, self.TEXT * 5)
 
-    def testDecompressTrailingJunk(self):
+    eleza testDecompressTrailingJunk(self):
         text = bz2.decompress(self.DATA + self.BAD_DATA)
         self.assertEqual(text, self.TEXT)
 
-    def testDecompressMultiStreamTrailingJunk(self):
+    eleza testDecompressMultiStreamTrailingJunk(self):
         text = bz2.decompress(self.DATA * 5 + self.BAD_DATA)
         self.assertEqual(text, self.TEXT * 5)
 
 
-class OpenTest(BaseTest):
+kundi OpenTest(BaseTest):
     "Test the open function."
 
-    def open(self, *args, **kwargs):
-        return bz2.open(*args, **kwargs)
+    eleza open(self, *args, **kwargs):
+        rudisha bz2.open(*args, **kwargs)
 
-    def test_binary_modes(self):
+    eleza test_binary_modes(self):
         for mode in ("wb", "xb"):
-            if mode == "xb":
+            ikiwa mode == "xb":
                 unlink(self.filename)
             with self.open(self.filename, mode) as f:
                 f.write(self.TEXT)
@@ -893,10 +893,10 @@ class OpenTest(BaseTest):
                 file_data = ext_decompress(f.read())
                 self.assertEqual(file_data, self.TEXT * 2)
 
-    def test_implicit_binary_modes(self):
+    eleza test_implicit_binary_modes(self):
         # Test implicit binary modes (no "b" or "t" in mode string).
         for mode in ("w", "x"):
-            if mode == "x":
+            ikiwa mode == "x":
                 unlink(self.filename)
             with self.open(self.filename, mode) as f:
                 f.write(self.TEXT)
@@ -911,11 +911,11 @@ class OpenTest(BaseTest):
                 file_data = ext_decompress(f.read())
                 self.assertEqual(file_data, self.TEXT * 2)
 
-    def test_text_modes(self):
+    eleza test_text_modes(self):
         text = self.TEXT.decode("ascii")
         text_native_eol = text.replace("\n", os.linesep)
         for mode in ("wt", "xt"):
-            if mode == "xt":
+            ikiwa mode == "xt":
                 unlink(self.filename)
             with self.open(self.filename, mode) as f:
                 f.write(text)
@@ -930,7 +930,7 @@ class OpenTest(BaseTest):
                 file_data = ext_decompress(f.read()).decode("ascii")
                 self.assertEqual(file_data, text_native_eol * 2)
 
-    def test_x_mode(self):
+    eleza test_x_mode(self):
         for mode in ("x", "xb", "xt"):
             unlink(self.filename)
             with self.open(self.filename, mode) as f:
@@ -939,7 +939,7 @@ class OpenTest(BaseTest):
                 with self.open(self.filename, mode) as f:
                     pass
 
-    def test_fileobj(self):
+    eleza test_fileobj(self):
         with self.open(BytesIO(self.DATA), "r") as f:
             self.assertEqual(f.read(), self.TEXT)
         with self.open(BytesIO(self.DATA), "rb") as f:
@@ -948,7 +948,7 @@ class OpenTest(BaseTest):
         with self.open(BytesIO(self.DATA), "rt") as f:
             self.assertEqual(f.read(), text)
 
-    def test_bad_params(self):
+    eleza test_bad_params(self):
         # Test invalid parameter combinations.
         self.assertRaises(ValueError,
                           self.open, self.filename, "wbt")
@@ -961,7 +961,7 @@ class OpenTest(BaseTest):
         self.assertRaises(ValueError,
                           self.open, self.filename, "rb", newline="\n")
 
-    def test_encoding(self):
+    eleza test_encoding(self):
         # Test non-default encoding.
         text = self.TEXT.decode("ascii")
         text_native_eol = text.replace("\n", os.linesep)
@@ -973,7 +973,7 @@ class OpenTest(BaseTest):
         with self.open(self.filename, "rt", encoding="utf-16-le") as f:
             self.assertEqual(f.read(), text)
 
-    def test_encoding_error_handler(self):
+    eleza test_encoding_error_handler(self):
         # Test with non-default encoding error handler.
         with self.open(self.filename, "wb") as f:
             f.write(b"foo\xffbar")
@@ -981,7 +981,7 @@ class OpenTest(BaseTest):
                 as f:
             self.assertEqual(f.read(), "foobar")
 
-    def test_newline(self):
+    eleza test_newline(self):
         # Test with explicit newline (universal newline mode disabled).
         text = self.TEXT.decode("ascii")
         with self.open(self.filename, "wt", newline="\n") as f:
@@ -990,7 +990,7 @@ class OpenTest(BaseTest):
             self.assertEqual(f.readlines(), [text])
 
 
-def test_main():
+eleza test_main():
     support.run_unittest(
         BZ2FileTest,
         BZ2CompressorTest,
@@ -1000,5 +1000,5 @@ def test_main():
     )
     support.reap_children()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test_main()

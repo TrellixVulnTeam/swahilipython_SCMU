@@ -20,7 +20,7 @@ AVAILABLE_KEYS = (ALPHANUM_KEYS + PUNCTUATION_KEYS + FUNCTION_KEYS +
                   WHITESPACE_KEYS + EDIT_KEYS + MOVE_KEYS)
 
 
-def translate_key(key, modifiers):
+eleza translate_key(key, modifiers):
     "Translate kutoka keycap symbol to the Tkinter keysym."
     mapping = {'Space':'space',
             '~':'asciitilde', '!':'exclam', '@':'at', '#':'numbersign',
@@ -35,17 +35,17 @@ def translate_key(key, modifiers):
             'Left Arrow':'Left', 'Right Arrow':'Right',
             'Up Arrow':'Up', 'Down Arrow': 'Down', 'Tab':'Tab'}
     key = mapping.get(key, key)
-    if 'Shift' in modifiers and key in string.ascii_lowercase:
+    ikiwa 'Shift' in modifiers and key in string.ascii_lowercase:
         key = key.upper()
-    return f'Key-{key}'
+    rudisha f'Key-{key}'
 
 
-class GetKeysDialog(Toplevel):
+kundi GetKeysDialog(Toplevel):
 
     # Dialog title for invalid key sequence
     keyerror_title = 'Key Sequence Error'
 
-    def __init__(self, parent, title, action, current_key_sequences,
+    eleza __init__(self, parent, title, action, current_key_sequences,
                  *, _htest=False, _utest=False):
         """
         parent - parent of this dialog
@@ -87,17 +87,17 @@ class GetKeysDialog(Toplevel):
                     (parent.winfo_width()/2 - self.winfo_reqwidth()/2),
                     parent.winfo_rooty() +
                     ((parent.winfo_height()/2 - self.winfo_reqheight()/2)
-                    if not _htest else 150)
+                    ikiwa not _htest else 150)
                 ) )  # Center dialog over parent (or below htest box).
-        if not _utest:
+        ikiwa not _utest:
             self.deiconify()  # Geometry set, unhide.
             self.wait_window()
 
-    def showerror(self, *args, **kwargs):
+    eleza showerror(self, *args, **kwargs):
         # Make testing easier.  Replace in #30751.
         messagebox.showerror(*args, **kwargs)
 
-    def create_widgets(self):
+    eleza create_widgets(self):
         self.frame = frame = Frame(self, borderwidth=2, relief='sunken')
         frame.pack(side='top', expand=True, fill='both')
 
@@ -199,23 +199,23 @@ class GetKeysDialog(Toplevel):
         self.button_level.grid(row=2, column=0, stick='ew', padx=5, pady=5)
         self.toggle_level()
 
-    def set_modifiers_for_platform(self):
+    eleza set_modifiers_for_platform(self):
         """Determine list of names of key modifiers for this platform.
 
-        The names are used to build Tk bindings -- it doesn't matter if the
-        keyboard has these keys; it matters if Tk understands them.  The
+        The names are used to build Tk bindings -- it doesn't matter ikiwa the
+        keyboard has these keys; it matters ikiwa Tk understands them.  The
         order is also agizaant: key binding equality depends on it, so
-        config-keys.def must use the same ordering.
+        config-keys.eleza must use the same ordering.
         """
-        if sys.platform == "darwin":
+        ikiwa sys.platform == "darwin":
             self.modifiers = ['Shift', 'Control', 'Option', 'Command']
         else:
             self.modifiers = ['Control', 'Alt', 'Shift']
         self.modifier_label = {'Control': 'Ctrl'}  # Short name.
 
-    def toggle_level(self):
+    eleza toggle_level(self):
         "Toggle between basic and advanced keys."
-        if  self.button_level.cget('text').startswith('Advanced'):
+        ikiwa  self.button_level.cget('text').startswith('Advanced'):
             self.clear_key_seq()
             self.button_level.config(text='<< Basic Key Binding Entry')
             self.frame_keyseq_advanced.lift()
@@ -229,25 +229,25 @@ class GetKeysDialog(Toplevel):
             self.frame_controls_basic.lift()
             self.advanced = False
 
-    def final_key_selected(self, event=None):
+    eleza final_key_selected(self, event=None):
         "Handler for clicking on key in basic settings list."
         self.build_key_string()
 
-    def build_key_string(self):
+    eleza build_key_string(self):
         "Create formatted string of modifiers plus the key."
         keylist = modifiers = self.get_modifiers()
         final_key = self.list_keys_final.get('anchor')
-        if final_key:
+        ikiwa final_key:
             final_key = translate_key(final_key, modifiers)
             keylist.append(final_key)
         self.key_string.set(f"<{'-'.join(keylist)}>")
 
-    def get_modifiers(self):
+    eleza get_modifiers(self):
         "Return ordered list of modifiers that have been selected."
         mod_list = [variable.get() for variable in self.modifier_vars]
-        return [mod for mod in mod_list if mod]
+        rudisha [mod for mod in mod_list ikiwa mod]
 
-    def clear_key_seq(self):
+    eleza clear_key_seq(self):
         "Clear modifiers and keys selection."
         self.list_keys_final.select_clear(0, 'end')
         self.list_keys_final.yview('moveto', '0.0')
@@ -255,23 +255,23 @@ class GetKeysDialog(Toplevel):
             variable.set('')
         self.key_string.set('')
 
-    def ok(self, event=None):
+    eleza ok(self, event=None):
         keys = self.key_string.get().strip()
-        if not keys:
+        ikiwa not keys:
             self.showerror(title=self.keyerror_title, parent=self,
                            message="No key specified.")
             return
-        if (self.advanced or self.keys_ok(keys)) and self.bind_ok(keys):
+        ikiwa (self.advanced or self.keys_ok(keys)) and self.bind_ok(keys):
             self.result = keys
         self.grab_release()
         self.destroy()
 
-    def cancel(self, event=None):
+    eleza cancel(self, event=None):
         self.result = ''
         self.grab_release()
         self.destroy()
 
-    def keys_ok(self, keys):
+    eleza keys_ok(self, keys):
         """Validity check on user's 'basic' keybinding selection.
 
         Doesn't check the string produced by the advanced dialog because
@@ -282,28 +282,28 @@ class GetKeysDialog(Toplevel):
         title = self.keyerror_title
         key_sequences = [key for keylist in self.current_key_sequences
                              for key in keylist]
-        if not keys.endswith('>'):
+        ikiwa not keys.endswith('>'):
             self.showerror(title, parent=self,
                            message='Missing the final Key')
-        elif (not modifiers
+        elikiwa (not modifiers
               and final_key not in FUNCTION_KEYS + MOVE_KEYS):
             self.showerror(title=title, parent=self,
                            message='No modifier key(s) specified.')
-        elif (modifiers == ['Shift']) \
+        elikiwa (modifiers == ['Shift']) \
                  and (final_key not in
                       FUNCTION_KEYS + MOVE_KEYS + ('Tab', 'Space')):
             msg = 'The shift modifier by itself may not be used with'\
                   ' this key symbol.'
             self.showerror(title=title, parent=self, message=msg)
-        elif keys in key_sequences:
+        elikiwa keys in key_sequences:
             msg = 'This key combination is already in use.'
             self.showerror(title=title, parent=self, message=msg)
         else:
-            return True
-        return False
+            rudisha True
+        rudisha False
 
-    def bind_ok(self, keys):
-        "Return True if Tcl accepts the new keys else show message."
+    eleza bind_ok(self, keys):
+        "Return True ikiwa Tcl accepts the new keys else show message."
         try:
             binding = self.bind(keys, lambda: None)
         except TclError as err:
@@ -311,13 +311,13 @@ class GetKeysDialog(Toplevel):
                     title=self.keyerror_title, parent=self,
                     message=(f'The entered key sequence is not accepted.\n\n'
                              f'Error: {err}'))
-            return False
+            rudisha False
         else:
             self.unbind(keys, binding)
-            return True
+            rudisha True
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_config_key', verbosity=2, exit=False)
 

@@ -14,14 +14,14 @@
 
 .. testsetup:: *
 
-   from collections import *
-   import itertools
+   kutoka collections agiza *
+   agiza itertools
    __name__ = '<doctest>'
 
 --------------
 
 This module provides :term:`abstract base classes <abstract base class>` that
-can be used to test whether a class provides a particular interface; for
+can be used to test whether a kundi provides a particular interface; for
 example, whether it is hashable or whether it is a mapping.
 
 
@@ -35,7 +35,7 @@ The collections module offers the following :term:`ABCs <abstract base class>`:
 .. tabularcolumns:: |l|L|L|L|
 
 ========================== ====================== ======================= ====================================================
-ABC                        Inherits from          Abstract Methods        Mixin Methods
+ABC                        Inherits kutoka          Abstract Methods        Mixin Methods
 ========================== ====================== ======================= ====================================================
 :class:`Container`                                ``__contains__``
 :class:`Hashable`                                 ``__hash__``
@@ -245,13 +245,13 @@ particular functionality, for example::
         size = len(myvar)
 
 Several of the ABCs are also useful as mixins that make it easier to develop
-classes supporting container APIs.  For example, to write a class supporting
+classes supporting container APIs.  For example, to write a kundi supporting
 the full :class:`Set` API, it is only necessary to supply the three underlying
 abstract methods: :meth:`__contains__`, :meth:`__iter__`, and :meth:`__len__`.
 The ABC supplies the remaining methods such as :meth:`__and__` and
 :meth:`isdisjoint`::
 
-    class ListBasedSet(collections.abc.Set):
+    kundi ListBasedSet(collections.abc.Set):
         ''' Alternate set implementation favoring space over speed
             and not requiring the set elements to be hashable. '''
         def __init__(self, iterable):
@@ -277,13 +277,13 @@ Notes on using :class:`Set` and :class:`MutableSet` as a mixin:
 
 (1)
    Since some set operations create new sets, the default mixin methods need
-   a way to create new instances from an iterable. The class constructor is
+   a way to create new instances kutoka an iterable. The kundi constructor is
    assumed to have a signature in the form ``ClassName(iterable)``.
    That assumption is factored-out to an internal classmethod called
-   :meth:`_from_iterable` which calls ``cls(iterable)`` to produce a new set.
-   If the :class:`Set` mixin is being used in a class with a different
-   constructor signature, you will need to override :meth:`_from_iterable`
-   with a classmethod that can construct new instances from
+   :meth:`_kutoka_iterable` which calls ``cls(iterable)`` to produce a new set.
+   If the :class:`Set` mixin is being used in a kundi with a different
+   constructor signature, you will need to override :meth:`_kutoka_iterable`
+   with a classmethod that can construct new instances kutoka
    an iterable argument.
 
 (2)
@@ -295,7 +295,7 @@ Notes on using :class:`Set` and :class:`MutableSet` as a mixin:
    The :class:`Set` mixin provides a :meth:`_hash` method to compute a hash value
    for the set; however, :meth:`__hash__` is not defined because not all sets
    are hashable or immutable.  To add set hashability using mixins,
-   inherit from both :meth:`Set` and :meth:`Hashable`, then define
+   inherit kutoka both :meth:`Set` and :meth:`Hashable`, then define
    ``__hash__ = Set._hash``.
 
 .. seealso::

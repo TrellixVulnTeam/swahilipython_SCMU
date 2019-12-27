@@ -68,7 +68,7 @@ def get_host_platform():
         # i386, etc.
         # XXX what about Alpha, SPARC, etc?
         return  "%s-%s" % (osname, machine)
-    elif osname[:5] == "sunos":
+    lasivyo osname[:5] == "sunos":
         if release[0] >= "5":           # SunOS 5 == Solaris 2
             osname = "solaris"
             release = "%d.%s" % (int(release[0]) - 3, release[2:])
@@ -78,16 +78,16 @@ def get_host_platform():
             bitness = {2147483647:"32bit", 9223372036854775807:"64bit"}
             machine += ".%s" % bitness[sys.maxsize]
         # fall through to standard osname-release-machine representation
-    elif osname[:3] == "aix":
+    lasivyo osname[:3] == "aix":
         return "%s-%s.%s" % (osname, version, release)
-    elif osname[:6] == "cygwin":
+    lasivyo osname[:6] == "cygwin":
         osname = "cygwin"
         rel_re = re.compile (r'[\d.]+', re.ASCII)
         m = rel_re.match(release)
         if m:
             release = m.group()
-    elif osname[:6] == "darwin":
-        import _osx_support, distutils.sysconfig
+    lasivyo osname[:6] == "darwin":
+        agiza _osx_support, distutils.sysconfig
         osname, release, machine = _osx_support.get_platform_osx(
                                         distutils.sysconfig.get_config_vars(),
                                         osname, release, machine)
@@ -145,7 +145,7 @@ def change_root (new_root, pathname):
         else:
             return os.path.join(new_root, pathname[1:])
 
-    elif os.name == 'nt':
+    lasivyo os.name == 'nt':
         (drive, path) = os.path.splitdrive(pathname)
         if path[0] == '\\':
             path = path[1:]
@@ -255,7 +255,7 @@ def split_quoted (s):
             s = s[end:].lstrip()
             pos = 0
 
-        elif s[end] == '\\':            # preserve whatever is being escaped;
+        lasivyo s[end] == '\\':            # preserve whatever is being escaped;
                                         # will become part of the current word
             s = s[:end] + s[end+1:]
             pos = end+1
@@ -263,7 +263,7 @@ def split_quoted (s):
         else:
             if s[end] == "'":           # slurp singly-quoted string
                 m = _squote_re.match(s, end)
-            elif s[end] == '"':         # slurp doubly-quoted string
+            lasivyo s[end] == '"':         # slurp doubly-quoted string
                 m = _dquote_re.match(s, end)
             else:
                 raise RuntimeError("this can't happen (bad char '%c')" % s[end])
@@ -313,7 +313,7 @@ def strtobool (val):
     val = val.lower()
     if val in ('y', 'yes', 't', 'true', 'on', '1'):
         return 1
-    elif val in ('n', 'no', 'f', 'false', 'off', '0'):
+    lasivyo val in ('n', 'no', 'f', 'false', 'off', '0'):
         return 0
     else:
         raise ValueError("invalid truth value %r" % (val,))

@@ -184,10 +184,10 @@ See also the main documentation section about the
     :class: full-width-table
 
     * - ``await`` :meth:`loop.sock_recv`
-      - Receive data from the :class:`~socket.socket`.
+      - Receive data kutoka the :class:`~socket.socket`.
 
     * - ``await`` :meth:`loop.sock_recv_into`
-      - Receive data from the :class:`~socket.socket` into a buffer.
+      - Receive data kutoka the :class:`~socket.socket` into a buffer.
 
     * - ``await`` :meth:`loop.sock_sendall`
       - Send data to the :class:`~socket.socket`.
@@ -235,7 +235,7 @@ See also the main documentation section about the
       - Spawn a subprocess.
 
     * - :meth:`loop.subprocess_shell`
-      - Spawn a subprocess from a shell command.
+      - Spawn a subprocess kutoka a shell command.
 
 
 .. rubric:: Error Handling
@@ -303,7 +303,7 @@ All transports implement the following methods:
 
 
 Transports that can receive data (TCP and Unix connections,
-pipes, etc).  Returned from methods like
+pipes, etc).  Returned kutoka methods like
 :meth:`loop.create_connection`, :meth:`loop.create_unix_connection`,
 :meth:`loop.connect_read_pipe`, etc:
 
@@ -323,7 +323,7 @@ pipes, etc).  Returned from methods like
 
 
 Transports that can Send data (TCP and Unix connections,
-pipes, etc).  Returned from methods like
+pipes, etc).  Returned kutoka methods like
 :meth:`loop.create_connection`, :meth:`loop.create_unix_connection`,
 :meth:`loop.connect_write_pipe`, etc:
 
@@ -507,4 +507,4 @@ details.
       - Set a new process-wide policy.
 
     * - :class:`AbstractEventLoopPolicy`
-      - Base class for policy objects.
+      - Base kundi for policy objects.

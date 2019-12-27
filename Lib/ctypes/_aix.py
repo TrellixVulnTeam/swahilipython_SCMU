@@ -77,7 +77,7 @@ def get_ld_header(p):
     for line in p.stdout:
         if line.startswith(('/', './', '../')):
             ld_header = line
-        elif "INDEX" in line:
+        lasivyo "INDEX" in line:
             return ld_header.rstrip('\n')
     return None
 
@@ -223,7 +223,7 @@ def get_member(name, members):
     member = get_one_match(expr, members)
     if member:
         return member
-    elif AIX_ABI == 64:
+    lasivyo AIX_ABI == 64:
         expr = rf'lib{name}64\.so'
         member = get_one_match(expr, members)
     if member:

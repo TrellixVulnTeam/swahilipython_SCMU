@@ -1,6 +1,6 @@
 agiza sqlite3
 
-class IterChars:
+kundi IterChars:
     def __init__(self):
         self.count = ord('a')
 

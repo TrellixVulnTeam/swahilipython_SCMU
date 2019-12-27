@@ -45,7 +45,7 @@ MAPPING = {"urllib":  [
 MAPPING["urllib2"].append(MAPPING["urllib"][1])
 
 
-def build_pattern():
+eleza build_pattern():
     bare = set()
     for old_module, changes in MAPPING.items():
         for change in changes:
@@ -54,11 +54,11 @@ def build_pattern():
             yield """import_name< 'agiza' (module=%r
                                   | dotted_as_names< any* module=%r any* >) >
                   """ % (old_module, old_module)
-            yield """import_from< 'from' mod_member=%r 'agiza'
+            yield """import_kutoka< 'kutoka' mod_member=%r 'agiza'
                        ( member=%s | import_as_name< member=%s 'as' any > |
                          import_as_names< members=any*  >) >
                   """ % (old_module, members, members)
-            yield """import_from< 'from' module_star=%r 'agiza' star='*' >
+            yield """import_kutoka< 'kutoka' module_star=%r 'agiza' star='*' >
                   """ % old_module
             yield """import_name< 'agiza'
                                   dotted_as_name< module_as=%r 'as' any > >
@@ -68,12 +68,12 @@ def build_pattern():
                   """ % (old_module, members)
 
 
-class FixUrllib(FixImports):
+kundi FixUrllib(FixImports):
 
-    def build_pattern(self):
-        return "|".join(build_pattern())
+    eleza build_pattern(self):
+        rudisha "|".join(build_pattern())
 
-    def transform_agiza(self, node, results):
+    eleza transform_agiza(self, node, results):
         """Transform for the basic agiza case. Replaces the old
            agiza name with a comma separated list of its
            replacements.
@@ -89,7 +89,7 @@ class FixUrllib(FixImports):
         names.append(Name(MAPPING[import_mod.value][-1][0], prefix=pref))
         import_mod.replace(names)
 
-    def transform_member(self, node, results):
+    eleza transform_member(self, node, results):
         """Transform for agizas of specific module elements. Replaces
            the module to be imported kutoka with the appropriate new
            module.
@@ -99,16 +99,16 @@ class FixUrllib(FixImports):
         member = results.get("member")
 
         # Simple case with only a single member being imported
-        if member:
+        ikiwa member:
             # this may be a list of length one, or just a node
-            if isinstance(member, list):
+            ikiwa isinstance(member, list):
                 member = member[0]
             new_name = None
             for change in MAPPING[mod_member.value]:
-                if member.value in change[1]:
+                ikiwa member.value in change[1]:
                     new_name = change[0]
                     break
-            if new_name:
+            ikiwa new_name:
                 mod_member.replace(Name(new_name, prefix=pref))
             else:
                 self.cannot_convert(node, "This is an invalid module element")
@@ -121,29 +121,29 @@ class FixUrllib(FixImports):
             members = results["members"]
             for member in members:
                 # we only care about the actual members
-                if member.type == syms.import_as_name:
+                ikiwa member.type == syms.import_as_name:
                     as_name = member.children[2].value
                     member_name = member.children[0].value
                 else:
                     member_name = member.value
                     as_name = None
-                if member_name != ",":
+                ikiwa member_name != ",":
                     for change in MAPPING[mod_member.value]:
-                        if member_name in change[1]:
-                            if change[0] not in mod_dict:
+                        ikiwa member_name in change[1]:
+                            ikiwa change[0] not in mod_dict:
                                 modules.append(change[0])
                             mod_dict.setdefault(change[0], []).append(member)
 
             new_nodes = []
             indentation = find_indentation(node)
             first = True
-            def handle_name(name, prefix):
-                if name.type == syms.import_as_name:
+            eleza handle_name(name, prefix):
+                ikiwa name.type == syms.import_as_name:
                     kids = [Name(name.children[0].value, prefix=prefix),
                             name.children[1].clone(),
                             name.children[2].clone()]
-                    return [Node(syms.import_as_name, kids)]
-                return [Name(name.value, prefix=prefix)]
+                    rudisha [Node(syms.import_as_name, kids)]
+                rudisha [Name(name.value, prefix=prefix)]
             for module in modules:
                 elts = mod_dict[module]
                 names = []
@@ -152,11 +152,11 @@ class FixUrllib(FixImports):
                     names.append(Comma())
                 names.extend(handle_name(elts[-1], pref))
                 new = FromImport(module, names)
-                if not first or node.parent.prefix.endswith(indentation):
+                ikiwa not first or node.parent.prefix.endswith(indentation):
                     new.prefix = indentation
                 new_nodes.append(new)
                 first = False
-            if new_nodes:
+            ikiwa new_nodes:
                 nodes = []
                 for new_node in new_nodes[:-1]:
                     nodes.extend([new_node, Newline()])
@@ -165,32 +165,32 @@ class FixUrllib(FixImports):
             else:
                 self.cannot_convert(node, "All module elements are invalid")
 
-    def transform_dot(self, node, results):
+    eleza transform_dot(self, node, results):
         """Transform for calls to module members in code."""
         module_dot = results.get("bare_with_attr")
         member = results.get("member")
         new_name = None
-        if isinstance(member, list):
+        ikiwa isinstance(member, list):
             member = member[0]
         for change in MAPPING[module_dot.value]:
-            if member.value in change[1]:
+            ikiwa member.value in change[1]:
                 new_name = change[0]
                 break
-        if new_name:
+        ikiwa new_name:
             module_dot.replace(Name(new_name,
                                     prefix=module_dot.prefix))
         else:
             self.cannot_convert(node, "This is an invalid module element")
 
-    def transform(self, node, results):
-        if results.get("module"):
+    eleza transform(self, node, results):
+        ikiwa results.get("module"):
             self.transform_agiza(node, results)
-        elif results.get("mod_member"):
+        elikiwa results.get("mod_member"):
             self.transform_member(node, results)
-        elif results.get("bare_with_attr"):
+        elikiwa results.get("bare_with_attr"):
             self.transform_dot(node, results)
         # Renaming and star agizas are not supported for these modules.
-        elif results.get("module_star"):
+        elikiwa results.get("module_star"):
             self.cannot_convert(node, "Cannot handle star agizas.")
-        elif results.get("module_as"):
+        elikiwa results.get("module_as"):
             self.cannot_convert(node, "This module is now multiple modules")

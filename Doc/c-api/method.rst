@@ -8,7 +8,7 @@ Instance Method Objects
 .. index:: object: instancemethod
 
 An instance method is a wrapper for a :c:data:`PyCFunction` and the new way
-to bind a :c:data:`PyCFunction` to a class object. It replaces the former call
+to bind a :c:data:`PyCFunction` to a kundi object. It replaces the former call
 ``PyMethod_New(func, NULL, class)``.
 
 
@@ -49,7 +49,7 @@ Method Objects
 .. index:: object: method
 
 Methods are bound function objects. Methods are always bound to an instance of
-a user-defined class. Unbound methods (methods bound to a class object) are
+a user-defined class. Unbound methods (methods bound to a kundi object) are
 no longer available.
 
 

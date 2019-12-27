@@ -14,12 +14,12 @@
 
 **Source code:** :source:`Lib/decimal.py`
 
-.. import modules for testing inline doctests with the Sphinx doctest builder
+.. agiza modules for testing inline doctests with the Sphinx doctest builder
 .. testsetup:: *
 
-   import decimal
-   import math
-   from decimal import *
+   agiza decimal
+   agiza math
+   kutoka decimal agiza *
    # make sure each group gets a fresh context
    setcontext(Context())
 
@@ -37,7 +37,7 @@ decimal floating point arithmetic. It offers several advantages over the
 * Decimal "is based on a floating-point model which was designed with people
   in mind, and necessarily has a paramount guiding principle -- computers must
   provide an arithmetic that works in the same way as the arithmetic that
-  people learn at school." -- excerpt from the decimal arithmetic specification.
+  people learn at school." -- excerpt kutoka the decimal arithmetic specification.
 
 * Decimal numbers can be represented exactly.  In contrast, numbers like
   :const:`1.1` and :const:`2.2` do not have exact representations in binary
@@ -62,7 +62,7 @@ decimal floating point arithmetic. It offers several advantages over the
   alterable precision (defaulting to 28 places) which can be as large as needed for
   a given problem:
 
-     >>> from decimal import *
+     >>> kutoka decimal agiza *
      >>> getcontext().prec = 6
      >>> Decimal(1) / Decimal(7)
      Decimal('0.142857')
@@ -79,7 +79,7 @@ decimal floating point arithmetic. It offers several advantages over the
 
 * The decimal module was designed to support "without prejudice, both exact
   unrounded decimal arithmetic (sometimes called fixed-point arithmetic)
-  and rounded floating-point arithmetic."  -- excerpt from the decimal
+  and rounded floating-point arithmetic."  -- excerpt kutoka the decimal
   arithmetic specification.
 
 The module design is centered around three concepts:  the decimal number, the
@@ -89,7 +89,7 @@ A decimal number is immutable.  It has a sign, coefficient digits, and an
 exponent.  To preserve significance, the coefficient digits do not truncate
 trailing zeros.  Decimals also include special values such as
 :const:`Infinity`, :const:`-Infinity`, and :const:`NaN`.  The standard also
-differentiates :const:`-0` from :const:`+0`.
+differentiates :const:`-0` kutoka :const:`+0`.
 
 The context for arithmetic is an environment specifying precision, rounding
 rules, limits on exponents, flags indicating the results of operations, and trap
@@ -128,7 +128,7 @@ The usual start to using decimals is importing the module, viewing the current
 context with :func:`getcontext` and, if necessary, setting new values for
 precision, rounding, or enabled traps::
 
-   >>> from decimal import *
+   >>> kutoka decimal agiza *
    >>> getcontext()
    Context(prec=28, rounding=ROUND_HALF_EVEN, Emin=-999999, Emax=999999,
            capitals=1, clamp=0, flags=[], traps=[Overflow, DivisionByZero,
@@ -136,8 +136,8 @@ precision, rounding, or enabled traps::
 
    >>> getcontext().prec = 7       # Set a new precision
 
-Decimal instances can be constructed from integers, strings, floats, or tuples.
-Construction from an integer or a float performs an exact conversion of the
+Decimal instances can be constructed kutoka integers, strings, floats, or tuples.
+Construction kutoka an integer or a float performs an exact conversion of the
 value of that integer or float.  Decimal numbers include special values such as
 :const:`NaN` which stands for "Not a number", positive and negative
 :const:`Infinity`, and :const:`-0`::
@@ -169,11 +169,11 @@ an exception::
    >>> Decimal(3.14)
    Traceback (most recent call last):
      File "<stdin>", line 1, in <module>
-   decimal.FloatOperation: [<class 'decimal.FloatOperation'>]
+   decimal.FloatOperation: [<kundi 'decimal.FloatOperation'>]
    >>> Decimal('3.5') < 3.7
    Traceback (most recent call last):
      File "<stdin>", line 1, in <module>
-   decimal.FloatOperation: [<class 'decimal.FloatOperation'>]
+   decimal.FloatOperation: [<kundi 'decimal.FloatOperation'>]
    >>> Decimal('3.5') == 3.5
    True
 
@@ -202,7 +202,7 @@ a decimal raises :class:`InvalidOperation`::
    >>> Decimal("1e9999999999999999999")
    Traceback (most recent call last):
      File "<stdin>", line 1, in <module>
-   decimal.InvalidOperation: [<class 'decimal.InvalidOperation'>]
+   decimal.InvalidOperation: [<kundi 'decimal.InvalidOperation'>]
 
 .. versionchanged:: 3.3
 
@@ -345,7 +345,7 @@ Decimal objects
 
 .. class:: Decimal(value="0", context=None)
 
-   Construct a new :class:`Decimal` object based from *value*.
+   Construct a new :class:`Decimal` object based kutoka *value*.
 
    *value* can be an integer, string, tuple, :class:`float`, or another :class:`Decimal`
    object. If no *value* is given, returns ``Decimal('0')``.  If *value* is a
@@ -364,7 +364,7 @@ Decimal objects
       numeric-string ::=  [sign] numeric-value | [sign] nan
 
    Other Unicode decimal digits are also permitted where ``digit``
-   appears above.  These include decimal digits from various other
+   appears above.  These include decimal digits kutoka various other
    alphabets (for example, Arabic-Indic and Devanāgarī digits) along
    with the fullwidth digits ``'\uff10'`` through ``'\uff19'``.
 
@@ -571,28 +571,28 @@ Decimal objects
       >>> Decimal(321).exp()
       Decimal('2.561702493119680037517373933E+139')
 
-   .. method:: from_float(f)
+   .. method:: kutoka_float(f)
 
       Classmethod that converts a float to a decimal number, exactly.
 
-      Note `Decimal.from_float(0.1)` is not the same as `Decimal('0.1')`.
+      Note `Decimal.kutoka_float(0.1)` is not the same as `Decimal('0.1')`.
       Since 0.1 is not exactly representable in binary floating point, the
       value is stored as the nearest representable value which is
       `0x1.999999999999ap-4`.  That equivalent value in decimal is
       `0.1000000000000000055511151231257827021181583404541015625`.
 
       .. note:: From Python 3.2 onwards, a :class:`Decimal` instance
-         can also be constructed directly from a :class:`float`.
+         can also be constructed directly kutoka a :class:`float`.
 
       .. doctest::
 
-          >>> Decimal.from_float(0.1)
+          >>> Decimal.kutoka_float(0.1)
           Decimal('0.1000000000000000055511151231257827021181583404541015625')
-          >>> Decimal.from_float(float('nan'))
+          >>> Decimal.kutoka_float(float('nan'))
           Decimal('NaN')
-          >>> Decimal.from_float(float('inf'))
+          >>> Decimal.kutoka_float(float('inf'))
           Decimal('Infinity')
-          >>> Decimal.from_float(float('-inf'))
+          >>> Decimal.kutoka_float(float('-inf'))
           Decimal('-Infinity')
 
       .. versionadded:: 3.1
@@ -794,12 +794,12 @@ Decimal objects
    .. method:: radix()
 
       Return ``Decimal(10)``, the radix (base) in which the :class:`Decimal`
-      class does all its arithmetic.  Included for compatibility with the
+      kundi does all its arithmetic.  Included for compatibility with the
       specification.
 
    .. method:: remainder_near(other, context=None)
 
-      Return the remainder from dividing *self* by *other*.  This differs from
+      Return the remainder kutoka dividing *self* by *other*.  This differs kutoka
       ``self % other`` in that the sign of the remainder is chosen so as to
       minimize its absolute value.  More precisely, the return value is
       ``self - n * other`` where ``n`` is the integer nearest to the exact
@@ -935,7 +935,7 @@ function to temporarily change the active context.
    For example, the following code sets the current decimal precision to 42 places,
    performs a calculation, and then automatically restores the previous context::
 
-      from decimal import localcontext
+      kutoka decimal agiza localcontext
 
       with localcontext() as ctx:
           ctx.prec = 42   # Perform a high precision calculation
@@ -996,7 +996,7 @@ In addition to the three supplied contexts, new contexts can be created with the
 .. class:: Context(prec=None, rounding=None, Emin=None, Emax=None, capitals=None, clamp=None, flags=None, traps=None)
 
    Creates a new context.  If a field is not specified or is :const:`None`, the
-   default values are copied from the :const:`DefaultContext`.  If the *flags*
+   default values are copied kutoka the :const:`DefaultContext`.  If the *flags*
    field is not specified or is :const:`None`, all flags are cleared.
 
    *prec* is an integer in the range [:const:`1`, :const:`MAX_PREC`] that sets
@@ -1034,7 +1034,7 @@ In addition to the three supplied contexts, new contexts can be created with the
    A *clamp* value of :const:`1` allows compatibility with the
    fixed-width decimal interchange formats specified in IEEE 754.
 
-   The :class:`Context` class defines several general purpose methods as well as
+   The :class:`Context` kundi defines several general purpose methods as well as
    a large number of methods for doing arithmetic directly in a given context.
    In addition, for each of the :class:`Decimal` methods described above (with
    the exception of the :meth:`adjusted` and :meth:`as_tuple` methods) there is
@@ -1065,13 +1065,13 @@ In addition to the three supplied contexts, new contexts can be created with the
 
    .. method:: create_decimal(num)
 
-      Creates a new Decimal instance from *num* but using *self* as
+      Creates a new Decimal instance kutoka *num* but using *self* as
       context. Unlike the :class:`Decimal` constructor, the context precision,
       rounding method, flags, and traps are applied to the conversion.
 
       This is useful because constants are often given to a greater precision
       than is needed by the application.  Another benefit is that rounding
-      immediately eliminates unintended effects from digits beyond the current
+      immediately eliminates unintended effects kutoka digits beyond the current
       precision. In the following example, using unrounded inputs means that
       adding zero to a sum can change the result:
 
@@ -1087,20 +1087,20 @@ In addition to the three supplied contexts, new contexts can be created with the
       If the argument is a string, no leading or trailing whitespace or
       underscores are permitted.
 
-   .. method:: create_decimal_from_float(f)
+   .. method:: create_decimal_kutoka_float(f)
 
-      Creates a new Decimal instance from a float *f* but rounding using *self*
-      as the context.  Unlike the :meth:`Decimal.from_float` class method,
+      Creates a new Decimal instance kutoka a float *f* but rounding using *self*
+      as the context.  Unlike the :meth:`Decimal.kutoka_float` kundi method,
       the context precision, rounding method, flags, and traps are applied to
       the conversion.
 
       .. doctest::
 
          >>> context = Context(prec=5, rounding=ROUND_DOWN)
-         >>> context.create_decimal_from_float(math.pi)
+         >>> context.create_decimal_kutoka_float(math.pi)
          Decimal('3.1415')
          >>> context = Context(prec=5, traps=[Inexact])
-         >>> context.create_decimal_from_float(math.pi)
+         >>> context.create_decimal_kutoka_float(math.pi)
          Traceback (most recent call last):
              ...
          decimal.Inexact: None
@@ -1121,7 +1121,7 @@ In addition to the three supplied contexts, new contexts can be created with the
    instances and then apply arithmetic operations which take place within the
    current context for the active thread.  An alternative approach is to use
    context methods for calculating within a specific context.  The methods are
-   similar to those for the :class:`Decimal` class and are only briefly
+   similar to those for the :class:`Decimal` kundi and are only briefly
    recounted here.
 
 
@@ -1172,7 +1172,7 @@ In addition to the three supplied contexts, new contexts can be created with the
 
    .. method:: copy_sign(x, y)
 
-      Copies the sign from *y* to *x*.
+      Copies the sign kutoka *y* to *x*.
 
 
    .. method:: divide(x, y)
@@ -1337,7 +1337,7 @@ In addition to the three supplied contexts, new contexts can be created with the
 
    .. method:: number_class(x)
 
-      Returns an indication of the class of *x*.
+      Returns an indication of the kundi of *x*.
 
 
    .. method:: plus(x)
@@ -1370,7 +1370,7 @@ In addition to the three supplied contexts, new contexts can be created with the
          - at least one of ``x`` or ``y`` must be nonzero
          - ``modulo`` must be nonzero and have at most 'precision' digits
 
-      The value resulting from ``Context.power(x, y, modulo)`` is
+      The value resulting kutoka ``Context.power(x, y, modulo)`` is
       equal to the value that would be obtained by computing ``(x**y)
       % modulo`` with unbounded precision, but is computed more
       efficiently.  The exponent of the result is zero, regardless of
@@ -1390,7 +1390,7 @@ In addition to the three supplied contexts, new contexts can be created with the
 
    .. method:: remainder(x, y)
 
-      Returns the remainder from integer division.
+      Returns the remainder kutoka integer division.
 
       The sign of the result, if non-zero, is the same as that of the original
       dividend.
@@ -1504,15 +1504,15 @@ Rounding modes
 
 .. data:: ROUND_HALF_UP
 
-   Round to nearest with ties going away from zero.
+   Round to nearest with ties going away kutoka zero.
 
 .. data:: ROUND_UP
 
-   Round away from zero.
+   Round away kutoka zero.
 
 .. data:: ROUND_05UP
 
-   Round away from zero if last digit after rounding towards zero would have
+   Round away kutoka zero if last digit after rounding towards zero would have
    been 0 or 5; otherwise round towards zero.
 
 
@@ -1546,7 +1546,7 @@ condition.
 
 .. class:: DecimalException
 
-   Base class for other signals and a subclass of :exc:`ArithmeticError`.
+   Base kundi for other signals and a subkundi of :exc:`ArithmeticError`.
 
 
 .. class:: DivisionByZero
@@ -1631,8 +1631,8 @@ condition.
     :meth:`~decimal.Context.create_decimal` and all comparison operators.
     Both conversion and comparisons are exact. Any occurrence of a mixed
     operation is silently recorded by setting :exc:`FloatOperation` in the
-    context flags. Explicit conversions with :meth:`~decimal.Decimal.from_float`
-    or :meth:`~decimal.Context.create_decimal_from_float` do not set the flag.
+    context flags. Explicit conversions with :meth:`~decimal.Decimal.kutoka_float`
+    or :meth:`~decimal.Context.create_decimal_kutoka_float` do not set the flag.
 
     Otherwise (the signal is trapped), only equality comparisons and explicit
     conversions are silent. All other mixed operations raise :exc:`FloatOperation`.
@@ -1677,8 +1677,8 @@ properties of addition:
 
 .. doctest:: newcontext
 
-   # Examples from Seminumerical Algorithms, Section 4.2.2.
-   >>> from decimal import Decimal, getcontext
+   # Examples kutoka Seminumerical Algorithms, Section 4.2.2.
+   >>> kutoka decimal agiza Decimal, getcontext
    >>> getcontext().prec = 8
 
    >>> u, v, w = Decimal(11111113), Decimal(-11111111), Decimal('7.51111111')
@@ -1720,9 +1720,9 @@ including :const:`NaN`, :const:`sNaN`, :const:`-Infinity`, :const:`Infinity`,
 and two zeros, :const:`+0` and :const:`-0`.
 
 Infinities can be constructed directly with:  ``Decimal('Infinity')``. Also,
-they can arise from dividing by zero when the :exc:`DivisionByZero` signal is
+they can arise kutoka dividing by zero when the :exc:`DivisionByZero` signal is
 not trapped.  Likewise, when the :exc:`Overflow` signal is not trapped, infinity
-can result from rounding beyond the limits of the largest representable number.
+can result kutoka rounding beyond the limits of the largest representable number.
 
 The infinities are signed (affine) and can be used in arithmetic operations
 where they get treated as very large, indeterminate numbers.  For instance,
@@ -1749,11 +1749,11 @@ quiet or signaling :const:`NaN` always returns :const:`False` (even when doing
 if either operand is a :const:`NaN`, and return :const:`False` if this signal is
 not trapped.  Note that the General Decimal Arithmetic specification does not
 specify the behavior of direct comparisons; these rules for comparisons
-involving a :const:`NaN` were taken from the IEEE 854 standard (see Table 3 in
+involving a :const:`NaN` were taken kutoka the IEEE 854 standard (see Table 3 in
 section 5.7).  To ensure strict standards-compliance, use the :meth:`compare`
 and :meth:`compare-signal` methods instead.
 
-The signed zeros can result from calculations that underflow. They keep the sign
+The signed zeros can result kutoka calculations that underflow. They keep the sign
 that would have resulted if the calculation had been carried out to greater
 precision.  Since their magnitude is zero, both positive and negative zeros are
 treated as equal and their sign is informational.
@@ -1786,7 +1786,7 @@ If :func:`setcontext` has not been called before :func:`getcontext`, then
 :func:`getcontext` will automatically create a new context for use in the
 current thread.
 
-The new context is copied from a prototype context called *DefaultContext*. To
+The new context is copied kutoka a prototype context called *DefaultContext*. To
 control the defaults so that each thread will use the same values throughout the
 application, directly modify the *DefaultContext* object. This should be done
 *before* any threads are started so that there won't be a race condition between

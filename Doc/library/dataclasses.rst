@@ -20,7 +20,7 @@ The member variables to use in these generated methods are defined
 using :pep:`526` type annotations.  For example this code::
 
   @dataclass
-  class InventoryItem:
+  kundi InventoryItem:
       '''Class for keeping track of an item in inventory.'''
       name: str
       unit_price: float
@@ -49,19 +49,19 @@ Module-level decorators, classes, and functions
    This function is a :term:`decorator` that is used to add generated
    :term:`special method`\s to classes, as described below.
 
-   The :func:`dataclass` decorator examines the class to find
-   ``field``\s.  A ``field`` is defined as class variable that has a
+   The :func:`dataclass` decorator examines the kundi to find
+   ``field``\s.  A ``field`` is defined as kundi variable that has a
    :term:`type annotation <variable annotation>`.  With two
    exceptions described below, nothing in :func:`dataclass`
    examines the type specified in the variable annotation.
 
    The order of the fields in all of the generated methods is the
-   order in which they appear in the class definition.
+   order in which they appear in the kundi definition.
 
    The :func:`dataclass` decorator will add various "dunder" methods to
    the class, described below.  If any of the added methods already
    exist on the class, a :exc:`TypeError` will be raised.  The decorator
-   returns the same class that is called on: no new class is created.
+   returns the same kundi that is called on: no new kundi is created.
 
    If :func:`dataclass` is used just as a simple decorator with no parameters,
    it acts as if it has the default values documented in this
@@ -69,15 +69,15 @@ Module-level decorators, classes, and functions
    equivalent::
 
      @dataclass
-     class C:
+     kundi C:
          ...
 
      @dataclass()
-     class C:
+     kundi C:
          ...
 
      @dataclass(init=True, repr=True, eq=True, order=False, unsafe_hash=False, frozen=False)
-     class C:
+     kundi C:
         ...
 
    The parameters to :func:`dataclass` are:
@@ -85,35 +85,35 @@ Module-level decorators, classes, and functions
    - ``init``: If true (the default), a :meth:`__init__` method will be
      generated.
 
-     If the class already defines :meth:`__init__`, this parameter is
+     If the kundi already defines :meth:`__init__`, this parameter is
      ignored.
 
    - ``repr``: If true (the default), a :meth:`__repr__` method will be
-     generated.  The generated repr string will have the class name and
+     generated.  The generated repr string will have the kundi name and
      the name and repr of each field, in the order they are defined in
-     the class.  Fields that are marked as being excluded from the repr
+     the class.  Fields that are marked as being excluded kutoka the repr
      are not included.  For example:
      ``InventoryItem(name='widget', unit_price=3.0, quantity_on_hand=10)``.
 
-     If the class already defines :meth:`__repr__`, this parameter is
+     If the kundi already defines :meth:`__repr__`, this parameter is
      ignored.
 
    - ``eq``: If true (the default), an :meth:`__eq__` method will be
-     generated.  This method compares the class as if it were a tuple
+     generated.  This method compares the kundi as if it were a tuple
      of its fields, in order.  Both instances in the comparison must
      be of the identical type.
 
-     If the class already defines :meth:`__eq__`, this parameter is
+     If the kundi already defines :meth:`__eq__`, this parameter is
      ignored.
 
    - ``order``: If true (the default is ``False``), :meth:`__lt__`,
      :meth:`__le__`, :meth:`__gt__`, and :meth:`__ge__` methods will be
-     generated.  These compare the class as if it were a tuple of its
+     generated.  These compare the kundi as if it were a tuple of its
      fields, in order.  Both instances in the comparison must be of the
      identical type.  If ``order`` is true and ``eq`` is false, a
      :exc:`ValueError` is raised.
 
-     If the class already defines any of :meth:`__lt__`,
+     If the kundi already defines any of :meth:`__lt__`,
      :meth:`__le__`, :meth:`__gt__`, or :meth:`__ge__`, then
      :exc:`ValueError` is raised.
 
@@ -122,7 +122,7 @@ Module-level decorators, classes, and functions
 
      :meth:`__hash__` is used by built-in :meth:`hash()`, and when objects are
      added to hashed collections such as dictionaries and sets.  Having a
-     :meth:`__hash__` implies that instances of the class are immutable.
+     :meth:`__hash__` implies that instances of the kundi are immutable.
      Mutability is a complicated property that depends on the programmer's
      intent, the existence and behavior of :meth:`__eq__`, and the values of
      the ``eq`` and ``frozen`` flags in the :func:`dataclass` decorator.
@@ -137,12 +137,12 @@ Module-level decorators, classes, and functions
      then :func:`dataclass` *may* add an implicit :meth:`__hash__` method.
      Although not recommended, you can force :func:`dataclass` to create a
      :meth:`__hash__` method with ``unsafe_hash=True``. This might be the case
-     if your class is logically immutable but can nonetheless be mutated.
+     if your kundi is logically immutable but can nonetheless be mutated.
      This is a specialized use case and should be considered carefully.
 
      Here are the rules governing implicit creation of a :meth:`__hash__`
      method.  Note that you cannot both have an explicit :meth:`__hash__`
-     method in your dataclass and set ``unsafe_hash=True``; this will result
+     method in your datakundi and set ``unsafe_hash=True``; this will result
      in a :exc:`TypeError`.
 
      If ``eq`` and ``frozen`` are both true, by default :func:`dataclass` will
@@ -150,7 +150,7 @@ Module-level decorators, classes, and functions
      ``frozen`` is false, :meth:`__hash__` will be set to ``None``, marking it
      unhashable (which it is, since it is mutable).  If ``eq`` is false,
      :meth:`__hash__` will be left untouched meaning the :meth:`__hash__`
-     method of the superclass will be used (if the superclass is
+     method of the superkundi will be used (if the superkundi is
      :class:`object`, this means it will fall back to id-based hashing).
 
    - ``frozen``: If true (the default is False), assigning to fields will
@@ -162,7 +162,7 @@ Module-level decorators, classes, and functions
    Python syntax::
 
      @dataclass
-     class C:
+     kundi C:
          a: int       # 'a' has no default value
          b: int = 0   # assign a default value for 'b'
 
@@ -173,18 +173,18 @@ Module-level decorators, classes, and functions
 
    :exc:`TypeError` will be raised if a field without a default value
    follows a field with a default value.  This is true either when this
-   occurs in a single class, or as a result of class inheritance.
+   occurs in a single class, or as a result of kundi inheritance.
 
 .. function:: field(*, default=MISSING, default_factory=MISSING, repr=True, hash=None, init=True, compare=True, metadata=None)
 
    For common and simple use cases, no other functionality is
-   required.  There are, however, some dataclass features that
+   required.  There are, however, some datakundi features that
    require additional per-field information.  To satisfy this need for
    additional information, you can replace the default field value
    with a call to the provided :func:`field` function.  For example::
 
      @dataclass
-     class C:
+     kundi C:
          mylist: List[int] = field(default_factory=list)
 
      c = C()
@@ -229,7 +229,7 @@ Module-level decorators, classes, and functions
      would be if a field is expensive to compute a hash value for,
      that field is needed for equality testing, and there are other
      fields that contribute to the type's hash value.  Even if a field
-     is excluded from the hash, it will still be used for comparisons.
+     is excluded kutoka the hash, it will still be used for comparisons.
 
    - ``metadata``: This can be a mapping or None. None is treated as
      an empty dict.  This value is wrapped in
@@ -240,23 +240,23 @@ Module-level decorators, classes, and functions
      namespace in the metadata.
 
    If the default value of a field is specified by a call to
-   :func:`field()`, then the class attribute for this field will be
+   :func:`field()`, then the kundi attribute for this field will be
    replaced by the specified ``default`` value.  If no ``default`` is
-   provided, then the class attribute will be deleted.  The intent is
+   provided, then the kundi attribute will be deleted.  The intent is
    that after the :func:`dataclass` decorator runs, the class
    attributes will all contain the default values for the fields, just
    as if the default value itself were specified.  For example,
    after::
 
      @dataclass
-     class C:
+     kundi C:
          x: int
          y: int = field(repr=False)
          z: int = field(repr=False, default=10)
          t: int = 20
 
-   The class attribute ``C.z`` will be ``10``, the class attribute
-   ``C.t`` will be ``20``, and the class attributes ``C.x`` and
+   The kundi attribute ``C.z`` will be ``10``, the kundi attribute
+   ``C.t`` will be ``20``, and the kundi attributes ``C.x`` and
    ``C.y`` will not be set.
 
 .. class:: Field
@@ -281,23 +281,23 @@ Module-level decorators, classes, and functions
 
    Returns a tuple of :class:`Field` objects that define the fields for this
    dataclass.  Accepts either a dataclass, or an instance of a dataclass.
-   Raises :exc:`TypeError` if not passed a dataclass or instance of one.
+   Raises :exc:`TypeError` if not passed a datakundi or instance of one.
    Does not return pseudo-fields which are ``ClassVar`` or ``InitVar``.
 
 .. function:: asdict(instance, *, dict_factory=dict)
 
-   Converts the dataclass ``instance`` to a dict (by using the
-   factory function ``dict_factory``).  Each dataclass is converted
+   Converts the datakundi ``instance`` to a dict (by using the
+   factory function ``dict_factory``).  Each datakundi is converted
    to a dict of its fields, as ``name: value`` pairs.  dataclasses, dicts,
    lists, and tuples are recursed into.  For example::
 
      @dataclass
-     class Point:
+     kundi Point:
           x: int
           y: int
 
      @dataclass
-     class C:
+     kundi C:
           mylist: List[Point]
 
      p = Point(10, 20)
@@ -306,25 +306,25 @@ Module-level decorators, classes, and functions
      c = C([Point(0, 0), Point(10, 4)])
      assert asdict(c) == {'mylist': [{'x': 0, 'y': 0}, {'x': 10, 'y': 4}]}
 
-   Raises :exc:`TypeError` if ``instance`` is not a dataclass instance.
+   Raises :exc:`TypeError` if ``instance`` is not a datakundi instance.
 
 .. function:: astuple(instance, *, tuple_factory=tuple)
 
-   Converts the dataclass ``instance`` to a tuple (by using the
-   factory function ``tuple_factory``).  Each dataclass is converted
+   Converts the datakundi ``instance`` to a tuple (by using the
+   factory function ``tuple_factory``).  Each datakundi is converted
    to a tuple of its field values.  dataclasses, dicts, lists, and
    tuples are recursed into.
 
-   Continuing from the previous example::
+   Continuing kutoka the previous example::
 
      assert astuple(p) == (10, 20)
      assert astuple(c) == ([(0, 0), (10, 4)],)
 
-   Raises :exc:`TypeError` if ``instance`` is not a dataclass instance.
+   Raises :exc:`TypeError` if ``instance`` is not a datakundi instance.
 
 .. function:: make_dataclass(cls_name, fields, *, bases=(), namespace=None, init=True, repr=True, eq=True, order=False, unsafe_hash=False, frozen=False)
 
-   Creates a new dataclass with name ``cls_name``, fields as defined
+   Creates a new datakundi with name ``cls_name``, fields as defined
    in ``fields``, base classes as given in ``bases``, and initialized
    with a namespace as given in ``namespace``.  ``fields`` is an
    iterable whose elements are each either ``name``, ``(name, type)``,
@@ -334,8 +334,8 @@ Module-level decorators, classes, and functions
    the same meaning as they do in :func:`dataclass`.
 
    This function is not strictly required, because any Python
-   mechanism for creating a new class with ``__annotations__`` can
-   then apply the :func:`dataclass` function to convert that class to
+   mechanism for creating a new kundi with ``__annotations__`` can
+   then apply the :func:`dataclass` function to convert that kundi to
    a dataclass.  This function is provided as a convenience.  For
    example::
 
@@ -348,7 +348,7 @@ Module-level decorators, classes, and functions
    Is equivalent to::
 
      @dataclass
-     class C:
+     kundi C:
          x: int
          y: 'typing.Any'
          z: int = 5
@@ -359,7 +359,7 @@ Module-level decorators, classes, and functions
 .. function:: replace(instance, **changes)
 
    Creates a new object of the same type of ``instance``, replacing
-   fields with values from ``changes``.  If ``instance`` is not a Data
+   fields with values kutoka ``changes``.  If ``instance`` is not a Data
    Class, raises :exc:`TypeError`.  If values in ``changes`` do not
    specify fields, raises :exc:`TypeError`.
 
@@ -376,21 +376,21 @@ Module-level decorators, classes, and functions
    in this case.
 
    Be forewarned about how ``init=False`` fields work during a call to
-   :func:`replace`.  They are not copied from the source object, but
+   :func:`replace`.  They are not copied kutoka the source object, but
    rather are initialized in :meth:`__post_init__`, if they're
    initialized at all.  It is expected that ``init=False`` fields will
    be rarely and judiciously used.  If they are used, it might be wise
-   to have alternate class constructors, or perhaps a custom
+   to have alternate kundi constructors, or perhaps a custom
    ``replace()`` (or similarly named) method which handles instance
    copying.
 
 .. function:: is_dataclass(class_or_instance)
 
-   Returns True if its parameter is a dataclass or an instance of one,
+   Returns True if its parameter is a datakundi or an instance of one,
    otherwise returns False.
 
-   If you need to know if a class is an instance of a dataclass (and
-   not a dataclass itself), then add a further check for ``not
+   If you need to know if a kundi is an instance of a datakundi (and
+   not a datakundi itself), then add a further check for ``not
    isinstance(obj, type)``::
 
      def is_dataclass_instance(obj):
@@ -411,7 +411,7 @@ Among other uses, this allows for initializing field values that
 depend on one or more other fields.  For example::
 
     @dataclass
-    class C:
+    kundi C:
         a: float
         b: float
         c: float = field(init=False)
@@ -427,10 +427,10 @@ Class variables
 ---------------
 
 One of two places where :func:`dataclass` actually inspects the type
-of a field is to determine if a field is a class variable as defined
+of a field is to determine if a field is a kundi variable as defined
 in :pep:`526`.  It does this by checking if the type of the field is
 ``typing.ClassVar``.  If a field is a ``ClassVar``, it is excluded
-from consideration as a field and is ignored by the dataclass
+kutoka consideration as a field and is ignored by the dataclass
 mechanisms.  Such ``ClassVar`` pseudo-fields are not returned by the
 module-level :func:`fields` function.
 
@@ -447,11 +447,11 @@ parameters to the generated :meth:`__init__` method, and are passed to
 the optional :meth:`__post_init__` method.  They are not otherwise used
 by dataclasses.
 
-For example, suppose a field will be initialized from a database, if a
+For example, suppose a field will be initialized kutoka a database, if a
 value is not provided when creating the class::
 
   @dataclass
-  class C:
+  kundi C:
       i: int
       j: int = None
       database: InitVar[DatabaseType] = None
@@ -481,28 +481,28 @@ must use :meth:`object.__setattr__`.
 Inheritance
 -----------
 
-When the dataclass is being created by the :meth:`dataclass` decorator,
+When the datakundi is being created by the :meth:`dataclass` decorator,
 it looks through all of the class's base classes in reverse MRO (that
-is, starting at :class:`object`) and, for each dataclass that it finds,
-adds the fields from that base class to an ordered mapping of fields.
-After all of the base class fields are added, it adds its own fields
+is, starting at :class:`object`) and, for each datakundi that it finds,
+adds the fields kutoka that base kundi to an ordered mapping of fields.
+After all of the base kundi fields are added, it adds its own fields
 to the ordered mapping.  All of the generated methods will use this
 combined, calculated ordered mapping of fields.  Because the fields
 are in insertion order, derived classes override base classes.  An
 example::
 
   @dataclass
-  class Base:
+  kundi Base:
       x: Any = 15.0
       y: int = 0
 
   @dataclass
-  class C(Base):
+  kundi C(Base):
       z: int = 10
       x: int = 15
 
 The final list of fields is, in order, ``x``, ``y``, ``z``.  The final
-type of ``x`` is ``int``, as specified in class ``C``.
+type of ``x`` is ``int``, as specified in kundi ``C``.
 
 The generated :meth:`__init__` method for ``C`` will look like::
 
@@ -517,19 +517,19 @@ Default factory functions
 
      mylist: list = field(default_factory=list)
 
-   If a field is excluded from :meth:`__init__` (using ``init=False``)
+   If a field is excluded kutoka :meth:`__init__` (using ``init=False``)
    and the field also specifies ``default_factory``, then the default
-   factory function will always be called from the generated
+   factory function will always be called kutoka the generated
    :meth:`__init__` function.  This happens because there is no other
    way to give the field an initial value.
 
 Mutable default values
 ----------------------
 
-   Python stores default member variable values in class attributes.
+   Python stores default member variable values in kundi attributes.
    Consider this example, not using dataclasses::
 
-     class C:
+     kundi C:
          x = []
          def add(self, element):
              self.x.append(element)
@@ -541,20 +541,20 @@ Mutable default values
      assert o1.x == [1, 2]
      assert o1.x is o2.x
 
-   Note that the two instances of class ``C`` share the same class
+   Note that the two instances of kundi ``C`` share the same class
    variable ``x``, as expected.
 
    Using dataclasses, *if* this code was valid::
 
      @dataclass
-     class D:
+     kundi D:
          x: List = []
          def add(self, element):
              self.x += element
 
    it would generate code similar to::
 
-     class D:
+     kundi D:
          x = []
          def __init__(self, x=x):
              self.x = x
@@ -563,10 +563,10 @@ Mutable default values
 
      assert D().x is D().x
 
-   This has the same issue as the original example using class ``C``.
-   That is, two instances of class ``D`` that do not specify a value for
-   ``x`` when creating a class instance will share the same copy of
-   ``x``.  Because dataclasses just use normal Python class creation
+   This has the same issue as the original example using kundi ``C``.
+   That is, two instances of kundi ``D`` that do not specify a value for
+   ``x`` when creating a kundi instance will share the same copy of
+   ``x``.  Because dataclasses just use normal Python kundi creation
    they also share this behavior.  There is no general way for Data
    Classes to detect this condition.  Instead, dataclasses will raise a
    :exc:`TypeError` if it detects a default parameter of type ``list``,
@@ -577,7 +577,7 @@ Mutable default values
    mutable types as default values for fields::
 
      @dataclass
-     class D:
+     kundi D:
          x: list = field(default_factory=list)
 
      assert D().x is not D().x
@@ -588,5 +588,5 @@ Exceptions
 .. exception:: FrozenInstanceError
 
    Raised when an implicitly defined :meth:`__setattr__` or
-   :meth:`__delattr__` is called on a dataclass which was defined with
+   :meth:`__delattr__` is called on a datakundi which was defined with
    ``frozen=True``.

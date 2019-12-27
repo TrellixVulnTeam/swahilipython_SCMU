@@ -11,10 +11,10 @@
 
 --------------
 
-The Document Object Model, or "DOM," is a cross-language API from the World Wide
+The Document Object Model, or "DOM," is a cross-language API kutoka the World Wide
 Web Consortium (W3C) for accessing and modifying XML documents.  A DOM
 implementation presents an XML document as a tree structure, or allows client
-code to build such a structure from scratch.  It then gives access to the
+code to build such a structure kutoka scratch.  It then gives access to the
 structure through a set of objects which provided well-known interfaces.
 
 The DOM is extremely useful for random-access applications.  SAX only allows you
@@ -44,7 +44,7 @@ DOM Level 2 recommendation.
 
 DOM applications typically start by parsing some XML into a DOM.  How this is
 accomplished is not covered at all by DOM Level 1, and Level 2 provides only
-limited improvements: There is a :class:`DOMImplementation` object class which
+limited improvements: There is a :class:`DOMImplementation` object kundi which
 provides access to :class:`Document` creation methods, but no way to access an
 XML reader/parser/Document builder in an implementation-independent way. There
 is also no well-defined way to access these methods without an existing
@@ -61,7 +61,7 @@ interpretation of the specification in Python.
 The specification provided by the W3C defines the DOM API for Java, ECMAScript,
 and OMG IDL.  The Python mapping defined here is based in large part on the IDL
 version of the specification, but strict compliance is not required (though
-implementations are free to support the strict mapping from IDL).  See section
+implementations are free to support the strict mapping kutoka IDL).  See section
 :ref:`dom-conformance` for a detailed discussion of mapping requirements.
 
 
@@ -74,7 +74,7 @@ implementations are free to support the strict mapping from IDL).  See section
       The W3C recommendation for the DOM supported by :mod:`xml.dom.minidom`.
 
    `Python Language Mapping Specification <http://www.omg.org/cgi-bin/doc?formal/02-11-05.pdf>`_
-      This specifies the mapping from OMG IDL to Python.
+      This specifies the mapping kutoka OMG IDL to Python.
 
 
 Module Contents
@@ -97,7 +97,7 @@ The :mod:`xml.dom` contains the following functions:
    Return a suitable DOM implementation. The *name* is either well-known, the
    module name of a DOM implementation, or ``None``. If it is not ``None``, imports
    the corresponding module and returns a :class:`DOMImplementation` object if the
-   import succeeds.  If no name is given, and if the environment variable
+   agiza succeeds.  If no name is given, and if the environment variable
    :envvar:`PYTHON_DOM` is set, this variable is used to find the implementation.
 
    If name is not given, this examines the available implementations to find one
@@ -135,13 +135,13 @@ Some convenience constants are also provided:
    HyperText Markup Language <https://www.w3.org/TR/xhtml1/>`_ (section 3.1.1).
 
 
-In addition, :mod:`xml.dom` contains a base :class:`Node` class and the DOM
-exception classes.  The :class:`Node` class provided by this module does not
+In addition, :mod:`xml.dom` contains a base :class:`Node` kundi and the DOM
+exception classes.  The :class:`Node` kundi provided by this module does not
 implement any of the methods or attributes defined by the DOM specification;
 concrete DOM implementations must provide those.  The :class:`Node` class
 provided as part of this module does provide the constants used for the
 :attr:`nodeType` attribute on concrete :class:`Node` objects; they are located
-within the class rather than at the module level to conform with the DOM
+within the kundi rather than at the module level to conform with the DOM
 specifications.
 
 .. Should the Node documentation go here?
@@ -152,7 +152,7 @@ specifications.
 Objects in the DOM
 ------------------
 
-The definitive documentation for the DOM is the DOM specification from the W3C.
+The definitive documentation for the DOM is the DOM specification kutoka the W3C.
 
 Note that DOM attributes may also be manipulated as nodes instead of as simple
 strings.  It is fairly rare that you must do this, however, so this usage is not
@@ -187,7 +187,7 @@ yet documented.
 |                                |                                   | the source document.            |
 +--------------------------------+-----------------------------------+---------------------------------+
 | :class:`Text`                  | :ref:`dom-text-objects`           | Nodes containing textual        |
-|                                |                                   | content from the document.      |
+|                                |                                   | content kutoka the document.      |
 +--------------------------------+-----------------------------------+---------------------------------+
 | :class:`ProcessingInstruction` | :ref:`dom-pi-objects`             | Processing instruction          |
 |                                |                                   | representation.                 |
@@ -320,7 +320,7 @@ All of the components of an XML document are subclasses of :class:`Node`.
 .. attribute:: Node.nodeName
 
    This has a different meaning for each node type; see the DOM specification for
-   details.  You can always get the information you would get here from another
+   details.  You can always get the information you would get here kutoka another
    property such as the :attr:`tagName` property for elements or the :attr:`name`
    property for attributes. For all node types, the value of this attribute will be
    either a string or ``None``.  This is a read-only attribute.
@@ -353,7 +353,7 @@ All of the components of an XML document are subclasses of :class:`Node`.
 
       This is based on a proposed DOM Level 3 API which is still in the "working
       draft" stage, but this particular interface appears uncontroversial.  Changes
-      from the W3C will not necessarily affect this method in the Python DOM interface
+      kutoka the W3C will not necessarily affect this method in the Python DOM interface
       (though any new W3C API for this would also be supported).
 
 
@@ -388,7 +388,7 @@ All of the components of an XML document are subclasses of :class:`Node`.
 .. method:: Node.normalize()
 
    Join adjacent text nodes so that all stretches of text are stored as single
-   :class:`Text` instances.  This simplifies processing text from a DOM tree for
+   :class:`Text` instances.  This simplifies processing text kutoka a DOM tree for
    many applications.
 
 
@@ -415,7 +415,7 @@ objects:
 
 .. method:: NodeList.item(i)
 
-   Return the *i*'th item from the sequence, if there is one, or ``None``.  The
+   Return the *i*'th item kutoka the sequence, if there is one, or ``None``.  The
    index *i* is not allowed to be less than zero or greater than or equal to the
    length of the sequence.
 
@@ -444,8 +444,8 @@ DocumentType Objects
 
 Information about the notations and entities declared by a document (including
 the external subset if the parser uses it and can provide the information) is
-available from a :class:`DocumentType` object.  The :class:`DocumentType` for a
-document is available from the :class:`Document` object's :attr:`doctype`
+available kutoka a :class:`DocumentType` object.  The :class:`DocumentType` for a
+document is available kutoka the :class:`Document` object's :attr:`doctype`
 attribute; if there is no ``DOCTYPE`` declaration for the document, the
 document's :attr:`doctype` attribute will be set to ``None`` instead of an
 instance of this interface.
@@ -468,7 +468,7 @@ following attributes:
 
 .. attribute:: DocumentType.internalSubset
 
-   A string giving the complete internal subset from the document. This does not
+   A string giving the complete internal subset kutoka the document. This does not
    include the brackets which enclose the subset.  If the document has no internal
    subset, this should be ``None``.
 
@@ -504,7 +504,7 @@ Document Objects
 
 A :class:`Document` represents an entire XML document, including its constituent
 elements, attributes, processing instructions, comments etc.  Remember that it
-inherits properties from :class:`Node`.
+inherits properties kutoka :class:`Node`.
 
 
 .. attribute:: Document.documentElement
@@ -582,7 +582,7 @@ inherits properties from :class:`Node`.
 Element Objects
 ^^^^^^^^^^^^^^^
 
-:class:`Element` is a subclass of :class:`Node`, so inherits all the attributes
+:class:`Element` is a subkundi of :class:`Node`, so inherits all the attributes
 of that class.
 
 
@@ -644,7 +644,7 @@ of that class.
 
 .. method:: Element.removeAttributeNode(oldAttr)
 
-   Remove and return *oldAttr* from the attribute list, if present. If *oldAttr* is
+   Remove and return *oldAttr* kutoka the attribute list, if present. If *oldAttr* is
    not present, :exc:`NotFoundErr` is raised.
 
 
@@ -656,7 +656,7 @@ of that class.
 
 .. method:: Element.setAttribute(name, value)
 
-   Set an attribute value from a string.
+   Set an attribute value kutoka a string.
 
 
 .. method:: Element.setAttributeNode(newAttr)
@@ -677,7 +677,7 @@ of that class.
 
 .. method:: Element.setAttributeNS(namespaceURI, qname, value)
 
-   Set an attribute value from a string, given a *namespaceURI* and a *qname*.
+   Set an attribute value kutoka a string, given a *namespaceURI* and a *qname*.
    Note that a qname is the whole attribute name.  This is different than above.
 
 
@@ -686,7 +686,7 @@ of that class.
 Attr Objects
 ^^^^^^^^^^^^
 
-:class:`Attr` inherits from :class:`Node`, so inherits all its attributes.
+:class:`Attr` inherits kutoka :class:`Node`, so inherits all its attributes.
 
 
 .. attribute:: Attr.name
@@ -719,7 +719,7 @@ Attr Objects
 NamedNodeMap Objects
 ^^^^^^^^^^^^^^^^^^^^
 
-:class:`NamedNodeMap` does *not* inherit from :class:`Node`.
+:class:`NamedNodeMap` does *not* inherit kutoka :class:`Node`.
 
 
 .. attribute:: NamedNodeMap.length
@@ -733,7 +733,7 @@ NamedNodeMap Objects
    in is arbitrary but will be consistent for the life of a DOM.  Each item is an
    attribute node.  Get its value with the :attr:`value` attribute.
 
-There are also experimental methods that give this class more mapping behavior.
+There are also experimental methods that give this kundi more mapping behavior.
 You can use them or you can use the standardized :meth:`getAttribute\*` family
 of methods on the :class:`Element` objects.
 
@@ -743,7 +743,7 @@ of methods on the :class:`Element` objects.
 Comment Objects
 ^^^^^^^^^^^^^^^
 
-:class:`Comment` represents a comment in the XML document.  It is a subclass of
+:class:`Comment` represents a comment in the XML document.  It is a subkundi of
 :class:`Node`, but cannot have child nodes.
 
 
@@ -787,7 +787,7 @@ nodes.
 ProcessingInstruction Objects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Represents a processing instruction in the XML document; this inherits from the
+Represents a processing instruction in the XML document; this inherits kutoka the
 :class:`Node` interface and cannot have child nodes.
 
 
@@ -822,14 +822,14 @@ attribute.
 
 .. exception:: DOMException
 
-   Base exception class used for all specific DOM exceptions.  This exception class
+   Base exception kundi used for all specific DOM exceptions.  This exception class
    cannot be directly instantiated.
 
 
 .. exception:: DomstringSizeErr
 
    Raised when a specified range of text does not fit into a string. This is not
-   known to be used in the Python DOM implementations, but may be received from DOM
+   known to be used in the Python DOM implementations, but may be received kutoka DOM
    implementations not written in Python.
 
 
@@ -912,13 +912,13 @@ attribute.
 
    Raised when an invalid or illegal string is specified.
 
-   .. XXX  how is this different from InvalidCharacterErr?
+   .. XXX  how is this different kutoka InvalidCharacterErr?
 
 
 .. exception:: WrongDocumentErr
 
    Raised when a node is inserted in a different document than it currently belongs
-   to, and the implementation does not support migrating the node from one document
+   to, and the implementation does not support migrating the node kutoka one document
    to the other.
 
 The exception codes defined in the DOM recommendation map to the exceptions
@@ -998,7 +998,7 @@ according to the following table.
 Accessor Methods
 ^^^^^^^^^^^^^^^^
 
-The mapping from OMG IDL to Python defines accessor functions for IDL
+The mapping kutoka OMG IDL to Python defines accessor functions for IDL
 ``attribute`` declarations in much the way the Java mapping does.
 Mapping the IDL declarations ::
 
@@ -1017,13 +1017,13 @@ This means that the typical surrogates generated by Python IDL compilers are not
 likely to work, and wrapper objects may be needed on the client if the DOM
 objects are accessed via CORBA. While this does require some additional
 consideration for CORBA DOM clients, the implementers with experience using DOM
-over CORBA from Python do not consider this a problem.  Attributes that are
+over CORBA kutoka Python do not consider this a problem.  Attributes that are
 declared ``readonly`` may not restrict write access in all DOM
 implementations.
 
 In the Python DOM API, accessor functions are not required.  If provided, they
 should take the form defined by the Python IDL mapping, but these methods are
-considered unnecessary since the attributes are accessible directly from Python.
+considered unnecessary since the attributes are accessible directly kutoka Python.
 "Set" accessors should never be provided for ``readonly`` attributes.
 
 The IDL definitions do not fully embody the requirements of the W3C DOM API,

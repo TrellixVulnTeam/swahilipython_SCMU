@@ -22,7 +22,7 @@
 This module builds on the :mod:`asyncore` infrastructure, simplifying
 asynchronous clients and servers and making it easier to handle protocols
 whose elements are terminated by arbitrary strings, or are of variable length.
-:mod:`asynchat` defines the abstract class :class:`async_chat` that you
+:mod:`asynchat` defines the abstract kundi :class:`async_chat` that you
 subclass, providing implementations of the :meth:`collect_incoming_data` and
 :meth:`found_terminator` methods. It uses the same asynchronous loop as
 :mod:`asyncore`, and the two types of channel, :class:`asyncore.dispatcher`
@@ -34,8 +34,8 @@ connection requests.
 
 .. class:: async_chat()
 
-   This class is an abstract subclass of :class:`asyncore.dispatcher`. To make
-   practical use of the code you must subclass :class:`async_chat`, providing
+   This kundi is an abstract subkundi of :class:`asyncore.dispatcher`. To make
+   practical use of the code you must subkundi :class:`async_chat`, providing
    meaningful :meth:`collect_incoming_data` and :meth:`found_terminator`
    methods.
    The :class:`asyncore.dispatcher` methods can be used, although not all make
@@ -47,7 +47,7 @@ connection requests.
    :class:`async_chat` object's methods are called by the event-processing
    framework with no action on the part of the programmer.
 
-   Two class attributes can be modified, to improve performance, or possibly
+   Two kundi attributes can be modified, to improve performance, or possibly
    even to conserve memory.
 
 
@@ -66,14 +66,14 @@ connection requests.
    transmitted on the channel.
    The producer indicates exhaustion (*i.e.* that it contains no more data) by
    having its :meth:`more` method return the empty bytes object. At this point
-   the :class:`async_chat` object removes the producer from the queue and starts
+   the :class:`async_chat` object removes the producer kutoka the queue and starts
    using the next producer, if any. When the producer queue is empty the
    :meth:`handle_write` method does nothing. You use the channel object's
    :meth:`set_terminator` method to describe how to recognize the end of, or
-   an important breakpoint in, an incoming transmission from the remote
+   an important breakpoint in, an incoming transmission kutoka the remote
    endpoint.
 
-   To build a functioning :class:`async_chat` subclass your  input methods
+   To build a functioning :class:`async_chat` subkundi your  input methods
    :meth:`collect_incoming_data` and :meth:`found_terminator` must handle the
    data that the channel receives asynchronously. The methods are described
    below.
@@ -166,16 +166,16 @@ read.
 Once the headers have been read, if the request is of type POST (indicating
 that further data are present in the input stream) then the
 ``Content-Length:`` header is used to set a numeric terminator to read the
-right amount of data from the channel.
+right amount of data kutoka the channel.
 
 The :meth:`handle_request` method is called once all relevant input has been
 marshalled, after setting the channel terminator to ``None`` to ensure that
 any extraneous data sent by the web client are ignored. ::
 
 
-   import asynchat
+   agiza asynchat
 
-   class http_request_handler(asynchat.async_chat):
+   kundi http_request_handler(asynchat.async_chat):
 
        def __init__(self, sock, addr, sessions, log):
            asynchat.async_chat.__init__(self, sock=sock)

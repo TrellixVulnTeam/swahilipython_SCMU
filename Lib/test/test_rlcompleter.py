@@ -3,14 +3,14 @@ kutoka unittest.mock agiza patch
 agiza builtins
 agiza rlcompleter
 
-class CompleteMe:
-    """ Trivial class used in testing rlcompleter.Completer. """
+kundi CompleteMe:
+    """ Trivial kundi used in testing rlcompleter.Completer. """
     spam = 1
     _ham = 2
 
 
-class TestRlcompleter(unittest.TestCase):
-    def setUp(self):
+kundi TestRlcompleter(unittest.TestCase):
+    eleza setUp(self):
         self.stdcompleter = rlcompleter.Completer()
         self.completer = rlcompleter.Completer(dict(spam=int,
                                                     egg=str,
@@ -19,10 +19,10 @@ class TestRlcompleter(unittest.TestCase):
         # forces stdcompleter to bind builtins namespace
         self.stdcompleter.complete('', 0)
 
-    def test_namespace(self):
-        class A(dict):
+    eleza test_namespace(self):
+        kundi A(dict):
             pass
-        class B(list):
+        kundi B(list):
             pass
 
         self.assertTrue(self.stdcompleter.use_main_ns)
@@ -30,12 +30,12 @@ class TestRlcompleter(unittest.TestCase):
         self.assertFalse(rlcompleter.Completer(A()).use_main_ns)
         self.assertRaises(TypeError, rlcompleter.Completer, B((1,)))
 
-    def test_global_matches(self):
+    eleza test_global_matches(self):
         # test with builtins namespace
         self.assertEqual(sorted(self.stdcompleter.global_matches('di')),
-                         [x+'(' for x in dir(builtins) if x.startswith('di')])
+                         [x+'(' for x in dir(builtins) ikiwa x.startswith('di')])
         self.assertEqual(sorted(self.stdcompleter.global_matches('st')),
-                         [x+'(' for x in dir(builtins) if x.startswith('st')])
+                         [x+'(' for x in dir(builtins) ikiwa x.startswith('st')])
         self.assertEqual(self.stdcompleter.global_matches('akaksajadhak'), [])
 
         # test with a customized namespace
@@ -47,13 +47,13 @@ class TestRlcompleter(unittest.TestCase):
         self.assertEqual(self.completer.global_matches('CompleteM'),
                          ['CompleteMe('])
 
-    def test_attr_matches(self):
+    eleza test_attr_matches(self):
         # test with builtins namespace
         self.assertEqual(self.stdcompleter.attr_matches('str.s'),
                          ['str.{}('.format(x) for x in dir(str)
-                          if x.startswith('s')])
+                          ikiwa x.startswith('s')])
         self.assertEqual(self.stdcompleter.attr_matches('tuple.foospamegg'), [])
-        expected = sorted({'None.%s%s' % (x, '(' if x != '__doc__' else '')
+        expected = sorted({'None.%s%s' % (x, '(' ikiwa x != '__doc__' else '')
                            for x in dir(None)})
         self.assertEqual(self.stdcompleter.attr_matches('None.'), expected)
         self.assertEqual(self.stdcompleter.attr_matches('None._'), expected)
@@ -78,31 +78,31 @@ class TestRlcompleter(unittest.TestCase):
                              ['CompleteMe.me.me.spam'])
             self.assertEqual(self.completer.attr_matches('egg.s'),
                              ['egg.{}('.format(x) for x in dir(str)
-                              if x.startswith('s')])
+                              ikiwa x.startswith('s')])
 
-    def test_excessive_getattr(self):
+    eleza test_excessive_getattr(self):
         # Ensure getattr() is invoked no more than once per attribute
-        class Foo:
+        kundi Foo:
             calls = 0
             @property
-            def bar(self):
+            eleza bar(self):
                 self.calls += 1
-                return None
+                rudisha None
         f = Foo()
         completer = rlcompleter.Completer(dict(f=f))
         self.assertEqual(completer.complete('f.b', 0), 'f.bar')
         self.assertEqual(f.calls, 1)
 
-    def test_uncreated_attr(self):
+    eleza test_uncreated_attr(self):
         # Attributes like properties and slots should be completed even when
         # they haven't been created on an instance
-        class Foo:
+        kundi Foo:
             __slots__ = ("bar",)
         completer = rlcompleter.Completer(dict(f=Foo()))
         self.assertEqual(completer.complete('f.', 0), 'f.bar')
 
     @unittest.mock.patch('rlcompleter._readline_available', False)
-    def test_complete(self):
+    eleza test_complete(self):
         completer = rlcompleter.Completer()
         self.assertEqual(completer.complete('', 0), '\t')
         self.assertEqual(completer.complete('a', 0), 'and ')
@@ -111,11 +111,11 @@ class TestRlcompleter(unittest.TestCase):
         self.assertEqual(completer.complete('an', 0), 'and ')
         self.assertEqual(completer.complete('pa', 0), 'pass')
         self.assertEqual(completer.complete('Fa', 0), 'False')
-        self.assertEqual(completer.complete('el', 0), 'elif ')
+        self.assertEqual(completer.complete('el', 0), 'elikiwa ')
         self.assertEqual(completer.complete('el', 1), 'else')
         self.assertEqual(completer.complete('tr', 0), 'try:')
 
-    def test_duplicate_globals(self):
+    eleza test_duplicate_globals(self):
         namespace = {
             'False': None,  # Keyword vs builtin vs namespace
             'assert': None,  # Keyword vs namespace
@@ -137,5 +137,5 @@ class TestRlcompleter(unittest.TestCase):
         self.assertEqual(completer.complete('Ellipsis', 0), 'Ellipsis(')
         self.assertIsNone(completer.complete('Ellipsis', 1))
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

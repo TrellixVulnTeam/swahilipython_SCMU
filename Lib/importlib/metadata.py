@@ -33,11 +33,11 @@ __all__ = [
     ]
 
 
-class PackageNotFoundError(ModuleNotFoundError):
+kundi PackageNotFoundError(ModuleNotFoundError):
     """The package was not found."""
 
 
-class EntryPoint(collections.namedtuple('EntryPointBase', 'name value group')):
+kundi EntryPoint(collections.namedtuple('EntryPointBase', 'name value group')):
     """An entry point as defined by Python packaging conventions.
 
     See `the packaging docs on entry points
@@ -66,31 +66,31 @@ class EntryPoint(collections.namedtuple('EntryPointBase', 'name value group')):
     following the attr, and following any extras.
     """
 
-    def load(self):
+    eleza load(self):
         """Load the entry point kutoka its definition. If only a module
-        is indicated by the value, return that module. Otherwise,
-        return the named object.
+        is indicated by the value, rudisha that module. Otherwise,
+        rudisha the named object.
         """
         match = self.pattern.match(self.value)
         module = import_module(match.group('module'))
         attrs = filter(None, (match.group('attr') or '').split('.'))
-        return functools.reduce(getattr, attrs, module)
+        rudisha functools.reduce(getattr, attrs, module)
 
     @property
-    def extras(self):
+    eleza extras(self):
         match = self.pattern.match(self.value)
-        return list(re.finditer(r'\w+', match.group('extras') or ''))
+        rudisha list(re.finditer(r'\w+', match.group('extras') or ''))
 
     @classmethod
-    def _from_config(cls, config):
-        return [
+    eleza _kutoka_config(cls, config):
+        rudisha [
             cls(name, value, group)
             for group in config.sections()
             for name, value in config.items(group)
             ]
 
     @classmethod
-    def _from_text(cls, text):
+    eleza _kutoka_text(cls, text):
         config = ConfigParser(delimiters='=')
         # case sensitive: https://stackoverflow.com/q/1611799/812183
         config.optionxform = str
@@ -99,77 +99,77 @@ class EntryPoint(collections.namedtuple('EntryPointBase', 'name value group')):
         except AttributeError:  # pragma: nocover
             # Python 2 has no read_string
             config.readfp(io.StringIO(text))
-        return EntryPoint._from_config(config)
+        rudisha EntryPoint._kutoka_config(config)
 
-    def __iter__(self):
+    eleza __iter__(self):
         """
         Supply iter so one may construct dicts of EntryPoints easily.
         """
-        return iter((self.name, self))
+        rudisha iter((self.name, self))
 
 
-class PackagePath(pathlib.PurePosixPath):
+kundi PackagePath(pathlib.PurePosixPath):
     """A reference to a path in a package"""
 
-    def read_text(self, encoding='utf-8'):
+    eleza read_text(self, encoding='utf-8'):
         with self.locate().open(encoding=encoding) as stream:
-            return stream.read()
+            rudisha stream.read()
 
-    def read_binary(self):
+    eleza read_binary(self):
         with self.locate().open('rb') as stream:
-            return stream.read()
+            rudisha stream.read()
 
-    def locate(self):
+    eleza locate(self):
         """Return a path-like object for this path"""
-        return self.dist.locate_file(self)
+        rudisha self.dist.locate_file(self)
 
 
-class FileHash:
-    def __init__(self, spec):
+kundi FileHash:
+    eleza __init__(self, spec):
         self.mode, _, self.value = spec.partition('=')
 
-    def __repr__(self):
-        return '<FileHash mode: {} value: {}>'.format(self.mode, self.value)
+    eleza __repr__(self):
+        rudisha '<FileHash mode: {} value: {}>'.format(self.mode, self.value)
 
 
-class Distribution:
+kundi Distribution:
     """A Python distribution package."""
 
     @abc.abstractmethod
-    def read_text(self, filename):
+    eleza read_text(self, filename):
         """Attempt to load metadata file given by the name.
 
         :param filename: The name of the file in the distribution info.
-        :return: The text if found, otherwise None.
+        :return: The text ikiwa found, otherwise None.
         """
 
     @abc.abstractmethod
-    def locate_file(self, path):
+    eleza locate_file(self, path):
         """
-        Given a path to a file in this distribution, return a path
+        Given a path to a file in this distribution, rudisha a path
         to it.
         """
 
     @classmethod
-    def from_name(cls, name):
+    eleza kutoka_name(cls, name):
         """Return the Distribution for the given package name.
 
         :param name: The name of the distribution package to search for.
-        :return: The Distribution instance (or subclass thereof) for the named
-            package, if found.
+        :return: The Distribution instance (or subkundi thereof) for the named
+            package, ikiwa found.
         :raises PackageNotFoundError: When the named package's distribution
             metadata cannot be found.
         """
         for resolver in cls._discover_resolvers():
             dists = resolver(DistributionFinder.Context(name=name))
             dist = next(dists, None)
-            if dist is not None:
-                return dist
+            ikiwa dist is not None:
+                rudisha dist
         else:
             raise PackageNotFoundError(name)
 
     @classmethod
-    def discover(cls, **kwargs):
+    eleza discover(cls, **kwargs):
         """Return an iterable of Distribution objects for all packages.
 
         Pass a ``context`` or pass keyword arguments for constructing
@@ -179,34 +179,34 @@ class Distribution:
         :return: Iterable of Distribution objects for all packages.
         """
         context = kwargs.pop('context', None)
-        if context and kwargs:
+        ikiwa context and kwargs:
             raise ValueError("cannot accept context and kwargs")
         context = context or DistributionFinder.Context(**kwargs)
-        return itertools.chain.from_iterable(
+        rudisha itertools.chain.kutoka_iterable(
             resolver(context)
             for resolver in cls._discover_resolvers()
             )
 
     @staticmethod
-    def at(path):
+    eleza at(path):
         """Return a Distribution for the indicated metadata path
 
         :param path: a string or path-like object
         :return: a concrete Distribution instance for the path
         """
-        return PathDistribution(pathlib.Path(path))
+        rudisha PathDistribution(pathlib.Path(path))
 
     @staticmethod
-    def _discover_resolvers():
+    eleza _discover_resolvers():
         """Search the meta_path for resolvers."""
         declared = (
             getattr(finder, 'find_distributions', None)
             for finder in sys.meta_path
             )
-        return filter(None, declared)
+        rudisha filter(None, declared)
 
     @property
-    def metadata(self):
+    eleza metadata(self):
         """Return the parsed metadata for this Distribution.
 
         The returned object will have keys that name the various bits of
@@ -220,89 +220,89 @@ class Distribution:
             # (which points to the egg-info file) attribute unchanged.
             or self.read_text('')
             )
-        return email.message_from_string(text)
+        rudisha email.message_kutoka_string(text)
 
     @property
-    def version(self):
+    eleza version(self):
         """Return the 'Version' metadata for the distribution package."""
-        return self.metadata['Version']
+        rudisha self.metadata['Version']
 
     @property
-    def entry_points(self):
-        return EntryPoint._from_text(self.read_text('entry_points.txt'))
+    eleza entry_points(self):
+        rudisha EntryPoint._kutoka_text(self.read_text('entry_points.txt'))
 
     @property
-    def files(self):
+    eleza files(self):
         """Files in this distribution.
 
         :return: List of PackagePath for this distribution or None
 
-        Result is `None` if the metadata file that enumerates files
+        Result is `None` ikiwa the metadata file that enumerates files
         (i.e. RECORD for dist-info or SOURCES.txt for egg-info) is
         missing.
-        Result may be empty if the metadata exists but is empty.
+        Result may be empty ikiwa the metadata exists but is empty.
         """
         file_lines = self._read_files_distinfo() or self._read_files_egginfo()
 
-        def make_file(name, hash=None, size_str=None):
+        eleza make_file(name, hash=None, size_str=None):
             result = PackagePath(name)
-            result.hash = FileHash(hash) if hash else None
-            result.size = int(size_str) if size_str else None
+            result.hash = FileHash(hash) ikiwa hash else None
+            result.size = int(size_str) ikiwa size_str else None
             result.dist = self
-            return result
+            rudisha result
 
-        return file_lines and list(starmap(make_file, csv.reader(file_lines)))
+        rudisha file_lines and list(starmap(make_file, csv.reader(file_lines)))
 
-    def _read_files_distinfo(self):
+    eleza _read_files_distinfo(self):
         """
         Read the lines of RECORD
         """
         text = self.read_text('RECORD')
-        return text and text.splitlines()
+        rudisha text and text.splitlines()
 
-    def _read_files_egginfo(self):
+    eleza _read_files_egginfo(self):
         """
         SOURCES.txt might contain literal commas, so wrap each line
         in quotes.
         """
         text = self.read_text('SOURCES.txt')
-        return text and map('"{}"'.format, text.splitlines())
+        rudisha text and map('"{}"'.format, text.splitlines())
 
     @property
-    def requires(self):
+    eleza requires(self):
         """Generated requirements specified for this Distribution"""
         reqs = self._read_dist_info_reqs() or self._read_egg_info_reqs()
-        return reqs and list(reqs)
+        rudisha reqs and list(reqs)
 
-    def _read_dist_info_reqs(self):
-        return self.metadata.get_all('Requires-Dist')
+    eleza _read_dist_info_reqs(self):
+        rudisha self.metadata.get_all('Requires-Dist')
 
-    def _read_egg_info_reqs(self):
+    eleza _read_egg_info_reqs(self):
         source = self.read_text('requires.txt')
-        return source and self._deps_from_requires_text(source)
+        rudisha source and self._deps_kutoka_requires_text(source)
 
     @classmethod
-    def _deps_from_requires_text(cls, source):
+    eleza _deps_kutoka_requires_text(cls, source):
         section_pairs = cls._read_sections(source.splitlines())
         sections = {
             section: list(map(operator.itemgetter('line'), results))
             for section, results in
             itertools.groupby(section_pairs, operator.itemgetter('section'))
             }
-        return cls._convert_egg_info_reqs_to_simple_reqs(sections)
+        rudisha cls._convert_egg_info_reqs_to_simple_reqs(sections)
 
     @staticmethod
-    def _read_sections(lines):
+    eleza _read_sections(lines):
         section = None
         for line in filter(None, lines):
             section_match = re.match(r'\[(.*)\]$', line)
-            if section_match:
+            ikiwa section_match:
                 section = section_match.group(1)
                 continue
             yield locals()
 
     @staticmethod
-    def _convert_egg_info_reqs_to_simple_reqs(sections):
+    eleza _convert_egg_info_reqs_to_simple_reqs(sections):
         """
         Historically, setuptools would solicit and store 'extra'
         requirements, including those with environment markers,
@@ -310,52 +310,52 @@ class Distribution:
         dependency to be defined separately, with any relevant
         extras and environment markers attached directly to that
         requirement. This method converts the former to the
-        latter. See _test_deps_from_requires_text for an example.
+        latter. See _test_deps_kutoka_requires_text for an example.
         """
-        def make_condition(name):
-            return name and 'extra == "{name}"'.format(name=name)
+        eleza make_condition(name):
+            rudisha name and 'extra == "{name}"'.format(name=name)
 
-        def parse_condition(section):
+        eleza parse_condition(section):
             section = section or ''
             extra, sep, markers = section.partition(':')
-            if extra and markers:
+            ikiwa extra and markers:
                 markers = '({markers})'.format(markers=markers)
             conditions = list(filter(None, [markers, make_condition(extra)]))
-            return '; ' + ' and '.join(conditions) if conditions else ''
+            rudisha '; ' + ' and '.join(conditions) ikiwa conditions else ''
 
         for section, deps in sections.items():
             for dep in deps:
                 yield dep + parse_condition(section)
 
 
-class DistributionFinder(MetaPathFinder):
+kundi DistributionFinder(MetaPathFinder):
     """
     A MetaPathFinder capable of discovering installed distributions.
     """
 
-    class Context:
+    kundi Context:
 
         name = None
         """
         Specific name for which a distribution finder should match.
         """
 
-        def __init__(self, **kwargs):
+        eleza __init__(self, **kwargs):
             vars(self).update(kwargs)
 
         @property
-        def path(self):
+        eleza path(self):
             """
             The path that a distribution finder should search.
             """
-            return vars(self).get('path', sys.path)
+            rudisha vars(self).get('path', sys.path)
 
         @property
-        def pattern(self):
-            return '.*' if self.name is None else re.escape(self.name)
+        eleza pattern(self):
+            rudisha '.*' ikiwa self.name is None else re.escape(self.name)
 
     @abc.abstractmethod
-    def find_distributions(self, context=Context()):
+    eleza find_distributions(self, context=Context()):
         """
         Find distributions.
 
@@ -365,60 +365,60 @@ class DistributionFinder(MetaPathFinder):
         """
 
 
-class MetadataPathFinder(DistributionFinder):
+kundi MetadataPathFinder(DistributionFinder):
     @classmethod
-    def find_distributions(cls, context=DistributionFinder.Context()):
+    eleza find_distributions(cls, context=DistributionFinder.Context()):
         """
         Find distributions.
 
         Return an iterable of all Distribution instances capable of
         loading the metadata for packages matching ``context.name``
-        (or all names if ``None`` indicated) along the paths in the list
+        (or all names ikiwa ``None`` indicated) along the paths in the list
         of directories ``context.path``.
         """
         found = cls._search_paths(context.pattern, context.path)
-        return map(PathDistribution, found)
+        rudisha map(PathDistribution, found)
 
     @classmethod
-    def _search_paths(cls, pattern, paths):
+    eleza _search_paths(cls, pattern, paths):
         """Find metadata directories in paths heuristically."""
-        return itertools.chain.from_iterable(
+        rudisha itertools.chain.kutoka_iterable(
             cls._search_path(path, pattern)
             for path in map(cls._switch_path, paths)
             )
 
     @staticmethod
-    def _switch_path(path):
+    eleza _switch_path(path):
         PYPY_OPEN_BUG = False
-        if not PYPY_OPEN_BUG or os.path.isfile(path):  # pragma: no branch
+        ikiwa not PYPY_OPEN_BUG or os.path.isfile(path):  # pragma: no branch
             with suppress(Exception):
-                return zipfile.Path(path)
-        return pathlib.Path(path)
+                rudisha zipfile.Path(path)
+        rudisha pathlib.Path(path)
 
     @classmethod
-    def _matches_info(cls, normalized, item):
+    eleza _matches_info(cls, normalized, item):
         template = r'{pattern}(-.*)?\.(dist|egg)-info'
         manifest = template.format(pattern=normalized)
-        return re.match(manifest, item.name, flags=re.IGNORECASE)
+        rudisha re.match(manifest, item.name, flags=re.IGNORECASE)
 
     @classmethod
-    def _matches_legacy(cls, normalized, item):
+    eleza _matches_legacy(cls, normalized, item):
         template = r'{pattern}-.*\.egg[\\/]EGG-INFO'
         manifest = template.format(pattern=normalized)
-        return re.search(manifest, str(item), flags=re.IGNORECASE)
+        rudisha re.search(manifest, str(item), flags=re.IGNORECASE)
 
     @classmethod
-    def _search_path(cls, root, pattern):
-        if not root.is_dir():
-            return ()
+    eleza _search_path(cls, root, pattern):
+        ikiwa not root.is_dir():
+            rudisha ()
         normalized = pattern.replace('-', '_')
-        return (item for item in root.iterdir()
-                if cls._matches_info(normalized, item)
+        rudisha (item for item in root.iterdir()
+                ikiwa cls._matches_info(normalized, item)
                 or cls._matches_legacy(normalized, item))
 
 
-class PathDistribution(Distribution):
-    def __init__(self, path):
+kundi PathDistribution(Distribution):
+    eleza __init__(self, path):
         """Construct a distribution kutoka a path to the metadata directory.
 
         :param path: A pathlib.Path or similar object supporting
@@ -426,82 +426,82 @@ class PathDistribution(Distribution):
         """
         self._path = path
 
-    def read_text(self, filename):
+    eleza read_text(self, filename):
         with suppress(FileNotFoundError, IsADirectoryError, KeyError,
                       NotADirectoryError, PermissionError):
-            return self._path.joinpath(filename).read_text(encoding='utf-8')
+            rudisha self._path.joinpath(filename).read_text(encoding='utf-8')
     read_text.__doc__ = Distribution.read_text.__doc__
 
-    def locate_file(self, path):
-        return self._path.parent / path
+    eleza locate_file(self, path):
+        rudisha self._path.parent / path
 
 
-def distribution(distribution_name):
+eleza distribution(distribution_name):
     """Get the ``Distribution`` instance for the named package.
 
     :param distribution_name: The name of the distribution package as a string.
-    :return: A ``Distribution`` instance (or subclass thereof).
+    :return: A ``Distribution`` instance (or subkundi thereof).
     """
-    return Distribution.from_name(distribution_name)
+    rudisha Distribution.kutoka_name(distribution_name)
 
 
-def distributions(**kwargs):
+eleza distributions(**kwargs):
     """Get all ``Distribution`` instances in the current environment.
 
     :return: An iterable of ``Distribution`` instances.
     """
-    return Distribution.discover(**kwargs)
+    rudisha Distribution.discover(**kwargs)
 
 
-def metadata(distribution_name):
+eleza metadata(distribution_name):
     """Get the metadata for the named package.
 
     :param distribution_name: The name of the distribution package to query.
     :return: An email.Message containing the parsed metadata.
     """
-    return Distribution.from_name(distribution_name).metadata
+    rudisha Distribution.kutoka_name(distribution_name).metadata
 
 
-def version(distribution_name):
+eleza version(distribution_name):
     """Get the version string for the named package.
 
     :param distribution_name: The name of the distribution package to query.
     :return: The version string for the package as defined in the package's
         "Version" metadata key.
     """
-    return distribution(distribution_name).version
+    rudisha distribution(distribution_name).version
 
 
-def entry_points():
+eleza entry_points():
     """Return EntryPoint objects for all installed packages.
 
     :return: EntryPoint objects for all installed packages.
     """
-    eps = itertools.chain.from_iterable(
+    eps = itertools.chain.kutoka_iterable(
         dist.entry_points for dist in distributions())
     by_group = operator.attrgetter('group')
     ordered = sorted(eps, key=by_group)
     grouped = itertools.groupby(ordered, by_group)
-    return {
+    rudisha {
         group: tuple(eps)
         for group, eps in grouped
         }
 
 
-def files(distribution_name):
+eleza files(distribution_name):
     """Return a list of files for the named package.
 
     :param distribution_name: The name of the distribution package to query.
     :return: List of files composing the distribution.
     """
-    return distribution(distribution_name).files
+    rudisha distribution(distribution_name).files
 
 
-def requires(distribution_name):
+eleza requires(distribution_name):
     """
     Return a list of requirements for the named package.
 
     :return: An iterator of requirements, suitable for
     packaging.requirement.Requirement.
     """
-    return distribution(distribution_name).requires
+    rudisha distribution(distribution_name).requires

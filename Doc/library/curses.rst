@@ -35,7 +35,7 @@ Linux and the BSD variants of Unix.
    using one of the system's available encodings.  This example uses the
    system's default encoding::
 
-      import locale
+      agiza locale
       locale.setlocale(locale.LC_ALL, '')
       code = locale.getpreferredencoding()
 
@@ -219,7 +219,7 @@ The module :mod:`curses` defines the following functions:
    multiple devices, and *x*, *y*, *z* are the event's coordinates.  (*z* is
    currently unused.)  *bstate* is an integer value whose bits will be set to
    indicate the type of event, and will be the bitwise OR of one or more of the
-   following constants, where *n* is the button number from 1 to 4:
+   following constants, where *n* is the button number kutoka 1 to 4:
    :const:`BUTTONn_PRESSED`, :const:`BUTTONn_RELEASED`, :const:`BUTTONn_CLICKED`,
    :const:`BUTTONn_DOUBLE_CLICKED`, :const:`BUTTONn_TRIPLE_CLICKED`,
    :const:`BUTTON_SHIFT`, :const:`BUTTON_CTRL`, :const:`BUTTON_ALT`.
@@ -378,7 +378,7 @@ The module :mod:`curses` defines the following functions:
    A pad is like a window, except that it is not restricted by the screen size, and
    is not necessarily associated with a particular part of the screen.  Pads can be
    used when a large window is needed, and only a part of the window will be on the
-   screen at one time.  Automatic refreshes of pads (such as from scrolling or
+   screen at one time.  Automatic refreshes of pads (such as kutoka scrolling or
    echoing of input) do not occur.  The :meth:`~window.refresh` and :meth:`~window.noutrefresh`
    methods of a pad require 6 arguments to specify the part of the pad to be
    displayed and the location on the screen to be used for the display. The
@@ -394,7 +394,7 @@ The module :mod:`curses` defines the following functions:
    Return a new :ref:`window <curses-window-objects>`, whose left-upper corner
    is at  ``(begin_y, begin_x)``, and whose height/width is  *nlines*/*ncols*.
 
-   By default, the window will extend from the  specified position to the lower
+   By default, the window will extend kutoka the  specified position to the lower
    right corner of the screen.
 
 
@@ -557,7 +557,7 @@ The module :mod:`curses` defines the following functions:
 
    Return the value of the Boolean capability corresponding to the terminfo
    capability name *capname* as an integer.  Return the value ``-1`` if *capname* is not a
-   Boolean capability, or ``0`` if it is canceled or absent from the terminal
+   Boolean capability, or ``0`` if it is canceled or absent kutoka the terminal
    description.
 
 
@@ -565,7 +565,7 @@ The module :mod:`curses` defines the following functions:
 
    Return the value of the numeric capability corresponding to the terminfo
    capability name *capname* as an integer.  Return the value ``-2`` if *capname* is not a
-   numeric capability, or ``-1`` if it is canceled or absent from the terminal
+   numeric capability, or ``-1`` if it is canceled or absent kutoka the terminal
    description.
 
 
@@ -573,14 +573,14 @@ The module :mod:`curses` defines the following functions:
 
    Return the value of the string capability corresponding to the terminfo
    capability name *capname* as a bytes object.  Return ``None`` if *capname*
-   is not a terminfo "string capability", or is canceled or absent from the
+   is not a terminfo "string capability", or is canceled or absent kutoka the
    terminal description.
 
 
 .. function:: tparm(str[, ...])
 
    Instantiate the bytes object *str* with the supplied parameters, where *str* should
-   be a parameterized string obtained from the terminfo database.  E.g.
+   be a parameterized string obtained kutoka the terminfo database.  E.g.
    ``tparm(tigetstr("cup"), 5, 3)`` could result in ``b'\033[6;4H'``, the exact
    result depending on terminal type.
 
@@ -592,7 +592,7 @@ The module :mod:`curses` defines the following functions:
 
    The curses library does "line-breakout optimization" by looking for typeahead
    periodically while updating the screen.  If input is found, and it is coming
-   from a tty, the current update is postponed until refresh or doupdate is called
+   kutoka a tty, the current update is postponed until refresh or doupdate is called
    again, allowing faster response to commands typed in advance. This function
    allows specifying a different file descriptor for typeahead checking.
 
@@ -722,13 +722,13 @@ the following methods and attributes:
 
 .. method:: window.attroff(attr)
 
-   Remove attribute *attr* from the "background" set applied to all writes to the
+   Remove attribute *attr* kutoka the "background" set applied to all writes to the
    current window.
 
 
 .. method:: window.attron(attr)
 
-   Add attribute *attr* from the "background" set applied to all writes to the
+   Add attribute *attr* kutoka the "background" set applied to all writes to the
    current window.
 
 
@@ -827,13 +827,13 @@ the following methods and attributes:
 
 .. method:: window.clrtobot()
 
-   Erase from cursor to the end of the window: all lines below the cursor are
+   Erase kutoka cursor to the end of the window: all lines below the cursor are
    deleted, and then the equivalent of :meth:`clrtoeol` is performed.
 
 
 .. method:: window.clrtoeol()
 
-   Erase from cursor to the end of the line.
+   Erase kutoka cursor to the end of the line.
 
 
 .. method:: window.cursyncup()
@@ -878,7 +878,7 @@ the following methods and attributes:
 .. attribute:: window.encoding
 
    Encoding used to encode method arguments (Unicode strings and characters).
-   The encoding attribute is inherited from the parent window when a subwindow
+   The encoding attribute is inherited kutoka the parent window when a subwindow
    is created, for example with :meth:`window.subwin`. By default, the locale
    encoding is used (see :func:`locale.getpreferredencoding`).
 
@@ -942,7 +942,7 @@ the following methods and attributes:
             window.getstr(y, x)
             window.getstr(y, x, n)
 
-   Read a bytes object from the user, with primitive line editing capacity.
+   Read a bytes object kutoka the user, with primitive line editing capacity.
 
 
 .. method:: window.getyx()
@@ -989,7 +989,7 @@ the following methods and attributes:
 .. method:: window.insch(ch[, attr])
             window.insch(y, x, ch[, attr])
 
-   Paint character *ch* at ``(y, x)`` with attributes *attr*, moving the line from
+   Paint character *ch* at ``(y, x)`` with attributes *attr*, moving the line kutoka
    position *x* right by one character.
 
 
@@ -1030,9 +1030,9 @@ the following methods and attributes:
 .. method:: window.instr([n])
             window.instr(y, x[, n])
 
-   Return a bytes object of characters, extracted from the window starting at the
+   Return a bytes object of characters, extracted kutoka the window starting at the
    current cursor position, or at *y*, *x* if specified. Attributes are stripped
-   from the characters.  If *n* is specified, :meth:`instr` returns a string
+   kutoka the characters.  If *n* is specified, :meth:`instr` returns a string
    at most *n* characters long (exclusive of the trailing NUL).
 
 
@@ -1157,7 +1157,7 @@ the following methods and attributes:
    left-hand corner of the rectangle to be displayed in the pad.  *sminrow*,
    *smincol*, *smaxrow*, and *smaxcol* specify the edges of the rectangle to be
    displayed on the screen.  The lower right-hand corner of the rectangle to be
-   displayed in the pad is calculated from the screen coordinates, since the
+   displayed in the pad is calculated kutoka the screen coordinates, since the
    rectangles must be the same size.  Both rectangles must be entirely contained
    within their respective structures.  Negative values of *pminrow*, *pmincol*,
    *sminrow*, or *smincol* are treated as if they were zero.
@@ -1188,7 +1188,7 @@ the following methods and attributes:
 
 .. method:: window.setscrreg(top, bottom)
 
-   Set the scrolling region from line *top* to line *bottom*. All scrolling actions
+   Set the scrolling region kutoka line *top* to line *bottom*. All scrolling actions
    will take place in this region.
 
 
@@ -1216,7 +1216,7 @@ the following methods and attributes:
    Return a sub-window, whose upper-left corner is at ``(begin_y, begin_x)``, and
    whose width/height is *ncols*/*nlines*.
 
-   By default, the sub-window will extend from the specified position to the lower
+   By default, the sub-window will extend kutoka the specified position to the lower
    right corner of the window.
 
 
@@ -1597,8 +1597,8 @@ keys); also, the following keypad mappings are standard:
 | :kbd:`Page Down` | KEY_NPAGE |
 +------------------+-----------+
 
-The following table lists characters from the alternate character set. These are
-inherited from the VT100 terminal, and will generally be  available on software
+The following table lists characters kutoka the alternate character set. These are
+inherited kutoka the VT100 terminal, and will generally be  available on software
 emulations such as X terminals.  When there is no graphic available, curses
 falls back on a crude printable ASCII approximation.
 
@@ -1728,7 +1728,7 @@ The following table lists the predefined colors:
 .. sectionauthor:: Eric Raymond <esr@thyrsus.com>
 
 
-The :mod:`curses.textpad` module provides a :class:`Textbox` class that handles
+The :mod:`curses.textpad` module provides a :class:`Textbox` kundi that handles
 elementary text editing in a curses window, supporting a set of keybindings
 resembling those of Emacs (thus, also of Netscape Navigator, BBedit 6.x,
 FrameMaker, and many other programs).  The module also provides a

@@ -11,8 +11,8 @@
 
 .. testsetup:: *
 
-    from collections import *
-    import itertools
+    kutoka collections agiza *
+    agiza itertools
     __name__ = '<doctest>'
 
 --------------
@@ -24,10 +24,10 @@ Python's general purpose built-in containers, :class:`dict`, :class:`list`,
 =====================   ====================================================================
 :func:`namedtuple`      factory function for creating tuple subclasses with named fields
 :class:`deque`          list-like container with fast appends and pops on either end
-:class:`ChainMap`       dict-like class for creating a single view of multiple mappings
-:class:`Counter`        dict subclass for counting hashable objects
-:class:`OrderedDict`    dict subclass that remembers the order entries were added
-:class:`defaultdict`    dict subclass that calls a factory function to supply missing values
+:class:`ChainMap`       dict-like kundi for creating a single view of multiple mappings
+:class:`Counter`        dict subkundi for counting hashable objects
+:class:`OrderedDict`    dict subkundi that remembers the order entries were added
+:class:`defaultdict`    dict subkundi that calls a factory function to supply missing values
 :class:`UserDict`       wrapper around dictionary objects for easier dict subclassing
 :class:`UserList`       wrapper around list objects for easier list subclassing
 :class:`UserString`     wrapper around string objects for easier string subclassing
@@ -44,11 +44,11 @@ Python's general purpose built-in containers, :class:`dict`, :class:`list`,
 
 .. versionadded:: 3.3
 
-A :class:`ChainMap` class is provided for quickly linking a number of mappings
+A :class:`ChainMap` kundi is provided for quickly linking a number of mappings
 so they can be treated as a single unit.  It is often much faster than creating
 a new dictionary and running multiple :meth:`~dict.update` calls.
 
-The class can be used to simulate nested scopes and is useful in templating.
+The kundi can be used to simulate nested scopes and is useful in templating.
 
 .. class:: ChainMap(*maps)
 
@@ -72,7 +72,7 @@ The class can be used to simulate nested scopes and is useful in templating.
 
     .. attribute:: maps
 
-        A user updateable list of mappings.  The list is ordered from
+        A user updateable list of mappings.  The list is ordered kutoka
         first-searched to last-searched.  It is the only stored state and can
         be modified to change which mappings are searched.  The list should
         always contain at least one mapping.
@@ -148,13 +148,13 @@ This section shows various approaches to working with chained maps.
 
 Example of simulating Python's internal lookup chain::
 
-        import builtins
+        agiza builtins
         pylookup = ChainMap(locals(), globals(), vars(builtins))
 
 Example of letting user specified command-line arguments take precedence over
 environment variables which in turn take precedence over default values::
 
-        import os, argparse
+        agiza os, argparse
 
         defaults = {'color': 'red', 'user': 'guest'}
 
@@ -168,31 +168,31 @@ environment variables which in turn take precedence over default values::
         print(combined['color'])
         print(combined['user'])
 
-Example patterns for using the :class:`ChainMap` class to simulate nested
+Example patterns for using the :class:`ChainMap` kundi to simulate nested
 contexts::
 
         c = ChainMap()        # Create root context
         d = c.new_child()     # Create nested child context
-        e = c.new_child()     # Child of c, independent from d
+        e = c.new_child()     # Child of c, independent kutoka d
         e.maps[0]             # Current context dictionary -- like Python's locals()
         e.maps[-1]            # Root context -- like Python's globals()
         e.parents             # Enclosing context chain -- like Python's nonlocals
 
         d['x'] = 1            # Set value in current context
         d['x']                # Get first key in the chain of contexts
-        del d['x']            # Delete from current context
+        del d['x']            # Delete kutoka current context
         list(d)               # All nested values
         k in d                # Check all nested values
         len(d)                # Number of nested values
         d.items()             # All nested items
         dict(d)               # Flatten into a regular dictionary
 
-The :class:`ChainMap` class only makes updates (writes and deletions) to the
+The :class:`ChainMap` kundi only makes updates (writes and deletions) to the
 first mapping in the chain while lookups will search the full chain.  However,
-if deep writes and deletions are desired, it is easy to make a subclass that
+if deep writes and deletions are desired, it is easy to make a subkundi that
 updates keys found deeper in the chain::
 
-    class DeepChainMap(ChainMap):
+    kundi DeepChainMap(ChainMap):
         'Variant of ChainMap that allows direct updates to inner scopes'
 
         def __setitem__(self, key, value):
@@ -231,7 +231,7 @@ For example::
     Counter({'blue': 3, 'red': 2, 'green': 1})
 
     >>> # Find the ten most common words in Hamlet
-    >>> import re
+    >>> agiza re
     >>> words = re.findall(r'\w+', open('hamlet.txt').read().lower())
     >>> Counter(words).most_common(10)
     [('the', 1143), ('and', 966), ('to', 762), ('of', 669), ('i', 631),
@@ -239,19 +239,19 @@ For example::
 
 .. class:: Counter([iterable-or-mapping])
 
-    A :class:`Counter` is a :class:`dict` subclass for counting hashable objects.
+    A :class:`Counter` is a :class:`dict` subkundi for counting hashable objects.
     It is a collection where elements are stored as dictionary keys
     and their counts are stored as dictionary values.  Counts are allowed to be
     any integer value including zero or negative counts.  The :class:`Counter`
-    class is similar to bags or multisets in other languages.
+    kundi is similar to bags or multisets in other languages.
 
-    Elements are counted from an *iterable* or initialized from another
+    Elements are counted kutoka an *iterable* or initialized kutoka another
     *mapping* (or counter):
 
         >>> c = Counter()                           # a new, empty counter
-        >>> c = Counter('gallahad')                 # a new counter from an iterable
-        >>> c = Counter({'red': 4, 'blue': 2})      # a new counter from a mapping
-        >>> c = Counter(cats=4, dogs=8)             # a new counter from keyword args
+        >>> c = Counter('gallahad')                 # a new counter kutoka an iterable
+        >>> c = Counter({'red': 4, 'blue': 2})      # a new counter kutoka a mapping
+        >>> c = Counter(cats=4, dogs=8)             # a new counter kutoka keyword args
 
     Counter objects have a dictionary interface except that they return a zero
     count for missing items instead of raising a :exc:`KeyError`:
@@ -260,7 +260,7 @@ For example::
         >>> c['bacon']                              # count of a missing element is zero
         0
 
-    Setting a count to zero does not remove an element from a counter.
+    Setting a count to zero does not remove an element kutoka a counter.
     Use ``del`` to remove it entirely:
 
         >>> c['sausage'] = 0                        # counter entry with a zero count
@@ -289,7 +289,7 @@ For example::
 
     .. method:: most_common([n])
 
-        Return a list of the *n* most common elements and their counts from the
+        Return a list of the *n* most common elements and their counts kutoka the
         most common to the least.  If *n* is omitted or ``None``,
         :meth:`most_common` returns *all* elements in the counter.
         Elements with equal counts are ordered in the order first encountered:
@@ -299,7 +299,7 @@ For example::
 
     .. method:: subtract([iterable-or-mapping])
 
-        Elements are subtracted from an *iterable* or from another *mapping*
+        Elements are subtracted kutoka an *iterable* or kutoka another *mapping*
         (or counter).  Like :meth:`dict.update` but subtracts counts instead
         of replacing them.  Both inputs and outputs may be zero or negative.
 
@@ -314,13 +314,13 @@ For example::
     The usual dictionary methods are available for :class:`Counter` objects
     except for two which work differently for counters.
 
-    .. method:: fromkeys(iterable)
+    .. method:: kutokakeys(iterable)
 
-        This class method is not implemented for :class:`Counter` objects.
+        This kundi method is not implemented for :class:`Counter` objects.
 
     .. method:: update([iterable-or-mapping])
 
-        Elements are counted from an *iterable* or added-in from another
+        Elements are counted kutoka an *iterable* or added-in kutoka another
         *mapping* (or counter).  Like :meth:`dict.update` but adds counts
         instead of replacing them.  Also, the *iterable* is expected to be a
         sequence of elements, not a sequence of ``(key, value)`` pairs.
@@ -333,7 +333,7 @@ Common patterns for working with :class:`Counter` objects::
     set(c)                          # convert to a set
     dict(c)                         # convert to a regular dictionary
     c.items()                       # convert to a list of (elem, cnt) pairs
-    Counter(dict(list_of_pairs))    # convert from a list of (elem, cnt) pairs
+    Counter(dict(list_of_pairs))    # convert kutoka a list of (elem, cnt) pairs
     c.most_common()[:-n-1:-1]       # n least common elements
     +c                              # remove zero and negative counts
 
@@ -356,7 +356,7 @@ counts, but the output will exclude results with counts of zero or less.
     Counter({'a': 3, 'b': 2})
 
 Unary addition and subtraction are shortcuts for adding an empty counter
-or subtracting from an empty counter.
+or subtracting kutoka an empty counter.
 
     >>> c = Counter(a=2, b=-4)
     >>> +c
@@ -374,7 +374,7 @@ or subtracting from an empty counter.
     cases needing other types or negative values.  To help with those use cases,
     this section documents the minimum range and type restrictions.
 
-    * The :class:`Counter` class itself is a dictionary subclass with no
+    * The :class:`Counter` kundi itself is a dictionary subkundi with no
       restrictions on its keys and values.  The values are intended to be numbers
       representing counts, but you *could* store anything in the value field.
 
@@ -396,7 +396,7 @@ or subtracting from an empty counter.
 
 .. seealso::
 
-    * `Bag class <https://www.gnu.org/software/smalltalk/manual-base/html_node/Bag.html>`_
+    * `Bag kundi <https://www.gnu.org/software/smalltalk/manual-base/html_node/Bag.html>`_
       in Smalltalk.
 
     * Wikipedia entry for `Multisets <https://en.wikipedia.org/wiki/Multiset>`_.
@@ -420,11 +420,11 @@ or subtracting from an empty counter.
 .. class:: deque([iterable, [maxlen]])
 
     Returns a new deque object initialized left-to-right (using :meth:`append`) with
-    data from *iterable*.  If *iterable* is not specified, the new deque is empty.
+    data kutoka *iterable*.  If *iterable* is not specified, the new deque is empty.
 
     Deques are a generalization of stacks and queues (the name is pronounced "deck"
     and is short for "double-ended queue").  Deques support thread-safe, memory
-    efficient appends and pops from either side of the deque with approximately the
+    efficient appends and pops kutoka either side of the deque with approximately the
     same O(1) performance in either direction.
 
     Though :class:`list` objects support similar operations, they are optimized for
@@ -436,7 +436,7 @@ or subtracting from an empty counter.
     If *maxlen* is not specified or is ``None``, deques may grow to an
     arbitrary length.  Otherwise, the deque is bounded to the specified maximum
     length.  Once a bounded length deque is full, when new items are added, a
-    corresponding number of items are discarded from the opposite end.  Bounded
+    corresponding number of items are discarded kutoka the opposite end.  Bounded
     length deques provide functionality similar to the ``tail`` filter in
     Unix. They are also useful for tracking transactions and other pools of data
     where only the most recent activity is of interest.
@@ -456,7 +456,7 @@ or subtracting from an empty counter.
 
     .. method:: clear()
 
-        Remove all elements from the deque leaving it with length 0.
+        Remove all elements kutoka the deque leaving it with length 0.
 
 
     .. method:: copy()
@@ -475,13 +475,13 @@ or subtracting from an empty counter.
 
     .. method:: extend(iterable)
 
-        Extend the right side of the deque by appending elements from the iterable
+        Extend the right side of the deque by appending elements kutoka the iterable
         argument.
 
 
     .. method:: extendleft(iterable)
 
-        Extend the left side of the deque by appending elements from *iterable*.
+        Extend the left side of the deque by appending elements kutoka *iterable*.
         Note, the series of left appends results in reversing the order of
         elements in the iterable argument.
 
@@ -507,13 +507,13 @@ or subtracting from an empty counter.
 
     .. method:: pop()
 
-        Remove and return an element from the right side of the deque. If no
+        Remove and return an element kutoka the right side of the deque. If no
         elements are present, raises an :exc:`IndexError`.
 
 
     .. method:: popleft()
 
-        Remove and return an element from the left side of the deque. If no
+        Remove and return an element kutoka the left side of the deque. If no
         elements are present, raises an :exc:`IndexError`.
 
 
@@ -562,7 +562,7 @@ Example:
 
 .. doctest::
 
-    >>> from collections import deque
+    >>> kutoka collections agiza deque
     >>> d = deque('ghi')                 # make a new deque with three items
     >>> for elem in d:                   # iterate over the deque's elements
     ...     print(elem.upper())
@@ -603,11 +603,11 @@ Example:
     >>> deque(reversed(d))               # make a new deque in reverse order
     deque(['l', 'k', 'j', 'i', 'h', 'g'])
     >>> d.clear()                        # empty the deque
-    >>> d.pop()                          # cannot pop from an empty deque
+    >>> d.pop()                          # cannot pop kutoka an empty deque
     Traceback (most recent call last):
         File "<pyshell#6>", line 1, in -toplevel-
             d.pop()
-    IndexError: pop from an empty deque
+    IndexError: pop kutoka an empty deque
 
     >>> d.extendleft('abc')              # extendleft() reverses the input order
     >>> d
@@ -644,7 +644,7 @@ added elements by appending to the right and popping to the left::
 
 A `round-robin scheduler
 <https://en.wikipedia.org/wiki/Round-robin_scheduling>`_ can be implemented with
-input iterators stored in a :class:`deque`.  Values are yielded from the active
+input iterators stored in a :class:`deque`.  Values are yielded kutoka the active
 iterator in position zero.  If that iterator is exhausted, it can be removed
 with :meth:`~deque.popleft`; otherwise, it can be cycled back to the end with
 the :meth:`~deque.rotate` method::
@@ -684,10 +684,10 @@ stack manipulations such as ``dup``, ``drop``, ``swap``, ``over``, ``pick``,
 
 .. class:: defaultdict([default_factory[, ...]])
 
-    Returns a new dictionary-like object.  :class:`defaultdict` is a subclass of the
+    Returns a new dictionary-like object.  :class:`defaultdict` is a subkundi of the
     built-in :class:`dict` class.  It overrides one method and adds one writable
     instance variable.  The remaining functionality is the same as for the
-    :class:`dict` class and is not documented here.
+    :class:`dict` kundi and is not documented here.
 
     The first argument provides the initial value for the :attr:`default_factory`
     attribute; it defaults to ``None``. All remaining arguments are treated the same
@@ -711,7 +711,7 @@ stack manipulations such as ``dup``, ``drop``, ``swap``, ``over``, ``pick``,
         propagated unchanged.
 
         This method is called by the :meth:`__getitem__` method of the
-        :class:`dict` class when the requested key is not found; whatever it
+        :class:`dict` kundi when the requested key is not found; whatever it
         returns or raises is then returned or raised by :meth:`__getitem__`.
 
         Note that :meth:`__missing__` is *not* called for any operations besides
@@ -726,7 +726,7 @@ stack manipulations such as ``dup``, ``drop``, ``swap``, ``over``, ``pick``,
     .. attribute:: default_factory
 
         This attribute is used by the :meth:`__missing__` method; it is
-        initialized from the first argument to the constructor, if present, or to
+        initialized kutoka the first argument to the constructor, if present, or to
         ``None``, if absent.
 
 
@@ -771,7 +771,7 @@ languages):
     >>> sorted(d.items())
     [('i', 4), ('m', 1), ('p', 2), ('s', 4)]
 
-When a letter is first encountered, it is missing from the mapping, so the
+When a letter is first encountered, it is missing kutoka the mapping, so the
 :attr:`~defaultdict.default_factory` function calls :func:`int` to supply a default count of
 zero.  The increment operation then builds up the count for each letter.
 
@@ -808,9 +808,9 @@ they add the ability to access fields by name instead of position index.
 
 .. function:: namedtuple(typename, field_names, *, rename=False, defaults=None, module=None)
 
-    Returns a new tuple subclass named *typename*.  The new subclass is used to
+    Returns a new tuple subkundi named *typename*.  The new subkundi is used to
     create tuple-like objects that have fields accessible by attribute lookup as
-    well as being indexable and iterable.  Instances of the subclass also have a
+    well as being indexable and iterable.  Instances of the subkundi also have a
     helpful docstring (with typename and field_names) and a helpful :meth:`__repr__`
     method which lists the tuple contents in a ``name=value`` format.
 
@@ -880,24 +880,24 @@ by the :mod:`csv` or :mod:`sqlite3` modules::
 
     EmployeeRecord = namedtuple('EmployeeRecord', 'name, age, title, department, paygrade')
 
-    import csv
+    agiza csv
     for emp in map(EmployeeRecord._make, csv.reader(open("employees.csv", "rb"))):
         print(emp.name, emp.title)
 
-    import sqlite3
+    agiza sqlite3
     conn = sqlite3.connect('/companydata')
     cursor = conn.cursor()
     cursor.execute('SELECT name, age, title, department, paygrade FROM employees')
     for emp in map(EmployeeRecord._make, cursor.fetchall()):
         print(emp.name, emp.title)
 
-In addition to the methods inherited from tuples, named tuples support
+In addition to the methods inherited kutoka tuples, named tuples support
 three additional methods and two attributes.  To prevent conflicts with
 field names, the method and attribute names start with an underscore.
 
 .. classmethod:: somenamedtuple._make(iterable)
 
-    Class method that makes a new instance from an existing sequence or iterable.
+    Class method that makes a new instance kutoka an existing sequence or iterable.
 
     .. doctest::
 
@@ -941,7 +941,7 @@ field names, the method and attribute names start with an underscore.
 .. attribute:: somenamedtuple._fields
 
     Tuple of strings listing the field names.  Useful for introspection
-    and for creating new named tuple types from existing named tuples.
+    and for creating new named tuple types kutoka existing named tuples.
 
     .. doctest::
 
@@ -984,7 +984,7 @@ a fixed-width print format:
 
 .. doctest::
 
-    >>> class Point(namedtuple('Point', ['x', 'y'])):
+    >>> kundi Point(namedtuple('Point', ['x', 'y'])):
     ...     __slots__ = ()
     ...     @property
     ...     def hypot(self):
@@ -997,11 +997,11 @@ a fixed-width print format:
     Point: x= 3.000  y= 4.000  hypot= 5.000
     Point: x=14.000  y= 0.714  hypot=14.018
 
-The subclass shown above sets ``__slots__`` to an empty tuple.  This helps
+The subkundi shown above sets ``__slots__`` to an empty tuple.  This helps
 keep memory requirements low by preventing the creation of instance dictionaries.
 
 Subclassing is not useful for adding new, stored fields.  Instead, simply
-create a new named tuple type from the :attr:`~somenamedtuple._fields` attribute:
+create a new named tuple type kutoka the :attr:`~somenamedtuple._fields` attribute:
 
     >>> Point3D = namedtuple('Point3D', Point._fields + ('z',))
 
@@ -1023,7 +1023,7 @@ fields:
       tuples.  It also provides an elegant notation using the :keyword:`class`
       keyword::
 
-          class Component(NamedTuple):
+          kundi Component(NamedTuple):
               part_number: int
               weight: float
               description: Optional[str] = None
@@ -1040,11 +1040,11 @@ fields:
 
 Ordered dictionaries are just like regular dictionaries but have some extra
 capabilities relating to ordering operations.  They have become less
-important now that the built-in :class:`dict` class gained the ability
+important now that the built-in :class:`dict` kundi gained the ability
 to remember insertion order (this new behavior became guaranteed in
 Python 3.7).
 
-Some differences from :class:`dict` still remain:
+Some differences kutoka :class:`dict` still remain:
 
 * The regular :class:`dict` was designed to be very good at mapping
   operations.  Tracking insertion order was secondary.
@@ -1071,7 +1071,7 @@ Some differences from :class:`dict` still remain:
 
 .. class:: OrderedDict([items])
 
-    Return an instance of a :class:`dict` subclass that has methods
+    Return an instance of a :class:`dict` subkundi that has methods
     specialized for rearranging dictionary order.
 
     .. versionadded:: 3.1
@@ -1090,7 +1090,7 @@ Some differences from :class:`dict` still remain:
         beginning if *last* is false.  Raises :exc:`KeyError` if the *key* does
         not exist::
 
-            >>> d = OrderedDict.fromkeys('abcde')
+            >>> d = OrderedDict.kutokakeys('abcde')
             >>> d.move_to_end('b')
             >>> ''.join(d.keys())
             'acdeb'
@@ -1127,7 +1127,7 @@ that remembers the order the keys were *last* inserted.
 If a new entry overwrites an existing entry, the
 original insertion position is changed and moved to the end::
 
-    class LastUpdatedOrderedDict(OrderedDict):
+    kundi LastUpdatedOrderedDict(OrderedDict):
         'Store items in the order the keys were last added'
 
         def __setitem__(self, key, value):
@@ -1137,7 +1137,7 @@ original insertion position is changed and moved to the end::
 An :class:`OrderedDict` would also be useful for implementing
 variants of :func:`functools.lru_cache`::
 
-    class LRU(OrderedDict):
+    kundi LRU(OrderedDict):
         'Limit size, evicting the least recently looked-up key when full'
 
         def __init__(self, maxsize=128, /, *args, **kwds):
@@ -1160,8 +1160,8 @@ variants of :func:`functools.lru_cache`::
 -------------------------
 
 The class, :class:`UserDict` acts as a wrapper around dictionary objects.
-The need for this class has been partially supplanted by the ability to
-subclass directly from :class:`dict`; however, this class can be easier
+The need for this kundi has been partially supplanted by the ability to
+subkundi directly kutoka :class:`dict`; however, this kundi can be easier
 to work with because the underlying dictionary is accessible as an
 attribute.
 
@@ -1186,13 +1186,13 @@ attribute.
 :class:`UserList` objects
 -------------------------
 
-This class acts as a wrapper around list objects.  It is a useful base class
-for your own list-like classes which can inherit from them and override
+This kundi acts as a wrapper around list objects.  It is a useful base class
+for your own list-like classes which can inherit kutoka them and override
 existing methods or add new ones.  In this way, one can add new behaviors to
 lists.
 
-The need for this class has been partially supplanted by the ability to
-subclass directly from :class:`list`; however, this class can be easier
+The need for this kundi has been partially supplanted by the ability to
+subkundi directly kutoka :class:`list`; however, this kundi can be easier
 to work with because the underlying list is accessible as an attribute.
 
 .. class:: UserList([list])
@@ -1218,8 +1218,8 @@ instance of the actual implementation class.  To do so, it assumes that the
 constructor can be called with a single parameter, which is a sequence object
 used as a data source.
 
-If a derived class does not wish to comply with this requirement, all of the
-special methods supported by this class will need to be overridden; please
+If a derived kundi does not wish to comply with this requirement, all of the
+special methods supported by this kundi will need to be overridden; please
 consult the sources for information about the methods which need to be provided
 in that case.
 
@@ -1227,8 +1227,8 @@ in that case.
 ---------------------------
 
 The class, :class:`UserString` acts as a wrapper around string objects.
-The need for this class has been partially supplanted by the ability to
-subclass directly from :class:`str`; however, this class can be easier
+The need for this kundi has been partially supplanted by the ability to
+subkundi directly kutoka :class:`str`; however, this kundi can be easier
 to work with because the underlying string is accessible as an
 attribute.
 

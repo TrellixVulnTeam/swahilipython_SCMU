@@ -32,7 +32,7 @@ def _ensure_list(value, fieldname):
         # a string containing comma separated values is okay.  It will
         # be converted to a list by Distribution.finalize_options().
         pass
-    elif not isinstance(value, list):
+    lasivyo not isinstance(value, list):
         # passing a tuple or an iterator perhaps, warn and convert
         typename = type(value).__name__
         msg = f"Warning: '{fieldname}' should be a list, got type '{typename}'"
@@ -265,9 +265,9 @@ Common commands: (see '--help-commands' for more)
             for (key, val) in attrs.items():
                 if hasattr(self.metadata, "set_" + key):
                     getattr(self.metadata, "set_" + key)(val)
-                elif hasattr(self.metadata, key):
+                lasivyo hasattr(self.metadata, key):
                     setattr(self.metadata, key, val)
-                elif hasattr(self, key):
+                lasivyo hasattr(self, key):
                     setattr(self, key, val)
                 else:
                     msg = "Unknown distribution option: %s" % repr(key)
@@ -427,7 +427,7 @@ Common commands: (see '--help-commands' for more)
                 try:
                     if alias:
                         setattr(self, alias, not strtobool(val))
-                    elif opt in ('verbose', 'dry_run'): # ugh!
+                    lasivyo opt in ('verbose', 'dry_run'): # ugh!
                         setattr(self, opt, strtobool(val))
                     else:
                         setattr(self, opt, val)
@@ -699,7 +699,7 @@ Common commands: (see '--help-commands' for more)
                 value = getattr(self.metadata, "get_"+opt)()
                 if opt in ['keywords', 'platforms']:
                     print(','.join(value))
-                elif opt in ('classifiers', 'provides', 'requires',
+                lasivyo opt in ('classifiers', 'provides', 'requires',
                              'obsoletes'):
                     print('\n'.join(value))
                 else:
@@ -902,9 +902,9 @@ Common commands: (see '--help-commands' for more)
                 is_string = isinstance(value, str)
                 if option in neg_opt and is_string:
                     setattr(command_obj, neg_opt[option], not strtobool(value))
-                elif option in bool_opts and is_string:
+                lasivyo option in bool_opts and is_string:
                     setattr(command_obj, option, strtobool(value))
-                elif hasattr(command_obj, option):
+                lasivyo hasattr(command_obj, option):
                     setattr(command_obj, option, value)
                 else:
                     raise DistutilsOptionError(

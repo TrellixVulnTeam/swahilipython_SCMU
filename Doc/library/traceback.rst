@@ -17,7 +17,7 @@ interpreter.
 .. index:: object: traceback
 
 The module uses traceback objects --- this is the object type that is stored in
-the :data:`sys.last_traceback` variable and returned as the third item from
+the :data:`sys.last_traceback` variable and returned as the third item kutoka
 :func:`sys.exc_info`.
 
 The module defines the following functions:
@@ -25,8 +25,8 @@ The module defines the following functions:
 
 .. function:: print_tb(tb, limit=None, file=None)
 
-   Print up to *limit* stack trace entries from traceback object *tb* (starting
-   from the caller's frame) if *limit* is positive.  Otherwise, print the last
+   Print up to *limit* stack trace entries kutoka traceback object *tb* (starting
+   kutoka the caller's frame) if *limit* is positive.  Otherwise, print the last
    ``abs(limit)`` entries.  If *limit* is omitted or ``None``, all entries are
    printed.  If *file* is omitted or ``None``, the output goes to
    ``sys.stderr``; otherwise it should be an open file or file-like object to
@@ -38,8 +38,8 @@ The module defines the following functions:
 
 .. function:: print_exception(etype, value, tb, limit=None, file=None, chain=True)
 
-   Print exception information and stack trace entries from traceback object
-   *tb* to *file*. This differs from :func:`print_tb` in the following
+   Print exception information and stack trace entries kutoka traceback object
+   *tb* to *file*. This differs kutoka :func:`print_tb` in the following
    ways:
 
    * if *tb* is not ``None``, it prints a header ``Traceback (most recent
@@ -60,7 +60,7 @@ The module defines the following functions:
    exception.
 
    .. versionchanged:: 3.5
-      The *etype* argument is ignored and inferred from the type of *value*.
+      The *etype* argument is ignored and inferred kutoka the type of *value*.
 
 
 .. function:: print_exc(limit=None, file=None, chain=True)
@@ -79,7 +79,7 @@ The module defines the following functions:
 
 .. function:: print_stack(f=None, limit=None, file=None)
 
-   Print up to *limit* stack trace entries (starting from the invocation
+   Print up to *limit* stack trace entries (starting kutoka the invocation
    point) if *limit* is positive.  Otherwise, print the last ``abs(limit)``
    entries.  If *limit* is omitted or ``None``, all entries are printed.
    The optional *f* argument can be used to specify an alternate stack frame
@@ -93,7 +93,7 @@ The module defines the following functions:
 .. function:: extract_tb(tb, limit=None)
 
    Return a :class:`StackSummary` object representing a list of "pre-processed"
-   stack trace entries extracted from the traceback object *tb*.  It is useful
+   stack trace entries extracted kutoka the traceback object *tb*.  It is useful
    for alternate formatting of stack traces.  The optional *limit* argument has
    the same meaning as for :func:`print_tb`.  A "pre-processed" stack trace
    entry is a :class:`FrameSummary` object containing attributes
@@ -106,7 +106,7 @@ The module defines the following functions:
 
 .. function:: extract_stack(f=None, limit=None)
 
-   Extract the raw traceback from the current stack frame.  The return value has
+   Extract the raw traceback kutoka the current stack frame.  The return value has
    the same format as for :func:`extract_tb`.  The optional *f* and *limit*
    arguments have the same meaning as for :func:`print_stack`.
 
@@ -141,7 +141,7 @@ The module defines the following functions:
    exactly the same text is printed as does :func:`print_exception`.
 
    .. versionchanged:: 3.5
-      The *etype* argument is ignored and inferred from the type of *value*.
+      The *etype* argument is ignored and inferred kutoka the type of *value*.
 
 
 .. function:: format_exc(limit=None, chain=True)
@@ -168,7 +168,7 @@ The module defines the following functions:
 
 .. function:: walk_stack(f)
 
-   Walk a stack following ``f.f_back`` from the given frame, yielding the frame
+   Walk a stack following ``f.f_back`` kutoka the given frame, yielding the frame
    and line number for each frame. If *f* is ``None``, the current stack is
    used. This helper is used with :meth:`StackSummary.extract`.
 
@@ -188,7 +188,7 @@ The module also defines the following classes:
 
 .. versionadded:: 3.5
 
-:class:`TracebackException` objects are created from actual exceptions to
+:class:`TracebackException` objects are created kutoka actual exceptions to
 capture data for later printing in a lightweight fashion.
 
 .. class:: TracebackException(exc_type, exc_value, exc_traceback, *, limit=None, lookup_lines=True, capture_locals=False)
@@ -208,7 +208,7 @@ capture data for later printing in a lightweight fashion.
 
    .. attribute:: __suppress_context__
 
-      The ``__suppress_context__`` value from the original exception.
+      The ``__suppress_context__`` value kutoka the original exception.
 
    .. attribute:: stack
 
@@ -216,7 +216,7 @@ capture data for later printing in a lightweight fashion.
 
    .. attribute:: exc_type
 
-      The class of the original traceback.
+      The kundi of the original traceback.
 
    .. attribute:: filename
 
@@ -238,7 +238,7 @@ capture data for later printing in a lightweight fashion.
 
       For syntax errors - the compiler error message.
 
-   .. classmethod:: from_exception(exc, *, limit=None, lookup_lines=True, capture_locals=False)
+   .. classmethod:: kutoka_exception(exc, *, limit=None, lookup_lines=True, capture_locals=False)
 
       Capture an exception for later rendering. *limit*, *lookup_lines* and
       *capture_locals* are as for the :class:`StackSummary` class.
@@ -285,11 +285,11 @@ capture data for later printing in a lightweight fashion.
 
    .. classmethod:: extract(frame_gen, *, limit=None, lookup_lines=True, capture_locals=False)
 
-      Construct a :class:`StackSummary` object from a frame generator (such as
+      Construct a :class:`StackSummary` object kutoka a frame generator (such as
       is returned by :func:`~traceback.walk_stack` or
       :func:`~traceback.walk_tb`).
 
-      If *limit* is supplied, only this many frames are taken from *frame_gen*.
+      If *limit* is supplied, only this many frames are taken kutoka *frame_gen*.
       If *lookup_lines* is ``False``, the returned :class:`FrameSummary`
       objects will not have read their lines in yet, making the cost of
       creating the :class:`StackSummary` cheaper (which may be valuable if it
@@ -297,16 +297,16 @@ capture data for later printing in a lightweight fashion.
       local variables in each :class:`FrameSummary` are captured as object
       representations.
 
-   .. classmethod:: from_list(a_list)
+   .. classmethod:: kutoka_list(a_list)
 
-      Construct a :class:`StackSummary` object from a supplied list of
+      Construct a :class:`StackSummary` object kutoka a supplied list of
       :class:`FrameSummary` objects or old-style list of tuples.  Each tuple
       should be a 4-tuple with filename, lineno, name, line as the elements.
 
    .. method:: format()
 
       Returns a list of strings ready for printing.  Each string in the
-      resulting list corresponds to a single frame from the stack.
+      resulting list corresponds to a single frame kutoka the stack.
       Each string ends in a newline; the strings may contain internal
       newlines as well, for those items with source text lines.
 
@@ -347,7 +347,7 @@ less useful than) the standard Python interactive interpreter loop.  For a more
 complete implementation of the interpreter loop, refer to the :mod:`code`
 module. ::
 
-   import sys, traceback
+   agiza sys, traceback
 
    def run_user_code(envdir):
        source = input(">>> ")
@@ -369,7 +369,7 @@ exception and traceback:
 
 .. testcode::
 
-   import sys, traceback
+   agiza sys, traceback
 
    def lumberjack():
        bright_side_of_death()
@@ -447,7 +447,7 @@ The output for the example would look similar to this:
 
 The following example shows the different ways to print and format the stack::
 
-   >>> import traceback
+   >>> agiza traceback
    >>> def another_function():
    ...     lumberstack()
    ...
@@ -476,7 +476,7 @@ This last example demonstrates the final few formatting functions:
 .. doctest::
    :options: +NORMALIZE_WHITESPACE
 
-   >>> import traceback
+   >>> agiza traceback
    >>> traceback.format_list([('spam.py', 3, '<module>', 'spam.eggs()'),
    ...                        ('eggs.py', 42, 'eggs', 'return "bacon"')])
    ['  File "spam.py", line 3, in <module>\n    spam.eggs()\n',

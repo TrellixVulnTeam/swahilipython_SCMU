@@ -15,11 +15,11 @@ STDOUT = subprocess.STDOUT
 DEVNULL = subprocess.DEVNULL
 
 
-class SubprocessStreamProtocol(streams.FlowControlMixin,
+kundi SubprocessStreamProtocol(streams.FlowControlMixin,
                                protocols.SubprocessProtocol):
     """Like StreamReaderProtocol, but for a subprocess."""
 
-    def __init__(self, limit, loop):
+    eleza __init__(self, limit, loop):
         super().__init__(loop=loop)
         self._limit = limit
         self.stdin = self.stdout = self.stderr = None
@@ -28,93 +28,93 @@ class SubprocessStreamProtocol(streams.FlowControlMixin,
         self._pipe_fds = []
         self._stdin_closed = self._loop.create_future()
 
-    def __repr__(self):
+    eleza __repr__(self):
         info = [self.__class__.__name__]
-        if self.stdin is not None:
+        ikiwa self.stdin is not None:
             info.append(f'stdin={self.stdin!r}')
-        if self.stdout is not None:
+        ikiwa self.stdout is not None:
             info.append(f'stdout={self.stdout!r}')
-        if self.stderr is not None:
+        ikiwa self.stderr is not None:
             info.append(f'stderr={self.stderr!r}')
-        return '<{}>'.format(' '.join(info))
+        rudisha '<{}>'.format(' '.join(info))
 
-    def connection_made(self, transport):
+    eleza connection_made(self, transport):
         self._transport = transport
 
         stdout_transport = transport.get_pipe_transport(1)
-        if stdout_transport is not None:
+        ikiwa stdout_transport is not None:
             self.stdout = streams.StreamReader(limit=self._limit,
                                                loop=self._loop)
             self.stdout.set_transport(stdout_transport)
             self._pipe_fds.append(1)
 
         stderr_transport = transport.get_pipe_transport(2)
-        if stderr_transport is not None:
+        ikiwa stderr_transport is not None:
             self.stderr = streams.StreamReader(limit=self._limit,
                                                loop=self._loop)
             self.stderr.set_transport(stderr_transport)
             self._pipe_fds.append(2)
 
         stdin_transport = transport.get_pipe_transport(0)
-        if stdin_transport is not None:
+        ikiwa stdin_transport is not None:
             self.stdin = streams.StreamWriter(stdin_transport,
                                               protocol=self,
                                               reader=None,
                                               loop=self._loop)
 
-    def pipe_data_received(self, fd, data):
-        if fd == 1:
+    eleza pipe_data_received(self, fd, data):
+        ikiwa fd == 1:
             reader = self.stdout
-        elif fd == 2:
+        elikiwa fd == 2:
             reader = self.stderr
         else:
             reader = None
-        if reader is not None:
+        ikiwa reader is not None:
             reader.feed_data(data)
 
-    def pipe_connection_lost(self, fd, exc):
-        if fd == 0:
+    eleza pipe_connection_lost(self, fd, exc):
+        ikiwa fd == 0:
             pipe = self.stdin
-            if pipe is not None:
+            ikiwa pipe is not None:
                 pipe.close()
             self.connection_lost(exc)
-            if exc is None:
+            ikiwa exc is None:
                 self._stdin_closed.set_result(None)
             else:
                 self._stdin_closed.set_exception(exc)
             return
-        if fd == 1:
+        ikiwa fd == 1:
             reader = self.stdout
-        elif fd == 2:
+        elikiwa fd == 2:
             reader = self.stderr
         else:
             reader = None
-        if reader is not None:
-            if exc is None:
+        ikiwa reader is not None:
+            ikiwa exc is None:
                 reader.feed_eof()
             else:
                 reader.set_exception(exc)
 
-        if fd in self._pipe_fds:
+        ikiwa fd in self._pipe_fds:
             self._pipe_fds.remove(fd)
         self._maybe_close_transport()
 
-    def process_exited(self):
+    eleza process_exited(self):
         self._process_exited = True
         self._maybe_close_transport()
 
-    def _maybe_close_transport(self):
-        if len(self._pipe_fds) == 0 and self._process_exited:
+    eleza _maybe_close_transport(self):
+        ikiwa len(self._pipe_fds) == 0 and self._process_exited:
             self._transport.close()
             self._transport = None
 
-    def _get_close_waiter(self, stream):
-        if stream is self.stdin:
-            return self._stdin_closed
+    eleza _get_close_waiter(self, stream):
+        ikiwa stream is self.stdin:
+            rudisha self._stdin_closed
 
 
-class Process:
-    def __init__(self, transport, protocol, loop):
+kundi Process:
+    eleza __init__(self, transport, protocol, loop):
         self._transport = transport
         self._protocol = protocol
         self._loop = loop
@@ -123,86 +123,86 @@ class Process:
         self.stderr = protocol.stderr
         self.pid = transport.get_pid()
 
-    def __repr__(self):
-        return f'<{self.__class__.__name__} {self.pid}>'
+    eleza __repr__(self):
+        rudisha f'<{self.__class__.__name__} {self.pid}>'
 
     @property
-    def returncode(self):
-        return self._transport.get_returncode()
+    eleza returncode(self):
+        rudisha self._transport.get_returncode()
 
-    async def wait(self):
-        """Wait until the process exit and return the process return code."""
-        return await self._transport._wait()
+    async eleza wait(self):
+        """Wait until the process exit and rudisha the process rudisha code."""
+        rudisha await self._transport._wait()
 
-    def send_signal(self, signal):
+    eleza send_signal(self, signal):
         self._transport.send_signal(signal)
 
-    def terminate(self):
+    eleza terminate(self):
         self._transport.terminate()
 
-    def kill(self):
+    eleza kill(self):
         self._transport.kill()
 
-    async def _feed_stdin(self, input):
+    async eleza _feed_stdin(self, input):
         debug = self._loop.get_debug()
         self.stdin.write(input)
-        if debug:
+        ikiwa debug:
             logger.debug(
                 '%r communicate: feed stdin (%s bytes)', self, len(input))
         try:
             await self.stdin.drain()
         except (BrokenPipeError, ConnectionResetError) as exc:
             # communicate() ignores BrokenPipeError and ConnectionResetError
-            if debug:
+            ikiwa debug:
                 logger.debug('%r communicate: stdin got %r', self, exc)
 
-        if debug:
+        ikiwa debug:
             logger.debug('%r communicate: close stdin', self)
         self.stdin.close()
 
-    async def _noop(self):
-        return None
+    async eleza _noop(self):
+        rudisha None
 
-    async def _read_stream(self, fd):
+    async eleza _read_stream(self, fd):
         transport = self._transport.get_pipe_transport(fd)
-        if fd == 2:
+        ikiwa fd == 2:
             stream = self.stderr
         else:
             assert fd == 1
             stream = self.stdout
-        if self._loop.get_debug():
-            name = 'stdout' if fd == 1 else 'stderr'
+        ikiwa self._loop.get_debug():
+            name = 'stdout' ikiwa fd == 1 else 'stderr'
             logger.debug('%r communicate: read %s', self, name)
         output = await stream.read()
-        if self._loop.get_debug():
-            name = 'stdout' if fd == 1 else 'stderr'
+        ikiwa self._loop.get_debug():
+            name = 'stdout' ikiwa fd == 1 else 'stderr'
             logger.debug('%r communicate: close %s', self, name)
         transport.close()
-        return output
+        rudisha output
 
-    async def communicate(self, input=None):
-        if input is not None:
+    async eleza communicate(self, input=None):
+        ikiwa input is not None:
             stdin = self._feed_stdin(input)
         else:
             stdin = self._noop()
-        if self.stdout is not None:
+        ikiwa self.stdout is not None:
             stdout = self._read_stream(1)
         else:
             stdout = self._noop()
-        if self.stderr is not None:
+        ikiwa self.stderr is not None:
             stderr = self._read_stream(2)
         else:
             stderr = self._noop()
         stdin, stdout, stderr = await tasks.gather(stdin, stdout, stderr,
                                                    loop=self._loop)
         await self.wait()
-        return (stdout, stderr)
+        rudisha (stdout, stderr)
 
 
-async def create_subprocess_shell(cmd, stdin=None, stdout=None, stderr=None,
+async eleza create_subprocess_shell(cmd, stdin=None, stdout=None, stderr=None,
                                   loop=None, limit=streams._DEFAULT_LIMIT,
                                   **kwds):
-    if loop is None:
+    ikiwa loop is None:
         loop = events.get_event_loop()
     else:
         warnings.warn("The loop argument is deprecated since Python 3.8 "
@@ -217,13 +217,13 @@ async def create_subprocess_shell(cmd, stdin=None, stdout=None, stderr=None,
         protocol_factory,
         cmd, stdin=stdin, stdout=stdout,
         stderr=stderr, **kwds)
-    return Process(transport, protocol, loop)
+    rudisha Process(transport, protocol, loop)
 
 
-async def create_subprocess_exec(program, *args, stdin=None, stdout=None,
+async eleza create_subprocess_exec(program, *args, stdin=None, stdout=None,
                                  stderr=None, loop=None,
                                  limit=streams._DEFAULT_LIMIT, **kwds):
-    if loop is None:
+    ikiwa loop is None:
         loop = events.get_event_loop()
     else:
         warnings.warn("The loop argument is deprecated since Python 3.8 "
@@ -238,4 +238,4 @@ async def create_subprocess_exec(program, *args, stdin=None, stdout=None,
         program, *args,
         stdin=stdin, stdout=stdout,
         stderr=stderr, **kwds)
-    return Process(transport, protocol, loop)
+    rudisha Process(transport, protocol, loop)

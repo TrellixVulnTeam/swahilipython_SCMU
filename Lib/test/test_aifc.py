@@ -8,14 +8,14 @@ agiza sys
 agiza struct
 agiza aifc
 
-class AifcTest(audiotests.AudioWriteTests,
+kundi AifcTest(audiotests.AudioWriteTests,
                audiotests.AudioTestsWithSourceFile):
     module = aifc
     close_fd = True
     test_unseekable_read = None
 
 
-class AifcPCM8Test(AifcTest, unittest.TestCase):
+kundi AifcPCM8Test(AifcTest, unittest.TestCase):
     sndfilename = 'pluck-pcm8.aiff'
     sndfilenframes = 3307
     nchannels = 2
@@ -24,7 +24,7 @@ class AifcPCM8Test(AifcTest, unittest.TestCase):
     nframes = 48
     comptype = b'NONE'
     compname = b'not compressed'
-    frames = bytes.fromhex("""\
+    frames = bytes.kutokahex("""\
       02FF 4B00 3104 8008 CB06 4803 BF01 03FE B8FA B4F3 29EB 1AE6 \
       EDE4 C6E2 0EE0 EFE0 57E2 FBE8 13EF D8F7 97FB F5FC 08FB DFFB \
       11FA 3EFB BCFC 66FF CF04 4309 C10E 5112 EE17 8216 7F14 8012 \
@@ -32,7 +32,7 @@ class AifcPCM8Test(AifcTest, unittest.TestCase):
       """)
 
 
-class AifcPCM16Test(AifcTest, unittest.TestCase):
+kundi AifcPCM16Test(AifcTest, unittest.TestCase):
     sndfilename = 'pluck-pcm16.aiff'
     sndfilenframes = 3307
     nchannels = 2
@@ -41,7 +41,7 @@ class AifcPCM16Test(AifcTest, unittest.TestCase):
     nframes = 48
     comptype = b'NONE'
     compname = b'not compressed'
-    frames = bytes.fromhex("""\
+    frames = bytes.kutokahex("""\
       022EFFEA 4B5D00F6 311804EA 80E10840 CBE106B1 48A903F5 BFE601B2 036CFE7B \
       B858FA3E B4B1F34F 299AEBCA 1A5DE6DA EDFAE491 C628E275 0E09E0B5 EF2AE029 \
       5758E271 FB35E83F 1376EF86 D82BF727 9790FB76 F5FAFC0F 0867FB9C DF30FB43 \
@@ -51,7 +51,7 @@ class AifcPCM16Test(AifcTest, unittest.TestCase):
       """)
 
 
-class AifcPCM24Test(AifcTest, unittest.TestCase):
+kundi AifcPCM24Test(AifcTest, unittest.TestCase):
     sndfilename = 'pluck-pcm24.aiff'
     sndfilenframes = 3307
     nchannels = 2
@@ -60,7 +60,7 @@ class AifcPCM24Test(AifcTest, unittest.TestCase):
     nframes = 48
     comptype = b'NONE'
     compname = b'not compressed'
-    frames = bytes.fromhex("""\
+    frames = bytes.kutokahex("""\
       022D65FFEB9D 4B5A0F00FA54 3113C304EE2B 80DCD6084303 \
       CBDEC006B261 48A99803F2F8 BFE82401B07D 036BFBFE7B5D \
       B85756FA3EC9 B4B055F3502B 299830EBCB62 1A5CA7E6D99A \
@@ -76,7 +76,7 @@ class AifcPCM24Test(AifcTest, unittest.TestCase):
       """)
 
 
-class AifcPCM32Test(AifcTest, unittest.TestCase):
+kundi AifcPCM32Test(AifcTest, unittest.TestCase):
     sndfilename = 'pluck-pcm32.aiff'
     sndfilenframes = 3307
     nchannels = 2
@@ -85,7 +85,7 @@ class AifcPCM32Test(AifcTest, unittest.TestCase):
     nframes = 48
     comptype = b'NONE'
     compname = b'not compressed'
-    frames = bytes.fromhex("""\
+    frames = bytes.kutokahex("""\
       022D65BCFFEB9D92 4B5A0F8000FA549C 3113C34004EE2BC0 80DCD680084303E0 \
       CBDEC0C006B26140 48A9980003F2F8FC BFE8248001B07D92 036BFB60FE7B5D34 \
       B8575600FA3EC920 B4B05500F3502BC0 29983000EBCB6240 1A5CA7A0E6D99A60 \
@@ -101,7 +101,7 @@ class AifcPCM32Test(AifcTest, unittest.TestCase):
       """)
 
 
-class AifcULAWTest(AifcTest, unittest.TestCase):
+kundi AifcULAWTest(AifcTest, unittest.TestCase):
     sndfilename = 'pluck-ulaw.aifc'
     sndfilenframes = 3307
     nchannels = 2
@@ -110,7 +110,7 @@ class AifcULAWTest(AifcTest, unittest.TestCase):
     nframes = 48
     comptype = b'ulaw'
     compname = b''
-    frames = bytes.fromhex("""\
+    frames = bytes.kutokahex("""\
       022CFFE8 497C0104 307C04DC 8284083C CB84069C 497C03DC BE8401AC 036CFE74 \
       B684FA24 B684F344 2A7CEC04 19FCE704 EE04E504 C584E204 0E3CE104 EF04DF84 \
       557CE204 FB24E804 12FCEF04 D784F744 9684FB64 F5C4FC24 083CFBA4 DF84FB24 \
@@ -118,11 +118,11 @@ class AifcULAWTest(AifcTest, unittest.TestCase):
       EF0416FC 828415FC 7D7C13FC 828412FC 497C0EBC 517C0DBC F0040F3C CD840FFC \
       E5040CBC 617C0A3C 08BC0A3C 2C7C0B3C 517C0E3C 8A8410FC B6840EBC 457C0A3C \
       """)
-    if sys.byteorder != 'big':
+    ikiwa sys.byteorder != 'big':
         frames = byteswap(frames, 2)
 
 
-class AifcALAWTest(AifcTest, unittest.TestCase):
+kundi AifcALAWTest(AifcTest, unittest.TestCase):
     sndfilename = 'pluck-alaw.aifc'
     sndfilenframes = 3307
     nchannels = 2
@@ -131,7 +131,7 @@ class AifcALAWTest(AifcTest, unittest.TestCase):
     nframes = 48
     comptype = b'alaw'
     compname = b''
-    frames = bytes.fromhex("""\
+    frames = bytes.kutokahex("""\
       0230FFE8 4A0000F8 310004E0 82000840 CB0006A0 4A0003F0 BE0001A8 0370FE78 \
       BA00FA20 B600F340 2900EB80 1A80E680 ED80E480 C700E280 0E40E080 EF80E080 \
       5600E280 FB20E880 1380EF80 D900F740 9600FB60 F5C0FC10 0840FBA0 DF00FB20 \
@@ -139,19 +139,19 @@ class AifcALAWTest(AifcTest, unittest.TestCase):
       EE801780 82001680 7E001480 82001280 4A000EC0 52000DC0 EF800F40 CF000FC0 \
       E4800CC0 62000A40 08C00A40 2B000B40 52000E40 8A001180 B6000EC0 46000A40 \
       """)
-    if sys.byteorder != 'big':
+    ikiwa sys.byteorder != 'big':
         frames = byteswap(frames, 2)
 
 
-class AifcMiscTest(audiotests.AudioMiscTests, unittest.TestCase):
+kundi AifcMiscTest(audiotests.AudioMiscTests, unittest.TestCase):
     module = aifc
 
-    def test_skipunknown(self):
+    eleza test_skipunknown(self):
         #Issue 2245
         #This file contains chunk types aifc doesn't recognize.
         self.f = aifc.open(findfile('Sine-1000Hz-300ms.aif'))
 
-    def test_close_opened_files_on_error(self):
+    eleza test_close_opened_files_on_error(self):
         non_aifc_file = findfile('pluck-pcm8.wav', subdir='audiodata')
         with check_no_resource_warning(self):
             with self.assertRaises(aifc.Error):
@@ -166,7 +166,7 @@ class AifcMiscTest(audiotests.AudioMiscTests, unittest.TestCase):
                 with self.assertRaises(RuntimeError):
                     self.fout = aifc.open(TESTFN, 'wb')
 
-    def test_params_added(self):
+    eleza test_params_added(self):
         f = self.f = aifc.open(TESTFN, 'wb')
         f.aiff()
         f.setparams((1, 1, 1, 1, b'NONE', b''))
@@ -181,7 +181,7 @@ class AifcMiscTest(audiotests.AudioMiscTests, unittest.TestCase):
         self.assertEqual(params.comptype, f.getcomptype())
         self.assertEqual(params.compname, f.getcompname())
 
-    def test_write_header_comptype_sampwidth(self):
+    eleza test_write_header_comptype_sampwidth(self):
         for comptype in (b'ULAW', b'ulaw', b'ALAW', b'alaw', b'G722'):
             fout = aifc.open(io.BytesIO(), 'wb')
             fout.setnchannels(1)
@@ -191,7 +191,7 @@ class AifcMiscTest(audiotests.AudioMiscTests, unittest.TestCase):
             self.assertEqual(fout.getsampwidth(), 2)
             fout.initfp(None)
 
-    def test_write_markers_values(self):
+    eleza test_write_markers_values(self):
         fout = aifc.open(io.BytesIO(), 'wb')
         self.assertEqual(fout.getmarkers(), None)
         fout.setmark(1, 0, b'foo1')
@@ -200,7 +200,7 @@ class AifcMiscTest(audiotests.AudioMiscTests, unittest.TestCase):
         self.assertEqual(fout.getmarkers(), [(1, 1, b'foo2')])
         fout.initfp(None)
 
-    def test_read_markers(self):
+    eleza test_read_markers(self):
         fout = self.fout = aifc.open(TESTFN, 'wb')
         fout.aiff()
         fout.setparams((1, 1, 1, 1, b'NONE', b''))
@@ -215,14 +215,14 @@ class AifcMiscTest(audiotests.AudioMiscTests, unittest.TestCase):
         self.assertRaises(aifc.Error, f.getmark, 3)
 
 
-class AIFCLowLevelTest(unittest.TestCase):
+kundi AIFCLowLevelTest(unittest.TestCase):
 
-    def test_read_written(self):
-        def read_written(self, what):
+    eleza test_read_written(self):
+        eleza read_written(self, what):
             f = io.BytesIO()
             getattr(aifc, '_write_' + what)(f, x)
             f.seek(0)
-            return getattr(aifc, '_read_' + what)(f)
+            rudisha getattr(aifc, '_read_' + what)(f)
         for x in (-1, 0, 0.1, 1):
             self.assertEqual(read_written(x, 'float'), x)
         for x in (float('NaN'), float('Inf')):
@@ -238,33 +238,33 @@ class AIFCLowLevelTest(unittest.TestCase):
         for x in (0, 1, 0xFFFF):
             self.assertEqual(read_written(x, 'ushort'), x)
 
-    def test_read_raises(self):
+    eleza test_read_raises(self):
         f = io.BytesIO(b'\x00')
         self.assertRaises(EOFError, aifc._read_ulong, f)
         self.assertRaises(EOFError, aifc._read_long, f)
         self.assertRaises(EOFError, aifc._read_ushort, f)
         self.assertRaises(EOFError, aifc._read_short, f)
 
-    def test_write_long_string_raises(self):
+    eleza test_write_long_string_raises(self):
         f = io.BytesIO()
         with self.assertRaises(ValueError):
             aifc._write_string(f, b'too long' * 255)
 
-    def test_wrong_open_mode(self):
+    eleza test_wrong_open_mode(self):
         with self.assertRaises(aifc.Error):
             aifc.open(TESTFN, 'wrong_mode')
 
-    def test_read_wrong_form(self):
+    eleza test_read_wrong_form(self):
         b1 = io.BytesIO(b'WRNG' + struct.pack('>L', 0))
         b2 = io.BytesIO(b'FORM' + struct.pack('>L', 4) + b'WRNG')
         self.assertRaises(aifc.Error, aifc.open, b1)
         self.assertRaises(aifc.Error, aifc.open, b2)
 
-    def test_read_no_comm_chunk(self):
+    eleza test_read_no_comm_chunk(self):
         b = io.BytesIO(b'FORM' + struct.pack('>L', 4) + b'AIFF')
         self.assertRaises(aifc.Error, aifc.open, b)
 
-    def test_read_no_ssnd_chunk(self):
+    eleza test_read_no_ssnd_chunk(self):
         b = b'FORM' + struct.pack('>L', 4) + b'AIFC'
         b += b'COMM' + struct.pack('>LhlhhLL', 38, 1, 0, 8,
                                    0x4000 | 12, 11025<<18, 0)
@@ -273,14 +273,14 @@ class AIFCLowLevelTest(unittest.TestCase):
                                                 ' missing'):
             aifc.open(io.BytesIO(b))
 
-    def test_read_wrong_compression_type(self):
+    eleza test_read_wrong_compression_type(self):
         b = b'FORM' + struct.pack('>L', 4) + b'AIFC'
         b += b'COMM' + struct.pack('>LhlhhLL', 23, 1, 0, 8,
                                    0x4000 | 12, 11025<<18, 0)
         b += b'WRNG' + struct.pack('B', 0)
         self.assertRaises(aifc.Error, aifc.open, io.BytesIO(b))
 
-    def test_read_wrong_number_of_channels(self):
+    eleza test_read_wrong_number_of_channels(self):
         for nchannels in 0, -1:
             b = b'FORM' + struct.pack('>L', 4) + b'AIFC'
             b += b'COMM' + struct.pack('>LhlhhLL', 38, nchannels, 0, 8,
@@ -290,7 +290,7 @@ class AIFCLowLevelTest(unittest.TestCase):
             with self.assertRaisesRegex(aifc.Error, 'bad # of channels'):
                 aifc.open(io.BytesIO(b))
 
-    def test_read_wrong_sample_width(self):
+    eleza test_read_wrong_sample_width(self):
         for sampwidth in 0, -1:
             b = b'FORM' + struct.pack('>L', 4) + b'AIFC'
             b += b'COMM' + struct.pack('>LhlhhLL', 38, 1, 0, sampwidth,
@@ -300,7 +300,7 @@ class AIFCLowLevelTest(unittest.TestCase):
             with self.assertRaisesRegex(aifc.Error, 'bad sample width'):
                 aifc.open(io.BytesIO(b))
 
-    def test_read_wrong_marks(self):
+    eleza test_read_wrong_marks(self):
         b = b'FORM' + struct.pack('>L', 4) + b'AIFF'
         b += b'COMM' + struct.pack('>LhlhhLL', 18, 1, 0, 8,
                                    0x4000 | 12, 11025<<18, 0)
@@ -312,7 +312,7 @@ class AIFCLowLevelTest(unittest.TestCase):
                                           'only 0 markers instead of 1')
         self.assertEqual(f.getmarkers(), None)
 
-    def test_read_comm_kludge_compname_even(self):
+    eleza test_read_comm_kludge_compname_even(self):
         b = b'FORM' + struct.pack('>L', 4) + b'AIFC'
         b += b'COMM' + struct.pack('>LhlhhLL', 18, 1, 0, 8,
                                    0x4000 | 12, 11025<<18, 0)
@@ -323,7 +323,7 @@ class AIFCLowLevelTest(unittest.TestCase):
         self.assertEqual(str(cm.warning), 'Warning: bad COMM chunk size')
         self.assertEqual(f.getcompname(), b'even')
 
-    def test_read_comm_kludge_compname_odd(self):
+    eleza test_read_comm_kludge_compname_odd(self):
         b = b'FORM' + struct.pack('>L', 4) + b'AIFC'
         b += b'COMM' + struct.pack('>LhlhhLL', 18, 1, 0, 8,
                                    0x4000 | 12, 11025<<18, 0)
@@ -334,7 +334,7 @@ class AIFCLowLevelTest(unittest.TestCase):
         self.assertEqual(str(cm.warning), 'Warning: bad COMM chunk size')
         self.assertEqual(f.getcompname(), b'odd')
 
-    def test_write_params_raises(self):
+    eleza test_write_params_raises(self):
         fout = aifc.open(io.BytesIO(), 'wb')
         wrong_params = (0, 0, 0, 0, b'WRNG', '')
         self.assertRaises(aifc.Error, fout.setparams, wrong_params)
@@ -361,7 +361,7 @@ class AIFCLowLevelTest(unittest.TestCase):
         self.assertRaises(aifc.Error, fout.aiff)
         self.assertRaises(aifc.Error, fout.aifc)
 
-    def test_write_params_singles(self):
+    eleza test_write_params_singles(self):
         fout = aifc.open(io.BytesIO(), 'wb')
         fout.aifc()
         fout.setnchannels(1)
@@ -380,7 +380,7 @@ class AIFCLowLevelTest(unittest.TestCase):
         self.assertEqual(fout.getnframes(), 4)
         self.assertEqual(fout.tell(), 4)
 
-    def test_write_params_bunch(self):
+    eleza test_write_params_bunch(self):
         fout = aifc.open(io.BytesIO(), 'wb')
         fout.aifc()
         p = (1, 2, 3, 4, b'NONE', b'name')
@@ -388,7 +388,7 @@ class AIFCLowLevelTest(unittest.TestCase):
         self.assertEqual(fout.getparams(), p)
         fout.initfp(None)
 
-    def test_write_header_raises(self):
+    eleza test_write_header_raises(self):
         fout = aifc.open(io.BytesIO(), 'wb')
         self.assertRaises(aifc.Error, fout.close)
         fout = aifc.open(io.BytesIO(), 'wb')
@@ -399,7 +399,7 @@ class AIFCLowLevelTest(unittest.TestCase):
         fout.setsampwidth(1)
         self.assertRaises(aifc.Error, fout.close)
 
-    def test_write_header_comptype_raises(self):
+    eleza test_write_header_comptype_raises(self):
         for comptype in (b'ULAW', b'ulaw', b'ALAW', b'alaw', b'G722'):
             fout = aifc.open(io.BytesIO(), 'wb')
             fout.setsampwidth(1)
@@ -407,7 +407,7 @@ class AIFCLowLevelTest(unittest.TestCase):
             self.assertRaises(aifc.Error, fout.close)
             fout.initfp(None)
 
-    def test_write_markers_raises(self):
+    eleza test_write_markers_raises(self):
         fout = aifc.open(io.BytesIO(), 'wb')
         self.assertRaises(aifc.Error, fout.setmark, 0, 0, b'')
         self.assertRaises(aifc.Error, fout.setmark, 1, -1, b'')
@@ -415,7 +415,7 @@ class AIFCLowLevelTest(unittest.TestCase):
         self.assertRaises(aifc.Error, fout.getmark, 1)
         fout.initfp(None)
 
-    def test_write_aiff_by_extension(self):
+    eleza test_write_aiff_by_extension(self):
         sampwidth = 2
         filename = TESTFN + '.aiff'
         fout = self.fout = aifc.open(filename, 'wb')
@@ -429,5 +429,5 @@ class AIFCLowLevelTest(unittest.TestCase):
         f.close()
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

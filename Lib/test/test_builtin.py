@@ -36,42 +36,42 @@ except ImportError:
     pty = signal = None
 
 
-class Squares:
+kundi Squares:
 
-    def __init__(self, max):
+    eleza __init__(self, max):
         self.max = max
         self.sofar = []
 
-    def __len__(self): return len(self.sofar)
+    eleza __len__(self): rudisha len(self.sofar)
 
-    def __getitem__(self, i):
-        if not 0 <= i < self.max: raise IndexError
+    eleza __getitem__(self, i):
+        ikiwa not 0 <= i < self.max: raise IndexError
         n = len(self.sofar)
         while n <= i:
             self.sofar.append(n*n)
             n += 1
-        return self.sofar[i]
+        rudisha self.sofar[i]
 
-class StrSquares:
+kundi StrSquares:
 
-    def __init__(self, max):
+    eleza __init__(self, max):
         self.max = max
         self.sofar = []
 
-    def __len__(self):
-        return len(self.sofar)
+    eleza __len__(self):
+        rudisha len(self.sofar)
 
-    def __getitem__(self, i):
-        if not 0 <= i < self.max:
+    eleza __getitem__(self, i):
+        ikiwa not 0 <= i < self.max:
             raise IndexError
         n = len(self.sofar)
         while n <= i:
             self.sofar.append(str(n*n))
             n += 1
-        return self.sofar[i]
+        rudisha self.sofar[i]
 
-class BitBucket:
-    def write(self, line):
+kundi BitBucket:
+    eleza write(self, line):
         pass
 
 test_conv_no_sign = [
@@ -118,23 +118,23 @@ test_conv_sign = [
         (chr(0x200), ValueError),
 ]
 
-class TestFailingBool:
-    def __bool__(self):
+kundi TestFailingBool:
+    eleza __bool__(self):
         raise RuntimeError
 
-class TestFailingIter:
-    def __iter__(self):
+kundi TestFailingIter:
+    eleza __iter__(self):
         raise RuntimeError
 
-def filter_char(arg):
-    return ord(arg) > ord("d")
+eleza filter_char(arg):
+    rudisha ord(arg) > ord("d")
 
-def map_char(arg):
-    return chr(ord(arg)+1)
+eleza map_char(arg):
+    rudisha chr(ord(arg)+1)
 
-class BuiltinTest(unittest.TestCase):
+kundi BuiltinTest(unittest.TestCase):
     # Helper to check picklability
-    def check_iter_pickle(self, it, seq, proto):
+    eleza check_iter_pickle(self, it, seq, proto):
         itorg = it
         d = pickle.dumps(it, proto)
         it = pickle.loads(d)
@@ -151,7 +151,7 @@ class BuiltinTest(unittest.TestCase):
         it = pickle.loads(d)
         self.assertEqual(list(it), seq[1:])
 
-    def test_agiza(self):
+    eleza test_agiza(self):
         __import__('sys')
         __import__('time')
         __import__('string')
@@ -165,11 +165,11 @@ class BuiltinTest(unittest.TestCase):
         with self.assertWarns(ImportWarning):
             self.assertRaises(ImportError, __import__, '',
                               {'__package__': None, '__spec__': None, '__name__': '__main__'},
-                              locals={}, fromlist=('foo',), level=1)
+                              locals={}, kutokalist=('foo',), level=1)
         # embedded null character
         self.assertRaises(ModuleNotFoundError, __import__, 'string\x00')
 
-    def test_abs(self):
+    eleza test_abs(self):
         # int
         self.assertEqual(abs(0), 0)
         self.assertEqual(abs(1234), 1234)
@@ -187,12 +187,12 @@ class BuiltinTest(unittest.TestCase):
         # other
         self.assertRaises(TypeError, abs)
         self.assertRaises(TypeError, abs, None)
-        class AbsClass(object):
-            def __abs__(self):
-                return -5
+        kundi AbsClass(object):
+            eleza __abs__(self):
+                rudisha -5
         self.assertEqual(abs(AbsClass()), -5)
 
-    def test_all(self):
+    eleza test_all(self):
         self.assertEqual(all([2, 4, 6]), True)
         self.assertEqual(all([2, None, 6]), False)
         self.assertRaises(RuntimeError, all, [2, TestFailingBool(), 6])
@@ -207,7 +207,7 @@ class BuiltinTest(unittest.TestCase):
         S = [50, 40, 60]
         self.assertEqual(all(x > 42 for x in S), False)
 
-    def test_any(self):
+    eleza test_any(self):
         self.assertEqual(any([None, None, None]), False)
         self.assertEqual(any([None, 4, None]), True)
         self.assertRaises(RuntimeError, any, [None, TestFailingBool(), 6])
@@ -222,7 +222,7 @@ class BuiltinTest(unittest.TestCase):
         S = [10, 20, 30]
         self.assertEqual(any(x > 42 for x in S), False)
 
-    def test_ascii(self):
+    eleza test_ascii(self):
         self.assertEqual(ascii(''), '\'\'')
         self.assertEqual(ascii(0), '0')
         self.assertEqual(ascii(()), '()')
@@ -235,7 +235,7 @@ class BuiltinTest(unittest.TestCase):
         a[0] = a
         self.assertEqual(ascii(a), '{0: {...}}')
         # Advanced checks for unicode strings
-        def _check_uni(s):
+        eleza _check_uni(s):
             self.assertEqual(ascii(s), repr(s))
         _check_uni("'")
         _check_uni('"')
@@ -257,22 +257,22 @@ class BuiltinTest(unittest.TestCase):
         self.assertEqual(ascii(s),
             r"""'\'\x00"\n\r\t abcd\x85\xe9\U00012fff\ud800\U0001d121xxx.'""")
 
-    def test_neg(self):
+    eleza test_neg(self):
         x = -sys.maxsize-1
         self.assertTrue(isinstance(x, int))
         self.assertEqual(-x, sys.maxsize+1)
 
-    def test_callable(self):
+    eleza test_callable(self):
         self.assertTrue(callable(len))
         self.assertFalse(callable("a"))
         self.assertTrue(callable(callable))
         self.assertTrue(callable(lambda x, y: x + y))
         self.assertFalse(callable(__builtins__))
-        def f(): pass
+        eleza f(): pass
         self.assertTrue(callable(f))
 
-        class C1:
-            def meth(self): pass
+        kundi C1:
+            eleza meth(self): pass
         self.assertTrue(callable(C1))
         c = C1()
         self.assertTrue(callable(c.meth))
@@ -286,17 +286,17 @@ class BuiltinTest(unittest.TestCase):
         del c.__call__
         self.assertFalse(callable(c))
 
-        class C2(object):
-            def __call__(self): pass
+        kundi C2(object):
+            eleza __call__(self): pass
         c2 = C2()
         self.assertTrue(callable(c2))
         c2.__call__ = None
         self.assertTrue(callable(c2))
-        class C3(C2): pass
+        kundi C3(C2): pass
         c3 = C3()
         self.assertTrue(callable(c3))
 
-    def test_chr(self):
+    eleza test_chr(self):
         self.assertEqual(chr(32), ' ')
         self.assertEqual(chr(65), 'A')
         self.assertEqual(chr(97), 'a')
@@ -318,42 +318,42 @@ class BuiltinTest(unittest.TestCase):
         self.assertRaises(ValueError, chr, 0x00110000)
         self.assertRaises((OverflowError, ValueError), chr, 2**32)
 
-    def test_cmp(self):
+    eleza test_cmp(self):
         self.assertTrue(not hasattr(builtins, "cmp"))
 
-    def test_compile(self):
-        compile('print(1)\n', '', 'exec')
+    eleza test_compile(self):
+        compile('andika(1)\n', '', 'exec')
         bom = b'\xef\xbb\xbf'
-        compile(bom + b'print(1)\n', '', 'exec')
+        compile(bom + b'andika(1)\n', '', 'exec')
         compile(source='pass', filename='?', mode='exec')
         compile(dont_inherit=0, filename='tmp', source='0', mode='eval')
         compile('pass', '?', dont_inherit=1, mode='exec')
         compile(memoryview(b"text"), "name", "exec")
         self.assertRaises(TypeError, compile)
-        self.assertRaises(ValueError, compile, 'print(42)\n', '<string>', 'badmode')
-        self.assertRaises(ValueError, compile, 'print(42)\n', '<string>', 'single', 0xff)
+        self.assertRaises(ValueError, compile, 'andika(42)\n', '<string>', 'badmode')
+        self.assertRaises(ValueError, compile, 'andika(42)\n', '<string>', 'single', 0xff)
         self.assertRaises(ValueError, compile, chr(0), 'f', 'exec')
         self.assertRaises(TypeError, compile, 'pass', '?', 'exec',
                           mode='eval', source='0', filename='tmp')
-        compile('print("\xe5")\n', '', 'exec')
+        compile('andika("\xe5")\n', '', 'exec')
         self.assertRaises(ValueError, compile, chr(0), 'f', 'exec')
         self.assertRaises(ValueError, compile, str('a = 1'), 'f', 'bad')
 
         # test the optimize argument
 
-        codestr = '''def f():
+        codestr = '''eleza f():
         """doc"""
         debug_enabled = False
-        if __debug__:
+        ikiwa __debug__:
             debug_enabled = True
         try:
             assert False
         except AssertionError:
-            return (True, f.__doc__, debug_enabled, __debug__)
+            rudisha (True, f.__doc__, debug_enabled, __debug__)
         else:
-            return (False, f.__doc__, debug_enabled, __debug__)
+            rudisha (False, f.__doc__, debug_enabled, __debug__)
         '''
-        def f(): """doc"""
+        eleza f(): """doc"""
         values = [(-1, __debug__, f.__doc__, __debug__, __debug__),
                   (0, True, 'doc', True, True),
                   (1, False, 'doc', False, False),
@@ -370,7 +370,7 @@ class BuiltinTest(unittest.TestCase):
                 rv = ns['f']()
                 self.assertEqual(rv, tuple(expected))
 
-    def test_compile_top_level_await(self):
+    eleza test_compile_top_level_await(self):
         """Test whether code some top level await can be compiled.
 
         Make sure it compiles only with the PyCF_ALLOW_TOP_LEVEL_AWAIT flag
@@ -380,7 +380,7 @@ class BuiltinTest(unittest.TestCase):
         """
 
         # helper function just to check we can run top=level async-for
-        async def arange(n):
+        async eleza arange(n):
             for i in range(n):
                 yield i
 
@@ -421,13 +421,13 @@ class BuiltinTest(unittest.TestCase):
         finally:
             asyncio.set_event_loop_policy(policy)
 
-    def test_compile_async_generator(self):
+    eleza test_compile_async_generator(self):
         """
         With the PyCF_ALLOW_TOP_LEVEL_AWAIT flag added in 3.8, we want to
         make sure AsyncGenerators are still properly not marked with the
         CO_COROUTINE flag.
         """
-        code = dedent("""async def ticker():
+        code = dedent("""async eleza ticker():
                 for i in range(10):
                     yield i
                     await asyncio.sleep(0)""")
@@ -437,12 +437,12 @@ class BuiltinTest(unittest.TestCase):
         exec(co, glob)
         self.assertEqual(type(glob['ticker']()), AsyncGeneratorType)
 
-    def test_delattr(self):
+    eleza test_delattr(self):
         sys.spam = 1
         delattr(sys, 'spam')
         self.assertRaises(TypeError, delattr)
 
-    def test_dir(self):
+    eleza test_dir(self):
         # dir(wrong number of arguments)
         self.assertRaises(TypeError, dir, 42, 42)
 
@@ -454,7 +454,7 @@ class BuiltinTest(unittest.TestCase):
         self.assertIn('exit', dir(sys))
 
         # dir(module_with_invalid__dict__)
-        class Foo(types.ModuleType):
+        kundi Foo(types.ModuleType):
             __dict__ = 8
         f = Foo("foo")
         self.assertRaises(TypeError, dir, f)
@@ -464,8 +464,8 @@ class BuiltinTest(unittest.TestCase):
         self.assertNotIn("__mro__", dir(str))
 
         # dir(obj)
-        class Foo(object):
-            def __init__(self):
+        kundi Foo(object):
+            eleza __init__(self):
                 self.x = 7
                 self.y = 8
                 self.z = 9
@@ -473,40 +473,40 @@ class BuiltinTest(unittest.TestCase):
         self.assertIn("y", dir(f))
 
         # dir(obj_no__dict__)
-        class Foo(object):
+        kundi Foo(object):
             __slots__ = []
         f = Foo()
         self.assertIn("__repr__", dir(f))
 
         # dir(obj_no__class__with__dict__)
         # (an ugly trick to cause getattr(f, "__class__") to fail)
-        class Foo(object):
+        kundi Foo(object):
             __slots__ = ["__class__", "__dict__"]
-            def __init__(self):
+            eleza __init__(self):
                 self.bar = "wow"
         f = Foo()
         self.assertNotIn("__repr__", dir(f))
         self.assertIn("bar", dir(f))
 
         # dir(obj_using __dir__)
-        class Foo(object):
-            def __dir__(self):
-                return ["kan", "ga", "roo"]
+        kundi Foo(object):
+            eleza __dir__(self):
+                rudisha ["kan", "ga", "roo"]
         f = Foo()
         self.assertTrue(dir(f) == ["ga", "kan", "roo"])
 
         # dir(obj__dir__tuple)
-        class Foo(object):
-            def __dir__(self):
-                return ("b", "c", "a")
+        kundi Foo(object):
+            eleza __dir__(self):
+                rudisha ("b", "c", "a")
         res = dir(Foo())
         self.assertIsInstance(res, list)
         self.assertTrue(res == ["a", "b", "c"])
 
         # dir(obj__dir__not_sequence)
-        class Foo(object):
-            def __dir__(self):
-                return 7
+        kundi Foo(object):
+            eleza __dir__(self):
+                rudisha 7
         f = Foo()
         self.assertRaises(TypeError, dir, f)
 
@@ -519,7 +519,7 @@ class BuiltinTest(unittest.TestCase):
         # test that object has a __dir__()
         self.assertEqual(sorted([].__dir__()), dir([]))
 
-    def test_divmod(self):
+    eleza test_divmod(self):
         self.assertEqual(divmod(12, 7), (1, 5))
         self.assertEqual(divmod(-12, 7), (-2, 2))
         self.assertEqual(divmod(12, -7), (-2, -2))
@@ -537,7 +537,7 @@ class BuiltinTest(unittest.TestCase):
 
         self.assertRaises(TypeError, divmod)
 
-    def test_eval(self):
+    eleza test_eval(self):
         self.assertEqual(eval('1+1'), 2)
         self.assertEqual(eval(' 1+1\n'), 2)
         globals = {'a': 1, 'b': 2}
@@ -555,22 +555,22 @@ class BuiltinTest(unittest.TestCase):
         self.assertRaises(TypeError, eval, ())
         self.assertRaises(SyntaxError, eval, bom[:2] + b'a')
 
-        class X:
-            def __getitem__(self, key):
+        kundi X:
+            eleza __getitem__(self, key):
                 raise ValueError
         self.assertRaises(ValueError, eval, "foo", {}, X())
 
-    def test_general_eval(self):
+    eleza test_general_eval(self):
         # Tests that general mappings can be used for the locals argument
 
-        class M:
+        kundi M:
             "Test mapping interface versus possible calls kutoka eval()."
-            def __getitem__(self, key):
-                if key == 'a':
-                    return 12
+            eleza __getitem__(self, key):
+                ikiwa key == 'a':
+                    rudisha 12
                 raise KeyError
-            def keys(self):
-                return list('xyz')
+            eleza keys(self):
+                rudisha list('xyz')
 
         m = M()
         g = globals()
@@ -580,20 +580,20 @@ class BuiltinTest(unittest.TestCase):
         self.assertEqual(eval('globals()', g, m), g)
         self.assertEqual(eval('locals()', g, m), m)
         self.assertRaises(TypeError, eval, 'a', m)
-        class A:
+        kundi A:
             "Non-mapping"
             pass
         m = A()
         self.assertRaises(TypeError, eval, 'a', g, m)
 
         # Verify that dict subclasses work as well
-        class D(dict):
-            def __getitem__(self, key):
-                if key == 'a':
-                    return 12
-                return dict.__getitem__(self, key)
-            def keys(self):
-                return list('xyz')
+        kundi D(dict):
+            eleza __getitem__(self, key):
+                ikiwa key == 'a':
+                    rudisha 12
+                rudisha dict.__getitem__(self, key)
+            eleza keys(self):
+                rudisha list('xyz')
 
         d = D()
         self.assertEqual(eval('a', g, d), 12)
@@ -606,13 +606,13 @@ class BuiltinTest(unittest.TestCase):
         eval('[locals() for i in (2,3)]', g, d)
         eval('[locals() for i in (2,3)]', g, collections.UserDict())
 
-        class SpreadSheet:
+        kundi SpreadSheet:
             "Sample application showing nested, calculated lookups."
             _cells = {}
-            def __setitem__(self, key, formula):
+            eleza __setitem__(self, key, formula):
                 self._cells[key] = formula
-            def __getitem__(self, key):
-                return eval(self._cells[key], globals(), self)
+            eleza __getitem__(self, key):
+                rudisha eval(self._cells[key], globals(), self)
 
         ss = SpreadSheet()
         ss['a1'] = '5'
@@ -622,22 +622,22 @@ class BuiltinTest(unittest.TestCase):
 
         # Verify that dir() catches a non-list returned by eval
         # SF bug #1004669
-        class C:
-            def __getitem__(self, item):
+        kundi C:
+            eleza __getitem__(self, item):
                 raise KeyError(item)
-            def keys(self):
-                return 1 # used to be 'a' but that's no longer an error
+            eleza keys(self):
+                rudisha 1 # used to be 'a' but that's no longer an error
         self.assertRaises(TypeError, eval, 'dir()', globals(), C())
 
-    def test_exec(self):
+    eleza test_exec(self):
         g = {}
         exec('z = 1', g)
-        if '__builtins__' in g:
+        ikiwa '__builtins__' in g:
             del g['__builtins__']
         self.assertEqual(g, {'z': 1})
 
         exec('z = 1+1', g)
-        if '__builtins__' in g:
+        ikiwa '__builtins__' in g:
             del g['__builtins__']
         self.assertEqual(g, {'z': 2})
         g = {}
@@ -647,14 +647,14 @@ class BuiltinTest(unittest.TestCase):
             warnings.filterwarnings("ignore", "global statement",
                     module="<string>")
             exec('global a; a = 1; b = 2', g, l)
-        if '__builtins__' in g:
+        ikiwa '__builtins__' in g:
             del g['__builtins__']
-        if '__builtins__' in l:
+        ikiwa '__builtins__' in l:
             del l['__builtins__']
         self.assertEqual((g, l), ({'a': 1}, {'b': 2}))
 
-    def test_exec_globals(self):
-        code = compile("print('Hello World!')", "", "exec")
+    eleza test_exec_globals(self):
+        code = compile("andika('Hello World!')", "", "exec")
         # no builtin function
         self.assertRaisesRegex(NameError, "name 'print' is not defined",
                                exec, code, {'__builtins__': {}})
@@ -663,23 +663,23 @@ class BuiltinTest(unittest.TestCase):
                           exec, code, {'__builtins__': 123})
 
         # no __build_class__ function
-        code = compile("class A: pass", "", "exec")
+        code = compile("kundi A: pass", "", "exec")
         self.assertRaisesRegex(NameError, "__build_class__ not found",
                                exec, code, {'__builtins__': {}})
 
-        class frozendict_error(Exception):
+        kundi frozendict_error(Exception):
             pass
 
-        class frozendict(dict):
-            def __setitem__(self, key, value):
+        kundi frozendict(dict):
+            eleza __setitem__(self, key, value):
                 raise frozendict_error("frozendict is readonly")
 
         # read-only builtins
-        if isinstance(__builtins__, types.ModuleType):
+        ikiwa isinstance(__builtins__, types.ModuleType):
             frozen_builtins = frozendict(__builtins__.__dict__)
         else:
             frozen_builtins = frozendict(__builtins__)
-        code = compile("__builtins__['superglobal']=2; print(superglobal)", "test", "exec")
+        code = compile("__builtins__['superglobal']=2; andika(superglobal)", "test", "exec")
         self.assertRaises(frozendict_error,
                           exec, code, {'__builtins__': frozen_builtins})
 
@@ -689,34 +689,34 @@ class BuiltinTest(unittest.TestCase):
         self.assertRaises(frozendict_error,
                           exec, code, namespace)
 
-    def test_exec_redirected(self):
+    eleza test_exec_redirected(self):
         savestdout = sys.stdout
         sys.stdout = None # Whatever that cannot flush()
         try:
-            # Used to raise SystemError('error return without exception set')
+            # Used to raise SystemError('error rudisha without exception set')
             exec('a')
         except NameError:
             pass
         finally:
             sys.stdout = savestdout
 
-    def test_filter(self):
+    eleza test_filter(self):
         self.assertEqual(list(filter(lambda c: 'a' <= c <= 'z', 'Hello World')), list('elloorld'))
         self.assertEqual(list(filter(None, [1, 'hello', [], [3], '', None, 9, 0])), [1, 'hello', [3], 9])
         self.assertEqual(list(filter(lambda x: x > 0, [1, -3, 9, 0, 2])), [1, 9, 2])
         self.assertEqual(list(filter(None, Squares(10))), [1, 4, 9, 16, 25, 36, 49, 64, 81])
         self.assertEqual(list(filter(lambda x: x%2, Squares(10))), [1, 9, 25, 49, 81])
-        def identity(item):
-            return 1
+        eleza identity(item):
+            rudisha 1
         filter(identity, Squares(5))
         self.assertRaises(TypeError, filter)
-        class BadSeq(object):
-            def __getitem__(self, index):
-                if index<4:
-                    return 42
+        kundi BadSeq(object):
+            eleza __getitem__(self, index):
+                ikiwa index<4:
+                    rudisha 42
                 raise ValueError
         self.assertRaises(ValueError, list, filter(lambda x: x, BadSeq()))
-        def badfunc():
+        eleza badfunc():
             pass
         self.assertRaises(TypeError, list, filter(badfunc, range(5)))
 
@@ -725,13 +725,13 @@ class BuiltinTest(unittest.TestCase):
         self.assertEqual(list(filter(lambda x: x>=3, (1, 2, 3, 4))), [3, 4])
         self.assertRaises(TypeError, list, filter(42, (1, 2)))
 
-    def test_filter_pickle(self):
+    eleza test_filter_pickle(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             f1 = filter(filter_char, "abcdeabcde")
             f2 = filter(filter_char, "abcdeabcde")
             self.check_iter_pickle(f1, list(f2), proto)
 
-    def test_getattr(self):
+    eleza test_getattr(self):
         self.assertTrue(getattr(sys, 'stdout') is sys.stdout)
         self.assertRaises(TypeError, getattr, sys, 1)
         self.assertRaises(TypeError, getattr, sys, 1, "foo")
@@ -740,7 +740,7 @@ class BuiltinTest(unittest.TestCase):
         # unicode surrogates are not encodable to the default encoding (utf8)
         self.assertRaises(AttributeError, getattr, 1, "\uDAD1\uD51E")
 
-    def test_hasattr(self):
+    eleza test_hasattr(self):
         self.assertTrue(hasattr(sys, 'stdout'))
         self.assertRaises(TypeError, hasattr, sys, 1)
         self.assertRaises(TypeError, hasattr)
@@ -748,41 +748,41 @@ class BuiltinTest(unittest.TestCase):
 
         # Check that hasattr propagates all exceptions outside of
         # AttributeError.
-        class A:
-            def __getattr__(self, what):
+        kundi A:
+            eleza __getattr__(self, what):
                 raise SystemExit
         self.assertRaises(SystemExit, hasattr, A(), "b")
-        class B:
-            def __getattr__(self, what):
+        kundi B:
+            eleza __getattr__(self, what):
                 raise ValueError
         self.assertRaises(ValueError, hasattr, B(), "b")
 
-    def test_hash(self):
+    eleza test_hash(self):
         hash(None)
         self.assertEqual(hash(1), hash(1))
         self.assertEqual(hash(1), hash(1.0))
         hash('spam')
         self.assertEqual(hash('spam'), hash(b'spam'))
         hash((0,1,2,3))
-        def f(): pass
+        eleza f(): pass
         self.assertRaises(TypeError, hash, [])
         self.assertRaises(TypeError, hash, {})
-        # Bug 1536021: Allow hash to return long objects
-        class X:
-            def __hash__(self):
-                return 2**100
+        # Bug 1536021: Allow hash to rudisha long objects
+        kundi X:
+            eleza __hash__(self):
+                rudisha 2**100
         self.assertEqual(type(hash(X())), int)
-        class Z(int):
-            def __hash__(self):
-                return self
+        kundi Z(int):
+            eleza __hash__(self):
+                rudisha self
         self.assertEqual(hash(Z(42)), hash(42))
 
-    def test_hex(self):
+    eleza test_hex(self):
         self.assertEqual(hex(16), '0x10')
         self.assertEqual(hex(-16), '-0x10')
         self.assertRaises(TypeError, hex, {})
 
-    def test_id(self):
+    eleza test_id(self):
         id(None)
         id(1)
         id(1.0)
@@ -791,9 +791,9 @@ class BuiltinTest(unittest.TestCase):
         id([0,1,2,3])
         id({'spam': 1, 'eggs': 2, 'ham': 3})
 
-    # Test input() later, alphabetized as if it were raw_input
+    # Test input() later, alphabetized as ikiwa it were raw_input
 
-    def test_iter(self):
+    eleza test_iter(self):
         self.assertRaises(TypeError, iter)
         self.assertRaises(TypeError, iter, 42, 42)
         lists = [("1", "2"), ["1", "2"], "12"]
@@ -803,12 +803,12 @@ class BuiltinTest(unittest.TestCase):
             self.assertEqual(next(i), '2')
             self.assertRaises(StopIteration, next, i)
 
-    def test_isinstance(self):
-        class C:
+    eleza test_isinstance(self):
+        kundi C:
             pass
-        class D(C):
+        kundi D(C):
             pass
-        class E:
+        kundi E:
             pass
         c = C()
         d = D()
@@ -821,12 +821,12 @@ class BuiltinTest(unittest.TestCase):
         self.assertRaises(TypeError, isinstance, E, 'foo')
         self.assertRaises(TypeError, isinstance)
 
-    def test_issubclass(self):
-        class C:
+    eleza test_issubclass(self):
+        kundi C:
             pass
-        class D(C):
+        kundi D(C):
             pass
-        class E:
+        kundi E:
             pass
         c = C()
         d = D()
@@ -838,41 +838,41 @@ class BuiltinTest(unittest.TestCase):
         self.assertRaises(TypeError, issubclass, E, 'foo')
         self.assertRaises(TypeError, issubclass)
 
-    def test_len(self):
+    eleza test_len(self):
         self.assertEqual(len('123'), 3)
         self.assertEqual(len(()), 0)
         self.assertEqual(len((1, 2, 3, 4)), 4)
         self.assertEqual(len([1, 2, 3, 4]), 4)
         self.assertEqual(len({}), 0)
         self.assertEqual(len({'a':1, 'b': 2}), 2)
-        class BadSeq:
-            def __len__(self):
+        kundi BadSeq:
+            eleza __len__(self):
                 raise ValueError
         self.assertRaises(ValueError, len, BadSeq())
-        class InvalidLen:
-            def __len__(self):
-                return None
+        kundi InvalidLen:
+            eleza __len__(self):
+                rudisha None
         self.assertRaises(TypeError, len, InvalidLen())
-        class FloatLen:
-            def __len__(self):
-                return 4.5
+        kundi FloatLen:
+            eleza __len__(self):
+                rudisha 4.5
         self.assertRaises(TypeError, len, FloatLen())
-        class NegativeLen:
-            def __len__(self):
-                return -10
+        kundi NegativeLen:
+            eleza __len__(self):
+                rudisha -10
         self.assertRaises(ValueError, len, NegativeLen())
-        class HugeLen:
-            def __len__(self):
-                return sys.maxsize + 1
+        kundi HugeLen:
+            eleza __len__(self):
+                rudisha sys.maxsize + 1
         self.assertRaises(OverflowError, len, HugeLen())
-        class HugeNegativeLen:
-            def __len__(self):
-                return -sys.maxsize-10
+        kundi HugeNegativeLen:
+            eleza __len__(self):
+                rudisha -sys.maxsize-10
         self.assertRaises(ValueError, len, HugeNegativeLen())
-        class NoLenMethod(object): pass
+        kundi NoLenMethod(object): pass
         self.assertRaises(TypeError, len, NoLenMethod())
 
-    def test_map(self):
+    eleza test_map(self):
         self.assertEqual(
             list(map(lambda x: x*x, range(1,4))),
             [1, 4, 9]
@@ -880,8 +880,8 @@ class BuiltinTest(unittest.TestCase):
         try:
             kutoka math agiza sqrt
         except ImportError:
-            def sqrt(x):
-                return pow(x, 0.5)
+            eleza sqrt(x):
+                rudisha pow(x, 0.5)
         self.assertEqual(
             list(map(lambda x: list(map(sqrt, x)), [[16, 4], [81, 9]])),
             [[4.0, 2.0], [9.0, 3.0]]
@@ -891,10 +891,10 @@ class BuiltinTest(unittest.TestCase):
             [10, 4, 6]
         )
 
-        def plus(*v):
+        eleza plus(*v):
             accu = 0
             for i in v: accu = accu + i
-            return accu
+            rudisha accu
         self.assertEqual(
             list(map(plus, [1, 3, 7])),
             [1, 3, 7]
@@ -911,34 +911,34 @@ class BuiltinTest(unittest.TestCase):
             list(map(int, Squares(10))),
             [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
         )
-        def Max(a, b):
-            if a is None:
-                return b
-            if b is None:
-                return a
-            return max(a, b)
+        eleza Max(a, b):
+            ikiwa a is None:
+                rudisha b
+            ikiwa b is None:
+                rudisha a
+            rudisha max(a, b)
         self.assertEqual(
             list(map(Max, Squares(3), Squares(2))),
             [0, 1]
         )
         self.assertRaises(TypeError, map)
         self.assertRaises(TypeError, map, lambda x: x, 42)
-        class BadSeq:
-            def __iter__(self):
+        kundi BadSeq:
+            eleza __iter__(self):
                 raise ValueError
                 yield None
         self.assertRaises(ValueError, list, map(lambda x: x, BadSeq()))
-        def badfunc(x):
+        eleza badfunc(x):
             raise RuntimeError
         self.assertRaises(RuntimeError, list, map(badfunc, range(5)))
 
-    def test_map_pickle(self):
+    eleza test_map_pickle(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             m1 = map(map_char, "Is this the real life?")
             m2 = map(map_char, "Is this the real life?")
             self.check_iter_pickle(m1, list(m2), proto)
 
-    def test_max(self):
+    eleza test_max(self):
         self.assertEqual(max('123123'), '3')
         self.assertEqual(max(1, 2, 3), 3)
         self.assertEqual(max((1, 2, 3, 1, 2, 3)), 3)
@@ -951,8 +951,8 @@ class BuiltinTest(unittest.TestCase):
         self.assertRaises(TypeError, max)
         self.assertRaises(TypeError, max, 42)
         self.assertRaises(ValueError, max, ())
-        class BadSeq:
-            def __getitem__(self, index):
+        kundi BadSeq:
+            eleza __getitem__(self, index):
                 raise ValueError
         self.assertRaises(ValueError, max, BadSeq())
 
@@ -992,7 +992,7 @@ class BuiltinTest(unittest.TestCase):
         self.assertEqual(max(data, key=f),
                          sorted(reversed(data), key=f)[-1])
 
-    def test_min(self):
+    eleza test_min(self):
         self.assertEqual(min('123123'), '1')
         self.assertEqual(min(1, 2, 3), 1)
         self.assertEqual(min((1, 2, 3, 1, 2, 3)), 1)
@@ -1005,8 +1005,8 @@ class BuiltinTest(unittest.TestCase):
         self.assertRaises(TypeError, min)
         self.assertRaises(TypeError, min, 42)
         self.assertRaises(ValueError, min, ())
-        class BadSeq:
-            def __getitem__(self, index):
+        kundi BadSeq:
+            eleza __getitem__(self, index):
                 raise ValueError
         self.assertRaises(ValueError, min, BadSeq())
 
@@ -1046,7 +1046,7 @@ class BuiltinTest(unittest.TestCase):
         self.assertEqual(min(data, key=f),
                          sorted(data, key=f)[0])
 
-    def test_next(self):
+    eleza test_next(self):
         it = iter(range(2))
         self.assertEqual(next(it), 0)
         self.assertEqual(next(it), 1)
@@ -1054,17 +1054,17 @@ class BuiltinTest(unittest.TestCase):
         self.assertRaises(StopIteration, next, it)
         self.assertEqual(next(it, 42), 42)
 
-        class Iter(object):
-            def __iter__(self):
-                return self
-            def __next__(self):
+        kundi Iter(object):
+            eleza __iter__(self):
+                rudisha self
+            eleza __next__(self):
                 raise StopIteration
 
         it = iter(Iter())
         self.assertEqual(next(it, 42), 42)
         self.assertRaises(StopIteration, next, it)
 
-        def gen():
+        eleza gen():
             yield 1
             return
 
@@ -1073,12 +1073,12 @@ class BuiltinTest(unittest.TestCase):
         self.assertRaises(StopIteration, next, it)
         self.assertEqual(next(it, 42), 42)
 
-    def test_oct(self):
+    eleza test_oct(self):
         self.assertEqual(oct(100), '0o144')
         self.assertEqual(oct(-100), '-0o144')
         self.assertRaises(TypeError, oct, ())
 
-    def write_testfile(self):
+    eleza write_testfile(self):
         # NB the first 4 lines are also used to test input, below
         fp = open(TESTFN, 'w')
         self.addCleanup(unlink, TESTFN)
@@ -1090,7 +1090,7 @@ class BuiltinTest(unittest.TestCase):
             fp.write('XXX'*100)
             fp.write('YYY'*100)
 
-    def test_open(self):
+    eleza test_open(self):
         self.write_testfile()
         fp = open(TESTFN, 'r')
         with fp:
@@ -1106,14 +1106,14 @@ class BuiltinTest(unittest.TestCase):
         self.assertRaises(ValueError, open, b'a\x00b')
 
     @unittest.skipIf(sys.flags.utf8_mode, "utf-8 mode is enabled")
-    def test_open_default_encoding(self):
+    eleza test_open_default_encoding(self):
         old_environ = dict(os.environ)
         try:
             # try to get a user preferred encoding different than the current
             # locale encoding to check that open() uses the current locale
             # encoding and not the user preferred encoding
             for key in ('LC_ALL', 'LANG', 'LC_CTYPE'):
-                if key in os.environ:
+                ikiwa key in os.environ:
                     del os.environ[key]
 
             self.write_testfile()
@@ -1125,12 +1125,12 @@ class BuiltinTest(unittest.TestCase):
             os.environ.clear()
             os.environ.update(old_environ)
 
-    def test_open_non_inheritable(self):
+    eleza test_open_non_inheritable(self):
         fileobj = open(__file__)
         with fileobj:
             self.assertFalse(os.get_inheritable(fileobj.fileno()))
 
-    def test_ord(self):
+    eleza test_ord(self):
         self.assertEqual(ord(' '), 32)
         self.assertEqual(ord('A'), 65)
         self.assertEqual(ord('a'), 97)
@@ -1157,7 +1157,7 @@ class BuiltinTest(unittest.TestCase):
         self.assertEqual(ord("\U0010FFFE"), 0x0010FFFE)
         self.assertEqual(ord("\U0010FFFF"), 0x0010FFFF)
 
-    def test_pow(self):
+    eleza test_pow(self):
         self.assertEqual(pow(0,0), 1)
         self.assertEqual(pow(0,1), 0)
         self.assertEqual(pow(1,0), 1)
@@ -1191,7 +1191,7 @@ class BuiltinTest(unittest.TestCase):
         for x in 2, 2.0:
             for y in 10, 10.0:
                 for z in 1000, 1000.0:
-                    if isinstance(x, float) or \
+                    ikiwa isinstance(x, float) or \
                        isinstance(y, float) or \
                        isinstance(z, float):
                         self.assertRaises(TypeError, pow, x, y, z)
@@ -1219,7 +1219,7 @@ class BuiltinTest(unittest.TestCase):
         self.assertEqual(mod10(2, 6), 4)
         self.assertEqual(mod10(exp=6, base=2), 4)
 
-    def test_input(self):
+    eleza test_input(self):
         self.write_testfile()
         fp = open(TESTFN, 'r')
         savestdin = sys.stdin
@@ -1256,7 +1256,7 @@ class BuiltinTest(unittest.TestCase):
 
     # test_int(): see test_int.py for tests of built-in function int().
 
-    def test_repr(self):
+    eleza test_repr(self):
         self.assertEqual(repr(''), '\'\'')
         self.assertEqual(repr(0), '0')
         self.assertEqual(repr(()), '()')
@@ -1269,7 +1269,7 @@ class BuiltinTest(unittest.TestCase):
         a[0] = a
         self.assertEqual(repr(a), '{0: {...}}')
 
-    def test_round(self):
+    eleza test_round(self):
         self.assertEqual(round(0.0), 0.0)
         self.assertEqual(type(round(0.0)), int)
         self.assertEqual(round(1.0), 1.0)
@@ -1326,11 +1326,11 @@ class BuiltinTest(unittest.TestCase):
         self.assertRaises(TypeError, round)
 
         # test generic rounding delegation for reals
-        class TestRound:
-            def __round__(self):
-                return 23
+        kundi TestRound:
+            eleza __round__(self):
+                rudisha 23
 
-        class TestNoRound:
+        kundi TestNoRound:
             pass
 
         self.assertEqual(round(TestRound()), 23)
@@ -1349,14 +1349,14 @@ class BuiltinTest(unittest.TestCase):
     #
     #   http://sources.redhat.com/bugzilla/show_bug.cgi?id=5350
     #
-    # We skip this test on Linux/alpha if it would fail.
+    # We skip this test on Linux/alpha ikiwa it would fail.
     linux_alpha = (platform.system().startswith('Linux') and
                    platform.machine().startswith('alpha'))
     system_round_bug = round(5e15+1) != 5e15+1
     @unittest.skipIf(linux_alpha and system_round_bug,
                      "test will fail;  failure is probably due to a "
                      "buggy system round function")
-    def test_round_large(self):
+    eleza test_round_large(self):
         # Issue #1869: integral floats should remain unchanged
         self.assertEqual(round(5e15-1), 5e15-1)
         self.assertEqual(round(5e15), 5e15)
@@ -1364,7 +1364,7 @@ class BuiltinTest(unittest.TestCase):
         self.assertEqual(round(5e15+2), 5e15+2)
         self.assertEqual(round(5e15+3), 5e15+3)
 
-    def test_bug_27936(self):
+    eleza test_bug_27936(self):
         # Verify that ndigits=None means the same as passing in no argument
         for x in [1234,
                   1234.56,
@@ -1373,7 +1373,7 @@ class BuiltinTest(unittest.TestCase):
             self.assertEqual(round(x, None), round(x))
             self.assertEqual(type(round(x, None)), type(round(x)))
 
-    def test_setattr(self):
+    eleza test_setattr(self):
         setattr(sys, 'spam', 1)
         self.assertEqual(sys.spam, 1)
         self.assertRaises(TypeError, setattr, sys, 1, 'spam')
@@ -1381,7 +1381,7 @@ class BuiltinTest(unittest.TestCase):
 
     # test_str(): see test_unicode.py and test_bytes.py for str() tests.
 
-    def test_sum(self):
+    eleza test_sum(self):
         self.assertEqual(sum([]), 0)
         self.assertEqual(sum(list(range(2,8))), 27)
         self.assertEqual(sum(iter(list(range(2,8)))), 27)
@@ -1403,8 +1403,8 @@ class BuiltinTest(unittest.TestCase):
         self.assertRaises(TypeError, sum, [{2:3}])
         self.assertRaises(TypeError, sum, [{2:3}]*2, {2:3})
 
-        class BadSeq:
-            def __getitem__(self, index):
+        kundi BadSeq:
+            eleza __getitem__(self, index):
                 raise ValueError
         self.assertRaises(ValueError, sum, BadSeq())
 
@@ -1412,29 +1412,29 @@ class BuiltinTest(unittest.TestCase):
         sum(([x] for x in range(10)), empty)
         self.assertEqual(empty, [])
 
-    def test_type(self):
+    eleza test_type(self):
         self.assertEqual(type(''),  type('123'))
         self.assertNotEqual(type(''), type(()))
 
     # We don't want self in vars(), so these are static methods
 
     @staticmethod
-    def get_vars_f0():
-        return vars()
+    eleza get_vars_f0():
+        rudisha vars()
 
     @staticmethod
-    def get_vars_f2():
+    eleza get_vars_f2():
         BuiltinTest.get_vars_f0()
         a = 1
         b = 2
-        return vars()
+        rudisha vars()
 
-    class C_get_vars(object):
-        def getDict(self):
-            return {'a':2}
+    kundi C_get_vars(object):
+        eleza getDict(self):
+            rudisha {'a':2}
         __dict__ = property(fget=getDict)
 
-    def test_vars(self):
+    eleza test_vars(self):
         self.assertEqual(set(vars()), set(dir()))
         self.assertEqual(set(vars(sys)), set(dir(sys)))
         self.assertEqual(self.get_vars_f0(), {})
@@ -1443,7 +1443,7 @@ class BuiltinTest(unittest.TestCase):
         self.assertRaises(TypeError, vars, 42)
         self.assertEqual(vars(self.C_get_vars()), {'a':2})
 
-    def test_zip(self):
+    eleza test_zip(self):
         a = (1, 2, 3)
         b = (4, 5, 6)
         t = [(1, 4), (2, 5), (3, 6)]
@@ -1452,15 +1452,15 @@ class BuiltinTest(unittest.TestCase):
         self.assertEqual(list(zip(a, b)), t)
         b = (4, 5, 6, 7)
         self.assertEqual(list(zip(a, b)), t)
-        class I:
-            def __getitem__(self, i):
-                if i < 0 or i > 2: raise IndexError
-                return i + 4
+        kundi I:
+            eleza __getitem__(self, i):
+                ikiwa i < 0 or i > 2: raise IndexError
+                rudisha i + 4
         self.assertEqual(list(zip(a, I())), t)
         self.assertEqual(list(zip()), [])
         self.assertEqual(list(zip(*[])), [])
         self.assertRaises(TypeError, zip, None)
-        class G:
+        kundi G:
             pass
         self.assertRaises(TypeError, zip, a, G())
         self.assertRaises(RuntimeError, zip, a, TestFailingIter())
@@ -1468,26 +1468,26 @@ class BuiltinTest(unittest.TestCase):
         # Make sure zip doesn't try to allocate a billion elements for the
         # result list when one of its arguments doesn't say how long it is.
         # A MemoryError is the most likely failure mode.
-        class SequenceWithoutALength:
-            def __getitem__(self, i):
-                if i == 5:
+        kundi SequenceWithoutALength:
+            eleza __getitem__(self, i):
+                ikiwa i == 5:
                     raise IndexError
                 else:
-                    return i
+                    rudisha i
         self.assertEqual(
             list(zip(SequenceWithoutALength(), range(2**30))),
             list(enumerate(range(5)))
         )
 
-        class BadSeq:
-            def __getitem__(self, i):
-                if i == 5:
+        kundi BadSeq:
+            eleza __getitem__(self, i):
+                ikiwa i == 5:
                     raise ValueError
                 else:
-                    return i
+                    rudisha i
         self.assertRaises(ValueError, list, zip(BadSeq(), BadSeq()))
 
-    def test_zip_pickle(self):
+    eleza test_zip_pickle(self):
         a = (1, 2, 3)
         b = (4, 5, 6)
         t = [(1, 4), (2, 5), (3, 6)]
@@ -1495,11 +1495,11 @@ class BuiltinTest(unittest.TestCase):
             z1 = zip(a, b)
             self.check_iter_pickle(z1, t, proto)
 
-    def test_zip_bad_iterable(self):
+    eleza test_zip_bad_iterable(self):
         exception = TypeError()
 
-        class BadIterable:
-            def __iter__(self):
+        kundi BadIterable:
+            eleza __iter__(self):
                 raise exception
 
         with self.assertRaises(TypeError) as cm:
@@ -1507,32 +1507,32 @@ class BuiltinTest(unittest.TestCase):
 
         self.assertIs(cm.exception, exception)
 
-    def test_format(self):
+    eleza test_format(self):
         # Test the basic machinery of the format() builtin.  Don't test
         #  the specifics of the various formatters
         self.assertEqual(format(3, ''), '3')
 
         # Returns some classes to use for various tests.  There's
         #  an old-style version, and a new-style version
-        def classes_new():
-            class A(object):
-                def __init__(self, x):
+        eleza classes_new():
+            kundi A(object):
+                eleza __init__(self, x):
                     self.x = x
-                def __format__(self, format_spec):
-                    return str(self.x) + format_spec
-            class DerivedFromA(A):
+                eleza __format__(self, format_spec):
+                    rudisha str(self.x) + format_spec
+            kundi DerivedFromA(A):
                 pass
 
-            class Simple(object): pass
-            class DerivedFromSimple(Simple):
-                def __init__(self, x):
+            kundi Simple(object): pass
+            kundi DerivedFromSimple(Simple):
+                eleza __init__(self, x):
                     self.x = x
-                def __format__(self, format_spec):
-                    return str(self.x) + format_spec
-            class DerivedFromSimple2(DerivedFromSimple): pass
-            return A, DerivedFromA, DerivedFromSimple, DerivedFromSimple2
+                eleza __format__(self, format_spec):
+                    rudisha str(self.x) + format_spec
+            kundi DerivedFromSimple2(DerivedFromSimple): pass
+            rudisha A, DerivedFromA, DerivedFromSimple, DerivedFromSimple2
 
-        def class_test(A, DerivedFromA, DerivedFromSimple, DerivedFromSimple2):
+        eleza class_test(A, DerivedFromA, DerivedFromSimple, DerivedFromSimple2):
             self.assertEqual(format(A(3), 'spec'), '3spec')
             self.assertEqual(format(DerivedFromA(4), 'spec'), '4spec')
             self.assertEqual(format(DerivedFromSimple(5), 'abc'), '5abc')
@@ -1541,7 +1541,7 @@ class BuiltinTest(unittest.TestCase):
 
         class_test(*classes_new())
 
-        def empty_format_spec(value):
+        eleza empty_format_spec(value):
             # test that:
             #  format(x, '') == str(x)
             #  format(x) == str(x)
@@ -1559,9 +1559,9 @@ class BuiltinTest(unittest.TestCase):
         empty_format_spec(None)
 
         # TypeError because self.__format__ returns the wrong type
-        class BadFormatResult:
-            def __format__(self, format_spec):
-                return 1.0
+        kundi BadFormatResult:
+            eleza __format__(self, format_spec):
+                rudisha 1.0
         self.assertRaises(TypeError, format, BadFormatResult(), "")
 
         # TypeError because format_spec is not unicode or str
@@ -1581,18 +1581,18 @@ class BuiltinTest(unittest.TestCase):
         # --------------------------------------------------------------------
         # Issue #7994: object.__format__ with a non-empty format string is
         # disallowed
-        class A:
-            def __format__(self, fmt_str):
-                return format('', fmt_str)
+        kundi A:
+            eleza __format__(self, fmt_str):
+                rudisha format('', fmt_str)
 
         self.assertEqual(format(A()), '')
         self.assertEqual(format(A(), ''), '')
         self.assertEqual(format(A(), 's'), '')
 
-        class B:
+        kundi B:
             pass
 
-        class C(object):
+        kundi C(object):
             pass
 
         for cls in [object, B, C]:
@@ -1604,11 +1604,11 @@ class BuiltinTest(unittest.TestCase):
                 format(obj, 's')
         # --------------------------------------------------------------------
 
-        # make sure we can take a subclass of str as a format spec
-        class DerivedFromStr(str): pass
+        # make sure we can take a subkundi of str as a format spec
+        kundi DerivedFromStr(str): pass
         self.assertEqual(format(0, DerivedFromStr('10')), '         0')
 
-    def test_bin(self):
+    eleza test_bin(self):
         self.assertEqual(bin(0), '0b0')
         self.assertEqual(bin(1), '0b1')
         self.assertEqual(bin(-1), '-0b1')
@@ -1617,17 +1617,17 @@ class BuiltinTest(unittest.TestCase):
         self.assertEqual(bin(-(2**65)), '-0b1' + '0' * 65)
         self.assertEqual(bin(-(2**65-1)), '-0b' + '1' * 65)
 
-    def test_bytearray_translate(self):
+    eleza test_bytearray_translate(self):
         x = bytearray(b"abc")
         self.assertRaises(ValueError, x.translate, b"1", 1)
         self.assertRaises(TypeError, x.translate, b"1"*256, 1)
 
-    def test_bytearray_extend_error(self):
+    eleza test_bytearray_extend_error(self):
         array = bytearray()
         bad_iter = map(int, "X")
         self.assertRaises(ValueError, array.extend, bad_iter)
 
-    def test_construct_singletons(self):
+    eleza test_construct_singletons(self):
         for const in None, Ellipsis, NotImplemented:
             tp = type(const)
             self.assertIs(tp(), const)
@@ -1635,9 +1635,9 @@ class BuiltinTest(unittest.TestCase):
             self.assertRaises(TypeError, tp, a=1, b=2)
 
 
-class TestBreakpoint(unittest.TestCase):
-    def setUp(self):
-        # These tests require a clean slate environment.  For example, if the
+kundi TestBreakpoint(unittest.TestCase):
+    eleza setUp(self):
+        # These tests require a clean slate environment.  For example, ikiwa the
         # test suite is run with $PYTHONBREAKPOINT set to something else, it
         # will mess up these tests.  Similarly for sys.breakpointhook.
         # Cleaning the slate here means you can't use breakpoint() to debug
@@ -1650,18 +1650,18 @@ class TestBreakpoint(unittest.TestCase):
         self.resources.enter_context(
             swap_attr(sys, 'breakpointhook', sys.__breakpointhook__))
 
-    def test_breakpoint(self):
+    eleza test_breakpoint(self):
         with patch('pdb.set_trace') as mock:
             breakpoint()
         mock.assert_called_once()
 
-    def test_breakpoint_with_breakpointhook_set(self):
+    eleza test_breakpoint_with_breakpointhook_set(self):
         my_breakpointhook = MagicMock()
         sys.breakpointhook = my_breakpointhook
         breakpoint()
         my_breakpointhook.assert_called_once_with()
 
-    def test_breakpoint_with_breakpointhook_reset(self):
+    eleza test_breakpoint_with_breakpointhook_reset(self):
         my_breakpointhook = MagicMock()
         sys.breakpointhook = my_breakpointhook
         breakpoint()
@@ -1673,40 +1673,40 @@ class TestBreakpoint(unittest.TestCase):
             mock.assert_called_once_with()
         my_breakpointhook.assert_called_once_with()
 
-    def test_breakpoint_with_args_and_keywords(self):
+    eleza test_breakpoint_with_args_and_keywords(self):
         my_breakpointhook = MagicMock()
         sys.breakpointhook = my_breakpointhook
         breakpoint(1, 2, 3, four=4, five=5)
         my_breakpointhook.assert_called_once_with(1, 2, 3, four=4, five=5)
 
-    def test_breakpoint_with_passthru_error(self):
-        def my_breakpointhook():
+    eleza test_breakpoint_with_passthru_error(self):
+        eleza my_breakpointhook():
             pass
         sys.breakpointhook = my_breakpointhook
         self.assertRaises(TypeError, breakpoint, 1, 2, 3, four=4, five=5)
 
     @unittest.skipIf(sys.flags.ignore_environment, '-E was given')
-    def test_envar_good_path_builtin(self):
+    eleza test_envar_good_path_builtin(self):
         self.env['PYTHONBREAKPOINT'] = 'int'
         with patch('builtins.int') as mock:
             breakpoint('7')
             mock.assert_called_once_with('7')
 
     @unittest.skipIf(sys.flags.ignore_environment, '-E was given')
-    def test_envar_good_path_other(self):
+    eleza test_envar_good_path_other(self):
         self.env['PYTHONBREAKPOINT'] = 'sys.exit'
         with patch('sys.exit') as mock:
             breakpoint()
             mock.assert_called_once_with()
 
     @unittest.skipIf(sys.flags.ignore_environment, '-E was given')
-    def test_envar_good_path_noop_0(self):
+    eleza test_envar_good_path_noop_0(self):
         self.env['PYTHONBREAKPOINT'] = '0'
         with patch('pdb.set_trace') as mock:
             breakpoint()
             mock.assert_not_called()
 
-    def test_envar_good_path_empty_string(self):
+    eleza test_envar_good_path_empty_string(self):
         # PYTHONBREAKPOINT='' is the same as it not being set.
         self.env['PYTHONBREAKPOINT'] = ''
         with patch('pdb.set_trace') as mock:
@@ -1714,7 +1714,7 @@ class TestBreakpoint(unittest.TestCase):
             mock.assert_called_once_with()
 
     @unittest.skipIf(sys.flags.ignore_environment, '-E was given')
-    def test_envar_unagizaable(self):
+    eleza test_envar_unagizaable(self):
         for envar in (
                 '.', '..', '.foo', 'foo.', '.int', 'int.',
                 '.foo.bar', '..foo.bar', '/./',
@@ -1732,7 +1732,7 @@ class TestBreakpoint(unittest.TestCase):
                 self.assertEqual(w.category, RuntimeWarning)
                 mock.assert_not_called()
 
-    def test_envar_ignored_when_hook_is_set(self):
+    eleza test_envar_ignored_when_hook_is_set(self):
         self.env['PYTHONBREAKPOINT'] = 'sys.exit'
         with patch('sys.exit') as mock:
             sys.breakpointhook = int
@@ -1741,11 +1741,11 @@ class TestBreakpoint(unittest.TestCase):
 
 
 @unittest.skipUnless(pty, "the pty and signal modules must be available")
-class PtyTests(unittest.TestCase):
+kundi PtyTests(unittest.TestCase):
     """Tests that use a pseudo terminal to guarantee stdin and stdout are
     terminals in the test environment"""
 
-    def run_child(self, child, terminal_input):
+    eleza run_child(self, child, terminal_input):
         r, w = os.pipe()  # Pipe test results kutoka child back to parent
         try:
             pid, fd = pty.fork()
@@ -1754,10 +1754,10 @@ class PtyTests(unittest.TestCase):
             os.close(w)
             self.skipTest("pty.fork() raised {}".format(e))
             raise
-        if pid == 0:
+        ikiwa pid == 0:
             # Child
             try:
-                # Make sure we don't get stuck if there's a problem
+                # Make sure we don't get stuck ikiwa there's a problem
                 signal.alarm(2)
                 os.close(r)
                 with open(w, "w") as wpipe:
@@ -1765,7 +1765,7 @@ class PtyTests(unittest.TestCase):
             except:
                 traceback.print_exc()
             finally:
-                # We don't want to return to unittest...
+                # We don't want to rudisha to unittest...
                 os._exit(0)
         # Parent
         os.close(w)
@@ -1775,12 +1775,12 @@ class PtyTests(unittest.TestCase):
             lines = []
             while True:
                 line = rpipe.readline().strip()
-                if line == "":
+                ikiwa line == "":
                     # The other end was closed => the child exited
                     break
                 lines.append(line)
         # Check the result was got and corresponds to the user's terminal input
-        if len(lines) != 2:
+        ikiwa len(lines) != 2:
             # Something went wrong, try to get at stderr
             # Beware of Linux raising EIO when the slave is closed
             child_output = bytearray()
@@ -1789,7 +1789,7 @@ class PtyTests(unittest.TestCase):
                     chunk = os.read(fd, 3000)
                 except OSError:  # Assume EIO
                     break
-                if not chunk:
+                ikiwa not chunk:
                     break
                 child_output.extend(chunk)
             os.close(fd)
@@ -1801,55 +1801,55 @@ class PtyTests(unittest.TestCase):
         # Wait until the child process completes
         os.waitpid(pid, 0)
 
-        return lines
+        rudisha lines
 
-    def check_input_tty(self, prompt, terminal_input, stdio_encoding=None):
-        if not sys.stdin.isatty() or not sys.stdout.isatty():
+    eleza check_input_tty(self, prompt, terminal_input, stdio_encoding=None):
+        ikiwa not sys.stdin.isatty() or not sys.stdout.isatty():
             self.skipTest("stdin and stdout must be ttys")
-        def child(wpipe):
+        eleza child(wpipe):
             # Check the error handlers are accounted for
-            if stdio_encoding:
+            ikiwa stdio_encoding:
                 sys.stdin = io.TextIOWrapper(sys.stdin.detach(),
                                              encoding=stdio_encoding,
                                              errors='surrogateescape')
                 sys.stdout = io.TextIOWrapper(sys.stdout.detach(),
                                               encoding=stdio_encoding,
                                               errors='replace')
-            print("tty =", sys.stdin.isatty() and sys.stdout.isatty(), file=wpipe)
-            print(ascii(input(prompt)), file=wpipe)
+            andika("tty =", sys.stdin.isatty() and sys.stdout.isatty(), file=wpipe)
+            andika(ascii(input(prompt)), file=wpipe)
         lines = self.run_child(child, terminal_input + b"\r\n")
         # Check we did exercise the GNU readline path
         self.assertIn(lines[0], {'tty = True', 'tty = False'})
-        if lines[0] != 'tty = True':
+        ikiwa lines[0] != 'tty = True':
             self.skipTest("standard IO in should have been a tty")
         input_result = eval(lines[1])   # ascii() -> eval() roundtrip
-        if stdio_encoding:
+        ikiwa stdio_encoding:
             expected = terminal_input.decode(stdio_encoding, 'surrogateescape')
         else:
             expected = terminal_input.decode(sys.stdin.encoding)  # what else?
         self.assertEqual(input_result, expected)
 
-    def test_input_tty(self):
+    eleza test_input_tty(self):
         # Test input() functionality when wired to a tty (the code path
-        # is different and invokes GNU readline if available).
+        # is different and invokes GNU readline ikiwa available).
         self.check_input_tty("prompt", b"quux")
 
-    def test_input_tty_non_ascii(self):
+    eleza test_input_tty_non_ascii(self):
         # Check stdin/stdout encoding is used when invoking GNU readline
         self.check_input_tty("prompté", b"quux\xe9", "utf-8")
 
-    def test_input_tty_non_ascii_unicode_errors(self):
+    eleza test_input_tty_non_ascii_unicode_errors(self):
         # Check stdin/stdout error handler is used when invoking GNU readline
         self.check_input_tty("prompté", b"quux\xe9", "ascii")
 
-    def test_input_no_stdout_fileno(self):
+    eleza test_input_no_stdout_fileno(self):
         # Issue #24402: If stdin is the original terminal but stdout.fileno()
         # fails, do not use the original stdout file descriptor
-        def child(wpipe):
-            print("stdin.isatty():", sys.stdin.isatty(), file=wpipe)
+        eleza child(wpipe):
+            andika("stdin.isatty():", sys.stdin.isatty(), file=wpipe)
             sys.stdout = io.StringIO()  # Does not support fileno()
             input("prompt")
-            print("captured:", ascii(sys.stdout.getvalue()), file=wpipe)
+            andika("captured:", ascii(sys.stdout.getvalue()), file=wpipe)
         lines = self.run_child(child, b"quux\r")
         expected = (
             "stdin.isatty(): True",
@@ -1857,9 +1857,9 @@ class PtyTests(unittest.TestCase):
         )
         self.assertSequenceEqual(lines, expected)
 
-class TestSorted(unittest.TestCase):
+kundi TestSorted(unittest.TestCase):
 
-    def test_basic(self):
+    eleza test_basic(self):
         data = list(range(100))
         copy = data[:]
         random.shuffle(copy)
@@ -1874,7 +1874,7 @@ class TestSorted(unittest.TestCase):
         self.assertEqual(data, sorted(copy, reverse=1))
         self.assertNotEqual(data, copy)
 
-    def test_bad_arguments(self):
+    eleza test_bad_arguments(self):
         # Issue #29327: The first argument is positional-only.
         sorted([])
         with self.assertRaises(TypeError):
@@ -1884,36 +1884,36 @@ class TestSorted(unittest.TestCase):
         with self.assertRaises(TypeError):
             sorted([], None)
 
-    def test_inputtypes(self):
+    eleza test_inputtypes(self):
         s = 'abracadabra'
         types = [list, tuple, str]
         for T in types:
             self.assertEqual(sorted(s), sorted(T(s)))
 
         s = ''.join(set(s))  # unique letters only
-        types = [str, set, frozenset, list, tuple, dict.fromkeys]
+        types = [str, set, frozenset, list, tuple, dict.kutokakeys]
         for T in types:
             self.assertEqual(sorted(s), sorted(T(s)))
 
-    def test_baddecorator(self):
+    eleza test_baddecorator(self):
         data = 'The quick Brown fox Jumped over The lazy Dog'.split()
         self.assertRaises(TypeError, sorted, data, None, lambda x,y: 0)
 
 
-class ShutdownTest(unittest.TestCase):
+kundi ShutdownTest(unittest.TestCase):
 
-    def test_cleanup(self):
+    eleza test_cleanup(self):
         # Issue #19255: builtins are still available at shutdown
-        code = """if 1:
+        code = """ikiwa 1:
             agiza builtins
             agiza sys
 
-            class C:
-                def __del__(self):
-                    print("before")
+            kundi C:
+                eleza __del__(self):
+                    andika("before")
                     # Check that builtins still exist
                     len(())
-                    print("after")
+                    andika("after")
 
             c = C()
             # Make this module survive until builtins and sys are cleaned
@@ -1925,7 +1925,7 @@ class ShutdownTest(unittest.TestCase):
             """
         # Issue #20599: Force ASCII encoding to get a codec implemented in C,
         # otherwise the codec may be unloaded before C.__del__() is called, and
-        # so print("before") fails because the codec cannot be used to encode
+        # so andika("before") fails because the codec cannot be used to encode
         # "before" to sys.stdout.encoding. For example, on Windows,
         # sys.stdout.encoding is the OEM code page and these code pages are
         # implemented in Python
@@ -1934,8 +1934,8 @@ class ShutdownTest(unittest.TestCase):
         self.assertEqual(["before", "after"], out.decode().splitlines())
 
 
-class TestType(unittest.TestCase):
-    def test_new_type(self):
+kundi TestType(unittest.TestCase):
+    eleza test_new_type(self):
         A = type('A', (), {})
         self.assertEqual(A.__name__, 'A')
         self.assertEqual(A.__qualname__, 'A')
@@ -1946,9 +1946,9 @@ class TestType(unittest.TestCase):
         self.assertIs(type(x), A)
         self.assertIs(x.__class__, A)
 
-        class B:
-            def ham(self):
-                return 'ham%d' % self
+        kundi B:
+            eleza ham(self):
+                rudisha 'ham%d' % self
         C = type('C', (B, int), {'spam': lambda self: 'spam%s' % self})
         self.assertEqual(C.__name__, 'C')
         self.assertEqual(C.__qualname__, 'C')
@@ -1965,13 +1965,13 @@ class TestType(unittest.TestCase):
         self.assertEqual(x.spam(), 'spam42')
         self.assertEqual(x.to_bytes(2, 'little'), b'\x2a\x00')
 
-    def test_type_nokwargs(self):
+    eleza test_type_nokwargs(self):
         with self.assertRaises(TypeError):
             type('a', (), {}, x=5)
         with self.assertRaises(TypeError):
             type('a', (), dict={})
 
-    def test_type_name(self):
+    eleza test_type_name(self):
         for name in 'A', '\xc4', '\U0001f40d', 'B.A', '42', '':
             with self.subTest(name=name):
                 A = type(name, (), {})
@@ -2004,7 +2004,7 @@ class TestType(unittest.TestCase):
             A.__name__ = b'A'
         self.assertEqual(A.__name__, 'C')
 
-    def test_type_qualname(self):
+    eleza test_type_qualname(self):
         A = type('A', (), {'__qualname__': 'B.C'})
         self.assertEqual(A.__name__, 'A')
         self.assertEqual(A.__qualname__, 'B.C')
@@ -2020,7 +2020,7 @@ class TestType(unittest.TestCase):
             A.__qualname__ = b'B'
         self.assertEqual(A.__qualname__, 'D.E')
 
-    def test_type_doc(self):
+    eleza test_type_doc(self):
         for doc in 'x', '\xc4', '\U0001f40d', 'x\x00y', b'x', 42, None:
             A = type('A', (), {'__doc__': doc})
             self.assertEqual(A.__doc__, doc)
@@ -2033,7 +2033,7 @@ class TestType(unittest.TestCase):
             A.__doc__ = doc
             self.assertEqual(A.__doc__, doc)
 
-    def test_bad_args(self):
+    eleza test_bad_args(self):
         with self.assertRaises(TypeError):
             type()
         with self.assertRaises(TypeError):
@@ -2053,7 +2053,7 @@ class TestType(unittest.TestCase):
         with self.assertRaises(TypeError):
             type('A', (int, str), {})
 
-    def test_bad_slots(self):
+    eleza test_bad_slots(self):
         with self.assertRaises(TypeError):
             type('A', (), {'__slots__': b'x'})
         with self.assertRaises(TypeError):
@@ -2071,14 +2071,14 @@ class TestType(unittest.TestCase):
         with self.assertRaises(TypeError):
             type('A', (), {'__slots__': ('__weakref__', '__weakref__')})
 
-        class B:
+        kundi B:
             pass
         with self.assertRaises(TypeError):
             type('A', (B,), {'__slots__': '__dict__'})
         with self.assertRaises(TypeError):
             type('A', (B,), {'__slots__': '__weakref__'})
 
-    def test_namespace_order(self):
+    eleza test_namespace_order(self):
         # bpo-34320: namespace should preserve order
         od = collections.OrderedDict([('a', 1), ('b', 2)])
         od.move_to_end('a')
@@ -2088,10 +2088,10 @@ class TestType(unittest.TestCase):
         self.assertEqual(list(C.__dict__.items())[:2], [('b', 2), ('a', 1)])
 
 
-def load_tests(loader, tests, pattern):
+eleza load_tests(loader, tests, pattern):
     kutoka doctest agiza DocTestSuite
     tests.addTest(DocTestSuite(builtins))
-    return tests
+    rudisha tests
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

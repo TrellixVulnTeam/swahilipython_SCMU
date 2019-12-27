@@ -6,9 +6,9 @@
 Utilities
 *********
 
-The functions in this chapter perform various utility tasks, ranging from
-helping C code be more portable across platforms, using Python modules from C,
-and parsing function arguments and constructing Python values from C values.
+The functions in this chapter perform various utility tasks, ranging kutoka
+helping C code be more portable across platforms, using Python modules kutoka C,
+and parsing function arguments and constructing Python values kutoka C values.
 
 .. toctree::
 

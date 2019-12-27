@@ -22,24 +22,24 @@ TEST_FILES = (
     ('python.exr', 'exr'),
 )
 
-class UnseekableIO(io.FileIO):
-    def tell(self):
+kundi UnseekableIO(io.FileIO):
+    eleza tell(self):
         raise io.UnsupportedOperation
 
-    def seek(self, *args, **kwargs):
+    eleza seek(self, *args, **kwargs):
         raise io.UnsupportedOperation
 
-class TestImghdr(unittest.TestCase):
+kundi TestImghdr(unittest.TestCase):
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.testfile = findfile('python.png', subdir='imghdrdata')
         with open(cls.testfile, 'rb') as stream:
             cls.testdata = stream.read()
 
-    def tearDown(self):
+    eleza tearDown(self):
         unlink(TESTFN)
 
-    def test_data(self):
+    eleza test_data(self):
         for filename, expected in TEST_FILES:
             filename = findfile(filename, subdir='imghdrdata')
             self.assertEqual(imghdr.what(filename), expected)
@@ -50,21 +50,21 @@ class TestImghdr(unittest.TestCase):
             self.assertEqual(imghdr.what(None, data), expected)
             self.assertEqual(imghdr.what(None, bytearray(data)), expected)
 
-    def test_pathlike_filename(self):
+    eleza test_pathlike_filename(self):
         for filename, expected in TEST_FILES:
             with self.subTest(filename=filename):
                 filename = findfile(filename, subdir='imghdrdata')
                 self.assertEqual(imghdr.what(pathlib.Path(filename)), expected)
 
-    def test_register_test(self):
-        def test_jumbo(h, file):
-            if h.startswith(b'eggs'):
-                return 'ham'
+    eleza test_register_test(self):
+        eleza test_jumbo(h, file):
+            ikiwa h.startswith(b'eggs'):
+                rudisha 'ham'
         imghdr.tests.append(test_jumbo)
         self.addCleanup(imghdr.tests.pop)
         self.assertEqual(imghdr.what(None, b'eggs'), 'ham')
 
-    def test_file_pos(self):
+    eleza test_file_pos(self):
         with open(TESTFN, 'wb') as stream:
             stream.write(b'ababagalamaga')
             pos = stream.tell()
@@ -74,7 +74,7 @@ class TestImghdr(unittest.TestCase):
             self.assertEqual(imghdr.what(stream), 'png')
             self.assertEqual(stream.tell(), pos)
 
-    def test_bad_args(self):
+    eleza test_bad_args(self):
         with self.assertRaises(TypeError):
             imghdr.what()
         with self.assertRaises(AttributeError):
@@ -87,7 +87,7 @@ class TestImghdr(unittest.TestCase):
             with self.assertRaises(AttributeError):
                 imghdr.what(f.fileno())
 
-    def test_invalid_headers(self):
+    eleza test_invalid_headers(self):
         for header in (b'\211PN\r\n',
                        b'\001\331',
                        b'\x59\xA6',
@@ -96,7 +96,7 @@ class TestImghdr(unittest.TestCase):
                        b'GIF80'):
             self.assertIsNone(imghdr.what(None, header))
 
-    def test_string_data(self):
+    eleza test_string_data(self):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", BytesWarning)
             for filename, _ in TEST_FILES:
@@ -108,11 +108,11 @@ class TestImghdr(unittest.TestCase):
                 with self.assertRaises(TypeError):
                     imghdr.what(None, data)
 
-    def test_missing_file(self):
+    eleza test_missing_file(self):
         with self.assertRaises(FileNotFoundError):
             imghdr.what('missing')
 
-    def test_closed_file(self):
+    eleza test_closed_file(self):
         stream = open(self.testfile, 'rb')
         stream.close()
         with self.assertRaises(ValueError) as cm:
@@ -122,19 +122,19 @@ class TestImghdr(unittest.TestCase):
         with self.assertRaises(ValueError) as cm:
             imghdr.what(stream)
 
-    def test_unseekable(self):
+    eleza test_unseekable(self):
         with open(TESTFN, 'wb') as stream:
             stream.write(self.testdata)
         with UnseekableIO(TESTFN, 'rb') as stream:
             with self.assertRaises(io.UnsupportedOperation):
                 imghdr.what(stream)
 
-    def test_output_stream(self):
+    eleza test_output_stream(self):
         with open(TESTFN, 'wb') as stream:
             stream.write(self.testdata)
             stream.seek(0)
             with self.assertRaises(OSError) as cm:
                 imghdr.what(stream)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

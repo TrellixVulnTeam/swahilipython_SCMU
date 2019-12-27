@@ -27,7 +27,7 @@
 kutoka _ast agiza *
 
 
-def parse(source, filename='<unknown>', mode='exec', *,
+eleza parse(source, filename='<unknown>', mode='exec', *,
           type_comments=False, feature_version=None):
     """
     Parse the source into an AST node.
@@ -35,68 +35,68 @@ def parse(source, filename='<unknown>', mode='exec', *,
     Pass type_comments=True to get back type comments where the syntax allows.
     """
     flags = PyCF_ONLY_AST
-    if type_comments:
+    ikiwa type_comments:
         flags |= PyCF_TYPE_COMMENTS
-    if isinstance(feature_version, tuple):
+    ikiwa isinstance(feature_version, tuple):
         major, minor = feature_version  # Should be a 2-tuple.
         assert major == 3
         feature_version = minor
-    elif feature_version is None:
+    elikiwa feature_version is None:
         feature_version = -1
     # Else it should be an int giving the minor version for 3.x.
-    return compile(source, filename, mode, flags,
+    rudisha compile(source, filename, mode, flags,
                    _feature_version=feature_version)
 
 
-def literal_eval(node_or_string):
+eleza literal_eval(node_or_string):
     """
     Safely evaluate an expression node or a string containing a Python
     expression.  The string or node provided may only consist of the following
     Python literal structures: strings, bytes, numbers, tuples, lists, dicts,
     sets, booleans, and None.
     """
-    if isinstance(node_or_string, str):
+    ikiwa isinstance(node_or_string, str):
         node_or_string = parse(node_or_string, mode='eval')
-    if isinstance(node_or_string, Expression):
+    ikiwa isinstance(node_or_string, Expression):
         node_or_string = node_or_string.body
-    def _convert_num(node):
-        if isinstance(node, Constant):
-            if type(node.value) in (int, float, complex):
-                return node.value
+    eleza _convert_num(node):
+        ikiwa isinstance(node, Constant):
+            ikiwa type(node.value) in (int, float, complex):
+                rudisha node.value
         raise ValueError('malformed node or string: ' + repr(node))
-    def _convert_signed_num(node):
-        if isinstance(node, UnaryOp) and isinstance(node.op, (UAdd, USub)):
+    eleza _convert_signed_num(node):
+        ikiwa isinstance(node, UnaryOp) and isinstance(node.op, (UAdd, USub)):
             operand = _convert_num(node.operand)
-            if isinstance(node.op, UAdd):
-                return + operand
+            ikiwa isinstance(node.op, UAdd):
+                rudisha + operand
             else:
-                return - operand
-        return _convert_num(node)
-    def _convert(node):
-        if isinstance(node, Constant):
-            return node.value
-        elif isinstance(node, Tuple):
-            return tuple(map(_convert, node.elts))
-        elif isinstance(node, List):
-            return list(map(_convert, node.elts))
-        elif isinstance(node, Set):
-            return set(map(_convert, node.elts))
-        elif isinstance(node, Dict):
-            return dict(zip(map(_convert, node.keys),
+                rudisha - operand
+        rudisha _convert_num(node)
+    eleza _convert(node):
+        ikiwa isinstance(node, Constant):
+            rudisha node.value
+        elikiwa isinstance(node, Tuple):
+            rudisha tuple(map(_convert, node.elts))
+        elikiwa isinstance(node, List):
+            rudisha list(map(_convert, node.elts))
+        elikiwa isinstance(node, Set):
+            rudisha set(map(_convert, node.elts))
+        elikiwa isinstance(node, Dict):
+            rudisha dict(zip(map(_convert, node.keys),
                             map(_convert, node.values)))
-        elif isinstance(node, BinOp) and isinstance(node.op, (Add, Sub)):
+        elikiwa isinstance(node, BinOp) and isinstance(node.op, (Add, Sub)):
             left = _convert_signed_num(node.left)
             right = _convert_num(node.right)
-            if isinstance(left, (int, float)) and isinstance(right, complex):
-                if isinstance(node.op, Add):
-                    return left + right
+            ikiwa isinstance(left, (int, float)) and isinstance(right, complex):
+                ikiwa isinstance(node.op, Add):
+                    rudisha left + right
                 else:
-                    return left - right
-        return _convert_signed_num(node)
-    return _convert(node_or_string)
+                    rudisha left - right
+        rudisha _convert_signed_num(node)
+    rudisha _convert(node_or_string)
 
 
-def dump(node, annotate_fields=True, include_attributes=False):
+eleza dump(node, annotate_fields=True, include_attributes=False):
     """
     Return a formatted dump of the tree in node.  This is mainly useful for
     debugging purposes.  If annotate_fields is true (by default),
@@ -106,8 +106,8 @@ def dump(node, annotate_fields=True, include_attributes=False):
     numbers and column offsets are not dumped by default.  If this is wanted,
     include_attributes can be set to true.
     """
-    def _format(node):
-        if isinstance(node, AST):
+    eleza _format(node):
+        ikiwa isinstance(node, AST):
             args = []
             keywords = annotate_fields
             for field in node._fields:
@@ -116,38 +116,38 @@ def dump(node, annotate_fields=True, include_attributes=False):
                 except AttributeError:
                     keywords = True
                 else:
-                    if keywords:
+                    ikiwa keywords:
                         args.append('%s=%s' % (field, _format(value)))
                     else:
                         args.append(_format(value))
-            if include_attributes and node._attributes:
+            ikiwa include_attributes and node._attributes:
                 for a in node._attributes:
                     try:
                         args.append('%s=%s' % (a, _format(getattr(node, a))))
                     except AttributeError:
                         pass
-            return '%s(%s)' % (node.__class__.__name__, ', '.join(args))
-        elif isinstance(node, list):
-            return '[%s]' % ', '.join(_format(x) for x in node)
-        return repr(node)
-    if not isinstance(node, AST):
+            rudisha '%s(%s)' % (node.__class__.__name__, ', '.join(args))
+        elikiwa isinstance(node, list):
+            rudisha '[%s]' % ', '.join(_format(x) for x in node)
+        rudisha repr(node)
+    ikiwa not isinstance(node, AST):
         raise TypeError('expected AST, got %r' % node.__class__.__name__)
-    return _format(node)
+    rudisha _format(node)
 
 
-def copy_location(new_node, old_node):
+eleza copy_location(new_node, old_node):
     """
     Copy source location (`lineno`, `col_offset`, `end_lineno`, and `end_col_offset`
-    attributes) kutoka *old_node* to *new_node* if possible, and return *new_node*.
+    attributes) kutoka *old_node* to *new_node* ikiwa possible, and rudisha *new_node*.
     """
     for attr in 'lineno', 'col_offset', 'end_lineno', 'end_col_offset':
-        if attr in old_node._attributes and attr in new_node._attributes \
+        ikiwa attr in old_node._attributes and attr in new_node._attributes \
            and hasattr(old_node, attr):
             setattr(new_node, attr, getattr(old_node, attr))
-    return new_node
+    rudisha new_node
 
 
-def fix_missing_locations(node):
+eleza fix_missing_locations(node):
     """
     When you compile a node tree with compile(), the compiler expects lineno and
     col_offset attributes for every node that supports them.  This is rather
@@ -155,48 +155,48 @@ def fix_missing_locations(node):
     recursively where not already set, by setting them to the values of the
     parent node.  It works recursively starting at *node*.
     """
-    def _fix(node, lineno, col_offset, end_lineno, end_col_offset):
-        if 'lineno' in node._attributes:
-            if not hasattr(node, 'lineno'):
+    eleza _fix(node, lineno, col_offset, end_lineno, end_col_offset):
+        ikiwa 'lineno' in node._attributes:
+            ikiwa not hasattr(node, 'lineno'):
                 node.lineno = lineno
             else:
                 lineno = node.lineno
-        if 'end_lineno' in node._attributes:
-            if not hasattr(node, 'end_lineno'):
+        ikiwa 'end_lineno' in node._attributes:
+            ikiwa not hasattr(node, 'end_lineno'):
                 node.end_lineno = end_lineno
             else:
                 end_lineno = node.end_lineno
-        if 'col_offset' in node._attributes:
-            if not hasattr(node, 'col_offset'):
+        ikiwa 'col_offset' in node._attributes:
+            ikiwa not hasattr(node, 'col_offset'):
                 node.col_offset = col_offset
             else:
                 col_offset = node.col_offset
-        if 'end_col_offset' in node._attributes:
-            if not hasattr(node, 'end_col_offset'):
+        ikiwa 'end_col_offset' in node._attributes:
+            ikiwa not hasattr(node, 'end_col_offset'):
                 node.end_col_offset = end_col_offset
             else:
                 end_col_offset = node.end_col_offset
         for child in iter_child_nodes(node):
             _fix(child, lineno, col_offset, end_lineno, end_col_offset)
     _fix(node, 1, 0, 1, 0)
-    return node
+    rudisha node
 
 
-def increment_lineno(node, n=1):
+eleza increment_lineno(node, n=1):
     """
     Increment the line number and end line number of each node in the tree
     starting at *node* by *n*. This is useful to "move code" to a different
     location in a file.
     """
     for child in walk(node):
-        if 'lineno' in child._attributes:
+        ikiwa 'lineno' in child._attributes:
             child.lineno = getattr(child, 'lineno', 0) + n
-        if 'end_lineno' in child._attributes:
+        ikiwa 'end_lineno' in child._attributes:
             child.end_lineno = getattr(child, 'end_lineno', 0) + n
-    return node
+    rudisha node
 
 
-def iter_fields(node):
+eleza iter_fields(node):
     """
     Yield a tuple of ``(fieldname, value)`` for each field in ``node._fields``
     that is present on *node*.
@@ -208,47 +208,47 @@ def iter_fields(node):
             pass
 
 
-def iter_child_nodes(node):
+eleza iter_child_nodes(node):
     """
     Yield all direct child nodes of *node*, that is, all fields that are nodes
     and all items of fields that are lists of nodes.
     """
     for name, field in iter_fields(node):
-        if isinstance(field, AST):
+        ikiwa isinstance(field, AST):
             yield field
-        elif isinstance(field, list):
+        elikiwa isinstance(field, list):
             for item in field:
-                if isinstance(item, AST):
+                ikiwa isinstance(item, AST):
                     yield item
 
 
-def get_docstring(node, clean=True):
+eleza get_docstring(node, clean=True):
     """
-    Return the docstring for the given node or None if no docstring can
+    Return the docstring for the given node or None ikiwa no docstring can
     be found.  If the node provided does not have docstrings a TypeError
     will be raised.
 
     If *clean* is `True`, all tabs are expanded to spaces and any whitespace
     that can be uniformly removed kutoka the second line onwards is removed.
     """
-    if not isinstance(node, (AsyncFunctionDef, FunctionDef, ClassDef, Module)):
+    ikiwa not isinstance(node, (AsyncFunctionDef, FunctionDef, ClassDef, Module)):
         raise TypeError("%r can't have docstrings" % node.__class__.__name__)
-    if not(node.body and isinstance(node.body[0], Expr)):
-        return None
+    ikiwa not(node.body and isinstance(node.body[0], Expr)):
+        rudisha None
     node = node.body[0].value
-    if isinstance(node, Str):
+    ikiwa isinstance(node, Str):
         text = node.s
-    elif isinstance(node, Constant) and isinstance(node.value, str):
+    elikiwa isinstance(node, Constant) and isinstance(node.value, str):
         text = node.value
     else:
-        return None
-    if clean:
+        rudisha None
+    ikiwa clean:
         agiza inspect
         text = inspect.cleandoc(text)
-    return text
+    rudisha text
 
 
-def _splitlines_no_ff(source):
+eleza _splitlines_no_ff(source):
     """Split a string into lines ignoring form feed and other chars.
 
     This mimics how the Python parser splits source code.
@@ -261,34 +261,34 @@ def _splitlines_no_ff(source):
         next_line += c
         idx += 1
         # Keep \r\n together
-        if c == '\r' and idx < len(source) and source[idx] == '\n':
+        ikiwa c == '\r' and idx < len(source) and source[idx] == '\n':
             next_line += '\n'
             idx += 1
-        if c in '\r\n':
+        ikiwa c in '\r\n':
             lines.append(next_line)
             next_line = ''
 
-    if next_line:
+    ikiwa next_line:
         lines.append(next_line)
-    return lines
+    rudisha lines
 
 
-def _pad_whitespace(source):
+eleza _pad_whitespace(source):
     """Replace all chars except '\f\t' in a line with spaces."""
     result = ''
     for c in source:
-        if c in '\f\t':
+        ikiwa c in '\f\t':
             result += c
         else:
             result += ' '
-    return result
+    rudisha result
 
 
-def get_source_segment(source, node, *, padded=False):
+eleza get_source_segment(source, node, *, padded=False):
     """Get source code segment of the *source* that generated *node*.
 
     If some location information (`lineno`, `end_lineno`, `col_offset`,
-    or `end_col_offset`) is missing, return None.
+    or `end_col_offset`) is missing, rudisha None.
 
     If *padded* is `True`, the first line of a multi-line statement will
     be padded with spaces to match its original position.
@@ -299,13 +299,13 @@ def get_source_segment(source, node, *, padded=False):
         col_offset = node.col_offset
         end_col_offset = node.end_col_offset
     except AttributeError:
-        return None
+        rudisha None
 
     lines = _splitlines_no_ff(source)
-    if end_lineno == lineno:
-        return lines[lineno].encode()[col_offset:end_col_offset].decode()
+    ikiwa end_lineno == lineno:
+        rudisha lines[lineno].encode()[col_offset:end_col_offset].decode()
 
-    if padded:
+    ikiwa padded:
         padding = _pad_whitespace(lines[lineno].encode()[:col_offset].decode())
     else:
         padding = ''
@@ -316,13 +316,13 @@ def get_source_segment(source, node, *, padded=False):
 
     lines.insert(0, first)
     lines.append(last)
-    return ''.join(lines)
+    rudisha ''.join(lines)
 
 
-def walk(node):
+eleza walk(node):
     """
     Recursively yield all descendant nodes in the tree starting at *node*
-    (including *node* itself), in no specified order.  This is useful if you
+    (including *node* itself), in no specified order.  This is useful ikiwa you
     only want to modify nodes in place and don't care about the context.
     """
     kutoka collections agiza deque
@@ -333,51 +333,51 @@ def walk(node):
         yield node
 
 
-class NodeVisitor(object):
+kundi NodeVisitor(object):
     """
-    A node visitor base class that walks the abstract syntax tree and calls a
-    visitor function for every node found.  This function may return a value
+    A node visitor base kundi that walks the abstract syntax tree and calls a
+    visitor function for every node found.  This function may rudisha a value
     which is forwarded by the `visit` method.
 
-    This class is meant to be subclassed, with the subclass adding visitor
+    This kundi is meant to be subclassed, with the subkundi adding visitor
     methods.
 
     Per default the visitor functions for the nodes are ``'visit_'`` +
-    class name of the node.  So a `TryFinally` node visit function would
+    kundi name of the node.  So a `TryFinally` node visit function would
     be `visit_TryFinally`.  This behavior can be changed by overriding
     the `visit` method.  If no visitor function exists for a node
-    (return value `None`) the `generic_visit` visitor is used instead.
+    (rudisha value `None`) the `generic_visit` visitor is used instead.
 
-    Don't use the `NodeVisitor` if you want to apply changes to nodes during
+    Don't use the `NodeVisitor` ikiwa you want to apply changes to nodes during
     traversing.  For this a special visitor exists (`NodeTransformer`) that
     allows modifications.
     """
 
-    def visit(self, node):
+    eleza visit(self, node):
         """Visit a node."""
         method = 'visit_' + node.__class__.__name__
         visitor = getattr(self, method, self.generic_visit)
-        return visitor(node)
+        rudisha visitor(node)
 
-    def generic_visit(self, node):
-        """Called if no explicit visitor function exists for a node."""
+    eleza generic_visit(self, node):
+        """Called ikiwa no explicit visitor function exists for a node."""
         for field, value in iter_fields(node):
-            if isinstance(value, list):
+            ikiwa isinstance(value, list):
                 for item in value:
-                    if isinstance(item, AST):
+                    ikiwa isinstance(item, AST):
                         self.visit(item)
-            elif isinstance(value, AST):
+            elikiwa isinstance(value, AST):
                 self.visit(value)
 
-    def visit_Constant(self, node):
+    eleza visit_Constant(self, node):
         value = node.value
         type_name = _const_node_type_names.get(type(value))
-        if type_name is None:
+        ikiwa type_name is None:
             for cls, name in _const_node_type_names.items():
-                if isinstance(value, cls):
+                ikiwa isinstance(value, cls):
                     type_name = name
                     break
-        if type_name is not None:
+        ikiwa type_name is not None:
             method = 'visit_' + type_name
             try:
                 visitor = getattr(self, method)
@@ -387,39 +387,39 @@ class NodeVisitor(object):
                 agiza warnings
                 warnings.warn(f"{method} is deprecated; add visit_Constant",
                               PendingDeprecationWarning, 2)
-                return visitor(node)
-        return self.generic_visit(node)
+                rudisha visitor(node)
+        rudisha self.generic_visit(node)
 
 
-class NodeTransformer(NodeVisitor):
+kundi NodeTransformer(NodeVisitor):
     """
-    A :class:`NodeVisitor` subclass that walks the abstract syntax tree and
+    A :class:`NodeVisitor` subkundi that walks the abstract syntax tree and
     allows modification of nodes.
 
-    The `NodeTransformer` will walk the AST and use the return value of the
-    visitor methods to replace or remove the old node.  If the return value of
+    The `NodeTransformer` will walk the AST and use the rudisha value of the
+    visitor methods to replace or remove the old node.  If the rudisha value of
     the visitor method is ``None``, the node will be removed kutoka its location,
-    otherwise it is replaced with the return value.  The return value may be the
+    otherwise it is replaced with the rudisha value.  The rudisha value may be the
     original node in which case no replacement takes place.
 
     Here is an example transformer that rewrites all occurrences of name lookups
     (``foo``) to ``data['foo']``::
 
-       class RewriteName(NodeTransformer):
+       kundi RewriteName(NodeTransformer):
 
-           def visit_Name(self, node):
-               return copy_location(Subscript(
+           eleza visit_Name(self, node):
+               rudisha copy_location(Subscript(
                    value=Name(id='data', ctx=Load()),
                    slice=Index(value=Str(s=node.id)),
                    ctx=node.ctx
                ), node)
 
-    Keep in mind that if the node you're operating on has child nodes you must
+    Keep in mind that ikiwa the node you're operating on has child nodes you must
     either transform the child nodes yourself or call the :meth:`generic_visit`
     method for the node first.
 
     For nodes that were part of a collection of statements (that applies to all
-    statement nodes), the visitor may also return a list of nodes rather than
+    statement nodes), the visitor may also rudisha a list of nodes rather than
     just a single node.
 
     Usually you use the transformer like this::
@@ -427,85 +427,85 @@ class NodeTransformer(NodeVisitor):
        node = YourTransformer().visit(node)
     """
 
-    def generic_visit(self, node):
+    eleza generic_visit(self, node):
         for field, old_value in iter_fields(node):
-            if isinstance(old_value, list):
+            ikiwa isinstance(old_value, list):
                 new_values = []
                 for value in old_value:
-                    if isinstance(value, AST):
+                    ikiwa isinstance(value, AST):
                         value = self.visit(value)
-                        if value is None:
+                        ikiwa value is None:
                             continue
-                        elif not isinstance(value, AST):
+                        elikiwa not isinstance(value, AST):
                             new_values.extend(value)
                             continue
                     new_values.append(value)
                 old_value[:] = new_values
-            elif isinstance(old_value, AST):
+            elikiwa isinstance(old_value, AST):
                 new_node = self.visit(old_value)
-                if new_node is None:
+                ikiwa new_node is None:
                     delattr(node, field)
                 else:
                     setattr(node, field, new_node)
-        return node
+        rudisha node
 
 
 # The following code is for backward compatibility.
 # It will be removed in future.
 
-def _getter(self):
-    return self.value
+eleza _getter(self):
+    rudisha self.value
 
-def _setter(self, value):
+eleza _setter(self, value):
     self.value = value
 
 Constant.n = property(_getter, _setter)
 Constant.s = property(_getter, _setter)
 
-class _ABC(type):
+kundi _ABC(type):
 
-    def __instancecheck__(cls, inst):
-        if not isinstance(inst, Constant):
-            return False
-        if cls in _const_types:
+    eleza __instancecheck__(cls, inst):
+        ikiwa not isinstance(inst, Constant):
+            rudisha False
+        ikiwa cls in _const_types:
             try:
                 value = inst.value
             except AttributeError:
-                return False
+                rudisha False
             else:
-                return (
+                rudisha (
                     isinstance(value, _const_types[cls]) and
                     not isinstance(value, _const_types_not.get(cls, ()))
                 )
-        return type.__instancecheck__(cls, inst)
+        rudisha type.__instancecheck__(cls, inst)
 
-def _new(cls, *args, **kwargs):
-    if cls in _const_types:
-        return Constant(*args, **kwargs)
-    return Constant.__new__(cls, *args, **kwargs)
+eleza _new(cls, *args, **kwargs):
+    ikiwa cls in _const_types:
+        rudisha Constant(*args, **kwargs)
+    rudisha Constant.__new__(cls, *args, **kwargs)
 
-class Num(Constant, metaclass=_ABC):
+kundi Num(Constant, metaclass=_ABC):
     _fields = ('n',)
     __new__ = _new
 
-class Str(Constant, metaclass=_ABC):
+kundi Str(Constant, metaclass=_ABC):
     _fields = ('s',)
     __new__ = _new
 
-class Bytes(Constant, metaclass=_ABC):
+kundi Bytes(Constant, metaclass=_ABC):
     _fields = ('s',)
     __new__ = _new
 
-class NameConstant(Constant, metaclass=_ABC):
+kundi NameConstant(Constant, metaclass=_ABC):
     __new__ = _new
 
-class Ellipsis(Constant, metaclass=_ABC):
+kundi Ellipsis(Constant, metaclass=_ABC):
     _fields = ()
 
-    def __new__(cls, *args, **kwargs):
-        if cls is Ellipsis:
-            return Constant(..., *args, **kwargs)
-        return Constant.__new__(cls, *args, **kwargs)
+    eleza __new__(cls, *args, **kwargs):
+        ikiwa cls is Ellipsis:
+            rudisha Constant(..., *args, **kwargs)
+        rudisha Constant.__new__(cls, *args, **kwargs)
 
 _const_types = {
     Num: (int, float, complex),

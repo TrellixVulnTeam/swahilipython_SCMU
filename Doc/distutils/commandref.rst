@@ -55,7 +55,7 @@ This command installs all (Python) scripts in the distribution.
 Creating a source distribution: the :command:`sdist` command
 ============================================================
 
-.. XXX fragment moved down from above: needs context!
+.. XXX fragment moved down kutoka above: needs context!
 
 The manifest template commands are:
 

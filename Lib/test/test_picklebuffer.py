@@ -11,13 +11,13 @@ agiza unittest
 kutoka test agiza support
 
 
-class B(bytes):
+kundi B(bytes):
     pass
 
 
-class PickleBufferTest(unittest.TestCase):
+kundi PickleBufferTest(unittest.TestCase):
 
-    def check_memoryview(self, pb, equiv):
+    eleza check_memoryview(self, pb, equiv):
         with memoryview(pb) as m:
             with memoryview(equiv) as expected:
                 self.assertEqual(m.nbytes, expected.nbytes)
@@ -30,7 +30,7 @@ class PickleBufferTest(unittest.TestCase):
                 self.assertEqual(m.format, expected.format)
                 self.assertEqual(m.tobytes(), expected.tobytes())
 
-    def test_constructor_failure(self):
+    eleza test_constructor_failure(self):
         with self.assertRaises(TypeError):
             PickleBuffer()
         with self.assertRaises(TypeError):
@@ -41,7 +41,7 @@ class PickleBufferTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             PickleBuffer(m)
 
-    def test_basics(self):
+    eleza test_basics(self):
         pb = PickleBuffer(b"foo")
         self.assertEqual(b"foo", bytes(pb))
         with memoryview(pb) as m:
@@ -54,7 +54,7 @@ class PickleBufferTest(unittest.TestCase):
             m[0] = 48
         self.assertEqual(b"0oo", bytes(pb))
 
-    def test_release(self):
+    eleza test_release(self):
         pb = PickleBuffer(b"foo")
         pb.release()
         with self.assertRaises(ValueError) as raises:
@@ -64,7 +64,7 @@ class PickleBufferTest(unittest.TestCase):
         # Idempotency
         pb.release()
 
-    def test_cycle(self):
+    eleza test_cycle(self):
         b = B(b"foo")
         pb = PickleBuffer(b)
         b.cycle = pb
@@ -73,7 +73,7 @@ class PickleBufferTest(unittest.TestCase):
         gc.collect()
         self.assertIsNone(wpb())
 
-    def test_ndarray_2d(self):
+    eleza test_ndarray_2d(self):
         # C-contiguous
         ndarray = support.import_module("_testbuffer").ndarray
         arr = ndarray(list(range(12)), shape=(4, 3), format='<i')
@@ -96,18 +96,18 @@ class PickleBufferTest(unittest.TestCase):
 
     # Tests for PickleBuffer.raw()
 
-    def check_raw(self, obj, equiv):
+    eleza check_raw(self, obj, equiv):
         pb = PickleBuffer(obj)
         with pb.raw() as m:
             self.assertIsInstance(m, memoryview)
             self.check_memoryview(m, equiv)
 
-    def test_raw(self):
+    eleza test_raw(self):
         for obj in (b"foo", bytearray(b"foo")):
             with self.subTest(obj=obj):
                 self.check_raw(obj, obj)
 
-    def test_raw_ndarray(self):
+    eleza test_raw_ndarray(self):
         # 1-D, contiguous
         ndarray = support.import_module("_testbuffer").ndarray
         arr = ndarray(list(range(3)), shape=(3,), format='<h')
@@ -128,12 +128,12 @@ class PickleBufferTest(unittest.TestCase):
         equiv = b'\xc8\x01\x00\x00'
         self.check_raw(arr, equiv)
 
-    def check_raw_non_contiguous(self, obj):
+    eleza check_raw_non_contiguous(self, obj):
         pb = PickleBuffer(obj)
         with self.assertRaisesRegex(BufferError, "non-contiguous"):
             pb.raw()
 
-    def test_raw_non_contiguous(self):
+    eleza test_raw_non_contiguous(self):
         # 1-D
         ndarray = support.import_module("_testbuffer").ndarray
         arr = ndarray(list(range(6)), shape=(6,), format='<i')[::2]
@@ -142,12 +142,12 @@ class PickleBufferTest(unittest.TestCase):
         arr = ndarray(list(range(12)), shape=(4, 3), format='<i')[::2]
         self.check_raw_non_contiguous(arr)
 
-    def test_raw_released(self):
+    eleza test_raw_released(self):
         pb = PickleBuffer(b"foo")
         pb.release()
         with self.assertRaises(ValueError) as raises:
             pb.raw()
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

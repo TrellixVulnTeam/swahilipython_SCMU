@@ -10,55 +10,55 @@ kutoka test agiza support
 agiza weakref
 
 
-class TestAbstractContextManager(unittest.TestCase):
+kundi TestAbstractContextManager(unittest.TestCase):
 
-    def test_enter(self):
-        class DefaultEnter(AbstractContextManager):
-            def __exit__(self, *args):
+    eleza test_enter(self):
+        kundi DefaultEnter(AbstractContextManager):
+            eleza __exit__(self, *args):
                 super().__exit__(*args)
 
         manager = DefaultEnter()
         self.assertIs(manager.__enter__(), manager)
 
-    def test_exit_is_abstract(self):
-        class MissingExit(AbstractContextManager):
+    eleza test_exit_is_abstract(self):
+        kundi MissingExit(AbstractContextManager):
             pass
 
         with self.assertRaises(TypeError):
             MissingExit()
 
-    def test_structural_subclassing(self):
-        class ManagerFromScratch:
-            def __enter__(self):
-                return self
-            def __exit__(self, exc_type, exc_value, traceback):
-                return None
+    eleza test_structural_subclassing(self):
+        kundi ManagerFromScratch:
+            eleza __enter__(self):
+                rudisha self
+            eleza __exit__(self, exc_type, exc_value, traceback):
+                rudisha None
 
         self.assertTrue(issubclass(ManagerFromScratch, AbstractContextManager))
 
-        class DefaultEnter(AbstractContextManager):
-            def __exit__(self, *args):
+        kundi DefaultEnter(AbstractContextManager):
+            eleza __exit__(self, *args):
                 super().__exit__(*args)
 
         self.assertTrue(issubclass(DefaultEnter, AbstractContextManager))
 
-        class NoEnter(ManagerFromScratch):
+        kundi NoEnter(ManagerFromScratch):
             __enter__ = None
 
         self.assertFalse(issubclass(NoEnter, AbstractContextManager))
 
-        class NoExit(ManagerFromScratch):
+        kundi NoExit(ManagerFromScratch):
             __exit__ = None
 
         self.assertFalse(issubclass(NoExit, AbstractContextManager))
 
 
-class ContextManagerTestCase(unittest.TestCase):
+kundi ContextManagerTestCase(unittest.TestCase):
 
-    def test_contextmanager_plain(self):
+    eleza test_contextmanager_plain(self):
         state = []
         @contextmanager
-        def woohoo():
+        eleza woohoo():
             state.append(1)
             yield 42
             state.append(999)
@@ -68,10 +68,10 @@ class ContextManagerTestCase(unittest.TestCase):
             state.append(x)
         self.assertEqual(state, [1, 42, 999])
 
-    def test_contextmanager_finally(self):
+    eleza test_contextmanager_finally(self):
         state = []
         @contextmanager
-        def woohoo():
+        eleza woohoo():
             state.append(1)
             try:
                 yield 42
@@ -85,18 +85,18 @@ class ContextManagerTestCase(unittest.TestCase):
                 raise ZeroDivisionError()
         self.assertEqual(state, [1, 42, 999])
 
-    def test_contextmanager_no_reraise(self):
+    eleza test_contextmanager_no_reraise(self):
         @contextmanager
-        def whee():
+        eleza whee():
             yield
         ctx = whee()
         ctx.__enter__()
         # Calling __exit__ should not result in an exception
         self.assertFalse(ctx.__exit__(TypeError, TypeError("foo"), None))
 
-    def test_contextmanager_trap_yield_after_throw(self):
+    eleza test_contextmanager_trap_yield_after_throw(self):
         @contextmanager
-        def whoo():
+        eleza whoo():
             try:
                 yield
             except:
@@ -107,10 +107,10 @@ class ContextManagerTestCase(unittest.TestCase):
             RuntimeError, ctx.__exit__, TypeError, TypeError("foo"), None
         )
 
-    def test_contextmanager_except(self):
+    eleza test_contextmanager_except(self):
         state = []
         @contextmanager
-        def woohoo():
+        eleza woohoo():
             state.append(1)
             try:
                 yield 42
@@ -124,10 +124,10 @@ class ContextManagerTestCase(unittest.TestCase):
             raise ZeroDivisionError(999)
         self.assertEqual(state, [1, 42, 999])
 
-    def test_contextmanager_except_stopiter(self):
+    eleza test_contextmanager_except_stopiter(self):
         stop_exc = StopIteration('spam')
         @contextmanager
-        def woohoo():
+        eleza woohoo():
             yield
         try:
             with self.assertWarnsRegex(DeprecationWarning,
@@ -139,12 +139,12 @@ class ContextManagerTestCase(unittest.TestCase):
         else:
             self.fail('StopIteration was suppressed')
 
-    def test_contextmanager_except_pep479(self):
+    eleza test_contextmanager_except_pep479(self):
         code = """\
 kutoka __future__ agiza generator_stop
 kutoka contextlib agiza contextmanager
 @contextmanager
-def woohoo():
+eleza woohoo():
     yield
 """
         locals = {}
@@ -160,9 +160,9 @@ def woohoo():
         else:
             self.fail('StopIteration was suppressed')
 
-    def test_contextmanager_do_not_unchain_non_stopiteration_exceptions(self):
+    eleza test_contextmanager_do_not_unchain_non_stopiteration_exceptions(self):
         @contextmanager
-        def test_issue29692():
+        eleza test_issue29692():
             try:
                 yield
             except Exception as exc:
@@ -183,48 +183,48 @@ def woohoo():
             self.assertEqual(ex.args[0], 'issue29692:Unchained')
             self.assertIsNone(ex.__cause__)
 
-    def _create_contextmanager_attribs(self):
-        def attribs(**kw):
-            def decorate(func):
+    eleza _create_contextmanager_attribs(self):
+        eleza attribs(**kw):
+            eleza decorate(func):
                 for k,v in kw.items():
                     setattr(func,k,v)
-                return func
-            return decorate
+                rudisha func
+            rudisha decorate
         @contextmanager
         @attribs(foo='bar')
-        def baz(spam):
+        eleza baz(spam):
             """Whee!"""
-        return baz
+        rudisha baz
 
-    def test_contextmanager_attribs(self):
+    eleza test_contextmanager_attribs(self):
         baz = self._create_contextmanager_attribs()
         self.assertEqual(baz.__name__,'baz')
         self.assertEqual(baz.foo, 'bar')
 
     @support.requires_docstrings
-    def test_contextmanager_doc_attrib(self):
+    eleza test_contextmanager_doc_attrib(self):
         baz = self._create_contextmanager_attribs()
         self.assertEqual(baz.__doc__, "Whee!")
 
     @support.requires_docstrings
-    def test_instance_docstring_given_cm_docstring(self):
+    eleza test_instance_docstring_given_cm_docstring(self):
         baz = self._create_contextmanager_attribs()(None)
         self.assertEqual(baz.__doc__, "Whee!")
 
-    def test_keywords(self):
+    eleza test_keywords(self):
         # Ensure no keyword arguments are inhibited
         @contextmanager
-        def woohoo(self, func, args, kwds):
+        eleza woohoo(self, func, args, kwds):
             yield (self, func, args, kwds)
         with woohoo(self=11, func=22, args=33, kwds=44) as target:
             self.assertEqual(target, (11, 22, 33, 44))
 
-    def test_nokeepref(self):
-        class A:
+    eleza test_nokeepref(self):
+        kundi A:
             pass
 
         @contextmanager
-        def woohoo(a, b):
+        eleza woohoo(a, b):
             a = weakref.ref(a)
             b = weakref.ref(b)
             self.assertIsNone(a())
@@ -234,9 +234,9 @@ def woohoo():
         with woohoo(A(), b=A()):
             pass
 
-    def test_param_errors(self):
+    eleza test_param_errors(self):
         @contextmanager
-        def woohoo(a, *, b):
+        eleza woohoo(a, *, b):
             yield
 
         with self.assertRaises(TypeError):
@@ -246,10 +246,10 @@ def woohoo():
         with self.assertRaises(TypeError):
             woohoo(b=3)
 
-    def test_recursive(self):
+    eleza test_recursive(self):
         depth = 0
         @contextmanager
-        def woohoo():
+        eleza woohoo():
             nonlocal depth
             before = depth
             depth += 1
@@ -258,27 +258,27 @@ def woohoo():
             self.assertEqual(depth, before)
 
         @woohoo()
-        def recursive():
-            if depth < 10:
+        eleza recursive():
+            ikiwa depth < 10:
                 recursive()
 
         recursive()
         self.assertEqual(depth, 0)
 
 
-class ClosingTestCase(unittest.TestCase):
+kundi ClosingTestCase(unittest.TestCase):
 
     @support.requires_docstrings
-    def test_instance_docs(self):
+    eleza test_instance_docs(self):
         # Issue 19330: ensure context manager instances have good docstrings
         cm_docstring = closing.__doc__
         obj = closing(None)
         self.assertEqual(obj.__doc__, cm_docstring)
 
-    def test_closing(self):
+    eleza test_closing(self):
         state = []
-        class C:
-            def close(self):
+        kundi C:
+            eleza close(self):
                 state.append(1)
         x = C()
         self.assertEqual(state, [])
@@ -286,10 +286,10 @@ class ClosingTestCase(unittest.TestCase):
             self.assertEqual(x, y)
         self.assertEqual(state, [1])
 
-    def test_closing_error(self):
+    eleza test_closing_error(self):
         state = []
-        class C:
-            def close(self):
+        kundi C:
+            eleza close(self):
                 state.append(1)
         x = C()
         self.assertEqual(state, [])
@@ -300,18 +300,18 @@ class ClosingTestCase(unittest.TestCase):
         self.assertEqual(state, [1])
 
 
-class NullcontextTestCase(unittest.TestCase):
-    def test_nullcontext(self):
-        class C:
+kundi NullcontextTestCase(unittest.TestCase):
+    eleza test_nullcontext(self):
+        kundi C:
             pass
         c = C()
         with nullcontext(c) as c_in:
             self.assertIs(c_in, c)
 
 
-class FileContextTestCase(unittest.TestCase):
+kundi FileContextTestCase(unittest.TestCase):
 
-    def testWithOpen(self):
+    eleza testWithOpen(self):
         tfn = tempfile.mktemp()
         try:
             f = None
@@ -329,9 +329,9 @@ class FileContextTestCase(unittest.TestCase):
         finally:
             support.unlink(tfn)
 
-class LockContextTestCase(unittest.TestCase):
+kundi LockContextTestCase(unittest.TestCase):
 
-    def boilerPlate(self, lock, locked):
+    eleza boilerPlate(self, lock, locked):
         self.assertFalse(locked())
         with lock:
             self.assertTrue(locked())
@@ -342,66 +342,66 @@ class LockContextTestCase(unittest.TestCase):
                 1 / 0
         self.assertFalse(locked())
 
-    def testWithLock(self):
+    eleza testWithLock(self):
         lock = threading.Lock()
         self.boilerPlate(lock, lock.locked)
 
-    def testWithRLock(self):
+    eleza testWithRLock(self):
         lock = threading.RLock()
         self.boilerPlate(lock, lock._is_owned)
 
-    def testWithCondition(self):
+    eleza testWithCondition(self):
         lock = threading.Condition()
-        def locked():
-            return lock._is_owned()
+        eleza locked():
+            rudisha lock._is_owned()
         self.boilerPlate(lock, locked)
 
-    def testWithSemaphore(self):
+    eleza testWithSemaphore(self):
         lock = threading.Semaphore()
-        def locked():
-            if lock.acquire(False):
+        eleza locked():
+            ikiwa lock.acquire(False):
                 lock.release()
-                return False
+                rudisha False
             else:
-                return True
+                rudisha True
         self.boilerPlate(lock, locked)
 
-    def testWithBoundedSemaphore(self):
+    eleza testWithBoundedSemaphore(self):
         lock = threading.BoundedSemaphore()
-        def locked():
-            if lock.acquire(False):
+        eleza locked():
+            ikiwa lock.acquire(False):
                 lock.release()
-                return False
+                rudisha False
             else:
-                return True
+                rudisha True
         self.boilerPlate(lock, locked)
 
 
-class mycontext(ContextDecorator):
+kundi mycontext(ContextDecorator):
     """Example decoration-compatible context manager for testing"""
     started = False
     exc = None
     catch = False
 
-    def __enter__(self):
+    eleza __enter__(self):
         self.started = True
-        return self
+        rudisha self
 
-    def __exit__(self, *exc):
+    eleza __exit__(self, *exc):
         self.exc = exc
-        return self.catch
+        rudisha self.catch
 
 
-class TestContextDecorator(unittest.TestCase):
+kundi TestContextDecorator(unittest.TestCase):
 
     @support.requires_docstrings
-    def test_instance_docs(self):
+    eleza test_instance_docs(self):
         # Issue 19330: ensure context manager instances have good docstrings
         cm_docstring = mycontext.__doc__
         obj = mycontext()
         self.assertEqual(obj.__doc__, cm_docstring)
 
-    def test_contextdecorator(self):
+    eleza test_contextdecorator(self):
         context = mycontext()
         with context as result:
             self.assertIs(result, context)
@@ -410,7 +410,7 @@ class TestContextDecorator(unittest.TestCase):
         self.assertEqual(context.exc, (None, None, None))
 
 
-    def test_contextdecorator_with_exception(self):
+    eleza test_contextdecorator_with_exception(self):
         context = mycontext()
 
         with self.assertRaisesRegex(NameError, 'foo'):
@@ -427,22 +427,22 @@ class TestContextDecorator(unittest.TestCase):
         self.assertIs(context.exc[0], NameError)
 
 
-    def test_decorator(self):
+    eleza test_decorator(self):
         context = mycontext()
 
         @context
-        def test():
+        eleza test():
             self.assertIsNone(context.exc)
             self.assertTrue(context.started)
         test()
         self.assertEqual(context.exc, (None, None, None))
 
 
-    def test_decorator_with_exception(self):
+    eleza test_decorator_with_exception(self):
         context = mycontext()
 
         @context
-        def test():
+        eleza test():
             self.assertIsNone(context.exc)
             self.assertTrue(context.started)
             raise NameError('foo')
@@ -453,13 +453,13 @@ class TestContextDecorator(unittest.TestCase):
         self.assertIs(context.exc[0], NameError)
 
 
-    def test_decorating_method(self):
+    eleza test_decorating_method(self):
         context = mycontext()
 
-        class Test(object):
+        kundi Test(object):
 
             @context
-            def method(self, a, b, c=None):
+            eleza method(self, a, b, c=None):
                 self.a = a
                 self.b = b
                 self.c = c
@@ -483,23 +483,11 @@ class TestContextDecorator(unittest.TestCase):
         self.assertEqual(test.b, 2)
 
 
-    def test_typo_enter(self):
-        class mycontext(ContextDecorator):
-            def __unter__(self):
+    eleza test_typo_enter(self):
+        kundi mycontext(ContextDecorator):
+            eleza __unter__(self):
                 pass
-            def __exit__(self, *exc):
-                pass
-
-        with self.assertRaises(AttributeError):
-            with mycontext():
-                pass
-
-
-    def test_typo_exit(self):
-        class mycontext(ContextDecorator):
-            def __enter__(self):
-                pass
-            def __uxit__(self, *exc):
+            eleza __exit__(self, *exc):
                 pass
 
         with self.assertRaises(AttributeError):
@@ -507,40 +495,52 @@ class TestContextDecorator(unittest.TestCase):
                 pass
 
 
-    def test_contextdecorator_as_mixin(self):
-        class somecontext(object):
+    eleza test_typo_exit(self):
+        kundi mycontext(ContextDecorator):
+            eleza __enter__(self):
+                pass
+            eleza __uxit__(self, *exc):
+                pass
+
+        with self.assertRaises(AttributeError):
+            with mycontext():
+                pass
+
+
+    eleza test_contextdecorator_as_mixin(self):
+        kundi somecontext(object):
             started = False
             exc = None
 
-            def __enter__(self):
+            eleza __enter__(self):
                 self.started = True
-                return self
+                rudisha self
 
-            def __exit__(self, *exc):
+            eleza __exit__(self, *exc):
                 self.exc = exc
 
-        class mycontext(somecontext, ContextDecorator):
+        kundi mycontext(somecontext, ContextDecorator):
             pass
 
         context = mycontext()
         @context
-        def test():
+        eleza test():
             self.assertIsNone(context.exc)
             self.assertTrue(context.started)
         test()
         self.assertEqual(context.exc, (None, None, None))
 
 
-    def test_contextmanager_as_decorator(self):
+    eleza test_contextmanager_as_decorator(self):
         @contextmanager
-        def woohoo(y):
+        eleza woohoo(y):
             state.append(y)
             yield
             state.append(999)
 
         state = []
         @woohoo(1)
-        def test(x):
+        eleza test(x):
             self.assertEqual(state, [1])
             state.append(x)
         test('something')
@@ -552,21 +552,21 @@ class TestContextDecorator(unittest.TestCase):
         self.assertEqual(state, [1, 'something else', 999])
 
 
-class TestBaseExitStack:
+kundi TestBaseExitStack:
     exit_stack = None
 
     @support.requires_docstrings
-    def test_instance_docs(self):
+    eleza test_instance_docs(self):
         # Issue 19330: ensure context manager instances have good docstrings
         cm_docstring = self.exit_stack.__doc__
         obj = self.exit_stack()
         self.assertEqual(obj.__doc__, cm_docstring)
 
-    def test_no_resources(self):
+    eleza test_no_resources(self):
         with self.exit_stack():
             pass
 
-    def test_callback(self):
+    eleza test_callback(self):
         expected = [
             ((), {}),
             ((1,), {}),
@@ -577,16 +577,16 @@ class TestBaseExitStack:
             ((1,2), dict(self=3, callback=4)),
         ]
         result = []
-        def _exit(*args, **kwds):
+        eleza _exit(*args, **kwds):
             """Test metadata propagation"""
             result.append((args, kwds))
         with self.exit_stack() as stack:
             for args, kwds in reversed(expected):
-                if args and kwds:
+                ikiwa args and kwds:
                     f = stack.callback(_exit, *args, **kwds)
-                elif args:
+                elikiwa args:
                     f = stack.callback(_exit, *args)
-                elif kwds:
+                elikiwa kwds:
                     f = stack.callback(_exit, **kwds)
                 else:
                     f = stack.callback(_exit)
@@ -607,22 +607,22 @@ class TestBaseExitStack:
                 stack.callback(callback=_exit, arg=3)
         self.assertEqual(result, [((), {'arg': 3})])
 
-    def test_push(self):
+    eleza test_push(self):
         exc_raised = ZeroDivisionError
-        def _expect_exc(exc_type, exc, exc_tb):
+        eleza _expect_exc(exc_type, exc, exc_tb):
             self.assertIs(exc_type, exc_raised)
-        def _suppress_exc(*exc_details):
-            return True
-        def _expect_ok(exc_type, exc, exc_tb):
+        eleza _suppress_exc(*exc_details):
+            rudisha True
+        eleza _expect_ok(exc_type, exc, exc_tb):
             self.assertIsNone(exc_type)
             self.assertIsNone(exc)
             self.assertIsNone(exc_tb)
-        class ExitCM(object):
-            def __init__(self, check_exc):
+        kundi ExitCM(object):
+            eleza __init__(self, check_exc):
                 self.check_exc = check_exc
-            def __enter__(self):
+            eleza __enter__(self):
                 self.fail("Should not be called!")
-            def __exit__(self, *exc_details):
+            eleza __exit__(self, *exc_details):
                 self.check_exc(*exc_details)
         with self.exit_stack() as stack:
             stack.push(_expect_ok)
@@ -641,18 +641,18 @@ class TestBaseExitStack:
             self.assertIs(stack._exit_callbacks[-1][1], _expect_exc)
             1/0
 
-    def test_enter_context(self):
-        class TestCM(object):
-            def __enter__(self):
+    eleza test_enter_context(self):
+        kundi TestCM(object):
+            eleza __enter__(self):
                 result.append(1)
-            def __exit__(self, *exc_details):
+            eleza __exit__(self, *exc_details):
                 result.append(3)
 
         result = []
         cm = TestCM()
         with self.exit_stack() as stack:
             @stack.callback  # Registered first => cleaned up last
-            def _exit():
+            eleza _exit():
                 result.append(4)
             self.assertIsNotNone(_exit)
             stack.enter_context(cm)
@@ -660,22 +660,22 @@ class TestBaseExitStack:
             result.append(2)
         self.assertEqual(result, [1, 2, 3, 4])
 
-    def test_close(self):
+    eleza test_close(self):
         result = []
         with self.exit_stack() as stack:
             @stack.callback
-            def _exit():
+            eleza _exit():
                 result.append(1)
             self.assertIsNotNone(_exit)
             stack.close()
             result.append(2)
         self.assertEqual(result, [1, 2])
 
-    def test_pop_all(self):
+    eleza test_pop_all(self):
         result = []
         with self.exit_stack() as stack:
             @stack.callback
-            def _exit():
+            eleza _exit():
                 result.append(3)
             self.assertIsNotNone(_exit)
             new_stack = stack.pop_all()
@@ -684,46 +684,46 @@ class TestBaseExitStack:
         new_stack.close()
         self.assertEqual(result, [1, 2, 3])
 
-    def test_exit_raise(self):
+    eleza test_exit_raise(self):
         with self.assertRaises(ZeroDivisionError):
             with self.exit_stack() as stack:
                 stack.push(lambda *exc: False)
                 1/0
 
-    def test_exit_suppress(self):
+    eleza test_exit_suppress(self):
         with self.exit_stack() as stack:
             stack.push(lambda *exc: True)
             1/0
 
-    def test_exit_exception_chaining_reference(self):
+    eleza test_exit_exception_chaining_reference(self):
         # Sanity check to make sure that ExitStack chaining matches
         # actual nested with statements
-        class RaiseExc:
-            def __init__(self, exc):
+        kundi RaiseExc:
+            eleza __init__(self, exc):
                 self.exc = exc
-            def __enter__(self):
-                return self
-            def __exit__(self, *exc_details):
+            eleza __enter__(self):
+                rudisha self
+            eleza __exit__(self, *exc_details):
                 raise self.exc
 
-        class RaiseExcWithContext:
-            def __init__(self, outer, inner):
+        kundi RaiseExcWithContext:
+            eleza __init__(self, outer, inner):
                 self.outer = outer
                 self.inner = inner
-            def __enter__(self):
-                return self
-            def __exit__(self, *exc_details):
+            eleza __enter__(self):
+                rudisha self
+            eleza __exit__(self, *exc_details):
                 try:
                     raise self.inner
                 except:
                     raise self.outer
 
-        class SuppressExc:
-            def __enter__(self):
-                return self
-            def __exit__(self, *exc_details):
+        kundi SuppressExc:
+            eleza __enter__(self):
+                rudisha self
+            eleza __exit__(self, *exc_details):
                 type(self).saved_details = exc_details
-                return True
+                rudisha True
 
         try:
             with RaiseExc(IndexError):
@@ -743,16 +743,16 @@ class TestBaseExitStack:
         self.assertIsInstance(inner_exc, ValueError)
         self.assertIsInstance(inner_exc.__context__, ZeroDivisionError)
 
-    def test_exit_exception_chaining(self):
+    eleza test_exit_exception_chaining(self):
         # Ensure exception chaining matches the reference behaviour
-        def raise_exc(exc):
+        eleza raise_exc(exc):
             raise exc
 
         saved_details = None
-        def suppress_exc(*exc_details):
+        eleza suppress_exc(*exc_details):
             nonlocal saved_details
             saved_details = exc_details
-            return True
+            rudisha True
 
         try:
             with self.exit_stack() as stack:
@@ -774,13 +774,13 @@ class TestBaseExitStack:
         self.assertIsInstance(inner_exc, ValueError)
         self.assertIsInstance(inner_exc.__context__, ZeroDivisionError)
 
-    def test_exit_exception_non_suppressing(self):
+    eleza test_exit_exception_non_suppressing(self):
         # http://bugs.python.org/issue19092
-        def raise_exc(exc):
+        eleza raise_exc(exc):
             raise exc
 
-        def suppress_exc(*exc_details):
-            return True
+        eleza suppress_exc(*exc_details):
+            rudisha True
 
         try:
             with self.exit_stack() as stack:
@@ -801,10 +801,10 @@ class TestBaseExitStack:
         else:
             self.fail("Expected KeyError, but no exception was raised")
 
-    def test_exit_exception_with_correct_context(self):
+    eleza test_exit_exception_with_correct_context(self):
         # http://bugs.python.org/issue20317
         @contextmanager
-        def gets_the_context_right(exc):
+        eleza gets_the_context_right(exc):
             try:
                 yield
             finally:
@@ -832,10 +832,10 @@ class TestBaseExitStack:
             self.assertIsNone(
                        exc.__context__.__context__.__context__.__context__)
 
-    def test_exit_exception_with_existing_context(self):
+    eleza test_exit_exception_with_existing_context(self):
         # Addresses a lack of test coverage discovered after checking in a
         # fix for issue 20317 that still contained debugging code.
-        def raise_nested(inner_exc, outer_exc):
+        eleza raise_nested(inner_exc, outer_exc):
             try:
                 raise inner_exc
             finally:
@@ -860,9 +860,9 @@ class TestBaseExitStack:
             self.assertIsNone(
                 exc.__context__.__context__.__context__.__context__.__context__)
 
-    def test_body_exception_suppress(self):
-        def suppress_exc(*exc_details):
-            return True
+    eleza test_body_exception_suppress(self):
+        eleza suppress_exc(*exc_details):
+            rudisha True
         try:
             with self.exit_stack() as stack:
                 stack.push(suppress_exc)
@@ -870,20 +870,20 @@ class TestBaseExitStack:
         except IndexError as exc:
             self.fail("Expected no exception, got IndexError")
 
-    def test_exit_exception_chaining_suppress(self):
+    eleza test_exit_exception_chaining_suppress(self):
         with self.exit_stack() as stack:
             stack.push(lambda *exc: True)
             stack.push(lambda *exc: 1/0)
             stack.push(lambda *exc: {}[1])
 
-    def test_excessive_nesting(self):
+    eleza test_excessive_nesting(self):
         # The original implementation would die with RecursionError here
         with self.exit_stack() as stack:
             for i in range(10000):
                 stack.callback(int)
 
-    def test_instance_bypass(self):
-        class Example(object): pass
+    eleza test_instance_bypass(self):
+        kundi Example(object): pass
         cm = Example()
         cm.__exit__ = object()
         stack = self.exit_stack()
@@ -891,20 +891,20 @@ class TestBaseExitStack:
         stack.push(cm)
         self.assertIs(stack._exit_callbacks[-1][1], cm)
 
-    def test_dont_reraise_RuntimeError(self):
+    eleza test_dont_reraise_RuntimeError(self):
         # https://bugs.python.org/issue27122
-        class UniqueException(Exception): pass
-        class UniqueRuntimeError(RuntimeError): pass
+        kundi UniqueException(Exception): pass
+        kundi UniqueRuntimeError(RuntimeError): pass
 
         @contextmanager
-        def second():
+        eleza second():
             try:
                 yield 1
             except Exception as exc:
                 raise UniqueException("new exception") kutoka exc
 
         @contextmanager
-        def first():
+        eleza first():
             try:
                 yield 1
             except Exception as exc:
@@ -926,121 +926,121 @@ class TestBaseExitStack:
         self.assertIs(exc.__cause__, exc.__context__)
 
 
-class TestExitStack(TestBaseExitStack, unittest.TestCase):
+kundi TestExitStack(TestBaseExitStack, unittest.TestCase):
     exit_stack = ExitStack
 
 
-class TestRedirectStream:
+kundi TestRedirectStream:
 
     redirect_stream = None
     orig_stream = None
 
     @support.requires_docstrings
-    def test_instance_docs(self):
+    eleza test_instance_docs(self):
         # Issue 19330: ensure context manager instances have good docstrings
         cm_docstring = self.redirect_stream.__doc__
         obj = self.redirect_stream(None)
         self.assertEqual(obj.__doc__, cm_docstring)
 
-    def test_no_redirect_in_init(self):
+    eleza test_no_redirect_in_init(self):
         orig_stdout = getattr(sys, self.orig_stream)
         self.redirect_stream(None)
         self.assertIs(getattr(sys, self.orig_stream), orig_stdout)
 
-    def test_redirect_to_string_io(self):
+    eleza test_redirect_to_string_io(self):
         f = io.StringIO()
         msg = "Consider an API like help(), which prints directly to stdout"
         orig_stdout = getattr(sys, self.orig_stream)
         with self.redirect_stream(f):
-            print(msg, file=getattr(sys, self.orig_stream))
+            andika(msg, file=getattr(sys, self.orig_stream))
         self.assertIs(getattr(sys, self.orig_stream), orig_stdout)
         s = f.getvalue().strip()
         self.assertEqual(s, msg)
 
-    def test_enter_result_is_target(self):
+    eleza test_enter_result_is_target(self):
         f = io.StringIO()
         with self.redirect_stream(f) as enter_result:
             self.assertIs(enter_result, f)
 
-    def test_cm_is_reusable(self):
+    eleza test_cm_is_reusable(self):
         f = io.StringIO()
         write_to_f = self.redirect_stream(f)
         orig_stdout = getattr(sys, self.orig_stream)
         with write_to_f:
-            print("Hello", end=" ", file=getattr(sys, self.orig_stream))
+            andika("Hello", end=" ", file=getattr(sys, self.orig_stream))
         with write_to_f:
-            print("World!", file=getattr(sys, self.orig_stream))
+            andika("World!", file=getattr(sys, self.orig_stream))
         self.assertIs(getattr(sys, self.orig_stream), orig_stdout)
         s = f.getvalue()
         self.assertEqual(s, "Hello World!\n")
 
-    def test_cm_is_reentrant(self):
+    eleza test_cm_is_reentrant(self):
         f = io.StringIO()
         write_to_f = self.redirect_stream(f)
         orig_stdout = getattr(sys, self.orig_stream)
         with write_to_f:
-            print("Hello", end=" ", file=getattr(sys, self.orig_stream))
+            andika("Hello", end=" ", file=getattr(sys, self.orig_stream))
             with write_to_f:
-                print("World!", file=getattr(sys, self.orig_stream))
+                andika("World!", file=getattr(sys, self.orig_stream))
         self.assertIs(getattr(sys, self.orig_stream), orig_stdout)
         s = f.getvalue()
         self.assertEqual(s, "Hello World!\n")
 
 
-class TestRedirectStdout(TestRedirectStream, unittest.TestCase):
+kundi TestRedirectStdout(TestRedirectStream, unittest.TestCase):
 
     redirect_stream = redirect_stdout
     orig_stream = "stdout"
 
 
-class TestRedirectStderr(TestRedirectStream, unittest.TestCase):
+kundi TestRedirectStderr(TestRedirectStream, unittest.TestCase):
 
     redirect_stream = redirect_stderr
     orig_stream = "stderr"
 
 
-class TestSuppress(unittest.TestCase):
+kundi TestSuppress(unittest.TestCase):
 
     @support.requires_docstrings
-    def test_instance_docs(self):
+    eleza test_instance_docs(self):
         # Issue 19330: ensure context manager instances have good docstrings
         cm_docstring = suppress.__doc__
         obj = suppress()
         self.assertEqual(obj.__doc__, cm_docstring)
 
-    def test_no_result_from_enter(self):
+    eleza test_no_result_kutoka_enter(self):
         with suppress(ValueError) as enter_result:
             self.assertIsNone(enter_result)
 
-    def test_no_exception(self):
+    eleza test_no_exception(self):
         with suppress(ValueError):
             self.assertEqual(pow(2, 5), 32)
 
-    def test_exact_exception(self):
+    eleza test_exact_exception(self):
         with suppress(TypeError):
             len(5)
 
-    def test_exception_hierarchy(self):
+    eleza test_exception_hierarchy(self):
         with suppress(LookupError):
             'Hello'[50]
 
-    def test_other_exception(self):
+    eleza test_other_exception(self):
         with self.assertRaises(ZeroDivisionError):
             with suppress(TypeError):
                 1/0
 
-    def test_no_args(self):
+    eleza test_no_args(self):
         with self.assertRaises(ZeroDivisionError):
             with suppress():
                 1/0
 
-    def test_multiple_exception_args(self):
+    eleza test_multiple_exception_args(self):
         with suppress(ZeroDivisionError, TypeError):
             1/0
         with suppress(ZeroDivisionError, TypeError):
             len(5)
 
-    def test_cm_is_reentrant(self):
+    eleza test_cm_is_reentrant(self):
         ignore_exceptions = suppress(Exception)
         with ignore_exceptions:
             pass
@@ -1053,5 +1053,5 @@ class TestSuppress(unittest.TestCase):
             1/0
         self.assertTrue(outer_continued)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

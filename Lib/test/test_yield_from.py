@@ -13,21 +13,21 @@ agiza inspect
 kutoka test.support agiza captured_stderr, disable_gc, gc_collect
 kutoka test agiza support
 
-class TestPEP380Operation(unittest.TestCase):
+kundi TestPEP380Operation(unittest.TestCase):
     """
     Test semantics.
     """
 
-    def test_delegation_of_initial_next_to_subgenerator(self):
+    eleza test_delegation_of_initial_next_to_subgenerator(self):
         """
         Test delegation of initial next() call to subgenerator
         """
         trace = []
-        def g1():
+        eleza g1():
             trace.append("Starting g1")
             yield kutoka g2()
             trace.append("Finishing g1")
-        def g2():
+        eleza g2():
             trace.append("Starting g2")
             yield 42
             trace.append("Finishing g2")
@@ -41,18 +41,18 @@ class TestPEP380Operation(unittest.TestCase):
             "Finishing g1",
         ])
 
-    def test_raising_exception_in_initial_next_call(self):
+    eleza test_raising_exception_in_initial_next_call(self):
         """
         Test raising exception in initial next() call
         """
         trace = []
-        def g1():
+        eleza g1():
             try:
                 trace.append("Starting g1")
                 yield kutoka g2()
             finally:
                 trace.append("Finishing g1")
-        def g2():
+        eleza g2():
             try:
                 trace.append("Starting g2")
                 raise ValueError("spanish inquisition occurred")
@@ -72,18 +72,18 @@ class TestPEP380Operation(unittest.TestCase):
             "Finishing g1",
         ])
 
-    def test_delegation_of_next_call_to_subgenerator(self):
+    eleza test_delegation_of_next_call_to_subgenerator(self):
         """
         Test delegation of next() call to subgenerator
         """
         trace = []
-        def g1():
+        eleza g1():
             trace.append("Starting g1")
             yield "g1 ham"
             yield kutoka g2()
             yield "g1 eggs"
             trace.append("Finishing g1")
-        def g2():
+        eleza g2():
             trace.append("Starting g2")
             yield "g2 spam"
             yield "g2 more spam"
@@ -101,12 +101,12 @@ class TestPEP380Operation(unittest.TestCase):
             "Finishing g1",
         ])
 
-    def test_raising_exception_in_delegated_next_call(self):
+    eleza test_raising_exception_in_delegated_next_call(self):
         """
         Test raising exception in delegated next() call
         """
         trace = []
-        def g1():
+        eleza g1():
             try:
                 trace.append("Starting g1")
                 yield "g1 ham"
@@ -114,7 +114,7 @@ class TestPEP380Operation(unittest.TestCase):
                 yield "g1 eggs"
             finally:
                 trace.append("Finishing g1")
-        def g2():
+        eleza g2():
             try:
                 trace.append("Starting g2")
                 yield "g2 spam"
@@ -138,12 +138,12 @@ class TestPEP380Operation(unittest.TestCase):
             "Finishing g1",
         ])
 
-    def test_delegation_of_send(self):
+    eleza test_delegation_of_send(self):
         """
         Test delegation of send()
         """
         trace = []
-        def g1():
+        eleza g1():
             trace.append("Starting g1")
             x = yield "g1 ham"
             trace.append("g1 received %s" % (x,))
@@ -151,7 +151,7 @@ class TestPEP380Operation(unittest.TestCase):
             x = yield "g1 eggs"
             trace.append("g1 received %s" % (x,))
             trace.append("Finishing g1")
-        def g2():
+        eleza g2():
             trace.append("Starting g2")
             x = yield "g2 spam"
             trace.append("g2 received %s" % (x,))
@@ -182,12 +182,12 @@ class TestPEP380Operation(unittest.TestCase):
             "Finishing g1",
         ])
 
-    def test_handling_exception_while_delegating_send(self):
+    eleza test_handling_exception_while_delegating_send(self):
         """
         Test handling exception while delegating 'send'
         """
         trace = []
-        def g1():
+        eleza g1():
             trace.append("Starting g1")
             x = yield "g1 ham"
             trace.append("g1 received %s" % (x,))
@@ -195,7 +195,7 @@ class TestPEP380Operation(unittest.TestCase):
             x = yield "g1 eggs"
             trace.append("g1 received %s" % (x,))
             trace.append("Finishing g1")
-        def g2():
+        eleza g2():
             trace.append("Starting g2")
             x = yield "g2 spam"
             trace.append("g2 received %s" % (x,))
@@ -203,7 +203,7 @@ class TestPEP380Operation(unittest.TestCase):
             x = yield "g2 more spam"
             trace.append("g2 received %s" % (x,))
             trace.append("Finishing g2")
-        def run():
+        eleza run():
             g = g1()
             y = next(g)
             x = 1
@@ -223,12 +223,12 @@ class TestPEP380Operation(unittest.TestCase):
             "g2 received 2",
         ])
 
-    def test_delegating_close(self):
+    eleza test_delegating_close(self):
         """
         Test delegating 'close'
         """
         trace = []
-        def g1():
+        eleza g1():
             try:
                 trace.append("Starting g1")
                 yield "g1 ham"
@@ -236,7 +236,7 @@ class TestPEP380Operation(unittest.TestCase):
                 yield "g1 eggs"
             finally:
                 trace.append("Finishing g1")
-        def g2():
+        eleza g2():
             try:
                 trace.append("Starting g2")
                 yield "g2 spam"
@@ -257,12 +257,12 @@ class TestPEP380Operation(unittest.TestCase):
             "Finishing g1"
         ])
 
-    def test_handing_exception_while_delegating_close(self):
+    eleza test_handing_exception_while_delegating_close(self):
         """
         Test handling exception while delegating 'close'
         """
         trace = []
-        def g1():
+        eleza g1():
             try:
                 trace.append("Starting g1")
                 yield "g1 ham"
@@ -270,7 +270,7 @@ class TestPEP380Operation(unittest.TestCase):
                 yield "g1 eggs"
             finally:
                 trace.append("Finishing g1")
-        def g2():
+        eleza g2():
             try:
                 trace.append("Starting g2")
                 yield "g2 spam"
@@ -298,12 +298,12 @@ class TestPEP380Operation(unittest.TestCase):
             "Finishing g1",
         ])
 
-    def test_delegating_throw(self):
+    eleza test_delegating_throw(self):
         """
         Test delegating 'throw'
         """
         trace = []
-        def g1():
+        eleza g1():
             try:
                 trace.append("Starting g1")
                 yield "g1 ham"
@@ -311,7 +311,7 @@ class TestPEP380Operation(unittest.TestCase):
                 yield "g1 eggs"
             finally:
                 trace.append("Finishing g1")
-        def g2():
+        eleza g2():
             try:
                 trace.append("Starting g2")
                 yield "g2 spam"
@@ -338,12 +338,12 @@ class TestPEP380Operation(unittest.TestCase):
             "Finishing g1",
         ])
 
-    def test_value_attribute_of_StopIteration_exception(self):
+    eleza test_value_attribute_of_StopIteration_exception(self):
         """
         Test 'value' attribute of StopIteration exception
         """
         trace = []
-        def pex(e):
+        eleza pex(e):
             trace.append("%s: %s" % (e.__class__.__name__, e))
             trace.append("value = %s" % (e.value,))
         e = StopIteration()
@@ -362,23 +362,23 @@ class TestPEP380Operation(unittest.TestCase):
         ])
 
 
-    def test_exception_value_crash(self):
-        # There used to be a refcount error when the return value
+    eleza test_exception_value_crash(self):
+        # There used to be a refcount error when the rudisha value
         # stored in the StopIteration has a refcount of 1.
-        def g1():
+        eleza g1():
             yield kutoka g2()
-        def g2():
+        eleza g2():
             yield "g2"
-            return [42]
+            rudisha [42]
         self.assertEqual(list(g1()), ["g2"])
 
 
-    def test_generator_return_value(self):
+    eleza test_generator_return_value(self):
         """
-        Test generator return value
+        Test generator rudisha value
         """
         trace = []
-        def g1():
+        eleza g1():
             trace.append("Starting g1")
             yield "g1 ham"
             ret = yield kutoka g2()
@@ -388,13 +388,13 @@ class TestPEP380Operation(unittest.TestCase):
                 trace.append("g2 returned %r" % (ret,))
             yield "g1 eggs"
             trace.append("Finishing g1")
-        def g2(v = None):
+        eleza g2(v = None):
             trace.append("Starting g2")
             yield "g2 spam"
             yield "g2 more spam"
             trace.append("Finishing g2")
-            if v:
-                return v
+            ikiwa v:
+                rudisha v
         for x in g1():
             trace.append("Yielded %s" % (x,))
         self.assertEqual(trace,[
@@ -424,12 +424,12 @@ class TestPEP380Operation(unittest.TestCase):
             "Finishing g1",
         ])
 
-    def test_delegation_of_next_to_non_generator(self):
+    eleza test_delegation_of_next_to_non_generator(self):
         """
         Test delegation of next() to non-generator
         """
         trace = []
-        def g():
+        eleza g():
             yield kutoka range(3)
         for x in g():
             trace.append("Yielded %s" % (x,))
@@ -440,12 +440,12 @@ class TestPEP380Operation(unittest.TestCase):
         ])
 
 
-    def test_conversion_of_sendNone_to_next(self):
+    eleza test_conversion_of_sendNone_to_next(self):
         """
         Test conversion of send(None) to next()
         """
         trace = []
-        def g():
+        eleza g():
             yield kutoka range(3)
         gi = g()
         for x in range(3):
@@ -457,12 +457,12 @@ class TestPEP380Operation(unittest.TestCase):
             "Yielded: 2",
         ])
 
-    def test_delegation_of_close_to_non_generator(self):
+    eleza test_delegation_of_close_to_non_generator(self):
         """
         Test delegation of close() to non-generator
         """
         trace = []
-        def g():
+        eleza g():
             try:
                 trace.append("starting g")
                 yield kutoka range(3)
@@ -479,12 +479,12 @@ class TestPEP380Operation(unittest.TestCase):
             "finishing g",
         ])
 
-    def test_delegating_throw_to_non_generator(self):
+    eleza test_delegating_throw_to_non_generator(self):
         """
         Test delegating 'throw' to non-generator
         """
         trace = []
-        def g():
+        eleza g():
             try:
                 trace.append("Starting g")
                 yield kutoka range(10)
@@ -511,12 +511,12 @@ class TestPEP380Operation(unittest.TestCase):
             "Finishing g",
         ])
 
-    def test_attempting_to_send_to_non_generator(self):
+    eleza test_attempting_to_send_to_non_generator(self):
         """
         Test attempting to send to non-generator
         """
         trace = []
-        def g():
+        eleza g():
             try:
                 trace.append("starting g")
                 yield kutoka range(3)
@@ -538,19 +538,19 @@ class TestPEP380Operation(unittest.TestCase):
             "finishing g",
         ])
 
-    def test_broken_getattr_handling(self):
+    eleza test_broken_getattr_handling(self):
         """
         Test subiterator with a broken getattr implementation
         """
-        class Broken:
-            def __iter__(self):
-                return self
-            def __next__(self):
-                return 1
-            def __getattr__(self, attr):
+        kundi Broken:
+            eleza __iter__(self):
+                rudisha self
+            eleza __next__(self):
+                rudisha 1
+            eleza __getattr__(self, attr):
                 1/0
 
-        def g():
+        eleza g():
             yield kutoka Broken()
 
         with self.assertRaises(ZeroDivisionError):
@@ -570,18 +570,18 @@ class TestPEP380Operation(unittest.TestCase):
 
             self.assertEqual(ZeroDivisionError, cm.unraisable.exc_type)
 
-    def test_exception_in_initial_next_call(self):
+    eleza test_exception_in_initial_next_call(self):
         """
         Test exception in initial next() call
         """
         trace = []
-        def g1():
+        eleza g1():
             trace.append("g1 about to yield kutoka g2")
             yield kutoka g2()
             trace.append("g1 should not be here")
-        def g2():
+        eleza g2():
             yield 1/0
-        def run():
+        eleza run():
             gi = g1()
             next(gi)
         self.assertRaises(ZeroDivisionError,run)
@@ -589,19 +589,19 @@ class TestPEP380Operation(unittest.TestCase):
             "g1 about to yield kutoka g2"
         ])
 
-    def test_attempted_yield_from_loop(self):
+    eleza test_attempted_yield_kutoka_loop(self):
         """
         Test attempted yield-kutoka loop
         """
         trace = []
-        def g1():
+        eleza g1():
             trace.append("g1: starting")
             yield "y1"
             trace.append("g1: about to yield kutoka g2")
             yield kutoka g2()
             trace.append("g1 should not be here")
 
-        def g2():
+        eleza g2():
             trace.append("g2: starting")
             yield "y2"
             trace.append("g2: about to yield kutoka g1")
@@ -624,12 +624,12 @@ class TestPEP380Operation(unittest.TestCase):
             "g2: about to yield kutoka g1",
         ])
 
-    def test_returning_value_from_delegated_throw(self):
+    eleza test_returning_value_kutoka_delegated_throw(self):
         """
         Test returning value kutoka delegated 'throw'
         """
         trace = []
-        def g1():
+        eleza g1():
             try:
                 trace.append("Starting g1")
                 yield "g1 ham"
@@ -637,7 +637,7 @@ class TestPEP380Operation(unittest.TestCase):
                 yield "g1 eggs"
             finally:
                 trace.append("Finishing g1")
-        def g2():
+        eleza g2():
             try:
                 trace.append("Starting g2")
                 yield "g2 spam"
@@ -646,7 +646,7 @@ class TestPEP380Operation(unittest.TestCase):
                 trace.append("Caught LunchError in g2")
                 yield "g2 lunch saved"
                 yield "g2 yet more spam"
-        class LunchError(Exception):
+        kundi LunchError(Exception):
             pass
         g = g1()
         for i in range(2):
@@ -667,12 +667,12 @@ class TestPEP380Operation(unittest.TestCase):
             "Finishing g1",
         ])
 
-    def test_next_and_return_with_value(self):
+    eleza test_next_and_return_with_value(self):
         """
-        Test next and return with value
+        Test next and rudisha with value
         """
         trace = []
-        def f(r):
+        eleza f(r):
             gi = g(r)
             next(gi)
             try:
@@ -681,11 +681,11 @@ class TestPEP380Operation(unittest.TestCase):
                 trace.append("f SHOULD NOT BE HERE")
             except StopIteration as e:
                 trace.append("f caught %r" % (e,))
-        def g(r):
+        eleza g(r):
             trace.append("g starting")
             yield
             trace.append("g returning %r" % (r,))
-            return r
+            rudisha r
         f(None)
         f(1)
         f((2,))
@@ -709,12 +709,12 @@ class TestPEP380Operation(unittest.TestCase):
             "f caught StopIteration(StopIteration(3))",
         ])
 
-    def test_send_and_return_with_value(self):
+    eleza test_send_and_return_with_value(self):
         """
-        Test send and return with value
+        Test send and rudisha with value
         """
         trace = []
-        def f(r):
+        eleza f(r):
             gi = g(r)
             next(gi)
             try:
@@ -723,12 +723,12 @@ class TestPEP380Operation(unittest.TestCase):
                 trace.append("f SHOULD NOT BE HERE")
             except StopIteration as e:
                 trace.append("f caught %r" % (e,))
-        def g(r):
+        eleza g(r):
             trace.append("g starting")
             x = yield
             trace.append("g received %r" % (x,))
             trace.append("g returning %r" % (r,))
-            return r
+            rudisha r
         f(None)
         f(1)
         f((2,))
@@ -756,19 +756,19 @@ class TestPEP380Operation(unittest.TestCase):
             'f caught StopIteration(StopIteration(3))'
         ])
 
-    def test_catching_exception_from_subgen_and_returning(self):
+    eleza test_catching_exception_kutoka_subgen_and_returning(self):
         """
         Test catching an exception thrown into a
         subgenerator and returning a value
         """
-        def inner():
+        eleza inner():
             try:
                 yield 1
             except ValueError:
                 trace.append("inner caught ValueError")
-            return value
+            rudisha value
 
-        def outer():
+        eleza outer():
             v = yield kutoka inner()
             trace.append("inner returned %r to outer" % (v,))
             yield v
@@ -785,20 +785,20 @@ class TestPEP380Operation(unittest.TestCase):
                 repr(value),
             ])
 
-    def test_throwing_GeneratorExit_into_subgen_that_returns(self):
+    eleza test_throwing_GeneratorExit_into_subgen_that_returns(self):
         """
         Test throwing GeneratorExit into a subgenerator that
         catches it and returns normally.
         """
         trace = []
-        def f():
+        eleza f():
             try:
                 trace.append("Enter f")
                 yield
                 trace.append("Exit f")
             except GeneratorExit:
                 return
-        def g():
+        eleza g():
             trace.append("Enter g")
             yield kutoka f()
             trace.append("Exit g")
@@ -815,20 +815,20 @@ class TestPEP380Operation(unittest.TestCase):
             "Enter f",
         ])
 
-    def test_throwing_GeneratorExit_into_subgenerator_that_yields(self):
+    eleza test_throwing_GeneratorExit_into_subgenerator_that_yields(self):
         """
         Test throwing GeneratorExit into a subgenerator that
         catches it and yields.
         """
         trace = []
-        def f():
+        eleza f():
             try:
                 trace.append("Enter f")
                 yield
                 trace.append("Exit f")
             except GeneratorExit:
                 yield
-        def g():
+        eleza g():
             trace.append("Enter g")
             yield kutoka f()
             trace.append("Exit g")
@@ -845,20 +845,20 @@ class TestPEP380Operation(unittest.TestCase):
             "Enter f",
         ])
 
-    def test_throwing_GeneratorExit_into_subgen_that_raises(self):
+    eleza test_throwing_GeneratorExit_into_subgen_that_raises(self):
         """
         Test throwing GeneratorExit into a subgenerator that
         catches it and raises a different exception.
         """
         trace = []
-        def f():
+        eleza f():
             try:
                 trace.append("Enter f")
                 yield
                 trace.append("Exit f")
             except GeneratorExit:
                 raise ValueError("Vorpal bunny encountered")
-        def g():
+        eleza g():
             trace.append("Enter g")
             yield kutoka f()
             trace.append("Exit g")
@@ -876,18 +876,18 @@ class TestPEP380Operation(unittest.TestCase):
             "Enter f",
         ])
 
-    def test_yield_from_empty(self):
-        def g():
+    eleza test_yield_kutoka_empty(self):
+        eleza g():
             yield kutoka ()
         self.assertRaises(StopIteration, next, g())
 
-    def test_delegating_generators_claim_to_be_running(self):
+    eleza test_delegating_generators_claim_to_be_running(self):
         # Check with basic iteration
-        def one():
+        eleza one():
             yield 0
             yield kutoka two()
             yield 3
-        def two():
+        eleza two():
             yield 1
             try:
                 yield kutoka g1
@@ -906,9 +906,9 @@ class TestPEP380Operation(unittest.TestCase):
             pass
         self.assertEqual(res, [0, 1, 2, 3])
         # Check with throw
-        class MyErr(Exception):
+        kundi MyErr(Exception):
             pass
-        def one():
+        eleza one():
             try:
                 yield 0
             except MyErr:
@@ -918,7 +918,7 @@ class TestPEP380Operation(unittest.TestCase):
                 yield 3
             except MyErr:
                 pass
-        def two():
+        eleza two():
             try:
                 yield 1
             except MyErr:
@@ -939,33 +939,33 @@ class TestPEP380Operation(unittest.TestCase):
         except StopIteration:
             pass
         # Check with close
-        class MyIt(object):
-            def __iter__(self):
-                return self
-            def __next__(self):
-                return 42
-            def close(self_):
+        kundi MyIt(object):
+            eleza __iter__(self):
+                rudisha self
+            eleza __next__(self):
+                rudisha 42
+            eleza close(self_):
                 self.assertTrue(g1.gi_running)
                 self.assertRaises(ValueError, next, g1)
-        def one():
+        eleza one():
             yield kutoka MyIt()
         g1 = one()
         next(g1)
         g1.close()
 
-    def test_delegator_is_visible_to_debugger(self):
-        def call_stack():
-            return [f[3] for f in inspect.stack()]
+    eleza test_delegator_is_visible_to_debugger(self):
+        eleza call_stack():
+            rudisha [f[3] for f in inspect.stack()]
 
-        def gen():
+        eleza gen():
             yield call_stack()
             yield call_stack()
             yield call_stack()
 
-        def spam(g):
+        eleza spam(g):
             yield kutoka g
 
-        def eggs(g):
+        eleza eggs(g):
             yield kutoka g
 
         for stack in spam(gen()):
@@ -974,21 +974,21 @@ class TestPEP380Operation(unittest.TestCase):
         for stack in spam(eggs(gen())):
             self.assertTrue('spam' in stack and 'eggs' in stack)
 
-    def test_custom_iterator_return(self):
+    eleza test_custom_iterator_return(self):
         # See issue #15568
-        class MyIter:
-            def __iter__(self):
-                return self
-            def __next__(self):
+        kundi MyIter:
+            eleza __iter__(self):
+                rudisha self
+            eleza __next__(self):
                 raise StopIteration(42)
-        def gen():
+        eleza gen():
             nonlocal ret
             ret = yield kutoka MyIter()
         ret = None
         list(gen())
         self.assertEqual(ret, 42)
 
-    def test_close_with_cleared_frame(self):
+    eleza test_close_with_cleared_frame(self):
         # See issue #17669.
         #
         # Create a stack of generators: outer() delegating to inner()
@@ -1007,12 +1007,12 @@ class TestPEP380Operation(unittest.TestCase):
         # Previously, gen_yf would crash since inner_gen's frame had been
         # cleared (and in particular f_stacktop was NULL).
 
-        def innermost():
+        eleza innermost():
             yield
-        def inner():
+        eleza inner():
             outer_gen = yield
             yield kutoka innermost()
-        def outer():
+        eleza outer():
             inner_gen = yield
             yield kutoka inner_gen
 
@@ -1027,18 +1027,18 @@ class TestPEP380Operation(unittest.TestCase):
             del inner_gen
             gc_collect()
 
-    def test_send_tuple_with_custom_generator(self):
+    eleza test_send_tuple_with_custom_generator(self):
         # See issue #21209.
-        class MyGen:
-            def __iter__(self):
-                return self
-            def __next__(self):
-                return 42
-            def send(self, what):
+        kundi MyGen:
+            eleza __iter__(self):
+                rudisha self
+            eleza __next__(self):
+                rudisha 42
+            eleza send(self, what):
                 nonlocal v
                 v = what
-                return None
-        def outer():
+                rudisha None
+        eleza outer():
             v = yield kutoka MyGen()
         g = outer()
         next(g)
@@ -1047,5 +1047,5 @@ class TestPEP380Operation(unittest.TestCase):
         self.assertEqual(v, (1, 2, 3, 4))
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

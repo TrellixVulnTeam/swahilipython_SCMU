@@ -26,7 +26,7 @@ except ImportError:
     _testcapi = None
 
 
-if support.PGO:
+ikiwa support.PGO:
     raise unittest.SkipTest("test is not helpful for PGO")
 
 mswindows = (sys.platform == "win32")
@@ -35,7 +35,7 @@ mswindows = (sys.platform == "win32")
 # Depends on the following external programs: Python
 #
 
-if mswindows:
+ikiwa mswindows:
     SETBINARY = ('agiza msvcrt; msvcrt.setmode(sys.stdout.fileno(), '
                                                 'os.O_BINARY);')
 else:
@@ -46,14 +46,14 @@ NONEXISTING_CMD = ('nonexisting_i_hope',)
 NONEXISTING_ERRORS = (FileNotFoundError, NotADirectoryError, PermissionError)
 
 
-class BaseTestCase(unittest.TestCase):
-    def setUp(self):
+kundi BaseTestCase(unittest.TestCase):
+    eleza setUp(self):
         # Try to minimize the number of children we have so this test
         # doesn't crash on some buildbots (Alphas in particular).
         support.reap_children()
 
-    def tearDown(self):
-        if not mswindows:
+    eleza tearDown(self):
+        ikiwa not mswindows:
             # subprocess._active is not used on Windows and is set to None.
             for inst in subprocess._active:
                 inst.wait()
@@ -64,7 +64,7 @@ class BaseTestCase(unittest.TestCase):
         self.doCleanups()
         support.reap_children()
 
-    def assertStderrEqual(self, stderr, expected, msg=None):
+    eleza assertStderrEqual(self, stderr, expected, msg=None):
         # In a debug build, stuff like "[6580 refs]" is printed to stderr at
         # shutdown time.  That frustrates tests trying to check stderr produced
         # kutoka a spawned Python process.
@@ -74,21 +74,21 @@ class BaseTestCase(unittest.TestCase):
         self.assertEqual(actual, expected, msg)
 
 
-class PopenTestException(Exception):
+kundi PopenTestException(Exception):
     pass
 
 
-class PopenExecuteChildRaises(subprocess.Popen):
-    """Popen subclass for testing cleanup of subprocess.PIPE filehandles when
+kundi PopenExecuteChildRaises(subprocess.Popen):
+    """Popen subkundi for testing cleanup of subprocess.PIPE filehandles when
     _execute_child fails.
     """
-    def _execute_child(self, *args, **kwargs):
+    eleza _execute_child(self, *args, **kwargs):
         raise PopenTestException("Forced Exception for Test")
 
 
-class ProcessTestCase(BaseTestCase):
+kundi ProcessTestCase(BaseTestCase):
 
-    def test_io_buffered_by_default(self):
+    eleza test_io_buffered_by_default(self):
         p = subprocess.Popen([sys.executable, "-c", "agiza sys; sys.exit(0)"],
                              stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)
@@ -102,7 +102,7 @@ class ProcessTestCase(BaseTestCase):
             p.stderr.close()
             p.wait()
 
-    def test_io_unbuffered_works(self):
+    eleza test_io_unbuffered_works(self):
         p = subprocess.Popen([sys.executable, "-c", "agiza sys; sys.exit(0)"],
                              stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE, bufsize=0)
@@ -116,13 +116,13 @@ class ProcessTestCase(BaseTestCase):
             p.stderr.close()
             p.wait()
 
-    def test_call_seq(self):
+    eleza test_call_seq(self):
         # call() function with sequence argument
         rc = subprocess.call([sys.executable, "-c",
                               "agiza sys; sys.exit(47)"])
         self.assertEqual(rc, 47)
 
-    def test_call_timeout(self):
+    eleza test_call_timeout(self):
         # call() function with timeout argument; we want to test that the child
         # process gets killed when the timeout expires.  If the child isn't
         # killed, this call will deadlock since subprocess.call waits for the
@@ -131,40 +131,40 @@ class ProcessTestCase(BaseTestCase):
                           [sys.executable, "-c", "while True: pass"],
                           timeout=0.1)
 
-    def test_check_call_zero(self):
-        # check_call() function with zero return code
+    eleza test_check_call_zero(self):
+        # check_call() function with zero rudisha code
         rc = subprocess.check_call([sys.executable, "-c",
                                     "agiza sys; sys.exit(0)"])
         self.assertEqual(rc, 0)
 
-    def test_check_call_nonzero(self):
-        # check_call() function with non-zero return code
+    eleza test_check_call_nonzero(self):
+        # check_call() function with non-zero rudisha code
         with self.assertRaises(subprocess.CalledProcessError) as c:
             subprocess.check_call([sys.executable, "-c",
                                    "agiza sys; sys.exit(47)"])
         self.assertEqual(c.exception.returncode, 47)
 
-    def test_check_output(self):
-        # check_output() function with zero return code
+    eleza test_check_output(self):
+        # check_output() function with zero rudisha code
         output = subprocess.check_output(
-                [sys.executable, "-c", "print('BDFL')"])
+                [sys.executable, "-c", "andika('BDFL')"])
         self.assertIn(b'BDFL', output)
 
-    def test_check_output_nonzero(self):
-        # check_call() function with non-zero return code
+    eleza test_check_output_nonzero(self):
+        # check_call() function with non-zero rudisha code
         with self.assertRaises(subprocess.CalledProcessError) as c:
             subprocess.check_output(
                     [sys.executable, "-c", "agiza sys; sys.exit(5)"])
         self.assertEqual(c.exception.returncode, 5)
 
-    def test_check_output_stderr(self):
+    eleza test_check_output_stderr(self):
         # check_output() function stderr redirected to stdout
         output = subprocess.check_output(
                 [sys.executable, "-c", "agiza sys; sys.stderr.write('BDFL')"],
                 stderr=subprocess.STDOUT)
         self.assertIn(b'BDFL', output)
 
-    def test_check_output_stdin_arg(self):
+    eleza test_check_output_stdin_arg(self):
         # check_output() can be called with stdin set to a file
         tf = tempfile.TemporaryFile()
         self.addCleanup(tf.close)
@@ -176,7 +176,7 @@ class ProcessTestCase(BaseTestCase):
                 stdin=tf)
         self.assertIn(b'PEAR', output)
 
-    def test_check_output_input_arg(self):
+    eleza test_check_output_input_arg(self):
         # check_output() can be called with input set to a string
         output = subprocess.check_output(
                 [sys.executable, "-c",
@@ -184,16 +184,16 @@ class ProcessTestCase(BaseTestCase):
                 input=b'pear')
         self.assertIn(b'PEAR', output)
 
-    def test_check_output_stdout_arg(self):
+    eleza test_check_output_stdout_arg(self):
         # check_output() refuses to accept 'stdout' argument
         with self.assertRaises(ValueError) as c:
             output = subprocess.check_output(
-                    [sys.executable, "-c", "print('will not be run')"],
+                    [sys.executable, "-c", "andika('will not be run')"],
                     stdout=sys.stdout)
             self.fail("Expected ValueError when stdout arg supplied.")
         self.assertIn('stdout', c.exception.args[0])
 
-    def test_check_output_stdin_with_input_arg(self):
+    eleza test_check_output_stdin_with_input_arg(self):
         # check_output() refuses to accept 'stdin' with 'input'
         tf = tempfile.TemporaryFile()
         self.addCleanup(tf.close)
@@ -201,13 +201,13 @@ class ProcessTestCase(BaseTestCase):
         tf.seek(0)
         with self.assertRaises(ValueError) as c:
             output = subprocess.check_output(
-                    [sys.executable, "-c", "print('will not be run')"],
+                    [sys.executable, "-c", "andika('will not be run')"],
                     stdin=tf, input=b'hare')
             self.fail("Expected ValueError when stdin and input args supplied.")
         self.assertIn('stdin', c.exception.args[0])
         self.assertIn('input', c.exception.args[0])
 
-    def test_check_output_timeout(self):
+    eleza test_check_output_timeout(self):
         # check_output() function with timeout arg
         with self.assertRaises(subprocess.TimeoutExpired) as c:
             output = subprocess.check_output(
@@ -222,7 +222,7 @@ class ProcessTestCase(BaseTestCase):
             self.fail("Expected TimeoutExpired.")
         self.assertEqual(c.exception.output, b'BDFL')
 
-    def test_call_kwargs(self):
+    eleza test_call_kwargs(self):
         # call() function with keyword args
         newenv = os.environ.copy()
         newenv["FRUIT"] = "banana"
@@ -232,7 +232,7 @@ class ProcessTestCase(BaseTestCase):
                              env=newenv)
         self.assertEqual(rc, 1)
 
-    def test_invalid_args(self):
+    eleza test_invalid_args(self):
         # Popen() called with invalid arguments should raise TypeError
         # but Popen.__del__ should not complain (issue #12085)
         with support.captured_stderr() as s:
@@ -242,16 +242,16 @@ class ProcessTestCase(BaseTestCase):
             self.assertRaises(TypeError, subprocess.Popen, *too_many_args)
         self.assertEqual(s.getvalue(), '')
 
-    def test_stdin_none(self):
+    eleza test_stdin_none(self):
         # .stdin is None when not redirected
-        p = subprocess.Popen([sys.executable, "-c", 'print("banana")'],
+        p = subprocess.Popen([sys.executable, "-c", 'andika("banana")'],
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         self.addCleanup(p.stdout.close)
         self.addCleanup(p.stderr.close)
         p.wait()
         self.assertEqual(p.stdin, None)
 
-    def test_stdout_none(self):
+    eleza test_stdout_none(self):
         # .stdout is None when not redirected, and the child's stdout will
         # be inherited kutoka the parent.  In order to test this we run a
         # subprocess in a subprocess:
@@ -263,7 +263,7 @@ class ProcessTestCase(BaseTestCase):
         # child goes to the parent stdout.  The parent also checks that the
         # child's stdout is None.  See #11963.
         code = ('agiza sys; kutoka subprocess agiza Popen, PIPE;'
-                'p = Popen([sys.executable, "-c", "print(\'test_stdout_none\')"],'
+                'p = Popen([sys.executable, "-c", "andika(\'test_stdout_none\')"],'
                 '          stdin=PIPE, stderr=PIPE);'
                 'p.wait(); assert p.stdout is None;')
         p = subprocess.Popen([sys.executable, "-c", code],
@@ -274,16 +274,16 @@ class ProcessTestCase(BaseTestCase):
         self.assertEqual(p.returncode, 0, err)
         self.assertEqual(out.rstrip(), b'test_stdout_none')
 
-    def test_stderr_none(self):
+    eleza test_stderr_none(self):
         # .stderr is None when not redirected
-        p = subprocess.Popen([sys.executable, "-c", 'print("banana")'],
+        p = subprocess.Popen([sys.executable, "-c", 'andika("banana")'],
                          stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         self.addCleanup(p.stdout.close)
         self.addCleanup(p.stdin.close)
         p.wait()
         self.assertEqual(p.stderr, None)
 
-    def _assert_python(self, pre_args, **kwargs):
+    eleza _assert_python(self, pre_args, **kwargs):
         # We include sys.exit() to prevent the test runner kutoka hanging
         # whenever python is found.
         args = pre_args + ["agiza sys; sys.exit(47)"]
@@ -291,7 +291,7 @@ class ProcessTestCase(BaseTestCase):
         p.wait()
         self.assertEqual(47, p.returncode)
 
-    def test_executable(self):
+    eleza test_executable(self):
         # Check that the executable argument works.
         #
         # On Unix (non-Mac and non-Windows), Python looks at args[0] to
@@ -302,19 +302,19 @@ class ProcessTestCase(BaseTestCase):
                                     "doesnotexist")
         self._assert_python([doesnotexist, "-c"], executable=sys.executable)
 
-    def test_bytes_executable(self):
+    eleza test_bytes_executable(self):
         doesnotexist = os.path.join(os.path.dirname(sys.executable),
                                     "doesnotexist")
         self._assert_python([doesnotexist, "-c"],
                             executable=os.fsencode(sys.executable))
 
-    def test_pathlike_executable(self):
+    eleza test_pathlike_executable(self):
         doesnotexist = os.path.join(os.path.dirname(sys.executable),
                                     "doesnotexist")
         self._assert_python([doesnotexist, "-c"],
                             executable=FakePath(sys.executable))
 
-    def test_executable_takes_precedence(self):
+    eleza test_executable_takes_precedence(self):
         # Check that the executable argument takes precedence over args[0].
         #
         # Verify first that the call succeeds without the executable arg.
@@ -325,37 +325,37 @@ class ProcessTestCase(BaseTestCase):
                           executable=NONEXISTING_CMD[0])
 
     @unittest.skipIf(mswindows, "executable argument replaces shell")
-    def test_executable_replaces_shell(self):
+    eleza test_executable_replaces_shell(self):
         # Check that the executable argument replaces the default shell
         # when shell=True.
         self._assert_python([], executable=sys.executable, shell=True)
 
     @unittest.skipIf(mswindows, "executable argument replaces shell")
-    def test_bytes_executable_replaces_shell(self):
+    eleza test_bytes_executable_replaces_shell(self):
         self._assert_python([], executable=os.fsencode(sys.executable),
                             shell=True)
 
     @unittest.skipIf(mswindows, "executable argument replaces shell")
-    def test_pathlike_executable_replaces_shell(self):
+    eleza test_pathlike_executable_replaces_shell(self):
         self._assert_python([], executable=FakePath(sys.executable),
                             shell=True)
 
     # For use in the test_cwd* tests below.
-    def _normalize_cwd(self, cwd):
+    eleza _normalize_cwd(self, cwd):
         # Normalize an expected cwd (for Tru64 support).
         # We can't use os.path.realpath since it doesn't expand Tru64 {memb}
         # strings.  See bug #1063571.
         with support.change_cwd(cwd):
-            return os.getcwd()
+            rudisha os.getcwd()
 
     # For use in the test_cwd* tests below.
-    def _split_python_path(self):
+    eleza _split_python_path(self):
         # Return normalized (python_dir, python_base).
         python_path = os.path.realpath(sys.executable)
-        return os.path.split(python_path)
+        rudisha os.path.split(python_path)
 
     # For use in the test_cwd* tests below.
-    def _assert_cwd(self, expected_cwd, python_arg, **kwargs):
+    eleza _assert_cwd(self, expected_cwd, python_arg, **kwargs):
         # Invoke Python via Popen, and assert that (1) the call succeeds,
         # and that (2) the current working directory of the child process
         # matches *expected_cwd*.
@@ -372,25 +372,25 @@ class ProcessTestCase(BaseTestCase):
         self.assertEqual(normcase(expected_cwd),
                          normcase(p.stdout.read().decode("utf-8")))
 
-    def test_cwd(self):
+    eleza test_cwd(self):
         # Check that cwd changes the cwd for the child process.
         temp_dir = tempfile.gettempdir()
         temp_dir = self._normalize_cwd(temp_dir)
         self._assert_cwd(temp_dir, sys.executable, cwd=temp_dir)
 
-    def test_cwd_with_bytes(self):
+    eleza test_cwd_with_bytes(self):
         temp_dir = tempfile.gettempdir()
         temp_dir = self._normalize_cwd(temp_dir)
         self._assert_cwd(temp_dir, sys.executable, cwd=os.fsencode(temp_dir))
 
-    def test_cwd_with_pathlike(self):
+    eleza test_cwd_with_pathlike(self):
         temp_dir = tempfile.gettempdir()
         temp_dir = self._normalize_cwd(temp_dir)
         self._assert_cwd(temp_dir, sys.executable, cwd=FakePath(temp_dir))
 
     @unittest.skipIf(mswindows, "pending resolution of issue #15533")
-    def test_cwd_with_relative_arg(self):
-        # Check that Popen looks for args[0] relative to cwd if args[0]
+    eleza test_cwd_with_relative_arg(self):
+        # Check that Popen looks for args[0] relative to cwd ikiwa args[0]
         # is relative.
         python_dir, python_base = self._split_python_path()
         rel_python = os.path.join(os.curdir, python_base)
@@ -405,8 +405,8 @@ class ProcessTestCase(BaseTestCase):
             self._assert_cwd(python_dir, rel_python, cwd=python_dir)
 
     @unittest.skipIf(mswindows, "pending resolution of issue #15533")
-    def test_cwd_with_relative_executable(self):
-        # Check that Popen looks for executable relative to cwd if executable
+    eleza test_cwd_with_relative_executable(self):
+        # Check that Popen looks for executable relative to cwd ikiwa executable
         # is relative (and that executable takes precedence over args[0]).
         python_dir, python_base = self._split_python_path()
         rel_python = os.path.join(os.curdir, python_base)
@@ -423,9 +423,9 @@ class ProcessTestCase(BaseTestCase):
             self._assert_cwd(python_dir, doesntexist, executable=rel_python,
                              cwd=python_dir)
 
-    def test_cwd_with_absolute_arg(self):
+    eleza test_cwd_with_absolute_arg(self):
         # Check that Popen can find the executable when the cwd is wrong
-        # if args[0] is an absolute path.
+        # ikiwa args[0] is an absolute path.
         python_dir, python_base = self._split_python_path()
         abs_python = os.path.join(python_dir, python_base)
         rel_python = os.path.join(os.curdir, python_base)
@@ -439,7 +439,7 @@ class ProcessTestCase(BaseTestCase):
 
     @unittest.skipIf(sys.base_prefix != sys.prefix,
                      'Test is not venv-compatible')
-    def test_executable_with_cwd(self):
+    eleza test_executable_with_cwd(self):
         python_dir, python_base = self._split_python_path()
         python_dir = self._normalize_cwd(python_dir)
         self._assert_cwd(python_dir, "somethingyoudonthave",
@@ -449,13 +449,13 @@ class ProcessTestCase(BaseTestCase):
                      'Test is not venv-compatible')
     @unittest.skipIf(sysconfig.is_python_build(),
                      "need an installed Python. See #7774")
-    def test_executable_without_cwd(self):
+    eleza test_executable_without_cwd(self):
         # For a normal installation, it should work without 'cwd'
         # argument.  For test runs in the build directory, see #7774.
         self._assert_cwd(os.getcwd(), "somethingyoudonthave",
                          executable=sys.executable)
 
-    def test_stdin_pipe(self):
+    eleza test_stdin_pipe(self):
         # stdin redirection
         p = subprocess.Popen([sys.executable, "-c",
                          'agiza sys; sys.exit(sys.stdin.read() == "pear")'],
@@ -465,7 +465,7 @@ class ProcessTestCase(BaseTestCase):
         p.wait()
         self.assertEqual(p.returncode, 1)
 
-    def test_stdin_filedes(self):
+    eleza test_stdin_filedes(self):
         # stdin is set to open file descriptor
         tf = tempfile.TemporaryFile()
         self.addCleanup(tf.close)
@@ -478,7 +478,7 @@ class ProcessTestCase(BaseTestCase):
         p.wait()
         self.assertEqual(p.returncode, 1)
 
-    def test_stdin_fileobj(self):
+    eleza test_stdin_fileobj(self):
         # stdin is set to open file object
         tf = tempfile.TemporaryFile()
         self.addCleanup(tf.close)
@@ -490,7 +490,7 @@ class ProcessTestCase(BaseTestCase):
         p.wait()
         self.assertEqual(p.returncode, 1)
 
-    def test_stdout_pipe(self):
+    eleza test_stdout_pipe(self):
         # stdout redirection
         p = subprocess.Popen([sys.executable, "-c",
                           'agiza sys; sys.stdout.write("orange")'],
@@ -498,7 +498,7 @@ class ProcessTestCase(BaseTestCase):
         with p:
             self.assertEqual(p.stdout.read(), b"orange")
 
-    def test_stdout_filedes(self):
+    eleza test_stdout_filedes(self):
         # stdout is set to open file descriptor
         tf = tempfile.TemporaryFile()
         self.addCleanup(tf.close)
@@ -510,7 +510,7 @@ class ProcessTestCase(BaseTestCase):
         os.lseek(d, 0, 0)
         self.assertEqual(os.read(d, 1024), b"orange")
 
-    def test_stdout_fileobj(self):
+    eleza test_stdout_fileobj(self):
         # stdout is set to open file object
         tf = tempfile.TemporaryFile()
         self.addCleanup(tf.close)
@@ -521,7 +521,7 @@ class ProcessTestCase(BaseTestCase):
         tf.seek(0)
         self.assertEqual(tf.read(), b"orange")
 
-    def test_stderr_pipe(self):
+    eleza test_stderr_pipe(self):
         # stderr redirection
         p = subprocess.Popen([sys.executable, "-c",
                           'agiza sys; sys.stderr.write("strawberry")'],
@@ -529,7 +529,7 @@ class ProcessTestCase(BaseTestCase):
         with p:
             self.assertStderrEqual(p.stderr.read(), b"strawberry")
 
-    def test_stderr_filedes(self):
+    eleza test_stderr_filedes(self):
         # stderr is set to open file descriptor
         tf = tempfile.TemporaryFile()
         self.addCleanup(tf.close)
@@ -541,7 +541,7 @@ class ProcessTestCase(BaseTestCase):
         os.lseek(d, 0, 0)
         self.assertStderrEqual(os.read(d, 1024), b"strawberry")
 
-    def test_stderr_fileobj(self):
+    eleza test_stderr_fileobj(self):
         # stderr is set to open file object
         tf = tempfile.TemporaryFile()
         self.addCleanup(tf.close)
@@ -552,7 +552,7 @@ class ProcessTestCase(BaseTestCase):
         tf.seek(0)
         self.assertStderrEqual(tf.read(), b"strawberry")
 
-    def test_stderr_redirect_with_no_stdout_redirect(self):
+    eleza test_stderr_redirect_with_no_stdout_redirect(self):
         # test stderr=STDOUT while stdout=None (not set)
 
         # - grandchild prints to stderr
@@ -573,7 +573,7 @@ class ProcessTestCase(BaseTestCase):
         self.assertStderrEqual(stderr, b'') # should be empty
         self.assertEqual(p.returncode, 0)
 
-    def test_stdout_stderr_pipe(self):
+    eleza test_stdout_stderr_pipe(self):
         # capture stdout and stderr to the same pipe
         p = subprocess.Popen([sys.executable, "-c",
                               'agiza sys;'
@@ -585,7 +585,7 @@ class ProcessTestCase(BaseTestCase):
         with p:
             self.assertStderrEqual(p.stdout.read(), b"appleorange")
 
-    def test_stdout_stderr_file(self):
+    eleza test_stdout_stderr_file(self):
         # capture stdout and stderr to the same open file
         tf = tempfile.TemporaryFile()
         self.addCleanup(tf.close)
@@ -600,7 +600,7 @@ class ProcessTestCase(BaseTestCase):
         tf.seek(0)
         self.assertStderrEqual(tf.read(), b"appleorange")
 
-    def test_stdout_filedes_of_stdout(self):
+    eleza test_stdout_filedes_of_stdout(self):
         # stdout is set to 1 (#1531862).
         # To avoid printing the text on stdout, we do something similar to
         # test_stdout_none (see above).  The parent subprocess calls the child
@@ -619,15 +619,15 @@ class ProcessTestCase(BaseTestCase):
         self.assertEqual(p.returncode, 0, err)
         self.assertEqual(out.rstrip(), b'test with stdout=1')
 
-    def test_stdout_devnull(self):
+    eleza test_stdout_devnull(self):
         p = subprocess.Popen([sys.executable, "-c",
                               'for i in range(10240):'
-                              'print("x" * 1024)'],
+                              'andika("x" * 1024)'],
                               stdout=subprocess.DEVNULL)
         p.wait()
         self.assertEqual(p.stdout, None)
 
-    def test_stderr_devnull(self):
+    eleza test_stderr_devnull(self):
         p = subprocess.Popen([sys.executable, "-c",
                               'agiza sys\n'
                               'for i in range(10240):'
@@ -636,7 +636,7 @@ class ProcessTestCase(BaseTestCase):
         p.wait()
         self.assertEqual(p.stderr, None)
 
-    def test_stdin_devnull(self):
+    eleza test_stdin_devnull(self):
         p = subprocess.Popen([sys.executable, "-c",
                               'agiza sys;'
                               'sys.stdin.read(1)'],
@@ -644,7 +644,7 @@ class ProcessTestCase(BaseTestCase):
         p.wait()
         self.assertEqual(p.stdin, None)
 
-    def test_env(self):
+    eleza test_env(self):
         newenv = os.environ.copy()
         newenv["FRUIT"] = "orange"
         with subprocess.Popen([sys.executable, "-c",
@@ -662,30 +662,30 @@ class ProcessTestCase(BaseTestCase):
     @unittest.skipIf(sysconfig.get_config_var('Py_ENABLE_SHARED') == 1,
                      'The Python shared library cannot be loaded '
                      'with an empty environment.')
-    def test_empty_env(self):
+    eleza test_empty_env(self):
         """Verify that env={} is as empty as possible."""
 
-        def is_env_var_to_ignore(n):
-            """Determine if an environment variable is under our control."""
+        eleza is_env_var_to_ignore(n):
+            """Determine ikiwa an environment variable is under our control."""
             # This excludes some __CF_* and VERSIONER_* keys MacOS insists
             # on adding even when the environment in exec is empty.
             # Gentoo sandboxes also force LD_PRELOAD and SANDBOX_* to exist.
-            return ('VERSIONER' in n or '__CF' in n or  # MacOS
+            rudisha ('VERSIONER' in n or '__CF' in n or  # MacOS
                     '__PYVENV_LAUNCHER__' in n or # MacOS framework build
                     n == 'LD_PRELOAD' or n.startswith('SANDBOX') or # Gentoo
                     n == 'LC_CTYPE') # Locale coercion triggered
 
         with subprocess.Popen([sys.executable, "-c",
-                               'agiza os; print(list(os.environ.keys()))'],
+                               'agiza os; andika(list(os.environ.keys()))'],
                               stdout=subprocess.PIPE, env={}) as p:
             stdout, stderr = p.communicate()
             child_env_names = eval(stdout.strip())
             self.assertIsInstance(child_env_names, list)
             child_env_names = [k for k in child_env_names
-                               if not is_env_var_to_ignore(k)]
+                               ikiwa not is_env_var_to_ignore(k)]
             self.assertEqual(child_env_names, [])
 
-    def test_invalid_cmd(self):
+    eleza test_invalid_cmd(self):
         # null character in the command name
         cmd = sys.executable + '\0'
         with self.assertRaises(ValueError):
@@ -695,7 +695,7 @@ class ProcessTestCase(BaseTestCase):
         with self.assertRaises(ValueError):
             subprocess.Popen([sys.executable, "-c", "pass#\0"])
 
-    def test_invalid_env(self):
+    eleza test_invalid_env(self):
         # null character in the environment variable name
         newenv = os.environ.copy()
         newenv["FRUIT\0VEGETABLE"] = "cabbage"
@@ -725,7 +725,7 @@ class ProcessTestCase(BaseTestCase):
             stdout, stderr = p.communicate()
             self.assertEqual(stdout, b"orange=lemon")
 
-    def test_communicate_stdin(self):
+    eleza test_communicate_stdin(self):
         p = subprocess.Popen([sys.executable, "-c",
                               'agiza sys;'
                               'sys.exit(sys.stdin.read() == "pear")'],
@@ -733,7 +733,7 @@ class ProcessTestCase(BaseTestCase):
         p.communicate(b"pear")
         self.assertEqual(p.returncode, 1)
 
-    def test_communicate_stdout(self):
+    eleza test_communicate_stdout(self):
         p = subprocess.Popen([sys.executable, "-c",
                               'agiza sys; sys.stdout.write("pineapple")'],
                              stdout=subprocess.PIPE)
@@ -741,7 +741,7 @@ class ProcessTestCase(BaseTestCase):
         self.assertEqual(stdout, b"pineapple")
         self.assertEqual(stderr, None)
 
-    def test_communicate_stderr(self):
+    eleza test_communicate_stderr(self):
         p = subprocess.Popen([sys.executable, "-c",
                               'agiza sys; sys.stderr.write("pineapple")'],
                              stderr=subprocess.PIPE)
@@ -749,7 +749,7 @@ class ProcessTestCase(BaseTestCase):
         self.assertEqual(stdout, None)
         self.assertStderrEqual(stderr, b"pineapple")
 
-    def test_communicate(self):
+    eleza test_communicate(self):
         p = subprocess.Popen([sys.executable, "-c",
                               'agiza sys,os;'
                               'sys.stderr.write("pineapple");'
@@ -764,7 +764,7 @@ class ProcessTestCase(BaseTestCase):
         self.assertEqual(stdout, b"banana")
         self.assertStderrEqual(stderr, b"pineapple")
 
-    def test_communicate_timeout(self):
+    eleza test_communicate_timeout(self):
         p = subprocess.Popen([sys.executable, "-c",
                               'agiza sys,os,time;'
                               'sys.stderr.write("pineapple\\n");'
@@ -783,7 +783,7 @@ class ProcessTestCase(BaseTestCase):
         self.assertEqual(stdout, "banana")
         self.assertStderrEqual(stderr.encode(), b"pineapple\npear\n")
 
-    def test_communicate_timeout_large_output(self):
+    eleza test_communicate_timeout_large_output(self):
         # Test an expiring timeout while the child is outputting lots of data.
         p = subprocess.Popen([sys.executable, "-c",
                               'agiza sys,os,time;'
@@ -800,37 +800,37 @@ class ProcessTestCase(BaseTestCase):
         self.assertEqual(len(stdout), 4 * 64 * 1024)
 
     # Test for the fd leak reported in http://bugs.python.org/issue2791.
-    def test_communicate_pipe_fd_leak(self):
+    eleza test_communicate_pipe_fd_leak(self):
         for stdin_pipe in (False, True):
             for stdout_pipe in (False, True):
                 for stderr_pipe in (False, True):
                     options = {}
-                    if stdin_pipe:
+                    ikiwa stdin_pipe:
                         options['stdin'] = subprocess.PIPE
-                    if stdout_pipe:
+                    ikiwa stdout_pipe:
                         options['stdout'] = subprocess.PIPE
-                    if stderr_pipe:
+                    ikiwa stderr_pipe:
                         options['stderr'] = subprocess.PIPE
-                    if not options:
+                    ikiwa not options:
                         continue
                     p = subprocess.Popen((sys.executable, "-c", "pass"), **options)
                     p.communicate()
-                    if p.stdin is not None:
+                    ikiwa p.stdin is not None:
                         self.assertTrue(p.stdin.closed)
-                    if p.stdout is not None:
+                    ikiwa p.stdout is not None:
                         self.assertTrue(p.stdout.closed)
-                    if p.stderr is not None:
+                    ikiwa p.stderr is not None:
                         self.assertTrue(p.stderr.closed)
 
-    def test_communicate_returns(self):
-        # communicate() should return None if no redirection is active
+    eleza test_communicate_returns(self):
+        # communicate() should rudisha None ikiwa no redirection is active
         p = subprocess.Popen([sys.executable, "-c",
                               "agiza sys; sys.exit(47)"])
         (stdout, stderr) = p.communicate()
         self.assertEqual(stdout, None)
         self.assertEqual(stderr, None)
 
-    def test_communicate_pipe_buf(self):
+    eleza test_communicate_pipe_buf(self):
         # communicate() with writes larger than pipe_buf
         # This test will probably deadlock rather than fail, if
         # communicate() does not work properly.
@@ -853,7 +853,7 @@ class ProcessTestCase(BaseTestCase):
         (stdout, stderr) = p.communicate(string_to_write)
         self.assertEqual(stdout, string_to_write)
 
-    def test_writes_before_communicate(self):
+    eleza test_writes_before_communicate(self):
         # stdin.write before communicate()
         p = subprocess.Popen([sys.executable, "-c",
                               'agiza sys,os;'
@@ -869,7 +869,7 @@ class ProcessTestCase(BaseTestCase):
         self.assertEqual(stdout, b"bananasplit")
         self.assertStderrEqual(stderr, b"")
 
-    def test_universal_newlines_and_text(self):
+    eleza test_universal_newlines_and_text(self):
         args = [
             sys.executable, "-c",
             'agiza sys,os;' + SETBINARY +
@@ -908,7 +908,7 @@ class ProcessTestCase(BaseTestCase):
                 self.assertEqual(p.stdout.read(),
                                  "line4\nline5\nline6\nline7\nline8")
 
-    def test_universal_newlines_communicate(self):
+    eleza test_universal_newlines_communicate(self):
         # universal newlines through communicate()
         p = subprocess.Popen([sys.executable, "-c",
                               'agiza sys,os;' + SETBINARY +
@@ -933,7 +933,7 @@ class ProcessTestCase(BaseTestCase):
         self.assertEqual(stdout,
                          "line2\nline4\nline5\nline6\nline7\nline8")
 
-    def test_universal_newlines_communicate_stdin(self):
+    eleza test_universal_newlines_communicate_stdin(self):
         # universal newlines through communicate(), with only stdin
         p = subprocess.Popen([sys.executable, "-c",
                               'agiza sys,os;' + SETBINARY + textwrap.dedent('''
@@ -947,7 +947,7 @@ class ProcessTestCase(BaseTestCase):
         (stdout, stderr) = p.communicate("line1\nline3\n")
         self.assertEqual(p.returncode, 0)
 
-    def test_universal_newlines_communicate_input_none(self):
+    eleza test_universal_newlines_communicate_input_none(self):
         # Test communicate(input=None) with universal newlines.
         #
         # We set stdout to PIPE because, as of this writing, a different
@@ -959,7 +959,7 @@ class ProcessTestCase(BaseTestCase):
         p.communicate()
         self.assertEqual(p.returncode, 0)
 
-    def test_universal_newlines_communicate_stdin_stdout_stderr(self):
+    eleza test_universal_newlines_communicate_stdin_stdout_stderr(self):
         # universal newlines through communicate(), with stdin, stdout, stderr
         p = subprocess.Popen([sys.executable, "-c",
                               'agiza sys,os;' + SETBINARY + textwrap.dedent('''
@@ -988,7 +988,7 @@ class ProcessTestCase(BaseTestCase):
         # Don't use assertStderrEqual because it strips CR and LF kutoka output.
         self.assertTrue(stderr.startswith("eline2\neline6\neline7\n"))
 
-    def test_universal_newlines_communicate_encodings(self):
+    eleza test_universal_newlines_communicate_encodings(self):
         # Check that universal newlines mode works for various encodings,
         # in particular for encodings in the UTF-16 and UTF-32 families.
         # See issue #15595.
@@ -1010,7 +1010,7 @@ class ProcessTestCase(BaseTestCase):
             stdout, stderr = popen.communicate(input='')
             self.assertEqual(stdout, '1\n2\n3\n4')
 
-    def test_communicate_errors(self):
+    eleza test_communicate_errors(self):
         for errors, expected in [
             ('ignore', ''),
             ('replace', '\ufffd\ufffd'),
@@ -1031,9 +1031,9 @@ class ProcessTestCase(BaseTestCase):
             stdout, stderr = popen.communicate(input='')
             self.assertEqual(stdout, '[{}]'.format(expected))
 
-    def test_no_leaking(self):
+    eleza test_no_leaking(self):
         # Make sure we leak no resources
-        if not mswindows:
+        ikiwa not mswindows:
             max_handles = 1026 # too much for most UNIX systems
         else:
             max_handles = 2050 # too much for (at least some) Windows setups
@@ -1045,7 +1045,7 @@ class ProcessTestCase(BaseTestCase):
                     tmpfile = os.path.join(tmpdir, support.TESTFN)
                     handles.append(os.open(tmpfile, os.O_WRONLY|os.O_CREAT))
                 except OSError as e:
-                    if e.errno != errno.EMFILE:
+                    ikiwa e.errno != errno.EMFILE:
                         raise
                     break
             else:
@@ -1070,7 +1070,7 @@ class ProcessTestCase(BaseTestCase):
                 os.close(h)
             shutil.rmtree(tmpdir)
 
-    def test_list2cmdline(self):
+    eleza test_list2cmdline(self):
         self.assertEqual(subprocess.list2cmdline(['a b c', 'd', 'e']),
                          '"a b c" d e')
         self.assertEqual(subprocess.list2cmdline(['ab"c', '\\', 'd']),
@@ -1088,7 +1088,7 @@ class ProcessTestCase(BaseTestCase):
         self.assertEqual(subprocess.list2cmdline(['ab', '']),
                          'ab ""')
 
-    def test_poll(self):
+    eleza test_poll(self):
         p = subprocess.Popen([sys.executable, "-c",
                               "agiza os; os.read(0, 1)"],
                              stdin=subprocess.PIPE)
@@ -1096,16 +1096,16 @@ class ProcessTestCase(BaseTestCase):
         self.assertIsNone(p.poll())
         os.write(p.stdin.fileno(), b'A')
         p.wait()
-        # Subsequent invocations should just return the returncode
+        # Subsequent invocations should just rudisha the returncode
         self.assertEqual(p.poll(), 0)
 
-    def test_wait(self):
+    eleza test_wait(self):
         p = subprocess.Popen([sys.executable, "-c", "pass"])
         self.assertEqual(p.wait(), 0)
-        # Subsequent invocations should just return the returncode
+        # Subsequent invocations should just rudisha the returncode
         self.assertEqual(p.wait(), 0)
 
-    def test_wait_timeout(self):
+    eleza test_wait_timeout(self):
         p = subprocess.Popen([sys.executable,
                               "-c", "agiza time; time.sleep(0.3)"])
         with self.assertRaises(subprocess.TimeoutExpired) as c:
@@ -1115,13 +1115,13 @@ class ProcessTestCase(BaseTestCase):
         # time to start.
         self.assertEqual(p.wait(timeout=3), 0)
 
-    def test_invalid_bufsize(self):
+    eleza test_invalid_bufsize(self):
         # an invalid type of the bufsize argument should raise
         # TypeError.
         with self.assertRaises(TypeError):
             subprocess.Popen([sys.executable, "-c", "pass"], "orange")
 
-    def test_bufsize_is_none(self):
+    eleza test_bufsize_is_none(self):
         # bufsize=None should be the same as bufsize=0.
         p = subprocess.Popen([sys.executable, "-c", "pass"], None)
         self.assertEqual(p.wait(), 0)
@@ -1129,7 +1129,7 @@ class ProcessTestCase(BaseTestCase):
         p = subprocess.Popen([sys.executable, "-c", "pass"], bufsize=None)
         self.assertEqual(p.wait(), 0)
 
-    def _test_bufsize_equal_one(self, line, expected, universal_newlines):
+    eleza _test_bufsize_equal_one(self, line, expected, universal_newlines):
         # subprocess may deadlock with bufsize=1, see issue #21332
         with subprocess.Popen([sys.executable, "-c", "agiza sys;"
                                "sys.stdout.write(sys.stdin.readline());"
@@ -1151,20 +1151,20 @@ class ProcessTestCase(BaseTestCase):
         self.assertEqual(p.returncode, 0)
         self.assertEqual(read_line, expected)
 
-    def test_bufsize_equal_one_text_mode(self):
+    eleza test_bufsize_equal_one_text_mode(self):
         # line is flushed in text mode with bufsize=1.
         # we should get the full line in return
         line = "line\n"
         self._test_bufsize_equal_one(line, line, universal_newlines=True)
 
-    def test_bufsize_equal_one_binary_mode(self):
+    eleza test_bufsize_equal_one_binary_mode(self):
         # line is not flushed in binary mode with bufsize=1.
         # we should get empty response
         line = b'line' + os.linesep.encode() # assume ascii-based locale
         with self.assertWarnsRegex(RuntimeWarning, 'line buffering'):
             self._test_bufsize_equal_one(line, b'', universal_newlines=False)
 
-    def test_leaking_fds_on_error(self):
+    eleza test_leaking_fds_on_error(self):
         # see bug #5179: Popen leaks file descriptors to PIPEs if
         # the child fails to execute; this will eventually exhaust
         # the maximum number of open fds. 1024 seems a very common
@@ -1176,7 +1176,7 @@ class ProcessTestCase(BaseTestCase):
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)
 
-    def test_nonexisting_with_pipes(self):
+    eleza test_nonexisting_with_pipes(self):
         # bpo-30121: Popen with pipes must close properly pipes on error.
         # Previously, os.close() was called with a Windows handle which is not
         # a valid file descriptor.
@@ -1217,10 +1217,10 @@ class ProcessTestCase(BaseTestCase):
         self.assertEqual(stderr, "")
         self.assertEqual(proc.returncode, 0)
 
-    def test_double_close_on_error(self):
+    eleza test_double_close_on_error(self):
         # Issue #18851
         fds = []
-        def open_fds():
+        eleza open_fds():
             for i in range(20):
                 fds.extend(os.pipe())
                 time.sleep(0.001)
@@ -1243,17 +1243,17 @@ class ProcessTestCase(BaseTestCase):
                     os.close(fd)
                 except OSError as e:
                     exc = e
-            if exc is not None:
+            ikiwa exc is not None:
                 raise exc
 
-    def test_threadsafe_wait(self):
+    eleza test_threadsafe_wait(self):
         """Issue21291: Popen.wait() needs to be threadsafe for returncode."""
         proc = subprocess.Popen([sys.executable, '-c',
                                  'agiza time; time.sleep(12)'])
         self.assertEqual(proc.returncode, None)
         results = []
 
-        def kill_proc_timer_thread():
+        eleza kill_proc_timer_thread():
             results.append(('thread-start-poll-result', proc.poll()))
             # terminate it kutoka the thread and wait for the result.
             proc.kill()
@@ -1270,7 +1270,7 @@ class ProcessTestCase(BaseTestCase):
         t = threading.Timer(0.2, kill_proc_timer_thread)
         t.start()
 
-        if mswindows:
+        ikiwa mswindows:
             expected_errorcode = 1
         else:
             # Should be -9 because of the proc.kill() kutoka the thread.
@@ -1298,18 +1298,18 @@ class ProcessTestCase(BaseTestCase):
                           ('thread-after-second-wait', expected_errorcode)],
                          results)
 
-    def test_issue8780(self):
+    eleza test_issue8780(self):
         # Ensure that stdout is inherited kutoka the parent
-        # if stdout=PIPE is not used
+        # ikiwa stdout=PIPE is not used
         code = ';'.join((
             'agiza subprocess, sys',
             'retcode = subprocess.call('
-                "[sys.executable, '-c', 'print(\"Hello World!\")'])",
+                "[sys.executable, '-c', 'andika(\"Hello World!\")'])",
             'assert retcode == 0'))
         output = subprocess.check_output([sys.executable, '-c', code])
         self.assertTrue(output.startswith(b'Hello World!'), ascii(output))
 
-    def test_handles_closed_on_exception(self):
+    eleza test_handles_closed_on_exception(self):
         # If CreateProcess exits with an error, ensure the
         # duplicate output handles are released
         ifhandle, ifname = tempfile.mkstemp()
@@ -1329,7 +1329,7 @@ class ProcessTestCase(BaseTestCase):
         self.assertFalse(os.path.exists(ofname))
         self.assertFalse(os.path.exists(efname))
 
-    def test_communicate_epipe(self):
+    eleza test_communicate_epipe(self):
         # Issue 10963: communicate() should hide EPIPE
         p = subprocess.Popen([sys.executable, "-c", 'pass'],
                              stdin=subprocess.PIPE,
@@ -1340,7 +1340,7 @@ class ProcessTestCase(BaseTestCase):
         self.addCleanup(p.stdin.close)
         p.communicate(b"x" * 2**20)
 
-    def test_communicate_epipe_only_stdin(self):
+    eleza test_communicate_epipe_only_stdin(self):
         # Issue 10963: communicate() should hide EPIPE
         p = subprocess.Popen([sys.executable, "-c", 'pass'],
                              stdin=subprocess.PIPE)
@@ -1354,9 +1354,9 @@ class ProcessTestCase(BaseTestCase):
                          "Requires os.kill")
     @unittest.skipUnless(hasattr(os, 'getppid'),
                          "Requires os.getppid")
-    def test_communicate_eintr(self):
+    eleza test_communicate_eintr(self):
         # Issue #12493: communicate() should handle EINTR
-        def handler(signum, frame):
+        eleza handler(signum, frame):
             pass
         old_handler = signal.signal(signal.SIGUSR1, handler)
         self.addCleanup(signal.signal, signal.SIGUSR1, old_handler)
@@ -1375,7 +1375,7 @@ class ProcessTestCase(BaseTestCase):
     # some coverage.  It is not a platform specific bug.
     @unittest.skipUnless(os.path.isdir('/proc/%d/fd' % os.getpid()),
                          "Linux specific")
-    def test_failed_child_execute_fd_leak(self):
+    eleza test_failed_child_execute_fd_leak(self):
         """Test for the fork() failure fd leak reported in issue16327."""
         fd_directory = '/proc/%d/fd' % os.getpid()
         fds_before_popen = os.listdir(fd_directory)
@@ -1392,42 +1392,42 @@ class ProcessTestCase(BaseTestCase):
         self.assertEqual(fds_before_popen, fds_after_exception)
 
     @unittest.skipIf(mswindows, "behavior currently not supported on Windows")
-    def test_file_not_found_includes_filename(self):
+    eleza test_file_not_found_includes_filename(self):
         with self.assertRaises(FileNotFoundError) as c:
             subprocess.call(['/opt/nonexistent_binary', 'with', 'some', 'args'])
         self.assertEqual(c.exception.filename, '/opt/nonexistent_binary')
 
     @unittest.skipIf(mswindows, "behavior currently not supported on Windows")
-    def test_file_not_found_with_bad_cwd(self):
+    eleza test_file_not_found_with_bad_cwd(self):
         with self.assertRaises(FileNotFoundError) as c:
             subprocess.Popen(['exit', '0'], cwd='/some/nonexistent/directory')
         self.assertEqual(c.exception.filename, '/some/nonexistent/directory')
 
 
-class RunFuncTestCase(BaseTestCase):
-    def run_python(self, code, **kwargs):
+kundi RunFuncTestCase(BaseTestCase):
+    eleza run_python(self, code, **kwargs):
         """Run Python code in a subprocess using subprocess.run"""
         argv = [sys.executable, "-c", code]
-        return subprocess.run(argv, **kwargs)
+        rudisha subprocess.run(argv, **kwargs)
 
-    def test_returncode(self):
+    eleza test_returncode(self):
         # call() function with sequence argument
         cp = self.run_python("agiza sys; sys.exit(47)")
         self.assertEqual(cp.returncode, 47)
         with self.assertRaises(subprocess.CalledProcessError):
             cp.check_returncode()
 
-    def test_check(self):
+    eleza test_check(self):
         with self.assertRaises(subprocess.CalledProcessError) as c:
             self.run_python("agiza sys; sys.exit(47)", check=True)
         self.assertEqual(c.exception.returncode, 47)
 
-    def test_check_zero(self):
+    eleza test_check_zero(self):
         # check_returncode shouldn't raise when returncode is zero
         cp = self.run_python("agiza sys; sys.exit(0)", check=True)
         self.assertEqual(cp.returncode, 0)
 
-    def test_timeout(self):
+    eleza test_timeout(self):
         # run() function with timeout argument; we want to test that the child
         # process gets killed when the timeout expires.  If the child isn't
         # killed, this call will deadlock since subprocess.run waits for the
@@ -1435,17 +1435,17 @@ class RunFuncTestCase(BaseTestCase):
         with self.assertRaises(subprocess.TimeoutExpired):
             self.run_python("while True: pass", timeout=0.0001)
 
-    def test_capture_stdout(self):
-        # capture stdout with zero return code
-        cp = self.run_python("print('BDFL')", stdout=subprocess.PIPE)
+    eleza test_capture_stdout(self):
+        # capture stdout with zero rudisha code
+        cp = self.run_python("andika('BDFL')", stdout=subprocess.PIPE)
         self.assertIn(b'BDFL', cp.stdout)
 
-    def test_capture_stderr(self):
+    eleza test_capture_stderr(self):
         cp = self.run_python("agiza sys; sys.stderr.write('BDFL')",
                              stderr=subprocess.PIPE)
         self.assertIn(b'BDFL', cp.stderr)
 
-    def test_check_output_stdin_arg(self):
+    eleza test_check_output_stdin_arg(self):
         # run() can be called with stdin set to a file
         tf = tempfile.TemporaryFile()
         self.addCleanup(tf.close)
@@ -1456,14 +1456,14 @@ class RunFuncTestCase(BaseTestCase):
                 stdin=tf, stdout=subprocess.PIPE)
         self.assertIn(b'PEAR', cp.stdout)
 
-    def test_check_output_input_arg(self):
+    eleza test_check_output_input_arg(self):
         # check_output() can be called with input set to a string
         cp = self.run_python(
                 "agiza sys; sys.stdout.write(sys.stdin.read().upper())",
                 input=b'pear', stdout=subprocess.PIPE)
         self.assertIn(b'PEAR', cp.stdout)
 
-    def test_check_output_stdin_with_input_arg(self):
+    eleza test_check_output_stdin_with_input_arg(self):
         # run() refuses to accept 'stdin' with 'input'
         tf = tempfile.TemporaryFile()
         self.addCleanup(tf.close)
@@ -1471,12 +1471,12 @@ class RunFuncTestCase(BaseTestCase):
         tf.seek(0)
         with self.assertRaises(ValueError,
               msg="Expected ValueError when stdin and input args supplied.") as c:
-            output = self.run_python("print('will not be run')",
+            output = self.run_python("andika('will not be run')",
                                      stdin=tf, input=b'hare')
         self.assertIn('stdin', c.exception.args[0])
         self.assertIn('input', c.exception.args[0])
 
-    def test_check_output_timeout(self):
+    eleza test_check_output_timeout(self):
         with self.assertRaises(subprocess.TimeoutExpired) as c:
             cp = self.run_python((
                      "agiza sys, time\n"
@@ -1490,21 +1490,21 @@ class RunFuncTestCase(BaseTestCase):
         # output is aliased to stdout
         self.assertEqual(c.exception.stdout, b'BDFL')
 
-    def test_run_kwargs(self):
+    eleza test_run_kwargs(self):
         newenv = os.environ.copy()
         newenv["FRUIT"] = "banana"
         cp = self.run_python(('agiza sys, os;'
-                      'sys.exit(33 if os.getenv("FRUIT")=="banana" else 31)'),
+                      'sys.exit(33 ikiwa os.getenv("FRUIT")=="banana" else 31)'),
                              env=newenv)
         self.assertEqual(cp.returncode, 33)
 
-    def test_run_with_pathlike_path(self):
+    eleza test_run_with_pathlike_path(self):
         # bpo-31961: test run(pathlike_object)
         # the name of a command that can be run without
         # any argumenets that exit fast
-        prog = 'tree.com' if mswindows else 'ls'
+        prog = 'tree.com' ikiwa mswindows else 'ls'
         path = shutil.which(prog)
-        if path is None:
+        ikiwa path is None:
             self.skipTest(f'{prog} required for this test')
         path = FakePath(path)
         res = subprocess.run(path, stdout=subprocess.DEVNULL)
@@ -1512,21 +1512,21 @@ class RunFuncTestCase(BaseTestCase):
         with self.assertRaises(TypeError):
             subprocess.run(path, stdout=subprocess.DEVNULL, shell=True)
 
-    def test_run_with_bytes_path_and_arguments(self):
+    eleza test_run_with_bytes_path_and_arguments(self):
         # bpo-31961: test run([bytes_object, b'additional arguments'])
         path = os.fsencode(sys.executable)
         args = [path, '-c', b'agiza sys; sys.exit(57)']
         res = subprocess.run(args)
         self.assertEqual(res.returncode, 57)
 
-    def test_run_with_pathlike_path_and_arguments(self):
+    eleza test_run_with_pathlike_path_and_arguments(self):
         # bpo-31961: test run([pathlike_object, 'additional arguments'])
         path = FakePath(sys.executable)
         args = [path, '-c', 'agiza sys; sys.exit(57)']
         res = subprocess.run(args)
         self.assertEqual(res.returncode, 57)
 
-    def test_capture_output(self):
+    eleza test_capture_output(self):
         cp = self.run_python(("agiza sys;"
                               "sys.stdout.write('BDFL'); "
                               "sys.stderr.write('FLUFL')"),
@@ -1534,26 +1534,26 @@ class RunFuncTestCase(BaseTestCase):
         self.assertIn(b'BDFL', cp.stdout)
         self.assertIn(b'FLUFL', cp.stderr)
 
-    def test_stdout_with_capture_output_arg(self):
+    eleza test_stdout_with_capture_output_arg(self):
         # run() refuses to accept 'stdout' with 'capture_output'
         tf = tempfile.TemporaryFile()
         self.addCleanup(tf.close)
         with self.assertRaises(ValueError,
             msg=("Expected ValueError when stdout and capture_output "
                  "args supplied.")) as c:
-            output = self.run_python("print('will not be run')",
+            output = self.run_python("andika('will not be run')",
                                       capture_output=True, stdout=tf)
         self.assertIn('stdout', c.exception.args[0])
         self.assertIn('capture_output', c.exception.args[0])
 
-    def test_stderr_with_capture_output_arg(self):
+    eleza test_stderr_with_capture_output_arg(self):
         # run() refuses to accept 'stderr' with 'capture_output'
         tf = tempfile.TemporaryFile()
         self.addCleanup(tf.close)
         with self.assertRaises(ValueError,
             msg=("Expected ValueError when stderr and capture_output "
                  "args supplied.")) as c:
-            output = self.run_python("print('will not be run')",
+            output = self.run_python("andika('will not be run')",
                                       capture_output=True, stderr=tf)
         self.assertIn('stderr', c.exception.args[0])
         self.assertIn('capture_output', c.exception.args[0])
@@ -1563,7 +1563,7 @@ class RunFuncTestCase(BaseTestCase):
     # but does assert that it happened "soon enough" to believe the right thing
     # happened.
     @unittest.skipIf(mswindows, "requires posix like 'sleep' shell command")
-    def test_run_with_shell_timeout_and_capture_output(self):
+    eleza test_run_with_shell_timeout_and_capture_output(self):
         """Output capturing after a timeout mustn't hang forever on open filehandles."""
         before_secs = time.monotonic()
         try:
@@ -1580,13 +1580,13 @@ class RunFuncTestCase(BaseTestCase):
 
 
 @unittest.skipIf(mswindows, "POSIX specific tests")
-class POSIXProcessTestCase(BaseTestCase):
+kundi POSIXProcessTestCase(BaseTestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         self._nonexistent_dir = "/_this/pa.th/does/not/exist"
 
-    def _get_chdir_exception(self):
+    eleza _get_chdir_exception(self):
         try:
             os.chdir(self._nonexistent_dir)
         except OSError as e:
@@ -1597,9 +1597,9 @@ class POSIXProcessTestCase(BaseTestCase):
         else:
             self.fail("chdir to nonexistent directory %s succeeded." %
                       self._nonexistent_dir)
-        return desired_exception
+        rudisha desired_exception
 
-    def test_exception_cwd(self):
+    eleza test_exception_cwd(self):
         """Test error in the child raised in the parent for a bad cwd."""
         desired_exception = self._get_chdir_exception()
         try:
@@ -1614,7 +1614,7 @@ class POSIXProcessTestCase(BaseTestCase):
         else:
             self.fail("Expected OSError: %s" % desired_exception)
 
-    def test_exception_bad_executable(self):
+    eleza test_exception_bad_executable(self):
         """Test error in the child raised in the parent for a bad executable."""
         desired_exception = self._get_chdir_exception()
         try:
@@ -1629,7 +1629,7 @@ class POSIXProcessTestCase(BaseTestCase):
         else:
             self.fail("Expected OSError: %s" % desired_exception)
 
-    def test_exception_bad_args_0(self):
+    eleza test_exception_bad_args_0(self):
         """Test error in the child raised in the parent for a bad args[0]."""
         desired_exception = self._get_chdir_exception()
         try:
@@ -1645,24 +1645,24 @@ class POSIXProcessTestCase(BaseTestCase):
 
     # We mock the __del__ method for Popen in the next two tests
     # because it does cleanup based on the pid returned by fork_exec
-    # along with issuing a resource warning if it still exists. Since
+    # along with issuing a resource warning ikiwa it still exists. Since
     # we don't actually spawn a process in these tests we can forego
     # the destructor. An alternative would be to set _child_created to
     # False before the destructor is called but there is no easy way
     # to do that
-    class PopenNoDestructor(subprocess.Popen):
-        def __del__(self):
+    kundi PopenNoDestructor(subprocess.Popen):
+        eleza __del__(self):
             pass
 
     @mock.patch("subprocess._posixsubprocess.fork_exec")
-    def test_exception_errpipe_normal(self, fork_exec):
+    eleza test_exception_errpipe_normal(self, fork_exec):
         """Test error passing done through errpipe_write in the good case"""
-        def proper_error(*args):
+        eleza proper_error(*args):
             errpipe_write = args[13]
             # Write the hex for the error code EISDIR: 'is a directory'
             err_code = '{:x}'.format(errno.EISDIR).encode()
             os.write(errpipe_write, b"OSError:" + err_code + b":")
-            return 0
+            rudisha 0
 
         fork_exec.side_effect = proper_error
 
@@ -1672,17 +1672,17 @@ class POSIXProcessTestCase(BaseTestCase):
                 self.PopenNoDestructor(["non_existent_command"])
 
     @mock.patch("subprocess._posixsubprocess.fork_exec")
-    def test_exception_errpipe_bad_data(self, fork_exec):
+    eleza test_exception_errpipe_bad_data(self, fork_exec):
         """Test error passing done through errpipe_write where its not
         in the expected format"""
         error_data = b"\xFF\x00\xDE\xAD"
-        def bad_error(*args):
+        eleza bad_error(*args):
             errpipe_write = args[13]
             # Anything can be in the pipe, no assumptions should
             # be made about its encoding, so we'll write some
             # arbitrary hex bytes to test it out
             os.write(errpipe_write, error_data)
-            return 0
+            rudisha 0
 
         fork_exec.side_effect = bad_error
 
@@ -1695,13 +1695,13 @@ class POSIXProcessTestCase(BaseTestCase):
 
     @unittest.skipIf(not os.path.exists('/proc/self/status'),
                      "need /proc/self/status")
-    def test_restore_signals(self):
+    eleza test_restore_signals(self):
         # Blindly assume that cat exists on systems with /proc/self/status...
         default_proc_status = subprocess.check_output(
                 ['cat', '/proc/self/status'],
                 restore_signals=False)
         for line in default_proc_status.splitlines():
-            if line.startswith(b'SigIgn'):
+            ikiwa line.startswith(b'SigIgn'):
                 default_sig_ign_mask = line
                 break
         else:
@@ -1710,30 +1710,30 @@ class POSIXProcessTestCase(BaseTestCase):
                 ['cat', '/proc/self/status'],
                 restore_signals=True)
         for line in restored_proc_status.splitlines():
-            if line.startswith(b'SigIgn'):
+            ikiwa line.startswith(b'SigIgn'):
                 restored_sig_ign_mask = line
                 break
         self.assertNotEqual(default_sig_ign_mask, restored_sig_ign_mask,
                             msg="restore_signals=True should've unblocked "
                             "SIGPIPE and friends.")
 
-    def test_start_new_session(self):
-        # For code coverage of calling setsid().  We don't care if we get an
+    eleza test_start_new_session(self):
+        # For code coverage of calling setsid().  We don't care ikiwa we get an
         # EPERM error kutoka it depending on the test execution environment, that
         # still indicates that it was called.
         try:
             output = subprocess.check_output(
-                    [sys.executable, "-c", "agiza os; print(os.getsid(0))"],
+                    [sys.executable, "-c", "agiza os; andika(os.getsid(0))"],
                     start_new_session=True)
         except OSError as e:
-            if e.errno != errno.EPERM:
+            ikiwa e.errno != errno.EPERM:
                 raise
         else:
             parent_sid = os.getsid(0)
             child_sid = int(output)
             self.assertNotEqual(parent_sid, child_sid)
 
-    def test_run_abort(self):
+    eleza test_run_abort(self):
         # returncode handles signal termination
         with support.SuppressCrashReport():
             p = subprocess.Popen([sys.executable, "-c",
@@ -1741,7 +1741,7 @@ class POSIXProcessTestCase(BaseTestCase):
             p.wait()
         self.assertEqual(-p.returncode, signal.SIGABRT)
 
-    def test_CalledProcessError_str_signal(self):
+    eleza test_CalledProcessError_str_signal(self):
         err = subprocess.CalledProcessError(-int(signal.SIGABRT), "fake cmd")
         error_string = str(err)
         # We're relying on the repr() of the signal.Signals intenum to provide
@@ -1752,17 +1752,17 @@ class POSIXProcessTestCase(BaseTestCase):
         self.assertIn("SIG", error_string)
         self.assertIn(str(signal.SIGABRT), error_string)
 
-    def test_CalledProcessError_str_unknown_signal(self):
+    eleza test_CalledProcessError_str_unknown_signal(self):
         err = subprocess.CalledProcessError(-9876543, "fake cmd")
         error_string = str(err)
         self.assertIn("unknown signal 9876543.", error_string)
 
-    def test_CalledProcessError_str_non_zero(self):
+    eleza test_CalledProcessError_str_non_zero(self):
         err = subprocess.CalledProcessError(2, "fake cmd")
         error_string = str(err)
         self.assertIn("non-zero exit status 2.", error_string)
 
-    def test_preexec(self):
+    eleza test_preexec(self):
         # DISCLAIMER: Setting environment variables is *not* a good use
         # of a preexec_fn.  This is merely a test.
         p = subprocess.Popen([sys.executable, "-c",
@@ -1773,9 +1773,9 @@ class POSIXProcessTestCase(BaseTestCase):
         with p:
             self.assertEqual(p.stdout.read(), b"apple")
 
-    def test_preexec_exception(self):
-        def raise_it():
-            raise ValueError("What if two swallows carried a coconut?")
+    eleza test_preexec_exception(self):
+        eleza raise_it():
+            raise ValueError("What ikiwa two swallows carried a coconut?")
         try:
             p = subprocess.Popen([sys.executable, "-c", ""],
                                  preexec_fn=raise_it)
@@ -1789,13 +1789,13 @@ class POSIXProcessTestCase(BaseTestCase):
             self.fail("Exception raised by preexec_fn did not make it "
                       "to the parent process.")
 
-    class _TestExecuteChildPopen(subprocess.Popen):
+    kundi _TestExecuteChildPopen(subprocess.Popen):
         """Used to test behavior at the end of _execute_child."""
-        def __init__(self, testcase, *args, **kwargs):
+        eleza __init__(self, testcase, *args, **kwargs):
             self._testcase = testcase
             subprocess.Popen.__init__(self, *args, **kwargs)
 
-        def _execute_child(self, *args, **kwargs):
+        eleza _execute_child(self, *args, **kwargs):
             try:
                 subprocess.Popen._execute_child(self, *args, **kwargs)
             finally:
@@ -1815,10 +1815,10 @@ class POSIXProcessTestCase(BaseTestCase):
                         os.close(fd)
 
     @unittest.skipIf(not os.path.exists("/dev/zero"), "/dev/zero required.")
-    def test_preexec_errpipe_does_not_double_close_pipes(self):
+    eleza test_preexec_errpipe_does_not_double_close_pipes(self):
         """Issue16140: Don't double close pipes on preexec error."""
 
-        def raise_it():
+        eleza raise_it():
             raise subprocess.SubprocessError(
                     "force the _execute_child() errpipe_data path.")
 
@@ -1828,10 +1828,10 @@ class POSIXProcessTestCase(BaseTestCase):
                         stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE, preexec_fn=raise_it)
 
-    def test_preexec_gc_module_failure(self):
-        # This tests the code that disables garbage collection if the child
+    eleza test_preexec_gc_module_failure(self):
+        # This tests the code that disables garbage collection ikiwa the child
         # process will execute any Python.
-        def raise_runtime_error():
+        eleza raise_runtime_error():
             raise RuntimeError("this shouldn't escape")
         enabled = gc.isenabled()
         orig_gc_disable = gc.disable
@@ -1862,12 +1862,12 @@ class POSIXProcessTestCase(BaseTestCase):
         finally:
             gc.disable = orig_gc_disable
             gc.isenabled = orig_gc_isenabled
-            if not enabled:
+            ikiwa not enabled:
                 gc.disable()
 
     @unittest.skipIf(
         sys.platform == 'darwin', 'setrlimit() seems to fail on OS X')
-    def test_preexec_fork_failure(self):
+    eleza test_preexec_fork_failure(self):
         # The internal code did not preserve the previous exception when
         # re-enabling garbage collection
         try:
@@ -1887,7 +1887,7 @@ class POSIXProcessTestCase(BaseTestCase):
         else:
             self.skipTest('RLIMIT_NPROC had no effect; probably superuser')
 
-    def test_args_string(self):
+    eleza test_args_string(self):
         # args is a string
         fd, fname = tempfile.mkstemp()
         # reopen in text mode
@@ -1901,7 +1901,7 @@ class POSIXProcessTestCase(BaseTestCase):
         os.remove(fname)
         self.assertEqual(p.returncode, 47)
 
-    def test_invalid_args(self):
+    eleza test_invalid_args(self):
         # invalid arguments should raise ValueError
         self.assertRaises(ValueError, subprocess.call,
                           [sys.executable, "-c",
@@ -1912,7 +1912,7 @@ class POSIXProcessTestCase(BaseTestCase):
                            "agiza sys; sys.exit(47)"],
                           creationflags=47)
 
-    def test_shell_sequence(self):
+    eleza test_shell_sequence(self):
         # Run command through the shell (sequence)
         newenv = os.environ.copy()
         newenv["FRUIT"] = "apple"
@@ -1922,7 +1922,7 @@ class POSIXProcessTestCase(BaseTestCase):
         with p:
             self.assertEqual(p.stdout.read().strip(b" \t\r\n\f"), b"apple")
 
-    def test_shell_string(self):
+    eleza test_shell_string(self):
         # Run command through the shell (string)
         newenv = os.environ.copy()
         newenv["FRUIT"] = "apple"
@@ -1932,7 +1932,7 @@ class POSIXProcessTestCase(BaseTestCase):
         with p:
             self.assertEqual(p.stdout.read().strip(b" \t\r\n\f"), b"apple")
 
-    def test_call_string(self):
+    eleza test_call_string(self):
         # call() function with string argument on UNIX
         fd, fname = tempfile.mkstemp()
         # reopen in text mode
@@ -1945,19 +1945,19 @@ class POSIXProcessTestCase(BaseTestCase):
         os.remove(fname)
         self.assertEqual(rc, 47)
 
-    def test_specific_shell(self):
+    eleza test_specific_shell(self):
         # Issue #9265: Incorrect name passed as arg[0].
         shells = []
         for prefix in ['/bin', '/usr/bin/', '/usr/local/bin']:
             for name in ['bash', 'ksh']:
                 sh = os.path.join(prefix, name)
-                if os.path.isfile(sh):
+                ikiwa os.path.isfile(sh):
                     shells.append(sh)
-        if not shells: # Will probably work for any shell but csh.
+        ikiwa not shells: # Will probably work for any shell but csh.
             self.skipTest("bash or ksh required for this test")
         sh = '/bin/sh'
-        if os.path.isfile(sh) and not os.path.islink(sh):
-            # Test will fail if /bin/sh is a symlink to csh.
+        ikiwa os.path.isfile(sh) and not os.path.islink(sh):
+            # Test will fail ikiwa /bin/sh is a symlink to csh.
             shells.append(sh)
         for sh in shells:
             p = subprocess.Popen("echo $0", executable=sh, shell=True,
@@ -1965,14 +1965,14 @@ class POSIXProcessTestCase(BaseTestCase):
             with p:
                 self.assertEqual(p.stdout.read().strip(), bytes(sh, 'ascii'))
 
-    def _kill_process(self, method, *args):
+    eleza _kill_process(self, method, *args):
         # Do not inherit file handles kutoka the parent.
         # It should fix failures on some platforms.
         # Also set the SIGINT handler to the default to make sure it's not
         # being ignored (some tests rely on that.)
         old_handler = signal.signal(signal.SIGINT, signal.default_int_handler)
         try:
-            p = subprocess.Popen([sys.executable, "-c", """if 1:
+            p = subprocess.Popen([sys.executable, "-c", """ikiwa 1:
                                  agiza sys, time
                                  sys.stdout.write('x\\n')
                                  sys.stdout.flush()
@@ -1988,14 +1988,14 @@ class POSIXProcessTestCase(BaseTestCase):
         # sending any signal.
         p.stdout.read(1)
         getattr(p, method)(*args)
-        return p
+        rudisha p
 
     @unittest.skipIf(sys.platform.startswith(('netbsd', 'openbsd')),
                      "Due to known OS bug (issue #16762)")
-    def _kill_dead_process(self, method, *args):
+    eleza _kill_dead_process(self, method, *args):
         # Do not inherit file handles kutoka the parent.
         # It should fix failures on some platforms.
-        p = subprocess.Popen([sys.executable, "-c", """if 1:
+        p = subprocess.Popen([sys.executable, "-c", """ikiwa 1:
                              agiza sys, time
                              sys.stdout.write('x\\n')
                              sys.stdout.flush()
@@ -2013,56 +2013,56 @@ class POSIXProcessTestCase(BaseTestCase):
         getattr(p, method)(*args)
         p.communicate()
 
-    def test_send_signal(self):
+    eleza test_send_signal(self):
         p = self._kill_process('send_signal', signal.SIGINT)
         _, stderr = p.communicate()
         self.assertIn(b'KeyboardInterrupt', stderr)
         self.assertNotEqual(p.wait(), 0)
 
-    def test_kill(self):
+    eleza test_kill(self):
         p = self._kill_process('kill')
         _, stderr = p.communicate()
         self.assertStderrEqual(stderr, b'')
         self.assertEqual(p.wait(), -signal.SIGKILL)
 
-    def test_terminate(self):
+    eleza test_terminate(self):
         p = self._kill_process('terminate')
         _, stderr = p.communicate()
         self.assertStderrEqual(stderr, b'')
         self.assertEqual(p.wait(), -signal.SIGTERM)
 
-    def test_send_signal_dead(self):
+    eleza test_send_signal_dead(self):
         # Sending a signal to a dead process
         self._kill_dead_process('send_signal', signal.SIGINT)
 
-    def test_kill_dead(self):
+    eleza test_kill_dead(self):
         # Killing a dead process
         self._kill_dead_process('kill')
 
-    def test_terminate_dead(self):
+    eleza test_terminate_dead(self):
         # Terminating a dead process
         self._kill_dead_process('terminate')
 
-    def _save_fds(self, save_fds):
+    eleza _save_fds(self, save_fds):
         fds = []
         for fd in save_fds:
             inheritable = os.get_inheritable(fd)
             saved = os.dup(fd)
             fds.append((fd, saved, inheritable))
-        return fds
+        rudisha fds
 
-    def _restore_fds(self, fds):
+    eleza _restore_fds(self, fds):
         for fd, saved, inheritable in fds:
             os.dup2(saved, fd, inheritable=inheritable)
             os.close(saved)
 
-    def check_close_std_fds(self, fds):
+    eleza check_close_std_fds(self, fds):
         # Issue #9905: test that subprocess pipes still work properly with
         # some standard fds closed
         stdin = 0
         saved_fds = self._save_fds(fds)
         for fd, saved, inheritable in saved_fds:
-            if fd == 0:
+            ikiwa fd == 0:
                 stdin = saved
                 break
         try:
@@ -2081,30 +2081,30 @@ class POSIXProcessTestCase(BaseTestCase):
         finally:
             self._restore_fds(saved_fds)
 
-    def test_close_fd_0(self):
+    eleza test_close_fd_0(self):
         self.check_close_std_fds([0])
 
-    def test_close_fd_1(self):
+    eleza test_close_fd_1(self):
         self.check_close_std_fds([1])
 
-    def test_close_fd_2(self):
+    eleza test_close_fd_2(self):
         self.check_close_std_fds([2])
 
-    def test_close_fds_0_1(self):
+    eleza test_close_fds_0_1(self):
         self.check_close_std_fds([0, 1])
 
-    def test_close_fds_0_2(self):
+    eleza test_close_fds_0_2(self):
         self.check_close_std_fds([0, 2])
 
-    def test_close_fds_1_2(self):
+    eleza test_close_fds_1_2(self):
         self.check_close_std_fds([1, 2])
 
-    def test_close_fds_0_1_2(self):
+    eleza test_close_fds_0_1_2(self):
         # Issue #10806: test that subprocess pipes still work properly with
         # all standard fds closed.
         self.check_close_std_fds([0, 1, 2])
 
-    def test_small_errpipe_write_fd(self):
+    eleza test_small_errpipe_write_fd(self):
         """Issue #15798: Popen should work when stdio fds are available."""
         new_stdin = os.dup(0)
         new_stdout = os.dup(1)
@@ -2112,12 +2112,12 @@ class POSIXProcessTestCase(BaseTestCase):
             os.close(0)
             os.close(1)
 
-            # Side test: if errpipe_write fails to have its CLOEXEC
+            # Side test: ikiwa errpipe_write fails to have its CLOEXEC
             # flag set this should cause the parent to think the exec
             # failed.  Extremely unlikely: everyone supports CLOEXEC.
             subprocess.Popen([
                     sys.executable, "-c",
-                    "print('AssertionError:0:CLOEXEC failure.')"]).wait()
+                    "andika('AssertionError:0:CLOEXEC failure.')"]).wait()
         finally:
             # Restore original stdin and stdout
             os.dup2(new_stdin, 0)
@@ -2125,7 +2125,7 @@ class POSIXProcessTestCase(BaseTestCase):
             os.close(new_stdin)
             os.close(new_stdout)
 
-    def test_remapping_std_fds(self):
+    eleza test_remapping_std_fds(self):
         # open up some temporary files
         temps = [tempfile.mkstemp() for i in range(3)]
         try:
@@ -2170,7 +2170,7 @@ class POSIXProcessTestCase(BaseTestCase):
             for fd in temp_fds:
                 os.close(fd)
 
-    def check_swap_fds(self, stdin_no, stdout_no, stderr_no):
+    eleza check_swap_fds(self, stdin_no, stdout_no, stderr_no):
         # open up some temporary files
         temps = [tempfile.mkstemp() for i in range(3)]
         temp_fds = [fd for fd, fname in temps]
@@ -2215,10 +2215,10 @@ class POSIXProcessTestCase(BaseTestCase):
             for fd in temp_fds:
                 os.close(fd)
 
-    # When duping fds, if there arises a situation where one of the fds is
+    # When duping fds, ikiwa there arises a situation where one of the fds is
     # either 0, 1 or 2, it is possible that it is overwritten (#12607).
     # This tests all combinations of this.
-    def test_swap_fds(self):
+    eleza test_swap_fds(self):
         self.check_swap_fds(0, 1, 2)
         self.check_swap_fds(0, 2, 1)
         self.check_swap_fds(1, 0, 2)
@@ -2226,26 +2226,26 @@ class POSIXProcessTestCase(BaseTestCase):
         self.check_swap_fds(2, 0, 1)
         self.check_swap_fds(2, 1, 0)
 
-    def _check_swap_std_fds_with_one_closed(self, from_fds, to_fds):
+    eleza _check_swap_std_fds_with_one_closed(self, kutoka_fds, to_fds):
         saved_fds = self._save_fds(range(3))
         try:
-            for from_fd in from_fds:
+            for kutoka_fd in kutoka_fds:
                 with tempfile.TemporaryFile() as f:
-                    os.dup2(f.fileno(), from_fd)
+                    os.dup2(f.fileno(), kutoka_fd)
 
-            fd_to_close = (set(range(3)) - set(from_fds)).pop()
+            fd_to_close = (set(range(3)) - set(kutoka_fds)).pop()
             os.close(fd_to_close)
 
             arg_names = ['stdin', 'stdout', 'stderr']
             kwargs = {}
-            for from_fd, to_fd in zip(from_fds, to_fds):
-                kwargs[arg_names[to_fd]] = from_fd
+            for kutoka_fd, to_fd in zip(kutoka_fds, to_fds):
+                kwargs[arg_names[to_fd]] = kutoka_fd
 
             code = textwrap.dedent(r'''
                 agiza os, sys
                 skipped_fd = int(sys.argv[1])
                 for fd in range(3):
-                    if fd != skipped_fd:
+                    ikiwa fd != skipped_fd:
                         os.write(fd, str(fd).encode('ascii'))
             ''')
 
@@ -2255,13 +2255,13 @@ class POSIXProcessTestCase(BaseTestCase):
                                  **kwargs)
             self.assertEqual(rc, 0)
 
-            for from_fd, to_fd in zip(from_fds, to_fds):
-                os.lseek(from_fd, 0, os.SEEK_SET)
-                read_bytes = os.read(from_fd, 1024)
+            for kutoka_fd, to_fd in zip(kutoka_fds, to_fds):
+                os.lseek(kutoka_fd, 0, os.SEEK_SET)
+                read_bytes = os.read(kutoka_fd, 1024)
                 read_fds = list(map(int, read_bytes.decode('ascii')))
                 msg = textwrap.dedent(f"""
-                    When testing {from_fds} to {to_fds} redirection,
-                    parent descriptor {from_fd} got redirected
+                    When testing {kutoka_fds} to {to_fds} redirection,
+                    parent descriptor {kutoka_fd} got redirected
                     to descriptor(s) {read_fds} instead of descriptor {to_fd}.
                 """)
                 self.assertEqual([to_fd], read_fds, msg)
@@ -2269,14 +2269,14 @@ class POSIXProcessTestCase(BaseTestCase):
             self._restore_fds(saved_fds)
 
     # Check that subprocess can remap std fds correctly even
-    # if one of them is closed (#32844).
-    def test_swap_std_fds_with_one_closed(self):
-        for from_fds in itertools.combinations(range(3), 2):
+    # ikiwa one of them is closed (#32844).
+    eleza test_swap_std_fds_with_one_closed(self):
+        for kutoka_fds in itertools.combinations(range(3), 2):
             for to_fds in itertools.permutations(range(3), 2):
-                self._check_swap_std_fds_with_one_closed(from_fds, to_fds)
+                self._check_swap_std_fds_with_one_closed(kutoka_fds, to_fds)
 
-    def test_surrogates_error_message(self):
-        def prepare():
+    eleza test_surrogates_error_message(self):
+        eleza prepare():
             raise ValueError("surrogate:\uDCff")
 
         try:
@@ -2294,12 +2294,12 @@ class POSIXProcessTestCase(BaseTestCase):
         else:
             self.fail("Expected ValueError or subprocess.SubprocessError")
 
-    def test_undecodable_env(self):
+    eleza test_undecodable_env(self):
         for key, value in (('test', 'abc\uDCFF'), ('test\uDCFF', '42')):
             encoded_value = value.encode("ascii", "surrogateescape")
 
             # test str with surrogates
-            script = "agiza os; print(ascii(os.getenv(%s)))" % repr(key)
+            script = "agiza os; andika(ascii(os.getenv(%s)))" % repr(key)
             env = os.environ.copy()
             env[key] = value
             # Use C locale to get ASCII for the locale encoding to force
@@ -2314,7 +2314,7 @@ class POSIXProcessTestCase(BaseTestCase):
 
             # test bytes
             key = key.encode("ascii", "surrogateescape")
-            script = "agiza os; print(ascii(os.getenvb(%s)))" % repr(key)
+            script = "agiza os; andika(ascii(os.getenvb(%s)))" % repr(key)
             env = os.environ.copy()
             env[key] = encoded_value
             stdout = subprocess.check_output(
@@ -2323,7 +2323,7 @@ class POSIXProcessTestCase(BaseTestCase):
             stdout = stdout.rstrip(b'\n\r')
             self.assertEqual(stdout.decode('ascii'), ascii(encoded_value))
 
-    def test_bytes_program(self):
+    eleza test_bytes_program(self):
         abs_program = os.fsencode(sys.executable)
         path, program = os.path.split(sys.executable)
         program = os.fsencode(program)
@@ -2349,7 +2349,7 @@ class POSIXProcessTestCase(BaseTestCase):
         exitcode = subprocess.call([program, "-c", "pass"], env=envb)
         self.assertEqual(exitcode, 0)
 
-    def test_pipe_cloexec(self):
+    eleza test_pipe_cloexec(self):
         sleeper = support.findfile("input_reader.py", subdir="subprocessdata")
         fd_status = support.findfile("fd_status.py", subdir="subprocessdata")
 
@@ -2372,7 +2372,7 @@ class POSIXProcessTestCase(BaseTestCase):
                          "found %r" %
                               (unwanted_fds, result_fds & unwanted_fds))
 
-    def test_pipe_cloexec_real_tools(self):
+    eleza test_pipe_cloexec_real_tools(self):
         qcat = support.findfile("qcat.py", subdir="subprocessdata")
         qgrep = support.findfile("qgrep.py", subdir="subprocessdata")
 
@@ -2389,12 +2389,12 @@ class POSIXProcessTestCase(BaseTestCase):
 
         self.addCleanup(p1.wait)
         self.addCleanup(p2.wait)
-        def kill_p1():
+        eleza kill_p1():
             try:
                 p1.terminate()
             except ProcessLookupError:
                 pass
-        def kill_p2():
+        eleza kill_p2():
             try:
                 p2.terminate()
             except ProcessLookupError:
@@ -2413,7 +2413,7 @@ class POSIXProcessTestCase(BaseTestCase):
         p1.stdout.close()
         p2.stdout.close()
 
-    def test_close_fds(self):
+    eleza test_close_fds(self):
         fd_status = support.findfile("fd_status.py", subdir="subprocessdata")
 
         fds = os.pipe()
@@ -2464,7 +2464,7 @@ class POSIXProcessTestCase(BaseTestCase):
     @unittest.skipIf(sys.platform.startswith("freebsd") and
                      os.stat("/dev").st_dev == os.stat("/dev/fd").st_dev,
                      "Requires fdescfs mounted on /dev/fd on FreeBSD.")
-    def test_close_fds_when_max_fd_is_lowered(self):
+    eleza test_close_fds_when_max_fd_is_lowered(self):
         """Confirm that issue21618 is fixed (may fail under valgrind)."""
         fd_status = support.findfile("fd_status.py", subdir="subprocessdata")
 
@@ -2491,7 +2491,7 @@ class POSIXProcessTestCase(BaseTestCase):
         # Leave a two pairs of low ones available for use by the
         # internal child error pipe and the stdout pipe.
         # We also leave 10 more open as some Python buildbots run into
-        # "too many open files" errors during the test if we do not.
+        # "too many open files" errors during the test ikiwa we do not.
         for fd in sorted(open_fds)[:14]:
             os.close(fd)
             open_fds.remove(fd)
@@ -2503,7 +2503,7 @@ class POSIXProcessTestCase(BaseTestCase):
         max_fd_open = max(open_fds)
 
         # Communicate the open_fds to the parent unittest.TestCase process.
-        print(','.join(map(str, sorted(open_fds))))
+        andika(','.join(map(str, sorted(open_fds))))
         sys.stdout.flush()
 
         rlim_cur, rlim_max = resource.getrlimit(resource.RLIMIT_NOFILE)
@@ -2545,7 +2545,7 @@ class POSIXProcessTestCase(BaseTestCase):
     # child process according to fstat(), but the mode of the file
     # descriptor is invalid, and read or write raise an error.
     @support.requires_mac_ver(10, 5)
-    def test_pass_fds(self):
+    eleza test_pass_fds(self):
         fd_status = support.findfile("fd_status.py", subdir="subprocessdata")
 
         open_fds = set()
@@ -2578,7 +2578,7 @@ class POSIXProcessTestCase(BaseTestCase):
                         close_fds=False, pass_fds=(fd, )))
             self.assertIn('overriding close_fds', str(context.warning))
 
-    def test_pass_fds_inheritable(self):
+    eleza test_pass_fds_inheritable(self):
         script = support.findfile("fd_status.py", subdir="subprocessdata")
 
         inheritable, non_inheritable = os.pipe()
@@ -2606,9 +2606,9 @@ class POSIXProcessTestCase(BaseTestCase):
 
 
     # bpo-32270: Ensure that descriptors specified in pass_fds
-    # are inherited even if they are used in redirections.
+    # are inherited even ikiwa they are used in redirections.
     # Contributed by @izbyshev.
-    def test_pass_fds_redirected(self):
+    eleza test_pass_fds_redirected(self):
         """Regression test for https://bugs.python.org/issue32270."""
         fd_status = support.findfile("fd_status.py", subdir="subprocessdata")
         pass_fds = []
@@ -2634,25 +2634,25 @@ class POSIXProcessTestCase(BaseTestCase):
         self.assertEqual(fds, {0, 1, 2} | frozenset(pass_fds), f"output={output!a}")
 
 
-    def test_stdout_stdin_are_single_inout_fd(self):
+    eleza test_stdout_stdin_are_single_inout_fd(self):
         with io.open(os.devnull, "r+") as inout:
             p = subprocess.Popen([sys.executable, "-c", "agiza sys; sys.exit(0)"],
                                  stdout=inout, stdin=inout)
             p.wait()
 
-    def test_stdout_stderr_are_single_inout_fd(self):
+    eleza test_stdout_stderr_are_single_inout_fd(self):
         with io.open(os.devnull, "r+") as inout:
             p = subprocess.Popen([sys.executable, "-c", "agiza sys; sys.exit(0)"],
                                  stdout=inout, stderr=inout)
             p.wait()
 
-    def test_stderr_stdin_are_single_inout_fd(self):
+    eleza test_stderr_stdin_are_single_inout_fd(self):
         with io.open(os.devnull, "r+") as inout:
             p = subprocess.Popen([sys.executable, "-c", "agiza sys; sys.exit(0)"],
                                  stderr=inout, stdin=inout)
             p.wait()
 
-    def test_wait_when_sigchild_ignored(self):
+    eleza test_wait_when_sigchild_ignored(self):
         # NOTE: sigchild_ignore.py may not be an effective test on all OSes.
         sigchild_ignore = support.findfile("sigchild_ignore.py",
                                            subdir="subprocessdata")
@@ -2663,7 +2663,7 @@ class POSIXProcessTestCase(BaseTestCase):
                          " non-zero with this error:\n%s" %
                          stderr.decode('utf-8'))
 
-    def test_select_unbuffered(self):
+    eleza test_select_unbuffered(self):
         # Issue #11459: bufsize=0 should really set the pipes as
         # unbuffered (and therefore let select() work properly).
         select = support.import_module("select")
@@ -2680,8 +2680,8 @@ class POSIXProcessTestCase(BaseTestCase):
         finally:
             p.wait()
 
-    def test_zombie_fast_process_del(self):
-        # Issue #12650: on Unix, if Popen.__del__() was called before the
+    eleza test_zombie_fast_process_del(self):
+        # Issue #12650: on Unix, ikiwa Popen.__del__() was called before the
         # process exited, it wouldn't be added to subprocess._active, and would
         # remain a zombie.
         # spawn a Popen, and delete its reference before it exits
@@ -2697,15 +2697,15 @@ class POSIXProcessTestCase(BaseTestCase):
         with support.check_warnings(('', ResourceWarning)):
             p = None
 
-        if mswindows:
+        ikiwa mswindows:
             # subprocess._active is not used on Windows and is set to None.
             self.assertIsNone(subprocess._active)
         else:
             # check that p is in the active processes list
             self.assertIn(ident, [id(o) for o in subprocess._active])
 
-    def test_leak_fast_process_del_killed(self):
-        # Issue #12650: on Unix, if Popen.__del__() was called before the
+    eleza test_leak_fast_process_del_killed(self):
+        # Issue #12650: on Unix, ikiwa Popen.__del__() was called before the
         # process exited, and the process got killed by a signal, it would never
         # be removed kutoka subprocess._active, which triggered a FD and memory
         # leak.
@@ -2723,7 +2723,7 @@ class POSIXProcessTestCase(BaseTestCase):
             p = None
 
         os.kill(pid, signal.SIGKILL)
-        if mswindows:
+        ikiwa mswindows:
             # subprocess._active is not used on Windows and is set to None.
             self.assertIsNone(subprocess._active)
         else:
@@ -2740,13 +2740,13 @@ class POSIXProcessTestCase(BaseTestCase):
                 pass
         # p should have been wait()ed on, and removed kutoka the _active list
         self.assertRaises(OSError, os.waitpid, pid, 0)
-        if mswindows:
+        ikiwa mswindows:
             # subprocess._active is not used on Windows and is set to None.
             self.assertIsNone(subprocess._active)
         else:
             self.assertNotIn(ident, [id(o) for o in subprocess._active])
 
-    def test_close_fds_after_preexec(self):
+    eleza test_close_fds_after_preexec(self):
         fd_status = support.findfile("fd_status.py", subdir="subprocessdata")
 
         # this FD is used as dup2() target by preexec_fn, and should be closed
@@ -2764,7 +2764,7 @@ class POSIXProcessTestCase(BaseTestCase):
         self.assertNotIn(fd, remaining_fds)
 
     @support.cpython_only
-    def test_fork_exec(self):
+    eleza test_fork_exec(self):
         # Issue #22290: fork_exec() must not crash on memory allocation failure
         # or other errors
         agiza _posixsubprocess
@@ -2790,21 +2790,21 @@ class POSIXProcessTestCase(BaseTestCase):
                         1, 2, 3, 4,
                         True, True, func)
         finally:
-            if not gc_enabled:
+            ikiwa not gc_enabled:
                 gc.disable()
 
     @support.cpython_only
-    def test_fork_exec_sorted_fd_sanity_check(self):
+    eleza test_fork_exec_sorted_fd_sanity_check(self):
         # Issue #23564: sanity check the fork_exec() fds_to_keep sanity check.
         agiza _posixsubprocess
-        class BadInt:
+        kundi BadInt:
             first = True
-            def __init__(self, value):
+            eleza __init__(self, value):
                 self.value = value
-            def __int__(self):
-                if self.first:
+            eleza __int__(self):
+                ikiwa self.first:
                     self.first = False
-                    return self.value
+                    rudisha self.value
                 raise ValueError
 
         gc_enabled = gc.isenabled()
@@ -2830,10 +2830,10 @@ class POSIXProcessTestCase(BaseTestCase):
                         True, True, None)
                 self.assertIn('fds_to_keep', str(c.exception))
         finally:
-            if not gc_enabled:
+            ikiwa not gc_enabled:
                 gc.disable()
 
-    def test_communicate_BrokenPipeError_stdin_close(self):
+    eleza test_communicate_BrokenPipeError_stdin_close(self):
         # By not setting stdout or stderr or a timeout we force the fast path
         # that just calls _stdin_write() internally due to our mock.
         proc = subprocess.Popen([sys.executable, '-c', 'pass'])
@@ -2842,7 +2842,7 @@ class POSIXProcessTestCase(BaseTestCase):
             proc.communicate()  # Should swallow BrokenPipeError kutoka close.
             mock_proc_stdin.close.assert_called_with()
 
-    def test_communicate_BrokenPipeError_stdin_write(self):
+    eleza test_communicate_BrokenPipeError_stdin_write(self):
         # By not setting stdout or stderr or a timeout we force the fast path
         # that just calls _stdin_write() internally due to our mock.
         proc = subprocess.Popen([sys.executable, '-c', 'pass'])
@@ -2852,7 +2852,7 @@ class POSIXProcessTestCase(BaseTestCase):
             mock_proc_stdin.write.assert_called_once_with(b'stuff')
             mock_proc_stdin.close.assert_called_once_with()
 
-    def test_communicate_BrokenPipeError_stdin_flush(self):
+    eleza test_communicate_BrokenPipeError_stdin_flush(self):
         # Setting stdin and stdout forces the ._communicate() code path.
         # python -h exits faster than python -c pass (but spams stdout).
         proc = subprocess.Popen([sys.executable, '-h'],
@@ -2867,7 +2867,7 @@ class POSIXProcessTestCase(BaseTestCase):
             proc.communicate(b'stuff')
             mock_proc_stdin.flush.assert_called_once_with()
 
-    def test_communicate_BrokenPipeError_stdin_close_with_timeout(self):
+    eleza test_communicate_BrokenPipeError_stdin_close_with_timeout(self):
         # Setting stdin and stdout forces the ._communicate() code path.
         # python -h exits faster than python -c pass (but spams stdout).
         proc = subprocess.Popen([sys.executable, '-h'],
@@ -2882,7 +2882,7 @@ class POSIXProcessTestCase(BaseTestCase):
     @unittest.skipUnless(_testcapi is not None
                          and hasattr(_testcapi, 'W_STOPCODE'),
                          'need _testcapi.W_STOPCODE')
-    def test_stopped(self):
+    eleza test_stopped(self):
         """Test wait() behavior when waitpid returns WIFSTOPPED; issue29335."""
         args = [sys.executable, '-c', 'pass']
         proc = subprocess.Popen(args)
@@ -2900,9 +2900,9 @@ class POSIXProcessTestCase(BaseTestCase):
 
 
 @unittest.skipUnless(mswindows, "Windows specific tests")
-class Win32ProcessTestCase(BaseTestCase):
+kundi Win32ProcessTestCase(BaseTestCase):
 
-    def test_startupinfo(self):
+    eleza test_startupinfo(self):
         # startupinfo argument
         # We uses hardcoded constants, because we do not want to
         # depend on win32all.
@@ -2917,7 +2917,7 @@ class Win32ProcessTestCase(BaseTestCase):
         subprocess.call([sys.executable, "-c", "agiza sys; sys.exit(0)"],
                         startupinfo=startupinfo)
 
-    def test_startupinfo_keywords(self):
+    eleza test_startupinfo_keywords(self):
         # startupinfo argument
         # We use hardcoded constants, because we do not want to
         # depend on win32all.
@@ -2933,7 +2933,7 @@ class Win32ProcessTestCase(BaseTestCase):
         subprocess.call([sys.executable, "-c", "agiza sys; sys.exit(0)"],
                         startupinfo=startupinfo)
 
-    def test_startupinfo_copy(self):
+    eleza test_startupinfo_copy(self):
         # bpo-34044: Popen must not modify input STARTUPINFO structure
         startupinfo = subprocess.STARTUPINFO()
         startupinfo.dwFlags = subprocess.STARTF_USESHOWWINDOW
@@ -2960,7 +2960,7 @@ class Win32ProcessTestCase(BaseTestCase):
             self.assertEqual(startupinfo.wShowWindow, subprocess.SW_HIDE)
             self.assertEqual(startupinfo.lpAttributeList, {"handle_list": []})
 
-    def test_creationflags(self):
+    eleza test_creationflags(self):
         # creationflags argument
         CREATE_NEW_CONSOLE = 16
         sys.stderr.write("    a DOS box should flash briefly ...\n")
@@ -2968,7 +2968,7 @@ class Win32ProcessTestCase(BaseTestCase):
                         ' -c "agiza time; time.sleep(0.25)"',
                         creationflags=CREATE_NEW_CONSOLE)
 
-    def test_invalid_args(self):
+    eleza test_invalid_args(self):
         # invalid arguments should raise ValueError
         self.assertRaises(ValueError, subprocess.call,
                           [sys.executable, "-c",
@@ -2976,22 +2976,22 @@ class Win32ProcessTestCase(BaseTestCase):
                           preexec_fn=lambda: 1)
 
     @support.cpython_only
-    def test_issue31471(self):
+    eleza test_issue31471(self):
         # There shouldn't be an assertion failure in Popen() in case the env
         # argument has a bad keys() method.
-        class BadEnv(dict):
+        kundi BadEnv(dict):
             keys = None
         with self.assertRaises(TypeError):
             subprocess.Popen([sys.executable, "-c", "pass"], env=BadEnv())
 
-    def test_close_fds(self):
+    eleza test_close_fds(self):
         # close file descriptors
         rc = subprocess.call([sys.executable, "-c",
                               "agiza sys; sys.exit(47)"],
                               close_fds=True)
         self.assertEqual(rc, 47)
 
-    def test_close_fds_with_stdio(self):
+    eleza test_close_fds_with_stdio(self):
         agiza msvcrt
 
         fds = os.pipe()
@@ -3004,14 +3004,14 @@ class Win32ProcessTestCase(BaseTestCase):
             handles.append(msvcrt.get_osfhandle(fd))
 
         p = subprocess.Popen([sys.executable, "-c",
-                              "agiza msvcrt; print(msvcrt.open_osfhandle({}, 0))".format(handles[0])],
+                              "agiza msvcrt; andika(msvcrt.open_osfhandle({}, 0))".format(handles[0])],
                              stdout=subprocess.PIPE, close_fds=False)
         stdout, stderr = p.communicate()
         self.assertEqual(p.returncode, 0)
         int(stdout.strip())  # Check that stdout is an integer
 
         p = subprocess.Popen([sys.executable, "-c",
-                              "agiza msvcrt; print(msvcrt.open_osfhandle({}, 0))".format(handles[0])],
+                              "agiza msvcrt; andika(msvcrt.open_osfhandle({}, 0))".format(handles[0])],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
         stdout, stderr = p.communicate()
         self.assertEqual(p.returncode, 1)
@@ -3022,7 +3022,7 @@ class Win32ProcessTestCase(BaseTestCase):
         startupinfo = subprocess.STARTUPINFO()
         startupinfo.lpAttributeList = {"handle_list": handle_list}
         p = subprocess.Popen([sys.executable, "-c",
-                              "agiza msvcrt; print(msvcrt.open_osfhandle({}, 0))".format(handles[0])],
+                              "agiza msvcrt; andika(msvcrt.open_osfhandle({}, 0))".format(handles[0])],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                              startupinfo=startupinfo, close_fds=True)
         stdout, stderr = p.communicate()
@@ -3034,25 +3034,25 @@ class Win32ProcessTestCase(BaseTestCase):
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.lpAttributeList = {"handle_list": handles[:]}
             p = subprocess.Popen([sys.executable, "-c",
-                                  "agiza msvcrt; print(msvcrt.open_osfhandle({}, 0))".format(handles[0])],
+                                  "agiza msvcrt; andika(msvcrt.open_osfhandle({}, 0))".format(handles[0])],
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                  startupinfo=startupinfo, close_fds=False)
             stdout, stderr = p.communicate()
             self.assertEqual(p.returncode, 0)
 
-    def test_empty_attribute_list(self):
+    eleza test_empty_attribute_list(self):
         startupinfo = subprocess.STARTUPINFO()
         startupinfo.lpAttributeList = {}
         subprocess.call([sys.executable, "-c", "agiza sys; sys.exit(0)"],
                         startupinfo=startupinfo)
 
-    def test_empty_handle_list(self):
+    eleza test_empty_handle_list(self):
         startupinfo = subprocess.STARTUPINFO()
         startupinfo.lpAttributeList = {"handle_list": []}
         subprocess.call([sys.executable, "-c", "agiza sys; sys.exit(0)"],
                         startupinfo=startupinfo)
 
-    def test_shell_sequence(self):
+    eleza test_shell_sequence(self):
         # Run command through the shell (sequence)
         newenv = os.environ.copy()
         newenv["FRUIT"] = "physalis"
@@ -3062,7 +3062,7 @@ class Win32ProcessTestCase(BaseTestCase):
         with p:
             self.assertIn(b"physalis", p.stdout.read())
 
-    def test_shell_string(self):
+    eleza test_shell_string(self):
         # Run command through the shell (string)
         newenv = os.environ.copy()
         newenv["FRUIT"] = "physalis"
@@ -3072,7 +3072,7 @@ class Win32ProcessTestCase(BaseTestCase):
         with p:
             self.assertIn(b"physalis", p.stdout.read())
 
-    def test_shell_encodings(self):
+    eleza test_shell_encodings(self):
         # Run command through the shell (string)
         for enc in ['ansi', 'oem']:
             newenv = os.environ.copy()
@@ -3084,15 +3084,15 @@ class Win32ProcessTestCase(BaseTestCase):
             with p:
                 self.assertIn("physalis", p.stdout.read(), enc)
 
-    def test_call_string(self):
+    eleza test_call_string(self):
         # call() function with string argument on Windows
         rc = subprocess.call(sys.executable +
                              ' -c "agiza sys; sys.exit(47)"')
         self.assertEqual(rc, 47)
 
-    def _kill_process(self, method, *args):
-        # Some win32 buildbot raises EOFError if stdin is inherited
-        p = subprocess.Popen([sys.executable, "-c", """if 1:
+    eleza _kill_process(self, method, *args):
+        # Some win32 buildbot raises EOFError ikiwa stdin is inherited
+        p = subprocess.Popen([sys.executable, "-c", """ikiwa 1:
                              agiza sys, time
                              sys.stdout.write('x\\n')
                              sys.stdout.flush()
@@ -3111,8 +3111,8 @@ class Win32ProcessTestCase(BaseTestCase):
             returncode = p.wait()
         self.assertNotEqual(returncode, 0)
 
-    def _kill_dead_process(self, method, *args):
-        p = subprocess.Popen([sys.executable, "-c", """if 1:
+    eleza _kill_dead_process(self, method, *args):
+        p = subprocess.Popen([sys.executable, "-c", """ikiwa 1:
                              agiza sys, time
                              sys.stdout.write('x\\n')
                              sys.stdout.flush()
@@ -3134,36 +3134,36 @@ class Win32ProcessTestCase(BaseTestCase):
             rc = p.wait()
         self.assertEqual(rc, 42)
 
-    def test_send_signal(self):
+    eleza test_send_signal(self):
         self._kill_process('send_signal', signal.SIGTERM)
 
-    def test_kill(self):
+    eleza test_kill(self):
         self._kill_process('kill')
 
-    def test_terminate(self):
+    eleza test_terminate(self):
         self._kill_process('terminate')
 
-    def test_send_signal_dead(self):
+    eleza test_send_signal_dead(self):
         self._kill_dead_process('send_signal', signal.SIGTERM)
 
-    def test_kill_dead(self):
+    eleza test_kill_dead(self):
         self._kill_dead_process('kill')
 
-    def test_terminate_dead(self):
+    eleza test_terminate_dead(self):
         self._kill_dead_process('terminate')
 
-class MiscTests(unittest.TestCase):
+kundi MiscTests(unittest.TestCase):
 
-    class RecordingPopen(subprocess.Popen):
+    kundi RecordingPopen(subprocess.Popen):
         """A Popen that saves a reference to each instance for testing."""
         instances_created = []
 
-        def __init__(self, *args, **kwargs):
+        eleza __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.instances_created.append(self)
 
     @mock.patch.object(subprocess.Popen, "_communicate")
-    def _test_keyboardinterrupt_no_kill(self, popener, mock__communicate,
+    eleza _test_keyboardinterrupt_no_kill(self, popener, mock__communicate,
                                         **kwargs):
         """Fake a SIGINT happening during Popen._communicate() and ._wait().
 
@@ -3193,7 +3193,7 @@ class MiscTests(unittest.TestCase):
                             f"{mock__wait.call_args_list}")
                 sigint_calls = []
                 for call in mock__wait.call_args_list:
-                    if call == mock.call(timeout=0.25):  # kutoka Popen.__init__
+                    ikiwa call == mock.call(timeout=0.25):  # kutoka Popen.__init__
                         sigint_calls.append(call)
                 self.assertLessEqual(mock__wait.call_count, 2,
                                      msg=mock__wait.call_args_list)
@@ -3206,19 +3206,19 @@ class MiscTests(unittest.TestCase):
             process.wait()
             self.assertEqual([], self.RecordingPopen.instances_created)
 
-    def test_call_keyboardinterrupt_no_kill(self):
+    eleza test_call_keyboardinterrupt_no_kill(self):
         self._test_keyboardinterrupt_no_kill(subprocess.call, timeout=6.282)
 
-    def test_run_keyboardinterrupt_no_kill(self):
+    eleza test_run_keyboardinterrupt_no_kill(self):
         self._test_keyboardinterrupt_no_kill(subprocess.run, timeout=6.282)
 
-    def test_context_manager_keyboardinterrupt_no_kill(self):
-        def popen_via_context_manager(*args, **kwargs):
+    eleza test_context_manager_keyboardinterrupt_no_kill(self):
+        eleza popen_via_context_manager(*args, **kwargs):
             with subprocess.Popen(*args, **kwargs) as unused_process:
                 raise KeyboardInterrupt  # Test how __exit__ handles ^C.
         self._test_keyboardinterrupt_no_kill(popen_via_context_manager)
 
-    def test_getoutput(self):
+    eleza test_getoutput(self):
         self.assertEqual(subprocess.getoutput('echo xyzzy'), 'xyzzy')
         self.assertEqual(subprocess.getstatusoutput('echo xyzzy'),
                          (0, 'xyzzy'))
@@ -3231,22 +3231,22 @@ class MiscTests(unittest.TestCase):
             dir = tempfile.mkdtemp()
             name = os.path.join(dir, "foo")
             status, output = subprocess.getstatusoutput(
-                ("type " if mswindows else "cat ") + name)
+                ("type " ikiwa mswindows else "cat ") + name)
             self.assertNotEqual(status, 0)
         finally:
-            if dir is not None:
+            ikiwa dir is not None:
                 os.rmdir(dir)
 
-    def test__all__(self):
+    eleza test__all__(self):
         """Ensure that __all__ is populated properly."""
         intentionally_excluded = {"list2cmdline", "Handle"}
         exported = set(subprocess.__all__)
         possible_exports = set()
         agiza types
         for name, value in subprocess.__dict__.items():
-            if name.startswith('_'):
+            ikiwa name.startswith('_'):
                 continue
-            if isinstance(value, (types.ModuleType,)):
+            ikiwa isinstance(value, (types.ModuleType,)):
                 continue
             possible_exports.add(name)
         self.assertEqual(exported, possible_exports - intentionally_excluded)
@@ -3254,21 +3254,21 @@ class MiscTests(unittest.TestCase):
 
 @unittest.skipUnless(hasattr(selectors, 'PollSelector'),
                      "Test needs selectors.PollSelector")
-class ProcessTestCaseNoPoll(ProcessTestCase):
-    def setUp(self):
+kundi ProcessTestCaseNoPoll(ProcessTestCase):
+    eleza setUp(self):
         self.orig_selector = subprocess._PopenSelector
         subprocess._PopenSelector = selectors.SelectSelector
         ProcessTestCase.setUp(self)
 
-    def tearDown(self):
+    eleza tearDown(self):
         subprocess._PopenSelector = self.orig_selector
         ProcessTestCase.tearDown(self)
 
 
 @unittest.skipUnless(mswindows, "Windows-specific tests")
-class CommandsWithSpaces (BaseTestCase):
+kundi CommandsWithSpaces (BaseTestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         f, fname = tempfile.mkstemp(".py", "te st")
         self.fname = fname.lower ()
@@ -3277,11 +3277,11 @@ class CommandsWithSpaces (BaseTestCase):
         )
         os.close(f)
 
-    def tearDown(self):
+    eleza tearDown(self):
         os.remove(self.fname)
         super().tearDown()
 
-    def with_spaces(self, *args, **kwargs):
+    eleza with_spaces(self, *args, **kwargs):
         kwargs['stdout'] = subprocess.PIPE
         p = subprocess.Popen(*args, **kwargs)
         with p:
@@ -3290,28 +3290,28 @@ class CommandsWithSpaces (BaseTestCase):
               "2 [%r, 'ab cd']" % self.fname
             )
 
-    def test_shell_string_with_spaces(self):
+    eleza test_shell_string_with_spaces(self):
         # call() function with string argument with spaces on Windows
         self.with_spaces('"%s" "%s" "%s"' % (sys.executable, self.fname,
                                              "ab cd"), shell=1)
 
-    def test_shell_sequence_with_spaces(self):
+    eleza test_shell_sequence_with_spaces(self):
         # call() function with sequence argument with spaces on Windows
         self.with_spaces([sys.executable, self.fname, "ab cd"], shell=1)
 
-    def test_noshell_string_with_spaces(self):
+    eleza test_noshell_string_with_spaces(self):
         # call() function with string argument with spaces on Windows
         self.with_spaces('"%s" "%s" "%s"' % (sys.executable, self.fname,
                              "ab cd"))
 
-    def test_noshell_sequence_with_spaces(self):
+    eleza test_noshell_sequence_with_spaces(self):
         # call() function with sequence argument with spaces on Windows
         self.with_spaces([sys.executable, self.fname, "ab cd"])
 
 
-class ContextManagerTests(BaseTestCase):
+kundi ContextManagerTests(BaseTestCase):
 
-    def test_pipe(self):
+    eleza test_pipe(self):
         with subprocess.Popen([sys.executable, "-c",
                                "agiza sys;"
                                "sys.stdout.write('stdout');"
@@ -3324,14 +3324,14 @@ class ContextManagerTests(BaseTestCase):
         self.assertTrue(proc.stdout.closed)
         self.assertTrue(proc.stderr.closed)
 
-    def test_returncode(self):
+    eleza test_returncode(self):
         with subprocess.Popen([sys.executable, "-c",
                                "agiza sys; sys.exit(100)"]) as proc:
             pass
         # __exit__ calls wait(), so the returncode should be set
         self.assertEqual(proc.returncode, 100)
 
-    def test_communicate_stdin(self):
+    eleza test_communicate_stdin(self):
         with subprocess.Popen([sys.executable, "-c",
                               "agiza sys;"
                               "sys.exit(sys.stdin.read() == 'context')"],
@@ -3339,14 +3339,14 @@ class ContextManagerTests(BaseTestCase):
             proc.communicate(b"context")
             self.assertEqual(proc.returncode, 1)
 
-    def test_invalid_args(self):
+    eleza test_invalid_args(self):
         with self.assertRaises(NONEXISTING_ERRORS):
             with subprocess.Popen(NONEXISTING_CMD,
                                   stdout=subprocess.PIPE,
                                   stderr=subprocess.PIPE) as proc:
                 pass
 
-    def test_broken_pipe_cleanup(self):
+    eleza test_broken_pipe_cleanup(self):
         """Broken pipe error should not prevent wait() (Issue 21619)"""
         proc = subprocess.Popen([sys.executable, '-c', 'pass'],
                                 stdin=subprocess.PIPE,
@@ -3363,5 +3363,5 @@ class ContextManagerTests(BaseTestCase):
         self.assertTrue(proc.stdin.closed)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

@@ -59,7 +59,7 @@ Summary -- Release highlights
 
 New syntax features:
 
-* New ``yield from`` expression for :ref:`generator delegation <pep-380>`.
+* New ``yield kutoka`` expression for :ref:`generator delegation <pep-380>`.
 * The ``u'unicode'`` syntax is accepted again for :class:`str` objects.
 
 New library modules:
@@ -77,7 +77,7 @@ New built-in features:
 
 Implementation improvements:
 
-* Rewritten :ref:`import machinery <importlib>` based on :mod:`importlib`.
+* Rewritten :ref:`agiza machinery <importlib>` based on :mod:`importlib`.
 * More compact :ref:`unicode strings <pep-393>`.
 * More compact :ref:`attribute dictionaries <pep-412>`.
 
@@ -102,9 +102,9 @@ PEP 405: Virtual Environments
 Virtual environments help create separate Python setups while sharing a
 system-wide base install, for ease of maintenance.  Virtual environments
 have their own set of private site packages (i.e. locally-installed
-libraries), and are optionally segregated from the system-wide site
+libraries), and are optionally segregated kutoka the system-wide site
 packages.  Their concept and implementation are inspired by the popular
-``virtualenv`` third-party package, but benefit from tighter integration
+``virtualenv`` third-party package, but benefit kutoka tighter integration
 with the interpreter core.
 
 This PEP adds the :mod:`venv` module for programmatic access, and the
@@ -229,7 +229,7 @@ Functionality
 Changes introduced by :pep:`393` are the following:
 
 * Python now always supports the full range of Unicode code points, including
-  non-BMP ones (i.e. from ``U+0000`` to ``U+10FFFF``).  The distinction between
+  non-BMP ones (i.e. kutoka ``U+0000`` to ``U+10FFFF``).  The distinction between
   narrow and wide builds no longer exists and Python now behaves like a wide
   build, even under Windows.
 
@@ -299,7 +299,7 @@ will be used to run the file. If multiple versions are installed, the most
 recent version is used by default, but this can be overridden by including
 a Unix-style "shebang line" in the Python script.
 
-The launcher can also be used explicitly from the command line as the ``py``
+The launcher can also be used explicitly kutoka the command line as the ``py``
 application. Running ``py`` follows the same version selection rules as
 implicitly launching scripts, but a more specific version can be selected
 by passing appropriate arguments (such as ``-3`` to request Python 3 when
@@ -338,7 +338,7 @@ reasons.
 
 Also, it is now easier to catch a specific error condition.  Instead of
 inspecting the ``errno`` attribute (or ``args[0]``) for a particular
-constant from the :mod:`errno` module, you can catch the adequate
+constant kutoka the :mod:`errno` module, you can catch the adequate
 :exc:`OSError` subclass.  The available subclasses are the following:
 
 * :exc:`BlockingIOError`
@@ -363,7 +363,7 @@ And the :exc:`ConnectionError` itself has finer-grained subclasses:
 Thanks to the new exceptions, common usages of the :mod:`errno` can now be
 avoided.  For example, the following code written for Python 3.2::
 
-    from errno import ENOENT, EACCES, EPERM
+    kutoka errno agiza ENOENT, EACCES, EPERM
 
     try:
         with open("document.txt") as f:
@@ -376,7 +376,7 @@ avoided.  For example, the following code written for Python 3.2::
         else:
             raise
 
-can now be written without the :mod:`errno` import and without manual
+can now be written without the :mod:`errno` agiza and without manual
 inspection of exception attributes::
 
     try:
@@ -394,14 +394,14 @@ inspection of exception attributes::
 
 
 .. index::
-   single: yield; yield from (in What's New)
+   single: yield; yield kutoka (in What's New)
 
 .. _pep-380:
 
 PEP 380: Syntax for Delegating to a Subgenerator
 ================================================
 
-PEP 380 adds the ``yield from`` expression, allowing a :term:`generator` to
+PEP 380 adds the ``yield kutoka`` expression, allowing a :term:`generator` to
 delegate
 part of its operations to another generator. This allows a section of code
 containing :keyword:`yield` to be factored out and placed in another generator.
@@ -409,20 +409,20 @@ Additionally, the subgenerator is allowed to return with a value, and the
 value is made available to the delegating generator.
 
 While designed primarily for use in delegating to a subgenerator, the ``yield
-from`` expression actually allows delegation to arbitrary subiterators.
+kutoka`` expression actually allows delegation to arbitrary subiterators.
 
-For simple iterators, ``yield from iterable`` is essentially just a shortened
+For simple iterators, ``yield kutoka iterable`` is essentially just a shortened
 form of ``for item in iterable: yield item``::
 
     >>> def g(x):
-    ...     yield from range(x, 0, -1)
-    ...     yield from range(x)
+    ...     yield kutoka range(x, 0, -1)
+    ...     yield kutoka range(x)
     ...
     >>> list(g(5))
     [5, 4, 3, 2, 1, 0, 1, 2, 3, 4]
 
-However, unlike an ordinary loop, ``yield from`` allows subgenerators to
-receive sent and thrown values directly from the calling scope, and
+However, unlike an ordinary loop, ``yield kutoka`` allows subgenerators to
+receive sent and thrown values directly kutoka the calling scope, and
 return a final value to the outer generator::
 
     >>> def accumulate():
@@ -435,7 +435,7 @@ return a final value to the outer generator::
     ...
     >>> def gather_tallies(tallies):
     ...     while 1:
-    ...         tally = yield from accumulate()
+    ...         tally = yield kutoka accumulate()
     ...         tallies.append(tally)
     ...
     >>> tallies = []
@@ -472,14 +472,14 @@ PEP 409 introduces new syntax that allows the display of the chained
 exception context to be disabled. This allows cleaner error messages in
 applications that convert between exception types::
 
-    >>> class D:
+    >>> kundi D:
     ...     def __init__(self, extra):
     ...         self._extra_attributes = extra
     ...     def __getattr__(self, attr):
     ...         try:
     ...             return self._extra_attributes[attr]
     ...         except KeyError:
-    ...             raise AttributeError(attr) from None
+    ...             raise AttributeError(attr) kutoka None
     ...
     >>> D({}).x
     Traceback (most recent call last):
@@ -487,10 +487,10 @@ applications that convert between exception types::
       File "<stdin>", line 8, in __getattr__
     AttributeError: x
 
-Without the ``from None`` suffix to suppress the cause, the original
+Without the ``kutoka None`` suffix to suppress the cause, the original
 exception would be displayed by default::
 
-    >>> class C:
+    >>> kundi C:
     ...     def __init__(self, extra):
     ...         self._extra_attributes = extra
     ...     def __getattr__(self, attr):
@@ -532,7 +532,7 @@ suppressed valuable underlying details)::
 PEP 414: Explicit Unicode literals
 ======================================
 
-To ease the transition from Python 2 for Unicode aware Python applications
+To ease the transition kutoka Python 2 for Unicode aware Python applications
 that make heavy use of Unicode literals, Python 3.3 once again supports the
 "``u``" prefix for string literals. This prefix has no semantic significance
 in Python 3, it is provided solely to reduce the number of purely mechanical
@@ -549,15 +549,15 @@ separation of binary and text data).
 PEP 3155: Qualified name for classes and functions
 ==================================================
 
-Functions and class objects have a new ``__qualname__`` attribute representing
-the "path" from the module top-level to their definition.  For global functions
+Functions and kundi objects have a new ``__qualname__`` attribute representing
+the "path" kutoka the module top-level to their definition.  For global functions
 and classes, this is the same as ``__name__``.  For other functions and classes,
 it provides better information about where they were actually defined, and
-how they might be accessible from the global scope.
+how they might be accessible kutoka the global scope.
 
 Example with (non-bound) methods::
 
-   >>> class C:
+   >>> kundi C:
    ...     def meth(self):
    ...         pass
    >>> C.meth.__name__
@@ -567,8 +567,8 @@ Example with (non-bound) methods::
 
 Example with nested classes::
 
-   >>> class C:
-   ...     class D:
+   >>> kundi C:
+   ...     kundi D:
    ...         def meth(self):
    ...             pass
    ...
@@ -597,7 +597,7 @@ The string representation of those objects is also changed to include the
 new, more precise information::
 
    >>> str(C.D)
-   "<class '__main__.C.D'>"
+   "<kundi '__main__.C.D'>"
    >>> str(C.D.meth)
    '<function C.D.meth at 0x7f46b9fe31e0>'
 
@@ -660,7 +660,7 @@ shift in order to make the standard library more portable.
 One example of improved standard library portability is ``cache_tag``.  As of
 Python 3.3, ``sys.implementation.cache_tag`` is used by :mod:`importlib` to
 support :pep:`3147` compliance.  Any Python implementation that uses
-``importlib`` for its built-in import system may use ``cache_tag`` to control
+``importlib`` for its built-in agiza system may use ``cache_tag`` to control
 the caching behavior for modules.
 
 SimpleNamespace
@@ -685,27 +685,27 @@ Using importlib as the Implementation of Import
 ===============================================
 :issue:`2377` - Replace __import__ w/ importlib.__import__
 :issue:`13959` - Re-implement parts of :mod:`imp` in pure Python
-:issue:`14605` - Make import machinery explicit
+:issue:`14605` - Make agiza machinery explicit
 :issue:`14646` - Require loaders set __loader__ and __package__
 
 The :func:`__import__` function is now powered by :func:`importlib.__import__`.
 This work leads to the completion of "phase 2" of :pep:`302`. There are
 multiple benefits to this change. First, it has allowed for more of the
-machinery powering import to be exposed instead of being implicit and hidden
+machinery powering agiza to be exposed instead of being implicit and hidden
 within the C code. It also provides a single implementation for all Python VMs
 supporting Python 3.3 to use, helping to end any VM-specific deviations in
-import semantics. And finally it eases the maintenance of import, allowing for
+agiza semantics. And finally it eases the maintenance of import, allowing for
 future growth to occur.
 
 For the common user, there should be no visible change in semantics.  For
-those whose code currently manipulates import or calls import
+those whose code currently manipulates agiza or calls import
 programmatically, the code changes that might possibly be required are covered
 in the `Porting Python code`_ section of this document.
 
 New APIs
 --------
 One of the large benefits of this work is the exposure of what goes into
-making the import statement work. That means the various importers that were
+making the agiza statement work. That means the various importers that were
 once implicit are now fully exposed as part of the :mod:`importlib` package.
 
 The abstract base classes defined in :mod:`importlib.abc` have been expanded
@@ -718,9 +718,9 @@ and does not enforce any method requirements.
 
 In terms of finders, :class:`importlib.machinery.FileFinder` exposes the
 mechanism used to search for source and bytecode files of a module. Previously
-this class was an implicit member of :attr:`sys.path_hooks`.
+this kundi was an implicit member of :attr:`sys.path_hooks`.
 
-For loaders, the new abstract base class :class:`importlib.abc.FileLoader` helps
+For loaders, the new abstract base kundi :class:`importlib.abc.FileLoader` helps
 write a loader that uses the file system as the storage mechanism for a module's
 code. The loader for source files
 (:class:`importlib.machinery.SourceFileLoader`), sourceless bytecode files
@@ -747,18 +747,18 @@ Beyond the expanse of what :mod:`importlib` now exposes, there are other
 visible changes to import. The biggest is that :attr:`sys.meta_path` and
 :attr:`sys.path_hooks` now store all of the meta path finders and path entry
 hooks used by import.  Previously the finders were implicit and hidden within
-the C code of import instead of being directly exposed. This means that one can
+the C code of agiza instead of being directly exposed. This means that one can
 now easily remove or change the order of the various finders to fit one's needs.
 
 Another change is that all modules have a ``__loader__`` attribute, storing the
 loader used to create the module. :pep:`302` has been updated to make this
 attribute mandatory for loaders to implement, so in the future once 3rd-party
 loaders have been updated people will be able to rely on the existence of the
-attribute. Until such time, though, import is setting the module post-load.
+attribute. Until such time, though, agiza is setting the module post-load.
 
-Loaders are also now expected to set the ``__package__`` attribute from
-:pep:`366`. Once again, import itself is already setting this on all loaders
-from :mod:`importlib` and import itself is setting the attribute post-load.
+Loaders are also now expected to set the ``__package__`` attribute kutoka
+:pep:`366`. Once again, agiza itself is already setting this on all loaders
+kutoka :mod:`importlib` and agiza itself is setting the attribute post-load.
 
 ``None`` is now inserted into :attr:`sys.path_importer_cache` when no finder
 can be found on :attr:`sys.path_hooks`. Since :class:`imp.NullImporter` is not
@@ -822,14 +822,14 @@ Some smaller changes made to the core Python language are:
 A Finer-Grained Import Lock
 ===========================
 
-Previous versions of CPython have always relied on a global import lock.
+Previous versions of CPython have always relied on a global agiza lock.
 This led to unexpected annoyances, such as deadlocks when importing a module
 would trigger code execution in a different thread as a side-effect.
 Clumsy workarounds were sometimes employed, such as the
 :c:func:`PyImport_ImportModuleNoBlock` C API function.
 
 In Python 3.3, importing a module takes a per-module lock.  This correctly
-serializes importation of a given module from multiple threads (preventing
+serializes importation of a given module kutoka multiple threads (preventing
 the exposure of incompletely initialized modules), while eliminating the
 aforementioned annoyances.
 
@@ -876,7 +876,7 @@ Example of a segmentation fault on Linux:
 .. code-block:: shell-session
 
     $ python -q -X faulthandler
-    >>> import ctypes
+    >>> agiza ctypes
     >>> ctypes.string_at(0)
     Fatal Python error: Segmentation fault
 
@@ -926,7 +926,7 @@ property. The built-in descriptors have been updated accordingly.
 (Contributed by Darren Dale in :issue:`11610`.)
 
 :meth:`abc.ABCMeta.register` now returns the registered subclass, which means
-it can now be used as a class decorator (:issue:`10868`).
+it can now be used as a kundi decorator (:issue:`10868`).
 
 
 array
@@ -957,13 +957,13 @@ Pitrou in :issue:`13637`.)
 bz2
 ---
 
-The :mod:`bz2` module has been rewritten from scratch. In the process, several
+The :mod:`bz2` module has been rewritten kutoka scratch. In the process, several
 new features have been added:
 
 * New :func:`bz2.open` function: open a bzip2-compressed file in binary or
   text mode.
 
-* :class:`bz2.BZ2File` can now read from and write to arbitrary file-like
+* :class:`bz2.BZ2File` can now read kutoka and write to arbitrary file-like
   objects, by means of its constructor's *fileobj* argument.
 
   (Contributed by Nadeem Vawda in :issue:`5863`.)
@@ -1001,7 +1001,7 @@ byte of an invalid byte sequence. For example, ``b'\xff\n'.decode('gb2312',
 Incremental CJK codec encoders are no longer reset at each call to their
 encode() methods. For example::
 
-    >>> import codecs
+    >>> agiza codecs
     >>> encoder = codecs.getincrementalencoder('hz')('strict')
     >>> b''.join(encoder.encode(x) for x in '\u52ff\u65bd\u65bc\u4eba\u3002 Bye.')
     b'~{NpJ)l6HK!#~} Bye.'
@@ -1017,7 +1017,7 @@ The ``unicode_internal`` codec has been deprecated.
 collections
 -----------
 
-Addition of a new :class:`~collections.ChainMap` class to allow treating a
+Addition of a new :class:`~collections.ChainMap` kundi to allow treating a
 number of mappings as a single unit.  (Written by Raymond Hettinger for
 :issue:`11089`, made public in :issue:`11297`.)
 
@@ -1028,7 +1028,7 @@ collections classes.  Aliases for ABCs are still present in the
 
 .. XXX addition of __slots__ to ABCs not recorded here: internal detail
 
-The :class:`~collections.Counter` class now supports the unary ``+`` and ``-``
+The :class:`~collections.Counter` kundi now supports the unary ``+`` and ``-``
 operators, as well as the in-place operators ``+=``, ``-=``, ``|=``, and
 ``&=``.  (Contributed by Raymond Hettinger in :issue:`13121`.)
 
@@ -1042,7 +1042,7 @@ functionality. Unlike the previous ``contextlib.nested`` API (which was
 deprecated and removed), the new API is designed to work correctly
 regardless of whether context managers acquire their resources in
 their ``__init__`` method (for example, file objects) or in their
-``__enter__`` method (for example, synchronisation objects from the
+``__enter__`` method (for example, synchronisation objects kutoka the
 :mod:`threading` module).
 
 (:issue:`13585`)
@@ -1064,7 +1064,7 @@ curses
    :c:func:`waddwstr`), and bytes functions otherwise (e.g. :c:func:`waddstr`).
  * Use the locale encoding instead of ``utf-8`` to encode Unicode strings.
  * :class:`curses.window` has a new :attr:`curses.window.encoding` attribute.
- * The :class:`curses.window` class has a new :meth:`~curses.window.get_wch`
+ * The :class:`curses.window` kundi has a new :meth:`~curses.window.get_wch`
    method to get a wide character
  * The :mod:`curses` module has a new :meth:`~curses.unget_wch` function to
    push a wide character so the next :meth:`~curses.window.get_wch` will return
@@ -1099,7 +1099,7 @@ The new C version of the decimal module integrates the high speed libmpdec
 library for arbitrary precision correctly-rounded decimal floating point
 arithmetic. libmpdec conforms to IBM's General Decimal Arithmetic Specification.
 
-Performance gains range from 10x for database applications to 100x for
+Performance gains range kutoka 10x for database applications to 100x for
 numerically intensive applications. These numbers are expected gains
 for standard precisions used in decimal floating point arithmetic. Since
 the precision is user configurable, the exact figures may vary. For example,
@@ -1279,7 +1279,7 @@ and add the following additional controls:
     ===============     =======================================================
 
 The ``header_factory`` is the key to the new features provided by the new
-policies.  When one of the new policies is used, any header retrieved from
+policies.  When one of the new policies is used, any header retrieved kutoka
 a ``Message`` object is an object produced by the ``header_factory``, and any
 time you set a header on a ``Message`` it becomes an object produced by
 ``header_factory``.  All such header objects have a ``name`` attribute equal
@@ -1312,7 +1312,7 @@ directly, you get the unicode version.  This eliminates any need to deal with
 the :mod:`email.header` :meth:`~email.header.decode_header` or
 :meth:`~email.header.make_header` functions.
 
-You can also create addresses from parts::
+You can also create addresses kutoka parts::
 
     >>> m['cc'] = [Group('pals', [Address('Bob', 'bob', 'example.com'),
     ...                           Address('Sally', 'sally', 'example.com')]),
@@ -1324,7 +1324,7 @@ You can also create addresses from parts::
 
 Decoding to unicode is done automatically::
 
-    >>> m2 = message_from_string(str(m))
+    >>> m2 = message_kutoka_string(str(m))
     >>> m2['to']
     'Éric <foo@example.com>'
 
@@ -1339,7 +1339,7 @@ addresses::
 
 In summary, if you use one of the new policies, header manipulation works the
 way it ought to:  your application works with unicode strings, and the email
-package transparently encodes and decodes the unicode to and from the RFC
+package transparently encodes and decodes the unicode to and kutoka the RFC
 standard Content Transfer Encodings.
 
 Other API Changes
@@ -1354,7 +1354,7 @@ New utility functions:
    * :func:`~email.utils.format_datetime`: given a :class:`~datetime.datetime`,
      produce a string formatted for use in an email header.
 
-   * :func:`~email.utils.parsedate_to_datetime`: given a date string from
+   * :func:`~email.utils.parsedate_to_datetime`: given a date string kutoka
      an email header, convert it into an aware :class:`~datetime.datetime`,
      or a naive :class:`~datetime.datetime` if the offset is ``-0000``.
 
@@ -1373,7 +1373,7 @@ ftplib
   when creating the outgoing socket.  (Contributed by Giampaolo Rodolà
   in :issue:`8594`.)
 
-* The :class:`~ftplib.FTP_TLS` class now provides a new
+* The :class:`~ftplib.FTP_TLS` kundi now provides a new
   :func:`~ftplib.FTP_TLS.ccc` function to revert control channel back to
   plaintext.  This can be useful to take advantage of firewalls that know how
   to handle NAT with non-secure FTP without opening fixed ports.  (Contributed
@@ -1459,7 +1459,7 @@ inspect
 -------
 
 A new :func:`~inspect.getclosurevars` function has been added. This function
-reports the current binding of all names referenced from the function body and
+reports the current binding of all names referenced kutoka the function body and
 where those names were resolved, making it easier to verify correct internal
 state when testing code that relies on stateful closures.
 
@@ -1481,7 +1481,7 @@ already exists. It is based on the C11 'x' mode to fopen().
 
 (Contributed by David Townshend in :issue:`12760`.)
 
-The constructor of the :class:`~io.TextIOWrapper` class has a new
+The constructor of the :class:`~io.TextIOWrapper` kundi has a new
 *write_through* optional argument. If *write_through* is ``True``, calls to
 :meth:`~io.TextIOWrapper.write` are guaranteed not to be buffered: any data
 written on the :class:`~io.TextIOWrapper` object is immediately handled to its
@@ -1501,7 +1501,7 @@ logging
 The :func:`~logging.basicConfig` function now supports an optional ``handlers``
 argument taking an iterable of handlers to be added to the root logger.
 
-A class level attribute :attr:`~logging.handlers.SysLogHandler.append_nul` has
+A kundi level attribute :attr:`~logging.handlers.SysLogHandler.append_nul` has
 been added to :class:`~logging.handlers.SysLogHandler` to allow control of the
 appending of the ``NUL`` (``\000``) byte to syslog records, since for some
 daemons it is required while for others it is passed through to the log.
@@ -1522,7 +1522,7 @@ mmap
 
 The :meth:`~mmap.mmap.read` method is now more compatible with other file-like
 objects: if the argument is omitted or specified as ``None``, it returns the
-bytes from the current file position to the end of the mapping.  (Contributed
+bytes kutoka the current file position to the end of the mapping.  (Contributed
 by Petri Lehtinen in :issue:`12021`.)
 
 
@@ -1538,7 +1538,7 @@ multiprocessing connections.
 (Contributed by Richard Oudkerk in :issue:`4892`.)
 
 :class:`multiprocessing.Process` now accepts a ``daemon`` keyword argument
-to override the default behavior of inheriting the ``daemon`` flag from
+to override the default behavior of inheriting the ``daemon`` flag kutoka
 the parent process (:issue:`6064`).
 
 New attribute :data:`multiprocessing.Process.sentinel` allows a
@@ -1557,11 +1557,11 @@ Schlawack in :issue:`12708`.)
 nntplib
 -------
 
-The :class:`nntplib.NNTP` class now supports the context management protocol to
+The :class:`nntplib.NNTP` kundi now supports the context management protocol to
 unconditionally consume :exc:`socket.error` exceptions and to close the NNTP
 connection when done::
 
-  >>> from nntplib import NNTP
+  >>> kutoka nntplib agiza NNTP
   >>> with NNTP('news.gmane.org') as n:
   ...     n.group('gmane.comp.python.committers')
   ...
@@ -1580,11 +1580,11 @@ os
   avoid race conditions in multi-threaded programs.
 
 * The :mod:`os` module has a new :func:`~os.sendfile` function which provides
-  an efficient "zero-copy" way for copying data from one file (or socket)
+  an efficient "zero-copy" way for copying data kutoka one file (or socket)
   descriptor to another. The phrase "zero-copy" refers to the fact that all of
   the copying of data between the two descriptors is done entirely by the
   kernel, with no copying of data into userspace buffers. :func:`~os.sendfile`
-  can be used to efficiently copy data from a file on disk to a network socket,
+  can be used to efficiently copy data kutoka a file on disk to a network socket,
   e.g. for downloading a file.
 
   (Patch submitted by Ross Lagerwall and Giampaolo Rodolà in :issue:`10882`.)
@@ -1671,11 +1671,11 @@ os
 * Additional new  posix functions:
 
   * :func:`~os.lockf`: Apply, test or remove a POSIX lock on an open file descriptor.
-  * :func:`~os.pread`: Read from a file descriptor at an offset, the file
+  * :func:`~os.pread`: Read kutoka a file descriptor at an offset, the file
     offset remains unchanged.
-  * :func:`~os.pwrite`: Write to a file descriptor from an offset, leaving
+  * :func:`~os.pwrite`: Write to a file descriptor kutoka an offset, leaving
     the file offset unchanged.
-  * :func:`~os.readv`: Read from a file descriptor into a number of writable buffers.
+  * :func:`~os.readv`: Read kutoka a file descriptor into a number of writable buffers.
   * :func:`~os.truncate`: Truncate the file corresponding to *path*, so that
     it is at most *length* bytes in size.
   * :func:`~os.waitid`: Wait for the completion of one or more child processes.
@@ -1684,7 +1684,7 @@ os
   * :func:`~os.getgrouplist` (:issue:`9344`): Return list of group ids that
     specified user belongs to.
 
-* :func:`~os.times` and :func:`~os.uname`: Return type changed from a tuple to
+* :func:`~os.times` and :func:`~os.uname`: Return type changed kutoka a tuple to
   a tuple-like object with named attributes.
 
 * Some platforms now support additional constants for the :func:`~os.lseek`
@@ -1725,7 +1725,7 @@ reduction functions to be set.
 pydoc
 -----
 
-The Tk GUI and the :func:`~pydoc.serve` function have been removed from the
+The Tk GUI and the :func:`~pydoc.serve` function have been removed kutoka the
 :mod:`pydoc` module: ``pydoc -g`` and :func:`~pydoc.serve` have been deprecated
 in Python 3.2.
 
@@ -1747,7 +1747,7 @@ sched
   This is useful in case you want to use the :class:`~sched.scheduler` in
   non-blocking applications.  (Contributed by Giampaolo Rodolà in :issue:`13449`.)
 
-* :class:`~sched.scheduler` class can now be safely used in multi-threaded
+* :class:`~sched.scheduler` kundi can now be safely used in multi-threaded
   environments.  (Contributed by Josiah Carlson and Giampaolo Rodolà in
   :issue:`8684`.)
 
@@ -1768,7 +1768,7 @@ sched
 select
 ------
 
-Solaris and derivative platforms have a new class :class:`select.devpoll`
+Solaris and derivative platforms have a new kundi :class:`select.devpoll`
 for high performance asynchronous sockets via :file:`/dev/poll`.
 (Contributed by Jesús Cea Avión in :issue:`6397`.)
 
@@ -1776,7 +1776,7 @@ for high performance asynchronous sockets via :file:`/dev/poll`.
 shlex
 -----
 
-The previously undocumented helper function ``quote`` from the
+The previously undocumented helper function ``quote`` kutoka the
 :mod:`pipes` modules has been moved to the :mod:`shlex` module and
 documented.  :func:`~shlex.quote` properly escapes all characters in a string
 that might be otherwise given special meaning by the shell.
@@ -1874,7 +1874,7 @@ channel.  (Contributed by Kasun Herath in :issue:`8809`.)
 socket
 ------
 
-* The :class:`~socket.socket` class now exposes additional methods to process
+* The :class:`~socket.socket` kundi now exposes additional methods to process
   ancillary data when supported by the underlying platform:
 
   * :func:`~socket.socket.sendmsg`
@@ -1884,17 +1884,17 @@ socket
   (Contributed by David Watson in :issue:`6560`, based on an earlier patch by
   Heiko Wundram)
 
-* The :class:`~socket.socket` class now supports the PF_CAN protocol family
+* The :class:`~socket.socket` kundi now supports the PF_CAN protocol family
   (https://en.wikipedia.org/wiki/Socketcan), on Linux
   (https://lwn.net/Articles/253425).
 
   (Contributed by Matthias Fuchs, updated by Tiago Gonçalves in :issue:`10141`.)
 
-* The :class:`~socket.socket` class now supports the PF_RDS protocol family
+* The :class:`~socket.socket` kundi now supports the PF_RDS protocol family
   (https://en.wikipedia.org/wiki/Reliable_Datagram_Sockets and
   https://oss.oracle.com/projects/rds/).
 
-* The :class:`~socket.socket` class now supports the ``PF_SYSTEM`` protocol
+* The :class:`~socket.socket` kundi now supports the ``PF_SYSTEM`` protocol
   family on OS X.  (Contributed by Michael Goderbauer in :issue:`13777`.)
 
 * New function :func:`~socket.sethostname` allows the hostname to be set
@@ -2036,12 +2036,12 @@ threading
 :class:`threading.Condition`, :class:`threading.Semaphore`,
 :class:`threading.BoundedSemaphore`, :class:`threading.Event`, and
 :class:`threading.Timer`, all of which used to be factory functions returning a
-class instance, are now classes and may be subclassed.  (Contributed by Éric
+kundi instance, are now classes and may be subclassed.  (Contributed by Éric
 Araujo in :issue:`10968`.)
 
 The :class:`threading.Thread` constructor now accepts a ``daemon`` keyword
 argument to override the default behavior of inheriting the ``daemon`` flag
-value from the parent thread (:issue:`6064`).
+value kutoka the parent thread (:issue:`6064`).
 
 The formerly private function ``_thread.get_ident`` is now available as the
 public function :func:`threading.get_ident`.  This eliminates several cases of
@@ -2115,7 +2115,7 @@ webbrowser
 The :mod:`webbrowser` module supports more "browsers": Google Chrome (named
 :program:`chrome`, :program:`chromium`, :program:`chrome-browser` or
 :program:`chromium-browser` depending on the version and operating system),
-and the generic launchers :program:`xdg-open`, from the FreeDesktop.org
+and the generic launchers :program:`xdg-open`, kutoka the FreeDesktop.org
 project, and :program:`gvfs-open`, which is the default URI handler for GNOME
 3.  (The former contributed by Arnaud Calmettes in :issue:`13620`, the latter
 by Matthias Klose in :issue:`14493`.)
@@ -2254,7 +2254,7 @@ Deprecated Python modules, functions and methods
   * :meth:`importlib.abc.SourceLoader.path_mtime` is now deprecated in favour of
     :meth:`importlib.abc.SourceLoader.path_stats` as bytecode files now store
     both the modification time and size of the source file the bytecode file was
-    compiled from.
+    compiled kutoka.
 
 
 
@@ -2356,7 +2356,7 @@ Porting Python code
   timestamp is out of range. :exc:`OSError` is now raised if C functions
   :c:func:`gmtime` or :c:func:`localtime` failed.
 
-* The default finders used by import now utilize a cache of what is contained
+* The default finders used by agiza now utilize a cache of what is contained
   within a specific directory. If you create a Python source file or sourceless
   bytecode file, make sure to call :func:`importlib.invalidate_caches` to clear
   out the cache for the finders to notice the new file.
@@ -2369,8 +2369,8 @@ Porting Python code
 * The *index* argument to :func:`__import__` now defaults to 0 instead of -1
   and no longer support negative values. It was an oversight when :pep:`328` was
   implemented that the default value remained -1. If you need to continue to
-  perform a relative import followed by an absolute import, then perform the
-  relative import using an index of 1, followed by another import using an
+  perform a relative agiza followed by an absolute import, then perform the
+  relative agiza using an index of 1, followed by another agiza using an
   index of 0. It is preferred, though, that you use
   :func:`importlib.import_module` rather than call :func:`__import__` directly.
 
@@ -2397,10 +2397,10 @@ Porting Python code
 
 * :mod:`pkgutil` has been converted to use :mod:`importlib` internally. This
   eliminates many edge cases where the old behaviour of the :pep:`302` import
-  emulation failed to match the behaviour of the real import system. The
-  import emulation itself is still present, but is now deprecated. The
+  emulation failed to match the behaviour of the real agiza system. The
+  agiza emulation itself is still present, but is now deprecated. The
   :func:`pkgutil.iter_importers` and :func:`pkgutil.walk_packages` functions
-  special case the standard import hooks so they are still supported even
+  special case the standard agiza hooks so they are still supported even
   though they do not provide the non-standard ``iter_modules()`` method.
 
 * A longstanding RFC-compliance bug (:issue:`1079`) in the parsing done by
@@ -2432,12 +2432,12 @@ Porting Python code
 
 * The deprecated variable ``time.accept2dyear`` has been removed.
 
-* The deprecated ``Context._clamp`` attribute has been removed from the
+* The deprecated ``Context._clamp`` attribute has been removed kutoka the
   :mod:`decimal` module.  It was previously replaced by the public attribute
   :attr:`~decimal.Context.clamp`.  (See :issue:`8540`.)
 
-* The undocumented internal helper class ``SSLFakeFile`` has been removed
-  from :mod:`smtplib`, since its functionality has long been provided directly
+* The undocumented internal helper kundi ``SSLFakeFile`` has been removed
+  kutoka :mod:`smtplib`, since its functionality has long been provided directly
   by :meth:`socket.socket.makefile`.
 
 * Passing a negative value to :func:`time.sleep` on Windows now raises an
@@ -2449,7 +2449,7 @@ Porting Python code
 
 * Code that used to work around the fact that the :mod:`threading` module used
   factory functions by subclassing the private classes will need to change to
-  subclass the now-public classes.
+  subkundi the now-public classes.
 
 * The undocumented debugging machinery in the threading module has been
   removed, simplifying the code.  This should have no effect on production
@@ -2497,7 +2497,7 @@ Building C extensions
   ``xxxmodule.cpython-*.so`` are no longer recognized as implementing
   the ``xxx`` module.  If you had been generating such files, you have
   to switch to the other spellings (i.e., remove the ``module`` string
-  from the file names).
+  kutoka the file names).
 
   (implemented in :issue:`14040`.)
 
@@ -2510,7 +2510,7 @@ Command Line Switch Changes
 
   (:issue:`10998`, contributed by Éric Araujo.)
 
-* When :program:`python` is started with :option:`-S`, ``import site``
+* When :program:`python` is started with :option:`-S`, ``agiza site``
   will no longer add site-specific paths to the module search paths.  In
   previous versions, it did.
 

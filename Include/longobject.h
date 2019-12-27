@@ -62,7 +62,7 @@ PyAPI_FUNC(PyObject *) PyLong_GetInfo(void);
 #  define _Py_PARSE_INTPTR "L"
 #  define _Py_PARSE_UINTPTR "K"
 #else
-#  error "void* different in size from int, long and long long"
+#  error "void* different in size kutoka int, long and long long"
 #endif /* SIZEOF_VOID_P */
 
 #ifndef Py_LIMITED_API

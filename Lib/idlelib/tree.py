@@ -29,12 +29,12 @@ try:
     _icondir = os.path.join(os.path.dirname(__file__), ICONDIR)
 except NameError:
     _icondir = ICONDIR
-if os.path.isdir(_icondir):
+ikiwa os.path.isdir(_icondir):
     ICONDIR = _icondir
-elif not os.path.isdir(ICONDIR):
+elikiwa not os.path.isdir(ICONDIR):
     raise RuntimeError("can't find icon directory (%r)" % (ICONDIR,))
 
-def listicons(icondir=ICONDIR):
+eleza listicons(icondir=ICONDIR):
     """Utility to display the available icons."""
     root = Tk()
     agiza glob
@@ -51,16 +51,16 @@ def listicons(icondir=ICONDIR):
         label = Label(root, text=name)
         label.grid(row=row+1, column=column)
         column = column + 1
-        if column >= 10:
+        ikiwa column >= 10:
             row = row+2
             column = 0
     root.images = images
 
-def wheel_event(event, widget=None):
+eleza wheel_event(event, widget=None):
     """Handle scrollwheel event.
 
     For wheel up, event.delta = 120*n on Windows, -1*n on darwin,
-    where n can be > 1 if one scrolls fast.  Flicking the wheel
+    where n can be > 1 ikiwa one scrolls fast.  Flicking the wheel
     generates up to maybe 20 events with n up to 10 or more 1.
     Macs use wheel down (delta = 1*n) to scroll up, so positive
     delta means to scroll up on both systems.
@@ -75,15 +75,15 @@ def wheel_event(event, widget=None):
     """
     up = {EventType.MouseWheel: event.delta > 0,
           EventType.ButtonPress: event.num == 4}
-    lines = -5 if up[event.type] else 5
-    widget = event.widget if widget is None else widget
+    lines = -5 ikiwa up[event.type] else 5
+    widget = event.widget ikiwa widget is None else widget
     widget.yview(SCROLL, lines, 'units')
-    return 'break'
+    rudisha 'break'
 
 
-class TreeNode:
+kundi TreeNode:
 
-    def __init__(self, canvas, parent, item):
+    eleza __init__(self, canvas, parent, item):
         self.canvas = canvas
         self.parent = parent
         self.item = item
@@ -93,15 +93,15 @@ class TreeNode:
         self.x = self.y = None
         self.iconimages = {} # cache of PhotoImage instances for icons
 
-    def destroy(self):
+    eleza destroy(self):
         for c in self.children[:]:
             self.children.remove(c)
             c.destroy()
         self.parent = None
 
-    def geticonimage(self, name):
+    eleza geticonimage(self, name):
         try:
-            return self.iconimages[name]
+            rudisha self.iconimages[name]
         except KeyError:
             pass
         file, ext = os.path.splitext(name)
@@ -109,10 +109,10 @@ class TreeNode:
         fullname = os.path.join(ICONDIR, file + ext)
         image = PhotoImage(master=self.canvas, file=fullname)
         self.iconimages[name] = image
-        return image
+        rudisha image
 
-    def select(self, event=None):
-        if self.selected:
+    eleza select(self, event=None):
+        ikiwa self.selected:
             return
         self.deselectall()
         self.selected = True
@@ -120,72 +120,72 @@ class TreeNode:
         self.drawicon()
         self.drawtext()
 
-    def deselect(self, event=None):
-        if not self.selected:
+    eleza deselect(self, event=None):
+        ikiwa not self.selected:
             return
         self.selected = False
         self.canvas.delete(self.image_id)
         self.drawicon()
         self.drawtext()
 
-    def deselectall(self):
-        if self.parent:
+    eleza deselectall(self):
+        ikiwa self.parent:
             self.parent.deselectall()
         else:
             self.deselecttree()
 
-    def deselecttree(self):
-        if self.selected:
+    eleza deselecttree(self):
+        ikiwa self.selected:
             self.deselect()
         for child in self.children:
             child.deselecttree()
 
-    def flip(self, event=None):
-        if self.state == 'expanded':
+    eleza flip(self, event=None):
+        ikiwa self.state == 'expanded':
             self.collapse()
         else:
             self.expand()
         self.item.OnDoubleClick()
-        return "break"
+        rudisha "break"
 
-    def expand(self, event=None):
-        if not self.item._IsExpandable():
+    eleza expand(self, event=None):
+        ikiwa not self.item._IsExpandable():
             return
-        if self.state != 'expanded':
+        ikiwa self.state != 'expanded':
             self.state = 'expanded'
             self.update()
             self.view()
 
-    def collapse(self, event=None):
-        if self.state != 'collapsed':
+    eleza collapse(self, event=None):
+        ikiwa self.state != 'collapsed':
             self.state = 'collapsed'
             self.update()
 
-    def view(self):
+    eleza view(self):
         top = self.y - 2
         bottom = self.lastvisiblechild().y + 17
         height = bottom - top
         visible_top = self.canvas.canvasy(0)
         visible_height = self.canvas.winfo_height()
         visible_bottom = self.canvas.canvasy(visible_height)
-        if visible_top <= top and bottom <= visible_bottom:
+        ikiwa visible_top <= top and bottom <= visible_bottom:
             return
         x0, y0, x1, y1 = self.canvas._getints(self.canvas['scrollregion'])
-        if top >= visible_top and height <= visible_height:
+        ikiwa top >= visible_top and height <= visible_height:
             fraction = top + height - visible_height
         else:
             fraction = top
         fraction = float(fraction) / y1
         self.canvas.yview_moveto(fraction)
 
-    def lastvisiblechild(self):
-        if self.children and self.state == 'expanded':
-            return self.children[-1].lastvisiblechild()
+    eleza lastvisiblechild(self):
+        ikiwa self.children and self.state == 'expanded':
+            rudisha self.children[-1].lastvisiblechild()
         else:
-            return self
+            rudisha self
 
-    def update(self):
-        if self.parent:
+    eleza update(self):
+        ikiwa self.parent:
             self.parent.update()
         else:
             oldcursor = self.canvas['cursor']
@@ -197,20 +197,20 @@ class TreeNode:
             self.canvas.configure(scrollregion=(0, 0, x1, y1))
             self.canvas['cursor'] = oldcursor
 
-    def draw(self, x, y):
+    eleza draw(self, x, y):
         # XXX This hard-codes too many geometry constants!
         dy = 20
         self.x, self.y = x, y
         self.drawicon()
         self.drawtext()
-        if self.state != 'expanded':
-            return y + dy
+        ikiwa self.state != 'expanded':
+            rudisha y + dy
         # draw children
-        if not self.children:
+        ikiwa not self.children:
             sublist = self.item._GetSubList()
-            if not sublist:
+            ikiwa not sublist:
                 # _IsExpandable() was mistaken; that's allowed
-                return y+17
+                rudisha y+17
             for item in sublist:
                 child = self.__class__(self.canvas, self, item)
                 self.children.append(child)
@@ -221,8 +221,8 @@ class TreeNode:
             cylast = cy
             self.canvas.create_line(x+9, cy+7, cx, cy+7, fill="gray50")
             cy = child.draw(cx, cy)
-            if child.item._IsExpandable():
-                if child.state == 'expanded':
+            ikiwa child.item._IsExpandable():
+                ikiwa child.state == 'expanded':
                     iconname = "minusnode"
                     callback = child.collapse
                 else:
@@ -237,10 +237,10 @@ class TreeNode:
             ##stipple="gray50",     # XXX Seems broken in Tk 8.0.x
             fill="gray50")
         self.canvas.tag_lower(id) # XXX .lower(id) before Python 1.5.2
-        return cy
+        rudisha cy
 
-    def drawicon(self):
-        if self.selected:
+    eleza drawicon(self):
+        ikiwa self.selected:
             imagename = (self.item.GetSelectedIconName() or
                          self.item.GetIconName() or
                          "openfolder")
@@ -252,11 +252,11 @@ class TreeNode:
         self.canvas.tag_bind(id, "<1>", self.select)
         self.canvas.tag_bind(id, "<Double-1>", self.flip)
 
-    def drawtext(self):
+    eleza drawtext(self):
         textx = self.x+20-1
         texty = self.y-4
         labeltext = self.item.GetLabelText()
-        if labeltext:
+        ikiwa labeltext:
             id = self.canvas.create_text(textx, texty, anchor="nw",
                                          text=labeltext)
             self.canvas.tag_bind(id, "<1>", self.select)
@@ -276,7 +276,7 @@ class TreeNode:
             # padding carefully selected (on Windows) to match Entry widget:
             self.label = Label(self.canvas, text=text, bd=0, padx=2, pady=2)
         theme = idleConf.CurrentTheme()
-        if self.selected:
+        ikiwa self.selected:
             self.label.configure(idleConf.GetHighlight(theme, 'hilite'))
         else:
             self.label.configure(idleConf.GetHighlight(theme, 'normal'))
@@ -289,13 +289,13 @@ class TreeNode:
         self.label.bind("<Button-5>", lambda e: wheel_event(e, self.canvas))
         self.text_id = id
 
-    def select_or_edit(self, event=None):
-        if self.selected and self.item.IsEditable():
+    eleza select_or_edit(self, event=None):
+        ikiwa self.selected and self.item.IsEditable():
             self.edit(event)
         else:
             self.select(event)
 
-    def edit(self, event=None):
+    eleza edit(self, event=None):
         self.entry = Entry(self.label, bd=0, highlightthickness=1, width=0)
         self.entry.insert(0, self.label['text'])
         self.entry.selection_range(0, END)
@@ -304,7 +304,7 @@ class TreeNode:
         self.entry.bind("<Return>", self.edit_finish)
         self.entry.bind("<Escape>", self.edit_cancel)
 
-    def edit_finish(self, event=None):
+    eleza edit_finish(self, event=None):
         try:
             entry = self.entry
             del self.entry
@@ -312,14 +312,14 @@ class TreeNode:
             return
         text = entry.get()
         entry.destroy()
-        if text and text != self.item.GetText():
+        ikiwa text and text != self.item.GetText():
             self.item.SetText(text)
         text = self.item.GetText()
         self.label['text'] = text
         self.drawtext()
         self.canvas.focus_set()
 
-    def edit_cancel(self, event=None):
+    eleza edit_cancel(self, event=None):
         try:
             entry = self.entry
             del self.entry
@@ -330,83 +330,83 @@ class TreeNode:
         self.canvas.focus_set()
 
 
-class TreeItem:
+kundi TreeItem:
 
-    """Abstract class representing tree items.
+    """Abstract kundi representing tree items.
 
     Methods should typically be overridden, otherwise a default action
     is used.
 
     """
 
-    def __init__(self):
+    eleza __init__(self):
         """Constructor.  Do whatever you need to do."""
 
-    def GetText(self):
+    eleza GetText(self):
         """Return text string to display."""
 
-    def GetLabelText(self):
-        """Return label text string to display in front of text (if any)."""
+    eleza GetLabelText(self):
+        """Return label text string to display in front of text (ikiwa any)."""
 
     expandable = None
 
-    def _IsExpandable(self):
+    eleza _IsExpandable(self):
         """Do not override!  Called by TreeNode."""
-        if self.expandable is None:
+        ikiwa self.expandable is None:
             self.expandable = self.IsExpandable()
-        return self.expandable
+        rudisha self.expandable
 
-    def IsExpandable(self):
+    eleza IsExpandable(self):
         """Return whether there are subitems."""
-        return 1
+        rudisha 1
 
-    def _GetSubList(self):
+    eleza _GetSubList(self):
         """Do not override!  Called by TreeNode."""
-        if not self.IsExpandable():
-            return []
+        ikiwa not self.IsExpandable():
+            rudisha []
         sublist = self.GetSubList()
-        if not sublist:
+        ikiwa not sublist:
             self.expandable = 0
-        return sublist
+        rudisha sublist
 
-    def IsEditable(self):
+    eleza IsEditable(self):
         """Return whether the item's text may be edited."""
 
-    def SetText(self, text):
-        """Change the item's text (if it is editable)."""
+    eleza SetText(self, text):
+        """Change the item's text (ikiwa it is editable)."""
 
-    def GetIconName(self):
+    eleza GetIconName(self):
         """Return name of icon to be displayed normally."""
 
-    def GetSelectedIconName(self):
+    eleza GetSelectedIconName(self):
         """Return name of icon to be displayed when selected."""
 
-    def GetSubList(self):
+    eleza GetSubList(self):
         """Return list of items forming sublist."""
 
-    def OnDoubleClick(self):
+    eleza OnDoubleClick(self):
         """Called on a double-click on the item."""
 
 
 # Example application
 
-class FileTreeItem(TreeItem):
+kundi FileTreeItem(TreeItem):
 
-    """Example TreeItem subclass -- browse the file system."""
+    """Example TreeItem subkundi -- browse the file system."""
 
-    def __init__(self, path):
+    eleza __init__(self, path):
         self.path = path
 
-    def GetText(self):
-        return os.path.basename(self.path) or self.path
+    eleza GetText(self):
+        rudisha os.path.basename(self.path) or self.path
 
-    def IsEditable(self):
-        return os.path.basename(self.path) != ""
+    eleza IsEditable(self):
+        rudisha os.path.basename(self.path) != ""
 
-    def SetText(self, text):
+    eleza SetText(self, text):
         newpath = os.path.dirname(self.path)
         newpath = os.path.join(newpath, text)
-        if os.path.dirname(newpath) != os.path.dirname(self.path):
+        ikiwa os.path.dirname(newpath) != os.path.dirname(self.path):
             return
         try:
             os.rename(self.path, newpath)
@@ -414,32 +414,32 @@ class FileTreeItem(TreeItem):
         except OSError:
             pass
 
-    def GetIconName(self):
-        if not self.IsExpandable():
-            return "python" # XXX wish there was a "file" icon
+    eleza GetIconName(self):
+        ikiwa not self.IsExpandable():
+            rudisha "python" # XXX wish there was a "file" icon
 
-    def IsExpandable(self):
-        return os.path.isdir(self.path)
+    eleza IsExpandable(self):
+        rudisha os.path.isdir(self.path)
 
-    def GetSubList(self):
+    eleza GetSubList(self):
         try:
             names = os.listdir(self.path)
         except OSError:
-            return []
+            rudisha []
         names.sort(key = os.path.normcase)
         sublist = []
         for name in names:
             item = FileTreeItem(os.path.join(self.path, name))
             sublist.append(item)
-        return sublist
+        rudisha sublist
 
 
 # A canvas widget with scroll bars and some useful bindings
 
-class ScrolledCanvas:
+kundi ScrolledCanvas:
 
-    def __init__(self, master, **opts):
-        if 'yscrollincrement' not in opts:
+    eleza __init__(self, master, **opts):
+        ikiwa 'yscrollincrement' not in opts:
             opts['yscrollincrement'] = 17
         self.master = master
         self.frame = Frame(master)
@@ -462,27 +462,27 @@ class ScrolledCanvas:
         self.canvas.bind("<MouseWheel>", wheel_event)
         self.canvas.bind("<Button-4>", wheel_event)
         self.canvas.bind("<Button-5>", wheel_event)
-        #if isinstance(master, Toplevel) or isinstance(master, Tk):
+        #ikiwa isinstance(master, Toplevel) or isinstance(master, Tk):
         self.canvas.bind("<Alt-Key-2>", self.zoom_height)
         self.canvas.focus_set()
-    def page_up(self, event):
+    eleza page_up(self, event):
         self.canvas.yview_scroll(-1, "page")
-        return "break"
-    def page_down(self, event):
+        rudisha "break"
+    eleza page_down(self, event):
         self.canvas.yview_scroll(1, "page")
-        return "break"
-    def unit_up(self, event):
+        rudisha "break"
+    eleza unit_up(self, event):
         self.canvas.yview_scroll(-1, "unit")
-        return "break"
-    def unit_down(self, event):
+        rudisha "break"
+    eleza unit_down(self, event):
         self.canvas.yview_scroll(1, "unit")
-        return "break"
-    def zoom_height(self, event):
+        rudisha "break"
+    eleza zoom_height(self, event):
         zoomheight.zoom_height(self.master)
-        return "break"
+        rudisha "break"
 
 
-def _tree_widget(parent):  # htest #
+eleza _tree_widget(parent):  # htest #
     top = Toplevel(parent)
     x, y = map(int, parent.geometry().split('+')[1:])
     top.geometry("+%d+%d" % (x+50, y+175))
@@ -492,7 +492,7 @@ def _tree_widget(parent):  # htest #
     node = TreeNode(sc.canvas, None, item)
     node.expand()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_tree', verbosity=2, exit=False)
 

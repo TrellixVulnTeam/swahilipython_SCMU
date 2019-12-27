@@ -24,8 +24,8 @@ TESTFN2 = TESTFN + "2"
 # How much time in seconds can pass before we print a 'Still working' message.
 _PRINT_WORKING_MSG_INTERVAL = 60
 
-class TestsWithSourceFile(unittest.TestCase):
-    def setUp(self):
+kundi TestsWithSourceFile(unittest.TestCase):
+    eleza setUp(self):
         # Create test data.
         line_gen = ("Test of zipfile line %d." % i for i in range(1000000))
         self.data = '\n'.join(line_gen).encode('ascii')
@@ -34,7 +34,7 @@ class TestsWithSourceFile(unittest.TestCase):
         with open(TESTFN, "wb") as fp:
             fp.write(self.data)
 
-    def zipTest(self, f, compression):
+    eleza zipTest(self, f, compression):
         # Create the ZIP archive.
         with zipfile.ZipFile(f, "w", compression) as zipfp:
 
@@ -46,9 +46,9 @@ class TestsWithSourceFile(unittest.TestCase):
             for num in range(filecount):
                 zipfp.writestr("testfn%d" % num, self.data)
                 # Print still working message since this test can be really slow
-                if next_time <= time.monotonic():
+                ikiwa next_time <= time.monotonic():
                     next_time = time.monotonic() + _PRINT_WORKING_MSG_INTERVAL
-                    print((
+                    andika((
                     '  zipTest still writing %d of %d, be patient...' %
                     (num, filecount)), file=sys.__stdout__)
                     sys.__stdout__.flush()
@@ -58,14 +58,14 @@ class TestsWithSourceFile(unittest.TestCase):
             for num in range(filecount):
                 self.assertEqual(zipfp.read("testfn%d" % num), self.data)
                 # Print still working message since this test can be really slow
-                if next_time <= time.monotonic():
+                ikiwa next_time <= time.monotonic():
                     next_time = time.monotonic() + _PRINT_WORKING_MSG_INTERVAL
-                    print((
+                    andika((
                     '  zipTest still reading %d of %d, be patient...' %
                     (num, filecount)), file=sys.__stdout__)
                     sys.__stdout__.flush()
 
-    def testStored(self):
+    eleza testStored(self):
         # Try the temp file first.  If we do TESTFN2 first, then it hogs
         # gigabytes of disk space for the duration of the test.
         with TemporaryFile() as f:
@@ -74,7 +74,7 @@ class TestsWithSourceFile(unittest.TestCase):
         self.zipTest(TESTFN2, zipfile.ZIP_STORED)
 
     @requires_zlib
-    def testDeflated(self):
+    eleza testDeflated(self):
         # Try the temp file first.  If we do TESTFN2 first, then it hogs
         # gigabytes of disk space for the duration of the test.
         with TemporaryFile() as f:
@@ -82,14 +82,14 @@ class TestsWithSourceFile(unittest.TestCase):
             self.assertFalse(f.closed)
         self.zipTest(TESTFN2, zipfile.ZIP_DEFLATED)
 
-    def tearDown(self):
+    eleza tearDown(self):
         for fname in TESTFN, TESTFN2:
-            if os.path.exists(fname):
+            ikiwa os.path.exists(fname):
                 os.remove(fname)
 
 
-class OtherTests(unittest.TestCase):
-    def testMoreThan64kFiles(self):
+kundi OtherTests(unittest.TestCase):
+    eleza testMoreThan64kFiles(self):
         # This test checks that more than 64k files can be added to an archive,
         # and that the resulting archive can be read properly by ZipFile
         with zipfile.ZipFile(TESTFN, mode="w", allowZip64=True) as zipf:
@@ -105,7 +105,7 @@ class OtherTests(unittest.TestCase):
                 content = zipf2.read("foo%08d" % i).decode('ascii')
                 self.assertEqual(content, "%d" % (i**3 % 57))
 
-    def testMoreThan64kFilesAppend(self):
+    eleza testMoreThan64kFilesAppend(self):
         with zipfile.ZipFile(TESTFN, mode="w", allowZip64=False) as zipf:
             zipf.debug = 100
             numfiles = (1 << 16) - 1
@@ -137,9 +137,9 @@ class OtherTests(unittest.TestCase):
                 content = zipf2.read("foo%08d" % i).decode('ascii')
                 self.assertEqual(content, "%d" % (i**3 % 57))
 
-    def tearDown(self):
+    eleza tearDown(self):
         support.unlink(TESTFN)
         support.unlink(TESTFN2)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

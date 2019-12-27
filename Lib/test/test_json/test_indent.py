@@ -3,8 +3,8 @@ kutoka io agiza StringIO
 kutoka test.test_json agiza PyTest, CTest
 
 
-class TestIndent:
-    def test_indent(self):
+kundi TestIndent:
+    eleza test_indent(self):
         h = [['blorpie'], ['whoops'], [], 'd-shtaeou', 'd-nthiouh', 'i-vhbjkhnth',
              {'nifty': 87}, {'field': 'yes', 'morefield': False} ]
 
@@ -47,9 +47,9 @@ class TestIndent:
         self.assertEqual(d4, d2)
         self.assertEqual(d5, d3)
 
-    def test_indent0(self):
+    eleza test_indent0(self):
         h = {3: 1}
-        def check(indent, expected):
+        eleza check(indent, expected):
             d1 = self.dumps(h, indent=indent)
             self.assertEqual(d1, expected)
 
@@ -63,5 +63,5 @@ class TestIndent:
         check(None, '{"3": 1}')
 
 
-class TestPyIndent(TestIndent, PyTest): pass
-class TestCIndent(TestIndent, CTest): pass
+kundi TestPyIndent(TestIndent, PyTest): pass
+kundi TestCIndent(TestIndent, CTest): pass

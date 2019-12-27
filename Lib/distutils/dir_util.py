@@ -152,7 +152,7 @@ def copy_tree(src, dst, preserve_mode=1, preserve_times=1,
                 os.symlink(link_dest, dst_name)
             outputs.append(dst_name)
 
-        elif os.path.isdir(src_name):
+        lasivyo os.path.isdir(src_name):
             outputs.extend(
                 copy_tree(src_name, dst_name, preserve_mode,
                           preserve_times, preserve_symlinks, update,

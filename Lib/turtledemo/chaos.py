@@ -8,28 +8,28 @@ kutoka turtle agiza *
 
 N = 80
 
-def f(x):
-    return 3.9*x*(1-x)
+eleza f(x):
+    rudisha 3.9*x*(1-x)
 
-def g(x):
-    return 3.9*(x-x**2)
+eleza g(x):
+    rudisha 3.9*(x-x**2)
 
-def h(x):
-    return 3.9*x-3.9*x*x
+eleza h(x):
+    rudisha 3.9*x-3.9*x*x
 
-def jumpto(x, y):
+eleza jumpto(x, y):
     penup(); goto(x,y)
 
-def line(x1, y1, x2, y2):
+eleza line(x1, y1, x2, y2):
     jumpto(x1, y1)
     pendown()
     goto(x2, y2)
 
-def coosys():
+eleza coosys():
     line(-1, 0, N+1, 0)
     line(0, -0.1, 0, 1.1)
 
-def plot(fun, start, color):
+eleza plot(fun, start, color):
     pencolor(color)
     x = start
     jumpto(0, x)
@@ -40,7 +40,7 @@ def plot(fun, start, color):
         goto(i+1,x)
         dot(5)
 
-def main():
+eleza main():
     reset()
     setworldcoordinates(-1.0,-0.1, N+1, 1.1)
     speed(0)
@@ -52,8 +52,8 @@ def main():
     # Now zoom in:
     for s in range(100):
         setworldcoordinates(0.5*s,-0.1, N+1, 1.1)
-    return "Done!"
+    rudisha "Done!"
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     main()
     mainloop()

@@ -14,23 +14,23 @@ kutoka tkinter agiza Tk
 kutoka idlelib.tree agiza TreeNode
 
 
-class ModuleBrowserTest(unittest.TestCase):
+kundi ModuleBrowserTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
         cls.mb = browser.ModuleBrowser(cls.root, __file__, _utest=True)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         cls.mb.close()
         cls.root.update_idletasks()
         cls.root.destroy()
         del cls.root, cls.mb
 
-    def test_init(self):
+    eleza test_init(self):
         mb = self.mb
         eq = self.assertEqual
         eq(mb.path, __file__)
@@ -38,17 +38,17 @@ class ModuleBrowserTest(unittest.TestCase):
         self.assertIsInstance(mb.node, TreeNode)
         self.assertIsNotNone(browser.file_open)
 
-    def test_settitle(self):
+    eleza test_settitle(self):
         mb = self.mb
         self.assertIn(os.path.basename(__file__), mb.top.title())
         self.assertEqual(mb.top.iconname(), 'Module Browser')
 
-    def test_rootnode(self):
+    eleza test_rootnode(self):
         mb = self.mb
         rn = mb.rootnode()
         self.assertIsInstance(rn, browser.ModuleBrowserTreeItem)
 
-    def test_close(self):
+    eleza test_close(self):
         mb = self.mb
         mb.top.destroy = Func()
         mb.node.destroy = Func()
@@ -76,13 +76,13 @@ mock_pyclbr_tree = {'C0': C0, 'f0': f0}
 browser.transform_children(mock_pyclbr_tree, 'test')  # C0(base)
 browser.transform_children(C0.children)  # C1()
 
-# The class below checks that the calls above are correct
+# The kundi below checks that the calls above are correct
 # and that duplicate calls have no effect.
 
 
-class TransformChildrenTest(unittest.TestCase):
+kundi TransformChildrenTest(unittest.TestCase):
 
-    def test_transform_module_children(self):
+    eleza test_transform_module_children(self):
         eq = self.assertEqual
         transform = browser.transform_children
         # Parameter matches tree module.
@@ -93,11 +93,11 @@ class TransformChildrenTest(unittest.TestCase):
         # Check that second call does not change suffix.
         tcl = list(transform(mock_pyclbr_tree, 'test'))
         eq(tcl[0].name, 'C0(base)')
-        # Nothing to traverse if parameter name isn't same as tree module.
+        # Nothing to traverse ikiwa parameter name isn't same as tree module.
         tcl = list(transform(mock_pyclbr_tree, 'different name'))
         eq(tcl, [])
 
-    def test_transform_node_children(self):
+    eleza test_transform_node_children(self):
         eq = self.assertEqual
         transform = browser.transform_children
         # Class with two children, one name altered.
@@ -111,25 +111,25 @@ class TransformChildrenTest(unittest.TestCase):
         eq(list(transform(f0.children)), [f1, c1])
 
 
-class ModuleBrowserTreeItemTest(unittest.TestCase):
+kundi ModuleBrowserTreeItemTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.mbt = browser.ModuleBrowserTreeItem(fname)
 
-    def test_init(self):
+    eleza test_init(self):
         self.assertEqual(self.mbt.file, fname)
 
-    def test_gettext(self):
+    eleza test_gettext(self):
         self.assertEqual(self.mbt.GetText(), fname)
 
-    def test_geticonname(self):
+    eleza test_geticonname(self):
         self.assertEqual(self.mbt.GetIconName(), 'python')
 
-    def test_isexpandable(self):
+    eleza test_isexpandable(self):
         self.assertTrue(self.mbt.IsExpandable())
 
-    def test_listchildren(self):
+    eleza test_listchildren(self):
         save_rex = browser.pyclbr.readmodule_ex
         save_tc = browser.transform_children
         browser.pyclbr.readmodule_ex = Func(result=mock_pyclbr_tree)
@@ -140,7 +140,7 @@ class ModuleBrowserTreeItemTest(unittest.TestCase):
             browser.pyclbr.readmodule_ex = save_rex
             browser.transform_children = save_tc
 
-    def test_getsublist(self):
+    eleza test_getsublist(self):
         mbt = self.mbt
         mbt.listchildren = Func(result=[f0, C0])
         sub0, sub1 = mbt.GetSubList()
@@ -151,7 +151,7 @@ class ModuleBrowserTreeItemTest(unittest.TestCase):
         self.assertEqual(sub1.name, 'C0(base)')
 
     @mock.patch('idlelib.browser.file_open')
-    def test_ondoubleclick(self, fopen):
+    eleza test_ondoubleclick(self, fopen):
         mbt = self.mbt
 
         with mock.patch('os.path.exists', return_value=False):
@@ -164,40 +164,40 @@ class ModuleBrowserTreeItemTest(unittest.TestCase):
             fopen.called_with(fname)
 
 
-class ChildBrowserTreeItemTest(unittest.TestCase):
+kundi ChildBrowserTreeItemTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         CBT = browser.ChildBrowserTreeItem
         cls.cbt_f1 = CBT(f1)
         cls.cbt_C1 = CBT(C1)
         cls.cbt_F1 = CBT(F1)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         del cls.cbt_C1, cls.cbt_f1, cls.cbt_F1
 
-    def test_init(self):
+    eleza test_init(self):
         eq = self.assertEqual
         eq(self.cbt_C1.name, 'C1()')
         self.assertFalse(self.cbt_C1.isfunction)
         eq(self.cbt_f1.name, 'f1')
         self.assertTrue(self.cbt_f1.isfunction)
 
-    def test_gettext(self):
-        self.assertEqual(self.cbt_C1.GetText(), 'class C1()')
-        self.assertEqual(self.cbt_f1.GetText(), 'def f1(...)')
+    eleza test_gettext(self):
+        self.assertEqual(self.cbt_C1.GetText(), 'kundi C1()')
+        self.assertEqual(self.cbt_f1.GetText(), 'eleza f1(...)')
 
-    def test_geticonname(self):
+    eleza test_geticonname(self):
         self.assertEqual(self.cbt_C1.GetIconName(), 'folder')
         self.assertEqual(self.cbt_f1.GetIconName(), 'python')
 
-    def test_isexpandable(self):
+    eleza test_isexpandable(self):
         self.assertTrue(self.cbt_C1.IsExpandable())
         self.assertTrue(self.cbt_f1.IsExpandable())
         self.assertFalse(self.cbt_F1.IsExpandable())
 
-    def test_getsublist(self):
+    eleza test_getsublist(self):
         eq = self.assertEqual
         CBT = browser.ChildBrowserTreeItem
 
@@ -209,7 +209,7 @@ class ChildBrowserTreeItemTest(unittest.TestCase):
         eq(self.cbt_F1.GetSubList(), [])
 
     @mock.patch('idlelib.browser.file_open')
-    def test_ondoubleclick(self, fopen):
+    eleza test_ondoubleclick(self, fopen):
         goto = fopen.return_value.gotoline = mock.Mock()
         self.cbt_F1.OnDoubleClick()
         fopen.assert_called()
@@ -218,10 +218,10 @@ class ChildBrowserTreeItemTest(unittest.TestCase):
         # Failure test would have to raise OSError or AttributeError.
 
 
-class NestedChildrenTest(unittest.TestCase):
+kundi NestedChildrenTest(unittest.TestCase):
     "Test that all the nodes in a nested tree are added to the BrowserTree."
 
-    def test_nested(self):
+    eleza test_nested(self):
         queue = deque()
         actual_names = []
         # The tree items are processed in breadth first order.
@@ -244,5 +244,5 @@ class NestedChildrenTest(unittest.TestCase):
         self.assertEqual(actual_names, expected_names)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

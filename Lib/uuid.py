@@ -1,6 +1,6 @@
 r"""UUID objects (universally unique identifiers) according to RFC 4122.
 
-This module provides immutable UUID objects (class UUID) and the functions
+This module provides immutable UUID objects (kundi UUID) and the functions
 uuid1(), uuid3(), uuid4(), uuid5() for generating version 1, 3, 4, and 5
 UUIDs as specified in RFC 4122.
 
@@ -67,14 +67,14 @@ int_ = int      # The built-in int type
 bytes_ = bytes  # The built-in bytes type
 
 
-class SafeUUID(Enum):
+kundi SafeUUID(Enum):
     safe = 0
     unsafe = -1
     unknown = None
 
 
-class UUID:
-    """Instances of the UUID class represent UUIDs as specified in RFC 4122.
+kundi UUID:
+    """Instances of the UUID kundi represent UUIDs as specified in RFC 4122.
     UUID objects are immutable, hashable, and usable as dictionary keys.
     Converting a UUID to a string with str() yields something in the form
     '12345678-1234-1234-1234-123456789abc'.  The UUID constructor accepts
@@ -127,7 +127,7 @@ class UUID:
 
     __slots__ = ('int', 'is_safe', '__weakref__')
 
-    def __init__(self, hex=None, bytes=None, bytes_le=None, fields=None,
+    eleza __init__(self, hex=None, bytes=None, bytes_le=None, fields=None,
                        int=None, version=None,
                        *, is_safe=SafeUUID.unknown):
         r"""Create a UUID kutoka either a string of 32 hexadecimal digits,
@@ -150,7 +150,7 @@ class UUID:
         UUID(int=0x12345678123456781234567812345678)
 
         Exactly one of 'hex', 'bytes', 'bytes_le', 'fields', or 'int' must
-        be given.  The 'version' argument is optional; if given, the resulting
+        be given.  The 'version' argument is optional; ikiwa given, the resulting
         UUID will have its variant and version set according to RFC 4122,
         overriding the given 'hex', 'bytes', 'bytes_le', 'fields', or 'int'.
 
@@ -159,50 +159,50 @@ class UUID:
         for multiprocessing applications, via uuid_generate_time_safe(3).
         """
 
-        if [hex, bytes, bytes_le, fields, int].count(None) != 4:
+        ikiwa [hex, bytes, bytes_le, fields, int].count(None) != 4:
             raise TypeError('one of the hex, bytes, bytes_le, fields, '
                             'or int arguments must be given')
-        if hex is not None:
+        ikiwa hex is not None:
             hex = hex.replace('urn:', '').replace('uuid:', '')
             hex = hex.strip('{}').replace('-', '')
-            if len(hex) != 32:
+            ikiwa len(hex) != 32:
                 raise ValueError('badly formed hexadecimal UUID string')
             int = int_(hex, 16)
-        if bytes_le is not None:
-            if len(bytes_le) != 16:
+        ikiwa bytes_le is not None:
+            ikiwa len(bytes_le) != 16:
                 raise ValueError('bytes_le is not a 16-char string')
             bytes = (bytes_le[4-1::-1] + bytes_le[6-1:4-1:-1] +
                      bytes_le[8-1:6-1:-1] + bytes_le[8:])
-        if bytes is not None:
-            if len(bytes) != 16:
+        ikiwa bytes is not None:
+            ikiwa len(bytes) != 16:
                 raise ValueError('bytes is not a 16-char string')
             assert isinstance(bytes, bytes_), repr(bytes)
-            int = int_.from_bytes(bytes, byteorder='big')
-        if fields is not None:
-            if len(fields) != 6:
+            int = int_.kutoka_bytes(bytes, byteorder='big')
+        ikiwa fields is not None:
+            ikiwa len(fields) != 6:
                 raise ValueError('fields is not a 6-tuple')
             (time_low, time_mid, time_hi_version,
              clock_seq_hi_variant, clock_seq_low, node) = fields
-            if not 0 <= time_low < 1<<32:
+            ikiwa not 0 <= time_low < 1<<32:
                 raise ValueError('field 1 out of range (need a 32-bit value)')
-            if not 0 <= time_mid < 1<<16:
+            ikiwa not 0 <= time_mid < 1<<16:
                 raise ValueError('field 2 out of range (need a 16-bit value)')
-            if not 0 <= time_hi_version < 1<<16:
+            ikiwa not 0 <= time_hi_version < 1<<16:
                 raise ValueError('field 3 out of range (need a 16-bit value)')
-            if not 0 <= clock_seq_hi_variant < 1<<8:
+            ikiwa not 0 <= clock_seq_hi_variant < 1<<8:
                 raise ValueError('field 4 out of range (need an 8-bit value)')
-            if not 0 <= clock_seq_low < 1<<8:
+            ikiwa not 0 <= clock_seq_low < 1<<8:
                 raise ValueError('field 5 out of range (need an 8-bit value)')
-            if not 0 <= node < 1<<48:
+            ikiwa not 0 <= node < 1<<48:
                 raise ValueError('field 6 out of range (need a 48-bit value)')
             clock_seq = (clock_seq_hi_variant << 8) | clock_seq_low
             int = ((time_low << 96) | (time_mid << 80) |
                    (time_hi_version << 64) | (clock_seq << 48) | node)
-        if int is not None:
-            if not 0 <= int < 1<<128:
+        ikiwa int is not None:
+            ikiwa not 0 <= int < 1<<128:
                 raise ValueError('int is out of range (need a 128-bit value)')
-        if version is not None:
-            if not 1 <= version <= 5:
+        ikiwa version is not None:
+            ikiwa not 1 <= version <= 5:
                 raise ValueError('illegal version number')
             # Set the variant to RFC 4122.
             int &= ~(0xc000 << 48)
@@ -213,148 +213,148 @@ class UUID:
         object.__setattr__(self, 'int', int)
         object.__setattr__(self, 'is_safe', is_safe)
 
-    def __getstate__(self):
+    eleza __getstate__(self):
         d = {'int': self.int}
-        if self.is_safe != SafeUUID.unknown:
+        ikiwa self.is_safe != SafeUUID.unknown:
             # is_safe is a SafeUUID instance.  Return just its value, so that
             # it can be un-pickled in older Python versions without SafeUUID.
             d['is_safe'] = self.is_safe.value
-        return d
+        rudisha d
 
-    def __setstate__(self, state):
+    eleza __setstate__(self, state):
         object.__setattr__(self, 'int', state['int'])
         # is_safe was added in 3.7; it is also omitted when it is "unknown"
         object.__setattr__(self, 'is_safe',
                            SafeUUID(state['is_safe'])
-                           if 'is_safe' in state else SafeUUID.unknown)
+                           ikiwa 'is_safe' in state else SafeUUID.unknown)
 
-    def __eq__(self, other):
-        if isinstance(other, UUID):
-            return self.int == other.int
-        return NotImplemented
+    eleza __eq__(self, other):
+        ikiwa isinstance(other, UUID):
+            rudisha self.int == other.int
+        rudisha NotImplemented
 
     # Q. What's the value of being able to sort UUIDs?
     # A. Use them as keys in a B-Tree or similar mapping.
 
-    def __lt__(self, other):
-        if isinstance(other, UUID):
-            return self.int < other.int
-        return NotImplemented
+    eleza __lt__(self, other):
+        ikiwa isinstance(other, UUID):
+            rudisha self.int < other.int
+        rudisha NotImplemented
 
-    def __gt__(self, other):
-        if isinstance(other, UUID):
-            return self.int > other.int
-        return NotImplemented
+    eleza __gt__(self, other):
+        ikiwa isinstance(other, UUID):
+            rudisha self.int > other.int
+        rudisha NotImplemented
 
-    def __le__(self, other):
-        if isinstance(other, UUID):
-            return self.int <= other.int
-        return NotImplemented
+    eleza __le__(self, other):
+        ikiwa isinstance(other, UUID):
+            rudisha self.int <= other.int
+        rudisha NotImplemented
 
-    def __ge__(self, other):
-        if isinstance(other, UUID):
-            return self.int >= other.int
-        return NotImplemented
+    eleza __ge__(self, other):
+        ikiwa isinstance(other, UUID):
+            rudisha self.int >= other.int
+        rudisha NotImplemented
 
-    def __hash__(self):
-        return hash(self.int)
+    eleza __hash__(self):
+        rudisha hash(self.int)
 
-    def __int__(self):
-        return self.int
+    eleza __int__(self):
+        rudisha self.int
 
-    def __repr__(self):
-        return '%s(%r)' % (self.__class__.__name__, str(self))
+    eleza __repr__(self):
+        rudisha '%s(%r)' % (self.__class__.__name__, str(self))
 
-    def __setattr__(self, name, value):
+    eleza __setattr__(self, name, value):
         raise TypeError('UUID objects are immutable')
 
-    def __str__(self):
+    eleza __str__(self):
         hex = '%032x' % self.int
-        return '%s-%s-%s-%s-%s' % (
+        rudisha '%s-%s-%s-%s-%s' % (
             hex[:8], hex[8:12], hex[12:16], hex[16:20], hex[20:])
 
     @property
-    def bytes(self):
-        return self.int.to_bytes(16, 'big')
+    eleza bytes(self):
+        rudisha self.int.to_bytes(16, 'big')
 
     @property
-    def bytes_le(self):
+    eleza bytes_le(self):
         bytes = self.bytes
-        return (bytes[4-1::-1] + bytes[6-1:4-1:-1] + bytes[8-1:6-1:-1] +
+        rudisha (bytes[4-1::-1] + bytes[6-1:4-1:-1] + bytes[8-1:6-1:-1] +
                 bytes[8:])
 
     @property
-    def fields(self):
-        return (self.time_low, self.time_mid, self.time_hi_version,
+    eleza fields(self):
+        rudisha (self.time_low, self.time_mid, self.time_hi_version,
                 self.clock_seq_hi_variant, self.clock_seq_low, self.node)
 
     @property
-    def time_low(self):
-        return self.int >> 96
+    eleza time_low(self):
+        rudisha self.int >> 96
 
     @property
-    def time_mid(self):
-        return (self.int >> 80) & 0xffff
+    eleza time_mid(self):
+        rudisha (self.int >> 80) & 0xffff
 
     @property
-    def time_hi_version(self):
-        return (self.int >> 64) & 0xffff
+    eleza time_hi_version(self):
+        rudisha (self.int >> 64) & 0xffff
 
     @property
-    def clock_seq_hi_variant(self):
-        return (self.int >> 56) & 0xff
+    eleza clock_seq_hi_variant(self):
+        rudisha (self.int >> 56) & 0xff
 
     @property
-    def clock_seq_low(self):
-        return (self.int >> 48) & 0xff
+    eleza clock_seq_low(self):
+        rudisha (self.int >> 48) & 0xff
 
     @property
-    def time(self):
-        return (((self.time_hi_version & 0x0fff) << 48) |
+    eleza time(self):
+        rudisha (((self.time_hi_version & 0x0fff) << 48) |
                 (self.time_mid << 32) | self.time_low)
 
     @property
-    def clock_seq(self):
-        return (((self.clock_seq_hi_variant & 0x3f) << 8) |
+    eleza clock_seq(self):
+        rudisha (((self.clock_seq_hi_variant & 0x3f) << 8) |
                 self.clock_seq_low)
 
     @property
-    def node(self):
-        return self.int & 0xffffffffffff
+    eleza node(self):
+        rudisha self.int & 0xffffffffffff
 
     @property
-    def hex(self):
-        return '%032x' % self.int
+    eleza hex(self):
+        rudisha '%032x' % self.int
 
     @property
-    def urn(self):
-        return 'urn:uuid:' + str(self)
+    eleza urn(self):
+        rudisha 'urn:uuid:' + str(self)
 
     @property
-    def variant(self):
-        if not self.int & (0x8000 << 48):
-            return RESERVED_NCS
-        elif not self.int & (0x4000 << 48):
-            return RFC_4122
-        elif not self.int & (0x2000 << 48):
-            return RESERVED_MICROSOFT
+    eleza variant(self):
+        ikiwa not self.int & (0x8000 << 48):
+            rudisha RESERVED_NCS
+        elikiwa not self.int & (0x4000 << 48):
+            rudisha RFC_4122
+        elikiwa not self.int & (0x2000 << 48):
+            rudisha RESERVED_MICROSOFT
         else:
-            return RESERVED_FUTURE
+            rudisha RESERVED_FUTURE
 
     @property
-    def version(self):
+    eleza version(self):
         # The version bits are only meaningful for RFC 4122 UUIDs.
-        if self.variant == RFC_4122:
-            return int((self.int >> 76) & 0xf)
+        ikiwa self.variant == RFC_4122:
+            rudisha int((self.int >> 76) & 0xf)
 
-def _popen(command, *args):
+eleza _popen(command, *args):
     agiza os, shutil, subprocess
     executable = shutil.which(command)
-    if executable is None:
+    ikiwa executable is None:
         path = os.pathsep.join(('/sbin', '/usr/sbin'))
         executable = shutil.which(command, path=path)
-        if executable is None:
-            return None
+        ikiwa executable is None:
+            rudisha None
     # LC_ALL=C to ensure English output, stderr=DEVNULL to prevent output
     # on stderr (Note: we don't have an example where the words we search
     # for are actually localized, but in theory some system could do so.)
@@ -364,7 +364,7 @@ def _popen(command, *args):
                             stdout=subprocess.PIPE,
                             stderr=subprocess.DEVNULL,
                             env=env)
-    return proc
+    rudisha proc
 
 # For MAC (a.k.a. IEEE 802, or EUI-48) addresses, the second least significant
 # bit of the first octet signifies whether the MAC address is universally (0)
@@ -377,29 +377,29 @@ def _popen(command, *args):
 # This bit works out to be the 42nd bit counting kutoka 1 being the least
 # significant, or 1<<41.  We'll prefer universally administered MAC addresses
 # over locally administered ones since the former are globally unique, but
-# we'll return the first of the latter found if that's all the machine has.
+# we'll rudisha the first of the latter found ikiwa that's all the machine has.
 #
 # See https://en.wikipedia.org/wiki/MAC_address#Universal_vs._local
 
-def _is_universal(mac):
-    return not (mac & (1 << 41))
+eleza _is_universal(mac):
+    rudisha not (mac & (1 << 41))
 
-def _find_mac(command, args, hw_identifiers, get_index):
+eleza _find_mac(command, args, hw_identifiers, get_index):
     first_local_mac = None
     try:
         proc = _popen(command, *args.split())
-        if not proc:
-            return None
+        ikiwa not proc:
+            rudisha None
         with proc:
             for line in proc.stdout:
                 words = line.lower().rstrip().split()
                 for i in range(len(words)):
-                    if words[i] in hw_identifiers:
+                    ikiwa words[i] in hw_identifiers:
                         try:
                             word = words[get_index(i)]
                             mac = int(word.replace(b':', b''), 16)
-                            if _is_universal(mac):
-                                return mac
+                            ikiwa _is_universal(mac):
+                                rudisha mac
                             first_local_mac = first_local_mac or mac
                         except (ValueError, IndexError):
                             # Virtual interfaces, such as those provided by
@@ -410,87 +410,87 @@ def _find_mac(command, args, hw_identifiers, get_index):
                             pass
     except OSError:
         pass
-    return first_local_mac or None
+    rudisha first_local_mac or None
 
-def _ifconfig_getnode():
+eleza _ifconfig_getnode():
     """Get the hardware address on Unix by running ifconfig."""
     # This works on Linux ('' or '-a'), Tru64 ('-av'), but not all Unixes.
     keywords = (b'hwaddr', b'ether', b'address:', b'lladdr')
     for args in ('', '-a', '-av'):
         mac = _find_mac('ifconfig', args, keywords, lambda i: i+1)
-        if mac:
-            return mac
-        return None
+        ikiwa mac:
+            rudisha mac
+        rudisha None
 
-def _ip_getnode():
+eleza _ip_getnode():
     """Get the hardware address on Unix by running ip."""
     # This works on Linux with iproute2.
     mac = _find_mac('ip', 'link', [b'link/ether'], lambda i: i+1)
-    if mac:
-        return mac
-    return None
+    ikiwa mac:
+        rudisha mac
+    rudisha None
 
-def _arp_getnode():
+eleza _arp_getnode():
     """Get the hardware address on Unix by running arp."""
     agiza os, socket
     try:
         ip_addr = socket.gethostbyname(socket.gethostname())
     except OSError:
-        return None
+        rudisha None
 
     # Try getting the MAC addr kutoka arp based on our IP address (Solaris).
     mac = _find_mac('arp', '-an', [os.fsencode(ip_addr)], lambda i: -1)
-    if mac:
-        return mac
+    ikiwa mac:
+        rudisha mac
 
     # This works on OpenBSD
     mac = _find_mac('arp', '-an', [os.fsencode(ip_addr)], lambda i: i+1)
-    if mac:
-        return mac
+    ikiwa mac:
+        rudisha mac
 
     # This works on Linux, FreeBSD and NetBSD
     mac = _find_mac('arp', '-an', [os.fsencode('(%s)' % ip_addr)],
                     lambda i: i+2)
     # Return None instead of 0.
-    if mac:
-        return mac
-    return None
+    ikiwa mac:
+        rudisha mac
+    rudisha None
 
-def _lanscan_getnode():
+eleza _lanscan_getnode():
     """Get the hardware address on Unix by running lanscan."""
     # This might work on HP-UX.
-    return _find_mac('lanscan', '-ai', [b'lan0'], lambda i: 0)
+    rudisha _find_mac('lanscan', '-ai', [b'lan0'], lambda i: 0)
 
-def _netstat_getnode():
+eleza _netstat_getnode():
     """Get the hardware address on Unix by running netstat."""
     # This might work on AIX, Tru64 UNIX.
     first_local_mac = None
     try:
         proc = _popen('netstat', '-ia')
-        if not proc:
-            return None
+        ikiwa not proc:
+            rudisha None
         with proc:
             words = proc.stdout.readline().rstrip().split()
             try:
                 i = words.index(b'Address')
             except ValueError:
-                return None
+                rudisha None
             for line in proc.stdout:
                 try:
                     words = line.rstrip().split()
                     word = words[i]
-                    if len(word) == 17 and word.count(b':') == 5:
+                    ikiwa len(word) == 17 and word.count(b':') == 5:
                         mac = int(word.replace(b':', b''), 16)
-                        if _is_universal(mac):
-                            return mac
+                        ikiwa _is_universal(mac):
+                            rudisha mac
                         first_local_mac = first_local_mac or mac
                 except (ValueError, IndexError):
                     pass
     except OSError:
         pass
-    return first_local_mac or None
+    rudisha first_local_mac or None
 
-def _ipconfig_getnode():
+eleza _ipconfig_getnode():
     """Get the hardware address on Windows by running ipconfig.exe."""
     agiza os, re, subprocess
     first_local_mac = None
@@ -512,14 +512,14 @@ def _ipconfig_getnode():
         with proc:
             for line in proc.stdout:
                 value = line.split(':')[-1].strip().lower()
-                if re.fullmatch('(?:[0-9a-f][0-9a-f]-){5}[0-9a-f][0-9a-f]', value):
+                ikiwa re.fullmatch('(?:[0-9a-f][0-9a-f]-){5}[0-9a-f][0-9a-f]', value):
                     mac = int(value.replace('-', ''), 16)
-                    if _is_universal(mac):
-                        return mac
+                    ikiwa _is_universal(mac):
+                        rudisha mac
                     first_local_mac = first_local_mac or mac
-    return first_local_mac or None
+    rudisha first_local_mac or None
 
-def _netbios_getnode():
+eleza _netbios_getnode():
     """Get the hardware address on Windows using NetBIOS calls.
     See http://support.microsoft.com/kb/118623 for details."""
     agiza win32wnet, netbios
@@ -528,31 +528,31 @@ def _netbios_getnode():
     ncb.Command = netbios.NCBENUM
     ncb.Buffer = adapters = netbios.LANA_ENUM()
     adapters._pack()
-    if win32wnet.Netbios(ncb) != 0:
-        return None
+    ikiwa win32wnet.Netbios(ncb) != 0:
+        rudisha None
     adapters._unpack()
     for i in range(adapters.length):
         ncb.Reset()
         ncb.Command = netbios.NCBRESET
         ncb.Lana_num = ord(adapters.lana[i])
-        if win32wnet.Netbios(ncb) != 0:
+        ikiwa win32wnet.Netbios(ncb) != 0:
             continue
         ncb.Reset()
         ncb.Command = netbios.NCBASTAT
         ncb.Lana_num = ord(adapters.lana[i])
         ncb.Callname = '*'.ljust(16)
         ncb.Buffer = status = netbios.ADAPTER_STATUS()
-        if win32wnet.Netbios(ncb) != 0:
+        ikiwa win32wnet.Netbios(ncb) != 0:
             continue
         status._unpack()
         bytes = status.adapter_address[:6]
-        if len(bytes) != 6:
+        ikiwa len(bytes) != 6:
             continue
-        mac = int.from_bytes(bytes, 'big')
-        if _is_universal(mac):
-            return mac
+        mac = int.kutoka_bytes(bytes, 'big')
+        ikiwa _is_universal(mac):
+            rudisha mac
         first_local_mac = first_local_mac or mac
-    return first_local_mac or None
+    rudisha first_local_mac or None
 
 
 _generate_time_safe = _UuidCreate = None
@@ -565,18 +565,18 @@ except ImportError:
     _uuid = None
 
 
-def _load_system_functions():
+eleza _load_system_functions():
     """
     Try to load platform-specific functions for generating uuids.
     """
     global _generate_time_safe, _UuidCreate, _has_uuid_generate_time_safe
 
-    if _has_uuid_generate_time_safe is not None:
+    ikiwa _has_uuid_generate_time_safe is not None:
         return
 
     _has_uuid_generate_time_safe = False
 
-    if sys.platform == "darwin" and int(os.uname().release.split('.')[0]) < 9:
+    ikiwa sys.platform == "darwin" and int(os.uname().release.split('.')[0]) < 9:
         # The uuid_generate_* functions are broken on MacOS X 10.5, as noted
         # in issue #8621 the function generates the same sequence of values
         # in the parent process and all children created using fork (unless
@@ -585,7 +585,7 @@ def _load_system_functions():
         # Assume that the uuid_generate functions are broken kutoka 10.5 onward,
         # the test can be adjusted when a later version is fixed.
         pass
-    elif _uuid is not None:
+    elikiwa _uuid is not None:
         _generate_time_safe = _uuid.generate_time_safe
         _has_uuid_generate_time_safe = _uuid.has_uuid_generate_time_safe
         return
@@ -600,7 +600,7 @@ def _load_system_functions():
         # The uuid_generate_* routines are provided by libuuid on at least
         # Linux and FreeBSD, and provided by libc on Mac OS X.
         _libnames = ['uuid']
-        if not sys.platform.startswith('win'):
+        ikiwa not sys.platform.startswith('win'):
             _libnames.append('c')
         for libname in _libnames:
             try:
@@ -608,24 +608,24 @@ def _load_system_functions():
             except Exception:                           # pragma: nocover
                 continue
             # Try to find the safe variety first.
-            if hasattr(lib, 'uuid_generate_time_safe'):
+            ikiwa hasattr(lib, 'uuid_generate_time_safe'):
                 _uuid_generate_time_safe = lib.uuid_generate_time_safe
                 # int uuid_generate_time_safe(uuid_t out);
-                def _generate_time_safe():
+                eleza _generate_time_safe():
                     _buffer = ctypes.create_string_buffer(16)
                     res = _uuid_generate_time_safe(_buffer)
-                    return bytes(_buffer.raw), res
+                    rudisha bytes(_buffer.raw), res
                 _has_uuid_generate_time_safe = True
                 break
 
-            elif hasattr(lib, 'uuid_generate_time'):    # pragma: nocover
+            elikiwa hasattr(lib, 'uuid_generate_time'):    # pragma: nocover
                 _uuid_generate_time = lib.uuid_generate_time
                 # void uuid_generate_time(uuid_t out);
                 _uuid_generate_time.restype = None
-                def _generate_time_safe():
+                eleza _generate_time_safe():
                     _buffer = ctypes.create_string_buffer(16)
                     _uuid_generate_time(_buffer)
-                    return bytes(_buffer.raw), None
+                    rudisha bytes(_buffer.raw), None
                 break
 
         # On Windows prior to 2000, UuidCreate gives a UUID containing the
@@ -649,22 +649,22 @@ def _load_system_functions():
                       ImportWarning)
 
 
-def _unix_getnode():
+eleza _unix_getnode():
     """Get the hardware address on Unix using the _uuid extension module
     or ctypes."""
     _load_system_functions()
     uuid_time, _ = _generate_time_safe()
-    return UUID(bytes=uuid_time).node
+    rudisha UUID(bytes=uuid_time).node
 
-def _windll_getnode():
+eleza _windll_getnode():
     """Get the hardware address on Windows using ctypes."""
     agiza ctypes
     _load_system_functions()
     _buffer = ctypes.create_string_buffer(16)
-    if _UuidCreate(_buffer) == 0:
-        return UUID(bytes=bytes_(_buffer.raw)).node
+    ikiwa _UuidCreate(_buffer) == 0:
+        rudisha UUID(bytes=bytes_(_buffer.raw)).node
 
-def _random_getnode():
+eleza _random_getnode():
     """Get a random node ID."""
     # RFC 4122, $4.1.6 says "For systems with no IEEE address, a randomly or
     # pseudo-randomly generated value may be used; see Section 4.5.  The
@@ -677,7 +677,7 @@ def _random_getnode():
     #
     # See https://en.wikipedia.org/wiki/MAC_address#Unicast_vs._multicast
     agiza random
-    return random.getrandbits(48) | (1 << 40)
+    rudisha random.getrandbits(48) | (1 << 40)
 
 
 # _OS_GETTERS, when known, are targeted for a specific OS or platform.
@@ -686,27 +686,27 @@ def _random_getnode():
 # which, when successful, means none of these "external" methods are called.
 # _GETTERS is (also) used by test_uuid.py to SkipUnless(), e.g.,
 #     @unittest.skipUnless(_uuid._ifconfig_getnode in _uuid._GETTERS, ...)
-if _LINUX:
+ikiwa _LINUX:
     _OS_GETTERS = [_ip_getnode, _ifconfig_getnode]
-elif _DARWIN:
+elikiwa _DARWIN:
     _OS_GETTERS = [_ifconfig_getnode, _arp_getnode, _netstat_getnode]
-elif _WINDOWS:
+elikiwa _WINDOWS:
     _OS_GETTERS = [_netbios_getnode, _ipconfig_getnode]
-elif _AIX:
+elikiwa _AIX:
     _OS_GETTERS = [_netstat_getnode]
 else:
     _OS_GETTERS = [_ifconfig_getnode, _ip_getnode, _arp_getnode,
                    _netstat_getnode, _lanscan_getnode]
-if os.name == 'posix':
+ikiwa os.name == 'posix':
     _GETTERS = [_unix_getnode] + _OS_GETTERS
-elif os.name == 'nt':
+elikiwa os.name == 'nt':
     _GETTERS = [_windll_getnode] + _OS_GETTERS
 else:
     _GETTERS = _OS_GETTERS
 
 _node = None
 
-def getnode(*, getters=None):
+eleza getnode(*, getters=None):
     """Get the hardware address as a 48-bit positive integer.
 
     The first time this runs, it may launch a separate program, which could
@@ -715,22 +715,22 @@ def getnode(*, getters=None):
     in RFC 4122.
     """
     global _node
-    if _node is not None:
-        return _node
+    ikiwa _node is not None:
+        rudisha _node
 
     for getter in _GETTERS + [_random_getnode]:
         try:
             _node = getter()
         except:
             continue
-        if (_node is not None) and (0 <= _node < (1 << 48)):
-            return _node
+        ikiwa (_node is not None) and (0 <= _node < (1 << 48)):
+            rudisha _node
     assert False, '_random_getnode() returned invalid value: {}'.format(_node)
 
 
 _last_timestamp = None
 
-def uuid1(node=None, clock_seq=None):
+eleza uuid1(node=None, clock_seq=None):
     """Generate a UUID kutoka a host ID, sequence number, and the current time.
     If 'node' is not given, getnode() is used to obtain the hardware
     address.  If 'clock_seq' is given, it is used as the sequence number;
@@ -739,13 +739,13 @@ def uuid1(node=None, clock_seq=None):
     # When the system provides a version-1 UUID generator, use it (but don't
     # use UuidCreate here because its UUIDs don't conform to RFC 4122).
     _load_system_functions()
-    if _generate_time_safe is not None and node is clock_seq is None:
+    ikiwa _generate_time_safe is not None and node is clock_seq is None:
         uuid_time, safely_generated = _generate_time_safe()
         try:
             is_safe = SafeUUID(safely_generated)
         except ValueError:
             is_safe = SafeUUID.unknown
-        return UUID(bytes=uuid_time, is_safe=is_safe)
+        rudisha UUID(bytes=uuid_time, is_safe=is_safe)
 
     global _last_timestamp
     agiza time
@@ -753,10 +753,10 @@ def uuid1(node=None, clock_seq=None):
     # 0x01b21dd213814000 is the number of 100-ns intervals between the
     # UUID epoch 1582-10-15 00:00:00 and the Unix epoch 1970-01-01 00:00:00.
     timestamp = nanoseconds // 100 + 0x01b21dd213814000
-    if _last_timestamp is not None and timestamp <= _last_timestamp:
+    ikiwa _last_timestamp is not None and timestamp <= _last_timestamp:
         timestamp = _last_timestamp + 1
     _last_timestamp = timestamp
-    if clock_seq is None:
+    ikiwa clock_seq is None:
         agiza random
         clock_seq = random.getrandbits(14) # instead of stable storage
     time_low = timestamp & 0xffffffff
@@ -764,26 +764,26 @@ def uuid1(node=None, clock_seq=None):
     time_hi_version = (timestamp >> 48) & 0x0fff
     clock_seq_low = clock_seq & 0xff
     clock_seq_hi_variant = (clock_seq >> 8) & 0x3f
-    if node is None:
+    ikiwa node is None:
         node = getnode()
-    return UUID(fields=(time_low, time_mid, time_hi_version,
+    rudisha UUID(fields=(time_low, time_mid, time_hi_version,
                         clock_seq_hi_variant, clock_seq_low, node), version=1)
 
-def uuid3(namespace, name):
+eleza uuid3(namespace, name):
     """Generate a UUID kutoka the MD5 hash of a namespace UUID and a name."""
     kutoka hashlib agiza md5
     hash = md5(namespace.bytes + bytes(name, "utf-8")).digest()
-    return UUID(bytes=hash[:16], version=3)
+    rudisha UUID(bytes=hash[:16], version=3)
 
-def uuid4():
+eleza uuid4():
     """Generate a random UUID."""
-    return UUID(bytes=os.urandom(16), version=4)
+    rudisha UUID(bytes=os.urandom(16), version=4)
 
-def uuid5(namespace, name):
+eleza uuid5(namespace, name):
     """Generate a UUID kutoka the SHA-1 hash of a namespace UUID and a name."""
     kutoka hashlib agiza sha1
     hash = sha1(namespace.bytes + bytes(name, "utf-8")).digest()
-    return UUID(bytes=hash[:16], version=5)
+    rudisha UUID(bytes=hash[:16], version=5)
 
 # The following standard UUIDs are for use with uuid3() or uuid5().
 

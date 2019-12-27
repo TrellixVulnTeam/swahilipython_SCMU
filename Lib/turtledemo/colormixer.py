@@ -2,9 +2,9 @@
 
 kutoka turtle agiza Screen, Turtle, mainloop
 
-class ColorTurtle(Turtle):
+kundi ColorTurtle(Turtle):
 
-    def __init__(self, x, y):
+    eleza __init__(self, x, y):
         Turtle.__init__(self)
         self.shape("turtle")
         self.resizemode("user")
@@ -25,16 +25,16 @@ class ColorTurtle(Turtle):
         self.pencolor("gray25")
         self.ondrag(self.shift)
 
-    def shift(self, x, y):
+    eleza shift(self, x, y):
         self.sety(max(0,min(y,1)))
         self._color[self.x] = self.ycor()
         self.fillcolor(self._color)
         setbgcolor()
 
-def setbgcolor():
+eleza setbgcolor():
     screen.bgcolor(red.ycor(), green.ycor(), blue.ycor())
 
-def main():
+eleza main():
     global screen, red, green, blue
     screen = Screen()
     screen.delay(0)
@@ -50,9 +50,9 @@ def main():
     writer.pu()
     writer.goto(1,1.15)
     writer.write("DRAG!",align="center",font=("Arial",30,("bold","italic")))
-    return "EVENTLOOP"
+    rudisha "EVENTLOOP"
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     msg = main()
-    print(msg)
+    andika(msg)
     mainloop()

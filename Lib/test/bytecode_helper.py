@@ -6,36 +6,36 @@ agiza io
 
 _UNSPECIFIED = object()
 
-class BytecodeTestCase(unittest.TestCase):
+kundi BytecodeTestCase(unittest.TestCase):
     """Custom assertion methods for inspecting bytecode."""
 
-    def get_disassembly_as_string(self, co):
+    eleza get_disassembly_as_string(self, co):
         s = io.StringIO()
         dis.dis(co, file=s)
-        return s.getvalue()
+        rudisha s.getvalue()
 
-    def assertInBytecode(self, x, opname, argval=_UNSPECIFIED):
-        """Returns instr if op is found, otherwise throws AssertionError"""
+    eleza assertInBytecode(self, x, opname, argval=_UNSPECIFIED):
+        """Returns instr ikiwa op is found, otherwise throws AssertionError"""
         for instr in dis.get_instructions(x):
-            if instr.opname == opname:
-                if argval is _UNSPECIFIED or instr.argval == argval:
-                    return instr
+            ikiwa instr.opname == opname:
+                ikiwa argval is _UNSPECIFIED or instr.argval == argval:
+                    rudisha instr
         disassembly = self.get_disassembly_as_string(x)
-        if argval is _UNSPECIFIED:
+        ikiwa argval is _UNSPECIFIED:
             msg = '%s not found in bytecode:\n%s' % (opname, disassembly)
         else:
             msg = '(%s,%r) not found in bytecode:\n%s'
             msg = msg % (opname, argval, disassembly)
         self.fail(msg)
 
-    def assertNotInBytecode(self, x, opname, argval=_UNSPECIFIED):
-        """Throws AssertionError if op is found"""
+    eleza assertNotInBytecode(self, x, opname, argval=_UNSPECIFIED):
+        """Throws AssertionError ikiwa op is found"""
         for instr in dis.get_instructions(x):
-            if instr.opname == opname:
+            ikiwa instr.opname == opname:
                 disassembly = self.get_disassembly_as_string(x)
-                if argval is _UNSPECIFIED:
+                ikiwa argval is _UNSPECIFIED:
                     msg = '%s occurs in bytecode:\n%s' % (opname, disassembly)
-                elif instr.argval == argval:
+                elikiwa instr.argval == argval:
                     msg = '(%s,%r) occurs in bytecode:\n%s'
                     msg = msg % (opname, argval, disassembly)
                 self.fail(msg)

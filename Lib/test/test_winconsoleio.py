@@ -8,20 +8,20 @@ agiza tempfile
 agiza unittest
 kutoka test agiza support
 
-if sys.platform != 'win32':
+ikiwa sys.platform != 'win32':
     raise unittest.SkipTest("test only relevant on win32")
 
 kutoka _testconsole agiza write_input
 
 ConIO = io._WindowsConsoleIO
 
-class WindowsConsoleIOTests(unittest.TestCase):
-    def test_abc(self):
+kundi WindowsConsoleIOTests(unittest.TestCase):
+    eleza test_abc(self):
         self.assertTrue(issubclass(ConIO, io.RawIOBase))
         self.assertFalse(issubclass(ConIO, io.BufferedIOBase))
         self.assertFalse(issubclass(ConIO, io.TextIOBase))
 
-    def test_open_fd(self):
+    eleza test_open_fd(self):
         self.assertRaisesRegex(ValueError,
             "negative file descriptor", ConIO, -1)
 
@@ -68,7 +68,7 @@ class WindowsConsoleIOTests(unittest.TestCase):
             f.close()
             f.close()
 
-    def test_open_name(self):
+    eleza test_open_name(self):
         self.assertRaises(ValueError, ConIO, sys.executable)
 
         f = ConIO("CON")
@@ -98,7 +98,7 @@ class WindowsConsoleIOTests(unittest.TestCase):
 
     @unittest.skipIf(sys.getwindowsversion()[:2] <= (6, 1),
         "test does not work on Windows 7 and earlier")
-    def test_conin_conout_names(self):
+    eleza test_conin_conout_names(self):
         f = open(r'\\.\conin$', 'rb', buffering=0)
         self.assertIsInstance(f, ConIO)
         f.close()
@@ -107,23 +107,23 @@ class WindowsConsoleIOTests(unittest.TestCase):
         self.assertIsInstance(f, ConIO)
         f.close()
 
-    def test_conout_path(self):
+    eleza test_conout_path(self):
         temp_path = tempfile.mkdtemp()
         self.addCleanup(support.rmtree, temp_path)
 
         conout_path = os.path.join(temp_path, 'CONOUT$')
 
         with open(conout_path, 'wb', buffering=0) as f:
-            if sys.getwindowsversion()[:2] > (6, 1):
+            ikiwa sys.getwindowsversion()[:2] > (6, 1):
                 self.assertIsInstance(f, ConIO)
             else:
                 self.assertNotIsInstance(f, ConIO)
 
-    def test_write_empty_data(self):
+    eleza test_write_empty_data(self):
         with ConIO('CONOUT$', 'w') as f:
             self.assertEqual(f.write(b''), 0)
 
-    def assertStdinRoundTrip(self, text):
+    eleza assertStdinRoundTrip(self, text):
         stdin = open('CONIN$', 'r')
         old_stdin = sys.stdin
         try:
@@ -137,7 +137,7 @@ class WindowsConsoleIOTests(unittest.TestCase):
             sys.stdin = old_stdin
         self.assertEqual(actual, text)
 
-    def test_input(self):
+    eleza test_input(self):
         # ASCII
         self.assertStdinRoundTrip('abc123')
         # Non-ASCII
@@ -147,7 +147,7 @@ class WindowsConsoleIOTests(unittest.TestCase):
         # Non-BMP
         self.assertStdinRoundTrip('\U00100000\U0010ffff\U0010fffd')
 
-    def test_partial_reads(self):
+    eleza test_partial_reads(self):
         # Test that reading less than 1 full character works when stdin
         # contains multibyte UTF-8 sequences
         source = 'ϼўТλФЙ\r\n'.encode('utf-16-le')
@@ -163,7 +163,7 @@ class WindowsConsoleIOTests(unittest.TestCase):
 
                 self.assertEqual(actual, expected, 'stdin.read({})'.format(read_count))
 
-    def test_partial_surrogate_reads(self):
+    eleza test_partial_surrogate_reads(self):
         # Test that reading less than 1 full character works when stdin
         # contains surrogate pairs that cannot be decoded to UTF-8 without
         # reading an extra character.
@@ -180,7 +180,7 @@ class WindowsConsoleIOTests(unittest.TestCase):
 
                 self.assertEqual(actual, expected, 'stdin.read({})'.format(read_count))
 
-    def test_ctrl_z(self):
+    eleza test_ctrl_z(self):
         with open('CONIN$', 'rb', buffering=0) as stdin:
             source = '\xC4\x1A\r\n'.encode('utf-16-le')
             expected = '\xC4'.encode('utf-8')
@@ -189,5 +189,5 @@ class WindowsConsoleIOTests(unittest.TestCase):
             self.assertEqual(expected[0:1], a)
             self.assertEqual(expected[1:], b)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

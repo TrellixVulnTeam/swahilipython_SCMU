@@ -29,7 +29,7 @@ transmit (and to some extent when).
 
 A different way of saying the same thing: a transport is an
 abstraction for a socket (or similar I/O endpoint) while a protocol
-is an abstraction for an application, from the transport's point
+is an abstraction for an application, kutoka the transport's point
 of view.
 
 Yet another view is the transport and protocol interfaces
@@ -90,14 +90,14 @@ Transports Hierarchy
 
 .. class:: BaseTransport
 
-   Base class for all transports.  Contains methods that all
+   Base kundi for all transports.  Contains methods that all
    asyncio transports share.
 
 .. class:: WriteTransport(BaseTransport)
 
    A base transport for write-only connections.
 
-   Instances of the *WriteTransport* class are returned from
+   Instances of the *WriteTransport* kundi are returned kutoka
    the :meth:`loop.connect_write_pipe` event loop method and
    are also used by subprocess-related methods like
    :meth:`loop.subprocess_exec`.
@@ -106,7 +106,7 @@ Transports Hierarchy
 
    A base transport for read-only connections.
 
-   Instances of the *ReadTransport* class are returned from
+   Instances of the *ReadTransport* kundi are returned kutoka
    the :meth:`loop.connect_read_pipe` event loop method and
    are also used by subprocess-related methods like
    :meth:`loop.subprocess_exec`.
@@ -120,7 +120,7 @@ Transports Hierarchy
    utility function, passing it a protocol factory and other
    information necessary to create the transport and protocol.
 
-   Instances of the *Transport* class are returned from or used by
+   Instances of the *Transport* kundi are returned kutoka or used by
    event loop methods like :meth:`loop.create_connection`,
    :meth:`loop.create_unix_connection`,
    :meth:`loop.create_server`, :meth:`loop.sendfile`, etc.
@@ -130,7 +130,7 @@ Transports Hierarchy
 
    A transport for datagram (UDP) connections.
 
-   Instances of the *DatagramTransport* class are returned from
+   Instances of the *DatagramTransport* kundi are returned kutoka
    the :meth:`loop.create_datagram_endpoint` event loop method.
 
 
@@ -139,7 +139,7 @@ Transports Hierarchy
    An abstraction to represent a connection between a parent and its
    child OS process.
 
-   Instances of the *SubprocessTransport* class are returned from
+   Instances of the *SubprocessTransport* kundi are returned kutoka
    event loop methods :meth:`loop.subprocess_shell` and
    :meth:`loop.subprocess_exec`.
 
@@ -458,21 +458,21 @@ Base Protocols
 
 .. class:: Protocol(BaseProtocol)
 
-   The base class for implementing streaming protocols
+   The base kundi for implementing streaming protocols
    (TCP, Unix sockets, etc).
 
 .. class:: BufferedProtocol(BaseProtocol)
 
-   A base class for implementing streaming protocols with manual
+   A base kundi for implementing streaming protocols with manual
    control of the receive buffer.
 
 .. class:: DatagramProtocol(BaseProtocol)
 
-   The base class for implementing datagram (UDP) protocols.
+   The base kundi for implementing datagram (UDP) protocols.
 
 .. class:: SubprocessProtocol(BaseProtocol)
 
-   The base class for implementing protocols communicating with child
+   The base kundi for implementing protocols communicating with child
    processes (unidirectional pipes).
 
 
@@ -570,7 +570,7 @@ accept factories that return streaming protocols.
    connection.
 
    Some transports, including SSL, don't support half-closed connections,
-   in which case returning true from this method will result in the connection
+   in which case returning true kutoka this method will result in the connection
    being closed.
 
 
@@ -722,13 +722,13 @@ TCP Echo Server
 Create a TCP echo server using the :meth:`loop.create_server` method, send back
 received data, and close the connection::
 
-    import asyncio
+    agiza asyncio
 
 
-    class EchoServerProtocol(asyncio.Protocol):
+    kundi EchoServerProtocol(asyncio.Protocol):
         def connection_made(self, transport):
             peername = transport.get_extra_info('peername')
-            print('Connection from {}'.format(peername))
+            print('Connection kutoka {}'.format(peername))
             self.transport = transport
 
         def data_received(self, data):
@@ -771,10 +771,10 @@ TCP Echo Client
 A TCP echo client using the :meth:`loop.create_connection` method, sends
 data, and waits until the connection is closed::
 
-    import asyncio
+    agiza asyncio
 
 
-    class EchoClientProtocol(asyncio.Protocol):
+    kundi EchoClientProtocol(asyncio.Protocol):
         def __init__(self, message, on_con_lost):
             self.message = message
             self.on_con_lost = on_con_lost
@@ -828,16 +828,16 @@ UDP Echo Server
 A UDP echo server, using the :meth:`loop.create_datagram_endpoint`
 method, sends back received data::
 
-    import asyncio
+    agiza asyncio
 
 
-    class EchoServerProtocol:
+    kundi EchoServerProtocol:
         def connection_made(self, transport):
             self.transport = transport
 
         def datagram_received(self, data, addr):
             message = data.decode()
-            print('Received %r from %s' % (message, addr))
+            print('Received %r kutoka %s' % (message, addr))
             print('Send %r to %s' % (message, addr))
             self.transport.sendto(data, addr)
 
@@ -872,10 +872,10 @@ UDP Echo Client
 A UDP echo client, using the :meth:`loop.create_datagram_endpoint`
 method, sends data and closes the transport when it receives the answer::
 
-    import asyncio
+    agiza asyncio
 
 
-    class EchoClientProtocol:
+    kundi EchoClientProtocol:
         def __init__(self, message, on_con_lost):
             self.message = message
             self.on_con_lost = on_con_lost
@@ -929,11 +929,11 @@ Connecting Existing Sockets
 Wait until a socket receives data using the
 :meth:`loop.create_connection` method with a protocol::
 
-    import asyncio
-    import socket
+    agiza asyncio
+    agiza socket
 
 
-    class MyProtocol(asyncio.Protocol):
+    kundi MyProtocol(asyncio.Protocol):
 
         def __init__(self, on_con_lost):
             self.transport = None
@@ -967,7 +967,7 @@ Wait until a socket receives data using the
         transport, protocol = await loop.create_connection(
             lambda: MyProtocol(on_con_lost), sock=rsock)
 
-        # Simulate the reception of data from the network.
+        # Simulate the reception of data kutoka the network.
         loop.call_soon(wsock.send, 'abc'.encode())
 
         try:
@@ -998,10 +998,10 @@ subprocess and to wait for the subprocess exit.
 
 The subprocess is created by th :meth:`loop.subprocess_exec` method::
 
-    import asyncio
-    import sys
+    agiza asyncio
+    agiza sys
 
-    class DateProtocol(asyncio.SubprocessProtocol):
+    kundi DateProtocol(asyncio.SubprocessProtocol):
         def __init__(self, exit_future):
             self.exit_future = exit_future
             self.output = bytearray()
@@ -1017,7 +1017,7 @@ The subprocess is created by th :meth:`loop.subprocess_exec` method::
         # low-level APIs.
         loop = asyncio.get_running_loop()
 
-        code = 'import datetime; print(datetime.datetime.now())'
+        code = 'agiza datetime; print(datetime.datetime.now())'
         exit_future = asyncio.Future(loop=loop)
 
         # Create the subprocess controlled by DateProtocol;

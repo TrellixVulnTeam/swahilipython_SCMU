@@ -45,7 +45,7 @@ Creating extensions without third party tools
 =============================================
 
 This section of the guide covers creating C and C++ extensions without
-assistance from third party tools. It is intended primarily for creators
+assistance kutoka third party tools. It is intended primarily for creators
 of those tools, rather than being a recommended way to create your own
 C extensions.
 

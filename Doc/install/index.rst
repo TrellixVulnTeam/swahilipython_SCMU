@@ -63,11 +63,11 @@ directory: :file:`foo-1.0` or :file:`widget-0.9.7`.  Additionally, the
 distribution will contain a setup script :file:`setup.py`, and a file named
 :file:`README.txt` or possibly just :file:`README`, which should explain that
 building and installing the module distribution is a simple matter of running
-one command from a terminal::
+one command kutoka a terminal::
 
    python setup.py install
 
-For Windows, this command should be run from a command prompt window
+For Windows, this command should be run kutoka a command prompt window
 (:menuselection:`Start --> Accessories`)::
 
    setup.py install
@@ -85,7 +85,7 @@ Standard Build and Install
 ==========================
 
 As described in section :ref:`inst-new-standard`, building and installing a module
-distribution using the Distutils is usually one simple command to run from a
+distribution using the Distutils is usually one simple command to run kutoka a
 terminal::
 
    python setup.py install
@@ -96,7 +96,7 @@ terminal::
 Platform variations
 -------------------
 
-You should always run the setup command from the distribution root directory,
+You should always run the setup command kutoka the distribution root directory,
 i.e. the top-level subdirectory that the module source distribution unpacks
 into.  For example, if you've just downloaded a module source distribution
 :file:`foo-1.0.tar.gz` onto a Unix system, the normal thing to do is::
@@ -243,7 +243,7 @@ statements shown below, and get the output as shown, to find out my
 
    Python 2.4 (#26, Aug  7 2004, 17:19:02)
    Type "help", "copyright", "credits" or "license" for more information.
-   >>> import sys
+   >>> agiza sys
    >>> sys.prefix
    '/usr'
    >>> sys.exec_prefix
@@ -287,7 +287,7 @@ you.
 
 Note that the various alternate installation schemes are mutually exclusive: you
 can pass ``--user``, or ``--home``, or ``--prefix`` and ``--exec-prefix``, or
-``--install-base`` and ``--install-platbase``, but you can't mix from these
+``--install-base`` and ``--install-platbase``, but you can't mix kutoka these
 groups.
 
 
@@ -345,7 +345,7 @@ Alternate installation: the home scheme
 ---------------------------------------
 
 The idea behind the "home scheme" is that you build and maintain a personal
-stash of Python modules.  This scheme's name is derived from the idea of a
+stash of Python modules.  This scheme's name is derived kutoka the idea of a
 "home" directory on Unix, since it's not unusual for a Unix user to make their
 home directory have a layout similar to :file:`/usr/` or :file:`/usr/local/`.
 This scheme can be used by anyone, regardless of the operating system they
@@ -396,14 +396,14 @@ there are at least two known cases where the prefix scheme will be useful.
 First, consider that many Linux distributions put Python in :file:`/usr`, rather
 than the more traditional :file:`/usr/local`.  This is entirely appropriate,
 since in those cases Python is part of "the system" rather than a local add-on.
-However, if you are installing Python modules from source, you probably want
+However, if you are installing Python modules kutoka source, you probably want
 them to go in :file:`/usr/local/lib/python2.{X}` rather than
 :file:`/usr/lib/python2.{X}`.  This can be done with ::
 
    /usr/bin/python setup.py install --prefix=/usr/local
 
 Another possibility is a network filesystem where the name used to write to a
-remote directory is different from the name used to read it: for example, the
+remote directory is different kutoka the name used to read it: for example, the
 Python interpreter accessed as :file:`/usr/local/bin/python` might search for
 modules in :file:`/usr/local/lib/python2.{X}`, but those modules would have to
 be installed to, say, :file:`/mnt/{@server}/export/lib/python2.{X}`.  This could
@@ -555,7 +555,7 @@ If you want to define an entire installation scheme, you just have to supply all
 of the installation directory options.  The recommended way to do this is to
 supply relative paths; for example, if you want to maintain all Python
 module-related files under :file:`python` in your home directory, and you want a
-separate directory for each platform that you use your home directory from, you
+separate directory for each platform that you use your home directory kutoka, you
 might define the following installation scheme::
 
    python setup.py install --home=~ \
@@ -620,7 +620,7 @@ the Distutils are the only ones you can use.) See section :ref:`inst-config-file
 for details.
 
 .. note:: When a :ref:`virtual environment <venv-def>` is activated, any options
-   that change the installation path will be ignored from all distutils configuration
+   that change the installation path will be ignored kutoka all distutils configuration
    files to prevent inadvertently installing projects outside of the virtual
    environment.
 
@@ -645,7 +645,7 @@ value of ``sys.path``.   ::
    Python 2.2 (#11, Oct  3 2002, 13:31:27)
    [GCC 2.96 20000731 (Red Hat Linux 7.3 2.96-112)] on linux2
    Type "help", "copyright", "credits" or "license" for more information.
-   >>> import sys
+   >>> agiza sys
    >>> sys.path
    ['', '/usr/local/lib/python2.3', '/usr/local/lib/python2.3/plat-linux2',
     '/usr/local/lib/python2.3/lib-tk', '/usr/local/lib/python2.3/lib-dynload',
@@ -659,7 +659,7 @@ The expected convention for locally installed packages is to put them in the
 modules into some arbitrary directory.  For example, your site may have a
 convention of keeping all software related to the web server under :file:`/www`.
 Add-on Python modules might then belong in :file:`/www/python`, and in order to
-import them, this directory must be added to ``sys.path``.  There are several
+agiza them, this directory must be added to ``sys.path``.  There are several
 different ways to add the directory.
 
 The most convenient way is to add a path configuration file to a directory
@@ -682,11 +682,11 @@ is supplied to suppress this behaviour.  So you could simply edit
 
 .. code-block:: python
 
-   import sys
+   agiza sys
    sys.path.append('/www/python/')
 
 However, if you reinstall the same major version of Python (perhaps when
-upgrading from 2.2 to 2.2.2, for example) :file:`site.py` will be overwritten by
+upgrading kutoka 2.2 to 2.2.2, for example) :file:`site.py` will be overwritten by
 the stock version.  You'd have to remember that it was modified and save a copy
 before doing the installation.
 
@@ -718,7 +718,7 @@ command can be stored in one of two or three (depending on your platform)
 configuration files, which will be consulted before the command-line is parsed.
 This means that configuration files will override default values, and the
 command-line will in turn override configuration files.  Furthermore, if
-multiple configuration files apply, values from "earlier" files are overridden
+multiple configuration files apply, values kutoka "earlier" files are overridden
 by "later" files.
 
 
@@ -767,7 +767,7 @@ Notes:
 
 (2)
    On Unix, if the :envvar:`HOME` environment variable is not defined, the user's
-   home directory will be determined with the :func:`getpwuid` function from the
+   home directory will be determined with the :func:`getpwuid` function kutoka the
    standard :mod:`pwd` module. This is done by the :func:`os.path.expanduser`
    function used by Distutils.
 
@@ -832,7 +832,7 @@ which corresponds to the command-line arguments ::
 except that including the :command:`build` command on the command-line means
 that command will be run.  Including a particular command in config files has no
 such implication; it only means that if the command is run, the options in the
-config file will apply.  (Or if other commands that derive values from it are
+config file will apply.  (Or if other commands that derive values kutoka it are
 run, they will use the values in the config file.)
 
 You can find out the complete list of options for any command using the
@@ -945,8 +945,8 @@ Borland/CodeGear C++
 
 This subsection describes the necessary steps to use Distutils with the Borland
 C++ compiler version 5.5.  First you have to know that Borland's object file
-format (OMF) is different from the format used by the Python version you can
-download from the Python or ActiveState Web site.  (Python is built with
+format (OMF) is different kutoka the format used by the Python version you can
+download kutoka the Python or ActiveState Web site.  (Python is built with
 Microsoft Visual C++, which uses COFF as the object file format.) For this
 reason you have to convert Python's library :file:`python25.lib` into the
 Borland format.  You can do this as follows:
@@ -984,7 +984,7 @@ section :ref:`inst-config-files`.)
 .. seealso::
 
    `C++Builder Compiler <https://www.embarcadero.com/products>`_
-      Information about the free C++ compiler from Borland, including links to the
+      Information about the free C++ compiler kutoka Borland, including links to the
       download pages.
 
    `Creating Python Extensions Using Borland's Free Compiler <http://www.cyberus.ca/~g_will/pyExtenDL.shtml>`_
@@ -1040,7 +1040,7 @@ installation options and the version and language of Windows.  In a "just for
 me" installation, it will appear in the root of the installation directory.  In
 a shared installation, it will be located in the system directory.
 
-Then you can create from these information an import library for gcc. ::
+Then you can create kutoka these information an agiza library for gcc. ::
 
    /cygwin/bin/dlltool --dllname python25.dll --def python25.def --output-lib libpython25.a
 

@@ -12,14 +12,14 @@
 --------------
 
 The :mod:`urllib.error` module defines the exception classes for exceptions
-raised by :mod:`urllib.request`.  The base exception class is :exc:`URLError`.
+raised by :mod:`urllib.request`.  The base exception kundi is :exc:`URLError`.
 
 The following exceptions are raised by :mod:`urllib.error` as appropriate:
 
 .. exception:: URLError
 
    The handlers raise this exception (or derived exceptions) when they run into
-   a problem.  It is a subclass of :exc:`OSError`.
+   a problem.  It is a subkundi of :exc:`OSError`.
 
    .. attribute:: reason
 
@@ -27,13 +27,13 @@ The following exceptions are raised by :mod:`urllib.error` as appropriate:
       exception instance.
 
    .. versionchanged:: 3.3
-      :exc:`URLError` has been made a subclass of :exc:`OSError` instead
+      :exc:`URLError` has been made a subkundi of :exc:`OSError` instead
       of :exc:`IOError`.
 
 
 .. exception:: HTTPError
 
-   Though being an exception (a subclass of :exc:`URLError`), an
+   Though being an exception (a subkundi of :exc:`URLError`), an
    :exc:`HTTPError` can also function as a non-exceptional file-like return
    value (the same thing that :func:`~urllib.request.urlopen` returns).  This
    is useful when handling exotic HTTP errors, such as requests for

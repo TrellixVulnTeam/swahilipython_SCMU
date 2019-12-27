@@ -28,19 +28,19 @@ agiza weakref
 agiza functools
 kutoka test agiza support
 
-class RegressionTests(unittest.TestCase):
-    def setUp(self):
+kundi RegressionTests(unittest.TestCase):
+    eleza setUp(self):
         self.con = sqlite.connect(":memory:")
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.con.close()
 
-    def CheckPragmaUserVersion(self):
+    eleza CheckPragmaUserVersion(self):
         # This used to crash pysqlite because this pragma command returns NULL for the column name
         cur = self.con.cursor()
         cur.execute("pragma user_version")
 
-    def CheckPragmaSchemaVersion(self):
+    eleza CheckPragmaSchemaVersion(self):
         # This still crashed pysqlite <= 2.2.1
         con = sqlite.connect(":memory:", detect_types=sqlite.PARSE_COLNAMES)
         try:
@@ -50,7 +50,7 @@ class RegressionTests(unittest.TestCase):
             cur.close()
             con.close()
 
-    def CheckStatementReset(self):
+    eleza CheckStatementReset(self):
         # pysqlite 2.1.0 to 2.2.0 have the problem that not all statements are
         # reset before a rollback, but only those that are still in the
         # statement cache. The others are not accessible kutoka the connection object.
@@ -65,7 +65,7 @@ class RegressionTests(unittest.TestCase):
 
         con.rollback()
 
-    def CheckColumnNameWithSpaces(self):
+    eleza CheckColumnNameWithSpaces(self):
         cur = self.con.cursor()
         cur.execute('select 1 as "foo bar [datetime]"')
         self.assertEqual(cur.description[0][0], "foo bar")
@@ -73,7 +73,7 @@ class RegressionTests(unittest.TestCase):
         cur.execute('select 1 as "foo baz"')
         self.assertEqual(cur.description[0][0], "foo baz")
 
-    def CheckStatementFinalizationOnCloseDb(self):
+    eleza CheckStatementFinalizationOnCloseDb(self):
         # pysqlite versions <= 2.3.3 only finalized statements in the statement
         # cache when closing the database. statements that were still
         # referenced in cursors weren't closed and could provoke "
@@ -88,7 +88,7 @@ class RegressionTests(unittest.TestCase):
         con.close()
 
     @unittest.skipIf(sqlite.sqlite_version_info < (3, 2, 2), 'needs sqlite 3.2.2 or newer')
-    def CheckOnConflictRollback(self):
+    eleza CheckOnConflictRollback(self):
         con = sqlite.connect(":memory:")
         con.execute("create table foo(x, unique(x) on conflict rollback)")
         con.execute("insert into foo(x) values (1)")
@@ -102,7 +102,7 @@ class RegressionTests(unittest.TestCase):
         except sqlite.OperationalError:
             self.fail("pysqlite knew nothing about the implicit ROLLBACK")
 
-    def CheckWorkaroundForBuggySqliteTransferBindings(self):
+    eleza CheckWorkaroundForBuggySqliteTransferBindings(self):
         """
         pysqlite would crash with older SQLite versions unless
         a workaround is implemented.
@@ -111,14 +111,14 @@ class RegressionTests(unittest.TestCase):
         self.con.execute("drop table foo")
         self.con.execute("create table foo(bar)")
 
-    def CheckEmptyStatement(self):
+    eleza CheckEmptyStatement(self):
         """
-        pysqlite used to segfault with SQLite versions 3.5.x. These return NULL
+        pysqlite used to segfault with SQLite versions 3.5.x. These rudisha NULL
         for "no-operation" statements
         """
         self.con.execute("")
 
-    def CheckTypeMapUsage(self):
+    eleza CheckTypeMapUsage(self):
         """
         pysqlite until 2.4.1 did not rebuild the row_cast_map when recompiling
         a statement. This test exhibits the problem.
@@ -133,7 +133,7 @@ class RegressionTests(unittest.TestCase):
         con.execute("insert into foo(bar) values (5)")
         con.execute(SELECT)
 
-    def CheckErrorMsgDecodeError(self):
+    eleza CheckErrorMsgDecodeError(self):
         # When porting the module to Python 3.0, the error message about
         # decoding errors disappeared. This verifies they're back again.
         with self.assertRaises(sqlite.OperationalError) as cm:
@@ -142,18 +142,18 @@ class RegressionTests(unittest.TestCase):
         msg = "Could not decode to UTF-8 column 'colname' with text 'xxx"
         self.assertIn(msg, str(cm.exception))
 
-    def CheckRegisterAdapter(self):
+    eleza CheckRegisterAdapter(self):
         """
         See issue 3312.
         """
         self.assertRaises(TypeError, sqlite.register_adapter, {}, None)
 
-    def CheckSetIsolationLevel(self):
+    eleza CheckSetIsolationLevel(self):
         # See issue 27881.
-        class CustomStr(str):
-            def upper(self):
-                return None
-            def __del__(self):
+        kundi CustomStr(str):
+            eleza upper(self):
+                rudisha None
+            eleza __del__(self):
                 con.isolation_level = ""
 
         con = sqlite.connect(":memory:")
@@ -178,13 +178,13 @@ class RegressionTests(unittest.TestCase):
                     con.isolation_level = value
                 self.assertEqual(con.isolation_level, "DEFERRED")
 
-    def CheckCursorConstructorCallCheck(self):
+    eleza CheckCursorConstructorCallCheck(self):
         """
-        Verifies that cursor methods check whether base class __init__ was
+        Verifies that cursor methods check whether base kundi __init__ was
         called.
         """
-        class Cursor(sqlite.Cursor):
-            def __init__(self, con):
+        kundi Cursor(sqlite.Cursor):
+            eleza __init__(self, con):
                 pass
 
         con = sqlite.connect(":memory:")
@@ -195,37 +195,37 @@ class RegressionTests(unittest.TestCase):
                                     r'^Base Cursor\.__init__ not called\.$'):
             cur.close()
 
-    def CheckStrSubclass(self):
+    eleza CheckStrSubclass(self):
         """
         The Python 3.0 port of the module didn't cope with values of subclasses of str.
         """
-        class MyStr(str): pass
+        kundi MyStr(str): pass
         self.con.execute("select ?", (MyStr("abc"),))
 
-    def CheckConnectionConstructorCallCheck(self):
+    eleza CheckConnectionConstructorCallCheck(self):
         """
-        Verifies that connection methods check whether base class __init__ was
+        Verifies that connection methods check whether base kundi __init__ was
         called.
         """
-        class Connection(sqlite.Connection):
-            def __init__(self, name):
+        kundi Connection(sqlite.Connection):
+            eleza __init__(self, name):
                 pass
 
         con = Connection(":memory:")
         with self.assertRaises(sqlite.ProgrammingError):
             cur = con.cursor()
 
-    def CheckCursorRegistration(self):
+    eleza CheckCursorRegistration(self):
         """
         Verifies that subclassed cursor classes are correctly registered with
         the connection object, too.  (fetch-across-rollback problem)
         """
-        class Connection(sqlite.Connection):
-            def cursor(self):
-                return Cursor(self)
+        kundi Connection(sqlite.Connection):
+            eleza cursor(self):
+                rudisha Cursor(self)
 
-        class Cursor(sqlite.Cursor):
-            def __init__(self, con):
+        kundi Cursor(sqlite.Cursor):
+            eleza __init__(self, con):
                 sqlite.Cursor.__init__(self, con)
 
         con = Connection(":memory:")
@@ -237,7 +237,7 @@ class RegressionTests(unittest.TestCase):
         with self.assertRaises(sqlite.InterfaceError):
             cur.fetchall()
 
-    def CheckAutoCommit(self):
+    eleza CheckAutoCommit(self):
         """
         Verifies that creating a connection in autocommit mode works.
         2.5.3 introduced a regression so that these could no longer
@@ -245,7 +245,7 @@ class RegressionTests(unittest.TestCase):
         """
         con = sqlite.connect(":memory:", isolation_level=None)
 
-    def CheckPragmaAutocommit(self):
+    eleza CheckPragmaAutocommit(self):
         """
         Verifies that running a PRAGMA statement that does an autocommit does
         work. This did not work in 2.5.3/2.5.4.
@@ -257,21 +257,21 @@ class RegressionTests(unittest.TestCase):
         cur.execute("pragma page_size")
         row = cur.fetchone()
 
-    def CheckConnectionCall(self):
+    eleza CheckConnectionCall(self):
         """
         Call a connection with a non-string SQL request: check error handling
         of the statement constructor.
         """
         self.assertRaises(sqlite.Warning, self.con, 1)
 
-    def CheckCollation(self):
-        def collation_cb(a, b):
-            return 1
+    eleza CheckCollation(self):
+        eleza collation_cb(a, b):
+            rudisha 1
         self.assertRaises(sqlite.ProgrammingError, self.con.create_collation,
             # Lone surrogate cannot be encoded to the default encoding (utf8)
             "\uDC80", collation_cb)
 
-    def CheckRecursiveCursorUse(self):
+    eleza CheckRecursiveCursorUse(self):
         """
         http://bugs.python.org/issue10811
 
@@ -284,7 +284,7 @@ class RegressionTests(unittest.TestCase):
         cur.execute("create table a (bar)")
         cur.execute("create table b (baz)")
 
-        def foo():
+        eleza foo():
             cur.execute("insert into a (bar) values (?)", (1,))
             yield 1
 
@@ -292,7 +292,7 @@ class RegressionTests(unittest.TestCase):
             cur.executemany("insert into b (baz) values (?)",
                             ((i,) for i in foo()))
 
-    def CheckConvertTimestampMicrosecondPadding(self):
+    eleza CheckConvertTimestampMicrosecondPadding(self):
         """
         http://bugs.python.org/issue14720
 
@@ -318,13 +318,13 @@ class RegressionTests(unittest.TestCase):
             datetime.datetime(2012, 4, 4, 15, 6, 0, 123456),
         ])
 
-    def CheckInvalidIsolationLevelType(self):
+    eleza CheckInvalidIsolationLevelType(self):
         # isolation level is a string, not an integer
         self.assertRaises(TypeError,
                           sqlite.connect, ":memory:", isolation_level=123)
 
 
-    def CheckNullCharacter(self):
+    eleza CheckNullCharacter(self):
         # Issue #21147
         con = sqlite.connect(":memory:")
         self.assertRaises(ValueError, con, "\0select 1")
@@ -333,10 +333,10 @@ class RegressionTests(unittest.TestCase):
         self.assertRaises(ValueError, cur.execute, " \0select 2")
         self.assertRaises(ValueError, cur.execute, "select 2\0")
 
-    def CheckCommitCursorReset(self):
+    eleza CheckCommitCursorReset(self):
         """
         Connection.commit() did reset cursors, which made sqlite3
-        to return rows multiple times when fetched kutoka cursors
+        to rudisha rows multiple times when fetched kutoka cursors
         after commit. See issues 10513 and 23129 for details.
         """
         con = sqlite.connect(":memory:")
@@ -355,21 +355,21 @@ class RegressionTests(unittest.TestCase):
             with self.subTest(i=i, row=row):
                 con.execute("insert into t2(c) values (?)", (i,))
                 con.commit()
-                if counter == 0:
+                ikiwa counter == 0:
                     self.assertEqual(row[0], 0)
-                elif counter == 1:
+                elikiwa counter == 1:
                     self.assertEqual(row[0], 1)
-                elif counter == 2:
+                elikiwa counter == 2:
                     self.assertEqual(row[0], 2)
                 counter += 1
         self.assertEqual(counter, 3, "should have returned exactly three rows")
 
-    def CheckBpo31770(self):
+    eleza CheckBpo31770(self):
         """
         The interpreter shouldn't crash in case Cursor.__init__() is called
         more than once.
         """
-        def callback(*args):
+        eleza callback(*args):
             pass
         con = sqlite.connect(":memory:")
         cur = sqlite.Cursor(con)
@@ -380,14 +380,14 @@ class RegressionTests(unittest.TestCase):
         del ref
         support.gc_collect()
 
-    def CheckDelIsolation_levelSegfault(self):
+    eleza CheckDelIsolation_levelSegfault(self):
         with self.assertRaises(AttributeError):
             del self.con.isolation_level
 
-    def CheckBpo37347(self):
-        class Printer:
-            def log(self, *args):
-                return sqlite.SQLITE_OK
+    eleza CheckBpo37347(self):
+        kundi Printer:
+            eleza log(self, *args):
+                rudisha sqlite.SQLITE_OK
 
         for method in [self.con.set_trace_callback,
                        functools.partial(self.con.set_progress_handler, n=1),
@@ -400,15 +400,15 @@ class RegressionTests(unittest.TestCase):
 
 
 
-def suite():
+eleza suite():
     regression_suite = unittest.makeSuite(RegressionTests, "Check")
-    return unittest.TestSuite((
+    rudisha unittest.TestSuite((
         regression_suite,
     ))
 
-def test():
+eleza test():
     runner = unittest.TextTestRunner()
     runner.run(suite())
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test()

@@ -12,18 +12,18 @@ agiza unittest
 agiza warnings
 
 
-class ImportModuleTests:
+kundi ImportModuleTests:
 
     """Test importlib.import_module."""
 
-    def test_module_agiza(self):
+    eleza test_module_agiza(self):
         # Test agizaing a top-level module.
         with test_util.mock_modules('top_level') as mock:
             with test_util.import_state(meta_path=[mock]):
                 module = self.init.import_module('top_level')
                 self.assertEqual(module.__name__, 'top_level')
 
-    def test_absolute_package_agiza(self):
+    eleza test_absolute_package_agiza(self):
         # Test agizaing a module kutoka a package with an absolute name.
         pkg_name = 'pkg'
         pkg_long_name = '{0}.__init__'.format(pkg_name)
@@ -33,7 +33,7 @@ class ImportModuleTests:
                 module = self.init.import_module(name)
                 self.assertEqual(module.__name__, name)
 
-    def test_shallow_relative_package_agiza(self):
+    eleza test_shallow_relative_package_agiza(self):
         # Test agizaing a module kutoka a package through a relative agiza.
         pkg_name = 'pkg'
         pkg_long_name = '{0}.__init__'.format(pkg_name)
@@ -46,7 +46,7 @@ class ImportModuleTests:
                 module = self.init.import_module(relative_name, pkg_name)
                 self.assertEqual(module.__name__, absolute_name)
 
-    def test_deep_relative_package_agiza(self):
+    eleza test_deep_relative_package_agiza(self):
         modules = ['a.__init__', 'a.b.__init__', 'a.c']
         with test_util.mock_modules(*modules) as mock:
             with test_util.import_state(meta_path=[mock]):
@@ -55,7 +55,7 @@ class ImportModuleTests:
                 module = self.init.import_module('..c', 'a.b')
                 self.assertEqual(module.__name__, 'a.c')
 
-    def test_absolute_import_with_package(self):
+    eleza test_absolute_import_with_package(self):
         # Test agizaing a module kutoka a package with an absolute name with
         # the 'package' argument given.
         pkg_name = 'pkg'
@@ -67,21 +67,21 @@ class ImportModuleTests:
                 module = self.init.import_module(name, pkg_name)
                 self.assertEqual(module.__name__, name)
 
-    def test_relative_import_wo_package(self):
+    eleza test_relative_import_wo_package(self):
         # Relative agizas cannot happen without the 'package' argument being
         # set.
         with self.assertRaises(TypeError):
             self.init.import_module('.support')
 
 
-    def test_loaded_once(self):
+    eleza test_loaded_once(self):
         # Issue #13591: Modules should only be loaded once when
         # initializing the parent package attempts to agiza the
         # module currently being imported.
         b_load_count = 0
-        def load_a():
+        eleza load_a():
             self.init.import_module('a.b')
-        def load_b():
+        eleza load_b():
             nonlocal b_load_count
             b_load_count += 1
         code = {'a': load_a, 'a.b': load_b}
@@ -97,12 +97,12 @@ class ImportModuleTests:
  ) = test_util.test_both(ImportModuleTests, init=init)
 
 
-class FindLoaderTests:
+kundi FindLoaderTests:
 
     FakeMetaFinder = None
 
-    def test_sys_modules(self):
-        # If a module with __loader__ is in sys.modules, then return it.
+    eleza test_sys_modules(self):
+        # If a module with __loader__ is in sys.modules, then rudisha it.
         name = 'some_mod'
         with test_util.uncache(name):
             module = types.ModuleType(name)
@@ -114,7 +114,7 @@ class FindLoaderTests:
                 found = self.init.find_loader(name)
             self.assertEqual(loader, found)
 
-    def test_sys_modules_loader_is_None(self):
+    eleza test_sys_modules_loader_is_None(self):
         # If sys.modules[name].__loader__ is None, raise ValueError.
         name = 'some_mod'
         with test_util.uncache(name):
@@ -126,7 +126,7 @@ class FindLoaderTests:
                     warnings.simplefilter('ignore', DeprecationWarning)
                     self.init.find_loader(name)
 
-    def test_sys_modules_loader_is_not_set(self):
+    eleza test_sys_modules_loader_is_not_set(self):
         # Should raise ValueError
         # Issue #17099
         name = 'some_mod'
@@ -142,7 +142,7 @@ class FindLoaderTests:
                     warnings.simplefilter('ignore', DeprecationWarning)
                     self.init.find_loader(name)
 
-    def test_success(self):
+    eleza test_success(self):
         # Return the loader found on sys.meta_path.
         name = 'some_mod'
         with test_util.uncache(name):
@@ -151,7 +151,7 @@ class FindLoaderTests:
                     warnings.simplefilter('ignore', DeprecationWarning)
                     self.assertEqual((name, None), self.init.find_loader(name))
 
-    def test_success_path(self):
+    eleza test_success_path(self):
         # Searching on a path should work.
         name = 'some_mod'
         path = 'path to some place'
@@ -162,19 +162,19 @@ class FindLoaderTests:
                     self.assertEqual((name, path),
                                      self.init.find_loader(name, path))
 
-    def test_nothing(self):
+    eleza test_nothing(self):
         # None is returned upon failure to find a loader.
         with warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             self.assertIsNone(self.init.find_loader('nevergoingtofindthismodule'))
 
 
-class FindLoaderPEP451Tests(FindLoaderTests):
+kundi FindLoaderPEP451Tests(FindLoaderTests):
 
-    class FakeMetaFinder:
+    kundi FakeMetaFinder:
         @staticmethod
-        def find_spec(name, path=None, target=None):
-            return machinery['Source'].ModuleSpec(name, (name, path))
+        eleza find_spec(name, path=None, target=None):
+            rudisha machinery['Source'].ModuleSpec(name, (name, path))
 
 
 (Frozen_FindLoaderPEP451Tests,
@@ -182,12 +182,12 @@ class FindLoaderPEP451Tests(FindLoaderTests):
  ) = test_util.test_both(FindLoaderPEP451Tests, init=init)
 
 
-class FindLoaderPEP302Tests(FindLoaderTests):
+kundi FindLoaderPEP302Tests(FindLoaderTests):
 
-    class FakeMetaFinder:
+    kundi FakeMetaFinder:
         @staticmethod
-        def find_module(name, path=None):
-            return name, path
+        eleza find_module(name, path=None):
+            rudisha name, path
 
 
 (Frozen_FindLoaderPEP302Tests,
@@ -195,17 +195,17 @@ class FindLoaderPEP302Tests(FindLoaderTests):
  ) = test_util.test_both(FindLoaderPEP302Tests, init=init)
 
 
-class ReloadTests:
+kundi ReloadTests:
 
-    def test_reload_modules(self):
+    eleza test_reload_modules(self):
         for mod in ('tokenize', 'time', 'marshal'):
             with self.subTest(module=mod):
                 with support.CleanImport(mod):
                     module = self.init.import_module(mod)
                     self.init.reload(module)
 
-    def test_module_replaced(self):
-        def code():
+    eleza test_module_replaced(self):
+        eleza code():
             agiza sys
             module = type(sys)('top_level')
             module.spam = 3
@@ -220,7 +220,7 @@ class ReloadTests:
                 self.assertEqual(actual.spam, 3)
                 self.assertEqual(reloaded.spam, 3)
 
-    def test_reload_missing_loader(self):
+    eleza test_reload_missing_loader(self):
         with support.CleanImport('types'):
             agiza types
             loader = types.__loader__
@@ -231,7 +231,7 @@ class ReloadTests:
             self.assertIs(sys.modules['types'], types)
             self.assertEqual(reloaded.__loader__.path, loader.path)
 
-    def test_reload_loader_replaced(self):
+    eleza test_reload_loader_replaced(self):
         with support.CleanImport('types'):
             agiza types
             types.__loader__ = None
@@ -242,7 +242,7 @@ class ReloadTests:
             self.assertIs(reloaded, types)
             self.assertIs(sys.modules['types'], types)
 
-    def test_reload_location_changed(self):
+    eleza test_reload_location_changed(self):
         name = 'spam'
         with support.temp_cwd(None) as cwd:
             with test_util.uncache('spam'):
@@ -250,7 +250,7 @@ class ReloadTests:
                     # Start as a plain module.
                     self.init.invalidate_caches()
                     path = os.path.join(cwd, name + '.py')
-                    cached = self.util.cache_from_source(path)
+                    cached = self.util.cache_kutoka_source(path)
                     expected = {'__name__': name,
                                 '__package__': '',
                                 '__file__': path,
@@ -271,7 +271,7 @@ class ReloadTests:
                     # Change to a package.
                     self.init.invalidate_caches()
                     init_path = os.path.join(cwd, name, '__init__.py')
-                    cached = self.util.cache_from_source(init_path)
+                    cached = self.util.cache_kutoka_source(init_path)
                     expected = {'__name__': name,
                                 '__package__': name,
                                 '__file__': init_path,
@@ -293,7 +293,7 @@ class ReloadTests:
                     self.maxDiff = None
                     self.assertEqual(ns, expected)
 
-    def test_reload_namespace_changed(self):
+    eleza test_reload_namespace_changed(self):
         name = 'spam'
         with support.temp_cwd(None) as cwd:
             with test_util.uncache('spam'):
@@ -301,7 +301,7 @@ class ReloadTests:
                     # Start as a namespace package.
                     self.init.invalidate_caches()
                     bad_path = os.path.join(cwd, name, '__init.py')
-                    cached = self.util.cache_from_source(bad_path)
+                    cached = self.util.cache_kutoka_source(bad_path)
                     expected = {'__name__': name,
                                 '__package__': name,
                                 '__doc__': None,
@@ -330,7 +330,7 @@ class ReloadTests:
                     # Change to a regular package.
                     self.init.invalidate_caches()
                     init_path = os.path.join(cwd, name, '__init__.py')
-                    cached = self.util.cache_from_source(init_path)
+                    cached = self.util.cache_kutoka_source(init_path)
                     expected = {'__name__': name,
                                 '__package__': name,
                                 '__file__': init_path,
@@ -351,7 +351,7 @@ class ReloadTests:
                     self.assertEqual(loader.path, init_path)
                     self.assertEqual(ns, expected)
 
-    def test_reload_submodule(self):
+    eleza test_reload_submodule(self):
         # See #19851.
         name = 'spam'
         subname = 'ham'
@@ -361,7 +361,7 @@ class ReloadTests:
             reloaded = self.init.reload(ham)
             self.assertIs(reloaded, ham)
 
-    def test_module_missing_spec(self):
+    eleza test_module_missing_spec(self):
         #Test that reload() throws ModuleNotFounderror when reloading
         # a module whose missing a spec. (bpo-29851)
         name = 'spam'
@@ -379,16 +379,16 @@ class ReloadTests:
  ) = test_util.test_both(ReloadTests, init=init, util=util)
 
 
-class InvalidateCacheTests:
+kundi InvalidateCacheTests:
 
-    def test_method_called(self):
+    eleza test_method_called(self):
         # If defined the method should be called.
-        class InvalidatingNullFinder:
-            def __init__(self, *ignored):
+        kundi InvalidatingNullFinder:
+            eleza __init__(self, *ignored):
                 self.called = False
-            def find_module(self, *args):
-                return None
-            def invalidate_caches(self):
+            eleza find_module(self, *args):
+                rudisha None
+            eleza invalidate_caches(self):
                 self.called = True
 
         key = 'gobledeegook'
@@ -402,8 +402,8 @@ class InvalidateCacheTests:
         self.assertTrue(meta_ins.called)
         self.assertTrue(path_ins.called)
 
-    def test_method_lacking(self):
-        # There should be no issues if the method is not defined.
+    eleza test_method_lacking(self):
+        # There should be no issues ikiwa the method is not defined.
         key = 'gobbledeegook'
         sys.path_importer_cache[key] = None
         self.addCleanup(lambda: sys.path_importer_cache.pop(key, None))
@@ -415,9 +415,9 @@ class InvalidateCacheTests:
  ) = test_util.test_both(InvalidateCacheTests, init=init)
 
 
-class FrozenImportlibTests(unittest.TestCase):
+kundi FrozenImportlibTests(unittest.TestCase):
 
-    def test_no_frozen_importlib(self):
+    eleza test_no_frozen_importlib(self):
         # Should be able to agiza w/o _frozen_importlib being defined.
         # Can't do an isinstance() check since separate copies of importlib
         # may have been used for agiza, so just check the name is not for the
@@ -427,28 +427,28 @@ class FrozenImportlibTests(unittest.TestCase):
                             'FrozenImporter')
 
 
-class StartupTests:
+kundi StartupTests:
 
-    def test_everyone_has___loader__(self):
+    eleza test_everyone_has___loader__(self):
         # Issue #17098: all modules should have __loader__ defined.
         for name, module in sys.modules.items():
-            if isinstance(module, types.ModuleType):
+            ikiwa isinstance(module, types.ModuleType):
                 with self.subTest(name=name):
                     self.assertTrue(hasattr(module, '__loader__'),
                                     '{!r} lacks a __loader__ attribute'.format(name))
-                    if self.machinery.BuiltinImporter.find_module(name):
+                    ikiwa self.machinery.BuiltinImporter.find_module(name):
                         self.assertIsNot(module.__loader__, None)
-                    elif self.machinery.FrozenImporter.find_module(name):
+                    elikiwa self.machinery.FrozenImporter.find_module(name):
                         self.assertIsNot(module.__loader__, None)
 
-    def test_everyone_has___spec__(self):
+    eleza test_everyone_has___spec__(self):
         for name, module in sys.modules.items():
-            if isinstance(module, types.ModuleType):
+            ikiwa isinstance(module, types.ModuleType):
                 with self.subTest(name=name):
                     self.assertTrue(hasattr(module, '__spec__'))
-                    if self.machinery.BuiltinImporter.find_module(name):
+                    ikiwa self.machinery.BuiltinImporter.find_module(name):
                         self.assertIsNot(module.__spec__, None)
-                    elif self.machinery.FrozenImporter.find_module(name):
+                    elikiwa self.machinery.FrozenImporter.find_module(name):
                         self.assertIsNot(module.__spec__, None)
 
 
@@ -457,5 +457,5 @@ class StartupTests:
  ) = test_util.test_both(StartupTests, machinery=machinery)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

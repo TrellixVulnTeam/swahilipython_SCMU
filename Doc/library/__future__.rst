@@ -10,11 +10,11 @@
 
 :mod:`__future__` is a real module, and serves three purposes:
 
-* To avoid confusing existing tools that analyze import statements and expect to
+* To avoid confusing existing tools that analyze agiza statements and expect to
   find the modules they're importing.
 
 * To ensure that :ref:`future statements <future>` run under releases prior to
-  2.1 at least yield runtime exceptions (the import of :mod:`__future__` will
+  2.1 at least yield runtime exceptions (the agiza of :mod:`__future__` will
   fail, because there was no module of that name prior to 2.1).
 
 * To document when incompatible changes were introduced, and when they will be
@@ -51,7 +51,7 @@ feature in question, but may continue to use such imports.
 *MandatoryRelease* may also be ``None``, meaning that a planned feature got
 dropped.
 
-Instances of class :class:`_Feature` have two corresponding methods,
+Instances of kundi :class:`_Feature` have two corresponding methods,
 :meth:`getOptionalRelease` and :meth:`getMandatoryRelease`.
 
 *CompilerFlag* is the (bitfield) flag that should be passed in the fourth
@@ -59,7 +59,7 @@ argument to the built-in function :func:`compile` to enable the feature in
 dynamically compiled code.  This flag is stored in the :attr:`compiler_flag`
 attribute on :class:`_Feature` instances.
 
-No feature description will ever be deleted from :mod:`__future__`. Since its
+No feature description will ever be deleted kutoka :mod:`__future__`. Since its
 introduction in Python 2.1 the following features have found their way into the
 language using this mechanism:
 
@@ -75,7 +75,7 @@ language using this mechanism:
 | division         | 2.2.0a2     | 3.0          | :pep:`238`:                                 |
 |                  |             |              | *Changing the Division Operator*            |
 +------------------+-------------+--------------+---------------------------------------------+
-| absolute_import  | 2.5.0a1     | 3.0          | :pep:`328`:                                 |
+| absolute_agiza  | 2.5.0a1     | 3.0          | :pep:`328`:                                 |
 |                  |             |              | *Imports: Multi-Line and Absolute/Relative* |
 +------------------+-------------+--------------+---------------------------------------------+
 | with_statement   | 2.5.0a1     | 2.6          | :pep:`343`:                                 |

@@ -34,19 +34,19 @@ TK_TABWIDTH_DEFAULT = 8
 _py_version = ' (%s)' % platform.python_version()
 darwin = sys.platform == 'darwin'
 
-def _sphinx_version():
+eleza _sphinx_version():
     "Format sys.version_info to produce the Sphinx version string used to install the chm docs"
     major, minor, micro, level, serial = sys.version_info
     release = '%s%s' % (major, minor)
     release += '%s' % (micro,)
-    if level == 'candidate':
+    ikiwa level == 'candidate':
         release += 'rc%s' % (serial,)
-    elif level != 'final':
+    elikiwa level != 'final':
         release += '%s%s' % (level[0], serial)
-    return release
+    rudisha release
 
 
-class EditorWindow(object):
+kundi EditorWindow(object):
     kutoka idlelib.percolator agiza Percolator
     kutoka idlelib.colorizer agiza ColorDelegator, color_config
     kutoka idlelib.undo agiza UndoDelegator
@@ -69,34 +69,34 @@ class EditorWindow(object):
     allow_code_context = True
     allow_line_numbers = True
 
-    def __init__(self, flist=None, filename=None, key=None, root=None):
+    eleza __init__(self, flist=None, filename=None, key=None, root=None):
         # Delay agiza: runscript agizas pyshell agizas EditorWindow.
         kutoka idlelib.runscript agiza ScriptBinding
 
-        if EditorWindow.help_url is None:
+        ikiwa EditorWindow.help_url is None:
             dochome =  os.path.join(sys.base_prefix, 'Doc', 'index.html')
-            if sys.platform.count('linux'):
+            ikiwa sys.platform.count('linux'):
                 # look for html docs in a couple of standard places
                 pyver = 'python-docs-' + '%s.%s.%s' % sys.version_info[:3]
-                if os.path.isdir('/var/www/html/python/'):  # "python2" rpm
+                ikiwa os.path.isdir('/var/www/html/python/'):  # "python2" rpm
                     dochome = '/var/www/html/python/index.html'
                 else:
                     basepath = '/usr/share/doc/'  # standard location
                     dochome = os.path.join(basepath, pyver,
                                            'Doc', 'index.html')
-            elif sys.platform[:3] == 'win':
+            elikiwa sys.platform[:3] == 'win':
                 chmfile = os.path.join(sys.base_prefix, 'Doc',
                                        'Python%s.chm' % _sphinx_version())
-                if os.path.isfile(chmfile):
+                ikiwa os.path.isfile(chmfile):
                     dochome = chmfile
-            elif sys.platform == 'darwin':
+            elikiwa sys.platform == 'darwin':
                 # documentation may be stored inside a python framework
                 dochome = os.path.join(sys.base_prefix,
                         'Resources/English.lproj/Documentation/index.html')
             dochome = os.path.normpath(dochome)
-            if os.path.isfile(dochome):
+            ikiwa os.path.isfile(dochome):
                 EditorWindow.help_url = dochome
-                if sys.platform == 'darwin':
+                ikiwa sys.platform == 'darwin':
                     # Safari requires real file:-URLs
                     EditorWindow.help_url = 'file://' + EditorWindow.help_url
             else:
@@ -107,7 +107,7 @@ class EditorWindow(object):
         self.root = root
         self.menubar = Menu(root)
         self.top = top = window.ListedToplevel(root, menu=self.menubar)
-        if flist:
+        ikiwa flist:
             self.tkinter_vars = flist.vars
             #self.top.instance_dict makes flist.inversedict available to
             #configdialog.py so it can access all EditorWindow instances
@@ -141,7 +141,7 @@ class EditorWindow(object):
 
         self.top.protocol("WM_DELETE_WINDOW", self.close)
         self.top.bind("<<close-window>>", self.close_event)
-        if macosx.isAquaTk():
+        ikiwa macosx.isAquaTk():
             # Command-W on editor windows doesn't work without this.
             text.bind('<<close-window>>', self.close_event)
             # Some OS X systems have only one mouse button, so use
@@ -194,9 +194,9 @@ class EditorWindow(object):
         text.bind("<<del-word-right>>", self.del_word_right)
         text.bind("<<beginning-of-line>>", self.home_callback)
 
-        if flist:
+        ikiwa flist:
             flist.inversedict[self] = key
-            if key:
+            ikiwa key:
                 flist.dict[key] = self
             text.bind("<<open-new-window>>", self.new_callback)
             text.bind("<<close-all-windows>>", self.flist.close_all_callback)
@@ -243,7 +243,7 @@ class EditorWindow(object):
 
         # When searching backwards for a reliable place to begin parsing,
         # first start num_context_lines[0] lines back, then
-        # num_context_lines[1] lines back if that didn't work, and so on.
+        # num_context_lines[1] lines back ikiwa that didn't work, and so on.
         # The last value should be huge (larger than the # of lines in a
         # conceivable file).
         # Making the initial values larger slows things down more often.
@@ -262,9 +262,9 @@ class EditorWindow(object):
         self.color = None # initialized below in self.ResetColorizer
         self.code_context = None # optionally initialized later below
         self.line_numbers = None # optionally initialized later below
-        if filename:
-            if os.path.exists(filename) and not os.path.isdir(filename):
-                if io.loadfile(filename):
+        ikiwa filename:
+            ikiwa os.path.exists(filename) and not os.path.isdir(filename):
+                ikiwa io.loadfile(filename):
                     self.good_load = True
                     is_py_src = self.ispythonsource(filename)
                     self.set_indentation_params(is_py_src)
@@ -277,11 +277,11 @@ class EditorWindow(object):
         self.update_recent_files_list()
         self.load_extensions()
         menu = self.menudict.get('window')
-        if menu:
+        ikiwa menu:
             end = menu.index("end")
-            if end is None:
+            ikiwa end is None:
                 end = -1
-            if end >= 0:
+            ikiwa end >= 0:
                 menu.add_separator()
                 end = end + 1
             self.wmenu_end = end
@@ -327,25 +327,25 @@ class EditorWindow(object):
         text.bind("<<refresh-calltip>>", ctip.refresh_calltip_event)
         text.bind("<<force-open-calltip>>", ctip.force_open_calltip_event)
         text.bind("<<zoom-height>>", self.ZoomHeight(self).zoom_height_event)
-        if self.allow_code_context:
+        ikiwa self.allow_code_context:
             self.code_context = self.CodeContext(self)
             text.bind("<<toggle-code-context>>",
                       self.code_context.toggle_code_context_event)
         else:
             self.update_menu_state('options', '*Code Context', 'disabled')
-        if self.allow_line_numbers:
+        ikiwa self.allow_line_numbers:
             self.line_numbers = self.LineNumbers(self)
-            if idleConf.GetOption('main', 'EditorWindow',
+            ikiwa idleConf.GetOption('main', 'EditorWindow',
                                   'line-numbers-default', type='bool'):
                 self.toggle_line_numbers_event()
             text.bind("<<toggle-line-numbers>>", self.toggle_line_numbers_event)
         else:
             self.update_menu_state('options', '*Line Numbers', 'disabled')
 
-    def handle_winconfig(self, event=None):
+    eleza handle_winconfig(self, event=None):
         self.set_width()
 
-    def set_width(self):
+    eleza set_width(self):
         text = self.text
         inner_padding = sum(map(text.tk.getint, [text.cget('border'),
                                                  text.cget('padx')]))
@@ -358,16 +358,16 @@ class EditorWindow(object):
             Font(text, font=text.cget('font')).measure('0')
         self.width = pixel_width // zero_char_width
 
-    def new_callback(self, event):
+    eleza new_callback(self, event):
         dirname, basename = self.io.defaultfilename()
         self.flist.new(dirname)
-        return "break"
+        rudisha "break"
 
-    def home_callback(self, event):
-        if (event.state & 4) != 0 and event.keysym == "Home":
+    eleza home_callback(self, event):
+        ikiwa (event.state & 4) != 0 and event.keysym == "Home":
             # state&4==Control. If <Control-Home>, use the Tk binding.
-            return None
-        if self.text.index("iomark") and \
+            rudisha None
+        ikiwa self.text.index("iomark") and \
            self.text.compare("iomark", "<=", "insert lineend") and \
            self.text.compare("insert linestart", "<=", "iomark"):
             # In Shell on input line, go to just after prompt
@@ -375,41 +375,41 @@ class EditorWindow(object):
         else:
             line = self.text.get("insert linestart", "insert lineend")
             for insertpt in range(len(line)):
-                if line[insertpt] not in (' ','\t'):
+                ikiwa line[insertpt] not in (' ','\t'):
                     break
             else:
                 insertpt=len(line)
         lineat = int(self.text.index("insert").split('.')[1])
-        if insertpt == lineat:
+        ikiwa insertpt == lineat:
             insertpt = 0
         dest = "insert linestart+"+str(insertpt)+"c"
-        if (event.state&1) == 0:
+        ikiwa (event.state&1) == 0:
             # shift was not pressed
             self.text.tag_remove("sel", "1.0", "end")
         else:
-            if not self.text.index("sel.first"):
+            ikiwa not self.text.index("sel.first"):
                 # there was no previous selection
                 self.text.mark_set("my_anchor", "insert")
             else:
-                if self.text.compare(self.text.index("sel.first"), "<",
+                ikiwa self.text.compare(self.text.index("sel.first"), "<",
                                      self.text.index("insert")):
                     self.text.mark_set("my_anchor", "sel.first") # extend back
                 else:
                     self.text.mark_set("my_anchor", "sel.last") # extend forward
             first = self.text.index(dest)
             last = self.text.index("my_anchor")
-            if self.text.compare(first,">",last):
+            ikiwa self.text.compare(first,">",last):
                 first,last = last,first
             self.text.tag_remove("sel", "1.0", "end")
             self.text.tag_add("sel", first, last)
         self.text.mark_set("insert", dest)
         self.text.see("insert")
-        return "break"
+        rudisha "break"
 
-    def set_status_bar(self):
+    eleza set_status_bar(self):
         self.status_bar = self.MultiStatusBar(self.top)
         sep = Frame(self.top, height=1, borderwidth=1, background='grey75')
-        if sys.platform == "darwin":
+        ikiwa sys.platform == "darwin":
             # Insert some padding to avoid obscuring some of the statusbar
             # by the resize widget.
             self.status_bar.set_label('_padding1', '    ', side=RIGHT)
@@ -422,7 +422,7 @@ class EditorWindow(object):
                             "<KeyRelease>", "<ButtonRelease>")
         self.text.after_idle(self.set_line_and_column)
 
-    def set_line_and_column(self, event=None):
+    eleza set_line_and_column(self, event=None):
         line, column = self.text.index(INSERT).split('.')
         self.status_bar.set_label('column', 'Col: %s' % column)
         self.status_bar.set_label('line', 'Ln: %s' % line)
@@ -438,14 +438,14 @@ class EditorWindow(object):
     ]
 
 
-    def createmenubar(self):
+    eleza createmenubar(self):
         mbar = self.menubar
         self.menudict = menudict = {}
         for name, label in self.menu_specs:
             underline, label = prepstr(label)
             menudict[name] = menu = Menu(mbar, name=name, tearoff=0)
             mbar.add_cascade(label=label, menu=menu, underline=underline)
-        if macosx.isCarbonTk():
+        ikiwa macosx.isCarbonTk():
             # Insert the application menu
             menudict['application'] = menu = Menu(mbar, name='apple',
                                                   tearoff=0)
@@ -458,47 +458,47 @@ class EditorWindow(object):
         self.base_helpmenu_length = self.menudict['help'].index(END)
         self.reset_help_menu_entries()
 
-    def postwindowsmenu(self):
+    eleza postwindowsmenu(self):
         # Only called when Window menu exists
         menu = self.menudict['window']
         end = menu.index("end")
-        if end is None:
+        ikiwa end is None:
             end = -1
-        if end > self.wmenu_end:
+        ikiwa end > self.wmenu_end:
             menu.delete(self.wmenu_end+1, end)
         window.add_windows_to_menu(menu)
 
-    def update_menu_label(self, menu, index, label):
+    eleza update_menu_label(self, menu, index, label):
         "Update label for menu item at index."
         menuitem = self.menudict[menu]
         menuitem.entryconfig(index, label=label)
 
-    def update_menu_state(self, menu, index, state):
+    eleza update_menu_state(self, menu, index, state):
         "Update state for menu item at index."
         menuitem = self.menudict[menu]
         menuitem.entryconfig(index, state=state)
 
-    def handle_yview(self, event, *args):
+    eleza handle_yview(self, event, *args):
         "Handle scrollbar."
-        if event == 'moveto':
+        ikiwa event == 'moveto':
             fraction = float(args[0])
             lines = (round(self.getlineno('end') * fraction) -
                      self.getlineno('@0,0'))
             event = 'scroll'
             args = (lines, 'units')
         self.text.yview(event, *args)
-        return 'break'
+        rudisha 'break'
 
     rmenu = None
 
-    def right_menu_event(self, event):
+    eleza right_menu_event(self, event):
         self.text.mark_set("insert", "@%d,%d" % (event.x, event.y))
-        if not self.rmenu:
+        ikiwa not self.rmenu:
             self.make_rmenu()
         rmenu = self.rmenu
         self.event = event
         iswin = sys.platform[:3] == 'win'
-        if iswin:
+        ikiwa iswin:
             self.text.config(cursor="arrow")
 
         for item in self.rmenu_specs:
@@ -507,77 +507,77 @@ class EditorWindow(object):
             except ValueError: # see issue1207589
                 continue
 
-            if verify_state is None:
+            ikiwa verify_state is None:
                 continue
             state = getattr(self, verify_state)()
             rmenu.entryconfigure(label, state=state)
 
 
         rmenu.tk_popup(event.x_root, event.y_root)
-        if iswin:
+        ikiwa iswin:
             self.text.config(cursor="ibeam")
-        return "break"
+        rudisha "break"
 
     rmenu_specs = [
         # ("Label", "<<virtual-event>>", "statefuncname"), ...
         ("Close", "<<close-window>>", None), # Example
     ]
 
-    def make_rmenu(self):
+    eleza make_rmenu(self):
         rmenu = Menu(self.text, tearoff=0)
         for item in self.rmenu_specs:
             label, eventname = item[0], item[1]
-            if label is not None:
-                def command(text=self.text, eventname=eventname):
+            ikiwa label is not None:
+                eleza command(text=self.text, eventname=eventname):
                     text.event_generate(eventname)
                 rmenu.add_command(label=label, command=command)
             else:
                 rmenu.add_separator()
         self.rmenu = rmenu
 
-    def rmenu_check_cut(self):
-        return self.rmenu_check_copy()
+    eleza rmenu_check_cut(self):
+        rudisha self.rmenu_check_copy()
 
-    def rmenu_check_copy(self):
+    eleza rmenu_check_copy(self):
         try:
             indx = self.text.index('sel.first')
         except TclError:
-            return 'disabled'
+            rudisha 'disabled'
         else:
-            return 'normal' if indx else 'disabled'
+            rudisha 'normal' ikiwa indx else 'disabled'
 
-    def rmenu_check_paste(self):
+    eleza rmenu_check_paste(self):
         try:
             self.text.tk.call('tk::GetSelection', self.text, 'CLIPBOARD')
         except TclError:
-            return 'disabled'
+            rudisha 'disabled'
         else:
-            return 'normal'
+            rudisha 'normal'
 
-    def about_dialog(self, event=None):
+    eleza about_dialog(self, event=None):
         "Handle Help 'About IDLE' event."
         # Synchronize with macosx.overrideRootMenu.about_dialog.
         help_about.AboutDialog(self.top)
-        return "break"
+        rudisha "break"
 
-    def config_dialog(self, event=None):
+    eleza config_dialog(self, event=None):
         "Handle Options 'Configure IDLE' event."
         # Synchronize with macosx.overrideRootMenu.config_dialog.
         configdialog.ConfigDialog(self.top,'Settings')
-        return "break"
+        rudisha "break"
 
-    def help_dialog(self, event=None):
+    eleza help_dialog(self, event=None):
         "Handle Help 'IDLE Help' event."
         # Synchronize with macosx.overrideRootMenu.help_dialog.
-        if self.root:
+        ikiwa self.root:
             parent = self.root
         else:
             parent = self.top
         help.show_idlehelp(parent)
-        return "break"
+        rudisha "break"
 
-    def python_docs(self, event=None):
-        if sys.platform[:3] == 'win':
+    eleza python_docs(self, event=None):
+        ikiwa sys.platform[:3] == 'win':
             try:
                 os.startfile(self.help_url)
             except OSError as why:
@@ -585,39 +585,39 @@ class EditorWindow(object):
                     message=str(why), parent=self.text)
         else:
             webbrowser.open(self.help_url)
-        return "break"
+        rudisha "break"
 
-    def cut(self,event):
+    eleza cut(self,event):
         self.text.event_generate("<<Cut>>")
-        return "break"
+        rudisha "break"
 
-    def copy(self,event):
-        if not self.text.tag_ranges("sel"):
+    eleza copy(self,event):
+        ikiwa not self.text.tag_ranges("sel"):
             # There is no selection, so do nothing and maybe interrupt.
-            return None
+            rudisha None
         self.text.event_generate("<<Copy>>")
-        return "break"
+        rudisha "break"
 
-    def paste(self,event):
+    eleza paste(self,event):
         self.text.event_generate("<<Paste>>")
         self.text.see("insert")
-        return "break"
+        rudisha "break"
 
-    def select_all(self, event=None):
+    eleza select_all(self, event=None):
         self.text.tag_add("sel", "1.0", "end-1c")
         self.text.mark_set("insert", "1.0")
         self.text.see("insert")
-        return "break"
+        rudisha "break"
 
-    def remove_selection(self, event=None):
+    eleza remove_selection(self, event=None):
         self.text.tag_remove("sel", "1.0", "end")
         self.text.see("insert")
-        return "break"
+        rudisha "break"
 
-    def move_at_edge_if_selection(self, edge_index):
+    eleza move_at_edge_if_selection(self, edge_index):
         """Cursor move begins at start or end of selection
 
-        When a left/right cursor key is pressed create and return to Tkinter a
+        When a left/right cursor key is pressed create and rudisha to Tkinter a
         function which causes a cursor move kutoka the associated edge of the
         selection.
 
@@ -625,57 +625,57 @@ class EditorWindow(object):
         self_text_index = self.text.index
         self_text_mark_set = self.text.mark_set
         edges_table = ("sel.first+1c", "sel.last-1c")
-        def move_at_edge(event):
-            if (event.state & 5) == 0: # no shift(==1) or control(==4) pressed
+        eleza move_at_edge(event):
+            ikiwa (event.state & 5) == 0: # no shift(==1) or control(==4) pressed
                 try:
                     self_text_index("sel.first")
                     self_text_mark_set("insert", edges_table[edge_index])
                 except TclError:
                     pass
-        return move_at_edge
+        rudisha move_at_edge
 
-    def del_word_left(self, event):
+    eleza del_word_left(self, event):
         self.text.event_generate('<Meta-Delete>')
-        return "break"
+        rudisha "break"
 
-    def del_word_right(self, event):
+    eleza del_word_right(self, event):
         self.text.event_generate('<Meta-d>')
-        return "break"
+        rudisha "break"
 
-    def find_event(self, event):
+    eleza find_event(self, event):
         search.find(self.text)
-        return "break"
+        rudisha "break"
 
-    def find_again_event(self, event):
+    eleza find_again_event(self, event):
         search.find_again(self.text)
-        return "break"
+        rudisha "break"
 
-    def find_selection_event(self, event):
+    eleza find_selection_event(self, event):
         search.find_selection(self.text)
-        return "break"
+        rudisha "break"
 
-    def find_in_files_event(self, event):
+    eleza find_in_files_event(self, event):
         grep.grep(self.text, self.io, self.flist)
-        return "break"
+        rudisha "break"
 
-    def replace_event(self, event):
+    eleza replace_event(self, event):
         replace.replace(self.text)
-        return "break"
+        rudisha "break"
 
-    def goto_line_event(self, event):
+    eleza goto_line_event(self, event):
         text = self.text
         lineno = tkSimpleDialog.askinteger("Goto",
                 "Go to line number:",parent=text)
-        if lineno is None:
-            return "break"
-        if lineno <= 0:
+        ikiwa lineno is None:
+            rudisha "break"
+        ikiwa lineno <= 0:
             text.bell()
-            return "break"
+            rudisha "break"
         text.mark_set("insert", "%d.0" % lineno)
         text.see("insert")
-        return "break"
+        rudisha "break"
 
-    def open_module(self):
+    eleza open_module(self):
         """Get module name kutoka user and open it.
 
         Return module path or None for calls by open_module_browser
@@ -692,135 +692,135 @@ class EditorWindow(object):
                 "Enter the name of a Python module\n"
                 "to search on sys.path and open:",
                 name).result
-        if file_path is not None:
-            if self.flist:
+        ikiwa file_path is not None:
+            ikiwa self.flist:
                 self.flist.open(file_path)
             else:
                 self.io.loadfile(file_path)
-        return file_path
+        rudisha file_path
 
-    def open_module_event(self, event):
+    eleza open_module_event(self, event):
         self.open_module()
-        return "break"
+        rudisha "break"
 
-    def open_module_browser(self, event=None):
+    eleza open_module_browser(self, event=None):
         filename = self.io.filename
-        if not (self.__class__.__name__ == 'PyShellEditorWindow'
+        ikiwa not (self.__class__.__name__ == 'PyShellEditorWindow'
                 and filename):
             filename = self.open_module()
-            if filename is None:
-                return "break"
+            ikiwa filename is None:
+                rudisha "break"
         kutoka idlelib agiza browser
         browser.ModuleBrowser(self.root, filename)
-        return "break"
+        rudisha "break"
 
-    def open_path_browser(self, event=None):
+    eleza open_path_browser(self, event=None):
         kutoka idlelib agiza pathbrowser
         pathbrowser.PathBrowser(self.root)
-        return "break"
+        rudisha "break"
 
-    def open_turtle_demo(self, event = None):
+    eleza open_turtle_demo(self, event = None):
         agiza subprocess
 
         cmd = [sys.executable,
                '-c',
                'kutoka turtledemo.__main__ agiza main; main()']
         subprocess.Popen(cmd, shell=False)
-        return "break"
+        rudisha "break"
 
-    def gotoline(self, lineno):
-        if lineno is not None and lineno > 0:
+    eleza gotoline(self, lineno):
+        ikiwa lineno is not None and lineno > 0:
             self.text.mark_set("insert", "%d.0" % lineno)
             self.text.tag_remove("sel", "1.0", "end")
             self.text.tag_add("sel", "insert", "insert +1l")
             self.center()
 
-    def ispythonsource(self, filename):
-        if not filename or os.path.isdir(filename):
-            return True
+    eleza ispythonsource(self, filename):
+        ikiwa not filename or os.path.isdir(filename):
+            rudisha True
         base, ext = os.path.splitext(os.path.basename(filename))
-        if os.path.normcase(ext) in (".py", ".pyw"):
-            return True
+        ikiwa os.path.normcase(ext) in (".py", ".pyw"):
+            rudisha True
         line = self.text.get('1.0', '1.0 lineend')
-        return line.startswith('#!') and 'python' in line
+        rudisha line.startswith('#!') and 'python' in line
 
-    def close_hook(self):
-        if self.flist:
+    eleza close_hook(self):
+        ikiwa self.flist:
             self.flist.unregister_maybe_terminate(self)
             self.flist = None
 
-    def set_close_hook(self, close_hook):
+    eleza set_close_hook(self, close_hook):
         self.close_hook = close_hook
 
-    def filename_change_hook(self):
-        if self.flist:
+    eleza filename_change_hook(self):
+        ikiwa self.flist:
             self.flist.filename_changed_edit(self)
         self.saved_change_hook()
         self.top.update_windowlist_registry(self)
         self.ResetColorizer()
 
-    def _addcolorizer(self):
-        if self.color:
+    eleza _addcolorizer(self):
+        ikiwa self.color:
             return
-        if self.ispythonsource(self.io.filename):
+        ikiwa self.ispythonsource(self.io.filename):
             self.color = self.ColorDelegator()
         # can add more colorizers here...
-        if self.color:
+        ikiwa self.color:
             self.per.removefilter(self.undo)
             self.per.insertfilter(self.color)
             self.per.insertfilter(self.undo)
 
-    def _rmcolorizer(self):
-        if not self.color:
+    eleza _rmcolorizer(self):
+        ikiwa not self.color:
             return
         self.color.removecolors()
         self.per.removefilter(self.color)
         self.color = None
 
-    def ResetColorizer(self):
+    eleza ResetColorizer(self):
         "Update the color theme"
         # Called kutoka self.filename_change_hook and kutoka configdialog.py
         self._rmcolorizer()
         self._addcolorizer()
         EditorWindow.color_config(self.text)
 
-        if self.code_context is not None:
+        ikiwa self.code_context is not None:
             self.code_context.update_highlight_colors()
 
-        if self.line_numbers is not None:
+        ikiwa self.line_numbers is not None:
             self.line_numbers.update_colors()
 
     IDENTCHARS = string.ascii_letters + string.digits + "_"
 
-    def colorize_syntax_error(self, text, pos):
+    eleza colorize_syntax_error(self, text, pos):
         text.tag_add("ERROR", pos)
         char = text.get(pos)
-        if char and char in self.IDENTCHARS:
+        ikiwa char and char in self.IDENTCHARS:
             text.tag_add("ERROR", pos + " wordstart", pos)
-        if '\n' == text.get(pos):   # error at line end
+        ikiwa '\n' == text.get(pos):   # error at line end
             text.mark_set("insert", pos)
         else:
             text.mark_set("insert", pos + "+1c")
         text.see(pos)
 
-    def ResetFont(self):
-        "Update the text widgets' font if it is changed"
+    eleza ResetFont(self):
+        "Update the text widgets' font ikiwa it is changed"
         # Called kutoka configdialog.py
 
         # Update the code context widget first, since its height affects
         # the height of the text widget.  This avoids double re-rendering.
-        if self.code_context is not None:
+        ikiwa self.code_context is not None:
             self.code_context.update_font()
         # Next, update the line numbers widget, since its width affects
         # the width of the text widget.
-        if self.line_numbers is not None:
+        ikiwa self.line_numbers is not None:
             self.line_numbers.update_font()
         # Finally, update the main text widget.
         new_font = idleConf.GetFont(self.root, 'main', 'EditorWindow')
         self.text['font'] = new_font
         self.set_width()
 
-    def RemoveKeybindings(self):
+    eleza RemoveKeybindings(self):
         "Remove the keybindings before they are changed."
         # Called kutoka configdialog.py
         self.mainmenu.default_keydefs = keydefs = idleConf.GetCurrentKeySet()
@@ -828,63 +828,63 @@ class EditorWindow(object):
             self.text.event_delete(event, *keylist)
         for extensionName in self.get_standard_extension_names():
             xkeydefs = idleConf.GetExtensionBindings(extensionName)
-            if xkeydefs:
+            ikiwa xkeydefs:
                 for event, keylist in xkeydefs.items():
                     self.text.event_delete(event, *keylist)
 
-    def ApplyKeybindings(self):
+    eleza ApplyKeybindings(self):
         "Update the keybindings after they are changed"
         # Called kutoka configdialog.py
         self.mainmenu.default_keydefs = keydefs = idleConf.GetCurrentKeySet()
         self.apply_bindings()
         for extensionName in self.get_standard_extension_names():
             xkeydefs = idleConf.GetExtensionBindings(extensionName)
-            if xkeydefs:
+            ikiwa xkeydefs:
                 self.apply_bindings(xkeydefs)
         #update menu accelerators
         menuEventDict = {}
         for menu in self.mainmenu.menudefs:
             menuEventDict[menu[0]] = {}
             for item in menu[1]:
-                if item:
+                ikiwa item:
                     menuEventDict[menu[0]][prepstr(item[0])[1]] = item[1]
         for menubarItem in self.menudict:
             menu = self.menudict[menubarItem]
             end = menu.index(END)
-            if end is None:
+            ikiwa end is None:
                 # Skip empty menus
                 continue
             end += 1
             for index in range(0, end):
-                if menu.type(index) == 'command':
+                ikiwa menu.type(index) == 'command':
                     accel = menu.entrycget(index, 'accelerator')
-                    if accel:
+                    ikiwa accel:
                         itemName = menu.entrycget(index, 'label')
                         event = ''
-                        if menubarItem in menuEventDict:
-                            if itemName in menuEventDict[menubarItem]:
+                        ikiwa menubarItem in menuEventDict:
+                            ikiwa itemName in menuEventDict[menubarItem]:
                                 event = menuEventDict[menubarItem][itemName]
-                        if event:
+                        ikiwa event:
                             accel = get_accelerator(keydefs, event)
                             menu.entryconfig(index, accelerator=accel)
 
-    def set_notabs_indentwidth(self):
-        "Update the indentwidth if changed and not using tabs in this window"
+    eleza set_notabs_indentwidth(self):
+        "Update the indentwidth ikiwa changed and not using tabs in this window"
         # Called kutoka configdialog.py
-        if not self.usetabs:
+        ikiwa not self.usetabs:
             self.indentwidth = idleConf.GetOption('main', 'Indent','num-spaces',
                                                   type='int')
 
-    def reset_help_menu_entries(self):
+    eleza reset_help_menu_entries(self):
         "Update the additional help entries on the Help menu"
         help_list = idleConf.GetAllExtraHelpSourcesList()
         helpmenu = self.menudict['help']
-        # first delete the extra help entries, if any
+        # first delete the extra help entries, ikiwa any
         helpmenu_length = helpmenu.index(END)
-        if helpmenu_length > self.base_helpmenu_length:
+        ikiwa helpmenu_length > self.base_helpmenu_length:
             helpmenu.delete((self.base_helpmenu_length + 1), helpmenu_length)
         # then rebuild them
-        if help_list:
+        ikiwa help_list:
             helpmenu.add_separator()
             for entry in help_list:
                 cmd = self.__extra_help_callback(entry[1])
@@ -892,12 +892,12 @@ class EditorWindow(object):
         # and update the menu dictionary
         self.menudict['help'] = helpmenu
 
-    def __extra_help_callback(self, helpfile):
+    eleza __extra_help_callback(self, helpfile):
         "Create a callback with the helpfile value frozen at definition time"
-        def display_extra_help(helpfile=helpfile):
-            if not helpfile.startswith(('www', 'http')):
+        eleza display_extra_help(helpfile=helpfile):
+            ikiwa not helpfile.startswith(('www', 'http')):
                 helpfile = os.path.normpath(helpfile)
-            if sys.platform[:3] == 'win':
+            ikiwa sys.platform[:3] == 'win':
                 try:
                     os.startfile(helpfile)
                 except OSError as why:
@@ -905,37 +905,37 @@ class EditorWindow(object):
                         message=str(why), parent=self.text)
             else:
                 webbrowser.open(helpfile)
-        return display_extra_help
+        rudisha display_extra_help
 
-    def update_recent_files_list(self, new_file=None):
+    eleza update_recent_files_list(self, new_file=None):
         "Load and update the recent files list and menus"
         # TODO: move to iomenu.
         rf_list = []
         file_path = self.recent_files_path
-        if file_path and os.path.exists(file_path):
+        ikiwa file_path and os.path.exists(file_path):
             with open(file_path, 'r',
                       encoding='utf_8', errors='replace') as rf_list_file:
                 rf_list = rf_list_file.readlines()
-        if new_file:
+        ikiwa new_file:
             new_file = os.path.abspath(new_file) + '\n'
-            if new_file in rf_list:
+            ikiwa new_file in rf_list:
                 rf_list.remove(new_file)  # move to top
             rf_list.insert(0, new_file)
         # clean and save the recent files list
         bad_paths = []
         for path in rf_list:
-            if '\0' in path or not os.path.exists(path[0:-1]):
+            ikiwa '\0' in path or not os.path.exists(path[0:-1]):
                 bad_paths.append(path)
-        rf_list = [path for path in rf_list if path not in bad_paths]
+        rf_list = [path for path in rf_list ikiwa path not in bad_paths]
         ulchars = "1234567890ABCDEFGHIJK"
         rf_list = rf_list[0:len(ulchars)]
-        if file_path:
+        ikiwa file_path:
             try:
                 with open(file_path, 'w',
                           encoding='utf_8', errors='replace') as rf_file:
                     rf_file.writelines(rf_list)
             except OSError as err:
-                if not getattr(self.root, "recentfiles_message", False):
+                ikiwa not getattr(self.root, "recentfiles_message", False):
                     self.root.recentfiles_message = True
                     tkMessageBox.showwarning(title='IDLE Warning',
                         message="Cannot save Recent Files list to disk.\n"
@@ -953,50 +953,50 @@ class EditorWindow(object):
                                  command=callback,
                                  underline=0)
 
-    def __recent_file_callback(self, file_name):
-        def open_recent_file(fn_closure=file_name):
+    eleza __recent_file_callback(self, file_name):
+        eleza open_recent_file(fn_closure=file_name):
             self.io.open(editFile=fn_closure)
-        return open_recent_file
+        rudisha open_recent_file
 
-    def saved_change_hook(self):
+    eleza saved_change_hook(self):
         short = self.short_title()
         long = self.long_title()
-        if short and long:
+        ikiwa short and long:
             title = short + " - " + long + _py_version
-        elif short:
+        elikiwa short:
             title = short
-        elif long:
+        elikiwa long:
             title = long
         else:
             title = "untitled"
         icon = short or long or title
-        if not self.get_saved():
+        ikiwa not self.get_saved():
             title = "*%s*" % title
             icon = "*%s" % icon
         self.top.wm_title(title)
         self.top.wm_iconname(icon)
 
-    def get_saved(self):
-        return self.undo.get_saved()
+    eleza get_saved(self):
+        rudisha self.undo.get_saved()
 
-    def set_saved(self, flag):
+    eleza set_saved(self, flag):
         self.undo.set_saved(flag)
 
-    def reset_undo(self):
+    eleza reset_undo(self):
         self.undo.reset_undo()
 
-    def short_title(self):
+    eleza short_title(self):
         filename = self.io.filename
-        return os.path.basename(filename) if filename else "untitled"
+        rudisha os.path.basename(filename) ikiwa filename else "untitled"
 
-    def long_title(self):
-        return self.io.filename or ""
+    eleza long_title(self):
+        rudisha self.io.filename or ""
 
-    def center_insert_event(self, event):
+    eleza center_insert_event(self, event):
         self.center()
-        return "break"
+        rudisha "break"
 
-    def center(self, mark="insert"):
+    eleza center(self, mark="insert"):
         text = self.text
         top, bot = self.getwindowlines()
         lineno = self.getlineno(mark)
@@ -1004,57 +1004,57 @@ class EditorWindow(object):
         newtop = max(1, lineno - height//2)
         text.yview(float(newtop))
 
-    def getwindowlines(self):
+    eleza getwindowlines(self):
         text = self.text
         top = self.getlineno("@0,0")
         bot = self.getlineno("@0,65535")
-        if top == bot and text.winfo_height() == 1:
+        ikiwa top == bot and text.winfo_height() == 1:
             # Geometry manager hasn't run yet
             height = int(text['height'])
             bot = top + height - 1
-        return top, bot
+        rudisha top, bot
 
-    def getlineno(self, mark="insert"):
+    eleza getlineno(self, mark="insert"):
         text = self.text
-        return int(float(text.index(mark)))
+        rudisha int(float(text.index(mark)))
 
-    def get_geometry(self):
+    eleza get_geometry(self):
         "Return (width, height, x, y)"
         geom = self.top.wm_geometry()
         m = re.match(r"(\d+)x(\d+)\+(-?\d+)\+(-?\d+)", geom)
-        return list(map(int, m.groups()))
+        rudisha list(map(int, m.groups()))
 
-    def close_event(self, event):
+    eleza close_event(self, event):
         self.close()
-        return "break"
+        rudisha "break"
 
-    def maybesave(self):
-        if self.io:
-            if not self.get_saved():
-                if self.top.state()!='normal':
+    eleza maybesave(self):
+        ikiwa self.io:
+            ikiwa not self.get_saved():
+                ikiwa self.top.state()!='normal':
                     self.top.deiconify()
                 self.top.lower()
                 self.top.lift()
-            return self.io.maybesave()
+            rudisha self.io.maybesave()
 
-    def close(self):
+    eleza close(self):
         try:
             reply = self.maybesave()
-            if str(reply) != "cancel":
+            ikiwa str(reply) != "cancel":
                 self._close()
-            return reply
+            rudisha reply
         except AttributeError:  # bpo-35379: close called twice
             pass
 
-    def _close(self):
-        if self.io.filename:
+    eleza _close(self):
+        ikiwa self.io.filename:
             self.update_recent_files_list(new_file=self.io.filename)
         window.unregister_callback(self.postwindowsmenu)
         self.unload_extensions()
         self.io.close()
         self.io = None
         self.undo = None
-        if self.color:
+        ikiwa self.color:
             self.color.close()
             self.color = None
         self.text = None
@@ -1062,36 +1062,36 @@ class EditorWindow(object):
         self.per.close()
         self.per = None
         self.top.destroy()
-        if self.close_hook:
-            # unless override: unregister kutoka flist, terminate if last window
+        ikiwa self.close_hook:
+            # unless override: unregister kutoka flist, terminate ikiwa last window
             self.close_hook()
 
-    def load_extensions(self):
+    eleza load_extensions(self):
         self.extensions = {}
         self.load_standard_extensions()
 
-    def unload_extensions(self):
+    eleza unload_extensions(self):
         for ins in list(self.extensions.values()):
-            if hasattr(ins, "close"):
+            ikiwa hasattr(ins, "close"):
                 ins.close()
         self.extensions = {}
 
-    def load_standard_extensions(self):
+    eleza load_standard_extensions(self):
         for name in self.get_standard_extension_names():
             try:
                 self.load_extension(name)
             except:
-                print("Failed to load extension", repr(name))
+                andika("Failed to load extension", repr(name))
                 traceback.print_exc()
 
-    def get_standard_extension_names(self):
-        return idleConf.GetExtensions(editor_only=True)
+    eleza get_standard_extension_names(self):
+        rudisha idleConf.GetExtensions(editor_only=True)
 
     extfiles = {  # Map built-in config-extension section names to file names.
         'ZzDummy': 'zzdummy',
         }
 
-    def load_extension(self, name):
+    eleza load_extension(self, name):
         fname = self.extfiles.get(name, name)
         try:
             try:
@@ -1099,15 +1099,15 @@ class EditorWindow(object):
             except (ImportError, TypeError):
                 mod = importlib.import_module(fname)
         except ImportError:
-            print("\nFailed to agiza extension: ", name)
+            andika("\nFailed to agiza extension: ", name)
             raise
         cls = getattr(mod, name)
         keydefs = idleConf.GetExtensionBindings(name)
-        if hasattr(cls, "menudefs"):
+        ikiwa hasattr(cls, "menudefs"):
             self.fill_menus(cls.menudefs, keydefs)
         ins = cls(self)
         self.extensions[name] = ins
-        if keydefs:
+        ikiwa keydefs:
             self.apply_bindings(keydefs)
             for vevent in keydefs:
                 methodname = vevent.replace("-", "_")
@@ -1116,46 +1116,46 @@ class EditorWindow(object):
                 while methodname[-1:] == '>':
                     methodname = methodname[:-1]
                 methodname = methodname + "_event"
-                if hasattr(ins, methodname):
+                ikiwa hasattr(ins, methodname):
                     self.text.bind(vevent, getattr(ins, methodname))
 
-    def apply_bindings(self, keydefs=None):
-        if keydefs is None:
+    eleza apply_bindings(self, keydefs=None):
+        ikiwa keydefs is None:
             keydefs = self.mainmenu.default_keydefs
         text = self.text
         text.keydefs = keydefs
         for event, keylist in keydefs.items():
-            if keylist:
+            ikiwa keylist:
                 text.event_add(event, *keylist)
 
-    def fill_menus(self, menudefs=None, keydefs=None):
+    eleza fill_menus(self, menudefs=None, keydefs=None):
         """Add appropriate entries to the menus and submenus
 
         Menus that are absent or None in self.menudict are ignored.
         """
-        if menudefs is None:
+        ikiwa menudefs is None:
             menudefs = self.mainmenu.menudefs
-        if keydefs is None:
+        ikiwa keydefs is None:
             keydefs = self.mainmenu.default_keydefs
         menudict = self.menudict
         text = self.text
         for mname, entrylist in menudefs:
             menu = menudict.get(mname)
-            if not menu:
+            ikiwa not menu:
                 continue
             for entry in entrylist:
-                if not entry:
+                ikiwa not entry:
                     menu.add_separator()
                 else:
                     label, eventname = entry
                     checkbutton = (label[:1] == '!')
-                    if checkbutton:
+                    ikiwa checkbutton:
                         label = label[1:]
                     underline, label = prepstr(label)
                     accelerator = get_accelerator(keydefs, eventname)
-                    def command(text=text, eventname=eventname):
+                    eleza command(text=text, eventname=eventname):
                         text.event_generate(eventname)
-                    if checkbutton:
+                    ikiwa checkbutton:
                         var = self.get_var_obj(eventname, BooleanVar)
                         menu.add_checkbutton(label=label, underline=underline,
                             command=command, accelerator=accelerator,
@@ -1165,27 +1165,27 @@ class EditorWindow(object):
                                          command=command,
                                          accelerator=accelerator)
 
-    def getvar(self, name):
+    eleza getvar(self, name):
         var = self.get_var_obj(name)
-        if var:
+        ikiwa var:
             value = var.get()
-            return value
+            rudisha value
         else:
             raise NameError(name)
 
-    def setvar(self, name, value, vartype=None):
+    eleza setvar(self, name, value, vartype=None):
         var = self.get_var_obj(name, vartype)
-        if var:
+        ikiwa var:
             var.set(value)
         else:
             raise NameError(name)
 
-    def get_var_obj(self, name, vartype=None):
+    eleza get_var_obj(self, name, vartype=None):
         var = self.tkinter_vars.get(name)
-        if not var and vartype:
+        ikiwa not var and vartype:
             # create a Tkinter variable object with self.text as master:
             self.tkinter_vars[name] = var = vartype(self.text)
-        return var
+        rudisha var
 
     # Tk implementations of "virtual text methods" -- each platform
     # reusing IDLE's support code needs to define these for its GUI's
@@ -1196,38 +1196,38 @@ class EditorWindow(object):
     # to compute ab initio, but is probably already known by the
     # platform's colorizer.
 
-    def is_char_in_string(self, text_index):
-        if self.color:
+    eleza is_char_in_string(self, text_index):
+        ikiwa self.color:
             # Return true iff colorizer hasn't (re)gotten this far
             # yet, or the character is tagged as being in a string
-            return self.text.tag_prevrange("TODO", text_index) or \
+            rudisha self.text.tag_prevrange("TODO", text_index) or \
                    "STRING" in self.text.tag_names(text_index)
         else:
             # The colorizer is missing: assume the worst
-            return 1
+            rudisha 1
 
-    # If a selection is defined in the text widget, return (start,
-    # end) as Tkinter text indices, otherwise return (None, None)
-    def get_selection_indices(self):
+    # If a selection is defined in the text widget, rudisha (start,
+    # end) as Tkinter text indices, otherwise rudisha (None, None)
+    eleza get_selection_indices(self):
         try:
             first = self.text.index("sel.first")
             last = self.text.index("sel.last")
-            return first, last
+            rudisha first, last
         except TclError:
-            return None, None
+            rudisha None, None
 
     # Return the text widget's current view of what a tab stop means
     # (equivalent width in spaces).
 
-    def get_tk_tabwidth(self):
+    eleza get_tk_tabwidth(self):
         current = self.text['tabs'] or TK_TABWIDTH_DEFAULT
-        return int(current)
+        rudisha int(current)
 
     # Set the text widget's current view of what a tab stop means.
 
-    def set_tk_tabwidth(self, newtabwidth):
+    eleza set_tk_tabwidth(self, newtabwidth):
         text = self.text
-        if self.get_tk_tabwidth() != newtabwidth:
+        ikiwa self.get_tk_tabwidth() != newtabwidth:
             # Set text widget tab width
             pixels = text.tk.call("font", "measure", text["font"],
                                   "-displayof", text.master,
@@ -1236,37 +1236,37 @@ class EditorWindow(object):
 
 ### begin autoindent code ###  (configuration was moved to beginning of class)
 
-    def set_indentation_params(self, is_py_src, guess=True):
-        if is_py_src and guess:
+    eleza set_indentation_params(self, is_py_src, guess=True):
+        ikiwa is_py_src and guess:
             i = self.guess_indent()
-            if 2 <= i <= 8:
+            ikiwa 2 <= i <= 8:
                 self.indentwidth = i
-            if self.indentwidth != self.tabwidth:
+            ikiwa self.indentwidth != self.tabwidth:
                 self.usetabs = False
         self.set_tk_tabwidth(self.tabwidth)
 
-    def smart_backspace_event(self, event):
+    eleza smart_backspace_event(self, event):
         text = self.text
         first, last = self.get_selection_indices()
-        if first and last:
+        ikiwa first and last:
             text.delete(first, last)
             text.mark_set("insert", first)
-            return "break"
+            rudisha "break"
         # Delete whitespace left, until hitting a real char or closest
         # preceding virtual tab stop.
         chars = text.get("insert linestart", "insert")
-        if chars == '':
-            if text.compare("insert", ">", "1.0"):
+        ikiwa chars == '':
+            ikiwa text.compare("insert", ">", "1.0"):
                 # easy: delete preceding newline
                 text.delete("insert-1c")
             else:
                 text.bell()     # at start of buffer
-            return "break"
-        if  chars[-1] not in " \t":
+            rudisha "break"
+        ikiwa  chars[-1] not in " \t":
             # easy: delete preceding real char
             text.delete("insert-1c")
-            return "break"
-        # Ick.  It may require *inserting* spaces if we back up over a
+            rudisha "break"
+        # Ick.  It may require *inserting* spaces ikiwa we back up over a
         # tab character!  This is written to be clear, not fast.
         tabwidth = self.tabwidth
         have = len(chars.expandtabs(tabwidth))
@@ -1275,24 +1275,24 @@ class EditorWindow(object):
         # Debug prompt is multilined....
         ncharsdeleted = 0
         while 1:
-            if chars == self.prompt_last_line:  # '' unless PyShell
+            ikiwa chars == self.prompt_last_line:  # '' unless PyShell
                 break
             chars = chars[:-1]
             ncharsdeleted = ncharsdeleted + 1
             have = len(chars.expandtabs(tabwidth))
-            if have <= want or chars[-1] not in " \t":
+            ikiwa have <= want or chars[-1] not in " \t":
                 break
         text.undo_block_start()
         text.delete("insert-%dc" % ncharsdeleted, "insert")
-        if have < want:
+        ikiwa have < want:
             text.insert("insert", ' ' * (want - have))
         text.undo_block_stop()
-        return "break"
+        rudisha "break"
 
-    def smart_indent_event(self, event):
-        # if intraline selection:
+    eleza smart_indent_event(self, event):
+        # ikiwa intraline selection:
         #     delete it
-        # elif multiline selection:
+        # elikiwa multiline selection:
         #     do indent-region
         # else:
         #     indent one level
@@ -1300,19 +1300,19 @@ class EditorWindow(object):
         first, last = self.get_selection_indices()
         text.undo_block_start()
         try:
-            if first and last:
-                if index2line(first) != index2line(last):
-                    return self.fregion.indent_region_event(event)
+            ikiwa first and last:
+                ikiwa index2line(first) != index2line(last):
+                    rudisha self.fregion.indent_region_event(event)
                 text.delete(first, last)
                 text.mark_set("insert", first)
             prefix = text.get("insert linestart", "insert")
             raw, effective = get_line_indent(prefix, self.tabwidth)
-            if raw == len(prefix):
+            ikiwa raw == len(prefix):
                 # only whitespace to the left
                 self.reindent_to(effective + self.indentwidth)
             else:
                 # tab to the next 'stop' within or to right of line's text:
-                if self.usetabs:
+                ikiwa self.usetabs:
                     pad = '\t'
                 else:
                     effective = len(prefix.expandtabs(self.tabwidth))
@@ -1320,34 +1320,34 @@ class EditorWindow(object):
                     pad = ' ' * (n - effective % n)
                 text.insert("insert", pad)
             text.see("insert")
-            return "break"
+            rudisha "break"
         finally:
             text.undo_block_stop()
 
-    def newline_and_indent_event(self, event):
+    eleza newline_and_indent_event(self, event):
         text = self.text
         first, last = self.get_selection_indices()
         text.undo_block_start()
         try:
-            if first and last:
+            ikiwa first and last:
                 text.delete(first, last)
                 text.mark_set("insert", first)
             line = text.get("insert linestart", "insert")
             i, n = 0, len(line)
             while i < n and line[i] in " \t":
                 i = i+1
-            if i == n:
+            ikiwa i == n:
                 # the cursor is in or at leading indentation in a continuation
                 # line; just inject an empty line at the start
                 text.insert("insert linestart", '\n')
-                return "break"
+                rudisha "break"
             indent = line[:i]
             # strip whitespace before insert point unless it's in the prompt
             i = 0
             while line and line[-1] in " \t" and line != self.prompt_last_line:
                 line = line[:-1]
                 i = i+1
-            if i:
+            ikiwa i:
                 text.delete("insert - %d chars" % i, "insert")
             # strip whitespace after insert point
             while text.get("insert") in " \t":
@@ -1359,7 +1359,7 @@ class EditorWindow(object):
             # open/close first need to find the last stmt
             lno = index2line(text.index('insert'))
             y = pyparse.Parser(self.indentwidth, self.tabwidth)
-            if not self.prompt_last_line:
+            ikiwa not self.prompt_last_line:
                 for context in self.num_context_lines:
                     startat = max(lno - context, 1)
                     startatindex = repr(startat) + ".0"
@@ -1367,12 +1367,12 @@ class EditorWindow(object):
                     y.set_code(rawtext)
                     bod = y.find_good_parse_start(
                               self._build_char_in_string_func(startatindex))
-                    if bod is not None or startat == 1:
+                    ikiwa bod is not None or startat == 1:
                         break
                 y.set_lo(bod or 0)
             else:
                 r = text.tag_prevrange("console", "insert")
-                if r:
+                ikiwa r:
                     startatindex = r[1]
                 else:
                     startatindex = "1.0"
@@ -1381,45 +1381,45 @@ class EditorWindow(object):
                 y.set_lo(0)
 
             c = y.get_continuation_type()
-            if c != pyparse.C_NONE:
+            ikiwa c != pyparse.C_NONE:
                 # The current stmt hasn't ended yet.
-                if c == pyparse.C_STRING_FIRST_LINE:
+                ikiwa c == pyparse.C_STRING_FIRST_LINE:
                     # after the first line of a string; do not indent at all
                     pass
-                elif c == pyparse.C_STRING_NEXT_LINES:
+                elikiwa c == pyparse.C_STRING_NEXT_LINES:
                     # inside a string which started before this line;
                     # just mimic the current indent
                     text.insert("insert", indent)
-                elif c == pyparse.C_BRACKET:
-                    # line up with the first (if any) element of the
+                elikiwa c == pyparse.C_BRACKET:
+                    # line up with the first (ikiwa any) element of the
                     # last open bracket structure; else indent one
                     # level beyond the indent of the line with the
                     # last open bracket
                     self.reindent_to(y.compute_bracket_indent())
-                elif c == pyparse.C_BACKSLASH:
-                    # if more than one line in this stmt already, just
-                    # mimic the current indent; else if initial line
+                elikiwa c == pyparse.C_BACKSLASH:
+                    # ikiwa more than one line in this stmt already, just
+                    # mimic the current indent; else ikiwa initial line
                     # has a start on an assignment stmt, indent to
                     # beyond leftmost =; else to beyond first chunk of
                     # non-whitespace on initial line
-                    if y.get_num_lines_in_stmt() > 1:
+                    ikiwa y.get_num_lines_in_stmt() > 1:
                         text.insert("insert", indent)
                     else:
                         self.reindent_to(y.compute_backslash_indent())
                 else:
                     assert 0, "bogus continuation type %r" % (c,)
-                return "break"
+                rudisha "break"
 
             # This line starts a brand new stmt; indent relative to
             # indentation of initial line of closest preceding
             # interesting stmt.
             indent = y.get_base_indent_string()
             text.insert("insert", indent)
-            if y.is_block_opener():
+            ikiwa y.is_block_opener():
                 self.smart_indent_event(event)
-            elif indent and y.is_block_closer():
+            elikiwa indent and y.is_block_closer():
                 self.smart_backspace_event(event)
-            return "break"
+            rudisha "break"
         finally:
             text.see("insert")
             text.undo_block_stop()
@@ -1429,60 +1429,60 @@ class EditorWindow(object):
     # a string. This builds a function for PyParse that accepts an
     # offset.
 
-    def _build_char_in_string_func(self, startindex):
-        def inner(offset, _startindex=startindex,
+    eleza _build_char_in_string_func(self, startindex):
+        eleza inner(offset, _startindex=startindex,
                   _icis=self.is_char_in_string):
-            return _icis(_startindex + "+%dc" % offset)
-        return inner
+            rudisha _icis(_startindex + "+%dc" % offset)
+        rudisha inner
 
     # XXX this isn't bound to anything -- see tabwidth comments
-##     def change_tabwidth_event(self, event):
+##     eleza change_tabwidth_event(self, event):
 ##         new = self._asktabwidth()
-##         if new != self.tabwidth:
+##         ikiwa new != self.tabwidth:
 ##             self.tabwidth = new
 ##             self.set_indentation_params(0, guess=0)
-##         return "break"
+##         rudisha "break"
 
     # Make string that displays as n leading blanks.
 
-    def _make_blanks(self, n):
-        if self.usetabs:
+    eleza _make_blanks(self, n):
+        ikiwa self.usetabs:
             ntabs, nspaces = divmod(n, self.tabwidth)
-            return '\t' * ntabs + ' ' * nspaces
+            rudisha '\t' * ntabs + ' ' * nspaces
         else:
-            return ' ' * n
+            rudisha ' ' * n
 
     # Delete kutoka beginning of line to insert point, then reinsert
-    # column logical (meaning use tabs if appropriate) spaces.
+    # column logical (meaning use tabs ikiwa appropriate) spaces.
 
-    def reindent_to(self, column):
+    eleza reindent_to(self, column):
         text = self.text
         text.undo_block_start()
-        if text.compare("insert linestart", "!=", "insert"):
+        ikiwa text.compare("insert linestart", "!=", "insert"):
             text.delete("insert linestart", "insert")
-        if column:
+        ikiwa column:
             text.insert("insert", self._make_blanks(column))
         text.undo_block_stop()
 
     # Guess indentwidth kutoka text content.
     # Return guessed indentwidth.  This should not be believed unless
-    # it's in a reasonable range (e.g., it will be 0 if no indented
+    # it's in a reasonable range (e.g., it will be 0 ikiwa no indented
     # blocks are found).
 
-    def guess_indent(self):
+    eleza guess_indent(self):
         opener, indented = IndentSearcher(self.text, self.tabwidth).run()
-        if opener and indented:
+        ikiwa opener and indented:
             raw, indentsmall = get_line_indent(opener, self.tabwidth)
             raw, indentlarge = get_line_indent(indented, self.tabwidth)
         else:
             indentsmall = indentlarge = 0
-        return indentlarge - indentsmall
+        rudisha indentlarge - indentsmall
 
-    def toggle_line_numbers_event(self, event=None):
-        if self.line_numbers is None:
+    eleza toggle_line_numbers_event(self, event=None):
+        ikiwa self.line_numbers is None:
             return
 
-        if self.line_numbers.is_shown:
+        ikiwa self.line_numbers.is_shown:
             self.line_numbers.hide_sidebar()
             menu_label = "Show"
         else:
@@ -1492,56 +1492,56 @@ class EditorWindow(object):
                                label=f'{menu_label} Line Numbers')
 
 # "line.col" -> line, as an int
-def index2line(index):
-    return int(float(index))
+eleza index2line(index):
+    rudisha int(float(index))
 
 
 _line_indent_re = re.compile(r'[ \t]*')
-def get_line_indent(line, tabwidth):
+eleza get_line_indent(line, tabwidth):
     """Return a line's indentation as (# chars, effective # of spaces).
 
     The effective # of spaces is the length after properly "expanding"
     the tabs into spaces, as done by str.expandtabs(tabwidth).
     """
     m = _line_indent_re.match(line)
-    return m.end(), len(m.group().expandtabs(tabwidth))
+    rudisha m.end(), len(m.group().expandtabs(tabwidth))
 
 
-class IndentSearcher(object):
+kundi IndentSearcher(object):
 
     # .run() chews over the Text widget, looking for a block opener
     # and the stmt following it.  Returns a pair,
     #     (line containing block opener, line containing stmt)
     # Either or both may be None.
 
-    def __init__(self, text, tabwidth):
+    eleza __init__(self, text, tabwidth):
         self.text = text
         self.tabwidth = tabwidth
         self.i = self.finished = 0
         self.blkopenline = self.indentedline = None
 
-    def readline(self):
-        if self.finished:
-            return ""
+    eleza readline(self):
+        ikiwa self.finished:
+            rudisha ""
         i = self.i = self.i + 1
         mark = repr(i) + ".0"
-        if self.text.compare(mark, ">=", "end"):
-            return ""
-        return self.text.get(mark, mark + " lineend+1c")
+        ikiwa self.text.compare(mark, ">=", "end"):
+            rudisha ""
+        rudisha self.text.get(mark, mark + " lineend+1c")
 
-    def tokeneater(self, type, token, start, end, line,
+    eleza tokeneater(self, type, token, start, end, line,
                    INDENT=tokenize.INDENT,
                    NAME=tokenize.NAME,
                    OPENERS=('class', 'def', 'for', 'if', 'try', 'while')):
-        if self.finished:
+        ikiwa self.finished:
             pass
-        elif type == NAME and token in OPENERS:
+        elikiwa type == NAME and token in OPENERS:
             self.blkopenline = line
-        elif type == INDENT and self.blkopenline:
+        elikiwa type == INDENT and self.blkopenline:
             self.indentedline = line
             self.finished = 1
 
-    def run(self):
+    eleza run(self):
         save_tabsize = tokenize.tabsize
         tokenize.tabsize = self.tabwidth
         try:
@@ -1555,17 +1555,17 @@ class IndentSearcher(object):
                 pass
         finally:
             tokenize.tabsize = save_tabsize
-        return self.blkopenline, self.indentedline
+        rudisha self.blkopenline, self.indentedline
 
 ### end autoindent code ###
 
-def prepstr(s):
+eleza prepstr(s):
     # Helper to extract the underscore kutoka a string, e.g.
     # prepstr("Co_py") returns (2, "Copy").
     i = s.find('_')
-    if i >= 0:
+    ikiwa i >= 0:
         s = s[:i] + s[i+1:]
-    return i, s
+    rudisha i, s
 
 
 keynames = {
@@ -1574,15 +1574,15 @@ keynames = {
  'slash': '/',
 }
 
-def get_accelerator(keydefs, eventname):
+eleza get_accelerator(keydefs, eventname):
     keylist = keydefs.get(eventname)
     # issue10940: temporary workaround to prevent hang with OS X Cocoa Tk 8.5
-    # if not keylist:
-    if (not keylist) or (macosx.isCocoaTk() and eventname in {
+    # ikiwa not keylist:
+    ikiwa (not keylist) or (macosx.isCocoaTk() and eventname in {
                             "<<open-module>>",
                             "<<goto-line>>",
                             "<<change-indentwidth>>"}):
-        return ""
+        rudisha ""
     s = keylist[0]
     s = re.sub(r"-[a-z]\b", lambda m: m.group().upper(), s)
     s = re.sub(r"\b\w+\b", lambda m: keynames.get(m.group(), m.group()), s)
@@ -1593,23 +1593,23 @@ def get_accelerator(keydefs, eventname):
     s = re.sub("><", " ", s)
     s = re.sub("<", "", s)
     s = re.sub(">", "", s)
-    return s
+    rudisha s
 
 
-def fixwordbreaks(root):
+eleza fixwordbreaks(root):
     # On Windows, tcl/tk breaks 'words' only on spaces, as in Command Prompt.
-    # We want Motif style everywhere. See #21474, msg218992 and followup.
+    # We want Motikiwa style everywhere. See #21474, msg218992 and followup.
     tk = root.tk
     tk.call('tcl_wordBreakAfter', 'a b', 0) # make sure word.tcl is loaded
     tk.call('set', 'tcl_wordchars', r'\w')
     tk.call('set', 'tcl_nonwordchars', r'\W')
 
 
-def _editor_window(parent):  # htest #
-    # error if close master window first - timer event, after script
+eleza _editor_window(parent):  # htest #
+    # error ikiwa close master window first - timer event, after script
     root = parent
     fixwordbreaks(root)
-    if sys.argv[1:]:
+    ikiwa sys.argv[1:]:
         filename = sys.argv[1]
     else:
         filename = None
@@ -1623,7 +1623,7 @@ def _editor_window(parent):  # htest #
     # Does not stop error, neither does following
     # edit.text.bind("<<close-window>>", edit.close_event)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_editor', verbosity=2, exit=False)
 

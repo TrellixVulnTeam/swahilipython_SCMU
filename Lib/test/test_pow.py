@@ -1,10 +1,10 @@
 agiza math
 agiza unittest
 
-class PowTest(unittest.TestCase):
+kundi PowTest(unittest.TestCase):
 
-    def powtest(self, type):
-        if type != float:
+    eleza powtest(self, type):
+        ikiwa type != float:
             for i in range(-1000, 1000):
                 self.assertEqual(pow(type(i), 0), 1)
                 self.assertEqual(pow(type(i), 1), type(i))
@@ -17,7 +17,7 @@ class PowTest(unittest.TestCase):
             pow2 = 1
             for i in range(0, 31):
                 self.assertEqual(pow(2, i), pow2)
-                if i != 30 : pow2 = pow2*2
+                ikiwa i != 30 : pow2 = pow2*2
 
             for othertype in (int,):
                 for i in list(range(-10, 0)) + list(range(1, 10)):
@@ -30,7 +30,7 @@ class PowTest(unittest.TestCase):
             for i in range(1, 100):
                 zero = type(0)
                 exp = -othertype(i/10.0)
-                if exp == 0:
+                ikiwa exp == 0:
                     continue
                 self.assertRaises(ZeroDivisionError, pow, zero, exp)
 
@@ -38,18 +38,18 @@ class PowTest(unittest.TestCase):
         jl, jh = -5,   5
         kl, kh = -10, 10
         asseq = self.assertEqual
-        if type == float:
+        ikiwa type == float:
             il = 1
             asseq = self.assertAlmostEqual
-        elif type == int:
+        elikiwa type == int:
             jl = 0
-        elif type == int:
+        elikiwa type == int:
             jl, jh = 0, 15
         for i in range(il, ih+1):
             for j in range(jl, jh+1):
                 for k in range(kl, kh+1):
-                    if k != 0:
-                        if type == float or j < 0:
+                    ikiwa k != 0:
+                        ikiwa type == float or j < 0:
                             self.assertRaises(TypeError, pow, type(i), j, k)
                             continue
                         asseq(
@@ -57,13 +57,13 @@ class PowTest(unittest.TestCase):
                             pow(type(i),j)% type(k)
                         )
 
-    def test_powint(self):
+    eleza test_powint(self):
         self.powtest(int)
 
-    def test_powfloat(self):
+    eleza test_powfloat(self):
         self.powtest(float)
 
-    def test_other(self):
+    eleza test_other(self):
         # Other tests-- not very systematic
         self.assertEqual(pow(3,3) % 8, pow(3,3,8))
         self.assertEqual(pow(3,3) % -8, pow(3,3,-8))
@@ -82,31 +82,31 @@ class PowTest(unittest.TestCase):
         for i in range(-10, 11):
             for j in range(0, 6):
                 for k in range(-7, 11):
-                    if j >= 0 and k != 0:
+                    ikiwa j >= 0 and k != 0:
                         self.assertEqual(
                             pow(i,j) % k,
                             pow(i,j,k)
                         )
-                    if j >= 0 and k != 0:
+                    ikiwa j >= 0 and k != 0:
                         self.assertEqual(
                             pow(int(i),j) % k,
                             pow(int(i),j,k)
                         )
 
-    def test_bug643260(self):
-        class TestRpow:
-            def __rpow__(self, other):
-                return None
+    eleza test_bug643260(self):
+        kundi TestRpow:
+            eleza __rpow__(self, other):
+                rudisha None
         None ** TestRpow() # Won't fail when __rpow__ invoked.  SF bug #643260.
 
-    def test_bug705231(self):
-        # -1.0 raised to an integer should never blow up.  It did if the
+    eleza test_bug705231(self):
+        # -1.0 raised to an integer should never blow up.  It did ikiwa the
         # platform pow() was buggy, and Python didn't worm around it.
         eq = self.assertEqual
         a = -1.0
-        # The next two tests can still fail if the platform floor()
+        # The next two tests can still fail ikiwa the platform floor()
         # function doesn't treat all large inputs as integers
-        # test_math should also fail if that is happening
+        # test_math should also fail ikiwa that is happening
         eq(pow(a, 1.23e167), 1.0)
         eq(pow(a, -1.23e167), 1.0)
         for b in range(-10, 11):
@@ -120,11 +120,11 @@ class PowTest(unittest.TestCase):
             eq(pow(a, -fiveto), expected)
         eq(expected, 1.0)   # else we didn't push fiveto to evenness
 
-    def test_negative_exponent(self):
+    eleza test_negative_exponent(self):
         for a in range(-50, 50):
             for m in range(-50, 50):
                 with self.subTest(a=a, m=m):
-                    if m != 0 and math.gcd(a, m) == 1:
+                    ikiwa m != 0 and math.gcd(a, m) == 1:
                         # Exponent -1 should give an inverse, with the
                         # same sign as m.
                         inv = pow(a, -1, m)
@@ -145,5 +145,5 @@ class PowTest(unittest.TestCase):
                             pow(a, -1001, m)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

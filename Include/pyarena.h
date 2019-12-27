@@ -40,13 +40,13 @@ extern "C" {
    * `size` bytes, or return NULL (without setting an exception) if enough
    * new memory can't be obtained.  Unlike malloc(0), PyArena_Malloc() with
    * size=0 does not guarantee to return a unique pointer (the pointer
-   * returned may equal one or more other pointers obtained from
+   * returned may equal one or more other pointers obtained kutoka
    * PyArena_Malloc()).
    * Note that pointers obtained via PyArena_Malloc() must never be passed to
    * the system free() or realloc(), or to any of Python's similar memory-
    * management functions.  PyArena_Malloc()-obtained pointers remain valid
    * until PyArena_Free(ar) is called, at which point all pointers obtained
-   * from the arena `ar` become invalid simultaneously.
+   * kutoka the arena `ar` become invalid simultaneously.
    */
   PyAPI_FUNC(void *) PyArena_Malloc(PyArena *, size_t size);
 

@@ -22,15 +22,15 @@ kutoka . agiza format_helpers
 kutoka . agiza exceptions
 
 
-class Handle:
+kundi Handle:
     """Object returned by callback registration methods."""
 
     __slots__ = ('_callback', '_args', '_cancelled', '_loop',
                  '_source_traceback', '_repr', '__weakref__',
                  '_context')
 
-    def __init__(self, callback, args, loop, context=None):
-        if context is None:
+    eleza __init__(self, callback, args, loop, context=None):
+        ikiwa context is None:
             context = contextvars.copy_context()
         self._context = context
         self._loop = loop
@@ -38,34 +38,34 @@ class Handle:
         self._args = args
         self._cancelled = False
         self._repr = None
-        if self._loop.get_debug():
+        ikiwa self._loop.get_debug():
             self._source_traceback = format_helpers.extract_stack(
                 sys._getframe(1))
         else:
             self._source_traceback = None
 
-    def _repr_info(self):
+    eleza _repr_info(self):
         info = [self.__class__.__name__]
-        if self._cancelled:
+        ikiwa self._cancelled:
             info.append('cancelled')
-        if self._callback is not None:
+        ikiwa self._callback is not None:
             info.append(format_helpers._format_callback_source(
                 self._callback, self._args))
-        if self._source_traceback:
+        ikiwa self._source_traceback:
             frame = self._source_traceback[-1]
             info.append(f'created at {frame[0]}:{frame[1]}')
-        return info
+        rudisha info
 
-    def __repr__(self):
-        if self._repr is not None:
-            return self._repr
+    eleza __repr__(self):
+        ikiwa self._repr is not None:
+            rudisha self._repr
         info = self._repr_info()
-        return '<{}>'.format(' '.join(info))
+        rudisha '<{}>'.format(' '.join(info))
 
-    def cancel(self):
-        if not self._cancelled:
+    eleza cancel(self):
+        ikiwa not self._cancelled:
             self._cancelled = True
-            if self._loop.get_debug():
+            ikiwa self._loop.get_debug():
                 # Keep a representation in debug mode to keep callback and
                 # parameters. For example, to log the warning
                 # "Executing <Handle...> took 2.5 second"
@@ -73,10 +73,10 @@ class Handle:
             self._callback = None
             self._args = None
 
-    def cancelled(self):
-        return self._cancelled
+    eleza cancelled(self):
+        rudisha self._cancelled
 
-    def _run(self):
+    eleza _run(self):
         try:
             self._context.run(self._callback, *self._args)
         except (SystemExit, KeyboardInterrupt):
@@ -90,92 +90,92 @@ class Handle:
                 'exception': exc,
                 'handle': self,
             }
-            if self._source_traceback:
+            ikiwa self._source_traceback:
                 context['source_traceback'] = self._source_traceback
             self._loop.call_exception_handler(context)
         self = None  # Needed to break cycles when an exception occurs.
 
 
-class TimerHandle(Handle):
+kundi TimerHandle(Handle):
     """Object returned by timed callback registration methods."""
 
     __slots__ = ['_scheduled', '_when']
 
-    def __init__(self, when, callback, args, loop, context=None):
+    eleza __init__(self, when, callback, args, loop, context=None):
         assert when is not None
         super().__init__(callback, args, loop, context)
-        if self._source_traceback:
+        ikiwa self._source_traceback:
             del self._source_traceback[-1]
         self._when = when
         self._scheduled = False
 
-    def _repr_info(self):
+    eleza _repr_info(self):
         info = super()._repr_info()
-        pos = 2 if self._cancelled else 1
+        pos = 2 ikiwa self._cancelled else 1
         info.insert(pos, f'when={self._when}')
-        return info
+        rudisha info
 
-    def __hash__(self):
-        return hash(self._when)
+    eleza __hash__(self):
+        rudisha hash(self._when)
 
-    def __lt__(self, other):
-        return self._when < other._when
+    eleza __lt__(self, other):
+        rudisha self._when < other._when
 
-    def __le__(self, other):
-        if self._when < other._when:
-            return True
-        return self.__eq__(other)
+    eleza __le__(self, other):
+        ikiwa self._when < other._when:
+            rudisha True
+        rudisha self.__eq__(other)
 
-    def __gt__(self, other):
-        return self._when > other._when
+    eleza __gt__(self, other):
+        rudisha self._when > other._when
 
-    def __ge__(self, other):
-        if self._when > other._when:
-            return True
-        return self.__eq__(other)
+    eleza __ge__(self, other):
+        ikiwa self._when > other._when:
+            rudisha True
+        rudisha self.__eq__(other)
 
-    def __eq__(self, other):
-        if isinstance(other, TimerHandle):
-            return (self._when == other._when and
+    eleza __eq__(self, other):
+        ikiwa isinstance(other, TimerHandle):
+            rudisha (self._when == other._when and
                     self._callback == other._callback and
                     self._args == other._args and
                     self._cancelled == other._cancelled)
-        return NotImplemented
+        rudisha NotImplemented
 
-    def __ne__(self, other):
+    eleza __ne__(self, other):
         equal = self.__eq__(other)
-        return NotImplemented if equal is NotImplemented else not equal
+        rudisha NotImplemented ikiwa equal is NotImplemented else not equal
 
-    def cancel(self):
-        if not self._cancelled:
+    eleza cancel(self):
+        ikiwa not self._cancelled:
             self._loop._timer_handle_cancelled(self)
         super().cancel()
 
-    def when(self):
+    eleza when(self):
         """Return a scheduled callback time.
 
         The time is an absolute timestamp, using the same time
         reference as loop.time().
         """
-        return self._when
+        rudisha self._when
 
 
-class AbstractServer:
+kundi AbstractServer:
     """Abstract server returned by create_server()."""
 
-    def close(self):
+    eleza close(self):
         """Stop serving.  This leaves existing connections open."""
         raise NotImplementedError
 
-    def get_loop(self):
+    eleza get_loop(self):
         """Get the event loop the Server object is attached to."""
         raise NotImplementedError
 
-    def is_serving(self):
-        """Return True if the server is accepting connections."""
+    eleza is_serving(self):
+        """Return True ikiwa the server is accepting connections."""
         raise NotImplementedError
 
-    async def start_serving(self):
+    async eleza start_serving(self):
         """Start accepting connections.
 
         This method is idempotent, so it can be called when
@@ -183,42 +183,42 @@ class AbstractServer:
         """
         raise NotImplementedError
 
-    async def serve_forever(self):
+    async eleza serve_forever(self):
         """Start accepting connections until the coroutine is cancelled.
 
         The server is closed when the coroutine is cancelled.
         """
         raise NotImplementedError
 
-    async def wait_closed(self):
+    async eleza wait_closed(self):
         """Coroutine to wait until service is closed."""
         raise NotImplementedError
 
-    async def __aenter__(self):
-        return self
+    async eleza __aenter__(self):
+        rudisha self
 
-    async def __aexit__(self, *exc):
+    async eleza __aexit__(self, *exc):
         self.close()
         await self.wait_closed()
 
 
-class AbstractEventLoop:
+kundi AbstractEventLoop:
     """Abstract event loop."""
 
     # Running and stopping the event loop.
 
-    def run_forever(self):
+    eleza run_forever(self):
         """Run the event loop until stop() is called."""
         raise NotImplementedError
 
-    def run_until_complete(self, future):
+    eleza run_until_complete(self, future):
         """Run the event loop until a Future is done.
 
         Return the Future's result, or raise its exception.
         """
         raise NotImplementedError
 
-    def stop(self):
+    eleza stop(self):
         """Stop the event loop as soon as reasonable.
 
         Exactly how soon that is may depend on the implementation, but
@@ -226,15 +226,15 @@ class AbstractEventLoop:
         """
         raise NotImplementedError
 
-    def is_running(self):
+    eleza is_running(self):
         """Return whether the event loop is currently running."""
         raise NotImplementedError
 
-    def is_closed(self):
-        """Returns True if the event loop was closed."""
+    eleza is_closed(self):
+        """Returns True ikiwa the event loop was closed."""
         raise NotImplementedError
 
-    def close(self):
+    eleza close(self):
         """Close the loop.
 
         The loop should not be running.
@@ -245,57 +245,57 @@ class AbstractEventLoop:
         """
         raise NotImplementedError
 
-    async def shutdown_asyncgens(self):
+    async eleza shutdown_asyncgens(self):
         """Shutdown all active asynchronous generators."""
         raise NotImplementedError
 
-    # Methods scheduling callbacks.  All these return Handles.
+    # Methods scheduling callbacks.  All these rudisha Handles.
 
-    def _timer_handle_cancelled(self, handle):
+    eleza _timer_handle_cancelled(self, handle):
         """Notification that a TimerHandle has been cancelled."""
         raise NotImplementedError
 
-    def call_soon(self, callback, *args):
-        return self.call_later(0, callback, *args)
+    eleza call_soon(self, callback, *args):
+        rudisha self.call_later(0, callback, *args)
 
-    def call_later(self, delay, callback, *args):
+    eleza call_later(self, delay, callback, *args):
         raise NotImplementedError
 
-    def call_at(self, when, callback, *args):
+    eleza call_at(self, when, callback, *args):
         raise NotImplementedError
 
-    def time(self):
+    eleza time(self):
         raise NotImplementedError
 
-    def create_future(self):
+    eleza create_future(self):
         raise NotImplementedError
 
     # Method scheduling a coroutine object: create a task.
 
-    def create_task(self, coro, *, name=None):
+    eleza create_task(self, coro, *, name=None):
         raise NotImplementedError
 
     # Methods for interacting with threads.
 
-    def call_soon_threadsafe(self, callback, *args):
+    eleza call_soon_threadsafe(self, callback, *args):
         raise NotImplementedError
 
-    async def run_in_executor(self, executor, func, *args):
+    async eleza run_in_executor(self, executor, func, *args):
         raise NotImplementedError
 
-    def set_default_executor(self, executor):
+    eleza set_default_executor(self, executor):
         raise NotImplementedError
 
     # Network I/O methods returning Futures.
 
-    async def getaddrinfo(self, host, port, *,
+    async eleza getaddrinfo(self, host, port, *,
                           family=0, type=0, proto=0, flags=0):
         raise NotImplementedError
 
-    async def getnameinfo(self, sockaddr, flags=0):
+    async eleza getnameinfo(self, sockaddr, flags=0):
         raise NotImplementedError
 
-    async def create_connection(
+    async eleza create_connection(
             self, protocol_factory, host=None, port=None,
             *, ssl=None, family=0, proto=0,
             flags=0, sock=None, local_addr=None,
@@ -304,7 +304,7 @@ class AbstractEventLoop:
             happy_eyeballs_delay=None, interleave=None):
         raise NotImplementedError
 
-    async def create_server(
+    async eleza create_server(
             self, protocol_factory, host=None, port=None,
             *, family=socket.AF_UNSPEC,
             flags=socket.AI_PASSIVE, sock=None, backlog=100,
@@ -313,7 +313,7 @@ class AbstractEventLoop:
             start_serving=True):
         """A coroutine which creates a TCP server bound to host and port.
 
-        The return value is a Server object which can be used to stop
+        The rudisha value is a Server object which can be used to stop
         the service.
 
         If host is an empty string or None all interfaces are assumed
@@ -357,7 +357,7 @@ class AbstractEventLoop:
         """
         raise NotImplementedError
 
-    async def sendfile(self, transport, file, offset=0, count=None,
+    async eleza sendfile(self, transport, file, offset=0, count=None,
                        *, fallback=True):
         """Send a file through a transport.
 
@@ -365,7 +365,7 @@ class AbstractEventLoop:
         """
         raise NotImplementedError
 
-    async def start_tls(self, transport, protocol, sslcontext, *,
+    async eleza start_tls(self, transport, protocol, sslcontext, *,
                         server_side=False,
                         server_hostname=None,
                         ssl_handshake_timeout=None):
@@ -376,21 +376,21 @@ class AbstractEventLoop:
         """
         raise NotImplementedError
 
-    async def create_unix_connection(
+    async eleza create_unix_connection(
             self, protocol_factory, path=None, *,
             ssl=None, sock=None,
             server_hostname=None,
             ssl_handshake_timeout=None):
         raise NotImplementedError
 
-    async def create_unix_server(
+    async eleza create_unix_server(
             self, protocol_factory, path=None, *,
             sock=None, backlog=100, ssl=None,
             ssl_handshake_timeout=None,
             start_serving=True):
         """A coroutine which creates a UNIX Domain Socket server.
 
-        The return value is a Server object, which can be used to stop
+        The rudisha value is a Server object, which can be used to stop
         the service.
 
         path is a str, representing a file systsem path to bind the
@@ -415,7 +415,7 @@ class AbstractEventLoop:
         """
         raise NotImplementedError
 
-    async def create_datagram_endpoint(self, protocol_factory,
+    async eleza create_datagram_endpoint(self, protocol_factory,
                                        local_addr=None, remote_addr=None, *,
                                        family=0, proto=0, flags=0,
                                        reuse_address=None, reuse_port=None,
@@ -428,7 +428,7 @@ class AbstractEventLoop:
         protocol_factory must be a callable returning a protocol instance.
 
         socket family AF_INET, socket.AF_INET6 or socket.AF_UNIX depending on
-        host (or family if specified), socket type SOCK_DGRAM.
+        host (or family ikiwa specified), socket type SOCK_DGRAM.
 
         reuse_address tells the kernel to reuse a local socket in
         TIME_WAIT state, without waiting for its natural timeout to
@@ -452,7 +452,7 @@ class AbstractEventLoop:
 
     # Pipes and subprocesses.
 
-    async def connect_read_pipe(self, protocol_factory, pipe):
+    async eleza connect_read_pipe(self, protocol_factory, pipe):
         """Register read pipe in event loop. Set the pipe to non-blocking mode.
 
         protocol_factory should instantiate object with Protocol interface.
@@ -461,11 +461,11 @@ class AbstractEventLoop:
         ReadTransport interface."""
         # The reason to accept file-like object instead of just file descriptor
         # is: we need to own pipe and close it at transport finishing
-        # Can got complicated errors if pass f.fileno(),
+        # Can got complicated errors ikiwa pass f.fileno(),
         # close fd in pipe transport then close f and vise versa.
         raise NotImplementedError
 
-    async def connect_write_pipe(self, protocol_factory, pipe):
+    async eleza connect_write_pipe(self, protocol_factory, pipe):
         """Register write pipe in event loop.
 
         protocol_factory should instantiate object with BaseProtocol interface.
@@ -474,18 +474,18 @@ class AbstractEventLoop:
         WriteTransport interface."""
         # The reason to accept file-like object instead of just file descriptor
         # is: we need to own pipe and close it at transport finishing
-        # Can got complicated errors if pass f.fileno(),
+        # Can got complicated errors ikiwa pass f.fileno(),
         # close fd in pipe transport then close f and vise versa.
         raise NotImplementedError
 
-    async def subprocess_shell(self, protocol_factory, cmd, *,
+    async eleza subprocess_shell(self, protocol_factory, cmd, *,
                                stdin=subprocess.PIPE,
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE,
                                **kwargs):
         raise NotImplementedError
 
-    async def subprocess_exec(self, protocol_factory, *args,
+    async eleza subprocess_exec(self, protocol_factory, *args,
                               stdin=subprocess.PIPE,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE,
@@ -493,117 +493,117 @@ class AbstractEventLoop:
         raise NotImplementedError
 
     # Ready-based callback registration methods.
-    # The add_*() methods return None.
-    # The remove_*() methods return True if something was removed,
-    # False if there was nothing to delete.
+    # The add_*() methods rudisha None.
+    # The remove_*() methods rudisha True ikiwa something was removed,
+    # False ikiwa there was nothing to delete.
 
-    def add_reader(self, fd, callback, *args):
+    eleza add_reader(self, fd, callback, *args):
         raise NotImplementedError
 
-    def remove_reader(self, fd):
+    eleza remove_reader(self, fd):
         raise NotImplementedError
 
-    def add_writer(self, fd, callback, *args):
+    eleza add_writer(self, fd, callback, *args):
         raise NotImplementedError
 
-    def remove_writer(self, fd):
+    eleza remove_writer(self, fd):
         raise NotImplementedError
 
     # Completion based I/O methods returning Futures.
 
-    async def sock_recv(self, sock, nbytes):
+    async eleza sock_recv(self, sock, nbytes):
         raise NotImplementedError
 
-    async def sock_recv_into(self, sock, buf):
+    async eleza sock_recv_into(self, sock, buf):
         raise NotImplementedError
 
-    async def sock_sendall(self, sock, data):
+    async eleza sock_sendall(self, sock, data):
         raise NotImplementedError
 
-    async def sock_connect(self, sock, address):
+    async eleza sock_connect(self, sock, address):
         raise NotImplementedError
 
-    async def sock_accept(self, sock):
+    async eleza sock_accept(self, sock):
         raise NotImplementedError
 
-    async def sock_sendfile(self, sock, file, offset=0, count=None,
+    async eleza sock_sendfile(self, sock, file, offset=0, count=None,
                             *, fallback=None):
         raise NotImplementedError
 
     # Signal handling.
 
-    def add_signal_handler(self, sig, callback, *args):
+    eleza add_signal_handler(self, sig, callback, *args):
         raise NotImplementedError
 
-    def remove_signal_handler(self, sig):
+    eleza remove_signal_handler(self, sig):
         raise NotImplementedError
 
     # Task factory.
 
-    def set_task_factory(self, factory):
+    eleza set_task_factory(self, factory):
         raise NotImplementedError
 
-    def get_task_factory(self):
+    eleza get_task_factory(self):
         raise NotImplementedError
 
     # Error handlers.
 
-    def get_exception_handler(self):
+    eleza get_exception_handler(self):
         raise NotImplementedError
 
-    def set_exception_handler(self, handler):
+    eleza set_exception_handler(self, handler):
         raise NotImplementedError
 
-    def default_exception_handler(self, context):
+    eleza default_exception_handler(self, context):
         raise NotImplementedError
 
-    def call_exception_handler(self, context):
+    eleza call_exception_handler(self, context):
         raise NotImplementedError
 
     # Debug flag management.
 
-    def get_debug(self):
+    eleza get_debug(self):
         raise NotImplementedError
 
-    def set_debug(self, enabled):
+    eleza set_debug(self, enabled):
         raise NotImplementedError
 
 
-class AbstractEventLoopPolicy:
+kundi AbstractEventLoopPolicy:
     """Abstract policy for accessing the event loop."""
 
-    def get_event_loop(self):
+    eleza get_event_loop(self):
         """Get the event loop for the current context.
 
         Returns an event loop object implementing the BaseEventLoop interface,
         or raises an exception in case no event loop has been set for the
         current context and the current policy does not specify to create one.
 
-        It should never return None."""
+        It should never rudisha None."""
         raise NotImplementedError
 
-    def set_event_loop(self, loop):
+    eleza set_event_loop(self, loop):
         """Set the event loop for the current context to loop."""
         raise NotImplementedError
 
-    def new_event_loop(self):
-        """Create and return a new event loop object according to this
+    eleza new_event_loop(self):
+        """Create and rudisha a new event loop object according to this
         policy's rules. If there's need to set this loop as the event loop for
         the current context, set_event_loop must be called explicitly."""
         raise NotImplementedError
 
     # Child processes handling (Unix only).
 
-    def get_child_watcher(self):
+    eleza get_child_watcher(self):
         "Get the watcher for child processes."
         raise NotImplementedError
 
-    def set_child_watcher(self, watcher):
+    eleza set_child_watcher(self, watcher):
         """Set the watcher for child processes."""
         raise NotImplementedError
 
 
-class BaseDefaultEventLoopPolicy(AbstractEventLoopPolicy):
+kundi BaseDefaultEventLoopPolicy(AbstractEventLoopPolicy):
     """Default policy implementation for accessing the event loop.
 
     In this policy, each thread has its own event loop.  However, we
@@ -618,45 +618,45 @@ class BaseDefaultEventLoopPolicy(AbstractEventLoopPolicy):
 
     _loop_factory = None
 
-    class _Local(threading.local):
+    kundi _Local(threading.local):
         _loop = None
         _set_called = False
 
-    def __init__(self):
+    eleza __init__(self):
         self._local = self._Local()
 
-    def get_event_loop(self):
+    eleza get_event_loop(self):
         """Get the event loop for the current context.
 
         Returns an instance of EventLoop or raises an exception.
         """
-        if (self._local._loop is None and
+        ikiwa (self._local._loop is None and
                 not self._local._set_called and
                 isinstance(threading.current_thread(), threading._MainThread)):
             self.set_event_loop(self.new_event_loop())
 
-        if self._local._loop is None:
+        ikiwa self._local._loop is None:
             raise RuntimeError('There is no current event loop in thread %r.'
                                % threading.current_thread().name)
 
-        return self._local._loop
+        rudisha self._local._loop
 
-    def set_event_loop(self, loop):
+    eleza set_event_loop(self, loop):
         """Set the event loop."""
         self._local._set_called = True
         assert loop is None or isinstance(loop, AbstractEventLoop)
         self._local._loop = loop
 
-    def new_event_loop(self):
+    eleza new_event_loop(self):
         """Create a new event loop.
 
         You must call set_event_loop() to make this the current event
         loop.
         """
-        return self._loop_factory()
+        rudisha self._loop_factory()
 
 
-# Event loop policy.  The policy itself is always global, even if the
+# Event loop policy.  The policy itself is always global, even ikiwa the
 # policy's rules say that there is an event loop per thread (or other
 # notion of context).  The default policy is installed by the first
 # call to get_event_loop_policy().
@@ -667,26 +667,26 @@ _lock = threading.Lock()
 
 
 # A TLS for the running event loop, used by _get_running_loop.
-class _RunningLoop(threading.local):
+kundi _RunningLoop(threading.local):
     loop_pid = (None, None)
 
 
 _running_loop = _RunningLoop()
 
 
-def get_running_loop():
-    """Return the running event loop.  Raise a RuntimeError if there is none.
+eleza get_running_loop():
+    """Return the running event loop.  Raise a RuntimeError ikiwa there is none.
 
     This function is thread-specific.
     """
     # NOTE: this function is implemented in C (see _asynciomodule.c)
     loop = _get_running_loop()
-    if loop is None:
+    ikiwa loop is None:
         raise RuntimeError('no running event loop')
-    return loop
+    rudisha loop
 
 
-def _get_running_loop():
+eleza _get_running_loop():
     """Return the running event loop or None.
 
     This is a low-level function intended to be used by event loops.
@@ -694,11 +694,11 @@ def _get_running_loop():
     """
     # NOTE: this function is implemented in C (see _asynciomodule.c)
     running_loop, pid = _running_loop.loop_pid
-    if running_loop is not None and pid == os.getpid():
-        return running_loop
+    ikiwa running_loop is not None and pid == os.getpid():
+        rudisha running_loop
 
 
-def _set_running_loop(loop):
+eleza _set_running_loop(loop):
     """Set the running event loop.
 
     This is a low-level function intended to be used by event loops.
@@ -708,22 +708,22 @@ def _set_running_loop(loop):
     _running_loop.loop_pid = (loop, os.getpid())
 
 
-def _init_event_loop_policy():
+eleza _init_event_loop_policy():
     global _event_loop_policy
     with _lock:
-        if _event_loop_policy is None:  # pragma: no branch
+        ikiwa _event_loop_policy is None:  # pragma: no branch
             kutoka . agiza DefaultEventLoopPolicy
             _event_loop_policy = DefaultEventLoopPolicy()
 
 
-def get_event_loop_policy():
+eleza get_event_loop_policy():
     """Get the current event loop policy."""
-    if _event_loop_policy is None:
+    ikiwa _event_loop_policy is None:
         _init_event_loop_policy()
-    return _event_loop_policy
+    rudisha _event_loop_policy
 
 
-def set_event_loop_policy(policy):
+eleza set_event_loop_policy(policy):
     """Set the current event loop policy.
 
     If policy is None, the default policy is restored."""
@@ -732,41 +732,41 @@ def set_event_loop_policy(policy):
     _event_loop_policy = policy
 
 
-def get_event_loop():
+eleza get_event_loop():
     """Return an asyncio event loop.
 
     When called kutoka a coroutine or a callback (e.g. scheduled with call_soon
-    or similar API), this function will always return the running event loop.
+    or similar API), this function will always rudisha the running event loop.
 
     If there is no running event loop set, the function will return
     the result of `get_event_loop_policy().get_event_loop()` call.
     """
     # NOTE: this function is implemented in C (see _asynciomodule.c)
     current_loop = _get_running_loop()
-    if current_loop is not None:
-        return current_loop
-    return get_event_loop_policy().get_event_loop()
+    ikiwa current_loop is not None:
+        rudisha current_loop
+    rudisha get_event_loop_policy().get_event_loop()
 
 
-def set_event_loop(loop):
+eleza set_event_loop(loop):
     """Equivalent to calling get_event_loop_policy().set_event_loop(loop)."""
     get_event_loop_policy().set_event_loop(loop)
 
 
-def new_event_loop():
+eleza new_event_loop():
     """Equivalent to calling get_event_loop_policy().new_event_loop()."""
-    return get_event_loop_policy().new_event_loop()
+    rudisha get_event_loop_policy().new_event_loop()
 
 
-def get_child_watcher():
+eleza get_child_watcher():
     """Equivalent to calling get_event_loop_policy().get_child_watcher()."""
-    return get_event_loop_policy().get_child_watcher()
+    rudisha get_event_loop_policy().get_child_watcher()
 
 
-def set_child_watcher(watcher):
+eleza set_child_watcher(watcher):
     """Equivalent to calling
     get_event_loop_policy().set_child_watcher(watcher)."""
-    return get_event_loop_policy().set_child_watcher(watcher)
+    rudisha get_event_loop_policy().set_child_watcher(watcher)
 
 
 # Alias pure-Python implementations for testing purposes.

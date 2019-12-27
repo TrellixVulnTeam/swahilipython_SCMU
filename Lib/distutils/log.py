@@ -71,7 +71,7 @@ def set_threshold(level):
 def set_verbosity(v):
     if v <= 0:
         set_threshold(WARN)
-    elif v == 1:
+    lasivyo v == 1:
         set_threshold(INFO)
-    elif v >= 2:
+    lasivyo v >= 2:
         set_threshold(DEBUG)

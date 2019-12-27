@@ -8,73 +8,73 @@ agiza re
 
 rx = re.compile(r'\((\S+).py, line (\d+)')
 
-def get_error_location(msg):
+eleza get_error_location(msg):
     mo = rx.search(str(msg))
-    return mo.group(1, 2)
+    rudisha mo.group(1, 2)
 
-class FutureTest(unittest.TestCase):
+kundi FutureTest(unittest.TestCase):
 
-    def check_syntax_error(self, err, basename, lineno, offset=1):
+    eleza check_syntax_error(self, err, basename, lineno, offset=1):
         self.assertIn('%s.py, line %d' % (basename, lineno), str(err))
         self.assertEqual(os.path.basename(err.filename), basename + '.py')
         self.assertEqual(err.lineno, lineno)
         self.assertEqual(err.offset, offset)
 
-    def test_future1(self):
+    eleza test_future1(self):
         with support.CleanImport('future_test1'):
             kutoka test agiza future_test1
             self.assertEqual(future_test1.result, 6)
 
-    def test_future2(self):
+    eleza test_future2(self):
         with support.CleanImport('future_test2'):
             kutoka test agiza future_test2
             self.assertEqual(future_test2.result, 6)
 
-    def test_future3(self):
+    eleza test_future3(self):
         with support.CleanImport('test_future3'):
             kutoka test agiza test_future3
 
-    def test_badfuture3(self):
+    eleza test_badfuture3(self):
         with self.assertRaises(SyntaxError) as cm:
             kutoka test agiza badsyntax_future3
         self.check_syntax_error(cm.exception, "badsyntax_future3", 3)
 
-    def test_badfuture4(self):
+    eleza test_badfuture4(self):
         with self.assertRaises(SyntaxError) as cm:
             kutoka test agiza badsyntax_future4
         self.check_syntax_error(cm.exception, "badsyntax_future4", 3)
 
-    def test_badfuture5(self):
+    eleza test_badfuture5(self):
         with self.assertRaises(SyntaxError) as cm:
             kutoka test agiza badsyntax_future5
         self.check_syntax_error(cm.exception, "badsyntax_future5", 4)
 
-    def test_badfuture6(self):
+    eleza test_badfuture6(self):
         with self.assertRaises(SyntaxError) as cm:
             kutoka test agiza badsyntax_future6
         self.check_syntax_error(cm.exception, "badsyntax_future6", 3)
 
-    def test_badfuture7(self):
+    eleza test_badfuture7(self):
         with self.assertRaises(SyntaxError) as cm:
             kutoka test agiza badsyntax_future7
         self.check_syntax_error(cm.exception, "badsyntax_future7", 3, 53)
 
-    def test_badfuture8(self):
+    eleza test_badfuture8(self):
         with self.assertRaises(SyntaxError) as cm:
             kutoka test agiza badsyntax_future8
         self.check_syntax_error(cm.exception, "badsyntax_future8", 3)
 
-    def test_badfuture9(self):
+    eleza test_badfuture9(self):
         with self.assertRaises(SyntaxError) as cm:
             kutoka test agiza badsyntax_future9
         self.check_syntax_error(cm.exception, "badsyntax_future9", 3)
 
-    def test_badfuture10(self):
+    eleza test_badfuture10(self):
         with self.assertRaises(SyntaxError) as cm:
             kutoka test agiza badsyntax_future10
         self.check_syntax_error(cm.exception, "badsyntax_future10", 3)
 
-    def test_parserhack(self):
+    eleza test_parserhack(self):
         # test that the parser.c::future_hack function works as expected
         # Note: although this test must pass, it's not testing the original
         #       bug as of 2.6 since the with statement is not optional and
@@ -94,29 +94,29 @@ class FutureTest(unittest.TestCase):
         else:
             self.fail("syntax error didn't occur")
 
-    def test_multiple_features(self):
+    eleza test_multiple_features(self):
         with support.CleanImport("test.test_future5"):
             kutoka test agiza test_future5
 
-    def test_unicode_literals_exec(self):
+    eleza test_unicode_literals_exec(self):
         scope = {}
         exec("kutoka __future__ agiza unicode_literals; x = ''", {}, scope)
         self.assertIsInstance(scope["x"], str)
 
-class AnnotationsFutureTestCase(unittest.TestCase):
+kundi AnnotationsFutureTestCase(unittest.TestCase):
     template = dedent(
         """
         kutoka __future__ agiza annotations
-        def f() -> {ann}:
+        eleza f() -> {ann}:
             ...
-        def g(arg: {ann}) -> None:
+        eleza g(arg: {ann}) -> None:
             ...
         var: {ann}
         var2: {ann} = None
         """
     )
 
-    def getActual(self, annotation):
+    eleza getActual(self, annotation):
         scope = {}
         exec(self.template.format(ann=annotation), {}, scope)
         func_ret_ann = scope['f'].__annotations__['return']
@@ -126,21 +126,21 @@ class AnnotationsFutureTestCase(unittest.TestCase):
         self.assertEqual(func_ret_ann, func_arg_ann)
         self.assertEqual(func_ret_ann, var_ann1)
         self.assertEqual(func_ret_ann, var_ann2)
-        return func_ret_ann
+        rudisha func_ret_ann
 
-    def assertAnnotationEqual(
+    eleza assertAnnotationEqual(
         self, annotation, expected=None, drop_parens=False, is_tuple=False,
     ):
         actual = self.getActual(annotation)
-        if expected is None:
-            expected = annotation if not is_tuple else annotation[1:-1]
-        if drop_parens:
+        ikiwa expected is None:
+            expected = annotation ikiwa not is_tuple else annotation[1:-1]
+        ikiwa drop_parens:
             self.assertNotEqual(actual, expected)
             actual = actual.replace("(", "").replace(")", "")
 
         self.assertEqual(actual, expected)
 
-    def test_annotations(self):
+    eleza test_annotations(self):
         eq = self.assertAnnotationEqual
         eq('...')
         eq("'some_string'")
@@ -196,15 +196,15 @@ class AnnotationsFutureTestCase(unittest.TestCase):
         eq('lambda x=1, y=2, z=3, /, w=4, *, l, l2, **kwargs: x + y + z + w + l + l2')
         eq('lambda x, /, y=1, *, z: x + y + z')
         eq('lambda x: lambda y: x + y')
-        eq('1 if True else 2')
-        eq('str or None if int or True else str or bytes or None')
-        eq('str or None if (1 if True else 2) else str or bytes or None')
-        eq("0 if not x else 1 if x > 0 else -1")
-        eq("(1 if x > 0 else -1) if x else 0")
+        eq('1 ikiwa True else 2')
+        eq('str or None ikiwa int or True else str or bytes or None')
+        eq('str or None ikiwa (1 ikiwa True else 2) else str or bytes or None')
+        eq("0 ikiwa not x else 1 ikiwa x > 0 else -1")
+        eq("(1 ikiwa x > 0 else -1) ikiwa x else 0")
         eq("{'2.7': dead, '3.7': long_live or die_hard}")
         eq("{'2.7': dead, '3.7': long_live or die_hard, **{'3.6': verygood}}")
         eq("{**a, **b, **c}")
-        eq("{'2.7', '3.6', '3.7', '3.8', '3.9', '4.0' if gilectomy else '3.10'}")
+        eq("{'2.7', '3.6', '3.7', '3.8', '3.9', '4.0' ikiwa gilectomy else '3.10'}")
         eq("{*a, *b, *c}")
         eq("({'a': 'b'}, True or False, +value, 'string', b'bytes') or None")
         eq("()")
@@ -259,14 +259,14 @@ class AnnotationsFutureTestCase(unittest.TestCase):
         eq("slice[()]")
         eq("slice[a, b:c, d:e:f]")
         eq("slice[(x for x in a)]")
-        eq('str or None if sys.version_info[0] > (3,) else str or bytes or None')
+        eq('str or None ikiwa sys.version_info[0] > (3,) else str or bytes or None')
         eq("f'f-string without formatted values is just a string'")
         eq("f'{{NOT a formatted value}}'")
         eq("f'some f-string with {a} {few():.2f} {formatted.values!r}'")
         eq('''f"{f'{nested} inner'} outer"''')
         eq("f'space between opening braces: { {a for a in (1, 2, 3)}}'")
         eq("f'{(lambda x: x)}'")
-        eq("f'{(None if a else lambda x: x)}'")
+        eq("f'{(None ikiwa a else lambda x: x)}'")
         eq("f'{x}'")
         eq("f'{x!r}'")
         eq("f'{x!a}'")
@@ -274,8 +274,8 @@ class AnnotationsFutureTestCase(unittest.TestCase):
         eq('(yield)')
         eq('(yield a + b)')
         eq('await some.complicated[0].call(with_args=True or 1 is not 1)')
-        eq('[x for x in (a if b else c)]')
-        eq('[x for x in a if (b if c else d)]')
+        eq('[x for x in (a ikiwa b else c)]')
+        eq('[x for x in a ikiwa (b ikiwa c else d)]')
         eq('f(x for x in a)')
         eq('f(1, (x for x in a))')
         eq('f((x for x in a), 2)')
@@ -284,7 +284,7 @@ class AnnotationsFutureTestCase(unittest.TestCase):
         eq("(x:=10)")
         eq("f'{(x:=10):=10}'")
 
-    def test_fstring_debug_annotations(self):
+    eleza test_fstring_debug_annotations(self):
         # f-strings with '=' don't round trip very well, so set the expected
         # result explicitely.
         self.assertAnnotationEqual("f'{x=!r}'", expected="f'x={x!r}'")
@@ -295,5 +295,5 @@ class AnnotationsFutureTestCase(unittest.TestCase):
         self.assertAnnotationEqual("f'{x=!s:*^20}'", expected="f'x={x!s:*^20}'")
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

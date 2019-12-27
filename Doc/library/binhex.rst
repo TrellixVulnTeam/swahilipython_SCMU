@@ -26,7 +26,7 @@ The :mod:`binhex` module defines the following functions:
    Decode a binhex file *input*. *input* may be a filename or a file-like object
    supporting :meth:`read` and :meth:`close` methods. The resulting file is written
    to a file named *output*, unless the argument is ``None`` in which case the
-   output filename is read from the binhex file.
+   output filename is read kutoka the binhex file.
 
 The following exception is also defined:
 

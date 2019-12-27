@@ -43,9 +43,9 @@ additional methods of invocation:
   commands and executes them until an EOF (an end-of-file character, you can
   produce that with :kbd:`Ctrl-D` on UNIX or :kbd:`Ctrl-Z, Enter` on Windows) is read.
 * When called with a file name argument or with a file as standard input, it
-  reads and executes a script from that file.
+  reads and executes a script kutoka that file.
 * When called with a directory name argument, it reads and executes an
-  appropriately named script from that directory.
+  appropriately named script kutoka that directory.
 * When called with ``-c command``, it executes the Python statement(s) given as
   *command*.  Here *command* may contain multiple statements separated by
   newlines. Leading whitespace is significant in Python statements!
@@ -130,7 +130,7 @@ source.
 
 .. describe:: -
 
-   Read commands from standard input (:data:`sys.stdin`).  If standard input is
+   Read commands kutoka standard input (:data:`sys.stdin`).  If standard input is
    a terminal, :option:`-i` is implied.
 
    If this option is given, the first element of :data:`sys.argv` will be
@@ -229,7 +229,7 @@ Miscellaneous options
 .. cmdoption:: -B
 
    If given, Python won't try to write ``.pyc`` files on the
-   import of source modules.  See also :envvar:`PYTHONDONTWRITEBYTECODE`.
+   agiza of source modules.  See also :envvar:`PYTHONDONTWRITEBYTECODE`.
 
 
 .. cmdoption:: --check-hash-based-pycs default|always|never
@@ -275,7 +275,7 @@ Miscellaneous options
    In isolated mode :data:`sys.path` contains neither the script's directory nor
    the user's site-packages directory. All :envvar:`PYTHON*` environment
    variables are ignored, too. Further restrictions may be imposed to prevent
-   the user from injecting malicious code.
+   the user kutoka injecting malicious code.
 
    .. versionadded:: 3.4
 
@@ -346,7 +346,7 @@ Miscellaneous options
 
 .. cmdoption:: -S
 
-   Disable the import of the module :mod:`site` and the site-dependent
+   Disable the agiza of the module :mod:`site` and the site-dependent
    manipulations of :data:`sys.path` that it entails.  Also disable these
    manipulations if :mod:`site` is explicitly imported later (call
    :func:`site.main` if you want them to be triggered).
@@ -366,7 +366,7 @@ Miscellaneous options
 .. cmdoption:: -v
 
    Print a message each time a module is initialized, showing the place
-   (filename or built-in module) from which it is loaded.  When given twice
+   (filename or built-in module) kutoka which it is loaded.  When given twice
    (:option:`!-vv`), print a message for each file that is checked for when
    searching for a module.  Also provides information on module cleanup at exit.
    See also :envvar:`PYTHONVERBOSE`.
@@ -392,7 +392,7 @@ Miscellaneous options
    invalid options when the first warning is issued).
 
    Warnings can also be controlled using the :envvar:`PYTHONWARNINGS`
-   environment variable and from within a Python program using the
+   environment variable and kutoka within a Python program using the
    :mod:`warnings` module.
 
    The simplest settings apply a particular action unconditionally to all
@@ -437,7 +437,7 @@ Miscellaneous options
    * ``-X showalloccount`` to output the total count of allocated objects for
      each type when the program finishes. This only works when Python was built with
      ``COUNT_ALLOCS`` defined.
-   * ``-X importtime`` to show how long each import takes. It shows module
+   * ``-X importtime`` to show how long each agiza takes. It shows module
      name, cumulative time (including nested imports) and self time (excluding
      nested imports).  Note that its output may be broken in multi-threaded
      application.  Typical usage is ``python3 -X importtime -c 'import
@@ -530,7 +530,7 @@ conflict.
 
    In addition to normal directories, individual :envvar:`PYTHONPATH` entries
    may refer to zipfiles containing pure Python modules (in either source or
-   compiled form). Extension modules cannot be imported from zipfiles.
+   compiled form). Extension modules cannot be imported kutoka zipfiles.
 
    The default search path is installation dependent, but generally begins with
    :file:`{prefix}/lib/python{version}` (see :envvar:`PYTHONHOME` above).  It
@@ -538,7 +538,7 @@ conflict.
 
    An additional directory will be inserted in the search path in front of
    :envvar:`PYTHONPATH` as described above under
-   :ref:`using-on-interface-options`. The search path can be manipulated from
+   :ref:`using-on-interface-options`. The search path can be manipulated kutoka
    within a Python program as the variable :data:`sys.path`.
 
 
@@ -614,7 +614,7 @@ conflict.
 .. envvar:: PYTHONDONTWRITEBYTECODE
 
    If this is set to a non-empty string, Python won't try to write ``.pyc``
-   files on the import of source modules.  This is equivalent to
+   files on the agiza of source modules.  This is equivalent to
    specifying the :option:`-B` option.
 
 
@@ -740,7 +740,7 @@ conflict.
 .. envvar:: PYTHONPROFILEIMPORTTIME
 
    If this environment variable is set to a non-empty string, Python will
-   show how long each import takes.  This is exactly equivalent to setting
+   show how long each agiza takes.  This is exactly equivalent to setting
    ``-X importtime`` on the command line.
 
    .. versionadded:: 3.7

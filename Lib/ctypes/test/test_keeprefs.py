@@ -146,7 +146,7 @@ class PointerToStructure(unittest.TestCase):
 
         # to avoid leaking when tests are run several times
         # clean up the types left in the cache.
-        from ctypes import _pointer_type_cache
+        from ctypes agiza _pointer_type_cache
         del _pointer_type_cache[POINT]
 
 if __name__ == "__main__":

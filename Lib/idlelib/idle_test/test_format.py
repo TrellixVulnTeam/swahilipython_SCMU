@@ -9,7 +9,7 @@ kutoka idlelib.editor agiza EditorWindow
 kutoka idlelib.idle_test.mock_idle agiza Editor as MockEditor
 
 
-class Is_Get_Test(unittest.TestCase):
+kundi Is_Get_Test(unittest.TestCase):
     """Test the is_ and get_ functions"""
     test_comment = '# This is a comment'
     test_nocomment = 'This is not a comment'
@@ -17,19 +17,19 @@ class Is_Get_Test(unittest.TestCase):
     leadingws_comment = '    # This is a comment'
     leadingws_nocomment = '    This is not a comment'
 
-    def test_is_all_white(self):
+    eleza test_is_all_white(self):
         self.assertTrue(ft.is_all_white(''))
         self.assertTrue(ft.is_all_white('\t\n\r\f\v'))
         self.assertFalse(ft.is_all_white(self.test_comment))
 
-    def test_get_indent(self):
+    eleza test_get_indent(self):
         Equal = self.assertEqual
         Equal(ft.get_indent(self.test_comment), '')
         Equal(ft.get_indent(self.trailingws_comment), '')
         Equal(ft.get_indent(self.leadingws_comment), '    ')
         Equal(ft.get_indent(self.leadingws_nocomment), '    ')
 
-    def test_get_comment_header(self):
+    eleza test_get_comment_header(self):
         Equal = self.assertEqual
         # Test comment strings
         Equal(ft.get_comment_header(self.test_comment), '#')
@@ -40,7 +40,7 @@ class Is_Get_Test(unittest.TestCase):
         Equal(ft.get_comment_header(self.test_nocomment), '')
 
 
-class FindTest(unittest.TestCase):
+kundi FindTest(unittest.TestCase):
     """Test the find_paragraph function in paragraph module.
 
     Using the runcase() function, find_paragraph() is called with 'mark' set at
@@ -51,11 +51,11 @@ class FindTest(unittest.TestCase):
     """
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         kutoka idlelib.idle_test.mock_tk agiza Text
         cls.text = Text()
 
-    def runcase(self, inserttext, stopline, expected):
+    eleza runcase(self, inserttext, stopline, expected):
         # Check that find_paragraph returns the expected paragraph when
         # the mark index is set to beginning, middle, end of each line
         # up to but not including the stop line
@@ -68,7 +68,7 @@ class FindTest(unittest.TestCase):
                 self.assertEqual(ft.find_paragraph(text, tempindex), expected)
         text.delete('1.0', 'end')
 
-    def test_find_comment(self):
+    eleza test_find_comment(self):
         comment = (
             "# Comment block with no blank lines before\n"
             "# Comment line\n"
@@ -122,7 +122,7 @@ class FindTest(unittest.TestCase):
             "\n")
         self.runcase(comment, 3, ('2.0', '3.0', '#', comment[1:49]))
 
-    def test_find_paragraph(self):
+    eleza test_find_paragraph(self):
         teststring = (
             '"""String with no blank lines before\n'
             'String line\n'
@@ -159,10 +159,10 @@ class FindTest(unittest.TestCase):
         self.runcase(teststring, 3, ('2.0', '3.0', '    ', teststring[1:55]))
 
 
-class ReformatFunctionTest(unittest.TestCase):
+kundi ReformatFunctionTest(unittest.TestCase):
     """Test the reformat_paragraph function without the editor window."""
 
-    def test_reformat_paragraph(self):
+    eleza test_reformat_paragraph(self):
         Equal = self.assertEqual
         reform = ft.reformat_paragraph
         hw = "O hello world"
@@ -185,10 +185,10 @@ class ReformatFunctionTest(unittest.TestCase):
         Equal(reform(hw, 13), "\nO hello world")
 
 
-class ReformatCommentTest(unittest.TestCase):
+kundi ReformatCommentTest(unittest.TestCase):
     """Test the reformat_comment function without the editor window."""
 
-    def test_reformat_comment(self):
+    eleza test_reformat_comment(self):
         Equal = self.assertEqual
 
         # reformat_comment formats to a minimum of 20 characters
@@ -211,8 +211,8 @@ class ReformatCommentTest(unittest.TestCase):
         Equal(result, expected)
 
 
-class FormatClassTest(unittest.TestCase):
-    def test_init_close(self):
+kundi FormatClassTest(unittest.TestCase):
+    eleza test_init_close(self):
         instance = ft.FormatParagraph('editor')
         self.assertEqual(instance.editwin, 'editor')
         instance.close()
@@ -225,25 +225,25 @@ class FormatClassTest(unittest.TestCase):
 
 # A real EditorWindow creates unneeded, time-consuming baggage and
 # sometimes emits shutdown warnings like this:
-# "warning: callback failed in WindowList <class '_tkinter.TclError'>
+# "warning: callback failed in WindowList <kundi '_tkinter.TclError'>
 # : invalid command name ".55131368.windows".
 # Calling EditorWindow._close in tearDownClass prevents this but causes
 # other problems (windows left open).
 
-class TextWrapper:
-    def __init__(self, master):
+kundi TextWrapper:
+    eleza __init__(self, master):
         self.text = Text(master=master)
-    def __getattr__(self, name):
-        return getattr(self.text, name)
-    def undo_block_start(self): pass
-    def undo_block_stop(self): pass
+    eleza __getattr__(self, name):
+        rudisha getattr(self.text, name)
+    eleza undo_block_start(self): pass
+    eleza undo_block_stop(self): pass
 
-class Editor:
-    def __init__(self, root):
+kundi Editor:
+    eleza __init__(self, root):
         self.text = TextWrapper(root)
     get_selection_indices = EditorWindow. get_selection_indices
 
-class FormatEventTest(unittest.TestCase):
+kundi FormatEventTest(unittest.TestCase):
     """Test the formatting of text inside a Text widget.
 
     This is done with FormatParagraph.format.paragraph_event,
@@ -269,7 +269,7 @@ class FormatEventTest(unittest.TestCase):
         "# The fourth line is short like the first line.")
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
@@ -279,19 +279,19 @@ class FormatEventTest(unittest.TestCase):
         # Sets the insert mark just after the re-wrapped and inserted  text.
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         del cls.text, cls.formatter
         cls.root.update_idletasks()
         cls.root.destroy()
         del cls.root
 
-    def test_short_line(self):
+    eleza test_short_line(self):
         self.text.insert('1.0', "Short line\n")
         self.formatter("Dummy")
         self.assertEqual(self.text.get('1.0', 'insert'), "Short line\n" )
         self.text.delete('1.0', 'end')
 
-    def test_long_line(self):
+    eleza test_long_line(self):
         text = self.text
 
         # Set cursor ('insert' mark) to '1.0', within text.
@@ -318,7 +318,7 @@ class FormatEventTest(unittest.TestCase):
         self.assertEqual(result, expected)
         text.delete('1.0', 'end')
 
-    def test_multiple_lines(self):
+    eleza test_multiple_lines(self):
         text = self.text
         #  Select 2 long lines.
         text.insert('1.0', self.multiline_test_string)
@@ -333,7 +333,7 @@ class FormatEventTest(unittest.TestCase):
         self.assertEqual(result, expected)
         text.delete('1.0', 'end')
 
-    def test_comment_block(self):
+    eleza test_comment_block(self):
         text = self.text
 
         # Set cursor ('insert') to '1.0', within block.
@@ -377,8 +377,8 @@ class FormatEventTest(unittest.TestCase):
 ##        text.delete('1.0', 'end')
 
 
-class DummyEditwin:
-    def __init__(self, root, text):
+kundi DummyEditwin:
+    eleza __init__(self, root, text):
         self.root = root
         self.text = text
         self.indentwidth = 4
@@ -390,10 +390,10 @@ class DummyEditwin:
     get_selection_indices = EditorWindow.get_selection_indices
 
 
-class FormatRegionTest(unittest.TestCase):
+kundi FormatRegionTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
@@ -404,36 +404,36 @@ class FormatRegionTest(unittest.TestCase):
         cls.formatter = ft.FormatRegion(cls.editor)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         del cls.text, cls.formatter, cls.editor
         cls.root.update_idletasks()
         cls.root.destroy()
         del cls.root
 
-    def setUp(self):
+    eleza setUp(self):
         self.text.insert('1.0', self.code_sample)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.text.delete('1.0', 'end')
 
     code_sample = """\
 
-class C1():
+kundi C1():
     # Class comment.
-    def __init__(self, a, b):
+    eleza __init__(self, a, b):
         self.a = a
         self.b = b
 
-    def compare(self):
-        if a > b:
-            return a
-        elif a < b:
-            return b
+    eleza compare(self):
+        ikiwa a > b:
+            rudisha a
+        elikiwa a < b:
+            rudisha b
         else:
-            return None
+            rudisha None
 """
 
-    def test_get_region(self):
+    eleza test_get_region(self):
         get = self.formatter.get_region
         text = self.text
         eq = self.assertEqual
@@ -441,8 +441,8 @@ class C1():
         # Add selection.
         text.tag_add('sel', '7.0', '10.0')
         expected_lines = ['',
-                          '    def compare(self):',
-                          '        if a > b:',
+                          '    eleza compare(self):',
+                          '        ikiwa a > b:',
                           '']
         eq(get(), ('7.0', '10.0', '\n'.join(expected_lines), expected_lines))
 
@@ -450,7 +450,7 @@ class C1():
         text.tag_remove('sel', '1.0', 'end')
         eq(get(), ('15.0', '16.0', '\n', ['', '']))
 
-    def test_set_region(self):
+    eleza test_set_region(self):
         set_ = self.formatter.set_region
         text = self.text
         eq = self.assertEqual
@@ -485,7 +485,7 @@ class C1():
 
         text.bell = save_bell
 
-    def test_indent_region_event(self):
+    eleza test_indent_region_event(self):
         indent = self.formatter.indent_region_event
         text = self.text
         eq = self.assertEqual
@@ -493,9 +493,9 @@ class C1():
         text.tag_add('sel', '7.0', '10.0')
         indent()
         # Blank lines aren't affected by indent.
-        eq(text.get('7.0', '10.0'), ('\n        def compare(self):\n            if a > b:\n'))
+        eq(text.get('7.0', '10.0'), ('\n        eleza compare(self):\n            ikiwa a > b:\n'))
 
-    def test_dedent_region_event(self):
+    eleza test_dedent_region_event(self):
         dedent = self.formatter.dedent_region_event
         text = self.text
         eq = self.assertEqual
@@ -503,18 +503,18 @@ class C1():
         text.tag_add('sel', '7.0', '10.0')
         dedent()
         # Blank lines aren't affected by dedent.
-        eq(text.get('7.0', '10.0'), ('\ndef compare(self):\n    if a > b:\n'))
+        eq(text.get('7.0', '10.0'), ('\neleza compare(self):\n    ikiwa a > b:\n'))
 
-    def test_comment_region_event(self):
+    eleza test_comment_region_event(self):
         comment = self.formatter.comment_region_event
         text = self.text
         eq = self.assertEqual
 
         text.tag_add('sel', '7.0', '10.0')
         comment()
-        eq(text.get('7.0', '10.0'), ('##\n##    def compare(self):\n##        if a > b:\n'))
+        eq(text.get('7.0', '10.0'), ('##\n##    eleza compare(self):\n##        ikiwa a > b:\n'))
 
-    def test_uncomment_region_event(self):
+    eleza test_uncomment_region_event(self):
         comment = self.formatter.comment_region_event
         uncomment = self.formatter.uncomment_region_event
         text = self.text
@@ -523,7 +523,7 @@ class C1():
         text.tag_add('sel', '7.0', '10.0')
         comment()
         uncomment()
-        eq(text.get('7.0', '10.0'), ('\n    def compare(self):\n        if a > b:\n'))
+        eq(text.get('7.0', '10.0'), ('\n    eleza compare(self):\n        ikiwa a > b:\n'))
 
         # Only remove comments at the beginning of a line.
         text.tag_remove('sel', '1.0', 'end')
@@ -536,7 +536,7 @@ class C1():
         eq(text.get('3.0', '3.end'), (' Class comment.'))
 
     @mock.patch.object(ft.FormatRegion, "_asktabwidth")
-    def test_tabify_region_event(self, _asktabwidth):
+    eleza test_tabify_region_event(self, _asktabwidth):
         tabify = self.formatter.tabify_region_event
         text = self.text
         eq = self.assertEqual
@@ -548,10 +548,10 @@ class C1():
 
         _asktabwidth.return_value = 3
         self.assertIsNotNone(tabify())
-        eq(text.get('7.0', '10.0'), ('\n\t def compare(self):\n\t\t  if a > b:\n'))
+        eq(text.get('7.0', '10.0'), ('\n\t eleza compare(self):\n\t\t  ikiwa a > b:\n'))
 
     @mock.patch.object(ft.FormatRegion, "_asktabwidth")
-    def test_untabify_region_event(self, _asktabwidth):
+    eleza test_untabify_region_event(self, _asktabwidth):
         untabify = self.formatter.untabify_region_event
         text = self.text
         eq = self.assertEqual
@@ -565,18 +565,18 @@ class C1():
         self.formatter.tabify_region_event()
         _asktabwidth.return_value = 3
         self.assertIsNotNone(untabify())
-        eq(text.get('7.0', '10.0'), ('\n      def compare(self):\n            if a > b:\n'))
+        eq(text.get('7.0', '10.0'), ('\n      eleza compare(self):\n            ikiwa a > b:\n'))
 
     @mock.patch.object(ft, "askinteger")
-    def test_ask_tabwidth(self, askinteger):
+    eleza test_ask_tabwidth(self, askinteger):
         ask = self.formatter._asktabwidth
         askinteger.return_value = 10
         self.assertEqual(ask(), 10)
 
 
-class rstripTest(unittest.TestCase):
+kundi rstripTest(unittest.TestCase):
 
-    def test_rstrip_line(self):
+    eleza test_rstrip_line(self):
         editor = MockEditor()
         text = editor.text
         do_rstrip = ft.Rstrip(editor).do_rstrip
@@ -591,7 +591,7 @@ class rstripTest(unittest.TestCase):
         do_rstrip()
         eq(text.get('1.0', 'insert'), '\n')
 
-    def test_rstrip_multiple(self):
+    eleza test_rstrip_multiple(self):
         editor = MockEditor()
         #  Comment above, uncomment 3 below to test with real Editor & Text.
         #kutoka idlelib.editor agiza EditorWindow as Editor
@@ -619,5 +619,5 @@ class rstripTest(unittest.TestCase):
         self.assertEqual(text.get('1.0', 'insert'), stripped)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2, exit=2)

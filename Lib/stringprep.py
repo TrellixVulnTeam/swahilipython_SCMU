@@ -9,16 +9,16 @@ kutoka unicodedata agiza ucd_3_2_0 as unicodedata
 
 assert unicodedata.unidata_version == '3.2.0'
 
-def in_table_a1(code):
-    if unicodedata.category(code) != 'Cn': return False
+eleza in_table_a1(code):
+    ikiwa unicodedata.category(code) != 'Cn': rudisha False
     c = ord(code)
-    if 0xFDD0 <= c < 0xFDF0: return False
-    return (c & 0xFFFF) not in (0xFFFE, 0xFFFF)
+    ikiwa 0xFDD0 <= c < 0xFDF0: rudisha False
+    rudisha (c & 0xFFFF) not in (0xFFFE, 0xFFFF)
 
 
 b1_set = set([173, 847, 6150, 6155, 6156, 6157, 8203, 8204, 8205, 8288, 65279] + list(range(65024,65040)))
-def in_table_b1(code):
-    return ord(code) in b1_set
+eleza in_table_b1(code):
+    rudisha ord(code) in b1_set
 
 
 b3_exceptions = {
@@ -186,87 +186,87 @@ b3_exceptions = {
 0x1d7a4:'\u03c5', 0x1d7a5:'\u03c6', 0x1d7a6:'\u03c7', 0x1d7a7:'\u03c8',
 0x1d7a8:'\u03c9', 0x1d7bb:'\u03c3', }
 
-def map_table_b3(code):
+eleza map_table_b3(code):
     r = b3_exceptions.get(ord(code))
-    if r is not None: return r
-    return code.lower()
+    ikiwa r is not None: rudisha r
+    rudisha code.lower()
 
 
-def map_table_b2(a):
+eleza map_table_b2(a):
     al = map_table_b3(a)
     b = unicodedata.normalize("NFKC", al)
     bl = "".join([map_table_b3(ch) for ch in b])
     c = unicodedata.normalize("NFKC", bl)
-    if b != c:
-        return c
+    ikiwa b != c:
+        rudisha c
     else:
-        return al
+        rudisha al
 
 
-def in_table_c11(code):
-    return code == " "
+eleza in_table_c11(code):
+    rudisha code == " "
 
 
-def in_table_c12(code):
-    return unicodedata.category(code) == "Zs" and code != " "
+eleza in_table_c12(code):
+    rudisha unicodedata.category(code) == "Zs" and code != " "
 
-def in_table_c11_c12(code):
-    return unicodedata.category(code) == "Zs"
+eleza in_table_c11_c12(code):
+    rudisha unicodedata.category(code) == "Zs"
 
 
-def in_table_c21(code):
-    return ord(code) < 128 and unicodedata.category(code) == "Cc"
+eleza in_table_c21(code):
+    rudisha ord(code) < 128 and unicodedata.category(code) == "Cc"
 
 c22_specials = set([1757, 1807, 6158, 8204, 8205, 8232, 8233, 65279] + list(range(8288,8292)) + list(range(8298,8304)) + list(range(65529,65533)) + list(range(119155,119163)))
-def in_table_c22(code):
+eleza in_table_c22(code):
     c = ord(code)
-    if c < 128: return False
-    if unicodedata.category(code) == "Cc": return True
-    return c in c22_specials
+    ikiwa c < 128: rudisha False
+    ikiwa unicodedata.category(code) == "Cc": rudisha True
+    rudisha c in c22_specials
 
-def in_table_c21_c22(code):
-    return unicodedata.category(code) == "Cc" or \
+eleza in_table_c21_c22(code):
+    rudisha unicodedata.category(code) == "Cc" or \
            ord(code) in c22_specials
 
 
-def in_table_c3(code):
-    return unicodedata.category(code) == "Co"
+eleza in_table_c3(code):
+    rudisha unicodedata.category(code) == "Co"
 
 
-def in_table_c4(code):
+eleza in_table_c4(code):
     c = ord(code)
-    if c < 0xFDD0: return False
-    if c < 0xFDF0: return True
-    return (ord(code) & 0xFFFF) in (0xFFFE, 0xFFFF)
+    ikiwa c < 0xFDD0: rudisha False
+    ikiwa c < 0xFDF0: rudisha True
+    rudisha (ord(code) & 0xFFFF) in (0xFFFE, 0xFFFF)
 
 
-def in_table_c5(code):
-    return unicodedata.category(code) == "Cs"
+eleza in_table_c5(code):
+    rudisha unicodedata.category(code) == "Cs"
 
 
 c6_set = set(range(65529,65534))
-def in_table_c6(code):
-    return ord(code) in c6_set
+eleza in_table_c6(code):
+    rudisha ord(code) in c6_set
 
 
 c7_set = set(range(12272,12284))
-def in_table_c7(code):
-    return ord(code) in c7_set
+eleza in_table_c7(code):
+    rudisha ord(code) in c7_set
 
 
 c8_set = set([832, 833, 8206, 8207] + list(range(8234,8239)) + list(range(8298,8304)))
-def in_table_c8(code):
-    return ord(code) in c8_set
+eleza in_table_c8(code):
+    rudisha ord(code) in c8_set
 
 
 c9_set = set([917505] + list(range(917536,917632)))
-def in_table_c9(code):
-    return ord(code) in c9_set
+eleza in_table_c9(code):
+    rudisha ord(code) in c9_set
 
 
-def in_table_d1(code):
-    return unicodedata.bidirectional(code) in ("R","AL")
+eleza in_table_d1(code):
+    rudisha unicodedata.bidirectional(code) in ("R","AL")
 
 
-def in_table_d2(code):
-    return unicodedata.bidirectional(code) == "L"
+eleza in_table_d2(code):
+    rudisha unicodedata.bidirectional(code) == "L"

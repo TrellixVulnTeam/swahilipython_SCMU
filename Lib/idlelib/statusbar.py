@@ -1,25 +1,25 @@
 kutoka tkinter agiza Frame, Label
 
 
-class MultiStatusBar(Frame):
+kundi MultiStatusBar(Frame):
 
-    def __init__(self, master, **kw):
+    eleza __init__(self, master, **kw):
         Frame.__init__(self, master, **kw)
         self.labels = {}
 
-    def set_label(self, name, text='', side='left', width=0):
-        if name not in self.labels:
+    eleza set_label(self, name, text='', side='left', width=0):
+        ikiwa name not in self.labels:
             label = Label(self, borderwidth=0, anchor='w')
             label.pack(side=side, pady=0, padx=4)
             self.labels[name] = label
         else:
             label = self.labels[name]
-        if width != 0:
+        ikiwa width != 0:
             label.config(width=width)
         label.config(text=text)
 
 
-def _multistatus_bar(parent):  # htest #
+eleza _multistatus_bar(parent):  # htest #
     kutoka tkinter agiza Toplevel, Frame, Text, Button
     top = Toplevel(parent)
     x, y = map(int, parent.geometry().split('+')[1:])
@@ -33,7 +33,7 @@ def _multistatus_bar(parent):  # htest #
     msb.set_label("two", "world")
     msb.pack(side='bottom', fill='x')
 
-    def change():
+    eleza change():
         msb.set_label("one", "foo")
         msb.set_label("two", "bar")
 
@@ -41,7 +41,7 @@ def _multistatus_bar(parent):  # htest #
     button.pack(side='bottom')
     frame.pack()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_statusbar', verbosity=2, exit=False)
 

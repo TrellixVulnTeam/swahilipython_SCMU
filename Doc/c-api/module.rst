@@ -94,8 +94,8 @@ Module Objects
 
 .. c:function:: PyModuleDef* PyModule_GetDef(PyObject *module)
 
-   Return a pointer to the :c:type:`PyModuleDef` struct from which the module was
-   created, or *NULL* if the module wasn't created from a definition.
+   Return a pointer to the :c:type:`PyModuleDef` struct kutoka which the module was
+   created, or *NULL* if the module wasn't created kutoka a definition.
 
 
 .. c:function:: PyObject* PyModule_GetFilenameObject(PyObject *module)
@@ -104,7 +104,7 @@ Module Objects
       single: __file__ (module attribute)
       single: SystemError (built-in exception)
 
-   Return the name of the file from which *module* was loaded using *module*'s
+   Return the name of the file kutoka which *module* was loaded using *module*'s
    :attr:`__file__` attribute.  If this is not defined, or if it is not a
    unicode string, raise :exc:`SystemError` and return *NULL*; otherwise return
    a reference to a Unicode object.
@@ -127,7 +127,7 @@ Module Objects
 Initializing C modules
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Modules objects are usually created from extension modules (shared libraries
+Modules objects are usually created kutoka extension modules (shared libraries
 which export an initialization function), or compiled-in modules
 (where the initialization function is added using :c:func:`PyImport_AppendInittab`).
 See :ref:`building` or :ref:`extending-with-embedding` for details.
@@ -239,7 +239,7 @@ of the following two module creation functions:
       Most uses of this function should be using :c:func:`PyModule_Create`
       instead; only use this if you are sure you need it.
 
-Before it is returned from in the initialization function, the resulting module
+Before it is returned kutoka in the initialization function, the resulting module
 object is typically populated using functions like :c:func:`PyModule_AddObject`.
 
 .. _multi-phase-initialization:
@@ -258,7 +258,7 @@ Unlike modules created using single-phase initialization, these modules are not
 singletons: if the *sys.modules* entry is removed and the module is re-imported,
 a new module object is created, and the old module is subject to normal garbage
 collection -- as with Python modules.
-By default, multiple modules created from the same definition should be
+By default, multiple modules created kutoka the same definition should be
 independent: changes to one should not affect the others.
 This means that all state should be specific to the module object (using e.g.
 using :c:func:`PyModule_GetState`), or its contents (such as the module's
@@ -289,7 +289,7 @@ The *m_slots* member of the module definition must point to an array of
 
    .. c:member:: int slot
 
-      A slot ID, chosen from the available values explained below.
+      A slot ID, chosen kutoka the available values explained below.
 
    .. c:member:: void* value
 
@@ -314,14 +314,14 @@ The available slot types are:
    and return *NULL*.
 
    This function should be kept minimal. In particular, it should not
-   call arbitrary Python code, as trying to import the same module again may
+   call arbitrary Python code, as trying to agiza the same module again may
    result in an infinite loop.
 
    Multiple ``Py_mod_create`` slots may not be specified in one module
    definition.
 
-   If ``Py_mod_create`` is not specified, the import machinery will create
-   a normal module object using :c:func:`PyModule_New`. The name is taken from
+   If ``Py_mod_create`` is not specified, the agiza machinery will create
+   a normal module object using :c:func:`PyModule_New`. The name is taken kutoka
    *spec*, not the definition, to allow extension modules to dynamically adjust
    to their place in the module hierarchy and be imported under different
    names through symlinks, all while sharing a single module definition.
@@ -386,7 +386,7 @@ objects dynamically. Note that both ``PyModule_FromDefAndSpec`` and
 .. c:function:: int PyModule_SetDocString(PyObject *module, const char *docstring)
 
    Set the docstring for *module* to *docstring*.
-   This function is called automatically when creating a module from
+   This function is called automatically when creating a module kutoka
    ``PyModuleDef``, using either ``PyModule_Create`` or
    ``PyModule_FromDefAndSpec``.
 
@@ -394,12 +394,12 @@ objects dynamically. Note that both ``PyModule_FromDefAndSpec`` and
 
 .. c:function:: int PyModule_AddFunctions(PyObject *module, PyMethodDef *functions)
 
-   Add the functions from the *NULL* terminated *functions* array to *module*.
+   Add the functions kutoka the *NULL* terminated *functions* array to *module*.
    Refer to the :c:type:`PyMethodDef` documentation for details on individual
    entries (due to the lack of a shared module namespace, module level
    "functions" implemented in C typically receive the module as their first
    parameter, making them similar to instance methods on Python classes).
-   This function is called automatically when creating a module from
+   This function is called automatically when creating a module kutoka
    ``PyModuleDef``, using either ``PyModule_Create`` or
    ``PyModule_FromDefAndSpec``.
 
@@ -409,14 +409,14 @@ Support functions
 .................
 
 The module initialization function (if using single phase initialization) or
-a function called from a module execution slot (if using multi-phase
+a function called kutoka a module execution slot (if using multi-phase
 initialization), can use the following functions to help initialize the module
 state:
 
 .. c:function:: int PyModule_AddObject(PyObject *module, const char *name, PyObject *value)
 
    Add an object to *module* as *name*.  This is a convenience function which can
-   be used from the module's initialization function.  This steals a reference to
+   be used kutoka the module's initialization function.  This steals a reference to
    *value* on success.  Return ``-1`` on error, ``0`` on success.
 
    .. note::
@@ -437,20 +437,20 @@ state:
 .. c:function:: int PyModule_AddIntConstant(PyObject *module, const char *name, long value)
 
    Add an integer constant to *module* as *name*.  This convenience function can be
-   used from the module's initialization function. Return ``-1`` on error, ``0`` on
+   used kutoka the module's initialization function. Return ``-1`` on error, ``0`` on
    success.
 
 
 .. c:function:: int PyModule_AddStringConstant(PyObject *module, const char *name, const char *value)
 
    Add a string constant to *module* as *name*.  This convenience function can be
-   used from the module's initialization function.  The string *value* must be
+   used kutoka the module's initialization function.  The string *value* must be
    *NULL*-terminated.  Return ``-1`` on error, ``0`` on success.
 
 
 .. c:function:: int PyModule_AddIntMacro(PyObject *module, macro)
 
-   Add an int constant to *module*. The name and the value are taken from
+   Add an int constant to *module*. The name and the value are taken kutoka
    *macro*. For example ``PyModule_AddIntMacro(module, AF_INET)`` adds the int
    constant *AF_INET* with the value of *AF_INET* to *module*.
    Return ``-1`` on error, ``0`` on success.
@@ -469,11 +469,11 @@ in the context of the current interpreter. This allows the module object to be
 retrieved later with only a reference to the module definition.
 
 These functions will not work on modules created using multi-phase initialization,
-since multiple such modules can be created from a single definition.
+since multiple such modules can be created kutoka a single definition.
 
 .. c:function:: PyObject* PyState_FindModule(PyModuleDef *def)
 
-   Returns the module object that was created from *def* for the current interpreter.
+   Returns the module object that was created kutoka *def* for the current interpreter.
    This method requires that the module object has been attached to the interpreter state with
    :c:func:`PyState_AddModule` beforehand. In case the corresponding module object is not
    found or has not been attached to the interpreter state yet, it returns *NULL*.
@@ -489,6 +489,6 @@ since multiple such modules can be created from a single definition.
 
 .. c:function:: int PyState_RemoveModule(PyModuleDef *def)
 
-   Removes the module object created from *def* from the interpreter state.
+   Removes the module object created kutoka *def* kutoka the interpreter state.
 
    .. versionadded:: 3.3

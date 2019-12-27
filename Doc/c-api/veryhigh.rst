@@ -11,7 +11,7 @@ The functions in this chapter will let you execute Python source code given in a
 file or a buffer, but they will not let you interact in a more detailed way with
 the interpreter.
 
-Several of these functions accept a start symbol from the grammar as a
+Several of these functions accept a start symbol kutoka the grammar as a
 parameter.  The available start symbols are :const:`Py_eval_input`,
 :const:`Py_file_input`, and :const:`Py_single_input`.  These are described
 following the functions which accept them as parameters.
@@ -72,7 +72,7 @@ the same library that the Python runtime is using.
    If *fp* refers to a file associated with an interactive device (console or
    terminal input or Unix pseudo-terminal), return the value of
    :c:func:`PyRun_InteractiveLoop`, otherwise return the result of
-   :c:func:`PyRun_SimpleFile`.  *filename* is decoded from the filesystem
+   :c:func:`PyRun_SimpleFile`.  *filename* is decoded kutoka the filesystem
    encoding (:func:`sys.getfilesystemencoding`).  If *filename* is *NULL*, this
    function uses ``"???"`` as the filename.
 
@@ -85,7 +85,7 @@ the same library that the Python runtime is using.
 
 .. c:function:: int PyRun_SimpleStringFlags(const char *command, PyCompilerFlags *flags)
 
-   Executes the Python source code from *command* in the :mod:`__main__` module
+   Executes the Python source code kutoka *command* in the :mod:`__main__` module
    according to the *flags* argument. If :mod:`__main__` does not already exist, it
    is created.  Returns ``0`` on success or ``-1`` if an exception was raised.  If
    there was an error, there is no way to get the exception information. For the
@@ -111,8 +111,8 @@ the same library that the Python runtime is using.
 .. c:function:: int PyRun_SimpleFileExFlags(FILE *fp, const char *filename, int closeit, PyCompilerFlags *flags)
 
    Similar to :c:func:`PyRun_SimpleStringFlags`, but the Python source code is read
-   from *fp* instead of an in-memory string. *filename* should be the name of
-   the file, it is decoded from the filesystem encoding
+   kutoka *fp* instead of an in-memory string. *filename* should be the name of
+   the file, it is decoded kutoka the filesystem encoding
    (:func:`sys.getfilesystemencoding`).  If *closeit* is true, the file is
    closed before PyRun_SimpleFileExFlags returns.
 
@@ -129,14 +129,14 @@ the same library that the Python runtime is using.
 
 .. c:function:: int PyRun_InteractiveOneFlags(FILE *fp, const char *filename, PyCompilerFlags *flags)
 
-   Read and execute a single statement from a file associated with an
+   Read and execute a single statement kutoka a file associated with an
    interactive device according to the *flags* argument.  The user will be
-   prompted using ``sys.ps1`` and ``sys.ps2``.  *filename* is decoded from the
+   prompted using ``sys.ps1`` and ``sys.ps2``.  *filename* is decoded kutoka the
    filesystem encoding (:func:`sys.getfilesystemencoding`).
 
    Returns ``0`` when the input was
    executed successfully, ``-1`` if there was an exception, or an error code
-   from the :file:`errcode.h` include file distributed as part of Python if
+   kutoka the :file:`errcode.h` include file distributed as part of Python if
    there was a parse error.  (Note that :file:`errcode.h` is not included by
    :file:`Python.h`, so must be included specifically if needed.)
 
@@ -149,9 +149,9 @@ the same library that the Python runtime is using.
 
 .. c:function:: int PyRun_InteractiveLoopFlags(FILE *fp, const char *filename, PyCompilerFlags *flags)
 
-   Read and execute statements from a file associated with an interactive device
+   Read and execute statements kutoka a file associated with an interactive device
    until EOF is reached.  The user will be prompted using ``sys.ps1`` and
-   ``sys.ps2``.  *filename* is decoded from the filesystem encoding
+   ``sys.ps2``.  *filename* is decoded kutoka the filesystem encoding
    (:func:`sys.getfilesystemencoding`).  Returns ``0`` at EOF or a negative
    number upon failure.
 
@@ -161,7 +161,7 @@ the same library that the Python runtime is using.
    Can be set to point to a function with the prototype
    ``int func(void)``.  The function will be called when Python's
    interpreter prompt is about to become idle and wait for user input
-   from the terminal.  The return value is ignored.  Overriding this
+   kutoka the terminal.  The return value is ignored.  Overriding this
    hook can be used to integrate the interpreter's prompt with other
    event loops, as done in the :file:`Modules/_tkinter.c` in the
    Python source code.
@@ -174,7 +174,7 @@ the same library that the Python runtime is using.
    overriding the default function used to read a single line of input
    at the interpreter's prompt.  The function is expected to output
    the string *prompt* if it's not *NULL*, and then read a line of
-   input from the provided standard input file, returning the
+   input kutoka the provided standard input file, returning the
    resulting string.  For example, The :mod:`readline` module sets
    this hook to provide line-editing and tab-completion features.
 
@@ -203,10 +203,10 @@ the same library that the Python runtime is using.
 
 .. c:function:: struct _node* PyParser_SimpleParseStringFlagsFilename( const char *str, const char *filename, int start, int flags)
 
-   Parse Python source code from *str* using the start token *start* according to
+   Parse Python source code kutoka *str* using the start token *start* according to
    the *flags* argument.  The result can be used to create a code object which can
    be evaluated efficiently. This is useful if a code fragment must be evaluated
-   many times. *filename* is decoded from the filesystem encoding
+   many times. *filename* is decoded kutoka the filesystem encoding
    (:func:`sys.getfilesystemencoding`).
 
 
@@ -219,7 +219,7 @@ the same library that the Python runtime is using.
 .. c:function:: struct _node* PyParser_SimpleParseFileFlags(FILE *fp, const char *filename, int start, int flags)
 
    Similar to :c:func:`PyParser_SimpleParseStringFlagsFilename`, but the Python
-   source code is read from *fp* instead of an in-memory string.
+   source code is read kutoka *fp* instead of an in-memory string.
 
 
 .. c:function:: PyObject* PyRun_String(const char *str, int start, PyObject *globals, PyObject *locals)
@@ -230,7 +230,7 @@ the same library that the Python runtime is using.
 
 .. c:function:: PyObject* PyRun_StringFlags(const char *str, int start, PyObject *globals, PyObject *locals, PyCompilerFlags *flags)
 
-   Execute Python source code from *str* in the context specified by the
+   Execute Python source code kutoka *str* in the context specified by the
    objects *globals* and *locals* with the compiler flags specified by
    *flags*.  *globals* must be a dictionary; *locals* can be any object
    that implements the mapping protocol.  The parameter *start* specifies
@@ -260,9 +260,9 @@ the same library that the Python runtime is using.
 
 .. c:function:: PyObject* PyRun_FileExFlags(FILE *fp, const char *filename, int start, PyObject *globals, PyObject *locals, int closeit, PyCompilerFlags *flags)
 
-   Similar to :c:func:`PyRun_StringFlags`, but the Python source code is read from
+   Similar to :c:func:`PyRun_StringFlags`, but the Python source code is read kutoka
    *fp* instead of an in-memory string. *filename* should be the name of the file,
-   it is decoded from the filesystem encoding (:func:`sys.getfilesystemencoding`).
+   it is decoded kutoka the filesystem encoding (:func:`sys.getfilesystemencoding`).
    If *closeit* is true, the file is closed before :c:func:`PyRun_FileExFlags`
    returns.
 
@@ -301,7 +301,7 @@ the same library that the Python runtime is using.
 .. c:function:: PyObject* Py_CompileStringExFlags(const char *str, const char *filename, int start, PyCompilerFlags *flags, int optimize)
 
    Like :c:func:`Py_CompileStringObject`, but *filename* is a byte string
-   decoded from the filesystem encoding (:func:`os.fsdecode`).
+   decoded kutoka the filesystem encoding (:func:`os.fsdecode`).
 
    .. versionadded:: 3.2
 
@@ -357,7 +357,7 @@ the same library that the Python runtime is using.
 
    .. index:: single: Py_CompileString()
 
-   The start symbol from the Python grammar for isolated expressions; for use with
+   The start symbol kutoka the Python grammar for isolated expressions; for use with
    :c:func:`Py_CompileString`.
 
 
@@ -365,8 +365,8 @@ the same library that the Python runtime is using.
 
    .. index:: single: Py_CompileString()
 
-   The start symbol from the Python grammar for sequences of statements as read
-   from a file or other source; for use with :c:func:`Py_CompileString`.  This is
+   The start symbol kutoka the Python grammar for sequences of statements as read
+   kutoka a file or other source; for use with :c:func:`Py_CompileString`.  This is
    the symbol to use when compiling arbitrarily long Python source code.
 
 
@@ -374,7 +374,7 @@ the same library that the Python runtime is using.
 
    .. index:: single: Py_CompileString()
 
-   The start symbol from the Python grammar for a single statement; for use with
+   The start symbol kutoka the Python grammar for a single statement; for use with
    :c:func:`Py_CompileString`. This is the symbol used for the interactive
    interpreter loop.
 
@@ -383,11 +383,11 @@ the same library that the Python runtime is using.
 
    This is the structure used to hold compiler flags.  In cases where code is only
    being compiled, it is passed as ``int flags``, and in cases where code is being
-   executed, it is passed as ``PyCompilerFlags *flags``.  In this case, ``from
+   executed, it is passed as ``PyCompilerFlags *flags``.  In this case, ``kutoka
    __future__ import`` can modify *flags*.
 
    Whenever ``PyCompilerFlags *flags`` is *NULL*, :attr:`cf_flags` is treated as
-   equal to ``0``, and any modification due to ``from __future__ import`` is
+   equal to ``0``, and any modification due to ``kutoka __future__ import`` is
    discarded.
 
    .. c:member:: int cf_flags

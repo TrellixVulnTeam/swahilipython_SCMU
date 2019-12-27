@@ -26,15 +26,15 @@ kutoka test.support agiza requires_hashdigest
 kutoka unittest.mock agiza Mock
 
 
-if sys.platform == 'darwin':
+ikiwa sys.platform == 'darwin':
     # select.poll returns a select.POLLHUP at the end of the tests
     # on darwin, so just ignore it
-    def handle_expt(self):
+    eleza handle_expt(self):
         pass
     smtpd.SMTPChannel.handle_expt = handle_expt
 
 
-def server(evt, buf, serv):
+eleza server(evt, buf, serv):
     serv.listen()
     evt.set()
     try:
@@ -45,7 +45,7 @@ def server(evt, buf, serv):
         n = 500
         while buf and n > 0:
             r, w, e = select.select([], [conn], [])
-            if w:
+            ikiwa w:
                 sent = conn.send(buf)
                 buf = buf[sent:]
 
@@ -56,29 +56,29 @@ def server(evt, buf, serv):
         serv.close()
         evt.set()
 
-class GeneralTests(unittest.TestCase):
+kundi GeneralTests(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         smtplib.socket = mock_socket
         self.port = 25
 
-    def tearDown(self):
+    eleza tearDown(self):
         smtplib.socket = socket
 
     # This method is no longer used but is retained for backward compatibility,
     # so test to make sure it still works.
-    def testQuoteData(self):
+    eleza testQuoteData(self):
         teststr  = "abc\n.jkl\rfoo\r\n..blue"
         expected = "abc\r\n..jkl\r\nfoo\r\n...blue"
         self.assertEqual(expected, smtplib.quotedata(teststr))
 
-    def testBasic1(self):
+    eleza testBasic1(self):
         mock_socket.reply_with(b"220 Hola mundo")
         # connects
         smtp = smtplib.SMTP(HOST, self.port)
         smtp.close()
 
-    def testSourceAddress(self):
+    eleza testSourceAddress(self):
         mock_socket.reply_with(b"220 Hola mundo")
         # connects
         smtp = smtplib.SMTP(HOST, self.port,
@@ -86,20 +86,20 @@ class GeneralTests(unittest.TestCase):
         self.assertEqual(smtp.source_address, ('127.0.0.1', 19876))
         smtp.close()
 
-    def testBasic2(self):
+    eleza testBasic2(self):
         mock_socket.reply_with(b"220 Hola mundo")
         # connects, include port in host name
         smtp = smtplib.SMTP("%s:%s" % (HOST, self.port))
         smtp.close()
 
-    def testLocalHostName(self):
+    eleza testLocalHostName(self):
         mock_socket.reply_with(b"220 Hola mundo")
         # check that supplied local_hostname is used
         smtp = smtplib.SMTP(HOST, self.port, local_hostname="testhost")
         self.assertEqual(smtp.local_hostname, "testhost")
         smtp.close()
 
-    def testTimeoutDefault(self):
+    eleza testTimeoutDefault(self):
         mock_socket.reply_with(b"220 Hola mundo")
         self.assertIsNone(mock_socket.getdefaulttimeout())
         mock_socket.setdefaulttimeout(30)
@@ -111,7 +111,7 @@ class GeneralTests(unittest.TestCase):
         self.assertEqual(smtp.sock.gettimeout(), 30)
         smtp.close()
 
-    def testTimeoutNone(self):
+    eleza testTimeoutNone(self):
         mock_socket.reply_with(b"220 Hola mundo")
         self.assertIsNone(socket.getdefaulttimeout())
         socket.setdefaulttimeout(30)
@@ -122,13 +122,13 @@ class GeneralTests(unittest.TestCase):
         self.assertIsNone(smtp.sock.gettimeout())
         smtp.close()
 
-    def testTimeoutValue(self):
+    eleza testTimeoutValue(self):
         mock_socket.reply_with(b"220 Hola mundo")
         smtp = smtplib.SMTP(HOST, self.port, timeout=30)
         self.assertEqual(smtp.sock.gettimeout(), 30)
         smtp.close()
 
-    def test_debuglevel(self):
+    eleza test_debuglevel(self):
         mock_socket.reply_with(b"220 Hello world")
         smtp = smtplib.SMTP()
         smtp.set_debuglevel(1)
@@ -138,7 +138,7 @@ class GeneralTests(unittest.TestCase):
         expected = re.compile(r"^connect:", re.MULTILINE)
         self.assertRegex(stderr.getvalue(), expected)
 
-    def test_debuglevel_2(self):
+    eleza test_debuglevel_2(self):
         mock_socket.reply_with(b"220 Hello world")
         smtp = smtplib.SMTP()
         smtp.set_debuglevel(2)
@@ -151,11 +151,11 @@ class GeneralTests(unittest.TestCase):
 
 
 # Test server thread using the specified SMTP server class
-def debugging_server(serv, serv_evt, client_evt):
+eleza debugging_server(serv, serv_evt, client_evt):
     serv_evt.set()
 
     try:
-        if hasattr(select, 'poll'):
+        ikiwa hasattr(select, 'poll'):
             poll_fun = asyncore.poll2
         else:
             poll_fun = asyncore.poll
@@ -166,7 +166,7 @@ def debugging_server(serv, serv_evt, client_evt):
 
             # when the client conversation is finished, it will
             # set client_evt, and it's then ok to kill the server
-            if client_evt.is_set():
+            ikiwa client_evt.is_set():
                 serv.close()
                 break
 
@@ -175,7 +175,7 @@ def debugging_server(serv, serv_evt, client_evt):
     except socket.timeout:
         pass
     finally:
-        if not client_evt.is_set():
+        ikiwa not client_evt.is_set():
             # allow some time for the client to read the result
             time.sleep(0.5)
             serv.close()
@@ -191,11 +191,11 @@ MSG_END = '------------ END MESSAGE ------------\n'
 # test server times out, causing the test to fail.
 
 # Test behavior of smtpd.DebuggingServer
-class DebuggingServerTests(unittest.TestCase):
+kundi DebuggingServerTests(unittest.TestCase):
 
     maxDiff = None
 
-    def setUp(self):
+    eleza setUp(self):
         self.thread_key = threading_setup()
         self.real_getfqdn = socket.getfqdn
         socket.getfqdn = mock_socket.getfqdn
@@ -222,7 +222,7 @@ class DebuggingServerTests(unittest.TestCase):
         self.serv_evt.wait()
         self.serv_evt.clear()
 
-    def tearDown(self):
+    eleza tearDown(self):
         socket.getfqdn = self.real_getfqdn
         # indicate that the client is finished
         self.client_evt.set()
@@ -238,17 +238,17 @@ class DebuggingServerTests(unittest.TestCase):
         self.doCleanups()
         threading_cleanup(*self.thread_key)
 
-    def get_output_without_xpeer(self):
+    eleza get_output_without_xpeer(self):
         test_output = self.output.getvalue()
-        return re.sub(r'(.*?)^X-Peer:\s*\S+\n(.*)', r'\1\2',
+        rudisha re.sub(r'(.*?)^X-Peer:\s*\S+\n(.*)', r'\1\2',
                       test_output, flags=re.MULTILINE|re.DOTALL)
 
-    def testBasic(self):
+    eleza testBasic(self):
         # connect
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
         smtp.quit()
 
-    def testSourceAddress(self):
+    eleza testSourceAddress(self):
         # connect
         src_port = support.find_unused_port()
         try:
@@ -259,25 +259,25 @@ class DebuggingServerTests(unittest.TestCase):
             self.assertEqual(smtp.local_hostname, 'localhost')
             smtp.quit()
         except OSError as e:
-            if e.errno == errno.EADDRINUSE:
+            ikiwa e.errno == errno.EADDRINUSE:
                 self.skipTest("couldn't bind to source port %d" % src_port)
             raise
 
-    def testNOOP(self):
+    eleza testNOOP(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
         self.addCleanup(smtp.close)
         expected = (250, b'OK')
         self.assertEqual(smtp.noop(), expected)
         smtp.quit()
 
-    def testRSET(self):
+    eleza testRSET(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
         self.addCleanup(smtp.close)
         expected = (250, b'OK')
         self.assertEqual(smtp.rset(), expected)
         smtp.quit()
 
-    def testELHO(self):
+    eleza testELHO(self):
         # EHLO isn't implemented in DebuggingServer
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
         self.addCleanup(smtp.close)
@@ -285,7 +285,7 @@ class DebuggingServerTests(unittest.TestCase):
         self.assertEqual(smtp.ehlo(), expected)
         smtp.quit()
 
-    def testEXPNNotImplemented(self):
+    eleza testEXPNNotImplemented(self):
         # EXPN isn't implemented in DebuggingServer
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
         self.addCleanup(smtp.close)
@@ -294,7 +294,7 @@ class DebuggingServerTests(unittest.TestCase):
         self.assertEqual(smtp.getreply(), expected)
         smtp.quit()
 
-    def testVRFY(self):
+    eleza testVRFY(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
         self.addCleanup(smtp.close)
         expected = (252, b'Cannot VRFY user, but will accept message ' + \
@@ -303,7 +303,7 @@ class DebuggingServerTests(unittest.TestCase):
         self.assertEqual(smtp.verify('nobody@nowhere.com'), expected)
         smtp.quit()
 
-    def testSecondHELO(self):
+    eleza testSecondHELO(self):
         # check that a second HELO returns a message that it's a duplicate
         # (this behavior is specific to smtpd.SMTPChannel)
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
@@ -313,14 +313,14 @@ class DebuggingServerTests(unittest.TestCase):
         self.assertEqual(smtp.helo(), expected)
         smtp.quit()
 
-    def testHELP(self):
+    eleza testHELP(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
         self.addCleanup(smtp.close)
         self.assertEqual(smtp.help(), b'Supported commands: EHLO HELO MAIL ' + \
                                       b'RCPT DATA RSET NOOP QUIT VRFY')
         smtp.quit()
 
-    def testSend(self):
+    eleza testSend(self):
         # connect and send mail
         m = 'A test message'
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
@@ -338,7 +338,7 @@ class DebuggingServerTests(unittest.TestCase):
         mexpect = '%s%s\n%s' % (MSG_BEGIN, m, MSG_END)
         self.assertEqual(self.output.getvalue(), mexpect)
 
-    def testSendBinary(self):
+    eleza testSendBinary(self):
         m = b'A test message'
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
         self.addCleanup(smtp.close)
@@ -353,7 +353,7 @@ class DebuggingServerTests(unittest.TestCase):
         mexpect = '%s%s\n%s' % (MSG_BEGIN, m.decode('ascii'), MSG_END)
         self.assertEqual(self.output.getvalue(), mexpect)
 
-    def testSendNeedingDotQuote(self):
+    eleza testSendNeedingDotQuote(self):
         # Issue 12283
         m = '.A test\n.mes.sage.'
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
@@ -369,7 +369,7 @@ class DebuggingServerTests(unittest.TestCase):
         mexpect = '%s%s\n%s' % (MSG_BEGIN, m, MSG_END)
         self.assertEqual(self.output.getvalue(), mexpect)
 
-    def testSendNullSender(self):
+    eleza testSendNullSender(self):
         m = 'A test message'
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
         self.addCleanup(smtp.close)
@@ -387,11 +387,11 @@ class DebuggingServerTests(unittest.TestCase):
         sender = re.compile("^sender: <>$", re.MULTILINE)
         self.assertRegex(debugout, sender)
 
-    def testSendMessage(self):
+    eleza testSendMessage(self):
         m = email.mime.text.MIMEText('A test message')
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
         self.addCleanup(smtp.close)
-        smtp.send_message(m, from_addr='John', to_addrs='Sally')
+        smtp.send_message(m, kutoka_addr='John', to_addrs='Sally')
         # XXX (see comment in testSend)
         time.sleep(0.01)
         smtp.quit()
@@ -408,7 +408,7 @@ class DebuggingServerTests(unittest.TestCase):
         mexpect = '%s%s\n%s' % (MSG_BEGIN, m.as_string(), MSG_END)
         self.assertEqual(test_output, mexpect)
 
-    def testSendMessageWithAddresses(self):
+    eleza testSendMessageWithAddresses(self):
         m = email.mime.text.MIMEText('A test message')
         m['From'] = 'foo@bar.com'
         m['To'] = 'John'
@@ -443,8 +443,8 @@ class DebuggingServerTests(unittest.TestCase):
                                  re.MULTILINE)
             self.assertRegex(debugout, to_addr)
 
-    def testSendMessageWithSomeAddresses(self):
-        # Make sure nothing breaks if not all of the three 'to' headers exist
+    eleza testSendMessageWithSomeAddresses(self):
+        # Make sure nothing breaks ikiwa not all of the three 'to' headers exist
         m = email.mime.text.MIMEText('A test message')
         m['From'] = 'foo@bar.com'
         m['To'] = 'John, Dinsdale'
@@ -471,14 +471,14 @@ class DebuggingServerTests(unittest.TestCase):
                                  re.MULTILINE)
             self.assertRegex(debugout, to_addr)
 
-    def testSendMessageWithSpecifiedAddresses(self):
+    eleza testSendMessageWithSpecifiedAddresses(self):
         # Make sure addresses specified in call override those in message.
         m = email.mime.text.MIMEText('A test message')
         m['From'] = 'foo@bar.com'
         m['To'] = 'John, Dinsdale'
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=3)
         self.addCleanup(smtp.close)
-        smtp.send_message(m, from_addr='joe@example.com', to_addrs='foo@example.net')
+        smtp.send_message(m, kutoka_addr='joe@example.com', to_addrs='foo@example.net')
         # XXX (see comment in testSend)
         time.sleep(0.01)
         smtp.quit()
@@ -501,7 +501,7 @@ class DebuggingServerTests(unittest.TestCase):
         recip = re.compile(r"^recips: .*'foo@example.net'.*$", re.MULTILINE)
         self.assertRegex(debugout, recip)
 
-    def testSendMessageWithMultipleFrom(self):
+    eleza testSendMessageWithMultipleFrom(self):
         # Sender overrides To
         m = email.mime.text.MIMEText('A test message')
         m['From'] = 'Bernard, Bianca'
@@ -530,7 +530,7 @@ class DebuggingServerTests(unittest.TestCase):
                                  re.MULTILINE)
             self.assertRegex(debugout, to_addr)
 
-    def testSendMessageResent(self):
+    eleza testSendMessageResent(self):
         m = email.mime.text.MIMEText('A test message')
         m['From'] = 'foo@bar.com'
         m['To'] = 'John'
@@ -566,7 +566,7 @@ class DebuggingServerTests(unittest.TestCase):
                                  re.MULTILINE)
             self.assertRegex(debugout, to_addr)
 
-    def testSendMessageMultipleResentRaises(self):
+    eleza testSendMessageMultipleResentRaises(self):
         m = email.mime.text.MIMEText('A test message')
         m['From'] = 'foo@bar.com'
         m['To'] = 'John'
@@ -585,9 +585,9 @@ class DebuggingServerTests(unittest.TestCase):
             smtp.send_message(m)
         smtp.close()
 
-class NonConnectingTests(unittest.TestCase):
+kundi NonConnectingTests(unittest.TestCase):
 
-    def testNotConnected(self):
+    eleza testNotConnected(self):
         # Test various operations on an unconnected SMTP object that
         # should raise exceptions (at present the attempt in SMTP.send
         # to reference the nonexistent 'sock' attribute of the SMTP object
@@ -597,14 +597,14 @@ class NonConnectingTests(unittest.TestCase):
         self.assertRaises(smtplib.SMTPServerDisconnected,
                           smtp.send, 'test msg')
 
-    def testNonnumericPort(self):
+    eleza testNonnumericPort(self):
         # check that non-numeric port raises OSError
         self.assertRaises(OSError, smtplib.SMTP,
                           "localhost", "bogus")
         self.assertRaises(OSError, smtplib.SMTP,
                           "localhost:bogus")
 
-    def testSockAttributeExists(self):
+    eleza testSockAttributeExists(self):
         # check that sock attribute is present outside of a connect() call
         # (regression test, the previous behavior raised an
         #  AttributeError: 'SMTP' object has no attribute 'sock')
@@ -612,16 +612,16 @@ class NonConnectingTests(unittest.TestCase):
             self.assertIsNone(smtp.sock)
 
 
-class DefaultArgumentsTests(unittest.TestCase):
+kundi DefaultArgumentsTests(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.msg = EmailMessage()
         self.msg['From'] = 'Páolo <főo@bar.com>'
         self.smtp = smtplib.SMTP()
         self.smtp.ehlo = Mock(return_value=(200, 'OK'))
         self.smtp.has_extn, self.smtp.sendmail = Mock(), Mock()
 
-    def testSendMessage(self):
+    eleza testSendMessage(self):
         expected_mail_options = ('SMTPUTF8', 'BODY=8BITMIME')
         self.smtp.send_message(self.msg)
         self.smtp.send_message(self.msg)
@@ -630,7 +630,7 @@ class DefaultArgumentsTests(unittest.TestCase):
         self.assertEqual(self.smtp.sendmail.call_args_list[1][0][3],
                          expected_mail_options)
 
-    def testSendMessageWithMailOptions(self):
+    eleza testSendMessageWithMailOptions(self):
         mail_options = ['STARTTLS']
         expected_mail_options = ('STARTTLS', 'SMTPUTF8', 'BODY=8BITMIME')
         self.smtp.send_message(self.msg, None, None, mail_options)
@@ -640,9 +640,9 @@ class DefaultArgumentsTests(unittest.TestCase):
 
 
 # test response of client to a non-successful HELO message
-class BadHELOServerTests(unittest.TestCase):
+kundi BadHELOServerTests(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         smtplib.socket = mock_socket
         mock_socket.reply_with(b"199 no hello for you!")
         self.old_stdout = sys.stdout
@@ -650,19 +650,19 @@ class BadHELOServerTests(unittest.TestCase):
         sys.stdout = self.output
         self.port = 25
 
-    def tearDown(self):
+    eleza tearDown(self):
         smtplib.socket = socket
         sys.stdout = self.old_stdout
 
-    def testFailingHELO(self):
+    eleza testFailingHELO(self):
         self.assertRaises(smtplib.SMTPConnectError, smtplib.SMTP,
                             HOST, self.port, 'localhost', 3)
 
 
-class TooLongLineTests(unittest.TestCase):
+kundi TooLongLineTests(unittest.TestCase):
     respdata = b'250 OK' + (b'.' * smtplib._MAXLINE * 2) + b'\n'
 
-    def setUp(self):
+    eleza setUp(self):
         self.thread_key = threading_setup()
         self.old_stdout = sys.stdout
         self.output = io.StringIO()
@@ -678,7 +678,7 @@ class TooLongLineTests(unittest.TestCase):
         self.evt.wait()
         self.evt.clear()
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.evt.wait()
         sys.stdout = self.old_stdout
         join_thread(self.thread)
@@ -686,7 +686,7 @@ class TooLongLineTests(unittest.TestCase):
         self.doCleanups()
         threading_cleanup(*self.thread_key)
 
-    def testLineTooLong(self):
+    eleza testLineTooLong(self):
         self.assertRaises(smtplib.SMTPResponseException, smtplib.SMTP,
                           HOST, self.port, 'localhost', 3)
 
@@ -704,8 +704,8 @@ sim_lists = {'list-1':['Mr.A@somewhere.com','Mrs.C@somewhereesle.com'],
             }
 
 # Simulated SMTP channel & server
-class ResponseException(Exception): pass
-class SimSMTPChannel(smtpd.SMTPChannel):
+kundi ResponseException(Exception): pass
+kundi SimSMTPChannel(smtpd.SMTPChannel):
 
     quit_response = None
     mail_response = None
@@ -717,16 +717,16 @@ class SimSMTPChannel(smtpd.SMTPChannel):
     AUTH = 99    # Add protocol state to enable auth testing.
     authenticated_user = None
 
-    def __init__(self, extra_features, *args, **kw):
+    eleza __init__(self, extra_features, *args, **kw):
         self._extrafeatures = ''.join(
             [ "250-{0}\r\n".format(x) for x in extra_features ])
         super(SimSMTPChannel, self).__init__(*args, **kw)
 
-    # AUTH related stuff.  It would be nice if support for this were in smtpd.
-    def found_terminator(self):
-        if self.smtp_state == self.AUTH:
+    # AUTH related stuff.  It would be nice ikiwa support for this were in smtpd.
+    eleza found_terminator(self):
+        ikiwa self.smtp_state == self.AUTH:
             line = self._emptystring.join(self.received_lines)
-            print('Data:', repr(line), file=smtpd.DEBUGSTREAM)
+            andika('Data:', repr(line), file=smtpd.DEBUGSTREAM)
             self.received_lines = []
             try:
                 self.auth_object(line)
@@ -737,19 +737,19 @@ class SimSMTPChannel(smtpd.SMTPChannel):
         super().found_terminator()
 
 
-    def smtp_AUTH(self, arg):
-        if not self.seen_greeting:
+    eleza smtp_AUTH(self, arg):
+        ikiwa not self.seen_greeting:
             self.push('503 Error: send EHLO first')
             return
-        if not self.extended_smtp or 'AUTH' not in self._extrafeatures:
+        ikiwa not self.extended_smtp or 'AUTH' not in self._extrafeatures:
             self.push('500 Error: command "AUTH" not recognized')
             return
-        if self.authenticated_user is not None:
+        ikiwa self.authenticated_user is not None:
             self.push(
                 '503 Bad sequence of commands: already authenticated')
             return
         args = arg.split()
-        if len(args) not in [1, 2]:
+        ikiwa len(args) not in [1, 2]:
             self.push('501 Syntax: AUTH <mechanism> [initial-response]')
             return
         auth_object_name = '_auth_%s' % args[0].lower().replace('-', '_')
@@ -760,21 +760,21 @@ class SimSMTPChannel(smtpd.SMTPChannel):
                       ' authentication mechanism {!r}'.format(auth_object_name))
             return
         self.smtp_state = self.AUTH
-        self.auth_object(args[1] if len(args) == 2 else None)
+        self.auth_object(args[1] ikiwa len(args) == 2 else None)
 
-    def _authenticated(self, user, valid):
-        if valid:
+    eleza _authenticated(self, user, valid):
+        ikiwa valid:
             self.authenticated_user = user
             self.push('235 Authentication Succeeded')
         else:
             self.push('535 Authentication credentials invalid')
         self.smtp_state = self.COMMAND
 
-    def _decode_base64(self, string):
-        return base64.decodebytes(string.encode('ascii')).decode('utf-8')
+    eleza _decode_base64(self, string):
+        rudisha base64.decodebytes(string.encode('ascii')).decode('utf-8')
 
-    def _auth_plain(self, arg=None):
-        if arg is None:
+    eleza _auth_plain(self, arg=None):
+        ikiwa arg is None:
             self.push('334 ')
         else:
             logpass = self._decode_base64(arg)
@@ -786,11 +786,11 @@ class SimSMTPChannel(smtpd.SMTPChannel):
                 return
             self._authenticated(user, password == sim_auth[1])
 
-    def _auth_login(self, arg=None):
-        if arg is None:
+    eleza _auth_login(self, arg=None):
+        ikiwa arg is None:
             # base64 encoded 'Username:'
             self.push('334 VXNlcm5hbWU6')
-        elif not hasattr(self, '_auth_login_user'):
+        elikiwa not hasattr(self, '_auth_login_user'):
             self._auth_login_user = self._decode_base64(arg)
             # base64 encoded 'Password:'
             self.push('334 UGFzc3dvcmQ6')
@@ -799,8 +799,8 @@ class SimSMTPChannel(smtpd.SMTPChannel):
             self._authenticated(self._auth_login_user, password == sim_auth[1])
             del self._auth_login_user
 
-    def _auth_cram_md5(self, arg=None):
-        if arg is None:
+    eleza _auth_cram_md5(self, arg=None):
+        ikiwa arg is None:
             self.push('334 {}'.format(sim_cram_md5_challenge))
         else:
             logpass = self._decode_base64(arg)
@@ -809,7 +809,7 @@ class SimSMTPChannel(smtpd.SMTPChannel):
             except ValueError as e:
                 self.push('535 Splitting response {!r} into user and password '
                           'failed: {}'.format(logpass, e))
-                return False
+                rudisha False
             valid_hashed_pass = hmac.HMAC(
                 sim_auth[1].encode('ascii'),
                 self._decode_base64(sim_cram_md5_challenge).encode('ascii'),
@@ -817,7 +817,7 @@ class SimSMTPChannel(smtpd.SMTPChannel):
             self._authenticated(user, hashed_pass == valid_hashed_pass)
     # end AUTH related stuff.
 
-    def smtp_EHLO(self, arg):
+    eleza smtp_EHLO(self, arg):
         resp = ('250-testhost\r\n'
                 '250-EXPN\r\n'
                 '250-SIZE 20000000\r\n'
@@ -828,92 +828,92 @@ class SimSMTPChannel(smtpd.SMTPChannel):
         self.seen_greeting = arg
         self.extended_smtp = True
 
-    def smtp_VRFY(self, arg):
+    eleza smtp_VRFY(self, arg):
         # For max compatibility smtplib should be sending the raw address.
-        if arg in sim_users:
+        ikiwa arg in sim_users:
             self.push('250 %s %s' % (sim_users[arg], smtplib.quoteaddr(arg)))
         else:
             self.push('550 No such user: %s' % arg)
 
-    def smtp_EXPN(self, arg):
+    eleza smtp_EXPN(self, arg):
         list_name = arg.lower()
-        if list_name in sim_lists:
+        ikiwa list_name in sim_lists:
             user_list = sim_lists[list_name]
             for n, user_email in enumerate(user_list):
                 quoted_addr = smtplib.quoteaddr(user_email)
-                if n < len(user_list) - 1:
+                ikiwa n < len(user_list) - 1:
                     self.push('250-%s %s' % (sim_users[user_email], quoted_addr))
                 else:
                     self.push('250 %s %s' % (sim_users[user_email], quoted_addr))
         else:
             self.push('550 No access for you!')
 
-    def smtp_QUIT(self, arg):
-        if self.quit_response is None:
+    eleza smtp_QUIT(self, arg):
+        ikiwa self.quit_response is None:
             super(SimSMTPChannel, self).smtp_QUIT(arg)
         else:
             self.push(self.quit_response)
             self.close_when_done()
 
-    def smtp_MAIL(self, arg):
-        if self.mail_response is None:
+    eleza smtp_MAIL(self, arg):
+        ikiwa self.mail_response is None:
             super().smtp_MAIL(arg)
         else:
             self.push(self.mail_response)
-            if self.disconnect:
+            ikiwa self.disconnect:
                 self.close_when_done()
 
-    def smtp_RCPT(self, arg):
-        if self.rcpt_response is None:
+    eleza smtp_RCPT(self, arg):
+        ikiwa self.rcpt_response is None:
             super().smtp_RCPT(arg)
             return
         self.rcpt_count += 1
         self.push(self.rcpt_response[self.rcpt_count-1])
 
-    def smtp_RSET(self, arg):
+    eleza smtp_RSET(self, arg):
         self.rset_count += 1
         super().smtp_RSET(arg)
 
-    def smtp_DATA(self, arg):
-        if self.data_response is None:
+    eleza smtp_DATA(self, arg):
+        ikiwa self.data_response is None:
             super().smtp_DATA(arg)
         else:
             self.push(self.data_response)
 
-    def handle_error(self):
+    eleza handle_error(self):
         raise
 
 
-class SimSMTPServer(smtpd.SMTPServer):
+kundi SimSMTPServer(smtpd.SMTPServer):
 
-    channel_class = SimSMTPChannel
+    channel_kundi = SimSMTPChannel
 
-    def __init__(self, *args, **kw):
+    eleza __init__(self, *args, **kw):
         self._extra_features = []
         self._addresses = {}
         smtpd.SMTPServer.__init__(self, *args, **kw)
 
-    def handle_accepted(self, conn, addr):
+    eleza handle_accepted(self, conn, addr):
         self._SMTPchannel = self.channel_class(
             self._extra_features, self, conn, addr,
             decode_data=self._decode_data)
 
-    def process_message(self, peer, mailfrom, rcpttos, data):
-        self._addresses['from'] = mailfrom
+    eleza process_message(self, peer, mailkutoka, rcpttos, data):
+        self._addresses['kutoka'] = mailkutoka
         self._addresses['tos'] = rcpttos
 
-    def add_feature(self, feature):
+    eleza add_feature(self, feature):
         self._extra_features.append(feature)
 
-    def handle_error(self):
+    eleza handle_error(self):
         raise
 
 
 # Test various SMTP & ESMTP commands/behaviors that require a simulated server
 # (i.e., something with more features than DebuggingServer)
-class SMTPSimTests(unittest.TestCase):
+kundi SMTPSimTests(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.thread_key = threading_setup()
         self.real_getfqdn = socket.getfqdn
         socket.getfqdn = mock_socket.getfqdn
@@ -931,7 +931,7 @@ class SMTPSimTests(unittest.TestCase):
         self.serv_evt.wait()
         self.serv_evt.clear()
 
-    def tearDown(self):
+    eleza tearDown(self):
         socket.getfqdn = self.real_getfqdn
         # indicate that the client is finished
         self.client_evt.set()
@@ -942,12 +942,12 @@ class SMTPSimTests(unittest.TestCase):
         self.doCleanups()
         threading_cleanup(*self.thread_key)
 
-    def testBasic(self):
+    eleza testBasic(self):
         # smoke test
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
         smtp.quit()
 
-    def testEHLO(self):
+    eleza testEHLO(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
 
         # no features should be present before the EHLO
@@ -968,7 +968,7 @@ class SMTPSimTests(unittest.TestCase):
         self.assertFalse(smtp.has_extn('unsupported-feature'))
         smtp.quit()
 
-    def testVRFY(self):
+    eleza testVRFY(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
 
         for addr_spec, name in sim_users.items():
@@ -982,7 +982,7 @@ class SMTPSimTests(unittest.TestCase):
         self.assertEqual(smtp.vrfy(u), expected_unknown)
         smtp.quit()
 
-    def testEXPN(self):
+    eleza testEXPN(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
 
         for listname, members in sim_lists.items():
@@ -997,14 +997,14 @@ class SMTPSimTests(unittest.TestCase):
         self.assertEqual(smtp.expn(u), expected_unknown)
         smtp.quit()
 
-    def testAUTH_PLAIN(self):
+    eleza testAUTH_PLAIN(self):
         self.serv.add_feature("AUTH PLAIN")
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
         resp = smtp.login(sim_auth[0], sim_auth[1])
         self.assertEqual(resp, (235, b'Authentication Succeeded'))
         smtp.close()
 
-    def testAUTH_LOGIN(self):
+    eleza testAUTH_LOGIN(self):
         self.serv.add_feature("AUTH LOGIN")
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
         resp = smtp.login(sim_auth[0], sim_auth[1])
@@ -1012,14 +1012,14 @@ class SMTPSimTests(unittest.TestCase):
         smtp.close()
 
     @requires_hashdigest('md5')
-    def testAUTH_CRAM_MD5(self):
+    eleza testAUTH_CRAM_MD5(self):
         self.serv.add_feature("AUTH CRAM-MD5")
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
         resp = smtp.login(sim_auth[0], sim_auth[1])
         self.assertEqual(resp, (235, b'Authentication Succeeded'))
         smtp.close()
 
-    def testAUTH_multiple(self):
+    eleza testAUTH_multiple(self):
         # Test that multiple authentication methods are tried.
         self.serv.add_feature("AUTH BOGUS PLAIN LOGIN CRAM-MD5")
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
@@ -1027,7 +1027,7 @@ class SMTPSimTests(unittest.TestCase):
         self.assertEqual(resp, (235, b'Authentication Succeeded'))
         smtp.close()
 
-    def test_auth_function(self):
+    eleza test_auth_function(self):
         supported = {'PLAIN', 'LOGIN'}
         try:
             hashlib.md5()
@@ -1048,7 +1048,7 @@ class SMTPSimTests(unittest.TestCase):
                 self.assertEqual(resp, (235, b'Authentication Succeeded'))
                 smtp.close()
 
-    def test_quit_resets_greeting(self):
+    eleza test_quit_resets_greeting(self):
         smtp = smtplib.SMTP(HOST, self.port,
                             local_hostname='localhost',
                             timeout=15)
@@ -1063,7 +1063,7 @@ class SMTPSimTests(unittest.TestCase):
         self.assertIn('size', smtp.esmtp_features)
         smtp.quit()
 
-    def test_with_statement(self):
+    eleza test_with_statement(self):
         with smtplib.SMTP(HOST, self.port) as smtp:
             code, message = smtp.noop()
             self.assertEqual(code, 250)
@@ -1072,7 +1072,7 @@ class SMTPSimTests(unittest.TestCase):
             smtp.close()
         self.assertRaises(smtplib.SMTPServerDisconnected, smtp.send, b'foo')
 
-    def test_with_statement_QUIT_failure(self):
+    eleza test_with_statement_QUIT_failure(self):
         with self.assertRaises(smtplib.SMTPResponseException) as error:
             with smtplib.SMTP(HOST, self.port) as smtp:
                 smtp.noop()
@@ -1084,7 +1084,7 @@ class SMTPSimTests(unittest.TestCase):
     #test infrastructure can support it.
 
     # Issue 17498: make sure _rset does not raise SMTPServerDisconnected exception
-    def test__rest_from_mail_cmd(self):
+    eleza test__rest_kutoka_mail_cmd(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
         smtp.noop()
         self.serv._SMTPchannel.mail_response = '451 Requested action aborted'
@@ -1093,8 +1093,8 @@ class SMTPSimTests(unittest.TestCase):
             smtp.sendmail('John', 'Sally', 'test message')
         self.assertIsNone(smtp.sock)
 
-    # Issue 5713: make sure close, not rset, is called if we get a 421 error
-    def test_421_from_mail_cmd(self):
+    # Issue 5713: make sure close, not rset, is called ikiwa we get a 421 error
+    eleza test_421_kutoka_mail_cmd(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
         smtp.noop()
         self.serv._SMTPchannel.mail_response = '421 closing connection'
@@ -1103,7 +1103,7 @@ class SMTPSimTests(unittest.TestCase):
         self.assertIsNone(smtp.sock)
         self.assertEqual(self.serv._SMTPchannel.rset_count, 0)
 
-    def test_421_from_rcpt_cmd(self):
+    eleza test_421_kutoka_rcpt_cmd(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
         smtp.noop()
         self.serv._SMTPchannel.rcpt_response = ['250 accepted', '421 closing']
@@ -1113,14 +1113,14 @@ class SMTPSimTests(unittest.TestCase):
         self.assertEqual(self.serv._SMTPchannel.rset_count, 0)
         self.assertDictEqual(r.exception.args[0], {'Frank': (421, b'closing')})
 
-    def test_421_from_data_cmd(self):
-        class MySimSMTPChannel(SimSMTPChannel):
-            def found_terminator(self):
-                if self.smtp_state == self.DATA:
+    eleza test_421_kutoka_data_cmd(self):
+        kundi MySimSMTPChannel(SimSMTPChannel):
+            eleza found_terminator(self):
+                ikiwa self.smtp_state == self.DATA:
                     self.push('421 closing')
                 else:
                     super().found_terminator()
-        self.serv.channel_class = MySimSMTPChannel
+        self.serv.channel_kundi = MySimSMTPChannel
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
         smtp.noop()
         with self.assertRaises(smtplib.SMTPDataError):
@@ -1128,7 +1128,7 @@ class SMTPSimTests(unittest.TestCase):
         self.assertIsNone(smtp.sock)
         self.assertEqual(self.serv._SMTPchannel.rcpt_count, 0)
 
-    def test_smtputf8_NotSupportedError_if_no_server_support(self):
+    eleza test_smtputf8_NotSupportedError_if_no_server_support(self):
         smtp = smtplib.SMTP(
             HOST, self.port, local_hostname='localhost', timeout=3)
         self.addCleanup(smtp.close)
@@ -1143,16 +1143,16 @@ class SMTPSimTests(unittest.TestCase):
             smtplib.SMTPNotSupportedError,
             smtp.mail, 'John', options=['BODY=8BITMIME', 'SMTPUTF8'])
 
-    def test_send_unicode_without_SMTPUTF8(self):
+    eleza test_send_unicode_without_SMTPUTF8(self):
         smtp = smtplib.SMTP(
             HOST, self.port, local_hostname='localhost', timeout=3)
         self.addCleanup(smtp.close)
         self.assertRaises(UnicodeEncodeError, smtp.sendmail, 'Alice', 'Böb', '')
         self.assertRaises(UnicodeEncodeError, smtp.mail, 'Älice')
 
-    def test_send_message_error_on_non_ascii_addrs_if_no_smtputf8(self):
+    eleza test_send_message_error_on_non_ascii_addrs_if_no_smtputf8(self):
         # This test is located here and not in the SMTPUTF8SimTests
-        # class because it needs a "regular" SMTP server to work
+        # kundi because it needs a "regular" SMTP server to work
         msg = EmailMessage()
         msg['From'] = "Páolo <főo@bar.com>"
         msg['To'] = 'Dinsdale'
@@ -1163,7 +1163,7 @@ class SMTPSimTests(unittest.TestCase):
         with self.assertRaises(smtplib.SMTPNotSupportedError):
             smtp.send_message(msg)
 
-    def test_name_field_not_included_in_envelop_addresses(self):
+    eleza test_name_field_not_included_in_envelop_addresses(self):
         smtp = smtplib.SMTP(
             HOST, self.port, local_hostname='localhost', timeout=3
         )
@@ -1175,41 +1175,41 @@ class SMTPSimTests(unittest.TestCase):
 
         self.assertDictEqual(smtp.send_message(message), {})
 
-        self.assertEqual(self.serv._addresses['from'], 'michael@example.com')
+        self.assertEqual(self.serv._addresses['kutoka'], 'michael@example.com')
         self.assertEqual(self.serv._addresses['tos'], ['rene@example.com'])
 
 
-class SimSMTPUTF8Server(SimSMTPServer):
+kundi SimSMTPUTF8Server(SimSMTPServer):
 
-    def __init__(self, *args, **kw):
+    eleza __init__(self, *args, **kw):
         # The base SMTP server turns these on automatically, but our test
         # server is set up to munge the EHLO response, so we need to provide
         # them as well.  And yes, the call is to SMTPServer not SimSMTPServer.
         self._extra_features = ['SMTPUTF8', '8BITMIME']
         smtpd.SMTPServer.__init__(self, *args, **kw)
 
-    def handle_accepted(self, conn, addr):
+    eleza handle_accepted(self, conn, addr):
         self._SMTPchannel = self.channel_class(
             self._extra_features, self, conn, addr,
             decode_data=self._decode_data,
             enable_SMTPUTF8=self.enable_SMTPUTF8,
         )
 
-    def process_message(self, peer, mailfrom, rcpttos, data, mail_options=None,
+    eleza process_message(self, peer, mailkutoka, rcpttos, data, mail_options=None,
                                                              rcpt_options=None):
         self.last_peer = peer
-        self.last_mailfrom = mailfrom
+        self.last_mailkutoka = mailkutoka
         self.last_rcpttos = rcpttos
         self.last_message = data
         self.last_mail_options = mail_options
         self.last_rcpt_options = rcpt_options
 
 
-class SMTPUTF8SimTests(unittest.TestCase):
+kundi SMTPUTF8SimTests(unittest.TestCase):
 
     maxDiff = None
 
-    def setUp(self):
+    eleza setUp(self):
         self.thread_key = threading_setup()
         self.real_getfqdn = socket.getfqdn
         socket.getfqdn = mock_socket.getfqdn
@@ -1229,7 +1229,7 @@ class SMTPUTF8SimTests(unittest.TestCase):
         self.serv_evt.wait()
         self.serv_evt.clear()
 
-    def tearDown(self):
+    eleza tearDown(self):
         socket.getfqdn = self.real_getfqdn
         # indicate that the client is finished
         self.client_evt.set()
@@ -1240,7 +1240,7 @@ class SMTPUTF8SimTests(unittest.TestCase):
         self.doCleanups()
         threading_cleanup(*self.thread_key)
 
-    def test_test_server_supports_extensions(self):
+    eleza test_test_server_supports_extensions(self):
         smtp = smtplib.SMTP(
             HOST, self.port, local_hostname='localhost', timeout=3)
         self.addCleanup(smtp.close)
@@ -1248,21 +1248,21 @@ class SMTPUTF8SimTests(unittest.TestCase):
         self.assertTrue(smtp.does_esmtp)
         self.assertTrue(smtp.has_extn('smtputf8'))
 
-    def test_send_unicode_with_SMTPUTF8_via_sendmail(self):
+    eleza test_send_unicode_with_SMTPUTF8_via_sendmail(self):
         m = '¡a test message containing unicode!'.encode('utf-8')
         smtp = smtplib.SMTP(
             HOST, self.port, local_hostname='localhost', timeout=3)
         self.addCleanup(smtp.close)
         smtp.sendmail('Jőhn', 'Sálly', m,
                       mail_options=['BODY=8BITMIME', 'SMTPUTF8'])
-        self.assertEqual(self.serv.last_mailfrom, 'Jőhn')
+        self.assertEqual(self.serv.last_mailkutoka, 'Jőhn')
         self.assertEqual(self.serv.last_rcpttos, ['Sálly'])
         self.assertEqual(self.serv.last_message, m)
         self.assertIn('BODY=8BITMIME', self.serv.last_mail_options)
         self.assertIn('SMTPUTF8', self.serv.last_mail_options)
         self.assertEqual(self.serv.last_rcpt_options, [])
 
-    def test_send_unicode_with_SMTPUTF8_via_low_level_API(self):
+    eleza test_send_unicode_with_SMTPUTF8_via_low_level_API(self):
         m = '¡a test message containing unicode!'.encode('utf-8')
         smtp = smtplib.SMTP(
             HOST, self.port, local_hostname='localhost', timeout=3)
@@ -1273,20 +1273,20 @@ class SMTPUTF8SimTests(unittest.TestCase):
             (250, b'OK'))
         self.assertEqual(smtp.rcpt('János'), (250, b'OK'))
         self.assertEqual(smtp.data(m), (250, b'OK'))
-        self.assertEqual(self.serv.last_mailfrom, 'Jő')
+        self.assertEqual(self.serv.last_mailkutoka, 'Jő')
         self.assertEqual(self.serv.last_rcpttos, ['János'])
         self.assertEqual(self.serv.last_message, m)
         self.assertIn('BODY=8BITMIME', self.serv.last_mail_options)
         self.assertIn('SMTPUTF8', self.serv.last_mail_options)
         self.assertEqual(self.serv.last_rcpt_options, [])
 
-    def test_send_message_uses_smtputf8_if_addrs_non_ascii(self):
+    eleza test_send_message_uses_smtputf8_if_addrs_non_ascii(self):
         msg = EmailMessage()
         msg['From'] = "Páolo <főo@bar.com>"
         msg['To'] = 'Dinsdale'
         msg['Subject'] = 'Nudge nudge, wink, wink \u1F609'
         # XXX I don't know why I need two \n's here, but this is an existing
-        # bug (if it is one) and not a problem with the new functionality.
+        # bug (ikiwa it is one) and not a problem with the new functionality.
         msg.set_content("oh là là, know what I mean, know what I mean?\n\n")
         # XXX smtpd converts received /r/n to /n, so we can't easily test that
         # we are successfully sending /r/n :(.
@@ -1304,7 +1304,7 @@ class SMTPUTF8SimTests(unittest.TestCase):
             HOST, self.port, local_hostname='localhost', timeout=3)
         self.addCleanup(smtp.close)
         self.assertEqual(smtp.send_message(msg), {})
-        self.assertEqual(self.serv.last_mailfrom, 'főo@bar.com')
+        self.assertEqual(self.serv.last_mailkutoka, 'főo@bar.com')
         self.assertEqual(self.serv.last_rcpttos, ['Dinsdale'])
         self.assertEqual(self.serv.last_message.decode(), expected)
         self.assertIn('BODY=8BITMIME', self.serv.last_mail_options)
@@ -1314,27 +1314,27 @@ class SMTPUTF8SimTests(unittest.TestCase):
 
 EXPECTED_RESPONSE = encode_base64(b'\0psu\0doesnotexist', eol='')
 
-class SimSMTPAUTHInitialResponseChannel(SimSMTPChannel):
-    def smtp_AUTH(self, arg):
+kundi SimSMTPAUTHInitialResponseChannel(SimSMTPChannel):
+    eleza smtp_AUTH(self, arg):
         # RFC 4954's AUTH command allows for an optional initial-response.
         # Not all AUTH methods support this; some require a challenge.  AUTH
         # PLAIN does those, so test that here.  See issue #15014.
         args = arg.split()
-        if args[0].lower() == 'plain':
-            if len(args) == 2:
+        ikiwa args[0].lower() == 'plain':
+            ikiwa len(args) == 2:
                 # AUTH PLAIN <initial-response> with the response base 64
                 # encoded.  Hard code the expected response for the test.
-                if args[1] == EXPECTED_RESPONSE:
+                ikiwa args[1] == EXPECTED_RESPONSE:
                     self.push('235 Ok')
                     return
         self.push('571 Bad authentication')
 
-class SimSMTPAUTHInitialResponseServer(SimSMTPServer):
-    channel_class = SimSMTPAUTHInitialResponseChannel
+kundi SimSMTPAUTHInitialResponseServer(SimSMTPServer):
+    channel_kundi = SimSMTPAUTHInitialResponseChannel
 
 
-class SMTPAUTHInitialResponseSimTests(unittest.TestCase):
-    def setUp(self):
+kundi SMTPAUTHInitialResponseSimTests(unittest.TestCase):
+    eleza setUp(self):
         self.thread_key = threading_setup()
         self.real_getfqdn = socket.getfqdn
         socket.getfqdn = mock_socket.getfqdn
@@ -1353,7 +1353,7 @@ class SMTPAUTHInitialResponseSimTests(unittest.TestCase):
         self.serv_evt.wait()
         self.serv_evt.clear()
 
-    def tearDown(self):
+    eleza tearDown(self):
         socket.getfqdn = self.real_getfqdn
         # indicate that the client is finished
         self.client_evt.set()
@@ -1364,14 +1364,14 @@ class SMTPAUTHInitialResponseSimTests(unittest.TestCase):
         self.doCleanups()
         threading_cleanup(*self.thread_key)
 
-    def testAUTH_PLAIN_initial_response_login(self):
+    eleza testAUTH_PLAIN_initial_response_login(self):
         self.serv.add_feature('AUTH PLAIN')
         smtp = smtplib.SMTP(HOST, self.port,
                             local_hostname='localhost', timeout=15)
         smtp.login('psu', 'doesnotexist')
         smtp.close()
 
-    def testAUTH_PLAIN_initial_response_auth(self):
+    eleza testAUTH_PLAIN_initial_response_auth(self):
         self.serv.add_feature('AUTH PLAIN')
         smtp = smtplib.SMTP(HOST, self.port,
                             local_hostname='localhost', timeout=15)
@@ -1382,5 +1382,5 @@ class SMTPAUTHInitialResponseSimTests(unittest.TestCase):
         self.assertEqual(code, 235)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

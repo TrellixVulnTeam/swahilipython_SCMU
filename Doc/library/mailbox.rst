@@ -13,9 +13,9 @@
 
 This module defines two classes, :class:`Mailbox` and :class:`Message`, for
 accessing and manipulating on-disk mailboxes and the messages they contain.
-:class:`Mailbox` offers a dictionary-like mapping from keys to messages.
+:class:`Mailbox` offers a dictionary-like mapping kutoka keys to messages.
 :class:`Message` extends the :mod:`email.message` module's
-:class:`~email.message.Message` class with format-specific state and behavior.
+:class:`~email.message.Message` kundi with format-specific state and behavior.
 Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
 
 
@@ -34,8 +34,8 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
 
    A mailbox, which may be inspected and modified.
 
-   The :class:`Mailbox` class defines an interface and is not intended to be
-   instantiated.  Instead, format-specific subclasses should inherit from
+   The :class:`Mailbox` kundi defines an interface and is not intended to be
+   instantiated.  Instead, format-specific subclasses should inherit kutoka
    :class:`Mailbox` and your code should instantiate a particular subclass.
 
    The :class:`Mailbox` interface is dictionary-like, with small keys
@@ -48,7 +48,7 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
    method :meth:`add` and removed using a ``del`` statement or the set-like
    methods :meth:`remove` and :meth:`discard`.
 
-   :class:`Mailbox` interface semantics differ from dictionary semantics in some
+   :class:`Mailbox` interface semantics differ kutoka dictionary semantics in some
    noteworthy ways. Each time a message is requested, a new representation
    (typically a :class:`Message` instance) is generated based upon the current
    state of the mailbox. Similarly, when a message is added to a
@@ -60,8 +60,8 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
    not keys as the default dictionary iterator does. Moreover, modification of a
    mailbox during iteration is safe and well-defined. Messages added to the
    mailbox after an iterator is created will not be seen by the
-   iterator. Messages removed from the mailbox before the iterator yields them
-   will be silently skipped, though using a key from an iterator may result in a
+   iterator. Messages removed kutoka the mailbox before the iterator yields them
+   will be silently skipped, though using a key kutoka an iterator may result in a
    :exc:`KeyError` exception if the corresponding message is subsequently
    removed.
 
@@ -88,7 +88,7 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
       :class:`email.message.Message` instance, a string, a byte string, or a
       file-like object (which should be open in binary mode). If *message* is
       an instance of the
-      appropriate format-specific :class:`Message` subclass (e.g., if it's an
+      appropriate format-specific :class:`Message` subkundi (e.g., if it's an
       :class:`mboxMessage` instance and this is an :class:`mbox` instance), its
       format-specific information is used. Otherwise, reasonable defaults for
       format-specific information are used.
@@ -101,7 +101,7 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
                __delitem__(key)
                discard(key)
 
-      Delete the message corresponding to *key* from the mailbox.
+      Delete the message corresponding to *key* kutoka the mailbox.
 
       If no such message exists, a :exc:`KeyError` exception is raised if the
       method was called as :meth:`remove` or :meth:`__delitem__` but no
@@ -157,7 +157,7 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
       *message* is a message representation, if called as :meth:`iteritems` or
       return a list of such pairs if called as :meth:`items`. The messages are
       represented as instances of the appropriate format-specific
-      :class:`Message` subclass unless a custom message factory was specified
+      :class:`Message` subkundi unless a custom message factory was specified
       when the :class:`Mailbox` instance was initialized.
 
 
@@ -168,7 +168,7 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
       message exists, *default* is returned if the method was called as
       :meth:`get` and a :exc:`KeyError` exception is raised if the method was
       called as :meth:`__getitem__`. The message is represented as an instance
-      of the appropriate format-specific :class:`Message` subclass unless a
+      of the appropriate format-specific :class:`Message` subkundi unless a
       custom message factory was specified when the :class:`Mailbox` instance
       was initialized.
 
@@ -229,7 +229,7 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
 
    .. method:: clear()
 
-      Delete all messages from the mailbox.
+      Delete all messages kutoka the mailbox.
 
 
    .. method:: pop(key, default=None)
@@ -237,7 +237,7 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
       Return a representation of the message corresponding to *key* and delete
       the message. If no such message exists, return *default*. The message is
       represented as an instance of the appropriate format-specific
-      :class:`Message` subclass unless a custom message factory was specified
+      :class:`Message` subkundi unless a custom message factory was specified
       when the :class:`Mailbox` instance was initialized.
 
 
@@ -247,7 +247,7 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
       *message* is a message representation, and delete the corresponding
       message. If the mailbox is empty, raise a :exc:`KeyError` exception. The
       message is represented as an instance of the appropriate format-specific
-      :class:`Message` subclass unless a custom message factory was specified
+      :class:`Message` subkundi unless a custom message factory was specified
       when the :class:`Mailbox` instance was initialized.
 
 
@@ -301,7 +301,7 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
 
 .. class:: Maildir(dirname, factory=None, create=True)
 
-   A subclass of :class:`Mailbox` for mailboxes in Maildir format. Parameter
+   A subkundi of :class:`Mailbox` for mailboxes in Maildir format. Parameter
    *factory* is a callable object that accepts a file-like message representation
    (which behaves as if opened in binary mode) and returns a custom representation.
    If *factory* is ``None``, :class:`MaildirMessage` is used as the default message
@@ -343,7 +343,7 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
       instead. The exclamation point (``'!'``) is a popular choice. For
       example::
 
-         import mailbox
+         agiza mailbox
          mailbox.Maildir.colon = '!'
 
       The :attr:`colon` attribute may also be set on a per-instance basis.
@@ -379,7 +379,7 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
 
    .. method:: clean()
 
-      Delete temporary files from the mailbox that have not been accessed in the
+      Delete temporary files kutoka the mailbox that have not been accessed in the
       last 36 hours. The Maildir specification says that mail-reading programs
       should do this occasionally.
 
@@ -426,14 +426,14 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
 
 .. seealso::
 
-   `maildir man page from qmail <http://www.qmail.org/man/man5/maildir.html>`_
+   `maildir man page kutoka qmail <http://www.qmail.org/man/man5/maildir.html>`_
       The original specification of the format.
 
    `Using maildir format <https://cr.yp.to/proto/maildir.html>`_
       Notes on Maildir by its inventor. Includes an updated name-creation scheme and
       details on "info" semantics.
 
-   `maildir man page from Courier <http://www.courier-mta.org/maildir.html>`_
+   `maildir man page kutoka Courier <http://www.courier-mta.org/maildir.html>`_
       Another specification of the format. Describes a common extension for supporting
       folders.
 
@@ -446,7 +446,7 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
 
 .. class:: mbox(path, factory=None, create=True)
 
-   A subclass of :class:`Mailbox` for mailboxes in mbox format. Parameter *factory*
+   A subkundi of :class:`Mailbox` for mailboxes in mbox format. Parameter *factory*
    is a callable object that accepts a file-like message representation (which
    behaves as if opened in binary mode) and returns a custom representation. If
    *factory* is ``None``, :class:`mboxMessage` is used as the default message
@@ -485,10 +485,10 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
 
 .. seealso::
 
-   `mbox man page from qmail <http://www.qmail.org/man/man5/mbox.html>`_
+   `mbox man page kutoka qmail <http://www.qmail.org/man/man5/mbox.html>`_
       A specification of the format and its variations.
 
-   `mbox man page from tin <http://www.tin.org/bin/man.cgi?section=5&topic=mbox>`_
+   `mbox man page kutoka tin <http://www.tin.org/bin/man.cgi?section=5&topic=mbox>`_
       Another specification of the format, with details on locking.
 
    `Configuring Netscape Mail on Unix: Why The Content-Length Format is Bad <https://www.jwz.org/doc/content-length.html>`_
@@ -506,7 +506,7 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
 
 .. class:: MH(path, factory=None, create=True)
 
-   A subclass of :class:`Mailbox` for mailboxes in MH format. Parameter *factory*
+   A subkundi of :class:`Mailbox` for mailboxes in MH format. Parameter *factory*
    is a callable object that accepts a file-like message representation (which
    behaves as if opened in binary mode) and returns a custom representation. If
    *factory* is ``None``, :class:`MHMessage` is used as the default message
@@ -521,7 +521,7 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
    messages without moving them to sub-folders. Sequences are defined in a file
    called :file:`.mh_sequences` in each folder.
 
-   The :class:`MH` class manipulates MH mailboxes, but it does not attempt to
+   The :class:`MH` kundi manipulates MH mailboxes, but it does not attempt to
    emulate all of :program:`mh`'s behaviors. In particular, it does not modify
    and is not affected by the :file:`context` or :file:`.mh_profile` files that
    are used by :program:`mh` to store its state and configuration.
@@ -636,7 +636,7 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
 
 .. class:: Babyl(path, factory=None, create=True)
 
-   A subclass of :class:`Mailbox` for mailboxes in Babyl format. Parameter
+   A subkundi of :class:`Mailbox` for mailboxes in Babyl format. Parameter
    *factory* is a callable object that accepts a file-like message representation
    (which behaves as if opened in binary mode) and returns a custom representation.
    If *factory* is ``None``, :class:`BabylMessage` is used as the default message
@@ -712,7 +712,7 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
 
 .. class:: MMDF(path, factory=None, create=True)
 
-   A subclass of :class:`Mailbox` for mailboxes in MMDF format. Parameter *factory*
+   A subkundi of :class:`Mailbox` for mailboxes in MMDF format. Parameter *factory*
    is a callable object that accepts a file-like message representation (which
    behaves as if opened in binary mode) and returns a custom representation. If
    *factory* is ``None``, :class:`MMDFMessage` is used as the default message
@@ -748,8 +748,8 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
 
 .. seealso::
 
-   `mmdf man page from tin <http://www.tin.org/bin/man.cgi?section=5&topic=mmdf>`_
-      A specification of MMDF format from the documentation of tin, a newsreader.
+   `mmdf man page kutoka tin <http://www.tin.org/bin/man.cgi?section=5&topic=mmdf>`_
+      A specification of MMDF format kutoka the documentation of tin, a newsreader.
 
    `MMDF <https://en.wikipedia.org/wiki/MMDF>`_
       A Wikipedia article describing the Multichannel Memorandum Distribution
@@ -764,7 +764,7 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
 
 .. class:: Message(message=None)
 
-   A subclass of the :mod:`email.message` module's
+   A subkundi of the :mod:`email.message` module's
    :class:`~email.message.Message`. Subclasses of :class:`mailbox.Message` add
    mailbox-format-specific state and behavior.
 
@@ -843,7 +843,7 @@ Supported mailbox formats are Maildir, mbox, MH, Babyl, and MMDF.
 
       .. note::
 
-         A message is typically moved from :file:`new` to :file:`cur` after its
+         A message is typically moved kutoka :file:`new` to :file:`cur` after its
          mailbox has been accessed, whether or not the message is has been
          read. A message ``msg`` has been read if ``"S" in msg.get_flags()`` is
          ``True``.
@@ -1004,18 +1004,18 @@ When a :class:`MaildirMessage` instance is created based upon a
    :class:`mboxMessage` instances offer the following methods:
 
 
-   .. method:: get_from()
+   .. method:: get_kutoka()
 
       Return a string representing the "From " line that marks the start of the
       message in an mbox mailbox. The leading "From " and the trailing newline
       are excluded.
 
 
-   .. method:: set_from(from_, time_=None)
+   .. method:: set_kutoka(kutoka_, time_=None)
 
-      Set the "From " line to *from_*, which should be specified without a
+      Set the "From " line to *kutoka_*, which should be specified without a
       leading "From " or trailing newline. For convenience, *time_* may be
-      specified and will be formatted appropriately and appended to *from_*. If
+      specified and will be formatted appropriately and appended to *kutoka_*. If
       *time_* is specified, it should be a :class:`time.struct_time` instance, a
       tuple suitable for passing to :meth:`time.strftime`, or ``True`` (to use
       :meth:`time.gmtime`).
@@ -1163,7 +1163,7 @@ instance, the "From " line is copied and all flags directly correspond:
 
    .. method:: remove_sequence(sequence)
 
-      Remove *sequence* from the list of sequences that include this message.
+      Remove *sequence* kutoka the list of sequences that include this message.
 
 When an :class:`MHMessage` instance is created based upon a
 :class:`MaildirMessage` instance, the following conversions take place:
@@ -1262,7 +1262,7 @@ When an :class:`MHMessage` instance is created based upon a
 
    .. method:: remove_label(label)
 
-      Remove *label* from the list of labels on the message.
+      Remove *label* kutoka the list of labels on the message.
 
 
    .. method:: get_visible()
@@ -1375,18 +1375,18 @@ When a :class:`BabylMessage` instance is created based upon an
    identical to those offered by :class:`mboxMessage`:
 
 
-   .. method:: get_from()
+   .. method:: get_kutoka()
 
       Return a string representing the "From " line that marks the start of the
       message in an mbox mailbox. The leading "From " and the trailing newline
       are excluded.
 
 
-   .. method:: set_from(from_, time_=None)
+   .. method:: set_kutoka(kutoka_, time_=None)
 
-      Set the "From " line to *from_*, which should be specified without a
+      Set the "From " line to *kutoka_*, which should be specified without a
       leading "From " or trailing newline. For convenience, *time_* may be
-      specified and will be formatted appropriately and appended to *from_*. If
+      specified and will be formatted appropriately and appended to *kutoka_*. If
       *time_* is specified, it should be a :class:`time.struct_time` instance, a
       tuple suitable for passing to :meth:`time.strftime`, or ``True`` (to use
       :meth:`time.gmtime`).
@@ -1496,13 +1496,13 @@ The following exception classes are defined in the :mod:`mailbox` module:
 
 .. exception:: Error()
 
-   The based class for all other module-specific exceptions.
+   The based kundi for all other module-specific exceptions.
 
 
 .. exception:: NoSuchMailboxError()
 
    Raised when a mailbox is expected but is not found, such as when instantiating a
-   :class:`Mailbox` subclass with a path that does not exist (and with the *create*
+   :class:`Mailbox` subkundi with a path that does not exist (and with the *create*
    parameter set to ``False``), or when opening a folder that does not exist.
 
 
@@ -1534,16 +1534,16 @@ Examples
 A simple example of printing the subjects of all messages in a mailbox that seem
 interesting::
 
-   import mailbox
+   agiza mailbox
    for message in mailbox.mbox('~/mbox'):
        subject = message['subject']       # Could possibly be None.
        if subject and 'python' in subject.lower():
            print(subject)
 
-To copy all mail from a Babyl mailbox to an MH mailbox, converting all of the
+To copy all mail kutoka a Babyl mailbox to an MH mailbox, converting all of the
 format-specific information that can be converted::
 
-   import mailbox
+   agiza mailbox
    destination = mailbox.MH('~/Mail')
    destination.lock()
    for message in mailbox.Babyl('~/RMAIL'):
@@ -1551,13 +1551,13 @@ format-specific information that can be converted::
    destination.flush()
    destination.unlock()
 
-This example sorts mail from several mailing lists into different mailboxes,
+This example sorts mail kutoka several mailing lists into different mailboxes,
 being careful to avoid mail corruption due to concurrent modification by other
 programs, mail loss due to interruption of the program, or premature termination
 due to malformed messages in the mailbox::
 
-   import mailbox
-   import email.errors
+   agiza mailbox
+   agiza email.errors
 
    list_names = ('python-list', 'python-dev', 'python-bugs')
 

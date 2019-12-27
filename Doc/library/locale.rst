@@ -46,7 +46,7 @@ The :mod:`locale` module defines the following exception and functions:
    :func:`setlocale` is not thread-safe on most systems. Applications typically
    start with a call of ::
 
-      import locale
+      agiza locale
       locale.setlocale(locale.LC_ALL, '')
 
    This sets the locale for all categories to the user's default setting (typically
@@ -89,7 +89,7 @@ The :mod:`locale` module defines the following exception and functions:
    |                      |                                     | values).                       |
    +----------------------+-------------------------------------+--------------------------------+
    |                      | ``'p_sep_by_space/n_sep_by_space'`` | Whether the currency symbol is |
-   |                      |                                     | separated from the value  by a |
+   |                      |                                     | separated kutoka the value  by a |
    |                      |                                     | space (for positive resp.      |
    |                      |                                     | negative values).              |
    +----------------------+-------------------------------------+--------------------------------+
@@ -164,7 +164,7 @@ The :mod:`locale` module defines the following exception and functions:
    symbolic constants are available in the locale module.
 
    The :func:`nl_langinfo` function accepts one of the following keys.  Most
-   descriptions are taken from the corresponding description in the GNU C
+   descriptions are taken kutoka the corresponding description in the GNU C
    library.
 
    .. data:: CODESET
@@ -230,7 +230,7 @@ The :mod:`locale` module defines the following exception and functions:
       .. note::
 
          The expression is in the syntax suitable for the :c:func:`regex` function
-         from the C library, which might differ from the syntax used in :mod:`re`.
+         kutoka the C library, which might differ kutoka the syntax used in :mod:`re`.
 
    .. data:: NOEXPR
 
@@ -458,7 +458,7 @@ The :mod:`locale` module defines the following exception and functions:
 .. data:: LC_MONETARY
 
    Locale category for formatting of monetary values.  The available options are
-   available from the :func:`localeconv` function.
+   available kutoka the :func:`localeconv` function.
 
 
 .. data:: LC_MESSAGES
@@ -494,7 +494,7 @@ The :mod:`locale` module defines the following exception and functions:
 
 Example::
 
-   >>> import locale
+   >>> agiza locale
    >>> loc = locale.getlocale()  # get current locale
    # use German locale; name might vary with platform
    >>> locale.setlocale(locale.LC_ALL, 'de_DE')
@@ -540,7 +540,7 @@ according to the locale.  For (Unicode) text strings these are done according
 to the character value only, while for byte strings, the conversions and
 classifications are done according to the ASCII value of the byte, and bytes
 whose high bit is set (i.e., non-ASCII bytes) are never converted or considered
-part of a character class such as letter or whitespace.
+part of a character kundi such as letter or whitespace.
 
 
 .. _embedding-locale:
@@ -556,7 +556,7 @@ the locale is ``C``).
 When Python code uses the :mod:`locale` module to change the locale, this also
 affects the embedding application.  If the embedding application doesn't want
 this to happen, it should remove the :mod:`_locale` extension module (which does
-all the work) from the table of built-in modules in the :file:`config.c` file,
+all the work) kutoka the table of built-in modules in the :file:`config.c` file,
 and make sure that the :mod:`_locale` module is not accessible as a shared
 library.
 

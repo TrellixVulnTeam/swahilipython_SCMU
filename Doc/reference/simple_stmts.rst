@@ -98,7 +98,7 @@ attributes or items of mutable objects:
 
 An assignment statement evaluates the expression list (remember that this can be
 a single expression or a comma-separated list, the latter yielding a tuple) and
-assigns the single resulting object to each of the target lists, from left to
+assigns the single resulting object to each of the target lists, kutoka left to
 right.
 
 .. index::
@@ -126,18 +126,18 @@ square brackets, is recursively defined as follows.
 
 * Else: The object must be an iterable with the same number of
   items as there are targets in the target list, and the items are assigned,
-  from left to right, to the corresponding targets.
+  kutoka left to right, to the corresponding targets.
 
   * If the target list contains one target prefixed with an asterisk, called a
     "starred" target: The object must be an iterable with at least as many items
     as there are targets in the target list, minus one.  The first items of the
-    iterable are assigned, from left to right, to the targets before the starred
+    iterable are assigned, kutoka left to right, to the targets before the starred
     target.  The final items of the iterable are assigned to the targets after
     the starred target.  A list of the remaining items in the iterable is then
     assigned to the starred target (the list can be empty).
 
   * Else: The object must be an iterable with the same number of items as there
-    are targets in the target list, and the items are assigned, from left to
+    are targets in the target list, and the items are assigned, kutoka left to
     right, to the corresponding targets.
 
 Assignment of an object to a single target is recursively defined as follows.
@@ -168,17 +168,17 @@ Assignment of an object to a single target is recursively defined as follows.
 
   .. _attr-target-note:
 
-  Note: If the object is a class instance and the attribute reference occurs on
+  Note: If the object is a kundi instance and the attribute reference occurs on
   both sides of the assignment operator, the right-hand side expression, ``a.x`` can access
   either an instance attribute or (if no instance attribute exists) a class
   attribute.  The left-hand side target ``a.x`` is always set as an instance attribute,
   creating it if necessary.  Thus, the two occurrences of ``a.x`` do not
   necessarily refer to the same attribute: if the right-hand side expression refers to a
-  class attribute, the left-hand side creates a new instance attribute as the target of the
+  kundi attribute, the left-hand side creates a new instance attribute as the target of the
   assignment::
 
-     class Cls:
-         x = 3             # class variable
+     kundi Cls:
+         x = 3             # kundi variable
      inst = Cls()
      inst.x = inst.x + 1   # writes inst.x as 4 leaving Cls.x as 3
 
@@ -229,7 +229,7 @@ Assignment of an object to a single target is recursively defined as follows.
   resulting bounds are clipped to lie between zero and the sequence's length,
   inclusive.  Finally, the sequence object is asked to replace the slice with
   the items of the assigned sequence.  The length of the slice may be different
-  from the length of the assigned sequence, thus changing the length of the
+  kutoka the length of the assigned sequence, thus changing the length of the
   target sequence, if the target sequence allows it.
 
 .. impl-detail::
@@ -332,18 +332,18 @@ statement, of a variable or attribute annotation and an optional assignment stat
    annotated_assignment_stmt: `augtarget` ":" `expression`
                             : ["=" (`starred_expression` | `yield_expression`)]
 
-The difference from normal :ref:`assignment` is that only single target is allowed.
+The difference kutoka normal :ref:`assignment` is that only single target is allowed.
 
-For simple names as assignment targets, if in class or module scope,
-the annotations are evaluated and stored in a special class or module
+For simple names as assignment targets, if in kundi or module scope,
+the annotations are evaluated and stored in a special kundi or module
 attribute :attr:`__annotations__`
-that is a dictionary mapping from variable names (mangled if private) to
+that is a dictionary mapping kutoka variable names (mangled if private) to
 evaluated annotations. This attribute is writable and is automatically
-created at the start of class or module body execution, if annotations
+created at the start of kundi or module body execution, if annotations
 are found statically.
 
 For expressions as assignment targets, the annotations are evaluated if
-in class or module scope, but not stored.
+in kundi or module scope, but not stored.
 
 If a name is annotated in a function scope, then this name is local for
 that scope. Annotations are never evaluated and stored in function scopes.
@@ -358,7 +358,7 @@ target, then the interpreter evaluates the target except for the last
 
    :pep:`526` - Syntax for Variable Annotations
       The proposal that added syntax for annotating the types of variables
-      (including class variables and instance variables), instead of expressing
+      (including kundi variables and instance variables), instead of expressing
       them through comments.
 
    :pep:`484` - Type hints
@@ -434,7 +434,7 @@ code needs to be executed, for example::
 
    def f(arg): pass    # a function that does nothing (yet)
 
-   class C: pass       # a class with no methods (yet)
+   kundi C: pass       # a kundi with no methods (yet)
 
 
 .. _del:
@@ -453,13 +453,13 @@ The :keyword:`!del` statement
 Deletion is recursively defined very similar to the way assignment is defined.
 Rather than spelling it out in full details, here are some hints.
 
-Deletion of a target list recursively deletes each target, from left to right.
+Deletion of a target list recursively deletes each target, kutoka left to right.
 
 .. index::
    statement: global
    pair: unbinding; name
 
-Deletion of a name removes the binding of that name from the local or global
+Deletion of a name removes the binding of that name kutoka the local or global
 namespace, depending on whether the name occurs in a :keyword:`global` statement
 in the same code block.  If the name is unbound, a :exc:`NameError` exception
 will be raised.
@@ -472,7 +472,7 @@ assignment of an empty slice of the right type (but even this is determined by
 the sliced object).
 
 .. versionchanged:: 3.2
-   Previously it was illegal to delete a name from the local namespace if it
+   Previously it was illegal to delete a name kutoka the local namespace if it
    occurs as a free variable in a nested block.
 
 
@@ -490,7 +490,7 @@ The :keyword:`!return` statement
    return_stmt: "return" [`expression_list`]
 
 :keyword:`return` may only occur syntactically nested in a function definition,
-not within a nested class definition.
+not within a nested kundi definition.
 
 If an expression list is present, it is evaluated, else ``None`` is substituted.
 
@@ -534,12 +534,12 @@ that would otherwise be required in the equivalent yield expression
 statement. For example, the yield statements ::
 
   yield <expr>
-  yield from <expr>
+  yield kutoka <expr>
 
 are equivalent to the yield expression statements ::
 
   (yield <expr>)
-  (yield from <expr>)
+  (yield kutoka <expr>)
 
 Yield expressions and statements are only used when defining a :term:`generator`
 function, and are only used in the body of the generator function.  Using yield
@@ -561,7 +561,7 @@ The :keyword:`!raise` statement
    single: __traceback__ (exception attribute)
 
 .. productionlist::
-   raise_stmt: "raise" [`expression` ["from" `expression`]]
+   raise_stmt: "raise" [`expression` ["kutoka" `expression`]]
 
 If no expressions are present, :keyword:`raise` re-raises the last exception
 that was active in the current scope.  If no exception is active in the current
@@ -569,9 +569,9 @@ scope, a :exc:`RuntimeError` exception is raised indicating that this is an
 error.
 
 Otherwise, :keyword:`raise` evaluates the first expression as the exception
-object.  It must be either a subclass or an instance of :class:`BaseException`.
+object.  It must be either a subkundi or an instance of :class:`BaseException`.
 If it is a class, the exception instance will be obtained when needed by
-instantiating the class with no arguments.
+instantiating the kundi with no arguments.
 
 The :dfn:`type` of the exception is the exception instance's class, the
 :dfn:`value` is the instance itself.
@@ -590,8 +590,8 @@ instance, with its traceback set to its argument), like so::
            __cause__ (exception attribute)
            __context__ (exception attribute)
 
-The ``from`` clause is used for exception chaining: if given, the second
-*expression* must be another exception class or instance, which will then be
+The ``kutoka`` clause is used for exception chaining: if given, the second
+*expression* must be another exception kundi or instance, which will then be
 attached to the raised exception as the :attr:`__cause__` attribute (which is
 writable).  If the raised exception is not handled, both exceptions will be
 printed::
@@ -599,7 +599,7 @@ printed::
    >>> try:
    ...     print(1 / 0)
    ... except Exception as exc:
-   ...     raise RuntimeError("Something bad happened") from exc
+   ...     raise RuntimeError("Something bad happened") kutoka exc
    ...
    Traceback (most recent call last):
      File "<stdin>", line 2, in <module>
@@ -631,12 +631,12 @@ attached as the new exception's :attr:`__context__` attribute::
    RuntimeError: Something bad happened
 
 Exception chaining can be explicitly suppressed by specifying :const:`None` in
-the ``from`` clause::
+the ``kutoka`` clause::
 
    >>> try:
    ...     print(1 / 0)
    ... except:
-   ...     raise RuntimeError("Something bad happened") from None
+   ...     raise RuntimeError("Something bad happened") kutoka None
    ...
    Traceback (most recent call last):
      File "<stdin>", line 4, in <module>
@@ -646,7 +646,7 @@ Additional information on exceptions can be found in section :ref:`exceptions`,
 and information about handling exceptions is in section :ref:`try`.
 
 .. versionchanged:: 3.3
-    :const:`None` is now permitted as ``Y`` in ``raise X from Y``.
+    :const:`None` is now permitted as ``Y`` in ``raise X kutoka Y``.
 
 .. versionadded:: 3.3
     The ``__suppress_context__`` attribute to suppress automatic display of the
@@ -667,7 +667,7 @@ The :keyword:`!break` statement
    break_stmt: "break"
 
 :keyword:`break` may only occur syntactically nested in a :keyword:`for` or
-:keyword:`while` loop, but not nested in a function or class definition within
+:keyword:`while` loop, but not nested in a function or kundi definition within
 that loop.
 
 .. index:: keyword: else
@@ -702,7 +702,7 @@ The :keyword:`!continue` statement
    continue_stmt: "continue"
 
 :keyword:`continue` may only occur syntactically nested in a :keyword:`for` or
-:keyword:`while` loop, but not nested in a function or class definition within
+:keyword:`while` loop, but not nested in a function or kundi definition within
 that loop.  It continues with the next cycle of the nearest enclosing loop.
 
 When :keyword:`continue` passes control out of a :keyword:`try` statement with a
@@ -711,7 +711,7 @@ really starting the next loop cycle.
 
 
 .. _import:
-.. _from:
+.. _kutoka:
 
 The :keyword:`!import` statement
 ================================
@@ -720,22 +720,22 @@ The :keyword:`!import` statement
    ! statement: import
    single: module; importing
    pair: name; binding
-   keyword: from
+   keyword: kutoka
    keyword: as
    exception: ImportError
-   single: , (comma); import statement
+   single: , (comma); agiza statement
 
 .. productionlist::
    import_stmt: "import" `module` ["as" `identifier`] ("," `module` ["as" `identifier`])*
-              : | "from" `relative_module` "import" `identifier` ["as" `identifier`]
+              : | "kutoka" `relative_module` "import" `identifier` ["as" `identifier`]
               : ("," `identifier` ["as" `identifier`])*
-              : | "from" `relative_module` "import" "(" `identifier` ["as" `identifier`]
+              : | "kutoka" `relative_module` "import" "(" `identifier` ["as" `identifier`]
               : ("," `identifier` ["as" `identifier`])* [","] ")"
-              : | "from" `module` "import" "*"
+              : | "kutoka" `module` "import" "*"
    module: (`identifier` ".")* `identifier`
    relative_module: "."* `module` | "."+
 
-The basic import statement (no :keyword:`from` clause) is executed in two
+The basic agiza statement (no :keyword:`kutoka` clause) is executed in two
 steps:
 
 #. find a module, loading and initializing it if necessary
@@ -748,17 +748,17 @@ as though the clauses had been separated out into individual import
 statements.
 
 The details of the first step, finding and loading modules are described in
-greater detail in the section on the :ref:`import system <importsystem>`,
+greater detail in the section on the :ref:`agiza system <importsystem>`,
 which also describes the various types of packages and modules that can
 be imported, as well as all the hooks that can be used to customize
-the import system. Note that failures in this step may indicate either
+the agiza system. Note that failures in this step may indicate either
 that the module could not be located, *or* that an error occurred while
 initializing the module, which includes execution of the module's code.
 
 If the requested module is retrieved successfully, it will be made
 available in the local namespace in one of three ways:
 
-.. index:: single: as; import statement
+.. index:: single: as; agiza statement
 
 * If the module name is followed by :keyword:`!as`, then the name
   following :keyword:`!as` is bound directly to the imported module.
@@ -773,16 +773,16 @@ available in the local namespace in one of three ways:
 
 .. index::
    pair: name; binding
-   single: from; import statement
+   single: kutoka; agiza statement
 
-The :keyword:`from` form uses a slightly more complex process:
+The :keyword:`kutoka` form uses a slightly more complex process:
 
-#. find the module specified in the :keyword:`from` clause, loading and
+#. find the module specified in the :keyword:`kutoka` clause, loading and
    initializing it if necessary;
 #. for each of the identifiers specified in the :keyword:`import` clauses:
 
    #. check if the imported module has an attribute by that name
-   #. if not, attempt to import a submodule with that name and then
+   #. if not, attempt to agiza a submodule with that name and then
       check the imported module again for that attribute
    #. if the attribute is not found, :exc:`ImportError` is raised.
    #. otherwise, a reference to that value is stored in the local namespace,
@@ -791,13 +791,13 @@ The :keyword:`from` form uses a slightly more complex process:
 
 Examples::
 
-   import foo                 # foo imported and bound locally
-   import foo.bar.baz         # foo.bar.baz imported, foo bound locally
-   import foo.bar.baz as fbb  # foo.bar.baz imported and bound as fbb
-   from foo.bar import baz    # foo.bar.baz imported and bound as baz
-   from foo import attr       # foo imported and foo.attr bound as attr
+   agiza foo                 # foo imported and bound locally
+   agiza foo.bar.baz         # foo.bar.baz imported, foo bound locally
+   agiza foo.bar.baz as fbb  # foo.bar.baz imported and bound as fbb
+   kutoka foo.bar agiza baz    # foo.bar.baz imported and bound as baz
+   kutoka foo agiza attr       # foo imported and foo.attr bound as attr
 
-.. index:: single: * (asterisk); import statement
+.. index:: single: * (asterisk); agiza statement
 
 If the list of identifiers is replaced by a star (``'*'``), all public
 names defined in the module are bound in the local namespace for the scope
@@ -815,24 +815,24 @@ in the module's namespace which do not begin with an underscore character
 to avoid accidentally exporting items that are not part of the API (such as
 library modules which were imported and used within the module).
 
-The wild card form of import --- ``from module import *`` --- is only allowed at
-the module level.  Attempting to use it in class or function definitions will
+The wild card form of agiza --- ``kutoka module agiza *`` --- is only allowed at
+the module level.  Attempting to use it in kundi or function definitions will
 raise a :exc:`SyntaxError`.
 
 .. index::
     single: relative; import
 
-When specifying what module to import you do not have to specify the absolute
+When specifying what module to agiza you do not have to specify the absolute
 name of the module. When a module or package is contained within another
-package it is possible to make a relative import within the same top package
+package it is possible to make a relative agiza within the same top package
 without having to mention the package name. By using leading dots in the
-specified module or package after :keyword:`from` you can specify how high to
+specified module or package after :keyword:`kutoka` you can specify how high to
 traverse up the current package hierarchy without specifying exact names. One
 leading dot means the current package where the module making the import
 exists. Two dots means up one package level. Three dots is up two levels, etc.
-So if you execute ``from . import mod`` from a module in the ``pkg`` package
-then you will end up importing ``pkg.mod``. If you execute ``from ..subpkg2
-import mod`` from within ``pkg.subpkg1`` you will import ``pkg.subpkg2.mod``.
+So if you execute ``kutoka . agiza mod`` kutoka a module in the ``pkg`` package
+then you will end up importing ``pkg.mod``. If you execute ``kutoka ..subpkg2
+agiza mod`` kutoka within ``pkg.subpkg1`` you will agiza ``pkg.subpkg2.mod``.
 The specification for relative imports is contained in
 the :ref:`relativeimports` section.
 
@@ -859,9 +859,9 @@ features on a per-module basis before the release in which the feature becomes
 standard.
 
 .. productionlist:: *
-   future_stmt: "from" "__future__" "import" `feature` ["as" `identifier`]
+   future_stmt: "kutoka" "__future__" "import" `feature` ["as" `identifier`]
               : ("," `feature` ["as" `identifier`])*
-              : | "from" "__future__" "import" "(" `feature` ["as" `identifier`]
+              : | "kutoka" "__future__" "import" "(" `feature` ["as" `identifier`]
               : ("," `feature` ["as" `identifier`])* [","] ")"
    feature: `identifier`
 
@@ -894,7 +894,7 @@ For any given release, the compiler knows which feature names have been defined,
 and raises a compile-time error if a future statement contains a feature not
 known to it.
 
-The direct runtime semantics are the same as for any import statement: there is
+The direct runtime semantics are the same as for any agiza statement: there is
 a standard module :mod:`__future__`, described later, and it will be imported in
 the usual way at the time the future statement is executed.
 
@@ -903,9 +903,9 @@ future statement.
 
 Note that there is nothing special about the statement::
 
-   import __future__ [as name]
+   agiza __future__ [as name]
 
-That is not a future statement; it's an ordinary import statement with no
+That is not a future statement; it's an ordinary agiza statement with no
 special semantics or syntax restrictions.
 
 Code compiled by calls to the built-in functions :func:`exec` and :func:`compile`

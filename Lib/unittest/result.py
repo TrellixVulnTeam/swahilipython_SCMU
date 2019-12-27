@@ -9,19 +9,19 @@ kutoka functools agiza wraps
 
 __unittest = True
 
-def failfast(method):
+eleza failfast(method):
     @wraps(method)
-    def inner(self, *args, **kw):
-        if getattr(self, 'failfast', False):
+    eleza inner(self, *args, **kw):
+        ikiwa getattr(self, 'failfast', False):
             self.stop()
-        return method(self, *args, **kw)
-    return inner
+        rudisha method(self, *args, **kw)
+    rudisha inner
 
 STDOUT_LINE = '\nStdout:\n%s'
 STDERR_LINE = '\nStderr:\n%s'
 
 
-class TestResult(object):
+kundi TestResult(object):
     """Holder for test result information.
 
     Test results are automatically managed by the TestCase and TestSuite
@@ -35,7 +35,7 @@ class TestResult(object):
     _previousTestClass = None
     _testRunEntered = False
     _moduleSetUpFailed = False
-    def __init__(self, stream=None, descriptions=None, verbosity=None):
+    eleza __init__(self, stream=None, descriptions=None, verbosity=None):
         self.failfast = False
         self.failures = []
         self.errors = []
@@ -52,45 +52,45 @@ class TestResult(object):
         self._original_stderr = sys.stderr
         self._mirrorOutput = False
 
-    def printErrors(self):
+    eleza printErrors(self):
         "Called by TestRunner after test run"
 
-    def startTest(self, test):
+    eleza startTest(self, test):
         "Called when the given test is about to be run"
         self.testsRun += 1
         self._mirrorOutput = False
         self._setupStdout()
 
-    def _setupStdout(self):
-        if self.buffer:
-            if self._stderr_buffer is None:
+    eleza _setupStdout(self):
+        ikiwa self.buffer:
+            ikiwa self._stderr_buffer is None:
                 self._stderr_buffer = io.StringIO()
                 self._stdout_buffer = io.StringIO()
             sys.stdout = self._stdout_buffer
             sys.stderr = self._stderr_buffer
 
-    def startTestRun(self):
+    eleza startTestRun(self):
         """Called once before any tests are executed.
 
         See startTest for a method called before each test.
         """
 
-    def stopTest(self, test):
+    eleza stopTest(self, test):
         """Called when the given test has been run"""
         self._restoreStdout()
         self._mirrorOutput = False
 
-    def _restoreStdout(self):
-        if self.buffer:
-            if self._mirrorOutput:
+    eleza _restoreStdout(self):
+        ikiwa self.buffer:
+            ikiwa self._mirrorOutput:
                 output = sys.stdout.getvalue()
                 error = sys.stderr.getvalue()
-                if output:
-                    if not output.endswith('\n'):
+                ikiwa output:
+                    ikiwa not output.endswith('\n'):
                         output += '\n'
                     self._original_stdout.write(STDOUT_LINE % output)
-                if error:
-                    if not error.endswith('\n'):
+                ikiwa error:
+                    ikiwa not error.endswith('\n'):
                         error += '\n'
                     self._original_stderr.write(STDERR_LINE % error)
 
@@ -101,14 +101,14 @@ class TestResult(object):
             self._stderr_buffer.seek(0)
             self._stderr_buffer.truncate()
 
-    def stopTestRun(self):
+    eleza stopTestRun(self):
         """Called once after all tests are executed.
 
         See stopTest for a method called after each test.
         """
 
     @failfast
-    def addError(self, test, err):
+    eleza addError(self, test, err):
         """Called when an error has occurred. 'err' is a tuple of values as
         returned by sys.exc_info().
         """
@@ -116,68 +116,68 @@ class TestResult(object):
         self._mirrorOutput = True
 
     @failfast
-    def addFailure(self, test, err):
+    eleza addFailure(self, test, err):
         """Called when an error has occurred. 'err' is a tuple of values as
         returned by sys.exc_info()."""
         self.failures.append((test, self._exc_info_to_string(err, test)))
         self._mirrorOutput = True
 
-    def addSubTest(self, test, subtest, err):
+    eleza addSubTest(self, test, subtest, err):
         """Called at the end of a subtest.
-        'err' is None if the subtest ended successfully, otherwise it's a
+        'err' is None ikiwa the subtest ended successfully, otherwise it's a
         tuple of values as returned by sys.exc_info().
         """
         # By default, we don't do anything with successful subtests, but
         # more sophisticated test results might want to record them.
-        if err is not None:
-            if getattr(self, 'failfast', False):
+        ikiwa err is not None:
+            ikiwa getattr(self, 'failfast', False):
                 self.stop()
-            if issubclass(err[0], test.failureException):
+            ikiwa issubclass(err[0], test.failureException):
                 errors = self.failures
             else:
                 errors = self.errors
             errors.append((subtest, self._exc_info_to_string(err, test)))
             self._mirrorOutput = True
 
-    def addSuccess(self, test):
+    eleza addSuccess(self, test):
         "Called when a test has completed successfully"
         pass
 
-    def addSkip(self, test, reason):
+    eleza addSkip(self, test, reason):
         """Called when a test is skipped."""
         self.skipped.append((test, reason))
 
-    def addExpectedFailure(self, test, err):
+    eleza addExpectedFailure(self, test, err):
         """Called when an expected failure/error occurred."""
         self.expectedFailures.append(
             (test, self._exc_info_to_string(err, test)))
 
     @failfast
-    def addUnexpectedSuccess(self, test):
+    eleza addUnexpectedSuccess(self, test):
         """Called when a test was expected to fail, but succeed."""
         self.unexpectedSuccesses.append(test)
 
-    def wasSuccessful(self):
+    eleza wasSuccessful(self):
         """Tells whether or not this result was a success."""
         # The hasattr check is for test_result's OldResult test.  That
         # way this method works on objects that lack the attribute.
         # (where would such result intances come kutoka? old stored pickles?)
-        return ((len(self.failures) == len(self.errors) == 0) and
+        rudisha ((len(self.failures) == len(self.errors) == 0) and
                 (not hasattr(self, 'unexpectedSuccesses') or
                  len(self.unexpectedSuccesses) == 0))
 
-    def stop(self):
+    eleza stop(self):
         """Indicates that the tests should be aborted."""
         self.shouldStop = True
 
-    def _exc_info_to_string(self, err, test):
+    eleza _exc_info_to_string(self, err, test):
         """Converts a sys.exc_info()-style tuple of values into a string."""
         exctype, value, tb = err
         # Skip test runner traceback levels
         while tb and self._is_relevant_tb_level(tb):
             tb = tb.tb_next
 
-        if exctype is test.failureException:
+        ikiwa exctype is test.failureException:
             # Skip assert*() traceback levels
             length = self._count_relevant_tb_levels(tb)
         else:
@@ -186,31 +186,31 @@ class TestResult(object):
             exctype, value, tb, limit=length, capture_locals=self.tb_locals)
         msgLines = list(tb_e.format())
 
-        if self.buffer:
+        ikiwa self.buffer:
             output = sys.stdout.getvalue()
             error = sys.stderr.getvalue()
-            if output:
-                if not output.endswith('\n'):
+            ikiwa output:
+                ikiwa not output.endswith('\n'):
                     output += '\n'
                 msgLines.append(STDOUT_LINE % output)
-            if error:
-                if not error.endswith('\n'):
+            ikiwa error:
+                ikiwa not error.endswith('\n'):
                     error += '\n'
                 msgLines.append(STDERR_LINE % error)
-        return ''.join(msgLines)
+        rudisha ''.join(msgLines)
 
 
-    def _is_relevant_tb_level(self, tb):
-        return '__unittest' in tb.tb_frame.f_globals
+    eleza _is_relevant_tb_level(self, tb):
+        rudisha '__unittest' in tb.tb_frame.f_globals
 
-    def _count_relevant_tb_levels(self, tb):
+    eleza _count_relevant_tb_levels(self, tb):
         length = 0
         while tb and not self._is_relevant_tb_level(tb):
             length += 1
             tb = tb.tb_next
-        return length
+        rudisha length
 
-    def __repr__(self):
-        return ("<%s run=%i errors=%i failures=%i>" %
+    eleza __repr__(self):
+        rudisha ("<%s run=%i errors=%i failures=%i>" %
                (util.strclass(self.__class__), self.testsRun, len(self.errors),
                 len(self.failures)))

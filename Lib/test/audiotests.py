@@ -5,28 +5,28 @@ kutoka unittest agiza mock
 agiza pickle
 
 
-class UnseekableIO(io.FileIO):
-    def tell(self):
+kundi UnseekableIO(io.FileIO):
+    eleza tell(self):
         raise io.UnsupportedOperation
 
-    def seek(self, *args, **kwargs):
+    eleza seek(self, *args, **kwargs):
         raise io.UnsupportedOperation
 
 
-class AudioTests:
+kundi AudioTests:
     close_fd = False
 
-    def setUp(self):
+    eleza setUp(self):
         self.f = self.fout = None
 
-    def tearDown(self):
-        if self.f is not None:
+    eleza tearDown(self):
+        ikiwa self.f is not None:
             self.f.close()
-        if self.fout is not None:
+        ikiwa self.fout is not None:
             self.fout.close()
         unlink(TESTFN)
 
-    def check_params(self, f, nchannels, sampwidth, framerate, nframes,
+    eleza check_params(self, f, nchannels, sampwidth, framerate, nframes,
                      comptype, compname):
         self.assertEqual(f.getnchannels(), nchannels)
         self.assertEqual(f.getsampwidth(), sampwidth)
@@ -50,9 +50,9 @@ class AudioTests:
             self.assertEqual(pickle.loads(dump), params)
 
 
-class AudioMiscTests(AudioTests):
+kundi AudioMiscTests(AudioTests):
 
-    def test_openfp_deprecated(self):
+    eleza test_openfp_deprecated(self):
         arg = "arg"
         mode = "mode"
         with mock.patch(f"{self.module.__name__}.open") as mock_open, \
@@ -61,17 +61,17 @@ class AudioMiscTests(AudioTests):
             mock_open.assert_called_with(arg, mode=mode)
 
 
-class AudioWriteTests(AudioTests):
+kundi AudioWriteTests(AudioTests):
 
-    def create_file(self, testfile):
+    eleza create_file(self, testfile):
         f = self.fout = self.module.open(testfile, 'wb')
         f.setnchannels(self.nchannels)
         f.setsampwidth(self.sampwidth)
         f.setframerate(self.framerate)
         f.setcomptype(self.comptype, self.compname)
-        return f
+        rudisha f
 
-    def check_file(self, testfile, nframes, frames):
+    eleza check_file(self, testfile, nframes, frames):
         with self.module.open(testfile, 'rb') as f:
             self.assertEqual(f.getnchannels(), self.nchannels)
             self.assertEqual(f.getsampwidth(), self.sampwidth)
@@ -79,7 +79,7 @@ class AudioWriteTests(AudioTests):
             self.assertEqual(f.getnframes(), nframes)
             self.assertEqual(f.readframes(nframes), frames)
 
-    def test_write_params(self):
+    eleza test_write_params(self):
         f = self.create_file(TESTFN)
         f.setnframes(self.nframes)
         f.writeframes(self.frames)
@@ -87,9 +87,9 @@ class AudioWriteTests(AudioTests):
                           self.nframes, self.comptype, self.compname)
         f.close()
 
-    def test_write_context_manager_calls_close(self):
+    eleza test_write_context_manager_calls_close(self):
         # Close checks for a minimum header and will raise an error
-        # if it is not set, so this proves that close is called.
+        # ikiwa it is not set, so this proves that close is called.
         with self.assertRaises(self.module.Error):
             with self.module.open(TESTFN, 'wb'):
                 pass
@@ -98,7 +98,7 @@ class AudioWriteTests(AudioTests):
                 with self.module.open(testfile):
                     pass
 
-    def test_context_manager_with_open_file(self):
+    eleza test_context_manager_with_open_file(self):
         with open(TESTFN, 'wb') as testfile:
             with self.module.open(testfile) as f:
                 f.setnchannels(self.nchannels)
@@ -113,11 +113,11 @@ class AudioWriteTests(AudioTests):
                 self.assertEqual(params.nchannels, self.nchannels)
                 self.assertEqual(params.sampwidth, self.sampwidth)
                 self.assertEqual(params.framerate, self.framerate)
-            if not self.close_fd:
+            ikiwa not self.close_fd:
                 self.assertIsNone(f.getfp())
             self.assertEqual(testfile.closed, self.close_fd)
 
-    def test_context_manager_with_filename(self):
+    eleza test_context_manager_with_filename(self):
         # If the file doesn't get closed, this test won't fail, but it will
         # produce a resource leak warning.
         with self.module.open(TESTFN, 'wb') as f:
@@ -131,10 +131,10 @@ class AudioWriteTests(AudioTests):
             self.assertEqual(params.nchannels, self.nchannels)
             self.assertEqual(params.sampwidth, self.sampwidth)
             self.assertEqual(params.framerate, self.framerate)
-        if not self.close_fd:
+        ikiwa not self.close_fd:
             self.assertIsNone(f.getfp())
 
-    def test_write(self):
+    eleza test_write(self):
         f = self.create_file(TESTFN)
         f.setnframes(self.nframes)
         f.writeframes(self.frames)
@@ -142,7 +142,7 @@ class AudioWriteTests(AudioTests):
 
         self.check_file(TESTFN, self.nframes, self.frames)
 
-    def test_write_bytearray(self):
+    eleza test_write_bytearray(self):
         f = self.create_file(TESTFN)
         f.setnframes(self.nframes)
         f.writeframes(bytearray(self.frames))
@@ -150,7 +150,7 @@ class AudioWriteTests(AudioTests):
 
         self.check_file(TESTFN, self.nframes, self.frames)
 
-    def test_write_array(self):
+    eleza test_write_array(self):
         f = self.create_file(TESTFN)
         f.setnframes(self.nframes)
         f.writeframes(array.array('h', self.frames))
@@ -158,7 +158,7 @@ class AudioWriteTests(AudioTests):
 
         self.check_file(TESTFN, self.nframes, self.frames)
 
-    def test_write_memoryview(self):
+    eleza test_write_memoryview(self):
         f = self.create_file(TESTFN)
         f.setnframes(self.nframes)
         f.writeframes(memoryview(self.frames))
@@ -166,7 +166,7 @@ class AudioWriteTests(AudioTests):
 
         self.check_file(TESTFN, self.nframes, self.frames)
 
-    def test_incompleted_write(self):
+    eleza test_incompleted_write(self):
         with open(TESTFN, 'wb') as testfile:
             testfile.write(b'ababagalamaga')
             f = self.create_file(testfile)
@@ -178,7 +178,7 @@ class AudioWriteTests(AudioTests):
             self.assertEqual(testfile.read(13), b'ababagalamaga')
             self.check_file(testfile, self.nframes, self.frames)
 
-    def test_multiple_writes(self):
+    eleza test_multiple_writes(self):
         with open(TESTFN, 'wb') as testfile:
             testfile.write(b'ababagalamaga')
             f = self.create_file(testfile)
@@ -192,7 +192,7 @@ class AudioWriteTests(AudioTests):
             self.assertEqual(testfile.read(13), b'ababagalamaga')
             self.check_file(testfile, self.nframes, self.frames)
 
-    def test_overflowed_write(self):
+    eleza test_overflowed_write(self):
         with open(TESTFN, 'wb') as testfile:
             testfile.write(b'ababagalamaga')
             f = self.create_file(testfile)
@@ -204,7 +204,7 @@ class AudioWriteTests(AudioTests):
             self.assertEqual(testfile.read(13), b'ababagalamaga')
             self.check_file(testfile, self.nframes, self.frames)
 
-    def test_unseekable_read(self):
+    eleza test_unseekable_read(self):
         with self.create_file(TESTFN) as f:
             f.setnframes(self.nframes)
             f.writeframes(self.frames)
@@ -212,7 +212,7 @@ class AudioWriteTests(AudioTests):
         with UnseekableIO(TESTFN, 'rb') as testfile:
             self.check_file(testfile, self.nframes, self.frames)
 
-    def test_unseekable_write(self):
+    eleza test_unseekable_write(self):
         with UnseekableIO(TESTFN, 'wb') as testfile:
             with self.create_file(testfile) as f:
                 f.setnframes(self.nframes)
@@ -220,7 +220,7 @@ class AudioWriteTests(AudioTests):
 
         self.check_file(TESTFN, self.nframes, self.frames)
 
-    def test_unseekable_incompleted_write(self):
+    eleza test_unseekable_incompleted_write(self):
         with UnseekableIO(TESTFN, 'wb') as testfile:
             testfile.write(b'ababagalamaga')
             f = self.create_file(testfile)
@@ -238,7 +238,7 @@ class AudioWriteTests(AudioTests):
             self.assertEqual(testfile.read(13), b'ababagalamaga')
             self.check_file(testfile, self.nframes + 1, self.frames)
 
-    def test_unseekable_overflowed_write(self):
+    eleza test_unseekable_overflowed_write(self):
         with UnseekableIO(TESTFN, 'wb') as testfile:
             testfile.write(b'ababagalamaga')
             f = self.create_file(testfile)
@@ -258,19 +258,19 @@ class AudioWriteTests(AudioTests):
             self.check_file(testfile, self.nframes - 1, self.frames[:-framesize])
 
 
-class AudioTestsWithSourceFile(AudioTests):
+kundi AudioTestsWithSourceFile(AudioTests):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.sndfilepath = findfile(cls.sndfilename, subdir='audiodata')
 
-    def test_read_params(self):
+    eleza test_read_params(self):
         f = self.f = self.module.open(self.sndfilepath)
         #self.assertEqual(f.getfp().name, self.sndfilepath)
         self.check_params(f, self.nchannels, self.sampwidth, self.framerate,
                           self.sndfilenframes, self.comptype, self.compname)
 
-    def test_close(self):
+    eleza test_close(self):
         with open(self.sndfilepath, 'rb') as testfile:
             f = self.f = self.module.open(testfile)
             self.assertFalse(testfile.closed)
@@ -284,7 +284,7 @@ class AudioTestsWithSourceFile(AudioTests):
             self.assertEqual(testfile.closed, self.close_fd)
             fout.close() # do nothing
 
-    def test_read(self):
+    eleza test_read(self):
         framesize = self.nchannels * self.sampwidth
         chunk1 = self.frames[:2 * framesize]
         chunk2 = self.frames[2 * framesize: 4 * framesize]
@@ -308,7 +308,7 @@ class AudioTestsWithSourceFile(AudioTests):
         with self.assertRaises(self.module.Error):
             f.setpos(f.getnframes() + 1)
 
-    def test_copy(self):
+    eleza test_copy(self):
         f = self.f = self.module.open(self.sndfilepath)
         fout = self.fout = self.module.open(TESTFN, 'wb')
         fout.setparams(f.getparams())
@@ -325,7 +325,7 @@ class AudioTestsWithSourceFile(AudioTests):
         self.assertEqual(f.readframes(f.getnframes()),
                          fout.readframes(fout.getnframes()))
 
-    def test_read_not_from_start(self):
+    eleza test_read_not_kutoka_start(self):
         with open(TESTFN, 'wb') as testfile:
             testfile.write(b'ababagalamaga')
             with open(self.sndfilepath, 'rb') as f:

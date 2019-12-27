@@ -13,7 +13,7 @@
 --------------
 
 The :mod:`pty` module defines operations for handling the pseudo-terminal
-concept: starting another process and being able to write to and read from its
+concept: starting another process and being able to write to and read kutoka its
 controlling terminal programmatically.
 
 Because pseudo-terminal handling is highly platform dependent, there is code to
@@ -43,22 +43,22 @@ The :mod:`pty` module defines the following functions:
 
    Spawn a process, and connect its controlling terminal with the current
    process's standard io. This is often used to baffle programs which insist on
-   reading from the controlling terminal. It is expected that the process
+   reading kutoka the controlling terminal. It is expected that the process
    spawned behind the pty will eventually terminate, and when it does *spawn*
    will return.
 
    The functions *master_read* and *stdin_read* are passed a file descriptor
-   which they should read from, and they should always return a byte string. In
+   which they should read kutoka, and they should always return a byte string. In
    order to force spawn to return before the child process exits an
    :exc:`OSError` should be thrown.
 
    The default implementation for both functions will read and return up to 1024
    bytes each time the function is called. The *master_read* callback is passed
-   the pseudoterminal’s master file descriptor to read output from the child
-   process, and *stdin_read* is passed file descriptor 0, to read from the
+   the pseudoterminal’s master file descriptor to read output kutoka the child
+   process, and *stdin_read* is passed file descriptor 0, to read kutoka the
    parent process's standard input.
 
-   Returning an empty byte string from either callback is interpreted as an
+   Returning an empty byte string kutoka either callback is interpreted as an
    end-of-file (EOF) condition, and that callback will not be called after
    that. If *stdin_read* signals EOF the controlling terminal can no longer
    communicate with the parent process OR the child process. Unless the child
@@ -71,7 +71,7 @@ The :mod:`pty` module defines the following functions:
 
 
    .. versionchanged:: 3.4
-      :func:`spawn` now returns the status value from :func:`os.waitpid`
+      :func:`spawn` now returns the status value kutoka :func:`os.waitpid`
       on the child process.
 
 Example
@@ -83,11 +83,11 @@ The following program acts like the Unix command :manpage:`script(1)`, using a
 pseudo-terminal to record all input and output of a terminal session in a
 "typescript". ::
 
-    import argparse
-    import os
-    import pty
-    import sys
-    import time
+    agiza argparse
+    agiza os
+    agiza pty
+    agiza sys
+    agiza time
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-a', dest='append', action='store_true')

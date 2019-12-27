@@ -67,7 +67,7 @@ Tuple Objects
 
 .. c:function:: PyObject* PyTuple_GetSlice(PyObject *p, Py_ssize_t low, Py_ssize_t high)
 
-   Take a slice of the tuple pointed to by *p* from *low* to *high* and return it
+   Take a slice of the tuple pointed to by *p* kutoka *low* to *high* and return it
    as a new tuple.
 
 
@@ -120,13 +120,13 @@ type.
 
 .. c:function:: PyTypeObject* PyStructSequence_NewType(PyStructSequence_Desc *desc)
 
-   Create a new struct sequence type from the data in *desc*, described below. Instances
+   Create a new struct sequence type kutoka the data in *desc*, described below. Instances
    of the resulting type can be created with :c:func:`PyStructSequence_New`.
 
 
 .. c:function:: void PyStructSequence_InitType(PyTypeObject *type, PyStructSequence_Desc *desc)
 
-   Initializes a struct sequence type *type* from *desc* in place.
+   Initializes a struct sequence type *type* kutoka *desc* in place.
 
 
 .. c:function:: int PyStructSequence_InitType2(PyTypeObject *type, PyStructSequence_Desc *desc)

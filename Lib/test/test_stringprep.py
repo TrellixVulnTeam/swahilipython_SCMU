@@ -5,8 +5,8 @@ agiza unittest
 
 kutoka stringprep agiza *
 
-class StringprepTests(unittest.TestCase):
-    def test(self):
+kundi StringprepTests(unittest.TestCase):
+    eleza test(self):
         self.assertTrue(in_table_a1("\u0221"))
         self.assertFalse(in_table_a1("\u0222"))
 
@@ -74,19 +74,19 @@ class StringprepTests(unittest.TestCase):
         # the database.
 
         # agiza hashlib
-        # predicates = [k for k in dir(stringprep) if k.startswith("in_table")]
+        # predicates = [k for k in dir(stringprep) ikiwa k.startswith("in_table")]
         # predicates.sort()
         # for p in predicates:
         #     f = getattr(stringprep, p)
         #     # Collect all BMP code points
         #     data = ["0"] * 0x10000
         #     for i in range(0x10000):
-        #         if f(unichr(i)):
+        #         ikiwa f(unichr(i)):
         #             data[i] = "1"
         #     data = "".join(data)
         #     h = hashlib.sha1()
         #     h.update(data)
         #     print p, h.hexdigest()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

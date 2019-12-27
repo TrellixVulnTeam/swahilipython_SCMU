@@ -10,7 +10,7 @@ agiza unittest
 
 
 @util.case_insensitive_tests
-class CaseSensitivityTest(util.CASEOKTestBase):
+kundi CaseSensitivityTest(util.CASEOKTestBase):
 
     """PEP 235 dictates that on case-preserving, case-insensitive file systems
     that agizas are case-sensitive unless the PYTHONCASEOK environment
@@ -19,14 +19,14 @@ class CaseSensitivityTest(util.CASEOKTestBase):
     name = 'MoDuLe'
     assert name != name.lower()
 
-    def finder(self, path):
-        return self.machinery.FileFinder(path,
+    eleza finder(self, path):
+        rudisha self.machinery.FileFinder(path,
                                       (self.machinery.SourceFileLoader,
                                             self.machinery.SOURCE_SUFFIXES),
                                         (self.machinery.SourcelessFileLoader,
                                             self.machinery.BYTECODE_SUFFIXES))
 
-    def sensitivity_test(self):
+    eleza sensitivity_test(self):
         """Look for a module with matching and non-matching sensitivity."""
         sensitive_pkg = 'sensitive.{0}'.format(self.name)
         insensitive_pkg = 'insensitive.{0}'.format(self.name.lower())
@@ -36,9 +36,9 @@ class CaseSensitivityTest(util.CASEOKTestBase):
             insensitive_path = os.path.join(mapping['.root'], 'insensitive')
             sensitive_finder = self.finder(sensitive_path)
             insensitive_finder = self.finder(insensitive_path)
-            return self.find(sensitive_finder), self.find(insensitive_finder)
+            rudisha self.find(sensitive_finder), self.find(insensitive_finder)
 
-    def test_sensitive(self):
+    eleza test_sensitive(self):
         with test_support.EnvironmentVarGuard() as env:
             env.unset('PYTHONCASEOK')
             self.caseok_env_changed(should_exist=False)
@@ -47,7 +47,7 @@ class CaseSensitivityTest(util.CASEOKTestBase):
             self.assertIn(self.name, sensitive.get_filename(self.name))
             self.assertIsNone(insensitive)
 
-    def test_insensitive(self):
+    eleza test_insensitive(self):
         with test_support.EnvironmentVarGuard() as env:
             env.set('PYTHONCASEOK', '1')
             self.caseok_env_changed(should_exist=True)
@@ -58,9 +58,9 @@ class CaseSensitivityTest(util.CASEOKTestBase):
             self.assertIn(self.name, insensitive.get_filename(self.name))
 
 
-class CaseSensitivityTestPEP302(CaseSensitivityTest):
-    def find(self, finder):
-        return finder.find_module(self.name)
+kundi CaseSensitivityTestPEP302(CaseSensitivityTest):
+    eleza find(self, finder):
+        rudisha finder.find_module(self.name)
 
 
 (Frozen_CaseSensitivityTestPEP302,
@@ -69,10 +69,10 @@ class CaseSensitivityTestPEP302(CaseSensitivityTest):
                     machinery=machinery)
 
 
-class CaseSensitivityTestPEP451(CaseSensitivityTest):
-    def find(self, finder):
+kundi CaseSensitivityTestPEP451(CaseSensitivityTest):
+    eleza find(self, finder):
         found = finder.find_spec(self.name)
-        return found.loader if found is not None else found
+        rudisha found.loader ikiwa found is not None else found
 
 
 (Frozen_CaseSensitivityTestPEP451,
@@ -81,5 +81,5 @@ class CaseSensitivityTestPEP451(CaseSensitivityTest):
                     machinery=machinery)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

@@ -19,13 +19,13 @@ PyAPI_FUNC(PyObject *) PyImport_ExecCodeModule(
 PyAPI_FUNC(PyObject *) PyImport_ExecCodeModuleEx(
     const char *name,           /* UTF-8 encoded string */
     PyObject *co,
-    const char *pathname        /* decoded from the filesystem encoding */
+    const char *pathname        /* decoded kutoka the filesystem encoding */
     );
 PyAPI_FUNC(PyObject *) PyImport_ExecCodeModuleWithPathnames(
     const char *name,           /* UTF-8 encoded string */
     PyObject *co,
-    const char *pathname,       /* decoded from the filesystem encoding */
-    const char *cpathname       /* decoded from the filesystem encoding */
+    const char *pathname,       /* decoded kutoka the filesystem encoding */
+    const char *cpathname       /* decoded kutoka the filesystem encoding */
     );
 #if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03030000
 PyAPI_FUNC(PyObject *) PyImport_ExecCodeModuleObject(
@@ -65,7 +65,7 @@ PyAPI_FUNC(PyObject *) PyImport_ImportModuleLevel(
     const char *name,           /* UTF-8 encoded string */
     PyObject *globals,
     PyObject *locals,
-    PyObject *fromlist,
+    PyObject *kutokalist,
     int level
     );
 #if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03050000
@@ -73,7 +73,7 @@ PyAPI_FUNC(PyObject *) PyImport_ImportModuleLevelObject(
     PyObject *name,
     PyObject *globals,
     PyObject *locals,
-    PyObject *fromlist,
+    PyObject *kutokalist,
     int level
     );
 #endif

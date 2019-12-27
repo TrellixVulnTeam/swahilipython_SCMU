@@ -166,7 +166,7 @@ This module offers the following functions:
 
 .. function:: DeleteValue(key, value)
 
-   Removes a named value from a registry key.
+   Removes a named value kutoka a registry key.
 
    *key* is an already open key, or one of the predefined
    :ref:`HKEY_* constants <hkey-constants>`.
@@ -259,20 +259,20 @@ This module offers the following functions:
 .. function:: LoadKey(key, sub_key, file_name)
 
    Creates a subkey under the specified key and stores registration information
-   from a specified file into that subkey.
+   kutoka a specified file into that subkey.
 
    *key* is a handle returned by :func:`ConnectRegistry` or one of the constants
    :const:`HKEY_USERS` or :const:`HKEY_LOCAL_MACHINE`.
 
    *sub_key* is a string that identifies the subkey to load.
 
-   *file_name* is the name of the file to load registry data from. This file must
+   *file_name* is the name of the file to load registry data kutoka. This file must
    have been created with the :func:`SaveKey` function. Under the file allocation
    table (FAT) file system, the filename may not have an extension.
 
    A call to :func:`LoadKey` fails if the calling process does not have the
    :const:`SE_RESTORE_PRIVILEGE` privilege.  Note that privileges are different
-   from permissions -- see the `RegLoadKey documentation
+   kutoka permissions -- see the `RegLoadKey documentation
    <https://msdn.microsoft.com/en-us/library/ms724889%28v=VS.85%29.aspx>`__ for
    more details.
 
@@ -532,7 +532,7 @@ HKEY_* Constants
 
    Registry entries subordinate to this key allow you to access
    performance data. The data is not actually stored in the registry;
-   the registry functions cause the system to collect the data from
+   the registry functions cause the system to collect the data kutoka
    its source.
 
 
@@ -719,7 +719,7 @@ true if they both reference the same underlying Windows handle value.
 Handle objects can be converted to an integer (e.g., using the built-in
 :func:`int` function), in which case the underlying Windows handle value is
 returned.  You can also use the :meth:`~PyHKEY.Detach` method to return the
-integer handle, and also disconnect the Windows handle from the handle object.
+integer handle, and also disconnect the Windows handle kutoka the handle object.
 
 
 .. method:: PyHKEY.Close()
@@ -731,7 +731,7 @@ integer handle, and also disconnect the Windows handle from the handle object.
 
 .. method:: PyHKEY.Detach()
 
-   Detaches the Windows handle from the handle object.
+   Detaches the Windows handle kutoka the handle object.
 
    The result is an integer that holds the value of the handle before it is
    detached.  If the handle is already detached or closed, this will return

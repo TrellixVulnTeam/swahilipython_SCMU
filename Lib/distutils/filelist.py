@@ -85,13 +85,13 @@ class FileList:
                 raise DistutilsTemplateError(
                       "'%s' expects <pattern1> <pattern2> ..." % action)
             patterns = [convert_path(w) for w in words[1:]]
-        elif action in ('recursive-include', 'recursive-exclude'):
+        lasivyo action in ('recursive-include', 'recursive-exclude'):
             if len(words) < 3:
                 raise DistutilsTemplateError(
                       "'%s' expects <dir> <pattern1> <pattern2> ..." % action)
             dir = convert_path(words[1])
             patterns = [convert_path(w) for w in words[2:]]
-        elif action in ('graft', 'prune'):
+        lasivyo action in ('graft', 'prune'):
             if len(words) != 2:
                 raise DistutilsTemplateError(
                       "'%s' expects a single <dir_pattern>" % action)
@@ -119,21 +119,21 @@ class FileList:
                     log.warn("warning: no files found matching '%s'",
                              pattern)
 
-        elif action == 'exclude':
+        lasivyo action == 'exclude':
             self.debug_print("exclude " + ' '.join(patterns))
             for pattern in patterns:
                 if not self.exclude_pattern(pattern, anchor=1):
                     log.warn(("warning: no previously-included files "
                               "found matching '%s'"), pattern)
 
-        elif action == 'global-include':
+        lasivyo action == 'global-include':
             self.debug_print("global-include " + ' '.join(patterns))
             for pattern in patterns:
                 if not self.include_pattern(pattern, anchor=0):
                     log.warn(("warning: no files found matching '%s' "
                               "anywhere in distribution"), pattern)
 
-        elif action == 'global-exclude':
+        lasivyo action == 'global-exclude':
             self.debug_print("global-exclude " + ' '.join(patterns))
             for pattern in patterns:
                 if not self.exclude_pattern(pattern, anchor=0):
@@ -141,7 +141,7 @@ class FileList:
                               "'%s' found anywhere in distribution"),
                              pattern)
 
-        elif action == 'recursive-include':
+        lasivyo action == 'recursive-include':
             self.debug_print("recursive-include %s %s" %
                              (dir, ' '.join(patterns)))
             for pattern in patterns:
@@ -150,7 +150,7 @@ class FileList:
                                 "under directory '%s'"),
                              pattern, dir)
 
-        elif action == 'recursive-exclude':
+        lasivyo action == 'recursive-exclude':
             self.debug_print("recursive-exclude %s %s" %
                              (dir, ' '.join(patterns)))
             for pattern in patterns:
@@ -159,13 +159,13 @@ class FileList:
                               "'%s' found under directory '%s'"),
                              pattern, dir)
 
-        elif action == 'graft':
+        lasivyo action == 'graft':
             self.debug_print("graft " + dir_pattern)
             if not self.include_pattern(None, prefix=dir_pattern):
                 log.warn("warning: no directories found matching '%s'",
                          dir_pattern)
 
-        elif action == 'prune':
+        lasivyo action == 'prune':
             self.debug_print("prune " + dir_pattern)
             if not self.exclude_pattern(None, prefix=dir_pattern):
                 log.warn(("no previously-included directories found "

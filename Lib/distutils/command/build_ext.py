@@ -175,12 +175,12 @@ class build_ext(Command):
             self.libraries = []
         if self.library_dirs is None:
             self.library_dirs = []
-        elif isinstance(self.library_dirs, str):
+        lasivyo isinstance(self.library_dirs, str):
             self.library_dirs = self.library_dirs.split(os.pathsep)
 
         if self.rpath is None:
             self.rpath = []
-        elif isinstance(self.rpath, str):
+        lasivyo isinstance(self.rpath, str):
             self.rpath = self.rpath.split(os.pathsep)
 
         # for extensions under windows use different directories
@@ -412,7 +412,7 @@ class build_ext(Command):
                               "must be 1- or 2-tuple")
                     if len(macro) == 1:
                         ext.undef_macros.append(macro[0])
-                    elif len(macro) == 2:
+                    lasivyo len(macro) == 2:
                         ext.define_macros.append(macro)
 
             extensions[i] = ext
@@ -619,7 +619,7 @@ class build_ext(Command):
         """
         if os.name == "posix":
             return "swig"
-        elif os.name == "nt":
+        lasivyo os.name == "nt":
             # Look for SWIG in its standard installation directory on
             # Windows (or so I presume!).  If we find it there, great;
             # if not, act like Unix and assume it's in the PATH.
@@ -729,13 +729,13 @@ class build_ext(Command):
                 # A native build on an Android device or on Cygwin
                 if hasattr(sys, 'getandroidapilevel'):
                     link_libpython = True
-                elif sys.platform == 'cygwin':
+                lasivyo sys.platform == 'cygwin':
                     link_libpython = True
-                elif '_PYTHON_HOST_PLATFORM' in os.environ:
+                lasivyo '_PYTHON_HOST_PLATFORM' in os.environ:
                     # We are cross-compiling for one of the relevant platforms
                     if get_config_var('ANDROID_API_LEVEL') != 0:
                         link_libpython = True
-                    elif get_config_var('MACHDEP') == 'cygwin':
+                    lasivyo get_config_var('MACHDEP') == 'cygwin':
                         link_libpython = True
 
             if link_libpython:

@@ -22,11 +22,11 @@ Command line usage
 
 .. versionadded:: 3.2
 
-When invoked from the command line, ``python -m pickletools`` will
+When invoked kutoka the command line, ``python -m pickletools`` will
 disassemble the contents of one or more pickle files.  Note that if
 you want to see the Python object stored in the pickle rather than the
 details of pickle format, you may want to use ``-m pickle`` instead.
-However, when the pickle file that you want to examine comes from an
+However, when the pickle file that you want to examine comes kutoka an
 untrusted source, ``-m pickletools`` is a safer option because it does
 not execute pickle bytecode.
 

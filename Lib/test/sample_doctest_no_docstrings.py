@@ -4,9 +4,9 @@
 # docstrings.
 
 
-class Foo(object):
+kundi Foo(object):
 
-    # A class with no docstring.
+    # A kundi with no docstring.
 
-    def __init__(self):
+    eleza __init__(self):
         pass

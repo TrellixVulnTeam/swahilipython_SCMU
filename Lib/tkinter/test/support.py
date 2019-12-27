@@ -51,7 +51,7 @@ def simulate_mouse_click(widget, x, y):
     widget.event_generate('<ButtonRelease-1>', x=x, y=y)
 
 
-import _tkinter
+agiza _tkinter
 tcl_version = tuple(map(int, _tkinter.TCL_VERSION.split('.')))
 
 def requires_tcl(*version):

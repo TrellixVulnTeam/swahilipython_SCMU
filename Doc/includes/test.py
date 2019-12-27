@@ -170,7 +170,7 @@ Test cyclic gc(?)
 >>> agiza gc
 >>> gc.disable()
 
->>> class Subclass(custom4.Custom): pass
+>>> kundi Subclass(custom4.Custom): pass
 ...
 >>> s = Subclass()
 >>> s.cycle = [s]

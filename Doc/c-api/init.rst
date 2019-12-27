@@ -100,7 +100,7 @@ to 1 and ``-bb`` sets :c:data:`Py_BytesWarningFlag` to 2.
 .. c:var:: Py_DontWriteBytecodeFlag
 
    If set to non-zero, Python won't try to write ``.pyc`` files on the
-   import of source modules.
+   agiza of source modules.
 
    Set by the :option:`-B` option and the :envvar:`PYTHONDONTWRITEBYTECODE`
    environment variable.
@@ -175,7 +175,7 @@ to 1 and ``-bb`` sets :c:data:`Py_BytesWarningFlag` to 2.
 
 .. c:var:: Py_NoSiteFlag
 
-   Disable the import of the module :mod:`site` and the site-dependent
+   Disable the agiza of the module :mod:`site` and the site-dependent
    manipulations of :data:`sys.path` that it entails.  Also disable these
    manipulations if :mod:`site` is explicitly imported later (call
    :func:`site.main` if you want them to be triggered).
@@ -213,7 +213,7 @@ to 1 and ``-bb`` sets :c:data:`Py_BytesWarningFlag` to 2.
 .. c:var:: Py_VerboseFlag
 
    Print a message each time a module is initialized, showing the place
-   (filename or built-in module) from which it is loaded.  If greater or equal
+   (filename or built-in module) kutoka which it is loaded.  If greater or equal
    to ``2``, print a message for each file that is checked for when
    searching for a module. Also provides information on module cleanup at exit.
 
@@ -253,7 +253,7 @@ Initializing and finalizing the interpreter
    fatal error if the initialization fails.
 
    .. note::
-      On Windows, changes the console mode from ``O_TEXT`` to ``O_BINARY``, which will
+      On Windows, changes the console mode kutoka ``O_TEXT`` to ``O_BINARY``, which will
       also affect non-Python uses of the console using the C Runtime.
 
 
@@ -284,10 +284,10 @@ Initializing and finalizing the interpreter
 
    This function is provided for a number of reasons.  An embedding application
    might want to restart Python without having to restart the application itself.
-   An application that has loaded the Python interpreter from a dynamically
+   An application that has loaded the Python interpreter kutoka a dynamically
    loadable library (or DLL) might want to free all memory allocated by Python
    before unloading the DLL. During a hunt for memory leaks in an application a
-   developer might want to free all memory allocated by Python before exiting from
+   developer might want to free all memory allocated by Python before exiting kutoka
    the application.
 
    **Bugs and caveats:** The destruction of modules and objects in modules is done
@@ -379,7 +379,7 @@ Process-wide parameters
 .. c:function:: wchar_t* Py_GetPrefix()
 
    Return the *prefix* for installed platform-independent files. This is derived
-   through a number of complicated rules from the program name set with
+   through a number of complicated rules kutoka the program name set with
    :c:func:`Py_SetProgramName` and some environment variables; for example, if the
    program name is ``'/usr/local/bin/python'``, the prefix is ``'/usr/local'``. The
    returned string points into static storage; the caller should not modify its
@@ -392,7 +392,7 @@ Process-wide parameters
 .. c:function:: wchar_t* Py_GetExecPrefix()
 
    Return the *exec-prefix* for installed platform-*dependent* files.  This is
-   derived through a number of complicated rules from the program name set with
+   derived through a number of complicated rules kutoka the program name set with
    :c:func:`Py_SetProgramName` and some environment variables; for example, if the
    program name is ``'/usr/local/bin/python'``, the exec-prefix is
    ``'/usr/local'``.  The returned string points into static storage; the caller
@@ -401,7 +401,7 @@ Process-wide parameters
    argument to the :program:`configure` script at build  time.  The value is
    available to Python code as ``sys.exec_prefix``.  It is only useful on Unix.
 
-   Background: The exec-prefix differs from the prefix when platform dependent
+   Background: The exec-prefix differs kutoka the prefix when platform dependent
    files (such as executables and shared libraries) are installed in a different
    directory tree.  In a typical installation, platform dependent files may be
    installed in the :file:`/usr/local/plat` subtree while platform independent may
@@ -415,7 +415,7 @@ Process-wide parameters
    platforms.  Non-Unix operating systems are a different story; the installation
    strategies on those systems are so different that the prefix and exec-prefix are
    meaningless, and set to the empty string. Note that compiled Python bytecode
-   files are platform independent (but not independent from the Python version by
+   files are platform independent (but not independent kutoka the Python version by
    which they were compiled!).
 
    System administrators will know how to configure the :program:`mount` or
@@ -431,7 +431,7 @@ Process-wide parameters
       single: executable (in module sys)
 
    Return the full program name of the Python executable; this is  computed as a
-   side-effect of deriving the default module search path  from the program name
+   side-effect of deriving the default module search path  kutoka the program name
    (set by :c:func:`Py_SetProgramName` above). The returned string points into
    static storage; the caller should not modify its value.  The value is available
    to Python code as ``sys.executable``.
@@ -444,7 +444,7 @@ Process-wide parameters
       single: path (in module sys)
       single: Py_SetPath()
 
-   Return the default module search path; this is computed from the program name
+   Return the default module search path; this is computed kutoka the program name
    (set by :c:func:`Py_SetProgramName` above) and some environment variables.
    The returned string consists of a series of directory names separated by a
    platform dependent delimiter character.  The delimiter character is ``':'``
@@ -508,7 +508,7 @@ Process-wide parameters
    .. index:: single: platform (in module sys)
 
    Return the platform identifier for the current platform.  On Unix, this is
-   formed from the "official" name of the operating system, converted to lower
+   formed kutoka the "official" name of the operating system, converted to lower
    case, followed by the major revision number; e.g., for Solaris 2.x, which is
    also known as SunOS 5.x, the value is ``'sunos5'``.  On Mac OS X, it is
    ``'darwin'``.  On Windows, it is ``'win'``.  The returned string points into
@@ -596,7 +596,7 @@ Process-wide parameters
       popping the first :data:`sys.path` element after having called
       :c:func:`PySys_SetArgv`, for example using::
 
-         PyRun_SimpleString("import sys; sys.path.pop(0)\n");
+         PyRun_SimpleString("agiza sys; sys.path.pop(0)\n");
 
    .. versionadded:: 3.1.3
 
@@ -674,7 +674,7 @@ inside a data structure called :c:type:`PyThreadState`.  There's also one
 global variable pointing to the current :c:type:`PyThreadState`: it can
 be retrieved using :c:func:`PyThreadState_Get`.
 
-Releasing the GIL from extension code
+Releasing the GIL kutoka extension code
 -------------------------------------
 
 Most extension code manipulating the :term:`GIL` has the following simple
@@ -684,7 +684,7 @@ structure::
    Release the global interpreter lock.
    ... Do some blocking I/O operation ...
    Reacquire the global interpreter lock.
-   Restore the thread state from the local variable.
+   Restore the thread state kutoka the local variable.
 
 This is so common that a pair of macros exists to simplify it::
 
@@ -737,11 +737,11 @@ Non-Python created threads
 When threads are created using the dedicated Python APIs (such as the
 :mod:`threading` module), a thread state is automatically associated to them
 and the code showed above is therefore correct.  However, when threads are
-created from C (for example by a third-party library with its own thread
+created kutoka C (for example by a third-party library with its own thread
 management), they don't hold the GIL, nor is there a thread state structure
 for them.
 
-If you need to call Python code from these threads (often this will be part
+If you need to call Python code kutoka these threads (often this will be part
 of a callback API provided by the aforementioned third-party library),
 you must first register these threads with the interpreter by
 creating a thread state data structure, then acquiring the GIL, and finally
@@ -751,7 +751,7 @@ the GIL, and finally free the thread state data structure.
 
 The :c:func:`PyGILState_Ensure` and :c:func:`PyGILState_Release` functions do
 all of the above automatically.  The typical idiom for calling into Python
-from a C thread is::
+kutoka a C thread is::
 
    PyGILState_STATE gstate;
    gstate = PyGILState_Ensure();
@@ -864,7 +864,7 @@ code, or when embedding the Python interpreter:
    ensues.
 
    .. note::
-      Calling this function from a thread when the runtime is finalizing
+      Calling this function kutoka a thread when the runtime is finalizing
       will terminate the thread, even if the thread was not created by Python.
       You can use :c:func:`_Py_IsFinalizing` or :func:`sys.is_finalizing` to
       check if the interpreter is in process of being finalized before calling
@@ -910,7 +910,7 @@ with sub-interpreters:
    to call arbitrary Python code.  Failure is a fatal error.
 
    .. note::
-      Calling this function from a thread when the runtime is finalizing
+      Calling this function kutoka a thread when the runtime is finalizing
       will terminate the thread, even if the thread was not created by Python.
       You can use :c:func:`_Py_IsFinalizing` or :func:`sys.is_finalizing` to
       check if the interpreter is in process of being finalized before calling
@@ -938,7 +938,7 @@ with sub-interpreters:
 .. c:function:: int PyGILState_Check()
 
    Return ``1`` if the current thread is holding the GIL and ``0`` otherwise.
-   This function can be called from any thread at any time.
+   This function can be called kutoka any thread at any time.
    Only if it has had its Python thread state initialized and currently is
    holding the GIL will it return ``1``.
    This is mainly a helper/diagnostic function.  It can be useful
@@ -1075,7 +1075,7 @@ All of the following functions must be called after :c:func:`Py_Initialize`.
    exception (if any) for the thread is cleared. This raises no exceptions.
 
    .. versionchanged:: 3.7
-      The type of the *id* parameter changed from :c:type:`long` to
+      The type of the *id* parameter changed kutoka :c:type:`long` to
       :c:type:`unsigned long`.
 
 .. c:function:: void PyEval_AcquireThread(PyThreadState *tstate)
@@ -1085,7 +1085,7 @@ All of the following functions must be called after :c:func:`Py_Initialize`.
    If this thread already has the lock, deadlock ensues.
 
    .. note::
-      Calling this function from a thread when the runtime is finalizing
+      Calling this function kutoka a thread when the runtime is finalizing
       will terminate the thread, even if the thread was not created by Python.
       You can use :c:func:`_Py_IsFinalizing` or :func:`sys.is_finalizing` to
       check if the interpreter is in process of being finalized before calling
@@ -1123,7 +1123,7 @@ All of the following functions must be called after :c:func:`Py_Initialize`.
       instead.
 
    .. note::
-      Calling this function from a thread when the runtime is finalizing
+      Calling this function kutoka a thread when the runtime is finalizing
       will terminate the thread, even if the thread was not created by Python.
       You can use :c:func:`_Py_IsFinalizing` or :func:`sys.is_finalizing` to
       check if the interpreter is in process of being finalized before calling
@@ -1206,7 +1206,7 @@ function. You can create and destroy them using the following functions:
    (shallow) copy of its module's dictionary is squirreled away.  When the same
    extension is imported by another (sub-)interpreter, a new module is initialized
    and filled with the contents of this copy; the extension's ``init`` function is
-   not called.  Note that this is different from what happens when an extension is
+   not called.  Note that this is different kutoka what happens when an extension is
    imported after the interpreter has been completely re-initialized by calling
    :c:func:`Py_FinalizeEx` and :c:func:`Py_Initialize`; in that case, the extension's
    ``initmodule`` function *is* called again.
@@ -1240,7 +1240,7 @@ work properly; this is especially likely when the extension makes use of
 dictionary after its initialization.  It is possible to insert objects created
 in one sub-interpreter into a namespace of another sub-interpreter; this should
 be done with great care to avoid sharing user-defined functions, methods,
-instances or classes between sub-interpreters, since import operations executed
+instances or classes between sub-interpreters, since agiza operations executed
 by such objects may affect the wrong (sub-)interpreter's dictionary of loaded
 modules.
 
@@ -1250,7 +1250,7 @@ and OS-level threads, an assumption broken by the presence of sub-interpreters.
 It is highly recommended that you don't switch sub-interpreters between a pair
 of matching :c:func:`PyGILState_Ensure` and :c:func:`PyGILState_Release` calls.
 Furthermore, extensions (such as :mod:`ctypes`) using these APIs to allow calling
-of Python code from non-Python created threads will probably be broken when using
+of Python code kutoka non-Python created threads will probably be broken when using
 sub-interpreters.
 
 
@@ -1266,11 +1266,11 @@ pointer and a void pointer argument.
 
    .. index:: single: Py_AddPendingCall()
 
-   Schedule a function to be called from the main interpreter thread.  On
+   Schedule a function to be called kutoka the main interpreter thread.  On
    success, ``0`` is returned and *func* is queued for being called in the
    main thread.  On failure, ``-1`` is returned without setting any exception.
 
-   When successfully queued, *func* will be *eventually* called from the
+   When successfully queued, *func* will be *eventually* called kutoka the
    main interpreter thread with the argument *arg*.  It will be called
    asynchronously with respect to normally running Python code, but with
    both these conditions met:
@@ -1292,7 +1292,7 @@ pointer and a void pointer argument.
       There is no guarantee that *func* will be called as quick as
       possible.  If the main thread is busy executing a system call,
       *func* won't be called before the system call returns.  This
-      function is generally **not** suitable for calling Python code from
+      function is generally **not** suitable for calling Python code kutoka
       arbitrary C threads.  Instead, use the :ref:`PyGILState API<gilstate>`.
 
    .. versionadded:: 3.1
@@ -1450,7 +1450,7 @@ These functions are only intended to be used by advanced debugging tools.
 
 .. c:function:: PyInterpreterState* PyInterpreterState_Next(PyInterpreterState *interp)
 
-   Return the next interpreter state object after *interp* from the list of all
+   Return the next interpreter state object after *interp* kutoka the list of all
    such objects.
 
 
@@ -1462,7 +1462,7 @@ These functions are only intended to be used by advanced debugging tools.
 
 .. c:function:: PyThreadState* PyThreadState_Next(PyThreadState *tstate)
 
-   Return the next thread state object after *tstate* from the list of all such
+   Return the next thread state object after *tstate* kutoka the list of all such
    objects belonging to the same :c:type:`PyInterpreterState` object.
 
 

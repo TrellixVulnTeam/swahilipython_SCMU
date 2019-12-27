@@ -349,6 +349,6 @@ BoundedSemaphore
 
 .. deprecated:: 3.7
 
-   Acquiring a lock using ``await lock`` or ``yield from lock`` and/or
-   :keyword:`with` statement (``with await lock``, ``with (yield from
+   Acquiring a lock using ``await lock`` or ``yield kutoka lock`` and/or
+   :keyword:`with` statement (``with await lock``, ``with (yield kutoka
    lock)``) is deprecated.  Use ``async with lock`` instead.

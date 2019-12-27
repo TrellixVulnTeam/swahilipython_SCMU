@@ -73,9 +73,9 @@ def test_recurse():
 def test_cpickle(_cache={}):
     import io
     try:
-        import _pickle
+        agiza _pickle
     except ImportError:
-        print("cannot import _pickle, skipped!")
+        print("cannot agiza _pickle, skipped!")
         return
     k, l = None, None
     for n in itertools.count():

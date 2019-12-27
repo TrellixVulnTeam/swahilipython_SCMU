@@ -61,7 +61,7 @@ The :mod:`urllib.request` module defines the following functions:
      commonly used to determine if a redirect was followed
 
    * :meth:`~urllib.response.addinfourl.info` --- return the meta-information of the page, such as headers,
-     in the form of an :func:`email.message_from_string` instance (see
+     in the form of an :func:`email.message_kutoka_string` instance (see
      `Quick Reference to HTTP Headers <http://jkorpela.fi/http.html>`_)
 
    * :meth:`~urllib.response.addinfourl.getcode` -- return the HTTP status code of the response.
@@ -89,7 +89,7 @@ The :mod:`urllib.request` module defines the following functions:
    :class:`ProxyHandler` is default installed and makes sure the requests are
    handled through the proxy.
 
-   The legacy ``urllib.urlopen`` function from Python 2.6 and earlier has been
+   The legacy ``urllib.urlopen`` function kutoka Python 2.6 and earlier has been
    discontinued; :func:`urllib.request.urlopen` corresponds to the old
    ``urllib2.urlopen``.  Proxy handling, which was done by passing a dictionary
    parameter to ``urllib.urlopen``, can be obtained by using
@@ -99,7 +99,7 @@ The :mod:`urllib.request` module defines the following functions:
 
       The default opener raises an :ref:`auditing event <auditing>`
       ``urllib.Request`` with arguments ``fullurl``, ``data``, ``headers``,
-      ``method`` taken from the request object.
+      ``method`` taken kutoka the request object.
 
    .. versionchanged:: 3.2
       *cafile* and *capath* were added.
@@ -131,7 +131,7 @@ The :mod:`urllib.request` module defines the following functions:
    Installing an opener is only necessary if you want urlopen to use that
    opener; otherwise, simply call :meth:`OpenerDirector.open` instead of
    :func:`~urllib.request.urlopen`.  The code does not check for a real
-   :class:`OpenerDirector`, and any class with the appropriate interface will
+   :class:`OpenerDirector`, and any kundi with the appropriate interface will
    work.
 
 
@@ -150,20 +150,20 @@ The :mod:`urllib.request` module defines the following functions:
    If the Python installation has SSL support (i.e., if the :mod:`ssl` module
    can be imported), :class:`HTTPSHandler` will also be added.
 
-   A :class:`BaseHandler` subclass may also change its :attr:`handler_order`
+   A :class:`BaseHandler` subkundi may also change its :attr:`handler_order`
    attribute to modify its position in the handlers list.
 
 
 .. function:: pathname2url(path)
 
-   Convert the pathname *path* from the local syntax for a path to the form used in
+   Convert the pathname *path* kutoka the local syntax for a path to the form used in
    the path component of a URL.  This does not produce a complete URL.  The return
    value will already be quoted using the :func:`~urllib.parse.quote` function.
 
 
 .. function:: url2pathname(path)
 
-   Convert the path component *path* from a percent-encoded URL to the local syntax for a
+   Convert the path component *path* kutoka a percent-encoded URL to the local syntax for a
    path.  This does not accept a complete URL.  This function uses
    :func:`~urllib.parse.unquote` to decode *path*.
 
@@ -172,7 +172,7 @@ The :mod:`urllib.request` module defines the following functions:
    This helper function returns a dictionary of scheme to proxy server URL
    mappings. It scans the environment for variables named ``<scheme>_proxy``,
    in a case insensitive approach, for all operating systems first, and when it
-   cannot find it, looks for proxy information from Mac OSX System
+   cannot find it, looks for proxy information kutoka Mac OSX System
    Configuration for Mac OS X and Windows Systems Registry for Windows.
    If both lowercase and uppercase environment variables exist (and disagree),
    lowercase is preferred.
@@ -192,7 +192,7 @@ The following classes are provided:
 
 .. class:: Request(url, data=None, headers={}, origin_req_host=None, unverifiable=False, method=None)
 
-   This class is an abstraction of a URL request.
+   This kundi is an abstraction of a URL request.
 
    *url* should be a string containing a valid URL.
 
@@ -216,7 +216,7 @@ The following classes are provided:
    :meth:`add_header` was called with each key and value as arguments.
    This is often used to "spoof" the ``User-Agent`` header value, which is
    used by a browser to identify itself -- some HTTP servers only
-   allow requests coming from common browsers as opposed to scripts.
+   allow requests coming kutoka common browsers as opposed to scripts.
    For example, Mozilla Firefox may identify itself as ``"Mozilla/5.0
    (X11; U; Linux i686) Gecko/20071127 Firefox/2.0.0.11"``, while
    :mod:`urllib`'s default user agent string is
@@ -250,7 +250,7 @@ The following classes are provided:
    :attr:`~Request.method` attribute and is used by :meth:`get_method()`.
    The default is ``'GET'`` if *data* is ``None`` or ``'POST'`` otherwise.
    Subclasses may indicate a different default method by setting the
-   :attr:`~Request.method` attribute in the class itself.
+   :attr:`~Request.method` attribute in the kundi itself.
 
    .. note::
       The request will not work as expected if the data object is unable
@@ -264,7 +264,7 @@ The following classes are provided:
       :attr:`Request.method` argument is added to the Request class.
 
    .. versionchanged:: 3.4
-      Default :attr:`Request.method` may be indicated at the class level.
+      Default :attr:`Request.method` may be indicated at the kundi level.
 
    .. versionchanged:: 3.6
       Do not raise an error if the ``Content-Length`` has not been
@@ -273,41 +273,41 @@ The following classes are provided:
 
 .. class:: OpenerDirector()
 
-   The :class:`OpenerDirector` class opens URLs via :class:`BaseHandler`\ s chained
-   together. It manages the chaining of handlers, and recovery from errors.
+   The :class:`OpenerDirector` kundi opens URLs via :class:`BaseHandler`\ s chained
+   together. It manages the chaining of handlers, and recovery kutoka errors.
 
 
 .. class:: BaseHandler()
 
-   This is the base class for all registered handlers --- and handles only the
+   This is the base kundi for all registered handlers --- and handles only the
    simple mechanics of registration.
 
 
 .. class:: HTTPDefaultErrorHandler()
 
-   A class which defines a default handler for HTTP error responses; all responses
+   A kundi which defines a default handler for HTTP error responses; all responses
    are turned into :exc:`~urllib.error.HTTPError` exceptions.
 
 
 .. class:: HTTPRedirectHandler()
 
-   A class to handle redirections.
+   A kundi to handle redirections.
 
 
 .. class:: HTTPCookieProcessor(cookiejar=None)
 
-   A class to handle HTTP Cookies.
+   A kundi to handle HTTP Cookies.
 
 
 .. class:: ProxyHandler(proxies=None)
 
    Cause requests to go through a proxy. If *proxies* is given, it must be a
    dictionary mapping protocol names to URLs of proxies. The default is to read
-   the list of proxies from the environment variables
+   the list of proxies kutoka the environment variables
    ``<protocol>_proxy``.  If no proxy environment variables are set, then
-   in a Windows environment proxy settings are obtained from the registry's
+   in a Windows environment proxy settings are obtained kutoka the registry's
    Internet Settings section, and in a Mac OS X environment proxy information
-   is retrieved from the OS X System Configuration Framework.
+   is retrieved kutoka the OS X System Configuration Framework.
 
    To disable autodetected proxy pass an empty dictionary.
 
@@ -346,7 +346,7 @@ The following classes are provided:
 
 .. class:: AbstractBasicAuthHandler(password_mgr=None)
 
-   This is a mixin class that helps with HTTP authentication, both to the remote
+   This is a mixin kundi that helps with HTTP authentication, both to the remote
    host and to a proxy. *password_mgr*, if given, should be something that is
    compatible with :class:`HTTPPasswordMgr`; refer to section
    :ref:`http-password-mgr` for information on the interface that must be
@@ -386,7 +386,7 @@ The following classes are provided:
 
 .. class:: AbstractDigestAuthHandler(password_mgr=None)
 
-   This is a mixin class that helps with HTTP authentication, both to the remote
+   This is a mixin kundi that helps with HTTP authentication, both to the remote
    host and to a proxy. *password_mgr*, if given, should be something that is
    compatible with :class:`HTTPPasswordMgr`; refer to section
    :ref:`http-password-mgr` for information on the interface that must be
@@ -420,12 +420,12 @@ The following classes are provided:
 
 .. class:: HTTPHandler()
 
-   A class to handle opening of HTTP URLs.
+   A kundi to handle opening of HTTP URLs.
 
 
 .. class:: HTTPSHandler(debuglevel=0, context=None, check_hostname=None)
 
-   A class to handle opening of HTTPS URLs.  *context* and *check_hostname*
+   A kundi to handle opening of HTTPS URLs.  *context* and *check_hostname*
    have the same meaning as in :class:`http.client.HTTPSConnection`.
 
    .. versionchanged:: 3.2
@@ -454,7 +454,7 @@ The following classes are provided:
 
 .. class:: UnknownHandler()
 
-   A catch-all class to handle unknown URLs.
+   A catch-all kundi to handle unknown URLs.
 
 
 .. class:: HTTPErrorProcessor()
@@ -519,7 +519,7 @@ request.
    which means that :meth:`~Request.get_method` will do its normal computation
    of the method to be used.  Its value can be set (thus overriding the default
    computation in :meth:`~Request.get_method`) either by providing a default
-   value by setting it at the class level in a :class:`Request` subclass, or by
+   value by setting it at the kundi level in a :class:`Request` subclass, or by
    passing a value in to the :class:`Request` constructor via the *method*
    argument.
 
@@ -565,7 +565,7 @@ request.
 
 .. method:: Request.remove_header(header)
 
-   Remove named header from the request instance (both from regular and
+   Remove named header kutoka the request instance (both kutoka regular and
    unredirected headers).
 
    .. versionadded:: 3.4
@@ -632,7 +632,7 @@ OpenerDirector Objects
      See |http_error_nnn|_ for more information.
 
    * :meth:`<protocol>_error` --- signal that the handler knows how to handle errors
-     from (non-\ ``http``) *protocol*.
+     kutoka (non-\ ``http``) *protocol*.
 
    * :meth:`<protocol>_request` --- signal that the handler knows how to pre-process
      *protocol* requests.
@@ -717,7 +717,7 @@ intended for direct use:
 
    Remove any parents.
 
-The following attribute and methods should only be used by classes derived from
+The following attribute and methods should only be used by classes derived kutoka
 :class:`BaseHandler`.
 
 .. note::
@@ -832,7 +832,7 @@ HTTPRedirectHandler Objects
 
 .. note::
 
-   Some HTTP redirections require action from this module's client code.  If this
+   Some HTTP redirections require action kutoka this module's client code.  If this
    is the case, :exc:`~urllib.error.HTTPError` is raised.  See :rfc:`2616` for
    details of the precise meanings of the various redirection codes.
 
@@ -845,7 +845,7 @@ HTTPRedirectHandler Objects
 
    Return a :class:`Request` or ``None`` in response to a redirect. This is called
    by the default implementations of the :meth:`http_error_30\*` methods when a
-   redirection is received from the server.  If a redirection should take place,
+   redirection is received kutoka the server.  If a redirection should take place,
    return a new :class:`Request` to allow :meth:`http_error_30\*` to perform the
    redirect to *newurl*.  Otherwise, raise :exc:`~urllib.error.HTTPError` if
    no other handler should try to handle this URL, or return ``None`` if you
@@ -1100,7 +1100,7 @@ DataHandler Objects
    Read a data URL. This kind of URL contains the content encoded in the URL
    itself. The data URL syntax is specified in :rfc:`2397`. This implementation
    ignores white spaces in base64 encoded data URLs so the URL may be wrapped
-   in whatever source file it comes from. But even though some browsers don't
+   in whatever source file it comes kutoka. But even though some browsers don't
    mind about a missing padding at the end of a base64 encoded data URL, this
    implementation will raise an :exc:`ValueError` in that case.
 
@@ -1182,7 +1182,7 @@ In addition to the examples below, more examples are given in
 This example gets the python.org main page and displays the first 300 bytes of
 it. ::
 
-   >>> import urllib.request
+   >>> agiza urllib.request
    >>> with urllib.request.urlopen('http://www.python.org/') as f:
    ...     print(f.read(300))
    ...
@@ -1194,7 +1194,7 @@ it. ::
 
 Note that urlopen returns a bytes object.  This is because there is no way
 for urlopen to automatically determine the encoding of the byte stream
-it receives from the HTTP server. In general, a program will decode
+it receives kutoka the HTTP server. In general, a program will decode
 the returned bytes object to string once it determines or guesses
 the appropriate encoding.
 
@@ -1214,7 +1214,7 @@ will use the same for decoding the bytes object. ::
 It is also possible to achieve the same result without using the
 :term:`context manager` approach. ::
 
-   >>> import urllib.request
+   >>> agiza urllib.request
    >>> f = urllib.request.urlopen('http://www.python.org/')
    >>> print(f.read(100).decode('utf-8'))
    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -1224,7 +1224,7 @@ In the following example, we are sending a data-stream to the stdin of a CGI
 and reading the data it returns to us. Note that this example will only work
 when the Python installation supports SSL. ::
 
-   >>> import urllib.request
+   >>> agiza urllib.request
    >>> req = urllib.request.Request(url='https://localhost/cgi-bin/test.cgi',
    ...                       data=b'This data is passed to stdin of the CGI')
    >>> with urllib.request.urlopen(req) as f:
@@ -1235,13 +1235,13 @@ when the Python installation supports SSL. ::
 The code for the sample CGI used in the above example is::
 
    #!/usr/bin/env python
-   import sys
+   agiza sys
    data = sys.stdin.read()
    print('Content-type: text/plain\n\nGot Data: "%s"' % data)
 
 Here is an example of doing a ``PUT`` request using :class:`Request`::
 
-    import urllib.request
+    agiza urllib.request
     DATA = b'some data'
     req = urllib.request.Request(url='http://localhost:8080', data=DATA,method='PUT')
     with urllib.request.urlopen(req) as f:
@@ -1251,7 +1251,7 @@ Here is an example of doing a ``PUT`` request using :class:`Request`::
 
 Use of Basic HTTP Authentication::
 
-   import urllib.request
+   agiza urllib.request
    # Create an OpenerDirector with support for Basic HTTP Authentication...
    auth_handler = urllib.request.HTTPBasicAuthHandler()
    auth_handler.add_password(realm='PDQ Application',
@@ -1285,7 +1285,7 @@ Adding HTTP headers:
 
 Use the *headers* argument to the :class:`Request` constructor, or::
 
-   import urllib.request
+   agiza urllib.request
    req = urllib.request.Request('http://www.example.com/')
    req.add_header('Referer', 'http://www.python.org/')
    # Customize the default User-Agent header value:
@@ -1295,7 +1295,7 @@ Use the *headers* argument to the :class:`Request` constructor, or::
 :class:`OpenerDirector` automatically adds a :mailheader:`User-Agent` header to
 every :class:`Request`.  To change this::
 
-   import urllib.request
+   agiza urllib.request
    opener = urllib.request.build_opener()
    opener.addheaders = [('User-agent', 'Mozilla/5.0')]
    opener.open('http://www.example.com/')
@@ -1310,8 +1310,8 @@ are added when the :class:`Request` is passed to :func:`urlopen` (or
 Here is an example session that uses the ``GET`` method to retrieve a URL
 containing parameters::
 
-   >>> import urllib.request
-   >>> import urllib.parse
+   >>> agiza urllib.request
+   >>> agiza urllib.parse
    >>> params = urllib.parse.urlencode({'spam': 1, 'eggs': 2, 'bacon': 0})
    >>> url = "http://www.musi-cal.com/cgi-bin/query?%s" % params
    >>> with urllib.request.urlopen(url) as f:
@@ -1319,10 +1319,10 @@ containing parameters::
    ...
 
 The following example uses the ``POST`` method instead. Note that params output
-from urlencode is encoded to bytes before it is sent to urlopen as data::
+kutoka urlencode is encoded to bytes before it is sent to urlopen as data::
 
-   >>> import urllib.request
-   >>> import urllib.parse
+   >>> agiza urllib.request
+   >>> agiza urllib.parse
    >>> data = urllib.parse.urlencode({'spam': 1, 'eggs': 2, 'bacon': 0})
    >>> data = data.encode('ascii')
    >>> with urllib.request.urlopen("http://requestb.in/xrbl82xr", data) as f:
@@ -1332,7 +1332,7 @@ from urlencode is encoded to bytes before it is sent to urlopen as data::
 The following example uses an explicitly specified HTTP proxy, overriding
 environment settings::
 
-   >>> import urllib.request
+   >>> agiza urllib.request
    >>> proxies = {'http': 'http://proxy.example.com:8080/'}
    >>> opener = urllib.request.FancyURLopener(proxies)
    >>> with opener.open("http://www.python.org") as f:
@@ -1341,7 +1341,7 @@ environment settings::
 
 The following example uses no proxies at all, overriding environment settings::
 
-   >>> import urllib.request
+   >>> agiza urllib.request
    >>> opener = urllib.request.FancyURLopener({})
    >>> with opener.open("http://www.python.org/") as f:
    ...     f.read().decode('utf-8')
@@ -1351,7 +1351,7 @@ The following example uses no proxies at all, overriding environment settings::
 Legacy interface
 ----------------
 
-The following functions and classes are ported from the Python 2 module
+The following functions and classes are ported kutoka the Python 2 module
 ``urllib`` (as opposed to ``urllib2``).  They might become deprecated at
 some point in the future.
 
@@ -1375,7 +1375,7 @@ some point in the future.
 
    The following example illustrates the most common usage scenario::
 
-      >>> import urllib.request
+      >>> agiza urllib.request
       >>> local_filename, headers = urllib.request.urlretrieve('http://python.org/')
       >>> html = open(local_filename)
       >>> html.close()
@@ -1411,15 +1411,15 @@ some point in the future.
 
    .. deprecated:: 3.3
 
-   Base class for opening and reading URLs.  Unless you need to support opening
+   Base kundi for opening and reading URLs.  Unless you need to support opening
    objects using schemes other than :file:`http:`, :file:`ftp:`, or :file:`file:`,
    you probably want to use :class:`FancyURLopener`.
 
-   By default, the :class:`URLopener` class sends a :mailheader:`User-Agent` header
+   By default, the :class:`URLopener` kundi sends a :mailheader:`User-Agent` header
    of ``urllib/VVV``, where *VVV* is the :mod:`urllib` version number.
    Applications can define their own :mailheader:`User-Agent` header by subclassing
-   :class:`URLopener` or :class:`FancyURLopener` and setting the class attribute
-   :attr:`version` to an appropriate string value in the subclass definition.
+   :class:`URLopener` or :class:`FancyURLopener` and setting the kundi attribute
+   :attr:`version` to an appropriate string value in the subkundi definition.
 
    The optional *proxies* parameter should be a dictionary mapping scheme names to
    proxy URLs, where an empty dictionary turns proxies off completely.  Its default
@@ -1461,7 +1461,7 @@ some point in the future.
       with a suffix that matches the suffix of the last path component of the input
       URL.  If *reporthook* is given, it must be a function accepting three numeric
       parameters: A chunk number, the maximum size chunks are read in and the total size of the download
-      (-1 if unknown).  It will be called once at the start and after each chunk of data is read from the
+      (-1 if unknown).  It will be called once at the start and after each chunk of data is read kutoka the
       network.  *reporthook* is ignored for local URLs.
 
       If the *url* uses the :file:`http:` scheme identifier, the optional *data*
@@ -1475,7 +1475,7 @@ some point in the future.
 
       Variable that specifies the user agent of the opener object.  To get
       :mod:`urllib` to tell servers that it is a particular user agent, set this in a
-      subclass as a class variable or in the constructor before calling the base
+      subkundi as a kundi variable or in the constructor before calling the base
       constructor.
 
 
@@ -1506,10 +1506,10 @@ some point in the future.
 
       When performing basic authentication, a :class:`FancyURLopener` instance calls
       its :meth:`prompt_user_passwd` method.  The default implementation asks the
-      users for the required information on the controlling terminal.  A subclass may
+      users for the required information on the controlling terminal.  A subkundi may
       override this method to support more appropriate behavior if needed.
 
-   The :class:`FancyURLopener` class offers one additional method that should be
+   The :class:`FancyURLopener` kundi offers one additional method that should be
    overloaded to provide the appropriate behavior:
 
    .. method:: prompt_user_passwd(host, realm)

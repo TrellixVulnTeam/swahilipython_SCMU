@@ -165,7 +165,7 @@ def _format_time(hh, mm, ss, us, timespec='auto'):
     if timespec == 'auto':
         # Skip trailing microseconds when us==0.
         timespec = 'microseconds' if us else 'seconds'
-    elif timespec == 'milliseconds':
+    lasivyo timespec == 'milliseconds':
         us //= 1000
     try:
         fmt = specs[timespec]
@@ -215,7 +215,7 @@ def _wrap_strftime(object, format, timetuple):
                         freplace = '%06d' % getattr(object,
                                                     'microsecond', 0)
                     newformat.append(freplace)
-                elif ch == 'z':
+                lasivyo ch == 'z':
                     if zreplace is None:
                         zreplace = ""
                         if hasattr(object, "utcoffset"):
@@ -231,13 +231,13 @@ def _wrap_strftime(object, format, timetuple):
                                 u = offset.microseconds
                                 if u:
                                     zreplace = '%c%02d%02d%02d.%06d' % (sign, h, m, s, u)
-                                elif s:
+                                lasivyo s:
                                     zreplace = '%c%02d%02d%02d' % (sign, h, m, s)
                                 else:
                                     zreplace = '%c%02d%02d' % (sign, h, m)
                     assert '%' not in zreplace
                     newformat.append(zreplace)
-                elif ch == 'Z':
+                lasivyo ch == 'Z':
                     if Zreplace is None:
                         Zreplace = ""
                         if hasattr(object, "tzname"):
@@ -466,7 +466,7 @@ def _divide_and_round(a, b):
     return q
 
 
-class timedelta:
+kundi timedelta:
     """Represent the difference between two datetime objects.
 
     Supported operators:
@@ -786,15 +786,15 @@ timedelta.max = timedelta(days=999999999, hours=23, minutes=59, seconds=59,
                           microseconds=999999)
 timedelta.resolution = timedelta(microseconds=1)
 
-class date:
+kundi date:
     """Concrete date type.
 
     Constructors:
 
     __new__()
-    fromtimestamp()
+    kutokatimestamp()
     today()
-    fromordinal()
+    kutokaordinal()
 
     Operators:
 
@@ -851,7 +851,7 @@ class date:
     # Additional constructors
 
     @classmethod
-    def fromtimestamp(cls, t):
+    def kutokatimestamp(cls, t):
         "Construct a date kutoka a POSIX timestamp (like time.time())."
         y, m, d, hh, mm, ss, weekday, jday, dst = _time.localtime(t)
         return cls(y, m, d)
@@ -860,10 +860,10 @@ class date:
     def today(cls):
         "Construct a date kutoka time.time()."
         t = _time.time()
-        return cls.fromtimestamp(t)
+        return cls.kutokatimestamp(t)
 
     @classmethod
-    def fromordinal(cls, n):
+    def kutokaordinal(cls, n):
         """Construct a date kutoka a proleptic Gregorian ordinal.
 
         January 1 of year 1 is day 1.  Only the year, month and day are
@@ -873,10 +873,10 @@ class date:
         return cls(y, m, d)
 
     @classmethod
-    def fromisoformat(cls, date_string):
+    def kutokaisoformat(cls, date_string):
         """Construct a date kutoka the output of date.isoformat()."""
         if not isinstance(date_string, str):
-            raise TypeError('fromisoformat: argument must be str')
+            raise TypeError('kutokaisoformat: argument must be str')
 
         try:
             assert len(date_string) == 10
@@ -885,7 +885,7 @@ class date:
             raise ValueError(f'Invalid isoformat string: {date_string!r}')
 
     @classmethod
-    def fromisocalendar(cls, year, week, day):
+    def kutokaisocalendar(cls, year, week, day):
         """Construct a date kutoka the ISO year, week number and weekday.
 
         This is the inverse of the date.isocalendar() function"""
@@ -1063,7 +1063,7 @@ class date:
         if isinstance(other, timedelta):
             o = self.toordinal() + other.days
             if 0 < o <= _MAXORDINAL:
-                return type(self).fromordinal(o)
+                return type(self).kutokaordinal(o)
             raise OverflowError("result out of range")
         return NotImplemented
 
@@ -1112,7 +1112,7 @@ class date:
             year -= 1
             week1monday = _isoweek1monday(year)
             week, day = divmod(today - week1monday, 7)
-        elif week >= 52:
+        lasivyo week >= 52:
             if today >= _isoweek1monday(year+1):
                 year += 1
                 week = 0
@@ -1131,15 +1131,15 @@ class date:
     def __reduce__(self):
         return (self.__class__, self._getstate())
 
-_date_class = date  # so functions w/ args named "date" can get at the class
+_date_kundi = date  # so functions w/ args named "date" can get at the class
 
 date.min = date(1, 1, 1)
 date.max = date(9999, 12, 31)
 date.resolution = timedelta(days=1)
 
 
-class tzinfo:
-    """Abstract base class for time zone info classes.
+kundi tzinfo:
+    """Abstract base kundi for time zone info classes.
 
     Subclasses must override the name(), utcoffset() and dst() methods.
     """
@@ -1147,11 +1147,11 @@ class tzinfo:
 
     def tzname(self, dt):
         "datetime -> string name of time zone."
-        raise NotImplementedError("tzinfo subclass must override tzname()")
+        raise NotImplementedError("tzinfo subkundi must override tzname()")
 
     def utcoffset(self, dt):
         "datetime -> timedelta, positive for east of UTC, negative for west of UTC"
-        raise NotImplementedError("tzinfo subclass must override utcoffset()")
+        raise NotImplementedError("tzinfo subkundi must override utcoffset()")
 
     def dst(self, dt):
         """datetime -> DST offset as timedelta, positive for east of UTC.
@@ -1159,32 +1159,32 @@ class tzinfo:
         Return 0 if DST not in effect.  utcoffset() must include the DST
         offset.
         """
-        raise NotImplementedError("tzinfo subclass must override dst()")
+        raise NotImplementedError("tzinfo subkundi must override dst()")
 
-    def fromutc(self, dt):
+    def kutokautc(self, dt):
         "datetime in UTC -> datetime in local time."
 
         if not isinstance(dt, datetime):
-            raise TypeError("fromutc() requires a datetime argument")
+            raise TypeError("kutokautc() requires a datetime argument")
         if dt.tzinfo is not self:
             raise ValueError("dt.tzinfo is not self")
 
         dtoff = dt.utcoffset()
         if dtoff is None:
-            raise ValueError("fromutc() requires a non-None utcoffset() "
+            raise ValueError("kutokautc() requires a non-None utcoffset() "
                              "result")
 
         # See the long comment block at the end of this file for an
         # explanation of this algorithm.
         dtdst = dt.dst()
         if dtdst is None:
-            raise ValueError("fromutc() requires a non-None dst() result")
+            raise ValueError("kutokautc() requires a non-None dst() result")
         delta = dtoff - dtdst
         if delta:
             dt += delta
             dtdst = dt.dst()
             if dtdst is None:
-                raise ValueError("fromutc(): dt.dst gave inconsistent "
+                raise ValueError("kutokautc(): dt.dst gave inconsistent "
                                  "results; cannot convert")
         return dt + dtdst
 
@@ -1206,9 +1206,9 @@ class tzinfo:
         else:
             return (self.__class__, args, state)
 
-_tzinfo_class = tzinfo
+_tzinfo_kundi = tzinfo
 
-class time:
+kundi time:
     """Time with time zone.
 
     Constructors:
@@ -1396,7 +1396,7 @@ class time:
         """Convert to formal string, for repr()."""
         if self._microsecond != 0:
             s = ", %d, %d" % (self._second, self._microsecond)
-        elif self._second != 0:
+        lasivyo self._second != 0:
             s = ", %d" % self._second
         else:
             s = ""
@@ -1430,10 +1430,10 @@ class time:
     __str__ = isoformat
 
     @classmethod
-    def fromisoformat(cls, time_string):
+    def kutokaisoformat(cls, time_string):
         """Construct a time kutoka the output of isoformat()."""
         if not isinstance(time_string, str):
-            raise TypeError('fromisoformat: argument must be str')
+            raise TypeError('kutokaisoformat: argument must be str')
 
         try:
             return cls(*_parse_isoformat_time(time_string))
@@ -1549,13 +1549,13 @@ class time:
     def __reduce__(self):
         return self.__reduce_ex__(2)
 
-_time_class = time  # so functions w/ args named "time" can get at the class
+_time_kundi = time  # so functions w/ args named "time" can get at the class
 
 time.min = time(0, 0, 0)
 time.max = time(23, 59, 59, 999999)
 time.resolution = timedelta(microseconds=1)
 
-class datetime(date):
+kundi datetime(date):
     """datetime(year, month, day[, hour[, minute[, second[, microsecond[,tzinfo]]]]])
 
     The year, month and day arguments are required. tzinfo may be None, or an
@@ -1629,7 +1629,7 @@ class datetime(date):
         return self._fold
 
     @classmethod
-    def _fromtimestamp(cls, t, utc, tz):
+    def _kutokatimestamp(cls, t, utc, tz):
         """Construct a datetime kutoka a POSIX timestamp (like time.time()).
 
         A timezone info object may be passed in as well.
@@ -1639,7 +1639,7 @@ class datetime(date):
         if us >= 1000000:
             t += 1
             us -= 1000000
-        elif us < 0:
+        lasivyo us < 0:
             t -= 1
             us += 1000000
 
@@ -1669,35 +1669,35 @@ class datetime(date):
                 if probe2 == result:
                     result._fold = 1
         else:
-            result = tz.fromutc(result)
+            result = tz.kutokautc(result)
         return result
 
     @classmethod
-    def fromtimestamp(cls, t, tz=None):
+    def kutokatimestamp(cls, t, tz=None):
         """Construct a datetime kutoka a POSIX timestamp (like time.time()).
 
         A timezone info object may be passed in as well.
         """
         _check_tzinfo_arg(tz)
 
-        return cls._fromtimestamp(t, tz is not None, tz)
+        return cls._kutokatimestamp(t, tz is not None, tz)
 
     @classmethod
-    def utcfromtimestamp(cls, t):
+    def utckutokatimestamp(cls, t):
         """Construct a naive UTC datetime kutoka a POSIX timestamp."""
-        return cls._fromtimestamp(t, True, None)
+        return cls._kutokatimestamp(t, True, None)
 
     @classmethod
     def now(cls, tz=None):
         "Construct a datetime kutoka time.time() and optional time zone info."
         t = _time.time()
-        return cls.fromtimestamp(t, tz)
+        return cls.kutokatimestamp(t, tz)
 
     @classmethod
     def utcnow(cls):
         "Construct a UTC datetime kutoka time.time()."
         t = _time.time()
-        return cls.utcfromtimestamp(t)
+        return cls.utckutokatimestamp(t)
 
     @classmethod
     def combine(cls, date, time, tzinfo=True):
@@ -1713,10 +1713,10 @@ class datetime(date):
                    tzinfo, fold=time.fold)
 
     @classmethod
-    def fromisoformat(cls, date_string):
+    def kutokaisoformat(cls, date_string):
         """Construct a datetime kutoka the output of datetime.isoformat()."""
         if not isinstance(date_string, str):
-            raise TypeError('fromisoformat: argument must be str')
+            raise TypeError('kutokaisoformat: argument must be str')
 
         # Split this at the separator
         dstr = date_string[0:10]
@@ -1742,7 +1742,7 @@ class datetime(date):
         dst = self.dst()
         if dst is None:
             dst = -1
-        elif dst:
+        lasivyo dst:
             dst = 1
         else:
             dst = 0
@@ -1855,7 +1855,7 @@ class datetime(date):
     def astimezone(self, tz=None):
         if tz is None:
             tz = self._local_timezone()
-        elif not isinstance(tz, tzinfo):
+        lasivyo not isinstance(tz, tzinfo):
             raise TypeError("tz argument must be an instance of tzinfo")
 
         mytz = self.tzinfo
@@ -1875,7 +1875,7 @@ class datetime(date):
         utc = (self - myoffset).replace(tzinfo=tz)
 
         # Convert kutoka UTC to tz's local time.
-        return tz.fromutc(utc)
+        return tz.kutokautc(utc)
 
     # Ways to produce a string.
 
@@ -1986,7 +1986,7 @@ class datetime(date):
     def __eq__(self, other):
         if isinstance(other, datetime):
             return self._cmp(other, allow_mixed=True) == 0
-        elif not isinstance(other, date):
+        lasivyo not isinstance(other, date):
             return NotImplemented
         else:
             return False
@@ -1994,7 +1994,7 @@ class datetime(date):
     def __le__(self, other):
         if isinstance(other, datetime):
             return self._cmp(other) <= 0
-        elif not isinstance(other, date):
+        lasivyo not isinstance(other, date):
             return NotImplemented
         else:
             _cmperror(self, other)
@@ -2002,7 +2002,7 @@ class datetime(date):
     def __lt__(self, other):
         if isinstance(other, datetime):
             return self._cmp(other) < 0
-        elif not isinstance(other, date):
+        lasivyo not isinstance(other, date):
             return NotImplemented
         else:
             _cmperror(self, other)
@@ -2010,7 +2010,7 @@ class datetime(date):
     def __ge__(self, other):
         if isinstance(other, datetime):
             return self._cmp(other) >= 0
-        elif not isinstance(other, date):
+        lasivyo not isinstance(other, date):
             return NotImplemented
         else:
             _cmperror(self, other)
@@ -2018,7 +2018,7 @@ class datetime(date):
     def __gt__(self, other):
         if isinstance(other, datetime):
             return self._cmp(other) > 0
-        elif not isinstance(other, date):
+        lasivyo not isinstance(other, date):
             return NotImplemented
         else:
             _cmperror(self, other)
@@ -2073,7 +2073,7 @@ class datetime(date):
         hour, rem = divmod(delta.seconds, 3600)
         minute, second = divmod(rem, 60)
         if 0 < delta.days <= _MAXORDINAL:
-            return type(self).combine(date.fromordinal(delta.days),
+            return type(self).combine(date.kutokaordinal(delta.days),
                                       time(hour, minute, second,
                                            delta.microseconds,
                                            tzinfo=self._tzinfo))
@@ -2176,7 +2176,7 @@ def _isoweek1monday(year):
     return week1monday
 
 
-class timezone(tzinfo):
+kundi timezone(tzinfo):
     __slots__ = '_offset', '_name'
 
     # Sentinel value to disallow None
@@ -2188,7 +2188,7 @@ class timezone(tzinfo):
             if not offset:
                 return cls.utc
             name = None
-        elif not isinstance(name, str):
+        lasivyo not isinstance(name, str):
             raise TypeError("name must be a string")
         if not cls._minoffset <= offset <= cls._maxoffset:
             raise ValueError("offset must be a timedelta "
@@ -2249,7 +2249,7 @@ class timezone(tzinfo):
     def tzname(self, dt):
         if isinstance(dt, datetime) or dt is None:
             if self._name is None:
-                return self._name_from_offset(self._offset)
+                return self._name_kutoka_offset(self._offset)
             return self._name
         raise TypeError("tzname() argument must be a datetime instance"
                         " or None")
@@ -2260,20 +2260,20 @@ class timezone(tzinfo):
         raise TypeError("dst() argument must be a datetime instance"
                         " or None")
 
-    def fromutc(self, dt):
+    def kutokautc(self, dt):
         if isinstance(dt, datetime):
             if dt.tzinfo is not self:
-                raise ValueError("fromutc: dt.tzinfo "
+                raise ValueError("kutokautc: dt.tzinfo "
                                  "is not self")
             return dt + self._offset
-        raise TypeError("fromutc() argument must be a datetime instance"
+        raise TypeError("kutokautc() argument must be a datetime instance"
                         " or None")
 
     _maxoffset = timedelta(hours=24, microseconds=-1)
     _minoffset = -_maxoffset
 
     @staticmethod
-    def _name_from_offset(delta):
+    def _name_kutoka_offset(delta):
         if not delta:
             return 'UTC'
         if delta < timedelta(0):
@@ -2326,7 +2326,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 # 5. (x+k).n = x.n + k
 #    Again follows kutoka how arithmetic is defined.
 #
-# Now we can explain tz.fromutc(x).  Let's assume it's an interesting case
+# Now we can explain tz.kutokautc(x).  Let's assume it's an interesting case
 # (meaning that the various tzinfo methods exist, and don't blow up or return
 # None when called).
 #
@@ -2375,7 +2375,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 # we have an equivalent time, and are almost done.  The insecurity here is
 # at the start of daylight time.  Picture US Eastern for concreteness.  The wall
 # time jumps kutoka 1:59 to 3:00, and wall hours of the form 2:MM don't make good
-# sense then.  The docs ask that an Eastern tzinfo class consider such a time to
+# sense then.  The docs ask that an Eastern tzinfo kundi consider such a time to
 # be EDT (because it's "after 2"), which is a redundant spelling of 1:MM EST
 # on the day DST starts.  We want to return the 1:MM EST spelling because that's
 # the only spelling that makes sense on the local wall clock.
@@ -2420,7 +2420,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 #
 #     z'.n - z'.o = x.n                           [8]
 #
-# If so, we're done.  If not, the tzinfo class is insane, according to the
+# If so, we're done.  If not, the tzinfo kundi is insane, according to the
 # assumptions we've made.  This also requires a bit of proof.  As before, let's
 # compute the difference between the LHS and RHS of [8] (and skipping some of
 # the justifications for the kinds of substitutions we've done several times
@@ -2468,7 +2468,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 # two possible dst() outcomes, one zero and the other non-zero).  Therefore
 # z' must be in standard time, and is the spelling we want in this case.
 #
-# Note again that z' is not UTC-equivalent as far as the hybrid tzinfo class is
+# Note again that z' is not UTC-equivalent as far as the hybrid tzinfo kundi is
 # concerned (because it takes z' as being in standard time rather than the
 # daylight time we intend here), but returning it gives the real-life "local
 # clock repeats an hour" behavior when mapping the "unspellable" UTC hour into
@@ -2488,13 +2488,13 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 #    the analysis gives up a step too early.  I haven't thought about that
 #    enough to say.
 #
-# In any case, it's clear that the default fromutc() is strong enough to handle
+# In any case, it's clear that the default kutokautc() is strong enough to handle
 # "almost all" time zones:  so long as the standard offset is invariant, it
 # doesn't matter if daylight time transition points change kutoka year to year, or
 # if daylight time is skipped in some years; it doesn't matter how large or
 # small dst() may get within its bounds; and it doesn't even matter if some
 # perverse time zone returns a negative dst()).  So a breaking case must be
-# pretty bizarre, and a tzinfo subclass can override fromutc() if it is.
+# pretty bizarre, and a tzinfo subkundi can override kutokautc() if it is.
 
 try:
     kutoka _datetime agiza *

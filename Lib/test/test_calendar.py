@@ -365,20 +365,20 @@ result_2004_dates = \
        '12/27/04 12/28/04 12/29/04 12/30/04 12/31/04 01/01/05 01/02/05']]]
 
 
-class OutputTestCase(unittest.TestCase):
-    def normalize_calendar(self, s):
+kundi OutputTestCase(unittest.TestCase):
+    eleza normalize_calendar(self, s):
         # Filters out locale dependent strings
-        def neitherspacenordigit(c):
-            return not c.isspace() and not c.isdigit()
+        eleza neitherspacenordigit(c):
+            rudisha not c.isspace() and not c.isdigit()
 
         lines = []
         for line in s.splitlines(keepends=False):
             # Drop texts, as they are locale dependent
-            if line and not filter(neitherspacenordigit, line):
+            ikiwa line and not filter(neitherspacenordigit, line):
                 lines.append(line)
-        return lines
+        rudisha lines
 
-    def check_htmlcalendar_encoding(self, req, res):
+    eleza check_htmlcalendar_encoding(self, req, res):
         cal = calendar.HTMLCalendar()
         format_ = default_format.copy()
         format_["encoding"] = req or 'utf-8'
@@ -388,7 +388,7 @@ class OutputTestCase(unittest.TestCase):
             result_2004_html.format(**format_).encode(res)
         )
 
-    def test_output(self):
+    eleza test_output(self):
         self.assertEqual(
             self.normalize_calendar(calendar.calendar(2004)),
             self.normalize_calendar(result_2004_text)
@@ -398,7 +398,7 @@ class OutputTestCase(unittest.TestCase):
             self.normalize_calendar(result_0_text)
         )
 
-    def test_output_textcalendar(self):
+    eleza test_output_textcalendar(self):
         self.assertEqual(
             calendar.TextCalendar().formatyear(2004),
             result_2004_text
@@ -408,18 +408,18 @@ class OutputTestCase(unittest.TestCase):
             result_0_text
         )
 
-    def test_output_htmlcalendar_encoding_ascii(self):
+    eleza test_output_htmlcalendar_encoding_ascii(self):
         self.check_htmlcalendar_encoding('ascii', 'ascii')
 
-    def test_output_htmlcalendar_encoding_utf8(self):
+    eleza test_output_htmlcalendar_encoding_utf8(self):
         self.check_htmlcalendar_encoding('utf-8', 'utf-8')
 
-    def test_output_htmlcalendar_encoding_default(self):
+    eleza test_output_htmlcalendar_encoding_default(self):
         self.check_htmlcalendar_encoding(None, sys.getdefaultencoding())
 
-    def test_yeardatescalendar(self):
-        def shrink(cal):
-            return [[[' '.join('{:02d}/{:02d}/{}'.format(
+    eleza test_yeardatescalendar(self):
+        eleza shrink(cal):
+            rudisha [[[' '.join('{:02d}/{:02d}/{}'.format(
                                 d.month, d.day, str(d.year)[-2:]) for d in z)
                             for z in y] for y in x] for x in cal]
         self.assertEqual(
@@ -427,26 +427,26 @@ class OutputTestCase(unittest.TestCase):
             result_2004_dates
         )
 
-    def test_yeardayscalendar(self):
+    eleza test_yeardayscalendar(self):
         self.assertEqual(
             calendar.Calendar().yeardayscalendar(2004),
             result_2004_days
         )
 
-    def test_formatweekheader_short(self):
+    eleza test_formatweekheader_short(self):
         self.assertEqual(
             calendar.TextCalendar().formatweekheader(2),
             'Mo Tu We Th Fr Sa Su'
         )
 
-    def test_formatweekheader_long(self):
+    eleza test_formatweekheader_long(self):
         self.assertEqual(
             calendar.TextCalendar().formatweekheader(9),
             '  Monday   Tuesday  Wednesday  Thursday '
             '  Friday   Saturday   Sunday '
         )
 
-    def test_formatmonth(self):
+    eleza test_formatmonth(self):
         self.assertEqual(
             calendar.TextCalendar().formatmonth(2004, 1),
             result_2004_01_text
@@ -456,43 +456,43 @@ class OutputTestCase(unittest.TestCase):
             result_0_02_text
         )
 
-    def test_formatmonthname_with_year(self):
+    eleza test_formatmonthname_with_year(self):
         self.assertEqual(
             calendar.HTMLCalendar().formatmonthname(2004, 1, withyear=True),
             '<tr><th colspan="7" class="month">January 2004</th></tr>'
         )
 
-    def test_formatmonthname_without_year(self):
+    eleza test_formatmonthname_without_year(self):
         self.assertEqual(
             calendar.HTMLCalendar().formatmonthname(2004, 1, withyear=False),
             '<tr><th colspan="7" class="month">January</th></tr>'
         )
 
-    def test_prweek(self):
+    eleza test_prweek(self):
         with support.captured_stdout() as out:
             week = [(1,0), (2,1), (3,2), (4,3), (5,4), (6,5), (7,6)]
             calendar.TextCalendar().prweek(week, 1)
             self.assertEqual(out.getvalue(), " 1  2  3  4  5  6  7")
 
-    def test_prmonth(self):
+    eleza test_prmonth(self):
         with support.captured_stdout() as out:
             calendar.TextCalendar().prmonth(2004, 1)
             self.assertEqual(out.getvalue(), result_2004_01_text)
 
-    def test_pryear(self):
+    eleza test_pryear(self):
         with support.captured_stdout() as out:
             calendar.TextCalendar().pryear(2004)
             self.assertEqual(out.getvalue(), result_2004_text)
 
-    def test_format(self):
+    eleza test_format(self):
         with support.captured_stdout() as out:
             calendar.format(["1", "2", "3"], colwidth=3, spacing=1)
             self.assertEqual(out.getvalue().strip(), "1   2   3")
 
-class CalendarTestCase(unittest.TestCase):
-    def test_isleap(self):
-        # Make sure that the return is right for a few years, and
-        # ensure that the return values are 1 or 0, not just true or
+kundi CalendarTestCase(unittest.TestCase):
+    eleza test_isleap(self):
+        # Make sure that the rudisha is right for a few years, and
+        # ensure that the rudisha values are 1 or 0, not just true or
         # false (see SF bug #485794).  Specific additional tests may
         # be appropriate; this tests a single "cycle".
         self.assertEqual(calendar.isleap(2000), 1)
@@ -500,7 +500,7 @@ class CalendarTestCase(unittest.TestCase):
         self.assertEqual(calendar.isleap(2002), 0)
         self.assertEqual(calendar.isleap(2003), 0)
 
-    def test_setfirstweekday(self):
+    eleza test_setfirstweekday(self):
         self.assertRaises(TypeError, calendar.setfirstweekday, 'flabber')
         self.assertRaises(ValueError, calendar.setfirstweekday, -1)
         self.assertRaises(ValueError, calendar.setfirstweekday, 200)
@@ -511,16 +511,16 @@ class CalendarTestCase(unittest.TestCase):
         self.assertEqual(calendar.firstweekday(), calendar.MONDAY)
         calendar.setfirstweekday(orig)
 
-    def test_illegal_weekday_reported(self):
+    eleza test_illegal_weekday_reported(self):
         with self.assertRaisesRegex(calendar.IllegalWeekdayError, '123'):
             calendar.setfirstweekday(123)
 
-    def test_enumerate_weekdays(self):
+    eleza test_enumerate_weekdays(self):
         self.assertRaises(IndexError, calendar.day_abbr.__getitem__, -10)
         self.assertRaises(IndexError, calendar.day_name.__getitem__, 10)
         self.assertEqual(len([d for d in calendar.day_abbr]), 7)
 
-    def test_days(self):
+    eleza test_days(self):
         for attr in "day_name", "day_abbr":
             value = getattr(calendar, attr)
             self.assertEqual(len(value), 7)
@@ -530,7 +530,7 @@ class CalendarTestCase(unittest.TestCase):
             # verify it "acts like a sequence" in two forms of iteration
             self.assertEqual(value[::-1], list(reversed(value)))
 
-    def test_months(self):
+    eleza test_months(self):
         for attr in "month_name", "month_abbr":
             value = getattr(calendar, attr)
             self.assertEqual(len(value), 13)
@@ -541,7 +541,7 @@ class CalendarTestCase(unittest.TestCase):
             # verify it "acts like a sequence" in two forms of iteration
             self.assertEqual(value[::-1], list(reversed(value)))
 
-    def test_locale_calendars(self):
+    eleza test_locale_calendars(self):
         # ensure that Locale{Text,HTML}Calendar resets the locale properly
         # (it is still not thread-safe though)
         old_october = calendar.TextCalendar().formatmonthname(2010, 10, 10)
@@ -564,17 +564,17 @@ class CalendarTestCase(unittest.TestCase):
         new_october = calendar.TextCalendar().formatmonthname(2010, 10, 10)
         self.assertEqual(old_october, new_october)
 
-    def test_itermonthdays3(self):
+    eleza test_itermonthdays3(self):
         # ensure itermonthdays3 doesn't overflow after datetime.MAXYEAR
         list(calendar.Calendar().itermonthdays3(datetime.MAXYEAR, 12))
 
-    def test_itermonthdays4(self):
+    eleza test_itermonthdays4(self):
         cal = calendar.Calendar(firstweekday=3)
         days = list(cal.itermonthdays4(2001, 2))
         self.assertEqual(days[0], (2001, 2, 1, 3))
         self.assertEqual(days[-1], (2001, 2, 28, 2))
 
-    def test_itermonthdays(self):
+    eleza test_itermonthdays(self):
         for firstweekday in range(7):
             cal = calendar.Calendar(firstweekday)
             # Test the extremes, see #28253 and #26650
@@ -586,7 +586,7 @@ class CalendarTestCase(unittest.TestCase):
         days = list(cal.itermonthdays(2001, 2))
         self.assertEqual(days, list(range(1, 29)))
 
-    def test_itermonthdays2(self):
+    eleza test_itermonthdays2(self):
         for firstweekday in range(7):
             cal = calendar.Calendar(firstweekday)
             # Test the extremes, see #28253 and #26650
@@ -596,25 +596,25 @@ class CalendarTestCase(unittest.TestCase):
                 self.assertEqual(days[-1][1], (firstweekday - 1) % 7)
 
 
-class MonthCalendarTestCase(unittest.TestCase):
-    def setUp(self):
+kundi MonthCalendarTestCase(unittest.TestCase):
+    eleza setUp(self):
         self.oldfirstweekday = calendar.firstweekday()
         calendar.setfirstweekday(self.firstweekday)
 
-    def tearDown(self):
+    eleza tearDown(self):
         calendar.setfirstweekday(self.oldfirstweekday)
 
-    def check_weeks(self, year, month, weeks):
+    eleza check_weeks(self, year, month, weeks):
         cal = calendar.monthcalendar(year, month)
         self.assertEqual(len(cal), len(weeks))
         for i in range(len(weeks)):
             self.assertEqual(weeks[i], sum(day != 0 for day in cal[i]))
 
 
-class MondayTestCase(MonthCalendarTestCase):
+kundi MondayTestCase(MonthCalendarTestCase):
     firstweekday = calendar.MONDAY
 
-    def test_february(self):
+    eleza test_february(self):
         # A 28-day february starting on monday (7+7+7+7 days)
         self.check_weeks(1999, 2, (7, 7, 7, 7))
 
@@ -633,7 +633,7 @@ class MondayTestCase(MonthCalendarTestCase):
         # A 29-day february starting on sunday (1+7+7+7+7 days)
         self.check_weeks(2004, 2, (1, 7, 7, 7, 7))
 
-    def test_april(self):
+    eleza test_april(self):
         # A 30-day april starting on monday (7+7+7+7+2 days)
         self.check_weeks(1935, 4, (7, 7, 7, 7, 2))
 
@@ -649,7 +649,7 @@ class MondayTestCase(MonthCalendarTestCase):
         # A 30-day april starting on friday (3+7+7+7+6 days)
         self.check_weeks(1994, 4, (3, 7, 7, 7, 6))
 
-    def test_december(self):
+    eleza test_december(self):
         # A 31-day december starting on monday (7+7+7+7+3 days)
         self.check_weeks(1980, 12, (7, 7, 7, 7, 3))
 
@@ -669,10 +669,10 @@ class MondayTestCase(MonthCalendarTestCase):
         self.check_weeks(2068, 12, (2, 7, 7, 7, 7, 1))
 
 
-class SundayTestCase(MonthCalendarTestCase):
+kundi SundayTestCase(MonthCalendarTestCase):
     firstweekday = calendar.SUNDAY
 
-    def test_february(self):
+    eleza test_february(self):
         # A 28-day february starting on sunday (7+7+7+7 days)
         self.check_weeks(2009, 2, (7, 7, 7, 7))
 
@@ -691,7 +691,7 @@ class SundayTestCase(MonthCalendarTestCase):
         # A 29-day february starting on saturday (1+7+7+7+7 days)
         self.check_weeks(1964, 2, (1, 7, 7, 7, 7))
 
-    def test_april(self):
+    eleza test_april(self):
         # A 30-day april starting on sunday (7+7+7+7+2 days)
         self.check_weeks(1923, 4, (7, 7, 7, 7, 2))
 
@@ -707,7 +707,7 @@ class SundayTestCase(MonthCalendarTestCase):
         # A 30-day april starting on thursday (3+7+7+7+6 days)
         self.check_weeks(1909, 4, (3, 7, 7, 7, 6))
 
-    def test_december(self):
+    eleza test_december(self):
         # A 31-day december starting on sunday (7+7+7+7+3 days)
         self.check_weeks(2080, 12, (7, 7, 7, 7, 3))
 
@@ -726,112 +726,112 @@ class SundayTestCase(MonthCalendarTestCase):
         # A 31-day december starting on friday (2+7+7+7+7+1 days)
         self.check_weeks(1995, 12, (2, 7, 7, 7, 7, 1))
 
-class TimegmTestCase(unittest.TestCase):
+kundi TimegmTestCase(unittest.TestCase):
     TIMESTAMPS = [0, 10, 100, 1000, 10000, 100000, 1000000,
                   1234567890, 1262304000, 1275785153,]
-    def test_timegm(self):
+    eleza test_timegm(self):
         for secs in self.TIMESTAMPS:
             tuple = time.gmtime(secs)
             self.assertEqual(secs, calendar.timegm(tuple))
 
-class MonthRangeTestCase(unittest.TestCase):
-    def test_january(self):
+kundi MonthRangeTestCase(unittest.TestCase):
+    eleza test_january(self):
         # Tests valid lower boundary case.
         self.assertEqual(calendar.monthrange(2004,1), (3,31))
 
-    def test_february_leap(self):
+    eleza test_february_leap(self):
         # Tests February during leap year.
         self.assertEqual(calendar.monthrange(2004,2), (6,29))
 
-    def test_february_nonleap(self):
+    eleza test_february_nonleap(self):
         # Tests February in non-leap year.
         self.assertEqual(calendar.monthrange(2010,2), (0,28))
 
-    def test_december(self):
+    eleza test_december(self):
         # Tests valid upper boundary case.
         self.assertEqual(calendar.monthrange(2004,12), (2,31))
 
-    def test_zeroth_month(self):
+    eleza test_zeroth_month(self):
         # Tests low invalid boundary case.
         with self.assertRaises(calendar.IllegalMonthError):
             calendar.monthrange(2004, 0)
 
-    def test_thirteenth_month(self):
+    eleza test_thirteenth_month(self):
         # Tests high invalid boundary case.
         with self.assertRaises(calendar.IllegalMonthError):
             calendar.monthrange(2004, 13)
 
-    def test_illegal_month_reported(self):
+    eleza test_illegal_month_reported(self):
         with self.assertRaisesRegex(calendar.IllegalMonthError, '65'):
             calendar.monthrange(2004, 65)
 
-class LeapdaysTestCase(unittest.TestCase):
-    def test_no_range(self):
+kundi LeapdaysTestCase(unittest.TestCase):
+    eleza test_no_range(self):
         # test when no range i.e. two identical years as args
         self.assertEqual(calendar.leapdays(2010,2010), 0)
 
-    def test_no_leapdays(self):
+    eleza test_no_leapdays(self):
         # test when no leap years in range
         self.assertEqual(calendar.leapdays(2010,2011), 0)
 
-    def test_no_leapdays_upper_boundary(self):
+    eleza test_no_leapdays_upper_boundary(self):
         # test no leap years in range, when upper boundary is a leap year
         self.assertEqual(calendar.leapdays(2010,2012), 0)
 
-    def test_one_leapday_lower_boundary(self):
+    eleza test_one_leapday_lower_boundary(self):
         # test when one leap year in range, lower boundary is leap year
         self.assertEqual(calendar.leapdays(2012,2013), 1)
 
-    def test_several_leapyears_in_range(self):
+    eleza test_several_leapyears_in_range(self):
         self.assertEqual(calendar.leapdays(1997,2020), 5)
 
 
-def conv(s):
-    return s.replace('\n', os.linesep).encode()
+eleza conv(s):
+    rudisha s.replace('\n', os.linesep).encode()
 
-class CommandLineTestCase(unittest.TestCase):
-    def run_ok(self, *args):
-        return assert_python_ok('-m', 'calendar', *args)[1]
+kundi CommandLineTestCase(unittest.TestCase):
+    eleza run_ok(self, *args):
+        rudisha assert_python_ok('-m', 'calendar', *args)[1]
 
-    def assertFailure(self, *args):
+    eleza assertFailure(self, *args):
         rc, stdout, stderr = assert_python_failure('-m', 'calendar', *args)
         self.assertIn(b'usage:', stderr)
         self.assertEqual(rc, 2)
 
-    def test_help(self):
+    eleza test_help(self):
         stdout = self.run_ok('-h')
         self.assertIn(b'usage:', stdout)
         self.assertIn(b'calendar.py', stdout)
         self.assertIn(b'--help', stdout)
 
-    def test_illegal_arguments(self):
+    eleza test_illegal_arguments(self):
         self.assertFailure('-z')
         self.assertFailure('spam')
         self.assertFailure('2004', 'spam')
         self.assertFailure('-t', 'html', '2004', '1')
 
-    def test_output_current_year(self):
+    eleza test_output_current_year(self):
         stdout = self.run_ok()
         year = datetime.datetime.now().year
         self.assertIn((' %s' % year).encode(), stdout)
         self.assertIn(b'January', stdout)
         self.assertIn(b'Mo Tu We Th Fr Sa Su', stdout)
 
-    def test_output_year(self):
+    eleza test_output_year(self):
         stdout = self.run_ok('2004')
         self.assertEqual(stdout, conv(result_2004_text))
 
-    def test_output_month(self):
+    eleza test_output_month(self):
         stdout = self.run_ok('2004', '1')
         self.assertEqual(stdout, conv(result_2004_01_text))
 
-    def test_option_encoding(self):
+    eleza test_option_encoding(self):
         self.assertFailure('-e')
         self.assertFailure('--encoding')
         stdout = self.run_ok('--encoding', 'utf-16-le', '2004')
         self.assertEqual(stdout, result_2004_text.encode('utf-16-le'))
 
-    def test_option_locale(self):
+    eleza test_option_locale(self):
         self.assertFailure('-L')
         self.assertFailure('--locale')
         self.assertFailure('-L', 'en')
@@ -849,35 +849,35 @@ class CommandLineTestCase(unittest.TestCase):
         stdout = self.run_ok('--locale', lang, '--encoding', enc, '2004')
         self.assertIn('2004'.encode(enc), stdout)
 
-    def test_option_width(self):
+    eleza test_option_width(self):
         self.assertFailure('-w')
         self.assertFailure('--width')
         self.assertFailure('-w', 'spam')
         stdout = self.run_ok('--width', '3', '2004')
         self.assertIn(b'Mon Tue Wed Thu Fri Sat Sun', stdout)
 
-    def test_option_lines(self):
+    eleza test_option_lines(self):
         self.assertFailure('-l')
         self.assertFailure('--lines')
         self.assertFailure('-l', 'spam')
         stdout = self.run_ok('--lines', '2', '2004')
         self.assertIn(conv('December\n\nMo Tu We'), stdout)
 
-    def test_option_spacing(self):
+    eleza test_option_spacing(self):
         self.assertFailure('-s')
         self.assertFailure('--spacing')
         self.assertFailure('-s', 'spam')
         stdout = self.run_ok('--spacing', '8', '2004')
         self.assertIn(b'Su        Mo', stdout)
 
-    def test_option_months(self):
+    eleza test_option_months(self):
         self.assertFailure('-m')
         self.assertFailure('--month')
         self.assertFailure('-m', 'spam')
         stdout = self.run_ok('--months', '1', '2004')
         self.assertIn(conv('\nMo Tu We Th Fr Sa Su\n'), stdout)
 
-    def test_option_type(self):
+    eleza test_option_type(self):
         self.assertFailure('-t')
         self.assertFailure('--type')
         self.assertFailure('-t', 'spam')
@@ -887,7 +887,7 @@ class CommandLineTestCase(unittest.TestCase):
         self.assertEqual(stdout[:6], b'<?xml ')
         self.assertIn(b'<title>Calendar for 2004</title>', stdout)
 
-    def test_html_output_current_year(self):
+    eleza test_html_output_current_year(self):
         stdout = self.run_ok('--type', 'html')
         year = datetime.datetime.now().year
         self.assertIn(('<title>Calendar for %s</title>' % year).encode(),
@@ -895,12 +895,12 @@ class CommandLineTestCase(unittest.TestCase):
         self.assertIn(b'<tr><th colspan="7" class="month">January</th></tr>',
                       stdout)
 
-    def test_html_output_year_encoding(self):
+    eleza test_html_output_year_encoding(self):
         stdout = self.run_ok('-t', 'html', '--encoding', 'ascii', '2004')
         self.assertEqual(stdout,
                          result_2004_html.format(**default_format).encode('ascii'))
 
-    def test_html_output_year_css(self):
+    eleza test_html_output_year_css(self):
         self.assertFailure('-t', 'html', '-c')
         self.assertFailure('-t', 'html', '--css')
         stdout = self.run_ok('-t', 'html', '--css', 'custom.css', '2004')
@@ -908,8 +908,8 @@ class CommandLineTestCase(unittest.TestCase):
                       b'href="custom.css" />', stdout)
 
 
-class MiscTestCase(unittest.TestCase):
-    def test__all__(self):
+kundi MiscTestCase(unittest.TestCase):
+    eleza test__all__(self):
         blacklist = {'mdays', 'January', 'February', 'EPOCH',
                      'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY',
                      'SATURDAY', 'SUNDAY', 'different_locale', 'c',
@@ -918,11 +918,11 @@ class MiscTestCase(unittest.TestCase):
         support.check__all__(self, calendar, blacklist=blacklist)
 
 
-class TestSubClassingCase(unittest.TestCase):
+kundi TestSubClassingCase(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
 
-        class CustomHTMLCal(calendar.HTMLCalendar):
+        kundi CustomHTMLCal(calendar.HTMLCalendar):
             cssclasses = [style + " text-nowrap" for style in
                           calendar.HTMLCalendar.cssclasses]
             cssclasses_weekday_head = ["red", "blue", "green", "lilac",
@@ -934,31 +934,31 @@ class TestSubClassingCase(unittest.TestCase):
 
         self.cal = CustomHTMLCal()
 
-    def test_formatmonthname(self):
+    eleza test_formatmonthname(self):
         self.assertIn('class="text-center month-head"',
                       self.cal.formatmonthname(2017, 5))
 
-    def test_formatmonth(self):
+    eleza test_formatmonth(self):
         self.assertIn('class="text-center month"',
                       self.cal.formatmonth(2017, 5))
 
-    def test_formatweek(self):
+    eleza test_formatweek(self):
         weeks = self.cal.monthdays2calendar(2017, 5)
         self.assertIn('class="wed text-nowrap"', self.cal.formatweek(weeks[0]))
 
-    def test_formatweek_head(self):
+    eleza test_formatweek_head(self):
         header = self.cal.formatweekheader()
         for color in self.cal.cssclasses_weekday_head:
             self.assertIn('<th class="%s">' % color, header)
 
-    def test_format_year(self):
+    eleza test_format_year(self):
         self.assertIn(
             ('<table border="0" cellpadding="0" cellspacing="0" class="%s">' %
              self.cal.cssclass_year), self.cal.formatyear(2017))
 
-    def test_format_year_head(self):
+    eleza test_format_year_head(self):
         self.assertIn('<tr><th colspan="%d" class="%s">%s</th></tr>' % (
             3, self.cal.cssclass_year_head, 2017), self.cal.formatyear(2017))
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

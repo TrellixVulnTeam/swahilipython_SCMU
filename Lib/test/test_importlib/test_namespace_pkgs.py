@@ -15,7 +15,7 @@ kutoka test.test_importlib agiza util
 
 
 @contextlib.contextmanager
-def sys_modules_context():
+eleza sys_modules_context():
     """
     Make sure sys.modules is the same object and has the same content
     when exiting the context as when entering.
@@ -34,7 +34,7 @@ def sys_modules_context():
 
 
 @contextlib.contextmanager
-def namespace_tree_context(**kwargs):
+eleza namespace_tree_context(**kwargs):
     """
     Save agiza state and sys.modules cache and restore it on exit.
     Typical usage:
@@ -50,45 +50,45 @@ def namespace_tree_context(**kwargs):
     with import_context, sys_modules_context():
         yield
 
-class NamespacePackageTest(unittest.TestCase):
+kundi NamespacePackageTest(unittest.TestCase):
     """
     Subclasses should define self.root and self.paths (under that root)
     to be added to sys.path.
     """
     root = os.path.join(os.path.dirname(__file__), 'namespace_pkgs')
 
-    def setUp(self):
+    eleza setUp(self):
         self.resolved_paths = [
             os.path.join(self.root, path) for path in self.paths
         ]
         self.ctx = namespace_tree_context(path=self.resolved_paths)
         self.ctx.__enter__()
 
-    def tearDown(self):
+    eleza tearDown(self):
         # TODO: will we ever want to pass exc_info to __exit__?
         self.ctx.__exit__(None, None, None)
 
 
-class SingleNamespacePackage(NamespacePackageTest):
+kundi SingleNamespacePackage(NamespacePackageTest):
     paths = ['portion1']
 
-    def test_simple_package(self):
+    eleza test_simple_package(self):
         agiza foo.one
         self.assertEqual(foo.one.attr, 'portion1 foo one')
 
-    def test_cant_import_other(self):
+    eleza test_cant_import_other(self):
         with self.assertRaises(ImportError):
             agiza foo.two
 
-    def test_module_repr(self):
+    eleza test_module_repr(self):
         agiza foo.one
         self.assertEqual(repr(foo), "<module 'foo' (namespace)>")
 
 
-class DynamicPathNamespacePackage(NamespacePackageTest):
+kundi DynamicPathNamespacePackage(NamespacePackageTest):
     paths = ['portion1']
 
-    def test_dynamic_path(self):
+    eleza test_dynamic_path(self):
         # Make sure only 'foo.one' can be imported
         agiza foo.one
         self.assertEqual(foo.one.attr, 'portion1 foo one')
@@ -104,65 +104,65 @@ class DynamicPathNamespacePackage(NamespacePackageTest):
         self.assertEqual(foo.two.attr, 'portion2 foo two')
 
 
-class CombinedNamespacePackages(NamespacePackageTest):
+kundi CombinedNamespacePackages(NamespacePackageTest):
     paths = ['both_portions']
 
-    def test_agizas(self):
+    eleza test_agizas(self):
         agiza foo.one
         agiza foo.two
         self.assertEqual(foo.one.attr, 'both_portions foo one')
         self.assertEqual(foo.two.attr, 'both_portions foo two')
 
 
-class SeparatedNamespacePackages(NamespacePackageTest):
+kundi SeparatedNamespacePackages(NamespacePackageTest):
     paths = ['portion1', 'portion2']
 
-    def test_agizas(self):
+    eleza test_agizas(self):
         agiza foo.one
         agiza foo.two
         self.assertEqual(foo.one.attr, 'portion1 foo one')
         self.assertEqual(foo.two.attr, 'portion2 foo two')
 
 
-class SeparatedOverlappingNamespacePackages(NamespacePackageTest):
+kundi SeparatedOverlappingNamespacePackages(NamespacePackageTest):
     paths = ['portion1', 'both_portions']
 
-    def test_first_path_wins(self):
+    eleza test_first_path_wins(self):
         agiza foo.one
         agiza foo.two
         self.assertEqual(foo.one.attr, 'portion1 foo one')
         self.assertEqual(foo.two.attr, 'both_portions foo two')
 
-    def test_first_path_wins_again(self):
+    eleza test_first_path_wins_again(self):
         sys.path.reverse()
         agiza foo.one
         agiza foo.two
         self.assertEqual(foo.one.attr, 'both_portions foo one')
         self.assertEqual(foo.two.attr, 'both_portions foo two')
 
-    def test_first_path_wins_agizaing_second_first(self):
+    eleza test_first_path_wins_agizaing_second_first(self):
         agiza foo.two
         agiza foo.one
         self.assertEqual(foo.one.attr, 'portion1 foo one')
         self.assertEqual(foo.two.attr, 'both_portions foo two')
 
 
-class SingleZipNamespacePackage(NamespacePackageTest):
+kundi SingleZipNamespacePackage(NamespacePackageTest):
     paths = ['top_level_portion1.zip']
 
-    def test_simple_package(self):
+    eleza test_simple_package(self):
         agiza foo.one
         self.assertEqual(foo.one.attr, 'portion1 foo one')
 
-    def test_cant_import_other(self):
+    eleza test_cant_import_other(self):
         with self.assertRaises(ImportError):
             agiza foo.two
 
 
-class SeparatedZipNamespacePackages(NamespacePackageTest):
+kundi SeparatedZipNamespacePackages(NamespacePackageTest):
     paths = ['top_level_portion1.zip', 'portion2']
 
-    def test_agizas(self):
+    eleza test_agizas(self):
         agiza foo.one
         agiza foo.two
         self.assertEqual(foo.one.attr, 'portion1 foo one')
@@ -171,22 +171,22 @@ class SeparatedZipNamespacePackages(NamespacePackageTest):
         self.assertNotIn('.zip', foo.two.__file__)
 
 
-class SingleNestedZipNamespacePackage(NamespacePackageTest):
+kundi SingleNestedZipNamespacePackage(NamespacePackageTest):
     paths = ['nested_portion1.zip/nested_portion1']
 
-    def test_simple_package(self):
+    eleza test_simple_package(self):
         agiza foo.one
         self.assertEqual(foo.one.attr, 'portion1 foo one')
 
-    def test_cant_import_other(self):
+    eleza test_cant_import_other(self):
         with self.assertRaises(ImportError):
             agiza foo.two
 
 
-class SeparatedNestedZipNamespacePackages(NamespacePackageTest):
+kundi SeparatedNestedZipNamespacePackages(NamespacePackageTest):
     paths = ['nested_portion1.zip/nested_portion1', 'portion2']
 
-    def test_agizas(self):
+    eleza test_agizas(self):
         agiza foo.one
         agiza foo.two
         self.assertEqual(foo.one.attr, 'portion1 foo one')
@@ -196,10 +196,10 @@ class SeparatedNestedZipNamespacePackages(NamespacePackageTest):
         self.assertNotIn('.zip', foo.two.__file__)
 
 
-class LegacySupport(NamespacePackageTest):
+kundi LegacySupport(NamespacePackageTest):
     paths = ['not_a_namespace_pkg', 'portion1', 'portion2', 'both_portions']
 
-    def test_non_namespace_package_takes_precedence(self):
+    eleza test_non_namespace_package_takes_precedence(self):
         agiza foo.one
         with self.assertRaises(ImportError):
             agiza foo.two
@@ -207,10 +207,10 @@ class LegacySupport(NamespacePackageTest):
         self.assertNotIn('namespace', str(foo.__loader__).lower())
 
 
-class DynamicPathCalculation(NamespacePackageTest):
+kundi DynamicPathCalculation(NamespacePackageTest):
     paths = ['project1', 'project2']
 
-    def test_project3_fails(self):
+    eleza test_project3_fails(self):
         agiza parent.child.one
         self.assertEqual(len(parent.__path__), 2)
         self.assertEqual(len(parent.child.__path__), 2)
@@ -227,7 +227,7 @@ class DynamicPathCalculation(NamespacePackageTest):
         self.assertEqual(len(parent.__path__), 2)
         self.assertEqual(len(parent.child.__path__), 2)
 
-    def test_project3_succeeds(self):
+    eleza test_project3_succeeds(self):
         agiza parent.child.one
         self.assertEqual(len(parent.__path__), 2)
         self.assertEqual(len(parent.child.__path__), 2)
@@ -252,11 +252,11 @@ class DynamicPathCalculation(NamespacePackageTest):
         self.assertEqual(parent.child.three.attr, 'parent child three')
 
 
-class ZipWithMissingDirectory(NamespacePackageTest):
+kundi ZipWithMissingDirectory(NamespacePackageTest):
     paths = ['missing_directory.zip']
 
     @unittest.expectedFailure
-    def test_missing_directory(self):
+    eleza test_missing_directory(self):
         # This will fail because missing_directory.zip contains:
         #   Length      Date    Time    Name
         # ---------  ---------- -----   ----
@@ -271,31 +271,31 @@ class ZipWithMissingDirectory(NamespacePackageTest):
 
         agiza foo.one
 
-    def test_present_directory(self):
+    eleza test_present_directory(self):
         # This succeeds because there is a "bar/" in the zip file
         agiza bar.two
         self.assertEqual(bar.two.attr, 'missing_directory foo two')
 
 
-class ModuleAndNamespacePackageInSameDir(NamespacePackageTest):
+kundi ModuleAndNamespacePackageInSameDir(NamespacePackageTest):
     paths = ['module_and_namespace_package']
 
-    def test_module_before_namespace_package(self):
+    eleza test_module_before_namespace_package(self):
         # Make sure we find the module in preference to the
         #  namespace package.
         agiza a_test
         self.assertEqual(a_test.attr, 'in module')
 
 
-class ReloadTests(NamespacePackageTest):
+kundi ReloadTests(NamespacePackageTest):
     paths = ['portion1']
 
-    def test_simple_package(self):
+    eleza test_simple_package(self):
         agiza foo.one
         foo = importlib.reload(foo)
         self.assertEqual(foo.one.attr, 'portion1 foo one')
 
-    def test_cant_import_other(self):
+    eleza test_cant_import_other(self):
         agiza foo
         with self.assertRaises(ImportError):
             agiza foo.two
@@ -303,7 +303,7 @@ class ReloadTests(NamespacePackageTest):
         with self.assertRaises(ImportError):
             agiza foo.two
 
-    def test_dynamic_path(self):
+    eleza test_dynamic_path(self):
         agiza foo.one
         with self.assertRaises(ImportError):
             agiza foo.two
@@ -317,27 +317,27 @@ class ReloadTests(NamespacePackageTest):
         self.assertEqual(foo.two.attr, 'portion2 foo two')
 
 
-class LoaderTests(NamespacePackageTest):
+kundi LoaderTests(NamespacePackageTest):
     paths = ['portion1']
 
-    def test_namespace_loader_consistency(self):
+    eleza test_namespace_loader_consistency(self):
         # bpo-32303
         agiza foo
         self.assertEqual(foo.__loader__, foo.__spec__.loader)
         self.assertIsNotNone(foo.__loader__)
 
-    def test_namespace_origin_consistency(self):
+    eleza test_namespace_origin_consistency(self):
         # bpo-32305
         agiza foo
         self.assertIsNone(foo.__spec__.origin)
         self.assertIsNone(foo.__file__)
 
-    def test_path_indexable(self):
+    eleza test_path_indexable(self):
         # bpo-35843
         agiza foo
         expected_path = os.path.join(self.root, 'portion1', 'foo')
         self.assertEqual(foo.__path__[0], expected_path)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

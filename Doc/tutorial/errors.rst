@@ -28,7 +28,7 @@ the earliest point in the line where the error was detected.  The error is
 caused by (or at least detected at) the token *preceding* the arrow: in the
 example, the error is detected at the function :func:`print`, since a colon
 (``':'``) is missing before it.  File name and line number are printed so you
-know where to look in case the input came from a script.
+know where to look in case the input came kutoka a script.
 
 
 .. _tut-exceptions:
@@ -68,7 +68,7 @@ caused it.
 
 The preceding part of the error message shows the context where the exception
 happened, in the form of a stack traceback. In general it contains a stack
-traceback listing source lines; however, it will not display lines read from
+traceback listing source lines; however, it will not display lines read kutoka
 standard input.
 
 :ref:`bltin-exceptions` lists the built-in exceptions and their meanings.
@@ -120,18 +120,18 @@ name multiple exceptions as a parenthesized tuple, for example::
    ... except (RuntimeError, TypeError, NameError):
    ...     pass
 
-A class in an :keyword:`except` clause is compatible with an exception if it is
-the same class or a base class thereof (but not the other way around --- an
-except clause listing a derived class is not compatible with a base class).  For
+A kundi in an :keyword:`except` clause is compatible with an exception if it is
+the same kundi or a base kundi thereof (but not the other way around --- an
+except clause listing a derived kundi is not compatible with a base class).  For
 example, the following code will print B, C, D in that order::
 
-   class B(Exception):
+   kundi B(Exception):
        pass
 
-   class C(B):
+   kundi C(B):
        pass
 
-   class D(C):
+   kundi D(C):
        pass
 
    for cls in [B, C, D]:
@@ -152,7 +152,7 @@ Use this with extreme caution, since it is easy to mask a real programming error
 in this way!  It can also be used to print an error message and then re-raise
 the exception (allowing a caller to handle the exception as well)::
 
-   import sys
+   agiza sys
 
    try:
        f = open('myfile.txt')
@@ -207,7 +207,7 @@ raising it and add any attributes to it as desired. ::
    ...     print('x =', x)
    ...     print('y =', y)
    ...
-   <class 'Exception'>
+   <kundi 'Exception'>
    ('spam', 'eggs')
    ('spam', 'eggs')
    x = spam
@@ -245,8 +245,8 @@ exception to occur. For example::
    NameError: HiThere
 
 The sole argument to :keyword:`raise` indicates the exception to be raised.
-This must be either an exception instance or an exception class (a class that
-derives from :class:`Exception`).  If an exception class is passed, it will
+This must be either an exception instance or an exception kundi (a kundi that
+derives kutoka :class:`Exception`).  If an exception kundi is passed, it will
 be implicitly instantiated by calling its constructor with no arguments::
 
    raise ValueError  # shorthand for 'raise ValueError()'
@@ -272,22 +272,22 @@ re-raise the exception::
 User-defined Exceptions
 =======================
 
-Programs may name their own exceptions by creating a new exception class (see
+Programs may name their own exceptions by creating a new exception kundi (see
 :ref:`tut-classes` for more about Python classes).  Exceptions should typically
-be derived from the :exc:`Exception` class, either directly or indirectly.
+be derived kutoka the :exc:`Exception` class, either directly or indirectly.
 
-Exception classes can be defined which do anything any other class can do, but
+Exception classes can be defined which do anything any other kundi can do, but
 are usually kept simple, often only offering a number of attributes that allow
 information about the error to be extracted by handlers for the exception.  When
 creating a module that can raise several distinct errors, a common practice is
-to create a base class for exceptions defined by that module, and subclass that
+to create a base kundi for exceptions defined by that module, and subkundi that
 to create specific exception classes for different error conditions::
 
-   class Error(Exception):
-       """Base class for exceptions in this module."""
+   kundi Error(Exception):
+       """Base kundi for exceptions in this module."""
        pass
 
-   class InputError(Error):
+   kundi InputError(Error):
        """Exception raised for errors in the input.
 
        Attributes:
@@ -299,7 +299,7 @@ to create specific exception classes for different error conditions::
            self.expression = expression
            self.message = message
 
-   class TransitionError(Error):
+   kundi TransitionError(Error):
        """Raised when an operation attempts a state transition that's not
        allowed.
 

@@ -9,9 +9,9 @@ agiza sys
 agiza unittest
 kutoka platform agiza uname
 
-if uname().system == "Darwin":
+ikiwa uname().system == "Darwin":
     maj, min, mic = [int(part) for part in uname().release.split(".")]
-    if (maj, min, mic) < (8, 0, 0):
+    ikiwa (maj, min, mic) < (8, 0, 0):
         raise unittest.SkipTest("locale support broken for OS X < 10.4")
 
 candidate_locales = ['es_UY', 'fr_FR', 'fi_FI', 'es_CO', 'pt_PT', 'it_IT',
@@ -26,13 +26,13 @@ candidate_locales = ['es_UY', 'fr_FR', 'fi_FI', 'es_CO', 'pt_PT', 'it_IT',
     'fr_FR.ISO8859-1', 'fr_FR.UTF-8', 'fr_FR.ISO8859-15@euro',
     'ru_RU.KOI8-R', 'ko_KR.eucKR']
 
-def setUpModule():
+eleza setUpModule():
     global candidate_locales
     # Issue #13441: Skip some locales (e.g. cs_CZ and hu_HU) on Solaris to
     # workaround a mbstowcs() bug. For example, on Solaris, the hu_HU locale uses
     # the locale encoding ISO-8859-2, the thousauds separator is b'\xA0' and it is
     # decoded as U+30000020 (an invalid character) by mbstowcs().
-    if sys.platform == 'sunos5':
+    ikiwa sys.platform == 'sunos5':
         old_locale = locale.setlocale(locale.LC_ALL)
         try:
             locales = []
@@ -45,7 +45,7 @@ def setUpModule():
                 try:
                     localeconv()
                 except Exception as err:
-                    print("WARNING: Skip locale %s (encoding %s): [%s] %s"
+                    andika("WARNING: Skip locale %s (encoding %s): [%s] %s"
                         % (loc, encoding, type(err), err))
                 else:
                     locales.append(loc)
@@ -54,11 +54,11 @@ def setUpModule():
             locale.setlocale(locale.LC_ALL, old_locale)
 
     # Workaround for MSVC6(debug) crash bug
-    if "MSC v.1200" in sys.version:
-        def accept(loc):
+    ikiwa "MSC v.1200" in sys.version:
+        eleza accept(loc):
             a = loc.split(".")
-            return not(len(a) == 2 and len(a[-1]) >= 9)
-        candidate_locales = [loc for loc in candidate_locales if accept(loc)]
+            rudisha not(len(a) == 2 and len(a[-1]) >= 9)
+        candidate_locales = [loc for loc in candidate_locales ikiwa accept(loc)]
 
 # List known locale values to test against when available.
 # Dict formatted as ``<locale> : (<decimal_point>, <thousands_sep>)``.  If a
@@ -72,12 +72,12 @@ known_numerics = {
     'ps_AF': ('\u066b', '\u066c'),
 }
 
-class _LocaleTests(unittest.TestCase):
+kundi _LocaleTests(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.oldlocale = setlocale(LC_ALL)
 
-    def tearDown(self):
+    eleza tearDown(self):
         setlocale(LC_ALL, self.oldlocale)
 
     # Want to know what value was calculated, what it was compared against,
@@ -85,24 +85,24 @@ class _LocaleTests(unittest.TestCase):
     # the locale that was supposedly set, and the actual locale that is set.
     lc_numeric_err_msg = "%s != %s (%s for %s; set to %s, using %s)"
 
-    def numeric_tester(self, calc_type, calc_value, data_type, used_locale):
-        """Compare calculation against known value, if available"""
+    eleza numeric_tester(self, calc_type, calc_value, data_type, used_locale):
+        """Compare calculation against known value, ikiwa available"""
         try:
             set_locale = setlocale(LC_NUMERIC)
         except Error:
             set_locale = "<not able to determine>"
         known_value = known_numerics.get(used_locale,
                                     ('', ''))[data_type == 'thousands_sep']
-        if known_value and calc_value:
+        ikiwa known_value and calc_value:
             self.assertEqual(calc_value, known_value,
                                 self.lc_numeric_err_msg % (
                                     calc_value, known_value,
                                     calc_type, data_type, set_locale,
                                     used_locale))
-            return True
+            rudisha True
 
     @unittest.skipUnless(nl_langinfo, "nl_langinfo is not available")
-    def test_lc_numeric_nl_langinfo(self):
+    eleza test_lc_numeric_nl_langinfo(self):
         # Test nl_langinfo against known values
         tested = False
         for loc in candidate_locales:
@@ -113,12 +113,12 @@ class _LocaleTests(unittest.TestCase):
                 continue
             for li, lc in ((RADIXCHAR, "decimal_point"),
                             (THOUSEP, "thousands_sep")):
-                if self.numeric_tester('nl_langinfo', nl_langinfo(li), lc, loc):
+                ikiwa self.numeric_tester('nl_langinfo', nl_langinfo(li), lc, loc):
                     tested = True
-        if not tested:
+        ikiwa not tested:
             self.skipTest('no suitable locales')
 
-    def test_lc_numeric_localeconv(self):
+    eleza test_lc_numeric_localeconv(self):
         # Test localeconv against known values
         tested = False
         for loc in candidate_locales:
@@ -130,13 +130,13 @@ class _LocaleTests(unittest.TestCase):
             formatting = localeconv()
             for lc in ("decimal_point",
                         "thousands_sep"):
-                if self.numeric_tester('localeconv', formatting[lc], lc, loc):
+                ikiwa self.numeric_tester('localeconv', formatting[lc], lc, loc):
                     tested = True
-        if not tested:
+        ikiwa not tested:
             self.skipTest('no suitable locales')
 
     @unittest.skipUnless(nl_langinfo, "nl_langinfo is not available")
-    def test_lc_numeric_basic(self):
+    eleza test_lc_numeric_basic(self):
         # Test nl_langinfo against localeconv
         tested = False
         for loc in candidate_locales:
@@ -159,10 +159,10 @@ class _LocaleTests(unittest.TestCase):
                                                 nl_radixchar, li_radixchar,
                                                 loc, set_locale))
                 tested = True
-        if not tested:
+        ikiwa not tested:
             self.skipTest('no suitable locales')
 
-    def test_float_parsing(self):
+    eleza test_float_parsing(self):
         # Bug #1391872: Test whether float parsing is okay on European
         # locales.
         tested = False
@@ -174,20 +174,20 @@ class _LocaleTests(unittest.TestCase):
                 continue
 
             # Ignore buggy locale databases. (Mac OS 10.4 and some other BSDs)
-            if loc == 'eu_ES' and localeconv()['decimal_point'] == "' ":
+            ikiwa loc == 'eu_ES' and localeconv()['decimal_point'] == "' ":
                 continue
 
             self.assertEqual(int(eval('3.14') * 100), 314,
                                 "using eval('3.14') failed for %s" % loc)
             self.assertEqual(int(float('3.14') * 100), 314,
                                 "using float('3.14') failed for %s" % loc)
-            if localeconv()['decimal_point'] != '.':
+            ikiwa localeconv()['decimal_point'] != '.':
                 self.assertRaises(ValueError, float,
                                   localeconv()['decimal_point'].join(['1', '23']))
             tested = True
-        if not tested:
+        ikiwa not tested:
             self.skipTest('no suitable locales')
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

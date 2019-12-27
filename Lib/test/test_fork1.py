@@ -13,30 +13,30 @@ kutoka test.fork_wait agiza ForkWait
 kutoka test.support agiza reap_children, get_attribute, verbose
 
 
-# Skip test if fork does not exist.
+# Skip test ikiwa fork does not exist.
 get_attribute(os, 'fork')
 
-class ForkTest(ForkWait):
-    def wait_impl(self, cpid):
+kundi ForkTest(ForkWait):
+    eleza wait_impl(self, cpid):
         deadline = time.monotonic() + 10.0
         while time.monotonic() <= deadline:
             # waitpid() shouldn't hang, but some of the buildbots seem to hang
             # in the forking tests.  This is an attempt to fix the problem.
             spid, status = os.waitpid(cpid, os.WNOHANG)
-            if spid == cpid:
+            ikiwa spid == cpid:
                 break
             time.sleep(0.1)
 
         self.assertEqual(spid, cpid)
         self.assertEqual(status, 0, "cause = %d, exit = %d" % (status&0xff, status>>8))
 
-    def test_threaded_import_lock_fork(self):
+    eleza test_threaded_import_lock_fork(self):
         """Check fork() in main thread works while a subthread is doing an agiza"""
         import_started = threading.Event()
         fake_module_name = "fake test module"
         partial_module = "partial"
         complete_module = "complete"
-        def importer():
+        eleza importer():
             imp.acquire_lock()
             sys.modules[fake_module_name] = partial_module
             import_started.set()
@@ -51,13 +51,13 @@ class ForkTest(ForkWait):
             # PyOS_BeforeFork should have waited for the agiza to complete
             # before forking, so the child can recreate the agiza lock
             # correctly, but also won't see a partially initialised module
-            if not pid:
+            ikiwa not pid:
                 m = __import__(fake_module_name)
-                if m == complete_module:
+                ikiwa m == complete_module:
                     os._exit(0)
                 else:
-                    if verbose > 1:
-                        print("Child encountered partial module")
+                    ikiwa verbose > 1:
+                        andika("Child encountered partial module")
                     os._exit(1)
             else:
                 t.join()
@@ -72,10 +72,10 @@ class ForkTest(ForkWait):
                 pass
 
 
-    def test_nested_import_lock_fork(self):
+    eleza test_nested_import_lock_fork(self):
         """Check fork() in main thread works while the main thread is doing an agiza"""
         # Issue 9573: this used to trigger RuntimeError in the child process
-        def fork_with_import_lock(level):
+        eleza fork_with_import_lock(level):
             release = 0
             in_child = False
             try:
@@ -89,12 +89,12 @@ class ForkTest(ForkWait):
                     for i in range(release):
                         imp.release_lock()
             except RuntimeError:
-                if in_child:
-                    if verbose > 1:
-                        print("RuntimeError in child")
+                ikiwa in_child:
+                    ikiwa verbose > 1:
+                        andika("RuntimeError in child")
                     os._exit(1)
                 raise
-            if in_child:
+            ikiwa in_child:
                 os._exit(0)
             self.wait_impl(pid)
 
@@ -104,8 +104,8 @@ class ForkTest(ForkWait):
             fork_with_import_lock(level)
 
 
-def tearDownModule():
+eleza tearDownModule():
     reap_children()
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

@@ -9,18 +9,18 @@ kutoka idlelib.config agiza idleConf
 kutoka idlelib.delegator agiza Delegator
 
 
-def get_end_linenumber(text):
+eleza get_end_linenumber(text):
     """Utility to get the last line's number in a Tk text widget."""
-    return int(float(text.index('end-1c')))
+    rudisha int(float(text.index('end-1c')))
 
 
-def get_widget_padding(widget):
+eleza get_widget_padding(widget):
     """Get the total padding of a Tk widget, including its border."""
     # TODO: use also in codecontext.py
     manager = widget.winfo_manager()
-    if manager == 'pack':
+    ikiwa manager == 'pack':
         info = widget.pack_info()
-    elif manager == 'grid':
+    elikiwa manager == 'grid':
         info = widget.grid_info()
     else:
         raise ValueError(f"Unsupported geometry manager: {manager}")
@@ -37,14 +37,14 @@ def get_widget_padding(widget):
         widget.cget('pady'),
         widget.cget('border'),
     ]))
-    return padx, pady
+    rudisha padx, pady
 
 
-class BaseSideBar:
+kundi BaseSideBar:
     """
-    The base class for extensions which require a sidebar.
+    The base kundi for extensions which require a sidebar.
     """
-    def __init__(self, editwin):
+    eleza __init__(self, editwin):
         self.editwin = editwin
         self.parent = editwin.text_frame
         self.text = editwin.text
@@ -60,68 +60,68 @@ class BaseSideBar:
 
         self.is_shown = False
 
-    def update_font(self):
+    eleza update_font(self):
         """Update the sidebar text font, usually after config changes."""
         font = idleConf.GetFont(self.text, 'main', 'EditorWindow')
         self._update_font(font)
 
-    def _update_font(self, font):
+    eleza _update_font(self, font):
         self.sidebar_text['font'] = font
 
-    def update_colors(self):
+    eleza update_colors(self):
         """Update the sidebar text colors, usually after config changes."""
         colors = idleConf.GetHighlight(idleConf.CurrentTheme(), 'normal')
         self._update_colors(foreground=colors['foreground'],
                             background=colors['background'])
 
-    def _update_colors(self, foreground, background):
+    eleza _update_colors(self, foreground, background):
         self.sidebar_text.config(
             fg=foreground, bg=background,
             selectforeground=foreground, selectbackground=background,
             inactiveselectbackground=background,
         )
 
-    def show_sidebar(self):
-        if not self.is_shown:
+    eleza show_sidebar(self):
+        ikiwa not self.is_shown:
             self.sidebar_text.grid(row=1, column=0, sticky=tk.NSEW)
             self.is_shown = True
 
-    def hide_sidebar(self):
-        if self.is_shown:
+    eleza hide_sidebar(self):
+        ikiwa self.is_shown:
             self.sidebar_text.grid_forget()
             self.is_shown = False
 
-    def redirect_yscroll_event(self, *args, **kwargs):
+    eleza redirect_yscroll_event(self, *args, **kwargs):
         """Redirect vertical scrolling to the main editor text widget.
 
         The scroll bar is also updated.
         """
         self.editwin.vbar.set(*args)
         self.sidebar_text.yview_moveto(args[0])
-        return 'break'
+        rudisha 'break'
 
-    def redirect_focusin_event(self, event):
+    eleza redirect_focusin_event(self, event):
         """Redirect focus-in events to the main editor text widget."""
         self.text.focus_set()
-        return 'break'
+        rudisha 'break'
 
-    def redirect_mousebutton_event(self, event, event_name):
+    eleza redirect_mousebutton_event(self, event, event_name):
         """Redirect mouse button events to the main editor text widget."""
         self.text.focus_set()
         self.text.event_generate(event_name, x=0, y=event.y)
-        return 'break'
+        rudisha 'break'
 
-    def redirect_mousewheel_event(self, event):
+    eleza redirect_mousewheel_event(self, event):
         """Redirect mouse wheel events to the editwin text widget."""
         self.text.event_generate('<MouseWheel>',
                                  x=0, y=event.y, delta=event.delta)
-        return 'break'
+        rudisha 'break'
 
 
-class EndLineDelegator(Delegator):
+kundi EndLineDelegator(Delegator):
     """Generate callbacks with the current end line number after
        insert or delete operations"""
-    def __init__(self, changed_callback):
+    eleza __init__(self, changed_callback):
         """
         changed_callback - Callable, will be called after insert
                            or delete operations with the current
@@ -130,18 +130,18 @@ class EndLineDelegator(Delegator):
         Delegator.__init__(self)
         self.changed_callback = changed_callback
 
-    def insert(self, index, chars, tags=None):
+    eleza insert(self, index, chars, tags=None):
         self.delegate.insert(index, chars, tags)
         self.changed_callback(get_end_linenumber(self.delegate))
 
-    def delete(self, index1, index2=None):
+    eleza delete(self, index1, index2=None):
         self.delegate.delete(index1, index2)
         self.changed_callback(get_end_linenumber(self.delegate))
 
 
-class LineNumbers(BaseSideBar):
+kundi LineNumbers(BaseSideBar):
     """Line numbers support for editor windows."""
-    def __init__(self, editwin):
+    eleza __init__(self, editwin):
         BaseSideBar.__init__(self, editwin)
         self.prev_end = 1
         self._sidebar_width_type = type(self.sidebar_text['width'])
@@ -170,7 +170,7 @@ class LineNumbers(BaseSideBar):
 
         self.is_shown = False
 
-    def bind_events(self):
+    eleza bind_events(self):
         # Ensure focus is always redirected to the main editor text widget.
         self.sidebar_text.bind('<FocusIn>', self.redirect_focusin_event)
 
@@ -184,7 +184,7 @@ class LineNumbers(BaseSideBar):
         # except for the left mouse button (1).
         #
         # Note: X-11 sends Button-4 and Button-5 events for the scroll wheel.
-        def bind_mouse_event(event_name, target_event_name):
+        eleza bind_mouse_event(event_name, target_event_name):
             handler = functools.partial(self.redirect_mousebutton_event,
                                         event_name=target_event_name)
             self.sidebar_text.bind(event_name, handler)
@@ -214,7 +214,7 @@ class LineNumbers(BaseSideBar):
         # to recognize scrolling while the mouse isn't moving.
         last_y = last_yview = None
 
-        def b1_mousedown_handler(event):
+        eleza b1_mousedown_handler(event):
             # select the entire line
             lineno = int(float(self.sidebar_text.index(f"@0,{event.y}")))
             self.text.tag_remove("sel", "1.0", "end")
@@ -226,7 +226,7 @@ class LineNumbers(BaseSideBar):
             start_line = lineno
         self.sidebar_text.bind('<Button-1>', b1_mousedown_handler)
 
-        def b1_mouseup_handler(event):
+        eleza b1_mouseup_handler(event):
             # On mouse up, we're no longer dragging.  Set the shared persistent
             # variables to None to represent this.
             nonlocal start_line
@@ -237,14 +237,14 @@ class LineNumbers(BaseSideBar):
             last_yview = None
         self.sidebar_text.bind('<ButtonRelease-1>', b1_mouseup_handler)
 
-        def drag_update_selection_and_insert_mark(y_coord):
+        eleza drag_update_selection_and_insert_mark(y_coord):
             """Helper function for drag and selection event handlers."""
             lineno = int(float(self.sidebar_text.index(f"@0,{y_coord}")))
             a, b = sorted([start_line, lineno])
             self.text.tag_remove("sel", "1.0", "end")
             self.text.tag_add("sel", f"{a}.0", f"{b+1}.0")
             self.text.mark_set("insert",
-                               f"{lineno if lineno == a else lineno + 1}.0")
+                               f"{lineno ikiwa lineno == a else lineno + 1}.0")
 
         # Special handling of dragging with mouse button 1.  In "normal" text
         # widgets this selects text, but the line numbers text widget has
@@ -252,12 +252,12 @@ class LineNumbers(BaseSideBar):
         # functionality under the hood.  Specifically, dragging to above or
         # below the text widget triggers scrolling, in a way that bypasses the
         # other scrolling synchronization mechanisms.i
-        def b1_drag_handler(event, *args):
+        eleza b1_drag_handler(event, *args):
             nonlocal last_y
             nonlocal last_yview
             last_y = event.y
             last_yview = self.sidebar_text.yview()
-            if not 0 <= last_y <= self.sidebar_text.winfo_height():
+            ikiwa not 0 <= last_y <= self.sidebar_text.winfo_height():
                 self.text.yview_moveto(last_yview[0])
             drag_update_selection_and_insert_mark(event.y)
         self.sidebar_text.bind('<B1-Motion>', b1_drag_handler)
@@ -266,39 +266,39 @@ class LineNumbers(BaseSideBar):
         # case we need to handle: When drag-scrolling, scrolling can continue
         # while the mouse isn't moving, leading to the above fix not scrolling
         # properly.
-        def selection_handler(event):
-            if last_yview is None:
+        eleza selection_handler(event):
+            ikiwa last_yview is None:
                 # This logic is only needed while dragging.
                 return
             yview = self.sidebar_text.yview()
-            if yview != last_yview:
+            ikiwa yview != last_yview:
                 self.text.yview_moveto(yview[0])
                 drag_update_selection_and_insert_mark(last_y)
         self.sidebar_text.bind('<<Selection>>', selection_handler)
 
-    def update_colors(self):
+    eleza update_colors(self):
         """Update the sidebar text colors, usually after config changes."""
         colors = idleConf.GetHighlight(idleConf.CurrentTheme(), 'linenumber')
         self._update_colors(foreground=colors['foreground'],
                             background=colors['background'])
 
-    def update_sidebar_text(self, end):
+    eleza update_sidebar_text(self, end):
         """
         Perform the following action:
         Each line sidebar_text contains the linenumber for that line
         Synchronize with editwin.text so that both sidebar_text and
         editwin.text contain the same number of lines"""
-        if end == self.prev_end:
+        ikiwa end == self.prev_end:
             return
 
         width_difference = len(str(end)) - len(str(self.prev_end))
-        if width_difference:
+        ikiwa width_difference:
             cur_width = int(float(self.sidebar_text['width']))
             new_width = cur_width + width_difference
             self.sidebar_text['width'] = self._sidebar_width_type(new_width)
 
         self.sidebar_text.config(state=tk.NORMAL)
-        if end > self.prev_end:
+        ikiwa end > self.prev_end:
             new_text = '\n'.join(itertools.chain(
                 [''],
                 map(str, range(self.prev_end + 1, end + 1)),
@@ -311,7 +311,7 @@ class LineNumbers(BaseSideBar):
         self.prev_end = end
 
 
-def _linenumbers_drag_scrolling(parent):  # htest #
+eleza _linenumbers_drag_scrolling(parent):  # htest #
     kutoka idlelib.idle_test.test_sidebar agiza Dummy_editwin
 
     toplevel = tk.Toplevel(parent)
@@ -333,7 +333,7 @@ def _linenumbers_drag_scrolling(parent):  # htest #
     text.insert('1.0', '\n'.join('a'*i for i in range(1, 101)))
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_sidebar', verbosity=2, exit=False)
 

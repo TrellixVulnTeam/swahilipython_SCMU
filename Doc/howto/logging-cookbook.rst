@@ -22,8 +22,8 @@ define and configure a parent logger in one module and create (but not
 configure) a child logger in a separate module, and all logger calls to the
 child will pass up to the parent.  Here is a main module::
 
-    import logging
-    import auxiliary_module
+    agiza logging
+    agiza auxiliary_module
 
     # create logger with 'spam_application'
     logger = logging.getLogger('spam_application')
@@ -54,12 +54,12 @@ child will pass up to the parent.  Here is a main module::
 
 Here is the auxiliary module::
 
-    import logging
+    agiza logging
 
     # create logger
     module_logger = logging.getLogger('spam_application.auxiliary')
 
-    class Auxiliary:
+    kundi Auxiliary:
         def __init__(self):
             self.logger = logging.getLogger('spam_application.auxiliary.Auxiliary')
             self.logger.info('creating an instance of Auxiliary')
@@ -97,19 +97,19 @@ The output looks like this:
     2005-03-23 23:47:11,673 - spam_application - INFO -
        done with auxiliary_module.some_function()
 
-Logging from multiple threads
+Logging kutoka multiple threads
 -----------------------------
 
-Logging from multiple threads requires no special effort. The following example
-shows logging from the main (initial) thread and another thread::
+Logging kutoka multiple threads requires no special effort. The following example
+shows logging kutoka the main (initial) thread and another thread::
 
-    import logging
-    import threading
-    import time
+    agiza logging
+    agiza threading
+    agiza time
 
     def worker(arg):
         while not arg['stop']:
-            logging.debug('Hi from myfunc')
+            logging.debug('Hi kutoka myfunc')
             time.sleep(0.5)
 
     def main():
@@ -119,7 +119,7 @@ shows logging from the main (initial) thread and another thread::
         thread.start()
         while True:
             try:
-                logging.debug('Hello from main')
+                logging.debug('Hello kutoka main')
                 time.sleep(0.75)
             except KeyboardInterrupt:
                 info['stop'] = True
@@ -133,23 +133,23 @@ When run, the script should print something like the following:
 
 .. code-block:: none
 
-     0 Thread-1 Hi from myfunc
-     3 MainThread Hello from main
-   505 Thread-1 Hi from myfunc
-   755 MainThread Hello from main
-  1007 Thread-1 Hi from myfunc
-  1507 MainThread Hello from main
-  1508 Thread-1 Hi from myfunc
-  2010 Thread-1 Hi from myfunc
-  2258 MainThread Hello from main
-  2512 Thread-1 Hi from myfunc
-  3009 MainThread Hello from main
-  3013 Thread-1 Hi from myfunc
-  3515 Thread-1 Hi from myfunc
-  3761 MainThread Hello from main
-  4017 Thread-1 Hi from myfunc
-  4513 MainThread Hello from main
-  4518 Thread-1 Hi from myfunc
+     0 Thread-1 Hi kutoka myfunc
+     3 MainThread Hello kutoka main
+   505 Thread-1 Hi kutoka myfunc
+   755 MainThread Hello kutoka main
+  1007 Thread-1 Hi kutoka myfunc
+  1507 MainThread Hello kutoka main
+  1508 Thread-1 Hi kutoka myfunc
+  2010 Thread-1 Hi kutoka myfunc
+  2258 MainThread Hello kutoka main
+  2512 Thread-1 Hi kutoka myfunc
+  3009 MainThread Hello kutoka main
+  3013 Thread-1 Hi kutoka myfunc
+  3515 Thread-1 Hi kutoka myfunc
+  3761 MainThread Hello kutoka main
+  4017 Thread-1 Hi kutoka myfunc
+  4513 MainThread Hello kutoka main
+  4518 Thread-1 Hi kutoka myfunc
 
 This shows the logging output interspersed as one might expect. This approach
 works for more threads than shown here, of course.
@@ -165,7 +165,7 @@ this up, simply configure the appropriate handlers.  The logging calls in the
 application code will remain unchanged.  Here is a slight modification to the
 previous simple module-based configuration example::
 
-    import logging
+    agiza logging
 
     logger = logging.getLogger('simple_example')
     logger.setLevel(logging.DEBUG)
@@ -212,7 +212,7 @@ and higher to file, and those messages at level INFO and higher to the console.
 Let's also assume that the file should contain timestamps, but the console
 messages should not. Here's how you can achieve this::
 
-   import logging
+   agiza logging
 
    # set up logging to file - see previous section for more details
    logging.basicConfig(level=logging.DEBUG,
@@ -241,7 +241,7 @@ messages should not. Here's how you can achieve this::
 
    logger1.debug('Quick zephyrs blow, vexing daft Jim.')
    logger1.info('How quickly daft jumping zebras vex.')
-   logger2.warning('Jail zesty vixen who grabbed pay from quack.')
+   logger2.warning('Jail zesty vixen who grabbed pay kutoka quack.')
    logger2.error('The five boxing wizards jump quickly.')
 
 When you run this, on the console you will see
@@ -250,7 +250,7 @@ When you run this, on the console you will see
 
    root        : INFO     Jackdaws love my big sphinx of quartz.
    myapp.area1 : INFO     How quickly daft jumping zebras vex.
-   myapp.area2 : WARNING  Jail zesty vixen who grabbed pay from quack.
+   myapp.area2 : WARNING  Jail zesty vixen who grabbed pay kutoka quack.
    myapp.area2 : ERROR    The five boxing wizards jump quickly.
 
 and in the file you will see something like
@@ -260,7 +260,7 @@ and in the file you will see something like
    10-22 22:19 root         INFO     Jackdaws love my big sphinx of quartz.
    10-22 22:19 myapp.area1  DEBUG    Quick zephyrs blow, vexing daft Jim.
    10-22 22:19 myapp.area1  INFO     How quickly daft jumping zebras vex.
-   10-22 22:19 myapp.area2  WARNING  Jail zesty vixen who grabbed pay from quack.
+   10-22 22:19 myapp.area2  WARNING  Jail zesty vixen who grabbed pay kutoka quack.
    10-22 22:19 myapp.area2  ERROR    The five boxing wizards jump quickly.
 
 As you can see, the DEBUG message only shows up in the file. The other messages
@@ -275,10 +275,10 @@ Configuration server example
 
 Here is an example of a module using the logging configuration server::
 
-    import logging
-    import logging.config
-    import time
-    import os
+    agiza logging
+    agiza logging.config
+    agiza time
+    agiza os
 
     # read initial config file
     logging.config.fileConfig('logging.conf')
@@ -309,7 +309,7 @@ properly preceded with the binary-encoded length, as the new logging
 configuration::
 
     #!/usr/bin/env python
-    import socket, sys, struct
+    agiza socket, sys, struct
 
     with open(sys.argv[1], 'rb') as f:
         data_to_send = f.read()
@@ -332,7 +332,7 @@ Dealing with handlers that block
 .. currentmodule:: logging.handlers
 
 Sometimes you have to get your logging handlers to do their work without
-blocking the thread you're logging from. This is common in Web applications,
+blocking the thread you're logging kutoka. This is common in Web applications,
 though of course it also occurs in other scenarios.
 
 A common culprit which demonstrates sluggish behaviour is the
@@ -344,7 +344,7 @@ DNS query under the hood which is too slow (and this query can be deep in the
 socket library code, below the Python layer, and outside your control).
 
 One solution is to use a two-part approach. For the first part, attach only a
-:class:`QueueHandler` to those loggers which are accessed from
+:class:`QueueHandler` to those loggers which are accessed kutoka
 performance-critical threads. They simply write to their queue, which can be
 sized to a large enough capacity or initialized with no upper bound to their
 size. The write to the queue will typically be accepted quickly, though you
@@ -358,11 +358,11 @@ The second part of the solution is :class:`QueueListener`, which has been
 designed as the counterpart to :class:`QueueHandler`.  A
 :class:`QueueListener` is very simple: it's passed a queue and some handlers,
 and it fires up an internal thread which listens to its queue for LogRecords
-sent from ``QueueHandlers`` (or any other source of ``LogRecords``, for that
-matter). The ``LogRecords`` are removed from the queue and passed to the
+sent kutoka ``QueueHandlers`` (or any other source of ``LogRecords``, for that
+matter). The ``LogRecords`` are removed kutoka the queue and passed to the
 handlers for processing.
 
-The advantage of having a separate :class:`QueueListener` class is that you
+The advantage of having a separate :class:`QueueListener` kundi is that you
 can use the same instance to service multiple ``QueueHandlers``. This is more
 resource-friendly than, say, having threaded versions of the existing handler
 classes, which would eat up one thread per handler for no particular benefit.
@@ -393,7 +393,7 @@ which, when run, will produce:
 
 .. versionchanged:: 3.5
    Prior to Python 3.5, the :class:`QueueListener` always passed every message
-   received from the queue to every handler it was initialized with. (This was
+   received kutoka the queue to every handler it was initialized with. (This was
    because it was assumed that level filtering was all done on the other side,
    where the queue is filled.) From 3.5 onwards, this behaviour can be changed
    by passing a keyword argument ``respect_handler_level=True`` to the
@@ -410,7 +410,7 @@ Let's say you want to send logging events across a network, and handle them at
 the receiving end. A simple way of doing this is attaching a
 :class:`SocketHandler` instance to the root logger at the sending end::
 
-   import logging, logging.handlers
+   agiza logging, logging.handlers
 
    rootLogger = logging.getLogger('')
    rootLogger.setLevel(logging.DEBUG)
@@ -431,20 +431,20 @@ the receiving end. A simple way of doing this is attaching a
 
    logger1.debug('Quick zephyrs blow, vexing daft Jim.')
    logger1.info('How quickly daft jumping zebras vex.')
-   logger2.warning('Jail zesty vixen who grabbed pay from quack.')
+   logger2.warning('Jail zesty vixen who grabbed pay kutoka quack.')
    logger2.error('The five boxing wizards jump quickly.')
 
 At the receiving end, you can set up a receiver using the :mod:`socketserver`
 module. Here is a basic working example::
 
-   import pickle
-   import logging
-   import logging.handlers
-   import socketserver
-   import struct
+   agiza pickle
+   agiza logging
+   agiza logging.handlers
+   agiza socketserver
+   agiza struct
 
 
-   class LogRecordStreamHandler(socketserver.StreamRequestHandler):
+   kundi LogRecordStreamHandler(socketserver.StreamRequestHandler):
        """Handler for a streaming logging request.
 
        This basically logs the record using whatever logging policy is
@@ -486,7 +486,7 @@ module. Here is a basic working example::
            # cycles and network bandwidth!
            logger.handle(record)
 
-   class LogRecordSocketReceiver(socketserver.ThreadingTCPServer):
+   kundi LogRecordSocketReceiver(socketserver.ThreadingTCPServer):
        """
        Simple TCP socket-based logging receiver suitable for testing.
        """
@@ -502,7 +502,7 @@ module. Here is a basic working example::
            self.logname = None
 
        def serve_until_stopped(self):
-           import select
+           agiza select
            abort = 0
            while not abort:
                rd, wr, ex = select.select([self.socket.fileno()],
@@ -531,7 +531,7 @@ printed on the console; on the server side, you should see something like:
       59 root            INFO     Jackdaws love my big sphinx of quartz.
       59 myapp.area1     DEBUG    Quick zephyrs blow, vexing daft Jim.
       69 myapp.area1     INFO     How quickly daft jumping zebras vex.
-      69 myapp.area2     WARNING  Jail zesty vixen who grabbed pay from quack.
+      69 myapp.area2     WARNING  Jail zesty vixen who grabbed pay kutoka quack.
       69 myapp.area2     ERROR    The five boxing wizards jump quickly.
 
 Note that there are some security issues with pickle in some scenarios. If
@@ -565,7 +565,7 @@ Using LoggerAdapters to impart contextual information
 
 An easy way in which you can pass contextual information to be output along
 with logging event information is to use the :class:`LoggerAdapter` class.
-This class is designed to look like a :class:`Logger`, so that you can call
+This kundi is designed to look like a :class:`Logger`, so that you can call
 :meth:`debug`, :meth:`info`, :meth:`warning`, :meth:`error`,
 :meth:`exception`, :meth:`critical` and :meth:`log`. These methods have the
 same signatures as their counterparts in :class:`Logger`, so you can use the
@@ -576,13 +576,13 @@ When you create an instance of :class:`LoggerAdapter`, you pass it a
 information. When you call one of the logging methods on an instance of
 :class:`LoggerAdapter`, it delegates the call to the underlying instance of
 :class:`Logger` passed to its constructor, and arranges to pass the contextual
-information in the delegated call. Here's a snippet from the code of
+information in the delegated call. Here's a snippet kutoka the code of
 :class:`LoggerAdapter`::
 
     def debug(self, msg, /, *args, **kwargs):
         """
         Delegate a debug call to the underlying logger, after adding
-        contextual information from this adapter instance.
+        contextual information kutoka this adapter instance.
         """
         msg, kwargs = self.process(msg, kwargs)
         self.logger.debug(msg, *args, **kwargs)
@@ -601,10 +601,10 @@ merged into the :class:`LogRecord` instance's __dict__, allowing you to use
 customized strings with your :class:`Formatter` instances which know about
 the keys of the dict-like object. If you need a different method, e.g. if you
 want to prepend or append the contextual information to the message string,
-you just need to subclass :class:`LoggerAdapter` and override
+you just need to subkundi :class:`LoggerAdapter` and override
 :meth:`~LoggerAdapter.process` to do what you need. Here is a simple example::
 
-    class CustomAdapter(logging.LoggerAdapter):
+    kundi CustomAdapter(logging.LoggerAdapter):
         """
         This example adapter expects the passed in dict-like object to have a
         'connid' key, whose value in brackets is prepended to the log message.
@@ -624,7 +624,7 @@ Using objects other than dicts to pass contextual information
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You don't need to pass an actual dict to a :class:`LoggerAdapter` - you could
-pass an instance of a class which implements ``__getitem__`` and ``__iter__`` so
+pass an instance of a kundi which implements ``__getitem__`` and ``__iter__`` so
 that it looks like a dict to logging. This would be useful if you want to
 generate values dynamically (whereas the values in a dict would be constant).
 
@@ -641,17 +641,17 @@ using a suitable format string, or if needed a custom :class:`Formatter`.
 
 For example in a web application, the request being processed (or at least,
 the interesting parts of it) can be stored in a threadlocal
-(:class:`threading.local`) variable, and then accessed from a ``Filter`` to
-add, say, information from the request - say, the remote IP address and remote
+(:class:`threading.local`) variable, and then accessed kutoka a ``Filter`` to
+add, say, information kutoka the request - say, the remote IP address and remote
 user's username - to the ``LogRecord``, using the attribute names 'ip' and
 'user' as in the ``LoggerAdapter`` example above. In that case, the same format
 string can be used to get similar output to that shown above. Here's an example
 script::
 
-    import logging
-    from random import choice
+    agiza logging
+    kutoka random agiza choice
 
-    class ContextFilter(logging.Filter):
+    kundi ContextFilter(logging.Filter):
         """
         This is a filter which injects contextual information into the log.
 
@@ -705,16 +705,16 @@ which, when run, produces something like:
 
 .. _multiple-processes:
 
-Logging to a single file from multiple processes
+Logging to a single file kutoka multiple processes
 ------------------------------------------------
 
-Although logging is thread-safe, and logging to a single file from multiple
-threads in a single process *is* supported, logging to a single file from
+Although logging is thread-safe, and logging to a single file kutoka multiple
+threads in a single process *is* supported, logging to a single file kutoka
 *multiple processes* is *not* supported, because there is no standard way to
 serialize access to a single file across multiple processes in Python. If you
-need to log to a single file from multiple processes, one way of doing this is
+need to log to a single file kutoka multiple processes, one way of doing this is
 to have all the processes log to a :class:`~handlers.SocketHandler`, and have a
-separate process which implements a socket server which reads from the socket
+separate process which implements a socket server which reads kutoka the socket
 and logs to file. (If you prefer, you can dedicate one thread in one of the
 existing processes to perform this function.)
 :ref:`This section <network-logging>` documents this approach in more detail and
@@ -722,8 +722,8 @@ includes a working socket receiver which can be used as a starting point for you
 to adapt in your own applications.
 
 You could also write your own handler which uses the :class:`~multiprocessing.Lock`
-class from the :mod:`multiprocessing` module to serialize access to the
-file from your processes. The existing :class:`FileHandler` and subclasses do
+kundi kutoka the :mod:`multiprocessing` module to serialize access to the
+file kutoka your processes. The existing :class:`FileHandler` and subclasses do
 not make use of :mod:`multiprocessing` at present, though they may do so in the
 future. Note that at present, the :mod:`multiprocessing` module does not provide
 working lock functionality on all platforms (see
@@ -743,13 +743,13 @@ the listener and the other processes in your application, and can be used as
 the basis for code meeting your own specific requirements::
 
     # You'll need these imports in your own code
-    import logging
-    import logging.handlers
-    import multiprocessing
+    agiza logging
+    agiza logging.handlers
+    agiza multiprocessing
 
-    # Next two import lines for this demo only
-    from random import choice, random
-    import time
+    # Next two agiza lines for this demo only
+    kutoka random agiza choice, random
+    agiza time
 
     #
     # Because you'll want to define the logging configurations for listener and workers, the
@@ -783,7 +783,7 @@ the basis for code meeting your own specific requirements::
                 logger = logging.getLogger(record.name)
                 logger.handle(record)  # No level or filter logic applied - just do it!
             except Exception:
-                import sys, traceback
+                agiza sys, traceback
                 print('Whoops! Problem:', file=sys.stderr)
                 traceback.print_exc(file=sys.stderr)
 
@@ -850,13 +850,13 @@ the basis for code meeting your own specific requirements::
 A variant of the above script keeps the logging in the main process, in a
 separate thread::
 
-    import logging
-    import logging.config
-    import logging.handlers
-    from multiprocessing import Process, Queue
-    import random
-    import threading
-    import time
+    agiza logging
+    agiza logging.config
+    agiza logging.handlers
+    kutoka multiprocessing agiza Process, Queue
+    agiza random
+    agiza threading
+    agiza time
 
     def logger_thread(q):
         while True:
@@ -965,7 +965,7 @@ you should use
 
    queue = multiprocessing.Manager().Queue(-1)  # also works with the examples above
 
-and you can then replace the worker creation from this::
+and you can then replace the worker creation kutoka this::
 
     workers = []
     for i in range(10):
@@ -976,7 +976,7 @@ and you can then replace the worker creation from this::
     for w in workers:
         w.join()
 
-to this (remembering to first import :mod:`concurrent.futures`)::
+to this (remembering to first agiza :mod:`concurrent.futures`)::
 
     with concurrent.futures.ProcessPoolExecutor(max_workers=10) as executor:
         for i in range(10):
@@ -995,9 +995,9 @@ when that many files have been created, rotate the files so that the number of
 files and the size of the files both remain bounded. For this usage pattern, the
 logging package provides a :class:`~handlers.RotatingFileHandler`::
 
-   import glob
-   import logging
-   import logging.handlers
+   agiza glob
+   agiza logging
+   agiza logging.handlers
 
    LOG_FILENAME = 'logging_rotatingfile_example.out'
 
@@ -1053,7 +1053,7 @@ method. Since then, Python has gained two new formatting approaches:
 (added in Python 2.6).
 
 Logging (as of 3.2) provides improved support for these two additional
-formatting styles. The :class:`Formatter` class been enhanced to take an
+formatting styles. The :class:`Formatter` kundi been enhanced to take an
 additional, optional keyword parameter named ``style``. This defaults to
 ``'%'``, but other possible values are ``'{'`` and ``'$'``, which correspond
 to the other two formatting styles. Backwards compatibility is maintained by
@@ -1064,7 +1064,7 @@ session to show the possibilities:
 
 .. code-block:: pycon
 
-    >>> import logging
+    >>> agiza logging
     >>> root = logging.getLogger()
     >>> root.setLevel(logging.DEBUG)
     >>> handler = logging.StreamHandler()
@@ -1113,7 +1113,7 @@ arbitrary object as a message format string, and that the logging package will
 call ``str()`` on that object to get the actual format string. Consider the
 following two classes::
 
-    class BraceMessage:
+    kundi BraceMessage:
         def __init__(self, fmt, /, *args, **kwargs):
             self.fmt = fmt
             self.args = args
@@ -1122,19 +1122,19 @@ following two classes::
         def __str__(self):
             return self.fmt.format(*self.args, **self.kwargs)
 
-    class DollarMessage:
+    kundi DollarMessage:
         def __init__(self, fmt, /, **kwargs):
             self.fmt = fmt
             self.kwargs = kwargs
 
         def __str__(self):
-            from string import Template
+            kutoka string agiza Template
             return Template(self.fmt).substitute(**self.kwargs)
 
 Either of these can be used in place of a format string, to allow {}- or
 $-formatting to be used to build the actual "message" part which appears in the
 formatted log output in place of "%(message)s" or "{message}" or "$message".
-It's a little unwieldy to use the class names whenever you want to log
+It's a little unwieldy to use the kundi names whenever you want to log
 something, but it's quite palatable if you use an alias such as __ (double
 underscore --- not to be confused with _, the single underscore used as a
 synonym/alias for :func:`gettext.gettext` or its brethren).
@@ -1145,10 +1145,10 @@ they're declared in a module called ``wherever``):
 
 .. code-block:: pycon
 
-    >>> from wherever import BraceMessage as __
+    >>> kutoka wherever agiza BraceMessage as __
     >>> print(__('Message with {0} {name}', 2, name='placeholders'))
     Message with 2 placeholders
-    >>> class Point: pass
+    >>> kundi Point: pass
     ...
     >>> p = Point()
     >>> p.x = 0.5
@@ -1156,7 +1156,7 @@ they're declared in a module called ``wherever``):
     >>> print(__('Message with coordinates: ({point.x:.2f}, {point.y:.2f})',
     ...       point=p))
     Message with coordinates: (0.50, 0.50)
-    >>> from wherever import DollarMessage as __
+    >>> kutoka wherever agiza DollarMessage as __
     >>> print(__('Message with $num $what', num=2, what='placeholders'))
     Message with 2 placeholders
     >>>
@@ -1176,9 +1176,9 @@ call to one of the XXXMessage classes.
 If you prefer, you can use a :class:`LoggerAdapter` to achieve a similar effect
 to the above, as in the following example::
 
-    import logging
+    agiza logging
 
-    class Message:
+    kundi Message:
         def __init__(self, fmt, args):
             self.fmt = fmt
             self.args = args
@@ -1186,7 +1186,7 @@ to the above, as in the following example::
         def __str__(self):
             return self.fmt.format(*self.args)
 
-    class StyleAdapter(logging.LoggerAdapter):
+    kundi StyleAdapter(logging.LoggerAdapter):
         def __init__(self, logger, extra=None):
             super(StyleAdapter, self).__init__(logger, extra or {})
 
@@ -1247,7 +1247,7 @@ to set its own :class:`Logger` subclass, and the one which did this last would
 win.
 
 The second approach works reasonably well for many cases, but does not allow
-you to e.g. use a specialized subclass of :class:`LogRecord`. Library
+you to e.g. use a specialized subkundi of :class:`LogRecord`. Library
 developers can set a suitable filter on their loggers, but they would have to
 remember to do this every time they introduced a new logger (which they would
 do simply by adding new packages or modules and doing ::
@@ -1257,7 +1257,7 @@ do simply by adding new packages or modules and doing ::
 at module level). It's probably one too many things to think about. Developers
 could also add the filter to a :class:`~logging.NullHandler` attached to their
 top-level logger, but this would not be invoked if an application developer
-attached a handler to a lower-level library logger --- so output from that
+attached a handler to a lower-level library logger --- so output kutoka that
 handler would not reflect the intentions of the library developer.
 
 In Python 3.2 and later, :class:`~logging.LogRecord` creation is done through a
@@ -1293,18 +1293,18 @@ the use of a :class:`Filter` does not provide the desired result.
 Subclassing QueueHandler - a ZeroMQ example
 -------------------------------------------
 
-You can use a :class:`QueueHandler` subclass to send messages to other kinds
+You can use a :class:`QueueHandler` subkundi to send messages to other kinds
 of queues, for example a ZeroMQ 'publish' socket. In the example below,the
 socket is created separately and passed to the handler (as its 'queue')::
 
-    import zmq   # using pyzmq, the Python binding for ZeroMQ
-    import json  # for serializing records portably
+    agiza zmq   # using pyzmq, the Python binding for ZeroMQ
+    agiza json  # for serializing records portably
 
     ctx = zmq.Context()
     sock = zmq.Socket(ctx, zmq.PUB)  # or zmq.PUSH, or other suitable value
     sock.bind('tcp://*:5556')        # or wherever
 
-    class ZeroMQSocketHandler(QueueHandler):
+    kundi ZeroMQSocketHandler(QueueHandler):
         def enqueue(self, record):
             self.queue.send_json(record.__dict__)
 
@@ -1315,7 +1315,7 @@ socket is created separately and passed to the handler (as its 'queue')::
 Of course there are other ways of organizing this, for example passing in the
 data needed by the handler to create the socket::
 
-    class ZeroMQSocketHandler(QueueHandler):
+    kundi ZeroMQSocketHandler(QueueHandler):
         def __init__(self, uri, socktype=zmq.PUB, ctx=None):
             self.ctx = ctx or zmq.Context()
             socket = zmq.Socket(self.ctx, socktype)
@@ -1332,10 +1332,10 @@ data needed by the handler to create the socket::
 Subclassing QueueListener - a ZeroMQ example
 --------------------------------------------
 
-You can also subclass :class:`QueueListener` to get messages from other kinds
+You can also subkundi :class:`QueueListener` to get messages kutoka other kinds
 of queues, for example a ZeroMQ 'subscribe' socket. Here's an example::
 
-    class ZeroMQSocketListener(QueueListener):
+    kundi ZeroMQSocketListener(QueueListener):
         def __init__(self, uri, /, *handlers, **kwargs):
             self.ctx = kwargs.get('ctx') or zmq.Context()
             socket = zmq.Socket(self.ctx, zmq.SUB)
@@ -1367,7 +1367,7 @@ of queues, for example a ZeroMQ 'subscribe' socket. Here's an example::
 An example dictionary-based configuration
 -----------------------------------------
 
-Below is an example of a logging configuration dictionary - it's taken from
+Below is an example of a logging configuration dictionary - it's taken kutoka
 the `documentation on the Django project <https://docs.djangoproject.com/en/1.9/topics/logging/#configuring-logging>`_.
 This dictionary is passed to :func:`~config.dictConfig` to put the configuration into effect::
 
@@ -1475,15 +1475,15 @@ scenario.
 Here's the script - the docstrings and the comments hopefully explain how it
 works::
 
-    import logging
-    import logging.config
-    import logging.handlers
-    from multiprocessing import Process, Queue, Event, current_process
-    import os
-    import random
-    import time
+    agiza logging
+    agiza logging.config
+    agiza logging.handlers
+    kutoka multiprocessing agiza Process, Queue, Event, current_process
+    agiza os
+    agiza random
+    agiza time
 
-    class MyHandler:
+    kundi MyHandler:
         """
         A simple handler for logging events. It runs in the listener process and
         dispatches events to loggers based on the name in the received record,
@@ -1538,7 +1538,7 @@ works::
         loggers.
 
         A small sleep is added to allow other processes a chance to run. This
-        is not strictly needed, but it mixes the output from the different
+        is not strictly needed, but it mixes the output kutoka the different
         processes a bit more than if it's left out.
         """
         logging.config.dictConfig(config)
@@ -1699,7 +1699,7 @@ beginning of the message and hence not allowing any pure-ASCII component to
 appear before it.
 
 As this behaviour is broken, the incorrect BOM insertion code is being removed
-from Python 3.2.4 and later. However, it is not being replaced, and if you
+kutoka Python 3.2.4 and later. However, it is not being replaced, and if you
 want to produce :rfc:`5424`-compliant messages which include a BOM, an optional
 pure-ASCII sequence before it and arbitrary Unicode after it, encoded using
 UTF-8, then you need to do the following:
@@ -1738,10 +1738,10 @@ straightforward to achieve using the logging package. There are a number of
 ways in which this could be achieved, but the following is a simple approach
 which uses JSON to serialise the event in a machine-parseable manner::
 
-    import json
-    import logging
+    agiza json
+    agiza logging
 
-    class StructuredMessage:
+    kundi StructuredMessage:
         def __init__(self, message, /, **kwargs):
             self.message = message
             self.kwargs = kwargs
@@ -1766,10 +1766,10 @@ Python used.
 If you need more specialised processing, you can use a custom JSON encoder,
 as in the following complete example::
 
-    from __future__ import unicode_literals
+    kutoka __future__ agiza unicode_literals
 
-    import json
-    import logging
+    agiza json
+    agiza logging
 
     # This next bit is to ensure the script runs unchanged on 2.x and 3.x
     try:
@@ -1777,7 +1777,7 @@ as in the following complete example::
     except NameError:
         unicode = str
 
-    class Encoder(json.JSONEncoder):
+    kundi Encoder(json.JSONEncoder):
         def default(self, o):
             if isinstance(o, set):
                 return tuple(o)
@@ -1785,7 +1785,7 @@ as in the following complete example::
                 return o.encode('unicode_escape').decode('ascii')
             return super(Encoder, self).default(o)
 
-    class StructuredMessage:
+    kundi StructuredMessage:
         def __init__(self, message, /, **kwargs):
             self.message = message
             self.kwargs = kwargs
@@ -1847,7 +1847,7 @@ that a logging handler be created by calling this function::
         },
         'handlers': {
             'file':{
-                # The values below are popped from this dictionary and
+                # The values below are popped kutoka this dictionary and
                 # used to create the handler, set the handler's level and
                 # its formatter.
                 '()': owned_file_handler,
@@ -1871,7 +1871,7 @@ In this example I am setting the ownership using the ``pulse`` user and group,
 just for the purposes of illustration. Putting it together into a working
 script, ``chowntest.py``::
 
-    import logging, logging.config, os, shutil
+    agiza logging, logging.config, os, shutil
 
     def owned_file_handler(filename, mode='a', encoding=None, owner=None):
         if owner:
@@ -1890,7 +1890,7 @@ script, ``chowntest.py``::
         },
         'handlers': {
             'file':{
-                # The values below are popped from this dictionary and
+                # The values below are popped kutoka this dictionary and
                 # used to create the handler, set the handler's level and
                 # its formatter.
                 '()': owned_file_handler,
@@ -1942,7 +1942,7 @@ you could use e.g.::
 where ``project.util`` can be replaced with the actual name of the package
 where the function resides. In the above working script, using
 ``'ext://__main__.owned_file_handler'`` should work. Here, the actual callable
-is resolved by :func:`dictConfig` from the ``ext://`` specification.
+is resolved by :func:`dictConfig` kutoka the ``ext://`` specification.
 
 This example hopefully also points the way to how you could implement other
 types of file change - e.g. setting specific POSIX permission bits - in the
@@ -1995,9 +1995,9 @@ Using LogRecord factories
 In Python 3.2, along with the :class:`~logging.Formatter` changes mentioned
 above, the logging package gained the ability to allow users to set their own
 :class:`LogRecord` subclasses, using the :func:`setLogRecordFactory` function.
-You can use this to set your own subclass of :class:`LogRecord`, which does the
+You can use this to set your own subkundi of :class:`LogRecord`, which does the
 Right Thing by overriding the :meth:`~LogRecord.getMessage` method. The base
-class implementation of this method is where the ``msg % args`` formatting
+kundi implementation of this method is where the ``msg % args`` formatting
 happens, and where you can substitute your alternate formatting; however, you
 should be careful to support all formatting styles and allow %-formatting as
 the default, to ensure interoperability with other code. Care should also be
@@ -2011,13 +2011,13 @@ Using custom message objects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 There is another, perhaps simpler way that you can use {}- and $- formatting to
-construct your individual log messages. You may recall (from
+construct your individual log messages. You may recall (kutoka
 :ref:`arbitrary-object-messages`) that when logging you can use an arbitrary
 object as a message format string, and that the logging package will call
 :func:`str` on that object to get the actual format string. Consider the
 following two classes::
 
-    class BraceMessage:
+    kundi BraceMessage:
         def __init__(self, fmt, /, *args, **kwargs):
             self.fmt = fmt
             self.args = args
@@ -2026,19 +2026,19 @@ following two classes::
         def __str__(self):
             return self.fmt.format(*self.args, **self.kwargs)
 
-    class DollarMessage:
+    kundi DollarMessage:
         def __init__(self, fmt, /, **kwargs):
             self.fmt = fmt
             self.kwargs = kwargs
 
         def __str__(self):
-            from string import Template
+            kutoka string agiza Template
             return Template(self.fmt).substitute(**self.kwargs)
 
 Either of these can be used in place of a format string, to allow {}- or
 $-formatting to be used to build the actual "message" part which appears in the
 formatted log output in place of “%(message)s” or “{message}” or “$message”.
-If you find it a little unwieldy to use the class names whenever you want to log
+If you find it a little unwieldy to use the kundi names whenever you want to log
 something, you can make it more palatable if you use an alias such as ``M`` or
 ``_`` for the message (or perhaps ``__``, if you are using ``_`` for
 localization).
@@ -2049,7 +2049,7 @@ Examples of this approach are given below. Firstly, formatting with
     >>> __ = BraceMessage
     >>> print(__('Message with {0} {1}', 2, 'placeholders'))
     Message with 2 placeholders
-    >>> class Point: pass
+    >>> kundi Point: pass
     ...
     >>> p = Point()
     >>> p.x = 0.5
@@ -2082,20 +2082,20 @@ Configuring filters with :func:`dictConfig`
 
 You *can* configure filters using :func:`~logging.config.dictConfig`, though it
 might not be obvious at first glance how to do it (hence this recipe). Since
-:class:`~logging.Filter` is the only filter class included in the standard
+:class:`~logging.Filter` is the only filter kundi included in the standard
 library, and it is unlikely to cater to many requirements (it's only there as a
 base class), you will typically need to define your own :class:`~logging.Filter`
-subclass with an overridden :meth:`~logging.Filter.filter` method. To do this,
+subkundi with an overridden :meth:`~logging.Filter.filter` method. To do this,
 specify the ``()`` key in the configuration dictionary for the filter,
-specifying a callable which will be used to create the filter (a class is the
+specifying a callable which will be used to create the filter (a kundi is the
 most obvious, but you can provide any callable which returns a
 :class:`~logging.Filter` instance). Here is a complete example::
 
-    import logging
-    import logging.config
-    import sys
+    agiza logging
+    agiza logging.config
+    agiza sys
 
-    class MyFilter(logging.Filter):
+    kundi MyFilter(logging.Filter):
         def __init__(self, param=None):
             self.param = param
 
@@ -2146,7 +2146,7 @@ which shows that the filter is working as configured.
 A couple of extra points to note:
 
 * If you can't refer to the callable directly in the configuration (e.g. if it
-  lives in a different module, and you can't import it directly where the
+  lives in a different module, and you can't agiza it directly where the
   configuration dictionary is), you can use the form ``ext://...`` as described
   in :ref:`logging-config-dict-externalobj`. For example, you could have used
   the text ``'ext://__main__.MyFilter'`` instead of ``MyFilter`` in the above
@@ -2168,9 +2168,9 @@ argument's sake, let's say you want exactly one line per logged event, even
 when exception information is present. You can do this with a custom formatter
 class, as shown in the following example::
 
-    import logging
+    agiza logging
 
-    class OneLineExceptionFormatter(logging.Formatter):
+    kundi OneLineExceptionFormatter(logging.Formatter):
         def formatException(self, exc_info):
             """
             Format an exception so that it prints on a single line.
@@ -2224,7 +2224,7 @@ There might be situations when it is desirable to have logging messages rendered
 in an audible rather than a visible format. This is easy to do if you have
 text-to-speech (TTS) functionality available in your system, even if it doesn't have
 a Python binding. Most TTS systems have a command line program you can run, and
-this can be invoked from a handler using :mod:`subprocess`. It's assumed here
+this can be invoked kutoka a handler using :mod:`subprocess`. It's assumed here
 that TTS command line programs won't expect to interact with users or take a
 long time to complete, and that the frequency of logged messages will be not so
 high as to swamp the user with messages, and that it's acceptable to have the
@@ -2233,11 +2233,11 @@ below waits for one message to be spoken before the next is processed, and this
 might cause other handlers to be kept waiting. Here is a short example showing
 the approach, which assumes that the ``espeak`` TTS package is available::
 
-    import logging
-    import subprocess
-    import sys
+    agiza logging
+    agiza subprocess
+    agiza sys
 
-    class TTSHandler(logging.Handler):
+    kundi TTSHandler(logging.Handler):
         def emit(self, record):
             msg = self.format(record)
             # Speak slowly in a female English voice
@@ -2266,7 +2266,7 @@ When run, this script should say "Hello" and then "Goodbye" in a female voice.
 
 The above approach can, of course, be adapted to other TTS systems and even
 other systems altogether which can process messages via external programs run
-from a command line.
+kutoka a command line.
 
 
 .. _buffered-logging:
@@ -2288,7 +2288,7 @@ until some condition occurs, at which point the buffered events are ``flushed``
 - passed to another handler (the ``target`` handler) for processing. By default,
 the ``MemoryHandler`` flushed when its buffer gets filled up or an event whose
 level is greater than or equal to a specified threshold is seen. You can use this
-recipe with a more specialised subclass of ``MemoryHandler`` if you want custom
+recipe with a more specialised subkundi of ``MemoryHandler`` if you want custom
 flushing behavior.
 
 The example script has a simple function, ``foo``, which just cycles through
@@ -2307,9 +2307,9 @@ writes to ``sys.stderr``, ``logging.ERROR`` and ``100`` respectively.
 
 Here's the script::
 
-    import logging
-    from logging.handlers import MemoryHandler
-    import sys
+    agiza logging
+    kutoka logging.handlers agiza MemoryHandler
+    agiza sys
 
     logger = logging.getLogger(__name__)
     logger.addHandler(logging.NullHandler())
@@ -2417,10 +2417,10 @@ Formatting times using UTC (GMT) via configuration
 Sometimes you want to format times using UTC, which can be done using a class
 such as `UTCFormatter`, shown below::
 
-    import logging
-    import time
+    agiza logging
+    agiza time
 
-    class UTCFormatter(logging.Formatter):
+    kundi UTCFormatter(logging.Formatter):
         converter = time.gmtime
 
 and you can then use the ``UTCFormatter`` in your code instead of
@@ -2428,11 +2428,11 @@ and you can then use the ``UTCFormatter`` in your code instead of
 use the :func:`~logging.config.dictConfig` API with an approach illustrated by
 the following complete example::
 
-    import logging
-    import logging.config
-    import time
+    agiza logging
+    agiza logging.config
+    agiza time
 
-    class UTCFormatter(logging.Formatter):
+    kundi UTCFormatter(logging.Formatter):
         converter = time.gmtime
 
     LOGGING = {
@@ -2489,10 +2489,10 @@ Here is a simple example of such a context manager, which allows you to
 optionally change the logging level and add a logging handler purely in the
 scope of the context manager::
 
-    import logging
-    import sys
+    agiza logging
+    agiza sys
 
-    class LoggingContext:
+    kundi LoggingContext:
         def __init__(self, logger, level=None, handler=None, close=True):
             self.logger = logger
             self.level = level
@@ -2518,7 +2518,7 @@ scope of the context manager::
 If you specify a level value, the logger's level is set to that value in the
 scope of the with block covered by the context manager. If you specify a
 handler, it is added to the logger on entry to the block and removed on exit
-from the block. You can also ask the manager to close the handler for you on
+kutoka the block. You can also ask the manager to close the handler for you on
 block exit - you could do this if you don't need the handler any more.
 
 To illustrate how it works, we can add the following block of code to the
@@ -2605,11 +2605,11 @@ further that we want to control the verbosity of the application via a
 command-line argument, defaulting to ``logging.INFO``. Here's one way that
 ``app.py`` could be written::
 
-    import argparse
-    import importlib
-    import logging
-    import os
-    import sys
+    agiza argparse
+    agiza importlib
+    agiza logging
+    agiza os
+    agiza sys
 
     def main(args=None):
         scriptname = os.path.basename(__file__)
@@ -2638,7 +2638,7 @@ command-line argument, defaulting to ``logging.INFO``. Here's one way that
         except (ImportError, AttributeError):
             print('Unable to find the code for command \'%s\'' % options.command)
             return 1
-        # Could get fancy here and load configuration from file or dictionary
+        # Could get fancy here and load configuration kutoka file or dictionary
         logging.basicConfig(level=options.log_level,
                             format='%(levelname)s %(name)s %(message)s')
         cmd(options)
@@ -2650,7 +2650,7 @@ And the ``start``, ``stop`` and ``restart`` commands can be implemented in
 separate modules, like so for starting::
 
     # start.py
-    import logging
+    agiza logging
 
     logger = logging.getLogger(__name__)
 
@@ -2662,7 +2662,7 @@ separate modules, like so for starting::
 and thus for stopping::
 
     # stop.py
-    import logging
+    agiza logging
 
     logger = logging.getLogger(__name__)
 
@@ -2683,7 +2683,7 @@ and thus for stopping::
 and similarly for restarting::
 
     # restart.py
-    import logging
+    agiza logging
 
     logger = logging.getLogger(__name__)
 
@@ -2750,20 +2750,20 @@ at ``WARNING`` level or above is logged by them.
 A Qt GUI for logging
 --------------------
 
-A question that comes up from time to time is about how to log to a GUI
+A question that comes up kutoka time to time is about how to log to a GUI
 application. The `Qt <https://www.qt.io/>`_ framework is a popular
 cross-platform UI framework with Python bindings using `PySide2
 <https://pypi.org/project/PySide2/>`_ or `PyQt5
 <https://pypi.org/project/PyQt5/>`_ libraries.
 
 The following example shows how to log to a Qt GUI. This introduces a simple
-``QtHandler`` class which takes a callable, which should be a slot in the main
+``QtHandler`` kundi which takes a callable, which should be a slot in the main
 thread that does GUI updates. A worker thread is also created to show how you
-can log to the GUI from both the UI itself (via a button for manual logging)
+can log to the GUI kutoka both the UI itself (via a button for manual logging)
 as well as a worker thread doing work in the background (here, just logging
 messages at random levels with random short delays in between).
 
-The worker thread is implemented using Qt's ``QThread`` class rather than the
+The worker thread is implemented using Qt's ``QThread`` kundi rather than the
 :mod:`threading` module, as there are circumstances where one has to use
 ``QThread``, which offers better integration with other ``Qt`` components.
 
@@ -2773,19 +2773,19 @@ refer to the comments in the code snippet for more detailed information.
 
 .. code-block:: python3
 
-    import datetime
-    import logging
-    import random
-    import sys
-    import time
+    agiza datetime
+    agiza logging
+    agiza random
+    agiza sys
+    agiza time
 
     # Deal with minor differences between PySide2 and PyQt5
     try:
-        from PySide2 import QtCore, QtGui, QtWidgets
+        kutoka PySide2 agiza QtCore, QtGui, QtWidgets
         Signal = QtCore.Signal
         Slot = QtCore.Slot
     except ImportError:
-        from PyQt5 import QtCore, QtGui, QtWidgets
+        kutoka PyQt5 agiza QtCore, QtGui, QtWidgets
         Signal = QtCore.pyqtSignal
         Slot = QtCore.pyqtSlot
 
@@ -2794,10 +2794,10 @@ refer to the comments in the code snippet for more detailed information.
 
 
     #
-    # Signals need to be contained in a QObject or subclass in order to be correctly
+    # Signals need to be contained in a QObject or subkundi in order to be correctly
     # initialized.
     #
-    class Signaller(QtCore.QObject):
+    kundi Signaller(QtCore.QObject):
         signal = Signal(str, logging.LogRecord)
 
     #
@@ -2811,7 +2811,7 @@ refer to the comments in the code snippet for more detailed information.
     # You specify the slot function to do whatever GUI updates you want. The handler
     # doesn't know or care about specific UI elements.
     #
-    class QtHandler(logging.Handler):
+    kundi QtHandler(logging.Handler):
         def __init__(self, slotfunc, *args, **kwargs):
             super(QtHandler, self).__init__(*args, **kwargs)
             self.signaller = Signaller()
@@ -2837,7 +2837,7 @@ refer to the comments in the code snippet for more detailed information.
               logging.CRITICAL)
 
     #
-    # This worker class represents work that is done in a thread separate to the
+    # This worker kundi represents work that is done in a thread separate to the
     # main thread. The way the thread is kicked off to do work is via a button press
     # that connects to a slot in the worker.
     #
@@ -2849,7 +2849,7 @@ refer to the comments in the code snippet for more detailed information.
     # This example worker just outputs messages sequentially, interspersed with
     # random delays of the order of a few seconds.
     #
-    class Worker(QtCore.QObject):
+    kundi Worker(QtCore.QObject):
         @Slot()
         def start(self):
             extra = {'qThreadName': ctname() }
@@ -2869,10 +2869,10 @@ refer to the comments in the code snippet for more detailed information.
     #
     # * A read-only text edit window which holds formatted log messages
     # * A button to start work and log stuff in a separate thread
-    # * A button to log something from the main thread
+    # * A button to log something kutoka the main thread
     # * A button to clear the log window
     #
-    class Window(QtWidgets.QWidget):
+    kundi Window(QtWidgets.QWidget):
 
         COLORS = {
             logging.DEBUG: 'black',
@@ -2958,7 +2958,7 @@ refer to the comments in the code snippet for more detailed information.
         @Slot()
         def manual_update(self):
             # This function uses the formatted message passed in, but also uses
-            # information from the record to format the message in an appropriate
+            # information kutoka the record to format the message in an appropriate
             # color according to its severity (level).
             level = random.choice(LEVELS)
             extra = {'qThreadName': ctname() }

@@ -26,8 +26,8 @@ This is the full module API reference—for an overview and introduction, see
 
 .. testsetup::
 
-   import ipaddress
-   from ipaddress import (
+   agiza ipaddress
+   kutoka ipaddress agiza (
        ip_network, IPv4Address, IPv4Interface, IPv4Network,
    )
 
@@ -78,7 +78,7 @@ One downside of these convenience functions is that the need to handle both
 IPv4 and IPv6 formats means that error messages provide minimal
 information on the precise error, as the functions don't know whether the
 IPv4 or IPv6 format was intended. More detailed error reporting can be
-obtained by calling the appropriate version specific class constructors
+obtained by calling the appropriate version specific kundi constructors
 directly.
 
 
@@ -325,7 +325,7 @@ examples::
 Arithmetic operators
 """"""""""""""""""""
 
-Integers can be added to or subtracted from address objects.  Some examples::
+Integers can be added to or subtracted kutoka address objects.  Some examples::
 
    >>> IPv4Address('127.0.0.2') + 3
    IPv4Address('127.0.0.5')
@@ -503,8 +503,8 @@ dictionaries.
 
    .. method:: address_exclude(network)
 
-      Computes the network definitions resulting from removing the given
-      *network* from this one.  Returns an iterator of network objects.
+      Computes the network definitions resulting kutoka removing the given
+      *network* kutoka this one.  Returns an iterator of network objects.
       Raises :exc:`ValueError` if *network* is not completely contained in
       this network.
 
@@ -745,8 +745,8 @@ dictionaries.
    constructor of :class:`IPv4Network`, except that arbitrary host addresses
    are always accepted.
 
-   :class:`IPv4Interface` is a subclass of :class:`IPv4Address`, so it inherits
-   all the attributes from that class.  In addition, the following attributes
+   :class:`IPv4Interface` is a subkundi of :class:`IPv4Address`, so it inherits
+   all the attributes kutoka that class.  In addition, the following attributes
    are available:
 
    .. attribute:: ip
@@ -796,8 +796,8 @@ dictionaries.
    constructor of :class:`IPv6Network`, except that arbitrary host addresses
    are always accepted.
 
-   :class:`IPv6Interface` is a subclass of :class:`IPv6Address`, so it inherits
-   all the attributes from that class.  In addition, the following attributes
+   :class:`IPv6Interface` is a subkundi of :class:`IPv6Address`, so it inherits
+   all the attributes kutoka that class.  In addition, the following attributes
    are available:
 
    .. attribute:: ip
@@ -907,7 +907,7 @@ The module also provides the following module level functions:
 Custom Exceptions
 -----------------
 
-To support more specific error reporting from class constructors, the
+To support more specific error reporting kutoka kundi constructors, the
 module defines the following exceptions:
 
 .. exception:: AddressValueError(ValueError)

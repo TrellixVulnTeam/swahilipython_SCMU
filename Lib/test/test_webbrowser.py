@@ -11,21 +11,21 @@ URL = 'http://www.example.com'
 CMD_NAME = 'test'
 
 
-class PopenMock(mock.MagicMock):
+kundi PopenMock(mock.MagicMock):
 
-    def poll(self):
-        return 0
+    eleza poll(self):
+        rudisha 0
 
-    def wait(self, seconds=None):
-        return 0
+    eleza wait(self, seconds=None):
+        rudisha 0
 
 
-class CommandTestMixin:
+kundi CommandTestMixin:
 
-    def _test(self, meth, *, args=[URL], kw={}, options, arguments):
+    eleza _test(self, meth, *, args=[URL], kw={}, options, arguments):
         """Given a web browser instance method name along with arguments and
         keywords for same (which defaults to the single argument URL), creates
-        a browser instance kutoka the class pointed to by self.browser, calls the
+        a browser instance kutoka the kundi pointed to by self.browser, calls the
         indicated instance method with the indicated arguments, and compares
         the resulting options and arguments passed to Popen by the browser
         instance against the 'options' and 'args' lists.  Options are compared
@@ -46,190 +46,190 @@ class CommandTestMixin:
         self.assertEqual(popen_args, arguments)
 
 
-class GenericBrowserCommandTest(CommandTestMixin, unittest.TestCase):
+kundi GenericBrowserCommandTest(CommandTestMixin, unittest.TestCase):
 
-    browser_class = webbrowser.GenericBrowser
+    browser_kundi = webbrowser.GenericBrowser
 
-    def test_open(self):
+    eleza test_open(self):
         self._test('open',
                    options=[],
                    arguments=[URL])
 
 
-class BackgroundBrowserCommandTest(CommandTestMixin, unittest.TestCase):
+kundi BackgroundBrowserCommandTest(CommandTestMixin, unittest.TestCase):
 
-    browser_class = webbrowser.BackgroundBrowser
+    browser_kundi = webbrowser.BackgroundBrowser
 
-    def test_open(self):
+    eleza test_open(self):
         self._test('open',
                    options=[],
                    arguments=[URL])
 
 
-class ChromeCommandTest(CommandTestMixin, unittest.TestCase):
+kundi ChromeCommandTest(CommandTestMixin, unittest.TestCase):
 
-    browser_class = webbrowser.Chrome
+    browser_kundi = webbrowser.Chrome
 
-    def test_open(self):
+    eleza test_open(self):
         self._test('open',
                    options=[],
                    arguments=[URL])
 
-    def test_open_with_autoraise_false(self):
+    eleza test_open_with_autoraise_false(self):
         self._test('open', kw=dict(autoraise=False),
                    options=[],
                    arguments=[URL])
 
-    def test_open_new(self):
+    eleza test_open_new(self):
         self._test('open_new',
                    options=['--new-window'],
                    arguments=[URL])
 
-    def test_open_new_tab(self):
+    eleza test_open_new_tab(self):
         self._test('open_new_tab',
                    options=[],
                    arguments=[URL])
 
 
-class MozillaCommandTest(CommandTestMixin, unittest.TestCase):
+kundi MozillaCommandTest(CommandTestMixin, unittest.TestCase):
 
-    browser_class = webbrowser.Mozilla
+    browser_kundi = webbrowser.Mozilla
 
-    def test_open(self):
+    eleza test_open(self):
         self._test('open',
                    options=[],
                    arguments=[URL])
 
-    def test_open_with_autoraise_false(self):
+    eleza test_open_with_autoraise_false(self):
         self._test('open', kw=dict(autoraise=False),
                    options=[],
                    arguments=[URL])
 
-    def test_open_new(self):
+    eleza test_open_new(self):
         self._test('open_new',
                    options=[],
                    arguments=['-new-window', URL])
 
-    def test_open_new_tab(self):
+    eleza test_open_new_tab(self):
         self._test('open_new_tab',
                    options=[],
                    arguments=['-new-tab', URL])
 
 
-class NetscapeCommandTest(CommandTestMixin, unittest.TestCase):
+kundi NetscapeCommandTest(CommandTestMixin, unittest.TestCase):
 
-    browser_class = webbrowser.Netscape
+    browser_kundi = webbrowser.Netscape
 
-    def test_open(self):
+    eleza test_open(self):
         self._test('open',
                    options=['-raise', '-remote'],
                    arguments=['openURL({})'.format(URL)])
 
-    def test_open_with_autoraise_false(self):
+    eleza test_open_with_autoraise_false(self):
         self._test('open', kw=dict(autoraise=False),
                    options=['-noraise', '-remote'],
                    arguments=['openURL({})'.format(URL)])
 
-    def test_open_new(self):
+    eleza test_open_new(self):
         self._test('open_new',
                    options=['-raise', '-remote'],
                    arguments=['openURL({},new-window)'.format(URL)])
 
-    def test_open_new_tab(self):
+    eleza test_open_new_tab(self):
         self._test('open_new_tab',
                    options=['-raise', '-remote'],
                    arguments=['openURL({},new-tab)'.format(URL)])
 
 
-class GaleonCommandTest(CommandTestMixin, unittest.TestCase):
+kundi GaleonCommandTest(CommandTestMixin, unittest.TestCase):
 
-    browser_class = webbrowser.Galeon
+    browser_kundi = webbrowser.Galeon
 
-    def test_open(self):
+    eleza test_open(self):
         self._test('open',
                    options=['-n'],
                    arguments=[URL])
 
-    def test_open_with_autoraise_false(self):
+    eleza test_open_with_autoraise_false(self):
         self._test('open', kw=dict(autoraise=False),
                    options=['-noraise', '-n'],
                    arguments=[URL])
 
-    def test_open_new(self):
+    eleza test_open_new(self):
         self._test('open_new',
                    options=['-w'],
                    arguments=[URL])
 
-    def test_open_new_tab(self):
+    eleza test_open_new_tab(self):
         self._test('open_new_tab',
                    options=['-w'],
                    arguments=[URL])
 
 
-class OperaCommandTest(CommandTestMixin, unittest.TestCase):
+kundi OperaCommandTest(CommandTestMixin, unittest.TestCase):
 
-    browser_class = webbrowser.Opera
+    browser_kundi = webbrowser.Opera
 
-    def test_open(self):
+    eleza test_open(self):
         self._test('open',
                    options=[],
                    arguments=[URL])
 
-    def test_open_with_autoraise_false(self):
+    eleza test_open_with_autoraise_false(self):
         self._test('open', kw=dict(autoraise=False),
                    options=[],
                    arguments=[URL])
 
-    def test_open_new(self):
+    eleza test_open_new(self):
         self._test('open_new',
                    options=['--new-window'],
                    arguments=[URL])
 
-    def test_open_new_tab(self):
+    eleza test_open_new_tab(self):
         self._test('open_new_tab',
                    options=[],
                    arguments=[URL])
 
 
-class ELinksCommandTest(CommandTestMixin, unittest.TestCase):
+kundi ELinksCommandTest(CommandTestMixin, unittest.TestCase):
 
-    browser_class = webbrowser.Elinks
+    browser_kundi = webbrowser.Elinks
 
-    def test_open(self):
+    eleza test_open(self):
         self._test('open', options=['-remote'],
                            arguments=['openURL({})'.format(URL)])
 
-    def test_open_with_autoraise_false(self):
+    eleza test_open_with_autoraise_false(self):
         self._test('open',
                    options=['-remote'],
                    arguments=['openURL({})'.format(URL)])
 
-    def test_open_new(self):
+    eleza test_open_new(self):
         self._test('open_new',
                    options=['-remote'],
                    arguments=['openURL({},new-window)'.format(URL)])
 
-    def test_open_new_tab(self):
+    eleza test_open_new_tab(self):
         self._test('open_new_tab',
                    options=['-remote'],
                    arguments=['openURL({},new-tab)'.format(URL)])
 
 
-class BrowserRegistrationTest(unittest.TestCase):
+kundi BrowserRegistrationTest(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         # Ensure we don't alter the real registered browser details
         self._saved_tryorder = webbrowser._tryorder
         webbrowser._tryorder = []
         self._saved_browsers = webbrowser._browsers
         webbrowser._browsers = {}
 
-    def tearDown(self):
+    eleza tearDown(self):
         webbrowser._tryorder = self._saved_tryorder
         webbrowser._browsers = self._saved_browsers
 
-    def _check_registration(self, preferred):
-        class ExampleBrowser:
+    eleza _check_registration(self, preferred):
+        kundi ExampleBrowser:
             pass
 
         expected_tryorder = []
@@ -245,12 +245,12 @@ class BrowserRegistrationTest(unittest.TestCase):
         self.assertEqual(webbrowser._browsers, expected_browsers)
 
         instance = ExampleBrowser()
-        if preferred is not None:
+        ikiwa preferred is not None:
             webbrowser.register('example2', ExampleBrowser, instance,
                                 preferred=preferred)
         else:
             webbrowser.register('example2', ExampleBrowser, instance)
-        if preferred:
+        ikiwa preferred:
             expected_tryorder = ['example2', 'Example1']
         else:
             expected_tryorder = ['Example1', 'example2']
@@ -258,23 +258,23 @@ class BrowserRegistrationTest(unittest.TestCase):
         self.assertEqual(webbrowser._tryorder, expected_tryorder)
         self.assertEqual(webbrowser._browsers, expected_browsers)
 
-    def test_register(self):
+    eleza test_register(self):
         self._check_registration(preferred=False)
 
-    def test_register_default(self):
+    eleza test_register_default(self):
         self._check_registration(preferred=None)
 
-    def test_register_preferred(self):
+    eleza test_register_preferred(self):
         self._check_registration(preferred=True)
 
 
-class ImportTest(unittest.TestCase):
-    def test_register(self):
+kundi ImportTest(unittest.TestCase):
+    eleza test_register(self):
         webbrowser = support.import_fresh_module('webbrowser')
         self.assertIsNone(webbrowser._tryorder)
         self.assertFalse(webbrowser._browsers)
 
-        class ExampleBrowser:
+        kundi ExampleBrowser:
             pass
         webbrowser.register('Example1', ExampleBrowser)
         self.assertTrue(webbrowser._tryorder)
@@ -283,7 +283,7 @@ class ImportTest(unittest.TestCase):
         self.assertIn('example1', webbrowser._browsers)
         self.assertEqual(webbrowser._browsers['example1'], [ExampleBrowser, None])
 
-    def test_get(self):
+    eleza test_get(self):
         webbrowser = support.import_fresh_module('webbrowser')
         self.assertIsNone(webbrowser._tryorder)
         self.assertFalse(webbrowser._browsers)
@@ -292,13 +292,13 @@ class ImportTest(unittest.TestCase):
             webbrowser.get('fakebrowser')
         self.assertIsNotNone(webbrowser._tryorder)
 
-    def test_synthesize(self):
+    eleza test_synthesize(self):
         webbrowser = support.import_fresh_module('webbrowser')
         name = os.path.basename(sys.executable).lower()
         webbrowser.register(name, None, webbrowser.GenericBrowser(name))
         webbrowser.get(sys.executable)
 
-    def test_environment(self):
+    eleza test_environment(self):
         webbrowser = support.import_fresh_module('webbrowser')
         try:
             browser = webbrowser.get().name
@@ -309,7 +309,7 @@ class ImportTest(unittest.TestCase):
             webbrowser = support.import_fresh_module('webbrowser')
             webbrowser.get()
 
-    def test_environment_preferred(self):
+    eleza test_environment_preferred(self):
         webbrowser = support.import_fresh_module('webbrowser')
         try:
             webbrowser.get()
@@ -328,5 +328,5 @@ class ImportTest(unittest.TestCase):
             self.assertEqual(webbrowser.get().name, sys.executable)
 
 
-if __name__=='__main__':
+ikiwa __name__=='__main__':
     unittest.main()

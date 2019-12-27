@@ -15,7 +15,7 @@ agiza json
 agiza sys
 
 
-def main():
+eleza main():
     prog = 'python -m json.tool'
     description = ('A simple command line interface for json module '
                    'to validate and pretty-print JSON objects.')
@@ -38,7 +38,7 @@ def main():
     json_lines = options.json_lines
     with infile, outfile:
         try:
-            if json_lines:
+            ikiwa json_lines:
                 objs = (json.loads(line) for line in infile)
             else:
                 objs = (json.load(infile), )
@@ -49,5 +49,5 @@ def main():
             raise SystemExit(e)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

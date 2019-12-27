@@ -1,15 +1,15 @@
 kutoka test agiza support
-# Skip test if _tkinter wasn't built.
+# Skip test ikiwa _tkinter wasn't built.
 support.import_module('_tkinter')
 
-# Skip test if tk cannot be initialized.
+# Skip test ikiwa tk cannot be initialized.
 support.requires('gui')
 
 kutoka tkinter.test agiza runtktests
 
-def test_main():
+eleza test_main():
     support.run_unittest(
             *runtktests.get_tests(text=False, packages=['test_tkinter']))
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test_main()

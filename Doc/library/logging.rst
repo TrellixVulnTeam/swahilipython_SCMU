@@ -27,7 +27,7 @@ logging system for applications and libraries.
 
 The key benefit of having the logging API provided by a standard library module
 is that all Python modules can participate in logging, so your application log
-can include your own messages integrated with messages from third-party
+can include your own messages integrated with messages kutoka third-party
 modules.
 
 The module provides a lot of functionality and flexibility.  If you are
@@ -172,7 +172,7 @@ is the module's name in the Python package namespace.
       ``False``. If true, stack information is added to the logging
       message, including the actual logging call. Note that this is not the same
       stack information as that displayed through specifying *exc_info*: The
-      former is stack frames from the bottom of the stack up to the logging call
+      former is stack frames kutoka the bottom of the stack up to the logging call
       in the current thread, whereas the latter is information about stack frames
       which have been unwound, following an exception, while searching for
       exception handlers.
@@ -279,7 +279,7 @@ is the module's name in the Python package namespace.
 
       Logs a message with level :const:`ERROR` on this logger. The arguments are
       interpreted as for :meth:`debug`. Exception info is added to the logging
-      message. This method should only be called from an exception handler.
+      message. This method should only be called kutoka an exception handler.
 
 
    .. method:: Logger.addFilter(filter)
@@ -289,7 +289,7 @@ is the module's name in the Python package namespace.
 
    .. method:: Logger.removeFilter(filter)
 
-      Removes the specified filter *filter* from this logger.
+      Removes the specified filter *filter* kutoka this logger.
 
 
    .. method:: Logger.filter(record)
@@ -308,7 +308,7 @@ is the module's name in the Python package namespace.
 
    .. method:: Logger.removeHandler(hdlr)
 
-      Removes the specified handler *hdlr* from this logger.
+      Removes the specified handler *hdlr* kutoka this logger.
 
 
    .. method:: Logger.findCaller(stack_info=False, stacklevel=1)
@@ -317,10 +317,10 @@ is the module's name in the Python package namespace.
       number, function name and stack information as a 4-element tuple. The stack
       information is returned as ``None`` unless *stack_info* is ``True``.
 
-      The *stacklevel* parameter is passed from code calling the :meth:`debug`
+      The *stacklevel* parameter is passed kutoka code calling the :meth:`debug`
       and other APIs. If greater than 1, the excess is used to skip stack frames
       before determining the values to be returned. This will generally be useful
-      when calling logging APIs from helper/wrapper code, so that the information
+      when calling logging APIs kutoka helper/wrapper code, so that the information
       in the event log refers not to the helper/wrapper code, but to the code that
       calls it.
 
@@ -329,7 +329,7 @@ is the module's name in the Python package namespace.
 
       Handles a record by passing it to all handlers associated with this logger and
       its ancestors (until a false value of *propagate* is found). This method is used
-      for unpickled records received from a socket, as well as those created locally.
+      for unpickled records received kutoka a socket, as well as those created locally.
       Logger-level filtering is applied using :meth:`~Logger.filter`.
 
 
@@ -386,7 +386,7 @@ Handler Objects
 ---------------
 
 Handlers have the following attributes and methods. Note that :class:`Handler`
-is never instantiated directly; this class acts as a base for more useful
+is never instantiated directly; this kundi acts as a base for more useful
 subclasses. However, the :meth:`__init__` method in subclasses needs to call
 :meth:`Handler.__init__`.
 
@@ -442,7 +442,7 @@ subclasses. However, the :meth:`__init__` method in subclasses needs to call
 
    .. method:: Handler.removeFilter(filter)
 
-      Removes the specified filter *filter* from this handler.
+      Removes the specified filter *filter* kutoka this handler.
 
 
    .. method:: Handler.filter(record)
@@ -463,9 +463,9 @@ subclasses. However, the :meth:`__init__` method in subclasses needs to call
    .. method:: Handler.close()
 
       Tidy up any resources used by the handler. This version does no output but
-      removes the handler from an internal list of handlers which is closed when
+      removes the handler kutoka an internal list of handlers which is closed when
       :func:`shutdown` is called. Subclasses should ensure that this gets called
-      from overridden :meth:`close` methods.
+      kutoka overridden :meth:`close` methods.
 
 
    .. method:: Handler.handle(record)
@@ -477,7 +477,7 @@ subclasses. However, the :meth:`__init__` method in subclasses needs to call
 
    .. method:: Handler.handleError(record)
 
-      This method should be called from handlers when an exception is encountered
+      This method should be called kutoka handlers when an exception is encountered
       during an :meth:`emit` call. If the module-level attribute
       ``raiseExceptions`` is ``False``, exceptions get silently ignored. This is
       what is mostly wanted for a logging system - most users will not care about
@@ -561,7 +561,7 @@ The useful mapping keys in a :class:`LogRecord` are given in the section on
       that the formatted exception information is cached in attribute
       *exc_text*. This is useful because the exception information can be
       pickled and sent across the wire, but you should be careful if you have
-      more than one :class:`Formatter` subclass which customizes the formatting
+      more than one :class:`Formatter` subkundi which customizes the formatting
       of exception information. In this case, you will have to clear the cached
       value after a formatter has done its formatting, so that the next
       formatter to handle the event doesn't use the cached value but
@@ -573,7 +573,7 @@ The useful mapping keys in a :class:`LogRecord` are given in the section on
 
    .. method:: formatTime(record, datefmt=None)
 
-      This method should be called from :meth:`format` by a formatter which
+      This method should be called kutoka :meth:`format` by a formatter which
       wants to make use of a formatted time. This method can be overridden in
       formatters to provide for any specific requirement, but the basic behavior
       is as follows: if *datefmt* (a string) is specified, it is used with
@@ -623,7 +623,7 @@ Filter Objects
 --------------
 
 ``Filters`` can be used by ``Handlers`` and ``Loggers`` for more sophisticated
-filtering than is provided by levels. The base filter class only allows events
+filtering than is provided by levels. The base filter kundi only allows events
 which are below a certain point in the logger hierarchy. For example, a filter
 initialized with 'A.B' will allow events logged by loggers 'A.B', 'A.B.C',
 'A.B.C.D', 'A.B.D' etc. but not 'A.BB', 'B.A.B' etc. If initialized with the
@@ -650,7 +650,7 @@ etc.), before sending an event to handlers. This means that events which have
 been generated by descendant loggers will not be filtered by a logger's filter
 setting, unless the filter has also been applied to those descendant loggers.
 
-You don't actually need to subclass ``Filter``: you can pass any instance
+You don't actually need to subkundi ``Filter``: you can pass any instance
 which has a ``filter`` method with the same semantics.
 
 .. versionchanged:: 3.2
@@ -679,7 +679,7 @@ LogRecord Objects
 
 :class:`LogRecord` instances are created automatically by the :class:`Logger`
 every time something is logged, and can be created manually via
-:func:`makeLogRecord` (for example, from a pickled event received over the
+:func:`makeLogRecord` (for example, kutoka a pickled event received over the
 wire).
 
 
@@ -709,9 +709,9 @@ wire).
                 event description.
    :param exc_info: An exception tuple with the current exception information,
                     or ``None`` if no exception information is available.
-   :param func: The name of the function or method from which the logging call
+   :param func: The name of the function or method kutoka which the logging call
                 was invoked.
-   :param sinfo: A text string representing stack information from the base of
+   :param sinfo: A text string representing stack information kutoka the base of
                  the stack in the current thread, up to the logging call.
 
    .. method:: getMessage()
@@ -752,10 +752,10 @@ wire).
 LogRecord attributes
 --------------------
 
-The LogRecord has a number of attributes, most of which are derived from the
+The LogRecord has a number of attributes, most of which are derived kutoka the
 parameters to the constructor. (Note that the names do not always correspond
 exactly between the LogRecord constructor parameters and the LogRecord
-attributes.) These attributes can be used to merge data from the record into
+attributes.) These attributes can be used to merge data kutoka the record into
 the format string. The following table lists (in alphabetical order) the
 attribute names, their meanings and the corresponding placeholder in a %-style
 format string.
@@ -767,7 +767,7 @@ both cases, of course, replace ``attrname`` with the actual attribute name
 you want to use.
 
 In the case of {}-formatting, you can specify formatting flags by placing them
-after the attribute name, separated from it with a colon. For example: a
+after the attribute name, separated kutoka it with a colon. For example: a
 placeholder of ``{msecs:03d}`` would format a millisecond value of ``4`` as
 ``004``. Refer to the :meth:`str.format` documentation for full details on
 the options available to you.
@@ -836,7 +836,7 @@ the options available to you.
 |                |                         | module was loaded.                            |
 +----------------+-------------------------+-----------------------------------------------+
 | stack_info     | You shouldn't need to   | Stack frame information (where available)     |
-|                | format this yourself.   | from the bottom of the stack in the current   |
+|                | format this yourself.   | kutoka the bottom of the stack in the current   |
 |                |                         | thread, up to and including the stack frame   |
 |                |                         | of the logging call which resulted in the     |
 |                |                         | creation of this record.                      |
@@ -896,9 +896,9 @@ locks; there is one lock to serialize access to the module's shared data, and
 each handler also creates a lock to serialize access to its underlying I/O.
 
 If you are implementing asynchronous signal handlers using the :mod:`signal`
-module, you may not be able to use logging from within such handlers. This is
+module, you may not be able to use logging kutoka within such handlers. This is
 because lock implementations in the :mod:`threading` module are not always
-re-entrant, and so cannot be invoked from such signal handlers.
+re-entrant, and so cannot be invoked kutoka such signal handlers.
 
 
 Module-Level Functions
@@ -922,12 +922,12 @@ functions.
 
 .. function:: getLoggerClass()
 
-   Return either the standard :class:`Logger` class, or the last class passed to
-   :func:`setLoggerClass`. This function may be called from within a new class
-   definition, to ensure that installing a customized :class:`Logger` class will
+   Return either the standard :class:`Logger` class, or the last kundi passed to
+   :func:`setLoggerClass`. This function may be called kutoka within a new class
+   definition, to ensure that installing a customized :class:`Logger` kundi will
    not undo customizations already applied by other code. For example::
 
-      class MyLogger(logging.getLoggerClass()):
+      kundi MyLogger(logging.getLoggerClass()):
           # ... override behaviour here
 
 
@@ -960,7 +960,7 @@ functions.
    ``False``. If true, stack information is added to the logging
    message, including the actual logging call. Note that this is not the same
    stack information as that displayed through specifying *exc_info*: The
-   former is stack frames from the bottom of the stack up to the logging call
+   former is stack frames kutoka the bottom of the stack up to the logging call
    in the current thread, whereas the latter is information about stack frames
    which have been unwound, following an exception, while searching for
    exception handlers.
@@ -1046,7 +1046,7 @@ functions.
 
    Logs a message with level :const:`ERROR` on the root logger. The arguments are
    interpreted as for :func:`debug`. Exception info is added to the logging
-   message. This function should only be called from an exception handler.
+   message. This function should only be called kutoka an exception handler.
 
 .. function:: log(level, msg, *args, **kwargs)
 
@@ -1137,9 +1137,9 @@ functions.
    This function does nothing if the root logger already has handlers
    configured, unless the keyword argument *force* is set to ``True``.
 
-   .. note:: This function should be called from the main thread
+   .. note:: This function should be called kutoka the main thread
       before other threads are started. In versions of Python prior to
-      2.7.1 and 3.2, if this function is called from multiple threads,
+      2.7.1 and 3.2, if this function is called kutoka multiple threads,
       it is possible (in rare circumstances) that a handler will be added
       to the root logger more than once, leading to unexpected results
       such as messages being duplicated in the log.
@@ -1222,8 +1222,8 @@ functions.
 
 .. function:: setLoggerClass(klass)
 
-   Tells the logging system to use the class *klass* when instantiating a logger.
-   The class should define :meth:`__init__` such that only a name argument is
+   Tells the logging system to use the kundi *klass* when instantiating a logger.
+   The kundi should define :meth:`__init__` such that only a name argument is
    required, and the :meth:`__init__` should call :meth:`Logger.__init__`. This
    function is typically called before any loggers are instantiated by applications
    which need to use custom logger behavior. After this call, as at any other
@@ -1310,6 +1310,6 @@ with the :mod:`warnings` module.
 
    `Original Python logging package <https://www.red-dove.com/python_logging.html>`_
       This is the original source for the :mod:`logging` package.  The version of the
-      package available from this site is suitable for use with Python 1.5.2, 2.1.x
+      package available kutoka this site is suitable for use with Python 1.5.2, 2.1.x
       and 2.2.x, which do not include the :mod:`logging` package in the standard
       library.

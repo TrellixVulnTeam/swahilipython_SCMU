@@ -42,7 +42,7 @@ __all__ = token.__all__ + ["tokenize", "generate_tokens", "detect_encoding",
                            "untokenize", "TokenInfo"]
 del token
 
-class TokenInfo(collections.namedtuple('TokenInfo', 'type string start end line')):
+kundi TokenInfo(collections.namedtuple('TokenInfo', 'type string start end line')):
     def __repr__(self):
         annotated_type = '%d (%s)' % (self.type, tok_name[self.type])
         return ('TokenInfo(type=%s, string=%r, start=%r, end=%r, line=%r)' %
@@ -154,12 +154,12 @@ for t in _all_string_prefixes():
 
 tabsize = 8
 
-class TokenError(Exception): pass
+kundi TokenError(Exception): pass
 
-class StopTokenizing(Exception): pass
+kundi StopTokenizing(Exception): pass
 
 
-class Untokenizer:
+kundi Untokenizer:
 
     def __init__(self):
         self.tokens = []
@@ -197,13 +197,13 @@ class Untokenizer:
             if tok_type == INDENT:
                 indents.append(token)
                 continue
-            elif tok_type == DEDENT:
+            lasivyo tok_type == DEDENT:
                 indents.pop()
                 self.prev_row, self.prev_col = end
                 continue
-            elif tok_type in (NEWLINE, NL):
+            lasivyo tok_type in (NEWLINE, NL):
                 startline = True
-            elif startline and indents:
+            lasivyo startline and indents:
                 indent = indents[-1]
                 if start[1] >= len(indent):
                     self.tokens.append(indent)
@@ -243,12 +243,12 @@ class Untokenizer:
             if toknum == INDENT:
                 indents.append(tokval)
                 continue
-            elif toknum == DEDENT:
+            lasivyo toknum == DEDENT:
                 indents.pop()
                 continue
-            elif toknum in (NEWLINE, NL):
+            lasivyo toknum in (NEWLINE, NL):
                 startline = True
-            elif startline and indents:
+            lasivyo startline and indents:
                 toks_append(indents[-1])
                 startline = False
             toks_append(tokval)
@@ -466,7 +466,7 @@ def _tokenize(readline, encoding):
                        strstart, (lnum, end), contline + line)
                 contstr, needcont = '', 0
                 contline = None
-            elif needcont and line[-2:] != '\\\n' and line[-3:] != '\\\r\n':
+            lasivyo needcont and line[-2:] != '\\\n' and line[-3:] != '\\\r\n':
                 yield TokenInfo(ERRORTOKEN, contstr + line,
                            strstart, (lnum, len(line)), contline)
                 contstr = ''
@@ -477,15 +477,15 @@ def _tokenize(readline, encoding):
                 contline = contline + line
                 continue
 
-        elif parenlev == 0 and not continued:  # new statement
+        lasivyo parenlev == 0 and not continued:  # new statement
             if not line: break
             column = 0
             while pos < max:                   # measure leading whitespace
                 if line[pos] == ' ':
                     column += 1
-                elif line[pos] == '\t':
+                lasivyo line[pos] == '\t':
                     column = (column//tabsize + 1)*tabsize
-                elif line[pos] == '\f':
+                lasivyo line[pos] == '\f':
                     column = 0
                 else:
                     break
@@ -533,17 +533,17 @@ def _tokenize(readline, encoding):
                 if (initial in numchars or                 # ordinary number
                     (initial == '.' and token != '.' and token != '...')):
                     yield TokenInfo(NUMBER, token, spos, epos, line)
-                elif initial in '\r\n':
+                lasivyo initial in '\r\n':
                     if parenlev > 0:
                         yield TokenInfo(NL, token, spos, epos, line)
                     else:
                         yield TokenInfo(NEWLINE, token, spos, epos, line)
 
-                elif initial == '#':
+                lasivyo initial == '#':
                     assert not token.endswith("\n")
                     yield TokenInfo(COMMENT, token, spos, epos, line)
 
-                elif token in triple_quoted:
+                lasivyo token in triple_quoted:
                     endprog = _compile(endpats[token])
                     endmatch = endprog.match(line, pos)
                     if endmatch:                           # all on one line
@@ -566,7 +566,7 @@ def _tokenize(readline, encoding):
                 # Note that initial == token[:1].
                 # Also note that single quote checking must come after
                 #  triple quote checking (above).
-                elif (initial in single_quoted or
+                lasivyo (initial in single_quoted or
                       token[:2] in single_quoted or
                       token[:3] in single_quoted):
                     if token[-1] == '\n':                  # continued string
@@ -586,14 +586,14 @@ def _tokenize(readline, encoding):
                     else:                                  # ordinary string
                         yield TokenInfo(STRING, token, spos, epos, line)
 
-                elif initial.isidentifier():               # ordinary name
+                lasivyo initial.isidentifier():               # ordinary name
                     yield TokenInfo(NAME, token, spos, epos, line)
-                elif initial == '\\':                      # continued stmt
+                lasivyo initial == '\\':                      # continued stmt
                     continued = 1
                 else:
                     if initial in '([{':
                         parenlev += 1
-                    elif initial in ')]}':
+                    lasivyo initial in ')]}':
                         parenlev -= 1
                     yield TokenInfo(OP, token, spos, epos, line)
             else:
@@ -629,7 +629,7 @@ def main():
         if location:
             args = (filename,) + location + (message,)
             perror("%s:%d:%d: error: %s" % args)
-        elif filename:
+        lasivyo filename:
             perror("%s: error: %s" % (filename, message))
         else:
             perror("error: %s" % message)

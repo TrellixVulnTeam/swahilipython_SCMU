@@ -10,7 +10,7 @@
 --------------
 
 The :mod:`readline` module defines a number of functions to facilitate
-completion and reading/writing of history files from the Python interpreter.
+completion and reading/writing of history files kutoka the Python interpreter.
 This module can be used directly, or via the :mod:`rlcompleter` module, which
 supports completion of Python identifiers at the interactive prompt.  Settings
 made using  this module affect the behaviour of both the interpreter's
@@ -31,7 +31,7 @@ Readline library in general.
   On macOS the :mod:`readline` module detects which library is being used
   at run time.
 
-  The configuration file for ``libedit`` is different from that
+  The configuration file for ``libedit`` is different kutoka that
   of GNU readline. If you programmatically load configuration strings
   you can check for the text "libedit" in :const:`readline.__doc__`
   to differentiate between GNU readline and libedit.
@@ -144,7 +144,7 @@ The following functions operate on a global history list:
 
 .. function:: get_current_history_length()
 
-   Return the number of items currently in the history.  (This is different from
+   Return the number of items currently in the history.  (This is different kutoka
    :func:`get_history_length`, which returns the maximum number of lines that will
    be written to a history file.)
 
@@ -157,7 +157,7 @@ The following functions operate on a global history list:
 
 .. function:: remove_history_item(pos)
 
-   Remove history item specified by its position from the history.
+   Remove history item specified by its position kutoka the history.
    The position is zero-based.  This calls :c:func:`remove_history` in
    the underlying library.
 
@@ -235,7 +235,7 @@ with a custom completer, a different set of word delimiters should be set.
 
    The installed completer function is invoked by the *entry_func* callback
    passed to :c:func:`rl_completion_matches` in the underlying library.
-   The *text* string comes from the first parameter to the
+   The *text* string comes kutoka the first parameter to the
    :c:data:`rl_attempted_completion_function` callback of the
    underlying library.
 
@@ -289,9 +289,9 @@ Example
 
 The following example demonstrates how to use the :mod:`readline` module's
 history reading and writing functions to automatically load and save a history
-file named :file:`.python_history` from the user's home directory.  The code
+file named :file:`.python_history` kutoka the user's home directory.  The code
 below would normally be executed automatically during interactive sessions
-from the user's :envvar:`PYTHONSTARTUP` file. ::
+kutoka the user's :envvar:`PYTHONSTARTUP` file. ::
 
    agiza atexit
    agiza os
@@ -331,7 +331,7 @@ sessions, by only appending the new history. ::
        readline.append_history_file(new_h_len - prev_h_len, histfile)
    atexit.register(save, h_len, histfile)
 
-The following example extends the :class:`code.InteractiveConsole` class to
+The following example extends the :class:`code.InteractiveConsole` kundi to
 support history save/restore. ::
 
    agiza atexit
@@ -339,7 +339,7 @@ support history save/restore. ::
    agiza os
    agiza readline
 
-   class HistoryConsole(code.InteractiveConsole):
+   kundi HistoryConsole(code.InteractiveConsole):
        def __init__(self, locals=None, filename="<console>",
                     histfile=os.path.expanduser("~/.console-history")):
            code.InteractiveConsole.__init__(self, locals, filename)

@@ -10,7 +10,7 @@ as of version 0.3.
 Notes on CGIHTTPRequestHandler
 ------------------------------
 
-This class implements GET and POST requests to cgi-bin scripts.
+This kundi implements GET and POST requests to cgi-bin scripts.
 
 If the os.fork() function is not present (e.g. on Windows),
 subprocess.Popen() is used as a fallback, with slightly altered semantics.
@@ -71,13 +71,13 @@ XXX To do:
 # |        mm: minutes
 # |        ss: seconds
 # |        request: The first line of the HTTP request as sent by the client.
-# |        ddd: the status code returned by the server, - if not available.
+# |        ddd: the status code returned by the server, - ikiwa not available.
 # |        bbbb: the total number of bytes sent,
-# |              *not including the HTTP/1.0 header*, - if not available
+# |              *not including the HTTP/1.0 header*, - ikiwa not available
 # |
 # | You can determine the name of the file accessed through request.
 #
-# (Actually, the latter is only true if you know the server configuration
+# (Actually, the latter is only true ikiwa you know the server configuration
 # at the time the request was made!)
 
 __version__ = "0.6"
@@ -128,11 +128,11 @@ DEFAULT_ERROR_MESSAGE = """\
 
 DEFAULT_ERROR_CONTENT_TYPE = "text/html;charset=utf-8"
 
-class HTTPServer(socketserver.TCPServer):
+kundi HTTPServer(socketserver.TCPServer):
 
     allow_reuse_address = 1    # Seems to make sense in testing environment
 
-    def server_bind(self):
+    eleza server_bind(self):
         """Override server_bind to store the server name."""
         socketserver.TCPServer.server_bind(self)
         host, port = self.server_address[:2]
@@ -140,11 +140,11 @@ class HTTPServer(socketserver.TCPServer):
         self.server_port = port
 
 
-class ThreadingHTTPServer(socketserver.ThreadingMixIn, HTTPServer):
+kundi ThreadingHTTPServer(socketserver.ThreadingMixIn, HTTPServer):
     daemon_threads = True
 
 
-class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
+kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
     """HTTP request handler base class.
 
@@ -237,7 +237,7 @@ class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
     The first thing to be written must be the response line.  Then
     follow 0 or more header lines, then a blank line, and then the
-    actual data (if any).  The meaning of the header lines depends on
+    actual data (ikiwa any).  The meaning of the header lines depends on
     the command executed by the server; in most cases, when data is
     returned, there should be at least one header line of the form
 
@@ -265,7 +265,7 @@ class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     # Most web servers default to HTTP 0.9, i.e. don't send a status line.
     default_request_version = "HTTP/0.9"
 
-    def parse_request(self):
+    eleza parse_request(self):
         """Parse a request (internal).
 
         The request should be stored in self.raw_requestline; the results
@@ -283,13 +283,13 @@ class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         requestline = requestline.rstrip('\r\n')
         self.requestline = requestline
         words = requestline.split()
-        if len(words) == 0:
-            return False
+        ikiwa len(words) == 0:
+            rudisha False
 
-        if len(words) >= 3:  # Enough to determine protocol version
+        ikiwa len(words) >= 3:  # Enough to determine protocol version
             version = words[-1]
             try:
-                if not version.startswith('HTTP/'):
+                ikiwa not version.startswith('HTTP/'):
                     raise ValueError
                 base_version_number = version.split('/', 1)[1]
                 version_number = base_version_number.split(".")
@@ -299,36 +299,36 @@ class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                 #   - HTTP/2.4 is a lower version than HTTP/2.13, which in
                 #      turn is lower than HTTP/12.3;
                 #   - Leading zeros MUST be ignored by recipients.
-                if len(version_number) != 2:
+                ikiwa len(version_number) != 2:
                     raise ValueError
                 version_number = int(version_number[0]), int(version_number[1])
             except (ValueError, IndexError):
                 self.send_error(
                     HTTPStatus.BAD_REQUEST,
                     "Bad request version (%r)" % version)
-                return False
-            if version_number >= (1, 1) and self.protocol_version >= "HTTP/1.1":
+                rudisha False
+            ikiwa version_number >= (1, 1) and self.protocol_version >= "HTTP/1.1":
                 self.close_connection = False
-            if version_number >= (2, 0):
+            ikiwa version_number >= (2, 0):
                 self.send_error(
                     HTTPStatus.HTTP_VERSION_NOT_SUPPORTED,
                     "Invalid HTTP version (%s)" % base_version_number)
-                return False
+                rudisha False
             self.request_version = version
 
-        if not 2 <= len(words) <= 3:
+        ikiwa not 2 <= len(words) <= 3:
             self.send_error(
                 HTTPStatus.BAD_REQUEST,
                 "Bad request syntax (%r)" % requestline)
-            return False
+            rudisha False
         command, path = words[:2]
-        if len(words) == 2:
+        ikiwa len(words) == 2:
             self.close_connection = True
-            if command != 'GET':
+            ikiwa command != 'GET':
                 self.send_error(
                     HTTPStatus.BAD_REQUEST,
                     "Bad HTTP/0.9 request type (%r)" % command)
-                return False
+                rudisha False
         self.command, self.path = command, path
 
         # Examine the headers and look for a Connection directive.
@@ -340,31 +340,31 @@ class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                 HTTPStatus.REQUEST_HEADER_FIELDS_TOO_LARGE,
                 "Line too long",
                 str(err))
-            return False
+            rudisha False
         except http.client.HTTPException as err:
             self.send_error(
                 HTTPStatus.REQUEST_HEADER_FIELDS_TOO_LARGE,
                 "Too many headers",
                 str(err)
             )
-            return False
+            rudisha False
 
         conntype = self.headers.get('Connection', "")
-        if conntype.lower() == 'close':
+        ikiwa conntype.lower() == 'close':
             self.close_connection = True
-        elif (conntype.lower() == 'keep-alive' and
+        elikiwa (conntype.lower() == 'keep-alive' and
               self.protocol_version >= "HTTP/1.1"):
             self.close_connection = False
         # Examine the headers and look for an Expect directive
         expect = self.headers.get('Expect', "")
-        if (expect.lower() == "100-continue" and
+        ikiwa (expect.lower() == "100-continue" and
                 self.protocol_version >= "HTTP/1.1" and
                 self.request_version >= "HTTP/1.1"):
-            if not self.handle_expect_100():
-                return False
-        return True
+            ikiwa not self.handle_expect_100():
+                rudisha False
+        rudisha True
 
-    def handle_expect_100(self):
+    eleza handle_expect_100(self):
         """Decide what to do with an "Expect: 100-continue" header.
 
         If the client is expecting a 100 Continue response, we must
@@ -373,16 +373,16 @@ class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         with a 100 Continue. You can behave differently (for example,
         reject unauthorized requests) by overriding this method.
 
-        This method should either return True (possibly after sending
+        This method should either rudisha True (possibly after sending
         a 100 Continue response) or send an error response and return
         False.
 
         """
         self.send_response_only(HTTPStatus.CONTINUE)
         self.end_headers()
-        return True
+        rudisha True
 
-    def handle_one_request(self):
+    eleza handle_one_request(self):
         """Handle a single HTTP request.
 
         You normally don't need to override this method; see the class
@@ -392,42 +392,42 @@ class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         """
         try:
             self.raw_requestline = self.rfile.readline(65537)
-            if len(self.raw_requestline) > 65536:
+            ikiwa len(self.raw_requestline) > 65536:
                 self.requestline = ''
                 self.request_version = ''
                 self.command = ''
                 self.send_error(HTTPStatus.REQUEST_URI_TOO_LONG)
                 return
-            if not self.raw_requestline:
+            ikiwa not self.raw_requestline:
                 self.close_connection = True
                 return
-            if not self.parse_request():
+            ikiwa not self.parse_request():
                 # An error code has been sent, just exit
                 return
             mname = 'do_' + self.command
-            if not hasattr(self, mname):
+            ikiwa not hasattr(self, mname):
                 self.send_error(
                     HTTPStatus.NOT_IMPLEMENTED,
                     "Unsupported method (%r)" % self.command)
                 return
             method = getattr(self, mname)
             method()
-            self.wfile.flush() #actually send the response if not already done.
+            self.wfile.flush() #actually send the response ikiwa not already done.
         except socket.timeout as e:
             #a read or a write timed out.  Discard this connection
             self.log_error("Request timed out: %r", e)
             self.close_connection = True
             return
 
-    def handle(self):
-        """Handle multiple requests if necessary."""
+    eleza handle(self):
+        """Handle multiple requests ikiwa necessary."""
         self.close_connection = True
 
         self.handle_one_request()
         while not self.close_connection:
             self.handle_one_request()
 
-    def send_error(self, code, message=None, explain=None):
+    eleza send_error(self, code, message=None, explain=None):
         """Send and log an error reply.
 
         Arguments are
@@ -449,9 +449,9 @@ class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
             shortmsg, longmsg = self.responses[code]
         except KeyError:
             shortmsg, longmsg = '???', '???'
-        if message is None:
+        ikiwa message is None:
             message = shortmsg
-        if explain is None:
+        ikiwa explain is None:
             explain = longmsg
         self.log_error("code %d, message %s", code, message)
         self.send_response(code, message)
@@ -461,7 +461,7 @@ class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         #  - RFC7230: 3.3. 1xx, 204(No Content), 304(Not Modified)
         #  - RFC7231: 6.3.6. 205(Reset Content)
         body = None
-        if (code >= 200 and
+        ikiwa (code >= 200 and
             code not in (HTTPStatus.NO_CONTENT,
                          HTTPStatus.RESET_CONTENT,
                          HTTPStatus.NOT_MODIFIED)):
@@ -477,10 +477,10 @@ class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
             self.send_header('Content-Length', str(len(body)))
         self.end_headers()
 
-        if self.command != 'HEAD' and body:
+        ikiwa self.command != 'HEAD' and body:
             self.wfile.write(body)
 
-    def send_response(self, code, message=None):
+    eleza send_response(self, code, message=None):
         """Add the response header to the headers buffer and log the
         response code.
 
@@ -493,57 +493,57 @@ class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         self.send_header('Server', self.version_string())
         self.send_header('Date', self.date_time_string())
 
-    def send_response_only(self, code, message=None):
+    eleza send_response_only(self, code, message=None):
         """Send the response header only."""
-        if self.request_version != 'HTTP/0.9':
-            if message is None:
-                if code in self.responses:
+        ikiwa self.request_version != 'HTTP/0.9':
+            ikiwa message is None:
+                ikiwa code in self.responses:
                     message = self.responses[code][0]
                 else:
                     message = ''
-            if not hasattr(self, '_headers_buffer'):
+            ikiwa not hasattr(self, '_headers_buffer'):
                 self._headers_buffer = []
             self._headers_buffer.append(("%s %d %s\r\n" %
                     (self.protocol_version, code, message)).encode(
                         'latin-1', 'strict'))
 
-    def send_header(self, keyword, value):
+    eleza send_header(self, keyword, value):
         """Send a MIME header to the headers buffer."""
-        if self.request_version != 'HTTP/0.9':
-            if not hasattr(self, '_headers_buffer'):
+        ikiwa self.request_version != 'HTTP/0.9':
+            ikiwa not hasattr(self, '_headers_buffer'):
                 self._headers_buffer = []
             self._headers_buffer.append(
                 ("%s: %s\r\n" % (keyword, value)).encode('latin-1', 'strict'))
 
-        if keyword.lower() == 'connection':
-            if value.lower() == 'close':
+        ikiwa keyword.lower() == 'connection':
+            ikiwa value.lower() == 'close':
                 self.close_connection = True
-            elif value.lower() == 'keep-alive':
+            elikiwa value.lower() == 'keep-alive':
                 self.close_connection = False
 
-    def end_headers(self):
+    eleza end_headers(self):
         """Send the blank line ending the MIME headers."""
-        if self.request_version != 'HTTP/0.9':
+        ikiwa self.request_version != 'HTTP/0.9':
             self._headers_buffer.append(b"\r\n")
             self.flush_headers()
 
-    def flush_headers(self):
-        if hasattr(self, '_headers_buffer'):
+    eleza flush_headers(self):
+        ikiwa hasattr(self, '_headers_buffer'):
             self.wfile.write(b"".join(self._headers_buffer))
             self._headers_buffer = []
 
-    def log_request(self, code='-', size='-'):
+    eleza log_request(self, code='-', size='-'):
         """Log an accepted request.
 
         This is called by send_response().
 
         """
-        if isinstance(code, HTTPStatus):
+        ikiwa isinstance(code, HTTPStatus):
             code = code.value
         self.log_message('"%s" %s %s',
                          self.requestline, str(code), str(size))
 
-    def log_error(self, format, *args):
+    eleza log_error(self, format, *args):
         """Log an error.
 
         This is called when a request cannot be fulfilled.  By
@@ -557,11 +557,11 @@ class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
 
         self.log_message(format, *args)
 
-    def log_message(self, format, *args):
+    eleza log_message(self, format, *args):
         """Log an arbitrary message.
 
         This is used by all other logging functions.  Override
-        it if you have specific logging wishes.
+        it ikiwa you have specific logging wishes.
 
         The first argument, FORMAT, is a format string for the
         message to be logged.  If the format string contains
@@ -579,23 +579,23 @@ class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                           self.log_date_time_string(),
                           format%args))
 
-    def version_string(self):
+    eleza version_string(self):
         """Return the server software version string."""
-        return self.server_version + ' ' + self.sys_version
+        rudisha self.server_version + ' ' + self.sys_version
 
-    def date_time_string(self, timestamp=None):
+    eleza date_time_string(self, timestamp=None):
         """Return the current date and time formatted for a message header."""
-        if timestamp is None:
+        ikiwa timestamp is None:
             timestamp = time.time()
-        return email.utils.formatdate(timestamp, usegmt=True)
+        rudisha email.utils.formatdate(timestamp, usegmt=True)
 
-    def log_date_time_string(self):
+    eleza log_date_time_string(self):
         """Return the current time formatted for logging."""
         now = time.time()
         year, month, day, hh, mm, ss, x, y, z = time.localtime(now)
         s = "%02d/%3s/%04d %02d:%02d:%02d" % (
                 day, self.monthname[month], year, hh, mm, ss)
-        return s
+        rudisha s
 
     weekdayname = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
@@ -603,12 +603,12 @@ class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-    def address_string(self):
+    eleza address_string(self):
         """Return the client address."""
 
-        return self.client_address[0]
+        rudisha self.client_address[0]
 
-    # Essentially static class variables
+    # Essentially static kundi variables
 
     # The version of the HTTP protocol we support.
     # Set this to HTTP/1.1 to enable automatic keepalive
@@ -624,7 +624,7 @@ class BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     }
 
 
-class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
+kundi SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
     """Simple HTTP request handler with GET and HEAD commands.
 
@@ -639,28 +639,28 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
     server_version = "SimpleHTTP/" + __version__
 
-    def __init__(self, *args, directory=None, **kwargs):
-        if directory is None:
+    eleza __init__(self, *args, directory=None, **kwargs):
+        ikiwa directory is None:
             directory = os.getcwd()
         self.directory = directory
         super().__init__(*args, **kwargs)
 
-    def do_GET(self):
+    eleza do_GET(self):
         """Serve a GET request."""
         f = self.send_head()
-        if f:
+        ikiwa f:
             try:
                 self.copyfile(f, self.wfile)
             finally:
                 f.close()
 
-    def do_HEAD(self):
+    eleza do_HEAD(self):
         """Serve a HEAD request."""
         f = self.send_head()
-        if f:
+        ikiwa f:
             f.close()
 
-    def send_head(self):
+    eleza send_head(self):
         """Common code for GET and HEAD commands.
 
         This sends the response code and MIME headers.
@@ -673,9 +673,9 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         """
         path = self.translate_path(self.path)
         f = None
-        if os.path.isdir(path):
+        ikiwa os.path.isdir(path):
             parts = urllib.parse.urlsplit(self.path)
-            if not parts.path.endswith('/'):
+            ikiwa not parts.path.endswith('/'):
                 # redirect browser - doing basically what apache does
                 self.send_response(HTTPStatus.MOVED_PERMANENTLY)
                 new_parts = (parts[0], parts[1], parts[2] + '/',
@@ -683,33 +683,33 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 new_url = urllib.parse.urlunsplit(new_parts)
                 self.send_header("Location", new_url)
                 self.end_headers()
-                return None
+                rudisha None
             for index in "index.html", "index.htm":
                 index = os.path.join(path, index)
-                if os.path.exists(index):
+                ikiwa os.path.exists(index):
                     path = index
                     break
             else:
-                return self.list_directory(path)
+                rudisha self.list_directory(path)
         ctype = self.guess_type(path)
-        # check for trailing "/" which should return 404. See Issue17324
+        # check for trailing "/" which should rudisha 404. See Issue17324
         # The test for this was added in test_httpserver.py
         # However, some OS platforms accept a trailingSlash as a filename
         # See discussion on python-dev and Issue34711 regarding
         # parseing and rejection of filenames with a trailing slash
-        if path.endswith("/"):
+        ikiwa path.endswith("/"):
             self.send_error(HTTPStatus.NOT_FOUND, "File not found")
-            return None
+            rudisha None
         try:
             f = open(path, 'rb')
         except OSError:
             self.send_error(HTTPStatus.NOT_FOUND, "File not found")
-            return None
+            rudisha None
 
         try:
             fs = os.fstat(f.fileno())
-            # Use browser cache if possible
-            if ("If-Modified-Since" in self.headers
+            # Use browser cache ikiwa possible
+            ikiwa ("If-Modified-Since" in self.headers
                     and "If-None-Match" not in self.headers):
                 # compare If-Modified-Since and time of last file modification
                 try:
@@ -719,22 +719,22 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                     # ignore ill-formed values
                     pass
                 else:
-                    if ims.tzinfo is None:
+                    ikiwa ims.tzinfo is None:
                         # obsolete format with no timezone, cf.
                         # https://tools.ietf.org/html/rfc7231#section-7.1.1.1
                         ims = ims.replace(tzinfo=datetime.timezone.utc)
-                    if ims.tzinfo is datetime.timezone.utc:
+                    ikiwa ims.tzinfo is datetime.timezone.utc:
                         # compare to UTC datetime of last modification
-                        last_modif = datetime.datetime.fromtimestamp(
+                        last_modikiwa = datetime.datetime.kutokatimestamp(
                             fs.st_mtime, datetime.timezone.utc)
                         # remove microseconds, like in If-Modified-Since
-                        last_modif = last_modif.replace(microsecond=0)
+                        last_modikiwa = last_modif.replace(microsecond=0)
 
-                        if last_modif <= ims:
+                        ikiwa last_modikiwa <= ims:
                             self.send_response(HTTPStatus.NOT_MODIFIED)
                             self.end_headers()
                             f.close()
-                            return None
+                            rudisha None
 
             self.send_response(HTTPStatus.OK)
             self.send_header("Content-type", ctype)
@@ -742,12 +742,12 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_header("Last-Modified",
                 self.date_time_string(fs.st_mtime))
             self.end_headers()
-            return f
+            rudisha f
         except:
             f.close()
             raise
 
-    def list_directory(self, path):
+    eleza list_directory(self, path):
         """Helper to produce a directory listing (absent index.html).
 
         Return value is either a file object, or None (indicating an
@@ -761,7 +761,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_error(
                 HTTPStatus.NOT_FOUND,
                 "No permission to list directory")
-            return None
+            rudisha None
         list.sort(key=lambda a: a.lower())
         r = []
         try:
@@ -784,10 +784,10 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             fullname = os.path.join(path, name)
             displayname = linkname = name
             # Append / for directories or @ for symbolic links
-            if os.path.isdir(fullname):
+            ikiwa os.path.isdir(fullname):
                 displayname = name + "/"
                 linkname = name + "/"
-            if os.path.islink(fullname):
+            ikiwa os.path.islink(fullname):
                 displayname = name + "@"
                 # Note: a link to a directory displays with @ and links with /
             r.append('<li><a href="%s">%s</a></li>'
@@ -803,9 +803,9 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         self.send_header("Content-type", "text/html; charset=%s" % enc)
         self.send_header("Content-Length", str(len(encoded)))
         self.end_headers()
-        return f
+        rudisha f
 
-    def translate_path(self, path):
+    eleza translate_path(self, path):
         """Translate a /-separated PATH to the local filename syntax.
 
         Components that mean special things to the local file system
@@ -827,15 +827,15 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         words = filter(None, words)
         path = self.directory
         for word in words:
-            if os.path.dirname(word) or word in (os.curdir, os.pardir):
+            ikiwa os.path.dirname(word) or word in (os.curdir, os.pardir):
                 # Ignore components that are not a simple file/directory name
                 continue
             path = os.path.join(path, word)
-        if trailing_slash:
+        ikiwa trailing_slash:
             path += '/'
-        return path
+        rudisha path
 
-    def copyfile(self, source, outputfile):
+    eleza copyfile(self, source, outputfile):
         """Copy all data between two file objects.
 
         The SOURCE argument is a file object open for reading
@@ -851,7 +851,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         """
         shutil.copyfileobj(source, outputfile)
 
-    def guess_type(self, path):
+    eleza guess_type(self, path):
         """Guess the type of a file.
 
         Argument is a PATH (a filename).
@@ -867,15 +867,15 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         """
 
         base, ext = posixpath.splitext(path)
-        if ext in self.extensions_map:
-            return self.extensions_map[ext]
+        ikiwa ext in self.extensions_map:
+            rudisha self.extensions_map[ext]
         ext = ext.lower()
-        if ext in self.extensions_map:
-            return self.extensions_map[ext]
+        ikiwa ext in self.extensions_map:
+            rudisha self.extensions_map[ext]
         else:
-            return self.extensions_map['']
+            rudisha self.extensions_map['']
 
-    if not mimetypes.inited:
+    ikiwa not mimetypes.inited:
         mimetypes.init() # try to read system mime.types
     extensions_map = mimetypes.types_map.copy()
     extensions_map.update({
@@ -888,7 +888,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
 # Utilities for CGIHTTPRequestHandler
 
-def _url_collapse_path(path):
+eleza _url_collapse_path(path):
     """
     Given a URL path, remove extra '/'s and '.' path elements and collapse
     any '..' references and returns a collapsed path.
@@ -899,7 +899,7 @@ def _url_collapse_path(path):
 
     Returns: The reconstituted URL, which will always start with a '/'.
 
-    Raises: IndexError if too many '..' occur within the path.
+    Raises: IndexError ikiwa too many '..' occur within the path.
 
     """
     # Query component should not be involved.
@@ -911,55 +911,55 @@ def _url_collapse_path(path):
     path_parts = path.split('/')
     head_parts = []
     for part in path_parts[:-1]:
-        if part == '..':
-            head_parts.pop() # IndexError if more '..' than prior parts
-        elif part and part != '.':
+        ikiwa part == '..':
+            head_parts.pop() # IndexError ikiwa more '..' than prior parts
+        elikiwa part and part != '.':
             head_parts.append( part )
-    if path_parts:
+    ikiwa path_parts:
         tail_part = path_parts.pop()
-        if tail_part:
-            if tail_part == '..':
+        ikiwa tail_part:
+            ikiwa tail_part == '..':
                 head_parts.pop()
                 tail_part = ''
-            elif tail_part == '.':
+            elikiwa tail_part == '.':
                 tail_part = ''
     else:
         tail_part = ''
 
-    if query:
+    ikiwa query:
         tail_part = '?'.join((tail_part, query))
 
     splitpath = ('/' + '/'.join(head_parts), tail_part)
     collapsed_path = "/".join(splitpath)
 
-    return collapsed_path
+    rudisha collapsed_path
 
 
 
 nobody = None
 
-def nobody_uid():
+eleza nobody_uid():
     """Internal routine to get nobody's uid"""
     global nobody
-    if nobody:
-        return nobody
+    ikiwa nobody:
+        rudisha nobody
     try:
         agiza pwd
     except ImportError:
-        return -1
+        rudisha -1
     try:
         nobody = pwd.getpwnam('nobody')[2]
     except KeyError:
         nobody = 1 + max(x[2] for x in pwd.getpwall())
-    return nobody
+    rudisha nobody
 
 
-def executable(path):
+eleza executable(path):
     """Test for executable file."""
-    return os.access(path, os.X_OK)
+    rudisha os.access(path, os.X_OK)
 
 
-class CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
+kundi CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
 
     """Complete HTTP server with GET, HEAD and POST commands.
 
@@ -976,32 +976,32 @@ class CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
     # the rest to a subprocess, so we can't use buffered input.
     rbufsize = 0
 
-    def do_POST(self):
+    eleza do_POST(self):
         """Serve a POST request.
 
         This is only implemented for CGI scripts.
 
         """
 
-        if self.is_cgi():
+        ikiwa self.is_cgi():
             self.run_cgi()
         else:
             self.send_error(
                 HTTPStatus.NOT_IMPLEMENTED,
                 "Can only POST to CGI scripts")
 
-    def send_head(self):
+    eleza send_head(self):
         """Version of send_head that support CGI scripts"""
-        if self.is_cgi():
-            return self.run_cgi()
+        ikiwa self.is_cgi():
+            rudisha self.run_cgi()
         else:
-            return SimpleHTTPRequestHandler.send_head(self)
+            rudisha SimpleHTTPRequestHandler.send_head(self)
 
-    def is_cgi(self):
+    eleza is_cgi(self):
         """Test whether self.path corresponds to a CGI script.
 
         Returns True and updates the cgi_info attribute to the tuple
-        (dir, rest) if self.path requires running a CGI script.
+        (dir, rest) ikiwa self.path requires running a CGI script.
         Returns False otherwise.
 
         If any exception is raised, the caller should assume that
@@ -1015,24 +1015,24 @@ class CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
         collapsed_path = _url_collapse_path(self.path)
         dir_sep = collapsed_path.find('/', 1)
         head, tail = collapsed_path[:dir_sep], collapsed_path[dir_sep+1:]
-        if head in self.cgi_directories:
+        ikiwa head in self.cgi_directories:
             self.cgi_info = head, tail
-            return True
-        return False
+            rudisha True
+        rudisha False
 
 
     cgi_directories = ['/cgi-bin', '/htbin']
 
-    def is_executable(self, path):
+    eleza is_executable(self, path):
         """Test whether argument path is an executable file."""
-        return executable(path)
+        rudisha executable(path)
 
-    def is_python(self, path):
+    eleza is_python(self, path):
         """Test whether argument path is a Python script."""
         head, tail = os.path.splitext(path)
-        return tail.lower() in (".py", ".pyw")
+        rudisha tail.lower() in (".py", ".pyw")
 
-    def run_cgi(self):
+    eleza run_cgi(self):
         """Execute a CGI script."""
         dir, rest = self.cgi_info
         path = dir + '/' + rest
@@ -1042,38 +1042,38 @@ class CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
             nextrest = path[i+1:]
 
             scriptdir = self.translate_path(nextdir)
-            if os.path.isdir(scriptdir):
+            ikiwa os.path.isdir(scriptdir):
                 dir, rest = nextdir, nextrest
                 i = path.find('/', len(dir)+1)
             else:
                 break
 
-        # find an explicit query string, if present.
+        # find an explicit query string, ikiwa present.
         rest, _, query = rest.partition('?')
 
         # dissect the part after the directory name into a script name &
         # a possible additional path, to be stored in PATH_INFO.
         i = rest.find('/')
-        if i >= 0:
+        ikiwa i >= 0:
             script, rest = rest[:i], rest[i:]
         else:
             script, rest = rest, ''
 
         scriptname = dir + '/' + script
         scriptfile = self.translate_path(scriptname)
-        if not os.path.exists(scriptfile):
+        ikiwa not os.path.exists(scriptfile):
             self.send_error(
                 HTTPStatus.NOT_FOUND,
                 "No such CGI script (%r)" % scriptname)
             return
-        if not os.path.isfile(scriptfile):
+        ikiwa not os.path.isfile(scriptfile):
             self.send_error(
                 HTTPStatus.FORBIDDEN,
                 "CGI script is not a plain file (%r)" % scriptname)
             return
         ispy = self.is_python(scriptname)
-        if self.have_fork or not ispy:
-            if not self.is_executable(scriptfile):
+        ikiwa self.have_fork or not ispy:
+            ikiwa not self.is_executable(scriptfile):
                 self.send_error(
                     HTTPStatus.FORBIDDEN,
                     "CGI script is not executable (%r)" % scriptname)
@@ -1092,16 +1092,16 @@ class CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
         env['PATH_INFO'] = uqrest
         env['PATH_TRANSLATED'] = self.translate_path(uqrest)
         env['SCRIPT_NAME'] = scriptname
-        if query:
+        ikiwa query:
             env['QUERY_STRING'] = query
         env['REMOTE_ADDR'] = self.client_address[0]
         authorization = self.headers.get("authorization")
-        if authorization:
+        ikiwa authorization:
             authorization = authorization.split()
-            if len(authorization) == 2:
+            ikiwa len(authorization) == 2:
                 agiza base64, binascii
                 env['AUTH_TYPE'] = authorization[0]
-                if authorization[0].lower() == "basic":
+                ikiwa authorization[0].lower() == "basic":
                     try:
                         authorization = authorization[1].encode('ascii')
                         authorization = base64.decodebytes(authorization).\
@@ -1110,32 +1110,32 @@ class CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
                         pass
                     else:
                         authorization = authorization.split(':')
-                        if len(authorization) == 2:
+                        ikiwa len(authorization) == 2:
                             env['REMOTE_USER'] = authorization[0]
         # XXX REMOTE_IDENT
-        if self.headers.get('content-type') is None:
+        ikiwa self.headers.get('content-type') is None:
             env['CONTENT_TYPE'] = self.headers.get_content_type()
         else:
             env['CONTENT_TYPE'] = self.headers['content-type']
         length = self.headers.get('content-length')
-        if length:
+        ikiwa length:
             env['CONTENT_LENGTH'] = length
         referer = self.headers.get('referer')
-        if referer:
+        ikiwa referer:
             env['HTTP_REFERER'] = referer
         accept = []
         for line in self.headers.getallmatchingheaders('accept'):
-            if line[:1] in "\t\n\r ":
+            ikiwa line[:1] in "\t\n\r ":
                 accept.append(line.strip())
             else:
                 accept = accept + line[7:].split(',')
         env['HTTP_ACCEPT'] = ','.join(accept)
         ua = self.headers.get('user-agent')
-        if ua:
+        ikiwa ua:
             env['HTTP_USER_AGENT'] = ua
         co = filter(None, self.headers.get_all('cookie', []))
         cookie_str = ', '.join(co)
-        if cookie_str:
+        ikiwa cookie_str:
             env['HTTP_COOKIE'] = cookie_str
         # XXX Other HTTP_* headers
         # Since we're setting the env in the parent, provide empty
@@ -1149,22 +1149,22 @@ class CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
 
         decoded_query = query.replace('+', ' ')
 
-        if self.have_fork:
+        ikiwa self.have_fork:
             # Unix -- fork as we should
             args = [script]
-            if '=' not in decoded_query:
+            ikiwa '=' not in decoded_query:
                 args.append(decoded_query)
             nobody = nobody_uid()
             self.wfile.flush() # Always flush before forking
             pid = os.fork()
-            if pid != 0:
+            ikiwa pid != 0:
                 # Parent
                 pid, sts = os.waitpid(pid, 0)
                 # throw away additional data [see bug #427345]
                 while select.select([self.rfile], [], [], 0)[0]:
-                    if not self.rfile.read(1):
+                    ikiwa not self.rfile.read(1):
                         break
-                if sts:
+                ikiwa sts:
                     self.log_error("CGI script exit status %#x", sts)
                 return
             # Child
@@ -1184,13 +1184,13 @@ class CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
             # Non-Unix -- use subprocess
             agiza subprocess
             cmdline = [scriptfile]
-            if self.is_python(scriptfile):
+            ikiwa self.is_python(scriptfile):
                 interp = sys.executable
-                if interp.lower().endswith("w.exe"):
+                ikiwa interp.lower().endswith("w.exe"):
                     # On Windows, use python.exe, not pythonw.exe
                     interp = interp[:-5] + interp[-4:]
                 cmdline = [interp, '-u'] + cmdline
-            if '=' not in query:
+            ikiwa '=' not in query:
                 cmdline.append(query)
             self.log_message("command: %s", subprocess.list2cmdline(cmdline))
             try:
@@ -1203,38 +1203,38 @@ class CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
                                  stderr=subprocess.PIPE,
                                  env = env
                                  )
-            if self.command.lower() == "post" and nbytes > 0:
+            ikiwa self.command.lower() == "post" and nbytes > 0:
                 data = self.rfile.read(nbytes)
             else:
                 data = None
             # throw away additional data [see bug #427345]
             while select.select([self.rfile._sock], [], [], 0)[0]:
-                if not self.rfile._sock.recv(1):
+                ikiwa not self.rfile._sock.recv(1):
                     break
             stdout, stderr = p.communicate(data)
             self.wfile.write(stdout)
-            if stderr:
+            ikiwa stderr:
                 self.log_error('%s', stderr)
             p.stderr.close()
             p.stdout.close()
             status = p.returncode
-            if status:
+            ikiwa status:
                 self.log_error("CGI script exit status %#x", status)
             else:
                 self.log_message("CGI script exited OK")
 
 
-def _get_best_family(*address):
+eleza _get_best_family(*address):
     infos = socket.getaddrinfo(
         *address,
         type=socket.SOCK_STREAM,
         flags=socket.AI_PASSIVE,
     )
     family, type, proto, canonname, sockaddr = next(iter(infos))
-    return family, sockaddr
+    rudisha family, sockaddr
 
 
-def test(HandlerClass=BaseHTTPRequestHandler,
+eleza test(HandlerClass=BaseHTTPRequestHandler,
          ServerClass=ThreadingHTTPServer,
          protocol="HTTP/1.0", port=8000, bind=None):
     """Test the HTTP request handler class.
@@ -1247,18 +1247,18 @@ def test(HandlerClass=BaseHTTPRequestHandler,
     HandlerClass.protocol_version = protocol
     with ServerClass(addr, HandlerClass) as httpd:
         host, port = httpd.socket.getsockname()[:2]
-        url_host = f'[{host}]' if ':' in host else host
-        print(
+        url_host = f'[{host}]' ikiwa ':' in host else host
+        andika(
             f"Serving HTTP on {host} port {port} "
             f"(http://{url_host}:{port}/) ..."
         )
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
-            print("\nKeyboard interrupt received, exiting.")
+            andika("\nKeyboard interrupt received, exiting.")
             sys.exit(0)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     agiza argparse
 
     parser = argparse.ArgumentParser()
@@ -1275,9 +1275,9 @@ if __name__ == '__main__':
                         nargs='?',
                         help='Specify alternate port [default: 8000]')
     args = parser.parse_args()
-    if args.cgi:
-        handler_class = CGIHTTPRequestHandler
+    ikiwa args.cgi:
+        handler_kundi = CGIHTTPRequestHandler
     else:
-        handler_class = partial(SimpleHTTPRequestHandler,
+        handler_kundi = partial(SimpleHTTPRequestHandler,
                                 directory=args.directory)
     test(HandlerClass=handler_class, port=args.port, bind=args.bind)

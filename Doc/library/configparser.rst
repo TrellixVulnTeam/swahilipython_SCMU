@@ -21,7 +21,7 @@
 
 --------------
 
-This module provides the :class:`ConfigParser` class which implements a basic
+This module provides the :class:`ConfigParser` kundi which implements a basic
 configuration language which provides a structure similar to what's found in
 Microsoft Windows INI files.  You can use this to write Python programs which
 can be customized by end users easily.
@@ -44,7 +44,7 @@ can be customized by end users easily.
 
 .. testsetup::
 
-   import configparser
+   agiza configparser
 
 
 Quick Start
@@ -75,7 +75,7 @@ creating the above configuration file programmatically.
 
 .. doctest::
 
-   >>> import configparser
+   >>> agiza configparser
    >>> config = configparser.ConfigParser()
    >>> config['DEFAULT'] = {'ServerAliveInterval': '45',
    ...                      'Compression': 'yes',
@@ -93,7 +93,7 @@ creating the above configuration file programmatically.
 
 As you can see, we can treat a config parser much like a dictionary.
 There are differences, `outlined later <#mapping-protocol-access>`_, but
-the behavior is very close to what you would expect from a dictionary.
+the behavior is very close to what you would expect kutoka a dictionary.
 
 Now that we have created and saved a configuration file, let's read it
 back and explore the data it holds.
@@ -155,7 +155,7 @@ methods to handle integers, floats and booleans.  The last one is the most
 interesting because simply passing the value to ``bool()`` would do no good
 since ``bool('False')`` is still ``True``.  This is why config parsers also
 provide :meth:`~ConfigParser.getboolean`.  This method is case-insensitive and
-recognizes Boolean values from ``'yes'``/``'no'``, ``'on'``/``'off'``,
+recognizes Boolean values kutoka ``'yes'``/``'no'``, ``'on'``/``'off'``,
 ``'true'``/``'false'`` and ``'1'``/``'0'`` [1]_.  For example:
 
 .. doctest::
@@ -167,7 +167,7 @@ recognizes Boolean values from ``'yes'``/``'no'``, ``'on'``/``'off'``,
    >>> config.getboolean('bitbucket.org', 'Compression')
    True
 
-Apart from :meth:`~ConfigParser.getboolean`, config parsers also
+Apart kutoka :meth:`~ConfigParser.getboolean`, config parsers also
 provide equivalent :meth:`~ConfigParser.getint` and
 :meth:`~ConfigParser.getfloat` methods.  You can register your own
 converters and customize the provided ones. [1]_
@@ -190,7 +190,7 @@ provide fallback values:
 
 Please note that default values have precedence over fallback values.
 For instance, in our example the ``'CompressionLevel'`` key was
-specified only in the ``'DEFAULT'`` section.  If we try to get it from
+specified only in the ``'DEFAULT'`` section.  If we try to get it kutoka
 the section ``'topsecret.server.com'``, we will always get the default,
 even if we specify a fallback:
 
@@ -231,7 +231,7 @@ Supported INI File Structure
 A configuration file consists of sections, each led by a ``[section]`` header,
 followed by key/value entries separated by a specific string (``=`` or ``:`` by
 default [1]_).  By default, section names are case sensitive but keys are not
-[1]_.  Leading and trailing whitespace is removed from keys and values.
+[1]_.  Leading and trailing whitespace is removed kutoka keys and values.
 Values can be omitted, in which case the key/value delimiter may also be left
 out.  Values can also span multiple lines, as long as they are indented deeper
 than the first line of the value.  Depending on the parser's mode, blank lines
@@ -250,7 +250,7 @@ For example:
    spaces in keys=allowed
    spaces in values=allowed as well
    spaces around the delimiter = obviously
-   you can also use : to delimit keys from values
+   you can also use : to delimit keys kutoka values
 
    [All Values Are Strings]
    values like this: 1000000
@@ -273,7 +273,7 @@ For example:
 
    # By default only in an empty line.
    # Inline comments can be harmful because they prevent users
-   # from using the delimiting characters as parts of values.
+   # kutoka using the delimiting characters as parts of values.
    # That being said, this can be customized.
 
        [Sections Can Be Indented]
@@ -293,7 +293,7 @@ Interpolation of values
 
 On top of the core functionality, :class:`ConfigParser` supports
 interpolation.  This means values can be preprocessed before returning them
-from ``get()`` calls.
+kutoka ``get()`` calls.
 
 .. index:: single: % (percent); interpolation in configuration files
 
@@ -333,10 +333,10 @@ from ``get()`` calls.
 
    An alternative handler for interpolation which implements a more advanced
    syntax, used for instance in ``zc.buildout``.  Extended interpolation is
-   using ``${section:option}`` to denote a value from a foreign section.
+   using ``${section:option}`` to denote a value kutoka a foreign section.
    Interpolation can span multiple levels.  For convenience, if the
    ``section:`` part is omitted, interpolation defaults to the current section
-   (and possibly the default values from the special section).
+   (and possibly the default values kutoka the special section).
 
    For example, the configuration specified above with basic interpolation,
    would look like this with extended interpolation:
@@ -351,7 +351,7 @@ from ``get()`` calls.
       [Escape]
       cost: $$80  # use a $$ to escape the $ sign ($ is the only character that needs to be escaped)
 
-   Values from other sections can be fetched as well:
+   Values kutoka other sections can be fetched as well:
 
    .. code-block:: ini
 
@@ -383,7 +383,7 @@ the mapping interface implementation is using the
 ``parser['section']['option']`` notation.
 
 ``parser['section']`` in particular returns a proxy for the section's data in
-the parser.  This means that the values are not copied but they are taken from
+the parser.  This means that the values are not copied but they are taken kutoka
 the original parser on demand.  What's even more important is that when values
 are changed on a section proxy, they are actually mutated in the original
 parser.
@@ -403,12 +403,12 @@ However, there are a few differences that should be taken into account:
 
 * All sections include ``DEFAULTSECT`` values as well which means that
   ``.clear()`` on a section may not leave the section visibly empty.  This is
-  because default values cannot be deleted from the section (because technically
+  because default values cannot be deleted kutoka the section (because technically
   they are not there).  If they are overridden in the section, deleting causes
   the default value to be visible again.  Trying to delete a default value
   causes a :exc:`KeyError`.
 
-* ``DEFAULTSECT`` cannot be removed from the parser:
+* ``DEFAULTSECT`` cannot be removed kutoka the parser:
 
   * trying to delete it raises :exc:`ValueError`,
 
@@ -495,7 +495,7 @@ the :meth:`__init__` options:
 
   .. doctest::
 
-     >>> import configparser
+     >>> agiza configparser
 
      >>> sample_config = """
      ... [mysqld]
@@ -525,7 +525,7 @@ the :meth:`__init__` options:
 
 * *delimiters*, default value: ``('=', ':')``
 
-  Delimiters are substrings that delimit keys from values within a section.
+  Delimiters are substrings that delimit keys kutoka values within a section.
   The first occurrence of a delimiting substring on a line is considered
   a delimiter.  This means values (but not keys) can contain the delimiters.
 
@@ -548,13 +548,13 @@ the :meth:`__init__` options:
      ``comment_prefixes=('#',';')`` and ``inline_comment_prefixes=(';',)``.
 
   Please note that config parsers don't support escaping of comment prefixes so
-  using *inline_comment_prefixes* may prevent users from specifying option
+  using *inline_comment_prefixes* may prevent users kutoka specifying option
   values with characters used as comment prefixes.  When in doubt, avoid
   setting *inline_comment_prefixes*.  In any circumstances, the only way of
   storing comment prefix characters at the beginning of a line in multiline
   values is to interpolate the prefix, for example::
 
-    >>> from configparser import ConfigParser, ExtendedInterpolation
+    >>> kutoka configparser agiza ConfigParser, ExtendedInterpolation
     >>> parser = ConfigParser(interpolation=ExtendedInterpolation())
     >>> # the default BasicInterpolation could be used as well
     >>> parser.read_string("""
@@ -596,7 +596,7 @@ the :meth:`__init__` options:
 * *strict*, default value: ``True``
 
   When set to ``True``, the parser will not allow for any section or option
-  duplicates while reading from a single source (using :meth:`read_file`,
+  duplicates while reading kutoka a single source (using :meth:`read_file`,
   :meth:`read_string` or :meth:`read_dict`).  It is recommended to use strict
   parsers in new applications.
 
@@ -636,10 +636,10 @@ the :meth:`__init__` options:
   normally called ``"DEFAULT"`` but this can be customized to point to any
   other valid section name.  Some typical values include: ``"general"`` or
   ``"common"``.  The name provided is used for recognizing default sections
-  when reading from any source and is used when writing configuration back to
+  when reading kutoka any source and is used when writing configuration back to
   a file.  Its current value can be retrieved using the
   ``parser_instance.default_section`` attribute and may be modified at runtime
-  (i.e. to convert files from one format to another).
+  (i.e. to convert files kutoka one format to another).
 
 * *interpolation*, default value: ``configparser.BasicInterpolation``
 
@@ -655,7 +655,7 @@ the :meth:`__init__` options:
   Config parsers provide option value getters that perform type conversion.  By
   default :meth:`~ConfigParser.getint`, :meth:`~ConfigParser.getfloat`, and
   :meth:`~ConfigParser.getboolean` are implemented.  Should other getters be
-  desirable, users may define them in a subclass or pass a dictionary where each
+  desirable, users may define them in a subkundi or pass a dictionary where each
   key is a name of the converter and each value is a callable implementing said
   conversion.  For instance, passing ``{'decimal': decimal.Decimal}`` would add
   :meth:`getdecimal` on both the parser object and all section proxies.  In
@@ -742,7 +742,7 @@ be overridden by subclasses or by attribute assignment.
 
   .. doctest::
 
-     >>> import re
+     >>> agiza re
      >>> config = """
      ... [Section 1]
      ... option = value
@@ -778,7 +778,7 @@ low-level and downright counterintuitive.
 
 An example of writing to a configuration file::
 
-   import configparser
+   agiza configparser
 
    config = configparser.RawConfigParser()
 
@@ -801,7 +801,7 @@ An example of writing to a configuration file::
 
 An example of reading the configuration file again::
 
-   import configparser
+   agiza configparser
 
    config = configparser.RawConfigParser()
    config.read('example.cfg')
@@ -819,7 +819,7 @@ An example of reading the configuration file again::
 
 To get interpolation, use :class:`ConfigParser`::
 
-   import configparser
+   agiza configparser
 
    cfg = configparser.ConfigParser()
    cfg.read('example.cfg')
@@ -853,7 +853,7 @@ To get interpolation, use :class:`ConfigParser`::
 Default values are available in both types of ConfigParsers.  They are used in
 interpolation if an option used is not defined elsewhere. ::
 
-   import configparser
+   agiza configparser
 
    # New instance with 'bar' and 'baz' defaulting to 'Life' and 'hard' each
    config = configparser.ConfigParser({'bar': 'Life', 'baz': 'hard'})
@@ -878,13 +878,13 @@ ConfigParser Objects
    the options within a section, and for the default values.
 
    When *delimiters* is given, it is used as the set of substrings that
-   divide keys from values.  When *comment_prefixes* is given, it will be used
+   divide keys kutoka values.  When *comment_prefixes* is given, it will be used
    as the set of substrings that prefix comments in otherwise empty lines.
    Comments can be indented.  When *inline_comment_prefixes* is given, it will
    be used as the set of substrings that prefix comments in non-empty lines.
 
    When *strict* is ``True`` (the default), the parser won't allow for
-   any section or option duplicates while reading from a single source (file,
+   any section or option duplicates while reading kutoka a single source (file,
    string or dictionary), raising :exc:`DuplicateSectionError` or
    :exc:`DuplicateOptionError`.  When *empty_lines_in_values* is ``False``
    (default: ``True``), each empty line marks the end of an option.  Otherwise,
@@ -912,7 +912,7 @@ ConfigParser Objects
 
    When *converters* is given, it should be a dictionary where each key
    represents the name of a type converter and each value is a callable
-   implementing the conversion from string to the desired datatype.  Every
+   implementing the conversion kutoka string to the desired datatype.  Every
    converter gets its own corresponding :meth:`get*()` method on the parser
    object and section proxies.
 
@@ -992,11 +992,11 @@ ConfigParser Objects
 
       If none of the named files exist, the :class:`ConfigParser`
       instance will contain an empty dataset.  An application which requires
-      initial values to be loaded from a file should load the required file or
+      initial values to be loaded kutoka a file should load the required file or
       files using :meth:`read_file` before calling :meth:`read` for any
       optional files::
 
-         import configparser, os
+         agiza configparser, os
 
          config = configparser.ConfigParser()
          config.read_file(open('defaults.cfg'))
@@ -1016,7 +1016,7 @@ ConfigParser Objects
 
    .. method:: read_file(f, source=None)
 
-      Read and parse configuration data from *f* which must be an iterable
+      Read and parse configuration data kutoka *f* which must be an iterable
       yielding Unicode strings (for example files opened in text mode).
 
       Optional argument *source* specifies the name of the file being read.  If
@@ -1028,7 +1028,7 @@ ConfigParser Objects
 
    .. method:: read_string(string, source='<string>')
 
-      Parse configuration data from a string.
+      Parse configuration data kutoka a string.
 
       Optional argument *source* specifies a context-specific name of the
       string passed.  If not given, ``'<string>'`` is used.  This should
@@ -1039,7 +1039,7 @@ ConfigParser Objects
 
    .. method:: read_dict(dictionary, source='<dict>')
 
-      Load configuration from any object that provides a dict-like ``items()``
+      Load configuration kutoka any object that provides a dict-like ``items()``
       method.  Keys are section names, values are dictionaries with keys and
       values that should be present in the section.  If the used dictionary
       type preserves order, sections and their keys will be added in order.
@@ -1067,7 +1067,7 @@ ConfigParser Objects
 
       .. versionchanged:: 3.2
          Arguments *raw*, *vars* and *fallback* are keyword only to protect
-         users from trying to use the third argument as the *fallback* fallback
+         users kutoka trying to use the third argument as the *fallback* fallback
          (especially when using the mapping protocol).
 
 
@@ -1131,7 +1131,7 @@ ConfigParser Objects
 
    .. method:: remove_option(section, option)
 
-      Remove the specified *option* from the specified *section*.  If the
+      Remove the specified *option* kutoka the specified *section*.  If the
       section does not exist, raise :exc:`NoSectionError`.  If the option
       existed to be removed, return :const:`True`; otherwise return
       :const:`False`.
@@ -1139,7 +1139,7 @@ ConfigParser Objects
 
    .. method:: remove_section(section)
 
-      Remove the specified *section* from the configuration.  If the section in
+      Remove the specified *section* kutoka the configuration.  If the section in
       fact existed, return ``True``.  Otherwise return ``False``.
 
 
@@ -1151,7 +1151,7 @@ ConfigParser Objects
       *option*; subclasses may override this or client code can set an attribute
       of this name on instances to affect this behavior.
 
-      You don't need to subclass the parser to use this method, you can also
+      You don't need to subkundi the parser to use this method, you can also
       set it on an instance, to a function that takes a string argument and
       returns a string.  Setting it to ``str``, for example, would make option
       names case sensitive::
@@ -1250,7 +1250,7 @@ Exceptions
 
 .. exception:: Error
 
-   Base class for all other :mod:`configparser` exceptions.
+   Base kundi for all other :mod:`configparser` exceptions.
 
 
 .. exception:: NoSectionError
@@ -1272,7 +1272,7 @@ Exceptions
 .. exception:: DuplicateOptionError
 
    Exception raised by strict parsers if a single option appears twice during
-   reading from a single file, string or dictionary. This catches misspellings
+   reading kutoka a single file, string or dictionary. This catches misspellings
    and case sensitivity-related errors, e.g. a dictionary may have two keys
    representing the same case-insensitive configuration key.
 
@@ -1285,27 +1285,27 @@ Exceptions
 
 .. exception:: InterpolationError
 
-   Base class for exceptions raised when problems occur performing string
+   Base kundi for exceptions raised when problems occur performing string
    interpolation.
 
 
 .. exception:: InterpolationDepthError
 
    Exception raised when string interpolation cannot be completed because the
-   number of iterations exceeds :const:`MAX_INTERPOLATION_DEPTH`.  Subclass of
+   number of iterations exceeds :const:`MAX_INTERPOLATION_DEPTH`.  Subkundi of
    :exc:`InterpolationError`.
 
 
 .. exception:: InterpolationMissingOptionError
 
-   Exception raised when an option referenced from a value does not exist.
-   Subclass of :exc:`InterpolationError`.
+   Exception raised when an option referenced kutoka a value does not exist.
+   Subkundi of :exc:`InterpolationError`.
 
 
 .. exception:: InterpolationSyntaxError
 
    Exception raised when the source text into which substitutions are made does
-   not conform to the required syntax.  Subclass of :exc:`InterpolationError`.
+   not conform to the required syntax.  Subkundi of :exc:`InterpolationError`.
 
 
 .. exception:: MissingSectionHeaderError

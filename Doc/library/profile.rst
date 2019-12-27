@@ -56,8 +56,8 @@ on an existing application.
 
 To profile a function that takes a single argument, you can do::
 
-   import cProfile
-   import re
+   agiza cProfile
+   agiza re
    cProfile.run('re.compile("foo|bar")')
 
 (Use :mod:`profile` instead of :mod:`cProfile` if the latter is not available on
@@ -95,7 +95,7 @@ percall
    is the quotient of ``tottime`` divided by ``ncalls``
 
 cumtime
-   is the cumulative time spent in this and all subfunctions (from invocation
+   is the cumulative time spent in this and all subfunctions (kutoka invocation
    till exit). This figure is accurate *even* for recursive functions.
 
 percall
@@ -113,11 +113,11 @@ printed.
 Instead of printing the output at the end of the profile run, you can save the
 results to a file by specifying a filename to the :func:`run` function::
 
-   import cProfile
-   import re
+   agiza cProfile
+   agiza re
    cProfile.run('re.compile("foo|bar")', 'restats')
 
-The :class:`pstats.Stats` class reads profile results from a file and formats
+The :class:`pstats.Stats` kundi reads profile results kutoka a file and formats
 them in various ways.
 
 The files :mod:`cProfile` and :mod:`profile` can also be invoked as a script to
@@ -138,15 +138,15 @@ the output by. This only applies when ``-o`` is not supplied.
    .. versionadded:: 3.8
       Added the ``-m`` option to :mod:`profile`.
 
-The :mod:`pstats` module's :class:`~pstats.Stats` class has a variety of methods
+The :mod:`pstats` module's :class:`~pstats.Stats` kundi has a variety of methods
 for manipulating and printing the data saved into a profile results file::
 
-   import pstats
-   from pstats import SortKey
+   agiza pstats
+   kutoka pstats agiza SortKey
    p = pstats.Stats('restats')
    p.strip_dirs().sort_stats(-1).print_stats()
 
-The :meth:`~pstats.Stats.strip_dirs` method removed the extraneous path from all
+The :meth:`~pstats.Stats.strip_dirs` method removed the extraneous path kutoka all
 the module names. The :meth:`~pstats.Stats.sort_stats` method sorted all the
 entries according to the standard module/line/name string that is printed. The
 :meth:`~pstats.Stats.print_stats` method printed out all the statistics.  You
@@ -178,7 +178,7 @@ You might also try::
    p.sort_stats(SortKey.FILENAME).print_stats('__init__')
 
 This will sort all the statistics by file name, and then print out statistics
-for only the class init methods (since they are spelled with ``__init__`` in
+for only the kundi init methods (since they are spelled with ``__init__`` in
 them).  As one final example, you could try::
 
    p.sort_stats(SortKey.TIME, SortKey.CUMULATIVE).print_stats(.5, 'init')
@@ -222,7 +222,7 @@ functions:
 
       exec(command, __main__.__dict__, __main__.__dict__)
 
-   and gathers profiling statistics from the execution. If no file name is
+   and gathers profiling statistics kutoka the execution. If no file name is
    present, then this function automatically creates a :class:`~pstats.Stats`
    instance and prints a simple profiling report. If the sort value is specified,
    it is passed to this :class:`~pstats.Stats` instance to control how the
@@ -240,7 +240,7 @@ functions:
 
 .. class:: Profile(timer=None, timeunit=0.0, subcalls=True, builtins=True)
 
-   This class is normally only used if more precise control over profiling is
+   This kundi is normally only used if more precise control over profiling is
    needed than what the :func:`cProfile.run` function provides.
 
    A custom timer can be supplied for measuring how long code takes to run via
@@ -250,11 +250,11 @@ functions:
    example, if the timer returns times measured in thousands of seconds, the
    time unit would be ``.001``.
 
-   Directly using the :class:`Profile` class allows formatting profile results
+   Directly using the :class:`Profile` kundi allows formatting profile results
    without writing the profile data to a file::
 
-      import cProfile, pstats, io
-      from pstats import SortKey
+      agiza cProfile, pstats, io
+      kutoka pstats agiza SortKey
       pr = cProfile.Profile()
       pr.enable()
       # ... do something ...
@@ -265,10 +265,10 @@ functions:
       ps.print_stats()
       print(s.getvalue())
 
-   The :class:`Profile` class can also be used as a context manager (supported
+   The :class:`Profile` kundi can also be used as a context manager (supported
    only in :mod:`cProfile` module. see :ref:`typecontextmanager`)::
 
-      import cProfile
+      agiza cProfile
 
       with cProfile.Profile() as pr:
           # ... do something ...
@@ -330,8 +330,8 @@ Analysis of the profiler data is done using the :class:`~pstats.Stats` class.
 
 .. class:: Stats(*filenames or profile, stream=sys.stdout)
 
-   This class constructor creates an instance of a "statistics object" from a
-   *filename* (or list of filenames) or from a :class:`Profile` instance. Output
+   This kundi constructor creates an instance of a "statistics object" kutoka a
+   *filename* (or list of filenames) or kutoka a :class:`Profile` instance. Output
    will be printed to the stream specified by *stream*.
 
    The file selected by the above constructor must have been created by the
@@ -345,15 +345,15 @@ Analysis of the profiler data is done using the :class:`~pstats.Stats` class.
    existing :class:`~pstats.Stats` object, the :meth:`~pstats.Stats.add` method
    can be used.
 
-   Instead of reading the profile data from a file, a :class:`cProfile.Profile`
+   Instead of reading the profile data kutoka a file, a :class:`cProfile.Profile`
    or :class:`profile.Profile` object can be used as the profile data source.
 
    :class:`Stats` objects have the following methods:
 
    .. method:: strip_dirs()
 
-      This method for the :class:`Stats` class removes all leading path
-      information from file names.  It is very useful in reducing the size of
+      This method for the :class:`Stats` kundi removes all leading path
+      information kutoka file names.  It is very useful in reducing the size of
       the printout to fit within (close to) 80 columns.  This method modifies
       the object, and the stripped information is lost.  After performing a
       strip operation, the object is considered to have its entries in a
@@ -366,7 +366,7 @@ Analysis of the profiler data is done using the :class:`~pstats.Stats` class.
 
    .. method:: add(*filenames)
 
-      This method of the :class:`Stats` class accumulates additional profiling
+      This method of the :class:`Stats` kundi accumulates additional profiling
       information into the current profiling object.  Its arguments should refer
       to filenames created by the corresponding version of :func:`profile.run`
       or :func:`cProfile.run`. Statistics for identically named (re: file, line,
@@ -458,7 +458,7 @@ Analysis of the profiler data is done using the :class:`~pstats.Stats` class.
 
    .. method:: reverse_order()
 
-      This method for the :class:`Stats` class reverses the ordering of the
+      This method for the :class:`Stats` kundi reverses the ordering of the
       basic list within the object.  Note that by default ascending vs
       descending order is properly selected based on the sort key of choice.
 
@@ -468,7 +468,7 @@ Analysis of the profiler data is done using the :class:`~pstats.Stats` class.
 
    .. method:: print_stats(*restrictions)
 
-      This method for the :class:`Stats` class prints out a report as described
+      This method for the :class:`Stats` kundi prints out a report as described
       in the :func:`profile.run` definition.
 
       The order of the printing is based on the last
@@ -499,7 +499,7 @@ Analysis of the profiler data is done using the :class:`~pstats.Stats` class.
 
    .. method:: print_callers(*restrictions)
 
-      This method for the :class:`Stats` class prints a list of all functions
+      This method for the :class:`Stats` kundi prints a list of all functions
       that called each function in the profiled database.  The ordering is
       identical to that provided by :meth:`~pstats.Stats.print_stats`, and the
       definition of the restricting argument is also identical.  Each caller is
@@ -519,8 +519,8 @@ Analysis of the profiler data is done using the :class:`~pstats.Stats` class.
 
    .. method:: print_callees(*restrictions)
 
-      This method for the :class:`Stats` class prints a list of all function
-      that were called by the indicated function.  Aside from this reversal of
+      This method for the :class:`Stats` kundi prints a list of all function
+      that were called by the indicated function.  Aside kutoka this reversal of
       direction of calls (re: called vs was called by), the arguments and
       ordering are identical to the :meth:`~pstats.Stats.print_callers` method.
 
@@ -571,10 +571,10 @@ than the underlying clock.  If enough measurements are taken, then the "error"
 will tend to average out. Unfortunately, removing this first error induces a
 second source of error.
 
-The second problem is that it "takes a while" from when an event is dispatched
+The second problem is that it "takes a while" kutoka when an event is dispatched
 until the profiler's call to get the time actually *gets* the state of the
 clock.  Similarly, there is a certain lag when exiting the profiler event
-handler from the time that the clock's value was obtained (and then squirreled
+handler kutoka the time that the clock's value was obtained (and then squirreled
 away), until the user's code is once again executing.  As a result, functions
 that are called many times, or call many functions, will typically accumulate
 this error. The error that accumulates in this fashion is typically less than
@@ -597,13 +597,13 @@ and the results are actually better than without calibration.
 Calibration
 ===========
 
-The profiler of the :mod:`profile` module subtracts a constant from each event
+The profiler of the :mod:`profile` module subtracts a constant kutoka each event
 handling time to compensate for the overhead of calling the time function, and
 socking away the results.  By default, the constant is 0. The following
 procedure can be used to obtain a better constant for a given platform (see
 :ref:`profile-limitations`). ::
 
-   import profile
+   agiza profile
    pr = profile.Profile()
    for i in range(5):
        print(pr.calibrate(10000))
@@ -620,7 +620,7 @@ have to pass 100000, or even 1000000, to get consistent results.
 
 When you have a consistent answer, there are three ways you can use it::
 
-   import profile
+   agiza profile
 
    # 1. Apply computed bias to all Profile instances created hereafter.
    profile.Profile.bias = your_computed_bias
@@ -642,7 +642,7 @@ Using a custom timer
 
 If you want to change how current time is determined (for example, to force use
 of wall-clock time or elapsed process time), pass the timing function you want
-to the :class:`Profile` class constructor::
+to the :class:`Profile` kundi constructor::
 
     pr = profile.Profile(your_time_func)
 
@@ -657,25 +657,25 @@ you are using :class:`profile.Profile` or :class:`cProfile.Profile`,
    length 2, then you will get an especially fast version of the dispatch
    routine.
 
-   Be warned that you should calibrate the profiler class for the timer function
+   Be warned that you should calibrate the profiler kundi for the timer function
    that you choose (see :ref:`profile-calibration`).  For most machines, a timer
    that returns a lone integer value will provide the best results in terms of
    low overhead during profiling.  (:func:`os.times` is *pretty* bad, as it
    returns a tuple of floating point values).  If you want to substitute a
-   better timer in the cleanest fashion, derive a class and hardwire a
+   better timer in the cleanest fashion, derive a kundi and hardwire a
    replacement dispatch method that best handles your timer call, along with the
    appropriate calibration constant.
 
 :class:`cProfile.Profile`
    ``your_time_func`` should return a single number.  If it returns integers,
-   you can also invoke the class constructor with a second argument specifying
+   you can also invoke the kundi constructor with a second argument specifying
    the real duration of one unit of time.  For example, if
    ``your_integer_time_func`` returns times measured in thousands of seconds,
    you would construct the :class:`Profile` instance as follows::
 
       pr = cProfile.Profile(your_integer_time_func, 0.001)
 
-   As the :class:`cProfile.Profile` class cannot be calibrated, custom timer
+   As the :class:`cProfile.Profile` kundi cannot be calibrated, custom timer
    functions should be used with care and should be as fast as possible.  For
    the best results with a custom timer, it might be necessary to hard-code it
    in the C source of the internal :mod:`_lsprof` module.

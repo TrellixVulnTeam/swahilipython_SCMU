@@ -25,7 +25,7 @@ typedef struct {
     const label *ll_label;
 } labellist;
 
-/* An arc from one state to another */
+/* An arc kutoka one state to another */
 
 typedef struct {
     short       a_lbl;          /* Label of this arc */

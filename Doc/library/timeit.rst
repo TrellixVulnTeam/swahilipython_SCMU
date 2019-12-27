@@ -34,9 +34,9 @@ can be used to compare three different expressions:
    $ python3 -m timeit '"-".join(map(str, range(100)))'
    10000 loops, best of 5: 23.2 usec per loop
 
-This can be achieved from the :ref:`python-interface` with::
+This can be achieved kutoka the :ref:`python-interface` with::
 
-   >>> import timeit
+   >>> agiza timeit
    >>> timeit.timeit('"-".join(str(n) for n in range(100))', number=10000)
    0.3018611848820001
    >>> timeit.timeit('"-".join([str(n) for n in range(100)])', number=10000)
@@ -44,7 +44,7 @@ This can be achieved from the :ref:`python-interface` with::
    >>> timeit.timeit('"-".join(map(str, range(100)))', number=10000)
    0.23702679807320237
 
-A callable can also be passed from the :ref:`python-interface`::
+A callable can also be passed kutoka the :ref:`python-interface`::
 
    >>> timeit.timeit(lambda: "-".join(map(str, range(100))), number=10000)
    0.19665591977536678
@@ -84,7 +84,7 @@ The module defines three convenience functions and a public class:
       The optional *globals* parameter was added.
 
    .. versionchanged:: 3.7
-      Default value of *repeat* changed from 3 to 5.
+      Default value of *repeat* changed kutoka 3 to 5.
 
 .. function:: default_timer()
 
@@ -110,7 +110,7 @@ The module defines three convenience functions and a public class:
    method.  The :meth:`.repeat` and :meth:`.autorange` methods are convenience
    methods to call :meth:`.timeit` multiple times.
 
-   The execution time of *setup* is excluded from the overall timed execution run.
+   The execution time of *setup* is excluded kutoka the overall timed execution run.
 
    The *stmt* and *setup* parameters can also take objects that are callable
    without arguments.  This will embed calls to them in a timer function that
@@ -148,7 +148,7 @@ The module defines three convenience functions and a public class:
       This is a convenience function that calls :meth:`.timeit` repeatedly
       so that the total time >= 0.2 second, returning the eventual
       (number of loops, time taken for that number of loops). It calls
-      :meth:`.timeit` with increasing numbers from the sequence 1, 2, 5,
+      :meth:`.timeit` with increasing numbers kutoka the sequence 1, 2, 5,
       10, 20, 50, ... until the time taken is at least 0.2 second.
 
       If *callback* is given and is not ``None``, it will be called after
@@ -168,7 +168,7 @@ The module defines three convenience functions and a public class:
 
       .. note::
 
-         It's tempting to calculate mean and standard deviation from the result
+         It's tempting to calculate mean and standard deviation kutoka the result
          vector and report these.  However, this is not very useful.
          In a typical case, the lowest value gives a lower bound for how fast
          your machine can run the given code snippet; higher values in the
@@ -179,12 +179,12 @@ The module defines three convenience functions and a public class:
          vector and apply common sense rather than statistics.
 
       .. versionchanged:: 3.7
-         Default value of *repeat* changed from 3 to 5.
+         Default value of *repeat* changed kutoka 3 to 5.
 
 
    .. method:: Timer.print_exc(file=None)
 
-      Helper to print a traceback from the timed code.
+      Helper to print a traceback kutoka the timed code.
 
       Typical use::
 
@@ -204,7 +204,7 @@ The module defines three convenience functions and a public class:
 Command-Line Interface
 ----------------------
 
-When called as a program from the command line, the following form is used::
+When called as a program kutoka the command line, the following form is used::
 
    python -m timeit [-n N] [-r N] [-u U] [-s S] [-h] [statement ...]
 
@@ -283,15 +283,15 @@ It is possible to provide a setup statement that is executed only once at the be
 
 ::
 
-   >>> import timeit
+   >>> agiza timeit
    >>> timeit.timeit('char in text', setup='text = "sample string"; char = "g"')
    0.41440500499993504
    >>> timeit.timeit('text.find(char)', setup='text = "sample string"; char = "g"')
    1.7246671520006203
 
-The same can be done using the :class:`Timer` class and its methods::
+The same can be done using the :class:`Timer` kundi and its methods::
 
-   >>> import timeit
+   >>> agiza timeit
    >>> t = timeit.Timer('char in text', setup='text = "sample string"; char = "g"')
    >>> t.timeit()
    0.3955516149999312
@@ -317,7 +317,7 @@ to test for missing and present object attributes:
 
 ::
 
-   >>> import timeit
+   >>> agiza timeit
    >>> # attribute is missing
    >>> s = """\
    ... try:
@@ -346,15 +346,15 @@ to test for missing and present object attributes:
 
 
 To give the :mod:`timeit` module access to functions you define, you can pass a
-*setup* parameter which contains an import statement::
+*setup* parameter which contains an agiza statement::
 
    def test():
        """Stupid test function"""
        L = [i for i in range(100)]
 
    if __name__ == '__main__':
-       import timeit
-       print(timeit.timeit("test()", setup="from __main__ import test"))
+       agiza timeit
+       print(timeit.timeit("test()", setup="kutoka __main__ agiza test"))
 
 Another option is to pass :func:`globals` to the  *globals* parameter, which will cause the code
 to be executed within your current global namespace.  This can be more convenient
@@ -367,5 +367,5 @@ than individually specifying imports::
    def h(x):
        return x**8
 
-   import timeit
+   agiza timeit
    print(timeit.timeit('[func(42) for func in (f,g,h)]', globals=globals()))

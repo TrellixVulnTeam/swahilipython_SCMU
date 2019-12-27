@@ -37,7 +37,7 @@ be the sample size in bits or ``'A'`` for A-LAW or ``'U'`` for u-LAW.
    ``None`` is returned.
 
    .. versionchanged:: 3.5
-      Result changed from a tuple to a namedtuple.
+      Result changed kutoka a tuple to a namedtuple.
 
 
 .. function:: whathdr(filename)
@@ -47,5 +47,5 @@ be the sample size in bits or ``'A'`` for A-LAW or ``'U'`` for u-LAW.
    described above on success, or ``None``.
 
    .. versionchanged:: 3.5
-      Result changed from a tuple to a namedtuple.
+      Result changed kutoka a tuple to a namedtuple.
 

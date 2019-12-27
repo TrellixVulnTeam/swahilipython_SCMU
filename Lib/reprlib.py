@@ -6,22 +6,22 @@ agiza builtins
 kutoka itertools agiza islice
 kutoka _thread agiza get_ident
 
-def recursive_repr(fillvalue='...'):
-    'Decorator to make a repr function return fillvalue for a recursive call'
+eleza recursive_repr(fillvalue='...'):
+    'Decorator to make a repr function rudisha fillvalue for a recursive call'
 
-    def decorating_function(user_function):
+    eleza decorating_function(user_function):
         repr_running = set()
 
-        def wrapper(self):
+        eleza wrapper(self):
             key = id(self), get_ident()
-            if key in repr_running:
-                return fillvalue
+            ikiwa key in repr_running:
+                rudisha fillvalue
             repr_running.add(key)
             try:
                 result = user_function(self)
             finally:
                 repr_running.discard(key)
-            return result
+            rudisha result
 
         # Can't use functools.wraps() here because of bootstrap issues
         wrapper.__module__ = getattr(user_function, '__module__')
@@ -29,13 +29,13 @@ def recursive_repr(fillvalue='...'):
         wrapper.__name__ = getattr(user_function, '__name__')
         wrapper.__qualname__ = getattr(user_function, '__qualname__')
         wrapper.__annotations__ = getattr(user_function, '__annotations__', {})
-        return wrapper
+        rudisha wrapper
 
-    return decorating_function
+    rudisha decorating_function
 
-class Repr:
+kundi Repr:
 
-    def __init__(self):
+    eleza __init__(self):
         self.maxlevel = 6
         self.maxtuple = 6
         self.maxlist = 6
@@ -48,64 +48,64 @@ class Repr:
         self.maxlong = 40
         self.maxother = 30
 
-    def repr(self, x):
-        return self.repr1(x, self.maxlevel)
+    eleza repr(self, x):
+        rudisha self.repr1(x, self.maxlevel)
 
-    def repr1(self, x, level):
+    eleza repr1(self, x, level):
         typename = type(x).__name__
-        if ' ' in typename:
+        ikiwa ' ' in typename:
             parts = typename.split()
             typename = '_'.join(parts)
-        if hasattr(self, 'repr_' + typename):
-            return getattr(self, 'repr_' + typename)(x, level)
+        ikiwa hasattr(self, 'repr_' + typename):
+            rudisha getattr(self, 'repr_' + typename)(x, level)
         else:
-            return self.repr_instance(x, level)
+            rudisha self.repr_instance(x, level)
 
-    def _repr_iterable(self, x, level, left, right, maxiter, trail=''):
+    eleza _repr_iterable(self, x, level, left, right, maxiter, trail=''):
         n = len(x)
-        if level <= 0 and n:
+        ikiwa level <= 0 and n:
             s = '...'
         else:
             newlevel = level - 1
             repr1 = self.repr1
             pieces = [repr1(elem, newlevel) for elem in islice(x, maxiter)]
-            if n > maxiter:  pieces.append('...')
+            ikiwa n > maxiter:  pieces.append('...')
             s = ', '.join(pieces)
-            if n == 1 and trail:  right = trail + right
-        return '%s%s%s' % (left, s, right)
+            ikiwa n == 1 and trail:  right = trail + right
+        rudisha '%s%s%s' % (left, s, right)
 
-    def repr_tuple(self, x, level):
-        return self._repr_iterable(x, level, '(', ')', self.maxtuple, ',')
+    eleza repr_tuple(self, x, level):
+        rudisha self._repr_iterable(x, level, '(', ')', self.maxtuple, ',')
 
-    def repr_list(self, x, level):
-        return self._repr_iterable(x, level, '[', ']', self.maxlist)
+    eleza repr_list(self, x, level):
+        rudisha self._repr_iterable(x, level, '[', ']', self.maxlist)
 
-    def repr_array(self, x, level):
-        if not x:
-            return "array('%s')" % x.typecode
+    eleza repr_array(self, x, level):
+        ikiwa not x:
+            rudisha "array('%s')" % x.typecode
         header = "array('%s', [" % x.typecode
-        return self._repr_iterable(x, level, header, '])', self.maxarray)
+        rudisha self._repr_iterable(x, level, header, '])', self.maxarray)
 
-    def repr_set(self, x, level):
-        if not x:
-            return 'set()'
+    eleza repr_set(self, x, level):
+        ikiwa not x:
+            rudisha 'set()'
         x = _possibly_sorted(x)
-        return self._repr_iterable(x, level, '{', '}', self.maxset)
+        rudisha self._repr_iterable(x, level, '{', '}', self.maxset)
 
-    def repr_frozenset(self, x, level):
-        if not x:
-            return 'frozenset()'
+    eleza repr_frozenset(self, x, level):
+        ikiwa not x:
+            rudisha 'frozenset()'
         x = _possibly_sorted(x)
-        return self._repr_iterable(x, level, 'frozenset({', '})',
+        rudisha self._repr_iterable(x, level, 'frozenset({', '})',
                                    self.maxfrozenset)
 
-    def repr_deque(self, x, level):
-        return self._repr_iterable(x, level, 'deque([', '])', self.maxdeque)
+    eleza repr_deque(self, x, level):
+        rudisha self._repr_iterable(x, level, 'deque([', '])', self.maxdeque)
 
-    def repr_dict(self, x, level):
+    eleza repr_dict(self, x, level):
         n = len(x)
-        if n == 0: return '{}'
-        if level <= 0: return '{...}'
+        ikiwa n == 0: rudisha '{}'
+        ikiwa level <= 0: rudisha '{...}'
         newlevel = level - 1
         repr1 = self.repr1
         pieces = []
@@ -113,49 +113,49 @@ class Repr:
             keyrepr = repr1(key, newlevel)
             valrepr = repr1(x[key], newlevel)
             pieces.append('%s: %s' % (keyrepr, valrepr))
-        if n > self.maxdict: pieces.append('...')
+        ikiwa n > self.maxdict: pieces.append('...')
         s = ', '.join(pieces)
-        return '{%s}' % (s,)
+        rudisha '{%s}' % (s,)
 
-    def repr_str(self, x, level):
+    eleza repr_str(self, x, level):
         s = builtins.repr(x[:self.maxstring])
-        if len(s) > self.maxstring:
+        ikiwa len(s) > self.maxstring:
             i = max(0, (self.maxstring-3)//2)
             j = max(0, self.maxstring-3-i)
             s = builtins.repr(x[:i] + x[len(x)-j:])
             s = s[:i] + '...' + s[len(s)-j:]
-        return s
+        rudisha s
 
-    def repr_int(self, x, level):
+    eleza repr_int(self, x, level):
         s = builtins.repr(x) # XXX Hope this isn't too slow...
-        if len(s) > self.maxlong:
+        ikiwa len(s) > self.maxlong:
             i = max(0, (self.maxlong-3)//2)
             j = max(0, self.maxlong-3-i)
             s = s[:i] + '...' + s[len(s)-j:]
-        return s
+        rudisha s
 
-    def repr_instance(self, x, level):
+    eleza repr_instance(self, x, level):
         try:
             s = builtins.repr(x)
             # Bugs in x.__repr__() can cause arbitrary
             # exceptions -- then make up something
         except Exception:
-            return '<%s instance at %#x>' % (x.__class__.__name__, id(x))
-        if len(s) > self.maxother:
+            rudisha '<%s instance at %#x>' % (x.__class__.__name__, id(x))
+        ikiwa len(s) > self.maxother:
             i = max(0, (self.maxother-3)//2)
             j = max(0, self.maxother-3-i)
             s = s[:i] + '...' + s[len(s)-j:]
-        return s
+        rudisha s
 
 
-def _possibly_sorted(x):
+eleza _possibly_sorted(x):
     # Since not all sequences of items can be sorted and comparison
-    # functions may raise arbitrary exceptions, return an unsorted
+    # functions may raise arbitrary exceptions, rudisha an unsorted
     # sequence in that case.
     try:
-        return sorted(x)
+        rudisha sorted(x)
     except Exception:
-        return list(x)
+        rudisha list(x)
 
 aRepr = Repr()
 repr = aRepr.repr

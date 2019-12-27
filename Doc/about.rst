@@ -3,7 +3,7 @@ About these documents
 =====================
 
 
-These documents are generated from `reStructuredText`_ sources by `Sphinx`_, a
+These documents are generated kutoka `reStructuredText`_ sources by `Sphinx`_, a
 document processor specifically written for the Python documentation.
 
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
@@ -24,7 +24,7 @@ Many thanks go to:
 * the `Docutils <http://docutils.sourceforge.net/>`_ project for creating
   reStructuredText and the Docutils suite;
 * Fredrik Lundh for his `Alternative Python Reference
-  <http://effbot.org/zone/pyref.htm>`_ project from which Sphinx got many good
+  <http://effbot.org/zone/pyref.htm>`_ project kutoka which Sphinx got many good
   ideas.
 
 

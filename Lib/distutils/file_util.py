@@ -131,7 +131,7 @@ def copy_file(src, dst, preserve_mode=1, preserve_times=1, update=0,
 
     # If linking (hard or symbolic), use the appropriate system call
     # (Unix only, of course, but that's the caller's responsibility)
-    elif link == 'hard':
+    lasivyo link == 'hard':
         if not (os.path.exists(dst) and os.path.samefile(src, dst)):
             try:
                 os.link(src, dst)
@@ -141,7 +141,7 @@ def copy_file(src, dst, preserve_mode=1, preserve_times=1, update=0,
                 # (some special filesystems don't support hard linking
                 #  even under Unix, see issue #8876).
                 pass
-    elif link == 'sym':
+    lasivyo link == 'sym':
         if not (os.path.exists(dst) and os.path.samefile(src, dst)):
             os.symlink(src, dst)
             return (dst, 1)
@@ -188,7 +188,7 @@ def move_file (src, dst,
 
     if isdir(dst):
         dst = os.path.join(dst, basename(src))
-    elif exists(dst):
+    lasivyo exists(dst):
         raise DistutilsFileError(
               "can't move '%s': destination '%s' already exists" %
               (src, dst))

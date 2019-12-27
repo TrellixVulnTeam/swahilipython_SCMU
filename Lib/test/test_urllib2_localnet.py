@@ -24,12 +24,12 @@ CERT_fakehostname = os.path.join(here, 'keycert2.pem')
 
 # Loopback http server infrastructure
 
-class LoopbackHttpServer(http.server.HTTPServer):
+kundi LoopbackHttpServer(http.server.HTTPServer):
     """HTTP server w/ a few modifications that make it useful for
     loopback testing purposes.
     """
 
-    def __init__(self, server_address, RequestHandlerClass):
+    eleza __init__(self, server_address, RequestHandlerClass):
         http.server.HTTPServer.__init__(self,
                                         server_address,
                                         RequestHandlerClass)
@@ -38,7 +38,7 @@ class LoopbackHttpServer(http.server.HTTPServer):
         # that we can stop the server easily.
         self.socket.settimeout(0.1)
 
-    def get_request(self):
+    eleza get_request(self):
         """HTTPServer method, overridden."""
 
         request, client_address = self.socket.accept()
@@ -48,12 +48,12 @@ class LoopbackHttpServer(http.server.HTTPServer):
         # deadlocks less likely to occur.
         request.settimeout(10.0)
 
-        return (request, client_address)
+        rudisha (request, client_address)
 
-class LoopbackHttpServerThread(threading.Thread):
+kundi LoopbackHttpServerThread(threading.Thread):
     """Stoppable thread that runs a loopback http server."""
 
-    def __init__(self, request_handler):
+    eleza __init__(self, request_handler):
         threading.Thread.__init__(self)
         self._stop_server = False
         self.ready = threading.Event()
@@ -62,48 +62,48 @@ class LoopbackHttpServerThread(threading.Thread):
                                         request_handler)
         self.port = self.httpd.server_port
 
-    def stop(self):
-        """Stops the webserver if it's currently running."""
+    eleza stop(self):
+        """Stops the webserver ikiwa it's currently running."""
 
         self._stop_server = True
 
         self.join()
         self.httpd.server_close()
 
-    def run(self):
+    eleza run(self):
         self.ready.set()
         while not self._stop_server:
             self.httpd.handle_request()
 
 # Authentication infrastructure
 
-class DigestAuthHandler:
+kundi DigestAuthHandler:
     """Handler for performing digest authentication."""
 
-    def __init__(self):
+    eleza __init__(self):
         self._request_num = 0
         self._nonces = []
         self._users = {}
         self._realm_name = "Test Realm"
         self._qop = "auth"
 
-    def set_qop(self, qop):
+    eleza set_qop(self, qop):
         self._qop = qop
 
-    def set_users(self, users):
+    eleza set_users(self, users):
         assert isinstance(users, dict)
         self._users = users
 
-    def set_realm(self, realm):
+    eleza set_realm(self, realm):
         self._realm_name = realm
 
-    def _generate_nonce(self):
+    eleza _generate_nonce(self):
         self._request_num += 1
         nonce = hashlib.md5(str(self._request_num).encode("ascii")).hexdigest()
         self._nonces.append(nonce)
-        return nonce
+        rudisha nonce
 
-    def _create_auth_dict(self, auth_str):
+    eleza _create_auth_dict(self, auth_str):
         first_space_index = auth_str.find(" ")
         auth_str = auth_str[first_space_index+1:]
 
@@ -113,14 +113,14 @@ class DigestAuthHandler:
         for part in parts:
             name, value = part.split("=")
             name = name.strip()
-            if value[0] == '"' and value[-1] == '"':
+            ikiwa value[0] == '"' and value[-1] == '"':
                 value = value[1:-1]
             else:
                 value = value.strip()
             auth_dict[name] = value
-        return auth_dict
+        rudisha auth_dict
 
-    def _validate_auth(self, auth_dict, password, method, uri):
+    eleza _validate_auth(self, auth_dict, password, method, uri):
         final_dict = {}
         final_dict.update(auth_dict)
         final_dict["password"] = password
@@ -136,9 +136,9 @@ class DigestAuthHandler:
                        "%(cnonce)s:%(qop)s:%(HA2)s" % final_dict
         response = hashlib.md5(response_str.encode("ascii")).hexdigest()
 
-        return response == auth_dict["response"]
+        rudisha response == auth_dict["response"]
 
-    def _return_auth_challenge(self, request_handler):
+    eleza _return_auth_challenge(self, request_handler):
         request_handler.send_response(407, "Proxy Authentication Required")
         request_handler.send_header("Content-Type", "text/html")
         request_handler.send_header(
@@ -146,37 +146,37 @@ class DigestAuthHandler:
             'qop="%s",'
             'nonce="%s", ' % \
             (self._realm_name, self._qop, self._generate_nonce()))
-        # XXX: Not sure if we're supposed to add this next header or
+        # XXX: Not sure ikiwa we're supposed to add this next header or
         # not.
         #request_handler.send_header('Connection', 'close')
         request_handler.end_headers()
         request_handler.wfile.write(b"Proxy Authentication Required.")
-        return False
+        rudisha False
 
-    def handle_request(self, request_handler):
+    eleza handle_request(self, request_handler):
         """Performs digest authentication on the given HTTP request
-        handler.  Returns True if authentication was successful, False
+        handler.  Returns True ikiwa authentication was successful, False
         otherwise.
 
         If no users have been set, then digest auth is effectively
-        disabled and this method will always return True.
+        disabled and this method will always rudisha True.
         """
 
-        if len(self._users) == 0:
-            return True
+        ikiwa len(self._users) == 0:
+            rudisha True
 
-        if "Proxy-Authorization" not in request_handler.headers:
-            return self._return_auth_challenge(request_handler)
+        ikiwa "Proxy-Authorization" not in request_handler.headers:
+            rudisha self._return_auth_challenge(request_handler)
         else:
             auth_dict = self._create_auth_dict(
                 request_handler.headers["Proxy-Authorization"]
                 )
-            if auth_dict["username"] in self._users:
+            ikiwa auth_dict["username"] in self._users:
                 password = self._users[ auth_dict["username"] ]
             else:
-                return self._return_auth_challenge(request_handler)
-            if not auth_dict.get("nonce") in self._nonces:
-                return self._return_auth_challenge(request_handler)
+                rudisha self._return_auth_challenge(request_handler)
+            ikiwa not auth_dict.get("nonce") in self._nonces:
+                rudisha self._return_auth_challenge(request_handler)
             else:
                 self._nonces.remove(auth_dict["nonce"])
 
@@ -187,18 +187,18 @@ class DigestAuthHandler:
             # either of them works here.
 
             for path in [request_handler.path, request_handler.short_path]:
-                if self._validate_auth(auth_dict,
+                ikiwa self._validate_auth(auth_dict,
                                        password,
                                        request_handler.command,
                                        path):
                     auth_validated = True
 
-            if not auth_validated:
-                return self._return_auth_challenge(request_handler)
-            return True
+            ikiwa not auth_validated:
+                rudisha self._return_auth_challenge(request_handler)
+            rudisha True
 
 
-class BasicAuthHandler(http.server.BaseHTTPRequestHandler):
+kundi BasicAuthHandler(http.server.BaseHTTPRequestHandler):
     """Handler for performing basic authentication."""
     # Server side values
     USER = 'testUser'
@@ -207,29 +207,29 @@ class BasicAuthHandler(http.server.BaseHTTPRequestHandler):
     USER_PASSWD = "%s:%s" % (USER, PASSWD)
     ENCODED_AUTH = base64.b64encode(USER_PASSWD.encode('ascii')).decode('ascii')
 
-    def __init__(self, *args, **kwargs):
+    eleza __init__(self, *args, **kwargs):
         http.server.BaseHTTPRequestHandler.__init__(self, *args, **kwargs)
 
-    def log_message(self, format, *args):
+    eleza log_message(self, format, *args):
         # Suppress console log message
         pass
 
-    def do_HEAD(self):
+    eleza do_HEAD(self):
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
 
-    def do_AUTHHEAD(self):
+    eleza do_AUTHHEAD(self):
         self.send_response(401)
         self.send_header("WWW-Authenticate", "Basic realm=\"%s\"" % self.REALM)
         self.send_header("Content-type", "text/html")
         self.end_headers()
 
-    def do_GET(self):
-        if not self.headers.get("Authorization", ""):
+    eleza do_GET(self):
+        ikiwa not self.headers.get("Authorization", ""):
             self.do_AUTHHEAD()
             self.wfile.write(b"No Auth header received")
-        elif self.headers.get(
+        elikiwa self.headers.get(
                 "Authorization", "") == "Basic " + self.ENCODED_AUTH:
             self.send_response(200)
             self.end_headers()
@@ -242,29 +242,29 @@ class BasicAuthHandler(http.server.BaseHTTPRequestHandler):
 
 # Proxy test infrastructure
 
-class FakeProxyHandler(http.server.BaseHTTPRequestHandler):
+kundi FakeProxyHandler(http.server.BaseHTTPRequestHandler):
     """This is a 'fake proxy' that makes it look like the entire
     internet has gone down due to a sudden zombie invasion.  It main
     utility is in providing us with authentication support for
     testing.
     """
 
-    def __init__(self, digest_auth_handler, *args, **kwargs):
+    eleza __init__(self, digest_auth_handler, *args, **kwargs):
         # This has to be set before calling our parent's __init__(), which will
         # try to call do_GET().
         self.digest_auth_handler = digest_auth_handler
         http.server.BaseHTTPRequestHandler.__init__(self, *args, **kwargs)
 
-    def log_message(self, format, *args):
+    eleza log_message(self, format, *args):
         # Uncomment the next line for debugging.
         # sys.stderr.write(format % args)
         pass
 
-    def do_GET(self):
+    eleza do_GET(self):
         (scm, netloc, path, params, query, fragment) = urllib.parse.urlparse(
             self.path, "http")
         self.short_path = path
-        if self.digest_auth_handler.handle_request(self):
+        ikiwa self.digest_auth_handler.handle_request(self):
             self.send_response(200, "OK")
             self.send_header("Content-Type", "text/html")
             self.end_headers()
@@ -275,31 +275,31 @@ class FakeProxyHandler(http.server.BaseHTTPRequestHandler):
 
 # Test cases
 
-class BasicAuthTests(unittest.TestCase):
+kundi BasicAuthTests(unittest.TestCase):
     USER = "testUser"
     PASSWD = "testPass"
     INCORRECT_PASSWD = "Incorrect"
     REALM = "Test"
 
-    def setUp(self):
+    eleza setUp(self):
         super(BasicAuthTests, self).setUp()
         # With Basic Authentication
-        def http_server_with_basic_auth_handler(*args, **kwargs):
-            return BasicAuthHandler(*args, **kwargs)
+        eleza http_server_with_basic_auth_handler(*args, **kwargs):
+            rudisha BasicAuthHandler(*args, **kwargs)
         self.server = LoopbackHttpServerThread(http_server_with_basic_auth_handler)
         self.addCleanup(self.stop_server)
         self.server_url = 'http://127.0.0.1:%s' % self.server.port
         self.server.start()
         self.server.ready.wait()
 
-    def stop_server(self):
+    eleza stop_server(self):
         self.server.stop()
         self.server = None
 
-    def tearDown(self):
+    eleza tearDown(self):
         super(BasicAuthTests, self).tearDown()
 
-    def test_basic_auth_success(self):
+    eleza test_basic_auth_success(self):
         ah = urllib.request.HTTPBasicAuthHandler()
         ah.add_password(self.REALM, self.server_url, self.USER, self.PASSWD)
         urllib.request.install_opener(urllib.request.build_opener(ah))
@@ -308,14 +308,14 @@ class BasicAuthTests(unittest.TestCase):
         except urllib.error.HTTPError:
             self.fail("Basic auth failed for the url: %s" % self.server_url)
 
-    def test_basic_auth_httperror(self):
+    eleza test_basic_auth_httperror(self):
         ah = urllib.request.HTTPBasicAuthHandler()
         ah.add_password(self.REALM, self.server_url, self.USER, self.INCORRECT_PASSWD)
         urllib.request.install_opener(urllib.request.build_opener(ah))
         self.assertRaises(urllib.error.HTTPError, urllib.request.urlopen, self.server_url)
 
 
-class ProxyAuthTests(unittest.TestCase):
+kundi ProxyAuthTests(unittest.TestCase):
     URL = "http://localhost"
 
     USER = "tester"
@@ -323,10 +323,10 @@ class ProxyAuthTests(unittest.TestCase):
     REALM = "TestRealm"
 
     @support.requires_hashdigest("md5")
-    def setUp(self):
+    eleza setUp(self):
         super(ProxyAuthTests, self).setUp()
         # Ignore proxy bypass settings in the environment.
-        def restore_environ(old_environ):
+        eleza restore_environ(old_environ):
             os.environ.clear()
             os.environ.update(old_environ)
         self.addCleanup(restore_environ, os.environ.copy())
@@ -337,8 +337,8 @@ class ProxyAuthTests(unittest.TestCase):
         self.digest_auth_handler.set_users({self.USER: self.PASSWD})
         self.digest_auth_handler.set_realm(self.REALM)
         # With Digest Authentication.
-        def create_fake_proxy_handler(*args, **kwargs):
-            return FakeProxyHandler(self.digest_auth_handler, *args, **kwargs)
+        eleza create_fake_proxy_handler(*args, **kwargs):
+            rudisha FakeProxyHandler(self.digest_auth_handler, *args, **kwargs)
 
         self.server = LoopbackHttpServerThread(create_fake_proxy_handler)
         self.addCleanup(self.stop_server)
@@ -350,11 +350,11 @@ class ProxyAuthTests(unittest.TestCase):
         self.opener = urllib.request.build_opener(
             handler, self.proxy_digest_handler)
 
-    def stop_server(self):
+    eleza stop_server(self):
         self.server.stop()
         self.server = None
 
-    def test_proxy_with_bad_password_raises_httperror(self):
+    eleza test_proxy_with_bad_password_raises_httperror(self):
         self.proxy_digest_handler.add_password(self.REALM, self.URL,
                                                self.USER, self.PASSWD+"bad")
         self.digest_auth_handler.set_qop("auth")
@@ -362,13 +362,13 @@ class ProxyAuthTests(unittest.TestCase):
                           self.opener.open,
                           self.URL)
 
-    def test_proxy_with_no_password_raises_httperror(self):
+    eleza test_proxy_with_no_password_raises_httperror(self):
         self.digest_auth_handler.set_qop("auth")
         self.assertRaises(urllib.error.HTTPError,
                           self.opener.open,
                           self.URL)
 
-    def test_proxy_qop_auth_works(self):
+    eleza test_proxy_qop_auth_works(self):
         self.proxy_digest_handler.add_password(self.REALM, self.URL,
                                                self.USER, self.PASSWD)
         self.digest_auth_handler.set_qop("auth")
@@ -376,14 +376,14 @@ class ProxyAuthTests(unittest.TestCase):
             while result.read():
                 pass
 
-    def test_proxy_qop_auth_int_works_or_throws_urlerror(self):
+    eleza test_proxy_qop_auth_int_works_or_throws_urlerror(self):
         self.proxy_digest_handler.add_password(self.REALM, self.URL,
                                                self.USER, self.PASSWD)
         self.digest_auth_handler.set_qop("auth-int")
         try:
             result = self.opener.open(self.URL)
         except urllib.error.URLError:
-            # It's okay if we don't support auth-int, but we certainly
+            # It's okay ikiwa we don't support auth-int, but we certainly
             # shouldn't receive any kind of exception here other than
             # a URLError.
             pass
@@ -393,28 +393,28 @@ class ProxyAuthTests(unittest.TestCase):
                     pass
 
 
-def GetRequestHandler(responses):
+eleza GetRequestHandler(responses):
 
-    class FakeHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
+    kundi FakeHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
         server_version = "TestHTTP/"
         requests = []
         headers_received = []
         port = 80
 
-        def do_GET(self):
+        eleza do_GET(self):
             body = self.send_head()
             while body:
                 done = self.wfile.write(body)
                 body = body[done:]
 
-        def do_POST(self):
+        eleza do_POST(self):
             content_length = self.headers["Content-Length"]
             post_data = self.rfile.read(int(content_length))
             self.do_GET()
             self.requests.append(post_data)
 
-        def send_head(self):
+        eleza send_head(self):
             FakeHTTPRequestHandler.headers_received = self.headers
             self.requests.append(self.path)
             response_code, headers, body = responses.pop(0)
@@ -423,20 +423,20 @@ def GetRequestHandler(responses):
 
             for (header, value) in headers:
                 self.send_header(header, value % {'port':self.port})
-            if body:
+            ikiwa body:
                 self.send_header("Content-type", "text/plain")
                 self.end_headers()
-                return body
+                rudisha body
             self.end_headers()
 
-        def log_message(self, *args):
+        eleza log_message(self, *args):
             pass
 
 
-    return FakeHTTPRequestHandler
+    rudisha FakeHTTPRequestHandler
 
 
-class TestUrlopen(unittest.TestCase):
+kundi TestUrlopen(unittest.TestCase):
     """Tests urllib.request.urlopen using the network.
 
     These tests are not exhaustive.  Assuming that testing using files does a
@@ -445,18 +445,18 @@ class TestUrlopen(unittest.TestCase):
     for transparent redirection have been written.
     """
 
-    def setUp(self):
+    eleza setUp(self):
         super(TestUrlopen, self).setUp()
 
         # Ignore proxies for localhost tests.
-        def restore_environ(old_environ):
+        eleza restore_environ(old_environ):
             os.environ.clear()
             os.environ.update(old_environ)
         self.addCleanup(restore_environ, os.environ.copy())
         os.environ['NO_PROXY'] = '*'
         os.environ['no_proxy'] = '*'
 
-    def urlopen(self, url, data=None, **kwargs):
+    eleza urlopen(self, url, data=None, **kwargs):
         l = []
         f = urllib.request.urlopen(url, data, **kwargs)
         try:
@@ -467,14 +467,14 @@ class TestUrlopen(unittest.TestCase):
             l.append(f.read())
         finally:
             f.close()
-        return b"".join(l)
+        rudisha b"".join(l)
 
-    def stop_server(self):
+    eleza stop_server(self):
         self.server.stop()
         self.server = None
 
-    def start_server(self, responses=None):
-        if responses is None:
+    eleza start_server(self, responses=None):
+        ikiwa responses is None:
             responses = [(200, [], b"we don't care")]
         handler = GetRequestHandler(responses)
 
@@ -484,20 +484,20 @@ class TestUrlopen(unittest.TestCase):
         self.server.ready.wait()
         port = self.server.port
         handler.port = port
-        return handler
+        rudisha handler
 
-    def start_https_server(self, responses=None, **kwargs):
-        if not hasattr(urllib.request, 'HTTPSHandler'):
+    eleza start_https_server(self, responses=None, **kwargs):
+        ikiwa not hasattr(urllib.request, 'HTTPSHandler'):
             self.skipTest('ssl support required')
         kutoka test.ssl_servers agiza make_https_server
-        if responses is None:
+        ikiwa responses is None:
             responses = [(200, [], b"we care a bit")]
         handler = GetRequestHandler(responses)
         server = make_https_server(self, handler_class=handler, **kwargs)
         handler.port = server.port
-        return handler
+        rudisha handler
 
-    def test_redirection(self):
+    eleza test_redirection(self):
         expected_response = b"We got here..."
         responses = [
             (302, [("Location", "http://localhost:%(port)s/somewhere_else")],
@@ -510,7 +510,7 @@ class TestUrlopen(unittest.TestCase):
         self.assertEqual(data, expected_response)
         self.assertEqual(handler.requests, ["/", "/somewhere_else"])
 
-    def test_chunked(self):
+    eleza test_chunked(self):
         expected_response = b"hello world"
         chunked_start = (
                         b'a\r\n'
@@ -524,7 +524,7 @@ class TestUrlopen(unittest.TestCase):
         data = self.urlopen("http://localhost:%s/" % handler.port)
         self.assertEqual(data, expected_response)
 
-    def test_404(self):
+    eleza test_404(self):
         expected_response = b"Bad bad bad..."
         handler = self.start_server([(404, [], expected_response)])
 
@@ -539,14 +539,14 @@ class TestUrlopen(unittest.TestCase):
         self.assertEqual(data, expected_response)
         self.assertEqual(handler.requests, ["/weeble"])
 
-    def test_200(self):
+    eleza test_200(self):
         expected_response = b"pycon 2008..."
         handler = self.start_server([(200, [], expected_response)])
         data = self.urlopen("http://localhost:%s/bizarre" % handler.port)
         self.assertEqual(data, expected_response)
         self.assertEqual(handler.requests, ["/bizarre"])
 
-    def test_200_with_parameters(self):
+    eleza test_200_with_parameters(self):
         expected_response = b"pycon 2008..."
         handler = self.start_server([(200, [], expected_response)])
         data = self.urlopen("http://localhost:%s/bizarre" % handler.port,
@@ -554,13 +554,13 @@ class TestUrlopen(unittest.TestCase):
         self.assertEqual(data, expected_response)
         self.assertEqual(handler.requests, ["/bizarre", b"get=with_feeling"])
 
-    def test_https(self):
+    eleza test_https(self):
         handler = self.start_https_server()
         context = ssl.create_default_context(cafile=CERT_localhost)
         data = self.urlopen("https://localhost:%s/bizarre" % handler.port, context=context)
         self.assertEqual(data, b"we care a bit")
 
-    def test_https_with_cafile(self):
+    eleza test_https_with_cafile(self):
         handler = self.start_https_server(certfile=CERT_localhost)
         with support.check_warnings(('', DeprecationWarning)):
             # Good cert
@@ -577,7 +577,7 @@ class TestUrlopen(unittest.TestCase):
                 self.urlopen("https://localhost:%s/bizarre" % handler.port,
                              cafile=CERT_fakehostname)
 
-    def test_https_with_cadefault(self):
+    eleza test_https_with_cadefault(self):
         handler = self.start_https_server(certfile=CERT_localhost)
         # Self-signed cert should fail verification with system certificate store
         with support.check_warnings(('', DeprecationWarning)):
@@ -585,13 +585,13 @@ class TestUrlopen(unittest.TestCase):
                 self.urlopen("https://localhost:%s/bizarre" % handler.port,
                              cadefault=True)
 
-    def test_https_sni(self):
-        if ssl is None:
+    eleza test_https_sni(self):
+        ikiwa ssl is None:
             self.skipTest("ssl module required")
-        if not ssl.HAS_SNI:
+        ikiwa not ssl.HAS_SNI:
             self.skipTest("SNI support required in OpenSSL")
         sni_name = None
-        def cb_sni(ssl_sock, server_name, initial_context):
+        eleza cb_sni(ssl_sock, server_name, initial_context):
             nonlocal sni_name
             sni_name = server_name
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
@@ -601,7 +601,7 @@ class TestUrlopen(unittest.TestCase):
         self.urlopen("https://localhost:%s" % handler.port, context=context)
         self.assertEqual(sni_name, "localhost")
 
-    def test_sending_headers(self):
+    eleza test_sending_headers(self):
         handler = self.start_server()
         req = urllib.request.Request("http://localhost:%s/" % handler.port,
                                      headers={"Range": "bytes=20-39"})
@@ -609,7 +609,7 @@ class TestUrlopen(unittest.TestCase):
             pass
         self.assertEqual(handler.headers_received["Range"], "bytes=20-39")
 
-    def test_basic(self):
+    eleza test_basic(self):
         handler = self.start_server()
         with urllib.request.urlopen("http://localhost:%s" % handler.port) as open_url:
             for attr in ("read", "close", "info", "geturl"):
@@ -617,7 +617,7 @@ class TestUrlopen(unittest.TestCase):
                              "urlopen lacks the %s attribute" % attr)
             self.assertTrue(open_url.read(), "calling 'read' failed")
 
-    def test_info(self):
+    eleza test_info(self):
         handler = self.start_server()
         open_url = urllib.request.urlopen(
             "http://localhost:%s" % handler.port)
@@ -628,7 +628,7 @@ class TestUrlopen(unittest.TestCase):
                               "instance of email.message.Message")
         self.assertEqual(info_obj.get_content_subtype(), "plain")
 
-    def test_geturl(self):
+    eleza test_geturl(self):
         # Make sure same URL as opened is returned by geturl.
         handler = self.start_server()
         open_url = urllib.request.urlopen("http://localhost:%s" % handler.port)
@@ -636,14 +636,14 @@ class TestUrlopen(unittest.TestCase):
             url = open_url.geturl()
         self.assertEqual(url, "http://localhost:%s" % handler.port)
 
-    def test_iteration(self):
+    eleza test_iteration(self):
         expected_response = b"pycon 2008..."
         handler = self.start_server([(200, [], expected_response)])
         data = urllib.request.urlopen("http://localhost:%s" % handler.port)
         for line in data:
             self.assertEqual(line, expected_response)
 
-    def test_line_iteration(self):
+    eleza test_line_iteration(self):
         lines = [b"We\n", b"got\n", b"here\n", b"verylong " * 8192 + b"\n"]
         expected_response = b"".join(lines)
         handler = self.start_server([(200, [], expected_response)])
@@ -658,15 +658,15 @@ class TestUrlopen(unittest.TestCase):
 
 threads_key = None
 
-def setUpModule():
+eleza setUpModule():
     # Store the threading_setup in a key and ensure that it is cleaned up
     # in the tearDown
     global threads_key
     threads_key = support.threading_setup()
 
-def tearDownModule():
-    if threads_key:
+eleza tearDownModule():
+    ikiwa threads_key:
         support.threading_cleanup(*threads_key)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

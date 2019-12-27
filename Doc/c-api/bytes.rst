@@ -199,7 +199,7 @@ called with a non-bytes parameter.
    the refcount on the input bytes object is not one. Pass the address of an
    existing bytes object as an lvalue (it may be written into), and the new size
    desired.  On success, *\*bytes* holds the resized bytes object and ``0`` is
-   returned; the address in *\*bytes* may differ from its input value.  If the
+   returned; the address in *\*bytes* may differ kutoka its input value.  If the
    reallocation fails, the original bytes object at *\*bytes* is deallocated,
    *\*bytes* is set to *NULL*, :exc:`MemoryError` is set, and ``-1`` is
    returned.

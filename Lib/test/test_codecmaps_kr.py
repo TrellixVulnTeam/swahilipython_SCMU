@@ -6,13 +6,13 @@
 kutoka test agiza multibytecodec_support
 agiza unittest
 
-class TestCP949Map(multibytecodec_support.TestBase_Mapping,
+kundi TestCP949Map(multibytecodec_support.TestBase_Mapping,
                    unittest.TestCase):
     encoding = 'cp949'
     mapfileurl = 'http://www.pythontest.net/unicode/CP949.TXT'
 
 
-class TestEUCKRMap(multibytecodec_support.TestBase_Mapping,
+kundi TestEUCKRMap(multibytecodec_support.TestBase_Mapping,
                    unittest.TestCase):
     encoding = 'euc_kr'
     mapfileurl = 'http://www.pythontest.net/unicode/EUC-KR.TXT'
@@ -22,7 +22,7 @@ class TestEUCKRMap(multibytecodec_support.TestBase_Mapping,
     pass_dectest = [(b'\xa4\xd4', '\u3164')]
 
 
-class TestJOHABMap(multibytecodec_support.TestBase_Mapping,
+kundi TestJOHABMap(multibytecodec_support.TestBase_Mapping,
                    unittest.TestCase):
     encoding = 'johab'
     mapfileurl = 'http://www.pythontest.net/unicode/JOHAB.TXT'
@@ -33,5 +33,5 @@ class TestJOHABMap(multibytecodec_support.TestBase_Mapping,
     pass_enctest = [(b'\\', '\u20a9')]
     pass_dectest = [(b'\\', '\u20a9')]
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

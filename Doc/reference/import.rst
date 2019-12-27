@@ -2,16 +2,16 @@
 .. _importsystem:
 
 *****************
-The import system
+The agiza system
 *****************
 
-.. index:: single: import machinery
+.. index:: single: agiza machinery
 
 Python code in one :term:`module` gains access to the code in another module
 by the process of :term:`importing` it.  The :keyword:`import` statement is
-the most common way of invoking the import machinery, but it is not the only
+the most common way of invoking the agiza machinery, but it is not the only
 way.  Functions such as :func:`importlib.import_module` and built-in
-:func:`__import__` can also be used to invoke the import machinery.
+:func:`__import__` can also be used to invoke the agiza machinery.
 
 The :keyword:`import` statement combines two operations; it searches for the
 named module, then it binds the results of that search to a name in the local
@@ -30,20 +30,20 @@ a name binding operation.
 
 When an :keyword:`import` statement is executed, the standard builtin
 :func:`__import__` function is called. Other mechanisms for invoking the
-import system (such as :func:`importlib.import_module`) may choose to bypass
-:func:`__import__` and use their own solutions to implement import semantics.
+agiza system (such as :func:`importlib.import_module`) may choose to bypass
+:func:`__import__` and use their own solutions to implement agiza semantics.
 
 When a module is first imported, Python searches for the module and if found,
 it creates a module object [#fnmo]_, initializing it.  If the named module
 cannot be found, a :exc:`ModuleNotFoundError` is raised.  Python implements various
-strategies to search for the named module when the import machinery is
+strategies to search for the named module when the agiza machinery is
 invoked.  These strategies can be modified and extended by using various hooks
 described in the sections below.
 
 .. versionchanged:: 3.3
-   The import system has been updated to fully implement the second phase
-   of :pep:`302`. There is no longer any implicit import machinery - the full
-   import system is exposed through :data:`sys.meta_path`. In addition,
+   The agiza system has been updated to fully implement the second phase
+   of :pep:`302`. There is no longer any implicit agiza machinery - the full
+   agiza system is exposed through :data:`sys.meta_path`. In addition,
    native namespace package support has been implemented (see :pep:`420`).
 
 
@@ -51,9 +51,9 @@ described in the sections below.
 ================
 
 The :mod:`importlib` module provides a rich API for interacting with the
-import system.  For example :func:`importlib.import_module` provides a
+agiza system.  For example :func:`importlib.import_module` provides a
 recommended, simpler API than built-in :func:`__import__` for invoking the
-import machinery.  Refer to the :mod:`importlib` library documentation for
+agiza machinery.  Refer to the :mod:`importlib` library documentation for
 additional detail.
 
 
@@ -71,7 +71,7 @@ concept of :term:`packages <package>`.
 
 You can think of packages as the directories on a file system and modules as
 files within directories, but don't take this analogy too literally since
-packages and modules need not originate from the file system.  For the
+packages and modules need not originate kutoka the file system.  For the
 purposes of this documentation, we'll use this convenient analogy of
 directories and files.  Like file system directories, packages are organized
 hierarchically, and packages may themselves contain subpackages, as well as
@@ -82,7 +82,7 @@ modules are packages.  Or put another way, packages are just a special kind of
 module.  Specifically, any module that contains a ``__path__`` attribute is
 considered a package.
 
-All modules have a name.  Subpackage names are separated from their parent
+All modules have a name.  Subpackage names are separated kutoka their parent
 package name by dots, akin to Python's standard attribute access syntax.  Thus
 you might have a module called :mod:`sys` and a package called :mod:`email`,
 which in turn has a subpackage called :mod:`email.mime` and a module within
@@ -140,12 +140,12 @@ representation.
 
 Namespace packages do not use an ordinary list for their ``__path__``
 attribute. They instead use a custom iterable type which will automatically
-perform a new search for package portions on the next import attempt within
+perform a new search for package portions on the next agiza attempt within
 that package if the path of their parent package (or :data:`sys.path` for a
 top level package) changes.
 
 With namespace packages, there is no ``parent/__init__.py`` file.  In fact,
-there may be multiple ``parent`` directories found during import search, where
+there may be multiple ``parent`` directories found during agiza search, where
 each one is provided by a different portion.  Thus ``parent/one`` may not be
 physically located next to ``parent/two``.  In this case, Python will create a
 namespace package for the top-level ``parent`` package whenever it or one of
@@ -159,13 +159,13 @@ Searching
 
 To begin the search, Python needs the :term:`fully qualified <qualified name>`
 name of the module (or package, but for the purposes of this discussion, the
-difference is immaterial) being imported.  This name may come from various
-arguments to the :keyword:`import` statement, or from the parameters to the
+difference is immaterial) being imported.  This name may come kutoka various
+arguments to the :keyword:`import` statement, or kutoka the parameters to the
 :func:`importlib.import_module` or :func:`__import__` functions.
 
-This name will be used in various phases of the import search, and it may be
+This name will be used in various phases of the agiza search, and it may be
 the dotted path to a submodule, e.g. ``foo.bar.baz``.  In this case, Python
-first tries to import ``foo``, then ``foo.bar``, and finally ``foo.bar.baz``.
+first tries to agiza ``foo``, then ``foo.bar``, and finally ``foo.bar.baz``.
 If any of the intermediate imports fail, a :exc:`ModuleNotFoundError` is raised.
 
 
@@ -175,7 +175,7 @@ The module cache
 .. index::
     single: sys.modules
 
-The first place checked during import search is :data:`sys.modules`.  This
+The first place checked during agiza search is :data:`sys.modules`.  This
 mapping serves as a cache of all modules that have been previously imported,
 including the intermediate paths.  So if ``foo.bar.baz`` was previously
 imported, :data:`sys.modules` will contain entries for ``foo``, ``foo.bar``,
@@ -196,7 +196,7 @@ import. The key can also be assigned to ``None``, forcing the next import
 of the module to result in a :exc:`ModuleNotFoundError`.
 
 Beware though, as if you keep a reference to the module object,
-invalidate its cache entry in :data:`sys.modules`, and then re-import the
+invalidate its cache entry in :data:`sys.modules`, and then re-agiza the
 named module, the two module objects will *not* be the same. By contrast,
 :func:`importlib.reload` will reuse the *same* module object, and simply
 reinitialise the module contents by rerunning the module's code.
@@ -220,44 +220,44 @@ themselves when they find that they can load the requested module.
 
 Python includes a number of default finders and importers.  The first one
 knows how to locate built-in modules, and the second knows how to locate
-frozen modules.  A third default finder searches an :term:`import path`
-for modules.  The :term:`import path` is a list of locations that may
+frozen modules.  A third default finder searches an :term:`agiza path`
+for modules.  The :term:`agiza path` is a list of locations that may
 name file system paths or zip files.  It can also be extended to search
 for any locatable resource, such as those identified by URLs.
 
-The import machinery is extensible, so new finders can be added to extend the
+The agiza machinery is extensible, so new finders can be added to extend the
 range and scope of module searching.
 
 Finders do not actually load modules.  If they can find the named module, they
 return a :dfn:`module spec`, an encapsulation of the module's import-related
-information, which the import machinery then uses when loading the module.
+information, which the agiza machinery then uses when loading the module.
 
 The following sections describe the protocol for finders and loaders in more
 detail, including how you can create and register new ones to extend the
-import machinery.
+agiza machinery.
 
 .. versionchanged:: 3.4
    In previous versions of Python, finders returned :term:`loaders <loader>`
    directly, whereas now they return module specs which *contain* loaders.
-   Loaders are still used during import but have fewer responsibilities.
+   Loaders are still used during agiza but have fewer responsibilities.
 
 Import hooks
 ------------
 
 .. index::
-   single: import hooks
+   single: agiza hooks
    single: meta hooks
    single: path hooks
    pair: hooks; import
    pair: hooks; meta
    pair: hooks; path
 
-The import machinery is designed to be extensible; the primary mechanism for
-this are the *import hooks*.  There are two types of import hooks: *meta
-hooks* and *import path hooks*.
+The agiza machinery is designed to be extensible; the primary mechanism for
+this are the *agiza hooks*.  There are two types of agiza hooks: *meta
+hooks* and *agiza path hooks*.
 
-Meta hooks are called at the start of import processing, before any other
-import processing has occurred, other than :data:`sys.modules` cache look up.
+Meta hooks are called at the start of agiza processing, before any other
+agiza processing has occurred, other than :data:`sys.modules` cache look up.
 This allows meta hooks to override :data:`sys.path` processing, frozen
 modules, or even built-in modules.  Meta hooks are registered by adding new
 finder objects to :data:`sys.meta_path`, as described below.
@@ -280,7 +280,7 @@ searches :data:`sys.meta_path`, which contains a list of meta path finder
 objects.  These finders are queried in order to see if they know how to handle
 the named module.  Meta path finders must implement a method called
 :meth:`~importlib.abc.MetaPathFinder.find_spec()` which takes three arguments:
-a name, an import path, and (optionally) a target module.  The meta path
+a name, an agiza path, and (optionally) a target module.  The meta path
 finder can use any strategy it wants to determine whether it can handle
 the named module or not.
 
@@ -288,7 +288,7 @@ If the meta path finder knows how to handle the named module, it returns a
 spec object.  If it cannot handle the named module, it returns ``None``.  If
 :data:`sys.meta_path` processing reaches the end of its list without returning
 a spec, then a :exc:`ModuleNotFoundError` is raised.  Any other exceptions
-raised are simply propagated up, aborting the import process.
+raised are simply propagated up, aborting the agiza process.
 
 The :meth:`~importlib.abc.MetaPathFinder.find_spec()` method of meta path
 finders is called with two or three arguments.  The first is the fully
@@ -299,9 +299,9 @@ subpackages, the second argument is the value of the parent package's
 ``__path__`` attribute. If the appropriate ``__path__`` attribute cannot
 be accessed, a :exc:`ModuleNotFoundError` is raised.  The third argument
 is an existing module object that will be the target of loading later.
-The import system passes in a target module only during reload.
+The agiza system passes in a target module only during reload.
 
-The meta path may be traversed multiple times for a single import request.
+The meta path may be traversed multiple times for a single agiza request.
 For example, assuming none of the modules involved has already been cached,
 importing ``foo.bar.baz`` will first perform a top level import, calling
 ``mpf.find_spec("foo", None, None)`` on each meta path finder (``mpf``). After
@@ -316,22 +316,22 @@ always return ``None`` when anything other than ``None`` is passed as the
 second argument.
 
 Python's default :data:`sys.meta_path` has three meta path finders, one that
-knows how to import built-in modules, one that knows how to import frozen
-modules, and one that knows how to import modules from an :term:`import path`
+knows how to agiza built-in modules, one that knows how to agiza frozen
+modules, and one that knows how to agiza modules kutoka an :term:`agiza path`
 (i.e. the :term:`path based finder`).
 
 .. versionchanged:: 3.4
    The :meth:`~importlib.abc.MetaPathFinder.find_spec` method of meta path
    finders replaced :meth:`~importlib.abc.MetaPathFinder.find_module`, which
    is now deprecated.  While it will continue to work without change, the
-   import machinery will try it only if the finder does not implement
+   agiza machinery will try it only if the finder does not implement
    ``find_spec()``.
 
 
 Loading
 =======
 
-If and when a module spec is found, the import machinery will use it (and
+If and when a module spec is found, the agiza machinery will use it (and
 the loader it contains) when loading the module.  Here is an approximation
 of what happens during the loading portion of import::
 
@@ -368,21 +368,21 @@ of what happens during the loading portion of import::
 Note the following details:
 
  * If there is an existing module object with the given name in
-   :data:`sys.modules`, import will have already returned it.
+   :data:`sys.modules`, agiza will have already returned it.
 
  * The module will exist in :data:`sys.modules` before the loader
    executes the module code.  This is crucial because the module code may
-   (directly or indirectly) import itself; adding it to :data:`sys.modules`
+   (directly or indirectly) agiza itself; adding it to :data:`sys.modules`
    beforehand prevents unbounded recursion in the worst case and multiple
    loading in the best.
 
  * If loading fails, the failing module -- and only the failing module --
-   gets removed from :data:`sys.modules`.  Any module already in the
+   gets removed kutoka :data:`sys.modules`.  Any module already in the
    :data:`sys.modules` cache, and any module that was successfully loaded
    as a side-effect, must remain in the cache.  This contrasts with
    reloading where even the failing module is left in :data:`sys.modules`.
 
- * After the module is created but before execution, the import machinery
+ * After the module is created but before execution, the agiza machinery
    sets the import-related module attributes ("_init_module_attrs" in
    the pseudo-code example above), as summarized in a
    :ref:`later section <import-mod-attrs>`.
@@ -392,10 +392,10 @@ Note the following details:
    loader, which gets to decide what gets populated and how.
 
  * The module created during loading and passed to exec_module() may
-   not be the one returned at the end of import [#fnlo]_.
+   not be the one returned at the end of agiza [#fnlo]_.
 
 .. versionchanged:: 3.4
-   The import system has taken over the boilerplate responsibilities of
+   The agiza system has taken over the boilerplate responsibilities of
    loaders.  These were previously performed by the
    :meth:`importlib.abc.Loader.load_module` method.
 
@@ -403,9 +403,9 @@ Loaders
 -------
 
 Module loaders provide the critical function of loading: module execution.
-The import machinery calls the :meth:`importlib.abc.Loader.exec_module`
+The agiza machinery calls the :meth:`importlib.abc.Loader.exec_module`
 method with a single argument, the module object to execute.  Any value
-returned from :meth:`~importlib.abc.Loader.exec_module` is ignored.
+returned kutoka :meth:`~importlib.abc.Loader.exec_module` is ignored.
 
 Loaders must satisfy the following requirements:
 
@@ -426,7 +426,7 @@ by implementing a :meth:`~importlib.abc.Loader.create_module` method.
 It takes one argument, the module spec, and returns the new module object
 to use during loading.  ``create_module()`` does not need to set any attributes
 on the module object.  If the method returns ``None``, the
-import machinery will create the new module itself.
+agiza machinery will create the new module itself.
 
 .. versionadded:: 3.4
    The :meth:`~importlib.abc.Loader.create_module` method of loaders.
@@ -436,7 +436,7 @@ import machinery will create the new module itself.
    :meth:`~importlib.abc.Loader.exec_module` and the import
    machinery assumed all the boilerplate responsibilities of loading.
 
-   For compatibility with existing loaders, the import machinery will use
+   For compatibility with existing loaders, the agiza machinery will use
    the ``load_module()`` method of loaders if it exists and the loader does
    not also implement ``exec_module()``.  However, ``load_module()`` has been
    deprecated and loaders should implement ``exec_module()`` instead.
@@ -472,7 +472,7 @@ Submodules
 ----------
 
 When a submodule is loaded using any mechanism (e.g. ``importlib`` APIs, the
-``import`` or ``import-from`` statements, or built-in ``__import__()``) a
+``import`` or ``import-kutoka`` statements, or built-in ``__import__()``) a
 binding is placed in the parent module's namespace to the submodule object.
 For example, if package ``spam`` has a submodule ``foo``, after importing
 ``spam.foo``, ``spam`` will have an attribute ``foo`` which is bound to the
@@ -485,20 +485,20 @@ submodule.  Let's say you have the following directory structure::
 
 and ``spam/__init__.py`` has the following lines in it::
 
-    from .foo import Foo
-    from .bar import Bar
+    kutoka .foo agiza Foo
+    kutoka .bar agiza Bar
 
 then executing the following puts a name binding to ``foo`` and ``bar`` in the
 ``spam`` module::
 
-    >>> import spam
+    >>> agiza spam
     >>> spam.foo
-    <module 'spam.foo' from '/tmp/imports/spam/foo.py'>
+    <module 'spam.foo' kutoka '/tmp/imports/spam/foo.py'>
     >>> spam.bar
-    <module 'spam.bar' from '/tmp/imports/spam/bar.py'>
+    <module 'spam.bar' kutoka '/tmp/imports/spam/bar.py'>
 
 Given Python's familiar name binding rules this might seem surprising, but
-it's actually a fundamental feature of the import system.  The invariant
+it's actually a fundamental feature of the agiza system.  The invariant
 holding is that if you have ``sys.modules['spam']`` and
 ``sys.modules['spam.foo']`` (as you would after the above import), the latter
 must appear as the ``foo`` attribute of the former.
@@ -506,15 +506,15 @@ must appear as the ``foo`` attribute of the former.
 Module spec
 -----------
 
-The import machinery uses a variety of information about each module
+The agiza machinery uses a variety of information about each module
 during import, especially before loading.  Most of the information is
 common to all modules.  The purpose of a module's spec is to encapsulate
 this import-related information on a per-module basis.
 
-Using a spec during import allows state to be transferred between import
+Using a spec during agiza allows state to be transferred between import
 system components, e.g. between the finder that creates the module spec
 and the loader that executes it.  Most importantly, it allows the
-import machinery to perform the boilerplate operations of loading,
+agiza machinery to perform the boilerplate operations of loading,
 whereas without a module spec the loader had that responsibility.
 
 The module's spec is exposed as the ``__spec__`` attribute on a module object.
@@ -528,7 +528,7 @@ the module spec.
 Import-related module attributes
 --------------------------------
 
-The import machinery fills in these attributes on each module object
+The agiza machinery fills in these attributes on each module object
 during loading, based on the module's spec, before the loader executes
 the module.
 
@@ -536,12 +536,12 @@ the module.
 
    The ``__name__`` attribute must be set to the fully-qualified name of
    the module.  This name is used to uniquely identify the module in
-   the import system.
+   the agiza system.
 
 .. attribute:: __loader__
 
    The ``__loader__`` attribute must be set to the loader object that
-   the import machinery used when loading the module.  This is mostly
+   the agiza machinery used when loading the module.  This is mostly
    for introspection, but can be used for additional loader-specific
    functionality, for example getting data associated with a loader.
 
@@ -595,8 +595,8 @@ the module.
 .. attribute:: __cached__
 
    ``__file__`` is optional. If set, this attribute's value must be a
-   string.  The import system may opt to leave ``__file__`` unset if it
-   has no semantic meaning (e.g. a module loaded from a database).
+   string.  The agiza system may opt to leave ``__file__`` unset if it
+   has no semantic meaning (e.g. a module loaded kutoka a database).
 
    If ``__file__`` is set, it may also be appropriate to set the
    ``__cached__`` attribute which is the path to any compiled version of
@@ -607,8 +607,8 @@ the module.
    It is also appropriate to set ``__cached__`` when ``__file__`` is not
    set.  However, that scenario is quite atypical.  Ultimately, the
    loader is what makes use of ``__file__`` and/or ``__cached__``.  So
-   if a loader can load from a cached module but otherwise does not load
-   from a file, that atypical scenario may be appropriate.
+   if a loader can load kutoka a cached module but otherwise does not load
+   kutoka a file, that atypical scenario may be appropriate.
 
 .. _package-path-rules:
 
@@ -618,7 +618,7 @@ module.__path__
 By definition, if a module has a ``__path__`` attribute, it is a package.
 
 A package's ``__path__`` attribute is used during imports of its subpackages.
-Within the import machinery, it functions much the same as :data:`sys.path`,
+Within the agiza machinery, it functions much the same as :data:`sys.path`,
 i.e. providing a list of locations to search for modules during import.
 However, ``__path__`` is typically much more constrained than
 :data:`sys.path`.
@@ -632,7 +632,7 @@ A package's ``__init__.py`` file may set or alter the package's ``__path__``
 attribute, and this was typically the way namespace packages were implemented
 prior to :pep:`420`.  With the adoption of :pep:`420`, namespace packages no
 longer need to supply ``__init__.py`` files containing only ``__path__``
-manipulation code; the import machinery automatically sets ``__path__``
+manipulation code; the agiza machinery automatically sets ``__path__``
 correctly for the namespace package.
 
 Module reprs
@@ -642,8 +642,8 @@ By default, all modules have a usable repr, however depending on the
 attributes set above, and in the module's spec, you can more explicitly
 control the repr of module objects.
 
-If the module has a spec (``__spec__``), the import machinery will try
-to generate a repr from it.  If that fails or there is no spec, the import
+If the module has a spec (``__spec__``), the agiza machinery will try
+to generate a repr kutoka it.  If that fails or there is no spec, the import
 system will craft a default repr using whatever information is available
 on the module.  It will try to use the ``module.__name__``,
 ``module.__file__``, and ``module.__loader__`` as input into the repr,
@@ -678,10 +678,10 @@ Here are the exact rules used:
 Cached bytecode invalidation
 ----------------------------
 
-Before Python loads cached bytecode from ``.pyc`` file, it checks whether the
+Before Python loads cached bytecode kutoka ``.pyc`` file, it checks whether the
 cache is up-to-date with the source ``.py`` file. By default, Python does this
 by storing the source's last-modified timestamp and size in the cache file when
-writing it. At runtime, the import system then validates the cache file by
+writing it. At runtime, the agiza system then validates the cache file by
 checking the stored metadata in the cache file against at source's
 metadata.
 
@@ -709,11 +709,11 @@ The Path Based Finder
 
 As mentioned previously, Python comes with several default meta path finders.
 One of these, called the :term:`path based finder`
-(:class:`~importlib.machinery.PathFinder`), searches an :term:`import path`,
+(:class:`~importlib.machinery.PathFinder`), searches an :term:`agiza path`,
 which contains a list of :term:`path entries <path entry>`.  Each path
 entry names a location to search for modules.
 
-The path based finder itself doesn't know how to import anything. Instead, it
+The path based finder itself doesn't know how to agiza anything. Instead, it
 traverses the individual path entries, associating each of them with a
 path entry finder that knows how to handle that particular kind of path.
 
@@ -722,7 +722,7 @@ modules on the file system, handling special file types such as Python source
 code (``.py`` files), Python byte code (``.pyc`` files) and
 shared libraries (e.g. ``.so`` files). When supported by the :mod:`zipimport`
 module in the standard library, the default path entry finders also handle
-loading all of these file types (other than shared libraries) from zipfiles.
+loading all of these file types (other than shared libraries) kutoka zipfiles.
 
 Path entries need not be limited to file system locations.  They can refer to
 URLs, database queries, or any other location that can be specified as a
@@ -733,7 +733,7 @@ can extend and customize the types of searchable path entries.  For example,
 if you wanted to support path entries as network URLs, you could write a hook
 that implements HTTP semantics to find modules on the web.  This hook (a
 callable) would return a :term:`path entry finder` supporting the protocol
-described below, which was then used to get a loader for the module from the
+described below, which was then used to get a loader for the module kutoka the
 web.
 
 A word of warning: this section and the previous both use the term *finder*,
@@ -746,7 +746,7 @@ process, as keyed off the :data:`sys.meta_path` traversal.
 
 By contrast, path entry finders are in a sense an implementation detail
 of the path based finder, and in fact, if the path based finder were to be
-removed from :data:`sys.meta_path`, none of the path entry finder semantics
+removed kutoka :data:`sys.meta_path`, none of the path entry finder semantics
 would be invoked.
 
 
@@ -767,15 +767,15 @@ but they need not be limited to this.
 As a meta path finder, the :term:`path based finder` implements the
 :meth:`~importlib.abc.MetaPathFinder.find_spec` protocol previously
 described, however it exposes additional hooks that can be used to
-customize how modules are found and loaded from the :term:`import path`.
+customize how modules are found and loaded kutoka the :term:`agiza path`.
 
 Three variables are used by the :term:`path based finder`, :data:`sys.path`,
 :data:`sys.path_hooks` and :data:`sys.path_importer_cache`.  The ``__path__``
 attributes on package objects are also used.  These provide additional ways
-that the import machinery can be customized.
+that the agiza machinery can be customized.
 
 :data:`sys.path` contains a list of strings providing search locations for
-modules and packages.  It is initialized from the :data:`PYTHONPATH`
+modules and packages.  It is initialized kutoka the :data:`PYTHONPATH`
 environment variable and various other installation- and
 implementation-specific defaults.  Entries in :data:`sys.path` can name
 directories on the file system, zip files, and potentially other "locations"
@@ -786,13 +786,13 @@ entries is determined by the individual :term:`path entry finders <path entry
 finder>`.
 
 The :term:`path based finder` is a :term:`meta path finder`, so the import
-machinery begins the :term:`import path` search by calling the path
+machinery begins the :term:`agiza path` search by calling the path
 based finder's :meth:`~importlib.machinery.PathFinder.find_spec` method as
 described previously.  When the ``path`` argument to
 :meth:`~importlib.machinery.PathFinder.find_spec` is given, it will be a
 list of string paths to traverse - typically a package's ``__path__``
-attribute for an import within that package.  If the ``path`` argument is
-``None``, this indicates a top level import and :data:`sys.path` is used.
+attribute for an agiza within that package.  If the ``path`` argument is
+``None``, this indicates a top level agiza and :data:`sys.path` is used.
 
 The path based finder iterates over every entry in the search path, and
 for each of these, looks for an appropriate :term:`path entry finder`
@@ -804,7 +804,7 @@ in :data:`sys.path_importer_cache` (despite the name, this cache actually
 stores finder objects rather than being limited to :term:`importer` objects).
 In this way, the expensive search for a particular :term:`path entry`
 location's :term:`path entry finder` need only be done once.  User code is
-free to remove cache entries from :data:`sys.path_importer_cache` forcing
+free to remove cache entries kutoka :data:`sys.path_importer_cache` forcing
 the path based finder to perform the path entry search again [#fnpic]_.
 
 If the path entry is not present in the cache, the path based finder iterates
@@ -815,7 +815,7 @@ entry finder` that can handle the path entry, or it may raise
 :exc:`ImportError`.  An :exc:`ImportError` is used by the path based finder to
 signal that the hook cannot find a :term:`path entry finder`
 for that :term:`path entry`.  The
-exception is ignored and :term:`import path` iteration continues.  The hook
+exception is ignored and :term:`agiza path` iteration continues.  The hook
 should expect either a string or bytes object; the encoding of bytes objects
 is up to the hook (e.g. it may be a file system encoding, UTF-8, or something
 else), and if the hook cannot decode the argument, it should raise
@@ -834,7 +834,7 @@ to ask the finder for a module spec, which is then used when loading the
 module.
 
 The current working directory -- denoted by an empty string -- is handled
-slightly differently from other entries on :data:`sys.path`. First, if the
+slightly differently kutoka other entries on :data:`sys.path`. First, if the
 current working directory is found to not exist, no value is stored in
 :data:`sys.path_importer_cache`. Second, the value for the current working
 directory is looked up fresh for each module lookup. Third, the path used for
@@ -854,7 +854,7 @@ fully qualified name of the module being imported, and the (optional) target
 module.  ``find_spec()`` returns a fully populated spec for the module.
 This spec will always have "loader" set (with one exception).
 
-To indicate to the import machinery that the spec represents a namespace
+To indicate to the agiza machinery that the spec represents a namespace
 :term:`portion`. the path entry finder sets "loader" on the spec to
 ``None`` and "submodule_search_locations" to a list containing the
 portion.
@@ -877,13 +877,13 @@ portion.
    ``None``, this means that while the path entry finder does not have a
    loader for the named module, it knows that the path entry contributes to
    a namespace portion for the named module.  This will almost always be the
-   case where Python is asked to import a namespace package that has no
+   case where Python is asked to agiza a namespace package that has no
    physical presence on the file system.  When a path entry finder returns
    ``None`` for the loader, the second item of the 2-tuple return value must
    be a sequence, although it can be empty.
 
    If ``find_loader()`` returns a non-``None`` loader value, the portion is
-   ignored and the loader is returned from the path based finder, terminating
+   ignored and the loader is returned kutoka the path based finder, terminating
    the search through the path entries.
 
    For backwards compatibility with other implementations of the import
@@ -891,31 +891,31 @@ portion.
    traditional ``find_module()`` method that meta path finders support.
    However path entry finder ``find_module()`` methods are never called
    with a ``path`` argument (they are expected to record the appropriate
-   path information from the initial call to the path hook).
+   path information kutoka the initial call to the path hook).
 
    The ``find_module()`` method on path entry finders is deprecated,
    as it does not allow the path entry finder to contribute portions to
    namespace packages.  If both ``find_loader()`` and ``find_module()``
-   exist on a path entry finder, the import system will always call
+   exist on a path entry finder, the agiza system will always call
    ``find_loader()`` in preference to ``find_module()``.
 
 
-Replacing the standard import system
+Replacing the standard agiza system
 ====================================
 
-The most reliable mechanism for replacing the entire import system is to
+The most reliable mechanism for replacing the entire agiza system is to
 delete the default contents of :data:`sys.meta_path`, replacing them
 entirely with a custom meta path hook.
 
-If it is acceptable to only alter the behaviour of import statements
-without affecting other APIs that access the import system, then replacing
+If it is acceptable to only alter the behaviour of agiza statements
+without affecting other APIs that access the agiza system, then replacing
 the builtin :func:`__import__` function may be sufficient. This technique
 may also be employed at the module level to only alter the behaviour of
-import statements within that module.
+agiza statements within that module.
 
-To selectively prevent import of some modules from a hook early on the
-meta path (rather than disabling the standard import system entirely),
-it is sufficient to raise :exc:`ModuleNotFoundError` directly from
+To selectively prevent agiza of some modules kutoka a hook early on the
+meta path (rather than disabling the standard agiza system entirely),
+it is sufficient to raise :exc:`ModuleNotFoundError` directly kutoka
 :meth:`~importlib.abc.MetaPathFinder.find_spec` instead of returning
 ``None``. The latter indicates that the meta path search should continue,
 while raising an exception terminates it immediately.
@@ -927,7 +927,7 @@ Package Relative Imports
 
 Relative imports use leading dots. A single leading dot indicates a relative
 import, starting with the current package. Two or more leading dots indicate a
-relative import to the parent(s) of the current package, one level per dot
+relative agiza to the parent(s) of the current package, one level per dot
 after the first. For example, given the following package layout::
 
     package/
@@ -944,18 +944,18 @@ after the first. For example, given the following package layout::
 In either ``subpackage1/moduleX.py`` or ``subpackage1/__init__.py``,
 the following are valid relative imports::
 
-    from .moduleY import spam
-    from .moduleY import spam as ham
-    from . import moduleY
-    from ..subpackage1 import moduleY
-    from ..subpackage2.moduleZ import eggs
-    from ..moduleA import foo
+    kutoka .moduleY agiza spam
+    kutoka .moduleY agiza spam as ham
+    kutoka . agiza moduleY
+    kutoka ..subpackage1 agiza moduleY
+    kutoka ..subpackage2.moduleZ agiza eggs
+    kutoka ..moduleA agiza foo
 
-Absolute imports may use either the ``import <>`` or ``from <> import <>``
+Absolute imports may use either the ``agiza <>`` or ``kutoka <> agiza <>``
 syntax, but relative imports may only use the second form; the reason
 for this is that::
 
-    import XXX.YYY.ZZZ
+    agiza XXX.YYY.ZZZ
 
 should expose ``XXX.YYY.ZZZ`` as a usable expression, but .moduleY is
 not a valid expression.
@@ -991,8 +991,8 @@ In :ref:`the remaining cases <using-on-interface-options>`
 
 - interactive prompt
 - :option:`-c` option
-- running from stdin
-- running directly from a source or bytecode file
+- running kutoka stdin
+- running directly kutoka a source or bytecode file
 
 Note that ``__main__.__spec__`` is always ``None`` in the last case,
 *even if* the file could technically be imported directly as a module
@@ -1016,19 +1016,19 @@ attributes of modules and packages, perhaps expanding upon or supplanting the
 related entries in the data model reference page?
 
 XXX runpy, pkgutil, et al in the library manual should all get "See Also"
-links at the top pointing to the new import system section.
+links at the top pointing to the new agiza system section.
 
 XXX Add more explanation regarding the different ways in which
 ``__main__`` is initialized?
 
-XXX Add more info on ``__main__`` quirks/pitfalls (i.e. copy from
+XXX Add more info on ``__main__`` quirks/pitfalls (i.e. copy kutoka
 :pep:`395`).
 
 
 References
 ==========
 
-The import machinery has evolved considerably since Python's early days.  The
+The agiza machinery has evolved considerably since Python's early days.  The
 original `specification for packages
 <https://www.python.org/doc/essays/packages/>`_ is still available to read,
 although some details have changed since the writing of that document.
@@ -1049,10 +1049,10 @@ proposed ``__name__`` for semantics :pep:`366` would eventually specify for
 
 :pep:`338` defines executing modules as scripts.
 
-:pep:`451` adds the encapsulation of per-module import state in spec
+:pep:`451` adds the encapsulation of per-module agiza state in spec
 objects.  It also off-loads most of the boilerplate responsibilities of
-loaders back onto the import machinery.  These changes allow the
-deprecation of several APIs in the import system and also addition of new
+loaders back onto the agiza machinery.  These changes allow the
+deprecation of several APIs in the agiza system and also addition of new
 methods to finders and loaders.
 
 .. rubric:: Footnotes

@@ -1,6 +1,6 @@
 """Define the menu contents, hotkeys, and event bindings.
 
-There is additional configuration information in the EditorWindow class (and
+There is additional configuration information in the EditorWindow kundi (and
 subclasses): the menus are created there based on the menu_specs (class)
 variable, and menus not created are silently skipped in the code here.  This
 makes it possible, for example, to define a Debug menu which is only present in
@@ -115,11 +115,11 @@ menudefs = [
    ]),
 ]
 
-if find_spec('turtledemo'):
+ikiwa find_spec('turtledemo'):
     menudefs[-1][1].append(('Turtle Demo', '<<open-turtle-demo>>'))
 
 default_keydefs = idleConf.GetCurrentKeySet()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_mainmenu', verbosity=2)

@@ -15,16 +15,16 @@ except AttributeError:
     raise unittest.SkipTest("select.poll not defined")
 
 
-def find_ready_matching(ready, flag):
+eleza find_ready_matching(ready, flag):
     match = []
     for fd, mode in ready:
-        if mode & flag:
+        ikiwa mode & flag:
             match.append(fd)
-    return match
+    rudisha match
 
-class PollTests(unittest.TestCase):
+kundi PollTests(unittest.TestCase):
 
-    def test_poll1(self):
+    eleza test_poll1(self):
         # Basic functional test of poll object
         # Create a bunch of pipe and test that poll works with them.
 
@@ -53,14 +53,14 @@ class PollTests(unittest.TestCase):
         while writers:
             ready = p.poll()
             ready_writers = find_ready_matching(ready, select.POLLOUT)
-            if not ready_writers:
+            ikiwa not ready_writers:
                 raise RuntimeError("no pipes ready for writing")
             wr = random.choice(ready_writers)
             os.write(wr, MSG)
 
             ready = p.poll()
             ready_readers = find_ready_matching(ready, select.POLLIN)
-            if not ready_readers:
+            ikiwa not ready_readers:
                 raise RuntimeError("no pipes ready for reading")
             rd = random.choice(ready_readers)
             buf = os.read(rd, MSG_LEN)
@@ -73,7 +73,7 @@ class PollTests(unittest.TestCase):
 
         self.assertEqual(bufs, [MSG] * NUM_PIPES)
 
-    def test_poll_unit_tests(self):
+    eleza test_poll_unit_tests(self):
         # returns NVAL for invalid file descriptor
         FD, w = os.pipe()
         os.close(FD)
@@ -104,12 +104,12 @@ class PollTests(unittest.TestCase):
 
         # Test error cases
         pollster = select.poll()
-        class Nope:
+        kundi Nope:
             pass
 
-        class Almost:
-            def fileno(self):
-                return 'fileno'
+        kundi Almost:
+            eleza fileno(self):
+                rudisha 'fileno'
 
         self.assertRaises(TypeError, pollster.register, Nope(), 0)
         self.assertRaises(TypeError, pollster.register, Almost(), 0)
@@ -117,7 +117,7 @@ class PollTests(unittest.TestCase):
     # Another test case for poll().  This is copied kutoka the test case for
     # select(), modified to use poll() instead.
 
-    def test_poll2(self):
+    eleza test_poll2(self):
         cmd = 'for i in 0 1 2 3 4 5 6 7 8 9; do echo testing...; sleep 1; done'
         proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
                                 bufsize=0)
@@ -128,25 +128,25 @@ class PollTests(unittest.TestCase):
         pollster.register( p, select.POLLIN )
         for tout in (0, 1000, 2000, 4000, 8000, 16000) + (-1,)*10:
             fdlist = pollster.poll(tout)
-            if (fdlist == []):
+            ikiwa (fdlist == []):
                 continue
             fd, flags = fdlist[0]
-            if flags & select.POLLHUP:
+            ikiwa flags & select.POLLHUP:
                 line = p.readline()
-                if line != b"":
+                ikiwa line != b"":
                     self.fail('error: pipe seems to be closed, but still returns data')
                 continue
 
-            elif flags & select.POLLIN:
+            elikiwa flags & select.POLLIN:
                 line = p.readline()
-                if not line:
+                ikiwa not line:
                     break
                 self.assertEqual(line, b'testing...\n')
                 continue
             else:
-                self.fail('Unexpected return value kutoka select.poll: %s' % fdlist)
+                self.fail('Unexpected rudisha value kutoka select.poll: %s' % fdlist)
 
-    def test_poll3(self):
+    eleza test_poll3(self):
         # test int overflow
         pollster = select.poll()
         pollster.register(1)
@@ -154,7 +154,7 @@ class PollTests(unittest.TestCase):
         self.assertRaises(OverflowError, pollster.poll, 1 << 64)
 
         x = 2 + 3
-        if x != 5:
+        ikiwa x != 5:
             self.fail('Overflow must have occurred')
 
         # Issues #15989, #17919
@@ -164,7 +164,7 @@ class PollTests(unittest.TestCase):
         self.assertRaises(OverflowError, pollster.modify, 1, 1 << 64)
 
     @cpython_only
-    def test_poll_c_limits(self):
+    eleza test_poll_c_limits(self):
         kutoka _testcapi agiza USHRT_MAX, INT_MAX, UINT_MAX
         pollster = select.poll()
         pollster.register(1)
@@ -176,7 +176,7 @@ class PollTests(unittest.TestCase):
         self.assertRaises(OverflowError, pollster.poll, UINT_MAX + 1)
 
     @reap_threads
-    def test_threaded_poll(self):
+    eleza test_threaded_poll(self):
         r, w = os.pipe()
         self.addCleanup(os.close, r)
         self.addCleanup(os.close, w)
@@ -205,7 +205,7 @@ class PollTests(unittest.TestCase):
 
     @unittest.skipUnless(threading, 'Threading required for this test.')
     @reap_threads
-    def test_poll_blocks_with_negative_ms(self):
+    eleza test_poll_blocks_with_negative_ms(self):
         for timeout_ms in [None, -1000, -1, -1.0, -0.1, -1e-100]:
             # Create two file descriptors. This will be used to unlock
             # the blocking call to poll.poll inside the thread
@@ -226,8 +226,8 @@ class PollTests(unittest.TestCase):
             os.close(w)
 
 
-def test_main():
+eleza test_main():
     run_unittest(PollTests)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test_main()

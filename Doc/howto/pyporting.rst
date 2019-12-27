@@ -58,7 +58,7 @@ Python 2 code.
 Another key point is that modernizing your Python 2 code to also support
 Python 3 is largely automated for you. While you might have to make some API
 decisions thanks to Python 3 clarifying text data versus binary data, the
-lower-level work is now mostly done for you and thus can at least benefit from
+lower-level work is now mostly done for you and thus can at least benefit kutoka
 the automated changes immediately.
 
 Keep those key points in mind while you read on about the details of porting
@@ -77,7 +77,7 @@ in this HOWTO will not be available to you.
 If you are able to skip Python 2.5 and older, then the required changes
 to your code should continue to look and feel like idiomatic Python code. At
 worst you will have to use a function instead of a method in some instances or
-have to import a function instead of using a built-in one, but otherwise the
+have to agiza a function instead of using a built-in one, but otherwise the
 overall transformation should not feel foreign to you.
 
 But you should aim for only supporting Python 2.7. Python 2.6 is no longer
@@ -121,7 +121,7 @@ you want to look out for while you code, you will want to learn what changes
 Python 3 makes in terms of Python 2. Typically the two best ways of doing that
 is reading the `"What's New"`_ doc for each release of Python 3 and the
 `Porting to Python 3`_ book (which is free online). There is also a handy
-`cheat sheet`_ from the Python-Future project.
+`cheat sheet`_ kutoka the Python-Future project.
 
 
 Update your code
@@ -132,7 +132,7 @@ it's time to update your code! You have a choice between two tools in porting
 your code automatically: Futurize_ and Modernize_. Which tool you choose will
 depend on how much like Python 3 you want your code to be. Futurize_ does its
 best to make Python 3 idioms and practices exist in Python 2, e.g. backporting
-the ``bytes`` type from Python 3 so that you have semantic parity between the
+the ``bytes`` type kutoka Python 3 so that you have semantic parity between the
 major versions of Python. Modernize_,
 on the other hand, is more conservative and targets a Python 2/3 subset of
 Python, directly relying on six_ to help provide compatibility. As Python 3 is
@@ -164,18 +164,18 @@ Division
 In Python 3, ``5 / 2 == 2.5`` and not ``2``; all division between ``int`` values
 result in a ``float``. This change has actually been planned since Python 2.2
 which was released in 2002. Since then users have been encouraged to add
-``from __future__ import division`` to any and all files which use the ``/`` and
+``kutoka __future__ agiza division`` to any and all files which use the ``/`` and
 ``//`` operators or to be running the interpreter with the ``-Q`` flag. If you
 have not been doing this then you will need to go through your code and do two
 things:
 
-#. Add ``from __future__ import division`` to your files
+#. Add ``kutoka __future__ agiza division`` to your files
 #. Update any division operator as necessary to either use ``//`` to use floor
    division or continue using ``/`` and expect a float
 
 The reason that ``/`` isn't simply translated to ``//`` automatically is that if
 an object defines a ``__truediv__`` method but not ``__floordiv__`` then your
-code would begin to fail (e.g. a user-defined class that uses ``/`` to
+code would begin to fail (e.g. a user-defined kundi that uses ``/`` to
 signify some operation but not ``//`` for the same thing or at all).
 
 
@@ -205,7 +205,7 @@ To start, you will need to decide which APIs take text and which take binary
 the difficulty of keeping the code working; as stated earlier it is difficult to
 do well). In Python 2 this means making sure the APIs that take text can work
 with ``unicode`` and those that work with binary data work with the
-``bytes`` type from Python 3 (which is a subset of ``str`` in Python 2 and acts
+``bytes`` type kutoka Python 3 (which is a subset of ``str`` in Python 2 and acts
 as an alias for ``bytes`` type in Python 2). Usually the biggest issue is
 realizing which methods exist on which types in Python 2 & 3 simultaneously
 (for text that's ``unicode`` in Python 2 and ``str`` in Python 3, for binary
@@ -240,7 +240,7 @@ having to keep track of what type of data you are working with.
 The next issue is making sure you know whether the string literals in your code
 represent text or binary data. You should add a ``b`` prefix to any
 literal that presents binary data. For text you should add a ``u`` prefix to
-the text literal. (there is a :mod:`__future__` import to force all unspecified
+the text literal. (there is a :mod:`__future__` agiza to force all unspecified
 literals to be Unicode, but usage has shown it isn't as effective as adding a
 ``b`` or ``u`` prefix to all literals explicitly)
 
@@ -253,7 +253,7 @@ Therefore, you **must** make a decision of whether a file will be used for
 binary access (allowing binary data to be read and/or written) or textual access
 (allowing text data to be read and/or written). You should also use :func:`io.open`
 for opening files instead of the built-in :func:`open` function as the :mod:`io`
-module is consistent from Python 2 to 3 while the built-in :func:`open` function
+module is consistent kutoka Python 2 to 3 while the built-in :func:`open` function
 is not (in Python 3 it's actually :func:`io.open`). Do not bother with the
 outdated practice of using :func:`codecs.open` as that's only necessary for
 keeping compatibility with Python 2.5.
@@ -307,33 +307,33 @@ is available in Python's standard library since Python 3.3 and available for
 Python 2 through importlib2_ on PyPI. You might be tempted to write code to
 access e.g. the ``importlib.abc`` module by doing the following::
 
-  import sys
+  agiza sys
 
   if sys.version_info[0] == 3:
-      from importlib import abc
+      kutoka importlib agiza abc
   else:
-      from importlib2 import abc
+      kutoka importlib2 agiza abc
 
 The problem with this code is what happens when Python 4 comes out? It would
 be better to treat Python 2 as the exceptional case instead of Python 3 and
 assume that future Python versions will be more compatible with Python 3 than
 Python 2::
 
-  import sys
+  agiza sys
 
   if sys.version_info[0] > 2:
-      from importlib import abc
+      kutoka importlib agiza abc
   else:
-      from importlib2 import abc
+      kutoka importlib2 agiza abc
 
 The best solution, though, is to do no version detection at all and instead rely
 on feature detection. That avoids any potential issues of getting the version
 detection wrong and helps keep you future-compatible::
 
   try:
-      from importlib import abc
+      kutoka importlib agiza abc
   except ImportError:
-      from importlib2 import abc
+      kutoka importlib2 agiza abc
 
 
 Prevent compatibility regressions
@@ -342,14 +342,14 @@ Prevent compatibility regressions
 Once you have fully translated your code to be compatible with Python 3, you
 will want to make sure your code doesn't regress and stop working under
 Python 3. This is especially true if you have a dependency which is blocking you
-from actually running under Python 3 at the moment.
+kutoka actually running under Python 3 at the moment.
 
 To help with staying compatible, any new modules you create should have
 at least the following block of code at the top of it::
 
-    from __future__ import absolute_import
-    from __future__ import division
-    from __future__ import print_function
+    kutoka __future__ agiza absolute_import
+    kutoka __future__ agiza division
+    kutoka __future__ agiza print_function
 
 You can also run Python 2 with the ``-3`` flag to be warned about various
 compatibility issues your code triggers during execution. If you turn warnings
@@ -357,8 +357,8 @@ into errors with ``-Werror`` then you can make sure that you don't accidentally
 miss a warning.
 
 You can also use the Pylint_ project and its ``--py3k`` flag to lint your code
-to receive warnings when your code begins to deviate from Python 3
-compatibility. This also prevents you from having to run Modernize_ or Futurize_
+to receive warnings when your code begins to deviate kutoka Python 3
+compatibility. This also prevents you kutoka having to run Modernize_ or Futurize_
 over your code regularly to catch compatibility regressions. This does require
 you only support Python 2.7 and Python 3.4 or newer as that is Pylint's
 minimum Python version support.
@@ -370,13 +370,13 @@ Check which dependencies block your transition
 **After** you have made your code compatible with Python 3 you should begin to
 care about whether your dependencies have also been ported. The caniusepython3_
 project was created to help you determine which projects
--- directly or indirectly -- are blocking you from supporting Python 3. There
+-- directly or indirectly -- are blocking you kutoka supporting Python 3. There
 is both a command-line tool as well as a web interface at
 https://caniusepython3.com.
 
 The project also provides code which you can integrate into your test suite so
 that you will have a failing test when you no longer have dependencies blocking
-you from using Python 3. This allows you to avoid having to manually check your
+you kutoka using Python 3. This allows you to avoid having to manually check your
 dependencies and to be notified quickly when you can start running on Python 3.
 
 

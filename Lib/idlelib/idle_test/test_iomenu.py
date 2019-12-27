@@ -8,17 +8,17 @@ kutoka tkinter agiza Tk
 kutoka idlelib.editor agiza EditorWindow
 
 
-class IOBindigTest(unittest.TestCase):
+kundi IOBindigTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
         cls.editwin = EditorWindow(root=cls.root)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         cls.editwin._close()
         del cls.editwin
         cls.root.update_idletasks()
@@ -27,11 +27,11 @@ class IOBindigTest(unittest.TestCase):
         cls.root.destroy()
         del cls.root
 
-    def test_init(self):
+    eleza test_init(self):
         io = iomenu.IOBinding(self.editwin)
         self.assertIs(io.editwin, self.editwin)
         io.close
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

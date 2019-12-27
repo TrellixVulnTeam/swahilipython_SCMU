@@ -22,53 +22,53 @@ TRIPLETS = [(0, 0, 0), (0, 0, 1), (0, 0, 2),
 
 # Helper classes
 
-class BasicIterClass:
-    def __init__(self, n):
+kundi BasicIterClass:
+    eleza __init__(self, n):
         self.n = n
         self.i = 0
-    def __next__(self):
+    eleza __next__(self):
         res = self.i
-        if res >= self.n:
+        ikiwa res >= self.n:
             raise StopIteration
         self.i = res + 1
-        return res
-    def __iter__(self):
-        return self
+        rudisha res
+    eleza __iter__(self):
+        rudisha self
 
-class IteratingSequenceClass:
-    def __init__(self, n):
+kundi IteratingSequenceClass:
+    eleza __init__(self, n):
         self.n = n
-    def __iter__(self):
-        return BasicIterClass(self.n)
+    eleza __iter__(self):
+        rudisha BasicIterClass(self.n)
 
-class SequenceClass:
-    def __init__(self, n):
+kundi SequenceClass:
+    eleza __init__(self, n):
         self.n = n
-    def __getitem__(self, i):
-        if 0 <= i < self.n:
-            return i
+    eleza __getitem__(self, i):
+        ikiwa 0 <= i < self.n:
+            rudisha i
         else:
             raise IndexError
 
-class UnlimitedSequenceClass:
-    def __getitem__(self, i):
-        return i
+kundi UnlimitedSequenceClass:
+    eleza __getitem__(self, i):
+        rudisha i
 
-class DefaultIterClass:
+kundi DefaultIterClass:
     pass
 
-class NoIterClass:
-    def __getitem__(self, i):
-        return i
+kundi NoIterClass:
+    eleza __getitem__(self, i):
+        rudisha i
     __iter__ = None
 
 # Main test suite
 
-class TestCase(unittest.TestCase):
+kundi TestCase(unittest.TestCase):
 
     # Helper to check that an iterator returns a given sequence
-    def check_iterator(self, it, seq, pickle=True):
-        if pickle:
+    eleza check_iterator(self, it, seq, pickle=True):
+        ikiwa pickle:
             self.check_pickle(it, seq)
         res = []
         while 1:
@@ -80,8 +80,8 @@ class TestCase(unittest.TestCase):
         self.assertEqual(res, seq)
 
     # Helper to check that a for loop generates a given sequence
-    def check_for_loop(self, expr, seq, pickle=True):
-        if pickle:
+    eleza check_for_loop(self, expr, seq, pickle=True):
+        ikiwa pickle:
             self.check_pickle(iter(expr), seq)
         res = []
         for val in expr:
@@ -89,7 +89,7 @@ class TestCase(unittest.TestCase):
         self.assertEqual(res, seq)
 
     # Helper to check picklability
-    def check_pickle(self, itorg, seq):
+    eleza check_pickle(self, itorg, seq):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             d = pickle.dumps(itorg, proto)
             it = pickle.loads(d)
@@ -109,22 +109,22 @@ class TestCase(unittest.TestCase):
             self.assertEqual(list(it), seq[1:])
 
     # Test basic use of iter() function
-    def test_iter_basic(self):
+    eleza test_iter_basic(self):
         self.check_iterator(iter(range(10)), list(range(10)))
 
     # Test that iter(iter(x)) is the same as iter(x)
-    def test_iter_idempotency(self):
+    eleza test_iter_idempotency(self):
         seq = list(range(10))
         it = iter(seq)
         it2 = iter(it)
         self.assertTrue(it is it2)
 
     # Test that for loops over iterators work
-    def test_iter_for_loop(self):
+    eleza test_iter_for_loop(self):
         self.check_for_loop(iter(range(10)), list(range(10)))
 
     # Test several independent iterators over the same list
-    def test_iter_independence(self):
+    eleza test_iter_independence(self):
         seq = range(3)
         res = []
         for i in iter(seq):
@@ -134,35 +134,35 @@ class TestCase(unittest.TestCase):
         self.assertEqual(res, TRIPLETS)
 
     # Test triple list comprehension using iterators
-    def test_nested_comprehensions_iter(self):
+    eleza test_nested_comprehensions_iter(self):
         seq = range(3)
         res = [(i, j, k)
                for i in iter(seq) for j in iter(seq) for k in iter(seq)]
         self.assertEqual(res, TRIPLETS)
 
     # Test triple list comprehension without iterators
-    def test_nested_comprehensions_for(self):
+    eleza test_nested_comprehensions_for(self):
         seq = range(3)
         res = [(i, j, k) for i in seq for j in seq for k in seq]
         self.assertEqual(res, TRIPLETS)
 
-    # Test a class with __iter__ in a for loop
-    def test_iter_class_for(self):
+    # Test a kundi with __iter__ in a for loop
+    eleza test_iter_class_for(self):
         self.check_for_loop(IteratingSequenceClass(10), list(range(10)))
 
-    # Test a class with __iter__ with explicit iter()
-    def test_iter_class_iter(self):
+    # Test a kundi with __iter__ with explicit iter()
+    eleza test_iter_class_iter(self):
         self.check_iterator(iter(IteratingSequenceClass(10)), list(range(10)))
 
-    # Test for loop on a sequence class without __iter__
-    def test_seq_class_for(self):
+    # Test for loop on a sequence kundi without __iter__
+    eleza test_seq_class_for(self):
         self.check_for_loop(SequenceClass(10), list(range(10)))
 
-    # Test iter() on a sequence class without __iter__
-    def test_seq_class_iter(self):
+    # Test iter() on a sequence kundi without __iter__
+    eleza test_seq_class_iter(self):
         self.check_iterator(iter(SequenceClass(10)), list(range(10)))
 
-    def test_mutating_seq_class_iter_pickle(self):
+    eleza test_mutating_seq_class_iter_pickle(self):
         orig = SequenceClass(5)
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             # initial iterator
@@ -198,7 +198,7 @@ class TestCase(unittest.TestCase):
             self.assertTrue(isinstance(it, collections.abc.Iterator))
             self.assertEqual(list(it), [])
 
-    def test_mutating_seq_class_exhausted_iter(self):
+    eleza test_mutating_seq_class_exhausted_iter(self):
         a = SequenceClass(5)
         exhit = iter(a)
         empit = iter(a)
@@ -209,52 +209,52 @@ class TestCase(unittest.TestCase):
         self.assertEqual(list(empit), [5, 6])
         self.assertEqual(list(a), [0, 1, 2, 3, 4, 5, 6])
 
-    # Test a new_style class with __iter__ but no next() method
-    def test_new_style_iter_class(self):
-        class IterClass(object):
-            def __iter__(self):
-                return self
+    # Test a new_style kundi with __iter__ but no next() method
+    eleza test_new_style_iter_class(self):
+        kundi IterClass(object):
+            eleza __iter__(self):
+                rudisha self
         self.assertRaises(TypeError, iter, IterClass())
 
     # Test two-argument iter() with callable instance
-    def test_iter_callable(self):
-        class C:
-            def __init__(self):
+    eleza test_iter_callable(self):
+        kundi C:
+            eleza __init__(self):
                 self.i = 0
-            def __call__(self):
+            eleza __call__(self):
                 i = self.i
                 self.i = i + 1
-                if i > 100:
+                ikiwa i > 100:
                     raise IndexError # Emergency stop
-                return i
+                rudisha i
         self.check_iterator(iter(C(), 10), list(range(10)), pickle=False)
 
     # Test two-argument iter() with function
-    def test_iter_function(self):
-        def spam(state=[0]):
+    eleza test_iter_function(self):
+        eleza spam(state=[0]):
             i = state[0]
             state[0] = i+1
-            return i
+            rudisha i
         self.check_iterator(iter(spam, 10), list(range(10)), pickle=False)
 
     # Test two-argument iter() with function that raises StopIteration
-    def test_iter_function_stop(self):
-        def spam(state=[0]):
+    eleza test_iter_function_stop(self):
+        eleza spam(state=[0]):
             i = state[0]
-            if i == 10:
+            ikiwa i == 10:
                 raise StopIteration
             state[0] = i+1
-            return i
+            rudisha i
         self.check_iterator(iter(spam, 20), list(range(10)), pickle=False)
 
     # Test exception propagation through function iterator
-    def test_exception_function(self):
-        def spam(state=[0]):
+    eleza test_exception_function(self):
+        eleza spam(state=[0]):
             i = state[0]
             state[0] = i+1
-            if i == 10:
+            ikiwa i == 10:
                 raise RuntimeError
-            return i
+            rudisha i
         res = []
         try:
             for x in iter(spam, 20):
@@ -265,12 +265,12 @@ class TestCase(unittest.TestCase):
             self.fail("should have raised RuntimeError")
 
     # Test exception propagation through sequence iterator
-    def test_exception_sequence(self):
-        class MySequenceClass(SequenceClass):
-            def __getitem__(self, i):
-                if i == 10:
+    eleza test_exception_sequence(self):
+        kundi MySequenceClass(SequenceClass):
+            eleza __getitem__(self, i):
+                ikiwa i == 10:
                     raise RuntimeError
-                return SequenceClass.__getitem__(self, i)
+                rudisha SequenceClass.__getitem__(self, i)
         res = []
         try:
             for x in MySequenceClass(20):
@@ -281,43 +281,43 @@ class TestCase(unittest.TestCase):
             self.fail("should have raised RuntimeError")
 
     # Test for StopIteration kutoka __getitem__
-    def test_stop_sequence(self):
-        class MySequenceClass(SequenceClass):
-            def __getitem__(self, i):
-                if i == 10:
+    eleza test_stop_sequence(self):
+        kundi MySequenceClass(SequenceClass):
+            eleza __getitem__(self, i):
+                ikiwa i == 10:
                     raise StopIteration
-                return SequenceClass.__getitem__(self, i)
+                rudisha SequenceClass.__getitem__(self, i)
         self.check_for_loop(MySequenceClass(20), list(range(10)), pickle=False)
 
     # Test a big range
-    def test_iter_big_range(self):
+    eleza test_iter_big_range(self):
         self.check_for_loop(iter(range(10000)), list(range(10000)))
 
     # Test an empty list
-    def test_iter_empty(self):
+    eleza test_iter_empty(self):
         self.check_for_loop(iter([]), [])
 
     # Test a tuple
-    def test_iter_tuple(self):
+    eleza test_iter_tuple(self):
         self.check_for_loop(iter((0,1,2,3,4,5,6,7,8,9)), list(range(10)))
 
     # Test a range
-    def test_iter_range(self):
+    eleza test_iter_range(self):
         self.check_for_loop(iter(range(10)), list(range(10)))
 
     # Test a string
-    def test_iter_string(self):
+    eleza test_iter_string(self):
         self.check_for_loop(iter("abcde"), ["a", "b", "c", "d", "e"])
 
     # Test a directory
-    def test_iter_dict(self):
+    eleza test_iter_dict(self):
         dict = {}
         for i in range(10):
             dict[i] = None
         self.check_for_loop(dict, list(dict.keys()))
 
     # Test a file
-    def test_iter_file(self):
+    eleza test_iter_file(self):
         f = open(TESTFN, "w")
         try:
             for i in range(5):
@@ -336,7 +336,7 @@ class TestCase(unittest.TestCase):
                 pass
 
     # Test list()'s use of iterators.
-    def test_builtin_list(self):
+    eleza test_builtin_list(self):
         self.assertEqual(list(SequenceClass(5)), list(range(5)))
         self.assertEqual(list(SequenceClass(0)), [])
         self.assertEqual(list(()), [])
@@ -367,7 +367,7 @@ class TestCase(unittest.TestCase):
                 pass
 
     # Test tuples()'s use of iterators.
-    def test_builtin_tuple(self):
+    eleza test_builtin_tuple(self):
         self.assertEqual(tuple(SequenceClass(5)), (0, 1, 2, 3, 4))
         self.assertEqual(tuple(SequenceClass(0)), ())
         self.assertEqual(tuple([]), ())
@@ -400,7 +400,7 @@ class TestCase(unittest.TestCase):
                 pass
 
     # Test filter()'s use of iterators.
-    def test_builtin_filter(self):
+    eleza test_builtin_filter(self):
         self.assertEqual(list(filter(None, SequenceClass(5))),
                          list(range(1, 5)))
         self.assertEqual(list(filter(None, SequenceClass(0))), [])
@@ -413,39 +413,39 @@ class TestCase(unittest.TestCase):
         self.assertRaises(TypeError, filter, None, list)
         self.assertRaises(TypeError, filter, None, 42)
 
-        class Boolean:
-            def __init__(self, truth):
+        kundi Boolean:
+            eleza __init__(self, truth):
                 self.truth = truth
-            def __bool__(self):
-                return self.truth
+            eleza __bool__(self):
+                rudisha self.truth
         bTrue = Boolean(True)
         bFalse = Boolean(False)
 
-        class Seq:
-            def __init__(self, *args):
+        kundi Seq:
+            eleza __init__(self, *args):
                 self.vals = args
-            def __iter__(self):
-                class SeqIter:
-                    def __init__(self, vals):
+            eleza __iter__(self):
+                kundi SeqIter:
+                    eleza __init__(self, vals):
                         self.vals = vals
                         self.i = 0
-                    def __iter__(self):
-                        return self
-                    def __next__(self):
+                    eleza __iter__(self):
+                        rudisha self
+                    eleza __next__(self):
                         i = self.i
                         self.i = i + 1
-                        if i < len(self.vals):
-                            return self.vals[i]
+                        ikiwa i < len(self.vals):
+                            rudisha self.vals[i]
                         else:
                             raise StopIteration
-                return SeqIter(self.vals)
+                rudisha SeqIter(self.vals)
 
         seq = Seq(*([bTrue, bFalse] * 25))
         self.assertEqual(list(filter(lambda x: not x, seq)), [bFalse]*25)
         self.assertEqual(list(filter(lambda x: not x, iter(seq))), [bFalse]*25)
 
     # Test max() and min()'s use of iterators.
-    def test_builtin_max_min(self):
+    eleza test_builtin_max_min(self):
         self.assertEqual(max(SequenceClass(5)), 4)
         self.assertEqual(min(SequenceClass(5)), 0)
         self.assertEqual(max(8, -1), 8)
@@ -477,7 +477,7 @@ class TestCase(unittest.TestCase):
                 pass
 
     # Test map()'s use of iterators.
-    def test_builtin_map(self):
+    eleza test_builtin_map(self):
         self.assertEqual(list(map(lambda x: x+1, SequenceClass(5))),
                          list(range(1, 6)))
 
@@ -507,7 +507,7 @@ class TestCase(unittest.TestCase):
                 pass
 
     # Test zip()'s use of iterators.
-    def test_builtin_zip(self):
+    eleza test_builtin_zip(self):
         self.assertEqual(list(zip()), [])
         self.assertEqual(list(zip(*[])), [])
         self.assertEqual(list(zip(*[(1, 2), 'ab'])), [(1, 'a'), (2, 'b')])
@@ -525,17 +525,17 @@ class TestCase(unittest.TestCase):
         self.assertEqual(list(d.items()), list(zip(d, d.values())))
 
         # Generate all ints starting at constructor arg.
-        class IntsFrom:
-            def __init__(self, start):
+        kundi IntsFrom:
+            eleza __init__(self, start):
                 self.i = start
 
-            def __iter__(self):
-                return self
+            eleza __iter__(self):
+                rudisha self
 
-            def __next__(self):
+            eleza __next__(self):
                 i = self.i
                 self.i = i+1
-                return i
+                rudisha i
 
         f = open(TESTFN, "w")
         try:
@@ -558,22 +558,22 @@ class TestCase(unittest.TestCase):
         self.assertEqual(list(zip(range(5))), [(i,) for i in range(5)])
 
         # Classes that lie about their lengths.
-        class NoGuessLen5:
-            def __getitem__(self, i):
-                if i >= 5:
+        kundi NoGuessLen5:
+            eleza __getitem__(self, i):
+                ikiwa i >= 5:
                     raise IndexError
-                return i
+                rudisha i
 
-        class Guess3Len5(NoGuessLen5):
-            def __len__(self):
-                return 3
+        kundi Guess3Len5(NoGuessLen5):
+            eleza __len__(self):
+                rudisha 3
 
-        class Guess30Len5(NoGuessLen5):
-            def __len__(self):
-                return 30
+        kundi Guess30Len5(NoGuessLen5):
+            eleza __len__(self):
+                rudisha 30
 
-        def lzip(*args):
-            return list(zip(*args))
+        eleza lzip(*args):
+            rudisha list(zip(*args))
 
         self.assertEqual(len(Guess3Len5()), 3)
         self.assertEqual(len(Guess30Len5()), 30)
@@ -586,24 +586,24 @@ class TestCase(unittest.TestCase):
             for y in NoGuessLen5(), Guess3Len5(), Guess30Len5():
                 self.assertEqual(lzip(x, y), expected)
 
-    def test_unicode_join_endcase(self):
+    eleza test_unicode_join_endcase(self):
 
-        # This class inserts a Unicode object into its argument's natural
+        # This kundi inserts a Unicode object into its argument's natural
         # iteration, in the 3rd position.
-        class OhPhooey:
-            def __init__(self, seq):
+        kundi OhPhooey:
+            eleza __init__(self, seq):
                 self.it = iter(seq)
                 self.i = 0
 
-            def __iter__(self):
-                return self
+            eleza __iter__(self):
+                rudisha self
 
-            def __next__(self):
+            eleza __next__(self):
                 i = self.i
                 self.i = i+1
-                if i == 2:
-                    return "fooled you!"
-                return next(self.it)
+                ikiwa i == 2:
+                    rudisha "fooled you!"
+                rudisha next(self.it)
 
         f = open(TESTFN, "w")
         try:
@@ -628,7 +628,7 @@ class TestCase(unittest.TestCase):
                 pass
 
     # Test iterators with 'x in y' and 'x not in y'.
-    def test_in_and_not_in(self):
+    eleza test_in_and_not_in(self):
         for sc5 in IteratingSequenceClass(5), SequenceClass(5):
             for i in range(5):
                 self.assertIn(i, sc5)
@@ -669,7 +669,7 @@ class TestCase(unittest.TestCase):
                 pass
 
     # Test iterators with operator.countOf (PySequence_Count).
-    def test_countOf(self):
+    eleza test_countOf(self):
         kutoka operator agiza countOf
         self.assertEqual(countOf([1,2,2,3,2,5], 2), 3)
         self.assertEqual(countOf((1,2,2,3,2,5), 2), 3)
@@ -704,7 +704,7 @@ class TestCase(unittest.TestCase):
                 pass
 
     # Test iterators with operator.indexOf (PySequence_Index).
-    def test_indexOf(self):
+    eleza test_indexOf(self):
         kutoka operator agiza indexOf
         self.assertEqual(indexOf([1,2,2,3,2,5], 1), 0)
         self.assertEqual(indexOf((1,2,2,3,2,5), 2), 1)
@@ -739,13 +739,13 @@ class TestCase(unittest.TestCase):
             except OSError:
                 pass
 
-        iclass = IteratingSequenceClass(3)
+        ikundi = IteratingSequenceClass(3)
         for i in range(3):
             self.assertEqual(indexOf(iclass, i), i)
         self.assertRaises(ValueError, indexOf, iclass, -1)
 
     # Test iterators with file.writelines().
-    def test_writelines(self):
+    eleza test_writelines(self):
         f = open(TESTFN, "w")
 
         try:
@@ -758,29 +758,29 @@ class TestCase(unittest.TestCase):
             f.writelines({})
 
             # Try a big chunk too.
-            class Iterator:
-                def __init__(self, start, finish):
+            kundi Iterator:
+                eleza __init__(self, start, finish):
                     self.start = start
                     self.finish = finish
                     self.i = self.start
 
-                def __next__(self):
-                    if self.i >= self.finish:
+                eleza __next__(self):
+                    ikiwa self.i >= self.finish:
                         raise StopIteration
                     result = str(self.i) + '\n'
                     self.i += 1
-                    return result
+                    rudisha result
 
-                def __iter__(self):
-                    return self
+                eleza __iter__(self):
+                    rudisha self
 
-            class Whatever:
-                def __init__(self, start, finish):
+            kundi Whatever:
+                eleza __init__(self, start, finish):
                     self.start = start
                     self.finish = finish
 
-                def __iter__(self):
-                    return Iterator(self.start, self.finish)
+                eleza __iter__(self):
+                    rudisha Iterator(self.start, self.finish)
 
             f.writelines(Whatever(6, 6+2000))
             f.close()
@@ -798,7 +798,7 @@ class TestCase(unittest.TestCase):
 
 
     # Test iterators on RHS of unpacking assignments.
-    def test_unpack_iter(self):
+    eleza test_unpack_iter(self):
         a, b = 1, 2
         self.assertEqual((a, b), (1, 2))
 
@@ -852,13 +852,13 @@ class TestCase(unittest.TestCase):
 
 
     @cpython_only
-    def test_ref_counting_behavior(self):
-        class C(object):
+    eleza test_ref_counting_behavior(self):
+        kundi C(object):
             count = 0
-            def __new__(cls):
+            eleza __new__(cls):
                 cls.count += 1
-                return object.__new__(cls)
-            def __del__(self):
+                rudisha object.__new__(cls)
+            eleza __del__(self):
                 cls = self.__class__
                 assert cls.count > 0
                 cls.count -= 1
@@ -880,7 +880,7 @@ class TestCase(unittest.TestCase):
     # This tests various things that weren't sink states in Python 2.2.1,
     # plus various things that always were fine.
 
-    def test_sinkstate_list(self):
+    eleza test_sinkstate_list(self):
         # This used to fail
         a = list(range(5))
         b = iter(a)
@@ -888,19 +888,19 @@ class TestCase(unittest.TestCase):
         a.extend(range(5, 10))
         self.assertEqual(list(b), [])
 
-    def test_sinkstate_tuple(self):
+    eleza test_sinkstate_tuple(self):
         a = (0, 1, 2, 3, 4)
         b = iter(a)
         self.assertEqual(list(b), list(range(5)))
         self.assertEqual(list(b), [])
 
-    def test_sinkstate_string(self):
+    eleza test_sinkstate_string(self):
         a = "abcde"
         b = iter(a)
         self.assertEqual(list(b), ['a', 'b', 'c', 'd', 'e'])
         self.assertEqual(list(b), [])
 
-    def test_sinkstate_sequence(self):
+    eleza test_sinkstate_sequence(self):
         # This used to fail
         a = SequenceClass(5)
         b = iter(a)
@@ -908,19 +908,19 @@ class TestCase(unittest.TestCase):
         a.n = 10
         self.assertEqual(list(b), [])
 
-    def test_sinkstate_callable(self):
+    eleza test_sinkstate_callable(self):
         # This used to fail
-        def spam(state=[0]):
+        eleza spam(state=[0]):
             i = state[0]
             state[0] = i+1
-            if i == 10:
+            ikiwa i == 10:
                 raise AssertionError("shouldn't have gotten this far")
-            return i
+            rudisha i
         b = iter(spam, 5)
         self.assertEqual(list(b), list(range(5)))
         self.assertEqual(list(b), [])
 
-    def test_sinkstate_dict(self):
+    eleza test_sinkstate_dict(self):
         # XXX For a more thorough test, see towards the end of:
         # http://mail.python.org/pipermail/python-dev/2002-July/026512.html
         a = {1:1, 2:2, 0:0, 4:4, 3:3}
@@ -929,35 +929,35 @@ class TestCase(unittest.TestCase):
             self.assertEqual(len(list(b)), 5)
             self.assertEqual(list(b), [])
 
-    def test_sinkstate_yield(self):
-        def gen():
+    eleza test_sinkstate_yield(self):
+        eleza gen():
             for i in range(5):
                 yield i
         b = gen()
         self.assertEqual(list(b), list(range(5)))
         self.assertEqual(list(b), [])
 
-    def test_sinkstate_range(self):
+    eleza test_sinkstate_range(self):
         a = range(5)
         b = iter(a)
         self.assertEqual(list(b), list(range(5)))
         self.assertEqual(list(b), [])
 
-    def test_sinkstate_enumerate(self):
+    eleza test_sinkstate_enumerate(self):
         a = range(5)
         e = enumerate(a)
         b = iter(e)
         self.assertEqual(list(b), list(zip(range(5), range(5))))
         self.assertEqual(list(b), [])
 
-    def test_3720(self):
+    eleza test_3720(self):
         # Avoid a crash, when an iterator deletes its next() method.
-        class BadIterator(object):
-            def __iter__(self):
-                return self
-            def __next__(self):
+        kundi BadIterator(object):
+            eleza __iter__(self):
+                rudisha self
+            eleza __next__(self):
                 del BadIterator.__next__
-                return 1
+                rudisha 1
 
         try:
             for i in BadIterator() :
@@ -965,13 +965,13 @@ class TestCase(unittest.TestCase):
         except TypeError:
             pass
 
-    def test_extending_list_with_iterator_does_not_segfault(self):
+    eleza test_extending_list_with_iterator_does_not_segfault(self):
         # The code to extend a list with an iterator has a fair
         # amount of nontrivial logic in terms of guessing how
         # much memory to allocate in advance, "stealing" refs,
         # and then shrinking at the end.  This is a basic smoke
         # test for that scenario.
-        def gen():
+        eleza gen():
             for i in range(500):
                 yield i
         lst = [0] * 500
@@ -981,7 +981,7 @@ class TestCase(unittest.TestCase):
         self.assertEqual(len(lst), 760)
 
     @cpython_only
-    def test_iter_overflow(self):
+    eleza test_iter_overflow(self):
         # Test for the issue 22939
         it = iter(UnlimitedSequenceClass())
         # Manually set `it_index` to PY_SSIZE_T_MAX-2 without a loop
@@ -994,23 +994,23 @@ class TestCase(unittest.TestCase):
         with self.assertRaises(OverflowError):
             next(it)
 
-    def test_iter_neg_setstate(self):
+    eleza test_iter_neg_setstate(self):
         it = iter(UnlimitedSequenceClass())
         it.__setstate__(-42)
         self.assertEqual(next(it), 0)
         self.assertEqual(next(it), 1)
 
-    def test_free_after_iterating(self):
+    eleza test_free_after_iterating(self):
         check_free_after_iterating(self, iter, SequenceClass, (0,))
 
-    def test_error_iter(self):
+    eleza test_error_iter(self):
         for typ in (DefaultIterClass, NoIterClass):
             self.assertRaises(TypeError, iter, typ())
 
 
-def test_main():
+eleza test_main():
     run_unittest(TestCase)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

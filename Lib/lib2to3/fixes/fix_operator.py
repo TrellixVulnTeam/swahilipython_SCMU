@@ -16,14 +16,14 @@ kutoka lib2to3 agiza fixer_base
 kutoka lib2to3.fixer_util agiza Call, Name, String, touch_agiza
 
 
-def invocation(s):
-    def dec(f):
+eleza invocation(s):
+    eleza dec(f):
         f.invocation = s
-        return f
-    return dec
+        rudisha f
+    rudisha dec
 
 
-class FixOperator(fixer_base.BaseFix):
+kundi FixOperator(fixer_base.BaseFix):
     BM_compatible = True
     order = "pre"
 
@@ -40,58 +40,58 @@ class FixOperator(fixer_base.BaseFix):
               power< %(methods)s trailer< %(obj)s > >
               """ % dict(methods=methods, obj=obj)
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         method = self._check_method(node, results)
-        if method is not None:
-            return method(node, results)
+        ikiwa method is not None:
+            rudisha method(node, results)
 
     @invocation("operator.contains(%s)")
-    def _sequenceIncludes(self, node, results):
-        return self._handle_rename(node, results, "contains")
+    eleza _sequenceIncludes(self, node, results):
+        rudisha self._handle_rename(node, results, "contains")
 
     @invocation("callable(%s)")
-    def _isCallable(self, node, results):
+    eleza _isCallable(self, node, results):
         obj = results["obj"]
-        return Call(Name("callable"), [obj.clone()], prefix=node.prefix)
+        rudisha Call(Name("callable"), [obj.clone()], prefix=node.prefix)
 
     @invocation("operator.mul(%s)")
-    def _repeat(self, node, results):
-        return self._handle_rename(node, results, "mul")
+    eleza _repeat(self, node, results):
+        rudisha self._handle_rename(node, results, "mul")
 
     @invocation("operator.imul(%s)")
-    def _irepeat(self, node, results):
-        return self._handle_rename(node, results, "imul")
+    eleza _irepeat(self, node, results):
+        rudisha self._handle_rename(node, results, "imul")
 
     @invocation("isinstance(%s, collections.abc.Sequence)")
-    def _isSequenceType(self, node, results):
-        return self._handle_type2abc(node, results, "collections.abc", "Sequence")
+    eleza _isSequenceType(self, node, results):
+        rudisha self._handle_type2abc(node, results, "collections.abc", "Sequence")
 
     @invocation("isinstance(%s, collections.abc.Mapping)")
-    def _isMappingType(self, node, results):
-        return self._handle_type2abc(node, results, "collections.abc", "Mapping")
+    eleza _isMappingType(self, node, results):
+        rudisha self._handle_type2abc(node, results, "collections.abc", "Mapping")
 
     @invocation("isinstance(%s, numbers.Number)")
-    def _isNumberType(self, node, results):
-        return self._handle_type2abc(node, results, "numbers", "Number")
+    eleza _isNumberType(self, node, results):
+        rudisha self._handle_type2abc(node, results, "numbers", "Number")
 
-    def _handle_rename(self, node, results, name):
+    eleza _handle_rename(self, node, results, name):
         method = results["method"][0]
         method.value = name
         method.changed()
 
-    def _handle_type2abc(self, node, results, module, abc):
+    eleza _handle_type2abc(self, node, results, module, abc):
         touch_agiza(None, module, node)
         obj = results["obj"]
         args = [obj.clone(), String(", " + ".".join([module, abc]))]
-        return Call(Name("isinstance"), args, prefix=node.prefix)
+        rudisha Call(Name("isinstance"), args, prefix=node.prefix)
 
-    def _check_method(self, node, results):
+    eleza _check_method(self, node, results):
         method = getattr(self, "_" + results["method"][0].value)
-        if isinstance(method, collections.abc.Callable):
-            if "module" in results:
-                return method
+        ikiwa isinstance(method, collections.abc.Callable):
+            ikiwa "module" in results:
+                rudisha method
             else:
                 sub = (str(results["obj"]),)
                 invocation_str = method.invocation % sub
                 self.warning(node, "You should use '%s' here." % invocation_str)
-        return None
+        rudisha None

@@ -320,7 +320,7 @@ def cleanup_test_droppings(test_name, verbose):
         if os.path.isdir(name):
             import shutil
             kind, nuker = "directory", shutil.rmtree
-        elif os.path.isfile(name):
+        lasivyo os.path.isfile(name):
             kind, nuker = "file", os.unlink
         else:
             raise RuntimeError(f"os.path says {name!r} exists but is neither "

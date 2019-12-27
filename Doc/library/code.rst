@@ -15,7 +15,7 @@ build applications which provide an interactive interpreter prompt.
 
 .. class:: InteractiveInterpreter(locals=None)
 
-   This class deals with parsing and interpreter state (the user's namespace); it
+   This kundi deals with parsing and interpreter state (the user's namespace); it
    does not deal with input buffering or prompting or input file naming (the
    filename is always passed in explicitly). The optional *locals* argument
    specifies the dictionary in which code will be executed; it defaults to a newly
@@ -54,7 +54,7 @@ build applications which provide an interactive interpreter prompt.
    function *almost* always makes the same decision as the real interpreter main
    loop.
 
-   *source* is the source string; *filename* is the optional filename from which
+   *source* is the source string; *filename* is the optional filename kutoka which
    source was read, defaulting to ``'<input>'``; and *symbol* is the optional
    grammar start symbol, which should be either ``'single'`` (the default) or
    ``'eval'``.
@@ -110,7 +110,7 @@ Interactive Interpreter Objects
    Display the syntax error that just occurred.  This does not display a stack
    trace because there isn't one for syntax errors. If *filename* is given, it is
    stuffed into the exception instead of the default filename provided by Python's
-   parser, because it always uses ``'<string>'`` when reading from a string. The
+   parser, because it always uses ``'<string>'`` when reading kutoka a string. The
    output is written by the :meth:`write` method.
 
 
@@ -135,7 +135,7 @@ Interactive Interpreter Objects
 Interactive Console Objects
 ---------------------------
 
-The :class:`InteractiveConsole` class is a subclass of
+The :class:`InteractiveConsole` kundi is a subkundi of
 :class:`InteractiveInterpreter`, and so offers all the methods of the
 interpreter objects as well as the following additions.
 
@@ -145,7 +145,7 @@ interpreter objects as well as the following additions.
    Closely emulate the interactive Python console. The optional *banner* argument
    specify the banner to print before the first interaction; by default it prints a
    banner similar to the one printed by the standard Python interpreter, followed
-   by the class name of the console object in parentheses (so as not to confuse
+   by the kundi name of the console object in parentheses (so as not to confuse
    this with the real interpreter -- since it's so close!).
 
    The optional *exitmsg* argument specifies an exit message printed when exiting.
@@ -173,12 +173,12 @@ interpreter objects as well as the following additions.
 
 .. method:: InteractiveConsole.resetbuffer()
 
-   Remove any unhandled source text from the input buffer.
+   Remove any unhandled source text kutoka the input buffer.
 
 
 .. method:: InteractiveConsole.raw_input(prompt="")
 
    Write a prompt and read a line.  The returned line does not include the trailing
    newline.  When the user enters the EOF key sequence, :exc:`EOFError` is raised.
-   The base implementation reads from ``sys.stdin``; a subclass may replace this
+   The base implementation reads kutoka ``sys.stdin``; a subkundi may replace this
    with a different implementation.

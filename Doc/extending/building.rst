@@ -36,7 +36,7 @@ are allowed. In this case, the initialization function name is
             suffix = b'U_' + name.encode('punycode').replace(b'-', b'_')
         return b'PyInit' + suffix
 
-It is possible to export multiple modules from a single shared library by
+It is possible to export multiple modules kutoka a single shared library by
 defining multiple initialization functions. However, importing them requires
 using symbolic links or a custom importer, because by default only the
 function corresponding to the filename is found.
@@ -59,7 +59,7 @@ Python file, which, in the most simple case, could look like this:
 
 .. code-block:: python3
 
-   from distutils.core import setup, Extension
+   kutoka distutils.core agiza setup, Extension
 
    module1 = Extension('demo',
                        sources = ['demo.c'])
@@ -102,7 +102,7 @@ example below.
 
 .. code-block:: python3
 
-   from distutils.core import setup, Extension
+   kutoka distutils.core agiza setup, Extension
 
    module1 = Extension('demo',
                        define_macros = [('MAJOR_VERSION', '1'),

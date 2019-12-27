@@ -25,7 +25,7 @@ structure of :file:`robots.txt` files, see http://www.robotstxt.org/orig.html.
 
 .. class:: RobotFileParser(url='')
 
-   This class provides methods to read, parse and answer questions about the
+   This kundi provides methods to read, parse and answer questions about the
    :file:`robots.txt` file at *url*.
 
    .. method:: set_url(url)
@@ -59,7 +59,7 @@ structure of :file:`robots.txt` files, see http://www.robotstxt.org/orig.html.
 
    .. method:: crawl_delay(useragent)
 
-      Returns the value of the ``Crawl-delay`` parameter from ``robots.txt``
+      Returns the value of the ``Crawl-delay`` parameter kutoka ``robots.txt``
       for the *useragent* in question.  If there is no such parameter or it
       doesn't apply to the *useragent* specified or the ``robots.txt`` entry
       for this parameter has invalid syntax, return ``None``.
@@ -68,7 +68,7 @@ structure of :file:`robots.txt` files, see http://www.robotstxt.org/orig.html.
 
    .. method:: request_rate(useragent)
 
-      Returns the contents of the ``Request-rate`` parameter from
+      Returns the contents of the ``Request-rate`` parameter kutoka
       ``robots.txt`` as a :term:`named tuple` ``RequestRate(requests, seconds)``.
       If there is no such parameter or it doesn't apply to the *useragent*
       specified or the ``robots.txt`` entry for this parameter has invalid
@@ -78,7 +78,7 @@ structure of :file:`robots.txt` files, see http://www.robotstxt.org/orig.html.
 
    .. method:: site_maps()
 
-      Returns the contents of the ``Sitemap`` parameter from
+      Returns the contents of the ``Sitemap`` parameter kutoka
       ``robots.txt`` in the form of a :func:`list`. If there is no such
       parameter or the ``robots.txt`` entry for this parameter has
       invalid syntax, return ``None``.
@@ -89,7 +89,7 @@ structure of :file:`robots.txt` files, see http://www.robotstxt.org/orig.html.
 The following example demonstrates basic use of the :class:`RobotFileParser`
 class::
 
-   >>> import urllib.robotparser
+   >>> agiza urllib.robotparser
    >>> rp = urllib.robotparser.RobotFileParser()
    >>> rp.set_url("http://www.musi-cal.com/robots.txt")
    >>> rp.read()

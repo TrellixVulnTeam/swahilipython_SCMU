@@ -109,27 +109,27 @@ Python, no amount of activity will change the string "eight" to anything else.
 Why must 'self' be used explicitly in method definitions and calls?
 -------------------------------------------------------------------
 
-The idea was borrowed from Modula-3.  It turns out to be very useful, for a
+The idea was borrowed kutoka Modula-3.  It turns out to be very useful, for a
 variety of reasons.
 
 First, it's more obvious that you are using a method or instance attribute
 instead of a local variable.  Reading ``self.x`` or ``self.meth()`` makes it
 absolutely clear that an instance variable or method is used even if you don't
-know the class definition by heart.  In C++, you can sort of tell by the lack of
+know the kundi definition by heart.  In C++, you can sort of tell by the lack of
 a local variable declaration (assuming globals are rare or easily recognizable)
 -- but in Python, there are no local variable declarations, so you'd have to
-look up the class definition to be sure.  Some C++ and Java coding standards
+look up the kundi definition to be sure.  Some C++ and Java coding standards
 call for instance attributes to have an ``m_`` prefix, so this explicitness is
 still useful in those languages, too.
 
 Second, it means that no special syntax is necessary if you want to explicitly
-reference or call the method from a particular class.  In C++, if you want to
-use a method from a base class which is overridden in a derived class, you have
+reference or call the method kutoka a particular class.  In C++, if you want to
+use a method kutoka a base kundi which is overridden in a derived class, you have
 to use the ``::`` operator -- in Python you can write
 ``baseclass.methodname(self, <argument list>)``.  This is particularly useful
 for :meth:`__init__` methods, and in general in cases where a derived class
-method wants to extend the base class method of the same name and thus has to
-call the base class method somehow.
+method wants to extend the base kundi method of the same name and thus has to
+call the base kundi method somehow.
 
 Finally, for instance variables it solves a syntactic problem with assignment:
 since local variables in Python are (by definition!) those variables to which a
@@ -177,9 +177,9 @@ As Guido said:
     the length of something. This tells me two things: the result is an
     integer, and the argument is some kind of container. To the contrary,
     when I read x.len(), I have to already know that x is some kind of
-    container implementing an interface or inheriting from a class that
+    container implementing an interface or inheriting kutoka a kundi that
     has a standard len(). Witness the confusion we occasionally have when
-    a class that is not implementing a mapping has a get() or keys()
+    a kundi that is not implementing a mapping has a get() or keys()
     method, or something that isn't a file has a write() method.
 
     -- https://mail.python.org/pipermail/python-3000/2006-November/004643.html
@@ -259,7 +259,7 @@ There have been some proposals for switch statement syntax, but there is no
 consensus (yet) on whether and how to do range tests.  See :pep:`275` for
 complete details and the current status.
 
-For cases where you need to choose from a very large number of possibilities,
+For cases where you need to choose kutoka a very large number of possibilities,
 you can create a dictionary mapping case values to functions to call.  For
 example::
 
@@ -286,7 +286,7 @@ For calling methods on objects, you can simplify yet further by using the
        method()
 
 It's suggested that you use a prefix for the method names, such as ``visit_`` in
-this example.  Without such a prefix, if values are coming from an untrusted
+this example.  Without such a prefix, if values are coming kutoka an untrusted
 source, an attacker would be able to call any method on your object.
 
 
@@ -311,7 +311,7 @@ Python, this is not a serious problem.  Unlike lambda forms in other languages,
 where they add functionality, Python lambdas are only a shorthand notation if
 you're too lazy to define a function.
 
-Functions are already first class objects in Python, and can be declared in a
+Functions are already first kundi objects in Python, and can be declared in a
 local scope.  Therefore the only advantage of using a lambda instead of a
 locally-defined function is that you don't need to invent a name for the
 function -- but that's just a local variable to which the function object (which
@@ -386,7 +386,7 @@ implements malloc() and free() properly.
 Why isn't all memory freed when CPython exits?
 ----------------------------------------------
 
-Objects referenced from the global namespaces of Python modules are not always
+Objects referenced kutoka the global namespaces of Python modules are not always
 deallocated when Python exits.  This may happen if there are circular
 references.  There are also certain bits of memory that are allocated by the C
 library that are impossible to free (e.g. a tool like Purify will complain about
@@ -456,7 +456,7 @@ constant time -- O(1), in Big-O notation -- to retrieve a key.
 Why must dictionary keys be immutable?
 --------------------------------------
 
-The hash table implementation of dictionaries uses a hash value calculated from
+The hash table implementation of dictionaries uses a hash value calculated kutoka
 the key value to find the key.  If the key were a mutable object, its value
 could change, and thus its hash could also change.  But since whoever changes
 the key object can't tell that it was being used as a dictionary key, it can't
@@ -478,7 +478,7 @@ Some unacceptable solutions that have been proposed:
      print(mydict[[1, 2]])
 
   would raise a :exc:`KeyError` exception because the id of the ``[1, 2]`` used in the
-  second line differs from that in the first line.  In other words, dictionary
+  second line differs kutoka that in the first line.  In other words, dictionary
   keys should be compared using ``==``, not using :keyword:`is`.
 
 - Make a copy when using a list as a key.  This doesn't work because the list,
@@ -486,24 +486,24 @@ Some unacceptable solutions that have been proposed:
   copying code would run into an infinite loop.
 
 - Allow lists as keys but tell the user not to modify them.  This would allow a
-  class of hard-to-track bugs in programs when you forgot or modified a list by
+  kundi of hard-to-track bugs in programs when you forgot or modified a list by
   accident. It also invalidates an important invariant of dictionaries: every
   value in ``d.keys()`` is usable as a key of the dictionary.
 
 - Mark lists as read-only once they are used as a dictionary key.  The problem
   is that it's not just the top-level object that could change its value; you
   could use a tuple containing a list as a key.  Entering anything as a key into
-  a dictionary would require marking all objects reachable from there as
+  a dictionary would require marking all objects reachable kutoka there as
   read-only -- and again, self-referential objects could cause an infinite loop.
 
 There is a trick to get around this if you need to, but use it at your own risk:
-You can wrap a mutable structure inside a class instance which has both a
+You can wrap a mutable structure inside a kundi instance which has both a
 :meth:`__eq__` and a :meth:`__hash__` method.  You must then make sure that the
 hash value for all such wrapper objects that reside in a dictionary (or other
 hash based structure), remain fixed while the object is in the dictionary (or
 other structure). ::
 
-   class ListWrapper:
+   kundi ListWrapper:
        def __init__(self, the_list):
            self.the_list = the_list
 
@@ -545,7 +545,7 @@ you won't be fooled into accidentally overwriting a list when you need a sorted
 copy but also need to keep the unsorted version around.
 
 If you want to return a new list, use the built-in :func:`sorted` function
-instead.  This function creates a new list from a provided iterable, sorts
+instead.  This function creates a new list kutoka a provided iterable, sorts
 it and returns it.  For example, here's how to iterate over the keys of a
 dictionary in sorted order::
 
@@ -563,7 +563,7 @@ construction of large programs.
 
 Python 2.6 adds an :mod:`abc` module that lets you define Abstract Base Classes
 (ABCs).  You can then use :func:`isinstance` and :func:`issubclass` to check
-whether an instance or a class implements a particular ABC.  The
+whether an instance or a kundi implements a particular ABC.  The
 :mod:`collections.abc` module defines a set of useful ABCs such as
 :class:`~collections.abc.Iterable`, :class:`~collections.abc.Container`, and
 :class:`~collections.abc.MutableMapping`.
@@ -603,7 +603,7 @@ function calls.  Many feel that exceptions can conveniently emulate all
 reasonable uses of the "go" or "goto" constructs of C, Fortran, and other
 languages.  For example::
 
-   class label(Exception): pass  # declare a label
+   kundi label(Exception): pass  # declare a label
 
    try:
        ...
@@ -647,7 +647,7 @@ Why doesn't Python have a "with" statement for attribute assignments?
 ---------------------------------------------------------------------
 
 Python has a 'with' statement that wraps the execution of a block, calling code
-on the entrance and exit from the block.  Some language have a construct that
+on the entrance and exit kutoka the block.  Some language have a construct that
 looks like this::
 
    with obj:
@@ -662,8 +662,8 @@ to. This is the main point of static typing -- the compiler *always* knows the
 scope of every variable at compile time.
 
 Python uses dynamic types. It is impossible to know in advance which attribute
-will be referenced at runtime. Member attributes may be added or removed from
-objects on the fly. This makes it impossible to know, from a simple reading,
+will be referenced at runtime. Member attributes may be added or removed kutoka
+objects on the fly. This makes it impossible to know, kutoka a simple reading,
 what attribute is being referenced: a local one, a global one, or a member
 attribute?
 
@@ -698,7 +698,7 @@ bindings are resolved at run-time in Python, and the second version only needs
 to perform the resolution once.
 
 
-Why are colons required for the if/while/def/class statements?
+Why are colons required for the if/while/def/kundi statements?
 --------------------------------------------------------------
 
 The colon is required primarily to enhance readability (one of the results of

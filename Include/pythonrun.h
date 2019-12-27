@@ -11,17 +11,17 @@ extern "C" {
 PyAPI_FUNC(int) PyRun_SimpleStringFlags(const char *, PyCompilerFlags *);
 PyAPI_FUNC(int) PyRun_AnyFileExFlags(
     FILE *fp,
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     int closeit,
     PyCompilerFlags *flags);
 PyAPI_FUNC(int) PyRun_SimpleFileExFlags(
     FILE *fp,
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     int closeit,
     PyCompilerFlags *flags);
 PyAPI_FUNC(int) PyRun_InteractiveOneFlags(
     FILE *fp,
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     PyCompilerFlags *flags);
 PyAPI_FUNC(int) PyRun_InteractiveOneObject(
     FILE *fp,
@@ -29,12 +29,12 @@ PyAPI_FUNC(int) PyRun_InteractiveOneObject(
     PyCompilerFlags *flags);
 PyAPI_FUNC(int) PyRun_InteractiveLoopFlags(
     FILE *fp,
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     PyCompilerFlags *flags);
 
 PyAPI_FUNC(struct _mod *) PyParser_ASTFromString(
     const char *s,
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     int start,
     PyCompilerFlags *flags,
     PyArena *arena);
@@ -46,7 +46,7 @@ PyAPI_FUNC(struct _mod *) PyParser_ASTFromStringObject(
     PyArena *arena);
 PyAPI_FUNC(struct _mod *) PyParser_ASTFromFile(
     FILE *fp,
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     const char* enc,
     int start,
     const char *ps1,
@@ -88,7 +88,7 @@ PyAPI_FUNC(PyObject *) PyRun_StringFlags(const char *, int, PyObject *,
 
 PyAPI_FUNC(PyObject *) PyRun_FileExFlags(
     FILE *fp,
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     int start,
     PyObject *globals,
     PyObject *locals,
@@ -103,7 +103,7 @@ PyAPI_FUNC(PyObject *) Py_CompileString(const char *, const char *, int);
 #define Py_CompileStringFlags(str, p, s, f) Py_CompileStringExFlags(str, p, s, f, -1)
 PyAPI_FUNC(PyObject *) Py_CompileStringExFlags(
     const char *str,
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     int start,
     PyCompilerFlags *flags,
     int optimize);
@@ -115,7 +115,7 @@ PyAPI_FUNC(PyObject *) Py_CompileStringObject(
 #endif
 PyAPI_FUNC(struct symtable *) Py_SymtableString(
     const char *str,
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     int start);
 #ifndef Py_LIMITED_API
 PyAPI_FUNC(const char *) _Py_SourceAsString(

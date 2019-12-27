@@ -13,7 +13,7 @@ class Test(unittest.TestCase):
 
     def test_checkretval(self):
 
-        import _ctypes_test
+        agiza _ctypes_test
         dll = CDLL(_ctypes_test.__file__)
         self.assertEqual(42, dll._testfunc_p_p(42))
 

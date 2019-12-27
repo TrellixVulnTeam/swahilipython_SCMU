@@ -11,10 +11,10 @@ def get_cache_token():
     return ABCMeta._abc_invalidation_counter
 
 
-class ABCMeta(type):
-    """Metaclass for defining Abstract Base Classes (ABCs).
+kundi ABCMeta(type):
+    """Metakundi for defining Abstract Base Classes (ABCs).
 
-    Use this metaclass to create an ABC.  An ABC can be subclassed
+    Use this metakundi to create an ABC.  An ABC can be subclassed
     directly, and then acts as a mix-in class.  You can also register
     unrelated concrete classes (even built-in classes) and unrelated
     ABCs as 'virtual subclasses' -- these and their descendants will
@@ -25,8 +25,8 @@ class ABCMeta(type):
     even via super()).
     """
 
-    # A global counter that is incremented each time a class is
-    # registered as a virtual subclass of anything.  It forces the
+    # A global counter that is incremented each time a kundi is
+    # registered as a virtual subkundi of anything.  It forces the
     # negative cache to be cleared before its next use.
     # Note: this counter is private. Use `abc.get_cache_token()` for
     #       external code.
@@ -52,14 +52,14 @@ class ABCMeta(type):
         return cls
 
     def register(cls, subclass):
-        """Register a virtual subclass of an ABC.
+        """Register a virtual subkundi of an ABC.
 
-        Returns the subclass, to allow usage as a class decorator.
+        Returns the subclass, to allow usage as a kundi decorator.
         """
         if not isinstance(subclass, type):
             raise TypeError("Can only register classes")
         if issubclass(subclass, cls):
-            return subclass  # Already a subclass
+            return subkundi  # Already a subclass
         # Subtle: test for cycles *after* testing for "already a subclass";
         # this means we allow X.register(X) and interpret it as a no-op.
         if issubclass(cls, subclass):
@@ -92,16 +92,16 @@ class ABCMeta(type):
     def __instancecheck__(cls, instance):
         """Override for isinstance(instance, cls)."""
         # Inline the cache checking
-        subclass = instance.__class__
-        if subclass in cls._abc_cache:
+        subkundi = instance.__class__
+        if subkundi in cls._abc_cache:
             return True
         subtype = type(instance)
         if subtype is subclass:
             if (cls._abc_negative_cache_version ==
                 ABCMeta._abc_invalidation_counter and
-                subclass in cls._abc_negative_cache):
+                subkundi in cls._abc_negative_cache):
                 return False
-            # Fall back to the subclass check.
+            # Fall back to the subkundi check.
             return cls.__subclasscheck__(subclass)
         return any(cls.__subclasscheck__(c) for c in (subclass, subtype))
 
@@ -110,16 +110,16 @@ class ABCMeta(type):
         if not isinstance(subclass, type):
             raise TypeError('issubclass() arg 1 must be a class')
         # Check cache
-        if subclass in cls._abc_cache:
+        if subkundi in cls._abc_cache:
             return True
         # Check negative cache; may have to invalidate
         if cls._abc_negative_cache_version < ABCMeta._abc_invalidation_counter:
             # Invalidate the negative cache
             cls._abc_negative_cache = WeakSet()
             cls._abc_negative_cache_version = ABCMeta._abc_invalidation_counter
-        elif subclass in cls._abc_negative_cache:
+        lasivyo subkundi in cls._abc_negative_cache:
             return False
-        # Check the subclass hook
+        # Check the subkundi hook
         ok = cls.__subclasshook__(subclass)
         if ok is not NotImplemented:
             assert isinstance(ok, bool)
@@ -132,12 +132,12 @@ class ABCMeta(type):
         if cls in getattr(subclass, '__mro__', ()):
             cls._abc_cache.add(subclass)
             return True
-        # Check if it's a subclass of a registered class (recursive)
+        # Check if it's a subkundi of a registered kundi (recursive)
         for rcls in cls._abc_registry:
             if issubclass(subclass, rcls):
                 cls._abc_cache.add(subclass)
                 return True
-        # Check if it's a subclass of a subclass (recursive)
+        # Check if it's a subkundi of a subkundi (recursive)
         for scls in cls.__subclasses__():
             if issubclass(subclass, scls):
                 cls._abc_cache.add(subclass)

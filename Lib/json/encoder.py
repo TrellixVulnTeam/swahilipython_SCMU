@@ -33,44 +33,44 @@ for i in range(0x20):
 
 INFINITY = float('inf')
 
-def py_encode_basestring(s):
+eleza py_encode_basestring(s):
     """Return a JSON representation of a Python string
 
     """
-    def replace(match):
-        return ESCAPE_DCT[match.group(0)]
-    return '"' + ESCAPE.sub(replace, s) + '"'
+    eleza replace(match):
+        rudisha ESCAPE_DCT[match.group(0)]
+    rudisha '"' + ESCAPE.sub(replace, s) + '"'
 
 
 encode_basestring = (c_encode_basestring or py_encode_basestring)
 
 
-def py_encode_basestring_ascii(s):
+eleza py_encode_basestring_ascii(s):
     """Return an ASCII-only JSON representation of a Python string
 
     """
-    def replace(match):
+    eleza replace(match):
         s = match.group(0)
         try:
-            return ESCAPE_DCT[s]
+            rudisha ESCAPE_DCT[s]
         except KeyError:
             n = ord(s)
-            if n < 0x10000:
-                return '\\u{0:04x}'.format(n)
-                #return '\\u%04x' % (n,)
+            ikiwa n < 0x10000:
+                rudisha '\\u{0:04x}'.format(n)
+                #rudisha '\\u%04x' % (n,)
             else:
                 # surrogate pair
                 n -= 0x10000
                 s1 = 0xd800 | ((n >> 10) & 0x3ff)
                 s2 = 0xdc00 | (n & 0x3ff)
-                return '\\u{0:04x}\\u{1:04x}'.format(s1, s2)
-    return '"' + ESCAPE_ASCII.sub(replace, s) + '"'
+                rudisha '\\u{0:04x}\\u{1:04x}'.format(s1, s2)
+    rudisha '"' + ESCAPE_ASCII.sub(replace, s) + '"'
 
 
 encode_basestring_ascii = (
     c_encode_basestring_ascii or py_encode_basestring_ascii)
 
-class JSONEncoder(object):
+kundi JSONEncoder(object):
     """Extensible JSON <http://json.org> encoder for Python data structures.
 
     Supports the following objects and types by default:
@@ -93,15 +93,15 @@ class JSONEncoder(object):
     | None              | null          |
     +-------------------+---------------+
 
-    To extend this to recognize other objects, subclass and implement a
+    To extend this to recognize other objects, subkundi and implement a
     ``.default()`` method with another method that returns a serializable
-    object for ``o`` if possible, otherwise it should call the superclass
+    object for ``o`` ikiwa possible, otherwise it should call the superclass
     implementation (to raise ``TypeError``).
 
     """
     item_separator = ', '
     key_separator = ': '
-    def __init__(self, *, skipkeys=False, ensure_ascii=True,
+    eleza __init__(self, *, skipkeys=False, ensure_ascii=True,
             check_circular=True, allow_nan=True, sort_keys=False,
             indent=None, separators=None, default=None):
         """Constructor for JSONEncoder, with sensible defaults.
@@ -134,12 +134,12 @@ class JSONEncoder(object):
         None is the most compact representation.
 
         If specified, separators should be an (item_separator, key_separator)
-        tuple.  The default is (', ', ': ') if *indent* is ``None`` and
+        tuple.  The default is (', ', ': ') ikiwa *indent* is ``None`` and
         (',', ': ') otherwise.  To get the most compact JSON representation,
         you should specify (',', ':') to eliminate whitespace.
 
         If specified, default is a function that gets called for objects
-        that can't otherwise be serialized.  It should return a JSON encodable
+        that can't otherwise be serialized.  It should rudisha a JSON encodable
         version of the object or raise a ``TypeError``.
 
         """
@@ -150,36 +150,36 @@ class JSONEncoder(object):
         self.allow_nan = allow_nan
         self.sort_keys = sort_keys
         self.indent = indent
-        if separators is not None:
+        ikiwa separators is not None:
             self.item_separator, self.key_separator = separators
-        elif indent is not None:
+        elikiwa indent is not None:
             self.item_separator = ','
-        if default is not None:
+        ikiwa default is not None:
             self.default = default
 
-    def default(self, o):
-        """Implement this method in a subclass such that it returns
+    eleza default(self, o):
+        """Implement this method in a subkundi such that it returns
         a serializable object for ``o``, or calls the base implementation
         (to raise a ``TypeError``).
 
         For example, to support arbitrary iterators, you could
         implement default like this::
 
-            def default(self, o):
+            eleza default(self, o):
                 try:
                     iterable = iter(o)
                 except TypeError:
                     pass
                 else:
-                    return list(iterable)
-                # Let the base class default method raise the TypeError
-                return JSONEncoder.default(self, o)
+                    rudisha list(iterable)
+                # Let the base kundi default method raise the TypeError
+                rudisha JSONEncoder.default(self, o)
 
         """
         raise TypeError(f'Object of type {o.__class__.__name__} '
                         f'is not JSON serializable')
 
-    def encode(self, o):
+    eleza encode(self, o):
         """Return a JSON string representation of a Python data structure.
 
         >>> kutoka json.encoder agiza JSONEncoder
@@ -188,20 +188,20 @@ class JSONEncoder(object):
 
         """
         # This is for extremely simple cases and benchmarks.
-        if isinstance(o, str):
-            if self.ensure_ascii:
-                return encode_basestring_ascii(o)
+        ikiwa isinstance(o, str):
+            ikiwa self.ensure_ascii:
+                rudisha encode_basestring_ascii(o)
             else:
-                return encode_basestring(o)
+                rudisha encode_basestring(o)
         # This doesn't pass the iterator directly to ''.join() because the
         # exceptions aren't as detailed.  The list call should be roughly
         # equivalent to the PySequence_Fast that ''.join() would do.
         chunks = self.iterencode(o, _one_shot=True)
-        if not isinstance(chunks, (list, tuple)):
+        ikiwa not isinstance(chunks, (list, tuple)):
             chunks = list(chunks)
-        return ''.join(chunks)
+        rudisha ''.join(chunks)
 
-    def iterencode(self, o, _one_shot=False):
+    eleza iterencode(self, o, _one_shot=False):
         """Encode the given object and yield each string
         representation as available.
 
@@ -211,39 +211,39 @@ class JSONEncoder(object):
                 mysocket.write(chunk)
 
         """
-        if self.check_circular:
+        ikiwa self.check_circular:
             markers = {}
         else:
             markers = None
-        if self.ensure_ascii:
+        ikiwa self.ensure_ascii:
             _encoder = encode_basestring_ascii
         else:
             _encoder = encode_basestring
 
-        def floatstr(o, allow_nan=self.allow_nan,
+        eleza floatstr(o, allow_nan=self.allow_nan,
                 _repr=float.__repr__, _inf=INFINITY, _neginf=-INFINITY):
             # Check for specials.  Note that this type of test is processor
             # and/or platform-specific, so do tests which don't depend on the
             # internals.
 
-            if o != o:
+            ikiwa o != o:
                 text = 'NaN'
-            elif o == _inf:
+            elikiwa o == _inf:
                 text = 'Infinity'
-            elif o == _neginf:
+            elikiwa o == _neginf:
                 text = '-Infinity'
             else:
-                return _repr(o)
+                rudisha _repr(o)
 
-            if not allow_nan:
+            ikiwa not allow_nan:
                 raise ValueError(
                     "Out of range float values are not JSON compliant: " +
                     repr(o))
 
-            return text
+            rudisha text
 
 
-        if (_one_shot and c_make_encoder is not None
+        ikiwa (_one_shot and c_make_encoder is not None
                 and self.indent is None):
             _iterencode = c_make_encoder(
                 markers, self.default, _encoder, self.indent,
@@ -254,9 +254,9 @@ class JSONEncoder(object):
                 markers, self.default, _encoder, self.indent, floatstr,
                 self.key_separator, self.item_separator, self.sort_keys,
                 self.skipkeys, _one_shot)
-        return _iterencode(o, 0)
+        rudisha _iterencode(o, 0)
 
-def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
+eleza _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
         _key_separator, _item_separator, _sort_keys, _skipkeys, _one_shot,
         ## HACK: hand-optimized bytecode; turn globals into locals
         ValueError=ValueError,
@@ -271,20 +271,20 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
         _intstr=int.__repr__,
     ):
 
-    if _indent is not None and not isinstance(_indent, str):
+    ikiwa _indent is not None and not isinstance(_indent, str):
         _indent = ' ' * _indent
 
-    def _iterencode_list(lst, _current_indent_level):
-        if not lst:
+    eleza _iterencode_list(lst, _current_indent_level):
+        ikiwa not lst:
             yield '[]'
             return
-        if markers is not None:
+        ikiwa markers is not None:
             markerid = id(lst)
-            if markerid in markers:
+            ikiwa markerid in markers:
                 raise ValueError("Circular reference detected")
             markers[markerid] = lst
         buf = '['
-        if _indent is not None:
+        ikiwa _indent is not None:
             _current_indent_level += 1
             newline_indent = '\n' + _indent * _current_indent_level
             separator = _item_separator + newline_indent
@@ -294,53 +294,53 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             separator = _item_separator
         first = True
         for value in lst:
-            if first:
+            ikiwa first:
                 first = False
             else:
                 buf = separator
-            if isinstance(value, str):
+            ikiwa isinstance(value, str):
                 yield buf + _encoder(value)
-            elif value is None:
+            elikiwa value is None:
                 yield buf + 'null'
-            elif value is True:
+            elikiwa value is True:
                 yield buf + 'true'
-            elif value is False:
+            elikiwa value is False:
                 yield buf + 'false'
-            elif isinstance(value, int):
+            elikiwa isinstance(value, int):
                 # Subclasses of int/float may override __repr__, but we still
                 # want to encode them as integers/floats in JSON. One example
                 # within the standard library is IntEnum.
                 yield buf + _intstr(value)
-            elif isinstance(value, float):
+            elikiwa isinstance(value, float):
                 # see comment above for int
                 yield buf + _floatstr(value)
             else:
                 yield buf
-                if isinstance(value, (list, tuple)):
+                ikiwa isinstance(value, (list, tuple)):
                     chunks = _iterencode_list(value, _current_indent_level)
-                elif isinstance(value, dict):
+                elikiwa isinstance(value, dict):
                     chunks = _iterencode_dict(value, _current_indent_level)
                 else:
                     chunks = _iterencode(value, _current_indent_level)
                 yield kutoka chunks
-        if newline_indent is not None:
+        ikiwa newline_indent is not None:
             _current_indent_level -= 1
             yield '\n' + _indent * _current_indent_level
         yield ']'
-        if markers is not None:
+        ikiwa markers is not None:
             del markers[markerid]
 
-    def _iterencode_dict(dct, _current_indent_level):
-        if not dct:
+    eleza _iterencode_dict(dct, _current_indent_level):
+        ikiwa not dct:
             yield '{}'
             return
-        if markers is not None:
+        ikiwa markers is not None:
             markerid = id(dct)
-            if markerid in markers:
+            ikiwa markerid in markers:
                 raise ValueError("Circular reference detected")
             markers[markerid] = dct
         yield '{'
-        if _indent is not None:
+        ikiwa _indent is not None:
             _current_indent_level += 1
             newline_indent = '\n' + _indent * _current_indent_level
             item_separator = _item_separator + newline_indent
@@ -349,94 +349,94 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             newline_indent = None
             item_separator = _item_separator
         first = True
-        if _sort_keys:
+        ikiwa _sort_keys:
             items = sorted(dct.items())
         else:
             items = dct.items()
         for key, value in items:
-            if isinstance(key, str):
+            ikiwa isinstance(key, str):
                 pass
             # JavaScript is weakly typed for these, so it makes sense to
             # also allow them.  Many encoders seem to do something like this.
-            elif isinstance(key, float):
+            elikiwa isinstance(key, float):
                 # see comment for int/float in _make_iterencode
                 key = _floatstr(key)
-            elif key is True:
+            elikiwa key is True:
                 key = 'true'
-            elif key is False:
+            elikiwa key is False:
                 key = 'false'
-            elif key is None:
+            elikiwa key is None:
                 key = 'null'
-            elif isinstance(key, int):
+            elikiwa isinstance(key, int):
                 # see comment for int/float in _make_iterencode
                 key = _intstr(key)
-            elif _skipkeys:
+            elikiwa _skipkeys:
                 continue
             else:
                 raise TypeError(f'keys must be str, int, float, bool or None, '
                                 f'not {key.__class__.__name__}')
-            if first:
+            ikiwa first:
                 first = False
             else:
                 yield item_separator
             yield _encoder(key)
             yield _key_separator
-            if isinstance(value, str):
+            ikiwa isinstance(value, str):
                 yield _encoder(value)
-            elif value is None:
+            elikiwa value is None:
                 yield 'null'
-            elif value is True:
+            elikiwa value is True:
                 yield 'true'
-            elif value is False:
+            elikiwa value is False:
                 yield 'false'
-            elif isinstance(value, int):
+            elikiwa isinstance(value, int):
                 # see comment for int/float in _make_iterencode
                 yield _intstr(value)
-            elif isinstance(value, float):
+            elikiwa isinstance(value, float):
                 # see comment for int/float in _make_iterencode
                 yield _floatstr(value)
             else:
-                if isinstance(value, (list, tuple)):
+                ikiwa isinstance(value, (list, tuple)):
                     chunks = _iterencode_list(value, _current_indent_level)
-                elif isinstance(value, dict):
+                elikiwa isinstance(value, dict):
                     chunks = _iterencode_dict(value, _current_indent_level)
                 else:
                     chunks = _iterencode(value, _current_indent_level)
                 yield kutoka chunks
-        if newline_indent is not None:
+        ikiwa newline_indent is not None:
             _current_indent_level -= 1
             yield '\n' + _indent * _current_indent_level
         yield '}'
-        if markers is not None:
+        ikiwa markers is not None:
             del markers[markerid]
 
-    def _iterencode(o, _current_indent_level):
-        if isinstance(o, str):
+    eleza _iterencode(o, _current_indent_level):
+        ikiwa isinstance(o, str):
             yield _encoder(o)
-        elif o is None:
+        elikiwa o is None:
             yield 'null'
-        elif o is True:
+        elikiwa o is True:
             yield 'true'
-        elif o is False:
+        elikiwa o is False:
             yield 'false'
-        elif isinstance(o, int):
+        elikiwa isinstance(o, int):
             # see comment for int/float in _make_iterencode
             yield _intstr(o)
-        elif isinstance(o, float):
+        elikiwa isinstance(o, float):
             # see comment for int/float in _make_iterencode
             yield _floatstr(o)
-        elif isinstance(o, (list, tuple)):
+        elikiwa isinstance(o, (list, tuple)):
             yield kutoka _iterencode_list(o, _current_indent_level)
-        elif isinstance(o, dict):
+        elikiwa isinstance(o, dict):
             yield kutoka _iterencode_dict(o, _current_indent_level)
         else:
-            if markers is not None:
+            ikiwa markers is not None:
                 markerid = id(o)
-                if markerid in markers:
+                ikiwa markerid in markers:
                     raise ValueError("Circular reference detected")
                 markers[markerid] = o
             o = _default(o)
             yield kutoka _iterencode(o, _current_indent_level)
-            if markers is not None:
+            ikiwa markers is not None:
                 del markers[markerid]
-    return _iterencode
+    rudisha _iterencode

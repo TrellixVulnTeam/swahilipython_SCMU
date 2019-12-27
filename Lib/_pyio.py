@@ -151,7 +151,7 @@ def open(file, mode="r", buffering=-1, encoding=None, errors=None,
     through which the standard file operations such as reading and writing
     are performed. When open() is used to open a file in a text mode ('w',
     'r', 'wt', 'rt', etc.), it returns a TextIOWrapper. When used to open
-    a file in a binary mode, the returned class varies: in read binary
+    a file in a binary mode, the returned kundi varies: in read binary
     mode, it returns a BufferedReader; in write binary and append binary
     modes, it returns a BufferedWriter, and in read/write mode, it returns
     a BufferedRandom.
@@ -237,9 +237,9 @@ def open(file, mode="r", buffering=-1, encoding=None, errors=None,
             raise ValueError("can't have unbuffered text I/O")
         if updating:
             buffer = BufferedRandom(raw, buffering)
-        elif creating or writing or appending:
+        lasivyo creating or writing or appending:
             buffer = BufferedWriter(raw, buffering)
-        elif reading:
+        lasivyo reading:
             buffer = BufferedReader(raw, buffering)
         else:
             raise ValueError("unknown mode: %r" % mode)
@@ -278,7 +278,7 @@ except AttributeError:
     open_code = _open_code_with_warning
 
 
-class DocDescriptor:
+kundi DocDescriptor:
     """Helper for builtins.open.__doc__
     """
     def __get__(self, obj, typ=None):
@@ -287,11 +287,11 @@ class DocDescriptor:
                  "errors=None, newline=None, closefd=True)\n\n" +
             open.__doc__)
 
-class OpenWrapper:
+kundi OpenWrapper:
     """Wrapper for builtins.open
 
     Trick so that open won't become a bound method when stored
-    as a class variable (as dbm.dumb does).
+    as a kundi variable (as dbm.dumb does).
 
     See initstdio() in Python/pylifecycle.c.
     """
@@ -306,16 +306,16 @@ class OpenWrapper:
 try:
     UnsupportedOperation = io.UnsupportedOperation
 except AttributeError:
-    class UnsupportedOperation(OSError, ValueError):
+    kundi UnsupportedOperation(OSError, ValueError):
         pass
 
 
-class IOBase(metaclass=abc.ABCMeta):
+kundi IOBase(metaclass=abc.ABCMeta):
 
-    """The abstract base class for all I/O classes, acting on streams of
+    """The abstract base kundi for all I/O classes, acting on streams of
     bytes. There is no public constructor.
 
-    This class provides dummy implementations for many methods that
+    This kundi provides dummy implementations for many methods that
     derived classes can override selectively; the default implementations
     represent a file that cannot be read, written or seeked.
 
@@ -603,9 +603,9 @@ class IOBase(metaclass=abc.ABCMeta):
 io.IOBase.register(IOBase)
 
 
-class RawIOBase(IOBase):
+kundi RawIOBase(IOBase):
 
-    """Base class for raw binary I/O."""
+    """Base kundi for raw binary I/O."""
 
     # The read() method is implemented by calling readinto(); derived
     # classes that want to support read() only need to implement
@@ -615,7 +615,7 @@ class RawIOBase(IOBase):
     # (It would be tempting to also provide an implementation of
     # readinto() in terms of read(), in case the latter is a more suitable
     # primitive operation, but that would lead to nasty recursion in case
-    # a subclass doesn't implement either.)
+    # a subkundi doesn't implement either.)
 
     def read(self, size=-1):
         """Read and return up to size bytes, where size is an int.
@@ -669,9 +669,9 @@ kutoka _io agiza FileIO
 RawIOBase.register(FileIO)
 
 
-class BufferedIOBase(IOBase):
+kundi BufferedIOBase(IOBase):
 
-    """Base class for buffered IO objects.
+    """Base kundi for buffered IO objects.
 
     The main difference with RawIOBase is that the read() method
     supports omitting the size argument, and does not have a default
@@ -775,7 +775,7 @@ class BufferedIOBase(IOBase):
 io.BufferedIOBase.register(BufferedIOBase)
 
 
-class _BufferedIOMixin(BufferedIOBase):
+kundi _BufferedIOMixin(BufferedIOBase):
 
     """A mixin implementation of BufferedIOBase with an underlying raw stream.
 
@@ -879,7 +879,7 @@ class _BufferedIOMixin(BufferedIOBase):
         return self.raw.isatty()
 
 
-class BytesIO(BufferedIOBase):
+kundi BytesIO(BufferedIOBase):
 
     """Buffered I/O implementation using an in-memory bytes buffer."""
 
@@ -976,9 +976,9 @@ class BytesIO(BufferedIOBase):
             if pos < 0:
                 raise ValueError("negative seek position %r" % (pos,))
             self._pos = pos
-        elif whence == 1:
+        lasivyo whence == 1:
             self._pos = max(0, self._pos + pos)
-        elif whence == 2:
+        lasivyo whence == 2:
             self._pos = max(0, len(self._buffer) + pos)
         else:
             raise ValueError("unsupported whence value")
@@ -1022,7 +1022,7 @@ class BytesIO(BufferedIOBase):
         return True
 
 
-class BufferedReader(_BufferedIOMixin):
+kundi BufferedReader(_BufferedIOMixin):
 
     """BufferedReader(raw[, buffer_size])
 
@@ -1153,7 +1153,7 @@ class BufferedReader(_BufferedIOMixin):
                 min(size, len(self._read_buf) - self._read_pos))
 
     # Implementing readinto() and readinto1() is not strictly necessary (we
-    # could rely on the base class that provides an implementation in terms of
+    # could rely on the base kundi that provides an implementation in terms of
     # read() and read1()). We do it anyway to keep the _pyio implementation
     # similar to the io implementation (which implements the methods for
     # performance reasons).
@@ -1193,7 +1193,7 @@ class BufferedReader(_BufferedIOMixin):
 
                 # Otherwise refill internal buffer - unless we're
                 # in read1 mode and already got some data
-                elif not (read1 and written):
+                lasivyo not (read1 and written):
                     if not self._peek_unlocked(1):
                         break # eof
 
@@ -1216,7 +1216,7 @@ class BufferedReader(_BufferedIOMixin):
             self._reset_read_buf()
             return pos
 
-class BufferedWriter(_BufferedIOMixin):
+kundi BufferedWriter(_BufferedIOMixin):
 
     """A buffer for a writeable sequential RawIO object.
 
@@ -1311,7 +1311,7 @@ class BufferedWriter(_BufferedIOMixin):
                 return
         # We have to release the lock and call self.flush() (which will
         # probably just re-take the lock) in case flush has been overridden in
-        # a subclass or the user set self.flush to something. This is the same
+        # a subkundi or the user set self.flush to something. This is the same
         # behavior as the C implementation.
         try:
             # may raise BlockingIOError or BrokenPipeError etc
@@ -1321,7 +1321,7 @@ class BufferedWriter(_BufferedIOMixin):
                 self.raw.close()
 
 
-class BufferedRWPair(BufferedIOBase):
+kundi BufferedRWPair(BufferedIOBase):
 
     """A buffered reader and writer object together.
 
@@ -1394,7 +1394,7 @@ class BufferedRWPair(BufferedIOBase):
         return self.writer.closed
 
 
-class BufferedRandom(BufferedWriter, BufferedReader):
+kundi BufferedRandom(BufferedWriter, BufferedReader):
 
     """A buffered interface to random access streams.
 
@@ -1468,7 +1468,7 @@ class BufferedRandom(BufferedWriter, BufferedReader):
         return BufferedWriter.write(self, b)
 
 
-class FileIO(RawIOBase):
+kundi FileIO(RawIOBase):
     _fd = -1
     _created = False
     _readable = False
@@ -1519,13 +1519,13 @@ class FileIO(RawIOBase):
             self._created = True
             self._writable = True
             flags = os.O_EXCL | os.O_CREAT
-        elif 'r' in mode:
+        lasivyo 'r' in mode:
             self._readable = True
             flags = 0
-        elif 'w' in mode:
+        lasivyo 'w' in mode:
             self._writable = True
             flags = os.O_CREAT | os.O_TRUNC
-        elif 'a' in mode:
+        lasivyo 'a' in mode:
             self._writable = True
             self._appending = True
             flags = os.O_APPEND | os.O_CREAT
@@ -1536,7 +1536,7 @@ class FileIO(RawIOBase):
 
         if self._readable and self._writable:
             flags |= os.O_RDWR
-        elif self._readable:
+        lasivyo self._readable:
             flags |= os.O_RDONLY
         else:
             flags |= os.O_WRONLY
@@ -1793,12 +1793,12 @@ class FileIO(RawIOBase):
                 return 'xb+'
             else:
                 return 'xb'
-        elif self._appending:
+        lasivyo self._appending:
             if self._readable:
                 return 'ab+'
             else:
                 return 'ab'
-        elif self._readable:
+        lasivyo self._readable:
             if self._writable:
                 return 'rb+'
             else:
@@ -1807,11 +1807,11 @@ class FileIO(RawIOBase):
             return 'wb'
 
 
-class TextIOBase(IOBase):
+kundi TextIOBase(IOBase):
 
-    """Base class for text I/O.
+    """Base kundi for text I/O.
 
-    This class provides a character and line based interface to stream
+    This kundi provides a character and line based interface to stream
     I/O. There is no public constructor.
     """
 
@@ -1874,7 +1874,7 @@ class TextIOBase(IOBase):
 io.TextIOBase.register(TextIOBase)
 
 
-class IncrementalNewlineDecoder(codecs.IncrementalDecoder):
+kundi IncrementalNewlineDecoder(codecs.IncrementalDecoder):
     r"""Codec used when reading a file in universal newlines mode.  It wraps
     another incremental decoder, translating \r\n and \r into \n.  It also
     records the types of newlines encountered.  When used with
@@ -1959,7 +1959,7 @@ class IncrementalNewlineDecoder(codecs.IncrementalDecoder):
                )[self.seennl]
 
 
-class TextIOWrapper(TextIOBase):
+kundi TextIOWrapper(TextIOBase):
 
     r"""Character and line based layer over a BufferedIOBase object, buffer.
 
@@ -2130,7 +2130,7 @@ class TextIOWrapper(TextIOBase):
                 errors = self._errors
             else:
                 errors = 'strict'
-        elif not isinstance(errors, str):
+        lasivyo not isinstance(errors, str):
             raise TypeError("invalid errors: %r" % errors)
 
         if encoding is None:
@@ -2445,7 +2445,7 @@ class TextIOWrapper(TextIOBase):
             # sync the underlying buffer with the current position.
             whence = 0
             cookie = self.tell()
-        elif whence == SEEK_END:
+        lasivyo whence == SEEK_END:
             if cookie != 0:
                 raise UnsupportedOperation("can't do nonzero end-relative seeks")
             self.flush()
@@ -2475,7 +2475,7 @@ class TextIOWrapper(TextIOBase):
         # Restore the decoder to its state kutoka the safe start point.
         if cookie == 0 and self._decoder:
             self._decoder.reset()
-        elif self._decoder or dec_flags or chars_to_skip:
+        lasivyo self._decoder or dec_flags or chars_to_skip:
             self._decoder = self._decoder or self._get_decoder()
             self._decoder.setstate((b'', dec_flags))
             self._snapshot = (dec_flags, b'')
@@ -2564,7 +2564,7 @@ class TextIOWrapper(TextIOBase):
                 else:
                     start = len(line)
 
-            elif self._readuniversal:
+            lasivyo self._readuniversal:
                 # Universal newline search. Find any of \r, \r\n, \n
                 # The decoder ensures that \r\n are not split in two pieces
 
@@ -2579,15 +2579,15 @@ class TextIOWrapper(TextIOBase):
                         # Found \n
                         endpos = nlpos + 1
                         break
-                elif nlpos == -1:
+                lasivyo nlpos == -1:
                     # Found lone \r
                     endpos = crpos + 1
                     break
-                elif nlpos < crpos:
+                lasivyo nlpos < crpos:
                     # Found \n
                     endpos = nlpos + 1
                     break
-                elif nlpos == crpos + 1:
+                lasivyo nlpos == crpos + 1:
                     # Found \r\n
                     endpos = crpos + 2
                     break
@@ -2630,7 +2630,7 @@ class TextIOWrapper(TextIOBase):
         return self._decoder.newlines if self._decoder else None
 
 
-class StringIO(TextIOWrapper):
+kundi StringIO(TextIOWrapper):
     """Text I/O implementation using an in-memory buffer.
 
     The initial_value argument sets the value of object.  The newline

@@ -6,10 +6,10 @@ but no doctest examples.
 """
 
 
-class Foo(object):
+kundi Foo(object):
     """A docstring with no doctest examples.
 
     """
 
-    def __init__(self):
+    eleza __init__(self):
         pass

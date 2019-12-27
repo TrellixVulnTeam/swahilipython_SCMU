@@ -1,22 +1,22 @@
 kutoka test agiza support
-support.import_module("dbm.ndbm") #skip if not supported
+support.import_module("dbm.ndbm") #skip ikiwa not supported
 agiza os
 agiza unittest
 agiza dbm.ndbm
 kutoka dbm.ndbm agiza error
 
-class DbmTestCase(unittest.TestCase):
+kundi DbmTestCase(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.filename = support.TESTFN
         self.d = dbm.ndbm.open(self.filename, 'c')
         self.d.close()
 
-    def tearDown(self):
+    eleza tearDown(self):
         for suffix in ['', '.pag', '.dir', '.db']:
             support.unlink(self.filename + suffix)
 
-    def test_keys(self):
+    eleza test_keys(self):
         self.d = dbm.ndbm.open(self.filename, 'c')
         self.assertEqual(self.d.keys(), [])
         self.d['a'] = 'b'
@@ -36,8 +36,8 @@ class DbmTestCase(unittest.TestCase):
         self.assertEqual(self.d[b'xxx'], b'foo')
         self.d.close()
 
-    def test_empty_value(self):
-        if dbm.ndbm.library == 'Berkeley DB':
+    eleza test_empty_value(self):
+        ikiwa dbm.ndbm.library == 'Berkeley DB':
             self.skipTest("Berkeley DB doesn't distinguish the empty value "
                           "kutoka the absent one")
         self.d = dbm.ndbm.open(self.filename, 'c')
@@ -50,7 +50,7 @@ class DbmTestCase(unittest.TestCase):
         self.assertEqual(self.d.setdefault(b'empty'), b'')
         self.d.close()
 
-    def test_modes(self):
+    eleza test_modes(self):
         for mode in ['r', 'rw', 'w', 'n']:
             try:
                 self.d = dbm.ndbm.open(self.filename, mode)
@@ -58,7 +58,7 @@ class DbmTestCase(unittest.TestCase):
             except error:
                 self.fail()
 
-    def test_context_manager(self):
+    eleza test_context_manager(self):
         with dbm.ndbm.open(self.filename, 'c') as db:
             db["ndbm context manager"] = "context manager"
 
@@ -70,7 +70,7 @@ class DbmTestCase(unittest.TestCase):
         self.assertEqual(str(cm.exception),
                          "DBM object has already been closed")
 
-    def test_bytes(self):
+    eleza test_bytes(self):
         with dbm.ndbm.open(self.filename, 'c') as db:
             db[b'bytes key \xbd'] = b'bytes value \xbd'
         with dbm.ndbm.open(self.filename, 'r') as db:
@@ -78,7 +78,7 @@ class DbmTestCase(unittest.TestCase):
             self.assertTrue(b'bytes key \xbd' in db)
             self.assertEqual(db[b'bytes key \xbd'], b'bytes value \xbd')
 
-    def test_unicode(self):
+    eleza test_unicode(self):
         with dbm.ndbm.open(self.filename, 'c') as db:
             db['Unicode key \U0001f40d'] = 'Unicode value \U0001f40d'
         with dbm.ndbm.open(self.filename, 'r') as db:
@@ -90,7 +90,7 @@ class DbmTestCase(unittest.TestCase):
             self.assertEqual(db['Unicode key \U0001f40d'],
                              'Unicode value \U0001f40d'.encode())
 
-    def test_write_readonly_file(self):
+    eleza test_write_readonly_file(self):
         with dbm.ndbm.open(self.filename, 'c') as db:
             db[b'bytes key'] = b'bytes value'
         with dbm.ndbm.open(self.filename, 'r') as db:
@@ -103,7 +103,7 @@ class DbmTestCase(unittest.TestCase):
 
     @unittest.skipUnless(support.TESTFN_NONASCII,
                          'requires OS support of non-ASCII encodings')
-    def test_nonascii_filename(self):
+    eleza test_nonascii_filename(self):
         filename = support.TESTFN_NONASCII
         for suffix in ['', '.pag', '.dir', '.db']:
             self.addCleanup(support.unlink, filename + suffix)
@@ -116,7 +116,7 @@ class DbmTestCase(unittest.TestCase):
             self.assertTrue(b'key' in db)
             self.assertEqual(db[b'key'], b'value')
 
-    def test_nonexisting_file(self):
+    eleza test_nonexisting_file(self):
         nonexisting_file = 'nonexisting-file'
         with self.assertRaises(dbm.ndbm.error) as cm:
             dbm.ndbm.open(nonexisting_file)
@@ -124,5 +124,5 @@ class DbmTestCase(unittest.TestCase):
         self.assertEqual(cm.exception.filename, nonexisting_file)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

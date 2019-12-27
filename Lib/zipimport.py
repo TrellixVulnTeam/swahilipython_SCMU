@@ -3,7 +3,7 @@
 This module exports three objects:
 - zipimporter: a class; its constructor takes a path to a Zip archive.
 - ZipImportError: exception raised by zipimporter objects. It's a
-  subclass of ImportError, so it can be caught as ImportError, too.
+  subkundi of ImportError, so it can be caught as ImportError, too.
 - _zip_directory_cache: a dict, mapping archive paths to zip directory
   info dicts, as used in zipimporter._files.
 
@@ -30,7 +30,7 @@ path_sep = _bootstrap_external.path_sep
 alt_path_sep = _bootstrap_external.path_separators[1:]
 
 
-class ZipImportError(ImportError):
+kundi ZipImportError(ImportError):
     pass
 
 # _read_directory() cache
@@ -42,7 +42,7 @@ END_CENTRAL_DIR_SIZE = 22
 STRING_END_ARCHIVE = b'PK\x05\x06'
 MAX_COMMENT_LEN = (1 << 16) - 1
 
-class zipimporter:
+kundi zipimporter:
     """zipimporter(archivepath) -> zipimporter object
 
     Create a new zipimporter instance. 'archivepath' must be a path to
@@ -721,10 +721,10 @@ def _get_module_code(self, fullname):
         raise ZipImportError(f"can't find module {fullname!r}", name=fullname)
 
 
-class _ZipImportResourceReader:
-    """Private class used to support ZipImport.get_resource_reader().
+kundi _ZipImportResourceReader:
+    """Private kundi used to support ZipImport.get_resource_reader().
 
-    This class is allowed to reference all the innards and private parts of
+    This kundi is allowed to reference all the innards and private parts of
     the zipimporter.
     """
     _registered = False
@@ -787,6 +787,6 @@ class _ZipImportResourceReader:
             parent_name = relative.parent.name
             if len(parent_name) == 0:
                 yield relative.name
-            elif parent_name not in subdirs_seen:
+            lasivyo parent_name not in subdirs_seen:
                 subdirs_seen.add(parent_name)
                 yield parent_name

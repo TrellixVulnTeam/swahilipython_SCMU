@@ -103,7 +103,7 @@ A theoretical benefit is that it's easier to construct a mathematical proof that
 a functional program is correct.
 
 For a long time researchers have been interested in finding ways to
-mathematically prove programs correct.  This is different from testing a program
+mathematically prove programs correct.  This is different kutoka testing a program
 on numerous inputs and concluding that its output is usually correct, or reading
 a program's source code and concluding that the code looks right; the goal is
 instead a rigorous proof that a program produces the right result for all
@@ -313,7 +313,7 @@ line of a file like this::
         # do something for each line
         ...
 
-Sets can take their contents from an iterable and let you iterate over the set's
+Sets can take their contents kutoka an iterable and let you iterate over the set's
 elements::
 
     S = {2, 3, 5, 7, 11, 13}
@@ -328,13 +328,13 @@ Generator expressions and list comprehensions
 Two common operations on an iterator's output are 1) performing some operation
 for every element, 2) selecting a subset of elements that meet some condition.
 For example, given a list of strings, you might want to strip off trailing
-whitespace from each line or extract all the strings containing a given
+whitespace kutoka each line or extract all the strings containing a given
 substring.
 
 List comprehensions and generator expressions (short form: "listcomps" and
-"genexps") are a concise notation for such operations, borrowed from the
+"genexps") are a concise notation for such operations, borrowed kutoka the
 functional programming language Haskell (https://www.haskell.org/).  You can strip
-all the whitespace from a stream of strings with the following code::
+all the whitespace kutoka a stream of strings with the following code::
 
     line_list = ['  line 1\n', 'line 2  \n', ...]
 
@@ -383,10 +383,10 @@ iterator that will be immediately passed to a function you can write::
     obj_total = sum(obj.count for obj in list_all_objects())
 
 The ``for...in`` clauses contain the sequences to be iterated over.  The
-sequences do not have to be the same length, because they are iterated over from
+sequences do not have to be the same length, because they are iterated over kutoka
 left to right, **not** in parallel.  For each element in ``sequence1``,
-``sequence2`` is looped over from the beginning.  ``sequence3`` is then looped
-over for each resulting pair of elements from ``sequence1`` and ``sequence2``.
+``sequence2`` is looped over kutoka the beginning.  ``sequence3`` is then looped
+over for each resulting pair of elements kutoka ``sequence1`` and ``sequence2``.
 
 To put it another way, a list comprehension or generator expression is
 equivalent to the following Python code::
@@ -430,7 +430,7 @@ comprehension below is a syntax error, while the second one is correct::
 Generators
 ==========
 
-Generators are a special class of functions that simplify the task of writing
+Generators are a special kundi of functions that simplify the task of writing
 iterators.  Regular functions compute a value and return it, but generators
 return an iterator that returns a stream of values.
 
@@ -483,7 +483,7 @@ You could equally write ``for i in generate_ints(5)``, or ``a, b, c =
 generate_ints(3)``.
 
 Inside a generator function, ``return value`` causes ``StopIteration(value)``
-to be raised from the :meth:`~generator.__next__` method.  Once this happens, or
+to be raised kutoka the :meth:`~generator.__next__` method.  Once this happens, or
 the bottom of the function is reached, the procession of values ends and the
 generator cannot yield any further values.
 
@@ -605,7 +605,7 @@ generators:
   If you need to run cleanup code when a :exc:`GeneratorExit` occurs, I suggest
   using a ``try: ... finally:`` suite instead of catching :exc:`GeneratorExit`.
 
-The cumulative effect of these changes is to turn generators from one-way
+The cumulative effect of these changes is to turn generators kutoka one-way
 producers of information into both producers and consumers.
 
 Generators also become **coroutines**, a more generalized form of subroutines.
@@ -655,7 +655,7 @@ This can also be written as a list comprehension:
 
 
 :func:`enumerate(iter, start=0) <enumerate>` counts off the elements in the
-iterable returning 2-tuples containing the count (from *start*) and
+iterable returning 2-tuples containing the count (kutoka *start*) and
 each element. ::
 
     >>> for item in enumerate(['subject', 'verb', 'object']):
@@ -677,7 +677,7 @@ elements of the iterable into a list, sorts the list, and returns the sorted
 result.  The *key* and *reverse* arguments are passed through to the
 constructed list's :meth:`~list.sort` method. ::
 
-    >>> import random
+    >>> agiza random
     >>> # Generate 8 random numbers between [0, 10000)
     >>> rand_list = random.sample(range(10000), 8)
     >>> rand_list  #doctest: +SKIP
@@ -709,7 +709,7 @@ elements are true values:
     True
 
 
-:func:`zip(iterA, iterB, ...) <zip>` takes one element from each iterable and
+:func:`zip(iterA, iterB, ...) <zip>` takes one element kutoka each iterable and
 returns them in a tuple::
 
     zip(['a', 'b', 'c'], (1, 2, 3)) =>
@@ -727,7 +727,7 @@ the same length as the shortest iterable. ::
     zip(['a', 'b'], (1, 2, 3)) =>
       ('a', 1), ('b', 2)
 
-You should avoid doing this, though, because an element may be taken from the
+You should avoid doing this, though, because an element may be taken kutoka the
 longer iterators and discarded.  This means you can't go on to use the iterators
 further because you risk skipping a discarded element.
 
@@ -761,7 +761,7 @@ which defaults to 0, and the interval between numbers, which defaults to 1::
       10, 15, 20, 25, 30, 35, 40, 45, 50, 55, ...
 
 :func:`itertools.cycle(iter) <itertools.cycle>` saves a copy of the contents of
-a provided iterable and returns a new iterator that returns its elements from
+a provided iterable and returns a new iterator that returns its elements kutoka
 first to last.  The new iterator will repeat these elements infinitely. ::
 
     itertools.cycle([1, 2, 3, 4, 5]) =>
@@ -927,7 +927,7 @@ position and don't require that the contents of *iterable* are unique::
       ('b', 'a', 'a'), ('a', 'a', 'b'), ('a', 'b', 'a')
 
 The identical tuple ``('a', 'a', 'b')`` occurs twice, but the two 'a'
-strings came from different positions.
+strings came kutoka different positions.
 
 The :func:`itertools.combinations_with_replacement(iterable, r) <itertools.combinations_with_replacement>`
 function relaxes a different constraint: elements can be repeated
@@ -951,7 +951,7 @@ The last function I'll discuss, :func:`itertools.groupby(iter, key_func=None)
 that can compute a key value for each element returned by the iterable.  If you
 don't supply a key function, the key is simply each element itself.
 
-:func:`~itertools.groupby` collects all the consecutive elements from the
+:func:`~itertools.groupby` collects all the consecutive elements kutoka the
 underlying iterable that have the same key value, and returns a stream of
 2-tuples containing a key value and an iterator for the elements with that key.
 
@@ -1006,7 +1006,7 @@ filled-in arguments.
 
 Here's a small but realistic example::
 
-    import functools
+    agiza functools
 
     def log(message, subsystem):
         """Write the contents of 'message' to the specified subsystem."""
@@ -1028,7 +1028,7 @@ values at all, a :exc:`TypeError` exception is raised.  If the initial value is
 supplied, it's used as a starting point and ``func(initial_value, A)`` is the
 first calculation. ::
 
-    >>> import operator, functools
+    >>> agiza operator, functools
     >>> functools.reduce(operator.concat, ['A', 'BB', 'C'])
     'ABBC'
     >>> functools.reduce(operator.concat, [])
@@ -1044,7 +1044,7 @@ If you use :func:`operator.add` with :func:`functools.reduce`, you'll add up all
 elements of the iterable.  This case is so common that there's a special
 built-in called :func:`sum` to compute it:
 
-    >>> import functools, operator
+    >>> agiza functools, operator
     >>> functools.reduce(operator.add, [1, 2, 3, 4], 0)
     10
     >>> sum([1, 2, 3, 4])
@@ -1055,7 +1055,7 @@ built-in called :func:`sum` to compute it:
 For many uses of :func:`functools.reduce`, though, it can be clearer to just
 write the obvious :keyword:`for` loop::
 
-   import functools
+   agiza functools
    # Instead of:
    product = functools.reduce(operator.mul, [1, 2, 3], 1)
 
@@ -1081,7 +1081,7 @@ The operator module
 
 The :mod:`operator` module was mentioned earlier.  It contains a set of
 functions corresponding to Python's operators.  These functions are often useful
-in functional-style code because they save you from writing trivial functions
+in functional-style code because they save you kutoka writing trivial functions
 that perform a single operation.
 
 Some of the functions in this module are:
@@ -1135,14 +1135,14 @@ comparisons or ``try... except`` statements.  If you try to do too much in a
 ``lambda`` statement, you'll end up with an overly complicated expression that's
 hard to read.  Quick, what's the following code doing? ::
 
-    import functools
+    agiza functools
     total = functools.reduce(lambda a, b: (0, a[1] + b[1]), items)[1]
 
 You can figure it out, but it takes time to disentangle the expression to figure
 out what's going on.  Using a short nested ``def`` statements makes things a
 little bit better::
 
-    import functools
+    agiza functools
     def combine(a, b):
         return 0, a[1] + b[1]
 
@@ -1253,7 +1253,7 @@ features in Python 2.5.
     Handy little function for printing part of an iterator -- used
     while writing this document.
 
-    import itertools
+    agiza itertools
     def print_iter(it):
          slice = itertools.islice(it, 10)
          for elem in slice[:-1]:

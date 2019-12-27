@@ -57,7 +57,7 @@ struct _mod; /* Declare the existence of this type */
 #define PyAST_Compile(mod, s, f, ar) PyAST_CompileEx(mod, s, f, -1, ar)
 PyAPI_FUNC(PyCodeObject *) PyAST_CompileEx(
     struct _mod *mod,
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     PyCompilerFlags *flags,
     int optimize,
     PyArena *arena);
@@ -69,7 +69,7 @@ PyAPI_FUNC(PyCodeObject *) PyAST_CompileObject(
     PyArena *arena);
 PyAPI_FUNC(PyFutureFeatures *) PyFuture_FromAST(
     struct _mod * mod,
-    const char *filename        /* decoded from the filesystem encoding */
+    const char *filename        /* decoded kutoka the filesystem encoding */
     );
 PyAPI_FUNC(PyFutureFeatures *) PyFuture_FromASTObject(
     struct _mod * mod,

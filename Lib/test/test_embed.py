@@ -29,34 +29,34 @@ API_PYTHON = 2
 API_ISOLATED = 3
 
 
-def debug_build(program):
+eleza debug_build(program):
     program = os.path.basename(program)
     name = os.path.splitext(program)[0]
-    return name.endswith("_d")
+    rudisha name.endswith("_d")
 
 
-def remove_python_envvars():
+eleza remove_python_envvars():
     env = dict(os.environ)
     # Remove PYTHON* environment variables to get deterministic environment
     for key in list(env):
-        if key.startswith('PYTHON'):
+        ikiwa key.startswith('PYTHON'):
             del env[key]
-    return env
+    rudisha env
 
 
-class EmbeddingTestsMixin:
-    def setUp(self):
+kundi EmbeddingTestsMixin:
+    eleza setUp(self):
         here = os.path.abspath(__file__)
         basepath = os.path.dirname(os.path.dirname(os.path.dirname(here)))
         exename = "_testembed"
-        if MS_WINDOWS:
-            ext = ("_d" if debug_build(sys.executable) else "") + ".exe"
+        ikiwa MS_WINDOWS:
+            ext = ("_d" ikiwa debug_build(sys.executable) else "") + ".exe"
             exename += ext
             exepath = os.path.dirname(sys.executable)
         else:
             exepath = os.path.join(basepath, "Programs")
         self.test_exe = exe = os.path.join(exepath, exename)
-        if not os.path.exists(exe):
+        ikiwa not os.path.exists(exe):
             self.skipTest("%r doesn't exist" % exe)
         # This is needed otherwise we get a fatal error:
         # "Py_Initialize: Unable to get the locale encoding
@@ -64,16 +64,16 @@ class EmbeddingTestsMixin:
         self.oldcwd = os.getcwd()
         os.chdir(basepath)
 
-    def tearDown(self):
+    eleza tearDown(self):
         os.chdir(self.oldcwd)
 
-    def run_embedded_interpreter(self, *args, env=None,
+    eleza run_embedded_interpreter(self, *args, env=None,
                                  timeout=None, returncode=0, input=None,
                                  cwd=None):
         """Runs a test in the embedded interpreter"""
         cmd = [self.test_exe]
         cmd.extend(args)
-        if env is not None and MS_WINDOWS:
+        ikiwa env is not None and MS_WINDOWS:
             # Windows requires at least the SYSTEMROOT environment variable to
             # start Python.
             env = env.copy()
@@ -91,18 +91,18 @@ class EmbeddingTestsMixin:
             p.terminate()
             p.wait()
             raise
-        if p.returncode != returncode and support.verbose:
-            print(f"--- {cmd} failed ---")
-            print(f"stdout:\n{out}")
-            print(f"stderr:\n{err}")
-            print(f"------")
+        ikiwa p.returncode != returncode and support.verbose:
+            andika(f"--- {cmd} failed ---")
+            andika(f"stdout:\n{out}")
+            andika(f"stderr:\n{err}")
+            andika(f"------")
 
         self.assertEqual(p.returncode, returncode,
                          "bad returncode %d, stderr is %r" %
                          (p.returncode, err))
-        return out, err
+        rudisha out, err
 
-    def run_repeated_init_and_subinterpreters(self):
+    eleza run_repeated_init_and_subinterpreters(self):
         out, err = self.run_embedded_interpreter("test_repeated_init_and_subinterpreters")
         self.assertEqual(err, "")
 
@@ -124,44 +124,44 @@ class EmbeddingTestsMixin:
         numloops = 0
         current_run = []
         for line in out.splitlines():
-            if line == "--- Pass {} ---".format(numloops):
+            ikiwa line == "--- Pass {} ---".format(numloops):
                 self.assertEqual(len(current_run), 0)
-                if support.verbose > 1:
-                    print(line)
+                ikiwa support.verbose > 1:
+                    andika(line)
                 numloops += 1
                 continue
 
             self.assertLess(len(current_run), 5)
             match = re.match(interp_pat, line)
-            if match is None:
+            ikiwa match is None:
                 self.assertRegex(line, interp_pat)
 
             # Parse the line kutoka the loop.  The first line is the main
             # interpreter and the 3 afterward are subinterpreters.
             interp = Interp(*match.groups())
-            if support.verbose > 1:
-                print(interp)
+            ikiwa support.verbose > 1:
+                andika(interp)
             self.assertTrue(interp.interp)
             self.assertTrue(interp.tstate)
             self.assertTrue(interp.modules)
             current_run.append(interp)
 
             # The last line in the loop should be the same as the first.
-            if len(current_run) == 5:
+            ikiwa len(current_run) == 5:
                 main = current_run[0]
                 self.assertEqual(interp, main)
                 yield current_run
                 current_run = []
 
 
-class EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
-    def test_subinterps_main(self):
+kundi EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
+    eleza test_subinterps_main(self):
         for run in self.run_repeated_init_and_subinterpreters():
             main = run[0]
 
             self.assertEqual(main.id, '0')
 
-    def test_subinterps_different_ids(self):
+    eleza test_subinterps_different_ids(self):
         for run in self.run_repeated_init_and_subinterpreters():
             main, *subs, _ = run
 
@@ -169,11 +169,11 @@ class EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
             for i, sub in enumerate(subs):
                 self.assertEqual(sub.id, str(mainid + i + 1))
 
-    def test_subinterps_distinct_state(self):
+    eleza test_subinterps_distinct_state(self):
         for run in self.run_repeated_init_and_subinterpreters():
             main, *subs, _ = run
 
-            if '0x0' in main:
+            ikiwa '0x0' in main:
                 # XXX Fix on Windows (and other platforms): something
                 # is going on with the pointers in Programs/_testembed.c.
                 # interp.interp is 0x0 and interp.modules is the same
@@ -190,14 +190,14 @@ class EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
                 self.assertNotEqual(sub.tstate, main.tstate)
                 self.assertNotEqual(sub.modules, main.modules)
 
-    def test_forced_io_encoding(self):
+    eleza test_forced_io_encoding(self):
         # Checks forced configuration of embedded interpreter IO streams
         env = dict(os.environ, PYTHONIOENCODING="utf-8:surrogateescape")
         out, err = self.run_embedded_interpreter("test_forced_io_encoding", env=env)
-        if support.verbose > 1:
-            print()
-            print(out)
-            print(err)
+        ikiwa support.verbose > 1:
+            andika()
+            andika(out)
+            andika(err)
         expected_stream_encoding = "utf-8"
         expected_errors = "surrogateescape"
         expected_output = '\n'.join([
@@ -229,18 +229,18 @@ class EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
                                 in_encoding=expected_stream_encoding,
                                 out_encoding=expected_stream_encoding,
                                 errors=expected_errors)
-        # This is useful if we ever trip over odd platform behaviour
+        # This is useful ikiwa we ever trip over odd platform behaviour
         self.maxDiff = None
         self.assertEqual(out.strip(), expected_output)
 
-    def test_pre_initialization_api(self):
+    eleza test_pre_initialization_api(self):
         """
         Checks some key parts of the C-API that need to work before the runtine
         is initialized (via Py_Initialize()).
         """
         env = dict(os.environ, PYTHONPATH=os.pathsep.join(sys.path))
         out, err = self.run_embedded_interpreter("test_pre_initialization_api", env=env)
-        if MS_WINDOWS:
+        ikiwa MS_WINDOWS:
             expected_path = self.test_exe
         else:
             expected_path = os.path.join(os.getcwd(), "spam")
@@ -248,7 +248,7 @@ class EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         self.assertIn(expected_output, out)
         self.assertEqual(err, '')
 
-    def test_pre_initialization_sys_options(self):
+    eleza test_pre_initialization_sys_options(self):
         """
         Checks that sys.warnoptions and sys._xoptions can be set before the
         runtime is initialized (otherwise they won't be effective).
@@ -265,7 +265,7 @@ class EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         self.assertIn(expected_output, out)
         self.assertEqual(err, '')
 
-    def test_bpo20891(self):
+    eleza test_bpo20891(self):
         """
         bpo-20891: Calling PyGILState_Ensure in a non-Python thread before
         calling PyEval_InitThreads() must not crash. PyGILState_Ensure() must
@@ -275,7 +275,7 @@ class EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         self.assertEqual(out, '')
         self.assertEqual(err, '')
 
-    def test_initialize_twice(self):
+    eleza test_initialize_twice(self):
         """
         bpo-33932: Calling Py_Initialize() twice should do nothing (and not
         crash!).
@@ -284,7 +284,7 @@ class EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         self.assertEqual(out, '')
         self.assertEqual(err, '')
 
-    def test_initialize_pymain(self):
+    eleza test_initialize_pymain(self):
         """
         bpo-34008: Calling Py_Main() after Py_Initialize() must not fail.
         """
@@ -292,15 +292,15 @@ class EmbeddingTests(EmbeddingTestsMixin, unittest.TestCase):
         self.assertEqual(out.rstrip(), "Py_Main() after Py_Initialize: sys.argv=['-c', 'arg2']")
         self.assertEqual(err, '')
 
-    def test_run_main(self):
+    eleza test_run_main(self):
         out, err = self.run_embedded_interpreter("test_run_main")
         self.assertEqual(out.rstrip(), "Py_RunMain(): sys.argv=['-c', 'arg2']")
         self.assertEqual(err, '')
 
 
-class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
+kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
     maxDiff = 4096
-    UTF8_MODE_ERRORS = ('surrogatepass' if MS_WINDOWS else 'surrogateescape')
+    UTF8_MODE_ERRORS = ('surrogatepass' ikiwa MS_WINDOWS else 'surrogateescape')
 
     # Marker to read the default configuration: get_default_config()
     GET_DEFAULT_CONFIG = object()
@@ -317,7 +317,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         'coerce_c_locale_warn': 0,
         'utf8_mode': 0,
     }
-    if MS_WINDOWS:
+    ikiwa MS_WINDOWS:
         PRE_CONFIG_COMPAT.update({
             'legacy_windows_fs_encoding': 0,
         })
@@ -408,7 +408,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         'pathconfig_warnings': 1,
         '_init_main': 1,
     }
-    if MS_WINDOWS:
+    ikiwa MS_WINDOWS:
         CONFIG_COMPAT.update({
             'legacy_windows_stdio': 0,
         })
@@ -430,7 +430,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         tracemalloc=0,
         pathconfig_warnings=0,
     )
-    if MS_WINDOWS:
+    ikiwa MS_WINDOWS:
         CONFIG_ISOLATED['legacy_windows_stdio'] = 0
 
     # global config
@@ -462,7 +462,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         ('Py_UnbufferedStdioFlag', 'buffered_stdio', True),
         ('Py_VerboseFlag', 'verbose'),
     ]
-    if MS_WINDOWS:
+    ikiwa MS_WINDOWS:
         COPY_GLOBAL_PRE_CONFIG.extend((
             ('Py_LegacyWindowsFSEncodingFlag', 'legacy_windows_fs_encoding'),
         ))
@@ -473,21 +473,21 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
     EXPECTED_CONFIG = None
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         # clear cache
         cls.EXPECTED_CONFIG = None
 
-    def main_xoptions(self, xoptions_list):
+    eleza main_xoptions(self, xoptions_list):
         xoptions = {}
         for opt in xoptions_list:
-            if '=' in opt:
+            ikiwa '=' in opt:
                 key, value = opt.split('=', 1)
                 xoptions[key] = value
             else:
                 xoptions[opt] = True
-        return xoptions
+        rudisha xoptions
 
-    def _get_expected_config_impl(self):
+    eleza _get_expected_config_impl(self):
         env = remove_python_envvars()
         code = textwrap.dedent('''
             agiza json
@@ -508,19 +508,19 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         proc = subprocess.run(args, env=env,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE)
-        if proc.returncode:
+        ikiwa proc.returncode:
             raise Exception(f"failed to get the default config: "
                             f"stdout={proc.stdout!r} stderr={proc.stderr!r}")
         stdout = proc.stdout.decode('utf-8')
         # ignore stderr
         try:
-            return json.loads(stdout)
+            rudisha json.loads(stdout)
         except json.JSONDecodeError:
             self.fail(f"fail to decode stdout: {stdout!r}")
 
-    def _get_expected_config(self):
+    eleza _get_expected_config(self):
         cls = InitConfigTests
-        if cls.EXPECTED_CONFIG is None:
+        ikiwa cls.EXPECTED_CONFIG is None:
             cls.EXPECTED_CONFIG = self._get_expected_config_impl()
 
         # get a copy
@@ -528,139 +528,139 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         for config_key, config_value in cls.EXPECTED_CONFIG.items():
             config = {}
             for key, value in config_value.items():
-                if isinstance(value, list):
+                ikiwa isinstance(value, list):
                     value = value.copy()
                 config[key] = value
             configs[config_key] = config
-        return configs
+        rudisha configs
 
-    def get_expected_config(self, expected_preconfig, expected, env, api,
+    eleza get_expected_config(self, expected_preconfig, expected, env, api,
                             modify_path_cb=None):
         cls = self.__class__
         configs = self._get_expected_config()
 
         pre_config = configs['pre_config']
         for key, value in expected_preconfig.items():
-            if value is self.GET_DEFAULT_CONFIG:
+            ikiwa value is self.GET_DEFAULT_CONFIG:
                 expected_preconfig[key] = pre_config[key]
 
-        if not expected_preconfig['configure_locale'] or api == API_COMPAT:
+        ikiwa not expected_preconfig['configure_locale'] or api == API_COMPAT:
             # there is no easy way to get the locale encoding before
             # setlocale(LC_CTYPE, "") is called: don't test encodings
             for key in ('filesystem_encoding', 'filesystem_errors',
                         'stdio_encoding', 'stdio_errors'):
                 expected[key] = self.IGNORE_CONFIG
 
-        if not expected_preconfig['configure_locale']:
+        ikiwa not expected_preconfig['configure_locale']:
             # UTF-8 Mode depends on the locale. There is no easy way
-            # to guess if UTF-8 Mode will be enabled or not if the locale
+            # to guess ikiwa UTF-8 Mode will be enabled or not ikiwa the locale
             # is not configured.
             expected_preconfig['utf8_mode'] = self.IGNORE_CONFIG
 
-        if expected_preconfig['utf8_mode'] == 1:
-            if expected['filesystem_encoding'] is self.GET_DEFAULT_CONFIG:
+        ikiwa expected_preconfig['utf8_mode'] == 1:
+            ikiwa expected['filesystem_encoding'] is self.GET_DEFAULT_CONFIG:
                 expected['filesystem_encoding'] = 'utf-8'
-            if expected['filesystem_errors'] is self.GET_DEFAULT_CONFIG:
+            ikiwa expected['filesystem_errors'] is self.GET_DEFAULT_CONFIG:
                 expected['filesystem_errors'] = self.UTF8_MODE_ERRORS
-            if expected['stdio_encoding'] is self.GET_DEFAULT_CONFIG:
+            ikiwa expected['stdio_encoding'] is self.GET_DEFAULT_CONFIG:
                 expected['stdio_encoding'] = 'utf-8'
-            if expected['stdio_errors'] is self.GET_DEFAULT_CONFIG:
+            ikiwa expected['stdio_errors'] is self.GET_DEFAULT_CONFIG:
                 expected['stdio_errors'] = 'surrogateescape'
 
-        if sys.platform == 'win32':
+        ikiwa sys.platform == 'win32':
             default_executable = self.test_exe
-        elif expected['program_name'] is not self.GET_DEFAULT_CONFIG:
+        elikiwa expected['program_name'] is not self.GET_DEFAULT_CONFIG:
             default_executable = os.path.abspath(expected['program_name'])
         else:
             default_executable = os.path.join(os.getcwd(), '_testembed')
-        if expected['executable'] is self.GET_DEFAULT_CONFIG:
+        ikiwa expected['executable'] is self.GET_DEFAULT_CONFIG:
             expected['executable'] = default_executable
-        if expected['base_executable'] is self.GET_DEFAULT_CONFIG:
+        ikiwa expected['base_executable'] is self.GET_DEFAULT_CONFIG:
             expected['base_executable'] = default_executable
-        if expected['program_name'] is self.GET_DEFAULT_CONFIG:
+        ikiwa expected['program_name'] is self.GET_DEFAULT_CONFIG:
             expected['program_name'] = './_testembed'
 
         config = configs['config']
         for key, value in expected.items():
-            if value is self.GET_DEFAULT_CONFIG:
+            ikiwa value is self.GET_DEFAULT_CONFIG:
                 expected[key] = config[key]
 
         pythonpath_env = expected['pythonpath_env']
-        if pythonpath_env is not None:
+        ikiwa pythonpath_env is not None:
             paths = pythonpath_env.split(os.path.pathsep)
             expected['module_search_paths'] = [*paths, *expected['module_search_paths']]
-        if modify_path_cb is not None:
+        ikiwa modify_path_cb is not None:
             expected['module_search_paths'] = expected['module_search_paths'].copy()
             modify_path_cb(expected['module_search_paths'])
 
         for key in self.COPY_PRE_CONFIG:
-            if key not in expected_preconfig:
+            ikiwa key not in expected_preconfig:
                 expected_preconfig[key] = expected[key]
 
-    def check_pre_config(self, configs, expected):
+    eleza check_pre_config(self, configs, expected):
         pre_config = dict(configs['pre_config'])
         for key, value in list(expected.items()):
-            if value is self.IGNORE_CONFIG:
+            ikiwa value is self.IGNORE_CONFIG:
                 del pre_config[key]
                 del expected[key]
         self.assertEqual(pre_config, expected)
 
-    def check_config(self, configs, expected):
+    eleza check_config(self, configs, expected):
         config = dict(configs['config'])
         for key, value in list(expected.items()):
-            if value is self.IGNORE_CONFIG:
+            ikiwa value is self.IGNORE_CONFIG:
                 del config[key]
                 del expected[key]
         self.assertEqual(config, expected)
 
-    def check_global_config(self, configs):
+    eleza check_global_config(self, configs):
         pre_config = configs['pre_config']
         config = configs['config']
 
         expected = dict(self.DEFAULT_GLOBAL_CONFIG)
         for item in self.COPY_GLOBAL_CONFIG:
-            if len(item) == 3:
+            ikiwa len(item) == 3:
                 global_key, core_key, opposite = item
-                expected[global_key] = 0 if config[core_key] else 1
+                expected[global_key] = 0 ikiwa config[core_key] else 1
             else:
                 global_key, core_key = item
                 expected[global_key] = config[core_key]
         for item in self.COPY_GLOBAL_PRE_CONFIG:
-            if len(item) == 3:
+            ikiwa len(item) == 3:
                 global_key, core_key, opposite = item
-                expected[global_key] = 0 if pre_config[core_key] else 1
+                expected[global_key] = 0 ikiwa pre_config[core_key] else 1
             else:
                 global_key, core_key = item
                 expected[global_key] = pre_config[core_key]
 
         self.assertEqual(configs['global_config'], expected)
 
-    def check_all_configs(self, testname, expected_config=None,
+    eleza check_all_configs(self, testname, expected_config=None,
                           expected_preconfig=None, modify_path_cb=None,
                           stderr=None, *, api, preconfig_api=None,
                           env=None, ignore_stderr=False, cwd=None):
         new_env = remove_python_envvars()
-        if env is not None:
+        ikiwa env is not None:
             new_env.update(env)
         env = new_env
 
-        if preconfig_api is None:
+        ikiwa preconfig_api is None:
             preconfig_api = api
-        if preconfig_api == API_ISOLATED:
+        ikiwa preconfig_api == API_ISOLATED:
             default_preconfig = self.PRE_CONFIG_ISOLATED
-        elif preconfig_api == API_PYTHON:
+        elikiwa preconfig_api == API_PYTHON:
             default_preconfig = self.PRE_CONFIG_PYTHON
         else:
             default_preconfig = self.PRE_CONFIG_COMPAT
-        if expected_preconfig is None:
+        ikiwa expected_preconfig is None:
             expected_preconfig = {}
         expected_preconfig = dict(default_preconfig, **expected_preconfig)
-        if expected_config is None:
+        ikiwa expected_config is None:
             expected_config = {}
 
-        if api == API_PYTHON:
+        ikiwa api == API_PYTHON:
             default_config = self.CONFIG_PYTHON
-        elif api == API_ISOLATED:
+        elikiwa api == API_ISOLATED:
             default_config = self.CONFIG_ISOLATED
         else:
             default_config = self.CONFIG_COMPAT
@@ -672,9 +672,9 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
         out, err = self.run_embedded_interpreter(testname,
                                                  env=env, cwd=cwd)
-        if stderr is None and not expected_config['verbose']:
+        ikiwa stderr is None and not expected_config['verbose']:
             stderr = ""
-        if stderr is not None and not ignore_stderr:
+        ikiwa stderr is not None and not ignore_stderr:
             self.assertEqual(err.rstrip(), stderr)
         try:
             configs = json.loads(out)
@@ -685,16 +685,16 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         self.check_config(configs, expected_config)
         self.check_global_config(configs)
 
-    def test_init_default_config(self):
+    eleza test_init_default_config(self):
         self.check_all_configs("test_init_initialize_config", api=API_COMPAT)
 
-    def test_preinit_compat_config(self):
+    eleza test_preinit_compat_config(self):
         self.check_all_configs("test_preinit_compat_config", api=API_COMPAT)
 
-    def test_init_compat_config(self):
+    eleza test_init_compat_config(self):
         self.check_all_configs("test_init_compat_config", api=API_COMPAT)
 
-    def test_init_global_config(self):
+    eleza test_init_global_config(self):
         preconfig = {
             'utf8_mode': 1,
         }
@@ -717,7 +717,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         self.check_all_configs("test_init_global_config", config, preconfig,
                                api=API_COMPAT)
 
-    def test_init_from_config(self):
+    eleza test_init_kutoka_config(self):
         preconfig = {
             'allocator': PYMEM_ALLOCATOR_MALLOC,
             'utf8_mode': 1,
@@ -768,10 +768,10 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             'check_hash_pycs_mode': 'always',
             'pathconfig_warnings': 0,
         }
-        self.check_all_configs("test_init_from_config", config, preconfig,
+        self.check_all_configs("test_init_kutoka_config", config, preconfig,
                                api=API_COMPAT)
 
-    def test_init_compat_env(self):
+    eleza test_init_compat_env(self):
         preconfig = {
             'allocator': PYMEM_ALLOCATOR_MALLOC,
         }
@@ -797,7 +797,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         self.check_all_configs("test_init_compat_env", config, preconfig,
                                api=API_COMPAT)
 
-    def test_init_python_env(self):
+    eleza test_init_python_env(self):
         preconfig = {
             'allocator': PYMEM_ALLOCATOR_MALLOC,
             'utf8_mode': 1,
@@ -824,7 +824,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         self.check_all_configs("test_init_python_env", config, preconfig,
                                api=API_PYTHON)
 
-    def test_init_env_dev_mode(self):
+    eleza test_init_env_dev_mode(self):
         preconfig = dict(allocator=PYMEM_ALLOCATOR_DEBUG)
         config = dict(dev_mode=1,
                       faulthandler=1,
@@ -832,7 +832,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         self.check_all_configs("test_init_env_dev_mode", config, preconfig,
                                api=API_COMPAT)
 
-    def test_init_env_dev_mode_alloc(self):
+    eleza test_init_env_dev_mode_alloc(self):
         preconfig = dict(allocator=PYMEM_ALLOCATOR_MALLOC)
         config = dict(dev_mode=1,
                       faulthandler=1,
@@ -840,7 +840,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         self.check_all_configs("test_init_env_dev_mode_alloc", config, preconfig,
                                api=API_COMPAT)
 
-    def test_init_dev_mode(self):
+    eleza test_init_dev_mode(self):
         preconfig = {
             'allocator': PYMEM_ALLOCATOR_DEBUG,
         }
@@ -852,7 +852,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         self.check_all_configs("test_init_dev_mode", config, preconfig,
                                api=API_PYTHON)
 
-    def test_preinit_parse_argv(self):
+    eleza test_preinit_parse_argv(self):
         # Pre-initialize implicitly using argv: make sure that -X dev
         # is used to configure the allocation in preinitialization
         preconfig = {
@@ -869,7 +869,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         self.check_all_configs("test_preinit_parse_argv", config, preconfig,
                                api=API_PYTHON)
 
-    def test_preinit_dont_parse_argv(self):
+    eleza test_preinit_dont_parse_argv(self):
         # -X dev must be ignored by isolated preconfiguration
         preconfig = {
             'isolated': 0,
@@ -882,7 +882,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         self.check_all_configs("test_preinit_dont_parse_argv", config, preconfig,
                                api=API_ISOLATED)
 
-    def test_init_isolated_flag(self):
+    eleza test_init_isolated_flag(self):
         config = {
             'isolated': 1,
             'use_environment': 0,
@@ -890,7 +890,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         }
         self.check_all_configs("test_init_isolated_flag", config, api=API_PYTHON)
 
-    def test_preinit_isolated1(self):
+    eleza test_preinit_isolated1(self):
         # _PyPreConfig.isolated=1, _PyCoreConfig.isolated not set
         config = {
             'isolated': 1,
@@ -899,7 +899,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         }
         self.check_all_configs("test_preinit_isolated1", config, api=API_COMPAT)
 
-    def test_preinit_isolated2(self):
+    eleza test_preinit_isolated2(self):
         # _PyPreConfig.isolated=0, _PyCoreConfig.isolated=1
         config = {
             'isolated': 1,
@@ -908,19 +908,19 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         }
         self.check_all_configs("test_preinit_isolated2", config, api=API_COMPAT)
 
-    def test_preinit_isolated_config(self):
+    eleza test_preinit_isolated_config(self):
         self.check_all_configs("test_preinit_isolated_config", api=API_ISOLATED)
 
-    def test_init_isolated_config(self):
+    eleza test_init_isolated_config(self):
         self.check_all_configs("test_init_isolated_config", api=API_ISOLATED)
 
-    def test_preinit_python_config(self):
+    eleza test_preinit_python_config(self):
         self.check_all_configs("test_preinit_python_config", api=API_PYTHON)
 
-    def test_init_python_config(self):
+    eleza test_init_python_config(self):
         self.check_all_configs("test_init_python_config", api=API_PYTHON)
 
-    def test_init_dont_configure_locale(self):
+    eleza test_init_dont_configure_locale(self):
         # _PyPreConfig.configure_locale=0
         preconfig = {
             'configure_locale': 0,
@@ -929,19 +929,19 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         self.check_all_configs("test_init_dont_configure_locale", {}, preconfig,
                                api=API_PYTHON)
 
-    def test_init_read_set(self):
+    eleza test_init_read_set(self):
         config = {
             'program_name': './init_read_set',
             'executable': 'my_executable',
         }
-        def modify_path(path):
+        eleza modify_path(path):
             path.insert(1, "test_path_insert1")
             path.append("test_path_append")
         self.check_all_configs("test_init_read_set", config,
                                api=API_PYTHON,
                                modify_path_cb=modify_path)
 
-    def test_init_sys_add(self):
+    eleza test_init_sys_add(self):
         config = {
             'faulthandler': 1,
             'xoptions': [
@@ -958,9 +958,9 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         }
         self.check_all_configs("test_init_sys_add", config, api=API_PYTHON)
 
-    def test_init_run_main(self):
+    eleza test_init_run_main(self):
         code = ('agiza _testinternalcapi, json; '
-                'print(json.dumps(_testinternalcapi.get_configs()))')
+                'andika(json.dumps(_testinternalcapi.get_configs()))')
         config = {
             'argv': ['-c', 'arg2'],
             'program_name': './python3',
@@ -969,9 +969,9 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         }
         self.check_all_configs("test_init_run_main", config, api=API_PYTHON)
 
-    def test_init_main(self):
+    eleza test_init_main(self):
         code = ('agiza _testinternalcapi, json; '
-                'print(json.dumps(_testinternalcapi.get_configs()))')
+                'andika(json.dumps(_testinternalcapi.get_configs()))')
         config = {
             'argv': ['-c', 'arg2'],
             'program_name': './python3',
@@ -983,7 +983,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                                api=API_PYTHON,
                                stderr="Run Python code before _Py_InitializeMain")
 
-    def test_init_parse_argv(self):
+    eleza test_init_parse_argv(self):
         config = {
             'parse_argv': 1,
             'argv': ['-c', 'arg1', '-v', 'arg3'],
@@ -993,7 +993,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         }
         self.check_all_configs("test_init_parse_argv", config, api=API_PYTHON)
 
-    def test_init_dont_parse_argv(self):
+    eleza test_init_dont_parse_argv(self):
         pre_config = {
             'parse_argv': 0,
         }
@@ -1005,13 +1005,13 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         self.check_all_configs("test_init_dont_parse_argv", config, pre_config,
                                api=API_PYTHON)
 
-    def default_program_name(self, config):
-        if MS_WINDOWS:
+    eleza default_program_name(self, config):
+        ikiwa MS_WINDOWS:
             program_name = 'python'
             executable = self.test_exe
         else:
             program_name = 'python3'
-            if MACOS:
+            ikiwa MACOS:
                 executable = self.test_exe
             else:
                 executable = shutil.which(program_name) or ''
@@ -1021,7 +1021,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             'executable': executable,
         })
 
-    def test_init_setpath(self):
+    eleza test_init_setpath(self):
         # Test Py_SetPath()
         config = self._get_expected_config()
         paths = config['config']['module_search_paths']
@@ -1039,7 +1039,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                                api=API_COMPAT, env=env,
                                ignore_stderr=True)
 
-    def test_init_setpath_config(self):
+    eleza test_init_setpath_config(self):
         # Test Py_SetPath() with PyConfig
         config = self._get_expected_config()
         paths = config['config']['module_search_paths']
@@ -1060,17 +1060,17 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         self.check_all_configs("test_init_setpath_config", config,
                                api=API_PYTHON, env=env, ignore_stderr=True)
 
-    def module_search_paths(self, prefix=None, exec_prefix=None):
+    eleza module_search_paths(self, prefix=None, exec_prefix=None):
         config = self._get_expected_config()
-        if prefix is None:
+        ikiwa prefix is None:
             prefix = config['config']['prefix']
-        if exec_prefix is None:
+        ikiwa exec_prefix is None:
             exec_prefix = config['config']['prefix']
-        if MS_WINDOWS:
-            return config['config']['module_search_paths']
+        ikiwa MS_WINDOWS:
+            rudisha config['config']['module_search_paths']
         else:
             ver = sys.version_info
-            return [
+            rudisha [
                 os.path.join(prefix, 'lib',
                              f'python{ver.major}{ver.minor}.zip'),
                 os.path.join(prefix, 'lib',
@@ -1080,7 +1080,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             ]
 
     @contextlib.contextmanager
-    def tmpdir_with_python(self):
+    eleza tmpdir_with_python(self):
         # Temporary directory with a copy of the Python program
         with tempfile.TemporaryDirectory() as tmpdir:
             # bpo-38234: On macOS and FreeBSD, the temporary directory
@@ -1088,11 +1088,11 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             # to /var/tmp. Call realpath() to resolve all symbolic links.
             tmpdir = os.path.realpath(tmpdir)
 
-            if MS_WINDOWS:
+            ikiwa MS_WINDOWS:
                 # Copy pythonXY.dll (or pythonXY_d.dll)
                 ver = sys.version_info
                 dll = f'python{ver.major}{ver.minor}'
-                if debug_build(sys.executable):
+                ikiwa debug_build(sys.executable):
                     dll += '_d'
                 dll += '.dll'
                 dll = os.path.join(os.path.dirname(self.test_exe), dll)
@@ -1107,16 +1107,16 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
             yield tmpdir
 
-    def test_init_setpythonhome(self):
+    eleza test_init_setpythonhome(self):
         # Test Py_SetPythonHome(home) with PYTHONPATH env var
         config = self._get_expected_config()
         paths = config['config']['module_search_paths']
         paths_str = os.path.pathsep.join(paths)
 
         for path in paths:
-            if not os.path.isdir(path):
+            ikiwa not os.path.isdir(path):
                 continue
-            if os.path.exists(os.path.join(path, 'os.py')):
+            ikiwa os.path.exists(os.path.join(path, 'os.py')):
                 home = os.path.dirname(path)
                 break
         else:
@@ -1140,16 +1140,16 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         self.check_all_configs("test_init_setpythonhome", config,
                                api=API_COMPAT, env=env)
 
-    def copy_paths_by_env(self, config):
+    eleza copy_paths_by_env(self, config):
         all_configs = self._get_expected_config()
         paths = all_configs['config']['module_search_paths']
         paths_str = os.path.pathsep.join(paths)
         config['pythonpath_env'] = paths_str
         env = {'PYTHONPATH': paths_str}
-        return env
+        rudisha env
 
     @unittest.skipIf(MS_WINDOWS, 'Windows does not use pybuilddir.txt')
-    def test_init_pybuilddir(self):
+    eleza test_init_pybuilddir(self):
         # Test path configuration with pybuilddir.txt configuration file
 
         with self.tmpdir_with_python() as tmpdir:
@@ -1177,14 +1177,14 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                                    api=API_COMPAT, env=env,
                                    ignore_stderr=True, cwd=tmpdir)
 
-    def test_init_pyvenv_cfg(self):
+    eleza test_init_pyvenv_cfg(self):
         # Test path configuration with pyvenv.cfg configuration file
 
         with self.tmpdir_with_python() as tmpdir, \
              tempfile.TemporaryDirectory() as pyvenv_home:
             ver = sys.version_info
 
-            if not MS_WINDOWS:
+            ikiwa not MS_WINDOWS:
                 lib_dynload = os.path.join(pyvenv_home,
                                            'lib',
                                            f'python{ver.major}.{ver.minor}',
@@ -1198,15 +1198,15 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
 
             filename = os.path.join(tmpdir, 'pyvenv.cfg')
             with open(filename, "w", encoding="utf8") as fp:
-                print("home = %s" % pyvenv_home, file=fp)
-                print("include-system-site-packages = false", file=fp)
+                andika("home = %s" % pyvenv_home, file=fp)
+                andika("include-system-site-packages = false", file=fp)
 
             paths = self.module_search_paths()
-            if not MS_WINDOWS:
+            ikiwa not MS_WINDOWS:
                 paths[-1] = lib_dynload
             else:
                 for index, path in enumerate(paths):
-                    if index == 0:
+                    ikiwa index == 0:
                         paths[index] = os.path.join(tmpdir, os.path.basename(path))
                     else:
                         paths[index] = os.path.join(pyvenv_home, os.path.basename(path))
@@ -1221,7 +1221,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                 'executable': executable,
                 'module_search_paths': paths,
             }
-            if MS_WINDOWS:
+            ikiwa MS_WINDOWS:
                 config['base_prefix'] = pyvenv_home
                 config['prefix'] = pyvenv_home
             env = self.copy_paths_by_env(config)
@@ -1229,7 +1229,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                                    api=API_COMPAT, env=env,
                                    ignore_stderr=True, cwd=tmpdir)
 
-    def test_global_pathconfig(self):
+    eleza test_global_pathconfig(self):
         # Test C API functions getting the path configuration:
         #
         # - Py_GetExecPrefix()
@@ -1244,11 +1244,11 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         ctypes = support.import_module('ctypes')
         _testinternalcapi = support.import_module('_testinternalcapi')
 
-        def get_func(name):
+        eleza get_func(name):
             func = getattr(ctypes.pythonapi, name)
             func.argtypes = ()
             func.restype = ctypes.c_wchar_p
-            return func
+            rudisha func
 
         Py_GetPath = get_func('Py_GetPath')
         Py_GetPrefix = get_func('Py_GetPrefix')
@@ -1267,7 +1267,7 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         self.assertEqual(Py_GetProgramFullPath(), config['executable'])
         self.assertEqual(Py_GetPythonHome(), config['home'])
 
-    def test_init_warnoptions(self):
+    eleza test_init_warnoptions(self):
         # lowest to highest priority
         warnoptions = [
             'ignore:::PyConfig_Insert0',      # PyWideStringList_Insert(0)
@@ -1292,27 +1292,27 @@ class InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
                                api=API_PYTHON)
 
 
-class AuditingTests(EmbeddingTestsMixin, unittest.TestCase):
-    def test_open_code_hook(self):
+kundi AuditingTests(EmbeddingTestsMixin, unittest.TestCase):
+    eleza test_open_code_hook(self):
         self.run_embedded_interpreter("test_open_code_hook")
 
-    def test_audit(self):
+    eleza test_audit(self):
         self.run_embedded_interpreter("test_audit")
 
-    def test_audit_subinterpreter(self):
+    eleza test_audit_subinterpreter(self):
         self.run_embedded_interpreter("test_audit_subinterpreter")
 
-    def test_audit_run_command(self):
+    eleza test_audit_run_command(self):
         self.run_embedded_interpreter("test_audit_run_command", timeout=3, returncode=1)
 
-    def test_audit_run_file(self):
+    eleza test_audit_run_file(self):
         self.run_embedded_interpreter("test_audit_run_file", timeout=3, returncode=1)
 
-    def test_audit_run_interactivehook(self):
+    eleza test_audit_run_interactivehook(self):
         startup = os.path.join(self.oldcwd, support.TESTFN) + ".py"
         with open(startup, "w", encoding="utf-8") as f:
-            print("agiza sys", file=f)
-            print("sys.__interactivehook__ = lambda: None", file=f)
+            andika("agiza sys", file=f)
+            andika("sys.__interactivehook__ = lambda: None", file=f)
         try:
             env = {**remove_python_envvars(), "PYTHONSTARTUP": startup}
             self.run_embedded_interpreter("test_audit_run_interactivehook", timeout=5,
@@ -1320,10 +1320,10 @@ class AuditingTests(EmbeddingTestsMixin, unittest.TestCase):
         finally:
             os.unlink(startup)
 
-    def test_audit_run_startup(self):
+    eleza test_audit_run_startup(self):
         startup = os.path.join(self.oldcwd, support.TESTFN) + ".py"
         with open(startup, "w", encoding="utf-8") as f:
-            print("pass", file=f)
+            andika("pass", file=f)
         try:
             env = {**remove_python_envvars(), "PYTHONSTARTUP": startup}
             self.run_embedded_interpreter("test_audit_run_startup", timeout=5,
@@ -1331,8 +1331,8 @@ class AuditingTests(EmbeddingTestsMixin, unittest.TestCase):
         finally:
             os.unlink(startup)
 
-    def test_audit_run_stdin(self):
+    eleza test_audit_run_stdin(self):
         self.run_embedded_interpreter("test_audit_run_stdin", timeout=3, returncode=1)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

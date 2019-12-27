@@ -1,2 +1,2 @@
-def parrot():
+eleza parrot():
     pass

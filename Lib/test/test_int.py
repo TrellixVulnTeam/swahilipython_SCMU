@@ -26,12 +26,12 @@ L = [
         ("\u0200", ValueError)
 ]
 
-class IntSubclass(int):
+kundi IntSubclass(int):
     pass
 
-class IntTestCases(unittest.TestCase):
+kundi IntTestCases(unittest.TestCase):
 
-    def test_basic(self):
+    eleza test_basic(self):
         self.assertEqual(int(314), 314)
         self.assertEqual(int(3.14), 3)
         # Check that conversion kutoka float truncates towards zero
@@ -51,7 +51,7 @@ class IntTestCases(unittest.TestCase):
                 for prefix in "", " ", "\t", "  \t\t  ":
                     ss = prefix + sign + s
                     vv = v
-                    if sign == "-" and v is not ValueError:
+                    ikiwa sign == "-" and v is not ValueError:
                         vv = -v
                     try:
                         self.assertEqual(int(ss), vv)
@@ -62,10 +62,10 @@ class IntTestCases(unittest.TestCase):
         x = int(s)
         self.assertEqual(x+1, -sys.maxsize)
         self.assertIsInstance(x, int)
-        # should return int
+        # should rudisha int
         self.assertEqual(int(s[1:]), sys.maxsize+1)
 
-        # should return int
+        # should rudisha int
         x = int(1e100)
         self.assertIsInstance(x, int)
         x = int(-1e100)
@@ -214,14 +214,14 @@ class IntTestCases(unittest.TestCase):
         self.assertEqual(int('2br45qc', 35), 4294967297)
         self.assertEqual(int('1z141z5', 36), 4294967297)
 
-    def test_underscores(self):
+    eleza test_underscores(self):
         for lit in VALID_UNDERSCORE_LITERALS:
-            if any(ch in lit for ch in '.eEjJ'):
+            ikiwa any(ch in lit for ch in '.eEjJ'):
                 continue
             self.assertEqual(int(lit, 0), eval(lit))
             self.assertEqual(int(lit, 0), int(lit.replace('_', ''), 0))
         for lit in INVALID_UNDERSCORE_LITERALS:
-            if any(ch in lit for ch in '.eEjJ'):
+            ikiwa any(ch in lit for ch in '.eEjJ'):
                 continue
             self.assertRaises(ValueError, int, lit, 0)
         # Additional test cases with bases != 0, only for the constructor:
@@ -234,17 +234,17 @@ class IntTestCases(unittest.TestCase):
         self.assertRaises(ValueError, int, "100_")
 
     @support.cpython_only
-    def test_small_ints(self):
+    eleza test_small_ints(self):
         # Bug #3236: Return small longs kutoka PyLong_FromString
         self.assertIs(int('10'), 10)
         self.assertIs(int('-1'), -1)
         self.assertIs(int(b'10'), 10)
         self.assertIs(int(b'-1'), -1)
 
-    def test_no_args(self):
+    eleza test_no_args(self):
         self.assertEqual(int(), 0)
 
-    def test_keyword_args(self):
+    eleza test_keyword_args(self):
         # Test invoking int() using keyword arguments.
         self.assertEqual(int('100', base=2), 4)
         with self.assertRaisesRegex(TypeError, 'keyword argument'):
@@ -254,7 +254,7 @@ class IntTestCases(unittest.TestCase):
         self.assertRaises(TypeError, int, base=10)
         self.assertRaises(TypeError, int, base=0)
 
-    def test_int_base_limits(self):
+    eleza test_int_base_limits(self):
         """Testing the supported limits of the int() base parameter."""
         self.assertEqual(int('0', 5), 0)
         with self.assertRaises(ValueError):
@@ -271,19 +271,19 @@ class IntTestCases(unittest.TestCase):
         for base in range(2,37):
             self.assertEqual(int('0', base=base), 0)
 
-    def test_int_base_bad_types(self):
+    eleza test_int_base_bad_types(self):
         """Not integer types are not valid bases; issue16772."""
         with self.assertRaises(TypeError):
             int('0', 5.5)
         with self.assertRaises(TypeError):
             int('0', 5.0)
 
-    def test_int_base_indexable(self):
-        class MyIndexable(object):
-            def __init__(self, value):
+    eleza test_int_base_indexable(self):
+        kundi MyIndexable(object):
+            eleza __init__(self, value):
                 self.value = value
-            def __index__(self):
-                return self.value
+            eleza __index__(self):
+                rudisha self.value
 
         # Check out of range bases.
         for base in 2**100, -2**100, 1, 37:
@@ -295,12 +295,12 @@ class IntTestCases(unittest.TestCase):
         self.assertEqual(int('101', base=MyIndexable(10)), 101)
         self.assertEqual(int('101', base=MyIndexable(36)), 1 + 36**2)
 
-    def test_non_numeric_input_types(self):
+    eleza test_non_numeric_input_types(self):
         # Test possible non-numeric types for the argument x, including
         # subclasses of the explicitly documented accepted types.
-        class CustomStr(str): pass
-        class CustomBytes(bytes): pass
-        class CustomByteArray(bytearray): pass
+        kundi CustomStr(str): pass
+        kundi CustomBytes(bytes): pass
+        kundi CustomByteArray(bytearray): pass
 
         factories = [
             bytes,
@@ -321,7 +321,7 @@ class IntTestCases(unittest.TestCase):
             x = f(b'100')
             with self.subTest(type(x)):
                 self.assertEqual(int(x), 100)
-                if isinstance(x, (str, bytes, bytearray)):
+                ikiwa isinstance(x, (str, bytes, bytearray)):
                     self.assertEqual(int(x, 2), 4)
                 else:
                     msg = "can't convert non-string"
@@ -330,80 +330,80 @@ class IntTestCases(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, 'invalid literal'):
                     int(f(b'A' * 0x10))
 
-    def test_int_memoryview(self):
+    eleza test_int_memoryview(self):
         self.assertEqual(int(memoryview(b'123')[1:3]), 23)
         self.assertEqual(int(memoryview(b'123\x00')[1:3]), 23)
         self.assertEqual(int(memoryview(b'123 ')[1:3]), 23)
         self.assertEqual(int(memoryview(b'123A')[1:3]), 23)
         self.assertEqual(int(memoryview(b'1234')[1:3]), 23)
 
-    def test_string_float(self):
+    eleza test_string_float(self):
         self.assertRaises(ValueError, int, '1.2')
 
-    def test_intconversion(self):
+    eleza test_intconversion(self):
         # Test __int__()
-        class ClassicMissingMethods:
+        kundi ClassicMissingMethods:
             pass
         self.assertRaises(TypeError, int, ClassicMissingMethods())
 
-        class MissingMethods(object):
+        kundi MissingMethods(object):
             pass
         self.assertRaises(TypeError, int, MissingMethods())
 
-        class Foo0:
-            def __int__(self):
-                return 42
+        kundi Foo0:
+            eleza __int__(self):
+                rudisha 42
 
         self.assertEqual(int(Foo0()), 42)
 
-        class Classic:
+        kundi Classic:
             pass
         for base in (object, Classic):
-            class IntOverridesTrunc(base):
-                def __int__(self):
-                    return 42
-                def __trunc__(self):
-                    return -12
+            kundi IntOverridesTrunc(base):
+                eleza __int__(self):
+                    rudisha 42
+                eleza __trunc__(self):
+                    rudisha -12
             self.assertEqual(int(IntOverridesTrunc()), 42)
 
-            class JustTrunc(base):
-                def __trunc__(self):
-                    return 42
+            kundi JustTrunc(base):
+                eleza __trunc__(self):
+                    rudisha 42
             self.assertEqual(int(JustTrunc()), 42)
 
-            class ExceptionalTrunc(base):
-                def __trunc__(self):
+            kundi ExceptionalTrunc(base):
+                eleza __trunc__(self):
                     1 / 0
             with self.assertRaises(ZeroDivisionError):
                 int(ExceptionalTrunc())
 
             for trunc_result_base in (object, Classic):
-                class Index(trunc_result_base):
-                    def __index__(self):
-                        return 42
+                kundi Index(trunc_result_base):
+                    eleza __index__(self):
+                        rudisha 42
 
-                class TruncReturnsNonInt(base):
-                    def __trunc__(self):
-                        return Index()
+                kundi TruncReturnsNonInt(base):
+                    eleza __trunc__(self):
+                        rudisha Index()
                 self.assertEqual(int(TruncReturnsNonInt()), 42)
 
-                class Intable(trunc_result_base):
-                    def __int__(self):
-                        return 42
+                kundi Intable(trunc_result_base):
+                    eleza __int__(self):
+                        rudisha 42
 
-                class TruncReturnsNonIndex(base):
-                    def __trunc__(self):
-                        return Intable()
+                kundi TruncReturnsNonIndex(base):
+                    eleza __trunc__(self):
+                        rudisha Intable()
                 self.assertEqual(int(TruncReturnsNonInt()), 42)
 
-                class NonIntegral(trunc_result_base):
-                    def __trunc__(self):
+                kundi NonIntegral(trunc_result_base):
+                    eleza __trunc__(self):
                         # Check that we avoid infinite recursion.
-                        return NonIntegral()
+                        rudisha NonIntegral()
 
-                class TruncReturnsNonIntegral(base):
-                    def __trunc__(self):
-                        return NonIntegral()
+                kundi TruncReturnsNonIntegral(base):
+                    eleza __trunc__(self):
+                        rudisha NonIntegral()
                 try:
                     int(TruncReturnsNonIntegral())
                 except TypeError as e:
@@ -415,25 +415,25 @@ class IntTestCases(unittest.TestCase):
                               ((base, trunc_result_base),))
 
                 # Regression test for bugs.python.org/issue16060.
-                class BadInt(trunc_result_base):
-                    def __int__(self):
-                        return 42.0
+                kundi BadInt(trunc_result_base):
+                    eleza __int__(self):
+                        rudisha 42.0
 
-                class TruncReturnsBadInt(base):
-                    def __trunc__(self):
-                        return BadInt()
+                kundi TruncReturnsBadInt(base):
+                    eleza __trunc__(self):
+                        rudisha BadInt()
 
                 with self.assertRaises(TypeError):
                     int(TruncReturnsBadInt())
 
-    def test_int_subclass_with_index(self):
-        class MyIndex(int):
-            def __index__(self):
-                return 42
+    eleza test_int_subclass_with_index(self):
+        kundi MyIndex(int):
+            eleza __index__(self):
+                rudisha 42
 
-        class BadIndex(int):
-            def __index__(self):
-                return 42.0
+        kundi BadIndex(int):
+            eleza __index__(self):
+                rudisha 42.0
 
         my_int = MyIndex(7)
         self.assertEqual(my_int, 7)
@@ -441,14 +441,14 @@ class IntTestCases(unittest.TestCase):
 
         self.assertEqual(int(BadIndex()), 0)
 
-    def test_int_subclass_with_int(self):
-        class MyInt(int):
-            def __int__(self):
-                return 42
+    eleza test_int_subclass_with_int(self):
+        kundi MyInt(int):
+            eleza __int__(self):
+                rudisha 42
 
-        class BadInt(int):
-            def __int__(self):
-                return 42.0
+        kundi BadInt(int):
+            eleza __int__(self):
+                rudisha 42.0
 
         my_int = MyInt(7)
         self.assertEqual(my_int, 7)
@@ -458,34 +458,34 @@ class IntTestCases(unittest.TestCase):
         self.assertEqual(my_int, 7)
         self.assertRaises(TypeError, int, my_int)
 
-    def test_int_returns_int_subclass(self):
-        class BadIndex:
-            def __index__(self):
-                return True
+    eleza test_int_returns_int_subclass(self):
+        kundi BadIndex:
+            eleza __index__(self):
+                rudisha True
 
-        class BadIndex2(int):
-            def __index__(self):
-                return True
+        kundi BadIndex2(int):
+            eleza __index__(self):
+                rudisha True
 
-        class BadInt:
-            def __int__(self):
-                return True
+        kundi BadInt:
+            eleza __int__(self):
+                rudisha True
 
-        class BadInt2(int):
-            def __int__(self):
-                return True
+        kundi BadInt2(int):
+            eleza __int__(self):
+                rudisha True
 
-        class TruncReturnsBadIndex:
-            def __trunc__(self):
-                return BadIndex()
+        kundi TruncReturnsBadIndex:
+            eleza __trunc__(self):
+                rudisha BadIndex()
 
-        class TruncReturnsBadInt:
-            def __trunc__(self):
-                return BadInt()
+        kundi TruncReturnsBadInt:
+            eleza __trunc__(self):
+                rudisha BadInt()
 
-        class TruncReturnsIntSubclass:
-            def __trunc__(self):
-                return True
+        kundi TruncReturnsIntSubclass:
+            eleza __trunc__(self):
+                rudisha True
 
         bad_int = BadIndex()
         with self.assertWarns(DeprecationWarning):
@@ -530,17 +530,17 @@ class IntTestCases(unittest.TestCase):
         self.assertEqual(n, 1)
         self.assertIs(type(n), IntSubclass)
 
-    def test_error_message(self):
-        def check(s, base=None):
+    eleza test_error_message(self):
+        eleza check(s, base=None):
             with self.assertRaises(ValueError,
                                    msg="int(%r, %r)" % (s, base)) as cm:
-                if base is None:
+                ikiwa base is None:
                     int(s)
                 else:
                     int(s, base)
             self.assertEqual(cm.exception.args[0],
                 "invalid literal for int() with base %d: %r" %
-                (10 if base is None else base, s))
+                (10 ikiwa base is None else base, s))
 
         check('\xbd')
         check('123\xbd')
@@ -563,7 +563,7 @@ class IntTestCases(unittest.TestCase):
         check('123\ud800')
         check('123\ud800', 10)
 
-    def test_issue31619(self):
+    eleza test_issue31619(self):
         self.assertEqual(int('1_0_1_0_1_0_1_0_1_0_1_0_1_0_1_0_1_0_1_0_1_0_1_0_1_0_1_0_1_0_1', 2),
                          0b1010101010101010101010101010101)
         self.assertEqual(int('1_2_3_4_5_6_7_0_1_2_3', 8), 0o12345670123)
@@ -571,5 +571,5 @@ class IntTestCases(unittest.TestCase):
         self.assertEqual(int('1_2_3_4_5_6_7', 32), 1144132807)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

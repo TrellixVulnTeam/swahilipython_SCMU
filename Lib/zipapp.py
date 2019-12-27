@@ -30,7 +30,7 @@ else:
     shebang_encoding = sys.getfilesystemencoding()
 
 
-class ZipAppError(ValueError):
+kundi ZipAppError(ValueError):
     pass
 
 
@@ -128,7 +128,7 @@ def create_archive(source, target=None, interpreter=None, main=None,
 
     if target is None:
         target = source.with_suffix('.pyz')
-    elif not hasattr(target, 'write'):
+    lasivyo not hasattr(target, 'write'):
         target = pathlib.Path(target)
 
     with _maybe_open(target, 'wb') as fd:

@@ -6,8 +6,8 @@ kutoka test.support agiza requires
 kutoka tkinter agiza Tk, Text
 kutoka idlelib.editor agiza EditorWindow
 
-class DummyEditwin:
-    def __init__(self, text):
+kundi DummyEditwin:
+    eleza __init__(self, text):
         self.text = text
         self.indentwidth = 8
         self.tabwidth = 8
@@ -18,7 +18,7 @@ class DummyEditwin:
     is_char_in_string = EditorWindow.is_char_in_string
 
 
-class HyperParserTest(unittest.TestCase):
+kundi HyperParserTest(unittest.TestCase):
     code = (
             '"""This is a module docstring"""\n'
             '# this line is a comment\n'
@@ -35,7 +35,7 @@ class HyperParserTest(unittest.TestCase):
             )
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
@@ -43,25 +43,25 @@ class HyperParserTest(unittest.TestCase):
         cls.editwin = DummyEditwin(cls.text)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         del cls.text, cls.editwin
         cls.root.destroy()
         del cls.root
 
-    def setUp(self):
+    eleza setUp(self):
         self.text.insert('insert', self.code)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.text.delete('1.0', 'end')
         self.editwin.prompt_last_line = '>>>'
 
-    def get_parser(self, index):
+    eleza get_parser(self, index):
         """
         Return a parser object with index at 'index'
         """
-        return HyperParser(self.editwin, index)
+        rudisha HyperParser(self.editwin, index)
 
-    def test_init(self):
+    eleza test_init(self):
         """
         test corner cases in the init method
         """
@@ -81,7 +81,7 @@ class HyperParserTest(unittest.TestCase):
         self.text.insert('end', self.text.get('1.0', 'end')*4)
         p = self.get_parser('54.5')
 
-    def test_is_in_string(self):
+    eleza test_is_in_string(self):
         get = self.get_parser
 
         p = get('1.0')
@@ -99,7 +99,7 @@ class HyperParserTest(unittest.TestCase):
         p = get('12.54')
         self.assertTrue(p.is_in_string())
 
-    def test_is_in_code(self):
+    eleza test_is_in_code(self):
         get = self.get_parser
 
         p = get('1.0')
@@ -115,18 +115,18 @@ class HyperParserTest(unittest.TestCase):
         p = get('4.14')
         self.assertFalse(p.is_in_code())
 
-    def test_get_surrounding_bracket(self):
+    eleza test_get_surrounding_bracket(self):
         get = self.get_parser
 
-        def without_mustclose(parser):
+        eleza without_mustclose(parser):
             # a utility function to get surrounding bracket
             # with mustclose=False
-            return parser.get_surrounding_brackets(mustclose=False)
+            rudisha parser.get_surrounding_brackets(mustclose=False)
 
-        def with_mustclose(parser):
+        eleza with_mustclose(parser):
             # a utility function to get surrounding bracket
             # with mustclose=True
-            return parser.get_surrounding_brackets(mustclose=True)
+            rudisha parser.get_surrounding_brackets(mustclose=True)
 
         p = get('3.2')
         self.assertIsNone(with_mustclose(p))
@@ -148,7 +148,7 @@ class HyperParserTest(unittest.TestCase):
         self.assertIsNone(with_mustclose(p))
         self.assertIsNone(without_mustclose(p))
 
-    def test_get_expression(self):
+    eleza test_get_expression(self):
         get = self.get_parser
 
         p = get('4.2')
@@ -200,13 +200,13 @@ class HyperParserTest(unittest.TestCase):
         p = get('12.6')
         self.assertEqual(p.get_expression(), 'cliché')
 
-    def test_eat_identifier(self):
-        def is_valid_id(candidate):
+    eleza test_eat_identifier(self):
+        eleza is_valid_id(candidate):
             result = HyperParser._eat_identifier(candidate, 0, len(candidate))
-            if result == len(candidate):
-                return True
-            elif result == 0:
-                return False
+            ikiwa result == len(candidate):
+                rudisha True
+            elikiwa result == 0:
+                rudisha False
             else:
                 err_msg = "Unexpected result: {} (expected 0 or {}".format(
                     result, len(candidate)
@@ -257,7 +257,7 @@ class HyperParserTest(unittest.TestCase):
         self.assertFalse(is_valid_id('"'))
         self.assertFalse(is_valid_id('"a string"'))
 
-    def test_eat_identifier_various_lengths(self):
+    eleza test_eat_identifier_various_lengths(self):
         eat_id = HyperParser._eat_identifier
 
         for length in range(1, 21):
@@ -272,5 +272,5 @@ class HyperParserTest(unittest.TestCase):
             self.assertEqual(eat_id('2' + 'é' * (length - 1), 0, length), 0)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

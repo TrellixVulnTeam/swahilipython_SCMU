@@ -9,9 +9,9 @@ agiza unittest
 agiza warnings
 
 
-class ExecModuleTests(abc.LoaderTests):
+kundi ExecModuleTests(abc.LoaderTests):
 
-    def exec_module(self, name):
+    eleza exec_module(self, name):
         with util.uncache(name), captured_stdout() as stdout:
             spec = self.machinery.ModuleSpec(
                     name, self.machinery.FrozenImporter, origin='frozen',
@@ -23,9 +23,9 @@ class ExecModuleTests(abc.LoaderTests):
             self.assertTrue(module.initialized)
             self.assertTrue(hasattr(module, '__spec__'))
             self.assertEqual(module.__spec__.origin, 'frozen')
-            return module, stdout.getvalue()
+            rudisha module, stdout.getvalue()
 
-    def test_module(self):
+    eleza test_module(self):
         name = '__hello__'
         module, output = self.exec_module(name)
         check = {'__name__': name}
@@ -34,7 +34,7 @@ class ExecModuleTests(abc.LoaderTests):
         self.assertEqual(output, 'Hello world!\n')
         self.assertTrue(hasattr(module, '__spec__'))
 
-    def test_package(self):
+    eleza test_package(self):
         name = '__phello__'
         module, output = self.exec_module(name)
         check = {'__name__': name}
@@ -46,7 +46,7 @@ class ExecModuleTests(abc.LoaderTests):
                                  expected=value))
         self.assertEqual(output, 'Hello world!\n')
 
-    def test_lacking_parent(self):
+    eleza test_lacking_parent(self):
         name = '__phello__.spam'
         with util.uncache('__phello__'):
             module, output = self.exec_module(name)
@@ -59,7 +59,7 @@ class ExecModuleTests(abc.LoaderTests):
                                  expected=value))
             self.assertEqual(output, 'Hello world!\n')
 
-    def test_module_repr(self):
+    eleza test_module_repr(self):
         name = '__hello__'
         module, output = self.exec_module(name)
         with warnings.catch_warnings():
@@ -68,7 +68,7 @@ class ExecModuleTests(abc.LoaderTests):
         self.assertEqual(repr_str,
                          "<module '__hello__' (frozen)>")
 
-    def test_module_repr_indirect(self):
+    eleza test_module_repr_indirect(self):
         name = '__hello__'
         module, output = self.exec_module(name)
         self.assertEqual(repr(module),
@@ -77,7 +77,7 @@ class ExecModuleTests(abc.LoaderTests):
     # No way to trigger an error in a frozen module.
     test_state_after_failure = None
 
-    def test_unloadable(self):
+    eleza test_unloadable(self):
         assert self.machinery.FrozenImporter.find_module('_not_real') is None
         with self.assertRaises(ImportError) as cm:
             self.exec_module('_not_real')
@@ -89,9 +89,9 @@ class ExecModuleTests(abc.LoaderTests):
  ) = util.test_both(ExecModuleTests, machinery=machinery)
 
 
-class LoaderTests(abc.LoaderTests):
+kundi LoaderTests(abc.LoaderTests):
 
-    def test_module(self):
+    eleza test_module(self):
         with util.uncache('__hello__'), captured_stdout() as stdout:
             with warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
@@ -105,7 +105,7 @@ class LoaderTests(abc.LoaderTests):
             self.assertEqual(stdout.getvalue(), 'Hello world!\n')
             self.assertFalse(hasattr(module, '__file__'))
 
-    def test_package(self):
+    eleza test_package(self):
         with util.uncache('__phello__'),  captured_stdout() as stdout:
             with warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
@@ -123,7 +123,7 @@ class LoaderTests(abc.LoaderTests):
             self.assertEqual(stdout.getvalue(), 'Hello world!\n')
             self.assertFalse(hasattr(module, '__file__'))
 
-    def test_lacking_parent(self):
+    eleza test_lacking_parent(self):
         with util.uncache('__phello__', '__phello__.spam'), \
              captured_stdout() as stdout:
             with warnings.catch_warnings():
@@ -141,7 +141,7 @@ class LoaderTests(abc.LoaderTests):
             self.assertEqual(stdout.getvalue(), 'Hello world!\n')
             self.assertFalse(hasattr(module, '__file__'))
 
-    def test_module_reuse(self):
+    eleza test_module_reuse(self):
         with util.uncache('__hello__'), captured_stdout() as stdout:
             with warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
@@ -151,7 +151,7 @@ class LoaderTests(abc.LoaderTests):
             self.assertEqual(stdout.getvalue(),
                              'Hello world!\nHello world!\n')
 
-    def test_module_repr(self):
+    eleza test_module_repr(self):
         with util.uncache('__hello__'), captured_stdout():
             with warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
@@ -160,7 +160,7 @@ class LoaderTests(abc.LoaderTests):
             self.assertEqual(repr_str,
                              "<module '__hello__' (frozen)>")
 
-    def test_module_repr_indirect(self):
+    eleza test_module_repr_indirect(self):
         with util.uncache('__hello__'), captured_stdout():
             module = self.machinery.FrozenImporter.load_module('__hello__')
         self.assertEqual(repr(module),
@@ -169,7 +169,7 @@ class LoaderTests(abc.LoaderTests):
     # No way to trigger an error in a frozen module.
     test_state_after_failure = None
 
-    def test_unloadable(self):
+    eleza test_unloadable(self):
         assert self.machinery.FrozenImporter.find_module('_not_real') is None
         with self.assertRaises(ImportError) as cm:
             self.machinery.FrozenImporter.load_module('_not_real')
@@ -181,11 +181,11 @@ class LoaderTests(abc.LoaderTests):
  ) = util.test_both(LoaderTests, machinery=machinery)
 
 
-class InspectLoaderTests:
+kundi InspectLoaderTests:
 
     """Tests for the InspectLoader methods for FrozenImporter."""
 
-    def test_get_code(self):
+    eleza test_get_code(self):
         # Make sure that the code object is good.
         name = '__hello__'
         with captured_stdout() as stdout:
@@ -195,12 +195,12 @@ class InspectLoaderTests:
             self.assertTrue(hasattr(mod, 'initialized'))
             self.assertEqual(stdout.getvalue(), 'Hello world!\n')
 
-    def test_get_source(self):
-        # Should always return None.
+    eleza test_get_source(self):
+        # Should always rudisha None.
         result = self.machinery.FrozenImporter.get_source('__hello__')
         self.assertIsNone(result)
 
-    def test_is_package(self):
+    eleza test_is_package(self):
         # Should be able to tell what is a package.
         test_for = (('__hello__', False), ('__phello__', True),
                     ('__phello__.spam', False))
@@ -208,7 +208,7 @@ class InspectLoaderTests:
             result = self.machinery.FrozenImporter.is_package(name)
             self.assertEqual(bool(result), is_package)
 
-    def test_failure(self):
+    eleza test_failure(self):
         # Raise ImportError for modules that are not frozen.
         for meth_name in ('get_code', 'get_source', 'is_package'):
             method = getattr(self.machinery.FrozenImporter, meth_name)
@@ -221,5 +221,5 @@ class InspectLoaderTests:
  ) = util.test_both(InspectLoaderTests, machinery=machinery)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

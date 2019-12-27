@@ -12,19 +12,19 @@ kutoka http.client agiza HTTPException
 kutoka test agiza support
 kutoka io agiza BytesIO
 
-class TestBase:
+kundi TestBase:
     encoding        = ''   # codec name
     codec           = None # codec tuple (with 4 elements)
     tstring         = None # must set. 2 strings to test StreamReader
 
     codectests      = None # must set. codec test tuple
-    roundtriptest   = 1    # set if roundtrip is possible with unicode
-    has_iso10646    = 0    # set if this encoding contains whole iso10646 map
+    roundtriptest   = 1    # set ikiwa roundtrip is possible with unicode
+    has_iso10646    = 0    # set ikiwa this encoding contains whole iso10646 map
     xmlcharnametest = None # string to test xmlcharrefreplace
     unmappedunicode = '\udeee' # a unicode code point that is not mapped.
 
-    def setUp(self):
-        if self.codec is None:
+    eleza setUp(self):
+        ikiwa self.codec is None:
             self.codec = codecs.lookup(self.encoding)
         self.encode = self.codec.encode
         self.decode = self.codec.decode
@@ -33,7 +33,7 @@ class TestBase:
         self.incrementalencoder = self.codec.incrementalencoder
         self.incrementaldecoder = self.codec.incrementaldecoder
 
-    def test_chunkcoding(self):
+    eleza test_chunkcoding(self):
         tstring_lines = []
         for b in self.tstring:
             lines = b.split(b"\n")
@@ -44,18 +44,18 @@ class TestBase:
         for native, utf8 in zip(*tstring_lines):
             u = self.decode(native)[0]
             self.assertEqual(u, utf8.decode('utf-8'))
-            if self.roundtriptest:
+            ikiwa self.roundtriptest:
                 self.assertEqual(native, self.encode(u)[0])
 
-    def test_errorhandle(self):
+    eleza test_errorhandle(self):
         for source, scheme, expected in self.codectests:
-            if isinstance(source, bytes):
+            ikiwa isinstance(source, bytes):
                 func = self.decode
             else:
                 func = self.encode
-            if expected:
+            ikiwa expected:
                 result = func(source, scheme)[0]
-                if func is self.decode:
+                ikiwa func is self.decode:
                     self.assertTrue(type(result) is str, type(result))
                     self.assertEqual(result, expected,
                                      '%a.decode(%r, %r)=%a != %a'
@@ -70,8 +70,8 @@ class TestBase:
             else:
                 self.assertRaises(UnicodeError, func, source, scheme)
 
-    def test_xmlcharrefreplace(self):
-        if self.has_iso10646:
+    eleza test_xmlcharrefreplace(self):
+        ikiwa self.has_iso10646:
             self.skipTest('encoding contains full ISO 10646 map')
 
         s = "\u0b13\u0b23\u0b60 nd eggs"
@@ -80,26 +80,26 @@ class TestBase:
             b"&#2835;&#2851;&#2912; nd eggs"
         )
 
-    def test_customreplace_encode(self):
-        if self.has_iso10646:
+    eleza test_customreplace_encode(self):
+        ikiwa self.has_iso10646:
             self.skipTest('encoding contains full ISO 10646 map')
 
         kutoka html.entities agiza codepoint2name
 
-        def xmlcharnamereplace(exc):
-            if not isinstance(exc, UnicodeEncodeError):
+        eleza xmlcharnamereplace(exc):
+            ikiwa not isinstance(exc, UnicodeEncodeError):
                 raise TypeError("don't know how to handle %r" % exc)
             l = []
             for c in exc.object[exc.start:exc.end]:
-                if ord(c) in codepoint2name:
+                ikiwa ord(c) in codepoint2name:
                     l.append("&%s;" % codepoint2name[ord(c)])
                 else:
                     l.append("&#%d;" % ord(c))
-            return ("".join(l), exc.end)
+            rudisha ("".join(l), exc.end)
 
         codecs.register_error("test.xmlcharnamereplace", xmlcharnamereplace)
 
-        if self.xmlcharnametest:
+        ikiwa self.xmlcharnametest:
             sin, sout = self.xmlcharnametest
         else:
             sin = "\xab\u211c\xbb = \u2329\u1234\u232a"
@@ -107,70 +107,70 @@ class TestBase:
         self.assertEqual(self.encode(sin,
                                     "test.xmlcharnamereplace")[0], sout)
 
-    def test_callback_returns_bytes(self):
-        def myreplace(exc):
-            return (b"1234", exc.end)
+    eleza test_callback_returns_bytes(self):
+        eleza myreplace(exc):
+            rudisha (b"1234", exc.end)
         codecs.register_error("test.cjktest", myreplace)
         enc = self.encode("abc" + self.unmappedunicode + "def", "test.cjktest")[0]
         self.assertEqual(enc, b"abc1234def")
 
-    def test_callback_wrong_objects(self):
-        def myreplace(exc):
-            return (ret, exc.end)
+    eleza test_callback_wrong_objects(self):
+        eleza myreplace(exc):
+            rudisha (ret, exc.end)
         codecs.register_error("test.cjktest", myreplace)
 
         for ret in ([1, 2, 3], [], None, object()):
             self.assertRaises(TypeError, self.encode, self.unmappedunicode,
                               'test.cjktest')
 
-    def test_callback_long_index(self):
-        def myreplace(exc):
-            return ('x', int(exc.end))
+    eleza test_callback_long_index(self):
+        eleza myreplace(exc):
+            rudisha ('x', int(exc.end))
         codecs.register_error("test.cjktest", myreplace)
         self.assertEqual(self.encode('abcd' + self.unmappedunicode + 'efgh',
                                      'test.cjktest'), (b'abcdxefgh', 9))
 
-        def myreplace(exc):
-            return ('x', sys.maxsize + 1)
+        eleza myreplace(exc):
+            rudisha ('x', sys.maxsize + 1)
         codecs.register_error("test.cjktest", myreplace)
         self.assertRaises(IndexError, self.encode, self.unmappedunicode,
                           'test.cjktest')
 
-    def test_callback_None_index(self):
-        def myreplace(exc):
-            return ('x', None)
+    eleza test_callback_None_index(self):
+        eleza myreplace(exc):
+            rudisha ('x', None)
         codecs.register_error("test.cjktest", myreplace)
         self.assertRaises(TypeError, self.encode, self.unmappedunicode,
                           'test.cjktest')
 
-    def test_callback_backward_index(self):
-        def myreplace(exc):
-            if myreplace.limit > 0:
+    eleza test_callback_backward_index(self):
+        eleza myreplace(exc):
+            ikiwa myreplace.limit > 0:
                 myreplace.limit -= 1
-                return ('REPLACED', 0)
+                rudisha ('REPLACED', 0)
             else:
-                return ('TERMINAL', exc.end)
+                rudisha ('TERMINAL', exc.end)
         myreplace.limit = 3
         codecs.register_error("test.cjktest", myreplace)
         self.assertEqual(self.encode('abcd' + self.unmappedunicode + 'efgh',
                                      'test.cjktest'),
                 (b'abcdREPLACEDabcdREPLACEDabcdREPLACEDabcdTERMINALefgh', 9))
 
-    def test_callback_forward_index(self):
-        def myreplace(exc):
-            return ('REPLACED', exc.end + 2)
+    eleza test_callback_forward_index(self):
+        eleza myreplace(exc):
+            rudisha ('REPLACED', exc.end + 2)
         codecs.register_error("test.cjktest", myreplace)
         self.assertEqual(self.encode('abcd' + self.unmappedunicode + 'efgh',
                                      'test.cjktest'), (b'abcdREPLACEDgh', 9))
 
-    def test_callback_index_outofbound(self):
-        def myreplace(exc):
-            return ('TERM', 100)
+    eleza test_callback_index_outofbound(self):
+        eleza myreplace(exc):
+            rudisha ('TERM', 100)
         codecs.register_error("test.cjktest", myreplace)
         self.assertRaises(IndexError, self.encode, self.unmappedunicode,
                           'test.cjktest')
 
-    def test_incrementalencoder(self):
+    eleza test_incrementalencoder(self):
         UTF8Reader = codecs.getreader('utf-8')
         for sizehint in [None] + list(range(1, 33)) + \
                         [64, 128, 256, 512, 1024]:
@@ -178,19 +178,19 @@ class TestBase:
             ostream = BytesIO()
             encoder = self.incrementalencoder()
             while 1:
-                if sizehint is not None:
+                ikiwa sizehint is not None:
                     data = istream.read(sizehint)
                 else:
                     data = istream.read()
 
-                if not data:
+                ikiwa not data:
                     break
                 e = encoder.encode(data)
                 ostream.write(e)
 
             self.assertEqual(ostream.getvalue(), self.tstring[0])
 
-    def test_incrementaldecoder(self):
+    eleza test_incrementaldecoder(self):
         UTF8Writer = codecs.getwriter('utf-8')
         for sizehint in [None, -1] + list(range(1, 33)) + \
                         [64, 128, 256, 512, 1024]:
@@ -199,7 +199,7 @@ class TestBase:
             decoder = self.incrementaldecoder()
             while 1:
                 data = istream.read(sizehint)
-                if not data:
+                ikiwa not data:
                     break
                 else:
                     u = decoder.decode(data)
@@ -207,7 +207,7 @@ class TestBase:
 
             self.assertEqual(ostream.getvalue(), self.tstring[1])
 
-    def test_incrementalencoder_error_callback(self):
+    eleza test_incrementalencoder_error_callback(self):
         inv = self.unmappedunicode
 
         e = self.incrementalencoder()
@@ -217,8 +217,8 @@ class TestBase:
         self.assertEqual(e.encode(inv, True), b'')
 
         e.reset()
-        def tempreplace(exc):
-            return ('called', exc.end)
+        eleza tempreplace(exc):
+            rudisha ('called', exc.end)
         codecs.register_error('test.incremental_error_callback', tempreplace)
         e.errors = 'test.incremental_error_callback'
         self.assertEqual(e.encode(inv, True), b'called')
@@ -227,7 +227,7 @@ class TestBase:
         e.errors = 'ignore'
         self.assertEqual(e.encode(inv, True), b'')
 
-    def test_streamreader(self):
+    eleza test_streamreader(self):
         UTF8Writer = codecs.getwriter('utf-8')
         for name in ["read", "readline", "readlines"]:
             for sizehint in [None, -1] + list(range(1, 33)) + \
@@ -237,16 +237,16 @@ class TestBase:
                 func = getattr(istream, name)
                 while 1:
                     data = func(sizehint)
-                    if not data:
+                    ikiwa not data:
                         break
-                    if name == "readlines":
+                    ikiwa name == "readlines":
                         ostream.writelines(data)
                     else:
                         ostream.write(data)
 
                 self.assertEqual(ostream.getvalue(), self.tstring[1])
 
-    def test_streamwriter(self):
+    eleza test_streamwriter(self):
         readfuncs = ('read', 'readline', 'readlines')
         UTF8Reader = codecs.getreader('utf-8')
         for name in readfuncs:
@@ -256,114 +256,114 @@ class TestBase:
                 ostream = self.writer(BytesIO())
                 func = getattr(istream, name)
                 while 1:
-                    if sizehint is not None:
+                    ikiwa sizehint is not None:
                         data = func(sizehint)
                     else:
                         data = func()
 
-                    if not data:
+                    ikiwa not data:
                         break
-                    if name == "readlines":
+                    ikiwa name == "readlines":
                         ostream.writelines(data)
                     else:
                         ostream.write(data)
 
                 self.assertEqual(ostream.getvalue(), self.tstring[0])
 
-    def test_streamwriter_reset_no_pending(self):
+    eleza test_streamwriter_reset_no_pending(self):
         # Issue #23247: Calling reset() on a fresh StreamWriter instance
         # (without pending data) must not crash
         stream = BytesIO()
         writer = self.writer(stream)
         writer.reset()
 
-    def test_incrementalencoder_del_segfault(self):
+    eleza test_incrementalencoder_del_segfault(self):
         e = self.incrementalencoder()
         with self.assertRaises(AttributeError):
             del e.errors
 
 
-class TestBase_Mapping(unittest.TestCase):
+kundi TestBase_Mapping(unittest.TestCase):
     pass_enctest = []
     pass_dectest = []
     supmaps = []
     codectests = []
 
-    def setUp(self):
+    eleza setUp(self):
         try:
             self.open_mapping_file().close() # test it to report the error early
         except (OSError, HTTPException):
             self.skipTest("Could not retrieve "+self.mapfileurl)
 
-    def open_mapping_file(self):
-        return support.open_urlresource(self.mapfileurl)
+    eleza open_mapping_file(self):
+        rudisha support.open_urlresource(self.mapfileurl)
 
-    def test_mapping_file(self):
-        if self.mapfileurl.endswith('.xml'):
+    eleza test_mapping_file(self):
+        ikiwa self.mapfileurl.endswith('.xml'):
             self._test_mapping_file_ucm()
         else:
             self._test_mapping_file_plain()
 
-    def _test_mapping_file_plain(self):
+    eleza _test_mapping_file_plain(self):
         unichrs = lambda s: ''.join(map(chr, map(eval, s.split('+'))))
         urt_wa = {}
 
         with self.open_mapping_file() as f:
             for line in f:
-                if not line:
+                ikiwa not line:
                     break
                 data = line.split('#')[0].strip().split()
-                if len(data) != 2:
+                ikiwa len(data) != 2:
                     continue
 
                 csetval = eval(data[0])
-                if csetval <= 0x7F:
+                ikiwa csetval <= 0x7F:
                     csetch = bytes([csetval & 0xff])
-                elif csetval >= 0x1000000:
+                elikiwa csetval >= 0x1000000:
                     csetch = bytes([(csetval >> 24), ((csetval >> 16) & 0xff),
                                     ((csetval >> 8) & 0xff), (csetval & 0xff)])
-                elif csetval >= 0x10000:
+                elikiwa csetval >= 0x10000:
                     csetch = bytes([(csetval >> 16), ((csetval >> 8) & 0xff),
                                     (csetval & 0xff)])
-                elif csetval >= 0x100:
+                elikiwa csetval >= 0x100:
                     csetch = bytes([(csetval >> 8), (csetval & 0xff)])
                 else:
                     continue
 
                 unich = unichrs(data[1])
-                if ord(unich) == 0xfffd or unich in urt_wa:
+                ikiwa ord(unich) == 0xfffd or unich in urt_wa:
                     continue
                 urt_wa[unich] = csetch
 
                 self._testpoint(csetch, unich)
 
-    def _test_mapping_file_ucm(self):
+    eleza _test_mapping_file_ucm(self):
         with self.open_mapping_file() as f:
             ucmdata = f.read()
         uc = re.findall('<a u="([A-F0-9]{4})" b="([0-9A-F ]+)"/>', ucmdata)
         for uni, coded in uc:
             unich = chr(int(uni, 16))
-            codech = bytes.fromhex(coded)
+            codech = bytes.kutokahex(coded)
             self._testpoint(codech, unich)
 
-    def test_mapping_supplemental(self):
+    eleza test_mapping_supplemental(self):
         for mapping in self.supmaps:
             self._testpoint(*mapping)
 
-    def _testpoint(self, csetch, unich):
-        if (csetch, unich) not in self.pass_enctest:
+    eleza _testpoint(self, csetch, unich):
+        ikiwa (csetch, unich) not in self.pass_enctest:
             self.assertEqual(unich.encode(self.encoding), csetch)
-        if (csetch, unich) not in self.pass_dectest:
+        ikiwa (csetch, unich) not in self.pass_dectest:
             self.assertEqual(str(csetch, self.encoding), unich)
 
-    def test_errorhandle(self):
+    eleza test_errorhandle(self):
         for source, scheme, expected in self.codectests:
-            if isinstance(source, bytes):
+            ikiwa isinstance(source, bytes):
                 func = source.decode
             else:
                 func = source.encode
-            if expected:
-                if isinstance(source, bytes):
+            ikiwa expected:
+                ikiwa isinstance(source, bytes):
                     result = func(self.encoding, scheme)
                     self.assertTrue(type(result) is str, type(result))
                     self.assertEqual(result, expected,
@@ -380,10 +380,10 @@ class TestBase_Mapping(unittest.TestCase):
             else:
                 self.assertRaises(UnicodeError, func, self.encoding, scheme)
 
-def load_teststring(name):
+eleza load_teststring(name):
     dir = os.path.join(os.path.dirname(__file__), 'cjkencodings')
     with open(os.path.join(dir, name + '.txt'), 'rb') as f:
         encoded = f.read()
     with open(os.path.join(dir, name + '-utf8.txt'), 'rb') as f:
         utf8 = f.read()
-    return encoded, utf8
+    rudisha encoded, utf8

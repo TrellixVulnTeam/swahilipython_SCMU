@@ -69,7 +69,7 @@ Buffer structure
 ================
 
 Buffer structures (or simply "buffers") are useful as a way to expose the
-binary data from another object to the Python programmer.  They can also be
+binary data kutoka another object to the Python programmer.  They can also be
 used as a zero-copy slicing mechanism.  Using their ability to reference a
 block of memory, it is possible to expose any data to the Python programmer
 quite easily.  The memory could be a large, constant array in a C extension,
@@ -464,7 +464,7 @@ Buffer-related functions
 
 .. c:function:: Py_ssize_t PyBuffer_SizeFromFormat(const char *)
 
-   Return the implied :c:data:`~Py_buffer.itemsize` from :c:data:`~Py_buffer.format`.
+   Return the implied :c:data:`~Py_buffer.itemsize` kutoka :c:data:`~Py_buffer.format`.
    This function is not yet implemented.
 
 
@@ -483,14 +483,14 @@ Buffer-related functions
 
 .. c:function:: int PyBuffer_FromContiguous(Py_buffer *view, void *buf, Py_ssize_t len, char fort)
 
-   Copy contiguous *len* bytes from *buf* to *view*.
+   Copy contiguous *len* bytes kutoka *buf* to *view*.
    *fort* can be ``'C'`` or ``'F'`` (for C-style or Fortran-style ordering).
    ``0`` is returned on success, ``-1`` on error.
 
 
 .. c:function:: int PyBuffer_ToContiguous(void *buf, Py_buffer *src, Py_ssize_t len, char order)
 
-   Copy *len* bytes from *src* to its contiguous representation in *buf*.
+   Copy *len* bytes kutoka *src* to its contiguous representation in *buf*.
    *order* can be ``'C'`` or ``'F'`` or ``'A'`` (for C-style or Fortran-style
    ordering or either one). ``0`` is returned on success, ``-1`` on error.
 

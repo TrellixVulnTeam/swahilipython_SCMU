@@ -1,5 +1,5 @@
 kutoka test agiza support
-gdbm = support.import_module("dbm.gnu") #skip if not supported
+gdbm = support.import_module("dbm.gnu") #skip ikiwa not supported
 agiza unittest
 agiza os
 kutoka test.support agiza TESTFN, TESTFN_NONASCII, unlink
@@ -7,26 +7,26 @@ kutoka test.support agiza TESTFN, TESTFN_NONASCII, unlink
 
 filename = TESTFN
 
-class TestGdbm(unittest.TestCase):
+kundi TestGdbm(unittest.TestCase):
     @staticmethod
-    def setUpClass():
-        if support.verbose:
+    eleza setUpClass():
+        ikiwa support.verbose:
             try:
                 kutoka _gdbm agiza _GDBM_VERSION as version
             except ImportError:
                 pass
             else:
-                print(f"gdbm version: {version}")
+                andika(f"gdbm version: {version}")
 
-    def setUp(self):
+    eleza setUp(self):
         self.g = None
 
-    def tearDown(self):
-        if self.g is not None:
+    eleza tearDown(self):
+        ikiwa self.g is not None:
             self.g.close()
         unlink(filename)
 
-    def test_key_methods(self):
+    eleza test_key_methods(self):
         self.g = gdbm.open(filename, 'c')
         self.assertEqual(self.g.keys(), [])
         self.g['a'] = 'b'
@@ -51,7 +51,7 @@ class TestGdbm(unittest.TestCase):
         self.assertEqual(self.g.setdefault(b'xxx', b'foo'), b'foo')
         self.assertEqual(self.g[b'xxx'], b'foo')
 
-    def test_error_conditions(self):
+    eleza test_error_conditions(self):
         # Try to open a non-existent database.
         unlink(filename)
         self.assertRaises(gdbm.error, gdbm.open, filename, 'r')
@@ -62,7 +62,7 @@ class TestGdbm(unittest.TestCase):
         # try pass an invalid open flag
         self.assertRaises(gdbm.error, lambda: gdbm.open(filename, 'rx').close())
 
-    def test_flags(self):
+    eleza test_flags(self):
         # Test the flag parameter open() by trying all supported flag modes.
         all = set(gdbm.open_flags)
         # Test standard flags (presumably "crwn").
@@ -78,7 +78,7 @@ class TestGdbm(unittest.TestCase):
                 self.g = gdbm.open(filename, mode + flag)
                 self.g.close()
 
-    def test_reorganize(self):
+    eleza test_reorganize(self):
         self.g = gdbm.open(filename, 'c')
         size0 = os.path.getsize(filename)
 
@@ -99,7 +99,7 @@ class TestGdbm(unittest.TestCase):
         self.assertLess(size2, size1)
         self.assertGreaterEqual(size2, size0)
 
-    def test_context_manager(self):
+    eleza test_context_manager(self):
         with gdbm.open(filename, 'c') as db:
             db["gdbm context manager"] = "context manager"
 
@@ -111,7 +111,7 @@ class TestGdbm(unittest.TestCase):
         self.assertEqual(str(cm.exception),
                          "GDBM object has already been closed")
 
-    def test_bytes(self):
+    eleza test_bytes(self):
         with gdbm.open(filename, 'c') as db:
             db[b'bytes key \xbd'] = b'bytes value \xbd'
         with gdbm.open(filename, 'r') as db:
@@ -119,7 +119,7 @@ class TestGdbm(unittest.TestCase):
             self.assertTrue(b'bytes key \xbd' in db)
             self.assertEqual(db[b'bytes key \xbd'], b'bytes value \xbd')
 
-    def test_unicode(self):
+    eleza test_unicode(self):
         with gdbm.open(filename, 'c') as db:
             db['Unicode key \U0001f40d'] = 'Unicode value \U0001f40d'
         with gdbm.open(filename, 'r') as db:
@@ -131,7 +131,7 @@ class TestGdbm(unittest.TestCase):
             self.assertEqual(db['Unicode key \U0001f40d'],
                              'Unicode value \U0001f40d'.encode())
 
-    def test_write_readonly_file(self):
+    eleza test_write_readonly_file(self):
         with gdbm.open(filename, 'c') as db:
             db[b'bytes key'] = b'bytes value'
         with gdbm.open(filename, 'r') as db:
@@ -144,7 +144,7 @@ class TestGdbm(unittest.TestCase):
 
     @unittest.skipUnless(TESTFN_NONASCII,
                          'requires OS support of non-ASCII encodings')
-    def test_nonascii_filename(self):
+    eleza test_nonascii_filename(self):
         filename = TESTFN_NONASCII
         self.addCleanup(unlink, filename)
         with gdbm.open(filename, 'c') as db:
@@ -155,7 +155,7 @@ class TestGdbm(unittest.TestCase):
             self.assertTrue(b'key' in db)
             self.assertEqual(db[b'key'], b'value')
 
-    def test_nonexisting_file(self):
+    eleza test_nonexisting_file(self):
         nonexisting_file = 'nonexisting-file'
         with self.assertRaises(gdbm.error) as cm:
             gdbm.open(nonexisting_file)
@@ -163,5 +163,5 @@ class TestGdbm(unittest.TestCase):
         self.assertEqual(cm.exception.filename, nonexisting_file)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

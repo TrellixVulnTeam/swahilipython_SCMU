@@ -146,7 +146,7 @@ None
 
    This type has a single value.  There is a single object with this value. This
    object is accessed through the built-in name ``None``. It is used to signify the
-   absence of a value in many situations, e.g., it is returned from functions that
+   absence of a value in many situations, e.g., it is returned kutoka functions that
    don't explicitly return anything. Its truth value is false.
 
 NotImplemented
@@ -188,7 +188,7 @@ Ellipsis
    :class:`numbers.Integral`
       .. index:: object: integer
 
-      These represent elements from the mathematical set of integers (positive and
+      These represent elements kutoka the mathematical set of integers (positive and
       negative).
 
       There are two types of integers:
@@ -297,7 +297,7 @@ Sequences
          represented in a string.  Python doesn't have a :c:type:`char` type;
          instead, every code point in the string is represented as a string
          object with length ``1``.  The built-in function :func:`ord`
-         converts a code point from its string form to an integer in the
+         converts a code point kutoka its string form to an integer in the
          range ``0 - 10FFFF``; :func:`chr` converts an integer in the range
          ``0 - 10FFFF`` to the corresponding length ``1`` string object.
          :meth:`str.encode` can be used to convert a :class:`str` to
@@ -351,7 +351,7 @@ Sequences
          .. index:: bytearray
 
          A bytearray object is a mutable array. They are created by the built-in
-         :func:`bytearray` constructor.  Aside from being mutable
+         :func:`bytearray` constructor.  Aside kutoka being mutable
          (and hence unhashable), byte arrays otherwise provide the same interface
          and functionality as immutable :class:`bytes` objects.
 
@@ -368,7 +368,7 @@ Set types
    These represent unordered, finite sets of unique, immutable objects. As such,
    they cannot be indexed by any subscript. However, they can be iterated over, and
    the built-in function :func:`len` returns the number of items in a set. Common
-   uses for sets are fast membership testing, removing duplicates from a sequence,
+   uses for sets are fast membership testing, removing duplicates kutoka a sequence,
    and computing mathematical operations such as intersection, union, difference,
    and symmetric difference.
 
@@ -401,7 +401,7 @@ Mappings
       object: mapping
 
    These represent finite sets of objects indexed by arbitrary index sets. The
-   subscript notation ``a[k]`` selects the item indexed by ``k`` from the mapping
+   subscript notation ``a[k]`` selects the item indexed by ``k`` kutoka the mapping
    ``a``; this can be used in expressions and as the target of assignments or
    :keyword:`del` statements. The built-in function :func:`len` returns the number
    of items in a mapping.
@@ -538,7 +538,7 @@ Callable types
       A cell object has the attribute ``cell_contents``. This can be used to get
       the value of the cell, as well as set the value.
 
-      Additional information about a function's definition can be retrieved from its
+      Additional information about a function's definition can be retrieved kutoka its
       code object; see the description of internal types below. The
       :data:`cell <types.CellType>` type can be accessed in the :mod:`types`
       module.
@@ -549,7 +549,7 @@ Callable types
          object: user-defined method
          pair: user-defined; method
 
-      An instance method object combines a class, a class instance and any
+      An instance method object combines a class, a kundi instance and any
       callable object (normally a user-defined function).
 
       .. index::
@@ -559,7 +559,7 @@ Callable types
          single: __name__ (method attribute)
          single: __module__ (method attribute)
 
-      Special read-only attributes: :attr:`__self__` is the class instance object,
+      Special read-only attributes: :attr:`__self__` is the kundi instance object,
       :attr:`__func__` is the function object; :attr:`__doc__` is the method's
       documentation (same as ``__func__.__doc__``); :attr:`~definition.__name__` is the
       method name (same as ``__func__.__name__``); :attr:`__module__` is the
@@ -569,40 +569,40 @@ Callable types
       attributes on the underlying function object.
 
       User-defined method objects may be created when getting an attribute of a
-      class (perhaps via an instance of that class), if that attribute is a
-      user-defined function object or a class method object.
+      kundi (perhaps via an instance of that class), if that attribute is a
+      user-defined function object or a kundi method object.
 
       When an instance method object is created by retrieving a user-defined
-      function object from a class via one of its instances, its
+      function object kutoka a kundi via one of its instances, its
       :attr:`__self__` attribute is the instance, and the method object is said
       to be bound.  The new method's :attr:`__func__` attribute is the original
       function object.
 
-      When an instance method object is created by retrieving a class method
-      object from a class or instance, its :attr:`__self__` attribute is the
-      class itself, and its :attr:`__func__` attribute is the function object
-      underlying the class method.
+      When an instance method object is created by retrieving a kundi method
+      object kutoka a kundi or instance, its :attr:`__self__` attribute is the
+      kundi itself, and its :attr:`__func__` attribute is the function object
+      underlying the kundi method.
 
       When an instance method object is called, the underlying function
-      (:attr:`__func__`) is called, inserting the class instance
+      (:attr:`__func__`) is called, inserting the kundi instance
       (:attr:`__self__`) in front of the argument list.  For instance, when
-      :class:`C` is a class which contains a definition for a function
+      :class:`C` is a kundi which contains a definition for a function
       :meth:`f`, and ``x`` is an instance of :class:`C`, calling ``x.f(1)`` is
       equivalent to calling ``C.f(x, 1)``.
 
-      When an instance method object is derived from a class method object, the
-      "class instance" stored in :attr:`__self__` will actually be the class
+      When an instance method object is derived kutoka a kundi method object, the
+      "kundi instance" stored in :attr:`__self__` will actually be the class
       itself, so that calling either ``x.f(1)`` or ``C.f(1)`` is equivalent to
       calling ``f(C,1)`` where ``f`` is the underlying function.
 
-      Note that the transformation from function object to instance method
-      object happens each time the attribute is retrieved from the instance.  In
+      Note that the transformation kutoka function object to instance method
+      object happens each time the attribute is retrieved kutoka the instance.  In
       some cases, a fruitful optimization is to assign the attribute to a local
       variable and call that local variable. Also notice that this
       transformation only happens for user-defined functions; other callable
       objects (and all non-callable objects) are retrieved without
       transformation.  It is also important to note that user-defined functions
-      which are attributes of a class instance are not converted to bound
+      which are attributes of a kundi instance are not converted to bound
       methods; this *only* happens when the function is an attribute of the
       class.
 
@@ -679,7 +679,7 @@ Callable types
 
    Classes
       Classes are callable.  These objects normally act as factories for new
-      instances of themselves, but variations are possible for class types that
+      instances of themselves, but variations are possible for kundi types that
       override :meth:`__new__`.  The arguments of the call are passed to
       :meth:`__new__` and, in the typical case, to :meth:`__init__` to
       initialize the new instance.
@@ -695,7 +695,7 @@ Modules
       object: module
 
    Modules are a basic organizational unit of Python code, and are created by
-   the :ref:`import system <importsystem>` as invoked either by the
+   the :ref:`agiza system <importsystem>` as invoked either by the
    :keyword:`import` statement, or by calling
    functions such as :func:`importlib.import_module` and built-in
    :func:`__import__`.  A module object has a namespace implemented by a
@@ -720,11 +720,11 @@ Modules
    :attr:`__doc__` is the module's documentation string, or ``None`` if
    unavailable; :attr:`__annotations__` (optional) is a dictionary containing
    :term:`variable annotations <variable annotation>` collected during module
-   body execution; :attr:`__file__` is the pathname of the file from which the
-   module was loaded, if it was loaded from a file. The :attr:`__file__`
+   body execution; :attr:`__file__` is the pathname of the file kutoka which the
+   module was loaded, if it was loaded kutoka a file. The :attr:`__file__`
    attribute may be missing for certain types of modules, such as C modules
    that are statically linked into the interpreter; for extension modules
-   loaded dynamically from a shared library, it is the pathname of the shared
+   loaded dynamically kutoka a shared library, it is the pathname of the shared
    library file.
 
    .. index:: single: __dict__ (module attribute)
@@ -740,8 +740,8 @@ Modules
       or keep the module around while using its dictionary directly.
 
 Custom classes
-   Custom class types are typically created by class definitions (see section
-   :ref:`class`).  A class has a namespace implemented by a dictionary object.
+   Custom kundi types are typically created by kundi definitions (see section
+   :ref:`class`).  A kundi has a namespace implemented by a dictionary object.
    Class attribute references are translated to lookups in this dictionary, e.g.,
    ``C.x`` is translated to ``C.__dict__["x"]`` (although there are a number of
    hooks which allow for other means of locating attributes). When the attribute
@@ -757,19 +757,19 @@ Custom classes
 
    .. index::
       object: class
-      object: class instance
+      object: kundi instance
       object: instance
-      pair: class object; call
+      pair: kundi object; call
       single: container
       object: dictionary
       pair: class; attribute
 
-   When a class attribute reference (for class :class:`C`, say) would yield a
-   class method object, it is transformed into an instance method object whose
+   When a kundi attribute reference (for kundi :class:`C`, say) would yield a
+   kundi method object, it is transformed into an instance method object whose
    :attr:`__self__` attribute is :class:`C`.  When it would yield a static
    method object, it is transformed into the object wrapped by the static method
    object. See section :ref:`descriptors` for another way in which attributes
-   retrieved from a class may differ from those actually contained in its
+   retrieved kutoka a kundi may differ kutoka those actually contained in its
    :attr:`~object.__dict__`.
 
    .. index:: triple: class; attribute; assignment
@@ -777,52 +777,52 @@ Custom classes
    Class attribute assignments update the class's dictionary, never the dictionary
    of a base class.
 
-   .. index:: pair: class object; call
+   .. index:: pair: kundi object; call
 
-   A class object can be called (see above) to yield a class instance (see below).
+   A kundi object can be called (see above) to yield a kundi instance (see below).
 
    .. index::
-      single: __name__ (class attribute)
-      single: __module__ (class attribute)
-      single: __dict__ (class attribute)
-      single: __bases__ (class attribute)
-      single: __doc__ (class attribute)
-      single: __annotations__ (class attribute)
+      single: __name__ (kundi attribute)
+      single: __module__ (kundi attribute)
+      single: __dict__ (kundi attribute)
+      single: __bases__ (kundi attribute)
+      single: __doc__ (kundi attribute)
+      single: __annotations__ (kundi attribute)
 
-   Special attributes: :attr:`~definition.__name__` is the class name; :attr:`__module__` is
-   the module name in which the class was defined; :attr:`~object.__dict__` is the
+   Special attributes: :attr:`~definition.__name__` is the kundi name; :attr:`__module__` is
+   the module name in which the kundi was defined; :attr:`~object.__dict__` is the
    dictionary containing the class's namespace; :attr:`~class.__bases__` is a
    tuple containing the base classes, in the order of their occurrence in the
-   base class list; :attr:`__doc__` is the class's documentation string,
+   base kundi list; :attr:`__doc__` is the class's documentation string,
    or ``None`` if undefined; :attr:`__annotations__` (optional) is a dictionary
    containing :term:`variable annotations <variable annotation>` collected during
-   class body execution.
+   kundi body execution.
 
 Class instances
    .. index::
-      object: class instance
+      object: kundi instance
       object: instance
       pair: class; instance
-      pair: class instance; attribute
+      pair: kundi instance; attribute
 
-   A class instance is created by calling a class object (see above).  A class
+   A kundi instance is created by calling a kundi object (see above).  A class
    instance has a namespace implemented as a dictionary which is the first place
    in which attribute references are searched.  When an attribute is not found
-   there, and the instance's class has an attribute by that name, the search
-   continues with the class attributes.  If a class attribute is found that is a
+   there, and the instance's kundi has an attribute by that name, the search
+   continues with the kundi attributes.  If a kundi attribute is found that is a
    user-defined function object, it is transformed into an instance method
    object whose :attr:`__self__` attribute is the instance.  Static method and
-   class method objects are also transformed; see above under "Classes".  See
+   kundi method objects are also transformed; see above under "Classes".  See
    section :ref:`descriptors` for another way in which attributes of a class
-   retrieved via its instances may differ from the objects actually stored in
-   the class's :attr:`~object.__dict__`.  If no class attribute is found, and the
-   object's class has a :meth:`__getattr__` method, that is called to satisfy
+   retrieved via its instances may differ kutoka the objects actually stored in
+   the class's :attr:`~object.__dict__`.  If no kundi attribute is found, and the
+   object's kundi has a :meth:`__getattr__` method, that is called to satisfy
    the lookup.
 
-   .. index:: triple: class instance; attribute; assignment
+   .. index:: triple: kundi instance; attribute; assignment
 
    Attribute assignments and deletions update the instance's dictionary, never a
-   class's dictionary.  If the class has a :meth:`__setattr__` or
+   class's dictionary.  If the kundi has a :meth:`__setattr__` or
    :meth:`__delattr__` method, this is called instead of updating the instance
    dictionary directly.
 
@@ -921,9 +921,9 @@ Internal types
       representing the sequence of bytecode instructions; :attr:`co_consts` is
       a tuple containing the literals used by the bytecode; :attr:`co_names` is
       a tuple containing the names used by the bytecode; :attr:`co_filename` is
-      the filename from which the code was compiled; :attr:`co_firstlineno` is
+      the filename kutoka which the code was compiled; :attr:`co_firstlineno` is
       the first line number of the function; :attr:`co_lnotab` is a string
-      encoding the mapping from bytecode offsets to line numbers (for details
+      encoding the mapping kutoka bytecode offsets to line numbers (for details
       see the source code of the interpreter); :attr:`co_stacksize` is the
       required stack size (including local variables); :attr:`co_flags` is an
       integer encoding a number of flags for the interpreter.
@@ -936,7 +936,7 @@ Internal types
       ``**keywords`` syntax to accept arbitrary keyword arguments; bit ``0x20`` is set
       if the function is a generator.
 
-      Future feature declarations (``from __future__ import division``) also use bits
+      Future feature declarations (``kutoka __future__ agiza division``) also use bits
       in :attr:`co_flags` to indicate whether a code object was compiled with a
       particular feature enabled: bit ``0x2000`` is set if the function was compiled
       with future division enabled; bits ``0x10`` and ``0x1000`` were used in earlier
@@ -990,7 +990,7 @@ Internal types
       function escape to the function being traced.
 
       :attr:`f_lineno` is the current line number of the frame --- writing to this
-      from within a trace function jumps to the given line (only for the bottom-most
+      kutoka within a trace function jumps to the given line (only for the bottom-most
       frame).  A debugger can implement a Jump command (aka Set Next Statement)
       by writing to f_lineno.
 
@@ -1052,7 +1052,7 @@ Internal types
       :attr:`tb_frame` points to the execution frame of the current level;
       :attr:`tb_lineno` gives the line number where the exception occurred;
       :attr:`tb_lasti` indicates the precise instruction.
-      The line number and last instruction in the traceback may differ from the
+      The line number and last instruction in the traceback may differ kutoka the
       line number of its frame object if the exception occurred in a
       :keyword:`try` statement with no matching except clause or with a
       finally clause.
@@ -1065,7 +1065,7 @@ Internal types
       there is no next level.
 
       .. versionchanged:: 3.7
-         Traceback objects can now be explicitly instantiated from Python code,
+         Traceback objects can now be explicitly instantiated kutoka Python code,
          and the ``tb_next`` attribute of existing instances can be updated.
 
    Slice objects
@@ -1098,16 +1098,16 @@ Internal types
       Static method objects provide a way of defeating the transformation of function
       objects to method objects described above. A static method object is a wrapper
       around any other object, usually a user-defined method object. When a static
-      method object is retrieved from a class or a class instance, the object actually
+      method object is retrieved kutoka a kundi or a kundi instance, the object actually
       returned is the wrapped object, which is not subject to any further
       transformation. Static method objects are not themselves callable, although the
       objects they wrap usually are. Static method objects are created by the built-in
       :func:`staticmethod` constructor.
 
    Class method objects
-      A class method object, like a static method object, is a wrapper around another
-      object that alters the way in which that object is retrieved from classes and
-      class instances. The behaviour of class method objects upon such retrieval is
+      A kundi method object, like a static method object, is a wrapper around another
+      object that alters the way in which that object is retrieved kutoka classes and
+      kundi instances. The behaviour of kundi method objects upon such retrieval is
       described above, under "User-defined methods". Class method objects are created
       by the built-in :func:`classmethod` constructor.
 
@@ -1121,23 +1121,23 @@ Special method names
    pair: operator; overloading
    single: __getitem__() (mapping object method)
 
-A class can implement certain operations that are invoked by special syntax
+A kundi can implement certain operations that are invoked by special syntax
 (such as arithmetic operations or subscripting and slicing) by defining methods
 with special names. This is Python's approach to :dfn:`operator overloading`,
 allowing classes to define their own behavior with respect to language
-operators.  For instance, if a class defines a method named :meth:`__getitem__`,
+operators.  For instance, if a kundi defines a method named :meth:`__getitem__`,
 and ``x`` is an instance of this class, then ``x[i]`` is roughly equivalent
 to ``type(x).__getitem__(x, i)``.  Except where mentioned, attempts to execute an
 operation raise an exception when no appropriate method is defined (typically
 :exc:`AttributeError` or :exc:`TypeError`).
 
 Setting a special method to ``None`` indicates that the corresponding
-operation is not available.  For example, if a class sets
-:meth:`__iter__` to ``None``, the class is not iterable, so calling
+operation is not available.  For example, if a kundi sets
+:meth:`__iter__` to ``None``, the kundi is not iterable, so calling
 :func:`iter` on its instances will raise a :exc:`TypeError` (without
 falling back to :meth:`__getitem__`). [#]_
 
-When implementing a class that emulates any built-in type, it is important that
+When implementing a kundi that emulates any built-in type, it is important that
 the emulation only be implemented to the degree that it makes sense for the
 object being modelled.  For example, some sequences may work well with retrieval
 of individual elements, but extracting a slice may not make sense.  (One example
@@ -1154,20 +1154,20 @@ Basic customization
 
    .. index:: pair: subclassing; immutable types
 
-   Called to create a new instance of class *cls*.  :meth:`__new__` is a static
+   Called to create a new instance of kundi *cls*.  :meth:`__new__` is a static
    method (special-cased so you need not declare it as such) that takes the class
    of which an instance was requested as its first argument.  The remaining
    arguments are those passed to the object constructor expression (the call to the
    class).  The return value of :meth:`__new__` should be the new object instance
    (usually an instance of *cls*).
 
-   Typical implementations create a new instance of the class by invoking the
+   Typical implementations create a new instance of the kundi by invoking the
    superclass's :meth:`__new__` method using ``super().__new__(cls[, ...])``
    with appropriate arguments and then modifying the newly-created instance
    as necessary before returning it.
 
    If :meth:`__new__` is invoked during object construction and it returns an
-   instance or subclass of *cls*, then the new instance’s :meth:`__init__` method
+   instance or subkundi of *cls*, then the new instance’s :meth:`__init__` method
    will be invoked like ``__init__(self[, ...])``, where *self* is the new instance
    and the remaining arguments are the same as were passed to the object constructor.
 
@@ -1176,7 +1176,7 @@ Basic customization
 
    :meth:`__new__` is intended mainly to allow subclasses of immutable types (like
    int, str, or tuple) to customize instance creation.  It is also commonly
-   overridden in custom metaclasses in order to customize class creation.
+   overridden in custom metaclasses in order to customize kundi creation.
 
 
 .. method:: object.__init__(self[, ...])
@@ -1185,9 +1185,9 @@ Basic customization
 
    Called after the instance has been created (by :meth:`__new__`), but before
    it is returned to the caller.  The arguments are those passed to the
-   class constructor expression.  If a base class has an :meth:`__init__`
+   kundi constructor expression.  If a base kundi has an :meth:`__init__`
    method, the derived class's :meth:`__init__` method, if any, must explicitly
-   call it to ensure proper initialization of the base class part of the
+   call it to ensure proper initialization of the base kundi part of the
    instance; for example: ``super().__init__([args...])``.
 
    Because :meth:`__new__` and :meth:`__init__` work together in constructing
@@ -1204,10 +1204,10 @@ Basic customization
       statement: del
 
    Called when the instance is about to be destroyed.  This is also called a
-   finalizer or (improperly) a destructor.  If a base class has a
+   finalizer or (improperly) a destructor.  If a base kundi has a
    :meth:`__del__` method, the derived class's :meth:`__del__` method,
    if any, must explicitly call it to ensure proper deletion of the base
-   class part of the instance.
+   kundi part of the instance.
 
    It is possible (though not recommended!) for the :meth:`__del__` method
    to postpone destruction of the instance by creating a new reference to
@@ -1227,7 +1227,7 @@ Basic customization
 
    .. impl-detail::
       It is possible for a reference cycle to prevent the reference count
-      of an object from going to zero.  In this case, the cycle will be
+      of an object kutoka going to zero.  In this case, the cycle will be
       later detected and deleted by the :term:`cyclic garbage collector
       <garbage collection>`.  A common cause of reference cycles is when
       an exception has been caught in a local variable.  The frame's
@@ -1245,7 +1245,7 @@ Basic customization
       is printed to ``sys.stderr`` instead.  In particular:
 
       * :meth:`__del__` can be invoked when arbitrary code is being executed,
-        including from any arbitrary thread.  If :meth:`__del__` needs to take
+        including kutoka any arbitrary thread.  If :meth:`__del__` needs to take
         a lock or invoke any other blocking resource, it may deadlock as
         the resource may already be taken by the code that gets interrupted
         to execute :meth:`__del__`.
@@ -1254,7 +1254,7 @@ Basic customization
         consequence, the global variables it needs to access (including other
         modules) may already have been deleted or set to ``None``. Python
         guarantees that globals whose name begins with a single underscore
-        are deleted from their module before other globals are deleted; if
+        are deleted kutoka their module before other globals are deleted; if
         no other references to such globals exist, this may help in assuring
         that imported modules are still available at the time when the
         :meth:`__del__` method is called.
@@ -1270,9 +1270,9 @@ Basic customization
    valid Python expression that could be used to recreate an object with the
    same value (given an appropriate environment).  If this is not possible, a
    string of the form ``<...some useful description...>`` should be returned.
-   The return value must be a string object. If a class defines :meth:`__repr__`
+   The return value must be a string object. If a kundi defines :meth:`__repr__`
    but not :meth:`__str__`, then :meth:`__repr__` is also used when an
-   "informal" string representation of instances of that class is required.
+   "informal" string representation of instances of that kundi is required.
 
    This is typically used for debugging, so it is important that the representation
    is information-rich and unambiguous.
@@ -1290,7 +1290,7 @@ Basic customization
    printable string representation of an object.  The return value must be a
    :ref:`string <textseq>` object.
 
-   This method differs from :meth:`object.__repr__` in that there is no
+   This method differs kutoka :meth:`object.__repr__` in that there is no
    expectation that :meth:`__str__` return a valid Python expression: a more
    convenient or concise representation can be used.
 
@@ -1366,7 +1366,7 @@ Basic customization
    inverts the result unless it is ``NotImplemented``.  There are no other
    implied relationships among the comparison operators, for example,
    the truth of ``(x<y or x==y)`` does not imply ``x<=y``.
-   To automatically generate ordering operations from a single root operation,
+   To automatically generate ordering operations kutoka a single root operation,
    see :func:`functools.total_ordering`.
 
    See the paragraph on :meth:`__hash__` for
@@ -1379,7 +1379,7 @@ Basic customization
    :meth:`__le__` and :meth:`__ge__` are each other's reflection, and
    :meth:`__eq__` and :meth:`__ne__` are their own reflection.
    If the operands are of different types, and right operand's type is
-   a direct or indirect subclass of the left operand's type,
+   a direct or indirect subkundi of the left operand's type,
    the reflected method of the right operand has priority, otherwise
    the left operand's method has priority.  Virtual subclassing is
    not considered.
@@ -1403,18 +1403,18 @@ Basic customization
 
    .. note::
 
-     :func:`hash` truncates the value returned from an object's custom
+     :func:`hash` truncates the value returned kutoka an object's custom
      :meth:`__hash__` method to the size of a :c:type:`Py_ssize_t`.  This is
      typically 8 bytes on 64-bit builds and 4 bytes on 32-bit builds.  If an
      object's   :meth:`__hash__` must interoperate on builds of different bit
      sizes, be sure to check the width on all supported builds.  An easy way
      to do this is with
-     ``python -c "import sys; print(sys.hash_info.width)"``.
+     ``python -c "agiza sys; print(sys.hash_info.width)"``.
 
-   If a class does not define an :meth:`__eq__` method it should not define a
+   If a kundi does not define an :meth:`__eq__` method it should not define a
    :meth:`__hash__` operation either; if it defines :meth:`__eq__` but not
    :meth:`__hash__`, its instances will not be usable as items in hashable
-   collections.  If a class defines mutable objects and implements an
+   collections.  If a kundi defines mutable objects and implements an
    :meth:`__eq__` method, it should not implement :meth:`__hash__`, since the
    implementation of hashable collections requires that a key's hash value is
    immutable (if the object's hash value changes, it will be in the wrong hash
@@ -1425,20 +1425,20 @@ Basic customization
    and ``x.__hash__()`` returns an appropriate value such that ``x == y``
    implies both that ``x is y`` and ``hash(x) == hash(y)``.
 
-   A class that overrides :meth:`__eq__` and does not define :meth:`__hash__`
+   A kundi that overrides :meth:`__eq__` and does not define :meth:`__hash__`
    will have its :meth:`__hash__` implicitly set to ``None``.  When the
-   :meth:`__hash__` method of a class is ``None``, instances of the class will
+   :meth:`__hash__` method of a kundi is ``None``, instances of the kundi will
    raise an appropriate :exc:`TypeError` when a program attempts to retrieve
    their hash value, and will also be correctly identified as unhashable when
    checking ``isinstance(obj, collections.abc.Hashable)``.
 
-   If a class that overrides :meth:`__eq__` needs to retain the implementation
-   of :meth:`__hash__` from a parent class, the interpreter must be told this
+   If a kundi that overrides :meth:`__eq__` needs to retain the implementation
+   of :meth:`__hash__` kutoka a parent class, the interpreter must be told this
    explicitly by setting ``__hash__ = <ParentClass>.__hash__``.
 
-   If a class that does not override :meth:`__eq__` wishes to suppress hash
-   support, it should include ``__hash__ = None`` in the class definition.
-   A class which defines its own :meth:`__hash__` that explicitly raises
+   If a kundi that does not override :meth:`__eq__` wishes to suppress hash
+   support, it should include ``__hash__ = None`` in the kundi definition.
+   A kundi which defines its own :meth:`__hash__` that explicitly raises
    a :exc:`TypeError` would be incorrectly identified as hashable by
    an ``isinstance(obj, collections.abc.Hashable)`` call.
 
@@ -1472,7 +1472,7 @@ Basic customization
    Called to implement truth value testing and the built-in operation
    ``bool()``; should return ``False`` or ``True``.  When this method is not
    defined, :meth:`__len__` is called, if it is defined, and the object is
-   considered true if its result is nonzero.  If a class defines neither
+   considered true if its result is nonzero.  If a kundi defines neither
    :meth:`__len__` nor :meth:`__bool__`, all its instances are considered
    true.
 
@@ -1483,7 +1483,7 @@ Customizing attribute access
 ----------------------------
 
 The following methods can be defined to customize the meaning of attribute
-access (use of, assignment to, or deletion of ``x.name``) for class instances.
+access (use of, assignment to, or deletion of ``x.name``) for kundi instances.
 
 .. XXX explain how descriptors interfere here!
 
@@ -1492,7 +1492,7 @@ access (use of, assignment to, or deletion of ``x.name``) for class instances.
 
    Called when the default attribute access fails with an :exc:`AttributeError`
    (either :meth:`__getattribute__` raises an :exc:`AttributeError` because
-   *name* is not an instance attribute or an attribute in the class tree
+   *name* is not an instance attribute or an attribute in the kundi tree
    for ``self``; or :meth:`__get__` of a *name* property raises
    :exc:`AttributeError`).  This method should either return the (computed)
    attribute value or raise an :exc:`AttributeError` exception.
@@ -1511,7 +1511,7 @@ access (use of, assignment to, or deletion of ``x.name``) for class instances.
 .. method:: object.__getattribute__(self, name)
 
    Called unconditionally to implement attribute accesses for instances of the
-   class. If the class also defines :meth:`__getattr__`, the latter will not be
+   class. If the kundi also defines :meth:`__getattr__`, the latter will not be
    called unless :meth:`__getattribute__` either calls it explicitly or raises an
    :exc:`AttributeError`. This method should return the (computed) attribute value
    or raise an :exc:`AttributeError` exception. In order to avoid infinite
@@ -1533,7 +1533,7 @@ access (use of, assignment to, or deletion of ``x.name``) for class instances.
    *name* is the attribute name, *value* is the value to be assigned to it.
 
    If :meth:`__setattr__` wants to assign to an instance attribute, it should
-   call the base class method with the same name, for example,
+   call the base kundi method with the same name, for example,
    ``object.__setattr__(self, name, value)``.
 
 
@@ -1572,12 +1572,12 @@ function overrides the standard :func:`dir` search on a module.
 
 For a more fine grained customization of the module behavior (setting
 attributes, properties, etc.), one can set the ``__class__`` attribute of
-a module object to a subclass of :class:`types.ModuleType`. For example::
+a module object to a subkundi of :class:`types.ModuleType`. For example::
 
-   import sys
-   from types import ModuleType
+   agiza sys
+   kutoka types agiza ModuleType
 
-   class VerboseModule(ModuleType):
+   kundi VerboseModule(ModuleType):
        def __repr__(self):
            return f'Verbose {self.__name__}'
 
@@ -1610,9 +1610,9 @@ a module object to a subclass of :class:`types.ModuleType`. For example::
 Implementing Descriptors
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following methods only apply when an instance of the class containing the
-method (a so-called *descriptor* class) appears in an *owner* class (the
-descriptor must be in either the owner's class dictionary or in the class
+The following methods only apply when an instance of the kundi containing the
+method (a so-called *descriptor* class) appears in an *owner* kundi (the
+descriptor must be in either the owner's kundi dictionary or in the class
 dictionary for one of its parents).  In the examples below, "the attribute"
 refers to the attribute whose name is the key of the property in the owner
 class' :attr:`~object.__dict__`.
@@ -1620,8 +1620,8 @@ class' :attr:`~object.__dict__`.
 
 .. method:: object.__get__(self, instance, owner=None)
 
-   Called to get the attribute of the owner class (class attribute access) or
-   of an instance of that class (instance attribute access). The optional
+   Called to get the attribute of the owner kundi (kundi attribute access) or
+   of an instance of that kundi (instance attribute access). The optional
    *owner* argument is the owner class, while *instance* is the instance that
    the attribute was accessed through, or ``None`` when the attribute is
    accessed through the *owner*.
@@ -1638,7 +1638,7 @@ class' :attr:`~object.__dict__`.
 
 .. method:: object.__set__(self, instance, value)
 
-   Called to set the attribute on an instance *instance* of the owner class to a
+   Called to set the attribute on an instance *instance* of the owner kundi to a
    new value, *value*.
 
    Note, adding :meth:`__set__` or :meth:`__delete__` changes the kind of
@@ -1652,15 +1652,15 @@ class' :attr:`~object.__dict__`.
 
 .. method:: object.__set_name__(self, owner, name)
 
-   Called at the time the owning class *owner* is created. The
+   Called at the time the owning kundi *owner* is created. The
    descriptor has been assigned to *name*.
 
    .. versionadded:: 3.6
 
 
 The attribute :attr:`__objclass__` is interpreted by the :mod:`inspect` module
-as specifying the class where this object was defined (setting this
-appropriately can assist in runtime introspection of dynamic class attributes).
+as specifying the kundi where this object was defined (setting this
+appropriately can assist in runtime introspection of dynamic kundi attributes).
 For callables, it may indicate that an instance of the given type (or a
 subclass) is expected or required as the first positional argument (for example,
 CPython sets this attribute for unbound methods that are implemented in C).
@@ -1677,7 +1677,7 @@ protocol:  :meth:`__get__`, :meth:`__set__`, and :meth:`__delete__`. If any of
 those methods are defined for an object, it is said to be a descriptor.
 
 The default behavior for attribute access is to get, set, or delete the
-attribute from an object's dictionary. For instance, ``a.x`` has a lookup chain
+attribute kutoka an object's dictionary. For instance, ``a.x`` has a lookup chain
 starting with ``a.__dict__['x']``, then ``type(a).__dict__['x']``, and
 continuing through the base classes of ``type(a)`` excluding metaclasses.
 
@@ -1703,7 +1703,7 @@ Class Binding
 
 Super Binding
    If ``a`` is an instance of :class:`super`, then the binding ``super(B, obj).m()``
-   searches ``obj.__class__.__mro__`` for the base class ``A``
+   searches ``obj.__class__.__mro__`` for the base kundi ``A``
    immediately preceding ``B`` and then invokes the descriptor with the call:
    ``A.__dict__['m'].__get__(obj, obj.__class__)``.
 
@@ -1723,7 +1723,7 @@ instances.
 Python methods (including :func:`staticmethod` and :func:`classmethod`) are
 implemented as non-data descriptors.  Accordingly, instances can redefine and
 override methods.  This allows individual instances to acquire behaviors that
-differ from other instances of the same class.
+differ kutoka other instances of the same class.
 
 The :func:`property` function is implemented as a data descriptor. Accordingly,
 instances cannot override the behavior of a property.
@@ -1743,7 +1743,7 @@ Attribute lookup speed can be significantly improved as well.
 
 .. data:: object.__slots__
 
-   This class variable can be assigned a string, iterable, or sequence of
+   This kundi variable can be assigned a string, iterable, or sequence of
    strings with variable names used by instances.  *__slots__* reserves space
    for the declared variables and prevents the automatic creation of *__dict__*
    and *__weakref__* for each instance.
@@ -1752,7 +1752,7 @@ Attribute lookup speed can be significantly improved as well.
 Notes on using *__slots__*
 """"""""""""""""""""""""""
 
-* When inheriting from a class without *__slots__*, the *__dict__* and
+* When inheriting kutoka a kundi without *__slots__*, the *__dict__* and
   *__weakref__* attribute of the instances will always be accessible.
 
 * Without a *__dict__* variable, instances cannot be assigned new variables not
@@ -1766,10 +1766,10 @@ Notes on using *__slots__*
   support is needed, then add ``'__weakref__'`` to the sequence of strings in the
   *__slots__* declaration.
 
-* *__slots__* are implemented at the class level by creating descriptors
-  (:ref:`descriptors`) for each variable name.  As a result, class attributes
+* *__slots__* are implemented at the kundi level by creating descriptors
+  (:ref:`descriptors`) for each variable name.  As a result, kundi attributes
   cannot be used to set default values for instance variables defined by
-  *__slots__*; otherwise, the class attribute would overwrite the descriptor
+  *__slots__*; otherwise, the kundi attribute would overwrite the descriptor
   assignment.
 
 * The action of a *__slots__* declaration is not limited to the class
@@ -1778,12 +1778,12 @@ Notes on using *__slots__*
   *__weakref__* unless they also define *__slots__* (which should only
   contain names of any *additional* slots).
 
-* If a class defines a slot also defined in a base class, the instance variable
-  defined by the base class slot is inaccessible (except by retrieving its
-  descriptor directly from the base class). This renders the meaning of the
+* If a kundi defines a slot also defined in a base class, the instance variable
+  defined by the base kundi slot is inaccessible (except by retrieving its
+  descriptor directly kutoka the base class). This renders the meaning of the
   program undefined.  In the future, a check may be added to prevent this.
 
-* Nonempty *__slots__* does not work for classes derived from "variable-length"
+* Nonempty *__slots__* does not work for classes derived kutoka "variable-length"
   built-in types such as :class:`int`, :class:`bytes` and :class:`tuple`.
 
 * Any non-string iterable may be assigned to *__slots__*. Mappings may also be
@@ -1799,34 +1799,34 @@ Notes on using *__slots__*
 
 .. _class-customization:
 
-Customizing class creation
+Customizing kundi creation
 --------------------------
 
-Whenever a class inherits from another class, *__init_subclass__* is
+Whenever a kundi inherits kutoka another class, *__init_subclass__* is
 called on that class. This way, it is possible to write classes which
 change the behavior of subclasses. This is closely related to class
-decorators, but where class decorators only affect the specific class they're
+decorators, but where kundi decorators only affect the specific kundi they're
 applied to, ``__init_subclass__`` solely applies to future subclasses of the
-class defining the method.
+kundi defining the method.
 
 .. classmethod:: object.__init_subclass__(cls)
 
-   This method is called whenever the containing class is subclassed.
+   This method is called whenever the containing kundi is subclassed.
    *cls* is then the new subclass. If defined as a normal instance method,
-   this method is implicitly converted to a class method.
+   this method is implicitly converted to a kundi method.
 
-   Keyword arguments which are given to a new class are passed to
-   the parent's class ``__init_subclass__``. For compatibility with
+   Keyword arguments which are given to a new kundi are passed to
+   the parent's kundi ``__init_subclass__``. For compatibility with
    other classes using ``__init_subclass__``, one should take out the
    needed keyword arguments and pass the others over to the base
    class, as in::
 
-       class Philosopher:
+       kundi Philosopher:
            def __init_subclass__(cls, /, default_name, **kwargs):
                super().__init_subclass__(**kwargs)
                cls.default_name = default_name
 
-       class AustralianPhilosopher(Philosopher, default_name="Bruce"):
+       kundi AustralianPhilosopher(Philosopher, default_name="Bruce"):
            pass
 
    The default implementation ``object.__init_subclass__`` does
@@ -1834,9 +1834,9 @@ class defining the method.
 
    .. note::
 
-      The metaclass hint ``metaclass`` is consumed by the rest of the type
+      The metakundi hint ``metaclass`` is consumed by the rest of the type
       machinery, and is never passed to ``__init_subclass__`` implementations.
-      The actual metaclass (rather than the explicit hint) can be accessed as
+      The actual metakundi (rather than the explicit hint) can be accessed as
       ``type(cls)``.
 
    .. versionadded:: 3.6
@@ -1850,42 +1850,42 @@ Metaclasses
 .. index::
    single: metaclass
    builtin: type
-   single: = (equals); class definition
+   single: = (equals); kundi definition
 
-By default, classes are constructed using :func:`type`. The class body is
-executed in a new namespace and the class name is bound locally to the
+By default, classes are constructed using :func:`type`. The kundi body is
+executed in a new namespace and the kundi name is bound locally to the
 result of ``type(name, bases, namespace)``.
 
-The class creation process can be customized by passing the ``metaclass``
-keyword argument in the class definition line, or by inheriting from an
-existing class that included such an argument. In the following example,
+The kundi creation process can be customized by passing the ``metaclass``
+keyword argument in the kundi definition line, or by inheriting kutoka an
+existing kundi that included such an argument. In the following example,
 both ``MyClass`` and ``MySubclass`` are instances of ``Meta``::
 
-   class Meta(type):
+   kundi Meta(type):
        pass
 
-   class MyClass(metaclass=Meta):
+   kundi MyClass(metaclass=Meta):
        pass
 
-   class MySubclass(MyClass):
+   kundi MySubclass(MyClass):
        pass
 
-Any other keyword arguments that are specified in the class definition are
-passed through to all metaclass operations described below.
+Any other keyword arguments that are specified in the kundi definition are
+passed through to all metakundi operations described below.
 
-When a class definition is executed, the following steps occur:
+When a kundi definition is executed, the following steps occur:
 
 * MRO entries are resolved;
-* the appropriate metaclass is determined;
-* the class namespace is prepared;
-* the class body is executed;
-* the class object is created.
+* the appropriate metakundi is determined;
+* the kundi namespace is prepared;
+* the kundi body is executed;
+* the kundi object is created.
 
 
 Resolving MRO entries
 ^^^^^^^^^^^^^^^^^^^^^
 
-If a base that appears in class definition is not an instance of :class:`type`,
+If a base that appears in kundi definition is not an instance of :class:`type`,
 then an ``__mro_entries__`` method is searched on it. If found, it is called
 with the original bases tuple. This method must return a tuple of classes that
 will be used instead of this base. The tuple may be empty, in such case
@@ -1899,37 +1899,37 @@ the original base is ignored.
 Determining the appropriate metaclass
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. index::
-    single: metaclass hint
+    single: metakundi hint
 
-The appropriate metaclass for a class definition is determined as follows:
+The appropriate metakundi for a kundi definition is determined as follows:
 
-* if no bases and no explicit metaclass are given, then :func:`type` is used;
-* if an explicit metaclass is given and it is *not* an instance of
+* if no bases and no explicit metakundi are given, then :func:`type` is used;
+* if an explicit metakundi is given and it is *not* an instance of
   :func:`type`, then it is used directly as the metaclass;
 * if an instance of :func:`type` is given as the explicit metaclass, or
-  bases are defined, then the most derived metaclass is used.
+  bases are defined, then the most derived metakundi is used.
 
-The most derived metaclass is selected from the explicitly specified
-metaclass (if any) and the metaclasses (i.e. ``type(cls)``) of all specified
-base classes. The most derived metaclass is one which is a subtype of *all*
+The most derived metakundi is selected kutoka the explicitly specified
+metakundi (if any) and the metaclasses (i.e. ``type(cls)``) of all specified
+base classes. The most derived metakundi is one which is a subtype of *all*
 of these candidate metaclasses. If none of the candidate metaclasses meets
-that criterion, then the class definition will fail with ``TypeError``.
+that criterion, then the kundi definition will fail with ``TypeError``.
 
 
 .. _prepare:
 
-Preparing the class namespace
+Preparing the kundi namespace
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. index::
-    single: __prepare__ (metaclass method)
+    single: __prepare__ (metakundi method)
 
-Once the appropriate metaclass has been identified, then the class namespace
-is prepared. If the metaclass has a ``__prepare__`` attribute, it is called
+Once the appropriate metakundi has been identified, then the kundi namespace
+is prepared. If the metakundi has a ``__prepare__`` attribute, it is called
 as ``namespace = metaclass.__prepare__(name, bases, **kwds)`` (where the
-additional keyword arguments, if any, come from the class definition).
+additional keyword arguments, if any, come kutoka the kundi definition).
 
-If the metaclass has no ``__prepare__`` attribute, then the class namespace
+If the metakundi has no ``__prepare__`` attribute, then the kundi namespace
 is initialised as an empty ordered mapping.
 
 .. seealso::
@@ -1938,74 +1938,74 @@ is initialised as an empty ordered mapping.
       Introduced the ``__prepare__`` namespace hook
 
 
-Executing the class body
+Executing the kundi body
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. index::
     single: class; body
 
-The class body is executed (approximately) as
-``exec(body, globals(), namespace)``. The key difference from a normal
-call to :func:`exec` is that lexical scoping allows the class body (including
-any methods) to reference names from the current and outer scopes when the
-class definition occurs inside a function.
+The kundi body is executed (approximately) as
+``exec(body, globals(), namespace)``. The key difference kutoka a normal
+call to :func:`exec` is that lexical scoping allows the kundi body (including
+any methods) to reference names kutoka the current and outer scopes when the
+kundi definition occurs inside a function.
 
-However, even when the class definition occurs inside the function, methods
-defined inside the class still cannot see names defined at the class scope.
+However, even when the kundi definition occurs inside the function, methods
+defined inside the kundi still cannot see names defined at the kundi scope.
 Class variables must be accessed through the first parameter of instance or
-class methods, or through the implicit lexically scoped ``__class__`` reference
+kundi methods, or through the implicit lexically scoped ``__class__`` reference
 described in the next section.
 
 .. _class-object-creation:
 
-Creating the class object
+Creating the kundi object
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. index::
     single: __class__ (method cell)
-    single: __classcell__ (class namespace entry)
+    single: __classcell__ (kundi namespace entry)
 
 
-Once the class namespace has been populated by executing the class body,
-the class object is created by calling
+Once the kundi namespace has been populated by executing the kundi body,
+the kundi object is created by calling
 ``metaclass(name, bases, namespace, **kwds)`` (the additional keywords
 passed here are the same as those passed to ``__prepare__``).
 
-This class object is the one that will be referenced by the zero-argument
+This kundi object is the one that will be referenced by the zero-argument
 form of :func:`super`. ``__class__`` is an implicit closure reference
-created by the compiler if any methods in a class body refer to either
+created by the compiler if any methods in a kundi body refer to either
 ``__class__`` or ``super``. This allows the zero argument form of
-:func:`super` to correctly identify the class being defined based on
-lexical scoping, while the class or instance that was used to make the
+:func:`super` to correctly identify the kundi being defined based on
+lexical scoping, while the kundi or instance that was used to make the
 current call is identified based on the first argument passed to the method.
 
 .. impl-detail::
 
    In CPython 3.6 and later, the ``__class__`` cell is passed to the metaclass
-   as a ``__classcell__`` entry in the class namespace. If present, this must
-   be propagated up to the ``type.__new__`` call in order for the class to be
+   as a ``__classcell__`` entry in the kundi namespace. If present, this must
+   be propagated up to the ``type.__new__`` call in order for the kundi to be
    initialised correctly.
    Failing to do so will result in a :exc:`RuntimeError` in Python 3.8.
 
-When using the default metaclass :class:`type`, or any metaclass that ultimately
+When using the default metakundi :class:`type`, or any metakundi that ultimately
 calls ``type.__new__``, the following additional customisation steps are
-invoked after creating the class object:
+invoked after creating the kundi object:
 
 * first, ``type.__new__`` collects all of the descriptors in the class
   namespace that define a :meth:`~object.__set_name__` method;
 * second, all of these ``__set_name__`` methods are called with the class
   being defined and the assigned name of that particular descriptor;
 * finally, the :meth:`~object.__init_subclass__` hook is called on the
-  immediate parent of the new class in its method resolution order.
+  immediate parent of the new kundi in its method resolution order.
 
-After the class object is created, it is passed to the class decorators
-included in the class definition (if any) and the resulting object is bound
+After the kundi object is created, it is passed to the kundi decorators
+included in the kundi definition (if any) and the resulting object is bound
 in the local namespace as the defined class.
 
-When a new class is created by ``type.__new__``, the object provided as the
+When a new kundi is created by ``type.__new__``, the object provided as the
 namespace parameter is copied to a new ordered mapping and the original
 object is discarded. The new copy is wrapped in a read-only proxy, which
-becomes the :attr:`~object.__dict__` attribute of the class object.
+becomes the :attr:`~object.__dict__` attribute of the kundi object.
 
 .. seealso::
 
@@ -2022,15 +2022,15 @@ automatic property creation, proxies, frameworks, and automatic resource
 locking/synchronization.
 
 
-Customizing instance and subclass checks
+Customizing instance and subkundi checks
 ----------------------------------------
 
 The following methods are used to override the default behavior of the
 :func:`isinstance` and :func:`issubclass` built-in functions.
 
-In particular, the metaclass :class:`abc.ABCMeta` implements these methods in
+In particular, the metakundi :class:`abc.ABCMeta` implements these methods in
 order to allow the addition of Abstract Base Classes (ABCs) as "virtual base
-classes" to any class or type (including built-in types), including other
+classes" to any kundi or type (including built-in types), including other
 ABCs.
 
 .. method:: class.__instancecheck__(self, instance)
@@ -2043,12 +2043,12 @@ ABCs.
 .. method:: class.__subclasscheck__(self, subclass)
 
    Return true if *subclass* should be considered a (direct or indirect)
-   subclass of *class*.  If defined, called to implement ``issubclass(subclass,
+   subkundi of *class*.  If defined, called to implement ``issubclass(subclass,
    class)``.
 
 
 Note that these methods are looked up on the type (metaclass) of a class.  They
-cannot be defined as class methods in the actual class.  This is consistent with
+cannot be defined as kundi methods in the actual class.  This is consistent with
 the lookup of special methods that are called on instances, only in this
 case the instance is itself a class.
 
@@ -2065,7 +2065,7 @@ case the instance is itself a class.
 Emulating generic types
 -----------------------
 
-One can implement the generic class syntax as specified by :pep:`484`
+One can implement the generic kundi syntax as specified by :pep:`484`
 (for example ``List[int]``) by defining a special method:
 
 .. classmethod:: object.__class_getitem__(cls, key)
@@ -2073,8 +2073,8 @@ One can implement the generic class syntax as specified by :pep:`484`
    Return an object representing the specialization of a generic class
    by type arguments found in *key*.
 
-This method is looked up on the class object itself, and when defined in
-the class body, this method is implicitly a class method.  Note, this
+This method is looked up on the kundi object itself, and when defined in
+the kundi body, this method is implicitly a kundi method.  Note, this
 mechanism is primarily reserved for use with static type hints, other usage
 is discouraged.
 
@@ -2114,7 +2114,7 @@ range of items.  It is also recommended that mappings provide the methods
 :meth:`update` behaving similar to those for Python's standard dictionary
 objects.  The :mod:`collections.abc` module provides a
 :class:`~collections.abc.MutableMapping`
-abstract base class to help create those methods from a base set of
+abstract base kundi to help create those methods kutoka a base set of
 :meth:`__getitem__`, :meth:`__setitem__`, :meth:`__delitem__`, and :meth:`keys`.
 Mutable sequences should provide methods :meth:`append`, :meth:`count`,
 :meth:`index`, :meth:`extend`, :meth:`insert`, :meth:`pop`, :meth:`remove`,
@@ -2182,7 +2182,7 @@ through the container; for mappings, :meth:`__iter__` should be the same as
 
    Called to implement evaluation of ``self[key]``. For sequence types, the
    accepted keys should be integers and slice objects.  Note that the special
-   interpretation of negative indexes (if the class wishes to emulate a sequence
+   interpretation of negative indexes (if the kundi wishes to emulate a sequence
    type) is up to the :meth:`__getitem__` method. If *key* is of an inappropriate
    type, :exc:`TypeError` may be raised; if of a value outside the set of indexes
    for the sequence (after any special interpretation of negative values),
@@ -2209,7 +2209,7 @@ through the container; for mappings, :meth:`__iter__` should be the same as
    Called to implement deletion of ``self[key]``.  Same note as for
    :meth:`__getitem__`.  This should only be implemented for mappings if the
    objects support removal of keys, or for sequences if elements can be removed
-   from the sequence.  The same exceptions should be raised for improper *key*
+   kutoka the sequence.  The same exceptions should be raised for improper *key*
    values as for the :meth:`__getitem__` method.
 
 
@@ -2293,7 +2293,7 @@ left undefined.
    These methods are called to implement the binary arithmetic operations
    (``+``, ``-``, ``*``, ``@``, ``/``, ``//``, ``%``, :func:`divmod`,
    :func:`pow`, ``**``, ``<<``, ``>>``, ``&``, ``^``, ``|``).  For instance, to
-   evaluate the expression ``x + y``, where *x* is an instance of a class that
+   evaluate the expression ``x + y``, where *x* is an instance of a kundi that
    has an :meth:`__add__` method, ``x.__add__(y)`` is called.  The
    :meth:`__divmod__` method should be the equivalent to using
    :meth:`__floordiv__` and :meth:`__mod__`; it should not be related to
@@ -2330,7 +2330,7 @@ left undefined.
    (swapped) operands.  These functions are only called if the left operand does
    not support the corresponding operation [#]_ and the operands are of different
    types. [#]_ For instance, to evaluate the expression ``x - y``, where *y* is
-   an instance of a class that has an :meth:`__rsub__` method, ``y.__rsub__(x)``
+   an instance of a kundi that has an :meth:`__rsub__` method, ``y.__rsub__(x)``
    is called if ``x.__sub__(y)`` returns *NotImplemented*.
 
    .. index:: builtin: pow
@@ -2340,8 +2340,8 @@ left undefined.
 
    .. note::
 
-      If the right operand's type is a subclass of the left operand's type and that
-      subclass provides the reflected method for the operation, this method will be
+      If the right operand's type is a subkundi of the left operand's type and that
+      subkundi provides the reflected method for the operation, this method will be
       called before the left operand's non-reflected method.  This behavior allows
       subclasses to override their ancestors' operations.
 
@@ -2366,7 +2366,7 @@ left undefined.
    operation in-place (modifying *self*) and return the result (which could be,
    but does not have to be, *self*).  If a specific method is not defined, the
    augmented assignment falls back to the normal methods.  For instance, if *x*
-   is an instance of a class with an :meth:`__iadd__` method, ``x += y`` is
+   is an instance of a kundi with an :meth:`__iadd__` method, ``x += y`` is
    equivalent to ``x = x.__iadd__(y)`` . Otherwise, ``x.__add__(y)`` and
    ``y.__radd__(x)`` are considered, as with the evaluation of ``x + y``. In
    certain situations, augmented assignment can result in unexpected errors (see
@@ -2436,7 +2436,7 @@ With Statement Context Managers
 
 A :dfn:`context manager` is an object that defines the runtime context to be
 established when executing a :keyword:`with` statement. The context manager
-handles the entry into, and the exit from, the desired runtime context for the
+handles the entry into, and the exit kutoka, the desired runtime context for the
 execution of the block of code.  Context managers are normally invoked using the
 :keyword:`!with` statement (described in section :ref:`with`), but can also be
 used by directly invoking their methods.
@@ -2465,8 +2465,8 @@ For more information on context managers, see :ref:`typecontextmanager`.
    without an exception, all three arguments will be :const:`None`.
 
    If an exception is supplied, and the method wishes to suppress the exception
-   (i.e., prevent it from being propagated), it should return a true value.
-   Otherwise, the exception will be processed normally upon exit from this method.
+   (i.e., prevent it kutoka being propagated), it should return a true value.
+   Otherwise, the exception will be processed normally upon exit kutoka this method.
 
    Note that :meth:`__exit__` methods should not reraise the passed-in exception;
    this is the caller's responsibility.
@@ -2489,7 +2489,7 @@ to work correctly if defined on an object's type, not in the object's instance
 dictionary.  That behaviour is the reason why the following code raises an
 exception::
 
-   >>> class C:
+   >>> kundi C:
    ...     pass
    ...
    >>> c = C()
@@ -2512,8 +2512,8 @@ itself::
      File "<stdin>", line 1, in <module>
    TypeError: descriptor '__hash__' of 'int' object needs an argument
 
-Incorrectly attempting to invoke an unbound method of a class in this way is
-sometimes referred to as 'metaclass confusion', and is avoided by bypassing
+Incorrectly attempting to invoke an unbound method of a kundi in this way is
+sometimes referred to as 'metakundi confusion', and is avoided by bypassing
 the instance when looking up special methods::
 
    >>> type(1).__hash__(1) == hash(1)
@@ -2525,12 +2525,12 @@ In addition to bypassing any instance attributes in the interest of
 correctness, implicit special method lookup generally also bypasses the
 :meth:`__getattribute__` method even of the object's metaclass::
 
-   >>> class Meta(type):
+   >>> kundi Meta(type):
    ...     def __getattribute__(*args):
-   ...         print("Metaclass getattribute invoked")
+   ...         print("Metakundi getattribute invoked")
    ...         return type.__getattribute__(*args)
    ...
-   >>> class C(object, metaclass=Meta):
+   >>> kundi C(object, metaclass=Meta):
    ...     def __len__(self):
    ...         return 10
    ...     def __getattribute__(*args):
@@ -2542,7 +2542,7 @@ correctness, implicit special method lookup generally also bypasses the
    Class getattribute invoked
    10
    >>> type(c).__len__(c)          # Explicit lookup via type
-   Metaclass getattribute invoked
+   Metakundi getattribute invoked
    10
    >>> len(c)                      # Implicit lookup
    10
@@ -2565,12 +2565,12 @@ Awaitable Objects
 -----------------
 
 An :term:`awaitable` object generally implements an :meth:`__await__` method.
-:term:`Coroutine` objects returned from :keyword:`async def` functions
+:term:`Coroutine` objects returned kutoka :keyword:`async def` functions
 are awaitable.
 
 .. note::
 
-   The :term:`generator iterator` objects returned from generators
+   The :term:`generator iterator` objects returned kutoka generators
    decorated with :func:`types.coroutine` or :func:`asyncio.coroutine`
    are also awaitable, but they do not implement :meth:`__await__`.
 
@@ -2661,7 +2661,7 @@ Asynchronous iterators can be used in an :keyword:`async for` statement.
 
 An example of an asynchronous iterable object::
 
-    class Reader:
+    kundi Reader:
         async def readline(self):
             ...
 
@@ -2708,7 +2708,7 @@ Asynchronous context managers can be used in an :keyword:`async with` statement.
 
 An example of an asynchronous context manager class::
 
-    class AsyncContextManager:
+    kundi AsyncContextManager:
         async def __aenter__(self):
             await log('entering context')
 
@@ -2729,7 +2729,7 @@ An example of an asynchronous context manager class::
    will still raise a :exc:`TypeError`, but may do so by relying on
    the behavior that ``None`` is not callable.
 
-.. [#] "Does not support" here means that the class has no such method, or
+.. [#] "Does not support" here means that the kundi has no such method, or
    the method returns ``NotImplemented``.  Do not set the method to
    ``None`` if you want to force fallback to the right operand's reflected
    method—that will instead have the opposite effect of explicitly

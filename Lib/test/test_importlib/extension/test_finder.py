@@ -7,19 +7,19 @@ agiza unittest
 agiza warnings
 
 
-class FinderTests(abc.FinderTests):
+kundi FinderTests(abc.FinderTests):
 
     """Test the finder for extension modules."""
 
-    def find_module(self, fullname):
+    eleza find_module(self, fullname):
         importer = self.machinery.FileFinder(util.EXTENSIONS.path,
                                             (self.machinery.ExtensionFileLoader,
                                              self.machinery.EXTENSION_SUFFIXES))
         with warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
-            return importer.find_module(fullname)
+            rudisha importer.find_module(fullname)
 
-    def test_module(self):
+    eleza test_module(self):
         self.assertTrue(self.find_module(util.EXTENSIONS.name))
 
     # No extension module as an __init__ available for testing.
@@ -31,7 +31,7 @@ class FinderTests(abc.FinderTests):
     # Extension modules cannot be an __init__ for a package.
     test_package_over_module = None
 
-    def test_failure(self):
+    eleza test_failure(self):
         self.assertIsNone(self.find_module('asdfjkl;'))
 
 
@@ -40,5 +40,5 @@ class FinderTests(abc.FinderTests):
  ) = util.test_both(FinderTests, machinery=machinery)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

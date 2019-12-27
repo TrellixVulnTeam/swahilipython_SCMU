@@ -22,7 +22,7 @@ import unittest
 #
 # In this case, there would have to be an additional reference to the argument...
 
-import _ctypes_test
+agiza _ctypes_test
 testdll = CDLL(_ctypes_test.__file__)
 
 # Return machine address `a` as a (possibly long) non-negative integer.

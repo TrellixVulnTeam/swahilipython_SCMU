@@ -52,7 +52,7 @@ Fetching URLs
 
 The simplest way to use urllib.request is as follows::
 
-    import urllib.request
+    agiza urllib.request
     with urllib.request.urlopen('http://python.org/') as response:
        html = response.read()
 
@@ -60,9 +60,9 @@ If you wish to retrieve a resource via URL and store it in a temporary
 location, you can do so via the :func:`shutil.copyfileobj` and
 :func:`tempfile.NamedTemporaryFile` functions::
 
-    import shutil
-    import tempfile
-    import urllib.request
+    agiza shutil
+    agiza tempfile
+    agiza urllib.request
 
     with urllib.request.urlopen('http://python.org/') as response:
         with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
@@ -84,7 +84,7 @@ Request object returns a response object for the URL requested. This response is
 a file-like object, which means you can for example call ``.read()`` on the
 response::
 
-    import urllib.request
+    agiza urllib.request
 
     req = urllib.request.Request('http://www.voidspace.org.uk')
     with urllib.request.urlopen(req) as response:
@@ -108,14 +108,14 @@ Sometimes you want to send data to a URL (often the URL will refer to a CGI
 (Common Gateway Interface) script or other web application). With HTTP,
 this is often done using what's known as a **POST** request. This is often what
 your browser does when you submit a HTML form that you filled in on the web. Not
-all POSTs have to come from forms: you can use a POST to transmit arbitrary data
+all POSTs have to come kutoka forms: you can use a POST to transmit arbitrary data
 to your own application. In the common case of HTML forms, the data needs to be
 encoded in a standard way, and then passed to the Request object as the ``data``
-argument. The encoding is done using a function from the :mod:`urllib.parse`
+argument. The encoding is done using a function kutoka the :mod:`urllib.parse`
 library. ::
 
-    import urllib.parse
-    import urllib.request
+    agiza urllib.parse
+    agiza urllib.request
 
     url = 'http://www.someserver.com/cgi-bin/register.cgi'
     values = {'name' : 'Michael Foord',
@@ -128,7 +128,7 @@ library. ::
     with urllib.request.urlopen(req) as response:
        the_page = response.read()
 
-Note that other encodings are sometimes required (e.g. for file upload from HTML
+Note that other encodings are sometimes required (e.g. for file upload kutoka HTML
 forms - see `HTML Specification, Form Submission
 <https://www.w3.org/TR/REC-html40/interact/forms.html#h-17.13>`_ for more
 details).
@@ -139,20 +139,20 @@ way in which GET and POST requests differ is that POST requests often have
 placing an order with the website for a hundredweight of tinned spam to be
 delivered to your door).  Though the HTTP standard makes it clear that POSTs are
 intended to *always* cause side-effects, and GET requests *never* to cause
-side-effects, nothing prevents a GET request from having side-effects, nor a
-POST requests from having no side-effects. Data can also be passed in an HTTP
+side-effects, nothing prevents a GET request kutoka having side-effects, nor a
+POST requests kutoka having no side-effects. Data can also be passed in an HTTP
 GET request by encoding it in the URL itself.
 
 This is done as follows::
 
-    >>> import urllib.request
-    >>> import urllib.parse
+    >>> agiza urllib.request
+    >>> agiza urllib.parse
     >>> data = {}
     >>> data['name'] = 'Somebody Here'
     >>> data['location'] = 'Northampton'
     >>> data['language'] = 'Python'
     >>> url_values = urllib.parse.urlencode(data)
-    >>> print(url_values)  # The order may differ from below.  #doctest: +SKIP
+    >>> print(url_values)  # The order may differ kutoka below.  #doctest: +SKIP
     name=Somebody+Here&language=Python&location=Northampton
     >>> url = 'http://www.example.com/example.cgi'
     >>> full_url = url + '?' + url_values
@@ -178,8 +178,8 @@ pass a dictionary of headers in. The following example makes the same
 request as above, but identifies itself as a version of Internet
 Explorer [#]_. ::
 
-    import urllib.parse
-    import urllib.request
+    agiza urllib.parse
+    agiza urllib.request
 
     url = 'http://www.someserver.com/cgi-bin/register.cgi'
     user_agent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'
@@ -205,10 +205,10 @@ Handling Exceptions
 usual with Python APIs, built-in exceptions such as :exc:`ValueError`,
 :exc:`TypeError` etc. may also be raised).
 
-:exc:`HTTPError` is the subclass of :exc:`URLError` raised in the specific case of
+:exc:`HTTPError` is the subkundi of :exc:`URLError` raised in the specific case of
 HTTP URLs.
 
-The exception classes are exported from the :mod:`urllib.error` module.
+The exception classes are exported kutoka the :mod:`urllib.error` module.
 
 URLError
 --------
@@ -231,10 +231,10 @@ e.g. ::
 HTTPError
 ---------
 
-Every HTTP response from the server contains a numeric "status code". Sometimes
+Every HTTP response kutoka the server contains a numeric "status code". Sometimes
 the status code indicates that the server is unable to fulfil the request. The
 default handlers will handle some of these responses for you (for example, if
-the response is a "redirection" that requests the client fetch the document from
+the response is a "redirection" that requests the client fetch the document kutoka
 a different URL, urllib will handle that for you). For those it can't handle,
 urlopen will raise an :exc:`HTTPError`. Typical errors include '404' (page not
 found), '403' (request forbidden), and '401' (authentication required).
@@ -266,7 +266,7 @@ dictionary is reproduced here for convenience ::
         201: ('Created', 'Document created, URL follows'),
         202: ('Accepted',
               'Request accepted, processing continues off-line'),
-        203: ('Non-Authoritative Information', 'Request fulfilled from cache'),
+        203: ('Non-Authoritative Information', 'Request fulfilled kutoka cache'),
         204: ('No Content', 'Request fulfilled, nothing follows'),
         205: ('Reset Content', 'Clear input form for further input.'),
         206: ('Partial Content', 'Partial content follows.'),
@@ -315,7 +315,7 @@ dictionary is reproduced here for convenience ::
         500: ('Internal Server Error', 'Server got itself in trouble'),
         501: ('Not Implemented',
               'Server does not support this operation'),
-        502: ('Bad Gateway', 'Invalid responses from another server/proxy.'),
+        502: ('Bad Gateway', 'Invalid responses kutoka another server/proxy.'),
         503: ('Service Unavailable',
               'The server cannot process the request due to a high load'),
         504: ('Gateway Timeout',
@@ -354,8 +354,8 @@ Number 1
 ::
 
 
-    from urllib.request import Request, urlopen
-    from urllib.error import URLError, HTTPError
+    kutoka urllib.request agiza Request, urlopen
+    kutoka urllib.error agiza URLError, HTTPError
     req = Request(someurl)
     try:
         response = urlopen(req)
@@ -379,8 +379,8 @@ Number 2
 
 ::
 
-    from urllib.request import Request, urlopen
-    from urllib.error import URLError
+    kutoka urllib.request agiza Request, urlopen
+    kutoka urllib.error agiza URLError
     req = Request(someurl)
     try:
         response = urlopen(req)
@@ -479,7 +479,7 @@ authentication'. In order to simplify this process we can create an instance of
 
 The ``HTTPBasicAuthHandler`` uses an object called a password manager to handle
 the mapping of URLs and realms to passwords and usernames. If you know what the
-realm is (from the authentication header sent by the server), then you can use a
+realm is (kutoka the authentication header sent by the server), then you can use a
 ``HTTPPasswordMgr``. Frequently one doesn't care what the realm is. In that
 case, it is convenient to use ``HTTPPasswordMgrWithDefaultRealm``. This allows
 you to specify a default username and password for a URL. This will be supplied
@@ -557,7 +557,7 @@ setting up a `Basic Authentication`_ handler: ::
 Sockets and Layers
 ==================
 
-The Python support for fetching resources from the web is layered.  urllib uses
+The Python support for fetching resources kutoka the web is layered.  urllib uses
 the :mod:`http.client` library, which in turn uses the socket library.
 
 As of Python 2.3 you can specify how long a socket should wait for a response
@@ -566,8 +566,8 @@ pages. By default the socket module has *no timeout* and can hang. Currently,
 the socket timeout is not exposed at the http.client or urllib.request levels.
 However, you can set the default timeout globally for all sockets using ::
 
-    import socket
-    import urllib.request
+    agiza socket
+    agiza urllib.request
 
     # timeout in seconds
     timeout = 10
@@ -598,7 +598,7 @@ This document was reviewed and revised by John Lee.
 .. [#] In my case I have to use a proxy to access the internet at work. If you
        attempt to fetch *localhost* URLs through this proxy it blocks them. IE
        is set to use the proxy, which urllib picks up on. In order to test
-       scripts with a localhost server, I have to prevent urllib from using
+       scripts with a localhost server, I have to prevent urllib kutoka using
        the proxy.
 .. [#] urllib opener for SSL proxy (CONNECT method): `ASPN Cookbook Recipe
        <https://code.activestate.com/recipes/456195/>`_.

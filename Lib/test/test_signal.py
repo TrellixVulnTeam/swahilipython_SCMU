@@ -16,28 +16,28 @@ except ImportError:
     _testcapi = None
 
 
-class GenericTests(unittest.TestCase):
+kundi GenericTests(unittest.TestCase):
 
-    def test_enums(self):
+    eleza test_enums(self):
         for name in dir(signal):
             sig = getattr(signal, name)
-            if name in {'SIG_DFL', 'SIG_IGN'}:
+            ikiwa name in {'SIG_DFL', 'SIG_IGN'}:
                 self.assertIsInstance(sig, signal.Handlers)
-            elif name in {'SIG_BLOCK', 'SIG_UNBLOCK', 'SIG_SETMASK'}:
+            elikiwa name in {'SIG_BLOCK', 'SIG_UNBLOCK', 'SIG_SETMASK'}:
                 self.assertIsInstance(sig, signal.Sigmasks)
-            elif name.startswith('SIG') and not name.startswith('SIG_'):
+            elikiwa name.startswith('SIG') and not name.startswith('SIG_'):
                 self.assertIsInstance(sig, signal.Signals)
-            elif name.startswith('CTRL_'):
+            elikiwa name.startswith('CTRL_'):
                 self.assertIsInstance(sig, signal.Signals)
                 self.assertEqual(sys.platform, "win32")
 
 
 @unittest.skipIf(sys.platform == "win32", "Not valid on Windows")
-class PosixTests(unittest.TestCase):
-    def trivial_signal_handler(self, *args):
+kundi PosixTests(unittest.TestCase):
+    eleza trivial_signal_handler(self, *args):
         pass
 
-    def test_out_of_range_signal_number_raises_error(self):
+    eleza test_out_of_range_signal_number_raises_error(self):
         self.assertRaises(ValueError, signal.getsignal, 4242)
 
         self.assertRaises(ValueError, signal.signal, 4242,
@@ -45,11 +45,11 @@ class PosixTests(unittest.TestCase):
 
         self.assertRaises(ValueError, signal.strsignal, 4242)
 
-    def test_setting_signal_handler_to_none_raises_error(self):
+    eleza test_setting_signal_handler_to_none_raises_error(self):
         self.assertRaises(TypeError, signal.signal,
                           signal.SIGUSR1, None)
 
-    def test_getsignal(self):
+    eleza test_getsignal(self):
         hup = signal.signal(signal.SIGHUP, self.trivial_signal_handler)
         self.assertIsInstance(hup, signal.Handlers)
         self.assertEqual(signal.getsignal(signal.SIGHUP),
@@ -57,18 +57,18 @@ class PosixTests(unittest.TestCase):
         signal.signal(signal.SIGHUP, hup)
         self.assertEqual(signal.getsignal(signal.SIGHUP), hup)
 
-    def test_strsignal(self):
+    eleza test_strsignal(self):
         self.assertIn("Interrupt", signal.strsignal(signal.SIGINT))
         self.assertIn("Terminated", signal.strsignal(signal.SIGTERM))
         self.assertIn("Hangup", signal.strsignal(signal.SIGHUP))
 
-    # Issue 3864, unknown if this affects earlier versions of freebsd also
-    def test_interprocess_signal(self):
+    # Issue 3864, unknown ikiwa this affects earlier versions of freebsd also
+    eleza test_interprocess_signal(self):
         dirname = os.path.dirname(__file__)
         script = os.path.join(dirname, 'signalinterproctester.py')
         assert_python_ok(script)
 
-    def test_valid_signals(self):
+    eleza test_valid_signals(self):
         s = signal.valid_signals()
         self.assertIsInstance(s, set)
         self.assertIn(signal.Signals.SIGINT, s)
@@ -78,7 +78,7 @@ class PosixTests(unittest.TestCase):
         self.assertLess(len(s), signal.NSIG)
 
     @unittest.skipUnless(sys.executable, "sys.executable required.")
-    def test_keyboard_interrupt_exit_code(self):
+    eleza test_keyboard_interrupt_exit_code(self):
         """KeyboardInterrupt triggers exit via SIGINT."""
         process = subprocess.run(
                 [sys.executable, "-c",
@@ -95,9 +95,9 @@ class PosixTests(unittest.TestCase):
 
 
 @unittest.skipUnless(sys.platform == "win32", "Windows specific")
-class WindowsSignalTests(unittest.TestCase):
+kundi WindowsSignalTests(unittest.TestCase):
 
-    def test_valid_signals(self):
+    eleza test_valid_signals(self):
         s = signal.valid_signals()
         self.assertIsInstance(s, set)
         self.assertGreaterEqual(len(s), 6)
@@ -106,7 +106,7 @@ class WindowsSignalTests(unittest.TestCase):
         self.assertNotIn(signal.NSIG, s)
         self.assertLess(len(s), signal.NSIG)
 
-    def test_issue9324(self):
+    eleza test_issue9324(self):
         # Updated for issue #10003, adding SIGBREAK
         handler = lambda x, y: None
         checked = set()
@@ -115,7 +115,7 @@ class WindowsSignalTests(unittest.TestCase):
                     signal.SIGTERM):
             # Set and then reset a handler for signals that work on windows.
             # Issue #18396, only for signals without a C-level handler.
-            if signal.getsignal(sig) is not None:
+            ikiwa signal.getsignal(sig) is not None:
                 signal.signal(sig, signal.signal(sig, handler))
                 checked.add(sig)
         # Issue #18396: Ensure the above loop at least tested *something*
@@ -128,7 +128,7 @@ class WindowsSignalTests(unittest.TestCase):
             signal.signal(7, handler)
 
     @unittest.skipUnless(sys.executable, "sys.executable required.")
-    def test_keyboard_interrupt_exit_code(self):
+    eleza test_keyboard_interrupt_exit_code(self):
         """KeyboardInterrupt triggers an exit using STATUS_CONTROL_C_EXIT."""
         # We don't test via os.kill(os.getpid(), signal.CTRL_C_EVENT) here
         # as that requires setting up a console control handler in a child
@@ -142,9 +142,9 @@ class WindowsSignalTests(unittest.TestCase):
         self.assertEqual(process.returncode, STATUS_CONTROL_C_EXIT)
 
 
-class WakeupFDTests(unittest.TestCase):
+kundi WakeupFDTests(unittest.TestCase):
 
-    def test_invalid_call(self):
+    eleza test_invalid_call(self):
         # First parameter is positional-only
         with self.assertRaises(TypeError):
             signal.set_wakeup_fd(signum=signal.SIGINT)
@@ -153,19 +153,19 @@ class WakeupFDTests(unittest.TestCase):
         with self.assertRaises(TypeError):
             signal.set_wakeup_fd(signal.SIGINT, False)
 
-    def test_invalid_fd(self):
+    eleza test_invalid_fd(self):
         fd = support.make_bad_fd()
         self.assertRaises((ValueError, OSError),
                           signal.set_wakeup_fd, fd)
 
-    def test_invalid_socket(self):
+    eleza test_invalid_socket(self):
         sock = socket.socket()
         fd = sock.fileno()
         sock.close()
         self.assertRaises((ValueError, OSError),
                           signal.set_wakeup_fd, fd)
 
-    def test_set_wakeup_fd_result(self):
+    eleza test_set_wakeup_fd_result(self):
         r1, w1 = os.pipe()
         self.addCleanup(os.close, r1)
         self.addCleanup(os.close, w1)
@@ -173,7 +173,7 @@ class WakeupFDTests(unittest.TestCase):
         self.addCleanup(os.close, r2)
         self.addCleanup(os.close, w2)
 
-        if hasattr(os, 'set_blocking'):
+        ikiwa hasattr(os, 'set_blocking'):
             os.set_blocking(w1, False)
             os.set_blocking(w2, False)
 
@@ -182,7 +182,7 @@ class WakeupFDTests(unittest.TestCase):
         self.assertEqual(signal.set_wakeup_fd(-1), w2)
         self.assertEqual(signal.set_wakeup_fd(-1), -1)
 
-    def test_set_wakeup_fd_socket_result(self):
+    eleza test_set_wakeup_fd_socket_result(self):
         sock1 = socket.socket()
         self.addCleanup(sock1.close)
         sock1.setblocking(False)
@@ -199,9 +199,9 @@ class WakeupFDTests(unittest.TestCase):
         self.assertEqual(signal.set_wakeup_fd(-1), -1)
 
     # On Windows, files are always blocking and Windows does not provide a
-    # function to test if a socket is in non-blocking mode.
+    # function to test ikiwa a socket is in non-blocking mode.
     @unittest.skipIf(sys.platform == "win32", "tests specific to POSIX")
-    def test_set_wakeup_fd_blocking(self):
+    eleza test_set_wakeup_fd_blocking(self):
         rfd, wfd = os.pipe()
         self.addCleanup(os.close, rfd)
         self.addCleanup(os.close, wfd)
@@ -220,11 +220,11 @@ class WakeupFDTests(unittest.TestCase):
 
 
 @unittest.skipIf(sys.platform == "win32", "Not valid on Windows")
-class WakeupSignalTests(unittest.TestCase):
+kundi WakeupSignalTests(unittest.TestCase):
     @unittest.skipIf(_testcapi is None, 'need _testcapi')
-    def check_wakeup(self, test_body, *signals, ordered=True):
+    eleza check_wakeup(self, test_body, *signals, ordered=True):
         # use a subprocess to have only one thread
-        code = """if 1:
+        code = """ikiwa 1:
         agiza _testcapi
         agiza os
         agiza signal
@@ -232,16 +232,16 @@ class WakeupSignalTests(unittest.TestCase):
 
         signals = {!r}
 
-        def handler(signum, frame):
+        eleza handler(signum, frame):
             pass
 
-        def check_signum(signals):
+        eleza check_signum(signals):
             data = os.read(read, len(signals)+1)
             raised = struct.unpack('%uB' % len(data), data)
-            if not {!r}:
+            ikiwa not {!r}:
                 raised = set(raised)
                 signals = set(signals)
-            if raised != signals:
+            ikiwa raised != signals:
                 raise Exception("%r != %r" % (raised, signals))
 
         {}
@@ -261,11 +261,11 @@ class WakeupSignalTests(unittest.TestCase):
         assert_python_ok('-c', code)
 
     @unittest.skipIf(_testcapi is None, 'need _testcapi')
-    def test_wakeup_write_error(self):
+    eleza test_wakeup_write_error(self):
         # Issue #16105: write() errors in the C signal handler should not
         # pass silently.
         # Use a subprocess to have only one thread.
-        code = """if 1:
+        code = """ikiwa 1:
         agiza _testcapi
         agiza errno
         agiza os
@@ -273,7 +273,7 @@ class WakeupSignalTests(unittest.TestCase):
         agiza sys
         kutoka test.support agiza captured_stderr
 
-        def handler(signum, frame):
+        eleza handler(signum, frame):
             1/0
 
         signal.signal(signal.SIGALRM, handler)
@@ -288,10 +288,10 @@ class WakeupSignalTests(unittest.TestCase):
         except ZeroDivisionError:
             # An ignored exception should have been printed out on stderr
             err = err.getvalue()
-            if ('Exception ignored when trying to write to the signal wakeup fd'
+            ikiwa ('Exception ignored when trying to write to the signal wakeup fd'
                 not in err):
                 raise AssertionError(err)
-            if ('OSError: [Errno %d]' % errno.EBADF) not in err:
+            ikiwa ('OSError: [Errno %d]' % errno.EBADF) not in err:
                 raise AssertionError(err)
         else:
             raise AssertionError("ZeroDivisionError not raised")
@@ -312,18 +312,18 @@ class WakeupSignalTests(unittest.TestCase):
 
         assert_python_ok('-c', code)
 
-    def test_wakeup_fd_early(self):
-        self.check_wakeup("""def test():
+    eleza test_wakeup_fd_early(self):
+        self.check_wakeup("""eleza test():
             agiza select
             agiza time
 
             TIMEOUT_FULL = 10
             TIMEOUT_HALF = 5
 
-            class InterruptSelect(Exception):
+            kundi InterruptSelect(Exception):
                 pass
 
-            def handler(signum, frame):
+            eleza handler(signum, frame):
                 raise InterruptSelect
             signal.signal(signal.SIGALRM, handler)
 
@@ -342,22 +342,22 @@ class WakeupSignalTests(unittest.TestCase):
             select.select([read], [], [], TIMEOUT_FULL)
             after_time = time.monotonic()
             dt = after_time - before_time
-            if dt >= TIMEOUT_HALF:
+            ikiwa dt >= TIMEOUT_HALF:
                 raise Exception("%s >= %s" % (dt, TIMEOUT_HALF))
         """, signal.SIGALRM)
 
-    def test_wakeup_fd_during(self):
-        self.check_wakeup("""def test():
+    eleza test_wakeup_fd_during(self):
+        self.check_wakeup("""eleza test():
             agiza select
             agiza time
 
             TIMEOUT_FULL = 10
             TIMEOUT_HALF = 5
 
-            class InterruptSelect(Exception):
+            kundi InterruptSelect(Exception):
                 pass
 
-            def handler(signum, frame):
+            eleza handler(signum, frame):
                 raise InterruptSelect
             signal.signal(signal.SIGALRM, handler)
 
@@ -372,12 +372,12 @@ class WakeupSignalTests(unittest.TestCase):
                 raise Exception("select() was not interrupted")
             after_time = time.monotonic()
             dt = after_time - before_time
-            if dt >= TIMEOUT_HALF:
+            ikiwa dt >= TIMEOUT_HALF:
                 raise Exception("%s >= %s" % (dt, TIMEOUT_HALF))
         """, signal.SIGALRM)
 
-    def test_signum(self):
-        self.check_wakeup("""def test():
+    eleza test_signum(self):
+        self.check_wakeup("""eleza test():
             signal.signal(signal.SIGUSR1, handler)
             signal.raise_signal(signal.SIGUSR1)
             signal.raise_signal(signal.SIGALRM)
@@ -385,8 +385,8 @@ class WakeupSignalTests(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(signal, 'pthread_sigmask'),
                          'need signal.pthread_sigmask()')
-    def test_pending(self):
-        self.check_wakeup("""def test():
+    eleza test_pending(self):
+        self.check_wakeup("""eleza test():
             signum1 = signal.SIGUSR1
             signum2 = signal.SIGUSR2
 
@@ -402,12 +402,12 @@ class WakeupSignalTests(unittest.TestCase):
 
 
 @unittest.skipUnless(hasattr(socket, 'socketpair'), 'need socket.socketpair')
-class WakeupSocketSignalTests(unittest.TestCase):
+kundi WakeupSocketSignalTests(unittest.TestCase):
 
     @unittest.skipIf(_testcapi is None, 'need _testcapi')
-    def test_socket(self):
+    eleza test_socket(self):
         # use a subprocess to have only one thread
-        code = """if 1:
+        code = """ikiwa 1:
         agiza signal
         agiza socket
         agiza struct
@@ -416,7 +416,7 @@ class WakeupSocketSignalTests(unittest.TestCase):
         signum = signal.SIGINT
         signals = (signum,)
 
-        def handler(signum, frame):
+        eleza handler(signum, frame):
             pass
 
         signal.signal(signum, handler)
@@ -428,10 +428,10 @@ class WakeupSocketSignalTests(unittest.TestCase):
         signal.raise_signal(signum)
 
         data = read.recv(1)
-        if not data:
+        ikiwa not data:
             raise Exception("no signum written")
         raised = struct.unpack('B', data)
-        if raised != signals:
+        ikiwa raised != signals:
             raise Exception("%r != %r" % (raised, signals))
 
         read.close()
@@ -441,13 +441,13 @@ class WakeupSocketSignalTests(unittest.TestCase):
         assert_python_ok('-c', code)
 
     @unittest.skipIf(_testcapi is None, 'need _testcapi')
-    def test_send_error(self):
+    eleza test_send_error(self):
         # Use a subprocess to have only one thread.
-        if os.name == 'nt':
+        ikiwa os.name == 'nt':
             action = 'send'
         else:
             action = 'write'
-        code = """if 1:
+        code = """ikiwa 1:
         agiza errno
         agiza signal
         agiza socket
@@ -458,7 +458,7 @@ class WakeupSocketSignalTests(unittest.TestCase):
 
         signum = signal.SIGINT
 
-        def handler(signum, frame):
+        eleza handler(signum, frame):
             pass
 
         signal.signal(signum, handler)
@@ -477,20 +477,20 @@ class WakeupSocketSignalTests(unittest.TestCase):
             signal.raise_signal(signum)
 
         err = err.getvalue()
-        if ('Exception ignored when trying to {action} to the signal wakeup fd'
+        ikiwa ('Exception ignored when trying to {action} to the signal wakeup fd'
             not in err):
             raise AssertionError(err)
         """.format(action=action)
         assert_python_ok('-c', code)
 
     @unittest.skipIf(_testcapi is None, 'need _testcapi')
-    def test_warn_on_full_buffer(self):
+    eleza test_warn_on_full_buffer(self):
         # Use a subprocess to have only one thread.
-        if os.name == 'nt':
+        ikiwa os.name == 'nt':
             action = 'send'
         else:
             action = 'write'
-        code = """if 1:
+        code = """ikiwa 1:
         agiza errno
         agiza signal
         agiza socket
@@ -503,7 +503,7 @@ class WakeupSocketSignalTests(unittest.TestCase):
 
         # This handler will be called, but we intentionally won't read kutoka
         # the wakeup fd.
-        def handler(signum, frame):
+        eleza handler(signum, frame):
             pass
 
         signal.signal(signum, handler)
@@ -511,7 +511,7 @@ class WakeupSocketSignalTests(unittest.TestCase):
         read, write = socket.socketpair()
 
         # Fill the socketpair buffer
-        if sys.platform == 'win32':
+        ikiwa sys.platform == 'win32':
             # bpo-34130: On Windows, sometimes non-blocking send fails to fill
             # the full socketpair buffer, so use a timeout of 50 ms instead.
             write.settimeout(0.050)
@@ -530,7 +530,7 @@ class WakeupSocketSignalTests(unittest.TestCase):
             except (BlockingIOError, socket.timeout):
                 pass
 
-        print(f"%s bytes written into the socketpair" % written, flush=True)
+        andika(f"%s bytes written into the socketpair" % written, flush=True)
 
         write.setblocking(False)
         try:
@@ -551,29 +551,29 @@ class WakeupSocketSignalTests(unittest.TestCase):
             signal.raise_signal(signum)
 
         err = err.getvalue()
-        if msg not in err:
+        ikiwa msg not in err:
             raise AssertionError("first set_wakeup_fd() test failed, "
                                  "stderr: %r" % err)
 
-        # And also if warn_on_full_buffer=True
+        # And also ikiwa warn_on_full_buffer=True
         signal.set_wakeup_fd(write.fileno(), warn_on_full_buffer=True)
 
         with captured_stderr() as err:
             signal.raise_signal(signum)
 
         err = err.getvalue()
-        if msg not in err:
+        ikiwa msg not in err:
             raise AssertionError("set_wakeup_fd(warn_on_full_buffer=True) "
                                  "test failed, stderr: %r" % err)
 
-        # But not if warn_on_full_buffer=False
+        # But not ikiwa warn_on_full_buffer=False
         signal.set_wakeup_fd(write.fileno(), warn_on_full_buffer=False)
 
         with captured_stderr() as err:
             signal.raise_signal(signum)
 
         err = err.getvalue()
-        if err != "":
+        ikiwa err != "":
             raise AssertionError("set_wakeup_fd(warn_on_full_buffer=False) "
                                  "test failed, stderr: %r" % err)
 
@@ -585,7 +585,7 @@ class WakeupSocketSignalTests(unittest.TestCase):
             signal.raise_signal(signum)
 
         err = err.getvalue()
-        if msg not in err:
+        ikiwa msg not in err:
             raise AssertionError("second set_wakeup_fd() test failed, "
                                  "stderr: %r" % err)
 
@@ -594,16 +594,16 @@ class WakeupSocketSignalTests(unittest.TestCase):
 
 
 @unittest.skipIf(sys.platform == "win32", "Not valid on Windows")
-class SiginterruptTest(unittest.TestCase):
+kundi SiginterruptTest(unittest.TestCase):
 
-    def readpipe_interrupted(self, interrupt):
-        """Perform a read during which a signal will arrive.  Return True if the
+    eleza readpipe_interrupted(self, interrupt):
+        """Perform a read during which a signal will arrive.  Return True ikiwa the
         read is interrupted by the signal and raises an exception.  Return False
-        if it returns normally.
+        ikiwa it returns normally.
         """
         # use a subprocess to have only one thread, to have a timeout on the
         # blocking read and to not touch signal handling in this process
-        code = """if 1:
+        code = """ikiwa 1:
             agiza errno
             agiza os
             agiza signal
@@ -612,14 +612,14 @@ class SiginterruptTest(unittest.TestCase):
             interrupt = %r
             r, w = os.pipe()
 
-            def handler(signum, frame):
+            eleza handler(signum, frame):
                 1 / 0
 
             signal.signal(signal.SIGALRM, handler)
-            if interrupt is not None:
+            ikiwa interrupt is not None:
                 signal.siginterrupt(signal.SIGALRM, interrupt)
 
-            print("ready")
+            andika("ready")
             sys.stdout.flush()
 
             # run the test twice
@@ -647,30 +647,30 @@ class SiginterruptTest(unittest.TestCase):
                 stdout, stderr = process.communicate(timeout=5.0)
             except subprocess.TimeoutExpired:
                 process.kill()
-                return False
+                rudisha False
             else:
                 stdout = first_line + stdout
                 exitcode = process.wait()
-                if exitcode not in (2, 3):
+                ikiwa exitcode not in (2, 3):
                     raise Exception("Child error (exit code %s): %r"
                                     % (exitcode, stdout))
-                return (exitcode == 3)
+                rudisha (exitcode == 3)
 
-    def test_without_siginterrupt(self):
+    eleza test_without_siginterrupt(self):
         # If a signal handler is installed and siginterrupt is not called
         # at all, when that signal arrives, it interrupts a syscall that's in
         # progress.
         interrupted = self.readpipe_interrupted(None)
         self.assertTrue(interrupted)
 
-    def test_siginterrupt_on(self):
+    eleza test_siginterrupt_on(self):
         # If a signal handler is installed and siginterrupt is called with
         # a true value for the second argument, when that signal arrives, it
         # interrupts a syscall that's in progress.
         interrupted = self.readpipe_interrupted(True)
         self.assertTrue(interrupted)
 
-    def test_siginterrupt_off(self):
+    eleza test_siginterrupt_off(self):
         # If a signal handler is installed and siginterrupt is called with
         # a false value for the second argument, when that signal arrives, it
         # does not interrupt a syscall that's in progress.
@@ -679,58 +679,58 @@ class SiginterruptTest(unittest.TestCase):
 
 
 @unittest.skipIf(sys.platform == "win32", "Not valid on Windows")
-class ItimerTest(unittest.TestCase):
-    def setUp(self):
+kundi ItimerTest(unittest.TestCase):
+    eleza setUp(self):
         self.hndl_called = False
         self.hndl_count = 0
         self.itimer = None
         self.old_alarm = signal.signal(signal.SIGALRM, self.sig_alrm)
 
-    def tearDown(self):
+    eleza tearDown(self):
         signal.signal(signal.SIGALRM, self.old_alarm)
-        if self.itimer is not None: # test_itimer_exc doesn't change this attr
+        ikiwa self.itimer is not None: # test_itimer_exc doesn't change this attr
             # just ensure that itimer is stopped
             signal.setitimer(self.itimer, 0)
 
-    def sig_alrm(self, *args):
+    eleza sig_alrm(self, *args):
         self.hndl_called = True
 
-    def sig_vtalrm(self, *args):
+    eleza sig_vtalrm(self, *args):
         self.hndl_called = True
 
-        if self.hndl_count > 3:
+        ikiwa self.hndl_count > 3:
             # it shouldn't be here, because it should have been disabled.
             raise signal.ItimerError("setitimer didn't disable ITIMER_VIRTUAL "
                 "timer.")
-        elif self.hndl_count == 3:
+        elikiwa self.hndl_count == 3:
             # disable ITIMER_VIRTUAL, this function shouldn't be called anymore
             signal.setitimer(signal.ITIMER_VIRTUAL, 0)
 
         self.hndl_count += 1
 
-    def sig_prof(self, *args):
+    eleza sig_prof(self, *args):
         self.hndl_called = True
         signal.setitimer(signal.ITIMER_PROF, 0)
 
-    def test_itimer_exc(self):
+    eleza test_itimer_exc(self):
         # XXX I'm assuming -1 is an invalid itimer, but maybe some platform
         # defines it ?
         self.assertRaises(signal.ItimerError, signal.setitimer, -1, 0)
         # Negative times are treated as zero on some platforms.
-        if 0:
+        ikiwa 0:
             self.assertRaises(signal.ItimerError,
                               signal.setitimer, signal.ITIMER_REAL, -1)
 
-    def test_itimer_real(self):
+    eleza test_itimer_real(self):
         self.itimer = signal.ITIMER_REAL
         signal.setitimer(self.itimer, 1.0)
         signal.pause()
         self.assertEqual(self.hndl_called, True)
 
-    # Issue 3864, unknown if this affects earlier versions of freebsd also
+    # Issue 3864, unknown ikiwa this affects earlier versions of freebsd also
     @unittest.skipIf(sys.platform in ('netbsd5',),
         'itimer not reliable (does not mix well with threading) on some BSDs.')
-    def test_itimer_virtual(self):
+    eleza test_itimer_virtual(self):
         self.itimer = signal.ITIMER_VIRTUAL
         signal.signal(signal.SIGVTALRM, self.sig_vtalrm)
         signal.setitimer(self.itimer, 0.3, 0.2)
@@ -739,7 +739,7 @@ class ItimerTest(unittest.TestCase):
         while time.monotonic() - start_time < 60.0:
             # use up some virtual time by doing real work
             _ = pow(12345, 67890, 10000019)
-            if signal.getitimer(self.itimer) == (0.0, 0.0):
+            ikiwa signal.getitimer(self.itimer) == (0.0, 0.0):
                 break # sig_vtalrm handler stopped this itimer
         else: # Issue 8424
             self.skipTest("timeout: likely cause: machine too slow or load too "
@@ -750,7 +750,7 @@ class ItimerTest(unittest.TestCase):
         # and the handler should have been called
         self.assertEqual(self.hndl_called, True)
 
-    def test_itimer_prof(self):
+    eleza test_itimer_prof(self):
         self.itimer = signal.ITIMER_PROF
         signal.signal(signal.SIGPROF, self.sig_prof)
         signal.setitimer(self.itimer, 0.2, 0.2)
@@ -759,7 +759,7 @@ class ItimerTest(unittest.TestCase):
         while time.monotonic() - start_time < 60.0:
             # do some work
             _ = pow(12345, 67890, 10000019)
-            if signal.getitimer(self.itimer) == (0.0, 0.0):
+            ikiwa signal.getitimer(self.itimer) == (0.0, 0.0):
                 break # sig_prof handler stopped this itimer
         else: # Issue 8424
             self.skipTest("timeout: likely cause: machine too slow or load too "
@@ -770,7 +770,7 @@ class ItimerTest(unittest.TestCase):
         # and the handler should have been called
         self.assertEqual(self.hndl_called, True)
 
-    def test_setitimer_tiny(self):
+    eleza test_setitimer_tiny(self):
         # bpo-30807: C setitimer() takes a microsecond-resolution interval.
         # Check that float -> timeval conversion doesn't round
         # the interval down to zero, which would disable the timer.
@@ -780,26 +780,26 @@ class ItimerTest(unittest.TestCase):
         self.assertEqual(self.hndl_called, True)
 
 
-class PendingSignalsTests(unittest.TestCase):
+kundi PendingSignalsTests(unittest.TestCase):
     """
     Test pthread_sigmask(), pthread_kill(), sigpending() and sigwait()
     functions.
     """
     @unittest.skipUnless(hasattr(signal, 'sigpending'),
                          'need signal.sigpending()')
-    def test_sigpending_empty(self):
+    eleza test_sigpending_empty(self):
         self.assertEqual(signal.sigpending(), set())
 
     @unittest.skipUnless(hasattr(signal, 'pthread_sigmask'),
                          'need signal.pthread_sigmask()')
     @unittest.skipUnless(hasattr(signal, 'sigpending'),
                          'need signal.sigpending()')
-    def test_sigpending(self):
-        code = """if 1:
+    eleza test_sigpending(self):
+        code = """ikiwa 1:
             agiza os
             agiza signal
 
-            def handler(signum, frame):
+            eleza handler(signum, frame):
                 1/0
 
             signum = signal.SIGUSR1
@@ -810,7 +810,7 @@ class PendingSignalsTests(unittest.TestCase):
             pending = signal.sigpending()
             for sig in pending:
                 assert isinstance(sig, signal.Signals), repr(pending)
-            if pending != {signum}:
+            ikiwa pending != {signum}:
                 raise Exception('%s != {%s}' % (pending, signum))
             try:
                 signal.pthread_sigmask(signal.SIG_UNBLOCK, [signum])
@@ -823,15 +823,15 @@ class PendingSignalsTests(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(signal, 'pthread_kill'),
                          'need signal.pthread_kill()')
-    def test_pthread_kill(self):
-        code = """if 1:
+    eleza test_pthread_kill(self):
+        code = """ikiwa 1:
             agiza signal
             agiza threading
             agiza sys
 
             signum = signal.SIGUSR1
 
-            def handler(signum, frame):
+            eleza handler(signum, frame):
                 1/0
 
             signal.signal(signum, handler)
@@ -848,17 +848,17 @@ class PendingSignalsTests(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(signal, 'pthread_sigmask'),
                          'need signal.pthread_sigmask()')
-    def wait_helper(self, blocked, test):
+    eleza wait_helper(self, blocked, test):
         """
-        test: body of the "def test(signum):" function.
+        test: body of the "eleza test(signum):" function.
         blocked: number of the blocked signal
         """
-        code = '''if 1:
+        code = '''ikiwa 1:
         agiza signal
         agiza sys
         kutoka signal agiza Signals
 
-        def handler(signum, frame):
+        eleza handler(signum, frame):
             1/0
 
         %s
@@ -878,11 +878,11 @@ class PendingSignalsTests(unittest.TestCase):
             try:
                 signal.pthread_sigmask(signal.SIG_UNBLOCK, [blocked])
             except ZeroDivisionError:
-                print("the signal handler has been called",
+                andika("the signal handler has been called",
                       file=sys.stderr)
                 sys.exit(1)
         except BaseException as err:
-            print("error: {}".format(err), file=sys.stderr)
+            andika("error: {}".format(err), file=sys.stderr)
             sys.stderr.flush()
             sys.exit(1)
         ''' % (test.strip(), blocked)
@@ -894,64 +894,64 @@ class PendingSignalsTests(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(signal, 'sigwait'),
                          'need signal.sigwait()')
-    def test_sigwait(self):
+    eleza test_sigwait(self):
         self.wait_helper(signal.SIGALRM, '''
-        def test(signum):
+        eleza test(signum):
             signal.alarm(1)
             received = signal.sigwait([signum])
             assert isinstance(received, signal.Signals), received
-            if received != signum:
+            ikiwa received != signum:
                 raise Exception('received %s, not %s' % (received, signum))
         ''')
 
     @unittest.skipUnless(hasattr(signal, 'sigwaitinfo'),
                          'need signal.sigwaitinfo()')
-    def test_sigwaitinfo(self):
+    eleza test_sigwaitinfo(self):
         self.wait_helper(signal.SIGALRM, '''
-        def test(signum):
+        eleza test(signum):
             signal.alarm(1)
             info = signal.sigwaitinfo([signum])
-            if info.si_signo != signum:
+            ikiwa info.si_signo != signum:
                 raise Exception("info.si_signo != %s" % signum)
         ''')
 
     @unittest.skipUnless(hasattr(signal, 'sigtimedwait'),
                          'need signal.sigtimedwait()')
-    def test_sigtimedwait(self):
+    eleza test_sigtimedwait(self):
         self.wait_helper(signal.SIGALRM, '''
-        def test(signum):
+        eleza test(signum):
             signal.alarm(1)
             info = signal.sigtimedwait([signum], 10.1000)
-            if info.si_signo != signum:
+            ikiwa info.si_signo != signum:
                 raise Exception('info.si_signo != %s' % signum)
         ''')
 
     @unittest.skipUnless(hasattr(signal, 'sigtimedwait'),
                          'need signal.sigtimedwait()')
-    def test_sigtimedwait_poll(self):
+    eleza test_sigtimedwait_poll(self):
         # check that polling with sigtimedwait works
         self.wait_helper(signal.SIGALRM, '''
-        def test(signum):
+        eleza test(signum):
             agiza os
             os.kill(os.getpid(), signum)
             info = signal.sigtimedwait([signum], 0)
-            if info.si_signo != signum:
+            ikiwa info.si_signo != signum:
                 raise Exception('info.si_signo != %s' % signum)
         ''')
 
     @unittest.skipUnless(hasattr(signal, 'sigtimedwait'),
                          'need signal.sigtimedwait()')
-    def test_sigtimedwait_timeout(self):
+    eleza test_sigtimedwait_timeout(self):
         self.wait_helper(signal.SIGALRM, '''
-        def test(signum):
+        eleza test(signum):
             received = signal.sigtimedwait([signum], 1.0)
-            if received is not None:
+            ikiwa received is not None:
                 raise Exception("received=%r" % (received,))
         ''')
 
     @unittest.skipUnless(hasattr(signal, 'sigtimedwait'),
                          'need signal.sigtimedwait()')
-    def test_sigtimedwait_negative_timeout(self):
+    eleza test_sigtimedwait_negative_timeout(self):
         signum = signal.SIGALRM
         self.assertRaises(ValueError, signal.sigtimedwait, [signum], -1.0)
 
@@ -959,18 +959,18 @@ class PendingSignalsTests(unittest.TestCase):
                          'need signal.sigwait()')
     @unittest.skipUnless(hasattr(signal, 'pthread_sigmask'),
                          'need signal.pthread_sigmask()')
-    def test_sigwait_thread(self):
+    eleza test_sigwait_thread(self):
         # Check that calling sigwait() kutoka a thread doesn't suspend the whole
         # process. A new interpreter is spawned to avoid problems when mixing
         # threads and fork(): only async-safe functions are allowed between
         # fork() and exec().
-        assert_python_ok("-c", """if True:
+        assert_python_ok("-c", """ikiwa True:
             agiza os, threading, sys, time, signal
 
             # the default handler terminates the process
             signum = signal.SIGUSR1
 
-            def kill_later():
+            eleza kill_later():
                 # wait until the main thread is waiting in sigwait()
                 time.sleep(1)
                 os.kill(os.getpid(), signum)
@@ -980,8 +980,8 @@ class PendingSignalsTests(unittest.TestCase):
             killer = threading.Thread(target=kill_later)
             killer.start()
             received = signal.sigwait([signum])
-            if received != signum:
-                print("sigwait() received %s, not %s" % (received, signum),
+            ikiwa received != signum:
+                andika("sigwait() received %s, not %s" % (received, signum),
                       file=sys.stderr)
                 sys.exit(1)
             killer.join()
@@ -991,7 +991,7 @@ class PendingSignalsTests(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(signal, 'pthread_sigmask'),
                          'need signal.pthread_sigmask()')
-    def test_pthread_sigmask_arguments(self):
+    eleza test_pthread_sigmask_arguments(self):
         self.assertRaises(TypeError, signal.pthread_sigmask)
         self.assertRaises(TypeError, signal.pthread_sigmask, 1)
         self.assertRaises(TypeError, signal.pthread_sigmask, 1, 2, 3)
@@ -1005,7 +1005,7 @@ class PendingSignalsTests(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(signal, 'pthread_sigmask'),
                          'need signal.pthread_sigmask()')
-    def test_pthread_sigmask_valid_signals(self):
+    eleza test_pthread_sigmask_valid_signals(self):
         s = signal.pthread_sigmask(signal.SIG_BLOCK, signal.valid_signals())
         self.addCleanup(signal.pthread_sigmask, signal.SIG_SETMASK, s)
         # Get current blocked set
@@ -1014,25 +1014,25 @@ class PendingSignalsTests(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(signal, 'pthread_sigmask'),
                          'need signal.pthread_sigmask()')
-    def test_pthread_sigmask(self):
-        code = """if 1:
+    eleza test_pthread_sigmask(self):
+        code = """ikiwa 1:
         agiza signal
         agiza os; agiza threading
 
-        def handler(signum, frame):
+        eleza handler(signum, frame):
             1/0
 
-        def kill(signum):
+        eleza kill(signum):
             os.kill(os.getpid(), signum)
 
-        def check_mask(mask):
+        eleza check_mask(mask):
             for sig in mask:
                 assert isinstance(sig, signal.Signals), repr(sig)
 
-        def read_sigmask():
+        eleza read_sigmask():
             sigmask = signal.pthread_sigmask(signal.SIG_BLOCK, [])
             check_mask(sigmask)
-            return sigmask
+            rudisha sigmask
 
         signum = signal.SIGUSR1
 
@@ -1058,9 +1058,9 @@ class PendingSignalsTests(unittest.TestCase):
         # Check the new mask
         blocked = read_sigmask()
         check_mask(blocked)
-        if signum not in blocked:
+        ikiwa signum not in blocked:
             raise Exception("%s not in %s" % (signum, blocked))
-        if old_mask ^ blocked != {signum}:
+        ikiwa old_mask ^ blocked != {signum}:
             raise Exception("%s ^ %s != {%s}" % (old_mask, blocked, signum))
 
         # Unblock SIGUSR1
@@ -1080,26 +1080,26 @@ class PendingSignalsTests(unittest.TestCase):
 
         # Check the new mask
         unblocked = read_sigmask()
-        if signum in unblocked:
+        ikiwa signum in unblocked:
             raise Exception("%s in %s" % (signum, unblocked))
-        if blocked ^ unblocked != {signum}:
+        ikiwa blocked ^ unblocked != {signum}:
             raise Exception("%s ^ %s != {%s}" % (blocked, unblocked, signum))
-        if old_mask != unblocked:
+        ikiwa old_mask != unblocked:
             raise Exception("%s != %s" % (old_mask, unblocked))
         """
         assert_python_ok('-c', code)
 
     @unittest.skipUnless(hasattr(signal, 'pthread_kill'),
                          'need signal.pthread_kill()')
-    def test_pthread_kill_main_thread(self):
+    eleza test_pthread_kill_main_thread(self):
         # Test that a signal can be sent to the main thread with pthread_kill()
         # before any other thread has been created (see issue #12392).
-        code = """if True:
+        code = """ikiwa True:
             agiza threading
             agiza signal
             agiza sys
 
-            def handler(signum, frame):
+            eleza handler(signum, frame):
                 sys.exit(3)
 
             signal.signal(signal.SIGUSR1, handler)
@@ -1110,28 +1110,28 @@ class PendingSignalsTests(unittest.TestCase):
         with spawn_python('-c', code) as process:
             stdout, stderr = process.communicate()
             exitcode = process.wait()
-            if exitcode != 3:
+            ikiwa exitcode != 3:
                 raise Exception("Child error (exit code %s): %s" %
                                 (exitcode, stdout))
 
 
-class StressTest(unittest.TestCase):
+kundi StressTest(unittest.TestCase):
     """
     Stress signal delivery, especially when a signal arrives in
     the middle of recomputing the signal state or executing
     previously tripped signal handlers.
     """
 
-    def setsig(self, signum, handler):
+    eleza setsig(self, signum, handler):
         old_handler = signal.signal(signum, handler)
         self.addCleanup(signal.signal, signum, old_handler)
 
-    def measure_itimer_resolution(self):
+    eleza measure_itimer_resolution(self):
         N = 20
         times = []
 
-        def handler(signum=None, frame=None):
-            if len(times) < N:
+        eleza handler(signum=None, frame=None):
+            ikiwa len(times) < N:
                 times.append(time.perf_counter())
                 # 1 µs is the smallest possible timer interval,
                 # we want to measure what the concrete duration
@@ -1146,19 +1146,19 @@ class StressTest(unittest.TestCase):
 
         durations = [times[i+1] - times[i] for i in range(len(times) - 1)]
         med = statistics.median(durations)
-        if support.verbose:
-            print("detected median itimer() resolution: %.6f s." % (med,))
-        return med
+        ikiwa support.verbose:
+            andika("detected median itimer() resolution: %.6f s." % (med,))
+        rudisha med
 
-    def decide_itimer_count(self):
+    eleza decide_itimer_count(self):
         # Some systems have poor setitimer() resolution (for example
         # measured around 20 ms. on FreeBSD 9), so decide on a reasonable
         # number of sequential timers based on that.
         reso = self.measure_itimer_resolution()
-        if reso <= 1e-4:
-            return 10000
-        elif reso <= 1e-2:
-            return 100
+        ikiwa reso <= 1e-4:
+            rudisha 10000
+        elikiwa reso <= 1e-2:
+            rudisha 100
         else:
             self.skipTest("detected itimer resolution (%.3f s.) too high "
                           "(> 10 ms.) on this platform (or system too busy)"
@@ -1166,14 +1166,14 @@ class StressTest(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(signal, "setitimer"),
                          "test needs setitimer()")
-    def test_stress_delivery_dependent(self):
+    eleza test_stress_delivery_dependent(self):
         """
         This test uses dependent signal handlers.
         """
         N = self.decide_itimer_count()
         sigs = []
 
-        def first_handler(signum, frame):
+        eleza first_handler(signum, frame):
             # 1e-6 is the minimum non-zero value for `setitimer()`.
             # Choose a random delay so as to improve chances of
             # triggering a race condition.  Ideally the signal is received
@@ -1181,7 +1181,7 @@ class StressTest(unittest.TestCase):
             # Py_MakePendingCalls().
             signal.setitimer(signal.ITIMER_REAL, 1e-6 + random.random() * 1e-5)
 
-        def second_handler(signum=None, frame=None):
+        eleza second_handler(signum=None, frame=None):
             sigs.append(signum)
 
         # Here on Linux, SIGPROF > SIGALRM > SIGUSR1.  By using both
@@ -1212,14 +1212,14 @@ class StressTest(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(signal, "setitimer"),
                          "test needs setitimer()")
-    def test_stress_delivery_simultaneous(self):
+    eleza test_stress_delivery_simultaneous(self):
         """
         This test uses simultaneous signal handlers.
         """
         N = self.decide_itimer_count()
         sigs = []
 
-        def handler(signum, frame):
+        eleza handler(signum, frame):
             sigs.append(signum)
 
         self.setsig(signal.SIGUSR1, handler)
@@ -1243,27 +1243,27 @@ class StressTest(unittest.TestCase):
         # Python handler
         self.assertEqual(len(sigs), N, "Some signals were lost")
 
-class RaiseSignalTest(unittest.TestCase):
+kundi RaiseSignalTest(unittest.TestCase):
 
-    def test_sigint(self):
+    eleza test_sigint(self):
         with self.assertRaises(KeyboardInterrupt):
             signal.raise_signal(signal.SIGINT)
 
     @unittest.skipIf(sys.platform != "win32", "Windows specific test")
-    def test_invalid_argument(self):
+    eleza test_invalid_argument(self):
         try:
             SIGHUP = 1 # not supported on win32
             signal.raise_signal(SIGHUP)
             self.fail("OSError (Invalid argument) expected")
         except OSError as e:
-            if e.errno == errno.EINVAL:
+            ikiwa e.errno == errno.EINVAL:
                 pass
             else:
                 raise
 
-    def test_handler(self):
+    eleza test_handler(self):
         is_ok = False
-        def handler(a, b):
+        eleza handler(a, b):
             nonlocal is_ok
             is_ok = True
         old_signal = signal.signal(signal.SIGINT, handler)
@@ -1273,8 +1273,8 @@ class RaiseSignalTest(unittest.TestCase):
         self.assertTrue(is_ok)
 
 
-def tearDownModule():
+eleza tearDownModule():
     support.reap_children()
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

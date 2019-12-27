@@ -5,10 +5,10 @@ agiza unittest
 _xxtestfuzz = test.support.import_module('_xxtestfuzz')
 
 
-class TestFuzzer(unittest.TestCase):
+kundi TestFuzzer(unittest.TestCase):
     """To keep our https://github.com/google/oss-fuzz API working."""
 
-    def test_sample_input_smoke_test(self):
+    eleza test_sample_input_smoke_test(self):
         """This is only a regression test: Check that it doesn't crash."""
         _xxtestfuzz.run(b"")
         _xxtestfuzz.run(b"\0")
@@ -20,6 +20,6 @@ class TestFuzzer(unittest.TestCase):
         _xxtestfuzz.run(b"AAAAAA\0")
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     faulthandler.enable()
     unittest.main()

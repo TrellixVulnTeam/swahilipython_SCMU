@@ -13,20 +13,20 @@ API only the aliases table is used.
 
 The remaining text in this section is the original documentation of the module.
 
-This module provides a class :class:`Charset` for representing character sets
+This module provides a kundi :class:`Charset` for representing character sets
 and character set conversions in email messages, as well as a character set
 registry and several convenience methods for manipulating this registry.
 Instances of :class:`Charset` are used in several other modules within the
 :mod:`email` package.
 
-Import this class from the :mod:`email.charset` module.
+Import this kundi kutoka the :mod:`email.charset` module.
 
 
 .. class:: Charset(input_charset=DEFAULT_CHARSET)
 
    Map character sets to their email properties.
 
-   This class provides information about the requirements imposed on email for a
+   This kundi provides information about the requirements imposed on email for a
    specific character set.  It also provides convenience routines for converting
    between character sets, given the availability of the applicable codecs.  Given
    a character set, it will do its best to provide information on how to use that
@@ -43,7 +43,7 @@ Import this class from the :mod:`email.charset` module.
    *input_charset* is ``iso-8859-1``, then headers and bodies will be encoded using
    quoted-printable and no output conversion codec is necessary.  If
    *input_charset* is ``euc-jp``, then headers will be encoded with base64, bodies
-   will not be encoded, but output text will be converted from the ``euc-jp``
+   will not be encoded, but output text will be converted kutoka the ``euc-jp``
    character set to the ``iso-2022-jp`` character set.
 
    :class:`Charset` instances have the following data attributes:
@@ -132,7 +132,7 @@ Import this class from the :mod:`email.charset` module.
 
       This is similar to :meth:`header_encode` except that the string is fit
       into maximum line lengths as given by the argument *maxlengths*, which
-      must be an iterator: each element returned from this iterator will provide
+      must be an iterator: each element returned kutoka this iterator will provide
       the next maximum line length.
 
 
@@ -143,7 +143,7 @@ Import this class from the :mod:`email.charset` module.
       The type of encoding (base64 or quoted-printable) will be based on the
       *body_encoding* attribute.
 
-   The :class:`Charset` class also provides a number of methods to support
+   The :class:`Charset` kundi also provides a number of methods to support
    standard operations and built-in functions.
 
 
@@ -182,7 +182,7 @@ new entries to the global character set, alias, and codec registries:
    *header_enc*. The default is ``None`` for no encoding.
 
    Optional *output_charset* is the character set that the output should be in.
-   Conversions will proceed from input charset, to Unicode, to the output charset
+   Conversions will proceed kutoka input charset, to Unicode, to the output charset
    when the method :meth:`Charset.convert` is called.  The default is to output in
    the same character set as the input.
 
@@ -206,7 +206,7 @@ new entries to the global character set, alias, and codec registries:
 
 .. function:: add_codec(charset, codecname)
 
-   Add a codec that map characters in the given character set to and from Unicode.
+   Add a codec that map characters in the given character set to and kutoka Unicode.
 
    *charset* is the canonical name of a character set. *codecname* is the name of a
    Python codec, as appropriate for the second argument to the :class:`str`'s

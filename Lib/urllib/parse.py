@@ -34,7 +34,7 @@ agiza warnings
 
 __all__ = ["urlparse", "urlunparse", "urljoin", "urldefrag",
            "urlsplit", "urlunsplit", "urlencode", "parse_qs",
-           "parse_qsl", "quote", "quote_plus", "quote_from_bytes",
+           "parse_qsl", "quote", "quote_plus", "quote_kutoka_bytes",
            "unquote", "unquote_plus", "unquote_to_bytes",
            "DefragResult", "ParseResult", "SplitResult",
            "DefragResultBytes", "ParseResultBytes", "SplitResultBytes"]
@@ -81,7 +81,7 @@ scheme_chars = ('abcdefghijklmnopqrstuvwxyz'
 MAX_CACHE_SIZE = 20
 _parse_cache = {}
 
-def clear_cache():
+eleza clear_cache():
     """Clear the parse cache and the quoters cache."""
     _parse_cache.clear()
     _safe_quoters.clear()
@@ -96,19 +96,19 @@ def clear_cache():
 _implicit_encoding = 'ascii'
 _implicit_errors = 'strict'
 
-def _noop(obj):
-    return obj
+eleza _noop(obj):
+    rudisha obj
 
-def _encode_result(obj, encoding=_implicit_encoding,
+eleza _encode_result(obj, encoding=_implicit_encoding,
                         errors=_implicit_errors):
-    return obj.encode(encoding, errors)
+    rudisha obj.encode(encoding, errors)
 
-def _decode_args(args, encoding=_implicit_encoding,
+eleza _decode_args(args, encoding=_implicit_encoding,
                        errors=_implicit_errors):
-    return tuple(x.decode(encoding, errors) if x else '' for x in args)
+    rudisha tuple(x.decode(encoding, errors) ikiwa x else '' for x in args)
 
-def _coerce_args(*args):
-    # Invokes decode if necessary to create str args
+eleza _coerce_args(*args):
+    # Invokes decode ikiwa necessary to create str args
     # and returns the coerced inputs along with
     # an appropriate result coercion function
     #   - noop for str inputs
@@ -117,124 +117,124 @@ def _coerce_args(*args):
     for arg in args[1:]:
         # We special-case the empty string to support the
         # "scheme=''" default argument to some functions
-        if arg and isinstance(arg, str) != str_input:
+        ikiwa arg and isinstance(arg, str) != str_input:
             raise TypeError("Cannot mix str and non-str arguments")
-    if str_input:
-        return args + (_noop,)
-    return _decode_args(args) + (_encode_result,)
+    ikiwa str_input:
+        rudisha args + (_noop,)
+    rudisha _decode_args(args) + (_encode_result,)
 
 # Result objects are more helpful than simple tuples
-class _ResultMixinStr(object):
+kundi _ResultMixinStr(object):
     """Standard approach to encoding parsed results kutoka str to bytes"""
     __slots__ = ()
 
-    def encode(self, encoding='ascii', errors='strict'):
-        return self._encoded_counterpart(*(x.encode(encoding, errors) for x in self))
+    eleza encode(self, encoding='ascii', errors='strict'):
+        rudisha self._encoded_counterpart(*(x.encode(encoding, errors) for x in self))
 
 
-class _ResultMixinBytes(object):
+kundi _ResultMixinBytes(object):
     """Standard approach to decoding parsed results kutoka bytes to str"""
     __slots__ = ()
 
-    def decode(self, encoding='ascii', errors='strict'):
-        return self._decoded_counterpart(*(x.decode(encoding, errors) for x in self))
+    eleza decode(self, encoding='ascii', errors='strict'):
+        rudisha self._decoded_counterpart(*(x.decode(encoding, errors) for x in self))
 
 
-class _NetlocResultMixinBase(object):
+kundi _NetlocResultMixinBase(object):
     """Shared methods for the parsed result objects containing a netloc element"""
     __slots__ = ()
 
     @property
-    def username(self):
-        return self._userinfo[0]
+    eleza username(self):
+        rudisha self._userinfo[0]
 
     @property
-    def password(self):
-        return self._userinfo[1]
+    eleza password(self):
+        rudisha self._userinfo[1]
 
     @property
-    def hostname(self):
+    eleza hostname(self):
         hostname = self._hostinfo[0]
-        if not hostname:
-            return None
+        ikiwa not hostname:
+            rudisha None
         # Scoped IPv6 address may have zone info, which must not be lowercased
         # like http://[fe80::822a:a8ff:fe49:470c%tESt]:1234/keys
-        separator = '%' if isinstance(hostname, str) else b'%'
+        separator = '%' ikiwa isinstance(hostname, str) else b'%'
         hostname, percent, zone = hostname.partition(separator)
-        return hostname.lower() + percent + zone
+        rudisha hostname.lower() + percent + zone
 
     @property
-    def port(self):
+    eleza port(self):
         port = self._hostinfo[1]
-        if port is not None:
+        ikiwa port is not None:
             try:
                 port = int(port, 10)
             except ValueError:
                 message = f'Port could not be cast to integer value as {port!r}'
                 raise ValueError(message) kutoka None
-            if not ( 0 <= port <= 65535):
+            ikiwa not ( 0 <= port <= 65535):
                 raise ValueError("Port out of range 0-65535")
-        return port
+        rudisha port
 
 
-class _NetlocResultMixinStr(_NetlocResultMixinBase, _ResultMixinStr):
+kundi _NetlocResultMixinStr(_NetlocResultMixinBase, _ResultMixinStr):
     __slots__ = ()
 
     @property
-    def _userinfo(self):
+    eleza _userinfo(self):
         netloc = self.netloc
         userinfo, have_info, hostinfo = netloc.rpartition('@')
-        if have_info:
+        ikiwa have_info:
             username, have_password, password = userinfo.partition(':')
-            if not have_password:
+            ikiwa not have_password:
                 password = None
         else:
             username = password = None
-        return username, password
+        rudisha username, password
 
     @property
-    def _hostinfo(self):
+    eleza _hostinfo(self):
         netloc = self.netloc
         _, _, hostinfo = netloc.rpartition('@')
         _, have_open_br, bracketed = hostinfo.partition('[')
-        if have_open_br:
+        ikiwa have_open_br:
             hostname, _, port = bracketed.partition(']')
             _, _, port = port.partition(':')
         else:
             hostname, _, port = hostinfo.partition(':')
-        if not port:
+        ikiwa not port:
             port = None
-        return hostname, port
+        rudisha hostname, port
 
 
-class _NetlocResultMixinBytes(_NetlocResultMixinBase, _ResultMixinBytes):
+kundi _NetlocResultMixinBytes(_NetlocResultMixinBase, _ResultMixinBytes):
     __slots__ = ()
 
     @property
-    def _userinfo(self):
+    eleza _userinfo(self):
         netloc = self.netloc
         userinfo, have_info, hostinfo = netloc.rpartition(b'@')
-        if have_info:
+        ikiwa have_info:
             username, have_password, password = userinfo.partition(b':')
-            if not have_password:
+            ikiwa not have_password:
                 password = None
         else:
             username = password = None
-        return username, password
+        rudisha username, password
 
     @property
-    def _hostinfo(self):
+    eleza _hostinfo(self):
         netloc = self.netloc
         _, _, hostinfo = netloc.rpartition(b'@')
         _, have_open_br, bracketed = hostinfo.partition(b'[')
-        if have_open_br:
+        ikiwa have_open_br:
             hostname, _, port = bracketed.partition(b']')
             _, _, port = port.partition(b':')
         else:
             hostname, _, port = hostinfo.partition(b':')
-        if not port:
+        ikiwa not port:
             port = None
-        return hostname, port
+        rudisha hostname, port
 
 
 kutoka collections agiza namedtuple
@@ -312,45 +312,45 @@ _ParseResultBase.fragment.__doc__ = _SplitResultBase.fragment.__doc__
 ResultBase = _NetlocResultMixinStr
 
 # Structured result objects for string data
-class DefragResult(_DefragResultBase, _ResultMixinStr):
+kundi DefragResult(_DefragResultBase, _ResultMixinStr):
     __slots__ = ()
-    def geturl(self):
-        if self.fragment:
-            return self.url + '#' + self.fragment
+    eleza geturl(self):
+        ikiwa self.fragment:
+            rudisha self.url + '#' + self.fragment
         else:
-            return self.url
+            rudisha self.url
 
-class SplitResult(_SplitResultBase, _NetlocResultMixinStr):
+kundi SplitResult(_SplitResultBase, _NetlocResultMixinStr):
     __slots__ = ()
-    def geturl(self):
-        return urlunsplit(self)
+    eleza geturl(self):
+        rudisha urlunsplit(self)
 
-class ParseResult(_ParseResultBase, _NetlocResultMixinStr):
+kundi ParseResult(_ParseResultBase, _NetlocResultMixinStr):
     __slots__ = ()
-    def geturl(self):
-        return urlunparse(self)
+    eleza geturl(self):
+        rudisha urlunparse(self)
 
 # Structured result objects for bytes data
-class DefragResultBytes(_DefragResultBase, _ResultMixinBytes):
+kundi DefragResultBytes(_DefragResultBase, _ResultMixinBytes):
     __slots__ = ()
-    def geturl(self):
-        if self.fragment:
-            return self.url + b'#' + self.fragment
+    eleza geturl(self):
+        ikiwa self.fragment:
+            rudisha self.url + b'#' + self.fragment
         else:
-            return self.url
+            rudisha self.url
 
-class SplitResultBytes(_SplitResultBase, _NetlocResultMixinBytes):
+kundi SplitResultBytes(_SplitResultBase, _NetlocResultMixinBytes):
     __slots__ = ()
-    def geturl(self):
-        return urlunsplit(self)
+    eleza geturl(self):
+        rudisha urlunsplit(self)
 
-class ParseResultBytes(_ParseResultBase, _NetlocResultMixinBytes):
+kundi ParseResultBytes(_ParseResultBase, _NetlocResultMixinBytes):
     __slots__ = ()
-    def geturl(self):
-        return urlunparse(self)
+    eleza geturl(self):
+        rudisha urlunparse(self)
 
 # Set up the encode/decode result pairs
-def _fix_result_transcoding():
+eleza _fix_result_transcoding():
     _result_pairs = (
         (DefragResult, DefragResultBytes),
         (SplitResult, SplitResultBytes),
@@ -363,7 +363,7 @@ def _fix_result_transcoding():
 _fix_result_transcoding()
 del _fix_result_transcoding
 
-def urlparse(url, scheme='', allow_fragments=True):
+eleza urlparse(url, scheme='', allow_fragments=True):
     """Parse a URL into 6 components:
     <scheme>://<netloc>/<path>;<params>?<query>#<fragment>
     Return a 6-tuple: (scheme, netloc, path, params, query, fragment).
@@ -372,32 +372,32 @@ def urlparse(url, scheme='', allow_fragments=True):
     url, scheme, _coerce_result = _coerce_args(url, scheme)
     splitresult = urlsplit(url, scheme, allow_fragments)
     scheme, netloc, url, query, fragment = splitresult
-    if scheme in uses_params and ';' in url:
+    ikiwa scheme in uses_params and ';' in url:
         url, params = _splitparams(url)
     else:
         params = ''
     result = ParseResult(scheme, netloc, url, params, query, fragment)
-    return _coerce_result(result)
+    rudisha _coerce_result(result)
 
-def _splitparams(url):
-    if '/'  in url:
+eleza _splitparams(url):
+    ikiwa '/'  in url:
         i = url.find(';', url.rfind('/'))
-        if i < 0:
-            return url, ''
+        ikiwa i < 0:
+            rudisha url, ''
     else:
         i = url.find(';')
-    return url[:i], url[i+1:]
+    rudisha url[:i], url[i+1:]
 
-def _splitnetloc(url, start=0):
+eleza _splitnetloc(url, start=0):
     delim = len(url)   # position of end of domain part of url, default is end
     for c in '/?#':    # look for delimiters; the order is NOT agizaant
         wdelim = url.find(c, start)        # find first of this delim
-        if wdelim >= 0:                    # if found
+        ikiwa wdelim >= 0:                    # ikiwa found
             delim = min(delim, wdelim)     # use earliest delim position
-    return url[start:delim], url[delim:]   # return (domain, rest)
+    rudisha url[start:delim], url[delim:]   # rudisha (domain, rest)
 
-def _checknetloc(netloc):
-    if not netloc or netloc.isascii():
+eleza _checknetloc(netloc):
+    ikiwa not netloc or netloc.isascii():
         return
     # looking for characters like \u2100 that expand to 'a/c'
     # IDNA uses NFKC equivalence, so normalize for this check
@@ -407,14 +407,14 @@ def _checknetloc(netloc):
     n = n.replace('#', '')
     n = n.replace('?', '')
     netloc2 = unicodedata.normalize('NFKC', n)
-    if n == netloc2:
+    ikiwa n == netloc2:
         return
     for c in '/?#@:':
-        if c in netloc2:
+        ikiwa c in netloc2:
             raise ValueError("netloc '" + netloc + "' contains invalid " +
                              "characters under NFKC normalization")
 
-def urlsplit(url, scheme='', allow_fragments=True):
+eleza urlsplit(url, scheme='', allow_fragments=True):
     """Parse a URL into 5 components:
     <scheme>://<netloc>/<path>?<query>#<fragment>
     Return a 5-tuple: (scheme, netloc, path, query, fragment).
@@ -424,90 +424,90 @@ def urlsplit(url, scheme='', allow_fragments=True):
     allow_fragments = bool(allow_fragments)
     key = url, scheme, allow_fragments, type(url), type(scheme)
     cached = _parse_cache.get(key, None)
-    if cached:
-        return _coerce_result(cached)
-    if len(_parse_cache) >= MAX_CACHE_SIZE: # avoid runaway growth
+    ikiwa cached:
+        rudisha _coerce_result(cached)
+    ikiwa len(_parse_cache) >= MAX_CACHE_SIZE: # avoid runaway growth
         clear_cache()
     netloc = query = fragment = ''
     i = url.find(':')
-    if i > 0:
-        if url[:i] == 'http': # optimize the common case
+    ikiwa i > 0:
+        ikiwa url[:i] == 'http': # optimize the common case
             url = url[i+1:]
-            if url[:2] == '//':
+            ikiwa url[:2] == '//':
                 netloc, url = _splitnetloc(url, 2)
-                if (('[' in netloc and ']' not in netloc) or
+                ikiwa (('[' in netloc and ']' not in netloc) or
                         (']' in netloc and '[' not in netloc)):
                     raise ValueError("Invalid IPv6 URL")
-            if allow_fragments and '#' in url:
+            ikiwa allow_fragments and '#' in url:
                 url, fragment = url.split('#', 1)
-            if '?' in url:
+            ikiwa '?' in url:
                 url, query = url.split('?', 1)
             _checknetloc(netloc)
             v = SplitResult('http', netloc, url, query, fragment)
             _parse_cache[key] = v
-            return _coerce_result(v)
+            rudisha _coerce_result(v)
         for c in url[:i]:
-            if c not in scheme_chars:
+            ikiwa c not in scheme_chars:
                 break
         else:
             # make sure "url" is not actually a port number (in which case
             # "scheme" is really part of the path)
             rest = url[i+1:]
-            if not rest or any(c not in '0123456789' for c in rest):
+            ikiwa not rest or any(c not in '0123456789' for c in rest):
                 # not a port number
                 scheme, url = url[:i].lower(), rest
 
-    if url[:2] == '//':
+    ikiwa url[:2] == '//':
         netloc, url = _splitnetloc(url, 2)
-        if (('[' in netloc and ']' not in netloc) or
+        ikiwa (('[' in netloc and ']' not in netloc) or
                 (']' in netloc and '[' not in netloc)):
             raise ValueError("Invalid IPv6 URL")
-    if allow_fragments and '#' in url:
+    ikiwa allow_fragments and '#' in url:
         url, fragment = url.split('#', 1)
-    if '?' in url:
+    ikiwa '?' in url:
         url, query = url.split('?', 1)
     _checknetloc(netloc)
     v = SplitResult(scheme, netloc, url, query, fragment)
     _parse_cache[key] = v
-    return _coerce_result(v)
+    rudisha _coerce_result(v)
 
-def urlunparse(components):
+eleza urlunparse(components):
     """Put a parsed URL back together again.  This may result in a
-    slightly different, but equivalent URL, if the URL that was parsed
+    slightly different, but equivalent URL, ikiwa the URL that was parsed
     originally had redundant delimiters, e.g. a ? with an empty query
     (the draft states that these are equivalent)."""
     scheme, netloc, url, params, query, fragment, _coerce_result = (
                                                   _coerce_args(*components))
-    if params:
+    ikiwa params:
         url = "%s;%s" % (url, params)
-    return _coerce_result(urlunsplit((scheme, netloc, url, query, fragment)))
+    rudisha _coerce_result(urlunsplit((scheme, netloc, url, query, fragment)))
 
-def urlunsplit(components):
+eleza urlunsplit(components):
     """Combine the elements of a tuple as returned by urlsplit() into a
     complete URL as a string. The data argument can be any five-item iterable.
-    This may result in a slightly different, but equivalent URL, if the URL that
+    This may result in a slightly different, but equivalent URL, ikiwa the URL that
     was parsed originally had unnecessary delimiters (for example, a ? with an
     empty query; the RFC states that these are equivalent)."""
     scheme, netloc, url, query, fragment, _coerce_result = (
                                           _coerce_args(*components))
-    if netloc or (scheme and scheme in uses_netloc and url[:2] != '//'):
-        if url and url[:1] != '/': url = '/' + url
+    ikiwa netloc or (scheme and scheme in uses_netloc and url[:2] != '//'):
+        ikiwa url and url[:1] != '/': url = '/' + url
         url = '//' + (netloc or '') + url
-    if scheme:
+    ikiwa scheme:
         url = scheme + ':' + url
-    if query:
+    ikiwa query:
         url = url + '?' + query
-    if fragment:
+    ikiwa fragment:
         url = url + '#' + fragment
-    return _coerce_result(url)
+    rudisha _coerce_result(url)
 
-def urljoin(base, url, allow_fragments=True):
+eleza urljoin(base, url, allow_fragments=True):
     """Join a base URL and a possibly relative URL to form an absolute
     interpretation of the latter."""
-    if not base:
-        return url
-    if not url:
-        return base
+    ikiwa not base:
+        rudisha url
+    ikiwa not url:
+        rudisha base
 
     base, url, _coerce_result = _coerce_args(base, url)
     bscheme, bnetloc, bpath, bparams, bquery, bfragment = \
@@ -515,30 +515,30 @@ def urljoin(base, url, allow_fragments=True):
     scheme, netloc, path, params, query, fragment = \
             urlparse(url, bscheme, allow_fragments)
 
-    if scheme != bscheme or scheme not in uses_relative:
-        return _coerce_result(url)
-    if scheme in uses_netloc:
-        if netloc:
-            return _coerce_result(urlunparse((scheme, netloc, path,
+    ikiwa scheme != bscheme or scheme not in uses_relative:
+        rudisha _coerce_result(url)
+    ikiwa scheme in uses_netloc:
+        ikiwa netloc:
+            rudisha _coerce_result(urlunparse((scheme, netloc, path,
                                               params, query, fragment)))
         netloc = bnetloc
 
-    if not path and not params:
+    ikiwa not path and not params:
         path = bpath
         params = bparams
-        if not query:
+        ikiwa not query:
             query = bquery
-        return _coerce_result(urlunparse((scheme, netloc, path,
+        rudisha _coerce_result(urlunparse((scheme, netloc, path,
                                           params, query, fragment)))
 
     base_parts = bpath.split('/')
-    if base_parts[-1] != '':
+    ikiwa base_parts[-1] != '':
         # the last item is not a directory, so will not be taken into account
         # in resolving the relative path
         del base_parts[-1]
 
     # for rfc3986, ignore all base path should the first character be root.
-    if path[:1] == '/':
+    ikiwa path[:1] == '/':
         segments = path.split('/')
     else:
         segments = base_parts + path.split('/')
@@ -549,28 +549,28 @@ def urljoin(base, url, allow_fragments=True):
     resolved_path = []
 
     for seg in segments:
-        if seg == '..':
+        ikiwa seg == '..':
             try:
                 resolved_path.pop()
             except IndexError:
                 # ignore any .. segments that would otherwise cause an IndexError
-                # when popped kutoka resolved_path if resolving for rfc3986
+                # when popped kutoka resolved_path ikiwa resolving for rfc3986
                 pass
-        elif seg == '.':
+        elikiwa seg == '.':
             continue
         else:
             resolved_path.append(seg)
 
-    if segments[-1] in ('.', '..'):
-        # do some post-processing here. if the last segment was a relative dir,
+    ikiwa segments[-1] in ('.', '..'):
+        # do some post-processing here. ikiwa the last segment was a relative dir,
         # then we need to append the trailing '/'
         resolved_path.append('')
 
-    return _coerce_result(urlunparse((scheme, netloc, '/'.join(
+    rudisha _coerce_result(urlunparse((scheme, netloc, '/'.join(
         resolved_path) or '/', params, query, fragment)))
 
 
-def urldefrag(url):
+eleza urldefrag(url):
     """Removes any existing fragment kutoka URL.
 
     Returns a tuple of the defragmented URL and the fragment.  If
@@ -578,37 +578,37 @@ def urldefrag(url):
     empty string.
     """
     url, _coerce_result = _coerce_args(url)
-    if '#' in url:
+    ikiwa '#' in url:
         s, n, p, a, q, frag = urlparse(url)
         defrag = urlunparse((s, n, p, a, q, ''))
     else:
         frag = ''
         defrag = url
-    return _coerce_result(DefragResult(defrag, frag))
+    rudisha _coerce_result(DefragResult(defrag, frag))
 
 _hexdig = '0123456789ABCDEFabcdef'
 _hextobyte = None
 
-def unquote_to_bytes(string):
+eleza unquote_to_bytes(string):
     """unquote_to_bytes('abc%20def') -> b'abc def'."""
-    # Note: strings are encoded as UTF-8. This is only an issue if it contains
+    # Note: strings are encoded as UTF-8. This is only an issue ikiwa it contains
     # unescaped non-ASCII characters, which URIs should not.
-    if not string:
+    ikiwa not string:
         # Is it a string-like object?
         string.split
-        return b''
-    if isinstance(string, str):
+        rudisha b''
+    ikiwa isinstance(string, str):
         string = string.encode('utf-8')
     bits = string.split(b'%')
-    if len(bits) == 1:
-        return string
+    ikiwa len(bits) == 1:
+        rudisha string
     res = [bits[0]]
     append = res.append
     # Delay the initialization of the table to not waste memory
-    # if the function is never called
+    # ikiwa the function is never called
     global _hextobyte
-    if _hextobyte is None:
-        _hextobyte = {(a + b).encode(): bytes.fromhex(a + b)
+    ikiwa _hextobyte is None:
+        _hextobyte = {(a + b).encode(): bytes.kutokahex(a + b)
                       for a in _hexdig for b in _hexdig}
     for item in bits[1:]:
         try:
@@ -617,11 +617,11 @@ def unquote_to_bytes(string):
         except KeyError:
             append(b'%')
             append(item)
-    return b''.join(res)
+    rudisha b''.join(res)
 
 _asciire = re.compile('([\x00-\x7f]+)')
 
-def unquote(string, encoding='utf-8', errors='replace'):
+eleza unquote(string, encoding='utf-8', errors='replace'):
     """Replace %xx escapes by their single-character equivalent. The optional
     encoding and errors parameters specify how to decode percent-encoded
     sequences into Unicode characters, as accepted by the bytes.decode()
@@ -631,12 +631,12 @@ def unquote(string, encoding='utf-8', errors='replace'):
 
     unquote('abc%20def') -> 'abc def'.
     """
-    if '%' not in string:
+    ikiwa '%' not in string:
         string.split
-        return string
-    if encoding is None:
+        rudisha string
+    ikiwa encoding is None:
         encoding = 'utf-8'
-    if errors is None:
+    ikiwa errors is None:
         errors = 'replace'
     bits = _asciire.split(string)
     res = [bits[0]]
@@ -644,10 +644,10 @@ def unquote(string, encoding='utf-8', errors='replace'):
     for i in range(1, len(bits), 2):
         append(unquote_to_bytes(bits[i]).decode(encoding, errors))
         append(bits[i + 1])
-    return ''.join(res)
+    rudisha ''.join(res)
 
 
-def parse_qs(qs, keep_blank_values=False, strict_parsing=False,
+eleza parse_qs(qs, keep_blank_values=False, strict_parsing=False,
              encoding='utf-8', errors='replace', max_num_fields=None):
     """Parse a query given as a string argument.
 
@@ -659,7 +659,7 @@ def parse_qs(qs, keep_blank_values=False, strict_parsing=False,
             percent-encoded queries should be treated as blank strings.
             A true value indicates that blanks should be retained as
             blank strings.  The default false value indicates that
-            blank values are to be ignored and treated as if they were
+            blank values are to be ignored and treated as ikiwa they were
             not included.
 
         strict_parsing: flag indicating what to do with parsing errors.
@@ -669,7 +669,7 @@ def parse_qs(qs, keep_blank_values=False, strict_parsing=False,
         encoding and errors: specify how to decode percent-encoded sequences
             into Unicode characters, as accepted by the bytes.decode() method.
 
-        max_num_fields: int. If set, then throws a ValueError if there
+        max_num_fields: int. If set, then throws a ValueError ikiwa there
             are more than n fields read by parse_qsl().
 
         Returns a dictionary.
@@ -679,14 +679,14 @@ def parse_qs(qs, keep_blank_values=False, strict_parsing=False,
                       encoding=encoding, errors=errors,
                       max_num_fields=max_num_fields)
     for name, value in pairs:
-        if name in parsed_result:
+        ikiwa name in parsed_result:
             parsed_result[name].append(value)
         else:
             parsed_result[name] = [value]
-    return parsed_result
+    rudisha parsed_result
 
 
-def parse_qsl(qs, keep_blank_values=False, strict_parsing=False,
+eleza parse_qsl(qs, keep_blank_values=False, strict_parsing=False,
               encoding='utf-8', errors='replace', max_num_fields=None):
     """Parse a query given as a string argument.
 
@@ -698,7 +698,7 @@ def parse_qsl(qs, keep_blank_values=False, strict_parsing=False,
             percent-encoded queries should be treated as blank strings.
             A true value indicates that blanks should be retained as blank
             strings.  The default false value indicates that blank values
-            are to be ignored and treated as if they were  not included.
+            are to be ignored and treated as ikiwa they were  not included.
 
         strict_parsing: flag indicating what to do with parsing errors. If
             false (the default), errors are silently ignored. If true,
@@ -708,7 +708,7 @@ def parse_qsl(qs, keep_blank_values=False, strict_parsing=False,
             into Unicode characters, as accepted by the bytes.decode() method.
 
         max_num_fields: int. If set, then throws a ValueError
-            if there are more than n fields read by parse_qsl().
+            ikiwa there are more than n fields read by parse_qsl().
 
         Returns a list, as G-d intended.
     """
@@ -717,26 +717,26 @@ def parse_qsl(qs, keep_blank_values=False, strict_parsing=False,
     # If max_num_fields is defined then check that the number of fields
     # is less than max_num_fields. This prevents a memory exhaustion DOS
     # attack via post bodies with many fields.
-    if max_num_fields is not None:
+    ikiwa max_num_fields is not None:
         num_fields = 1 + qs.count('&') + qs.count(';')
-        if max_num_fields < num_fields:
+        ikiwa max_num_fields < num_fields:
             raise ValueError('Max number of fields exceeded')
 
     pairs = [s2 for s1 in qs.split('&') for s2 in s1.split(';')]
     r = []
     for name_value in pairs:
-        if not name_value and not strict_parsing:
+        ikiwa not name_value and not strict_parsing:
             continue
         nv = name_value.split('=', 1)
-        if len(nv) != 2:
-            if strict_parsing:
+        ikiwa len(nv) != 2:
+            ikiwa strict_parsing:
                 raise ValueError("bad query field: %r" % (name_value,))
             # Handle case of a control-name with no equal sign
-            if keep_blank_values:
+            ikiwa keep_blank_values:
                 nv.append('')
             else:
                 continue
-        if len(nv[1]) or keep_blank_values:
+        ikiwa len(nv[1]) or keep_blank_values:
             name = nv[0].replace('+', ' ')
             name = unquote(name, encoding=encoding, errors=errors)
             name = _coerce_result(name)
@@ -744,16 +744,16 @@ def parse_qsl(qs, keep_blank_values=False, strict_parsing=False,
             value = unquote(value, encoding=encoding, errors=errors)
             value = _coerce_result(value)
             r.append((name, value))
-    return r
+    rudisha r
 
-def unquote_plus(string, encoding='utf-8', errors='replace'):
+eleza unquote_plus(string, encoding='utf-8', errors='replace'):
     """Like unquote(), but also replace plus signs by spaces, as required for
     unquoting HTML form values.
 
     unquote_plus('%7e/abc+def') -> '~/abc def'
     """
     string = string.replace('+', ' ')
-    return unquote(string, encoding, errors)
+    rudisha unquote(string, encoding, errors)
 
 _ALWAYS_SAFE = frozenset(b'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
                          b'abcdefghijklmnopqrstuvwxyz'
@@ -762,7 +762,7 @@ _ALWAYS_SAFE = frozenset(b'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 _ALWAYS_SAFE_BYTES = bytes(_ALWAYS_SAFE)
 _safe_quoters = {}
 
-class Quoter(collections.defaultdict):
+kundi Quoter(collections.defaultdict):
     """A mapping kutoka bytes (in range(0,256)) to strings.
 
     String values are percent-encoded byte values, unless the key < 128, and
@@ -770,21 +770,21 @@ class Quoter(collections.defaultdict):
     """
     # Keeps a cache internally, using defaultdict, for efficiency (lookups
     # of cached keys don't call Python code at all).
-    def __init__(self, safe):
+    eleza __init__(self, safe):
         """safe: bytes object."""
         self.safe = _ALWAYS_SAFE.union(safe)
 
-    def __repr__(self):
+    eleza __repr__(self):
         # Without this, will just display as a defaultdict
-        return "<%s %r>" % (self.__class__.__name__, dict(self))
+        rudisha "<%s %r>" % (self.__class__.__name__, dict(self))
 
-    def __missing__(self, b):
+    eleza __missing__(self, b):
         # Handle a cache miss. Store quoted string in cache and return.
-        res = chr(b) if b in self.safe else '%{:02X}'.format(b)
+        res = chr(b) ikiwa b in self.safe else '%{:02X}'.format(b)
         self[b] = res
-        return res
+        rudisha res
 
-def quote(string, safe='/', encoding=None, errors=None):
+eleza quote(string, safe='/', encoding=None, errors=None):
     """quote('abc def') -> 'abc%20def'
 
     Each part of a URL, e.g. the path info, the query, etc., has a
@@ -816,68 +816,68 @@ def quote(string, safe='/', encoding=None, errors=None):
     Now, "~" is included in the set of unreserved characters.
 
     string and safe may be either str or bytes objects. encoding and errors
-    must not be specified if string is a bytes object.
+    must not be specified ikiwa string is a bytes object.
 
     The optional encoding and errors parameters specify how to deal with
     non-ASCII characters, as accepted by the str.encode method.
     By default, encoding='utf-8' (characters are encoded with UTF-8), and
     errors='strict' (unsupported characters raise a UnicodeEncodeError).
     """
-    if isinstance(string, str):
-        if not string:
-            return string
-        if encoding is None:
+    ikiwa isinstance(string, str):
+        ikiwa not string:
+            rudisha string
+        ikiwa encoding is None:
             encoding = 'utf-8'
-        if errors is None:
+        ikiwa errors is None:
             errors = 'strict'
         string = string.encode(encoding, errors)
     else:
-        if encoding is not None:
+        ikiwa encoding is not None:
             raise TypeError("quote() doesn't support 'encoding' for bytes")
-        if errors is not None:
+        ikiwa errors is not None:
             raise TypeError("quote() doesn't support 'errors' for bytes")
-    return quote_from_bytes(string, safe)
+    rudisha quote_kutoka_bytes(string, safe)
 
-def quote_plus(string, safe='', encoding=None, errors=None):
+eleza quote_plus(string, safe='', encoding=None, errors=None):
     """Like quote(), but also replace ' ' with '+', as required for quoting
     HTML form values. Plus signs in the original string are escaped unless
     they are included in safe. It also does not have safe default to '/'.
     """
-    # Check if ' ' in string, where string may either be a str or bytes.  If
+    # Check ikiwa ' ' in string, where string may either be a str or bytes.  If
     # there are no spaces, the regular quote will produce the right answer.
-    if ((isinstance(string, str) and ' ' not in string) or
+    ikiwa ((isinstance(string, str) and ' ' not in string) or
         (isinstance(string, bytes) and b' ' not in string)):
-        return quote(string, safe, encoding, errors)
-    if isinstance(safe, str):
+        rudisha quote(string, safe, encoding, errors)
+    ikiwa isinstance(safe, str):
         space = ' '
     else:
         space = b' '
     string = quote(string, safe + space, encoding, errors)
-    return string.replace(' ', '+')
+    rudisha string.replace(' ', '+')
 
-def quote_from_bytes(bs, safe='/'):
+eleza quote_kutoka_bytes(bs, safe='/'):
     """Like quote(), but accepts a bytes object rather than a str, and does
     not perform string-to-bytes encoding.  It always returns an ASCII string.
-    quote_from_bytes(b'abc def\x3f') -> 'abc%20def%3f'
+    quote_kutoka_bytes(b'abc def\x3f') -> 'abc%20def%3f'
     """
-    if not isinstance(bs, (bytes, bytearray)):
-        raise TypeError("quote_from_bytes() expected bytes")
-    if not bs:
-        return ''
-    if isinstance(safe, str):
+    ikiwa not isinstance(bs, (bytes, bytearray)):
+        raise TypeError("quote_kutoka_bytes() expected bytes")
+    ikiwa not bs:
+        rudisha ''
+    ikiwa isinstance(safe, str):
         # Normalize 'safe' by converting to bytes and removing non-ASCII chars
         safe = safe.encode('ascii', 'ignore')
     else:
-        safe = bytes([c for c in safe if c < 128])
-    if not bs.rstrip(_ALWAYS_SAFE_BYTES + safe):
-        return bs.decode()
+        safe = bytes([c for c in safe ikiwa c < 128])
+    ikiwa not bs.rstrip(_ALWAYS_SAFE_BYTES + safe):
+        rudisha bs.decode()
     try:
         quoter = _safe_quoters[safe]
     except KeyError:
         _safe_quoters[safe] = quoter = Quoter(safe).__getitem__
-    return ''.join([quoter(char) for char in bs])
+    rudisha ''.join([quoter(char) for char in bs])
 
-def urlencode(query, doseq=False, safe='', encoding=None, errors=None,
+eleza urlencode(query, doseq=False, safe='', encoding=None, errors=None,
               quote_via=quote_plus):
     """Encode a dict or sequence of two-element tuples into a URL query string.
 
@@ -891,10 +891,10 @@ def urlencode(query, doseq=False, safe='', encoding=None, errors=None,
     The components of a query arg may each be either a string or a bytes type.
 
     The safe, encoding, and errors parameters are passed down to the function
-    specified by quote_via (encoding and errors only if a component is a str).
+    specified by quote_via (encoding and errors only ikiwa a component is a str).
     """
 
-    if hasattr(query, "items"):
+    ikiwa hasattr(query, "items"):
         query = query.items()
     else:
         # It's a bother at times that strings and string-like objects are
@@ -902,7 +902,7 @@ def urlencode(query, doseq=False, safe='', encoding=None, errors=None,
         try:
             # non-sequence items should not work with len()
             # non-empty strings will fail this
-            if len(query) and not isinstance(query[0], tuple):
+            ikiwa len(query) and not isinstance(query[0], tuple):
                 raise TypeError
             # Zero-length sequences of all types will get here and succeed,
             # but that's a minor nit.  Since the original implementation
@@ -914,29 +914,29 @@ def urlencode(query, doseq=False, safe='', encoding=None, errors=None,
                             "or mapping object").with_traceback(tb)
 
     l = []
-    if not doseq:
+    ikiwa not doseq:
         for k, v in query:
-            if isinstance(k, bytes):
+            ikiwa isinstance(k, bytes):
                 k = quote_via(k, safe)
             else:
                 k = quote_via(str(k), safe, encoding, errors)
 
-            if isinstance(v, bytes):
+            ikiwa isinstance(v, bytes):
                 v = quote_via(v, safe)
             else:
                 v = quote_via(str(v), safe, encoding, errors)
             l.append(k + '=' + v)
     else:
         for k, v in query:
-            if isinstance(k, bytes):
+            ikiwa isinstance(k, bytes):
                 k = quote_via(k, safe)
             else:
                 k = quote_via(str(k), safe, encoding, errors)
 
-            if isinstance(v, bytes):
+            ikiwa isinstance(v, bytes):
                 v = quote_via(v, safe)
                 l.append(k + '=' + v)
-            elif isinstance(v, str):
+            elikiwa isinstance(v, str):
                 v = quote_via(v, safe, encoding, errors)
                 l.append(k + '=' + v)
             else:
@@ -950,216 +950,216 @@ def urlencode(query, doseq=False, safe='', encoding=None, errors=None,
                 else:
                     # loop over the sequence
                     for elt in v:
-                        if isinstance(elt, bytes):
+                        ikiwa isinstance(elt, bytes):
                             elt = quote_via(elt, safe)
                         else:
                             elt = quote_via(str(elt), safe, encoding, errors)
                         l.append(k + '=' + elt)
-    return '&'.join(l)
+    rudisha '&'.join(l)
 
 
-def to_bytes(url):
+eleza to_bytes(url):
     warnings.warn("urllib.parse.to_bytes() is deprecated as of 3.8",
                   DeprecationWarning, stacklevel=2)
-    return _to_bytes(url)
+    rudisha _to_bytes(url)
 
 
-def _to_bytes(url):
+eleza _to_bytes(url):
     """to_bytes(u"URL") --> 'URL'."""
     # Most URL schemes require ASCII. If that changes, the conversion
     # can be relaxed.
     # XXX get rid of to_bytes()
-    if isinstance(url, str):
+    ikiwa isinstance(url, str):
         try:
             url = url.encode("ASCII").decode()
         except UnicodeError:
             raise UnicodeError("URL " + repr(url) +
                                " contains non-ASCII characters")
-    return url
+    rudisha url
 
 
-def unwrap(url):
+eleza unwrap(url):
     """Transform a string like '<URL:scheme://host/path>' into 'scheme://host/path'.
 
-    The string is returned unchanged if it's not a wrapped URL.
+    The string is returned unchanged ikiwa it's not a wrapped URL.
     """
     url = str(url).strip()
-    if url[:1] == '<' and url[-1:] == '>':
+    ikiwa url[:1] == '<' and url[-1:] == '>':
         url = url[1:-1].strip()
-    if url[:4] == 'URL:':
+    ikiwa url[:4] == 'URL:':
         url = url[4:].strip()
-    return url
+    rudisha url
 
 
-def splittype(url):
+eleza splittype(url):
     warnings.warn("urllib.parse.splittype() is deprecated as of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
-    return _splittype(url)
+    rudisha _splittype(url)
 
 
 _typeprog = None
-def _splittype(url):
+eleza _splittype(url):
     """splittype('type:opaquestring') --> 'type', 'opaquestring'."""
     global _typeprog
-    if _typeprog is None:
+    ikiwa _typeprog is None:
         _typeprog = re.compile('([^/:]+):(.*)', re.DOTALL)
 
     match = _typeprog.match(url)
-    if match:
+    ikiwa match:
         scheme, data = match.groups()
-        return scheme.lower(), data
-    return None, url
+        rudisha scheme.lower(), data
+    rudisha None, url
 
 
-def splithost(url):
+eleza splithost(url):
     warnings.warn("urllib.parse.splithost() is deprecated as of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
-    return _splithost(url)
+    rudisha _splithost(url)
 
 
 _hostprog = None
-def _splithost(url):
+eleza _splithost(url):
     """splithost('//host[:port]/path') --> 'host[:port]', '/path'."""
     global _hostprog
-    if _hostprog is None:
+    ikiwa _hostprog is None:
         _hostprog = re.compile('//([^/#?]*)(.*)', re.DOTALL)
 
     match = _hostprog.match(url)
-    if match:
+    ikiwa match:
         host_port, path = match.groups()
-        if path and path[0] != '/':
+        ikiwa path and path[0] != '/':
             path = '/' + path
-        return host_port, path
-    return None, url
+        rudisha host_port, path
+    rudisha None, url
 
 
-def splituser(host):
+eleza splituser(host):
     warnings.warn("urllib.parse.splituser() is deprecated as of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
-    return _splituser(host)
+    rudisha _splituser(host)
 
 
-def _splituser(host):
+eleza _splituser(host):
     """splituser('user[:passwd]@host[:port]') --> 'user[:passwd]', 'host[:port]'."""
     user, delim, host = host.rpartition('@')
-    return (user if delim else None), host
+    rudisha (user ikiwa delim else None), host
 
 
-def splitpasswd(user):
+eleza splitpasswd(user):
     warnings.warn("urllib.parse.splitpasswd() is deprecated as of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
-    return _splitpasswd(user)
+    rudisha _splitpasswd(user)
 
 
-def _splitpasswd(user):
+eleza _splitpasswd(user):
     """splitpasswd('user:passwd') -> 'user', 'passwd'."""
     user, delim, passwd = user.partition(':')
-    return user, (passwd if delim else None)
+    rudisha user, (passwd ikiwa delim else None)
 
 
-def splitport(host):
+eleza splitport(host):
     warnings.warn("urllib.parse.splitport() is deprecated as of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
-    return _splitport(host)
+    rudisha _splitport(host)
 
 
 # splittag('/path#tag') --> '/path', 'tag'
 _portprog = None
-def _splitport(host):
+eleza _splitport(host):
     """splitport('host:port') --> 'host', 'port'."""
     global _portprog
-    if _portprog is None:
+    ikiwa _portprog is None:
         _portprog = re.compile('(.*):([0-9]*)$', re.DOTALL)
 
     match = _portprog.match(host)
-    if match:
+    ikiwa match:
         host, port = match.groups()
-        if port:
-            return host, port
-    return host, None
+        ikiwa port:
+            rudisha host, port
+    rudisha host, None
 
 
-def splitnport(host, defport=-1):
+eleza splitnport(host, defport=-1):
     warnings.warn("urllib.parse.splitnport() is deprecated as of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
-    return _splitnport(host, defport)
+    rudisha _splitnport(host, defport)
 
 
-def _splitnport(host, defport=-1):
+eleza _splitnport(host, defport=-1):
     """Split host and port, returning numeric port.
-    Return given default port if no ':' found; defaults to -1.
-    Return numerical port if a valid number are found after ':'.
-    Return None if ':' but not a valid number."""
+    Return given default port ikiwa no ':' found; defaults to -1.
+    Return numerical port ikiwa a valid number are found after ':'.
+    Return None ikiwa ':' but not a valid number."""
     host, delim, port = host.rpartition(':')
-    if not delim:
+    ikiwa not delim:
         host = port
-    elif port:
+    elikiwa port:
         try:
             nport = int(port)
         except ValueError:
             nport = None
-        return host, nport
-    return host, defport
+        rudisha host, nport
+    rudisha host, defport
 
 
-def splitquery(url):
+eleza splitquery(url):
     warnings.warn("urllib.parse.splitquery() is deprecated as of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
-    return _splitquery(url)
+    rudisha _splitquery(url)
 
 
-def _splitquery(url):
+eleza _splitquery(url):
     """splitquery('/path?query') --> '/path', 'query'."""
     path, delim, query = url.rpartition('?')
-    if delim:
-        return path, query
-    return url, None
+    ikiwa delim:
+        rudisha path, query
+    rudisha url, None
 
 
-def splittag(url):
+eleza splittag(url):
     warnings.warn("urllib.parse.splittag() is deprecated as of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
-    return _splittag(url)
+    rudisha _splittag(url)
 
 
-def _splittag(url):
+eleza _splittag(url):
     """splittag('/path#tag') --> '/path', 'tag'."""
     path, delim, tag = url.rpartition('#')
-    if delim:
-        return path, tag
-    return url, None
+    ikiwa delim:
+        rudisha path, tag
+    rudisha url, None
 
 
-def splitattr(url):
+eleza splitattr(url):
     warnings.warn("urllib.parse.splitattr() is deprecated as of 3.8, "
                   "use urllib.parse.urlparse() instead",
                   DeprecationWarning, stacklevel=2)
-    return _splitattr(url)
+    rudisha _splitattr(url)
 
 
-def _splitattr(url):
+eleza _splitattr(url):
     """splitattr('/path;attr1=value1;attr2=value2;...') ->
         '/path', ['attr1=value1', 'attr2=value2', ...]."""
     words = url.split(';')
-    return words[0], words[1:]
+    rudisha words[0], words[1:]
 
 
-def splitvalue(attr):
+eleza splitvalue(attr):
     warnings.warn("urllib.parse.splitvalue() is deprecated as of 3.8, "
                   "use urllib.parse.parse_qsl() instead",
                   DeprecationWarning, stacklevel=2)
-    return _splitvalue(attr)
+    rudisha _splitvalue(attr)
 
 
-def _splitvalue(attr):
+eleza _splitvalue(attr):
     """splitvalue('attr=value') --> 'attr', 'value'."""
     attr, delim, value = attr.partition('=')
-    return attr, (value if delim else None)
+    rudisha attr, (value ikiwa delim else None)

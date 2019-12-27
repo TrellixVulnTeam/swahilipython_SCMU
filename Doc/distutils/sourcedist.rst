@@ -138,7 +138,7 @@ described above does not apply in this case.
 
 
 The manifest template has one command per line, where each command specifies a
-set of files to include or exclude from the source distribution.  For an
+set of files to include or exclude kutoka the source distribution.  For an
 example, again we turn to the Distutils' own manifest template:
 
 .. code-block:: none
@@ -151,7 +151,7 @@ The meanings should be fairly clear: include all files in the distribution root
 matching :file:`\*.txt`, all files anywhere under the :file:`examples` directory
 matching :file:`\*.txt` or :file:`\*.py`, and exclude all directories matching
 :file:`examples/sample?/build`.  All of this is done *after* the standard
-include set, so you can exclude files from the standard set with explicit
+include set, so you can exclude files kutoka the standard set with explicit
 instructions in the manifest template.  (Or, you can use the
 :option:`!--no-defaults` option to disable the standard set entirely.)  There are
 several other commands available in the manifest template mini-language; see
@@ -159,7 +159,7 @@ section :ref:`sdist-cmd`.
 
 The order of commands in the manifest template matters: initially, we have the
 list of default files as described above, and each command in the template adds
-to or removes from that list of files.  Once we have fully processed the
+to or removes kutoka that list of files.  Once we have fully processed the
 manifest template, we remove files that should not be included in the source
 distribution:
 
@@ -218,7 +218,7 @@ Manifest-related options
 The normal course of operations for the :command:`sdist` command is as follows:
 
 * if the manifest file (:file:`MANIFEST` by default) exists and the first line
-  does not have a comment indicating it is generated from :file:`MANIFEST.in`,
+  does not have a comment indicating it is generated kutoka :file:`MANIFEST.in`,
   then it is used as is, unaltered
 
 * if the manifest file doesn't exist or has been previously automatically

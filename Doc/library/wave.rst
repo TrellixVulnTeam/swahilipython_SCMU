@@ -5,7 +5,7 @@
    :synopsis: Provide an interface to the WAV sound format.
 
 .. sectionauthor:: Moshe Zadka <moshez@zadka.site.co.il>
-.. Documentations stolen from comments in file.
+.. Documentations stolen kutoka comments in file.
 
 **Source code:** :source:`Lib/wave.py`
 

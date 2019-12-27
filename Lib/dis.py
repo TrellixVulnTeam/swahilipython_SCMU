@@ -58,11 +58,11 @@ def dis(x=None, *, file=None, depth=None):
     # Extract compiled code objects kutoka...
     if hasattr(x, '__code__'):  # ...a function, or
         x = x.__code__
-    elif hasattr(x, 'gi_code'):  #...a generator object, or
+    lasivyo hasattr(x, 'gi_code'):  #...a generator object, or
         x = x.gi_code
-    elif hasattr(x, 'ag_code'):  #...an asynchronous generator object, or
+    lasivyo hasattr(x, 'ag_code'):  #...an asynchronous generator object, or
         x = x.ag_code
-    elif hasattr(x, 'cr_code'):  #...a coroutine.
+    lasivyo hasattr(x, 'cr_code'):  #...a coroutine.
         x = x.cr_code
     # Perform the disassembly.
     if hasattr(x, '__dict__'):  # Class or module
@@ -75,11 +75,11 @@ def dis(x=None, *, file=None, depth=None):
                 except TypeError as msg:
                     print("Sorry:", msg, file=file)
                 print(file=file)
-    elif hasattr(x, 'co_code'): # Code object
+    lasivyo hasattr(x, 'co_code'): # Code object
         _disassemble_recursive(x, file=file, depth=depth)
-    elif isinstance(x, (bytes, bytearray)): # Raw bytecode
+    lasivyo isinstance(x, (bytes, bytearray)): # Raw bytecode
         _disassemble_bytes(x, file=file)
-    elif isinstance(x, str):    # Source code
+    lasivyo isinstance(x, str):    # Source code
         _disassemble_str(x, file=file, depth=depth)
     else:
         raise TypeError("don't know how to disassemble %s objects" %
@@ -133,11 +133,11 @@ def _get_code_object(x):
     # Extract compiled code objects kutoka...
     if hasattr(x, '__code__'):  # ...a function, or
         x = x.__code__
-    elif hasattr(x, 'gi_code'):  #...a generator object, or
+    lasivyo hasattr(x, 'gi_code'):  #...a generator object, or
         x = x.gi_code
-    elif hasattr(x, 'ag_code'):  #...an asynchronous generator object, or
+    lasivyo hasattr(x, 'ag_code'):  #...an asynchronous generator object, or
         x = x.ag_code
-    elif hasattr(x, 'cr_code'):  #...a coroutine.
+    lasivyo hasattr(x, 'cr_code'):  #...a coroutine.
         x = x.cr_code
     # Handle source code.
     if isinstance(x, str):
@@ -206,7 +206,7 @@ _Instruction.is_jump_target.__doc__ = "True if other code jumps to here, otherwi
 _OPNAME_WIDTH = 20
 _OPARG_WIDTH = 5
 
-class Instruction(_Instruction):
+kundi Instruction(_Instruction):
     """Details for a bytecode operation
 
        Defined fields:
@@ -336,26 +336,26 @@ def _get_instructions_bytes(code, varnames=None, names=None, constants=None,
             argval = arg
             if op in hasconst:
                 argval, argrepr = _get_const_info(arg, constants)
-            elif op in hasname:
+            lasivyo op in hasname:
                 argval, argrepr = _get_name_info(arg, names)
-            elif op in hasjrel:
+            lasivyo op in hasjrel:
                 argval = offset + 2 + arg
                 argrepr = "to " + repr(argval)
-            elif op in haslocal:
+            lasivyo op in haslocal:
                 argval, argrepr = _get_name_info(arg, varnames)
-            elif op in hascompare:
+            lasivyo op in hascompare:
                 argval = cmp_op[arg]
                 argrepr = argval
-            elif op in hasfree:
+            lasivyo op in hasfree:
                 argval, argrepr = _get_name_info(arg, cells)
-            elif op == FORMAT_VALUE:
+            lasivyo op == FORMAT_VALUE:
                 argval, argrepr = FORMAT_VALUE_CONVERTERS[arg & 0x3]
                 argval = (argval, bool(arg & 0x4))
                 if argval[1]:
                     if argrepr:
                         argrepr += ', '
                     argrepr += 'with format'
-            elif op == MAKE_FUNCTION:
+            lasivyo op == MAKE_FUNCTION:
                 argrepr = ', '.join(s for i, s in enumerate(MAKE_FUNCTION_FLAGS)
                                     if arg & (1<<i))
         yield Instruction(opname[op], op,
@@ -438,7 +438,7 @@ def findlabels(code):
         if arg is not None:
             if op in hasjrel:
                 label = offset + 2 + arg
-            elif op in hasjabs:
+            lasivyo op in hasjabs:
                 label = arg
             else:
                 continue
@@ -476,7 +476,7 @@ def findlinestarts(code):
     if lineno != lastlineno:
         yield (addr, lineno)
 
-class Bytecode:
+kundi Bytecode:
     """The bytecode operations of a piece of code
 
     Instantiate this with a function, method, other compiled object, string of
@@ -509,7 +509,7 @@ class Bytecode:
                                  self._original_object)
 
     @classmethod
-    def from_traceback(cls, tb):
+    def kutoka_traceback(cls, tb):
         """ Construct a Bytecode kutoka the given traceback """
         while tb.tb_next:
             tb = tb.tb_next

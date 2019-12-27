@@ -15,8 +15,8 @@ What's New in IDLE 2.7? (Merged into 3.1 before 2.7 release.)
   David Scherer for suggesting the use of an ephemeral port for the GUI.
   Patch 1529142 Weeble.
 
-- Remove port spec from run.py and fix bug where subprocess fails to
-  extract port from command line when warnings are present.
+- Remove port spec kutoka run.py and fix bug where subprocess fails to
+  extract port kutoka command line when warnings are present.
 
 - Tk 8.5 Text widget requires 'wordprocessor' tabstyle attr to handle
   mixed space/tab properly. Issue 5129, patch by Guilherme Polo.
@@ -55,7 +55,7 @@ What's New in IDLE 2.7? (Merged into 3.1 before 2.7 release.)
 - IDLE modules now use absolute agiza instead of implied relative agiza.
 
 - atexit call replaces sys.exitfunc.  The functionality of delete-exitfunc flag
-  in config-main.cfg remains unchanged: if set, registered exit functions will
+  in config-main.cfg remains unchanged: ikiwa set, registered exit functions will
   be cleared before IDLE exits.
 
 
@@ -63,8 +63,8 @@ What's New in IDLE 2.6
 ======================
 *Release date: 01-Oct-2008*, merged into 3.0 releases detailed above (3.0rc2)
 
-- Issue #2665: On Windows, an IDLE installation upgraded from an old version
-  would not start if a custom theme was defined.
+- Issue #2665: On Windows, an IDLE installation upgraded kutoka an old version
+  would not start ikiwa a custom theme was defined.
 
 - Home / Control-A toggles between left margin and end of leading white
   space.  issue1196903, patch by Jeff Shute.
@@ -75,14 +75,14 @@ What's New in IDLE 2.6
   '/' char on Windows.  issue2061 Patch by Tal Einat.
 
 - Configured selection highlighting colors were ignored; updating highlighting
-  in the config dialog would cause non-Python files to be colored as if they
+  in the config dialog would cause non-Python files to be colored as ikiwa they
   were Python source; improve use of ColorDelagator.  Patch 1334. Tal Einat.
 
 - ScriptBinding event handlers weren't returning 'break'. Patch 2050, Tal Einat
 
-- There was an error on exit if no sys.exitfunc was defined. Issue 1647.
+- There was an error on exit ikiwa no sys.exitfunc was defined. Issue 1647.
 
-- Could not open files in .idlerc directory if latter was hidden on Windows.
+- Could not open files in .idlerc directory ikiwa latter was hidden on Windows.
   Issue 1743, Issue 1862.
 
 - Configure Dialog: improved layout for keybinding.  Patch 1457 Tal Einat.
@@ -92,12 +92,12 @@ What's New in IDLE 2.6
 
 - Add confirmation dialog before printing.  Patch 1717170 Tal Einat.
 
-- Show paste position if > 80 col.  Patch 1659326 Tal Einat.
+- Show paste position ikiwa > 80 col.  Patch 1659326 Tal Einat.
 
 - Update cursor color without restarting.  Patch 1725576 Tal Einat.
 
 - Allow keyboard interrupt only when user code is executing in subprocess.
-  Patch 1225 Tal Einat (reworked from IDLE-Spoon).
+  Patch 1225 Tal Einat (reworked kutoka IDLE-Spoon).
 
 - configDialog cleanup. Patch 1730217 Tal Einat.
 
@@ -109,7 +109,7 @@ What's New in IDLE 2.6
 
 - OSX: Avoid crash for those versions of Tcl/Tk which don't have a console
 
-- Bug in idlelib.MultiCall: Options dialog was crashing IDLE if there was an
+- Bug in idlelib.MultiCall: Options dialog was crashing IDLE ikiwa there was an
   option in config-extensions w/o a value. Patch #1672481, Tal Einat
 
 - Corrected some bugs in AutoComplete.  Also, Page Up/Down in ACW implemented;
@@ -117,7 +117,7 @@ What's New in IDLE 2.6
   current selection and closes ACW (similar to double-click and Return); scroll
   wheel now works in ACW.  Added AutoComplete instructions to IDLE Help.
 
-- AutoCompleteWindow moved below input line, will move above if there
+- AutoCompleteWindow moved below input line, will move above ikiwa there
   isn't enough space.  Patch 1621265 Tal Einat
 
 - Calltips now 'handle' tuples in the argument list (display '<tuple>' :)
@@ -130,7 +130,7 @@ What's New in IDLE 2.6
 - Patch #1362975: Rework CodeContext indentation algorithm to
   avoid hard-coding pixel widths.
 
-- Bug #813342: Start the IDLE subprocess with -Qnew if the parent
+- Bug #813342: Start the IDLE subprocess with -Qnew ikiwa the parent
   is started with that option.
 
 - Honor the "Cancel" action in the save dialog (Debian bug #299092)
@@ -149,9 +149,9 @@ What's New in IDLE 1.2?
 
 - File menu hotkeys: there were three 'p' assignments.  Reassign the
   'Save Copy As' and 'Print' hotkeys to 'y' and 't'.  Change the
-  Shell hotkey from 's' to 'l'.
+  Shell hotkey kutoka 's' to 'l'.
 
-- IDLE honors new quit() and exit() commands from site.py Quitter() object.
+- IDLE honors new quit() and exit() commands kutoka site.py Quitter() object.
   Patch 1540892, Jim Jewett
 
 - The 'with' statement is now a Code Context block opener.
@@ -162,7 +162,7 @@ What's New in IDLE 1.2?
 
 - Changing tokenize (39046) to detect dedent broke tabnanny check (since 1.2a1)
 
-- ToggleTab dialog was setting indent to 8 even if cancelled (since 1.2a1).
+- ToggleTab dialog was setting indent to 8 even ikiwa cancelled (since 1.2a1).
 
 - When used w/o subprocess, all exceptions were preceded by an error
   message claiming they were IDLE internal errors (since 1.2a1).
@@ -172,14 +172,14 @@ What's New in IDLE 1.2?
 - Bug #1517990: IDLE keybindings on MacOS X now work correctly
 
 - Bug #1517996: IDLE now longer shows the default Tk menu when a
-  path browser, class browser or debugger is the frontmost window on MacOS X
+  path browser, kundi browser or debugger is the frontmost window on MacOS X
 
 - EditorWindow.test() was failing.  Bug 1417598
 
-- EditorWindow failed when used stand-alone if sys.ps1 not set.
+- EditorWindow failed when used stand-alone ikiwa sys.ps1 not set.
   Bug 1010370 Dave Florek
 
-- Tooltips failed on new-syle class __init__ args.  Bug 1027566 Loren Guthrie
+- Tooltips failed on new-syle kundi __init__ args.  Bug 1027566 Loren Guthrie
 
 - Avoid occasional failure to detect closing paren properly.
   Patch 1407280 Tal Einat
@@ -192,24 +192,24 @@ What's New in IDLE 1.2?
 
 - Patch #1162825: Support non-ASCII characters in IDLE window titles.
 
-- Source file f.flush() after writing; trying to avoid lossage if user
+- Source file f.flush() after writing; trying to avoid lossage ikiwa user
   kills GUI.
 
 - Options / Keys / Advanced dialog made functional.  Also, allow binding
   of 'movement' keys.
 
-- 'syntax' patch adds improved calltips and a new class attribute listbox.
+- 'syntax' patch adds improved calltips and a new kundi attribute listbox.
   MultiCall module allows binding multiple actions to an event.
   Patch 906702 Noam Raphael
 
 - Better indentation after first line of string continuation.
   IDLEfork Patch 681992, Noam Raphael
 
-- Fixed CodeContext alignment problem, following suggestion from Tal Einat.
+- Fixed CodeContext alignment problem, following suggestion kutoka Tal Einat.
 
 - Increased performance in CodeContext extension  Patch 936169 Noam Raphael
 
-- Mac line endings were incorrect when pasting code from some browsers
+- Mac line endings were incorrect when pasting code kutoka some browsers
   when using X11 and the Fink distribution.  Python Bug 1263656.
 
 - <Enter> when cursor is on a previous command retrieves that command.  Instead
@@ -235,9 +235,9 @@ What's New in IDLE 1.2?
 - Add config-main option to make the 'history' feature non-cyclic.
   Default remains cyclic.  Python Patch 914546 Noam Raphael.
 
-- Removed ability to configure tabs indent from Options dialog.  This 'feature'
+- Removed ability to configure tabs indent kutoka Options dialog.  This 'feature'
   has never worked and no one has complained.  It is still possible to set a
-  default tabs (v. spaces) indent 'manually' via config-main.def (or to turn on
+  default tabs (v. spaces) indent 'manually' via config-main.eleza (or to turn on
   tabs for the current EditorWindow via the Format menu) but IDLE will
   encourage indentation via spaces.
 
@@ -252,7 +252,7 @@ What's New in IDLE 1.2?
 - Restore use of EditorWindow.set_indentation_params(), was dead code since
   Autoindent was merged into EditorWindow.  This allows IDLE to conform to the
   indentation width of a loaded file.  (But it still will not switch to tabs
-  even if the file uses tabs.)  Any change in indent width is local to that
+  even ikiwa the file uses tabs.)  Any change in indent width is local to that
   window.
 
 - Add Tabnanny check before Run/F5, not just when Checking module.
@@ -262,7 +262,7 @@ What's New in IDLE 1.2?
 
 - Improve error handling when .idlerc can't be created (warn and exit).
 
-- The GUI was hanging if the shell window was closed while a raw_input()
+- The GUI was hanging ikiwa the shell window was closed while a raw_input()
   was pending.  Restored the quit() of the readline() mainloop().
   http://mail.python.org/pipermail/idle-dev/2004-December/002307.html
 
@@ -274,7 +274,7 @@ What's New in IDLE 1.1?
 =======================
 *Release date: 30-NOV-2004*
 
-- On OpenBSD, terminating IDLE with ctrl-c from the command line caused a
+- On OpenBSD, terminating IDLE with ctrl-c kutoka the command line caused a
   stuck subprocess MainThread because only the SocketThread was exiting.
 
 - Saving a Keyset w/o making changes (by using the "Save as New Custom Key Set"
@@ -329,20 +329,20 @@ What's New in IDLE 1.1?
   refreshed and Python bug [897872 ] Unknown color name on HP-UX
 
 - rpc.py:SocketIO - Large modules were generating large pickles when downloaded
-  to the execution server.  The return of the OK response from the subprocess
+  to the execution server.  The rudisha of the OK response kutoka the subprocess
   initialization was interfering and causing the sending socket to be not
   ready.  Add an IO ready test to fix this.  Moved the polling IO ready test
   into pollpacket().
 
 - Fix typo in rpc.py, s/b "pickle.PicklingError" not "pickle.UnpicklingError".
 
-- Added a Tk error dialog to run.py inform the user if the subprocess can't
+- Added a Tk error dialog to run.py inform the user ikiwa the subprocess can't
   connect to the user GUI process.  Added a timeout to the GUI's listening
   socket.  Added Tk error dialogs to PyShell.py to announce a failure to bind
   the port or connect to the subprocess.  Clean up error handling during
   connection initiation phase.  This is an update of Python Patch 778323.
 
-- Print correct exception even if source file changed since shell was
+- Print correct exception even ikiwa source file changed since shell was
   restarted.  IDLEfork Patch 869012 Noam Raphael
 
 - Keybindings with the Shift modifier now work correctly.  So do bindings which
@@ -353,13 +353,13 @@ What's New in IDLE 1.1?
   Raphael suggested correcting this so pdb's postmortem pm() would work.
   IDLEfork Patch 844675
 
-- IDLE now does not fail to save the file anymore if the Tk buffer is not a
+- IDLE now does not fail to save the file anymore ikiwa the Tk buffer is not a
   Unicode string, yet eol_convention is.  Python Bugs 774680, 788378
 
 - IDLE didn't start correctly when Python was installed in "Program Files" on
   W2K and XP.  Python Bugs 780451, 784183
 
-- config-main.def documentation incorrectly referred to idle- instead of
+- config-main.eleza documentation incorrectly referred to idle- instead of
   config-  filenames.  SF 782759  Also added note about .idlerc location.
 
 
@@ -372,7 +372,7 @@ What's New in IDLE 1.0?
 
 - Calltip error when docstring was None  Python Bug 775541
 
-- Updated extend.txt, help.txt, and config-extensions.def to correctly
+- Updated extend.txt, help.txt, and config-extensions.eleza to correctly
   reflect the current status of the configuration system.  Python Bug 768469
 
 - Fixed: Call Tip Trimming May Loop Forever. Python Patch 769142 (Daniels)
@@ -383,7 +383,7 @@ What's New in IDLE 1.0?
 - Break or continue statements outside a loop were causing IDLE crash
   Python Bug 767794
 
-- Convert Unicode strings from readline to IOBinding.encoding.  Also set
+- Convert Unicode strings kutoka readline to IOBinding.encoding.  Also set
   sys.std{in|out|err}.encoding, for both the local and the subprocess case.
   SF IDLEfork patch 682347.
 
@@ -395,18 +395,18 @@ What's New in IDLE 1.0?
   buttons for IDLE's README and NEWS.
 
 - TextViewer() now has a third parameter which allows inserting text into the
-  viewer instead of reading from a file.
+  viewer instead of reading kutoka a file.
 
 - (Created the .../Lib/idlelib directory in the Python CVS, which is a clone of
   IDLEfork modified to install in the Python environment.  The code in the
   interrupt module has been moved to thread.interrupt_main(). )
 
-- Printing the Shell window was failing if it was not saved first SF 748975
+- Printing the Shell window was failing ikiwa it was not saved first SF 748975
 
-- When using the Search in Files dialog, if the user had a selection
+- When using the Search in Files dialog, ikiwa the user had a selection
   highlighted in his Editor window, insert it into the dialog search field.
 
-- The Python Shell entry was disappearing from the Windows menu.
+- The Python Shell entry was disappearing kutoka the Windows menu.
 
 - Update the Windows file list when a file name change occurs
 
@@ -419,7 +419,7 @@ What's New in IDLE 1.0?
 - Fixed an issue with highlighted errors never de-colorizing.  SF 747677.  Also
   improved notification of Tabnanny Token Error.
 
-- File / New will by default save in the directory of the Edit window from
+- File / New will by default save in the directory of the Edit window kutoka
   which it was initiated.  SF 748973 Guido van Rossum patch.
 
 
@@ -443,8 +443,8 @@ What's New in IDLEfork 0.9b1?
 - Options / Fonts/Tabs / Set Base Editor Font: List box was not highlighting
   the default font when first installed on Windows.  SF 661676
 
-- Added Autosave feature: when user runs code from edit window, if the file
-  has been modified IDLE will silently save it if Autosave is enabled.  The
+- Added Autosave feature: when user runs code kutoka edit window, ikiwa the file
+  has been modified IDLE will silently save it ikiwa Autosave is enabled.  The
   option is set in the Options dialog, and the default is to prompt the
   user to save the file.   SF 661318 Bruce Sherwood patch.
 
@@ -453,18 +453,18 @@ What's New in IDLEfork 0.9b1?
   repeatedly hammers the Ctrl-F6 restart.
 
 - Allow IDLE to run when not installed and cwd is not the IDLE directory
-  SF Patch 686254 "Run IDLEfork from any directory without set-up" - Raphael
+  SF Patch 686254 "Run IDLEfork kutoka any directory without set-up" - Raphael
 
-- When a module is run from an EditorWindow: if its directory is not in
+- When a module is run kutoka an EditorWindow: ikiwa its directory is not in
   sys.path, prepend it.  This allows the module to agiza other modules in
-  the same directory.  Do the same for a script run from the command line.
+  the same directory.  Do the same for a script run kutoka the command line.
 
-- Correctly restart the subprocess if it is running user code and the user
+- Correctly restart the subprocess ikiwa it is running user code and the user
   attempts to run some other module or restarts the shell.  Do the same if
   the link is broken and it is possible to restart the subprocess and re-
   connect to the GUI.   SF RFE 661321.
 
-- Improved exception reporting when running commands or scripts from the
+- Improved exception reporting when running commands or scripts kutoka the
   command line.
 
 - Added a -n command line switch to start IDLE without the subprocess.
@@ -477,7 +477,7 @@ What's New in IDLEfork 0.9b1?
   some platforms or configurations.  (Running without the subprocess allows the
   debugger to trace through parts of IDLE itself, which may or may not be
   desirable, depending on your point of view.  In addition, the traditional
-  reload/agiza tricks must be use if user source code is changed.)  This is
+  reload/agiza tricks must be use ikiwa user source code is changed.)  This is
   helpful for developing IDLE using IDLE, because one instance can be used to
   edit the code and a separate instance run to test changes.  (Multiple
   concurrent IDLE instances with subprocesses is a future feature)
@@ -490,7 +490,7 @@ What's New in IDLEfork 0.9b1?
   possible values: none, utf-8, and locale. None is the default: IDLE will show
   this dialog when non-ASCII characters are encountered. utf-8 means that files
   with non-ASCII characters are saved as utf-8-with-bom. locale means that
-  files are saved in the locale's encoding; the dialog is only displayed if the
+  files are saved in the locale's encoding; the dialog is only displayed ikiwa the
   source contains characters outside the locale's charset.  SF 710733 - Loewis
 
 - Improved I/O response by tweaking the wait parameter in various
@@ -520,7 +520,7 @@ What's New in IDLEfork 0.9b1?
 
 - Handle subprocess interrupt with an RPC message.
 
-- Restart the subprocess if it terminates itself. (VPython programs do that)
+- Restart the subprocess ikiwa it terminates itself. (VPython programs do that)
 
 - Support subclassing of exceptions, including in the shell, by moving the
   exception formatting to the subprocess.
@@ -540,16 +540,16 @@ What's New in IDLEfork 0.9 Alpha 2?
   the correct traceback, with IDLE internal levels pruned out.
 
 - If an exception occurs entirely in IDLE, don't prune the IDLE internal
-  modules from the traceback displayed.
+  modules kutoka the traceback displayed.
 
 - Class Browser and Path Browser now use Alt-Key-2 for vertical zoom.
 
-- IDLE icons will now install correctly even when setup.py is run from the
+- IDLE icons will now install correctly even when setup.py is run kutoka the
   build directory
 
 - Class Browser now compatible with Python2.3 version of pyclbr.py
 
-- Left cursor move in presence of selected text now moves from left end
+- Left cursor move in presence of selected text now moves kutoka left end
   of the selection.
 
 - Add Meta keybindings to "IDLE Classic Windows" to handle reversed
@@ -557,9 +557,9 @@ What's New in IDLEfork 0.9 Alpha 2?
 
 - Change default: IDLE now starts with Python Shell.
 
-- Removed the File Path from the Additional Help Sources scrolled list.
+- Removed the File Path kutoka the Additional Help Sources scrolled list.
 
-- Add capability to access Additional Help Sources on the web if the
+- Add capability to access Additional Help Sources on the web ikiwa the
   Help File Path begins with //http or www.  (Otherwise local path is
   validated, as before.)
 
@@ -568,7 +568,7 @@ What's New in IDLEfork 0.9 Alpha 2?
   number.
 
 - Add Browse button to New Help Source dialog.  Arrange to start in
-  Python/Doc if platform is Windows, otherwise start in current directory.
+  Python/Doc ikiwa platform is Windows, otherwise start in current directory.
 
 - Put the Additional Help Sources directly on the Help menu instead of in
   an Extra Help cascade menu.  Rearrange the Help menu so the Additional
@@ -579,7 +579,7 @@ What's New in IDLEfork 0.9 Alpha 2?
 - Uniform capitalization in General tab of ConfigDialog, update the doc string.
 
 - Fix bug in ConfigDialog where SaveAllChangedConfig() was unexpectedly
-  deleting Additional Help Sources from the user's config file.
+  deleting Additional Help Sources kutoka the user's config file.
 
 - Make configHelpSourceEdit OK button the default and bind <Return>
 
@@ -609,7 +609,7 @@ What's New in IDLEfork 0.9 Alpha 2?
 
 - Rearrange the Shell menu to put Stack Viewer entries adjacent.
 
-- Add the ability to restart the subprocess interpreter from the shell window;
+- Add the ability to restart the subprocess interpreter kutoka the shell window;
   add an associated menu entry "Shell/Restart" with binding Control-F6.  Update
   IDLE help.
 
@@ -646,13 +646,13 @@ What's New in IDLEfork 0.9 Alpha 1?
 - Introduced the new RPC implementation, which includes a debugger.  The output
   of user code is to the shell, and the shell may be used to inspect the
   environment after the run has finished.  (In version 0.8.1 the shell
-  environment was separate from the environment of the user code.)
+  environment was separate kutoka the environment of the user code.)
 
 - Introduced the configuration GUI and a new About dialog.
 
 - Removed David Scherer's Remote Procedure Call code and replaced with Guido
   van Rossum's.  GvR code has support for the IDLE debugger and uses the shell
-  to inspect the environment of code Run from an Edit window.  Files removed:
+  to inspect the environment of code Run kutoka an Edit window.  Files removed:
   ExecBinding.py, loader.py, protocol.py, Remote.py, spawn.py
 
 --------------------------------------------------------------------

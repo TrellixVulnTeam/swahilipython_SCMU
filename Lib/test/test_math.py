@@ -27,7 +27,7 @@ x, y = 1e16, 2.9999 # use temporary values to defeat peephole optimizer
 HAVE_DOUBLE_ROUNDING = (x + y == 1e16 + 4)
 
 # locate file with test values
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     file = sys.argv[0]
 else:
     file = __file__
@@ -36,7 +36,7 @@ math_testcases = os.path.join(test_dir, 'math_testcases.txt')
 test_file = os.path.join(test_dir, 'cmath_testcases.txt')
 
 
-def to_ulps(x):
+eleza to_ulps(x):
     """Convert a non-NaN float x to an integer, in such a way that
     adjacent floats are converted to adjacent integers.  Then
     abs(ulps(x) - ulps(y)) gives the difference in ulps between two
@@ -48,12 +48,12 @@ def to_ulps(x):
     Note: 0.0 and -0.0 are converted to 0 and -1, respectively.
     """
     n = struct.unpack('<q', struct.pack('<d', x))[0]
-    if n < 0:
+    ikiwa n < 0:
         n = ~(n+2**63)
-    return n
+    rudisha n
 
 
-def ulp(x):
+eleza ulp(x):
     """Return the value of the least significant bit of a
     float x, such that the first float bigger than x is x+ulp(x).
     Then, given an expected result x and a tolerance of n ulps,
@@ -62,20 +62,20 @@ def ulp(x):
     where native doubles are represented in IEEE 754 binary64 format.
     """
     x = abs(float(x))
-    if math.isnan(x) or math.isinf(x):
-        return x
+    ikiwa math.isnan(x) or math.isinf(x):
+        rudisha x
 
     # Find next float up kutoka x.
     n = struct.unpack('<q', struct.pack('<d', x))[0]
     x_next = struct.unpack('<d', struct.pack('<q', n + 1))[0]
-    if math.isinf(x_next):
+    ikiwa math.isinf(x_next):
         # Corner case: x was the largest finite float. Then it's
         # not an exact power of two, so we can take the difference
         # between x and the previous float.
         x_prev = struct.unpack('<d', struct.pack('<q', n - 1))[0]
-        return x - x_prev
+        rudisha x - x_prev
     else:
-        return x_next - x
+        rudisha x_next - x
 
 # Here's a pure Python version of the math.factorial algorithm, for
 # documentation and comparison purposes.
@@ -98,25 +98,25 @@ def ulp(x):
 # multiplying by all j in {n >> i+1 < j <= n >> i; j odd}.  In Python terms,
 # this set is range((n >> i+1) + 1 | 1, (n >> i) + 1 | 1, 2).
 
-def count_set_bits(n):
+eleza count_set_bits(n):
     """Number of '1' bits in binary expansion of a nonnnegative integer."""
-    return 1 + count_set_bits(n & n - 1) if n else 0
+    rudisha 1 + count_set_bits(n & n - 1) ikiwa n else 0
 
-def partial_product(start, stop):
+eleza partial_product(start, stop):
     """Product of integers in range(start, stop, 2), computed recursively.
     start and stop should both be odd, with start <= stop.
 
     """
     numfactors = (stop - start) >> 1
-    if not numfactors:
-        return 1
-    elif numfactors == 1:
-        return start
+    ikiwa not numfactors:
+        rudisha 1
+    elikiwa numfactors == 1:
+        rudisha start
     else:
         mid = (start + numfactors) | 1
-        return partial_product(start, mid) * partial_product(mid, stop)
+        rudisha partial_product(start, mid) * partial_product(mid, stop)
 
-def py_factorial(n):
+eleza py_factorial(n):
     """Factorial of nonnegative integer n, via "Binary Split Factorial Formula"
     described at http://www.luschny.de/math/factorial/binarysplitfact.html
 
@@ -125,9 +125,9 @@ def py_factorial(n):
     for i in reversed(range(n.bit_length())):
         inner *= partial_product((n >> i + 1) + 1 | 1, (n >> i) + 1 | 1)
         outer *= inner
-    return outer << (n - count_set_bits(n))
+    rudisha outer << (n - count_set_bits(n))
 
-def ulp_abs_check(expected, got, ulp_tol, abs_tol):
+eleza ulp_abs_check(expected, got, ulp_tol, abs_tol):
     """Given finite floats `expected` and `got`, check that they're
     approximately equal to within the given number of ulps or the
     given absolute tolerance, whichever is bigger.
@@ -137,15 +137,15 @@ def ulp_abs_check(expected, got, ulp_tol, abs_tol):
     ulp_error = abs(to_ulps(expected) - to_ulps(got))
     abs_error = abs(expected - got)
 
-    # Succeed if either abs_error <= abs_tol or ulp_error <= ulp_tol.
-    if abs_error <= abs_tol or ulp_error <= ulp_tol:
-        return None
+    # Succeed ikiwa either abs_error <= abs_tol or ulp_error <= ulp_tol.
+    ikiwa abs_error <= abs_tol or ulp_error <= ulp_tol:
+        rudisha None
     else:
         fmt = ("error = {:.3g} ({:d} ulps); "
                "permitted error = {:.3g} or {:d} ulps")
-        return fmt.format(abs_error, ulp_error, abs_tol, ulp_tol)
+        rudisha fmt.format(abs_error, ulp_error, abs_tol, ulp_tol)
 
-def parse_mtestfile(fname):
+eleza parse_mtestfile(fname):
     """Parse a file with test values
 
     -- starts a comment
@@ -157,9 +157,9 @@ def parse_mtestfile(fname):
     with open(fname) as fp:
         for line in fp:
             # strip comments, and skip blank lines
-            if '--' in line:
+            ikiwa '--' in line:
                 line = line[:line.index('--')]
-            if not line.strip():
+            ikiwa not line.strip():
                 continue
 
             lhs, rhs = line.split('->')
@@ -171,7 +171,7 @@ def parse_mtestfile(fname):
             yield (id, fn, float(arg), float(exp), flags)
 
 
-def parse_testfile(fname):
+eleza parse_testfile(fname):
     """Parse a file with test values
 
     Empty lines or lines starting with -- are ignored
@@ -180,7 +180,7 @@ def parse_testfile(fname):
     with open(fname) as fp:
         for line in fp:
             # skip comment lines and blank lines
-            if line.startswith('--') or not line.strip():
+            ikiwa line.startswith('--') or not line.strip():
                 continue
 
             lhs, rhs = line.split('->')
@@ -195,11 +195,11 @@ def parse_testfile(fname):
                    flags)
 
 
-def result_check(expected, got, ulp_tol=5, abs_tol=0.0):
+eleza result_check(expected, got, ulp_tol=5, abs_tol=0.0):
     # Common logic of MathTests.(ftest, test_testcases, test_mtestcases)
-    """Compare arguments expected and got, as floats, if either
+    """Compare arguments expected and got, as floats, ikiwa either
     is a float, using a tolerance expressed in multiples of
-    ulp(expected) or absolutely (if given and greater).
+    ulp(expected) or absolutely (ikiwa given and greater).
 
     As a convenience, when neither argument is a float, and for
     non-finite floats, exact equality is demanded. Also, nan==nan
@@ -209,52 +209,52 @@ def result_check(expected, got, ulp_tol=5, abs_tol=0.0):
     """
 
     # Check exactly equal (applies also to strings representing exceptions)
-    if got == expected:
-        return None
+    ikiwa got == expected:
+        rudisha None
 
     failure = "not equal"
 
     # Turn mixed float and int comparison (e.g. floor()) to all-float
-    if isinstance(expected, float) and isinstance(got, int):
+    ikiwa isinstance(expected, float) and isinstance(got, int):
         got = float(got)
-    elif isinstance(got, float) and isinstance(expected, int):
+    elikiwa isinstance(got, float) and isinstance(expected, int):
         expected = float(expected)
 
-    if isinstance(expected, float) and isinstance(got, float):
-        if math.isnan(expected) and math.isnan(got):
+    ikiwa isinstance(expected, float) and isinstance(got, float):
+        ikiwa math.isnan(expected) and math.isnan(got):
             # Pass, since both nan
             failure = None
-        elif math.isinf(expected) or math.isinf(got):
+        elikiwa math.isinf(expected) or math.isinf(got):
             # We already know they're not equal, drop through to failure
             pass
         else:
             # Both are finite floats (now). Are they close enough?
             failure = ulp_abs_check(expected, got, ulp_tol, abs_tol)
 
-    # arguments are not equal, and if numeric, are too far apart
-    if failure is not None:
+    # arguments are not equal, and ikiwa numeric, are too far apart
+    ikiwa failure is not None:
         fail_fmt = "expected {!r}, got {!r}"
         fail_msg = fail_fmt.format(expected, got)
         fail_msg += ' ({})'.format(failure)
-        return fail_msg
+        rudisha fail_msg
     else:
-        return None
+        rudisha None
 
-class IntSubclass(int):
+kundi IntSubclass(int):
     pass
 
 # Class providing an __index__ method.
-class MyIndexable(object):
-    def __init__(self, value):
+kundi MyIndexable(object):
+    eleza __init__(self, value):
         self.value = value
 
-    def __index__(self):
-        return self.value
+    eleza __index__(self):
+        rudisha self.value
 
-class MathTests(unittest.TestCase):
+kundi MathTests(unittest.TestCase):
 
-    def ftest(self, name, got, expected, ulp_tol=5, abs_tol=0.0):
-        """Compare arguments expected and got, as floats, if either
+    eleza ftest(self, name, got, expected, ulp_tol=5, abs_tol=0.0):
+        """Compare arguments expected and got, as floats, ikiwa either
         is a float, using a tolerance expressed in multiples of
         ulp(expected) or absolutely, whichever is greater.
 
@@ -263,16 +263,16 @@ class MathTests(unittest.TestCase):
         in this function.
         """
         failure = result_check(expected, got, ulp_tol, abs_tol)
-        if failure is not None:
+        ikiwa failure is not None:
             self.fail("{}: {}".format(name, failure))
 
-    def testConstants(self):
+    eleza testConstants(self):
         # Ref: Abramowitz & Stegun (Dover, 1965)
         self.ftest('pi', math.pi, 3.141592653589793238462643)
         self.ftest('e', math.e, 2.718281828459045235360287)
         self.assertEqual(math.tau, 2*math.pi)
 
-    def testAcos(self):
+    eleza testAcos(self):
         self.assertRaises(TypeError, math.acos)
         self.ftest('acos(-1)', math.acos(-1), math.pi)
         self.ftest('acos(0)', math.acos(0), math.pi/2)
@@ -283,7 +283,7 @@ class MathTests(unittest.TestCase):
         self.assertRaises(ValueError, math.acos, -1 - eps)
         self.assertTrue(math.isnan(math.acos(NAN)))
 
-    def testAcosh(self):
+    eleza testAcosh(self):
         self.assertRaises(TypeError, math.acosh)
         self.ftest('acosh(1)', math.acosh(1), 0)
         self.ftest('acosh(2)', math.acosh(2), 1.3169578969248168)
@@ -293,7 +293,7 @@ class MathTests(unittest.TestCase):
         self.assertRaises(ValueError, math.acosh, NINF)
         self.assertTrue(math.isnan(math.acosh(NAN)))
 
-    def testAsin(self):
+    eleza testAsin(self):
         self.assertRaises(TypeError, math.asin)
         self.ftest('asin(-1)', math.asin(-1), -math.pi/2)
         self.ftest('asin(0)', math.asin(0), 0)
@@ -304,7 +304,7 @@ class MathTests(unittest.TestCase):
         self.assertRaises(ValueError, math.asin, -1 - eps)
         self.assertTrue(math.isnan(math.asin(NAN)))
 
-    def testAsinh(self):
+    eleza testAsinh(self):
         self.assertRaises(TypeError, math.asinh)
         self.ftest('asinh(0)', math.asinh(0), 0)
         self.ftest('asinh(1)', math.asinh(1), 0.88137358701954305)
@@ -313,7 +313,7 @@ class MathTests(unittest.TestCase):
         self.assertEqual(math.asinh(NINF), NINF)
         self.assertTrue(math.isnan(math.asinh(NAN)))
 
-    def testAtan(self):
+    eleza testAtan(self):
         self.assertRaises(TypeError, math.atan)
         self.ftest('atan(-1)', math.atan(-1), -math.pi/4)
         self.ftest('atan(0)', math.atan(0), 0)
@@ -322,7 +322,7 @@ class MathTests(unittest.TestCase):
         self.ftest('atan(-inf)', math.atan(NINF), -math.pi/2)
         self.assertTrue(math.isnan(math.atan(NAN)))
 
-    def testAtanh(self):
+    eleza testAtanh(self):
         self.assertRaises(TypeError, math.atan)
         self.ftest('atanh(0)', math.atanh(0), 0)
         self.ftest('atanh(0.5)', math.atanh(0.5), 0.54930614433405489)
@@ -333,7 +333,7 @@ class MathTests(unittest.TestCase):
         self.assertRaises(ValueError, math.atanh, NINF)
         self.assertTrue(math.isnan(math.atanh(NAN)))
 
-    def testAtan2(self):
+    eleza testAtan2(self):
         self.assertRaises(TypeError, math.atan2)
         self.ftest('atan2(-1, 0)', math.atan2(-1, 0), -math.pi/2)
         self.ftest('atan2(-1, 1)', math.atan2(-1, 1), -math.pi/4)
@@ -394,7 +394,7 @@ class MathTests(unittest.TestCase):
         self.assertTrue(math.isnan(math.atan2(NAN, INF)))
         self.assertTrue(math.isnan(math.atan2(NAN, NAN)))
 
-    def testCeil(self):
+    eleza testCeil(self):
         self.assertRaises(TypeError, math.ceil)
         self.assertEqual(int, type(math.ceil(0.5)))
         self.ftest('ceil(0.5)', math.ceil(0.5), 1)
@@ -407,10 +407,10 @@ class MathTests(unittest.TestCase):
         #self.assertEqual(math.ceil(NINF), NINF)
         #self.assertTrue(math.isnan(math.ceil(NAN)))
 
-        class TestCeil:
-            def __ceil__(self):
-                return 42
-        class TestNoCeil:
+        kundi TestCeil:
+            eleza __ceil__(self):
+                rudisha 42
+        kundi TestNoCeil:
             pass
         self.ftest('ceil(TestCeil())', math.ceil(TestCeil()), 42)
         self.assertRaises(TypeError, math.ceil, TestNoCeil())
@@ -421,7 +421,7 @@ class MathTests(unittest.TestCase):
         self.assertRaises(TypeError, math.ceil, t, 0)
 
     @requires_IEEE_754
-    def testCopysign(self):
+    eleza testCopysign(self):
         self.assertEqual(math.copysign(1, 42), 1.0)
         self.assertEqual(math.copysign(0., 42), 0.0)
         self.assertEqual(math.copysign(1., -42), -1.0)
@@ -454,7 +454,7 @@ class MathTests(unittest.TestCase):
         # similarly, copysign(2., NAN) could be 2. or -2.
         self.assertEqual(abs(math.copysign(2., NAN)), 2.)
 
-    def testCos(self):
+    eleza testCos(self):
         self.assertRaises(TypeError, math.cos)
         self.ftest('cos(-pi/2)', math.cos(-math.pi/2), 0, abs_tol=ulp(1))
         self.ftest('cos(0)', math.cos(0), 1)
@@ -468,7 +468,7 @@ class MathTests(unittest.TestCase):
             self.assertRaises(ValueError, math.cos, NINF)
         self.assertTrue(math.isnan(math.cos(NAN)))
 
-    def testCosh(self):
+    eleza testCosh(self):
         self.assertRaises(TypeError, math.cosh)
         self.ftest('cosh(0)', math.cosh(0), 1)
         self.ftest('cosh(2)-2*cosh(1)**2', math.cosh(2)-2*math.cosh(1)**2, -1) # Thanks to Lambert
@@ -476,14 +476,14 @@ class MathTests(unittest.TestCase):
         self.assertEqual(math.cosh(NINF), INF)
         self.assertTrue(math.isnan(math.cosh(NAN)))
 
-    def testDegrees(self):
+    eleza testDegrees(self):
         self.assertRaises(TypeError, math.degrees)
         self.ftest('degrees(pi)', math.degrees(math.pi), 180.0)
         self.ftest('degrees(pi/2)', math.degrees(math.pi/2), 90.0)
         self.ftest('degrees(-pi/4)', math.degrees(-math.pi/4), -45.0)
         self.ftest('degrees(0)', math.degrees(0), 0)
 
-    def testExp(self):
+    eleza testExp(self):
         self.assertRaises(TypeError, math.exp)
         self.ftest('exp(-1)', math.exp(-1), 1/math.e)
         self.ftest('exp(0)', math.exp(0), 1)
@@ -493,13 +493,13 @@ class MathTests(unittest.TestCase):
         self.assertTrue(math.isnan(math.exp(NAN)))
         self.assertRaises(OverflowError, math.exp, 1000000)
 
-    def testFabs(self):
+    eleza testFabs(self):
         self.assertRaises(TypeError, math.fabs)
         self.ftest('fabs(-1)', math.fabs(-1), 1)
         self.ftest('fabs(0)', math.fabs(0), 0)
         self.ftest('fabs(1)', math.fabs(1), 1)
 
-    def testFactorial(self):
+    eleza testFactorial(self):
         self.assertEqual(math.factorial(0), 1)
         self.assertEqual(math.factorial(0.0), 1)
         total = 1
@@ -514,19 +514,19 @@ class MathTests(unittest.TestCase):
         self.assertRaises(ValueError, math.factorial, -1e100)
         self.assertRaises(ValueError, math.factorial, math.pi)
 
-    def testFactorialNonIntegers(self):
+    eleza testFactorialNonIntegers(self):
         self.assertRaises(TypeError, math.factorial, decimal.Decimal(5.2))
         self.assertRaises(TypeError, math.factorial, "5")
 
     # Other implementations may place different upper bounds.
     @support.cpython_only
-    def testFactorialHugeInputs(self):
+    eleza testFactorialHugeInputs(self):
         # Currently raises OverflowError for inputs that are too large
         # to fit into a C long.
         self.assertRaises(OverflowError, math.factorial, 10**100)
         self.assertRaises(OverflowError, math.factorial, 1e100)
 
-    def testFloor(self):
+    eleza testFloor(self):
         self.assertRaises(TypeError, math.floor)
         self.assertEqual(int, type(math.floor(0.5)))
         self.ftest('floor(0.5)', math.floor(0.5), 0)
@@ -543,10 +543,10 @@ class MathTests(unittest.TestCase):
         #self.assertEqual(math.ceil(NINF), NINF)
         #self.assertTrue(math.isnan(math.floor(NAN)))
 
-        class TestFloor:
-            def __floor__(self):
-                return 42
-        class TestNoFloor:
+        kundi TestFloor:
+            eleza __floor__(self):
+                rudisha 42
+        kundi TestNoFloor:
             pass
         self.ftest('floor(TestFloor())', math.floor(TestFloor()), 42)
         self.assertRaises(TypeError, math.floor, TestNoFloor())
@@ -556,7 +556,7 @@ class MathTests(unittest.TestCase):
         self.assertRaises(TypeError, math.floor, t)
         self.assertRaises(TypeError, math.floor, t, 0)
 
-    def testFmod(self):
+    eleza testFmod(self):
         self.assertRaises(TypeError, math.fmod)
         self.ftest('fmod(10, 1)', math.fmod(10, 1), 0.0)
         self.ftest('fmod(10, 0.5)', math.fmod(10, 0.5), 0.0)
@@ -578,12 +578,12 @@ class MathTests(unittest.TestCase):
         self.assertEqual(math.fmod(0.0, 3.0), 0.0)
         self.assertEqual(math.fmod(0.0, NINF), 0.0)
 
-    def testFrexp(self):
+    eleza testFrexp(self):
         self.assertRaises(TypeError, math.frexp)
 
-        def testfrexp(name, result, expected):
+        eleza testfrexp(name, result, expected):
             (mant, exp), (emant, eexp) = result, expected
-            if abs(mant-emant) > eps or exp != eexp:
+            ikiwa abs(mant-emant) > eps or exp != eexp:
                 self.fail('%s returned %r, expected %r'%\
                           (name, result, expected))
 
@@ -599,7 +599,7 @@ class MathTests(unittest.TestCase):
     @requires_IEEE_754
     @unittest.skipIf(HAVE_DOUBLE_ROUNDING,
                          "fsum is not exact on machines with double rounding")
-    def testFsum(self):
+    eleza testFsum(self):
         # math.fsum relies on exact rounding for correct operation.
         # There's a known problem with IA32 floating-point that causes
         # inexact rounding in some situations, and will cause the
@@ -615,7 +615,7 @@ class MathTests(unittest.TestCase):
         mant_dig = float_info.mant_dig
         etiny = float_info.min_exp - mant_dig
 
-        def msum(iterable):
+        eleza msum(iterable):
             """Full precision summation.  Compute sum(iterable) without any
             intermediate accumulation of error.  Based on the 'lsum' function
             at http://code.activestate.com/recipes/393090/
@@ -625,7 +625,7 @@ class MathTests(unittest.TestCase):
             for x in iterable:
                 mant, exp = math.frexp(x)
                 mant, exp = int(math.ldexp(mant, mant_dig)), exp - mant_dig
-                if texp > exp:
+                ikiwa texp > exp:
                     tmant <<= texp-exp
                     texp = exp
                 else:
@@ -636,11 +636,11 @@ class MathTests(unittest.TestCase):
             # a little unsafe because str -> float conversion can't be
             # relied upon to do correct rounding on all platforms.
             tail = max(len(bin(abs(tmant)))-2 - mant_dig, etiny - texp)
-            if tail > 0:
+            ikiwa tail > 0:
                 h = 1 << (tail-1)
                 tmant = tmant // (2*h) + bool(tmant & h and tmant & 3*h-1)
                 texp += tail
-            return math.ldexp(tmant, texp)
+            rudisha math.ldexp(tmant, texp)
 
         test_values = [
             ([], 0.0),
@@ -651,16 +651,16 @@ class MathTests(unittest.TestCase):
             ([2.0**53+10.0, 1.0, 2.0**-100], 2.0**53+12.0),
             ([2.0**53-4.0, 0.5, 2.0**-54], 2.0**53-3.0),
             ([1./n for n in range(1, 1001)],
-             float.fromhex('0x1.df11f45f4e61ap+2')),
+             float.kutokahex('0x1.df11f45f4e61ap+2')),
             ([(-1.)**n/n for n in range(1, 1001)],
-             float.fromhex('-0x1.62a2af1bd3624p-1')),
+             float.kutokahex('-0x1.62a2af1bd3624p-1')),
             ([1.7**(i+1)-1.7**i for i in range(1000)] + [-1.7**1000], -1.0),
             ([1e16, 1., 1e-16], 10000000000000002.0),
             ([1e16-2., 1.-2.**-53, -(1e16-2.), -(1.-2.**-53)], 0.0),
             # exercise code for resizing partials array
             ([2.**n - 2.**(n+50) + 2.**(n+52) for n in range(-1074, 972, 2)] +
              [-2.**1022],
-             float.fromhex('0x1.5555555555555p+970')),
+             float.kutokahex('0x1.5555555555555p+970')),
             ]
 
         for i, (vals, expected) in enumerate(test_values):
@@ -687,7 +687,7 @@ class MathTests(unittest.TestCase):
             s = msum(vals)
             self.assertEqual(msum(vals), math.fsum(vals))
 
-    def testGcd(self):
+    eleza testGcd(self):
         gcd = math.gcd
         self.assertEqual(gcd(0, 0), 0)
         self.assertEqual(gcd(1, 0), 1)
@@ -730,7 +730,7 @@ class MathTests(unittest.TestCase):
         self.assertRaises(TypeError, gcd, 120, 84.0)
         self.assertEqual(gcd(MyIndexable(120), MyIndexable(84)), 12)
 
-    def testHypot(self):
+    eleza testHypot(self):
         kutoka decimal agiza Decimal
         kutoka fractions agiza Fraction
 
@@ -804,7 +804,7 @@ class MathTests(unittest.TestCase):
             scale = FLOAT_MIN / 2.0 ** exp
             self.assertEqual(math.hypot(4*scale, 3*scale), 5*scale)
 
-    def testDist(self):
+    eleza testDist(self):
         kutoka decimal agiza Decimal as D
         kutoka fractions agiza Fraction as F
 
@@ -857,7 +857,7 @@ class MathTests(unittest.TestCase):
         )
 
         # Verify tuple subclasses are allowed
-        class T(tuple):
+        kundi T(tuple):
             pass
         self.assertEqual(dist(T((1, 2, 3)), ((4, 2, -1))), 5.0)
 
@@ -894,10 +894,10 @@ class MathTests(unittest.TestCase):
         for p in itertools.product(values, repeat=3):
             for q in itertools.product(values, repeat=3):
                 diffs = [px - qx for px, qx in zip(p, q)]
-                if any(map(math.isinf, diffs)):
+                ikiwa any(map(math.isinf, diffs)):
                     # Any infinite difference gives positive infinity.
                     self.assertEqual(dist(p, q), INF)
-                elif any(map(math.isnan, diffs)):
+                elikiwa any(map(math.isnan, diffs)):
                     # If no infinity, any NaN gives a NaN.
                     self.assertTrue(math.isnan(dist(p, q)))
 
@@ -917,7 +917,7 @@ class MathTests(unittest.TestCase):
             self.assertEqual(math.dist(p, q), 5*scale)
             self.assertEqual(math.dist(q, p), 5*scale)
 
-    def testIsqrt(self):
+    eleza testIsqrt(self):
         # Test a variety of inputs, large and small.
         test_values = (
             list(range(1000))
@@ -946,12 +946,12 @@ class MathTests(unittest.TestCase):
         self.assertIs(type(s), int)
         self.assertEqual(s, 0)
 
-        class IntegerLike(object):
-            def __init__(self, value):
+        kundi IntegerLike(object):
+            eleza __init__(self, value):
                 self.value = value
 
-            def __index__(self):
-                return self.value
+            eleza __index__(self):
+                rudisha self.value
 
         s = math.isqrt(IntegerLike(1729))
         self.assertIs(type(s), int)
@@ -970,7 +970,7 @@ class MathTests(unittest.TestCase):
                 with self.assertRaises(TypeError):
                     math.isqrt(value)
 
-    def testLdexp(self):
+    eleza testLdexp(self):
         self.assertRaises(TypeError, math.ldexp)
         self.ftest('ldexp(0,1)', math.ldexp(0,1), 0)
         self.ftest('ldexp(1,1)', math.ldexp(1,1), 2)
@@ -1002,7 +1002,7 @@ class MathTests(unittest.TestCase):
             self.assertEqual(math.ldexp(NINF, n), NINF)
             self.assertTrue(math.isnan(math.ldexp(NAN, n)))
 
-    def testLog(self):
+    eleza testLog(self):
         self.assertRaises(TypeError, math.log)
         self.ftest('log(1/e)', math.log(1/math.e), -1)
         self.ftest('log(1)', math.log(1), 0)
@@ -1018,7 +1018,7 @@ class MathTests(unittest.TestCase):
         self.assertEqual(math.log(INF), INF)
         self.assertTrue(math.isnan(math.log(NAN)))
 
-    def testLog1p(self):
+    eleza testLog1p(self):
         self.assertRaises(TypeError, math.log1p)
         for n in [2, 2**90, 2**300]:
             self.assertAlmostEqual(math.log1p(n), math.log1p(float(n)))
@@ -1026,7 +1026,7 @@ class MathTests(unittest.TestCase):
         self.assertEqual(math.log1p(INF), INF)
 
     @requires_IEEE_754
-    def testLog2(self):
+    eleza testLog2(self):
         self.assertRaises(TypeError, math.log2)
 
         # Check some integer values
@@ -1046,13 +1046,13 @@ class MathTests(unittest.TestCase):
     @requires_IEEE_754
     # log2() is not accurate enough on Mac OS X Tiger (10.4)
     @support.requires_mac_ver(10, 5)
-    def testLog2Exact(self):
+    eleza testLog2Exact(self):
         # Check that we get exact equality for log2 of powers of 2.
         actual = [math.log2(math.ldexp(1.0, n)) for n in range(-1074, 1024)]
         expected = [float(n) for n in range(-1074, 1024)]
         self.assertEqual(actual, expected)
 
-    def testLog10(self):
+    eleza testLog10(self):
         self.assertRaises(TypeError, math.log10)
         self.ftest('log10(0.1)', math.log10(0.1), -1)
         self.ftest('log10(1)', math.log10(1), 0)
@@ -1064,12 +1064,12 @@ class MathTests(unittest.TestCase):
         self.assertEqual(math.log(INF), INF)
         self.assertTrue(math.isnan(math.log10(NAN)))
 
-    def testModf(self):
+    eleza testModf(self):
         self.assertRaises(TypeError, math.modf)
 
-        def testmodf(name, result, expected):
+        eleza testmodf(name, result, expected):
             (v1, v2), (e1, e2) = result, expected
-            if abs(v1-e1) > eps or abs(v2-e2):
+            ikiwa abs(v1-e1) > eps or abs(v2-e2):
                 self.fail('%s returned %r, expected %r'%\
                           (name, result, expected))
 
@@ -1083,7 +1083,7 @@ class MathTests(unittest.TestCase):
         self.assertTrue(math.isnan(modf_nan[0]))
         self.assertTrue(math.isnan(modf_nan[1]))
 
-    def testPow(self):
+    eleza testPow(self):
         self.assertRaises(TypeError, math.pow)
         self.ftest('pow(0,1)', math.pow(0,1), 0)
         self.ftest('pow(1,0)', math.pow(1,0), 1)
@@ -1184,7 +1184,7 @@ class MathTests(unittest.TestCase):
         self.assertEqual(math.pow(-2.3, -0.), 1.)
         self.assertEqual(math.pow(NAN, -0.), 1.)
 
-        # pow(x, y) is invalid if x is negative and y is not integral
+        # pow(x, y) is invalid ikiwa x is negative and y is not integral
         self.assertRaises(ValueError, math.pow, -1., 2.3)
         self.assertRaises(ValueError, math.pow, -15., -3.1)
 
@@ -1232,7 +1232,7 @@ class MathTests(unittest.TestCase):
         #self.assertEqual(1.**NINF, 1)
         #self.assertEqual(1.**0, 1)
 
-    def testRadians(self):
+    eleza testRadians(self):
         self.assertRaises(TypeError, math.radians)
         self.ftest('radians(180)', math.radians(180), math.pi)
         self.ftest('radians(90)', math.radians(90), math.pi/2)
@@ -1240,10 +1240,10 @@ class MathTests(unittest.TestCase):
         self.ftest('radians(0)', math.radians(0), 0)
 
     @requires_IEEE_754
-    def testRemainder(self):
+    eleza testRemainder(self):
         kutoka fractions agiza Fraction
 
-        def validate_spec(x, y, r):
+        eleza validate_spec(x, y, r):
             """
             Check that r matches remainder(x, y) according to the IEEE 754
             specification. Assumes that x, y and r are finite and y is nonzero.
@@ -1254,7 +1254,7 @@ class MathTests(unittest.TestCase):
             # x - r should be an exact integer multiple of y
             n = (fx - fr) / fy
             self.assertEqual(n, int(n))
-            if abs(fr) == abs(fy/2):
+            ikiwa abs(fr) == abs(fy/2):
                 # If |r| == |y/2|, n should be even.
                 self.assertEqual(n/2, int(n/2))
 
@@ -1321,9 +1321,9 @@ class MathTests(unittest.TestCase):
         for case in testcases:
             with self.subTest(case=case):
                 x_hex, y_hex, expected_hex = case.split()
-                x = float.fromhex(x_hex)
-                y = float.fromhex(y_hex)
-                expected = float.fromhex(expected_hex)
+                x = float.kutokahex(x_hex)
+                y = float.kutokahex(y_hex)
+                expected = float.kutokahex(expected_hex)
                 validate_spec(x, y, expected)
                 actual = math.remainder(x, y)
                 # Cheap way of checking that the floats are
@@ -1333,9 +1333,9 @@ class MathTests(unittest.TestCase):
         # Test tiny subnormal modulus: there's potential for
         # getting the implementation wrong here (for example,
         # by assuming that modulus/2 is exactly representable).
-        tiny = float.fromhex('1p-1074')  # min +ve subnormal
+        tiny = float.kutokahex('1p-1074')  # min +ve subnormal
         for n in range(-25, 25):
-            if n == 0:
+            ikiwa n == 0:
                 continue
             y = n * tiny
             for m in range(100):
@@ -1368,7 +1368,7 @@ class MathTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 math.remainder(value, -0.0)
 
-    def testSin(self):
+    eleza testSin(self):
         self.assertRaises(TypeError, math.sin)
         self.ftest('sin(0)', math.sin(0), 0)
         self.ftest('sin(pi/2)', math.sin(math.pi/2), 1)
@@ -1381,7 +1381,7 @@ class MathTests(unittest.TestCase):
             self.assertRaises(ValueError, math.sin, NINF)
         self.assertTrue(math.isnan(math.sin(NAN)))
 
-    def testSinh(self):
+    eleza testSinh(self):
         self.assertRaises(TypeError, math.sinh)
         self.ftest('sinh(0)', math.sinh(0), 0)
         self.ftest('sinh(1)**2-cosh(1)**2', math.sinh(1)**2-math.cosh(1)**2, -1)
@@ -1390,7 +1390,7 @@ class MathTests(unittest.TestCase):
         self.assertEqual(math.sinh(NINF), NINF)
         self.assertTrue(math.isnan(math.sinh(NAN)))
 
-    def testSqrt(self):
+    eleza testSqrt(self):
         self.assertRaises(TypeError, math.sqrt)
         self.ftest('sqrt(0)', math.sqrt(0), 0)
         self.ftest('sqrt(1)', math.sqrt(1), 1)
@@ -1400,7 +1400,7 @@ class MathTests(unittest.TestCase):
         self.assertRaises(ValueError, math.sqrt, NINF)
         self.assertTrue(math.isnan(math.sqrt(NAN)))
 
-    def testTan(self):
+    eleza testTan(self):
         self.assertRaises(TypeError, math.tan)
         self.ftest('tan(0)', math.tan(0), 0)
         self.ftest('tan(pi/4)', math.tan(math.pi/4), 1)
@@ -1413,7 +1413,7 @@ class MathTests(unittest.TestCase):
             self.assertRaises(ValueError, math.tan, NINF)
         self.assertTrue(math.isnan(math.tan(NAN)))
 
-    def testTanh(self):
+    eleza testTanh(self):
         self.assertRaises(TypeError, math.tanh)
         self.ftest('tanh(0)', math.tanh(0), 0)
         self.ftest('tanh(1)+tanh(-1)', math.tanh(1)+math.tanh(-1), 0,
@@ -1423,13 +1423,13 @@ class MathTests(unittest.TestCase):
         self.assertTrue(math.isnan(math.tanh(NAN)))
 
     @requires_IEEE_754
-    def testTanhSign(self):
+    eleza testTanhSign(self):
         # check that tanh(-0.) == -0. on IEEE 754 systems
         self.assertEqual(math.tanh(-0.), -0.)
         self.assertEqual(math.copysign(1., math.tanh(-0.)),
                          math.copysign(1., -0.))
 
-    def test_trunc(self):
+    eleza test_trunc(self):
         self.assertEqual(math.trunc(1), 1)
         self.assertEqual(math.trunc(-1), -1)
         self.assertEqual(type(math.trunc(1)), int)
@@ -1441,11 +1441,11 @@ class MathTests(unittest.TestCase):
         self.assertEqual(math.trunc(-0.999999), -0)
         self.assertEqual(math.trunc(-100.999), -100)
 
-        class TestTrunc(object):
-            def __trunc__(self):
-                return 23
+        kundi TestTrunc(object):
+            eleza __trunc__(self):
+                rudisha 23
 
-        class TestNoTrunc(object):
+        kundi TestNoTrunc(object):
             pass
 
         self.assertEqual(math.trunc(TestTrunc()), 23)
@@ -1454,7 +1454,7 @@ class MathTests(unittest.TestCase):
         self.assertRaises(TypeError, math.trunc, 1, 2)
         self.assertRaises(TypeError, math.trunc, TestNoTrunc())
 
-    def testIsfinite(self):
+    eleza testIsfinite(self):
         self.assertTrue(math.isfinite(0.0))
         self.assertTrue(math.isfinite(-0.0))
         self.assertTrue(math.isfinite(1.0))
@@ -1463,7 +1463,7 @@ class MathTests(unittest.TestCase):
         self.assertFalse(math.isfinite(float("inf")))
         self.assertFalse(math.isfinite(float("-inf")))
 
-    def testIsnan(self):
+    eleza testIsnan(self):
         self.assertTrue(math.isnan(float("nan")))
         self.assertTrue(math.isnan(float("-nan")))
         self.assertTrue(math.isnan(float("inf") * 0.))
@@ -1471,7 +1471,7 @@ class MathTests(unittest.TestCase):
         self.assertFalse(math.isnan(0.))
         self.assertFalse(math.isnan(1.))
 
-    def testIsinf(self):
+    eleza testIsinf(self):
         self.assertTrue(math.isinf(float("inf")))
         self.assertTrue(math.isinf(float("-inf")))
         self.assertTrue(math.isinf(1E400))
@@ -1481,11 +1481,11 @@ class MathTests(unittest.TestCase):
         self.assertFalse(math.isinf(1.))
 
     @requires_IEEE_754
-    def test_nan_constant(self):
+    eleza test_nan_constant(self):
         self.assertTrue(math.isnan(math.nan))
 
     @requires_IEEE_754
-    def test_inf_constant(self):
+    eleza test_inf_constant(self):
         self.assertTrue(math.isinf(math.inf))
         self.assertGreater(math.inf, 0.0)
         self.assertEqual(math.inf, float("inf"))
@@ -1497,7 +1497,7 @@ class MathTests(unittest.TestCase):
     # *run* test_exceptions() in verbose mode, so that this isn't normally
     # tested.
     @unittest.skipUnless(verbose, 'requires verbose mode')
-    def test_exceptions(self):
+    eleza test_exceptions(self):
         try:
             x = math.exp(-1000000000)
         except:
@@ -1505,7 +1505,7 @@ class MathTests(unittest.TestCase):
             # we've got an fp format with huge dynamic range
             self.fail("underflowing exp() should not have raised "
                         "an exception")
-        if x != 0:
+        ikiwa x != 0:
             self.fail("underflowing exp() should have returned 0")
 
         # If this fails, probably using a strict IEEE-754 conforming libm, and x
@@ -1529,13 +1529,13 @@ class MathTests(unittest.TestCase):
             self.fail("sqrt(-1) didn't raise ValueError")
 
     @requires_IEEE_754
-    def test_testfile(self):
+    eleza test_testfile(self):
         # Some tests need to be skipped on ancient OS X versions.
         # See issue #27953.
         SKIP_ON_TIGER = {'tan0064'}
 
         osx_version = None
-        if sys.platform == 'darwin':
+        ikiwa sys.platform == 'darwin':
             version_txt = platform.mac_ver()[0]
             try:
                 osx_version = tuple(map(int, version_txt.split('.')))
@@ -1546,22 +1546,22 @@ class MathTests(unittest.TestCase):
 
         failures = []
         for id, fn, ar, ai, er, ei, flags in parse_testfile(test_file):
-            # Skip if either the input or result is complex
-            if ai != 0.0 or ei != 0.0:
+            # Skip ikiwa either the input or result is complex
+            ikiwa ai != 0.0 or ei != 0.0:
                 continue
-            if fn in ['rect', 'polar']:
+            ikiwa fn in ['rect', 'polar']:
                 # no real versions of rect, polar
                 continue
             # Skip certain tests on OS X 10.4.
-            if osx_version is not None and osx_version < (10, 5):
-                if id in SKIP_ON_TIGER:
+            ikiwa osx_version is not None and osx_version < (10, 5):
+                ikiwa id in SKIP_ON_TIGER:
                     continue
 
             func = getattr(math, fn)
 
-            if 'invalid' in flags or 'divide-by-zero' in flags:
+            ikiwa 'invalid' in flags or 'divide-by-zero' in flags:
                 er = 'ValueError'
-            elif 'overflow' in flags:
+            elikiwa 'overflow' in flags:
                 er = 'OverflowError'
 
             try:
@@ -1575,27 +1575,27 @@ class MathTests(unittest.TestCase):
             ulp_tol, abs_tol = 5, 0.0
 
             failure = result_check(er, result, ulp_tol, abs_tol)
-            if failure is None:
+            ikiwa failure is None:
                 continue
 
             msg = fail_fmt.format(id, fn, ar, failure)
             failures.append(msg)
 
-        if failures:
+        ikiwa failures:
             self.fail('Failures in test_testfile:\n  ' +
                       '\n  '.join(failures))
 
     @requires_IEEE_754
-    def test_mtestfile(self):
+    eleza test_mtestfile(self):
         fail_fmt = "{}: {}({!r}): {}"
 
         failures = []
         for id, fn, arg, expected, flags in parse_mtestfile(math_testcases):
             func = getattr(math, fn)
 
-            if 'invalid' in flags or 'divide-by-zero' in flags:
+            ikiwa 'invalid' in flags or 'divide-by-zero' in flags:
                 expected = 'ValueError'
-            elif 'overflow' in flags:
+            elikiwa 'overflow' in flags:
                 expected = 'OverflowError'
 
             try:
@@ -1609,20 +1609,20 @@ class MathTests(unittest.TestCase):
             ulp_tol, abs_tol = 5, 0.0
 
             # Exceptions to the defaults
-            if fn == 'gamma':
+            ikiwa fn == 'gamma':
                 # Experimental results on one platform gave
                 # an accuracy of <= 10 ulps across the entire float
                 # domain. We weaken that to require 20 ulp accuracy.
                 ulp_tol = 20
 
-            elif fn == 'lgamma':
+            elikiwa fn == 'lgamma':
                 # we use a weaker accuracy test for lgamma;
                 # lgamma only achieves an absolute error of
                 # a few multiples of the machine accuracy, in
                 # general.
                 abs_tol = 1e-15
 
-            elif fn == 'erfc' and arg >= 0.0:
+            elikiwa fn == 'erfc' and arg >= 0.0:
                 # erfc has less-than-ideal accuracy for large
                 # arguments (x ~ 25 or so), mainly due to the
                 # error involved in computing exp(-x*x).
@@ -1634,25 +1634,25 @@ class MathTests(unittest.TestCase):
                 # 10 <= x < 20 : err <= 300 ulp
                 # 20 <= x      : < 600 ulp
                 #
-                if arg < 1.0:
+                ikiwa arg < 1.0:
                     ulp_tol = 10
-                elif arg < 10.0:
+                elikiwa arg < 10.0:
                     ulp_tol = 100
                 else:
                     ulp_tol = 1000
 
             failure = result_check(expected, got, ulp_tol, abs_tol)
-            if failure is None:
+            ikiwa failure is None:
                 continue
 
             msg = fail_fmt.format(id, fn, arg, failure)
             failures.append(msg)
 
-        if failures:
+        ikiwa failures:
             self.fail('Failures in test_mtestfile:\n  ' +
                       '\n  '.join(failures))
 
-    def test_prod(self):
+    eleza test_prod(self):
         prod = math.prod
         self.assertEqual(prod([]), 1)
         self.assertEqual(prod([], start=5), 5)
@@ -1688,10 +1688,10 @@ class MathTests(unittest.TestCase):
         self.assertEqual(prod([1, 0, 2, 3]), 0)
         self.assertEqual(prod([1, 2, 3, 0]), 0)
 
-        def _naive_prod(iterable, start=1):
+        eleza _naive_prod(iterable, start=1):
             for elem in iterable:
                 start *= elem
-            return start
+            rudisha start
 
         # Big integers
 
@@ -1740,38 +1740,38 @@ class MathTests(unittest.TestCase):
 
     # Custom assertions.
 
-    def assertIsNaN(self, value):
-        if not math.isnan(value):
+    eleza assertIsNaN(self, value):
+        ikiwa not math.isnan(value):
             self.fail("Expected a NaN, got {!r}.".format(value))
 
 
-class IsCloseTests(unittest.TestCase):
+kundi IsCloseTests(unittest.TestCase):
     isclose = math.isclose  # subclasses should override this
 
-    def assertIsClose(self, a, b, *args, **kwargs):
+    eleza assertIsClose(self, a, b, *args, **kwargs):
         self.assertTrue(self.isclose(a, b, *args, **kwargs),
                         msg="%s and %s should be close!" % (a, b))
 
-    def assertIsNotClose(self, a, b, *args, **kwargs):
+    eleza assertIsNotClose(self, a, b, *args, **kwargs):
         self.assertFalse(self.isclose(a, b, *args, **kwargs),
                          msg="%s and %s should not be close!" % (a, b))
 
-    def assertAllClose(self, examples, *args, **kwargs):
+    eleza assertAllClose(self, examples, *args, **kwargs):
         for a, b in examples:
             self.assertIsClose(a, b, *args, **kwargs)
 
-    def assertAllNotClose(self, examples, *args, **kwargs):
+    eleza assertAllNotClose(self, examples, *args, **kwargs):
         for a, b in examples:
             self.assertIsNotClose(a, b, *args, **kwargs)
 
-    def test_negative_tolerances(self):
-        # ValueError should be raised if either tolerance is less than zero
+    eleza test_negative_tolerances(self):
+        # ValueError should be raised ikiwa either tolerance is less than zero
         with self.assertRaises(ValueError):
             self.assertIsClose(1, 1, rel_tol=-1e-100)
         with self.assertRaises(ValueError):
             self.assertIsClose(1, 1, rel_tol=1e-100, abs_tol=-1e10)
 
-    def test_identical(self):
+    eleza test_identical(self):
         # identical values must test as close
         identical_examples = [(2.0, 2.0),
                               (0.1e200, 0.1e200),
@@ -1781,7 +1781,7 @@ class IsCloseTests(unittest.TestCase):
                               (345678, 345678)]
         self.assertAllClose(identical_examples, rel_tol=0.0, abs_tol=0.0)
 
-    def test_eight_decimal_places(self):
+    eleza test_eight_decimal_places(self):
         # examples that are close to 1e-8, but not 1e-9
         eight_decimal_places_examples = [(1e8, 1e8 + 1),
                                          (-1e-8, -1.000000009e-8),
@@ -1789,7 +1789,7 @@ class IsCloseTests(unittest.TestCase):
         self.assertAllClose(eight_decimal_places_examples, rel_tol=1e-8)
         self.assertAllNotClose(eight_decimal_places_examples, rel_tol=1e-9)
 
-    def test_near_zero(self):
+    eleza test_near_zero(self):
         # values close to zero
         near_zero_examples = [(1e-9, 0.0),
                               (-1e-9, 0.0),
@@ -1799,14 +1799,14 @@ class IsCloseTests(unittest.TestCase):
         # these should be close to abs_tol=1e-8
         self.assertAllClose(near_zero_examples, abs_tol=1e-8)
 
-    def test_identical_infinite(self):
+    eleza test_identical_infinite(self):
         # these are close regardless of tolerance -- i.e. they are equal
         self.assertIsClose(INF, INF)
         self.assertIsClose(INF, INF, abs_tol=0.0)
         self.assertIsClose(NINF, NINF)
         self.assertIsClose(NINF, NINF, abs_tol=0.0)
 
-    def test_inf_ninf_nan(self):
+    eleza test_inf_ninf_nan(self):
         # these should never be close (following IEEE 754 rules for equality)
         not_close_examples = [(NAN, NAN),
                               (NAN, 1e-100),
@@ -1821,7 +1821,7 @@ class IsCloseTests(unittest.TestCase):
         # use largest reasonable tolerance
         self.assertAllNotClose(not_close_examples, abs_tol=0.999999999999999)
 
-    def test_zero_tolerance(self):
+    eleza test_zero_tolerance(self):
         # test with zero tolerance
         zero_tolerance_close_examples = [(1.0, 1.0),
                                          (-3.4, -3.4),
@@ -1833,11 +1833,11 @@ class IsCloseTests(unittest.TestCase):
                                              (1.0e200, .999999999999999e200)]
         self.assertAllNotClose(zero_tolerance_not_close_examples, rel_tol=0.0)
 
-    def test_asymmetry(self):
+    eleza test_asymmetry(self):
         # test the asymmetry example kutoka PEP 485
         self.assertAllClose([(9, 10), (10, 9)], rel_tol=0.1)
 
-    def test_integers(self):
+    eleza test_integers(self):
         # test with integer values
         integer_examples = [(100000001, 100000000),
                             (123456789, 123456788)]
@@ -1845,7 +1845,7 @@ class IsCloseTests(unittest.TestCase):
         self.assertAllClose(integer_examples, rel_tol=1e-8)
         self.assertAllNotClose(integer_examples, rel_tol=1e-9)
 
-    def test_decimals(self):
+    eleza test_decimals(self):
         # test with Decimal values
         kutoka decimal agiza Decimal
 
@@ -1856,7 +1856,7 @@ class IsCloseTests(unittest.TestCase):
         self.assertAllClose(decimal_examples, rel_tol=1e-8)
         self.assertAllNotClose(decimal_examples, rel_tol=1e-9)
 
-    def test_fractions(self):
+    eleza test_fractions(self):
         # test with Fraction values
         kutoka fractions agiza Fraction
 
@@ -1867,10 +1867,10 @@ class IsCloseTests(unittest.TestCase):
         self.assertAllClose(fraction_examples, rel_tol=1e-8)
         self.assertAllNotClose(fraction_examples, rel_tol=1e-9)
 
-    def testPerm(self):
+    eleza testPerm(self):
         perm = math.perm
         factorial = math.factorial
-        # Test if factorial definition is satisfied
+        # Test ikiwa factorial definition is satisfied
         for n in range(100):
             for k in range(n + 1):
                 self.assertEqual(perm(n, k),
@@ -1892,7 +1892,7 @@ class IsCloseTests(unittest.TestCase):
             self.assertEqual(perm(n), factorial(n))
             self.assertEqual(perm(n, None), factorial(n))
 
-        # Raises TypeError if any argument is non-integer or argument count is
+        # Raises TypeError ikiwa any argument is non-integer or argument count is
         # not 1 or 2
         self.assertRaises(TypeError, perm, 10, 1.0)
         self.assertRaises(TypeError, perm, 10, decimal.Decimal(1.0))
@@ -1905,13 +1905,13 @@ class IsCloseTests(unittest.TestCase):
         self.assertRaises(TypeError, perm, 10, 1, 3)
         self.assertRaises(TypeError, perm)
 
-        # Raises Value error if not k or n are negative numbers
+        # Raises Value error ikiwa not k or n are negative numbers
         self.assertRaises(ValueError, perm, -1, 1)
         self.assertRaises(ValueError, perm, -2**1000, 1)
         self.assertRaises(ValueError, perm, 1, -1)
         self.assertRaises(ValueError, perm, 1, -2**1000)
 
-        # Returns zero if k is greater than n
+        # Returns zero ikiwa k is greater than n
         self.assertEqual(perm(1, 2), 0)
         self.assertEqual(perm(1, 2**1000), 0)
 
@@ -1919,7 +1919,7 @@ class IsCloseTests(unittest.TestCase):
         self.assertEqual(perm(n, 0), 1)
         self.assertEqual(perm(n, 1), n)
         self.assertEqual(perm(n, 2), n * (n-1))
-        if support.check_impl_detail(cpython=True):
+        ikiwa support.check_impl_detail(cpython=True):
             self.assertRaises(OverflowError, perm, n, n)
 
         for n, k in (True, True), (True, False), (False, False):
@@ -1931,10 +1931,10 @@ class IsCloseTests(unittest.TestCase):
             self.assertIs(type(perm(IntSubclass(5), IntSubclass(k))), int)
             self.assertIs(type(perm(MyIndexable(5), MyIndexable(k))), int)
 
-    def testComb(self):
+    eleza testComb(self):
         comb = math.comb
         factorial = math.factorial
-        # Test if factorial definition is satisfied
+        # Test ikiwa factorial definition is satisfied
         for n in range(100):
             for k in range(n + 1):
                 self.assertEqual(comb(n, k), factorial(n)
@@ -1959,7 +1959,7 @@ class IsCloseTests(unittest.TestCase):
             for k in range(n // 2):
                 self.assertEqual(comb(n, k), comb(n, n - k))
 
-        # Raises TypeError if any argument is non-integer or argument count is
+        # Raises TypeError ikiwa any argument is non-integer or argument count is
         # not 2
         self.assertRaises(TypeError, comb, 10, 1.0)
         self.assertRaises(TypeError, comb, 10, decimal.Decimal(1.0))
@@ -1972,13 +1972,13 @@ class IsCloseTests(unittest.TestCase):
         self.assertRaises(TypeError, comb, 10, 1, 3)
         self.assertRaises(TypeError, comb)
 
-        # Raises Value error if not k or n are negative numbers
+        # Raises Value error ikiwa not k or n are negative numbers
         self.assertRaises(ValueError, comb, -1, 1)
         self.assertRaises(ValueError, comb, -2**1000, 1)
         self.assertRaises(ValueError, comb, 1, -1)
         self.assertRaises(ValueError, comb, 1, -2**1000)
 
-        # Returns zero if k is greater than n
+        # Returns zero ikiwa k is greater than n
         self.assertEqual(comb(1, 2), 0)
         self.assertEqual(comb(1, 2**1000), 0)
 
@@ -1989,7 +1989,7 @@ class IsCloseTests(unittest.TestCase):
         self.assertEqual(comb(n, n), 1)
         self.assertEqual(comb(n, n-1), n)
         self.assertEqual(comb(n, n-2), n * (n-1) // 2)
-        if support.check_impl_detail(cpython=True):
+        ikiwa support.check_impl_detail(cpython=True):
             self.assertRaises(OverflowError, comb, n, n//2)
 
         for n, k in (True, True), (True, False), (False, False):
@@ -2002,7 +2002,7 @@ class IsCloseTests(unittest.TestCase):
             self.assertIs(type(comb(MyIndexable(5), MyIndexable(k))), int)
 
 
-def test_main():
+eleza test_main():
     kutoka doctest agiza DocFileSuite
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(MathTests))
@@ -2010,5 +2010,5 @@ def test_main():
     suite.addTest(DocFileSuite("ieee754.txt"))
     run_unittest(suite)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test_main()

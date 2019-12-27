@@ -28,12 +28,12 @@ associated messages through the :class:`http.HTTPStatus` enum:
 
    .. versionadded:: 3.5
 
-   A subclass of :class:`enum.IntEnum` that defines a set of HTTP status codes,
+   A subkundi of :class:`enum.IntEnum` that defines a set of HTTP status codes,
    reason phrases and long descriptions written in English.
 
    Usage::
 
-      >>> from http import HTTPStatus
+      >>> kutoka http agiza HTTPStatus
       >>> HTTPStatus.OK
       <HTTPStatus.OK: 200>
       >>> HTTPStatus.OK == 200

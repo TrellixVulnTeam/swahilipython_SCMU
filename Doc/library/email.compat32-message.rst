@@ -4,12 +4,12 @@
 --------------------------------------------------------------------------------------------------------
 
 .. module:: email.message
-   :synopsis: The base class representing email messages in a fashion
+   :synopsis: The base kundi representing email messages in a fashion
               backward compatible with Python 3.2
    :noindex:
 
 
-The :class:`Message` class is very similar to the
+The :class:`Message` kundi is very similar to the
 :class:`~email.message.EmailMessage` class, without the methods added by that
 class, and with the default behavior of certain other methods being slightly
 different.  We also document here some methods that, while supported by the
@@ -20,7 +20,7 @@ The philosophy and structure of the two classes is otherwise the same.
 
 This document describes the behavior under the default (for :class:`Message`)
 policy :attr:`~email.policy.Compat32`.  If you are going to use another policy,
-you should be using the :class:`~email.message.EmailMessage` class instead.
+you should be using the :class:`~email.message.EmailMessage` kundi instead.
 
 An email message consists of *headers* and a *payload*.  Headers must be
 :rfc:`5233` style names and values, where the field name and value are
@@ -33,7 +33,7 @@ having a MIME type such as :mimetype:`multipart/\*` or
 
 The conceptual model provided by a :class:`Message` object is that of an
 ordered dictionary of headers with additional methods for accessing both
-specialized information from the headers, for accessing the payload, for
+specialized information kutoka the headers, for accessing the payload, for
 generating a serialized version of the message, and for recursively walking
 over the object tree.  Note that duplicate headers are supported but special
 methods must be used to access them.
@@ -64,15 +64,15 @@ Here are the methods of the :class:`Message` class:
    .. versionchanged:: 3.3 The *policy* keyword argument was added.
 
 
-   .. method:: as_string(unixfrom=False, maxheaderlen=0, policy=None)
+   .. method:: as_string(unixkutoka=False, maxheaderlen=0, policy=None)
 
-      Return the entire message flattened as a string.  When optional *unixfrom*
+      Return the entire message flattened as a string.  When optional *unixkutoka*
       is true, the envelope header is included in the returned string.
-      *unixfrom* defaults to ``False``.  For backward compatibility reasons,
+      *unixkutoka* defaults to ``False``.  For backward compatibility reasons,
       *maxheaderlen* defaults to ``0``, so if you want a different value you
       must override it explicitly (the value specified for *max_line_length* in
       the policy will be ignored by this method).  The *policy* argument may be
-      used to override the default policy obtained from the message instance.
+      used to override the default policy obtained kutoka the message instance.
       This can be used to control some of the formatting produced by the
       method, since the specified *policy* will be passed to the ``Generator``.
 
@@ -87,10 +87,10 @@ Here are the methods of the :class:`Message` class:
       :class:`~email.generator.Generator` instance and use its
       :meth:`~email.generator.Generator.flatten` method directly.  For example::
 
-         from io import StringIO
-         from email.generator import Generator
+         kutoka io agiza StringIO
+         kutoka email.generator agiza Generator
          fp = StringIO()
-         g = Generator(fp, mangle_from_=True, maxheaderlen=60)
+         g = Generator(fp, mangle_kutoka_=True, maxheaderlen=60)
          g.flatten(msg)
          text = fp.getvalue()
 
@@ -108,12 +108,12 @@ Here are the methods of the :class:`Message` class:
       string containing the formatted message.
 
 
-   .. method:: as_bytes(unixfrom=False, policy=None)
+   .. method:: as_bytes(unixkutoka=False, policy=None)
 
       Return the entire message flattened as a bytes object.  When optional
-      *unixfrom* is true, the envelope header is included in the returned
-      string.  *unixfrom* defaults to ``False``.  The *policy* argument may be
-      used to override the default policy obtained from the message instance.
+      *unixkutoka* is true, the envelope header is included in the returned
+      string.  *unixkutoka* defaults to ``False``.  The *policy* argument may be
+      used to override the default policy obtained kutoka the message instance.
       This can be used to control some of the formatting produced by the
       method, since the specified *policy* will be passed to the
       ``BytesGenerator``.
@@ -130,10 +130,10 @@ Here are the methods of the :class:`Message` class:
       :meth:`~email.generator.BytesGenerator.flatten` method directly.
       For example::
 
-         from io import BytesIO
-         from email.generator import BytesGenerator
+         kutoka io agiza BytesIO
+         kutoka email.generator agiza BytesGenerator
          fp = BytesIO()
-         g = BytesGenerator(fp, mangle_from_=True, maxheaderlen=60)
+         g = BytesGenerator(fp, mangle_kutoka_=True, maxheaderlen=60)
          g.flatten(msg)
          text = fp.getvalue()
 
@@ -160,12 +160,12 @@ Here are the methods of the :class:`Message` class:
       :class:`Message` is of type ``message/rfc822``.)
 
 
-   .. method:: set_unixfrom(unixfrom)
+   .. method:: set_unixkutoka(unixkutoka)
 
-      Set the message's envelope header to *unixfrom*, which should be a string.
+      Set the message's envelope header to *unixkutoka*, which should be a string.
 
 
-   .. method:: get_unixfrom()
+   .. method:: get_unixkutoka()
 
       Return the message's envelope header.  Defaults to ``None`` if the
       envelope header was never set.
@@ -180,7 +180,7 @@ Here are the methods of the :class:`Message` class:
       :meth:`set_payload` instead.
 
       This is a legacy method.  On the
-      :class:`~email.emailmessage.EmailMessage` class its functionality is
+      :class:`~email.emailmessage.EmailMessage` kundi its functionality is
       replaced by :meth:`~email.message.EmailMessage.set_content` and the
       related ``make`` and ``add`` methods.
 
@@ -193,7 +193,7 @@ Here are the methods of the :class:`Message` class:
       and you mutate the list object, you modify the message's payload in place.
 
       With optional argument *i*, :meth:`get_payload` will return the *i*-th
-      element of the payload, counting from zero, if :meth:`is_multipart` is
+      element of the payload, counting kutoka zero, if :meth:`is_multipart` is
       ``True``.  An :exc:`IndexError` will be raised if *i* is less than 0 or
       greater than or equal to the number of items in the payload.  If the
       payload is a string (i.e.  :meth:`is_multipart` is ``False``) and *i* is
@@ -223,7 +223,7 @@ Here are the methods of the :class:`Message` class:
       ASCII charset.
 
       This is a legacy method.  On the
-      :class:`~email.emailmessage.EmailMessage` class its functionality is
+      :class:`~email.emailmessage.EmailMessage` kundi its functionality is
       replaced by :meth:`~email.message.EmailMessage.get_content` and
       :meth:`~email.message.EmailMessage.iter_parts`.
 
@@ -235,7 +235,7 @@ Here are the methods of the :class:`Message` class:
       the message's default character set; see :meth:`set_charset` for details.
 
       This is a legacy method.  On the
-      :class:`~email.emailmessage.EmailMessage` class its functionality is
+      :class:`~email.emailmessage.EmailMessage` kundi its functionality is
       replaced by :meth:`~email.message.EmailMessage.set_content`.
 
 
@@ -245,7 +245,7 @@ Here are the methods of the :class:`Message` class:
       :class:`~email.charset.Charset` instance (see :mod:`email.charset`), a
       string naming a character set, or ``None``.  If it is a string, it will
       be converted to a :class:`~email.charset.Charset` instance.  If *charset*
-      is ``None``, the ``charset`` parameter will be removed from the
+      is ``None``, the ``charset`` parameter will be removed kutoka the
       :mailheader:`Content-Type` header (the message will not be otherwise
       modified).  Anything else will generate a :exc:`TypeError`.
 
@@ -264,7 +264,7 @@ Here are the methods of the :class:`Message` class:
       using that :mailheader:`Content-Transfer-Encoding` and is not modified.
 
       This is a legacy method.  On the
-      :class:`~email.emailmessage.EmailMessage` class its functionality is
+      :class:`~email.emailmessage.EmailMessage` kundi its functionality is
       replaced by the *charset* parameter of the
       :meth:`email.emailmessage.EmailMessage.set_content` method.
 
@@ -275,7 +275,7 @@ Here are the methods of the :class:`Message` class:
       message's payload.
 
       This is a legacy method.  On the
-      :class:`~email.emailmessage.EmailMessage` class it always returns
+      :class:`~email.emailmessage.EmailMessage` kundi it always returns
       ``None``.
 
 
@@ -295,7 +295,7 @@ Here are the methods of the :class:`Message` class:
    Note that in all cases, any envelope header present in the message is not
    included in the mapping interface.
 
-   In a model generated from bytes, any header values that (in contravention of
+   In a model generated kutoka bytes, any header values that (in contravention of
    the RFCs) contain non-ASCII bytes will, when retrieved through this
    interface, be represented as :class:`~email.header.Header` objects with
    a charset of `unknown-8bit`.
@@ -343,7 +343,7 @@ Here are the methods of the :class:`Message` class:
 
    .. method:: __delitem__(name)
 
-      Delete all occurrences of the field with name *name* from the message's
+      Delete all occurrences of the field with name *name* kutoka the message's
       headers.  No exception is raised if the named field isn't present in the
       headers.
 
@@ -485,7 +485,7 @@ Here are the methods of the :class:`Message` class:
       search instead of :mailheader:`Content-Type`.
 
       This is a legacy method.  On the
-      :class:`~email.emailmessage.EmailMessage` class its functionality is
+      :class:`~email.emailmessage.EmailMessage` kundi its functionality is
       replaced by the *params* property of the individual header objects
       returned by the header access methods.
 
@@ -511,7 +511,7 @@ Here are the methods of the :class:`Message` class:
       If your application doesn't care whether the parameter was encoded as in
       :rfc:`2231`, you can collapse the parameter value by calling
       :func:`email.utils.collapse_rfc2231_value`, passing in the return value
-      from :meth:`get_param`.  This will return a suitably decoded Unicode
+      kutoka :meth:`get_param`.  This will return a suitably decoded Unicode
       string when the value is a tuple, or the original string unquoted if it
       isn't.  For example::
 
@@ -523,7 +523,7 @@ Here are the methods of the :class:`Message` class:
       to ``False``.
 
       This is a legacy method.  On the
-      :class:`~email.emailmessage.EmailMessage` class its functionality is
+      :class:`~email.emailmessage.EmailMessage` kundi its functionality is
       replaced by the *params* property of the individual header objects
       returned by the header access methods.
 
@@ -555,7 +555,7 @@ Here are the methods of the :class:`Message` class:
 
    .. method:: del_param(param, header='content-type', requote=True)
 
-      Remove the given parameter completely from the :mailheader:`Content-Type`
+      Remove the given parameter completely kutoka the :mailheader:`Content-Type`
       header.  The header will be re-written in place without the parameter or
       its value.  All values will be quoted as necessary unless *requote* is
       ``False`` (the default is ``True``).  Optional *header* specifies an
@@ -578,7 +578,7 @@ Here are the methods of the :class:`Message` class:
       header is also added.
 
       This is a legacy method.  On the
-      :class:`~email.emailmessage.EmailMessage` class its functionality is
+      :class:`~email.emailmessage.EmailMessage` kundi its functionality is
       replaced by the ``make_`` and ``add_`` methods.
 
 
@@ -622,7 +622,7 @@ Here are the methods of the :class:`Message` class:
       coerced to lower case.  If there is no :mailheader:`Content-Type` header, or if
       that header has no ``charset`` parameter, *failobj* is returned.
 
-      Note that this method differs from :meth:`get_charset` which returns the
+      Note that this method differs kutoka :meth:`get_charset` which returns the
       :class:`~email.charset.Charset` instance for the default encoding of the message body.
 
 
@@ -661,14 +661,14 @@ Here are the methods of the :class:`Message` class:
 
       .. testsetup::
 
-         import email
-         from email import message_from_binary_file
-         from os.path import join, dirname
+         agiza email
+         kutoka email agiza message_kutoka_binary_file
+         kutoka os.path agiza join, dirname
          lib_dir = dirname(dirname(email.__file__))
          file_path = join(lib_dir, 'test/test_email/data/msg_16.txt')
          with open(file_path, 'rb') as f:
-             msg = message_from_binary_file(f)
-         from email.iterators import _structure
+             msg = message_kutoka_binary_file(f)
+         kutoka email.iterators agiza _structure
 
       .. doctest::
 

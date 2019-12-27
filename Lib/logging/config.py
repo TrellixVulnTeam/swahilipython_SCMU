@@ -48,22 +48,22 @@ RESET_ERROR = errno.ECONNRESET
 #   _listener holds the server object doing the listening
 _listener = None
 
-def fileConfig(fname, defaults=None, disable_existing_loggers=True):
+eleza fileConfig(fname, defaults=None, disable_existing_loggers=True):
     """
     Read the logging configuration kutoka a ConfigParser-format file.
 
     This can be called several times kutoka an application, allowing an end user
-    the ability to select kutoka various pre-canned configurations (if the
+    the ability to select kutoka various pre-canned configurations (ikiwa the
     developer provides a mechanism to present the choices and load the chosen
     configuration).
     """
     agiza configparser
 
-    if isinstance(fname, configparser.RawConfigParser):
+    ikiwa isinstance(fname, configparser.RawConfigParser):
         cp = fname
     else:
         cp = configparser.ConfigParser(defaults)
-        if hasattr(fname, 'readline'):
+        ikiwa hasattr(fname, 'readline'):
             cp.read_file(fname)
         else:
             cp.read(fname)
@@ -82,7 +82,7 @@ def fileConfig(fname, defaults=None, disable_existing_loggers=True):
         logging._releaseLock()
 
 
-def _resolve(name):
+eleza _resolve(name):
     """Resolve a dotted name to a global object."""
     name = name.split('.')
     used = name.pop(0)
@@ -94,16 +94,16 @@ def _resolve(name):
         except AttributeError:
             __import__(used)
             found = getattr(found, n)
-    return found
+    rudisha found
 
-def _strip_spaces(alist):
-    return map(str.strip, alist)
+eleza _strip_spaces(alist):
+    rudisha map(str.strip, alist)
 
-def _create_formatters(cp):
-    """Create and return formatters"""
+eleza _create_formatters(cp):
+    """Create and rudisha formatters"""
     flist = cp["formatters"]["keys"]
-    if not len(flist):
-        return {}
+    ikiwa not len(flist):
+        rudisha {}
     flist = flist.split(",")
     flist = _strip_spaces(flist)
     formatters = {}
@@ -114,18 +114,18 @@ def _create_formatters(cp):
         stl = cp.get(sectname, "style", raw=True, fallback='%')
         c = logging.Formatter
         class_name = cp[sectname].get("class")
-        if class_name:
+        ikiwa class_name:
             c = _resolve(class_name)
         f = c(fs, dfs, stl)
         formatters[form] = f
-    return formatters
+    rudisha formatters
 
 
-def _install_handlers(cp, formatters):
-    """Install and return handlers"""
+eleza _install_handlers(cp, formatters):
+    """Install and rudisha handlers"""
     hlist = cp["handlers"]["keys"]
-    if not len(hlist):
-        return {}
+    ikiwa not len(hlist):
+        rudisha {}
     hlist = hlist.split(",")
     hlist = _strip_spaces(hlist)
     handlers = {}
@@ -143,22 +143,22 @@ def _install_handlers(cp, formatters):
         kwargs = section.get("kwargs", '{}')
         kwargs = eval(kwargs, vars(logging))
         h = klass(*args, **kwargs)
-        if "level" in section:
+        ikiwa "level" in section:
             level = section["level"]
             h.setLevel(level)
-        if len(fmt):
+        ikiwa len(fmt):
             h.setFormatter(formatters[fmt])
-        if issubclass(klass, logging.handlers.MemoryHandler):
+        ikiwa issubclass(klass, logging.handlers.MemoryHandler):
             target = section.get("target", "")
-            if len(target): #the target handler may not be loaded yet, so keep for later...
+            ikiwa len(target): #the target handler may not be loaded yet, so keep for later...
                 fixups.append((h, target))
         handlers[hand] = h
     #now all handlers are loaded, fixup inter-handler references...
     for h, t in fixups:
         h.setTarget(handlers[t])
-    return handlers
+    rudisha handlers
 
-def _handle_existing_loggers(existing, child_loggers, disable_existing):
+eleza _handle_existing_loggers(existing, child_loggers, disable_existing):
     """
     When (re)configuring logging, handle loggers which were in the previous
     configuration but are not in the new configuration. There's no point
@@ -167,20 +167,20 @@ def _handle_existing_loggers(existing, child_loggers, disable_existing):
 
     However, don't disable children of named loggers, as that's probably not
     what was intended by the user. Also, allow existing loggers to NOT be
-    disabled if disable_existing is false.
+    disabled ikiwa disable_existing is false.
     """
     root = logging.root
     for log in existing:
         logger = root.manager.loggerDict[log]
-        if log in child_loggers:
-            if not isinstance(logger, logging.PlaceHolder):
+        ikiwa log in child_loggers:
+            ikiwa not isinstance(logger, logging.PlaceHolder):
                 logger.setLevel(logging.NOTSET)
                 logger.handlers = []
                 logger.propagate = True
         else:
             logger.disabled = disable_existing
 
-def _install_loggers(cp, handlers, disable_existing):
+eleza _install_loggers(cp, handlers, disable_existing):
     """Create and install loggers"""
 
     # configure the root first
@@ -191,13 +191,13 @@ def _install_loggers(cp, handlers, disable_existing):
     section = cp["logger_root"]
     root = logging.root
     log = root
-    if "level" in section:
+    ikiwa "level" in section:
         level = section["level"]
         log.setLevel(level)
     for h in root.handlers[:]:
         root.removeHandler(h)
     hlist = section["handlers"]
-    if len(hlist):
+    ikiwa len(hlist):
         hlist = hlist.split(",")
         hlist = _strip_spaces(hlist)
         for hand in hlist:
@@ -227,17 +227,17 @@ def _install_loggers(cp, handlers, disable_existing):
         qn = section["qualname"]
         propagate = section.getint("propagate", fallback=1)
         logger = logging.getLogger(qn)
-        if qn in existing:
+        ikiwa qn in existing:
             i = existing.index(qn) + 1 # start with the entry after qn
             prefixed = qn + "."
             pflen = len(prefixed)
             num_existing = len(existing)
             while i < num_existing:
-                if existing[i][:pflen] == prefixed:
+                ikiwa existing[i][:pflen] == prefixed:
                     child_loggers.append(existing[i])
                 i += 1
             existing.remove(qn)
-        if "level" in section:
+        ikiwa "level" in section:
             level = section["level"]
             logger.setLevel(level)
         for h in logger.handlers[:]:
@@ -245,7 +245,7 @@ def _install_loggers(cp, handlers, disable_existing):
         logger.propagate = propagate
         logger.disabled = 0
         hlist = section["handlers"]
-        if len(hlist):
+        ikiwa len(hlist):
             hlist = hlist.split(",")
             hlist = _strip_spaces(hlist)
             for hand in hlist:
@@ -258,16 +258,16 @@ def _install_loggers(cp, handlers, disable_existing):
     #probably not what was intended by the user.
     #for log in existing:
     #    logger = root.manager.loggerDict[log]
-    #    if log in child_loggers:
+    #    ikiwa log in child_loggers:
     #        logger.level = logging.NOTSET
     #        logger.handlers = []
     #        logger.propagate = 1
-    #    elif disable_existing_loggers:
+    #    elikiwa disable_existing_loggers:
     #        logger.disabled = 1
     _handle_existing_loggers(existing, child_loggers, disable_existing)
 
 
-def _clearExistingHandlers():
+eleza _clearExistingHandlers():
     """Clear and close existing handlers"""
     logging._handlers.clear()
     logging.shutdown(logging._handlerList[:])
@@ -277,35 +277,35 @@ def _clearExistingHandlers():
 IDENTIFIER = re.compile('^[a-z_][a-z0-9_]*$', re.I)
 
 
-def valid_ident(s):
+eleza valid_ident(s):
     m = IDENTIFIER.match(s)
-    if not m:
+    ikiwa not m:
         raise ValueError('Not a valid Python identifier: %r' % s)
-    return True
+    rudisha True
 
 
-class ConvertingMixin(object):
-    """For ConvertingXXX's, this mixin class provides common functions"""
+kundi ConvertingMixin(object):
+    """For ConvertingXXX's, this mixin kundi provides common functions"""
 
-    def convert_with_key(self, key, value, replace=True):
+    eleza convert_with_key(self, key, value, replace=True):
         result = self.configurator.convert(value)
         #If the converted value is different, save for next time
-        if value is not result:
-            if replace:
+        ikiwa value is not result:
+            ikiwa replace:
                 self[key] = result
-            if type(result) in (ConvertingDict, ConvertingList,
+            ikiwa type(result) in (ConvertingDict, ConvertingList,
                                ConvertingTuple):
                 result.parent = self
                 result.key = key
-        return result
+        rudisha result
 
-    def convert(self, value):
+    eleza convert(self, value):
         result = self.configurator.convert(value)
-        if value is not result:
-            if type(result) in (ConvertingDict, ConvertingList,
+        ikiwa value is not result:
+            ikiwa type(result) in (ConvertingDict, ConvertingList,
                                ConvertingTuple):
                 result.parent = self
-        return result
+        rudisha result
 
 
 # The ConvertingXXX classes are wrappers around standard Python containers,
@@ -317,41 +317,41 @@ class ConvertingMixin(object):
 # Each wrapper should have a configurator attribute holding the actual
 # configurator to use for conversion.
 
-class ConvertingDict(dict, ConvertingMixin):
+kundi ConvertingDict(dict, ConvertingMixin):
     """A converting dictionary wrapper."""
 
-    def __getitem__(self, key):
+    eleza __getitem__(self, key):
         value = dict.__getitem__(self, key)
-        return self.convert_with_key(key, value)
+        rudisha self.convert_with_key(key, value)
 
-    def get(self, key, default=None):
+    eleza get(self, key, default=None):
         value = dict.get(self, key, default)
-        return self.convert_with_key(key, value)
+        rudisha self.convert_with_key(key, value)
 
-    def pop(self, key, default=None):
+    eleza pop(self, key, default=None):
         value = dict.pop(self, key, default)
-        return self.convert_with_key(key, value, replace=False)
+        rudisha self.convert_with_key(key, value, replace=False)
 
-class ConvertingList(list, ConvertingMixin):
+kundi ConvertingList(list, ConvertingMixin):
     """A converting list wrapper."""
-    def __getitem__(self, key):
+    eleza __getitem__(self, key):
         value = list.__getitem__(self, key)
-        return self.convert_with_key(key, value)
+        rudisha self.convert_with_key(key, value)
 
-    def pop(self, idx=-1):
+    eleza pop(self, idx=-1):
         value = list.pop(self, idx)
-        return self.convert(value)
+        rudisha self.convert(value)
 
-class ConvertingTuple(tuple, ConvertingMixin):
+kundi ConvertingTuple(tuple, ConvertingMixin):
     """A converting tuple wrapper."""
-    def __getitem__(self, key):
+    eleza __getitem__(self, key):
         value = tuple.__getitem__(self, key)
         # Can't replace a tuple entry.
-        return self.convert_with_key(key, value, replace=False)
+        rudisha self.convert_with_key(key, value, replace=False)
 
-class BaseConfigurator(object):
+kundi BaseConfigurator(object):
     """
-    The configurator base class which defines some useful defaults.
+    The configurator base kundi which defines some useful defaults.
     """
 
     CONVERT_PATTERN = re.compile(r'^(?P<prefix>[a-z]+)://(?P<suffix>.*)$')
@@ -369,11 +369,11 @@ class BaseConfigurator(object):
     # We might want to use a different one, e.g. importlib
     importer = staticmethod(__import__)
 
-    def __init__(self, config):
+    eleza __init__(self, config):
         self.config = ConvertingDict(config)
         self.config.configurator = self
 
-    def resolve(self, s):
+    eleza resolve(self, s):
         """
         Resolve strings to objects using standard agiza and attribute
         syntax.
@@ -389,22 +389,22 @@ class BaseConfigurator(object):
                 except AttributeError:
                     self.importer(used)
                     found = getattr(found, frag)
-            return found
+            rudisha found
         except ImportError:
             e, tb = sys.exc_info()[1:]
             v = ValueError('Cannot resolve %r: %s' % (s, e))
             v.__cause__, v.__traceback__ = e, tb
             raise v
 
-    def ext_convert(self, value):
+    eleza ext_convert(self, value):
         """Default converter for the ext:// protocol."""
-        return self.resolve(value)
+        rudisha self.resolve(value)
 
-    def cfg_convert(self, value):
+    eleza cfg_convert(self, value):
         """Default converter for the cfg:// protocol."""
         rest = value
         m = self.WORD_PATTERN.match(rest)
-        if m is None:
+        ikiwa m is None:
             raise ValueError("Unable to convert %r" % value)
         else:
             rest = rest[m.end():]
@@ -412,13 +412,13 @@ class BaseConfigurator(object):
             #print d, rest
             while rest:
                 m = self.DOT_PATTERN.match(rest)
-                if m:
+                ikiwa m:
                     d = d[m.groups()[0]]
                 else:
                     m = self.INDEX_PATTERN.match(rest)
-                    if m:
+                    ikiwa m:
                         idx = m.groups()[0]
-                        if not self.DIGIT_PATTERN.match(idx):
+                        ikiwa not self.DIGIT_PATTERN.match(idx):
                             d = d[idx]
                         else:
                             try:
@@ -426,84 +426,84 @@ class BaseConfigurator(object):
                                 d = d[n]
                             except TypeError:
                                 d = d[idx]
-                if m:
+                ikiwa m:
                     rest = rest[m.end():]
                 else:
                     raise ValueError('Unable to convert '
                                      '%r at %r' % (value, rest))
         #rest should be empty
-        return d
+        rudisha d
 
-    def convert(self, value):
+    eleza convert(self, value):
         """
         Convert values to an appropriate type. dicts, lists and tuples are
         replaced by their converting alternatives. Strings are checked to
-        see if they have a conversion format and are converted if they do.
+        see ikiwa they have a conversion format and are converted ikiwa they do.
         """
-        if not isinstance(value, ConvertingDict) and isinstance(value, dict):
+        ikiwa not isinstance(value, ConvertingDict) and isinstance(value, dict):
             value = ConvertingDict(value)
             value.configurator = self
-        elif not isinstance(value, ConvertingList) and isinstance(value, list):
+        elikiwa not isinstance(value, ConvertingList) and isinstance(value, list):
             value = ConvertingList(value)
             value.configurator = self
-        elif not isinstance(value, ConvertingTuple) and\
+        elikiwa not isinstance(value, ConvertingTuple) and\
                  isinstance(value, tuple):
             value = ConvertingTuple(value)
             value.configurator = self
-        elif isinstance(value, str): # str for py3k
+        elikiwa isinstance(value, str): # str for py3k
             m = self.CONVERT_PATTERN.match(value)
-            if m:
+            ikiwa m:
                 d = m.groupdict()
                 prefix = d['prefix']
                 converter = self.value_converters.get(prefix, None)
-                if converter:
+                ikiwa converter:
                     suffix = d['suffix']
                     converter = getattr(self, converter)
                     value = converter(suffix)
-        return value
+        rudisha value
 
-    def configure_custom(self, config):
+    eleza configure_custom(self, config):
         """Configure an object with a user-supplied factory."""
         c = config.pop('()')
-        if not callable(c):
+        ikiwa not callable(c):
             c = self.resolve(c)
         props = config.pop('.', None)
         # Check for valid identifiers
-        kwargs = {k: config[k] for k in config if valid_ident(k)}
+        kwargs = {k: config[k] for k in config ikiwa valid_ident(k)}
         result = c(**kwargs)
-        if props:
+        ikiwa props:
             for name, value in props.items():
                 setattr(result, name, value)
-        return result
+        rudisha result
 
-    def as_tuple(self, value):
+    eleza as_tuple(self, value):
         """Utility function which converts lists to tuples."""
-        if isinstance(value, list):
+        ikiwa isinstance(value, list):
             value = tuple(value)
-        return value
+        rudisha value
 
-class DictConfigurator(BaseConfigurator):
+kundi DictConfigurator(BaseConfigurator):
     """
     Configure logging using a dictionary-like object to describe the
     configuration.
     """
 
-    def configure(self):
+    eleza configure(self):
         """Do the configuration."""
 
         config = self.config
-        if 'version' not in config:
+        ikiwa 'version' not in config:
             raise ValueError("dictionary doesn't specify a version")
-        if config['version'] != 1:
+        ikiwa config['version'] != 1:
             raise ValueError("Unsupported version: %s" % config['version'])
         incremental = config.pop('incremental', False)
         EMPTY_DICT = {}
         logging._acquireLock()
         try:
-            if incremental:
+            ikiwa incremental:
                 handlers = config.get('handlers', EMPTY_DICT)
                 for name in handlers:
-                    if name not in logging._handlers:
+                    ikiwa name not in logging._handlers:
                         raise ValueError('No handler found with '
                                          'name %r'  % name)
                     else:
@@ -511,7 +511,7 @@ class DictConfigurator(BaseConfigurator):
                             handler = logging._handlers[name]
                             handler_config = handlers[name]
                             level = handler_config.get('level', None)
-                            if level:
+                            ikiwa level:
                                 handler.setLevel(logging._checkLevel(level))
                         except Exception as e:
                             raise ValueError('Unable to configure handler '
@@ -524,7 +524,7 @@ class DictConfigurator(BaseConfigurator):
                         raise ValueError('Unable to configure logger '
                                          '%r' % name) kutoka e
                 root = config.get('root', None)
-                if root:
+                ikiwa root:
                     try:
                         self.configure_root(root, True)
                     except Exception as e:
@@ -564,7 +564,7 @@ class DictConfigurator(BaseConfigurator):
                         handler.name = name
                         handlers[name] = handler
                     except Exception as e:
-                        if 'target not configured yet' in str(e.__cause__):
+                        ikiwa 'target not configured yet' in str(e.__cause__):
                             deferred.append(name)
                         else:
                             raise ValueError('Unable to configure handler '
@@ -603,13 +603,13 @@ class DictConfigurator(BaseConfigurator):
                 #now set up the new ones...
                 loggers = config.get('loggers', EMPTY_DICT)
                 for name in loggers:
-                    if name in existing:
+                    ikiwa name in existing:
                         i = existing.index(name) + 1 # look after name
                         prefixed = name + "."
                         pflen = len(prefixed)
                         num_existing = len(existing)
                         while i < num_existing:
-                            if existing[i][:pflen] == prefixed:
+                            ikiwa existing[i][:pflen] == prefixed:
                                 child_loggers.append(existing[i])
                             i += 1
                         existing.remove(name)
@@ -626,18 +626,18 @@ class DictConfigurator(BaseConfigurator):
                 #probably not what was intended by the user.
                 #for log in existing:
                 #    logger = root.manager.loggerDict[log]
-                #    if log in child_loggers:
+                #    ikiwa log in child_loggers:
                 #        logger.level = logging.NOTSET
                 #        logger.handlers = []
                 #        logger.propagate = True
-                #    elif disable_existing:
+                #    elikiwa disable_existing:
                 #        logger.disabled = True
                 _handle_existing_loggers(existing, child_loggers,
                                          disable_existing)
 
                 # And finally, do the root logger
                 root = config.get('root', None)
-                if root:
+                ikiwa root:
                     try:
                         self.configure_root(root)
                     except Exception as e:
@@ -646,14 +646,14 @@ class DictConfigurator(BaseConfigurator):
         finally:
             logging._releaseLock()
 
-    def configure_formatter(self, config):
+    eleza configure_formatter(self, config):
         """Configure a formatter kutoka a dictionary."""
-        if '()' in config:
+        ikiwa '()' in config:
             factory = config['()'] # for use in exception handler
             try:
                 result = self.configure_custom(config)
             except TypeError as te:
-                if "'format'" not in str(te):
+                ikiwa "'format'" not in str(te):
                     raise
                 #Name of parameter changed kutoka fmt to format.
                 #Retry with old name.
@@ -668,30 +668,30 @@ class DictConfigurator(BaseConfigurator):
             style = config.get('style', '%')
             cname = config.get('class', None)
 
-            if not cname:
+            ikiwa not cname:
                 c = logging.Formatter
             else:
                 c = _resolve(cname)
 
-            # A TypeError would be raised if "validate" key is passed in with a formatter callable
+            # A TypeError would be raised ikiwa "validate" key is passed in with a formatter callable
             # that does not accept "validate" as a parameter
-            if 'validate' in config:  # if user hasn't mentioned it, the default will be fine
+            ikiwa 'validate' in config:  # ikiwa user hasn't mentioned it, the default will be fine
                 result = c(fmt, dfmt, style, config['validate'])
             else:
                 result = c(fmt, dfmt, style)
 
-        return result
+        rudisha result
 
-    def configure_filter(self, config):
+    eleza configure_filter(self, config):
         """Configure a filter kutoka a dictionary."""
-        if '()' in config:
+        ikiwa '()' in config:
             result = self.configure_custom(config)
         else:
             name = config.get('name', '')
             result = logging.Filter(name)
-        return result
+        rudisha result
 
-    def add_filters(self, filterer, filters):
+    eleza add_filters(self, filterer, filters):
         """Add filters to a filterer kutoka a list of names."""
         for f in filters:
             try:
@@ -699,11 +699,11 @@ class DictConfigurator(BaseConfigurator):
             except Exception as e:
                 raise ValueError('Unable to add filter %r' % f) kutoka e
 
-    def configure_handler(self, config):
+    eleza configure_handler(self, config):
         """Configure a handler kutoka a dictionary."""
         config_copy = dict(config)  # for restoring in case of error
         formatter = config.pop('formatter', None)
-        if formatter:
+        ikiwa formatter:
             try:
                 formatter = self.config['formatters'][formatter]
             except Exception as e:
@@ -711,39 +711,39 @@ class DictConfigurator(BaseConfigurator):
                                  '%r' % formatter) kutoka e
         level = config.pop('level', None)
         filters = config.pop('filters', None)
-        if '()' in config:
+        ikiwa '()' in config:
             c = config.pop('()')
-            if not callable(c):
+            ikiwa not callable(c):
                 c = self.resolve(c)
             factory = c
         else:
             cname = config.pop('class')
             klass = self.resolve(cname)
             #Special case for handler which refers to another handler
-            if issubclass(klass, logging.handlers.MemoryHandler) and\
+            ikiwa issubclass(klass, logging.handlers.MemoryHandler) and\
                 'target' in config:
                 try:
                     th = self.config['handlers'][config['target']]
-                    if not isinstance(th, logging.Handler):
+                    ikiwa not isinstance(th, logging.Handler):
                         config.update(config_copy)  # restore for deferred cfg
                         raise TypeError('target not configured yet')
                     config['target'] = th
                 except Exception as e:
                     raise ValueError('Unable to set target handler '
                                      '%r' % config['target']) kutoka e
-            elif issubclass(klass, logging.handlers.SMTPHandler) and\
+            elikiwa issubclass(klass, logging.handlers.SMTPHandler) and\
                 'mailhost' in config:
                 config['mailhost'] = self.as_tuple(config['mailhost'])
-            elif issubclass(klass, logging.handlers.SysLogHandler) and\
+            elikiwa issubclass(klass, logging.handlers.SysLogHandler) and\
                 'address' in config:
                 config['address'] = self.as_tuple(config['address'])
             factory = klass
         props = config.pop('.', None)
-        kwargs = {k: config[k] for k in config if valid_ident(k)}
+        kwargs = {k: config[k] for k in config ikiwa valid_ident(k)}
         try:
             result = factory(**kwargs)
         except TypeError as te:
-            if "'stream'" not in str(te):
+            ikiwa "'stream'" not in str(te):
                 raise
             #The argument name changed kutoka strm to stream
             #Retry with old name.
@@ -751,18 +751,18 @@ class DictConfigurator(BaseConfigurator):
             #(e.g. by Django)
             kwargs['strm'] = kwargs.pop('stream')
             result = factory(**kwargs)
-        if formatter:
+        ikiwa formatter:
             result.setFormatter(formatter)
-        if level is not None:
+        ikiwa level is not None:
             result.setLevel(logging._checkLevel(level))
-        if filters:
+        ikiwa filters:
             self.add_filters(result, filters)
-        if props:
+        ikiwa props:
             for name, value in props.items():
                 setattr(result, name, value)
-        return result
+        rudisha result
 
-    def add_handlers(self, logger, handlers):
+    eleza add_handlers(self, logger, handlers):
         """Add handlers to a logger kutoka a list of names."""
         for h in handlers:
             try:
@@ -770,45 +770,45 @@ class DictConfigurator(BaseConfigurator):
             except Exception as e:
                 raise ValueError('Unable to add handler %r' % h) kutoka e
 
-    def common_logger_config(self, logger, config, incremental=False):
+    eleza common_logger_config(self, logger, config, incremental=False):
         """
         Perform configuration which is common to root and non-root loggers.
         """
         level = config.get('level', None)
-        if level is not None:
+        ikiwa level is not None:
             logger.setLevel(logging._checkLevel(level))
-        if not incremental:
+        ikiwa not incremental:
             #Remove any existing handlers
             for h in logger.handlers[:]:
                 logger.removeHandler(h)
             handlers = config.get('handlers', None)
-            if handlers:
+            ikiwa handlers:
                 self.add_handlers(logger, handlers)
             filters = config.get('filters', None)
-            if filters:
+            ikiwa filters:
                 self.add_filters(logger, filters)
 
-    def configure_logger(self, name, config, incremental=False):
+    eleza configure_logger(self, name, config, incremental=False):
         """Configure a non-root logger kutoka a dictionary."""
         logger = logging.getLogger(name)
         self.common_logger_config(logger, config, incremental)
         propagate = config.get('propagate', None)
-        if propagate is not None:
+        ikiwa propagate is not None:
             logger.propagate = propagate
 
-    def configure_root(self, config, incremental=False):
+    eleza configure_root(self, config, incremental=False):
         """Configure a root logger kutoka a dictionary."""
         root = logging.getLogger()
         self.common_logger_config(root, config, incremental)
 
 dictConfigClass = DictConfigurator
 
-def dictConfig(config):
+eleza dictConfig(config):
     """Configure logging using a dictionary."""
     dictConfigClass(config).configure()
 
 
-def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=None):
+eleza listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=None):
     """
     Start up a socket server on the specified port, and listen for new
     configurations.
@@ -821,21 +821,21 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=None):
     Use the ``verify`` argument to verify any bytes received across the wire
     kutoka a client. If specified, it should be a callable which receives a
     single argument - the bytes of configuration data received across the
-    network - and it should return either ``None``, to indicate that the
+    network - and it should rudisha either ``None``, to indicate that the
     passed in bytes could not be verified and should be discarded, or a
     byte string which is then passed to the configuration machinery as
-    normal. Note that you can return transformed bytes, e.g. by decrypting
+    normal. Note that you can rudisha transformed bytes, e.g. by decrypting
     the bytes passed in.
     """
 
-    class ConfigStreamHandler(StreamRequestHandler):
+    kundi ConfigStreamHandler(StreamRequestHandler):
         """
         Handler for a logging configuration request.
 
         It expects a completely new logging configuration and uses fileConfig
         to install it.
         """
-        def handle(self):
+        eleza handle(self):
             """
             Handle a request.
 
@@ -846,14 +846,14 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=None):
             try:
                 conn = self.connection
                 chunk = conn.recv(4)
-                if len(chunk) == 4:
+                ikiwa len(chunk) == 4:
                     slen = struct.unpack(">L", chunk)[0]
                     chunk = self.connection.recv(slen)
                     while len(chunk) < slen:
                         chunk = chunk + conn.recv(slen - len(chunk))
-                    if self.server.verify is not None:
+                    ikiwa self.server.verify is not None:
                         chunk = self.server.verify(chunk)
-                    if chunk is not None:   # verified, can process
+                    ikiwa chunk is not None:   # verified, can process
                         chunk = chunk.decode("utf-8")
                         try:
                             agiza json
@@ -868,20 +868,20 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=None):
                                 fileConfig(file)
                             except Exception:
                                 traceback.print_exc()
-                    if self.server.ready:
+                    ikiwa self.server.ready:
                         self.server.ready.set()
             except OSError as e:
-                if e.errno != RESET_ERROR:
+                ikiwa e.errno != RESET_ERROR:
                     raise
 
-    class ConfigSocketReceiver(ThreadingTCPServer):
+    kundi ConfigSocketReceiver(ThreadingTCPServer):
         """
         A simple TCP socket-based logging config receiver.
         """
 
         allow_reuse_address = 1
 
-        def __init__(self, host='localhost', port=DEFAULT_LOGGING_CONFIG_PORT,
+        eleza __init__(self, host='localhost', port=DEFAULT_LOGGING_CONFIG_PORT,
                      handler=None, ready=None, verify=None):
             ThreadingTCPServer.__init__(self, (host, port), handler)
             logging._acquireLock()
@@ -891,23 +891,23 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=None):
             self.ready = ready
             self.verify = verify
 
-        def serve_until_stopped(self):
+        eleza serve_until_stopped(self):
             agiza select
             abort = 0
             while not abort:
                 rd, wr, ex = select.select([self.socket.fileno()],
                                            [], [],
                                            self.timeout)
-                if rd:
+                ikiwa rd:
                     self.handle_request()
                 logging._acquireLock()
                 abort = self.abort
                 logging._releaseLock()
             self.server_close()
 
-    class Server(threading.Thread):
+    kundi Server(threading.Thread):
 
-        def __init__(self, rcvr, hdlr, port, verify):
+        eleza __init__(self, rcvr, hdlr, port, verify):
             super(Server, self).__init__()
             self.rcvr = rcvr
             self.hdlr = hdlr
@@ -915,11 +915,11 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=None):
             self.verify = verify
             self.ready = threading.Event()
 
-        def run(self):
+        eleza run(self):
             server = self.rcvr(port=self.port, handler=self.hdlr,
                                ready=self.ready,
                                verify=self.verify)
-            if self.port == 0:
+            ikiwa self.port == 0:
                 self.port = server.server_address[1]
             self.ready.set()
             global _listener
@@ -928,16 +928,16 @@ def listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=None):
             logging._releaseLock()
             server.serve_until_stopped()
 
-    return Server(ConfigSocketReceiver, ConfigStreamHandler, port, verify)
+    rudisha Server(ConfigSocketReceiver, ConfigStreamHandler, port, verify)
 
-def stopListening():
+eleza stopListening():
     """
     Stop the listening server which was created with a call to listen().
     """
     global _listener
     logging._acquireLock()
     try:
-        if _listener:
+        ikiwa _listener:
             _listener.abort = 1
             _listener = None
     finally:

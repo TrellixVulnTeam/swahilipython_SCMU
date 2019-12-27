@@ -22,118 +22,118 @@ kutoka base64 agiza b64encode
 agiza collections
 
 
-def hexescape(char):
+eleza hexescape(char):
     """Escape char as RFC 2396 specifies"""
     hex_repr = hex(ord(char))[2:].upper()
-    if len(hex_repr) == 1:
+    ikiwa len(hex_repr) == 1:
         hex_repr = "0%s" % hex_repr
-    return "%" + hex_repr
+    rudisha "%" + hex_repr
 
 # Shortcut for testing FancyURLopener
 _urlopener = None
 
 
-def urlopen(url, data=None, proxies=None):
+eleza urlopen(url, data=None, proxies=None):
     """urlopen(url [, data]) -> open file-like object"""
     global _urlopener
-    if proxies is not None:
+    ikiwa proxies is not None:
         opener = urllib.request.FancyURLopener(proxies=proxies)
-    elif not _urlopener:
+    elikiwa not _urlopener:
         opener = FancyURLopener()
         _urlopener = opener
     else:
         opener = _urlopener
-    if data is None:
-        return opener.open(url)
+    ikiwa data is None:
+        rudisha opener.open(url)
     else:
-        return opener.open(url, data)
+        rudisha opener.open(url, data)
 
 
-def FancyURLopener():
+eleza FancyURLopener():
     with support.check_warnings(
             ('FancyURLopener style of invoking requests is deprecated.',
             DeprecationWarning)):
-        return urllib.request.FancyURLopener()
+        rudisha urllib.request.FancyURLopener()
 
 
-def fakehttp(fakedata, mock_close=False):
-    class FakeSocket(io.BytesIO):
+eleza fakehttp(fakedata, mock_close=False):
+    kundi FakeSocket(io.BytesIO):
         io_refs = 1
 
-        def sendall(self, data):
+        eleza sendall(self, data):
             FakeHTTPConnection.buf = data
 
-        def makefile(self, *args, **kwds):
+        eleza makefile(self, *args, **kwds):
             self.io_refs += 1
-            return self
+            rudisha self
 
-        def read(self, amt=None):
-            if self.closed:
-                return b""
-            return io.BytesIO.read(self, amt)
+        eleza read(self, amt=None):
+            ikiwa self.closed:
+                rudisha b""
+            rudisha io.BytesIO.read(self, amt)
 
-        def readline(self, length=None):
-            if self.closed:
-                return b""
-            return io.BytesIO.readline(self, length)
+        eleza readline(self, length=None):
+            ikiwa self.closed:
+                rudisha b""
+            rudisha io.BytesIO.readline(self, length)
 
-        def close(self):
+        eleza close(self):
             self.io_refs -= 1
-            if self.io_refs == 0:
+            ikiwa self.io_refs == 0:
                 io.BytesIO.close(self)
 
-    class FakeHTTPConnection(http.client.HTTPConnection):
+    kundi FakeHTTPConnection(http.client.HTTPConnection):
 
         # buffer to store data for verification in urlopen tests.
         buf = None
 
-        def connect(self):
+        eleza connect(self):
             self.sock = FakeSocket(self.fakedata)
             type(self).fakesock = self.sock
 
-        if mock_close:
+        ikiwa mock_close:
             # bpo-36918: HTTPConnection destructor calls close() which calls
             # flush(). Problem: flush() calls self.fp.flush() which raises
             # "ValueError: I/O operation on closed file" which is logged as an
             # "Exception ignored in". Override close() to silence this error.
-            def close(self):
+            eleza close(self):
                 pass
     FakeHTTPConnection.fakedata = fakedata
 
-    return FakeHTTPConnection
+    rudisha FakeHTTPConnection
 
 
-class FakeHTTPMixin(object):
-    def fakehttp(self, fakedata, mock_close=False):
-        fake_http_class = fakehttp(fakedata, mock_close=mock_close)
-        self._connection_class = http.client.HTTPConnection
+kundi FakeHTTPMixin(object):
+    eleza fakehttp(self, fakedata, mock_close=False):
+        fake_http_kundi = fakehttp(fakedata, mock_close=mock_close)
+        self._connection_kundi = http.client.HTTPConnection
         http.client.HTTPConnection = fake_http_class
 
-    def unfakehttp(self):
+    eleza unfakehttp(self):
         http.client.HTTPConnection = self._connection_class
 
 
-class FakeFTPMixin(object):
-    def fakeftp(self):
-        class FakeFtpWrapper(object):
-            def __init__(self,  user, passwd, host, port, dirs, timeout=None,
+kundi FakeFTPMixin(object):
+    eleza fakeftp(self):
+        kundi FakeFtpWrapper(object):
+            eleza __init__(self,  user, passwd, host, port, dirs, timeout=None,
                      persistent=True):
                 pass
 
-            def retrfile(self, file, type):
-                return io.BytesIO(), 0
+            eleza retrfile(self, file, type):
+                rudisha io.BytesIO(), 0
 
-            def close(self):
+            eleza close(self):
                 pass
 
-        self._ftpwrapper_class = urllib.request.ftpwrapper
+        self._ftpwrapper_kundi = urllib.request.ftpwrapper
         urllib.request.ftpwrapper = FakeFtpWrapper
 
-    def unfakeftp(self):
+    eleza unfakeftp(self):
         urllib.request.ftpwrapper = self._ftpwrapper_class
 
 
-class urlopen_FileTests(unittest.TestCase):
+kundi urlopen_FileTests(unittest.TestCase):
     """Test urlopen() opening a temporary file.
 
     Try to test as much functionality as possible so as to cut down on reliance
@@ -141,7 +141,7 @@ class urlopen_FileTests(unittest.TestCase):
 
     """
 
-    def setUp(self):
+    eleza setUp(self):
         # Create a temp file to use for testing
         self.text = bytes("test_urllib: %s\n" % self.__class__.__name__,
                           "ascii")
@@ -153,12 +153,12 @@ class urlopen_FileTests(unittest.TestCase):
         self.pathname = support.TESTFN
         self.returned_obj = urlopen("file:%s" % self.pathname)
 
-    def tearDown(self):
+    eleza tearDown(self):
         """Shut down the open object"""
         self.returned_obj.close()
         os.remove(support.TESTFN)
 
-    def test_interface(self):
+    eleza test_interface(self):
         # Make sure object returned by urlopen() has the specified methods
         for attr in ("read", "readline", "readlines", "fileno",
                      "close", "info", "geturl", "getcode", "__iter__"):
@@ -166,44 +166,44 @@ class urlopen_FileTests(unittest.TestCase):
                          "object returned by urlopen() lacks %s attribute" %
                          attr)
 
-    def test_read(self):
+    eleza test_read(self):
         self.assertEqual(self.text, self.returned_obj.read())
 
-    def test_readline(self):
+    eleza test_readline(self):
         self.assertEqual(self.text, self.returned_obj.readline())
         self.assertEqual(b'', self.returned_obj.readline(),
                          "calling readline() after exhausting the file did not"
-                         " return an empty string")
+                         " rudisha an empty string")
 
-    def test_readlines(self):
+    eleza test_readlines(self):
         lines_list = self.returned_obj.readlines()
         self.assertEqual(len(lines_list), 1,
                          "readlines() returned the wrong number of lines")
         self.assertEqual(lines_list[0], self.text,
                          "readlines() returned improper text")
 
-    def test_fileno(self):
+    eleza test_fileno(self):
         file_num = self.returned_obj.fileno()
-        self.assertIsInstance(file_num, int, "fileno() did not return an int")
+        self.assertIsInstance(file_num, int, "fileno() did not rudisha an int")
         self.assertEqual(os.read(file_num, len(self.text)), self.text,
                          "Reading on the file descriptor returned by fileno() "
-                         "did not return the expected text")
+                         "did not rudisha the expected text")
 
-    def test_close(self):
+    eleza test_close(self):
         # Test close() by calling it here and then having it be called again
         # by the tearDown() method for the test
         self.returned_obj.close()
 
-    def test_info(self):
+    eleza test_info(self):
         self.assertIsInstance(self.returned_obj.info(), email.message.Message)
 
-    def test_geturl(self):
+    eleza test_geturl(self):
         self.assertEqual(self.returned_obj.geturl(), self.pathname)
 
-    def test_getcode(self):
+    eleza test_getcode(self):
         self.assertIsNone(self.returned_obj.getcode())
 
-    def test_iter(self):
+    eleza test_iter(self):
         # Test iterator
         # Don't need to count number of iterations since test would fail the
         # instant it returned anything beyond the first line kutoka the
@@ -212,26 +212,26 @@ class urlopen_FileTests(unittest.TestCase):
         for line in self.returned_obj:
             self.assertEqual(line, self.text)
 
-    def test_relativelocalfile(self):
+    eleza test_relativelocalfile(self):
         self.assertRaises(ValueError,urllib.request.urlopen,'./' + self.pathname)
 
 
-class ProxyTests(unittest.TestCase):
+kundi ProxyTests(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         # Records changes to env vars
         self.env = support.EnvironmentVarGuard()
         # Delete all proxy related env vars
         for k in list(os.environ):
-            if 'proxy' in k.lower():
+            ikiwa 'proxy' in k.lower():
                 self.env.unset(k)
 
-    def tearDown(self):
+    eleza tearDown(self):
         # Restore all proxy related env vars
         self.env.__exit__()
         del self.env
 
-    def test_getproxies_environment_keep_no_proxies(self):
+    eleza test_getproxies_environment_keep_no_proxies(self):
         self.env.set('NO_PROXY', 'localhost')
         proxies = urllib.request.getproxies_environment()
         # getproxies_environment use lowered case truncated (no '_proxy') keys
@@ -242,7 +242,7 @@ class ProxyTests(unittest.TestCase):
         self.assertTrue(urllib.request.proxy_bypass_environment('anotherdomain.com:8888'))
         self.assertTrue(urllib.request.proxy_bypass_environment('newdomain.com:1234'))
 
-    def test_proxy_cgi_ignore(self):
+    eleza test_proxy_cgi_ignore(self):
         try:
             self.env.set('HTTP_PROXY', 'http://somewhere:3128')
             proxies = urllib.request.getproxies_environment()
@@ -254,7 +254,7 @@ class ProxyTests(unittest.TestCase):
             self.env.unset('REQUEST_METHOD')
             self.env.unset('HTTP_PROXY')
 
-    def test_proxy_bypass_environment_host_match(self):
+    eleza test_proxy_bypass_environment_host_match(self):
         bypass = urllib.request.proxy_bypass_environment
         self.env.set('NO_PROXY',
                      'localhost, anotherdomain.com, newdomain.com:1234, .d.o.t')
@@ -270,18 +270,18 @@ class ProxyTests(unittest.TestCase):
         self.assertFalse(bypass('newdomain.com:1235'))       # wrong port
 
 
-class ProxyTests_withOrderedEnv(unittest.TestCase):
+kundi ProxyTests_withOrderedEnv(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         # We need to test conditions, where variable order _is_ significant
         self._saved_env = os.environ
         # Monkey patch os.environ, start with empty fake environment
         os.environ = collections.OrderedDict()
 
-    def tearDown(self):
+    eleza tearDown(self):
         os.environ = self._saved_env
 
-    def test_getproxies_environment_prefer_lowercase(self):
+    eleza test_getproxies_environment_prefer_lowercase(self):
         # Test lowercase preference with removal
         os.environ['no_proxy'] = ''
         os.environ['No_Proxy'] = 'localhost'
@@ -306,10 +306,10 @@ class ProxyTests_withOrderedEnv(unittest.TestCase):
         self.assertEqual('http://somewhere:3128', proxies['http'])
 
 
-class urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin, FakeFTPMixin):
+kundi urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin, FakeFTPMixin):
     """Test urlopen() opening a fake http connection."""
 
-    def check_read(self, ver):
+    eleza check_read(self, ver):
         self.fakehttp(b"HTTP/" + ver + b" 200 OK\r\n\r\nHello!")
         try:
             fp = urlopen("http://python.org/")
@@ -320,7 +320,7 @@ class urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin, FakeFTPMixin):
         finally:
             self.unfakehttp()
 
-    def test_url_fragment(self):
+    eleza test_url_fragment(self):
         # Issue #11703: geturl() omits fragments in the original URL.
         url = 'http://docs.python.org/library/urllib.html#OK'
         self.fakehttp(b"HTTP/1.1 200 OK\r\n\r\nHello!")
@@ -330,7 +330,7 @@ class urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin, FakeFTPMixin):
         finally:
             self.unfakehttp()
 
-    def test_willclose(self):
+    eleza test_willclose(self):
         self.fakehttp(b"HTTP/1.1 200 OK\r\n\r\nHello!")
         try:
             resp = urlopen("http://www.python.org")
@@ -339,14 +339,14 @@ class urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin, FakeFTPMixin):
             self.unfakehttp()
 
     @unittest.skipUnless(ssl, "ssl module required")
-    def test_url_with_control_char_rejected(self):
+    eleza test_url_with_control_char_rejected(self):
         for char_no in list(range(0, 0x21)) + [0x7f]:
             char = chr(char_no)
             schemeless_url = f"//localhost:7777/test{char}/"
             self.fakehttp(b"HTTP/1.1 200 OK\r\n\r\nHello.")
             try:
                 # We explicitly test urllib.request.urlopen() instead of the top
-                # level 'def urlopen()' function defined in this... (quite ugly)
+                # level 'eleza urlopen()' function defined in this... (quite ugly)
                 # test suite.  They use different url opening codepaths.  Plain
                 # urlopen uses FancyURLOpener which goes via a codepath that
                 # calls urllib.parse.quote() on the URL which makes all of the
@@ -366,13 +366,13 @@ class urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin, FakeFTPMixin):
                 self.unfakehttp()
 
     @unittest.skipUnless(ssl, "ssl module required")
-    def test_url_with_newline_header_injection_rejected(self):
+    eleza test_url_with_newline_header_injection_rejected(self):
         self.fakehttp(b"HTTP/1.1 200 OK\r\n\r\nHello.")
         host = "localhost:7777?a=1 HTTP/1.1\r\nX-injected: header\r\nTEST: 123"
         schemeless_url = "//" + host + ":8080/test/?test=a"
         try:
             # We explicitly test urllib.request.urlopen() instead of the top
-            # level 'def urlopen()' function defined in this... (quite ugly)
+            # level 'eleza urlopen()' function defined in this... (quite ugly)
             # test suite.  They use different url opening codepaths.  Plain
             # urlopen uses FancyURLOpener which goes via a codepath that
             # calls urllib.parse.quote() on the URL which makes all of the
@@ -391,18 +391,18 @@ class urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin, FakeFTPMixin):
         finally:
             self.unfakehttp()
 
-    def test_read_0_9(self):
+    eleza test_read_0_9(self):
         # "0.9" response accepted (but not "simple responses" without
         # a status line)
         self.check_read(b"0.9")
 
-    def test_read_1_0(self):
+    eleza test_read_1_0(self):
         self.check_read(b"1.0")
 
-    def test_read_1_1(self):
+    eleza test_read_1_1(self):
         self.check_read(b"1.1")
 
-    def test_read_bogus(self):
+    eleza test_read_bogus(self):
         # urlopen() should raise OSError for many error codes.
         self.fakehttp(b'''HTTP/1.1 401 Authentication Required
 Date: Wed, 02 Jan 2008 03:03:54 GMT
@@ -415,7 +415,7 @@ Content-Type: text/html; charset=iso-8859-1
         finally:
             self.unfakehttp()
 
-    def test_invalid_redirect(self):
+    eleza test_invalid_redirect(self):
         # urlopen() should raise OSError for many error codes.
         self.fakehttp(b'''HTTP/1.1 302 Found
 Date: Wed, 02 Jan 2008 03:03:54 GMT
@@ -431,7 +431,7 @@ Content-Type: text/html; charset=iso-8859-1
         finally:
             self.unfakehttp()
 
-    def test_redirect_limit_independent(self):
+    eleza test_redirect_limit_independent(self):
         # Ticket #12923: make sure independent requests each use their
         # own retry limit.
         for i in range(FancyURLopener().maxtries):
@@ -445,8 +445,8 @@ Connection: close
             finally:
                 self.unfakehttp()
 
-    def test_empty_socket(self):
-        # urlopen() raises OSError if the underlying socket does not send any
+    eleza test_empty_socket(self):
+        # urlopen() raises OSError ikiwa the underlying socket does not send any
         # data. (#1680230)
         self.fakehttp(b'')
         try:
@@ -454,14 +454,14 @@ Connection: close
         finally:
             self.unfakehttp()
 
-    def test_missing_localfile(self):
+    eleza test_missing_localfile(self):
         # Test for #10836
         with self.assertRaises(urllib.error.URLError) as e:
             urlopen('file://localhost/a/file/which/doesnot/exists.py')
         self.assertTrue(e.exception.filename)
         self.assertTrue(e.exception.reason)
 
-    def test_file_notexists(self):
+    eleza test_file_notexists(self):
         fd, tmp_file = tempfile.mkstemp()
         tmp_fileurl = 'file://localhost/' + tmp_file.replace(os.path.sep, '/')
         try:
@@ -475,21 +475,21 @@ Connection: close
         with self.assertRaises(urllib.error.URLError):
             urlopen(tmp_fileurl)
 
-    def test_ftp_nohost(self):
+    eleza test_ftp_nohost(self):
         test_ftp_url = 'ftp:///path'
         with self.assertRaises(urllib.error.URLError) as e:
             urlopen(test_ftp_url)
         self.assertFalse(e.exception.filename)
         self.assertTrue(e.exception.reason)
 
-    def test_ftp_nonexisting(self):
+    eleza test_ftp_nonexisting(self):
         with self.assertRaises(urllib.error.URLError) as e:
             urlopen('ftp://localhost/a/file/which/doesnot/exists.py')
         self.assertFalse(e.exception.filename)
         self.assertTrue(e.exception.reason)
 
     @patch.object(urllib.request, 'MAXFTPCACHE', 0)
-    def test_ftp_cache_pruning(self):
+    eleza test_ftp_cache_pruning(self):
         self.fakeftp()
         try:
             urllib.request.ftpcache['test'] = urllib.request.ftpwrapper('user', 'pass', 'localhost', 21, [])
@@ -497,7 +497,7 @@ Connection: close
         finally:
             self.unfakeftp()
 
-    def test_userpass_inurl(self):
+    eleza test_userpass_inurl(self):
         self.fakehttp(b"HTTP/1.0 200 OK\r\n\r\nHello!")
         try:
             fp = urlopen("http://user:pass@python.org/")
@@ -508,7 +508,7 @@ Connection: close
         finally:
             self.unfakehttp()
 
-    def test_userpass_inurl_w_spaces(self):
+    eleza test_userpass_inurl_w_spaces(self):
         self.fakehttp(b"HTTP/1.0 200 OK\r\n\r\nHello!")
         try:
             userpass = "a b:c d"
@@ -527,12 +527,12 @@ Connection: close
         finally:
             self.unfakehttp()
 
-    def test_URLopener_deprecation(self):
+    eleza test_URLopener_deprecation(self):
         with support.check_warnings(('',DeprecationWarning)):
             urllib.request.URLopener()
 
     @unittest.skipUnless(ssl, "ssl module required")
-    def test_cafile_and_context(self):
+    eleza test_cafile_and_context(self):
         context = ssl.create_default_context()
         with support.check_warnings(('', DeprecationWarning)):
             with self.assertRaises(ValueError):
@@ -541,10 +541,10 @@ Connection: close
                 )
 
 
-class urlopen_DataTests(unittest.TestCase):
+kundi urlopen_DataTests(unittest.TestCase):
     """Test urlopen() opening a data URL."""
 
-    def setUp(self):
+    eleza setUp(self):
         # text containing URL special- and unicode-characters
         self.text = "test data URLs :;,%=& \u00f6 \u00c4 "
         # 2x1 pixel RGB PNG image with one black and one white pixel
@@ -572,7 +572,7 @@ class urlopen_DataTests(unittest.TestCase):
             self.text_url_base64)
         self.image_url_resp = urllib.request.urlopen(self.image_url)
 
-    def test_interface(self):
+    eleza test_interface(self):
         # Make sure object returned by urlopen() has the specified methods
         for attr in ("read", "readline", "readlines",
                      "close", "info", "geturl", "getcode", "__iter__"):
@@ -580,7 +580,7 @@ class urlopen_DataTests(unittest.TestCase):
                          "object returned by urlopen() lacks %s attribute" %
                          attr)
 
-    def test_info(self):
+    eleza test_info(self):
         self.assertIsInstance(self.text_url_resp.info(), email.message.Message)
         self.assertEqual(self.text_url_base64_resp.info().get_params(),
             [('text/plain', ''), ('charset', 'ISO-8859-1')])
@@ -589,36 +589,36 @@ class urlopen_DataTests(unittest.TestCase):
         self.assertEqual(urllib.request.urlopen("data:,").info().get_params(),
             [('text/plain', ''), ('charset', 'US-ASCII')])
 
-    def test_geturl(self):
+    eleza test_geturl(self):
         self.assertEqual(self.text_url_resp.geturl(), self.text_url)
         self.assertEqual(self.text_url_base64_resp.geturl(),
             self.text_url_base64)
         self.assertEqual(self.image_url_resp.geturl(), self.image_url)
 
-    def test_read_text(self):
+    eleza test_read_text(self):
         self.assertEqual(self.text_url_resp.read().decode(
             dict(self.text_url_resp.info().get_params())['charset']), self.text)
 
-    def test_read_text_base64(self):
+    eleza test_read_text_base64(self):
         self.assertEqual(self.text_url_base64_resp.read().decode(
             dict(self.text_url_base64_resp.info().get_params())['charset']),
             self.text)
 
-    def test_read_image(self):
+    eleza test_read_image(self):
         self.assertEqual(self.image_url_resp.read(), self.image)
 
-    def test_missing_comma(self):
+    eleza test_missing_comma(self):
         self.assertRaises(ValueError,urllib.request.urlopen,'data:text/plain')
 
-    def test_invalid_base64_data(self):
+    eleza test_invalid_base64_data(self):
         # missing padding character
         self.assertRaises(ValueError,urllib.request.urlopen,'data:;base64,Cg=')
 
 
-class urlretrieve_FileTests(unittest.TestCase):
+kundi urlretrieve_FileTests(unittest.TestCase):
     """Test urllib.urlretrieve() on local files"""
 
-    def setUp(self):
+    eleza setUp(self):
         # Create a list of temporary files. Each item in the list is a file
         # name (absolute path or relative to the current working directory).
         # All files in this list will be deleted in the tearDown method. Note,
@@ -639,21 +639,21 @@ class urlretrieve_FileTests(unittest.TestCase):
             try: FILE.close()
             except: pass
 
-    def tearDown(self):
+    eleza tearDown(self):
         # Delete the temporary files.
         for each in self.tempFiles:
             try: os.remove(each)
             except: pass
 
-    def constructLocalFileUrl(self, filePath):
+    eleza constructLocalFileUrl(self, filePath):
         filePath = os.path.abspath(filePath)
         try:
             filePath.encode("utf-8")
         except UnicodeEncodeError:
             raise unittest.SkipTest("filePath is not encodable to utf8")
-        return "file://%s" % urllib.request.pathname2url(filePath)
+        rudisha "file://%s" % urllib.request.pathname2url(filePath)
 
-    def createNewTempFile(self, data=b""):
+    eleza createNewTempFile(self, data=b""):
         """Creates a new temporary file containing the specified data,
         registers the file for deletion during the test fixture tear down, and
         returns the absolute path of the file."""
@@ -667,12 +667,12 @@ class urlretrieve_FileTests(unittest.TestCase):
         finally:
             try: newFile.close()
             except: pass
-        return newFilePath
+        rudisha newFilePath
 
-    def registerFileForCleanUp(self, fileName):
+    eleza registerFileForCleanUp(self, fileName):
         self.tempFiles.append(fileName)
 
-    def test_basic(self):
+    eleza test_basic(self):
         # Make sure that a local file just gets its own location returned and
         # a headers value is returned.
         result = urllib.request.urlretrieve("file:%s" % support.TESTFN)
@@ -681,7 +681,7 @@ class urlretrieve_FileTests(unittest.TestCase):
                               "did not get an email.message.Message instance "
                               "as second returned value")
 
-    def test_copy(self):
+    eleza test_copy(self):
         # Test that setting the filename argument works.
         second_temp = "%s.2" % support.TESTFN
         self.registerFileForCleanUp(second_temp)
@@ -699,9 +699,9 @@ class urlretrieve_FileTests(unittest.TestCase):
             except: pass
         self.assertEqual(self.text, text)
 
-    def test_reporthook(self):
+    eleza test_reporthook(self):
         # Make sure that the reporthook works.
-        def hooktester(block_count, block_read_size, file_size, count_holder=[0]):
+        eleza hooktester(block_count, block_read_size, file_size, count_holder=[0]):
             self.assertIsInstance(block_count, int)
             self.assertIsInstance(block_read_size, int)
             self.assertIsInstance(file_size, int)
@@ -713,10 +713,10 @@ class urlretrieve_FileTests(unittest.TestCase):
             self.constructLocalFileUrl(support.TESTFN),
             second_temp, hooktester)
 
-    def test_reporthook_0_bytes(self):
+    eleza test_reporthook_0_bytes(self):
         # Test on zero length file. Should call reporthook only 1 time.
         report = []
-        def hooktester(block_count, block_read_size, file_size, _report=report):
+        eleza hooktester(block_count, block_read_size, file_size, _report=report):
             _report.append((block_count, block_read_size, file_size))
         srcFileName = self.createNewTempFile()
         urllib.request.urlretrieve(self.constructLocalFileUrl(srcFileName),
@@ -724,12 +724,12 @@ class urlretrieve_FileTests(unittest.TestCase):
         self.assertEqual(len(report), 1)
         self.assertEqual(report[0][2], 0)
 
-    def test_reporthook_5_bytes(self):
+    eleza test_reporthook_5_bytes(self):
         # Test on 5 byte file. Should call reporthook only 2 times (once when
         # the "network connection" is established and once when the block is
         # read).
         report = []
-        def hooktester(block_count, block_read_size, file_size, _report=report):
+        eleza hooktester(block_count, block_read_size, file_size, _report=report):
             _report.append((block_count, block_read_size, file_size))
         srcFileName = self.createNewTempFile(b"x" * 5)
         urllib.request.urlretrieve(self.constructLocalFileUrl(srcFileName),
@@ -738,12 +738,12 @@ class urlretrieve_FileTests(unittest.TestCase):
         self.assertEqual(report[0][2], 5)
         self.assertEqual(report[1][2], 5)
 
-    def test_reporthook_8193_bytes(self):
+    eleza test_reporthook_8193_bytes(self):
         # Test on 8193 byte file. Should call reporthook only 3 times (once
         # when the "network connection" is established, once for the next 8192
         # bytes, and once for the last byte).
         report = []
-        def hooktester(block_count, block_read_size, file_size, _report=report):
+        eleza hooktester(block_count, block_read_size, file_size, _report=report):
             _report.append((block_count, block_read_size, file_size))
         srcFileName = self.createNewTempFile(b"x" * 8193)
         urllib.request.urlretrieve(self.constructLocalFileUrl(srcFileName),
@@ -755,10 +755,10 @@ class urlretrieve_FileTests(unittest.TestCase):
         self.assertEqual(report[2][1], 8192)
 
 
-class urlretrieve_HttpTests(unittest.TestCase, FakeHTTPMixin):
+kundi urlretrieve_HttpTests(unittest.TestCase, FakeHTTPMixin):
     """Test urllib.urlretrieve() using fake http connections"""
 
-    def test_short_content_raises_ContentTooShortError(self):
+    eleza test_short_content_raises_ContentTooShortError(self):
         self.fakehttp(b'''HTTP/1.1 200 OK
 Date: Wed, 02 Jan 2008 03:03:54 GMT
 Server: Apache/1.3.33 (Debian GNU/Linux) mod_ssl/2.8.22 OpenSSL/0.9.7e
@@ -769,7 +769,7 @@ Content-Type: text/html; charset=iso-8859-1
 FF
 ''')
 
-        def _reporthook(par1, par2, par3):
+        eleza _reporthook(par1, par2, par3):
             pass
 
         with self.assertRaises(urllib.error.ContentTooShortError):
@@ -779,7 +779,7 @@ FF
             finally:
                 self.unfakehttp()
 
-    def test_short_content_raises_ContentTooShortError_without_reporthook(self):
+    eleza test_short_content_raises_ContentTooShortError_without_reporthook(self):
         self.fakehttp(b'''HTTP/1.1 200 OK
 Date: Wed, 02 Jan 2008 03:03:54 GMT
 Server: Apache/1.3.33 (Debian GNU/Linux) mod_ssl/2.8.22 OpenSSL/0.9.7e
@@ -796,7 +796,7 @@ FF
                 self.unfakehttp()
 
 
-class QuotingTests(unittest.TestCase):
+kundi QuotingTests(unittest.TestCase):
     r"""Tests for urllib.quote() and urllib.quote_plus()
 
     According to RFC 3986 (Uniform Resource Identifiers), to escape a
@@ -807,10 +807,10 @@ class QuotingTests(unittest.TestCase):
     The various character sets specified are:
 
     Reserved characters : ";/?:@&=+$,"
-        Have special meaning in URIs and must be escaped if not being used for
+        Have special meaning in URIs and must be escaped ikiwa not being used for
         their special meaning
     Data characters : letters, digits, and "-_.!~*'()"
-        Unreserved and do not need to be escaped; can be, though, if desired
+        Unreserved and do not need to be escaped; can be, though, ikiwa desired
     Control characters : 0x00 - 0x1F, 0x7F
         Have no use in URIs so must be escaped
     space : 0x20
@@ -822,7 +822,7 @@ class QuotingTests(unittest.TestCase):
 
     """
 
-    def test_never_quote(self):
+    eleza test_never_quote(self):
         # Make sure quote() does not quote letters, digits, and "_,.-"
         do_not_quote = '' .join(["ABCDEFGHIJKLMNOPQRSTUVWXYZ",
                                  "abcdefghijklmnopqrstuvwxyz",
@@ -835,11 +835,11 @@ class QuotingTests(unittest.TestCase):
         self.assertEqual(do_not_quote, result,
                         "using quote_plus(): %r != %r" % (do_not_quote, result))
 
-    def test_default_safe(self):
+    eleza test_default_safe(self):
         # Test '/' is default value for 'safe' parameter
         self.assertEqual(urllib.parse.quote.__defaults__[0], '/')
 
-    def test_safe(self):
+    eleza test_safe(self):
         # Test setting 'safe' parameter does what it should do
         quote_by_default = "<>"
         result = urllib.parse.quote(quote_by_default, safe=quote_by_default)
@@ -868,7 +868,7 @@ class QuotingTests(unittest.TestCase):
                          "using quote(): %r != %r" %
                          (expect, result))
 
-    def test_default_quoting(self):
+    eleza test_default_quoting(self):
         # Make sure all characters that should be quoted are by default sans
         # space (separate test for that).
         should_quote = [chr(num) for num in range(32)] # For 0x00 - 0x1F
@@ -896,7 +896,7 @@ class QuotingTests(unittest.TestCase):
         self.assertEqual(expected, result,
                          "using quote_plus(): %r != %r" % (expected, result))
 
-    def test_quoting_space(self):
+    eleza test_quoting_space(self):
         # Make sure quote() and quote_plus() handle spaces as specified in
         # their unique way
         result = urllib.parse.quote(' ')
@@ -915,7 +915,7 @@ class QuotingTests(unittest.TestCase):
         self.assertEqual(expect, result,
                          "using quote_plus(): %r != %r" % (expect, result))
 
-    def test_quoting_plus(self):
+    eleza test_quoting_plus(self):
         self.assertEqual(urllib.parse.quote_plus('alpha+beta gamma'),
                          'alpha%2Bbeta+gamma')
         self.assertEqual(urllib.parse.quote_plus('alpha+beta gamma', '+'),
@@ -927,7 +927,7 @@ class QuotingTests(unittest.TestCase):
         self.assertEqual(urllib.parse.quote_plus('alpha+beta gamma', b'+'),
                          'alpha+beta+gamma')
 
-    def test_quote_bytes(self):
+    eleza test_quote_bytes(self):
         # Bytes should quote directly to percent-encoded values
         given = b"\xa2\xd8ab\xff"
         expect = "%A2%D8ab%FF"
@@ -937,13 +937,13 @@ class QuotingTests(unittest.TestCase):
         # Encoding argument should raise type error on bytes input
         self.assertRaises(TypeError, urllib.parse.quote, given,
                             encoding="latin-1")
-        # quote_from_bytes should work the same
-        result = urllib.parse.quote_from_bytes(given)
+        # quote_kutoka_bytes should work the same
+        result = urllib.parse.quote_kutoka_bytes(given)
         self.assertEqual(expect, result,
-                         "using quote_from_bytes(): %r != %r"
+                         "using quote_kutoka_bytes(): %r != %r"
                          % (expect, result))
 
-    def test_quote_with_unicode(self):
+    eleza test_quote_with_unicode(self):
         # Characters in Latin-1 range, encoded by default in UTF-8
         given = "\xa2\xd8ab\xff"
         expect = "%C2%A2%C3%98ab%C3%BF"
@@ -985,7 +985,7 @@ class QuotingTests(unittest.TestCase):
         self.assertEqual(expect, result,
                          "using quote(): %r != %r" % (expect, result))
 
-    def test_quote_plus_with_unicode(self):
+    eleza test_quote_plus_with_unicode(self):
         # Encoding (latin-1) test for quote_plus
         given = "\xa2\xd8 \xff"
         expect = "%A2%D8+%FF"
@@ -1001,14 +1001,14 @@ class QuotingTests(unittest.TestCase):
                          "using quote_plus(): %r != %r" % (expect, result))
 
 
-class UnquotingTests(unittest.TestCase):
+kundi UnquotingTests(unittest.TestCase):
     """Tests for unquote() and unquote_plus()
 
     See the doc string for quoting_Tests for details on quoting and such.
 
     """
 
-    def test_unquoting(self):
+    eleza test_unquoting(self):
         # Make sure unquoting of all ASCII values works
         escape_list = []
         for num in range(128):
@@ -1033,7 +1033,7 @@ class UnquotingTests(unittest.TestCase):
         with support.check_warnings(('', BytesWarning), quiet=True):
             self.assertRaises((TypeError, AttributeError), urllib.parse.unquote, b'')
 
-    def test_unquoting_badpercent(self):
+    eleza test_unquoting_badpercent(self):
         # Test unquoting on bad percent-escapes
         given = '%xab'
         expect = given
@@ -1069,7 +1069,7 @@ class UnquotingTests(unittest.TestCase):
         self.assertRaises((TypeError, AttributeError), urllib.parse.unquote_to_bytes, None)
         self.assertRaises((TypeError, AttributeError), urllib.parse.unquote_to_bytes, ())
 
-    def test_unquoting_mixed_case(self):
+    eleza test_unquoting_mixed_case(self):
         # Test unquoting on mixed-case hex digits in the percent-escapes
         given = '%Ab%eA'
         expect = b'\xab\xea'
@@ -1078,7 +1078,7 @@ class UnquotingTests(unittest.TestCase):
                          "using unquote_to_bytes(): %r != %r"
                          % (expect, result))
 
-    def test_unquoting_parts(self):
+    eleza test_unquoting_parts(self):
         # Make sure unquoting works when have non-quoted characters
         # interspersed
         given = 'ab%sd' % hexescape('c')
@@ -1090,7 +1090,7 @@ class UnquotingTests(unittest.TestCase):
         self.assertEqual(expect, result,
                          "using unquote_plus(): %r != %r" % (expect, result))
 
-    def test_unquoting_plus(self):
+    eleza test_unquoting_plus(self):
         # Test difference between unquote() and unquote_plus()
         given = "are+there+spaces..."
         expect = given
@@ -1102,7 +1102,7 @@ class UnquotingTests(unittest.TestCase):
         self.assertEqual(expect, result,
                          "using unquote_plus(): %r != %r" % (expect, result))
 
-    def test_unquote_to_bytes(self):
+    eleza test_unquote_to_bytes(self):
         given = 'br%C3%BCckner_sapporo_20050930.doc'
         expect = b'br\xc3\xbcckner_sapporo_20050930.doc'
         result = urllib.parse.unquote_to_bytes(given)
@@ -1133,7 +1133,7 @@ class UnquotingTests(unittest.TestCase):
                          "using unquote_to_bytes(): %r != %r"
                          % (expect, result))
 
-    def test_unquote_with_unicode(self):
+    eleza test_unquote_with_unicode(self):
         # Characters in the Latin-1 range, encoded with UTF-8
         given = 'br%C3%BCckner_sapporo_20050930.doc'
         expect = 'br\u00fcckner_sapporo_20050930.doc'
@@ -1191,10 +1191,10 @@ class UnquotingTests(unittest.TestCase):
         self.assertEqual(expect, result,
                          "using unquote(): %r != %r" % (expect, result))
 
-class urlencode_Tests(unittest.TestCase):
+kundi urlencode_Tests(unittest.TestCase):
     """Tests for urlencode()"""
 
-    def help_inputtype(self, given, test_type):
+    eleza help_inputtype(self, given, test_type):
         """Helper method for testing different input types.
 
         'given' must lead to only the pairs:
@@ -1226,17 +1226,17 @@ class urlencode_Tests(unittest.TestCase):
                          "unexpected number of characters: %s != %s" %
                          (test_type, len(result), (5 * 3) + 2))
 
-    def test_using_mapping(self):
+    eleza test_using_mapping(self):
         # Test passing in a mapping object as an argument.
         self.help_inputtype({"1st":'1', "2nd":'2', "3rd":'3'},
                             "using dict as input type")
 
-    def test_using_sequence(self):
+    eleza test_using_sequence(self):
         # Test passing in a sequence of two-item sequences as an argument.
         self.help_inputtype([('1st', '1'), ('2nd', '2'), ('3rd', '3')],
                             "using sequence of two-item tuples as input")
 
-    def test_quoting(self):
+    eleza test_quoting(self):
         # Make sure keys and values are quoted using quote_plus()
         given = {"&":"="}
         expect = "%s=%s" % (hexescape('&'), hexescape('='))
@@ -1247,7 +1247,7 @@ class urlencode_Tests(unittest.TestCase):
         result = urllib.parse.urlencode(given)
         self.assertEqual(expect, result)
 
-    def test_doseq(self):
+    eleza test_doseq(self):
         # Test that passing True for 'doseq' parameter works correctly
         given = {'sequence':['1', '2', '3']}
         expect = "sequence=%s" % urllib.parse.quote_plus(str(['1', '2', '3']))
@@ -1260,15 +1260,15 @@ class urlencode_Tests(unittest.TestCase):
         self.assertEqual(result.count('&'), 2,
                          "Expected 2 '&'s, got %s" % result.count('&'))
 
-    def test_empty_sequence(self):
+    eleza test_empty_sequence(self):
         self.assertEqual("", urllib.parse.urlencode({}))
         self.assertEqual("", urllib.parse.urlencode([]))
 
-    def test_nonstring_values(self):
+    eleza test_nonstring_values(self):
         self.assertEqual("a=1", urllib.parse.urlencode({"a": 1}))
         self.assertEqual("a=None", urllib.parse.urlencode({"a": None}))
 
-    def test_nonstring_seq_values(self):
+    eleza test_nonstring_seq_values(self):
         self.assertEqual("a=1&a=2", urllib.parse.urlencode({"a": [1, 2]}, True))
         self.assertEqual("a=None&a=a",
                          urllib.parse.urlencode({"a": [None, "a"]}, True))
@@ -1276,7 +1276,7 @@ class urlencode_Tests(unittest.TestCase):
         self.assertEqual("a=a&a=b",
                          urllib.parse.urlencode({"a": data}, True))
 
-    def test_urlencode_encoding(self):
+    eleza test_urlencode_encoding(self):
         # ASCII encoding. Expect %3F with errors="replace'
         given = (('\u00a0', '\u00c1'),)
         expect = '%3F=%3F'
@@ -1295,7 +1295,7 @@ class urlencode_Tests(unittest.TestCase):
         result = urllib.parse.urlencode(given, encoding="latin-1")
         self.assertEqual(expect, result)
 
-    def test_urlencode_encoding_doseq(self):
+    eleza test_urlencode_encoding_doseq(self):
         # ASCII Encoding. Expect %3F with errors="replace'
         given = (('\u00a0', '\u00c1'),)
         expect = '%3F=%3F'
@@ -1332,7 +1332,7 @@ class urlencode_Tests(unittest.TestCase):
         result = urllib.parse.urlencode(given, True, encoding="latin-1")
         self.assertEqual(expect, result)
 
-    def test_urlencode_bytes(self):
+    eleza test_urlencode_bytes(self):
         given = ((b'\xa0\x24', b'\xc1\x24'),)
         expect = '%A0%24=%C1%24'
         result = urllib.parse.urlencode(given)
@@ -1346,7 +1346,7 @@ class urlencode_Tests(unittest.TestCase):
         result = urllib.parse.urlencode(given, True)
         self.assertEqual(expect, result)
 
-    def test_urlencode_encoding_safe_parameter(self):
+    eleza test_urlencode_encoding_safe_parameter(self):
 
         # Send '$' (\x24) as safe character
         # Default utf-8 encoding
@@ -1386,10 +1386,10 @@ class urlencode_Tests(unittest.TestCase):
                                         encoding="latin-1")
         self.assertEqual(expect, result)
 
-class Pathname_Tests(unittest.TestCase):
+kundi Pathname_Tests(unittest.TestCase):
     """Test pathname2url() and url2pathname()"""
 
-    def test_basic(self):
+    eleza test_basic(self):
         # Make sure simple tests pass
         expected_path = os.path.join("parts", "of", "a", "path")
         expected_url = "parts/of/a/path"
@@ -1402,7 +1402,7 @@ class Pathname_Tests(unittest.TestCase):
                          "url2pathame() failed; %s != %s" %
                          (result, expected_path))
 
-    def test_quoting(self):
+    eleza test_quoting(self):
         # Test automatic quoting and unquoting works for pathnam2url() and
         # url2pathname() respectively
         given = os.path.join("needs", "quot=ing", "here")
@@ -1431,7 +1431,7 @@ class Pathname_Tests(unittest.TestCase):
 
     @unittest.skipUnless(sys.platform == 'win32',
                          'test specific to the urllib.url2path function.')
-    def test_ntpath(self):
+    eleza test_ntpath(self):
         given = ('/C:/', '///C:/', '/C|//')
         expect = 'C:\\'
         for url in given:
@@ -1446,21 +1446,21 @@ class Pathname_Tests(unittest.TestCase):
                          'urllib.request.url2pathname() failed; %s != %s' %
                          (expect, result))
 
-class Utility_Tests(unittest.TestCase):
+kundi Utility_Tests(unittest.TestCase):
     """Testcase to test the various utility functions in the urllib."""
 
-    def test_thishost(self):
+    eleza test_thishost(self):
         """Test the urllib.request.thishost utility function returns a tuple"""
         self.assertIsInstance(urllib.request.thishost(), tuple)
 
 
-class URLopener_Tests(FakeHTTPMixin, unittest.TestCase):
+kundi URLopener_Tests(FakeHTTPMixin, unittest.TestCase):
     """Testcase to test the open method of URLopener class."""
 
-    def test_quoted_open(self):
-        class DummyURLopener(urllib.request.URLopener):
-            def open_spam(self, url):
-                return url
+    eleza test_quoted_open(self):
+        kundi DummyURLopener(urllib.request.URLopener):
+            eleza open_spam(self, url):
+                rudisha url
         with support.check_warnings(
                 ('DummyURLopener style of invoking requests is deprecated.',
                 DeprecationWarning)):
@@ -1473,7 +1473,7 @@ class URLopener_Tests(FakeHTTPMixin, unittest.TestCase):
                 "//c:|windows%/:=&?~#+!$,;'@()*[]|/path/")
 
     @support.ignore_warnings(category=DeprecationWarning)
-    def test_urlopener_retrieve_file(self):
+    eleza test_urlopener_retrieve_file(self):
         with support.temp_dir() as tmpdir:
             fd, tmpfile = tempfile.mkstemp(dir=tmpdir)
             os.close(fd)
@@ -1483,7 +1483,7 @@ class URLopener_Tests(FakeHTTPMixin, unittest.TestCase):
             self.assertEqual(os.path.normcase(filename), os.path.normcase(tmpfile))
 
     @support.ignore_warnings(category=DeprecationWarning)
-    def test_urlopener_retrieve_remote(self):
+    eleza test_urlopener_retrieve_remote(self):
         url = "http://www.python.org/file.txt"
         self.fakehttp(b"HTTP/1.1 200 OK\r\n\r\nHello!")
         self.addCleanup(self.unfakehttp)
@@ -1491,11 +1491,11 @@ class URLopener_Tests(FakeHTTPMixin, unittest.TestCase):
         self.assertEqual(os.path.splitext(filename)[1], ".txt")
 
     @support.ignore_warnings(category=DeprecationWarning)
-    def test_local_file_open(self):
+    eleza test_local_file_open(self):
         # bpo-35907, CVE-2019-9948: urllib must reject local_file:// scheme
-        class DummyURLopener(urllib.request.URLopener):
-            def open_local_file(self, url):
-                return url
+        kundi DummyURLopener(urllib.request.URLopener):
+            eleza open_local_file(self, url):
+                rudisha url
         for url in ('local_file://example', 'local-file://example'):
             self.assertRaises(OSError, urllib.request.urlopen, url)
             self.assertRaises(OSError, urllib.request.URLopener().open, url)
@@ -1512,7 +1512,7 @@ class URLopener_Tests(FakeHTTPMixin, unittest.TestCase):
 # If anybody has one of the problematic environments, please help!
 # .   Facundo
 #
-# def server(evt):
+# eleza server(evt):
 #     agiza socket, time
 #     serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 #     serv.settimeout(3)
@@ -1535,24 +1535,24 @@ class URLopener_Tests(FakeHTTPMixin, unittest.TestCase):
 #         serv.close()
 #         evt.set()
 #
-# class FTPWrapperTests(unittest.TestCase):
+# kundi FTPWrapperTests(unittest.TestCase):
 #
-#     def setUp(self):
+#     eleza setUp(self):
 #         agiza ftplib, time, threading
 #         ftplib.FTP.port = 9093
 #         self.evt = threading.Event()
 #         threading.Thread(target=server, args=(self.evt,)).start()
 #         time.sleep(.1)
 #
-#     def tearDown(self):
+#     eleza tearDown(self):
 #         self.evt.wait()
 #
-#     def testBasic(self):
+#     eleza testBasic(self):
 #         # connects
 #         ftp = urllib.ftpwrapper("myuser", "mypass", "localhost", 9093, [])
 #         ftp.close()
 #
-#     def testTimeoutNone(self):
+#     eleza testTimeoutNone(self):
 #         # global default timeout is ignored
 #         agiza socket
 #         self.assertIsNone(socket.getdefaulttimeout())
@@ -1564,7 +1564,7 @@ class URLopener_Tests(FakeHTTPMixin, unittest.TestCase):
 #         self.assertEqual(ftp.ftp.sock.gettimeout(), 30)
 #         ftp.close()
 #
-#     def testTimeoutDefault(self):
+#     eleza testTimeoutDefault(self):
 #         # global default timeout is used
 #         agiza socket
 #         self.assertIsNone(socket.getdefaulttimeout())
@@ -1576,24 +1576,24 @@ class URLopener_Tests(FakeHTTPMixin, unittest.TestCase):
 #         self.assertEqual(ftp.ftp.sock.gettimeout(), 30)
 #         ftp.close()
 #
-#     def testTimeoutValue(self):
+#     eleza testTimeoutValue(self):
 #         ftp = urllib.ftpwrapper("myuser", "mypass", "localhost", 9093, [],
 #                                 timeout=30)
 #         self.assertEqual(ftp.ftp.sock.gettimeout(), 30)
 #         ftp.close()
 
 
-class RequestTests(unittest.TestCase):
+kundi RequestTests(unittest.TestCase):
     """Unit tests for urllib.request.Request."""
 
-    def test_default_values(self):
+    eleza test_default_values(self):
         Request = urllib.request.Request
         request = Request("http://www.python.org")
         self.assertEqual(request.get_method(), 'GET')
         request = Request("http://www.python.org", {})
         self.assertEqual(request.get_method(), 'POST')
 
-    def test_with_method_arg(self):
+    eleza test_with_method_arg(self):
         Request = urllib.request.Request
         request = Request("http://www.python.org", method='HEAD')
         self.assertEqual(request.method, 'HEAD')
@@ -1607,26 +1607,26 @@ class RequestTests(unittest.TestCase):
         self.assertEqual(request.get_method(), 'HEAD')
 
 
-class URL2PathNameTests(unittest.TestCase):
+kundi URL2PathNameTests(unittest.TestCase):
 
-    def test_converting_drive_letter(self):
+    eleza test_converting_drive_letter(self):
         self.assertEqual(url2pathname("///C|"), 'C:')
         self.assertEqual(url2pathname("///C:"), 'C:')
         self.assertEqual(url2pathname("///C|/"), 'C:\\')
 
-    def test_converting_when_no_drive_letter(self):
+    eleza test_converting_when_no_drive_letter(self):
         # cannot end a raw string in \
         self.assertEqual(url2pathname("///C/test/"), r'\\\C\test' '\\')
         self.assertEqual(url2pathname("////C/test/"), r'\\C\test' '\\')
 
-    def test_simple_compare(self):
+    eleza test_simple_compare(self):
         self.assertEqual(url2pathname("///C|/foo/bar/spam.foo"),
                          r'C:\foo\bar\spam.foo')
 
-    def test_non_ascii_drive_letter(self):
+    eleza test_non_ascii_drive_letter(self):
         self.assertRaises(IOError, url2pathname, "///\u00e8|/")
 
-    def test_roundtrip_url2pathname(self):
+    eleza test_roundtrip_url2pathname(self):
         list_of_paths = ['C:',
                          r'\\\C\test\\',
                          r'C:\foo\bar\spam.foo'
@@ -1634,13 +1634,13 @@ class URL2PathNameTests(unittest.TestCase):
         for path in list_of_paths:
             self.assertEqual(url2pathname(pathname2url(path)), path)
 
-class PathName2URLTests(unittest.TestCase):
+kundi PathName2URLTests(unittest.TestCase):
 
-    def test_converting_drive_letter(self):
+    eleza test_converting_drive_letter(self):
         self.assertEqual(pathname2url("C:"), '///C:')
         self.assertEqual(pathname2url("C:\\"), '///C:')
 
-    def test_converting_when_no_drive_letter(self):
+    eleza test_converting_when_no_drive_letter(self):
         self.assertEqual(pathname2url(r"\\\folder\test" "\\"),
                          '/////folder/test/')
         self.assertEqual(pathname2url(r"\\folder\test" "\\"),
@@ -1648,19 +1648,19 @@ class PathName2URLTests(unittest.TestCase):
         self.assertEqual(pathname2url(r"\folder\test" "\\"),
                          '/folder/test/')
 
-    def test_simple_compare(self):
+    eleza test_simple_compare(self):
         self.assertEqual(pathname2url(r'C:\foo\bar\spam.foo'),
                          "///C:/foo/bar/spam.foo" )
 
-    def test_long_drive_letter(self):
+    eleza test_long_drive_letter(self):
         self.assertRaises(IOError, pathname2url, "XX:\\")
 
-    def test_roundtrip_pathname2url(self):
+    eleza test_roundtrip_pathname2url(self):
         list_of_paths = ['///C:',
                          '/////folder/test/',
                          '///C:/foo/bar/spam.foo']
         for path in list_of_paths:
             self.assertEqual(pathname2url(url2pathname(path)), path)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

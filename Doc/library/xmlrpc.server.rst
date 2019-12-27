@@ -28,7 +28,7 @@ servers written in Python.  Servers can either be free standing, using
                logRequests=True, allow_none=False, encoding=None,\
                bind_and_activate=True, use_builtin_types=False)
 
-   Create a new server instance.  This class provides methods for registration of
+   Create a new server instance.  This kundi provides methods for registration of
    functions that can be called by the XML-RPC protocol.  The *requestHandler*
    parameter should be a factory for request handler instances; it defaults to
    :class:`SimpleXMLRPCRequestHandler`.  The *addr* and *requestHandler* parameters
@@ -36,10 +36,10 @@ servers written in Python.  Servers can either be free standing, using
    is true (the default), requests will be logged; setting this parameter to false
    will turn off logging.   The *allow_none* and *encoding* parameters are passed
    on to :mod:`xmlrpc.client` and control the XML-RPC responses that will be returned
-   from the server. The *bind_and_activate* parameter controls whether
+   kutoka the server. The *bind_and_activate* parameter controls whether
    :meth:`server_bind` and :meth:`server_activate` are called immediately by the
    constructor; it defaults to true. Setting it to false allows code to manipulate
-   the *allow_reuse_address* class variable before the address is bound.
+   the *allow_reuse_address* kundi variable before the address is bound.
    The *use_builtin_types* parameter is passed to the
    :func:`~xmlrpc.client.loads` function and controls which types are processed
    when date/times values or binary data are received; it defaults to false.
@@ -53,7 +53,7 @@ servers written in Python.  Servers can either be free standing, using
 
    Create a new instance to handle XML-RPC requests in a CGI environment.  The
    *allow_none* and *encoding* parameters are passed on to :mod:`xmlrpc.client`
-   and control the XML-RPC responses that will be returned from the server.
+   and control the XML-RPC responses that will be returned kutoka the server.
    The *use_builtin_types* parameter is passed to the
    :func:`~xmlrpc.client.loads` function and controls which types are processed
    when date/times values or binary data are received; it defaults to false.
@@ -74,7 +74,7 @@ servers written in Python.  Servers can either be free standing, using
 SimpleXMLRPCServer Objects
 --------------------------
 
-The :class:`SimpleXMLRPCServer` class is based on
+The :class:`SimpleXMLRPCServer` kundi is based on
 :class:`socketserver.TCPServer` and provides a means of creating simple, stand
 alone XML-RPC servers.
 
@@ -99,10 +99,10 @@ alone XML-RPC servers.
    Register an object which is used to expose method names which have not been
    registered using :meth:`register_function`.  If *instance* contains a
    :meth:`_dispatch` method, it is called with the requested method name and the
-   parameters from the request.  Its API is ``def _dispatch(self, method, params)``
+   parameters kutoka the request.  Its API is ``def _dispatch(self, method, params)``
    (note that *params* does not represent a variable argument list).  If it calls
    an underlying function to perform its task, that function is called as
-   ``func(*params)``, expanding the parameter list. The return value from
+   ``func(*params)``, expanding the parameter list. The return value kutoka
    :meth:`_dispatch` is returned to the client as the result.  If *instance* does
    not have a :meth:`_dispatch` method, it is searched for an attribute matching
    the name of the requested method.
@@ -110,8 +110,8 @@ alone XML-RPC servers.
    If the optional *allow_dotted_names* argument is true and the instance does not
    have a :meth:`_dispatch` method, then if the requested method name contains
    periods, each component of the method name is searched for individually, with
-   the effect that a simple hierarchical search is performed.  The value found from
-   this search is then called with the parameters from the request, and the return
+   the effect that a simple hierarchical search is performed.  The value found kutoka
+   this search is then called with the parameters kutoka the request, and the return
    value is passed back to the client.
 
    .. warning::
@@ -146,11 +146,11 @@ SimpleXMLRPCServer Example
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 Server code::
 
-   from xmlrpc.server import SimpleXMLRPCServer
-   from xmlrpc.server import SimpleXMLRPCRequestHandler
+   kutoka xmlrpc.server agiza SimpleXMLRPCServer
+   kutoka xmlrpc.server agiza SimpleXMLRPCRequestHandler
 
    # Restrict to a particular path.
-   class RequestHandler(SimpleXMLRPCRequestHandler):
+   kundi RequestHandler(SimpleXMLRPCRequestHandler):
        rpc_paths = ('/RPC2',)
 
    # Create server
@@ -169,7 +169,7 @@ Server code::
 
        # Register an instance; all the methods of the instance are
        # published as XML-RPC methods (in this case, just 'mul').
-       class MyFuncs:
+       kundi MyFuncs:
            def mul(self, x, y):
                return x * y
 
@@ -181,7 +181,7 @@ Server code::
 The following client code will call the methods made available by the preceding
 server::
 
-   import xmlrpc.client
+   agiza xmlrpc.client
 
    s = xmlrpc.client.ServerProxy('http://localhost:8000')
    print(s.pow(2,3))  # Returns 2**3 = 8
@@ -194,10 +194,10 @@ server::
 :meth:`register_function` can also be used as a decorator. The previous server
 example can register functions in a decorator way::
 
-   from xmlrpc.server import SimpleXMLRPCServer
-   from xmlrpc.server import SimpleXMLRPCRequestHandler
+   kutoka xmlrpc.server agiza SimpleXMLRPCServer
+   kutoka xmlrpc.server agiza SimpleXMLRPCRequestHandler
 
-   class RequestHandler(SimpleXMLRPCRequestHandler):
+   kundi RequestHandler(SimpleXMLRPCRequestHandler):
        rpc_paths = ('/RPC2',)
 
    with SimpleXMLRPCServer(('localhost', 8000),
@@ -233,13 +233,13 @@ a server allowing dotted names and registering a multicall function.
 
 ::
 
-    import datetime
+    agiza datetime
 
-    class ExampleService:
+    kundi ExampleService:
         def getData(self):
             return '42'
 
-        class currentTime:
+        kundi currentTime:
             @staticmethod
             def getCurrentTime():
                 return datetime.datetime.now()
@@ -256,7 +256,7 @@ a server allowing dotted names and registering a multicall function.
             print("\nKeyboard interrupt received, exiting.")
             sys.exit(0)
 
-This ExampleService demo can be invoked from the command line::
+This ExampleService demo can be invoked kutoka the command line::
 
     python -m xmlrpc.server
 
@@ -289,7 +289,7 @@ This client which interacts with the demo XMLRPC server can be invoked as::
 CGIXMLRPCRequestHandler
 -----------------------
 
-The :class:`CGIXMLRPCRequestHandler` class can be used to handle XML-RPC
+The :class:`CGIXMLRPCRequestHandler` kundi can be used to handle XML-RPC
 requests sent to Python CGI scripts.
 
 
@@ -313,12 +313,12 @@ requests sent to Python CGI scripts.
    Register an object which is used to expose method names  which have not been
    registered using :meth:`register_function`. If  instance contains a
    :meth:`_dispatch` method, it is called with the  requested method name and the
-   parameters from the  request; the return value is returned to the client as the
+   parameters kutoka the  request; the return value is returned to the client as the
    result. If instance does not have a :meth:`_dispatch` method, it is searched
    for an attribute matching the name of the requested method; if  the requested
    method name contains periods, each  component of the method name is searched for
    individually,  with the effect that a simple hierarchical search is performed.
-   The value found from this search is then called with the  parameters from the
+   The value found kutoka this search is then called with the  parameters kutoka the
    request, and the return value is passed  back to the client.
 
 
@@ -340,7 +340,7 @@ requests sent to Python CGI scripts.
 
 Example::
 
-   class MyFuncs:
+   kundi MyFuncs:
        def mul(self, x, y):
            return x * y
 
@@ -392,7 +392,7 @@ to HTTP GET requests.  Servers can either be free standing, using
 DocXMLRPCServer Objects
 -----------------------
 
-The :class:`DocXMLRPCServer` class is derived from :class:`SimpleXMLRPCServer`
+The :class:`DocXMLRPCServer` kundi is derived kutoka :class:`SimpleXMLRPCServer`
 and provides a means of creating self-documenting, stand alone XML-RPC
 servers. HTTP POST requests are handled as XML-RPC method calls. HTTP GET
 requests are handled by generating pydoc-style HTML documentation. This allows a
@@ -420,7 +420,7 @@ server to provide its own web-based documentation.
 DocCGIXMLRPCRequestHandler
 --------------------------
 
-The :class:`DocCGIXMLRPCRequestHandler` class is derived from
+The :class:`DocCGIXMLRPCRequestHandler` kundi is derived kutoka
 :class:`CGIXMLRPCRequestHandler` and provides a means of creating
 self-documenting, XML-RPC CGI scripts. HTTP POST requests are handled as XML-RPC
 method calls. HTTP GET requests are handled by generating pydoc-style HTML

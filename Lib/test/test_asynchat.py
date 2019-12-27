@@ -17,21 +17,21 @@ SERVER_QUIT = b'QUIT\n'
 TIMEOUT = 3.0
 
 
-class echo_server(threading.Thread):
+kundi echo_server(threading.Thread):
     # parameter to determine the number of bytes passed back to the
     # client each send
     chunk_size = 1
 
-    def __init__(self, event):
+    eleza __init__(self, event):
         threading.Thread.__init__(self)
         self.event = event
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.port = support.bind_port(self.sock)
-        # This will be set if the client wants us to wait before echoing
+        # This will be set ikiwa the client wants us to wait before echoing
         # data back.
         self.start_resend_event = None
 
-    def run(self):
+    eleza run(self):
         self.sock.listen()
         self.event.set()
         conn, client = self.sock.accept()
@@ -39,14 +39,14 @@ class echo_server(threading.Thread):
         # collect data until quit message is seen
         while SERVER_QUIT not in self.buffer:
             data = conn.recv(1)
-            if not data:
+            ikiwa not data:
                 break
             self.buffer = self.buffer + data
 
         # remove the SERVER_QUIT message
         self.buffer = self.buffer.replace(SERVER_QUIT, b'')
 
-        if self.start_resend_event:
+        ikiwa self.start_resend_event:
             self.start_resend_event.wait()
 
         # re-send entire set of collected data
@@ -63,9 +63,9 @@ class echo_server(threading.Thread):
         conn.close()
         self.sock.close()
 
-class echo_client(asynchat.async_chat):
+kundi echo_client(asynchat.async_chat):
 
-    def __init__(self, terminator, server_port):
+    eleza __init__(self, terminator, server_port):
         asynchat.async_chat.__init__(self)
         self.contents = []
         self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -73,42 +73,42 @@ class echo_client(asynchat.async_chat):
         self.set_terminator(terminator)
         self.buffer = b""
 
-        def handle_connect(self):
+        eleza handle_connect(self):
             pass
 
-        if sys.platform == 'darwin':
+        ikiwa sys.platform == 'darwin':
             # select.poll returns a select.POLLHUP at the end of the tests
             # on darwin, so just ignore it
-            def handle_expt(self):
+            eleza handle_expt(self):
                 pass
 
-    def collect_incoming_data(self, data):
+    eleza collect_incoming_data(self, data):
         self.buffer += data
 
-    def found_terminator(self):
+    eleza found_terminator(self):
         self.contents.append(self.buffer)
         self.buffer = b""
 
-def start_echo_server():
+eleza start_echo_server():
     event = threading.Event()
     s = echo_server(event)
     s.start()
     event.wait()
     event.clear()
     time.sleep(0.01)   # Give server time to start accepting.
-    return s, event
+    rudisha s, event
 
 
-class TestAsynchat(unittest.TestCase):
+kundi TestAsynchat(unittest.TestCase):
     usepoll = False
 
-    def setUp(self):
+    eleza setUp(self):
         self._threads = support.threading_setup()
 
-    def tearDown(self):
+    eleza tearDown(self):
         support.threading_cleanup(*self._threads)
 
-    def line_terminator_check(self, term, server_chunk):
+    eleza line_terminator_check(self, term, server_chunk):
         event = threading.Event()
         s = echo_server(event)
         s.chunk_size = server_chunk
@@ -130,22 +130,22 @@ class TestAsynchat(unittest.TestCase):
     # chunks back kutoka the server in order to exercise all branches of
     # async_chat.handle_read
 
-    def test_line_terminator1(self):
+    eleza test_line_terminator1(self):
         # test one-character terminator
         for l in (1, 2, 3):
             self.line_terminator_check(b'\n', l)
 
-    def test_line_terminator2(self):
+    eleza test_line_terminator2(self):
         # test two-character terminator
         for l in (1, 2, 3):
             self.line_terminator_check(b'\r\n', l)
 
-    def test_line_terminator3(self):
+    eleza test_line_terminator3(self):
         # test three-character terminator
         for l in (1, 2, 3):
             self.line_terminator_check(b'qqq', l)
 
-    def numeric_terminator_check(self, termlen):
+    eleza numeric_terminator_check(self, termlen):
         # Try reading a fixed number of bytes
         s, event = start_echo_server()
         c = echo_client(termlen, s.port)
@@ -157,15 +157,15 @@ class TestAsynchat(unittest.TestCase):
 
         self.assertEqual(c.contents, [data[:termlen]])
 
-    def test_numeric_terminator1(self):
+    eleza test_numeric_terminator1(self):
         # check that ints & longs both work (since type is
         # explicitly checked in async_chat.handle_read)
         self.numeric_terminator_check(1)
 
-    def test_numeric_terminator2(self):
+    eleza test_numeric_terminator2(self):
         self.numeric_terminator_check(6)
 
-    def test_none_terminator(self):
+    eleza test_none_terminator(self):
         # Try reading a fixed number of bytes
         s, event = start_echo_server()
         c = echo_client(None, s.port)
@@ -178,7 +178,7 @@ class TestAsynchat(unittest.TestCase):
         self.assertEqual(c.contents, [])
         self.assertEqual(c.buffer, data)
 
-    def test_simple_producer(self):
+    eleza test_simple_producer(self):
         s, event = start_echo_server()
         c = echo_client(b'\n', s.port)
         data = b"hello world\nI'm not dead yet!\n"
@@ -189,7 +189,7 @@ class TestAsynchat(unittest.TestCase):
 
         self.assertEqual(c.contents, [b"hello world", b"I'm not dead yet!"])
 
-    def test_string_producer(self):
+    eleza test_string_producer(self):
         s, event = start_echo_server()
         c = echo_client(b'\n', s.port)
         data = b"hello world\nI'm not dead yet!\n"
@@ -199,7 +199,7 @@ class TestAsynchat(unittest.TestCase):
 
         self.assertEqual(c.contents, [b"hello world", b"I'm not dead yet!"])
 
-    def test_empty_line(self):
+    eleza test_empty_line(self):
         # checks that empty lines are handled correctly
         s, event = start_echo_server()
         c = echo_client(b'\n', s.port)
@@ -211,7 +211,7 @@ class TestAsynchat(unittest.TestCase):
         self.assertEqual(c.contents,
                          [b"hello world", b"", b"I'm not dead yet!"])
 
-    def test_close_when_done(self):
+    eleza test_close_when_done(self):
         s, event = start_echo_server()
         s.start_resend_event = threading.Event()
         c = echo_client(b'\n', s.port)
@@ -233,8 +233,8 @@ class TestAsynchat(unittest.TestCase):
         # (which could still result in the client not having received anything)
         self.assertGreater(len(s.buffer), 0)
 
-    def test_push(self):
-        # Issue #12523: push() should raise a TypeError if it doesn't get
+    eleza test_push(self):
+        # Issue #12523: push() should raise a TypeError ikiwa it doesn't get
         # a bytes string
         s, event = start_echo_server()
         c = echo_client(b'\n', s.port)
@@ -250,12 +250,12 @@ class TestAsynchat(unittest.TestCase):
         self.assertEqual(c.contents, [b'bytes', b'bytes', b'bytes'])
 
 
-class TestAsynchat_WithPoll(TestAsynchat):
+kundi TestAsynchat_WithPoll(TestAsynchat):
     usepoll = True
 
 
-class TestAsynchatMocked(unittest.TestCase):
-    def test_blockingioerror(self):
+kundi TestAsynchatMocked(unittest.TestCase):
+    eleza test_blockingioerror(self):
         # Issue #16133: handle_read() must ignore BlockingIOError
         sock = unittest.mock.Mock()
         sock.recv.side_effect = BlockingIOError(errno.EAGAIN)
@@ -269,19 +269,19 @@ class TestAsynchatMocked(unittest.TestCase):
         self.assertFalse(error.called)
 
 
-class TestHelperFunctions(unittest.TestCase):
-    def test_find_prefix_at_end(self):
+kundi TestHelperFunctions(unittest.TestCase):
+    eleza test_find_prefix_at_end(self):
         self.assertEqual(asynchat.find_prefix_at_end("qwerty\r", "\r\n"), 1)
         self.assertEqual(asynchat.find_prefix_at_end("qwertydkjf", "\r\n"), 0)
 
 
-class TestNotConnected(unittest.TestCase):
-    def test_disallow_negative_terminator(self):
+kundi TestNotConnected(unittest.TestCase):
+    eleza test_disallow_negative_terminator(self):
         # Issue #11259
         client = asynchat.async_chat()
         self.assertRaises(ValueError, client.set_terminator, -1)
 
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

@@ -22,7 +22,7 @@ Sockets
 I'm only going to talk about INET (i.e. IPv4) sockets, but they account for at least 99% of
 the sockets in use. And I'll only talk about STREAM (i.e. TCP) sockets - unless you really
 know what you're doing (in which case this HOWTO isn't for you!), you'll get
-better behavior and performance from a STREAM socket than anything else. I will
+better behavior and performance kutoka a STREAM socket than anything else. I will
 try to clear up the mystery of what a socket is, as well as some hints on how to
 work with blocking and non-blocking sockets. But I'll start by talking about
 blocking sockets. You'll need to know how they work before dealing with
@@ -96,7 +96,7 @@ Now that we have a "server" socket, listening on port 80, we can enter the
 mainloop of the web server::
 
    while True:
-       # accept connections from outside
+       # accept connections kutoka outside
        (clientsocket, address) = serversocket.accept()
        # now do something with the clientsocket
        # in this case, we'll pretend this is a threaded server
@@ -151,7 +151,7 @@ your output buffer.
 
 Now we come to the major stumbling block of sockets - ``send`` and ``recv`` operate
 on the network buffers. They do not necessarily handle all the bytes you hand
-them (or expect from them), because their major focus is handling the network
+them (or expect kutoka them), because their major focus is handling the network
 buffers. In general, they return when the associated network buffers have been
 filled (``send``) or emptied (``recv``). They then tell you how many bytes they
 handled. It is *your* responsibility to call them again until your message has
@@ -180,8 +180,8 @@ righter than others).
 Assuming you don't want to end the connection, the simplest solution is a fixed
 length message::
 
-   class MySocket:
-       """demonstration class only
+   kundi MySocket:
+       """demonstration kundi only
          - coded for clarity, not efficiency
        """
 
@@ -320,7 +320,7 @@ inside-out.
 In Python, you use ``socket.setblocking(0)`` to make it non-blocking. In C, it's
 more complex, (for one thing, you'll need to choose between the BSD flavor
 ``O_NONBLOCK`` and the almost indistinguishable Posix flavor ``O_NDELAY``, which
-is completely different from ``TCP_NODELAY``), but it's the exact same idea. You
+is completely different kutoka ``TCP_NODELAY``), but it's the exact same idea. You
 do this after creating the socket, but before using it. (Actually, if you're
 nuts, you can switch back and forth.)
 

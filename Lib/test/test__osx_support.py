@@ -13,9 +13,9 @@ agiza test.support
 agiza _osx_support
 
 @unittest.skipUnless(sys.platform.startswith("darwin"), "requires OS X")
-class Test_OSXSupport(unittest.TestCase):
+kundi Test_OSXSupport(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.maxDiff = None
         self.prog_name = 'bogus_program_xxxx'
         self.temp_path_dir = os.path.abspath(os.getcwd())
@@ -25,18 +25,18 @@ class Test_OSXSupport(unittest.TestCase):
                             'BASECFLAGS', 'BLDSHARED', 'LDSHARED', 'CC',
                             'CXX', 'PY_CFLAGS', 'PY_LDFLAGS', 'PY_CPPFLAGS',
                             'PY_CORE_CFLAGS', 'PY_CORE_LDFLAGS'):
-            if cv in self.env:
+            ikiwa cv in self.env:
                 self.env.unset(cv)
 
-    def add_expected_saved_initial_values(self, config_vars, expected_vars):
+    eleza add_expected_saved_initial_values(self, config_vars, expected_vars):
         # Ensure that the initial values for all modified config vars
         # are also saved with modified keys.
         expected_vars.update(('_OSX_SUPPORT_INITIAL_'+ k,
                 config_vars[k]) for k in config_vars
-                    if config_vars[k] != expected_vars[k])
+                    ikiwa config_vars[k] != expected_vars[k])
 
-    def test__find_executable(self):
-        if self.env['PATH']:
+    eleza test__find_executable(self):
+        ikiwa self.env['PATH']:
             self.env['PATH'] = self.env['PATH'] + ':'
         self.env['PATH'] = self.env['PATH'] + os.path.abspath(self.temp_path_dir)
         test.support.unlink(self.prog_name)
@@ -48,8 +48,8 @@ class Test_OSXSupport(unittest.TestCase):
         self.assertEqual(self.prog_name,
                             _osx_support._find_executable(self.prog_name))
 
-    def test__read_output(self):
-        if self.env['PATH']:
+    eleza test__read_output(self):
+        ikiwa self.env['PATH']:
             self.env['PATH'] = self.env['PATH'] + ':'
         self.env['PATH'] = self.env['PATH'] + os.path.abspath(self.temp_path_dir)
         test.support.unlink(self.prog_name)
@@ -60,16 +60,16 @@ class Test_OSXSupport(unittest.TestCase):
         self.assertEqual('ExpectedOutput',
                             _osx_support._read_output(self.prog_name))
 
-    def test__find_build_tool(self):
+    eleza test__find_build_tool(self):
         out = _osx_support._find_build_tool('cc')
         self.assertTrue(os.path.isfile(out),
                             'cc not found - check xcode-select')
 
-    def test__get_system_version(self):
+    eleza test__get_system_version(self):
         self.assertTrue(platform.mac_ver()[0].startswith(
                                     _osx_support._get_system_version()))
 
-    def test__remove_original_values(self):
+    eleza test__remove_original_values(self):
         config_vars = {
         'CC': 'gcc-test -pthreads',
         }
@@ -83,7 +83,7 @@ class Test_OSXSupport(unittest.TestCase):
         _osx_support._remove_original_values(config_vars)
         self.assertEqual(expected_vars, config_vars)
 
-    def test__save_modified_value(self):
+    eleza test__save_modified_value(self):
         config_vars = {
         'CC': 'gcc-test -pthreads',
         }
@@ -96,7 +96,7 @@ class Test_OSXSupport(unittest.TestCase):
         _osx_support._save_modified_value(config_vars, cv, newvalue)
         self.assertEqual(expected_vars, config_vars)
 
-    def test__save_modified_value_unchanged(self):
+    eleza test__save_modified_value_unchanged(self):
         config_vars = {
         'CC': 'gcc-test -pthreads',
         }
@@ -106,14 +106,14 @@ class Test_OSXSupport(unittest.TestCase):
         _osx_support._save_modified_value(config_vars, cv, newvalue)
         self.assertEqual(expected_vars, config_vars)
 
-    def test__supports_universal_builds(self):
+    eleza test__supports_universal_builds(self):
         agiza platform
         mac_ver_tuple = tuple(int(i) for i in
                             platform.mac_ver()[0].split('.')[0:2])
         self.assertEqual(mac_ver_tuple >= (10, 4),
                             _osx_support._supports_universal_builds())
 
-    def test__find_appropriate_compiler(self):
+    eleza test__find_appropriate_compiler(self):
         compilers = (
                         ('gcc-test', 'i686-apple-darwin11-llvm-gcc-4.2'),
                         ('clang', 'clang version 3.1'),
@@ -140,7 +140,7 @@ class Test_OSXSupport(unittest.TestCase):
         }
         self.add_expected_saved_initial_values(config_vars, expected_vars)
 
-        suffix = (':' + self.env['PATH']) if self.env['PATH'] else ''
+        suffix = (':' + self.env['PATH']) ikiwa self.env['PATH'] else ''
         self.env['PATH'] = os.path.abspath(self.temp_path_dir) + suffix
         for c_name, c_output in compilers:
             test.support.unlink(c_name)
@@ -152,7 +152,7 @@ class Test_OSXSupport(unittest.TestCase):
                             _osx_support._find_appropriate_compiler(
                                     config_vars))
 
-    def test__remove_universal_flags(self):
+    eleza test__remove_universal_flags(self):
         config_vars = {
         'CFLAGS': '-fno-strict-aliasing  -g -O3 -arch ppc -arch i386  ',
         'LDFLAGS': '-arch ppc -arch i386   -g',
@@ -174,7 +174,7 @@ class Test_OSXSupport(unittest.TestCase):
                             _osx_support._remove_universal_flags(
                                     config_vars))
 
-    def test__remove_unsupported_archs(self):
+    eleza test__remove_unsupported_archs(self):
         config_vars = {
         'CC': 'clang',
         'CFLAGS': '-fno-strict-aliasing  -g -O3 -arch ppc -arch i386  ',
@@ -195,7 +195,7 @@ class Test_OSXSupport(unittest.TestCase):
         }
         self.add_expected_saved_initial_values(config_vars, expected_vars)
 
-        suffix = (':' + self.env['PATH']) if self.env['PATH'] else ''
+        suffix = (':' + self.env['PATH']) ikiwa self.env['PATH'] else ''
         self.env['PATH'] = os.path.abspath(self.temp_path_dir) + suffix
         c_name = 'clang'
         test.support.unlink(c_name)
@@ -208,7 +208,7 @@ class Test_OSXSupport(unittest.TestCase):
                             _osx_support._remove_unsupported_archs(
                                     config_vars))
 
-    def test__override_all_archs(self):
+    eleza test__override_all_archs(self):
         self.env['ARCHFLAGS'] = '-arch x86_64'
         config_vars = {
         'CC': 'clang',
@@ -234,7 +234,7 @@ class Test_OSXSupport(unittest.TestCase):
                             _osx_support._override_all_archs(
                                     config_vars))
 
-    def test__check_for_unavailable_sdk(self):
+    eleza test__check_for_unavailable_sdk(self):
         config_vars = {
         'CC': 'clang',
         'CFLAGS': '-fno-strict-aliasing  -g -O3 -arch ppc -arch i386  '
@@ -261,7 +261,7 @@ class Test_OSXSupport(unittest.TestCase):
                             _osx_support._check_for_unavailable_sdk(
                                     config_vars))
 
-    def test_get_platform_osx(self):
+    eleza test_get_platform_osx(self):
         # Note, get_platform_osx is currently tested more extensively
         # indirectly by test_sysconfig and test_distutils
         config_vars = {
@@ -272,5 +272,5 @@ class Test_OSXSupport(unittest.TestCase):
         result = _osx_support.get_platform_osx(config_vars, ' ', ' ', ' ')
         self.assertEqual(('macosx', '10.6', 'fat'), result)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

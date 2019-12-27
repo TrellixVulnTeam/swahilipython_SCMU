@@ -1,13 +1,13 @@
 """Parse a Python module and describe its classes and functions.
 
-Parse enough of a Python file to recognize agizas and class and
+Parse enough of a Python file to recognize agizas and kundi and
 function definitions, and to find out the superclasses of a class.
 
 The interface consists of a single function:
     readmodule_ex(module, path=None)
 where module is the name of a Python module, and path is an optional
 list of directories where the module is to be searched.  If present,
-path is prepended to the system search path sys.path.  The return value
+path is prepended to the system search path sys.path.  The rudisha value
 is a dictionary.  The keys of the dictionary are the names of the
 classes and functions defined in the module (including classes that are
 defined via the kutoka XXX agiza YYY construct).  The values are
@@ -21,7 +21,7 @@ has the following attributes:
     name    -- name of the object;
     file    -- file in which the object is defined;
     lineno  -- line in the file where the object's definition starts;
-    parent  -- parent of this object, if any;
+    parent  -- parent of this object, ikiwa any;
     children -- nested objects contained in this object.
 The 'children' attribute is a dictionary mapping names to objects.
 
@@ -29,10 +29,10 @@ Instances of Function describe functions with the attributes kutoka _Object.
 
 Instances of Class describe classes with the attributes kutoka _Object,
 plus the following:
-    super   -- list of super classes (Class instances if possible);
+    super   -- list of super classes (Class instances ikiwa possible);
     methods -- mapping of method names to beginning line numbers.
-If the name of a super class is not recognized, the corresponding
-entry in the list of super classes is not a class instance but a
+If the name of a super kundi is not recognized, the corresponding
+entry in the list of super classes is not a kundi instance but a
 string giving the name of the super class.  Since agiza statements
 are recognized and imported modules are scanned as well, this
 shouldn't happen often.
@@ -49,9 +49,9 @@ __all__ = ["readmodule", "readmodule_ex", "Class", "Function"]
 _modules = {}  # Initialize cache of modules we've seen.
 
 
-class _Object:
-    "Information about Python class or function."
-    def __init__(self, module, name, file, lineno, parent):
+kundi _Object:
+    "Information about Python kundi or function."
+    eleza __init__(self, module, name, file, lineno, parent):
         self.module = module
         self.name = name
         self.file = file
@@ -59,42 +59,42 @@ class _Object:
         self.parent = parent
         self.children = {}
 
-    def _addchild(self, name, obj):
+    eleza _addchild(self, name, obj):
         self.children[name] = obj
 
 
-class Function(_Object):
+kundi Function(_Object):
     "Information about a Python function, including methods."
-    def __init__(self, module, name, file, lineno, parent=None):
+    eleza __init__(self, module, name, file, lineno, parent=None):
         _Object.__init__(self, module, name, file, lineno, parent)
 
 
-class Class(_Object):
+kundi Class(_Object):
     "Information about a Python class."
-    def __init__(self, module, name, super, file, lineno, parent=None):
+    eleza __init__(self, module, name, super, file, lineno, parent=None):
         _Object.__init__(self, module, name, file, lineno, parent)
-        self.super = [] if super is None else super
+        self.super = [] ikiwa super is None else super
         self.methods = {}
 
-    def _addmethod(self, name, lineno):
+    eleza _addmethod(self, name, lineno):
         self.methods[name] = lineno
 
 
-def _nest_function(ob, func_name, lineno):
+eleza _nest_function(ob, func_name, lineno):
     "Return a Function after nesting within ob."
     newfunc = Function(ob.module, func_name, ob.file, lineno, ob)
     ob._addchild(func_name, newfunc)
-    if isinstance(ob, Class):
+    ikiwa isinstance(ob, Class):
         ob._addmethod(func_name, lineno)
-    return newfunc
+    rudisha newfunc
 
-def _nest_class(ob, class_name, lineno, super=None):
+eleza _nest_class(ob, class_name, lineno, super=None):
     "Return a Class after nesting within ob."
-    newclass = Class(ob.module, class_name, super, ob.file, lineno, ob)
+    newkundi = Class(ob.module, class_name, super, ob.file, lineno, ob)
     ob._addchild(class_name, newclass)
-    return newclass
+    rudisha newclass
 
-def readmodule(module, path=None):
+eleza readmodule(module, path=None):
     """Return Class objects for the top-level classes in module.
 
     This is the original interface, before Functions were added.
@@ -102,20 +102,20 @@ def readmodule(module, path=None):
 
     res = {}
     for key, value in _readmodule(module, path or []).items():
-        if isinstance(value, Class):
+        ikiwa isinstance(value, Class):
             res[key] = value
-    return res
+    rudisha res
 
-def readmodule_ex(module, path=None):
+eleza readmodule_ex(module, path=None):
     """Return a dictionary with all functions and classes in module.
 
     Search for module in PATH + sys.path.
     If possible, include imported superclasses.
     Do this by reading source, without agizaing (and executing) it.
     """
-    return _readmodule(module, path or [])
+    rudisha _readmodule(module, path or [])
 
-def _readmodule(module, path, inpackage=None):
+eleza _readmodule(module, path, inpackage=None):
     """Do the hard work for readmodule[_ex].
 
     If inpackage is given, it must be the dotted name of the package in
@@ -123,63 +123,63 @@ def _readmodule(module, path, inpackage=None):
     package search path; otherwise, we are searching for a top-level
     module, and path is combined with sys.path.
     """
-    # Compute the full module name (prepending inpackage if set).
-    if inpackage is not None:
+    # Compute the full module name (prepending inpackage ikiwa set).
+    ikiwa inpackage is not None:
         fullmodule = "%s.%s" % (inpackage, module)
     else:
         fullmodule = module
 
     # Check in the cache.
-    if fullmodule in _modules:
-        return _modules[fullmodule]
+    ikiwa fullmodule in _modules:
+        rudisha _modules[fullmodule]
 
     # Initialize the dict for this module's contents.
     tree = {}
 
-    # Check if it is a built-in module; we don't do much for these.
-    if module in sys.builtin_module_names and inpackage is None:
+    # Check ikiwa it is a built-in module; we don't do much for these.
+    ikiwa module in sys.builtin_module_names and inpackage is None:
         _modules[module] = tree
-        return tree
+        rudisha tree
 
     # Check for a dotted module name.
     i = module.rfind('.')
-    if i >= 0:
+    ikiwa i >= 0:
         package = module[:i]
         submodule = module[i+1:]
         parent = _readmodule(package, path, inpackage)
-        if inpackage is not None:
+        ikiwa inpackage is not None:
             package = "%s.%s" % (inpackage, package)
-        if not '__path__' in parent:
+        ikiwa not '__path__' in parent:
             raise ImportError('No package named {}'.format(package))
-        return _readmodule(submodule, parent['__path__'], package)
+        rudisha _readmodule(submodule, parent['__path__'], package)
 
     # Search the path for the module.
     f = None
-    if inpackage is not None:
+    ikiwa inpackage is not None:
         search_path = path
     else:
         search_path = path + sys.path
-    spec = importlib.util._find_spec_from_path(fullmodule, search_path)
-    if spec is None:
+    spec = importlib.util._find_spec_kutoka_path(fullmodule, search_path)
+    ikiwa spec is None:
         raise ModuleNotFoundError(f"no module named {fullmodule!r}", name=fullmodule)
     _modules[fullmodule] = tree
     # Is module a package?
-    if spec.submodule_search_locations is not None:
+    ikiwa spec.submodule_search_locations is not None:
         tree['__path__'] = spec.submodule_search_locations
     try:
         source = spec.loader.get_source(fullmodule)
     except (AttributeError, ImportError):
         # If module is not Python source, we cannot do anything.
-        return tree
+        rudisha tree
     else:
-        if source is None:
-            return tree
+        ikiwa source is None:
+            rudisha tree
 
     fname = spec.loader.get_filename(fullmodule)
-    return _create_tree(fullmodule, path, fname, source, tree, inpackage)
+    rudisha _create_tree(fullmodule, path, fname, source, tree, inpackage)
 
 
-def _create_tree(fullmodule, path, fname, source, tree, inpackage):
+eleza _create_tree(fullmodule, path, fname, source, tree, inpackage):
     """Return the tree for a particular module.
 
     fullmodule (full module name), inpackage+module, becomes o.module.
@@ -198,21 +198,21 @@ def _create_tree(fullmodule, path, fname, source, tree, inpackage):
     g = tokenize.generate_tokens(f.readline)
     try:
         for tokentype, token, start, _end, _line in g:
-            if tokentype == DEDENT:
+            ikiwa tokentype == DEDENT:
                 lineno, thisindent = start
                 # Close previous nested classes and defs.
                 while stack and stack[-1][1] >= thisindent:
                     del stack[-1]
-            elif token == 'def':
+            elikiwa token == 'def':
                 lineno, thisindent = start
                 # Close previous nested classes and defs.
                 while stack and stack[-1][1] >= thisindent:
                     del stack[-1]
                 tokentype, func_name, start = next(g)[0:3]
-                if tokentype != NAME:
-                    continue  # Skip def with syntax error.
+                ikiwa tokentype != NAME:
+                    continue  # Skip eleza with syntax error.
                 cur_func = None
-                if stack:
+                ikiwa stack:
                     cur_obj = stack[-1][0]
                     cur_func = _nest_function(cur_obj, func_name, lineno)
                 else:
@@ -220,69 +220,69 @@ def _create_tree(fullmodule, path, fname, source, tree, inpackage):
                     cur_func = Function(fullmodule, func_name, fname, lineno)
                     tree[func_name] = cur_func
                 stack.append((cur_func, thisindent))
-            elif token == 'class':
+            elikiwa token == 'class':
                 lineno, thisindent = start
                 # Close previous nested classes and defs.
                 while stack and stack[-1][1] >= thisindent:
                     del stack[-1]
                 tokentype, class_name, start = next(g)[0:3]
-                if tokentype != NAME:
-                    continue # Skip class with syntax error.
-                # Parse what follows the class name.
+                ikiwa tokentype != NAME:
+                    continue # Skip kundi with syntax error.
+                # Parse what follows the kundi name.
                 tokentype, token, start = next(g)[0:3]
                 inherit = None
-                if token == '(':
+                ikiwa token == '(':
                     names = [] # Initialize list of superclasses.
                     level = 1
                     super = [] # Tokens making up current superclass.
                     while True:
                         tokentype, token, start = next(g)[0:3]
-                        if token in (')', ',') and level == 1:
+                        ikiwa token in (')', ',') and level == 1:
                             n = "".join(super)
-                            if n in tree:
+                            ikiwa n in tree:
                                 # We know this super class.
                                 n = tree[n]
                             else:
                                 c = n.split('.')
-                                if len(c) > 1:
-                                    # Super class form is module.class:
+                                ikiwa len(c) > 1:
+                                    # Super kundi form is module.class:
                                     # look in module for class.
                                     m = c[-2]
                                     c = c[-1]
-                                    if m in _modules:
+                                    ikiwa m in _modules:
                                         d = _modules[m]
-                                        if c in d:
+                                        ikiwa c in d:
                                             n = d[c]
                             names.append(n)
                             super = []
-                        if token == '(':
+                        ikiwa token == '(':
                             level += 1
-                        elif token == ')':
+                        elikiwa token == ')':
                             level -= 1
-                            if level == 0:
+                            ikiwa level == 0:
                                 break
-                        elif token == ',' and level == 1:
+                        elikiwa token == ',' and level == 1:
                             pass
                         # Only use NAME and OP (== dot) tokens for type name.
-                        elif tokentype in (NAME, OP) and level == 1:
+                        elikiwa tokentype in (NAME, OP) and level == 1:
                             super.append(token)
                         # Expressions in the base list are not supported.
                     inherit = names
-                if stack:
+                ikiwa stack:
                     cur_obj = stack[-1][0]
-                    cur_class = _nest_class(
+                    cur_kundi = _nest_class(
                             cur_obj, class_name, lineno, inherit)
                 else:
-                    cur_class = Class(fullmodule, class_name, inherit,
+                    cur_kundi = Class(fullmodule, class_name, inherit,
                                       fname, lineno)
                     tree[class_name] = cur_class
                 stack.append((cur_class, thisindent))
-            elif token == 'agiza' and start[1] == 0:
+            elikiwa token == 'agiza' and start[1] == 0:
                 modules = _getnamelist(g)
                 for mod, _mod2 in modules:
                     try:
                         # Recursively read the imported module.
-                        if inpackage is None:
+                        ikiwa inpackage is None:
                             _readmodule(mod, path)
                         else:
                             try:
@@ -293,9 +293,9 @@ def _create_tree(fullmodule, path, fname, source, tree, inpackage):
                         # If we can't find or parse the imported module,
                         # too bad -- don't die here.
                         pass
-            elif token == 'from' and start[1] == 0:
+            elikiwa token == 'kutoka' and start[1] == 0:
                 mod, token = _getname(g)
-                if not mod or token != "agiza":
+                ikiwa not mod or token != "agiza":
                     continue
                 names = _getnamelist(g)
                 try:
@@ -306,23 +306,23 @@ def _create_tree(fullmodule, path, fname, source, tree, inpackage):
                     # too bad -- don't die here.
                     continue
                 # Add any classes that were defined in the imported module
-                # to our name space if they were mentioned in the list.
+                # to our name space ikiwa they were mentioned in the list.
                 for n, n2 in names:
-                    if n in d:
+                    ikiwa n in d:
                         tree[n2 or n] = d[n]
-                    elif n == '*':
+                    elikiwa n == '*':
                         # Don't add names that start with _.
                         for n in d:
-                            if n[0] != '_':
+                            ikiwa n[0] != '_':
                                 tree[n] = d[n]
     except StopIteration:
         pass
 
     f.close()
-    return tree
+    rudisha tree
 
 
-def _getnamelist(g):
+eleza _getnamelist(g):
     """Return list of (dotted-name, as-name or None) tuples for token source g.
 
     An as-name is the name that follows 'as' in an as clause.
@@ -330,49 +330,49 @@ def _getnamelist(g):
     names = []
     while True:
         name, token = _getname(g)
-        if not name:
+        ikiwa not name:
             break
-        if token == 'as':
+        ikiwa token == 'as':
             name2, token = _getname(g)
         else:
             name2 = None
         names.append((name, name2))
         while token != "," and "\n" not in token:
             token = next(g)[1]
-        if token != ",":
+        ikiwa token != ",":
             break
-    return names
+    rudisha names
 
 
-def _getname(g):
+eleza _getname(g):
     "Return (dotted-name or None, next-token) tuple for token source g."
     parts = []
     tokentype, token = next(g)[0:2]
-    if tokentype != NAME and token != '*':
-        return (None, token)
+    ikiwa tokentype != NAME and token != '*':
+        rudisha (None, token)
     parts.append(token)
     while True:
         tokentype, token = next(g)[0:2]
-        if token != '.':
+        ikiwa token != '.':
             break
         tokentype, token = next(g)[0:2]
-        if tokentype != NAME:
+        ikiwa tokentype != NAME:
             break
         parts.append(token)
-    return (".".join(parts), token)
+    rudisha (".".join(parts), token)
 
 
-def _main():
+eleza _main():
     "Print module output (default this file) for quick visual check."
     agiza os
     try:
         mod = sys.argv[1]
     except:
         mod = __file__
-    if os.path.exists(mod):
+    ikiwa os.path.exists(mod):
         path = [os.path.dirname(mod)]
         mod = os.path.basename(mod)
-        if mod.lower().endswith(".py"):
+        ikiwa mod.lower().endswith(".py"):
             mod = mod[:-3]
     else:
         path = []
@@ -382,23 +382,23 @@ def _main():
     indent_level = 2
     while objs:
         obj = objs.pop()
-        if isinstance(obj, list):
+        ikiwa isinstance(obj, list):
             # Value is a __path__ key.
             continue
-        if not hasattr(obj, 'indent'):
+        ikiwa not hasattr(obj, 'indent'):
             obj.indent = 0
 
-        if isinstance(obj, _Object):
+        ikiwa isinstance(obj, _Object):
             new_objs = sorted(obj.children.values(),
                               key=lineno_key, reverse=True)
             for ob in new_objs:
                 ob.indent = obj.indent + indent_level
             objs.extend(new_objs)
-        if isinstance(obj, Class):
-            print("{}class {} {} {}"
+        ikiwa isinstance(obj, Class):
+            andika("{}kundi {} {} {}"
                   .format(' ' * obj.indent, obj.name, obj.super, obj.lineno))
-        elif isinstance(obj, Function):
-            print("{}def {} {}".format(' ' * obj.indent, obj.name, obj.lineno))
+        elikiwa isinstance(obj, Function):
+            andika("{}eleza {} {}".format(' ' * obj.indent, obj.name, obj.lineno))
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     _main()

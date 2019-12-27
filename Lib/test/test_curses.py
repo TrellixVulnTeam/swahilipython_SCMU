@@ -32,8 +32,8 @@ try:
 except ImportError:
     pass
 
-def requires_curses_func(name):
-    return unittest.skipUnless(hasattr(curses, name),
+eleza requires_curses_func(name):
+    rudisha unittest.skipUnless(hasattr(curses, name),
                                'requires curses.%s' % name)
 
 term = os.environ.get('TERM')
@@ -43,11 +43,11 @@ term = os.environ.get('TERM')
                  "$TERM=%r, calling initscr() may cause exit" % term)
 @unittest.skipIf(sys.platform == "cygwin",
                  "cygwin's curses mostly just hangs")
-class TestCurses(unittest.TestCase):
+kundi TestCurses(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
-        if not sys.__stdout__.isatty():
+    eleza setUpClass(cls):
+        ikiwa not sys.__stdout__.isatty():
             # Temporary skip tests on non-tty
             raise unittest.SkipTest('sys.__stdout__ is not a tty')
             cls.tmp = tempfile.TemporaryFile()
@@ -60,26 +60,26 @@ class TestCurses(unittest.TestCase):
         curses.setupterm(fd=fd)
 
     @classmethod
-    def tearDownClass(cls):
-        if cls.tmp:
+    eleza tearDownClass(cls):
+        ikiwa cls.tmp:
             cls.tmp.close()
             del cls.tmp
 
-    def setUp(self):
+    eleza setUp(self):
         self.save_signals = SaveSignals()
         self.save_signals.save()
-        if verbose:
+        ikiwa verbose:
             # just to make the test output a little more readable
-            print()
+            andika()
         self.stdscr = curses.initscr()
         curses.savetty()
 
-    def tearDown(self):
+    eleza tearDown(self):
         curses.resetty()
         curses.endwin()
         self.save_signals.restore()
 
-    def test_window_funcs(self):
+    eleza test_window_funcs(self):
         "Test the methods of windows"
         stdscr = self.stdscr
         win = curses.newwin(10,10)
@@ -148,7 +148,7 @@ class TestCurses(unittest.TestCase):
 
         stdscr.idcok(1)
         stdscr.idlok(1)
-        if hasattr(stdscr, 'immedok'):
+        ikiwa hasattr(stdscr, 'immedok'):
             stdscr.immedok(1)
             stdscr.immedok(0)
         stdscr.insch('c')
@@ -184,14 +184,14 @@ class TestCurses(unittest.TestCase):
         stdscr.setscrreg(10,15)
         win3 = stdscr.subwin(10,10)
         win3 = stdscr.subwin(10,10, 5,5)
-        if hasattr(stdscr, 'syncok') and not sys.platform.startswith("sunos"):
+        ikiwa hasattr(stdscr, 'syncok') and not sys.platform.startswith("sunos"):
             stdscr.syncok(1)
         stdscr.timeout(5)
         stdscr.touchline(5,5)
         stdscr.touchline(5,5,0)
         stdscr.vline('a', 3)
         stdscr.vline('a', 3, curses.A_STANDOUT)
-        if hasattr(stdscr, 'chgat'):
+        ikiwa hasattr(stdscr, 'chgat'):
             stdscr.chgat(5, 2, 3, curses.A_BLINK)
             stdscr.chgat(3, curses.A_BOLD)
             stdscr.chgat(5, 8, curses.A_UNDERLINE)
@@ -201,9 +201,9 @@ class TestCurses(unittest.TestCase):
         stdscr.vline(1,1, 'a', 3)
         stdscr.vline(1,1, 'a', 3, curses.A_STANDOUT)
 
-        if hasattr(stdscr, 'resize'):
+        ikiwa hasattr(stdscr, 'resize'):
             stdscr.resize(25, 80)
-        if hasattr(stdscr, 'enclose'):
+        ikiwa hasattr(stdscr, 'enclose'):
             stdscr.enclose(10, 10)
 
         self.assertRaises(ValueError, stdscr.getstr, -400)
@@ -211,7 +211,7 @@ class TestCurses(unittest.TestCase):
         self.assertRaises(ValueError, stdscr.instr, -2)
         self.assertRaises(ValueError, stdscr.instr, 2, 3, -2)
 
-    def test_embedded_null_chars(self):
+    eleza test_embedded_null_chars(self):
         # reject embedded null bytes and characters
         stdscr = self.stdscr
         for arg in ['a', b'a']:
@@ -221,7 +221,7 @@ class TestCurses(unittest.TestCase):
                 self.assertRaises(ValueError, stdscr.insstr, 'a\0')
                 self.assertRaises(ValueError, stdscr.insnstr, 'a\0', 1)
 
-    def test_module_funcs(self):
+    eleza test_module_funcs(self):
         "Test module-level functions"
         for func in [curses.baudrate, curses.beep, curses.can_change_color,
                      curses.cbreak, curses.def_prog_mode, curses.doupdate,
@@ -234,13 +234,13 @@ class TestCurses(unittest.TestCase):
                      curses.termname, curses.erasechar]:
             with self.subTest(func=func.__qualname__):
                 func()
-        if hasattr(curses, 'filter'):
+        ikiwa hasattr(curses, 'filter'):
             curses.filter()
-        if hasattr(curses, 'getsyx'):
+        ikiwa hasattr(curses, 'getsyx'):
             curses.getsyx()
 
         # Functions that actually need arguments
-        if curses.tigetstr("cnorm"):
+        ikiwa curses.tigetstr("cnorm"):
             curses.curs_set(1)
         curses.delay_output(1)
         curses.echo() ; curses.echo(1)
@@ -261,22 +261,22 @@ class TestCurses(unittest.TestCase):
         curses.putp(b'abc')
         curses.qiflush()
         curses.raw() ; curses.raw(1)
-        if hasattr(curses, 'setsyx'):
+        ikiwa hasattr(curses, 'setsyx'):
             curses.setsyx(5,5)
         curses.tigetflag('hc')
         curses.tigetnum('co')
         curses.tigetstr('cr')
         curses.tparm(b'cr')
-        if hasattr(curses, 'typeahead'):
+        ikiwa hasattr(curses, 'typeahead'):
             curses.typeahead(sys.__stdin__.fileno())
         curses.unctrl('a')
         curses.ungetch('a')
-        if hasattr(curses, 'use_env'):
+        ikiwa hasattr(curses, 'use_env'):
             curses.use_env(1)
 
     # Functions only available on a few platforms
-    def test_colors_funcs(self):
-        if not curses.has_colors():
+    eleza test_colors_funcs(self):
+        ikiwa not curses.has_colors():
             self.skipTest('requires colors support')
         curses.start_color()
         curses.init_pair(2, 1,1)
@@ -285,21 +285,21 @@ class TestCurses(unittest.TestCase):
         curses.pair_content(curses.COLOR_PAIRS - 1)
         curses.pair_number(0)
 
-        if hasattr(curses, 'use_default_colors'):
+        ikiwa hasattr(curses, 'use_default_colors'):
             curses.use_default_colors()
 
     @requires_curses_func('keyname')
-    def test_keyname(self):
+    eleza test_keyname(self):
         curses.keyname(13)
 
     @requires_curses_func('has_key')
-    def test_has_key(self):
+    eleza test_has_key(self):
         curses.has_key(13)
 
     @requires_curses_func('getmouse')
-    def test_getmouse(self):
+    eleza test_getmouse(self):
         (availmask, oldmask) = curses.mousemask(curses.BUTTON1_PRESSED)
-        if availmask == 0:
+        ikiwa availmask == 0:
             self.skipTest('mouse stuff not available')
         curses.mouseinterval(10)
         # just verify these don't cause errors
@@ -307,7 +307,7 @@ class TestCurses(unittest.TestCase):
         m = curses.getmouse()
 
     @requires_curses_func('panel')
-    def test_userptr_without_set(self):
+    eleza test_userptr_without_set(self):
         w = curses.newwin(10, 10)
         p = curses.panel.new_panel(w)
         # try to access userptr() before calling set_userptr() -- segfaults
@@ -316,7 +316,7 @@ class TestCurses(unittest.TestCase):
             p.userptr()
 
     @requires_curses_func('panel')
-    def test_userptr_memory_leak(self):
+    eleza test_userptr_memory_leak(self):
         w = curses.newwin(10, 10)
         p = curses.panel.new_panel(w)
         obj = object()
@@ -329,31 +329,31 @@ class TestCurses(unittest.TestCase):
                          "set_userptr leaked references")
 
     @requires_curses_func('panel')
-    def test_userptr_segfault(self):
+    eleza test_userptr_segfault(self):
         w = curses.newwin(10, 10)
         panel = curses.panel.new_panel(w)
-        class A:
-            def __del__(self):
+        kundi A:
+            eleza __del__(self):
                 panel.set_userptr(None)
         panel.set_userptr(A())
         panel.set_userptr(None)
 
     @requires_curses_func('panel')
-    def test_new_curses_panel(self):
+    eleza test_new_curses_panel(self):
         w = curses.newwin(10, 10)
         panel = curses.panel.new_panel(w)
         self.assertRaises(TypeError, type(panel))
 
     @requires_curses_func('is_term_resized')
-    def test_is_term_resized(self):
+    eleza test_is_term_resized(self):
         curses.is_term_resized(*self.stdscr.getmaxyx())
 
     @requires_curses_func('resize_term')
-    def test_resize_term(self):
+    eleza test_resize_term(self):
         curses.resize_term(*self.stdscr.getmaxyx())
 
     @requires_curses_func('resizeterm')
-    def test_resizeterm(self):
+    eleza test_resizeterm(self):
         stdscr = self.stdscr
         lines, cols = curses.LINES, curses.COLS
         new_lines = lines - 1
@@ -363,14 +363,14 @@ class TestCurses(unittest.TestCase):
         self.assertEqual(curses.LINES, new_lines)
         self.assertEqual(curses.COLS, new_cols)
 
-    def test_issue6243(self):
+    eleza test_issue6243(self):
         curses.ungetch(1025)
         self.stdscr.getkey()
 
     @requires_curses_func('unget_wch')
     @unittest.skipIf(getattr(curses, 'ncurses_version', (99,)) < (5, 8),
                      "unget_wch is broken in ncurses 5.7 and earlier")
-    def test_unget_wch(self):
+    eleza test_unget_wch(self):
         stdscr = self.stdscr
         encoding = stdscr.encoding
         for ch in ('a', '\xe9', '\u20ac', '\U0010FFFF'):
@@ -391,11 +391,11 @@ class TestCurses(unittest.TestCase):
             read = stdscr.get_wch()
             self.assertEqual(read, ch)
 
-    def test_issue10570(self):
+    eleza test_issue10570(self):
         b = curses.tparm(curses.tigetstr("cup"), 5, 3)
         self.assertIs(type(b), bytes)
 
-    def test_encoding(self):
+    eleza test_encoding(self):
         stdscr = self.stdscr
         agiza codecs
         encoding = stdscr.encoding
@@ -406,7 +406,7 @@ class TestCurses(unittest.TestCase):
         with self.assertRaises(TypeError):
             del stdscr.encoding
 
-    def test_issue21088(self):
+    eleza test_issue21088(self):
         stdscr = self.stdscr
         #
         # http://bugs.python.org/issue21088
@@ -415,7 +415,7 @@ class TestCurses(unittest.TestCase):
         # when converting curses.window.addch to Argument Clinic
         # the first two parameters were switched.
 
-        # if someday we can represent the signature of addch
+        # ikiwa someday we can represent the signature of addch
         # we will need to rewrite this test.
         try:
             signature = inspect.signature(stdscr.addch)
@@ -434,9 +434,9 @@ class TestCurses(unittest.TestCase):
         human_readable_signature = stdscr.addch.__doc__.split("\n")[0]
         self.assertIn("[y, x,]", human_readable_signature)
 
-    def test_issue13051(self):
+    eleza test_issue13051(self):
         stdscr = self.stdscr
-        if not hasattr(stdscr, 'resize'):
+        ikiwa not hasattr(stdscr, 'resize'):
             raise unittest.SkipTest('requires curses.window.resize')
         box = curses.textpad.Textbox(stdscr, insert_mode=True)
         lines, cols = stdscr.getmaxyx()
@@ -445,10 +445,10 @@ class TestCurses(unittest.TestCase):
         box._insert_printable_char('a')
 
 
-class MiscTests(unittest.TestCase):
+kundi MiscTests(unittest.TestCase):
 
     @requires_curses_func('update_lines_cols')
-    def test_update_lines_cols(self):
+    eleza test_update_lines_cols(self):
         # this doesn't actually test that LINES and COLS are updated,
         # because we can't automate changing them. See Issue #4254 for
         # a manual test script. We can only test that the function
@@ -456,7 +456,7 @@ class MiscTests(unittest.TestCase):
         curses.update_lines_cols()
 
     @requires_curses_func('ncurses_version')
-    def test_ncurses_version(self):
+    eleza test_ncurses_version(self):
         v = curses.ncurses_version
         self.assertIsInstance(v[:], tuple)
         self.assertEqual(len(v), 3)
@@ -473,14 +473,14 @@ class MiscTests(unittest.TestCase):
         self.assertGreaterEqual(v.minor, 0)
         self.assertGreaterEqual(v.patch, 0)
 
-class TestAscii(unittest.TestCase):
+kundi TestAscii(unittest.TestCase):
 
-    def test_controlnames(self):
+    eleza test_controlnames(self):
         for name in curses.ascii.controlnames:
             self.assertTrue(hasattr(curses.ascii, name), name)
 
-    def test_ctypes(self):
-        def check(func, expected):
+    eleza test_ctypes(self):
+        eleza check(func, expected):
             with self.subTest(ch=c, func=func):
                 self.assertEqual(func(i), expected)
                 self.assertEqual(func(c), expected)
@@ -518,32 +518,32 @@ class TestAscii(unittest.TestCase):
             self.assertFalse(curses.ascii.iscntrl(i))
             self.assertFalse(curses.ascii.isblank(i))
             self.assertFalse(curses.ascii.isgraph(i))
-            self.assertFalse(curses.ascii.isprint(i))
+            self.assertFalse(curses.ascii.isandika(i))
             self.assertFalse(curses.ascii.ispunct(i))
             self.assertFalse(curses.ascii.isxdigit(i))
 
         self.assertFalse(curses.ascii.ismeta(-1))
 
-    def test_ascii(self):
+    eleza test_ascii(self):
         ascii = curses.ascii.ascii
         self.assertEqual(ascii('\xc1'), 'A')
         self.assertEqual(ascii('A'), 'A')
         self.assertEqual(ascii(ord('\xc1')), ord('A'))
 
-    def test_ctrl(self):
+    eleza test_ctrl(self):
         ctrl = curses.ascii.ctrl
         self.assertEqual(ctrl('J'), '\n')
         self.assertEqual(ctrl('\n'), '\n')
         self.assertEqual(ctrl('@'), '\0')
         self.assertEqual(ctrl(ord('J')), ord('\n'))
 
-    def test_alt(self):
+    eleza test_alt(self):
         alt = curses.ascii.alt
         self.assertEqual(alt('\n'), '\x8a')
         self.assertEqual(alt('A'), '\xc1')
         self.assertEqual(alt(ord('A')), 0xc1)
 
-    def test_unctrl(self):
+    eleza test_unctrl(self):
         unctrl = curses.ascii.unctrl
         self.assertEqual(unctrl('a'), 'a')
         self.assertEqual(unctrl('A'), 'A')
@@ -561,5 +561,5 @@ class TestAscii(unittest.TestCase):
         self.assertEqual(unctrl(ord('\xc1')), '!A')
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

@@ -38,11 +38,11 @@ __all__ = ["BadZipFile", "BadZipfile", "error",
            "ZIP_STORED", "ZIP_DEFLATED", "ZIP_BZIP2", "ZIP_LZMA",
            "is_zipfile", "ZipInfo", "ZipFile", "PyZipFile", "LargeZipFile"]
 
-class BadZipFile(Exception):
+kundi BadZipFile(Exception):
     pass
 
 
-class LargeZipFile(Exception):
+kundi LargeZipFile(Exception):
     """
     Raised when writing a zipfile, the zipfile requires ZIP64 extensions
     and those extensions are disabled.
@@ -313,7 +313,7 @@ def _EndRecData(fpin):
     return None
 
 
-class ZipInfo (object):
+kundi ZipInfo (object):
     """Class with attributes describing each file in the ZIP archive."""
 
     __slots__ = (
@@ -376,7 +376,7 @@ class ZipInfo (object):
         self.volume = 0                 # Volume number of file header
         self.internal_attr = 0          # Internal attributes
         self.external_attr = 0          # External file attributes
-        # Other attributes are set by class ZipFile:
+        # Other attributes are set by kundi ZipFile:
         # header_offset         Byte offset to the file header
         # CRC                   CRC-32 of the uncompressed file
         # compress_size         Size of the compressed file
@@ -437,7 +437,7 @@ class ZipInfo (object):
 
         if self.compress_type == ZIP_BZIP2:
             min_version = max(BZIP2_VERSION, min_version)
-        elif self.compress_type == ZIP_LZMA:
+        lasivyo self.compress_type == ZIP_LZMA:
             min_version = max(LZMA_VERSION, min_version)
 
         self.extract_version = max(min_version, self.extract_version)
@@ -467,11 +467,11 @@ class ZipInfo (object):
             if tp == 0x0001:
                 if ln >= 24:
                     counts = unpack('<QQQ', extra[4:28])
-                elif ln == 16:
+                lasivyo ln == 16:
                     counts = unpack('<QQ', extra[4:20])
-                elif ln == 8:
+                lasivyo ln == 8:
                     counts = unpack('<Q', extra[4:12])
-                elif ln == 0:
+                lasivyo ln == 0:
                     counts = ()
                 else:
                     raise BadZipFile("Corrupt extra field %04x (size=%d)" % (tp, ln))
@@ -495,7 +495,7 @@ class ZipInfo (object):
             extra = extra[ln+4:]
 
     @classmethod
-    def from_file(cls, filename, arcname=None, *, strict_timestamps=True):
+    def kutoka_file(cls, filename, arcname=None, *, strict_timestamps=True):
         """Construct an appropriate ZipInfo for a file on the filesystem.
 
         filename should be the path to a file or directory on the filesystem.
@@ -512,7 +512,7 @@ class ZipInfo (object):
         date_time = mtime[0:6]
         if not strict_timestamps and date_time[0] < 1980:
             date_time = (1980, 1, 1, 0, 0, 0)
-        elif not strict_timestamps and date_time[0] > 2107:
+        lasivyo not strict_timestamps and date_time[0] > 2107:
             date_time = (2107, 12, 31, 23, 59, 59)
         # Create ZipInfo instance to store file information
         if arcname is None:
@@ -596,7 +596,7 @@ def _ZipDecrypter(pwd):
     return decrypter
 
 
-class LZMACompressor:
+kundi LZMACompressor:
 
     def __init__(self):
         self._comp = None
@@ -619,7 +619,7 @@ class LZMACompressor:
         return self._comp.flush()
 
 
-class LZMADecompressor:
+kundi LZMADecompressor:
 
     def __init__(self):
         self._decomp = None
@@ -670,15 +670,15 @@ compressor_names = {
 def _check_compression(compression):
     if compression == ZIP_STORED:
         pass
-    elif compression == ZIP_DEFLATED:
+    lasivyo compression == ZIP_DEFLATED:
         if not zlib:
             raise RuntimeError(
                 "Compression requires the (missing) zlib module")
-    elif compression == ZIP_BZIP2:
+    lasivyo compression == ZIP_BZIP2:
         if not bz2:
             raise RuntimeError(
                 "Compression requires the (missing) bz2 module")
-    elif compression == ZIP_LZMA:
+    lasivyo compression == ZIP_LZMA:
         if not lzma:
             raise RuntimeError(
                 "Compression requires the (missing) lzma module")
@@ -691,12 +691,12 @@ def _get_compressor(compress_type, compresslevel=None):
         if compresslevel is not None:
             return zlib.compressobj(compresslevel, zlib.DEFLATED, -15)
         return zlib.compressobj(zlib.Z_DEFAULT_COMPRESSION, zlib.DEFLATED, -15)
-    elif compress_type == ZIP_BZIP2:
+    lasivyo compress_type == ZIP_BZIP2:
         if compresslevel is not None:
             return bz2.BZ2Compressor(compresslevel)
         return bz2.BZ2Compressor()
     # compresslevel is ignored for ZIP_LZMA
-    elif compress_type == ZIP_LZMA:
+    lasivyo compress_type == ZIP_LZMA:
         return LZMACompressor()
     else:
         return None
@@ -706,11 +706,11 @@ def _get_decompressor(compress_type):
     _check_compression(compress_type)
     if compress_type == ZIP_STORED:
         return None
-    elif compress_type == ZIP_DEFLATED:
+    lasivyo compress_type == ZIP_DEFLATED:
         return zlib.decompressobj(-15)
-    elif compress_type == ZIP_BZIP2:
+    lasivyo compress_type == ZIP_BZIP2:
         return bz2.BZ2Decompressor()
-    elif compress_type == ZIP_LZMA:
+    lasivyo compress_type == ZIP_LZMA:
         return LZMADecompressor()
     else:
         descr = compressor_names.get(compress_type)
@@ -720,7 +720,7 @@ def _get_decompressor(compress_type):
             raise NotImplementedError("compression type %d" % (compress_type,))
 
 
-class _SharedFile:
+kundi _SharedFile:
     def __init__(self, file, pos, close, lock, writing):
         self._file = file
         self._pos = pos
@@ -758,7 +758,7 @@ class _SharedFile:
             self._close(fileobj)
 
 # Provide the tell method for unseekable stream
-class _Tellable:
+kundi _Tellable:
     def __init__(self, fp):
         self.fp = fp
         self.offset = 0
@@ -778,7 +778,7 @@ class _Tellable:
         self.fp.close()
 
 
-class ZipExtFile(io.BufferedIOBase):
+kundi ZipExtFile(io.BufferedIOBase):
     """File-like object for reading an archive member.
        Is returned by ZipFile.open().
     """
@@ -978,7 +978,7 @@ class ZipExtFile(io.BufferedIOBase):
 
         if self._compress_type == ZIP_STORED:
             self._eof = self._compress_left <= 0
-        elif self._compress_type == ZIP_DEFLATED:
+        lasivyo self._compress_type == ZIP_DEFLATED:
             n = max(n, self.MIN_READ_SIZE)
             data = self._decompressor.decompress(data, n)
             self._eof = (self._decompressor.eof or
@@ -1029,9 +1029,9 @@ class ZipExtFile(io.BufferedIOBase):
         curr_pos = self.tell()
         if whence == 0: # Seek kutoka start of file
             new_pos = offset
-        elif whence == 1: # Seek kutoka current position
+        lasivyo whence == 1: # Seek kutoka current position
             new_pos = curr_pos + offset
-        elif whence == 2: # Seek kutoka EOF
+        lasivyo whence == 2: # Seek kutoka EOF
             new_pos = self._orig_file_size + offset
         else:
             raise ValueError("whence must be os.SEEK_SET (0), "
@@ -1050,7 +1050,7 @@ class ZipExtFile(io.BufferedIOBase):
             # Just move the _offset index if the new position is in the _readbuffer
             self._offset = buff_offset
             read_offset = 0
-        elif read_offset < 0:
+        lasivyo read_offset < 0:
             # Position is before the current position. Reset the ZipExtFile
             self._fileobj.seek(self._orig_compress_start)
             self._running_crc = self._orig_start_crc
@@ -1076,7 +1076,7 @@ class ZipExtFile(io.BufferedIOBase):
         return filepos
 
 
-class _ZipWriteFile(io.BufferedIOBase):
+kundi _ZipWriteFile(io.BufferedIOBase):
     def __init__(self, zf, zinfo, zip64):
         self._zinfo = zinfo
         self._zip64 = zip64
@@ -1154,7 +1154,7 @@ class _ZipWriteFile(io.BufferedIOBase):
 
 
 
-class ZipFile:
+kundi ZipFile:
     """ Class with methods to open, read, write, close, list zip files.
 
     z = ZipFile(file, mode="r", compression=ZIP_STORED, allowZip64=True,
@@ -1232,7 +1232,7 @@ class ZipFile:
         try:
             if mode == 'r':
                 self._RealGetContents()
-            elif mode in ('w', 'x'):
+            lasivyo mode in ('w', 'x'):
                 # set the modified flag so central directory gets written
                 # even if no files are added to the archive
                 self._didModify = True
@@ -1248,7 +1248,7 @@ class ZipFile:
                         self.fp.seek(self.start_dir)
                     except (AttributeError, OSError):
                         self._seekable = False
-            elif mode == 'a':
+            lasivyo mode == 'a':
                 try:
                     # See if file is a zip file
                     self._RealGetContents()
@@ -1282,7 +1282,7 @@ class ZipFile:
         if self.fp is not None:
             if self._filePassed:
                 result.append(' file=%r' % self.fp)
-            elif self.filename is not None:
+            lasivyo self.filename is not None:
                 result.append(' filename=%r' % self.filename)
             result.append(' mode=%r' % self.mode)
         else:
@@ -1373,7 +1373,7 @@ class ZipFile:
         return [data.filename for data in self.filelist]
 
     def infolist(self):
-        """Return a list of class ZipInfo instances for files in the
+        """Return a list of kundi ZipInfo instances for files in the
         archive."""
         return self.filelist
 
@@ -1470,7 +1470,7 @@ class ZipFile:
         if isinstance(name, ZipInfo):
             # 'name' is already an info object
             zinfo = name
-        elif mode == 'w':
+        lasivyo mode == 'w':
             zinfo = ZipInfo(name)
             zinfo.compress_type = self.compression
             zinfo._compresslevel = self.compresslevel
@@ -1699,9 +1699,9 @@ class ZipFile:
             requires_zip64 = None
             if len(self.filelist) >= ZIP_FILECOUNT_LIMIT:
                 requires_zip64 = "Files count"
-            elif zinfo.file_size > ZIP64_LIMIT:
+            lasivyo zinfo.file_size > ZIP64_LIMIT:
                 requires_zip64 = "Filesize"
-            elif zinfo.header_offset > ZIP64_LIMIT:
+            lasivyo zinfo.header_offset > ZIP64_LIMIT:
                 requires_zip64 = "Zipfile size"
             if requires_zip64:
                 raise LargeZipFile(requires_zip64 +
@@ -1719,7 +1719,7 @@ class ZipFile:
                 "Can't write to ZIP archive while an open writing handle exists"
             )
 
-        zinfo = ZipInfo.from_file(filename, arcname,
+        zinfo = ZipInfo.kutoka_file(filename, arcname,
                                   strict_timestamps=self._strict_timestamps)
 
         if zinfo.is_dir():
@@ -1858,7 +1858,7 @@ class ZipFile:
 
             if zinfo.compress_type == ZIP_BZIP2:
                 min_version = max(BZIP2_VERSION, min_version)
-            elif zinfo.compress_type == ZIP_LZMA:
+            lasivyo zinfo.compress_type == ZIP_LZMA:
                 min_version = max(LZMA_VERSION, min_version)
 
             extract_version = max(min_version, zinfo.extract_version)
@@ -1895,9 +1895,9 @@ class ZipFile:
         requires_zip64 = None
         if centDirCount > ZIP_FILECOUNT_LIMIT:
             requires_zip64 = "Files count"
-        elif centDirOffset > ZIP64_LIMIT:
+        lasivyo centDirOffset > ZIP64_LIMIT:
             requires_zip64 = "Central directory offset"
-        elif centDirSize > ZIP64_LIMIT:
+        lasivyo centDirSize > ZIP64_LIMIT:
             requires_zip64 = "Central directory size"
         if requires_zip64:
             # Need to write the ZIP64 end-of-archive records
@@ -1932,7 +1932,7 @@ class ZipFile:
             fp.close()
 
 
-class PyZipFile(ZipFile):
+kundi PyZipFile(ZipFile):
     """Class to create ZIP archives with Python library files and packages."""
 
     def __init__(self, file, mode="r", compression=ZIP_STORED,
@@ -1987,7 +1987,7 @@ class PyZipFile(ZipFile):
                             # This is a package directory, add it
                             self.writepy(path, basename,
                                          filterfunc=filterfunc)  # Recursive call
-                    elif ext == ".py":
+                    lasivyo ext == ".py":
                         if filterfunc and not filterfunc(path):
                             if self.debug:
                                 print('file %r skipped by filterfunc' % path)
@@ -2043,28 +2043,28 @@ class PyZipFile(ZipFile):
 
         file_py  = pathname + ".py"
         file_pyc = pathname + ".pyc"
-        pycache_opt0 = importlib.util.cache_from_source(file_py, optimization='')
-        pycache_opt1 = importlib.util.cache_from_source(file_py, optimization=1)
-        pycache_opt2 = importlib.util.cache_from_source(file_py, optimization=2)
+        pycache_opt0 = importlib.util.cache_kutoka_source(file_py, optimization='')
+        pycache_opt1 = importlib.util.cache_kutoka_source(file_py, optimization=1)
+        pycache_opt2 = importlib.util.cache_kutoka_source(file_py, optimization=2)
         if self._optimize == -1:
             # legacy mode: use whatever file is present
             if (os.path.isfile(file_pyc) and
                   os.stat(file_pyc).st_mtime >= os.stat(file_py).st_mtime):
                 # Use .pyc file.
                 arcname = fname = file_pyc
-            elif (os.path.isfile(pycache_opt0) and
+            lasivyo (os.path.isfile(pycache_opt0) and
                   os.stat(pycache_opt0).st_mtime >= os.stat(file_py).st_mtime):
                 # Use the __pycache__/*.pyc file, but write it to the legacy pyc
                 # file name in the archive.
                 fname = pycache_opt0
                 arcname = file_pyc
-            elif (os.path.isfile(pycache_opt1) and
+            lasivyo (os.path.isfile(pycache_opt1) and
                   os.stat(pycache_opt1).st_mtime >= os.stat(file_py).st_mtime):
                 # Use the __pycache__/*.pyc file, but write it to the legacy pyc
                 # file name in the archive.
                 fname = pycache_opt1
                 arcname = file_pyc
-            elif (os.path.isfile(pycache_opt2) and
+            lasivyo (os.path.isfile(pycache_opt2) and
                   os.stat(pycache_opt2).st_mtime >= os.stat(file_py).st_mtime):
                 # Use the __pycache__/*.pyc file, but write it to the legacy pyc
                 # file name in the archive.
@@ -2075,7 +2075,7 @@ class PyZipFile(ZipFile):
                 if _compile(file_py):
                     if sys.flags.optimize == 0:
                         fname = pycache_opt0
-                    elif sys.flags.optimize == 1:
+                    lasivyo sys.flags.optimize == 1:
                         fname = pycache_opt1
                     else:
                         fname = pycache_opt2
@@ -2091,7 +2091,7 @@ class PyZipFile(ZipFile):
                 arcname = file_pyc
                 if self._optimize == 1:
                     fname = pycache_opt1
-                elif self._optimize == 2:
+                lasivyo self._optimize == 2:
                     fname = pycache_opt2
                 else:
                     msg = "invalid value for 'optimize': {!r}".format(self._optimize)
@@ -2165,7 +2165,7 @@ def _ancestry(path):
         path, tail = posixpath.split(path)
 
 
-class Path:
+kundi Path:
     """
     A pathlib-compatible interface for zip files.
 
@@ -2337,24 +2337,24 @@ def main(args=None):
             print("The following enclosed file is corrupted: {!r}".format(badfile))
         print("Done testing")
 
-    elif args.list is not None:
+    lasivyo args.list is not None:
         src = args.list
         with ZipFile(src, 'r') as zf:
             zf.printdir()
 
-    elif args.extract is not None:
+    lasivyo args.extract is not None:
         src, curdir = args.extract
         with ZipFile(src, 'r') as zf:
             zf.extractall(curdir)
 
-    elif args.create is not None:
+    lasivyo args.create is not None:
         zip_name = args.create.pop(0)
         files = args.create
 
         def addToZip(zf, path, zippath):
             if os.path.isfile(path):
                 zf.write(path, zippath, ZIP_DEFLATED)
-            elif os.path.isdir(path):
+            lasivyo os.path.isdir(path):
                 if zippath:
                     zf.write(path, zippath)
                 for nm in sorted(os.listdir(path)):

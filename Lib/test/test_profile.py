@@ -14,21 +14,21 @@ kutoka test.profilee agiza testfunc, timer
 kutoka test.support.script_helper agiza assert_python_failure, assert_python_ok
 
 
-class ProfileTest(unittest.TestCase):
+kundi ProfileTest(unittest.TestCase):
 
-    profilerclass = profile.Profile
+    profilerkundi = profile.Profile
     profilermodule = profile
     methodnames = ['print_stats', 'print_callers', 'print_callees']
     expected_max_output = ':0(max)'
 
-    def tearDown(self):
+    eleza tearDown(self):
         unlink(TESTFN)
 
-    def get_expected_output(self):
-        return _ProfileOutput
+    eleza get_expected_output(self):
+        rudisha _ProfileOutput
 
     @classmethod
-    def do_profiling(cls):
+    eleza do_profiling(cls):
         results = []
         prof = cls.profilerclass(timer, 0.001)
         start_timer = timer()
@@ -44,11 +44,11 @@ class ProfileTest(unittest.TestCase):
             # Only compare against stats originating kutoka the test file.
             # Prevents outside code (e.g., the io module) kutoka causing
             # unexpected output.
-            output = [line.rstrip() for line in output if mod_name in line]
+            output = [line.rstrip() for line in output ikiwa mod_name in line]
             results.append('\n'.join(output))
-        return results
+        rudisha results
 
-    def test_cprofile(self):
+    eleza test_cprofile(self):
         results = self.do_profiling()
         expected = self.get_expected_output()
         self.assertEqual(results[0], 1000)
@@ -56,16 +56,16 @@ class ProfileTest(unittest.TestCase):
         for i, method in enumerate(self.methodnames):
             a = expected[method]
             b = results[i+1]
-            if a != b:
+            ikiwa a != b:
                 fail.append(f"\nStats.{method} output for "
                             f"{self.profilerclass.__name__} "
                              "does not fit expectation:")
                 fail.extend(unified_diff(a.split('\n'), b.split('\n'),
                             lineterm=""))
-        if fail:
+        ikiwa fail:
             self.fail("\n".join(fail))
 
-    def test_calling_conventions(self):
+    eleza test_calling_conventions(self):
         # Issue #5330: profile and cProfile wouldn't report C functions called
         # with keyword arguments. We test all calling conventions.
         stmts = [
@@ -86,20 +86,20 @@ class ProfileTest(unittest.TestCase):
             self.assertIn(self.expected_max_output, res,
                 "Profiling {0!r} didn't report max:\n{1}".format(stmt, res))
 
-    def test_run(self):
+    eleza test_run(self):
         with silent():
             self.profilermodule.run("int('1')")
         self.profilermodule.run("int('1')", filename=TESTFN)
         self.assertTrue(os.path.exists(TESTFN))
 
-    def test_runctx(self):
+    eleza test_runctx(self):
         with silent():
             self.profilermodule.runctx("testfunc()", globals(), locals())
         self.profilermodule.runctx("testfunc()", globals(), locals(),
                                   filename=TESTFN)
         self.assertTrue(os.path.exists(TESTFN))
 
-    def test_run_profile_as_module(self):
+    eleza test_run_profile_as_module(self):
         # Test that -m switch needs an argument
         assert_python_failure('-m', self.profilermodule.__name__, '-m')
 
@@ -112,16 +112,16 @@ class ProfileTest(unittest.TestCase):
                          '-m', 'timeit', '-n', '1')
 
 
-def regenerate_expected_output(filename, cls):
+eleza regenerate_expected_output(filename, cls):
     filename = filename.rstrip('co')
-    print('Regenerating %s...' % filename)
+    andika('Regenerating %s...' % filename)
     results = cls.do_profiling()
 
     newfile = []
     with open(filename, 'r') as f:
         for line in f:
             newfile.append(line)
-            if line.startswith('#--cut'):
+            ikiwa line.startswith('#--cut'):
                 break
 
     with open(filename, 'w') as f:
@@ -130,10 +130,10 @@ def regenerate_expected_output(filename, cls):
         for i, method in enumerate(cls.methodnames):
             f.write('_ProfileOutput[%r] = """\\\n%s"""\n' % (
                     method, results[i+1]))
-        f.write('\nif __name__ == "__main__":\n    main()\n')
+        f.write('\nikiwa __name__ == "__main__":\n    main()\n')
 
 @contextmanager
-def silent():
+eleza silent():
     stdout = sys.stdout
     try:
         sys.stdout = StringIO()
@@ -141,11 +141,11 @@ def silent():
     finally:
         sys.stdout = stdout
 
-def test_main():
+eleza test_main():
     run_unittest(ProfileTest)
 
-def main():
-    if '-r' not in sys.argv:
+eleza main():
+    ikiwa '-r' not in sys.argv:
         test_main()
     else:
         regenerate_expected_output(__file__, ProfileTest)
@@ -201,5 +201,5 @@ profilee.py:88(helper2)           -> :0(hasattr)(8)   11.964
                                      profilee.py:98(subhelper)(8)   79.960
 profilee.py:98(subhelper)         -> profilee.py:110(__getattr__)(16)   27.972"""
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     main()

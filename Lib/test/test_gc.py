@@ -16,11 +16,11 @@ agiza weakref
 try:
     kutoka _testcapi agiza with_tp_del
 except ImportError:
-    def with_tp_del(cls):
-        class C(object):
-            def __new__(cls, *args, **kwargs):
+    eleza with_tp_del(cls):
+        kundi C(object):
+            eleza __new__(cls, *args, **kwargs):
                 raise TypeError('requires _testcapi.with_tp_del')
-        return C
+        rudisha C
 
 ### Support code
 ###############################################################################
@@ -30,19 +30,19 @@ except ImportError:
 
 # An instance of C1055820 has a self-loop, so becomes cyclic trash when
 # unreachable.
-class C1055820(object):
-    def __init__(self, i):
+kundi C1055820(object):
+    eleza __init__(self, i):
         self.i = i
         self.loop = self
 
-class GC_Detector(object):
+kundi GC_Detector(object):
     # Create an instance I.  Then gc hasn't happened again so long as
     # I.gc_happened is false.
 
-    def __init__(self):
+    eleza __init__(self):
         self.gc_happened = False
 
-        def it_happened(ignored):
+        eleza it_happened(ignored):
             self.gc_happened = True
 
         # Create a piece of cyclic trash that triggers it_happened when
@@ -50,25 +50,25 @@ class GC_Detector(object):
         self.wr = weakref.ref(C1055820(666), it_happened)
 
 @with_tp_del
-class Uncollectable(object):
+kundi Uncollectable(object):
     """Create a reference cycle with multiple __del__ methods.
 
     An object in a reference cycle will never have zero references,
     and so must be garbage collected.  If one or more objects in the
     cycle have __del__ methods, the gc refuses to guess an order,
     and leaves the cycle uncollected."""
-    def __init__(self, partner=None):
-        if partner is None:
+    eleza __init__(self, partner=None):
+        ikiwa partner is None:
             self.partner = Uncollectable(partner=self)
         else:
             self.partner = partner
-    def __tp_del__(self):
+    eleza __tp_del__(self):
         pass
 
-if sysconfig.get_config_vars().get('PY_CFLAGS', ''):
+ikiwa sysconfig.get_config_vars().get('PY_CFLAGS', ''):
     BUILD_WITH_NDEBUG = ('-DNDEBUG' in sysconfig.get_config_vars()['PY_CFLAGS'])
 else:
-    # Usually, sys.gettotalrefcount() is only present if Python has been
+    # Usually, sys.gettotalrefcount() is only present ikiwa Python has been
     # compiled in debug mode. If it's missing, expect that Python has
     # been released in release mode: with NDEBUG defined.
     BUILD_WITH_NDEBUG = (not hasattr(sys, 'gettotalrefcount'))
@@ -76,22 +76,22 @@ else:
 ### Tests
 ###############################################################################
 
-class GCTests(unittest.TestCase):
-    def test_list(self):
+kundi GCTests(unittest.TestCase):
+    eleza test_list(self):
         l = []
         l.append(l)
         gc.collect()
         del l
         self.assertEqual(gc.collect(), 1)
 
-    def test_dict(self):
+    eleza test_dict(self):
         d = {}
         d[1] = d
         gc.collect()
         del d
         self.assertEqual(gc.collect(), 1)
 
-    def test_tuple(self):
+    eleza test_tuple(self):
         # since tuples are immutable we close the loop with a list
         l = []
         t = (l,)
@@ -101,23 +101,23 @@ class GCTests(unittest.TestCase):
         del l
         self.assertEqual(gc.collect(), 2)
 
-    def test_class(self):
-        class A:
+    eleza test_class(self):
+        kundi A:
             pass
         A.a = A
         gc.collect()
         del A
         self.assertNotEqual(gc.collect(), 0)
 
-    def test_newstyleclass(self):
-        class A(object):
+    eleza test_newstyleclass(self):
+        kundi A(object):
             pass
         gc.collect()
         del A
         self.assertNotEqual(gc.collect(), 0)
 
-    def test_instance(self):
-        class A:
+    eleza test_instance(self):
+        kundi A:
             pass
         a = A()
         a.a = a
@@ -126,17 +126,17 @@ class GCTests(unittest.TestCase):
         self.assertNotEqual(gc.collect(), 0)
 
     @requires_type_collecting
-    def test_newinstance(self):
-        class A(object):
+    eleza test_newinstance(self):
+        kundi A(object):
             pass
         a = A()
         a.a = a
         gc.collect()
         del a
         self.assertNotEqual(gc.collect(), 0)
-        class B(list):
+        kundi B(list):
             pass
-        class C(B, A):
+        kundi C(B, A):
             pass
         a = C()
         a.a = a
@@ -150,10 +150,10 @@ class GCTests(unittest.TestCase):
         self.assertNotEqual(gc.collect(), 0)
         self.assertEqual(gc.collect(), 0)
 
-    def test_method(self):
+    eleza test_method(self):
         # Tricky: self.__init__ is a bound method, it references the instance.
-        class A:
-            def __init__(self):
+        kundi A:
+            eleza __init__(self):
                 self.init = self.__init__
         a = A()
         gc.collect()
@@ -161,13 +161,13 @@ class GCTests(unittest.TestCase):
         self.assertNotEqual(gc.collect(), 0)
 
     @cpython_only
-    def test_legacy_finalizer(self):
-        # A() is uncollectable if it is part of a cycle, make sure it shows up
+    eleza test_legacy_finalizer(self):
+        # A() is uncollectable ikiwa it is part of a cycle, make sure it shows up
         # in gc.garbage.
         @with_tp_del
-        class A:
-            def __tp_del__(self): pass
-        class B:
+        kundi A:
+            eleza __tp_del__(self): pass
+        kundi B:
             pass
         a = A()
         a.a = a
@@ -179,7 +179,7 @@ class GCTests(unittest.TestCase):
         del b
         self.assertNotEqual(gc.collect(), 0)
         for obj in gc.garbage:
-            if id(obj) == id_a:
+            ikiwa id(obj) == id_a:
                 del obj.a
                 break
         else:
@@ -187,13 +187,13 @@ class GCTests(unittest.TestCase):
         gc.garbage.remove(obj)
 
     @cpython_only
-    def test_legacy_finalizer_newclass(self):
-        # A() is uncollectable if it is part of a cycle, make sure it shows up
+    eleza test_legacy_finalizer_newclass(self):
+        # A() is uncollectable ikiwa it is part of a cycle, make sure it shows up
         # in gc.garbage.
         @with_tp_del
-        class A(object):
-            def __tp_del__(self): pass
-        class B(object):
+        kundi A(object):
+            eleza __tp_del__(self): pass
+        kundi B(object):
             pass
         a = A()
         a.a = a
@@ -205,38 +205,38 @@ class GCTests(unittest.TestCase):
         del b
         self.assertNotEqual(gc.collect(), 0)
         for obj in gc.garbage:
-            if id(obj) == id_a:
+            ikiwa id(obj) == id_a:
                 del obj.a
                 break
         else:
             self.fail("didn't find obj in garbage (finalizer)")
         gc.garbage.remove(obj)
 
-    def test_function(self):
+    eleza test_function(self):
         # Tricky: f -> d -> f, code should call d.clear() after the exec to
         # break the cycle.
         d = {}
-        exec("def f(): pass\n", d)
+        exec("eleza f(): pass\n", d)
         gc.collect()
         del d
         self.assertEqual(gc.collect(), 2)
 
     @refcount_test
-    def test_frame(self):
-        def f():
+    eleza test_frame(self):
+        eleza f():
             frame = sys._getframe()
         gc.collect()
         f()
         self.assertEqual(gc.collect(), 1)
 
-    def test_saveall(self):
-        # Verify that cyclic garbage like lists show up in gc.garbage if the
+    eleza test_saveall(self):
+        # Verify that cyclic garbage like lists show up in gc.garbage ikiwa the
         # SAVEALL option is enabled.
 
         # First make sure we don't save away other stuff that just happens to
         # be waiting for collection.
         gc.collect()
-        # if this fails, someone else created immortal trash
+        # ikiwa this fails, someone else created immortal trash
         self.assertEqual(gc.garbage, [])
 
         L = []
@@ -253,14 +253,14 @@ class GCTests(unittest.TestCase):
         obj = gc.garbage.pop()
         self.assertEqual(id(obj), id_L)
 
-    def test_del(self):
+    eleza test_del(self):
         # __del__ methods can trigger collection, make this to happen
         thresholds = gc.get_threshold()
         gc.enable()
         gc.set_threshold(1)
 
-        class A:
-            def __del__(self):
+        kundi A:
+            eleza __del__(self):
                 dir(self)
         a = A()
         del a
@@ -268,14 +268,14 @@ class GCTests(unittest.TestCase):
         gc.disable()
         gc.set_threshold(*thresholds)
 
-    def test_del_newclass(self):
+    eleza test_del_newclass(self):
         # __del__ methods can trigger collection, make this to happen
         thresholds = gc.get_threshold()
         gc.enable()
         gc.set_threshold(1)
 
-        class A(object):
-            def __del__(self):
+        kundi A(object):
+            eleza __del__(self):
                 dir(self)
         a = A()
         del a
@@ -290,7 +290,7 @@ class GCTests(unittest.TestCase):
     # To minimize variations, though, we first store the get_count() results
     # and check them at the end.
     @refcount_test
-    def test_get_count(self):
+    eleza test_get_count(self):
         gc.collect()
         a, b, c = gc.get_count()
         x = []
@@ -304,7 +304,7 @@ class GCTests(unittest.TestCase):
         self.assertGreater(d, a)
 
     @refcount_test
-    def test_collect_generations(self):
+    eleza test_collect_generations(self):
         gc.collect()
         # This object will "trickle" into generation N + 1 after
         # each call to collect(N)
@@ -324,12 +324,12 @@ class GCTests(unittest.TestCase):
         self.assertEqual((e, f), (0, 1))
         self.assertEqual((h, i), (0, 0))
 
-    def test_trashcan(self):
-        class Ouch:
+    eleza test_trashcan(self):
+        kundi Ouch:
             n = 0
-            def __del__(self):
+            eleza __del__(self):
                 Ouch.n = Ouch.n + 1
-                if Ouch.n % 17 == 0:
+                ikiwa Ouch.n % 17 == 0:
                     gc.collect()
 
         # "trashcan" is a hack to prevent stack overflow when deallocating
@@ -359,26 +359,26 @@ class GCTests(unittest.TestCase):
                 v = {1: v, 2: Ouch()}
         gc.disable()
 
-    def test_trashcan_threads(self):
+    eleza test_trashcan_threads(self):
         # Issue #13992: trashcan mechanism should be thread-safe
         NESTING = 60
         N_THREADS = 2
 
-        def sleeper_gen():
+        eleza sleeper_gen():
             """A generator that releases the GIL when closed or dealloc'ed."""
             try:
                 yield
             finally:
                 time.sleep(0.000001)
 
-        class C(list):
+        kundi C(list):
             # Appending to a list is atomic, which avoids the use of a lock.
             inits = []
             dels = []
-            def __init__(self, alist):
+            eleza __init__(self, alist):
                 self[:] = alist
                 C.inits.append(None)
-            def __del__(self):
+            eleza __del__(self):
                 # This __del__ is called by subtype_dealloc().
                 C.dels.append(None)
                 # `g` will release the GIL when garbage-collected.  This
@@ -389,7 +389,7 @@ class GCTests(unittest.TestCase):
                 # Now that __del__ is finished, subtype_dealloc will proceed
                 # to call list_dealloc, which also uses the trashcan mechanism.
 
-        def make_nested():
+        eleza make_nested():
             """Create a sufficiently nested container object so that the
             trashcan mechanism is invoked when deallocating it."""
             x = C([])
@@ -397,7 +397,7 @@ class GCTests(unittest.TestCase):
                 x = [C([x])]
             del x
 
-        def run_thread():
+        eleza run_thread():
             """Exercise make_nested() in a loop."""
             while not exit:
                 make_nested()
@@ -417,9 +417,9 @@ class GCTests(unittest.TestCase):
         gc.collect()
         self.assertEqual(len(C.inits), len(C.dels))
 
-    def test_boom(self):
-        class Boom:
-            def __getattr__(self, someattribute):
+    eleza test_boom(self):
+        kundi Boom:
+            eleza __getattr__(self, someattribute):
                 del self.attr
                 raise AttributeError
 
@@ -441,14 +441,14 @@ class GCTests(unittest.TestCase):
         self.assertEqual(gc.collect(), 4)
         self.assertEqual(len(gc.garbage), garbagelen)
 
-    def test_boom2(self):
-        class Boom2:
-            def __init__(self):
+    eleza test_boom2(self):
+        kundi Boom2:
+            eleza __init__(self):
                 self.x = 0
 
-            def __getattr__(self, someattribute):
+            eleza __getattr__(self, someattribute):
                 self.x += 1
-                if self.x > 1:
+                ikiwa self.x > 1:
                     del self.attr
                 raise AttributeError
 
@@ -468,12 +468,12 @@ class GCTests(unittest.TestCase):
         self.assertEqual(gc.collect(), 4)
         self.assertEqual(len(gc.garbage), garbagelen)
 
-    def test_boom_new(self):
+    eleza test_boom_new(self):
         # boom__new and boom2_new are exactly like boom and boom2, except use
         # new-style classes.
 
-        class Boom_New(object):
-            def __getattr__(self, someattribute):
+        kundi Boom_New(object):
+            eleza __getattr__(self, someattribute):
                 del self.attr
                 raise AttributeError
 
@@ -488,14 +488,14 @@ class GCTests(unittest.TestCase):
         self.assertEqual(gc.collect(), 4)
         self.assertEqual(len(gc.garbage), garbagelen)
 
-    def test_boom2_new(self):
-        class Boom2_New(object):
-            def __init__(self):
+    eleza test_boom2_new(self):
+        kundi Boom2_New(object):
+            eleza __init__(self):
                 self.x = 0
 
-            def __getattr__(self, someattribute):
+            eleza __getattr__(self, someattribute):
                 self.x += 1
-                if self.x > 1:
+                ikiwa self.x > 1:
                     del self.attr
                 raise AttributeError
 
@@ -510,7 +510,7 @@ class GCTests(unittest.TestCase):
         self.assertEqual(gc.collect(), 4)
         self.assertEqual(len(gc.garbage), garbagelen)
 
-    def test_get_referents(self):
+    eleza test_get_referents(self):
         alist = [1, 3, 5]
         got = gc.get_referents(alist)
         got.sort()
@@ -533,7 +533,7 @@ class GCTests(unittest.TestCase):
 
         self.assertEqual(gc.get_referents(1, 'a', 4j), [])
 
-    def test_is_tracked(self):
+    eleza test_is_tracked(self):
         # Atomic built-in types are not tracked, user-defined objects and
         # mutable containers are.
         # NOTE: types with special optimizations (e.g. tuple) have tests
@@ -552,22 +552,22 @@ class GCTests(unittest.TestCase):
         self.assertFalse(gc.is_tracked(object))
         self.assertFalse(gc.is_tracked(object()))
 
-        class UserClass:
+        kundi UserClass:
             pass
 
-        class UserInt(int):
+        kundi UserInt(int):
             pass
 
-        # Base class is object; no extra fields.
-        class UserClassSlots:
+        # Base kundi is object; no extra fields.
+        kundi UserClassSlots:
             __slots__ = ()
 
-        # Base class is fixed size larger than object; no extra fields.
-        class UserFloatSlots(float):
+        # Base kundi is fixed size larger than object; no extra fields.
+        kundi UserFloatSlots(float):
             __slots__ = ()
 
-        # Base class is variable size; no extra fields.
-        class UserIntSlots(int):
+        # Base kundi is variable size; no extra fields.
+        kundi UserIntSlots(int):
             __slots__ = ()
 
         self.assertTrue(gc.is_tracked(gc))
@@ -580,11 +580,11 @@ class GCTests(unittest.TestCase):
         self.assertFalse(gc.is_tracked(UserFloatSlots()))
         self.assertFalse(gc.is_tracked(UserIntSlots()))
 
-    def test_bug1055820b(self):
+    eleza test_bug1055820b(self):
         # Corresponds to temp2b.py in the bug report.
 
         ouch = []
-        def callback(ignored):
+        eleza callback(ignored):
             ouch[:] = [wr() for wr in WRs]
 
         Cs = [C1055820(i) for i in range(2)]
@@ -604,7 +604,7 @@ class GCTests(unittest.TestCase):
             # would be damaged, with an empty __dict__.
             self.assertEqual(x, None)
 
-    def test_bug21435(self):
+    eleza test_bug21435(self):
         # This is a poor test - its only virtue is that it happened to
         # segfault on Tim's Windows box before the patch for 21435 was
         # applied.  That's a nasty bug relying on specific pieces of cyclic
@@ -612,21 +612,21 @@ class GCTests(unittest.TestCase):
         # input list.
         # But there's no reliable way to force that order kutoka Python code,
         # so over time chances are good this test won't really be testing much
-        # of anything anymore.  Still, if it blows up, there's _some_
+        # of anything anymore.  Still, ikiwa it blows up, there's _some_
         # problem ;-)
         gc.collect()
 
-        class A:
+        kundi A:
             pass
 
-        class B:
-            def __init__(self, x):
+        kundi B:
+            eleza __init__(self, x):
                 self.x = x
 
-            def __del__(self):
+            eleza __del__(self):
                 self.attr = None
 
-        def do_work():
+        eleza do_work():
             a = A()
             b = B(A())
 
@@ -637,18 +637,18 @@ class GCTests(unittest.TestCase):
         gc.collect() # this blows up (bad C pointer) when it fails
 
     @cpython_only
-    def test_garbage_at_shutdown(self):
+    eleza test_garbage_at_shutdown(self):
         agiza subprocess
-        code = """if 1:
+        code = """ikiwa 1:
             agiza gc
             agiza _testcapi
             @_testcapi.with_tp_del
-            class X:
-                def __init__(self, name):
+            kundi X:
+                eleza __init__(self, name):
                     self.name = name
-                def __repr__(self):
-                    return "<X %%r>" %% self.name
-                def __tp_del__(self):
+                eleza __repr__(self):
+                    rudisha "<X %%r>" %% self.name
+                eleza __tp_del__(self):
                     pass
 
             x = X('first')
@@ -657,7 +657,7 @@ class GCTests(unittest.TestCase):
             del x
             gc.set_debug(%s)
         """
-        def run_command(code):
+        eleza run_command(code):
             p = subprocess.Popen([sys.executable, "-Wd", "-c", code],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE)
@@ -666,7 +666,7 @@ class GCTests(unittest.TestCase):
             p.stderr.close()
             self.assertEqual(p.returncode, 0)
             self.assertEqual(stdout.strip(), b"")
-            return strip_python_stderr(stderr)
+            rudisha strip_python_stderr(stderr)
 
         stderr = run_command(code % "0")
         self.assertIn(b"ResourceWarning: gc: 2 uncollectable objects at "
@@ -686,13 +686,13 @@ class GCTests(unittest.TestCase):
         self.assertNotIn(b"uncollectable objects at shutdown", stderr)
 
     @requires_type_collecting
-    def test_gc_main_module_at_shutdown(self):
+    eleza test_gc_main_module_at_shutdown(self):
         # Create a reference cycle through the __main__ module and check
         # it gets collected at interpreter shutdown.
-        code = """if 1:
-            class C:
-                def __del__(self):
-                    print('__del__ called')
+        code = """ikiwa 1:
+            kundi C:
+                eleza __del__(self):
+                    andika('__del__ called')
             l = [C()]
             l.append(l)
             """
@@ -700,17 +700,17 @@ class GCTests(unittest.TestCase):
         self.assertEqual(out.strip(), b'__del__ called')
 
     @requires_type_collecting
-    def test_gc_ordinary_module_at_shutdown(self):
+    eleza test_gc_ordinary_module_at_shutdown(self):
         # Same as above, but with a non-__main__ module.
         with temp_dir() as script_dir:
-            module = """if 1:
-                class C:
-                    def __del__(self):
-                        print('__del__ called')
+            module = """ikiwa 1:
+                kundi C:
+                    eleza __del__(self):
+                        andika('__del__ called')
                 l = [C()]
                 l.append(l)
                 """
-            code = """if 1:
+            code = """ikiwa 1:
                 agiza sys
                 sys.path.insert(0, %r)
                 agiza gctest
@@ -720,11 +720,11 @@ class GCTests(unittest.TestCase):
             self.assertEqual(out.strip(), b'__del__ called')
 
     @requires_type_collecting
-    def test_global_del_SystemExit(self):
-        code = """if 1:
-            class ClassWithDel:
-                def __del__(self):
-                    print('__del__ called')
+    eleza test_global_del_SystemExit(self):
+        code = """ikiwa 1:
+            kundi ClassWithDel:
+                eleza __del__(self):
+                    andika('__del__ called')
             a = ClassWithDel()
             a.link = a
             raise SystemExit(0)"""
@@ -734,7 +734,7 @@ class GCTests(unittest.TestCase):
         rc, out, err = assert_python_ok(TESTFN)
         self.assertEqual(out.strip(), b'__del__ called')
 
-    def test_get_stats(self):
+    eleza test_get_stats(self):
         stats = gc.get_stats()
         self.assertEqual(len(stats), 3)
         for st in stats:
@@ -745,7 +745,7 @@ class GCTests(unittest.TestCase):
             self.assertGreaterEqual(st["collections"], 0)
             self.assertGreaterEqual(st["uncollectable"], 0)
         # Check that collection counts are incremented correctly
-        if gc.isenabled():
+        ikiwa gc.isenabled():
             self.addCleanup(gc.enable)
             gc.disable()
         old = gc.get_stats()
@@ -760,13 +760,13 @@ class GCTests(unittest.TestCase):
         self.assertEqual(new[1]["collections"], old[1]["collections"])
         self.assertEqual(new[2]["collections"], old[2]["collections"] + 1)
 
-    def test_freeze(self):
+    eleza test_freeze(self):
         gc.freeze()
         self.assertGreater(gc.get_freeze_count(), 0)
         gc.unfreeze()
         self.assertEqual(gc.get_freeze_count(), 0)
 
-    def test_get_objects(self):
+    eleza test_get_objects(self):
         gc.collect()
         l = []
         l.append(l)
@@ -812,7 +812,7 @@ class GCTests(unittest.TestCase):
         del l
         gc.collect()
 
-    def test_get_objects_arguments(self):
+    eleza test_get_objects_arguments(self):
         gc.collect()
         self.assertEqual(len(gc.get_objects()),
                          len(gc.get_objects(generation=None)))
@@ -822,30 +822,30 @@ class GCTests(unittest.TestCase):
         self.assertRaises(TypeError, gc.get_objects, "1")
         self.assertRaises(TypeError, gc.get_objects, 1.234)
 
-    def test_38379(self):
+    eleza test_38379(self):
         # When a finalizer resurrects objects, stats were reporting them as
         # having been collected.  This affected both collect()'s return
         # value and the dicts returned by get_stats().
         N = 100
 
-        class A:  # simple self-loop
-            def __init__(self):
+        kundi A:  # simple self-loop
+            eleza __init__(self):
                 self.me = self
 
-        class Z(A):  # resurrecting __del__
-            def __del__(self):
+        kundi Z(A):  # resurrecting __del__
+            eleza __del__(self):
                 zs.append(self)
 
         zs = []
 
-        def getstats():
+        eleza getstats():
             d = gc.get_stats()[-1]
-            return d['collected'], d['uncollectable']
+            rudisha d['collected'], d['uncollectable']
 
         gc.collect()
         gc.disable()
 
-        # No problems if just collecting A() instances.
+        # No problems ikiwa just collecting A() instances.
         oldc, oldnc = getstats()
         for i in range(N):
             A()
@@ -893,8 +893,8 @@ class GCTests(unittest.TestCase):
 
         gc.enable()
 
-class GCCallbackTests(unittest.TestCase):
-    def setUp(self):
+kundi GCCallbackTests(unittest.TestCase):
+    eleza setUp(self):
         # Save gc state and disable it.
         self.enabled = gc.isenabled()
         gc.disable()
@@ -904,24 +904,24 @@ class GCCallbackTests(unittest.TestCase):
         gc.callbacks.append(self.cb2)
         self.othergarbage = []
 
-    def tearDown(self):
+    eleza tearDown(self):
         # Restore gc state
         del self.visit
         gc.callbacks.remove(self.cb1)
         gc.callbacks.remove(self.cb2)
         gc.set_debug(self.debug)
-        if self.enabled:
+        ikiwa self.enabled:
             gc.enable()
         # destroy any uncollectables
         gc.collect()
         for obj in gc.garbage:
-            if isinstance(obj, Uncollectable):
+            ikiwa isinstance(obj, Uncollectable):
                 obj.partner = None
         del gc.garbage[:]
         del self.othergarbage
         gc.collect()
 
-    def preclean(self):
+    eleza preclean(self):
         # Remove all fluff kutoka the system.  Invoke this function
         # manually rather than through self.setUp() for maximum
         # safety.
@@ -931,20 +931,20 @@ class GCCallbackTests(unittest.TestCase):
         self.othergarbage.append(garbage)
         self.visit = []
 
-    def cb1(self, phase, info):
+    eleza cb1(self, phase, info):
         self.visit.append((1, phase, dict(info)))
 
-    def cb2(self, phase, info):
+    eleza cb2(self, phase, info):
         self.visit.append((2, phase, dict(info)))
-        if phase == "stop" and hasattr(self, "cleanup"):
+        ikiwa phase == "stop" and hasattr(self, "cleanup"):
             # Clean Uncollectable kutoka garbage
-            uc = [e for e in gc.garbage if isinstance(e, Uncollectable)]
+            uc = [e for e in gc.garbage ikiwa isinstance(e, Uncollectable)]
             gc.garbage[:] = [e for e in gc.garbage
-                             if not isinstance(e, Uncollectable)]
+                             ikiwa not isinstance(e, Uncollectable)]
             for e in uc:
                 e.partner = None
 
-    def test_collect(self):
+    eleza test_collect(self):
         self.preclean()
         gc.collect()
         # Algorithmically verify the contents of self.visit
@@ -952,15 +952,15 @@ class GCCallbackTests(unittest.TestCase):
 
         # Count the number of visits to each callback
         n = [v[0] for v in self.visit]
-        n1 = [i for i in n if i == 1]
-        n2 = [i for i in n if i == 2]
+        n1 = [i for i in n ikiwa i == 1]
+        n2 = [i for i in n ikiwa i == 2]
         self.assertEqual(n1, [1]*2)
         self.assertEqual(n2, [2]*2)
 
         # Count that we got the right number of start and stop callbacks.
         n = [v[1] for v in self.visit]
-        n1 = [i for i in n if i == "start"]
-        n2 = [i for i in n if i == "stop"]
+        n1 = [i for i in n ikiwa i == "start"]
+        n2 = [i for i in n ikiwa i == "stop"]
         self.assertEqual(n1, ["start"]*2)
         self.assertEqual(n2, ["stop"]*2)
 
@@ -971,7 +971,7 @@ class GCCallbackTests(unittest.TestCase):
             self.assertTrue("collected" in info)
             self.assertTrue("uncollectable" in info)
 
-    def test_collect_generation(self):
+    eleza test_collect_generation(self):
         self.preclean()
         gc.collect(2)
         for v in self.visit:
@@ -979,7 +979,7 @@ class GCCallbackTests(unittest.TestCase):
             self.assertEqual(info["generation"], 2)
 
     @cpython_only
-    def test_collect_garbage(self):
+    eleza test_collect_garbage(self):
         self.preclean()
         # Each of these cause four objects to be garbage: Two
         # Uncollectables and their instance dicts.
@@ -988,7 +988,7 @@ class GCCallbackTests(unittest.TestCase):
         C1055820(666)
         gc.collect()
         for v in self.visit:
-            if v[1] != "stop":
+            ikiwa v[1] != "stop":
                 continue
             info = v[2]
             self.assertEqual(info["collected"], 2)
@@ -1005,7 +1005,7 @@ class GCCallbackTests(unittest.TestCase):
         gc.garbage[:] = []
         gc.collect()
         for v in self.visit:
-            if v[1] != "stop":
+            ikiwa v[1] != "stop":
                 continue
             info = v[2]
             self.assertEqual(info["collected"], 0)
@@ -1017,11 +1017,11 @@ class GCCallbackTests(unittest.TestCase):
 
     @unittest.skipIf(BUILD_WITH_NDEBUG,
                      'built with -NDEBUG')
-    def test_refcount_errors(self):
+    eleza test_refcount_errors(self):
         self.preclean()
         # Verify the "handling" of objects with broken refcounts
 
-        # Skip the test if ctypes is not available
+        # Skip the test ikiwa ctypes is not available
         import_module("ctypes")
 
         agiza subprocess
@@ -1067,14 +1067,14 @@ class GCCallbackTests(unittest.TestCase):
             br'address : [0-9a-fA-Fx]+')
 
 
-class GCTogglingTests(unittest.TestCase):
-    def setUp(self):
+kundi GCTogglingTests(unittest.TestCase):
+    eleza setUp(self):
         gc.enable()
 
-    def tearDown(self):
+    eleza tearDown(self):
         gc.disable()
 
-    def test_bug1055820c(self):
+    eleza test_bug1055820c(self):
         # Corresponds to temp2c.py in the bug report.  This is pretty
         # elaborate.
 
@@ -1090,7 +1090,7 @@ class GCTogglingTests(unittest.TestCase):
         c2wr = weakref.ref(c2) # no callback!
 
         ouch = []
-        def callback(ignored):
+        eleza callback(ignored):
             ouch[:] = [c2wr()]
 
         # The callback gets associated with a wr on an object in generation 2.
@@ -1133,7 +1133,7 @@ class GCTogglingTests(unittest.TestCase):
         detector = GC_Detector()
         while not detector.gc_happened:
             i += 1
-            if i > 10000:
+            ikiwa i > 10000:
                 self.fail("gc didn't happen after 10000 iterations")
             self.assertEqual(len(ouch), 0)
             junk.append([])  # this will eventually trigger gc
@@ -1144,14 +1144,14 @@ class GCTogglingTests(unittest.TestCase):
             # with an empty __dict__.
             self.assertEqual(x, None)
 
-    def test_bug1055820d(self):
+    eleza test_bug1055820d(self):
         # Corresponds to temp2d.py in the bug report.  This is very much like
         # test_bug1055820c, but uses a __del__ method instead of a weakref
         # callback to sneak in a resurrection of cyclic trash.
 
         ouch = []
-        class D(C1055820):
-            def __del__(self):
+        kundi D(C1055820):
+            eleza __del__(self):
                 ouch[:] = [c2wr()]
 
         d0 = D(0)
@@ -1200,7 +1200,7 @@ class GCTogglingTests(unittest.TestCase):
         i = 0
         while not detector.gc_happened:
             i += 1
-            if i > 10000:
+            ikiwa i > 10000:
                 self.fail("gc didn't happen after 10000 iterations")
             self.assertEqual(len(ouch), 0)
             junk.append([])  # this will eventually trigger gc
@@ -1211,7 +1211,7 @@ class GCTogglingTests(unittest.TestCase):
             # empty __dict__.
             self.assertEqual(x, None)
 
-def test_main():
+eleza test_main():
     enabled = gc.isenabled()
     gc.disable()
     assert not gc.isenabled()
@@ -1223,14 +1223,14 @@ def test_main():
         run_unittest(GCTests, GCTogglingTests, GCCallbackTests)
     finally:
         gc.set_debug(debug)
-        # test gc.enable() even if GC is disabled by default
-        if verbose:
-            print("restoring automatic collection")
+        # test gc.enable() even ikiwa GC is disabled by default
+        ikiwa verbose:
+            andika("restoring automatic collection")
         # make sure to always test gc.enable()
         gc.enable()
         assert gc.isenabled()
-        if not enabled:
+        ikiwa not enabled:
             gc.disable()
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

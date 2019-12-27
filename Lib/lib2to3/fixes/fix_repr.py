@@ -8,16 +8,16 @@ kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Call, Name, parenthesize
 
 
-class FixRepr(fixer_base.BaseFix):
+kundi FixRepr(fixer_base.BaseFix):
 
     BM_compatible = True
     PATTERN = """
               atom < '`' expr=any '`' >
               """
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         expr = results["expr"].clone()
 
-        if expr.type == self.syms.testlist1:
+        ikiwa expr.type == self.syms.testlist1:
             expr = parenthesize(expr)
-        return Call(Name("repr"), [expr], prefix=node.prefix)
+        rudisha Call(Name("repr"), [expr], prefix=node.prefix)

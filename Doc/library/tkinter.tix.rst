@@ -18,8 +18,8 @@
 
 The :mod:`tkinter.tix` (Tk Interface Extension) module provides an additional
 rich set of widgets. Although the standard Tk library has many useful widgets,
-they are far from complete. The :mod:`tkinter.tix` library provides most of the
-commonly needed widgets that are missing from standard Tk: :class:`HList`,
+they are far kutoka complete. The :mod:`tkinter.tix` library provides most of the
+commonly needed widgets that are missing kutoka standard Tk: :class:`HList`,
 :class:`ComboBox`, :class:`Control` (a.k.a. SpinBox) and an assortment of
 scrollable widgets.
 :mod:`tkinter.tix` also includes many more widgets that are generally useful in
@@ -60,19 +60,19 @@ Using Tix
 
    Classes in the :mod:`tkinter.tix` module subclasses the classes in the
    :mod:`tkinter`. The former imports the latter, so to use :mod:`tkinter.tix`
-   with Tkinter, all you need to do is to import one module. In general, you
-   can just import :mod:`tkinter.tix`, and replace the toplevel call to
+   with Tkinter, all you need to do is to agiza one module. In general, you
+   can just agiza :mod:`tkinter.tix`, and replace the toplevel call to
    :class:`tkinter.Tk` with :class:`tix.Tk`::
 
-      from tkinter import tix
-      from tkinter.constants import *
+      kutoka tkinter agiza tix
+      kutoka tkinter.constants agiza *
       root = tix.Tk()
 
 To use :mod:`tkinter.tix`, you must have the Tix widgets installed, usually
 alongside your installation of the Tk widgets. To test your installation, try
 the following::
 
-   from tkinter import tix
+   kutoka tkinter agiza tix
    root = tix.Tk()
    root.tk.eval('package require Tix')
 
@@ -115,7 +115,7 @@ Basic Widgets
    The `ComboBox
    <http://tix.sourceforge.net/dist/current/man/html/TixCmd/tixComboBox.htm>`_
    widget is similar to the combo box control in MS Windows. The user can select a
-   choice by either typing in the entry subwidget or selecting from the listbox
+   choice by either typing in the entry subwidget or selecting kutoka the listbox
    subwidget.
 
 .. Python Demo of:
@@ -431,7 +431,7 @@ The :mod:`tkinter.tix` module adds:
 
 * `pixmap <http://tix.sourceforge.net/dist/current/man/html/TixCmd/pixmap.htm>`_
   capabilities to all :mod:`tkinter.tix` and :mod:`tkinter` widgets to create
-  color images from XPM files.
+  color images kutoka XPM files.
 
   .. Python Demo of:
   .. \ulink{XPM Image In Button}{http://tix.sourceforge.net/dist/current/demos/samples/Xpm.tcl}
@@ -442,7 +442,7 @@ The :mod:`tkinter.tix` module adds:
   <http://tix.sourceforge.net/dist/current/man/html/TixCmd/compound.htm>`_ image
   types can be used to create images that consists of multiple horizontal lines;
   each line is composed of a series of items (texts, bitmaps, images or spaces)
-  arranged from left to right. For example, a compound image can be used to
+  arranged kutoka left to right. For example, a compound image can be used to
   display a bitmap and a text string simultaneously in a Tk :class:`Button`
   widget.
 
@@ -464,7 +464,7 @@ Miscellaneous Widgets
 
    The `InputOnly
    <http://tix.sourceforge.net/dist/current/man/html/TixCmd/tixInputOnly.htm>`_
-   widgets are to accept inputs from the user, which can be done with the ``bind``
+   widgets are to accept inputs kutoka the user, which can be done with the ``bind``
    command (Unix only).
 
 
@@ -496,7 +496,7 @@ Tix Commands
 
    To view the current settings, the common usage is::
 
-      from tkinter import tix
+      kutoka tkinter agiza tix
       root = tix.Tk()
       print(root.tix_configure())
 
@@ -541,10 +541,10 @@ Tix Commands
 
 .. method:: tixCommand.tix_filedialog([dlgclass])
 
-   Returns the file selection dialog that may be shared among different calls from
+   Returns the file selection dialog that may be shared among different calls kutoka
    this application.  This method will create a file selection dialog widget when
    it is called the first time. This dialog will be returned by all subsequent
-   calls to :meth:`tix_filedialog`.  An optional dlgclass parameter can be passed
+   calls to :meth:`tix_filedialog`.  An optional dlgkundi parameter can be passed
    as a string to specified what type of file selection dialog widget is desired.
    Possible options are ``tix``, ``FileSelectDialog`` or ``tixExFileSelectDialog``.
 

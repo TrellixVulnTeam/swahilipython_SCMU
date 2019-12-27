@@ -19,36 +19,36 @@ WINEXE = (sys.platform == 'win32' and getattr(sys, 'frozen', False))
 WINSERVICE = sys.executable.lower().endswith("pythonservice.exe")
 
 
-def _path_eq(p1, p2):
-    return p1 == p2 or os.path.normcase(p1) == os.path.normcase(p2)
+eleza _path_eq(p1, p2):
+    rudisha p1 == p2 or os.path.normcase(p1) == os.path.normcase(p2)
 
 WINENV = not _path_eq(sys.executable, sys._base_executable)
 
 
-def _close_handles(*handles):
+eleza _close_handles(*handles):
     for handle in handles:
         _winapi.CloseHandle(handle)
 
 
 #
-# We define a Popen class similar to the one kutoka subprocess, but
+# We define a Popen kundi similar to the one kutoka subprocess, but
 # whose constructor takes a process object as its argument.
 #
 
-class Popen(object):
+kundi Popen(object):
     '''
     Start a subprocess to run the code of a process object
     '''
     method = 'spawn'
 
-    def __init__(self, process_obj):
+    eleza __init__(self, process_obj):
         prep_data = spawn.get_preparation_data(process_obj._name)
 
         # read end of pipe will be duplicated by the child process
         # -- see spawn_main() in spawn.py.
         #
         # bpo-33929: Previously, the read end of pipe was "stolen" by the child
-        # process, but it leaked a handle if the child process had been
+        # process, but it leaked a handle ikiwa the child process had been
         # terminated before it could steal the handle kutoka the parent process.
         rhandle, whandle = _winapi.CreatePipe(None, 0)
         wfd = msvcrt.open_osfhandle(whandle, 0)
@@ -60,7 +60,7 @@ class Popen(object):
 
         # bpo-35797: When running in a venv, we bypass the redirect
         # executor and launch our base Python.
-        if WINENV and _path_eq(python_exe, sys.executable):
+        ikiwa WINENV and _path_eq(python_exe, sys.executable):
             python_exe = sys._base_executable
             env = os.environ.copy()
             env["__PYVENV_LAUNCHER__"] = sys.executable
@@ -94,38 +94,38 @@ class Popen(object):
             finally:
                 set_spawning_popen(None)
 
-    def duplicate_for_child(self, handle):
+    eleza duplicate_for_child(self, handle):
         assert self is get_spawning_popen()
-        return reduction.duplicate(handle, self.sentinel)
+        rudisha reduction.duplicate(handle, self.sentinel)
 
-    def wait(self, timeout=None):
-        if self.returncode is None:
-            if timeout is None:
+    eleza wait(self, timeout=None):
+        ikiwa self.returncode is None:
+            ikiwa timeout is None:
                 msecs = _winapi.INFINITE
             else:
                 msecs = max(0, int(timeout * 1000 + 0.5))
 
             res = _winapi.WaitForSingleObject(int(self._handle), msecs)
-            if res == _winapi.WAIT_OBJECT_0:
+            ikiwa res == _winapi.WAIT_OBJECT_0:
                 code = _winapi.GetExitCodeProcess(self._handle)
-                if code == TERMINATE:
+                ikiwa code == TERMINATE:
                     code = -signal.SIGTERM
                 self.returncode = code
 
-        return self.returncode
+        rudisha self.returncode
 
-    def poll(self):
-        return self.wait(timeout=0)
+    eleza poll(self):
+        rudisha self.wait(timeout=0)
 
-    def terminate(self):
-        if self.returncode is None:
+    eleza terminate(self):
+        ikiwa self.returncode is None:
             try:
                 _winapi.TerminateProcess(int(self._handle), TERMINATE)
             except OSError:
-                if self.wait(timeout=1.0) is None:
+                ikiwa self.wait(timeout=1.0) is None:
                     raise
 
     kill = terminate
 
-    def close(self):
+    eleza close(self):
         self.finalizer()

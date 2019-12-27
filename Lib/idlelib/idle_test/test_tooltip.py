@@ -2,7 +2,7 @@
 
 Coverage is 100% after excluding 6 lines with "# pragma: no cover".
 They involve TclErrors that either should or should not happen in a
-particular situation, and which are 'pass'ed if they do.
+particular situation, and which are 'pass'ed ikiwa they do.
 """
 
 kutoka idlelib.tooltip agiza TooltipBase, Hovertip
@@ -15,27 +15,27 @@ kutoka tkinter agiza Button, Tk, Toplevel
 agiza unittest
 
 
-def setUpModule():
+eleza setUpModule():
     global root
     root = Tk()
 
-def tearDownModule():
+eleza tearDownModule():
     global root
     root.update_idletasks()
     root.destroy()
     del root
 
 
-def add_call_counting(func):
+eleza add_call_counting(func):
     @wraps(func)
-    def wrapped_func(*args, **kwargs):
+    eleza wrapped_func(*args, **kwargs):
         wrapped_func.call_args_list.append((args, kwargs))
-        return func(*args, **kwargs)
+        rudisha func(*args, **kwargs)
     wrapped_func.call_args_list = []
-    return wrapped_func
+    rudisha wrapped_func
 
 
-def _make_top_and_button(testobj):
+eleza _make_top_and_button(testobj):
     global root
     top = Toplevel(root)
     testobj.addCleanup(top.destroy)
@@ -44,14 +44,14 @@ def _make_top_and_button(testobj):
     button.pack()
     testobj.addCleanup(button.destroy)
     top.lift()
-    return top, button
+    rudisha top, button
 
 
-class ToolTipBaseTest(unittest.TestCase):
-    def setUp(self):
+kundi ToolTipBaseTest(unittest.TestCase):
+    eleza setUp(self):
         self.top, self.button = _make_top_and_button(self)
 
-    def test_base_class_is_unusable(self):
+    eleza test_base_class_is_unusable(self):
         global root
         top = Toplevel(root)
         self.addCleanup(top.destroy)
@@ -65,21 +65,21 @@ class ToolTipBaseTest(unittest.TestCase):
             tooltip.showtip()
 
 
-class HovertipTest(unittest.TestCase):
-    def setUp(self):
+kundi HovertipTest(unittest.TestCase):
+    eleza setUp(self):
         self.top, self.button = _make_top_and_button(self)
 
-    def is_tipwindow_shown(self, tooltip):
-        return tooltip.tipwindow and tooltip.tipwindow.winfo_viewable()
+    eleza is_tipwindow_shown(self, tooltip):
+        rudisha tooltip.tipwindow and tooltip.tipwindow.winfo_viewable()
 
-    def test_showtip(self):
+    eleza test_showtip(self):
         tooltip = Hovertip(self.button, 'ToolTip text')
         self.addCleanup(tooltip.hidetip)
         self.assertFalse(self.is_tipwindow_shown(tooltip))
         tooltip.showtip()
         self.assertTrue(self.is_tipwindow_shown(tooltip))
 
-    def test_showtip_twice(self):
+    eleza test_showtip_twice(self):
         tooltip = Hovertip(self.button, 'ToolTip text')
         self.addCleanup(tooltip.hidetip)
         self.assertFalse(self.is_tipwindow_shown(tooltip))
@@ -90,14 +90,14 @@ class HovertipTest(unittest.TestCase):
         self.assertTrue(self.is_tipwindow_shown(tooltip))
         self.assertIs(tooltip.tipwindow, orig_tipwindow)
 
-    def test_hidetip(self):
+    eleza test_hidetip(self):
         tooltip = Hovertip(self.button, 'ToolTip text')
         self.addCleanup(tooltip.hidetip)
         tooltip.showtip()
         tooltip.hidetip()
         self.assertFalse(self.is_tipwindow_shown(tooltip))
 
-    def test_showtip_on_mouse_enter_no_delay(self):
+    eleza test_showtip_on_mouse_enter_no_delay(self):
         tooltip = Hovertip(self.button, 'ToolTip text', hover_delay=None)
         self.addCleanup(tooltip.hidetip)
         tooltip.showtip = add_call_counting(tooltip.showtip)
@@ -108,7 +108,7 @@ class HovertipTest(unittest.TestCase):
         self.assertTrue(self.is_tipwindow_shown(tooltip))
         self.assertGreater(len(tooltip.showtip.call_args_list), 0)
 
-    def test_hover_with_delay(self):
+    eleza test_hover_with_delay(self):
         # Run multiple tests requiring an actual delay simultaneously.
 
         # Test #1: A hover tip with a non-zero delay appears after the delay.
@@ -144,7 +144,7 @@ class HovertipTest(unittest.TestCase):
         self.assertFalse(self.is_tipwindow_shown(tooltip2))
         self.assertEqual(tooltip2.showtip.call_args_list, [])
 
-    def test_hidetip_on_mouse_leave(self):
+    eleza test_hidetip_on_mouse_leave(self):
         tooltip = Hovertip(self.button, 'ToolTip text', hover_delay=None)
         self.addCleanup(tooltip.hidetip)
         tooltip.showtip = add_call_counting(tooltip.showtip)
@@ -157,5 +157,5 @@ class HovertipTest(unittest.TestCase):
         self.assertGreater(len(tooltip.showtip.call_args_list), 0)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

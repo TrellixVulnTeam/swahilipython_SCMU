@@ -56,7 +56,7 @@ sys.modules['decimal'] = orig_sys_decimal
 
 # Useful Test Constant
 Signals = {
-  C: tuple(C.getcontext().flags.keys()) if C else None,
+  C: tuple(C.getcontext().flags.keys()) ikiwa C else None,
   P: tuple(P.getcontext().flags.keys())
 }
 # Signals ordered with respect to precedence: when an operation
@@ -65,14 +65,14 @@ Signals = {
 OrderedSignals = {
   C: [C.Clamped, C.Rounded, C.Inexact, C.Subnormal, C.Underflow,
       C.Overflow, C.DivisionByZero, C.InvalidOperation,
-      C.FloatOperation] if C else None,
+      C.FloatOperation] ikiwa C else None,
   P: [P.Clamped, P.Rounded, P.Inexact, P.Subnormal, P.Underflow,
       P.Overflow, P.DivisionByZero, P.InvalidOperation,
       P.FloatOperation]
 }
-def assert_signals(cls, context, attr, expected):
+eleza assert_signals(cls, context, attr, expected):
     d = getattr(context, attr)
-    cls.assertTrue(all(d[s] if s in expected else not d[s] for s in d))
+    cls.assertTrue(all(d[s] ikiwa s in expected else not d[s] for s in d))
 
 ROUND_UP = P.ROUND_UP
 ROUND_DOWN = P.ROUND_DOWN
@@ -92,18 +92,18 @@ RoundingModes = [
 # Tests are built around these assumed context defaults.
 # test_main() restores the original context.
 ORIGINAL_CONTEXT = {
-  C: C.getcontext().copy() if C else None,
+  C: C.getcontext().copy() ikiwa C else None,
   P: P.getcontext().copy()
 }
-def init(m):
-    if not m: return
+eleza init(m):
+    ikiwa not m: return
     DefaultTestContext = m.Context(
-       prec=9, rounding=ROUND_HALF_EVEN, traps=dict.fromkeys(Signals[m], 0)
+       prec=9, rounding=ROUND_HALF_EVEN, traps=dict.kutokakeys(Signals[m], 0)
     )
     m.setcontext(DefaultTestContext)
 
 TESTDATADIR = 'decimaltestdata'
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     file = sys.argv[0]
 else:
     file = __file__
@@ -117,17 +117,17 @@ skip_expected = not os.path.isdir(directory)
 EXTENDEDERRORTEST = False
 
 # Test extra functionality in the C version (-DEXTRA_FUNCTIONALITY).
-EXTRA_FUNCTIONALITY = True if hasattr(C, 'DecClamped') else False
+EXTRA_FUNCTIONALITY = True ikiwa hasattr(C, 'DecClamped') else False
 requires_extra_functionality = unittest.skipUnless(
   EXTRA_FUNCTIONALITY, "test requires build with -DEXTRA_FUNCTIONALITY")
 skip_if_extra_functionality = unittest.skipIf(
   EXTRA_FUNCTIONALITY, "test requires regular build")
 
 
-class IBMTestCases(unittest.TestCase):
-    """Class which tests the Decimal class against the IBM test cases."""
+kundi IBMTestCases(unittest.TestCase):
+    """Class which tests the Decimal kundi against the IBM test cases."""
 
-    def setUp(self):
+    eleza setUp(self):
         self.context = self.decimal.Context()
         self.readcontext = self.decimal.Context()
         self.ignore_list = ['#']
@@ -170,7 +170,7 @@ class IBMTestCases(unittest.TestCase):
             'powx4014',
             ])
 
-        if self.decimal == C:
+        ikiwa self.decimal == C:
             # status has additional Subnormal, Underflow
             self.skipped_test_ids.add('pwsx803')
             self.skipped_test_ids.add('pwsx805')
@@ -254,7 +254,7 @@ class IBMTestCases(unittest.TestCase):
                            'subnormal' : self.decimal.Subnormal,
                            'underflow' : self.decimal.Underflow}
 
-        # The following functions return True/False rather than a
+        # The following functions rudisha True/False rather than a
         # Decimal instance.
         self.LogicalFunctions = ('is_canonical',
                                  'is_finite',
@@ -268,23 +268,23 @@ class IBMTestCases(unittest.TestCase):
                                  'is_zero',
                                  'same_quantum')
 
-    def read_unlimited(self, v, context):
+    eleza read_unlimited(self, v, context):
         """Work around the limitations of the 32-bit _decimal version. The
            guaranteed maximum values for prec, Emax etc. are 425000000,
            but higher values usually work, except for rare corner cases.
            In particular, all of the IBM tests pass with maximum values
            of 1070000000."""
-        if self.decimal == C and self.decimal.MAX_EMAX == 425000000:
+        ikiwa self.decimal == C and self.decimal.MAX_EMAX == 425000000:
             self.readcontext._unsafe_setprec(1070000000)
             self.readcontext._unsafe_setemax(1070000000)
             self.readcontext._unsafe_setemin(-1070000000)
-            return self.readcontext.create_decimal(v)
+            rudisha self.readcontext.create_decimal(v)
         else:
-            return self.decimal.Decimal(v, context)
+            rudisha self.decimal.Decimal(v, context)
 
-    def eval_file(self, file):
+    eleza eval_file(self, file):
         global skip_expected
-        if skip_expected:
+        ikiwa skip_expected:
             raise unittest.SkipTest
         with open(file) as f:
             for line in f:
@@ -297,27 +297,27 @@ class IBMTestCases(unittest.TestCase):
                     self.fail('Exception "'+exception.__class__.__name__ + '" raised on line '+line)
 
 
-    def eval_line(self, s):
-        if s.find(' -> ') >= 0 and s[:2] != '--' and not s.startswith('  --'):
+    eleza eval_line(self, s):
+        ikiwa s.find(' -> ') >= 0 and s[:2] != '--' and not s.startswith('  --'):
             s = (s.split('->')[0] + '->' +
                  s.split('->')[1].split('--')[0]).strip()
         else:
             s = s.split('--')[0].strip()
 
         for ignore in self.ignore_list:
-            if s.find(ignore) >= 0:
+            ikiwa s.find(ignore) >= 0:
                 #print s.split()[0], 'NotImplemented--', ignore
                 return
-        if not s:
+        ikiwa not s:
             return
-        elif ':' in s:
-            return self.eval_directive(s)
+        elikiwa ':' in s:
+            rudisha self.eval_directive(s)
         else:
-            return self.eval_equation(s)
+            rudisha self.eval_equation(s)
 
-    def eval_directive(self, s):
+    eleza eval_directive(self, s):
         funct, value = (x.strip().lower() for x in s.split(':'))
-        if funct == 'rounding':
+        ikiwa funct == 'rounding':
             value = self.RoundingDict[value]
         else:
             try:
@@ -328,9 +328,9 @@ class IBMTestCases(unittest.TestCase):
         funct = self.ChangeDict.get(funct, (lambda *args: None))
         funct(value)
 
-    def eval_equation(self, s):
+    eleza eval_equation(self, s):
 
-        if not TEST_ALL and random.random() < 0.90:
+        ikiwa not TEST_ALL and random.random() < 0.90:
             return
 
         self.context.clear_flags()
@@ -339,8 +339,8 @@ class IBMTestCases(unittest.TestCase):
             Sides = s.split('->')
             L = Sides[0].strip().split()
             id = L[0]
-            if DEBUG:
-                print("Test ", id, end=" ")
+            ikiwa DEBUG:
+                andika("Test ", id, end=" ")
             funct = L[1].lower()
             valstemp = L[2:]
             L = Sides[1].strip().split()
@@ -348,17 +348,17 @@ class IBMTestCases(unittest.TestCase):
             exceptions = L[1:]
         except (TypeError, AttributeError, IndexError):
             raise self.decimal.InvalidOperation
-        def FixQuotes(val):
+        eleza FixQuotes(val):
             val = val.replace("''", 'SingleQuote').replace('""', 'DoubleQuote')
             val = val.replace("'", '').replace('"', '')
             val = val.replace('SingleQuote', "'").replace('DoubleQuote', '"')
-            return val
+            rudisha val
 
-        if id in self.skipped_test_ids:
+        ikiwa id in self.skipped_test_ids:
             return
 
         fname = self.NameAdapter.get(funct, funct)
-        if fname == 'rescale':
+        ikiwa fname == 'rescale':
             return
         funct = getattr(self.context, fname)
         vals = []
@@ -371,17 +371,17 @@ class IBMTestCases(unittest.TestCase):
         for exception in theirexceptions:
             self.context.traps[exception] = 0
         for i, val in enumerate(valstemp):
-            if val.count("'") % 2 == 1:
+            ikiwa val.count("'") % 2 == 1:
                 quote = 1 - quote
-            if quote:
+            ikiwa quote:
                 conglomerate = conglomerate + ' ' + val
                 continue
             else:
                 val = conglomerate + val
                 conglomerate = ''
             v = FixQuotes(val)
-            if fname in ('to_sci_string', 'to_eng_string'):
-                if EXTENDEDERRORTEST:
+            ikiwa fname in ('to_sci_string', 'to_eng_string'):
+                ikiwa EXTENDEDERRORTEST:
                     for error in theirexceptions:
                         self.context.traps[error] = 1
                         try:
@@ -401,7 +401,7 @@ class IBMTestCases(unittest.TestCase):
 
         ans = FixQuotes(ans)
 
-        if EXTENDEDERRORTEST and fname not in ('to_sci_string', 'to_eng_string'):
+        ikiwa EXTENDEDERRORTEST and fname not in ('to_sci_string', 'to_eng_string'):
             for error in theirexceptions:
                 self.context.traps[error] = 1
                 try:
@@ -416,7 +416,7 @@ class IBMTestCases(unittest.TestCase):
                 self.context.traps[error] = 0
 
             # as above, but add traps cumulatively, to check precedence
-            ordered_errors = [e for e in OrderedSignals[self.decimal] if e in theirexceptions]
+            ordered_errors = [e for e in OrderedSignals[self.decimal] ikiwa e in theirexceptions]
             for error in ordered_errors:
                 self.context.traps[error] = 1
                 try:
@@ -433,16 +433,16 @@ class IBMTestCases(unittest.TestCase):
                 self.context.traps[error] = 0
 
 
-        if DEBUG:
-            print("--", self.context)
+        ikiwa DEBUG:
+            andika("--", self.context)
         try:
             result = str(funct(*vals))
-            if fname in self.LogicalFunctions:
+            ikiwa fname in self.LogicalFunctions:
                 result = str(int(eval(result))) # 'True', 'False' -> '1', '0'
         except Signals[self.decimal] as error:
             self.fail("Raised %s in %s" % (error, s))
         except: #Catch any error long enough to state the test case.
-            print("ERROR:", s)
+            andika("ERROR:", s)
             raise
 
         myexceptions = self.getexceptions()
@@ -456,48 +456,48 @@ class IBMTestCases(unittest.TestCase):
         self.assertEqual(myexceptions, theirexceptions,
               'Incorrect flags set in ' + s + ' -- got ' + str(myexceptions))
 
-    def getexceptions(self):
-        return [e for e in Signals[self.decimal] if self.context.flags[e]]
+    eleza getexceptions(self):
+        rudisha [e for e in Signals[self.decimal] ikiwa self.context.flags[e]]
 
-    def change_precision(self, prec):
-        if self.decimal == C and self.decimal.MAX_PREC == 425000000:
+    eleza change_precision(self, prec):
+        ikiwa self.decimal == C and self.decimal.MAX_PREC == 425000000:
             self.context._unsafe_setprec(prec)
         else:
             self.context.prec = prec
-    def change_rounding_method(self, rounding):
+    eleza change_rounding_method(self, rounding):
         self.context.rounding = rounding
-    def change_min_exponent(self, exp):
-        if self.decimal == C and self.decimal.MAX_PREC == 425000000:
+    eleza change_min_exponent(self, exp):
+        ikiwa self.decimal == C and self.decimal.MAX_PREC == 425000000:
             self.context._unsafe_setemin(exp)
         else:
             self.context.Emin = exp
-    def change_max_exponent(self, exp):
-        if self.decimal == C and self.decimal.MAX_PREC == 425000000:
+    eleza change_max_exponent(self, exp):
+        ikiwa self.decimal == C and self.decimal.MAX_PREC == 425000000:
             self.context._unsafe_setemax(exp)
         else:
             self.context.Emax = exp
-    def change_clamp(self, clamp):
+    eleza change_clamp(self, clamp):
         self.context.clamp = clamp
 
-class CIBMTestCases(IBMTestCases):
+kundi CIBMTestCases(IBMTestCases):
     decimal = C
-class PyIBMTestCases(IBMTestCases):
+kundi PyIBMTestCases(IBMTestCases):
     decimal = P
 
 # The following classes test the behaviour of Decimal according to PEP 327
 
-class ExplicitConstructionTest(unittest.TestCase):
+kundi ExplicitConstructionTest(unittest.TestCase):
     '''Unit tests for Explicit Construction cases of Decimal.'''
 
-    def test_explicit_empty(self):
+    eleza test_explicit_empty(self):
         Decimal = self.decimal.Decimal
         self.assertEqual(Decimal(), Decimal("0"))
 
-    def test_explicit_from_None(self):
+    eleza test_explicit_kutoka_None(self):
         Decimal = self.decimal.Decimal
         self.assertRaises(TypeError, Decimal, None)
 
-    def test_explicit_from_int(self):
+    eleza test_explicit_kutoka_int(self):
         Decimal = self.decimal.Decimal
 
         #positive
@@ -524,7 +524,7 @@ class ExplicitConstructionTest(unittest.TestCase):
                     d = Decimal(i)
                     self.assertEqual(str(d), str(i))
 
-    def test_explicit_from_string(self):
+    eleza test_explicit_kutoka_string(self):
         Decimal = self.decimal.Decimal
         InvalidOperation = self.decimal.InvalidOperation
         localcontext = self.decimal.localcontext
@@ -581,7 +581,7 @@ class ExplicitConstructionTest(unittest.TestCase):
             self.assertRaises(InvalidOperation, Decimal, "1_2_\u00003")
 
     @cpython_only
-    def test_from_legacy_strings(self):
+    eleza test_kutoka_legacy_strings(self):
         agiza _testcapi
         Decimal = self.decimal.Decimal
         context = self.decimal.Context()
@@ -590,7 +590,7 @@ class ExplicitConstructionTest(unittest.TestCase):
         self.assertEqual(str(Decimal(s)), '9.999999')
         self.assertEqual(str(context.create_decimal(s)), '9.999999')
 
-    def test_explicit_from_tuples(self):
+    eleza test_explicit_kutoka_tuples(self):
         Decimal = self.decimal.Decimal
 
         #zero
@@ -633,7 +633,7 @@ class ExplicitConstructionTest(unittest.TestCase):
         self.assertRaises(ValueError, Decimal, (1, (4, 10, 4, 9, 1), 2) )
         self.assertRaises(ValueError, Decimal, (1, (4, 3, 4, 'a', 1), 2) )
 
-    def test_explicit_from_list(self):
+    eleza test_explicit_kutoka_list(self):
         Decimal = self.decimal.Decimal
 
         d = Decimal([0, [0], 0])
@@ -648,7 +648,7 @@ class ExplicitConstructionTest(unittest.TestCase):
         d = Decimal((1, [4, 3, 4, 9, 1, 3, 5, 3, 4], -25))
         self.assertEqual(str(d), '-4.34913534E-17')
 
-    def test_explicit_from_bool(self):
+    eleza test_explicit_kutoka_bool(self):
         Decimal = self.decimal.Decimal
 
         self.assertIs(bool(Decimal(0)), False)
@@ -656,7 +656,7 @@ class ExplicitConstructionTest(unittest.TestCase):
         self.assertEqual(Decimal(False), Decimal(0))
         self.assertEqual(Decimal(True), Decimal(1))
 
-    def test_explicit_from_Decimal(self):
+    eleza test_explicit_kutoka_Decimal(self):
         Decimal = self.decimal.Decimal
 
         #positive
@@ -680,7 +680,7 @@ class ExplicitConstructionTest(unittest.TestCase):
         self.assertEqual(str(e), '0')
 
     @requires_IEEE_754
-    def test_explicit_from_float(self):
+    eleza test_explicit_kutoka_float(self):
 
         Decimal = self.decimal.Decimal
 
@@ -703,7 +703,7 @@ class ExplicitConstructionTest(unittest.TestCase):
             x = random.expovariate(0.01) * (random.random() * 2.0 - 1.0)
             self.assertEqual(x, float(Decimal(x))) # roundtrip
 
-    def test_explicit_context_create_decimal(self):
+    eleza test_explicit_context_create_decimal(self):
         Decimal = self.decimal.Decimal
         InvalidOperation = self.decimal.InvalidOperation
         Rounded = self.decimal.Rounded
@@ -792,7 +792,7 @@ class ExplicitConstructionTest(unittest.TestCase):
         self.assertEqual(str(nc.create_decimal(Decimal('NaN12345'))), 'NaN')
         self.assertTrue(nc.flags[InvalidOperation])
 
-    def test_explicit_context_create_from_float(self):
+    eleza test_explicit_context_create_kutoka_float(self):
 
         Decimal = self.decimal.Decimal
 
@@ -816,7 +816,7 @@ class ExplicitConstructionTest(unittest.TestCase):
             x = random.expovariate(0.01) * (random.random() * 2.0 - 1.0)
             self.assertEqual(x, float(nc.create_decimal(x))) # roundtrip
 
-    def test_unicode_digits(self):
+    eleza test_unicode_digits(self):
         Decimal = self.decimal.Decimal
 
         test_values = {
@@ -827,19 +827,19 @@ class ExplicitConstructionTest(unittest.TestCase):
         for input, expected in test_values.items():
             self.assertEqual(str(Decimal(input)), expected)
 
-class CExplicitConstructionTest(ExplicitConstructionTest):
+kundi CExplicitConstructionTest(ExplicitConstructionTest):
     decimal = C
-class PyExplicitConstructionTest(ExplicitConstructionTest):
+kundi PyExplicitConstructionTest(ExplicitConstructionTest):
     decimal = P
 
-class ImplicitConstructionTest(unittest.TestCase):
+kundi ImplicitConstructionTest(unittest.TestCase):
     '''Unit tests for Implicit Construction cases of Decimal.'''
 
-    def test_implicit_from_None(self):
+    eleza test_implicit_kutoka_None(self):
         Decimal = self.decimal.Decimal
         self.assertRaises(TypeError, eval, 'Decimal(5) + None', locals())
 
-    def test_implicit_from_int(self):
+    eleza test_implicit_kutoka_int(self):
         Decimal = self.decimal.Decimal
 
         #normal
@@ -847,39 +847,39 @@ class ImplicitConstructionTest(unittest.TestCase):
         #exceeding precision
         self.assertEqual(Decimal(5) + 123456789000, Decimal(123456789000))
 
-    def test_implicit_from_string(self):
+    eleza test_implicit_kutoka_string(self):
         Decimal = self.decimal.Decimal
         self.assertRaises(TypeError, eval, 'Decimal(5) + "3"', locals())
 
-    def test_implicit_from_float(self):
+    eleza test_implicit_kutoka_float(self):
         Decimal = self.decimal.Decimal
         self.assertRaises(TypeError, eval, 'Decimal(5) + 2.2', locals())
 
-    def test_implicit_from_Decimal(self):
+    eleza test_implicit_kutoka_Decimal(self):
         Decimal = self.decimal.Decimal
         self.assertEqual(Decimal(5) + Decimal(45), Decimal(50))
 
-    def test_rop(self):
+    eleza test_rop(self):
         Decimal = self.decimal.Decimal
 
         # Allow other classes to be trained to interact with Decimals
-        class E:
-            def __divmod__(self, other):
-                return 'divmod ' + str(other)
-            def __rdivmod__(self, other):
-                return str(other) + ' rdivmod'
-            def __lt__(self, other):
-                return 'lt ' + str(other)
-            def __gt__(self, other):
-                return 'gt ' + str(other)
-            def __le__(self, other):
-                return 'le ' + str(other)
-            def __ge__(self, other):
-                return 'ge ' + str(other)
-            def __eq__(self, other):
-                return 'eq ' + str(other)
-            def __ne__(self, other):
-                return 'ne ' + str(other)
+        kundi E:
+            eleza __divmod__(self, other):
+                rudisha 'divmod ' + str(other)
+            eleza __rdivmod__(self, other):
+                rudisha str(other) + ' rdivmod'
+            eleza __lt__(self, other):
+                rudisha 'lt ' + str(other)
+            eleza __gt__(self, other):
+                rudisha 'gt ' + str(other)
+            eleza __le__(self, other):
+                rudisha 'le ' + str(other)
+            eleza __ge__(self, other):
+                rudisha 'ge ' + str(other)
+            eleza __eq__(self, other):
+                rudisha 'eq ' + str(other)
+            eleza __ne__(self, other):
+                rudisha 'ne ' + str(other)
 
         self.assertEqual(divmod(E(), Decimal(10)), 'divmod 10')
         self.assertEqual(divmod(Decimal(10), E()), '10 rdivmod')
@@ -909,14 +909,14 @@ class ImplicitConstructionTest(unittest.TestCase):
             self.assertEqual(eval('Decimal(10)' + sym + 'E()'),
                              '10' + rop + 'str')
 
-class CImplicitConstructionTest(ImplicitConstructionTest):
+kundi CImplicitConstructionTest(ImplicitConstructionTest):
     decimal = C
-class PyImplicitConstructionTest(ImplicitConstructionTest):
+kundi PyImplicitConstructionTest(ImplicitConstructionTest):
     decimal = P
 
-class FormatTest(unittest.TestCase):
+kundi FormatTest(unittest.TestCase):
     '''Unit tests for the format function.'''
-    def test_formatting(self):
+    eleza test_formatting(self):
         Decimal = self.decimal.Decimal
 
         # triples giving a format, a Decimal, and the expected result
@@ -1043,7 +1043,7 @@ class FormatTest(unittest.TestCase):
             ('7,', '123456', '123,456'),
             ('8,', '123456', ' 123,456'),
             ('08,', '123456', '0,123,456'), # special case: extra 0 needed
-            ('+08,', '123456', '+123,456'), # but not if there's a sign
+            ('+08,', '123456', '+123,456'), # but not ikiwa there's a sign
             (' 08,', '123456', ' 123,456'),
             ('08,', '-123456', '-123,456'),
             ('+09,', '123456', '+0,123,456'),
@@ -1075,7 +1075,7 @@ class FormatTest(unittest.TestCase):
         # bytes format argument
         self.assertRaises(TypeError, Decimal(1).__format__, b'-020')
 
-    def test_n_format(self):
+    eleza test_n_format(self):
         Decimal = self.decimal.Decimal
 
         try:
@@ -1083,14 +1083,14 @@ class FormatTest(unittest.TestCase):
         except ImportError:
             self.skipTest('locale.CHAR_MAX not available')
 
-        def make_grouping(lst):
-            return ''.join([chr(x) for x in lst]) if self.decimal == C else lst
+        eleza make_grouping(lst):
+            rudisha ''.join([chr(x) for x in lst]) ikiwa self.decimal == C else lst
 
-        def get_fmt(x, override=None, fmt='n'):
-            if self.decimal == C:
-                return Decimal(x).__format__(fmt, override)
+        eleza get_fmt(x, override=None, fmt='n'):
+            ikiwa self.decimal == C:
+                rudisha Decimal(x).__format__(fmt, override)
             else:
-                return Decimal(x).__format__(fmt, _localeconv=override)
+                rudisha Decimal(x).__format__(fmt, _localeconv=override)
 
         # Set up some localeconv-like dictionaries
         en_US = {
@@ -1165,41 +1165,41 @@ class FormatTest(unittest.TestCase):
                          '-0\u00b4000\u00b4000\u00b4000\u00b4001\u00bf5')
 
     @run_with_locale('LC_ALL', 'ps_AF')
-    def test_wide_char_separator_decimal_point(self):
+    eleza test_wide_char_separator_decimal_point(self):
         # locale with wide char separator and decimal point
         Decimal = self.decimal.Decimal
 
         decimal_point = locale.localeconv()['decimal_point']
         thousands_sep = locale.localeconv()['thousands_sep']
-        if decimal_point != '\u066b':
+        ikiwa decimal_point != '\u066b':
             self.skipTest('inappropriate decimal point separator '
                           '({!a} not {!a})'.format(decimal_point, '\u066b'))
-        if thousands_sep != '\u066c':
+        ikiwa thousands_sep != '\u066c':
             self.skipTest('inappropriate thousands separator '
                           '({!a} not {!a})'.format(thousands_sep, '\u066c'))
 
         self.assertEqual(format(Decimal('100000000.123'), 'n'),
                          '100\u066c000\u066c000\u066b123')
 
-    def test_decimal_from_float_argument_type(self):
-        class A(self.decimal.Decimal):
-            def __init__(self, a):
+    eleza test_decimal_kutoka_float_argument_type(self):
+        kundi A(self.decimal.Decimal):
+            eleza __init__(self, a):
                 self.a_type = type(a)
-        a = A.from_float(42.5)
+        a = A.kutoka_float(42.5)
         self.assertEqual(self.decimal.Decimal, a.a_type)
 
-        a = A.from_float(42)
+        a = A.kutoka_float(42)
         self.assertEqual(self.decimal.Decimal, a.a_type)
 
-class CFormatTest(FormatTest):
+kundi CFormatTest(FormatTest):
     decimal = C
-class PyFormatTest(FormatTest):
+kundi PyFormatTest(FormatTest):
     decimal = P
 
-class ArithmeticOperatorsTest(unittest.TestCase):
+kundi ArithmeticOperatorsTest(unittest.TestCase):
     '''Unit tests for all arithmetic operators, binary and unary.'''
 
-    def test_addition(self):
+    eleza test_addition(self):
         Decimal = self.decimal.Decimal
 
         d1 = Decimal('-11.1')
@@ -1227,7 +1227,7 @@ class ArithmeticOperatorsTest(unittest.TestCase):
         d1 += 5
         self.assertEqual(d1, Decimal('16.1'))
 
-    def test_subtraction(self):
+    eleza test_subtraction(self):
         Decimal = self.decimal.Decimal
 
         d1 = Decimal('-11.1')
@@ -1255,7 +1255,7 @@ class ArithmeticOperatorsTest(unittest.TestCase):
         d1 -= 5
         self.assertEqual(d1, Decimal('-38.3'))
 
-    def test_multiplication(self):
+    eleza test_multiplication(self):
         Decimal = self.decimal.Decimal
 
         d1 = Decimal('-5')
@@ -1283,7 +1283,7 @@ class ArithmeticOperatorsTest(unittest.TestCase):
         d1 *= 5
         self.assertEqual(d1, Decimal('-75'))
 
-    def test_division(self):
+    eleza test_division(self):
         Decimal = self.decimal.Decimal
 
         d1 = Decimal('-5')
@@ -1311,7 +1311,7 @@ class ArithmeticOperatorsTest(unittest.TestCase):
         d1 /= 4
         self.assertEqual(d1, Decimal('-0.625'))
 
-    def test_floor_division(self):
+    eleza test_floor_division(self):
         Decimal = self.decimal.Decimal
 
         d1 = Decimal('5')
@@ -1339,7 +1339,7 @@ class ArithmeticOperatorsTest(unittest.TestCase):
         d1 //= 2
         self.assertEqual(d1, Decimal('1'))
 
-    def test_powering(self):
+    eleza test_powering(self):
         Decimal = self.decimal.Decimal
 
         d1 = Decimal('5')
@@ -1367,7 +1367,7 @@ class ArithmeticOperatorsTest(unittest.TestCase):
         d1 **= 4
         self.assertEqual(d1, Decimal('390625'))
 
-    def test_module(self):
+    eleza test_module(self):
         Decimal = self.decimal.Decimal
 
         d1 = Decimal('5')
@@ -1395,7 +1395,7 @@ class ArithmeticOperatorsTest(unittest.TestCase):
         d1 %= 4
         self.assertEqual(d1, Decimal('1'))
 
-    def test_floor_div_module(self):
+    eleza test_floor_div_module(self):
         Decimal = self.decimal.Decimal
 
         d1 = Decimal('5')
@@ -1422,21 +1422,21 @@ class ArithmeticOperatorsTest(unittest.TestCase):
         self.assertEqual(type(p), type(d1))
         self.assertEqual(type(q), type(d1))
 
-    def test_unary_operators(self):
+    eleza test_unary_operators(self):
         Decimal = self.decimal.Decimal
 
         self.assertEqual(+Decimal(45), Decimal(+45))           #  +
         self.assertEqual(-Decimal(45), Decimal(-45))           #  -
         self.assertEqual(abs(Decimal(45)), abs(Decimal(-45)))  # abs
 
-    def test_nan_comparisons(self):
+    eleza test_nan_comparisons(self):
         # comparisons involving signaling nans signal InvalidOperation
 
         # order comparisons (<, <=, >, >=) involving only quiet nans
         # also signal InvalidOperation
 
         # equality comparisons (==, !=) involving only quiet nans
-        # don't signal, but return False or True respectively.
+        # don't signal, but rudisha False or True respectively.
         Decimal = self.decimal.Decimal
         InvalidOperation = self.decimal.InvalidOperation
         localcontext = self.decimal.localcontext
@@ -1455,7 +1455,7 @@ class ArithmeticOperatorsTest(unittest.TestCase):
         for x, y in qnan_pairs + snan_pairs:
             for op in order_ops + equality_ops:
                 got = op(x, y)
-                expected = True if op is operator.ne else False
+                expected = True ikiwa op is operator.ne else False
                 self.assertIs(expected, got,
                               "expected {0!r} for operator.{1}({2!r}, {3!r}); "
                               "got {4!r}".format(
@@ -1468,7 +1468,7 @@ class ArithmeticOperatorsTest(unittest.TestCase):
             for x, y in qnan_pairs:
                 for op in equality_ops:
                     got = op(x, y)
-                    expected = True if op is operator.ne else False
+                    expected = True ikiwa op is operator.ne else False
                     self.assertIs(expected, got,
                                   "expected {0!r} for "
                                   "operator.{1}({2!r}, {3!r}); "
@@ -1484,21 +1484,21 @@ class ArithmeticOperatorsTest(unittest.TestCase):
                 for op in order_ops:
                     self.assertRaises(InvalidOperation, op, x, y)
 
-    def test_copy_sign(self):
+    eleza test_copy_sign(self):
         Decimal = self.decimal.Decimal
 
         d = Decimal(1).copy_sign(Decimal(-2))
         self.assertEqual(Decimal(1).copy_sign(-2), d)
         self.assertRaises(TypeError, Decimal(1).copy_sign, '-2')
 
-class CArithmeticOperatorsTest(ArithmeticOperatorsTest):
+kundi CArithmeticOperatorsTest(ArithmeticOperatorsTest):
     decimal = C
-class PyArithmeticOperatorsTest(ArithmeticOperatorsTest):
+kundi PyArithmeticOperatorsTest(ArithmeticOperatorsTest):
     decimal = P
 
 # The following are two functions used to test threading in the next class
 
-def thfunc1(cls):
+eleza thfunc1(cls):
     Decimal = cls.decimal.Decimal
     InvalidOperation = cls.decimal.InvalidOperation
     DivisionByZero = cls.decimal.DivisionByZero
@@ -1537,7 +1537,7 @@ def thfunc1(cls):
     for sig in Overflow, Underflow, DivisionByZero, InvalidOperation:
         cls.assertFalse(c1.flags[sig])
 
-def thfunc2(cls):
+eleza thfunc2(cls):
     Decimal = cls.decimal.Decimal
     InvalidOperation = cls.decimal.InvalidOperation
     DivisionByZero = cls.decimal.DivisionByZero
@@ -1581,16 +1581,16 @@ def thfunc2(cls):
     for sig in Overflow, Underflow, DivisionByZero, InvalidOperation:
         cls.assertFalse(thiscontext.flags[sig])
 
-class ThreadingTest(unittest.TestCase):
+kundi ThreadingTest(unittest.TestCase):
     '''Unit tests for thread local contexts in Decimal.'''
 
     # Take care executing this test kutoka IDLE, there's an issue in threading
     # that hangs IDLE and I couldn't find it
 
-    def test_threading(self):
+    eleza test_threading(self):
         DefaultContext = self.decimal.DefaultContext
 
-        if self.decimal == C and not self.decimal.HAVE_THREADS:
+        ikiwa self.decimal == C and not self.decimal.HAVE_THREADS:
             self.skipTest("compiled without threading")
         # Test the "threading isolation" of a Context. Also test changing
         # the DefaultContext, which acts as a template for the thread-local
@@ -1626,16 +1626,16 @@ class ThreadingTest(unittest.TestCase):
         DefaultContext.Emin = save_emin
 
 
-class CThreadingTest(ThreadingTest):
+kundi CThreadingTest(ThreadingTest):
     decimal = C
 
-class PyThreadingTest(ThreadingTest):
+kundi PyThreadingTest(ThreadingTest):
     decimal = P
 
-class UsabilityTest(unittest.TestCase):
+kundi UsabilityTest(unittest.TestCase):
     '''Unit tests for Usability cases of Decimal.'''
 
-    def test_comparison_operators(self):
+    eleza test_comparison_operators(self):
 
         Decimal = self.decimal.Decimal
 
@@ -1671,7 +1671,7 @@ class UsabilityTest(unittest.TestCase):
         a.sort()
         self.assertEqual(a, b)
 
-    def test_decimal_float_comparison(self):
+    eleza test_decimal_float_comparison(self):
         Decimal = self.decimal.Decimal
 
         da = Decimal('0.25')
@@ -1690,7 +1690,7 @@ class UsabilityTest(unittest.TestCase):
         self.assertEqual(3.0, db)
         self.assertNotEqual(0.1, Decimal('0.1'))
 
-    def test_decimal_complex_comparison(self):
+    eleza test_decimal_complex_comparison(self):
         Decimal = self.decimal.Decimal
 
         da = Decimal('0.25')
@@ -1710,7 +1710,7 @@ class UsabilityTest(unittest.TestCase):
         self.assertIs(db.__gt__(3.0+0j), NotImplemented)
         self.assertIs(db.__le__(3.0+0j), NotImplemented)
 
-    def test_decimal_fraction_comparison(self):
+    eleza test_decimal_fraction_comparison(self):
         D = self.decimal.Decimal
         F = fractions[self.decimal].Fraction
         Context = self.decimal.Context
@@ -1718,9 +1718,9 @@ class UsabilityTest(unittest.TestCase):
         InvalidOperation = self.decimal.InvalidOperation
 
 
-        emax = C.MAX_EMAX if C else 999999999
-        emin = C.MIN_EMIN if C else -999999999
-        etiny = C.MIN_ETINY if C else -1999999997
+        emax = C.MAX_EMAX ikiwa C else 999999999
+        emin = C.MIN_EMIN ikiwa C else -999999999
+        etiny = C.MIN_ETINY ikiwa C else -1999999997
         c = Context(Emax=emax, Emin=emin)
 
         with localcontext(c):
@@ -1752,7 +1752,7 @@ class UsabilityTest(unittest.TestCase):
             self.assertNotEqual(D('nan'), F(-9,123))
             self.assertNotEqual(F(-9,123), D('nan'))
 
-    def test_copy_and_deepcopy_methods(self):
+    eleza test_copy_and_deepcopy_methods(self):
         Decimal = self.decimal.Decimal
 
         d = Decimal('43.24')
@@ -1761,16 +1761,16 @@ class UsabilityTest(unittest.TestCase):
         dc = copy.deepcopy(d)
         self.assertEqual(id(dc), id(d))
 
-    def test_hash_method(self):
+    eleza test_hash_method(self):
 
         Decimal = self.decimal.Decimal
         localcontext = self.decimal.localcontext
 
-        def hashit(d):
+        eleza hashit(d):
             a = hash(d)
             b = d.__hash__()
             self.assertEqual(a, b)
-            return a
+            rudisha a
 
         #just that it's hashable
         hashit(Decimal(23))
@@ -1845,7 +1845,7 @@ class UsabilityTest(unittest.TestCase):
             x = 1100 ** 1248
             self.assertEqual(hashit(Decimal(x)), hashit(x))
 
-    def test_min_and_max_methods(self):
+    eleza test_min_and_max_methods(self):
         Decimal = self.decimal.Decimal
 
         d1 = Decimal('15.32')
@@ -1865,7 +1865,7 @@ class UsabilityTest(unittest.TestCase):
         self.assertIs(max(l1,d2), d2)
         self.assertIs(max(d2,l1), d2)
 
-    def test_as_nonzero(self):
+    eleza test_as_nonzero(self):
         Decimal = self.decimal.Decimal
 
         #as false
@@ -1873,7 +1873,7 @@ class UsabilityTest(unittest.TestCase):
         #as true
         self.assertTrue(Decimal('0.372'))
 
-    def test_tostring_methods(self):
+    eleza test_tostring_methods(self):
         #Test str and repr methods.
         Decimal = self.decimal.Decimal
 
@@ -1881,7 +1881,7 @@ class UsabilityTest(unittest.TestCase):
         self.assertEqual(str(d), '15.32')               # str
         self.assertEqual(repr(d), "Decimal('15.32')")   # repr
 
-    def test_tonum_methods(self):
+    eleza test_tonum_methods(self):
         #Test float and int methods.
         Decimal = self.decimal.Decimal
 
@@ -1984,7 +1984,7 @@ class UsabilityTest(unittest.TestCase):
         for d, n, r in test_triples:
             self.assertEqual(str(round(Decimal(d), n)), r)
 
-    def test_nan_to_float(self):
+    eleza test_nan_to_float(self):
         # Test conversions of decimal NANs to float.
         # See http://bugs.python.org/issue15544
         Decimal = self.decimal.Decimal
@@ -1992,15 +1992,15 @@ class UsabilityTest(unittest.TestCase):
             f = float(Decimal(s))
             self.assertTrue(math.isnan(f))
             sign = math.copysign(1.0, f)
-            self.assertEqual(sign, -1.0 if s.startswith('-') else 1.0)
+            self.assertEqual(sign, -1.0 ikiwa s.startswith('-') else 1.0)
 
-    def test_snan_to_float(self):
+    eleza test_snan_to_float(self):
         Decimal = self.decimal.Decimal
         for s in ('snan', '-snan', 'snan1357', '-snan1234'):
             d = Decimal(s)
             self.assertRaises(ValueError, float, d)
 
-    def test_eval_round_trip(self):
+    eleza test_eval_round_trip(self):
         Decimal = self.decimal.Decimal
 
         #with zero
@@ -2019,7 +2019,7 @@ class UsabilityTest(unittest.TestCase):
         d = Decimal( (1, (4, 3, 4, 9, 1, 3, 5, 3, 4), -25) )
         self.assertEqual(d, eval(repr(d)))
 
-    def test_as_tuple(self):
+    eleza test_as_tuple(self):
         Decimal = self.decimal.Decimal
 
         #with zero
@@ -2064,7 +2064,7 @@ class UsabilityTest(unittest.TestCase):
         d = Decimal( (1, (0, 2, 7, 1), 'F') )
         self.assertEqual(d.as_tuple(), (1, (0,), 'F'))
 
-    def test_as_integer_ratio(self):
+    eleza test_as_integer_ratio(self):
         Decimal = self.decimal.Decimal
 
         # exceptional cases
@@ -2084,7 +2084,7 @@ class UsabilityTest(unittest.TestCase):
                     pq = d.as_integer_ratio()
                     p, q = pq
 
-                    # check return type
+                    # check rudisha type
                     self.assertIsInstance(pq, tuple)
                     self.assertIsInstance(p, int)
                     self.assertIsInstance(q, int)
@@ -2097,11 +2097,11 @@ class UsabilityTest(unittest.TestCase):
                     # check that p/q actually gives the correct value
                     self.assertEqual(Decimal(p) / Decimal(q), d)
 
-    def test_subclassing(self):
+    eleza test_subclassing(self):
         # Different behaviours when subclassing Decimal
         Decimal = self.decimal.Decimal
 
-        class MyDecimal(Decimal):
+        kundi MyDecimal(Decimal):
             y = None
 
         d1 = MyDecimal(1)
@@ -2144,7 +2144,7 @@ class UsabilityTest(unittest.TestCase):
         self.assertEqual(x, d)
         self.assertIs(x.y, None)
 
-    def test_implicit_context(self):
+    eleza test_implicit_context(self):
         Decimal = self.decimal.Decimal
         getcontext = self.decimal.getcontext
 
@@ -2153,7 +2153,7 @@ class UsabilityTest(unittest.TestCase):
         self.assertEqual(str(Decimal(0).sqrt()),
                          str(c.sqrt(Decimal(0))))
 
-    def test_none_args(self):
+    eleza test_none_args(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
         localcontext = self.decimal.localcontext
@@ -2392,7 +2392,7 @@ class UsabilityTest(unittest.TestCase):
                 self.assertEqual(c.Emax, 999)
                 self.assertEqual(c.Emin, -999)
 
-    def test_conversions_from_int(self):
+    eleza test_conversions_kutoka_int(self):
         # Check that methods taking a second Decimal argument will
         # always accept an integer in place of a Decimal.
         Decimal = self.decimal.Decimal
@@ -2441,14 +2441,14 @@ class UsabilityTest(unittest.TestCase):
         self.assertEqual(Decimal(-12).fma(45, Decimal(67)),
                          Decimal(-12).fma(Decimal(45), Decimal(67)))
 
-class CUsabilityTest(UsabilityTest):
+kundi CUsabilityTest(UsabilityTest):
     decimal = C
-class PyUsabilityTest(UsabilityTest):
+kundi PyUsabilityTest(UsabilityTest):
     decimal = P
 
-class PythonAPItests(unittest.TestCase):
+kundi PythonAPItests(unittest.TestCase):
 
-    def test_abc(self):
+    eleza test_abc(self):
         Decimal = self.decimal.Decimal
 
         self.assertTrue(issubclass(Decimal, numbers.Number))
@@ -2456,7 +2456,7 @@ class PythonAPItests(unittest.TestCase):
         self.assertIsInstance(Decimal(0), numbers.Number)
         self.assertNotIsInstance(Decimal(0), numbers.Real)
 
-    def test_pickle(self):
+    eleza test_pickle(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             Decimal = self.decimal.Decimal
 
@@ -2469,7 +2469,7 @@ class PythonAPItests(unittest.TestCase):
             e = pickle.loads(p)
             self.assertEqual(d, e)
 
-            if C:
+            ikiwa C:
                 # Test interchangeability
                 x = C.Decimal('-3.123e81723')
                 y = P.Decimal('-3.123e81723')
@@ -2507,7 +2507,7 @@ class PythonAPItests(unittest.TestCase):
 
             sys.modules['decimal'] = savedecimal
 
-    def test_int(self):
+    eleza test_int(self):
         Decimal = self.decimal.Decimal
 
         for x in range(-250, 250):
@@ -2524,7 +2524,7 @@ class PythonAPItests(unittest.TestCase):
         self.assertRaises(OverflowError, int, Decimal('inf'))
         self.assertRaises(OverflowError, int, Decimal('-inf'))
 
-    def test_trunc(self):
+    eleza test_trunc(self):
         Decimal = self.decimal.Decimal
 
         for x in range(-250, 250):
@@ -2536,67 +2536,67 @@ class PythonAPItests(unittest.TestCase):
             r = d.to_integral(ROUND_DOWN)
             self.assertEqual(Decimal(math.trunc(d)), r)
 
-    def test_from_float(self):
+    eleza test_kutoka_float(self):
 
         Decimal = self.decimal.Decimal
 
-        class MyDecimal(Decimal):
-            def __init__(self, _):
+        kundi MyDecimal(Decimal):
+            eleza __init__(self, _):
                 self.x = 'y'
 
         self.assertTrue(issubclass(MyDecimal, Decimal))
 
-        r = MyDecimal.from_float(0.1)
+        r = MyDecimal.kutoka_float(0.1)
         self.assertEqual(type(r), MyDecimal)
         self.assertEqual(str(r),
                 '0.1000000000000000055511151231257827021181583404541015625')
         self.assertEqual(r.x, 'y')
 
         bigint = 12345678901234567890123456789
-        self.assertEqual(MyDecimal.from_float(bigint), MyDecimal(bigint))
-        self.assertTrue(MyDecimal.from_float(float('nan')).is_qnan())
-        self.assertTrue(MyDecimal.from_float(float('inf')).is_infinite())
-        self.assertTrue(MyDecimal.from_float(float('-inf')).is_infinite())
-        self.assertEqual(str(MyDecimal.from_float(float('nan'))),
+        self.assertEqual(MyDecimal.kutoka_float(bigint), MyDecimal(bigint))
+        self.assertTrue(MyDecimal.kutoka_float(float('nan')).is_qnan())
+        self.assertTrue(MyDecimal.kutoka_float(float('inf')).is_infinite())
+        self.assertTrue(MyDecimal.kutoka_float(float('-inf')).is_infinite())
+        self.assertEqual(str(MyDecimal.kutoka_float(float('nan'))),
                          str(Decimal('NaN')))
-        self.assertEqual(str(MyDecimal.from_float(float('inf'))),
+        self.assertEqual(str(MyDecimal.kutoka_float(float('inf'))),
                          str(Decimal('Infinity')))
-        self.assertEqual(str(MyDecimal.from_float(float('-inf'))),
+        self.assertEqual(str(MyDecimal.kutoka_float(float('-inf'))),
                          str(Decimal('-Infinity')))
-        self.assertRaises(TypeError, MyDecimal.from_float, 'abc')
+        self.assertRaises(TypeError, MyDecimal.kutoka_float, 'abc')
         for i in range(200):
             x = random.expovariate(0.01) * (random.random() * 2.0 - 1.0)
-            self.assertEqual(x, float(MyDecimal.from_float(x))) # roundtrip
+            self.assertEqual(x, float(MyDecimal.kutoka_float(x))) # roundtrip
 
-    def test_create_decimal_from_float(self):
+    eleza test_create_decimal_kutoka_float(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
         Inexact = self.decimal.Inexact
 
         context = Context(prec=5, rounding=ROUND_DOWN)
         self.assertEqual(
-            context.create_decimal_from_float(math.pi),
+            context.create_decimal_kutoka_float(math.pi),
             Decimal('3.1415')
         )
         context = Context(prec=5, rounding=ROUND_UP)
         self.assertEqual(
-            context.create_decimal_from_float(math.pi),
+            context.create_decimal_kutoka_float(math.pi),
             Decimal('3.1416')
         )
         context = Context(prec=5, traps=[Inexact])
         self.assertRaises(
             Inexact,
-            context.create_decimal_from_float,
+            context.create_decimal_kutoka_float,
             math.pi
         )
-        self.assertEqual(repr(context.create_decimal_from_float(-0.0)),
+        self.assertEqual(repr(context.create_decimal_kutoka_float(-0.0)),
                          "Decimal('-0')")
-        self.assertEqual(repr(context.create_decimal_from_float(1.0)),
+        self.assertEqual(repr(context.create_decimal_kutoka_float(1.0)),
                          "Decimal('1')")
-        self.assertEqual(repr(context.create_decimal_from_float(10)),
+        self.assertEqual(repr(context.create_decimal_kutoka_float(10)),
                          "Decimal('10')")
 
-    def test_quantize(self):
+    eleza test_quantize(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
         InvalidOperation = self.decimal.InvalidOperation
@@ -2620,7 +2620,7 @@ class PythonAPItests(unittest.TestCase):
         x = d.quantize(context=c, exp=Decimal("1e797"), rounding=ROUND_DOWN)
         self.assertEqual(x, Decimal('8.71E+799'))
 
-    def test_complex(self):
+    eleza test_complex(self):
         Decimal = self.decimal.Decimal
 
         x = Decimal("9.8182731e181273")
@@ -2636,7 +2636,7 @@ class PythonAPItests(unittest.TestCase):
         self.assertRaises(AttributeError, setattr, x, 'conjugate', 100)
         self.assertRaises(AttributeError, setattr, x, '__complex__', 100)
 
-    def test_named_parameters(self):
+    eleza test_named_parameters(self):
         D = self.decimal.Decimal
         Context = self.decimal.Context
         localcontext = self.decimal.localcontext
@@ -2739,7 +2739,7 @@ class PythonAPItests(unittest.TestCase):
             self.assertFalse(c.flags[Overflow])
             self.assertEqual(D('23').shift(-1, context=xc), 0)
 
-            self.assertRaises(TypeError, D.from_float, 1.1, context=xc)
+            self.assertRaises(TypeError, D.kutoka_float, 1.1, context=xc)
             self.assertRaises(TypeError, D(0).as_tuple, context=xc)
 
             self.assertEqual(D(1).canonical(), 1)
@@ -2748,7 +2748,7 @@ class PythonAPItests(unittest.TestCase):
             self.assertRaises(TypeError, D(1).canonical, context="x")
             self.assertRaises(TypeError, D(1).canonical, xyz="x")
 
-    def test_exception_hierarchy(self):
+    eleza test_exception_hierarchy(self):
 
         decimal = self.decimal
         DecimalException = decimal.DecimalException
@@ -2788,14 +2788,14 @@ class PythonAPItests(unittest.TestCase):
         self.assertTrue(issubclass(decimal.DivisionUndefined, ZeroDivisionError))
         self.assertTrue(issubclass(decimal.InvalidContext, InvalidOperation))
 
-class CPythonAPItests(PythonAPItests):
+kundi CPythonAPItests(PythonAPItests):
     decimal = C
-class PyPythonAPItests(PythonAPItests):
+kundi PyPythonAPItests(PythonAPItests):
     decimal = P
 
-class ContextAPItests(unittest.TestCase):
+kundi ContextAPItests(unittest.TestCase):
 
-    def test_none_args(self):
+    eleza test_none_args(self):
         Context = self.decimal.Context
         InvalidOperation = self.decimal.InvalidOperation
         DivisionByZero = self.decimal.DivisionByZero
@@ -2816,7 +2816,7 @@ class ContextAPItests(unittest.TestCase):
                                               Overflow])
 
     @cpython_only
-    def test_from_legacy_strings(self):
+    eleza test_kutoka_legacy_strings(self):
         agiza _testcapi
         c = self.decimal.Context()
 
@@ -2830,7 +2830,7 @@ class ContextAPItests(unittest.TestCase):
         s = _testcapi.unicode_legacy_string('ROUND_\x00UP')
         self.assertRaises(TypeError, setattr, c, 'rounding', s)
 
-    def test_pickle(self):
+    eleza test_pickle(self):
 
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             Context = self.decimal.Context
@@ -2852,7 +2852,7 @@ class ContextAPItests(unittest.TestCase):
             self.assertEqual(c.traps, e.traps)
 
             # Test interchangeability
-            combinations = [(C, P), (P, C)] if C else [(P, P)]
+            combinations = [(C, P), (P, C)] ikiwa C else [(P, P)]
             for dumper, loader in combinations:
                 for ri, _ in enumerate(RoundingModes):
                     for fi, _ in enumerate(OrderedSignals[dumper]):
@@ -2891,13 +2891,13 @@ class ContextAPItests(unittest.TestCase):
 
             sys.modules['decimal'] = savedecimal
 
-    def test_equality_with_other_types(self):
+    eleza test_equality_with_other_types(self):
         Decimal = self.decimal.Decimal
 
         self.assertIn(Decimal(10), ['a', 1.0, Decimal(10), (1,2), {}])
         self.assertNotIn(Decimal(10), ['a', 1.0, (1,2), {}])
 
-    def test_copy(self):
+    eleza test_copy(self):
         # All copies should be deep
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
@@ -2912,7 +2912,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(k1, k2)
         self.assertEqual(c.flags, d.flags)
 
-    def test__clamp(self):
+    eleza test__clamp(self):
         # In Python 3.2, the private attribute `_clamp` was made
         # public (issue 8540), with the old `_clamp` becoming a
         # property wrapping `clamp`.  For the duration of Python 3.2
@@ -2923,7 +2923,7 @@ class ContextAPItests(unittest.TestCase):
         c = Context()
         self.assertRaises(AttributeError, getattr, c, '_clamp')
 
-    def test_abs(self):
+    eleza test_abs(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -2932,7 +2932,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.abs(-1), d)
         self.assertRaises(TypeError, c.abs, '-1')
 
-    def test_add(self):
+    eleza test_add(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -2944,7 +2944,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.add, '1', 1)
         self.assertRaises(TypeError, c.add, 1, '1')
 
-    def test_compare(self):
+    eleza test_compare(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -2956,7 +2956,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.compare, '1', 1)
         self.assertRaises(TypeError, c.compare, 1, '1')
 
-    def test_compare_signal(self):
+    eleza test_compare_signal(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -2968,7 +2968,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.compare_signal, '1', 1)
         self.assertRaises(TypeError, c.compare_signal, 1, '1')
 
-    def test_compare_total(self):
+    eleza test_compare_total(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -2980,7 +2980,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.compare_total, '1', 1)
         self.assertRaises(TypeError, c.compare_total, 1, '1')
 
-    def test_compare_total_mag(self):
+    eleza test_compare_total_mag(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -2992,7 +2992,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.compare_total_mag, '1', 1)
         self.assertRaises(TypeError, c.compare_total_mag, 1, '1')
 
-    def test_copy_abs(self):
+    eleza test_copy_abs(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3001,7 +3001,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.copy_abs(-1), d)
         self.assertRaises(TypeError, c.copy_abs, '-1')
 
-    def test_copy_decimal(self):
+    eleza test_copy_decimal(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3010,7 +3010,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.copy_decimal(-1), d)
         self.assertRaises(TypeError, c.copy_decimal, '-1')
 
-    def test_copy_negate(self):
+    eleza test_copy_negate(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3019,7 +3019,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.copy_negate(-1), d)
         self.assertRaises(TypeError, c.copy_negate, '-1')
 
-    def test_copy_sign(self):
+    eleza test_copy_sign(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3031,7 +3031,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.copy_sign, '1', -2)
         self.assertRaises(TypeError, c.copy_sign, 1, '-2')
 
-    def test_divide(self):
+    eleza test_divide(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3043,7 +3043,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.divide, '1', 2)
         self.assertRaises(TypeError, c.divide, 1, '2')
 
-    def test_divide_int(self):
+    eleza test_divide_int(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3055,7 +3055,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.divide_int, '1', 2)
         self.assertRaises(TypeError, c.divide_int, 1, '2')
 
-    def test_divmod(self):
+    eleza test_divmod(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3067,7 +3067,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.divmod, '1', 2)
         self.assertRaises(TypeError, c.divmod, 1, '2')
 
-    def test_exp(self):
+    eleza test_exp(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3076,7 +3076,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.exp(10), d)
         self.assertRaises(TypeError, c.exp, '10')
 
-    def test_fma(self):
+    eleza test_fma(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3102,7 +3102,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, Decimal(1).fma,
                           Decimal('snan'), 1.222)
 
-    def test_is_finite(self):
+    eleza test_is_finite(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3111,7 +3111,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.is_finite(10), d)
         self.assertRaises(TypeError, c.is_finite, '10')
 
-    def test_is_infinite(self):
+    eleza test_is_infinite(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3120,7 +3120,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.is_infinite(10), d)
         self.assertRaises(TypeError, c.is_infinite, '10')
 
-    def test_is_nan(self):
+    eleza test_is_nan(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3129,7 +3129,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.is_nan(10), d)
         self.assertRaises(TypeError, c.is_nan, '10')
 
-    def test_is_normal(self):
+    eleza test_is_normal(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3138,7 +3138,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.is_normal(10), d)
         self.assertRaises(TypeError, c.is_normal, '10')
 
-    def test_is_qnan(self):
+    eleza test_is_qnan(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3147,7 +3147,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.is_qnan(10), d)
         self.assertRaises(TypeError, c.is_qnan, '10')
 
-    def test_is_signed(self):
+    eleza test_is_signed(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3156,7 +3156,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.is_signed(10), d)
         self.assertRaises(TypeError, c.is_signed, '10')
 
-    def test_is_snan(self):
+    eleza test_is_snan(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3165,7 +3165,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.is_snan(10), d)
         self.assertRaises(TypeError, c.is_snan, '10')
 
-    def test_is_subnormal(self):
+    eleza test_is_subnormal(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3174,7 +3174,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.is_subnormal(10), d)
         self.assertRaises(TypeError, c.is_subnormal, '10')
 
-    def test_is_zero(self):
+    eleza test_is_zero(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3183,7 +3183,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.is_zero(10), d)
         self.assertRaises(TypeError, c.is_zero, '10')
 
-    def test_ln(self):
+    eleza test_ln(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3192,7 +3192,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.ln(10), d)
         self.assertRaises(TypeError, c.ln, '10')
 
-    def test_log10(self):
+    eleza test_log10(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3201,7 +3201,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.log10(10), d)
         self.assertRaises(TypeError, c.log10, '10')
 
-    def test_logb(self):
+    eleza test_logb(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3210,7 +3210,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.logb(10), d)
         self.assertRaises(TypeError, c.logb, '10')
 
-    def test_logical_and(self):
+    eleza test_logical_and(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3222,7 +3222,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.logical_and, '1', 1)
         self.assertRaises(TypeError, c.logical_and, 1, '1')
 
-    def test_logical_invert(self):
+    eleza test_logical_invert(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3231,7 +3231,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.logical_invert(1000), d)
         self.assertRaises(TypeError, c.logical_invert, '1000')
 
-    def test_logical_or(self):
+    eleza test_logical_or(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3243,7 +3243,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.logical_or, '1', 1)
         self.assertRaises(TypeError, c.logical_or, 1, '1')
 
-    def test_logical_xor(self):
+    eleza test_logical_xor(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3255,7 +3255,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.logical_xor, '1', 1)
         self.assertRaises(TypeError, c.logical_xor, 1, '1')
 
-    def test_max(self):
+    eleza test_max(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3267,7 +3267,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.max, '1', 2)
         self.assertRaises(TypeError, c.max, 1, '2')
 
-    def test_max_mag(self):
+    eleza test_max_mag(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3279,7 +3279,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.max_mag, '1', 2)
         self.assertRaises(TypeError, c.max_mag, 1, '2')
 
-    def test_min(self):
+    eleza test_min(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3291,7 +3291,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.min, '1', 2)
         self.assertRaises(TypeError, c.min, 1, '2')
 
-    def test_min_mag(self):
+    eleza test_min_mag(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3303,7 +3303,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.min_mag, '1', 2)
         self.assertRaises(TypeError, c.min_mag, 1, '2')
 
-    def test_minus(self):
+    eleza test_minus(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3312,7 +3312,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.minus(10), d)
         self.assertRaises(TypeError, c.minus, '10')
 
-    def test_multiply(self):
+    eleza test_multiply(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3324,7 +3324,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.multiply, '1', 2)
         self.assertRaises(TypeError, c.multiply, 1, '2')
 
-    def test_next_minus(self):
+    eleza test_next_minus(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3333,7 +3333,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.next_minus(10), d)
         self.assertRaises(TypeError, c.next_minus, '10')
 
-    def test_next_plus(self):
+    eleza test_next_plus(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3342,7 +3342,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.next_plus(10), d)
         self.assertRaises(TypeError, c.next_plus, '10')
 
-    def test_next_toward(self):
+    eleza test_next_toward(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3354,7 +3354,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.next_toward, '1', 2)
         self.assertRaises(TypeError, c.next_toward, 1, '2')
 
-    def test_normalize(self):
+    eleza test_normalize(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3363,7 +3363,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.normalize(10), d)
         self.assertRaises(TypeError, c.normalize, '10')
 
-    def test_number_class(self):
+    eleza test_number_class(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3372,7 +3372,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.number_class(0), c.number_class(Decimal(0)))
         self.assertEqual(c.number_class(-45), c.number_class(Decimal(-45)))
 
-    def test_plus(self):
+    eleza test_plus(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3381,7 +3381,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.plus(10), d)
         self.assertRaises(TypeError, c.plus, '10')
 
-    def test_power(self):
+    eleza test_power(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3395,7 +3395,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.power, 1, '4')
         self.assertEqual(c.power(modulo=5, b=8, a=2), 1)
 
-    def test_quantize(self):
+    eleza test_quantize(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3407,7 +3407,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.quantize, '1', 2)
         self.assertRaises(TypeError, c.quantize, 1, '2')
 
-    def test_remainder(self):
+    eleza test_remainder(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3419,7 +3419,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.remainder, '1', 2)
         self.assertRaises(TypeError, c.remainder, 1, '2')
 
-    def test_remainder_near(self):
+    eleza test_remainder_near(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3431,7 +3431,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.remainder_near, '1', 2)
         self.assertRaises(TypeError, c.remainder_near, 1, '2')
 
-    def test_rotate(self):
+    eleza test_rotate(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3443,7 +3443,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.rotate, '1', 2)
         self.assertRaises(TypeError, c.rotate, 1, '2')
 
-    def test_sqrt(self):
+    eleza test_sqrt(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3452,7 +3452,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.sqrt(10), d)
         self.assertRaises(TypeError, c.sqrt, '10')
 
-    def test_same_quantum(self):
+    eleza test_same_quantum(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3464,7 +3464,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.same_quantum, '1', 2)
         self.assertRaises(TypeError, c.same_quantum, 1, '2')
 
-    def test_scaleb(self):
+    eleza test_scaleb(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3476,7 +3476,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.scaleb, '1', 2)
         self.assertRaises(TypeError, c.scaleb, 1, '2')
 
-    def test_shift(self):
+    eleza test_shift(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3488,7 +3488,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.shift, '1', 2)
         self.assertRaises(TypeError, c.shift, 1, '2')
 
-    def test_subtract(self):
+    eleza test_subtract(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3500,7 +3500,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.subtract, '1', 2)
         self.assertRaises(TypeError, c.subtract, 1, '2')
 
-    def test_to_eng_string(self):
+    eleza test_to_eng_string(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3509,7 +3509,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.to_eng_string(10), d)
         self.assertRaises(TypeError, c.to_eng_string, '10')
 
-    def test_to_sci_string(self):
+    eleza test_to_sci_string(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3518,7 +3518,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.to_sci_string(10), d)
         self.assertRaises(TypeError, c.to_sci_string, '10')
 
-    def test_to_integral_exact(self):
+    eleza test_to_integral_exact(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3527,7 +3527,7 @@ class ContextAPItests(unittest.TestCase):
         self.assertEqual(c.to_integral_exact(10), d)
         self.assertRaises(TypeError, c.to_integral_exact, '10')
 
-    def test_to_integral_value(self):
+    eleza test_to_integral_value(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
 
@@ -3537,16 +3537,16 @@ class ContextAPItests(unittest.TestCase):
         self.assertRaises(TypeError, c.to_integral_value, '10')
         self.assertRaises(TypeError, c.to_integral_value, 10, 'x')
 
-class CContextAPItests(ContextAPItests):
+kundi CContextAPItests(ContextAPItests):
     decimal = C
-class PyContextAPItests(ContextAPItests):
+kundi PyContextAPItests(ContextAPItests):
     decimal = P
 
-class ContextWithStatement(unittest.TestCase):
+kundi ContextWithStatement(unittest.TestCase):
     # Can't do these as docstrings until Python 2.6
     # as doctest can't handle __future__ statements
 
-    def test_localcontext(self):
+    eleza test_localcontext(self):
         # Use a copy of the current context in the block
         getcontext = self.decimal.getcontext
         localcontext = self.decimal.localcontext
@@ -3559,7 +3559,7 @@ class ContextWithStatement(unittest.TestCase):
         self.assertIsNot(orig_ctx, set_ctx, 'did not copy the context')
         self.assertIs(set_ctx, enter_ctx, '__enter__ returned wrong context')
 
-    def test_localcontextarg(self):
+    eleza test_localcontextarg(self):
         # Use a copy of the supplied context in the block
         Context = self.decimal.Context
         getcontext = self.decimal.getcontext
@@ -3576,7 +3576,7 @@ class ContextWithStatement(unittest.TestCase):
         self.assertIsNot(new_ctx, set_ctx, 'did not copy the context')
         self.assertIs(set_ctx, enter_ctx, '__enter__ returned wrong context')
 
-    def test_nested_with_statements(self):
+    eleza test_nested_with_statements(self):
         # Use a copy of the supplied context in the block
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
@@ -3611,7 +3611,7 @@ class ContextWithStatement(unittest.TestCase):
         self.assertFalse(new_ctx.flags[Clamped])
         self.assertFalse(new_ctx.flags[Overflow])
 
-    def test_with_statements_gc1(self):
+    eleza test_with_statements_gc1(self):
         localcontext = self.decimal.localcontext
 
         with localcontext() as c1:
@@ -3623,7 +3623,7 @@ class ContextWithStatement(unittest.TestCase):
                     with localcontext() as c4:
                         del c4
 
-    def test_with_statements_gc2(self):
+    eleza test_with_statements_gc2(self):
         localcontext = self.decimal.localcontext
 
         with localcontext() as c1:
@@ -3635,7 +3635,7 @@ class ContextWithStatement(unittest.TestCase):
                         del c3
                         del c4
 
-    def test_with_statements_gc3(self):
+    eleza test_with_statements_gc3(self):
         Context = self.decimal.Context
         localcontext = self.decimal.localcontext
         getcontext = self.decimal.getcontext
@@ -3668,14 +3668,14 @@ class ContextWithStatement(unittest.TestCase):
                         self.assertEqual(c4.prec, 4)
                         del c4
 
-class CContextWithStatement(ContextWithStatement):
+kundi CContextWithStatement(ContextWithStatement):
     decimal = C
-class PyContextWithStatement(ContextWithStatement):
+kundi PyContextWithStatement(ContextWithStatement):
     decimal = P
 
-class ContextFlags(unittest.TestCase):
+kundi ContextFlags(unittest.TestCase):
 
-    def test_flags_irrelevant(self):
+    eleza test_flags_irrelevant(self):
         # check that the result (numeric result + flags raised) of an
         # arithmetic operation doesn't depend on the current flags
         Decimal = self.decimal.Decimal
@@ -3686,10 +3686,10 @@ class ContextFlags(unittest.TestCase):
         Clamped = self.decimal.Clamped
         Subnormal = self.decimal.Subnormal
 
-        def raise_error(context, flag):
-            if self.decimal == C:
+        eleza raise_error(context, flag):
+            ikiwa self.decimal == C:
                 context.flags[flag] = True
-                if context.traps[flag]:
+                ikiwa context.traps[flag]:
                     raise flag
             else:
                 context._raise_error(flag)
@@ -3714,7 +3714,7 @@ class ContextFlags(unittest.TestCase):
             # find answer and flags raised using a clean context
             context.clear_flags()
             ans = fn(*args)
-            flags = [k for k, v in context.flags.items() if v]
+            flags = [k for k, v in context.flags.items() ikiwa v]
 
             for extra_flags in flagsets:
                 # set flags, before calling operation
@@ -3726,12 +3726,12 @@ class ContextFlags(unittest.TestCase):
                 # flags that we expect to be set after the operation
                 expected_flags = list(flags)
                 for flag in extra_flags:
-                    if flag not in expected_flags:
+                    ikiwa flag not in expected_flags:
                         expected_flags.append(flag)
                 expected_flags.sort(key=id)
 
                 # flags we actually got
-                new_flags = [k for k,v in context.flags.items() if v]
+                new_flags = [k for k,v in context.flags.items() ikiwa v]
                 new_flags.sort(key=id)
 
                 self.assertEqual(ans, new_ans,
@@ -3741,7 +3741,7 @@ class ContextFlags(unittest.TestCase):
                                   "operation raises different flags depending on flags set: " +
                                   "expected %s, got %s" % (expected_flags, new_flags))
 
-    def test_flag_comparisons(self):
+    eleza test_flag_comparisons(self):
         Context = self.decimal.Context
         Inexact = self.decimal.Inexact
         Rounded = self.decimal.Rounded
@@ -3780,7 +3780,7 @@ class ContextFlags(unittest.TestCase):
         self.assertNotEqual(c.flags, d)
 
     @requires_IEEE_754
-    def test_float_operation(self):
+    eleza test_float_operation(self):
         Decimal = self.decimal.Decimal
         FloatOperation = self.decimal.FloatOperation
         localcontext = self.decimal.localcontext
@@ -3800,14 +3800,14 @@ class ContextFlags(unittest.TestCase):
 
             # explicit conversion does not set the flag
             c.clear_flags()
-            x = Decimal.from_float(7.5)
+            x = Decimal.kutoka_float(7.5)
             self.assertFalse(c.flags[FloatOperation])
             # comparison sets the flag
             self.assertEqual(x, 7.5)
             self.assertTrue(c.flags[FloatOperation])
 
             c.clear_flags()
-            x = c.create_decimal_from_float(7.5)
+            x = c.create_decimal_kutoka_float(7.5)
             self.assertFalse(c.flags[FloatOperation])
             self.assertEqual(x, 7.5)
             self.assertTrue(c.flags[FloatOperation])
@@ -3826,23 +3826,23 @@ class ContextFlags(unittest.TestCase):
 
             # explicit conversion is silent
             c.clear_flags()
-            x = Decimal.from_float(7.5)
+            x = Decimal.kutoka_float(7.5)
             self.assertFalse(c.flags[FloatOperation])
 
             c.clear_flags()
-            x = c.create_decimal_from_float(7.5)
+            x = c.create_decimal_kutoka_float(7.5)
             self.assertFalse(c.flags[FloatOperation])
 
-    def test_float_comparison(self):
+    eleza test_float_comparison(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
         FloatOperation = self.decimal.FloatOperation
         localcontext = self.decimal.localcontext
 
-        def assert_attr(a, b, attr, context, signal=None):
+        eleza assert_attr(a, b, attr, context, signal=None):
             context.clear_flags()
             f = getattr(a, attr)
-            if signal == FloatOperation:
+            ikiwa signal == FloatOperation:
                 self.assertRaises(signal, f, b)
             else:
                 self.assertIs(f(b), True)
@@ -3863,7 +3863,7 @@ class ContextFlags(unittest.TestCase):
         inf_f = float('inf')
         neg_inf_f = float('-inf')
 
-        def doit(c, signal=None):
+        eleza doit(c, signal=None):
             # Order
             for attr in '__lt__', '__le__':
                 assert_attr(small_d, big_f, attr, c, signal)
@@ -3893,14 +3893,14 @@ class ContextFlags(unittest.TestCase):
 
             assert_attr(Decimal('NaN'), float('nan'), '__ne__', c, None)
 
-        def test_containers(c, signal=None):
+        eleza test_containers(c, signal=None):
             c.clear_flags()
             s = set([100.0, Decimal('100.0')])
             self.assertEqual(len(s), 1)
             self.assertTrue(c.flags[FloatOperation])
 
             c.clear_flags()
-            if signal:
+            ikiwa signal:
                 self.assertRaises(signal, sorted, [1.0, Decimal('10.0')])
             else:
                 s = sorted([10.0, Decimal('10.0')])
@@ -3924,7 +3924,7 @@ class ContextFlags(unittest.TestCase):
             doit(c, signal=FloatOperation)
             test_containers(c, signal=FloatOperation)
 
-    def test_float_operation_default(self):
+    eleza test_float_operation_default(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
         Inexact = self.decimal.Inexact
@@ -3940,15 +3940,15 @@ class ContextFlags(unittest.TestCase):
         self.assertTrue(context.traps[FloatOperation])
         self.assertTrue(context.traps[Inexact])
 
-class CContextFlags(ContextFlags):
+kundi CContextFlags(ContextFlags):
     decimal = C
-class PyContextFlags(ContextFlags):
+kundi PyContextFlags(ContextFlags):
     decimal = P
 
-class SpecialContexts(unittest.TestCase):
+kundi SpecialContexts(unittest.TestCase):
     """Test the context templates."""
 
-    def test_context_templates(self):
+    eleza test_context_templates(self):
         BasicContext = self.decimal.BasicContext
         ExtendedContext = self.decimal.ExtendedContext
         getcontext = self.decimal.getcontext
@@ -3981,10 +3981,10 @@ class SpecialContexts(unittest.TestCase):
             BasicContext.prec = basic_context_prec
             ExtendedContext.prec = extended_context_prec
             setcontext(savecontext)
-            if ex:
+            ikiwa ex:
                 raise ex
 
-    def test_default_context(self):
+    eleza test_default_context(self):
         DefaultContext = self.decimal.DefaultContext
         BasicContext = self.decimal.BasicContext
         ExtendedContext = self.decimal.ExtendedContext
@@ -4022,17 +4022,17 @@ class SpecialContexts(unittest.TestCase):
         finally:
             DefaultContext.prec = default_context_prec
             setcontext(savecontext)
-            if ex:
+            ikiwa ex:
                 raise ex
 
-class CSpecialContexts(SpecialContexts):
+kundi CSpecialContexts(SpecialContexts):
     decimal = C
-class PySpecialContexts(SpecialContexts):
+kundi PySpecialContexts(SpecialContexts):
     decimal = P
 
-class ContextInputValidation(unittest.TestCase):
+kundi ContextInputValidation(unittest.TestCase):
 
-    def test_invalid_context(self):
+    eleza test_invalid_context(self):
         Context = self.decimal.Context
         DefaultContext = self.decimal.DefaultContext
 
@@ -4092,14 +4092,14 @@ class ContextInputValidation(unittest.TestCase):
         self.assertRaises(TypeError, Context, flags=(0,1))
         self.assertRaises(TypeError, Context, traps=(1,0))
 
-class CContextInputValidation(ContextInputValidation):
+kundi CContextInputValidation(ContextInputValidation):
     decimal = C
-class PyContextInputValidation(ContextInputValidation):
+kundi PyContextInputValidation(ContextInputValidation):
     decimal = P
 
-class ContextSubclassing(unittest.TestCase):
+kundi ContextSubclassing(unittest.TestCase):
 
-    def test_context_subclassing(self):
+    eleza test_context_subclassing(self):
         decimal = self.decimal
         Decimal = decimal.Decimal
         Context = decimal.Context
@@ -4112,29 +4112,29 @@ class ContextSubclassing(unittest.TestCase):
         Underflow = decimal.Underflow
         InvalidOperation = decimal.InvalidOperation
 
-        class MyContext(Context):
-            def __init__(self, prec=None, rounding=None, Emin=None, Emax=None,
+        kundi MyContext(Context):
+            eleza __init__(self, prec=None, rounding=None, Emin=None, Emax=None,
                                capitals=None, clamp=None, flags=None,
                                traps=None):
                 Context.__init__(self)
-                if prec is not None:
+                ikiwa prec is not None:
                     self.prec = prec
-                if rounding is not None:
+                ikiwa rounding is not None:
                     self.rounding = rounding
-                if Emin is not None:
+                ikiwa Emin is not None:
                     self.Emin = Emin
-                if Emax is not None:
+                ikiwa Emax is not None:
                     self.Emax = Emax
-                if capitals is not None:
+                ikiwa capitals is not None:
                     self.capitals = capitals
-                if clamp is not None:
+                ikiwa clamp is not None:
                     self.clamp = clamp
-                if flags is not None:
-                    if isinstance(flags, list):
+                ikiwa flags is not None:
+                    ikiwa isinstance(flags, list):
                         flags = {v:(v in flags) for v in OrderedSignals[decimal] + flags}
                     self.flags = flags
-                if traps is not None:
-                    if isinstance(traps, list):
+                ikiwa traps is not None:
+                    ikiwa isinstance(traps, list):
                         traps = {v:(v in traps) for v in OrderedSignals[decimal] + traps}
                     self.traps = traps
 
@@ -4170,7 +4170,7 @@ class ContextSubclassing(unittest.TestCase):
         c = MyContext(Emax=1, prec=1)
         self.assertEqual(c.Emax, 1)
         self.assertRaises(Overflow, c.add, Decimal('1e99'), Decimal('2.234e2000'))
-        if self.decimal == C:
+        ikiwa self.decimal == C:
             for signal in (Inexact, Overflow, Rounded):
                 self.assertTrue(c.flags[signal])
 
@@ -4206,15 +4206,15 @@ class ContextSubclassing(unittest.TestCase):
         for signal in OrderedSignals[decimal]:
             self.assertFalse(c.traps[signal])
 
-class CContextSubclassing(ContextSubclassing):
+kundi CContextSubclassing(ContextSubclassing):
     decimal = C
-class PyContextSubclassing(ContextSubclassing):
+kundi PyContextSubclassing(ContextSubclassing):
     decimal = P
 
 @skip_if_extra_functionality
-class CheckAttributes(unittest.TestCase):
+kundi CheckAttributes(unittest.TestCase):
 
-    def test_module_attributes(self):
+    eleza test_module_attributes(self):
 
         # Architecture dependent context limits
         self.assertEqual(C.MAX_PREC, P.MAX_PREC)
@@ -4229,21 +4229,21 @@ class CheckAttributes(unittest.TestCase):
 
         self.assertEqual(dir(C), dir(P))
 
-    def test_context_attributes(self):
+    eleza test_context_attributes(self):
 
-        x = [s for s in dir(C.Context()) if '__' in s or not s.startswith('_')]
-        y = [s for s in dir(P.Context()) if '__' in s or not s.startswith('_')]
+        x = [s for s in dir(C.Context()) ikiwa '__' in s or not s.startswith('_')]
+        y = [s for s in dir(P.Context()) ikiwa '__' in s or not s.startswith('_')]
         self.assertEqual(set(x) - set(y), set())
 
-    def test_decimal_attributes(self):
+    eleza test_decimal_attributes(self):
 
-        x = [s for s in dir(C.Decimal(9)) if '__' in s or not s.startswith('_')]
-        y = [s for s in dir(C.Decimal(9)) if '__' in s or not s.startswith('_')]
+        x = [s for s in dir(C.Decimal(9)) ikiwa '__' in s or not s.startswith('_')]
+        y = [s for s in dir(C.Decimal(9)) ikiwa '__' in s or not s.startswith('_')]
         self.assertEqual(set(x) - set(y), set())
 
-class Coverage(unittest.TestCase):
+kundi Coverage(unittest.TestCase):
 
-    def test_adjusted(self):
+    eleza test_adjusted(self):
         Decimal = self.decimal.Decimal
 
         self.assertEqual(Decimal('1234e9999').adjusted(), 10002)
@@ -4251,7 +4251,7 @@ class Coverage(unittest.TestCase):
         self.assertEqual(Decimal('nan').adjusted(), 0)
         self.assertEqual(Decimal('inf').adjusted(), 0)
 
-    def test_canonical(self):
+    eleza test_canonical(self):
         Decimal = self.decimal.Decimal
         getcontext = self.decimal.getcontext
 
@@ -4262,7 +4262,7 @@ class Coverage(unittest.TestCase):
         x = c.canonical(Decimal(9))
         self.assertEqual(x, 9)
 
-    def test_context_repr(self):
+    eleza test_context_repr(self):
         c = self.decimal.DefaultContext.copy()
 
         c.prec = 425000000
@@ -4281,7 +4281,7 @@ class Coverage(unittest.TestCase):
             "flags=[], traps=[])"
         self.assertEqual(s, t)
 
-    def test_implicit_context(self):
+    eleza test_implicit_context(self):
         Decimal = self.decimal.Decimal
         localcontext = self.decimal.localcontext
 
@@ -4362,7 +4362,7 @@ class Coverage(unittest.TestCase):
             z = y.copy_sign(Decimal(1))
             self.assertEqual(z, x)
 
-    def test_divmod(self):
+    eleza test_divmod(self):
         Decimal = self.decimal.Decimal
         localcontext = self.decimal.localcontext
         InvalidOperation = self.decimal.InvalidOperation
@@ -4403,7 +4403,7 @@ class Coverage(unittest.TestCase):
             self.assertTrue(c.flags[InvalidOperation] and
                             c.flags[DivisionByZero])
 
-    def test_power(self):
+    eleza test_power(self):
         Decimal = self.decimal.Decimal
         localcontext = self.decimal.localcontext
         Overflow = self.decimal.Overflow
@@ -4423,7 +4423,7 @@ class Coverage(unittest.TestCase):
             self.assertEqual(Decimal(10000) ** Decimal("0.5"), Decimal('inf'))
             self.assertTrue(c.flags[Overflow])
 
-    def test_quantize(self):
+    eleza test_quantize(self):
         Decimal = self.decimal.Decimal
         localcontext = self.decimal.localcontext
         InvalidOperation = self.decimal.InvalidOperation
@@ -4436,7 +4436,7 @@ class Coverage(unittest.TestCase):
             x = Decimal(99).quantize(Decimal("1e1"))
             self.assertTrue(x.is_nan())
 
-    def test_radix(self):
+    eleza test_radix(self):
         Decimal = self.decimal.Decimal
         getcontext = self.decimal.getcontext
 
@@ -4444,14 +4444,14 @@ class Coverage(unittest.TestCase):
         self.assertEqual(Decimal("1").radix(), 10)
         self.assertEqual(c.radix(), 10)
 
-    def test_rop(self):
+    eleza test_rop(self):
         Decimal = self.decimal.Decimal
 
         for attr in ('__radd__', '__rsub__', '__rmul__', '__rtruediv__',
                      '__rdivmod__', '__rmod__', '__rfloordiv__', '__rpow__'):
             self.assertIs(getattr(Decimal("1"), attr)("xyz"), NotImplemented)
 
-    def test_round(self):
+    eleza test_round(self):
         # Python3 behavior: round() returns Decimal
         Decimal = self.decimal.Decimal
         localcontext = self.decimal.localcontext
@@ -4468,11 +4468,11 @@ class Coverage(unittest.TestCase):
             self.assertRaises(TypeError, Decimal("1.23").__round__, "5")
             self.assertRaises(TypeError, Decimal("1.23").__round__, 5, 8)
 
-    def test_create_decimal(self):
+    eleza test_create_decimal(self):
         c = self.decimal.Context()
         self.assertRaises(ValueError, c.create_decimal, ["%"])
 
-    def test_int(self):
+    eleza test_int(self):
         Decimal = self.decimal.Decimal
         localcontext = self.decimal.localcontext
 
@@ -4482,7 +4482,7 @@ class Coverage(unittest.TestCase):
             self.assertEqual(int(x), 1)
             self.assertEqual(x.to_integral(), 2)
 
-    def test_copy(self):
+    eleza test_copy(self):
         Context = self.decimal.Context
 
         c = Context()
@@ -4498,15 +4498,15 @@ class Coverage(unittest.TestCase):
         y = c.copy_sign(x, 1)
         self.assertEqual(y, -x)
 
-class CCoverage(Coverage):
+kundi CCoverage(Coverage):
     decimal = C
-class PyCoverage(Coverage):
+kundi PyCoverage(Coverage):
     decimal = P
 
-class PyFunctionality(unittest.TestCase):
+kundi PyFunctionality(unittest.TestCase):
     """Extra functionality in decimal.py"""
 
-    def test_py_alternate_formatting(self):
+    eleza test_py_alternate_formatting(self):
         # triples giving a format, a Decimal, and the expected result
         Decimal = P.Decimal
         localcontext = P.localcontext
@@ -4527,10 +4527,10 @@ class PyFunctionality(unittest.TestCase):
         for fmt, d, result in test_values:
             self.assertEqual(format(Decimal(d), fmt), result)
 
-class PyWhitebox(unittest.TestCase):
+kundi PyWhitebox(unittest.TestCase):
     """White box testing for decimal.py"""
 
-    def test_py_exact_power(self):
+    eleza test_py_exact_power(self):
         # Rarely exercised lines in _power_exact.
         Decimal = P.Decimal
         localcontext = P.localcontext
@@ -4557,7 +4557,7 @@ class PyWhitebox(unittest.TestCase):
             c.prec = 201
             x = Decimal(2**578) ** Decimal("-0.5")
 
-    def test_py_immutability_operations(self):
+    eleza test_py_immutability_operations(self):
         # Do operations and check that it didn't change internal objects.
         Decimal = P.Decimal
         DefaultContext = P.DefaultContext
@@ -4572,8 +4572,8 @@ class PyWhitebox(unittest.TestCase):
         d2 = Decimal('33e+33')
         b2 = Decimal('33e+33')
 
-        def checkSameDec(operation, useOther=False):
-            if useOther:
+        eleza checkSameDec(operation, useOther=False):
+            ikiwa useOther:
                 eval("d1." + operation + "(d2)")
                 self.assertEqual(d1._sign, b1._sign)
                 self.assertEqual(d1._int, b1._int)
@@ -4636,7 +4636,7 @@ class PyWhitebox(unittest.TestCase):
         checkSameDec("to_eng_string")
         checkSameDec("to_integral")
 
-    def test_py_decimal_id(self):
+    eleza test_py_decimal_id(self):
         Decimal = P.Decimal
 
         d = Decimal(45)
@@ -4644,7 +4644,7 @@ class PyWhitebox(unittest.TestCase):
         self.assertEqual(str(e), '45')
         self.assertNotEqual(id(d), id(e))
 
-    def test_py_rescale(self):
+    eleza test_py_rescale(self):
         # Coverage
         Decimal = P.Decimal
         localcontext = P.localcontext
@@ -4653,24 +4653,24 @@ class PyWhitebox(unittest.TestCase):
             x = Decimal("NaN")._rescale(3, ROUND_UP)
             self.assertTrue(x.is_nan())
 
-    def test_py__round(self):
+    eleza test_py__round(self):
         # Coverage
         Decimal = P.Decimal
 
         self.assertRaises(ValueError, Decimal("3.1234")._round, 0, ROUND_UP)
 
-class CFunctionality(unittest.TestCase):
+kundi CFunctionality(unittest.TestCase):
     """Extra functionality in _decimal"""
 
     @requires_extra_functionality
-    def test_c_ieee_context(self):
+    eleza test_c_ieee_context(self):
         # issue 8786: Add support for IEEE 754 contexts to decimal module.
         IEEEContext = C.IEEEContext
         DECIMAL32 = C.DECIMAL32
         DECIMAL64 = C.DECIMAL64
         DECIMAL128 = C.DECIMAL128
 
-        def assert_rest(self, context):
+        eleza assert_rest(self, context):
             self.assertEqual(context.clamp, 1)
             assert_signals(self, context, 'traps', [])
             assert_signals(self, context, 'flags', [])
@@ -4699,7 +4699,7 @@ class CFunctionality(unittest.TestCase):
         self.assertRaises(ValueError, IEEEContext, 1024)
 
     @requires_extra_functionality
-    def test_c_context(self):
+    eleza test_c_context(self):
         Context = C.Context
 
         c = Context(flags=C.DecClamped, traps=C.DecRounded)
@@ -4707,7 +4707,7 @@ class CFunctionality(unittest.TestCase):
         self.assertEqual(c._traps, C.DecRounded)
 
     @requires_extra_functionality
-    def test_constants(self):
+    eleza test_constants(self):
         # Condition flags
         cond = (
             C.DecClamped, C.DecConversionSyntax, C.DecDivisionByZero,
@@ -4744,10 +4744,10 @@ class CFunctionality(unittest.TestCase):
         self.assertEqual(C.DecTraps,
                          C.DecErrors|C.DecOverflow|C.DecUnderflow)
 
-class CWhitebox(unittest.TestCase):
+kundi CWhitebox(unittest.TestCase):
     """Whitebox testing for _decimal"""
 
-    def test_bignum(self):
+    eleza test_bignum(self):
         # Not exactly whitebox, but too slow with pydecimal.
 
         Decimal = C.Decimal
@@ -4764,10 +4764,10 @@ class CWhitebox(unittest.TestCase):
                 y = Decimal(a) ** Decimal(b)
                 self.assertEqual(x, y)
 
-    def test_invalid_construction(self):
+    eleza test_invalid_construction(self):
         self.assertRaises(TypeError, C.Decimal, 9, "xyz")
 
-    def test_c_input_restriction(self):
+    eleza test_c_input_restriction(self):
         # Too large for _decimal to be converted exactly
         Decimal = C.Decimal
         InvalidOperation = C.InvalidOperation
@@ -4778,7 +4778,7 @@ class CWhitebox(unittest.TestCase):
             self.assertRaises(InvalidOperation, Decimal,
                               "1e9999999999999999999")
 
-    def test_c_context_repr(self):
+    eleza test_c_context_repr(self):
         # This test is _decimal-only because flags are not printed
         # in the same order.
         DefaultContext = C.DefaultContext
@@ -4807,7 +4807,7 @@ class CWhitebox(unittest.TestCase):
                    "FloatOperation, Overflow, Rounded, Subnormal, Underflow])"
         self.assertEqual(s, t)
 
-    def test_c_context_errors(self):
+    eleza test_c_context_errors(self):
         Context = C.Context
         InvalidOperation = C.InvalidOperation
         Overflow = C.Overflow
@@ -4838,8 +4838,8 @@ class CWhitebox(unittest.TestCase):
         self.assertRaises(KeyError, setattr, c, 'traps', d)
 
         # Input corner cases
-        int_max = 2**63-1 if HAVE_CONFIG_64 else 2**31-1
-        gt_max_emax = 10**18 if HAVE_CONFIG_64 else 10**9
+        int_max = 2**63-1 ikiwa HAVE_CONFIG_64 else 2**31-1
+        gt_max_emax = 10**18 ikiwa HAVE_CONFIG_64 else 10**9
 
         # prec, Emax, Emin
         for attr in ['prec', 'Emax']:
@@ -4862,12 +4862,12 @@ class CWhitebox(unittest.TestCase):
         for attr in ('prec', 'Emin', 'Emax', 'capitals', 'clamp'):
             self.assertRaises(OverflowError, setattr, c, attr, int_max+1)
             self.assertRaises(OverflowError, setattr, c, attr, -int_max-2)
-            if sys.platform != 'win32':
+            ikiwa sys.platform != 'win32':
                 self.assertRaises(ValueError, setattr, c, attr, int_max)
                 self.assertRaises(ValueError, setattr, c, attr, -int_max-1)
 
         # OverflowError: _unsafe_setprec, _unsafe_setemin, _unsafe_setemax
-        if C.MAX_PREC == 425000000:
+        ikiwa C.MAX_PREC == 425000000:
             self.assertRaises(OverflowError, getattr(c, '_unsafe_setprec'),
                               int_max+1)
             self.assertRaises(OverflowError, getattr(c, '_unsafe_setemax'),
@@ -4876,7 +4876,7 @@ class CWhitebox(unittest.TestCase):
                               -int_max-2)
 
         # ValueError: _unsafe_setprec, _unsafe_setemin, _unsafe_setemax
-        if C.MAX_PREC == 425000000:
+        ikiwa C.MAX_PREC == 425000000:
             self.assertRaises(ValueError, getattr(c, '_unsafe_setprec'), 0)
             self.assertRaises(ValueError, getattr(c, '_unsafe_setprec'),
                               1070000001)
@@ -4892,7 +4892,7 @@ class CWhitebox(unittest.TestCase):
             self.assertRaises(ValueError, setattr, c, attr, -1)
             self.assertRaises(ValueError, setattr, c, attr, 2)
             self.assertRaises(TypeError, setattr, c, attr, [1,2,3])
-            if HAVE_CONFIG_64:
+            ikiwa HAVE_CONFIG_64:
                 self.assertRaises(ValueError, setattr, c, attr, 2**32)
                 self.assertRaises(ValueError, setattr, c, attr, 2**32+1)
 
@@ -4908,7 +4908,7 @@ class CWhitebox(unittest.TestCase):
         self.assertRaises(TypeError, setcontext, "xyz")
         setcontext(saved_context)
 
-    def test_rounding_strings_interned(self):
+    eleza test_rounding_strings_interned(self):
 
         self.assertIs(C.ROUND_UP, P.ROUND_UP)
         self.assertIs(C.ROUND_DOWN, P.ROUND_DOWN)
@@ -4920,7 +4920,7 @@ class CWhitebox(unittest.TestCase):
         self.assertIs(C.ROUND_05UP, P.ROUND_05UP)
 
     @requires_extra_functionality
-    def test_c_context_errors_extra(self):
+    eleza test_c_context_errors_extra(self):
         Context = C.Context
         InvalidOperation = C.InvalidOperation
         Overflow = C.Overflow
@@ -4932,12 +4932,12 @@ class CWhitebox(unittest.TestCase):
         c = Context()
 
         # Input corner cases
-        int_max = 2**63-1 if HAVE_CONFIG_64 else 2**31-1
+        int_max = 2**63-1 ikiwa HAVE_CONFIG_64 else 2**31-1
 
         # OverflowError, general ValueError
         self.assertRaises(OverflowError, setattr, c, '_allcr', int_max+1)
         self.assertRaises(OverflowError, setattr, c, '_allcr', -int_max-2)
-        if sys.platform != 'win32':
+        ikiwa sys.platform != 'win32':
             self.assertRaises(ValueError, setattr, c, '_allcr', int_max)
             self.assertRaises(ValueError, setattr, c, '_allcr', -int_max-1)
 
@@ -4945,7 +4945,7 @@ class CWhitebox(unittest.TestCase):
         for attr in ('_flags', '_traps'):
             self.assertRaises(OverflowError, setattr, c, attr, int_max+1)
             self.assertRaises(OverflowError, setattr, c, attr, -int_max-2)
-            if sys.platform != 'win32':
+            ikiwa sys.platform != 'win32':
                 self.assertRaises(TypeError, setattr, c, attr, int_max)
                 self.assertRaises(TypeError, setattr, c, attr, -int_max-1)
 
@@ -4953,7 +4953,7 @@ class CWhitebox(unittest.TestCase):
         self.assertRaises(ValueError, setattr, c, '_allcr', -1)
         self.assertRaises(ValueError, setattr, c, '_allcr', 2)
         self.assertRaises(TypeError, setattr, c, '_allcr', [1,2,3])
-        if HAVE_CONFIG_64:
+        ikiwa HAVE_CONFIG_64:
             self.assertRaises(ValueError, setattr, c, '_allcr', 2**32)
             self.assertRaises(ValueError, setattr, c, '_allcr', 2**32+1)
 
@@ -4962,7 +4962,7 @@ class CWhitebox(unittest.TestCase):
             self.assertRaises(TypeError, setattr, c, attr, 999999)
             self.assertRaises(TypeError, setattr, c, attr, 'x')
 
-    def test_c_valid_context(self):
+    eleza test_c_valid_context(self):
         # These tests are for code coverage in _decimal.
         DefaultContext = C.DefaultContext
         Clamped = C.Clamped
@@ -4992,7 +4992,7 @@ class CWhitebox(unittest.TestCase):
         self.assertEqual(c.Etop(), 2967)
 
         # Exercise all unsafe setters
-        if C.MAX_PREC == 425000000:
+        ikiwa C.MAX_PREC == 425000000:
             c._unsafe_setprec(999999999)
             c._unsafe_setemax(999999999)
             c._unsafe_setemin(-999999999)
@@ -5001,7 +5001,7 @@ class CWhitebox(unittest.TestCase):
             self.assertEqual(c.Emin, -999999999)
 
     @requires_extra_functionality
-    def test_c_valid_context_extra(self):
+    eleza test_c_valid_context_extra(self):
         DefaultContext = C.DefaultContext
 
         c = DefaultContext.copy()
@@ -5009,14 +5009,14 @@ class CWhitebox(unittest.TestCase):
         c._allcr = 0
         self.assertEqual(c._allcr, 0)
 
-    def test_c_round(self):
+    eleza test_c_round(self):
         # Restricted input.
         Decimal = C.Decimal
         InvalidOperation = C.InvalidOperation
         localcontext = C.localcontext
         MAX_EMAX = C.MAX_EMAX
         MIN_ETINY = C.MIN_ETINY
-        int_max = 2**63-1 if C.MAX_PREC > 425000000 else 2**31-1
+        int_max = 2**63-1 ikiwa C.MAX_PREC > 425000000 else 2**31-1
 
         with localcontext() as c:
             c.traps[InvalidOperation] = True
@@ -5033,7 +5033,7 @@ class CWhitebox(unittest.TestCase):
             self.assertRaises(OverflowError, Decimal("1.23").__round__,
                               int_max+1)
 
-    def test_c_format(self):
+    eleza test_c_format(self):
         # Restricted input
         Decimal = C.Decimal
         HAVE_CONFIG_64 = (C.MAX_PREC > 425000000)
@@ -5043,11 +5043,11 @@ class CWhitebox(unittest.TestCase):
         self.assertRaises(TypeError, Decimal(1).__format__, [])
 
         self.assertRaises(ValueError, Decimal(1).__format__, "<>=10.10")
-        maxsize = 2**63-1 if HAVE_CONFIG_64 else 2**31-1
+        maxsize = 2**63-1 ikiwa HAVE_CONFIG_64 else 2**31-1
         self.assertRaises(ValueError, Decimal("1.23456789").__format__,
                           "=%d.1" % maxsize)
 
-    def test_c_integral(self):
+    eleza test_c_integral(self):
         Decimal = C.Decimal
         Inexact = C.Inexact
         localcontext = C.localcontext
@@ -5078,7 +5078,7 @@ class CWhitebox(unittest.TestCase):
             c.traps[Inexact] = True
             self.assertRaises(Inexact, Decimal("999.9").to_integral_exact, ROUND_UP)
 
-    def test_c_funcs(self):
+    eleza test_c_funcs(self):
         # Invalid arguments
         Decimal = C.Decimal
         InvalidOperation = C.InvalidOperation
@@ -5137,7 +5137,7 @@ class CWhitebox(unittest.TestCase):
             c.prec = 2
             self.assertRaises(InvalidOperation, pow, Decimal(1000), 1, 501)
 
-    def test_va_args_exceptions(self):
+    eleza test_va_args_exceptions(self):
         Decimal = C.Decimal
         Context = C.Context
 
@@ -5182,7 +5182,7 @@ class CWhitebox(unittest.TestCase):
         self.assertRaises(TypeError, c.power, "x", 2, mod=None)
 
     @requires_extra_functionality
-    def test_c_context_templates(self):
+    eleza test_c_context_templates(self):
         self.assertEqual(
             C.BasicContext._traps,
             C.DecIEEEInvalidOperation|C.DecDivisionByZero|C.DecOverflow|
@@ -5194,7 +5194,7 @@ class CWhitebox(unittest.TestCase):
         )
 
     @requires_extra_functionality
-    def test_c_signal_dict(self):
+    eleza test_c_signal_dict(self):
 
         # SignalDict coverage
         Context = C.Context
@@ -5213,9 +5213,9 @@ class CWhitebox(unittest.TestCase):
         DecInvalidOperation = C.DecInvalidOperation
         DecIEEEInvalidOperation = C.DecIEEEInvalidOperation
 
-        def assertIsExclusivelySet(signal, signal_dict):
+        eleza assertIsExclusivelySet(signal, signal_dict):
             for sig in signal_dict:
-                if sig == signal:
+                ikiwa sig == signal:
                     self.assertTrue(signal_dict[sig])
                 else:
                     self.assertFalse(signal_dict[sig])
@@ -5325,7 +5325,7 @@ class CWhitebox(unittest.TestCase):
             self.assertTrue(c._traps&DecIEEEInvalidOperation)
             assertIsExclusivelySet(InvalidOperation, c.traps)
 
-    def test_invalid_override(self):
+    eleza test_invalid_override(self):
         Decimal = C.Decimal
 
         try:
@@ -5333,11 +5333,11 @@ class CWhitebox(unittest.TestCase):
         except ImportError:
             self.skipTest('locale.CHAR_MAX not available')
 
-        def make_grouping(lst):
-            return ''.join([chr(x) for x in lst])
+        eleza make_grouping(lst):
+            rudisha ''.join([chr(x) for x in lst])
 
-        def get_fmt(x, override=None, fmt='n'):
-            return Decimal(x).__format__(fmt, override)
+        eleza get_fmt(x, override=None, fmt='n'):
+            rudisha Decimal(x).__format__(fmt, override)
 
         invalid_grouping = {
             'decimal_point' : ',',
@@ -5355,14 +5355,14 @@ class CWhitebox(unittest.TestCase):
             'thousands_sep' : 'yyyyy'
         }
 
-        if CHAR_MAX == 127: # negative grouping in override
+        ikiwa CHAR_MAX == 127: # negative grouping in override
             self.assertRaises(ValueError, get_fmt, 12345,
                               invalid_grouping, 'g')
 
         self.assertRaises(ValueError, get_fmt, 12345, invalid_dot, 'g')
         self.assertRaises(ValueError, get_fmt, 12345, invalid_sep, 'g')
 
-    def test_exact_conversion(self):
+    eleza test_exact_conversion(self):
         Decimal = C.Decimal
         localcontext = C.localcontext
         InvalidOperation = C.InvalidOperation
@@ -5386,7 +5386,7 @@ class CWhitebox(unittest.TestCase):
             x = "1e%d" % (-sys.maxsize-1)
             self.assertRaises(InvalidOperation, Decimal, x)
 
-    def test_from_tuple(self):
+    eleza test_kutoka_tuple(self):
         Decimal = C.Decimal
         localcontext = C.localcontext
         InvalidOperation = C.InvalidOperation
@@ -5434,12 +5434,12 @@ class CWhitebox(unittest.TestCase):
             x = (1, (0, 1), "N")
             self.assertEqual(str(Decimal(x)), '-sNaN1')
 
-    def test_sizeof(self):
+    eleza test_sizeof(self):
         Decimal = C.Decimal
         HAVE_CONFIG_64 = (C.MAX_PREC > 425000000)
 
         self.assertGreater(Decimal(0).__sizeof__(), 0)
-        if HAVE_CONFIG_64:
+        ikiwa HAVE_CONFIG_64:
             x = Decimal(10**(19*24)).__sizeof__()
             y = Decimal(10**(19*25)).__sizeof__()
             self.assertEqual(y, x+8)
@@ -5448,68 +5448,68 @@ class CWhitebox(unittest.TestCase):
             y = Decimal(10**(9*25)).__sizeof__()
             self.assertEqual(y, x+4)
 
-    def test_internal_use_of_overridden_methods(self):
+    eleza test_internal_use_of_overridden_methods(self):
         Decimal = C.Decimal
 
         # Unsound subtyping
-        class X(float):
-            def as_integer_ratio(self):
-                return 1
-            def __abs__(self):
-                return self
+        kundi X(float):
+            eleza as_integer_ratio(self):
+                rudisha 1
+            eleza __abs__(self):
+                rudisha self
 
-        class Y(float):
-            def __abs__(self):
-                return [1]*200
+        kundi Y(float):
+            eleza __abs__(self):
+                rudisha [1]*200
 
-        class I(int):
-            def bit_length(self):
-                return [1]*200
+        kundi I(int):
+            eleza bit_length(self):
+                rudisha [1]*200
 
-        class Z(float):
-            def as_integer_ratio(self):
-                return (I(1), I(1))
-            def __abs__(self):
-                return self
+        kundi Z(float):
+            eleza as_integer_ratio(self):
+                rudisha (I(1), I(1))
+            eleza __abs__(self):
+                rudisha self
 
         for cls in X, Y, Z:
-            self.assertEqual(Decimal.from_float(cls(101.1)),
-                             Decimal.from_float(101.1))
+            self.assertEqual(Decimal.kutoka_float(cls(101.1)),
+                             Decimal.kutoka_float(101.1))
 
 @requires_docstrings
 @unittest.skipUnless(C, "test requires C version")
-class SignatureTest(unittest.TestCase):
+kundi SignatureTest(unittest.TestCase):
     """Function signatures"""
 
-    def test_inspect_module(self):
+    eleza test_inspect_module(self):
         for attr in dir(P):
-            if attr.startswith('_'):
+            ikiwa attr.startswith('_'):
                 continue
             p_func = getattr(P, attr)
             c_func = getattr(C, attr)
-            if (attr == 'Decimal' or attr == 'Context' or
+            ikiwa (attr == 'Decimal' or attr == 'Context' or
                 inspect.isfunction(p_func)):
                 p_sig = inspect.signature(p_func)
                 c_sig = inspect.signature(c_func)
 
                 # parameter names:
                 c_names = list(c_sig.parameters.keys())
-                p_names = [x for x in p_sig.parameters.keys() if not
+                p_names = [x for x in p_sig.parameters.keys() ikiwa not
                            x.startswith('_')]
 
                 self.assertEqual(c_names, p_names,
                                  msg="parameter name mismatch in %s" % p_func)
 
                 c_kind = [x.kind for x in c_sig.parameters.values()]
-                p_kind = [x[1].kind for x in p_sig.parameters.items() if not
+                p_kind = [x[1].kind for x in p_sig.parameters.items() ikiwa not
                           x[0].startswith('_')]
 
                 # parameters:
-                if attr != 'setcontext':
+                ikiwa attr != 'setcontext':
                     self.assertEqual(c_kind, p_kind,
                                      msg="parameter kind mismatch in %s" % p_func)
 
-    def test_inspect_types(self):
+    eleza test_inspect_types(self):
 
         POS = inspect._ParameterKind.POSITIONAL_ONLY
         POS_KWD = inspect._ParameterKind.POSITIONAL_OR_KEYWORD
@@ -5541,36 +5541,36 @@ class SignatureTest(unittest.TestCase):
                      'rounding': P.ROUND_HALF_UP,
                      'context': P.getcontext()}}
 
-        def mkargs(module, sig):
+        eleza mkargs(module, sig):
             args = []
             kwargs = {}
             for name, param in sig.parameters.items():
-                if name == 'self': continue
-                if param.kind == POS:
+                ikiwa name == 'self': continue
+                ikiwa param.kind == POS:
                     args.append(pdict[module][name])
-                elif param.kind == POS_KWD:
+                elikiwa param.kind == POS_KWD:
                     kwargs[name] = pdict[module][name]
                 else:
                     raise TestFailed("unexpected parameter kind")
-            return args, kwargs
+            rudisha args, kwargs
 
-        def tr(s):
+        eleza tr(s):
             """The C Context docstrings use 'x' in order to prevent confusion
                with the article 'a' in the descriptions."""
-            if s == 'x': return 'a'
-            if s == 'y': return 'b'
-            if s == 'z': return 'c'
-            return s
+            ikiwa s == 'x': rudisha 'a'
+            ikiwa s == 'y': rudisha 'b'
+            ikiwa s == 'z': rudisha 'c'
+            rudisha s
 
-        def doit(ty):
+        eleza doit(ty):
             p_type = getattr(P, ty)
             c_type = getattr(C, ty)
             for attr in dir(p_type):
-                if attr.startswith('_'):
+                ikiwa attr.startswith('_'):
                     continue
                 p_func = getattr(p_type, attr)
                 c_func = getattr(c_type, attr)
-                if inspect.isfunction(p_func):
+                ikiwa inspect.isfunction(p_func):
                     p_sig = inspect.signature(p_func)
                     c_sig = inspect.signature(c_func)
 
@@ -5589,7 +5589,7 @@ class SignatureTest(unittest.TestCase):
                     self.assertIs(c_kind[0], POS)
 
                     # remaining parameters:
-                    if ty == 'Decimal':
+                    ikiwa ty == 'Decimal':
                         self.assertEqual(c_kind[1:], p_kind[1:],
                                          msg="parameter kind mismatch in %s" % p_func)
                     else: # Context methods are positional only in the C version.
@@ -5633,28 +5633,28 @@ all_tests = [
   CIBMTestCases,             PyIBMTestCases,
 ]
 
-# Delete C tests if _decimal.so is not present.
-if not C:
+# Delete C tests ikiwa _decimal.so is not present.
+ikiwa not C:
     all_tests = all_tests[1::2]
 else:
     all_tests.insert(0, CheckAttributes)
     all_tests.insert(1, SignatureTest)
 
 
-def test_main(arith=None, verbose=None, todo_tests=None, debug=None):
+eleza test_main(arith=None, verbose=None, todo_tests=None, debug=None):
     """ Execute the tests.
 
-    Runs all arithmetic tests if arith is True or if the "decimal" resource
+    Runs all arithmetic tests ikiwa arith is True or ikiwa the "decimal" resource
     is enabled in regrtest.py
     """
 
     init(C)
     init(P)
     global TEST_ALL, DEBUG
-    TEST_ALL = arith if arith is not None else is_resource_enabled('decimal')
+    TEST_ALL = arith ikiwa arith is not None else is_resource_enabled('decimal')
     DEBUG = debug
 
-    if todo_tests is None:
+    ikiwa todo_tests is None:
         test_classes = all_tests
     else:
         test_classes = [CIBMTestCases, PyIBMTestCases]
@@ -5663,10 +5663,10 @@ def test_main(arith=None, verbose=None, todo_tests=None, debug=None):
     # directory and add the definitions to the DecimalTest class.  This
     # procedure insures that new files do not get skipped.
     for filename in os.listdir(directory):
-        if '.decTest' not in filename or filename.startswith("."):
+        ikiwa '.decTest' not in filename or filename.startswith("."):
             continue
         head, tail = filename.split('.')
-        if todo_tests is not None and head not in todo_tests:
+        ikiwa todo_tests is not None and head not in todo_tests:
             continue
         tester = lambda self, f=filename: self.eval_file(directory + f)
         setattr(CIBMTestCases, 'test_' + head, tester)
@@ -5676,36 +5676,36 @@ def test_main(arith=None, verbose=None, todo_tests=None, debug=None):
 
     try:
         run_unittest(*test_classes)
-        if todo_tests is None:
+        ikiwa todo_tests is None:
             kutoka doctest agiza IGNORE_EXCEPTION_DETAIL
             savedecimal = sys.modules['decimal']
-            if C:
+            ikiwa C:
                 sys.modules['decimal'] = C
                 run_doctest(C, verbose, optionflags=IGNORE_EXCEPTION_DETAIL)
             sys.modules['decimal'] = P
             run_doctest(P, verbose)
             sys.modules['decimal'] = savedecimal
     finally:
-        if C: C.setcontext(ORIGINAL_CONTEXT[C])
+        ikiwa C: C.setcontext(ORIGINAL_CONTEXT[C])
         P.setcontext(ORIGINAL_CONTEXT[P])
-        if not C:
+        ikiwa not C:
             warnings.warn('C tests skipped: no module named _decimal.',
                           UserWarning)
-        if not orig_sys_decimal is sys.modules['decimal']:
+        ikiwa not orig_sys_decimal is sys.modules['decimal']:
             raise TestFailed("Internal error: unbalanced number of changes to "
                              "sys.modules['decimal'].")
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     agiza optparse
     p = optparse.OptionParser("test_decimal.py [--debug] [{--skip | test1 [test2 [...]]}]")
     p.add_option('--debug', '-d', action='store_true', help='shows the test number and context before each test')
     p.add_option('--skip',  '-s', action='store_true', help='skip over 90% of the arithmetic tests')
     (opt, args) = p.parse_args()
 
-    if opt.skip:
+    ikiwa opt.skip:
         test_main(arith=False, verbose=True)
-    elif args:
+    elikiwa args:
         test_main(arith=True, verbose=True, todo_tests=args, debug=opt.debug)
     else:
         test_main(arith=True, verbose=True)

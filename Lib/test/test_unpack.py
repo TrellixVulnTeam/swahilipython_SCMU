@@ -28,9 +28,9 @@ Unpack string... fun!
 
 Unpack generic sequence
 
-    >>> class Seq:
-    ...     def __getitem__(self, i):
-    ...         if i >= 0 and i < 3: return i
+    >>> kundi Seq:
+    ...     eleza __getitem__(self, i):
+    ...         ikiwa i >= 0 and i < 3: rudisha i
     ...         raise IndexError
     ...
     >>> a, b, c = Seq()
@@ -88,14 +88,14 @@ Unpacking sequence too long
 Unpacking a sequence where the test for too long raises a different kind of
 error
 
-    >>> class BozoError(Exception):
+    >>> kundi BozoError(Exception):
     ...     pass
     ...
-    >>> class BadSeq:
-    ...     def __getitem__(self, i):
-    ...         if i >= 0 and i < 3:
-    ...             return i
-    ...         elif i == 3:
+    >>> kundi BadSeq:
+    ...     eleza __getitem__(self, i):
+    ...         ikiwa i >= 0 and i < 3:
+    ...             rudisha i
+    ...         elikiwa i == 3:
     ...             raise BozoError
     ...         else:
     ...             raise IndexError
@@ -142,10 +142,10 @@ Unpacking to an empty iterable should raise ValueError
 
 __test__ = {'doctests' : doctests}
 
-def test_main(verbose=False):
+eleza test_main(verbose=False):
     kutoka test agiza support
     kutoka test agiza test_unpack
     support.run_doctest(test_unpack, verbose)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main(verbose=True)

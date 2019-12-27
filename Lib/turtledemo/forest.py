@@ -15,23 +15,23 @@ kutoka turtle agiza Turtle, colormode, tracer, mainloop
 kutoka random agiza randrange
 kutoka time agiza perf_counter as clock
 
-def symRandom(n):
-    return randrange(-n,n+1)
+eleza symRandom(n):
+    rudisha randrange(-n,n+1)
 
-def randomize( branchlist, angledist, sizedist ):
-    return [ (angle+symRandom(angledist),
+eleza randomize( branchlist, angledist, sizedist ):
+    rudisha [ (angle+symRandom(angledist),
               sizefactor*1.01**symRandom(sizedist))
                      for angle, sizefactor in branchlist ]
 
-def randomfd( t, distance, parts, angledist ):
+eleza randomfd( t, distance, parts, angledist ):
     for i in range(parts):
         t.left(symRandom(angledist))
         t.forward( (1.0 * distance)/parts )
 
-def tree(tlist, size, level, widthfactor, branchlists, angledist=10, sizedist=5):
+eleza tree(tlist, size, level, widthfactor, branchlists, angledist=10, sizedist=5):
     # benutzt Liste von turtles und Liste von Zweiglisten,
     # fuer jede turtle eine!
-    if level > 0:
+    ikiwa level > 0:
         lst = []
         brs = []
         for t, branchlist in list(zip(tlist,branchlists)):
@@ -52,7 +52,7 @@ def tree(tlist, size, level, widthfactor, branchlists, angledist=10, sizedist=5)
             yield None
 
 
-def start(t,x,y):
+eleza start(t,x,y):
     colormode(255)
     t.reset()
     t.speed(0)
@@ -62,26 +62,26 @@ def start(t,x,y):
     t.setpos(x,y)
     t.pendown()
 
-def doit1(level, pen):
+eleza doit1(level, pen):
     pen.hideturtle()
     start(pen, 20, -208)
     t = tree( [pen], 80, level, 0.1, [[ (45,0.69), (0,0.65), (-45,0.71) ]] )
-    return t
+    rudisha t
 
-def doit2(level, pen):
+eleza doit2(level, pen):
     pen.hideturtle()
     start(pen, -135, -130)
     t = tree( [pen], 120, level, 0.1, [[ (45,0.69), (-45,0.71) ]] )
-    return t
+    rudisha t
 
-def doit3(level, pen):
+eleza doit3(level, pen):
     pen.hideturtle()
     start(pen, 190, -90)
     t = tree( [pen], 100, level, 0.1, [[ (45,0.7), (0,0.72), (-45,0.65) ]] )
-    return t
+    rudisha t
 
 # Hier 3 Baumgeneratoren:
-def main():
+eleza main():
     p = Turtle()
     p.ht()
     tracer(75,0)
@@ -96,13 +96,13 @@ def main():
                 b.__next__()
             except:
                 done += 1
-        if done == 3:
+        ikiwa done == 3:
             break
 
     tracer(1,10)
     b = clock()
-    return "runtime: %.2f sec." % (b-a)
+    rudisha "runtime: %.2f sec." % (b-a)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()
     mainloop()

@@ -9,68 +9,68 @@ PKG_NAME = 'fine'
 SUBMOD_NAME = 'fine.bogus'
 
 
-class BadSpecFinderLoader:
+kundi BadSpecFinderLoader:
     @classmethod
-    def find_spec(cls, fullname, path=None, target=None):
-        if fullname == SUBMOD_NAME:
+    eleza find_spec(cls, fullname, path=None, target=None):
+        ikiwa fullname == SUBMOD_NAME:
             spec = machinery.ModuleSpec(fullname, cls)
-            return spec
+            rudisha spec
 
     @staticmethod
-    def create_module(spec):
-        return None
+    eleza create_module(spec):
+        rudisha None
 
     @staticmethod
-    def exec_module(module):
-        if module.__name__ == SUBMOD_NAME:
+    eleza exec_module(module):
+        ikiwa module.__name__ == SUBMOD_NAME:
             raise ImportError('I cannot be loaded!')
 
 
-class BadLoaderFinder:
+kundi BadLoaderFinder:
     @classmethod
-    def find_module(cls, fullname, path):
-        if fullname == SUBMOD_NAME:
-            return cls
+    eleza find_module(cls, fullname, path):
+        ikiwa fullname == SUBMOD_NAME:
+            rudisha cls
 
     @classmethod
-    def load_module(cls, fullname):
-        if fullname == SUBMOD_NAME:
+    eleza load_module(cls, fullname):
+        ikiwa fullname == SUBMOD_NAME:
             raise ImportError('I cannot be loaded!')
 
 
-class APITest:
+kundi APITest:
 
     """Test API-specific details for __import__ (e.g. raising the right
     exception when passing in an int for the module name)."""
 
-    def test_raises_ModuleNotFoundError(self):
+    eleza test_raises_ModuleNotFoundError(self):
         with self.assertRaises(ModuleNotFoundError):
             util.import_importlib('some module that does not exist')
 
-    def test_name_requires_rparition(self):
-        # Raise TypeError if a non-string is passed in for the module name.
+    eleza test_name_requires_rparition(self):
+        # Raise TypeError ikiwa a non-string is passed in for the module name.
         with self.assertRaises(TypeError):
             self.__import__(42)
 
-    def test_negative_level(self):
+    eleza test_negative_level(self):
         # Raise ValueError when a negative level is specified.
         # PEP 328 did away with sys.module None entries and the ambiguity of
         # absolute/relative agizas.
         with self.assertRaises(ValueError):
             self.__import__('os', globals(), level=-1)
 
-    def test_nonexistent_fromlist_entry(self):
-        # If something in fromlist doesn't exist, that's okay.
+    eleza test_nonexistent_kutokalist_entry(self):
+        # If something in kutokalist doesn't exist, that's okay.
         # issue15715
         mod = types.ModuleType(PKG_NAME)
         mod.__path__ = ['XXX']
         with util.import_state(meta_path=[self.bad_finder_loader]):
             with util.uncache(PKG_NAME):
                 sys.modules[PKG_NAME] = mod
-                self.__import__(PKG_NAME, fromlist=['not here'])
+                self.__import__(PKG_NAME, kutokalist=['not here'])
 
-    def test_fromlist_load_error_propagates(self):
-        # If something in fromlist triggers an exception not related to not
+    eleza test_kutokalist_load_error_propagates(self):
+        # If something in kutokalist triggers an exception not related to not
         # existing, let that exception propagate.
         # issue15316
         mod = types.ModuleType(PKG_NAME)
@@ -80,10 +80,10 @@ class APITest:
                 sys.modules[PKG_NAME] = mod
                 with self.assertRaises(ImportError):
                     self.__import__(PKG_NAME,
-                                    fromlist=[SUBMOD_NAME.rpartition('.')[-1]])
+                                    kutokalist=[SUBMOD_NAME.rpartition('.')[-1]])
 
-    def test_blocked_fromlist(self):
-        # If fromlist entry is None, let a ModuleNotFoundError propagate.
+    eleza test_blocked_kutokalist(self):
+        # If kutokalist entry is None, let a ModuleNotFoundError propagate.
         # issue31642
         mod = types.ModuleType(PKG_NAME)
         mod.__path__ = []
@@ -93,11 +93,11 @@ class APITest:
                 sys.modules[SUBMOD_NAME] = None
                 with self.assertRaises(ModuleNotFoundError) as cm:
                     self.__import__(PKG_NAME,
-                                    fromlist=[SUBMOD_NAME.rpartition('.')[-1]])
+                                    kutokalist=[SUBMOD_NAME.rpartition('.')[-1]])
                 self.assertEqual(cm.exception.name, SUBMOD_NAME)
 
 
-class OldAPITests(APITest):
+kundi OldAPITests(APITest):
     bad_finder_loader = BadLoaderFinder
 
 
@@ -106,7 +106,7 @@ class OldAPITests(APITest):
  ) = util.test_both(OldAPITests, __import__=util.__import__)
 
 
-class SpecAPITests(APITest):
+kundi SpecAPITests(APITest):
     bad_finder_loader = BadSpecFinderLoader
 
 
@@ -115,5 +115,5 @@ class SpecAPITests(APITest):
  ) = util.test_both(SpecAPITests, __import__=util.__import__)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

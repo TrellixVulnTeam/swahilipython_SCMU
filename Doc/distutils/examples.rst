@@ -36,7 +36,7 @@ the single module you're distributing, :file:`foo.py` in this example::
 (In all diagrams in this section, *<root>* will refer to the distribution root
 directory.)  A minimal setup script to describe this situation would be::
 
-   from distutils.core import setup
+   kutoka distutils.core agiza setup
    setup(name='foo',
          version='1.0',
          py_modules=['foo'],
@@ -59,7 +59,7 @@ setup might look like this::
 
 and the setup script might be  ::
 
-   from distutils.core import setup
+   kutoka distutils.core agiza setup
    setup(name='foobar',
          version='1.0',
          py_modules=['foo', 'bar'],
@@ -78,13 +78,13 @@ Pure Python distribution (by package)
 If you have more than a couple of modules to distribute, especially if they are
 in multiple packages, it's probably easier to specify whole packages rather than
 individual modules.  This works even if your modules are not in a package; you
-can just tell the Distutils to process modules from the root package, and that
+can just tell the Distutils to process modules kutoka the root package, and that
 works the same as any other package (except that you don't have to have an
 :file:`__init__.py` file).
 
-The setup script from the last example could also be written as  ::
+The setup script kutoka the last example could also be written as  ::
 
-   from distutils.core import setup
+   kutoka distutils.core agiza setup
    setup(name='foobar',
          version='1.0',
          packages=[''],
@@ -103,7 +103,7 @@ package, e.g.::
 then you would still specify the root package, but you have to tell the
 Distutils where source files in the root package live::
 
-   from distutils.core import setup
+   kutoka distutils.core agiza setup
    setup(name='foobar',
          version='1.0',
          package_dir={'': 'src'},
@@ -125,7 +125,7 @@ modules belong in package :mod:`foobar`, one way to layout your source tree is
 This is in fact the default layout expected by the Distutils, and the one that
 requires the least work to describe in your setup script::
 
-   from distutils.core import setup
+   kutoka distutils.core agiza setup
    setup(name='foobar',
          version='1.0',
          packages=['foobar'],
@@ -144,14 +144,14 @@ need to use the ``package_dir`` option again.  For example, if the
 
 an appropriate setup script would be  ::
 
-   from distutils.core import setup
+   kutoka distutils.core agiza setup
    setup(name='foobar',
          version='1.0',
          package_dir={'foobar': 'src'},
          packages=['foobar'],
          )
 
-Or, you might put modules from your main package right in the distribution
+Or, you might put modules kutoka your main package right in the distribution
 root::
 
    <root>/
@@ -162,7 +162,7 @@ root::
 
 in which case your setup script would be  ::
 
-   from distutils.core import setup
+   kutoka distutils.core agiza setup
    setup(name='foobar',
          version='1.0',
          package_dir={'foobar': ''},
@@ -189,7 +189,7 @@ figure out which directories correspond to Python packages by looking for
 
 then the corresponding setup script would be  ::
 
-   from distutils.core import setup
+   kutoka distutils.core agiza setup
    setup(name='foobar',
          version='1.0',
          packages=['foobar', 'foobar.subfoo'],
@@ -213,8 +213,8 @@ single extension module in a single C source file, is::
 If the :mod:`foo` extension belongs in the root package, the setup script for
 this could be  ::
 
-   from distutils.core import setup
-   from distutils.extension import Extension
+   kutoka distutils.core agiza setup
+   kutoka distutils.extension agiza Extension
    setup(name='foobar',
          version='1.0',
          ext_modules=[Extension('foo', ['foo.c'])],
@@ -225,8 +225,8 @@ If the extension actually belongs in a package, say :mod:`foopkg`, then
 With exactly the same source tree layout, this extension can be put in the
 :mod:`foopkg` package simply by changing the name of the extension::
 
-   from distutils.core import setup
-   from distutils.extension import Extension
+   kutoka distutils.core agiza setup
+   kutoka distutils.extension agiza Extension
    setup(name='foobar',
          version='1.0',
          ext_modules=[Extension('foopkg.foo', ['foo.c'])],
@@ -243,7 +243,7 @@ missing, ``check`` will display a warning.
 
 Let's take an example with a simple script::
 
-    from distutils.core import setup
+    kutoka distutils.core agiza setup
 
     setup(name='foobar')
 
@@ -264,7 +264,7 @@ If you use the reStructuredText syntax in the ``long_description`` field and
 
 For example, if the :file:`setup.py` script is changed like this::
 
-    from distutils.core import setup
+    kutoka distutils.core agiza setup
 
     desc = """\
     My description
@@ -310,10 +310,10 @@ in the Metadata, and ``pyX.X`` the major and minor version of Python like
 ``2.7`` or ``3.2``.
 
 You can read back this static file, by using the
-:class:`distutils.dist.DistributionMetadata` class and its
+:class:`distutils.dist.DistributionMetadata` kundi and its
 :func:`read_pkg_file` method::
 
-    >>> from distutils.dist import DistributionMetadata
+    >>> kutoka distutils.dist agiza DistributionMetadata
     >>> metadata = DistributionMetadata()
     >>> metadata.read_pkg_file(open('distribute-0.6.8-py2.7.egg-info'))
     >>> metadata.name
@@ -323,7 +323,7 @@ You can read back this static file, by using the
     >>> metadata.description
     'Easily download, build, install, upgrade, and uninstall Python packages'
 
-Notice that the class can also be instantiated with a metadata file path to
+Notice that the kundi can also be instantiated with a metadata file path to
 loads its values::
 
     >>> pkg_info_path = 'distribute-0.6.8-py2.7.egg-info'

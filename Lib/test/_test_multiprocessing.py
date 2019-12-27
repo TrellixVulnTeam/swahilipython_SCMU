@@ -28,9 +28,9 @@ agiza test.support.script_helper
 kutoka test agiza support
 
 
-# Skip tests if _multiprocessing wasn't built.
+# Skip tests ikiwa _multiprocessing wasn't built.
 _multiprocessing = test.support.import_module('_multiprocessing')
-# Skip tests if sem_open implementation is broken.
+# Skip tests ikiwa sem_open implementation is broken.
 test.support.import_module('multiprocessing.synchronize')
 agiza threading
 
@@ -73,26 +73,26 @@ except ImportError:
 # Timeout to wait until a process completes
 TIMEOUT = 60.0 # seconds
 
-def latin(s):
-    return s.encode('latin')
+eleza latin(s):
+    rudisha s.encode('latin')
 
 
-def close_queue(queue):
-    if isinstance(queue, multiprocessing.queues.Queue):
+eleza close_queue(queue):
+    ikiwa isinstance(queue, multiprocessing.queues.Queue):
         queue.close()
         queue.join_thread()
 
 
-def join_process(process):
+eleza join_process(process):
     # Since multiprocessing.Process has the same API than threading.Thread
     # (join() and is_alive(), the support function can be reused
     support.join_thread(process, timeout=TIMEOUT)
 
 
-if os.name == "posix":
+ikiwa os.name == "posix":
     kutoka multiprocessing agiza resource_tracker
 
-    def _resource_unlink(name, rtype):
+    eleza _resource_unlink(name, rtype):
         resource_tracker._CLEANUP_FUNCS[rtype](name)
 
 
@@ -108,7 +108,7 @@ CHECK_TIMINGS = False     # making true makes tests take a lot longer
                           # and can sometimes cause some non-serious
                           # failures because some calls block a bit
                           # longer than expected
-if CHECK_TIMINGS:
+ikiwa CHECK_TIMINGS:
     TIMEOUT1, TIMEOUT2, TIMEOUT3 = 0.82, 0.35, 1.4
 else:
     TIMEOUT1, TIMEOUT2, TIMEOUT3 = 0.1, 0.1, 0.1
@@ -120,10 +120,10 @@ WIN32 = (sys.platform == "win32")
 
 kutoka multiprocessing.connection agiza wait
 
-def wait_for_handle(handle, timeout):
-    if timeout is not None and timeout < 0.0:
+eleza wait_for_handle(handle, timeout):
+    ikiwa timeout is not None and timeout < 0.0:
         timeout = None
-    return wait([handle], timeout)
+    rudisha wait([handle], timeout)
 
 try:
     MAXFD = os.sysconf("SC_OPEN_MAX")
@@ -144,7 +144,7 @@ except ImportError:
     c_int = c_double = c_longlong = None
 
 
-def check_enough_semaphores():
+eleza check_enough_semaphores():
     """Check that the system supports enough semaphores to run the test."""
     # minimum number of semaphores available according to POSIX
     nsems_min = 256
@@ -153,7 +153,7 @@ def check_enough_semaphores():
     except (AttributeError, ValueError):
         # sysconf not available or setting not available
         return
-    if nsems == -1 or nsems >= nsems_min:
+    ikiwa nsems == -1 or nsems >= nsems_min:
         return
     raise unittest.SkipTest("The OS doesn't support enough semaphores "
                             "to run the test (required: %d)." % nsems_min)
@@ -163,42 +163,42 @@ def check_enough_semaphores():
 # Creates a wrapper for a function which records the time it takes to finish
 #
 
-class TimingWrapper(object):
+kundi TimingWrapper(object):
 
-    def __init__(self, func):
+    eleza __init__(self, func):
         self.func = func
         self.elapsed = None
 
-    def __call__(self, *args, **kwds):
+    eleza __call__(self, *args, **kwds):
         t = time.monotonic()
         try:
-            return self.func(*args, **kwds)
+            rudisha self.func(*args, **kwds)
         finally:
             self.elapsed = time.monotonic() - t
 
 #
-# Base class for test cases
+# Base kundi for test cases
 #
 
-class BaseTestCase(object):
+kundi BaseTestCase(object):
 
     ALLOWED_TYPES = ('processes', 'manager', 'threads')
 
-    def assertTimingAlmostEqual(self, a, b):
-        if CHECK_TIMINGS:
+    eleza assertTimingAlmostEqual(self, a, b):
+        ikiwa CHECK_TIMINGS:
             self.assertAlmostEqual(a, b, 1)
 
-    def assertReturnsIfImplemented(self, value, func, *args):
+    eleza assertReturnsIfImplemented(self, value, func, *args):
         try:
             res = func(*args)
         except NotImplementedError:
             pass
         else:
-            return self.assertEqual(value, res)
+            rudisha self.assertEqual(value, res)
 
     # For the sanity of Windows users, rather than crashing or freezing in
     # multiple ways.
-    def __reduce__(self, *args):
+    eleza __reduce__(self, *args):
         raise NotImplementedError("shouldn't try to pickle a test case")
 
     __reduce_ex__ = __reduce__
@@ -207,15 +207,15 @@ class BaseTestCase(object):
 # Return the value of a semaphore
 #
 
-def get_value(self):
+eleza get_value(self):
     try:
-        return self.get_value()
+        rudisha self.get_value()
     except AttributeError:
         try:
-            return self._Semaphore__value
+            rudisha self._Semaphore__value
         except AttributeError:
             try:
-                return self._value
+                rudisha self._value
             except AttributeError:
                 raise NotImplementedError
 
@@ -223,18 +223,18 @@ def get_value(self):
 # Testcases
 #
 
-class DummyCallable:
-    def __call__(self, q, c):
+kundi DummyCallable:
+    eleza __call__(self, q, c):
         assert isinstance(c, DummyCallable)
         q.put(5)
 
 
-class _TestProcess(BaseTestCase):
+kundi _TestProcess(BaseTestCase):
 
     ALLOWED_TYPES = ('processes', 'threads')
 
-    def test_current(self):
-        if self.TYPE == 'threads':
+    eleza test_current(self):
+        ikiwa self.TYPE == 'threads':
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
 
         current = self.current_process()
@@ -247,8 +247,8 @@ class _TestProcess(BaseTestCase):
         self.assertEqual(current.ident, os.getpid())
         self.assertEqual(current.exitcode, None)
 
-    def test_daemon_argument(self):
-        if self.TYPE == "threads":
+    eleza test_daemon_argument(self):
+        ikiwa self.TYPE == "threads":
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
 
         # By default uses the current process's daemon flag.
@@ -260,17 +260,17 @@ class _TestProcess(BaseTestCase):
         self.assertFalse(proc2.daemon)
 
     @classmethod
-    def _test(cls, q, *args, **kwds):
+    eleza _test(cls, q, *args, **kwds):
         current = cls.current_process()
         q.put(args)
         q.put(kwds)
         q.put(current.name)
-        if cls.TYPE != 'threads':
+        ikiwa cls.TYPE != 'threads':
             q.put(bytes(current.authkey))
             q.put(current.pid)
 
-    def test_parent_process_attributes(self):
-        if self.TYPE == "threads":
+    eleza test_parent_process_attributes(self):
+        ikiwa self.TYPE == "threads":
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
 
         self.assertIsNone(self.parent_process())
@@ -285,12 +285,12 @@ class _TestProcess(BaseTestCase):
         self.assertEqual(parent_name, self.current_process().name)
 
     @classmethod
-    def _test_send_parent_process(cls, wconn):
+    eleza _test_send_parent_process(cls, wconn):
         kutoka multiprocessing.process agiza parent_process
         wconn.send([parent_process().pid, parent_process().name])
 
-    def test_parent_process(self):
-        if self.TYPE == "threads":
+    eleza test_parent_process(self):
+        ikiwa self.TYPE == "threads":
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
 
         # Launch a child process. Make it launch a grandchild process. Kill the
@@ -301,7 +301,7 @@ class _TestProcess(BaseTestCase):
             target=self._test_create_grandchild_process, args=(wconn, ))
         p.start()
 
-        if not rconn.poll(timeout=60):
+        ikiwa not rconn.poll(timeout=60):
             raise AssertionError("Could not communicate with child process")
         parent_process_status = rconn.recv()
         self.assertEqual(parent_process_status, "alive")
@@ -309,25 +309,25 @@ class _TestProcess(BaseTestCase):
         p.terminate()
         p.join()
 
-        if not rconn.poll(timeout=60):
+        ikiwa not rconn.poll(timeout=60):
             raise AssertionError("Could not communicate with child process")
         parent_process_status = rconn.recv()
         self.assertEqual(parent_process_status, "not alive")
 
     @classmethod
-    def _test_create_grandchild_process(cls, wconn):
+    eleza _test_create_grandchild_process(cls, wconn):
         p = cls.Process(target=cls._test_report_parent_status, args=(wconn, ))
         p.start()
         time.sleep(300)
 
     @classmethod
-    def _test_report_parent_status(cls, wconn):
+    eleza _test_report_parent_status(cls, wconn):
         kutoka multiprocessing.process agiza parent_process
-        wconn.send("alive" if parent_process().is_alive() else "not alive")
+        wconn.send("alive" ikiwa parent_process().is_alive() else "not alive")
         parent_process().join(timeout=5)
-        wconn.send("alive" if parent_process().is_alive() else "not alive")
+        wconn.send("alive" ikiwa parent_process().is_alive() else "not alive")
 
-    def test_process(self):
+    eleza test_process(self):
         q = self.Queue(1)
         e = self.Event()
         args = (q, 1, 2)
@@ -339,7 +339,7 @@ class _TestProcess(BaseTestCase):
         p.daemon = True
         current = self.current_process()
 
-        if self.TYPE != 'threads':
+        ikiwa self.TYPE != 'threads':
             self.assertEqual(p.authkey, current.authkey)
         self.assertEqual(p.is_alive(), False)
         self.assertEqual(p.daemon, True)
@@ -356,7 +356,7 @@ class _TestProcess(BaseTestCase):
         self.assertEqual(q.get(), args[1:])
         self.assertEqual(q.get(), kwargs)
         self.assertEqual(q.get(), p.name)
-        if self.TYPE != 'threads':
+        ikiwa self.TYPE != 'threads':
             self.assertEqual(q.get(), current.authkey)
             self.assertEqual(q.get(), p.pid)
 
@@ -368,15 +368,15 @@ class _TestProcess(BaseTestCase):
         close_queue(q)
 
     @classmethod
-    def _sleep_some(cls):
+    eleza _sleep_some(cls):
         time.sleep(100)
 
     @classmethod
-    def _test_sleep(cls, delay):
+    eleza _test_sleep(cls, delay):
         time.sleep(delay)
 
-    def _kill_process(self, meth):
-        if self.TYPE == 'threads':
+    eleza _kill_process(self, meth):
+        ikiwa self.TYPE == 'threads':
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
 
         p = self.Process(target=self._sleep_some)
@@ -402,10 +402,10 @@ class _TestProcess(BaseTestCase):
 
         meth(p)
 
-        if hasattr(signal, 'alarm'):
+        ikiwa hasattr(signal, 'alarm'):
             # On the Gentoo buildbot waitpid() often seems to block forever.
-            # We use alarm() to interrupt it if it blocks for too long.
-            def handler(*args):
+            # We use alarm() to interrupt it ikiwa it blocks for too long.
+            eleza handler(*args):
                 raise RuntimeError('join took too long: %s' % p)
             old_handler = signal.signal(signal.SIGALRM, handler)
             try:
@@ -424,19 +424,19 @@ class _TestProcess(BaseTestCase):
 
         p.join()
 
-        return p.exitcode
+        rudisha p.exitcode
 
-    def test_terminate(self):
+    eleza test_terminate(self):
         exitcode = self._kill_process(multiprocessing.Process.terminate)
-        if os.name != 'nt':
+        ikiwa os.name != 'nt':
             self.assertEqual(exitcode, -signal.SIGTERM)
 
-    def test_kill(self):
+    eleza test_kill(self):
         exitcode = self._kill_process(multiprocessing.Process.kill)
-        if os.name != 'nt':
+        ikiwa os.name != 'nt':
             self.assertEqual(exitcode, -signal.SIGKILL)
 
-    def test_cpu_count(self):
+    eleza test_cpu_count(self):
         try:
             cpus = multiprocessing.cpu_count()
         except NotImplementedError:
@@ -444,7 +444,7 @@ class _TestProcess(BaseTestCase):
         self.assertTrue(type(cpus) is int)
         self.assertTrue(cpus >= 1)
 
-    def test_active_children(self):
+    eleza test_active_children(self):
         self.assertEqual(type(self.active_children()), list)
 
         p = self.Process(target=time.sleep, args=(DELTA,))
@@ -458,9 +458,9 @@ class _TestProcess(BaseTestCase):
         self.assertNotIn(p, self.active_children())
 
     @classmethod
-    def _test_recursion(cls, wconn, id):
+    eleza _test_recursion(cls, wconn, id):
         wconn.send(id)
-        if len(id) < 2:
+        ikiwa len(id) < 2:
             for i in range(2):
                 p = cls.Process(
                     target=cls._test_recursion, args=(wconn, id+[i])
@@ -468,7 +468,7 @@ class _TestProcess(BaseTestCase):
                 p.start()
                 p.join()
 
-    def test_recursion(self):
+    eleza test_recursion(self):
         rconn, wconn = self.Pipe(duplex=False)
         self._test_recursion(wconn, [])
 
@@ -489,11 +489,11 @@ class _TestProcess(BaseTestCase):
         self.assertEqual(result, expected)
 
     @classmethod
-    def _test_sentinel(cls, event):
+    eleza _test_sentinel(cls, event):
         event.wait(10.0)
 
-    def test_sentinel(self):
-        if self.TYPE == "threads":
+    eleza test_sentinel(self):
+        ikiwa self.TYPE == "threads":
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
         event = self.Event()
         p = self.Process(target=self._test_sentinel, args=(event,))
@@ -509,13 +509,13 @@ class _TestProcess(BaseTestCase):
         self.assertTrue(wait_for_handle(sentinel, timeout=1))
 
     @classmethod
-    def _test_close(cls, rc=0, q=None):
-        if q is not None:
+    eleza _test_close(cls, rc=0, q=None):
+        ikiwa q is not None:
             q.get()
         sys.exit(rc)
 
-    def test_close(self):
-        if self.TYPE == "threads":
+    eleza test_close(self):
+        ikiwa self.TYPE == "threads":
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
         q = self.Queue()
         p = self.Process(target=self._test_close, kwargs={'q': q})
@@ -546,12 +546,12 @@ class _TestProcess(BaseTestCase):
 
         close_queue(q)
 
-    def test_many_processes(self):
-        if self.TYPE == 'threads':
+    eleza test_many_processes(self):
+        ikiwa self.TYPE == 'threads':
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
 
         sm = multiprocessing.get_start_method()
-        N = 5 if sm == 'spawn' else 100
+        N = 5 ikiwa sm == 'spawn' else 100
 
         # Try to overwhelm the forkserver loop with events
         procs = [self.Process(target=self._test_sleep, args=(0.01,))
@@ -572,16 +572,16 @@ class _TestProcess(BaseTestCase):
             p.terminate()
         for p in procs:
             join_process(p)
-        if os.name != 'nt':
+        ikiwa os.name != 'nt':
             exitcodes = [-signal.SIGTERM]
-            if sys.platform == 'darwin':
+            ikiwa sys.platform == 'darwin':
                 # bpo-31510: On macOS, killing a freshly started process with
                 # SIGTERM sometimes kills the process with SIGKILL.
                 exitcodes.append(-signal.SIGKILL)
             for p in procs:
                 self.assertIn(p.exitcode, exitcodes)
 
-    def test_lose_target_ref(self):
+    eleza test_lose_target_ref(self):
         c = DummyCallable()
         wr = weakref.ref(c)
         q = self.Queue()
@@ -594,18 +594,18 @@ class _TestProcess(BaseTestCase):
         close_queue(q)
 
     @classmethod
-    def _test_child_fd_inflation(self, evt, q):
+    eleza _test_child_fd_inflation(self, evt, q):
         q.put(test.support.fd_count())
         evt.wait()
 
-    def test_child_fd_inflation(self):
+    eleza test_child_fd_inflation(self):
         # Number of fds in child processes should not grow with the
         # number of running children.
-        if self.TYPE == 'threads':
+        ikiwa self.TYPE == 'threads':
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
 
         sm = multiprocessing.get_start_method()
-        if sm == 'fork':
+        ikiwa sm == 'fork':
             # The fork method by design inherits all fds kutoka the parent,
             # trying to go against it is a lost battle
             self.skipTest('test not appropriate for {}'.format(sm))
@@ -630,22 +630,22 @@ class _TestProcess(BaseTestCase):
             close_queue(q)
 
     @classmethod
-    def _test_wait_for_threads(self, evt):
-        def func1():
+    eleza _test_wait_for_threads(self, evt):
+        eleza func1():
             time.sleep(0.5)
             evt.set()
 
-        def func2():
+        eleza func2():
             time.sleep(20)
             evt.clear()
 
         threading.Thread(target=func1).start()
         threading.Thread(target=func2, daemon=True).start()
 
-    def test_wait_for_threads(self):
+    eleza test_wait_for_threads(self):
         # A child process should wait for non-daemonic threads to end
         # before exiting
-        if self.TYPE == 'threads':
+        ikiwa self.TYPE == 'threads':
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
 
         evt = self.Event()
@@ -655,9 +655,9 @@ class _TestProcess(BaseTestCase):
         self.assertTrue(evt.is_set())
 
     @classmethod
-    def _test_error_on_stdio_flush(self, evt, break_std_streams={}):
+    eleza _test_error_on_stdio_flush(self, evt, break_std_streams={}):
         for stream_name, action in break_std_streams.items():
-            if action == 'close':
+            ikiwa action == 'close':
                 stream = io.StringIO()
                 stream.close()
             else:
@@ -666,7 +666,7 @@ class _TestProcess(BaseTestCase):
             setattr(sys, stream_name, None)
         evt.set()
 
-    def test_error_on_stdio_flush_1(self):
+    eleza test_error_on_stdio_flush_1(self):
         # Check that Process works with broken standard streams
         streams = [io.StringIO(), None]
         streams[0].close()
@@ -685,7 +685,7 @@ class _TestProcess(BaseTestCase):
                 finally:
                     setattr(sys, stream_name, old_stream)
 
-    def test_error_on_stdio_flush_2(self):
+    eleza test_error_on_stdio_flush_2(self):
         # Same as test_error_on_stdio_flush_1(), but standard streams are
         # broken by the child process
         for stream_name in ('stdout', 'stderr'):
@@ -703,18 +703,18 @@ class _TestProcess(BaseTestCase):
                     setattr(sys, stream_name, old_stream)
 
     @classmethod
-    def _sleep_and_set_event(self, evt, delay=0.0):
+    eleza _sleep_and_set_event(self, evt, delay=0.0):
         time.sleep(delay)
         evt.set()
 
-    def check_forkserver_death(self, signum):
-        # bpo-31308: if the forkserver process has died, we should still
+    eleza check_forkserver_death(self, signum):
+        # bpo-31308: ikiwa the forkserver process has died, we should still
         # be able to create and run new Process instances (the forkserver
         # is implicitly restarted).
-        if self.TYPE == 'threads':
+        ikiwa self.TYPE == 'threads':
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
         sm = multiprocessing.get_start_method()
-        if sm != 'forkserver':
+        ikiwa sm != 'forkserver':
             # The fork method by design inherits all fds kutoka the parent,
             # trying to go against it is a lost battle
             self.skipTest('test not appropriate for {}'.format(sm))
@@ -745,13 +745,13 @@ class _TestProcess(BaseTestCase):
         self.assertTrue(evt.is_set())
         self.assertIn(proc.exitcode, (0, 255))
 
-    def test_forkserver_sigint(self):
+    eleza test_forkserver_sigint(self):
         # Catchable signal
         self.check_forkserver_death(signal.SIGINT)
 
-    def test_forkserver_sigkill(self):
+    eleza test_forkserver_sigkill(self):
         # Uncatchable signal
-        if os.name != 'nt':
+        ikiwa os.name != 'nt':
             self.check_forkserver_death(signal.SIGKILL)
 
 
@@ -759,33 +759,33 @@ class _TestProcess(BaseTestCase):
 #
 #
 
-class _UpperCaser(multiprocessing.Process):
+kundi _UpperCaser(multiprocessing.Process):
 
-    def __init__(self):
+    eleza __init__(self):
         multiprocessing.Process.__init__(self)
         self.child_conn, self.parent_conn = multiprocessing.Pipe()
 
-    def run(self):
+    eleza run(self):
         self.parent_conn.close()
         for s in iter(self.child_conn.recv, None):
             self.child_conn.send(s.upper())
         self.child_conn.close()
 
-    def submit(self, s):
+    eleza submit(self, s):
         assert type(s) is str
         self.parent_conn.send(s)
-        return self.parent_conn.recv()
+        rudisha self.parent_conn.recv()
 
-    def stop(self):
+    eleza stop(self):
         self.parent_conn.send(None)
         self.parent_conn.close()
         self.child_conn.close()
 
-class _TestSubclassingProcess(BaseTestCase):
+kundi _TestSubclassingProcess(BaseTestCase):
 
     ALLOWED_TYPES = ('processes',)
 
-    def test_subclassing(self):
+    eleza test_subclassing(self):
         uppercaser = _UpperCaser()
         uppercaser.daemon = True
         uppercaser.start()
@@ -794,9 +794,9 @@ class _TestSubclassingProcess(BaseTestCase):
         uppercaser.stop()
         uppercaser.join()
 
-    def test_stderr_flush(self):
+    eleza test_stderr_flush(self):
         # sys.stderr is flushed at process shutdown (issue #13812)
-        if self.TYPE == "threads":
+        ikiwa self.TYPE == "threads":
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
 
         testfn = test.support.TESTFN
@@ -812,21 +812,21 @@ class _TestSubclassingProcess(BaseTestCase):
             self.assertIn("1/0 # MARKER", err)
 
     @classmethod
-    def _test_stderr_flush(cls, testfn):
+    eleza _test_stderr_flush(cls, testfn):
         fd = os.open(testfn, os.O_WRONLY | os.O_CREAT | os.O_EXCL)
         sys.stderr = open(fd, 'w', closefd=False)
         1/0 # MARKER
 
 
     @classmethod
-    def _test_sys_exit(cls, reason, testfn):
+    eleza _test_sys_exit(cls, reason, testfn):
         fd = os.open(testfn, os.O_WRONLY | os.O_CREAT | os.O_EXCL)
         sys.stderr = open(fd, 'w', closefd=False)
         sys.exit(reason)
 
-    def test_sys_exit(self):
+    eleza test_sys_exit(self):
         # See Issue 13854
-        if self.TYPE == 'threads':
+        ikiwa self.TYPE == 'threads':
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
 
         testfn = test.support.TESTFN
@@ -859,30 +859,30 @@ class _TestSubclassingProcess(BaseTestCase):
 #
 #
 
-def queue_empty(q):
-    if hasattr(q, 'empty'):
-        return q.empty()
+eleza queue_empty(q):
+    ikiwa hasattr(q, 'empty'):
+        rudisha q.empty()
     else:
-        return q.qsize() == 0
+        rudisha q.qsize() == 0
 
-def queue_full(q, maxsize):
-    if hasattr(q, 'full'):
-        return q.full()
+eleza queue_full(q, maxsize):
+    ikiwa hasattr(q, 'full'):
+        rudisha q.full()
     else:
-        return q.qsize() == maxsize
+        rudisha q.qsize() == maxsize
 
 
-class _TestQueue(BaseTestCase):
+kundi _TestQueue(BaseTestCase):
 
 
     @classmethod
-    def _test_put(cls, queue, child_can_start, parent_can_continue):
+    eleza _test_put(cls, queue, child_can_start, parent_can_continue):
         child_can_start.wait()
         for i in range(6):
             queue.get()
         parent_can_continue.set()
 
-    def test_put(self):
+    eleza test_put(self):
         MAXSIZE = 6
         queue = self.Queue(maxsize=MAXSIZE)
         child_can_start = self.Event()
@@ -942,7 +942,7 @@ class _TestQueue(BaseTestCase):
         close_queue(queue)
 
     @classmethod
-    def _test_get(cls, queue, child_can_start, parent_can_continue):
+    eleza _test_get(cls, queue, child_can_start, parent_can_continue):
         child_can_start.wait()
         #queue.put(1)
         queue.put(2)
@@ -951,7 +951,7 @@ class _TestQueue(BaseTestCase):
         queue.put(5)
         parent_can_continue.set()
 
-    def test_get(self):
+    eleza test_get(self):
         queue = self.Queue()
         child_can_start = self.Event()
         parent_can_continue = self.Event()
@@ -1005,16 +1005,16 @@ class _TestQueue(BaseTestCase):
         close_queue(queue)
 
     @classmethod
-    def _test_fork(cls, queue):
+    eleza _test_fork(cls, queue):
         for i in range(10, 20):
             queue.put(i)
         # note that at this point the items may only be buffered, so the
         # process cannot shutdown until the feeder thread has finished
         # pushing items onto the pipe.
 
-    def test_fork(self):
+    eleza test_fork(self):
         # Old versions of Queue would fail to create a new feeder
-        # thread for a forked process if the original process had its
+        # thread for a forked process ikiwa the original process had its
         # own feeder thread.  This test checks that this no longer
         # happens.
 
@@ -1040,7 +1040,7 @@ class _TestQueue(BaseTestCase):
         p.join()
         close_queue(queue)
 
-    def test_qsize(self):
+    eleza test_qsize(self):
         q = self.Queue()
         try:
             self.assertEqual(q.qsize(), 0)
@@ -1057,12 +1057,12 @@ class _TestQueue(BaseTestCase):
         close_queue(q)
 
     @classmethod
-    def _test_task_done(cls, q):
+    eleza _test_task_done(cls, q):
         for obj in iter(q.get, None):
             time.sleep(DELTA)
             q.task_done()
 
-    def test_task_done(self):
+    eleza test_task_done(self):
         queue = self.JoinableQueue()
 
         workers = [self.Process(target=self._test_task_done, args=(queue,))
@@ -1084,11 +1084,11 @@ class _TestQueue(BaseTestCase):
             p.join()
         close_queue(queue)
 
-    def test_no_import_lock_contention(self):
+    eleza test_no_import_lock_contention(self):
         with test.support.temp_cwd():
             module_name = 'imported_by_an_imported_module'
             with open(module_name + '.py', 'w') as f:
-                f.write("""if 1:
+                f.write("""ikiwa 1:
                     agiza multiprocessing
 
                     q = multiprocessing.Queue()
@@ -1105,7 +1105,7 @@ class _TestQueue(BaseTestCase):
                     self.fail("Probable regression on agiza lock contention;"
                               " see Issue #22853")
 
-    def test_timeout(self):
+    eleza test_timeout(self):
         q = multiprocessing.Queue()
         start = time.monotonic()
         self.assertRaises(pyqueue.Empty, q.get, True, 0.200)
@@ -1116,13 +1116,13 @@ class _TestQueue(BaseTestCase):
         self.assertGreaterEqual(delta, 0.100)
         close_queue(q)
 
-    def test_queue_feeder_donot_stop_onexc(self):
+    eleza test_queue_feeder_donot_stop_onexc(self):
         # bpo-30414: verify feeder handles exceptions correctly
-        if self.TYPE != 'processes':
+        ikiwa self.TYPE != 'processes':
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
 
-        class NotSerializable(object):
-            def __reduce__(self):
+        kundi NotSerializable(object):
+            eleza __reduce__(self):
                 raise AttributeError
         with test.support.captured_stderr():
             q = self.Queue()
@@ -1149,27 +1149,27 @@ class _TestQueue(BaseTestCase):
             self.assertTrue(q.empty())
             close_queue(q)
 
-    def test_queue_feeder_on_queue_feeder_error(self):
+    eleza test_queue_feeder_on_queue_feeder_error(self):
         # bpo-30006: verify feeder handles exceptions using the
         # _on_queue_feeder_error hook.
-        if self.TYPE != 'processes':
+        ikiwa self.TYPE != 'processes':
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
 
-        class NotSerializable(object):
+        kundi NotSerializable(object):
             """Mock unserializable object"""
-            def __init__(self):
+            eleza __init__(self):
                 self.reduce_was_called = False
                 self.on_queue_feeder_error_was_called = False
 
-            def __reduce__(self):
+            eleza __reduce__(self):
                 self.reduce_was_called = True
                 raise AttributeError
 
-        class SafeQueue(multiprocessing.queues.Queue):
+        kundi SafeQueue(multiprocessing.queues.Queue):
             """Queue with overloaded _on_queue_feeder_error hook"""
             @staticmethod
-            def _on_queue_feeder_error(e, obj):
-                if (isinstance(e, AttributeError) and
+            eleza _on_queue_feeder_error(e, obj):
+                ikiwa (isinstance(e, AttributeError) and
                         isinstance(obj, NotSerializable)):
                     obj.on_queue_feeder_error_was_called = True
 
@@ -1187,7 +1187,7 @@ class _TestQueue(BaseTestCase):
         self.assertTrue(not_serializable_obj.reduce_was_called)
         self.assertTrue(not_serializable_obj.on_queue_feeder_error_was_called)
 
-    def test_closed_queue_put_get_exceptions(self):
+    eleza test_closed_queue_put_get_exceptions(self):
         for q in multiprocessing.Queue(), multiprocessing.JoinableQueue():
             q.close()
             with self.assertRaisesRegex(ValueError, 'is closed'):
@@ -1198,16 +1198,16 @@ class _TestQueue(BaseTestCase):
 #
 #
 
-class _TestLock(BaseTestCase):
+kundi _TestLock(BaseTestCase):
 
-    def test_lock(self):
+    eleza test_lock(self):
         lock = self.Lock()
         self.assertEqual(lock.acquire(), True)
         self.assertEqual(lock.acquire(False), False)
         self.assertEqual(lock.release(), None)
         self.assertRaises((ValueError, threading.ThreadError), lock.release)
 
-    def test_rlock(self):
+    eleza test_rlock(self):
         lock = self.RLock()
         self.assertEqual(lock.acquire(), True)
         self.assertEqual(lock.acquire(), True)
@@ -1217,14 +1217,14 @@ class _TestLock(BaseTestCase):
         self.assertEqual(lock.release(), None)
         self.assertRaises((AssertionError, RuntimeError), lock.release)
 
-    def test_lock_context(self):
+    eleza test_lock_context(self):
         with self.Lock():
             pass
 
 
-class _TestSemaphore(BaseTestCase):
+kundi _TestSemaphore(BaseTestCase):
 
-    def _test_semaphore(self, sem):
+    eleza _test_semaphore(self, sem):
         self.assertReturnsIfImplemented(2, get_value, sem)
         self.assertEqual(sem.acquire(), True)
         self.assertReturnsIfImplemented(1, get_value, sem)
@@ -1237,7 +1237,7 @@ class _TestSemaphore(BaseTestCase):
         self.assertEqual(sem.release(), None)
         self.assertReturnsIfImplemented(2, get_value, sem)
 
-    def test_semaphore(self):
+    eleza test_semaphore(self):
         sem = self.Semaphore(2)
         self._test_semaphore(sem)
         self.assertEqual(sem.release(), None)
@@ -1245,16 +1245,16 @@ class _TestSemaphore(BaseTestCase):
         self.assertEqual(sem.release(), None)
         self.assertReturnsIfImplemented(4, get_value, sem)
 
-    def test_bounded_semaphore(self):
+    eleza test_bounded_semaphore(self):
         sem = self.BoundedSemaphore(2)
         self._test_semaphore(sem)
         # Currently fails on OS/X
-        #if HAVE_GETVALUE:
+        #ikiwa HAVE_GETVALUE:
         #    self.assertRaises(ValueError, sem.release)
         #    self.assertReturnsIfImplemented(2, get_value, sem)
 
-    def test_timeout(self):
-        if self.TYPE != 'processes':
+    eleza test_timeout(self):
+        ikiwa self.TYPE != 'processes':
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
 
         sem = self.Semaphore(0)
@@ -1276,20 +1276,20 @@ class _TestSemaphore(BaseTestCase):
         self.assertTimingAlmostEqual(acquire.elapsed, TIMEOUT3)
 
 
-class _TestCondition(BaseTestCase):
+kundi _TestCondition(BaseTestCase):
 
     @classmethod
-    def f(cls, cond, sleeping, woken, timeout=None):
+    eleza f(cls, cond, sleeping, woken, timeout=None):
         cond.acquire()
         sleeping.release()
         cond.wait(timeout)
         woken.release()
         cond.release()
 
-    def assertReachesEventually(self, func, value):
+    eleza assertReachesEventually(self, func, value):
         for i in range(10):
             try:
-                if func() == value:
+                ikiwa func() == value:
                     break
             except NotImplementedError:
                 break
@@ -1297,9 +1297,9 @@ class _TestCondition(BaseTestCase):
         time.sleep(DELTA)
         self.assertReturnsIfImplemented(value, func)
 
-    def check_invariant(self, cond):
+    eleza check_invariant(self, cond):
         # this is only supposed to succeed when there are no sleepers
-        if self.TYPE == 'processes':
+        ikiwa self.TYPE == 'processes':
             try:
                 sleepers = (cond._sleeping_count.get_value() -
                             cond._woken_count.get_value())
@@ -1308,7 +1308,7 @@ class _TestCondition(BaseTestCase):
             except NotImplementedError:
                 pass
 
-    def test_notify(self):
+    eleza test_notify(self):
         cond = self.Condition()
         sleeping = self.Semaphore(0)
         woken = self.Semaphore(0)
@@ -1353,7 +1353,7 @@ class _TestCondition(BaseTestCase):
         self.check_invariant(cond)
         p.join()
 
-    def test_notify_all(self):
+    eleza test_notify_all(self):
         cond = self.Condition()
         sleeping = self.Semaphore(0)
         woken = self.Semaphore(0)
@@ -1415,7 +1415,7 @@ class _TestCondition(BaseTestCase):
         # check state is not mucked up
         self.check_invariant(cond)
 
-    def test_notify_n(self):
+    eleza test_notify_n(self):
         cond = self.Condition()
         sleeping = self.Semaphore(0)
         woken = self.Semaphore(0)
@@ -1465,7 +1465,7 @@ class _TestCondition(BaseTestCase):
         # check state is not mucked up
         self.check_invariant(cond)
 
-    def test_timeout(self):
+    eleza test_timeout(self):
         cond = self.Condition()
         wait = TimingWrapper(cond.wait)
         cond.acquire()
@@ -1475,16 +1475,16 @@ class _TestCondition(BaseTestCase):
         self.assertTimingAlmostEqual(wait.elapsed, TIMEOUT1)
 
     @classmethod
-    def _test_waitfor_f(cls, cond, state):
+    eleza _test_waitfor_f(cls, cond, state):
         with cond:
             state.value = 0
             cond.notify()
             result = cond.wait_for(lambda : state.value==4)
-            if not result or state.value != 4:
+            ikiwa not result or state.value != 4:
                 sys.exit(1)
 
     @unittest.skipUnless(HAS_SHAREDCTYPES, 'needs sharedctypes')
-    def test_waitfor(self):
+    eleza test_waitfor(self):
         # based on test in test/lock_tests.py
         cond = self.Condition()
         state = self.Value('i', -1)
@@ -1508,7 +1508,7 @@ class _TestCondition(BaseTestCase):
         self.assertEqual(p.exitcode, 0)
 
     @classmethod
-    def _test_waitfor_timeout_f(cls, cond, state, success, sem):
+    eleza _test_waitfor_timeout_f(cls, cond, state, success, sem):
         sem.release()
         with cond:
             expected = 0.1
@@ -1516,11 +1516,11 @@ class _TestCondition(BaseTestCase):
             result = cond.wait_for(lambda : state.value==4, timeout=expected)
             dt = time.monotonic() - dt
             # borrow logic in assertTimeout() kutoka test/lock_tests.py
-            if not result and expected * 0.6 < dt < expected * 10.0:
+            ikiwa not result and expected * 0.6 < dt < expected * 10.0:
                 success.value = True
 
     @unittest.skipUnless(HAS_SHAREDCTYPES, 'needs sharedctypes')
-    def test_waitfor_timeout(self):
+    eleza test_waitfor_timeout(self):
         # based on test in test/lock_tests.py
         cond = self.Condition()
         state = self.Value('i', 0)
@@ -1544,15 +1544,15 @@ class _TestCondition(BaseTestCase):
         self.assertTrue(success.value)
 
     @classmethod
-    def _test_wait_result(cls, c, pid):
+    eleza _test_wait_result(cls, c, pid):
         with c:
             c.notify()
         time.sleep(1)
-        if pid is not None:
+        ikiwa pid is not None:
             os.kill(pid, signal.SIGINT)
 
-    def test_wait_result(self):
-        if isinstance(self, ProcessesMixin) and sys.platform != 'win32':
+    eleza test_wait_result(self):
+        ikiwa isinstance(self, ProcessesMixin) and sys.platform != 'win32':
             pid = os.getpid()
         else:
             pid = None
@@ -1566,20 +1566,20 @@ class _TestCondition(BaseTestCase):
             p.start()
 
             self.assertTrue(c.wait(60))
-            if pid is not None:
+            ikiwa pid is not None:
                 self.assertRaises(KeyboardInterrupt, c.wait, 60)
 
             p.join()
 
 
-class _TestEvent(BaseTestCase):
+kundi _TestEvent(BaseTestCase):
 
     @classmethod
-    def _test_event(cls, event):
+    eleza _test_event(cls, event):
         time.sleep(TIMEOUT2)
         event.set()
 
-    def test_event(self):
+    eleza test_event(self):
         event = self.Event()
         wait = TimingWrapper(event.wait)
 
@@ -1587,7 +1587,7 @@ class _TestEvent(BaseTestCase):
         # work with threading._Event objects. is_set == isSet
         self.assertEqual(event.is_set(), False)
 
-        # Removed, threading.Event.wait() will return the value of the __flag
+        # Removed, threading.Event.wait() will rudisha the value of the __flag
         # instead of None. API Shear with the semaphore backed mp.Event
         self.assertEqual(wait(0.0), False)
         self.assertTimingAlmostEqual(wait.elapsed, 0.0)
@@ -1620,42 +1620,42 @@ class _TestEvent(BaseTestCase):
 
 # Many of the tests for threading.Barrier use a list as an atomic
 # counter: a value is appended to increment the counter, and the
-# length of the list gives the value.  We use the class DummyList
+# length of the list gives the value.  We use the kundi DummyList
 # for the same purpose.
 
-class _DummyList(object):
+kundi _DummyList(object):
 
-    def __init__(self):
+    eleza __init__(self):
         wrapper = multiprocessing.heap.BufferWrapper(struct.calcsize('i'))
         lock = multiprocessing.Lock()
         self.__setstate__((wrapper, lock))
         self._lengthbuf[0] = 0
 
-    def __setstate__(self, state):
+    eleza __setstate__(self, state):
         (self._wrapper, self._lock) = state
         self._lengthbuf = self._wrapper.create_memoryview().cast('i')
 
-    def __getstate__(self):
-        return (self._wrapper, self._lock)
+    eleza __getstate__(self):
+        rudisha (self._wrapper, self._lock)
 
-    def append(self, _):
+    eleza append(self, _):
         with self._lock:
             self._lengthbuf[0] += 1
 
-    def __len__(self):
+    eleza __len__(self):
         with self._lock:
-            return self._lengthbuf[0]
+            rudisha self._lengthbuf[0]
 
-def _wait():
+eleza _wait():
     # A crude wait/yield function not relying on synchronization primitives.
     time.sleep(0.01)
 
 
-class Bunch(object):
+kundi Bunch(object):
     """
     A bunch of threads.
     """
-    def __init__(self, namespace, f, args, n, wait_before_exit=False):
+    eleza __init__(self, namespace, f, args, n, wait_before_exit=False):
         """
         Construct a bunch of `n` threads running the same function `f`.
         If `wait_before_exit` is True, the threads won't terminate until
@@ -1667,7 +1667,7 @@ class Bunch(object):
         self.started = namespace.DummyList()
         self.finished = namespace.DummyList()
         self._can_exit = namespace.Event()
-        if not wait_before_exit:
+        ikiwa not wait_before_exit:
             self._can_exit.set()
 
         threads = []
@@ -1677,13 +1677,13 @@ class Bunch(object):
             p.start()
             threads.append(p)
 
-        def finalize(threads):
+        eleza finalize(threads):
             for p in threads:
                 p.join()
 
         self._finalizer = weakref.finalize(self, finalize, threads)
 
-    def task(self):
+    eleza task(self):
         pid = os.getpid()
         self.started.append(pid)
         try:
@@ -1693,51 +1693,51 @@ class Bunch(object):
             self._can_exit.wait(30)
             assert self._can_exit.is_set()
 
-    def wait_for_started(self):
+    eleza wait_for_started(self):
         while len(self.started) < self.n:
             _wait()
 
-    def wait_for_finished(self):
+    eleza wait_for_finished(self):
         while len(self.finished) < self.n:
             _wait()
 
-    def do_finish(self):
+    eleza do_finish(self):
         self._can_exit.set()
 
-    def close(self):
+    eleza close(self):
         self._finalizer()
 
 
-class AppendTrue(object):
-    def __init__(self, obj):
+kundi AppendTrue(object):
+    eleza __init__(self, obj):
         self.obj = obj
-    def __call__(self):
+    eleza __call__(self):
         self.obj.append(True)
 
 
-class _TestBarrier(BaseTestCase):
+kundi _TestBarrier(BaseTestCase):
     """
     Tests for Barrier objects.
     """
     N = 5
     defaultTimeout = 30.0  # XXX Slow Windows buildbots need generous timeout
 
-    def setUp(self):
+    eleza setUp(self):
         self.barrier = self.Barrier(self.N, timeout=self.defaultTimeout)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.barrier.abort()
         self.barrier = None
 
-    def DummyList(self):
-        if self.TYPE == 'threads':
-            return []
-        elif self.TYPE == 'manager':
-            return self.manager.list()
+    eleza DummyList(self):
+        ikiwa self.TYPE == 'threads':
+            rudisha []
+        elikiwa self.TYPE == 'manager':
+            rudisha self.manager.list()
         else:
-            return _DummyList()
+            rudisha _DummyList()
 
-    def run_threads(self, f, args):
+    eleza run_threads(self, f, args):
         b = Bunch(self, f, args, self.N-1)
         try:
             f(*args)
@@ -1746,7 +1746,7 @@ class _TestBarrier(BaseTestCase):
             b.close()
 
     @classmethod
-    def multipass(cls, barrier, results, n):
+    eleza multipass(cls, barrier, results, n):
         m = barrier.parties
         assert m == cls.N
         for i in range(n):
@@ -1762,27 +1762,27 @@ class _TestBarrier(BaseTestCase):
             pass
         assert not barrier.broken
 
-    def test_barrier(self, passes=1):
+    eleza test_barrier(self, passes=1):
         """
         Test that a barrier is passed in lockstep
         """
         results = [self.DummyList(), self.DummyList()]
         self.run_threads(self.multipass, (self.barrier, results, passes))
 
-    def test_barrier_10(self):
+    eleza test_barrier_10(self):
         """
         Test that a barrier works for 10 consecutive runs
         """
-        return self.test_barrier(10)
+        rudisha self.test_barrier(10)
 
     @classmethod
-    def _test_wait_return_f(cls, barrier, queue):
+    eleza _test_wait_return_f(cls, barrier, queue):
         res = barrier.wait()
         queue.put(res)
 
-    def test_wait_return(self):
+    eleza test_wait_return(self):
         """
-        test the return value kutoka barrier.wait
+        test the rudisha value kutoka barrier.wait
         """
         queue = self.Queue()
         self.run_threads(self._test_wait_return_f, (self.barrier, queue))
@@ -1791,12 +1791,12 @@ class _TestBarrier(BaseTestCase):
         close_queue(queue)
 
     @classmethod
-    def _test_action_f(cls, barrier, results):
+    eleza _test_action_f(cls, barrier, results):
         barrier.wait()
-        if len(results) != 1:
+        ikiwa len(results) != 1:
             raise RuntimeError
 
-    def test_action(self):
+    eleza test_action(self):
         """
         Test the 'action' callback
         """
@@ -1806,10 +1806,10 @@ class _TestBarrier(BaseTestCase):
         self.assertEqual(len(results), 1)
 
     @classmethod
-    def _test_abort_f(cls, barrier, results1, results2):
+    eleza _test_abort_f(cls, barrier, results1, results2):
         try:
             i = barrier.wait()
-            if i == cls.N//2:
+            ikiwa i == cls.N//2:
                 raise RuntimeError
             barrier.wait()
             results1.append(True)
@@ -1818,7 +1818,7 @@ class _TestBarrier(BaseTestCase):
         except RuntimeError:
             barrier.abort()
 
-    def test_abort(self):
+    eleza test_abort(self):
         """
         Test that an abort will put the barrier in a broken state
         """
@@ -1831,9 +1831,9 @@ class _TestBarrier(BaseTestCase):
         self.assertTrue(self.barrier.broken)
 
     @classmethod
-    def _test_reset_f(cls, barrier, results1, results2, results3):
+    eleza _test_reset_f(cls, barrier, results1, results2, results3):
         i = barrier.wait()
-        if i == cls.N//2:
+        ikiwa i == cls.N//2:
             # Wait until the other threads are all in the barrier.
             while barrier.n_waiting < cls.N-1:
                 time.sleep(0.001)
@@ -1848,7 +1848,7 @@ class _TestBarrier(BaseTestCase):
         barrier.wait()
         results3.append(True)
 
-    def test_reset(self):
+    eleza test_reset(self):
         """
         Test that a 'reset' on a barrier frees the waiting threads
         """
@@ -1862,11 +1862,11 @@ class _TestBarrier(BaseTestCase):
         self.assertEqual(len(results3), self.N)
 
     @classmethod
-    def _test_abort_and_reset_f(cls, barrier, barrier2,
+    eleza _test_abort_and_reset_f(cls, barrier, barrier2,
                                 results1, results2, results3):
         try:
             i = barrier.wait()
-            if i == cls.N//2:
+            ikiwa i == cls.N//2:
                 raise RuntimeError
             barrier.wait()
             results1.append(True)
@@ -1877,13 +1877,13 @@ class _TestBarrier(BaseTestCase):
         # Synchronize and reset the barrier.  Must synchronize first so
         # that everyone has left it when we reset, and after so that no
         # one enters it before the reset.
-        if barrier2.wait() == cls.N//2:
+        ikiwa barrier2.wait() == cls.N//2:
             barrier.reset()
         barrier2.wait()
         barrier.wait()
         results3.append(True)
 
-    def test_abort_and_reset(self):
+    eleza test_abort_and_reset(self):
         """
         Test that a barrier can be reset after being broken.
         """
@@ -1899,9 +1899,9 @@ class _TestBarrier(BaseTestCase):
         self.assertEqual(len(results3), self.N)
 
     @classmethod
-    def _test_timeout_f(cls, barrier, results):
+    eleza _test_timeout_f(cls, barrier, results):
         i = barrier.wait()
-        if i == cls.N//2:
+        ikiwa i == cls.N//2:
             # One thread is late!
             time.sleep(1.0)
         try:
@@ -1909,7 +1909,7 @@ class _TestBarrier(BaseTestCase):
         except threading.BrokenBarrierError:
             results.append(True)
 
-    def test_timeout(self):
+    eleza test_timeout(self):
         """
         Test wait(timeout)
         """
@@ -1918,9 +1918,9 @@ class _TestBarrier(BaseTestCase):
         self.assertEqual(len(results), self.barrier.parties)
 
     @classmethod
-    def _test_default_timeout_f(cls, barrier, results):
+    eleza _test_default_timeout_f(cls, barrier, results):
         i = barrier.wait(cls.defaultTimeout)
-        if i == cls.N//2:
+        ikiwa i == cls.N//2:
             # One thread is later than the default timeout
             time.sleep(1.0)
         try:
@@ -1928,7 +1928,7 @@ class _TestBarrier(BaseTestCase):
         except threading.BrokenBarrierError:
             results.append(True)
 
-    def test_default_timeout(self):
+    eleza test_default_timeout(self):
         """
         Test the barrier's default timeout
         """
@@ -1937,20 +1937,20 @@ class _TestBarrier(BaseTestCase):
         self.run_threads(self._test_default_timeout_f, (barrier, results))
         self.assertEqual(len(results), barrier.parties)
 
-    def test_single_thread(self):
+    eleza test_single_thread(self):
         b = self.Barrier(1)
         b.wait()
         b.wait()
 
     @classmethod
-    def _test_thousand_f(cls, barrier, passes, conn, lock):
+    eleza _test_thousand_f(cls, barrier, passes, conn, lock):
         for i in range(passes):
             barrier.wait()
             with lock:
                 conn.send(i)
 
-    def test_thousand(self):
-        if self.TYPE == 'manager':
+    eleza test_thousand(self):
+        ikiwa self.TYPE == 'manager':
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
         passes = 1000
         lock = self.Lock()
@@ -1969,7 +1969,7 @@ class _TestBarrier(BaseTestCase):
 #
 #
 
-class _TestValue(BaseTestCase):
+kundi _TestValue(BaseTestCase):
 
     ALLOWED_TYPES = ('processes',)
 
@@ -1981,18 +1981,18 @@ class _TestValue(BaseTestCase):
         ('c', latin('x'), latin('y'))
         ]
 
-    def setUp(self):
-        if not HAS_SHAREDCTYPES:
+    eleza setUp(self):
+        ikiwa not HAS_SHAREDCTYPES:
             self.skipTest("requires multiprocessing.sharedctypes")
 
     @classmethod
-    def _test(cls, values):
+    eleza _test(cls, values):
         for sv, cv in zip(values, cls.codes_values):
             sv.value = cv[2]
 
 
-    def test_value(self, raw=False):
-        if raw:
+    eleza test_value(self, raw=False):
+        ikiwa raw:
             values = [self.RawValue(code, value)
                       for code, value, _ in self.codes_values]
         else:
@@ -2010,10 +2010,10 @@ class _TestValue(BaseTestCase):
         for sv, cv in zip(values, self.codes_values):
             self.assertEqual(sv.value, cv[2])
 
-    def test_rawvalue(self):
+    eleza test_rawvalue(self):
         self.test_value(raw=True)
 
-    def test_getobj_getlock(self):
+    eleza test_getobj_getlock(self):
         val1 = self.Value('i', 5)
         lock1 = val1.get_lock()
         obj1 = val1.get_obj()
@@ -2039,19 +2039,19 @@ class _TestValue(BaseTestCase):
         self.assertFalse(hasattr(arr5, 'get_obj'))
 
 
-class _TestArray(BaseTestCase):
+kundi _TestArray(BaseTestCase):
 
     ALLOWED_TYPES = ('processes',)
 
     @classmethod
-    def f(cls, seq):
+    eleza f(cls, seq):
         for i in range(1, len(seq)):
             seq[i] += seq[i-1]
 
     @unittest.skipIf(c_int is None, "requires _ctypes")
-    def test_array(self, raw=False):
+    eleza test_array(self, raw=False):
         seq = [680, 626, 934, 821, 150, 233, 548, 982, 714, 831]
-        if raw:
+        ikiwa raw:
             arr = self.RawArray('i', seq)
         else:
             arr = self.Array('i', seq)
@@ -2074,7 +2074,7 @@ class _TestArray(BaseTestCase):
         self.assertEqual(list(arr[:]), seq)
 
     @unittest.skipIf(c_int is None, "requires _ctypes")
-    def test_array_from_size(self):
+    eleza test_array_kutoka_size(self):
         size = 10
         # Test for zeroing (see issue #11675).
         # The repetition below strengthens the test by increasing the chances
@@ -2089,11 +2089,11 @@ class _TestArray(BaseTestCase):
             del arr
 
     @unittest.skipIf(c_int is None, "requires _ctypes")
-    def test_rawarray(self):
+    eleza test_rawarray(self):
         self.test_array(raw=True)
 
     @unittest.skipIf(c_int is None, "requires _ctypes")
-    def test_getobj_getlock_obj(self):
+    eleza test_getobj_getlock_obj(self):
         arr1 = self.Array('i', list(range(10)))
         lock1 = arr1.get_lock()
         obj1 = arr1.get_obj()
@@ -2122,11 +2122,11 @@ class _TestArray(BaseTestCase):
 #
 #
 
-class _TestContainers(BaseTestCase):
+kundi _TestContainers(BaseTestCase):
 
     ALLOWED_TYPES = ('manager',)
 
-    def test_list(self):
+    eleza test_list(self):
         a = self.list(list(range(10)))
         self.assertEqual(a[:], list(range(10)))
 
@@ -2157,7 +2157,7 @@ class _TestContainers(BaseTestCase):
         a.append('hello')
         self.assertEqual(f[0][:], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'hello'])
 
-    def test_list_iter(self):
+    eleza test_list_iter(self):
         a = self.list(list(range(10)))
         it = iter(a)
         self.assertEqual(list(it), list(range(10)))
@@ -2167,7 +2167,7 @@ class _TestContainers(BaseTestCase):
         a[0] = 100
         self.assertEqual(next(it), 100)
 
-    def test_list_proxy_in_list(self):
+    eleza test_list_proxy_in_list(self):
         a = self.list([self.list(range(3)) for _i in range(3)])
         self.assertEqual([inner[:] for inner in a], [[0, 1, 2]] * 3)
 
@@ -2187,7 +2187,7 @@ class _TestContainers(BaseTestCase):
         b.append(b)
         del b
 
-    def test_dict(self):
+    eleza test_dict(self):
         d = self.dict()
         indices = list(range(65, 70))
         for i in indices:
@@ -2197,7 +2197,7 @@ class _TestContainers(BaseTestCase):
         self.assertEqual(sorted(d.values()), [chr(i) for i in indices])
         self.assertEqual(sorted(d.items()), [(i, chr(i)) for i in indices])
 
-    def test_dict_iter(self):
+    eleza test_dict_iter(self):
         d = self.dict()
         indices = list(range(65, 70))
         for i in indices:
@@ -2210,7 +2210,7 @@ class _TestContainers(BaseTestCase):
         d.clear()
         self.assertRaises(RuntimeError, next, it)
 
-    def test_dict_proxy_nested(self):
+    eleza test_dict_proxy_nested(self):
         pets = self.dict(ferrets=2, hamsters=4)
         supplies = self.dict(water=10, feed=3)
         d = self.dict(pets=pets, supplies=supplies)
@@ -2256,7 +2256,7 @@ class _TestContainers(BaseTestCase):
         self.assertIsInstance(outer[0], list)  # Not a ListProxy
         self.assertEqual(outer[-1][-1]['feed'], 3)
 
-    def test_namespace(self):
+    eleza test_namespace(self):
         n = self.Namespace()
         n.name = 'Bob'
         n.job = 'Builder'
@@ -2271,67 +2271,67 @@ class _TestContainers(BaseTestCase):
 #
 #
 
-def sqr(x, wait=0.0):
+eleza sqr(x, wait=0.0):
     time.sleep(wait)
-    return x*x
+    rudisha x*x
 
-def mul(x, y):
-    return x*y
+eleza mul(x, y):
+    rudisha x*y
 
-def raise_large_valuerror(wait):
+eleza raise_large_valuerror(wait):
     time.sleep(wait)
     raise ValueError("x" * 1024**2)
 
-def identity(x):
-    return x
+eleza identity(x):
+    rudisha x
 
-class CountedObject(object):
+kundi CountedObject(object):
     n_instances = 0
 
-    def __new__(cls):
+    eleza __new__(cls):
         cls.n_instances += 1
-        return object.__new__(cls)
+        rudisha object.__new__(cls)
 
-    def __del__(self):
+    eleza __del__(self):
         type(self).n_instances -= 1
 
-class SayWhenError(ValueError): pass
+kundi SayWhenError(ValueError): pass
 
-def exception_throwing_generator(total, when):
-    if when == -1:
+eleza exception_throwing_generator(total, when):
+    ikiwa when == -1:
         raise SayWhenError("Somebody said when")
     for i in range(total):
-        if i == when:
+        ikiwa i == when:
             raise SayWhenError("Somebody said when")
         yield i
 
 
-class _TestPool(BaseTestCase):
+kundi _TestPool(BaseTestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         super().setUpClass()
         cls.pool = cls.Pool(4)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         cls.pool.terminate()
         cls.pool.join()
         cls.pool = None
         super().tearDownClass()
 
-    def test_apply(self):
+    eleza test_apply(self):
         papply = self.pool.apply
         self.assertEqual(papply(sqr, (5,)), sqr(5))
         self.assertEqual(papply(sqr, (), {'x':3}), sqr(x=3))
 
-    def test_map(self):
+    eleza test_map(self):
         pmap = self.pool.map
         self.assertEqual(pmap(sqr, list(range(10))), list(map(sqr, list(range(10)))))
         self.assertEqual(pmap(sqr, list(range(100)), chunksize=20),
                          list(map(sqr, list(range(100)))))
 
-    def test_starmap(self):
+    eleza test_starmap(self):
         psmap = self.pool.starmap
         tuples = list(zip(range(10), range(9,-1, -1)))
         self.assertEqual(psmap(mul, tuples),
@@ -2340,17 +2340,17 @@ class _TestPool(BaseTestCase):
         self.assertEqual(psmap(mul, tuples, chunksize=20),
                          list(itertools.starmap(mul, tuples)))
 
-    def test_starmap_async(self):
+    eleza test_starmap_async(self):
         tuples = list(zip(range(100), range(99,-1, -1)))
         self.assertEqual(self.pool.starmap_async(mul, tuples).get(),
                          list(itertools.starmap(mul, tuples)))
 
-    def test_map_async(self):
+    eleza test_map_async(self):
         self.assertEqual(self.pool.map_async(sqr, list(range(10))).get(),
                          list(map(sqr, list(range(10)))))
 
-    def test_map_async_callbacks(self):
-        call_args = self.manager.list() if self.TYPE == 'manager' else []
+    eleza test_map_async_callbacks(self):
+        call_args = self.manager.list() ikiwa self.TYPE == 'manager' else []
         self.pool.map_async(int, ['1'],
                             callback=call_args.append,
                             error_callback=call_args.append).wait()
@@ -2362,24 +2362,24 @@ class _TestPool(BaseTestCase):
         self.assertEqual(2, len(call_args))
         self.assertIsInstance(call_args[1], ValueError)
 
-    def test_map_unplicklable(self):
+    eleza test_map_unplicklable(self):
         # Issue #19425 -- failure to pickle should not cause a hang
-        if self.TYPE == 'threads':
+        ikiwa self.TYPE == 'threads':
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
-        class A(object):
-            def __reduce__(self):
+        kundi A(object):
+            eleza __reduce__(self):
                 raise RuntimeError('cannot pickle')
         with self.assertRaises(RuntimeError):
             self.pool.map(sqr, [A()]*10)
 
-    def test_map_chunksize(self):
+    eleza test_map_chunksize(self):
         try:
             self.pool.map_async(sqr, [], chunksize=1).get(timeout=TIMEOUT1)
         except multiprocessing.TimeoutError:
             self.fail("pool.map_async with chunksize stalled on null list")
 
-    def test_map_handle_iterable_exception(self):
-        if self.TYPE == 'manager':
+    eleza test_map_handle_iterable_exception(self):
+        ikiwa self.TYPE == 'manager':
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
 
         # SayWhenError seen at the very first of the iterable
@@ -2392,31 +2392,31 @@ class _TestPool(BaseTestCase):
         with self.assertRaises(SayWhenError):
             self.pool.map(sqr, exception_throwing_generator(10, 3), 1)
 
-        class SpecialIterable:
-            def __iter__(self):
-                return self
-            def __next__(self):
+        kundi SpecialIterable:
+            eleza __iter__(self):
+                rudisha self
+            eleza __next__(self):
                 raise SayWhenError
-            def __len__(self):
-                return 1
+            eleza __len__(self):
+                rudisha 1
         with self.assertRaises(SayWhenError):
             self.pool.map(sqr, SpecialIterable(), 1)
         with self.assertRaises(SayWhenError):
             self.pool.map(sqr, SpecialIterable(), 1)
 
-    def test_async(self):
+    eleza test_async(self):
         res = self.pool.apply_async(sqr, (7, TIMEOUT1,))
         get = TimingWrapper(res.get)
         self.assertEqual(get(), 49)
         self.assertTimingAlmostEqual(get.elapsed, TIMEOUT1)
 
-    def test_async_timeout(self):
+    eleza test_async_timeout(self):
         res = self.pool.apply_async(sqr, (6, TIMEOUT2 + 1.0))
         get = TimingWrapper(res.get)
         self.assertRaises(multiprocessing.TimeoutError, get, timeout=TIMEOUT2)
         self.assertTimingAlmostEqual(get.elapsed, TIMEOUT2)
 
-    def test_imap(self):
+    eleza test_imap(self):
         it = self.pool.imap(sqr, list(range(10)))
         self.assertEqual(list(it), list(map(sqr, list(range(10)))))
 
@@ -2430,8 +2430,8 @@ class _TestPool(BaseTestCase):
             self.assertEqual(next(it), i*i)
         self.assertRaises(StopIteration, it.__next__)
 
-    def test_imap_handle_iterable_exception(self):
-        if self.TYPE == 'manager':
+    eleza test_imap_handle_iterable_exception(self):
+        ikiwa self.TYPE == 'manager':
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
 
         # SayWhenError seen at the very first of the iterable
@@ -2456,15 +2456,15 @@ class _TestPool(BaseTestCase):
             self.assertEqual(next(it), i*i)
         self.assertRaises(SayWhenError, it.__next__)
 
-    def test_imap_unordered(self):
+    eleza test_imap_unordered(self):
         it = self.pool.imap_unordered(sqr, list(range(10)))
         self.assertEqual(sorted(it), list(map(sqr, list(range(10)))))
 
         it = self.pool.imap_unordered(sqr, list(range(1000)), chunksize=100)
         self.assertEqual(sorted(it), list(map(sqr, list(range(1000)))))
 
-    def test_imap_unordered_handle_iterable_exception(self):
-        if self.TYPE == 'manager':
+    eleza test_imap_unordered_handle_iterable_exception(self):
+        ikiwa self.TYPE == 'manager':
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
 
         # SayWhenError seen at the very first of the iterable
@@ -2499,14 +2499,14 @@ class _TestPool(BaseTestCase):
                 self.assertIn(value, expected_values)
                 expected_values.remove(value)
 
-    def test_make_pool(self):
-        expected_error = (RemoteError if self.TYPE == 'manager'
+    eleza test_make_pool(self):
+        expected_error = (RemoteError ikiwa self.TYPE == 'manager'
                           else ValueError)
 
         self.assertRaises(expected_error, self.Pool, -1)
         self.assertRaises(expected_error, self.Pool, 0)
 
-        if self.TYPE != 'manager':
+        ikiwa self.TYPE != 'manager':
             p = self.Pool(3)
             try:
                 self.assertEqual(3, len(p._pool))
@@ -2514,7 +2514,7 @@ class _TestPool(BaseTestCase):
                 p.close()
                 p.join()
 
-    def test_terminate(self):
+    eleza test_terminate(self):
         result = self.pool.map_async(
             time.sleep, [0.1 for i in range(10000)], chunksize=1
             )
@@ -2524,7 +2524,7 @@ class _TestPool(BaseTestCase):
         # Sanity check the pool didn't wait for all tasks to finish
         self.assertLess(join.elapsed, 2.0)
 
-    def test_empty_iterable(self):
+    eleza test_empty_iterable(self):
         # See Issue 12157
         p = self.Pool(1)
 
@@ -2536,8 +2536,8 @@ class _TestPool(BaseTestCase):
         p.close()
         p.join()
 
-    def test_context(self):
-        if self.TYPE == 'processes':
+    eleza test_context(self):
+        ikiwa self.TYPE == 'processes':
             L = list(range(10))
             expected = [sqr(i) for i in L]
             with self.Pool(2) as p:
@@ -2547,13 +2547,13 @@ class _TestPool(BaseTestCase):
             self.assertRaises(ValueError, p.map_async, sqr, L)
 
     @classmethod
-    def _test_traceback(cls):
+    eleza _test_traceback(cls):
         raise RuntimeError(123) # some comment
 
-    def test_traceback(self):
+    eleza test_traceback(self):
         # We want ensure that the traceback kutoka the child process is
         # contained in the traceback raised in the main process.
-        if self.TYPE == 'processes':
+        ikiwa self.TYPE == 'processes':
             with self.Pool(1) as p:
                 try:
                     p.apply(self._test_traceback)
@@ -2589,17 +2589,17 @@ class _TestPool(BaseTestCase):
             p.join()
 
     @classmethod
-    def _test_wrapped_exception(cls):
+    eleza _test_wrapped_exception(cls):
         raise RuntimeError('foo')
 
-    def test_wrapped_exception(self):
+    eleza test_wrapped_exception(self):
         # Issue #20980: Should not wrap exception when using thread pool
         with self.Pool(1) as p:
             with self.assertRaises(RuntimeError):
                 p.apply(self._test_wrapped_exception)
         p.join()
 
-    def test_map_no_failfast(self):
+    eleza test_map_no_failfast(self):
         # Issue #23992: the fail-fast behaviour when an exception is raised
         # during map() would make Pool.join() deadlock, because a worker
         # process would fill the result queue (after the result handler thread
@@ -2619,7 +2619,7 @@ class _TestPool(BaseTestCase):
         # check that we indeed waited for all jobs
         self.assertGreater(time.monotonic() - t_start, 0.9)
 
-    def test_release_task_refs(self):
+    eleza test_release_task_refs(self):
         # Issue #29861: task arguments and results should not be kept
         # alive after we are done with them.
         objs = [CountedObject() for i in range(10)]
@@ -2633,8 +2633,8 @@ class _TestPool(BaseTestCase):
         # they were released too.
         self.assertEqual(CountedObject.n_instances, 0)
 
-    def test_enter(self):
-        if self.TYPE == 'manager':
+    eleza test_enter(self):
+        ikiwa self.TYPE == 'manager':
             self.skipTest("test not applicable to manager")
 
         pool = self.Pool(1)
@@ -2644,13 +2644,13 @@ class _TestPool(BaseTestCase):
         # pool is no longer running
 
         with self.assertRaises(ValueError):
-            # bpo-35477: pool.__enter__() fails if the pool is not running
+            # bpo-35477: pool.__enter__() fails ikiwa the pool is not running
             with pool:
                 pass
         pool.join()
 
-    def test_resource_warning(self):
-        if self.TYPE == 'manager':
+    eleza test_resource_warning(self):
+        ikiwa self.TYPE == 'manager':
             self.skipTest("test not applicable to manager")
 
         pool = self.Pool(1)
@@ -2665,20 +2665,20 @@ class _TestPool(BaseTestCase):
             pool = None
             support.gc_collect()
 
-def raising():
+eleza raising():
     raise KeyError("key")
 
-def unpickleable_result():
-    return lambda: 42
+eleza unpickleable_result():
+    rudisha lambda: 42
 
-class _TestPoolWorkerErrors(BaseTestCase):
+kundi _TestPoolWorkerErrors(BaseTestCase):
     ALLOWED_TYPES = ('processes', )
 
-    def test_async_error_callback(self):
+    eleza test_async_error_callback(self):
         p = multiprocessing.Pool(2)
 
         scratchpad = [None]
-        def errback(exc):
+        eleza errback(exc):
             scratchpad[0] = exc
 
         res = p.apply_async(raising, error_callback=errback)
@@ -2689,7 +2689,7 @@ class _TestPoolWorkerErrors(BaseTestCase):
         p.close()
         p.join()
 
-    def test_unpickleable_result(self):
+    eleza test_unpickleable_result(self):
         kutoka multiprocessing.pool agiza MaybeEncodingError
         p = multiprocessing.Pool(2)
 
@@ -2697,7 +2697,7 @@ class _TestPoolWorkerErrors(BaseTestCase):
         for iteration in range(20):
 
             scratchpad = [None]
-            def errback(exc):
+            eleza errback(exc):
                 scratchpad[0] = exc
 
             res = p.apply_async(unpickleable_result, error_callback=errback)
@@ -2711,10 +2711,10 @@ class _TestPoolWorkerErrors(BaseTestCase):
         p.close()
         p.join()
 
-class _TestPoolWorkerLifetime(BaseTestCase):
+kundi _TestPoolWorkerLifetime(BaseTestCase):
     ALLOWED_TYPES = ('processes', )
 
-    def test_pool_worker_lifetime(self):
+    eleza test_pool_worker_lifetime(self):
         p = multiprocessing.Pool(3, maxtasksperchild=10)
         self.assertEqual(3, len(p._pool))
         origworkerpids = [w.pid for w in p._pool]
@@ -2743,7 +2743,7 @@ class _TestPoolWorkerLifetime(BaseTestCase):
         p.close()
         p.join()
 
-    def test_pool_worker_lifetime_early_close(self):
+    eleza test_pool_worker_lifetime_early_close(self):
         # Issue #10332: closing a pool whose workers have limited lifetimes
         # before all the tasks completed would make join() hang.
         p = multiprocessing.Pool(3, maxtasksperchild=1)
@@ -2762,26 +2762,26 @@ class _TestPoolWorkerLifetime(BaseTestCase):
 
 kutoka multiprocessing.managers agiza BaseManager, BaseProxy, RemoteError
 
-class FooBar(object):
-    def f(self):
-        return 'f()'
-    def g(self):
+kundi FooBar(object):
+    eleza f(self):
+        rudisha 'f()'
+    eleza g(self):
         raise ValueError
-    def _h(self):
-        return '_h()'
+    eleza _h(self):
+        rudisha '_h()'
 
-def baz():
+eleza baz():
     for i in range(10):
         yield i*i
 
-class IteratorProxy(BaseProxy):
+kundi IteratorProxy(BaseProxy):
     _exposed_ = ('__next__',)
-    def __iter__(self):
-        return self
-    def __next__(self):
-        return self._callmethod('__next__')
+    eleza __iter__(self):
+        rudisha self
+    eleza __next__(self):
+        rudisha self._callmethod('__next__')
 
-class MyManager(BaseManager):
+kundi MyManager(BaseManager):
     pass
 
 MyManager.register('Foo', callable=FooBar)
@@ -2789,43 +2789,43 @@ MyManager.register('Bar', callable=FooBar, exposed=('f', '_h'))
 MyManager.register('baz', callable=baz, proxytype=IteratorProxy)
 
 
-class _TestMyManager(BaseTestCase):
+kundi _TestMyManager(BaseTestCase):
 
     ALLOWED_TYPES = ('manager',)
 
-    def test_mymanager(self):
+    eleza test_mymanager(self):
         manager = MyManager()
         manager.start()
         self.common(manager)
         manager.shutdown()
 
         # bpo-30356: BaseManager._finalize_manager() sends SIGTERM
-        # to the manager process if it takes longer than 1 second to stop,
+        # to the manager process ikiwa it takes longer than 1 second to stop,
         # which happens on slow buildbots.
         self.assertIn(manager._process.exitcode, (0, -signal.SIGTERM))
 
-    def test_mymanager_context(self):
+    eleza test_mymanager_context(self):
         with MyManager() as manager:
             self.common(manager)
         # bpo-30356: BaseManager._finalize_manager() sends SIGTERM
-        # to the manager process if it takes longer than 1 second to stop,
+        # to the manager process ikiwa it takes longer than 1 second to stop,
         # which happens on slow buildbots.
         self.assertIn(manager._process.exitcode, (0, -signal.SIGTERM))
 
-    def test_mymanager_context_prestarted(self):
+    eleza test_mymanager_context_prestarted(self):
         manager = MyManager()
         manager.start()
         with manager:
             self.common(manager)
         self.assertEqual(manager._process.exitcode, 0)
 
-    def common(self, manager):
+    eleza common(self, manager):
         foo = manager.Foo()
         bar = manager.Bar()
         baz = manager.baz()
 
-        foo_methods = [name for name in ('f', 'g', '_h') if hasattr(foo, name)]
-        bar_methods = [name for name in ('f', 'g', '_h') if hasattr(bar, name)]
+        foo_methods = [name for name in ('f', 'g', '_h') ikiwa hasattr(foo, name)]
+        bar_methods = [name for name in ('f', 'g', '_h') ikiwa hasattr(bar, name)]
 
         self.assertEqual(foo_methods, ['f', 'g'])
         self.assertEqual(bar_methods, ['f', '_h'])
@@ -2848,21 +2848,21 @@ class _TestMyManager(BaseTestCase):
 #
 
 _queue = pyqueue.Queue()
-def get_queue():
-    return _queue
+eleza get_queue():
+    rudisha _queue
 
-class QueueManager(BaseManager):
-    '''manager class used by server process'''
+kundi QueueManager(BaseManager):
+    '''manager kundi used by server process'''
 QueueManager.register('get_queue', callable=get_queue)
 
-class QueueManager2(BaseManager):
-    '''manager class which specifies the same interface as QueueManager'''
+kundi QueueManager2(BaseManager):
+    '''manager kundi which specifies the same interface as QueueManager'''
 QueueManager2.register('get_queue')
 
 
 SERIALIZER = 'xmlrpclib'
 
-class _TestRemoteManager(BaseTestCase):
+kundi _TestRemoteManager(BaseTestCase):
 
     ALLOWED_TYPES = ('manager',)
     values = ['hello world', None, True, 2.25,
@@ -2873,7 +2873,7 @@ class _TestRemoteManager(BaseTestCase):
     result = values[:]
 
     @classmethod
-    def _putter(cls, address, authkey):
+    eleza _putter(cls, address, authkey):
         manager = QueueManager2(
             address=address, authkey=authkey, serializer=SERIALIZER
             )
@@ -2882,7 +2882,7 @@ class _TestRemoteManager(BaseTestCase):
         # Note that xmlrpclib will deserialize object as a list not a tuple
         queue.put(tuple(cls.values))
 
-    def test_remote(self):
+    eleza test_remote(self):
         authkey = os.urandom(32)
 
         manager = QueueManager(
@@ -2910,17 +2910,17 @@ class _TestRemoteManager(BaseTestCase):
         # Make queue finalizer run before the server is stopped
         del queue
 
-class _TestManagerRestart(BaseTestCase):
+kundi _TestManagerRestart(BaseTestCase):
 
     @classmethod
-    def _putter(cls, address, authkey):
+    eleza _putter(cls, address, authkey):
         manager = QueueManager(
             address=address, authkey=authkey, serializer=SERIALIZER)
         manager.connect()
         queue = manager.get_queue()
         queue.put('hello world')
 
-    def test_rapid_restart(self):
+    eleza test_rapid_restart(self):
         authkey = os.urandom(32)
         manager = QueueManager(
             address=(test.support.HOST, 0), authkey=authkey, serializer=SERIALIZER)
@@ -2939,7 +2939,7 @@ class _TestManagerRestart(BaseTestCase):
             self.assertEqual(queue.get(), 'hello world')
             del queue
         finally:
-            if hasattr(manager, "shutdown"):
+            ikiwa hasattr(manager, "shutdown"):
                 manager.shutdown()
 
         manager = QueueManager(
@@ -2948,14 +2948,14 @@ class _TestManagerRestart(BaseTestCase):
             manager.start()
             self.addCleanup(manager.shutdown)
         except OSError as e:
-            if e.errno != errno.EADDRINUSE:
+            ikiwa e.errno != errno.EADDRINUSE:
                 raise
             # Retry after some time, in case the old socket was lingering
             # (sporadic failure on buildbots)
             time.sleep(1.0)
             manager = QueueManager(
                 address=addr, authkey=authkey, serializer=SERIALIZER)
-            if hasattr(manager, "shutdown"):
+            ikiwa hasattr(manager, "shutdown"):
                 self.addCleanup(manager.shutdown)
 
 #
@@ -2964,17 +2964,17 @@ class _TestManagerRestart(BaseTestCase):
 
 SENTINEL = latin('')
 
-class _TestConnection(BaseTestCase):
+kundi _TestConnection(BaseTestCase):
 
     ALLOWED_TYPES = ('processes', 'threads')
 
     @classmethod
-    def _echo(cls, conn):
+    eleza _echo(cls, conn):
         for msg in iter(conn.recv_bytes, SENTINEL):
             conn.send_bytes(msg)
         conn.close()
 
-    def test_connection(self):
+    eleza test_connection(self):
         conn, child_conn = self.Pipe()
 
         p = self.Process(target=self._echo, args=(child_conn,))
@@ -2986,7 +2986,7 @@ class _TestConnection(BaseTestCase):
         longmsg = msg * 10
         arr = array.array('i', list(range(4)))
 
-        if self.TYPE == 'processes':
+        ikiwa self.TYPE == 'processes':
             self.assertEqual(type(conn.fileno()), int)
 
         self.assertEqual(conn.send(seq), None)
@@ -2995,7 +2995,7 @@ class _TestConnection(BaseTestCase):
         self.assertEqual(conn.send_bytes(msg), None)
         self.assertEqual(conn.recv_bytes(), msg)
 
-        if self.TYPE == 'processes':
+        ikiwa self.TYPE == 'processes':
             buffer = array.array('i', [0]*10)
             expected = list(arr) + [0] * (10 - len(arr))
             self.assertEqual(conn.send_bytes(arr), None)
@@ -3045,7 +3045,7 @@ class _TestConnection(BaseTestCase):
         conn.send_bytes(SENTINEL)                          # tell child to quit
         child_conn.close()
 
-        if self.TYPE == 'processes':
+        ikiwa self.TYPE == 'processes':
             self.assertEqual(conn.readable, True)
             self.assertEqual(conn.writable, True)
             self.assertRaises(EOFError, conn.recv)
@@ -3053,11 +3053,11 @@ class _TestConnection(BaseTestCase):
 
         p.join()
 
-    def test_duplex_false(self):
+    eleza test_duplex_false(self):
         reader, writer = self.Pipe(duplex=False)
         self.assertEqual(writer.send(1), None)
         self.assertEqual(reader.recv(), 1)
-        if self.TYPE == 'processes':
+        ikiwa self.TYPE == 'processes':
             self.assertEqual(reader.readable, True)
             self.assertEqual(reader.writable, False)
             self.assertEqual(writer.readable, False)
@@ -3066,7 +3066,7 @@ class _TestConnection(BaseTestCase):
             self.assertRaises(OSError, writer.recv)
             self.assertRaises(OSError, writer.poll)
 
-    def test_spawn_close(self):
+    eleza test_spawn_close(self):
         # We test that a pipe connection can be closed by parent
         # process immediately after child is spawned.  On Windows this
         # would have sometimes failed on old versions because
@@ -3087,8 +3087,8 @@ class _TestConnection(BaseTestCase):
         conn.close()
         p.join()
 
-    def test_sendbytes(self):
-        if self.TYPE != 'processes':
+    eleza test_sendbytes(self):
+        ikiwa self.TYPE != 'processes':
             self.skipTest('test not appropriate for {}'.format(self.TYPE))
 
         msg = latin('abcdefghijklmnopqrstuvwxyz')
@@ -3120,31 +3120,31 @@ class _TestConnection(BaseTestCase):
         self.assertRaises(ValueError, a.send_bytes, msg, 4, -1)
 
     @classmethod
-    def _is_fd_assigned(cls, fd):
+    eleza _is_fd_assigned(cls, fd):
         try:
             os.fstat(fd)
         except OSError as e:
-            if e.errno == errno.EBADF:
-                return False
+            ikiwa e.errno == errno.EBADF:
+                rudisha False
             raise
         else:
-            return True
+            rudisha True
 
     @classmethod
-    def _writefd(cls, conn, data, create_dummy_fds=False):
-        if create_dummy_fds:
+    eleza _writefd(cls, conn, data, create_dummy_fds=False):
+        ikiwa create_dummy_fds:
             for i in range(0, 256):
-                if not cls._is_fd_assigned(i):
+                ikiwa not cls._is_fd_assigned(i):
                     os.dup2(conn.fileno(), i)
         fd = reduction.recv_handle(conn)
-        if msvcrt:
+        ikiwa msvcrt:
             fd = msvcrt.open_osfhandle(fd, os.O_WRONLY)
         os.write(fd, data)
         os.close(fd)
 
     @unittest.skipUnless(HAS_REDUCTION, "test needs multiprocessing.reduction")
-    def test_fd_transfer(self):
-        if self.TYPE != 'processes':
+    eleza test_fd_transfer(self):
+        ikiwa self.TYPE != 'processes':
             self.skipTest("only makes sense with processes")
         conn, child_conn = self.Pipe(duplex=True)
 
@@ -3154,7 +3154,7 @@ class _TestConnection(BaseTestCase):
         self.addCleanup(test.support.unlink, test.support.TESTFN)
         with open(test.support.TESTFN, "wb") as f:
             fd = f.fileno()
-            if msvcrt:
+            ikiwa msvcrt:
                 fd = msvcrt.get_osfhandle(fd)
             reduction.send_handle(conn, fd, p.pid)
         p.join()
@@ -3168,9 +3168,9 @@ class _TestConnection(BaseTestCase):
                      "largest assignable fd number is too small")
     @unittest.skipUnless(hasattr(os, "dup2"),
                          "test needs os.dup2()")
-    def test_large_fd_transfer(self):
+    eleza test_large_fd_transfer(self):
         # With fd > 256 (issue #11657)
-        if self.TYPE != 'processes':
+        ikiwa self.TYPE != 'processes':
             self.skipTest("only makes sense with processes")
         conn, child_conn = self.Pipe(duplex=True)
 
@@ -3181,7 +3181,7 @@ class _TestConnection(BaseTestCase):
         with open(test.support.TESTFN, "wb") as f:
             fd = f.fileno()
             for newfd in range(256, MAXFD):
-                if not self._is_fd_assigned(newfd):
+                ikiwa not self._is_fd_assigned(newfd):
                     break
             else:
                 self.fail("could not find an unassigned large file descriptor")
@@ -3195,15 +3195,15 @@ class _TestConnection(BaseTestCase):
             self.assertEqual(f.read(), b"bar")
 
     @classmethod
-    def _send_data_without_fd(self, conn):
+    eleza _send_data_without_fd(self, conn):
         os.write(conn.fileno(), b"\0")
 
     @unittest.skipUnless(HAS_REDUCTION, "test needs multiprocessing.reduction")
     @unittest.skipIf(sys.platform == "win32", "doesn't make sense on Windows")
-    def test_missing_fd_transfer(self):
+    eleza test_missing_fd_transfer(self):
         # Check that exception is raised when received data is not
         # accompanied by a file descriptor in ancillary data.
-        if self.TYPE != 'processes':
+        ikiwa self.TYPE != 'processes':
             self.skipTest("only makes sense with processes")
         conn, child_conn = self.Pipe(duplex=True)
 
@@ -3213,54 +3213,54 @@ class _TestConnection(BaseTestCase):
         self.assertRaises(RuntimeError, reduction.recv_handle, conn)
         p.join()
 
-    def test_context(self):
+    eleza test_context(self):
         a, b = self.Pipe()
 
         with a, b:
             a.send(1729)
             self.assertEqual(b.recv(), 1729)
-            if self.TYPE == 'processes':
+            ikiwa self.TYPE == 'processes':
                 self.assertFalse(a.closed)
                 self.assertFalse(b.closed)
 
-        if self.TYPE == 'processes':
+        ikiwa self.TYPE == 'processes':
             self.assertTrue(a.closed)
             self.assertTrue(b.closed)
             self.assertRaises(OSError, a.recv)
             self.assertRaises(OSError, b.recv)
 
-class _TestListener(BaseTestCase):
+kundi _TestListener(BaseTestCase):
 
     ALLOWED_TYPES = ('processes',)
 
-    def test_multiple_bind(self):
+    eleza test_multiple_bind(self):
         for family in self.connection.families:
             l = self.connection.Listener(family=family)
             self.addCleanup(l.close)
             self.assertRaises(OSError, self.connection.Listener,
                               l.address, family)
 
-    def test_context(self):
+    eleza test_context(self):
         with self.connection.Listener() as l:
             with self.connection.Client(l.address) as c:
                 with l.accept() as d:
                     c.send(1729)
                     self.assertEqual(d.recv(), 1729)
 
-        if self.TYPE == 'processes':
+        ikiwa self.TYPE == 'processes':
             self.assertRaises(OSError, l.accept)
 
-class _TestListenerClient(BaseTestCase):
+kundi _TestListenerClient(BaseTestCase):
 
     ALLOWED_TYPES = ('processes', 'threads')
 
     @classmethod
-    def _test(cls, address):
+    eleza _test(cls, address):
         conn = cls.connection.Client(address)
         conn.send('hello')
         conn.close()
 
-    def test_listener_client(self):
+    eleza test_listener_client(self):
         for family in self.connection.families:
             l = self.connection.Listener(family=family)
             p = self.Process(target=self._test, args=(l.address,))
@@ -3271,7 +3271,7 @@ class _TestListenerClient(BaseTestCase):
             p.join()
             l.close()
 
-    def test_issue14725(self):
+    eleza test_issue14725(self):
         l = self.connection.Listener()
         p = self.Process(target=self._test, args=(l.address,))
         p.daemon = True
@@ -3287,7 +3287,7 @@ class _TestListenerClient(BaseTestCase):
         p.join()
         l.close()
 
-    def test_issue16955(self):
+    eleza test_issue16955(self):
         for fam in self.connection.families:
             l = self.connection.Listener(family=fam)
             c = self.connection.Client(l.address)
@@ -3298,11 +3298,11 @@ class _TestListenerClient(BaseTestCase):
             c.close()
             l.close()
 
-class _TestPoll(BaseTestCase):
+kundi _TestPoll(BaseTestCase):
 
     ALLOWED_TYPES = ('processes', 'threads')
 
-    def test_empty_string(self):
+    eleza test_empty_string(self):
         a, b = self.Pipe()
         self.assertEqual(a.poll(), False)
         b.send_bytes(b'')
@@ -3310,13 +3310,13 @@ class _TestPoll(BaseTestCase):
         self.assertEqual(a.poll(), True)
 
     @classmethod
-    def _child_strings(cls, conn, strings):
+    eleza _child_strings(cls, conn, strings):
         for s in strings:
             time.sleep(0.1)
             conn.send_bytes(s)
         conn.close()
 
-    def test_strings(self):
+    eleza test_strings(self):
         strings = (b'hello', b'', b'a', b'b', b'', b'bye', b'', b'lop')
         a, b = self.Pipe()
         p = self.Process(target=self._child_strings, args=(b, strings))
@@ -3324,7 +3324,7 @@ class _TestPoll(BaseTestCase):
 
         for s in strings:
             for i in range(200):
-                if a.poll(0.01):
+                ikiwa a.poll(0.01):
                     break
             x = a.recv_bytes()
             self.assertEqual(s, x)
@@ -3332,14 +3332,14 @@ class _TestPoll(BaseTestCase):
         p.join()
 
     @classmethod
-    def _child_boundaries(cls, r):
+    eleza _child_boundaries(cls, r):
         # Polling may "pull" a message in to the child process, but we
         # don't want it to pull only part of a message, as that would
         # corrupt the pipe for any other processes which might later
         # read kutoka it.
         r.poll(5)
 
-    def test_boundaries(self):
+    eleza test_boundaries(self):
         r, w = self.Pipe(False)
         p = self.Process(target=self._child_boundaries, args=(r,))
         p.start()
@@ -3352,12 +3352,12 @@ class _TestPoll(BaseTestCase):
         self.assertIn(r.recv_bytes(), L)
 
     @classmethod
-    def _child_dont_merge(cls, b):
+    eleza _child_dont_merge(cls, b):
         b.send_bytes(b'a')
         b.send_bytes(b'b')
         b.send_bytes(b'cd')
 
-    def test_dont_merge(self):
+    eleza test_dont_merge(self):
         a, b = self.Pipe()
         self.assertEqual(a.poll(0.0), False)
         self.assertEqual(a.poll(0.1), False)
@@ -3381,17 +3381,17 @@ class _TestPoll(BaseTestCase):
 #
 
 @unittest.skipUnless(HAS_REDUCTION, "test needs multiprocessing.reduction")
-class _TestPicklingConnections(BaseTestCase):
+kundi _TestPicklingConnections(BaseTestCase):
 
     ALLOWED_TYPES = ('processes',)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         kutoka multiprocessing agiza resource_sharer
         resource_sharer.stop(timeout=TIMEOUT)
 
     @classmethod
-    def _listener(cls, conn, families):
+    eleza _listener(cls, conn, families):
         for fam in families:
             l = cls.connection.Listener(family=fam)
             conn.send(l.address)
@@ -3410,7 +3410,7 @@ class _TestPicklingConnections(BaseTestCase):
         conn.recv()
 
     @classmethod
-    def _remote(cls, conn):
+    eleza _remote(cls, conn):
         for (address, msg) in iter(conn.recv, None):
             client = cls.connection.Client(address)
             client.send(msg.upper())
@@ -3424,7 +3424,7 @@ class _TestPicklingConnections(BaseTestCase):
 
         conn.close()
 
-    def test_pickling(self):
+    eleza test_pickling(self):
         families = self.connection.families
 
         lconn, lconn0 = self.Pipe()
@@ -3455,7 +3455,7 @@ class _TestPicklingConnections(BaseTestCase):
         buf = []
         while True:
             s = new_conn.recv(100)
-            if not s:
+            ikiwa not s:
                 break
             buf.append(s)
         buf = b''.join(buf)
@@ -3471,7 +3471,7 @@ class _TestPicklingConnections(BaseTestCase):
         rp.join()
 
     @classmethod
-    def child_access(cls, conn):
+    eleza child_access(cls, conn):
         w = conn.recv()
         w.send('all is well')
         w.close()
@@ -3482,8 +3482,8 @@ class _TestPicklingConnections(BaseTestCase):
 
         conn.close()
 
-    def test_access(self):
-        # On Windows, if we do not specify a destination pid when
+    eleza test_access(self):
+        # On Windows, ikiwa we do not specify a destination pid when
         # using DupHandle then we need to be careful to use the
         # correct access flags for DuplicateHandle(), or else
         # DupHandle.detach() will raise PermissionError.  For example,
@@ -3515,21 +3515,21 @@ class _TestPicklingConnections(BaseTestCase):
 #
 #
 
-class _TestHeap(BaseTestCase):
+kundi _TestHeap(BaseTestCase):
 
     ALLOWED_TYPES = ('processes',)
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         # Make pristine heap for these tests
         self.old_heap = multiprocessing.heap.BufferWrapper._heap
         multiprocessing.heap.BufferWrapper._heap = multiprocessing.heap.Heap()
 
-    def tearDown(self):
+    eleza tearDown(self):
         multiprocessing.heap.BufferWrapper._heap = self.old_heap
         super().tearDown()
 
-    def test_heap(self):
+    eleza test_heap(self):
         iterations = 5000
         maxblocks = 50
         blocks = []
@@ -3543,7 +3543,7 @@ class _TestHeap(BaseTestCase):
             size = int(random.lognormvariate(0, 1) * 1000)
             b = multiprocessing.heap.BufferWrapper(size)
             blocks.append(b)
-            if len(blocks) > maxblocks:
+            ikiwa len(blocks) > maxblocks:
                 i = random.randrange(maxblocks)
                 del blocks[i]
             del b
@@ -3574,7 +3574,7 @@ class _TestHeap(BaseTestCase):
             for i in range(len(all)-1):
                 (arena, start, stop) = all[i][:3]
                 (narena, nstart, nstop) = all[i+1][:3]
-                if arena != narena:
+                ikiwa arena != narena:
                     # Two different arenas
                     self.assertEqual(stop, heap._arenas[arena].size)  # last block
                     self.assertEqual(nstart, 0)         # first block
@@ -3593,13 +3593,13 @@ class _TestHeap(BaseTestCase):
         self.assertEqual(len(heap._allocated_blocks), 0, heap._allocated_blocks)
         self.assertEqual(len(heap._len_to_seq), 0)
 
-    def test_free_from_gc(self):
+    eleza test_free_kutoka_gc(self):
         # Check that freeing of blocks by the garbage collector doesn't deadlock
         # (issue #12352).
         # Make sure the GC is enabled, and set lower collection thresholds to
         # make collections more frequent (and increase the probability of
         # deadlock).
-        if not gc.isenabled():
+        ikiwa not gc.isenabled():
             gc.enable()
             self.addCleanup(gc.disable)
         thresholds = gc.get_threshold()
@@ -3619,23 +3619,23 @@ class _TestHeap(BaseTestCase):
 #
 #
 
-class _Foo(Structure):
+kundi _Foo(Structure):
     _fields_ = [
         ('x', c_int),
         ('y', c_double),
         ('z', c_longlong,)
         ]
 
-class _TestSharedCTypes(BaseTestCase):
+kundi _TestSharedCTypes(BaseTestCase):
 
     ALLOWED_TYPES = ('processes',)
 
-    def setUp(self):
-        if not HAS_SHAREDCTYPES:
+    eleza setUp(self):
+        ikiwa not HAS_SHAREDCTYPES:
             self.skipTest("requires multiprocessing.sharedctypes")
 
     @classmethod
-    def _double(cls, x, y, z, foo, arr, string):
+    eleza _double(cls, x, y, z, foo, arr, string):
         x.value *= 2
         y.value *= 2
         z.value *= 2
@@ -3645,7 +3645,7 @@ class _TestSharedCTypes(BaseTestCase):
         for i in range(len(arr)):
             arr[i] *= 2
 
-    def test_sharedctypes(self, lock=False):
+    eleza test_sharedctypes(self, lock=False):
         x = Value('i', 7, lock=lock)
         y = Value(c_double, 1.0/3.0, lock=lock)
         z = Value(c_longlong, 2 ** 33, lock=lock)
@@ -3668,10 +3668,10 @@ class _TestSharedCTypes(BaseTestCase):
             self.assertAlmostEqual(arr[i], i*2)
         self.assertEqual(string.value, latin('hellohello'))
 
-    def test_synchronize(self):
+    eleza test_synchronize(self):
         self.test_sharedctypes(lock=True)
 
-    def test_copy(self):
+    eleza test_copy(self):
         foo = _Foo(2, 5.0, 2 ** 33)
         bar = copy(foo)
         foo.x = 0
@@ -3683,20 +3683,20 @@ class _TestSharedCTypes(BaseTestCase):
 
 
 @unittest.skipUnless(HAS_SHMEM, "requires multiprocessing.shared_memory")
-class _TestSharedMemory(BaseTestCase):
+kundi _TestSharedMemory(BaseTestCase):
 
     ALLOWED_TYPES = ('processes',)
 
     @staticmethod
-    def _attach_existing_shmem_then_write(shmem_name_or_obj, binary_data):
-        if isinstance(shmem_name_or_obj, str):
+    eleza _attach_existing_shmem_then_write(shmem_name_or_obj, binary_data):
+        ikiwa isinstance(shmem_name_or_obj, str):
             local_sms = shared_memory.SharedMemory(shmem_name_or_obj)
         else:
             local_sms = shmem_name_or_obj
         local_sms.buf[:len(binary_data)] = binary_data
         local_sms.close()
 
-    def test_shared_memory_basics(self):
+    eleza test_shared_memory_basics(self):
         sms = shared_memory.SharedMemory('test01_tsmb', create=True, size=512)
         self.addCleanup(sms.unlink)
 
@@ -3719,7 +3719,7 @@ class _TestSharedMemory(BaseTestCase):
         self.assertLess(same_sms.size, 20*sms.size)  # Size was ignored.
         same_sms.close()
 
-        if shared_memory._USE_POSIX:
+        ikiwa shared_memory._USE_POSIX:
             # Posix Shared Memory can only be unlinked once.  Here we
             # test an implementation detail that is not observed across
             # all supported platforms (since WindowsNamedSharedMemory
@@ -3753,14 +3753,14 @@ class _TestSharedMemory(BaseTestCase):
                 size=512
             )
 
-        if shared_memory._USE_POSIX:
+        ikiwa shared_memory._USE_POSIX:
             # Requesting creation of a shared memory segment with the option
-            # to attach to an existing segment, if that name is currently in
+            # to attach to an existing segment, ikiwa that name is currently in
             # use, should not trigger an exception.
             # Note:  Using a smaller size could possibly cause truncation of
             # the existing segment but is OS platform dependent.  In the
             # case of MacOS/darwin, requesting a smaller size is disallowed.
-            class OptionalAttachSharedMemory(shared_memory.SharedMemory):
+            kundi OptionalAttachSharedMemory(shared_memory.SharedMemory):
                 _flags = os.O_CREAT | os.O_RDWR
             ok_if_exists_sms = OptionalAttachSharedMemory('test01_tsmb')
             self.assertEqual(ok_if_exists_sms.size, sms.size)
@@ -3774,7 +3774,7 @@ class _TestSharedMemory(BaseTestCase):
 
         sms.close()
 
-    def test_shared_memory_across_processes(self):
+    eleza test_shared_memory_across_processes(self):
         sms = shared_memory.SharedMemory('test02_tsmap', True, size=512)
         self.addCleanup(sms.unlink)
 
@@ -3801,7 +3801,7 @@ class _TestSharedMemory(BaseTestCase):
         sms.close()
 
     @unittest.skipIf(os.name != "posix", "not feasible in non-posix platforms")
-    def test_shared_memory_SharedMemoryServer_ignores_sigint(self):
+    eleza test_shared_memory_SharedMemoryServer_ignores_sigint(self):
         # bpo-36368: protect SharedMemoryManager server process kutoka
         # KeyboardInterrupt signals.
         smm = multiprocessing.managers.SharedMemoryManager()
@@ -3825,10 +3825,10 @@ class _TestSharedMemory(BaseTestCase):
         smm.shutdown()
 
     @unittest.skipIf(os.name != "posix", "resource_tracker is posix only")
-    def test_shared_memory_SharedMemoryManager_reuses_resource_tracker(self):
+    eleza test_shared_memory_SharedMemoryManager_reuses_resource_tracker(self):
         # bpo-36867: test that a SharedMemoryManager uses the
         # same resource_tracker process as its parent.
-        cmd = '''if 1:
+        cmd = '''ikiwa 1:
             kutoka multiprocessing.managers agiza SharedMemoryManager
 
 
@@ -3845,10 +3845,10 @@ class _TestSharedMemory(BaseTestCase):
         # properly released sl.
         self.assertFalse(err)
 
-    def test_shared_memory_SharedMemoryManager_basics(self):
+    eleza test_shared_memory_SharedMemoryManager_basics(self):
         smm1 = multiprocessing.managers.SharedMemoryManager()
         with self.assertRaises(ValueError):
-            smm1.SharedMemory(size=9)  # Fails if SharedMemoryServer not started
+            smm1.SharedMemory(size=9)  # Fails ikiwa SharedMemoryServer not started
         smm1.start()
         lol = [ smm1.ShareableList(range(i)) for i in range(5, 10) ]
         lom = [ smm1.SharedMemory(size=j) for j in range(32, 128, 16) ]
@@ -3858,7 +3858,7 @@ class _TestSharedMemory(BaseTestCase):
         self.assertGreaterEqual(len(doppleganger_shm0.buf), 32)
         held_name = lom[0].name
         smm1.shutdown()
-        if sys.platform != "win32":
+        ikiwa sys.platform != "win32":
             # Calls to unlink() have no effect on Windows platform; shared
             # memory will only be released once final process exits.
             with self.assertRaises(FileNotFoundError):
@@ -3869,13 +3869,13 @@ class _TestSharedMemory(BaseTestCase):
             sl = smm2.ShareableList("howdy")
             shm = smm2.SharedMemory(size=128)
             held_name = sl.shm.name
-        if sys.platform != "win32":
+        ikiwa sys.platform != "win32":
             with self.assertRaises(FileNotFoundError):
                 # No longer there to be attached to again.
                 absent_sl = shared_memory.ShareableList(name=held_name)
 
 
-    def test_shared_memory_ShareableList_basics(self):
+    eleza test_shared_memory_ShareableList_basics(self):
         sl = shared_memory.ShareableList(
             ['howdy', b'HoWdY', -273.154, 100, None, True, 42]
         )
@@ -3958,7 +3958,7 @@ class _TestSharedMemory(BaseTestCase):
         finally:
             empty_sl.shm.unlink()
 
-    def test_shared_memory_ShareableList_pickling(self):
+    eleza test_shared_memory_ShareableList_pickling(self):
         sl = shared_memory.ShareableList(range(10))
         self.addCleanup(sl.shm.unlink)
 
@@ -3983,8 +3983,8 @@ class _TestSharedMemory(BaseTestCase):
         deserialized_sl.shm.close()
         sl.shm.close()
 
-    def test_shared_memory_cleaned_after_process_termination(self):
-        cmd = '''if 1:
+    eleza test_shared_memory_cleaned_after_process_termination(self):
+        cmd = '''ikiwa 1:
             agiza os, time, sys
             kutoka multiprocessing agiza shared_memory
 
@@ -4017,7 +4017,7 @@ class _TestSharedMemory(BaseTestCase):
                 raise AssertionError("A SharedMemory segment was leaked after"
                                      " a process was abruptly terminated.")
 
-            if os.name == 'posix':
+            ikiwa os.name == 'posix':
                 # A warning was emitted by the subprocess' own
                 # resource_tracker (on Windows, shared memory segments
                 # are released automatically by the OS).
@@ -4030,21 +4030,21 @@ class _TestSharedMemory(BaseTestCase):
 #
 #
 
-class _TestFinalize(BaseTestCase):
+kundi _TestFinalize(BaseTestCase):
 
     ALLOWED_TYPES = ('processes',)
 
-    def setUp(self):
+    eleza setUp(self):
         self.registry_backup = util._finalizer_registry.copy()
         util._finalizer_registry.clear()
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.assertFalse(util._finalizer_registry)
         util._finalizer_registry.update(self.registry_backup)
 
     @classmethod
-    def _test_finalize(cls, conn):
-        class Foo(object):
+    eleza _test_finalize(cls, conn):
+        kundi Foo(object):
             pass
 
         a = Foo()
@@ -4080,7 +4080,7 @@ class _TestFinalize(BaseTestCase):
         conn.close()
         os._exit(0)
 
-    def test_finalize(self):
+    eleza test_finalize(self):
         conn, child_conn = self.Pipe()
 
         p = self.Process(target=self._test_finalize, args=(child_conn,))
@@ -4091,13 +4091,13 @@ class _TestFinalize(BaseTestCase):
         result = [obj for obj in iter(conn.recv, 'STOP')]
         self.assertEqual(result, ['a', 'b', 'd10', 'd03', 'd02', 'd01', 'e'])
 
-    def test_thread_safety(self):
+    eleza test_thread_safety(self):
         # bpo-24484: _run_finalizers() should be thread-safe
-        def cb():
+        eleza cb():
             pass
 
-        class Foo(object):
-            def __init__(self):
+        kundi Foo(object):
+            eleza __init__(self):
                 self.ref = self  # create reference cycle
                 # insert finalizer at random key
                 util.Finalize(self, cb, exitpriority=random.randint(1, 100))
@@ -4105,7 +4105,7 @@ class _TestFinalize(BaseTestCase):
         finish = False
         exc = None
 
-        def run_finalizers():
+        eleza run_finalizers():
             nonlocal exc
             while not finish:
                 time.sleep(random.random() * 1e-1)
@@ -4116,7 +4116,7 @@ class _TestFinalize(BaseTestCase):
                 except Exception as e:
                     exc = e
 
-        def make_finalizers():
+        eleza make_finalizers():
             nonlocal exc
             d = {}
             while not finish:
@@ -4138,7 +4138,7 @@ class _TestFinalize(BaseTestCase):
             with test.support.start_threads(threads):
                 time.sleep(4.0)  # Wait a bit to trigger race condition
                 finish = True
-            if exc is not None:
+            ikiwa exc is not None:
                 raise exc
         finally:
             sys.setswitchinterval(old_interval)
@@ -4150,9 +4150,9 @@ class _TestFinalize(BaseTestCase):
 # Test that kutoka ... agiza * works for each module
 #
 
-class _TestImportStar(unittest.TestCase):
+kundi _TestImportStar(unittest.TestCase):
 
-    def get_module_names(self):
+    eleza get_module_names(self):
         agiza glob
         folder = os.path.dirname(multiprocessing.__file__)
         pattern = os.path.join(folder, '*.py')
@@ -4161,20 +4161,20 @@ class _TestImportStar(unittest.TestCase):
         modules = ['multiprocessing.' + m for m in modules]
         modules.remove('multiprocessing.__init__')
         modules.append('multiprocessing')
-        return modules
+        rudisha modules
 
-    def test_agiza(self):
+    eleza test_agiza(self):
         modules = self.get_module_names()
-        if sys.platform == 'win32':
+        ikiwa sys.platform == 'win32':
             modules.remove('multiprocessing.popen_fork')
             modules.remove('multiprocessing.popen_forkserver')
             modules.remove('multiprocessing.popen_spawn_posix')
         else:
             modules.remove('multiprocessing.popen_spawn_win32')
-            if not HAS_REDUCTION:
+            ikiwa not HAS_REDUCTION:
                 modules.remove('multiprocessing.popen_forkserver')
 
-        if c_int is None:
+        ikiwa c_int is None:
             # This module requires _ctypes
             modules.remove('multiprocessing.sharedctypes')
 
@@ -4193,11 +4193,11 @@ class _TestImportStar(unittest.TestCase):
 # Quick test that logging works -- does not test logging output
 #
 
-class _TestLogging(BaseTestCase):
+kundi _TestLogging(BaseTestCase):
 
     ALLOWED_TYPES = ('processes',)
 
-    def test_enable_logging(self):
+    eleza test_enable_logging(self):
         logger = multiprocessing.get_logger()
         logger.setLevel(util.SUBWARNING)
         self.assertTrue(logger is not None)
@@ -4206,11 +4206,11 @@ class _TestLogging(BaseTestCase):
         logger.setLevel(LOG_LEVEL)
 
     @classmethod
-    def _test_level(cls, conn):
+    eleza _test_level(cls, conn):
         logger = multiprocessing.get_logger()
         conn.send(logger.getEffectiveLevel())
 
-    def test_level(self):
+    eleza test_level(self):
         LEVEL1 = 32
         LEVEL2 = 37
 
@@ -4239,13 +4239,13 @@ class _TestLogging(BaseTestCase):
         logger.setLevel(level=LOG_LEVEL)
 
 
-# class _TestLoggingProcessName(BaseTestCase):
+# kundi _TestLoggingProcessName(BaseTestCase):
 #
-#     def handle(self, record):
+#     eleza handle(self, record):
 #         assert record.processName == multiprocessing.current_process().name
 #         self.__handled = True
 #
-#     def test_logging(self):
+#     eleza test_logging(self):
 #         handler = logging.Handler()
 #         handler.handle = self.handle
 #         self.__handled = False
@@ -4259,22 +4259,22 @@ class _TestLogging(BaseTestCase):
 #         assert self.__handled
 
 #
-# Check that Process.join() retries if os.waitpid() fails with EINTR
+# Check that Process.join() retries ikiwa os.waitpid() fails with EINTR
 #
 
-class _TestPollEintr(BaseTestCase):
+kundi _TestPollEintr(BaseTestCase):
 
     ALLOWED_TYPES = ('processes',)
 
     @classmethod
-    def _killer(cls, pid):
+    eleza _killer(cls, pid):
         time.sleep(0.1)
         os.kill(pid, signal.SIGUSR1)
 
     @unittest.skipUnless(hasattr(signal, 'SIGUSR1'), 'requires SIGUSR1')
-    def test_poll_eintr(self):
+    eleza test_poll_eintr(self):
         got_signal = [False]
-        def record(*args):
+        eleza record(*args):
             got_signal[0] = True
         pid = os.getpid()
         oldhandler = signal.signal(signal.SIGUSR1, record)
@@ -4296,10 +4296,10 @@ class _TestPollEintr(BaseTestCase):
 # Test to verify handle verification, see issue 3321
 #
 
-class TestInvalidHandle(unittest.TestCase):
+kundi TestInvalidHandle(unittest.TestCase):
 
     @unittest.skipIf(WIN32, "skipped on Windows")
-    def test_invalid_handles(self):
+    eleza test_invalid_handles(self):
         conn = multiprocessing.connection.Connection(44977608)
         # check that poll() doesn't crash
         try:
@@ -4315,30 +4315,30 @@ class TestInvalidHandle(unittest.TestCase):
 
 
 
-class OtherTest(unittest.TestCase):
+kundi OtherTest(unittest.TestCase):
     # TODO: add more tests for deliver/answer challenge.
-    def test_deliver_challenge_auth_failure(self):
-        class _FakeConnection(object):
-            def recv_bytes(self, size):
-                return b'something bogus'
-            def send_bytes(self, data):
+    eleza test_deliver_challenge_auth_failure(self):
+        kundi _FakeConnection(object):
+            eleza recv_bytes(self, size):
+                rudisha b'something bogus'
+            eleza send_bytes(self, data):
                 pass
         self.assertRaises(multiprocessing.AuthenticationError,
                           multiprocessing.connection.deliver_challenge,
                           _FakeConnection(), b'abc')
 
-    def test_answer_challenge_auth_failure(self):
-        class _FakeConnection(object):
-            def __init__(self):
+    eleza test_answer_challenge_auth_failure(self):
+        kundi _FakeConnection(object):
+            eleza __init__(self):
                 self.count = 0
-            def recv_bytes(self, size):
+            eleza recv_bytes(self, size):
                 self.count += 1
-                if self.count == 1:
-                    return multiprocessing.connection.CHALLENGE
-                elif self.count == 2:
-                    return b'something bogus'
-                return b''
-            def send_bytes(self, data):
+                ikiwa self.count == 1:
+                    rudisha multiprocessing.connection.CHALLENGE
+                elikiwa self.count == 2:
+                    rudisha b'something bogus'
+                rudisha b''
+            eleza send_bytes(self, data):
                 pass
         self.assertRaises(multiprocessing.AuthenticationError,
                           multiprocessing.connection.answer_challenge,
@@ -4348,20 +4348,20 @@ class OtherTest(unittest.TestCase):
 # Test Manager.start()/Pool.__init__() initializer feature - see issue 5585
 #
 
-def initializer(ns):
+eleza initializer(ns):
     ns.test += 1
 
-class TestInitializers(unittest.TestCase):
-    def setUp(self):
+kundi TestInitializers(unittest.TestCase):
+    eleza setUp(self):
         self.mgr = multiprocessing.Manager()
         self.ns = self.mgr.Namespace()
         self.ns.test = 0
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.mgr.shutdown()
         self.mgr.join()
 
-    def test_manager_initializer(self):
+    eleza test_manager_initializer(self):
         m = multiprocessing.managers.SyncManager()
         self.assertRaises(TypeError, m.start, 1)
         m.start(initializer, (self.ns,))
@@ -4369,7 +4369,7 @@ class TestInitializers(unittest.TestCase):
         m.shutdown()
         m.join()
 
-    def test_pool_initializer(self):
+    eleza test_pool_initializer(self):
         self.assertRaises(TypeError, multiprocessing.Pool, initializer=1)
         p = multiprocessing.Pool(1, initializer, (self.ns,))
         p.close()
@@ -4381,62 +4381,62 @@ class TestInitializers(unittest.TestCase):
 # Verifies os.close(sys.stdin.fileno) vs. sys.stdin.close() behavior
 #
 
-def _this_sub_process(q):
+eleza _this_sub_process(q):
     try:
         item = q.get(block=False)
     except pyqueue.Empty:
         pass
 
-def _test_process():
+eleza _test_process():
     queue = multiprocessing.Queue()
     subProc = multiprocessing.Process(target=_this_sub_process, args=(queue,))
     subProc.daemon = True
     subProc.start()
     subProc.join()
 
-def _afunc(x):
-    return x*x
+eleza _afunc(x):
+    rudisha x*x
 
-def pool_in_process():
+eleza pool_in_process():
     pool = multiprocessing.Pool(processes=4)
     x = pool.map(_afunc, [1, 2, 3, 4, 5, 6, 7])
     pool.close()
     pool.join()
 
-class _file_like(object):
-    def __init__(self, delegate):
+kundi _file_like(object):
+    eleza __init__(self, delegate):
         self._delegate = delegate
         self._pid = None
 
     @property
-    def cache(self):
+    eleza cache(self):
         pid = os.getpid()
         # There are no race conditions since fork keeps only the running thread
-        if pid != self._pid:
+        ikiwa pid != self._pid:
             self._pid = pid
             self._cache = []
-        return self._cache
+        rudisha self._cache
 
-    def write(self, data):
+    eleza write(self, data):
         self.cache.append(data)
 
-    def flush(self):
+    eleza flush(self):
         self._delegate.write(''.join(self.cache))
         self._cache = []
 
-class TestStdinBadfiledescriptor(unittest.TestCase):
+kundi TestStdinBadfiledescriptor(unittest.TestCase):
 
-    def test_queue_in_process(self):
+    eleza test_queue_in_process(self):
         proc = multiprocessing.Process(target=_test_process)
         proc.start()
         proc.join()
 
-    def test_pool_in_process(self):
+    eleza test_pool_in_process(self):
         p = multiprocessing.Process(target=pool_in_process)
         p.start()
         p.join()
 
-    def test_flushing(self):
+    eleza test_flushing(self):
         sio = io.StringIO()
         flike = _file_like(sio)
         flike.write('foo')
@@ -4445,17 +4445,17 @@ class TestStdinBadfiledescriptor(unittest.TestCase):
         assert sio.getvalue() == 'foo'
 
 
-class TestWait(unittest.TestCase):
+kundi TestWait(unittest.TestCase):
 
     @classmethod
-    def _child_test_wait(cls, w, slow):
+    eleza _child_test_wait(cls, w, slow):
         for i in range(10):
-            if slow:
+            ikiwa slow:
                 time.sleep(random.random()*0.1)
             w.send((i, os.getpid()))
         w.close()
 
-    def test_wait(self, slow=False):
+    eleza test_wait(self, slow=False):
         kutoka multiprocessing.connection agiza wait
         readers = []
         procs = []
@@ -4486,16 +4486,16 @@ class TestWait(unittest.TestCase):
         self.assertEqual(messages, expected)
 
     @classmethod
-    def _child_test_wait_socket(cls, address, slow):
+    eleza _child_test_wait_socket(cls, address, slow):
         s = socket.socket()
         s.connect(address)
         for i in range(10):
-            if slow:
+            ikiwa slow:
                 time.sleep(random.random()*0.1)
             s.sendall(('%s\n' % i).encode('ascii'))
         s.close()
 
-    def test_wait_socket(self, slow=False):
+    eleza test_wait_socket(self, slow=False):
         kutoka multiprocessing.connection agiza wait
         l = socket.create_server((test.support.HOST, 0))
         addr = l.getsockname()
@@ -4520,7 +4520,7 @@ class TestWait(unittest.TestCase):
         while readers:
             for r in wait(readers):
                 msg = r.recv(32)
-                if not msg:
+                ikiwa not msg:
                     readers.remove(r)
                     r.close()
                 else:
@@ -4530,13 +4530,13 @@ class TestWait(unittest.TestCase):
         for v in dic.values():
             self.assertEqual(b''.join(v), expected)
 
-    def test_wait_slow(self):
+    eleza test_wait_slow(self):
         self.test_wait(True)
 
-    def test_wait_socket_slow(self):
+    eleza test_wait_socket_slow(self):
         self.test_wait_socket(True)
 
-    def test_wait_timeout(self):
+    eleza test_wait_timeout(self):
         kutoka multiprocessing.connection agiza wait
 
         expected = 5
@@ -4560,11 +4560,11 @@ class TestWait(unittest.TestCase):
         self.assertLess(delta, 0.4)
 
     @classmethod
-    def signal_and_sleep(cls, sem, period):
+    eleza signal_and_sleep(cls, sem, period):
         sem.release()
         time.sleep(period)
 
-    def test_wait_integer(self):
+    eleza test_wait_integer(self):
         kutoka multiprocessing.connection agiza wait
 
         expected = 3
@@ -4607,7 +4607,7 @@ class TestWait(unittest.TestCase):
         p.terminate()
         p.join()
 
-    def test_neg_timeout(self):
+    eleza test_neg_timeout(self):
         kutoka multiprocessing.connection agiza wait
         a, b = multiprocessing.Pipe()
         t = time.monotonic()
@@ -4622,15 +4622,15 @@ class TestWait(unittest.TestCase):
 # Issue 14151: Test invalid family on invalid environment
 #
 
-class TestInvalidFamily(unittest.TestCase):
+kundi TestInvalidFamily(unittest.TestCase):
 
     @unittest.skipIf(WIN32, "skipped on Windows")
-    def test_invalid_family(self):
+    eleza test_invalid_family(self):
         with self.assertRaises(ValueError):
             multiprocessing.connection.Listener(r'\\.\test')
 
     @unittest.skipUnless(WIN32, "skipped on non-Windows platforms")
-    def test_invalid_family_win32(self):
+    eleza test_invalid_family_win32(self):
         with self.assertRaises(ValueError):
             multiprocessing.connection.Listener('/var/test.pipe')
 
@@ -4638,13 +4638,13 @@ class TestInvalidFamily(unittest.TestCase):
 # Issue 12098: check sys.flags of child matches that for parent
 #
 
-class TestFlags(unittest.TestCase):
+kundi TestFlags(unittest.TestCase):
     @classmethod
-    def run_in_grandchild(cls, conn):
+    eleza run_in_grandchild(cls, conn):
         conn.send(tuple(sys.flags))
 
     @classmethod
-    def run_in_child(cls):
+    eleza run_in_child(cls):
         agiza json
         r, w = multiprocessing.Pipe(duplex=False)
         p = multiprocessing.Process(target=cls.run_in_grandchild, args=(w,))
@@ -4654,9 +4654,9 @@ class TestFlags(unittest.TestCase):
         r.close()
         w.close()
         flags = (tuple(sys.flags), grandchild_flags)
-        print(json.dumps(flags))
+        andika(json.dumps(flags))
 
-    def test_flags(self):
+    eleza test_flags(self):
         agiza json
         # start child process using unusual flags
         prog = ('kutoka test._test_multiprocessing agiza TestFlags; ' +
@@ -4670,9 +4670,9 @@ class TestFlags(unittest.TestCase):
 # Test interaction with socket timeouts - see Issue #6056
 #
 
-class TestTimeouts(unittest.TestCase):
+kundi TestTimeouts(unittest.TestCase):
     @classmethod
-    def _test_timeout(cls, child, address):
+    eleza _test_timeout(cls, child, address):
         time.sleep(1)
         child.send(123)
         child.close()
@@ -4680,7 +4680,7 @@ class TestTimeouts(unittest.TestCase):
         conn.send(456)
         conn.close()
 
-    def test_timeout(self):
+    eleza test_timeout(self):
         old_timeout = socket.getdefaulttimeout()
         try:
             socket.setdefaulttimeout(0.1)
@@ -4701,14 +4701,14 @@ class TestTimeouts(unittest.TestCase):
             socket.setdefaulttimeout(old_timeout)
 
 #
-# Test what happens with no "if __name__ == '__main__'"
+# Test what happens with no "ikiwa __name__ == '__main__'"
 #
 
-class TestNoForkBomb(unittest.TestCase):
-    def test_noforkbomb(self):
+kundi TestNoForkBomb(unittest.TestCase):
+    eleza test_noforkbomb(self):
         sm = multiprocessing.get_start_method()
         name = os.path.join(os.path.dirname(__file__), 'mp_fork_bomb.py')
-        if sm != 'fork':
+        ikiwa sm != 'fork':
             rc, out, err = test.support.script_helper.assert_python_failure(name, sm)
             self.assertEqual(out, b'')
             self.assertIn(b'RuntimeError', err)
@@ -4721,14 +4721,14 @@ class TestNoForkBomb(unittest.TestCase):
 # Issue #17555: ForkAwareThreadLock
 #
 
-class TestForkAwareThreadLock(unittest.TestCase):
+kundi TestForkAwareThreadLock(unittest.TestCase):
     # We recursively start processes.  Issue #17555 meant that the
     # after fork registry would get duplicate entries for the same
     # lock.  The size of the registry at generation n was ~2**n.
 
     @classmethod
-    def child(cls, n, conn):
-        if n > 1:
+    eleza child(cls, n, conn):
+        ikiwa n > 1:
             p = multiprocessing.Process(target=cls.child, args=(n-1, conn))
             p.start()
             conn.close()
@@ -4737,7 +4737,7 @@ class TestForkAwareThreadLock(unittest.TestCase):
             conn.send(len(util._afterfork_registry))
         conn.close()
 
-    def test_lock(self):
+    eleza test_lock(self):
         r, w = multiprocessing.Pipe(False)
         l = util.ForkAwareThreadLock()
         old_size = len(util._afterfork_registry)
@@ -4752,14 +4752,14 @@ class TestForkAwareThreadLock(unittest.TestCase):
 # Check that non-forked child processes do not inherit unneeded fds/handles
 #
 
-class TestCloseFds(unittest.TestCase):
+kundi TestCloseFds(unittest.TestCase):
 
-    def get_high_socket_fd(self):
-        if WIN32:
+    eleza get_high_socket_fd(self):
+        ikiwa WIN32:
             # The child process will not have any socket handles, so
-            # calling socket.fromfd() should produce WSAENOTSOCK even
-            # if there is a handle of the same number.
-            return socket.socket().detach()
+            # calling socket.kutokafd() should produce WSAENOTSOCK even
+            # ikiwa there is a handle of the same number.
+            rudisha socket.socket().detach()
         else:
             # We want to produce a socket with an fd high enough that a
             # freshly created child process will not have any fds as high.
@@ -4770,26 +4770,26 @@ class TestCloseFds(unittest.TestCase):
                 fd = os.dup(fd)
             for x in to_close:
                 os.close(x)
-            return fd
+            rudisha fd
 
-    def close(self, fd):
-        if WIN32:
+    eleza close(self, fd):
+        ikiwa WIN32:
             socket.socket(socket.AF_INET, socket.SOCK_STREAM, fileno=fd).close()
         else:
             os.close(fd)
 
     @classmethod
-    def _test_closefds(cls, conn, fd):
+    eleza _test_closefds(cls, conn, fd):
         try:
-            s = socket.fromfd(fd, socket.AF_INET, socket.SOCK_STREAM)
+            s = socket.kutokafd(fd, socket.AF_INET, socket.SOCK_STREAM)
         except Exception as e:
             conn.send(e)
         else:
             s.close()
             conn.send(None)
 
-    def test_closefd(self):
-        if not HAS_REDUCTION:
+    eleza test_closefd(self):
+        ikiwa not HAS_REDUCTION:
             raise unittest.SkipTest('requires fd pickling')
 
         reader, writer = multiprocessing.Pipe()
@@ -4806,7 +4806,7 @@ class TestCloseFds(unittest.TestCase):
             writer.close()
             reader.close()
 
-        if multiprocessing.get_start_method() == 'fork':
+        ikiwa multiprocessing.get_start_method() == 'fork':
             self.assertIs(e, None)
         else:
             WSAENOTSOCK = 10038
@@ -4818,14 +4818,14 @@ class TestCloseFds(unittest.TestCase):
 # Issue #17097: EINTR should be ignored by recv(), send(), accept() etc
 #
 
-class TestIgnoreEINTR(unittest.TestCase):
+kundi TestIgnoreEINTR(unittest.TestCase):
 
     # Sending CONN_MAX_SIZE bytes into a multiprocessing pipe must block
     CONN_MAX_SIZE = max(support.PIPE_MAX_SIZE, support.SOCK_MAX_SIZE)
 
     @classmethod
-    def _test_ignore(cls, conn):
-        def handler(signum, frame):
+    eleza _test_ignore(cls, conn):
+        eleza handler(signum, frame):
             pass
         signal.signal(signal.SIGUSR1, handler)
         conn.send('ready')
@@ -4834,7 +4834,7 @@ class TestIgnoreEINTR(unittest.TestCase):
         conn.send_bytes(b'x' * cls.CONN_MAX_SIZE)
 
     @unittest.skipUnless(hasattr(signal, 'SIGUSR1'), 'requires SIGUSR1')
-    def test_ignore(self):
+    eleza test_ignore(self):
         conn, child_conn = multiprocessing.Pipe()
         try:
             p = multiprocessing.Process(target=self._test_ignore,
@@ -4857,8 +4857,8 @@ class TestIgnoreEINTR(unittest.TestCase):
             conn.close()
 
     @classmethod
-    def _test_ignore_listener(cls, conn):
-        def handler(signum, frame):
+    eleza _test_ignore_listener(cls, conn):
+        eleza handler(signum, frame):
             pass
         signal.signal(signal.SIGUSR1, handler)
         with multiprocessing.connection.Listener() as l:
@@ -4867,7 +4867,7 @@ class TestIgnoreEINTR(unittest.TestCase):
             a.send('welcome')
 
     @unittest.skipUnless(hasattr(signal, 'SIGUSR1'), 'requires SIGUSR1')
-    def test_ignore_listener(self):
+    eleza test_ignore_listener(self):
         conn, child_conn = multiprocessing.Pipe()
         try:
             p = multiprocessing.Process(target=self._test_ignore_listener,
@@ -4885,12 +4885,12 @@ class TestIgnoreEINTR(unittest.TestCase):
         finally:
             conn.close()
 
-class TestStartMethod(unittest.TestCase):
+kundi TestStartMethod(unittest.TestCase):
     @classmethod
-    def _check_context(cls, conn):
+    eleza _check_context(cls, conn):
         conn.send(multiprocessing.get_start_method())
 
-    def check_context(self, ctx):
+    eleza check_context(self, ctx):
         r, w = ctx.Pipe(duplex=False)
         p = ctx.Process(target=self._check_context, args=(w,))
         p.start()
@@ -4900,7 +4900,7 @@ class TestStartMethod(unittest.TestCase):
         p.join()
         self.assertEqual(child_method, ctx.get_start_method())
 
-    def test_context(self):
+    eleza test_context(self):
         for method in ('fork', 'spawn', 'forkserver'):
             try:
                 ctx = multiprocessing.get_context(method)
@@ -4912,7 +4912,7 @@ class TestStartMethod(unittest.TestCase):
             self.assertRaises(ValueError, ctx.set_start_method, None)
             self.check_context(ctx)
 
-    def test_set_get(self):
+    eleza test_set_get(self):
         multiprocessing.set_forkserver_preload(PRELOAD)
         count = 0
         old_method = multiprocessing.get_start_method()
@@ -4934,36 +4934,36 @@ class TestStartMethod(unittest.TestCase):
             multiprocessing.set_start_method(old_method, force=True)
         self.assertGreaterEqual(count, 1)
 
-    def test_get_all(self):
+    eleza test_get_all(self):
         methods = multiprocessing.get_all_start_methods()
-        if sys.platform == 'win32':
+        ikiwa sys.platform == 'win32':
             self.assertEqual(methods, ['spawn'])
         else:
             self.assertTrue(methods == ['fork', 'spawn'] or
                             methods == ['fork', 'spawn', 'forkserver'])
 
-    def test_preload_resources(self):
-        if multiprocessing.get_start_method() != 'forkserver':
+    eleza test_preload_resources(self):
+        ikiwa multiprocessing.get_start_method() != 'forkserver':
             self.skipTest("test only relevant for 'forkserver' method")
         name = os.path.join(os.path.dirname(__file__), 'mp_preload.py')
         rc, out, err = test.support.script_helper.assert_python_ok(name)
         out = out.decode()
         err = err.decode()
-        if out.rstrip() != 'ok' or err != '':
-            print(out)
-            print(err)
+        ikiwa out.rstrip() != 'ok' or err != '':
+            andika(out)
+            andika(err)
             self.fail("failed spawning forkserver or grandchild")
 
 
 @unittest.skipIf(sys.platform == "win32",
                  "test semantics don't make sense on Windows")
-class TestResourceTracker(unittest.TestCase):
+kundi TestResourceTracker(unittest.TestCase):
 
-    def test_resource_tracker(self):
+    eleza test_resource_tracker(self):
         #
         # Check that killing process does not leak named semaphores
         #
-        cmd = '''if 1:
+        cmd = '''ikiwa 1:
             agiza time, os, tempfile
             agiza multiprocessing as mp
             kutoka multiprocessing agiza resource_tracker
@@ -4973,13 +4973,13 @@ class TestResourceTracker(unittest.TestCase):
             rand = tempfile._RandomNameSequence()
 
 
-            def create_and_register_resource(rtype):
-                if rtype == "semaphore":
+            eleza create_and_register_resource(rtype):
+                ikiwa rtype == "semaphore":
                     lock = mp.Lock()
-                    return lock, lock._semlock.name
-                elif rtype == "shared_memory":
+                    rudisha lock, lock._semlock.name
+                elikiwa rtype == "shared_memory":
                     sm = SharedMemory(create=True, size=10)
-                    return sm, sm._name
+                    rudisha sm, sm._name
                 else:
                     raise ValueError(
                         "Resource type {{}} not understood".format(rtype))
@@ -4995,7 +4995,7 @@ class TestResourceTracker(unittest.TestCase):
         '''
         for rtype in resource_tracker._CLEANUP_FUNCS:
             with self.subTest(rtype=rtype):
-                if rtype == "noop":
+                ikiwa rtype == "noop":
                     # Artefact resource type used by the resource_tracker
                     continue
                 r, w = os.pipe()
@@ -5033,12 +5033,12 @@ class TestResourceTracker(unittest.TestCase):
                 self.assertRegex(err, expected)
                 self.assertRegex(err, r'resource_tracker: %r: \[Errno' % name1)
 
-    def check_resource_tracker_death(self, signum, should_die):
-        # bpo-31310: if the semaphore tracker process has died, it should
+    eleza check_resource_tracker_death(self, signum, should_die):
+        # bpo-31310: ikiwa the semaphore tracker process has died, it should
         # be restarted implicitly.
         kutoka multiprocessing.resource_tracker agiza _resource_tracker
         pid = _resource_tracker._pid
-        if pid is not None:
+        ikiwa pid is not None:
             os.kill(pid, signal.SIGKILL)
             os.waitpid(pid, 0)
         with warnings.catch_warnings():
@@ -5061,7 +5061,7 @@ class TestResourceTracker(unittest.TestCase):
             del sem
             gc.collect()
             self.assertIsNone(wr())
-            if should_die:
+            ikiwa should_die:
                 self.assertEqual(len(all_warn), 1)
                 the_warn = all_warn[0]
                 self.assertTrue(issubclass(the_warn.category, UserWarning))
@@ -5070,20 +5070,20 @@ class TestResourceTracker(unittest.TestCase):
             else:
                 self.assertEqual(len(all_warn), 0)
 
-    def test_resource_tracker_sigint(self):
+    eleza test_resource_tracker_sigint(self):
         # Catchable signal (ignored by semaphore tracker)
         self.check_resource_tracker_death(signal.SIGINT, False)
 
-    def test_resource_tracker_sigterm(self):
+    eleza test_resource_tracker_sigterm(self):
         # Catchable signal (ignored by semaphore tracker)
         self.check_resource_tracker_death(signal.SIGTERM, False)
 
-    def test_resource_tracker_sigkill(self):
+    eleza test_resource_tracker_sigkill(self):
         # Uncatchable signal.
         self.check_resource_tracker_death(signal.SIGKILL, True)
 
     @staticmethod
-    def _is_resource_tracker_reused(conn, pid):
+    eleza _is_resource_tracker_reused(conn, pid):
         kutoka multiprocessing.resource_tracker agiza _resource_tracker
         _resource_tracker.ensure_running()
         # The pid should be None in the child process, expect for the fork
@@ -5092,7 +5092,7 @@ class TestResourceTracker(unittest.TestCase):
         reused &= _resource_tracker._check_alive()
         conn.send(reused)
 
-    def test_resource_tracker_reused(self):
+    eleza test_resource_tracker_reused(self):
         kutoka multiprocessing.resource_tracker agiza _resource_tracker
         _resource_tracker.ensure_running()
         pid = _resource_tracker._pid
@@ -5111,10 +5111,10 @@ class TestResourceTracker(unittest.TestCase):
         self.assertTrue(is_resource_tracker_reused)
 
 
-class TestSimpleQueue(unittest.TestCase):
+kundi TestSimpleQueue(unittest.TestCase):
 
     @classmethod
-    def _test_empty(cls, queue, child_can_start, parent_can_continue):
+    eleza _test_empty(cls, queue, child_can_start, parent_can_continue):
         child_can_start.wait()
         # issue 30301, could fail under spawn and forkserver
         try:
@@ -5123,7 +5123,7 @@ class TestSimpleQueue(unittest.TestCase):
         finally:
             parent_can_continue.set()
 
-    def test_empty(self):
+    eleza test_empty(self):
         queue = multiprocessing.SimpleQueue()
         child_can_start = multiprocessing.Event()
         parent_can_continue = multiprocessing.Event()
@@ -5148,37 +5148,37 @@ class TestSimpleQueue(unittest.TestCase):
         proc.join()
 
 
-class TestPoolNotLeakOnFailure(unittest.TestCase):
+kundi TestPoolNotLeakOnFailure(unittest.TestCase):
 
-    def test_release_unused_processes(self):
-        # Issue #19675: During pool creation, if we can't create a process,
+    eleza test_release_unused_processes(self):
+        # Issue #19675: During pool creation, ikiwa we can't create a process,
         # don't leak already created ones.
         will_fail_in = 3
         forked_processes = []
 
-        class FailingForkProcess:
-            def __init__(self, **kwargs):
+        kundi FailingForkProcess:
+            eleza __init__(self, **kwargs):
                 self.name = 'Fake Process'
                 self.exitcode = None
                 self.state = None
                 forked_processes.append(self)
 
-            def start(self):
+            eleza start(self):
                 nonlocal will_fail_in
-                if will_fail_in <= 0:
+                ikiwa will_fail_in <= 0:
                     raise OSError("Manually induced OSError")
                 will_fail_in -= 1
                 self.state = 'started'
 
-            def terminate(self):
+            eleza terminate(self):
                 self.state = 'stopping'
 
-            def join(self):
-                if self.state == 'stopping':
+            eleza join(self):
+                ikiwa self.state == 'stopping':
                     self.state = 'stopped'
 
-            def is_alive(self):
-                return self.state == 'started' or self.state == 'stopping'
+            eleza is_alive(self):
+                rudisha self.state == 'started' or self.state == 'stopping'
 
         with self.assertRaisesRegex(OSError, 'Manually induced OSError'):
             p = multiprocessing.pool.Pool(5, context=unittest.mock.MagicMock(
@@ -5189,7 +5189,7 @@ class TestPoolNotLeakOnFailure(unittest.TestCase):
             any(process.is_alive() for process in forked_processes))
 
 
-class TestSyncManagerTypes(unittest.TestCase):
+kundi TestSyncManagerTypes(unittest.TestCase):
     """Test all the types which can be shared between a parent and a
     child process by using a manager which acts as an intermediary
     between them.
@@ -5200,26 +5200,26 @@ class TestSyncManagerTypes(unittest.TestCase):
 
     # The child.
     @classmethod
-    def _test_list(cls, obj):
+    eleza _test_list(cls, obj):
         assert obj[0] == 5
         assert obj.append(6)
 
     # The parent.
-    def test_list(self):
+    eleza test_list(self):
         o = self.manager.list()
         o.append(5)
         self.run_worker(self._test_list, o)
         assert o[1] == 6
     """
-    manager_class = multiprocessing.managers.SyncManager
+    manager_kundi = multiprocessing.managers.SyncManager
 
-    def setUp(self):
+    eleza setUp(self):
         self.manager = self.manager_class()
         self.manager.start()
         self.proc = None
 
-    def tearDown(self):
-        if self.proc is not None and self.proc.is_alive():
+    eleza tearDown(self):
+        ikiwa self.proc is not None and self.proc.is_alive():
             self.proc.terminate()
             self.proc.join()
         self.manager.shutdown()
@@ -5227,15 +5227,15 @@ class TestSyncManagerTypes(unittest.TestCase):
         self.proc = None
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         support.reap_children()
 
     tearDownClass = setUpClass
 
-    def wait_proc_exit(self):
+    eleza wait_proc_exit(self):
         # Only the manager process should be returned by active_children()
         # but this can take a bit on slow machines, so wait a few seconds
-        # if there are other children too (see #17395).
+        # ikiwa there are other children too (see #17395).
         join_process(self.proc)
         start_time = time.monotonic()
         t = 0.01
@@ -5243,15 +5243,15 @@ class TestSyncManagerTypes(unittest.TestCase):
             time.sleep(t)
             t *= 2
             dt = time.monotonic() - start_time
-            if dt >= 5.0:
+            ikiwa dt >= 5.0:
                 test.support.environment_altered = True
-                print("Warning -- multiprocessing.Manager still has %s active "
+                andika("Warning -- multiprocessing.Manager still has %s active "
                       "children after %s seconds"
                       % (multiprocessing.active_children(), dt),
                       file=sys.stderr)
                 break
 
-    def run_worker(self, worker, obj):
+    eleza run_worker(self, worker, obj):
         self.proc = multiprocessing.Process(target=worker, args=(obj, ))
         self.proc.daemon = True
         self.proc.start()
@@ -5259,13 +5259,13 @@ class TestSyncManagerTypes(unittest.TestCase):
         self.assertEqual(self.proc.exitcode, 0)
 
     @classmethod
-    def _test_event(cls, obj):
+    eleza _test_event(cls, obj):
         assert obj.is_set()
         obj.wait()
         obj.clear()
         obj.wait(0.001)
 
-    def test_event(self):
+    eleza test_event(self):
         o = self.manager.Event()
         o.set()
         self.run_worker(self._test_event, o)
@@ -5273,66 +5273,66 @@ class TestSyncManagerTypes(unittest.TestCase):
         o.wait(0.001)
 
     @classmethod
-    def _test_lock(cls, obj):
+    eleza _test_lock(cls, obj):
         obj.acquire()
 
-    def test_lock(self, lname="Lock"):
+    eleza test_lock(self, lname="Lock"):
         o = getattr(self.manager, lname)()
         self.run_worker(self._test_lock, o)
         o.release()
         self.assertRaises(RuntimeError, o.release)  # already released
 
     @classmethod
-    def _test_rlock(cls, obj):
+    eleza _test_rlock(cls, obj):
         obj.acquire()
         obj.release()
 
-    def test_rlock(self, lname="Lock"):
+    eleza test_rlock(self, lname="Lock"):
         o = getattr(self.manager, lname)()
         self.run_worker(self._test_rlock, o)
 
     @classmethod
-    def _test_semaphore(cls, obj):
+    eleza _test_semaphore(cls, obj):
         obj.acquire()
 
-    def test_semaphore(self, sname="Semaphore"):
+    eleza test_semaphore(self, sname="Semaphore"):
         o = getattr(self.manager, sname)()
         self.run_worker(self._test_semaphore, o)
         o.release()
 
-    def test_bounded_semaphore(self):
+    eleza test_bounded_semaphore(self):
         self.test_semaphore(sname="BoundedSemaphore")
 
     @classmethod
-    def _test_condition(cls, obj):
+    eleza _test_condition(cls, obj):
         obj.acquire()
         obj.release()
 
-    def test_condition(self):
+    eleza test_condition(self):
         o = self.manager.Condition()
         self.run_worker(self._test_condition, o)
 
     @classmethod
-    def _test_barrier(cls, obj):
+    eleza _test_barrier(cls, obj):
         assert obj.parties == 5
         obj.reset()
 
-    def test_barrier(self):
+    eleza test_barrier(self):
         o = self.manager.Barrier(5)
         self.run_worker(self._test_barrier, o)
 
     @classmethod
-    def _test_pool(cls, obj):
+    eleza _test_pool(cls, obj):
         # TODO: fix https://bugs.python.org/issue35919
         with obj:
             pass
 
-    def test_pool(self):
+    eleza test_pool(self):
         o = self.manager.Pool(processes=4)
         self.run_worker(self._test_pool, o)
 
     @classmethod
-    def _test_queue(cls, obj):
+    eleza _test_queue(cls, obj):
         assert obj.qsize() == 2
         assert obj.full()
         assert not obj.empty()
@@ -5341,7 +5341,7 @@ class TestSyncManagerTypes(unittest.TestCase):
         assert obj.get() == 6
         assert obj.empty()
 
-    def test_queue(self, qname="Queue"):
+    eleza test_queue(self, qname="Queue"):
         o = getattr(self.manager, qname)(2)
         o.put(5)
         o.put(6)
@@ -5349,11 +5349,11 @@ class TestSyncManagerTypes(unittest.TestCase):
         assert o.empty()
         assert not o.full()
 
-    def test_joinable_queue(self):
+    eleza test_joinable_queue(self):
         self.test_queue("JoinableQueue")
 
     @classmethod
-    def _test_list(cls, obj):
+    eleza _test_list(cls, obj):
         assert obj[0] == 5
         assert obj.count(5) == 1
         assert obj.index(5) == 0
@@ -5364,7 +5364,7 @@ class TestSyncManagerTypes(unittest.TestCase):
         assert len(obj) == 1
         assert obj.pop(0) == 5
 
-    def test_list(self):
+    eleza test_list(self):
         o = self.manager.list()
         o.append(5)
         self.run_worker(self._test_list, o)
@@ -5372,7 +5372,7 @@ class TestSyncManagerTypes(unittest.TestCase):
         self.assertEqual(len(o), 0)
 
     @classmethod
-    def _test_dict(cls, obj):
+    eleza _test_dict(cls, obj):
         assert len(obj) == 1
         assert obj['foo'] == 5
         assert obj.get('foo') == 5
@@ -5382,7 +5382,7 @@ class TestSyncManagerTypes(unittest.TestCase):
         assert obj.copy() == {'foo': 5}
         assert obj.popitem() == ('foo', 5)
 
-    def test_dict(self):
+    eleza test_dict(self):
         o = self.manager.dict()
         o['foo'] = 5
         self.run_worker(self._test_dict, o)
@@ -5390,42 +5390,42 @@ class TestSyncManagerTypes(unittest.TestCase):
         self.assertEqual(len(o), 0)
 
     @classmethod
-    def _test_value(cls, obj):
+    eleza _test_value(cls, obj):
         assert obj.value == 1
         assert obj.get() == 1
         obj.set(2)
 
-    def test_value(self):
+    eleza test_value(self):
         o = self.manager.Value('i', 1)
         self.run_worker(self._test_value, o)
         self.assertEqual(o.value, 2)
         self.assertEqual(o.get(), 2)
 
     @classmethod
-    def _test_array(cls, obj):
+    eleza _test_array(cls, obj):
         assert obj[0] == 0
         assert obj[1] == 1
         assert len(obj) == 2
         assert list(obj) == [0, 1]
 
-    def test_array(self):
+    eleza test_array(self):
         o = self.manager.Array('i', [0, 1])
         self.run_worker(self._test_array, o)
 
     @classmethod
-    def _test_namespace(cls, obj):
+    eleza _test_namespace(cls, obj):
         assert obj.x == 0
         assert obj.y == 1
 
-    def test_namespace(self):
+    eleza test_namespace(self):
         o = self.manager.Namespace()
         o.x = 0
         o.y = 1
         self.run_worker(self._test_namespace, o)
 
 
-class MiscTestCase(unittest.TestCase):
-    def test__all__(self):
+kundi MiscTestCase(unittest.TestCase):
+    eleza test__all__(self):
         # Just make sure names in blacklist are excluded
         support.check__all__(self, multiprocessing, extra=multiprocessing.__all__,
                              blacklist=['SUBDEBUG', 'SUBWARNING'])
@@ -5433,34 +5433,34 @@ class MiscTestCase(unittest.TestCase):
 # Mixins
 #
 
-class BaseMixin(object):
+kundi BaseMixin(object):
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.dangling = (multiprocessing.process._dangling.copy(),
                         threading._dangling.copy())
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         # bpo-26762: Some multiprocessing objects like Pool create reference
         # cycles. Trigger a garbage collection to break these cycles.
         test.support.gc_collect()
 
         processes = set(multiprocessing.process._dangling) - set(cls.dangling[0])
-        if processes:
+        ikiwa processes:
             test.support.environment_altered = True
-            print('Warning -- Dangling processes: %s' % processes,
+            andika('Warning -- Dangling processes: %s' % processes,
                   file=sys.stderr)
         processes = None
 
         threads = set(threading._dangling) - set(cls.dangling[1])
-        if threads:
+        ikiwa threads:
             test.support.environment_altered = True
-            print('Warning -- Dangling threads: %s' % threads,
+            andika('Warning -- Dangling threads: %s' % threads,
                   file=sys.stderr)
         threads = None
 
 
-class ProcessesMixin(BaseMixin):
+kundi ProcessesMixin(BaseMixin):
     TYPE = 'processes'
     Process = multiprocessing.Process
     connection = multiprocessing.connection
@@ -5484,7 +5484,7 @@ class ProcessesMixin(BaseMixin):
     RawArray = staticmethod(multiprocessing.RawArray)
 
 
-class ManagerMixin(BaseMixin):
+kundi ManagerMixin(BaseMixin):
     TYPE = 'manager'
     Process = multiprocessing.Process
     Queue = property(operator.attrgetter('manager.Queue'))
@@ -5503,42 +5503,42 @@ class ManagerMixin(BaseMixin):
     Namespace = property(operator.attrgetter('manager.Namespace'))
 
     @classmethod
-    def Pool(cls, *args, **kwds):
-        return cls.manager.Pool(*args, **kwds)
+    eleza Pool(cls, *args, **kwds):
+        rudisha cls.manager.Pool(*args, **kwds)
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         super().setUpClass()
         cls.manager = multiprocessing.Manager()
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         # only the manager process should be returned by active_children()
         # but this can take a bit on slow machines, so wait a few seconds
-        # if there are other children too (see #17395)
+        # ikiwa there are other children too (see #17395)
         start_time = time.monotonic()
         t = 0.01
         while len(multiprocessing.active_children()) > 1:
             time.sleep(t)
             t *= 2
             dt = time.monotonic() - start_time
-            if dt >= 5.0:
+            ikiwa dt >= 5.0:
                 test.support.environment_altered = True
-                print("Warning -- multiprocessing.Manager still has %s active "
+                andika("Warning -- multiprocessing.Manager still has %s active "
                       "children after %s seconds"
                       % (multiprocessing.active_children(), dt),
                       file=sys.stderr)
                 break
 
         gc.collect()                       # do garbage collection
-        if cls.manager._number_of_objects() != 0:
+        ikiwa cls.manager._number_of_objects() != 0:
             # This is not really an error since some tests do not
             # ensure that all processes which hold a reference to a
             # managed object have been joined.
             test.support.environment_altered = True
-            print('Warning -- Shared objects which still exist at manager '
+            andika('Warning -- Shared objects which still exist at manager '
                   'shutdown:')
-            print(cls.manager._debug_info())
+            andika(cls.manager._debug_info())
         cls.manager.shutdown()
         cls.manager.join()
         cls.manager = None
@@ -5546,7 +5546,7 @@ class ManagerMixin(BaseMixin):
         super().tearDownClass()
 
 
-class ThreadsMixin(BaseMixin):
+kundi ThreadsMixin(BaseMixin):
     TYPE = 'threads'
     Process = multiprocessing.dummy.Process
     connection = multiprocessing.dummy.connection
@@ -5570,28 +5570,28 @@ class ThreadsMixin(BaseMixin):
 # Functions used to create test cases kutoka the base ones in this module
 #
 
-def install_tests_in_module_dict(remote_globs, start_method):
+eleza install_tests_in_module_dict(remote_globs, start_method):
     __module__ = remote_globs['__name__']
     local_globs = globals()
     ALL_TYPES = {'processes', 'threads', 'manager'}
 
     for name, base in local_globs.items():
-        if not isinstance(base, type):
+        ikiwa not isinstance(base, type):
             continue
-        if issubclass(base, BaseTestCase):
-            if base is BaseTestCase:
+        ikiwa issubclass(base, BaseTestCase):
+            ikiwa base is BaseTestCase:
                 continue
             assert set(base.ALLOWED_TYPES) <= ALL_TYPES, base.ALLOWED_TYPES
             for type_ in base.ALLOWED_TYPES:
                 newname = 'With' + type_.capitalize() + name[1:]
                 Mixin = local_globs[type_.capitalize() + 'Mixin']
-                class Temp(base, Mixin, unittest.TestCase):
+                kundi Temp(base, Mixin, unittest.TestCase):
                     pass
                 Temp.__name__ = Temp.__qualname__ = newname
                 Temp.__module__ = __module__
                 remote_globs[newname] = Temp
-        elif issubclass(base, unittest.TestCase):
-            class Temp(base, object):
+        elikiwa issubclass(base, unittest.TestCase):
+            kundi Temp(base, object):
                 pass
             Temp.__name__ = Temp.__qualname__ = name
             Temp.__module__ = __module__
@@ -5600,7 +5600,7 @@ def install_tests_in_module_dict(remote_globs, start_method):
     dangling = [None, None]
     old_start_method = [None]
 
-    def setUpModule():
+    eleza setUpModule():
         multiprocessing.set_forkserver_preload(PRELOAD)
         multiprocessing.process._cleanup()
         dangling[0] = multiprocessing.process._dangling.copy()
@@ -5612,7 +5612,7 @@ def install_tests_in_module_dict(remote_globs, start_method):
             raise unittest.SkipTest(start_method +
                                     ' start method not supported')
 
-        if sys.platform.startswith("linux"):
+        ikiwa sys.platform.startswith("linux"):
             try:
                 lock = multiprocessing.RLock()
             except OSError:
@@ -5622,7 +5622,7 @@ def install_tests_in_module_dict(remote_globs, start_method):
         util.get_temp_dir()     # creates temp directory
         multiprocessing.get_logger().setLevel(LOG_LEVEL)
 
-    def tearDownModule():
+    eleza tearDownModule():
         need_sleep = False
 
         # bpo-26762: Some multiprocessing objects like Pool create reference
@@ -5632,28 +5632,28 @@ def install_tests_in_module_dict(remote_globs, start_method):
         multiprocessing.set_start_method(old_start_method[0], force=True)
         # pause a bit so we don't get warning about dangling threads/processes
         processes = set(multiprocessing.process._dangling) - set(dangling[0])
-        if processes:
+        ikiwa processes:
             need_sleep = True
             test.support.environment_altered = True
-            print('Warning -- Dangling processes: %s' % processes,
+            andika('Warning -- Dangling processes: %s' % processes,
                   file=sys.stderr)
         processes = None
 
         threads = set(threading._dangling) - set(dangling[1])
-        if threads:
+        ikiwa threads:
             need_sleep = True
             test.support.environment_altered = True
-            print('Warning -- Dangling threads: %s' % threads,
+            andika('Warning -- Dangling threads: %s' % threads,
                   file=sys.stderr)
         threads = None
 
         # Sleep 500 ms to give time to child processes to complete.
-        if need_sleep:
+        ikiwa need_sleep:
             time.sleep(0.5)
 
         multiprocessing.process._cleanup()
 
-        # Stop the ForkServer process if it's running
+        # Stop the ForkServer process ikiwa it's running
         kutoka multiprocessing agiza forkserver
         forkserver._forkserver._stop()
 

@@ -20,7 +20,7 @@ Functions:
 
 init([files]) -- parse a list of files, default knownfiles (on Windows, the
   default values are taken kutoka the registry)
-read_mime_types(file) -- parse one file, return a dictionary or None
+read_mime_types(file) -- parse one file, rudisha a dictionary or None
 """
 
 agiza os
@@ -55,7 +55,7 @@ inited = False
 _db = None
 
 
-class MimeTypes:
+kundi MimeTypes:
     """MIME-types datastore.
 
     This datastore can handle information kutoka mime.types-style files
@@ -63,8 +63,8 @@ class MimeTypes:
     URL, and can guess a reasonable extension given a MIME type.
     """
 
-    def __init__(self, filenames=(), strict=True):
-        if not inited:
+    eleza __init__(self, filenames=(), strict=True):
+        ikiwa not inited:
             init()
         self.encodings_map = _encodings_map_default.copy()
         self.suffix_map = _suffix_map_default.copy()
@@ -77,7 +77,7 @@ class MimeTypes:
         for name in filenames:
             self.read(name, strict)
 
-    def add_type(self, type, ext, strict=True):
+    eleza add_type(self, type, ext, strict=True):
         """Add a mapping between a type and an extension.
 
         When the extension is already known, the new
@@ -91,10 +91,10 @@ class MimeTypes:
         """
         self.types_map[strict][ext] = type
         exts = self.types_map_inv[strict].setdefault(type, [])
-        if ext not in exts:
+        ikiwa ext not in exts:
             exts.append(ext)
 
-    def guess_type(self, url, strict=True):
+    eleza guess_type(self, url, strict=True):
         """Guess the type of a file which is either a URL or a path-like object.
 
         Return value is a tuple (type, encoding) where type is None if
@@ -115,7 +115,7 @@ class MimeTypes:
         """
         url = os.fspath(url)
         scheme, url = urllib.parse._splittype(url)
-        if scheme == 'data':
+        ikiwa scheme == 'data':
             # syntax of data URLs:
             # dataurl   := "data:" [ mediatype ] [ ";base64" ] "," data
             # mediatype := [ type "/" subtype ] *( ";" parameter )
@@ -123,41 +123,41 @@ class MimeTypes:
             # parameter := attribute "=" value
             # type/subtype defaults to "text/plain"
             comma = url.find(',')
-            if comma < 0:
+            ikiwa comma < 0:
                 # bad data URL
-                return None, None
+                rudisha None, None
             semi = url.find(';', 0, comma)
-            if semi >= 0:
+            ikiwa semi >= 0:
                 type = url[:semi]
             else:
                 type = url[:comma]
-            if '=' in type or '/' not in type:
+            ikiwa '=' in type or '/' not in type:
                 type = 'text/plain'
-            return type, None           # never compressed, so encoding is None
+            rudisha type, None           # never compressed, so encoding is None
         base, ext = posixpath.splitext(url)
         while ext in self.suffix_map:
             base, ext = posixpath.splitext(base + self.suffix_map[ext])
-        if ext in self.encodings_map:
+        ikiwa ext in self.encodings_map:
             encoding = self.encodings_map[ext]
             base, ext = posixpath.splitext(base)
         else:
             encoding = None
         types_map = self.types_map[True]
-        if ext in types_map:
-            return types_map[ext], encoding
-        elif ext.lower() in types_map:
-            return types_map[ext.lower()], encoding
-        elif strict:
-            return None, encoding
+        ikiwa ext in types_map:
+            rudisha types_map[ext], encoding
+        elikiwa ext.lower() in types_map:
+            rudisha types_map[ext.lower()], encoding
+        elikiwa strict:
+            rudisha None, encoding
         types_map = self.types_map[False]
-        if ext in types_map:
-            return types_map[ext], encoding
-        elif ext.lower() in types_map:
-            return types_map[ext.lower()], encoding
+        ikiwa ext in types_map:
+            rudisha types_map[ext], encoding
+        elikiwa ext.lower() in types_map:
+            rudisha types_map[ext.lower()], encoding
         else:
-            return None, encoding
+            rudisha None, encoding
 
-    def guess_all_extensions(self, type, strict=True):
+    eleza guess_all_extensions(self, type, strict=True):
         """Guess the extensions for a file based on its MIME type.
 
         Return value is a list of strings giving the possible filename
@@ -170,13 +170,13 @@ class MimeTypes:
         """
         type = type.lower()
         extensions = self.types_map_inv[True].get(type, [])
-        if not strict:
+        ikiwa not strict:
             for ext in self.types_map_inv[False].get(type, []):
-                if ext not in extensions:
+                ikiwa ext not in extensions:
                     extensions.append(ext)
-        return extensions
+        rudisha extensions
 
-    def guess_extension(self, type, strict=True):
+    eleza guess_extension(self, type, strict=True):
         """Guess the extension for a file based on its MIME type.
 
         Return value is a string giving a filename extension,
@@ -190,11 +190,11 @@ class MimeTypes:
         but non-standard types.
         """
         extensions = self.guess_all_extensions(type, strict)
-        if not extensions:
-            return None
-        return extensions[0]
+        ikiwa not extensions:
+            rudisha None
+        rudisha extensions[0]
 
-    def read(self, filename, strict=True):
+    eleza read(self, filename, strict=True):
         """
         Read a single mime.types-format file, specified by pathname.
 
@@ -205,7 +205,7 @@ class MimeTypes:
         with open(filename, encoding='utf-8') as fp:
             self.readfp(fp, strict)
 
-    def readfp(self, fp, strict=True):
+    eleza readfp(self, fp, strict=True):
         """
         Read a single mime.types-format file.
 
@@ -215,20 +215,20 @@ class MimeTypes:
         """
         while 1:
             line = fp.readline()
-            if not line:
+            ikiwa not line:
                 break
             words = line.split()
             for i in range(len(words)):
-                if words[i][0] == '#':
+                ikiwa words[i][0] == '#':
                     del words[i:]
                     break
-            if not words:
+            ikiwa not words:
                 continue
             type, suffixes = words[0], words[1:]
             for suff in suffixes:
                 self.add_type(type, '.' + suff, strict)
 
-    def read_windows_registry(self, strict=True):
+    eleza read_windows_registry(self, strict=True):
         """
         Load the MIME types database kutoka Windows registry.
 
@@ -238,10 +238,10 @@ class MimeTypes:
         """
 
         # Windows only
-        if not _winreg:
+        ikiwa not _winreg:
             return
 
-        def enum_types(mimedb):
+        eleza enum_types(mimedb):
             i = 0
             while True:
                 try:
@@ -249,7 +249,7 @@ class MimeTypes:
                 except OSError:
                     break
                 else:
-                    if '\0' not in ctype:
+                    ikiwa '\0' not in ctype:
                         yield ctype
                 i += 1
 
@@ -258,21 +258,21 @@ class MimeTypes:
                 try:
                     with _winreg.OpenKey(hkcr, subkeyname) as subkey:
                         # Only check file extensions
-                        if not subkeyname.startswith("."):
+                        ikiwa not subkeyname.startswith("."):
                             continue
-                        # raises OSError if no 'Content Type' value
+                        # raises OSError ikiwa no 'Content Type' value
                         mimetype, datatype = _winreg.QueryValueEx(
                             subkey, 'Content Type')
-                        if datatype != _winreg.REG_SZ:
+                        ikiwa datatype != _winreg.REG_SZ:
                             continue
                         self.add_type(mimetype, subkeyname, strict)
                 except OSError:
                     continue
 
-def guess_type(url, strict=True):
+eleza guess_type(url, strict=True):
     """Guess the type of a file based on its URL.
 
-    Return value is a tuple (type, encoding) where type is None if the
+    Return value is a tuple (type, encoding) where type is None ikiwa the
     type can't be guessed (no or unknown suffix) or a string of the
     form type/subtype, usable for a MIME Content-type header; and
     encoding is None for no encoding or the name of the program used
@@ -287,12 +287,12 @@ def guess_type(url, strict=True):
     Optional `strict' argument when false adds a bunch of commonly found, but
     non-standard types.
     """
-    if _db is None:
+    ikiwa _db is None:
         init()
-    return _db.guess_type(url, strict)
+    rudisha _db.guess_type(url, strict)
 
 
-def guess_all_extensions(type, strict=True):
+eleza guess_all_extensions(type, strict=True):
     """Guess the extensions for a file based on its MIME type.
 
     Return value is a list of strings giving the possible filename
@@ -305,11 +305,11 @@ def guess_all_extensions(type, strict=True):
     Optional `strict' argument when false adds a bunch of commonly found,
     but non-standard types.
     """
-    if _db is None:
+    ikiwa _db is None:
         init()
-    return _db.guess_all_extensions(type, strict)
+    rudisha _db.guess_all_extensions(type, strict)
 
-def guess_extension(type, strict=True):
+eleza guess_extension(type, strict=True):
     """Guess the extension for a file based on its MIME type.
 
     Return value is a string giving a filename extension, including the
@@ -321,11 +321,11 @@ def guess_extension(type, strict=True):
     Optional `strict' argument when false adds a bunch of commonly found,
     but non-standard types.
     """
-    if _db is None:
+    ikiwa _db is None:
         init()
-    return _db.guess_extension(type, strict)
+    rudisha _db.guess_extension(type, strict)
 
-def add_type(type, ext, strict=True):
+eleza add_type(type, ext, strict=True):
     """Add a mapping between a type and an extension.
 
     When the extension is already known, the new
@@ -337,22 +337,22 @@ def add_type(type, ext, strict=True):
     list of standard types, else to the list of non-standard
     types.
     """
-    if _db is None:
+    ikiwa _db is None:
         init()
-    return _db.add_type(type, ext, strict)
+    rudisha _db.add_type(type, ext, strict)
 
 
-def init(files=None):
+eleza init(files=None):
     global suffix_map, types_map, encodings_map, common_types
     global inited, _db
     inited = True    # so that MimeTypes.__init__() doesn't call us again
 
-    if files is None or _db is None:
+    ikiwa files is None or _db is None:
         db = MimeTypes()
-        if _winreg:
+        ikiwa _winreg:
             db.read_windows_registry()
 
-        if files is None:
+        ikiwa files is None:
             files = knownfiles
         else:
             files = knownfiles + list(files)
@@ -360,7 +360,7 @@ def init(files=None):
         db = _db
 
     for file in files:
-        if os.path.isfile(file):
+        ikiwa os.path.isfile(file):
             db.read(file)
     encodings_map = db.encodings_map
     suffix_map = db.suffix_map
@@ -370,18 +370,18 @@ def init(files=None):
     _db = db
 
 
-def read_mime_types(file):
+eleza read_mime_types(file):
     try:
         f = open(file)
     except OSError:
-        return None
+        rudisha None
     with f:
         db = MimeTypes()
         db.readfp(f, True)
-        return db.types_map[True]
+        rudisha db.types_map[True]
 
 
-def _default_mime_types():
+eleza _default_mime_types():
     global suffix_map, _suffix_map_default
     global encodings_map, _encodings_map_default
     global types_map, _types_map_default
@@ -545,7 +545,7 @@ def _default_mime_types():
         }
 
     # These are non-standard types, commonly found in the wild.  They will
-    # only match if strict=0 flag is given to the API methods.
+    # only match ikiwa strict=0 flag is given to the API methods.
 
     # Please sort these too
     common_types = _common_types_default = {
@@ -563,7 +563,7 @@ def _default_mime_types():
 _default_mime_types()
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     agiza getopt
 
     USAGE = """\
@@ -578,9 +578,9 @@ Options:
 More than one type argument may be given.
 """
 
-    def usage(code, msg=''):
-        print(USAGE)
-        if msg: print(msg)
+    eleza usage(code, msg=''):
+        andika(USAGE)
+        ikiwa msg: andika(msg)
         sys.exit(code)
 
     try:
@@ -592,18 +592,18 @@ More than one type argument may be given.
     strict = 1
     extension = 0
     for opt, arg in opts:
-        if opt in ('-h', '--help'):
+        ikiwa opt in ('-h', '--help'):
             usage(0)
-        elif opt in ('-l', '--lenient'):
+        elikiwa opt in ('-l', '--lenient'):
             strict = 0
-        elif opt in ('-e', '--extension'):
+        elikiwa opt in ('-e', '--extension'):
             extension = 1
     for gtype in args:
-        if extension:
+        ikiwa extension:
             guess = guess_extension(gtype, strict)
-            if not guess: print("I don't know anything about type", gtype)
-            else: print(guess)
+            ikiwa not guess: andika("I don't know anything about type", gtype)
+            else: andika(guess)
         else:
             guess, encoding = guess_type(gtype, strict)
-            if not guess: print("I don't know anything about type", gtype)
-            else: print('type:', guess, 'encoding:', encoding)
+            ikiwa not guess: andika("I don't know anything about type", gtype)
+            else: andika('type:', guess, 'encoding:', encoding)

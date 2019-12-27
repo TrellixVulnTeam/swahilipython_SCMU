@@ -25,40 +25,40 @@ kutoka idlelib agiza rpc  # multiple objects
 kutoka idlelib agiza stackviewer  # StackTreeItem
 agiza __main__
 
-agiza tkinter  # Use tcl and, if startup fails, messagebox.
-if not hasattr(sys.modules['idlelib.run'], 'firstrun'):
+agiza tkinter  # Use tcl and, ikiwa startup fails, messagebox.
+ikiwa not hasattr(sys.modules['idlelib.run'], 'firstrun'):
     # Undo modifications of tkinter by idlelib agizas; see bpo-25507.
     for mod in ('simpledialog', 'messagebox', 'font',
                 'dialog', 'filedialog', 'commondialog',
                 'ttk'):
         delattr(tkinter, mod)
         del sys.modules['tkinter.' + mod]
-    # Avoid AttributeError if run again; see bpo-37038.
+    # Avoid AttributeError ikiwa run again; see bpo-37038.
     sys.modules['idlelib.run'].firstrun = False
 
 LOCALHOST = '127.0.0.1'
 
 
-def idle_formatwarning(message, category, filename, lineno, line=None):
+eleza idle_formatwarning(message, category, filename, lineno, line=None):
     """Format warnings the IDLE way."""
 
     s = "\nWarning (kutoka warnings module):\n"
     s += '  File \"%s\", line %s\n' % (filename, lineno)
-    if line is None:
+    ikiwa line is None:
         line = linecache.getline(filename, lineno)
     line = line.strip()
-    if line:
+    ikiwa line:
         s += "    %s\n" % line
     s += "%s: %s\n" % (category.__name__, message)
-    return s
+    rudisha s
 
-def idle_showwarning_subproc(
+eleza idle_showwarning_subproc(
         message, category, filename, lineno, file=None, line=None):
     """Show Idle-format warning after replacing warnings.showwarning.
 
     The only difference is the formatter called.
     """
-    if file is None:
+    ikiwa file is None:
         file = sys.stderr
     try:
         file.write(idle_formatwarning(
@@ -68,24 +68,24 @@ def idle_showwarning_subproc(
 
 _warnings_showwarning = None
 
-def capture_warnings(capture):
+eleza capture_warnings(capture):
     "Replace warning.showwarning with idle_showwarning_subproc, or reverse."
 
     global _warnings_showwarning
-    if capture:
-        if _warnings_showwarning is None:
+    ikiwa capture:
+        ikiwa _warnings_showwarning is None:
             _warnings_showwarning = warnings.showwarning
             warnings.showwarning = idle_showwarning_subproc
     else:
-        if _warnings_showwarning is not None:
+        ikiwa _warnings_showwarning is not None:
             warnings.showwarning = _warnings_showwarning
             _warnings_showwarning = None
 
 capture_warnings(True)
 tcl = tkinter.Tcl()
 
-def handle_tk_events(tcl=tcl):
-    """Process any tk events that are ready to be dispatched if tkinter
+eleza handle_tk_events(tcl=tcl):
+    """Process any tk events that are ready to be dispatched ikiwa tkinter
     has been imported, a tcl interpreter has been created and tk has been
     loaded."""
     tcl.eval("update")
@@ -98,12 +98,12 @@ exit_now = False
 quitting = False
 interruptable = False
 
-def main(del_exitfunc=False):
+eleza main(del_exitfunc=False):
     """Start the Python execution server in a subprocess
 
     In the Python subprocess, RPCServer is instantiated with handlerclass
     MyHandler, which inherits register/unregister methods kutoka RPCHandler via
-    the mix-in class SocketIO.
+    the mix-in kundi SocketIO.
 
     When the RPCServer 'server' is instantiated, the TCPServer initialization
     creates an instance of run.MyHandler and calls its handle() method.
@@ -125,7 +125,7 @@ def main(del_exitfunc=False):
         assert(len(sys.argv) > 1)
         port = int(sys.argv[-1])
     except:
-        print("IDLE Subprocess: no IP port passed in sys.argv.",
+        andika("IDLE Subprocess: no IP port passed in sys.argv.",
               file=sys.__stderr__)
         return
 
@@ -138,7 +138,7 @@ def main(del_exitfunc=False):
     sockthread.start()
     while 1:
         try:
-            if exit_now:
+            ikiwa exit_now:
                 try:
                     exit()
                 except KeyboardInterrupt:
@@ -150,14 +150,14 @@ def main(del_exitfunc=False):
                 request = None
                 # Issue 32207: calling handle_tk_events here adds spurious
                 # queue.Empty traceback to event handling exceptions.
-            if request:
+            ikiwa request:
                 seq, (method, args, kwargs) = request
                 ret = method(*args, **kwargs)
                 rpc.response_queue.put((seq, ret))
             else:
                 handle_tk_events()
         except KeyboardInterrupt:
-            if quitting:
+            ikiwa quitting:
                 exit_now = True
             continue
         except SystemExit:
@@ -175,18 +175,18 @@ def main(del_exitfunc=False):
             else:
                 continue
 
-def manage_socket(address):
+eleza manage_socket(address):
     for i in range(3):
         time.sleep(i)
         try:
             server = MyRPCServer(address, MyHandler)
             break
         except OSError as err:
-            print("IDLE Subprocess: OSError: " + err.args[1] +
+            andika("IDLE Subprocess: OSError: " + err.args[1] +
                   ", retrying....", file=sys.__stderr__)
             socket_error = err
     else:
-        print("IDLE Subprocess: Connection to "
+        andika("IDLE Subprocess: Connection to "
               "IDLE GUI failed, exiting.", file=sys.__stderr__)
         show_socket_error(socket_error, address)
         global exit_now
@@ -194,7 +194,7 @@ def manage_socket(address):
         return
     server.handle_request() # A single request only
 
-def show_socket_error(err, address):
+eleza show_socket_error(err, address):
     "Display socket error kutoka manage_socket."
     agiza tkinter
     kutoka tkinter.messagebox agiza showerror
@@ -210,7 +210,7 @@ def show_socket_error(err, address):
             parent=root)
     root.destroy()
 
-def print_exception():
+eleza print_exception():
     agiza linecache
     linecache.checkcache()
     flush_stdout()
@@ -219,108 +219,108 @@ def print_exception():
     sys.last_type, sys.last_value, sys.last_traceback = excinfo
     seen = set()
 
-    def print_exc(typ, exc, tb):
+    eleza print_exc(typ, exc, tb):
         seen.add(id(exc))
         context = exc.__context__
         cause = exc.__cause__
-        if cause is not None and id(cause) not in seen:
+        ikiwa cause is not None and id(cause) not in seen:
             print_exc(type(cause), cause, cause.__traceback__)
-            print("\nThe above exception was the direct cause "
+            andika("\nThe above exception was the direct cause "
                   "of the following exception:\n", file=efile)
-        elif (context is not None and
+        elikiwa (context is not None and
               not exc.__suppress_context__ and
               id(context) not in seen):
             print_exc(type(context), context, context.__traceback__)
-            print("\nDuring handling of the above exception, "
+            andika("\nDuring handling of the above exception, "
                   "another exception occurred:\n", file=efile)
-        if tb:
+        ikiwa tb:
             tbe = traceback.extract_tb(tb)
-            print('Traceback (most recent call last):', file=efile)
+            andika('Traceback (most recent call last):', file=efile)
             exclude = ("run.py", "rpc.py", "threading.py", "queue.py",
                        "debugger_r.py", "bdb.py")
             cleanup_traceback(tbe, exclude)
             traceback.print_list(tbe, file=efile)
         lines = traceback.format_exception_only(typ, exc)
         for line in lines:
-            print(line, end='', file=efile)
+            andika(line, end='', file=efile)
 
     print_exc(typ, val, tb)
 
-def cleanup_traceback(tb, exclude):
+eleza cleanup_traceback(tb, exclude):
     "Remove excluded traces kutoka beginning/end of tb; get cached lines"
     orig_tb = tb[:]
     while tb:
         for rpcfile in exclude:
-            if tb[0][0].count(rpcfile):
+            ikiwa tb[0][0].count(rpcfile):
                 break    # found an exclude, break for: and delete tb[0]
         else:
             break        # no excludes, have left RPC code, break while:
         del tb[0]
     while tb:
         for rpcfile in exclude:
-            if tb[-1][0].count(rpcfile):
+            ikiwa tb[-1][0].count(rpcfile):
                 break
         else:
             break
         del tb[-1]
-    if len(tb) == 0:
+    ikiwa len(tb) == 0:
         # exception was in IDLE internals, don't prune!
         tb[:] = orig_tb[:]
-        print("** IDLE Internal Exception: ", file=sys.stderr)
+        andika("** IDLE Internal Exception: ", file=sys.stderr)
     rpchandler = rpc.objecttable['exec'].rpchandler
     for i in range(len(tb)):
         fn, ln, nm, line = tb[i]
-        if nm == '?':
+        ikiwa nm == '?':
             nm = "-toplevel-"
-        if not line and fn.startswith("<pyshell#"):
+        ikiwa not line and fn.startswith("<pyshell#"):
             line = rpchandler.remotecall('linecache', 'getline',
                                               (fn, ln), {})
         tb[i] = fn, ln, nm, line
 
-def flush_stdout():
+eleza flush_stdout():
     """XXX How to do this now?"""
 
-def exit():
+eleza exit():
     """Exit subprocess, possibly after first clearing exit functions.
 
-    If config-main.cfg/.def 'General' 'delete-exitfunc' is True, then any
+    If config-main.cfg/.eleza 'General' 'delete-exitfunc' is True, then any
     functions registered with atexit will be removed before exiting.
     (VPython support)
 
     """
-    if no_exitfunc:
+    ikiwa no_exitfunc:
         agiza atexit
         atexit._clear()
     capture_warnings(False)
     sys.exit(0)
 
 
-def fix_scaling(root):
+eleza fix_scaling(root):
     """Scale fonts on HiDPI displays."""
     agiza tkinter.font
     scaling = float(root.tk.call('tk', 'scaling'))
-    if scaling > 1.4:
+    ikiwa scaling > 1.4:
         for name in tkinter.font.names(root):
             font = tkinter.font.Font(root=root, name=name, exists=True)
             size = int(font['size'])
-            if size < 0:
+            ikiwa size < 0:
                 font['size'] = round(-0.75*size)
 
 
-def fixdoc(fun, text):
-    tem = (fun.__doc__ + '\n\n') if fun.__doc__ is not None else ''
+eleza fixdoc(fun, text):
+    tem = (fun.__doc__ + '\n\n') ikiwa fun.__doc__ is not None else ''
     fun.__doc__ = tem + textwrap.fill(textwrap.dedent(text))
 
 RECURSIONLIMIT_DELTA = 30
 
-def install_recursionlimit_wrappers():
+eleza install_recursionlimit_wrappers():
     """Install wrappers to always add 30 to the recursion limit."""
     # see: bpo-26806
 
     @functools.wraps(sys.setrecursionlimit)
-    def setrecursionlimit(*args, **kwargs):
+    eleza setrecursionlimit(*args, **kwargs):
         # mimic the original sys.setrecursionlimit()'s input handling
-        if kwargs:
+        ikiwa kwargs:
             raise TypeError(
                 "setrecursionlimit() takes no keyword arguments")
         try:
@@ -328,19 +328,19 @@ def install_recursionlimit_wrappers():
         except ValueError:
             raise TypeError(f"setrecursionlimit() takes exactly one "
                             f"argument ({len(args)} given)")
-        if not limit > 0:
+        ikiwa not limit > 0:
             raise ValueError(
                 "recursion limit must be greater or equal than 1")
 
-        return setrecursionlimit.__wrapped__(limit + RECURSIONLIMIT_DELTA)
+        rudisha setrecursionlimit.__wrapped__(limit + RECURSIONLIMIT_DELTA)
 
     fixdoc(setrecursionlimit, f"""\
             This IDLE wrapper adds {RECURSIONLIMIT_DELTA} to prevent possible
             uninterruptible loops.""")
 
     @functools.wraps(sys.getrecursionlimit)
-    def getrecursionlimit():
-        return getrecursionlimit.__wrapped__() - RECURSIONLIMIT_DELTA
+    eleza getrecursionlimit():
+        rudisha getrecursionlimit.__wrapped__() - RECURSIONLIMIT_DELTA
 
     fixdoc(getrecursionlimit, f"""\
             This IDLE wrapper subtracts {RECURSIONLIMIT_DELTA} to compensate
@@ -353,13 +353,13 @@ def install_recursionlimit_wrappers():
     sys.getrecursionlimit = getrecursionlimit
 
 
-def uninstall_recursionlimit_wrappers():
+eleza uninstall_recursionlimit_wrappers():
     """Uninstall the recursion limit wrappers kutoka the sys module.
 
     IDLE only uses this for tests. Users can agiza run and call
     this to remove the wrapping.
     """
-    if (
+    ikiwa (
             getattr(sys.setrecursionlimit, '__wrapped__', None) and
             getattr(sys.getrecursionlimit, '__wrapped__', None)
     ):
@@ -368,12 +368,12 @@ def uninstall_recursionlimit_wrappers():
         sys.setrecursionlimit(sys.getrecursionlimit() - RECURSIONLIMIT_DELTA)
 
 
-class MyRPCServer(rpc.RPCServer):
+kundi MyRPCServer(rpc.RPCServer):
 
-    def handle_error(self, request, client_address):
+    eleza handle_error(self, request, client_address):
         """Override RPCServer method for IDLE
 
-        Interrupt the MainThread and exit server if link is dropped.
+        Interrupt the MainThread and exit server ikiwa link is dropped.
 
         """
         global quitting
@@ -387,108 +387,108 @@ class MyRPCServer(rpc.RPCServer):
             thread.interrupt_main()
         except:
             erf = sys.__stderr__
-            print('\n' + '-'*40, file=erf)
-            print('Unhandled server exception!', file=erf)
-            print('Thread: %s' % threading.current_thread().name, file=erf)
-            print('Client Address: ', client_address, file=erf)
-            print('Request: ', repr(request), file=erf)
+            andika('\n' + '-'*40, file=erf)
+            andika('Unhandled server exception!', file=erf)
+            andika('Thread: %s' % threading.current_thread().name, file=erf)
+            andika('Client Address: ', client_address, file=erf)
+            andika('Request: ', repr(request), file=erf)
             traceback.print_exc(file=erf)
-            print('\n*** Unrecoverable, server exiting!', file=erf)
-            print('-'*40, file=erf)
+            andika('\n*** Unrecoverable, server exiting!', file=erf)
+            andika('-'*40, file=erf)
             quitting = True
             thread.interrupt_main()
 
 
 # Pseudofiles for shell-remote communication (also used in pyshell)
 
-class StdioFile(io.TextIOBase):
+kundi StdioFile(io.TextIOBase):
 
-    def __init__(self, shell, tags, encoding='utf-8', errors='strict'):
+    eleza __init__(self, shell, tags, encoding='utf-8', errors='strict'):
         self.shell = shell
         self.tags = tags
         self._encoding = encoding
         self._errors = errors
 
     @property
-    def encoding(self):
-        return self._encoding
+    eleza encoding(self):
+        rudisha self._encoding
 
     @property
-    def errors(self):
-        return self._errors
+    eleza errors(self):
+        rudisha self._errors
 
     @property
-    def name(self):
-        return '<%s>' % self.tags
+    eleza name(self):
+        rudisha '<%s>' % self.tags
 
-    def isatty(self):
-        return True
+    eleza isatty(self):
+        rudisha True
 
 
-class StdOutputFile(StdioFile):
+kundi StdOutputFile(StdioFile):
 
-    def writable(self):
-        return True
+    eleza writable(self):
+        rudisha True
 
-    def write(self, s):
-        if self.closed:
+    eleza write(self, s):
+        ikiwa self.closed:
             raise ValueError("write to closed file")
         s = str.encode(s, self.encoding, self.errors).decode(self.encoding, self.errors)
-        return self.shell.write(s, self.tags)
+        rudisha self.shell.write(s, self.tags)
 
 
-class StdInputFile(StdioFile):
+kundi StdInputFile(StdioFile):
     _line_buffer = ''
 
-    def readable(self):
-        return True
+    eleza readable(self):
+        rudisha True
 
-    def read(self, size=-1):
-        if self.closed:
+    eleza read(self, size=-1):
+        ikiwa self.closed:
             raise ValueError("read kutoka closed file")
-        if size is None:
+        ikiwa size is None:
             size = -1
-        elif not isinstance(size, int):
+        elikiwa not isinstance(size, int):
             raise TypeError('must be int, not ' + type(size).__name__)
         result = self._line_buffer
         self._line_buffer = ''
-        if size < 0:
+        ikiwa size < 0:
             while True:
                 line = self.shell.readline()
-                if not line: break
+                ikiwa not line: break
                 result += line
         else:
             while len(result) < size:
                 line = self.shell.readline()
-                if not line: break
+                ikiwa not line: break
                 result += line
             self._line_buffer = result[size:]
             result = result[:size]
-        return result
+        rudisha result
 
-    def readline(self, size=-1):
-        if self.closed:
+    eleza readline(self, size=-1):
+        ikiwa self.closed:
             raise ValueError("read kutoka closed file")
-        if size is None:
+        ikiwa size is None:
             size = -1
-        elif not isinstance(size, int):
+        elikiwa not isinstance(size, int):
             raise TypeError('must be int, not ' + type(size).__name__)
         line = self._line_buffer or self.shell.readline()
-        if size < 0:
+        ikiwa size < 0:
             size = len(line)
         eol = line.find('\n', 0, size)
-        if eol >= 0:
+        ikiwa eol >= 0:
             size = eol + 1
         self._line_buffer = line[size:]
-        return line[:size]
+        rudisha line[:size]
 
-    def close(self):
+    eleza close(self):
         self.shell.close()
 
 
-class MyHandler(rpc.RPCHandler):
+kundi MyHandler(rpc.RPCHandler):
 
-    def handle(self):
+    eleza handle(self):
         """Override base method"""
         executive = Executive(self)
         self.register("exec", executive)
@@ -514,32 +514,32 @@ class MyHandler(rpc.RPCHandler):
         self.interp = self.get_remote_proxy("interp")
         rpc.RPCHandler.getresponse(self, myseq=None, wait=0.05)
 
-    def exithook(self):
+    eleza exithook(self):
         "override SocketIO method - wait for MainThread to shut us down"
         time.sleep(10)
 
-    def EOFhook(self):
+    eleza EOFhook(self):
         "Override SocketIO method - terminate wait on callback and exit thread"
         global quitting
         quitting = True
         thread.interrupt_main()
 
-    def decode_interrupthook(self):
+    eleza decode_interrupthook(self):
         "interrupt awakened thread"
         global quitting
         quitting = True
         thread.interrupt_main()
 
 
-class Executive(object):
+kundi Executive(object):
 
-    def __init__(self, rpchandler):
+    eleza __init__(self, rpchandler):
         self.rpchandler = rpchandler
         self.locals = __main__.__dict__
         self.calltip = calltip.Calltip()
         self.autocomplete = autocomplete.AutoComplete()
 
-    def runcode(self, code):
+    eleza runcode(self, code):
         global interruptable
         try:
             self.usr_exc_info = None
@@ -549,56 +549,56 @@ class Executive(object):
             finally:
                 interruptable = False
         except SystemExit as e:
-            if e.args:  # SystemExit called with an argument.
+            ikiwa e.args:  # SystemExit called with an argument.
                 ob = e.args[0]
-                if not isinstance(ob, (type(None), int)):
-                    print('SystemExit: ' + str(ob), file=sys.stderr)
+                ikiwa not isinstance(ob, (type(None), int)):
+                    andika('SystemExit: ' + str(ob), file=sys.stderr)
             # Return to the interactive prompt.
         except:
             self.usr_exc_info = sys.exc_info()
-            if quitting:
+            ikiwa quitting:
                 exit()
             print_exception()
             jit = self.rpchandler.console.getvar("<<toggle-jit-stack-viewer>>")
-            if jit:
+            ikiwa jit:
                 self.rpchandler.interp.open_remote_stack_viewer()
         else:
             flush_stdout()
 
-    def interrupt_the_server(self):
-        if interruptable:
+    eleza interrupt_the_server(self):
+        ikiwa interruptable:
             thread.interrupt_main()
 
-    def start_the_debugger(self, gui_adap_oid):
-        return debugger_r.start_debugger(self.rpchandler, gui_adap_oid)
+    eleza start_the_debugger(self, gui_adap_oid):
+        rudisha debugger_r.start_debugger(self.rpchandler, gui_adap_oid)
 
-    def stop_the_debugger(self, idb_adap_oid):
+    eleza stop_the_debugger(self, idb_adap_oid):
         "Unregister the Idb Adapter.  Link objects and Idb then subject to GC"
         self.rpchandler.unregister(idb_adap_oid)
 
-    def get_the_calltip(self, name):
-        return self.calltip.fetch_tip(name)
+    eleza get_the_calltip(self, name):
+        rudisha self.calltip.fetch_tip(name)
 
-    def get_the_completion_list(self, what, mode):
-        return self.autocomplete.fetch_completions(what, mode)
+    eleza get_the_completion_list(self, what, mode):
+        rudisha self.autocomplete.fetch_completions(what, mode)
 
-    def stackviewer(self, flist_oid=None):
-        if self.usr_exc_info:
+    eleza stackviewer(self, flist_oid=None):
+        ikiwa self.usr_exc_info:
             typ, val, tb = self.usr_exc_info
         else:
-            return None
+            rudisha None
         flist = None
-        if flist_oid is not None:
+        ikiwa flist_oid is not None:
             flist = self.rpchandler.get_remote_proxy(flist_oid)
         while tb and tb.tb_frame.f_globals["__name__"] in ["rpc", "run"]:
             tb = tb.tb_next
         sys.last_type = typ
         sys.last_value = val
         item = stackviewer.StackTreeItem(flist, tb)
-        return debugobj_r.remote_object_tree_item(item)
+        rudisha debugobj_r.remote_object_tree_item(item)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_run', verbosity=2)
 

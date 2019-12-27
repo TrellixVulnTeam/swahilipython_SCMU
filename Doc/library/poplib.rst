@@ -15,11 +15,11 @@
 
 This module defines a class, :class:`POP3`, which encapsulates a connection to a
 POP3 server and implements the protocol as defined in :rfc:`1939`. The
-:class:`POP3` class supports both the minimal and optional command sets from
-:rfc:`1939`. The :class:`POP3` class also supports the ``STLS`` command introduced
+:class:`POP3` kundi supports both the minimal and optional command sets kutoka
+:rfc:`1939`. The :class:`POP3` kundi also supports the ``STLS`` command introduced
 in :rfc:`2595` to enable encrypted communication on an already established connection.
 
-Additionally, this module provides a class :class:`POP3_SSL`, which provides
+Additionally, this module provides a kundi :class:`POP3_SSL`, which provides
 support for connecting to POP3 servers that use SSL as an underlying protocol
 layer.
 
@@ -33,7 +33,7 @@ The :mod:`poplib` module provides two classes:
 
 .. class:: POP3(host, port=POP3_PORT[, timeout])
 
-   This class implements the actual POP3 protocol.  The connection is created when
+   This kundi implements the actual POP3 protocol.  The connection is created when
    the instance is initialized. If *port* is omitted, the standard POP3 port (110)
    is used. The optional *timeout* parameter specifies a timeout in seconds for the
    connection attempt (if not specified, the global default timeout setting will
@@ -50,7 +50,7 @@ The :mod:`poplib` module provides two classes:
 
 .. class:: POP3_SSL(host, port=POP3_SSL_PORT, keyfile=None, certfile=None, timeout=None, context=None)
 
-   This is a subclass of :class:`POP3` that connects to the server over an SSL
+   This is a subkundi of :class:`POP3` that connects to the server over an SSL
    encrypted socket.  If *port* is not specified, 995, the standard POP3-over-SSL
    port is used.  *timeout* works as in the :class:`POP3` constructor.
    *context* is an optional :class:`ssl.SSLContext` object which allows
@@ -74,7 +74,7 @@ The :mod:`poplib` module provides two classes:
       *context* parameter added.
 
    .. versionchanged:: 3.4
-      The class now supports hostname check with
+      The kundi now supports hostname check with
       :attr:`ssl.SSLContext.check_hostname` and *Server Name Indication* (see
       :data:`ssl.HAS_SNI`).
 
@@ -90,7 +90,7 @@ One exception is defined as an attribute of the :mod:`poplib` module:
 
 .. exception:: error_proto
 
-   Exception raised on any errors from this module (errors from :mod:`socket`
+   Exception raised on any errors kutoka this module (errors kutoka :mod:`socket`
    module are not caught). The reason for the exception is passed to the
    constructor as a string.
 
@@ -245,7 +245,7 @@ An :class:`POP3` instance has the following methods:
 
 
 Instances of :class:`POP3_SSL` have no additional methods. The interface of this
-subclass is identical to its parent.
+subkundi is identical to its parent.
 
 
 .. _pop3-example:
@@ -256,7 +256,7 @@ POP3 Example
 Here is a minimal example (without error checking) that opens a mailbox and
 retrieves and prints all messages::
 
-   import getpass, poplib
+   agiza getpass, poplib
 
    M = poplib.POP3('localhost')
    M.user(getpass.getuser())

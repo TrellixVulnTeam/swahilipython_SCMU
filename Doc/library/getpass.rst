@@ -25,16 +25,16 @@ The :mod:`getpass` module provides two functions:
    argument is ignored on Windows).
 
    If echo free input is unavailable getpass() falls back to printing
-   a warning message to *stream* and reading from ``sys.stdin`` and
+   a warning message to *stream* and reading kutoka ``sys.stdin`` and
    issuing a :exc:`GetPassWarning`.
 
    .. note::
-      If you call getpass from within IDLE, the input may be done in the
-      terminal you launched IDLE from rather than the idle window itself.
+      If you call getpass kutoka within IDLE, the input may be done in the
+      terminal you launched IDLE kutoka rather than the idle window itself.
 
 .. exception:: GetPassWarning
 
-   A :exc:`UserWarning` subclass issued when password input may be echoed.
+   A :exc:`UserWarning` subkundi issued when password input may be echoed.
 
 
 .. function:: getuser()
@@ -44,7 +44,7 @@ The :mod:`getpass` module provides two functions:
    This function checks the environment variables :envvar:`LOGNAME`,
    :envvar:`USER`, :envvar:`LNAME` and :envvar:`USERNAME`, in order, and
    returns the value of the first one which is set to a non-empty string.  If
-   none are set, the login name from the password database is returned on
+   none are set, the login name kutoka the password database is returned on
    systems which support the :mod:`pwd` module, otherwise, an exception is
    raised.
 

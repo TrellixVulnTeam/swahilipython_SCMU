@@ -88,7 +88,7 @@ which contains only the file :file:`3.txt`.  :func:`glob` will produce
 the following results.  Notice how any leading components of the path are
 preserved. ::
 
-   >>> import glob
+   >>> agiza glob
    >>> glob.glob('./[0-9].*')
    ['./1.gif', './2.txt']
    >>> glob.glob('*.gif')
@@ -104,7 +104,7 @@ If the directory contains files starting with ``.`` they won't be matched by
 default. For example, consider a directory containing :file:`card.gif` and
 :file:`.card.gif`::
 
-   >>> import glob
+   >>> agiza glob
    >>> glob.glob('*.gif')
    ['card.gif']
    >>> glob.glob('.c*')

@@ -1,8 +1,8 @@
-:mod:`imp` --- Access the :ref:`import <importsystem>` internals
+:mod:`imp` --- Access the :ref:`agiza <importsystem>` internals
 ================================================================
 
 .. module:: imp
-   :synopsis: Access the implementation of the import statement.
+   :synopsis: Access the implementation of the agiza statement.
    :deprecated:
 
 **Source code:** :source:`Lib/imp.py`
@@ -98,7 +98,7 @@ This module provides an interface to the mechanisms used to implement the
    module name (including the package name, if this is a submodule of a
    package).  The *file* argument is an open file, and *pathname* is the
    corresponding file name; these can be ``None`` and ``''``, respectively, when
-   the module is a package or not being loaded from a file.  The *description*
+   the module is a package or not being loaded kutoka a file.  The *description*
    argument is a tuple, as would be returned by :func:`get_suffixes`, describing
    what kind of module must be loaded.
 
@@ -115,8 +115,8 @@ This module provides an interface to the mechanisms used to implement the
       returned by the replacement you chose for :func:`imp.find_module`. If you
       called :func:`imp.load_module` and related functions directly with file
       path arguments then use a combination of
-      :func:`importlib.util.spec_from_file_location` and
-      :func:`importlib.util.module_from_spec`. See the :ref:`importlib-examples`
+      :func:`importlib.util.spec_kutoka_file_location` and
+      :func:`importlib.util.module_kutoka_spec`. See the :ref:`importlib-examples`
       section of the :mod:`importlib` documentation for details of the various
       approaches.
 
@@ -127,7 +127,7 @@ This module provides an interface to the mechanisms used to implement the
    in ``sys.modules``.
 
    .. deprecated:: 3.4
-      Use :func:`importlib.util.module_from_spec` instead.
+      Use :func:`importlib.util.module_kutoka_spec` instead.
 
 
 .. function:: reload(module)
@@ -175,15 +175,15 @@ This module provides an interface to the mechanisms used to implement the
    In many cases, however, extension modules are not designed to be initialized
    more than once, and may fail in arbitrary ways when reloaded.
 
-   If a module imports objects from another module using :keyword:`from` ...
+   If a module imports objects kutoka another module using :keyword:`kutoka` ...
    :keyword:`import` ..., calling :func:`reload` for the other module does not
-   redefine the objects imported from it --- one way around this is to re-execute
-   the :keyword:`!from` statement, another is to use :keyword:`!import` and qualified
+   redefine the objects imported kutoka it --- one way around this is to re-execute
+   the :keyword:`!kutoka` statement, another is to use :keyword:`!import` and qualified
    names (*module*.*name*) instead.
 
    If a module instantiates instances of a class, reloading the module that defines
-   the class does not affect the method definitions of the instances --- they
-   continue to use the old class definition.  The same is true for derived classes.
+   the kundi does not affect the method definitions of the instances --- they
+   continue to use the old kundi definition.  The same is true for derived classes.
 
    .. versionchanged:: 3.3
       Relies on both ``__name__`` and ``__loader__`` being defined on the module
@@ -198,12 +198,12 @@ file paths.
 
 .. versionadded:: 3.2
 
-.. function:: cache_from_source(path, debug_override=None)
+.. function:: cache_kutoka_source(path, debug_override=None)
 
    Return the :pep:`3147` path to the byte-compiled file associated with the
    source *path*.  For example, if *path* is ``/foo/bar/baz.py`` the return
    value would be ``/foo/bar/__pycache__/baz.cpython-32.pyc`` for Python 3.2.
-   The ``cpython-32`` string comes from the current magic tag (see
+   The ``cpython-32`` string comes kutoka the current magic tag (see
    :func:`get_tag`; if :attr:`sys.implementation.cache_tag` is not defined then
    :exc:`NotImplementedError` will be raised). By passing in ``True`` or
    ``False`` for *debug_override* you can override the system's value for
@@ -216,13 +216,13 @@ file paths.
       :exc:`NotImplementedError` is raised.
 
    .. deprecated:: 3.4
-      Use :func:`importlib.util.cache_from_source` instead.
+      Use :func:`importlib.util.cache_kutoka_source` instead.
 
    .. versionchanged:: 3.5
       The *debug_override* parameter no longer creates a ``.pyo`` file.
 
 
-.. function:: source_from_cache(path)
+.. function:: source_kutoka_cache(path)
 
    Given the *path* to a :pep:`3147` file name, return the associated source code
    file path.  For example, if *path* is
@@ -237,7 +237,7 @@ file paths.
       :attr:`sys.implementation.cache_tag` is not defined.
 
    .. deprecated:: 3.4
-      Use :func:`importlib.util.source_from_cache` instead.
+      Use :func:`importlib.util.source_kutoka_cache` instead.
 
 
 .. function:: get_tag()
@@ -250,28 +250,28 @@ file paths.
       in Python 3.3.
 
 
-The following functions help interact with the import system's internal
+The following functions help interact with the agiza system's internal
 locking mechanism.  Locking semantics of imports are an implementation
-detail which may vary from release to release.  However, Python ensures
+detail which may vary kutoka release to release.  However, Python ensures
 that circular imports work without any deadlocks.
 
 
 .. function:: lock_held()
 
-   Return ``True`` if the global import lock is currently held, else
+   Return ``True`` if the global agiza lock is currently held, else
    ``False``. On platforms without threads, always return ``False``.
 
-   On platforms with threads, a thread executing an import first holds a
-   global import lock, then sets up a per-module lock for the rest of the
-   import.  This blocks other threads from importing the same module until
-   the original import completes, preventing other threads from seeing
+   On platforms with threads, a thread executing an agiza first holds a
+   global agiza lock, then sets up a per-module lock for the rest of the
+   import.  This blocks other threads kutoka importing the same module until
+   the original agiza completes, preventing other threads kutoka seeing
    incomplete module objects constructed by the original thread.  An
    exception is made for circular imports, which by construction have to
    expose an incomplete module object at some point.
 
    .. versionchanged:: 3.3
       The locking scheme has changed to per-module locks for
-      the most part.  A global import lock is kept for some critical tasks,
+      the most part.  A global agiza lock is kept for some critical tasks,
       such as initializing the per-module locks.
 
    .. deprecated:: 3.4
@@ -279,11 +279,11 @@ that circular imports work without any deadlocks.
 
 .. function:: acquire_lock()
 
-   Acquire the interpreter's global import lock for the current thread.
-   This lock should be used by import hooks to ensure thread-safety when
+   Acquire the interpreter's global agiza lock for the current thread.
+   This lock should be used by agiza hooks to ensure thread-safety when
    importing modules.
 
-   Once a thread has acquired the import lock, the same thread may acquire it
+   Once a thread has acquired the agiza lock, the same thread may acquire it
    again without blocking; the thread must release it once for each time it has
    acquired it.
 
@@ -291,7 +291,7 @@ that circular imports work without any deadlocks.
 
    .. versionchanged:: 3.3
       The locking scheme has changed to per-module locks for
-      the most part.  A global import lock is kept for some critical tasks,
+      the most part.  A global agiza lock is kept for some critical tasks,
       such as initializing the per-module locks.
 
    .. deprecated:: 3.4
@@ -299,12 +299,12 @@ that circular imports work without any deadlocks.
 
 .. function:: release_lock()
 
-   Release the interpreter's global import lock. On platforms without
+   Release the interpreter's global agiza lock. On platforms without
    threads, this function does nothing.
 
    .. versionchanged:: 3.3
       The locking scheme has changed to per-module locks for
-      the most part.  A global import lock is kept for some critical tasks,
+      the most part.  A global agiza lock is kept for some critical tasks,
       such as initializing the per-module locks.
 
    .. deprecated:: 3.4
@@ -358,7 +358,7 @@ to indicate the search result of :func:`find_module`.
 
 .. class:: NullImporter(path_string)
 
-   The :class:`NullImporter` type is a :pep:`302` import hook that handles
+   The :class:`NullImporter` type is a :pep:`302` agiza hook that handles
    non-directory path strings by failing to find any modules.  Calling this type
    with an existing directory or empty string raises :exc:`ImportError`.
    Otherwise, a :class:`NullImporter` instance is returned.
@@ -383,15 +383,15 @@ to indicate the search result of :func:`find_module`.
 Examples
 --------
 
-The following function emulates what was the standard import statement up to
+The following function emulates what was the standard agiza statement up to
 Python 1.4 (no hierarchical module names).  (This *implementation* wouldn't work
 in that version, since :func:`find_module` has been extended and
 :func:`load_module` has been added in 1.4.) ::
 
-   import imp
-   import sys
+   agiza imp
+   agiza sys
 
-   def __import__(name, globals=None, locals=None, fromlist=None):
+   def __import__(name, globals=None, locals=None, kutokalist=None):
        # Fast path: see if the module has already been imported.
        try:
            return sys.modules[name]

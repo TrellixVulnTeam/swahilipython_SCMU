@@ -60,13 +60,13 @@ NATIVE = {
 }
 
 # NumPy does not have 'n' or 'N':
-if numpy_array:
+ikiwa numpy_array:
     del NATIVE['n']
     del NATIVE['N']
 
-if struct:
+ikiwa struct:
     try:
-        # Add "qQ" if present in native mode.
+        # Add "qQ" ikiwa present in native mode.
         struct.pack('Q', 2**64-1)
         NATIVE['q'] = 0
         NATIVE['Q'] = 0
@@ -84,15 +84,15 @@ STANDARD = {
     'f':(-(1<<63), 1<<63), 'd':(-(1<<1023), 1<<1023)
 }
 
-def native_type_range(fmt):
+eleza native_type_range(fmt):
     """Return range of a native type."""
-    if fmt == 'c':
+    ikiwa fmt == 'c':
         lh = (0, 256)
-    elif fmt == '?':
+    elikiwa fmt == '?':
         lh = (0, 2)
-    elif fmt == 'f':
+    elikiwa fmt == 'f':
         lh = (-(1<<63), 1<<63)
-    elif fmt == 'd':
+    elikiwa fmt == 'd':
         lh = (-(1<<1023), 1<<1023)
     else:
         for exp in (128, 127, 64, 63, 32, 31, 16, 15, 8, 7):
@@ -101,8 +101,8 @@ def native_type_range(fmt):
                 break
             except struct.error:
                 pass
-        lh = (-(1<<exp), 1<<exp) if exp & 1 else (0, 1<<exp)
-    return lh
+        lh = (-(1<<exp), 1<<exp) ikiwa exp & 1 else (0, 1<<exp)
+    rudisha lh
 
 fmtdict = {
     '':NATIVE,
@@ -113,19 +113,19 @@ fmtdict = {
     '!':STANDARD
 }
 
-if struct:
+ikiwa struct:
     for fmt in fmtdict['@']:
         fmtdict['@'][fmt] = native_type_range(fmt)
 
 MEMORYVIEW = NATIVE.copy()
 ARRAY = NATIVE.copy()
 for k in NATIVE:
-    if not k in "bBhHiIlLfd":
+    ikiwa not k in "bBhHiIlLfd":
         del ARRAY[k]
 
 BYTEFMT = NATIVE.copy()
 for k in NATIVE:
-    if not k in "Bbc":
+    ikiwa not k in "Bbc":
         del BYTEFMT[k]
 
 fmtdict['m']  = MEMORYVIEW
@@ -145,40 +145,40 @@ cap = {         # format chars                  # multiplier
   'bytefmt':    (['@b', 'b'],                   ['']),
 }
 
-def randrange_fmt(mode, char, obj):
+eleza randrange_fmt(mode, char, obj):
     """Return random item for a type specified by a mode and a single
        format character."""
     x = randrange(*fmtdict[mode][char])
-    if char == 'c':
+    ikiwa char == 'c':
         x = bytes([x])
-        if obj == 'numpy' and x == b'\x00':
+        ikiwa obj == 'numpy' and x == b'\x00':
             # http://projects.scipy.org/numpy/ticket/1925
             x = b'\x01'
-    if char == '?':
+    ikiwa char == '?':
         x = bool(x)
-    if char == 'f' or char == 'd':
+    ikiwa char == 'f' or char == 'd':
         x = struct.pack(char, x)
         x = struct.unpack(char, x)[0]
-    return x
+    rudisha x
 
-def gen_item(fmt, obj):
+eleza gen_item(fmt, obj):
     """Return single random item."""
     mode, chars = fmt.split('#')
     x = []
     for c in chars:
         x.append(randrange_fmt(mode, c, obj))
-    return x[0] if len(x) == 1 else tuple(x)
+    rudisha x[0] ikiwa len(x) == 1 else tuple(x)
 
-def gen_items(n, fmt, obj):
+eleza gen_items(n, fmt, obj):
     """Return a list of random items (or a scalar)."""
-    if n == 0:
-        return gen_item(fmt, obj)
+    ikiwa n == 0:
+        rudisha gen_item(fmt, obj)
     lst = [0] * n
     for i in range(n):
         lst[i] = gen_item(fmt, obj)
-    return lst
+    rudisha lst
 
-def struct_items(n, obj):
+eleza struct_items(n, obj):
     mode = choice(cap[obj][MODE])
     xfmt = mode + '#'
     fmt = mode.strip('amb')
@@ -186,79 +186,79 @@ def struct_items(n, obj):
     for _ in range(nmemb):
         char = choice(tuple(fmtdict[mode]))
         multiplier = choice(cap[obj][MULT])
-        xfmt += (char * int(multiplier if multiplier else 1))
+        xfmt += (char * int(multiplier ikiwa multiplier else 1))
         fmt += (multiplier + char)
     items = gen_items(n, xfmt, obj)
     item = gen_item(xfmt, obj)
-    return fmt, items, item
+    rudisha fmt, items, item
 
-def randitems(n, obj='ndarray', mode=None, char=None):
+eleza randitems(n, obj='ndarray', mode=None, char=None):
     """Return random format, items, item."""
-    if mode is None:
+    ikiwa mode is None:
         mode = choice(cap[obj][MODE])
-    if char is None:
+    ikiwa char is None:
         char = choice(tuple(fmtdict[mode]))
     multiplier = choice(cap[obj][MULT])
-    fmt = mode + '#' + char * int(multiplier if multiplier else 1)
+    fmt = mode + '#' + char * int(multiplier ikiwa multiplier else 1)
     items = gen_items(n, fmt, obj)
     item = gen_item(fmt, obj)
     fmt = mode.strip('amb') + multiplier + char
-    return fmt, items, item
+    rudisha fmt, items, item
 
-def iter_mode(n, obj='ndarray'):
+eleza iter_mode(n, obj='ndarray'):
     """Iterate through supported mode/char combinations."""
     for mode in cap[obj][MODE]:
         for char in fmtdict[mode]:
             yield randitems(n, obj, mode, char)
 
-def iter_format(nitems, testobj='ndarray'):
+eleza iter_format(nitems, testobj='ndarray'):
     """Yield (format, items, item) for all possible modes and format
        characters plus one random compound format string."""
     for t in iter_mode(nitems, testobj):
         yield t
-    if testobj != 'ndarray':
+    ikiwa testobj != 'ndarray':
         return
     yield struct_items(nitems, testobj)
 
 
-def is_byte_format(fmt):
-    return 'c' in fmt or 'b' in fmt or 'B' in fmt
+eleza is_byte_format(fmt):
+    rudisha 'c' in fmt or 'b' in fmt or 'B' in fmt
 
-def is_memoryview_format(fmt):
+eleza is_memoryview_format(fmt):
     """format suitable for memoryview"""
     x = len(fmt)
-    return ((x == 1 or (x == 2 and fmt[0] == '@')) and
+    rudisha ((x == 1 or (x == 2 and fmt[0] == '@')) and
             fmt[x-1] in MEMORYVIEW)
 
-NON_BYTE_FORMAT = [c for c in fmtdict['@'] if not is_byte_format(c)]
+NON_BYTE_FORMAT = [c for c in fmtdict['@'] ikiwa not is_byte_format(c)]
 
 
 # ======================================================================
 #       Multi-dimensional tolist(), slicing and slice assignments
 # ======================================================================
 
-def atomp(lst):
+eleza atomp(lst):
     """Tuple items (representing structs) are regarded as atoms."""
-    return not isinstance(lst, list)
+    rudisha not isinstance(lst, list)
 
-def listp(lst):
-    return isinstance(lst, list)
+eleza listp(lst):
+    rudisha isinstance(lst, list)
 
-def prod(lst):
+eleza prod(lst):
     """Product of list elements."""
-    if len(lst) == 0:
-        return 0
+    ikiwa len(lst) == 0:
+        rudisha 0
     x = lst[0]
     for v in lst[1:]:
         x *= v
-    return x
+    rudisha x
 
-def strides_from_shape(ndim, shape, itemsize, layout):
+eleza strides_kutoka_shape(ndim, shape, itemsize, layout):
     """Calculate strides of a contiguous array. Layout is 'C' or
        'F' (Fortran)."""
-    if ndim == 0:
-        return ()
-    if layout == 'C':
+    ikiwa ndim == 0:
+        rudisha ()
+    ikiwa layout == 'C':
         strides = list(shape[1:]) + [itemsize]
         for i in range(ndim-2, -1, -1):
             strides[i] *= strides[i+1]
@@ -266,100 +266,100 @@ def strides_from_shape(ndim, shape, itemsize, layout):
         strides = [itemsize] + list(shape[:-1])
         for i in range(1, ndim):
             strides[i] *= strides[i-1]
-    return strides
+    rudisha strides
 
-def _ca(items, s):
+eleza _ca(items, s):
     """Convert flat item list to the nested list representation of a
        multidimensional C array with shape 's'."""
-    if atomp(items):
-        return items
-    if len(s) == 0:
-        return items[0]
+    ikiwa atomp(items):
+        rudisha items
+    ikiwa len(s) == 0:
+        rudisha items[0]
     lst = [0] * s[0]
-    stride = len(items) // s[0] if s[0] else 0
+    stride = len(items) // s[0] ikiwa s[0] else 0
     for i in range(s[0]):
         start = i*stride
         lst[i] = _ca(items[start:start+stride], s[1:])
-    return lst
+    rudisha lst
 
-def _fa(items, s):
+eleza _fa(items, s):
     """Convert flat item list to the nested list representation of a
        multidimensional Fortran array with shape 's'."""
-    if atomp(items):
-        return items
-    if len(s) == 0:
-        return items[0]
+    ikiwa atomp(items):
+        rudisha items
+    ikiwa len(s) == 0:
+        rudisha items[0]
     lst = [0] * s[0]
     stride = s[0]
     for i in range(s[0]):
         lst[i] = _fa(items[i::stride], s[1:])
-    return lst
+    rudisha lst
 
-def carray(items, shape):
-    if listp(items) and not 0 in shape and prod(shape) != len(items):
+eleza carray(items, shape):
+    ikiwa listp(items) and not 0 in shape and prod(shape) != len(items):
         raise ValueError("prod(shape) != len(items)")
-    return _ca(items, shape)
+    rudisha _ca(items, shape)
 
-def farray(items, shape):
-    if listp(items) and not 0 in shape and prod(shape) != len(items):
+eleza farray(items, shape):
+    ikiwa listp(items) and not 0 in shape and prod(shape) != len(items):
         raise ValueError("prod(shape) != len(items)")
-    return _fa(items, shape)
+    rudisha _fa(items, shape)
 
-def indices(shape):
+eleza indices(shape):
     """Generate all possible tuples of indices."""
     iterables = [range(v) for v in shape]
-    return product(*iterables)
+    rudisha product(*iterables)
 
-def getindex(ndim, ind, strides):
+eleza getindex(ndim, ind, strides):
     """Convert multi-dimensional index to the position in the flat list."""
     ret = 0
     for i in range(ndim):
         ret += strides[i] * ind[i]
-    return ret
+    rudisha ret
 
-def transpose(src, shape):
+eleza transpose(src, shape):
     """Transpose flat item list that is regarded as a multi-dimensional
        matrix defined by shape: dest...[k][j][i] = src[i][j][k]...  """
-    if not shape:
-        return src
+    ikiwa not shape:
+        rudisha src
     ndim = len(shape)
-    sstrides = strides_from_shape(ndim, shape, 1, 'C')
-    dstrides = strides_from_shape(ndim, shape[::-1], 1, 'C')
+    sstrides = strides_kutoka_shape(ndim, shape, 1, 'C')
+    dstrides = strides_kutoka_shape(ndim, shape[::-1], 1, 'C')
     dest = [0] * len(src)
     for ind in indices(shape):
         fr = getindex(ndim, ind, sstrides)
         to = getindex(ndim, ind[::-1], dstrides)
         dest[to] = src[fr]
-    return dest
+    rudisha dest
 
-def _flatten(lst):
+eleza _flatten(lst):
     """flatten list"""
-    if lst == []:
-        return lst
-    if atomp(lst):
-        return [lst]
-    return _flatten(lst[0]) + _flatten(lst[1:])
+    ikiwa lst == []:
+        rudisha lst
+    ikiwa atomp(lst):
+        rudisha [lst]
+    rudisha _flatten(lst[0]) + _flatten(lst[1:])
 
-def flatten(lst):
-    """flatten list or return scalar"""
-    if atomp(lst): # scalar
-        return lst
-    return _flatten(lst)
+eleza flatten(lst):
+    """flatten list or rudisha scalar"""
+    ikiwa atomp(lst): # scalar
+        rudisha lst
+    rudisha _flatten(lst)
 
-def slice_shape(lst, slices):
+eleza slice_shape(lst, slices):
     """Get the shape of lst after slicing: slices is a list of slice
        objects."""
-    if atomp(lst):
-        return []
-    return [len(lst[slices[0]])] + slice_shape(lst[0], slices[1:])
+    ikiwa atomp(lst):
+        rudisha []
+    rudisha [len(lst[slices[0]])] + slice_shape(lst[0], slices[1:])
 
-def multislice(lst, slices):
+eleza multislice(lst, slices):
     """Multi-dimensional slicing: slices is a list of slice objects."""
-    if atomp(lst):
-        return lst
-    return [multislice(sublst, slices[1:]) for sublst in lst[slices[0]]]
+    ikiwa atomp(lst):
+        rudisha lst
+    rudisha [multislice(sublst, slices[1:]) for sublst in lst[slices[0]]]
 
-def m_assign(llst, rlst, lslices, rslices):
+eleza m_assign(llst, rlst, lslices, rslices):
     """Multi-dimensional slice assignment: llst and rlst are the operands,
        lslices and rslices are lists of slice objects. llst and rlst must
        have the same structure.
@@ -374,31 +374,31 @@ def m_assign(llst, rlst, lslices, rslices):
          rslices = [slice(1,3,1), slice(1,3,1)]
          multislice_assign(llst, rlst, lslices, rslices)
     """
-    if atomp(rlst):
-        return rlst
+    ikiwa atomp(rlst):
+        rudisha rlst
     rlst = [m_assign(l, r, lslices[1:], rslices[1:])
             for l, r in zip(llst[lslices[0]], rlst[rslices[0]])]
     llst[lslices[0]] = rlst
-    return llst
+    rudisha llst
 
-def cmp_structure(llst, rlst, lslices, rslices):
+eleza cmp_structure(llst, rlst, lslices, rslices):
     """Compare the structure of llst[lslices] and rlst[rslices]."""
     lshape = slice_shape(llst, lslices)
     rshape = slice_shape(rlst, rslices)
-    if (len(lshape) != len(rshape)):
-        return -1
+    ikiwa (len(lshape) != len(rshape)):
+        rudisha -1
     for i in range(len(lshape)):
-        if lshape[i] != rshape[i]:
-            return -1
-        if lshape[i] == 0:
-            return 0
-    return 0
+        ikiwa lshape[i] != rshape[i]:
+            rudisha -1
+        ikiwa lshape[i] == 0:
+            rudisha 0
+    rudisha 0
 
-def multislice_assign(llst, rlst, lslices, rslices):
+eleza multislice_assign(llst, rlst, lslices, rslices):
     """Return llst after assigning: llst[lslices] = rlst[rslices]"""
-    if cmp_structure(llst, rlst, lslices, rslices) < 0:
+    ikiwa cmp_structure(llst, rlst, lslices, rslices) < 0:
         raise ValueError("lvalue and rvalue have different structures")
-    return m_assign(llst, rlst, lslices, rslices)
+    rudisha m_assign(llst, rlst, lslices, rslices)
 
 
 # ======================================================================
@@ -424,47 +424,47 @@ def multislice_assign(llst, rlst, lslices, rslices):
 #   t = (memlen, itemsize, ndim, shape, strides, offset)
 #
 
-def verify_structure(memlen, itemsize, ndim, shape, strides, offset):
+eleza verify_structure(memlen, itemsize, ndim, shape, strides, offset):
     """Verify that the parameters represent a valid array within
        the bounds of the allocated memory:
            char *mem: start of the physical memory block
            memlen: length of the physical memory block
            offset: (char *)buf - mem
     """
-    if offset % itemsize:
-        return False
-    if offset < 0 or offset+itemsize > memlen:
-        return False
-    if any(v % itemsize for v in strides):
-        return False
+    ikiwa offset % itemsize:
+        rudisha False
+    ikiwa offset < 0 or offset+itemsize > memlen:
+        rudisha False
+    ikiwa any(v % itemsize for v in strides):
+        rudisha False
 
-    if ndim <= 0:
-        return ndim == 0 and not shape and not strides
-    if 0 in shape:
-        return True
+    ikiwa ndim <= 0:
+        rudisha ndim == 0 and not shape and not strides
+    ikiwa 0 in shape:
+        rudisha True
 
     imin = sum(strides[j]*(shape[j]-1) for j in range(ndim)
-               if strides[j] <= 0)
+               ikiwa strides[j] <= 0)
     imax = sum(strides[j]*(shape[j]-1) for j in range(ndim)
-               if strides[j] > 0)
+               ikiwa strides[j] > 0)
 
-    return 0 <= offset+imin and offset+imax+itemsize <= memlen
+    rudisha 0 <= offset+imin and offset+imax+itemsize <= memlen
 
-def get_item(lst, indices):
+eleza get_item(lst, indices):
     for i in indices:
         lst = lst[i]
-    return lst
+    rudisha lst
 
-def memory_index(indices, t):
+eleza memory_index(indices, t):
     """Location of an item in the underlying memory."""
     memlen, itemsize, ndim, shape, strides, offset = t
     p = offset
     for i in range(ndim):
         p += strides[i]*indices[i]
-    return p
+    rudisha p
 
-def is_overlapping(t):
-    """The structure 't' is overlapping if at least one memory location
+eleza is_overlapping(t):
+    """The structure 't' is overlapping ikiwa at least one memory location
        is visited twice while iterating through all possible tuples of
        indices."""
     memlen, itemsize, ndim, shape, strides, offset = t
@@ -472,33 +472,33 @@ def is_overlapping(t):
     for ind in indices(shape):
         i = memory_index(ind, t)
         bit = 1<<i
-        if visited & bit:
-            return True
+        ikiwa visited & bit:
+            rudisha True
         visited |= bit
-    return False
+    rudisha False
 
-def rand_structure(itemsize, valid, maxdim=5, maxshape=16, shape=()):
+eleza rand_structure(itemsize, valid, maxdim=5, maxshape=16, shape=()):
     """Return random structure:
            (memlen, itemsize, ndim, shape, strides, offset)
        If 'valid' is true, the returned structure is valid, otherwise invalid.
        If 'shape' is given, use that instead of creating a random shape.
     """
-    if not shape:
+    ikiwa not shape:
         ndim = randrange(maxdim+1)
-        if (ndim == 0):
-            if valid:
-                return itemsize, itemsize, ndim, (), (), 0
+        ikiwa (ndim == 0):
+            ikiwa valid:
+                rudisha itemsize, itemsize, ndim, (), (), 0
             else:
                 nitems = randrange(1, 16+1)
                 memlen = nitems * itemsize
-                offset = -itemsize if randrange(2) == 0 else memlen
-                return memlen, itemsize, ndim, (), (), offset
+                offset = -itemsize ikiwa randrange(2) == 0 else memlen
+                rudisha memlen, itemsize, ndim, (), (), offset
 
         minshape = 2
         n = randrange(100)
-        if n >= 95 and valid:
+        ikiwa n >= 95 and valid:
             minshape = 0
-        elif n >= 90:
+        elikiwa n >= 90:
             minshape = 1
         shape = [0] * ndim
 
@@ -509,124 +509,124 @@ def rand_structure(itemsize, valid, maxdim=5, maxshape=16, shape=()):
 
     maxstride = 5
     n = randrange(100)
-    zero_stride = True if n >= 95 and n & 1 else False
+    zero_stride = True ikiwa n >= 95 and n & 1 else False
 
     strides = [0] * ndim
     strides[ndim-1] = itemsize * randrange(-maxstride, maxstride+1)
-    if not zero_stride and strides[ndim-1] == 0:
+    ikiwa not zero_stride and strides[ndim-1] == 0:
         strides[ndim-1] = itemsize
 
     for i in range(ndim-2, -1, -1):
-        maxstride *= shape[i+1] if shape[i+1] else 1
-        if zero_stride:
+        maxstride *= shape[i+1] ikiwa shape[i+1] else 1
+        ikiwa zero_stride:
             strides[i] = itemsize * randrange(-maxstride, maxstride+1)
         else:
             strides[i] = ((1,-1)[randrange(2)] *
                           itemsize * randrange(1, maxstride+1))
 
     imin = imax = 0
-    if not 0 in shape:
+    ikiwa not 0 in shape:
         imin = sum(strides[j]*(shape[j]-1) for j in range(ndim)
-                   if strides[j] <= 0)
+                   ikiwa strides[j] <= 0)
         imax = sum(strides[j]*(shape[j]-1) for j in range(ndim)
-                   if strides[j] > 0)
+                   ikiwa strides[j] > 0)
 
     nitems = imax - imin
-    if valid:
+    ikiwa valid:
         offset = -imin * itemsize
         memlen = offset + (imax+1) * itemsize
     else:
         memlen = (-imin + imax) * itemsize
-        offset = -imin-itemsize if randrange(2) == 0 else memlen
-    return memlen, itemsize, ndim, shape, strides, offset
+        offset = -imin-itemsize ikiwa randrange(2) == 0 else memlen
+    rudisha memlen, itemsize, ndim, shape, strides, offset
 
-def randslice_from_slicelen(slicelen, listlen):
+eleza randslice_kutoka_slicelen(slicelen, listlen):
     """Create a random slice of len slicelen that fits into listlen."""
     maxstart = listlen - slicelen
     start = randrange(maxstart+1)
-    maxstep = (listlen - start) // slicelen if slicelen else 1
+    maxstep = (listlen - start) // slicelen ikiwa slicelen else 1
     step = randrange(1, maxstep+1)
     stop = start + slicelen * step
     s = slice(start, stop, step)
     _, _, _, control = slice_indices(s, listlen)
-    if control != slicelen:
+    ikiwa control != slicelen:
         raise RuntimeError
-    return s
+    rudisha s
 
-def randslice_from_shape(ndim, shape):
+eleza randslice_kutoka_shape(ndim, shape):
     """Create two sets of slices for an array x with shape 'shape'
        such that shapeof(x[lslices]) == shapeof(x[rslices])."""
     lslices = [0] * ndim
     rslices = [0] * ndim
     for n in range(ndim):
         l = shape[n]
-        slicelen = randrange(1, l+1) if l > 0 else 0
-        lslices[n] = randslice_from_slicelen(slicelen, l)
-        rslices[n] = randslice_from_slicelen(slicelen, l)
-    return tuple(lslices), tuple(rslices)
+        slicelen = randrange(1, l+1) ikiwa l > 0 else 0
+        lslices[n] = randslice_kutoka_slicelen(slicelen, l)
+        rslices[n] = randslice_kutoka_slicelen(slicelen, l)
+    rudisha tuple(lslices), tuple(rslices)
 
-def rand_aligned_slices(maxdim=5, maxshape=16):
+eleza rand_aligned_slices(maxdim=5, maxshape=16):
     """Create (lshape, rshape, tuple(lslices), tuple(rslices)) such that
        shapeof(x[lslices]) == shapeof(y[rslices]), where x is an array
        with shape 'lshape' and y is an array with shape 'rshape'."""
     ndim = randrange(1, maxdim+1)
     minshape = 2
     n = randrange(100)
-    if n >= 95:
+    ikiwa n >= 95:
         minshape = 0
-    elif n >= 90:
+    elikiwa n >= 90:
         minshape = 1
-    all_random = True if randrange(100) >= 80 else False
+    all_random = True ikiwa randrange(100) >= 80 else False
     lshape = [0]*ndim; rshape = [0]*ndim
     lslices = [0]*ndim; rslices = [0]*ndim
 
     for n in range(ndim):
         small = randrange(minshape, maxshape+1)
         big = randrange(minshape, maxshape+1)
-        if big < small:
+        ikiwa big < small:
             big, small = small, big
 
         # Create a slice that fits the smaller value.
-        if all_random:
+        ikiwa all_random:
             start = randrange(-small, small+1)
             stop = randrange(-small, small+1)
             step = (1,-1)[randrange(2)] * randrange(1, small+2)
             s_small = slice(start, stop, step)
             _, _, _, slicelen = slice_indices(s_small, small)
         else:
-            slicelen = randrange(1, small+1) if small > 0 else 0
-            s_small = randslice_from_slicelen(slicelen, small)
+            slicelen = randrange(1, small+1) ikiwa small > 0 else 0
+            s_small = randslice_kutoka_slicelen(slicelen, small)
 
         # Create a slice of the same length for the bigger value.
-        s_big = randslice_from_slicelen(slicelen, big)
-        if randrange(2) == 0:
+        s_big = randslice_kutoka_slicelen(slicelen, big)
+        ikiwa randrange(2) == 0:
             rshape[n], lshape[n] = big, small
             rslices[n], lslices[n] = s_big, s_small
         else:
             rshape[n], lshape[n] = small, big
             rslices[n], lslices[n] = s_small, s_big
 
-    return lshape, rshape, tuple(lslices), tuple(rslices)
+    rudisha lshape, rshape, tuple(lslices), tuple(rslices)
 
-def randitems_from_structure(fmt, t):
+eleza randitems_kutoka_structure(fmt, t):
     """Return a list of random items for structure 't' with format
        'fmtchar'."""
     memlen, itemsize, _, _, _, _ = t
-    return gen_items(memlen//itemsize, '#'+fmt, 'numpy')
+    rudisha gen_items(memlen//itemsize, '#'+fmt, 'numpy')
 
-def ndarray_from_structure(items, fmt, t, flags=0):
+eleza ndarray_kutoka_structure(items, fmt, t, flags=0):
     """Return ndarray kutoka the tuple returned by rand_structure()"""
     memlen, itemsize, ndim, shape, strides, offset = t
-    return ndarray(items, shape=shape, strides=strides, format=fmt,
+    rudisha ndarray(items, shape=shape, strides=strides, format=fmt,
                    offset=offset, flags=ND_WRITABLE|flags)
 
-def numpy_array_from_structure(items, fmt, t):
+eleza numpy_array_kutoka_structure(items, fmt, t):
     """Return numpy_array kutoka the tuple returned by rand_structure()"""
     memlen, itemsize, ndim, shape, strides, offset = t
     buf = bytearray(memlen)
     for j, v in enumerate(items):
         struct.pack_into(fmt, buf, j*itemsize, v)
-    return numpy_array(buffer=buf, shape=shape, strides=strides,
+    rudisha numpy_array(buffer=buf, shape=shape, strides=strides,
                        dtype=fmt, offset=offset)
 
 
@@ -634,26 +634,26 @@ def numpy_array_from_structure(items, fmt, t):
 #                          memoryview casts
 # ======================================================================
 
-def cast_items(exporter, fmt, itemsize, shape=None):
+eleza cast_items(exporter, fmt, itemsize, shape=None):
     """Interpret the raw memory of 'exporter' as a list of items with
        size 'itemsize'. If shape=None, the new structure is assumed to
        be 1-D with n * itemsize = bytelen. If shape is given, the usual
        constraint for contiguous arrays prod(shape) * itemsize = bytelen
-       applies. On success, return (items, shape). If the constraints
-       cannot be met, return (None, None). If a chunk of bytes is interpreted
-       as NaN as a result of float conversion, return ('nan', None)."""
+       applies. On success, rudisha (items, shape). If the constraints
+       cannot be met, rudisha (None, None). If a chunk of bytes is interpreted
+       as NaN as a result of float conversion, rudisha ('nan', None)."""
     bytelen = exporter.nbytes
-    if shape:
-        if prod(shape) * itemsize != bytelen:
-            return None, shape
-    elif shape == []:
-        if exporter.ndim == 0 or itemsize != bytelen:
-            return None, shape
+    ikiwa shape:
+        ikiwa prod(shape) * itemsize != bytelen:
+            rudisha None, shape
+    elikiwa shape == []:
+        ikiwa exporter.ndim == 0 or itemsize != bytelen:
+            rudisha None, shape
     else:
         n, r = divmod(bytelen, itemsize)
         shape = [n]
-        if r != 0:
-            return None, shape
+        ikiwa r != 0:
+            rudisha None, shape
 
     mem = exporter.tobytes()
     byteitems = [mem[i:i+itemsize] for i in range(0, len(mem), itemsize)]
@@ -661,21 +661,21 @@ def cast_items(exporter, fmt, itemsize, shape=None):
     items = []
     for v in byteitems:
         item = struct.unpack(fmt, v)[0]
-        if item != item:
-            return 'nan', shape
+        ikiwa item != item:
+            rudisha 'nan', shape
         items.append(item)
 
-    return (items, shape) if shape != [] else (items[0], shape)
+    rudisha (items, shape) ikiwa shape != [] else (items[0], shape)
 
-def gencastshapes():
+eleza gencastshapes():
     """Generate shapes to test casting."""
     for n in range(32):
         yield [n]
     ndim = randrange(4, 6)
-    minshape = 1 if randrange(100) > 80 else 2
+    minshape = 1 ikiwa randrange(100) > 80 else 2
     yield [randrange(minshape, 5) for _ in range(ndim)]
     ndim = randrange(2, 4)
-    minshape = 1 if randrange(100) > 80 else 2
+    minshape = 1 ikiwa randrange(100) > 80 else 2
     yield [randrange(minshape, 5) for _ in range(ndim)]
 
 
@@ -683,29 +683,29 @@ def gencastshapes():
 #                              Actual tests
 # ======================================================================
 
-def genslices(n):
+eleza genslices(n):
     """Generate all possible slices for a single dimension."""
-    return product(range(-n, n+1), range(-n, n+1), range(-n, n+1))
+    rudisha product(range(-n, n+1), range(-n, n+1), range(-n, n+1))
 
-def genslices_ndim(ndim, shape):
+eleza genslices_ndim(ndim, shape):
     """Generate all possible slice tuples for 'shape'."""
     iterables = [genslices(shape[n]) for n in range(ndim)]
-    return product(*iterables)
+    rudisha product(*iterables)
 
-def rslice(n, allow_empty=False):
+eleza rslice(n, allow_empty=False):
     """Generate random slice for a single dimension of length n.
        If zero=True, the slices may be empty, otherwise they will
        be non-empty."""
-    minlen = 0 if allow_empty or n == 0 else 1
+    minlen = 0 ikiwa allow_empty or n == 0 else 1
     slicelen = randrange(minlen, n+1)
-    return randslice_from_slicelen(slicelen, n)
+    rudisha randslice_kutoka_slicelen(slicelen, n)
 
-def rslices(n, allow_empty=False):
+eleza rslices(n, allow_empty=False):
     """Generate random slices for a single dimension."""
     for _ in range(5):
         yield rslice(n, allow_empty)
 
-def rslices_ndim(ndim, shape, iterations=5):
+eleza rslices_ndim(ndim, shape, iterations=5):
     """Generate random slice tuples for 'shape'."""
     # non-empty slices
     for _ in range(iterations):
@@ -716,24 +716,24 @@ def rslices_ndim(ndim, shape, iterations=5):
     # invalid slices
     yield tuple(slice(0,1,0) for _ in range(ndim))
 
-def rpermutation(iterable, r=None):
+eleza rpermutation(iterable, r=None):
     pool = tuple(iterable)
-    r = len(pool) if r is None else r
+    r = len(pool) ikiwa r is None else r
     yield tuple(sample(pool, r))
 
-def ndarray_print(nd):
+eleza ndarray_andika(nd):
     """Print ndarray for debugging."""
     try:
         x = nd.tolist()
     except (TypeError, NotImplementedError):
         x = nd.tobytes()
-    if isinstance(nd, ndarray):
+    ikiwa isinstance(nd, ndarray):
         offset = nd.offset
         flags = nd.flags
     else:
         offset = 'unknown'
         flags = 'unknown'
-    print("ndarray(%s, shape=%s, strides=%s, suboffsets=%s, offset=%s, "
+    andika("ndarray(%s, shape=%s, strides=%s, suboffsets=%s, offset=%s, "
           "format='%s', itemsize=%s, flags=%s)" %
           (x, nd.shape, nd.strides, nd.suboffsets, offset,
            nd.format, nd.itemsize, flags))
@@ -744,7 +744,7 @@ ITERATIONS = 100
 MAXDIM = 5
 MAXSHAPE = 10
 
-if SHORT_TEST:
+ikiwa SHORT_TEST:
     ITERATIONS = 10
     MAXDIM = 3
     MAXSHAPE = 4
@@ -755,21 +755,21 @@ if SHORT_TEST:
 
 @unittest.skipUnless(struct, 'struct module required for this test.')
 @unittest.skipUnless(ndarray, 'ndarray object required for this test')
-class TestBufferProtocol(unittest.TestCase):
+kundi TestBufferProtocol(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         # The suboffsets tests need sizeof(void *).
         self.sizeof_void_p = get_sizeof_void_p()
 
-    def verify(self, result, *, obj,
+    eleza verify(self, result, *, obj,
                      itemsize, fmt, readonly,
                      ndim, shape, strides,
                      lst, sliced=False, cast=False):
         # Verify buffer contents against expected values.
-        if shape:
+        ikiwa shape:
             expected_len = prod(shape)*itemsize
         else:
-            if not fmt: # array has been implicitly cast to unsigned bytes
+            ikiwa not fmt: # array has been implicitly cast to unsigned bytes
                 expected_len = len(lst)
             else: # ndim = 0
                 expected_len = itemsize
@@ -777,21 +777,21 @@ class TestBufferProtocol(unittest.TestCase):
         # Reconstruct suboffsets kutoka strides. Support for slicing
         # could be added, but is currently only needed for test_getbuf().
         suboffsets = ()
-        if result.suboffsets:
+        ikiwa result.suboffsets:
             self.assertGreater(ndim, 0)
 
             suboffset0 = 0
             for n in range(1, ndim):
-                if shape[n] == 0:
+                ikiwa shape[n] == 0:
                     break
-                if strides[n] <= 0:
+                ikiwa strides[n] <= 0:
                     suboffset0 += -strides[n] * (shape[n]-1)
 
             suboffsets = [suboffset0] + [-1 for v in range(ndim-1)]
 
-            # Not correct if slicing has occurred in the first dimension.
+            # Not correct ikiwa slicing has occurred in the first dimension.
             stride0 = self.sizeof_void_p
-            if strides[0] < 0:
+            ikiwa strides[0] < 0:
                 stride0 = -stride0
             strides = [stride0] + list(strides[1:])
 
@@ -802,16 +802,16 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertIs(result.readonly, readonly)
         self.assertEqual(result.ndim, ndim)
         self.assertEqual(result.shape, tuple(shape))
-        if not (sliced and suboffsets):
+        ikiwa not (sliced and suboffsets):
             self.assertEqual(result.strides, tuple(strides))
         self.assertEqual(result.suboffsets, tuple(suboffsets))
 
-        if isinstance(result, ndarray) or is_memoryview_format(fmt):
-            rep = result.tolist() if fmt else result.tobytes()
+        ikiwa isinstance(result, ndarray) or is_memoryview_format(fmt):
+            rep = result.tolist() ikiwa fmt else result.tobytes()
             self.assertEqual(rep, lst)
 
-        if not fmt: # array has been cast to unsigned bytes,
-            return  # the remaining tests won't work.
+        ikiwa not fmt: # array has been cast to unsigned bytes,
+            rudisha  # the remaining tests won't work.
 
         # PyBuffer_GetPointer() is the definition how to access an item.
         # If PyBuffer_GetPointer(indices) is correct for all possible
@@ -819,14 +819,14 @@ class TestBufferProtocol(unittest.TestCase):
         #
         # Also test tobytes() against the flattened 'lst', with all items
         # packed to bytes.
-        if not cast: # casts chop up 'lst' in different ways
+        ikiwa not cast: # casts chop up 'lst' in different ways
             b = bytearray()
             buf_err = None
             for ind in indices(shape):
                 try:
                     item1 = get_pointer(result, ind)
                     item2 = get_item(lst, ind)
-                    if isinstance(item2, tuple):
+                    ikiwa isinstance(item2, tuple):
                         x = struct.pack(fmt, *item2)
                     else:
                         x = struct.pack(fmt, item2)
@@ -836,7 +836,7 @@ class TestBufferProtocol(unittest.TestCase):
                     break
                 self.assertEqual(item1, item2)
 
-            if not buf_err:
+            ikiwa not buf_err:
                 # test tobytes()
                 self.assertEqual(result.tobytes(), b)
 
@@ -847,16 +847,16 @@ class TestBufferProtocol(unittest.TestCase):
 
                 # lst := expected multi-dimensional logical representation
                 # flatten(lst) := elements in C-order
-                ff = fmt if fmt else 'B'
+                ff = fmt ikiwa fmt else 'B'
                 flattened = flatten(lst)
 
-                # Rules for 'A': if the array is already contiguous, return
-                # the array unaltered. Otherwise, return a contiguous 'C'
+                # Rules for 'A': ikiwa the array is already contiguous, return
+                # the array unaltered. Otherwise, rudisha a contiguous 'C'
                 # representation.
                 for order in ['C', 'F', 'A']:
                     expected = result
-                    if order == 'F':
-                        if not is_contiguous(result, 'A') or \
+                    ikiwa order == 'F':
+                        ikiwa not is_contiguous(result, 'A') or \
                            is_contiguous(result, 'C'):
                             # For constructing the ndarray, convert the
                             # flattened logical representation to Fortran order.
@@ -864,7 +864,7 @@ class TestBufferProtocol(unittest.TestCase):
                             expected = ndarray(trans, shape=shape, format=ff,
                                                flags=ND_FORTRAN)
                     else: # 'C', 'A'
-                        if not is_contiguous(result, 'A') or \
+                        ikiwa not is_contiguous(result, 'A') or \
                            is_contiguous(result, 'F') and order == 'C':
                             # The flattened list is already in C-order.
                             expected = ndarray(flattened, shape=shape, format=ff)
@@ -873,11 +873,11 @@ class TestBufferProtocol(unittest.TestCase):
                     self.assertEqual(contig.tobytes(), b)
                     self.assertTrue(cmp_contig(contig, expected))
 
-                    if ndim == 0:
+                    ikiwa ndim == 0:
                         continue
 
                     nmemb = len(flattened)
-                    ro = 0 if readonly else ND_WRITABLE
+                    ro = 0 ikiwa readonly else ND_WRITABLE
 
                     ### See comment in test_py_buffer_to_contiguous for an
                     ### explanation why these tests are valid.
@@ -885,9 +885,9 @@ class TestBufferProtocol(unittest.TestCase):
                     # To 'C'
                     contig = py_buffer_to_contiguous(result, 'C', PyBUF_FULL_RO)
                     self.assertEqual(len(contig), nmemb * itemsize)
-                    initlst = [struct.unpack_from(fmt, contig, n*itemsize)
+                    initlst = [struct.unpack_kutoka(fmt, contig, n*itemsize)
                                for n in range(nmemb)]
-                    if len(initlst[0]) == 1:
+                    ikiwa len(initlst[0]) == 1:
                         initlst = [v[0] for v in initlst]
 
                     y = ndarray(initlst, shape=shape, flags=ro, format=fmt)
@@ -905,9 +905,9 @@ class TestBufferProtocol(unittest.TestCase):
                     # To 'F'
                     contig = py_buffer_to_contiguous(result, 'F', PyBUF_FULL_RO)
                     self.assertEqual(len(contig), nmemb * itemsize)
-                    initlst = [struct.unpack_from(fmt, contig, n*itemsize)
+                    initlst = [struct.unpack_kutoka(fmt, contig, n*itemsize)
                                for n in range(nmemb)]
-                    if len(initlst[0]) == 1:
+                    ikiwa len(initlst[0]) == 1:
                         initlst = [v[0] for v in initlst]
 
                     y = ndarray(initlst, shape=shape, flags=ro|ND_FORTRAN,
@@ -920,26 +920,26 @@ class TestBufferProtocol(unittest.TestCase):
                     # To 'A'
                     contig = py_buffer_to_contiguous(result, 'A', PyBUF_FULL_RO)
                     self.assertEqual(len(contig), nmemb * itemsize)
-                    initlst = [struct.unpack_from(fmt, contig, n*itemsize)
+                    initlst = [struct.unpack_kutoka(fmt, contig, n*itemsize)
                                for n in range(nmemb)]
-                    if len(initlst[0]) == 1:
+                    ikiwa len(initlst[0]) == 1:
                         initlst = [v[0] for v in initlst]
 
-                    f = ND_FORTRAN if is_contiguous(result, 'F') else 0
+                    f = ND_FORTRAN ikiwa is_contiguous(result, 'F') else 0
                     y = ndarray(initlst, shape=shape, flags=f|ro, format=fmt)
                     self.assertEqual(memoryview(y), memoryview(result))
 
                     contig_bytes = memoryview(result).tobytes(order='A')
                     self.assertEqual(contig_bytes, contig)
 
-        if is_memoryview_format(fmt):
+        ikiwa is_memoryview_format(fmt):
             try:
                 m = memoryview(result)
             except BufferError: # re-exporter does not provide full information
                 return
-            ex = result.obj if isinstance(result, memoryview) else result
+            ex = result.obj ikiwa isinstance(result, memoryview) else result
 
-            def check_memoryview(m, expected_readonly=readonly):
+            eleza check_memoryview(m, expected_readonly=readonly):
                 self.assertIs(m.obj, ex)
                 self.assertEqual(m.nbytes, expected_len)
                 self.assertEqual(m.itemsize, itemsize)
@@ -947,14 +947,14 @@ class TestBufferProtocol(unittest.TestCase):
                 self.assertEqual(m.readonly, expected_readonly)
                 self.assertEqual(m.ndim, ndim)
                 self.assertEqual(m.shape, tuple(shape))
-                if not (sliced and suboffsets):
+                ikiwa not (sliced and suboffsets):
                     self.assertEqual(m.strides, tuple(strides))
                 self.assertEqual(m.suboffsets, tuple(suboffsets))
 
-                n = 1 if ndim == 0 else len(lst)
+                n = 1 ikiwa ndim == 0 else len(lst)
                 self.assertEqual(len(m), n)
 
-                rep = result.tolist() if fmt else result.tobytes()
+                rep = result.tolist() ikiwa fmt else result.tobytes()
                 self.assertEqual(rep, lst)
                 self.assertEqual(m, result)
 
@@ -963,13 +963,13 @@ class TestBufferProtocol(unittest.TestCase):
                 check_memoryview(mm, expected_readonly=True)
             m.tobytes()  # Releasing mm didn't release m
 
-    def verify_getbuf(self, orig_ex, ex, req, sliced=False):
-        def simple_fmt(ex):
-            return ex.format == '' or ex.format == 'B'
-        def match(req, flag):
-            return ((req&flag) == flag)
+    eleza verify_getbuf(self, orig_ex, ex, req, sliced=False):
+        eleza simple_fmt(ex):
+            rudisha ex.format == '' or ex.format == 'B'
+        eleza match(req, flag):
+            rudisha ((req&flag) == flag)
 
-        if (# writable request to read-only exporter
+        ikiwa (# writable request to read-only exporter
             (ex.readonly and match(req, PyBUF_WRITABLE)) or
             # cannot match explicit contiguity request
             (match(req, PyBUF_C_CONTIGUOUS) and not ex.c_contiguous) or
@@ -985,27 +985,27 @@ class TestBufferProtocol(unittest.TestCase):
             self.assertRaises(BufferError, ndarray, ex, getbuf=req)
             return
 
-        if isinstance(ex, ndarray) or is_memoryview_format(ex.format):
+        ikiwa isinstance(ex, ndarray) or is_memoryview_format(ex.format):
             lst = ex.tolist()
         else:
             nd = ndarray(ex, getbuf=PyBUF_FULL_RO)
             lst = nd.tolist()
 
         # The consumer may have requested default values or a NULL format.
-        ro = False if match(req, PyBUF_WRITABLE) else ex.readonly
+        ro = False ikiwa match(req, PyBUF_WRITABLE) else ex.readonly
         fmt = ex.format
         itemsize = ex.itemsize
         ndim = ex.ndim
-        if not match(req, PyBUF_FORMAT):
+        ikiwa not match(req, PyBUF_FORMAT):
             # itemsize refers to the original itemsize before the cast.
             # The equality product(shape) * itemsize = len still holds.
             # The equality calcsize(format) = itemsize does _not_ hold.
             fmt = ''
             lst = orig_ex.tobytes() # Issue 12834
-        if not match(req, PyBUF_ND):
+        ikiwa not match(req, PyBUF_ND):
             ndim = 1
-        shape = orig_ex.shape if match(req, PyBUF_ND) else ()
-        strides = orig_ex.strides if match(req, PyBUF_STRIDES) else ()
+        shape = orig_ex.shape ikiwa match(req, PyBUF_ND) else ()
+        strides = orig_ex.strides ikiwa match(req, PyBUF_STRIDES) else ()
 
         nd = ndarray(ex, getbuf=req)
         self.verify(nd, obj=ex,
@@ -1013,7 +1013,7 @@ class TestBufferProtocol(unittest.TestCase):
                     ndim=ndim, shape=shape, strides=strides,
                     lst=lst, sliced=sliced)
 
-    def test_ndarray_getbuf(self):
+    eleza test_ndarray_getbuf(self):
         requests = (
             # distinct flags
             PyBUF_INDIRECT, PyBUF_STRIDES, PyBUF_ND, PyBUF_SIMPLE,
@@ -1026,10 +1026,10 @@ class TestBufferProtocol(unittest.TestCase):
         )
         # items and format
         items_fmt = (
-            ([True if x % 2 else False for x in range(12)], '?'),
+            ([True ikiwa x % 2 else False for x in range(12)], '?'),
             ([1,2,3,4,5,6,7,8,9,10,11,12], 'b'),
             ([1,2,3,4,5,6,7,8,9,10,11,12], 'B'),
-            ([(2**31-x) if x % 2 else (-2**31+x) for x in range(12)], 'l')
+            ([(2**31-x) ikiwa x % 2 else (-2**31+x) for x in range(12)], 'l')
         )
         # shape, strides, offset
         structure = (
@@ -1060,29 +1060,29 @@ class TestBufferProtocol(unittest.TestCase):
                 offset *= itemsize
                 for flags in ndflags:
 
-                    if strides and (flags&ND_FORTRAN):
+                    ikiwa strides and (flags&ND_FORTRAN):
                         continue
-                    if not shape and (flags&ND_PIL):
+                    ikiwa not shape and (flags&ND_PIL):
                         continue
 
-                    _items = items if shape else items[0]
+                    _items = items ikiwa shape else items[0]
                     ex1 = ndarray(_items, format=fmt, flags=flags,
                                   shape=shape, strides=strides, offset=offset)
-                    ex2 = ex1[::-2] if shape else None
+                    ex2 = ex1[::-2] ikiwa shape else None
 
                     m1 = memoryview(ex1)
-                    if ex2:
+                    ikiwa ex2:
                         m2 = memoryview(ex2)
-                    if ex1.ndim == 0 or (ex1.ndim == 1 and shape and strides):
+                    ikiwa ex1.ndim == 0 or (ex1.ndim == 1 and shape and strides):
                         self.assertEqual(m1, ex1)
-                    if ex2 and ex2.ndim == 1 and shape and strides:
+                    ikiwa ex2 and ex2.ndim == 1 and shape and strides:
                         self.assertEqual(m2, ex2)
 
                     for req in requests:
                         for bits in real_flags:
                             self.verify_getbuf(ex1, ex1, req|bits)
                             self.verify_getbuf(ex1, m1, req|bits)
-                            if ex2:
+                            ikiwa ex2:
                                 self.verify_getbuf(ex2, ex2, req|bits,
                                                    sliced=True)
                                 self.verify_getbuf(ex2, m2, req|bits,
@@ -1118,7 +1118,7 @@ class TestBufferProtocol(unittest.TestCase):
                     self.assertTrue(is_contiguous(nd, 'F'))
                     self.assertTrue(is_contiguous(nd, 'C'))
 
-    def test_ndarray_exceptions(self):
+    eleza test_ndarray_exceptions(self):
         nd = ndarray([9], [1])
         ndm = ndarray([9], [1], flags=ND_VAREXPORT)
 
@@ -1240,18 +1240,18 @@ class TestBufferProtocol(unittest.TestCase):
         nd = ndarray(ex, getbuf=PyBUF_SIMPLE)
         self.assertRaises(ValueError, nd.tolist)
 
-        # memoryview_from_buffer()
+        # memoryview_kutoka_buffer()
         ex1 = ndarray([1,2,3], shape=[3], format='L')
         ex2 = ndarray(ex1)
         nd = ndarray(ex2)
-        self.assertRaises(TypeError, nd.memoryview_from_buffer)
+        self.assertRaises(TypeError, nd.memoryview_kutoka_buffer)
 
         nd = ndarray([(1,)*200], shape=[1], format='L'*200)
-        self.assertRaises(TypeError, nd.memoryview_from_buffer)
+        self.assertRaises(TypeError, nd.memoryview_kutoka_buffer)
 
         n = ND_MAX_NDIM
         nd = ndarray(list(range(n)), shape=[1]*n)
-        self.assertRaises(ValueError, nd.memoryview_from_buffer)
+        self.assertRaises(ValueError, nd.memoryview_kutoka_buffer)
 
         # get_contiguous()
         nd = ndarray([1], shape=[1])
@@ -1276,7 +1276,7 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertRaises(TypeError, is_contiguous, {}, 'A')
         self.assertRaises(TypeError, is_contiguous, nd, 201)
 
-    def test_ndarray_linked_list(self):
+    eleza test_ndarray_linked_list(self):
         for perm in permutations(range(5)):
             m = [0]*5
             nd = ndarray([1,2,3], shape=[3], flags=ND_VAREXPORT)
@@ -1292,7 +1292,7 @@ class TestBufferProtocol(unittest.TestCase):
             self.assertRaises(BufferError, nd.pop)
             del nd
 
-    def test_ndarray_format_scalar(self):
+    eleza test_ndarray_format_scalar(self):
         # ndim = 0: scalar
         for fmt, scalar, _ in iter_format(0):
             itemsize = struct.calcsize(fmt)
@@ -1302,7 +1302,7 @@ class TestBufferProtocol(unittest.TestCase):
                         ndim=0, shape=(), strides=(),
                         lst=scalar)
 
-    def test_ndarray_format_shape(self):
+    eleza test_ndarray_format_shape(self):
         # ndim = 1, shape = [n]
         nitems =  randrange(1, 10)
         for fmt, items, _ in iter_format(nitems):
@@ -1314,18 +1314,18 @@ class TestBufferProtocol(unittest.TestCase):
                             ndim=1, shape=(nitems,), strides=(itemsize,),
                             lst=items)
 
-    def test_ndarray_format_strides(self):
+    eleza test_ndarray_format_strides(self):
         # ndim = 1, strides
         nitems = randrange(1, 30)
         for fmt, items, _ in iter_format(nitems):
             itemsize = struct.calcsize(fmt)
             for step in range(-5, 5):
-                if step == 0:
+                ikiwa step == 0:
                     continue
 
                 shape = [len(items[::step])]
                 strides = [step*itemsize]
-                offset = itemsize*(nitems-1) if step < 0 else 0
+                offset = itemsize*(nitems-1) ikiwa step < 0 else 0
 
                 for flags in (0, ND_PIL):
                     nd = ndarray(items, shape=shape, strides=strides,
@@ -1335,13 +1335,13 @@ class TestBufferProtocol(unittest.TestCase):
                                 ndim=1, shape=shape, strides=strides,
                                 lst=items[::step])
 
-    def test_ndarray_fortran(self):
+    eleza test_ndarray_fortran(self):
         items = [1,2,3,4,5,6,7,8,9,10,11,12]
         ex = ndarray(items, shape=(3, 4), strides=(1, 3))
         nd = ndarray(ex, getbuf=PyBUF_F_CONTIGUOUS|PyBUF_FORMAT)
         self.assertEqual(nd.tolist(), farray(items, (3, 4)))
 
-    def test_ndarray_multidim(self):
+    eleza test_ndarray_multidim(self):
         for ndim in range(5):
             shape_t = [randrange(2, 10) for _ in range(ndim)]
             nitems = prod(shape_t)
@@ -1351,25 +1351,25 @@ class TestBufferProtocol(unittest.TestCase):
                 itemsize = struct.calcsize(fmt)
 
                 for flags in (0, ND_PIL):
-                    if ndim == 0 and flags == ND_PIL:
+                    ikiwa ndim == 0 and flags == ND_PIL:
                         continue
 
                     # C array
                     nd = ndarray(items, shape=shape, format=fmt, flags=flags)
 
-                    strides = strides_from_shape(ndim, shape, itemsize, 'C')
+                    strides = strides_kutoka_shape(ndim, shape, itemsize, 'C')
                     lst = carray(items, shape)
                     self.verify(nd, obj=None,
                                 itemsize=itemsize, fmt=fmt, readonly=True,
                                 ndim=ndim, shape=shape, strides=strides,
                                 lst=lst)
 
-                    if is_memoryview_format(fmt):
+                    ikiwa is_memoryview_format(fmt):
                         # memoryview: reconstruct strides
                         ex = ndarray(items, shape=shape, format=fmt)
                         nd = ndarray(ex, getbuf=PyBUF_CONTIG_RO|PyBUF_FORMAT)
                         self.assertTrue(nd.strides == ())
-                        mv = nd.memoryview_from_buffer()
+                        mv = nd.memoryview_kutoka_buffer()
                         self.verify(mv, obj=None,
                                     itemsize=itemsize, fmt=fmt, readonly=True,
                                     ndim=ndim, shape=shape, strides=strides,
@@ -1379,14 +1379,14 @@ class TestBufferProtocol(unittest.TestCase):
                     nd = ndarray(items, shape=shape, format=fmt,
                                  flags=flags|ND_FORTRAN)
 
-                    strides = strides_from_shape(ndim, shape, itemsize, 'F')
+                    strides = strides_kutoka_shape(ndim, shape, itemsize, 'F')
                     lst = farray(items, shape)
                     self.verify(nd, obj=None,
                                 itemsize=itemsize, fmt=fmt, readonly=True,
                                 ndim=ndim, shape=shape, strides=strides,
                                 lst=lst)
 
-    def test_ndarray_index_invalid(self):
+    eleza test_ndarray_index_invalid(self):
         # not writable
         nd = ndarray([1], shape=[1])
         self.assertRaises(TypeError, nd.__setitem__, 1, 8)
@@ -1425,7 +1425,7 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertRaises(ValueError, nd.__setitem__, 2, 300)
         self.assertRaises(struct.error, nd.__setitem__, 1, (b'\x001', 200))
 
-    def test_ndarray_index_scalar(self):
+    eleza test_ndarray_index_scalar(self):
         # scalar
         nd = ndarray(1, shape=(), flags=ND_WRITABLE)
         mv = memoryview(nd)
@@ -1451,7 +1451,7 @@ class TestBufferProtocol(unittest.TestCase):
         nd[...] = 5; self.assertEqual(nd.tolist(), 5)
         mv[...] = 5; self.assertEqual(mv.tolist(), 5)
 
-    def test_ndarray_index_null_strides(self):
+    eleza test_ndarray_index_null_strides(self):
         ex = ndarray(list(range(2*4)), shape=[2, 4], flags=ND_WRITABLE)
         nd = ndarray(ex, getbuf=PyBUF_CONTIG)
 
@@ -1460,7 +1460,7 @@ class TestBufferProtocol(unittest.TestCase):
         # Same for slices.
         self.assertRaises(BufferError, nd.__getitem__, slice(3,5,1))
 
-    def test_ndarray_index_getitem_single(self):
+    eleza test_ndarray_index_getitem_single(self):
         # getitem
         for fmt, items, _ in iter_format(5):
             nd = ndarray(items, shape=[5], format=fmt)
@@ -1470,7 +1470,7 @@ class TestBufferProtocol(unittest.TestCase):
             self.assertRaises(IndexError, nd.__getitem__, -6)
             self.assertRaises(IndexError, nd.__getitem__, 5)
 
-            if is_memoryview_format(fmt):
+            ikiwa is_memoryview_format(fmt):
                 mv = memoryview(nd)
                 self.assertEqual(mv, nd)
                 for i in range(-5, 5):
@@ -1487,8 +1487,8 @@ class TestBufferProtocol(unittest.TestCase):
             for i in range(-5, 5):
                 self.assertEqual(nd[i], items[i])
 
-            if is_memoryview_format(fmt):
-                mv = nd.memoryview_from_buffer()
+            ikiwa is_memoryview_format(fmt):
+                mv = nd.memoryview_kutoka_buffer()
                 self.assertIs(mv.__eq__(nd), NotImplemented)
                 for i in range(-5, 5):
                     self.assertEqual(mv[i], items[i])
@@ -1508,7 +1508,7 @@ class TestBufferProtocol(unittest.TestCase):
         for i in range(-5, 5):
             self.assertEqual(nd[i], items[i])
 
-    def test_ndarray_index_setitem_single(self):
+    eleza test_ndarray_index_setitem_single(self):
         # assign single value
         for fmt, items, single_item in iter_format(5):
             nd = ndarray(items, shape=[5], format=fmt, flags=ND_WRITABLE)
@@ -1520,7 +1520,7 @@ class TestBufferProtocol(unittest.TestCase):
             self.assertRaises(IndexError, nd.__setitem__, -6, single_item)
             self.assertRaises(IndexError, nd.__setitem__, 5, single_item)
 
-            if not is_memoryview_format(fmt):
+            ikiwa not is_memoryview_format(fmt):
                 continue
 
             nd = ndarray(items, shape=[5], format=fmt, flags=ND_WRITABLE)
@@ -1543,7 +1543,7 @@ class TestBufferProtocol(unittest.TestCase):
                 nd[i] = nd[i+1]
             self.assertEqual(nd.tolist(), items)
 
-            if not is_memoryview_format(fmt):
+            ikiwa not is_memoryview_format(fmt):
                 continue
 
             nd = ndarray(items, shape=[5], format=fmt, flags=ND_WRITABLE)
@@ -1554,7 +1554,7 @@ class TestBufferProtocol(unittest.TestCase):
                 mv[i] = mv[i+1]
             self.assertEqual(mv.tolist(), items)
 
-    def test_ndarray_index_getitem_multidim(self):
+    eleza test_ndarray_index_getitem_multidim(self):
         shape_t = (2, 3, 5)
         nitems = prod(shape_t)
         for shape in permutations(shape_t):
@@ -1585,7 +1585,7 @@ class TestBufferProtocol(unittest.TestCase):
                         for k in range(shape[2], shape[2]):
                             self.assertEqual(lst[i][j][k], nd[i][j][k])
 
-    def test_ndarray_sequence(self):
+    eleza test_ndarray_sequence(self):
         nd = ndarray(1, shape=())
         self.assertRaises(TypeError, eval, "1 in nd", locals())
         mv = memoryview(nd)
@@ -1598,13 +1598,13 @@ class TestBufferProtocol(unittest.TestCase):
                 self.assertEqual(v, items[i])
                 self.assertTrue(v in nd)
 
-            if is_memoryview_format(fmt):
+            ikiwa is_memoryview_format(fmt):
                 mv = memoryview(nd)
                 for i, v in enumerate(mv):
                     self.assertEqual(v, items[i])
                     self.assertTrue(v in mv)
 
-    def test_ndarray_slice_invalid(self):
+    eleza test_ndarray_slice_invalid(self):
         items = [1,2,3,4,5,6,7,8]
 
         # rvalue is not an exporter
@@ -1693,7 +1693,7 @@ class TestBufferProtocol(unittest.TestCase):
         x = ndarray(ex, getbuf=PyBUF_SIMPLE)
         self.assertRaises(TypeError, x.add_suboffsets)
 
-    def test_ndarray_slice_zero_shape(self):
+    eleza test_ndarray_slice_zero_shape(self):
         items = [1,2,3,4,5,6,7,8,9,10,11,12]
 
         x = ndarray(items, shape=[12], format="L", flags=ND_WRITABLE)
@@ -1713,7 +1713,7 @@ class TestBufferProtocol(unittest.TestCase):
         x[1:2, 2:2] = y[1:2, 3:3]
         self.assertEqual(x.tolist(), carray(items, [3, 4]))
 
-    def test_ndarray_slice_multidim(self):
+    eleza test_ndarray_slice_multidim(self):
         shape_t = (2, 3, 5)
         ndim = len(shape_t)
         nitems = prod(shape_t)
@@ -1740,12 +1740,12 @@ class TestBufferProtocol(unittest.TestCase):
                     except Exception as e:
                         nderr = e.__class__
 
-                    if nderr or listerr:
+                    ikiwa nderr or listerr:
                         self.assertIs(nderr, listerr)
                     else:
                         self.assertEqual(ndsliced.tolist(), sliced)
 
-    def test_ndarray_slice_redundant_suboffsets(self):
+    eleza test_ndarray_slice_redundant_suboffsets(self):
         shape_t = (2, 3, 5, 2)
         ndim = len(shape_t)
         nitems = prod(shape_t)
@@ -1775,12 +1775,12 @@ class TestBufferProtocol(unittest.TestCase):
                 except Exception as e:
                     nderr = e.__class__
 
-                if nderr or listerr:
+                ikiwa nderr or listerr:
                     self.assertIs(nderr, listerr)
                 else:
                     self.assertEqual(ndsliced.tolist(), sliced)
 
-    def test_ndarray_slice_assign_single(self):
+    eleza test_ndarray_slice_assign_single(self):
         for fmt, items, _ in iter_format(5):
             for lslice in genslices(5):
                 for rslice in genslices(5):
@@ -1808,13 +1808,13 @@ class TestBufferProtocol(unittest.TestCase):
                         except Exception as e:
                             nderr = e.__class__
 
-                        if diff_structure: # ndarray cannot change shape
+                        ikiwa diff_structure: # ndarray cannot change shape
                             self.assertIs(nderr, ValueError)
                         else:
                             self.assertEqual(nd.tolist(), lst)
                             self.assertIs(nderr, lsterr)
 
-                        if not is_memoryview_format(fmt):
+                        ikiwa not is_memoryview_format(fmt):
                             continue
 
                         mverr = None
@@ -1823,7 +1823,7 @@ class TestBufferProtocol(unittest.TestCase):
                         except Exception as e:
                             mverr = e.__class__
 
-                        if diff_structure: # memoryview cannot change shape
+                        ikiwa diff_structure: # memoryview cannot change shape
                             self.assertIs(mverr, ValueError)
                         else:
                             self.assertEqual(mv.tolist(), lst)
@@ -1834,7 +1834,7 @@ class TestBufferProtocol(unittest.TestCase):
                               ndim=nd.ndim, shape=nd.shape, strides=nd.strides,
                               lst=nd.tolist())
 
-    def test_ndarray_slice_assign_multidim(self):
+    eleza test_ndarray_slice_assign_multidim(self):
         shape_t = (2, 3, 5)
         ndim = len(shape_t)
         nitems = prod(shape_t)
@@ -1844,7 +1844,7 @@ class TestBufferProtocol(unittest.TestCase):
 
             for flags in (0, ND_PIL):
                 for _ in range(ITERATIONS):
-                    lslices, rslices = randslice_from_shape(ndim, shape)
+                    lslices, rslices = randslice_kutoka_shape(ndim, shape)
 
                     nd = ndarray(items, shape=shape, format=fmt,
                                  flags=flags|ND_WRITABLE)
@@ -1862,12 +1862,12 @@ class TestBufferProtocol(unittest.TestCase):
                     except Exception as e:
                         nderr = e.__class__
 
-                    if nderr or listerr:
+                    ikiwa nderr or listerr:
                         self.assertIs(nderr, listerr)
                     else:
                         self.assertEqual(nd.tolist(), result)
 
-    def test_ndarray_random(self):
+    eleza test_ndarray_random(self):
         # construction of valid arrays
         for _ in range(ITERATIONS):
             for fmt in fmtdict['@']:
@@ -1876,39 +1876,39 @@ class TestBufferProtocol(unittest.TestCase):
                 t = rand_structure(itemsize, True, maxdim=MAXDIM,
                                    maxshape=MAXSHAPE)
                 self.assertTrue(verify_structure(*t))
-                items = randitems_from_structure(fmt, t)
+                items = randitems_kutoka_structure(fmt, t)
 
-                x = ndarray_from_structure(items, fmt, t)
+                x = ndarray_kutoka_structure(items, fmt, t)
                 xlist = x.tolist()
 
                 mv = memoryview(x)
-                if is_memoryview_format(fmt):
+                ikiwa is_memoryview_format(fmt):
                     mvlist = mv.tolist()
                     self.assertEqual(mvlist, xlist)
 
-                if t[2] > 0:
+                ikiwa t[2] > 0:
                     # ndim > 0: test against suboffsets representation.
-                    y = ndarray_from_structure(items, fmt, t, flags=ND_PIL)
+                    y = ndarray_kutoka_structure(items, fmt, t, flags=ND_PIL)
                     ylist = y.tolist()
                     self.assertEqual(xlist, ylist)
 
                     mv = memoryview(y)
-                    if is_memoryview_format(fmt):
+                    ikiwa is_memoryview_format(fmt):
                         self.assertEqual(mv, y)
                         mvlist = mv.tolist()
                         self.assertEqual(mvlist, ylist)
 
-                if numpy_array:
+                ikiwa numpy_array:
                     shape = t[3]
-                    if 0 in shape:
+                    ikiwa 0 in shape:
                         continue # http://projects.scipy.org/numpy/ticket/1910
-                    z = numpy_array_from_structure(items, fmt, t)
+                    z = numpy_array_kutoka_structure(items, fmt, t)
                     self.verify(x, obj=None,
                                 itemsize=z.itemsize, fmt=fmt, readonly=False,
                                 ndim=z.ndim, shape=z.shape, strides=z.strides,
                                 lst=z.tolist())
 
-    def test_ndarray_random_invalid(self):
+    eleza test_ndarray_random_invalid(self):
         # exceptions during construction of invalid arrays
         for _ in range(ITERATIONS):
             for fmt in fmtdict['@']:
@@ -1917,26 +1917,26 @@ class TestBufferProtocol(unittest.TestCase):
                 t = rand_structure(itemsize, False, maxdim=MAXDIM,
                                    maxshape=MAXSHAPE)
                 self.assertFalse(verify_structure(*t))
-                items = randitems_from_structure(fmt, t)
+                items = randitems_kutoka_structure(fmt, t)
 
                 nderr = False
                 try:
-                    x = ndarray_from_structure(items, fmt, t)
+                    x = ndarray_kutoka_structure(items, fmt, t)
                 except Exception as e:
                     nderr = e.__class__
                 self.assertTrue(nderr)
 
-                if numpy_array:
+                ikiwa numpy_array:
                     numpy_err = False
                     try:
-                        y = numpy_array_from_structure(items, fmt, t)
+                        y = numpy_array_kutoka_structure(items, fmt, t)
                     except Exception as e:
                         numpy_err = e.__class__
 
-                    if 0: # http://projects.scipy.org/numpy/ticket/1910
+                    ikiwa 0: # http://projects.scipy.org/numpy/ticket/1910
                         self.assertTrue(numpy_err)
 
-    def test_ndarray_random_slice_assign(self):
+    eleza test_ndarray_random_slice_assign(self):
         # valid slice assignments
         for _ in range(ITERATIONS):
             for fmt in fmtdict['@']:
@@ -1948,11 +1948,11 @@ class TestBufferProtocol(unittest.TestCase):
                 tr = rand_structure(itemsize, True, shape=rshape)
                 self.assertTrue(verify_structure(*tl))
                 self.assertTrue(verify_structure(*tr))
-                litems = randitems_from_structure(fmt, tl)
-                ritems = randitems_from_structure(fmt, tr)
+                litems = randitems_kutoka_structure(fmt, tl)
+                ritems = randitems_kutoka_structure(fmt, tr)
 
-                xl = ndarray_from_structure(litems, fmt, tl)
-                xr = ndarray_from_structure(ritems, fmt, tr)
+                xl = ndarray_kutoka_structure(litems, fmt, tl)
+                xr = ndarray_kutoka_structure(ritems, fmt, tr)
                 xl[lslices] = xr[rslices]
                 xllist = xl.tolist()
                 xrlist = xr.tolist()
@@ -1962,10 +1962,10 @@ class TestBufferProtocol(unittest.TestCase):
                 self.assertEqual(ml.tolist(), xllist)
                 self.assertEqual(mr.tolist(), xrlist)
 
-                if tl[2] > 0 and tr[2] > 0:
+                ikiwa tl[2] > 0 and tr[2] > 0:
                     # ndim > 0: test against suboffsets representation.
-                    yl = ndarray_from_structure(litems, fmt, tl, flags=ND_PIL)
-                    yr = ndarray_from_structure(ritems, fmt, tr, flags=ND_PIL)
+                    yl = ndarray_kutoka_structure(litems, fmt, tl, flags=ND_PIL)
+                    yr = ndarray_kutoka_structure(ritems, fmt, tr, flags=ND_PIL)
                     yl[lslices] = yr[rslices]
                     yllist = yl.tolist()
                     yrlist = yr.tolist()
@@ -1977,15 +1977,15 @@ class TestBufferProtocol(unittest.TestCase):
                     self.assertEqual(ml.tolist(), yllist)
                     self.assertEqual(mr.tolist(), yrlist)
 
-                if numpy_array:
-                    if 0 in lshape or 0 in rshape:
+                ikiwa numpy_array:
+                    ikiwa 0 in lshape or 0 in rshape:
                         continue # http://projects.scipy.org/numpy/ticket/1910
 
-                    zl = numpy_array_from_structure(litems, fmt, tl)
-                    zr = numpy_array_from_structure(ritems, fmt, tr)
+                    zl = numpy_array_kutoka_structure(litems, fmt, tl)
+                    zr = numpy_array_kutoka_structure(ritems, fmt, tr)
                     zl[lslices] = zr[rslices]
 
-                    if not is_overlapping(tl) and not is_overlapping(tr):
+                    ikiwa not is_overlapping(tl) and not is_overlapping(tr):
                         # Slice assignment of overlapping structures
                         # is undefined in NumPy.
                         self.verify(xl, obj=None,
@@ -1998,7 +1998,7 @@ class TestBufferProtocol(unittest.TestCase):
                                 ndim=zr.ndim, shape=zr.shape,
                                 strides=zr.strides, lst=zr.tolist())
 
-    def test_ndarray_re_export(self):
+    eleza test_ndarray_re_export(self):
         items = [1,2,3,4,5,6,7,8,9,10,11,12]
 
         nd = ndarray(items, shape=[3,4], flags=ND_PIL)
@@ -2011,7 +2011,7 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertFalse(ex.f_contiguous)
         self.assertFalse(ex.contiguous)
 
-    def test_ndarray_zero_shape(self):
+    eleza test_ndarray_zero_shape(self):
         # zeros in shape
         for flags in (0, ND_PIL):
             nd = ndarray([1,2,3], shape=[0], flags=flags)
@@ -2030,7 +2030,7 @@ class TestBufferProtocol(unittest.TestCase):
             self.assertEqual(nd.tolist(),
                              [[[], [], []], [[], [], []], [[], [], []]])
 
-    def test_ndarray_zero_strides(self):
+    eleza test_ndarray_zero_strides(self):
         # zero strides
         for flags in (0, ND_PIL):
             nd = ndarray([1], shape=[5], strides=[0], flags=flags)
@@ -2039,24 +2039,24 @@ class TestBufferProtocol(unittest.TestCase):
             self.assertEqual(nd.tolist(), [1, 1, 1, 1, 1])
             self.assertEqual(mv.tolist(), [1, 1, 1, 1, 1])
 
-    def test_ndarray_offset(self):
+    eleza test_ndarray_offset(self):
         nd = ndarray(list(range(20)), shape=[3], offset=7)
         self.assertEqual(nd.offset, 7)
         self.assertEqual(nd.tolist(), [7,8,9])
 
-    def test_ndarray_memoryview_from_buffer(self):
+    eleza test_ndarray_memoryview_kutoka_buffer(self):
         for flags in (0, ND_PIL):
             nd = ndarray(list(range(3)), shape=[3], flags=flags)
-            m = nd.memoryview_from_buffer()
+            m = nd.memoryview_kutoka_buffer()
             self.assertEqual(m, nd)
 
-    def test_ndarray_get_pointer(self):
+    eleza test_ndarray_get_pointer(self):
         for flags in (0, ND_PIL):
             nd = ndarray(list(range(3)), shape=[3], flags=flags)
             for i in range(3):
                 self.assertEqual(nd[i], get_pointer(nd, [i]))
 
-    def test_ndarray_tolist_null_strides(self):
+    eleza test_ndarray_tolist_null_strides(self):
         ex = ndarray(list(range(20)), shape=[2,2,5])
 
         nd = ndarray(ex, getbuf=PyBUF_ND|PyBUF_FORMAT)
@@ -2065,7 +2065,7 @@ class TestBufferProtocol(unittest.TestCase):
         m = memoryview(ex)
         self.assertEqual(m.tolist(), ex.tolist())
 
-    def test_ndarray_cmp_contig(self):
+    eleza test_ndarray_cmp_contig(self):
 
         self.assertFalse(cmp_contig(b"123", b"456"))
 
@@ -2077,7 +2077,7 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertTrue(cmp_contig(x, b'\x01'))
         self.assertTrue(cmp_contig(b'\x01', x))
 
-    def test_ndarray_hash(self):
+    eleza test_ndarray_hash(self):
 
         a = array.array('L', [1,2,3])
         nd = ndarray(a)
@@ -2114,7 +2114,7 @@ class TestBufferProtocol(unittest.TestCase):
         nd = ndarray(list(range(12)), shape=[2,2,3], format='L')
         self.assertEqual(hash(nd), hash(nd.tobytes()))
 
-    def test_py_buffer_to_contiguous(self):
+    eleza test_py_buffer_to_contiguous(self):
 
         # The requests are used in _testbuffer.c:py_buffer_to_contiguous
         # to generate buffers without full information for testing.
@@ -2194,7 +2194,7 @@ class TestBufferProtocol(unittest.TestCase):
         ### Multi-dimensional arrays:
         ###
         ### The goal here is to preserve the logical representation of the
-        ### input array but change the physical representation if necessary.
+        ### input array but change the physical representation ikiwa necessary.
         ###
         ### _testbuffer example:
         ### ====================
@@ -2212,7 +2212,7 @@ class TestBufferProtocol(unittest.TestCase):
         ###       >>> py_buffer_to_contiguous(nd, 'F', PyBUF_FULL_RO)
         ###       >>> b'\x00\x04\x08\x01\x05\t\x02\x06\n\x03\x07\x0b'
         ###
-        ###    The return value corresponds to this input list for
+        ###    The rudisha value corresponds to this input list for
         ###    _testbuffer's ndarray:
         ###       >>> nd = ndarray([0,4,8,1,5,9,2,6,10,3,7,11], shape=[3,4],
         ###                        flags=ND_FORTRAN)
@@ -2257,13 +2257,13 @@ class TestBufferProtocol(unittest.TestCase):
         lst = list(range(12))
         for f in [0, ND_FORTRAN]:
             nd = ndarray(lst, shape=[3, 4], flags=f|ND_WRITABLE)
-            if numpy_array:
+            ikiwa numpy_array:
                 na = numpy_array(buffer=bytearray(lst),
                                  shape=[3, 4], dtype='B',
-                                 order='C' if f == 0 else 'F')
+                                 order='C' ikiwa f == 0 else 'F')
 
             # 'C' request
-            if f == ND_FORTRAN: # 'F' to 'C'
+            ikiwa f == ND_FORTRAN: # 'F' to 'C'
                 x = ndarray(transpose(lst, [4, 3]), shape=[3, 4],
                             flags=ND_WRITABLE)
                 expected = x.tobytes()
@@ -2282,11 +2282,11 @@ class TestBufferProtocol(unittest.TestCase):
                 y = ndarray([v for v in b], shape=[3, 4], flags=ND_WRITABLE)
                 self.assertEqual(memoryview(y), memoryview(nd))
 
-                if numpy_array:
+                ikiwa numpy_array:
                     self.assertEqual(b, na.tostring(order='C'))
 
             # 'F' request
-            if f == 0: # 'C' to 'F'
+            ikiwa f == 0: # 'C' to 'F'
                 x = ndarray(transpose(lst, [3, 4]), shape=[4, 3],
                             flags=ND_WRITABLE)
             else:
@@ -2305,11 +2305,11 @@ class TestBufferProtocol(unittest.TestCase):
                 y = ndarray([v for v in b], shape=[3, 4], flags=ND_FORTRAN|ND_WRITABLE)
                 self.assertEqual(memoryview(y), memoryview(nd))
 
-                if numpy_array:
+                ikiwa numpy_array:
                     self.assertEqual(b, na.tostring(order='F'))
 
             # 'A' request
-            if f == ND_FORTRAN:
+            ikiwa f == ND_FORTRAN:
                 x = ndarray(lst, shape=[3, 4], flags=ND_WRITABLE)
                 expected = x.tobytes()
             else:
@@ -2329,7 +2329,7 @@ class TestBufferProtocol(unittest.TestCase):
                 y = ndarray([v for v in b], shape=[3, 4], flags=f|ND_WRITABLE)
                 self.assertEqual(memoryview(y), memoryview(nd))
 
-                if numpy_array:
+                ikiwa numpy_array:
                     self.assertEqual(b, na.tostring(order='A'))
 
         # multi-dimensional, non-contiguous input
@@ -2354,7 +2354,7 @@ class TestBufferProtocol(unittest.TestCase):
         y = ndarray([v for v in b], shape=[3, 4], flags=ND_WRITABLE)
         self.assertEqual(memoryview(y), memoryview(nd))
 
-    def test_memoryview_construction(self):
+    eleza test_memoryview_construction(self):
 
         items_shape = [(9, []), ([1,2,3], [3]), (list(range(2*3*5)), [2,3,5])]
 
@@ -2368,7 +2368,7 @@ class TestBufferProtocol(unittest.TestCase):
             self.assertTrue(m.contiguous)
 
             ndim = len(shape)
-            strides = strides_from_shape(ndim, shape, 1, 'C')
+            strides = strides_kutoka_shape(ndim, shape, 1, 'C')
             lst = carray(items, shape)
 
             self.verify(m, obj=ex,
@@ -2386,7 +2386,7 @@ class TestBufferProtocol(unittest.TestCase):
             # PyMemoryView_FromBuffer(): no strides
             nd = ndarray(ex, getbuf=PyBUF_CONTIG_RO|PyBUF_FORMAT)
             self.assertEqual(nd.strides, ())
-            m = nd.memoryview_from_buffer()
+            m = nd.memoryview_kutoka_buffer()
             self.verify(m, obj=None,
                         itemsize=1, fmt='B', readonly=True,
                         ndim=ndim, shape=shape, strides=strides,
@@ -2397,9 +2397,9 @@ class TestBufferProtocol(unittest.TestCase):
             self.assertEqual(nd.format, '')
             self.assertEqual(nd.shape, ())
             self.assertEqual(nd.strides, ())
-            m = nd.memoryview_from_buffer()
+            m = nd.memoryview_kutoka_buffer()
 
-            lst = [items] if ndim == 0 else items
+            lst = [items] ikiwa ndim == 0 else items
             self.verify(m, obj=None,
                         itemsize=1, fmt='B', readonly=True,
                         ndim=1, shape=[ex.nbytes], strides=(1,),
@@ -2415,7 +2415,7 @@ class TestBufferProtocol(unittest.TestCase):
             self.assertTrue(m.contiguous)
 
             ndim = len(shape)
-            strides = strides_from_shape(ndim, shape, 1, 'F')
+            strides = strides_kutoka_shape(ndim, shape, 1, 'F')
             lst = farray(items, shape)
 
             self.verify(m, obj=ex,
@@ -2466,13 +2466,13 @@ class TestBufferProtocol(unittest.TestCase):
         # ndim > 64
         nd = ndarray([1]*128, shape=[1]*128, format='L')
         self.assertRaises(ValueError, memoryview, nd)
-        self.assertRaises(ValueError, nd.memoryview_from_buffer)
+        self.assertRaises(ValueError, nd.memoryview_kutoka_buffer)
         self.assertRaises(ValueError, get_contiguous, nd, PyBUF_READ, 'C')
         self.assertRaises(ValueError, get_contiguous, nd, PyBUF_READ, 'F')
         self.assertRaises(ValueError, get_contiguous, nd[::-1], PyBUF_READ, 'C')
 
-    def test_memoryview_cast_zero_shape(self):
-        # Casts are undefined if buffer is multidimensional and shape
+    eleza test_memoryview_cast_zero_shape(self):
+        # Casts are undefined ikiwa buffer is multidimensional and shape
         # contains zeros. These arrays are regarded as C-contiguous by
         # Numpy and PyBuffer_GetContiguous(), so they are not caught by
         # the test for C-contiguity in memory_cast().
@@ -2491,7 +2491,7 @@ class TestBufferProtocol(unittest.TestCase):
 
     check_sizeof = support.check_sizeof
 
-    def test_memoryview_sizeof(self):
+    eleza test_memoryview_sizeof(self):
         check = self.check_sizeof
         vsize = support.calcvobjsize
         base_struct = 'Pnin 2P2n2i5P P'
@@ -2504,21 +2504,21 @@ class TestBufferProtocol(unittest.TestCase):
         a = ndarray(items, shape=[2, 2, 2], format="b")
         check(memoryview(a), vsize(base_struct + 3 * per_dim))
 
-    def test_memoryview_struct_module(self):
+    eleza test_memoryview_struct_module(self):
 
-        class INT(object):
-            def __init__(self, val):
+        kundi INT(object):
+            eleza __init__(self, val):
                 self.val = val
-            def __int__(self):
-                return self.val
+            eleza __int__(self):
+                rudisha self.val
 
-        class IDX(object):
-            def __init__(self, val):
+        kundi IDX(object):
+            eleza __init__(self, val):
                 self.val = val
-            def __index__(self):
-                return self.val
+            eleza __index__(self):
+                rudisha self.val
 
-        def f(): return 7
+        eleza f(): rudisha 7
 
         values = [INT(9), IDX(9),
                   2.2+3j, Decimal("-21.1"), 12.2, Fraction(5, 2),
@@ -2538,7 +2538,7 @@ class TestBufferProtocol(unittest.TestCase):
             self.assertEqual(m[0], nd[0])
 
             itemsize = struct.calcsize(fmt)
-            if 'P' in fmt:
+            ikiwa 'P' in fmt:
                 continue
 
             for v in values:
@@ -2554,14 +2554,14 @@ class TestBufferProtocol(unittest.TestCase):
                 except (TypeError, ValueError) as e:
                     mv_err = e.__class__
 
-                if struct_err or mv_err:
+                ikiwa struct_err or mv_err:
                     self.assertIsNot(struct_err, None)
                     self.assertIsNot(mv_err, None)
                 else:
                     self.assertEqual(m[1], nd[1])
 
-    def test_memoryview_cast_zero_strides(self):
-        # Casts are undefined if strides contains zeros. These arrays are
+    eleza test_memoryview_cast_zero_strides(self):
+        # Casts are undefined ikiwa strides contains zeros. These arrays are
         # (sometimes!) regarded as C-contiguous by Numpy, but not by
         # PyBuffer_GetContiguous().
         ex = ndarray([1,2,3], shape=[3], strides=[0])
@@ -2569,13 +2569,13 @@ class TestBufferProtocol(unittest.TestCase):
         msrc = memoryview(ex)
         self.assertRaises(TypeError, msrc.cast, 'c')
 
-    def test_memoryview_cast_invalid(self):
+    eleza test_memoryview_cast_invalid(self):
         # invalid format
         for sfmt in NON_BYTE_FORMAT:
-            sformat = '@' + sfmt if randrange(2) else sfmt
+            sformat = '@' + sfmt ikiwa randrange(2) else sfmt
             ssize = struct.calcsize(sformat)
             for dfmt in NON_BYTE_FORMAT:
-                dformat = '@' + dfmt if randrange(2) else dfmt
+                dformat = '@' + dfmt ikiwa randrange(2) else dfmt
                 dsize = struct.calcsize(dformat)
                 ex = ndarray(list(range(32)), shape=[32//ssize], format=sformat)
                 msrc = memoryview(ex)
@@ -2585,11 +2585,11 @@ class TestBufferProtocol(unittest.TestCase):
             ex = ndarray(sitems, shape=[1], format=sfmt)
             msrc = memoryview(ex)
             for dfmt, _, _ in iter_format(1):
-                if not is_memoryview_format(dfmt):
+                ikiwa not is_memoryview_format(dfmt):
                     self.assertRaises(ValueError, msrc.cast, dfmt,
                                       [32//dsize])
                 else:
-                    if not is_byte_format(sfmt) and not is_byte_format(dfmt):
+                    ikiwa not is_byte_format(sfmt) and not is_byte_format(dfmt):
                         self.assertRaises(TypeError, msrc.cast, dfmt,
                                           [32//dsize])
 
@@ -2669,7 +2669,7 @@ class TestBufferProtocol(unittest.TestCase):
         m1 = memoryview(nd)
         nd = ndarray(list(range(128)), shape=[128], format='B')
         m2 = memoryview(nd)
-        if sys.maxsize == 2**63-1:
+        ikiwa sys.maxsize == 2**63-1:
             self.assertRaises(TypeError, m1.cast, 'B',
                               [7, 7, 73, 127, 337, 92737, 649657])
             self.assertRaises(ValueError, m1.cast, 'B',
@@ -2684,14 +2684,14 @@ class TestBufferProtocol(unittest.TestCase):
             self.assertRaises(ValueError, m2.cast, 'I',
                               [2**10, 2**10, 2**5, 2**3, 2**1])
 
-    def test_memoryview_cast(self):
+    eleza test_memoryview_cast(self):
         bytespec = (
           ('B', lambda ex: list(ex.tobytes())),
-          ('b', lambda ex: [x-256 if x > 127 else x for x in list(ex.tobytes())]),
+          ('b', lambda ex: [x-256 ikiwa x > 127 else x for x in list(ex.tobytes())]),
           ('c', lambda ex: [bytes(chr(x), 'latin-1') for x in list(ex.tobytes())]),
         )
 
-        def iter_roundtrip(ex, m, items, fmt):
+        eleza iter_roundtrip(ex, m, items, fmt):
             srcsize = struct.calcsize(fmt)
             for bytefmt, to_bytelist in bytespec:
 
@@ -2744,7 +2744,7 @@ class TestBufferProtocol(unittest.TestCase):
             m = memoryview(ex)
             iter_roundtrip(ex, m, items, fmt)
 
-    def test_memoryview_cast_1D_ND(self):
+    eleza test_memoryview_cast_1D_ND(self):
         # Cast between C-contiguous buffers. At least one buffer must
         # be 1D, at least one format must be 'c', 'b' or 'B'.
         for _tshape in gencastshapes():
@@ -2752,10 +2752,10 @@ class TestBufferProtocol(unittest.TestCase):
                 tfmt = ('', '@')[randrange(2)] + char
                 tsize = struct.calcsize(tfmt)
                 n = prod(_tshape) * tsize
-                obj = 'memoryview' if is_byte_format(tfmt) else 'bytefmt'
+                obj = 'memoryview' ikiwa is_byte_format(tfmt) else 'bytefmt'
                 for fmt, items, _ in iter_format(n, obj):
                     size = struct.calcsize(fmt)
-                    shape = [n] if n > 0 else []
+                    shape = [n] ikiwa n > 0 else []
                     tshape = _tshape + [size]
 
                     ex = ndarray(items, shape=shape, format=fmt)
@@ -2763,10 +2763,10 @@ class TestBufferProtocol(unittest.TestCase):
 
                     titems, tshape = cast_items(ex, tfmt, tsize, shape=tshape)
 
-                    if titems is None:
+                    ikiwa titems is None:
                         self.assertRaises(TypeError, m.cast, tfmt, tshape)
                         continue
-                    if titems == 'nan':
+                    ikiwa titems == 'nan':
                         continue # NaNs in lists are a recipe for trouble.
 
                     # 1D -> ND
@@ -2798,9 +2798,9 @@ class TestBufferProtocol(unittest.TestCase):
                                 ndim=ndim, shape=shape, strides=strides,
                                 lst=lst, cast=True)
 
-        if ctypes:
+        ikiwa ctypes:
             # format: "T{>l:x:>d:y:}"
-            class BEPoint(ctypes.BigEndianStructure):
+            kundi BEPoint(ctypes.BigEndianStructure):
                 _fields_ = [("x", ctypes.c_long), ("y", ctypes.c_double)]
             point = BEPoint(100, 200.1)
             m1 = memoryview(point)
@@ -2824,7 +2824,7 @@ class TestBufferProtocol(unittest.TestCase):
             self.assertEqual(m2.strides, (1,))
             self.assertEqual(m2.suboffsets, ())
 
-    def test_memoryview_tolist(self):
+    eleza test_memoryview_tolist(self):
 
         # Most tolist() tests are in self.verify() etc.
 
@@ -2854,7 +2854,7 @@ class TestBufferProtocol(unittest.TestCase):
         m = memoryview(ex)
         self.assertRaises(NotImplementedError, m.tolist)
 
-    def test_memoryview_repr(self):
+    eleza test_memoryview_repr(self):
         m = memoryview(bytearray(9))
         r = m.__repr__()
         self.assertTrue(r.startswith("<memory"))
@@ -2863,7 +2863,7 @@ class TestBufferProtocol(unittest.TestCase):
         r = m.__repr__()
         self.assertTrue(r.startswith("<released"))
 
-    def test_memoryview_sequence(self):
+    eleza test_memoryview_sequence(self):
 
         for fmt in ('d', 'f'):
             inf = float(3e400)
@@ -2878,13 +2878,13 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertRaises(TypeError, eval, "9.0 in m", locals())
 
     @contextlib.contextmanager
-    def assert_out_of_bounds_error(self, dim):
+    eleza assert_out_of_bounds_error(self, dim):
         with self.assertRaises(IndexError) as cm:
             yield
         self.assertEqual(str(cm.exception),
                          "index out of bounds on dimension %d" % (dim,))
 
-    def test_memoryview_index(self):
+    eleza test_memoryview_index(self):
 
         # ndim = 0
         ex = ndarray(12.5, shape=[], format='d')
@@ -2937,7 +2937,7 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertRaises(NotImplementedError, m.__getitem__, ())
         self.assertRaises(NotImplementedError, m.__getitem__, 0)
 
-    def test_memoryview_assign(self):
+    eleza test_memoryview_assign(self):
 
         # ndim = 0
         ex = ndarray(12.5, shape=[], format='f', flags=ND_WRITABLE)
@@ -2967,7 +2967,7 @@ class TestBufferProtocol(unittest.TestCase):
 
         # pack_single() success:
         for fmt in fmtdict['@']:
-            if fmt == 'c' or fmt == '?':
+            ikiwa fmt == 'c' or fmt == '?':
                 continue
             ex = ndarray([1,2,3], shape=[3], format=fmt, flags=ND_WRITABLE)
             m = memoryview(ex)
@@ -2997,15 +2997,15 @@ class TestBufferProtocol(unittest.TestCase):
         m1 = memoryview(ex)
 
         for fmt, _range in fmtdict['@'].items():
-            if (fmt == '?'): # PyObject_IsTrue() accepts anything
+            ikiwa (fmt == '?'): # PyObject_IsTrue() accepts anything
                 continue
-            if fmt == 'c': # special case tested above
+            ikiwa fmt == 'c': # special case tested above
                 continue
             m2 = m1.cast(fmt)
             lo, hi = _range
-            if fmt == 'd' or fmt == 'f':
+            ikiwa fmt == 'd' or fmt == 'f':
                 lo, hi = -2**1024, 2**1024
-            if fmt != 'P': # PyLong_AsVoidPtr() accepts negative numbers
+            ikiwa fmt != 'P': # PyLong_AsVoidPtr() accepts negative numbers
                 self.assertRaises(ValueError, m2.__setitem__, 0, lo-1)
                 self.assertRaises(TypeError, m2.__setitem__, 0, "xyz")
             self.assertRaises(ValueError, m2.__setitem__, 0, hi)
@@ -3046,7 +3046,7 @@ class TestBufferProtocol(unittest.TestCase):
         # Not implemented: multidimensional sub-views
         self.assertRaises(NotImplementedError, m.__setitem__, 0, [2, 3])
 
-    def test_memoryview_slice(self):
+    eleza test_memoryview_slice(self):
 
         ex = ndarray(list(range(12)), shape=[12], flags=ND_WRITABLE)
         m = memoryview(ex)
@@ -3102,15 +3102,15 @@ class TestBufferProtocol(unittest.TestCase):
             self.assertEqual(m1, ex1)
             self.assertEqual(m2, ex2)
 
-    def test_memoryview_array(self):
+    eleza test_memoryview_array(self):
 
-        def cmptest(testcase, a, b, m, singleitem):
+        eleza cmptest(testcase, a, b, m, singleitem):
             for i, _ in enumerate(a):
                 ai = a[i]
                 mi = m[i]
                 testcase.assertEqual(ai, mi)
                 a[i] = singleitem
-                if singleitem != ai:
+                ikiwa singleitem != ai:
                     testcase.assertNotEqual(a, m)
                     testcase.assertNotEqual(a, b)
                 else:
@@ -3154,9 +3154,9 @@ class TestBufferProtocol(unittest.TestCase):
                         except Exception as e:
                             m_err = e.__class__
 
-                        if have_resize: # memoryview cannot change shape
+                        ikiwa have_resize: # memoryview cannot change shape
                             self.assertIs(m_err, ValueError)
-                        elif m_err or array_err:
+                        elikiwa m_err or array_err:
                             self.assertIs(m_err, array_err)
                         else:
                             self.assertEqual(m, a)
@@ -3164,7 +3164,7 @@ class TestBufferProtocol(unittest.TestCase):
                             self.assertEqual(m.tobytes(), a.tobytes())
                             cmptest(self, a, b, m, singleitem)
 
-    def test_memoryview_compare_special_cases(self):
+    eleza test_memoryview_compare_special_cases(self):
 
         a = array.array('L', [1, 2, 3])
         b = array.array('L', [1, 2, 7])
@@ -3205,9 +3205,9 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertNotEqual(v, a)
 
         # Some ctypes format strings are unknown to the struct module.
-        if ctypes:
+        ikiwa ctypes:
             # format: "T{>l:x:>l:y:}"
-            class BEPoint(ctypes.BigEndianStructure):
+            kundi BEPoint(ctypes.BigEndianStructure):
                 _fields_ = [("x", ctypes.c_long), ("y", ctypes.c_long)]
             point = BEPoint(100, 200)
             a = memoryview(point)
@@ -3217,7 +3217,7 @@ class TestBufferProtocol(unittest.TestCase):
             self.assertNotEqual(point, a)
             self.assertRaises(NotImplementedError, a.tolist)
 
-    def test_memoryview_compare_ndim_zero(self):
+    eleza test_memoryview_compare_ndim_zero(self):
 
         nd1 = ndarray(1729, shape=[], format='@L')
         nd2 = ndarray(1729, shape=[], format='L', flags=ND_WRITABLE)
@@ -3280,7 +3280,7 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertEqual(v, nd1)
         self.assertEqual(w, nd2)
 
-    def test_memoryview_compare_ndim_one(self):
+    eleza test_memoryview_compare_ndim_one(self):
 
         # contiguous
         nd1 = ndarray([-529, 576, -625, 676, -729], shape=[5], format='@h')
@@ -3352,7 +3352,7 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertEqual(v, w[::2])
         self.assertEqual(v[::-1], w[::-2])
 
-    def test_memoryview_compare_zero_shape(self):
+    eleza test_memoryview_compare_zero_shape(self):
 
         # zeros in shape
         nd1 = ndarray([900, 961], shape=[0], format='@h')
@@ -3378,7 +3378,7 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertEqual(w, nd1)
         self.assertEqual(v, w)
 
-    def test_memoryview_compare_zero_strides(self):
+    eleza test_memoryview_compare_zero_strides(self):
 
         # zero strides
         nd1 = ndarray([900, 900, 900, 900], shape=[4], format='@L')
@@ -3404,7 +3404,7 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertEqual(w, nd1)
         self.assertEqual(v, w)
 
-    def test_memoryview_compare_random_formats(self):
+    eleza test_memoryview_compare_random_formats(self):
 
         # random single character native formats
         n = 10
@@ -3432,7 +3432,7 @@ class TestBufferProtocol(unittest.TestCase):
                 m = memoryview(nd)
                 self.assertEqual(m, nd)
 
-    def test_memoryview_compare_multidim_c(self):
+    eleza test_memoryview_compare_multidim_c(self):
 
         # C-contiguous, different values
         nd1 = ndarray(list(range(-15, 15)), shape=[3, 2, 5], format='@h')
@@ -3494,7 +3494,7 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertEqual(w, nd1)
         self.assertEqual(v, w)
 
-    def test_memoryview_compare_multidim_fortran(self):
+    eleza test_memoryview_compare_multidim_fortran(self):
 
         # Fortran-contiguous, different values
         nd1 = ndarray(list(range(-15, 15)), shape=[5, 2, 3], format='@h',
@@ -3566,7 +3566,7 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertEqual(w, nd1)
         self.assertEqual(v, w)
 
-    def test_memoryview_compare_multidim_mixed(self):
+    eleza test_memoryview_compare_multidim_mixed(self):
 
         # mixed C/Fortran contiguous
         lst1 = list(range(-15, 15))
@@ -3663,7 +3663,7 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertNotEqual(w, nd1)
         self.assertNotEqual(v, w)
 
-    def test_memoryview_compare_multidim_zero_shape(self):
+    eleza test_memoryview_compare_multidim_zero_shape(self):
 
         # zeros in shape
         nd1 = ndarray(list(range(30)), shape=[0, 3, 2], format='i')
@@ -3689,7 +3689,7 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertNotEqual(w, nd1)
         self.assertNotEqual(v, w)
 
-    def test_memoryview_compare_multidim_zero_strides(self):
+    eleza test_memoryview_compare_multidim_zero_strides(self):
 
         # zero strides
         nd1 = ndarray([900]*80, shape=[4, 5, 4], format='@L')
@@ -3716,7 +3716,7 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertEqual(w, nd1)
         self.assertEqual(v, w)
 
-    def test_memoryview_compare_multidim_suboffsets(self):
+    eleza test_memoryview_compare_multidim_suboffsets(self):
 
         # suboffsets
         ex1 = ndarray(list(range(40)), shape=[5, 8], format='@I')
@@ -3845,7 +3845,7 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertEqual(w, nd2)
         self.assertEqual(v, w)
 
-    def test_memoryview_compare_not_equal(self):
+    eleza test_memoryview_compare_not_equal(self):
 
         # items not equal
         for byteorder in ['=', '<', '>', '!']:
@@ -3874,7 +3874,7 @@ class TestBufferProtocol(unittest.TestCase):
             self.assertNotEqual(a, y)
             self.assertNotEqual(b, x)
 
-    def test_memoryview_check_released(self):
+    eleza test_memoryview_check_released(self):
 
         a = array.array('d', [1.1, 2.2, 3.3])
 
@@ -3914,7 +3914,7 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertNotEqual(m1, a)
         self.assertEqual(m1, m1)
 
-    def test_memoryview_tobytes(self):
+    eleza test_memoryview_tobytes(self):
         # Many implicit tests are already in self.verify().
 
         t = (-529, 576, -625, 676, -729)
@@ -3941,15 +3941,15 @@ class TestBufferProtocol(unittest.TestCase):
         self.assertEqual(m.tobytes(), nd.tobytes())
 
         # Unknown formats are handled: tobytes() purely depends on itemsize.
-        if ctypes:
+        ikiwa ctypes:
             # format: "T{>l:x:>l:y:}"
-            class BEPoint(ctypes.BigEndianStructure):
+            kundi BEPoint(ctypes.BigEndianStructure):
                 _fields_ = [("x", ctypes.c_long), ("y", ctypes.c_long)]
             point = BEPoint(100, 200)
             a = memoryview(point)
             self.assertEqual(a.tobytes(), bytes(point))
 
-    def test_memoryview_get_contiguous(self):
+    eleza test_memoryview_get_contiguous(self):
         # Many implicit tests are already in self.verify().
 
         # no buffer interface
@@ -4066,7 +4066,7 @@ class TestBufferProtocol(unittest.TestCase):
         m = get_contiguous(nd, PyBUF_READ, 'C')
         self.assertTrue(m.c_contiguous)
 
-    def test_memoryview_serializing(self):
+    eleza test_memoryview_serializing(self):
 
         # C-contiguous
         size = struct.calcsize('i')
@@ -4096,7 +4096,7 @@ class TestBufferProtocol(unittest.TestCase):
         #buf.readinto(b)
         #self.assertEqual(m.tobytes(), b)
 
-    def test_memoryview_hash(self):
+    eleza test_memoryview_hash(self):
 
         # bytes exporter
         b = bytes(list(range(12)))
@@ -4156,7 +4156,7 @@ class TestBufferProtocol(unittest.TestCase):
         m = memoryview(nd)
         self.assertRaises(ValueError, m.__hash__)
 
-    def test_memoryview_release(self):
+    eleza test_memoryview_release(self):
 
         # Create re-exporter kutoka getbuffer(memoryview), then release the view.
         a = bytearray([1,2,3])
@@ -4222,7 +4222,7 @@ class TestBufferProtocol(unittest.TestCase):
         # If multiple memoryviews share the same managed buffer, implicit
         # release() in the context manager's __exit__() method should still
         # work.
-        def catch22(b):
+        eleza catch22(b):
             with memoryview(b) as m2:
                 pass
 
@@ -4277,14 +4277,14 @@ class TestBufferProtocol(unittest.TestCase):
                         self.assertEqual(m3[2], ord(b'3'))
                         del m1, m2, m3
 
-        # memoryview.release() fails if the view has exported buffers.
+        # memoryview.release() fails ikiwa the view has exported buffers.
         x = bytearray(b'123')
         with self.assertRaises(BufferError):
             with memoryview(x) as m:
                 ex = ndarray(m)
                 m[0] == ord(b'1')
 
-    def test_memoryview_redirect(self):
+    eleza test_memoryview_redirect(self):
 
         nd = ndarray([1.0 * x for x in range(12)], shape=[12], format='d')
         a = array.array('d', [1.0 * x for x in range(12)])
@@ -4308,7 +4308,7 @@ class TestBufferProtocol(unittest.TestCase):
             del y, z
             self.assertEqual(m[1:3], x[1:3])
 
-    def test_memoryview_from_static_exporter(self):
+    eleza test_memoryview_kutoka_static_exporter(self):
 
         fmt = 'B'
         lst = [0,1,2,3,4,5,6,7,8,9,10,11]
@@ -4402,16 +4402,16 @@ class TestBufferProtocol(unittest.TestCase):
                     lst=lst)
         del x, y, z, m
 
-    def test_memoryview_getbuffer_undefined(self):
+    eleza test_memoryview_getbuffer_undefined(self):
 
         # getbufferproc does not adhere to the new documentation
         nd = ndarray([1,2,3], [3], flags=ND_GETBUF_FAIL|ND_GETBUF_UNDEFINED)
         self.assertRaises(BufferError, memoryview, nd)
 
-    def test_issue_7385(self):
+    eleza test_issue_7385(self):
         x = ndarray([1,2,3], shape=[3], flags=ND_GETBUF_FAIL)
         self.assertRaises(BufferError, memoryview, x)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

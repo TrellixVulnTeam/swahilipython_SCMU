@@ -12,18 +12,18 @@ kutoka unittest.mock agiza Mock
 kutoka tkinter agiza Tk, Text
 
 
-class DummyEditwin:
-    def __init__(self, text):
+kundi DummyEditwin:
+    eleza __init__(self, text):
         self.text = text
         self.indentwidth = 8
         self.tabwidth = 8
         self.prompt_last_line = '>>>' # Currently not used by parenmatch.
 
 
-class ParenMatchTest(unittest.TestCase):
+kundi ParenMatchTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.root = Tk()
         cls.root.withdraw()
         cls.text = Text(cls.root)
@@ -31,21 +31,21 @@ class ParenMatchTest(unittest.TestCase):
         cls.editwin.text_frame = Mock()
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         del cls.text, cls.editwin
         cls.root.update_idletasks()
         cls.root.destroy()
         del cls.root
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.text.delete('1.0', 'end')
 
-    def get_parenmatch(self):
+    eleza get_parenmatch(self):
         pm = ParenMatch(self.editwin)
         pm.bell = lambda: None
-        return pm
+        rudisha pm
 
-    def test_paren_styles(self):
+    eleza test_paren_styles(self):
         """
         Test ParenMatch with each style.
         """
@@ -59,11 +59,11 @@ class ParenMatchTest(unittest.TestCase):
             with self.subTest(style=style):
                 text.delete('1.0', 'end')
                 pm.STYLE = style
-                text.insert('insert', 'def foobar(a, b')
+                text.insert('insert', 'eleza foobar(a, b')
 
                 pm.flash_paren_event('event')
                 self.assertIn('<<parenmatch-check-restore>>', text.event_info())
-                if style == 'parens':
+                ikiwa style == 'parens':
                     self.assertTupleEqual(text.tag_nextrange('paren', '1.0'),
                                           ('1.10', '1.11'))
                 self.assertTupleEqual(
@@ -79,7 +79,7 @@ class ParenMatchTest(unittest.TestCase):
                 self.assertTupleEqual(
                         text.tag_prevrange('paren', 'end'), range2)
 
-    def test_paren_corner(self):
+    eleza test_paren_corner(self):
         """
         Test corner cases in flash_paren_event and paren_closed_event.
 
@@ -98,7 +98,7 @@ class ParenMatchTest(unittest.TestCase):
         text.insert('insert', ' a, *arg)')
         pm.paren_closed_event('event')
 
-    def test_handle_restore_timer(self):
+    eleza test_handle_restore_timer(self):
         pm = self.get_parenmatch()
         pm.restore_event = Mock()
         pm.handle_restore_timer(0)
@@ -108,5 +108,5 @@ class ParenMatchTest(unittest.TestCase):
         self.assertFalse(pm.restore_event.called)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -39,12 +39,12 @@ The following group define certificate requirements that one side is
 allowing/requiring kutoka the other side:
 
 CERT_NONE - no certificates kutoka the other side are required (or will
-            be looked at if provided)
-CERT_OPTIONAL - certificates are not required, but if provided will be
-                validated, and if validation fails, the connection will
+            be looked at ikiwa provided)
+CERT_OPTIONAL - certificates are not required, but ikiwa provided will be
+                validated, and ikiwa validation fails, the connection will
                 also fail
 CERT_REQUIRED - certificates are required, and will be validated, and
-                if validation fails, the connection will also fail
+                ikiwa validation fails, the connection will also fail
 
 The following constants identify various SSL protocol variants:
 
@@ -95,7 +95,7 @@ agiza os
 kutoka collections agiza namedtuple
 kutoka enum agiza Enum as _Enum, IntEnum as _IntEnum, IntFlag as _IntFlag
 
-agiza _ssl             # if we can't agiza it, let the error propagate
+agiza _ssl             # ikiwa we can't agiza it, let the error propagate
 
 kutoka _ssl agiza OPENSSL_VERSION_NUMBER, OPENSSL_VERSION_INFO, OPENSSL_VERSION
 kutoka _ssl agiza _SSLContext, MemoryBIO, SSLSession
@@ -155,7 +155,7 @@ _PROTOCOL_NAMES = {value: name for name, value in _SSLMethod.__members__.items()
 _SSLv2_IF_EXISTS = getattr(_SSLMethod, 'PROTOCOL_SSLv2', None)
 
 
-class TLSVersion(_IntEnum):
+kundi TLSVersion(_IntEnum):
     MINIMUM_SUPPORTED = _ssl.PROTO_MINIMUM_SUPPORTED
     SSLv3 = _ssl.PROTO_SSLv3
     TLSv1 = _ssl.PROTO_TLSv1
@@ -165,7 +165,7 @@ class TLSVersion(_IntEnum):
     MAXIMUM_SUPPORTED = _ssl.PROTO_MAXIMUM_SUPPORTED
 
 
-class _TLSContentType(_IntEnum):
+kundi _TLSContentType(_IntEnum):
     """Content types (record layer)
 
     See RFC 8446, section B.1
@@ -179,7 +179,7 @@ class _TLSContentType(_IntEnum):
     INNER_CONTENT_TYPE = 0x101
 
 
-class _TLSAlertType(_IntEnum):
+kundi _TLSAlertType(_IntEnum):
     """Alert types for TLSContentType.ALERT messages
 
     See RFC 8466, section B.2
@@ -220,7 +220,7 @@ class _TLSAlertType(_IntEnum):
     NO_APPLICATION_PROTOCOL = 120
 
 
-class _TLSMessageType(_IntEnum):
+kundi _TLSMessageType(_IntEnum):
     """Message types (handshake protocol)
 
     See RFC 8446, section B.3
@@ -249,7 +249,7 @@ class _TLSMessageType(_IntEnum):
     CHANGE_CIPHER_SPEC = 0x0101
 
 
-if sys.platform == "win32":
+ikiwa sys.platform == "win32":
     kutoka _ssl agiza enum_certificates, enum_crls
 
 kutoka socket agiza socket, AF_INET, SOCK_STREAM, create_connection
@@ -272,7 +272,7 @@ _RESTRICTED_SERVER_CIPHERS = _DEFAULT_CIPHERS
 CertificateError = SSLCertVerificationError
 
 
-def _dnsname_match(dn, hostname):
+eleza _dnsname_match(dn, hostname):
     """Matching according to RFC 6125, section 6.4.3
 
     - Hostnames are compared lower case.
@@ -282,46 +282,46 @@ def _dnsname_match(dn, hostname):
       supported and a CertificateError is raised.
     - A wildcard must match at least one character.
     """
-    if not dn:
-        return False
+    ikiwa not dn:
+        rudisha False
 
     wildcards = dn.count('*')
     # speed up common case w/o wildcards
-    if not wildcards:
-        return dn.lower() == hostname.lower()
+    ikiwa not wildcards:
+        rudisha dn.lower() == hostname.lower()
 
-    if wildcards > 1:
+    ikiwa wildcards > 1:
         raise CertificateError(
             "too many wildcards in certificate DNS name: {!r}.".format(dn))
 
     dn_leftmost, sep, dn_remainder = dn.partition('.')
 
-    if '*' in dn_remainder:
+    ikiwa '*' in dn_remainder:
         # Only match wildcard in leftmost segment.
         raise CertificateError(
             "wildcard can only be present in the leftmost label: "
             "{!r}.".format(dn))
 
-    if not sep:
+    ikiwa not sep:
         # no right side
         raise CertificateError(
             "sole wildcard without additional labels are not support: "
             "{!r}.".format(dn))
 
-    if dn_leftmost != '*':
+    ikiwa dn_leftmost != '*':
         # no partial wildcard matching
         raise CertificateError(
             "partial wildcards in leftmost label are not supported: "
             "{!r}.".format(dn))
 
     hostname_leftmost, sep, hostname_remainder = hostname.partition('.')
-    if not hostname_leftmost or not sep:
+    ikiwa not hostname_leftmost or not sep:
         # wildcard must match at least one char
-        return False
-    return dn_remainder.lower() == hostname_remainder.lower()
+        rudisha False
+    rudisha dn_remainder.lower() == hostname_remainder.lower()
 
 
-def _inet_paton(ipname):
+eleza _inet_paton(ipname):
     """Try to convert an IP address to packed binary form
 
     Supports IPv4 addresses on all platforms and IPv6 on platforms with IPv6
@@ -335,9 +335,9 @@ def _inet_paton(ipname):
         # not an IPv4 address
         pass
     else:
-        if _socket.inet_ntoa(addr) == ipname:
+        ikiwa _socket.inet_ntoa(addr) == ipname:
             # only accept injective ipnames
-            return addr
+            rudisha addr
         else:
             # refuse for short IPv4 notation and additional trailing data
             raise ValueError(
@@ -345,7 +345,7 @@ def _inet_paton(ipname):
             )
 
     try:
-        return _socket.inet_pton(_socket.AF_INET6, ipname)
+        rudisha _socket.inet_pton(_socket.AF_INET6, ipname)
     except OSError:
         raise ValueError("{!r} is neither an IPv4 nor an IP6 "
                          "address.".format(ipname))
@@ -356,7 +356,7 @@ def _inet_paton(ipname):
     raise ValueError("{!r} is not an IPv4 address.".format(ipname))
 
 
-def _ipaddress_match(cert_ipaddress, host_ip):
+eleza _ipaddress_match(cert_ipaddress, host_ip):
     """Exact matching of IP addresses.
 
     RFC 6125 explicitly doesn't define an algorithm for this
@@ -365,15 +365,15 @@ def _ipaddress_match(cert_ipaddress, host_ip):
     # OpenSSL may add a trailing newline to a subjectAltName's IP address,
     # commonly woth IPv6 addresses. Strip off trailing \n.
     ip = _inet_paton(cert_ipaddress.rstrip())
-    return ip == host_ip
+    rudisha ip == host_ip
 
 
-def match_hostname(cert, hostname):
+eleza match_hostname(cert, hostname):
     """Verify that *cert* (in decoded format as returned by
     SSLSocket.getpeercert()) matches the *hostname*.  RFC 2818 and RFC 6125
     rules are followed.
 
-    The function matches IP addresses rather than dNSNames if hostname is a
+    The function matches IP addresses rather than dNSNames ikiwa hostname is a
     valid ipaddress string. IPv4 addresses are supported on all platforms.
     IPv6 addresses are supported on platforms with IPv6 support (AF_INET6
     and inet_pton).
@@ -381,7 +381,7 @@ def match_hostname(cert, hostname):
     CertificateError is raised on failure. On success, the function
     returns nothing.
     """
-    if not cert:
+    ikiwa not cert:
         raise ValueError("empty or no certificate, match_hostname needs a "
                          "SSL socket or SSL context with either "
                          "CERT_OPTIONAL or CERT_REQUIRED")
@@ -393,30 +393,30 @@ def match_hostname(cert, hostname):
     dnsnames = []
     san = cert.get('subjectAltName', ())
     for key, value in san:
-        if key == 'DNS':
-            if host_ip is None and _dnsname_match(value, hostname):
+        ikiwa key == 'DNS':
+            ikiwa host_ip is None and _dnsname_match(value, hostname):
                 return
             dnsnames.append(value)
-        elif key == 'IP Address':
-            if host_ip is not None and _ipaddress_match(value, host_ip):
+        elikiwa key == 'IP Address':
+            ikiwa host_ip is not None and _ipaddress_match(value, host_ip):
                 return
             dnsnames.append(value)
-    if not dnsnames:
+    ikiwa not dnsnames:
         # The subject is only checked when there is no dNSName entry
         # in subjectAltName
         for sub in cert.get('subject', ()):
             for key, value in sub:
                 # XXX according to RFC 2818, the most specific Common Name
                 # must be used.
-                if key == 'commonName':
-                    if _dnsname_match(value, hostname):
+                ikiwa key == 'commonName':
+                    ikiwa _dnsname_match(value, hostname):
                         return
                     dnsnames.append(value)
-    if len(dnsnames) > 1:
+    ikiwa len(dnsnames) > 1:
         raise CertificateError("hostname %r "
             "doesn't match either of %s"
             % (hostname, ', '.join(map(repr, dnsnames))))
-    elif len(dnsnames) == 1:
+    elikiwa len(dnsnames) == 1:
         raise CertificateError("hostname %r "
             "doesn't match %r"
             % (hostname, dnsnames[0]))
@@ -429,7 +429,7 @@ DefaultVerifyPaths = namedtuple("DefaultVerifyPaths",
     "cafile capath openssl_cafile_env openssl_cafile openssl_capath_env "
     "openssl_capath")
 
-def get_default_verify_paths():
+eleza get_default_verify_paths():
     """Return paths to default cafile and capath.
     """
     parts = _ssl.get_default_verify_paths()
@@ -438,66 +438,66 @@ def get_default_verify_paths():
     cafile = os.environ.get(parts[0], parts[1])
     capath = os.environ.get(parts[2], parts[3])
 
-    return DefaultVerifyPaths(cafile if os.path.isfile(cafile) else None,
-                              capath if os.path.isdir(capath) else None,
+    rudisha DefaultVerifyPaths(cafile ikiwa os.path.isfile(cafile) else None,
+                              capath ikiwa os.path.isdir(capath) else None,
                               *parts)
 
 
-class _ASN1Object(namedtuple("_ASN1Object", "nid shortname longname oid")):
+kundi _ASN1Object(namedtuple("_ASN1Object", "nid shortname longname oid")):
     """ASN.1 object identifier lookup
     """
     __slots__ = ()
 
-    def __new__(cls, oid):
-        return super().__new__(cls, *_txt2obj(oid, name=False))
+    eleza __new__(cls, oid):
+        rudisha super().__new__(cls, *_txt2obj(oid, name=False))
 
     @classmethod
-    def fromnid(cls, nid):
+    eleza kutokanid(cls, nid):
         """Create _ASN1Object kutoka OpenSSL numeric ID
         """
-        return super().__new__(cls, *_nid2obj(nid))
+        rudisha super().__new__(cls, *_nid2obj(nid))
 
     @classmethod
-    def fromname(cls, name):
+    eleza kutokaname(cls, name):
         """Create _ASN1Object kutoka short name, long name or OID
         """
-        return super().__new__(cls, *_txt2obj(name, name=True))
+        rudisha super().__new__(cls, *_txt2obj(name, name=True))
 
 
-class Purpose(_ASN1Object, _Enum):
+kundi Purpose(_ASN1Object, _Enum):
     """SSLContext purpose flags with X509v3 Extended Key Usage objects
     """
     SERVER_AUTH = '1.3.6.1.5.5.7.3.1'
     CLIENT_AUTH = '1.3.6.1.5.5.7.3.2'
 
 
-class SSLContext(_SSLContext):
+kundi SSLContext(_SSLContext):
     """An SSLContext holds various SSL-related configuration options and
     data, such as certificates and possibly a private key."""
     _windows_cert_stores = ("CA", "ROOT")
 
-    sslsocket_class = None  # SSLSocket is assigned later.
-    sslobject_class = None  # SSLObject is assigned later.
+    sslsocket_kundi = None  # SSLSocket is assigned later.
+    sslobject_kundi = None  # SSLObject is assigned later.
 
-    def __new__(cls, protocol=PROTOCOL_TLS, *args, **kwargs):
+    eleza __new__(cls, protocol=PROTOCOL_TLS, *args, **kwargs):
         self = _SSLContext.__new__(cls, protocol)
-        return self
+        rudisha self
 
-    def _encode_hostname(self, hostname):
-        if hostname is None:
-            return None
-        elif isinstance(hostname, str):
-            return hostname.encode('idna').decode('ascii')
+    eleza _encode_hostname(self, hostname):
+        ikiwa hostname is None:
+            rudisha None
+        elikiwa isinstance(hostname, str):
+            rudisha hostname.encode('idna').decode('ascii')
         else:
-            return hostname.decode('ascii')
+            rudisha hostname.decode('ascii')
 
-    def wrap_socket(self, sock, server_side=False,
+    eleza wrap_socket(self, sock, server_side=False,
                     do_handshake_on_connect=True,
                     suppress_ragged_eofs=True,
                     server_hostname=None, session=None):
-        # SSLSocket class handles server_hostname encoding before it calls
+        # SSLSocket kundi handles server_hostname encoding before it calls
         # ctx._wrap_socket()
-        return self.sslsocket_class._create(
+        rudisha self.sslsocket_class._create(
             sock=sock,
             server_side=server_side,
             do_handshake_on_connect=do_handshake_on_connect,
@@ -507,119 +507,119 @@ class SSLContext(_SSLContext):
             session=session
         )
 
-    def wrap_bio(self, incoming, outgoing, server_side=False,
+    eleza wrap_bio(self, incoming, outgoing, server_side=False,
                  server_hostname=None, session=None):
         # Need to encode server_hostname here because _wrap_bio() can only
         # handle ASCII str.
-        return self.sslobject_class._create(
+        rudisha self.sslobject_class._create(
             incoming, outgoing, server_side=server_side,
             server_hostname=self._encode_hostname(server_hostname),
             session=session, context=self,
         )
 
-    def set_npn_protocols(self, npn_protocols):
+    eleza set_npn_protocols(self, npn_protocols):
         protos = bytearray()
         for protocol in npn_protocols:
             b = bytes(protocol, 'ascii')
-            if len(b) == 0 or len(b) > 255:
+            ikiwa len(b) == 0 or len(b) > 255:
                 raise SSLError('NPN protocols must be 1 to 255 in length')
             protos.append(len(b))
             protos.extend(b)
 
         self._set_npn_protocols(protos)
 
-    def set_servername_callback(self, server_name_callback):
-        if server_name_callback is None:
+    eleza set_servername_callback(self, server_name_callback):
+        ikiwa server_name_callback is None:
             self.sni_callback = None
         else:
-            if not callable(server_name_callback):
+            ikiwa not callable(server_name_callback):
                 raise TypeError("not a callable object")
 
-            def shim_cb(sslobj, servername, sslctx):
+            eleza shim_cb(sslobj, servername, sslctx):
                 servername = self._encode_hostname(servername)
-                return server_name_callback(sslobj, servername, sslctx)
+                rudisha server_name_callback(sslobj, servername, sslctx)
 
             self.sni_callback = shim_cb
 
-    def set_alpn_protocols(self, alpn_protocols):
+    eleza set_alpn_protocols(self, alpn_protocols):
         protos = bytearray()
         for protocol in alpn_protocols:
             b = bytes(protocol, 'ascii')
-            if len(b) == 0 or len(b) > 255:
+            ikiwa len(b) == 0 or len(b) > 255:
                 raise SSLError('ALPN protocols must be 1 to 255 in length')
             protos.append(len(b))
             protos.extend(b)
 
         self._set_alpn_protocols(protos)
 
-    def _load_windows_store_certs(self, storename, purpose):
+    eleza _load_windows_store_certs(self, storename, purpose):
         certs = bytearray()
         try:
             for cert, encoding, trust in enum_certificates(storename):
                 # CA certs are never PKCS#7 encoded
-                if encoding == "x509_asn":
-                    if trust is True or purpose.oid in trust:
+                ikiwa encoding == "x509_asn":
+                    ikiwa trust is True or purpose.oid in trust:
                         certs.extend(cert)
         except PermissionError:
             warnings.warn("unable to enumerate Windows certificate store")
-        if certs:
+        ikiwa certs:
             self.load_verify_locations(cadata=certs)
-        return certs
+        rudisha certs
 
-    def load_default_certs(self, purpose=Purpose.SERVER_AUTH):
-        if not isinstance(purpose, _ASN1Object):
+    eleza load_default_certs(self, purpose=Purpose.SERVER_AUTH):
+        ikiwa not isinstance(purpose, _ASN1Object):
             raise TypeError(purpose)
-        if sys.platform == "win32":
+        ikiwa sys.platform == "win32":
             for storename in self._windows_cert_stores:
                 self._load_windows_store_certs(storename, purpose)
         self.set_default_verify_paths()
 
-    if hasattr(_SSLContext, 'minimum_version'):
+    ikiwa hasattr(_SSLContext, 'minimum_version'):
         @property
-        def minimum_version(self):
-            return TLSVersion(super().minimum_version)
+        eleza minimum_version(self):
+            rudisha TLSVersion(super().minimum_version)
 
         @minimum_version.setter
-        def minimum_version(self, value):
-            if value == TLSVersion.SSLv3:
+        eleza minimum_version(self, value):
+            ikiwa value == TLSVersion.SSLv3:
                 self.options &= ~Options.OP_NO_SSLv3
             super(SSLContext, SSLContext).minimum_version.__set__(self, value)
 
         @property
-        def maximum_version(self):
-            return TLSVersion(super().maximum_version)
+        eleza maximum_version(self):
+            rudisha TLSVersion(super().maximum_version)
 
         @maximum_version.setter
-        def maximum_version(self, value):
+        eleza maximum_version(self, value):
             super(SSLContext, SSLContext).maximum_version.__set__(self, value)
 
     @property
-    def options(self):
-        return Options(super().options)
+    eleza options(self):
+        rudisha Options(super().options)
 
     @options.setter
-    def options(self, value):
+    eleza options(self, value):
         super(SSLContext, SSLContext).options.__set__(self, value)
 
-    if hasattr(_ssl, 'HOSTFLAG_NEVER_CHECK_SUBJECT'):
+    ikiwa hasattr(_ssl, 'HOSTFLAG_NEVER_CHECK_SUBJECT'):
         @property
-        def hostname_checks_common_name(self):
+        eleza hostname_checks_common_name(self):
             ncs = self._host_flags & _ssl.HOSTFLAG_NEVER_CHECK_SUBJECT
-            return ncs != _ssl.HOSTFLAG_NEVER_CHECK_SUBJECT
+            rudisha ncs != _ssl.HOSTFLAG_NEVER_CHECK_SUBJECT
 
         @hostname_checks_common_name.setter
-        def hostname_checks_common_name(self, value):
-            if value:
+        eleza hostname_checks_common_name(self, value):
+            ikiwa value:
                 self._host_flags &= ~_ssl.HOSTFLAG_NEVER_CHECK_SUBJECT
             else:
                 self._host_flags |= _ssl.HOSTFLAG_NEVER_CHECK_SUBJECT
     else:
         @property
-        def hostname_checks_common_name(self):
-            return True
+        eleza hostname_checks_common_name(self):
+            rudisha True
 
     @property
-    def _msg_callback(self):
+    eleza _msg_callback(self):
         """TLS message callback
 
         The message callback provides a debugging hook to analyze TLS
@@ -630,7 +630,7 @@ class SSLContext(_SSLContext):
         callback is delayed until the handshake, read, or write operation
         has been performed.
 
-        def msg_cb(conn, direction, version, content_type, msg_type, data):
+        eleza msg_cb(conn, direction, version, content_type, msg_type, data):
             pass
 
         conn
@@ -652,21 +652,21 @@ class SSLContext(_SSLContext):
             Raw, decrypted message content as bytes
         """
         inner = super()._msg_callback
-        if inner is not None:
-            return inner.user_function
+        ikiwa inner is not None:
+            rudisha inner.user_function
         else:
-            return None
+            rudisha None
 
     @_msg_callback.setter
-    def _msg_callback(self, callback):
-        if callback is None:
+    eleza _msg_callback(self, callback):
+        ikiwa callback is None:
             super(SSLContext, SSLContext)._msg_callback.__set__(self, None)
             return
 
-        if not hasattr(callback, '__call__'):
+        ikiwa not hasattr(callback, '__call__'):
             raise TypeError(f"{callback} is not callable.")
 
-        def inner(conn, direction, version, content_type, msg_type, data):
+        eleza inner(conn, direction, version, content_type, msg_type, data):
             try:
                 version = TLSVersion(version)
             except ValueError:
@@ -677,9 +677,9 @@ class SSLContext(_SSLContext):
             except ValueError:
                 pass
 
-            if content_type == _TLSContentType.HEADER:
+            ikiwa content_type == _TLSContentType.HEADER:
                 msg_enum = _TLSContentType
-            elif content_type == _TLSContentType.ALERT:
+            elikiwa content_type == _TLSContentType.ALERT:
                 msg_enum = _TLSAlertType
             else:
                 msg_enum = _TLSMessageType
@@ -688,7 +688,7 @@ class SSLContext(_SSLContext):
             except ValueError:
                 pass
 
-            return callback(conn, direction, version,
+            rudisha callback(conn, direction, version,
                             content_type, msg_type, data)
 
         inner.user_function = callback
@@ -696,31 +696,31 @@ class SSLContext(_SSLContext):
         super(SSLContext, SSLContext)._msg_callback.__set__(self, inner)
 
     @property
-    def protocol(self):
-        return _SSLMethod(super().protocol)
+    eleza protocol(self):
+        rudisha _SSLMethod(super().protocol)
 
     @property
-    def verify_flags(self):
-        return VerifyFlags(super().verify_flags)
+    eleza verify_flags(self):
+        rudisha VerifyFlags(super().verify_flags)
 
     @verify_flags.setter
-    def verify_flags(self, value):
+    eleza verify_flags(self, value):
         super(SSLContext, SSLContext).verify_flags.__set__(self, value)
 
     @property
-    def verify_mode(self):
+    eleza verify_mode(self):
         value = super().verify_mode
         try:
-            return VerifyMode(value)
+            rudisha VerifyMode(value)
         except ValueError:
-            return value
+            rudisha value
 
     @verify_mode.setter
-    def verify_mode(self, value):
+    eleza verify_mode(self, value):
         super(SSLContext, SSLContext).verify_mode.__set__(self, value)
 
 
-def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,
+eleza create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,
                            capath=None, cadata=None):
     """Create a SSLContext object with default settings.
 
@@ -728,7 +728,7 @@ def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,
           deprecation. The values represent a fair balance between maximum
           compatibility and security.
     """
-    if not isinstance(purpose, _ASN1Object):
+    ikiwa not isinstance(purpose, _ASN1Object):
         raise TypeError(purpose)
 
     # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,
@@ -736,26 +736,26 @@ def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,
     # by default.
     context = SSLContext(PROTOCOL_TLS)
 
-    if purpose == Purpose.SERVER_AUTH:
+    ikiwa purpose == Purpose.SERVER_AUTH:
         # verify certs and host name in client mode
         context.verify_mode = CERT_REQUIRED
         context.check_hostname = True
 
-    if cafile or capath or cadata:
+    ikiwa cafile or capath or cadata:
         context.load_verify_locations(cafile, capath, cadata)
-    elif context.verify_mode != CERT_NONE:
+    elikiwa context.verify_mode != CERT_NONE:
         # no explicit cafile, capath or cadata but the verify mode is
         # CERT_OPTIONAL or CERT_REQUIRED. Let's try to load default system
         # root CA certificates for the given purpose. This may fail silently.
         context.load_default_certs(purpose)
     # OpenSSL 1.1.1 keylog file
-    if hasattr(context, 'keylog_filename'):
+    ikiwa hasattr(context, 'keylog_filename'):
         keylogfile = os.environ.get('SSLKEYLOGFILE')
-        if keylogfile and not sys.flags.ignore_environment:
+        ikiwa keylogfile and not sys.flags.ignore_environment:
             context.keylog_filename = keylogfile
-    return context
+    rudisha context
 
-def _create_unverified_context(protocol=PROTOCOL_TLS, *, cert_reqs=CERT_NONE,
+eleza _create_unverified_context(protocol=PROTOCOL_TLS, *, cert_reqs=CERT_NONE,
                            check_hostname=False, purpose=Purpose.SERVER_AUTH,
                            certfile=None, keyfile=None,
                            cafile=None, capath=None, cadata=None):
@@ -766,7 +766,7 @@ def _create_unverified_context(protocol=PROTOCOL_TLS, *, cert_reqs=CERT_NONE,
     is less restrict than create_default_context()'s to increase backward
     compatibility.
     """
-    if not isinstance(purpose, _ASN1Object):
+    ikiwa not isinstance(purpose, _ASN1Object):
         raise TypeError(purpose)
 
     # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,
@@ -774,34 +774,34 @@ def _create_unverified_context(protocol=PROTOCOL_TLS, *, cert_reqs=CERT_NONE,
     # by default.
     context = SSLContext(protocol)
 
-    if not check_hostname:
+    ikiwa not check_hostname:
         context.check_hostname = False
-    if cert_reqs is not None:
+    ikiwa cert_reqs is not None:
         context.verify_mode = cert_reqs
-    if check_hostname:
+    ikiwa check_hostname:
         context.check_hostname = True
 
-    if keyfile and not certfile:
+    ikiwa keyfile and not certfile:
         raise ValueError("certfile must be specified")
-    if certfile or keyfile:
+    ikiwa certfile or keyfile:
         context.load_cert_chain(certfile, keyfile)
 
     # load CA root certs
-    if cafile or capath or cadata:
+    ikiwa cafile or capath or cadata:
         context.load_verify_locations(cafile, capath, cadata)
-    elif context.verify_mode != CERT_NONE:
+    elikiwa context.verify_mode != CERT_NONE:
         # no explicit cafile, capath or cadata but the verify mode is
         # CERT_OPTIONAL or CERT_REQUIRED. Let's try to load default system
         # root CA certificates for the given purpose. This may fail silently.
         context.load_default_certs(purpose)
     # OpenSSL 1.1.1 keylog file
-    if hasattr(context, 'keylog_filename'):
+    ikiwa hasattr(context, 'keylog_filename'):
         keylogfile = os.environ.get('SSLKEYLOGFILE')
-        if keylogfile and not sys.flags.ignore_environment:
+        ikiwa keylogfile and not sys.flags.ignore_environment:
             context.keylog_filename = keylogfile
-    return context
+    rudisha context
 
-# Used by http.client if no context is explicitly passed.
+# Used by http.client ikiwa no context is explicitly passed.
 _create_default_https_context = create_default_context
 
 
@@ -809,14 +809,14 @@ _create_default_https_context = create_default_context
 _create_stdlib_context = _create_unverified_context
 
 
-class SSLObject:
-    """This class implements an interface on top of a low-level SSL object as
+kundi SSLObject:
+    """This kundi implements an interface on top of a low-level SSL object as
     implemented by OpenSSL. This object captures the state of an SSL connection
     but does not provide any network IO itself. IO needs to be performed
     through separate "BIO" objects which are OpenSSL's IO abstraction layer.
 
-    This class does not have a public constructor. Instances are returned by
-    ``SSLContext.wrap_bio``. This class is typically used by framework authors
+    This kundi does not have a public constructor. Instances are returned by
+    ``SSLContext.wrap_bio``. This kundi is typically used by framework authors
     that want to implement asynchronous IO for SSL through memory buffers.
 
     When compared to ``SSLSocket``, this object lacks the following features:
@@ -824,14 +824,14 @@ class SSLObject:
      * Any form of network IO, including methods such as ``recv`` and ``send``.
      * The ``do_handshake_on_connect`` and ``suppress_ragged_eofs`` machinery.
     """
-    def __init__(self, *args, **kwargs):
+    eleza __init__(self, *args, **kwargs):
         raise TypeError(
             f"{self.__class__.__name__} does not have a public "
             f"constructor. Instances are returned by SSLContext.wrap_bio()."
         )
 
     @classmethod
-    def _create(cls, incoming, outgoing, server_side=False,
+    eleza _create(cls, incoming, outgoing, server_side=False,
                  server_hostname=None, session=None, context=None):
         self = cls.__new__(cls)
         sslobj = context._wrap_bio(
@@ -840,140 +840,140 @@ class SSLObject:
             owner=self, session=session
         )
         self._sslobj = sslobj
-        return self
+        rudisha self
 
     @property
-    def context(self):
+    eleza context(self):
         """The SSLContext that is currently in use."""
-        return self._sslobj.context
+        rudisha self._sslobj.context
 
     @context.setter
-    def context(self, ctx):
+    eleza context(self, ctx):
         self._sslobj.context = ctx
 
     @property
-    def session(self):
+    eleza session(self):
         """The SSLSession for client socket."""
-        return self._sslobj.session
+        rudisha self._sslobj.session
 
     @session.setter
-    def session(self, session):
+    eleza session(self, session):
         self._sslobj.session = session
 
     @property
-    def session_reused(self):
+    eleza session_reused(self):
         """Was the client session reused during handshake"""
-        return self._sslobj.session_reused
+        rudisha self._sslobj.session_reused
 
     @property
-    def server_side(self):
+    eleza server_side(self):
         """Whether this is a server-side socket."""
-        return self._sslobj.server_side
+        rudisha self._sslobj.server_side
 
     @property
-    def server_hostname(self):
-        """The currently set server hostname (for SNI), or ``None`` if no
+    eleza server_hostname(self):
+        """The currently set server hostname (for SNI), or ``None`` ikiwa no
         server hostname is set."""
-        return self._sslobj.server_hostname
+        rudisha self._sslobj.server_hostname
 
-    def read(self, len=1024, buffer=None):
-        """Read up to 'len' bytes kutoka the SSL object and return them.
+    eleza read(self, len=1024, buffer=None):
+        """Read up to 'len' bytes kutoka the SSL object and rudisha them.
 
-        If 'buffer' is provided, read into this buffer and return the number of
+        If 'buffer' is provided, read into this buffer and rudisha the number of
         bytes read.
         """
-        if buffer is not None:
+        ikiwa buffer is not None:
             v = self._sslobj.read(len, buffer)
         else:
             v = self._sslobj.read(len)
-        return v
+        rudisha v
 
-    def write(self, data):
-        """Write 'data' to the SSL object and return the number of bytes
+    eleza write(self, data):
+        """Write 'data' to the SSL object and rudisha the number of bytes
         written.
 
         The 'data' argument must support the buffer interface.
         """
-        return self._sslobj.write(data)
+        rudisha self._sslobj.write(data)
 
-    def getpeercert(self, binary_form=False):
+    eleza getpeercert(self, binary_form=False):
         """Returns a formatted version of the data in the certificate provided
         by the other end of the SSL channel.
 
-        Return None if no certificate was provided, {} if a certificate was
+        Return None ikiwa no certificate was provided, {} ikiwa a certificate was
         provided, but not validated.
         """
-        return self._sslobj.getpeercert(binary_form)
+        rudisha self._sslobj.getpeercert(binary_form)
 
-    def selected_npn_protocol(self):
+    eleza selected_npn_protocol(self):
         """Return the currently selected NPN protocol as a string, or ``None``
-        if a next protocol was not negotiated or if NPN is not supported by one
+        ikiwa a next protocol was not negotiated or ikiwa NPN is not supported by one
         of the peers."""
-        if _ssl.HAS_NPN:
-            return self._sslobj.selected_npn_protocol()
+        ikiwa _ssl.HAS_NPN:
+            rudisha self._sslobj.selected_npn_protocol()
 
-    def selected_alpn_protocol(self):
+    eleza selected_alpn_protocol(self):
         """Return the currently selected ALPN protocol as a string, or ``None``
-        if a next protocol was not negotiated or if ALPN is not supported by one
+        ikiwa a next protocol was not negotiated or ikiwa ALPN is not supported by one
         of the peers."""
-        if _ssl.HAS_ALPN:
-            return self._sslobj.selected_alpn_protocol()
+        ikiwa _ssl.HAS_ALPN:
+            rudisha self._sslobj.selected_alpn_protocol()
 
-    def cipher(self):
+    eleza cipher(self):
         """Return the currently selected cipher as a 3-tuple ``(name,
         ssl_version, secret_bits)``."""
-        return self._sslobj.cipher()
+        rudisha self._sslobj.cipher()
 
-    def shared_ciphers(self):
+    eleza shared_ciphers(self):
         """Return a list of ciphers shared by the client during the handshake or
-        None if this is not a valid server connection.
+        None ikiwa this is not a valid server connection.
         """
-        return self._sslobj.shared_ciphers()
+        rudisha self._sslobj.shared_ciphers()
 
-    def compression(self):
+    eleza compression(self):
         """Return the current compression algorithm in use, or ``None`` if
         compression was not negotiated or not supported by one of the peers."""
-        return self._sslobj.compression()
+        rudisha self._sslobj.compression()
 
-    def pending(self):
+    eleza pending(self):
         """Return the number of bytes that can be read immediately."""
-        return self._sslobj.pending()
+        rudisha self._sslobj.pending()
 
-    def do_handshake(self):
+    eleza do_handshake(self):
         """Start the SSL/TLS handshake."""
         self._sslobj.do_handshake()
 
-    def unwrap(self):
+    eleza unwrap(self):
         """Start the SSL shutdown handshake."""
-        return self._sslobj.shutdown()
+        rudisha self._sslobj.shutdown()
 
-    def get_channel_binding(self, cb_type="tls-unique"):
+    eleza get_channel_binding(self, cb_type="tls-unique"):
         """Get channel binding data for current connection.  Raise ValueError
-        if the requested `cb_type` is not supported.  Return bytes of the data
-        or None if the data is not available (e.g. before the handshake)."""
-        return self._sslobj.get_channel_binding(cb_type)
+        ikiwa the requested `cb_type` is not supported.  Return bytes of the data
+        or None ikiwa the data is not available (e.g. before the handshake)."""
+        rudisha self._sslobj.get_channel_binding(cb_type)
 
-    def version(self):
+    eleza version(self):
         """Return a string identifying the protocol version used by the
         current SSL channel. """
-        return self._sslobj.version()
+        rudisha self._sslobj.version()
 
-    def verify_client_post_handshake(self):
-        return self._sslobj.verify_client_post_handshake()
+    eleza verify_client_post_handshake(self):
+        rudisha self._sslobj.verify_client_post_handshake()
 
 
-def _sslcopydoc(func):
+eleza _sslcopydoc(func):
     """Copy docstring kutoka SSLObject to SSLSocket"""
     func.__doc__ = getattr(SSLObject, func.__name__).__doc__
-    return func
+    rudisha func
 
 
-class SSLSocket(socket):
-    """This class implements a subtype of socket.socket that wraps
+kundi SSLSocket(socket):
+    """This kundi implements a subtype of socket.socket that wraps
     the underlying OS socket in an SSL context when necessary, and
     provides read and write methods over that channel. """
 
-    def __init__(self, *args, **kwargs):
+    eleza __init__(self, *args, **kwargs):
         raise TypeError(
             f"{self.__class__.__name__} does not have a public "
             f"constructor. Instances are returned by "
@@ -981,19 +981,19 @@ class SSLSocket(socket):
         )
 
     @classmethod
-    def _create(cls, sock, server_side=False, do_handshake_on_connect=True,
+    eleza _create(cls, sock, server_side=False, do_handshake_on_connect=True,
                 suppress_ragged_eofs=True, server_hostname=None,
                 context=None, session=None):
-        if sock.getsockopt(SOL_SOCKET, SO_TYPE) != SOCK_STREAM:
+        ikiwa sock.getsockopt(SOL_SOCKET, SO_TYPE) != SOCK_STREAM:
             raise NotImplementedError("only stream sockets are supported")
-        if server_side:
-            if server_hostname:
+        ikiwa server_side:
+            ikiwa server_hostname:
                 raise ValueError("server_hostname can only be specified "
                                  "in client mode")
-            if session is not None:
+            ikiwa session is not None:
                 raise ValueError("session can only be specified in "
                                  "client mode")
-        if context.check_hostname and not server_hostname:
+        ikiwa context.check_hostname and not server_hostname:
             raise ValueError("check_hostname requires server_hostname")
 
         kwargs = dict(
@@ -1014,186 +1014,186 @@ class SSLSocket(socket):
         self.do_handshake_on_connect = do_handshake_on_connect
         self.suppress_ragged_eofs = suppress_ragged_eofs
 
-        # See if we are connected
+        # See ikiwa we are connected
         try:
             self.getpeername()
         except OSError as e:
-            if e.errno != errno.ENOTCONN:
+            ikiwa e.errno != errno.ENOTCONN:
                 raise
             connected = False
         else:
             connected = True
 
         self._connected = connected
-        if connected:
+        ikiwa connected:
             # create the SSL object
             try:
                 self._sslobj = self._context._wrap_socket(
                     self, server_side, self.server_hostname,
                     owner=self, session=self._session,
                 )
-                if do_handshake_on_connect:
+                ikiwa do_handshake_on_connect:
                     timeout = self.gettimeout()
-                    if timeout == 0.0:
+                    ikiwa timeout == 0.0:
                         # non-blocking
                         raise ValueError("do_handshake_on_connect should not be specified for non-blocking sockets")
                     self.do_handshake()
             except (OSError, ValueError):
                 self.close()
                 raise
-        return self
+        rudisha self
 
     @property
     @_sslcopydoc
-    def context(self):
-        return self._context
+    eleza context(self):
+        rudisha self._context
 
     @context.setter
-    def context(self, ctx):
+    eleza context(self, ctx):
         self._context = ctx
         self._sslobj.context = ctx
 
     @property
     @_sslcopydoc
-    def session(self):
-        if self._sslobj is not None:
-            return self._sslobj.session
+    eleza session(self):
+        ikiwa self._sslobj is not None:
+            rudisha self._sslobj.session
 
     @session.setter
-    def session(self, session):
+    eleza session(self, session):
         self._session = session
-        if self._sslobj is not None:
+        ikiwa self._sslobj is not None:
             self._sslobj.session = session
 
     @property
     @_sslcopydoc
-    def session_reused(self):
-        if self._sslobj is not None:
-            return self._sslobj.session_reused
+    eleza session_reused(self):
+        ikiwa self._sslobj is not None:
+            rudisha self._sslobj.session_reused
 
-    def dup(self):
+    eleza dup(self):
         raise NotImplementedError("Can't dup() %s instances" %
                                   self.__class__.__name__)
 
-    def _checkClosed(self, msg=None):
-        # raise an exception here if you wish to check for spurious closes
+    eleza _checkClosed(self, msg=None):
+        # raise an exception here ikiwa you wish to check for spurious closes
         pass
 
-    def _check_connected(self):
-        if not self._connected:
-            # getpeername() will raise ENOTCONN if the socket is really
+    eleza _check_connected(self):
+        ikiwa not self._connected:
+            # getpeername() will raise ENOTCONN ikiwa the socket is really
             # not connected; note that we can be connected even without
-            # _connected being set, e.g. if connect() first returned
+            # _connected being set, e.g. ikiwa connect() first returned
             # EAGAIN.
             self.getpeername()
 
-    def read(self, len=1024, buffer=None):
-        """Read up to LEN bytes and return them.
+    eleza read(self, len=1024, buffer=None):
+        """Read up to LEN bytes and rudisha them.
         Return zero-length string on EOF."""
 
         self._checkClosed()
-        if self._sslobj is None:
+        ikiwa self._sslobj is None:
             raise ValueError("Read on closed or unwrapped SSL socket.")
         try:
-            if buffer is not None:
-                return self._sslobj.read(len, buffer)
+            ikiwa buffer is not None:
+                rudisha self._sslobj.read(len, buffer)
             else:
-                return self._sslobj.read(len)
+                rudisha self._sslobj.read(len)
         except SSLError as x:
-            if x.args[0] == SSL_ERROR_EOF and self.suppress_ragged_eofs:
-                if buffer is not None:
-                    return 0
+            ikiwa x.args[0] == SSL_ERROR_EOF and self.suppress_ragged_eofs:
+                ikiwa buffer is not None:
+                    rudisha 0
                 else:
-                    return b''
+                    rudisha b''
             else:
                 raise
 
-    def write(self, data):
+    eleza write(self, data):
         """Write DATA to the underlying SSL channel.  Returns
         number of bytes of DATA actually transmitted."""
 
         self._checkClosed()
-        if self._sslobj is None:
+        ikiwa self._sslobj is None:
             raise ValueError("Write on closed or unwrapped SSL socket.")
-        return self._sslobj.write(data)
+        rudisha self._sslobj.write(data)
 
     @_sslcopydoc
-    def getpeercert(self, binary_form=False):
+    eleza getpeercert(self, binary_form=False):
         self._checkClosed()
         self._check_connected()
-        return self._sslobj.getpeercert(binary_form)
+        rudisha self._sslobj.getpeercert(binary_form)
 
     @_sslcopydoc
-    def selected_npn_protocol(self):
+    eleza selected_npn_protocol(self):
         self._checkClosed()
-        if self._sslobj is None or not _ssl.HAS_NPN:
-            return None
+        ikiwa self._sslobj is None or not _ssl.HAS_NPN:
+            rudisha None
         else:
-            return self._sslobj.selected_npn_protocol()
+            rudisha self._sslobj.selected_npn_protocol()
 
     @_sslcopydoc
-    def selected_alpn_protocol(self):
+    eleza selected_alpn_protocol(self):
         self._checkClosed()
-        if self._sslobj is None or not _ssl.HAS_ALPN:
-            return None
+        ikiwa self._sslobj is None or not _ssl.HAS_ALPN:
+            rudisha None
         else:
-            return self._sslobj.selected_alpn_protocol()
+            rudisha self._sslobj.selected_alpn_protocol()
 
     @_sslcopydoc
-    def cipher(self):
+    eleza cipher(self):
         self._checkClosed()
-        if self._sslobj is None:
-            return None
+        ikiwa self._sslobj is None:
+            rudisha None
         else:
-            return self._sslobj.cipher()
+            rudisha self._sslobj.cipher()
 
     @_sslcopydoc
-    def shared_ciphers(self):
+    eleza shared_ciphers(self):
         self._checkClosed()
-        if self._sslobj is None:
-            return None
+        ikiwa self._sslobj is None:
+            rudisha None
         else:
-            return self._sslobj.shared_ciphers()
+            rudisha self._sslobj.shared_ciphers()
 
     @_sslcopydoc
-    def compression(self):
+    eleza compression(self):
         self._checkClosed()
-        if self._sslobj is None:
-            return None
+        ikiwa self._sslobj is None:
+            rudisha None
         else:
-            return self._sslobj.compression()
+            rudisha self._sslobj.compression()
 
-    def send(self, data, flags=0):
+    eleza send(self, data, flags=0):
         self._checkClosed()
-        if self._sslobj is not None:
-            if flags != 0:
+        ikiwa self._sslobj is not None:
+            ikiwa flags != 0:
                 raise ValueError(
                     "non-zero flags not allowed in calls to send() on %s" %
                     self.__class__)
-            return self._sslobj.write(data)
+            rudisha self._sslobj.write(data)
         else:
-            return super().send(data, flags)
+            rudisha super().send(data, flags)
 
-    def sendto(self, data, flags_or_addr, addr=None):
+    eleza sendto(self, data, flags_or_addr, addr=None):
         self._checkClosed()
-        if self._sslobj is not None:
+        ikiwa self._sslobj is not None:
             raise ValueError("sendto not allowed on instances of %s" %
                              self.__class__)
-        elif addr is None:
-            return super().sendto(data, flags_or_addr)
+        elikiwa addr is None:
+            rudisha super().sendto(data, flags_or_addr)
         else:
-            return super().sendto(data, flags_or_addr, addr)
+            rudisha super().sendto(data, flags_or_addr, addr)
 
-    def sendmsg(self, *args, **kwargs):
-        # Ensure programs don't send data unencrypted if they try to
+    eleza sendmsg(self, *args, **kwargs):
+        # Ensure programs don't send data unencrypted ikiwa they try to
         # use this method.
         raise NotImplementedError("sendmsg not allowed on instances of %s" %
                                   self.__class__)
 
-    def sendall(self, data, flags=0):
+    eleza sendall(self, data, flags=0):
         self._checkClosed()
-        if self._sslobj is not None:
-            if flags != 0:
+        ikiwa self._sslobj is not None:
+            ikiwa flags != 0:
                 raise ValueError(
                     "non-zero flags not allowed in calls to sendall() on %s" %
                     self.__class__)
@@ -1204,149 +1204,149 @@ class SSLSocket(socket):
                     v = self.send(byte_view[count:])
                     count += v
         else:
-            return super().sendall(data, flags)
+            rudisha super().sendall(data, flags)
 
-    def sendfile(self, file, offset=0, count=None):
-        """Send a file, possibly by using os.sendfile() if this is a
+    eleza sendfile(self, file, offset=0, count=None):
+        """Send a file, possibly by using os.sendfile() ikiwa this is a
         clear-text socket.  Return the total number of bytes sent.
         """
-        if self._sslobj is not None:
-            return self._sendfile_use_send(file, offset, count)
+        ikiwa self._sslobj is not None:
+            rudisha self._sendfile_use_send(file, offset, count)
         else:
             # os.sendfile() works with plain sockets only
-            return super().sendfile(file, offset, count)
+            rudisha super().sendfile(file, offset, count)
 
-    def recv(self, buflen=1024, flags=0):
+    eleza recv(self, buflen=1024, flags=0):
         self._checkClosed()
-        if self._sslobj is not None:
-            if flags != 0:
+        ikiwa self._sslobj is not None:
+            ikiwa flags != 0:
                 raise ValueError(
                     "non-zero flags not allowed in calls to recv() on %s" %
                     self.__class__)
-            return self.read(buflen)
+            rudisha self.read(buflen)
         else:
-            return super().recv(buflen, flags)
+            rudisha super().recv(buflen, flags)
 
-    def recv_into(self, buffer, nbytes=None, flags=0):
+    eleza recv_into(self, buffer, nbytes=None, flags=0):
         self._checkClosed()
-        if buffer and (nbytes is None):
+        ikiwa buffer and (nbytes is None):
             nbytes = len(buffer)
-        elif nbytes is None:
+        elikiwa nbytes is None:
             nbytes = 1024
-        if self._sslobj is not None:
-            if flags != 0:
+        ikiwa self._sslobj is not None:
+            ikiwa flags != 0:
                 raise ValueError(
                   "non-zero flags not allowed in calls to recv_into() on %s" %
                   self.__class__)
-            return self.read(nbytes, buffer)
+            rudisha self.read(nbytes, buffer)
         else:
-            return super().recv_into(buffer, nbytes, flags)
+            rudisha super().recv_into(buffer, nbytes, flags)
 
-    def recvfrom(self, buflen=1024, flags=0):
+    eleza recvkutoka(self, buflen=1024, flags=0):
         self._checkClosed()
-        if self._sslobj is not None:
-            raise ValueError("recvfrom not allowed on instances of %s" %
+        ikiwa self._sslobj is not None:
+            raise ValueError("recvkutoka not allowed on instances of %s" %
                              self.__class__)
         else:
-            return super().recvfrom(buflen, flags)
+            rudisha super().recvkutoka(buflen, flags)
 
-    def recvfrom_into(self, buffer, nbytes=None, flags=0):
+    eleza recvkutoka_into(self, buffer, nbytes=None, flags=0):
         self._checkClosed()
-        if self._sslobj is not None:
-            raise ValueError("recvfrom_into not allowed on instances of %s" %
+        ikiwa self._sslobj is not None:
+            raise ValueError("recvkutoka_into not allowed on instances of %s" %
                              self.__class__)
         else:
-            return super().recvfrom_into(buffer, nbytes, flags)
+            rudisha super().recvkutoka_into(buffer, nbytes, flags)
 
-    def recvmsg(self, *args, **kwargs):
+    eleza recvmsg(self, *args, **kwargs):
         raise NotImplementedError("recvmsg not allowed on instances of %s" %
                                   self.__class__)
 
-    def recvmsg_into(self, *args, **kwargs):
+    eleza recvmsg_into(self, *args, **kwargs):
         raise NotImplementedError("recvmsg_into not allowed on instances of "
                                   "%s" % self.__class__)
 
     @_sslcopydoc
-    def pending(self):
+    eleza pending(self):
         self._checkClosed()
-        if self._sslobj is not None:
-            return self._sslobj.pending()
+        ikiwa self._sslobj is not None:
+            rudisha self._sslobj.pending()
         else:
-            return 0
+            rudisha 0
 
-    def shutdown(self, how):
+    eleza shutdown(self, how):
         self._checkClosed()
         self._sslobj = None
         super().shutdown(how)
 
     @_sslcopydoc
-    def unwrap(self):
-        if self._sslobj:
+    eleza unwrap(self):
+        ikiwa self._sslobj:
             s = self._sslobj.shutdown()
             self._sslobj = None
-            return s
+            rudisha s
         else:
             raise ValueError("No SSL wrapper around " + str(self))
 
     @_sslcopydoc
-    def verify_client_post_handshake(self):
-        if self._sslobj:
-            return self._sslobj.verify_client_post_handshake()
+    eleza verify_client_post_handshake(self):
+        ikiwa self._sslobj:
+            rudisha self._sslobj.verify_client_post_handshake()
         else:
             raise ValueError("No SSL wrapper around " + str(self))
 
-    def _real_close(self):
+    eleza _real_close(self):
         self._sslobj = None
         super()._real_close()
 
     @_sslcopydoc
-    def do_handshake(self, block=False):
+    eleza do_handshake(self, block=False):
         self._check_connected()
         timeout = self.gettimeout()
         try:
-            if timeout == 0.0 and block:
+            ikiwa timeout == 0.0 and block:
                 self.settimeout(None)
             self._sslobj.do_handshake()
         finally:
             self.settimeout(timeout)
 
-    def _real_connect(self, addr, connect_ex):
-        if self.server_side:
+    eleza _real_connect(self, addr, connect_ex):
+        ikiwa self.server_side:
             raise ValueError("can't connect in server-side mode")
         # Here we assume that the socket is client-side, and not
         # connected at the time of the call.  We connect it, then wrap it.
-        if self._connected or self._sslobj is not None:
+        ikiwa self._connected or self._sslobj is not None:
             raise ValueError("attempt to connect already-connected SSLSocket!")
         self._sslobj = self.context._wrap_socket(
             self, False, self.server_hostname,
             owner=self, session=self._session
         )
         try:
-            if connect_ex:
+            ikiwa connect_ex:
                 rc = super().connect_ex(addr)
             else:
                 rc = None
                 super().connect(addr)
-            if not rc:
+            ikiwa not rc:
                 self._connected = True
-                if self.do_handshake_on_connect:
+                ikiwa self.do_handshake_on_connect:
                     self.do_handshake()
-            return rc
+            rudisha rc
         except (OSError, ValueError):
             self._sslobj = None
             raise
 
-    def connect(self, addr):
+    eleza connect(self, addr):
         """Connects to remote ADDR, and then wraps the connection in
         an SSL channel."""
         self._real_connect(addr, False)
 
-    def connect_ex(self, addr):
+    eleza connect_ex(self, addr):
         """Connects to remote ADDR, and then wraps the connection in
         an SSL channel."""
-        return self._real_connect(addr, True)
+        rudisha self._real_connect(addr, True)
 
-    def accept(self):
+    eleza accept(self):
         """Accepts a new connection kutoka a remote client, and returns
         a tuple containing that new connection wrapped with a server-side
         SSL channel, and the address of the remote client."""
@@ -1356,53 +1356,53 @@ class SSLSocket(socket):
                     do_handshake_on_connect=self.do_handshake_on_connect,
                     suppress_ragged_eofs=self.suppress_ragged_eofs,
                     server_side=True)
-        return newsock, addr
+        rudisha newsock, addr
 
     @_sslcopydoc
-    def get_channel_binding(self, cb_type="tls-unique"):
-        if self._sslobj is not None:
-            return self._sslobj.get_channel_binding(cb_type)
+    eleza get_channel_binding(self, cb_type="tls-unique"):
+        ikiwa self._sslobj is not None:
+            rudisha self._sslobj.get_channel_binding(cb_type)
         else:
-            if cb_type not in CHANNEL_BINDING_TYPES:
+            ikiwa cb_type not in CHANNEL_BINDING_TYPES:
                 raise ValueError(
                     "{0} channel binding type not implemented".format(cb_type)
                 )
-            return None
+            rudisha None
 
     @_sslcopydoc
-    def version(self):
-        if self._sslobj is not None:
-            return self._sslobj.version()
+    eleza version(self):
+        ikiwa self._sslobj is not None:
+            rudisha self._sslobj.version()
         else:
-            return None
+            rudisha None
 
 
 # Python does not support forward declaration of types.
-SSLContext.sslsocket_class = SSLSocket
-SSLContext.sslobject_class = SSLObject
+SSLContext.sslsocket_kundi = SSLSocket
+SSLContext.sslobject_kundi = SSLObject
 
 
-def wrap_socket(sock, keyfile=None, certfile=None,
+eleza wrap_socket(sock, keyfile=None, certfile=None,
                 server_side=False, cert_reqs=CERT_NONE,
                 ssl_version=PROTOCOL_TLS, ca_certs=None,
                 do_handshake_on_connect=True,
                 suppress_ragged_eofs=True,
                 ciphers=None):
 
-    if server_side and not certfile:
+    ikiwa server_side and not certfile:
         raise ValueError("certfile must be specified for server-side "
                          "operations")
-    if keyfile and not certfile:
+    ikiwa keyfile and not certfile:
         raise ValueError("certfile must be specified")
     context = SSLContext(ssl_version)
     context.verify_mode = cert_reqs
-    if ca_certs:
+    ikiwa ca_certs:
         context.load_verify_locations(ca_certs)
-    if certfile:
+    ikiwa certfile:
         context.load_cert_chain(certfile, keyfile)
-    if ciphers:
+    ikiwa ciphers:
         context.set_ciphers(ciphers)
-    return context.wrap_socket(
+    rudisha context.wrap_socket(
         sock=sock, server_side=server_side,
         do_handshake_on_connect=do_handshake_on_connect,
         suppress_ragged_eofs=suppress_ragged_eofs
@@ -1410,7 +1410,7 @@ def wrap_socket(sock, keyfile=None, certfile=None,
 
 # some utility functions
 
-def cert_time_to_seconds(cert_time):
+eleza cert_time_to_seconds(cert_time):
     """Return the time in seconds since the Epoch, given the timestring
     representing the "notBefore" or "notAfter" date kutoka a certificate
     in ``"%b %d %H:%M:%S %Y %Z"`` strptime format (C locale).
@@ -1418,7 +1418,7 @@ def cert_time_to_seconds(cert_time):
     "notBefore" or "notAfter" dates must use UTC (RFC 5280).
 
     Month is one of: Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
-    UTC should be specified as GMT (see ASN1_TIME_print())
+    UTC should be specified as GMT (see ASN1_TIME_andika())
     """
     kutoka time agiza strptime
     kutoka calendar agiza timegm
@@ -1436,14 +1436,14 @@ def cert_time_to_seconds(cert_time):
     else:
         # found valid month
         tt = strptime(cert_time[3:], time_format)
-        # return an integer, the previous mktime()-based implementation
+        # rudisha an integer, the previous mktime()-based implementation
         # returned a float (fractional seconds are always zero here).
-        return timegm((tt[0], month_number) + tt[2:6])
+        rudisha timegm((tt[0], month_number) + tt[2:6])
 
 PEM_HEADER = "-----BEGIN CERTIFICATE-----"
 PEM_FOOTER = "-----END CERTIFICATE-----"
 
-def DER_cert_to_PEM_cert(der_cert_bytes):
+eleza DER_cert_to_PEM_cert(der_cert_bytes):
     """Takes a certificate in binary DER format and returns the
     PEM version of it as a string."""
 
@@ -1451,29 +1451,29 @@ def DER_cert_to_PEM_cert(der_cert_bytes):
     ss = [PEM_HEADER]
     ss += [f[i:i+64] for i in range(0, len(f), 64)]
     ss.append(PEM_FOOTER + '\n')
-    return '\n'.join(ss)
+    rudisha '\n'.join(ss)
 
-def PEM_cert_to_DER_cert(pem_cert_string):
+eleza PEM_cert_to_DER_cert(pem_cert_string):
     """Takes a certificate in ASCII PEM format and returns the
     DER-encoded version of it as a byte sequence"""
 
-    if not pem_cert_string.startswith(PEM_HEADER):
+    ikiwa not pem_cert_string.startswith(PEM_HEADER):
         raise ValueError("Invalid PEM encoding; must start with %s"
                          % PEM_HEADER)
-    if not pem_cert_string.strip().endswith(PEM_FOOTER):
+    ikiwa not pem_cert_string.strip().endswith(PEM_FOOTER):
         raise ValueError("Invalid PEM encoding; must end with %s"
                          % PEM_FOOTER)
     d = pem_cert_string.strip()[len(PEM_HEADER):-len(PEM_FOOTER)]
-    return base64.decodebytes(d.encode('ASCII', 'strict'))
+    rudisha base64.decodebytes(d.encode('ASCII', 'strict'))
 
-def get_server_certificate(addr, ssl_version=PROTOCOL_TLS, ca_certs=None):
+eleza get_server_certificate(addr, ssl_version=PROTOCOL_TLS, ca_certs=None):
     """Retrieve the certificate kutoka the server at the specified address,
-    and return it as a PEM-encoded string.
+    and rudisha it as a PEM-encoded string.
     If 'ca_certs' is specified, validate the server cert against it.
     If 'ssl_version' is specified, use it in the connection attempt."""
 
     host, port = addr
-    if ca_certs is not None:
+    ikiwa ca_certs is not None:
         cert_reqs = CERT_REQUIRED
     else:
         cert_reqs = CERT_NONE
@@ -1483,7 +1483,7 @@ def get_server_certificate(addr, ssl_version=PROTOCOL_TLS, ca_certs=None):
     with  create_connection(addr) as sock:
         with context.wrap_socket(sock) as sslsock:
             dercert = sslsock.getpeercert(True)
-    return DER_cert_to_PEM_cert(dercert)
+    rudisha DER_cert_to_PEM_cert(dercert)
 
-def get_protocol_name(protocol_code):
-    return _PROTOCOL_NAMES.get(protocol_code, '<unknown>')
+eleza get_protocol_name(protocol_code):
+    rudisha _PROTOCOL_NAMES.get(protocol_code, '<unknown>')

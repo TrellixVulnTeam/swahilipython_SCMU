@@ -10,7 +10,7 @@
 r"""Subprocesses with accessible I/O streams
 
 This module allows you to spawn processes, connect to their
-input/output/error pipes, and obtain their return codes.
+input/output/error pipes, and obtain their rudisha codes.
 
 For a complete description of this module see the Python documentation.
 
@@ -18,7 +18,7 @@ Main API
 ========
 run(...): Runs a command, waits for it to complete, then returns a
           CompletedProcess instance.
-Popen(...): A class for flexibly executing a command in a new process
+Popen(...): A kundi for flexibly executing a command in a new process
 
 Constants
 ---------
@@ -30,11 +30,11 @@ STDOUT:  Special value that indicates that stderr should go to stdout
 Older API
 =========
 call(...): Runs a command, waits for it to complete, then returns
-    the return code.
+    the rudisha code.
 check_call(...): Same as call() but raises CalledProcessError()
-    if return code is not 0
+    ikiwa rudisha code is not 0
 check_output(...): Same as check_call() but returns the contents of
-    stdout instead of a return code
+    stdout instead of a rudisha code
 getoutput(...): Runs a command in the shell, waits for it to complete,
     then returns the output
 getstatusoutput(...): Runs a command in the shell, waits for it to complete,
@@ -93,77 +93,77 @@ else:
 
 
 # Exception classes used by this module.
-class SubprocessError(Exception): pass
+kundi SubprocessError(Exception): pass
 
 
-class CalledProcessError(SubprocessError):
+kundi CalledProcessError(SubprocessError):
     """Raised when run() is called with check=True and the process
     returns a non-zero exit status.
 
     Attributes:
       cmd, returncode, stdout, stderr, output
     """
-    def __init__(self, returncode, cmd, output=None, stderr=None):
+    eleza __init__(self, returncode, cmd, output=None, stderr=None):
         self.returncode = returncode
         self.cmd = cmd
         self.output = output
         self.stderr = stderr
 
-    def __str__(self):
-        if self.returncode and self.returncode < 0:
+    eleza __str__(self):
+        ikiwa self.returncode and self.returncode < 0:
             try:
-                return "Command '%s' died with %r." % (
+                rudisha "Command '%s' died with %r." % (
                         self.cmd, signal.Signals(-self.returncode))
             except ValueError:
-                return "Command '%s' died with unknown signal %d." % (
+                rudisha "Command '%s' died with unknown signal %d." % (
                         self.cmd, -self.returncode)
         else:
-            return "Command '%s' returned non-zero exit status %d." % (
+            rudisha "Command '%s' returned non-zero exit status %d." % (
                     self.cmd, self.returncode)
 
     @property
-    def stdout(self):
+    eleza stdout(self):
         """Alias for output attribute, to match stderr"""
-        return self.output
+        rudisha self.output
 
     @stdout.setter
-    def stdout(self, value):
+    eleza stdout(self, value):
         # There's no obvious reason to set this, but allow it anyway so
         # .stdout is a transparent alias for .output
         self.output = value
 
 
-class TimeoutExpired(SubprocessError):
+kundi TimeoutExpired(SubprocessError):
     """This exception is raised when the timeout expires while waiting for a
     child process.
 
     Attributes:
         cmd, output, stdout, stderr, timeout
     """
-    def __init__(self, cmd, timeout, output=None, stderr=None):
+    eleza __init__(self, cmd, timeout, output=None, stderr=None):
         self.cmd = cmd
         self.timeout = timeout
         self.output = output
         self.stderr = stderr
 
-    def __str__(self):
-        return ("Command '%s' timed out after %s seconds" %
+    eleza __str__(self):
+        rudisha ("Command '%s' timed out after %s seconds" %
                 (self.cmd, self.timeout))
 
     @property
-    def stdout(self):
-        return self.output
+    eleza stdout(self):
+        rudisha self.output
 
     @stdout.setter
-    def stdout(self, value):
+    eleza stdout(self, value):
         # There's no obvious reason to set this, but allow it anyway so
         # .stdout is a transparent alias for .output
         self.output = value
 
 
-if _mswindows:
-    class STARTUPINFO:
-        def __init__(self, *, dwFlags=0, hStdInput=None, hStdOutput=None,
+ikiwa _mswindows:
+    kundi STARTUPINFO:
+        eleza __init__(self, *, dwFlags=0, hStdInput=None, hStdOutput=None,
                      hStdError=None, wShowWindow=0, lpAttributeList=None):
             self.dwFlags = dwFlags
             self.hStdInput = hStdInput
@@ -172,12 +172,12 @@ if _mswindows:
             self.wShowWindow = wShowWindow
             self.lpAttributeList = lpAttributeList or {"handle_list": []}
 
-        def copy(self):
+        eleza copy(self):
             attr_list = self.lpAttributeList.copy()
-            if 'handle_list' in attr_list:
+            ikiwa 'handle_list' in attr_list:
                 attr_list['handle_list'] = list(attr_list['handle_list'])
 
-            return STARTUPINFO(dwFlags=self.dwFlags,
+            rudisha STARTUPINFO(dwFlags=self.dwFlags,
                                hStdInput=self.hStdInput,
                                hStdOutput=self.hStdOutput,
                                hStdError=self.hStdError,
@@ -185,22 +185,22 @@ if _mswindows:
                                lpAttributeList=attr_list)
 
 
-    class Handle(int):
+    kundi Handle(int):
         closed = False
 
-        def Close(self, CloseHandle=_winapi.CloseHandle):
-            if not self.closed:
+        eleza Close(self, CloseHandle=_winapi.CloseHandle):
+            ikiwa not self.closed:
                 self.closed = True
                 CloseHandle(self)
 
-        def Detach(self):
-            if not self.closed:
+        eleza Detach(self):
+            ikiwa not self.closed:
                 self.closed = True
-                return int(self)
+                rudisha int(self)
             raise ValueError("already closed")
 
-        def __repr__(self):
-            return "%s(%d)" % (self.__class__.__name__, int(self))
+        eleza __repr__(self):
+            rudisha "%s(%d)" % (self.__class__.__name__, int(self))
 
         __del__ = Close
 else:
@@ -212,13 +212,13 @@ else:
     # poll/select have the advantage of not requiring any extra file
     # descriptor, contrarily to epoll/kqueue (also, they require a single
     # syscall).
-    if hasattr(selectors, 'PollSelector'):
+    ikiwa hasattr(selectors, 'PollSelector'):
         _PopenSelector = selectors.PollSelector
     else:
         _PopenSelector = selectors.SelectSelector
 
 
-if _mswindows:
+ikiwa _mswindows:
     # On Windows we just need to close `Popen._handle` when we no longer need
     # it, so that the kernel can free it. `Popen._handle` gets closed
     # implicitly when the `Popen` instance is finalized (see `Handle.__del__`,
@@ -229,7 +229,7 @@ if _mswindows:
     # creating-processes
     _active = None
 
-    def _cleanup():
+    eleza _cleanup():
         pass
 else:
     # This lists holds Popen instances for which the underlying process had not
@@ -238,16 +238,16 @@ else:
     # created, to avoid zombie processes.
     _active = []
 
-    def _cleanup():
-        if _active is None:
+    eleza _cleanup():
+        ikiwa _active is None:
             return
         for inst in _active[:]:
             res = inst._internal_poll(_deadstate=sys.maxsize)
-            if res is not None:
+            ikiwa res is not None:
                 try:
                     _active.remove(inst)
                 except ValueError:
-                    # This can happen if two threads create a new Popen instance.
+                    # This can happen ikiwa two threads create a new Popen instance.
                     # It's harmless that it was already removed, so ignore.
                     pass
 
@@ -260,17 +260,17 @@ DEVNULL = -3
 # but it's here so that it can be imported when Python is compiled without
 # threads.
 
-def _optim_args_from_interpreter_flags():
+eleza _optim_args_kutoka_interpreter_flags():
     """Return a list of command-line arguments reproducing the current
     optimization settings in sys.flags."""
     args = []
     value = sys.flags.optimize
-    if value > 0:
+    ikiwa value > 0:
         args.append('-' + 'O' * value)
-    return args
+    rudisha args
 
 
-def _args_from_interpreter_flags():
+eleza _args_kutoka_interpreter_flags():
     """Return a list of command-line arguments reproducing the current
     settings in sys.flags, sys.warnoptions and sys._xoptions."""
     flag_opt_map = {
@@ -282,20 +282,20 @@ def _args_from_interpreter_flags():
         'verbose': 'v',
         'bytes_warning': 'b',
         'quiet': 'q',
-        # -O is handled in _optim_args_from_interpreter_flags()
+        # -O is handled in _optim_args_kutoka_interpreter_flags()
     }
-    args = _optim_args_from_interpreter_flags()
+    args = _optim_args_kutoka_interpreter_flags()
     for flag, opt in flag_opt_map.items():
         v = getattr(sys.flags, flag)
-        if v > 0:
+        ikiwa v > 0:
             args.append('-' + opt * v)
 
-    if sys.flags.isolated:
+    ikiwa sys.flags.isolated:
         args.append('-I')
     else:
-        if sys.flags.ignore_environment:
+        ikiwa sys.flags.ignore_environment:
             args.append('-E')
-        if sys.flags.no_user_site:
+        ikiwa sys.flags.no_user_site:
             args.append('-s')
 
     # -W options
@@ -304,34 +304,34 @@ def _args_from_interpreter_flags():
     xoptions = getattr(sys, '_xoptions', {})
     dev_mode = ('dev' in xoptions)
 
-    if bytes_warning > 1:
+    ikiwa bytes_warning > 1:
         warnopts.remove("error::BytesWarning")
-    elif bytes_warning:
+    elikiwa bytes_warning:
         warnopts.remove("default::BytesWarning")
-    if dev_mode:
+    ikiwa dev_mode:
         warnopts.remove('default')
     for opt in warnopts:
         args.append('-W' + opt)
 
     # -X options
-    if dev_mode:
+    ikiwa dev_mode:
         args.extend(('-X', 'dev'))
     for opt in ('faulthandler', 'tracemalloc', 'agizatime',
                 'showalloccount', 'showrefcount', 'utf8'):
-        if opt in xoptions:
+        ikiwa opt in xoptions:
             value = xoptions[opt]
-            if value is True:
+            ikiwa value is True:
                 arg = opt
             else:
                 arg = '%s=%s' % (opt, value)
             args.extend(('-X', arg))
 
-    return args
+    rudisha args
 
 
-def call(*popenargs, timeout=None, **kwargs):
+eleza call(*popenargs, timeout=None, **kwargs):
     """Run command with arguments.  Wait for command to complete or
-    timeout, then return the returncode attribute.
+    timeout, then rudisha the returncode attribute.
 
     The arguments are the same as for the Popen constructor.  Example:
 
@@ -339,37 +339,37 @@ def call(*popenargs, timeout=None, **kwargs):
     """
     with Popen(*popenargs, **kwargs) as p:
         try:
-            return p.wait(timeout=timeout)
+            rudisha p.wait(timeout=timeout)
         except:  # Including KeyboardInterrupt, wait handled that.
             p.kill()
             # We don't call p.wait() again as p.__exit__ does that for us.
             raise
 
 
-def check_call(*popenargs, **kwargs):
+eleza check_call(*popenargs, **kwargs):
     """Run command with arguments.  Wait for command to complete.  If
     the exit code was zero then return, otherwise raise
     CalledProcessError.  The CalledProcessError object will have the
-    return code in the returncode attribute.
+    rudisha code in the returncode attribute.
 
     The arguments are the same as for the call function.  Example:
 
     check_call(["ls", "-l"])
     """
     retcode = call(*popenargs, **kwargs)
-    if retcode:
+    ikiwa retcode:
         cmd = kwargs.get("args")
-        if cmd is None:
+        ikiwa cmd is None:
             cmd = popenargs[0]
         raise CalledProcessError(retcode, cmd)
-    return 0
+    rudisha 0
 
 
-def check_output(*popenargs, timeout=None, **kwargs):
-    r"""Run command with arguments and return its output.
+eleza check_output(*popenargs, timeout=None, **kwargs):
+    r"""Run command with arguments and rudisha its output.
 
     If the exit code was non-zero it raises a CalledProcessError.  The
-    CalledProcessError object will have the return code in the returncode
+    CalledProcessError object will have the rudisha code in the returncode
     attribute and output in the output attribute.
 
     The arguments are the same as for the Popen constructor.  Example:
@@ -395,24 +395,24 @@ def check_output(*popenargs, timeout=None, **kwargs):
     b'when in the course of barman events\n'
 
     By default, all communication is in bytes, and therefore any "input"
-    should be bytes, and the return value will be bytes.  If in text mode,
-    any "input" should be a string, and the return value will be a string
-    decoded according to locale encoding, or by "encoding" if set. Text mode
+    should be bytes, and the rudisha value will be bytes.  If in text mode,
+    any "input" should be a string, and the rudisha value will be a string
+    decoded according to locale encoding, or by "encoding" ikiwa set. Text mode
     is triggered by setting any of text, encoding, errors or universal_newlines.
     """
-    if 'stdout' in kwargs:
+    ikiwa 'stdout' in kwargs:
         raise ValueError('stdout argument not allowed, it will be overridden.')
 
-    if 'input' in kwargs and kwargs['input'] is None:
+    ikiwa 'input' in kwargs and kwargs['input'] is None:
         # Explicitly passing input=None was previously equivalent to passing an
         # empty string. That is maintained here for backwards compatibility.
-        kwargs['input'] = '' if kwargs.get('universal_newlines', False) else b''
+        kwargs['input'] = '' ikiwa kwargs.get('universal_newlines', False) else b''
 
-    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+    rudisha run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
                **kwargs).stdout
 
 
-class CompletedProcess(object):
+kundi CompletedProcess(object):
     """A process that has finished running.
 
     This is returned by run().
@@ -420,42 +420,42 @@ class CompletedProcess(object):
     Attributes:
       args: The list or str args passed to run().
       returncode: The exit code of the process, negative for signals.
-      stdout: The standard output (None if not captured).
-      stderr: The standard error (None if not captured).
+      stdout: The standard output (None ikiwa not captured).
+      stderr: The standard error (None ikiwa not captured).
     """
-    def __init__(self, args, returncode, stdout=None, stderr=None):
+    eleza __init__(self, args, returncode, stdout=None, stderr=None):
         self.args = args
         self.returncode = returncode
         self.stdout = stdout
         self.stderr = stderr
 
-    def __repr__(self):
+    eleza __repr__(self):
         args = ['args={!r}'.format(self.args),
                 'returncode={!r}'.format(self.returncode)]
-        if self.stdout is not None:
+        ikiwa self.stdout is not None:
             args.append('stdout={!r}'.format(self.stdout))
-        if self.stderr is not None:
+        ikiwa self.stderr is not None:
             args.append('stderr={!r}'.format(self.stderr))
-        return "{}({})".format(type(self).__name__, ', '.join(args))
+        rudisha "{}({})".format(type(self).__name__, ', '.join(args))
 
-    def check_returncode(self):
-        """Raise CalledProcessError if the exit code is non-zero."""
-        if self.returncode:
+    eleza check_returncode(self):
+        """Raise CalledProcessError ikiwa the exit code is non-zero."""
+        ikiwa self.returncode:
             raise CalledProcessError(self.returncode, self.args, self.stdout,
                                      self.stderr)
 
 
-def run(*popenargs,
+eleza run(*popenargs,
         input=None, capture_output=False, timeout=None, check=False, **kwargs):
-    """Run command with arguments and return a CompletedProcess instance.
+    """Run command with arguments and rudisha a CompletedProcess instance.
 
     The returned instance will have attributes args, returncode, stdout and
     stderr. By default, stdout and stderr are not captured, and those attributes
     will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them.
 
     If check is True and the exit code was non-zero, it raises a
-    CalledProcessError. The CalledProcessError object will have the return code
-    in the returncode attribute, and output & stderr attributes if those streams
+    CalledProcessError. The CalledProcessError object will have the rudisha code
+    in the returncode attribute, and output & stderr attributes ikiwa those streams
     were captured.
 
     If timeout is given, and the process takes too long, a TimeoutExpired
@@ -469,18 +469,18 @@ def run(*popenargs,
     By default, all communication is in bytes, and therefore any "input" should
     be bytes, and the stdout and stderr will be bytes. If in text mode, any
     "input" should be a string, and stdout and stderr will be strings decoded
-    according to locale encoding, or by "encoding" if set. Text mode is
+    according to locale encoding, or by "encoding" ikiwa set. Text mode is
     triggered by setting any of text, encoding, errors or universal_newlines.
 
     The other arguments are the same as for the Popen constructor.
     """
-    if input is not None:
-        if kwargs.get('stdin') is not None:
+    ikiwa input is not None:
+        ikiwa kwargs.get('stdin') is not None:
             raise ValueError('stdin and input arguments may not both be used.')
         kwargs['stdin'] = PIPE
 
-    if capture_output:
-        if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+    ikiwa capture_output:
+        ikiwa kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
             raise ValueError('stdout and stderr arguments may not be used '
                              'with capture_output.')
         kwargs['stdout'] = PIPE
@@ -491,7 +491,7 @@ def run(*popenargs,
             stdout, stderr = process.communicate(input, timeout=timeout)
         except TimeoutExpired as exc:
             process.kill()
-            if _mswindows:
+            ikiwa _mswindows:
                 # Windows accumulates the output in a single blocking
                 # read() call run on child threads, with the timeout
                 # being done in a join() on those threads.  communicate()
@@ -508,13 +508,13 @@ def run(*popenargs,
             # We don't call process.wait() as .__exit__ does that for us.
             raise
         retcode = process.poll()
-        if check and retcode:
+        ikiwa check and retcode:
             raise CalledProcessError(retcode, process.args,
                                      output=stdout, stderr=stderr)
-    return CompletedProcess(process.args, retcode, stdout, stderr)
+    rudisha CompletedProcess(process.args, retcode, stdout, stderr)
 
 
-def list2cmdline(seq):
+eleza list2cmdline(seq):
     """
     Translate a sequence of arguments into a command line
     string, using the same rules as the MS C runtime:
@@ -550,48 +550,48 @@ def list2cmdline(seq):
         bs_buf = []
 
         # Add a space to separate this argument kutoka the others
-        if result:
+        ikiwa result:
             result.append(' ')
 
         needquote = (" " in arg) or ("\t" in arg) or not arg
-        if needquote:
+        ikiwa needquote:
             result.append('"')
 
         for c in arg:
-            if c == '\\':
-                # Don't know if we need to double yet.
+            ikiwa c == '\\':
+                # Don't know ikiwa we need to double yet.
                 bs_buf.append(c)
-            elif c == '"':
+            elikiwa c == '"':
                 # Double backslashes.
                 result.append('\\' * len(bs_buf)*2)
                 bs_buf = []
                 result.append('\\"')
             else:
                 # Normal char
-                if bs_buf:
+                ikiwa bs_buf:
                     result.extend(bs_buf)
                     bs_buf = []
                 result.append(c)
 
-        # Add remaining backslashes, if any.
-        if bs_buf:
+        # Add remaining backslashes, ikiwa any.
+        ikiwa bs_buf:
             result.extend(bs_buf)
 
-        if needquote:
+        ikiwa needquote:
             result.extend(bs_buf)
             result.append('"')
 
-    return ''.join(result)
+    rudisha ''.join(result)
 
 
 # Various tools for executing commands and looking at their output and status.
 #
 
-def getstatusoutput(cmd):
+eleza getstatusoutput(cmd):
     """Return (exitcode, output) of executing cmd in a shell.
 
     Execute the string 'cmd' in a shell with 'check_output' and
-    return a 2-tuple (status, output). The locale encoding is used
+    rudisha a 2-tuple (status, output). The locale encoding is used
     to decode the output and process newlines.
 
     A trailing newline is stripped kutoka the output.
@@ -614,11 +614,11 @@ def getstatusoutput(cmd):
     except CalledProcessError as ex:
         data = ex.output
         exitcode = ex.returncode
-    if data[-1:] == '\n':
+    ikiwa data[-1:] == '\n':
         data = data[:-1]
-    return exitcode, data
+    rudisha exitcode, data
 
-def getoutput(cmd):
+eleza getoutput(cmd):
     """Return output (stdout or stderr) of executing cmd in a shell.
 
     Like getstatusoutput(), except the exit status is ignored and the return
@@ -628,11 +628,11 @@ def getoutput(cmd):
     >>> subprocess.getoutput('ls /bin/ls')
     '/bin/ls'
     """
-    return getstatusoutput(cmd)[1]
+    rudisha getstatusoutput(cmd)[1]
 
 
-def _use_posix_spawn():
-    """Check if posix_spawn() can be used for subprocess.
+eleza _use_posix_spawn():
+    """Check ikiwa posix_spawn() can be used for subprocess.
 
     subprocess requires a posix_spawn() implementation that properly reports
     errors to the parent process, & sets errno on the following failures:
@@ -644,44 +644,44 @@ def _use_posix_spawn():
     Prefer an implementation which can use vfork() in some cases for best
     performance.
     """
-    if _mswindows or not hasattr(os, 'posix_spawn'):
+    ikiwa _mswindows or not hasattr(os, 'posix_spawn'):
         # os.posix_spawn() is not available
-        return False
+        rudisha False
 
-    if sys.platform == 'darwin':
+    ikiwa sys.platform == 'darwin':
         # posix_spawn() is a syscall on macOS and properly reports errors
-        return True
+        rudisha True
 
     # Check libc name and runtime libc version
     try:
         ver = os.confstr('CS_GNU_LIBC_VERSION')
         # parse 'glibc 2.28' as ('glibc', (2, 28))
         parts = ver.split(maxsplit=1)
-        if len(parts) != 2:
+        ikiwa len(parts) != 2:
             # reject unknown format
             raise ValueError
         libc = parts[0]
         version = tuple(map(int, parts[1].split('.')))
 
-        if sys.platform == 'linux' and libc == 'glibc' and version >= (2, 24):
+        ikiwa sys.platform == 'linux' and libc == 'glibc' and version >= (2, 24):
             # glibc 2.24 has a new Linux posix_spawn implementation using vfork
             # which properly reports errors to the parent process.
-            return True
+            rudisha True
         # Note: Don't use the implementation in earlier glibc because it doesn't
-        # use vfork (even if glibc 2.26 added a pipe to properly report errors
+        # use vfork (even ikiwa glibc 2.26 added a pipe to properly report errors
         # to the parent process).
     except (AttributeError, ValueError, OSError):
         # os.confstr() or CS_GNU_LIBC_VERSION value not available
         pass
 
     # By default, assume that posix_spawn() does not properly report errors.
-    return False
+    rudisha False
 
 
 _USE_POSIX_SPAWN = _use_posix_spawn()
 
 
-class Popen(object):
+kundi Popen(object):
     """ Execute a child program in a new process.
 
     For a complete description of the arguments see the Python documentation.
@@ -709,7 +709,7 @@ class Popen(object):
       env: Defines the environment variables for the new process.
 
       text: If true, decode stdin, stdout and stderr using the given encoding
-          (if set) or the system default otherwise.
+          (ikiwa set) or the system default otherwise.
 
       universal_newlines: Alias of text, provided for backwards compatibility.
 
@@ -729,7 +729,7 @@ class Popen(object):
     """
     _child_created = False  # Set here since __del__ checks it
 
-    def __init__(self, args, bufsize=-1, executable=None,
+    eleza __init__(self, args, bufsize=-1, executable=None,
                  stdin=None, stdout=None, stderr=None,
                  preexec_fn=None, close_fds=True,
                  shell=False, cwd=None, env=None, universal_newlines=None,
@@ -739,32 +739,32 @@ class Popen(object):
         """Create new Popen instance."""
         _cleanup()
         # Held while anything is calling waitpid before returncode has been
-        # updated to prevent clobbering returncode if wait() or poll() are
+        # updated to prevent clobbering returncode ikiwa wait() or poll() are
         # called kutoka multiple threads at once.  After acquiring the lock,
-        # code must re-check self.returncode to see if another thread just
+        # code must re-check self.returncode to see ikiwa another thread just
         # finished a waitpid() call.
         self._waitpid_lock = threading.Lock()
 
         self._input = None
         self._communication_started = False
-        if bufsize is None:
+        ikiwa bufsize is None:
             bufsize = -1  # Restore default
-        if not isinstance(bufsize, int):
+        ikiwa not isinstance(bufsize, int):
             raise TypeError("bufsize must be an integer")
 
-        if _mswindows:
-            if preexec_fn is not None:
+        ikiwa _mswindows:
+            ikiwa preexec_fn is not None:
                 raise ValueError("preexec_fn is not supported on Windows "
                                  "platforms")
         else:
             # POSIX
-            if pass_fds and not close_fds:
+            ikiwa pass_fds and not close_fds:
                 warnings.warn("pass_fds overriding close_fds.", RuntimeWarning)
                 close_fds = True
-            if startupinfo is not None:
+            ikiwa startupinfo is not None:
                 raise ValueError("startupinfo is only supported on Windows "
                                  "platforms")
-            if creationflags != 0:
+            ikiwa creationflags != 0:
                 raise ValueError("creationflags is only supported on Windows "
                                  "platforms")
 
@@ -778,7 +778,7 @@ class Popen(object):
         self.errors = errors
 
         # Validate the combinations of text and universal_newlines
-        if (text is not None and universal_newlines is not None
+        ikiwa (text is not None and universal_newlines is not None
             and bool(universal_newlines) != bool(text)):
             raise SubprocessError('Cannot disambiguate when both text '
                                   'and universal_newlines are supplied but '
@@ -807,12 +807,12 @@ class Popen(object):
         # quickly terminating child could make our fds unwrappable
         # (see #8458).
 
-        if _mswindows:
-            if p2cwrite != -1:
+        ikiwa _mswindows:
+            ikiwa p2cwrite != -1:
                 p2cwrite = msvcrt.open_osfhandle(p2cwrite.Detach(), 0)
-            if c2pread != -1:
+            ikiwa c2pread != -1:
                 c2pread = msvcrt.open_osfhandle(c2pread.Detach(), 0)
-            if errread != -1:
+            ikiwa errread != -1:
                 errread = msvcrt.open_osfhandle(errread.Detach(), 0)
 
         self.text_mode = encoding or errors or text or universal_newlines
@@ -824,8 +824,8 @@ class Popen(object):
 
         self._closed_child_pipe_fds = False
 
-        if self.text_mode:
-            if bufsize == 1:
+        ikiwa self.text_mode:
+            ikiwa bufsize == 1:
                 line_buffering = True
                 # Use the default buffer size for the underlying binary streams
                 # since they don't support line buffering.
@@ -834,20 +834,20 @@ class Popen(object):
                 line_buffering = False
 
         try:
-            if p2cwrite != -1:
+            ikiwa p2cwrite != -1:
                 self.stdin = io.open(p2cwrite, 'wb', bufsize)
-                if self.text_mode:
+                ikiwa self.text_mode:
                     self.stdin = io.TextIOWrapper(self.stdin, write_through=True,
                             line_buffering=line_buffering,
                             encoding=encoding, errors=errors)
-            if c2pread != -1:
+            ikiwa c2pread != -1:
                 self.stdout = io.open(c2pread, 'rb', bufsize)
-                if self.text_mode:
+                ikiwa self.text_mode:
                     self.stdout = io.TextIOWrapper(self.stdout,
                             encoding=encoding, errors=errors)
-            if errread != -1:
+            ikiwa errread != -1:
                 self.stderr = io.open(errread, 'rb', bufsize)
-                if self.text_mode:
+                ikiwa self.text_mode:
                     self.stderr = io.TextIOWrapper(self.stderr,
                             encoding=encoding, errors=errors)
 
@@ -859,26 +859,26 @@ class Popen(object):
                                 errread, errwrite,
                                 restore_signals, start_new_session)
         except:
-            # Cleanup if the child failed starting.
+            # Cleanup ikiwa the child failed starting.
             for f in filter(None, (self.stdin, self.stdout, self.stderr)):
                 try:
                     f.close()
                 except OSError:
                     pass  # Ignore EBADF or other errors.
 
-            if not self._closed_child_pipe_fds:
+            ikiwa not self._closed_child_pipe_fds:
                 to_close = []
-                if stdin == PIPE:
+                ikiwa stdin == PIPE:
                     to_close.append(p2cread)
-                if stdout == PIPE:
+                ikiwa stdout == PIPE:
                     to_close.append(c2pwrite)
-                if stderr == PIPE:
+                ikiwa stderr == PIPE:
                     to_close.append(errwrite)
-                if hasattr(self, '_devnull'):
+                ikiwa hasattr(self, '_devnull'):
                     to_close.append(self._devnull)
                 for fd in to_close:
                     try:
-                        if _mswindows and isinstance(fd, Handle):
+                        ikiwa _mswindows and isinstance(fd, Handle):
                             fd.Close()
                         else:
                             os.close(fd)
@@ -888,32 +888,32 @@ class Popen(object):
             raise
 
     @property
-    def universal_newlines(self):
+    eleza universal_newlines(self):
         # universal_newlines as retained as an alias of text_mode for API
         # compatibility. bpo-31756
-        return self.text_mode
+        rudisha self.text_mode
 
     @universal_newlines.setter
-    def universal_newlines(self, universal_newlines):
+    eleza universal_newlines(self, universal_newlines):
         self.text_mode = bool(universal_newlines)
 
-    def _translate_newlines(self, data, encoding, errors):
+    eleza _translate_newlines(self, data, encoding, errors):
         data = data.decode(encoding, errors)
-        return data.replace("\r\n", "\n").replace("\r", "\n")
+        rudisha data.replace("\r\n", "\n").replace("\r", "\n")
 
-    def __enter__(self):
-        return self
+    eleza __enter__(self):
+        rudisha self
 
-    def __exit__(self, exc_type, value, traceback):
-        if self.stdout:
+    eleza __exit__(self, exc_type, value, traceback):
+        ikiwa self.stdout:
             self.stdout.close()
-        if self.stderr:
+        ikiwa self.stderr:
             self.stderr.close()
         try:  # Flushing a BufferedWriter may raise an error
-            if self.stdin:
+            ikiwa self.stdin:
                 self.stdin.close()
         finally:
-            if exc_type == KeyboardInterrupt:
+            ikiwa exc_type == KeyboardInterrupt:
                 # https://bugs.python.org/issue25942
                 # In the case of a KeyboardInterrupt we assume the SIGINT
                 # was also already sent to our child processes.  We can't
@@ -921,47 +921,47 @@ class Popen(object):
                 # If we have not already waited a brief amount of time in
                 # an interrupted .wait() or .communicate() call, do so here
                 # for consistency.
-                if self._sigint_wait_secs > 0:
+                ikiwa self._sigint_wait_secs > 0:
                     try:
                         self._wait(timeout=self._sigint_wait_secs)
                     except TimeoutExpired:
                         pass
                 self._sigint_wait_secs = 0  # Note that this has been done.
-                return  # resume the KeyboardInterrupt
+                rudisha  # resume the KeyboardInterrupt
 
             # Wait for the process to terminate, to avoid zombies.
             self.wait()
 
-    def __del__(self, _maxsize=sys.maxsize, _warn=warnings.warn):
-        if not self._child_created:
+    eleza __del__(self, _maxsize=sys.maxsize, _warn=warnings.warn):
+        ikiwa not self._child_created:
             # We didn't get to successfully create a child process.
             return
-        if self.returncode is None:
+        ikiwa self.returncode is None:
             # Not reading subprocess exit status creates a zombie process which
             # is only destroyed at the parent python process exit
             _warn("subprocess %s is still running" % self.pid,
                   ResourceWarning, source=self)
-        # In case the child hasn't been waited on, check if it's done.
+        # In case the child hasn't been waited on, check ikiwa it's done.
         self._internal_poll(_deadstate=_maxsize)
-        if self.returncode is None and _active is not None:
+        ikiwa self.returncode is None and _active is not None:
             # Child is still running, keep us alive until we can wait on it.
             _active.append(self)
 
-    def _get_devnull(self):
-        if not hasattr(self, '_devnull'):
+    eleza _get_devnull(self):
+        ikiwa not hasattr(self, '_devnull'):
             self._devnull = os.open(os.devnull, os.O_RDWR)
-        return self._devnull
+        rudisha self._devnull
 
-    def _stdin_write(self, input):
-        if input:
+    eleza _stdin_write(self, input):
+        ikiwa input:
             try:
                 self.stdin.write(input)
             except BrokenPipeError:
                 pass  # communicate() must ignore broken pipe errors.
             except OSError as exc:
-                if exc.errno == errno.EINVAL:
+                ikiwa exc.errno == errno.EINVAL:
                     # bpo-19612, bpo-30418: On Windows, stdin.write() fails
-                    # with EINVAL if the child process exited or if the child
+                    # with EINVAL ikiwa the child process exited or ikiwa the child
                     # process is still running but closed the pipe.
                     pass
                 else:
@@ -972,50 +972,50 @@ class Popen(object):
         except BrokenPipeError:
             pass  # communicate() must ignore broken pipe errors.
         except OSError as exc:
-            if exc.errno == errno.EINVAL:
+            ikiwa exc.errno == errno.EINVAL:
                 pass
             else:
                 raise
 
-    def communicate(self, input=None, timeout=None):
+    eleza communicate(self, input=None, timeout=None):
         """Interact with process: Send data to stdin and close it.
         Read data kutoka stdout and stderr, until end-of-file is
         reached.  Wait for process to terminate.
 
         The optional "input" argument should be data to be sent to the
-        child process, or None, if no data should be sent to the child.
+        child process, or None, ikiwa no data should be sent to the child.
         communicate() returns a tuple (stdout, stderr).
 
         By default, all communication is in bytes, and therefore any
         "input" should be bytes, and the (stdout, stderr) will be bytes.
         If in text mode (indicated by self.text_mode), any "input" should
         be a string, and (stdout, stderr) will be strings decoded
-        according to locale encoding, or by "encoding" if set. Text mode
+        according to locale encoding, or by "encoding" ikiwa set. Text mode
         is triggered by setting any of text, encoding, errors or
         universal_newlines.
         """
 
-        if self._communication_started and input:
+        ikiwa self._communication_started and input:
             raise ValueError("Cannot send input after starting communication")
 
         # Optimization: If we are not worried about timeouts, we haven't
         # started communicating, and we have one or zero pipes, using select()
         # or threads is unnecessary.
-        if (timeout is None and not self._communication_started and
+        ikiwa (timeout is None and not self._communication_started and
             [self.stdin, self.stdout, self.stderr].count(None) >= 2):
             stdout = None
             stderr = None
-            if self.stdin:
+            ikiwa self.stdin:
                 self._stdin_write(input)
-            elif self.stdout:
+            elikiwa self.stdout:
                 stdout = self.stdout.read()
                 self.stdout.close()
-            elif self.stderr:
+            elikiwa self.stderr:
                 stderr = self.stderr.read()
                 self.stderr.close()
             self.wait()
         else:
-            if timeout is not None:
+            ikiwa timeout is not None:
                 endtime = _time() + timeout
             else:
                 endtime = None
@@ -1025,7 +1025,7 @@ class Popen(object):
             except KeyboardInterrupt:
                 # https://bugs.python.org/issue25942
                 # See the detailed comment in .wait().
-                if timeout is not None:
+                ikiwa timeout is not None:
                     sigint_timeout = min(self._sigint_wait_secs,
                                          self._remaining_time(endtime))
                 else:
@@ -1042,47 +1042,47 @@ class Popen(object):
 
             sts = self.wait(timeout=self._remaining_time(endtime))
 
-        return (stdout, stderr)
+        rudisha (stdout, stderr)
 
 
-    def poll(self):
-        """Check if child process has terminated. Set and return returncode
+    eleza poll(self):
+        """Check ikiwa child process has terminated. Set and rudisha returncode
         attribute."""
-        return self._internal_poll()
+        rudisha self._internal_poll()
 
 
-    def _remaining_time(self, endtime):
+    eleza _remaining_time(self, endtime):
         """Convenience for _communicate when computing timeouts."""
-        if endtime is None:
-            return None
+        ikiwa endtime is None:
+            rudisha None
         else:
-            return endtime - _time()
+            rudisha endtime - _time()
 
 
-    def _check_timeout(self, endtime, orig_timeout, stdout_seq, stderr_seq,
+    eleza _check_timeout(self, endtime, orig_timeout, stdout_seq, stderr_seq,
                        skip_check_and_raise=False):
-        """Convenience for checking if a timeout has expired."""
-        if endtime is None:
+        """Convenience for checking ikiwa a timeout has expired."""
+        ikiwa endtime is None:
             return
-        if skip_check_and_raise or _time() > endtime:
+        ikiwa skip_check_and_raise or _time() > endtime:
             raise TimeoutExpired(
                     self.args, orig_timeout,
-                    output=b''.join(stdout_seq) if stdout_seq else None,
-                    stderr=b''.join(stderr_seq) if stderr_seq else None)
+                    output=b''.join(stdout_seq) ikiwa stdout_seq else None,
+                    stderr=b''.join(stderr_seq) ikiwa stderr_seq else None)
 
 
-    def wait(self, timeout=None):
+    eleza wait(self, timeout=None):
         """Wait for child process to terminate; returns self.returncode."""
-        if timeout is not None:
+        ikiwa timeout is not None:
             endtime = _time() + timeout
         try:
-            return self._wait(timeout=timeout)
+            rudisha self._wait(timeout=timeout)
         except KeyboardInterrupt:
             # https://bugs.python.org/issue25942
             # The first keyboard interrupt waits briefly for the child to
             # exit under the common assumption that it also received the ^C
             # generated SIGINT and will exit rapidly.
-            if timeout is not None:
+            ikiwa timeout is not None:
                 sigint_timeout = min(self._sigint_wait_secs,
                                      self._remaining_time(endtime))
             else:
@@ -1094,7 +1094,7 @@ class Popen(object):
                 pass
             raise  # resume the KeyboardInterrupt
 
-    def _close_pipe_fds(self,
+    eleza _close_pipe_fds(self,
                         p2cread, p2cwrite,
                         c2pread, c2pwrite,
                         errread, errwrite):
@@ -1102,126 +1102,126 @@ class Popen(object):
         devnull_fd = getattr(self, '_devnull', None)
 
         with contextlib.ExitStack() as stack:
-            if _mswindows:
-                if p2cread != -1:
+            ikiwa _mswindows:
+                ikiwa p2cread != -1:
                     stack.callback(p2cread.Close)
-                if c2pwrite != -1:
+                ikiwa c2pwrite != -1:
                     stack.callback(c2pwrite.Close)
-                if errwrite != -1:
+                ikiwa errwrite != -1:
                     stack.callback(errwrite.Close)
             else:
-                if p2cread != -1 and p2cwrite != -1 and p2cread != devnull_fd:
+                ikiwa p2cread != -1 and p2cwrite != -1 and p2cread != devnull_fd:
                     stack.callback(os.close, p2cread)
-                if c2pwrite != -1 and c2pread != -1 and c2pwrite != devnull_fd:
+                ikiwa c2pwrite != -1 and c2pread != -1 and c2pwrite != devnull_fd:
                     stack.callback(os.close, c2pwrite)
-                if errwrite != -1 and errread != -1 and errwrite != devnull_fd:
+                ikiwa errwrite != -1 and errread != -1 and errwrite != devnull_fd:
                     stack.callback(os.close, errwrite)
 
-            if devnull_fd is not None:
+            ikiwa devnull_fd is not None:
                 stack.callback(os.close, devnull_fd)
 
         # Prevent a double close of these handles/fds kutoka __init__ on error.
         self._closed_child_pipe_fds = True
 
-    if _mswindows:
+    ikiwa _mswindows:
         #
         # Windows methods
         #
-        def _get_handles(self, stdin, stdout, stderr):
-            """Construct and return tuple with IO objects:
+        eleza _get_handles(self, stdin, stdout, stderr):
+            """Construct and rudisha tuple with IO objects:
             p2cread, p2cwrite, c2pread, c2pwrite, errread, errwrite
             """
-            if stdin is None and stdout is None and stderr is None:
-                return (-1, -1, -1, -1, -1, -1)
+            ikiwa stdin is None and stdout is None and stderr is None:
+                rudisha (-1, -1, -1, -1, -1, -1)
 
             p2cread, p2cwrite = -1, -1
             c2pread, c2pwrite = -1, -1
             errread, errwrite = -1, -1
 
-            if stdin is None:
+            ikiwa stdin is None:
                 p2cread = _winapi.GetStdHandle(_winapi.STD_INPUT_HANDLE)
-                if p2cread is None:
+                ikiwa p2cread is None:
                     p2cread, _ = _winapi.CreatePipe(None, 0)
                     p2cread = Handle(p2cread)
                     _winapi.CloseHandle(_)
-            elif stdin == PIPE:
+            elikiwa stdin == PIPE:
                 p2cread, p2cwrite = _winapi.CreatePipe(None, 0)
                 p2cread, p2cwrite = Handle(p2cread), Handle(p2cwrite)
-            elif stdin == DEVNULL:
+            elikiwa stdin == DEVNULL:
                 p2cread = msvcrt.get_osfhandle(self._get_devnull())
-            elif isinstance(stdin, int):
+            elikiwa isinstance(stdin, int):
                 p2cread = msvcrt.get_osfhandle(stdin)
             else:
                 # Assuming file-like object
                 p2cread = msvcrt.get_osfhandle(stdin.fileno())
             p2cread = self._make_inheritable(p2cread)
 
-            if stdout is None:
+            ikiwa stdout is None:
                 c2pwrite = _winapi.GetStdHandle(_winapi.STD_OUTPUT_HANDLE)
-                if c2pwrite is None:
+                ikiwa c2pwrite is None:
                     _, c2pwrite = _winapi.CreatePipe(None, 0)
                     c2pwrite = Handle(c2pwrite)
                     _winapi.CloseHandle(_)
-            elif stdout == PIPE:
+            elikiwa stdout == PIPE:
                 c2pread, c2pwrite = _winapi.CreatePipe(None, 0)
                 c2pread, c2pwrite = Handle(c2pread), Handle(c2pwrite)
-            elif stdout == DEVNULL:
+            elikiwa stdout == DEVNULL:
                 c2pwrite = msvcrt.get_osfhandle(self._get_devnull())
-            elif isinstance(stdout, int):
+            elikiwa isinstance(stdout, int):
                 c2pwrite = msvcrt.get_osfhandle(stdout)
             else:
                 # Assuming file-like object
                 c2pwrite = msvcrt.get_osfhandle(stdout.fileno())
             c2pwrite = self._make_inheritable(c2pwrite)
 
-            if stderr is None:
+            ikiwa stderr is None:
                 errwrite = _winapi.GetStdHandle(_winapi.STD_ERROR_HANDLE)
-                if errwrite is None:
+                ikiwa errwrite is None:
                     _, errwrite = _winapi.CreatePipe(None, 0)
                     errwrite = Handle(errwrite)
                     _winapi.CloseHandle(_)
-            elif stderr == PIPE:
+            elikiwa stderr == PIPE:
                 errread, errwrite = _winapi.CreatePipe(None, 0)
                 errread, errwrite = Handle(errread), Handle(errwrite)
-            elif stderr == STDOUT:
+            elikiwa stderr == STDOUT:
                 errwrite = c2pwrite
-            elif stderr == DEVNULL:
+            elikiwa stderr == DEVNULL:
                 errwrite = msvcrt.get_osfhandle(self._get_devnull())
-            elif isinstance(stderr, int):
+            elikiwa isinstance(stderr, int):
                 errwrite = msvcrt.get_osfhandle(stderr)
             else:
                 # Assuming file-like object
                 errwrite = msvcrt.get_osfhandle(stderr.fileno())
             errwrite = self._make_inheritable(errwrite)
 
-            return (p2cread, p2cwrite,
+            rudisha (p2cread, p2cwrite,
                     c2pread, c2pwrite,
                     errread, errwrite)
 
 
-        def _make_inheritable(self, handle):
+        eleza _make_inheritable(self, handle):
             """Return a duplicate of handle, which is inheritable"""
             h = _winapi.DuplicateHandle(
                 _winapi.GetCurrentProcess(), handle,
                 _winapi.GetCurrentProcess(), 0, 1,
                 _winapi.DUPLICATE_SAME_ACCESS)
-            return Handle(h)
+            rudisha Handle(h)
 
 
-        def _filter_handle_list(self, handle_list):
+        eleza _filter_handle_list(self, handle_list):
             """Filter out console handles that can't be used
             in lpAttributeList["handle_list"] and make sure the list
             isn't empty. This also removes duplicate handles."""
             # An handle with it's lowest two bits set might be a special console
-            # handle that if passed in lpAttributeList["handle_list"], will
+            # handle that ikiwa passed in lpAttributeList["handle_list"], will
             # cause it to fail.
-            return list({handle for handle in handle_list
-                         if handle & 0x3 != 0x3
+            rudisha list({handle for handle in handle_list
+                         ikiwa handle & 0x3 != 0x3
                          or _winapi.GetFileType(handle) !=
                             _winapi.FILE_TYPE_CHAR})
 
 
-        def _execute_child(self, args, executable, preexec_fn, close_fds,
+        eleza _execute_child(self, args, executable, preexec_fn, close_fds,
                            pass_fds, cwd, env,
                            startupinfo, creationflags, shell,
                            p2cread, p2cwrite,
@@ -1232,25 +1232,25 @@ class Popen(object):
 
             assert not pass_fds, "pass_fds not supported on Windows."
 
-            if isinstance(args, str):
+            ikiwa isinstance(args, str):
                 pass
-            elif isinstance(args, bytes):
-                if shell:
+            elikiwa isinstance(args, bytes):
+                ikiwa shell:
                     raise TypeError('bytes args is not allowed on Windows')
                 args = list2cmdline([args])
-            elif isinstance(args, os.PathLike):
-                if shell:
+            elikiwa isinstance(args, os.PathLike):
+                ikiwa shell:
                     raise TypeError('path-like args is not allowed when '
                                     'shell is true')
                 args = list2cmdline([args])
             else:
                 args = list2cmdline(args)
 
-            if executable is not None:
+            ikiwa executable is not None:
                 executable = os.fsdecode(executable)
 
             # Process startup details
-            if startupinfo is None:
+            ikiwa startupinfo is None:
                 startupinfo = STARTUPINFO()
             else:
                 # bpo-34044: Copy STARTUPINFO since it is modified above,
@@ -1258,7 +1258,7 @@ class Popen(object):
                 startupinfo = startupinfo.copy()
 
             use_std_handles = -1 not in (p2cread, c2pwrite, errwrite)
-            if use_std_handles:
+            ikiwa use_std_handles:
                 startupinfo.dwFlags |= _winapi.STARTF_USESTDHANDLES
                 startupinfo.hStdInput = p2cread
                 startupinfo.hStdOutput = c2pwrite
@@ -1270,19 +1270,19 @@ class Popen(object):
                                     attribute_list["handle_list"])
 
             # If we were given an handle_list or need to create one
-            if have_handle_list or (use_std_handles and close_fds):
-                if attribute_list is None:
+            ikiwa have_handle_list or (use_std_handles and close_fds):
+                ikiwa attribute_list is None:
                     attribute_list = startupinfo.lpAttributeList = {}
                 handle_list = attribute_list["handle_list"] = \
                     list(attribute_list.get("handle_list", []))
 
-                if use_std_handles:
+                ikiwa use_std_handles:
                     handle_list += [int(p2cread), int(c2pwrite), int(errwrite)]
 
                 handle_list[:] = self._filter_handle_list(handle_list)
 
-                if handle_list:
-                    if not close_fds:
+                ikiwa handle_list:
+                    ikiwa not close_fds:
                         warnings.warn("startupinfo.lpAttributeList['handle_list'] "
                                       "overriding close_fds", RuntimeWarning)
 
@@ -1291,13 +1291,13 @@ class Popen(object):
                     # the ones in the handle_list
                     close_fds = False
 
-            if shell:
+            ikiwa shell:
                 startupinfo.dwFlags |= _winapi.STARTF_USESHOWWINDOW
                 startupinfo.wShowWindow = _winapi.SW_HIDE
                 comspec = os.environ.get("COMSPEC", "cmd.exe")
                 args = '{} /c "{}"'.format (comspec, args)
 
-            if cwd is not None:
+            ikiwa cwd is not None:
                 cwd = os.fsdecode(cwd)
 
             sys.audit("subprocess.Popen", executable, args, cwd, env)
@@ -1329,55 +1329,55 @@ class Popen(object):
             self.pid = pid
             _winapi.CloseHandle(ht)
 
-        def _internal_poll(self, _deadstate=None,
+        eleza _internal_poll(self, _deadstate=None,
                 _WaitForSingleObject=_winapi.WaitForSingleObject,
                 _WAIT_OBJECT_0=_winapi.WAIT_OBJECT_0,
                 _GetExitCodeProcess=_winapi.GetExitCodeProcess):
-            """Check if child process has terminated.  Returns returncode
+            """Check ikiwa child process has terminated.  Returns returncode
             attribute.
 
             This method is called by __del__, so it can only refer to objects
             in its local scope.
 
             """
-            if self.returncode is None:
-                if _WaitForSingleObject(self._handle, 0) == _WAIT_OBJECT_0:
+            ikiwa self.returncode is None:
+                ikiwa _WaitForSingleObject(self._handle, 0) == _WAIT_OBJECT_0:
                     self.returncode = _GetExitCodeProcess(self._handle)
-            return self.returncode
+            rudisha self.returncode
 
 
-        def _wait(self, timeout):
+        eleza _wait(self, timeout):
             """Internal implementation of wait() on Windows."""
-            if timeout is None:
+            ikiwa timeout is None:
                 timeout_millis = _winapi.INFINITE
             else:
                 timeout_millis = int(timeout * 1000)
-            if self.returncode is None:
-                # API note: Returns immediately if timeout_millis == 0.
+            ikiwa self.returncode is None:
+                # API note: Returns immediately ikiwa timeout_millis == 0.
                 result = _winapi.WaitForSingleObject(self._handle,
                                                      timeout_millis)
-                if result == _winapi.WAIT_TIMEOUT:
+                ikiwa result == _winapi.WAIT_TIMEOUT:
                     raise TimeoutExpired(self.args, timeout)
                 self.returncode = _winapi.GetExitCodeProcess(self._handle)
-            return self.returncode
+            rudisha self.returncode
 
 
-        def _readerthread(self, fh, buffer):
+        eleza _readerthread(self, fh, buffer):
             buffer.append(fh.read())
             fh.close()
 
 
-        def _communicate(self, input, endtime, orig_timeout):
+        eleza _communicate(self, input, endtime, orig_timeout):
             # Start reader threads feeding into a list hanging off of this
             # object, unless they've already been started.
-            if self.stdout and not hasattr(self, "_stdout_buff"):
+            ikiwa self.stdout and not hasattr(self, "_stdout_buff"):
                 self._stdout_buff = []
                 self.stdout_thread = \
                         threading.Thread(target=self._readerthread,
                                          args=(self.stdout, self._stdout_buff))
                 self.stdout_thread.daemon = True
                 self.stdout_thread.start()
-            if self.stderr and not hasattr(self, "_stderr_buff"):
+            ikiwa self.stderr and not hasattr(self, "_stderr_buff"):
                 self._stderr_buff = []
                 self.stderr_thread = \
                         threading.Thread(target=self._readerthread,
@@ -1385,58 +1385,58 @@ class Popen(object):
                 self.stderr_thread.daemon = True
                 self.stderr_thread.start()
 
-            if self.stdin:
+            ikiwa self.stdin:
                 self._stdin_write(input)
 
             # Wait for the reader threads, or time out.  If we time out, the
             # threads remain reading and the fds left open in case the user
             # calls communicate again.
-            if self.stdout is not None:
+            ikiwa self.stdout is not None:
                 self.stdout_thread.join(self._remaining_time(endtime))
-                if self.stdout_thread.is_alive():
+                ikiwa self.stdout_thread.is_alive():
                     raise TimeoutExpired(self.args, orig_timeout)
-            if self.stderr is not None:
+            ikiwa self.stderr is not None:
                 self.stderr_thread.join(self._remaining_time(endtime))
-                if self.stderr_thread.is_alive():
+                ikiwa self.stderr_thread.is_alive():
                     raise TimeoutExpired(self.args, orig_timeout)
 
             # Collect the output kutoka and close both pipes, now that we know
             # both have been read successfully.
             stdout = None
             stderr = None
-            if self.stdout:
+            ikiwa self.stdout:
                 stdout = self._stdout_buff
                 self.stdout.close()
-            if self.stderr:
+            ikiwa self.stderr:
                 stderr = self._stderr_buff
                 self.stderr.close()
 
             # All data exchanged.  Translate lists into strings.
-            if stdout is not None:
+            ikiwa stdout is not None:
                 stdout = stdout[0]
-            if stderr is not None:
+            ikiwa stderr is not None:
                 stderr = stderr[0]
 
-            return (stdout, stderr)
+            rudisha (stdout, stderr)
 
-        def send_signal(self, sig):
+        eleza send_signal(self, sig):
             """Send a signal to the process."""
             # Don't signal a process that we know has already died.
-            if self.returncode is not None:
+            ikiwa self.returncode is not None:
                 return
-            if sig == signal.SIGTERM:
+            ikiwa sig == signal.SIGTERM:
                 self.terminate()
-            elif sig == signal.CTRL_C_EVENT:
+            elikiwa sig == signal.CTRL_C_EVENT:
                 os.kill(self.pid, signal.CTRL_C_EVENT)
-            elif sig == signal.CTRL_BREAK_EVENT:
+            elikiwa sig == signal.CTRL_BREAK_EVENT:
                 os.kill(self.pid, signal.CTRL_BREAK_EVENT)
             else:
                 raise ValueError("Unsupported signal: {}".format(sig))
 
-        def terminate(self):
+        eleza terminate(self):
             """Terminates the process."""
             # Don't terminate a process that we know has already died.
-            if self.returncode is not None:
+            ikiwa self.returncode is not None:
                 return
             try:
                 _winapi.TerminateProcess(self._handle, 1)
@@ -1444,7 +1444,7 @@ class Popen(object):
                 # ERROR_ACCESS_DENIED (winerror 5) is received when the
                 # process already died.
                 rc = _winapi.GetExitCodeProcess(self._handle)
-                if rc == _winapi.STILL_ACTIVE:
+                ikiwa rc == _winapi.STILL_ACTIVE:
                     raise
                 self.returncode = rc
 
@@ -1454,90 +1454,90 @@ class Popen(object):
         #
         # POSIX methods
         #
-        def _get_handles(self, stdin, stdout, stderr):
-            """Construct and return tuple with IO objects:
+        eleza _get_handles(self, stdin, stdout, stderr):
+            """Construct and rudisha tuple with IO objects:
             p2cread, p2cwrite, c2pread, c2pwrite, errread, errwrite
             """
             p2cread, p2cwrite = -1, -1
             c2pread, c2pwrite = -1, -1
             errread, errwrite = -1, -1
 
-            if stdin is None:
+            ikiwa stdin is None:
                 pass
-            elif stdin == PIPE:
+            elikiwa stdin == PIPE:
                 p2cread, p2cwrite = os.pipe()
-            elif stdin == DEVNULL:
+            elikiwa stdin == DEVNULL:
                 p2cread = self._get_devnull()
-            elif isinstance(stdin, int):
+            elikiwa isinstance(stdin, int):
                 p2cread = stdin
             else:
                 # Assuming file-like object
                 p2cread = stdin.fileno()
 
-            if stdout is None:
+            ikiwa stdout is None:
                 pass
-            elif stdout == PIPE:
+            elikiwa stdout == PIPE:
                 c2pread, c2pwrite = os.pipe()
-            elif stdout == DEVNULL:
+            elikiwa stdout == DEVNULL:
                 c2pwrite = self._get_devnull()
-            elif isinstance(stdout, int):
+            elikiwa isinstance(stdout, int):
                 c2pwrite = stdout
             else:
                 # Assuming file-like object
                 c2pwrite = stdout.fileno()
 
-            if stderr is None:
+            ikiwa stderr is None:
                 pass
-            elif stderr == PIPE:
+            elikiwa stderr == PIPE:
                 errread, errwrite = os.pipe()
-            elif stderr == STDOUT:
-                if c2pwrite != -1:
+            elikiwa stderr == STDOUT:
+                ikiwa c2pwrite != -1:
                     errwrite = c2pwrite
                 else: # child's stdout is not set, use parent's stdout
                     errwrite = sys.__stdout__.fileno()
-            elif stderr == DEVNULL:
+            elikiwa stderr == DEVNULL:
                 errwrite = self._get_devnull()
-            elif isinstance(stderr, int):
+            elikiwa isinstance(stderr, int):
                 errwrite = stderr
             else:
                 # Assuming file-like object
                 errwrite = stderr.fileno()
 
-            return (p2cread, p2cwrite,
+            rudisha (p2cread, p2cwrite,
                     c2pread, c2pwrite,
                     errread, errwrite)
 
 
-        def _posix_spawn(self, args, executable, env, restore_signals,
+        eleza _posix_spawn(self, args, executable, env, restore_signals,
                          p2cread, p2cwrite,
                          c2pread, c2pwrite,
                          errread, errwrite):
             """Execute program using os.posix_spawn()."""
-            if env is None:
+            ikiwa env is None:
                 env = os.environ
 
             kwargs = {}
-            if restore_signals:
+            ikiwa restore_signals:
                 # See _Py_RestoreSignals() in Python/pylifecycle.c
                 sigset = []
                 for signame in ('SIGPIPE', 'SIGXFZ', 'SIGXFSZ'):
                     signum = getattr(signal, signame, None)
-                    if signum is not None:
+                    ikiwa signum is not None:
                         sigset.append(signum)
                 kwargs['setsigdef'] = sigset
 
             file_actions = []
             for fd in (p2cwrite, c2pread, errread):
-                if fd != -1:
+                ikiwa fd != -1:
                     file_actions.append((os.POSIX_SPAWN_CLOSE, fd))
             for fd, fd2 in (
                 (p2cread, 0),
                 (c2pwrite, 1),
                 (errwrite, 2),
             ):
-                if fd != -1:
+                ikiwa fd != -1:
                     file_actions.append((os.POSIX_SPAWN_DUP2, fd, fd2))
-            if file_actions:
+            ikiwa file_actions:
                 kwargs['file_actions'] = file_actions
 
             self.pid = os.posix_spawn(executable, args, env, **kwargs)
@@ -1547,7 +1547,7 @@ class Popen(object):
                                  c2pread, c2pwrite,
                                  errread, errwrite)
 
-        def _execute_child(self, args, executable, preexec_fn, close_fds,
+        eleza _execute_child(self, args, executable, preexec_fn, close_fds,
                            pass_fds, cwd, env,
                            startupinfo, creationflags, shell,
                            p2cread, p2cwrite,
@@ -1556,30 +1556,30 @@ class Popen(object):
                            restore_signals, start_new_session):
             """Execute program (POSIX version)"""
 
-            if isinstance(args, (str, bytes)):
+            ikiwa isinstance(args, (str, bytes)):
                 args = [args]
-            elif isinstance(args, os.PathLike):
-                if shell:
+            elikiwa isinstance(args, os.PathLike):
+                ikiwa shell:
                     raise TypeError('path-like args is not allowed when '
                                     'shell is true')
                 args = [args]
             else:
                 args = list(args)
 
-            if shell:
+            ikiwa shell:
                 # On Android the default shell is at '/system/bin/sh'.
                 unix_shell = ('/system/bin/sh' if
                           hasattr(sys, 'getandroidapilevel') else '/bin/sh')
                 args = [unix_shell, "-c"] + args
-                if executable:
+                ikiwa executable:
                     args[0] = executable
 
-            if executable is None:
+            ikiwa executable is None:
                 executable = args[0]
 
             sys.audit("subprocess.Popen", executable, args, cwd, env)
 
-            if (_USE_POSIX_SPAWN
+            ikiwa (_USE_POSIX_SPAWN
                     and os.path.dirname(executable)
                     and preexec_fn is None
                     and not close_fds
@@ -1615,17 +1615,17 @@ class Popen(object):
                     # potential deadlocks, thus we do all this here.
                     # and pass it to fork_exec()
 
-                    if env is not None:
+                    ikiwa env is not None:
                         env_list = []
                         for k, v in env.items():
                             k = os.fsencode(k)
-                            if b'=' in k:
+                            ikiwa b'=' in k:
                                 raise ValueError("illegal environment variable name")
                             env_list.append(k + b'=' + os.fsencode(v))
                     else:
                         env_list = None  # Use execv instead of execve.
                     executable = os.fsencode(executable)
-                    if os.path.dirname(executable):
+                    ikiwa os.path.dirname(executable):
                         executable_list = (executable,)
                     else:
                         # This matches the behavior of os._execvpe().
@@ -1657,16 +1657,16 @@ class Popen(object):
                 while True:
                     part = os.read(errpipe_read, 50000)
                     errpipe_data += part
-                    if not part or len(errpipe_data) > 50000:
+                    ikiwa not part or len(errpipe_data) > 50000:
                         break
             finally:
                 # be sure the FD is closed no matter what
                 os.close(errpipe_read)
 
-            if errpipe_data:
+            ikiwa errpipe_data:
                 try:
                     pid, sts = os.waitpid(self.pid, 0)
-                    if pid == self.pid:
+                    ikiwa pid == self.pid:
                         self._handle_exitstatus(sts)
                     else:
                         self.returncode = sys.maxsize
@@ -1688,64 +1688,64 @@ class Popen(object):
                 child_exception_type = getattr(
                         builtins, exception_name.decode('ascii'),
                         SubprocessError)
-                if issubclass(child_exception_type, OSError) and hex_errno:
+                ikiwa issubclass(child_exception_type, OSError) and hex_errno:
                     errno_num = int(hex_errno, 16)
                     child_exec_never_called = (err_msg == "noexec")
-                    if child_exec_never_called:
+                    ikiwa child_exec_never_called:
                         err_msg = ""
                         # The error must be kutoka chdir(cwd).
                         err_filename = cwd
                     else:
                         err_filename = orig_executable
-                    if errno_num != 0:
+                    ikiwa errno_num != 0:
                         err_msg = os.strerror(errno_num)
                     raise child_exception_type(errno_num, err_msg, err_filename)
                 raise child_exception_type(err_msg)
 
 
-        def _handle_exitstatus(self, sts, _WIFSIGNALED=os.WIFSIGNALED,
+        eleza _handle_exitstatus(self, sts, _WIFSIGNALED=os.WIFSIGNALED,
                 _WTERMSIG=os.WTERMSIG, _WIFEXITED=os.WIFEXITED,
                 _WEXITSTATUS=os.WEXITSTATUS, _WIFSTOPPED=os.WIFSTOPPED,
                 _WSTOPSIG=os.WSTOPSIG):
             """All callers to this function MUST hold self._waitpid_lock."""
             # This method is called (indirectly) by __del__, so it cannot
             # refer to anything outside of its local scope.
-            if _WIFSIGNALED(sts):
+            ikiwa _WIFSIGNALED(sts):
                 self.returncode = -_WTERMSIG(sts)
-            elif _WIFEXITED(sts):
+            elikiwa _WIFEXITED(sts):
                 self.returncode = _WEXITSTATUS(sts)
-            elif _WIFSTOPPED(sts):
+            elikiwa _WIFSTOPPED(sts):
                 self.returncode = -_WSTOPSIG(sts)
             else:
                 # Should never happen
                 raise SubprocessError("Unknown child exit status!")
 
 
-        def _internal_poll(self, _deadstate=None, _waitpid=os.waitpid,
+        eleza _internal_poll(self, _deadstate=None, _waitpid=os.waitpid,
                 _WNOHANG=os.WNOHANG, _ECHILD=errno.ECHILD):
-            """Check if child process has terminated.  Returns returncode
+            """Check ikiwa child process has terminated.  Returns returncode
             attribute.
 
             This method is called by __del__, so it cannot reference anything
             outside of the local scope (nor can any methods it calls).
 
             """
-            if self.returncode is None:
-                if not self._waitpid_lock.acquire(False):
+            ikiwa self.returncode is None:
+                ikiwa not self._waitpid_lock.acquire(False):
                     # Something else is busy calling waitpid.  Don't allow two
                     # at once.  We know nothing yet.
-                    return None
+                    rudisha None
                 try:
-                    if self.returncode is not None:
-                        return self.returncode  # Another thread waited.
+                    ikiwa self.returncode is not None:
+                        rudisha self.returncode  # Another thread waited.
                     pid, sts = _waitpid(self.pid, _WNOHANG)
-                    if pid == self.pid:
+                    ikiwa pid == self.pid:
                         self._handle_exitstatus(sts)
                 except OSError as e:
-                    if _deadstate is not None:
+                    ikiwa _deadstate is not None:
                         self.returncode = _deadstate
-                    elif e.errno == _ECHILD:
-                        # This happens if SIGCLD is set to be ignored or
+                    elikiwa e.errno == _ECHILD:
+                        # This happens ikiwa SIGCLD is set to be ignored or
                         # waiting for child processes has otherwise been
                         # disabled for our process.  This child is dead, we
                         # can't get the status.
@@ -1753,72 +1753,72 @@ class Popen(object):
                         self.returncode = 0
                 finally:
                     self._waitpid_lock.release()
-            return self.returncode
+            rudisha self.returncode
 
 
-        def _try_wait(self, wait_flags):
+        eleza _try_wait(self, wait_flags):
             """All callers to this function MUST hold self._waitpid_lock."""
             try:
                 (pid, sts) = os.waitpid(self.pid, wait_flags)
             except ChildProcessError:
-                # This happens if SIGCLD is set to be ignored or waiting
+                # This happens ikiwa SIGCLD is set to be ignored or waiting
                 # for child processes has otherwise been disabled for our
                 # process.  This child is dead, we can't get the status.
                 pid = self.pid
                 sts = 0
-            return (pid, sts)
+            rudisha (pid, sts)
 
 
-        def _wait(self, timeout):
+        eleza _wait(self, timeout):
             """Internal implementation of wait() on POSIX."""
-            if self.returncode is not None:
-                return self.returncode
+            ikiwa self.returncode is not None:
+                rudisha self.returncode
 
-            if timeout is not None:
+            ikiwa timeout is not None:
                 endtime = _time() + timeout
-                # Enter a busy loop if we have a timeout.  This busy loop was
+                # Enter a busy loop ikiwa we have a timeout.  This busy loop was
                 # cribbed kutoka Lib/threading.py in Thread.wait() at r71065.
                 delay = 0.0005 # 500 us -> initial delay of 1 ms
                 while True:
-                    if self._waitpid_lock.acquire(False):
+                    ikiwa self._waitpid_lock.acquire(False):
                         try:
-                            if self.returncode is not None:
+                            ikiwa self.returncode is not None:
                                 break  # Another thread waited.
                             (pid, sts) = self._try_wait(os.WNOHANG)
                             assert pid == self.pid or pid == 0
-                            if pid == self.pid:
+                            ikiwa pid == self.pid:
                                 self._handle_exitstatus(sts)
                                 break
                         finally:
                             self._waitpid_lock.release()
                     remaining = self._remaining_time(endtime)
-                    if remaining <= 0:
+                    ikiwa remaining <= 0:
                         raise TimeoutExpired(self.args, timeout)
                     delay = min(delay * 2, remaining, .05)
                     time.sleep(delay)
             else:
                 while self.returncode is None:
                     with self._waitpid_lock:
-                        if self.returncode is not None:
+                        ikiwa self.returncode is not None:
                             break  # Another thread waited.
                         (pid, sts) = self._try_wait(0)
                         # Check the pid and loop as waitpid has been known to
-                        # return 0 even without WNOHANG in odd situations.
+                        # rudisha 0 even without WNOHANG in odd situations.
                         # http://bugs.python.org/issue14396.
-                        if pid == self.pid:
+                        ikiwa pid == self.pid:
                             self._handle_exitstatus(sts)
-            return self.returncode
+            rudisha self.returncode
 
 
-        def _communicate(self, input, endtime, orig_timeout):
-            if self.stdin and not self._communication_started:
-                # Flush stdio buffer.  This might block, if the user has
+        eleza _communicate(self, input, endtime, orig_timeout):
+            ikiwa self.stdin and not self._communication_started:
+                # Flush stdio buffer.  This might block, ikiwa the user has
                 # been writing to .stdin in an uncontrolled fashion.
                 try:
                     self.stdin.flush()
                 except BrokenPipeError:
                     pass  # communicate() must ignore BrokenPipeError.
-                if not input:
+                ikiwa not input:
                     try:
                         self.stdin.close()
                     except BrokenPipeError:
@@ -1827,35 +1827,35 @@ class Popen(object):
             stdout = None
             stderr = None
 
-            # Only create this mapping if we haven't already.
-            if not self._communication_started:
+            # Only create this mapping ikiwa we haven't already.
+            ikiwa not self._communication_started:
                 self._fileobj2output = {}
-                if self.stdout:
+                ikiwa self.stdout:
                     self._fileobj2output[self.stdout] = []
-                if self.stderr:
+                ikiwa self.stderr:
                     self._fileobj2output[self.stderr] = []
 
-            if self.stdout:
+            ikiwa self.stdout:
                 stdout = self._fileobj2output[self.stdout]
-            if self.stderr:
+            ikiwa self.stderr:
                 stderr = self._fileobj2output[self.stderr]
 
             self._save_input(input)
 
-            if self._input:
+            ikiwa self._input:
                 input_view = memoryview(self._input)
 
             with _PopenSelector() as selector:
-                if self.stdin and input:
+                ikiwa self.stdin and input:
                     selector.register(self.stdin, selectors.EVENT_WRITE)
-                if self.stdout:
+                ikiwa self.stdout:
                     selector.register(self.stdout, selectors.EVENT_READ)
-                if self.stderr:
+                ikiwa self.stderr:
                     selector.register(self.stderr, selectors.EVENT_READ)
 
                 while selector.get_map():
                     timeout = self._remaining_time(endtime)
-                    if timeout is not None and timeout < 0:
+                    ikiwa timeout is not None and timeout < 0:
                         self._check_timeout(endtime, orig_timeout,
                                             stdout, stderr,
                                             skip_check_and_raise=True)
@@ -1870,7 +1870,7 @@ class Popen(object):
                     # objects; they are no longer using C stdio!
 
                     for key, events in ready:
-                        if key.fileobj is self.stdin:
+                        ikiwa key.fileobj is self.stdin:
                             chunk = input_view[self._input_offset :
                                                self._input_offset + _PIPE_BUF]
                             try:
@@ -1879,12 +1879,12 @@ class Popen(object):
                                 selector.unregister(key.fileobj)
                                 key.fileobj.close()
                             else:
-                                if self._input_offset >= len(self._input):
+                                ikiwa self._input_offset >= len(self._input):
                                     selector.unregister(key.fileobj)
                                     key.fileobj.close()
-                        elif key.fileobj in (self.stdout, self.stderr):
+                        elikiwa key.fileobj in (self.stdout, self.stderr):
                             data = os.read(key.fd, 32768)
-                            if not data:
+                            ikiwa not data:
                                 selector.unregister(key.fileobj)
                                 key.fileobj.close()
                             self._fileobj2output[key.fileobj].append(data)
@@ -1892,50 +1892,50 @@ class Popen(object):
             self.wait(timeout=self._remaining_time(endtime))
 
             # All data exchanged.  Translate lists into strings.
-            if stdout is not None:
+            ikiwa stdout is not None:
                 stdout = b''.join(stdout)
-            if stderr is not None:
+            ikiwa stderr is not None:
                 stderr = b''.join(stderr)
 
-            # Translate newlines, if requested.
+            # Translate newlines, ikiwa requested.
             # This also turns bytes into strings.
-            if self.text_mode:
-                if stdout is not None:
+            ikiwa self.text_mode:
+                ikiwa stdout is not None:
                     stdout = self._translate_newlines(stdout,
                                                       self.stdout.encoding,
                                                       self.stdout.errors)
-                if stderr is not None:
+                ikiwa stderr is not None:
                     stderr = self._translate_newlines(stderr,
                                                       self.stderr.encoding,
                                                       self.stderr.errors)
 
-            return (stdout, stderr)
+            rudisha (stdout, stderr)
 
 
-        def _save_input(self, input):
+        eleza _save_input(self, input):
             # This method is called kutoka the _communicate_with_*() methods
-            # so that if we time out while communicating, we can continue
-            # sending input if we retry.
-            if self.stdin and self._input is None:
+            # so that ikiwa we time out while communicating, we can continue
+            # sending input ikiwa we retry.
+            ikiwa self.stdin and self._input is None:
                 self._input_offset = 0
                 self._input = input
-                if input is not None and self.text_mode:
+                ikiwa input is not None and self.text_mode:
                     self._input = self._input.encode(self.stdin.encoding,
                                                      self.stdin.errors)
 
 
-        def send_signal(self, sig):
+        eleza send_signal(self, sig):
             """Send a signal to the process."""
             # Skip signalling a process that we know has already died.
-            if self.returncode is None:
+            ikiwa self.returncode is None:
                 os.kill(self.pid, sig)
 
-        def terminate(self):
+        eleza terminate(self):
             """Terminate the process with SIGTERM
             """
             self.send_signal(signal.SIGTERM)
 
-        def kill(self):
+        eleza kill(self):
             """Kill the process with SIGKILL
             """
             self.send_signal(signal.SIGKILL)

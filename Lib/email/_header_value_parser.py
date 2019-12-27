@@ -72,7 +72,7 @@ import sys
 import urllib   # For urllib.parse.unquote
 from string import hexdigits
 from operator import itemgetter
-from email import _encoded_words as _ew
+from email agiza _encoded_words as _ew
 from email import errors
 from email import utils
 
@@ -318,7 +318,7 @@ class Address(TokenList):
     def mailboxes(self):
         if self[0].token_type == 'mailbox':
             return [self[0]]
-        elif self[0].token_type == 'invalid-mailbox':
+        lasivyo self[0].token_type == 'invalid-mailbox':
             return []
         return self[0].mailboxes
 
@@ -326,7 +326,7 @@ class Address(TokenList):
     def all_mailboxes(self):
         if self[0].token_type == 'mailbox':
             return [self[0]]
-        elif self[0].token_type == 'invalid-mailbox':
+        lasivyo self[0].token_type == 'invalid-mailbox':
             return [self[0]]
         return self[0].all_mailboxes
 
@@ -1011,7 +1011,7 @@ def _get_ptext_to_endchars(value, endchars):
                 continue
         if escape:
             escape = False
-        elif fragment[pos] in endchars:
+        lasivyo fragment[pos] in endchars:
             break
         vchars.append(fragment[pos])
     else:
@@ -1212,7 +1212,7 @@ def get_bare_quoted_string(value):
     while value and value[0] != '"':
         if value[0] in WSP:
             token, value = get_fws(value)
-        elif value[:2] == '=?':
+        lasivyo value[:2] == '=?':
             try:
                 token, value = get_encoded_word(value)
                 bare_quoted_string.defects.append(errors.InvalidHeaderDefect(
@@ -1242,7 +1242,7 @@ def get_comment(value):
     while value and value[0] != ")":
         if value[0] in WSP:
             token, value = get_fws(value)
-        elif value[0] == '(':
+        lasivyo value[0] == '(':
             token, value = get_comment(value)
         else:
             token, value = get_qp_ctext(value)
@@ -1380,7 +1380,7 @@ def get_word(value):
             "Expected 'atom' or 'quoted-string' but found nothing.")
     if value[0]=='"':
         token, value = get_quoted_string(value)
-    elif value[0] in SPECIALS:
+    lasivyo value[0] in SPECIALS:
         raise errors.HeaderParseError("Expected 'atom' or 'quoted-string' "
                                       "but found '{}'".format(value))
     else:
@@ -1480,7 +1480,7 @@ def get_obs_local_part(value):
             last_non_ws_was_dot = True
             value = value[1:]
             continue
-        elif value[0]=='\\':
+        lasivyo value[0]=='\\':
             obs_local_part.append(ValueTerminal(value[0],
                                                 'misplaced-special'))
             value = value[1:]
@@ -1646,7 +1646,7 @@ def get_obs_route(value):
         if value[0] in CFWS_LEADER:
             token, value = get_cfws(value)
             obs_route.append(token)
-        elif value[0] == ',':
+        lasivyo value[0] == ',':
             obs_route.append(ListSeparator)
             value = value[1:]
     if not value or value[0] != '@':
@@ -1837,7 +1837,7 @@ def get_mailbox_list(value):
                     mailbox_list.append(token)
                     mailbox_list.defects.append(errors.InvalidHeaderDefect(
                         "invalid mailbox in mailbox-list"))
-            elif value[0] == ',':
+            lasivyo value[0] == ',':
                 mailbox_list.defects.append(errors.ObsoleteHeaderDefect(
                     "empty element in mailbox-list"))
             else:
@@ -1919,7 +1919,7 @@ def get_group(value):
     if not value:
         group.defects.append(errors.InvalidHeaderDefect(
             "end of header in group"))
-    elif value[0] != ';':
+    lasivyo value[0] != ';':
         raise errors.HeaderParseError(
             "expected ';' at end of group but found {}".format(value))
     group.append(ValueTerminal(';', 'group-terminator'))
@@ -1988,7 +1988,7 @@ def get_address_list(value):
                     address_list.append(Address([token]))
                     address_list.defects.append(errors.InvalidHeaderDefect(
                         "invalid address in address-list"))
-            elif value[0] == ',':
+            lasivyo value[0] == ',':
                 address_list.defects.append(errors.ObsoleteHeaderDefect(
                     "empty element in address-list"))
             else:
@@ -2513,7 +2513,7 @@ def get_parameter(value):
         while value:
             if value[0] in WSP:
                 token, value = get_fws(value)
-            elif value[0] == '"':
+            lasivyo value[0] == '"':
                 token = ValueTerminal('"', 'DQUOTE')
                 value = value[1:]
             else:
@@ -2949,7 +2949,7 @@ def _fold_mime_parameters(part, lines, maxlen, encoding):
         if len(lines[-1]) + len(tstr) + 1 < maxlen:
             lines[-1] = lines[-1] + ' ' + tstr
             continue
-        elif len(tstr) + 2 <= maxlen:
+        lasivyo len(tstr) + 2 <= maxlen:
             lines.append(' ' + tstr)
             continue
         # We need multiple sections.  We are allowed to mix encoded and

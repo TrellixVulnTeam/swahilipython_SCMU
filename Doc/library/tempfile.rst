@@ -44,7 +44,7 @@ The module defines the following user-callable items:
    The resulting object can be used as a context manager (see
    :ref:`tempfile-examples`).  On completion of the context or
    destruction of the file object the temporary file will be removed
-   from the filesystem.
+   kutoka the filesystem.
 
    The *mode* parameter defaults to ``'w+b'`` so that the file created can
    be read and written without being closed.  Binary mode is used so that it
@@ -77,7 +77,7 @@ The module defines the following user-callable items:
    This function operates exactly as :func:`TemporaryFile` does, except that
    the file is guaranteed to have a visible name in the file system (on
    Unix, the directory entry is not unlinked).  That name can be retrieved
-   from the :attr:`name` attribute of the returned
+   kutoka the :attr:`name` attribute of the returned
    file-like object.  Whether the name can be
    used to open the file a second time, while the named temporary file is
    still open, varies across platforms (it can be so used on Unix; it cannot
@@ -124,9 +124,9 @@ The module defines the following user-callable items:
    The resulting object can be used as a context manager (see
    :ref:`tempfile-examples`).  On completion of the context or destruction
    of the temporary directory object the newly created temporary directory
-   and all its contents are removed from the filesystem.
+   and all its contents are removed kutoka the filesystem.
 
-   The directory name can be retrieved from the :attr:`name` attribute of the
+   The directory name can be retrieved kutoka the :attr:`name` attribute of the
    returned object.  When the returned object is used as a context manager, the
    :attr:`name` will be assigned to the target of the :keyword:`!as` clause in
    the :keyword:`with` statement, if there is one.
@@ -163,7 +163,7 @@ The module defines the following user-callable items:
 
    If *dir* is not ``None``, the file will be created in that directory;
    otherwise, a default directory is used.  The default directory is chosen
-   from a platform-dependent list, but the user of the application can
+   kutoka a platform-dependent list, but the user of the application can
    control the directory location by setting the *TMPDIR*, *TEMP* or *TMP*
    environment variables.  There is thus no guarantee that the generated
    filename will have any nice properties, such as not requiring quoting
@@ -289,12 +289,12 @@ Examples
 
 Here are some examples of typical usage of the :mod:`tempfile` module::
 
-    >>> import tempfile
+    >>> agiza tempfile
 
     # create a temporary file and write some data to it
     >>> fp = tempfile.TemporaryFile()
     >>> fp.write(b'Hello world!')
-    # read data from file
+    # read data kutoka file
     >>> fp.seek(0)
     >>> fp.read()
     b'Hello world!'

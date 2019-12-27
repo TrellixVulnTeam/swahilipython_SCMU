@@ -30,32 +30,32 @@ HAVE_SEND_HANDLE = (sys.platform == 'win32' or
 # Pickler subclass
 #
 
-class ForkingPickler(pickle.Pickler):
-    '''Pickler subclass used by multiprocessing.'''
+kundi ForkingPickler(pickle.Pickler):
+    '''Pickler subkundi used by multiprocessing.'''
     _extra_reducers = {}
     _copyreg_dispatch_table = copyreg.dispatch_table
 
-    def __init__(self, *args):
+    eleza __init__(self, *args):
         super().__init__(*args)
         self.dispatch_table = self._copyreg_dispatch_table.copy()
         self.dispatch_table.update(self._extra_reducers)
 
     @classmethod
-    def register(cls, type, reduce):
+    eleza register(cls, type, reduce):
         '''Register a reduce function for a type.'''
         cls._extra_reducers[type] = reduce
 
     @classmethod
-    def dumps(cls, obj, protocol=None):
+    eleza dumps(cls, obj, protocol=None):
         buf = io.BytesIO()
         cls(buf, protocol).dump(obj)
-        return buf.getbuffer()
+        rudisha buf.getbuffer()
 
     loads = pickle.loads
 
 register = ForkingPickler.register
 
-def dump(obj, file, protocol=None):
+eleza dump(obj, file, protocol=None):
     '''Replacement for pickle.dump() using ForkingPickler.'''
     ForkingPickler(file, protocol).dump(obj)
 
@@ -63,48 +63,48 @@ def dump(obj, file, protocol=None):
 # Platform specific definitions
 #
 
-if sys.platform == 'win32':
+ikiwa sys.platform == 'win32':
     # Windows
     __all__ += ['DupHandle', 'duplicate', 'steal_handle']
     agiza _winapi
 
-    def duplicate(handle, target_process=None, inheritable=False,
+    eleza duplicate(handle, target_process=None, inheritable=False,
                   *, source_process=None):
         '''Duplicate a handle.  (target_process is a handle not a pid!)'''
         current_process = _winapi.GetCurrentProcess()
-        if source_process is None:
+        ikiwa source_process is None:
             source_process = current_process
-        if target_process is None:
+        ikiwa target_process is None:
             target_process = current_process
-        return _winapi.DuplicateHandle(
+        rudisha _winapi.DuplicateHandle(
             source_process, handle, target_process,
             0, inheritable, _winapi.DUPLICATE_SAME_ACCESS)
 
-    def steal_handle(source_pid, handle):
+    eleza steal_handle(source_pid, handle):
         '''Steal a handle kutoka process identified by source_pid.'''
         source_process_handle = _winapi.OpenProcess(
             _winapi.PROCESS_DUP_HANDLE, False, source_pid)
         try:
-            return _winapi.DuplicateHandle(
+            rudisha _winapi.DuplicateHandle(
                 source_process_handle, handle,
                 _winapi.GetCurrentProcess(), 0, False,
                 _winapi.DUPLICATE_SAME_ACCESS | _winapi.DUPLICATE_CLOSE_SOURCE)
         finally:
             _winapi.CloseHandle(source_process_handle)
 
-    def send_handle(conn, handle, destination_pid):
+    eleza send_handle(conn, handle, destination_pid):
         '''Send a handle over a local connection.'''
         dh = DupHandle(handle, _winapi.DUPLICATE_SAME_ACCESS, destination_pid)
         conn.send(dh)
 
-    def recv_handle(conn):
+    eleza recv_handle(conn):
         '''Receive a handle over a local connection.'''
-        return conn.recv().detach()
+        rudisha conn.recv().detach()
 
-    class DupHandle(object):
+    kundi DupHandle(object):
         '''Picklable wrapper for a handle.'''
-        def __init__(self, handle, access, pid=None):
-            if pid is None:
+        eleza __init__(self, handle, access, pid=None):
+            ikiwa pid is None:
                 # We just duplicate the handle in the current process and
                 # let the receiving process steal the handle.
                 pid = os.getpid()
@@ -118,17 +118,17 @@ if sys.platform == 'win32':
             self._access = access
             self._pid = pid
 
-        def detach(self):
+        eleza detach(self):
             '''Get the handle.  This should only be called once.'''
             # retrieve handle kutoka process which currently owns it
-            if self._pid == os.getpid():
+            ikiwa self._pid == os.getpid():
                 # The handle has already been duplicated for this process.
-                return self._handle
+                rudisha self._handle
             # We must steal the handle kutoka the process whose pid is self._pid.
             proc = _winapi.OpenProcess(_winapi.PROCESS_DUP_HANDLE, False,
                                        self._pid)
             try:
-                return _winapi.DuplicateHandle(
+                rudisha _winapi.DuplicateHandle(
                     proc, self._handle, _winapi.GetCurrentProcess(),
                     self._access, False, _winapi.DUPLICATE_CLOSE_SOURCE)
             finally:
@@ -142,60 +142,60 @@ else:
     # On MacOSX we should acknowledge receipt of fds -- see Issue14669
     ACKNOWLEDGE = sys.platform == 'darwin'
 
-    def sendfds(sock, fds):
+    eleza sendfds(sock, fds):
         '''Send an array of fds over an AF_UNIX socket.'''
         fds = array.array('i', fds)
         msg = bytes([len(fds) % 256])
         sock.sendmsg([msg], [(socket.SOL_SOCKET, socket.SCM_RIGHTS, fds)])
-        if ACKNOWLEDGE and sock.recv(1) != b'A':
+        ikiwa ACKNOWLEDGE and sock.recv(1) != b'A':
             raise RuntimeError('did not receive acknowledgement of fd')
 
-    def recvfds(sock, size):
+    eleza recvfds(sock, size):
         '''Receive an array of fds over an AF_UNIX socket.'''
         a = array.array('i')
         bytes_size = a.itemsize * size
         msg, ancdata, flags, addr = sock.recvmsg(1, socket.CMSG_SPACE(bytes_size))
-        if not msg and not ancdata:
+        ikiwa not msg and not ancdata:
             raise EOFError
         try:
-            if ACKNOWLEDGE:
+            ikiwa ACKNOWLEDGE:
                 sock.send(b'A')
-            if len(ancdata) != 1:
+            ikiwa len(ancdata) != 1:
                 raise RuntimeError('received %d items of ancdata' %
                                    len(ancdata))
             cmsg_level, cmsg_type, cmsg_data = ancdata[0]
-            if (cmsg_level == socket.SOL_SOCKET and
+            ikiwa (cmsg_level == socket.SOL_SOCKET and
                 cmsg_type == socket.SCM_RIGHTS):
-                if len(cmsg_data) % a.itemsize != 0:
+                ikiwa len(cmsg_data) % a.itemsize != 0:
                     raise ValueError
-                a.frombytes(cmsg_data)
-                if len(a) % 256 != msg[0]:
+                a.kutokabytes(cmsg_data)
+                ikiwa len(a) % 256 != msg[0]:
                     raise AssertionError(
                         "Len is {0:n} but msg[0] is {1!r}".format(
                             len(a), msg[0]))
-                return list(a)
+                rudisha list(a)
         except (ValueError, IndexError):
             pass
         raise RuntimeError('Invalid data received')
 
-    def send_handle(conn, handle, destination_pid):
+    eleza send_handle(conn, handle, destination_pid):
         '''Send a handle over a local connection.'''
-        with socket.fromfd(conn.fileno(), socket.AF_UNIX, socket.SOCK_STREAM) as s:
+        with socket.kutokafd(conn.fileno(), socket.AF_UNIX, socket.SOCK_STREAM) as s:
             sendfds(s, [handle])
 
-    def recv_handle(conn):
+    eleza recv_handle(conn):
         '''Receive a handle over a local connection.'''
-        with socket.fromfd(conn.fileno(), socket.AF_UNIX, socket.SOCK_STREAM) as s:
-            return recvfds(s, 1)[0]
+        with socket.kutokafd(conn.fileno(), socket.AF_UNIX, socket.SOCK_STREAM) as s:
+            rudisha recvfds(s, 1)[0]
 
-    def DupFd(fd):
+    eleza DupFd(fd):
         '''Return a wrapper for an fd.'''
         popen_obj = context.get_spawning_popen()
-        if popen_obj is not None:
-            return popen_obj.DupFd(popen_obj.duplicate_for_child(fd))
-        elif HAVE_SEND_HANDLE:
+        ikiwa popen_obj is not None:
+            rudisha popen_obj.DupFd(popen_obj.duplicate_for_child(fd))
+        elikiwa HAVE_SEND_HANDLE:
             kutoka . agiza resource_sharer
-            return resource_sharer.DupFd(fd)
+            rudisha resource_sharer.DupFd(fd)
         else:
             raise ValueError('SCM_RIGHTS appears not to be available')
 
@@ -203,53 +203,53 @@ else:
 # Try making some callable types picklable
 #
 
-def _reduce_method(m):
-    if m.__self__ is None:
-        return getattr, (m.__class__, m.__func__.__name__)
+eleza _reduce_method(m):
+    ikiwa m.__self__ is None:
+        rudisha getattr, (m.__class__, m.__func__.__name__)
     else:
-        return getattr, (m.__self__, m.__func__.__name__)
-class _C:
-    def f(self):
+        rudisha getattr, (m.__self__, m.__func__.__name__)
+kundi _C:
+    eleza f(self):
         pass
 register(type(_C().f), _reduce_method)
 
 
-def _reduce_method_descriptor(m):
-    return getattr, (m.__objclass__, m.__name__)
+eleza _reduce_method_descriptor(m):
+    rudisha getattr, (m.__objclass__, m.__name__)
 register(type(list.append), _reduce_method_descriptor)
 register(type(int.__add__), _reduce_method_descriptor)
 
 
-def _reduce_partial(p):
-    return _rebuild_partial, (p.func, p.args, p.keywords or {})
-def _rebuild_partial(func, args, keywords):
-    return functools.partial(func, *args, **keywords)
+eleza _reduce_partial(p):
+    rudisha _rebuild_partial, (p.func, p.args, p.keywords or {})
+eleza _rebuild_partial(func, args, keywords):
+    rudisha functools.partial(func, *args, **keywords)
 register(functools.partial, _reduce_partial)
 
 #
 # Make sockets picklable
 #
 
-if sys.platform == 'win32':
-    def _reduce_socket(s):
+ikiwa sys.platform == 'win32':
+    eleza _reduce_socket(s):
         kutoka .resource_sharer agiza DupSocket
-        return _rebuild_socket, (DupSocket(s),)
-    def _rebuild_socket(ds):
-        return ds.detach()
+        rudisha _rebuild_socket, (DupSocket(s),)
+    eleza _rebuild_socket(ds):
+        rudisha ds.detach()
     register(socket.socket, _reduce_socket)
 
 else:
-    def _reduce_socket(s):
+    eleza _reduce_socket(s):
         df = DupFd(s.fileno())
-        return _rebuild_socket, (df, s.family, s.type, s.proto)
-    def _rebuild_socket(df, family, type, proto):
+        rudisha _rebuild_socket, (df, s.family, s.type, s.proto)
+    eleza _rebuild_socket(df, family, type, proto):
         fd = df.detach()
-        return socket.socket(family, type, proto, fileno=fd)
+        rudisha socket.socket(family, type, proto, fileno=fd)
     register(socket.socket, _reduce_socket)
 
 
-class AbstractReducer(metaclass=ABCMeta):
-    '''Abstract base class for use in implementing a Reduction class
+kundi AbstractReducer(metaclass=ABCMeta):
+    '''Abstract base kundi for use in implementing a Reduction class
     suitable for use in replacing the standard reduction mechanism
     used in multiprocessing.'''
     ForkingPickler = ForkingPickler
@@ -258,7 +258,7 @@ class AbstractReducer(metaclass=ABCMeta):
     send_handle = send_handle
     recv_handle = recv_handle
 
-    if sys.platform == 'win32':
+    ikiwa sys.platform == 'win32':
         steal_handle = steal_handle
         duplicate = duplicate
         DupHandle = DupHandle
@@ -273,7 +273,7 @@ class AbstractReducer(metaclass=ABCMeta):
     _reduce_socket = _reduce_socket
     _rebuild_socket = _rebuild_socket
 
-    def __init__(self, *args):
+    eleza __init__(self, *args):
         register(type(_C().f), _reduce_method)
         register(type(list.append), _reduce_method_descriptor)
         register(type(int.__add__), _reduce_method_descriptor)

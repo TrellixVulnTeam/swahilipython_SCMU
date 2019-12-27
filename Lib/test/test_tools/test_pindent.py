@@ -13,26 +13,26 @@ kutoka test.test_tools agiza scriptsdir, skip_if_missing
 skip_if_missing()
 
 
-class PindentTests(unittest.TestCase):
+kundi PindentTests(unittest.TestCase):
     script = os.path.join(scriptsdir, 'pindent.py')
 
-    def assertFileEqual(self, fn1, fn2):
+    eleza assertFileEqual(self, fn1, fn2):
         with open(fn1) as f1, open(fn2) as f2:
             self.assertEqual(f1.readlines(), f2.readlines())
 
-    def pindent(self, source, *args):
+    eleza pindent(self, source, *args):
         with subprocess.Popen(
                 (sys.executable, self.script) + args,
                 stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                 universal_newlines=True) as proc:
             out, err = proc.communicate(source)
         self.assertIsNone(err)
-        return out
+        rudisha out
 
-    def lstriplines(self, data):
-        return '\n'.join(line.lstrip() for line in data.splitlines()) + '\n'
+    eleza lstriplines(self, data):
+        rudisha '\n'.join(line.lstrip() for line in data.splitlines()) + '\n'
 
-    def test_selftest(self):
+    eleza test_selftest(self):
         self.maxDiff = None
         with support.temp_dir() as directory:
             data_path = os.path.join(directory, '_test.py')
@@ -75,23 +75,23 @@ class PindentTests(unittest.TestCase):
             compile(indented, '_test.py', 'exec')
             self.assertEqual(self.pindent(broken, '-r'), indented)
 
-    def pindent_test(self, clean, closed):
+    eleza pindent_test(self, clean, closed):
         self.assertEqual(self.pindent(clean, '-c'), closed)
         self.assertEqual(self.pindent(closed, '-d'), clean)
         broken = self.lstriplines(closed)
         self.assertEqual(self.pindent(broken, '-r', '-e', '-s', '4'), closed)
 
-    def test_statements(self):
+    eleza test_statements(self):
         clean = textwrap.dedent("""\
-            if a:
+            ikiwa a:
                 pass
 
-            if a:
+            ikiwa a:
                 pass
             else:
                 pass
 
-            if a:
+            ikiwa a:
                 pass
             elif:
                 pass
@@ -140,25 +140,25 @@ class PindentTests(unittest.TestCase):
             with a:
                 pass
 
-            class A:
+            kundi A:
                 pass
 
-            def f():
+            eleza f():
                 pass
             """)
 
         closed = textwrap.dedent("""\
-            if a:
+            ikiwa a:
                 pass
             # end if
 
-            if a:
+            ikiwa a:
                 pass
             else:
                 pass
             # end if
 
-            if a:
+            ikiwa a:
                 pass
             elif:
                 pass
@@ -216,51 +216,51 @@ class PindentTests(unittest.TestCase):
                 pass
             # end with
 
-            class A:
+            kundi A:
                 pass
-            # end class A
+            # end kundi A
 
-            def f():
+            eleza f():
                 pass
-            # end def f
+            # end eleza f
             """)
         self.pindent_test(clean, closed)
 
-    def test_multilevel(self):
+    eleza test_multilevel(self):
         clean = textwrap.dedent("""\
-            def foobar(a, b):
-                if a == b:
+            eleza foobar(a, b):
+                ikiwa a == b:
                     a = a+1
-                elif a < b:
+                elikiwa a < b:
                     b = b-1
-                    if b > a: a = a-1
+                    ikiwa b > a: a = a-1
                 else:
                     print 'oops!'
             """)
         closed = textwrap.dedent("""\
-            def foobar(a, b):
-                if a == b:
+            eleza foobar(a, b):
+                ikiwa a == b:
                     a = a+1
-                elif a < b:
+                elikiwa a < b:
                     b = b-1
-                    if b > a: a = a-1
+                    ikiwa b > a: a = a-1
                     # end if
                 else:
                     print 'oops!'
                 # end if
-            # end def foobar
+            # end eleza foobar
             """)
         self.pindent_test(clean, closed)
 
-    def test_preserve_indents(self):
+    eleza test_preserve_indents(self):
         clean = textwrap.dedent("""\
-            if a:
-                     if b:
+            ikiwa a:
+                     ikiwa b:
                               pass
             """)
         closed = textwrap.dedent("""\
-            if a:
-                     if b:
+            ikiwa a:
+                     ikiwa b:
                               pass
                      # end if
             # end if
@@ -270,13 +270,13 @@ class PindentTests(unittest.TestCase):
         broken = self.lstriplines(closed)
         self.assertEqual(self.pindent(broken, '-r', '-e', '-s', '9'), closed)
         clean = textwrap.dedent("""\
-            if a:
-            \tif b:
+            ikiwa a:
+            \tikiwa b:
             \t\tpass
             """)
         closed = textwrap.dedent("""\
-            if a:
-            \tif b:
+            ikiwa a:
+            \tikiwa b:
             \t\tpass
             \t# end if
             # end if
@@ -286,7 +286,7 @@ class PindentTests(unittest.TestCase):
         broken = self.lstriplines(closed)
         self.assertEqual(self.pindent(broken, '-r'), closed)
 
-    def test_escaped_newline(self):
+    eleza test_escaped_newline(self):
         clean = textwrap.dedent("""\
             class\\
             \\
@@ -304,36 +304,36 @@ class PindentTests(unittest.TestCase):
             \\
             f:
                   pass
-               # end def f
-            # end class A
+               # end eleza f
+            # end kundi A
             """)
         self.assertEqual(self.pindent(clean, '-c'), closed)
         self.assertEqual(self.pindent(closed, '-d'), clean)
 
-    def test_empty_line(self):
+    eleza test_empty_line(self):
         clean = textwrap.dedent("""\
-            if a:
+            ikiwa a:
 
                 pass
             """)
         closed = textwrap.dedent("""\
-            if a:
+            ikiwa a:
 
                 pass
             # end if
             """)
         self.pindent_test(clean, closed)
 
-    def test_oneline(self):
+    eleza test_oneline(self):
         clean = textwrap.dedent("""\
-            if a: pass
+            ikiwa a: pass
             """)
         closed = textwrap.dedent("""\
-            if a: pass
+            ikiwa a: pass
             # end if
             """)
         self.pindent_test(clean, closed)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

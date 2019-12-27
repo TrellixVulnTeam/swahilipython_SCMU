@@ -23,12 +23,12 @@ NAMES = dict(
 )
 
 
-class FixAsserts(BaseFix):
+kundi FixAsserts(BaseFix):
 
     PATTERN = """
               power< any+ trailer< '.' meth=(%s)> any* >
               """ % '|'.join(map(repr, NAMES))
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         name = results["meth"][0]
         name.replace(Name(NAMES[str(name)], prefix=name.prefix))

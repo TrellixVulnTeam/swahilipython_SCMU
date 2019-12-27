@@ -9,7 +9,7 @@
 --------------
 
 Message object structures can be created in one of two ways: they can be
-created from whole cloth by creating an :class:`~email.message.EmailMessage`
+created kutoka whole cloth by creating an :class:`~email.message.EmailMessage`
 object, adding headers using the dictionary interface, and adding payload(s)
 using :meth:`~email.message.EmailMessage.set_content` and related methods, or
 they can be created by parsing a serialized representation of the email
@@ -21,7 +21,7 @@ bytes, string or file object, and the parser will return to you the root
 :class:`~email.message.EmailMessage` instance of the object structure.  For
 simple, non-MIME messages the payload of this root object will likely be a
 string containing the text of the message.  For MIME messages, the root object
-will return ``True`` from its :meth:`~email.message.EmailMessage.is_multipart`
+will return ``True`` kutoka its :meth:`~email.message.EmailMessage.is_multipart`
 method, and the subparts can be accessed via the payload manipulation methods,
 such as :meth:`~email.message.EmailMessage.get_body`,
 :meth:`~email.message.EmailMessage.iter_parts`, and
@@ -31,15 +31,15 @@ There are actually two parser interfaces available for use, the :class:`Parser`
 API and the incremental :class:`FeedParser` API.  The :class:`Parser` API is
 most useful if you have the entire text of the message in memory, or if the
 entire message lives in a file on the file system.  :class:`FeedParser` is more
-appropriate when you are reading the message from a stream which might block
-waiting for more input (such as reading an email message from a socket).  The
+appropriate when you are reading the message kutoka a stream which might block
+waiting for more input (such as reading an email message kutoka a socket).  The
 :class:`FeedParser` can consume and parse the message incrementally, and only
 returns the root object when you close the parser.
 
 Note that the parser can be extended in limited ways, and of course you can
-implement your own parser completely from scratch.  All of the logic that
+implement your own parser completely kutoka scratch.  All of the logic that
 connects the :mod:`email` package's bundled parser and the
-:class:`~email.message.EmailMessage` class is embodied in the :mod:`policy`
+:class:`~email.message.EmailMessage` kundi is embodied in the :mod:`policy`
 class, so a custom parser can create message object trees any way it finds
 necessary by implementing custom versions of the appropriate :mod:`policy`
 methods.
@@ -48,9 +48,9 @@ methods.
 FeedParser API
 ^^^^^^^^^^^^^^
 
-The :class:`BytesFeedParser`, imported from the :mod:`email.feedparser` module,
+The :class:`BytesFeedParser`, imported kutoka the :mod:`email.feedparser` module,
 provides an API that is conducive to incremental parsing of email messages,
-such as would be necessary when reading the text of an email message from a
+such as would be necessary when reading the text of an email message kutoka a
 source that can block (such as a socket).  The :class:`BytesFeedParser` can of
 course be used to parse an email message fully contained in a :term:`bytes-like
 object`, string, or file, but the :class:`BytesParser` API may be more
@@ -74,7 +74,7 @@ Here is the API for the :class:`BytesFeedParser`:
 
    Create a :class:`BytesFeedParser` instance.  Optional *_factory* is a
    no-argument callable; if not specified use the
-   :attr:`~email.policy.Policy.message_factory` from the *policy*.  Call
+   :attr:`~email.policy.Policy.message_factory` kutoka the *policy*.  Call
    *_factory* whenever a new message object is needed.
 
    If *policy* is specified use the rules it specifies to update the
@@ -125,7 +125,7 @@ Here is the API for the :class:`BytesFeedParser`:
 Parser API
 ^^^^^^^^^^
 
-The :class:`BytesParser` class, imported from the :mod:`email.parser` module,
+The :class:`BytesParser` class, imported kutoka the :mod:`email.parser` module,
 provides an API that can be used to parse a message when the complete contents
 of the message are available in a :term:`bytes-like object` or file.  The
 :mod:`email.parser` module also provides :class:`Parser` for parsing strings,
@@ -153,7 +153,7 @@ message body, instead setting the payload to the raw body.
 
    .. method:: parse(fp, headersonly=False)
 
-      Read all the data from the binary file-like object *fp*, parse the
+      Read all the data kutoka the binary file-like object *fp*, parse the
       resulting bytes, and return the message object.  *fp* must support
       both the :meth:`~io.IOBase.readline` and the :meth:`~io.IOBase.read`
       methods.
@@ -193,7 +193,7 @@ message body, instead setting the payload to the raw body.
 
 .. class:: Parser(_class=None, *, policy=policy.compat32)
 
-   This class is parallel to :class:`BytesParser`, but handles string input.
+   This kundi is parallel to :class:`BytesParser`, but handles string input.
 
    .. versionchanged:: 3.3
       Removed the *strict* argument.  Added the *policy* keyword.
@@ -202,7 +202,7 @@ message body, instead setting the payload to the raw body.
 
    .. method:: parse(fp, headersonly=False)
 
-      Read all the data from the text-mode file-like object *fp*, parse the
+      Read all the data kutoka the text-mode file-like object *fp*, parse the
       resulting text, and return the root message object.  *fp* must support
       both the :meth:`~io.TextIOBase.readline` and the
       :meth:`~io.TextIOBase.read` methods on file-like objects.
@@ -227,16 +227,16 @@ message body, instead setting the payload to the raw body.
    defaults to ``True``.
 
 
-Since creating a message object structure from a string or a file object is such
+Since creating a message object structure kutoka a string or a file object is such
 a common task, four functions are provided as a convenience.  They are available
 in the top-level :mod:`email` package namespace.
 
 .. currentmodule:: email
 
 
-.. function:: message_from_bytes(s, _class=None, *, policy=policy.compat32)
+.. function:: message_kutoka_bytes(s, _class=None, *, policy=policy.compat32)
 
-   Return a message object structure from a :term:`bytes-like object`.  This is
+   Return a message object structure kutoka a :term:`bytes-like object`.  This is
    equivalent to ``BytesParser().parsebytes(s)``.  Optional *_class* and
    *policy* are interpreted as with the :class:`~email.parser.BytesParser` class
    constructor.
@@ -246,10 +246,10 @@ in the top-level :mod:`email` package namespace.
       Removed the *strict* argument.  Added the *policy* keyword.
 
 
-.. function:: message_from_binary_file(fp, _class=None, *, \
+.. function:: message_kutoka_binary_file(fp, _class=None, *, \
                                        policy=policy.compat32)
 
-   Return a message object structure tree from an open binary :term:`file
+   Return a message object structure tree kutoka an open binary :term:`file
    object`.  This is equivalent to ``BytesParser().parse(fp)``.  *_class* and
    *policy* are interpreted as with the :class:`~email.parser.BytesParser` class
    constructor.
@@ -259,32 +259,32 @@ in the top-level :mod:`email` package namespace.
       Removed the *strict* argument.  Added the *policy* keyword.
 
 
-.. function:: message_from_string(s, _class=None, *, policy=policy.compat32)
+.. function:: message_kutoka_string(s, _class=None, *, policy=policy.compat32)
 
-   Return a message object structure from a string.  This is equivalent to
+   Return a message object structure kutoka a string.  This is equivalent to
    ``Parser().parsestr(s)``.  *_class* and *policy* are interpreted as
-   with the :class:`~email.parser.Parser` class constructor.
+   with the :class:`~email.parser.Parser` kundi constructor.
 
    .. versionchanged:: 3.3
       Removed the *strict* argument.  Added the *policy* keyword.
 
 
-.. function:: message_from_file(fp, _class=None, *, policy=policy.compat32)
+.. function:: message_kutoka_file(fp, _class=None, *, policy=policy.compat32)
 
-   Return a message object structure tree from an open :term:`file object`.
+   Return a message object structure tree kutoka an open :term:`file object`.
    This is equivalent to ``Parser().parse(fp)``.  *_class* and *policy* are
-   interpreted as with the :class:`~email.parser.Parser` class constructor.
+   interpreted as with the :class:`~email.parser.Parser` kundi constructor.
 
    .. versionchanged:: 3.3
       Removed the *strict* argument.  Added the *policy* keyword.
    .. versionchanged:: 3.6 *_class* defaults to the policy ``message_factory``.
 
 
-Here's an example of how you might use :func:`message_from_bytes` at an
+Here's an example of how you might use :func:`message_kutoka_bytes` at an
 interactive Python prompt::
 
-   >>> import email
-   >>> msg = email.message_from_bytes(myBytes)  # doctest: +SKIP
+   >>> agiza email
+   >>> msg = email.message_kutoka_bytes(myBytes)  # doctest: +SKIP
 
 
 Additional notes
@@ -316,5 +316,5 @@ Here are some notes on the parsing semantics:
   :meth:`~email.message.EmailMessage.is_multipart` method may return ``False``.
   If such messages were parsed with the :class:`~email.parser.FeedParser`,
   they will have an instance of the
-  :class:`~email.errors.MultipartInvariantViolationDefect` class in their
+  :class:`~email.errors.MultipartInvariantViolationDefect` kundi in their
   *defects* attribute list.  See :mod:`email.errors` for details.

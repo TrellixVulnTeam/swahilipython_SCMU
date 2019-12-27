@@ -10,21 +10,21 @@ agiza unittest
 
 @unittest.skipUnless(hasattr(os, 'kill'), "Test requires os.kill")
 @unittest.skipIf(sys.platform =="win32", "Test cannot run on Windows")
-class TestBreak(unittest.TestCase):
+kundi TestBreak(unittest.TestCase):
     int_handler = None
 
-    def setUp(self):
+    eleza setUp(self):
         self._default_handler = signal.getsignal(signal.SIGINT)
-        if self.int_handler is not None:
+        ikiwa self.int_handler is not None:
             signal.signal(signal.SIGINT, self.int_handler)
 
-    def tearDown(self):
+    eleza tearDown(self):
         signal.signal(signal.SIGINT, self._default_handler)
         unittest.signals._results = weakref.WeakKeyDictionary()
         unittest.signals._interrupt_handler = None
 
 
-    def testInstallHandler(self):
+    eleza testInstallHandler(self):
         default_handler = signal.getsignal(signal.SIGINT)
         unittest.installHandler()
         self.assertNotEqual(signal.getsignal(signal.SIGINT), default_handler)
@@ -37,7 +37,7 @@ class TestBreak(unittest.TestCase):
 
         self.assertTrue(unittest.signals._interrupt_handler.called)
 
-    def testRegisterResult(self):
+    eleza testRegisterResult(self):
         result = unittest.TestResult()
         self.assertNotIn(result, unittest.signals._results)
 
@@ -47,7 +47,7 @@ class TestBreak(unittest.TestCase):
         finally:
             unittest.removeResult(result)
 
-    def testInterruptCaught(self):
+    eleza testInterruptCaught(self):
         default_handler = signal.getsignal(signal.SIGINT)
 
         result = unittest.TestResult()
@@ -56,7 +56,7 @@ class TestBreak(unittest.TestCase):
 
         self.assertNotEqual(signal.getsignal(signal.SIGINT), default_handler)
 
-        def test(result):
+        eleza test(result):
             pid = os.getpid()
             os.kill(pid, signal.SIGINT)
             result.breakCaught = True
@@ -69,16 +69,16 @@ class TestBreak(unittest.TestCase):
         self.assertTrue(result.breakCaught)
 
 
-    def testSecondInterrupt(self):
+    eleza testSecondInterrupt(self):
         # Can't use skipIf decorator because the signal handler may have
         # been changed after defining this method.
-        if signal.getsignal(signal.SIGINT) == signal.SIG_IGN:
+        ikiwa signal.getsignal(signal.SIGINT) == signal.SIG_IGN:
             self.skipTest("test requires SIGINT to not be ignored")
         result = unittest.TestResult()
         unittest.installHandler()
         unittest.registerResult(result)
 
-        def test(result):
+        eleza test(result):
             pid = os.getpid()
             os.kill(pid, signal.SIGINT)
             result.breakCaught = True
@@ -95,7 +95,7 @@ class TestBreak(unittest.TestCase):
         self.assertTrue(result.breakCaught)
 
 
-    def testTwoResults(self):
+    eleza testTwoResults(self):
         unittest.installHandler()
 
         result = unittest.TestResult()
@@ -108,7 +108,7 @@ class TestBreak(unittest.TestCase):
 
         result3 = unittest.TestResult()
 
-        def test(result):
+        eleza test(result):
             pid = os.getpid()
             os.kill(pid, signal.SIGINT)
 
@@ -122,10 +122,10 @@ class TestBreak(unittest.TestCase):
         self.assertFalse(result3.shouldStop)
 
 
-    def testHandlerReplacedButCalled(self):
+    eleza testHandlerReplacedButCalled(self):
         # Can't use skipIf decorator because the signal handler may have
         # been changed after defining this method.
-        if signal.getsignal(signal.SIGINT) == signal.SIG_IGN:
+        ikiwa signal.getsignal(signal.SIGINT) == signal.SIG_IGN:
             self.skipTest("test requires SIGINT to not be ignored")
         # If our handler has been replaced (is no longer installed) but is
         # called by the *new* handler, then it isn't safe to delay the
@@ -133,7 +133,7 @@ class TestBreak(unittest.TestCase):
         unittest.installHandler()
 
         handler = signal.getsignal(signal.SIGINT)
-        def new_handler(frame, signum):
+        eleza new_handler(frame, signum):
             handler(frame, signum)
         signal.signal(signal.SIGINT, new_handler)
 
@@ -145,7 +145,7 @@ class TestBreak(unittest.TestCase):
         else:
             self.fail("replaced but delegated handler doesn't raise interrupt")
 
-    def testRunner(self):
+    eleza testRunner(self):
         # Creating a TextTestRunner with the appropriate argument should
         # register the TextTestResult it creates
         runner = unittest.TextTestRunner(stream=io.StringIO())
@@ -153,7 +153,7 @@ class TestBreak(unittest.TestCase):
         result = runner.run(unittest.TestSuite())
         self.assertIn(result, unittest.signals._results)
 
-    def testWeakReferences(self):
+    eleza testWeakReferences(self):
         # Calling registerResult on a result should not keep it alive
         result = unittest.TestResult()
         unittest.registerResult(result)
@@ -166,7 +166,7 @@ class TestBreak(unittest.TestCase):
         self.assertIsNone(ref())
 
 
-    def testRemoveResult(self):
+    eleza testRemoveResult(self):
         result = unittest.TestResult()
         unittest.registerResult(result)
 
@@ -184,24 +184,24 @@ class TestBreak(unittest.TestCase):
 
         self.assertFalse(result.shouldStop)
 
-    def testMainInstallsHandler(self):
+    eleza testMainInstallsHandler(self):
         failfast = object()
         test = object()
         verbosity = object()
         result = object()
         default_handler = signal.getsignal(signal.SIGINT)
 
-        class FakeRunner(object):
+        kundi FakeRunner(object):
             initArgs = []
             runArgs = []
-            def __init__(self, *args, **kwargs):
+            eleza __init__(self, *args, **kwargs):
                 self.initArgs.append((args, kwargs))
-            def run(self, test):
+            eleza run(self, test):
                 self.runArgs.append(test)
-                return result
+                rudisha result
 
-        class Program(unittest.TestProgram):
-            def __init__(self, catchbreak):
+        kundi Program(unittest.TestProgram):
+            eleza __init__(self, catchbreak):
                 self.exit = False
                 self.verbosity = verbosity
                 self.failfast = failfast
@@ -239,7 +239,7 @@ class TestBreak(unittest.TestCase):
 
         self.assertNotEqual(signal.getsignal(signal.SIGINT), default_handler)
 
-    def testRemoveHandler(self):
+    eleza testRemoveHandler(self):
         default_handler = signal.getsignal(signal.SIGINT)
         unittest.installHandler()
         unittest.removeHandler()
@@ -249,12 +249,12 @@ class TestBreak(unittest.TestCase):
         unittest.removeHandler()
         self.assertEqual(signal.getsignal(signal.SIGINT), default_handler)
 
-    def testRemoveHandlerAsDecorator(self):
+    eleza testRemoveHandlerAsDecorator(self):
         default_handler = signal.getsignal(signal.SIGINT)
         unittest.installHandler()
 
         @unittest.removeHandler
-        def test():
+        eleza test():
             self.assertEqual(signal.getsignal(signal.SIGINT), default_handler)
 
         test()
@@ -262,19 +262,19 @@ class TestBreak(unittest.TestCase):
 
 @unittest.skipUnless(hasattr(os, 'kill'), "Test requires os.kill")
 @unittest.skipIf(sys.platform =="win32", "Test cannot run on Windows")
-class TestBreakDefaultIntHandler(TestBreak):
+kundi TestBreakDefaultIntHandler(TestBreak):
     int_handler = signal.default_int_handler
 
 @unittest.skipUnless(hasattr(os, 'kill'), "Test requires os.kill")
 @unittest.skipIf(sys.platform =="win32", "Test cannot run on Windows")
-class TestBreakSignalIgnored(TestBreak):
+kundi TestBreakSignalIgnored(TestBreak):
     int_handler = signal.SIG_IGN
 
 @unittest.skipUnless(hasattr(os, 'kill'), "Test requires os.kill")
 @unittest.skipIf(sys.platform =="win32", "Test cannot run on Windows")
-class TestBreakSignalDefault(TestBreak):
+kundi TestBreakSignalDefault(TestBreak):
     int_handler = signal.SIG_DFL
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

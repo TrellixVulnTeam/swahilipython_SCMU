@@ -3,7 +3,7 @@
 kutoka idlelib.config agiza idleConf
 
 
-class History:
+kundi History:
     ''' Implement Idle Shell history mechanism.
 
     store - Store source statement (called kutoka pyshell.resetoutput).
@@ -11,7 +11,7 @@ class History:
     history_next - Bound to <<history-next>> event (default Alt-N).
     history_prev - Bound to <<history-prev>> event (default Alt-P).
     '''
-    def __init__(self, text):
+    eleza __init__(self, text):
         '''Initialize data attributes and bind event methods.
 
         .text - Idle wrapper of tk Text widget, with .bell().
@@ -28,57 +28,57 @@ class History:
         text.bind("<<history-previous>>", self.history_prev)
         text.bind("<<history-next>>", self.history_next)
 
-    def history_next(self, event):
-        "Fetch later statement; start with ealiest if cyclic."
+    eleza history_next(self, event):
+        "Fetch later statement; start with ealiest ikiwa cyclic."
         self.fetch(reverse=False)
-        return "break"
+        rudisha "break"
 
-    def history_prev(self, event):
+    eleza history_prev(self, event):
         "Fetch earlier statement; start with most recent."
         self.fetch(reverse=True)
-        return "break"
+        rudisha "break"
 
-    def fetch(self, reverse):
+    eleza fetch(self, reverse):
         '''Fetch statement and replace current line in text widget.
 
         Set prefix and pointer as needed for successive fetches.
         Reset them to None, None when returning to the start line.
-        Sound bell when return to start line or cannot leave a line
+        Sound bell when rudisha to start line or cannot leave a line
         because cyclic is False.
         '''
         nhist = len(self.history)
         pointer = self.pointer
         prefix = self.prefix
-        if pointer is not None and prefix is not None:
-            if self.text.compare("insert", "!=", "end-1c") or \
+        ikiwa pointer is not None and prefix is not None:
+            ikiwa self.text.compare("insert", "!=", "end-1c") or \
                     self.text.get("iomark", "end-1c") != self.history[pointer]:
                 pointer = prefix = None
                 self.text.mark_set("insert", "end-1c")  # != after cursor move
-        if pointer is None or prefix is None:
+        ikiwa pointer is None or prefix is None:
             prefix = self.text.get("iomark", "end-1c")
-            if reverse:
+            ikiwa reverse:
                 pointer = nhist  # will be decremented
             else:
-                if self.cyclic:
+                ikiwa self.cyclic:
                     pointer = -1  # will be incremented
                 else:  # abort history_next
                     self.text.bell()
                     return
         nprefix = len(prefix)
         while 1:
-            pointer += -1 if reverse else 1
-            if pointer < 0 or pointer >= nhist:
+            pointer += -1 ikiwa reverse else 1
+            ikiwa pointer < 0 or pointer >= nhist:
                 self.text.bell()
-                if not self.cyclic and pointer < 0:  # abort history_prev
+                ikiwa not self.cyclic and pointer < 0:  # abort history_prev
                     return
                 else:
-                    if self.text.get("iomark", "end-1c") != prefix:
+                    ikiwa self.text.get("iomark", "end-1c") != prefix:
                         self.text.delete("iomark", "end-1c")
                         self.text.insert("iomark", prefix)
                     pointer = prefix = None
                 break
             item = self.history[pointer]
-            if item[:nprefix] == prefix and len(item) > nprefix:
+            ikiwa item[:nprefix] == prefix and len(item) > nprefix:
                 self.text.delete("iomark", "end-1c")
                 self.text.insert("iomark", item)
                 break
@@ -87,10 +87,10 @@ class History:
         self.pointer = pointer
         self.prefix = prefix
 
-    def store(self, source):
+    eleza store(self, source):
         "Store Shell input statement into history list."
         source = source.strip()
-        if len(source) > 2:
+        ikiwa len(source) > 2:
             # avoid duplicates
             try:
                 self.history.remove(source)
@@ -101,6 +101,6 @@ class History:
         self.prefix = None
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     kutoka unittest agiza main
     main('idlelib.idle_test.test_history', verbosity=2, exit=False)

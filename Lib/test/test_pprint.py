@@ -11,72 +11,72 @@ agiza types
 agiza unittest
 
 # list, tuple and dict subclasses that do or don't overwrite __repr__
-class list2(list):
+kundi list2(list):
     pass
 
-class list3(list):
-    def __repr__(self):
-        return list.__repr__(self)
+kundi list3(list):
+    eleza __repr__(self):
+        rudisha list.__repr__(self)
 
-class tuple2(tuple):
+kundi tuple2(tuple):
     pass
 
-class tuple3(tuple):
-    def __repr__(self):
-        return tuple.__repr__(self)
+kundi tuple3(tuple):
+    eleza __repr__(self):
+        rudisha tuple.__repr__(self)
 
-class set2(set):
+kundi set2(set):
     pass
 
-class set3(set):
-    def __repr__(self):
-        return set.__repr__(self)
+kundi set3(set):
+    eleza __repr__(self):
+        rudisha set.__repr__(self)
 
-class frozenset2(frozenset):
+kundi frozenset2(frozenset):
     pass
 
-class frozenset3(frozenset):
-    def __repr__(self):
-        return frozenset.__repr__(self)
+kundi frozenset3(frozenset):
+    eleza __repr__(self):
+        rudisha frozenset.__repr__(self)
 
-class dict2(dict):
+kundi dict2(dict):
     pass
 
-class dict3(dict):
-    def __repr__(self):
-        return dict.__repr__(self)
+kundi dict3(dict):
+    eleza __repr__(self):
+        rudisha dict.__repr__(self)
 
-class Unorderable:
-    def __repr__(self):
-        return str(id(self))
+kundi Unorderable:
+    eleza __repr__(self):
+        rudisha str(id(self))
 
 # Class Orderable is orderable with any type
-class Orderable:
-    def __init__(self, hash):
+kundi Orderable:
+    eleza __init__(self, hash):
         self._hash = hash
-    def __lt__(self, other):
-        return False
-    def __gt__(self, other):
-        return self != other
-    def __le__(self, other):
-        return self == other
-    def __ge__(self, other):
-        return True
-    def __eq__(self, other):
-        return self is other
-    def __ne__(self, other):
-        return self is not other
-    def __hash__(self):
-        return self._hash
+    eleza __lt__(self, other):
+        rudisha False
+    eleza __gt__(self, other):
+        rudisha self != other
+    eleza __le__(self, other):
+        rudisha self == other
+    eleza __ge__(self, other):
+        rudisha True
+    eleza __eq__(self, other):
+        rudisha self is other
+    eleza __ne__(self, other):
+        rudisha self is not other
+    eleza __hash__(self):
+        rudisha self._hash
 
-class QueryTestCase(unittest.TestCase):
+kundi QueryTestCase(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.a = list(range(100))
         self.b = list(range(200))
         self.a[-12] = self.b
 
-    def test_init(self):
+    eleza test_init(self):
         pp = pprint.PrettyPrinter()
         pp = pprint.PrettyPrinter(indent=4, width=40, depth=5,
                                   stream=io.StringIO(), compact=True)
@@ -89,7 +89,7 @@ class QueryTestCase(unittest.TestCase):
         self.assertRaises(ValueError, pprint.PrettyPrinter, depth=-1)
         self.assertRaises(ValueError, pprint.PrettyPrinter, width=0)
 
-    def test_basic(self):
+    eleza test_basic(self):
         # Verify .isrecursive() and .isreadable() w/o recursion
         pp = pprint.PrettyPrinter()
         for safe in (2, 2.0, 2j, "abc", [3], (2,2), {3: 3}, b"def",
@@ -106,7 +106,7 @@ class QueryTestCase(unittest.TestCase):
             self.assertTrue(pp.isreadable(safe),
                             "expected isreadable for %r" % (safe,))
 
-    def test_knotted(self):
+    eleza test_knotted(self):
         # Verify .isrecursive() and .isreadable() w/ recursion
         # Tie a knot.
         self.b[67] = self.a
@@ -139,7 +139,7 @@ class QueryTestCase(unittest.TestCase):
             self.assertTrue(pp.isreadable(safe),
                             "expected isreadable for %r" % (safe,))
 
-    def test_unreadable(self):
+    eleza test_unreadable(self):
         # Not recursive but not readable anyway
         pp = pprint.PrettyPrinter()
         for unreadable in type(3), pprint, pprint.isrecursive:
@@ -154,13 +154,13 @@ class QueryTestCase(unittest.TestCase):
             self.assertFalse(pp.isreadable(unreadable),
                              "expected not isreadable for %r" % (unreadable,))
 
-    def test_same_as_repr(self):
+    eleza test_same_as_repr(self):
         # Simple objects, small containers and classes that overwrite __repr__
         # For those the result should be the same as repr().
         # Ahem.  The docs don't say anything about that -- this appears to
         # be testing an implementation quirk.  Starting in Python 2.5, it's
         # not true for dicts:  pprint always sorts dicts by key now; before,
-        # it sorted a dict display if and only if the display required
+        # it sorted a dict display ikiwa and only ikiwa the display required
         # multiple lines.  For that reason, dicts with more than one element
         # aren't tested here.
         for simple in (0, 0, 0+0j, 0.0, "", b"", bytearray(),
@@ -187,7 +187,7 @@ class QueryTestCase(unittest.TestCase):
                              .replace('\n', ' '), native)
             self.assertEqual(pprint.saferepr(simple), native)
 
-    def test_basic_line_wrap(self):
+    eleza test_basic_line_wrap(self):
         # verify basic line-wrapping operation
         o = {'RPM_cal': 0,
              'RPM_cal2': 48059,
@@ -223,7 +223,7 @@ class QueryTestCase(unittest.TestCase):
         for type in [list, list2]:
             self.assertEqual(pprint.pformat(type(o), indent=4), exp)
 
-    def test_nested_indentations(self):
+    eleza test_nested_indentations(self):
         o1 = list(range(10))
         o2 = dict(first=1, second=2, third=3)
         o = [o1, o2]
@@ -238,13 +238,13 @@ class QueryTestCase(unittest.TestCase):
         'third': 3}]"""
         self.assertEqual(pprint.pformat(o, indent=4, width=41), expected)
 
-    def test_width(self):
+    eleza test_width(self):
         expected = """\
 [[[[[[1, 2, 3],
      '1 2']]]],
  {1: [1, 2, 3],
   2: [12, 34]},
- 'abc def ghi',
+ 'abc eleza ghi',
  ('ab cd ef',),
  set2({1, 23}),
  [[[[[1, 2, 3],
@@ -264,7 +264,7 @@ class QueryTestCase(unittest.TestCase):
       3],
   2: [12,
       34]},
- 'abc def '
+ 'abc eleza '
  'ghi',
  ('ab cd '
   'ef',),
@@ -276,7 +276,7 @@ class QueryTestCase(unittest.TestCase):
      '1 '
      '2']]]]]""")
 
-    def test_sorted_dict(self):
+    eleza test_sorted_dict(self):
         # Starting in Python 2.5, pprint sorts dict displays by key regardless
         # of how small the dictionary may be.
         # Before the change, on 32-bit Windows pformat() gave order
@@ -294,13 +294,13 @@ class QueryTestCase(unittest.TestCase):
         self.assertEqual(pprint.pformat({"xy\tab\n": (3,), 5: [[]], (): {}}),
             r"{5: [[]], 'xy\tab\n': (3,), (): {}}")
 
-    def test_sort_dict(self):
-        d = dict.fromkeys('cba')
+    eleza test_sort_dict(self):
+        d = dict.kutokakeys('cba')
         self.assertEqual(pprint.pformat(d, sort_dicts=False), "{'c': None, 'b': None, 'a': None}")
         self.assertEqual(pprint.pformat([d, d], sort_dicts=False),
             "[{'c': None, 'b': None, 'a': None}, {'c': None, 'b': None, 'a': None}]")
 
-    def test_ordered_dict(self):
+    eleza test_ordered_dict(self):
         d = collections.OrderedDict()
         self.assertEqual(pprint.pformat(d, width=1), 'OrderedDict()')
         d = collections.OrderedDict([])
@@ -319,7 +319,7 @@ OrderedDict([('the', 0),
              ('lazy', 7),
              ('dog', 8)])""")
 
-    def test_mapping_proxy(self):
+    eleza test_mapping_proxy(self):
         words = 'the quick brown fox jumped over a lazy dog'.split()
         d = dict(zip(words, itertools.count()))
         m = types.MappingProxyType(d)
@@ -346,7 +346,7 @@ mappingproxy(OrderedDict([('the', 0),
                           ('lazy', 7),
                           ('dog', 8)]))""")
 
-    def test_subclassing(self):
+    eleza test_subclassing(self):
         o = {'names with spaces': 'should be presented using repr()',
              'others.should.not.be': 'like.this'}
         exp = """\
@@ -354,7 +354,7 @@ mappingproxy(OrderedDict([('the', 0),
  others.should.not.be: like.this}"""
         self.assertEqual(DottedPrettyPrinter().pformat(o), exp)
 
-    def test_set_reprs(self):
+    eleza test_set_reprs(self):
         self.assertEqual(pprint.pformat(set()), 'set()')
         self.assertEqual(pprint.pformat(set(range(3))), '{0, 1, 2}')
         self.assertEqual(pprint.pformat(set(range(7)), width=20), '''\
@@ -401,7 +401,7 @@ frozenset2({0,
     @unittest.expectedFailure
     #See http://bugs.python.org/issue13907
     @test.support.cpython_only
-    def test_set_of_sets_reprs(self):
+    eleza test_set_of_sets_reprs(self):
         # This test creates a complex arrangement of frozensets and
         # compares the pretty-printed repr against a string hard-coded in
         # the test.  The hard-coded repr depends on the sort order of
@@ -610,7 +610,7 @@ frozenset2({0,
         cubo = test.test_set.linegraph(cube)
         self.assertEqual(pprint.pformat(cubo), cubo_repr_tgt)
 
-    def test_depth(self):
+    eleza test_depth(self):
         nested_tuple = (1, (2, (3, (4, (5, 6)))))
         nested_dict = {1: {2: {3: {4: {5: {6: 6}}}}}}
         nested_list = [1, [2, [3, [4, [5, [6, []]]]]]]
@@ -625,7 +625,7 @@ frozenset2({0,
         self.assertEqual(pprint.pformat(nested_dict, depth=1), lv1_dict)
         self.assertEqual(pprint.pformat(nested_list, depth=1), lv1_list)
 
-    def test_sort_unorderable_values(self):
+    eleza test_sort_unorderable_values(self):
         # Issue 3976:  sorted pprints fail for unorderable values.
         n = 20
         keys = [Unorderable() for i in range(n)]
@@ -637,7 +637,7 @@ frozenset2({0,
             '{' + ','.join(map(repr, skeys)) + '}')
         self.assertEqual(clean(pprint.pformat(frozenset(keys))),
             'frozenset({' + ','.join(map(repr, skeys)) + '})')
-        self.assertEqual(clean(pprint.pformat(dict.fromkeys(keys))),
+        self.assertEqual(clean(pprint.pformat(dict.kutokakeys(keys))),
             '{' + ','.join('%r:None' % k for k in skeys) + '}')
 
         # Issue 10017: TypeError on user-defined types as dict keys.
@@ -646,10 +646,10 @@ frozenset2({0,
 
         # Issue 14998: TypeError on tuples with NoneTypes as dict keys.
         keys = [(1,), (None,)]
-        self.assertEqual(pprint.pformat(dict.fromkeys(keys, 0)),
+        self.assertEqual(pprint.pformat(dict.kutokakeys(keys, 0)),
                          '{%r: 0, %r: 0}' % tuple(sorted(keys, key=id)))
 
-    def test_sort_orderable_and_unorderable_values(self):
+    eleza test_sort_orderable_and_unorderable_values(self):
         # Issue 22721:  sorted pprints is not stable
         a = Unorderable()
         b = Orderable(hash(a))  # should have the same hash value
@@ -664,12 +664,12 @@ frozenset2({0,
         self.assertEqual(pprint.pformat(set([a, b]), width=1),
                          '{%r,\n %r}' % (a, b))
         # dict
-        self.assertEqual(pprint.pformat(dict.fromkeys([b, a]), width=1),
+        self.assertEqual(pprint.pformat(dict.kutokakeys([b, a]), width=1),
                          '{%r: None,\n %r: None}' % (a, b))
-        self.assertEqual(pprint.pformat(dict.fromkeys([a, b]), width=1),
+        self.assertEqual(pprint.pformat(dict.kutokakeys([a, b]), width=1),
                          '{%r: None,\n %r: None}' % (a, b))
 
-    def test_str_wrap(self):
+    eleza test_str_wrap(self):
         # pprint tries to wrap strings intelligently
         fox = 'the quick brown fox jumped over a lazy dog'
         self.assertEqual(pprint.pformat(fox, width=19), """\
@@ -729,7 +729,7 @@ frozenset2({0,
             formatted = pprint.pformat([special] * 2, width=width)
             self.assertEqual(eval(formatted), [special] * 2)
 
-    def test_compact(self):
+    eleza test_compact(self):
         o = ([list(range(i * i)) for i in range(5)] +
              [list(range(i)) for i in range(6)])
         expected = """\
@@ -741,7 +741,7 @@ frozenset2({0,
  [0, 1, 2, 3, 4]]"""
         self.assertEqual(pprint.pformat(o, width=47, compact=True), expected)
 
-    def test_compact_width(self):
+    eleza test_compact_width(self):
         levels = 20
         number = 10
         o = [0] * number
@@ -753,7 +753,7 @@ frozenset2({0,
             self.assertLessEqual(maxwidth, w)
             self.assertGreater(maxwidth, w - 3)
 
-    def test_bytes_wrap(self):
+    eleza test_bytes_wrap(self):
         self.assertEqual(pprint.pformat(b'', width=1), "b''")
         self.assertEqual(pprint.pformat(b'abcd', width=1), "b'abcd'")
         letters = b'abcdefghijklmnopqrstuvwxyz'
@@ -810,7 +810,7 @@ frozenset2({0,
             formatted = pprint.pformat([special] * 2, width=width)
             self.assertEqual(eval(formatted), [special] * 2)
 
-    def test_bytearray_wrap(self):
+    eleza test_bytearray_wrap(self):
         self.assertEqual(pprint.pformat(bytearray(), width=1), "bytearray(b'')")
         letters = bytearray(b'abcdefghijklmnopqrstuvwxyz')
         self.assertEqual(pprint.pformat(letters, width=40), repr(letters))
@@ -853,14 +853,14 @@ bytearray(b'\\x00\\x01\\x02\\x03'
 [[[[[bytearray(b'\\x00\\x01\\x02\\x03\\x04\\x05\\x06\\x07'
                b'\\x08\\t\\n\\x0b\\x0c\\r\\x0e\\x0f')]]]]]""")
 
-    def test_default_dict(self):
+    eleza test_default_dict(self):
         d = collections.defaultdict(int)
-        self.assertEqual(pprint.pformat(d, width=1), "defaultdict(<class 'int'>, {})")
+        self.assertEqual(pprint.pformat(d, width=1), "defaultdict(<kundi 'int'>, {})")
         words = 'the quick brown fox jumped over a lazy dog'.split()
         d = collections.defaultdict(int, zip(words, itertools.count()))
         self.assertEqual(pprint.pformat(d),
 """\
-defaultdict(<class 'int'>,
+defaultdict(<kundi 'int'>,
             {'a': 6,
              'brown': 2,
              'dog': 8,
@@ -871,7 +871,7 @@ defaultdict(<class 'int'>,
              'quick': 1,
              'the': 0})""")
 
-    def test_counter(self):
+    eleza test_counter(self):
         d = collections.Counter()
         self.assertEqual(pprint.pformat(d, width=1), "Counter()")
         d = collections.Counter('senselessness')
@@ -882,7 +882,7 @@ Counter({'s': 6,
          'n': 2,
          'l': 1})""")
 
-    def test_chainmap(self):
+    eleza test_chainmap(self):
         d = collections.ChainMap()
         self.assertEqual(pprint.pformat(d, width=1), "ChainMap({})")
         words = 'the quick brown fox jumped over a lazy dog'.split()
@@ -921,7 +921,7 @@ ChainMap({'a': 6,
                       ('lazy', 7),
                       ('dog', 8)]))""")
 
-    def test_deque(self):
+    eleza test_deque(self):
         d = collections.deque()
         self.assertEqual(pprint.pformat(d, width=1), "deque([])")
         d = collections.deque(maxlen=7)
@@ -951,7 +951,7 @@ deque([('brown', 2),
        ('dog', 8)],
       maxlen=7)""")
 
-    def test_user_dict(self):
+    eleza test_user_dict(self):
         d = collections.UserDict()
         self.assertEqual(pprint.pformat(d, width=1), "{}")
         words = 'the quick brown fox jumped over a lazy dog'.split()
@@ -968,7 +968,7 @@ deque([('brown', 2),
  'quick': 1,
  'the': 0}""")
 
-    def test_user_list(self):
+    eleza test_user_list(self):
         d = collections.UserList()
         self.assertEqual(pprint.pformat(d, width=1), "[]")
         words = 'the quick brown fox jumped over a lazy dog'.split()
@@ -985,7 +985,7 @@ deque([('brown', 2),
  ('lazy', 7),
  ('dog', 8)]""")
 
-    def test_user_string(self):
+    eleza test_user_string(self):
         d = collections.UserString('')
         self.assertEqual(pprint.pformat(d, width=1), "''")
         d = collections.UserString('the quick brown fox jumped over a lazy dog')
@@ -1002,18 +1002,18 @@ deque([('brown', 2),
     'lazy dog'}""")
 
 
-class DottedPrettyPrinter(pprint.PrettyPrinter):
+kundi DottedPrettyPrinter(pprint.PrettyPrinter):
 
-    def format(self, object, context, maxlevels, level):
-        if isinstance(object, str):
-            if ' ' in object:
-                return repr(object), 1, 0
+    eleza format(self, object, context, maxlevels, level):
+        ikiwa isinstance(object, str):
+            ikiwa ' ' in object:
+                rudisha repr(object), 1, 0
             else:
-                return object, 0, 0
+                rudisha object, 0, 0
         else:
-            return pprint.PrettyPrinter.format(
+            rudisha pprint.PrettyPrinter.format(
                 self, object, context, maxlevels, level)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

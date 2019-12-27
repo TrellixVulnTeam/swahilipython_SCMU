@@ -15,11 +15,11 @@ pulldom -- DOM builder supporting on-demand tree-building for selected
 """
 
 
-class Node:
+kundi Node:
     """Class giving the NodeType constants."""
     __slots__ = ()
 
-    # DOM implementations may use this as a base class for their own
+    # DOM implementations may use this as a base kundi for their own
     # Node implementations.  If they don't, the constants defined here
     # should still be used as the canonical definitions as they match
     # the values given in the W3C recommendation.  Client code can
@@ -59,69 +59,69 @@ INVALID_ACCESS_ERR             = 15
 VALIDATION_ERR                 = 16
 
 
-class DOMException(Exception):
-    """Abstract base class for DOM exceptions.
+kundi DOMException(Exception):
+    """Abstract base kundi for DOM exceptions.
     Exceptions with specific codes are specializations of this class."""
 
-    def __init__(self, *args, **kw):
-        if self.__class__ is DOMException:
+    eleza __init__(self, *args, **kw):
+        ikiwa self.__class__ is DOMException:
             raise RuntimeError(
                 "DOMException should not be instantiated directly")
         Exception.__init__(self, *args, **kw)
 
-    def _get_code(self):
-        return self.code
+    eleza _get_code(self):
+        rudisha self.code
 
 
-class IndexSizeErr(DOMException):
+kundi IndexSizeErr(DOMException):
     code = INDEX_SIZE_ERR
 
-class DomstringSizeErr(DOMException):
+kundi DomstringSizeErr(DOMException):
     code = DOMSTRING_SIZE_ERR
 
-class HierarchyRequestErr(DOMException):
+kundi HierarchyRequestErr(DOMException):
     code = HIERARCHY_REQUEST_ERR
 
-class WrongDocumentErr(DOMException):
+kundi WrongDocumentErr(DOMException):
     code = WRONG_DOCUMENT_ERR
 
-class InvalidCharacterErr(DOMException):
+kundi InvalidCharacterErr(DOMException):
     code = INVALID_CHARACTER_ERR
 
-class NoDataAllowedErr(DOMException):
+kundi NoDataAllowedErr(DOMException):
     code = NO_DATA_ALLOWED_ERR
 
-class NoModificationAllowedErr(DOMException):
+kundi NoModificationAllowedErr(DOMException):
     code = NO_MODIFICATION_ALLOWED_ERR
 
-class NotFoundErr(DOMException):
+kundi NotFoundErr(DOMException):
     code = NOT_FOUND_ERR
 
-class NotSupportedErr(DOMException):
+kundi NotSupportedErr(DOMException):
     code = NOT_SUPPORTED_ERR
 
-class InuseAttributeErr(DOMException):
+kundi InuseAttributeErr(DOMException):
     code = INUSE_ATTRIBUTE_ERR
 
-class InvalidStateErr(DOMException):
+kundi InvalidStateErr(DOMException):
     code = INVALID_STATE_ERR
 
-class SyntaxErr(DOMException):
+kundi SyntaxErr(DOMException):
     code = SYNTAX_ERR
 
-class InvalidModificationErr(DOMException):
+kundi InvalidModificationErr(DOMException):
     code = INVALID_MODIFICATION_ERR
 
-class NamespaceErr(DOMException):
+kundi NamespaceErr(DOMException):
     code = NAMESPACE_ERR
 
-class InvalidAccessErr(DOMException):
+kundi InvalidAccessErr(DOMException):
     code = INVALID_ACCESS_ERR
 
-class ValidationErr(DOMException):
+kundi ValidationErr(DOMException):
     code = VALIDATION_ERR
 
-class UserDataHandler:
+kundi UserDataHandler:
     """Class giving the operation constants for UserDataHandler.handle()."""
 
     # Based on DOM Level 3 (WD 9 April 2002)

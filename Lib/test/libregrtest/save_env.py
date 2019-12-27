@@ -11,7 +11,7 @@ import warnings
 from test import support
 from test.libregrtest.utils import print_warning
 try:
-    import _multiprocessing, multiprocessing.process
+    agiza _multiprocessing, multiprocessing.process
 except ImportError:
     multiprocessing = None
 
@@ -232,7 +232,7 @@ class saved_test_environment:
         if fn not in saved_value and (fn + '/') not in saved_value:
             if os.path.isfile(fn):
                 support.unlink(fn)
-            elif os.path.isdir(fn):
+            lasivyo os.path.isdir(fn):
                 support.rmtree(fn)
 
     _lc = [getattr(locale, lc) for lc in dir(locale)

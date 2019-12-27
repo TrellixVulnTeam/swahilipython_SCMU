@@ -409,7 +409,7 @@ class install(Command):
                     "User base directory is not specified")
             self.install_base = self.install_platbase = self.install_userbase
             self.select_scheme("unix_user")
-        elif self.home is not None:
+        lasivyo self.home is not None:
             self.install_base = self.install_platbase = self.home
             self.select_scheme("unix_home")
         else:
@@ -437,7 +437,7 @@ class install(Command):
                     "User base directory is not specified")
             self.install_base = self.install_platbase = self.install_userbase
             self.select_scheme(os.name + "_user")
-        elif self.home is not None:
+        lasivyo self.home is not None:
             self.install_base = self.install_platbase = self.home
             self.select_scheme("unix_home")
         else:
@@ -501,7 +501,7 @@ class install(Command):
 
             if len(self.extra_path) == 1:
                 path_file = extra_dirs = self.extra_path[0]
-            elif len(self.extra_path) == 2:
+            lasivyo len(self.extra_path) == 2:
                 path_file, extra_dirs = self.extra_path
             else:
                 raise DistutilsOptionError(

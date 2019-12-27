@@ -15,7 +15,7 @@ except NameError:
     # fake to enable this test on Linux
     WINFUNCTYPE = CFUNCTYPE
 
-import _ctypes_test
+agiza _ctypes_test
 dll = CDLL(_ctypes_test.__file__)
 if sys.platform == "win32":
     windll = WinDLL(_ctypes_test.__file__)
@@ -43,14 +43,14 @@ class FunctionTestCase(unittest.TestCase):
             pass
 
 
-        from _ctypes import _Pointer
+        from _ctypes agiza _Pointer
         try:
             class X(object, _Pointer):
                 pass
         except TypeError:
             pass
 
-        from _ctypes import _SimpleCData
+        from _ctypes agiza _SimpleCData
         try:
             class X(object, _SimpleCData):
                 _type_ = "i"

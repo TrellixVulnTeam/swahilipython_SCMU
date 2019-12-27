@@ -98,7 +98,7 @@ Raw I/O
 
 Raw I/O (also called *unbuffered I/O*) is generally used as a low-level
 building-block for binary and text streams; it is rarely useful to directly
-manipulate a raw stream from user code.  Nevertheless, you can create a raw
+manipulate a raw stream kutoka user code.  Nevertheless, you can create a raw
 stream by opening a file in binary mode with buffering disabled::
 
    f = open("myfile.jpg", "rb", buffering=0)
@@ -124,7 +124,7 @@ High-level Module Interface
 
       This function raises an :ref:`auditing event <auditing>` ``open`` with
       arguments ``path``, ``mode`` and ``flags``. The ``mode`` and ``flags``
-      arguments may have been modified or inferred from the original call.
+      arguments may have been modified or inferred kutoka the original call.
 
 
 .. function:: open_code(path)
@@ -186,7 +186,7 @@ standard stream implementations.
       example, :class:`BufferedIOBase` provides unoptimized implementations of
       :meth:`~IOBase.readinto` and :meth:`~IOBase.readline`.
 
-At the top of the I/O hierarchy is the abstract base class :class:`IOBase`.  It
+At the top of the I/O hierarchy is the abstract base kundi :class:`IOBase`.  It
 defines the basic interface to a stream.  Note, however, that there is no
 separation between reading and writing to streams; implementations are allowed
 to raise :exc:`UnsupportedOperation` if they do not support a given operation.
@@ -203,9 +203,9 @@ provides a buffered interface to random access streams.  Another
 :class:`BufferedIOBase` subclass, :class:`BytesIO`, is a stream of in-memory
 bytes.
 
-The :class:`TextIOBase` ABC, another subclass of :class:`IOBase`, deals with
+The :class:`TextIOBase` ABC, another subkundi of :class:`IOBase`, deals with
 streams whose bytes represent text, and handles encoding and decoding to and
-from strings. :class:`TextIOWrapper`, which extends it, is a buffered text
+kutoka strings. :class:`TextIOWrapper`, which extends it, is a buffered text
 interface to a buffered raw stream (:class:`BufferedIOBase`). Finally,
 :class:`StringIO` is an in-memory stream for text.
 
@@ -239,10 +239,10 @@ I/O Base Classes
 
 .. class:: IOBase
 
-   The abstract base class for all I/O classes, acting on streams of bytes.
+   The abstract base kundi for all I/O classes, acting on streams of bytes.
    There is no public constructor.
 
-   This class provides empty abstract implementations for many methods
+   This kundi provides empty abstract implementations for many methods
    that derived classes can override selectively; the default
    implementations represent a file that cannot be read, written or
    seeked.
@@ -253,7 +253,7 @@ I/O Base Classes
    implementations may raise a :exc:`ValueError` (or :exc:`UnsupportedOperation`)
    when operations they do not support are called.
 
-   The basic type used for binary data read from or written to a file is
+   The basic type used for binary data read kutoka or written to a file is
    :class:`bytes`.  Other :term:`bytes-like objects <bytes-like object>` are
    accepted as method arguments too.  Text I/O classes work with :class:`str` data.
 
@@ -306,12 +306,12 @@ I/O Base Classes
 
    .. method:: readable()
 
-      Return ``True`` if the stream can be read from.  If ``False``, :meth:`read`
+      Return ``True`` if the stream can be read kutoka.  If ``False``, :meth:`read`
       will raise :exc:`OSError`.
 
    .. method:: readline(size=-1)
 
-      Read and return one line from the stream.  If *size* is specified, at
+      Read and return one line kutoka the stream.  If *size* is specified, at
       most *size* bytes will be read.
 
       The line terminator is always ``b'\n'`` for binary files; for text files,
@@ -320,7 +320,7 @@ I/O Base Classes
 
    .. method:: readlines(hint=-1)
 
-      Read and return a list of lines from the stream.  *hint* can be specified
+      Read and return a list of lines kutoka the stream.  *hint* can be specified
       to control the number of lines read: no more lines will be read if the
       total size (in bytes/characters) of all lines so far exceeds *hint*.
 
@@ -391,19 +391,19 @@ I/O Base Classes
 
 .. class:: RawIOBase
 
-   Base class for raw binary I/O.  It inherits :class:`IOBase`.  There is no
+   Base kundi for raw binary I/O.  It inherits :class:`IOBase`.  There is no
    public constructor.
 
    Raw binary I/O typically provides low-level access to an underlying OS
    device or API, and does not try to encapsulate it in high-level primitives
    (this is left to Buffered I/O and Text I/O, described later in this page).
 
-   In addition to the attributes and methods from :class:`IOBase`,
+   In addition to the attributes and methods kutoka :class:`IOBase`,
    :class:`RawIOBase` provides the following methods:
 
    .. method:: read(size=-1)
 
-      Read up to *size* bytes from the object and return them.  As a convenience,
+      Read up to *size* bytes kutoka the object and return them.  As a convenience,
       if *size* is unspecified or -1, all bytes until EOF are returned.
       Otherwise, only one system call is ever made.  Fewer than *size* bytes may
       be returned if the operating system call returns fewer than *size* bytes.
@@ -417,7 +417,7 @@ I/O Base Classes
 
    .. method:: readall()
 
-      Read and return all the bytes from the stream until EOF, using multiple
+      Read and return all the bytes kutoka the stream until EOF, using multiple
       calls to the stream if necessary.
 
    .. method:: readinto(b)
@@ -443,7 +443,7 @@ I/O Base Classes
 
 .. class:: BufferedIOBase
 
-   Base class for binary streams that support some kind of buffering.
+   Base kundi for binary streams that support some kind of buffering.
    It inherits :class:`IOBase`. There is no public constructor.
 
    The main difference with :class:`RawIOBase` is that methods :meth:`read`,
@@ -459,12 +459,12 @@ I/O Base Classes
    Besides, the :meth:`read` method does not have a default
    implementation that defers to :meth:`readinto`.
 
-   A typical :class:`BufferedIOBase` implementation should not inherit from a
+   A typical :class:`BufferedIOBase` implementation should not inherit kutoka a
    :class:`RawIOBase` implementation, but wrap one, like
    :class:`BufferedWriter` and :class:`BufferedReader` do.
 
    :class:`BufferedIOBase` provides or overrides these methods and attribute in
-   addition to those from :class:`IOBase`:
+   addition to those kutoka :class:`IOBase`:
 
    .. attribute:: raw
 
@@ -474,13 +474,13 @@ I/O Base Classes
 
    .. method:: detach()
 
-      Separate the underlying raw stream from the buffer and return it.
+      Separate the underlying raw stream kutoka the buffer and return it.
 
       After the raw stream has been detached, the buffer is in an unusable
       state.
 
       Some buffers, like :class:`BytesIO`, do not have the concept of a single
-      raw stream to return from this method.  They raise
+      raw stream to return kutoka this method.  They raise
       :exc:`UnsupportedOperation`.
 
       .. versionadded:: 3.1
@@ -580,7 +580,7 @@ Raw File I/O
    ``'+'`` to the mode to allow simultaneous reading and writing.
 
    The :meth:`read` (when called with a positive argument), :meth:`readinto`
-   and :meth:`write` methods on this class will only make one system call.
+   and :meth:`write` methods on this kundi will only make one system call.
 
    A custom opener can be used by passing a callable as *opener*. The underlying
    file descriptor for the file object is then obtained by calling *opener* with
@@ -600,7 +600,7 @@ Raw File I/O
    .. versionchanged:: 3.4
       The file is now non-inheritable.
 
-   In addition to the attributes and methods from :class:`IOBase` and
+   In addition to the attributes and methods kutoka :class:`IOBase` and
    :class:`RawIOBase`, :class:`FileIO` provides the following data
    attributes:
 
@@ -630,7 +630,7 @@ than raw I/O does.
    contains initial data.
 
    :class:`BytesIO` provides or overrides these methods in addition to those
-   from :class:`BufferedIOBase` and :class:`IOBase`:
+   kutoka :class:`BufferedIOBase` and :class:`IOBase`:
 
    .. method:: getbuffer()
 
@@ -672,8 +672,8 @@ than raw I/O does.
 
    A buffer providing higher-level access to a readable, sequential
    :class:`RawIOBase` object.  It inherits :class:`BufferedIOBase`.
-   When reading data from this object, a larger amount of data may be
-   requested from the underlying raw stream, and kept in an internal buffer.
+   When reading data kutoka this object, a larger amount of data may be
+   requested kutoka the underlying raw stream, and kept in an internal buffer.
    The buffered data can then be returned directly on subsequent reads.
 
    The constructor creates a :class:`BufferedReader` for the given readable
@@ -681,11 +681,11 @@ than raw I/O does.
    :data:`DEFAULT_BUFFER_SIZE` is used.
 
    :class:`BufferedReader` provides or overrides these methods in addition to
-   those from :class:`BufferedIOBase` and :class:`IOBase`:
+   those kutoka :class:`BufferedIOBase` and :class:`IOBase`:
 
    .. method:: peek([size])
 
-      Return bytes from the stream without advancing the position.  At most one
+      Return bytes kutoka the stream without advancing the position.  At most one
       single read on the raw stream is done to satisfy the call. The number of
       bytes returned may be less or more than requested.
 
@@ -722,7 +722,7 @@ than raw I/O does.
    :data:`DEFAULT_BUFFER_SIZE`.
 
    :class:`BufferedWriter` provides or overrides these methods in addition to
-   those from :class:`BufferedIOBase` and :class:`IOBase`:
+   those kutoka :class:`BufferedIOBase` and :class:`IOBase`:
 
    .. method:: flush()
 
@@ -777,12 +777,12 @@ Text I/O
 
 .. class:: TextIOBase
 
-   Base class for text streams.  This class provides a character and line based
+   Base kundi for text streams.  This kundi provides a character and line based
    interface to stream I/O.  It inherits :class:`IOBase`.
    There is no public constructor.
 
    :class:`TextIOBase` provides or overrides these data attributes and
-   methods in addition to those from :class:`IOBase`:
+   methods in addition to those kutoka :class:`IOBase`:
 
    .. attribute:: encoding
 
@@ -807,7 +807,7 @@ Text I/O
 
    .. method:: detach()
 
-      Separate the underlying binary buffer from the :class:`TextIOBase` and
+      Separate the underlying binary buffer kutoka the :class:`TextIOBase` and
       return it.
 
       After the underlying buffer has been detached, the :class:`TextIOBase` is
@@ -821,7 +821,7 @@ Text I/O
 
    .. method:: read(size=-1)
 
-      Read and return at most *size* characters from the stream as a single
+      Read and return at most *size* characters kutoka the stream as a single
       :class:`str`.  If *size* is negative or ``None``, reads until EOF.
 
    .. method:: readline(size=-1)
@@ -837,7 +837,7 @@ Text I/O
       the *whence* parameter.  The default value for *whence* is
       :data:`SEEK_SET`.
 
-      * :data:`SEEK_SET` or ``0``: seek from the start of the stream
+      * :data:`SEEK_SET` or ``0``: seek kutoka the start of the stream
         (the default); *offset* must either be a number returned by
         :meth:`TextIOBase.tell`, or zero.  Any other *offset* value
         produces undefined behaviour.
@@ -893,7 +893,7 @@ Text I/O
    *newline* controls how line endings are handled.  It can be ``None``,
    ``''``, ``'\n'``, ``'\r'``, and ``'\r\n'``.  It works as follows:
 
-   * When reading input from the stream, if *newline* is ``None``,
+   * When reading input kutoka the stream, if *newline* is ``None``,
      :term:`universal newlines` mode is enabled.  Lines in the input can end in
      ``'\n'``, ``'\r'``, or ``'\r\n'``, and these are translated into ``'\n'``
      before being returned to the caller.  If it is ``''``, universal newlines
@@ -949,7 +949,7 @@ Text I/O
       *errors* is not specified.
 
       It is not possible to change the encoding or newline if some data
-      has already been read from the stream. On the other hand, changing
+      has already been read kutoka the stream. On the other hand, changing
       encoding after write is possible.
 
       This method does an implicit stream flush before setting the
@@ -974,7 +974,7 @@ Text I/O
    newlines are written as ``\n`` on all platforms, but universal
    newline decoding is still performed when reading.
 
-   :class:`StringIO` provides this method in addition to those from
+   :class:`StringIO` provides this method in addition to those kutoka
    :class:`TextIOBase` and its parents:
 
    .. method:: getvalue()
@@ -985,7 +985,7 @@ Text I/O
 
    Example usage::
 
-      import io
+      agiza io
 
       output = io.StringIO()
       output.write('First line.\n')
@@ -1049,7 +1049,7 @@ calls (such as ``read(2)`` under Unix) they wrap are thread-safe too.
 Binary buffered objects (instances of :class:`BufferedReader`,
 :class:`BufferedWriter`, :class:`BufferedRandom` and :class:`BufferedRWPair`)
 protect their internal structures using a lock; it is therefore safe to call
-them from multiple threads at once.
+them kutoka multiple threads at once.
 
 :class:`TextIOWrapper` objects are not thread-safe.
 
@@ -1059,9 +1059,9 @@ Reentrancy
 Binary buffered objects (instances of :class:`BufferedReader`,
 :class:`BufferedWriter`, :class:`BufferedRandom` and :class:`BufferedRWPair`)
 are not reentrant.  While reentrant calls will not happen in normal situations,
-they can arise from doing I/O in a :mod:`signal` handler.  If a thread tries to
+they can arise kutoka doing I/O in a :mod:`signal` handler.  If a thread tries to
 re-enter a buffered object which it is already accessing, a :exc:`RuntimeError`
-is raised.  Note this doesn't prohibit a different thread from entering the
+is raised.  Note this doesn't prohibit a different thread kutoka entering the
 buffered object.
 
 The above implicitly extends to text files, since the :func:`open()` function

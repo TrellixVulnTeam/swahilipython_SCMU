@@ -1,7 +1,7 @@
 """ Test Iterator Length Transparency
 
 Some functions or methods which accept general iterable arguments have
-optional, more efficient code paths if they know how many items to expect.
+optional, more efficient code paths ikiwa they know how many items to expect.
 For instance, map(func, iterable), will pre-allocate the exact amount of
 space required whenever the iterable can report its length.
 
@@ -25,7 +25,7 @@ an attempt to iterate after a length mutation.
 
 The situation slightly more involved whenever an object allows length mutation
 during iteration.  Lists and sequence iterators are dynamically updatable.
-So, if a list is extended during iteration, the iterator will continue through
+So, ikiwa a list is extended during iteration, the iterator will continue through
 the new items.  If it shrinks to a point before the most recent iteration,
 then no further items are available and the length is reported at zero.
 
@@ -49,9 +49,9 @@ kutoka operator agiza length_hint
 n = 10
 
 
-class TestInvariantWithoutMutations:
+kundi TestInvariantWithoutMutations:
 
-    def test_invariant(self):
+    eleza test_invariant(self):
         it = self.it
         for i in reversed(range(1, n+1)):
             self.assertEqual(length_hint(it), i)
@@ -60,9 +60,9 @@ class TestInvariantWithoutMutations:
         self.assertRaises(StopIteration, next, it)
         self.assertEqual(length_hint(it), 0)
 
-class TestTemporarilyImmutable(TestInvariantWithoutMutations):
+kundi TestTemporarilyImmutable(TestInvariantWithoutMutations):
 
-    def test_immutable_during_iteration(self):
+    eleza test_immutable_during_iteration(self):
         # objects such as deques, sets, and dictionaries enforce
         # length immutability  during iteration
 
@@ -76,78 +76,78 @@ class TestTemporarilyImmutable(TestInvariantWithoutMutations):
 
 ## ------- Concrete Type Tests -------
 
-class TestRepeat(TestInvariantWithoutMutations, unittest.TestCase):
+kundi TestRepeat(TestInvariantWithoutMutations, unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.it = repeat(None, n)
 
-class TestXrange(TestInvariantWithoutMutations, unittest.TestCase):
+kundi TestXrange(TestInvariantWithoutMutations, unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.it = iter(range(n))
 
-class TestXrangeCustomReversed(TestInvariantWithoutMutations, unittest.TestCase):
+kundi TestXrangeCustomReversed(TestInvariantWithoutMutations, unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.it = reversed(range(n))
 
-class TestTuple(TestInvariantWithoutMutations, unittest.TestCase):
+kundi TestTuple(TestInvariantWithoutMutations, unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.it = iter(tuple(range(n)))
 
 ## ------- Types that should not be mutated during iteration -------
 
-class TestDeque(TestTemporarilyImmutable, unittest.TestCase):
+kundi TestDeque(TestTemporarilyImmutable, unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         d = deque(range(n))
         self.it = iter(d)
         self.mutate = d.pop
 
-class TestDequeReversed(TestTemporarilyImmutable, unittest.TestCase):
+kundi TestDequeReversed(TestTemporarilyImmutable, unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         d = deque(range(n))
         self.it = reversed(d)
         self.mutate = d.pop
 
-class TestDictKeys(TestTemporarilyImmutable, unittest.TestCase):
+kundi TestDictKeys(TestTemporarilyImmutable, unittest.TestCase):
 
-    def setUp(self):
-        d = dict.fromkeys(range(n))
+    eleza setUp(self):
+        d = dict.kutokakeys(range(n))
         self.it = iter(d)
         self.mutate = d.popitem
 
-class TestDictItems(TestTemporarilyImmutable, unittest.TestCase):
+kundi TestDictItems(TestTemporarilyImmutable, unittest.TestCase):
 
-    def setUp(self):
-        d = dict.fromkeys(range(n))
+    eleza setUp(self):
+        d = dict.kutokakeys(range(n))
         self.it = iter(d.items())
         self.mutate = d.popitem
 
-class TestDictValues(TestTemporarilyImmutable, unittest.TestCase):
+kundi TestDictValues(TestTemporarilyImmutable, unittest.TestCase):
 
-    def setUp(self):
-        d = dict.fromkeys(range(n))
+    eleza setUp(self):
+        d = dict.kutokakeys(range(n))
         self.it = iter(d.values())
         self.mutate = d.popitem
 
-class TestSet(TestTemporarilyImmutable, unittest.TestCase):
+kundi TestSet(TestTemporarilyImmutable, unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         d = set(range(n))
         self.it = iter(d)
         self.mutate = d.pop
 
 ## ------- Types that can mutate during iteration -------
 
-class TestList(TestInvariantWithoutMutations, unittest.TestCase):
+kundi TestList(TestInvariantWithoutMutations, unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.it = iter(range(n))
 
-    def test_mutation(self):
+    eleza test_mutation(self):
         d = list(range(n))
         it = iter(d)
         next(it)
@@ -162,12 +162,12 @@ class TestList(TestInvariantWithoutMutations, unittest.TestCase):
         self.assertEqual(length_hint(it), 0)
 
 
-class TestListReversed(TestInvariantWithoutMutations, unittest.TestCase):
+kundi TestListReversed(TestInvariantWithoutMutations, unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.it = reversed(range(n))
 
-    def test_mutation(self):
+    eleza test_mutation(self):
         d = list(range(n))
         it = reversed(d)
         next(it)
@@ -184,33 +184,33 @@ class TestListReversed(TestInvariantWithoutMutations, unittest.TestCase):
 ## -- Check to make sure exceptions are not suppressed by __length_hint__()
 
 
-class BadLen(object):
-    def __iter__(self):
-        return iter(range(10))
+kundi BadLen(object):
+    eleza __iter__(self):
+        rudisha iter(range(10))
 
-    def __len__(self):
+    eleza __len__(self):
         raise RuntimeError('hello')
 
 
-class BadLengthHint(object):
-    def __iter__(self):
-        return iter(range(10))
+kundi BadLengthHint(object):
+    eleza __iter__(self):
+        rudisha iter(range(10))
 
-    def __length_hint__(self):
+    eleza __length_hint__(self):
         raise RuntimeError('hello')
 
 
-class NoneLengthHint(object):
-    def __iter__(self):
-        return iter(range(10))
+kundi NoneLengthHint(object):
+    eleza __iter__(self):
+        rudisha iter(range(10))
 
-    def __length_hint__(self):
-        return NotImplemented
+    eleza __length_hint__(self):
+        rudisha NotImplemented
 
 
-class TestLengthHintExceptions(unittest.TestCase):
+kundi TestLengthHintExceptions(unittest.TestCase):
 
-    def test_issue1242657(self):
+    eleza test_issue1242657(self):
         self.assertRaises(RuntimeError, list, BadLen())
         self.assertRaises(RuntimeError, list, BadLengthHint())
         self.assertRaises(RuntimeError, [].extend, BadLen())
@@ -219,10 +219,10 @@ class TestLengthHintExceptions(unittest.TestCase):
         self.assertRaises(RuntimeError, b.extend, BadLen())
         self.assertRaises(RuntimeError, b.extend, BadLengthHint())
 
-    def test_invalid_hint(self):
+    eleza test_invalid_hint(self):
         # Make sure an invalid result doesn't muck-up the works
         self.assertEqual(list(NoneLengthHint()), list(range(10)))
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

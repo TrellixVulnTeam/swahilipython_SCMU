@@ -1,6 +1,6 @@
 .. testsetup::
 
-    import math
+    agiza math
 
 .. _tut-fp-issues:
 
@@ -138,7 +138,7 @@ for a more complete account of other common surprises.
 
 As that says near the end, "there are no easy answers."  Still, don't be unduly
 wary of floating-point!  The errors in Python float operations are inherited
-from the floating-point hardware, and on most machines are on the order of no
+kutoka the floating-point hardware, and on most machines are on the order of no
 more than 1 part in 2\*\*53 per operation.  That's more than adequate for most
 tasks, but you do need to keep in mind that it's not decimal arithmetic and
 that every float operation can suffer a new rounding error.
@@ -185,7 +185,7 @@ The :meth:`float.hex` method expresses a float in hexadecimal (base
 This precise hexadecimal representation can be used to reconstruct
 the float value exactly::
 
-    >>> x == float.fromhex('0x1.921f9f01b866ep+1')
+    >>> x == float.kutokahex('0x1.921f9f01b866ep+1')
     True
 
 Since the representation is exact, it is useful for reliably porting values
@@ -284,17 +284,17 @@ older versions of Python), round the result to 17 significant digits::
 The :mod:`fractions` and :mod:`decimal` modules make these calculations
 easy::
 
-   >>> from decimal import Decimal
-   >>> from fractions import Fraction
+   >>> kutoka decimal agiza Decimal
+   >>> kutoka fractions agiza Fraction
 
-   >>> Fraction.from_float(0.1)
+   >>> Fraction.kutoka_float(0.1)
    Fraction(3602879701896397, 36028797018963968)
 
    >>> (0.1).as_integer_ratio()
    (3602879701896397, 36028797018963968)
 
-   >>> Decimal.from_float(0.1)
+   >>> Decimal.kutoka_float(0.1)
    Decimal('0.1000000000000000055511151231257827021181583404541015625')
 
-   >>> format(Decimal.from_float(0.1), '.17')
+   >>> format(Decimal.kutoka_float(0.1), '.17')
    '0.10000000000000001'

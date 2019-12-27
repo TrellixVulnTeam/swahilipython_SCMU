@@ -26,9 +26,9 @@ __all__ = ['dataclass',
            ]
 
 # Conditions for adding methods.  The boxes indicate what action the
-# dataclass decorator takes.  For all of these tables, when I talk
+# datakundi decorator takes.  For all of these tables, when I talk
 # about init=, repr=, eq=, order=, unsafe_hash=, or frozen=, I'm
-# referring to the arguments to the @dataclass decorator.  When
+# referring to the arguments to the @datakundi decorator.  When
 # checking if a dunder method already exists, I mean check for an
 # entry in the class's __dict__.  I never check to see if an attribute
 # is defined in a base class.
@@ -51,7 +51,7 @@ __all__ = ['dataclass',
 #   +--- init= parameter
 #   |
 #   v     |       |       |
-#         |  no   |  yes  |  <--- class has __init__ in __dict__?
+#         |  no   |  yes  |  <--- kundi has __init__ in __dict__?
 # +=======+=======+=======+
 # | False |       |       |
 # +-------+-------+-------+
@@ -63,7 +63,7 @@ __all__ = ['dataclass',
 #    +--- repr= parameter
 #    |
 #    v    |       |       |
-#         |  no   |  yes  |  <--- class has __repr__ in __dict__?
+#         |  no   |  yes  |  <--- kundi has __repr__ in __dict__?
 # +=======+=======+=======+
 # | False |       |       |
 # +-------+-------+-------+
@@ -77,7 +77,7 @@ __all__ = ['dataclass',
 #    +--- frozen= parameter
 #    |
 #    v    |       |       |
-#         |  no   |  yes  |  <--- class has __setattr__ or __delattr__ in __dict__?
+#         |  no   |  yes  |  <--- kundi has __setattr__ or __delattr__ in __dict__?
 # +=======+=======+=======+
 # | False |       |       |  <- the default
 # +-------+-------+-------+
@@ -91,7 +91,7 @@ __all__ = ['dataclass',
 #    +--- eq= parameter
 #    |
 #    v    |       |       |
-#         |  no   |  yes  |  <--- class has __eq__ in __dict__?
+#         |  no   |  yes  |  <--- kundi has __eq__ in __dict__?
 # +=======+=======+=======+
 # | False |       |       |
 # +-------+-------+-------+
@@ -106,7 +106,7 @@ __all__ = ['dataclass',
 #    +--- order= parameter
 #    |
 #    v    |       |       |
-#         |  no   |  yes  |  <--- class has any comparison method in __dict__?
+#         |  no   |  yes  |  <--- kundi has any comparison method in __dict__?
 # +=======+=======+=======+
 # | False |       |       |  <- the default
 # +-------+-------+-------+
@@ -122,11 +122,11 @@ __all__ = ['dataclass',
 #    |       |       +--- frozen= parameter
 #    |       |       |
 #    v       v       v    |        |        |
-#                         |   no   |  yes   |  <--- class has explicitly defined __hash__
+#                         |   no   |  yes   |  <--- kundi has explicitly defined __hash__
 # +=======+=======+=======+========+========+
-# | False | False | False |        |        | No __eq__, use the base class __hash__
+# | False | False | False |        |        | No __eq__, use the base kundi __hash__
 # +-------+-------+-------+--------+--------+
-# | False | False | True  |        |        | No __eq__, use the base class __hash__
+# | False | False | True  |        |        | No __eq__, use the base kundi __hash__
 # +-------+-------+-------+--------+--------+
 # | False | True  | False | None   |        | <-- the default, not hashable
 # +-------+-------+-------+--------+--------+
@@ -144,27 +144,27 @@ __all__ = ['dataclass',
 # inherited kutoka the base class.  If the base is object, then
 # id-based hashing is used.
 #
-# Note that a class may already have __hash__=None if it specified an
-# __eq__ method in the class body (not one that was created by
+# Note that a kundi may already have __hash__=None if it specified an
+# __eq__ method in the kundi body (not one that was created by
 # @dataclass).
 #
 # See _hash_action (below) for a coded version of this table.
 
 
 # Raised when an attempt is made to modify a frozen class.
-class FrozenInstanceError(AttributeError): pass
+kundi FrozenInstanceError(AttributeError): pass
 
 # A sentinel object for default values to signal that a default
 # factory will be used.  This is given a nice repr() which will appear
 # in the function signature of dataclasses' constructors.
-class _HAS_DEFAULT_FACTORY_CLASS:
+kundi _HAS_DEFAULT_FACTORY_CLASS:
     def __repr__(self):
         return '<factory>'
 _HAS_DEFAULT_FACTORY = _HAS_DEFAULT_FACTORY_CLASS()
 
 # A sentinel object to detect if a parameter is supplied or not.  Use
-# a class to give it a better repr.
-class _MISSING_TYPE:
+# a kundi to give it a better repr.
+kundi _MISSING_TYPE:
     pass
 MISSING = _MISSING_TYPE()
 
@@ -173,7 +173,7 @@ MISSING = _MISSING_TYPE()
 _EMPTY_METADATA = types.MappingProxyType({})
 
 # Markers for the various kinds of fields and pseudo-fields.
-class _FIELD_BASE:
+kundi _FIELD_BASE:
     def __init__(self, name):
         self.name = name
     def __repr__(self):
@@ -182,11 +182,11 @@ _FIELD = _FIELD_BASE('_FIELD')
 _FIELD_CLASSVAR = _FIELD_BASE('_FIELD_CLASSVAR')
 _FIELD_INITVAR = _FIELD_BASE('_FIELD_INITVAR')
 
-# The name of an attribute on the class where we store the Field
-# objects.  Also used to check if a class is a Data Class.
+# The name of an attribute on the kundi where we store the Field
+# objects.  Also used to check if a kundi is a Data Class.
 _FIELDS = '__dataclass_fields__'
 
-# The name of an attribute on the class that stores the parameters to
+# The name of an attribute on the kundi that stores the parameters to
 # @dataclass.
 _PARAMS = '__dataclass_params__'
 
@@ -199,11 +199,11 @@ _POST_INIT_NAME = '__post_init__'
 # https://bugs.python.org/issue33453 for details.
 _MODULE_IDENTIFIER_RE = re.compile(r'^(?:\s*(\w+)\s*\.)?\s*(\w+)')
 
-class _InitVarMeta(type):
+kundi _InitVarMeta(type):
     def __getitem__(self, params):
         return InitVar(params)
 
-class InitVar(metaclass=_InitVarMeta):
+kundi InitVar(metaclass=_InitVarMeta):
     __slots__ = ('type', )
 
     def __init__(self, type):
@@ -223,12 +223,12 @@ class InitVar(metaclass=_InitVarMeta):
 # exposed externally as (conceptually) read-only objects.
 #
 # name and type are filled in after the fact, not in __init__.
-# They're not known at the time this class is instantiated, but it's
+# They're not known at the time this kundi is instantiated, but it's
 # convenient if they're available later.
 #
 # When cls._FIELDS is filled in with a list of Field objects, the name
 # and type fields will have been populated.
-class Field:
+kundi Field:
     __slots__ = ('name',
                  'type',
                  'default',
@@ -286,7 +286,7 @@ class Field:
             func(self.default, owner, name)
 
 
-class _DataclassParams:
+kundi _DataclassParams:
     __slots__ = ('init',
                  'repr',
                  'eq',
@@ -319,7 +319,7 @@ class _DataclassParams:
 # function whose type depends on its parameters.
 def field(*, default=MISSING, default_factory=MISSING, init=True, repr=True,
           hash=None, compare=True, metadata=None):
-    """Return an object to identify dataclass fields.
+    """Return an object to identify datakundi fields.
 
     default is the default value of the field.  default_factory is a
     0-argument function called to initialize a field's value.  If init
@@ -430,11 +430,11 @@ def _field_init(f, frozen, globals, self_name):
             # because there's no other way to initialize it.
 
             # For a field initialized with a default=defaultvalue, the
-            # class dict just has the default value
+            # kundi dict just has the default value
             # (cls.fieldname=defaultvalue).  But that won't work for a
             # default factory, the factory must be called in __init__
             # and we must assign that to self.fieldname.  We can't
-            # fall back to the class dict's value, both because it's
+            # fall back to the kundi dict's value, both because it's
             # not set, and because it might be different per-class
             # (which, after all, is why we have a factory function!).
 
@@ -446,7 +446,7 @@ def _field_init(f, frozen, globals, self_name):
             if f.default is MISSING:
                 # There's no default, just do an assignment.
                 value = f.name
-            elif f.default is not MISSING:
+            lasivyo f.default is not MISSING:
                 globals[default_name] = f.default
                 value = f.name
         else:
@@ -473,11 +473,11 @@ def _init_param(f):
         # There's no default, and no default_factory, just output the
         # variable name and type.
         default = ''
-    elif f.default is not MISSING:
+    lasivyo f.default is not MISSING:
         # There's a default, this will be the name that's used to look
         # it up.
         default = f'=_dflt_{f.name}'
-    elif f.default_factory is not MISSING:
+    lasivyo f.default_factory is not MISSING:
         # There's a factory function.  Set a marker.
         default = '=_HAS_DEFAULT_FACTORY'
     return f'{f.name}:_type_{f.name}{default}'
@@ -497,7 +497,7 @@ def _init_fn(fields, frozen, has_post_init, self_name):
         if f.init:
             if not (f.default is MISSING and f.default_factory is MISSING):
                 seen_default = True
-            elif seen_default:
+            lasivyo seen_default:
                 raise TypeError(f'non-default argument {f.name!r} '
                                 'follows default argument')
 
@@ -512,7 +512,7 @@ def _init_fn(fields, frozen, has_post_init, self_name):
         if line:
             body_lines.append(line)
 
-    # Does this class have a post-init function?
+    # Does this kundi have a post-init function?
     if has_post_init:
         params_str = ','.join(f.name for f in fields
                               if f._field_type is _FIELD_INITVAR)
@@ -612,7 +612,7 @@ def _is_type(annotation, cls, a_module, a_type, is_type_predicate):
     # the caller already knows a_module.
 
     # - annotation is a string type annotation
-    # - cls is the class that this annotation was found in
+    # - cls is the kundi that this annotation was found in
     # - a_module is the module we want to match
     # - a_type is the type in that module we want to match
     # - is_type_predicate is a function called with (obj, a_module)
@@ -625,12 +625,12 @@ def _is_type(annotation, cls, a_module, a_type, is_type_predicate):
     # With string annotations, cv0 will be detected as a ClassVar:
     #   CV = ClassVar
     #   @dataclass
-    #   class C0:
+    #   kundi C0:
     #     cv0: CV
 
     # But in this example cv1 will not be detected as a ClassVar:
     #   @dataclass
-    #   class C1:
+    #   kundi C1:
     #     CV = ClassVar
     #     cv1: CV
 
@@ -766,7 +766,7 @@ def _hash_add(cls, fields):
 def _hash_exception(cls, fields):
     # Raise an exception.
     raise TypeError(f'Cannot overwrite attribute __hash__ '
-                    f'in class {cls.__name__}')
+                    f'in kundi {cls.__name__}')
 
 #
 #                +-------------------------------------- unsafe_hash?
@@ -801,7 +801,7 @@ _hash_action = {(False, False, False, False): None,
 def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
     # Now that dicts retain insertion order, there's no reason to use
     # an ordered dict.  I am leveraging that ordering here, because
-    # derived class fields overwrite base class fields, but the order
+    # derived kundi fields overwrite base kundi fields, but the order
     # is defined by the base class, which is found first.
     fields = {}
 
@@ -825,13 +825,13 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
             if getattr(b, _PARAMS).frozen:
                 any_frozen_base = True
 
-    # Annotations that are defined in this class (not in base
+    # Annotations that are defined in this kundi (not in base
     # classes).  If __annotations__ isn't present, then this class
     # adds no new annotations.  We use this to compute fields that are
     # added by this class.
     #
     # Fields are found kutoka cls_annotations, which is guaranteed to be
-    # ordered.  Default values are kutoka class attributes, if a field
+    # ordered.  Default values are kutoka kundi attributes, if a field
     # has a default.  If the default value is a Field(), then it
     # contains additional info beyond (and possibly including) the
     # actual default value.  Pseudo-fields ClassVars and InitVars are
@@ -840,24 +840,24 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
     cls_annotations = cls.__dict__.get('__annotations__', {})
 
     # Now find fields in our class.  While doing so, validate some
-    # things, and set the default values (as class attributes) where
+    # things, and set the default values (as kundi attributes) where
     # we can.
     cls_fields = [_get_field(cls, name, type)
                   for name, type in cls_annotations.items()]
     for f in cls_fields:
         fields[f.name] = f
 
-        # If the class attribute (which is the default value for this
+        # If the kundi attribute (which is the default value for this
         # field) exists and is of type 'Field', replace it with the
-        # real default.  This is so that normal class introspection
+        # real default.  This is so that normal kundi introspection
         # sees a real default value, not a Field.
         if isinstance(getattr(cls, f.name, None), Field):
             if f.default is MISSING:
-                # If there's no default, delete the class attribute.
+                # If there's no default, delete the kundi attribute.
                 # This happens if we specify field(repr=False), for
                 # example (that is, we specified a field object, but
                 # no default value).  Also if we're using a default
-                # factory.  The class attribute should not be set at
+                # factory.  The kundi attribute should not be set at
                 # all in the post-processed class.
                 delattr(cls, f.name)
             else:
@@ -872,19 +872,19 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
     if has_dataclass_bases:
         # Raise an exception if any of our bases are frozen, but we're not.
         if any_frozen_base and not frozen:
-            raise TypeError('cannot inherit non-frozen dataclass kutoka a '
+            raise TypeError('cannot inherit non-frozen datakundi kutoka a '
                             'frozen one')
 
         # Raise an exception if we're frozen, but none of our bases are.
         if not any_frozen_base and frozen:
-            raise TypeError('cannot inherit frozen dataclass kutoka a '
+            raise TypeError('cannot inherit frozen datakundi kutoka a '
                             'non-frozen one')
 
-    # Remember all of the fields on our class (including bases).  This
-    # also marks this class as being a dataclass.
+    # Remember all of the fields on our kundi (including bases).  This
+    # also marks this kundi as being a dataclass.
     setattr(cls, _FIELDS, fields)
 
-    # Was this class defined with an explicit __hash__?  Note that if
+    # Was this kundi defined with an explicit __hash__?  Note that if
     # __eq__ is defined in this class, then python will automatically
     # set __hash__ to None.  This is a heuristic, as it's possible
     # that such a __hash__ == None was not auto-generated, but it
@@ -899,7 +899,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
         raise ValueError('eq must be true if order is true')
 
     if init:
-        # Does this class have a post-init function?
+        # Does this kundi have a post-init function?
         has_post_init = hasattr(cls, _POST_INIT_NAME)
 
         # Include InitVars and regular fields (so, not ClassVars).
@@ -947,14 +947,14 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
             if _set_new_attribute(cls, name,
                                   _cmp_fn(name, op, self_tuple, other_tuple)):
                 raise TypeError(f'Cannot overwrite attribute {name} '
-                                f'in class {cls.__name__}. Consider using '
+                                f'in kundi {cls.__name__}. Consider using '
                                 'functools.total_ordering')
 
     if frozen:
         for fn in _frozen_get_del_attr(cls, field_list):
             if _set_new_attribute(cls, fn.__name__, fn):
                 raise TypeError(f'Cannot overwrite attribute {fn.__name__} '
-                                f'in class {cls.__name__}')
+                                f'in kundi {cls.__name__}')
 
     # Decide if/how we're going to create a hash function.
     hash_action = _hash_action[bool(unsafe_hash),
@@ -967,7 +967,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
         cls.__hash__ = hash_action(cls, field_list)
 
     if not getattr(cls, '__doc__'):
-        # Create a class doc-string.
+        # Create a kundi doc-string.
         cls.__doc__ = (cls.__name__ +
                        str(inspect.signature(cls)).replace(' -> None', ''))
 
@@ -976,7 +976,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
 
 def dataclass(cls=None, /, *, init=True, repr=True, eq=True, order=False,
               unsafe_hash=False, frozen=False):
-    """Returns the same class as was passed in, with dunder methods
+    """Returns the same kundi as was passed in, with dunder methods
     added based on the fields defined in the class.
 
     Examines PEP 526 __annotations__ to determine fields.
@@ -991,19 +991,19 @@ def dataclass(cls=None, /, *, init=True, repr=True, eq=True, order=False,
     def wrap(cls):
         return _process_class(cls, init, repr, eq, order, unsafe_hash, frozen)
 
-    # See if we're being called as @dataclass or @dataclass().
+    # See if we're being called as @datakundi or @dataclass().
     if cls is None:
         # We're called with parens.
         return wrap
 
-    # We're called as @dataclass without parens.
+    # We're called as @datakundi without parens.
     return wrap(cls)
 
 
 def fields(class_or_instance):
     """Return a tuple describing the fields of this dataclass.
 
-    Accepts a dataclass or an instance of one. Tuple elements are of
+    Accepts a datakundi or an instance of one. Tuple elements are of
     type Field.
     """
 
@@ -1011,7 +1011,7 @@ def fields(class_or_instance):
     try:
         fields = getattr(class_or_instance, _FIELDS)
     except AttributeError:
-        raise TypeError('must be called with a dataclass type or instance')
+        raise TypeError('must be called with a datakundi type or instance')
 
     # Exclude pseudo-fields.  Note that fields is sorted by insertion
     # order, so the order of the tuple is as the fields were defined.
@@ -1024,20 +1024,20 @@ def _is_dataclass_instance(obj):
 
 
 def is_dataclass(obj):
-    """Returns True if obj is a dataclass or an instance of a
+    """Returns True if obj is a datakundi or an instance of a
     dataclass."""
     cls = obj if isinstance(obj, type) else type(obj)
     return hasattr(cls, _FIELDS)
 
 
 def asdict(obj, *, dict_factory=dict):
-    """Return the fields of a dataclass instance as a new dictionary mapping
+    """Return the fields of a datakundi instance as a new dictionary mapping
     field names to field values.
 
     Example usage:
 
       @dataclass
-      class C:
+      kundi C:
           x: int
           y: int
 
@@ -1046,11 +1046,11 @@ def asdict(obj, *, dict_factory=dict):
 
     If given, 'dict_factory' will be used instead of built-in dict.
     The function applies recursively to field values that are
-    dataclass instances. This will also look into built-in containers:
+    datakundi instances. This will also look into built-in containers:
     tuples, lists, and dicts.
     """
     if not _is_dataclass_instance(obj):
-        raise TypeError("asdict() should be called on dataclass instances")
+        raise TypeError("asdict() should be called on datakundi instances")
     return _asdict_inner(obj, dict_factory)
 
 
@@ -1061,7 +1061,7 @@ def _asdict_inner(obj, dict_factory):
             value = _asdict_inner(getattr(obj, f.name), dict_factory)
             result.append((f.name, value))
         return dict_factory(result)
-    elif isinstance(obj, tuple) and hasattr(obj, '_fields'):
+    lasivyo isinstance(obj, tuple) and hasattr(obj, '_fields'):
         # obj is a namedtuple.  Recurse into it, but the returned
         # object is another namedtuple of the same type.  This is
         # similar to how other list- or tuple-derived classes are
@@ -1082,12 +1082,12 @@ def _asdict_inner(obj, dict_factory):
         #   structure where a namedtuple was used as a dict key.
 
         return type(obj)(*[_asdict_inner(v, dict_factory) for v in obj])
-    elif isinstance(obj, (list, tuple)):
+    lasivyo isinstance(obj, (list, tuple)):
         # Assume we can create an object of this type by passing in a
         # generator (which is not true for namedtuples, handled
         # above).
         return type(obj)(_asdict_inner(v, dict_factory) for v in obj)
-    elif isinstance(obj, dict):
+    lasivyo isinstance(obj, dict):
         return type(obj)((_asdict_inner(k, dict_factory),
                           _asdict_inner(v, dict_factory))
                          for k, v in obj.items())
@@ -1096,12 +1096,12 @@ def _asdict_inner(obj, dict_factory):
 
 
 def astuple(obj, *, tuple_factory=tuple):
-    """Return the fields of a dataclass instance as a new tuple of field values.
+    """Return the fields of a datakundi instance as a new tuple of field values.
 
     Example usage::
 
       @dataclass
-      class C:
+      kundi C:
           x: int
           y: int
 
@@ -1110,12 +1110,12 @@ def astuple(obj, *, tuple_factory=tuple):
 
     If given, 'tuple_factory' will be used instead of built-in tuple.
     The function applies recursively to field values that are
-    dataclass instances. This will also look into built-in containers:
+    datakundi instances. This will also look into built-in containers:
     tuples, lists, and dicts.
     """
 
     if not _is_dataclass_instance(obj):
-        raise TypeError("astuple() should be called on dataclass instances")
+        raise TypeError("astuple() should be called on datakundi instances")
     return _astuple_inner(obj, tuple_factory)
 
 
@@ -1126,7 +1126,7 @@ def _astuple_inner(obj, tuple_factory):
             value = _astuple_inner(getattr(obj, f.name), tuple_factory)
             result.append(value)
         return tuple_factory(result)
-    elif isinstance(obj, tuple) and hasattr(obj, '_fields'):
+    lasivyo isinstance(obj, tuple) and hasattr(obj, '_fields'):
         # obj is a namedtuple.  Recurse into it, but the returned
         # object is another namedtuple of the same type.  This is
         # similar to how other list- or tuple-derived classes are
@@ -1134,12 +1134,12 @@ def _astuple_inner(obj, tuple_factory):
         # differently because a namedtuple's __init__ needs to be
         # called differently (see bpo-34363).
         return type(obj)(*[_astuple_inner(v, tuple_factory) for v in obj])
-    elif isinstance(obj, (list, tuple)):
+    lasivyo isinstance(obj, (list, tuple)):
         # Assume we can create an object of this type by passing in a
         # generator (which is not true for namedtuples, handled
         # above).
         return type(obj)(_astuple_inner(v, tuple_factory) for v in obj)
-    elif isinstance(obj, dict):
+    lasivyo isinstance(obj, dict):
         return type(obj)((_astuple_inner(k, tuple_factory), _astuple_inner(v, tuple_factory))
                           for k, v in obj.items())
     else:
@@ -1151,7 +1151,7 @@ def make_dataclass(cls_name, fields, *, bases=(), namespace=None, init=True,
                    frozen=False):
     """Return a new dynamically created dataclass.
 
-    The dataclass name will be 'cls_name'.  'fields' is an iterable
+    The datakundi name will be 'cls_name'.  'fields' is an iterable
     of either (name), (name, type) or (name, type, Field) objects. If type is
     omitted, use the string 'typing.Any'.  Field objects are created by
     the equivalent of calling 'field(name, type [, Field-info])'.
@@ -1161,7 +1161,7 @@ def make_dataclass(cls_name, fields, *, bases=(), namespace=None, init=True,
     is equivalent to:
 
       @dataclass
-      class C(Base):
+      kundi C(Base):
           x: 'typing.Any'
           y: int
           z: int = field(init=False)
@@ -1186,9 +1186,9 @@ def make_dataclass(cls_name, fields, *, bases=(), namespace=None, init=True,
         if isinstance(item, str):
             name = item
             tp = 'typing.Any'
-        elif len(item) == 2:
+        lasivyo len(item) == 2:
             name, tp, = item
-        elif len(item) == 3:
+        lasivyo len(item) == 3:
             name, tp, spec = item
             namespace[name] = spec
         else:
@@ -1218,7 +1218,7 @@ def replace(*args, **changes):
     This is especially useful for frozen classes.  Example usage:
 
       @dataclass(frozen=True)
-      class C:
+      kundi C:
           x: int
           y: int
 
@@ -1230,7 +1230,7 @@ def replace(*args, **changes):
         raise TypeError(f'replace() takes 1 positional argument but {len(args)} were given')
     if args:
         obj, = args
-    elif 'obj' in changes:
+    lasivyo 'obj' in changes:
         obj = changes.pop('obj')
         agiza warnings
         warnings.warn("Passing 'obj' as keyword argument is deprecated",
@@ -1242,7 +1242,7 @@ def replace(*args, **changes):
     # new dict, even if called with 'replace(obj, **my_changes)'.
 
     if not _is_dataclass_instance(obj):
-        raise TypeError("replace() should be called on dataclass instances")
+        raise TypeError("replace() should be called on datakundi instances")
 
     # It's an error to have init=False fields in 'changes'.
     # If a field is not in 'changes', read its value kutoka the provided obj.

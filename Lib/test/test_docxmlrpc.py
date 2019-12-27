@@ -5,21 +5,21 @@ agiza sys
 agiza threading
 agiza unittest
 
-def make_request_and_skipIf(condition, reason):
+eleza make_request_and_skipIf(condition, reason):
     # If we skip the test, we have to make a request because
     # the server created in setUp blocks expecting one to come in.
-    if not condition:
-        return lambda func: func
-    def decorator(func):
-        def make_request_and_skip(self):
+    ikiwa not condition:
+        rudisha lambda func: func
+    eleza decorator(func):
+        eleza make_request_and_skip(self):
             self.client.request("GET", "/")
             self.client.getresponse()
             raise unittest.SkipTest(reason)
-        return make_request_and_skip
-    return decorator
+        rudisha make_request_and_skip
+    rudisha decorator
 
 
-def make_server():
+eleza make_server():
     serv = DocXMLRPCServer(("localhost", 0), logRequests=False)
 
     try:
@@ -31,41 +31,41 @@ def make_server():
             "can be used by POSTing to /RPC2. Try self.add, too.")
 
         # Create and register classes and functions
-        class TestClass(object):
-            def test_method(self, arg):
+        kundi TestClass(object):
+            eleza test_method(self, arg):
                 """Test method's docs. This method truly does very little."""
                 self.arg = arg
 
         serv.register_introspection_functions()
         serv.register_instance(TestClass())
 
-        def add(x, y):
+        eleza add(x, y):
             """Add two instances together. This follows PEP008, but has nothing
             to do with RFC1952. Case should matter: pEp008 and rFC1952.  Things
             that start with http and ftp should be auto-linked, too:
             http://google.com.
             """
-            return x + y
+            rudisha x + y
 
-        def annotation(x: int):
+        eleza annotation(x: int):
             """ Use function annotations. """
-            return x
+            rudisha x
 
-        class ClassWithAnnotation:
-            def method_annotation(self, x: bytes):
-                return x.decode()
+        kundi ClassWithAnnotation:
+            eleza method_annotation(self, x: bytes):
+                rudisha x.decode()
 
         serv.register_function(add)
         serv.register_function(lambda x, y: x-y)
         serv.register_function(annotation)
         serv.register_instance(ClassWithAnnotation())
-        return serv
+        rudisha serv
     except:
         serv.server_close()
         raise
 
-class DocXMLRPCHTTPGETServer(unittest.TestCase):
-    def setUp(self):
+kundi DocXMLRPCHTTPGETServer(unittest.TestCase):
+    eleza setUp(self):
         # Enable server feedback
         DocXMLRPCServer._send_traceback_header = True
 
@@ -76,7 +76,7 @@ class DocXMLRPCHTTPGETServer(unittest.TestCase):
         PORT = self.serv.server_address[1]
         self.client = http.client.HTTPConnection("localhost:%d" % PORT)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.client.close()
 
         # Disable server feedback
@@ -85,17 +85,17 @@ class DocXMLRPCHTTPGETServer(unittest.TestCase):
         self.thread.join()
         self.serv.server_close()
 
-    def test_valid_get_response(self):
+    eleza test_valid_get_response(self):
         self.client.request("GET", "/")
         response = self.client.getresponse()
 
         self.assertEqual(response.status, 200)
         self.assertEqual(response.getheader("Content-type"), "text/html")
 
-        # Server raises an exception if we don't start to read the data
+        # Server raises an exception ikiwa we don't start to read the data
         response.read()
 
-    def test_invalid_get_response(self):
+    eleza test_invalid_get_response(self):
         self.client.request("GET", "/spam")
         response = self.client.getresponse()
 
@@ -104,7 +104,7 @@ class DocXMLRPCHTTPGETServer(unittest.TestCase):
 
         response.read()
 
-    def test_lambda(self):
+    eleza test_lambda(self):
         """Test that lambda functionality stays the same.  The output produced
         currently is, I suspect invalid because of the unencoded brackets in the
         HTML, "<lambda>".
@@ -120,7 +120,7 @@ class DocXMLRPCHTTPGETServer(unittest.TestCase):
 
     @make_request_and_skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
-    def test_autolinking(self):
+    eleza test_autolinking(self):
         """Test that the server correctly automatically wraps references to
         PEPS and RFCs with links, and that it linkifies text starting with
         http or ftp protocol prefixes.
@@ -144,7 +144,7 @@ class DocXMLRPCHTTPGETServer(unittest.TestCase):
 
     @make_request_and_skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
-    def test_system_methods(self):
+    eleza test_system_methods(self):
         """Test the presence of three consecutive system.* methods.
 
         This also tests their use of parameter type recognition and the
@@ -171,7 +171,7 @@ class DocXMLRPCHTTPGETServer(unittest.TestCase):
              b'<br>\nThis&nbsp;server&nbsp;does&nbsp;NOT&nbsp;support&nbsp;system'
              b'.methodSignature.</tt></dd></dl>'), response)
 
-    def test_autolink_dotted_methods(self):
+    eleza test_autolink_dotted_methods(self):
         """Test that selfdot values are made strong automatically in the
         documentation."""
         self.client.request("GET", "/")
@@ -180,11 +180,11 @@ class DocXMLRPCHTTPGETServer(unittest.TestCase):
         self.assertIn(b"""Try&nbsp;self.<strong>add</strong>,&nbsp;too.""",
                       response.read())
 
-    def test_annotations(self):
+    eleza test_annotations(self):
         """ Test that annotations works as expected """
         self.client.request("GET", "/")
         response = self.client.getresponse()
-        docstring = (b'' if sys.flags.optimize >= 2 else
+        docstring = (b'' ikiwa sys.flags.optimize >= 2 else
                      b'<dd><tt>Use&nbsp;function&nbsp;annotations.</tt></dd>')
         self.assertIn(
             (b'<dl><dt><a name="-annotation"><strong>annotation</strong></a>'
@@ -193,7 +193,7 @@ class DocXMLRPCHTTPGETServer(unittest.TestCase):
              b'method_annotation</strong></a>(x: bytes)</dt></dl>'),
             response.read())
 
-    def test_server_title_escape(self):
+    eleza test_server_title_escape(self):
         # bpo-38243: Ensure that the server title and documentation
         # are escaped for HTML.
         self.serv.set_server_title('test_title<script>')
@@ -209,5 +209,5 @@ class DocXMLRPCHTTPGETServer(unittest.TestCase):
         self.assertEqual('<p><tt>test_documentation&lt;script&gt;</tt></p>', documentation)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

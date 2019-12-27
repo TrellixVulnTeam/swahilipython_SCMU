@@ -52,17 +52,17 @@ understand and to work with, at the cost of ignoring some aspects of reality.
 
 For applications requiring aware objects, :class:`.datetime` and :class:`.time`
 objects have an optional time zone information attribute, :attr:`!tzinfo`, that
-can be set to an instance of a subclass of the abstract :class:`tzinfo` class.
-These :class:`tzinfo` objects capture information about the offset from UTC
+can be set to an instance of a subkundi of the abstract :class:`tzinfo` class.
+These :class:`tzinfo` objects capture information about the offset kutoka UTC
 time, the time zone name, and whether daylight saving time is in effect.
 
 Only one concrete :class:`tzinfo` class, the :class:`timezone` class, is
-supplied by the :mod:`datetime` module. The :class:`timezone` class can
-represent simple timezones with fixed offsets from UTC, such as UTC itself or
+supplied by the :mod:`datetime` module. The :class:`timezone` kundi can
+represent simple timezones with fixed offsets kutoka UTC, such as UTC itself or
 North American EST and EDT timezones. Supporting timezones at deeper levels of
 detail is up to the application. The rules for time adjustment across the
 world are more political than rational, change frequently, and there is no
-standard suitable for every application aside from UTC.
+standard suitable for every application aside kutoka UTC.
 
 Constants
 ---------
@@ -118,7 +118,7 @@ Available Types
 .. class:: tzinfo
    :noindex:
 
-   An abstract base class for time zone information objects. These are used by the
+   An abstract base kundi for time zone information objects. These are used by the
    :class:`.datetime` and :class:`.time` classes to provide a customizable notion of
    time adjustment (for example, to account for time zone and/or daylight saving
    time).
@@ -126,14 +126,14 @@ Available Types
 .. class:: timezone
    :noindex:
 
-   A class that implements the :class:`tzinfo` abstract base class as a
-   fixed offset from the UTC.
+   A kundi that implements the :class:`tzinfo` abstract base kundi as a
+   fixed offset kutoka the UTC.
 
    .. versionadded:: 3.2
 
 Objects of these types are immutable.
 
-Subclass relationships::
+Subkundi relationships::
 
    object
        timedelta
@@ -210,7 +210,7 @@ dates or times.
    *days*, *seconds* and *microseconds* are "merged" and normalized into those
    three resulting attributes::
 
-       >>> from datetime import timedelta
+       >>> kutoka datetime agiza timedelta
        >>> delta = timedelta(
        ...     days=50,
        ...     seconds=27,
@@ -225,7 +225,7 @@ dates or times.
        datetime.timedelta(days=64, seconds=29156, microseconds=10)
 
    If any argument is a float and there are fractional microseconds,
-   the fractional microseconds left over from all arguments are
+   the fractional microseconds left over kutoka all arguments are
    combined and their sum is rounded to the nearest microsecond using
    round-half-to-even tiebreaker. If no argument is a float, the
    conversion and normalization processes are exact (no information is
@@ -237,7 +237,7 @@ dates or times.
    Note that normalization of negative values may be surprising at first. For
    example::
 
-      >>> from datetime import timedelta
+      >>> kutoka datetime agiza timedelta
       >>> d = timedelta(microseconds=-1)
       >>> (d.days, d.seconds, d.microseconds)
       (-1, 86399, 999999)
@@ -387,7 +387,7 @@ Comparisons of :class:`timedelta` objects are supported, with some caveats.
 The comparisons ``==`` or ``!=`` *always* return a :class:`bool`, no matter
 the type of the compared object::
 
-    >>> from datetime import timedelta
+    >>> kutoka datetime agiza timedelta
     >>> delta1 = timedelta(seconds=57)
     >>> delta2 = timedelta(hours=25, seconds=2)
     >>> delta2 != delta1
@@ -428,7 +428,7 @@ Examples of usage: :class:`timedelta`
 An additional example of normalization::
 
     >>> # Components of another_year add up to exactly 365 days
-    >>> from datetime import timedelta
+    >>> kutoka datetime agiza timedelta
     >>> year = timedelta(days=365)
     >>> another_year = timedelta(weeks=40, days=84, hours=23,
     ...                          minutes=50, seconds=600)
@@ -439,7 +439,7 @@ An additional example of normalization::
 
 Examples of :class:`timedelta` arithmetic::
 
-    >>> from datetime import timedelta
+    >>> kutoka datetime agiza timedelta
     >>> year = timedelta(days=365)
     >>> ten_years = 10 * year
     >>> ten_years
@@ -477,15 +477,15 @@ called day number 2, and so on. [#]_
    If an argument outside those ranges is given, :exc:`ValueError` is raised.
 
 
-Other constructors, all class methods:
+Other constructors, all kundi methods:
 
 .. classmethod:: date.today()
 
    Return the current local date.
 
-   This is equivalent to ``date.fromtimestamp(time.time())``.
+   This is equivalent to ``date.kutokatimestamp(time.time())``.
 
-.. classmethod:: date.fromtimestamp(timestamp)
+.. classmethod:: date.kutokatimestamp(timestamp)
 
    Return the local date corresponding to the POSIX timestamp, such as is
    returned by :func:`time.time`.
@@ -493,9 +493,9 @@ Other constructors, all class methods:
    This may raise :exc:`OverflowError`, if the timestamp is out
    of the range of values supported by the platform C :c:func:`localtime`
    function, and :exc:`OSError` on :c:func:`localtime` failure.
-   It's common for this to be restricted to years from 1970 through 2038. Note
+   It's common for this to be restricted to years kutoka 1970 through 2038. Note
    that on non-POSIX systems that include leap seconds in their notion of a
-   timestamp, leap seconds are ignored by :meth:`fromtimestamp`.
+   timestamp, leap seconds are ignored by :meth:`kutokatimestamp`.
 
    .. versionchanged:: 3.3
       Raise :exc:`OverflowError` instead of :exc:`ValueError` if the timestamp
@@ -504,23 +504,23 @@ Other constructors, all class methods:
       :exc:`ValueError` on :c:func:`localtime` failure.
 
 
-.. classmethod:: date.fromordinal(ordinal)
+.. classmethod:: date.kutokaordinal(ordinal)
 
    Return the date corresponding to the proleptic Gregorian ordinal, where
    January 1 of year 1 has ordinal 1.
 
    :exc:`ValueError` is raised unless ``1 <= ordinal <=
    date.max.toordinal()``. For any date *d*,
-   ``date.fromordinal(d.toordinal()) == d``.
+   ``date.kutokaordinal(d.toordinal()) == d``.
 
 
-.. classmethod:: date.fromisoformat(date_string)
+.. classmethod:: date.kutokaisoformat(date_string)
 
    Return a :class:`date` corresponding to a *date_string* given in the format
    ``YYYY-MM-DD``::
 
-      >>> from datetime import date
-      >>> date.fromisoformat('2019-12-04')
+      >>> kutoka datetime agiza date
+      >>> date.kutokaisoformat('2019-12-04')
       datetime.date(2019, 12, 4)
 
    This is the inverse of :meth:`date.isoformat`. It only supports the format
@@ -529,7 +529,7 @@ Other constructors, all class methods:
    .. versionadded:: 3.7
 
 
-.. classmethod:: date.fromisocalendar(year, week, day)
+.. classmethod:: date.kutokaisocalendar(year, week, day)
 
    Return a :class:`date` corresponding to the ISO calendar date specified by
    year, week and day. This is the inverse of the function :meth:`date.isocalendar`.
@@ -578,7 +578,7 @@ Supported operations:
 | Operation                     | Result                                       |
 +===============================+==============================================+
 | ``date2 = date1 + timedelta`` | *date2* is ``timedelta.days`` days removed   |
-|                               | from *date1*. (1)                            |
+|                               | kutoka *date1*. (1)                            |
 +-------------------------------+----------------------------------------------+
 | ``date2 = date1 - timedelta`` | Computes *date2* such that ``date2 +         |
 |                               | timedelta == date1``. (2)                    |
@@ -627,7 +627,7 @@ Instance methods:
 
    Example::
 
-       >>> from datetime import date
+       >>> kutoka datetime agiza date
        >>> d = date(2002, 12, 31)
        >>> d.replace(day=26)
        datetime.date(2002, 12, 26)
@@ -651,7 +651,7 @@ Instance methods:
 
    Return the proleptic Gregorian ordinal of the date, where January 1 of year 1
    has ordinal 1. For any :class:`date` object *d*,
-   ``date.fromordinal(d.toordinal()) == d``.
+   ``date.kutokaordinal(d.toordinal()) == d``.
 
 
 .. method:: date.weekday()
@@ -682,7 +682,7 @@ Instance methods:
    For example, 2004 begins on a Thursday, so the first week of ISO year 2004
    begins on Monday, 29 Dec 2003 and ends on Sunday, 4 Jan 2004::
 
-       >>> from datetime import date
+       >>> kutoka datetime agiza date
        >>> date(2003, 12, 29).isocalendar()
        (2004, 1, 1)
        >>> date(2004, 1, 4).isocalendar()
@@ -692,11 +692,11 @@ Instance methods:
 
    Return a string representing the date in ISO 8601 format, ``YYYY-MM-DD``::
 
-       >>> from datetime import date
+       >>> kutoka datetime agiza date
        >>> date(2002, 12, 4).isoformat()
        '2002-12-04'
 
-   This is the inverse of :meth:`date.fromisoformat`.
+   This is the inverse of :meth:`date.kutokaisoformat`.
 
 .. method:: date.__str__()
 
@@ -707,7 +707,7 @@ Instance methods:
 
    Return a string representing the date::
 
-       >>> from datetime import date
+       >>> kutoka datetime agiza date
        >>> date(2002, 12, 4).ctime()
        'Wed Dec  4 00:00:00 2002'
 
@@ -741,12 +741,12 @@ Examples of Usage: :class:`date`
 
 Example of counting days to an event::
 
-    >>> import time
-    >>> from datetime import date
+    >>> agiza time
+    >>> kutoka datetime agiza date
     >>> today = date.today()
     >>> today
     datetime.date(2007, 12, 5)
-    >>> today == date.fromtimestamp(time.time())
+    >>> today == date.kutokatimestamp(time.time())
     True
     >>> my_birthday = date(today.year, 6, 24)
     >>> if my_birthday < today:
@@ -761,8 +761,8 @@ More examples of working with :class:`date`:
 
 .. doctest::
 
-    >>> from datetime import date
-    >>> d = date.fromordinal(730920) # 730920th day after 1. 1. 0001
+    >>> kutoka datetime agiza date
+    >>> d = date.kutokaordinal(730920) # 730920th day after 1. 1. 0001
     >>> d
     datetime.date(2002, 3, 11)
 
@@ -809,7 +809,7 @@ More examples of working with :class:`date`:
 --------------------------
 
 A :class:`.datetime` object is a single object containing all the information
-from a :class:`date` object and a :class:`.time` object.
+kutoka a :class:`date` object and a :class:`.time` object.
 
 Like a :class:`date` object, :class:`.datetime` assumes the current Gregorian
 calendar extended in both directions; like a :class:`.time` object,
@@ -837,7 +837,7 @@ Constructor:
    .. versionadded:: 3.6
       Added the ``fold`` argument.
 
-Other constructors, all class methods:
+Other constructors, all kundi methods:
 
 .. classmethod:: datetime.today()
 
@@ -845,9 +845,9 @@ Other constructors, all class methods:
 
    Equivalent to::
 
-     datetime.fromtimestamp(time.time())
+     datetime.kutokatimestamp(time.time())
 
-   See also :meth:`now`, :meth:`fromtimestamp`.
+   See also :meth:`now`, :meth:`kutokatimestamp`.
 
    This method is functionally equivalent to :meth:`now`, but without a
    ``tz`` parameter.
@@ -858,7 +858,7 @@ Other constructors, all class methods:
 
    If optional argument *tz* is ``None``
    or not specified, this is like :meth:`today`, but, if possible, supplies more
-   precision than can be gotten from going through a :func:`time.time` timestamp
+   precision than can be gotten kutoka going through a :func:`time.time` timestamp
    (for example, this may be possible on platforms supplying the C
    :c:func:`gettimeofday` function).
 
@@ -884,7 +884,7 @@ Other constructors, all class methods:
       current time in UTC  by calling ``datetime.now(timezone.utc)``.
 
 
-.. classmethod:: datetime.fromtimestamp(timestamp, tz=None)
+.. classmethod:: datetime.kutokatimestamp(timestamp, tz=None)
 
    Return the local date and time corresponding to the POSIX timestamp, such as is
    returned by :func:`time.time`. If optional argument *tz* is ``None`` or not
@@ -894,16 +894,16 @@ Other constructors, all class methods:
    If *tz* is not ``None``, it must be an instance of a :class:`tzinfo` subclass, and the
    timestamp is converted to *tz*’s time zone.
 
-   :meth:`fromtimestamp` may raise :exc:`OverflowError`, if the timestamp is out of
+   :meth:`kutokatimestamp` may raise :exc:`OverflowError`, if the timestamp is out of
    the range of values supported by the platform C :c:func:`localtime` or
    :c:func:`gmtime` functions, and :exc:`OSError` on :c:func:`localtime` or
    :c:func:`gmtime` failure.
    It's common for this to be restricted to years in
    1970 through 2038. Note that on non-POSIX systems that include leap seconds in
-   their notion of a timestamp, leap seconds are ignored by :meth:`fromtimestamp`,
+   their notion of a timestamp, leap seconds are ignored by :meth:`kutokatimestamp`,
    and then it's possible to have two timestamps differing by a second that yield
    identical :class:`.datetime` objects. This method is preferred over
-   :meth:`utcfromtimestamp`.
+   :meth:`utckutokatimestamp`.
 
    .. versionchanged:: 3.3
       Raise :exc:`OverflowError` instead of :exc:`ValueError` if the timestamp
@@ -913,9 +913,9 @@ Other constructors, all class methods:
       failure.
 
    .. versionchanged:: 3.6
-      :meth:`fromtimestamp` may return instances with :attr:`.fold` set to 1.
+      :meth:`kutokatimestamp` may return instances with :attr:`.fold` set to 1.
 
-.. classmethod:: datetime.utcfromtimestamp(timestamp)
+.. classmethod:: datetime.utckutokatimestamp(timestamp)
 
    Return the UTC :class:`.datetime` corresponding to the POSIX timestamp, with
    :attr:`.tzinfo` ``None``.  (The resulting object is naive.)
@@ -925,9 +925,9 @@ Other constructors, all class methods:
    and :exc:`OSError` on :c:func:`gmtime` failure.
    It's common for this to be restricted to years in 1970 through 2038.
 
-   To get an aware :class:`.datetime` object, call :meth:`fromtimestamp`::
+   To get an aware :class:`.datetime` object, call :meth:`kutokatimestamp`::
 
-     datetime.fromtimestamp(timestamp, timezone.utc)
+     datetime.kutokatimestamp(timestamp, timezone.utc)
 
    On the POSIX compliant platforms, it is equivalent to the following
    expression::
@@ -943,7 +943,7 @@ Other constructors, all class methods:
       as local times, it is preferred to use aware datetimes to represent times
       in UTC. As such, the recommended way to create an object representing a
       specific timestamp in UTC  by calling
-      ``datetime.fromtimestamp(timestamp, tz=timezone.utc)``.
+      ``datetime.kutokatimestamp(timestamp, tz=timezone.utc)``.
 
    .. versionchanged:: 3.3
       Raise :exc:`OverflowError` instead of :exc:`ValueError` if the timestamp
@@ -952,7 +952,7 @@ Other constructors, all class methods:
       :exc:`ValueError` on :c:func:`gmtime` failure.
 
 
-.. classmethod:: datetime.fromordinal(ordinal)
+.. classmethod:: datetime.kutokaordinal(ordinal)
 
    Return the :class:`.datetime` corresponding to the proleptic Gregorian ordinal,
    where January 1 of year 1 has ordinal 1. :exc:`ValueError` is raised unless ``1
@@ -978,7 +978,7 @@ Other constructors, all class methods:
       Added the *tzinfo* argument.
 
 
-.. classmethod:: datetime.fromisoformat(date_string)
+.. classmethod:: datetime.kutokaisoformat(date_string)
 
    Return a :class:`.datetime` corresponding to a *date_string* in one of the
    formats emitted by :meth:`date.isoformat` and :meth:`datetime.isoformat`.
@@ -1002,22 +1002,22 @@ Other constructors, all class methods:
 
    Examples::
 
-       >>> from datetime import datetime
-       >>> datetime.fromisoformat('2011-11-04')
+       >>> kutoka datetime agiza datetime
+       >>> datetime.kutokaisoformat('2011-11-04')
        datetime.datetime(2011, 11, 4, 0, 0)
-       >>> datetime.fromisoformat('2011-11-04T00:05:23')
+       >>> datetime.kutokaisoformat('2011-11-04T00:05:23')
        datetime.datetime(2011, 11, 4, 0, 5, 23)
-       >>> datetime.fromisoformat('2011-11-04 00:05:23.283')
+       >>> datetime.kutokaisoformat('2011-11-04 00:05:23.283')
        datetime.datetime(2011, 11, 4, 0, 5, 23, 283000)
-       >>> datetime.fromisoformat('2011-11-04 00:05:23.283+00:00')
+       >>> datetime.kutokaisoformat('2011-11-04 00:05:23.283+00:00')
        datetime.datetime(2011, 11, 4, 0, 5, 23, 283000, tzinfo=datetime.timezone.utc)
-       >>> datetime.fromisoformat('2011-11-04T00:05:23+04:00')   # doctest: +NORMALIZE_WHITESPACE
+       >>> datetime.kutokaisoformat('2011-11-04T00:05:23+04:00')   # doctest: +NORMALIZE_WHITESPACE
        datetime.datetime(2011, 11, 4, 0, 5, 23,
            tzinfo=datetime.timezone(datetime.timedelta(seconds=14400)))
 
    .. versionadded:: 3.7
 
-.. classmethod:: datetime.fromisocalendar(year, week, day)
+.. classmethod:: datetime.kutokaisocalendar(year, week, day)
 
    Return a :class:`.datetime` corresponding to the ISO calendar date specified
    by year, week and day. The non-date components of the datetime are populated
@@ -1131,7 +1131,7 @@ Supported operations:
 +---------------------------------------+--------------------------------+
 
 (1)
-   datetime2 is a duration of timedelta removed from datetime1, moving forward in
+   datetime2 is a duration of timedelta removed kutoka datetime1, moving forward in
    time if ``timedelta.days`` > 0, or backward if ``timedelta.days`` < 0. The
    result has the same :attr:`~.datetime.tzinfo` attribute as the input datetime, and
    datetime2 - datetime1 == timedelta after. :exc:`OverflowError` is raised if
@@ -1145,7 +1145,7 @@ Supported operations:
    datetime, and no time zone adjustments are done even if the input is aware.
 
 (3)
-   Subtraction of a :class:`.datetime` from a :class:`.datetime` is defined only if
+   Subtraction of a :class:`.datetime` kutoka a :class:`.datetime` is defined only if
    both operands are naive, or if both are aware. If one is aware and the other is
    naive, :exc:`TypeError` is raised.
 
@@ -1171,7 +1171,7 @@ Supported operations:
    common :attr:`~.datetime.tzinfo` attribute is ignored and the base datetimes are
    compared. If both comparands are aware and have different :attr:`~.datetime.tzinfo`
    attributes, the comparands are first adjusted by subtracting their UTC
-   offsets (obtained from ``self.utcoffset()``).
+   offsets (obtained kutoka ``self.utcoffset()``).
 
    .. versionchanged:: 3.3
       Equality comparisons between aware and naive :class:`.datetime`
@@ -1179,7 +1179,7 @@ Supported operations:
 
    .. note::
 
-      In order to stop comparison from falling back to the default scheme of comparing
+      In order to stop comparison kutoka falling back to the default scheme of comparing
       object addresses, datetime comparison normally raises :exc:`TypeError` if the
       other comparand isn't also a :class:`.datetime` object. However,
       ``NotImplemented`` is returned instead if the other comparand has a
@@ -1220,7 +1220,7 @@ Instance methods:
 
    Return a datetime with the same attributes, except for those attributes given
    new values by whichever keyword arguments are specified. Note that
-   ``tzinfo=None`` can be specified to create a naive datetime from an aware
+   ``tzinfo=None`` can be specified to create a naive datetime kutoka an aware
    datetime with no conversion of date and time data.
 
    .. versionadded:: 3.6
@@ -1240,7 +1240,7 @@ Instance methods:
    If called without arguments (or with ``tz=None``) the system local
    timezone is assumed for the target timezone. The ``.tzinfo`` attribute of the converted
    datetime instance will be set to an instance of :class:`timezone`
-   with the zone name and offset obtained from the OS.
+   with the zone name and offset obtained kutoka the OS.
 
    If ``self.tzinfo`` is *tz*, ``self.astimezone(tz)`` is equal to *self*:  no
    adjustment of date or time data is performed. Else the result is local
@@ -1250,11 +1250,11 @@ Instance methods:
 
    If you merely want to attach a time zone object *tz* to a datetime *dt* without
    adjustment of date and time data, use ``dt.replace(tzinfo=tz)``. If you
-   merely want to remove the time zone object from an aware datetime *dt* without
+   merely want to remove the time zone object kutoka an aware datetime *dt* without
    conversion of date and time data, use ``dt.replace(tzinfo=None)``.
 
-   Note that the default :meth:`tzinfo.fromutc` method can be overridden in a
-   :class:`tzinfo` subclass to affect the result returned by :meth:`astimezone`.
+   Note that the default :meth:`tzinfo.kutokautc` method can be overridden in a
+   :class:`tzinfo` subkundi to affect the result returned by :meth:`astimezone`.
    Ignoring error cases, :meth:`astimezone` acts like::
 
       def astimezone(self, tz):
@@ -1262,8 +1262,8 @@ Instance methods:
               return self
           # Convert self to UTC, and attach the new time zone object.
           utc = (self - self.utcoffset()).replace(tzinfo=tz)
-          # Convert from UTC to tz's local time.
-          return tz.fromutc(utc)
+          # Convert kutoka UTC to tz's local time.
+          return tz.kutokautc(utc)
 
    .. versionchanged:: 3.3
       *tz* now can be omitted.
@@ -1336,7 +1336,7 @@ Instance methods:
 
       Because naive ``datetime`` objects are treated by many ``datetime`` methods
       as local times, it is preferred to use aware datetimes to represent times
-      in UTC; as a result, using ``utcfromtimetuple`` may give misleading
+      in UTC; as a result, using ``utckutokatimetuple`` may give misleading
       results. If you have a naive ``datetime`` representing UTC, use
       ``datetime.replace(tzinfo=timezone.utc)`` to make it aware, at which point
       you can use :meth:`.datetime.timetuple`.
@@ -1372,7 +1372,7 @@ Instance methods:
 
    .. note::
 
-      There is no method to obtain the POSIX timestamp directly from a
+      There is no method to obtain the POSIX timestamp directly kutoka a
       naive :class:`.datetime` instance representing UTC time. If your
       application uses this convention and your system timezone is not
       set to UTC, you can obtain the POSIX timestamp by supplying
@@ -1419,7 +1419,7 @@ Instance methods:
 
    Examples::
 
-       >>> from datetime import datetime, timezone
+       >>> kutoka datetime agiza datetime, timezone
        >>> datetime(2019, 5, 18, 15, 17, 8, 132263).isoformat()
        '2019-05-18T15:17:08.132263'
        >>> datetime(2019, 5, 18, 15, 17, tzinfo=timezone.utc).isoformat()
@@ -1428,8 +1428,8 @@ Instance methods:
    The optional argument *sep* (default ``'T'``) is a one-character separator,
    placed between the date and time portions of the result. For example::
 
-      >>> from datetime import tzinfo, timedelta, datetime
-      >>> class TZ(tzinfo):
+      >>> kutoka datetime agiza tzinfo, timedelta, datetime
+      >>> kundi TZ(tzinfo):
       ...     """A time zone with an arbitrary, constant -06:39 offset."""
       ...     def utcoffset(self, dt):
       ...         return timedelta(hours=-6, minutes=-39)
@@ -1460,7 +1460,7 @@ Instance methods:
    :exc:`ValueError` will be raised on an invalid *timespec* argument::
 
 
-      >>> from datetime import datetime
+      >>> kutoka datetime agiza datetime
       >>> datetime.now().isoformat(timespec='minutes')   # doctest: +SKIP
       '2002-12-25T00:00'
       >>> dt = datetime(2015, 1, 1, 12, 30, 59, 0)
@@ -1481,7 +1481,7 @@ Instance methods:
 
    Return a string representing the date and time::
 
-       >>> from datetime import datetime
+       >>> kutoka datetime agiza datetime
        >>> datetime(2002, 12, 4, 20, 30, 40).ctime()
        'Wed Dec  4 20:30:40 2002'
 
@@ -1518,7 +1518,7 @@ Examples of working with :class:`~datetime.datetime` objects:
 
 .. doctest::
 
-    >>> from datetime import datetime, date, time, timezone
+    >>> kutoka datetime agiza datetime, date, time, timezone
 
     >>> # Using datetime.combine()
     >>> d = date(2005, 7, 14)
@@ -1567,13 +1567,13 @@ Examples of working with :class:`~datetime.datetime` objects:
     >>> 'The {1} is {0:%d}, the {2} is {0:%B}, the {3} is {0:%I:%M%p}.'.format(dt, "day", "month", "time")
     'The day is 21, the month is November, the time is 04:30PM.'
 
-The example below defines a :class:`tzinfo` subclass capturing time zone
+The example below defines a :class:`tzinfo` subkundi capturing time zone
 information for Kabul, Afghanistan, which used +4 UTC until 1945
 and then +4:30 UTC thereafter::
 
-   from datetime import timedelta, datetime, tzinfo, timezone
+   kutoka datetime agiza timedelta, datetime, tzinfo, timezone
 
-   class KabulTz(tzinfo):
+   kundi KabulTz(tzinfo):
        # Kabul used +4 until 1945, when they moved to +4:30
        UTC_MOVE_DATE = datetime(1944, 12, 31, 20, tzinfo=timezone.utc)
 
@@ -1582,24 +1582,24 @@ and then +4:30 UTC thereafter::
                return timedelta(hours=4)
            elif (1945, 1, 1, 0, 0) <= dt.timetuple()[:5] < (1945, 1, 1, 0, 30):
                # An ambiguous ("imaginary") half-hour range representing
-               # a 'fold' in time due to the shift from +4 to +4:30.
+               # a 'fold' in time due to the shift kutoka +4 to +4:30.
                # If dt falls in the imaginary range, use fold to decide how
                # to resolve. See PEP495.
                return timedelta(hours=4, minutes=(30 if dt.fold else 0))
            else:
                return timedelta(hours=4, minutes=30)
 
-       def fromutc(self, dt):
+       def kutokautc(self, dt):
            # Follow same validations as in datetime.tzinfo
            if not isinstance(dt, datetime):
-               raise TypeError("fromutc() requires a datetime argument")
+               raise TypeError("kutokautc() requires a datetime argument")
            if dt.tzinfo is not self:
                raise ValueError("dt.tzinfo is not self")
 
-           # A custom implementation is required for fromutc as
+           # A custom implementation is required for kutokautc as
            # the input to this function is a datetime with utc values
            # but with a tzinfo set to self.
-           # See datetime.astimezone or fromtimestamp.
+           # See datetime.astimezone or kutokatimestamp.
            if dt.replace(tzinfo=timezone.utc) >= self.UTC_MOVE_DATE:
                return dt + timedelta(hours=4, minutes=30)
            else:
@@ -1614,7 +1614,7 @@ and then +4:30 UTC thereafter::
                return "+04:30"
            return "+04"
 
-Usage of ``KabulTz`` from above::
+Usage of ``KabulTz`` kutoka above::
 
    >>> tz1 = KabulTz()
 
@@ -1728,8 +1728,8 @@ If both comparands are aware, and have
 the same :attr:`~time.tzinfo` attribute, the common :attr:`~time.tzinfo` attribute is
 ignored and the base times are compared. If both comparands are aware and
 have different :attr:`~time.tzinfo` attributes, the comparands are first adjusted by
-subtracting their UTC offsets (obtained from ``self.utcoffset()``). In order
-to stop mixed-type comparisons from falling back to the default comparison by
+subtracting their UTC offsets (obtained kutoka ``self.utcoffset()``). In order
+to stop mixed-type comparisons kutoka falling back to the default comparison by
 object address, when a :class:`.time` object is compared to an object of a
 different type, :exc:`TypeError` is raised unless the comparison is ``==`` or
 ``!=``. The latter cases return :const:`False` or :const:`True`, respectively.
@@ -1749,7 +1749,7 @@ In Boolean contexts, a :class:`.time` object is always considered to be true.
 
 Other constructor:
 
-.. classmethod:: time.fromisoformat(time_string)
+.. classmethod:: time.kutokaisoformat(time_string)
 
    Return a :class:`.time` corresponding to a *time_string* in one of the
    formats emitted by :meth:`time.isoformat`. Specifically, this function supports
@@ -1766,12 +1766,12 @@ Other constructor:
 
    Examples::
 
-       >>> from datetime import time
-       >>> time.fromisoformat('04:23:01')
+       >>> kutoka datetime agiza time
+       >>> time.kutokaisoformat('04:23:01')
        datetime.time(4, 23, 1)
-       >>> time.fromisoformat('04:23:01.000384')
+       >>> time.kutokaisoformat('04:23:01.000384')
        datetime.time(4, 23, 1, 384)
-       >>> time.fromisoformat('04:23:01+04:00')
+       >>> time.kutokaisoformat('04:23:01+04:00')
        datetime.time(4, 23, 1, tzinfo=datetime.timezone(datetime.timedelta(seconds=14400)))
 
    .. versionadded:: 3.7
@@ -1784,7 +1784,7 @@ Instance methods:
 
    Return a :class:`.time` with the same value, except for those attributes given
    new values by whichever keyword arguments are specified. Note that
-   ``tzinfo=None`` can be specified to create a naive :class:`.time` from an
+   ``tzinfo=None`` can be specified to create a naive :class:`.time` kutoka an
    aware :class:`.time`, without conversion of the time data.
 
    .. versionadded:: 3.6
@@ -1822,7 +1822,7 @@ Instance methods:
 
    Example::
 
-      >>> from datetime import time
+      >>> kutoka datetime agiza time
       >>> time(hour=12, minute=34, second=56, microsecond=123456).isoformat(timespec='minutes')
       '12:34'
       >>> dt = time(hour=12, minute=34, second=56, microsecond=0)
@@ -1886,8 +1886,8 @@ Examples of Usage: :class:`.time`
 
 Examples of working with a :class:`.time` object::
 
-    >>> from datetime import time, tzinfo, timedelta
-    >>> class TZ1(tzinfo):
+    >>> kutoka datetime agiza time, tzinfo, timedelta
+    >>> kundi TZ1(tzinfo):
     ...     def utcoffset(self, dt):
     ...         return timedelta(hours=1)
     ...     def dst(self, dt):
@@ -1919,39 +1919,39 @@ Examples of working with a :class:`.time` object::
 
 .. class:: tzinfo()
 
-   This is an abstract base class, meaning that this class should not be
-   instantiated directly.  Define a subclass of :class:`tzinfo` to capture
+   This is an abstract base class, meaning that this kundi should not be
+   instantiated directly.  Define a subkundi of :class:`tzinfo` to capture
    information about a particular time zone.
 
-   An instance of (a concrete subclass of) :class:`tzinfo` can be passed to the
+   An instance of (a concrete subkundi of) :class:`tzinfo` can be passed to the
    constructors for :class:`.datetime` and :class:`.time` objects. The latter objects
    view their attributes as being in local time, and the :class:`tzinfo` object
-   supports methods revealing offset of local time from UTC, the name of the time
+   supports methods revealing offset of local time kutoka UTC, the name of the time
    zone, and DST offset, all relative to a date or time object passed to them.
 
    You need to derive a concrete subclass, and (at least)
    supply implementations of the standard :class:`tzinfo` methods needed by the
    :class:`.datetime` methods you use. The :mod:`datetime` module provides
-   :class:`timezone`, a simple concrete subclass of :class:`tzinfo` which can
-   represent timezones with fixed offset from UTC such as UTC itself or North
+   :class:`timezone`, a simple concrete subkundi of :class:`tzinfo` which can
+   represent timezones with fixed offset kutoka UTC such as UTC itself or North
    American EST and EDT.
 
-   Special requirement for pickling:  A :class:`tzinfo` subclass must have an
+   Special requirement for pickling:  A :class:`tzinfo` subkundi must have an
    :meth:`__init__` method that can be called with no arguments, otherwise it can be
    pickled but possibly not unpickled again. This is a technical requirement that
    may be relaxed in the future.
 
-   A concrete subclass of :class:`tzinfo` may need to implement the following
+   A concrete subkundi of :class:`tzinfo` may need to implement the following
    methods. Exactly which methods are needed depends on the uses made of aware
    :mod:`datetime` objects. If in doubt, simply implement all of them.
 
 
 .. method:: tzinfo.utcoffset(dt)
 
-   Return offset of local time from UTC, as a :class:`timedelta` object that is
+   Return offset of local time kutoka UTC, as a :class:`timedelta` object that is
    positive east of UTC. If local time is west of UTC, this should be negative.
 
-   This represents the *total* offset from UTC; for example, if a
+   This represents the *total* offset kutoka UTC; for example, if a
    :class:`tzinfo` object represents both time zone and DST adjustments,
    :meth:`utcoffset` should return their sum. If the UTC offset isn't known,
    return ``None``. Else the value returned must be a :class:`timedelta` object
@@ -1985,10 +1985,10 @@ Examples of working with a :class:`.time` object::
    no need to consult :meth:`dst` unless you're interested in obtaining DST info
    separately. For example, :meth:`datetime.timetuple` calls its :attr:`~.datetime.tzinfo`
    attribute's :meth:`dst` method to determine how the :attr:`tm_isdst` flag
-   should be set, and :meth:`tzinfo.fromutc` calls :meth:`dst` to account for
+   should be set, and :meth:`tzinfo.kutokautc` calls :meth:`dst` to account for
    DST changes when crossing time zones.
 
-   An instance *tz* of a :class:`tzinfo` subclass that models both standard and
+   An instance *tz* of a :class:`tzinfo` subkundi that models both standard and
    daylight times must be consistent in this sense:
 
    ``tz.utcoffset(dt) - tz.dst(dt)``
@@ -1998,9 +1998,9 @@ Examples of working with a :class:`.time` object::
    zone's "standard offset", which should not depend on the date or the time, but
    only on geographic location. The implementation of :meth:`datetime.astimezone`
    relies on this, but cannot detect violations; it's the programmer's
-   responsibility to ensure it. If a :class:`tzinfo` subclass cannot guarantee
+   responsibility to ensure it. If a :class:`tzinfo` subkundi cannot guarantee
    this, it may be able to override the default implementation of
-   :meth:`tzinfo.fromutc` to work correctly with :meth:`astimezone` regardless.
+   :meth:`tzinfo.kutokautc` to work correctly with :meth:`astimezone` regardless.
 
    Most implementations of :meth:`dst` will probably look like one of these two::
 
@@ -2035,7 +2035,7 @@ Examples of working with a :class:`.time` object::
    valid replies. Return ``None`` if a string name isn't known. Note that this is
    a method rather than a fixed string primarily because some :class:`tzinfo`
    subclasses will wish to return different names depending on the specific value
-   of *dt* passed, especially if the :class:`tzinfo` class is accounting for
+   of *dt* passed, especially if the :class:`tzinfo` kundi is accounting for
    daylight time.
 
    The default implementation of :meth:`tzname` raises :exc:`NotImplementedError`.
@@ -2045,10 +2045,10 @@ These methods are called by a :class:`.datetime` or :class:`.time` object, in
 response to their methods of the same names. A :class:`.datetime` object passes
 itself as the argument, and a :class:`.time` object passes ``None`` as the
 argument. A :class:`tzinfo` subclass's methods should therefore be prepared to
-accept a *dt* argument of ``None``, or of class :class:`.datetime`.
+accept a *dt* argument of ``None``, or of kundi :class:`.datetime`.
 
-When ``None`` is passed, it's up to the class designer to decide the best
-response. For example, returning ``None`` is appropriate if the class wishes to
+When ``None`` is passed, it's up to the kundi designer to decide the best
+response. For example, returning ``None`` is appropriate if the kundi wishes to
 say that time objects don't participate in the :class:`tzinfo` protocols. It
 may be more useful for ``utcoffset(None)`` to return the standard UTC offset, as
 there is no other convention for discovering the standard offset.
@@ -2059,32 +2059,32 @@ rely on this, unless user code calls :class:`tzinfo` methods directly. The
 intent is that the :class:`tzinfo` methods interpret *dt* as being in local
 time, and not need worry about objects in other timezones.
 
-There is one more :class:`tzinfo` method that a subclass may wish to override:
+There is one more :class:`tzinfo` method that a subkundi may wish to override:
 
 
-.. method:: tzinfo.fromutc(dt)
+.. method:: tzinfo.kutokautc(dt)
 
-   This is called from the default :class:`datetime.astimezone()`
-   implementation. When called from that, ``dt.tzinfo`` is *self*, and *dt*'s
+   This is called kutoka the default :class:`datetime.astimezone()`
+   implementation. When called kutoka that, ``dt.tzinfo`` is *self*, and *dt*'s
    date and time data are to be viewed as expressing a UTC time. The purpose
-   of :meth:`fromutc` is to adjust the date and time data, returning an
+   of :meth:`kutokautc` is to adjust the date and time data, returning an
    equivalent datetime in *self*'s local time.
 
    Most :class:`tzinfo` subclasses should be able to inherit the default
-   :meth:`fromutc` implementation without problems. It's strong enough to handle
+   :meth:`kutokautc` implementation without problems. It's strong enough to handle
    fixed-offset time zones, and time zones accounting for both standard and
    daylight time, and the latter even if the DST transition times differ in
-   different years. An example of a time zone the default :meth:`fromutc`
+   different years. An example of a time zone the default :meth:`kutokautc`
    implementation may not handle correctly in all cases is one where the standard
-   offset (from UTC) depends on the specific date and time passed, which can happen
+   offset (kutoka UTC) depends on the specific date and time passed, which can happen
    for political reasons. The default implementations of :meth:`astimezone` and
-   :meth:`fromutc` may not produce the result you want if the result is one of the
+   :meth:`kutokautc` may not produce the result you want if the result is one of the
    hours straddling the moment the standard offset changes.
 
-   Skipping code for error cases, the default :meth:`fromutc` implementation acts
+   Skipping code for error cases, the default :meth:`kutokautc` implementation acts
    like::
 
-      def fromutc(self, dt):
+      def kutokautc(self, dt):
           # raise ValueError error if dt.tzinfo is not self
           dtoff = dt.utcoffset()
           dtdst = dt.dst()
@@ -2106,7 +2106,7 @@ In the following :download:`tzinfo_examples.py
 .. literalinclude:: ../includes/tzinfo_examples.py
 
 Note that there are unavoidable subtleties twice per year in a :class:`tzinfo`
-subclass accounting for both standard and daylight time, at the DST transition
+subkundi accounting for both standard and daylight time, at the DST transition
 points. For concreteness, consider US Eastern (UTC -0500), where EDT begins the
 minute after 1:59 (EST) on the second Sunday in March, and ends the minute after
 1:59 (EDT) on the first Sunday in November::
@@ -2119,13 +2119,13 @@ minute after 1:59 (EST) on the second Sunday in March, and ends the minute after
 
      end  23:MM  0:MM  1:MM  1:MM  2:MM  3:MM
 
-When DST starts (the "start" line), the local wall clock leaps from 1:59 to
+When DST starts (the "start" line), the local wall clock leaps kutoka 1:59 to
 3:00. A wall time of the form 2:MM doesn't really make sense on that day, so
 ``astimezone(Eastern)`` won't deliver a result with ``hour == 2`` on the day DST
 begins. For example, at the Spring forward transition of 2016, we get::
 
-    >>> from datetime import datetime, timezone
-    >>> from tzinfo_examples import HOUR, Eastern
+    >>> kutoka datetime agiza datetime, timezone
+    >>> kutoka tzinfo_examples agiza HOUR, Eastern
     >>> u0 = datetime(2016, 3, 13, 5, tzinfo=timezone.utc)
     >>> for i in range(4):
     ...     u = u0 + i*HOUR
@@ -2141,7 +2141,7 @@ begins. For example, at the Spring forward transition of 2016, we get::
 When DST ends (the "end" line), there's a potentially worse problem: there's an
 hour that can't be spelled unambiguously in local wall time: the last hour of
 daylight time. In Eastern, that's times of the form 5:MM UTC on the day
-daylight time ends. The local wall clock leaps from 1:59 (daylight time) back
+daylight time ends. The local wall clock leaps kutoka 1:59 (daylight time) back
 to 1:00 (standard time) again. Local times of the form 1:MM are ambiguous.
 :meth:`astimezone` mimics the local clock's behavior by mapping two adjacent UTC
 hours into the same local hour then. In the Eastern example, UTC times of the
@@ -2166,14 +2166,14 @@ Note that the :class:`.datetime` instances that differ only by the value of the
 Applications that can't bear wall-time ambiguities should explicitly check the
 value of the :attr:`~datetime.fold` attribute or avoid using hybrid
 :class:`tzinfo` subclasses; there are no ambiguities when using :class:`timezone`,
-or any other fixed-offset :class:`tzinfo` subclass (such as a class representing
+or any other fixed-offset :class:`tzinfo` subkundi (such as a kundi representing
 only EST (fixed offset -5 hours), or only EDT (fixed offset -4 hours)).
 
 .. seealso::
 
    `dateutil.tz <https://dateutil.readthedocs.io/en/stable/tz.html>`_
-      The :mod:`datetime` module has a basic :class:`timezone` class (for
-      handling arbitrary fixed offsets from UTC) and its :attr:`timezone.utc`
+      The :mod:`datetime` module has a basic :class:`timezone` kundi (for
+      handling arbitrary fixed offsets kutoka UTC) and its :attr:`timezone.utc`
       attribute (a UTC timezone instance).
 
       *dateutil.tz* library brings the *IANA timezone database*
@@ -2193,11 +2193,11 @@ only EST (fixed offset -5 hours), or only EDT (fixed offset -4 hours)).
 :class:`timezone` Objects
 --------------------------
 
-The :class:`timezone` class is a subclass of :class:`tzinfo`, each
-instance of which represents a timezone defined by a fixed offset from
+The :class:`timezone` kundi is a subkundi of :class:`tzinfo`, each
+instance of which represents a timezone defined by a fixed offset kutoka
 UTC.
 
-Objects of this class cannot be used to represent timezone information in the
+Objects of this kundi cannot be used to represent timezone information in the
 locations where different offsets are used in different days of the year or
 where historical changes have been made to civil time.
 
@@ -2235,13 +2235,13 @@ where historical changes have been made to civil time.
   is constructed.
 
   If *name* is not provided in the constructor, the name returned by
-  ``tzname(dt)`` is generated from the value of the ``offset`` as follows. If
+  ``tzname(dt)`` is generated kutoka the value of the ``offset`` as follows. If
   *offset* is ``timedelta(0)``, the name is "UTC", otherwise it is a string in
   the format ``UTC±HH:MM``, where ± is the sign of ``offset``, HH and MM are
   two digits of ``offset.hours`` and ``offset.minutes`` respectively.
 
   .. versionchanged:: 3.6
-     Name generated from ``offset=timedelta(0)`` is now plain `'UTC'`, not
+     Name generated kutoka ``offset=timedelta(0)`` is now plain `'UTC'`, not
      ``'UTC+00:00'``.
 
 
@@ -2249,7 +2249,7 @@ where historical changes have been made to civil time.
 
   Always returns ``None``.
 
-.. method:: timezone.fromutc(dt)
+.. method:: timezone.kutokautc(dt)
 
   Return ``dt + offset``. The *dt* argument must be an aware
   :class:`.datetime` instance, with ``tzinfo`` set to ``self``.
@@ -2273,8 +2273,8 @@ Class attributes:
 ``strftime(format)`` method, to create a string representing the time under the
 control of an explicit format string.
 
-Conversely, the :meth:`datetime.strptime` class method creates a
-:class:`.datetime` object from a string representing a date and time and a
+Conversely, the :meth:`datetime.strptime` kundi method creates a
+:class:`.datetime` object kutoka a string representing a date and time and a
 corresponding format string.
 
 The table below provides a high-level comparison of :meth:`strftime`
@@ -2440,9 +2440,9 @@ Broadly speaking, ``d.strftime(fmt)`` acts like the :mod:`time` module's
 ``time.strftime(fmt, d.timetuple())`` although not all objects support a
 :meth:`timetuple` method.
 
-For the :meth:`datetime.strptime` class method, the default value is
+For the :meth:`datetime.strptime` kundi method, the default value is
 ``1900-01-01T00:00:00.000``: any components not specified in the format string
-will be pulled from the default value. [#]_
+will be pulled kutoka the default value. [#]_
 
 Using ``datetime.strptime(date_string, format)`` is equivalent to::
 
@@ -2499,7 +2499,7 @@ Notes:
 
 (5)
    When used with the :meth:`strptime` method, the ``%f`` directive
-   accepts from one to six digits and zero pads on the right. ``%f`` is
+   accepts kutoka one to six digits and zero pads on the right. ``%f`` is
    an extension to the set of format characters in the C standard (but
    implemented separately in datetime objects, and therefore always
    available).

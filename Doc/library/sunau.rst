@@ -36,7 +36,7 @@ header are:
 |               | audio file (padded with null bytes).          |
 +---------------+-----------------------------------------------+
 
-Apart from the info field, all header fields are 4 bytes in size. They are all
+Apart kutoka the info field, all header fields are 4 bytes in size. They are all
 32-bit unsigned integers encoded in big-endian byte order.
 
 The :mod:`sunau` module defines the following functions:
@@ -89,7 +89,7 @@ The :mod:`sunau` module defines the following data items:
           AUDIO_FILE_ENCODING_LINEAR_32
           AUDIO_FILE_ENCODING_ALAW_8
 
-   Values of the encoding field from the AU header which are supported by this
+   Values of the encoding field kutoka the AU header which are supported by this
    module.
 
 
@@ -100,7 +100,7 @@ The :mod:`sunau` module defines the following data items:
           AUDIO_FILE_ENCODING_ADPCM_G723_3
           AUDIO_FILE_ENCODING_ADPCM_G723_5
 
-   Additional known values of the encoding field from the AU header, but which are
+   Additional known values of the encoding field kutoka the AU header, but which are
    not supported by this module.
 
 
@@ -175,7 +175,7 @@ them, and is otherwise implementation dependent.
 
 .. method:: AU_read.setpos(pos)
 
-   Set the file pointer to the specified position.  Only values returned from
+   Set the file pointer to the specified position.  Only values returned kutoka
    :meth:`tell` should be used for *pos*.
 
 

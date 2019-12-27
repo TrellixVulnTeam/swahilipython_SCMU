@@ -1,6 +1,6 @@
 kutoka lib2to3.fixer_base agiza BaseFix
 
-class FixFirst(BaseFix):
+kundi FixFirst(BaseFix):
     run_order = 1
 
-    def match(self, node): return False
+    eleza match(self, node): rudisha False

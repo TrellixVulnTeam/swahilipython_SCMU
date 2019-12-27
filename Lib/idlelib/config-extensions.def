@@ -46,7 +46,7 @@ bell= True
 # Note: If a keybinding is already in use when the extension is loaded,
 # the extension's virtual event's keybinding will be set to ''.
 #
-# See config-keys.def for notes on specifying keys and extend.txt for
+# See config-keys.eleza for notes on specifying keys and extend.txt for
 # information on creating IDLE extensions.
 
 # A fake extension for testing and example purposes.  When enabled and

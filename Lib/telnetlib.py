@@ -8,7 +8,7 @@ Example:
 >>> kutoka telnetlib agiza Telnet
 >>> tn = Telnet('www.python.org', 79)   # connect to finger port
 >>> tn.write(b'guido\r\n')
->>> print(tn.read_all())
+>>> andika(tn.read_all())
 Login       Name               TTY         Idle    When    Where
 guido    Guido van Rossum      pts/2        <Dec  2 11:10> snag.cnri.reston..
 
@@ -18,8 +18,8 @@ Note that read_all() won't read until eof -- it just reads some data
 -- but it guarantees to read at least one byte unless EOF is hit.
 
 It is possible to pass a Telnet object to a selector in order to wait until
-more data is available.  Note that in this case, read_eager() may return b''
-even if there was data on the socket, because the protocol negotiation may have
+more data is available.  Note that in this case, read_eager() may rudisha b''
+even ikiwa there was data on the socket, because the protocol negotiation may have
 eaten the data.  This is why EOFError is needed in some cases to distinguish
 between "no data" and "connection closed" (since the socket also appears ready
 for reading when it is closed).
@@ -132,17 +132,17 @@ NOOPT = bytes([0])
 
 # poll/select have the advantage of not requiring any extra file descriptor,
 # contrarily to epoll/kqueue (also, they require a single syscall).
-if hasattr(selectors, 'PollSelector'):
+ikiwa hasattr(selectors, 'PollSelector'):
     _TelnetSelector = selectors.PollSelector
 else:
     _TelnetSelector = selectors.SelectSelector
 
 
-class Telnet:
+kundi Telnet:
 
     """Telnet interface class.
 
-    An instance of this class represents a connection to a telnet
+    An instance of this kundi represents a connection to a telnet
     server.  The instance is initially not connected; the open()
     method must be used to establish a connection.  Alternatively, the
     host name and optional port number can be passed to the
@@ -150,9 +150,9 @@ class Telnet:
 
     Don't try to reopen an already connected instance.
 
-    This class has many read_*() methods.  Note that some of them
+    This kundi has many read_*() methods.  Note that some of them
     raise EOFError when the end of the connection is read, because
-    they can return an empty string for other reasons.  See the
+    they can rudisha an empty string for other reasons.  See the
     individual doc strings.
 
     read_until(expected, [timeout])
@@ -186,14 +186,14 @@ class Telnet:
 
     set_option_negotiation_callback(callback)
         Each time a telnet option is read on the input flow, this callback
-        (if set) is called with the following parameters :
+        (ikiwa set) is called with the following parameters :
         callback(telnet socket, command, option)
             option will be chr(0) when there is no option.
         No other action is done afterwards by telnetlib.
 
     """
 
-    def __init__(self, host=None, port=0,
+    eleza __init__(self, host=None, port=0,
                  timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
         """Constructor.
 
@@ -214,10 +214,10 @@ class Telnet:
         self.sb = 0 # flag for SB and SE sequence.
         self.sbdataq = b''
         self.option_callback = None
-        if host is not None:
+        ikiwa host is not None:
             self.open(host, port, timeout)
 
-    def open(self, host, port=0, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
+    eleza open(self, host, port=0, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
         """Connect to a host.
 
         The optional second argument is the port number, which
@@ -226,7 +226,7 @@ class Telnet:
         Don't try to reopen an already connected instance.
         """
         self.eof = 0
-        if not port:
+        ikiwa not port:
             port = TELNET_PORT
         self.host = host
         self.port = port
@@ -234,25 +234,25 @@ class Telnet:
         sys.audit("telnetlib.Telnet.open", self, host, port)
         self.sock = socket.create_connection((host, port), timeout)
 
-    def __del__(self):
+    eleza __del__(self):
         """Destructor -- close the connection."""
         self.close()
 
-    def msg(self, msg, *args):
+    eleza msg(self, msg, *args):
         """Print a debug message, when the debug level is > 0.
 
         If extra arguments are present, they are substituted in the
         message using the standard string formatting operator.
 
         """
-        if self.debuglevel > 0:
-            print('Telnet(%s,%s):' % (self.host, self.port), end=' ')
-            if args:
-                print(msg % args)
+        ikiwa self.debuglevel > 0:
+            andika('Telnet(%s,%s):' % (self.host, self.port), end=' ')
+            ikiwa args:
+                andika(msg % args)
             else:
-                print(msg)
+                andika(msg)
 
-    def set_debuglevel(self, debuglevel):
+    eleza set_debuglevel(self, debuglevel):
         """Set the debug level.
 
         The higher it is, the more debug output you get (on sys.stdout).
@@ -260,75 +260,75 @@ class Telnet:
         """
         self.debuglevel = debuglevel
 
-    def close(self):
+    eleza close(self):
         """Close the connection."""
         sock = self.sock
         self.sock = None
         self.eof = True
         self.iacseq = b''
         self.sb = 0
-        if sock:
+        ikiwa sock:
             sock.close()
 
-    def get_socket(self):
+    eleza get_socket(self):
         """Return the socket object used internally."""
-        return self.sock
+        rudisha self.sock
 
-    def fileno(self):
+    eleza fileno(self):
         """Return the fileno() of the socket object used internally."""
-        return self.sock.fileno()
+        rudisha self.sock.fileno()
 
-    def write(self, buffer):
+    eleza write(self, buffer):
         """Write a string to the socket, doubling any IAC characters.
 
-        Can block if the connection is blocked.  May raise
-        OSError if the connection is closed.
+        Can block ikiwa the connection is blocked.  May raise
+        OSError ikiwa the connection is closed.
 
         """
-        if IAC in buffer:
+        ikiwa IAC in buffer:
             buffer = buffer.replace(IAC, IAC+IAC)
         sys.audit("telnetlib.Telnet.write", self, buffer)
         self.msg("send %r", buffer)
         self.sock.sendall(buffer)
 
-    def read_until(self, match, timeout=None):
+    eleza read_until(self, match, timeout=None):
         """Read until a given string is encountered or until timeout.
 
-        When no match is found, return whatever is available instead,
-        possibly the empty string.  Raise EOFError if the connection
+        When no match is found, rudisha whatever is available instead,
+        possibly the empty string.  Raise EOFError ikiwa the connection
         is closed and no cooked data is available.
 
         """
         n = len(match)
         self.process_rawq()
         i = self.cookedq.find(match)
-        if i >= 0:
+        ikiwa i >= 0:
             i = i+n
             buf = self.cookedq[:i]
             self.cookedq = self.cookedq[i:]
-            return buf
-        if timeout is not None:
+            rudisha buf
+        ikiwa timeout is not None:
             deadline = _time() + timeout
         with _TelnetSelector() as selector:
             selector.register(self, selectors.EVENT_READ)
             while not self.eof:
-                if selector.select(timeout):
+                ikiwa selector.select(timeout):
                     i = max(0, len(self.cookedq)-n)
                     self.fill_rawq()
                     self.process_rawq()
                     i = self.cookedq.find(match, i)
-                    if i >= 0:
+                    ikiwa i >= 0:
                         i = i+n
                         buf = self.cookedq[:i]
                         self.cookedq = self.cookedq[i:]
-                        return buf
-                if timeout is not None:
+                        rudisha buf
+                ikiwa timeout is not None:
                     timeout = deadline - _time()
-                    if timeout < 0:
+                    ikiwa timeout < 0:
                         break
-        return self.read_very_lazy()
+        rudisha self.read_very_lazy()
 
-    def read_all(self):
+    eleza read_all(self):
         """Read all data until EOF; block until connection closed."""
         self.process_rawq()
         while not self.eof:
@@ -336,12 +336,12 @@ class Telnet:
             self.process_rawq()
         buf = self.cookedq
         self.cookedq = b''
-        return buf
+        rudisha buf
 
-    def read_some(self):
+    eleza read_some(self):
         """Read at least one byte of cooked data unless EOF is hit.
 
-        Return b'' if EOF is hit.  Block if no data is immediately
+        Return b'' ikiwa EOF is hit.  Block ikiwa no data is immediately
         available.
 
         """
@@ -351,13 +351,13 @@ class Telnet:
             self.process_rawq()
         buf = self.cookedq
         self.cookedq = b''
-        return buf
+        rudisha buf
 
-    def read_very_eager(self):
+    eleza read_very_eager(self):
         """Read everything that's possible without blocking in I/O (eager).
 
-        Raise EOFError if connection closed and no cooked data
-        available.  Return b'' if no cooked data available otherwise.
+        Raise EOFError ikiwa connection closed and no cooked data
+        available.  Return b'' ikiwa no cooked data available otherwise.
         Don't block unless in the midst of an IAC sequence.
 
         """
@@ -365,13 +365,13 @@ class Telnet:
         while not self.eof and self.sock_avail():
             self.fill_rawq()
             self.process_rawq()
-        return self.read_very_lazy()
+        rudisha self.read_very_lazy()
 
-    def read_eager(self):
+    eleza read_eager(self):
         """Read readily available data.
 
-        Raise EOFError if connection closed and no cooked data
-        available.  Return b'' if no cooked data available otherwise.
+        Raise EOFError ikiwa connection closed and no cooked data
+        available.  Return b'' ikiwa no cooked data available otherwise.
         Don't block unless in the midst of an IAC sequence.
 
         """
@@ -379,49 +379,49 @@ class Telnet:
         while not self.cookedq and not self.eof and self.sock_avail():
             self.fill_rawq()
             self.process_rawq()
-        return self.read_very_lazy()
+        rudisha self.read_very_lazy()
 
-    def read_lazy(self):
-        """Process and return data that's already in the queues (lazy).
+    eleza read_lazy(self):
+        """Process and rudisha data that's already in the queues (lazy).
 
-        Raise EOFError if connection closed and no data available.
-        Return b'' if no cooked data available otherwise.  Don't block
+        Raise EOFError ikiwa connection closed and no data available.
+        Return b'' ikiwa no cooked data available otherwise.  Don't block
         unless in the midst of an IAC sequence.
 
         """
         self.process_rawq()
-        return self.read_very_lazy()
+        rudisha self.read_very_lazy()
 
-    def read_very_lazy(self):
+    eleza read_very_lazy(self):
         """Return any data available in the cooked queue (very lazy).
 
-        Raise EOFError if connection closed and no data available.
-        Return b'' if no cooked data available otherwise.  Don't block.
+        Raise EOFError ikiwa connection closed and no data available.
+        Return b'' ikiwa no cooked data available otherwise.  Don't block.
 
         """
         buf = self.cookedq
         self.cookedq = b''
-        if not buf and self.eof and not self.rawq:
+        ikiwa not buf and self.eof and not self.rawq:
             raise EOFError('telnet connection closed')
-        return buf
+        rudisha buf
 
-    def read_sb_data(self):
+    eleza read_sb_data(self):
         """Return any data available in the SB ... SE queue.
 
-        Return b'' if no SB ... SE available. Should only be called
+        Return b'' ikiwa no SB ... SE available. Should only be called
         after seeing a SB or SE command. When a new SB command is
         found, old unread SB data will be discarded. Don't block.
 
         """
         buf = self.sbdataq
         self.sbdataq = b''
-        return buf
+        rudisha buf
 
-    def set_option_negotiation_callback(self, callback):
+    eleza set_option_negotiation_callback(self, callback):
         """Provide a callback function called after each receipt of a telnet option."""
         self.option_callback = callback
 
-    def process_rawq(self):
+    eleza process_rawq(self):
         """Transfer kutoka raw queue to cooked queue.
 
         Set self.eof when connection is closed.  Don't block unless in
@@ -432,34 +432,34 @@ class Telnet:
         try:
             while self.rawq:
                 c = self.rawq_getchar()
-                if not self.iacseq:
-                    if c == theNULL:
+                ikiwa not self.iacseq:
+                    ikiwa c == theNULL:
                         continue
-                    if c == b"\021":
+                    ikiwa c == b"\021":
                         continue
-                    if c != IAC:
+                    ikiwa c != IAC:
                         buf[self.sb] = buf[self.sb] + c
                         continue
                     else:
                         self.iacseq += c
-                elif len(self.iacseq) == 1:
+                elikiwa len(self.iacseq) == 1:
                     # 'IAC: IAC CMD [OPTION only for WILL/WONT/DO/DONT]'
-                    if c in (DO, DONT, WILL, WONT):
+                    ikiwa c in (DO, DONT, WILL, WONT):
                         self.iacseq += c
                         continue
 
                     self.iacseq = b''
-                    if c == IAC:
+                    ikiwa c == IAC:
                         buf[self.sb] = buf[self.sb] + c
                     else:
-                        if c == SB: # SB ... SE start.
+                        ikiwa c == SB: # SB ... SE start.
                             self.sb = 1
                             self.sbdataq = b''
-                        elif c == SE:
+                        elikiwa c == SE:
                             self.sb = 0
                             self.sbdataq = self.sbdataq + buf[1]
                             buf[1] = b''
-                        if self.option_callback:
+                        ikiwa self.option_callback:
                             # Callback is supposed to look into
                             # the sbdataq
                             self.option_callback(self.sock, c, NOOPT)
@@ -468,21 +468,21 @@ class Telnet:
                             # suboptions. Alas, we should not get any
                             # unless we did a WILL/DO before.
                             self.msg('IAC %d not recognized' % ord(c))
-                elif len(self.iacseq) == 2:
+                elikiwa len(self.iacseq) == 2:
                     cmd = self.iacseq[1:2]
                     self.iacseq = b''
                     opt = c
-                    if cmd in (DO, DONT):
+                    ikiwa cmd in (DO, DONT):
                         self.msg('IAC %s %d',
                             cmd == DO and 'DO' or 'DONT', ord(opt))
-                        if self.option_callback:
+                        ikiwa self.option_callback:
                             self.option_callback(self.sock, cmd, opt)
                         else:
                             self.sock.sendall(IAC + WONT + opt)
-                    elif cmd in (WILL, WONT):
+                    elikiwa cmd in (WILL, WONT):
                         self.msg('IAC %s %d',
                             cmd == WILL and 'WILL' or 'WONT', ord(opt))
-                        if self.option_callback:
+                        ikiwa self.option_callback:
                             self.option_callback(self.sock, cmd, opt)
                         else:
                             self.sock.sendall(IAC + DONT + opt)
@@ -493,32 +493,32 @@ class Telnet:
         self.cookedq = self.cookedq + buf[0]
         self.sbdataq = self.sbdataq + buf[1]
 
-    def rawq_getchar(self):
+    eleza rawq_getchar(self):
         """Get next char kutoka raw queue.
 
-        Block if no data is immediately available.  Raise EOFError
+        Block ikiwa no data is immediately available.  Raise EOFError
         when connection is closed.
 
         """
-        if not self.rawq:
+        ikiwa not self.rawq:
             self.fill_rawq()
-            if self.eof:
+            ikiwa self.eof:
                 raise EOFError
         c = self.rawq[self.irawq:self.irawq+1]
         self.irawq = self.irawq + 1
-        if self.irawq >= len(self.rawq):
+        ikiwa self.irawq >= len(self.rawq):
             self.rawq = b''
             self.irawq = 0
-        return c
+        rudisha c
 
-    def fill_rawq(self):
+    eleza fill_rawq(self):
         """Fill raw queue kutoka exactly one recv() system call.
 
-        Block if no data is immediately available.  Set self.eof when
+        Block ikiwa no data is immediately available.  Set self.eof when
         connection is closed.
 
         """
-        if self.irawq >= len(self.rawq):
+        ikiwa self.irawq >= len(self.rawq):
             self.rawq = b''
             self.irawq = 0
         # The buffer size should be fairly small so as to avoid quadratic
@@ -528,15 +528,15 @@ class Telnet:
         self.eof = (not buf)
         self.rawq = self.rawq + buf
 
-    def sock_avail(self):
+    eleza sock_avail(self):
         """Test whether data is available on the socket."""
         with _TelnetSelector() as selector:
             selector.register(self, selectors.EVENT_READ)
-            return bool(selector.select(0))
+            rudisha bool(selector.select(0))
 
-    def interact(self):
+    eleza interact(self):
         """Interaction function, emulates a very dumb telnet client."""
-        if sys.platform == "win32":
+        ikiwa sys.platform == "win32":
             self.mt_interact()
             return
         with _TelnetSelector() as selector:
@@ -545,45 +545,45 @@ class Telnet:
 
             while True:
                 for key, events in selector.select():
-                    if key.fileobj is self:
+                    ikiwa key.fileobj is self:
                         try:
                             text = self.read_eager()
                         except EOFError:
-                            print('*** Connection closed by remote host ***')
+                            andika('*** Connection closed by remote host ***')
                             return
-                        if text:
+                        ikiwa text:
                             sys.stdout.write(text.decode('ascii'))
                             sys.stdout.flush()
-                    elif key.fileobj is sys.stdin:
+                    elikiwa key.fileobj is sys.stdin:
                         line = sys.stdin.readline().encode('ascii')
-                        if not line:
+                        ikiwa not line:
                             return
                         self.write(line)
 
-    def mt_interact(self):
+    eleza mt_interact(self):
         """Multithreaded version of interact()."""
         agiza _thread
         _thread.start_new_thread(self.listener, ())
         while 1:
             line = sys.stdin.readline()
-            if not line:
+            ikiwa not line:
                 break
             self.write(line.encode('ascii'))
 
-    def listener(self):
+    eleza listener(self):
         """Helper for mt_interact() -- this executes in the other thread."""
         while 1:
             try:
                 data = self.read_eager()
             except EOFError:
-                print('*** Connection closed by remote host ***')
+                andika('*** Connection closed by remote host ***')
                 return
-            if data:
+            ikiwa data:
                 sys.stdout.write(data.decode('ascii'))
             else:
                 sys.stdout.flush()
 
-    def expect(self, list, timeout=None):
+    eleza expect(self, list, timeout=None):
         """Read until one kutoka a list of a regular expressions matches.
 
         The first argument is a list of regular expressions, either
@@ -596,12 +596,12 @@ class Telnet:
         returned; and the text read up till and including the match.
 
         If EOF is read and no text was read, raise EOFError.
-        Otherwise, when nothing matches, return (-1, None, text) where
-        text is the text received so far (may be the empty string if a
+        Otherwise, when nothing matches, rudisha (-1, None, text) where
+        text is the text received so far (may be the empty string ikiwa a
         timeout happened).
 
         If a regular expression ends with a greedy match (e.g. '.*')
-        or if more than one expression can match the same input, the
+        or ikiwa more than one expression can match the same input, the
         results are undeterministic, and may depend on the I/O timing.
 
         """
@@ -609,10 +609,10 @@ class Telnet:
         list = list[:]
         indices = range(len(list))
         for i in indices:
-            if not hasattr(list[i], "search"):
-                if not re: agiza re
+            ikiwa not hasattr(list[i], "search"):
+                ikiwa not re: agiza re
                 list[i] = re.compile(list[i])
-        if timeout is not None:
+        ikiwa timeout is not None:
             deadline = _time() + timeout
         with _TelnetSelector() as selector:
             selector.register(self, selectors.EVENT_READ)
@@ -620,33 +620,33 @@ class Telnet:
                 self.process_rawq()
                 for i in indices:
                     m = list[i].search(self.cookedq)
-                    if m:
+                    ikiwa m:
                         e = m.end()
                         text = self.cookedq[:e]
                         self.cookedq = self.cookedq[e:]
-                        return (i, m, text)
-                if timeout is not None:
+                        rudisha (i, m, text)
+                ikiwa timeout is not None:
                     ready = selector.select(timeout)
                     timeout = deadline - _time()
-                    if not ready:
-                        if timeout < 0:
+                    ikiwa not ready:
+                        ikiwa timeout < 0:
                             break
                         else:
                             continue
                 self.fill_rawq()
         text = self.read_very_lazy()
-        if not text and self.eof:
+        ikiwa not text and self.eof:
             raise EOFError
-        return (-1, None, text)
+        rudisha (-1, None, text)
 
-    def __enter__(self):
-        return self
+    eleza __enter__(self):
+        rudisha self
 
-    def __exit__(self, type, value, traceback):
+    eleza __exit__(self, type, value, traceback):
         self.close()
 
 
-def test():
+eleza test():
     """Test program for telnetlib.
 
     Usage: python telnetlib.py [-d] ... [host [port]]
@@ -659,10 +659,10 @@ def test():
         debuglevel = debuglevel+1
         del sys.argv[1]
     host = 'localhost'
-    if sys.argv[1:]:
+    ikiwa sys.argv[1:]:
         host = sys.argv[1]
     port = 0
-    if sys.argv[2:]:
+    ikiwa sys.argv[2:]:
         portstr = sys.argv[2]
         try:
             port = int(portstr)
@@ -673,5 +673,5 @@ def test():
         tn.open(host, port, timeout=0.5)
         tn.interact()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test()

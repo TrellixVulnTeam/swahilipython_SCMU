@@ -96,7 +96,7 @@ PyAPI_FUNC(int) Py_GetRecursionLimit(void);
 PyAPI_FUNC(int) _Py_CheckRecursiveCall(const char *where);
 
 /* Due to the macros in which it's used, _Py_CheckRecursionLimit is in
-   the stable ABI.  It should be removed therefrom when possible.
+   the stable ABI.  It should be removed therekutoka when possible.
 */
 PyAPI_DATA(int) _Py_CheckRecursionLimit;
 
@@ -177,7 +177,7 @@ PyAPI_FUNC(PyObject *) _PyEval_EvalFrameDefault(struct _frame *f, int exc);
    WARNING: NEVER NEST CALLS TO Py_BEGIN_ALLOW_THREADS AND
    Py_END_ALLOW_THREADS!!!
 
-   The function PyEval_InitThreads() should be called only from
+   The function PyEval_InitThreads() should be called only kutoka
    init_thread() in "_threadmodule.c".
 
    Note that not yet all candidates have been converted to use this

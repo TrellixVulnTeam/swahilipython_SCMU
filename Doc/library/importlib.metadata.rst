@@ -5,11 +5,11 @@
 ==========================
 
 .. note::
-   This functionality is provisional and may deviate from the usual
+   This functionality is provisional and may deviate kutoka the usual
    version semantics of the standard library.
 
 ``importlib.metadata`` is a library that provides for access to installed
-package metadata.  Built in part on Python's import system, this library
+package metadata.  Built in part on Python's agiza system, this library
 intends to replace similar functionality in the `entry point
 API`_ and `metadata API`_ of ``pkg_resources``.  Along with
 ``importlib.resources`` in `Python 3.7
@@ -45,7 +45,7 @@ You can get the version string for ``wheel`` by running the following:
 .. code-block:: pycon
 
     (example) $ python
-    >>> from importlib.metadata import version  # doctest: +SKIP
+    >>> kutoka importlib.metadata agiza version  # doctest: +SKIP
     >>> version('wheel')  # doctest: +SKIP
     '0.32.3'
 
@@ -108,7 +108,7 @@ Every distribution includes some metadata, which you can extract using the
     >>> wheel_metadata = metadata('wheel')  # doctest: +SKIP
 
 The keys of the returned data structure [#f1]_ name the metadata keywords, and
-their values are returned unparsed from the distribution metadata::
+their values are returned unparsed kutoka the distribution metadata::
 
     >>> wheel_metadata['Requires-Python']  # doctest: +SKIP
     '>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*'
@@ -150,8 +150,8 @@ files installed by this distribution.  Each file object returned is a
 Once you have the file, you can also read its contents::
 
     >>> print(util.read_text())  # doctest: +SKIP
-    import base64
-    import sys
+    agiza base64
+    agiza sys
     ...
     def as_bytes(s):
         if isinstance(s, text_type):
@@ -182,11 +182,11 @@ Distributions
 =============
 
 While the above API is the most common and convenient usage, you can get all
-of that information from the ``Distribution`` class.  A ``Distribution`` is an
+of that information kutoka the ``Distribution`` class.  A ``Distribution`` is an
 abstract object that represents the metadata for a Python package.  You can
 get the ``Distribution`` instance::
 
-    >>> from importlib.metadata import distribution  # doctest: +SKIP
+    >>> kutoka importlib.metadata agiza distribution  # doctest: +SKIP
     >>> dist = distribution('wheel')  # doctest: +SKIP
 
 Thus, an alternative way to get the version number is through the
@@ -220,10 +220,10 @@ By default ``importlib.metadata`` installs a finder for distribution packages
 found on the file system.  This finder doesn't actually find any *packages*,
 but it can find the packages' metadata.
 
-The abstract class :py:class:`importlib.abc.MetaPathFinder` defines the
-interface expected of finders by Python's import system.
+The abstract kundi :py:class:`importlib.abc.MetaPathFinder` defines the
+interface expected of finders by Python's agiza system.
 ``importlib.metadata`` extends this protocol by looking for an optional
-``find_distributions`` callable on the finders from
+``find_distributions`` callable on the finders kutoka
 ``sys.meta_path`` and presents this extended interface as the
 ``DistributionFinder`` abstract base class, which defines this abstract
 method::
@@ -239,8 +239,8 @@ properties indicating the path to search and names to match and may
 supply other relevant context.
 
 What this means in practice is that to support finding distribution package
-metadata in locations other than the file system, you should derive from
-``Distribution`` and implement the ``load_metadata()`` method. Then from
+metadata in locations other than the file system, you should derive kutoka
+``Distribution`` and implement the ``load_metadata()`` method. Then kutoka
 your finder, return instances of this derived ``Distribution`` in the
 ``find_distributions()`` method.
 

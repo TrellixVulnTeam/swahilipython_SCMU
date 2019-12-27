@@ -9,7 +9,7 @@ Introduction
 
 The Application Programmer's Interface to Python gives C and C++ programmers
 access to the Python interpreter at a variety of levels.  The API is equally
-usable from C++, but for brevity it is generally referred to as the Python/C
+usable kutoka C++, but for brevity it is generally referred to as the Python/C
 API.  There are two fundamentally different reasons for using the Python/C API.
 The first reason is to write *extension modules* for specific purposes; these
 are C modules that extend the Python interpreter.  This is probably the most
@@ -89,12 +89,12 @@ To include the headers, place both directories (if different) on your compiler's
 search path for includes.  Do *not* place the parent directories on the search
 path and then use ``#include <pythonX.Y/Python.h>``; this will break on
 multi-platform builds since the platform independent headers under
-:envvar:`prefix` include the platform specific headers from
+:envvar:`prefix` include the platform specific headers kutoka
 :envvar:`exec_prefix`.
 
 C++ users should note that although the API is defined entirely using C, the
 header files properly declare the entry points to be ``extern "C"``. As a result,
-there is no need to do anything special to use the API from C++.
+there is no need to do anything special to use the API kutoka C++.
 
 
 Useful macros
@@ -240,21 +240,21 @@ variable that contains a pointer to an object.  In theory, the  object's
 reference count goes up by one when the variable is made to  point to it and it
 goes down by one when the variable goes out of  scope.  However, these two
 cancel each other out, so at the end the  reference count hasn't changed.  The
-only real reason to use the  reference count is to prevent the object from being
+only real reason to use the  reference count is to prevent the object kutoka being
 deallocated as  long as our variable is pointing to it.  If we know that there
 is at  least one other reference to the object that lives at least as long as
 our variable, there is no need to increment the reference count  temporarily.
 An important situation where this arises is in objects  that are passed as
-arguments to C functions in an extension module  that are called from Python;
+arguments to C functions in an extension module  that are called kutoka Python;
 the call mechanism guarantees to hold a  reference to every argument for the
 duration of the call.
 
-However, a common pitfall is to extract an object from a list and hold on to it
+However, a common pitfall is to extract an object kutoka a list and hold on to it
 for a while without incrementing its reference count. Some other operation might
-conceivably remove the object from the list, decrementing its reference count
+conceivably remove the object kutoka the list, decrementing its reference count
 and possibly deallocating it. The real danger is that innocent-looking
 operations may invoke arbitrary Python code which could do this; there is a code
-path which allows control to flow back to the user from a :c:func:`Py_DECREF`, so
+path which allows control to flow back to the user kutoka a :c:func:`Py_DECREF`, so
 almost any operation is potentially dangerous.
 
 A safe approach is to always use the generic operations (functions  whose name
@@ -322,7 +322,7 @@ and :c:func:`PyList_SetItem`.
 
 However, in practice, you will rarely use these ways of creating and populating
 a tuple or list.  There's a generic function, :c:func:`Py_BuildValue`, that can
-create most common objects from C values, directed by a :dfn:`format string`.
+create most common objects kutoka C values, directed by a :dfn:`format string`.
 For example, the above two blocks of code could be replaced by the following
 (which also takes care of the error checking)::
 
@@ -373,8 +373,8 @@ always return a new reference (the caller becomes the owner of the reference).
 It is important to realize that whether you own a reference returned  by a
 function depends on which function you call only --- *the plumage* (the type of
 the object passed as an argument to the function) *doesn't enter into it!*
-Thus, if you  extract an item from a list using :c:func:`PyList_GetItem`, you
-don't own the reference --- but if you obtain the same item from the same list
+Thus, if you  extract an item kutoka a list using :c:func:`PyList_GetItem`, you
+don't own the reference --- but if you obtain the same item kutoka the same list
 using :c:func:`PySequence_GetItem` (which happens to take exactly the same
 arguments), you do own a reference to the returned object.
 
@@ -508,7 +508,7 @@ bytecode interpreter's  main loop, which takes care of transferring it to
 .. index:: single: exc_info() (in module sys)
 
 Note that starting with Python 1.5, the preferred, thread-safe way to access the
-exception state from Python code is to call the function :func:`sys.exc_info`,
+exception state kutoka Python code is to call the function :func:`sys.exc_info`,
 which returns the per-thread exception state for Python code.  Also, the
 semantics of both ways to access the exception state have changed so that a
 function which catches an exception will save and restore its thread's exception
@@ -709,7 +709,7 @@ extra checks are performed:
 
 * Extra checks are added to the parser and compiler.
 
-* Downcasts from wide types to narrow types are checked for loss of information.
+* Downcasts kutoka wide types to narrow types are checked for loss of information.
 
 * A number of assertions are added to the dictionary and set implementations.
   In addition, the set object acquires a :meth:`test_c_api` method.

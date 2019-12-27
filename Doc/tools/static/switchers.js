@@ -82,7 +82,7 @@
   function on_version_switch() {
     var selected_version = $(this).children('option:selected').attr('value') + '/';
     var url = window.location.href;
-    var current_language = language_segment_from_url(url);
+    var current_language = language_segment_kutoka_url(url);
     var current_version = version_segment_in_url(url);
     var new_url = url.replace('.org/' + current_language + current_version,
                               '.org/' + current_language + selected_version);
@@ -101,7 +101,7 @@
   function on_language_switch() {
     var selected_language = $(this).children('option:selected').attr('value') + '/';
     var url = window.location.href;
-    var current_language = language_segment_from_url(url);
+    var current_language = language_segment_kutoka_url(url);
     var current_version = version_segment_in_url(url);
     if (selected_language == 'en/') // Special 'default' case for english.
       selected_language = '';
@@ -117,7 +117,7 @@
 
   // Returns the path segment of the language as a string, like 'fr/'
   // or '' if not found.
-  function language_segment_from_url(url) {
+  function language_segment_kutoka_url(url) {
     var language_regexp = '\.org/([a-z]{2}(?:-[a-z]{2})?/)';
     var match = url.match(language_regexp);
     if (match !== null)
@@ -139,7 +139,7 @@
 
   $(document).ready(function() {
     var release = DOCUMENTATION_OPTIONS.VERSION;
-    var language_segment = language_segment_from_url(window.location.href);
+    var language_segment = language_segment_kutoka_url(window.location.href);
     var current_language = language_segment.replace(/\/+$/g, '') || 'en';
     var version = release.substr(0, 3);
     var version_select = build_version_select(version, release);

@@ -5,7 +5,7 @@ This codec de/encodes from bytes to bytes.
 Written by Marc-Andre Lemburg (mal@lemburg.com).
 """
 
-import codecs
+agiza codecs
 import base64
 
 ### Codec APIs

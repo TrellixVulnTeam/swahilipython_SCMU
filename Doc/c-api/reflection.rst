@@ -36,7 +36,7 @@ Reflection
 
 .. c:function:: const char* PyEval_GetFuncName(PyObject *func)
 
-   Return the name of *func* if it is a function, class or instance object, else the
+   Return the name of *func* if it is a function, kundi or instance object, else the
    name of *func*\s type.
 
 

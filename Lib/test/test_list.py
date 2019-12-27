@@ -4,10 +4,10 @@ kutoka test.support agiza cpython_only
 agiza pickle
 agiza unittest
 
-class ListTest(list_tests.CommonTest):
+kundi ListTest(list_tests.CommonTest):
     type2test = list
 
-    def test_basic(self):
+    eleza test_basic(self):
         self.assertEqual(list([]), [])
         l0_3 = [0, 1, 2, 3]
         l0_3_bis = list(l0_3)
@@ -17,10 +17,10 @@ class ListTest(list_tests.CommonTest):
         self.assertEqual(list((0, 1, 2, 3)), [0, 1, 2, 3])
         self.assertEqual(list(''), [])
         self.assertEqual(list('spam'), ['s', 'p', 'a', 'm'])
-        self.assertEqual(list(x for x in range(10) if x % 2),
+        self.assertEqual(list(x for x in range(10) ikiwa x % 2),
                          [1, 3, 5, 7, 9])
 
-        if sys.maxsize == 0x7fffffff:
+        ikiwa sys.maxsize == 0x7fffffff:
             # This test can currently only work on 32-bit machines.
             # XXX If/when PySequence_Length() returns a ssize_t, it should be
             # XXX re-enabled.
@@ -42,35 +42,35 @@ class ListTest(list_tests.CommonTest):
         x.extend(-y for y in x)
         self.assertEqual(x, [])
 
-    def test_keyword_args(self):
+    eleza test_keyword_args(self):
         with self.assertRaisesRegex(TypeError, 'keyword argument'):
             list(sequence=[])
 
-    def test_truth(self):
+    eleza test_truth(self):
         super().test_truth()
         self.assertTrue(not [])
         self.assertTrue([42])
 
-    def test_identity(self):
+    eleza test_identity(self):
         self.assertTrue([] is not [])
 
-    def test_len(self):
+    eleza test_len(self):
         super().test_len()
         self.assertEqual(len([]), 0)
         self.assertEqual(len([0]), 1)
         self.assertEqual(len([0, 1, 2]), 3)
 
-    def test_overflow(self):
+    eleza test_overflow(self):
         lst = [4, 5, 6, 7]
         n = int((sys.maxsize*2+2) // len(lst))
-        def mul(a, b): return a * b
-        def imul(a, b): a *= b
+        eleza mul(a, b): rudisha a * b
+        eleza imul(a, b): a *= b
         self.assertRaises((MemoryError, OverflowError), mul, lst, n)
         self.assertRaises((MemoryError, OverflowError), imul, lst, n)
 
-    def test_repr_large(self):
+    eleza test_repr_large(self):
         # Check the repr of large list objects
-        def check(n):
+        eleza check(n):
             l = [0] * n
             s = repr(l)
             self.assertEqual(s,
@@ -78,7 +78,7 @@ class ListTest(list_tests.CommonTest):
         check(10)       # check our checking code
         check(1000000)
 
-    def test_iterator_pickle(self):
+    eleza test_iterator_pickle(self):
         orig = self.type2test([4, 5, 6, 7])
         data = [10, 11, 12, 13, 14, 15]
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -114,7 +114,7 @@ class ListTest(list_tests.CommonTest):
             a[:] = data
             self.assertEqual(list(it), [])
 
-    def test_reversed_pickle(self):
+    eleza test_reversed_pickle(self):
         orig = self.type2test([4, 5, 6, 7])
         data = [10, 11, 12, 13, 14, 15]
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -150,21 +150,21 @@ class ListTest(list_tests.CommonTest):
             a[:] = data
             self.assertEqual(list(it), [])
 
-    def test_no_comdat_folding(self):
+    eleza test_no_comdat_folding(self):
         # Issue 8847: In the PGO build, the MSVC linker's COMDAT folding
         # optimization causes failures in code that relies on distinct
         # function addresses.
-        class L(list): pass
+        kundi L(list): pass
         with self.assertRaises(TypeError):
             (3,) + L([1,2])
 
     @cpython_only
-    def test_preallocation(self):
+    eleza test_preallocation(self):
         iterable = [0] * 10
         iter_size = sys.getsizeof(iterable)
 
         self.assertEqual(iter_size, sys.getsizeof(list([0] * 10)))
         self.assertEqual(iter_size, sys.getsizeof(list(range(10))))
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

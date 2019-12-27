@@ -6,20 +6,20 @@ agiza unittest, string, sys, struct
 kutoka test agiza support
 kutoka collections agiza UserList
 
-class Sequence:
-    def __init__(self, seq='wxyz'): self.seq = seq
-    def __len__(self): return len(self.seq)
-    def __getitem__(self, i): return self.seq[i]
+kundi Sequence:
+    eleza __init__(self, seq='wxyz'): self.seq = seq
+    eleza __len__(self): rudisha len(self.seq)
+    eleza __getitem__(self, i): rudisha self.seq[i]
 
-class BadSeq1(Sequence):
-    def __init__(self): self.seq = [7, 'hello', 123]
-    def __str__(self): return '{0} {1} {2}'.format(*self.seq)
+kundi BadSeq1(Sequence):
+    eleza __init__(self): self.seq = [7, 'hello', 123]
+    eleza __str__(self): rudisha '{0} {1} {2}'.format(*self.seq)
 
-class BadSeq2(Sequence):
-    def __init__(self): self.seq = ['a', 'b', 'c']
-    def __len__(self): return 8
+kundi BadSeq2(Sequence):
+    eleza __init__(self): self.seq = ['a', 'b', 'c']
+    eleza __len__(self): rudisha 8
 
-class BaseTest:
+kundi BaseTest:
     # These tests are for buffers of values (bytes) and not
     # specific to character interpretation, used for bytes objects
     # and various string implementations
@@ -36,26 +36,26 @@ class BaseTest:
     # All tests pass their arguments to the testing methods
     # as str objects. fixtesttype() can be used to propagate
     # these arguments to the appropriate type
-    def fixtype(self, obj):
-        if isinstance(obj, str):
-            return self.__class__.type2test(obj)
-        elif isinstance(obj, list):
-            return [self.fixtype(x) for x in obj]
-        elif isinstance(obj, tuple):
-            return tuple([self.fixtype(x) for x in obj])
-        elif isinstance(obj, dict):
-            return dict([
+    eleza fixtype(self, obj):
+        ikiwa isinstance(obj, str):
+            rudisha self.__class__.type2test(obj)
+        elikiwa isinstance(obj, list):
+            rudisha [self.fixtype(x) for x in obj]
+        elikiwa isinstance(obj, tuple):
+            rudisha tuple([self.fixtype(x) for x in obj])
+        elikiwa isinstance(obj, dict):
+            rudisha dict([
                (self.fixtype(key), self.fixtype(value))
                for (key, value) in obj.items()
             ])
         else:
-            return obj
+            rudisha obj
 
-    def test_fixtype(self):
+    eleza test_fixtype(self):
         self.assertIs(type(self.fixtype("123")), self.type2test)
 
     # check that obj.method(*args) returns result
-    def checkequal(self, result, obj, methodname, *args, **kwargs):
+    eleza checkequal(self, result, obj, methodname, *args, **kwargs):
         result = self.fixtype(result)
         obj = self.fixtype(obj)
         args = self.fixtype(args)
@@ -65,21 +65,21 @@ class BaseTest:
             result,
             realresult
         )
-        # if the original is returned make sure that
+        # ikiwa the original is returned make sure that
         # this doesn't happen with subclasses
-        if obj is realresult:
+        ikiwa obj is realresult:
             try:
-                class subtype(self.__class__.type2test):
+                kundi subtype(self.__class__.type2test):
                     pass
             except TypeError:
-                pass  # Skip this if we can't subclass
+                pass  # Skip this ikiwa we can't subclass
             else:
                 obj = subtype(obj)
                 realresult = getattr(obj, methodname)(*args)
                 self.assertIsNot(obj, realresult)
 
     # check that obj.method(*args) raises exc
-    def checkraises(self, exc, obj, methodname, *args):
+    eleza checkraises(self, exc, obj, methodname, *args):
         obj = self.fixtype(obj)
         args = self.fixtype(args)
         with self.assertRaises(exc) as cm:
@@ -87,12 +87,12 @@ class BaseTest:
         self.assertNotEqual(str(cm.exception), '')
 
     # call obj.method(*args) without any checks
-    def checkcall(self, obj, methodname, *args):
+    eleza checkcall(self, obj, methodname, *args):
         obj = self.fixtype(obj)
         args = self.fixtype(args)
         getattr(obj, methodname)(*args)
 
-    def test_count(self):
+    eleza test_count(self):
         self.checkequal(3, 'aaa', 'count', 'a')
         self.checkequal(0, 'aaa', 'count', 'b')
         self.checkequal(3, 'aaa', 'count', 'a')
@@ -124,7 +124,7 @@ class BaseTest:
 
         self.checkraises(TypeError, 'hello', 'count')
 
-        if self.contains_bytes:
+        ikiwa self.contains_bytes:
             self.checkequal(0, 'hello', 'count', 42)
         else:
             self.checkraises(TypeError, 'hello', 'count', 42)
@@ -147,16 +147,16 @@ class BaseTest:
             n = len(i)
             for j in teststrings:
                 r1 = i.count(j)
-                if j:
+                ikiwa j:
                     r2, rem = divmod(n - len(i.replace(j, self.fixtype(''))),
                                      len(j))
                 else:
                     r2, rem = len(i)+1, 0
-                if rem or r1 != r2:
+                ikiwa rem or r1 != r2:
                     self.assertEqual(rem, 0, '%s != 0 for %s' % (rem, i))
                     self.assertEqual(r1, r2, '%s != %s for %s' % (r1, r2, i))
 
-    def test_find(self):
+    eleza test_find(self):
         self.checkequal(0, 'abcdefghiabc', 'find', 'abc')
         self.checkequal(9, 'abcdefghiabc', 'find', 'abc', 1)
         self.checkequal(-1, 'abcdefghiabc', 'find', 'def', 4)
@@ -174,7 +174,7 @@ class BaseTest:
 
         self.checkraises(TypeError, 'hello', 'find')
 
-        if self.contains_bytes:
+        ikiwa self.contains_bytes:
             self.checkequal(-1, 'hello', 'find', 42)
         else:
             self.checkraises(TypeError, 'hello', 'find', 42)
@@ -210,10 +210,10 @@ class BaseTest:
                 r1 = (loc != -1)
                 r2 = j in i
                 self.assertEqual(r1, r2)
-                if loc != -1:
+                ikiwa loc != -1:
                     self.assertEqual(i[loc:loc+len(j)], j)
 
-    def test_rfind(self):
+    eleza test_rfind(self):
         self.checkequal(9,  'abcdefghiabc', 'rfind', 'abc')
         self.checkequal(12, 'abcdefghiabc', 'rfind', '')
         self.checkequal(0, 'abcdefghiabc', 'rfind', 'abcd')
@@ -232,7 +232,7 @@ class BaseTest:
 
         self.checkraises(TypeError, 'hello', 'rfind')
 
-        if self.contains_bytes:
+        ikiwa self.contains_bytes:
             self.checkequal(-1, 'hello', 'rfind', 42)
         else:
             self.checkraises(TypeError, 'hello', 'rfind', 42)
@@ -257,7 +257,7 @@ class BaseTest:
                 r1 = (loc != -1)
                 r2 = j in i
                 self.assertEqual(r1, r2)
-                if loc != -1:
+                ikiwa loc != -1:
                     self.assertEqual(i[loc:loc+len(j)], j)
 
         # issue 7458
@@ -266,7 +266,7 @@ class BaseTest:
         # issue #15534
         self.checkequal(0, '<......\u043c...', "rfind", "<")
 
-    def test_index(self):
+    eleza test_index(self):
         self.checkequal(0, 'abcdefghiabc', 'index', '')
         self.checkequal(3, 'abcdefghiabc', 'index', 'def')
         self.checkequal(0, 'abcdefghiabc', 'index', 'abc')
@@ -286,12 +286,12 @@ class BaseTest:
 
         self.checkraises(TypeError, 'hello', 'index')
 
-        if self.contains_bytes:
+        ikiwa self.contains_bytes:
             self.checkraises(ValueError, 'hello', 'index', 42)
         else:
             self.checkraises(TypeError, 'hello', 'index', 42)
 
-    def test_rindex(self):
+    eleza test_rindex(self):
         self.checkequal(12, 'abcdefghiabc', 'rindex', '')
         self.checkequal(3,  'abcdefghiabc', 'rindex', 'def')
         self.checkequal(9,  'abcdefghiabc', 'rindex', 'abc')
@@ -312,22 +312,22 @@ class BaseTest:
 
         self.checkraises(TypeError, 'hello', 'rindex')
 
-        if self.contains_bytes:
+        ikiwa self.contains_bytes:
             self.checkraises(ValueError, 'hello', 'rindex', 42)
         else:
             self.checkraises(TypeError, 'hello', 'rindex', 42)
 
-    def test_lower(self):
+    eleza test_lower(self):
         self.checkequal('hello', 'HeLLo', 'lower')
         self.checkequal('hello', 'hello', 'lower')
         self.checkraises(TypeError, 'hello', 'lower', 42)
 
-    def test_upper(self):
+    eleza test_upper(self):
         self.checkequal('HELLO', 'HeLLo', 'upper')
         self.checkequal('HELLO', 'HELLO', 'upper')
         self.checkraises(TypeError, 'hello', 'upper', 42)
 
-    def test_expandtabs(self):
+    eleza test_expandtabs(self):
         self.checkequal('abc\rab      def\ng       hi', 'abc\rab\tdef\ng\thi',
                         'expandtabs')
         self.checkequal('abc\rab      def\ng       hi', 'abc\rab\tdef\ng\thi',
@@ -352,11 +352,11 @@ class BaseTest:
 
         self.checkraises(TypeError, 'hello', 'expandtabs', 42, 42)
         # This test is only valid when sizeof(int) == sizeof(void*) == 4.
-        if sys.maxsize < (1 << 32) and struct.calcsize('P') == 4:
+        ikiwa sys.maxsize < (1 << 32) and struct.calcsize('P') == 4:
             self.checkraises(OverflowError,
                              '\ta\n\tb', 'expandtabs', sys.maxsize)
 
-    def test_split(self):
+    eleza test_split(self):
         # by a char
         self.checkequal(['a', 'b', 'c', 'd'], 'a|b|c|d', 'split', '|')
         self.checkequal(['a|b|c|d'], 'a|b|c|d', 'split', '|', 0)
@@ -426,7 +426,7 @@ class BaseTest:
         self.checkraises(ValueError, 'hello', 'split', '')
         self.checkraises(ValueError, 'hello', 'split', '', 0)
 
-    def test_rsplit(self):
+    eleza test_rsplit(self):
         # by a char
         self.checkequal(['a', 'b', 'c', 'd'], 'a|b|c|d', 'rsplit', '|')
         self.checkequal(['a|b|c', 'd'], 'a|b|c|d', 'rsplit', '|', 1)
@@ -496,7 +496,7 @@ class BaseTest:
         self.checkraises(ValueError, 'hello', 'rsplit', '')
         self.checkraises(ValueError, 'hello', 'rsplit', '', 0)
 
-    def test_replace(self):
+    eleza test_replace(self):
         EQ = self.checkequal
 
         # Operations on the empty string
@@ -674,14 +674,14 @@ class BaseTest:
 
     @unittest.skipIf(sys.maxsize > (1 << 32) or struct.calcsize('P') != 4,
                      'only applies to 32-bit platforms')
-    def test_replace_overflow(self):
+    eleza test_replace_overflow(self):
         # Check for overflow checking on 32 bit machines
         A2_16 = "A" * (2**16)
         self.checkraises(OverflowError, A2_16, "replace", "", A2_16)
         self.checkraises(OverflowError, A2_16, "replace", "A", A2_16)
         self.checkraises(OverflowError, A2_16, "replace", "AA", A2_16+A2_16)
 
-    def test_capitalize(self):
+    eleza test_capitalize(self):
         self.checkequal(' hello ', ' hello ', 'capitalize')
         self.checkequal('Hello ', 'Hello ','capitalize')
         self.checkequal('Hello ', 'hello ','capitalize')
@@ -690,7 +690,7 @@ class BaseTest:
 
         self.checkraises(TypeError, 'hello', 'capitalize', 42)
 
-    def test_additional_split(self):
+    eleza test_additional_split(self):
         self.checkequal(['this', 'is', 'the', 'split', 'function'],
             'this is the split function', 'split')
 
@@ -726,7 +726,7 @@ class BaseTest:
             self.checkequal(['arf', 'barf'], b, 'split', None)
             self.checkequal(['arf', 'barf'], b, 'split', None, 2)
 
-    def test_additional_rsplit(self):
+    eleza test_additional_rsplit(self):
         self.checkequal(['this', 'is', 'the', 'rsplit', 'function'],
                          'this is the rsplit function', 'rsplit')
 
@@ -766,7 +766,7 @@ class BaseTest:
             self.checkequal(['arf', 'barf'], b, 'rsplit', None)
             self.checkequal(['arf', 'barf'], b, 'rsplit', None, 2)
 
-    def test_strip_whitespace(self):
+    eleza test_strip_whitespace(self):
         self.checkequal('hello', '   hello   ', 'strip')
         self.checkequal('hello   ', '   hello   ', 'lstrip')
         self.checkequal('   hello', '   hello   ', 'rstrip')
@@ -783,7 +783,7 @@ class BaseTest:
         self.checkequal('   hello', '   hello   ', 'rstrip', None)
         self.checkequal('hello', 'hello', 'strip', None)
 
-    def test_strip(self):
+    eleza test_strip(self):
         # strip/lstrip/rstrip with str arg
         self.checkequal('hello', 'xyzzyhelloxyzzy', 'strip', 'xyz')
         self.checkequal('helloxyzzy', 'xyzzyhelloxyzzy', 'lstrip', 'xyz')
@@ -798,7 +798,7 @@ class BaseTest:
         self.checkraises(TypeError, 'hello', 'lstrip', 42, 42)
         self.checkraises(TypeError, 'hello', 'rstrip', 42, 42)
 
-    def test_ljust(self):
+    eleza test_ljust(self):
         self.checkequal('abc       ', 'abc', 'ljust', 10)
         self.checkequal('abc   ', 'abc', 'ljust', 6)
         self.checkequal('abc', 'abc', 'ljust', 3)
@@ -806,7 +806,7 @@ class BaseTest:
         self.checkequal('abc*******', 'abc', 'ljust', 10, '*')
         self.checkraises(TypeError, 'abc', 'ljust')
 
-    def test_rjust(self):
+    eleza test_rjust(self):
         self.checkequal('       abc', 'abc', 'rjust', 10)
         self.checkequal('   abc', 'abc', 'rjust', 6)
         self.checkequal('abc', 'abc', 'rjust', 3)
@@ -814,7 +814,7 @@ class BaseTest:
         self.checkequal('*******abc', 'abc', 'rjust', 10, '*')
         self.checkraises(TypeError, 'abc', 'rjust')
 
-    def test_center(self):
+    eleza test_center(self):
         self.checkequal('   abc    ', 'abc', 'center', 10)
         self.checkequal(' abc  ', 'abc', 'center', 6)
         self.checkequal('abc', 'abc', 'center', 3)
@@ -822,12 +822,12 @@ class BaseTest:
         self.checkequal('***abc****', 'abc', 'center', 10, '*')
         self.checkraises(TypeError, 'abc', 'center')
 
-    def test_swapcase(self):
+    eleza test_swapcase(self):
         self.checkequal('hEllO CoMPuTErS', 'HeLLo cOmpUteRs', 'swapcase')
 
         self.checkraises(TypeError, 'hello', 'swapcase', 42)
 
-    def test_zfill(self):
+    eleza test_zfill(self):
         self.checkequal('123', '123', 'zfill', 2)
         self.checkequal('123', '123', 'zfill', 3)
         self.checkequal('0123', '123', 'zfill', 4)
@@ -843,7 +843,7 @@ class BaseTest:
 
         self.checkraises(TypeError, '123', 'zfill')
 
-    def test_islower(self):
+    eleza test_islower(self):
         self.checkequal(False, '', 'islower')
         self.checkequal(True, 'a', 'islower')
         self.checkequal(False, 'A', 'islower')
@@ -853,7 +853,7 @@ class BaseTest:
         self.checkequal(True, 'abc\n', 'islower')
         self.checkraises(TypeError, 'abc', 'islower', 42)
 
-    def test_isupper(self):
+    eleza test_isupper(self):
         self.checkequal(False, '', 'isupper')
         self.checkequal(False, 'a', 'isupper')
         self.checkequal(True, 'A', 'isupper')
@@ -863,7 +863,7 @@ class BaseTest:
         self.checkequal(True, 'ABC\n', 'isupper')
         self.checkraises(TypeError, 'abc', 'isupper', 42)
 
-    def test_istitle(self):
+    eleza test_istitle(self):
         self.checkequal(False, '', 'istitle')
         self.checkequal(False, 'a', 'istitle')
         self.checkequal(True, 'A', 'istitle')
@@ -877,7 +877,7 @@ class BaseTest:
         self.checkequal(False, 'NOT', 'istitle')
         self.checkraises(TypeError, 'abc', 'istitle', 42)
 
-    def test_isspace(self):
+    eleza test_isspace(self):
         self.checkequal(False, '', 'isspace')
         self.checkequal(False, 'a', 'isspace')
         self.checkequal(True, ' ', 'isspace')
@@ -888,7 +888,7 @@ class BaseTest:
         self.checkequal(False, ' \t\r\na', 'isspace')
         self.checkraises(TypeError, 'abc', 'isspace', 42)
 
-    def test_isalpha(self):
+    eleza test_isalpha(self):
         self.checkequal(False, '', 'isalpha')
         self.checkequal(True, 'a', 'isalpha')
         self.checkequal(True, 'A', 'isalpha')
@@ -898,7 +898,7 @@ class BaseTest:
         self.checkequal(False, 'abc\n', 'isalpha')
         self.checkraises(TypeError, 'abc', 'isalpha', 42)
 
-    def test_isalnum(self):
+    eleza test_isalnum(self):
         self.checkequal(False, '', 'isalnum')
         self.checkequal(True, 'a', 'isalnum')
         self.checkequal(True, 'A', 'isalnum')
@@ -909,7 +909,7 @@ class BaseTest:
         self.checkequal(False, 'abc\n', 'isalnum')
         self.checkraises(TypeError, 'abc', 'isalnum', 42)
 
-    def test_isascii(self):
+    eleza test_isascii(self):
         self.checkequal(True, '', 'isascii')
         self.checkequal(True, '\x00', 'isascii')
         self.checkequal(True, '\x7f', 'isascii')
@@ -924,7 +924,7 @@ class BaseTest:
             self.checkequal(True, ' '*p + '\x7f' + ' '*8, 'isascii')
             self.checkequal(False, ' '*p + '\x80' + ' '*8, 'isascii')
 
-    def test_isdigit(self):
+    eleza test_isdigit(self):
         self.checkequal(False, '', 'isdigit')
         self.checkequal(False, 'a', 'isdigit')
         self.checkequal(True, '0', 'isdigit')
@@ -933,7 +933,7 @@ class BaseTest:
 
         self.checkraises(TypeError, 'abc', 'isdigit', 42)
 
-    def test_title(self):
+    eleza test_title(self):
         self.checkequal(' Hello ', ' hello ', 'title')
         self.checkequal('Hello ', 'hello ', 'title')
         self.checkequal('Hello ', 'Hello ', 'title')
@@ -942,7 +942,7 @@ class BaseTest:
         self.checkequal('Getint', "getInt", 'title')
         self.checkraises(TypeError, 'hello', 'title', 42)
 
-    def test_splitlines(self):
+    eleza test_splitlines(self):
         self.checkequal(['abc', 'def', '', 'ghi'], "abc\ndef\n\rghi", 'splitlines')
         self.checkequal(['abc', 'def', '', 'ghi'], "abc\ndef\n\r\nghi", 'splitlines')
         self.checkequal(['abc', 'def', 'ghi'], "abc\ndef\r\nghi", 'splitlines')
@@ -961,11 +961,11 @@ class BaseTest:
         self.checkraises(TypeError, 'abc', 'splitlines', 42, 42)
 
 
-class CommonTest(BaseTest):
+kundi CommonTest(BaseTest):
     # This testcase contains tests that can be used in all
     # stringlike classes. Currently this is str and UserString.
 
-    def test_hash(self):
+    eleza test_hash(self):
         # SF bug 1054139:  += optimization was not invalidating cached hash value
         a = self.type2test('DNSSEC')
         b = self.type2test('')
@@ -974,7 +974,7 @@ class CommonTest(BaseTest):
             hash(b)
         self.assertEqual(hash(a), hash(b))
 
-    def test_capitalize_nonascii(self):
+    eleza test_capitalize_nonascii(self):
         # check that titlecased chars are lowered correctly
         # \u1ffc is the titlecased char
         self.checkequal('\u1ffc\u1ff3\u1ff3\u1ff3',
@@ -993,11 +993,11 @@ class CommonTest(BaseTest):
                         '\u019b\u1d00\u1d86\u0221\u1fb7', 'capitalize')
 
 
-class MixinStrUnicodeUserStringTest:
+kundi MixinStrUnicodeUserStringTest:
     # additional tests that only work for
     # stringlike objects, i.e. str, UserString
 
-    def test_startswith(self):
+    eleza test_startswith(self):
         self.checkequal(True, 'hello', 'startswith', 'he')
         self.checkequal(True, 'hello', 'startswith', 'hello')
         self.checkequal(False, 'hello', 'startswith', 'hello world')
@@ -1045,7 +1045,7 @@ class MixinStrUnicodeUserStringTest:
 
         self.checkraises(TypeError, 'hello', 'startswith', (42,))
 
-    def test_endswith(self):
+    eleza test_endswith(self):
         self.checkequal(True, 'hello', 'endswith', 'lo')
         self.checkequal(False, 'hello', 'endswith', 'he')
         self.checkequal(True, 'hello', 'endswith', '')
@@ -1097,7 +1097,7 @@ class MixinStrUnicodeUserStringTest:
 
         self.checkraises(TypeError, 'hello', 'endswith', (42,))
 
-    def test___contains__(self):
+    eleza test___contains__(self):
         self.checkequal(True, '', '__contains__', '')
         self.checkequal(True, 'abc', '__contains__', '')
         self.checkequal(False, 'abc', '__contains__', '\0')
@@ -1108,7 +1108,7 @@ class MixinStrUnicodeUserStringTest:
         self.checkequal(False, 'asd', '__contains__', 'asdf')
         self.checkequal(False, '', '__contains__', 'asdf')
 
-    def test_subscript(self):
+    eleza test_subscript(self):
         self.checkequal('a', 'abc', '__getitem__', 0)
         self.checkequal('c', 'abc', '__getitem__', -1)
         self.checkequal('a', 'abc', '__getitem__', 0)
@@ -1119,7 +1119,7 @@ class MixinStrUnicodeUserStringTest:
 
         self.checkraises(TypeError, 'abc', '__getitem__', 'def')
 
-    def test_slice(self):
+    eleza test_slice(self):
         self.checkequal('abc', 'abc', '__getitem__', slice(0, 1000))
         self.checkequal('abc', 'abc', '__getitem__', slice(0, 3))
         self.checkequal('ab', 'abc', '__getitem__', slice(0, 2))
@@ -1132,7 +1132,7 @@ class MixinStrUnicodeUserStringTest:
 
         self.checkraises(TypeError, 'abc', '__getitem__', 'def')
 
-    def test_extended_getslice(self):
+    eleza test_extended_getslice(self):
         # Test extended slicing by comparing with list slicing.
         s = string.ascii_letters + string.digits
         indices = (0, None, 1, 3, 41, sys.maxsize, -1, -2, -37)
@@ -1144,7 +1144,7 @@ class MixinStrUnicodeUserStringTest:
                     self.checkequal("".join(L), s, '__getitem__',
                                     slice(start, stop, step))
 
-    def test_mul(self):
+    eleza test_mul(self):
         self.checkequal('', 'abc', '__mul__', -1)
         self.checkequal('', 'abc', '__mul__', 0)
         self.checkequal('abc', 'abc', '__mul__', 1)
@@ -1152,10 +1152,10 @@ class MixinStrUnicodeUserStringTest:
         self.checkraises(TypeError, 'abc', '__mul__')
         self.checkraises(TypeError, 'abc', '__mul__', '')
         # XXX: on a 64-bit system, this doesn't raise an overflow error,
-        # but either raises a MemoryError, or succeeds (if you have 54TiB)
+        # but either raises a MemoryError, or succeeds (ikiwa you have 54TiB)
         #self.checkraises(OverflowError, 10000*'abc', '__mul__', 2000000000)
 
-    def test_join(self):
+    eleza test_join(self):
         # join now works with any sequence type
         # moved here, because the argument order is
         # different in string.join
@@ -1182,16 +1182,16 @@ class MixinStrUnicodeUserStringTest:
         self.checkraises(TypeError, ' ', 'join', 7)
         self.checkraises(TypeError, ' ', 'join', [1, 2, bytes()])
         try:
-            def f():
+            eleza f():
                 yield 4 + ""
             self.fixtype(' ').join(f())
         except TypeError as e:
-            if '+' not in str(e):
+            ikiwa '+' not in str(e):
                 self.fail('join() ate exception message')
         else:
             self.fail('exception not raised')
 
-    def test_formatting(self):
+    eleza test_formatting(self):
         self.checkequal('+hello+', '+%s+', '__mod__', 'hello')
         self.checkequal('+10+', '+%d+', '__mod__', 10)
         self.checkequal('a', "%c", '__mod__', "a")
@@ -1241,11 +1241,11 @@ class MixinStrUnicodeUserStringTest:
         self.checkraises(OverflowError, '%.*f', '__mod__',
                          (sys.maxsize + 1, 1. / 7))
 
-        class X(object): pass
+        kundi X(object): pass
         self.checkraises(TypeError, 'abc', '__mod__', X())
 
     @support.cpython_only
-    def test_formatting_c_limits(self):
+    eleza test_formatting_c_limits(self):
         kutoka _testcapi agiza PY_SSIZE_T_MAX, INT_MAX, UINT_MAX
         SIZE_MAX = (1 << (PY_SSIZE_T_MAX.bit_length() + 1)) - 1
         self.checkraises(OverflowError, '%*s', '__mod__',
@@ -1258,7 +1258,7 @@ class MixinStrUnicodeUserStringTest:
         self.checkraises(OverflowError, '%.*f', '__mod__',
                          (UINT_MAX + 1, 1. / 7))
 
-    def test_floatformatting(self):
+    eleza test_floatformatting(self):
         # float formatting
         for prec in range(100):
             format = '%%.%if' % prec
@@ -1267,7 +1267,7 @@ class MixinStrUnicodeUserStringTest:
                 value = value * 3.14159265359 / 3.0 * 10.0
                 self.checkcall(format, "__mod__", value)
 
-    def test_inplace_rewrites(self):
+    eleza test_inplace_rewrites(self):
         # Check that strings don't copy and modify cached single-character strings
         self.checkequal('a', 'A', 'lower')
         self.checkequal(True, 'A', 'isupper')
@@ -1286,7 +1286,7 @@ class MixinStrUnicodeUserStringTest:
         self.checkequal('A', 'a', 'title')
         self.checkequal(True, 'a', 'islower')
 
-    def test_partition(self):
+    eleza test_partition(self):
 
         self.checkequal(('this is the par', 'ti', 'tion method'),
             'this is the partition method', 'partition', 'ti')
@@ -1301,7 +1301,7 @@ class MixinStrUnicodeUserStringTest:
         self.checkraises(ValueError, S, 'partition', '')
         self.checkraises(TypeError, S, 'partition', None)
 
-    def test_rpartition(self):
+    eleza test_rpartition(self):
 
         self.checkequal(('this is the rparti', 'ti', 'on method'),
             'this is the rpartition method', 'rpartition', 'ti')
@@ -1316,7 +1316,7 @@ class MixinStrUnicodeUserStringTest:
         self.checkraises(ValueError, S, 'rpartition', '')
         self.checkraises(TypeError, S, 'rpartition', None)
 
-    def test_none_arguments(self):
+    eleza test_none_arguments(self):
         # issue 11828
         s = 'hello'
         self.checkequal(2, s, 'find', 'l', None)
@@ -1354,7 +1354,7 @@ class MixinStrUnicodeUserStringTest:
         self.checkequal(True, s, 'startswith', 'h', None, -2)
         self.checkequal(False, s, 'startswith', 'x', None, None)
 
-    def test_find_etc_raise_correct_error_messages(self):
+    eleza test_find_etc_raise_correct_error_messages(self):
         # issue 11828
         s = 'hello'
         x = 'x'
@@ -1377,16 +1377,16 @@ class MixinStrUnicodeUserStringTest:
         self.checkequal(10, "...\u043c......<", "find", "<")
 
 
-class MixinStrUnicodeTest:
+kundi MixinStrUnicodeTest:
     # Additional tests that only work with str.
 
-    def test_bug1001011(self):
+    eleza test_bug1001011(self):
         # Make sure join returns a NEW object for single item sequences
         # involving a subclass.
         # Make sure that it is of the appropriate type.
         # Check the optimisation still occurs for standard objects.
         t = self.type2test
-        class subclass(t):
+        kundi subclass(t):
             pass
         s1 = subclass("abcd")
         s2 = t().join([s1])

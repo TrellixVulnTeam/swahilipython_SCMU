@@ -7,7 +7,7 @@ kutoka test agiza support
 kutoka test.support.script_helper agiza assert_python_ok
 
 
-class TestTool(unittest.TestCase):
+kundi TestTool(unittest.TestCase):
     data = """
 
         [["blorpie"],[ "whoops" ] , [
@@ -82,28 +82,28 @@ class TestTool(unittest.TestCase):
     }
     """)
 
-    def test_stdin_stdout(self):
+    eleza test_stdin_stdout(self):
         args = sys.executable, '-m', 'json.tool'
         with Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE) as proc:
             out, err = proc.communicate(self.data.encode())
         self.assertEqual(out.splitlines(), self.expect.encode().splitlines())
         self.assertEqual(err, b'')
 
-    def _create_infile(self):
+    eleza _create_infile(self):
         infile = support.TESTFN
         with open(infile, "w") as fp:
             self.addCleanup(os.remove, infile)
             fp.write(self.data)
-        return infile
+        rudisha infile
 
-    def test_infile_stdout(self):
+    eleza test_infile_stdout(self):
         infile = self._create_infile()
         rc, out, err = assert_python_ok('-m', 'json.tool', infile)
         self.assertEqual(rc, 0)
         self.assertEqual(out.splitlines(), self.expect.encode().splitlines())
         self.assertEqual(err, b'')
 
-    def test_infile_outfile(self):
+    eleza test_infile_outfile(self):
         infile = self._create_infile()
         outfile = support.TESTFN + '.out'
         rc, out, err = assert_python_ok('-m', 'json.tool', infile, outfile)
@@ -114,20 +114,20 @@ class TestTool(unittest.TestCase):
         self.assertEqual(out, b'')
         self.assertEqual(err, b'')
 
-    def test_jsonlines(self):
+    eleza test_jsonlines(self):
         args = sys.executable, '-m', 'json.tool', '--json-lines'
         with Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE) as proc:
             out, err = proc.communicate(self.jsonlines_raw.encode())
         self.assertEqual(out.splitlines(), self.jsonlines_expect.encode().splitlines())
         self.assertEqual(err, b'')
 
-    def test_help_flag(self):
+    eleza test_help_flag(self):
         rc, out, err = assert_python_ok('-m', 'json.tool', '-h')
         self.assertEqual(rc, 0)
         self.assertTrue(out.startswith(b'usage: '))
         self.assertEqual(err, b'')
 
-    def test_sort_keys_flag(self):
+    eleza test_sort_keys_flag(self):
         infile = self._create_infile()
         rc, out, err = assert_python_ok('-m', 'json.tool', '--sort-keys', infile)
         self.assertEqual(rc, 0)

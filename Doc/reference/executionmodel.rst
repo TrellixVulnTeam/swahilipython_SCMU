@@ -16,9 +16,9 @@ Structure of a program
 
 .. index:: block
 
-A Python program is constructed from code blocks.
+A Python program is constructed kutoka code blocks.
 A :dfn:`block` is a piece of Python program text that is executed as a unit.
-The following are blocks: a module, a function body, and a class definition.
+The following are blocks: a module, a function body, and a kundi definition.
 Each command typed interactively is a block.  A script file (a file given as
 standard input to the interpreter or specified as a command line argument to the
 interpreter) is a code block.  A script command (a command specified on the
@@ -52,22 +52,22 @@ Binding of names
 
 :dfn:`Names` refer to objects.  Names are introduced by name binding operations.
 
-.. index:: single: from; import statement
+.. index:: single: kutoka; agiza statement
 
 The following constructs bind names: formal parameters to functions,
-:keyword:`import` statements, class and function definitions (these bind the
-class or function name in the defining block), and targets that are identifiers
+:keyword:`import` statements, kundi and function definitions (these bind the
+kundi or function name in the defining block), and targets that are identifiers
 if occurring in an assignment, :keyword:`for` loop header, or after
 :keyword:`!as` in a :keyword:`with` statement or :keyword:`except` clause.
 The :keyword:`!import` statement
-of the form ``from ... import *`` binds all names defined in the imported
+of the form ``kutoka ... agiza *`` binds all names defined in the imported
 module, except those beginning with an underscore.  This form may only be used
 at the module level.
 
 A target occurring in a :keyword:`del` statement is also considered bound for
 this purpose (though the actual semantics are to unbind the name).
 
-Each assignment or import statement occurs within a block defined by a class or
+Each assignment or agiza statement occurs within a block defined by a kundi or
 function definition or at the module level (the top-level code block).
 
 .. index:: pair: free; variable
@@ -108,7 +108,7 @@ When a name is not found at all, a :exc:`NameError` exception is raised.
 If the current scope is a function scope, and the name refers to a local
 variable that has not yet been bound to a value at the point where the name is
 used, an :exc:`UnboundLocalError` exception is raised.
-:exc:`UnboundLocalError` is a subclass of :exc:`NameError`.
+:exc:`UnboundLocalError` is a subkundi of :exc:`NameError`.
 
 If a name binding operation occurs anywhere within a code block, all uses of the
 name within the block are treated as references to the current block.  This can
@@ -144,16 +144,16 @@ imported.  The main module for a script is always called :mod:`__main__`.
 
 Class definition blocks and arguments to :func:`exec` and :func:`eval` are
 special in the context of name resolution.
-A class definition is an executable statement that may use and define names.
+A kundi definition is an executable statement that may use and define names.
 These references follow the normal rules for name resolution with an exception
 that unbound local variables are looked up in the global namespace.
-The namespace of the class definition becomes the attribute dictionary of
-the class. The scope of names defined in a class block is limited to the
-class block; it does not extend to the code blocks of methods -- this includes
+The namespace of the kundi definition becomes the attribute dictionary of
+the class. The scope of names defined in a kundi block is limited to the
+kundi block; it does not extend to the code blocks of methods -- this includes
 comprehensions and generator expressions since they are implemented using a
 function scope.  This means that the following will fail::
 
-   class A:
+   kundi A:
        a = 42
        b = list(a + i for i in range(10))
 
@@ -194,7 +194,7 @@ This means that the following code will print 42::
    i = 42
    f()
 
-.. XXX from * also invalid with relative imports (at least currently)
+.. XXX kutoka * also invalid with relative imports (at least currently)
 
 The :func:`eval` and :func:`exec` functions do not have access to the full
 environment for resolving names.  Names may be resolved in the local and global
@@ -237,7 +237,7 @@ the preceding code.
 Python uses the "termination" model of error handling: an exception handler can
 find out what happened and continue execution at an outer level, but it cannot
 repair the cause of the error and retry the failing operation (except by
-re-entering the offending piece of code from the top).
+re-entering the offending piece of code kutoka the top).
 
 .. index:: single: SystemExit (built-in exception)
 
@@ -245,15 +245,15 @@ When an exception is not handled at all, the interpreter terminates execution of
 the program, or returns to its interactive main loop.  In either case, it prints
 a stack traceback, except when the exception is :exc:`SystemExit`.
 
-Exceptions are identified by class instances.  The :keyword:`except` clause is
-selected depending on the class of the instance: it must reference the class of
-the instance or a base class thereof.  The instance can be received by the
+Exceptions are identified by kundi instances.  The :keyword:`except` clause is
+selected depending on the kundi of the instance: it must reference the kundi of
+the instance or a base kundi thereof.  The instance can be received by the
 handler and can carry additional information about the exceptional condition.
 
 .. note::
 
    Exception messages are not part of the Python API.  Their contents may change
-   from one version of Python to the next without warning and should not be
+   kutoka one version of Python to the next without warning and should not be
    relied on by code which will run under multiple versions of the interpreter.
 
 See also the description of the :keyword:`try` statement in section :ref:`try`

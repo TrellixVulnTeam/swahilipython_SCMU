@@ -11,7 +11,7 @@
 .. highlight:: none
 
 **This module is automatically imported during initialization.** The automatic
-import can be suppressed using the interpreter's :option:`-S` option.
+agiza can be suppressed using the interpreter's :option:`-S` option.
 
 .. index:: triple: module; search; path
 
@@ -28,7 +28,7 @@ additions, call the :func:`site.main` function.
 .. index::
    pair: site-packages; directory
 
-It starts by constructing up to four directories from a head and a tail part.
+It starts by constructing up to four directories kutoka a head and a tail part.
 For the head part, it uses ``sys.prefix`` and ``sys.exec_prefix``; empty heads
 are skipped.  For the tail part, it uses the empty string and then
 :file:`lib/site-packages` (on Windows) or
@@ -68,7 +68,7 @@ with ``import`` (followed by space or tab) are executed.
    Its impact should thus be kept to a minimum.
    The primary intended purpose of executable lines is to make the
    corresponding module(s) importable
-   (load 3rd-party import hooks, adjust :envvar:`PATH` etc).
+   (load 3rd-party agiza hooks, adjust :envvar:`PATH` etc).
    Any other initialization is supposed to be done upon a module's
    actual import, if and when it happens.
    Limiting a code chunk to a single line is a deliberate measure
@@ -111,28 +111,28 @@ not mentioned in either path configuration file.
 
 .. index:: module: sitecustomize
 
-After these path manipulations, an attempt is made to import a module named
+After these path manipulations, an attempt is made to agiza a module named
 :mod:`sitecustomize`, which can perform arbitrary site-specific customizations.
 It is typically created by a system administrator in the site-packages
-directory.  If this import fails with an :exc:`ImportError` or its subclass
+directory.  If this agiza fails with an :exc:`ImportError` or its subclass
 exception, and the exception's :attr:`name` attribute equals to ``'sitecustomize'``,
 it is silently ignored.  If Python is started without output streams available, as
 with :file:`pythonw.exe` on Windows (which is used by default to start IDLE),
-attempted output from :mod:`sitecustomize` is ignored.  Any other exception
+attempted output kutoka :mod:`sitecustomize` is ignored.  Any other exception
 causes a silent and perhaps mysterious failure of the process.
 
 .. index:: module: usercustomize
 
-After this, an attempt is made to import a module named :mod:`usercustomize`,
+After this, an attempt is made to agiza a module named :mod:`usercustomize`,
 which can perform arbitrary user-specific customizations, if
 :data:`ENABLE_USER_SITE` is true.  This file is intended to be created in the
 user site-packages directory (see below), which is part of ``sys.path`` unless
-disabled by :option:`-s`.  If this import fails with an :exc:`ImportError` or
-its subclass exception, and the exception's :attr:`name` attribute equals to
+disabled by :option:`-s`.  If this agiza fails with an :exc:`ImportError` or
+its subkundi exception, and the exception's :attr:`name` attribute equals to
 ``'usercustomize'``, it is silently ignored.
 
 Note that for some non-Unix systems, ``sys.prefix`` and ``sys.exec_prefix`` are
-empty, and the path manipulations are skipped; however the import of
+empty, and the path manipulations are skipped; however the agiza of
 :mod:`sitecustomize` and :mod:`usercustomize` is still attempted.
 
 
@@ -141,7 +141,7 @@ empty, and the path manipulations are skipped; however the import of
 Readline configuration
 ----------------------
 
-On systems that support :mod:`readline`, this module will also import and
+On systems that support :mod:`readline`, this module will also agiza and
 configure the :mod:`rlcompleter` module, if Python is started in
 :ref:`interactive mode <tut-interactive>` and without the :option:`-S` option.
 The default behavior is enable tab-completion and to use
@@ -236,7 +236,7 @@ Module contents
    .. versionadded:: 3.2
 
 
-The :mod:`site` module also provides a way to get the user directories from the
+The :mod:`site` module also provides a way to get the user directories kutoka the
 command line:
 
 .. code-block:: shell-session

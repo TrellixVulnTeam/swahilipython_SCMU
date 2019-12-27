@@ -11,141 +11,141 @@ _reply_data = None
 # This is used to queue up data to be read through socket.makefile, typically
 # *before* the socket object is even created. It is intended to handle a single
 # line which the socket will feed on recv() or makefile().
-def reply_with(line):
+eleza reply_with(line):
     global _reply_data
     _reply_data = line
 
 
-class MockFile:
+kundi MockFile:
     """Mock file object returned by MockSocket.makefile().
     """
-    def __init__(self, lines):
+    eleza __init__(self, lines):
         self.lines = lines
-    def readline(self, limit=-1):
+    eleza readline(self, limit=-1):
         result = self.lines.pop(0) + b'\r\n'
-        if limit >= 0:
+        ikiwa limit >= 0:
             # Re-insert the line, removing the \r\n we added.
             self.lines.insert(0, result[limit:-2])
             result = result[:limit]
-        return result
-    def close(self):
+        rudisha result
+    eleza close(self):
         pass
 
 
-class MockSocket:
+kundi MockSocket:
     """Mock socket object used by smtpd and smtplib tests.
     """
-    def __init__(self, family=None):
+    eleza __init__(self, family=None):
         global _reply_data
         self.family = family
         self.output = []
         self.lines = []
-        if _reply_data:
+        ikiwa _reply_data:
             self.lines.append(_reply_data)
             _reply_data = None
         self.conn = None
         self.timeout = None
 
-    def queue_recv(self, line):
+    eleza queue_recv(self, line):
         self.lines.append(line)
 
-    def recv(self, bufsize, flags=None):
+    eleza recv(self, bufsize, flags=None):
         data = self.lines.pop(0) + b'\r\n'
-        return data
+        rudisha data
 
-    def fileno(self):
-        return 0
+    eleza fileno(self):
+        rudisha 0
 
-    def settimeout(self, timeout):
-        if timeout is None:
+    eleza settimeout(self, timeout):
+        ikiwa timeout is None:
             self.timeout = _defaulttimeout
         else:
             self.timeout = timeout
 
-    def gettimeout(self):
-        return self.timeout
+    eleza gettimeout(self):
+        rudisha self.timeout
 
-    def setsockopt(self, level, optname, value):
+    eleza setsockopt(self, level, optname, value):
         pass
 
-    def getsockopt(self, level, optname, buflen=None):
-        return 0
+    eleza getsockopt(self, level, optname, buflen=None):
+        rudisha 0
 
-    def bind(self, address):
+    eleza bind(self, address):
         pass
 
-    def accept(self):
+    eleza accept(self):
         self.conn = MockSocket()
-        return self.conn, 'c'
+        rudisha self.conn, 'c'
 
-    def getsockname(self):
-        return ('0.0.0.0', 0)
+    eleza getsockname(self):
+        rudisha ('0.0.0.0', 0)
 
-    def setblocking(self, flag):
+    eleza setblocking(self, flag):
         pass
 
-    def listen(self, backlog):
+    eleza listen(self, backlog):
         pass
 
-    def makefile(self, mode='r', bufsize=-1):
+    eleza makefile(self, mode='r', bufsize=-1):
         handle = MockFile(self.lines)
-        return handle
+        rudisha handle
 
-    def sendall(self, buffer, flags=None):
+    eleza sendall(self, buffer, flags=None):
         self.last = data
         self.output.append(data)
-        return len(data)
+        rudisha len(data)
 
-    def send(self, data, flags=None):
+    eleza send(self, data, flags=None):
         self.last = data
         self.output.append(data)
-        return len(data)
+        rudisha len(data)
 
-    def getpeername(self):
-        return ('peer-address', 'peer-port')
+    eleza getpeername(self):
+        rudisha ('peer-address', 'peer-port')
 
-    def close(self):
+    eleza close(self):
         pass
 
 
-def socket(family=None, type=None, proto=None):
-    return MockSocket(family)
+eleza socket(family=None, type=None, proto=None):
+    rudisha MockSocket(family)
 
-def create_connection(address, timeout=socket_module._GLOBAL_DEFAULT_TIMEOUT,
+eleza create_connection(address, timeout=socket_module._GLOBAL_DEFAULT_TIMEOUT,
                       source_address=None):
     try:
         int_port = int(address[1])
     except ValueError:
         raise error
     ms = MockSocket()
-    if timeout is socket_module._GLOBAL_DEFAULT_TIMEOUT:
+    ikiwa timeout is socket_module._GLOBAL_DEFAULT_TIMEOUT:
         timeout = getdefaulttimeout()
     ms.settimeout(timeout)
-    return ms
+    rudisha ms
 
 
-def setdefaulttimeout(timeout):
+eleza setdefaulttimeout(timeout):
     global _defaulttimeout
     _defaulttimeout = timeout
 
 
-def getdefaulttimeout():
-    return _defaulttimeout
+eleza getdefaulttimeout():
+    rudisha _defaulttimeout
 
 
-def getfqdn():
-    return ""
+eleza getfqdn():
+    rudisha ""
 
 
-def gethostname():
+eleza gethostname():
     pass
 
 
-def gethostbyname(name):
-    return ""
+eleza gethostbyname(name):
+    rudisha ""
 
-def getaddrinfo(*args, **kw):
-    return socket_module.getaddrinfo(*args, **kw)
+eleza getaddrinfo(*args, **kw):
+    rudisha socket_module.getaddrinfo(*args, **kw)
 
 gaierror = socket_module.gaierror
 error = socket_module.error

@@ -11,20 +11,20 @@ kutoka tkinter agiza SUNKEN, TOP, BOTTOM, LEFT, X, BOTH, W, EW, NSEW, E
 kutoka idlelib agiza textview
 
 
-def build_bits():
+eleza build_bits():
     "Return bits for platform."
-    if sys.platform == 'darwin':
-        return '64' if sys.maxsize > 2**32 else '32'
+    ikiwa sys.platform == 'darwin':
+        rudisha '64' ikiwa sys.maxsize > 2**32 else '32'
     else:
-        return architecture()[0][:2]
+        rudisha architecture()[0][:2]
 
 
-class AboutDialog(Toplevel):
+kundi AboutDialog(Toplevel):
     """Modal about dialog for idle
 
     """
-    def __init__(self, parent, title=None, *, _htest=False, _utest=False):
-        """Create popup, do not return until tk widget destroyed.
+    eleza __init__(self, parent, title=None, *, _htest=False, _utest=False):
+        """Create popup, do not rudisha until tk widget destroyed.
 
         parent - parent of this dialog
         title - string which is title of popup dialog
@@ -33,10 +33,10 @@ class AboutDialog(Toplevel):
         """
         Toplevel.__init__(self, parent)
         self.configure(borderwidth=5)
-        # place dialog below parent if running htest
+        # place dialog below parent ikiwa running htest
         self.geometry("+%d+%d" % (
                         parent.winfo_rootx()+30,
-                        parent.winfo_rooty()+(30 if not _htest else 100)))
+                        parent.winfo_rooty()+(30 ikiwa not _htest else 100)))
         self.bg = "#bbbbbb"
         self.fg = "#000000"
         self.create_widgets()
@@ -53,11 +53,11 @@ class AboutDialog(Toplevel):
         self._current_textview = None
         self._utest = _utest
 
-        if not _utest:
+        ikiwa not _utest:
             self.deiconify()
             self.wait_window()
 
-    def create_widgets(self):
+    eleza create_widgets(self):
         frame = Frame(self, borderwidth=2, relief=SUNKEN)
         frame_buttons = Frame(self)
         frame_buttons.pack(side=BOTTOM, fill=X)
@@ -74,7 +74,7 @@ class AboutDialog(Toplevel):
         header.grid(row=0, column=0, sticky=E, padx=10, pady=10)
 
         tk_patchlevel = self.tk.call('info', 'patchlevel')
-        ext = '.png' if tk_patchlevel >= '8.6' else '.gif'
+        ext = '.png' ikiwa tk_patchlevel >= '8.6' else '.gif'
         icon = os.path.join(os.path.abspath(os.path.dirname(__file__)),
                             'Icons', f'idle_48{ext}')
         self.icon_image = PhotoImage(master=self._root(), file=icon)
@@ -143,33 +143,33 @@ class AboutDialog(Toplevel):
         self.idle_credits.pack(side=LEFT, padx=10, pady=10)
 
     # License, copyright, and credits are of type _sitebuiltins._Printer
-    def show_py_license(self):
+    eleza show_py_license(self):
         "Handle License button event."
         self.display_printer_text('About - License', license)
 
-    def show_py_copyright(self):
+    eleza show_py_copyright(self):
         "Handle Copyright button event."
         self.display_printer_text('About - Copyright', copyright)
 
-    def show_py_credits(self):
+    eleza show_py_credits(self):
         "Handle Python Credits button event."
         self.display_printer_text('About - Python Credits', credits)
 
     # Encode CREDITS.txt to utf-8 for proper version of Loewis.
     # Specify others as ascii until need utf-8, so catch errors.
-    def show_idle_credits(self):
+    eleza show_idle_credits(self):
         "Handle Idle Credits button event."
         self.display_file_text('About - Credits', 'CREDITS.txt', 'utf-8')
 
-    def show_readme(self):
+    eleza show_readme(self):
         "Handle Readme button event."
         self.display_file_text('About - Readme', 'README.txt', 'ascii')
 
-    def show_idle_news(self):
+    eleza show_idle_news(self):
         "Handle News button event."
         self.display_file_text('About - NEWS', 'NEWS.txt', 'utf-8')
 
-    def display_printer_text(self, title, printer):
+    eleza display_printer_text(self, title, printer):
         """Create textview for built-in constants.
 
         Built-in constants have type _sitebuiltins._Printer.  The
@@ -182,7 +182,7 @@ class AboutDialog(Toplevel):
         self._current_textview = textview.view_text(
             self, title, text, _utest=self._utest)
 
-    def display_file_text(self, title, filename, encoding=None):
+    eleza display_file_text(self, title, filename, encoding=None):
         """Create textview for filename.
 
         The filename needs to be in the current directory.  The path
@@ -193,13 +193,13 @@ class AboutDialog(Toplevel):
         self._current_textview = textview.view_file(
             self, title, fn, encoding, _utest=self._utest)
 
-    def ok(self, event=None):
+    eleza ok(self, event=None):
         "Dismiss help_about dialog."
         self.grab_release()
         self.destroy()
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_help_about', verbosity=2, exit=False)
 

@@ -17,13 +17,13 @@ Importing Modules
    leaving the *globals* and *locals* arguments set to *NULL* and *level* set
    to 0.  When the *name*
    argument contains a dot (when it specifies a submodule of a package), the
-   *fromlist* argument is set to the list ``['*']`` so that the return value is the
+   *kutokalist* argument is set to the list ``['*']`` so that the return value is the
    named module rather than the top-level package containing it as would otherwise
    be the case.  (Unfortunately, this has an additional side effect when *name* in
    fact specifies a subpackage instead of a submodule: the submodules specified in
    the package's ``__all__`` variable are  loaded.)  Return a new reference to the
    imported module, or *NULL* with an exception set on failure.  A failing
-   import of a module doesn't leave the module in :data:`sys.modules`.
+   agiza of a module doesn't leave the module in :data:`sys.modules`.
 
    This function always uses absolute imports.
 
@@ -33,13 +33,13 @@ Importing Modules
    This function is a deprecated alias of :c:func:`PyImport_ImportModule`.
 
    .. versionchanged:: 3.3
-      This function used to fail immediately when the import lock was held
+      This function used to fail immediately when the agiza lock was held
       by another thread.  In Python 3.3 though, the locking scheme switched
       to per-module locks for most purposes, so this function's special
       behaviour isn't needed anymore.
 
 
-.. c:function:: PyObject* PyImport_ImportModuleEx(const char *name, PyObject *globals, PyObject *locals, PyObject *fromlist)
+.. c:function:: PyObject* PyImport_ImportModuleEx(const char *name, PyObject *globals, PyObject *locals, PyObject *kutokalist)
 
    .. index:: builtin: __import__
 
@@ -49,14 +49,14 @@ Importing Modules
    The return value is a new reference to the imported module or top-level
    package, or *NULL* with an exception set on failure.  Like for
    :func:`__import__`, the return value when a submodule of a package was
-   requested is normally the top-level package, unless a non-empty *fromlist*
+   requested is normally the top-level package, unless a non-empty *kutokalist*
    was given.
 
    Failing imports remove incomplete module objects, like with
    :c:func:`PyImport_ImportModule`.
 
 
-.. c:function:: PyObject* PyImport_ImportModuleLevelObject(PyObject *name, PyObject *globals, PyObject *locals, PyObject *fromlist, int level)
+.. c:function:: PyObject* PyImport_ImportModuleLevelObject(PyObject *name, PyObject *globals, PyObject *locals, PyObject *kutokalist, int level)
 
    Import a module.  This is best described by referring to the built-in Python
    function :func:`__import__`, as the standard :func:`__import__` function calls
@@ -65,12 +65,12 @@ Importing Modules
    The return value is a new reference to the imported module or top-level package,
    or *NULL* with an exception set on failure.  Like for :func:`__import__`,
    the return value when a submodule of a package was requested is normally the
-   top-level package, unless a non-empty *fromlist* was given.
+   top-level package, unless a non-empty *kutokalist* was given.
 
    .. versionadded:: 3.3
 
 
-.. c:function:: PyObject* PyImport_ImportModuleLevel(const char *name, PyObject *globals, PyObject *locals, PyObject *fromlist, int level)
+.. c:function:: PyObject* PyImport_ImportModuleLevel(const char *name, PyObject *globals, PyObject *locals, PyObject *kutokalist, int level)
 
    Similar to :c:func:`PyImport_ImportModuleLevelObject`, but the name is a
    UTF-8 encoded string instead of a Unicode object.
@@ -80,10 +80,10 @@ Importing Modules
 
 .. c:function:: PyObject* PyImport_Import(PyObject *name)
 
-   This is a higher-level interface that calls the current "import hook
+   This is a higher-level interface that calls the current "agiza hook
    function" (with an explicit *level* of 0, meaning absolute import).  It
-   invokes the :func:`__import__` function from the ``__builtins__`` of the
-   current globals.  This means that the import is done using whatever import
+   invokes the :func:`__import__` function kutoka the ``__builtins__`` of the
+   current globals.  This means that the agiza is done using whatever import
    hooks are installed in the current environment.
 
    This function always uses absolute imports.
@@ -104,9 +104,9 @@ Importing Modules
 
    .. note::
 
-      This function does not load or import the module; if the module wasn't already
+      This function does not load or agiza the module; if the module wasn't already
       loaded, you will get an empty module object. Use :c:func:`PyImport_ImportModule`
-      or one of its variants to import a module.  Package structures implied by a
+      or one of its variants to agiza a module.  Package structures implied by a
       dotted name for *name* are not created if not already present.
 
    .. versionadded:: 3.3
@@ -123,10 +123,10 @@ Importing Modules
    .. index:: builtin: compile
 
    Given a module name (possibly of the form ``package.module``) and a code object
-   read from a Python bytecode file or obtained from the built-in function
+   read kutoka a Python bytecode file or obtained kutoka the built-in function
    :func:`compile`, load the module.  Return a new reference to the module object,
    or *NULL* with an exception set if an error occurred.  *name*
-   is removed from :attr:`sys.modules` in error cases, even if *name* was already
+   is removed kutoka :attr:`sys.modules` in error cases, even if *name* was already
    in :attr:`sys.modules` on entry to :c:func:`PyImport_ExecCodeModule`.  Leaving
    incompletely initialized modules in :attr:`sys.modules` is dangerous, as imports of
    such modules have no way to know that the module object is an unknown (and
@@ -172,12 +172,12 @@ Importing Modules
 
    Like :c:func:`PyImport_ExecCodeModuleObject`, but *name*, *pathname* and
    *cpathname* are UTF-8 encoded strings. Attempts are also made to figure out
-   what the value for *pathname* should be from *cpathname* if the former is
+   what the value for *pathname* should be kutoka *cpathname* if the former is
    set to ``NULL``.
 
    .. versionadded:: 3.2
    .. versionchanged:: 3.3
-      Uses :func:`imp.source_from_cache()` in calculating the source path if
+      Uses :func:`imp.source_kutoka_cache()` in calculating the source path if
       only the bytecode path is provided.
 
 
@@ -215,7 +215,7 @@ Importing Modules
 .. c:function:: PyObject* PyImport_GetImporter(PyObject *path)
 
    Return a finder object for a :data:`sys.path`/:attr:`pkg.__path__` item
-   *path*, possibly by fetching it from the :data:`sys.path_importer_cache`
+   *path*, possibly by fetching it kutoka the :data:`sys.path_importer_cache`
    dict.  If it wasn't yet cached, traverse :data:`sys.path_hooks` until a hook
    is found that can handle the path item.  Return ``None`` if no hook could;
    this tells our caller that the :term:`path based finder` could not find a
@@ -225,7 +225,7 @@ Importing Modules
 
 .. c:function:: void _PyImport_Init()
 
-   Initialize the import mechanism.  For internal use only.
+   Initialize the agiza mechanism.  For internal use only.
 
 
 .. c:function:: void PyImport_Cleanup()
@@ -235,7 +235,7 @@ Importing Modules
 
 .. c:function:: void _PyImport_Fini()
 
-   Finalize the import mechanism.  For internal use only.
+   Finalize the agiza mechanism.  For internal use only.
 
 
 .. c:function:: int PyImport_ImportFrozenModuleObject(PyObject *name)

@@ -86,7 +86,7 @@ def _bootstrap(*, root=None, upgrade=False, user=False,
     if altinstall:
         # omit pip, pipX and easy_install
         os.environ["ENSUREPIP_OPTIONS"] = "altinstall"
-    elif not default_pip:
+    lasivyo not default_pip:
         # omit pip and easy_install
         os.environ["ENSUREPIP_OPTIONS"] = "install"
 

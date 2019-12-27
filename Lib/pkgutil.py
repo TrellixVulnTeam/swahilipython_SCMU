@@ -23,36 +23,36 @@ ModuleInfo = namedtuple('ModuleInfo', 'module_finder name ispkg')
 ModuleInfo.__doc__ = 'A namedtuple with minimal info about a module.'
 
 
-def _get_spec(finder, name):
+eleza _get_spec(finder, name):
     """Return the finder-specific module spec."""
     # Works with legacy finders.
     try:
         find_spec = finder.find_spec
     except AttributeError:
         loader = finder.find_module(name)
-        if loader is None:
-            return None
-        return importlib.util.spec_from_loader(name, loader)
+        ikiwa loader is None:
+            rudisha None
+        rudisha importlib.util.spec_kutoka_loader(name, loader)
     else:
-        return find_spec(name)
+        rudisha find_spec(name)
 
 
-def read_code(stream):
+eleza read_code(stream):
     # This helper is needed in order for the PEP 302 emulation to
     # correctly handle compiled files
     agiza marshal
 
     magic = stream.read(4)
-    if magic != importlib.util.MAGIC_NUMBER:
-        return None
+    ikiwa magic != importlib.util.MAGIC_NUMBER:
+        rudisha None
 
     stream.read(12) # Skip rest of the header
-    return marshal.load(stream)
+    rudisha marshal.load(stream)
 
 
-def walk_packages(path=None, prefix='', onerror=None):
+eleza walk_packages(path=None, prefix='', onerror=None):
     """Yields ModuleInfo for all modules recursively
-    on path, or, if path is None, all accessible modules.
+    on path, or, ikiwa path is None, all accessible modules.
 
     'path' should be either None or a list of paths to look for
     modules in.
@@ -65,7 +65,7 @@ def walk_packages(path=None, prefix='', onerror=None):
     attribute to find submodules.
 
     'onerror' is a function which gets called with one argument (the
-    name of the package which was being imported) if any exception
+    name of the package which was being imported) ikiwa any exception
     occurs while trying to agiza a package.  If no onerror function is
     supplied, ImportErrors are caught and ignored, while all other
     exceptions are propagated, terminating the search.
@@ -79,22 +79,22 @@ def walk_packages(path=None, prefix='', onerror=None):
     walk_packages(ctypes.__path__, ctypes.__name__+'.')
     """
 
-    def seen(p, m={}):
-        if p in m:
-            return True
+    eleza seen(p, m={}):
+        ikiwa p in m:
+            rudisha True
         m[p] = True
 
     for info in iter_modules(path, prefix):
         yield info
 
-        if info.ispkg:
+        ikiwa info.ispkg:
             try:
                 __import__(info.name)
             except ImportError:
-                if onerror is not None:
+                ikiwa onerror is not None:
                     onerror(info.name)
             except Exception:
-                if onerror is not None:
+                ikiwa onerror is not None:
                     onerror(info.name)
                 else:
                     raise
@@ -102,14 +102,14 @@ def walk_packages(path=None, prefix='', onerror=None):
                 path = getattr(sys.modules[info.name], '__path__', None) or []
 
                 # don't traverse path items we've seen before
-                path = [p for p in path if not seen(p)]
+                path = [p for p in path ikiwa not seen(p)]
 
                 yield kutoka walk_packages(path, info.name+'.', onerror)
 
 
-def iter_modules(path=None, prefix=''):
+eleza iter_modules(path=None, prefix=''):
     """Yields ModuleInfo for all submodules on path,
-    or, if path is None, all top-level modules on sys.path.
+    or, ikiwa path is None, all top-level modules on sys.path.
 
     'path' should be either None or a list of paths to look for
     modules in.
@@ -117,9 +117,9 @@ def iter_modules(path=None, prefix=''):
     'prefix' is a string to output on the front of every module name
     on output.
     """
-    if path is None:
+    ikiwa path is None:
         importers = iter_importers()
-    elif isinstance(path, str):
+    elikiwa isinstance(path, str):
         raise ValueError("path must be None or list of paths to look for "
                         "modules in")
     else:
@@ -128,21 +128,21 @@ def iter_modules(path=None, prefix=''):
     yielded = {}
     for i in importers:
         for name, ispkg in iter_importer_modules(i, prefix):
-            if name not in yielded:
+            ikiwa name not in yielded:
                 yielded[name] = 1
                 yield ModuleInfo(i, name, ispkg)
 
 
 @simplegeneric
-def iter_importer_modules(importer, prefix=''):
-    if not hasattr(importer, 'iter_modules'):
-        return []
-    return importer.iter_modules(prefix)
+eleza iter_importer_modules(importer, prefix=''):
+    ikiwa not hasattr(importer, 'iter_modules'):
+        rudisha []
+    rudisha importer.iter_modules(prefix)
 
 
 # Implement a file walker for the normal importlib path hook
-def _iter_file_finder_modules(importer, prefix=''):
-    if importer.path is None or not os.path.isdir(importer.path):
+eleza _iter_file_finder_modules(importer, prefix=''):
+    ikiwa importer.path is None or not os.path.isdir(importer.path):
         return
 
     yielded = {}
@@ -156,13 +156,13 @@ def _iter_file_finder_modules(importer, prefix=''):
 
     for fn in filenames:
         modname = inspect.getmodulename(fn)
-        if modname=='__init__' or modname in yielded:
+        ikiwa modname=='__init__' or modname in yielded:
             continue
 
         path = os.path.join(importer.path, fn)
         ispkg = False
 
-        if not modname and os.path.isdir(path) and '.' not in fn:
+        ikiwa not modname and os.path.isdir(path) and '.' not in fn:
             modname = fn
             try:
                 dircontents = os.listdir(path)
@@ -171,13 +171,13 @@ def _iter_file_finder_modules(importer, prefix=''):
                 dircontents = []
             for fn in dircontents:
                 subname = inspect.getmodulename(fn)
-                if subname=='__init__':
+                ikiwa subname=='__init__':
                     ispkg = True
                     break
             else:
                 continue    # not a package
 
-        if modname and '.' not in modname:
+        ikiwa modname and '.' not in modname:
             yielded[modname] = 1
             yield prefix + modname, ispkg
 
@@ -185,13 +185,13 @@ iter_importer_modules.register(
     importlib.machinery.FileFinder, _iter_file_finder_modules)
 
 
-def _import_imp():
+eleza _import_imp():
     global imp
     with warnings.catch_warnings():
         warnings.simplefilter('ignore', DeprecationWarning)
         imp = importlib.import_module('imp')
 
-class ImpImporter:
+kundi ImpImporter:
     """PEP 302 Finder that wraps Python's "classic" agiza algorithm
 
     ImpImporter(dirname) produces a PEP 302 finder that searches that
@@ -202,30 +202,30 @@ class ImpImporter:
     on sys.meta_path.
     """
 
-    def __init__(self, path=None):
+    eleza __init__(self, path=None):
         global imp
         warnings.warn("This emulation is deprecated, use 'importlib' instead",
              DeprecationWarning)
         _import_imp()
         self.path = path
 
-    def find_module(self, fullname, path=None):
+    eleza find_module(self, fullname, path=None):
         # Note: we ignore 'path' argument since it is only used via meta_path
         subname = fullname.split(".")[-1]
-        if subname != fullname and self.path is None:
-            return None
-        if self.path is None:
+        ikiwa subname != fullname and self.path is None:
+            rudisha None
+        ikiwa self.path is None:
             path = None
         else:
             path = [os.path.realpath(self.path)]
         try:
             file, filename, etc = imp.find_module(subname, path)
         except ImportError:
-            return None
-        return ImpLoader(fullname, file, filename, etc)
+            rudisha None
+        rudisha ImpLoader(fullname, file, filename, etc)
 
-    def iter_modules(self, prefix=''):
-        if self.path is None or not os.path.isdir(self.path):
+    eleza iter_modules(self, prefix=''):
+        ikiwa self.path is None or not os.path.isdir(self.path):
             return
 
         yielded = {}
@@ -239,13 +239,13 @@ class ImpImporter:
 
         for fn in filenames:
             modname = inspect.getmodulename(fn)
-            if modname=='__init__' or modname in yielded:
+            ikiwa modname=='__init__' or modname in yielded:
                 continue
 
             path = os.path.join(self.path, fn)
             ispkg = False
 
-            if not modname and os.path.isdir(path) and '.' not in fn:
+            ikiwa not modname and os.path.isdir(path) and '.' not in fn:
                 modname = fn
                 try:
                     dircontents = os.listdir(path)
@@ -254,23 +254,23 @@ class ImpImporter:
                     dircontents = []
                 for fn in dircontents:
                     subname = inspect.getmodulename(fn)
-                    if subname=='__init__':
+                    ikiwa subname=='__init__':
                         ispkg = True
                         break
                 else:
                     continue    # not a package
 
-            if modname and '.' not in modname:
+            ikiwa modname and '.' not in modname:
                 yielded[modname] = 1
                 yield prefix + modname, ispkg
 
 
-class ImpLoader:
+kundi ImpLoader:
     """PEP 302 Loader that wraps Python's "classic" agiza algorithm
     """
     code = source = None
 
-    def __init__(self, fullname, file, filename, etc):
+    eleza __init__(self, fullname, file, filename, etc):
         warnings.warn("This emulation is deprecated, use 'importlib' instead",
                       DeprecationWarning)
         _import_imp()
@@ -279,120 +279,120 @@ class ImpLoader:
         self.fullname = fullname
         self.etc = etc
 
-    def load_module(self, fullname):
+    eleza load_module(self, fullname):
         self._reopen()
         try:
             mod = imp.load_module(fullname, self.file, self.filename, self.etc)
         finally:
-            if self.file:
+            ikiwa self.file:
                 self.file.close()
         # Note: we don't set __loader__ because we want the module to look
         # normal; i.e. this is just a wrapper for standard agiza machinery
-        return mod
+        rudisha mod
 
-    def get_data(self, pathname):
+    eleza get_data(self, pathname):
         with open(pathname, "rb") as file:
-            return file.read()
+            rudisha file.read()
 
-    def _reopen(self):
-        if self.file and self.file.closed:
+    eleza _reopen(self):
+        ikiwa self.file and self.file.closed:
             mod_type = self.etc[2]
-            if mod_type==imp.PY_SOURCE:
+            ikiwa mod_type==imp.PY_SOURCE:
                 self.file = open(self.filename, 'r')
-            elif mod_type in (imp.PY_COMPILED, imp.C_EXTENSION):
+            elikiwa mod_type in (imp.PY_COMPILED, imp.C_EXTENSION):
                 self.file = open(self.filename, 'rb')
 
-    def _fix_name(self, fullname):
-        if fullname is None:
+    eleza _fix_name(self, fullname):
+        ikiwa fullname is None:
             fullname = self.fullname
-        elif fullname != self.fullname:
+        elikiwa fullname != self.fullname:
             raise ImportError("Loader for module %s cannot handle "
                               "module %s" % (self.fullname, fullname))
-        return fullname
+        rudisha fullname
 
-    def is_package(self, fullname):
+    eleza is_package(self, fullname):
         fullname = self._fix_name(fullname)
-        return self.etc[2]==imp.PKG_DIRECTORY
+        rudisha self.etc[2]==imp.PKG_DIRECTORY
 
-    def get_code(self, fullname=None):
+    eleza get_code(self, fullname=None):
         fullname = self._fix_name(fullname)
-        if self.code is None:
+        ikiwa self.code is None:
             mod_type = self.etc[2]
-            if mod_type==imp.PY_SOURCE:
+            ikiwa mod_type==imp.PY_SOURCE:
                 source = self.get_source(fullname)
                 self.code = compile(source, self.filename, 'exec')
-            elif mod_type==imp.PY_COMPILED:
+            elikiwa mod_type==imp.PY_COMPILED:
                 self._reopen()
                 try:
                     self.code = read_code(self.file)
                 finally:
                     self.file.close()
-            elif mod_type==imp.PKG_DIRECTORY:
+            elikiwa mod_type==imp.PKG_DIRECTORY:
                 self.code = self._get_delegate().get_code()
-        return self.code
+        rudisha self.code
 
-    def get_source(self, fullname=None):
+    eleza get_source(self, fullname=None):
         fullname = self._fix_name(fullname)
-        if self.source is None:
+        ikiwa self.source is None:
             mod_type = self.etc[2]
-            if mod_type==imp.PY_SOURCE:
+            ikiwa mod_type==imp.PY_SOURCE:
                 self._reopen()
                 try:
                     self.source = self.file.read()
                 finally:
                     self.file.close()
-            elif mod_type==imp.PY_COMPILED:
-                if os.path.exists(self.filename[:-1]):
+            elikiwa mod_type==imp.PY_COMPILED:
+                ikiwa os.path.exists(self.filename[:-1]):
                     with open(self.filename[:-1], 'r') as f:
                         self.source = f.read()
-            elif mod_type==imp.PKG_DIRECTORY:
+            elikiwa mod_type==imp.PKG_DIRECTORY:
                 self.source = self._get_delegate().get_source()
-        return self.source
+        rudisha self.source
 
-    def _get_delegate(self):
+    eleza _get_delegate(self):
         finder = ImpImporter(self.filename)
         spec = _get_spec(finder, '__init__')
-        return spec.loader
+        rudisha spec.loader
 
-    def get_filename(self, fullname=None):
+    eleza get_filename(self, fullname=None):
         fullname = self._fix_name(fullname)
         mod_type = self.etc[2]
-        if mod_type==imp.PKG_DIRECTORY:
-            return self._get_delegate().get_filename()
-        elif mod_type in (imp.PY_SOURCE, imp.PY_COMPILED, imp.C_EXTENSION):
-            return self.filename
-        return None
+        ikiwa mod_type==imp.PKG_DIRECTORY:
+            rudisha self._get_delegate().get_filename()
+        elikiwa mod_type in (imp.PY_SOURCE, imp.PY_COMPILED, imp.C_EXTENSION):
+            rudisha self.filename
+        rudisha None
 
 
 try:
     agiza zipagiza
     kutoka zipagiza agiza zipimporter
 
-    def iter_zipimport_modules(importer, prefix=''):
+    eleza iter_zipimport_modules(importer, prefix=''):
         dirlist = sorted(zipagiza._zip_directory_cache[importer.archive])
         _prefix = importer.prefix
         plen = len(_prefix)
         yielded = {}
         agiza inspect
         for fn in dirlist:
-            if not fn.startswith(_prefix):
+            ikiwa not fn.startswith(_prefix):
                 continue
 
             fn = fn[plen:].split(os.sep)
 
-            if len(fn)==2 and fn[1].startswith('__init__.py'):
-                if fn[0] not in yielded:
+            ikiwa len(fn)==2 and fn[1].startswith('__init__.py'):
+                ikiwa fn[0] not in yielded:
                     yielded[fn[0]] = 1
                     yield prefix + fn[0], True
 
-            if len(fn)!=1:
+            ikiwa len(fn)!=1:
                 continue
 
             modname = inspect.getmodulename(fn[0])
-            if modname=='__init__':
+            ikiwa modname=='__init__':
                 continue
 
-            if modname and '.' not in modname and modname not in yielded:
+            ikiwa modname and '.' not in modname and modname not in yielded:
                 yielded[modname] = 1
                 yield prefix + modname, False
 
@@ -402,13 +402,13 @@ except ImportError:
     pass
 
 
-def get_importer(path_item):
+eleza get_importer(path_item):
     """Retrieve a finder for the given path item
 
     The returned finder is cached in sys.path_importer_cache
-    if it was newly created by a path hook.
+    ikiwa it was newly created by a path hook.
 
-    The cache (or part of it) can be cleared manually if a
+    The cache (or part of it) can be cleared manually ikiwa a
     rescan of sys.path_hooks is necessary.
     """
     try:
@@ -423,10 +423,10 @@ def get_importer(path_item):
                 pass
         else:
             importer = None
-    return importer
+    rudisha importer
 
 
-def iter_importers(fullname=""):
+eleza iter_importers(fullname=""):
     """Yield finders for the given module name
 
     If fullname contains a '.', the finders will be for the package
@@ -438,15 +438,15 @@ def iter_importers(fullname=""):
 
     If no module name is specified, all top level finders are produced.
     """
-    if fullname.startswith('.'):
+    ikiwa fullname.startswith('.'):
         msg = "Relative module name {!r} not supported".format(fullname)
         raise ImportError(msg)
-    if '.' in fullname:
+    ikiwa '.' in fullname:
         # Get the containing package's __path__
         pkg_name = fullname.rpartition(".")[0]
         pkg = importlib.import_module(pkg_name)
         path = getattr(pkg, '__path__', None)
-        if path is None:
+        ikiwa path is None:
             return
     else:
         yield kutoka sys.meta_path
@@ -455,38 +455,38 @@ def iter_importers(fullname=""):
         yield get_importer(item)
 
 
-def get_loader(module_or_name):
+eleza get_loader(module_or_name):
     """Get a "loader" object for module_or_name
 
-    Returns None if the module cannot be found or imported.
+    Returns None ikiwa the module cannot be found or imported.
     If the named module is not already imported, its containing package
-    (if any) is imported, in order to establish the package __path__.
+    (ikiwa any) is imported, in order to establish the package __path__.
     """
-    if module_or_name in sys.modules:
+    ikiwa module_or_name in sys.modules:
         module_or_name = sys.modules[module_or_name]
-        if module_or_name is None:
-            return None
-    if isinstance(module_or_name, ModuleType):
+        ikiwa module_or_name is None:
+            rudisha None
+    ikiwa isinstance(module_or_name, ModuleType):
         module = module_or_name
         loader = getattr(module, '__loader__', None)
-        if loader is not None:
-            return loader
-        if getattr(module, '__spec__', None) is None:
-            return None
+        ikiwa loader is not None:
+            rudisha loader
+        ikiwa getattr(module, '__spec__', None) is None:
+            rudisha None
         fullname = module.__name__
     else:
         fullname = module_or_name
-    return find_loader(fullname)
+    rudisha find_loader(fullname)
 
 
-def find_loader(fullname):
+eleza find_loader(fullname):
     """Find a "loader" object for fullname
 
     This is a backwards compatibility wrapper around
     importlib.util.find_spec that converts most failures to ImportError
     and only returns the loader rather than the full spec
     """
-    if fullname.startswith('.'):
+    ikiwa fullname.startswith('.'):
         msg = "Relative module name {!r} not supported".format(fullname)
         raise ImportError(msg)
     try:
@@ -497,10 +497,10 @@ def find_loader(fullname):
         # pkgutil previously raised ImportError
         msg = "Error while finding loader for {!r} ({}: {})"
         raise ImportError(msg.format(fullname, type(ex), ex)) kutoka ex
-    return spec.loader if spec is not None else None
+    rudisha spec.loader ikiwa spec is not None else None
 
 
-def extend_path(path, name):
+eleza extend_path(path, name):
     """Extend a package's path.
 
     Intended use is to place the following code in a package's __init__.py:
@@ -510,7 +510,7 @@ def extend_path(path, name):
 
     This will add to the package's __path__ all subdirectories of
     directories on sys.path named after the package.  This is useful
-    if one wants to distribute different parts of a single logical
+    ikiwa one wants to distribute different parts of a single logical
     package as multiple directories.
 
     It also looks for *.pkg files beginning where * matches the name
@@ -533,51 +533,51 @@ def extend_path(path, name):
     exception (in line with os.path.isdir() behavior).
     """
 
-    if not isinstance(path, list):
+    ikiwa not isinstance(path, list):
         # This could happen e.g. when this is called kutoka inside a
         # frozen package.  Return the path unchanged in that case.
-        return path
+        rudisha path
 
     sname_pkg = name + ".pkg"
 
     path = path[:] # Start with a copy of the existing path
 
     parent_package, _, final_name = name.rpartition('.')
-    if parent_package:
+    ikiwa parent_package:
         try:
             search_path = sys.modules[parent_package].__path__
         except (KeyError, AttributeError):
             # We can't do anything: find_loader() returns None when
             # passed a dotted name.
-            return path
+            rudisha path
     else:
         search_path = sys.path
 
     for dir in search_path:
-        if not isinstance(dir, str):
+        ikiwa not isinstance(dir, str):
             continue
 
         finder = get_importer(dir)
-        if finder is not None:
+        ikiwa finder is not None:
             portions = []
-            if hasattr(finder, 'find_spec'):
+            ikiwa hasattr(finder, 'find_spec'):
                 spec = finder.find_spec(final_name)
-                if spec is not None:
+                ikiwa spec is not None:
                     portions = spec.submodule_search_locations or []
             # Is this finder PEP 420 compliant?
-            elif hasattr(finder, 'find_loader'):
+            elikiwa hasattr(finder, 'find_loader'):
                 _, portions = finder.find_loader(final_name)
 
             for portion in portions:
                 # XXX This may still add duplicate entries to path on
                 # case-insensitive filesystems
-                if portion not in path:
+                ikiwa portion not in path:
                     path.append(portion)
 
         # XXX Is this the right thing for subpackages like zope.app?
         # It looks for a file named "zope.app.pkg"
         pkgfile = os.path.join(dir, sname_pkg)
-        if os.path.isfile(pkgfile):
+        ikiwa os.path.isfile(pkgfile):
             try:
                 f = open(pkgfile)
             except OSError as msg:
@@ -587,14 +587,14 @@ def extend_path(path, name):
                 with f:
                     for line in f:
                         line = line.rstrip('\n')
-                        if not line or line.startswith('#'):
+                        ikiwa not line or line.startswith('#'):
                             continue
                         path.append(line) # Don't check for existence!
 
-    return path
+    rudisha path
 
 
-def get_data(package, resource):
+eleza get_data(package, resource):
     """Get a resource kutoka a package.
 
     This is a wrapper round the PEP 302 loader get_data API. The package
@@ -617,16 +617,16 @@ def get_data(package, resource):
     """
 
     spec = importlib.util.find_spec(package)
-    if spec is None:
-        return None
+    ikiwa spec is None:
+        rudisha None
     loader = spec.loader
-    if loader is None or not hasattr(loader, 'get_data'):
-        return None
+    ikiwa loader is None or not hasattr(loader, 'get_data'):
+        rudisha None
     # XXX needs test
     mod = (sys.modules.get(package) or
            importlib._bootstrap._load(spec))
-    if mod is None or not hasattr(mod, '__file__'):
-        return None
+    ikiwa mod is None or not hasattr(mod, '__file__'):
+        rudisha None
 
     # Modify the resource name to be compatible with the loader.get_data
     # signature - an os.path format "filename" starting with the dirname of
@@ -634,4 +634,4 @@ def get_data(package, resource):
     parts = resource.split('/')
     parts.insert(0, os.path.dirname(mod.__file__))
     resource_name = os.path.join(*parts)
-    return loader.get_data(resource_name)
+    rudisha loader.get_data(resource_name)

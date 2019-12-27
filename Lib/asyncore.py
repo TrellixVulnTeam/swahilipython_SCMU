@@ -31,7 +31,7 @@ There are only two ways to have a program on a single processor do "more
 than one thing at a time".  Multi-threaded programming is the simplest and
 most popular way to do it, but there is another very different technique,
 that lets you have nearly all the advantages of multi-threading, without
-actually using multiple threads. it's really only practical if your program
+actually using multiple threads. it's really only practical ikiwa your program
 is largely I/O bound. If your program is CPU bound, then pre-emptive
 scheduled threads are probably what you really need. Network servers are
 rarely CPU-bound, however.
@@ -65,20 +65,20 @@ try:
 except NameError:
     socket_map = {}
 
-def _strerror(err):
+eleza _strerror(err):
     try:
-        return os.strerror(err)
+        rudisha os.strerror(err)
     except (ValueError, OverflowError, NameError):
-        if err in errorcode:
-            return errorcode[err]
-        return "Unknown error %s" %err
+        ikiwa err in errorcode:
+            rudisha errorcode[err]
+        rudisha "Unknown error %s" %err
 
-class ExitNow(Exception):
+kundi ExitNow(Exception):
     pass
 
 _reraised_exceptions = (ExitNow, KeyboardInterrupt, SystemExit)
 
-def read(obj):
+eleza read(obj):
     try:
         obj.handle_read_event()
     except _reraised_exceptions:
@@ -86,7 +86,7 @@ def read(obj):
     except:
         obj.handle_error()
 
-def write(obj):
+eleza write(obj):
     try:
         obj.handle_write_event()
     except _reraised_exceptions:
@@ -94,7 +94,7 @@ def write(obj):
     except:
         obj.handle_error()
 
-def _exception(obj):
+eleza _exception(obj):
     try:
         obj.handle_expt_event()
     except _reraised_exceptions:
@@ -102,18 +102,18 @@ def _exception(obj):
     except:
         obj.handle_error()
 
-def readwrite(obj, flags):
+eleza readwrite(obj, flags):
     try:
-        if flags & select.POLLIN:
+        ikiwa flags & select.POLLIN:
             obj.handle_read_event()
-        if flags & select.POLLOUT:
+        ikiwa flags & select.POLLOUT:
             obj.handle_write_event()
-        if flags & select.POLLPRI:
+        ikiwa flags & select.POLLPRI:
             obj.handle_expt_event()
-        if flags & (select.POLLHUP | select.POLLERR | select.POLLNVAL):
+        ikiwa flags & (select.POLLHUP | select.POLLERR | select.POLLNVAL):
             obj.handle_close()
     except OSError as e:
-        if e.args[0] not in _DISCONNECTED:
+        ikiwa e.args[0] not in _DISCONNECTED:
             obj.handle_error()
         else:
             obj.handle_close()
@@ -122,22 +122,22 @@ def readwrite(obj, flags):
     except:
         obj.handle_error()
 
-def poll(timeout=0.0, map=None):
-    if map is None:
+eleza poll(timeout=0.0, map=None):
+    ikiwa map is None:
         map = socket_map
-    if map:
+    ikiwa map:
         r = []; w = []; e = []
         for fd, obj in list(map.items()):
             is_r = obj.readable()
             is_w = obj.writable()
-            if is_r:
+            ikiwa is_r:
                 r.append(fd)
             # accepting sockets should not be writable
-            if is_w and not obj.accepting:
+            ikiwa is_w and not obj.accepting:
                 w.append(fd)
-            if is_r or is_w:
+            ikiwa is_r or is_w:
                 e.append(fd)
-        if [] == r == w == e:
+        ikiwa [] == r == w == e:
             time.sleep(timeout)
             return
 
@@ -145,60 +145,60 @@ def poll(timeout=0.0, map=None):
 
         for fd in r:
             obj = map.get(fd)
-            if obj is None:
+            ikiwa obj is None:
                 continue
             read(obj)
 
         for fd in w:
             obj = map.get(fd)
-            if obj is None:
+            ikiwa obj is None:
                 continue
             write(obj)
 
         for fd in e:
             obj = map.get(fd)
-            if obj is None:
+            ikiwa obj is None:
                 continue
             _exception(obj)
 
-def poll2(timeout=0.0, map=None):
+eleza poll2(timeout=0.0, map=None):
     # Use the poll() support added to the select module in Python 2.0
-    if map is None:
+    ikiwa map is None:
         map = socket_map
-    if timeout is not None:
+    ikiwa timeout is not None:
         # timeout is in milliseconds
         timeout = int(timeout*1000)
     pollster = select.poll()
-    if map:
+    ikiwa map:
         for fd, obj in list(map.items()):
             flags = 0
-            if obj.readable():
+            ikiwa obj.readable():
                 flags |= select.POLLIN | select.POLLPRI
             # accepting sockets should not be writable
-            if obj.writable() and not obj.accepting:
+            ikiwa obj.writable() and not obj.accepting:
                 flags |= select.POLLOUT
-            if flags:
+            ikiwa flags:
                 pollster.register(fd, flags)
 
         r = pollster.poll(timeout)
         for fd, flags in r:
             obj = map.get(fd)
-            if obj is None:
+            ikiwa obj is None:
                 continue
             readwrite(obj, flags)
 
 poll3 = poll2                           # Alias for backward compatibility
 
-def loop(timeout=30.0, use_poll=False, map=None, count=None):
-    if map is None:
+eleza loop(timeout=30.0, use_poll=False, map=None, count=None):
+    ikiwa map is None:
         map = socket_map
 
-    if use_poll and hasattr(select, 'poll'):
+    ikiwa use_poll and hasattr(select, 'poll'):
         poll_fun = poll2
     else:
         poll_fun = poll
 
-    if count is None:
+    ikiwa count is None:
         while map:
             poll_fun(timeout, map)
 
@@ -207,7 +207,7 @@ def loop(timeout=30.0, use_poll=False, map=None, count=None):
             poll_fun(timeout, map)
             count = count - 1
 
-class dispatcher:
+kundi dispatcher:
 
     debug = False
     connected = False
@@ -217,15 +217,15 @@ class dispatcher:
     addr = None
     ignore_log_types = frozenset({'warning'})
 
-    def __init__(self, sock=None, map=None):
-        if map is None:
+    eleza __init__(self, sock=None, map=None):
+        ikiwa map is None:
             self._map = socket_map
         else:
             self._map = map
 
         self._fileno = None
 
-        if sock:
+        ikiwa sock:
             # Set to nonblocking just to make sure for cases where we
             # get a socket kutoka a blocking source.
             sock.setblocking(0)
@@ -236,7 +236,7 @@ class dispatcher:
             try:
                 self.addr = sock.getpeername()
             except OSError as err:
-                if err.args[0] in (ENOTCONN, EINVAL):
+                ikiwa err.args[0] in (ENOTCONN, EINVAL):
                     # To handle the case where we got an unconnected
                     # socket.
                     self.connected = False
@@ -249,47 +249,47 @@ class dispatcher:
         else:
             self.socket = None
 
-    def __repr__(self):
+    eleza __repr__(self):
         status = [self.__class__.__module__+"."+self.__class__.__qualname__]
-        if self.accepting and self.addr:
+        ikiwa self.accepting and self.addr:
             status.append('listening')
-        elif self.connected:
+        elikiwa self.connected:
             status.append('connected')
-        if self.addr is not None:
+        ikiwa self.addr is not None:
             try:
                 status.append('%s:%d' % self.addr)
             except TypeError:
                 status.append(repr(self.addr))
-        return '<%s at %#x>' % (' '.join(status), id(self))
+        rudisha '<%s at %#x>' % (' '.join(status), id(self))
 
-    def add_channel(self, map=None):
+    eleza add_channel(self, map=None):
         #self.log_info('adding channel %s' % self)
-        if map is None:
+        ikiwa map is None:
             map = self._map
         map[self._fileno] = self
 
-    def del_channel(self, map=None):
+    eleza del_channel(self, map=None):
         fd = self._fileno
-        if map is None:
+        ikiwa map is None:
             map = self._map
-        if fd in map:
+        ikiwa fd in map:
             #self.log_info('closing channel %d:%s' % (fd, self))
             del map[fd]
         self._fileno = None
 
-    def create_socket(self, family=socket.AF_INET, type=socket.SOCK_STREAM):
+    eleza create_socket(self, family=socket.AF_INET, type=socket.SOCK_STREAM):
         self.family_and_type = family, type
         sock = socket.socket(family, type)
         sock.setblocking(0)
         self.set_socket(sock)
 
-    def set_socket(self, sock, map=None):
+    eleza set_socket(self, sock, map=None):
         self.socket = sock
         self._fileno = sock.fileno()
         self.add_channel(map)
 
-    def set_reuse_addr(self):
-        # try to re-use a server port if possible
+    eleza set_reuse_addr(self):
+        # try to re-use a server port ikiwa possible
         try:
             self.socket.setsockopt(
                 socket.SOL_SOCKET, socket.SO_REUSEADDR,
@@ -305,145 +305,145 @@ class dispatcher:
     # to pass to select().
     # ==================================================
 
-    def readable(self):
-        return True
+    eleza readable(self):
+        rudisha True
 
-    def writable(self):
-        return True
+    eleza writable(self):
+        rudisha True
 
     # ==================================================
     # socket object methods.
     # ==================================================
 
-    def listen(self, num):
+    eleza listen(self, num):
         self.accepting = True
-        if os.name == 'nt' and num > 5:
+        ikiwa os.name == 'nt' and num > 5:
             num = 5
-        return self.socket.listen(num)
+        rudisha self.socket.listen(num)
 
-    def bind(self, addr):
+    eleza bind(self, addr):
         self.addr = addr
-        return self.socket.bind(addr)
+        rudisha self.socket.bind(addr)
 
-    def connect(self, address):
+    eleza connect(self, address):
         self.connected = False
         self.connecting = True
         err = self.socket.connect_ex(address)
-        if err in (EINPROGRESS, EALREADY, EWOULDBLOCK) \
+        ikiwa err in (EINPROGRESS, EALREADY, EWOULDBLOCK) \
         or err == EINVAL and os.name == 'nt':
             self.addr = address
             return
-        if err in (0, EISCONN):
+        ikiwa err in (0, EISCONN):
             self.addr = address
             self.handle_connect_event()
         else:
             raise OSError(err, errorcode[err])
 
-    def accept(self):
-        # XXX can return either an address pair or None
+    eleza accept(self):
+        # XXX can rudisha either an address pair or None
         try:
             conn, addr = self.socket.accept()
         except TypeError:
-            return None
+            rudisha None
         except OSError as why:
-            if why.args[0] in (EWOULDBLOCK, ECONNABORTED, EAGAIN):
-                return None
+            ikiwa why.args[0] in (EWOULDBLOCK, ECONNABORTED, EAGAIN):
+                rudisha None
             else:
                 raise
         else:
-            return conn, addr
+            rudisha conn, addr
 
-    def send(self, data):
+    eleza send(self, data):
         try:
             result = self.socket.send(data)
-            return result
+            rudisha result
         except OSError as why:
-            if why.args[0] == EWOULDBLOCK:
-                return 0
-            elif why.args[0] in _DISCONNECTED:
+            ikiwa why.args[0] == EWOULDBLOCK:
+                rudisha 0
+            elikiwa why.args[0] in _DISCONNECTED:
                 self.handle_close()
-                return 0
+                rudisha 0
             else:
                 raise
 
-    def recv(self, buffer_size):
+    eleza recv(self, buffer_size):
         try:
             data = self.socket.recv(buffer_size)
-            if not data:
+            ikiwa not data:
                 # a closed connection is indicated by signaling
-                # a read condition, and having recv() return 0.
+                # a read condition, and having recv() rudisha 0.
                 self.handle_close()
-                return b''
+                rudisha b''
             else:
-                return data
+                rudisha data
         except OSError as why:
             # winsock sometimes raises ENOTCONN
-            if why.args[0] in _DISCONNECTED:
+            ikiwa why.args[0] in _DISCONNECTED:
                 self.handle_close()
-                return b''
+                rudisha b''
             else:
                 raise
 
-    def close(self):
+    eleza close(self):
         self.connected = False
         self.accepting = False
         self.connecting = False
         self.del_channel()
-        if self.socket is not None:
+        ikiwa self.socket is not None:
             try:
                 self.socket.close()
             except OSError as why:
-                if why.args[0] not in (ENOTCONN, EBADF):
+                ikiwa why.args[0] not in (ENOTCONN, EBADF):
                     raise
 
     # log and log_info may be overridden to provide more sophisticated
     # logging and warning methods. In general, log is for 'hit' logging
     # and 'log_info' is for informational, warning and error logging.
 
-    def log(self, message):
+    eleza log(self, message):
         sys.stderr.write('log: %s\n' % str(message))
 
-    def log_info(self, message, type='info'):
-        if type not in self.ignore_log_types:
-            print('%s: %s' % (type, message))
+    eleza log_info(self, message, type='info'):
+        ikiwa type not in self.ignore_log_types:
+            andika('%s: %s' % (type, message))
 
-    def handle_read_event(self):
-        if self.accepting:
+    eleza handle_read_event(self):
+        ikiwa self.accepting:
             # accepting sockets are never connected, they "spawn" new
             # sockets that are connected
             self.handle_accept()
-        elif not self.connected:
-            if self.connecting:
+        elikiwa not self.connected:
+            ikiwa self.connecting:
                 self.handle_connect_event()
             self.handle_read()
         else:
             self.handle_read()
 
-    def handle_connect_event(self):
+    eleza handle_connect_event(self):
         err = self.socket.getsockopt(socket.SOL_SOCKET, socket.SO_ERROR)
-        if err != 0:
+        ikiwa err != 0:
             raise OSError(err, _strerror(err))
         self.handle_connect()
         self.connected = True
         self.connecting = False
 
-    def handle_write_event(self):
-        if self.accepting:
+    eleza handle_write_event(self):
+        ikiwa self.accepting:
             # Accepting sockets shouldn't get a write event.
             # We will pretend it didn't happen.
             return
 
-        if not self.connected:
-            if self.connecting:
+        ikiwa not self.connected:
+            ikiwa self.connecting:
                 self.handle_connect_event()
         self.handle_write()
 
-    def handle_expt_event(self):
-        # handle_expt_event() is called if there might be an error on the
-        # socket, or if there is OOB data
+    eleza handle_expt_event(self):
+        # handle_expt_event() is called ikiwa there might be an error on the
+        # socket, or ikiwa there is OOB data
         # check for the error condition first
         err = self.socket.getsockopt(socket.SOL_SOCKET, socket.SO_ERROR)
-        if err != 0:
+        ikiwa err != 0:
             # we can get here when select.select() says that there is an
             # exceptional condition on the socket
             # since there is an error, we'll go ahead and close the socket
@@ -453,7 +453,7 @@ class dispatcher:
         else:
             self.handle_expt()
 
-    def handle_error(self):
+    eleza handle_error(self):
         nil, t, v, tbinfo = compact_traceback()
 
         # sometimes a user repr method will crash.
@@ -473,28 +473,28 @@ class dispatcher:
             )
         self.handle_close()
 
-    def handle_expt(self):
+    eleza handle_expt(self):
         self.log_info('unhandled incoming priority event', 'warning')
 
-    def handle_read(self):
+    eleza handle_read(self):
         self.log_info('unhandled read event', 'warning')
 
-    def handle_write(self):
+    eleza handle_write(self):
         self.log_info('unhandled write event', 'warning')
 
-    def handle_connect(self):
+    eleza handle_connect(self):
         self.log_info('unhandled connect event', 'warning')
 
-    def handle_accept(self):
+    eleza handle_accept(self):
         pair = self.accept()
-        if pair is not None:
+        ikiwa pair is not None:
             self.handle_accepted(*pair)
 
-    def handle_accepted(self, sock, addr):
+    eleza handle_accepted(self, sock, addr):
         sock.close()
         self.log_info('unhandled accepted event', 'warning')
 
-    def handle_close(self):
+    eleza handle_close(self):
         self.log_info('unhandled close event', 'warning')
         self.close()
 
@@ -503,25 +503,25 @@ class dispatcher:
 # [for more sophisticated usage use asynchat.async_chat]
 # ---------------------------------------------------------------------------
 
-class dispatcher_with_send(dispatcher):
+kundi dispatcher_with_send(dispatcher):
 
-    def __init__(self, sock=None, map=None):
+    eleza __init__(self, sock=None, map=None):
         dispatcher.__init__(self, sock, map)
         self.out_buffer = b''
 
-    def initiate_send(self):
+    eleza initiate_send(self):
         num_sent = 0
         num_sent = dispatcher.send(self, self.out_buffer[:65536])
         self.out_buffer = self.out_buffer[num_sent:]
 
-    def handle_write(self):
+    eleza handle_write(self):
         self.initiate_send()
 
-    def writable(self):
-        return (not self.connected) or len(self.out_buffer)
+    eleza writable(self):
+        rudisha (not self.connected) or len(self.out_buffer)
 
-    def send(self, data):
-        if self.debug:
+    eleza send(self, data):
+        ikiwa self.debug:
             self.log_info('sending %s' % repr(data))
         self.out_buffer = self.out_buffer + data
         self.initiate_send()
@@ -530,10 +530,10 @@ class dispatcher_with_send(dispatcher):
 # used for debugging.
 # ---------------------------------------------------------------------------
 
-def compact_traceback():
+eleza compact_traceback():
     t, v, tb = sys.exc_info()
     tbinfo = []
-    if not tb: # Must have a traceback
+    ikiwa not tb: # Must have a traceback
         raise AssertionError("traceback does not exist")
     while tb:
         tbinfo.append((
@@ -548,23 +548,23 @@ def compact_traceback():
 
     file, function, line = tbinfo[-1]
     info = ' '.join(['[%s|%s|%s]' % x for x in tbinfo])
-    return (file, function, line), t, v, info
+    rudisha (file, function, line), t, v, info
 
-def close_all(map=None, ignore_all=False):
-    if map is None:
+eleza close_all(map=None, ignore_all=False):
+    ikiwa map is None:
         map = socket_map
     for x in list(map.values()):
         try:
             x.close()
         except OSError as x:
-            if x.args[0] == EBADF:
+            ikiwa x.args[0] == EBADF:
                 pass
-            elif not ignore_all:
+            elikiwa not ignore_all:
                 raise
         except _reraised_exceptions:
             raise
         except:
-            if not ignore_all:
+            ikiwa not ignore_all:
                 raise
     map.clear()
 
@@ -581,51 +581,51 @@ def close_all(map=None, ignore_all=False):
 #
 # Regardless, this is useful for pipes, and stdin/stdout...
 
-if os.name == 'posix':
-    class file_wrapper:
+ikiwa os.name == 'posix':
+    kundi file_wrapper:
         # Here we override just enough to make a file
         # look like a socket for the purposes of asyncore.
         # The passed fd is automatically os.dup()'d
 
-        def __init__(self, fd):
+        eleza __init__(self, fd):
             self.fd = os.dup(fd)
 
-        def __del__(self):
-            if self.fd >= 0:
+        eleza __del__(self):
+            ikiwa self.fd >= 0:
                 warnings.warn("unclosed file %r" % self, ResourceWarning,
                               source=self)
             self.close()
 
-        def recv(self, *args):
-            return os.read(self.fd, *args)
+        eleza recv(self, *args):
+            rudisha os.read(self.fd, *args)
 
-        def send(self, *args):
-            return os.write(self.fd, *args)
+        eleza send(self, *args):
+            rudisha os.write(self.fd, *args)
 
-        def getsockopt(self, level, optname, buflen=None):
-            if (level == socket.SOL_SOCKET and
+        eleza getsockopt(self, level, optname, buflen=None):
+            ikiwa (level == socket.SOL_SOCKET and
                 optname == socket.SO_ERROR and
                 not buflen):
-                return 0
+                rudisha 0
             raise NotImplementedError("Only asyncore specific behaviour "
                                       "implemented.")
 
         read = recv
         write = send
 
-        def close(self):
-            if self.fd < 0:
+        eleza close(self):
+            ikiwa self.fd < 0:
                 return
             fd = self.fd
             self.fd = -1
             os.close(fd)
 
-        def fileno(self):
-            return self.fd
+        eleza fileno(self):
+            rudisha self.fd
 
-    class file_dispatcher(dispatcher):
+    kundi file_dispatcher(dispatcher):
 
-        def __init__(self, fd, map=None):
+        eleza __init__(self, fd, map=None):
             dispatcher.__init__(self, None, map)
             self.connected = True
             try:
@@ -636,7 +636,7 @@ if os.name == 'posix':
             # set it to non-blocking mode
             os.set_blocking(fd, False)
 
-        def set_file(self, fd):
+        eleza set_file(self, fd):
             self.socket = file_wrapper(fd)
             self._fileno = self.socket.fileno()
             self.add_channel()

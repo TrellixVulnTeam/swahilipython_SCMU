@@ -48,7 +48,7 @@ solution is to create a separate process or thread to handle each request; the
 support asynchronous behaviour.
 
 Creating a server requires several steps.  First, you must create a request
-handler class by subclassing the :class:`BaseRequestHandler` class and
+handler kundi by subclassing the :class:`BaseRequestHandler` kundi and
 overriding its :meth:`~BaseRequestHandler.handle` method;
 this method will process incoming
 requests.  Second, you must instantiate one of the server classes, passing it
@@ -59,9 +59,9 @@ the server in a :keyword:`with` statement. Then call the
 process one or many requests.  Finally, call :meth:`~BaseServer.server_close`
 to close the socket (unless you used a :keyword:`!with` statement).
 
-When inheriting from :class:`ThreadingMixIn` for threaded connection behavior,
+When inheriting kutoka :class:`ThreadingMixIn` for threaded connection behavior,
 you should explicitly declare how you want your threads to behave on an abrupt
-shutdown.  The :class:`ThreadingMixIn` class defines an attribute
+shutdown.  The :class:`ThreadingMixIn` kundi defines an attribute
 *daemon_threads*, which indicates whether or not the server should wait for
 thread termination.  You should set the flag explicitly if you would like
 threads to behave autonomously; the default is :const:`False`, meaning that
@@ -92,7 +92,7 @@ synchronous servers of four types::
    | UDPServer |------->| UnixDatagramServer |
    +-----------+        +--------------------+
 
-Note that :class:`UnixDatagramServer` derives from :class:`UDPServer`, not from
+Note that :class:`UnixDatagramServer` derives kutoka :class:`UDPServer`, not kutoka
 :class:`UnixStreamServer` --- the only difference between an IP and a Unix
 stream server is the address family, which is simply repeated in both Unix
 server classes.
@@ -105,10 +105,10 @@ server classes.
    using these mix-in classes.  For instance, :class:`ThreadingUDPServer`
    is created as follows::
 
-      class ThreadingUDPServer(ThreadingMixIn, UDPServer):
+      kundi ThreadingUDPServer(ThreadingMixIn, UDPServer):
           pass
 
-   The mix-in class comes first, since it overrides a method defined in
+   The mix-in kundi comes first, since it overrides a method defined in
    :class:`UDPServer`.  Setting the various attributes also changes the
    behavior of the underlying server mechanism.
 
@@ -143,11 +143,11 @@ server classes.
    These classes are pre-defined using the mix-in classes.
 
 
-To implement a service, you must derive a class from :class:`BaseRequestHandler`
+To implement a service, you must derive a kundi kutoka :class:`BaseRequestHandler`
 and redefine its :meth:`~BaseRequestHandler.handle` method.
 You can then run various versions of
 the service by combining one of the server classes with your request handler
-class.  The request handler class must be different for datagram or stream
+class.  The request handler kundi must be different for datagram or stream
 services.  This can be hidden by using the handler subclasses
 :class:`StreamRequestHandler` or :class:`DatagramRequestHandler`.
 
@@ -159,7 +159,7 @@ each child.  In this case, you can use a threading server, but you will probably
 have to use locks to protect the integrity of the shared data.
 
 On the other hand, if you are building an HTTP server where all data is stored
-externally (for instance, in the file system), a synchronous class will
+externally (for instance, in the file system), a synchronous kundi will
 essentially render the service "deaf" while one request is being handled --
 which may be for a very long time if a client is slow to receive all the data it
 has requested.  Here a threading or forking server is appropriate.
@@ -167,7 +167,7 @@ has requested.  Here a threading or forking server is appropriate.
 In some cases, it may be appropriate to process part of a request synchronously,
 but to finish processing in a forked child depending on the request data.  This
 can be implemented by using a synchronous server and doing an explicit fork in
-the request handler class :meth:`~BaseRequestHandler.handle` method.
+the request handler kundi :meth:`~BaseRequestHandler.handle` method.
 
 Another approach to handling multiple simultaneous requests in an environment
 that supports neither threads nor :func:`~os.fork` (or where these are too
@@ -179,7 +179,7 @@ connected for a long time (if threads or subprocesses cannot be used).  See
 :mod:`asyncore` for another way to manage this.
 
 .. XXX should data and methods be intermingled, or separate?
-   how should the distinction between class and instance variables be drawn?
+   how should the distinction between kundi and instance variables be drawn?
 
 
 Server Objects
@@ -187,7 +187,7 @@ Server Objects
 
 .. class:: BaseServer(server_address, RequestHandlerClass)
 
-   This is the superclass of all Server objects in the module.  It defines the
+   This is the superkundi of all Server objects in the module.  It defines the
    interface, given below, but does not implement most of the methods, which is
    done in subclasses.  The two parameters are stored in the respective
    :attr:`server_address` and :attr:`RequestHandlerClass` attributes.
@@ -206,7 +206,7 @@ Server Objects
       order: :meth:`get_request`, :meth:`verify_request`, and
       :meth:`process_request`.  If the user-provided
       :meth:`~BaseRequestHandler.handle` method of the
-      handler class raises an exception, the server's :meth:`handle_error` method
+      handler kundi raises an exception, the server's :meth:`handle_error` method
       will be called.  If no request is received within :attr:`timeout`
       seconds, :meth:`handle_timeout` will be called and :meth:`handle_request`
       will return.
@@ -217,9 +217,9 @@ Server Objects
       Handle requests until an explicit :meth:`shutdown` request.  Poll for
       shutdown every *poll_interval* seconds.
       Ignores the :attr:`timeout` attribute.  It
-      also calls :meth:`service_actions`, which may be used by a subclass or mixin
+      also calls :meth:`service_actions`, which may be used by a subkundi or mixin
       to provide actions specific to a given service.  For example, the
-      :class:`ForkingMixIn` class uses :meth:`service_actions` to clean up zombie
+      :class:`ForkingMixIn` kundi uses :meth:`service_actions` to clean up zombie
       child processes.
 
       .. versionchanged:: 3.3
@@ -252,7 +252,7 @@ Server Objects
 
    .. attribute:: RequestHandlerClass
 
-      The user-provided request handler class; an instance of this class is created
+      The user-provided request handler class; an instance of this kundi is created
       for each request.
 
 
@@ -270,9 +270,9 @@ Server Objects
       The socket object on which the server will listen for incoming requests.
 
 
-   The server classes support the following class variables:
+   The server classes support the following kundi variables:
 
-   .. XXX should class variables be covered before instance variables, or vice versa?
+   .. XXX should kundi variables be covered before instance variables, or vice versa?
 
    .. attribute:: allow_reuse_address
 
@@ -285,7 +285,7 @@ Server Objects
       The size of the request queue.  If it takes a long time to process a single
       request, any requests that arrive while the server is busy are placed into a
       queue, up to :attr:`request_queue_size` requests.  Once the queue is full,
-      further requests from clients will get a "Connection denied" error.  The default
+      further requests kutoka clients will get a "Connection denied" error.  The default
       value is usually 5, but this can be overridden by subclasses.
 
 
@@ -317,7 +317,7 @@ Server Objects
 
    .. method:: get_request()
 
-      Must accept a request from the socket, and return a 2-tuple containing the *new*
+      Must accept a request kutoka the socket, and return a 2-tuple containing the *new*
       socket object to be used to communicate with the client, and the client's
       address.
 
@@ -330,7 +330,7 @@ Server Objects
       standard error and continue handling further requests.
 
       .. versionchanged:: 3.6
-         Now only called for exceptions derived from the :exc:`Exception`
+         Now only called for exceptions derived kutoka the :exc:`Exception`
          class.
 
 
@@ -386,10 +386,10 @@ Request Handler Objects
 
 .. class:: BaseRequestHandler
 
-   This is the superclass of all request handler objects.  It defines
-   the interface, given below.  A concrete request handler subclass must
+   This is the superkundi of all request handler objects.  It defines
+   the interface, given below.  A concrete request handler subkundi must
    define a new :meth:`handle` method, and can override any of
-   the other methods.  A new instance of the subclass is created for each
+   the other methods.  A new instance of the subkundi is created for each
    request.
 
 
@@ -447,11 +447,11 @@ Examples
 
 This is the server side::
 
-   import socketserver
+   agiza socketserver
 
-   class MyTCPHandler(socketserver.BaseRequestHandler):
+   kundi MyTCPHandler(socketserver.BaseRequestHandler):
        """
-       The request handler class for our server.
+       The request handler kundi for our server.
 
        It is instantiated once per connection to the server, and must
        override the handle() method to implement communication to the
@@ -475,10 +475,10 @@ This is the server side::
            # interrupt the program with Ctrl-C
            server.serve_forever()
 
-An alternative request handler class that makes use of streams (file-like
+An alternative request handler kundi that makes use of streams (file-like
 objects that simplify communication by providing the standard file interface)::
 
-   class MyTCPHandler(socketserver.StreamRequestHandler):
+   kundi MyTCPHandler(socketserver.StreamRequestHandler):
 
        def handle(self):
            # self.rfile is a file-like object created by the handler;
@@ -493,13 +493,13 @@ objects that simplify communication by providing the standard file interface)::
 The difference is that the ``readline()`` call in the second handler will call
 ``recv()`` multiple times until it encounters a newline character, while the
 single ``recv()`` call in the first handler will just return what has been sent
-from the client in one ``sendall()`` call.
+kutoka the client in one ``sendall()`` call.
 
 
 This is the client side::
 
-   import socket
-   import sys
+   agiza socket
+   agiza sys
 
    HOST, PORT = "localhost", 9999
    data = " ".join(sys.argv[1:])
@@ -510,7 +510,7 @@ This is the client side::
        sock.connect((HOST, PORT))
        sock.sendall(bytes(data + "\n", "utf-8"))
 
-       # Receive data from the server and shut down
+       # Receive data kutoka the server and shut down
        received = str(sock.recv(1024), "utf-8")
 
    print("Sent:     {}".format(data))
@@ -546,11 +546,11 @@ Client:
 
 This is the server side::
 
-   import socketserver
+   agiza socketserver
 
-   class MyUDPHandler(socketserver.BaseRequestHandler):
+   kundi MyUDPHandler(socketserver.BaseRequestHandler):
        """
-       This class works similar to the TCP handler class, except that
+       This kundi works similar to the TCP handler class, except that
        self.request consists of a pair of data and client socket, and since
        there is no connection the client address must be given explicitly
        when sending data back via sendto().
@@ -570,8 +570,8 @@ This is the server side::
 
 This is the client side::
 
-   import socket
-   import sys
+   agiza socket
+   agiza sys
 
    HOST, PORT = "localhost", 9999
    data = " ".join(sys.argv[1:])
@@ -598,11 +598,11 @@ To build asynchronous handlers, use the :class:`ThreadingMixIn` and
 
 An example for the :class:`ThreadingMixIn` class::
 
-   import socket
-   import threading
-   import socketserver
+   agiza socket
+   agiza threading
+   agiza socketserver
 
-   class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
+   kundi ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
        def handle(self):
            data = str(self.request.recv(1024), 'ascii')
@@ -610,7 +610,7 @@ An example for the :class:`ThreadingMixIn` class::
            response = bytes("{}: {}".format(cur_thread.name, data), 'ascii')
            self.request.sendall(response)
 
-   class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+   kundi ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
        pass
 
    def client(ip, port, message):
@@ -654,7 +654,7 @@ The output of the example should look something like this:
    Received: Thread-4: Hello World 3
 
 
-The :class:`ForkingMixIn` class is used in the same way, except that the server
+The :class:`ForkingMixIn` kundi is used in the same way, except that the server
 will spawn a new process for each request.
 Available only on POSIX platforms that support :func:`~os.fork`.
 

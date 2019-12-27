@@ -86,7 +86,7 @@ __all__ = [
     'DocFileSuite',
     'set_unittest_reportflags',
     # 8. Debugging Support
-    'script_from_examples',
+    'script_kutoka_examples',
     'testsource',
     'debug_src',
     'debug',
@@ -204,9 +204,9 @@ def _normalize_module(module, depth=2):
     """
     if inspect.ismodule(module):
         return module
-    elif isinstance(module, str):
+    lasivyo isinstance(module, str):
         return __import__(module, globals(), locals(), ["*"])
-    elif module is None:
+    lasivyo module is None:
         return sys.modules[sys._getframe(depth).f_globals['__name__']]
     else:
         raise TypeError("Expected a module, string, or None")
@@ -245,7 +245,7 @@ def _exception_traceback(exc_info):
     return excout.getvalue()
 
 # Override some StringIO methods.
-class _SpoofOut(StringIO):
+kundi _SpoofOut(StringIO):
     def getvalue(self):
         result = StringIO.getvalue(self)
         # If anything at all was written, make sure there's a trailing
@@ -343,7 +343,7 @@ def _strip_exception_details(msg):
         start = i+1
     return msg[start: end]
 
-class _OutputRedirectingPdb(pdb.Pdb):
+kundi _OutputRedirectingPdb(pdb.Pdb):
     """
     A specialized version of the python debugger that redirects stdout
     to a given stream when interacting with the user.  Stdout is *not*
@@ -393,7 +393,7 @@ def _module_relative_path(module, test_path):
     if hasattr(module, '__file__'):
         # A normal module/package
         basedir = os.path.split(module.__file__)[0]
-    elif module.__name__ == '__main__':
+    lasivyo module.__name__ == '__main__':
         # An interactive session.
         if len(sys.argv)>0 and sys.argv[0] != '':
             basedir = os.path.split(sys.argv[0])[0]
@@ -419,14 +419,14 @@ def _module_relative_path(module, test_path):
 ######################################################################
 ## - An "example" is a <source, want> pair, where "source" is a
 ##   fragment of source code, and "want" is the expected output for
-##   "source."  The Example class also includes information about
+##   "source."  The Example kundi also includes information about
 ##   where the example was extracted kutoka.
 ##
 ## - A "doctest" is a collection of examples, typically extracted kutoka
-##   a string (such as an object's docstring).  The DocTest class also
+##   a string (such as an object's docstring).  The DocTest kundi also
 ##   includes information about where the string was extracted kutoka.
 
-class Example:
+kundi Example:
     """
     A single doctest example, consisting of source code and expected
     output.  `Example` defines the following attributes:
@@ -494,7 +494,7 @@ class Example:
         return hash((self.source, self.want, self.lineno, self.indent,
                      self.exc_msg))
 
-class DocTest:
+kundi DocTest:
     """
     A collection of doctest examples that should be run in a single
     namespace.  Each `DocTest` defines the following attributes:
@@ -535,7 +535,7 @@ class DocTest:
     def __repr__(self):
         if len(self.examples) == 0:
             examples = 'no examples'
-        elif len(self.examples) == 1:
+        lasivyo len(self.examples) == 1:
             examples = '1 example'
         else:
             examples = '%d examples' % len(self.examples)
@@ -569,9 +569,9 @@ class DocTest:
 ## 3. DocTestParser
 ######################################################################
 
-class DocTestParser:
+kundi DocTestParser:
     """
-    A class used to parse strings containing doctest examples.
+    A kundi used to parse strings containing doctest examples.
     """
     # This regular expression is used to find doctest examples in a
     # string.  It defines three groups: `source` is the source code
@@ -804,9 +804,9 @@ class DocTestParser:
 ## 4. DocTest Finder
 ######################################################################
 
-class DocTestFinder:
+kundi DocTestFinder:
     """
-    A class used to extract the DocTests that are relevant to a given
+    A kundi used to extract the DocTests that are relevant to a given
     object, kutoka its docstring and the docstrings of its contained
     objects.  Doctests can currently be extracted kutoka the following
     object types: modules, functions, classes, methods, staticmethods,
@@ -818,7 +818,7 @@ class DocTestFinder:
         """
         Create a new doctest finder.
 
-        The optional argument `parser` specifies a class or
+        The optional argument `parser` specifies a kundi or
         function that should be used to create new DocTest objects (or
         objects that implement the same interface as DocTest).  The
         signature for this factory function should match the signature
@@ -883,7 +883,7 @@ class DocTestFinder:
         # case module will be None.
         if module is False:
             module = None
-        elif module is None:
+        lasivyo module is None:
             module = inspect.getmodule(obj)
 
         # Read the module's source code.  This is used by
@@ -937,33 +937,33 @@ class DocTestFinder:
         tests.sort()
         return tests
 
-    def _from_module(self, module, object):
+    def _kutoka_module(self, module, object):
         """
         Return true if the given object is defined in the given
         module.
         """
         if module is None:
             return True
-        elif inspect.getmodule(object) is not None:
+        lasivyo inspect.getmodule(object) is not None:
             return module is inspect.getmodule(object)
-        elif inspect.isfunction(object):
+        lasivyo inspect.isfunction(object):
             return module.__dict__ is object.__globals__
-        elif inspect.ismethoddescriptor(object):
+        lasivyo inspect.ismethoddescriptor(object):
             if hasattr(object, '__objclass__'):
                 obj_mod = object.__objclass__.__module__
-            elif hasattr(object, '__module__'):
+            lasivyo hasattr(object, '__module__'):
                 obj_mod = object.__module__
             else:
                 return True # [XX] no easy way to tell otherwise
             return module.__name__ == obj_mod
-        elif inspect.isclass(object):
+        lasivyo inspect.isclass(object):
             return module.__name__ == object.__module__
-        elif hasattr(object, '__module__'):
+        lasivyo hasattr(object, '__module__'):
             return module.__name__ == object.__module__
-        elif isinstance(object, property):
+        lasivyo isinstance(object, property):
             return True # [XX] no way not be sure.
         else:
-            raise ValueError("object must be a class or function")
+            raise ValueError("object must be a kundi or function")
 
     def _find(self, tests, obj, name, module, source_lines, globs, seen):
         """
@@ -990,7 +990,7 @@ class DocTestFinder:
                 # Recurse to functions & classes.
                 if ((inspect.isroutine(inspect.unwrap(val))
                      or inspect.isclass(val)) and
-                    self._from_module(module, val)):
+                    self._kutoka_module(module, val)):
                     self._find(tests, val, valname, module, source_lines,
                                globs, seen)
 
@@ -1023,7 +1023,7 @@ class DocTestFinder:
                 # Recurse to methods, properties, and nested classes.
                 if ((inspect.isroutine(val) or inspect.isclass(val) or
                       isinstance(val, property)) and
-                      self._from_module(module, val)):
+                      self._kutoka_module(module, val)):
                     valname = '%s.%s' % (name, valname)
                     self._find(tests, val, valname, module, source_lines,
                                globs, seen)
@@ -1077,7 +1077,7 @@ class DocTestFinder:
             lineno = 0
 
         # Find the line number for classes.
-        # Note: this could be fooled if a class is defined multiple
+        # Note: this could be fooled if a kundi is defined multiple
         # times in a single file.
         if inspect.isclass(obj):
             if source_lines is None:
@@ -1117,9 +1117,9 @@ class DocTestFinder:
 ## 5. DocTest Runner
 ######################################################################
 
-class DocTestRunner:
+kundi DocTestRunner:
     """
-    A class used to run DocTest test cases, and accumulate statistics.
+    A kundi used to run DocTest test cases, and accumulate statistics.
     The `run` method is used to process a single DocTest case.  It
     returns a tuple `(f, t)`, where `t` is the number of test cases
     tried, and `f` is the number of test cases that failed.
@@ -1161,7 +1161,7 @@ class DocTestRunner:
     by an `OutputChecker`.  This comparison may be customized with a
     number of option flags; see the documentation for `testmod` for
     more information.  If the option flags are insufficient, then the
-    comparison may also be customized by passing a subclass of
+    comparison may also be customized by passing a subkundi of
     `OutputChecker` to the constructor.
 
     The test runner's display output can be controlled in two ways.
@@ -1357,11 +1357,11 @@ class DocTestRunner:
                     outcome = BOOM
 
                 # We expected an exception:  see whether it matches.
-                elif check(example.exc_msg, exc_msg, self.optionflags):
+                lasivyo check(example.exc_msg, exc_msg, self.optionflags):
                     outcome = SUCCESS
 
                 # Another chance if they didn't care about the detail.
-                elif self.optionflags & IGNORE_EXCEPTION_DETAIL:
+                lasivyo self.optionflags & IGNORE_EXCEPTION_DETAIL:
                     if check(_strip_exception_details(example.exc_msg),
                              _strip_exception_details(exc_msg),
                              self.optionflags):
@@ -1371,11 +1371,11 @@ class DocTestRunner:
             if outcome is SUCCESS:
                 if not quiet:
                     self.report_success(out, test, example, got)
-            elif outcome is FAILURE:
+            lasivyo outcome is FAILURE:
                 if not quiet:
                     self.report_failure(out, test, example, got)
                 failures += 1
-            elif outcome is BOOM:
+            lasivyo outcome is BOOM:
                 if not quiet:
                     self.report_unexpected_exception(out, test, example,
                                                      exception)
@@ -1511,7 +1511,7 @@ class DocTestRunner:
             totalf += f
             if t == 0:
                 notests.append(name)
-            elif f == 0:
+            lasivyo f == 0:
                 passed.append( (name, t) )
             else:
                 failed.append(x)
@@ -1537,7 +1537,7 @@ class DocTestRunner:
             print(totalt - totalf, "passed and", totalf, "failed.")
         if totalf:
             print("***Test Failed***", totalf, "failures.")
-        elif verbose:
+        lasivyo verbose:
             print("Test passed.")
         return TestResults(totalf, totalt)
 
@@ -1557,9 +1557,9 @@ class DocTestRunner:
                 t = t + t2
             d[name] = f, t
 
-class OutputChecker:
+kundi OutputChecker:
     """
-    A class used to check the whether the actual output kutoka a doctest
+    A kundi used to check the whether the actual output kutoka a doctest
     example matches the expected output.  `OutputChecker` defines two
     methods: `check_output`, which compares a given pair of outputs,
     and returns true if they match; and `output_difference`, which
@@ -1680,11 +1680,11 @@ class OutputChecker:
                 diff = difflib.unified_diff(want_lines, got_lines, n=2)
                 diff = list(diff)[2:] # strip the diff header
                 kind = 'unified diff with -expected +actual'
-            elif optionflags & REPORT_CDIFF:
+            lasivyo optionflags & REPORT_CDIFF:
                 diff = difflib.context_diff(want_lines, got_lines, n=2)
                 diff = list(diff)[2:] # strip the diff header
                 kind = 'context diff with expected followed by actual'
-            elif optionflags & REPORT_NDIFF:
+            lasivyo optionflags & REPORT_NDIFF:
                 engine = difflib.Differ(charjunk=difflib.IS_CHARACTER_JUNK)
                 diff = list(engine.compare(want_lines, got_lines))
                 kind = 'ndiff with -expected +actual'
@@ -1696,14 +1696,14 @@ class OutputChecker:
         # output followed by the actual output.
         if want and got:
             return 'Expected:\n%sGot:\n%s' % (_indent(want), _indent(got))
-        elif want:
+        lasivyo want:
             return 'Expected:\n%sGot nothing\n' % _indent(want)
-        elif got:
+        lasivyo got:
             return 'Expected nothing\nGot:\n%s' % _indent(got)
         else:
             return 'Expected nothing\nGot nothing\n'
 
-class DocTestFailure(Exception):
+kundi DocTestFailure(Exception):
     """A DocTest example has failed in debugging mode.
 
     The exception instance has variables:
@@ -1722,7 +1722,7 @@ class DocTestFailure(Exception):
     def __str__(self):
         return str(self.test)
 
-class UnexpectedException(Exception):
+kundi UnexpectedException(Exception):
     """A DocTest example has encountered an unexpected exception
 
     The exception instance has variables:
@@ -1741,7 +1741,7 @@ class UnexpectedException(Exception):
     def __str__(self):
         return str(self.test)
 
-class DebugRunner(DocTestRunner):
+kundi DebugRunner(DocTestRunner):
     r"""Run doc tests but raise an exception as soon as there is a failure.
 
        If an unexpected exception occurs, an UnexpectedException is raised.
@@ -1866,7 +1866,7 @@ def testmod(m=None, name=None, globs=None, verbose=None,
 
     Also test examples reachable kutoka dict m.__test__ if it exists and is
     not None.  m.__test__ maps names to functions, classes and strings;
-    function and class docstrings are tested even if the name is private;
+    function and kundi docstrings are tested even if the name is private;
     strings are tested directly, as if they were docstrings.
 
     Return (#failures, #tests).
@@ -1912,7 +1912,7 @@ def testmod(m=None, name=None, globs=None, verbose=None,
     post-mortem debugged.
 
     Advanced tomfoolery:  testmod runs methods of a local instance of
-    class doctest.Tester, then merges the results into (or creates)
+    kundi doctest.Tester, then merges the results into (or creates)
     global Tester instance doctest.master.  Methods of doctest.master
     can be called directly too, if you want to do something unusual.
     Passing report=0 to testmod is especially useful then, to delay
@@ -2030,7 +2030,7 @@ def testfile(filename, module_relative=True, name=None, package=None,
     be used to convert the file to unicode.
 
     Advanced tomfoolery:  testmod runs methods of a local instance of
-    class doctest.Tester, then merges the results into (or creates)
+    kundi doctest.Tester, then merges the results into (or creates)
     global Tester instance doctest.master.  Methods of doctest.master
     can be called directly too, if you want to do something unusual.
     Passing report=0 to testmod is especially useful then, to delay
@@ -2145,7 +2145,7 @@ def set_unittest_reportflags(flags):
     return old
 
 
-class DocTestCase(unittest.TestCase):
+kundi DocTestCase(unittest.TestCase):
 
     def __init__(self, test, optionflags=0, setUp=None, tearDown=None,
                  checker=None):
@@ -2305,7 +2305,7 @@ class DocTestCase(unittest.TestCase):
     def shortDescription(self):
         return "Doctest: " + self._dt_test.name
 
-class SkipDocTestCase(DocTestCase):
+kundi SkipDocTestCase(DocTestCase):
     def __init__(self, module):
         self.module = module
         DocTestCase.__init__(self, None)
@@ -2322,7 +2322,7 @@ class SkipDocTestCase(DocTestCase):
     __str__ = shortDescription
 
 
-class _DocTestSuite(unittest.TestSuite):
+kundi _DocTestSuite(unittest.TestSuite):
 
     def _removeTestAtIndex(self, index):
         pass
@@ -2392,7 +2392,7 @@ def DocTestSuite(module=None, globs=None, extraglobs=None, test_finder=None,
 
     return suite
 
-class DocFileCase(DocTestCase):
+kundi DocFileCase(DocTestCase):
 
     def id(self):
         return '_'.join(self._dt_test.name.split('.'))
@@ -2504,7 +2504,7 @@ def DocFileSuite(*paths, **kw):
 ## 8. Debugging Support
 ######################################################################
 
-def script_from_examples(s):
+def script_kutoka_examples(s):
     r"""Extract script kutoka text with examples.
 
        Converts text with examples to a Python script.  Example input is
@@ -2536,7 +2536,7 @@ def script_from_examples(s):
        ...           Ho hum
        ...           '''
 
-       >>> print(script_from_examples(text))
+       >>> print(script_kutoka_examples(text))
        # Here are examples of simple math.
        #
        #     Python has super accurate integer addition
@@ -2599,12 +2599,12 @@ def testsource(module, name):
     if not test:
         raise ValueError(name, "not found in tests")
     test = test[0]
-    testsrc = script_from_examples(test.docstring)
+    testsrc = script_kutoka_examples(test.docstring)
     return testsrc
 
 def debug_src(src, pm=False, globs=None):
     """Debug a single doctest docstring, in argument `src`'"""
-    testsrc = script_from_examples(src)
+    testsrc = script_kutoka_examples(src)
     debug_script(testsrc, pm, globs)
 
 def debug_script(src, pm=False, globs=None):
@@ -2641,7 +2641,7 @@ def debug(module, name, pm=False):
 ######################################################################
 ## 9. Example Usage
 ######################################################################
-class _TestClass:
+kundi _TestClass:
     """
     A pointless class, for sanity-checking of docstring testing.
 

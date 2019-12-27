@@ -7,7 +7,7 @@ Written by Marc-Andre Lemburg (mal@lemburg.com).
 
 """#"
 
-import codecs
+agiza codecs
 
 ### Codec APIs
 

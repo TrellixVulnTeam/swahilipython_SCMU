@@ -4,10 +4,10 @@ list, set, and tuple.
 
 * namedtuple   factory function for creating tuple subclasses with named fields
 * deque        list-like container with fast appends and pops on either end
-* ChainMap     dict-like class for creating a single view of multiple mappings
-* Counter      dict subclass for counting hashable objects
-* OrderedDict  dict subclass that remembers the order entries were added
-* defaultdict  dict subclass that calls a factory function to supply missing values
+* ChainMap     dict-like kundi for creating a single view of multiple mappings
+* Counter      dict subkundi for counting hashable objects
+* OrderedDict  dict subkundi that remembers the order entries were added
+* defaultdict  dict subkundi that calls a factory function to supply missing values
 * UserDict     wrapper around dictionary objects for easier dict subclassing
 * UserList     wrapper around list objects for easier list subclassing
 * UserString   wrapper around string objects for easier string subclassing
@@ -39,11 +39,11 @@ except ImportError:
     pass
 
 
-def __getattr__(name):
+eleza __getattr__(name):
     # For backwards compatibility, continue to make the collections ABCs
     # through Python 3.6 available through the collections module.
     # Note, no new collections ABCs were added in Python 3.7
-    if name in _collections_abc.__all__:
+    ikiwa name in _collections_abc.__all__:
         obj = getattr(_collections_abc, name)
         agiza warnings
         warnings.warn("Using or agizaing the ABCs kutoka 'collections' instead "
@@ -51,34 +51,34 @@ def __getattr__(name):
                       "and in 3.9 it will stop working",
                       DeprecationWarning, stacklevel=2)
         globals()[name] = obj
-        return obj
+        rudisha obj
     raise AttributeError(f'module {__name__!r} has no attribute {name!r}')
 
 ################################################################################
 ### OrderedDict
 ################################################################################
 
-class _OrderedDictKeysView(_collections_abc.KeysView):
+kundi _OrderedDictKeysView(_collections_abc.KeysView):
 
-    def __reversed__(self):
+    eleza __reversed__(self):
         yield kutoka reversed(self._mapping)
 
-class _OrderedDictItemsView(_collections_abc.ItemsView):
+kundi _OrderedDictItemsView(_collections_abc.ItemsView):
 
-    def __reversed__(self):
+    eleza __reversed__(self):
         for key in reversed(self._mapping):
             yield (key, self._mapping[key])
 
-class _OrderedDictValuesView(_collections_abc.ValuesView):
+kundi _OrderedDictValuesView(_collections_abc.ValuesView):
 
-    def __reversed__(self):
+    eleza __reversed__(self):
         for key in reversed(self._mapping):
             yield self._mapping[key]
 
-class _Link(object):
+kundi _Link(object):
     __slots__ = 'prev', 'next', 'key', '__weakref__'
 
-class OrderedDict(dict):
+kundi OrderedDict(dict):
     'Dictionary that remembers insertion order'
     # An inherited dict maps keys to values.
     # The inherited dict provides __getitem__, __len__, __contains__, and get.
@@ -93,7 +93,7 @@ class OrderedDict(dict):
     # Individual links are kept alive by the hard reference in self.__map.
     # Those hard references disappear when a key is deleted kutoka an OrderedDict.
 
-    def __init__(self, other=(), /, **kwds):
+    eleza __init__(self, other=(), /, **kwds):
         '''Initialize an ordered dictionary.  The signature is the same as
         regular dictionaries.  Keyword argument order is preserved.
         '''
@@ -106,12 +106,12 @@ class OrderedDict(dict):
             self.__map = {}
         self.__update(other, **kwds)
 
-    def __setitem__(self, key, value,
+    eleza __setitem__(self, key, value,
                     dict_setitem=dict.__setitem__, proxy=_proxy, Link=_Link):
         'od.__setitem__(i, y) <==> od[i]=y'
         # Setting a new item creates a new link at the end of the linked list,
         # and the inherited dictionary is updated with the new key/value pair.
-        if key not in self:
+        ikiwa key not in self:
             self.__map[key] = link = Link()
             root = self.__root
             last = root.prev
@@ -120,7 +120,7 @@ class OrderedDict(dict):
             root.prev = proxy(link)
         dict_setitem(self, key, value)
 
-    def __delitem__(self, key, dict_delitem=dict.__delitem__):
+    eleza __delitem__(self, key, dict_delitem=dict.__delitem__):
         'od.__delitem__(y) <==> del od[y]'
         # Deleting an existing item uses self.__map to find the link which gets
         # removed by updating the links in the predecessor and successor nodes.
@@ -133,7 +133,7 @@ class OrderedDict(dict):
         link.prev = None
         link.next = None
 
-    def __iter__(self):
+    eleza __iter__(self):
         'od.__iter__() <==> iter(od)'
         # Traverse the linked list in order.
         root = self.__root
@@ -142,7 +142,7 @@ class OrderedDict(dict):
             yield curr.key
             curr = curr.next
 
-    def __reversed__(self):
+    eleza __reversed__(self):
         'od.__reversed__() <==> reversed(od)'
         # Traverse the linked list in reverse order.
         root = self.__root
@@ -151,22 +151,22 @@ class OrderedDict(dict):
             yield curr.key
             curr = curr.prev
 
-    def clear(self):
+    eleza clear(self):
         'od.clear() -> None.  Remove all items kutoka od.'
         root = self.__root
         root.prev = root.next = root
         self.__map.clear()
         dict.clear(self)
 
-    def popitem(self, last=True):
-        '''Remove and return a (key, value) pair kutoka the dictionary.
+    eleza popitem(self, last=True):
+        '''Remove and rudisha a (key, value) pair kutoka the dictionary.
 
-        Pairs are returned in LIFO order if last is true or FIFO order if false.
+        Pairs are returned in LIFO order ikiwa last is true or FIFO order ikiwa false.
         '''
-        if not self:
+        ikiwa not self:
             raise KeyError('dictionary is empty')
         root = self.__root
-        if last:
+        ikiwa last:
             link = root.prev
             link_prev = link.prev
             link_prev.next = root
@@ -179,12 +179,12 @@ class OrderedDict(dict):
         key = link.key
         del self.__map[key]
         value = dict.pop(self, key)
-        return key, value
+        rudisha key, value
 
-    def move_to_end(self, key, last=True):
-        '''Move an existing element to the end (or beginning if last is false).
+    eleza move_to_end(self, key, last=True):
+        '''Move an existing element to the end (or beginning ikiwa last is false).
 
-        Raise KeyError if the element does not exist.
+        Raise KeyError ikiwa the element does not exist.
         '''
         link = self.__map[key]
         link_prev = link.prev
@@ -193,7 +193,7 @@ class OrderedDict(dict):
         link_prev.next = link_next
         link_next.prev = link_prev
         root = self.__root
-        if last:
+        ikiwa last:
             last = root.prev
             link.prev = last
             link.next = root
@@ -206,92 +206,92 @@ class OrderedDict(dict):
             first.prev = soft_link
             root.next = link
 
-    def __sizeof__(self):
+    eleza __sizeof__(self):
         sizeof = _sys.getsizeof
         n = len(self) + 1                       # number of links including root
         size = sizeof(self.__dict__)            # instance dictionary
         size += sizeof(self.__map) * 2          # internal dict and inherited dict
         size += sizeof(self.__hardroot) * n     # link objects
         size += sizeof(self.__root) * n         # proxy objects
-        return size
+        rudisha size
 
     update = __update = _collections_abc.MutableMapping.update
 
-    def keys(self):
+    eleza keys(self):
         "D.keys() -> a set-like object providing a view on D's keys"
-        return _OrderedDictKeysView(self)
+        rudisha _OrderedDictKeysView(self)
 
-    def items(self):
+    eleza items(self):
         "D.items() -> a set-like object providing a view on D's items"
-        return _OrderedDictItemsView(self)
+        rudisha _OrderedDictItemsView(self)
 
-    def values(self):
+    eleza values(self):
         "D.values() -> an object providing a view on D's values"
-        return _OrderedDictValuesView(self)
+        rudisha _OrderedDictValuesView(self)
 
     __ne__ = _collections_abc.MutableMapping.__ne__
 
     __marker = object()
 
-    def pop(self, key, default=__marker):
-        '''od.pop(k[,d]) -> v, remove specified key and return the corresponding
-        value.  If key is not found, d is returned if given, otherwise KeyError
+    eleza pop(self, key, default=__marker):
+        '''od.pop(k[,d]) -> v, remove specified key and rudisha the corresponding
+        value.  If key is not found, d is returned ikiwa given, otherwise KeyError
         is raised.
 
         '''
-        if key in self:
+        ikiwa key in self:
             result = self[key]
             del self[key]
-            return result
-        if default is self.__marker:
+            rudisha result
+        ikiwa default is self.__marker:
             raise KeyError(key)
-        return default
+        rudisha default
 
-    def setdefault(self, key, default=None):
-        '''Insert key with a value of default if key is not in the dictionary.
+    eleza setdefault(self, key, default=None):
+        '''Insert key with a value of default ikiwa key is not in the dictionary.
 
-        Return the value for key if key is in the dictionary, else default.
+        Return the value for key ikiwa key is in the dictionary, else default.
         '''
-        if key in self:
-            return self[key]
+        ikiwa key in self:
+            rudisha self[key]
         self[key] = default
-        return default
+        rudisha default
 
     @_recursive_repr()
-    def __repr__(self):
+    eleza __repr__(self):
         'od.__repr__() <==> repr(od)'
-        if not self:
-            return '%s()' % (self.__class__.__name__,)
-        return '%s(%r)' % (self.__class__.__name__, list(self.items()))
+        ikiwa not self:
+            rudisha '%s()' % (self.__class__.__name__,)
+        rudisha '%s(%r)' % (self.__class__.__name__, list(self.items()))
 
-    def __reduce__(self):
+    eleza __reduce__(self):
         'Return state information for pickling'
         inst_dict = vars(self).copy()
         for k in vars(OrderedDict()):
             inst_dict.pop(k, None)
-        return self.__class__, (), inst_dict or None, None, iter(self.items())
+        rudisha self.__class__, (), inst_dict or None, None, iter(self.items())
 
-    def copy(self):
+    eleza copy(self):
         'od.copy() -> a shallow copy of od'
-        return self.__class__(self)
+        rudisha self.__class__(self)
 
     @classmethod
-    def fromkeys(cls, iterable, value=None):
+    eleza kutokakeys(cls, iterable, value=None):
         '''Create a new ordered dictionary with keys kutoka iterable and values set to value.
         '''
         self = cls()
         for key in iterable:
             self[key] = value
-        return self
+        rudisha self
 
-    def __eq__(self, other):
+    eleza __eq__(self, other):
         '''od.__eq__(y) <==> od==y.  Comparison to another OD is order-sensitive
         while comparison to a regular mapping is order-insensitive.
 
         '''
-        if isinstance(other, OrderedDict):
-            return dict.__eq__(self, other) and all(map(_eq, self, other))
-        return dict.__eq__(self, other)
+        ikiwa isinstance(other, OrderedDict):
+            rudisha dict.__eq__(self, other) and all(map(_eq, self, other))
+        rudisha dict.__eq__(self, other)
 
 
 try:
@@ -310,8 +310,8 @@ try:
 except ImportError:
     _tuplegetter = lambda index, doc: property(_itemgetter(index), doc=doc)
 
-def namedtuple(typename, field_names, *, rename=False, defaults=None, module=None):
-    """Returns a new subclass of tuple with named fields.
+eleza namedtuple(typename, field_names, *, rename=False, defaults=None, module=None):
+    """Returns a new subkundi of tuple with named fields.
 
     >>> Point = namedtuple('Point', ['x', 'y'])
     >>> Point.__doc__                   # docstring for the new class
@@ -336,15 +336,15 @@ def namedtuple(typename, field_names, *, rename=False, defaults=None, module=Non
 
     # Validate the field names.  At the user's option, either generate an error
     # message or automatically replace the field name with a valid name.
-    if isinstance(field_names, str):
+    ikiwa isinstance(field_names, str):
         field_names = field_names.replace(',', ' ').split()
     field_names = list(map(str, field_names))
     typename = _sys.intern(str(typename))
 
-    if rename:
+    ikiwa rename:
         seen = set()
         for index, name in enumerate(field_names):
-            if (not name.isidentifier()
+            ikiwa (not name.isidentifier()
                 or _iskeyword(name)
                 or name.startswith('_')
                 or name in seen):
@@ -352,28 +352,28 @@ def namedtuple(typename, field_names, *, rename=False, defaults=None, module=Non
             seen.add(name)
 
     for name in [typename] + field_names:
-        if type(name) is not str:
+        ikiwa type(name) is not str:
             raise TypeError('Type names and field names must be strings')
-        if not name.isidentifier():
+        ikiwa not name.isidentifier():
             raise ValueError('Type names and field names must be valid '
                              f'identifiers: {name!r}')
-        if _iskeyword(name):
+        ikiwa _iskeyword(name):
             raise ValueError('Type names and field names cannot be a '
                              f'keyword: {name!r}')
 
     seen = set()
     for name in field_names:
-        if name.startswith('_') and not rename:
+        ikiwa name.startswith('_') and not rename:
             raise ValueError('Field names cannot start with an underscore: '
                              f'{name!r}')
-        if name in seen:
+        ikiwa name in seen:
             raise ValueError(f'Encountered duplicate field name: {name!r}')
         seen.add(name)
 
     field_defaults = {}
-    if defaults is not None:
+    ikiwa defaults is not None:
         defaults = tuple(defaults)
-        if len(defaults) > len(field_names):
+        ikiwa len(defaults) > len(field_names):
             raise TypeError('Got more default values than field names')
         field_defaults = dict(reversed(list(zip(reversed(field_names),
                                                 reversed(defaults)))))
@@ -386,54 +386,54 @@ def namedtuple(typename, field_names, *, rename=False, defaults=None, module=Non
     tuple_new = tuple.__new__
     _dict, _tuple, _len, _map, _zip = dict, tuple, len, map, zip
 
-    # Create all the named tuple methods to be added to the class namespace
+    # Create all the named tuple methods to be added to the kundi namespace
 
-    s = f'def __new__(_cls, {arg_list}): return _tuple_new(_cls, ({arg_list}))'
+    s = f'eleza __new__(_cls, {arg_list}): rudisha _tuple_new(_cls, ({arg_list}))'
     namespace = {'_tuple_new': tuple_new, '__name__': f'namedtuple_{typename}'}
     # Note: exec() has the side-effect of interning the field names
     exec(s, namespace)
     __new__ = namespace['__new__']
     __new__.__doc__ = f'Create new instance of {typename}({arg_list})'
-    if defaults is not None:
+    ikiwa defaults is not None:
         __new__.__defaults__ = defaults
 
     @classmethod
-    def _make(cls, iterable):
+    eleza _make(cls, iterable):
         result = tuple_new(cls, iterable)
-        if _len(result) != num_fields:
+        ikiwa _len(result) != num_fields:
             raise TypeError(f'Expected {num_fields} arguments, got {len(result)}')
-        return result
+        rudisha result
 
     _make.__func__.__doc__ = (f'Make a new {typename} object kutoka a sequence '
                               'or iterable')
 
-    def _replace(self, /, **kwds):
+    eleza _replace(self, /, **kwds):
         result = self._make(_map(kwds.pop, field_names, self))
-        if kwds:
+        ikiwa kwds:
             raise ValueError(f'Got unexpected field names: {list(kwds)!r}')
-        return result
+        rudisha result
 
     _replace.__doc__ = (f'Return a new {typename} object replacing specified '
                         'fields with new values')
 
-    def __repr__(self):
+    eleza __repr__(self):
         'Return a nicely formatted representation string'
-        return self.__class__.__name__ + repr_fmt % self
+        rudisha self.__class__.__name__ + repr_fmt % self
 
-    def _asdict(self):
+    eleza _asdict(self):
         'Return a new dict which maps field names to their values.'
-        return _dict(_zip(self._fields, self))
+        rudisha _dict(_zip(self._fields, self))
 
-    def __getnewargs__(self):
+    eleza __getnewargs__(self):
         'Return self as a plain tuple.  Used by copy and pickle.'
-        return _tuple(self)
+        rudisha _tuple(self)
 
     # Modify function metadata to help with introspection and debugging
     for method in (__new__, _make.__func__, _replace,
                    __repr__, _asdict, __getnewargs__):
         method.__qualname__ = f'{typename}.{method.__name__}'
 
-    # Build-up the class namespace dictionary
+    # Build-up the kundi namespace dictionary
     # and use type() to build the result class
     class_namespace = {
         '__doc__': f'{typename}({arg_list})',
@@ -460,34 +460,34 @@ def namedtuple(typename, field_names, *, rename=False, defaults=None, module=Non
     # sys._getframe is not defined (Jython for example) or sys._getframe is not
     # defined for arguments greater than 0 (IronPython), or where the user has
     # specified a particular module.
-    if module is None:
+    ikiwa module is None:
         try:
             module = _sys._getframe(1).f_globals.get('__name__', '__main__')
         except (AttributeError, ValueError):
             pass
-    if module is not None:
+    ikiwa module is not None:
         result.__module__ = module
 
-    return result
+    rudisha result
 
 
 ########################################################################
 ###  Counter
 ########################################################################
 
-def _count_elements(mapping, iterable):
+eleza _count_elements(mapping, iterable):
     'Tally elements kutoka the iterable.'
     mapping_get = mapping.get
     for elem in iterable:
         mapping[elem] = mapping_get(elem, 0) + 1
 
-try:                                    # Load C helper function if available
+try:                                    # Load C helper function ikiwa available
     kutoka _collections agiza _count_elements
 except ImportError:
     pass
 
-class Counter(dict):
-    '''Dict subclass for counting hashable items.  Sometimes called a bag
+kundi Counter(dict):
+    '''Dict subkundi for counting hashable items.  Sometimes called a bag
     or multiset.  Elements are stored as dictionary keys and their counts
     are stored as dictionary values.
 
@@ -537,8 +537,8 @@ class Counter(dict):
     #   http://code.activestate.com/recipes/259174/
     #   Knuth, TAOCP Vol. II section 4.6.3
 
-    def __init__(self, iterable=None, /, **kwds):
-        '''Create a new, empty Counter object.  And if given, count elements
+    eleza __init__(self, iterable=None, /, **kwds):
+        '''Create a new, empty Counter object.  And ikiwa given, count elements
         kutoka an input iterable.  Or, initialize the count kutoka another mapping
         of elements to their counts.
 
@@ -551,12 +551,12 @@ class Counter(dict):
         super(Counter, self).__init__()
         self.update(iterable, **kwds)
 
-    def __missing__(self, key):
+    eleza __missing__(self, key):
         'The count of elements not in the Counter is zero.'
         # Needed so that self[missing_item] does not raise KeyError
-        return 0
+        rudisha 0
 
-    def most_common(self, n=None):
+    eleza most_common(self, n=None):
         '''List the n most common elements and their counts kutoka the most
         common to the least.  If n is None, then list all element counts.
 
@@ -565,11 +565,11 @@ class Counter(dict):
 
         '''
         # Emulate Bag.sortedByCount kutoka Smalltalk
-        if n is None:
-            return sorted(self.items(), key=_itemgetter(1), reverse=True)
-        return _heapq.nlargest(n, self.items(), key=_itemgetter(1))
+        ikiwa n is None:
+            rudisha sorted(self.items(), key=_itemgetter(1), reverse=True)
+        rudisha _heapq.nlargest(n, self.items(), key=_itemgetter(1))
 
-    def elements(self):
+    eleza elements(self):
         '''Iterator over elements repeating each as many times as its count.
 
         >>> c = Counter('ABCABC')
@@ -584,28 +584,28 @@ class Counter(dict):
         >>> product
         1836
 
-        Note, if an element's count has been set to zero or is a negative
+        Note, ikiwa an element's count has been set to zero or is a negative
         number, elements() will ignore it.
 
         '''
         # Emulate Bag.do kutoka Smalltalk and Multiset.begin kutoka C++.
-        return _chain.from_iterable(_starmap(_repeat, self.items()))
+        rudisha _chain.kutoka_iterable(_starmap(_repeat, self.items()))
 
     # Override dict methods where necessary
 
     @classmethod
-    def fromkeys(cls, iterable, v=None):
+    eleza kutokakeys(cls, iterable, v=None):
         # There is no equivalent method for counters because the semantics
-        # would be ambiguous in cases such as Counter.fromkeys('aaabbc', v=2).
+        # would be ambiguous in cases such as Counter.kutokakeys('aaabbc', v=2).
         # Initializing counters to zero values isn't necessary because zero
         # is already the default value for counter lookups.  Initializing
         # to one is easily accomplished with Counter(set(iterable)).  For
         # more exotic cases, create a dictionary first using a dictionary
-        # comprehension or dict.fromkeys().
+        # comprehension or dict.kutokakeys().
         raise NotImplementedError(
-            'Counter.fromkeys() is undefined.  Use Counter(iterable) instead.')
+            'Counter.kutokakeys() is undefined.  Use Counter(iterable) instead.')
 
-    def update(self, iterable=None, /, **kwds):
+    eleza update(self, iterable=None, /, **kwds):
         '''Like dict.update() but add counts instead of replacing them.
 
         Source can be an iterable, a dictionary, or another Counter instance.
@@ -625,9 +625,9 @@ class Counter(dict):
         # contexts.  Instead, we implement straight-addition.  Both the inputs
         # and outputs are allowed to contain zero and negative counts.
 
-        if iterable is not None:
-            if isinstance(iterable, _collections_abc.Mapping):
-                if self:
+        ikiwa iterable is not None:
+            ikiwa isinstance(iterable, _collections_abc.Mapping):
+                ikiwa self:
                     self_get = self.get
                     for elem, count in iterable.items():
                         self[elem] = count + self_get(elem, 0)
@@ -635,10 +635,10 @@ class Counter(dict):
                     super(Counter, self).update(iterable) # fast path when counter is empty
             else:
                 _count_elements(self, iterable)
-        if kwds:
+        ikiwa kwds:
             self.update(kwds)
 
-    def subtract(self, iterable=None, /, **kwds):
+    eleza subtract(self, iterable=None, /, **kwds):
         '''Like dict.update() but subtracts counts instead of replacing them.
         Counts can be reduced below zero.  Both the inputs and outputs are
         allowed to contain zero and negative counts.
@@ -654,38 +654,38 @@ class Counter(dict):
         -1
 
         '''
-        if iterable is not None:
+        ikiwa iterable is not None:
             self_get = self.get
-            if isinstance(iterable, _collections_abc.Mapping):
+            ikiwa isinstance(iterable, _collections_abc.Mapping):
                 for elem, count in iterable.items():
                     self[elem] = self_get(elem, 0) - count
             else:
                 for elem in iterable:
                     self[elem] = self_get(elem, 0) - 1
-        if kwds:
+        ikiwa kwds:
             self.subtract(kwds)
 
-    def copy(self):
+    eleza copy(self):
         'Return a shallow copy.'
-        return self.__class__(self)
+        rudisha self.__class__(self)
 
-    def __reduce__(self):
-        return self.__class__, (dict(self),)
+    eleza __reduce__(self):
+        rudisha self.__class__, (dict(self),)
 
-    def __delitem__(self, elem):
+    eleza __delitem__(self, elem):
         'Like dict.__delitem__() but does not raise KeyError for missing values.'
-        if elem in self:
+        ikiwa elem in self:
             super().__delitem__(elem)
 
-    def __repr__(self):
-        if not self:
-            return '%s()' % self.__class__.__name__
+    eleza __repr__(self):
+        ikiwa not self:
+            rudisha '%s()' % self.__class__.__name__
         try:
             items = ', '.join(map('%r: %r'.__mod__, self.most_common()))
-            return '%s({%s})' % (self.__class__.__name__, items)
+            rudisha '%s({%s})' % (self.__class__.__name__, items)
         except TypeError:
             # handle case where values are not orderable
-            return '{0}({1!r})'.format(self.__class__.__name__, dict(self))
+            rudisha '{0}({1!r})'.format(self.__class__.__name__, dict(self))
 
     # Multiset-style mathematical operations discussed in:
     #       Knuth TAOCP Volume II section 4.6.3 exercise 19
@@ -696,108 +696,108 @@ class Counter(dict):
     # To strip negative and zero counts, add-in an empty counter:
     #       c += Counter()
 
-    def __add__(self, other):
+    eleza __add__(self, other):
         '''Add counts kutoka two counters.
 
         >>> Counter('abbb') + Counter('bcc')
         Counter({'b': 4, 'c': 2, 'a': 1})
 
         '''
-        if not isinstance(other, Counter):
-            return NotImplemented
+        ikiwa not isinstance(other, Counter):
+            rudisha NotImplemented
         result = Counter()
         for elem, count in self.items():
             newcount = count + other[elem]
-            if newcount > 0:
+            ikiwa newcount > 0:
                 result[elem] = newcount
         for elem, count in other.items():
-            if elem not in self and count > 0:
+            ikiwa elem not in self and count > 0:
                 result[elem] = count
-        return result
+        rudisha result
 
-    def __sub__(self, other):
+    eleza __sub__(self, other):
         ''' Subtract count, but keep only results with positive counts.
 
         >>> Counter('abbbc') - Counter('bccd')
         Counter({'b': 2, 'a': 1})
 
         '''
-        if not isinstance(other, Counter):
-            return NotImplemented
+        ikiwa not isinstance(other, Counter):
+            rudisha NotImplemented
         result = Counter()
         for elem, count in self.items():
             newcount = count - other[elem]
-            if newcount > 0:
+            ikiwa newcount > 0:
                 result[elem] = newcount
         for elem, count in other.items():
-            if elem not in self and count < 0:
+            ikiwa elem not in self and count < 0:
                 result[elem] = 0 - count
-        return result
+        rudisha result
 
-    def __or__(self, other):
+    eleza __or__(self, other):
         '''Union is the maximum of value in either of the input counters.
 
         >>> Counter('abbb') | Counter('bcc')
         Counter({'b': 3, 'c': 2, 'a': 1})
 
         '''
-        if not isinstance(other, Counter):
-            return NotImplemented
+        ikiwa not isinstance(other, Counter):
+            rudisha NotImplemented
         result = Counter()
         for elem, count in self.items():
             other_count = other[elem]
-            newcount = other_count if count < other_count else count
-            if newcount > 0:
+            newcount = other_count ikiwa count < other_count else count
+            ikiwa newcount > 0:
                 result[elem] = newcount
         for elem, count in other.items():
-            if elem not in self and count > 0:
+            ikiwa elem not in self and count > 0:
                 result[elem] = count
-        return result
+        rudisha result
 
-    def __and__(self, other):
+    eleza __and__(self, other):
         ''' Intersection is the minimum of corresponding counts.
 
         >>> Counter('abbb') & Counter('bcc')
         Counter({'b': 1})
 
         '''
-        if not isinstance(other, Counter):
-            return NotImplemented
+        ikiwa not isinstance(other, Counter):
+            rudisha NotImplemented
         result = Counter()
         for elem, count in self.items():
             other_count = other[elem]
-            newcount = count if count < other_count else other_count
-            if newcount > 0:
+            newcount = count ikiwa count < other_count else other_count
+            ikiwa newcount > 0:
                 result[elem] = newcount
-        return result
+        rudisha result
 
-    def __pos__(self):
+    eleza __pos__(self):
         'Adds an empty counter, effectively stripping negative and zero counts'
         result = Counter()
         for elem, count in self.items():
-            if count > 0:
+            ikiwa count > 0:
                 result[elem] = count
-        return result
+        rudisha result
 
-    def __neg__(self):
+    eleza __neg__(self):
         '''Subtracts kutoka an empty counter.  Strips positive and zero counts,
         and flips the sign on negative counts.
 
         '''
         result = Counter()
         for elem, count in self.items():
-            if count < 0:
+            ikiwa count < 0:
                 result[elem] = 0 - count
-        return result
+        rudisha result
 
-    def _keep_positive(self):
+    eleza _keep_positive(self):
         '''Internal method to strip elements with a negative or zero count'''
-        nonpositive = [elem for elem, count in self.items() if not count > 0]
+        nonpositive = [elem for elem, count in self.items() ikiwa not count > 0]
         for elem in nonpositive:
             del self[elem]
-        return self
+        rudisha self
 
-    def __iadd__(self, other):
+    eleza __iadd__(self, other):
         '''Inplace add kutoka another counter, keeping only positive counts.
 
         >>> c = Counter('abbb')
@@ -808,9 +808,9 @@ class Counter(dict):
         '''
         for elem, count in other.items():
             self[elem] += count
-        return self._keep_positive()
+        rudisha self._keep_positive()
 
-    def __isub__(self, other):
+    eleza __isub__(self, other):
         '''Inplace subtract counter, but keep only results with positive counts.
 
         >>> c = Counter('abbbc')
@@ -821,9 +821,9 @@ class Counter(dict):
         '''
         for elem, count in other.items():
             self[elem] -= count
-        return self._keep_positive()
+        rudisha self._keep_positive()
 
-    def __ior__(self, other):
+    eleza __ior__(self, other):
         '''Inplace union is the maximum of value kutoka either counter.
 
         >>> c = Counter('abbb')
@@ -834,11 +834,11 @@ class Counter(dict):
         '''
         for elem, other_count in other.items():
             count = self[elem]
-            if other_count > count:
+            ikiwa other_count > count:
                 self[elem] = other_count
-        return self._keep_positive()
+        rudisha self._keep_positive()
 
-    def __iand__(self, other):
+    eleza __iand__(self, other):
         '''Inplace intersection is the minimum of corresponding counts.
 
         >>> c = Counter('abbb')
@@ -849,16 +849,16 @@ class Counter(dict):
         '''
         for elem, count in self.items():
             other_count = other[elem]
-            if other_count < count:
+            ikiwa other_count < count:
                 self[elem] = other_count
-        return self._keep_positive()
+        rudisha self._keep_positive()
 
 
 ########################################################################
 ###  ChainMap
 ########################################################################
 
-class ChainMap(_collections_abc.MutableMapping):
+kundi ChainMap(_collections_abc.MutableMapping):
     ''' A ChainMap groups multiple dicts (or other mappings) together
     to create a single, updateable view.
 
@@ -872,94 +872,94 @@ class ChainMap(_collections_abc.MutableMapping):
 
     '''
 
-    def __init__(self, *maps):
+    eleza __init__(self, *maps):
         '''Initialize a ChainMap by setting *maps* to the given mappings.
         If no mappings are provided, a single empty dictionary is used.
 
         '''
         self.maps = list(maps) or [{}]          # always at least one map
 
-    def __missing__(self, key):
+    eleza __missing__(self, key):
         raise KeyError(key)
 
-    def __getitem__(self, key):
+    eleza __getitem__(self, key):
         for mapping in self.maps:
             try:
-                return mapping[key]             # can't use 'key in mapping' with defaultdict
+                rudisha mapping[key]             # can't use 'key in mapping' with defaultdict
             except KeyError:
                 pass
-        return self.__missing__(key)            # support subclasses that define __missing__
+        rudisha self.__missing__(key)            # support subclasses that define __missing__
 
-    def get(self, key, default=None):
-        return self[key] if key in self else default
+    eleza get(self, key, default=None):
+        rudisha self[key] ikiwa key in self else default
 
-    def __len__(self):
-        return len(set().union(*self.maps))     # reuses stored hash values if possible
+    eleza __len__(self):
+        rudisha len(set().union(*self.maps))     # reuses stored hash values ikiwa possible
 
-    def __iter__(self):
+    eleza __iter__(self):
         d = {}
         for mapping in reversed(self.maps):
-            d.update(mapping)                   # reuses stored hash values if possible
-        return iter(d)
+            d.update(mapping)                   # reuses stored hash values ikiwa possible
+        rudisha iter(d)
 
-    def __contains__(self, key):
-        return any(key in m for m in self.maps)
+    eleza __contains__(self, key):
+        rudisha any(key in m for m in self.maps)
 
-    def __bool__(self):
-        return any(self.maps)
+    eleza __bool__(self):
+        rudisha any(self.maps)
 
     @_recursive_repr()
-    def __repr__(self):
-        return f'{self.__class__.__name__}({", ".join(map(repr, self.maps))})'
+    eleza __repr__(self):
+        rudisha f'{self.__class__.__name__}({", ".join(map(repr, self.maps))})'
 
     @classmethod
-    def fromkeys(cls, iterable, *args):
+    eleza kutokakeys(cls, iterable, *args):
         'Create a ChainMap with a single dict created kutoka the iterable.'
-        return cls(dict.fromkeys(iterable, *args))
+        rudisha cls(dict.kutokakeys(iterable, *args))
 
-    def copy(self):
-        'New ChainMap or subclass with a new copy of maps[0] and refs to maps[1:]'
-        return self.__class__(self.maps[0].copy(), *self.maps[1:])
+    eleza copy(self):
+        'New ChainMap or subkundi with a new copy of maps[0] and refs to maps[1:]'
+        rudisha self.__class__(self.maps[0].copy(), *self.maps[1:])
 
     __copy__ = copy
 
-    def new_child(self, m=None):                # like Django's Context.push()
+    eleza new_child(self, m=None):                # like Django's Context.push()
         '''New ChainMap with a new map followed by all previous maps.
         If no map is provided, an empty dict is used.
         '''
-        if m is None:
+        ikiwa m is None:
             m = {}
-        return self.__class__(m, *self.maps)
+        rudisha self.__class__(m, *self.maps)
 
     @property
-    def parents(self):                          # like Django's Context.pop()
+    eleza parents(self):                          # like Django's Context.pop()
         'New ChainMap kutoka maps[1:].'
-        return self.__class__(*self.maps[1:])
+        rudisha self.__class__(*self.maps[1:])
 
-    def __setitem__(self, key, value):
+    eleza __setitem__(self, key, value):
         self.maps[0][key] = value
 
-    def __delitem__(self, key):
+    eleza __delitem__(self, key):
         try:
             del self.maps[0][key]
         except KeyError:
             raise KeyError('Key not found in the first mapping: {!r}'.format(key))
 
-    def popitem(self):
-        'Remove and return an item pair kutoka maps[0]. Raise KeyError is maps[0] is empty.'
+    eleza popitem(self):
+        'Remove and rudisha an item pair kutoka maps[0]. Raise KeyError is maps[0] is empty.'
         try:
-            return self.maps[0].popitem()
+            rudisha self.maps[0].popitem()
         except KeyError:
             raise KeyError('No keys found in the first mapping.')
 
-    def pop(self, key, *args):
-        'Remove *key* kutoka maps[0] and return its value. Raise KeyError if *key* not in maps[0].'
+    eleza pop(self, key, *args):
+        'Remove *key* kutoka maps[0] and rudisha its value. Raise KeyError ikiwa *key* not in maps[0].'
         try:
-            return self.maps[0].pop(key, *args)
+            rudisha self.maps[0].pop(key, *args)
         except KeyError:
             raise KeyError('Key not found in the first mapping: {!r}'.format(key))
 
-    def clear(self):
+    eleza clear(self):
         'Clear maps[0], leaving maps[1:] intact.'
         self.maps[0].clear()
 
@@ -968,19 +968,19 @@ class ChainMap(_collections_abc.MutableMapping):
 ### UserDict
 ################################################################################
 
-class UserDict(_collections_abc.MutableMapping):
+kundi UserDict(_collections_abc.MutableMapping):
 
     # Start by filling-out the abstract methods
-    def __init__(*args, **kwargs):
-        if not args:
+    eleza __init__(*args, **kwargs):
+        ikiwa not args:
             raise TypeError("descriptor '__init__' of 'UserDict' object "
                             "needs an argument")
         self, *args = args
-        if len(args) > 1:
+        ikiwa len(args) > 1:
             raise TypeError('expected at most 1 arguments, got %d' % len(args))
-        if args:
+        ikiwa args:
             dict = args[0]
-        elif 'dict' in kwargs:
+        elikiwa 'dict' in kwargs:
             dict = kwargs.pop('dict')
             agiza warnings
             warnings.warn("Passing 'dict' as keyword argument is deprecated",
@@ -988,40 +988,40 @@ class UserDict(_collections_abc.MutableMapping):
         else:
             dict = None
         self.data = {}
-        if dict is not None:
+        ikiwa dict is not None:
             self.update(dict)
-        if kwargs:
+        ikiwa kwargs:
             self.update(kwargs)
     __init__.__text_signature__ = '($self, dict=None, /, **kwargs)'
 
-    def __len__(self): return len(self.data)
-    def __getitem__(self, key):
-        if key in self.data:
-            return self.data[key]
-        if hasattr(self.__class__, "__missing__"):
-            return self.__class__.__missing__(self, key)
+    eleza __len__(self): rudisha len(self.data)
+    eleza __getitem__(self, key):
+        ikiwa key in self.data:
+            rudisha self.data[key]
+        ikiwa hasattr(self.__class__, "__missing__"):
+            rudisha self.__class__.__missing__(self, key)
         raise KeyError(key)
-    def __setitem__(self, key, item): self.data[key] = item
-    def __delitem__(self, key): del self.data[key]
-    def __iter__(self):
-        return iter(self.data)
+    eleza __setitem__(self, key, item): self.data[key] = item
+    eleza __delitem__(self, key): del self.data[key]
+    eleza __iter__(self):
+        rudisha iter(self.data)
 
     # Modify __contains__ to work correctly when __missing__ is present
-    def __contains__(self, key):
-        return key in self.data
+    eleza __contains__(self, key):
+        rudisha key in self.data
 
     # Now, add the methods in dicts but not in MutableMapping
-    def __repr__(self): return repr(self.data)
-    def __copy__(self):
+    eleza __repr__(self): rudisha repr(self.data)
+    eleza __copy__(self):
         inst = self.__class__.__new__(self.__class__)
         inst.__dict__.update(self.__dict__)
         # Create a copy and avoid triggering descriptors
         inst.__dict__["data"] = self.__dict__["data"].copy()
-        return inst
+        rudisha inst
 
-    def copy(self):
-        if self.__class__ is UserDict:
-            return UserDict(self.data.copy())
+    eleza copy(self):
+        ikiwa self.__class__ is UserDict:
+            rudisha UserDict(self.data.copy())
         agiza copy
         data = self.data
         try:
@@ -1030,14 +1030,14 @@ class UserDict(_collections_abc.MutableMapping):
         finally:
             self.data = data
         c.update(self)
-        return c
+        rudisha c
 
     @classmethod
-    def fromkeys(cls, iterable, value=None):
+    eleza kutokakeys(cls, iterable, value=None):
         d = cls()
         for key in iterable:
             d[key] = value
-        return d
+        rudisha d
 
 
 
@@ -1045,79 +1045,79 @@ class UserDict(_collections_abc.MutableMapping):
 ### UserList
 ################################################################################
 
-class UserList(_collections_abc.MutableSequence):
+kundi UserList(_collections_abc.MutableSequence):
     """A more or less complete user-defined wrapper around list objects."""
-    def __init__(self, initlist=None):
+    eleza __init__(self, initlist=None):
         self.data = []
-        if initlist is not None:
+        ikiwa initlist is not None:
             # XXX should this accept an arbitrary sequence?
-            if type(initlist) == type(self.data):
+            ikiwa type(initlist) == type(self.data):
                 self.data[:] = initlist
-            elif isinstance(initlist, UserList):
+            elikiwa isinstance(initlist, UserList):
                 self.data[:] = initlist.data[:]
             else:
                 self.data = list(initlist)
-    def __repr__(self): return repr(self.data)
-    def __lt__(self, other): return self.data <  self.__cast(other)
-    def __le__(self, other): return self.data <= self.__cast(other)
-    def __eq__(self, other): return self.data == self.__cast(other)
-    def __gt__(self, other): return self.data >  self.__cast(other)
-    def __ge__(self, other): return self.data >= self.__cast(other)
-    def __cast(self, other):
-        return other.data if isinstance(other, UserList) else other
-    def __contains__(self, item): return item in self.data
-    def __len__(self): return len(self.data)
-    def __getitem__(self, i):
-        if isinstance(i, slice):
-            return self.__class__(self.data[i])
+    eleza __repr__(self): rudisha repr(self.data)
+    eleza __lt__(self, other): rudisha self.data <  self.__cast(other)
+    eleza __le__(self, other): rudisha self.data <= self.__cast(other)
+    eleza __eq__(self, other): rudisha self.data == self.__cast(other)
+    eleza __gt__(self, other): rudisha self.data >  self.__cast(other)
+    eleza __ge__(self, other): rudisha self.data >= self.__cast(other)
+    eleza __cast(self, other):
+        rudisha other.data ikiwa isinstance(other, UserList) else other
+    eleza __contains__(self, item): rudisha item in self.data
+    eleza __len__(self): rudisha len(self.data)
+    eleza __getitem__(self, i):
+        ikiwa isinstance(i, slice):
+            rudisha self.__class__(self.data[i])
         else:
-            return self.data[i]
-    def __setitem__(self, i, item): self.data[i] = item
-    def __delitem__(self, i): del self.data[i]
-    def __add__(self, other):
-        if isinstance(other, UserList):
-            return self.__class__(self.data + other.data)
-        elif isinstance(other, type(self.data)):
-            return self.__class__(self.data + other)
-        return self.__class__(self.data + list(other))
-    def __radd__(self, other):
-        if isinstance(other, UserList):
-            return self.__class__(other.data + self.data)
-        elif isinstance(other, type(self.data)):
-            return self.__class__(other + self.data)
-        return self.__class__(list(other) + self.data)
-    def __iadd__(self, other):
-        if isinstance(other, UserList):
+            rudisha self.data[i]
+    eleza __setitem__(self, i, item): self.data[i] = item
+    eleza __delitem__(self, i): del self.data[i]
+    eleza __add__(self, other):
+        ikiwa isinstance(other, UserList):
+            rudisha self.__class__(self.data + other.data)
+        elikiwa isinstance(other, type(self.data)):
+            rudisha self.__class__(self.data + other)
+        rudisha self.__class__(self.data + list(other))
+    eleza __radd__(self, other):
+        ikiwa isinstance(other, UserList):
+            rudisha self.__class__(other.data + self.data)
+        elikiwa isinstance(other, type(self.data)):
+            rudisha self.__class__(other + self.data)
+        rudisha self.__class__(list(other) + self.data)
+    eleza __iadd__(self, other):
+        ikiwa isinstance(other, UserList):
             self.data += other.data
-        elif isinstance(other, type(self.data)):
+        elikiwa isinstance(other, type(self.data)):
             self.data += other
         else:
             self.data += list(other)
-        return self
-    def __mul__(self, n):
-        return self.__class__(self.data*n)
+        rudisha self
+    eleza __mul__(self, n):
+        rudisha self.__class__(self.data*n)
     __rmul__ = __mul__
-    def __imul__(self, n):
+    eleza __imul__(self, n):
         self.data *= n
-        return self
-    def __copy__(self):
+        rudisha self
+    eleza __copy__(self):
         inst = self.__class__.__new__(self.__class__)
         inst.__dict__.update(self.__dict__)
         # Create a copy and avoid triggering descriptors
         inst.__dict__["data"] = self.__dict__["data"][:]
-        return inst
-    def append(self, item): self.data.append(item)
-    def insert(self, i, item): self.data.insert(i, item)
-    def pop(self, i=-1): return self.data.pop(i)
-    def remove(self, item): self.data.remove(item)
-    def clear(self): self.data.clear()
-    def copy(self): return self.__class__(self)
-    def count(self, item): return self.data.count(item)
-    def index(self, item, *args): return self.data.index(item, *args)
-    def reverse(self): self.data.reverse()
-    def sort(self, /, *args, **kwds): self.data.sort(*args, **kwds)
-    def extend(self, other):
-        if isinstance(other, UserList):
+        rudisha inst
+    eleza append(self, item): self.data.append(item)
+    eleza insert(self, i, item): self.data.insert(i, item)
+    eleza pop(self, i=-1): rudisha self.data.pop(i)
+    eleza remove(self, item): self.data.remove(item)
+    eleza clear(self): self.data.clear()
+    eleza copy(self): rudisha self.__class__(self)
+    eleza count(self, item): rudisha self.data.count(item)
+    eleza index(self, item, *args): rudisha self.data.index(item, *args)
+    eleza reverse(self): self.data.reverse()
+    eleza sort(self, /, *args, **kwds): self.data.sort(*args, **kwds)
+    eleza extend(self, other):
+        ikiwa isinstance(other, UserList):
             self.data.extend(other.data)
         else:
             self.data.extend(other)
@@ -1128,145 +1128,145 @@ class UserList(_collections_abc.MutableSequence):
 ### UserString
 ################################################################################
 
-class UserString(_collections_abc.Sequence):
-    def __init__(self, seq):
-        if isinstance(seq, str):
+kundi UserString(_collections_abc.Sequence):
+    eleza __init__(self, seq):
+        ikiwa isinstance(seq, str):
             self.data = seq
-        elif isinstance(seq, UserString):
+        elikiwa isinstance(seq, UserString):
             self.data = seq.data[:]
         else:
             self.data = str(seq)
-    def __str__(self): return str(self.data)
-    def __repr__(self): return repr(self.data)
-    def __int__(self): return int(self.data)
-    def __float__(self): return float(self.data)
-    def __complex__(self): return complex(self.data)
-    def __hash__(self): return hash(self.data)
-    def __getnewargs__(self):
-        return (self.data[:],)
+    eleza __str__(self): rudisha str(self.data)
+    eleza __repr__(self): rudisha repr(self.data)
+    eleza __int__(self): rudisha int(self.data)
+    eleza __float__(self): rudisha float(self.data)
+    eleza __complex__(self): rudisha complex(self.data)
+    eleza __hash__(self): rudisha hash(self.data)
+    eleza __getnewargs__(self):
+        rudisha (self.data[:],)
 
-    def __eq__(self, string):
-        if isinstance(string, UserString):
-            return self.data == string.data
-        return self.data == string
-    def __lt__(self, string):
-        if isinstance(string, UserString):
-            return self.data < string.data
-        return self.data < string
-    def __le__(self, string):
-        if isinstance(string, UserString):
-            return self.data <= string.data
-        return self.data <= string
-    def __gt__(self, string):
-        if isinstance(string, UserString):
-            return self.data > string.data
-        return self.data > string
-    def __ge__(self, string):
-        if isinstance(string, UserString):
-            return self.data >= string.data
-        return self.data >= string
+    eleza __eq__(self, string):
+        ikiwa isinstance(string, UserString):
+            rudisha self.data == string.data
+        rudisha self.data == string
+    eleza __lt__(self, string):
+        ikiwa isinstance(string, UserString):
+            rudisha self.data < string.data
+        rudisha self.data < string
+    eleza __le__(self, string):
+        ikiwa isinstance(string, UserString):
+            rudisha self.data <= string.data
+        rudisha self.data <= string
+    eleza __gt__(self, string):
+        ikiwa isinstance(string, UserString):
+            rudisha self.data > string.data
+        rudisha self.data > string
+    eleza __ge__(self, string):
+        ikiwa isinstance(string, UserString):
+            rudisha self.data >= string.data
+        rudisha self.data >= string
 
-    def __contains__(self, char):
-        if isinstance(char, UserString):
+    eleza __contains__(self, char):
+        ikiwa isinstance(char, UserString):
             char = char.data
-        return char in self.data
+        rudisha char in self.data
 
-    def __len__(self): return len(self.data)
-    def __getitem__(self, index): return self.__class__(self.data[index])
-    def __add__(self, other):
-        if isinstance(other, UserString):
-            return self.__class__(self.data + other.data)
-        elif isinstance(other, str):
-            return self.__class__(self.data + other)
-        return self.__class__(self.data + str(other))
-    def __radd__(self, other):
-        if isinstance(other, str):
-            return self.__class__(other + self.data)
-        return self.__class__(str(other) + self.data)
-    def __mul__(self, n):
-        return self.__class__(self.data*n)
+    eleza __len__(self): rudisha len(self.data)
+    eleza __getitem__(self, index): rudisha self.__class__(self.data[index])
+    eleza __add__(self, other):
+        ikiwa isinstance(other, UserString):
+            rudisha self.__class__(self.data + other.data)
+        elikiwa isinstance(other, str):
+            rudisha self.__class__(self.data + other)
+        rudisha self.__class__(self.data + str(other))
+    eleza __radd__(self, other):
+        ikiwa isinstance(other, str):
+            rudisha self.__class__(other + self.data)
+        rudisha self.__class__(str(other) + self.data)
+    eleza __mul__(self, n):
+        rudisha self.__class__(self.data*n)
     __rmul__ = __mul__
-    def __mod__(self, args):
-        return self.__class__(self.data % args)
-    def __rmod__(self, template):
-        return self.__class__(str(template) % self)
+    eleza __mod__(self, args):
+        rudisha self.__class__(self.data % args)
+    eleza __rmod__(self, template):
+        rudisha self.__class__(str(template) % self)
     # the following methods are defined in alphabetical order:
-    def capitalize(self): return self.__class__(self.data.capitalize())
-    def casefold(self):
-        return self.__class__(self.data.casefold())
-    def center(self, width, *args):
-        return self.__class__(self.data.center(width, *args))
-    def count(self, sub, start=0, end=_sys.maxsize):
-        if isinstance(sub, UserString):
+    eleza capitalize(self): rudisha self.__class__(self.data.capitalize())
+    eleza casefold(self):
+        rudisha self.__class__(self.data.casefold())
+    eleza center(self, width, *args):
+        rudisha self.__class__(self.data.center(width, *args))
+    eleza count(self, sub, start=0, end=_sys.maxsize):
+        ikiwa isinstance(sub, UserString):
             sub = sub.data
-        return self.data.count(sub, start, end)
-    def encode(self, encoding='utf-8', errors='strict'):
-        encoding = 'utf-8' if encoding is None else encoding
-        errors = 'strict' if errors is None else errors
-        return self.data.encode(encoding, errors)
-    def endswith(self, suffix, start=0, end=_sys.maxsize):
-        return self.data.endswith(suffix, start, end)
-    def expandtabs(self, tabsize=8):
-        return self.__class__(self.data.expandtabs(tabsize))
-    def find(self, sub, start=0, end=_sys.maxsize):
-        if isinstance(sub, UserString):
+        rudisha self.data.count(sub, start, end)
+    eleza encode(self, encoding='utf-8', errors='strict'):
+        encoding = 'utf-8' ikiwa encoding is None else encoding
+        errors = 'strict' ikiwa errors is None else errors
+        rudisha self.data.encode(encoding, errors)
+    eleza endswith(self, suffix, start=0, end=_sys.maxsize):
+        rudisha self.data.endswith(suffix, start, end)
+    eleza expandtabs(self, tabsize=8):
+        rudisha self.__class__(self.data.expandtabs(tabsize))
+    eleza find(self, sub, start=0, end=_sys.maxsize):
+        ikiwa isinstance(sub, UserString):
             sub = sub.data
-        return self.data.find(sub, start, end)
-    def format(self, /, *args, **kwds):
-        return self.data.format(*args, **kwds)
-    def format_map(self, mapping):
-        return self.data.format_map(mapping)
-    def index(self, sub, start=0, end=_sys.maxsize):
-        return self.data.index(sub, start, end)
-    def isalpha(self): return self.data.isalpha()
-    def isalnum(self): return self.data.isalnum()
-    def isascii(self): return self.data.isascii()
-    def isdecimal(self): return self.data.isdecimal()
-    def isdigit(self): return self.data.isdigit()
-    def isidentifier(self): return self.data.isidentifier()
-    def islower(self): return self.data.islower()
-    def isnumeric(self): return self.data.isnumeric()
-    def isprintable(self): return self.data.isprintable()
-    def isspace(self): return self.data.isspace()
-    def istitle(self): return self.data.istitle()
-    def isupper(self): return self.data.isupper()
-    def join(self, seq): return self.data.join(seq)
-    def ljust(self, width, *args):
-        return self.__class__(self.data.ljust(width, *args))
-    def lower(self): return self.__class__(self.data.lower())
-    def lstrip(self, chars=None): return self.__class__(self.data.lstrip(chars))
+        rudisha self.data.find(sub, start, end)
+    eleza format(self, /, *args, **kwds):
+        rudisha self.data.format(*args, **kwds)
+    eleza format_map(self, mapping):
+        rudisha self.data.format_map(mapping)
+    eleza index(self, sub, start=0, end=_sys.maxsize):
+        rudisha self.data.index(sub, start, end)
+    eleza isalpha(self): rudisha self.data.isalpha()
+    eleza isalnum(self): rudisha self.data.isalnum()
+    eleza isascii(self): rudisha self.data.isascii()
+    eleza isdecimal(self): rudisha self.data.isdecimal()
+    eleza isdigit(self): rudisha self.data.isdigit()
+    eleza isidentifier(self): rudisha self.data.isidentifier()
+    eleza islower(self): rudisha self.data.islower()
+    eleza isnumeric(self): rudisha self.data.isnumeric()
+    eleza isprintable(self): rudisha self.data.isprintable()
+    eleza isspace(self): rudisha self.data.isspace()
+    eleza istitle(self): rudisha self.data.istitle()
+    eleza isupper(self): rudisha self.data.isupper()
+    eleza join(self, seq): rudisha self.data.join(seq)
+    eleza ljust(self, width, *args):
+        rudisha self.__class__(self.data.ljust(width, *args))
+    eleza lower(self): rudisha self.__class__(self.data.lower())
+    eleza lstrip(self, chars=None): rudisha self.__class__(self.data.lstrip(chars))
     maketrans = str.maketrans
-    def partition(self, sep):
-        return self.data.partition(sep)
-    def replace(self, old, new, maxsplit=-1):
-        if isinstance(old, UserString):
+    eleza partition(self, sep):
+        rudisha self.data.partition(sep)
+    eleza replace(self, old, new, maxsplit=-1):
+        ikiwa isinstance(old, UserString):
             old = old.data
-        if isinstance(new, UserString):
+        ikiwa isinstance(new, UserString):
             new = new.data
-        return self.__class__(self.data.replace(old, new, maxsplit))
-    def rfind(self, sub, start=0, end=_sys.maxsize):
-        if isinstance(sub, UserString):
+        rudisha self.__class__(self.data.replace(old, new, maxsplit))
+    eleza rfind(self, sub, start=0, end=_sys.maxsize):
+        ikiwa isinstance(sub, UserString):
             sub = sub.data
-        return self.data.rfind(sub, start, end)
-    def rindex(self, sub, start=0, end=_sys.maxsize):
-        return self.data.rindex(sub, start, end)
-    def rjust(self, width, *args):
-        return self.__class__(self.data.rjust(width, *args))
-    def rpartition(self, sep):
-        return self.data.rpartition(sep)
-    def rstrip(self, chars=None):
-        return self.__class__(self.data.rstrip(chars))
-    def split(self, sep=None, maxsplit=-1):
-        return self.data.split(sep, maxsplit)
-    def rsplit(self, sep=None, maxsplit=-1):
-        return self.data.rsplit(sep, maxsplit)
-    def splitlines(self, keepends=False): return self.data.splitlines(keepends)
-    def startswith(self, prefix, start=0, end=_sys.maxsize):
-        return self.data.startswith(prefix, start, end)
-    def strip(self, chars=None): return self.__class__(self.data.strip(chars))
-    def swapcase(self): return self.__class__(self.data.swapcase())
-    def title(self): return self.__class__(self.data.title())
-    def translate(self, *args):
-        return self.__class__(self.data.translate(*args))
-    def upper(self): return self.__class__(self.data.upper())
-    def zfill(self, width): return self.__class__(self.data.zfill(width))
+        rudisha self.data.rfind(sub, start, end)
+    eleza rindex(self, sub, start=0, end=_sys.maxsize):
+        rudisha self.data.rindex(sub, start, end)
+    eleza rjust(self, width, *args):
+        rudisha self.__class__(self.data.rjust(width, *args))
+    eleza rpartition(self, sep):
+        rudisha self.data.rpartition(sep)
+    eleza rstrip(self, chars=None):
+        rudisha self.__class__(self.data.rstrip(chars))
+    eleza split(self, sep=None, maxsplit=-1):
+        rudisha self.data.split(sep, maxsplit)
+    eleza rsplit(self, sep=None, maxsplit=-1):
+        rudisha self.data.rsplit(sep, maxsplit)
+    eleza splitlines(self, keepends=False): rudisha self.data.splitlines(keepends)
+    eleza startswith(self, prefix, start=0, end=_sys.maxsize):
+        rudisha self.data.startswith(prefix, start, end)
+    eleza strip(self, chars=None): rudisha self.__class__(self.data.strip(chars))
+    eleza swapcase(self): rudisha self.__class__(self.data.swapcase())
+    eleza title(self): rudisha self.__class__(self.data.title())
+    eleza translate(self, *args):
+        rudisha self.__class__(self.data.translate(*args))
+    eleza upper(self): rudisha self.__class__(self.data.upper())
+    eleza zfill(self, width): rudisha self.__class__(self.data.zfill(width))

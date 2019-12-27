@@ -9,10 +9,10 @@ agiza distutils.tests
 agiza test.support
 
 
-def test_main():
+eleza test_main():
     test.support.run_unittest(distutils.tests.test_suite())
     test.support.reap_children()
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

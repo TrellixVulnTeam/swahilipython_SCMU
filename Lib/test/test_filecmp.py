@@ -7,8 +7,8 @@ agiza unittest
 kutoka test agiza support
 
 
-class FileCompareTestCase(unittest.TestCase):
-    def setUp(self):
+kundi FileCompareTestCase(unittest.TestCase):
+    eleza setUp(self):
         self.name = support.TESTFN
         self.name_same = support.TESTFN + '-same'
         self.name_diff = support.TESTFN + '-diff'
@@ -21,12 +21,12 @@ class FileCompareTestCase(unittest.TestCase):
             output.write('An extra line.\n')
         self.dir = tempfile.gettempdir()
 
-    def tearDown(self):
+    eleza tearDown(self):
         os.unlink(self.name)
         os.unlink(self.name_same)
         os.unlink(self.name_diff)
 
-    def test_matching(self):
+    eleza test_matching(self):
         self.assertTrue(filecmp.cmp(self.name, self.name),
                         "Comparing file to itself fails")
         self.assertTrue(filecmp.cmp(self.name, self.name, shallow=False),
@@ -36,21 +36,21 @@ class FileCompareTestCase(unittest.TestCase):
         self.assertTrue(filecmp.cmp(self.name, self.name_same, shallow=False),
                         "Comparing file to identical file fails")
 
-    def test_different(self):
+    eleza test_different(self):
         self.assertFalse(filecmp.cmp(self.name, self.name_diff),
                     "Mismatched files compare as equal")
         self.assertFalse(filecmp.cmp(self.name, self.dir),
                     "File and directory compare as equal")
 
-    def test_cache_clear(self):
+    eleza test_cache_clear(self):
         first_compare = filecmp.cmp(self.name, self.name_same, shallow=False)
         second_compare = filecmp.cmp(self.name, self.name_diff, shallow=False)
         filecmp.clear_cache()
         self.assertTrue(len(filecmp._cache) == 0,
                         "Cache not cleared after calling clear_cache")
 
-class DirCompareTestCase(unittest.TestCase):
-    def setUp(self):
+kundi DirCompareTestCase(unittest.TestCase):
+    eleza setUp(self):
         tmpdir = tempfile.gettempdir()
         self.dir = os.path.join(tmpdir, 'dir')
         self.dir_same = os.path.join(tmpdir, 'dir-same')
@@ -65,7 +65,7 @@ class DirCompareTestCase(unittest.TestCase):
         for dir in (self.dir, self.dir_same, self.dir_diff, self.dir_ignored):
             shutil.rmtree(dir, True)
             os.mkdir(dir)
-            if self.caseinsensitive and dir is self.dir_same:
+            ikiwa self.caseinsensitive and dir is self.dir_same:
                 fn = 'FiLe'     # Verify case-insensitive comparison
             else:
                 fn = 'file'
@@ -75,14 +75,14 @@ class DirCompareTestCase(unittest.TestCase):
         with open(os.path.join(self.dir_diff, 'file2'), 'w') as output:
             output.write('An extra file.\n')
 
-    def tearDown(self):
+    eleza tearDown(self):
         for dir in (self.dir, self.dir_same, self.dir_diff):
             shutil.rmtree(dir)
 
-    def test_default_ignores(self):
+    eleza test_default_ignores(self):
         self.assertIn('.hg', filecmp.DEFAULT_IGNORES)
 
-    def test_cmpfiles(self):
+    eleza test_cmpfiles(self):
         self.assertTrue(filecmp.cmpfiles(self.dir, self.dir, ['file']) ==
                         (['file'], [], []),
                         "Comparing directory to itself fails")
@@ -109,13 +109,13 @@ class DirCompareTestCase(unittest.TestCase):
                     "Comparing mismatched directories fails")
 
 
-    def test_dircmp(self):
+    eleza test_dircmp(self):
         # Check attributes for comparison of two identical directories
         left_dir, right_dir = self.dir, self.dir_same
         d = filecmp.dircmp(left_dir, right_dir)
         self.assertEqual(d.left, left_dir)
         self.assertEqual(d.right, right_dir)
-        if self.caseinsensitive:
+        ikiwa self.caseinsensitive:
             self.assertEqual([d.left_list, d.right_list],[['file'], ['FiLe']])
         else:
             self.assertEqual([d.left_list, d.right_list],[['file'], ['file']])
@@ -185,7 +185,7 @@ class DirCompareTestCase(unittest.TestCase):
         ]
         self._assert_report(d.report, expected_report)
 
-    def test_report_partial_closure(self):
+    eleza test_report_partial_closure(self):
         left_dir, right_dir = self.dir, self.dir_same
         d = filecmp.dircmp(left_dir, right_dir)
         expected_report = [
@@ -194,7 +194,7 @@ class DirCompareTestCase(unittest.TestCase):
         ]
         self._assert_report(d.report_partial_closure, expected_report)
 
-    def test_report_full_closure(self):
+    eleza test_report_full_closure(self):
         left_dir, right_dir = self.dir, self.dir_same
         d = filecmp.dircmp(left_dir, right_dir)
         expected_report = [
@@ -203,15 +203,15 @@ class DirCompareTestCase(unittest.TestCase):
         ]
         self._assert_report(d.report_full_closure, expected_report)
 
-    def _assert_report(self, dircmp_report, expected_report_lines):
+    eleza _assert_report(self, dircmp_report, expected_report_lines):
         with support.captured_stdout() as stdout:
             dircmp_report()
             report_lines = stdout.getvalue().strip().split('\n')
             self.assertEqual(report_lines, expected_report_lines)
 
 
-def test_main():
+eleza test_main():
     support.run_unittest(FileCompareTestCase, DirCompareTestCase)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

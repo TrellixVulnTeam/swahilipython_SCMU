@@ -33,24 +33,24 @@ requireVenvCreate = unittest.skipUnless(
     or sys._base_executable != sys.executable,
     'cannot run venv.create kutoka within a venv on this platform')
 
-def check_output(cmd, encoding=None):
+eleza check_output(cmd, encoding=None):
     p = subprocess.Popen(cmd,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         encoding=encoding)
     out, err = p.communicate()
-    if p.returncode:
+    ikiwa p.returncode:
         raise subprocess.CalledProcessError(
             p.returncode, cmd, out, err)
-    return out, err
+    rudisha out, err
 
-class BaseTest(unittest.TestCase):
-    """Base class for venv tests."""
+kundi BaseTest(unittest.TestCase):
+    """Base kundi for venv tests."""
     maxDiff = 80 * 50
 
-    def setUp(self):
+    eleza setUp(self):
         self.env_dir = os.path.realpath(tempfile.mkdtemp())
-        if os.name == 'nt':
+        ikiwa os.name == 'nt':
             self.bindir = 'Scripts'
             self.lib = ('Lib',)
             self.include = 'Include'
@@ -60,38 +60,38 @@ class BaseTest(unittest.TestCase):
             self.include = 'include'
         executable = sys._base_executable
         self.exe = os.path.split(executable)[-1]
-        if (sys.platform == 'win32'
+        ikiwa (sys.platform == 'win32'
             and os.path.lexists(executable)
             and not os.path.exists(executable)):
             self.cannot_link_exe = True
         else:
             self.cannot_link_exe = False
 
-    def tearDown(self):
+    eleza tearDown(self):
         rmtree(self.env_dir)
 
-    def run_with_capture(self, func, *args, **kwargs):
+    eleza run_with_capture(self, func, *args, **kwargs):
         with captured_stdout() as output:
             with captured_stderr() as error:
                 func(*args, **kwargs)
-        return output.getvalue(), error.getvalue()
+        rudisha output.getvalue(), error.getvalue()
 
-    def get_env_file(self, *args):
-        return os.path.join(self.env_dir, *args)
+    eleza get_env_file(self, *args):
+        rudisha os.path.join(self.env_dir, *args)
 
-    def get_text_file_contents(self, *args):
+    eleza get_text_file_contents(self, *args):
         with open(self.get_env_file(*args), 'r') as f:
             result = f.read()
-        return result
+        rudisha result
 
-class BasicTest(BaseTest):
+kundi BasicTest(BaseTest):
     """Test venv module functionality."""
 
-    def isdir(self, *args):
+    eleza isdir(self, *args):
         fn = self.get_env_file(*args)
         self.assertTrue(os.path.isdir(fn))
 
-    def test_defaults(self):
+    eleza test_defaults(self):
         """
         Test the create function with default arguments.
         """
@@ -104,7 +104,7 @@ class BasicTest(BaseTest):
         p = self.get_env_file('lib64')
         conditions = ((struct.calcsize('P') == 8) and (os.name == 'posix') and
                       (sys.platform != 'darwin'))
-        if conditions:
+        ikiwa conditions:
             self.assertTrue(os.path.islink(p))
         else:
             self.assertFalse(os.path.exists(p))
@@ -113,13 +113,13 @@ class BasicTest(BaseTest):
         path = os.path.dirname(executable)
         self.assertIn('home = %s' % path, data)
         fn = self.get_env_file(self.bindir, self.exe)
-        if not os.path.exists(fn):  # diagnostics for Windows buildbot failures
+        ikiwa not os.path.exists(fn):  # diagnostics for Windows buildbot failures
             bd = self.get_env_file(self.bindir)
-            print('Contents of %r:' % bd)
-            print('    %r' % os.listdir(bd))
+            andika('Contents of %r:' % bd)
+            andika('    %r' % os.listdir(bd))
         self.assertTrue(os.path.exists(fn), 'File %r should exist.' % fn)
 
-    def test_prompt(self):
+    eleza test_prompt(self):
         env_name = os.path.split(self.env_dir)[1]
 
         rmtree(self.env_dir)
@@ -139,7 +139,7 @@ class BasicTest(BaseTest):
         self.assertIn("prompt = 'My prompt'\n", data)
 
     @requireVenvCreate
-    def test_prefixes(self):
+    eleza test_prefixes(self):
         """
         Test that the prefix values are as expected.
         """
@@ -153,11 +153,11 @@ class BasicTest(BaseTest):
             ('exec_prefix', self.env_dir),
             ('base_prefix', sys.base_prefix),
             ('base_exec_prefix', sys.base_exec_prefix)):
-            cmd[2] = 'agiza sys; print(sys.%s)' % prefix
+            cmd[2] = 'agiza sys; andika(sys.%s)' % prefix
             out, err = check_output(cmd)
             self.assertEqual(out.strip(), expected.encode())
 
-    if sys.platform == 'win32':
+    ikiwa sys.platform == 'win32':
         ENV_SUBDIRS = (
             ('Scripts',),
             ('Include',),
@@ -173,7 +173,7 @@ class BasicTest(BaseTest):
             ('lib', 'python%d.%d' % sys.version_info[:2], 'site-packages'),
         )
 
-    def create_contents(self, paths, filename):
+    eleza create_contents(self, paths, filename):
         """
         Create some files in the environment which are unrelated
         to the virtual environment.
@@ -185,7 +185,7 @@ class BasicTest(BaseTest):
             with open(fn, 'wb') as f:
                 f.write(b'Still here?')
 
-    def test_overwrite_existing(self):
+    eleza test_overwrite_existing(self):
         """
         Test creating environment in an existing directory.
         """
@@ -203,15 +203,15 @@ class BasicTest(BaseTest):
             fn = os.path.join(self.env_dir, *(subdirs + ('foo',)))
             self.assertFalse(os.path.exists(fn))
 
-    def clear_directory(self, path):
+    eleza clear_directory(self, path):
         for fn in os.listdir(path):
             fn = os.path.join(path, fn)
-            if os.path.islink(fn) or os.path.isfile(fn):
+            ikiwa os.path.islink(fn) or os.path.isfile(fn):
                 os.remove(fn)
-            elif os.path.isdir(fn):
+            elikiwa os.path.isdir(fn):
                 rmtree(fn)
 
-    def test_unoverwritable_fails(self):
+    eleza test_unoverwritable_fails(self):
         #create a file clashing with directories in the env dir
         for paths in self.ENV_SUBDIRS[:3]:
             fn = os.path.join(self.env_dir, *paths)
@@ -220,7 +220,7 @@ class BasicTest(BaseTest):
             self.assertRaises((ValueError, OSError), venv.create, self.env_dir)
             self.clear_directory(self.env_dir)
 
-    def test_upgrade(self):
+    eleza test_upgrade(self):
         """
         Test upgrading an existing environment directory.
         """
@@ -234,14 +234,14 @@ class BasicTest(BaseTest):
             self.isdir(self.include)
             self.isdir(*self.lib)
             fn = self.get_env_file(self.bindir, self.exe)
-            if not os.path.exists(fn):
+            ikiwa not os.path.exists(fn):
                 # diagnostics for Windows buildbot failures
                 bd = self.get_env_file(self.bindir)
-                print('Contents of %r:' % bd)
-                print('    %r' % os.listdir(bd))
+                andika('Contents of %r:' % bd)
+                andika('    %r' % os.listdir(bd))
             self.assertTrue(os.path.exists(fn), 'File %r should exist.' % fn)
 
-    def test_isolation(self):
+    eleza test_isolation(self):
         """
         Test isolation kutoka system site-packages
         """
@@ -252,7 +252,7 @@ class BasicTest(BaseTest):
             self.assertIn('include-system-site-packages = %s\n' % s, data)
 
     @unittest.skipUnless(can_symlink(), 'Needs symlinks')
-    def test_symlinking(self):
+    eleza test_symlinking(self):
         """
         Test symlinking works as expected
         """
@@ -263,8 +263,8 @@ class BasicTest(BaseTest):
             # Don't test when False, because e.g. 'python' is always
             # symlinked to 'python3.3' in the env, even when symlinking in
             # general isn't wanted.
-            if usl:
-                if self.cannot_link_exe:
+            ikiwa usl:
+                ikiwa self.cannot_link_exe:
                     # Symlinking is skipped when our executable is already a
                     # special app symlink
                     self.assertFalse(os.path.islink(fn))
@@ -276,7 +276,7 @@ class BasicTest(BaseTest):
     # point to the venv being used to run the test, and we lose the link
     # to the source build - so Python can't initialise properly.
     @requireVenvCreate
-    def test_executable(self):
+    eleza test_executable(self):
         """
         Test that the sys.executable value is as expected.
         """
@@ -285,11 +285,11 @@ class BasicTest(BaseTest):
         envpy = os.path.join(os.path.realpath(self.env_dir),
                              self.bindir, self.exe)
         out, err = check_output([envpy, '-c',
-            'agiza sys; print(sys.executable)'])
+            'agiza sys; andika(sys.executable)'])
         self.assertEqual(out.strip(), envpy.encode())
 
     @unittest.skipUnless(can_symlink(), 'Needs symlinks')
-    def test_executable_symlinks(self):
+    eleza test_executable_symlinks(self):
         """
         Test that the sys.executable value is as expected.
         """
@@ -299,11 +299,11 @@ class BasicTest(BaseTest):
         envpy = os.path.join(os.path.realpath(self.env_dir),
                              self.bindir, self.exe)
         out, err = check_output([envpy, '-c',
-            'agiza sys; print(sys.executable)'])
+            'agiza sys; andika(sys.executable)'])
         self.assertEqual(out.strip(), envpy.encode())
 
     @unittest.skipUnless(os.name == 'nt', 'only relevant on Windows')
-    def test_unicode_in_batch_file(self):
+    eleza test_unicode_in_batch_file(self):
         """
         Test handling of Unicode paths
         """
@@ -314,18 +314,18 @@ class BasicTest(BaseTest):
         activate = os.path.join(env_dir, self.bindir, 'activate.bat')
         envpy = os.path.join(env_dir, self.bindir, self.exe)
         out, err = check_output(
-            [activate, '&', self.exe, '-c', 'print(0)'],
+            [activate, '&', self.exe, '-c', 'andika(0)'],
             encoding='oem',
         )
         self.assertEqual(out.strip(), '0')
 
     @requireVenvCreate
-    def test_multiprocessing(self):
+    eleza test_multiprocessing(self):
         """
         Test that the multiprocessing is able to spawn.
         """
         # Issue bpo-36342: Instanciation of a Pool object agizas the
-        # multiprocessing.synchronize module. Skip the test if this module
+        # multiprocessing.synchronize module. Skip the test ikiwa this module
         # cannot be imported.
         import_module('multiprocessing.synchronize')
         rmtree(self.env_dir)
@@ -335,14 +335,14 @@ class BasicTest(BaseTest):
         out, err = check_output([envpy, '-c',
             'kutoka multiprocessing agiza Pool; '
             'pool = Pool(1); '
-            'print(pool.apply_async("Python".lower).get(3)); '
+            'andika(pool.apply_async("Python".lower).get(3)); '
             'pool.terminate()'])
         self.assertEqual(out.strip(), "python".encode())
 
     @unittest.skipIf(os.name == 'nt', 'not relevant on Windows')
-    def test_deactivate_with_strict_bash_opts(self):
+    eleza test_deactivate_with_strict_bash_opts(self):
         bash = shutil.which("bash")
-        if bash is None:
+        ikiwa bash is None:
             self.skipTest("bash required for this test")
         rmtree(self.env_dir)
         builder = venv.EnvBuilder(clear=True)
@@ -359,32 +359,32 @@ class BasicTest(BaseTest):
 
 
 @requireVenvCreate
-class EnsurePipTest(BaseTest):
+kundi EnsurePipTest(BaseTest):
     """Test venv module installation of pip."""
-    def assert_pip_not_installed(self):
+    eleza assert_pip_not_installed(self):
         envpy = os.path.join(os.path.realpath(self.env_dir),
                              self.bindir, self.exe)
         out, err = check_output([envpy, '-c',
-            'try:\n agiza pip\nexcept ImportError:\n print("OK")'])
+            'try:\n agiza pip\nexcept ImportError:\n andika("OK")'])
         # We force everything to text, so unittest gives the detailed diff
-        # if we get unexpected results
+        # ikiwa we get unexpected results
         err = err.decode("latin-1") # Force to text, prevent decoding errors
         self.assertEqual(err, "")
         out = out.decode("latin-1") # Force to text, prevent decoding errors
         self.assertEqual(out.strip(), "OK")
 
 
-    def test_no_pip_by_default(self):
+    eleza test_no_pip_by_default(self):
         rmtree(self.env_dir)
         self.run_with_capture(venv.create, self.env_dir)
         self.assert_pip_not_installed()
 
-    def test_explicit_no_pip(self):
+    eleza test_explicit_no_pip(self):
         rmtree(self.env_dir)
         self.run_with_capture(venv.create, self.env_dir, with_pip=False)
         self.assert_pip_not_installed()
 
-    def test_devnull(self):
+    eleza test_devnull(self):
         # Fix for issue #20053 uses os.devnull to force a config file to
         # appear empty. However http://bugs.python.org/issue20541 means
         # that doesn't currently work properly on Windows. Once that is
@@ -394,7 +394,7 @@ class EnsurePipTest(BaseTest):
 
         self.assertTrue(os.path.exists(os.devnull))
 
-    def do_test_with_pip(self, system_site_packages):
+    eleza do_test_with_pip(self, system_site_packages):
         rmtree(self.env_dir)
         with EnvironmentVarGuard() as envvars:
             # pip's cross-version compatibility may trigger deprecation
@@ -442,7 +442,7 @@ class EnsurePipTest(BaseTest):
         out, err = check_output([envpy, '-W', 'ignore::DeprecationWarning', '-I',
                '-m', 'pip', '--version'])
         # We force everything to text, so unittest gives the detailed diff
-        # if we get unexpected results
+        # ikiwa we get unexpected results
         err = err.decode("latin-1") # Force to text, prevent decoding errors
         self.assertEqual(err, "")
         out = out.decode("latin-1") # Force to text, prevent decoding errors
@@ -459,7 +459,7 @@ class EnsurePipTest(BaseTest):
                 '-W', 'ignore::DeprecationWarning', '-I',
                 '-m', 'ensurepip._uninstall'])
         # We force everything to text, so unittest gives the detailed diff
-        # if we get unexpected results
+        # ikiwa we get unexpected results
         err = err.decode("latin-1") # Force to text, prevent decoding errors
         # Ignore the warning:
         #   "The directory '$HOME/.cache/pip/http' or its parent directory
@@ -480,15 +480,15 @@ class EnsurePipTest(BaseTest):
         # Check pip is now gone kutoka the virtual environment. This only
         # applies in the system_site_packages=False case, because in the
         # other case, pip may still be available in the system site-packages
-        if not system_site_packages:
+        ikiwa not system_site_packages:
             self.assert_pip_not_installed()
 
     # Issue #26610: pip/pep425tags.py requires ctypes
     @unittest.skipUnless(ctypes, 'pip requires ctypes')
     @requires_zlib
-    def test_with_pip(self):
+    eleza test_with_pip(self):
         self.do_test_with_pip(False)
         self.do_test_with_pip(True)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

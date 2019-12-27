@@ -13,7 +13,7 @@
 
 .. testsetup:: *
 
-   from statistics import *
+   kutoka statistics agiza *
    __name__ = '<doctest>'
 
 --------------
@@ -38,7 +38,7 @@ example: ``map(float, input_data)``.
 Averages and measures of central location
 -----------------------------------------
 
-These functions calculate an average or typical value from a population
+These functions calculate an average or typical value kutoka a population
 or sample.
 
 =======================  ===============================================================
@@ -59,7 +59,7 @@ Measures of spread
 ------------------
 
 These functions calculate a measure of how much the population or sample
-tends to deviate from the typical or average values.
+tends to deviate kutoka the typical or average values.
 
 =======================  =============================================
 :func:`pstdev`           Population standard deviation of data.
@@ -95,11 +95,11 @@ However, for reading convenience, most of the examples show sorted sequences.
       >>> mean([-1.0, 2.5, 3.25, 5.75])
       2.625
 
-      >>> from fractions import Fraction as F
+      >>> kutoka fractions agiza Fraction as F
       >>> mean([F(3, 7), F(1, 21), F(5, 3), F(1, 3)])
       Fraction(13, 21)
 
-      >>> from decimal import Decimal as D
+      >>> kutoka decimal agiza Decimal as D
       >>> mean([D("0.5"), D("0.75"), D("0.625"), D("0.375")])
       Decimal('0.5625')
 
@@ -275,9 +275,9 @@ However, for reading convenience, most of the examples show sorted sequences.
       52.5
 
    In the following example, the data are rounded, so that each value represents
-   the midpoint of data classes, e.g. 1 is the midpoint of the class 0.5--1.5, 2
+   the midpoint of data classes, e.g. 1 is the midpoint of the kundi 0.5--1.5, 2
    is the midpoint of 1.5--2.5, 3 is the midpoint of 2.5--3.5, etc.  With the data
-   given, the middle value falls somewhere in the class 3.5--4.5, and
+   given, the middle value falls somewhere in the kundi 3.5--4.5, and
    interpolation is used to estimate it:
 
    .. doctest::
@@ -285,8 +285,8 @@ However, for reading convenience, most of the examples show sorted sequences.
       >>> median_grouped([1, 2, 2, 3, 4, 4, 4, 4, 4, 5])
       3.7
 
-   Optional argument *interval* represents the class interval, and defaults
-   to 1.  Changing the class interval naturally will change the interpolation:
+   Optional argument *interval* represents the kundi interval, and defaults
+   to 1.  Changing the kundi interval naturally will change the interpolation:
 
    .. doctest::
 
@@ -316,7 +316,7 @@ However, for reading convenience, most of the examples show sorted sequences.
 
 .. function:: mode(data)
 
-   Return the single most common data point from discrete or nominal *data*.
+   Return the single most common data point kutoka discrete or nominal *data*.
    The mode (when it exists) is the most typical value and serves as a
    measure of central location.
 
@@ -387,8 +387,8 @@ However, for reading convenience, most of the examples show sorted sequences.
    point that is not the mean.  If it is missing or ``None`` (the default),
    the arithmetic mean is automatically calculated.
 
-   Use this function to calculate the variance from the entire population.  To
-   estimate the variance from a sample, the :func:`variance` function is usually
+   Use this function to calculate the variance kutoka the entire population.  To
+   estimate the variance kutoka a sample, the :func:`variance` function is usually
    a better choice.
 
    Raises :exc:`StatisticsError` if *data* is empty.
@@ -414,11 +414,11 @@ However, for reading convenience, most of the examples show sorted sequences.
 
    .. doctest::
 
-      >>> from decimal import Decimal as D
+      >>> kutoka decimal agiza Decimal as D
       >>> pvariance([D("27.5"), D("30.25"), D("30.25"), D("34.5"), D("41.75")])
       Decimal('24.815')
 
-      >>> from fractions import Fraction as F
+      >>> kutoka fractions agiza Fraction as F
       >>> pvariance([F(1, 4), F(5, 4), F(1, 2)])
       Fraction(13, 72)
 
@@ -458,8 +458,8 @@ However, for reading convenience, most of the examples show sorted sequences.
    *data*.  If it is missing or ``None`` (the default), the mean is
    automatically calculated.
 
-   Use this function when your data is a sample from a population. To calculate
-   the variance from the entire population, see :func:`pvariance`.
+   Use this function when your data is a sample kutoka a population. To calculate
+   the variance kutoka the entire population, see :func:`pvariance`.
 
    Raises :exc:`StatisticsError` if *data* has fewer than two values.
 
@@ -488,11 +488,11 @@ However, for reading convenience, most of the examples show sorted sequences.
 
    .. doctest::
 
-      >>> from decimal import Decimal as D
+      >>> kutoka decimal agiza Decimal as D
       >>> variance([D("27.5"), D("30.25"), D("30.25"), D("34.5"), D("41.75")])
       Decimal('31.01875')
 
-      >>> from fractions import Fraction as F
+      >>> kutoka fractions agiza Fraction as F
       >>> variance([F(1, 6), F(1, 2), F(5, 3)])
       Fraction(67, 108)
 
@@ -521,16 +521,16 @@ However, for reading convenience, most of the examples show sorted sequences.
    results, the number of data points in *data* should be larger than *n*.
    Raises :exc:`StatisticsError` if there are not at least two data points.
 
-   The cut points are linearly interpolated from the
+   The cut points are linearly interpolated kutoka the
    two nearest data points.  For example, if a cut point falls one-third
    of the distance between two sample values, ``100`` and ``112``, the
    cut-point will evaluate to ``104``.
 
    The *method* for computing quantiles can be varied depending on
    whether the *data* includes or excludes the lowest and
-   highest possible values from the population.
+   highest possible values kutoka the population.
 
-   The default *method* is "exclusive" and is used for data sampled from
+   The default *method* is "exclusive" and is used for data sampled kutoka
    a population that can have more extreme values than found in the
    samples.  The portion of the population falling below the *i-th* of
    *m* sorted data points is computed as ``i / (m + 1)``.  Given nine
@@ -539,7 +539,7 @@ However, for reading convenience, most of the examples show sorted sequences.
 
    Setting the *method* to "inclusive" is used for describing population
    data or for samples that are known to include the most extreme values
-   from the population.  The minimum value in *data* is treated as the 0th
+   kutoka the population.  The minimum value in *data* is treated as the 0th
    percentile and the maximum value is treated as the 100th percentile.
    The portion of the population falling below the *i-th* of *m* sorted
    data points is computed as ``(i - 1) / (m - 1)``.  Given 11 sample
@@ -567,7 +567,7 @@ A single exception is defined:
 
 .. exception:: StatisticsError
 
-   Subclass of :exc:`ValueError` for statistics-related exceptions.
+   Subkundi of :exc:`ValueError` for statistics-related exceptions.
 
 
 :class:`NormalDist` objects
@@ -576,10 +576,10 @@ A single exception is defined:
 :class:`NormalDist` is a tool for creating and manipulating normal
 distributions of a `random variable
 <http://www.stat.yale.edu/Courses/1997-98/101/ranvar.htm>`_.  It is a
-class that treats the mean and standard deviation of data
+kundi that treats the mean and standard deviation of data
 measurements as a single entity.
 
-Normal distributions arise from the `Central Limit Theorem
+Normal distributions arise kutoka the `Central Limit Theorem
 <https://en.wikipedia.org/wiki/Central_limit_theorem>`_ and have a wide range
 of applications in statistics.
 
@@ -622,10 +622,10 @@ of applications in statistics.
        <https://en.wikipedia.org/wiki/Variance>`_ of a normal
        distribution. Equal to the square of the standard deviation.
 
-    .. classmethod:: NormalDist.from_samples(data)
+    .. classmethod:: NormalDist.kutoka_samples(data)
 
        Makes a normal distribution instance with *mu* and *sigma* parameters
-       estimated from the *data* using :func:`fmean` and :func:`stdev`.
+       estimated kutoka the *data* using :func:`fmean` and :func:`stdev`.
 
        The *data* can be any :term:`iterable` and should consist of values
        that can be converted to type :class:`float`.  If *data* does not
@@ -704,7 +704,7 @@ of applications in statistics.
     Dividing a constant by an instance of :class:`NormalDist` is not supported
     because the result wouldn't be normally distributed.
 
-    Since normal distributions arise from additive effects of independent
+    Since normal distributions arise kutoka additive effects of independent
     variables, it is possible to `add and subtract two independent normally
     distributed random variables
     <https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables>`_
@@ -712,7 +712,7 @@ of applications in statistics.
 
     .. doctest::
 
-        >>> birth_weights = NormalDist.from_samples([2.5, 3.1, 2.1, 2.4, 2.7, 3.5])
+        >>> birth_weights = NormalDist.kutoka_samples([2.5, 3.1, 2.1, 2.4, 2.7, 3.5])
         >>> drug_effects = NormalDist(0.4, 0.15)
         >>> combined = birth_weights + drug_effects
         >>> round(combined.mean, 1)
@@ -771,7 +771,7 @@ Normal distributions commonly arise in machine learning problems.
 
 Wikipedia has a `nice example of a Naive Bayesian Classifier
 <https://en.wikipedia.org/wiki/Naive_Bayes_classifier#Sex_classification>`_.
-The challenge is to predict a person's gender from measurements of normally
+The challenge is to predict a person's gender kutoka measurements of normally
 distributed features including height, weight, and foot size.
 
 We're given a training dataset with measurements for eight people.  The
@@ -780,12 +780,12 @@ with :class:`NormalDist`:
 
 .. doctest::
 
-    >>> height_male = NormalDist.from_samples([6, 5.92, 5.58, 5.92])
-    >>> height_female = NormalDist.from_samples([5, 5.5, 5.42, 5.75])
-    >>> weight_male = NormalDist.from_samples([180, 190, 170, 165])
-    >>> weight_female = NormalDist.from_samples([100, 150, 130, 150])
-    >>> foot_size_male = NormalDist.from_samples([12, 11, 12, 10])
-    >>> foot_size_female = NormalDist.from_samples([6, 8, 7, 9])
+    >>> height_male = NormalDist.kutoka_samples([6, 5.92, 5.58, 5.92])
+    >>> height_female = NormalDist.kutoka_samples([5, 5.5, 5.42, 5.75])
+    >>> weight_male = NormalDist.kutoka_samples([180, 190, 170, 165])
+    >>> weight_female = NormalDist.kutoka_samples([100, 150, 130, 150])
+    >>> foot_size_male = NormalDist.kutoka_samples([12, 11, 12, 10])
+    >>> foot_size_female = NormalDist.kutoka_samples([6, 8, 7, 9])
 
 Next, we encounter a new person whose feature measurements are known but whose
 gender is unknown:

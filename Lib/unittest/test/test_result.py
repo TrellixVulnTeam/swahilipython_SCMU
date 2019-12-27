@@ -8,21 +8,21 @@ agiza traceback
 agiza unittest
 
 
-class MockTraceback(object):
-    class TracebackException:
-        def __init__(self, *args, **kwargs):
+kundi MockTraceback(object):
+    kundi TracebackException:
+        eleza __init__(self, *args, **kwargs):
             self.capture_locals = kwargs.get('capture_locals', False)
-        def format(self):
+        eleza format(self):
             result = ['A traceback']
-            if self.capture_locals:
+            ikiwa self.capture_locals:
                 result.append('locals')
-            return result
+            rudisha result
 
-def restore_traceback():
+eleza restore_traceback():
     unittest.result.traceback = traceback
 
 
-class Test_TestResult(unittest.TestCase):
+kundi Test_TestResult(unittest.TestCase):
     # Note: there are not separate tests for TestResult.wasSuccessful(),
     # TestResult.errors, TestResult.failures, TestResult.testsRun or
     # TestResult.shouldStop because these only have meaning in terms of
@@ -32,7 +32,7 @@ class Test_TestResult(unittest.TestCase):
     # in with the tests for the defining methods.
     ################################################################
 
-    def test_init(self):
+    eleza test_init(self):
         result = unittest.TestResult()
 
         self.assertTrue(result.wasSuccessful())
@@ -46,7 +46,7 @@ class Test_TestResult(unittest.TestCase):
     # "This method can be called to signal that the set of tests being
     # run should be aborted by setting the TestResult's shouldStop
     # attribute to True."
-    def test_stop(self):
+    eleza test_stop(self):
         result = unittest.TestResult()
 
         result.stop()
@@ -55,9 +55,9 @@ class Test_TestResult(unittest.TestCase):
 
     # "Called when the test case test is about to be run. The default
     # implementation simply increments the instance's testsRun counter."
-    def test_startTest(self):
-        class Foo(unittest.TestCase):
-            def test_1(self):
+    eleza test_startTest(self):
+        kundi Foo(unittest.TestCase):
+            eleza test_1(self):
                 pass
 
         test = Foo('test_1')
@@ -76,9 +76,9 @@ class Test_TestResult(unittest.TestCase):
 
     # "Called after the test case test has been executed, regardless of
     # the outcome. The default implementation does nothing."
-    def test_stopTest(self):
-        class Foo(unittest.TestCase):
-            def test_1(self):
+    eleza test_stopTest(self):
+        kundi Foo(unittest.TestCase):
+            eleza test_1(self):
                 pass
 
         test = Foo('test_1')
@@ -103,7 +103,7 @@ class Test_TestResult(unittest.TestCase):
         self.assertEqual(result.shouldStop, False)
 
     # "Called before and after tests are run. The default implementation does nothing."
-    def test_startTestRun_stopTestRun(self):
+    eleza test_startTestRun_stopTestRun(self):
         result = unittest.TestResult()
         result.startTestRun()
         result.stopTestRun()
@@ -112,7 +112,7 @@ class Test_TestResult(unittest.TestCase):
     # ...
     # "Called when the test case test succeeds"
     # ...
-    # "wasSuccessful() - Returns True if all tests run so far have passed,
+    # "wasSuccessful() - Returns True ikiwa all tests run so far have passed,
     # otherwise returns False"
     # ...
     # "testsRun - The total number of tests run so far."
@@ -127,9 +127,9 @@ class Test_TestResult(unittest.TestCase):
     # explicitly signalled using the TestCase.fail*() or TestCase.assert*()
     # methods. Contains formatted tracebacks instead
     # of sys.exc_info() results."
-    def test_addSuccess(self):
-        class Foo(unittest.TestCase):
-            def test_1(self):
+    eleza test_addSuccess(self):
+        kundi Foo(unittest.TestCase):
+            eleza test_1(self):
                 pass
 
         test = Foo('test_1')
@@ -151,7 +151,7 @@ class Test_TestResult(unittest.TestCase):
     # "Called when the test case test signals a failure. err is a tuple of
     # the form returned by sys.exc_info(): (type, value, traceback)"
     # ...
-    # "wasSuccessful() - Returns True if all tests run so far have passed,
+    # "wasSuccessful() - Returns True ikiwa all tests run so far have passed,
     # otherwise returns False"
     # ...
     # "testsRun - The total number of tests run so far."
@@ -166,9 +166,9 @@ class Test_TestResult(unittest.TestCase):
     # explicitly signalled using the TestCase.fail*() or TestCase.assert*()
     # methods. Contains formatted tracebacks instead
     # of sys.exc_info() results."
-    def test_addFailure(self):
-        class Foo(unittest.TestCase):
-            def test_1(self):
+    eleza test_addFailure(self):
+        kundi Foo(unittest.TestCase):
+            eleza test_1(self):
                 pass
 
         test = Foo('test_1')
@@ -199,7 +199,7 @@ class Test_TestResult(unittest.TestCase):
     # is a tuple of the form returned by sys.exc_info():
     # (type, value, traceback)"
     # ...
-    # "wasSuccessful() - Returns True if all tests run so far have passed,
+    # "wasSuccessful() - Returns True ikiwa all tests run so far have passed,
     # otherwise returns False"
     # ...
     # "testsRun - The total number of tests run so far."
@@ -214,9 +214,9 @@ class Test_TestResult(unittest.TestCase):
     # explicitly signalled using the TestCase.fail*() or TestCase.assert*()
     # methods. Contains formatted tracebacks instead
     # of sys.exc_info() results."
-    def test_addError(self):
-        class Foo(unittest.TestCase):
-            def test_1(self):
+    eleza test_addError(self):
+        kundi Foo(unittest.TestCase):
+            eleza test_1(self):
                 pass
 
         test = Foo('test_1')
@@ -241,9 +241,9 @@ class Test_TestResult(unittest.TestCase):
         self.assertIs(test_case, test)
         self.assertIsInstance(formatted_exc, str)
 
-    def test_addError_locals(self):
-        class Foo(unittest.TestCase):
-            def test_1(self):
+    eleza test_addError_locals(self):
+        kundi Foo(unittest.TestCase):
+            eleza test_1(self):
                 1/0
 
         test = Foo('test_1')
@@ -260,9 +260,9 @@ class Test_TestResult(unittest.TestCase):
         test_case, formatted_exc = result.errors[0]
         self.assertEqual('A tracebacklocals', formatted_exc)
 
-    def test_addSubTest(self):
-        class Foo(unittest.TestCase):
-            def test_1(self):
+    eleza test_addSubTest(self):
+        kundi Foo(unittest.TestCase):
+            eleza test_1(self):
                 nonlocal subtest
                 with self.subTest(foo=1):
                     subtest = self._subtest
@@ -294,14 +294,14 @@ class Test_TestResult(unittest.TestCase):
         self.assertIs(test_case, subtest)
         self.assertIn("some recognizable failure", formatted_exc)
 
-    def testGetDescriptionWithoutDocstring(self):
+    eleza testGetDescriptionWithoutDocstring(self):
         result = unittest.TextTestResult(None, True, 1)
         self.assertEqual(
                 result.getDescription(self),
                 'testGetDescriptionWithoutDocstring (' + __name__ +
                 '.Test_TestResult)')
 
-    def testGetSubTestDescriptionWithoutDocstring(self):
+    eleza testGetSubTestDescriptionWithoutDocstring(self):
         with self.subTest(foo=1, bar=2):
             result = unittest.TextTestResult(None, True, 1)
             self.assertEqual(
@@ -315,7 +315,7 @@ class Test_TestResult(unittest.TestCase):
                     'testGetSubTestDescriptionWithoutDocstring (' + __name__ +
                     '.Test_TestResult) [some message]')
 
-    def testGetSubTestDescriptionWithoutDocstringAndParams(self):
+    eleza testGetSubTestDescriptionWithoutDocstringAndParams(self):
         with self.subTest():
             result = unittest.TextTestResult(None, True, 1)
             self.assertEqual(
@@ -323,7 +323,7 @@ class Test_TestResult(unittest.TestCase):
                     'testGetSubTestDescriptionWithoutDocstringAndParams '
                     '(' + __name__ + '.Test_TestResult) (<subtest>)')
 
-    def testGetSubTestDescriptionForFalsyValues(self):
+    eleza testGetSubTestDescriptionForFalsyValues(self):
         expected = 'testGetSubTestDescriptionForFalsyValues (%s.Test_TestResult) [%s]'
         result = unittest.TextTestResult(None, True, 1)
         for arg in [0, None, []]:
@@ -333,7 +333,7 @@ class Test_TestResult(unittest.TestCase):
                     expected % (__name__, arg)
                 )
 
-    def testGetNestedSubTestDescriptionWithoutDocstring(self):
+    eleza testGetNestedSubTestDescriptionWithoutDocstring(self):
         with self.subTest(foo=1):
             with self.subTest(baz=2, bar=3):
                 result = unittest.TextTestResult(None, True, 1)
@@ -342,7 +342,7 @@ class Test_TestResult(unittest.TestCase):
                         'testGetNestedSubTestDescriptionWithoutDocstring '
                         '(' + __name__ + '.Test_TestResult) (baz=2, bar=3, foo=1)')
 
-    def testGetDuplicatedNestedSubTestDescriptionWithoutDocstring(self):
+    eleza testGetDuplicatedNestedSubTestDescriptionWithoutDocstring(self):
         with self.subTest(foo=1, bar=2):
             with self.subTest(baz=3, bar=4):
                 result = unittest.TextTestResult(None, True, 1)
@@ -353,7 +353,7 @@ class Test_TestResult(unittest.TestCase):
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
-    def testGetDescriptionWithOneLineDocstring(self):
+    eleza testGetDescriptionWithOneLineDocstring(self):
         """Tests getDescription() for a method with a docstring."""
         result = unittest.TextTestResult(None, True, 1)
         self.assertEqual(
@@ -364,7 +364,7 @@ class Test_TestResult(unittest.TestCase):
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
-    def testGetSubTestDescriptionWithOneLineDocstring(self):
+    eleza testGetSubTestDescriptionWithOneLineDocstring(self):
         """Tests getDescription() for a method with a docstring."""
         result = unittest.TextTestResult(None, True, 1)
         with self.subTest(foo=1, bar=2):
@@ -376,7 +376,7 @@ class Test_TestResult(unittest.TestCase):
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
-    def testGetDescriptionWithMultiLineDocstring(self):
+    eleza testGetDescriptionWithMultiLineDocstring(self):
         """Tests getDescription() for a method with a longer docstring.
         The second line of the docstring.
         """
@@ -390,7 +390,7 @@ class Test_TestResult(unittest.TestCase):
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
-    def testGetSubTestDescriptionWithMultiLineDocstring(self):
+    eleza testGetSubTestDescriptionWithMultiLineDocstring(self):
         """Tests getDescription() for a method with a longer docstring.
         The second line of the docstring.
         """
@@ -403,9 +403,9 @@ class Test_TestResult(unittest.TestCase):
                 'Tests getDescription() for a method with a longer '
                 'docstring.'))
 
-    def testStackFrameTrimming(self):
-        class Frame(object):
-            class tb_frame(object):
+    eleza testStackFrameTrimming(self):
+        kundi Frame(object):
+            kundi tb_frame(object):
                 f_globals = {}
         result = unittest.TestResult()
         self.assertFalse(result._is_relevant_tb_level(Frame))
@@ -413,7 +413,7 @@ class Test_TestResult(unittest.TestCase):
         Frame.tb_frame.f_globals['__unittest'] = True
         self.assertTrue(result._is_relevant_tb_level(Frame))
 
-    def testFailFast(self):
+    eleza testFailFast(self):
         result = unittest.TestResult()
         result._exc_info_to_string = lambda *_: ''
         result.failfast = True
@@ -432,9 +432,9 @@ class Test_TestResult(unittest.TestCase):
         result.addUnexpectedSuccess(None)
         self.assertTrue(result.shouldStop)
 
-    def testFailFastSetByRunner(self):
+    eleza testFailFastSetByRunner(self):
         runner = unittest.TextTestRunner(stream=io.StringIO(), failfast=True)
-        def test(result):
+        eleza test(result):
             self.assertTrue(result.failfast)
         result = runner.run(test)
 
@@ -444,7 +444,7 @@ for m in ('addSkip', 'addExpectedFailure', 'addUnexpectedSuccess',
            '__init__'):
     del classDict[m]
 
-def __init__(self, stream=None, descriptions=None, verbosity=None):
+eleza __init__(self, stream=None, descriptions=None, verbosity=None):
     self.failures = []
     self.errors = []
     self.testsRun = 0
@@ -455,24 +455,24 @@ def __init__(self, stream=None, descriptions=None, verbosity=None):
 classDict['__init__'] = __init__
 OldResult = type('OldResult', (object,), classDict)
 
-class Test_OldTestResult(unittest.TestCase):
+kundi Test_OldTestResult(unittest.TestCase):
 
-    def assertOldResultWarning(self, test, failures):
+    eleza assertOldResultWarning(self, test, failures):
         with support.check_warnings(("TestResult has no add.+ method,",
                                      RuntimeWarning)):
             result = OldResult()
             test.run(result)
             self.assertEqual(len(result.failures), failures)
 
-    def testOldTestResult(self):
-        class Test(unittest.TestCase):
-            def testSkip(self):
+    eleza testOldTestResult(self):
+        kundi Test(unittest.TestCase):
+            eleza testSkip(self):
                 self.skipTest('foobar')
             @unittest.expectedFailure
-            def testExpectedFail(self):
+            eleza testExpectedFail(self):
                 raise TypeError
             @unittest.expectedFailure
-            def testUnexpectedSuccess(self):
+            eleza testUnexpectedSuccess(self):
                 pass
 
         for test_name, should_pass in (('testSkip', True),
@@ -481,43 +481,43 @@ class Test_OldTestResult(unittest.TestCase):
             test = Test(test_name)
             self.assertOldResultWarning(test, int(not should_pass))
 
-    def testOldTestTesultSetup(self):
-        class Test(unittest.TestCase):
-            def setUp(self):
+    eleza testOldTestTesultSetup(self):
+        kundi Test(unittest.TestCase):
+            eleza setUp(self):
                 self.skipTest('no reason')
-            def testFoo(self):
+            eleza testFoo(self):
                 pass
         self.assertOldResultWarning(Test('testFoo'), 0)
 
-    def testOldTestResultClass(self):
+    eleza testOldTestResultClass(self):
         @unittest.skip('no reason')
-        class Test(unittest.TestCase):
-            def testFoo(self):
+        kundi Test(unittest.TestCase):
+            eleza testFoo(self):
                 pass
         self.assertOldResultWarning(Test('testFoo'), 0)
 
-    def testOldResultWithRunner(self):
-        class Test(unittest.TestCase):
-            def testFoo(self):
+    eleza testOldResultWithRunner(self):
+        kundi Test(unittest.TestCase):
+            eleza testFoo(self):
                 pass
         runner = unittest.TextTestRunner(resultclass=OldResult,
                                           stream=io.StringIO())
-        # This will raise an exception if TextTestRunner can't handle old
+        # This will raise an exception ikiwa TextTestRunner can't handle old
         # test result objects
         runner.run(Test('testFoo'))
 
 
-class TestOutputBuffering(unittest.TestCase):
+kundi TestOutputBuffering(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self._real_out = sys.stdout
         self._real_err = sys.stderr
 
-    def tearDown(self):
+    eleza tearDown(self):
         sys.stdout = self._real_out
         sys.stderr = self._real_err
 
-    def testBufferOutputOff(self):
+    eleza testBufferOutputOff(self):
         real_out = self._real_out
         real_err = self._real_err
 
@@ -532,7 +532,7 @@ class TestOutputBuffering(unittest.TestCase):
         self.assertIs(real_out, sys.stdout)
         self.assertIs(real_err, sys.stderr)
 
-    def testBufferOutputStartTestAddSuccess(self):
+    eleza testBufferOutputStartTestAddSuccess(self):
         real_out = self._real_out
         real_err = self._real_err
 
@@ -558,8 +558,8 @@ class TestOutputBuffering(unittest.TestCase):
         result._original_stdout = io.StringIO()
         result._original_stderr = io.StringIO()
 
-        print('foo')
-        print('bar', file=sys.stderr)
+        andika('foo')
+        andika('bar', file=sys.stderr)
 
         self.assertEqual(out_stream.getvalue(), 'foo\n')
         self.assertEqual(err_stream.getvalue(), 'bar\n')
@@ -580,13 +580,13 @@ class TestOutputBuffering(unittest.TestCase):
         self.assertEqual(err_stream.getvalue(), '')
 
 
-    def getStartedResult(self):
+    eleza getStartedResult(self):
         result = unittest.TestResult()
         result.buffer = True
         result.startTest(self)
-        return result
+        rudisha result
 
-    def testBufferOutputAddErrorOrFailure(self):
+    eleza testBufferOutputAddErrorOrFailure(self):
         unittest.result.traceback = MockTraceback
         self.addCleanup(restore_traceback)
 
@@ -602,9 +602,9 @@ class TestOutputBuffering(unittest.TestCase):
             result._original_stdout = io.StringIO()
             result._original_stderr = io.StringIO()
 
-            print('foo', file=sys.stdout)
-            if include_error:
-                print('bar', file=sys.stderr)
+            andika('foo', file=sys.stdout)
+            ikiwa include_error:
+                andika('bar', file=sys.stderr)
 
 
             addFunction = getattr(result, add_attr)
@@ -620,7 +620,7 @@ class TestOutputBuffering(unittest.TestCase):
                 foo
             """)
             expectedErrMessage = ''
-            if include_error:
+            ikiwa include_error:
                 expectedErrMessage = textwrap.dedent("""
                 Stderr:
                 bar
@@ -633,44 +633,44 @@ class TestOutputBuffering(unittest.TestCase):
             self.assertEqual(result._original_stderr.getvalue(), expectedErrMessage)
             self.assertMultiLineEqual(message, expectedFullMessage)
 
-    def testBufferSetupClass(self):
+    eleza testBufferSetupClass(self):
         result = unittest.TestResult()
         result.buffer = True
 
-        class Foo(unittest.TestCase):
+        kundi Foo(unittest.TestCase):
             @classmethod
-            def setUpClass(cls):
+            eleza setUpClass(cls):
                 1/0
-            def test_foo(self):
+            eleza test_foo(self):
                 pass
         suite = unittest.TestSuite([Foo('test_foo')])
         suite(result)
         self.assertEqual(len(result.errors), 1)
 
-    def testBufferTearDownClass(self):
+    eleza testBufferTearDownClass(self):
         result = unittest.TestResult()
         result.buffer = True
 
-        class Foo(unittest.TestCase):
+        kundi Foo(unittest.TestCase):
             @classmethod
-            def tearDownClass(cls):
+            eleza tearDownClass(cls):
                 1/0
-            def test_foo(self):
+            eleza test_foo(self):
                 pass
         suite = unittest.TestSuite([Foo('test_foo')])
         suite(result)
         self.assertEqual(len(result.errors), 1)
 
-    def testBufferSetUpModule(self):
+    eleza testBufferSetUpModule(self):
         result = unittest.TestResult()
         result.buffer = True
 
-        class Foo(unittest.TestCase):
-            def test_foo(self):
+        kundi Foo(unittest.TestCase):
+            eleza test_foo(self):
                 pass
-        class Module(object):
+        kundi Module(object):
             @staticmethod
-            def setUpModule():
+            eleza setUpModule():
                 1/0
 
         Foo.__module__ = 'Module'
@@ -680,16 +680,16 @@ class TestOutputBuffering(unittest.TestCase):
         suite(result)
         self.assertEqual(len(result.errors), 1)
 
-    def testBufferTearDownModule(self):
+    eleza testBufferTearDownModule(self):
         result = unittest.TestResult()
         result.buffer = True
 
-        class Foo(unittest.TestCase):
-            def test_foo(self):
+        kundi Foo(unittest.TestCase):
+            eleza test_foo(self):
                 pass
-        class Module(object):
+        kundi Module(object):
             @staticmethod
-            def tearDownModule():
+            eleza tearDownModule():
                 1/0
 
         Foo.__module__ = 'Module'
@@ -700,5 +700,5 @@ class TestOutputBuffering(unittest.TestCase):
         self.assertEqual(len(result.errors), 1)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

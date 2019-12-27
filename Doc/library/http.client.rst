@@ -36,13 +36,13 @@ The module provides the following classes:
 
    An :class:`HTTPConnection` instance represents one transaction with an HTTP
    server.  It should be instantiated passing it a host and optional port
-   number.  If no port number is passed, the port is extracted from the host
+   number.  If no port number is passed, the port is extracted kutoka the host
    string if it has the form ``host:port``, else the default HTTP port (80) is
    used.  If the optional *timeout* parameter is given, blocking
    operations (like connection attempts) will timeout after that many seconds
    (if it is not given, the global default timeout setting is used).
    The optional *source_address* parameter may be a tuple of a (host, port)
-   to use as the source address the HTTP connection is made from.
+   to use as the source address the HTTP connection is made kutoka.
    The optional *blocksize* parameter sets the buffer size in bytes for
    sending a file-like message body.
 
@@ -70,7 +70,7 @@ The module provides the following classes:
                            source_address=None, *, context=None, \
                            check_hostname=None, blocksize=8192)
 
-   A subclass of :class:`HTTPConnection` that uses SSL for communication with
+   A subkundi of :class:`HTTPConnection` that uses SSL for communication with
    secure servers.  Default port is ``443``.  If *context* is specified, it
    must be a :class:`ssl.SSLContext` instance describing the various SSL
    options.
@@ -81,7 +81,7 @@ The module provides the following classes:
       *source_address*, *context* and *check_hostname* were added.
 
    .. versionchanged:: 3.2
-      This class now supports HTTPS virtual hosts if possible (that is,
+      This kundi now supports HTTPS virtual hosts if possible (that is,
       if :data:`ssl.HAS_SNI` is true).
 
    .. versionchanged:: 3.4
@@ -89,13 +89,13 @@ The module provides the following classes:
       no longer supported.
 
    .. versionchanged:: 3.4.3
-      This class now performs all the necessary certificate and hostname checks
+      This kundi now performs all the necessary certificate and hostname checks
       by default. To revert to the previous, unverified, behavior
       :func:`ssl._create_unverified_context` can be passed to the *context*
       parameter.
 
    .. versionchanged:: 3.8
-      This class now enables TLS 1.3
+      This kundi now enables TLS 1.3
       :attr:`ssl.SSLContext.post_handshake_auth` for the default *context* or
       when *cert_file* is passed with a custom *context*.
 
@@ -124,7 +124,7 @@ This module provides the following function:
 
 .. function:: parse_headers(fp)
 
-   Parse the headers from a file pointer *fp* representing a HTTP
+   Parse the headers kutoka a file pointer *fp* representing a HTTP
    request/response. The file has to be a :class:`BufferedIOBase` reader
    (i.e. not text) and must provide a valid :rfc:`2822` style header.
 
@@ -145,78 +145,78 @@ The following exceptions are raised as appropriate:
 
 .. exception:: HTTPException
 
-   The base class of the other exceptions in this module.  It is a subclass of
+   The base kundi of the other exceptions in this module.  It is a subkundi of
    :exc:`Exception`.
 
 
 .. exception:: NotConnected
 
-   A subclass of :exc:`HTTPException`.
+   A subkundi of :exc:`HTTPException`.
 
 
 .. exception:: InvalidURL
 
-   A subclass of :exc:`HTTPException`, raised if a port is given and is either
+   A subkundi of :exc:`HTTPException`, raised if a port is given and is either
    non-numeric or empty.
 
 
 .. exception:: UnknownProtocol
 
-   A subclass of :exc:`HTTPException`.
+   A subkundi of :exc:`HTTPException`.
 
 
 .. exception:: UnknownTransferEncoding
 
-   A subclass of :exc:`HTTPException`.
+   A subkundi of :exc:`HTTPException`.
 
 
 .. exception:: UnimplementedFileMode
 
-   A subclass of :exc:`HTTPException`.
+   A subkundi of :exc:`HTTPException`.
 
 
 .. exception:: IncompleteRead
 
-   A subclass of :exc:`HTTPException`.
+   A subkundi of :exc:`HTTPException`.
 
 
 .. exception:: ImproperConnectionState
 
-   A subclass of :exc:`HTTPException`.
+   A subkundi of :exc:`HTTPException`.
 
 
 .. exception:: CannotSendRequest
 
-   A subclass of :exc:`ImproperConnectionState`.
+   A subkundi of :exc:`ImproperConnectionState`.
 
 
 .. exception:: CannotSendHeader
 
-   A subclass of :exc:`ImproperConnectionState`.
+   A subkundi of :exc:`ImproperConnectionState`.
 
 
 .. exception:: ResponseNotReady
 
-   A subclass of :exc:`ImproperConnectionState`.
+   A subkundi of :exc:`ImproperConnectionState`.
 
 
 .. exception:: BadStatusLine
 
-   A subclass of :exc:`HTTPException`.  Raised if a server responds with a HTTP
+   A subkundi of :exc:`HTTPException`.  Raised if a server responds with a HTTP
    status code that we don't understand.
 
 
 .. exception:: LineTooLong
 
-   A subclass of :exc:`HTTPException`.  Raised if an excessively long line
-   is received in the HTTP protocol from the server.
+   A subkundi of :exc:`HTTPException`.  Raised if an excessively long line
+   is received in the HTTP protocol kutoka the server.
 
 
 .. exception:: RemoteDisconnected
 
-   A subclass of :exc:`ConnectionResetError` and :exc:`BadStatusLine`.  Raised
+   A subkundi of :exc:`ConnectionResetError` and :exc:`BadStatusLine`.  Raised
    by :meth:`HTTPConnection.getresponse` when the attempt to read the response
-   results in no data read from the connection, indicating that the remote end
+   results in no data read kutoka the connection, indicating that the remote end
    has closed the connection.
 
    .. versionadded:: 3.5
@@ -308,7 +308,7 @@ HTTPConnection Objects
 
 .. method:: HTTPConnection.getresponse()
 
-   Should be called after a request is sent to get the response from the server.
+   Should be called after a request is sent to get the response kutoka the server.
    Returns an :class:`HTTPResponse` instance.
 
    .. note::
@@ -317,7 +317,7 @@ HTTPConnection Objects
       request to the server.
 
    .. versionchanged:: 3.5
-      If a :exc:`ConnectionError` or subclass is raised, the
+      If a :exc:`ConnectionError` or subkundi is raised, the
       :class:`HTTPConnection` object will be ready to reconnect when
       a new request is sent.
 
@@ -349,7 +349,7 @@ HTTPConnection Objects
    constructor, and the address of the host that we eventually want to reach to
    the :meth:`~HTTPConnection.set_tunnel` method::
 
-      >>> import http.client
+      >>> agiza http.client
       >>> conn = http.client.HTTPSConnection("localhost", 8080)
       >>> conn.set_tunnel("www.python.org")
       >>> conn.request("HEAD","/index.html")
@@ -438,7 +438,7 @@ also send your request step by step, by using the four functions below.
 HTTPResponse Objects
 --------------------
 
-An :class:`HTTPResponse` instance wraps the HTTP response from the
+An :class:`HTTPResponse` instance wraps the HTTP response kutoka the
 server.  It provides access to the request headers and the entity
 body.  The response is an iterable object and can be used in a with
 statement.
@@ -477,7 +477,7 @@ statement.
 .. attribute:: HTTPResponse.msg
 
    A :class:`http.client.HTTPMessage` instance containing the response
-   headers.  :class:`http.client.HTTPMessage` is a subclass of
+   headers.  :class:`http.client.HTTPMessage` is a subkundi of
    :class:`email.message.Message`.
 
 .. attribute:: HTTPResponse.version
@@ -506,7 +506,7 @@ Examples
 
 Here is an example session that uses the ``GET`` method::
 
-   >>> import http.client
+   >>> agiza http.client
    >>> conn = http.client.HTTPSConnection("www.python.org")
    >>> conn.request("GET", "/")
    >>> r1 = conn.getresponse()
@@ -532,7 +532,7 @@ Here is an example session that uses the ``GET`` method::
 Here is an example session that uses the ``HEAD`` method.  Note that the
 ``HEAD`` method never returns any data. ::
 
-   >>> import http.client
+   >>> agiza http.client
    >>> conn = http.client.HTTPSConnection("www.python.org")
    >>> conn.request("HEAD", "/")
    >>> res = conn.getresponse()
@@ -546,7 +546,7 @@ Here is an example session that uses the ``HEAD`` method.  Note that the
 
 Here is an example session that shows how to ``POST`` requests::
 
-   >>> import http.client, urllib.parse
+   >>> agiza http.client, urllib.parse
    >>> params = urllib.parse.urlencode({'@number': 12524, '@type': 'issue', '@action': 'show'})
    >>> headers = {"Content-type": "application/x-www-form-urlencoded",
    ...            "Accept": "text/plain"}
@@ -571,7 +571,7 @@ request using http.client::
     >>> # with the content of BODY as the enclosed representation
     >>> # for the resource http://localhost:8080/file
     ...
-    >>> import http.client
+    >>> agiza http.client
     >>> BODY = "***filecontents***"
     >>> conn = http.client.HTTPConnection("localhost", 8080)
     >>> conn.request("PUT", "/file", BODY)
@@ -584,7 +584,7 @@ request using http.client::
 HTTPMessage Objects
 -------------------
 
-An :class:`http.client.HTTPMessage` instance holds the headers from an HTTP
+An :class:`http.client.HTTPMessage` instance holds the headers kutoka an HTTP
 response.  It is implemented using the :class:`email.message.Message` class.
 
 .. XXX Define the methods that clients can depend upon between versions.

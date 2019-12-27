@@ -14,7 +14,7 @@
 .. versionadded:: 3.6 [1]_
 
 Headers are represented by customized subclasses of :class:`str`.  The
-particular class used to represent a given header is determined by the
+particular kundi used to represent a given header is determined by the
 :attr:`~email.policy.EmailPolicy.header_factory` of the :mod:`~email.policy` in
 effect when the headers are created.  This section documents the particular
 ``header_factory`` implemented by the email package for handling :RFC:`5322`
@@ -22,30 +22,30 @@ compliant email messages, which not only provides customized header objects for
 various header types, but also provides an extension mechanism for applications
 to add their own custom header types.
 
-When using any of the policy objects derived from
+When using any of the policy objects derived kutoka
 :data:`~email.policy.EmailPolicy`, all headers are produced by
 :class:`.HeaderRegistry` and have :class:`.BaseHeader` as their last base
-class.  Each header class has an additional base class that is determined by
+class.  Each header kundi has an additional base kundi that is determined by
 the type of the header.  For example, many headers have the class
 :class:`.UnstructuredHeader` as their other base class.  The specialized second
-class for a header is determined by the name of the header, using a lookup
+kundi for a header is determined by the name of the header, using a lookup
 table stored in the :class:`.HeaderRegistry`.  All of this is managed
 transparently for the typical application program, but interfaces are provided
 for modifying the default behavior for use by more complex applications.
 
 The sections below first document the header base classes and their attributes,
 followed by the API for modifying the behavior of :class:`.HeaderRegistry`, and
-finally the support classes used to represent the data parsed from structured
+finally the support classes used to represent the data parsed kutoka structured
 headers.
 
 
 .. class:: BaseHeader(name, value)
 
-   *name* and *value* are passed to ``BaseHeader`` from the
+   *name* and *value* are passed to ``BaseHeader`` kutoka the
    :attr:`~email.policy.EmailPolicy.header_factory` call.  The string value of
    any header object is the *value* fully decoded to unicode.
 
-   This base class defines the following read-only properties:
+   This base kundi defines the following read-only properties:
 
 
    .. attribute:: name
@@ -88,7 +88,7 @@ headers.
    ``BaseHeader`` by itself cannot be used to create a header object.  It
    defines a protocol that each specialized header cooperates with in order to
    produce the header object.  Specifically, ``BaseHeader`` requires that
-   the specialized class provide a :func:`classmethod` named ``parse``.  This
+   the specialized kundi provide a :func:`classmethod` named ``parse``.  This
    method is called as follows::
 
        parse(string, kwds)
@@ -103,7 +103,7 @@ headers.
    unicode characters as well so that it can parse un-encoded header values.
 
    ``BaseHeader``'s ``__new__`` then creates the header instance, and calls its
-   ``init`` method.  The specialized class only needs to provide an ``init``
+   ``init`` method.  The specialized kundi only needs to provide an ``init``
    method if it wishes to set additional attributes beyond those provided by
    ``BaseHeader`` itself.  Such an ``init`` method should look like this::
 
@@ -111,7 +111,7 @@ headers.
            self._myattr = kw.pop('myattr')
            super().init(*args, **kw)
 
-   That is, anything extra that the specialized class puts in to the ``kwds``
+   That is, anything extra that the specialized kundi puts in to the ``kwds``
    dictionary should be removed and handled, and the remaining contents of
    ``kw`` (and ``args``) passed to the ``BaseHeader`` ``init`` method.
 
@@ -170,7 +170,7 @@ headers.
 
    Because this is a naive ``datetime`` it will be interpreted as a UTC
    timestamp, and the resulting value will have a timezone of ``-0000``.  Much
-   more useful is to use the :func:`~email.utils.localtime` function from the
+   more useful is to use the :func:`~email.utils.localtime` function kutoka the
    :mod:`~email.utils` module::
 
        msg['Date'] = utils.localtime()
@@ -182,7 +182,7 @@ headers.
 .. class:: AddressHeader
 
    Address headers are one of the most complex structured header types.
-   The ``AddressHeader`` class provides a generic interface to any address
+   The ``AddressHeader`` kundi provides a generic interface to any address
    header.
 
    This header type provides the following additional attributes:
@@ -199,8 +199,8 @@ headers.
    .. attribute:: addresses
 
       A tuple of :class:`.Address` objects encoding all
-      of the individual addresses from the header value.  If the header value
-      contains any groups, the individual addresses from the group are included
+      of the individual addresses kutoka the header value.  If the header value
+      contains any groups, the individual addresses kutoka the group are included
       in the list at the point where the group occurs in the value (that is,
       the list of addresses is "flattened" into a one dimensional list).
 
@@ -214,12 +214,12 @@ headers.
    may be used to set the value of an address header.  ``Group`` objects whose
    ``display_name`` is ``None`` will be interpreted as single addresses, which
    allows an address list to be copied with groups intact by using the list
-   obtained from the ``groups`` attribute of the source header.
+   obtained kutoka the ``groups`` attribute of the source header.
 
 
 .. class:: SingleAddressHeader
 
-   A subclass of :class:`.AddressHeader` that adds one
+   A subkundi of :class:`.AddressHeader` that adds one
    additional attribute:
 
 
@@ -261,9 +261,9 @@ variant, :attr:`~.BaseHeader.max_count` is set to 1.
 .. class:: ParameterizedMIMEHeader
 
     MIME headers all start with the prefix 'Content-'.  Each specific header has
-    a certain value, described under the class for that header.  Some can
+    a certain value, described under the kundi for that header.  Some can
     also take a list of supplemental parameters, which have a common format.
-    This class serves as a base for all the MIME headers that take parameters.
+    This kundi serves as a base for all the MIME headers that take parameters.
 
     .. attribute:: params
 
@@ -272,7 +272,7 @@ variant, :attr:`~.BaseHeader.max_count` is set to 1.
 
 .. class:: ContentTypeHeader
 
-    A :class:`ParameterizedMIMEHeader` class that handles the
+    A :class:`ParameterizedMIMEHeader` kundi that handles the
     :mailheader:`Content-Type` header.
 
     .. attribute:: content_type
@@ -286,7 +286,7 @@ variant, :attr:`~.BaseHeader.max_count` is set to 1.
 
 .. class:: ContentDispositionHeader
 
-    A :class:`ParameterizedMIMEHeader` class that handles the
+    A :class:`ParameterizedMIMEHeader` kundi that handles the
     :mailheader:`Content-Disposition` header.
 
     .. attribute:: content-disposition
@@ -310,13 +310,13 @@ variant, :attr:`~.BaseHeader.max_count` is set to 1.
                           use_default_map=True)
 
     This is the factory used by :class:`~email.policy.EmailPolicy` by default.
-    ``HeaderRegistry`` builds the class used to create a header instance
-    dynamically, using *base_class* and a specialized class retrieved from a
+    ``HeaderRegistry`` builds the kundi used to create a header instance
+    dynamically, using *base_class* and a specialized kundi retrieved kutoka a
     registry that it holds.  When a given header name does not appear in the
-    registry, the class specified by *default_class* is used as the specialized
+    registry, the kundi specified by *default_class* is used as the specialized
     class.  When *use_default_map* is ``True`` (the default), the standard
     mapping of header names to classes is copied in to the registry during
-    initialization.  *base_class* is always the last class in the generated
+    initialization.  *base_class* is always the last kundi in the generated
     class's ``__bases__`` list.
 
     The default mappings are:
@@ -333,8 +333,8 @@ variant, :attr:`~.BaseHeader.max_count` is set to 1.
       :resent-cc:                 AddressHeader
       :bcc:                       UniqueAddressHeader
       :resent-bcc:                AddressHeader
-      :from:                      UniqueAddressHeader
-      :resent-from:               AddressHeader
+      :kutoka:                      UniqueAddressHeader
+      :resent-kutoka:               AddressHeader
       :reply-to:                  UniqueAddressHeader
       :mime-version:              MIMEVersionHeader
       :content-type:              ContentTypeHeader
@@ -348,33 +348,33 @@ variant, :attr:`~.BaseHeader.max_count` is set to 1.
     .. method:: map_to_type(self, name, cls)
 
        *name* is the name of the header to be mapped.  It will be converted to
-       lower case in the registry.  *cls* is the specialized class to be used,
-       along with *base_class*, to create the class used to instantiate headers
+       lower case in the registry.  *cls* is the specialized kundi to be used,
+       along with *base_class*, to create the kundi used to instantiate headers
        that match *name*.
 
 
     .. method:: __getitem__(name)
 
-       Construct and return a class to handle creating a *name* header.
+       Construct and return a kundi to handle creating a *name* header.
 
 
     .. method:: __call__(name, value)
 
-       Retrieves the specialized header associated with *name* from the
+       Retrieves the specialized header associated with *name* kutoka the
        registry (using *default_class* if *name* does not appear in the
        registry) and composes it with *base_class* to produce a class,
        calls the constructed class's constructor, passing it the same
-       argument list, and finally returns the class instance created thereby.
+       argument list, and finally returns the kundi instance created thereby.
 
 
-The following classes are the classes used to represent data parsed from
+The following classes are the classes used to represent data parsed kutoka
 structured headers and can, in general, be used by an application program to
 construct structured values to assign to specific headers.
 
 
 .. class:: Address(display_name='', username='', domain='', addr_spec=None)
 
-   The class used to represent an email address.  The general form of an
+   The kundi used to represent an email address.  The general form of an
    address is::
 
       [display_name] <username@domain>
@@ -387,7 +387,7 @@ construct structured values to assign to specific headers.
    :rfc:`5322`.
 
    As a convenience *addr_spec* can be specified instead of *username* and
-   *domain*, in which case *username* and *domain* will be parsed from the
+   *domain*, in which case *username* and *domain* will be parsed kutoka the
    *addr_spec*.  An *addr_spec* must be a properly RFC quoted string; if it is
    not ``Address`` will raise an error.  Unicode characters are allowed and
    will be property encoded when serialized.  However, per the RFCs, unicode is
@@ -426,7 +426,7 @@ construct structured values to assign to specific headers.
 
 .. class:: Group(display_name=None, addresses=None)
 
-   The class used to represent an address group.  The general form of an
+   The kundi used to represent an address group.  The general form of an
    address group is::
 
      display_name: [address-list];

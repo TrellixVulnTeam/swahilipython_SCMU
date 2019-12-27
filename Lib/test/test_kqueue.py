@@ -8,11 +8,11 @@ agiza socket
 agiza time
 agiza unittest
 
-if not hasattr(select, "kqueue"):
+ikiwa not hasattr(select, "kqueue"):
     raise unittest.SkipTest("test works only on BSD")
 
-class TestKQueue(unittest.TestCase):
-    def test_create_queue(self):
+kundi TestKQueue(unittest.TestCase):
+    eleza test_create_queue(self):
         kq = select.kqueue()
         self.assertTrue(kq.fileno() > 0, kq.fileno())
         self.assertTrue(not kq.closed)
@@ -20,7 +20,7 @@ class TestKQueue(unittest.TestCase):
         self.assertTrue(kq.closed)
         self.assertRaises(ValueError, kq.fileno)
 
-    def test_create_event(self):
+    eleza test_create_event(self):
         kutoka operator agiza lt, le, gt, ge
 
         fd = os.open(os.devnull, os.O_WRONLY)
@@ -109,7 +109,7 @@ class TestKQueue(unittest.TestCase):
         self.assertNotEqual(ev, other)
 
 
-    def test_queue_event(self):
+    eleza test_queue_event(self):
         serverSocket = socket.create_server(('127.0.0.1', 0))
         client = socket.socket()
         client.setblocking(False)
@@ -123,7 +123,7 @@ class TestKQueue(unittest.TestCase):
         server, addr = serverSocket.accept()
 
         kq = select.kqueue()
-        kq2 = select.kqueue.fromfd(kq.fileno())
+        kq2 = select.kqueue.kutokafd(kq.fileno())
 
         ev = select.kevent(server.fileno(),
                            select.KQ_FILTER_WRITE,
@@ -154,7 +154,7 @@ class TestKQueue(unittest.TestCase):
         # We may need to call it several times
         for i in range(10):
             events = kq.control(None, 4, 1)
-            if len(events) == 4:
+            ikiwa len(events) == 4:
                 break
             time.sleep(1.0)
         else:
@@ -190,7 +190,7 @@ class TestKQueue(unittest.TestCase):
         server.close()
         serverSocket.close()
 
-    def testPair(self):
+    eleza testPair(self):
         kq = select.kqueue()
         a, b = socket.socketpair()
 
@@ -206,7 +206,7 @@ class TestKQueue(unittest.TestCase):
         b.close()
         kq.close()
 
-    def test_issue30058(self):
+    eleza test_issue30058(self):
         # changelist must be an iterable
         kq = select.kqueue()
         a, b = socket.socketpair()
@@ -216,10 +216,10 @@ class TestKQueue(unittest.TestCase):
         # not a list
         kq.control((ev,), 0)
         # __len__ is not consistent with __iter__
-        class BadList:
-            def __len__(self):
-                return 0
-            def __iter__(self):
+        kundi BadList:
+            eleza __len__(self):
+                rudisha 0
+            eleza __iter__(self):
                 for i in range(100):
                     yield ev
         kq.control(BadList(), 0)
@@ -230,7 +230,7 @@ class TestKQueue(unittest.TestCase):
         b.close()
         kq.close()
 
-    def test_close(self):
+    eleza test_close(self):
         open_file = open(__file__, "rb")
         self.addCleanup(open_file.close)
         fd = open_file.fileno()
@@ -251,11 +251,11 @@ class TestKQueue(unittest.TestCase):
         # operations must fail with ValueError("I/O operation on closed ...")
         self.assertRaises(ValueError, kqueue.control, None, 4)
 
-    def test_fd_non_inheritable(self):
+    eleza test_fd_non_inheritable(self):
         kqueue = select.kqueue()
         self.addCleanup(kqueue.close)
         self.assertEqual(os.get_inheritable(kqueue.fileno()), False)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

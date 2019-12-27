@@ -290,13 +290,13 @@ PyAPI_FUNC(PyObject *) PyObject_GetItem(PyObject *o, PyObject *key);
    This is the equivalent of the Python statement: o[key]=v. */
 PyAPI_FUNC(int) PyObject_SetItem(PyObject *o, PyObject *key, PyObject *v);
 
-/* Remove the mapping for the string 'key' from the object 'o'.
+/* Remove the mapping for the string 'key' kutoka the object 'o'.
    Returns -1 on failure.
 
    This is equivalent to the Python statement: del o[key]. */
 PyAPI_FUNC(int) PyObject_DelItemString(PyObject *o, const char *key);
 
-/* Delete the mapping for the object 'key' from the object 'o'.
+/* Delete the mapping for the object 'key' kutoka the object 'o'.
    Returns -1 on failure.
 
    This is the equivalent of the Python statement: del o[key]. */
@@ -392,7 +392,7 @@ PyAPI_FUNC(int) PyNumber_Check(PyObject *o);
    This is the equivalent of the Python expression: o1 + o2. */
 PyAPI_FUNC(PyObject *) PyNumber_Add(PyObject *o1, PyObject *o2);
 
-/* Returns the result of subtracting o2 from o1, or NULL on failure.
+/* Returns the result of subtracting o2 kutoka o1, or NULL on failure.
 
    This is the equivalent of the Python expression: o1 - o2. */
 PyAPI_FUNC(PyObject *) PyNumber_Subtract(PyObject *o1, PyObject *o2);
@@ -523,7 +523,7 @@ PyAPI_FUNC(PyObject *) PyNumber_Float(PyObject *o);
    This is the equivalent of the Python expression: o1 += o2. */
 PyAPI_FUNC(PyObject *) PyNumber_InPlaceAdd(PyObject *o1, PyObject *o2);
 
-/* Returns the result of subtracting o2 from o1, possibly in-place or
+/* Returns the result of subtracting o2 kutoka o1, possibly in-place or
    NULL on failure.
 
    This is the equivalent of the Python expression: o1 -= o2. */
@@ -655,13 +655,13 @@ PyAPI_FUNC(int) PySequence_SetItem(PyObject *o, Py_ssize_t i, PyObject *v);
 PyAPI_FUNC(int) PySequence_DelItem(PyObject *o, Py_ssize_t i);
 
 /* Assign the sequence object 'v' to the slice in sequence object 'o',
-   from 'i1' to 'i2'. Returns -1 on failure.
+   kutoka 'i1' to 'i2'. Returns -1 on failure.
 
    This is the equivalent of the Python statement: o[i1:i2] = v. */
 PyAPI_FUNC(int) PySequence_SetSlice(PyObject *o, Py_ssize_t i1, Py_ssize_t i2,
                                     PyObject *v);
 
-/* Delete the slice in sequence object 'o' from 'i1' to 'i2'.
+/* Delete the slice in sequence object 'o' kutoka 'i1' to 'i2'.
    Returns -1 on failure.
 
    This is the equivalent of the Python statement: del o[i1:i2]. */
@@ -769,7 +769,7 @@ PyAPI_FUNC(Py_ssize_t) PyMapping_Length(PyObject *o);
 
    int PyMapping_DelItemString(PyObject *o, const char *key);
 
-   Remove the mapping for the string 'key' from the mapping 'o'. Returns -1 on
+   Remove the mapping for the string 'key' kutoka the mapping 'o'. Returns -1 on
    failure.
 
    This is equivalent to the Python statement: del o[key]. */
@@ -779,7 +779,7 @@ PyAPI_FUNC(Py_ssize_t) PyMapping_Length(PyObject *o);
 
    int PyMapping_DelItem(PyObject *o, PyObject *key);
 
-   Remove the mapping for the object 'key' from the mapping object 'o'.
+   Remove the mapping for the object 'key' kutoka the mapping object 'o'.
    Returns -1 on failure.
 
    This is equivalent to the Python statement: del o[key]. */

@@ -20,7 +20,7 @@ The :mod:`unittest` unit testing framework was originally inspired by JUnit
 and has a similar flavor as major unit testing frameworks in other
 languages.  It supports test automation, sharing of setup and shutdown code
 for tests, aggregation of tests into collections, and independence of the
-tests from the reporting framework.
+tests kutoka the reporting framework.
 
 To achieve this, :mod:`unittest` supports some important concepts in an
 object-oriented way:
@@ -87,9 +87,9 @@ suffice to meet the needs of most users.
 
 Here is a short script to test three string methods::
 
-  import unittest
+  agiza unittest
 
-  class TestStringMethods(unittest.TestCase):
+  kundi TestStringMethods(unittest.TestCase):
 
       def test_upper(self):
           self.assertEqual('foo'.upper(), 'FOO')
@@ -126,7 +126,7 @@ to define instructions that will be executed before and after each test method.
 They are covered in more detail in the section :ref:`organizing-tests`.
 
 The final block shows a simple way to run the tests. :func:`unittest.main`
-provides a command-line interface to the test script.  When run from the command
+provides a command-line interface to the test script.  When run kutoka the command
 line, the above script produces an output that looks like this::
 
    ...
@@ -149,7 +149,7 @@ to enable a higher level of verbosity, and produce the following output::
 
 The above examples show the most commonly used :mod:`unittest` features which
 are sufficient to meet many everyday testing needs.  The remainder of the
-documentation explores the full feature set from first principles.
+documentation explores the full feature set kutoka first principles.
 
 
 .. _unittest-command-line-interface:
@@ -157,7 +157,7 @@ documentation explores the full feature set from first principles.
 Command-Line Interface
 ----------------------
 
-The unittest module can be used from the command line to run tests from
+The unittest module can be used kutoka the command line to run tests kutoka
 modules, classes or even individual test methods::
 
    python -m unittest test_module1 test_module2
@@ -165,7 +165,7 @@ modules, classes or even individual test methods::
    python -m unittest test_module.TestClass.test_method
 
 You can pass in a list with any combination of module names, and fully
-qualified class or method names.
+qualified kundi or method names.
 
 Test modules can be specified by file path as well::
 
@@ -262,12 +262,12 @@ Test Discovery
 Unittest supports simple test discovery. In order to be compatible with test
 discovery, all of the test files must be :ref:`modules <tut-modules>` or
 :ref:`packages <tut-packages>` (including :term:`namespace packages
-<namespace package>`) importable from the top-level directory of
+<namespace package>`) importable kutoka the top-level directory of
 the project (this means that their filenames must be valid :ref:`identifiers
 <identifiers>`).
 
 Test discovery is implemented in :meth:`TestLoader.discover`, but can also be
-used from the command line. The basic command-line usage is::
+used kutoka the command line. The basic command-line usage is::
 
    cd project_directory
    python -m unittest discover
@@ -313,17 +313,17 @@ as the start directory.
 .. caution::
 
     Test discovery loads tests by importing them. Once test discovery has found
-    all the test files from the start directory you specify it turns the paths
+    all the test files kutoka the start directory you specify it turns the paths
     into package names to import. For example :file:`foo/bar/baz.py` will be
     imported as ``foo.bar.baz``.
 
     If you have a package installed globally and attempt test discovery on
-    a different copy of the package then the import *could* happen from the
+    a different copy of the package then the agiza *could* happen kutoka the
     wrong place. If this happens test discovery will warn you and exit.
 
     If you supply the start directory as a package name rather than a
     path to a directory then discover assumes that whichever location it
-    imports from is the location you intended, so you will not get the
+    imports kutoka is the location you intended, so you will not get the
     warning.
 
 Test modules and packages can customize test loading and discovery by through
@@ -348,13 +348,13 @@ The testing code of a :class:`TestCase` instance should be entirely self
 contained, such that it can be run either in isolation or in arbitrary
 combination with any number of other test cases.
 
-The simplest :class:`TestCase` subclass will simply implement a test method
+The simplest :class:`TestCase` subkundi will simply implement a test method
 (i.e. a method whose name starts with ``test``) in order to perform specific
 testing code::
 
-   import unittest
+   agiza unittest
 
-   class DefaultWidgetSizeTestCase(unittest.TestCase):
+   kundi DefaultWidgetSizeTestCase(unittest.TestCase):
        def test_default_widget_size(self):
            widget = Widget('The widget')
            self.assertEqual(widget.size(), (50, 50))
@@ -370,9 +370,9 @@ can factor out set-up code by implementing a method called
 :meth:`~TestCase.setUp`, which the testing framework will automatically
 call for every single test we run::
 
-   import unittest
+   agiza unittest
 
-   class WidgetTestCase(unittest.TestCase):
+   kundi WidgetTestCase(unittest.TestCase):
        def setUp(self):
            self.widget = Widget('The widget')
 
@@ -397,9 +397,9 @@ the test method will not be executed.
 Similarly, we can provide a :meth:`~TestCase.tearDown` method that tidies up
 after the test method has been run::
 
-   import unittest
+   agiza unittest
 
-   class WidgetTestCase(unittest.TestCase):
+   kundi WidgetTestCase(unittest.TestCase):
        def setUp(self):
            self.widget = Widget('The widget')
 
@@ -440,9 +440,9 @@ as the code they are to test (such as :file:`widget.py`), but there are several
 advantages to placing the test code in a separate module, such as
 :file:`test_widget.py`:
 
-* The test module can be run standalone from the command line.
+* The test module can be run standalone kutoka the command line.
 
-* The test code can more easily be separated from shipped code.
+* The test code can more easily be separated kutoka shipped code.
 
 * There is less temptation to change test code to fit the code it tests without
   a good reason.
@@ -463,11 +463,11 @@ Re-using old test code
 ----------------------
 
 Some users will find that they have existing test code that they would like to
-run from :mod:`unittest`, without converting every old test function to a
+run kutoka :mod:`unittest`, without converting every old test function to a
 :class:`TestCase` subclass.
 
 For this reason, :mod:`unittest` provides a :class:`FunctionTestCase` class.
-This subclass of :class:`TestCase` can be used to wrap an existing test
+This subkundi of :class:`TestCase` can be used to wrap an existing test
 function.  Set-up and tear-down functions can also be provided.
 
 Given the following test function::
@@ -492,8 +492,8 @@ set-up and tear-down methods::
    subclasses will make future test refactorings infinitely easier.
 
 In some cases, the existing tests may have been written using the :mod:`doctest`
-module.  If so, :mod:`doctest` provides a :class:`DocTestSuite` class that can
-automatically build :class:`unittest.TestSuite` instances from the existing
+module.  If so, :mod:`doctest` provides a :class:`DocTestSuite` kundi that can
+automatically build :class:`unittest.TestSuite` instances kutoka the existing
 :mod:`doctest`\ -based tests.
 
 
@@ -515,7 +515,7 @@ or one of its conditional variants, calling :meth:`TestCase.skipTest` within a
 
 Basic skipping looks like this::
 
-   class MyTestCase(unittest.TestCase):
+   kundi MyTestCase(unittest.TestCase):
 
        @unittest.skip("demonstrating skipping")
        def test_nothing(self):
@@ -552,8 +552,8 @@ This is the output of running the example above in verbose mode::
 
 Classes can be skipped just like methods::
 
-   @unittest.skip("showing class skipping")
-   class MySkippedTestCase(unittest.TestCase):
+   @unittest.skip("showing kundi skipping")
+   kundi MySkippedTestCase(unittest.TestCase):
        def test_not_run(self):
            pass
 
@@ -562,7 +562,7 @@ that needs to be set up is not available.
 
 Expected failures use the :func:`expectedFailure` decorator. ::
 
-   class ExpectedFailureTestCase(unittest.TestCase):
+   kundi ExpectedFailureTestCase(unittest.TestCase):
        @unittest.expectedFailure
        def test_fail(self):
            self.assertEqual(1, 0, "broken")
@@ -621,7 +621,7 @@ the body of a test method using the :meth:`~TestCase.subTest` context manager.
 
 For example, the following test::
 
-   class NumbersTest(unittest.TestCase):
+   kundi NumbersTest(unittest.TestCase):
 
        def test_even(self):
            """
@@ -685,8 +685,8 @@ Test cases
 
 .. class:: TestCase(methodName='runTest')
 
-   Instances of the :class:`TestCase` class represent the logical test units
-   in the :mod:`unittest` universe.  This class is intended to be used as a base
+   Instances of the :class:`TestCase` kundi represent the logical test units
+   in the :mod:`unittest` universe.  This kundi is intended to be used as a base
    class, with specific tests being implemented by concrete subclasses.  This class
    implements the interface needed by the test runner to allow it to drive the
    tests, and methods that the test code can use to check for and report various
@@ -700,7 +700,7 @@ Test cases
    .. versionchanged:: 3.2
       :class:`TestCase` can be instantiated successfully without providing a
       *methodName*. This makes it easier to experiment with :class:`TestCase`
-      from the interactive interpreter.
+      kutoka the interactive interpreter.
 
    :class:`TestCase` instances provide three groups of methods: one group used
    to run the test, another used by the test implementation to check conditions
@@ -732,8 +732,8 @@ Test cases
 
    .. method:: setUpClass()
 
-      A class method called before tests in an individual class are run.
-      ``setUpClass`` is called with the class as the only argument
+      A kundi method called before tests in an individual kundi are run.
+      ``setUpClass`` is called with the kundi as the only argument
       and must be decorated as a :func:`classmethod`::
 
         @classmethod
@@ -747,8 +747,8 @@ Test cases
 
    .. method:: tearDownClass()
 
-      A class method called after tests in an individual class have run.
-      ``tearDownClass`` is called with the class as the only argument
+      A kundi method called after tests in an individual kundi have run.
+      ``tearDownClass`` is called with the kundi as the only argument
       and must be decorated as a :meth:`classmethod`::
 
         @classmethod
@@ -806,7 +806,7 @@ Test cases
 
    .. _assert-methods:
 
-   The :class:`TestCase` class provides several assert methods to check for and
+   The :class:`TestCase` kundi provides several assert methods to check for and
    report failures.  The following table lists the most commonly used methods
    (see the tables below for more assert methods):
 
@@ -922,7 +922,7 @@ Test cases
                assertNotIsInstance(obj, cls, msg=None)
 
       Test that *obj* is (or is not) an instance of *cls* (which can be a
-      class or a tuple of classes, as supported by :func:`isinstance`).
+      kundi or a tuple of classes, as supported by :func:`isinstance`).
       To check for the exact type, use :func:`assertIs(type(obj), cls) <assertIs>`.
 
       .. versionadded:: 3.2
@@ -1347,26 +1347,26 @@ Test cases
 
    .. attribute:: failureException
 
-      This class attribute gives the exception raised by the test method.  If a
+      This kundi attribute gives the exception raised by the test method.  If a
       test framework needs to use a specialized exception, possibly to carry
-      additional information, it must subclass this exception in order to "play
+      additional information, it must subkundi this exception in order to "play
       fair" with the framework.  The initial value of this attribute is
       :exc:`AssertionError`.
 
 
    .. attribute:: longMessage
 
-      This class attribute determines what happens when a custom failure message
+      This kundi attribute determines what happens when a custom failure message
       is passed as the msg argument to an assertXYY call that fails.
       ``True`` is the default value. In this case, the custom message is appended
       to the end of the standard failure message.
       When set to ``False``, the custom message replaces the standard message.
 
-      The class setting can be overridden in individual test methods by assigning
+      The kundi setting can be overridden in individual test methods by assigning
       an instance attribute, self.longMessage, to ``True`` or ``False`` before
       calling the assert methods.
 
-      The class setting gets reset before each test call.
+      The kundi setting gets reset before each test call.
 
       .. versionadded:: 3.1
 
@@ -1398,8 +1398,8 @@ Test cases
 
    .. method:: defaultTestResult()
 
-      Return an instance of the test result class that should be used for this
-      test case class (if no other result instance is provided to the
+      Return an instance of the test result kundi that should be used for this
+      test case kundi (if no other result instance is provided to the
       :meth:`run` method).
 
       For :class:`TestCase` instances, this will always be an instance of
@@ -1410,7 +1410,7 @@ Test cases
    .. method:: id()
 
       Return a string identifying the specific test case.  This is usually the
-      full name of the test method, including the module and class name.
+      full name of the test method, including the module and kundi name.
 
 
    .. method:: shortDescription()
@@ -1488,7 +1488,7 @@ Test cases
 
 .. class:: IsolatedAsyncioTestCase(methodName='runTest')
 
-   This class provides an API similar to :class:`TestCase` and also accepts
+   This kundi provides an API similar to :class:`TestCase` and also accepts
    coroutines as test functions.
 
    .. versionadded:: 3.8
@@ -1529,12 +1529,12 @@ Test cases
 
    An example illustrating the order::
 
-      from unittest import IsolatedAsyncioTestCase
+      kutoka unittest agiza IsolatedAsyncioTestCase
 
       events = []
 
 
-      class Test(IsolatedAsyncioTestCase):
+      kundi Test(IsolatedAsyncioTestCase):
 
 
           def setUp(self):
@@ -1568,7 +1568,7 @@ Test cases
 
 .. class:: FunctionTestCase(testFunc, setUp=None, tearDown=None, description=None)
 
-   This class implements the portion of the :class:`TestCase` interface which
+   This kundi implements the portion of the :class:`TestCase` interface which
    allows the test runner to drive the test, but does not provide the methods
    which test code can use to check and report errors.  This is used to create
    test cases using legacy test code, allowing it to be integrated into a
@@ -1616,8 +1616,8 @@ Grouping tests
 
 .. class:: TestSuite(tests=())
 
-   This class represents an aggregation of individual test cases and test suites.
-   The class presents the interface needed by the test runner to allow it to be run
+   This kundi represents an aggregation of individual test cases and test suites.
+   The kundi presents the interface needed by the test runner to allow it to be run
    as any other test case.  Running a :class:`TestSuite` instance is the same as
    iterating over the suite, running each test individually.
 
@@ -1638,7 +1638,7 @@ Grouping tests
 
    .. method:: TestSuite.addTests(tests)
 
-      Add all the tests from an iterable of :class:`TestCase` and :class:`TestSuite`
+      Add all the tests kutoka an iterable of :class:`TestCase` and :class:`TestSuite`
       instances to this test suite.
 
       This is equivalent to iterating over *tests*, calling :meth:`addTest` for
@@ -1677,7 +1677,7 @@ Grouping tests
       returned by repeated iterations before :meth:`TestSuite.run` must be the
       same for each call iteration. After :meth:`TestSuite.run`, callers should
       not rely on the tests returned by this method unless the caller uses a
-      subclass that overrides :meth:`TestSuite._removeTestAtIndex` to preserve
+      subkundi that overrides :meth:`TestSuite._removeTestAtIndex` to preserve
       test references.
 
       .. versionchanged:: 3.2
@@ -1699,10 +1699,10 @@ Loading and running tests
 
 .. class:: TestLoader()
 
-   The :class:`TestLoader` class is used to create test suites from classes and
+   The :class:`TestLoader` kundi is used to create test suites kutoka classes and
    modules.  Normally, there is no need to create an instance of this class; the
    :mod:`unittest` module provides an instance that can be shared as
-   :data:`unittest.defaultTestLoader`.  Using a subclass or instance, however,
+   :data:`unittest.defaultTestLoader`.  Using a subkundi or instance, however,
    allows customization of some configurable properties.
 
    :class:`TestLoader` objects have the following attributes:
@@ -1737,8 +1737,8 @@ Loading and running tests
    .. method:: loadTestsFromModule(module, pattern=None)
 
       Return a suite of all test cases contained in the given module. This
-      method searches *module* for classes derived from :class:`TestCase` and
-      creates an instance of the class for each test method defined for the
+      method searches *module* for classes derived kutoka :class:`TestCase` and
+      creates an instance of the kundi for each test method defined for the
       class.
 
       .. note::
@@ -1773,11 +1773,11 @@ Loading and running tests
       :class:`TestSuite` instance, or a callable object which returns a
       :class:`TestCase` or :class:`TestSuite` instance.  These checks are
       applied in the order listed here; that is, a method on a possible test
-      case class will be picked up as "a test method within a test case class",
+      case kundi will be picked up as "a test method within a test case class",
       rather than "a callable object".
 
       For example, if you have a module :mod:`SampleTests` containing a
-      :class:`TestCase`\ -derived class :class:`SampleTestCase` with three test
+      :class:`TestCase`\ -derived kundi :class:`SampleTestCase` with three test
       methods (:meth:`test_one`, :meth:`test_two`, and :meth:`test_three`), the
       specifier ``'SampleTests.SampleTestCase'`` would cause this method to
       return a suite which will run all three test methods. Using the specifier
@@ -1805,24 +1805,24 @@ Loading and running tests
    .. method:: getTestCaseNames(testCaseClass)
 
       Return a sorted sequence of method names found within *testCaseClass*;
-      this should be a subclass of :class:`TestCase`.
+      this should be a subkundi of :class:`TestCase`.
 
 
    .. method:: discover(start_dir, pattern='test*.py', top_level_dir=None)
 
-      Find all the test modules by recursing into subdirectories from the
+      Find all the test modules by recursing into subdirectories kutoka the
       specified start directory, and return a TestSuite object containing them.
       Only test files that match *pattern* will be loaded. (Using shell style
       pattern matching.) Only module names that are importable (i.e. are valid
       Python identifiers) will be loaded.
 
-      All test modules must be importable from the top level of the project. If
+      All test modules must be importable kutoka the top level of the project. If
       the start directory is not the top level directory then the top level
       directory must be specified separately.
 
       If importing a module fails, for example due to a syntax error, then
       this will be recorded as a single error and discovery will continue.  If
-      the import failure is due to :exc:`SkipTest` being raised, it will be
+      the agiza failure is due to :exc:`SkipTest` being raised, it will be
       recorded as a skip instead of an error.
 
       If a package (a directory containing a file named :file:`__init__.py`) is
@@ -1847,7 +1847,7 @@ Loading and running tests
       .. versionadded:: 3.2
 
       .. versionchanged:: 3.4
-         Modules that raise :exc:`SkipTest` on import are recorded as skips,
+         Modules that raise :exc:`SkipTest` on agiza are recorded as skips,
            not errors.
          Discovery works for :term:`namespace packages <namespace package>`.
          Paths are sorted before being imported so that execution order is
@@ -1881,7 +1881,7 @@ Loading and running tests
 
    .. attribute:: suiteClass
 
-      Callable object that constructs a test suite from a list of tests. No
+      Callable object that constructs a test suite kutoka a list of tests. No
       methods on the resulting object are needed.  The default value is the
       :class:`TestSuite` class.
 
@@ -1905,7 +1905,7 @@ Loading and running tests
 
 .. class:: TestResult
 
-   This class is used to compile information about which tests have succeeded
+   This kundi is used to compile information about which tests have succeeded
    and which have failed.
 
    A :class:`TestResult` object stores the results of a set of tests.  The
@@ -1989,7 +1989,7 @@ Loading and running tests
 
       .. versionchanged:: 3.4
          Returns ``False`` if there were any :attr:`unexpectedSuccesses`
-         from tests marked with the :func:`expectedFailure` decorator.
+         kutoka tests marked with the :func:`expectedFailure` decorator.
 
    .. method:: stop()
 
@@ -1998,12 +1998,12 @@ Loading and running tests
       :class:`TestRunner` objects should respect this flag and return without
       running any additional tests.
 
-      For example, this feature is used by the :class:`TextTestRunner` class to
-      stop the test framework when the user signals an interrupt from the
+      For example, this feature is used by the :class:`TextTestRunner` kundi to
+      stop the test framework when the user signals an interrupt kutoka the
       keyboard.  Interactive tools which provide :class:`TestRunner`
       implementations can use this in a similar manner.
 
-   The following methods of the :class:`TestResult` class are used to maintain
+   The following methods of the :class:`TestResult` kundi are used to maintain
    the internal data structures, and may be extended in subclasses to support
    additional reporting requirements.  This is particularly useful in building
    tools which support interactive reporting while tests are being run.
@@ -2040,7 +2040,7 @@ Loading and running tests
 
       The default implementation appends a tuple ``(test, formatted_err)`` to
       the instance's :attr:`errors` attribute, where *formatted_err* is a
-      formatted traceback derived from *err*.
+      formatted traceback derived kutoka *err*.
 
 
    .. method:: addFailure(test, err)
@@ -2050,7 +2050,7 @@ Loading and running tests
 
       The default implementation appends a tuple ``(test, formatted_err)`` to
       the instance's :attr:`failures` attribute, where *formatted_err* is a
-      formatted traceback derived from *err*.
+      formatted traceback derived kutoka *err*.
 
 
    .. method:: addSuccess(test)
@@ -2076,7 +2076,7 @@ Loading and running tests
 
       The default implementation appends a tuple ``(test, formatted_err)`` to
       the instance's :attr:`expectedFailures` attribute, where *formatted_err*
-      is a formatted traceback derived from *err*.
+      is a formatted traceback derived kutoka *err*.
 
 
    .. method:: addUnexpectedSuccess(test)
@@ -2110,13 +2110,13 @@ Loading and running tests
    :class:`TextTestRunner`.
 
    .. versionadded:: 3.2
-      This class was previously named ``_TextTestResult``. The old name still
+      This kundi was previously named ``_TextTestResult``. The old name still
       exists as an alias but is deprecated.
 
 
 .. data:: defaultTestLoader
 
-   Instance of the :class:`TestLoader` class intended to be shared.  If no
+   Instance of the :class:`TestLoader` kundi intended to be shared.  If no
    customization of the :class:`TestLoader` is needed, this instance can be used
    instead of repeatedly creating new instances.
 
@@ -2147,7 +2147,7 @@ Loading and running tests
 
    .. versionchanged:: 3.2
       The default stream is set to :data:`sys.stderr` at instantiation time rather
-      than import time.
+      than agiza time.
 
    .. versionchanged:: 3.5
       Added the tb_locals parameter.
@@ -2158,10 +2158,10 @@ Loading and running tests
       It is not intended to be called directly, but can be overridden in
       subclasses to provide a custom ``TestResult``.
 
-      ``_makeResult()`` instantiates the class or callable passed in the
+      ``_makeResult()`` instantiates the kundi or callable passed in the
       ``TextTestRunner`` constructor as the ``resultclass`` argument. It
       defaults to :class:`TextTestResult` if no ``resultclass`` is provided.
-      The result class is instantiated with the following arguments::
+      The result kundi is instantiated with the following arguments::
 
         stream, descriptions, verbosity
 
@@ -2178,7 +2178,7 @@ Loading and running tests
                    testLoader=unittest.defaultTestLoader, exit=True, verbosity=1, \
                    failfast=None, catchbreak=None, buffer=None, warnings=None)
 
-   A command-line program that loads a set of tests from *module* and runs them;
+   A command-line program that loads a set of tests kutoka *module* and runs them;
    this is primarily for making test modules conveniently executable.
    The simplest use for this function is to include the following line at the
    end of a test script::
@@ -2201,18 +2201,18 @@ Loading and running tests
    first element being the program name.  If not specified or ``None``,
    the values of :data:`sys.argv` are used.
 
-   The *testRunner* argument can either be a test runner class or an already
+   The *testRunner* argument can either be a test runner kundi or an already
    created instance of it. By default ``main`` calls :func:`sys.exit` with
    an exit code indicating success or failure of the tests run.
 
    The *testLoader* argument has to be a :class:`TestLoader` instance,
    and defaults to :data:`defaultTestLoader`.
 
-   ``main`` supports being used from the interactive interpreter by passing in the
+   ``main`` supports being used kutoka the interactive interpreter by passing in the
    argument ``exit=False``. This displays the result on standard output without
    calling :func:`sys.exit`::
 
-      >>> from unittest import main
+      >>> kutoka unittest agiza main
       >>> main(module='test_module', exit=False)
 
    The *failfast*, *catchbreak* and *buffer* parameters have the same
@@ -2244,7 +2244,7 @@ load_tests Protocol
 
 .. versionadded:: 3.2
 
-Modules or packages can customize how tests are loaded from them during normal
+Modules or packages can customize how tests are loaded kutoka them during normal
 test runs or test discovery by implementing a function called ``load_tests``.
 
 If a test module defines ``load_tests`` it will be called by
@@ -2252,30 +2252,30 @@ If a test module defines ``load_tests`` it will be called by
 
     load_tests(loader, standard_tests, pattern)
 
-where *pattern* is passed straight through from ``loadTestsFromModule``.  It
+where *pattern* is passed straight through kutoka ``loadTestsFromModule``.  It
 defaults to ``None``.
 
 It should return a :class:`TestSuite`.
 
 *loader* is the instance of :class:`TestLoader` doing the loading.
-*standard_tests* are the tests that would be loaded by default from the
+*standard_tests* are the tests that would be loaded by default kutoka the
 module. It is common for test modules to only want to add or remove tests
-from the standard set of tests.
+kutoka the standard set of tests.
 The third argument is used when loading packages as part of test discovery.
 
-A typical ``load_tests`` function that loads tests from a specific set of
+A typical ``load_tests`` function that loads tests kutoka a specific set of
 :class:`TestCase` classes may look like::
 
     test_cases = (TestCase1, TestCase2, TestCase3)
 
     def load_tests(loader, tests, pattern):
         suite = TestSuite()
-        for test_class in test_cases:
+        for test_kundi in test_cases:
             tests = loader.loadTestsFromTestCase(test_class)
             suite.addTests(tests)
         return suite
 
-If discovery is started in a directory containing a package, either from the
+If discovery is started in a directory containing a package, either kutoka the
 command line or by calling :meth:`TestLoader.discover`, then the package
 :file:`__init__.py` will be checked for ``load_tests``.  If that function does
 not exist, discovery will recurse into the package as though it were just
@@ -2285,8 +2285,8 @@ to ``load_tests`` which is called with the following arguments::
     load_tests(loader, standard_tests, pattern)
 
 This should return a :class:`TestSuite` representing all the tests
-from the package. (``standard_tests`` will only contain tests
-collected from :file:`__init__.py`.)
+kutoka the package. (``standard_tests`` will only contain tests
+collected kutoka :file:`__init__.py`.)
 
 Because the pattern is passed into ``load_tests`` the package is free to
 continue (and potentially modify) test discovery. A 'do nothing'
@@ -2309,13 +2309,13 @@ Class and Module Fixtures
 -------------------------
 
 Class and module level fixtures are implemented in :class:`TestSuite`. When
-the test suite encounters a test from a new class then :meth:`tearDownClass`
-from the previous class (if there is one) is called, followed by
-:meth:`setUpClass` from the new class.
+the test suite encounters a test kutoka a new kundi then :meth:`tearDownClass`
+kutoka the previous kundi (if there is one) is called, followed by
+:meth:`setUpClass` kutoka the new class.
 
-Similarly if a test is from a different module from the previous test then
-``tearDownModule`` from the previous module is run, followed by
-``setUpModule`` from the new module.
+Similarly if a test is kutoka a different module kutoka the previous test then
+``tearDownModule`` kutoka the previous module is run, followed by
+``setUpModule`` kutoka the new module.
 
 After all the tests have run the final ``tearDownClass`` and
 ``tearDownModule`` are run.
@@ -2324,9 +2324,9 @@ Note that shared fixtures do not play well with [potential] features like test
 parallelization and they break test isolation. They should be used with care.
 
 The default ordering of tests created by the unittest test loaders is to group
-all tests from the same modules and classes together. This will lead to
-``setUpClass`` / ``setUpModule`` (etc) being called exactly once per class and
-module. If you randomize the order, so that tests from different modules and
+all tests kutoka the same modules and classes together. This will lead to
+``setUpClass`` / ``setUpModule`` (etc) being called exactly once per kundi and
+module. If you randomize the order, so that tests kutoka different modules and
 classes are adjacent to each other, then these shared fixture functions may be
 called multiple times in a single test run.
 
@@ -2345,11 +2345,11 @@ are a framework author it may be relevant.
 setUpClass and tearDownClass
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-These must be implemented as class methods::
+These must be implemented as kundi methods::
 
-    import unittest
+    agiza unittest
 
-    class Test(unittest.TestCase):
+    kundi Test(unittest.TestCase):
         @classmethod
         def setUpClass(cls):
             cls._connection = createExpensiveConnectionObject()
@@ -2365,7 +2365,7 @@ then you must call up to them yourself. The implementations in
 If an exception is raised during a ``setUpClass`` then the tests in the class
 are not run and the ``tearDownClass`` is not run. Skipped classes will not
 have ``setUpClass`` or ``tearDownClass`` run. If the exception is a
-:exc:`SkipTest` exception then the class will be reported as having been skipped
+:exc:`SkipTest` exception then the kundi will be reported as having been skipped
 instead of as an error.
 
 
@@ -2452,7 +2452,7 @@ handling functionality within test frameworks.
 .. function:: registerResult(result)
 
    Register a :class:`TestResult` object for control-c handling. Registering a
-   result stores a weak reference to it, so it doesn't prevent the result from
+   result stores a weak reference to it, so it doesn't prevent the result kutoka
    being garbage collected.
 
    Registering a :class:`TestResult` object has no side-effects if control-c

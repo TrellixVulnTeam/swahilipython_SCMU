@@ -385,7 +385,7 @@ class MultiprocessTestRunner:
         if mp_result.error_msg is not None:
             # CHILD_ERROR
             text += ' (%s)' % mp_result.error_msg
-        elif (result.test_time >= PROGRESS_MIN_TIME and not self.ns.pgo):
+        lasivyo (result.test_time >= PROGRESS_MIN_TIME and not self.ns.pgo):
             text += ' (%s)' % format_duration(result.test_time)
         running = get_running(self.workers)
         if running and not self.ns.pgo:

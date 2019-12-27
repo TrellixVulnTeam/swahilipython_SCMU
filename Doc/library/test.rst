@@ -54,10 +54,10 @@ stated.
 
 A basic boilerplate is often used::
 
-   import unittest
-   from test import support
+   agiza unittest
+   kutoka test agiza support
 
-   class MyTestCase1(unittest.TestCase):
+   kundi MyTestCase1(unittest.TestCase):
 
        # Only use setUp() and tearDown() if necessary
 
@@ -77,7 +77,7 @@ A basic boilerplate is often used::
 
        ... more test methods ...
 
-   class MyTestCase2(unittest.TestCase):
+   kundi MyTestCase2(unittest.TestCase):
        ... same structure as MyTestCase1 ...
 
    ... more test classes ...
@@ -120,32 +120,32 @@ guidelines to be followed:
 
 * Import as few modules as possible and do it as soon as possible. This
   minimizes external dependencies of tests and also minimizes possible anomalous
-  behavior from side-effects of importing a module.
+  behavior kutoka side-effects of importing a module.
 
 * Try to maximize code reuse. On occasion, tests will vary by something as small
   as what type of input is used. Minimize code duplication by subclassing a
-  basic test class with a class that specifies the input::
+  basic test kundi with a kundi that specifies the input::
 
-     class TestFuncAcceptsSequencesMixin:
+     kundi TestFuncAcceptsSequencesMixin:
 
          func = mySuperWhammyFunction
 
          def test_func(self):
              self.func(self.arg)
 
-     class AcceptLists(TestFuncAcceptsSequencesMixin, unittest.TestCase):
+     kundi AcceptLists(TestFuncAcceptsSequencesMixin, unittest.TestCase):
          arg = [1, 2, 3]
 
-     class AcceptStrings(TestFuncAcceptsSequencesMixin, unittest.TestCase):
+     kundi AcceptStrings(TestFuncAcceptsSequencesMixin, unittest.TestCase):
          arg = 'abc'
 
-     class AcceptTuples(TestFuncAcceptsSequencesMixin, unittest.TestCase):
+     kundi AcceptTuples(TestFuncAcceptsSequencesMixin, unittest.TestCase):
          arg = (1, 2, 3)
 
-  When using this pattern, remember that all classes that inherit from
-  :class:`unittest.TestCase` are run as tests.  The :class:`Mixin` class in the example above
+  When using this pattern, remember that all classes that inherit kutoka
+  :class:`unittest.TestCase` are run as tests.  The :class:`Mixin` kundi in the example above
   does not have any data and so can't be run by itself, thus it does not
-  inherit from :class:`unittest.TestCase`.
+  inherit kutoka :class:`unittest.TestCase`.
 
 
 .. seealso::
@@ -186,7 +186,7 @@ options, run :program:`python -m test -h`.
 Some other ways to execute the regression tests depend on what platform the
 tests are being executed on. On Unix, you can run :program:`make test` at the
 top-level directory where Python was built. On Windows,
-executing :program:`rt.bat` from your :file:`PCbuild` directory will run all
+executing :program:`rt.bat` kutoka your :file:`PCbuild` directory will run all
 regression tests.
 
 
@@ -218,7 +218,7 @@ This module defines the following exceptions:
 
 .. exception:: ResourceDenied
 
-   Subclass of :exc:`unittest.SkipTest`. Raised when a resource (such as a
+   Subkundi of :exc:`unittest.SkipTest`. Raised when a resource (such as a
    network connection) is not available. Raised by the :func:`requires`
    function.
 
@@ -383,13 +383,13 @@ The :mod:`test.support` module defines the following functions:
 
 .. function:: forget(module_name)
 
-   Remove the module named *module_name* from ``sys.modules`` and delete any
+   Remove the module named *module_name* kutoka ``sys.modules`` and delete any
    byte-compiled files of the module.
 
 
 .. function:: unload(name)
 
-   Delete *name* from ``sys.modules``.
+   Delete *name* kutoka ``sys.modules``.
 
 
 .. function:: unlink(filename)
@@ -515,7 +515,7 @@ The :mod:`test.support` module defines the following functions:
 .. function:: setswitchinterval(interval)
 
    Set the :func:`sys.setswitchinterval` to the given *interval*.  Defines
-   a minimum interval for Android systems to prevent the system from hanging.
+   a minimum interval for Android systems to prevent the system kutoka hanging.
 
 
 .. function:: check_impl_detail(**guards)
@@ -552,7 +552,7 @@ The :mod:`test.support` module defines the following functions:
    In this case all warnings are caught and no errors are raised.
 
    On entry to the context manager, a :class:`WarningRecorder` instance is
-   returned. The underlying warnings list from
+   returned. The underlying warnings list kutoka
    :func:`~warnings.catch_warnings` is available via the recorder object's
    :attr:`warnings` attribute.  As a convenience, the attributes of the object
    representing the most recent warning can also be accessed directly through
@@ -609,7 +609,7 @@ The :mod:`test.support` module defines the following functions:
 
 .. function:: record_original_stdout(stdout)
 
-   Store the value from *stdout*.  It is meant to hold the stdout at the
+   Store the value kutoka *stdout*.  It is meant to hold the stdout at the
    time the regrtest began.
 
 
@@ -621,18 +621,18 @@ The :mod:`test.support` module defines the following functions:
 
 .. function:: strip_python_strerr(stderr)
 
-   Strip the *stderr* of a Python process from potential debug output
+   Strip the *stderr* of a Python process kutoka potential debug output
    emitted by the interpreter.  This will typically be run on the result of
    :meth:`subprocess.Popen.communicate`.
 
 
-.. function:: args_from_interpreter_flags()
+.. function:: args_kutoka_interpreter_flags()
 
    Return a list of command line arguments reproducing the current settings
    in ``sys.flags`` and ``sys.warnoptions``.
 
 
-.. function:: optim_args_from_interpreter_flags()
+.. function:: optim_args_kutoka_interpreter_flags()
 
    Return a list of command line arguments reproducing the current
    optimization settings in ``sys.flags``.
@@ -658,7 +658,7 @@ The :mod:`test.support` module defines the following functions:
       with captured_stdin() as stdin:
           stdin.write('hello\n')
           stdin.seek(0)
-          # call test code that consumes from sys.stdin
+          # call test code that consumes kutoka sys.stdin
           captured = input()
       self.assertEqual(captured, "hello")
 
@@ -999,20 +999,20 @@ The :mod:`test.support` module defines the following functions:
 .. function:: import_fresh_module(name, fresh=(), blocked=(), deprecated=False)
 
    This function imports and returns a fresh copy of the named Python module
-   by removing the named module from ``sys.modules`` before doing the import.
+   by removing the named module kutoka ``sys.modules`` before doing the import.
    Note that unlike :func:`reload`, the original module is not affected by
    this operation.
 
    *fresh* is an iterable of additional module names that are also removed
-   from the ``sys.modules`` cache before doing the import.
+   kutoka the ``sys.modules`` cache before doing the import.
 
    *blocked* is an iterable of module names that are replaced with ``None``
-   in the module cache during the import to ensure that attempts to import
+   in the module cache during the agiza to ensure that attempts to import
    them raise :exc:`ImportError`.
 
    The named module and any modules named in the *fresh* and *blocked*
-   parameters are saved before starting the import and then reinserted into
-   ``sys.modules`` when the fresh import is complete.
+   parameters are saved before starting the agiza and then reinserted into
+   ``sys.modules`` when the fresh agiza is complete.
 
    Module and package deprecation messages are suppressed during this import
    if *deprecated* is ``True``.
@@ -1088,7 +1088,7 @@ The :mod:`test.support` module defines the following functions:
 
    Additionally, if the :const:`~socket.SO_EXCLUSIVEADDRUSE` socket option is
    available (i.e. on Windows), it will be set on the socket.  This will
-   prevent anyone else from binding to our host/port for the duration of the
+   prevent anyone else kutoka binding to our host/port for the duration of the
    test.
 
 
@@ -1166,7 +1166,7 @@ The :mod:`test.support` module defines the following functions:
    the ``sock`` parameter (default is :const:`~socket.AF_INET`,
    :const:`~socket.SOCK_STREAM`),
    and binding it to the specified host address (defaults to ``0.0.0.0``)
-   with the port set to 0, eliciting an unused ephemeral port from the OS.
+   with the port set to 0, eliciting an unused ephemeral port kutoka the OS.
    The temporary socket is then closed and deleted, and the ephemeral port is
    returned.
 
@@ -1190,8 +1190,8 @@ The :mod:`test.support` module defines the following functions:
    ``load_tests``.  In simple cases, the test package's ``__init__.py``
    can be the following::
 
-      import os
-      from test.support import load_package_tests
+      agiza os
+      kutoka test.support agiza load_package_tests
 
       def load_tests(*args):
           return load_package_tests(os.path.dirname(__file__), *args)
@@ -1251,7 +1251,7 @@ The :mod:`test.support` module defines the following functions:
 
    The *name_of_module* argument can specify (as a string or tuple thereof) what
    module(s) an API could be defined in order to be detected as a public
-   API. One case for this is when *module* imports part of its public API from
+   API. One case for this is when *module* imports part of its public API kutoka
    other modules, possibly a C backend (like ``csv`` and its ``_csv``).
 
    The *extra* argument can be a set of names that wouldn't otherwise be automatically
@@ -1263,20 +1263,20 @@ The :mod:`test.support` module defines the following functions:
 
    Example use::
 
-      import bar
-      import foo
-      import unittest
-      from test import support
+      agiza bar
+      agiza foo
+      agiza unittest
+      kutoka test agiza support
 
-      class MiscTestCase(unittest.TestCase):
+      kundi MiscTestCase(unittest.TestCase):
           def test__all__(self):
               support.check__all__(self, foo)
 
-      class OtherTestCase(unittest.TestCase):
+      kundi OtherTestCase(unittest.TestCase):
           def test__all__(self):
               extra = {'BAR_CONST', 'FOO_CONST'}
               blacklist = {'baz'}  # Undocumented name.
-              # bar imports part of its API from _bar.
+              # bar imports part of its API kutoka _bar.
               support.check__all__(self, bar, ('bar', '_bar'),
                                    extra=extra, blacklist=blacklist)
 
@@ -1298,7 +1298,7 @@ The :mod:`test.support` module defines the following classes:
 
    Class used to temporarily set or unset environment variables.  Instances can
    be used as a context manager and have a complete dictionary interface for
-   querying/modifying the underlying ``os.environ``. After exit from the
+   querying/modifying the underlying ``os.environ``. After exit kutoka the
    context manager all changes to environment variables done through this
    instance will be rolled back.
 
@@ -1333,7 +1333,7 @@ The :mod:`test.support` module defines the following classes:
 
 .. class:: CleanImport(*module_names)
 
-   A context manager to force import to return a new module reference.  This
+   A context manager to force agiza to return a new module reference.  This
    is useful for testing module-level behaviors, such as the emission of a
    DeprecationWarning on import.  Example usage::
 
@@ -1417,7 +1417,7 @@ script execution tests.
    mode (``-I``) or no environment mode (``-E``) sub-interpreter process.
 
    A normal build & test does not run into this situation but it can happen
-   when trying to run the standard library test suite from an interpreter that
+   when trying to run the standard library test suite kutoka an interpreter that
    doesn't have an obvious home with Python's current home finding logic.
 
    Setting :envvar:`PYTHONHOME` is one way to get most of the testsuite to run

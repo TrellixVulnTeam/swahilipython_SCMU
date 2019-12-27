@@ -12,7 +12,7 @@ supporting community of contributors and users that also make their software
 available for other Python developers to use under open source license terms.
 
 This allows Python users to share and collaborate effectively, benefiting
-from the solutions others have already created to common (and sometimes
+kutoka the solutions others have already created to common (and sometimes
 even rare!) problems, as well as potentially contributing their own
 solutions to the common pool.
 
@@ -171,6 +171,6 @@ Python Packaging User Guide for more information and recommendations.
 .. other topics:
 
    Once the Development & Deployment part of PPUG is fleshed out, some of
-   those sections should be linked from new questions here (most notably,
+   those sections should be linked kutoka new questions here (most notably,
    we should have a question about avoiding depending on PyPI that links to
    https://packaging.python.org/en/latest/mirrors/)

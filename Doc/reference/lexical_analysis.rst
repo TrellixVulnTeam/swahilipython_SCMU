@@ -37,7 +37,7 @@ Logical lines
 The end of a logical line is represented by the token NEWLINE.  Statements
 cannot cross logical line boundaries except where NEWLINE is allowed by the
 syntax (e.g., between statements in compound statements). A logical line is
-constructed from one or more *physical lines* by following the explicit or
+constructed kutoka one or more *physical lines* by following the explicit or
 implicit *line joining* rules.
 
 
@@ -179,7 +179,7 @@ Leading whitespace (spaces and tabs) at the beginning of a logical line is used
 to compute the indentation level of the line, which in turn is used to determine
 the grouping of statements.
 
-Tabs are replaced (from left to right) by one to eight spaces such that the
+Tabs are replaced (kutoka left to right) by one to eight spaces such that the
 total number of characters up to and including the replacement is a multiple of
 eight (this is intended to be the same rule as used by Unix).  The total number
 of spaces preceding the first non-blank character then determines the line's
@@ -208,7 +208,7 @@ DEDENT tokens, using a stack, as follows.
 
 Before the first line of the file is read, a single zero is pushed on the stack;
 this will never be popped off again.  The numbers pushed on the stack will
-always be strictly increasing from bottom to top.  At the beginning of each
+always be strictly increasing kutoka bottom to top.  At the beginning of each
 logical line, the line's indentation level is compared to the top of the stack.
 If it is equal, nothing happens. If it is larger, it is pushed on the stack, and
 one INDENT token is generated.  If it is smaller, it *must* be one of the
@@ -268,7 +268,7 @@ Besides NEWLINE, INDENT and DEDENT, the following categories of tokens exist:
 *identifiers*, *keywords*, *literals*, *operators*, and *delimiters*. Whitespace
 characters (other than line terminators, discussed earlier) are not tokens, but
 serve to delimit tokens. Where ambiguity exists, a token comprises the longest
-possible string that forms a legal token, when read from left to right.
+possible string that forms a legal token, when read kutoka left to right.
 
 
 .. _identifiers:
@@ -290,7 +290,7 @@ are the same as in Python 2.x: the uppercase and lowercase letters ``A`` through
 ``Z``, the underscore ``_`` and, except for the first character, the digits
 ``0`` through ``9``.
 
-Python 3.0 introduces additional characters from outside the ASCII range (see
+Python 3.0 introduces additional characters kutoka outside the ASCII range (see
 :pep:`3131`).  For these characters, the classification uses the version of the
 Unicode Character Database as included in the :mod:`unicodedata` module.
 
@@ -343,11 +343,11 @@ exactly as written here:
 
 .. sourcecode:: text
 
-   False      await      else       import     pass
+   False      await      else       agiza     pass
    None       break      except     in         raise
-   True       class      finally    is         return
+   True       kundi      finally    is         return
    and        continue   for        lambda     try
-   as         def        from       nonlocal   while
+   as         def        kutoka       nonlocal   while
    assert     del        global     not        with
    async      elif       if         or         yield
 
@@ -364,7 +364,7 @@ classes are identified by the patterns of leading and trailing underscore
 characters:
 
 ``_*``
-   Not imported by ``from module import *``.  The special identifier ``_`` is used
+   Not imported by ``kutoka module agiza *``.  The special identifier ``_`` is used
    in the interactive interpreter to store the result of the last evaluation; it is
    stored in the :mod:`builtins` module.  When not in interactive mode, ``_``
    has no special meaning and is not defined. See section :ref:`import`.
@@ -385,7 +385,7 @@ characters:
 
 ``__*``
    Class-private names.  Names in this category, when used within the context of a
-   class definition, are re-written to use a mangled form to help avoid name
+   kundi definition, are re-written to use a mangled form to help avoid name
    clashes between "private" attributes of base and derived classes. See section
    :ref:`atom-identifiers`.
 
@@ -682,7 +682,7 @@ An empty expression is not allowed, and both :keyword:`lambda`  and
 assignment expressions ``:=`` must be surrounded by explicit parentheses.
 Replacement expressions can contain line breaks (e.g. in triple-quoted
 strings), but they cannot contain comments.  Each expression is evaluated
-in the context where the formatted string literal appears, in order from
+in the context where the formatted string literal appears, in order kutoka
 left to right.
 
 If a conversion is specified, the result of evaluating the expression
@@ -800,7 +800,7 @@ Integer literals are described by the following lexical definitions:
    octdigit: "0"..."7"
    hexdigit: `digit` | "a"..."f" | "A"..."F"
 
-There is no limit for the length of integer literals apart from what can be
+There is no limit for the length of integer literals apart kutoka what can be
 stored in available memory.
 
 Underscores are ignored for determining the numeric value of the literal.  They

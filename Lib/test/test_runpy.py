@@ -26,7 +26,7 @@ kutoka runpy agiza _run_code, _run_module_code, run_module, run_path
 example_source = """\
 # Check basic code execution
 result = ['Top level assignment']
-def f():
+eleza f():
     result.append('Lower level reference')
 f()
 del f
@@ -61,7 +61,7 @@ example_namespace =  {
 }
 example_namespace.update(implicit_namespace)
 
-class CodeExecutionMixin:
+kundi CodeExecutionMixin:
     # Issue #15230 (run_path not handling run_name correctly) highlighted a
     # problem with the way arguments were being passed kutoka higher level APIs
     # down to lower level code. This mixin makes it easier to ensure full
@@ -73,7 +73,7 @@ class CodeExecutionMixin:
     CHECKED_SPEC_ATTRIBUTES = ["name", "parent", "origin", "cached",
                                "has_location", "submodule_search_locations"]
 
-    def assertNamespaceMatches(self, result_ns, expected_ns):
+    eleza assertNamespaceMatches(self, result_ns, expected_ns):
         """Check two namespaces match.
 
            Ignores any unspecified interpreter created names
@@ -83,21 +83,21 @@ class CodeExecutionMixin:
         expected_ns = expected_ns.copy()
         # Impls are permitted to add extra names, so filter them out
         for k in list(result_ns):
-            if k.startswith("__") and k.endswith("__"):
-                if k not in expected_ns:
+            ikiwa k.startswith("__") and k.endswith("__"):
+                ikiwa k not in expected_ns:
                     result_ns.pop(k)
-                if k not in expected_ns["nested"]:
+                ikiwa k not in expected_ns["nested"]:
                     result_ns["nested"].pop(k)
         # Spec equality includes the loader, so we take the spec out of the
         # result namespace and check that separately
         result_spec = result_ns.pop("__spec__")
         expected_spec = expected_ns.pop("__spec__")
-        if expected_spec is None:
+        ikiwa expected_spec is None:
             self.assertIsNone(result_spec)
         else:
             # If an expected loader is set, we just check we got the right
             # type, rather than checking for full equality
-            if expected_spec.loader is not None:
+            ikiwa expected_spec.loader is not None:
                 self.assertEqual(type(result_spec.loader),
                                  type(expected_spec.loader))
             for attr in self.CHECKED_SPEC_ATTRIBUTES:
@@ -106,14 +106,14 @@ class CodeExecutionMixin:
                 expected = (k, getattr(expected_spec, attr))
                 self.assertEqual(actual, expected)
         # For the rest, we still don't use direct dict comparison on the
-        # namespace, as the diffs are too hard to debug if anything breaks
+        # namespace, as the diffs are too hard to debug ikiwa anything breaks
         self.assertEqual(set(result_ns), set(expected_ns))
         for k in result_ns:
             actual = (k, result_ns[k])
             expected = (k, expected_ns[k])
             self.assertEqual(actual, expected)
 
-    def check_code_execution(self, create_namespace, expected_namespace):
+    eleza check_code_execution(self, create_namespace, expected_namespace):
         """Check that an interface runs the example code correctly
 
            First argument is a callable accepting the initial globals and
@@ -140,19 +140,19 @@ class CodeExecutionMixin:
         self.assertIs(sys.modules.get(run_name, sentinel), saved_mod)
 
 
-class ExecutionLayerTestCase(unittest.TestCase, CodeExecutionMixin):
+kundi ExecutionLayerTestCase(unittest.TestCase, CodeExecutionMixin):
     """Unit tests for runpy._run_code and runpy._run_module_code"""
 
-    def test_run_code(self):
+    eleza test_run_code(self):
         expected_ns = example_namespace.copy()
         expected_ns.update({
             "__loader__": None,
         })
-        def create_ns(init_globals):
-            return _run_code(example_source, {}, init_globals)
+        eleza create_ns(init_globals):
+            rudisha _run_code(example_source, {}, init_globals)
         self.check_code_execution(create_ns, expected_ns)
 
-    def test_run_module_code(self):
+    eleza test_run_module_code(self):
         mod_name = "<Nonsense>"
         mod_fname = "Some other nonsense"
         mod_loader = "Now you're just being silly"
@@ -171,18 +171,18 @@ class ExecutionLayerTestCase(unittest.TestCase, CodeExecutionMixin):
             "run_name_in_sys_modules": True,
             "module_in_sys_modules": True,
         })
-        def create_ns(init_globals):
-            return _run_module_code(example_source,
+        eleza create_ns(init_globals):
+            rudisha _run_module_code(example_source,
                                     init_globals,
                                     mod_name,
                                     mod_spec)
         self.check_code_execution(create_ns, expected_ns)
 
 # TODO: Use self.addCleanup to get rid of a lot of try-finally blocks
-class RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
+kundi RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
     """Unit tests for runpy.run_module"""
 
-    def expect_import_error(self, mod_name):
+    eleza expect_import_error(self, mod_name):
         try:
             run_module(mod_name)
         except ImportError:
@@ -190,7 +190,7 @@ class RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
         else:
             self.fail("Expected agiza error for " + mod_name)
 
-    def test_invalid_names(self):
+    eleza test_invalid_names(self):
         # Builtin module
         self.expect_import_error("sys")
         # Non-existent modules
@@ -205,84 +205,84 @@ class RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
         # Package without __main__.py
         self.expect_import_error("multiprocessing")
 
-    def test_library_module(self):
+    eleza test_library_module(self):
         self.assertEqual(run_module("runpy")["__name__"], "runpy")
 
-    def _add_pkg_dir(self, pkg_dir, namespace=False):
+    eleza _add_pkg_dir(self, pkg_dir, namespace=False):
         os.mkdir(pkg_dir)
-        if namespace:
-            return None
+        ikiwa namespace:
+            rudisha None
         pkg_fname = os.path.join(pkg_dir, "__init__.py")
         create_empty_file(pkg_fname)
-        return pkg_fname
+        rudisha pkg_fname
 
-    def _make_pkg(self, source, depth, mod_base="runpy_test",
+    eleza _make_pkg(self, source, depth, mod_base="runpy_test",
                      *, namespace=False, parent_namespaces=False):
         # Enforce a couple of internal sanity checks on test cases
-        if (namespace or parent_namespaces) and not depth:
+        ikiwa (namespace or parent_namespaces) and not depth:
             raise RuntimeError("Can't mark top level module as a "
                                "namespace package")
         pkg_name = "__runpy_pkg__"
         test_fname = mod_base+os.extsep+"py"
         pkg_dir = sub_dir = os.path.realpath(tempfile.mkdtemp())
-        if verbose > 1: print("  Package tree in:", sub_dir)
+        ikiwa verbose > 1: andika("  Package tree in:", sub_dir)
         sys.path.insert(0, pkg_dir)
-        if verbose > 1: print("  Updated sys.path:", sys.path[0])
-        if depth:
+        ikiwa verbose > 1: andika("  Updated sys.path:", sys.path[0])
+        ikiwa depth:
             namespace_flags = [parent_namespaces] * depth
             namespace_flags[-1] = namespace
             for namespace_flag in namespace_flags:
                 sub_dir = os.path.join(sub_dir, pkg_name)
                 pkg_fname = self._add_pkg_dir(sub_dir, namespace_flag)
-                if verbose > 1: print("  Next level in:", sub_dir)
-                if verbose > 1: print("  Created:", pkg_fname)
+                ikiwa verbose > 1: andika("  Next level in:", sub_dir)
+                ikiwa verbose > 1: andika("  Created:", pkg_fname)
         mod_fname = os.path.join(sub_dir, test_fname)
         with open(mod_fname, "w") as mod_file:
             mod_file.write(source)
-        if verbose > 1: print("  Created:", mod_fname)
+        ikiwa verbose > 1: andika("  Created:", mod_fname)
         mod_name = (pkg_name+".")*depth + mod_base
-        mod_spec = importlib.util.spec_from_file_location(mod_name,
+        mod_spec = importlib.util.spec_kutoka_file_location(mod_name,
                                                           mod_fname)
-        return pkg_dir, mod_fname, mod_name, mod_spec
+        rudisha pkg_dir, mod_fname, mod_name, mod_spec
 
-    def _del_pkg(self, top):
+    eleza _del_pkg(self, top):
         for entry in list(sys.modules):
-            if entry.startswith("__runpy_pkg__"):
+            ikiwa entry.startswith("__runpy_pkg__"):
                 del sys.modules[entry]
-        if verbose > 1: print("  Removed sys.modules entries")
+        ikiwa verbose > 1: andika("  Removed sys.modules entries")
         del sys.path[0]
-        if verbose > 1: print("  Removed sys.path entry")
+        ikiwa verbose > 1: andika("  Removed sys.path entry")
         for root, dirs, files in os.walk(top, topdown=False):
             for name in files:
                 try:
                     os.remove(os.path.join(root, name))
                 except OSError as ex:
-                    if verbose > 1: print(ex) # Persist with cleaning up
+                    ikiwa verbose > 1: andika(ex) # Persist with cleaning up
             for name in dirs:
                 fullname = os.path.join(root, name)
                 try:
                     os.rmdir(fullname)
                 except OSError as ex:
-                    if verbose > 1: print(ex) # Persist with cleaning up
+                    ikiwa verbose > 1: andika(ex) # Persist with cleaning up
         try:
             os.rmdir(top)
-            if verbose > 1: print("  Removed package tree")
+            ikiwa verbose > 1: andika("  Removed package tree")
         except OSError as ex:
-            if verbose > 1: print(ex) # Persist with cleaning up
+            ikiwa verbose > 1: andika(ex) # Persist with cleaning up
 
-    def _fix_ns_for_legacy_pyc(self, ns, alter_sys):
+    eleza _fix_ns_for_legacy_pyc(self, ns, alter_sys):
         char_to_add = "c"
         ns["__file__"] += char_to_add
         ns["__cached__"] = ns["__file__"]
         spec = ns["__spec__"]
-        new_spec = importlib.util.spec_from_file_location(spec.name,
+        new_spec = importlib.util.spec_kutoka_file_location(spec.name,
                                                           ns["__file__"])
         ns["__spec__"] = new_spec
-        if alter_sys:
+        ikiwa alter_sys:
             ns["run_argv0"] += char_to_add
 
 
-    def _check_module(self, depth, alter_sys=False,
+    eleza _check_module(self, depth, alter_sys=False,
                          *, namespace=False, parent_namespaces=False):
         pkg_dir, mod_fname, mod_name, mod_spec = (
                self._make_pkg(example_source, depth,
@@ -297,32 +297,32 @@ class RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
             "__package__": mod_name.rpartition(".")[0],
             "__spec__": mod_spec,
         })
-        if alter_sys:
+        ikiwa alter_sys:
             expected_ns.update({
                 "run_argv0": mod_fname,
                 "run_name_in_sys_modules": True,
                 "module_in_sys_modules": True,
             })
-        def create_ns(init_globals):
-            return run_module(mod_name, init_globals, alter_sys=alter_sys)
+        eleza create_ns(init_globals):
+            rudisha run_module(mod_name, init_globals, alter_sys=alter_sys)
         try:
-            if verbose > 1: print("Running kutoka source:", mod_name)
+            ikiwa verbose > 1: andika("Running kutoka source:", mod_name)
             self.check_code_execution(create_ns, expected_ns)
             importlib.invalidate_caches()
             __import__(mod_name)
             os.remove(mod_fname)
-            if not sys.dont_write_bytecode:
+            ikiwa not sys.dont_write_bytecode:
                 make_legacy_pyc(mod_fname)
                 unload(mod_name)  # In case loader caches paths
                 importlib.invalidate_caches()
-                if verbose > 1: print("Running kutoka compiled:", mod_name)
+                ikiwa verbose > 1: andika("Running kutoka compiled:", mod_name)
                 self._fix_ns_for_legacy_pyc(expected_ns, alter_sys)
                 self.check_code_execution(create_ns, expected_ns)
         finally:
             self._del_pkg(pkg_dir)
-        if verbose > 1: print("Module executed successfully")
+        ikiwa verbose > 1: andika("Module executed successfully")
 
-    def _check_package(self, depth, alter_sys=False,
+    eleza _check_package(self, depth, alter_sys=False,
                           *, namespace=False, parent_namespaces=False):
         pkg_dir, mod_fname, mod_name, mod_spec = (
                self._make_pkg(example_source, depth, "__main__",
@@ -334,37 +334,37 @@ class RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
         expected_ns.update({
             "__name__": mod_name,
             "__file__": mod_fname,
-            "__cached__": importlib.util.cache_from_source(mod_fname),
+            "__cached__": importlib.util.cache_kutoka_source(mod_fname),
             "__package__": pkg_name,
             "__spec__": mod_spec,
         })
-        if alter_sys:
+        ikiwa alter_sys:
             expected_ns.update({
                 "run_argv0": mod_fname,
                 "run_name_in_sys_modules": True,
                 "module_in_sys_modules": True,
             })
-        def create_ns(init_globals):
-            return run_module(pkg_name, init_globals, alter_sys=alter_sys)
+        eleza create_ns(init_globals):
+            rudisha run_module(pkg_name, init_globals, alter_sys=alter_sys)
         try:
-            if verbose > 1: print("Running kutoka source:", pkg_name)
+            ikiwa verbose > 1: andika("Running kutoka source:", pkg_name)
             self.check_code_execution(create_ns, expected_ns)
             importlib.invalidate_caches()
             __import__(mod_name)
             os.remove(mod_fname)
-            if not sys.dont_write_bytecode:
+            ikiwa not sys.dont_write_bytecode:
                 make_legacy_pyc(mod_fname)
                 unload(mod_name)  # In case loader caches paths
-                if verbose > 1: print("Running kutoka compiled:", pkg_name)
+                ikiwa verbose > 1: andika("Running kutoka compiled:", pkg_name)
                 importlib.invalidate_caches()
                 self._fix_ns_for_legacy_pyc(expected_ns, alter_sys)
                 self.check_code_execution(create_ns, expected_ns)
         finally:
             self._del_pkg(pkg_dir)
-        if verbose > 1: print("Package executed successfully")
+        ikiwa verbose > 1: andika("Package executed successfully")
 
-    def _add_relative_modules(self, base_dir, source, depth):
-        if depth <= 1:
+    eleza _add_relative_modules(self, base_dir, source, depth):
+        ikiwa depth <= 1:
             raise ValueError("Relative module test needs depth > 1")
         pkg_name = "__runpy_pkg__"
         module_dir = base_dir
@@ -374,19 +374,19 @@ class RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
         # Add sibling module
         sibling_fname = os.path.join(module_dir, "sibling.py")
         create_empty_file(sibling_fname)
-        if verbose > 1: print("  Added sibling module:", sibling_fname)
+        ikiwa verbose > 1: andika("  Added sibling module:", sibling_fname)
         # Add nephew module
         uncle_dir = os.path.join(parent_dir, "uncle")
         self._add_pkg_dir(uncle_dir)
-        if verbose > 1: print("  Added uncle package:", uncle_dir)
+        ikiwa verbose > 1: andika("  Added uncle package:", uncle_dir)
         cousin_dir = os.path.join(uncle_dir, "cousin")
         self._add_pkg_dir(cousin_dir)
-        if verbose > 1: print("  Added cousin package:", cousin_dir)
+        ikiwa verbose > 1: andika("  Added cousin package:", cousin_dir)
         nephew_fname = os.path.join(cousin_dir, "nephew.py")
         create_empty_file(nephew_fname)
-        if verbose > 1: print("  Added nephew module:", nephew_fname)
+        ikiwa verbose > 1: andika("  Added nephew module:", nephew_fname)
 
-    def _check_relative_agizas(self, depth, run_name=None):
+    eleza _check_relative_agizas(self, depth, run_name=None):
         contents = r"""\
 kutoka __future__ agiza absolute_agiza
 kutoka . agiza sibling
@@ -394,14 +394,14 @@ kutoka ..uncle.cousin agiza nephew
 """
         pkg_dir, mod_fname, mod_name, mod_spec = (
                self._make_pkg(contents, depth))
-        if run_name is None:
+        ikiwa run_name is None:
             expected_name = mod_name
         else:
             expected_name = run_name
         try:
             self._add_relative_modules(pkg_dir, contents, depth)
             pkg_name = mod_name.rpartition('.')[0]
-            if verbose > 1: print("Running kutoka source:", mod_name)
+            ikiwa verbose > 1: andika("Running kutoka source:", mod_name)
             d1 = run_module(mod_name, run_name=run_name) # Read kutoka source
             self.assertEqual(d1["__name__"], expected_name)
             self.assertEqual(d1["__package__"], pkg_name)
@@ -411,10 +411,10 @@ kutoka ..uncle.cousin agiza nephew
             importlib.invalidate_caches()
             __import__(mod_name)
             os.remove(mod_fname)
-            if not sys.dont_write_bytecode:
+            ikiwa not sys.dont_write_bytecode:
                 make_legacy_pyc(mod_fname)
                 unload(mod_name)  # In case the loader caches paths
-                if verbose > 1: print("Running kutoka compiled:", mod_name)
+                ikiwa verbose > 1: andika("Running kutoka compiled:", mod_name)
                 importlib.invalidate_caches()
                 d2 = run_module(mod_name, run_name=run_name) # Read kutoka bytecode
                 self.assertEqual(d2["__name__"], expected_name)
@@ -424,24 +424,24 @@ kutoka ..uncle.cousin agiza nephew
                 del d2 # Ensure __loader__ entry doesn't keep file open
         finally:
             self._del_pkg(pkg_dir)
-        if verbose > 1: print("Module executed successfully")
+        ikiwa verbose > 1: andika("Module executed successfully")
 
-    def test_run_module(self):
+    eleza test_run_module(self):
         for depth in range(4):
-            if verbose > 1: print("Testing package depth:", depth)
+            ikiwa verbose > 1: andika("Testing package depth:", depth)
             self._check_module(depth)
 
-    def test_run_module_in_namespace_package(self):
+    eleza test_run_module_in_namespace_package(self):
         for depth in range(1, 4):
-            if verbose > 1: print("Testing package depth:", depth)
+            ikiwa verbose > 1: andika("Testing package depth:", depth)
             self._check_module(depth, namespace=True, parent_namespaces=True)
 
-    def test_run_package(self):
+    eleza test_run_package(self):
         for depth in range(1, 4):
-            if verbose > 1: print("Testing package depth:", depth)
+            ikiwa verbose > 1: andika("Testing package depth:", depth)
             self._check_package(depth)
 
-    def test_run_package_init_exceptions(self):
+    eleza test_run_package_init_exceptions(self):
         # These were previously wrapped in an ImportError; see Issue 14285
         result = self._make_pkg("", 1, "__main__")
         pkg_dir, _, mod_name, _ = result
@@ -469,7 +469,7 @@ kutoka ..uncle.cousin agiza nephew
                 else:
                     self.fail("Nothing raised; expected {}".format(name))
 
-    def test_submodule_imported_warning(self):
+    eleza test_submodule_imported_warning(self):
         pkg_dir, _, mod_name, _ = self._make_pkg("", 1)
         try:
             __import__(mod_name)
@@ -479,57 +479,57 @@ kutoka ..uncle.cousin agiza nephew
         finally:
             self._del_pkg(pkg_dir)
 
-    def test_package_imported_no_warning(self):
+    eleza test_package_imported_no_warning(self):
         pkg_dir, _, mod_name, _ = self._make_pkg("", 1, "__main__")
         self.addCleanup(self._del_pkg, pkg_dir)
         package = mod_name.replace(".__main__", "")
-        # No warning should occur if we only imported the parent package
+        # No warning should occur ikiwa we only imported the parent package
         __import__(package)
         self.assertIn(package, sys.modules)
         with warnings.catch_warnings():
             warnings.simplefilter("error", RuntimeWarning)
             run_module(package)
-        # But the warning should occur if we imported the __main__ submodule
+        # But the warning should occur ikiwa we imported the __main__ submodule
         __import__(mod_name)
         with self.assertWarnsRegex(RuntimeWarning, r"found in sys\.modules"):
             run_module(package)
 
-    def test_run_package_in_namespace_package(self):
+    eleza test_run_package_in_namespace_package(self):
         for depth in range(1, 4):
-            if verbose > 1: print("Testing package depth:", depth)
+            ikiwa verbose > 1: andika("Testing package depth:", depth)
             self._check_package(depth, parent_namespaces=True)
 
-    def test_run_namespace_package(self):
+    eleza test_run_namespace_package(self):
         for depth in range(1, 4):
-            if verbose > 1: print("Testing package depth:", depth)
+            ikiwa verbose > 1: andika("Testing package depth:", depth)
             self._check_package(depth, namespace=True)
 
-    def test_run_namespace_package_in_namespace_package(self):
+    eleza test_run_namespace_package_in_namespace_package(self):
         for depth in range(1, 4):
-            if verbose > 1: print("Testing package depth:", depth)
+            ikiwa verbose > 1: andika("Testing package depth:", depth)
             self._check_package(depth, namespace=True, parent_namespaces=True)
 
-    def test_run_module_alter_sys(self):
+    eleza test_run_module_alter_sys(self):
         for depth in range(4):
-            if verbose > 1: print("Testing package depth:", depth)
+            ikiwa verbose > 1: andika("Testing package depth:", depth)
             self._check_module(depth, alter_sys=True)
 
-    def test_run_package_alter_sys(self):
+    eleza test_run_package_alter_sys(self):
         for depth in range(1, 4):
-            if verbose > 1: print("Testing package depth:", depth)
+            ikiwa verbose > 1: andika("Testing package depth:", depth)
             self._check_package(depth, alter_sys=True)
 
-    def test_explicit_relative_agiza(self):
+    eleza test_explicit_relative_agiza(self):
         for depth in range(2, 5):
-            if verbose > 1: print("Testing relative agizas at depth:", depth)
+            ikiwa verbose > 1: andika("Testing relative agizas at depth:", depth)
             self._check_relative_agizas(depth)
 
-    def test_main_relative_agiza(self):
+    eleza test_main_relative_agiza(self):
         for depth in range(2, 5):
-            if verbose > 1: print("Testing main relative agizas at depth:", depth)
+            ikiwa verbose > 1: andika("Testing main relative agizas at depth:", depth)
             self._check_relative_agizas(depth, "__main__")
 
-    def test_run_name(self):
+    eleza test_run_name(self):
         depth = 1
         run_name = "And now for something completely different"
         pkg_dir, mod_fname, mod_name, mod_spec = (
@@ -539,18 +539,18 @@ kutoka ..uncle.cousin agiza nephew
         expected_ns.update({
             "__name__": run_name,
             "__file__": mod_fname,
-            "__cached__": importlib.util.cache_from_source(mod_fname),
+            "__cached__": importlib.util.cache_kutoka_source(mod_fname),
             "__package__": mod_name.rpartition(".")[0],
             "__spec__": mod_spec,
         })
-        def create_ns(init_globals):
-            return run_module(mod_name, init_globals, run_name)
+        eleza create_ns(init_globals):
+            rudisha run_module(mod_name, init_globals, run_name)
         try:
             self.check_code_execution(create_ns, expected_ns)
         finally:
             self._del_pkg(pkg_dir)
 
-    def test_pkgutil_walk_packages(self):
+    eleza test_pkgutil_walk_packages(self):
         # This is a dodgy hack to use the test_runpy infrastructure to test
         # issue #15343. Issue #15348 declares this is indeed a dodgy hack ;)
         agiza pkgutil
@@ -579,39 +579,39 @@ kutoka ..uncle.cousin agiza nephew
             self.assertIsInstance(moduleinfo, pkgutil.ModuleInfo)
             self.assertIsInstance(moduleinfo.module_finder,
                                   importlib.machinery.FileFinder)
-            if moduleinfo.ispkg:
+            ikiwa moduleinfo.ispkg:
                 expected_packages.remove(moduleinfo.name)
             else:
                 expected_modules.remove(moduleinfo.name)
         self.assertEqual(len(expected_packages), 0, expected_packages)
         self.assertEqual(len(expected_modules), 0, expected_modules)
 
-class RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
+kundi RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
     """Unit tests for runpy.run_path"""
 
-    def _make_test_script(self, script_dir, script_basename,
+    eleza _make_test_script(self, script_dir, script_basename,
                           source=None, omit_suffix=False):
-        if source is None:
+        ikiwa source is None:
             source = example_source
-        return make_script(script_dir, script_basename,
+        rudisha make_script(script_dir, script_basename,
                            source, omit_suffix)
 
-    def _check_script(self, script_name, expected_name, expected_file,
+    eleza _check_script(self, script_name, expected_name, expected_file,
                             expected_argv0, mod_name=None,
                             expect_spec=True, check_loader=True):
         # First check is without run_name
-        def create_ns(init_globals):
-            return run_path(script_name, init_globals)
+        eleza create_ns(init_globals):
+            rudisha run_path(script_name, init_globals)
         expected_ns = example_namespace.copy()
-        if mod_name is None:
+        ikiwa mod_name is None:
             spec_name = expected_name
         else:
             spec_name = mod_name
-        if expect_spec:
-            mod_spec = importlib.util.spec_from_file_location(spec_name,
+        ikiwa expect_spec:
+            mod_spec = importlib.util.spec_kutoka_file_location(spec_name,
                                                               expected_file)
             mod_cached = mod_spec.cached
-            if not check_loader:
+            ikiwa not check_loader:
                 mod_spec.loader = None
         else:
             mod_spec = mod_cached = None
@@ -629,30 +629,30 @@ class RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
         self.check_code_execution(create_ns, expected_ns)
         # Second check makes sure run_name works in all cases
         run_name = "prove.issue15230.is.fixed"
-        def create_ns(init_globals):
-            return run_path(script_name, init_globals, run_name)
-        if expect_spec and mod_name is None:
-            mod_spec = importlib.util.spec_from_file_location(run_name,
+        eleza create_ns(init_globals):
+            rudisha run_path(script_name, init_globals, run_name)
+        ikiwa expect_spec and mod_name is None:
+            mod_spec = importlib.util.spec_kutoka_file_location(run_name,
                                                               expected_file)
-            if not check_loader:
+            ikiwa not check_loader:
                 mod_spec.loader = None
             expected_ns["__spec__"] = mod_spec
         expected_ns["__name__"] = run_name
         expected_ns["__package__"] = run_name.rpartition(".")[0]
         self.check_code_execution(create_ns, expected_ns)
 
-    def _check_import_error(self, script_name, msg):
+    eleza _check_import_error(self, script_name, msg):
         msg = re.escape(msg)
         self.assertRaisesRegex(ImportError, msg, run_path, script_name)
 
-    def test_basic_script(self):
+    eleza test_basic_script(self):
         with temp_dir() as script_dir:
             mod_name = 'script'
             script_name = self._make_test_script(script_dir, mod_name)
             self._check_script(script_name, "<run_path>", script_name,
                                script_name, expect_spec=False)
 
-    def test_basic_script_no_suffix(self):
+    eleza test_basic_script_no_suffix(self):
         with temp_dir() as script_dir:
             mod_name = 'script'
             script_name = self._make_test_script(script_dir, mod_name,
@@ -660,7 +660,7 @@ class RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
             self._check_script(script_name, "<run_path>", script_name,
                                script_name, expect_spec=False)
 
-    def test_script_compiled(self):
+    eleza test_script_compiled(self):
         with temp_dir() as script_dir:
             mod_name = 'script'
             script_name = self._make_test_script(script_dir, mod_name)
@@ -669,32 +669,32 @@ class RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
             self._check_script(compiled_name, "<run_path>", compiled_name,
                                compiled_name, expect_spec=False)
 
-    def test_directory(self):
+    eleza test_directory(self):
         with temp_dir() as script_dir:
             mod_name = '__main__'
             script_name = self._make_test_script(script_dir, mod_name)
             self._check_script(script_dir, "<run_path>", script_name,
                                script_dir, mod_name=mod_name)
 
-    def test_directory_compiled(self):
+    eleza test_directory_compiled(self):
         with temp_dir() as script_dir:
             mod_name = '__main__'
             script_name = self._make_test_script(script_dir, mod_name)
             compiled_name = py_compile.compile(script_name, doraise=True)
             os.remove(script_name)
-            if not sys.dont_write_bytecode:
+            ikiwa not sys.dont_write_bytecode:
                 legacy_pyc = make_legacy_pyc(script_name)
                 self._check_script(script_dir, "<run_path>", legacy_pyc,
                                    script_dir, mod_name=mod_name)
 
-    def test_directory_error(self):
+    eleza test_directory_error(self):
         with temp_dir() as script_dir:
             mod_name = 'not_main'
             script_name = self._make_test_script(script_dir, mod_name)
             msg = "can't find '__main__' module in %r" % script_dir
             self._check_import_error(script_dir, msg)
 
-    def test_zipfile(self):
+    eleza test_zipfile(self):
         with temp_dir() as script_dir:
             mod_name = '__main__'
             script_name = self._make_test_script(script_dir, mod_name)
@@ -702,7 +702,7 @@ class RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
             self._check_script(zip_name, "<run_path>", fname, zip_name,
                                mod_name=mod_name, check_loader=False)
 
-    def test_zipfile_compiled(self):
+    eleza test_zipfile_compiled(self):
         with temp_dir() as script_dir:
             mod_name = '__main__'
             script_name = self._make_test_script(script_dir, mod_name)
@@ -712,7 +712,7 @@ class RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
             self._check_script(zip_name, "<run_path>", fname, zip_name,
                                mod_name=mod_name, check_loader=False)
 
-    def test_zipfile_error(self):
+    eleza test_zipfile_error(self):
         with temp_dir() as script_dir:
             mod_name = 'not_main'
             script_name = self._make_test_script(script_dir, mod_name)
@@ -721,7 +721,7 @@ class RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
             self._check_import_error(zip_name, msg)
 
     @no_tracing
-    def test_main_recursion_error(self):
+    eleza test_main_recursion_error(self):
         with temp_dir() as script_dir, temp_dir() as dummy_dir:
             mod_name = '__main__'
             source = ("agiza runpy\n"
@@ -731,7 +731,7 @@ class RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
             msg = "recursion depth exceeded"
             self.assertRaisesRegex(RecursionError, msg, run_path, zip_name)
 
-    def test_encoding(self):
+    eleza test_encoding(self):
         with temp_dir() as script_dir:
             filename = os.path.join(script_dir, 'script.py')
             with open(filename, 'w', encoding='latin1') as f:
@@ -743,5 +743,5 @@ s = "non-ASCII: h\xe9"
             self.assertEqual(result['s'], "non-ASCII: h\xe9")
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

@@ -1,10 +1,10 @@
 """The io module provides the Python interfaces to stream handling. The
 builtin open function is defined in this module.
 
-At the top of the I/O hierarchy is the abstract base class IOBase. It
+At the top of the I/O hierarchy is the abstract base kundi IOBase. It
 defines the basic interface to a stream. Note, however, that there is no
 separation between reading and writing to streams; implementations are
-allowed to raise an OSError if they do not support a given operation.
+allowed to raise an OSError ikiwa they do not support a given operation.
 
 Extending IOBase is RawIOBase which deals simply with the reading and
 writing of raw bytes to a stream. FileIO subclasses RawIOBase to provide
@@ -69,16 +69,16 @@ SEEK_END = 2
 # Declaring ABCs in C is tricky so we do it here.
 # Method descriptions and default implementations are inherited kutoka the C
 # version however.
-class IOBase(_io._IOBase, metaclass=abc.ABCMeta):
+kundi IOBase(_io._IOBase, metaclass=abc.ABCMeta):
     __doc__ = _io._IOBase.__doc__
 
-class RawIOBase(_io._RawIOBase, IOBase):
+kundi RawIOBase(_io._RawIOBase, IOBase):
     __doc__ = _io._RawIOBase.__doc__
 
-class BufferedIOBase(_io._BufferedIOBase, IOBase):
+kundi BufferedIOBase(_io._BufferedIOBase, IOBase):
     __doc__ = _io._BufferedIOBase.__doc__
 
-class TextIOBase(_io._TextIOBase, IOBase):
+kundi TextIOBase(_io._TextIOBase, IOBase):
     __doc__ = _io._TextIOBase.__doc__
 
 RawIOBase.register(FileIO)

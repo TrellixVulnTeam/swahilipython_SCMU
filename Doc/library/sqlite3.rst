@@ -24,7 +24,7 @@ To use the module, you must first create a :class:`Connection` object that
 represents the database.  Here the data will be stored in the
 :file:`example.db` file::
 
-   import sqlite3
+   agiza sqlite3
    conn = sqlite3.connect('example.db')
 
 You can also supply the special name ``:memory:`` to create a database in RAM.
@@ -50,11 +50,11 @@ and call its :meth:`~Cursor.execute` method to perform SQL commands::
 
 The data you've saved is persistent and is available in subsequent sessions::
 
-   import sqlite3
+   agiza sqlite3
    conn = sqlite3.connect('example.db')
    c = conn.cursor()
 
-Usually your SQL operations will need to use values from Python variables.  You
+Usually your SQL operations will need to use values kutoka Python variables.  You
 shouldn't assemble your query using Python's string operations because doing so
 is insecure; it makes your program vulnerable to an SQL injection attack
 (see https://xkcd.com/327/ for humorous example of what can go wrong).
@@ -203,9 +203,9 @@ Module functions and constants
    across multiple threads. When using multiple threads with the same connection
    writing operations should be serialized by the user to avoid data corruption.
 
-   By default, the :mod:`sqlite3` module uses its :class:`Connection` class for the
-   connect call.  You can, however, subclass the :class:`Connection` class and make
-   :func:`connect` use your class instead by providing your class for the *factory*
+   By default, the :mod:`sqlite3` module uses its :class:`Connection` kundi for the
+   connect call.  You can, however, subkundi the :class:`Connection` kundi and make
+   :func:`connect` use your kundi instead by providing your kundi for the *factory*
    parameter.
 
    Consult the section :ref:`sqlite3-types` of this manual for details.
@@ -235,7 +235,7 @@ Module functions and constants
 
 .. function:: register_converter(typename, callable)
 
-   Registers a callable to convert a bytestring from the database into a custom
+   Registers a callable to convert a bytestring kutoka the database into a custom
    Python type. The callable will be invoked for all database values that are of
    the type *typename*. Confer the parameter *detect_types* of the :func:`connect`
    function for how the type detection works. Note that *typename* and the name of
@@ -268,7 +268,7 @@ Module functions and constants
    By default you will not get any tracebacks in user-defined functions,
    aggregates, converters, authorizer callbacks etc. If you want to debug them,
    you can call this function with *flag* set to ``True``. Afterwards, you will
-   get tracebacks from callbacks on ``sys.stderr``. Use :const:`False` to
+   get tracebacks kutoka callbacks on ``sys.stderr``. Use :const:`False` to
    disable the feature again.
 
 
@@ -303,7 +303,7 @@ Connection Objects
    .. method:: commit()
 
       This method commits the current transaction. If you don't call this method,
-      anything you did since the last call to ``commit()`` is not visible from
+      anything you did since the last call to ``commit()`` is not visible kutoka
       other database connections. If you wonder why you don't see the data you've
       written to the database, please check you didn't forget to call this method.
 
@@ -341,7 +341,7 @@ Connection Objects
 
    .. method:: create_function(name, num_params, func, *, deterministic=False)
 
-      Creates a user-defined function that you can later use from within SQL
+      Creates a user-defined function that you can later use kutoka within SQL
       statements under the function name *name*. *num_params* is the number of
       parameters the function accepts (if *num_params* is -1, the function may
       take any number of arguments), and *func* is a Python callable that is
@@ -366,7 +366,7 @@ Connection Objects
 
       Creates a user-defined aggregate function.
 
-      The aggregate class must implement a ``step`` method, which accepts the number
+      The aggregate kundi must implement a ``step`` method, which accepts the number
       of parameters *num_params* (if *num_params* is -1, the function may take
       any number of arguments), and a ``finalize`` method which will return the
       final result of the aggregate.
@@ -401,7 +401,7 @@ Connection Objects
 
    .. method:: interrupt()
 
-      You can call this method from a different thread to abort any queries that might
+      You can call this method kutoka a different thread to abort any queries that might
       be executing on the connection. The query will then abort and the caller will
       get an exception.
 
@@ -420,7 +420,7 @@ Connection Objects
       depending on the first argument. The 4th argument is the name of the database
       ("main", "temp", etc.) if applicable. The 5th argument is the name of the
       inner-most trigger or view that is responsible for the access attempt or
-      :const:`None` if this access attempt is directly from input SQL code.
+      :const:`None` if this access attempt is directly kutoka input SQL code.
 
       Please consult the SQLite documentation about the possible values for the first
       argument and the meaning of the second and third argument depending on the first
@@ -431,13 +431,13 @@ Connection Objects
 
       This routine registers a callback. The callback is invoked for every *n*
       instructions of the SQLite virtual machine. This is useful if you want to
-      get called from SQLite during long-running operations, for example to update
+      get called kutoka SQLite during long-running operations, for example to update
       a GUI.
 
       If you want to clear any previously installed progress handler, call the
       method with :const:`None` for *handler*.
 
-      Returning a non-zero value from the handler function will terminate the
+      Returning a non-zero value kutoka the handler function will terminate the
       currently executing query and cause it to raise an :exc:`OperationalError`
       exception.
 
@@ -461,7 +461,7 @@ Connection Objects
    .. method:: enable_load_extension(enabled)
 
       This routine allows/disallows the SQLite engine to load SQLite extensions
-      from shared libraries.  SQLite extensions can define new functions,
+      kutoka shared libraries.  SQLite extensions can define new functions,
       aggregates or whole new virtual table implementations.  One well-known
       extension is the fulltext-search extension distributed with SQLite.
 
@@ -473,7 +473,7 @@ Connection Objects
 
    .. method:: load_extension(path)
 
-      This routine loads a SQLite extension from a shared library.  You have to
+      This routine loads a SQLite extension kutoka a shared library.  You have to
       enable extension loading with :meth:`enable_load_extension` before you can
       use this routine.
 
@@ -533,7 +533,7 @@ Connection Objects
       Example::
 
          # Convert file existing_db.db to SQL dump file dump.sql
-         import sqlite3
+         agiza sqlite3
 
          con = sqlite3.connect('existing_db.db')
          with open('dump.sql', 'w') as f:
@@ -570,7 +570,7 @@ Connection Objects
 
       Example 1, copy an existing database into another::
 
-         import sqlite3
+         agiza sqlite3
 
          def progress(status, remaining, total):
              print(f'Copied {total-remaining} of {total} pages...')
@@ -584,7 +584,7 @@ Connection Objects
 
       Example 2, copy an existing database into a transient copy::
 
-         import sqlite3
+         agiza sqlite3
 
          source = sqlite3.connect('existing_db.db')
          dest = sqlite3.connect(':memory:')
@@ -670,7 +670,7 @@ Cursor Objects
       Note there are performance considerations involved with the *size* parameter.
       For optimal performance, it is usually best to use the arraysize attribute.
       If the *size* parameter is used, then it is best for it to retain the same
-      value from one :meth:`fetchmany` call to the next.
+      value kutoka one :meth:`fetchmany` call to the next.
 
    .. method:: fetchall()
 
@@ -682,12 +682,12 @@ Cursor Objects
 
       Close the cursor now (rather than whenever ``__del__`` is called).
 
-      The cursor will be unusable from this point forward; a :exc:`ProgrammingError`
+      The cursor will be unusable kutoka this point forward; a :exc:`ProgrammingError`
       exception will be raised if any operation is attempted with the cursor.
 
    .. attribute:: rowcount
 
-      Although the :class:`Cursor` class of the :mod:`sqlite3` module implements this
+      Although the :class:`Cursor` kundi of the :mod:`sqlite3` module implements this
       attribute, the database engine's own support for the determination of "rows
       affected"/"rows selected" is quirky.
 
@@ -783,11 +783,11 @@ Now we plug :class:`Row` in::
 
    >>> conn.row_factory = sqlite3.Row
    >>> c = conn.cursor()
-   >>> c.execute('select * from stocks')
+   >>> c.execute('select * kutoka stocks')
    <sqlite3.Cursor object at 0x7f4e7dd8fa80>
    >>> r = c.fetchone()
    >>> type(r)
-   <class 'sqlite3.Row'>
+   <kundi 'sqlite3.Row'>
    >>> tuple(r)
    ('2006-01-05', 'BUY', 'RHAT', 100.0, 35.14)
    >>> len(r)
@@ -815,11 +815,11 @@ Exceptions
 
 .. exception:: Warning
 
-   A subclass of :exc:`Exception`.
+   A subkundi of :exc:`Exception`.
 
 .. exception:: Error
 
-   The base class of the other exceptions in this module.  It is a subclass
+   The base kundi of the other exceptions in this module.  It is a subclass
    of :exc:`Exception`.
 
 .. exception:: DatabaseError
@@ -829,27 +829,27 @@ Exceptions
 .. exception:: IntegrityError
 
    Exception raised when the relational integrity of the database is affected,
-   e.g. a foreign key check fails.  It is a subclass of :exc:`DatabaseError`.
+   e.g. a foreign key check fails.  It is a subkundi of :exc:`DatabaseError`.
 
 .. exception:: ProgrammingError
 
    Exception raised for programming errors, e.g. table not found or already
    exists, syntax error in the SQL statement, wrong number of parameters
-   specified, etc.  It is a subclass of :exc:`DatabaseError`.
+   specified, etc.  It is a subkundi of :exc:`DatabaseError`.
 
 .. exception:: OperationalError
 
    Exception raised for errors that are related to the database's operation
    and not necessarily under the control of the programmer, e.g. an unexpected
    disconnect occurs, the data source name is not found, a transaction could
-   not be processed, etc.  It is a subclass of :exc:`DatabaseError`.
+   not be processed, etc.  It is a subkundi of :exc:`DatabaseError`.
 
 .. exception:: NotSupportedError
 
    Exception raised in case a method or database API was used which is not
    supported by the database, e.g. calling the :meth:`~Connection.rollback`
    method on a connection that does not support transaction or has
-   transactions turned off.  It is a subclass of :exc:`DatabaseError`.
+   transactions turned off.  It is a subkundi of :exc:`DatabaseError`.
 
 
 .. _sqlite3-types:
@@ -919,17 +919,17 @@ type to one of the supported ones.
 Letting your object adapt itself
 """"""""""""""""""""""""""""""""
 
-This is a good approach if you write the class yourself. Let's suppose you have
-a class like this::
+This is a good approach if you write the kundi yourself. Let's suppose you have
+a kundi like this::
 
-   class Point:
+   kundi Point:
        def __init__(self, x, y):
            self.x, self.y = x, y
 
 Now you want to store the point in a single SQLite column.  First you'll have to
 choose one of the supported types first to be used for representing the point.
 Let's just use str and separate the coordinates using a semicolon. Then you need
-to give your class a method ``__conform__(self, protocol)`` which must return
+to give your kundi a method ``__conform__(self, protocol)`` which must return
 the converted value. The parameter *protocol* will be :class:`PrepareProtocol`.
 
 .. literalinclude:: ../includes/sqlite3/adapter_point_1.py
@@ -963,7 +963,7 @@ Let's go back to the :class:`Point` class. We stored the x and y coordinates
 separated via semicolons as strings in SQLite.
 
 First, we'll define a converter function that accepts the string as a parameter
-and constructs a :class:`Point` object from it.
+and constructs a :class:`Point` object kutoka it.
 
 .. note::
 
@@ -976,7 +976,7 @@ and constructs a :class:`Point` object from it.
        x, y = map(float, s.split(b";"))
        return Point(x, y)
 
-Now you need to make the :mod:`sqlite3` module know that what you select from
+Now you need to make the :mod:`sqlite3` module know that what you select kutoka
 the database is actually a point. There are two ways of doing this:
 
 * Implicitly via the declared type
@@ -1001,7 +1001,7 @@ The default converters are registered under the name "date" for
 :class:`datetime.date` and under the name "timestamp" for
 :class:`datetime.datetime`.
 
-This way, you can use date/timestamps from Python without any additional
+This way, you can use date/timestamps kutoka Python without any additional
 fiddling in most cases. The format of the adapters is also compatible with the
 experimental SQLite date/time functions.
 
@@ -1071,9 +1071,9 @@ Accessing columns by name instead of by index
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 One useful feature of the :mod:`sqlite3` module is the built-in
-:class:`sqlite3.Row` class designed to be used as a row factory.
+:class:`sqlite3.Row` kundi designed to be used as a row factory.
 
-Rows wrapped with this class can be accessed both by index (like tuples) and
+Rows wrapped with this kundi can be accessed both by index (like tuples) and
 case-insensitively by name:
 
 .. literalinclude:: ../includes/sqlite3/rowclass.py
@@ -1101,7 +1101,7 @@ That's why the Python module disallows sharing connections and cursors between
 threads. If you still try to do so, you will get an exception at runtime.
 
 The only exception is calling the :meth:`~Connection.interrupt` method, which
-only makes sense to call from a different thread.
+only makes sense to call kutoka a different thread.
 
 .. rubric:: Footnotes
 

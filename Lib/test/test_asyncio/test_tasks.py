@@ -2859,12 +2859,12 @@ class GenericTaskTests(test_utils.TestCase):
         # fail on systems where C modules were successfully compiled
         # (hence the test for _functools), but _asyncio somehow didn't.
         try:
-            import _functools
+            agiza _functools
         except ImportError:
             pass
         else:
             try:
-                import _asyncio
+                agiza _asyncio
             except ImportError:
                 self.fail('_asyncio module is missing')
 

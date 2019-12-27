@@ -7,7 +7,7 @@ kutoka _weakref agiza ref
 __all__ = ['WeakSet']
 
 
-class _IterationGuard:
+kundi _IterationGuard:
     # This context manager registers itself in the current iterators of the
     # weak container, such as to delay all removals until the context manager
     # exits.
@@ -32,7 +32,7 @@ class _IterationGuard:
                 w._commit_removals()
 
 
-class WeakSet:
+kundi WeakSet:
     def __init__(self, data=None):
         self.data = set()
         def _remove(item, selfref=ref(self)):

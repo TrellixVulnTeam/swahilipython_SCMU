@@ -2,20 +2,20 @@ agiza netrc, os, unittest, sys, tempfile, textwrap
 kutoka test agiza support
 
 
-class NetrcTestCase(unittest.TestCase):
+kundi NetrcTestCase(unittest.TestCase):
 
-    def make_nrc(self, test_data):
+    eleza make_nrc(self, test_data):
         test_data = textwrap.dedent(test_data)
         mode = 'w'
-        if sys.platform != 'cygwin':
+        ikiwa sys.platform != 'cygwin':
             mode += 't'
         temp_fd, temp_filename = tempfile.mkstemp()
         with os.fdopen(temp_fd, mode=mode) as fp:
             fp.write(test_data)
         self.addCleanup(os.unlink, temp_filename)
-        return netrc.netrc(temp_filename)
+        rudisha netrc.netrc(temp_filename)
 
-    def test_default(self):
+    eleza test_default(self):
         nrc = self.make_nrc("""\
             machine host1.domain.com login log1 password pass1 account acct1
             default login log2 password pass2
@@ -27,77 +27,77 @@ class NetrcTestCase(unittest.TestCase):
         nrc2 = self.make_nrc(nrc.__repr__())
         self.assertEqual(nrc.hosts, nrc2.hosts)
 
-    def test_macros(self):
+    eleza test_macros(self):
         nrc = self.make_nrc("""\
-            macdef macro1
+            maceleza macro1
             line1
             line2
 
-            macdef macro2
+            maceleza macro2
             line3
             line4
             """)
         self.assertEqual(nrc.macros, {'macro1': ['line1\n', 'line2\n'],
                                       'macro2': ['line3\n', 'line4\n']})
 
-    def _test_passwords(self, nrc, passwd):
+    eleza _test_passwords(self, nrc, passwd):
         nrc = self.make_nrc(nrc)
         self.assertEqual(nrc.hosts['host.domain.com'], ('log', 'acct', passwd))
 
-    def test_password_with_leading_hash(self):
+    eleza test_password_with_leading_hash(self):
         self._test_passwords("""\
             machine host.domain.com login log password #pass account acct
             """, '#pass')
 
-    def test_password_with_trailing_hash(self):
+    eleza test_password_with_trailing_hash(self):
         self._test_passwords("""\
             machine host.domain.com login log password pass# account acct
             """, 'pass#')
 
-    def test_password_with_internal_hash(self):
+    eleza test_password_with_internal_hash(self):
         self._test_passwords("""\
             machine host.domain.com login log password pa#ss account acct
             """, 'pa#ss')
 
-    def _test_comment(self, nrc, passwd='pass'):
+    eleza _test_comment(self, nrc, passwd='pass'):
         nrc = self.make_nrc(nrc)
         self.assertEqual(nrc.hosts['foo.domain.com'], ('bar', None, passwd))
         self.assertEqual(nrc.hosts['bar.domain.com'], ('foo', None, 'pass'))
 
-    def test_comment_before_machine_line(self):
+    eleza test_comment_before_machine_line(self):
         self._test_comment("""\
             # comment
             machine foo.domain.com login bar password pass
             machine bar.domain.com login foo password pass
             """)
 
-    def test_comment_before_machine_line_no_space(self):
+    eleza test_comment_before_machine_line_no_space(self):
         self._test_comment("""\
             #comment
             machine foo.domain.com login bar password pass
             machine bar.domain.com login foo password pass
             """)
 
-    def test_comment_before_machine_line_hash_only(self):
+    eleza test_comment_before_machine_line_hash_only(self):
         self._test_comment("""\
             #
             machine foo.domain.com login bar password pass
             machine bar.domain.com login foo password pass
             """)
 
-    def test_comment_at_end_of_machine_line(self):
+    eleza test_comment_at_end_of_machine_line(self):
         self._test_comment("""\
             machine foo.domain.com login bar password pass # comment
             machine bar.domain.com login foo password pass
             """)
 
-    def test_comment_at_end_of_machine_line_no_space(self):
+    eleza test_comment_at_end_of_machine_line_no_space(self):
         self._test_comment("""\
             machine foo.domain.com login bar password pass #comment
             machine bar.domain.com login foo password pass
             """)
 
-    def test_comment_at_end_of_machine_line_pass_has_hash(self):
+    eleza test_comment_at_end_of_machine_line_pass_has_hash(self):
         self._test_comment("""\
             machine foo.domain.com login bar password #pass #comment
             machine bar.domain.com login foo password pass
@@ -105,7 +105,7 @@ class NetrcTestCase(unittest.TestCase):
 
 
     @unittest.skipUnless(os.name == 'posix', 'POSIX only test')
-    def test_security(self):
+    eleza test_security(self):
         # This test is incomplete since we are normally not run as root and
         # therefore can't test the file ownership being wrong.
         d = support.TESTFN
@@ -126,7 +126,7 @@ class NetrcTestCase(unittest.TestCase):
             os.chmod(fn, 0o622)
             self.assertRaises(netrc.NetrcParseError, netrc.netrc)
 
-    def test_file_not_found_in_home(self):
+    eleza test_file_not_found_in_home(self):
         d = support.TESTFN
         os.mkdir(d)
         self.addCleanup(support.rmtree, d)
@@ -134,11 +134,11 @@ class NetrcTestCase(unittest.TestCase):
             environ.set('HOME', d)
             self.assertRaises(FileNotFoundError, netrc.netrc)
 
-    def test_file_not_found_explicit(self):
+    eleza test_file_not_found_explicit(self):
         self.assertRaises(FileNotFoundError, netrc.netrc,
                           file='unlikely_netrc')
 
-    def test_home_not_set(self):
+    eleza test_home_not_set(self):
         fake_home = support.TESTFN
         os.mkdir(fake_home)
         self.addCleanup(support.rmtree, fake_home)
@@ -150,13 +150,13 @@ class NetrcTestCase(unittest.TestCase):
         orig_expanduser = os.path.expanduser
         called = []
 
-        def fake_expanduser(s):
+        eleza fake_expanduser(s):
             called.append(s)
             with support.EnvironmentVarGuard() as environ:
                 environ.set('HOME', fake_home)
                 environ.set('USERPROFILE', fake_home)
                 result = orig_expanduser(s)
-                return result
+                rudisha result
 
         with support.swap_attr(os.path, 'expanduser', fake_expanduser):
             nrc = netrc.netrc()
@@ -166,5 +166,5 @@ class NetrcTestCase(unittest.TestCase):
         self.assertTrue(called)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

@@ -13,7 +13,7 @@ History of the software
 Python was created in the early 1990s by Guido van Rossum at Stichting
 Mathematisch Centrum (CWI, see https://www.cwi.nl/) in the Netherlands as a
 successor of a language called ABC.  Guido remains Python's principal author,
-although it includes many contributions from others.
+although it includes many contributions kutoka others.
 
 In 1995, Guido continued his work on Python at the Corporation for National
 Research Initiatives (CNRI, see https://www.cnri.reston.va.us/) in Reston,
@@ -32,7 +32,7 @@ Source Definition). Historically, most, but not all, Python releases have also
 been GPL-compatible; the table below summarizes the various releases.
 
 +----------------+--------------+------------+------------+-----------------+
-| Release        | Derived from | Year       | Owner      | GPL compatible? |
+| Release        | Derived kutoka | Year       | Owner      | GPL compatible? |
 +================+==============+============+============+=================+
 | 0.9.0 thru 1.2 | n/a          | 1991-1995  | CWI        | yes             |
 +----------------+--------------+------------+------------+-----------------+
@@ -191,7 +191,7 @@ CNRI LICENSE AGREEMENT FOR PYTHON 1.6.1
       is made available subject to the terms and conditions in CNRI's License
       Agreement.  This Agreement together with Python 1.6.1 may be located on the
       Internet using the following unique, persistent identifier (known as a handle):
-      1895.22/1013.  This Agreement may also be obtained from a proxy server on the
+      1895.22/1013.  This Agreement may also be obtained kutoka a proxy server on the
       Internet using the following URL: http://hdl.handle.net/1895.22/1013."
 
    3. In the event Licensee prepares a derivative work that is based on or
@@ -268,9 +268,9 @@ for third-party software incorporated in the Python distribution.
 Mersenne Twister
 ----------------
 
-The :mod:`_random` module includes code based on a download from
+The :mod:`_random` module includes code based on a download kutoka
 http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/MT2002/emt19937ar.html. The following are
-the verbatim comments from the original code::
+the verbatim comments kutoka the original code::
 
    A C-program for MT19937, with initialization improved 2002/1/26.
    Coded by Takuji Nishimura and Makoto Matsumoto.
@@ -293,7 +293,7 @@ the verbatim comments from the original code::
        documentation and/or other materials provided with the distribution.
 
     3. The names of its contributors may not be used to endorse or promote
-       products derived from this software without specific prior written
+       products derived kutoka this software without specific prior written
        permission.
 
    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
@@ -318,7 +318,7 @@ Sockets
 -------
 
 The :mod:`socket` module uses the functions, :func:`getaddrinfo`, and
-:func:`getnameinfo`, which are coded in separate source files from the WIDE
+:func:`getnameinfo`, which are coded in separate source files kutoka the WIDE
 Project, http://www.wide.ad.jp/. ::
 
    Copyright (C) 1995, 1996, 1997, and 1998 WIDE Project.
@@ -333,7 +333,7 @@ Project, http://www.wide.ad.jp/. ::
       notice, this list of conditions and the following disclaimer in the
       documentation and/or other materials provided with the distribution.
    3. Neither the name of the project nor the names of its contributors
-      may be used to endorse or promote products derived from this software
+      may be used to endorse or promote products derived kutoka this software
       without specific prior written permission.
 
    THIS SOFTWARE IS PROVIDED BY THE PROJECT AND CONTRIBUTORS ``AS IS'' AND
@@ -580,7 +580,7 @@ Dan Bernstein's SipHash24 algorithm. It contains the following note::
   Original location:
      https://github.com/majek/csiphash/
 
-  Solution inspired by code from:
+  Solution inspired by code kutoka:
      Samuel Neves (supercop/crypto_auth/siphash24/little)
      djb (supercop/crypto_auth/siphash24/little2)
      Jean-Philippe Aumasson (https://131002.net/siphash/siphash24.c)
@@ -590,9 +590,9 @@ strtod and dtoa
 ---------------
 
 The file :file:`Python/dtoa.c`, which supplies C functions dtoa and
-strtod for conversion of C doubles to and from strings, is derived
-from the file of the same name by David M. Gay, currently available
-from http://www.netlib.org/fp/.  The original file, as retrieved on
+strtod for conversion of C doubles to and kutoka strings, is derived
+kutoka the file of the same name by David M. Gay, currently available
+kutoka http://www.netlib.org/fp/.  The original file, as retrieved on
 March 16, 2009, contains the following copyright and licensing
 notice::
 
@@ -659,11 +659,11 @@ of the OpenSSL license here::
      *    for use in the OpenSSL Toolkit. (http://www.openssl.org/)"
      *
      * 4. The names "OpenSSL Toolkit" and "OpenSSL Project" must not be used to
-     *    endorse or promote products derived from this software without
+     *    endorse or promote products derived kutoka this software without
      *    prior written permission. For written permission, please contact
      *    openssl-core@openssl.org.
      *
-     * 5. Products derived from this software may not be called "OpenSSL"
+     * 5. Products derived kutoka this software may not be called "OpenSSL"
      *    nor may "OpenSSL" appear in their names without prior written
      *    permission of the OpenSSL Project.
      *
@@ -728,9 +728,9 @@ of the OpenSSL license here::
      *    must display the following acknowledgement:
      *    "This product includes cryptographic software written by
      *     Eric Young (eay@cryptsoft.com)"
-     *    The word 'cryptographic' can be left out if the rouines from the library
+     *    The word 'cryptographic' can be left out if the rouines kutoka the library
      *    being used are not cryptographic related :-).
-     * 4. If you include any Windows specific code (or a derivative thereof) from
+     * 4. If you include any Windows specific code (or a derivative thereof) kutoka
      *    the apps directory (application code) you must include an acknowledgement:
      *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
      *
@@ -822,7 +822,7 @@ used for the build::
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
-  arising from the use of this software.
+  arising kutoka the use of this software.
 
   Permission is granted to anyone to use this software for any purpose,
   including commercial applications, and to alter it and redistribute it
@@ -836,7 +836,7 @@ used for the build::
   2. Altered source versions must be plainly marked as such, and must not be
      misrepresented as being the original software.
 
-  3. This notice may not be removed or altered from any source distribution.
+  3. This notice may not be removed or altered kutoka any source distribution.
 
   Jean-loup Gailly        Mark Adler
   jloup@gzip.org          madler@alumni.caltech.edu
@@ -867,7 +867,7 @@ on the cfuhash project::
 
      * Neither the name of the author nor the names of its
        contributors may be used to endorse or promote products derived
-       from this software without specific prior written permission.
+       kutoka this software without specific prior written permission.
 
    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -919,7 +919,7 @@ W3C C14N test suite
 -------------------
 
 The C14N 2.0 test suite in the :mod:`test` package
-(``Lib/test/xmltestdata/c14n-20/``) was retrieved from the W3C website at
+(``Lib/test/xmltestdata/c14n-20/``) was retrieved kutoka the W3C website at
 https://www.w3.org/TR/xml-c14n2-testcases/ and is distributed under the
 3-clause BSD license:
 
@@ -936,7 +936,7 @@ https://www.w3.org/TR/xml-c14n2-testcases/ and is distributed under the
      notice, this list of conditions and the following disclaimer in the
      documentation and/or other materials provided with the distribution.
    * Neither the name of the W3C nor the names of its contributors may be
-     used to endorse or promote products derived from this work without
+     used to endorse or promote products derived kutoka this work without
      specific prior written permission.
 
    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS

@@ -134,30 +134,30 @@ bar \\ baz
 '''
 
 # Indentation
-if 1:
+ikiwa 1:
     x = 2
-if 1:
+ikiwa 1:
         x = 2
-if 1:
+ikiwa 1:
     while 0:
-     if 0:
+     ikiwa 0:
            x = 2
      x = 2
-if 0:
-  if 2:
+ikiwa 0:
+  ikiwa 2:
    while 0:
-        if 1:
+        ikiwa 1:
           x = 2
 
 # Operators
 
-def d22(a, b, c=1, d=2): pass
-def d01v(a=1, *restt, **restd): pass
+eleza d22(a, b, c=1, d=2): pass
+eleza d01v(a=1, *restt, **restd): pass
 
 (x, y) != ({'a':1}, {'b':2})
 
 # comparison
-if 1 < 1 > 1 == 1 >= 1 <= 1 != 1 != 1 in 1 not in 1 is 1 is not 1: pass
+ikiwa 1 < 1 > 1 == 1 >= 1 <= 1 != 1 != 1 in 1 not in 1 is 1 is not 1: pass
 
 # binary
 x = 1 & 1
@@ -182,8 +182,8 @@ agiza sys, time
 x = sys.modules['time'].time()
 
 @staticmethod
-def foo(): pass
+eleza foo(): pass
 
 @staticmethod
-def foo(x:1)->1: pass
+eleza foo(x:1)->1: pass
 

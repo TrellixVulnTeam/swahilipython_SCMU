@@ -70,7 +70,7 @@ NAME_MAPPING = {
     ('UserList', 'UserList'): ('collections', 'UserList'),
     ('UserString', 'UserString'): ('collections', 'UserString'),
     ('whichdb', 'whichdb'): ('dbm', 'whichdb'),
-    ('_socket', 'fromfd'): ('socket', 'fromfd'),
+    ('_socket', 'kutokafd'): ('socket', 'kutokafd'),
     ('_multiprocessing', 'Connection'): ('multiprocessing.connection', 'Connection'),
     ('multiprocessing.process', 'Process'): ('multiprocessing.context', 'Process'),
     ('multiprocessing.forking', 'Popen'): ('multiprocessing.popen_fork', 'Popen'),

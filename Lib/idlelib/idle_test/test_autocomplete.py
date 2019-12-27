@@ -13,8 +13,8 @@ kutoka idlelib.idle_test.mock_idle agiza Func
 kutoka idlelib.idle_test.mock_tk agiza Event
 
 
-class DummyEditwin:
-    def __init__(self, root, text):
+kundi DummyEditwin:
+    eleza __init__(self, root, text):
         self.root = root
         self.text = text
         self.indentwidth = 8
@@ -22,10 +22,10 @@ class DummyEditwin:
         self.prompt_last_line = '>>>'  # Currently not used by autocomplete.
 
 
-class AutoCompleteTest(unittest.TestCase):
+kundi AutoCompleteTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
@@ -33,32 +33,32 @@ class AutoCompleteTest(unittest.TestCase):
         cls.editor = DummyEditwin(cls.root, cls.text)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         del cls.editor, cls.text
         cls.root.update_idletasks()
         cls.root.destroy()
         del cls.root
 
-    def setUp(self):
+    eleza setUp(self):
         self.text.delete('1.0', 'end')
         self.autocomplete = ac.AutoComplete(self.editor)
 
-    def test_init(self):
+    eleza test_init(self):
         self.assertEqual(self.autocomplete.editwin, self.editor)
         self.assertEqual(self.autocomplete.text, self.text)
 
-    def test_make_autocomplete_window(self):
+    eleza test_make_autocomplete_window(self):
         testwin = self.autocomplete._make_autocomplete_window()
         self.assertIsInstance(testwin, acw.AutoCompleteWindow)
 
-    def test_remove_autocomplete_window(self):
+    eleza test_remove_autocomplete_window(self):
         acp = self.autocomplete
         acp.autocompletewindow = m = Mock()
         acp._remove_autocomplete_window()
         m.hide_window.assert_called_once()
         self.assertIsNone(acp.autocompletewindow)
 
-    def test_force_open_completions_event(self):
+    eleza test_force_open_completions_event(self):
         # Call _open_completions and break.
         acp = self.autocomplete
         open_c = Func()
@@ -66,7 +66,7 @@ class AutoCompleteTest(unittest.TestCase):
         self.assertEqual(acp.force_open_completions_event('event'), 'break')
         self.assertEqual(open_c.args[0], ac.FORCE)
 
-    def test_autocomplete_event(self):
+    eleza test_autocomplete_event(self):
         Equal = self.assertEqual
         acp = self.autocomplete
 
@@ -97,7 +97,7 @@ class AutoCompleteTest(unittest.TestCase):
         Equal(acp.autocomplete_event(ev), 'break')
         Equal(open_c.args[0], ac.TAB)
 
-    def test_try_open_completions_event(self):
+    eleza test_try_open_completions_event(self):
         Equal = self.assertEqual
         text = self.text
         acp = self.autocomplete
@@ -134,7 +134,7 @@ class AutoCompleteTest(unittest.TestCase):
               (acp.popupwait, acp._delayed_open_completions, ac.TRY_F))
         Equal(acp._delayed_completion_id, 'after2')
 
-    def test_delayed_open_completions(self):
+    eleza test_delayed_open_completions(self):
         Equal = self.assertEqual
         acp = self.autocomplete
         open_c = Func()
@@ -154,7 +154,7 @@ class AutoCompleteTest(unittest.TestCase):
         acp._delayed_open_completions((1, 2, 3, ac.FILES))
         self.assertEqual(open_c.args[0], (1, 2, 3, ac.FILES))
 
-    def test_oc_cancel_comment(self):
+    eleza test_oc_cancel_comment(self):
         none = self.assertIsNone
         acp = self.autocomplete
 
@@ -166,7 +166,7 @@ class AutoCompleteTest(unittest.TestCase):
         none(acp.open_completions(ac.TAB))  # From 'else' after 'elif'.
         none(acp._delayed_completion_id)
 
-    def test_oc_no_list(self):
+    eleza test_oc_no_list(self):
         acp = self.autocomplete
         fetch = Func(result=([],[]))
         acp.fetch_completions = fetch
@@ -177,7 +177,7 @@ class AutoCompleteTest(unittest.TestCase):
         self.assertEqual(fetch.called, 2)
 
 
-    def test_open_completions_none(self):
+    eleza test_open_completions_none(self):
         # Test other two None returns.
         none = self.assertIsNone
         acp = self.autocomplete
@@ -188,24 +188,24 @@ class AutoCompleteTest(unittest.TestCase):
         self.text.insert('insert', ' int().')
         none(acp.open_completions(ac.TAB))
 
-        # Blank or quote trigger 'if complete ...'.
+        # Blank or quote trigger 'ikiwa complete ...'.
         self.text.delete(1.0, 'end')
         self.assertFalse(acp.open_completions(ac.TAB))
         self.text.insert('1.0', '"')
         self.assertFalse(acp.open_completions(ac.TAB))
         self.text.delete('1.0', 'end')
 
-    class dummy_acw():
+    kundi dummy_acw():
         __init__ = Func()
         show_window = Func(result=False)
         hide_window = Func()
 
-    def test_open_completions(self):
+    eleza test_open_completions(self):
         # Test completions of files and attributes.
         acp = self.autocomplete
         fetch = Func(result=(['tem'],['tem', '_tem']))
         acp.fetch_completions = fetch
-        def make_acw(): return self.dummy_acw()
+        eleza make_acw(): rudisha self.dummy_acw()
         acp._make_autocomplete_window = make_acw
 
         self.text.insert('1.0', 'int.')
@@ -218,7 +218,7 @@ class AutoCompleteTest(unittest.TestCase):
         self.assertTrue(acp.open_completions(ac.TAB))
         self.text.delete('1.0', 'end')
 
-    def test_fetch_completions(self):
+    eleza test_fetch_completions(self):
         # Test that fetch_completions returns 2 lists:
         # For attribute completion, a large list containing all variables, and
         # a small list containing non-private variables.
@@ -227,7 +227,7 @@ class AutoCompleteTest(unittest.TestCase):
         acp = self.autocomplete
         small, large = acp.fetch_completions(
                 '', ac.ATTRS)
-        if __main__.__file__ != ac.__file__:
+        ikiwa __main__.__file__ != ac.__file__:
             self.assertNotIn('AutoComplete', small)  # See issue 36405.
 
         # Test attributes
@@ -250,15 +250,15 @@ class AutoCompleteTest(unittest.TestCase):
             s, b = acp.fetch_completions('foo', ac.ATTRS)
             self.assertNotIn('_private', s)
             self.assertIn('_private', b)
-            self.assertEqual(s, [i for i in sorted(dir(mock)) if i[:1] != '_'])
+            self.assertEqual(s, [i for i in sorted(dir(mock)) ikiwa i[:1] != '_'])
             self.assertEqual(b, sorted(dir(mock)))
 
         # Test files
-        def _listdir(path):
+        eleza _listdir(path):
             # This will be patch and used in fetch_completions.
-            if path == '.':
-                return ['foo', 'bar', '.hidden']
-            return ['monty', 'python', '.hidden']
+            ikiwa path == '.':
+                rudisha ['foo', 'bar', '.hidden']
+            rudisha ['monty', 'python', '.hidden']
 
         with patch.object(os, 'listdir', _listdir):
             s, b = acp.fetch_completions('', ac.FILES)
@@ -269,7 +269,7 @@ class AutoCompleteTest(unittest.TestCase):
             self.assertEqual(s, ['monty', 'python'])
             self.assertEqual(b, ['.hidden', 'monty', 'python'])
 
-    def test_get_entity(self):
+    eleza test_get_entity(self):
         # Test that a name is in the namespace of sys.modules and
         # __main__.__dict__.
         acp = self.autocomplete
@@ -293,5 +293,5 @@ class AutoCompleteTest(unittest.TestCase):
                 acp.get_entity('not_exist')
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

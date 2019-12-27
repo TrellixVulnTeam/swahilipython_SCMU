@@ -3,9 +3,9 @@
 agiza unittest
 kutoka test agiza ann_module, support
 
-class OpcodeTest(unittest.TestCase):
+kundi OpcodeTest(unittest.TestCase):
 
-    def test_try_inside_for_loop(self):
+    eleza test_try_inside_for_loop(self):
         n = 0
         for i in range(10):
             n = n+i
@@ -18,10 +18,10 @@ class OpcodeTest(unittest.TestCase):
             try: pass
             finally: pass
             n = n+i
-        if n != 90:
+        ikiwa n != 90:
             self.fail('try inside for')
 
-    def test_setup_annotations_line(self):
+    eleza test_setup_annotations_line(self):
         # check that SETUP_ANNOTATIONS does not create spurious line numbers
         try:
             with open(ann_module.__file__) as f:
@@ -31,32 +31,32 @@ class OpcodeTest(unittest.TestCase):
         except OSError:
             pass
 
-    def test_no_annotations_if_not_needed(self):
-        class C: pass
+    eleza test_no_annotations_if_not_needed(self):
+        kundi C: pass
         with self.assertRaises(AttributeError):
             C.__annotations__
 
-    def test_use_existing_annotations(self):
+    eleza test_use_existing_annotations(self):
         ns = {'__annotations__': {1: 2}}
         exec('x: int', ns)
         self.assertEqual(ns['__annotations__'], {'x': int, 1: 2})
 
-    def test_do_not_recreate_annotations(self):
+    eleza test_do_not_recreate_annotations(self):
         # Don't rely on the existence of the '__annotations__' global.
         with support.swap_item(globals(), '__annotations__', {}):
             del globals()['__annotations__']
-            class C:
+            kundi C:
                 del __annotations__
                 with self.assertRaises(NameError):
                     x: int
 
-    def test_raise_class_exceptions(self):
+    eleza test_raise_class_exceptions(self):
 
-        class AClass(Exception): pass
-        class BClass(AClass): pass
-        class CClass(Exception): pass
-        class DClass(AClass):
-            def __init__(self, ignore):
+        kundi AClass(Exception): pass
+        kundi BClass(AClass): pass
+        kundi CClass(Exception): pass
+        kundi DClass(AClass):
+            eleza __init__(self, ignore):
                 pass
 
         try: raise AClass()
@@ -93,7 +93,7 @@ class OpcodeTest(unittest.TestCase):
         else:
             self.fail("no exception")
 
-    def test_compare_function_objects(self):
+    eleza test_compare_function_objects(self):
 
         f = eval('lambda: None')
         g = eval('lambda: None')
@@ -127,12 +127,12 @@ class OpcodeTest(unittest.TestCase):
         g = eval('lambda a=1: None')
         self.assertNotEqual(f, g)
 
-    def test_modulo_of_string_subclasses(self):
-        class MyString(str):
-            def __mod__(self, value):
-                return 42
+    eleza test_modulo_of_string_subclasses(self):
+        kundi MyString(str):
+            eleza __mod__(self, value):
+                rudisha 42
         self.assertEqual(MyString() % 3, 42)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

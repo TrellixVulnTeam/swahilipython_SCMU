@@ -56,7 +56,7 @@ and :meth:`flush` methods).
    .. method:: flush()
 
       Flushes the stream by calling its :meth:`flush` method. Note that the
-      :meth:`close` method is inherited from :class:`~logging.Handler` and so
+      :meth:`close` method is inherited kutoka :class:`~logging.Handler` and so
       does no output, so an explicit :meth:`flush` call may be needed at times.
 
    .. method:: setStream(stream)
@@ -72,7 +72,7 @@ and :meth:`flush` methods).
 
 
 .. versionchanged:: 3.2
-   The ``StreamHandler`` class now has a ``terminator`` attribute, default
+   The ``StreamHandler`` kundi now has a ``terminator`` attribute, default
    value ``'\n'``, which is used as the terminator when writing a formatted
    record to a stream. If you don't want this newline termination, you can
    set the handler instance's ``terminator`` attribute to the empty string.
@@ -85,7 +85,7 @@ FileHandler
 ^^^^^^^^^^^
 
 The :class:`FileHandler` class, located in the core :mod:`logging` package,
-sends logging output to a disk file.  It inherits the output functionality from
+sends logging output to a disk file.  It inherits the output functionality kutoka
 :class:`StreamHandler`.
 
 
@@ -200,7 +200,7 @@ BaseRotatingHandler
 ^^^^^^^^^^^^^^^^^^^
 
 The :class:`BaseRotatingHandler` class, located in the :mod:`logging.handlers`
-module, is the base class for the rotating file handlers,
+module, is the base kundi for the rotating file handlers,
 :class:`RotatingFileHandler` and :class:`TimedRotatingFileHandler`. You should
 not need to instantiate this class, but it has attributes and methods you may
 need to override.
@@ -262,7 +262,7 @@ need to override.
 
       .. versionadded:: 3.3
 
-The reason the attributes exist is to save you having to subclass - you can use
+The reason the attributes exist is to save you having to subkundi - you can use
 the same callables for instances of :class:`RotatingFileHandler` and
 :class:`TimedRotatingFileHandler`. If either the namer or rotator callable
 raises an exception, this will be handled in the same way as any other
@@ -426,12 +426,12 @@ SocketHandler
 ^^^^^^^^^^^^^
 
 The :class:`SocketHandler` class, located in the :mod:`logging.handlers` module,
-sends logging output to a network socket. The base class uses a TCP socket.
+sends logging output to a network socket. The base kundi uses a TCP socket.
 
 
 .. class:: SocketHandler(host, port)
 
-   Returns a new instance of the :class:`SocketHandler` class intended to
+   Returns a new instance of the :class:`SocketHandler` kundi intended to
    communicate with a remote machine whose address is given by *host* and *port*.
 
    .. versionchanged:: 3.4
@@ -522,13 +522,13 @@ DatagramHandler
 ^^^^^^^^^^^^^^^
 
 The :class:`DatagramHandler` class, located in the :mod:`logging.handlers`
-module, inherits from :class:`SocketHandler` to support sending logging messages
+module, inherits kutoka :class:`SocketHandler` to support sending logging messages
 over UDP sockets.
 
 
 .. class:: DatagramHandler(host, port)
 
-   Returns a new instance of the :class:`DatagramHandler` class intended to
+   Returns a new instance of the :class:`DatagramHandler` kundi intended to
    communicate with a remote machine whose address is given by *host* and *port*.
 
    .. versionchanged:: 3.4
@@ -567,7 +567,7 @@ supports sending logging messages to a remote or local Unix syslog.
 
 .. class:: SysLogHandler(address=('localhost', SYSLOG_UDP_PORT), facility=LOG_USER, socktype=socket.SOCK_DGRAM)
 
-   Returns a new instance of the :class:`SysLogHandler` class intended to
+   Returns a new instance of the :class:`SysLogHandler` kundi intended to
    communicate with a remote Unix machine whose address is given by *address* in
    the form of a ``(host, port)`` tuple.  If *address* is not specified,
    ``('localhost', 514)`` is used.  The address is used to open a socket.  An
@@ -742,7 +742,7 @@ extensions for Python installed.
 
    .. method:: close()
 
-      At this point, you can remove the application name from the registry as a
+      At this point, you can remove the application name kutoka the registry as a
       source of event log entries. However, if you do this, you will not be able
       to see the events as you intended in the Event Log Viewer - it needs to be
       able to access the registry to get the .dll name. The current version does
@@ -789,10 +789,10 @@ The :class:`SMTPHandler` class, located in the :mod:`logging.handlers` module,
 supports sending logging messages to an email address via SMTP.
 
 
-.. class:: SMTPHandler(mailhost, fromaddr, toaddrs, subject, credentials=None, secure=None, timeout=1.0)
+.. class:: SMTPHandler(mailhost, kutokaaddr, toaddrs, subject, credentials=None, secure=None, timeout=1.0)
 
    Returns a new instance of the :class:`SMTPHandler` class. The instance is
-   initialized with the from and to addresses and subject line of the email. The
+   initialized with the kutoka and to addresses and subject line of the email. The
    *toaddrs* should be a list of strings. To specify a non-standard SMTP port, use
    the (host, port) tuple format for the *mailhost* argument. If you use a string,
    the standard SMTP port is used. If your SMTP server requires authentication, you
@@ -831,7 +831,7 @@ supports buffering of logging records in memory, periodically flushing them to a
 :dfn:`target` handler. Flushing occurs whenever the buffer is full, or when an
 event of a certain severity or greater is seen.
 
-:class:`MemoryHandler` is a subclass of the more general
+:class:`MemoryHandler` is a subkundi of the more general
 :class:`BufferingHandler`, which is an abstract class. This buffers logging
 records in memory. Whenever each record is added to the buffer, a check is made
 by calling :meth:`shouldFlush` to see if the buffer should be flushed.  If it
@@ -962,7 +962,7 @@ supports sending logging messages to a queue, such as those implemented in the
 :mod:`queue` or :mod:`multiprocessing` modules.
 
 Along with the :class:`QueueListener` class, :class:`QueueHandler` can be used
-to let handlers do their work on a separate thread from the one which does the
+to let handlers do their work on a separate thread kutoka the one which does the
 logging. This is important in Web applications and also other service
 applications where threads servicing clients need to respond as quickly as
 possible, while any potentially slow operations (such as sending an email via
@@ -994,7 +994,7 @@ possible, while any potentially slow operations (such as sending an email via
 
       The base implementation formats the record to merge the message,
       arguments, and exception information, if present.  It also
-      removes unpickleable items from the record in-place.
+      removes unpickleable items kutoka the record in-place.
 
       You might want to override this method if you want to convert
       the record to a dict or JSON string, or send a modified copy
@@ -1016,15 +1016,15 @@ QueueListener
 .. versionadded:: 3.2
 
 The :class:`QueueListener` class, located in the :mod:`logging.handlers`
-module, supports receiving logging messages from a queue, such as those
+module, supports receiving logging messages kutoka a queue, such as those
 implemented in the :mod:`queue` or :mod:`multiprocessing` modules. The
-messages are received from a queue in an internal thread and passed, on
+messages are received kutoka a queue in an internal thread and passed, on
 the same thread, to one or more handlers for processing. While
 :class:`QueueListener` is not itself a handler, it is documented here
 because it works hand-in-hand with :class:`QueueHandler`.
 
 Along with the :class:`QueueHandler` class, :class:`QueueListener` can be used
-to let handlers do their work on a separate thread from the one which does the
+to let handlers do their work on a separate thread kutoka the one which does the
 logging. This is important in Web applications and also other service
 applications where threads servicing clients need to respond as quickly as
 possible, while any potentially slow operations (such as sending an email via
@@ -1036,7 +1036,7 @@ possible, while any potentially slow operations (such as sending an email via
    initialized with the queue to send messages to and a list of handlers which
    will handle entries placed on the queue. The queue can be any queue-like
    object; it's passed as-is to the :meth:`dequeue` method, which needs
-   to know how to get messages from it. The queue is not *required* to have the
+   to know how to get messages kutoka it. The queue is not *required* to have the
    task tracking API (though it's used if available), which means that you can
    use :class:`~queue.SimpleQueue` instances for *queue*.
 
@@ -1070,7 +1070,7 @@ possible, while any potentially slow operations (such as sending an email via
 
       This just loops through the handlers offering them the record
       to handle. The actual object passed to the handlers is that which
-      is returned from :meth:`prepare`.
+      is returned kutoka :meth:`prepare`.
 
    .. method:: start()
 

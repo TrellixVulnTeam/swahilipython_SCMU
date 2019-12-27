@@ -113,7 +113,7 @@ created.  Socket addresses are represented as follows:
 - A tuple ``(interface, )`` is used for the :const:`AF_CAN` address family,
   where *interface* is a string representing a network interface name like
   ``'can0'``. The network interface name ``''`` can be used to receive packets
-  from all network interfaces of this family.
+  kutoka all network interfaces of this family.
 
   - :const:`CAN_ISOTP` protocol require a tuple ``(interface, rx_addr, tx_addr)``
     where both additional parameters are unsigned long integer that represent a
@@ -187,7 +187,7 @@ created.  Socket addresses are represented as follows:
     - ``PACKET_MULTIHOST`` - Packet sent to a physical-layer multicast address.
     - ``PACKET_OTHERHOST`` - Packet to some other host that has been caught by
       a device driver in promiscuous mode.
-    - ``PACKET_OUTGOING`` - Packet originating from the local host that is
+    - ``PACKET_OUTGOING`` - Packet originating kutoka the local host that is
       looped back to a packet socket.
   - *hatype* - Optional integer specifying the ARP hardware address type.
   - *addr* - Optional bytes-like object specifying the hardware physical
@@ -202,13 +202,13 @@ created.  Socket addresses are represented as follows:
 
 If you use a hostname in the *host* portion of IPv4/v6 socket address, the
 program may show a nondeterministic behavior, as Python uses the first address
-returned from the DNS resolution.  The socket address will be resolved
-differently into an actual IPv4/v6 address, depending on the results from DNS
+returned kutoka the DNS resolution.  The socket address will be resolved
+differently into an actual IPv4/v6 address, depending on the results kutoka DNS
 resolution and/or the host configuration.  For deterministic behavior use a
 numeric address in *host* portion.
 
 All errors raise exceptions.  The normal exceptions for invalid argument types
-and out-of-memory conditions can be raised; starting from Python 3.3, errors
+and out-of-memory conditions can be raised; starting kutoka Python 3.3, errors
 related to socket or address semantics raise :exc:`OSError` or one of its
 subclasses (they used to raise :exc:`socket.error`).
 
@@ -231,12 +231,12 @@ Exceptions
    A deprecated alias of :exc:`OSError`.
 
    .. versionchanged:: 3.3
-      Following :pep:`3151`, this class was made an alias of :exc:`OSError`.
+      Following :pep:`3151`, this kundi was made an alias of :exc:`OSError`.
 
 
 .. exception:: herror
 
-   A subclass of :exc:`OSError`, this exception is raised for
+   A subkundi of :exc:`OSError`, this exception is raised for
    address-related errors, i.e. for functions that use *h_errno* in the POSIX
    C API, including :func:`gethostbyname_ex` and :func:`gethostbyaddr`.
    The accompanying value is a pair ``(h_errno, string)`` representing an
@@ -245,11 +245,11 @@ Exceptions
    :c:func:`hstrerror` C function.
 
    .. versionchanged:: 3.3
-      This class was made a subclass of :exc:`OSError`.
+      This kundi was made a subkundi of :exc:`OSError`.
 
 .. exception:: gaierror
 
-   A subclass of :exc:`OSError`, this exception is raised for
+   A subkundi of :exc:`OSError`, this exception is raised for
    address-related errors by :func:`getaddrinfo` and :func:`getnameinfo`.
    The accompanying value is a pair ``(error, string)`` representing an error
    returned by a library call.  *string* represents the description of
@@ -258,18 +258,18 @@ Exceptions
    defined in this module.
 
    .. versionchanged:: 3.3
-      This class was made a subclass of :exc:`OSError`.
+      This kundi was made a subkundi of :exc:`OSError`.
 
 .. exception:: timeout
 
-   A subclass of :exc:`OSError`, this exception is raised when a timeout
+   A subkundi of :exc:`OSError`, this exception is raised when a timeout
    occurs on a socket which has had timeouts enabled via a prior call to
    :meth:`~socket.settimeout` (or implicitly through
    :func:`~socket.setdefaulttimeout`).  The accompanying value is a string
    whose value is currently always "timed out".
 
    .. versionchanged:: 3.3
-      This class was made a subclass of :exc:`OSError`.
+      This kundi was made a subkundi of :exc:`OSError`.
 
 
 Constants
@@ -383,7 +383,7 @@ Constants
 
    Enables CAN FD support in a CAN_RAW socket. This is disabled by default.
    This allows your application to send both CAN and CAN FD frames; however,
-   you must accept both CAN and CAN FD frames when reading from the socket.
+   you must accept both CAN and CAN FD frames when reading kutoka the socket.
 
    This constant is documented in the Linux documentation.
 
@@ -519,11 +519,11 @@ The following functions all create :ref:`socket objects <socket-objects>`.
    should be one of :const:`CAN_RAW`, :const:`CAN_BCM` or :const:`CAN_ISOTP`.
 
    If *fileno* is specified, the values for *family*, *type*, and *proto* are
-   auto-detected from the specified file descriptor.  Auto-detection can be
+   auto-detected kutoka the specified file descriptor.  Auto-detection can be
    overruled by calling the function with explicit *family*, *type*, or *proto*
    arguments.  This only affects how Python represents e.g. the return value
    of :meth:`socket.getpeername` but not the actual OS resource.  Unlike
-   :func:`socket.fromfd`, *fileno* will return the same socket and not a
+   :func:`socket.kutokafd`, *fileno* will return the same socket and not a
    duplicate. This may help close a detached socket using
    :meth:`socket.close()`.
 
@@ -623,7 +623,7 @@ The following functions all create :ref:`socket objects <socket-objects>`.
 
    ::
 
-     import socket
+     agiza socket
 
      addr = ("", 8080)  # all interfaces, port 8080
      if socket.has_dualstack_ipv6():
@@ -645,10 +645,10 @@ The following functions all create :ref:`socket objects <socket-objects>`.
 
    .. versionadded:: 3.8
 
-.. function:: fromfd(fd, family, type, proto=0)
+.. function:: kutokafd(fd, family, type, proto=0)
 
    Duplicate the file descriptor *fd* (an integer as returned by a file object's
-   :meth:`fileno` method) and build a socket object from the result.  Address
+   :meth:`fileno` method) and build a socket object kutoka the result.  Address
    family, socket type and protocol number are as for the :func:`.socket` function
    above. The file descriptor should refer to a socket, but this is not checked ---
    subsequent operations on the object may fail if the file descriptor is invalid.
@@ -662,9 +662,9 @@ The following functions all create :ref:`socket objects <socket-objects>`.
       The returned socket is now non-inheritable.
 
 
-.. function:: fromshare(data)
+.. function:: kutokashare(data)
 
-   Instantiate a socket from data obtained from the :meth:`socket.share`
+   Instantiate a socket kutoka data obtained kutoka the :meth:`socket.share`
    method.  The socket is assumed to be in blocking mode.
 
    .. availability:: Windows.
@@ -844,14 +844,14 @@ The :mod:`socket` module also offers various network-related services:
 
 .. function:: ntohl(x)
 
-   Convert 32-bit positive integers from network to host byte order.  On machines
+   Convert 32-bit positive integers kutoka network to host byte order.  On machines
    where the host byte order is the same as network byte order, this is a no-op;
    otherwise, it performs a 4-byte swap operation.
 
 
 .. function:: ntohs(x)
 
-   Convert 16-bit positive integers from network to host byte order.  On machines
+   Convert 16-bit positive integers kutoka network to host byte order.  On machines
    where the host byte order is the same as network byte order, this is a no-op;
    otherwise, it performs a 2-byte swap operation.
 
@@ -864,14 +864,14 @@ The :mod:`socket` module also offers various network-related services:
 
 .. function:: htonl(x)
 
-   Convert 32-bit positive integers from host to network byte order.  On machines
+   Convert 32-bit positive integers kutoka host to network byte order.  On machines
    where the host byte order is the same as network byte order, this is a no-op;
    otherwise, it performs a 4-byte swap operation.
 
 
 .. function:: htons(x)
 
-   Convert 16-bit positive integers from host to network byte order.  On machines
+   Convert 16-bit positive integers kutoka host to network byte order.  On machines
    where the host byte order is the same as network byte order, this is a no-op;
    otherwise, it performs a 2-byte swap operation.
 
@@ -884,7 +884,7 @@ The :mod:`socket` module also offers various network-related services:
 
 .. function:: inet_aton(ip_string)
 
-   Convert an IPv4 address from dotted-quad string format (for example,
+   Convert an IPv4 address kutoka dotted-quad string format (for example,
    '123.45.67.89') to 32-bit packed binary format, as a bytes object four characters in
    length.  This is useful when conversing with a program that uses the standard C
    library and needs objects of type :c:type:`struct in_addr`, which is the C type
@@ -921,7 +921,7 @@ The :mod:`socket` module also offers various network-related services:
 
 .. function:: inet_pton(address_family, ip_string)
 
-   Convert an IP address from its family-specific string format to a packed,
+   Convert an IP address kutoka its family-specific string format to a packed,
    binary format. :func:`inet_pton` is useful when a library or network protocol
    calls for an object of type :c:type:`struct in_addr` (similar to
    :func:`inet_aton`) or :c:type:`struct in6_addr`.
@@ -950,7 +950,7 @@ The :mod:`socket` module also offers various network-related services:
    Supported values for *address_family* are currently :const:`AF_INET` and
    :const:`AF_INET6`. If the bytes object *packed_ip* is not the correct
    length for the specified address family, :exc:`ValueError` will be raised.
-   :exc:`OSError` is raised for errors from the call to :func:`inet_ntop`.
+   :exc:`OSError` is raised for errors kutoka the call to :func:`inet_ntop`.
 
    .. availability:: Unix (maybe not all platforms), Windows.
 
@@ -1115,7 +1115,7 @@ to sockets.
 .. method:: socket.close()
 
    Mark the socket closed.  The underlying system resource (e.g. a file
-   descriptor) is also closed when all file objects from :meth:`makefile()`
+   descriptor) is also closed when all file objects kutoka :meth:`makefile()`
    are closed.  Once that happens, all future operations on the socket
    object will fail. The remote end will receive no more data (after
    queued data is flushed).
@@ -1304,7 +1304,7 @@ to sockets.
 
 .. method:: socket.recv(bufsize[, flags])
 
-   Receive data from the socket.  The return value is a bytes object representing the
+   Receive data kutoka the socket.  The return value is a bytes object representing the
    data received.  The maximum amount of data to be received at once is specified
    by *bufsize*.  See the Unix manual page :manpage:`recv(2)` for the meaning of
    the optional argument *flags*; it defaults to zero.
@@ -1320,9 +1320,9 @@ to sockets.
       an :exc:`InterruptedError` exception (see :pep:`475` for the rationale).
 
 
-.. method:: socket.recvfrom(bufsize[, flags])
+.. method:: socket.recvkutoka(bufsize[, flags])
 
-   Receive data from the socket.  The return value is a pair ``(bytes, address)``
+   Receive data kutoka the socket.  The return value is a pair ``(bytes, address)``
    where *bytes* is a bytes object representing the data received and *address* is the
    address of the socket sending the data.  See the Unix manual page
    :manpage:`recv(2)` for the meaning of the optional argument *flags*; it defaults
@@ -1340,7 +1340,7 @@ to sockets.
 
 .. method:: socket.recvmsg(bufsize[, ancbufsize[, flags]])
 
-   Receive normal data (up to *bufsize* bytes) and ancillary data from
+   Receive normal data (up to *bufsize* bytes) and ancillary data kutoka
    the socket.  The *ancbufsize* argument sets the size in bytes of
    the internal buffer used to receive the ancillary data; it defaults
    to 0, meaning that no ancillary data will be received.  Appropriate
@@ -1388,7 +1388,7 @@ to sockets.
    (while ignoring unexpected conditions such as unrelated control
    messages being received).  See also :meth:`sendmsg`. ::
 
-      import socket, array
+      agiza socket, array
 
       def recv_fds(sock, msglen, maxfds):
           fds = array.array("i")   # Array of ints
@@ -1396,7 +1396,7 @@ to sockets.
           for cmsg_level, cmsg_type, cmsg_data in ancdata:
               if (cmsg_level == socket.SOL_SOCKET and cmsg_type == socket.SCM_RIGHTS):
                   # Append data, ignoring any truncated integers at the end.
-                  fds.fromstring(cmsg_data[:len(cmsg_data) - (len(cmsg_data) % fds.itemsize)])
+                  fds.kutokastring(cmsg_data[:len(cmsg_data) - (len(cmsg_data) % fds.itemsize)])
           return msg, list(fds)
 
    .. availability:: most Unix platforms, possibly others.
@@ -1411,7 +1411,7 @@ to sockets.
 
 .. method:: socket.recvmsg_into(buffers[, ancbufsize[, flags]])
 
-   Receive normal data and ancillary data from the socket, behaving as
+   Receive normal data and ancillary data kutoka the socket, behaving as
    :meth:`recvmsg` would, but scatter the non-ancillary data into a
    series of buffers instead of returning a new bytes object.  The
    *buffers* argument must be an iterable of objects that export
@@ -1429,7 +1429,7 @@ to sockets.
 
    Example::
 
-      >>> import socket
+      >>> agiza socket
       >>> s1, s2 = socket.socketpair()
       >>> b1 = bytearray(b'----')
       >>> b2 = bytearray(b'0123456789')
@@ -1446,9 +1446,9 @@ to sockets.
    .. versionadded:: 3.3
 
 
-.. method:: socket.recvfrom_into(buffer[, nbytes[, flags]])
+.. method:: socket.recvkutoka_into(buffer[, nbytes[, flags]])
 
-   Receive data from the socket, writing it into *buffer* instead of creating a
+   Receive data kutoka the socket, writing it into *buffer* instead of creating a
    new bytestring.  The return value is a pair ``(nbytes, address)`` where *nbytes* is
    the number of bytes received and *address* is the address of the socket sending
    the data.  See the Unix manual page :manpage:`recv(2)` for the meaning of the
@@ -1458,7 +1458,7 @@ to sockets.
 
 .. method:: socket.recv_into(buffer[, nbytes[, flags]])
 
-   Receive up to *nbytes* bytes from the socket, storing the data into a buffer
+   Receive up to *nbytes* bytes kutoka the socket, storing the data into a buffer
    rather than creating a new bytestring.  If *nbytes* is not specified (or 0),
    receive up to the size available in the given buffer.  Returns the number of
    bytes received.  See the Unix manual page :manpage:`recv(2)` for the meaning
@@ -1484,7 +1484,7 @@ to sockets.
 
    Send data to the socket.  The socket must be connected to a remote socket.  The
    optional *flags* argument has the same meaning as for :meth:`recv` above.
-   Unlike :meth:`send`, this method continues to send data from *bytes* until
+   Unlike :meth:`send`, this method continues to send data kutoka *bytes* until
    either all data has been sent or an error occurs.  ``None`` is returned on
    success.  On error, an exception is raised, and there is no way to determine how
    much data, if any, was successfully sent.
@@ -1519,7 +1519,7 @@ to sockets.
 .. method:: socket.sendmsg(buffers[, ancdata[, flags[, address]]])
 
    Send normal and ancillary data to the socket, gathering the
-   non-ancillary data from a series of buffers and concatenating it
+   non-ancillary data kutoka a series of buffers and concatenating it
    into a single message.  The *buffers* argument specifies the
    non-ancillary data as an iterable of
    :term:`bytes-like objects <bytes-like object>`
@@ -1542,7 +1542,7 @@ to sockets.
    over an :const:`AF_UNIX` socket, on systems which support the
    :const:`SCM_RIGHTS` mechanism.  See also :meth:`recvmsg`. ::
 
-      import socket, array
+      agiza socket, array
 
       def send_fds(sock, msg, fds):
           return sock.sendmsg([msg], [(socket.SOL_SOCKET, socket.SCM_RIGHTS, array.array("i", fds))])
@@ -1573,7 +1573,7 @@ to sockets.
    :mod:`os.sendfile` and return the total number of bytes which were sent.
    *file* must be a regular file object opened in binary mode. If
    :mod:`os.sendfile` is not available (e.g. Windows) or *file* is not a
-   regular file :meth:`send` will be used instead. *offset* tells from where to
+   regular file :meth:`send` will be used instead. *offset* tells kutoka where to
    start reading the file. If specified, *count* is the total number of bytes
    to transmit as opposed to sending the file until EOF is reached. File
    position is updated on return or also in case of error in which case
@@ -1660,7 +1660,7 @@ to sockets.
    Duplicate a socket and prepare it for sharing with a target process.  The
    target process must be provided with *process_id*.  The resulting bytes object
    can then be passed to the target process using some form of interprocess
-   communication and the socket can be recreated there using :func:`fromshare`.
+   communication and the socket can be recreated there using :func:`kutokashare`.
    Once this method has been called, it is safe to close the socket since
    the operating system has already duplicated it for the target process.
 
@@ -1705,7 +1705,7 @@ can be changed by calling :func:`setdefaulttimeout`.
   an error (such as connection timed out).
 
 * In *non-blocking mode*, operations fail (with an error that is unfortunately
-  system-dependent) if they cannot be completed immediately: functions from the
+  system-dependent) if they cannot be completed immediately: functions kutoka the
   :mod:`select` can be used to know when and whether a socket is available for
   reading or writing.
 
@@ -1764,7 +1764,7 @@ the socket it is listening on but on the new socket returned by
 The first two examples support IPv4 only. ::
 
    # Echo server program
-   import socket
+   agiza socket
 
    HOST = ''                 # Symbolic name meaning all available interfaces
    PORT = 50007              # Arbitrary non-privileged port
@@ -1782,7 +1782,7 @@ The first two examples support IPv4 only. ::
 ::
 
    # Echo client program
-   import socket
+   agiza socket
 
    HOST = 'daring.cwi.nl'    # The remote host
    PORT = 50007              # The same port as used by the server
@@ -1800,8 +1800,8 @@ to connect to the all addresses returned as a result of the name resolution, and
 sends traffic to the first one connected successfully. ::
 
    # Echo server program
-   import socket
-   import sys
+   agiza socket
+   agiza sys
 
    HOST = None               # Symbolic name meaning all available interfaces
    PORT = 50007              # Arbitrary non-privileged port
@@ -1836,8 +1836,8 @@ sends traffic to the first one connected successfully. ::
 ::
 
    # Echo client program
-   import socket
-   import sys
+   agiza socket
+   agiza sys
 
    HOST = 'daring.cwi.nl'    # The remote host
    PORT = 50007              # The same port as used by the server
@@ -1868,7 +1868,7 @@ The next example shows how to write a very simple network sniffer with raw
 sockets on Windows. The example requires administrator privileges to modify
 the interface::
 
-   import socket
+   agiza socket
 
    # the public network interface
    HOST = socket.gethostbyname(socket.gethostname())
@@ -1884,7 +1884,7 @@ the interface::
    s.ioctl(socket.SIO_RCVALL, socket.RCVALL_ON)
 
    # receive a package
-   print(s.recvfrom(65565))
+   print(s.recvkutoka(65565))
 
    # disabled promiscuous mode
    s.ioctl(socket.SIO_RCVALL, socket.RCVALL_OFF)
@@ -1901,8 +1901,8 @@ their counterparts) on the socket object as usual.
 
 This last example might require special privileges::
 
-   import socket
-   import struct
+   agiza socket
+   agiza struct
 
 
    # CAN frame packing/unpacking (see 'struct can_frame' in <linux/can.h>)
@@ -1925,7 +1925,7 @@ This last example might require special privileges::
    s.bind(('vcan0',))
 
    while True:
-       cf, addr = s.recvfrom(can_frame_size)
+       cf, addr = s.recvkutoka(can_frame_size)
 
        print('Received: can_id=%x, can_dlc=%x, data=%s' % dissect_can_frame(cf))
 

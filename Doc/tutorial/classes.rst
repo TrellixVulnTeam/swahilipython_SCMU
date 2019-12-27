@@ -5,31 +5,31 @@ Classes
 *******
 
 Classes provide a means of bundling data and functionality together.  Creating
-a new class creates a new *type* of object, allowing new *instances* of that
-type to be made.  Each class instance can have attributes attached to it for
+a new kundi creates a new *type* of object, allowing new *instances* of that
+type to be made.  Each kundi instance can have attributes attached to it for
 maintaining its state.  Class instances can also have methods (defined by its
 class) for modifying its state.
 
-Compared with other programming languages, Python's class mechanism adds classes
+Compared with other programming languages, Python's kundi mechanism adds classes
 with a minimum of new syntax and semantics.  It is a mixture of the class
 mechanisms found in C++ and Modula-3.  Python classes provide all the standard
-features of Object Oriented Programming: the class inheritance mechanism allows
-multiple base classes, a derived class can override any methods of its base
-class or classes, and a method can call the method of a base class with the same
+features of Object Oriented Programming: the kundi inheritance mechanism allows
+multiple base classes, a derived kundi can override any methods of its base
+kundi or classes, and a method can call the method of a base kundi with the same
 name.  Objects can contain arbitrary amounts and kinds of data.  As is true for
 modules, classes partake of the dynamic nature of Python: they are created at
 runtime, and can be modified further after creation.
 
-In C++ terminology, normally class members (including the data members) are
+In C++ terminology, normally kundi members (including the data members) are
 *public* (except see below :ref:`tut-private`), and all member functions are
 *virtual*.  As in Modula-3, there are no shorthands for referencing the object's
-members from its methods: the method function is declared with an explicit first
+members kutoka its methods: the method function is declared with an explicit first
 argument representing the object, which is provided implicitly by the call.  As
 in Smalltalk, classes themselves are objects.  This provides semantics for
 importing and renaming.  Unlike C++ and Modula-3, built-in types can be used as
 base classes for extension by the user.  Also, like in C++, most built-in
 operators with special syntax (arithmetic operators, subscripting etc.) can be
-redefined for class instances.
+redefined for kundi instances.
 
 (Lacking universally accepted terminology to talk about classes, I will make
 occasional use of Smalltalk and C++ terms.  I would use Modula-3 terms, since
@@ -68,7 +68,7 @@ programmer.
 
 Let's begin with some definitions.
 
-A *namespace* is a mapping from names to objects.  Most namespaces are currently
+A *namespace* is a mapping kutoka names to objects.  Most namespaces are currently
 implemented as Python dictionaries, but that's normally not noticeable in any
 way (except for performance), and it may change in the future.  Examples of
 namespaces are: the set of built-in names (containing functions such as :func:`abs`, and
@@ -91,14 +91,14 @@ Attributes may be read-only or writable.  In the latter case, assignment to
 attributes is possible.  Module attributes are writable: you can write
 ``modname.the_answer = 42``.  Writable attributes may also be deleted with the
 :keyword:`del` statement.  For example, ``del modname.the_answer`` will remove
-the attribute :attr:`the_answer` from the object named by ``modname``.
+the attribute :attr:`the_answer` kutoka the object named by ``modname``.
 
 Namespaces are created at different moments and have different lifetimes.  The
 namespace containing the built-in names is created when the Python interpreter
 starts up, and is never deleted.  The global namespace for a module is created
 when the module definition is read in; normally, module namespaces also last
 until the interpreter quits.  The statements executed by the top-level
-invocation of the interpreter, either read from a script file or interactively,
+invocation of the interpreter, either read kutoka a script file or interactively,
 are considered part of a module called :mod:`__main__`, so they have their own
 global namespace.  (The built-in names actually also live in a module; this is
 called :mod:`builtins`.)
@@ -137,7 +137,7 @@ namespace in the local scope.
 
 It is important to realize that scopes are determined textually: the global
 scope of a function defined in a module is that module's namespace, no matter
-from where or by what alias the function is called.  On the other hand, the
+kutoka where or by what alias the function is called.  On the other hand, the
 actual search for names is done dynamically, at run time --- however, the
 language definition is evolving towards static name resolution, at "compile"
 time, so don't rely on dynamic name resolution!  (In fact, local variables are
@@ -146,7 +146,7 @@ already determined statically.)
 A special quirk of Python is that -- if no :keyword:`global` statement is in
 effect -- assignments to names always go into the innermost scope.  Assignments
 do not copy data --- they just bind names to objects.  The same is true for
-deletions: the statement ``del x`` removes the binding of ``x`` from the
+deletions: the statement ``del x`` removes the binding of ``x`` kutoka the
 namespace referenced by the local scope.  In fact, all operations that introduce
 new names use the local scope: in particular, :keyword:`import` statements and
 function definitions bind the module or function name in the local scope.
@@ -220,9 +220,9 @@ new semantics.
 Class Definition Syntax
 -----------------------
 
-The simplest form of class definition looks like this::
+The simplest form of kundi definition looks like this::
 
-   class ClassName:
+   kundi ClassName:
        <statement-1>
        .
        .
@@ -233,23 +233,23 @@ Class definitions, like function definitions (:keyword:`def` statements) must be
 executed before they have any effect.  (You could conceivably place a class
 definition in a branch of an :keyword:`if` statement, or inside a function.)
 
-In practice, the statements inside a class definition will usually be function
+In practice, the statements inside a kundi definition will usually be function
 definitions, but other statements are allowed, and sometimes useful --- we'll
-come back to this later.  The function definitions inside a class normally have
+come back to this later.  The function definitions inside a kundi normally have
 a peculiar form of argument list, dictated by the calling conventions for
 methods --- again, this is explained later.
 
-When a class definition is entered, a new namespace is created, and used as the
+When a kundi definition is entered, a new namespace is created, and used as the
 local scope --- thus, all assignments to local variables go into this new
 namespace.  In particular, function definitions bind the name of the new
 function here.
 
-When a class definition is left normally (via the end), a *class object* is
+When a kundi definition is left normally (via the end), a *kundi object* is
 created.  This is basically a wrapper around the contents of the namespace
-created by the class definition; we'll learn more about class objects in the
+created by the kundi definition; we'll learn more about kundi objects in the
 next section.  The original local scope (the one in effect just before the class
-definition was entered) is reinstated, and the class object is bound here to the
-class name given in the class definition header (:class:`ClassName` in the
+definition was entered) is reinstated, and the kundi object is bound here to the
+kundi name given in the kundi definition header (:class:`ClassName` in the
 example).
 
 
@@ -263,10 +263,10 @@ instantiation.
 
 *Attribute references* use the standard syntax used for all attribute references
 in Python: ``obj.name``.  Valid attribute names are all the names that were in
-the class's namespace when the class object was created.  So, if the class
+the class's namespace when the kundi object was created.  So, if the class
 definition looked like this::
 
-   class MyClass:
+   kundi MyClass:
        """A simple example class"""
        i = 12345
 
@@ -285,28 +285,28 @@ For example (assuming the above class)::
 
    x = MyClass()
 
-creates a new *instance* of the class and assigns this object to the local
+creates a new *instance* of the kundi and assigns this object to the local
 variable ``x``.
 
-The instantiation operation ("calling" a class object) creates an empty object.
+The instantiation operation ("calling" a kundi object) creates an empty object.
 Many classes like to create objects with instances customized to a specific
-initial state. Therefore a class may define a special method named
+initial state. Therefore a kundi may define a special method named
 :meth:`__init__`, like this::
 
    def __init__(self):
        self.data = []
 
-When a class defines an :meth:`__init__` method, class instantiation
-automatically invokes :meth:`__init__` for the newly-created class instance.  So
+When a kundi defines an :meth:`__init__` method, kundi instantiation
+automatically invokes :meth:`__init__` for the newly-created kundi instance.  So
 in this example, a new, initialized instance can be obtained by::
 
    x = MyClass()
 
 Of course, the :meth:`__init__` method may have arguments for greater
-flexibility.  In that case, arguments given to the class instantiation operator
+flexibility.  In that case, arguments given to the kundi instantiation operator
 are passed on to :meth:`__init__`.  For example, ::
 
-   >>> class Complex:
+   >>> kundi Complex:
    ...     def __init__(self, realpart, imagpart):
    ...         self.r = realpart
    ...         self.i = imagpart
@@ -339,15 +339,15 @@ code will print the value ``16``, without leaving a trace::
 
 The other kind of instance attribute reference is a *method*. A method is a
 function that "belongs to" an object.  (In Python, the term method is not unique
-to class instances: other object types can have methods as well.  For example,
+to kundi instances: other object types can have methods as well.  For example,
 list objects have methods called append, insert, remove, sort, and so on.
 However, in the following discussion, we'll use the term method exclusively to
-mean methods of class instance objects, unless explicitly stated otherwise.)
+mean methods of kundi instance objects, unless explicitly stated otherwise.)
 
 .. index:: object: method
 
 Valid method names of an instance object depend on its class.  By definition,
-all attributes of a class that are function  objects define corresponding
+all attributes of a kundi that are function  objects define corresponding
 methods of its instances.  So in our example, ``x.f`` is a valid method
 reference, since ``MyClass.f`` is a function, but ``x.i`` is not, since
 ``MyClass.i`` is not.  But ``x.f`` is not the same thing as ``MyClass.f`` --- it
@@ -388,11 +388,11 @@ the method's instance object before the first argument.
 
 If you still don't understand how methods work, a look at the implementation can
 perhaps clarify matters.  When a non-data attribute of an instance is
-referenced, the instance's class is searched.  If the name denotes a valid class
+referenced, the instance's kundi is searched.  If the name denotes a valid class
 attribute that is a function object, a method object is created by packing
 (pointers to) the instance object and the function object just found together in
 an abstract object: this is the method object.  When the method object is called
-with an argument list, a new argument list is constructed from the instance
+with an argument list, a new argument list is constructed kutoka the instance
 object and the argument list, and the function object is called with this new
 argument list.
 
@@ -403,12 +403,12 @@ Class and Instance Variables
 ----------------------------
 
 Generally speaking, instance variables are for data unique to each instance
-and class variables are for attributes and methods shared by all instances
+and kundi variables are for attributes and methods shared by all instances
 of the class::
 
-    class Dog:
+    kundi Dog:
 
-        kind = 'canine'         # class variable shared by all instances
+        kind = 'canine'         # kundi variable shared by all instances
 
         def __init__(self, name):
             self.name = name    # instance variable unique to each instance
@@ -427,12 +427,12 @@ of the class::
 As discussed in :ref:`tut-object`, shared data can have possibly surprising
 effects with involving :term:`mutable` objects such as lists and dictionaries.
 For example, the *tricks* list in the following code should not be used as a
-class variable because just a single list would be shared by all *Dog*
+kundi variable because just a single list would be shared by all *Dog*
 instances::
 
-    class Dog:
+    kundi Dog:
 
-        tricks = []             # mistaken use of a class variable
+        tricks = []             # mistaken use of a kundi variable
 
         def __init__(self, name):
             self.name = name
@@ -447,9 +447,9 @@ instances::
     >>> d.tricks                # unexpectedly shared by all dogs
     ['roll over', 'play dead']
 
-Correct design of the class should use an instance variable instead::
+Correct design of the kundi should use an instance variable instead::
 
-    class Dog:
+    kundi Dog:
 
         def __init__(self, name):
             self.name = name
@@ -478,7 +478,7 @@ Random Remarks
 If the same attribute name occurs in both an instance and in a class,
 then attribute lookup prioritizes the instance::
 
-    >>> class Warehouse:
+    >>> kundi Warehouse:
             purpose = 'storage'
             region = 'west'
 
@@ -504,7 +504,7 @@ clients may add data attributes of their own to an instance object without
 affecting the validity of the methods, as long as name conflicts are avoided ---
 again, a naming convention can save a lot of headaches here.
 
-There is no shorthand for referencing data attributes (or other methods!) from
+There is no shorthand for referencing data attributes (or other methods!) kutoka
 within methods.  I find that this actually increases the readability of methods:
 there is no chance of confusing local variables and instance variables when
 glancing through a method.
@@ -513,18 +513,18 @@ Often, the first argument of a method is called ``self``.  This is nothing more
 than a convention: the name ``self`` has absolutely no special meaning to
 Python.  Note, however, that by not following the convention your code may be
 less readable to other Python programmers, and it is also conceivable that a
-*class browser* program might be written that relies upon such a convention.
+*kundi browser* program might be written that relies upon such a convention.
 
-Any function object that is a class attribute defines a method for instances of
+Any function object that is a kundi attribute defines a method for instances of
 that class.  It is not necessary that the function definition is textually
-enclosed in the class definition: assigning a function object to a local
-variable in the class is also ok.  For example::
+enclosed in the kundi definition: assigning a function object to a local
+variable in the kundi is also ok.  For example::
 
    # Function defined outside the class
    def f1(self, x, y):
        return min(x, x+y)
 
-   class C:
+   kundi C:
        f = f1
 
        def g(self):
@@ -532,7 +532,7 @@ variable in the class is also ok.  For example::
 
        h = g
 
-Now ``f``, ``g`` and ``h`` are all attributes of class :class:`C` that refer to
+Now ``f``, ``g`` and ``h`` are all attributes of kundi :class:`C` that refer to
 function objects, and consequently they are all methods of instances of
 :class:`C` --- ``h`` being exactly equivalent to ``g``.  Note that this practice
 usually only serves to confuse the reader of a program.
@@ -540,7 +540,7 @@ usually only serves to confuse the reader of a program.
 Methods may call other methods by using method attributes of the ``self``
 argument::
 
-   class Bag:
+   kundi Bag:
        def __init__(self):
            self.data = []
 
@@ -553,11 +553,11 @@ argument::
 
 Methods may reference global names in the same way as ordinary functions.  The
 global scope associated with a method is the module containing its
-definition.  (A class is never used as a global scope.)  While one
+definition.  (A kundi is never used as a global scope.)  While one
 rarely encounters a good reason for using global data in a method, there are
 many legitimate uses of the global scope: for one thing, functions and modules
 imported into the global scope can be used by methods, as well as functions and
-classes defined in it.  Usually, the class containing the method is itself
+classes defined in it.  Usually, the kundi containing the method is itself
 defined in this global scope, and in the next section we'll find some good
 reasons why a method would want to reference its own class.
 
@@ -571,10 +571,10 @@ Inheritance
 ===========
 
 Of course, a language feature would not be worthy of the name "class" without
-supporting inheritance.  The syntax for a derived class definition looks like
+supporting inheritance.  The syntax for a derived kundi definition looks like
 this::
 
-   class DerivedClassName(BaseClassName):
+   kundi DerivedClassName(BaseClassName):
        <statement-1>
        .
        .
@@ -582,47 +582,47 @@ this::
        <statement-N>
 
 The name :class:`BaseClassName` must be defined in a scope containing the
-derived class definition.  In place of a base class name, other arbitrary
+derived kundi definition.  In place of a base kundi name, other arbitrary
 expressions are also allowed.  This can be useful, for example, when the base
-class is defined in another module::
+kundi is defined in another module::
 
-   class DerivedClassName(modname.BaseClassName):
+   kundi DerivedClassName(modname.BaseClassName):
 
-Execution of a derived class definition proceeds the same as for a base class.
-When the class object is constructed, the base class is remembered.  This is
+Execution of a derived kundi definition proceeds the same as for a base class.
+When the kundi object is constructed, the base kundi is remembered.  This is
 used for resolving attribute references: if a requested attribute is not found
 in the class, the search proceeds to look in the base class.  This rule is
-applied recursively if the base class itself is derived from some other class.
+applied recursively if the base kundi itself is derived kutoka some other class.
 
 There's nothing special about instantiation of derived classes:
 ``DerivedClassName()`` creates a new instance of the class.  Method references
-are resolved as follows: the corresponding class attribute is searched,
+are resolved as follows: the corresponding kundi attribute is searched,
 descending down the chain of base classes if necessary, and the method reference
 is valid if this yields a function object.
 
 Derived classes may override methods of their base classes.  Because methods
 have no special privileges when calling other methods of the same object, a
-method of a base class that calls another method defined in the same base class
-may end up calling a method of a derived class that overrides it.  (For C++
+method of a base kundi that calls another method defined in the same base class
+may end up calling a method of a derived kundi that overrides it.  (For C++
 programmers: all methods in Python are effectively ``virtual``.)
 
-An overriding method in a derived class may in fact want to extend rather than
-simply replace the base class method of the same name. There is a simple way to
-call the base class method directly: just call ``BaseClassName.methodname(self,
+An overriding method in a derived kundi may in fact want to extend rather than
+simply replace the base kundi method of the same name. There is a simple way to
+call the base kundi method directly: just call ``BaseClassName.methodname(self,
 arguments)``.  This is occasionally useful to clients as well.  (Note that this
-only works if the base class is accessible as ``BaseClassName`` in the global
+only works if the base kundi is accessible as ``BaseClassName`` in the global
 scope.)
 
 Python has two built-in functions that work with inheritance:
 
 * Use :func:`isinstance` to check an instance's type: ``isinstance(obj, int)``
   will be ``True`` only if ``obj.__class__`` is :class:`int` or some class
-  derived from :class:`int`.
+  derived kutoka :class:`int`.
 
-* Use :func:`issubclass` to check class inheritance: ``issubclass(bool, int)``
-  is ``True`` since :class:`bool` is a subclass of :class:`int`.  However,
+* Use :func:`issubclass` to check kundi inheritance: ``issubclass(bool, int)``
+  is ``True`` since :class:`bool` is a subkundi of :class:`int`.  However,
   ``issubclass(float, int)`` is ``False`` since :class:`float` is not a
-  subclass of :class:`int`.
+  subkundi of :class:`int`.
 
 
 
@@ -631,10 +631,10 @@ Python has two built-in functions that work with inheritance:
 Multiple Inheritance
 --------------------
 
-Python supports a form of multiple inheritance as well.  A class definition with
+Python supports a form of multiple inheritance as well.  A kundi definition with
 multiple base classes looks like this::
 
-   class DerivedClassName(Base1, Base2, Base3):
+   kundi DerivedClassName(Base1, Base2, Base3):
        <statement-1>
        .
        .
@@ -642,8 +642,8 @@ multiple base classes looks like this::
        <statement-N>
 
 For most purposes, in the simplest cases, you can think of the search for
-attributes inherited from a parent class as depth-first, left-to-right, not
-searching twice in the same class where there is an overlap in the hierarchy.
+attributes inherited kutoka a parent kundi as depth-first, left-to-right, not
+searching twice in the same kundi where there is an overlap in the hierarchy.
 Thus, if an attribute is not found in :class:`DerivedClassName`, it is searched
 for in :class:`Base1`, then (recursively) in the base classes of :class:`Base1`,
 and if it was not found there, it was searched for in :class:`Base2`, and so on.
@@ -656,13 +656,13 @@ single-inheritance languages.
 
 Dynamic ordering is necessary because all cases of multiple inheritance exhibit
 one or more diamond relationships (where at least one of the parent classes
-can be accessed through multiple paths from the bottommost class).  For example,
-all classes inherit from :class:`object`, so any case of multiple inheritance
+can be accessed through multiple paths kutoka the bottommost class).  For example,
+all classes inherit kutoka :class:`object`, so any case of multiple inheritance
 provides more than one path to reach :class:`object`.  To keep the base classes
-from being accessed more than once, the dynamic algorithm linearizes the search
+kutoka being accessed more than once, the dynamic algorithm linearizes the search
 order in a way that preserves the left-to-right ordering specified in each
 class, that calls each parent only once, and that is monotonic (meaning that a
-class can be subclassed without affecting the precedence order of its parents).
+kundi can be subclassed without affecting the precedence order of its parents).
 Taken together, these properties make it possible to design reliable and
 extensible classes with multiple inheritance.  For more detail, see
 https://www.python.org/download/releases/2.3/mro/.
@@ -673,7 +673,7 @@ https://www.python.org/download/releases/2.3/mro/.
 Private Variables
 =================
 
-"Private" instance variables that cannot be accessed except from inside an
+"Private" instance variables that cannot be accessed except kutoka inside an
 object don't exist in Python.  However, there is a convention that is followed
 by most Python code: a name prefixed with an underscore (e.g. ``_spam``) should
 be treated as a non-public part of the API (whether it is a function, a method
@@ -688,14 +688,14 @@ clashes of names with names defined by subclasses), there is limited support for
 such a mechanism, called :dfn:`name mangling`.  Any identifier of the form
 ``__spam`` (at least two leading underscores, at most one trailing underscore)
 is textually replaced with ``_classname__spam``, where ``classname`` is the
-current class name with leading underscore(s) stripped.  This mangling is done
+current kundi name with leading underscore(s) stripped.  This mangling is done
 without regard to the syntactic position of the identifier, as long as it
 occurs within the definition of a class.
 
 Name mangling is helpful for letting subclasses override methods without
-breaking intraclass method calls.  For example::
+breaking intrakundi method calls.  For example::
 
-   class Mapping:
+   kundi Mapping:
        def __init__(self, iterable):
            self.items_list = []
            self.__update(iterable)
@@ -706,7 +706,7 @@ breaking intraclass method calls.  For example::
 
        __update = update   # private copy of original update() method
 
-   class MappingSubclass(Mapping):
+   kundi MappingSubclass(Mapping):
 
        def update(self, keys, values):
            # provides new signature for update()
@@ -716,15 +716,15 @@ breaking intraclass method calls.  For example::
 
 The above example would work even if ``MappingSubclass`` were to introduce a
 ``__update`` identifier since it is replaced with ``_Mapping__update`` in the
-``Mapping`` class  and ``_MappingSubclass__update`` in the ``MappingSubclass``
-class respectively.
+``Mapping`` kundi  and ``_MappingSubclass__update`` in the ``MappingSubclass``
+kundi respectively.
 
 Note that the mangling rules are designed mostly to avoid accidents; it still is
 possible to access or modify a variable that is considered private.  This can
 even be useful in special circumstances, such as in the debugger.
 
 Notice that code passed to ``exec()`` or ``eval()`` does not consider the
-classname of the invoking class to be the current class; this is similar to the
+classname of the invoking kundi to be the current class; this is similar to the
 effect of the ``global`` statement, the effect of which is likewise restricted
 to code that is byte-compiled together.  The same restriction applies to
 ``getattr()``, ``setattr()`` and ``delattr()``, as well as when referencing
@@ -737,10 +737,10 @@ Odds and Ends
 =============
 
 Sometimes it is useful to have a data type similar to the Pascal "record" or C
-"struct", bundling together a few named data items.  An empty class definition
+"struct", bundling together a few named data items.  An empty kundi definition
 will do nicely::
 
-   class Employee:
+   kundi Employee:
        pass
 
    john = Employee()  # Create an empty employee record
@@ -751,15 +751,15 @@ will do nicely::
    john.salary = 1000
 
 A piece of Python code that expects a particular abstract data type can often be
-passed a class that emulates the methods of that data type instead.  For
-instance, if you have a function that formats some data from a file object, you
-can define a class with methods :meth:`read` and :meth:`!readline` that get the
-data from a string buffer instead, and pass it as an argument.
+passed a kundi that emulates the methods of that data type instead.  For
+instance, if you have a function that formats some data kutoka a file object, you
+can define a kundi with methods :meth:`read` and :meth:`!readline` that get the
+data kutoka a string buffer instead, and pass it as an argument.
 
-.. (Unfortunately, this technique has its limitations: a class can't define
+.. (Unfortunately, this technique has its limitations: a kundi can't define
    operations that are accessed by special syntax such as sequence subscripting
    or arithmetic operators, and assigning such a "pseudo-file" to sys.stdin will
-   not cause the interpreter to read further input from it.)
+   not cause the interpreter to read further input kutoka it.)
 
 Instance method objects have attributes, too: ``m.__self__`` is the instance
 object with the method :meth:`m`, and ``m.__func__`` is the function object
@@ -815,7 +815,7 @@ iterator behavior to your classes.  Define an :meth:`__iter__` method which
 returns an object with a :meth:`~iterator.__next__` method.  If the class
 defines :meth:`__next__`, then :meth:`__iter__` can just return ``self``::
 
-   class Reverse:
+   kundi Reverse:
        """Iterator for looping over a sequence backwards."""
        def __init__(self, data):
            self.data = data

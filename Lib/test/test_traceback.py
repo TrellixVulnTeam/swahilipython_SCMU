@@ -19,38 +19,38 @@ test_frame = namedtuple('frame', ['f_code', 'f_globals', 'f_locals'])
 test_tb = namedtuple('tb', ['tb_frame', 'tb_lineno', 'tb_next'])
 
 
-class TracebackCases(unittest.TestCase):
+kundi TracebackCases(unittest.TestCase):
     # For now, a very minimal set of tests.  I want to be sure that
     # formatting of SyntaxErrors works based on changes for 2.1.
 
-    def get_exception_format(self, func, exc):
+    eleza get_exception_format(self, func, exc):
         try:
             func()
         except exc as value:
-            return traceback.format_exception_only(exc, value)
+            rudisha traceback.format_exception_only(exc, value)
         else:
             raise ValueError("call did not raise exception")
 
-    def syntax_error_with_caret(self):
-        compile("def fact(x):\n\treturn x!\n", "?", "exec")
+    eleza syntax_error_with_caret(self):
+        compile("eleza fact(x):\n\trudisha x!\n", "?", "exec")
 
-    def syntax_error_with_caret_2(self):
+    eleza syntax_error_with_caret_2(self):
         compile("1 +\n", "?", "exec")
 
-    def syntax_error_bad_indentation(self):
-        compile("def spam():\n  print(1)\n print(2)", "?", "exec")
+    eleza syntax_error_bad_indentation(self):
+        compile("eleza spam():\n  andika(1)\n andika(2)", "?", "exec")
 
-    def syntax_error_with_caret_non_ascii(self):
+    eleza syntax_error_with_caret_non_ascii(self):
         compile('Python = "\u1e54\xfd\u0163\u0125\xf2\xf1" +', "?", "exec")
 
-    def syntax_error_bad_indentation2(self):
-        compile(" print(2)", "?", "exec")
+    eleza syntax_error_bad_indentation2(self):
+        compile(" andika(2)", "?", "exec")
 
-    def test_caret(self):
+    eleza test_caret(self):
         err = self.get_exception_format(self.syntax_error_with_caret,
                                         SyntaxError)
         self.assertEqual(len(err), 4)
-        self.assertTrue(err[1].strip() == "return x!")
+        self.assertTrue(err[1].strip() == "rudisha x!")
         self.assertIn("^", err[2]) # third line has caret
         self.assertEqual(err[1].find("!"), err[2].find("^")) # in the right place
 
@@ -66,47 +66,47 @@ class TracebackCases(unittest.TestCase):
         self.assertEqual(err[2].count('\n'), 1)   # and no additional newline
         self.assertEqual(err[1].find("+"), err[2].find("^"))  # in the right place
 
-    def test_nocaret(self):
+    eleza test_nocaret(self):
         exc = SyntaxError("error", ("x.py", 23, None, "bad syntax"))
         err = traceback.format_exception_only(SyntaxError, exc)
         self.assertEqual(len(err), 3)
         self.assertEqual(err[1].strip(), "bad syntax")
 
-    def test_bad_indentation(self):
+    eleza test_bad_indentation(self):
         err = self.get_exception_format(self.syntax_error_bad_indentation,
                                         IndentationError)
         self.assertEqual(len(err), 4)
-        self.assertEqual(err[1].strip(), "print(2)")
+        self.assertEqual(err[1].strip(), "andika(2)")
         self.assertIn("^", err[2])
         self.assertEqual(err[1].find(")"), err[2].find("^"))
 
         err = self.get_exception_format(self.syntax_error_bad_indentation2,
                                         IndentationError)
         self.assertEqual(len(err), 4)
-        self.assertEqual(err[1].strip(), "print(2)")
+        self.assertEqual(err[1].strip(), "andika(2)")
         self.assertIn("^", err[2])
         self.assertEqual(err[1].find("p"), err[2].find("^"))
 
-    def test_base_exception(self):
+    eleza test_base_exception(self):
         # Test that exceptions derived kutoka BaseException are formatted right
         e = KeyboardInterrupt()
         lst = traceback.format_exception_only(e.__class__, e)
         self.assertEqual(lst, ['KeyboardInterrupt\n'])
 
-    def test_format_exception_only_bad__str__(self):
-        class X(Exception):
-            def __str__(self):
+    eleza test_format_exception_only_bad__str__(self):
+        kundi X(Exception):
+            eleza __str__(self):
                 1/0
         err = traceback.format_exception_only(X, X())
         self.assertEqual(len(err), 1)
         str_value = '<unprintable %s object>' % X.__name__
-        if X.__module__ in ('__main__', 'builtins'):
+        ikiwa X.__module__ in ('__main__', 'builtins'):
             str_name = X.__qualname__
         else:
             str_name = '.'.join([X.__module__, X.__qualname__])
         self.assertEqual(err[0], "%s: %s\n" % (str_name, str_value))
 
-    def test_encoded_file(self):
+    eleza test_encoded_file(self):
         # Test that tracebacks are correctly printed for encoded source files:
         # - correct line number (Issue2384)
         # - respect file encoding (Issue3975)
@@ -116,17 +116,17 @@ class TracebackCases(unittest.TestCase):
         # encoding may be different kutoka the current interpreter, on Windows
         # at least.
         process = subprocess.Popen([sys.executable, "-c",
-                                    "agiza sys; print(sys.stdout.encoding)"],
+                                    "agiza sys; andika(sys.stdout.encoding)"],
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.STDOUT)
         stdout, stderr = process.communicate()
         output_encoding = str(stdout, 'ascii').splitlines()[0]
 
-        def do_test(firstlines, message, charset, lineno):
+        eleza do_test(firstlines, message, charset, lineno):
             # Raise the message in a subprocess, and catch the output
             try:
                 with open(TESTFN, "w", encoding=charset) as output:
-                    output.write("""{0}if 1:
+                    output.write("""{0}ikiwa 1:
                         agiza traceback;
                         raise RuntimeError('{1}')
                         """.format(firstlines, message))
@@ -159,9 +159,9 @@ class TracebackCases(unittest.TestCase):
 
         do_test("", "foo", "ascii", 3)
         for charset in ("ascii", "iso-8859-1", "utf-8", "GBK"):
-            if charset == "ascii":
+            ikiwa charset == "ascii":
                 text = "foo"
-            elif charset == "GBK":
+            elikiwa charset == "GBK":
                 text = "\u4E02\u5100"
             else:
                 text = "h\xe9 ho"
@@ -175,15 +175,15 @@ class TracebackCases(unittest.TestCase):
         do_test("x=0\n# coding: GBK\n", "h\xe9 ho", 'utf-8', 5)
 
     @support.requires_type_collecting
-    def test_print_traceback_at_exit(self):
+    eleza test_print_traceback_at_exit(self):
         # Issue #22599: Ensure that it is possible to use the traceback module
         # to display an exception at Python exit
         code = textwrap.dedent("""
             agiza sys
             agiza traceback
 
-            class PrintExceptionAtExit(object):
-                def __init__(self):
+            kundi PrintExceptionAtExit(object):
+                eleza __init__(self):
                     try:
                         x = 1 / 0
                     except Exception:
@@ -193,7 +193,7 @@ class TracebackCases(unittest.TestCase):
                         # frame to break a reference cycle
                         self = None
 
-                def __del__(self):
+                eleza __del__(self):
                     traceback.print_exception(*self.exc_info)
 
             # Keep a reference in the module namespace to call the destructor
@@ -206,7 +206,7 @@ class TracebackCases(unittest.TestCase):
                     b'ZeroDivisionError: division by zero']
         self.assertEqual(stderr.splitlines(), expected)
 
-    def test_print_exception(self):
+    eleza test_print_exception(self):
         output = StringIO()
         traceback.print_exception(
             Exception, Exception("projector"), None, file=output
@@ -214,25 +214,25 @@ class TracebackCases(unittest.TestCase):
         self.assertEqual(output.getvalue(), "Exception: projector\n")
 
 
-class TracebackFormatTests(unittest.TestCase):
+kundi TracebackFormatTests(unittest.TestCase):
 
-    def some_exception(self):
+    eleza some_exception(self):
         raise KeyError('blah')
 
     @cpython_only
-    def check_traceback_format(self, cleanup_func=None):
+    eleza check_traceback_format(self, cleanup_func=None):
         kutoka _testcapi agiza traceback_print
         try:
             self.some_exception()
         except KeyError:
             type_, value, tb = sys.exc_info()
-            if cleanup_func is not None:
+            ikiwa cleanup_func is not None:
                 # Clear the inner frames, not this one
                 cleanup_func(tb.tb_next)
             traceback_fmt = 'Traceback (most recent call last):\n' + \
                             ''.join(traceback.format_tb(tb))
             file_ = StringIO()
-            traceback_print(tb, file_)
+            traceback_andika(tb, file_)
             python_fmt  = file_.getvalue()
             # Call all _tb and _exc functions
             with captured_output("stderr") as tbstderr:
@@ -264,16 +264,16 @@ class TracebackFormatTests(unittest.TestCase):
         self.assertTrue(location.startswith('  File'))
         self.assertTrue(source_line.startswith('    raise'))
 
-    def test_traceback_format(self):
+    eleza test_traceback_format(self):
         self.check_traceback_format()
 
-    def test_traceback_format_with_cleared_frames(self):
+    eleza test_traceback_format_with_cleared_frames(self):
         # Check that traceback formatting also works with a clear()ed frame
-        def cleanup_tb(tb):
+        eleza cleanup_tb(tb):
             tb.tb_frame.clear()
         self.check_traceback_format(cleanup_tb)
 
-    def test_stack_format(self):
+    eleza test_stack_format(self):
         # Verify _stack functions. Note we have to use _getframe(1) to
         # compare them without this frame appearing in the output
         with captured_output("stderr") as ststderr:
@@ -286,8 +286,8 @@ class TracebackFormatTests(unittest.TestCase):
 
         self.assertEqual(ststderr.getvalue(), "".join(stfmt))
 
-    def test_print_stack(self):
-        def prn():
+    eleza test_print_stack(self):
+        eleza prn():
             traceback.print_stack()
         with captured_output("stderr") as stderr:
             prn()
@@ -300,14 +300,14 @@ class TracebackFormatTests(unittest.TestCase):
         ])
 
     # issue 26823 - Shrink recursive tracebacks
-    def _check_recursive_traceback_display(self, render_exc):
+    eleza _check_recursive_traceback_display(self, render_exc):
         # Always show full diffs when this test fails
         # Note that rearranging things may require adjusting
         # the relative line numbers in the expected tracebacks
         self.maxDiff = None
 
         # Check hitting the recursion limit
-        def f():
+        eleza f():
             f()
 
         with captured_output("stderr") as stderr_f:
@@ -352,9 +352,9 @@ class TracebackFormatTests(unittest.TestCase):
         self.assertIn(int(re.search(r"\d+", actual[-2]).group()), range(rec_limit-60, rec_limit))
 
         # Check a known (limited) number of recursive invocations
-        def g(count=10):
-            if count:
-                return g(count-1)
+        eleza g(count=10):
+            ikiwa count:
+                rudisha g(count-1)
             raise ValueError
 
         with captured_output("stderr") as stderr_g:
@@ -368,11 +368,11 @@ class TracebackFormatTests(unittest.TestCase):
         lineno_g = g.__code__.co_firstlineno
         result_g = (
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
-            '    return g(count-1)\n'
+            '    rudisha g(count-1)\n'
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
-            '    return g(count-1)\n'
+            '    rudisha g(count-1)\n'
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
-            '    return g(count-1)\n'
+            '    rudisha g(count-1)\n'
             '  [Previous line repeated 7 more times]\n'
             f'  File "{__file__}", line {lineno_g+3}, in g\n'
             '    raise ValueError\n'
@@ -388,9 +388,9 @@ class TracebackFormatTests(unittest.TestCase):
         self.assertEqual(actual, expected)
 
         # Check 2 different repetitive sections
-        def h(count=10):
-            if count:
-                return h(count-1)
+        eleza h(count=10):
+            ikiwa count:
+                rudisha h(count-1)
             g()
 
         with captured_output("stderr") as stderr_h:
@@ -407,11 +407,11 @@ class TracebackFormatTests(unittest.TestCase):
             f'  File "{__file__}", line {lineno_h+7}, in _check_recursive_traceback_display\n'
             '    h()\n'
             f'  File "{__file__}", line {lineno_h+2}, in h\n'
-            '    return h(count-1)\n'
+            '    rudisha h(count-1)\n'
             f'  File "{__file__}", line {lineno_h+2}, in h\n'
-            '    return h(count-1)\n'
+            '    rudisha h(count-1)\n'
             f'  File "{__file__}", line {lineno_h+2}, in h\n'
-            '    return h(count-1)\n'
+            '    rudisha h(count-1)\n'
             '  [Previous line repeated 7 more times]\n'
             f'  File "{__file__}", line {lineno_h+3}, in h\n'
             '    g()\n'
@@ -430,11 +430,11 @@ class TracebackFormatTests(unittest.TestCase):
                 self.fail("no error raised")
         result_g = (
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
-            '    return g(count-1)\n'
+            '    rudisha g(count-1)\n'
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
-            '    return g(count-1)\n'
+            '    rudisha g(count-1)\n'
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
-            '    return g(count-1)\n'
+            '    rudisha g(count-1)\n'
             f'  File "{__file__}", line {lineno_g+3}, in g\n'
             '    raise ValueError\n'
             'ValueError\n'
@@ -458,11 +458,11 @@ class TracebackFormatTests(unittest.TestCase):
                 self.fail("no error raised")
         result_g = (
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
-            '    return g(count-1)\n'
+            '    rudisha g(count-1)\n'
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
-            '    return g(count-1)\n'
+            '    rudisha g(count-1)\n'
             f'  File "{__file__}", line {lineno_g+2}, in g\n'
-            '    return g(count-1)\n'
+            '    rudisha g(count-1)\n'
             '  [Previous line repeated 1 more time]\n'
             f'  File "{__file__}", line {lineno_g+3}, in g\n'
             '    raise ValueError\n'
@@ -477,36 +477,36 @@ class TracebackFormatTests(unittest.TestCase):
         actual = stderr_g.getvalue().splitlines()
         self.assertEqual(actual, expected)
 
-    def test_recursive_traceback_python(self):
+    eleza test_recursive_traceback_python(self):
         self._check_recursive_traceback_display(traceback.print_exc)
 
     @cpython_only
-    def test_recursive_traceback_cpython_internal(self):
+    eleza test_recursive_traceback_cpython_internal(self):
         kutoka _testcapi agiza exception_print
-        def render_exc():
+        eleza render_exc():
             exc_type, exc_value, exc_tb = sys.exc_info()
-            exception_print(exc_value)
+            exception_andika(exc_value)
         self._check_recursive_traceback_display(render_exc)
 
-    def test_format_stack(self):
-        def fmt():
-            return traceback.format_stack()
+    eleza test_format_stack(self):
+        eleza fmt():
+            rudisha traceback.format_stack()
         result = fmt()
         lineno = fmt.__code__.co_firstlineno
         self.assertEqual(result[-2:], [
             '  File "%s", line %d, in test_format_stack\n'
             '    result = fmt()\n' % (__file__, lineno+2),
             '  File "%s", line %d, in fmt\n'
-            '    return traceback.format_stack()\n' % (__file__, lineno+1),
+            '    rudisha traceback.format_stack()\n' % (__file__, lineno+1),
         ])
 
     @cpython_only
-    def test_unhashable(self):
+    eleza test_unhashable(self):
         kutoka _testcapi agiza exception_print
 
-        class UnhashableException(Exception):
-            def __eq__(self, other):
-                return True
+        kundi UnhashableException(Exception):
+            eleza __eq__(self, other):
+                rudisha True
 
         ex1 = UnhashableException('ex1')
         ex2 = UnhashableException('ex2')
@@ -519,7 +519,7 @@ class TracebackFormatTests(unittest.TestCase):
                 exc_type, exc_val, exc_tb = sys.exc_info()
 
         with captured_output("stderr") as stderr_f:
-            exception_print(exc_val)
+            exception_andika(exc_val)
 
         tb = stderr_f.getvalue().strip().splitlines()
         self.assertEqual(11, len(tb))
@@ -540,26 +540,26 @@ boundaries = re.compile(
     '(%s|%s)' % (re.escape(cause_message), re.escape(context_message)))
 
 
-class BaseExceptionReportingTests:
+kundi BaseExceptionReportingTests:
 
-    def get_exception(self, exception_or_callable):
-        if isinstance(exception_or_callable, Exception):
-            return exception_or_callable
+    eleza get_exception(self, exception_or_callable):
+        ikiwa isinstance(exception_or_callable, Exception):
+            rudisha exception_or_callable
         try:
             exception_or_callable()
         except Exception as e:
-            return e
+            rudisha e
 
-    def zero_div(self):
+    eleza zero_div(self):
         1/0 # In zero_div
 
-    def check_zero_div(self, msg):
+    eleza check_zero_div(self, msg):
         lines = msg.splitlines()
         self.assertTrue(lines[-3].startswith('  File'))
         self.assertIn('1/0 # In zero_div', lines[-2])
         self.assertTrue(lines[-1].startswith('ZeroDivisionError'), lines[-1])
 
-    def test_simple(self):
+    eleza test_simple(self):
         try:
             1/0 # Marker
         except ZeroDivisionError as _:
@@ -571,13 +571,13 @@ class BaseExceptionReportingTests:
         self.assertIn('1/0 # Marker', lines[2])
         self.assertTrue(lines[3].startswith('ZeroDivisionError'))
 
-    def test_cause(self):
-        def inner_raise():
+    eleza test_cause(self):
+        eleza inner_raise():
             try:
                 self.zero_div()
             except ZeroDivisionError as e:
                 raise KeyError kutoka e
-        def outer_raise():
+        eleza outer_raise():
             inner_raise() # Marker
         blocks = boundaries.split(self.get_report(outer_raise))
         self.assertEqual(len(blocks), 3)
@@ -585,13 +585,13 @@ class BaseExceptionReportingTests:
         self.check_zero_div(blocks[0])
         self.assertIn('inner_raise() # Marker', blocks[2])
 
-    def test_context(self):
-        def inner_raise():
+    eleza test_context(self):
+        eleza inner_raise():
             try:
                 self.zero_div()
             except ZeroDivisionError:
                 raise KeyError
-        def outer_raise():
+        eleza outer_raise():
             inner_raise() # Marker
         blocks = boundaries.split(self.get_report(outer_raise))
         self.assertEqual(len(blocks), 3)
@@ -599,7 +599,7 @@ class BaseExceptionReportingTests:
         self.check_zero_div(blocks[0])
         self.assertIn('inner_raise() # Marker', blocks[2])
 
-    def test_context_suppression(self):
+    eleza test_context_suppression(self):
         try:
             try:
                 raise Exception
@@ -614,10 +614,10 @@ class BaseExceptionReportingTests:
         self.assertIn('ZeroDivisionError kutoka None', lines[2])
         self.assertTrue(lines[3].startswith('ZeroDivisionError'))
 
-    def test_cause_and_context(self):
+    eleza test_cause_and_context(self):
         # When both a cause and a context are set, only the cause should be
         # displayed and the context should be muted.
-        def inner_raise():
+        eleza inner_raise():
             try:
                 self.zero_div()
             except ZeroDivisionError as _e:
@@ -626,7 +626,7 @@ class BaseExceptionReportingTests:
                 xyzzy
             except NameError:
                 raise KeyError kutoka e
-        def outer_raise():
+        eleza outer_raise():
             inner_raise() # Marker
         blocks = boundaries.split(self.get_report(outer_raise))
         self.assertEqual(len(blocks), 3)
@@ -634,8 +634,8 @@ class BaseExceptionReportingTests:
         self.check_zero_div(blocks[0])
         self.assertIn('inner_raise() # Marker', blocks[2])
 
-    def test_cause_recursive(self):
-        def inner_raise():
+    eleza test_cause_recursive(self):
+        eleza inner_raise():
             try:
                 try:
                     self.zero_div()
@@ -644,7 +644,7 @@ class BaseExceptionReportingTests:
                     raise KeyError kutoka e
             except KeyError as e:
                 raise z kutoka e
-        def outer_raise():
+        eleza outer_raise():
             inner_raise() # Marker
         blocks = boundaries.split(self.get_report(outer_raise))
         self.assertEqual(len(blocks), 3)
@@ -657,18 +657,18 @@ class BaseExceptionReportingTests:
         self.assertIn('inner_raise() # Marker', blocks[2])
         self.check_zero_div(blocks[2])
 
-    def test_syntax_error_offset_at_eol(self):
+    eleza test_syntax_error_offset_at_eol(self):
         # See #10186.
-        def e():
+        eleza e():
             raise SyntaxError('', ('', 0, 5, 'hello'))
         msg = self.get_report(e).splitlines()
         self.assertEqual(msg[-2], "        ^")
-        def e():
+        eleza e():
             exec("x = 5 | 4 |")
         msg = self.get_report(e).splitlines()
         self.assertEqual(msg[-2], '              ^')
 
-    def test_message_none(self):
+    eleza test_message_none(self):
         # A message that looks like "None" should not be treated specially
         err = self.get_report(Exception(None))
         self.assertIn('Exception: None\n', err)
@@ -680,76 +680,76 @@ class BaseExceptionReportingTests:
         self.assertIn('Exception\n', err)
 
 
-class PyExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
+kundi PyExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
     #
     # This checks reporting through the 'traceback' module, with both
     # format_exception() and print_exception().
     #
 
-    def get_report(self, e):
+    eleza get_report(self, e):
         e = self.get_exception(e)
         s = ''.join(
             traceback.format_exception(type(e), e, e.__traceback__))
         with captured_output("stderr") as sio:
             traceback.print_exception(type(e), e, e.__traceback__)
         self.assertEqual(sio.getvalue(), s)
-        return s
+        rudisha s
 
 
-class CExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
+kundi CExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
     #
     # This checks built-in reporting by the interpreter.
     #
 
     @cpython_only
-    def get_report(self, e):
+    eleza get_report(self, e):
         kutoka _testcapi agiza exception_print
         e = self.get_exception(e)
         with captured_output("stderr") as s:
-            exception_print(e)
-        return s.getvalue()
+            exception_andika(e)
+        rudisha s.getvalue()
 
 
-class LimitTests(unittest.TestCase):
+kundi LimitTests(unittest.TestCase):
 
     ''' Tests for limit argument.
         It's enough to test extact_tb, extract_stack and format_exception '''
 
-    def last_raises1(self):
+    eleza last_raises1(self):
         raise Exception('Last raised')
 
-    def last_raises2(self):
+    eleza last_raises2(self):
         self.last_raises1()
 
-    def last_raises3(self):
+    eleza last_raises3(self):
         self.last_raises2()
 
-    def last_raises4(self):
+    eleza last_raises4(self):
         self.last_raises3()
 
-    def last_raises5(self):
+    eleza last_raises5(self):
         self.last_raises4()
 
-    def last_returns_frame1(self):
-        return sys._getframe()
+    eleza last_returns_frame1(self):
+        rudisha sys._getframe()
 
-    def last_returns_frame2(self):
-        return self.last_returns_frame1()
+    eleza last_returns_frame2(self):
+        rudisha self.last_returns_frame1()
 
-    def last_returns_frame3(self):
-        return self.last_returns_frame2()
+    eleza last_returns_frame3(self):
+        rudisha self.last_returns_frame2()
 
-    def last_returns_frame4(self):
-        return self.last_returns_frame3()
+    eleza last_returns_frame4(self):
+        rudisha self.last_returns_frame3()
 
-    def last_returns_frame5(self):
-        return self.last_returns_frame4()
+    eleza last_returns_frame5(self):
+        rudisha self.last_returns_frame4()
 
-    def test_extract_stack(self):
+    eleza test_extract_stack(self):
         frame = self.last_returns_frame5()
-        def extract(**kwargs):
-            return traceback.extract_stack(frame, **kwargs)
-        def assertEqualExcept(actual, expected, ignore):
+        eleza extract(**kwargs):
+            rudisha traceback.extract_stack(frame, **kwargs)
+        eleza assertEqualExcept(actual, expected, ignore):
             self.assertEqual(actual[:ignore], expected[:ignore])
             self.assertEqual(actual[ignore+1:], expected[ignore+1:])
             self.assertEqual(len(actual), len(expected))
@@ -773,13 +773,13 @@ class LimitTests(unittest.TestCase):
             sys.tracebacklimit = -1
             self.assertEqual(extract(), [])
 
-    def test_extract_tb(self):
+    eleza test_extract_tb(self):
         try:
             self.last_raises5()
         except Exception:
             exc_type, exc_value, tb = sys.exc_info()
-        def extract(**kwargs):
-            return traceback.extract_tb(tb, **kwargs)
+        eleza extract(**kwargs):
+            rudisha traceback.extract_tb(tb, **kwargs)
 
         with support.swap_attr(sys, 'tracebacklimit', 1000):
             nolim = extract()
@@ -800,15 +800,15 @@ class LimitTests(unittest.TestCase):
             sys.tracebacklimit = -1
             self.assertEqual(extract(), [])
 
-    def test_format_exception(self):
+    eleza test_format_exception(self):
         try:
             self.last_raises5()
         except Exception:
             exc_type, exc_value, tb = sys.exc_info()
         # [1:-1] to exclude "Traceback (...)" header and
         # exception type and value
-        def extract(**kwargs):
-            return traceback.format_exception(exc_type, exc_value, tb, **kwargs)[1:-1]
+        eleza extract(**kwargs):
+            rudisha traceback.format_exception(exc_type, exc_value, tb, **kwargs)[1:-1]
 
         with support.swap_attr(sys, 'tracebacklimit', 1000):
             nolim = extract()
@@ -830,17 +830,17 @@ class LimitTests(unittest.TestCase):
             self.assertEqual(extract(), [])
 
 
-class MiscTracebackCases(unittest.TestCase):
+kundi MiscTracebackCases(unittest.TestCase):
     #
     # Check non-printing functions in traceback module
     #
 
-    def test_clear(self):
-        def outer():
+    eleza test_clear(self):
+        eleza outer():
             middle()
-        def middle():
+        eleza middle():
             inner()
-        def inner():
+        eleza inner():
             i = 1
             1/0
 
@@ -859,21 +859,21 @@ class MiscTracebackCases(unittest.TestCase):
         # Local variable dict should now be empty.
         self.assertEqual(len(inner_frame.f_locals), 0)
 
-    def test_extract_stack(self):
-        def extract():
-            return traceback.extract_stack()
+    eleza test_extract_stack(self):
+        eleza extract():
+            rudisha traceback.extract_stack()
         result = extract()
         lineno = extract.__code__.co_firstlineno
         self.assertEqual(result[-2:], [
             (__file__, lineno+2, 'test_extract_stack', 'result = extract()'),
-            (__file__, lineno+1, 'extract', 'return traceback.extract_stack()'),
+            (__file__, lineno+1, 'extract', 'rudisha traceback.extract_stack()'),
             ])
         self.assertEqual(len(result[0]), 4)
 
 
-class TestFrame(unittest.TestCase):
+kundi TestFrame(unittest.TestCase):
 
-    def test_basics(self):
+    eleza test_basics(self):
         linecache.clearcache()
         linecache.lazycache("f", globals())
         f = traceback.FrameSummary("f", 1, "dummy")
@@ -888,7 +888,7 @@ class TestFrame(unittest.TestCase):
         self.assertEqual(tuple(f), f)
         self.assertIsNone(f.locals)
 
-    def test_lazy_lines(self):
+    eleza test_lazy_lines(self):
         linecache.clearcache()
         f = traceback.FrameSummary("f", 1, "dummy", lookup_line=False)
         self.assertEqual(None, f._line)
@@ -897,26 +897,26 @@ class TestFrame(unittest.TestCase):
             '"""Test cases for traceback module"""',
             f.line)
 
-    def test_explicit_line(self):
+    eleza test_explicit_line(self):
         f = traceback.FrameSummary("f", 1, "dummy", line="line")
         self.assertEqual("line", f.line)
 
-    def test_len(self):
+    eleza test_len(self):
         f = traceback.FrameSummary("f", 1, "dummy", line="line")
         self.assertEqual(len(f), 4)
 
 
-class TestStack(unittest.TestCase):
+kundi TestStack(unittest.TestCase):
 
-    def test_walk_stack(self):
-        def deeper():
-            return list(traceback.walk_stack(None))
+    eleza test_walk_stack(self):
+        eleza deeper():
+            rudisha list(traceback.walk_stack(None))
         s1 = list(traceback.walk_stack(None))
         s2 = deeper()
         self.assertEqual(len(s2) - len(s1), 1)
         self.assertEqual(s2[1:], s1)
 
-    def test_walk_tb(self):
+    eleza test_walk_tb(self):
         try:
             1/0
         except Exception:
@@ -924,15 +924,15 @@ class TestStack(unittest.TestCase):
         s = list(traceback.walk_tb(tb))
         self.assertEqual(len(s), 1)
 
-    def test_extract_stack(self):
+    eleza test_extract_stack(self):
         s = traceback.StackSummary.extract(traceback.walk_stack(None))
         self.assertIsInstance(s, traceback.StackSummary)
 
-    def test_extract_stack_limit(self):
+    eleza test_extract_stack_limit(self):
         s = traceback.StackSummary.extract(traceback.walk_stack(None), limit=5)
         self.assertEqual(len(s), 5)
 
-    def test_extract_stack_lookup_lines(self):
+    eleza test_extract_stack_lookup_lines(self):
         linecache.clearcache()
         linecache.updatecache('/foo.py', globals())
         c = test_code('/foo.py', 'method')
@@ -941,7 +941,7 @@ class TestStack(unittest.TestCase):
         linecache.clearcache()
         self.assertEqual(s[0].line, "agiza sys")
 
-    def test_extract_stackup_deferred_lookup_lines(self):
+    eleza test_extract_stackup_deferred_lookup_lines(self):
         linecache.clearcache()
         c = test_code('/foo.py', 'method')
         f = test_frame(c, None, None)
@@ -950,61 +950,61 @@ class TestStack(unittest.TestCase):
         linecache.updatecache('/foo.py', globals())
         self.assertEqual(s[0].line, "agiza sys")
 
-    def test_from_list(self):
-        s = traceback.StackSummary.from_list([('foo.py', 1, 'fred', 'line')])
+    eleza test_kutoka_list(self):
+        s = traceback.StackSummary.kutoka_list([('foo.py', 1, 'fred', 'line')])
         self.assertEqual(
             ['  File "foo.py", line 1, in fred\n    line\n'],
             s.format())
 
-    def test_from_list_edited_stack(self):
-        s = traceback.StackSummary.from_list([('foo.py', 1, 'fred', 'line')])
+    eleza test_kutoka_list_edited_stack(self):
+        s = traceback.StackSummary.kutoka_list([('foo.py', 1, 'fred', 'line')])
         s[0] = ('foo.py', 2, 'fred', 'line')
-        s2 = traceback.StackSummary.from_list(s)
+        s2 = traceback.StackSummary.kutoka_list(s)
         self.assertEqual(
             ['  File "foo.py", line 2, in fred\n    line\n'],
             s2.format())
 
-    def test_format_smoke(self):
+    eleza test_format_smoke(self):
         # For detailed tests see the format_list tests, which consume the same
         # code.
-        s = traceback.StackSummary.from_list([('foo.py', 1, 'fred', 'line')])
+        s = traceback.StackSummary.kutoka_list([('foo.py', 1, 'fred', 'line')])
         self.assertEqual(
             ['  File "foo.py", line 1, in fred\n    line\n'],
             s.format())
 
-    def test_locals(self):
+    eleza test_locals(self):
         linecache.updatecache('/foo.py', globals())
         c = test_code('/foo.py', 'method')
         f = test_frame(c, globals(), {'something': 1})
         s = traceback.StackSummary.extract(iter([(f, 6)]), capture_locals=True)
         self.assertEqual(s[0].locals, {'something': '1'})
 
-    def test_no_locals(self):
+    eleza test_no_locals(self):
         linecache.updatecache('/foo.py', globals())
         c = test_code('/foo.py', 'method')
         f = test_frame(c, globals(), {'something': 1})
         s = traceback.StackSummary.extract(iter([(f, 6)]))
         self.assertEqual(s[0].locals, None)
 
-    def test_format_locals(self):
-        def some_inner(k, v):
+    eleza test_format_locals(self):
+        eleza some_inner(k, v):
             a = 1
             b = 2
-            return traceback.StackSummary.extract(
+            rudisha traceback.StackSummary.extract(
                 traceback.walk_stack(None), capture_locals=True, limit=1)
         s = some_inner(3, 4)
         self.assertEqual(
             ['  File "%s", line %d, in some_inner\n'
-             '    return traceback.StackSummary.extract(\n'
+             '    rudisha traceback.StackSummary.extract(\n'
              '    a = 1\n'
              '    b = 2\n'
              '    k = 3\n'
              '    v = 4\n' % (__file__, some_inner.__code__.co_firstlineno + 3)
             ], s.format())
 
-class TestTracebackException(unittest.TestCase):
+kundi TestTracebackException(unittest.TestCase):
 
-    def test_smoke(self):
+    eleza test_smoke(self):
         try:
             1/0
         except Exception:
@@ -1019,9 +1019,9 @@ class TestTracebackException(unittest.TestCase):
         self.assertEqual(exc_info[0], exc.exc_type)
         self.assertEqual(str(exc_info[1]), str(exc))
 
-    def test_from_exception(self):
+    eleza test_kutoka_exception(self):
         # Check all the parameters are accepted.
-        def foo():
+        eleza foo():
             1/0
         try:
             foo()
@@ -1030,7 +1030,7 @@ class TestTracebackException(unittest.TestCase):
             self.expected_stack = traceback.StackSummary.extract(
                 traceback.walk_tb(exc_info[2]), limit=1, lookup_lines=False,
                 capture_locals=True)
-            self.exc = traceback.TracebackException.from_exception(
+            self.exc = traceback.TracebackException.kutoka_exception(
                 e, limit=1, lookup_lines=False, capture_locals=True)
         expected_stack = self.expected_stack
         exc = self.exc
@@ -1041,7 +1041,7 @@ class TestTracebackException(unittest.TestCase):
         self.assertEqual(exc_info[0], exc.exc_type)
         self.assertEqual(str(exc_info[1]), str(exc))
 
-    def test_cause(self):
+    eleza test_cause(self):
         try:
             try:
                 1/0
@@ -1063,7 +1063,7 @@ class TestTracebackException(unittest.TestCase):
         self.assertEqual(exc_info[0], exc.exc_type)
         self.assertEqual(str(exc_info[1]), str(exc))
 
-    def test_context(self):
+    eleza test_context(self):
         try:
             try:
                 1/0
@@ -1083,10 +1083,10 @@ class TestTracebackException(unittest.TestCase):
         self.assertEqual(exc_info[0], exc.exc_type)
         self.assertEqual(str(exc_info[1]), str(exc))
 
-    def test_unhashable(self):
-        class UnhashableException(Exception):
-            def __eq__(self, other):
-                return True
+    eleza test_unhashable(self):
+        kundi UnhashableException(Exception):
+            eleza __eq__(self, other):
+                rudisha True
 
         ex1 = UnhashableException('ex1')
         ex2 = UnhashableException('ex2')
@@ -1102,9 +1102,9 @@ class TestTracebackException(unittest.TestCase):
         self.assertIn('UnhashableException: ex2\n', formatted[2])
         self.assertIn('UnhashableException: ex1\n', formatted[6])
 
-    def test_limit(self):
-        def recurse(n):
-            if n:
+    eleza test_limit(self):
+        eleza recurse(n):
+            ikiwa n:
                 recurse(n-1)
             else:
                 1/0
@@ -1117,7 +1117,7 @@ class TestTracebackException(unittest.TestCase):
                 traceback.walk_tb(exc_info[2]), limit=5)
         self.assertEqual(expected_stack, exc.stack)
 
-    def test_lookup_lines(self):
+    eleza test_lookup_lines(self):
         linecache.clearcache()
         e = Exception("uh oh")
         c = test_code('/foo.py', 'method')
@@ -1128,7 +1128,7 @@ class TestTracebackException(unittest.TestCase):
         linecache.updatecache('/foo.py', globals())
         self.assertEqual(exc.stack[0].line, "agiza sys")
 
-    def test_locals(self):
+    eleza test_locals(self):
         linecache.updatecache('/foo.py', globals())
         e = Exception("uh oh")
         c = test_code('/foo.py', 'method')
@@ -1139,7 +1139,7 @@ class TestTracebackException(unittest.TestCase):
         self.assertEqual(
             exc.stack[0].locals, {'something': '1', 'other': "'string'"})
 
-    def test_no_locals(self):
+    eleza test_no_locals(self):
         linecache.updatecache('/foo.py', globals())
         e = Exception("uh oh")
         c = test_code('/foo.py', 'method')
@@ -1148,26 +1148,26 @@ class TestTracebackException(unittest.TestCase):
         exc = traceback.TracebackException(Exception, e, tb)
         self.assertEqual(exc.stack[0].locals, None)
 
-    def test_traceback_header(self):
-        # do not print a traceback header if exc_traceback is None
+    eleza test_traceback_header(self):
+        # do not print a traceback header ikiwa exc_traceback is None
         # see issue #24695
         exc = traceback.TracebackException(Exception, Exception("haven"), None)
         self.assertEqual(list(exc.format()), ["Exception: haven\n"])
 
 
-class MiscTest(unittest.TestCase):
+kundi MiscTest(unittest.TestCase):
 
-    def test_all(self):
+    eleza test_all(self):
         expected = set()
         blacklist = {'print_list'}
         for name in dir(traceback):
-            if name.startswith('_') or name in blacklist:
+            ikiwa name.startswith('_') or name in blacklist:
                 continue
             module_object = getattr(traceback, name)
-            if getattr(module_object, '__module__', None) == 'traceback':
+            ikiwa getattr(module_object, '__module__', None) == 'traceback':
                 expected.add(name)
         self.assertCountEqual(traceback.__all__, expected)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

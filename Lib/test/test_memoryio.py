@@ -11,20 +11,20 @@ agiza _pyio as pyio
 agiza pickle
 agiza sys
 
-class IntLike:
-    def __init__(self, num):
+kundi IntLike:
+    eleza __init__(self, num):
         self._num = num
-    def __index__(self):
-        return self._num
+    eleza __index__(self):
+        rudisha self._num
     __int__ = __index__
 
-class MemorySeekTestMixin:
+kundi MemorySeekTestMixin:
 
-    def testInit(self):
+    eleza testInit(self):
         buf = self.buftype("1234567890")
         bytesIo = self.ioclass(buf)
 
-    def testRead(self):
+    eleza testRead(self):
         buf = self.buftype("1234567890")
         bytesIo = self.ioclass(buf)
 
@@ -33,14 +33,14 @@ class MemorySeekTestMixin:
         self.assertEqual(buf[5:], bytesIo.read(900))
         self.assertEqual(self.EOF, bytesIo.read())
 
-    def testReadNoArgs(self):
+    eleza testReadNoArgs(self):
         buf = self.buftype("1234567890")
         bytesIo = self.ioclass(buf)
 
         self.assertEqual(buf, bytesIo.read())
         self.assertEqual(self.EOF, bytesIo.read())
 
-    def testSeek(self):
+    eleza testSeek(self):
         buf = self.buftype("1234567890")
         bytesIo = self.ioclass(buf)
 
@@ -52,7 +52,7 @@ class MemorySeekTestMixin:
         self.assertEqual(buf[3:], bytesIo.read())
         self.assertRaises(TypeError, bytesIo.seek, 0.0)
 
-    def testTell(self):
+    eleza testTell(self):
         buf = self.buftype("1234567890")
         bytesIo = self.ioclass(buf)
 
@@ -63,13 +63,13 @@ class MemorySeekTestMixin:
         self.assertEqual(10000, bytesIo.tell())
 
 
-class MemoryTestMixin:
+kundi MemoryTestMixin:
 
-    def test_detach(self):
+    eleza test_detach(self):
         buf = self.ioclass()
         self.assertRaises(self.UnsupportedOperation, buf.detach)
 
-    def write_ops(self, f, t):
+    eleza write_ops(self, f, t):
         self.assertEqual(f.write(t("blah.")), 5)
         self.assertEqual(f.seek(0), 0)
         self.assertEqual(f.write(t("Hello.")), 6)
@@ -82,7 +82,7 @@ class MemoryTestMixin:
         self.assertEqual(f.truncate(12), 12)
         self.assertEqual(f.tell(), 1)
 
-    def test_write(self):
+    eleza test_write(self):
         buf = self.buftype("hello world\n")
         memio = self.ioclass(buf)
 
@@ -95,7 +95,7 @@ class MemoryTestMixin:
         memio.close()
         self.assertRaises(ValueError, memio.write, self.buftype(""))
 
-    def test_writelines(self):
+    eleza test_writelines(self):
         buf = self.buftype("1234567890")
         memio = self.ioclass()
 
@@ -110,15 +110,15 @@ class MemoryTestMixin:
         memio.close()
         self.assertRaises(ValueError, memio.writelines, [])
 
-    def test_writelines_error(self):
+    eleza test_writelines_error(self):
         memio = self.ioclass()
-        def error_gen():
+        eleza error_gen():
             yield self.buftype('spam')
             raise KeyboardInterrupt
 
         self.assertRaises(KeyboardInterrupt, memio.writelines, error_gen())
 
-    def test_truncate(self):
+    eleza test_truncate(self):
         buf = self.buftype("1234567890")
         memio = self.ioclass(buf)
 
@@ -143,7 +143,7 @@ class MemoryTestMixin:
         self.assertRaises(ValueError, memio.truncate, 0)
         self.assertRaises(ValueError, memio.truncate, IntLike(0))
 
-    def test_init(self):
+    eleza test_init(self):
         buf = self.buftype("1234567890")
         memio = self.ioclass(buf)
         self.assertEqual(memio.getvalue(), buf)
@@ -155,7 +155,7 @@ class MemoryTestMixin:
         self.assertEqual(memio.getvalue(), buf)
         self.assertRaises(TypeError, memio.__init__, [])
 
-    def test_read(self):
+    eleza test_read(self):
         buf = self.buftype("1234567890")
         memio = self.ioclass(buf)
 
@@ -193,7 +193,7 @@ class MemoryTestMixin:
         memio.close()
         self.assertRaises(ValueError, memio.read)
 
-    def test_readline(self):
+    eleza test_readline(self):
         buf = self.buftype("1234567890\n")
         memio = self.ioclass(buf * 2)
 
@@ -234,7 +234,7 @@ class MemoryTestMixin:
         memio.close()
         self.assertRaises(ValueError,  memio.readline)
 
-    def test_readlines(self):
+    eleza test_readlines(self):
         buf = self.buftype("1234567890\n")
         memio = self.ioclass(buf * 10)
 
@@ -258,7 +258,7 @@ class MemoryTestMixin:
         memio.close()
         self.assertRaises(ValueError, memio.readlines)
 
-    def test_iterator(self):
+    eleza test_iterator(self):
         buf = self.buftype("1234567890\n")
         memio = self.ioclass(buf * 10)
 
@@ -283,7 +283,7 @@ class MemoryTestMixin:
         memio.close()
         self.assertRaises(ValueError, memio.__next__)
 
-    def test_getvalue(self):
+    eleza test_getvalue(self):
         buf = self.buftype("1234567890")
         memio = self.ioclass(buf)
 
@@ -297,7 +297,7 @@ class MemoryTestMixin:
         memio.close()
         self.assertRaises(ValueError, memio.getvalue)
 
-    def test_seek(self):
+    eleza test_seek(self):
         buf = self.buftype("1234567890")
         memio = self.ioclass(buf)
 
@@ -320,7 +320,7 @@ class MemoryTestMixin:
         memio.close()
         self.assertRaises(ValueError, memio.seek, 0)
 
-    def test_overseek(self):
+    eleza test_overseek(self):
         buf = self.buftype("1234567890")
         memio = self.ioclass(buf)
 
@@ -333,7 +333,7 @@ class MemoryTestMixin:
         memio.write(buf)
         self.assertEqual(memio.getvalue(), buf + self.buftype('\0') + buf)
 
-    def test_tell(self):
+    eleza test_tell(self):
         buf = self.buftype("1234567890")
         memio = self.ioclass(buf)
 
@@ -345,13 +345,13 @@ class MemoryTestMixin:
         memio.close()
         self.assertRaises(ValueError, memio.tell)
 
-    def test_flush(self):
+    eleza test_flush(self):
         buf = self.buftype("1234567890")
         memio = self.ioclass(buf)
 
         self.assertEqual(memio.flush(), None)
 
-    def test_flags(self):
+    eleza test_flags(self):
         memio = self.ioclass()
 
         self.assertEqual(memio.writable(), True)
@@ -366,45 +366,45 @@ class MemoryTestMixin:
         self.assertRaises(ValueError, memio.isatty)
         self.assertEqual(memio.closed, True)
 
-    def test_subclassing(self):
+    eleza test_subclassing(self):
         buf = self.buftype("1234567890")
-        def test1():
-            class MemIO(self.ioclass):
+        eleza test1():
+            kundi MemIO(self.ioclass):
                 pass
             m = MemIO(buf)
-            return m.getvalue()
-        def test2():
-            class MemIO(self.ioclass):
-                def __init__(me, a, b):
+            rudisha m.getvalue()
+        eleza test2():
+            kundi MemIO(self.ioclass):
+                eleza __init__(me, a, b):
                     self.ioclass.__init__(me, a)
             m = MemIO(buf, None)
-            return m.getvalue()
+            rudisha m.getvalue()
         self.assertEqual(test1(), buf)
         self.assertEqual(test2(), buf)
 
-    def test_instance_dict_leak(self):
+    eleza test_instance_dict_leak(self):
         # Test case for issue #6242.
-        # This will be caught by regrtest.py -R if this leak.
+        # This will be caught by regrtest.py -R ikiwa this leak.
         for _ in range(100):
             memio = self.ioclass()
             memio.foo = 1
 
-    def test_pickling(self):
+    eleza test_pickling(self):
         buf = self.buftype("1234567890")
         memio = self.ioclass(buf)
         memio.foo = 42
         memio.seek(2)
 
-        class PickleTestMemIO(self.ioclass):
-            def __init__(me, initvalue, foo):
+        kundi PickleTestMemIO(self.ioclass):
+            eleza __init__(me, initvalue, foo):
                 self.ioclass.__init__(me, initvalue)
                 me.foo = foo
             # __getnewargs__ is undefined on purpose. This checks that PEP 307
             # is used to provide pickling support.
 
-        # Pickle expects the class to be on the module level. Here we use a
-        # little hack to allow the PickleTestMemIO class to derive kutoka
-        # self.ioclass without having to define all combinations explicitly on
+        # Pickle expects the kundi to be on the module level. Here we use a
+        # little hack to allow the PickleTestMemIO kundi to derive kutoka
+        # self.iokundi without having to define all combinations explicitly on
         # the module-level.
         agiza __main__
         PickleTestMemIO.__module__ = '__main__'
@@ -427,18 +427,18 @@ class MemoryTestMixin:
         del __main__.PickleTestMemIO
 
 
-class PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
-    # Test _pyio.BytesIO; class also inherited for testing C implementation
+kundi PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
+    # Test _pyio.BytesIO; kundi also inherited for testing C implementation
 
     UnsupportedOperation = pyio.UnsupportedOperation
 
     @staticmethod
-    def buftype(s):
-        return s.encode("ascii")
-    ioclass = pyio.BytesIO
+    eleza buftype(s):
+        rudisha s.encode("ascii")
+    iokundi = pyio.BytesIO
     EOF = b""
 
-    def test_getbuffer(self):
+    eleza test_getbuffer(self):
         memio = self.ioclass(b"1234567890")
         buf = memio.getbuffer()
         self.assertEqual(bytes(buf), b"1234567890")
@@ -463,12 +463,12 @@ class PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
         memio.close()
         self.assertRaises(ValueError, memio.getbuffer)
 
-    def test_read1(self):
+    eleza test_read1(self):
         buf = self.buftype("1234567890")
         self.assertEqual(self.ioclass(buf).read1(), buf)
         self.assertEqual(self.ioclass(buf).read1(-1), buf)
 
-    def test_readinto(self):
+    eleza test_readinto(self):
         buf = self.buftype("1234567890")
         memio = self.ioclass(buf)
 
@@ -501,7 +501,7 @@ class PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
         memio.readinto(b)
         self.assertEqual(b, b"")
 
-    def test_relative_seek(self):
+    eleza test_relative_seek(self):
         buf = self.buftype("1234567890")
         memio = self.ioclass(buf)
 
@@ -517,14 +517,14 @@ class PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
         memio.seek(1, 1)
         self.assertEqual(memio.read(), buf[1:])
 
-    def test_unicode(self):
+    eleza test_unicode(self):
         memio = self.ioclass()
 
         self.assertRaises(TypeError, self.ioclass, "1234567890")
         self.assertRaises(TypeError, memio.write, "1234567890")
         self.assertRaises(TypeError, memio.writelines, ["1234567890"])
 
-    def test_bytes_array(self):
+    eleza test_bytes_array(self):
         buf = b"1234567890"
         agiza array
         a = array.array('b', list(buf))
@@ -533,20 +533,20 @@ class PyBytesIOTest(MemoryTestMixin, MemorySeekTestMixin, unittest.TestCase):
         self.assertEqual(memio.write(a), 10)
         self.assertEqual(memio.getvalue(), buf)
 
-    def test_issue5449(self):
+    eleza test_issue5449(self):
         buf = self.buftype("1234567890")
         self.ioclass(initial_bytes=buf)
         self.assertRaises(TypeError, self.ioclass, buf, foo=None)
 
 
-class TextIOTestMixin:
+kundi TextIOTestMixin:
 
-    def test_newlines_property(self):
+    eleza test_newlines_property(self):
         memio = self.ioclass(newline=None)
         # The C StringIO decodes newlines in write() calls, but the Python
         # implementation only does when reading.  This function forces them to
         # be decoded for testing.
-        def force_decode():
+        eleza force_decode():
             memio.seek(0)
             memio.read()
         self.assertEqual(memio.newlines, None)
@@ -560,7 +560,7 @@ class TextIOTestMixin:
         force_decode()
         self.assertEqual(memio.newlines, ("\r", "\n", "\r\n"))
 
-    def test_relative_seek(self):
+    eleza test_relative_seek(self):
         memio = self.ioclass()
 
         self.assertRaises(OSError, memio.seek, -1, 1)
@@ -570,7 +570,7 @@ class TextIOTestMixin:
         self.assertRaises(OSError, memio.seek, 1, 1)
         self.assertRaises(OSError, memio.seek, 1, 2)
 
-    def test_textio_properties(self):
+    eleza test_textio_properties(self):
         memio = self.ioclass()
 
         # These are just dummy values but we nevertheless check them for fear
@@ -579,7 +579,7 @@ class TextIOTestMixin:
         self.assertIsNone(memio.errors)
         self.assertFalse(memio.line_buffering)
 
-    def test_newline_default(self):
+    eleza test_newline_default(self):
         memio = self.ioclass("a\nb\r\nc\rd")
         self.assertEqual(list(memio), ["a\n", "b\r\n", "c\rd"])
         self.assertEqual(memio.getvalue(), "a\nb\r\nc\rd")
@@ -590,7 +590,7 @@ class TextIOTestMixin:
         self.assertEqual(list(memio), ["a\n", "b\r\n", "c\rd"])
         self.assertEqual(memio.getvalue(), "a\nb\r\nc\rd")
 
-    def test_newline_none(self):
+    eleza test_newline_none(self):
         # newline=None
         memio = self.ioclass("a\nb\r\nc\rd", newline=None)
         self.assertEqual(list(memio), ["a\n", "b\n", "c\n", "d"])
@@ -612,7 +612,7 @@ class TextIOTestMixin:
         memio = self.ioclass("a\r\nb", newline=None)
         self.assertEqual(memio.read(3), "a\nb")
 
-    def test_newline_empty(self):
+    eleza test_newline_empty(self):
         # newline=""
         memio = self.ioclass("a\nb\r\nc\rd", newline="")
         self.assertEqual(list(memio), ["a\n", "b\r\n", "c\r", "d"])
@@ -631,7 +631,7 @@ class TextIOTestMixin:
         self.assertEqual(list(memio), ["a\n", "b\r\n", "c\r", "d"])
         self.assertEqual(memio.getvalue(), "a\nb\r\nc\rd")
 
-    def test_newline_lf(self):
+    eleza test_newline_lf(self):
         # newline="\n"
         memio = self.ioclass("a\nb\r\nc\rd", newline="\n")
         self.assertEqual(list(memio), ["a\n", "b\r\n", "c\rd"])
@@ -643,7 +643,7 @@ class TextIOTestMixin:
         self.assertEqual(list(memio), ["a\n", "b\r\n", "c\rd"])
         self.assertEqual(memio.getvalue(), "a\nb\r\nc\rd")
 
-    def test_newline_cr(self):
+    eleza test_newline_cr(self):
         # newline="\r"
         memio = self.ioclass("a\nb\r\nc\rd", newline="\r")
         self.assertEqual(memio.read(), "a\rb\r\rc\rd")
@@ -659,7 +659,7 @@ class TextIOTestMixin:
         self.assertEqual(memio.readlines(), ["a\r", "b\r", "\r", "c\r", "d"])
         self.assertEqual(memio.getvalue(), "a\rb\r\rc\rd")
 
-    def test_newline_crlf(self):
+    eleza test_newline_crlf(self):
         # newline="\r\n"
         memio = self.ioclass("a\nb\r\nc\rd", newline="\r\n")
         self.assertEqual(memio.read(), "a\r\nb\r\r\nc\rd")
@@ -675,13 +675,13 @@ class TextIOTestMixin:
         self.assertEqual(list(memio), ["a\r\n", "b\r\r\n", "c\rd"])
         self.assertEqual(memio.getvalue(), "a\r\nb\r\r\nc\rd")
 
-    def test_issue5265(self):
+    eleza test_issue5265(self):
         # StringIO can duplicate newlines in universal newlines mode
         memio = self.ioclass("a\r\nb\r\n", newline=None)
         self.assertEqual(memio.read(5), "a\nb\n")
         self.assertEqual(memio.getvalue(), "a\nb\n")
 
-    def test_newline_argument(self):
+    eleza test_newline_argument(self):
         self.assertRaises(TypeError, self.ioclass, newline=b"\n")
         self.assertRaises(ValueError, self.ioclass, newline="error")
         # These should not raise an error
@@ -689,14 +689,14 @@ class TextIOTestMixin:
             self.ioclass(newline=newline)
 
 
-class PyStringIOTest(MemoryTestMixin, MemorySeekTestMixin,
+kundi PyStringIOTest(MemoryTestMixin, MemorySeekTestMixin,
                      TextIOTestMixin, unittest.TestCase):
     buftype = str
-    ioclass = pyio.StringIO
+    iokundi = pyio.StringIO
     UnsupportedOperation = pyio.UnsupportedOperation
     EOF = ""
 
-    def test_lone_surrogates(self):
+    eleza test_lone_surrogates(self):
         # Issue #20424
         memio = self.ioclass('\ud800')
         self.assertEqual(memio.read(), '\ud800')
@@ -706,36 +706,36 @@ class PyStringIOTest(MemoryTestMixin, MemorySeekTestMixin,
         self.assertEqual(memio.getvalue(), '\ud800')
 
 
-class PyStringIOPickleTest(TextIOTestMixin, unittest.TestCase):
-    """Test if pickle restores properly the internal state of StringIO.
+kundi PyStringIOPickleTest(TextIOTestMixin, unittest.TestCase):
+    """Test ikiwa pickle restores properly the internal state of StringIO.
     """
     buftype = str
     UnsupportedOperation = pyio.UnsupportedOperation
     EOF = ""
 
-    class ioclass(pyio.StringIO):
-        def __new__(cls, *args, **kwargs):
-            return pickle.loads(pickle.dumps(pyio.StringIO(*args, **kwargs)))
-        def __init__(self, *args, **kwargs):
+    kundi ioclass(pyio.StringIO):
+        eleza __new__(cls, *args, **kwargs):
+            rudisha pickle.loads(pickle.dumps(pyio.StringIO(*args, **kwargs)))
+        eleza __init__(self, *args, **kwargs):
             pass
 
 
-class CBytesIOTest(PyBytesIOTest):
-    ioclass = io.BytesIO
+kundi CBytesIOTest(PyBytesIOTest):
+    iokundi = io.BytesIO
     UnsupportedOperation = io.UnsupportedOperation
 
-    def test_getstate(self):
+    eleza test_getstate(self):
         memio = self.ioclass()
         state = memio.__getstate__()
         self.assertEqual(len(state), 3)
-        bytearray(state[0]) # Check if state[0] supports the buffer interface.
+        bytearray(state[0]) # Check ikiwa state[0] supports the buffer interface.
         self.assertIsInstance(state[1], int)
-        if state[2] is not None:
+        ikiwa state[2] is not None:
             self.assertIsInstance(state[2], dict)
         memio.close()
         self.assertRaises(ValueError, memio.__getstate__)
 
-    def test_setstate(self):
+    eleza test_setstate(self):
         # This checks whether __setstate__ does proper input validation.
         memio = self.ioclass()
         memio.__setstate__((b"no error", 0, None))
@@ -754,7 +754,7 @@ class CBytesIOTest(PyBytesIOTest):
     check_sizeof = support.check_sizeof
 
     @support.cpython_only
-    def test_sizeof(self):
+    eleza test_sizeof(self):
         basesize = support.calcobjsize('P2n2Pn')
         check = self.check_sizeof
         self.assertEqual(object.__sizeof__(io.BytesIO()), basesize)
@@ -764,7 +764,7 @@ class CBytesIOTest(PyBytesIOTest):
 
     # Various tests of copy-on-write behaviour for BytesIO.
 
-    def _test_cow_mutation(self, mutation):
+    eleza _test_cow_mutation(self, mutation):
         # Common code for all BytesIO copy-on-write mutation tests.
         imm = b' ' * 1024
         old_rc = sys.getrefcount(imm)
@@ -774,31 +774,31 @@ class CBytesIOTest(PyBytesIOTest):
         self.assertEqual(sys.getrefcount(imm), old_rc)
 
     @support.cpython_only
-    def test_cow_truncate(self):
+    eleza test_cow_truncate(self):
         # Ensure truncate causes a copy.
-        def mutation(memio):
+        eleza mutation(memio):
             memio.truncate(1)
         self._test_cow_mutation(mutation)
 
     @support.cpython_only
-    def test_cow_write(self):
+    eleza test_cow_write(self):
         # Ensure write that would not cause a resize still results in a copy.
-        def mutation(memio):
+        eleza mutation(memio):
             memio.seek(0)
             memio.write(b'foo')
         self._test_cow_mutation(mutation)
 
     @support.cpython_only
-    def test_cow_setstate(self):
+    eleza test_cow_setstate(self):
         # __setstate__ should cause buffer to be released.
         memio = self.ioclass(b'foooooo')
         state = memio.__getstate__()
-        def mutation(memio):
+        eleza mutation(memio):
             memio.__setstate__(state)
         self._test_cow_mutation(mutation)
 
     @support.cpython_only
-    def test_cow_mutable(self):
+    eleza test_cow_mutable(self):
         # BytesIO should accept only Bytes for copy-on-write sharing, since
         # arbitrary buffer-exporting objects like bytearray() aren't guaranteed
         # to be immutable.
@@ -807,13 +807,13 @@ class CBytesIOTest(PyBytesIOTest):
         memio = self.ioclass(ba)
         self.assertEqual(sys.getrefcount(ba), old_rc)
 
-class CStringIOTest(PyStringIOTest):
-    ioclass = io.StringIO
+kundi CStringIOTest(PyStringIOTest):
+    iokundi = io.StringIO
     UnsupportedOperation = io.UnsupportedOperation
 
     # XXX: For the Python version of io.StringIO, this is highly
     # dependent on the encoding used for the underlying buffer.
-    def test_widechar(self):
+    eleza test_widechar(self):
         buf = self.buftype("\U0002030a\U00020347")
         memio = self.ioclass(buf)
 
@@ -825,19 +825,19 @@ class CStringIOTest(PyStringIOTest):
         self.assertEqual(memio.tell(), len(buf) * 2)
         self.assertEqual(memio.getvalue(), buf + buf)
 
-    def test_getstate(self):
+    eleza test_getstate(self):
         memio = self.ioclass()
         state = memio.__getstate__()
         self.assertEqual(len(state), 4)
         self.assertIsInstance(state[0], str)
         self.assertIsInstance(state[1], str)
         self.assertIsInstance(state[2], int)
-        if state[3] is not None:
+        ikiwa state[3] is not None:
             self.assertIsInstance(state[3], dict)
         memio.close()
         self.assertRaises(ValueError, memio.__getstate__)
 
-    def test_setstate(self):
+    eleza test_setstate(self):
         # This checks whether __setstate__ does proper input validation.
         memio = self.ioclass()
         memio.__setstate__(("no error", "\n", 0, None))
@@ -855,15 +855,15 @@ class CStringIOTest(PyStringIOTest):
         self.assertRaises(ValueError, memio.__setstate__, ("closed", "", 0, None))
 
 
-class CStringIOPickleTest(PyStringIOPickleTest):
+kundi CStringIOPickleTest(PyStringIOPickleTest):
     UnsupportedOperation = io.UnsupportedOperation
 
-    class ioclass(io.StringIO):
-        def __new__(cls, *args, **kwargs):
-            return pickle.loads(pickle.dumps(io.StringIO(*args, **kwargs)))
-        def __init__(self, *args, **kwargs):
+    kundi ioclass(io.StringIO):
+        eleza __new__(cls, *args, **kwargs):
+            rudisha pickle.loads(pickle.dumps(io.StringIO(*args, **kwargs)))
+        eleza __init__(self, *args, **kwargs):
             pass
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

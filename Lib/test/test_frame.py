@@ -6,22 +6,22 @@ agiza weakref
 kutoka test agiza support
 
 
-class ClearTest(unittest.TestCase):
+kundi ClearTest(unittest.TestCase):
     """
     Tests for frame.clear().
     """
 
-    def inner(self, x=5, **kwargs):
+    eleza inner(self, x=5, **kwargs):
         1/0
 
-    def outer(self, **kwargs):
+    eleza outer(self, **kwargs):
         try:
             self.inner(**kwargs)
         except ZeroDivisionError as e:
             exc = e
-        return exc
+        rudisha exc
 
-    def clear_traceback_frames(self, tb):
+    eleza clear_traceback_frames(self, tb):
         """
         Clear all frames in a traceback.
         """
@@ -29,8 +29,8 @@ class ClearTest(unittest.TestCase):
             tb.tb_frame.clear()
             tb = tb.tb_next
 
-    def test_clear_locals(self):
-        class C:
+    eleza test_clear_locals(self):
+        kundi C:
             pass
         c = C()
         wr = weakref.ref(c)
@@ -44,9 +44,9 @@ class ClearTest(unittest.TestCase):
         # The reference was released by .clear()
         self.assertIs(None, wr())
 
-    def test_clear_generator(self):
+    eleza test_clear_generator(self):
         endly = False
-        def g():
+        eleza g():
             nonlocal endly
             try:
                 yield
@@ -60,7 +60,7 @@ class ClearTest(unittest.TestCase):
         gen.gi_frame.clear()
         self.assertTrue(endly)
 
-    def test_clear_executing(self):
+    eleza test_clear_executing(self):
         # Attempting to clear an executing frame is forbidden.
         try:
             1/0
@@ -71,10 +71,10 @@ class ClearTest(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             f.f_back.clear()
 
-    def test_clear_executing_generator(self):
+    eleza test_clear_executing_generator(self):
         # Attempting to clear an executing generator frame is forbidden.
         endly = False
-        def g():
+        eleza g():
             nonlocal endly
             try:
                 1/0
@@ -95,10 +95,10 @@ class ClearTest(unittest.TestCase):
         self.assertTrue(endly)
 
     @support.cpython_only
-    def test_clear_refcycles(self):
+    eleza test_clear_refcycles(self):
         # .clear() doesn't leave any refcycle behind
         with support.disable_gc():
-            class C:
+            kundi C:
                 pass
             c = C()
             wr = weakref.ref(c)
@@ -109,17 +109,17 @@ class ClearTest(unittest.TestCase):
             self.assertIs(None, wr())
 
 
-class FrameAttrsTest(unittest.TestCase):
+kundi FrameAttrsTest(unittest.TestCase):
 
-    def make_frames(self):
-        def outer():
+    eleza make_frames(self):
+        eleza outer():
             x = 5
             y = 6
-            def inner():
+            eleza inner():
                 z = x + 2
                 1/0
                 t = 9
-            return inner()
+            rudisha inner()
         try:
             outer()
         except ZeroDivisionError as e:
@@ -128,9 +128,9 @@ class FrameAttrsTest(unittest.TestCase):
             while tb:
                 frames.append(tb.tb_frame)
                 tb = tb.tb_next
-        return frames
+        rudisha frames
 
-    def test_locals(self):
+    eleza test_locals(self):
         f, outer, inner = self.make_frames()
         outer_locals = outer.f_locals
         self.assertIsInstance(outer_locals.pop('inner'), types.FunctionType)
@@ -138,7 +138,7 @@ class FrameAttrsTest(unittest.TestCase):
         inner_locals = inner.f_locals
         self.assertEqual(inner_locals, {'x': 5, 'z': 7})
 
-    def test_clear_locals(self):
+    eleza test_clear_locals(self):
         # Test f_locals after clear() (issue #21897)
         f, outer, inner = self.make_frames()
         outer.clear()
@@ -146,7 +146,7 @@ class FrameAttrsTest(unittest.TestCase):
         self.assertEqual(outer.f_locals, {})
         self.assertEqual(inner.f_locals, {})
 
-    def test_locals_clear_locals(self):
+    eleza test_locals_clear_locals(self):
         # Test f_locals before and after clear() (to exercise caching)
         f, outer, inner = self.make_frames()
         outer.f_locals
@@ -156,26 +156,26 @@ class FrameAttrsTest(unittest.TestCase):
         self.assertEqual(outer.f_locals, {})
         self.assertEqual(inner.f_locals, {})
 
-    def test_f_lineno_del_segfault(self):
+    eleza test_f_lineno_del_segfault(self):
         f, _, _ = self.make_frames()
         with self.assertRaises(AttributeError):
             del f.f_lineno
 
 
-class ReprTest(unittest.TestCase):
+kundi ReprTest(unittest.TestCase):
     """
     Tests for repr(frame).
     """
 
-    def test_repr(self):
-        def outer():
+    eleza test_repr(self):
+        eleza outer():
             x = 5
             y = 6
-            def inner():
+            eleza inner():
                 z = x + 2
                 1/0
                 t = 9
-            return inner()
+            rudisha inner()
 
         offset = outer.__code__.co_firstlineno
         try:
@@ -202,5 +202,5 @@ class ReprTest(unittest.TestCase):
                          % (file_repr, offset + 5))
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

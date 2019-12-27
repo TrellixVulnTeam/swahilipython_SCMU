@@ -20,7 +20,7 @@ agiza os
 #   - The workers would still be running during interpreter shutdown,
 #     meaning that they would fail in unpredictable ways.
 #   - The workers could be killed while evaluating a work item, which could
-#     be bad if the callable being evaluated has external side-effects e.g.
+#     be bad ikiwa the callable being evaluated has external side-effects e.g.
 #     writing to a file.
 #
 # To work around this problem, an exit handler is installed which tells the
@@ -30,7 +30,7 @@ agiza os
 _threads_queues = weakref.WeakKeyDictionary()
 _shutdown = False
 
-def _python_exit():
+eleza _python_exit():
     global _shutdown
     _shutdown = True
     items = list(_threads_queues.items())
@@ -42,15 +42,15 @@ def _python_exit():
 atexit.register(_python_exit)
 
 
-class _WorkItem(object):
-    def __init__(self, future, fn, args, kwargs):
+kundi _WorkItem(object):
+    eleza __init__(self, future, fn, args, kwargs):
         self.future = future
         self.fn = fn
         self.args = args
         self.kwargs = kwargs
 
-    def run(self):
-        if not self.future.set_running_or_notify_cancel():
+    eleza run(self):
+        ikiwa not self.future.set_running_or_notify_cancel():
             return
 
         try:
@@ -63,27 +63,27 @@ class _WorkItem(object):
             self.future.set_result(result)
 
 
-def _worker(executor_reference, work_queue, initializer, initargs):
-    if initializer is not None:
+eleza _worker(executor_reference, work_queue, initializer, initargs):
+    ikiwa initializer is not None:
         try:
             initializer(*initargs)
         except BaseException:
             _base.LOGGER.critical('Exception in initializer:', exc_info=True)
             executor = executor_reference()
-            if executor is not None:
+            ikiwa executor is not None:
                 executor._initializer_failed()
             return
     try:
         while True:
             work_item = work_queue.get(block=True)
-            if work_item is not None:
+            ikiwa work_item is not None:
                 work_item.run()
                 # Delete references to object. See issue16284
                 del work_item
 
                 # attempt to increment idle count
                 executor = executor_reference()
-                if executor is not None:
+                ikiwa executor is not None:
                     executor._idle_semaphore.release()
                 del executor
                 continue
@@ -93,10 +93,10 @@ def _worker(executor_reference, work_queue, initializer, initargs):
             #   - The interpreter is shutting down OR
             #   - The executor that owns the worker has been collected OR
             #   - The executor that owns the worker has been shutdown.
-            if _shutdown or executor is None or executor._shutdown:
-                # Flag the executor as shutting down as early as possible if it
+            ikiwa _shutdown or executor is None or executor._shutdown:
+                # Flag the executor as shutting down as early as possible ikiwa it
                 # is not gc-ed yet.
-                if executor is not None:
+                ikiwa executor is not None:
                     executor._shutdown = True
                 # Notice other workers
                 work_queue.put(None)
@@ -106,18 +106,18 @@ def _worker(executor_reference, work_queue, initializer, initargs):
         _base.LOGGER.critical('Exception in worker', exc_info=True)
 
 
-class BrokenThreadPool(_base.BrokenExecutor):
+kundi BrokenThreadPool(_base.BrokenExecutor):
     """
     Raised when a worker thread in a ThreadPoolExecutor failed initializing.
     """
 
 
-class ThreadPoolExecutor(_base.Executor):
+kundi ThreadPoolExecutor(_base.Executor):
 
     # Used to assign unique thread names when thread_name_prefix is not supplied.
     _counter = itertools.count().__next__
 
-    def __init__(self, max_workers=None, thread_name_prefix='',
+    eleza __init__(self, max_workers=None, thread_name_prefix='',
                  initializer=None, initargs=()):
         """Initializes a new ThreadPoolExecutor instance.
 
@@ -128,7 +128,7 @@ class ThreadPoolExecutor(_base.Executor):
             initializer: A callable used to initialize worker threads.
             initargs: A tuple of arguments to pass to the initializer.
         """
-        if max_workers is None:
+        ikiwa max_workers is None:
             # ThreadPoolExecutor is often used to:
             # * CPU bound task which releases GIL
             # * I/O bound task (which releases GIL, of course)
@@ -137,10 +137,10 @@ class ThreadPoolExecutor(_base.Executor):
             # But we limit it to 32 to avoid consuming surprisingly large resource
             # on many core machine.
             max_workers = min(32, (os.cpu_count() or 1) + 4)
-        if max_workers <= 0:
+        ikiwa max_workers <= 0:
             raise ValueError("max_workers must be greater than 0")
 
-        if initializer is not None and not callable(initializer):
+        ikiwa initializer is not None and not callable(initializer):
             raise TypeError("initializer must be a callable")
 
         self._max_workers = max_workers
@@ -155,13 +155,13 @@ class ThreadPoolExecutor(_base.Executor):
         self._initializer = initializer
         self._initargs = initargs
 
-    def submit(*args, **kwargs):
-        if len(args) >= 2:
+    eleza submit(*args, **kwargs):
+        ikiwa len(args) >= 2:
             self, fn, *args = args
-        elif not args:
+        elikiwa not args:
             raise TypeError("descriptor 'submit' of 'ThreadPoolExecutor' object "
                             "needs an argument")
-        elif 'fn' in kwargs:
+        elikiwa 'fn' in kwargs:
             fn = kwargs.pop('fn')
             self, *args = args
             agiza warnings
@@ -172,12 +172,12 @@ class ThreadPoolExecutor(_base.Executor):
                             'got %d' % (len(args)-1))
 
         with self._shutdown_lock:
-            if self._broken:
+            ikiwa self._broken:
                 raise BrokenThreadPool(self._broken)
 
-            if self._shutdown:
+            ikiwa self._shutdown:
                 raise RuntimeError('cannot schedule new futures after shutdown')
-            if _shutdown:
+            ikiwa _shutdown:
                 raise RuntimeError('cannot schedule new futures after '
                                    'interpreter shutdown')
 
@@ -186,22 +186,22 @@ class ThreadPoolExecutor(_base.Executor):
 
             self._work_queue.put(w)
             self._adjust_thread_count()
-            return f
+            rudisha f
     submit.__text_signature__ = _base.Executor.submit.__text_signature__
     submit.__doc__ = _base.Executor.submit.__doc__
 
-    def _adjust_thread_count(self):
-        # if idle threads are available, don't spin new threads
-        if self._idle_semaphore.acquire(timeout=0):
+    eleza _adjust_thread_count(self):
+        # ikiwa idle threads are available, don't spin new threads
+        ikiwa self._idle_semaphore.acquire(timeout=0):
             return
 
         # When the executor gets lost, the weakref callback will wake up
         # the worker threads.
-        def weakref_cb(_, q=self._work_queue):
+        eleza weakref_cb(_, q=self._work_queue):
             q.put(None)
 
         num_threads = len(self._threads)
-        if num_threads < self._max_workers:
+        ikiwa num_threads < self._max_workers:
             thread_name = '%s_%d' % (self._thread_name_prefix or self,
                                      num_threads)
             t = threading.Thread(name=thread_name, target=_worker,
@@ -214,7 +214,7 @@ class ThreadPoolExecutor(_base.Executor):
             self._threads.add(t)
             _threads_queues[t] = self._work_queue
 
-    def _initializer_failed(self):
+    eleza _initializer_failed(self):
         with self._shutdown_lock:
             self._broken = ('A thread initializer failed, the thread pool '
                             'is not usable anymore')
@@ -224,14 +224,14 @@ class ThreadPoolExecutor(_base.Executor):
                     work_item = self._work_queue.get_nowait()
                 except queue.Empty:
                     break
-                if work_item is not None:
+                ikiwa work_item is not None:
                     work_item.future.set_exception(BrokenThreadPool(self._broken))
 
-    def shutdown(self, wait=True):
+    eleza shutdown(self, wait=True):
         with self._shutdown_lock:
             self._shutdown = True
             self._work_queue.put(None)
-        if wait:
+        ikiwa wait:
             for t in self._threads:
                 t.join()
     shutdown.__doc__ = _base.Executor.shutdown.__doc__

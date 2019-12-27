@@ -12,13 +12,13 @@ JSON = r'''
 '''
 
 
-class TestPass3:
-    def test_parse(self):
+kundi TestPass3:
+    eleza test_parse(self):
         # test in/out equivalence and parsing
         res = self.loads(JSON)
         out = self.dumps(res)
         self.assertEqual(res, self.loads(out))
 
 
-class TestPyPass3(TestPass3, PyTest): pass
-class TestCPass3(TestPass3, CTest): pass
+kundi TestPyPass3(TestPass3, PyTest): pass
+kundi TestCPass3(TestPass3, CTest): pass

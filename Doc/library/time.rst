@@ -32,7 +32,7 @@ An explanation of some terminology and conventions is in order.
 
 * The term :dfn:`seconds since the epoch` refers to the total number
   of elapsed seconds since the epoch, typically excluding
-  `leap seconds`_.  Leap seconds are excluded from this total on all
+  `leap seconds`_.  Leap seconds are excluded kutoka this total on all
   POSIX-compliant platforms.
 
 .. index:: single: Year 2038
@@ -67,8 +67,8 @@ An explanation of some terminology and conventions is in order.
 
 * DST is Daylight Saving Time, an adjustment of the timezone by (usually) one
   hour during part of the year.  DST rules are magic (determined by local law) and
-  can change from year to year.  The C library has a table containing the local
-  rules (often it is read from a system file for flexibility) and is the only
+  can change kutoka year to year.  The C library has a table containing the local
+  rules (often it is read kutoka a system file for flexibility) and is the only
   source of True Wisdom in this respect.
 
 * The precision of the various real-time functions may be less than suggested by
@@ -437,7 +437,7 @@ Functions
    |           |                                                |       |
    +-----------+------------------------------------------------+-------+
    | ``%z``    | Time zone offset indicating a positive or      |       |
-   |           | negative time difference from UTC/GMT of the   |       |
+   |           | negative time difference kutoka UTC/GMT of the   |       |
    |           | form +HHMM or -HHMM, where H represents decimal|       |
    |           | hour digits and M represents decimal minute    |       |
    |           | digits [-23:59, +23:59].                       |       |
@@ -466,7 +466,7 @@ Functions
    Here is an example, a format for dates compatible with that specified  in the
    :rfc:`2822` Internet email standard.  [#]_ ::
 
-      >>> from time import gmtime, strftime
+      >>> kutoka time agiza gmtime, strftime
       >>> strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
       'Thu, 28 Jun 2001 14:17:15 +0000'
 
@@ -500,7 +500,7 @@ Functions
 
    For example:
 
-      >>> import time
+      >>> agiza time
       >>> time.strptime("30 Nov 00", "%d %b %y")   # doctest: +NORMALIZE_WHITESPACE
       time.struct_time(tm_year=2000, tm_mon=11, tm_mday=30, tm_hour=0, tm_min=0,
                        tm_sec=0, tm_wday=3, tm_yday=335, tm_isdst=-1)
@@ -584,7 +584,7 @@ Functions
    time format (i.e. year, month, day, hour, etc...) in UTC by passing it to
    :func:`gmtime` function or in local time by passing it to the
    :func:`localtime` function. In both cases a
-   :class:`struct_time` object is returned, from which the components
+   :class:`struct_time` object is returned, kutoka which the components
    of the calendar date may be accessed as attributes.
 
 
@@ -625,7 +625,7 @@ Functions
 
    Reset the time conversion rules used by the library routines. The environment
    variable :envvar:`TZ` specifies how this is done. It will also set the variables
-   ``tzname`` (from the :envvar:`TZ` environment variable), ``timezone`` (non-DST
+   ``tzname`` (kutoka the :envvar:`TZ` environment variable), ``timezone`` (non-DST
    seconds West of UTC), ``altzone`` (DST seconds west of UTC) and ``daylight``
    (to 0 if this timezone does not have any daylight saving time rules, or to
    nonzero if there is a time, past, present or future when daylight saving time
@@ -659,7 +659,7 @@ Functions
       dst, summer time is assumed to be one hour ahead of standard time.
 
    ``start[/time], end[/time]``
-      Indicates when to change to and back from DST. The format of the
+      Indicates when to change to and back kutoka DST. The format of the
       start and end dates are one of the following:
 
       :samp:`J{n}`
@@ -765,7 +765,7 @@ These constants are used as parameters for :func:`clock_getres` and
 
 .. data:: CLOCK_PROCESS_CPUTIME_ID
 
-   High-resolution per-process timer from the CPU.
+   High-resolution per-process timer kutoka the CPU.
 
    .. availability:: Unix.
 
@@ -774,7 +774,7 @@ These constants are used as parameters for :func:`clock_getres` and
 
 .. data:: CLOCK_PROF
 
-   High-resolution per-process timer from the CPU.
+   High-resolution per-process timer kutoka the CPU.
 
    .. availability:: FreeBSD, NetBSD 7 or later, OpenBSD.
 
@@ -858,7 +858,7 @@ Timezone Constants
    and :data:`tzname`), the value is determined by the timezone rules in effect
    at module load time or the last time :func:`tzset` is called and may be incorrect
    for times in the past.  It is recommended to use the :attr:`tm_gmtoff` and
-   :attr:`tm_zone` results from :func:`localtime` to obtain timezone information.
+   :attr:`tm_zone` results kutoka :func:`localtime` to obtain timezone information.
 
 
 .. seealso::
@@ -872,7 +872,7 @@ Timezone Constants
 
    Module :mod:`calendar`
       General calendar-related functions.   :func:`~calendar.timegm` is the
-      inverse of :func:`gmtime` from this module.
+      inverse of :func:`gmtime` kutoka this module.
 
 .. rubric:: Footnotes
 

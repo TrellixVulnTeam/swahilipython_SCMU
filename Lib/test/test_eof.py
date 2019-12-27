@@ -5,8 +5,8 @@ kutoka test agiza support
 kutoka test.support agiza script_helper
 agiza unittest
 
-class EOFTestCase(unittest.TestCase):
-    def test_EOFC(self):
+kundi EOFTestCase(unittest.TestCase):
+    eleza test_EOFC(self):
         expect = "EOL while scanning string literal (<string>, line 1)"
         try:
             eval("""'this is a test\
@@ -16,7 +16,7 @@ class EOFTestCase(unittest.TestCase):
         else:
             raise support.TestFailed
 
-    def test_EOFS(self):
+    eleza test_EOFS(self):
         expect = ("EOF while scanning triple-quoted string literal "
                   "(<string>, line 1)")
         try:
@@ -26,7 +26,7 @@ class EOFTestCase(unittest.TestCase):
         else:
             raise support.TestFailed
 
-    def test_line_continuation_EOF(self):
+    eleza test_line_continuation_EOF(self):
         """A contination at the end of input must be an error; bpo2180."""
         expect = 'unexpected EOF while parsing (<string>, line 1)'
         with self.assertRaises(SyntaxError) as excinfo:
@@ -37,7 +37,7 @@ class EOFTestCase(unittest.TestCase):
         self.assertEqual(str(excinfo.exception), expect)
 
     @unittest.skipIf(not sys.executable, "sys.executable required")
-    def test_line_continuation_EOF_from_file_bpo2180(self):
+    eleza test_line_continuation_EOF_kutoka_file_bpo2180(self):
         """Ensure tok_nextc() does not add too many ending newlines."""
         with support.temp_dir() as temp_dir:
             file_name = script_helper.make_script(temp_dir, 'foo', '\\')
@@ -48,5 +48,5 @@ class EOFTestCase(unittest.TestCase):
             rc, out, err = script_helper.assert_python_failure(file_name)
             self.assertIn(b'unexpected EOF while parsing', err)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

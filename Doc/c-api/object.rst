@@ -14,7 +14,7 @@ Object Protocol
 
 .. c:macro:: Py_RETURN_NOTIMPLEMENTED
 
-   Properly handle returning :c:data:`Py_NotImplemented` from within a C
+   Properly handle returning :c:data:`Py_NotImplemented` kutoka within a C
    function (that is, increment the reference count of NotImplemented and
    return it).
 
@@ -52,14 +52,14 @@ Object Protocol
 
 .. c:function:: PyObject* PyObject_GetAttr(PyObject *o, PyObject *attr_name)
 
-   Retrieve an attribute named *attr_name* from object *o*. Returns the attribute
+   Retrieve an attribute named *attr_name* kutoka object *o*. Returns the attribute
    value on success, or *NULL* on failure.  This is the equivalent of the Python
    expression ``o.attr_name``.
 
 
 .. c:function:: PyObject* PyObject_GetAttrString(PyObject *o, const char *attr_name)
 
-   Retrieve an attribute named *attr_name* from object *o*. Returns the attribute
+   Retrieve an attribute named *attr_name* kutoka object *o*. Returns the attribute
    value on success, or *NULL* on failure. This is the equivalent of the Python
    expression ``o.attr_name``.
 
@@ -209,7 +209,7 @@ Object Protocol
 
 .. c:function:: int PyObject_IsSubclass(PyObject *derived, PyObject *cls)
 
-   Return ``1`` if the class *derived* is identical to or derived from the class
+   Return ``1`` if the kundi *derived* is identical to or derived kutoka the class
    *cls*, otherwise return ``0``.  In case of an error, return ``-1``.
 
    If *cls* is a tuple, the check will be done against every entry in *cls*.
@@ -217,18 +217,18 @@ Object Protocol
    otherwise it will be ``0``.
 
    If *cls* has a :meth:`~class.__subclasscheck__` method, it will be called to
-   determine the subclass status as described in :pep:`3119`.  Otherwise,
-   *derived* is a subclass of *cls* if it is a direct or indirect subclass,
+   determine the subkundi status as described in :pep:`3119`.  Otherwise,
+   *derived* is a subkundi of *cls* if it is a direct or indirect subclass,
    i.e. contained in ``cls.__mro__``.
 
-   Normally only class objects, i.e. instances of :class:`type` or a derived
+   Normally only kundi objects, i.e. instances of :class:`type` or a derived
    class, are considered classes.  However, objects can override this by having
    a :attr:`__bases__` attribute (which must be a tuple of base classes).
 
 
 .. c:function:: int PyObject_IsInstance(PyObject *inst, PyObject *cls)
 
-   Return ``1`` if *inst* is an instance of the class *cls* or a subclass of
+   Return ``1`` if *inst* is an instance of the kundi *cls* or a subkundi of
    *cls*, or ``0`` if not.  On error, returns ``-1`` and sets an exception.
 
    If *cls* is a tuple, the check will be done against every entry in *cls*.
@@ -236,10 +236,10 @@ Object Protocol
    otherwise it will be ``0``.
 
    If *cls* has a :meth:`~class.__instancecheck__` method, it will be called to
-   determine the subclass status as described in :pep:`3119`.  Otherwise, *inst*
-   is an instance of *cls* if its class is a subclass of *cls*.
+   determine the subkundi status as described in :pep:`3119`.  Otherwise, *inst*
+   is an instance of *cls* if its kundi is a subkundi of *cls*.
 
-   An instance *inst* can override what is considered its class by having a
+   An instance *inst* can override what is considered its kundi by having a
    :attr:`__class__` attribute.
 
    An object *cls* can override if it is considered a class, and what its base
@@ -294,7 +294,7 @@ Object Protocol
    :c:func:`PyObject_CallFunctionObjArgs` is a faster alternative.
 
    .. versionchanged:: 3.4
-      The type of *format* was changed from ``char *``.
+      The type of *format* was changed kutoka ``char *``.
 
 
 .. c:function:: PyObject* PyObject_CallMethod(PyObject *obj, const char *name, const char *format, ...)
@@ -315,7 +315,7 @@ Object Protocol
    :c:func:`PyObject_CallMethodObjArgs` is a faster alternative.
 
    .. versionchanged:: 3.4
-      The types of *name* and *format* were changed from ``char *``.
+      The types of *name* and *format* were changed kutoka ``char *``.
 
 
 .. c:function:: PyObject* PyObject_CallFunctionObjArgs(PyObject *callable, ..., NULL)
@@ -508,7 +508,7 @@ Object Protocol
 
 .. c:function:: int PyObject_DelItem(PyObject *o, PyObject *key)
 
-   Remove the mapping for the object *key* from the object *o*.  Return ``-1``
+   Remove the mapping for the object *key* kutoka the object *o*.  Return ``-1``
    on failure.  This is equivalent to the Python statement ``del o[key]``.
 
 

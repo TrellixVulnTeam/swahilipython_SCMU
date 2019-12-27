@@ -9,10 +9,10 @@ kutoka idlelib.tree agiza TreeNode, ScrolledCanvas
 agiza sys
 
 
-class StackBrowserTest(unittest.TestCase):
+kundi StackBrowserTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         svs = stackviewer.sys
         try:
             abc
@@ -25,7 +25,7 @@ class StackBrowserTest(unittest.TestCase):
         cls.root.withdraw()
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         svs = stackviewer.sys
         del svs.last_traceback, svs.last_type, svs.last_value
 
@@ -35,7 +35,7 @@ class StackBrowserTest(unittest.TestCase):
         cls.root.destroy()
         del cls.root
 
-    def test_init(self):
+    eleza test_init(self):
         sb = stackviewer.StackBrowser(self.root)
         isi = self.assertIsInstance
         isi(stackviewer.sc, ScrolledCanvas)
@@ -43,5 +43,5 @@ class StackBrowserTest(unittest.TestCase):
         isi(stackviewer.node, TreeNode)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

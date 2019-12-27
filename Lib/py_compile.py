@@ -15,7 +15,7 @@ agiza traceback
 __all__ = ["compile", "main", "PyCompileError", "PycInvalidationMode"]
 
 
-class PyCompileError(Exception):
+kundi PyCompileError(Exception):
     """Exception raised when an error occurs while attempting to
     compile the file.
 
@@ -26,26 +26,26 @@ class PyCompileError(Exception):
     where
 
         exc_type:   exception type to be used in error message
-                    type name can be accesses as class variable
+                    type name can be accesses as kundi variable
                     'exc_type_name'
 
         exc_value:  exception value to be used in error message
-                    can be accesses as class variable 'exc_value'
+                    can be accesses as kundi variable 'exc_value'
 
         file:       name of file being compiled to be used in error message
-                    can be accesses as class variable 'file'
+                    can be accesses as kundi variable 'file'
 
         msg:        string message to be written as error message
                     If no value is given, a default exception message will be
                     given, consistent with 'standard' py_compile output.
-                    message (or default) can be accesses as class variable
+                    message (or default) can be accesses as kundi variable
                     'msg'
 
     """
 
-    def __init__(self, exc_type, exc_value, file, msg=''):
+    eleza __init__(self, exc_type, exc_value, file, msg=''):
         exc_type_name = exc_type.__name__
-        if exc_type is SyntaxError:
+        ikiwa exc_type is SyntaxError:
             tbtext = ''.join(traceback.format_exception_only(
                 exc_type, exc_value))
             errmsg = tbtext.replace('File "<string>"', 'File "%s"' % file)
@@ -59,24 +59,24 @@ class PyCompileError(Exception):
         self.file = file
         self.msg = msg or errmsg
 
-    def __str__(self):
-        return self.msg
+    eleza __str__(self):
+        rudisha self.msg
 
 
-class PycInvalidationMode(enum.Enum):
+kundi PycInvalidationMode(enum.Enum):
     TIMESTAMP = 1
     CHECKED_HASH = 2
     UNCHECKED_HASH = 3
 
 
-def _get_default_invalidation_mode():
-    if os.environ.get('SOURCE_DATE_EPOCH'):
-        return PycInvalidationMode.CHECKED_HASH
+eleza _get_default_invalidation_mode():
+    ikiwa os.environ.get('SOURCE_DATE_EPOCH'):
+        rudisha PycInvalidationMode.CHECKED_HASH
     else:
-        return PycInvalidationMode.TIMESTAMP
+        rudisha PycInvalidationMode.TIMESTAMP
 
 
-def compile(file, cfile=None, dfile=None, doraise=False, optimize=-1,
+eleza compile(file, cfile=None, dfile=None, doraise=False, optimize=-1,
             invalidation_mode=None, quiet=0):
     """Byte-compile one Python source file to Python bytecode.
 
@@ -88,7 +88,7 @@ def compile(file, cfile=None, dfile=None, doraise=False, optimize=-1,
     :param doraise: Flag indicating whether or not an exception should be
         raised when a compile error is found.  If an exception occurs and this
         flag is set to False, a string indicating the nature of the exception
-        will be printed, and the function will return to the caller. If an
+        will be printed, and the function will rudisha to the caller. If an
         exception occurs and this flag is set to True, a PyCompileError
         exception will be raised.
     :param optimize: The optimization level for the compiler.  Valid values
@@ -102,10 +102,10 @@ def compile(file, cfile=None, dfile=None, doraise=False, optimize=-1,
 
     Note that it isn't necessary to byte-compile Python modules for
     execution efficiency -- Python itself byte-compiles a module when
-    it is loaded, and if it can, writes out the bytecode to the
+    it is loaded, and ikiwa it can, writes out the bytecode to the
     corresponding .pyc file.
 
-    However, if a Python installation is shared between users, it is a
+    However, ikiwa a Python installation is shared between users, it is a
     good idea to byte-compile all modules upon installation, since
     other users may not be able to write in the source directories,
     and thus they won't be able to write the .pyc file, and then
@@ -116,27 +116,27 @@ def compile(file, cfile=None, dfile=None, doraise=False, optimize=-1,
     byte-compile all installed files (or all files in selected
     directories).
 
-    Do note that FileExistsError is raised if cfile ends up pointing at a
+    Do note that FileExistsError is raised ikiwa cfile ends up pointing at a
     non-regular file or symlink. Because the compilation uses a file renaming,
     the resulting file would be regular and thus not the same type of file as
     it was previously.
     """
-    if invalidation_mode is None:
+    ikiwa invalidation_mode is None:
         invalidation_mode = _get_default_invalidation_mode()
-    if cfile is None:
-        if optimize >= 0:
-            optimization = optimize if optimize >= 1 else ''
-            cfile = importlib.util.cache_from_source(file,
+    ikiwa cfile is None:
+        ikiwa optimize >= 0:
+            optimization = optimize ikiwa optimize >= 1 else ''
+            cfile = importlib.util.cache_kutoka_source(file,
                                                      optimization=optimization)
         else:
-            cfile = importlib.util.cache_from_source(file)
-    if os.path.islink(cfile):
-        msg = ('{} is a symlink and will be changed into a regular file if '
+            cfile = importlib.util.cache_kutoka_source(file)
+    ikiwa os.path.islink(cfile):
+        msg = ('{} is a symlink and will be changed into a regular file ikiwa '
                'agiza writes a byte-compiled file to it')
         raise FileExistsError(msg.format(cfile))
-    elif os.path.exists(cfile) and not os.path.isfile(cfile):
+    elikiwa os.path.exists(cfile) and not os.path.isfile(cfile):
         msg = ('{} is a non-regular file and will be changed into a regular '
-               'one if agiza writes a byte-compiled file to it')
+               'one ikiwa agiza writes a byte-compiled file to it')
         raise FileExistsError(msg.format(cfile))
     loader = importlib.machinery.SourceFileLoader('<py_compile>', file)
     source_bytes = loader.get_data(file)
@@ -145,19 +145,19 @@ def compile(file, cfile=None, dfile=None, doraise=False, optimize=-1,
                                      _optimize=optimize)
     except Exception as err:
         py_exc = PyCompileError(err.__class__, err, dfile or file)
-        if quiet < 2:
-            if doraise:
+        ikiwa quiet < 2:
+            ikiwa doraise:
                 raise py_exc
             else:
                 sys.stderr.write(py_exc.msg + '\n')
         return
     try:
         dirname = os.path.dirname(cfile)
-        if dirname:
+        ikiwa dirname:
             os.makedirs(dirname)
     except FileExistsError:
         pass
-    if invalidation_mode == PycInvalidationMode.TIMESTAMP:
+    ikiwa invalidation_mode == PycInvalidationMode.TIMESTAMP:
         source_stats = loader.path_stats(file)
         bytecode = importlib._bootstrap_external._code_to_timestamp_pyc(
             code, source_stats['mtime'], source_stats['size'])
@@ -170,13 +170,13 @@ def compile(file, cfile=None, dfile=None, doraise=False, optimize=-1,
         )
     mode = importlib._bootstrap_external._calc_mode(file)
     importlib._bootstrap_external._write_atomic(cfile, bytecode, mode)
-    return cfile
+    rudisha cfile
 
 
-def main(args=None):
+eleza main(args=None):
     """Compile several source files.
 
-    The files named in 'args' (or on the command line, if 'args' is
+    The files named in 'args' (or on the command line, ikiwa 'args' is
     not specified) are compiled and the resulting bytecode is cached
     in the normal manner.  This function does not search a directory
     structure to locate source files; it only compiles files named
@@ -184,35 +184,35 @@ def main(args=None):
     files is taken kutoka standard input.
 
     """
-    if args is None:
+    ikiwa args is None:
         args = sys.argv[1:]
     rv = 0
-    if args == ['-']:
+    ikiwa args == ['-']:
         while True:
             filename = sys.stdin.readline()
-            if not filename:
+            ikiwa not filename:
                 break
             filename = filename.rstrip('\n')
             try:
                 compile(filename, doraise=True)
             except PyCompileError as error:
                 rv = 1
-                if quiet < 2:
+                ikiwa quiet < 2:
                     sys.stderr.write("%s\n" % error.msg)
             except OSError as error:
                 rv = 1
-                if quiet < 2:
+                ikiwa quiet < 2:
                     sys.stderr.write("%s\n" % error)
     else:
         for filename in args:
             try:
                 compile(filename, doraise=True)
             except PyCompileError as error:
-                # return value to indicate at least one failure
+                # rudisha value to indicate at least one failure
                 rv = 1
-                if quiet < 2:
+                ikiwa quiet < 2:
                     sys.stderr.write("%s\n" % error.msg)
-    return rv
+    rudisha rv
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     sys.exit(main())

@@ -4,21 +4,21 @@ agiza unittest
 agiza sys
 agiza cgitb
 
-class TestCgitb(unittest.TestCase):
+kundi TestCgitb(unittest.TestCase):
 
-    def test_fonts(self):
+    eleza test_fonts(self):
         text = "Hello Robbie!"
         self.assertEqual(cgitb.small(text), "<small>{}</small>".format(text))
         self.assertEqual(cgitb.strong(text), "<strong>{}</strong>".format(text))
         self.assertEqual(cgitb.grey(text),
                          '<font color="#909090">{}</font>'.format(text))
 
-    def test_blanks(self):
+    eleza test_blanks(self):
         self.assertEqual(cgitb.small(""), "")
         self.assertEqual(cgitb.strong(""), "")
         self.assertEqual(cgitb.grey(""), "")
 
-    def test_html(self):
+    eleza test_html(self):
         try:
             raise ValueError("Hello World")
         except ValueError as err:
@@ -28,7 +28,7 @@ class TestCgitb(unittest.TestCase):
             self.assertIn("ValueError", html)
             self.assertIn(str(err), html)
 
-    def test_text(self):
+    eleza test_text(self):
         try:
             raise ValueError("Hello World")
         except ValueError as err:
@@ -36,7 +36,7 @@ class TestCgitb(unittest.TestCase):
             self.assertIn("ValueError", text)
             self.assertIn("Hello World", text)
 
-    def test_syshook_no_logdir_default_format(self):
+    eleza test_syshook_no_logdir_default_format(self):
         with temp_dir() as tracedir:
             rc, out, err = assert_python_failure(
                   '-c',
@@ -50,7 +50,7 @@ class TestCgitb(unittest.TestCase):
         self.assertIn('<p>', out)
         self.assertIn('</p>', out)
 
-    def test_syshook_no_logdir_text_format(self):
+    eleza test_syshook_no_logdir_text_format(self):
         # Issue 12890: we were emitting the <p> tag in text mode.
         with temp_dir() as tracedir:
             rc, out, err = assert_python_failure(
@@ -64,5 +64,5 @@ class TestCgitb(unittest.TestCase):
         self.assertNotIn('</p>', out)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

@@ -5,7 +5,7 @@ agiza unittest
 agiza shutil
 kutoka test.support agiza TESTFN, run_unittest, unlink, reap_children
 
-if os.name != 'posix':
+ikiwa os.name != 'posix':
     raise unittest.SkipTest('pipes module only works on posix')
 
 TESTFN2 = TESTFN + "2"
@@ -13,13 +13,13 @@ TESTFN2 = TESTFN + "2"
 # tr a-z A-Z is not portable, so make the ranges explicit
 s_command = 'tr %s %s' % (string.ascii_lowercase, string.ascii_uppercase)
 
-class SimplePipeTests(unittest.TestCase):
-    def tearDown(self):
+kundi SimplePipeTests(unittest.TestCase):
+    eleza tearDown(self):
         for f in (TESTFN, TESTFN2):
             unlink(f)
 
-    def testSimplePipe1(self):
-        if shutil.which('tr') is None:
+    eleza testSimplePipe1(self):
+        ikiwa shutil.which('tr') is None:
             self.skipTest('tr is not available')
         t = pipes.Template()
         t.append(s_command, pipes.STDIN_STDOUT)
@@ -28,8 +28,8 @@ class SimplePipeTests(unittest.TestCase):
         with open(TESTFN) as f:
             self.assertEqual(f.read(), 'HELLO WORLD #1')
 
-    def testSimplePipe2(self):
-        if shutil.which('tr') is None:
+    eleza testSimplePipe2(self):
+        ikiwa shutil.which('tr') is None:
             self.skipTest('tr is not available')
         with open(TESTFN, 'w') as f:
             f.write('hello world #2')
@@ -39,8 +39,8 @@ class SimplePipeTests(unittest.TestCase):
         with open(TESTFN2) as f:
             self.assertEqual(f.read(), 'HELLO WORLD #2')
 
-    def testSimplePipe3(self):
-        if shutil.which('tr') is None:
+    eleza testSimplePipe3(self):
+        ikiwa shutil.which('tr') is None:
             self.skipTest('tr is not available')
         with open(TESTFN, 'w') as f:
             f.write('hello world #2')
@@ -52,7 +52,7 @@ class SimplePipeTests(unittest.TestCase):
         finally:
             f.close()
 
-    def testEmptyPipeline1(self):
+    eleza testEmptyPipeline1(self):
         # copy through empty pipe
         d = 'empty pipeline test COPY'
         with open(TESTFN, 'w') as f:
@@ -64,7 +64,7 @@ class SimplePipeTests(unittest.TestCase):
         with open(TESTFN2) as f:
             self.assertEqual(f.read(), d)
 
-    def testEmptyPipeline2(self):
+    eleza testEmptyPipeline2(self):
         # read through empty pipe
         d = 'empty pipeline test READ'
         with open(TESTFN, 'w') as f:
@@ -76,7 +76,7 @@ class SimplePipeTests(unittest.TestCase):
         finally:
             f.close()
 
-    def testEmptyPipeline3(self):
+    eleza testEmptyPipeline3(self):
         # write through empty pipe
         d = 'empty pipeline test WRITE'
         t = pipes.Template()
@@ -85,35 +85,35 @@ class SimplePipeTests(unittest.TestCase):
         with open(TESTFN) as f:
             self.assertEqual(f.read(), d)
 
-    def testRepr(self):
+    eleza testRepr(self):
         t = pipes.Template()
         self.assertEqual(repr(t), "<Template instance, steps=[]>")
         t.append('tr a-z A-Z', pipes.STDIN_STDOUT)
         self.assertEqual(repr(t),
                     "<Template instance, steps=[('tr a-z A-Z', '--')]>")
 
-    def testSetDebug(self):
+    eleza testSetDebug(self):
         t = pipes.Template()
         t.debug(False)
         self.assertEqual(t.debugging, False)
         t.debug(True)
         self.assertEqual(t.debugging, True)
 
-    def testReadOpenSink(self):
+    eleza testReadOpenSink(self):
         # check calling open('r') on a pipe ending with
         # a sink raises ValueError
         t = pipes.Template()
         t.append('boguscmd', pipes.SINK)
         self.assertRaises(ValueError, t.open, 'bogusfile', 'r')
 
-    def testWriteOpenSource(self):
+    eleza testWriteOpenSource(self):
         # check calling open('w') on a pipe ending with
         # a source raises ValueError
         t = pipes.Template()
         t.prepend('boguscmd', pipes.SOURCE)
         self.assertRaises(ValueError, t.open, 'bogusfile', 'w')
 
-    def testBadAppendOptions(self):
+    eleza testBadAppendOptions(self):
         t = pipes.Template()
 
         # try a non-string command
@@ -147,7 +147,7 @@ class SimplePipeTests(unittest.TestCase):
                            pipes.STDIN_FILEOUT)
 
 
-    def testBadPrependOptions(self):
+    eleza testBadPrependOptions(self):
         t = pipes.Template()
 
         # try a non-string command
@@ -180,11 +180,11 @@ class SimplePipeTests(unittest.TestCase):
         self.assertRaises(ValueError, t.prepend, 'boguscmd',
                            pipes.STDIN_FILEOUT)
 
-    def testBadOpenMode(self):
+    eleza testBadOpenMode(self):
         t = pipes.Template()
         self.assertRaises(ValueError, t.open, 'bogusfile', 'x')
 
-    def testClone(self):
+    eleza testClone(self):
         t = pipes.Template()
         t.append('tr a-z A-Z', pipes.STDIN_STDOUT)
 
@@ -194,9 +194,9 @@ class SimplePipeTests(unittest.TestCase):
         self.assertNotEqual(id(t.steps), id(u.steps))
         self.assertEqual(t.debugging, u.debugging)
 
-def test_main():
+eleza test_main():
     run_unittest(SimplePipeTests)
     reap_children()
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

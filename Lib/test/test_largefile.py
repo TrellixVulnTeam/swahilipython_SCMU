@@ -12,23 +12,23 @@ agiza _pyio as pyio # Python implementation of io
 # size of file to create (>2 GiB; 2 GiB == 2,147,483,648 bytes)
 size = 2_500_000_000
 
-class LargeFileTest:
+kundi LargeFileTest:
     """Test that each file function works as expected for large
     (i.e. > 2 GiB) files.
     """
 
-    def setUp(self):
-        if os.path.exists(TESTFN):
+    eleza setUp(self):
+        ikiwa os.path.exists(TESTFN):
             mode = 'r+b'
         else:
             mode = 'w+b'
 
         with self.open(TESTFN, mode) as f:
             current_size = os.fstat(f.fileno())[stat.ST_SIZE]
-            if current_size == size+1:
+            ikiwa current_size == size+1:
                 return
 
-            if current_size == 0:
+            ikiwa current_size == 0:
                 f.write(b'z')
 
             f.seek(0)
@@ -38,26 +38,26 @@ class LargeFileTest:
             self.assertEqual(os.fstat(f.fileno())[stat.ST_SIZE], size+1)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         with cls.open(TESTFN, 'wb'):
             pass
-        if not os.stat(TESTFN)[stat.ST_SIZE] == 0:
+        ikiwa not os.stat(TESTFN)[stat.ST_SIZE] == 0:
             raise cls.failureException('File was not truncated by opening '
                                        'with mode "wb"')
 
     # _pyio.FileIO.readall() uses a temporary bytearray then casted to bytes,
     # so memuse=2 is needed
     @bigmemtest(size=size, memuse=2, dry_run=False)
-    def test_large_read(self, _size):
+    eleza test_large_read(self, _size):
         # bpo-24658: Test that a read greater than 2GB does not fail.
         with self.open(TESTFN, "rb") as f:
             self.assertEqual(len(f.read()), size + 1)
             self.assertEqual(f.tell(), size + 1)
 
-    def test_osstat(self):
+    eleza test_osstat(self):
         self.assertEqual(os.stat(TESTFN)[stat.ST_SIZE], size+1)
 
-    def test_seek_read(self):
+    eleza test_seek_read(self):
         with self.open(TESTFN, 'rb') as f:
             self.assertEqual(f.tell(), 0)
             self.assertEqual(f.read(1), b'z')
@@ -88,7 +88,7 @@ class LargeFileTest:
             self.assertEqual(f.read(1), b'z')
             self.assertEqual(f.tell(), 1)
 
-    def test_lseek(self):
+    eleza test_lseek(self):
         with self.open(TESTFN, 'rb') as f:
             self.assertEqual(os.lseek(f.fileno(), 0, 0), 0)
             self.assertEqual(os.lseek(f.fileno(), 42, 0), 42)
@@ -101,9 +101,9 @@ class LargeFileTest:
             # the 'a' that was written at the end of file above
             self.assertEqual(f.read(1), b'a')
 
-    def test_truncate(self):
+    eleza test_truncate(self):
         with self.open(TESTFN, 'r+b') as f:
-            if not hasattr(f, 'truncate'):
+            ikiwa not hasattr(f, 'truncate'):
                 raise unittest.SkipTest("open().truncate() not available "
                                         "on this system")
             f.seek(0, 2)
@@ -132,15 +132,15 @@ class LargeFileTest:
             f.seek(0)
             self.assertEqual(len(f.read()), 1)  # else wasn't truncated
 
-    def test_seekable(self):
-        # Issue #5016; seekable() can return False when the current position
+    eleza test_seekable(self):
+        # Issue #5016; seekable() can rudisha False when the current position
         # is negative when truncated to an int.
         for pos in (2**31-1, 2**31, 2**31+1):
             with self.open(TESTFN, 'rb') as f:
                 f.seek(pos)
                 self.assertTrue(f.seekable())
 
-def setUpModule():
+eleza setUpModule():
     try:
         agiza signal
         # The default handler for SIGXFSZ is to abort the process.
@@ -154,11 +154,11 @@ def setUpModule():
     # takes a long time to build the >2 GiB file and takes >2 GiB of disk
     # space therefore the resource must be enabled to run this test.
     # If not, nothing after this line stanza will be executed.
-    if sys.platform[:3] == 'win' or sys.platform == 'darwin':
+    ikiwa sys.platform[:3] == 'win' or sys.platform == 'darwin':
         requires('largefile',
                  'test requires %s bytes and a long time to run' % str(size))
     else:
-        # Only run if the current filesystem supports large files.
+        # Only run ikiwa the current filesystem supports large files.
         # (Skip this test on Windows, since we now always support
         # large files.)
         f = open(TESTFN, 'wb', buffering=0)
@@ -176,14 +176,14 @@ def setUpModule():
             unlink(TESTFN)
 
 
-class CLargeFileTest(LargeFileTest, unittest.TestCase):
+kundi CLargeFileTest(LargeFileTest, unittest.TestCase):
     open = staticmethod(io.open)
 
-class PyLargeFileTest(LargeFileTest, unittest.TestCase):
+kundi PyLargeFileTest(LargeFileTest, unittest.TestCase):
     open = staticmethod(pyio.open)
 
-def tearDownModule():
+eleza tearDownModule():
     unlink(TESTFN)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

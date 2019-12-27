@@ -2,7 +2,7 @@
 -------------------------------------------------
 
 .. module:: email.generator
-   :synopsis: Generate flat text email messages from a message structure.
+   :synopsis: Generate flat text email messages kutoka a message structure.
 
 **Source code:** :source:`Lib/email/generator.py`
 
@@ -16,20 +16,20 @@ message object structure and producing a serialized representation is the job
 of the generator classes.
 
 As with the :mod:`email.parser` module, you aren't limited to the functionality
-of the bundled generator; you could write one from scratch yourself.  However
+of the bundled generator; you could write one kutoka scratch yourself.  However
 the bundled generator knows how to generate most email in a standards-compliant
 way, should handle MIME and non-MIME email messages just fine, and is designed
 so that the bytes-oriented parsing and generation operations are inverses,
 assuming the same non-transforming :mod:`~email.policy` is used for both.  That
 is, parsing the serialized byte stream via the
-:class:`~email.parser.BytesParser` class and then regenerating the serialized
+:class:`~email.parser.BytesParser` kundi and then regenerating the serialized
 byte stream using :class:`BytesGenerator` should produce output identical to
 the input [#]_.  (On the other hand, using the generator on an
 :class:`~email.message.EmailMessage` constructed by program may result in
 changes to the :class:`~email.message.EmailMessage` object as defaults are
 filled in.)
 
-The :class:`Generator` class can be used to flatten a message into a text (as
+The :class:`Generator` kundi can be used to flatten a message into a text (as
 opposed to binary) serialized representation, but since Unicode cannot
 represent binary data directly, the message is of necessity transformed into
 something that contains only ASCII characters, using the standard email RFC
@@ -41,7 +41,7 @@ To accommodate reproducible processing of SMIME-signed messages
 ``multipart/signed`` and all subparts.
 
 
-.. class:: BytesGenerator(outfp, mangle_from_=None, maxheaderlen=None, *, \
+.. class:: BytesGenerator(outfp, mangle_kutoka_=None, maxheaderlen=None, *, \
                           policy=None)
 
    Return a :class:`BytesGenerator` object that will write any message provided
@@ -49,13 +49,13 @@ To accommodate reproducible processing of SMIME-signed messages
    to the :meth:`write` method, to the :term:`file-like object` *outfp*.
    *outfp* must support a ``write`` method that accepts binary data.
 
-   If optional *mangle_from_* is ``True``, put a ``>`` character in front of
+   If optional *mangle_kutoka_* is ``True``, put a ``>`` character in front of
    any line in the body that starts with the exact string ``"From "``, that is
-   ``From`` followed by a space at the beginning of a line.  *mangle_from_*
-   defaults to the value of the :attr:`~email.policy.Policy.mangle_from_`
+   ``From`` followed by a space at the beginning of a line.  *mangle_kutoka_*
+   defaults to the value of the :attr:`~email.policy.Policy.mangle_kutoka_`
    setting of the *policy* (which is ``True`` for the
    :data:`~email.policy.compat32` policy and ``False`` for all others).
-   *mangle_from_* is intended for use when messages are stored in unix mbox
+   *mangle_kutoka_* is intended for use when messages are stored in unix mbox
    format (see :mod:`mailbox` and `WHY THE CONTENT-LENGTH FORMAT IS BAD
    <https://www.jwz.org/doc/content-length.html>`_).
 
@@ -74,11 +74,11 @@ To accommodate reproducible processing of SMIME-signed messages
 
    .. versionchanged:: 3.3 Added the *policy* keyword.
 
-   .. versionchanged:: 3.6 The default behavior of the *mangle_from_*
+   .. versionchanged:: 3.6 The default behavior of the *mangle_kutoka_*
       and *maxheaderlen* parameters is to follow the policy.
 
 
-   .. method:: flatten(msg, unixfrom=False, linesep=None)
+   .. method:: flatten(msg, unixkutoka=False, linesep=None)
 
       Print the textual representation of the message object structure rooted
       at *msg* to the output file specified when the :class:`BytesGenerator`
@@ -101,7 +101,7 @@ To accommodate reproducible processing of SMIME-signed messages
       .. XXX: There should be an option that just does the RFC
          compliance transformation on headers but leaves CTE 8bit parts alone.
 
-      If *unixfrom* is ``True``, print the envelope header delimiter used by
+      If *unixkutoka* is ``True``, print the envelope header delimiter used by
       the Unix mailbox format (see :mod:`mailbox`) before the first of the
       :rfc:`5322` headers of the root message object.  If the root object has
       no envelope header, craft a standard one.  The default is ``False``.
@@ -134,7 +134,7 @@ a serialized binary representation of a message object.  For more detail, see
 :mod:`email.message`.
 
 
-Because strings cannot represent binary data, the :class:`Generator` class must
+Because strings cannot represent binary data, the :class:`Generator` kundi must
 convert any binary data in any message it flattens to an ASCII compatible
 format, by converting them to an ASCII compatible
 :mailheader:`Content-Transfer_Encoding`.  Using the terminology of the email
@@ -142,7 +142,7 @@ RFCs, you can think of this as :class:`Generator` serializing to an I/O stream
 that is not "8 bit clean".  In other words, most applications will want
 to be using :class:`BytesGenerator`, and not :class:`Generator`.
 
-.. class:: Generator(outfp, mangle_from_=None, maxheaderlen=None, *, \
+.. class:: Generator(outfp, mangle_kutoka_=None, maxheaderlen=None, *, \
                      policy=None)
 
    Return a :class:`Generator` object that will write any message provided
@@ -150,13 +150,13 @@ to be using :class:`BytesGenerator`, and not :class:`Generator`.
    method, to the :term:`file-like object` *outfp*.  *outfp* must support a
    ``write`` method that accepts string data.
 
-   If optional *mangle_from_* is ``True``, put a ``>`` character in front of
+   If optional *mangle_kutoka_* is ``True``, put a ``>`` character in front of
    any line in the body that starts with the exact string ``"From "``, that is
-   ``From`` followed by a space at the beginning of a line.  *mangle_from_*
-   defaults to the value of the :attr:`~email.policy.Policy.mangle_from_`
+   ``From`` followed by a space at the beginning of a line.  *mangle_kutoka_*
+   defaults to the value of the :attr:`~email.policy.Policy.mangle_kutoka_`
    setting of the *policy* (which is ``True`` for the
    :data:`~email.policy.compat32` policy and ``False`` for all others).
-   *mangle_from_* is intended for use when messages are stored in unix mbox
+   *mangle_kutoka_* is intended for use when messages are stored in unix mbox
    format (see :mod:`mailbox` and `WHY THE CONTENT-LENGTH FORMAT IS BAD
    <https://www.jwz.org/doc/content-length.html>`_).
 
@@ -173,11 +173,11 @@ to be using :class:`BytesGenerator`, and not :class:`Generator`.
 
    .. versionchanged:: 3.3 Added the *policy* keyword.
 
-   .. versionchanged:: 3.6 The default behavior of the *mangle_from_*
+   .. versionchanged:: 3.6 The default behavior of the *mangle_kutoka_*
       and *maxheaderlen* parameters is to follow the policy.
 
 
-   .. method:: flatten(msg, unixfrom=False, linesep=None)
+   .. method:: flatten(msg, unixkutoka=False, linesep=None)
 
       Print the textual representation of the message object structure rooted
       at *msg* to the output file specified when the :class:`Generator`
@@ -194,7 +194,7 @@ to be using :class:`BytesGenerator`, and not :class:`Generator`.
       bytes in headers using the MIME ``unknown-8bit`` character set, thus
       rendering them RFC-compliant.
 
-      If *unixfrom* is ``True``, print the envelope header delimiter used by
+      If *unixkutoka* is ``True``, print the envelope header delimiter used by
       the Unix mailbox format (see :mod:`mailbox`) before the first of the
       :rfc:`5322` headers of the root message object.  If the root object has
       no envelope header, craft a standard one.  The default is ``False``.
@@ -235,17 +235,17 @@ a formatted string representation of a message object.  For more detail, see
 The :mod:`email.generator` module also provides a derived class,
 :class:`DecodedGenerator`, which is like the :class:`Generator` base class,
 except that non-\ :mimetype:`text` parts are not serialized, but are instead
-represented in the output stream by a string derived from a template filled
+represented in the output stream by a string derived kutoka a template filled
 in with information about the part.
 
-.. class:: DecodedGenerator(outfp, mangle_from_=None, maxheaderlen=None, \
+.. class:: DecodedGenerator(outfp, mangle_kutoka_=None, maxheaderlen=None, \
                             fmt=None, *, policy=None)
 
    Act like :class:`Generator`, except that for any subpart of the message
    passed to :meth:`Generator.flatten`, if the subpart is of main type
    :mimetype:`text`, print the decoded payload of the subpart, and if the main
    type is not :mimetype:`text`, instead of printing it fill in the string
-   *fmt* using information from the part and print the resulting
+   *fmt* using information kutoka the part and print the resulting
    filled-in string.
 
    To fill in *fmt*, execute ``fmt % part_info``, where ``part_info``
@@ -267,14 +267,14 @@ in with information about the part.
 
       "[Non-text (%(type)s) part of message omitted, filename %(filename)s]"
 
-   Optional *_mangle_from_* and *maxheaderlen* are as with the
+   Optional *_mangle_kutoka_* and *maxheaderlen* are as with the
    :class:`Generator` base class.
 
 
 .. rubric:: Footnotes
 
 .. [#] This statement assumes that you use the appropriate setting for
-       ``unixfrom``, and that there are no :mod:`policy` settings calling for
+       ``unixkutoka``, and that there are no :mod:`policy` settings calling for
        automatic adjustments (for example,
        :attr:`~email.policy.Policy.refold_source` must be ``none``, which is
        *not* the default).  It is also not 100% true, since if the message

@@ -31,7 +31,7 @@ The module defines the following:
    A deprecated alias of :exc:`OSError`.
 
    .. versionchanged:: 3.3
-      Following :pep:`3151`, this class was made an alias of :exc:`OSError`.
+      Following :pep:`3151`, this kundi was made an alias of :exc:`OSError`.
 
 
 .. function:: devpoll()
@@ -144,7 +144,7 @@ The module defines the following:
    Among the acceptable object types in the sequences are Python :term:`file
    objects <file object>` (e.g. ``sys.stdin``, or objects returned by
    :func:`open` or :func:`os.popen`), socket objects returned by
-   :func:`socket.socket`.  You may also define a :dfn:`wrapper` class yourself,
+   :func:`socket.socket`.  You may also define a :dfn:`wrapper` kundi yourself,
    as long as it has an appropriate :meth:`~io.IOBase.fileno` method (that
    really returns a file descriptor, not just a random integer).
 
@@ -154,7 +154,7 @@ The module defines the following:
 
       File objects on Windows are not acceptable, but sockets are.  On Windows,
       the underlying :c:func:`select` function is provided by the WinSock
-      library, and does not handle file descriptors that don't originate from
+      library, and does not handle file descriptors that don't originate kutoka
       WinSock.
 
    .. versionchanged:: 3.5
@@ -336,9 +336,9 @@ Edge and Level Trigger Polling (epoll) Objects
    Return the file descriptor number of the control fd.
 
 
-.. method:: epoll.fromfd(fd)
+.. method:: epoll.kutokafd(fd)
 
-   Create an epoll object from a given file descriptor.
+   Create an epoll object kutoka a given file descriptor.
 
 
 .. method:: epoll.register(fd[, eventmask])
@@ -353,7 +353,7 @@ Edge and Level Trigger Polling (epoll) Objects
 
 .. method:: epoll.unregister(fd)
 
-   Remove a registered file descriptor from the epoll object.
+   Remove a registered file descriptor kutoka the epoll object.
 
 
 .. method:: epoll.poll(timeout=None, maxevents=-1)
@@ -475,9 +475,9 @@ Kqueue Objects
    Return the file descriptor number of the control fd.
 
 
-.. method:: kqueue.fromfd(fd)
+.. method:: kqueue.kutokafd(fd)
 
-   Create a kqueue object from a given file descriptor.
+   Create a kqueue object kutoka a given file descriptor.
 
 
 .. method:: kqueue.control(changelist, max_events[, timeout]) -> eventlist
@@ -548,7 +548,7 @@ https://www.freebsd.org/cgi/man.cgi?query=kqueue&sektion=2
    +===========================+=============================================+
    | :const:`KQ_EV_ADD`        | Adds or modifies an event                   |
    +---------------------------+---------------------------------------------+
-   | :const:`KQ_EV_DELETE`     | Removes an event from the queue             |
+   | :const:`KQ_EV_DELETE`     | Removes an event kutoka the queue             |
    +---------------------------+---------------------------------------------+
    | :const:`KQ_EV_ENABLE`     | Permitscontrol() to returns the event       |
    +---------------------------+---------------------------------------------+

@@ -15,7 +15,7 @@ ISPEED = 4
 OSPEED = 5
 CC = 6
 
-def setraw(fd, when=TCSAFLUSH):
+eleza setraw(fd, when=TCSAFLUSH):
     """Put terminal into a raw mode."""
     mode = tcgetattr(fd)
     mode[IFLAG] = mode[IFLAG] & ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON)
@@ -27,7 +27,7 @@ def setraw(fd, when=TCSAFLUSH):
     mode[CC][VTIME] = 0
     tcsetattr(fd, when, mode)
 
-def setcbreak(fd, when=TCSAFLUSH):
+eleza setcbreak(fd, when=TCSAFLUSH):
     """Put terminal into a cbreak mode."""
     mode = tcgetattr(fd)
     mode[LFLAG] = mode[LFLAG] & ~(ECHO | ICANON)

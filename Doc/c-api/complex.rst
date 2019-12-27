@@ -8,7 +8,7 @@ Complex Number Objects
 .. index:: object: complex number
 
 Python's complex number objects are implemented as two distinct types when
-viewed from the C API:  one is the Python object exposed to Python programs, and
+viewed kutoka the C API:  one is the Python object exposed to Python programs, and
 the other is a C structure which represents the actual complex number value.
 The API provides functions for working with both.
 
@@ -105,12 +105,12 @@ Complex Numbers as Python Objects
 
 .. c:function:: PyObject* PyComplex_FromCComplex(Py_complex v)
 
-   Create a new Python complex number object from a C :c:type:`Py_complex` value.
+   Create a new Python complex number object kutoka a C :c:type:`Py_complex` value.
 
 
 .. c:function:: PyObject* PyComplex_FromDoubles(double real, double imag)
 
-   Return a new :c:type:`PyComplexObject` object from *real* and *imag*.
+   Return a new :c:type:`PyComplexObject` object kutoka *real* and *imag*.
 
 
 .. c:function:: double PyComplex_RealAsDouble(PyObject *op)

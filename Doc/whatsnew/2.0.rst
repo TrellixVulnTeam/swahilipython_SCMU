@@ -24,7 +24,7 @@ a few optimizations, additional docstrings, and better error messages went into
 Consult the publicly-available CVS logs if you want to see the full list.  This
 progress is due to the five developers working for  PythonLabs are now getting
 paid to spend their days fixing bugs, and also due to the improved communication
-resulting  from moving to SourceForge.
+resulting  kutoka moving to SourceForge.
 
 .. ======================================================================
 
@@ -60,7 +60,7 @@ The most important change in Python 2.0 may not be to the code at all, but to
 how Python is developed: in May 2000 the Python developers began using the tools
 made available by SourceForge for storing  source code, tracking bug reports,
 and managing the queue of patch submissions.  To report bugs or submit patches
-for Python 2.0, use the bug tracking and patch manager tools available from
+for Python 2.0, use the bug tracking and patch manager tools available kutoka
 Python's project page, located at https://sourceforge.net/projects/python/.
 
 The most important of the services now hosted at SourceForge is the Python CVS
@@ -93,12 +93,12 @@ that are completely unhelpful, so Ka-Ping Yee wrote an HTML screen-scraper that
 sends more useful messages.
 
 The ease of adding code caused a few initial growing pains, such as code was
-checked in before it was ready or without getting clear agreement from the
+checked in before it was ready or without getting clear agreement kutoka the
 developer group.  The approval process that has emerged is somewhat similar to
 that used by the Apache group. Developers can vote +1, +0, -0, or -1 on a patch;
 +1 and -1 denote acceptance or rejection, while +0 and -0 mean the developer is
 mostly indifferent to the change, though with a slight positive or negative
-slant.  The most significant change from the Apache model is that the voting is
+slant.  The most significant change kutoka the Apache model is that the voting is
 essentially advisory, letting Guido van Rossum, who has Benevolent Dictator For
 Life status, know what the general opinion is. He can still ignore the result of
 a vote, and approve or reject a change even if the community disagrees with him.
@@ -111,7 +111,7 @@ python-dev.  Therefore, a relatively formal process has been set up to write
 Python Enhancement Proposals (PEPs), modelled on the Internet RFC process.  PEPs
 are draft documents that describe a proposed new feature, and are continually
 revised until the community reaches a consensus, either accepting or rejecting
-the proposal.  Quoting from the introduction to :pep:`1`, "PEP Purpose and
+the proposal.  Quoting kutoka the introduction to :pep:`1`, "PEP Purpose and
 Guidelines":
 
 
@@ -129,9 +129,9 @@ Guidelines":
 
 Read the rest of :pep:`1` for the details of the PEP editorial process, style, and
 format.  PEPs are kept in the Python CVS tree on SourceForge, though they're not
-part of the Python 2.0 distribution, and are also available in HTML form from
+part of the Python 2.0 distribution, and are also available in HTML form kutoka
 https://www.python.org/dev/peps/.  As of September 2000, there are 25 PEPS, ranging
-from :pep:`201`, "Lockstep Iteration", to PEP 225, "Elementwise/Objectwise
+kutoka :pep:`201`, "Lockstep Iteration", to PEP 225, "Elementwise/Objectwise
 Operators".
 
 .. ======================================================================
@@ -154,7 +154,7 @@ significant points about the Unicode interfaces.
 
 In Python source code, Unicode strings are written as ``u"string"``.  Arbitrary
 Unicode characters can be written using a new escape sequence, ``\uHHHH``, where
-*HHHH* is a 4-digit hexadecimal number from 0000 to FFFF.  The existing
+*HHHH* is a 4-digit hexadecimal number kutoka 0000 to FFFF.  The existing
 ``\xHHHH`` escape sequence can also be used, and octal escapes can be used for
 characters up to U+01FF, which is represented by ``\777``.
 
@@ -182,7 +182,7 @@ support Unicode:
   number of the character as an integer.
 
 * ``unicode(string [, encoding]  [, errors] )`` creates a Unicode string
-  from an 8-bit string.  ``encoding`` is a string naming the encoding to use. The
+  kutoka an 8-bit string.  ``encoding`` is a string naming the encoding to use. The
   ``errors`` parameter specifies the treatment of characters that are invalid for
   the current encoding; passing ``'strict'`` as the value causes an exception to
   be raised on any encoding error, while ``'ignore'`` causes errors to be silently
@@ -216,12 +216,12 @@ often use the ``codecs.lookup(encoding)`` function, which returns a
   string *ustring* and the integer *length* telling how much of the 8-bit string
   was consumed.
 
-* *stream_reader* is a class that supports decoding input from a stream.
+* *stream_reader* is a kundi that supports decoding input kutoka a stream.
   *stream_reader(file_obj)* returns an object that supports the :meth:`read`,
   :meth:`readline`, and :meth:`readlines` methods.  These methods will all
-  translate from the given encoding and return Unicode strings.
+  translate kutoka the given encoding and return Unicode strings.
 
-* *stream_writer*, similarly, is a class that supports encoding output to a
+* *stream_writer*, similarly, is a kundi that supports encoding output to a
   stream.  *stream_writer(file_obj)* returns an object that supports the
   :meth:`write` and :meth:`writelines` methods.  These methods expect Unicode
   strings, translating them to the given encoding on output.
@@ -229,7 +229,7 @@ often use the ``codecs.lookup(encoding)`` function, which returns a
 For example, the following code writes a Unicode string into a file,  encoding
 it as UTF-8::
 
-   import codecs
+   agiza codecs
 
    unistr = u'\u0660\u2000ab ...'
 
@@ -240,7 +240,7 @@ it as UTF-8::
    output.write( unistr )
    output.close()
 
-The following code would then read UTF-8 input from the file::
+The following code would then read UTF-8 input kutoka the file::
 
    input = UTF8_streamreader( open( '/tmp/output', 'rb') )
    print repr(input.read())
@@ -266,7 +266,7 @@ at some point.  Two common operations on lists are to loop over them, and either
 pick out the elements that meet a certain criterion, or apply some function to
 each element.  For example, given a list of strings, you might want to pull out
 all the strings containing a given substring, or strip off trailing whitespace
-from each line.
+kutoka each line.
 
 The existing :func:`map` and :func:`filter` functions can be used for this
 purpose, but they require a function as one of their arguments.  This is fine if
@@ -298,7 +298,7 @@ List comprehensions have the form::
 
 The :keyword:`!for`...\ :keyword:`!in` clauses contain the sequences to be
 iterated over.  The sequences do not have to be the same length, because they
-are *not* iterated over in parallel, but from left to right; this is explained
+are *not* iterated over in parallel, but kutoka left to right; this is explained
 more clearly in the following paragraphs.  The elements of the generated list
 will be the successive values of *expression*.  The final :keyword:`!if` clause
 is optional; if present, *expression* is only evaluated and added to the result
@@ -336,7 +336,7 @@ comprehension below is a syntax error, while the second one is correct::
    # Correct
    [ (x,y) for x in seq1 for y in seq2]
 
-The idea of list comprehensions originally comes from the functional programming
+The idea of list comprehensions originally comes kutoka the functional programming
 language Haskell (https://www.haskell.org).  Greg Ewing argued most effectively
 for adding them to Python and wrote the initial list comprehension patch, which
 was then discussed for a seemingly endless time on the python-dev mailing list
@@ -357,14 +357,14 @@ The full list of supported assignment operators is ``+=``, ``-=``, ``*=``,
 ``/=``, ``%=``, ``**=``, ``&=``, ``|=``, ``^=``, ``>>=``, and ``<<=``.  Python
 classes can override the augmented assignment operators by defining methods
 named :meth:`__iadd__`, :meth:`__isub__`, etc.  For example, the following
-:class:`Number` class stores a number and supports using += to create a new
+:class:`Number` kundi stores a number and supports using += to create a new
 instance with an incremented value.
 
 .. The empty groups below prevent conversion to guillemets.
 
 ::
 
-   class Number:
+   kundi Number:
        def __init__(self, value):
            self.value = value
        def __iadd__(self, increment):
@@ -422,7 +422,7 @@ in JPython for quite some time, are :meth:`startswith` and :meth:`endswith`.
 
 One other method which deserves special mention is :meth:`join`.  The
 :meth:`join` method of a string receives one parameter, a sequence of strings,
-and is equivalent to the :func:`string.join` function from the old :mod:`string`
+and is equivalent to the :func:`string.join` function kutoka the old :mod:`string`
 module, with the arguments reversed. In other words, ``s.join(seq)`` is
 equivalent to the old ``string.join(seq, s)``.
 
@@ -446,15 +446,15 @@ major problem with reference counting is that it sometimes doesn't realise that
 objects are no longer accessible, resulting in a memory leak.  This happens when
 there are cycles of references.
 
-Consider the simplest possible cycle,  a class instance which has a reference to
+Consider the simplest possible cycle,  a kundi instance which has a reference to
 itself::
 
    instance = SomeClass()
    instance.myself = instance
 
 After the above two lines of code have been executed, the reference count of
-``instance`` is 2; one reference is from the variable named ``'instance'``, and
-the other is from the ``myself`` attribute of the instance.
+``instance`` is 2; one reference is kutoka the variable named ``'instance'``, and
+the other is kutoka the ``myself`` attribute of the instance.
 
 If the next line of code is ``del instance``, what happens?  The reference count
 of ``instance`` is decreased by 1, so it has a reference count of 1; the
@@ -470,7 +470,7 @@ obtain debugging statistics, and tuning the collector's parameters.
 
 Running the cycle detection algorithm takes some time, and therefore will result
 in some additional overhead.  It is hoped that after we've gotten experience
-with the cycle collection from using 2.0, Python 2.1 will be able to minimize
+with the cycle collection kutoka using 2.0, Python 2.1 will be able to minimize
 the overhead with careful tuning.  It's not yet obvious how much performance is
 lost, because benchmarking this is tricky and depends crucially on how often the
 program creates and destroys objects.  The detection of cycles can be disabled
@@ -506,7 +506,7 @@ arguments and/or a dictionary of keyword arguments. In Python 1.5 and earlier,
 you'd use the :func:`apply` built-in function: ``apply(f, args, kw)`` calls the
 function :func:`f` with the argument tuple *args* and the keyword arguments in
 the dictionary *kw*.  :func:`apply`  is the same in 2.0, but thanks to a patch
-from Greg Ewing, ``f(*args, **kw)`` is a shorter and clearer way to achieve the
+kutoka Greg Ewing, ``f(*args, **kw)`` is a shorter and clearer way to achieve the
 same effect.  This syntax is symmetrical with the syntax for defining
 functions::
 
@@ -525,17 +525,17 @@ error, it's much easier to write this::
 
    print >> sys.stderr, "Warning: action field not supplied"
 
-Modules can now be renamed on importing them, using the syntax ``import module
-as name`` or ``from module import name as othername``.  The patch was submitted
+Modules can now be renamed on importing them, using the syntax ``agiza module
+as name`` or ``kutoka module agiza name as othername``.  The patch was submitted
 by Thomas Wouters.
 
 A new format style is available when using the ``%`` operator; '%r' will insert
-the :func:`repr` of its argument.  This was also added from symmetry
+the :func:`repr` of its argument.  This was also added kutoka symmetry
 considerations, this time for symmetry with the existing '%s' format style,
 which inserts the :func:`str` of its argument.  For example, ``'%r %s' % ('abc',
 'abc')`` returns a string containing ``'abc' abc``.
 
-Previously there was no way to implement a class that overrode Python's built-in
+Previously there was no way to implement a kundi that overrode Python's built-in
 :keyword:`in` operator and implemented a custom version.  ``obj in seq`` returns
 true if *obj* is present in the sequence *seq*; Python computes this by simply
 trying every index of the sequence until either *obj* is found or an
@@ -583,7 +583,7 @@ An attempt has been made to alleviate one of Python's warts, the often-confusing
 variable has been assigned a value.  For example, the following code raises an
 exception on the ``print`` statement in both 1.5.2 and 2.0; in 1.5.2 a
 :exc:`NameError` exception is raised, while 2.0 raises a new
-:exc:`UnboundLocalError` exception. :exc:`UnboundLocalError` is a subclass of
+:exc:`UnboundLocalError` exception. :exc:`UnboundLocalError` is a subkundi of
 :exc:`NameError`, so any existing code that expects :exc:`NameError` to be
 raised should still work. ::
 
@@ -601,7 +601,7 @@ Changes to Built-in Functions
 -----------------------------
 
 A new built-in, ``zip(seq1, seq2, ...)``, has been added.  :func:`zip`
-returns a list of tuples where each tuple contains the i-th element from each of
+returns a list of tuples where each tuple contains the i-th element kutoka each of
 the argument sequences.  The difference between :func:`zip` and ``map(None,
 seq1, seq2)`` is that :func:`map` pads the sequences with ``None`` if the
 sequences aren't all of the same length, while :func:`zip` truncates the
@@ -724,12 +724,12 @@ binary, so ``repr(8.1)`` is ``'8.0999999999999996'``, while str(8.1) is
 The ``-X`` command-line option, which turned all standard exceptions into
 strings instead of classes, has been removed; the standard exceptions will now
 always be classes.  The :mod:`exceptions` module containing the standard
-exceptions was translated from Python to a built-in C module, written by Barry
+exceptions was translated kutoka Python to a built-in C module, written by Barry
 Warsaw and Fredrik Lundh.
 
 .. Commented out for now -- I don't think anyone will care.
    The pattern and match objects provided by SRE are C types, not Python
-   class instances as in 1.5.  This means you can no longer inherit from
+   kundi instances as in 1.5.  This means you can no longer inherit kutoka
    \class{RegexObject} or \class{MatchObject}, but that shouldn't be much
    of a problem since no one should have been doing that in the first
    place.
@@ -746,7 +746,7 @@ this section.
 
 The version number of the Python C API was incremented, so C extensions compiled
 for 1.5.2 must be recompiled in order to work with 2.0.  On Windows, it's not
-possible for Python 2.0 to import a third party extension built for Python 1.5.x
+possible for Python 2.0 to agiza a third party extension built for Python 1.5.x
 due to how Windows DLLs work, so Python will raise an exception and the import
 will fail.
 
@@ -791,7 +791,7 @@ Previously the Python virtual machine used 16-bit numbers in its bytecode,
 limiting the size of source files.  In particular, this affected the maximum
 size of literal lists and dictionaries in Python source; occasionally people who
 are generating Python code would run into this limit.  A patch by Charles G.
-Waldman raises the limit from ``2^16`` to ``2^{32}``.
+Waldman raises the limit kutoka ``2^16`` to ``2^{32}``.
 
 Three new convenience functions intended for adding constants to a module's
 dictionary at module initialization time were added: :func:`PyModule_AddObject`,
@@ -821,34 +821,34 @@ packages, which made administering a Python installation something of  a chore.
 The SIG for distribution utilities, shepherded by Greg Ward, has created the
 Distutils, a system to make package installation much easier.  They form the
 :mod:`distutils` package, a new part of Python's standard library. In the best
-case, installing a Python module from source will require the same steps: first
+case, installing a Python module kutoka source will require the same steps: first
 you simply mean unpack the tarball or zip archive, and the run "``python
 setup.py install``".  The platform will be automatically detected, the compiler
 will be recognized, C extension modules will be compiled, and the distribution
 installed into the proper directory.  Optional command-line arguments provide
 more control over the installation process, the distutils package offers many
-places to override defaults -- separating the build from the install, building
+places to override defaults -- separating the build kutoka the install, building
 or installing in non-default directories, and more.
 
 In order to use the Distutils, you need to write a :file:`setup.py` script.  For
 the simple case, when the software contains only .py files, a minimal
 :file:`setup.py` can be just a few lines long::
 
-   from distutils.core import setup
+   kutoka distutils.core agiza setup
    setup (name = "foo", version = "1.0",
           py_modules = ["module1", "module2"])
 
 The :file:`setup.py` file isn't much more complicated if the software consists
 of a few packages::
 
-   from distutils.core import setup
+   kutoka distutils.core agiza setup
    setup (name = "foo", version = "1.0",
           packages = ["package", "package.subpackage"])
 
-A C extension can be the most complicated case; here's an example taken from
+A C extension can be the most complicated case; here's an example taken kutoka
 the PyXML package::
 
-   from distutils.core import setup, Extension
+   kutoka distutils.core agiza setup, Extension
 
    expat_extension = Extension('xml.parsers.pyexpat',
         define_macros = [('XML_NS', None)],
@@ -896,7 +896,7 @@ SAX2 Support
 ------------
 
 SAX defines an event-driven interface for parsing XML.  To use SAX, you must
-write a SAX handler class.  Handler classes inherit from various classes
+write a SAX handler class.  Handler classes inherit kutoka various classes
 provided by SAX, and override various methods that will then be called by the
 XML parser.  For example, the :meth:`startElement` and :meth:`endElement`
 methods are called for every starting and end tag encountered by the parser, the
@@ -905,7 +905,7 @@ forth.
 
 The advantage of the event-driven approach is that the whole document doesn't
 have to be resident in memory at any one time, which matters if you are
-processing really huge documents.  However, writing the SAX handler class can
+processing really huge documents.  However, writing the SAX handler kundi can
 get very complicated if you're trying to modify the document structure in some
 elaborate way.
 
@@ -913,9 +913,9 @@ For example, this little example program defines a handler that prints a message
 for every starting and ending tag, and then parses the file :file:`hamlet.xml`
 using it::
 
-   from xml import sax
+   kutoka xml agiza sax
 
-   class SimpleHandler(sax.ContentHandler):
+   kundi SimpleHandler(sax.ContentHandler):
        def startElement(self, name, attrs):
            print 'Start of element:', name, attrs.keys()
 
@@ -958,17 +958,17 @@ module.  It's a lightweight implementation of the Level 1 DOM with support for
 XML namespaces.  The  :func:`parse` and :func:`parseString` convenience
 functions are provided for generating a DOM tree::
 
-   from xml.dom import minidom
+   kutoka xml.dom agiza minidom
    doc = minidom.parse('hamlet.xml')
 
 ``doc`` is a :class:`Document` instance.  :class:`Document`, like all the other
-DOM classes such as :class:`Element` and :class:`Text`, is a subclass of the
+DOM classes such as :class:`Element` and :class:`Text`, is a subkundi of the
 :class:`Node` base class.  All the nodes in a DOM tree therefore support certain
 common methods, such as :meth:`toxml` which returns a string containing the XML
-representation of the node and its children.  Each class also has special
+representation of the node and its children.  Each kundi also has special
 methods of its own; for example, :class:`Element` and :class:`Document`
 instances have a method to find all child elements with a given tag name.
-Continuing from the previous 2-line example::
+Continuing kutoka the previous 2-line example::
 
    perslist = doc.getElementsByTagName( 'PERSONA' )
    print perslist[0].toxml()
@@ -1002,7 +1002,7 @@ Relationship to PyXML
 ---------------------
 
 The XML Special Interest Group has been working on XML-related Python code for a
-while.  Its code distribution, called PyXML, is available from the SIG's Web
+while.  Its code distribution, called PyXML, is available kutoka the SIG's Web
 pages at https://www.python.org/community/sigs/current/xml-sig. The PyXML distribution also used
 the package name ``xml``.  If you've written programs that used PyXML, you're
 probably wondering about its compatibility with the 2.0 :mod:`xml` package.
@@ -1016,7 +1016,7 @@ be installed.  When installed, PyXML versions 0.6.0 or greater will replace the
 standard package, adding a bunch of additional features.  Some of the additional
 features in PyXML include:
 
-* 4DOM, a full DOM implementation from FourThought, Inc.
+* 4DOM, a full DOM implementation kutoka FourThought, Inc.
 
 * The xmlproc validating parser, written by Lars Marius Garshol.
 
@@ -1054,8 +1054,8 @@ supports displaying Unicode strings in Tk widgets. Also, Fredrik Lundh
 contributed an optimization which makes operations like ``create_line`` and
 ``create_polygon`` much faster, especially when using lots of coordinates.
 
-The :mod:`curses` module has been greatly extended, starting from Oliver
-Andrich's enhanced version, to provide many additional functions from ncurses
+The :mod:`curses` module has been greatly extended, starting kutoka Oliver
+Andrich's enhanced version, to provide many additional functions kutoka ncurses
 and SYSV curses, such as colour, alternative character set support, pads, and
 mouse support.  This means the module is no longer compatible with operating
 systems that only have BSD curses, but there don't seem to be any currently
@@ -1092,7 +1092,7 @@ module.
 
 * :mod:`gettext`: This module provides internationalization (I18N) and
   localization (L10N) support for Python programs by providing an interface to the
-  GNU gettext message catalog library. (Integrated by Barry Warsaw, from separate
+  GNU gettext message catalog library. (Integrated by Barry Warsaw, kutoka separate
   contributions by Martin  von Löwis, Peter Funk, and James Henstridge.)
 
 * :mod:`linuxaudiodev`: Support for the :file:`/dev/audio` device on Linux, a
@@ -1110,14 +1110,14 @@ module.
 
 * :mod:`robotparser`: Parse a :file:`robots.txt` file, which is used for writing
   Web spiders that politely avoid certain areas of a Web site.  The parser accepts
-  the contents of a :file:`robots.txt` file, builds a set of rules from it, and
+  the contents of a :file:`robots.txt` file, builds a set of rules kutoka it, and
   can then answer questions about the fetchability of a given URL.  (Contributed
   by Skip Montanaro.)
 
 * :mod:`tabnanny`: A module/script to  check Python source code for ambiguous
   indentation. (Contributed by Tim Peters.)
 
-* :mod:`UserString`: A base class useful for deriving objects that behave like
+* :mod:`UserString`: A base kundi useful for deriving objects that behave like
   strings.
 
 * :mod:`webbrowser`: A module that provides a platform independent way to launch
@@ -1125,7 +1125,7 @@ module.
   in a specific order. The user can alter which browser is launched by setting the
   *BROWSER* environment variable.  (Originally inspired by Eric S. Raymond's patch
   to :mod:`urllib` which added similar functionality, but the final module comes
-  from code originally  implemented by Fred Drake as
+  kutoka code originally  implemented by Fred Drake as
   :file:`Tools/idle/BrowserControl.py`, and adapted for the standard library by
   Fred.)
 
@@ -1140,7 +1140,7 @@ module.
   supported by the :mod:`gzip` module) (Contributed by James C. Ahlstrom.)
 
 * :mod:`imputil`: A module that provides a simpler way for writing customized
-  import hooks, in comparison to the existing :mod:`ihooks` module.  (Implemented
+  agiza hooks, in comparison to the existing :mod:`ihooks` module.  (Implemented
   by Greg Stein, with much discussion on python-dev along the way.)
 
 .. ======================================================================
@@ -1156,7 +1156,7 @@ partial list:
 * UI improvements and optimizations, especially in the area of syntax
   highlighting and auto-indentation.
 
-* The class browser now shows more information, such as the top level functions
+* The kundi browser now shows more information, such as the top level functions
   in a module.
 
 * Tab width is now a user settable option. When opening an existing Python file,

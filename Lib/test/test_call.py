@@ -11,16 +11,16 @@ agiza itertools
 agiza gc
 
 
-class FunctionCalls(unittest.TestCase):
+kundi FunctionCalls(unittest.TestCase):
 
-    def test_kwargs_order(self):
+    eleza test_kwargs_order(self):
         # bpo-34320:  **kwargs should preserve order of passed OrderedDict
         od = collections.OrderedDict([('a', 1), ('b', 2)])
         od.move_to_end('a')
         expected = list(od.items())
 
-        def fn(**kw):
-            return kw
+        eleza fn(**kw):
+            rudisha kw
 
         res = fn(**od)
         self.assertIsInstance(res, dict)
@@ -32,27 +32,27 @@ class FunctionCalls(unittest.TestCase):
 # function, which can't be verified kutoka Python.  If the METH_XXX decl
 # for a C function changes, these tests may not cover the right paths.
 
-class CFunctionCalls(unittest.TestCase):
+kundi CFunctionCalls(unittest.TestCase):
 
-    def test_varargs0(self):
+    eleza test_varargs0(self):
         self.assertRaises(TypeError, {}.__contains__)
 
-    def test_varargs1(self):
+    eleza test_varargs1(self):
         {}.__contains__(0)
 
-    def test_varargs2(self):
+    eleza test_varargs2(self):
         self.assertRaises(TypeError, {}.__contains__, 0, 1)
 
-    def test_varargs0_ext(self):
+    eleza test_varargs0_ext(self):
         try:
             {}.__contains__(*())
         except TypeError:
             pass
 
-    def test_varargs1_ext(self):
+    eleza test_varargs1_ext(self):
         {}.__contains__(*(0,))
 
-    def test_varargs2_ext(self):
+    eleza test_varargs2_ext(self):
         try:
             {}.__contains__(*(1, 2))
         except TypeError:
@@ -60,25 +60,25 @@ class CFunctionCalls(unittest.TestCase):
         else:
             raise RuntimeError
 
-    def test_varargs1_kw(self):
+    eleza test_varargs1_kw(self):
         self.assertRaises(TypeError, {}.__contains__, x=2)
 
-    def test_varargs2_kw(self):
+    eleza test_varargs2_kw(self):
         self.assertRaises(TypeError, {}.__contains__, x=2, y=2)
 
-    def test_oldargs0_0(self):
+    eleza test_oldargs0_0(self):
         {}.keys()
 
-    def test_oldargs0_1(self):
+    eleza test_oldargs0_1(self):
         self.assertRaises(TypeError, {}.keys, 0)
 
-    def test_oldargs0_2(self):
+    eleza test_oldargs0_2(self):
         self.assertRaises(TypeError, {}.keys, 0, 1)
 
-    def test_oldargs0_0_ext(self):
+    eleza test_oldargs0_0_ext(self):
         {}.keys(*())
 
-    def test_oldargs0_1_ext(self):
+    eleza test_oldargs0_1_ext(self):
         try:
             {}.keys(*(0,))
         except TypeError:
@@ -86,7 +86,7 @@ class CFunctionCalls(unittest.TestCase):
         else:
             raise RuntimeError
 
-    def test_oldargs0_2_ext(self):
+    eleza test_oldargs0_2_ext(self):
         try:
             {}.keys(*(1, 2))
         except TypeError:
@@ -94,7 +94,7 @@ class CFunctionCalls(unittest.TestCase):
         else:
             raise RuntimeError
 
-    def test_oldargs0_0_kw(self):
+    eleza test_oldargs0_0_kw(self):
         try:
             {}.keys(x=2)
         except TypeError:
@@ -102,22 +102,22 @@ class CFunctionCalls(unittest.TestCase):
         else:
             raise RuntimeError
 
-    def test_oldargs0_1_kw(self):
+    eleza test_oldargs0_1_kw(self):
         self.assertRaises(TypeError, {}.keys, x=2)
 
-    def test_oldargs0_2_kw(self):
+    eleza test_oldargs0_2_kw(self):
         self.assertRaises(TypeError, {}.keys, x=2, y=2)
 
-    def test_oldargs1_0(self):
+    eleza test_oldargs1_0(self):
         self.assertRaises(TypeError, [].count)
 
-    def test_oldargs1_1(self):
+    eleza test_oldargs1_1(self):
         [].count(1)
 
-    def test_oldargs1_2(self):
+    eleza test_oldargs1_2(self):
         self.assertRaises(TypeError, [].count, 1, 2)
 
-    def test_oldargs1_0_ext(self):
+    eleza test_oldargs1_0_ext(self):
         try:
             [].count(*())
         except TypeError:
@@ -125,10 +125,10 @@ class CFunctionCalls(unittest.TestCase):
         else:
             raise RuntimeError
 
-    def test_oldargs1_1_ext(self):
+    eleza test_oldargs1_1_ext(self):
         [].count(*(1,))
 
-    def test_oldargs1_2_ext(self):
+    eleza test_oldargs1_2_ext(self):
         try:
             [].count(*(1, 2))
         except TypeError:
@@ -136,181 +136,181 @@ class CFunctionCalls(unittest.TestCase):
         else:
             raise RuntimeError
 
-    def test_oldargs1_0_kw(self):
+    eleza test_oldargs1_0_kw(self):
         self.assertRaises(TypeError, [].count, x=2)
 
-    def test_oldargs1_1_kw(self):
+    eleza test_oldargs1_1_kw(self):
         self.assertRaises(TypeError, [].count, {}, x=2)
 
-    def test_oldargs1_2_kw(self):
+    eleza test_oldargs1_2_kw(self):
         self.assertRaises(TypeError, [].count, x=2, y=2)
 
 
 @cpython_only
-class CFunctionCallsErrorMessages(unittest.TestCase):
+kundi CFunctionCallsErrorMessages(unittest.TestCase):
 
-    def test_varargs0(self):
+    eleza test_varargs0(self):
         msg = r"__contains__\(\) takes exactly one argument \(0 given\)"
         self.assertRaisesRegex(TypeError, msg, {}.__contains__)
 
-    def test_varargs2(self):
+    eleza test_varargs2(self):
         msg = r"__contains__\(\) takes exactly one argument \(2 given\)"
         self.assertRaisesRegex(TypeError, msg, {}.__contains__, 0, 1)
 
-    def test_varargs3(self):
-        msg = r"^from_bytes\(\) takes exactly 2 positional arguments \(3 given\)"
-        self.assertRaisesRegex(TypeError, msg, int.from_bytes, b'a', 'little', False)
+    eleza test_varargs3(self):
+        msg = r"^kutoka_bytes\(\) takes exactly 2 positional arguments \(3 given\)"
+        self.assertRaisesRegex(TypeError, msg, int.kutoka_bytes, b'a', 'little', False)
 
-    def test_varargs1min(self):
+    eleza test_varargs1min(self):
         msg = r"get expected at least 1 argument, got 0"
         self.assertRaisesRegex(TypeError, msg, {}.get)
 
         msg = r"expected 1 argument, got 0"
         self.assertRaisesRegex(TypeError, msg, {}.__delattr__)
 
-    def test_varargs2min(self):
+    eleza test_varargs2min(self):
         msg = r"getattr expected at least 2 arguments, got 0"
         self.assertRaisesRegex(TypeError, msg, getattr)
 
-    def test_varargs1max(self):
+    eleza test_varargs1max(self):
         msg = r"input expected at most 1 argument, got 2"
         self.assertRaisesRegex(TypeError, msg, input, 1, 2)
 
-    def test_varargs2max(self):
+    eleza test_varargs2max(self):
         msg = r"get expected at most 2 arguments, got 3"
         self.assertRaisesRegex(TypeError, msg, {}.get, 1, 2, 3)
 
-    def test_varargs1_kw(self):
+    eleza test_varargs1_kw(self):
         msg = r"__contains__\(\) takes no keyword arguments"
         self.assertRaisesRegex(TypeError, msg, {}.__contains__, x=2)
 
-    def test_varargs2_kw(self):
+    eleza test_varargs2_kw(self):
         msg = r"__contains__\(\) takes no keyword arguments"
         self.assertRaisesRegex(TypeError, msg, {}.__contains__, x=2, y=2)
 
-    def test_varargs3_kw(self):
+    eleza test_varargs3_kw(self):
         msg = r"bool\(\) takes no keyword arguments"
         self.assertRaisesRegex(TypeError, msg, bool, x=2)
 
-    def test_varargs4_kw(self):
+    eleza test_varargs4_kw(self):
         msg = r"^index\(\) takes no keyword arguments$"
         self.assertRaisesRegex(TypeError, msg, [].index, x=2)
 
-    def test_varargs5_kw(self):
+    eleza test_varargs5_kw(self):
         msg = r"^hasattr\(\) takes no keyword arguments$"
         self.assertRaisesRegex(TypeError, msg, hasattr, x=2)
 
-    def test_varargs6_kw(self):
+    eleza test_varargs6_kw(self):
         msg = r"^getattr\(\) takes no keyword arguments$"
         self.assertRaisesRegex(TypeError, msg, getattr, x=2)
 
-    def test_varargs7_kw(self):
+    eleza test_varargs7_kw(self):
         msg = r"^next\(\) takes no keyword arguments$"
         self.assertRaisesRegex(TypeError, msg, next, x=2)
 
-    def test_varargs8_kw(self):
+    eleza test_varargs8_kw(self):
         msg = r"^pack\(\) takes no keyword arguments$"
         self.assertRaisesRegex(TypeError, msg, struct.pack, x=2)
 
-    def test_varargs9_kw(self):
+    eleza test_varargs9_kw(self):
         msg = r"^pack_into\(\) takes no keyword arguments$"
         self.assertRaisesRegex(TypeError, msg, struct.pack_into, x=2)
 
-    def test_varargs10_kw(self):
+    eleza test_varargs10_kw(self):
         msg = r"^index\(\) takes no keyword arguments$"
         self.assertRaisesRegex(TypeError, msg, collections.deque().index, x=2)
 
-    def test_varargs11_kw(self):
+    eleza test_varargs11_kw(self):
         msg = r"^pack\(\) takes no keyword arguments$"
         self.assertRaisesRegex(TypeError, msg, struct.Struct.pack, struct.Struct(""), x=2)
 
-    def test_varargs12_kw(self):
+    eleza test_varargs12_kw(self):
         msg = r"^staticmethod\(\) takes no keyword arguments$"
         self.assertRaisesRegex(TypeError, msg, staticmethod, func=id)
 
-    def test_varargs13_kw(self):
+    eleza test_varargs13_kw(self):
         msg = r"^classmethod\(\) takes no keyword arguments$"
         self.assertRaisesRegex(TypeError, msg, classmethod, func=id)
 
-    def test_varargs14_kw(self):
+    eleza test_varargs14_kw(self):
         msg = r"^product\(\) takes at most 1 keyword argument \(2 given\)$"
         self.assertRaisesRegex(TypeError, msg,
                                itertools.product, 0, repeat=1, foo=2)
 
-    def test_varargs15_kw(self):
+    eleza test_varargs15_kw(self):
         msg = r"^ImportError\(\) takes at most 2 keyword arguments \(3 given\)$"
         self.assertRaisesRegex(TypeError, msg,
                                ImportError, 0, name=1, path=2, foo=3)
 
-    def test_varargs16_kw(self):
+    eleza test_varargs16_kw(self):
         msg = r"^min\(\) takes at most 2 keyword arguments \(3 given\)$"
         self.assertRaisesRegex(TypeError, msg,
                                min, 0, default=1, key=2, foo=3)
 
-    def test_varargs17_kw(self):
+    eleza test_varargs17_kw(self):
         msg = r"^print\(\) takes at most 4 keyword arguments \(5 given\)$"
         self.assertRaisesRegex(TypeError, msg,
                                print, 0, sep=1, end=2, file=3, flush=4, foo=5)
 
-    def test_oldargs0_1(self):
+    eleza test_oldargs0_1(self):
         msg = r"keys\(\) takes no arguments \(1 given\)"
         self.assertRaisesRegex(TypeError, msg, {}.keys, 0)
 
-    def test_oldargs0_2(self):
+    eleza test_oldargs0_2(self):
         msg = r"keys\(\) takes no arguments \(2 given\)"
         self.assertRaisesRegex(TypeError, msg, {}.keys, 0, 1)
 
-    def test_oldargs0_1_kw(self):
+    eleza test_oldargs0_1_kw(self):
         msg = r"keys\(\) takes no keyword arguments"
         self.assertRaisesRegex(TypeError, msg, {}.keys, x=2)
 
-    def test_oldargs0_2_kw(self):
+    eleza test_oldargs0_2_kw(self):
         msg = r"keys\(\) takes no keyword arguments"
         self.assertRaisesRegex(TypeError, msg, {}.keys, x=2, y=2)
 
-    def test_oldargs1_0(self):
+    eleza test_oldargs1_0(self):
         msg = r"count\(\) takes exactly one argument \(0 given\)"
         self.assertRaisesRegex(TypeError, msg, [].count)
 
-    def test_oldargs1_2(self):
+    eleza test_oldargs1_2(self):
         msg = r"count\(\) takes exactly one argument \(2 given\)"
         self.assertRaisesRegex(TypeError, msg, [].count, 1, 2)
 
-    def test_oldargs1_0_kw(self):
+    eleza test_oldargs1_0_kw(self):
         msg = r"count\(\) takes no keyword arguments"
         self.assertRaisesRegex(TypeError, msg, [].count, x=2)
 
-    def test_oldargs1_1_kw(self):
+    eleza test_oldargs1_1_kw(self):
         msg = r"count\(\) takes no keyword arguments"
         self.assertRaisesRegex(TypeError, msg, [].count, {}, x=2)
 
-    def test_oldargs1_2_kw(self):
+    eleza test_oldargs1_2_kw(self):
         msg = r"count\(\) takes no keyword arguments"
         self.assertRaisesRegex(TypeError, msg, [].count, x=2, y=2)
 
 
-def pyfunc(arg1, arg2):
-    return [arg1, arg2]
+eleza pyfunc(arg1, arg2):
+    rudisha [arg1, arg2]
 
 
-def pyfunc_noarg():
-    return "noarg"
+eleza pyfunc_noarg():
+    rudisha "noarg"
 
 
-class PythonClass:
-    def method(self, arg1, arg2):
-        return [arg1, arg2]
+kundi PythonClass:
+    eleza method(self, arg1, arg2):
+        rudisha [arg1, arg2]
 
-    def method_noarg(self):
-        return "noarg"
+    eleza method_noarg(self):
+        rudisha "noarg"
 
     @classmethod
-    def class_method(cls):
-        return "classmethod"
+    eleza class_method(cls):
+        rudisha "classmethod"
 
     @staticmethod
-    def static_method():
-        return "staticmethod"
+    eleza static_method():
+        rudisha "staticmethod"
 
 
 PYTHON_INSTANCE = PythonClass()
@@ -320,7 +320,7 @@ IGNORE_RESULT = object()
 
 
 @cpython_only
-class FastCallTests(unittest.TestCase):
+kundi FastCallTests(unittest.TestCase):
     # Test calls with positional arguments
     CALLS_POSARGS = (
         # (func, args: tuple, result)
@@ -331,7 +331,7 @@ class FastCallTests(unittest.TestCase):
         # Python function without argument
         (pyfunc_noarg, (), "noarg"),
 
-        # Python class methods
+        # Python kundi methods
         (PythonClass.class_method, (), "classmethod"),
         (PythonClass.static_method, (), "staticmethod"),
 
@@ -357,7 +357,7 @@ class FastCallTests(unittest.TestCase):
         (divmod, (1000, 33), (30, 10)),
 
         # C type static method: METH_FASTCALL | METH_CLASS
-        (int.from_bytes, (b'\x01\x00', 'little'), 1),
+        (int.kutoka_bytes, (b'\x01\x00', 'little'), 1),
 
         # bpo-30524: Test that calling a C type static method with no argument
         # doesn't crash (ignore the result): METH_FASTCALL | METH_CLASS
@@ -380,16 +380,16 @@ class FastCallTests(unittest.TestCase):
         (max, ([],), {'default': 9}, 9),
 
         # C type static method: METH_FASTCALL | METH_CLASS
-        (int.from_bytes, (b'\x01\x00',), {'byteorder': 'little'}, 1),
-        (int.from_bytes, (), {'bytes': b'\x01\x00', 'byteorder': 'little'}, 1),
+        (int.kutoka_bytes, (b'\x01\x00',), {'byteorder': 'little'}, 1),
+        (int.kutoka_bytes, (), {'bytes': b'\x01\x00', 'byteorder': 'little'}, 1),
     )
 
-    def check_result(self, result, expected):
-        if expected is IGNORE_RESULT:
+    eleza check_result(self, result, expected):
+        ikiwa expected is IGNORE_RESULT:
             return
         self.assertEqual(result, expected)
 
-    def test_fastcall(self):
+    eleza test_fastcall(self):
         # Test _PyObject_FastCall()
 
         for func, args, expected in self.CALLS_POSARGS:
@@ -397,12 +397,12 @@ class FastCallTests(unittest.TestCase):
                 result = _testcapi.pyobject_fastcall(func, args)
                 self.check_result(result, expected)
 
-                if not args:
+                ikiwa not args:
                     # args=NULL, nargs=0
                     result = _testcapi.pyobject_fastcall(func, None)
                     self.check_result(result, expected)
 
-    def test_vectorcall_dict(self):
+    eleza test_vectorcall_dict(self):
         # Test _PyObject_FastCallDict()
 
         for func, args, expected in self.CALLS_POSARGS:
@@ -415,7 +415,7 @@ class FastCallTests(unittest.TestCase):
                 result = _testcapi.pyobject_fastcalldict(func, args, {})
                 self.check_result(result, expected)
 
-                if not args:
+                ikiwa not args:
                     # args=NULL, nargs=0, kwargs=NULL
                     result = _testcapi.pyobject_fastcalldict(func, None, None)
                     self.check_result(result, expected)
@@ -429,7 +429,7 @@ class FastCallTests(unittest.TestCase):
                 result = _testcapi.pyobject_fastcalldict(func, args, kwargs)
                 self.check_result(result, expected)
 
-    def test_vectorcall(self):
+    eleza test_vectorcall(self):
         # Test _PyObject_Vectorcall()
 
         for func, args, expected in self.CALLS_POSARGS:
@@ -442,7 +442,7 @@ class FastCallTests(unittest.TestCase):
                 result = _testcapi.pyobject_vectorcall(func, args, ())
                 self.check_result(result, expected)
 
-                if not args:
+                ikiwa not args:
                     # kwnames=NULL
                     result = _testcapi.pyobject_vectorcall(func, None, None)
                     self.check_result(result, expected)
@@ -458,17 +458,17 @@ class FastCallTests(unittest.TestCase):
                 result = _testcapi.pyobject_vectorcall(func, args, kwnames)
                 self.check_result(result, expected)
 
-    def test_fastcall_clearing_dict(self):
+    eleza test_fastcall_clearing_dict(self):
         # Test bpo-36907: the point of the test is just checking that this
         # does not crash.
-        class IntWithDict:
+        kundi IntWithDict:
             __slots__ = ["kwargs"]
-            def __init__(self, **kwargs):
+            eleza __init__(self, **kwargs):
                 self.kwargs = kwargs
-            def __index__(self):
+            eleza __index__(self):
                 self.kwargs.clear()
                 gc.collect()
-                return 0
+                rudisha 0
         x = IntWithDict(dont_inherit=IntWithDict())
         # We test the argument handling of "compile" here, the compilation
         # itself is not relevant. When we pass flags=x below, x.__index__() is
@@ -480,19 +480,19 @@ Py_TPFLAGS_HAVE_VECTORCALL = 1 << 11
 Py_TPFLAGS_METHOD_DESCRIPTOR = 1 << 17
 
 
-def testfunction(self):
+eleza testfunction(self):
     """some doc"""
-    return self
+    rudisha self
 
 
-def testfunction_kw(self, *, kw):
+eleza testfunction_kw(self, *, kw):
     """some doc"""
-    return self
+    rudisha self
 
 
-class TestPEP590(unittest.TestCase):
+kundi TestPEP590(unittest.TestCase):
 
-    def test_method_descriptor_flag(self):
+    eleza test_method_descriptor_flag(self):
         agiza functools
         cached = functools.lru_cache(1)(testfunction)
 
@@ -507,22 +507,22 @@ class TestPEP590(unittest.TestCase):
         self.assertFalse(_testcapi.MethodDescriptorNopGet.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
 
         # Heap type should not inherit Py_TPFLAGS_METHOD_DESCRIPTOR
-        class MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
+        kundi MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
             pass
         self.assertFalse(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
 
-    def test_vectorcall_flag(self):
+    eleza test_vectorcall_flag(self):
         self.assertTrue(_testcapi.MethodDescriptorBase.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
         self.assertTrue(_testcapi.MethodDescriptorDerived.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
         self.assertFalse(_testcapi.MethodDescriptorNopGet.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
         self.assertTrue(_testcapi.MethodDescriptor2.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
 
         # Heap type should not inherit Py_TPFLAGS_HAVE_VECTORCALL
-        class MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
+        kundi MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
             pass
         self.assertFalse(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
 
-    def test_vectorcall_override(self):
+    eleza test_vectorcall_override(self):
         # Check that tp_call can correctly override vectorcall.
         # MethodDescriptorNopGet implements tp_call but it inherits kutoka
         # MethodDescriptorBase, which implements vectorcall. Since
@@ -532,7 +532,7 @@ class TestPEP590(unittest.TestCase):
         f = _testcapi.MethodDescriptorNopGet()
         self.assertIs(f(*args), args)
 
-    def test_vectorcall(self):
+    eleza test_vectorcall(self):
         # Test a bunch of different ways to call objects:
         # 1. vectorcall using PyVectorcall_Call()
         #   (only for objects that support vectorcall directly)
@@ -556,34 +556,34 @@ class TestPEP590(unittest.TestCase):
         kutoka types agiza MethodType
         kutoka functools agiza partial
 
-        def vectorcall(func, args, kwargs):
+        eleza vectorcall(func, args, kwargs):
             args = *args, *kwargs.values()
             kwnames = tuple(kwargs)
-            return pyobject_vectorcall(func, args, kwnames)
+            rudisha pyobject_vectorcall(func, args, kwnames)
 
         for (func, args, kwargs, expected) in calls:
             with self.subTest(str(func)):
-                if not kwargs:
+                ikiwa not kwargs:
                     self.assertEqual(expected, pyvectorcall_call(func, args))
                 self.assertEqual(expected, pyvectorcall_call(func, args, kwargs))
 
         # Add derived classes (which do not support vectorcall directly,
         # but do support all other ways of calling).
 
-        class MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
+        kundi MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
             pass
 
-        class MethodDescriptorOverridden(_testcapi.MethodDescriptorBase):
-            def __call__(self, n):
-                return 'new'
+        kundi MethodDescriptorOverridden(_testcapi.MethodDescriptorBase):
+            eleza __call__(self, n):
+                rudisha 'new'
 
-        class SuperBase:
-            def __call__(self, *args):
-                return super().__call__(*args)
+        kundi SuperBase:
+            eleza __call__(self, *args):
+                rudisha super().__call__(*args)
 
-        class MethodDescriptorSuper(SuperBase, _testcapi.MethodDescriptorBase):
-            def __call__(self, *args):
-                return super().__call__(*args)
+        kundi MethodDescriptorSuper(SuperBase, _testcapi.MethodDescriptorBase):
+            eleza __call__(self, *args):
+                rudisha super().__call__(*args)
 
         calls += [
             (dict.update, ({},), {"key":True}, None),
@@ -598,7 +598,7 @@ class TestPEP590(unittest.TestCase):
                 args1 = args[1:]
                 meth = MethodType(func, args[0])
                 wrapped = partial(func)
-                if not kwargs:
+                ikiwa not kwargs:
                     self.assertEqual(expected, func(*args))
                     self.assertEqual(expected, pyobject_vectorcall(func, args, None))
                     self.assertEqual(expected, meth(*args1))
@@ -609,5 +609,5 @@ class TestPEP590(unittest.TestCase):
                 self.assertEqual(expected, wrapped(*args, **kwargs))
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

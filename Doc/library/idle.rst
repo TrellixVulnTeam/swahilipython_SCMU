@@ -175,7 +175,7 @@ Comment Out Region
    Insert ## in front of selected lines.
 
 Uncomment Region
-   Remove leading # or ## from selected lines.
+   Remove leading # or ## kutoka selected lines.
 
 Tabify Region
    Turn *leading* stretches of spaces into tabs. (Note: We recommend using
@@ -273,7 +273,7 @@ Go to File/Line
    single: stack viewer
 
 Debugger (toggle)
-   When activated, code entered in the Shell or run from an Editor will run
+   When activated, code entered in the Shell or run kutoka an Editor will run
    under the debugger.  In the Editor, breakpoints can be set with the context
    menu.  This feature is still incomplete and somewhat experimental.
 
@@ -428,7 +428,7 @@ the :kbd:`Command` key on macOS.
 
 * :kbd:`C-Home`/:kbd:`C-End` go to begin/end of file
 
-* Some useful Emacs bindings are inherited from Tcl/Tk:
+* Some useful Emacs bindings are inherited kutoka Tcl/Tk:
 
    * :kbd:`C-a` beginning of line
 
@@ -535,11 +535,11 @@ and what definitions have been run, all since the last restart.
 For example, restart the Shell and enter ``itertools.count(``.  A calltip
 appears because Idle imports itertools into the user process for its own use.
 (This could change.)  Enter ``turtle.write(`` and nothing appears.  Idle does
-not import turtle.  The menu or shortcut do nothing either.  Enter
-``import turtle`` and then ``turtle.write(`` will work.
+not agiza turtle.  The menu or shortcut do nothing either.  Enter
+``agiza turtle`` and then ``turtle.write(`` will work.
 
-In an editor, import statements have no effect until one runs the file.  One
-might want to run a file after writing the import statements at the top,
+In an editor, agiza statements have no effect until one runs the file.  One
+might want to run a file after writing the agiza statements at the top,
 or immediately run an existing file before editing.
 
 .. _code-context:
@@ -596,7 +596,7 @@ Text colors
 Idle defaults to black on white text, but colors text with special meanings.
 For the shell, these are shell output, shell error, user output, and
 user error.  For Python code, at the shell prompt or in an editor, these are
-keywords, builtin class and function names, names following ``class`` and
+keywords, builtin kundi and function names, names following ``class`` and
 ``def``, strings, and comments. For any text window, these are the cursor (when
 present), found text (when possible), and selected text.
 
@@ -614,14 +614,14 @@ the environment variables :envvar:`IDLESTARTUP` or :envvar:`PYTHONSTARTUP`.
 IDLE first checks for ``IDLESTARTUP``; if ``IDLESTARTUP`` is present the file
 referenced is run.  If ``IDLESTARTUP`` is not present, IDLE checks for
 ``PYTHONSTARTUP``.  Files referenced by these environment variables are
-convenient places to store functions that are used frequently from the IDLE
-shell, or for executing import statements to import common modules.
+convenient places to store functions that are used frequently kutoka the IDLE
+shell, or for executing agiza statements to agiza common modules.
 
 In addition, ``Tk`` also loads a startup file if it is present.  Note that the
 Tk file is loaded unconditionally.  This additional file is ``.Idle.py`` and is
 looked for in the user's home directory.  Statements in this file will be
 executed in the Tk namespace, so this file is not useful for importing
-functions to be used from IDLE's Python shell.
+functions to be used kutoka IDLE's Python shell.
 
 Command line usage
 ^^^^^^^^^^^^^^^^^^
@@ -663,7 +663,7 @@ user here.  It then exits.
 A common cause of failure is a user-written file with the same name as a
 standard library module, such as *random.py* and *tkinter.py*. When such a
 file is located in the same directory as a file that is about to be run,
-IDLE cannot import the stdlib file.  The current fix is to rename the
+IDLE cannot agiza the stdlib file.  The current fix is to rename the
 user file.
 
 Though less common than in the past, an antivirus or firewall program may
@@ -690,8 +690,8 @@ be prevented by never editing the files by hand, using the configuration
 dialog, under Options, instead Options.  Once it happens, the solution may
 be to delete one or more of the configuration files.
 
-If IDLE quits with no message, and it was not started from a console, try
-starting from a console (``python -m idlelib)`` and see if a message appears.
+If IDLE quits with no message, and it was not started kutoka a console, try
+starting kutoka a console (``python -m idlelib)`` and see if a message appears.
 
 Running user code
 ^^^^^^^^^^^^^^^^^
@@ -706,7 +706,7 @@ and ``threading.activeCount()`` returns 2 instead of 1.
 By default, IDLE runs user code in a separate OS process rather than in
 the user interface process that runs the shell and editor.  In the execution
 process, it replaces ``sys.stdin``, ``sys.stdout``, and ``sys.stderr``
-with objects that get input from and send output to the Shell window.
+with objects that get input kutoka and send output to the Shell window.
 The original values stored in ``sys.__stdin__``, ``sys.__stdout__``, and
 ``sys.__stderr__`` are not touched, but may be ``None``.
 
@@ -717,7 +717,7 @@ determine whether a key has been pressed and if so, which.
 
 IDLE's standard stream replacements are not inherited by subprocesses
 created in the execution process, whether directly by user code or by modules
-such as multiprocessing.  If such subprocess use ``input`` from sys.stdin
+such as multiprocessing.  If such subprocess use ``input`` kutoka sys.stdin
 or ``print`` or ``write`` to sys.stdout or sys.stderr,
 IDLE should be started in a command line window.  The secondary subprocess
 will then be attached to that window for input and output.
@@ -727,7 +727,7 @@ that would not be there otherwise.  IDLE wraps ``sys.getrecursionlimit`` and
 ``sys.setrecursionlimit`` to reduce the effect of the additional stack frames.
 
 If ``sys`` is reset by user code, such as with ``importlib.reload(sys)``,
-IDLE's changes are lost and input from the keyboard and output to the screen
+IDLE's changes are lost and input kutoka the keyboard and output to the screen
 will not work correctly.
 
 When user code raises SystemExit either directly or by calling sys.exit, IDLE
@@ -739,7 +739,7 @@ User output in Shell
 When a program outputs text, the result is determined by the
 corresponding output device.  When IDLE executes user code, ``sys.stdout``
 and ``sys.stderr`` are connected to the display area of IDLE's Shell.  Some of
-its features are inherited from the underlying Tk Text widget.  Others
+its features are inherited kutoka the underlying Tk Text widget.  Others
 are programmed additions.  Where it matters, Shell is designed for development
 rather than production runs.
 
@@ -774,11 +774,11 @@ replaced with escape codes. As demonstrated above, it allows one to
 identify the characters in a string, regardless of how they are displayed.
 
 Normal and error output are generally kept separate (on separate lines)
-from code input and each other.  They each get different highlight colors.
+kutoka code input and each other.  They each get different highlight colors.
 
 For SyntaxError tracebacks, the normal '^' marking where the error was
 detected is replaced by coloring the text with an error highlight.
-When code run from a file causes other exceptions, one may right click
+When code run kutoka a file causes other exceptions, one may right click
 on a traceback line to jump to the corresponding line in an IDLE editor.
 The file will be opened if necessary.
 
@@ -797,8 +797,8 @@ right-clicking the label.
 Developing tkinter applications
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-IDLE is intentionally different from standard Python in order to
-facilitate development of tkinter programs.  Enter ``import tkinter as tk;
+IDLE is intentionally different kutoka standard Python in order to
+facilitate development of tkinter programs.  Enter ``agiza tkinter as tk;
 root = tk.Tk()`` in standard Python and nothing appears.  Enter the same
 in IDLE and a tk window appears.  In standard Python, one must also enter
 ``root.update()`` to see the window.  IDLE does the equivalent in the
@@ -808,11 +808,11 @@ nothing visibly changes in standard Python until one enters ``root.update()``.
 
 Most tkinter programs run ``root.mainloop()``, which usually does not
 return until the tk app is destroyed.  If the program is run with
-``python -i`` or from an IDLE editor, a ``>>>`` shell prompt does not
+``python -i`` or kutoka an IDLE editor, a ``>>>`` shell prompt does not
 appear until ``mainloop()`` returns, at which time there is nothing left
 to interact with.
 
-When running a tkinter program from an IDLE editor, one can comment out
+When running a tkinter program kutoka an IDLE editor, one can comment out
 the mainloop call.  One then gets a shell prompt immediately and can
 interact with the live application.  One just has to remember to
 re-enable the mainloop call when running in standard Python.
@@ -822,7 +822,7 @@ Running without a subprocess
 
 By default, IDLE executes user code in a separate subprocess via a socket,
 which uses the internal loopback interface.  This connection is not
-externally visible and no data is sent to or received from the Internet.
+externally visible and no data is sent to or received kutoka the Internet.
 If firewall software complains anyway, you can ignore it.
 
 If the attempt to make the socket connection fails, Idle will notify you.
@@ -835,10 +835,10 @@ If IDLE is started with the -n command line switch it will run in a
 single process and will not create the subprocess which runs the RPC
 Python execution server.  This can be useful if Python cannot create
 the subprocess or the RPC socket interface on your platform.  However,
-in this mode user code is not isolated from IDLE itself.  Also, the
+in this mode user code is not isolated kutoka IDLE itself.  Also, the
 environment is not restarted when Run/Run Module (F5) is selected.  If
 your code has been modified, you must reload() the affected modules and
-re-import any specific items (e.g. from foo import baz) if the changes
+re-agiza any specific items (e.g. kutoka foo agiza baz) if the changes
 are to take effect.  For these reasons, it is preferable to run IDLE
 with the default subprocess if at all possible.
 
@@ -867,7 +867,7 @@ is the currently running Python version.  If your system
 has an off-line copy of the docs (this may be an installation option),
 that will be opened instead.
 
-Selected URLs can be added or removed from the help menu at any time using the
+Selected URLs can be added or removed kutoka the help menu at any time using the
 General tab of the Configure IDLE dialog .
 
 .. _preferences:

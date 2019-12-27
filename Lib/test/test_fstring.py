@@ -21,18 +21,18 @@ a_global = 'global variable'
 #  worthwhile tradeoff. When I switched to this method, I found many
 #  examples where I wasn't testing what I thought I was.
 
-class TestCase(unittest.TestCase):
-    def assertAllRaise(self, exception_type, regex, error_strings):
+kundi TestCase(unittest.TestCase):
+    eleza assertAllRaise(self, exception_type, regex, error_strings):
         for str in error_strings:
             with self.subTest(str=str):
                 with self.assertRaisesRegex(exception_type, regex):
                     eval(str)
 
-    def test__format__lookup(self):
+    eleza test__format__lookup(self):
         # Make sure __format__ is looked up on the type, not the instance.
-        class X:
-            def __format__(self, spec):
-                return 'class'
+        kundi X:
+            eleza __format__(self, spec):
+                rudisha 'class'
 
         x = X()
 
@@ -55,14 +55,14 @@ class TestCase(unittest.TestCase):
         self.assertEqual(type(x).__format__(x, ''), 'class')
         self.assertEqual(type(y).__format__(y, ''), 'class')
 
-    def test_ast(self):
+    eleza test_ast(self):
         # Inspired by http://bugs.python.org/issue24975
-        class X:
-            def __init__(self):
+        kundi X:
+            eleza __init__(self):
                 self.called = False
-            def __call__(self):
+            eleza __call__(self):
                 self.called = True
-                return 4
+                rudisha 4
         x = X()
         expr = """
 a = 10
@@ -79,7 +79,7 @@ f'{a * x()}'"""
         # Make sure x was called.
         self.assertTrue(x.called)
 
-    def test_ast_line_numbers(self):
+    eleza test_ast_line_numbers(self):
         expr = """
 a = 10
 f'{a * x()}'"""
@@ -110,7 +110,7 @@ f'{a * x()}'"""
         self.assertEqual(binop.left.col_offset, 3)
         self.assertEqual(binop.right.col_offset, 7)
 
-    def test_ast_line_numbers_multiple_formattedvalues(self):
+    eleza test_ast_line_numbers_multiple_formattedvalues(self):
         expr = """
 f'no formatted values'
 f'eggs {a * x()} spam {b + y()}'"""
@@ -162,7 +162,7 @@ f'eggs {a * x()} spam {b + y()}'"""
         self.assertEqual(binop2.left.col_offset, 23)
         self.assertEqual(binop2.right.col_offset, 27)
 
-    def test_ast_line_numbers_nested(self):
+    eleza test_ast_line_numbers_nested(self):
         expr = """
 a = 10
 f'{a * f"-{x()}-"}'"""
@@ -207,7 +207,7 @@ f'{a * f"-{x()}-"}'"""
         self.assertEqual(call.lineno, 3)
         self.assertEqual(call.col_offset, 11)
 
-    def test_ast_line_numbers_duplicate_expression(self):
+    eleza test_ast_line_numbers_duplicate_expression(self):
         """Duplicate expression
 
         NOTE: this is currently broken, always sets location of the first
@@ -278,7 +278,7 @@ f'{a * x()} {a * x()} {a * x()}'
         self.assertEqual(binop.left.col_offset, 3)  # FIXME: this is wrong
         self.assertEqual(binop.right.col_offset, 7)  # FIXME: this is wrong
 
-    def test_ast_line_numbers_multiline_fstring(self):
+    eleza test_ast_line_numbers_multiline_fstring(self):
         # See bpo-30465 for details.
         expr = """
 a = 10
@@ -328,20 +328,20 @@ non-agizaant content
         self.assertEqual(binop.left.col_offset, 4)
         self.assertEqual(binop.right.col_offset, 7)
 
-    def test_docstring(self):
-        def f():
+    eleza test_docstring(self):
+        eleza f():
             f'''Not a docstring'''
         self.assertIsNone(f.__doc__)
-        def g():
+        eleza g():
             '''Not a docstring''' \
             f''
         self.assertIsNone(g.__doc__)
 
-    def test_literal_eval(self):
+    eleza test_literal_eval(self):
         with self.assertRaisesRegex(ValueError, 'malformed node or string'):
             ast.literal_eval("f'x'")
 
-    def test_ast_compile_time_concat(self):
+    eleza test_ast_compile_time_concat(self):
         x = ['']
 
         expr = """x[0] = 'foo' f'{3}'"""
@@ -350,19 +350,19 @@ non-agizaant content
         exec(c)
         self.assertEqual(x[0], 'foo3')
 
-    def test_compile_time_concat_errors(self):
+    eleza test_compile_time_concat_errors(self):
         self.assertAllRaise(SyntaxError,
                             'cannot mix bytes and nonbytes literals',
                             [r"""f'' b''""",
                              r"""b'' f''""",
                              ])
 
-    def test_literal(self):
+    eleza test_literal(self):
         self.assertEqual(f'', '')
         self.assertEqual(f'a', 'a')
         self.assertEqual(f' ', ' ')
 
-    def test_unterminated_string(self):
+    eleza test_unterminated_string(self):
         self.assertAllRaise(SyntaxError, 'f-string: unterminated string',
                             [r"""f'{"x'""",
                              r"""f'{"x}'""",
@@ -370,7 +370,7 @@ non-agizaant content
                              r"""f'{("x}'""",
                              ])
 
-    def test_mismatched_parens(self):
+    eleza test_mismatched_parens(self):
         self.assertAllRaise(SyntaxError, r"f-string: closing parenthesis '\}' "
                             r"does not match opening parenthesis '\('",
                             ["f'{((}'",
@@ -393,7 +393,7 @@ non-agizaant content
                             ])
         self.assertRaises(SyntaxError, eval, "f'{" + "("*500 + "}'")
 
-    def test_double_braces(self):
+    eleza test_double_braces(self):
         self.assertEqual(f'{{', '{')
         self.assertEqual(f'a{{', 'a{')
         self.assertEqual(f'{{b', '{b')
@@ -428,11 +428,11 @@ non-agizaant content
                             ["f'{ {{}} }'", # dict in a set
                              ])
 
-    def test_compile_time_concat(self):
+    eleza test_compile_time_concat(self):
         x = 'def'
         self.assertEqual('abc' f'## {x}ghi', 'abc## defghi')
         self.assertEqual('abc' f'{x}' 'ghi', 'abcdefghi')
-        self.assertEqual('abc' f'{x}' 'gh' f'i{x:4}', 'abcdefghidef ')
+        self.assertEqual('abc' f'{x}' 'gh' f'i{x:4}', 'abcdefghieleza ')
         self.assertEqual('{x}' f'{x}', '{x}def')
         self.assertEqual('{x' f'{x}', '{xdef')
         self.assertEqual('{x}' f'{x}', '{x}def')
@@ -459,7 +459,7 @@ non-agizaant content
                             ["f'{3' f'}'",  # can't concat to get a valid f-string
                              ])
 
-    def test_comments(self):
+    eleza test_comments(self):
         # These aren't comments, since they're in strings.
         d = {'#': 'hash'}
         self.assertEqual(f'{"#"}', '#')
@@ -475,13 +475,13 @@ non-agizaant content
                                           #  '()#)'.  Make sure that doesn't compile.
                              ])
 
-    def test_many_expressions(self):
+    eleza test_many_expressions(self):
         # Create a string with many expressions in it. Note that
         #  because we have a space in here as a literal, we're actually
         #  going to use twice as many ast nodes: one for each literal
         #  plus one for each expression.
-        def build_fstr(n, extra=''):
-            return "f'" + ('{x} ' * n) + extra + "'"
+        eleza build_fstr(n, extra=''):
+            rudisha "f'" + ('{x} ' * n) + extra + "'"
 
         x = 'X'
         width = 1
@@ -500,7 +500,7 @@ non-agizaant content
         s = "f'{1}' 'x' 'y'" * 1024
         self.assertEqual(eval(s), '1xy' * 1024)
 
-    def test_format_specifier_expressions(self):
+    eleza test_format_specifier_expressions(self):
         width = 10
         precision = 4
         value = decimal.Decimal('12.34567')
@@ -537,18 +537,18 @@ non-agizaant content
                              """f'{"s"!{"r"}}'""",
                              ])
 
-    def test_side_effect_order(self):
-        class X:
-            def __init__(self):
+    eleza test_side_effect_order(self):
+        kundi X:
+            eleza __init__(self):
                 self.i = 0
-            def __format__(self, spec):
+            eleza __format__(self, spec):
                 self.i += 1
-                return str(self.i)
+                rudisha str(self.i)
 
         x = X()
         self.assertEqual(f'{x} {x}', '1 2')
 
-    def test_missing_expression(self):
+    eleza test_missing_expression(self):
         self.assertAllRaise(SyntaxError, 'f-string: empty expression not allowed',
                             ["f'{}'",
                              "f'{ }'"
@@ -588,7 +588,7 @@ non-agizaant content
                              "\xa0",
                              ])
 
-    def test_parens_in_expressions(self):
+    eleza test_parens_in_expressions(self):
         self.assertEqual(f'{3,}', '(3,)')
 
         # Add these because when an expression is evaluated, parens
@@ -608,7 +608,7 @@ non-agizaant content
                             ["f'{\n}'",
                              ])
 
-    def test_backslashes_in_string_part(self):
+    eleza test_backslashes_in_string_part(self):
         self.assertEqual(f'\t', '\t')
         self.assertEqual(r'\t', '\\t')
         self.assertEqual(rf'\t', '\\t')
@@ -663,7 +663,7 @@ non-agizaant content
         self.assertEqual(fr'\N{AMPERSAND}', '\\Nspam')
         self.assertEqual(f'\\\N{AMPERSAND}', '\\&')
 
-    def test_misformed_unicode_character_name(self):
+    eleza test_misformed_unicode_character_name(self):
         # These test are needed because unicode names are parsed
         # differently inside f-strings.
         self.assertAllRaise(SyntaxError, r"\(unicode error\) 'unicodeescape' codec can't decode bytes in position .*: malformed \\N character escape",
@@ -678,7 +678,7 @@ non-agizaant content
                              r"'\N{GREEK CAPITAL LETTER DELTA'",
                              ])
 
-    def test_no_backslashes_in_expression_part(self):
+    eleza test_no_backslashes_in_expression_part(self):
         self.assertAllRaise(SyntaxError, 'f-string expression part cannot include a backslash',
                             [r"f'{\'a\'}'",
                              r"f'{\t3}'",
@@ -690,7 +690,7 @@ non-agizaant content
                              r"f'{\n}'",
                              ])
 
-    def test_no_escapes_for_braces(self):
+    eleza test_no_escapes_for_braces(self):
         """
         Only literal curly braces begin an expression.
         """
@@ -700,12 +700,12 @@ non-agizaant content
         self.assertEqual(f'\u007b1+1', '{1+1')
         self.assertEqual(f'\N{LEFT CURLY BRACKET}1+1\N{RIGHT CURLY BRACKET}', '{1+1}')
 
-    def test_newlines_in_expressions(self):
+    eleza test_newlines_in_expressions(self):
         self.assertEqual(f'{0}', '0')
         self.assertEqual(rf'''{3+
 4}''', '7')
 
-    def test_lambda(self):
+    eleza test_lambda(self):
         x = 5
         self.assertEqual(f'{(lambda y:x*y)("8")!r}', "'88888'")
         self.assertEqual(f'{(lambda y:x*y)("8")!r:10}', "'88888'   ")
@@ -717,17 +717,17 @@ non-agizaant content
                             ["f'{lambda x:x}'",
                              ])
 
-    def test_yield(self):
+    eleza test_yield(self):
         # Not terribly useful, but make sure the yield turns
         #  a function into a generator
-        def fn(y):
+        eleza fn(y):
             f'y:{yield y*2}'
 
         g = fn(4)
         self.assertEqual(next(g), 8)
 
-    def test_yield_send(self):
-        def fn(x):
+    eleza test_yield_send(self):
+        eleza fn(x):
             yield f'x:{yield (lambda i: x * i)}'
 
         g = fn(10)
@@ -735,7 +735,7 @@ non-agizaant content
         self.assertEqual(the_lambda(4), 40)
         self.assertEqual(g.send('string'), 'x:string')
 
-    def test_expressions_with_triple_quoted_strings(self):
+    eleza test_expressions_with_triple_quoted_strings(self):
         self.assertEqual(f"{'''x'''}", 'x')
         self.assertEqual(f"{'''eric's'''}", "eric's")
 
@@ -747,7 +747,7 @@ non-agizaant content
         self.assertEqual(f'{"""x""" """eric"s""" """y"""}', 'xeric"sy')
         self.assertEqual(f'{r"""x""" """eric"s""" """y"""}', 'xeric"sy')
 
-    def test_multiple_vars(self):
+    eleza test_multiple_vars(self):
         x = 98
         y = 'abc'
         self.assertEqual(f'{x}{y}', '98abc')
@@ -762,38 +762,38 @@ non-agizaant content
 
         self.assertEqual(f'X{x}Y{y}Z', 'X98YabcZ')
 
-    def test_closure(self):
-        def outer(x):
-            def inner():
-                return f'x:{x}'
-            return inner
+    eleza test_closure(self):
+        eleza outer(x):
+            eleza inner():
+                rudisha f'x:{x}'
+            rudisha inner
 
         self.assertEqual(outer('987')(), 'x:987')
         self.assertEqual(outer(7)(), 'x:7')
 
-    def test_arguments(self):
+    eleza test_arguments(self):
         y = 2
-        def f(x, width):
-            return f'x={x*y:{width}}'
+        eleza f(x, width):
+            rudisha f'x={x*y:{width}}'
 
         self.assertEqual(f('foo', 10), 'x=foofoo    ')
         x = 'bar'
         self.assertEqual(f(10, 10), 'x=        20')
 
-    def test_locals(self):
+    eleza test_locals(self):
         value = 123
         self.assertEqual(f'v:{value}', 'v:123')
 
-    def test_missing_variable(self):
+    eleza test_missing_variable(self):
         with self.assertRaises(NameError):
             f'v:{value}'
 
-    def test_missing_format_spec(self):
-        class O:
-            def __format__(self, spec):
-                if not spec:
-                    return '*'
-                return spec
+    eleza test_missing_format_spec(self):
+        kundi O:
+            eleza __format__(self, spec):
+                ikiwa not spec:
+                    rudisha '*'
+                rudisha spec
 
         self.assertEqual(f'{O():x}', 'x')
         self.assertEqual(f'{O()}', '*')
@@ -802,7 +802,7 @@ non-agizaant content
         self.assertEqual(f'{3:}', '3')
         self.assertEqual(f'{3!s:}', '3')
 
-    def test_global(self):
+    eleza test_global(self):
         self.assertEqual(f'g:{a_global}', 'g:global variable')
         self.assertEqual(f'g:{a_global!r}', "g:'global variable'")
 
@@ -816,7 +816,7 @@ non-agizaant content
 
         self.assertIn("module 'unittest' kutoka", f'{unittest}')
 
-    def test_shadowed_global(self):
+    eleza test_shadowed_global(self):
         a_global = 'really a local'
         self.assertEqual(f'g:{a_global}', 'g:really a local')
         self.assertEqual(f'g:{a_global!r}', "g:'really a local'")
@@ -829,18 +829,18 @@ non-agizaant content
         self.assertEqual(f'g:{a_global} l:{a_local!r}',
                          "g:really a local l:'local variable'")
 
-    def test_call(self):
-        def foo(x):
-            return 'x=' + str(x)
+    eleza test_call(self):
+        eleza foo(x):
+            rudisha 'x=' + str(x)
 
         self.assertEqual(f'{foo(10)}', 'x=10')
 
-    def test_nested_fstrings(self):
+    eleza test_nested_fstrings(self):
         y = 5
         self.assertEqual(f'{f"{0}"*3}', '000')
         self.assertEqual(f'{f"{y}"*3}', '555')
 
-    def test_invalid_string_prefixes(self):
+    eleza test_invalid_string_prefixes(self):
         self.assertAllRaise(SyntaxError, 'unexpected EOF while parsing',
                             ["fu''",
                              "uf''",
@@ -866,7 +866,7 @@ non-agizaant content
                              "BF''",
                              ])
 
-    def test_leading_trailing_spaces(self):
+    eleza test_leading_trailing_spaces(self):
         self.assertEqual(f'{ 3}', '3')
         self.assertEqual(f'{  3}', '3')
         self.assertEqual(f'{3 }', '3')
@@ -877,7 +877,7 @@ non-agizaant content
         self.assertEqual(f'expr={ {x: y for x, y in [(1, 2), ]} }',
                          'expr={1: 2}')
 
-    def test_not_equal(self):
+    eleza test_not_equal(self):
         # There's a special test for this because there's a special
         #  case in the f-string parser to look for != as not ending an
         #  expression. Normally it would, while looking for !s or !r.
@@ -887,13 +887,13 @@ non-agizaant content
         self.assertEqual(f'{3!=4!s}', 'True')
         self.assertEqual(f'{3!=4!s:.3}', 'Tru')
 
-    def test_equal_equal(self):
+    eleza test_equal_equal(self):
         # Because an expression ending in = has special meaning,
         # there's a special test for ==. Make sure it works.
 
         self.assertEqual(f'{0==1}', 'False')
 
-    def test_conversions(self):
+    eleza test_conversions(self):
         self.assertEqual(f'{3.14:10.10}', '      3.14')
         self.assertEqual(f'{3.14!s:10.10}', '3.14      ')
         self.assertEqual(f'{3.14!r:10.10}', '3.14      ')
@@ -926,20 +926,20 @@ non-agizaant content
                              "f'{3!ss:s}'",
                              ])
 
-    def test_assignment(self):
+    eleza test_assignment(self):
         self.assertAllRaise(SyntaxError, 'invalid syntax',
                             ["f'' = 3",
                              "f'{0}' = x",
                              "f'{x}' = x",
                              ])
 
-    def test_del(self):
+    eleza test_del(self):
         self.assertAllRaise(SyntaxError, 'invalid syntax',
                             ["del f''",
                              "del '' f''",
                              ])
 
-    def test_mismatched_braces(self):
+    eleza test_mismatched_braces(self):
         self.assertAllRaise(SyntaxError, "f-string: single '}' is not allowed",
                             ["f'{{}'",
                              "f'{{}}}'",
@@ -976,30 +976,30 @@ non-agizaant content
         self.assertEqual(f'{3:{"}"}>10}', '}}}}}}}}}3')
         self.assertEqual(f'{2:{"{"}>10}', '{{{{{{{{{2')
 
-    def test_if_conditional(self):
-        # There's special logic in compile.c to test if the
-        #  conditional for an if (and while) are constants. Exercise
+    eleza test_if_conditional(self):
+        # There's special logic in compile.c to test ikiwa the
+        #  conditional for an ikiwa (and while) are constants. Exercise
         #  that code.
 
-        def test_fstring(x, expected):
+        eleza test_fstring(x, expected):
             flag = 0
-            if f'{x}':
+            ikiwa f'{x}':
                 flag = 1
             else:
                 flag = 2
             self.assertEqual(flag, expected)
 
-        def test_concat_empty(x, expected):
+        eleza test_concat_empty(x, expected):
             flag = 0
-            if '' f'{x}':
+            ikiwa '' f'{x}':
                 flag = 1
             else:
                 flag = 2
             self.assertEqual(flag, expected)
 
-        def test_concat_non_empty(x, expected):
+        eleza test_concat_non_empty(x, expected):
             flag = 0
-            if ' ' f'{x}':
+            ikiwa ' ' f'{x}':
                 flag = 1
             else:
                 flag = 2
@@ -1014,14 +1014,14 @@ non-agizaant content
         test_concat_non_empty('', 1)
         test_concat_non_empty(' ', 1)
 
-    def test_empty_format_specifier(self):
+    eleza test_empty_format_specifier(self):
         x = 'test'
         self.assertEqual(f'{x}', 'test')
         self.assertEqual(f'{x:}', 'test')
         self.assertEqual(f'{x!s:}', 'test')
         self.assertEqual(f'{x!r:}', "'test'")
 
-    def test_str_format_differences(self):
+    eleza test_str_format_differences(self):
         d = {'a': 'string',
              0: 'integer',
              }
@@ -1032,7 +1032,7 @@ non-agizaant content
         self.assertEqual('{d[a]}'.format(d=d), 'string')
         self.assertEqual('{d[0]}'.format(d=d), 'integer')
 
-    def test_errors(self):
+    eleza test_errors(self):
         # see issue 26287
         self.assertAllRaise(TypeError, 'unsupported',
                             [r"f'{(lambda: 0):x}'",
@@ -1043,11 +1043,11 @@ non-agizaant content
                              r"f'{1000:j}'",
                             ])
 
-    def test_loop(self):
+    eleza test_loop(self):
         for i in range(1000):
             self.assertEqual(f'i:{i}', 'i:' + str(i))
 
-    def test_dict(self):
+    eleza test_dict(self):
         d = {'"': 'dquote',
              "'": 'squote',
              'foo': 'bar',
@@ -1058,13 +1058,13 @@ non-agizaant content
         self.assertEqual(f'{d["foo"]}', 'bar')
         self.assertEqual(f"{d['foo']}", 'bar')
 
-    def test_backslash_char(self):
+    eleza test_backslash_char(self):
         # Check eval of a backslash followed by a control char.
         # See bpo-30682: this used to raise an assert in pydebug mode.
         self.assertEqual(eval('f"\\\n"'), '')
         self.assertEqual(eval('f"\\\r"'), '')
 
-    def test_debug_conversion(self):
+    eleza test_debug_conversion(self):
         x = 'A string'
         self.assertEqual(f'{x=}', 'x=' + repr(x))
         self.assertEqual(f'{x =}', 'x =' + repr(x))
@@ -1123,11 +1123,11 @@ non-agizaant content
 
         # Test named function parameters, to make sure '=' parsing works
         # there.
-        def f(a):
+        eleza f(a):
             nonlocal x
             oldx = x
             x = a
-            return oldx
+            rudisha oldx
         x = 0
         self.assertEqual(f'{f(a="3=")}', '0')
         self.assertEqual(x, '3=')
@@ -1135,11 +1135,11 @@ non-agizaant content
         self.assertEqual(x, 4)
 
         # Make sure __format__ is being called.
-        class C:
-            def __format__(self, s):
-                return f'FORMAT-{s}'
-            def __repr__(self):
-                return 'REPR'
+        kundi C:
+            eleza __format__(self, s):
+                rudisha f'FORMAT-{s}'
+            eleza __repr__(self):
+                rudisha 'REPR'
 
         self.assertEqual(f'{C()=}', 'C()=REPR')
         self.assertEqual(f'{C()=!r}', 'C()=REPR')
@@ -1168,7 +1168,7 @@ non-agizaant content
         #self.assertEqual(f'X{x =}Y', 'Xx\t='+repr(x)+'Y')
         #self.assertEqual(f'X{x =       }Y', 'Xx\t=\t'+repr(x)+'Y')
 
-    def test_walrus(self):
+    eleza test_walrus(self):
         x = 20
         # This isn't an assignment expression, it's 'x', with a format
         # spec of '=10'.
@@ -1179,5 +1179,5 @@ non-agizaant content
         self.assertEqual(x, 10)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

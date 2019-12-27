@@ -34,21 +34,21 @@ def _is_sunder(name):
 
 
 def _make_class_unpicklable(cls):
-    """Make the given class un-picklable."""
+    """Make the given kundi un-picklable."""
     def _break_on_call_reduce(self, proto):
         raise TypeError('%r cannot be pickled' % self)
     cls.__reduce_ex__ = _break_on_call_reduce
     cls.__module__ = '<unknown>'
 
 _auto_null = object()
-class auto:
+kundi auto:
     """
-    Instances are replaced with an appropriate value in Enum class suites.
+    Instances are replaced with an appropriate value in Enum kundi suites.
     """
     value = _auto_null
 
 
-class _EnumDict(dict):
+kundi _EnumDict(dict):
     """Track enum member order and ensure member names are not reused.
 
     EnumMeta will use the names found in self._member_names as the
@@ -78,7 +78,7 @@ class _EnumDict(dict):
                 raise ValueError('_names_ are reserved for future Enum use')
             if key == '_generate_next_value_':
                 setattr(self, '_generate_next_value', value)
-            elif key == '_ignore_':
+            lasivyo key == '_ignore_':
                 if isinstance(value, str):
                     value = value.replace(',',' ').split()
                 else:
@@ -87,15 +87,15 @@ class _EnumDict(dict):
                 already = set(value) & set(self._member_names)
                 if already:
                     raise ValueError('_ignore_ cannot specify already set names: %r' % (already, ))
-        elif _is_dunder(key):
+        lasivyo _is_dunder(key):
             if key == '__order__':
                 key = '_order_'
-        elif key in self._member_names:
+        lasivyo key in self._member_names:
             # descriptor overwriting an enum?
             raise TypeError('Attempted to reuse key: %r' % key)
-        elif key in self._ignore:
+        lasivyo key in self._ignore:
             pass
-        elif not _is_descriptor(value):
+        lasivyo not _is_descriptor(value):
             if key in self:
                 # enum overwriting a descriptor?
                 raise TypeError('%r already defined as: %r' % (key, self[key]))
@@ -109,13 +109,13 @@ class _EnumDict(dict):
 
 
 # Dummy value for Enum as EnumMeta explicitly checks for it, but of course
-# until EnumMeta finishes running the first time the Enum class doesn't exist.
+# until EnumMeta finishes running the first time the Enum kundi doesn't exist.
 # This is also why there are checks in EnumMeta like `if Enum is not None`
 Enum = None
 
 
-class EnumMeta(type):
-    """Metaclass for Enum"""
+kundi EnumMeta(type):
+    """Metakundi for Enum"""
     @classmethod
     def __prepare__(metacls, cls, bases):
         # create the namespace dict
@@ -127,10 +127,10 @@ class EnumMeta(type):
         return enum_dict
 
     def __new__(metacls, cls, bases, classdict):
-        # an Enum class is final once enumeration items have been defined; it
+        # an Enum kundi is final once enumeration items have been defined; it
         # cannot be mixed with other types (int, float, etc.) if it has an
         # inherited __new__ unless a new __new__ is defined (or the resulting
-        # class will fail).
+        # kundi will fail).
         #
         # remove any keys listed in _ignore_
         classdict.setdefault('_ignore_', []).append('_ignore_')
@@ -161,13 +161,13 @@ class EnumMeta(type):
             classdict['__doc__'] = 'An enumeration.'
 
         # create our new Enum type
-        enum_class = super().__new__(metacls, cls, bases, classdict)
+        enum_kundi = super().__new__(metacls, cls, bases, classdict)
         enum_class._member_names_ = []               # names in definition order
         enum_class._member_map_ = {}                 # name->value map
         enum_class._member_type_ = member_type
 
         # save DynamicClassAttribute attributes kutoka super classes so we know
-        # if we can take the shortcut of storing members in the class dict
+        # if we can take the shortcut of storing members in the kundi dict
         dynamic_attributes = {k for c in enum_class.mro()
                               for k, v in c.__dict__.items()
                               if isinstance(v, DynamicClassAttribute)}
@@ -178,10 +178,10 @@ class EnumMeta(type):
         # If a custom type is mixed into the Enum, and it does not know how
         # to pickle itself, pickle.dumps will succeed but pickle.loads will
         # fail.  Rather than have the error show up later and possibly far
-        # kutoka the source, sabotage the pickle protocol for this class so
+        # kutoka the source, sabotage the pickle protocol for this kundi so
         # that pickle.dumps also fails.
         #
-        # However, if the new class implements its own __reduce_ex__, do not
+        # However, if the new kundi implements its own __reduce_ex__, do not
         # sabotage -- it's on them to make sure it works correctly.  We use
         # __reduce_ex__ instead of any of the others as it is preferred by
         # pickle over __reduce__, and it handles all pickle protocols.
@@ -255,7 +255,7 @@ class EnumMeta(type):
         # anyway) -- again, this is to support pickle
         if Enum is not None:
             # if the user defined their own __new__, save it before it gets
-            # clobbered in case they subclass later
+            # clobbered in case they subkundi later
             if save_new:
                 enum_class.__new_member__ = __new__
             enum_class.__new__ = Enum.__new__
@@ -278,7 +278,7 @@ class EnumMeta(type):
     def __call__(cls, value, names=None, *, module=None, qualname=None, type=None, start=1):
         """Either returns an existing member, or creates a new enum class.
 
-        This method is used both when an enum class is given a value to match
+        This method is used both when an enum kundi is given a value to match
         to an enumeration member (i.e. Color(3)) and for the functional API
         (i.e. Color = Enum('Color', names='RED GREEN BLUE')).
 
@@ -289,11 +289,11 @@ class EnumMeta(type):
         `names` should be either a string of white-space/comma delimited names
         (values will start at `start`), or an iterator/mapping of name, value pairs.
 
-        `module` should be set to the module this class is being created in;
+        `module` should be set to the module this kundi is being created in;
         if it is not set, an attempt to find that module will be made, but if
-        it fails the class will not be picklable.
+        it fails the kundi will not be picklable.
 
-        `qualname` should be set to the actual location this class can be found
+        `qualname` should be set to the actual location this kundi can be found
         at in its module; by default it is set to the global scope.  If this is
         not correct, unpickling will fail in some circumstances.
 
@@ -368,7 +368,7 @@ class EnumMeta(type):
     def __setattr__(cls, name, value):
         """Block attempts to reassign Enum members.
 
-        A simple assignment to the class namespace only changes one of the
+        A simple assignment to the kundi namespace only changes one of the
         several possible ways to get an Enum member kutoka the Enum class,
         resulting in an inconsistent Enumeration.
 
@@ -413,7 +413,7 @@ class EnumMeta(type):
             else:
                 member_name, member_value = item
             classdict[member_name] = member_value
-        enum_class = metacls.__new__(metacls, class_name, bases, classdict)
+        enum_kundi = metacls.__new__(metacls, class_name, bases, classdict)
 
         # TODO: replace the frame hack if a blessed way to know the calling
         # module is ever developed
@@ -433,7 +433,7 @@ class EnumMeta(type):
 
     def _convert_(cls, name, module, filter, source=None):
         """
-        Create a new Enum subclass that replaces a collection of global constants
+        Create a new Enum subkundi that replaces a collection of global constants
         """
         # convert all constants kutoka source (or module) that pass filter() to
         # a new Enum called name, and export the enum and its members back to
@@ -486,12 +486,12 @@ class EnumMeta(type):
                 for base in chain.__mro__:
                     if base is object:
                         continue
-                    elif '__new__' in base.__dict__:
+                    lasivyo '__new__' in base.__dict__:
                         if issubclass(base, Enum):
                             continue
                         return base
 
-        # ensure final parent class is an Enum derivative, find any concrete
+        # ensure final parent kundi is an Enum derivative, find any concrete
         # data type, and check that Enum has no members
         first_enum = bases[-1]
         if not issubclass(first_enum, Enum):
@@ -506,7 +506,7 @@ class EnumMeta(type):
     def _find_new_(classdict, member_type, first_enum):
         """Returns the __new__ to be used for creating the enum members.
 
-        classdict: the class dictionary given to __new__
+        classdict: the kundi dictionary given to __new__
         member_type: the data type whose __new__ will be used by default
         first_enum: enumeration to check for an overriding __new__
 
@@ -548,14 +548,14 @@ class EnumMeta(type):
         return __new__, save_new, use_args
 
 
-class Enum(metaclass=EnumMeta):
+kundi Enum(metaclass=EnumMeta):
     """Generic enumeration.
 
-    Derive kutoka this class to define new enumerations.
+    Derive kutoka this kundi to define new enumerations.
 
     """
     def __new__(cls, value):
-        # all enum instances are actually created during class construction
+        # all enum instances are actually created during kundi construction
         # without calling this method; this method is called by the metaclass'
         # __call__ (i.e. Color(3) ), and by pickle
         if type(value) is cls:
@@ -586,7 +586,7 @@ class Enum(metaclass=EnumMeta):
             ve_exc = ValueError("%r is not a valid %s" % (value, cls.__name__))
             if result is None and exc is None:
                 raise ve_exc
-            elif exc is None:
+            lasivyo exc is None:
                 exc = TypeError(
                         'error in %s._missing_: returned %r instead of None or a valid member'
                         % (cls.__name__, result)
@@ -648,7 +648,7 @@ class Enum(metaclass=EnumMeta):
     # `value` properties of enum members while keeping some measure of
     # protection kutoka modification, while still allowing for an enumeration
     # to have members named `name` and `value`.  This works because enumeration
-    # members are not set directly on the enum class -- __getattr__ is
+    # members are not set directly on the enum kundi -- __getattr__ is
     # used to look them up.
 
     @DynamicClassAttribute
@@ -662,14 +662,14 @@ class Enum(metaclass=EnumMeta):
         return self._value_
 
 
-class IntEnum(int, Enum):
+kundi IntEnum(int, Enum):
     """Enum where members are also (and must be) ints"""
 
 
 def _reduce_ex_by_name(self, proto):
     return self.name
 
-class Flag(Enum):
+kundi Flag(Enum):
     """Support for flags"""
 
     def _generate_next_value_(name, start, count, last_values):
@@ -779,7 +779,7 @@ class Flag(Enum):
         return self.__class__(inverted)
 
 
-class IntFlag(int, Flag):
+kundi IntFlag(int, Flag):
     """Support for integer-based Flags"""
 
     @classmethod

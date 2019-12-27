@@ -5,20 +5,20 @@ agiza unittest
 agiza warnings
 
 
-class GlobalTests(unittest.TestCase):
+kundi GlobalTests(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self._warnings_manager = check_warnings()
         self._warnings_manager.__enter__()
         warnings.filterwarnings("error", module="<test string>")
 
-    def tearDown(self):
+    eleza tearDown(self):
         self._warnings_manager.__exit__(None, None, None)
 
 
-    def test1(self):
+    eleza test1(self):
         prog_text_1 = """\
-def wrong1():
+eleza wrong1():
     a = 1
     b = 2
     global a
@@ -26,24 +26,24 @@ def wrong1():
 """
         check_syntax_error(self, prog_text_1, lineno=4, offset=5)
 
-    def test2(self):
+    eleza test2(self):
         prog_text_2 = """\
-def wrong2():
-    print(x)
+eleza wrong2():
+    andika(x)
     global x
 """
         check_syntax_error(self, prog_text_2, lineno=3, offset=5)
 
-    def test3(self):
+    eleza test3(self):
         prog_text_3 = """\
-def wrong3():
-    print(x)
+eleza wrong3():
+    andika(x)
     x = 2
     global x
 """
         check_syntax_error(self, prog_text_3, lineno=4, offset=5)
 
-    def test4(self):
+    eleza test4(self):
         prog_text_4 = """\
 global x
 x = 2
@@ -52,10 +52,10 @@ x = 2
         compile(prog_text_4, "<test string>", "exec")
 
 
-def test_main():
+eleza test_main():
     with warnings.catch_warnings():
         warnings.filterwarnings("error", module="<test string>")
         run_unittest(GlobalTests)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

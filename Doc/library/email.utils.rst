@@ -91,7 +91,7 @@ of the new API.
    :meth:`Message.get_all <email.message.Message.get_all>`.  Here's a simple
    example that gets all the recipients of a message::
 
-      from email.utils import getaddresses
+      kutoka email.utils agiza getaddresses
 
       tos = msg.get_all('to', [])
       ccs = msg.get_all('cc', [])
@@ -115,7 +115,7 @@ of the new API.
 
    Performs the same function as :func:`parsedate`, but returns either ``None`` or
    a 10-tuple; the first 9 elements make up a tuple that can be passed directly to
-   :func:`time.mktime`, and the tenth is the offset of the date's timezone from UTC
+   :func:`time.mktime`, and the tenth is the offset of the date's timezone kutoka UTC
    (which is the official term for Greenwich Mean Time) [#]_.  If the input string
    has no timezone, the last element of the tuple returned is ``None``.  Note that
    indexes 6, 7, and 8 of the result tuple are not usable.
@@ -128,7 +128,7 @@ of the new API.
    the input date has a timezone of ``-0000``, the ``datetime`` will be a naive
    ``datetime``, and if the date is conforming to the RFCs it will represent a
    time in UTC but with no indication of the actual source timezone of the
-   message the date comes from.  If the input date has any other valid timezone
+   message the date comes kutoka.  If the input date has any other valid timezone
    offset, the ``datetime`` will be an aware ``datetime`` with the
    corresponding a :class:`~datetime.timezone` :class:`~datetime.tzinfo`.
 

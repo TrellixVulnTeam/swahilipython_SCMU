@@ -12,8 +12,8 @@
 
 .. testsetup::
 
-   import sys
-   from difflib import *
+   agiza sys
+   kutoka difflib agiza *
 
 --------------
 
@@ -25,7 +25,7 @@ diffs. For comparing directories and files, see also, the :mod:`filecmp` module.
 
 .. class:: SequenceMatcher
 
-   This is a flexible class for comparing pairs of sequences of any type, so long
+   This is a flexible kundi for comparing pairs of sequences of any type, so long
    as the sequence elements are :term:`hashable`.  The basic algorithm predates, and is a
    little fancier than, an algorithm published in the late 1980's by Ratcliff and
    Obershelp under the hyperbolic name "gestalt pattern matching."  The idea is to
@@ -57,7 +57,7 @@ diffs. For comparing directories and files, see also, the :mod:`filecmp` module.
 
 .. class:: Differ
 
-   This is a class for comparing sequences of lines of text, and producing
+   This is a kundi for comparing sequences of lines of text, and producing
    human-readable differences or deltas.  Differ uses :class:`SequenceMatcher`
    both to compare sequences of lines, and to compare sequences of characters
    within similar (near-matching) lines.
@@ -83,12 +83,12 @@ diffs. For comparing directories and files, see also, the :mod:`filecmp` module.
 
 .. class:: HtmlDiff
 
-   This class can be used to create an HTML table (or a complete HTML file
+   This kundi can be used to create an HTML table (or a complete HTML file
    containing the table) showing a side by side, line by line comparison of text
    with inter-line and intra-line change highlights.  The table can be generated in
    either full or contextual difference mode.
 
-   The constructor for this class is:
+   The constructor for this kundi is:
 
 
    .. method:: __init__(tabsize=8, wrapcolumn=None, linejunk=None, charjunk=IS_CHARACTER_JUNK)
@@ -107,14 +107,14 @@ diffs. For comparing directories and files, see also, the :mod:`filecmp` module.
 
    The following methods are public:
 
-   .. method:: make_file(fromlines, tolines, fromdesc='', todesc='', context=False, \
+   .. method:: make_file(kutokalines, tolines, kutokadesc='', todesc='', context=False, \
                          numlines=5, *, charset='utf-8')
 
-      Compares *fromlines* and *tolines* (lists of strings) and returns a string which
+      Compares *kutokalines* and *tolines* (lists of strings) and returns a string which
       is a complete HTML file containing a table showing line by line differences with
       inter-line and intra-line changes highlighted.
 
-      *fromdesc* and *todesc* are optional keyword arguments to specify from/to file
+      *kutokadesc* and *todesc* are optional keyword arguments to specify kutoka/to file
       column header strings (both default to an empty string).
 
       *context* and *numlines* are both optional keyword arguments. Set *context* to
@@ -128,27 +128,27 @@ diffs. For comparing directories and files, see also, the :mod:`filecmp` module.
       context).
 
       .. note::
-         *fromdesc* and *todesc* are interpreted as unescaped HTML and should be
-         properly escaped while receiving input from untrusted sources.
+         *kutokadesc* and *todesc* are interpreted as unescaped HTML and should be
+         properly escaped while receiving input kutoka untrusted sources.
 
       .. versionchanged:: 3.5
          *charset* keyword-only argument was added.  The default charset of
-         HTML document changed from ``'ISO-8859-1'`` to ``'utf-8'``.
+         HTML document changed kutoka ``'ISO-8859-1'`` to ``'utf-8'``.
 
-   .. method:: make_table(fromlines, tolines, fromdesc='', todesc='', context=False, numlines=5)
+   .. method:: make_table(kutokalines, tolines, kutokadesc='', todesc='', context=False, numlines=5)
 
-      Compares *fromlines* and *tolines* (lists of strings) and returns a string which
+      Compares *kutokalines* and *tolines* (lists of strings) and returns a string which
       is a complete HTML table showing line by line differences with inter-line and
       intra-line changes highlighted.
 
       The arguments for this method are the same as those for the :meth:`make_file`
       method.
 
-   :file:`Tools/scripts/diff.py` is a command-line front-end to this class and
+   :file:`Tools/scripts/diff.py` is a command-line front-end to this kundi and
    contains a good example of its use.
 
 
-.. function:: context_diff(a, b, fromfile='', tofile='', fromfiledate='', tofiledate='', n=3, lineterm='\\n')
+.. function:: context_diff(a, b, kutokafile='', tofile='', kutokafiledate='', tofiledate='', n=3, lineterm='\\n')
 
    Compare *a* and *b* (lists of strings); return a delta (a :term:`generator`
    generating the delta lines) in context diff format.
@@ -158,7 +158,7 @@ diffs. For comparing directories and files, see also, the :mod:`filecmp` module.
    number of context lines is set by *n* which defaults to three.
 
    By default, the diff control lines (those with ``***`` or ``---``) are created
-   with a trailing newline.  This is helpful so that inputs created from
+   with a trailing newline.  This is helpful so that inputs created kutoka
    :func:`io.IOBase.readlines` result in diffs that are suitable for use with
    :func:`io.IOBase.writelines` since both the inputs and outputs have trailing
    newlines.
@@ -167,14 +167,14 @@ diffs. For comparing directories and files, see also, the :mod:`filecmp` module.
    ``""`` so that the output will be uniformly newline free.
 
    The context diff format normally has a header for filenames and modification
-   times.  Any or all of these may be specified using strings for *fromfile*,
-   *tofile*, *fromfiledate*, and *tofiledate*.  The modification times are normally
+   times.  Any or all of these may be specified using strings for *kutokafile*,
+   *tofile*, *kutokafiledate*, and *tofiledate*.  The modification times are normally
    expressed in the ISO 8601 format. If not specified, the
    strings default to blanks.
 
       >>> s1 = ['bacon\n', 'eggs\n', 'ham\n', 'guido\n']
       >>> s2 = ['python\n', 'eggy\n', 'hamster\n', 'guido\n']
-      >>> sys.stdout.writelines(context_diff(s1, s2, fromfile='before.py', tofile='after.py'))
+      >>> sys.stdout.writelines(context_diff(s1, s2, kutokafile='before.py', tofile='after.py'))
       *** before.py
       --- after.py
       ***************
@@ -209,7 +209,7 @@ diffs. For comparing directories and files, see also, the :mod:`filecmp` module.
 
       >>> get_close_matches('appel', ['ape', 'apple', 'peach', 'puppy'])
       ['apple', 'ape']
-      >>> import keyword
+      >>> agiza keyword
       >>> get_close_matches('wheel', keyword.kwlist)
       ['while']
       >>> get_close_matches('pineapple', keyword.kwlist)
@@ -230,7 +230,7 @@ diffs. For comparing directories and files, see also, the :mod:`filecmp` module.
    true if the string is junk, or false if not. The default is ``None``. There
    is also a module-level function :func:`IS_LINE_JUNK`, which filters out lines
    without visible characters, except for at most one pound character (``'#'``)
-   -- however the underlying :class:`SequenceMatcher` class does a dynamic
+   -- however the underlying :class:`SequenceMatcher` kundi does a dynamic
    analysis of which lines are so frequent as to constitute noise, and this
    usually works better than using this function.
 
@@ -260,7 +260,7 @@ diffs. For comparing directories and files, see also, the :mod:`filecmp` module.
    Return one of the two sequences that generated a delta.
 
    Given a *sequence* produced by :meth:`Differ.compare` or :func:`ndiff`, extract
-   lines originating from file 1 or 2 (parameter *which*), stripping off line
+   lines originating kutoka file 1 or 2 (parameter *which*), stripping off line
    prefixes.
 
    Example:
@@ -278,7 +278,7 @@ diffs. For comparing directories and files, see also, the :mod:`filecmp` module.
       emu
 
 
-.. function:: unified_diff(a, b, fromfile='', tofile='', fromfiledate='', tofiledate='', n=3, lineterm='\\n')
+.. function:: unified_diff(a, b, kutokafile='', tofile='', kutokafiledate='', tofiledate='', n=3, lineterm='\\n')
 
    Compare *a* and *b* (lists of strings); return a delta (a :term:`generator`
    generating the delta lines) in unified diff format.
@@ -289,7 +289,7 @@ diffs. For comparing directories and files, see also, the :mod:`filecmp` module.
    defaults to three.
 
    By default, the diff control lines (those with ``---``, ``+++``, or ``@@``) are
-   created with a trailing newline.  This is helpful so that inputs created from
+   created with a trailing newline.  This is helpful so that inputs created kutoka
    :func:`io.IOBase.readlines` result in diffs that are suitable for use with
    :func:`io.IOBase.writelines` since both the inputs and outputs have trailing
    newlines.
@@ -298,15 +298,15 @@ diffs. For comparing directories and files, see also, the :mod:`filecmp` module.
    ``""`` so that the output will be uniformly newline free.
 
    The context diff format normally has a header for filenames and modification
-   times.  Any or all of these may be specified using strings for *fromfile*,
-   *tofile*, *fromfiledate*, and *tofiledate*.  The modification times are normally
+   times.  Any or all of these may be specified using strings for *kutokafile*,
+   *tofile*, *kutokafiledate*, and *tofiledate*.  The modification times are normally
    expressed in the ISO 8601 format. If not specified, the
    strings default to blanks.
 
 
       >>> s1 = ['bacon\n', 'eggs\n', 'ham\n', 'guido\n']
       >>> s2 = ['python\n', 'eggy\n', 'hamster\n', 'guido\n']
-      >>> sys.stdout.writelines(unified_diff(s1, s2, fromfile='before.py', tofile='after.py'))
+      >>> sys.stdout.writelines(unified_diff(s1, s2, kutokafile='before.py', tofile='after.py'))
       --- before.py
       +++ after.py
       @@ -1,4 +1,4 @@
@@ -320,7 +320,7 @@ diffs. For comparing directories and files, see also, the :mod:`filecmp` module.
 
    See :ref:`difflib-interface` for a more detailed example.
 
-.. function:: diff_bytes(dfunc, a, b, fromfile=b'', tofile=b'', fromfiledate=b'', tofiledate=b'', n=3, lineterm=b'\\n')
+.. function:: diff_bytes(dfunc, a, b, kutokafile=b'', tofile=b'', kutokafiledate=b'', tofiledate=b'', n=3, lineterm=b'\\n')
 
    Compare *a* and *b* (lists of bytes objects) using *dfunc*; yield a
    sequence of delta lines (also bytes) in the format returned by *dfunc*.
@@ -330,7 +330,7 @@ diffs. For comparing directories and files, see also, the :mod:`filecmp` module.
    Allows you to compare data with unknown or inconsistent encoding. All
    inputs except *n* must be bytes objects, not str. Works by losslessly
    converting all inputs (except *n*) to str, and calling ``dfunc(a, b,
-   fromfile, tofile, fromfiledate, tofiledate, n, lineterm)``. The output of
+   kutokafile, tofile, kutokafiledate, tofiledate, n, lineterm)``. The output of
    *dfunc* is then converted back to bytes, so the delta lines that you
    receive have the same unknown/inconsistent encodings as *a* and *b*.
 
@@ -362,7 +362,7 @@ diffs. For comparing directories and files, see also, the :mod:`filecmp` module.
 SequenceMatcher Objects
 -----------------------
 
-The :class:`SequenceMatcher` class has this constructor:
+The :class:`SequenceMatcher` kundi has this constructor:
 
 
 .. class:: SequenceMatcher(isjunk=None, a='', b='', autojunk=True)
@@ -446,7 +446,7 @@ The :class:`SequenceMatcher` class has this constructor:
       match.
 
       Here's the same example as before, but considering blanks to be junk. That
-      prevents ``' abcd'`` from matching the ``' abcd'`` at the tail end of the
+      prevents ``' abcd'`` kutoka matching the ``' abcd'`` at the tail end of the
       second sequence directly.  Instead only the ``'abcd'`` can match, and
       matches the leftmost ``'abcd'`` in the second sequence:
 
@@ -485,7 +485,7 @@ The :class:`SequenceMatcher` class has this constructor:
 
       Return list of 5-tuples describing how to turn *a* into *b*. Each tuple is
       of the form ``(tag, i1, i2, j1, j2)``.  The first tuple has ``i1 == j1 ==
-      0``, and remaining tuples have *i1* equal to the *i2* from the preceding
+      0``, and remaining tuples have *i1* equal to the *i2* kutoka the preceding
       tuple, and, likewise, *j1* equal to the previous *j2*.
 
       The *tag* values are strings, with these meanings:
@@ -644,7 +644,7 @@ synch up anywhere possible, sometimes accidental matches 100 pages apart.
 Restricting synch points to contiguous matches preserves some notion of
 locality, at the occasional cost of producing a longer diff.
 
-The :class:`Differ` class has this constructor:
+The :class:`Differ` kundi has this constructor:
 
 
 .. class:: Differ(linejunk=None, charjunk=None)
@@ -674,7 +674,7 @@ The :class:`Differ` class has this constructor:
       Compare two sequences of lines, and generate the delta (a sequence of lines).
 
       Each sequence must contain individual single-line strings ending with
-      newlines.  Such sequences can be obtained from the
+      newlines.  Such sequences can be obtained kutoka the
       :meth:`~io.IOBase.readlines` method of file-like objects.  The delta
       generated also consists of newline-terminated strings, ready to be
       printed as-is via the :meth:`~io.IOBase.writelines` method of a
@@ -688,7 +688,7 @@ Differ Example
 
 This example compares two texts. First we set up the texts, sequences of
 individual single-line strings ending with newlines (such sequences can also be
-obtained from the :meth:`~io.BaseIO.readlines` method of file-like objects):
+obtained kutoka the :meth:`~io.BaseIO.readlines` method of file-like objects):
 
    >>> text1 = '''  1. Beautiful is better than ugly.
    ...   2. Explicit is better than implicit.
@@ -719,7 +719,7 @@ Finally, we compare the two:
 
 ``result`` is a list of strings, so let's pretty-print it:
 
-   >>> from pprint import pprint
+   >>> kutoka pprint agiza pprint
    >>> pprint(result)
    ['    1. Beautiful is better than ugly.\n',
     '-   2. Explicit is better than implicit.\n',
@@ -734,7 +734,7 @@ Finally, we compare the two:
 
 As a single multi-line string it looks like this:
 
-   >>> import sys
+   >>> agiza sys
    >>> sys.stdout.writelines(result)
        1. Beautiful is better than ugly.
    -   2. Explicit is better than implicit.

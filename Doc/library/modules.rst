@@ -4,8 +4,8 @@
 Importing Modules
 *****************
 
-The modules described in this chapter provide new ways to import other Python
-modules and hooks for customizing the import process.
+The modules described in this chapter provide new ways to agiza other Python
+modules and hooks for customizing the agiza process.
 
 The full list of modules described in this chapter is:
 

@@ -22,7 +22,7 @@ __metaclass__ = type
 
 
 @contextlib.contextmanager
-def tempdir():
+eleza tempdir():
     tmpdir = tempfile.mkdtemp()
     try:
         yield pathlib.Path(tmpdir)
@@ -31,7 +31,7 @@ def tempdir():
 
 
 @contextlib.contextmanager
-def save_cwd():
+eleza save_cwd():
     orig = os.getcwd()
     try:
         yield
@@ -40,36 +40,36 @@ def save_cwd():
 
 
 @contextlib.contextmanager
-def tempdir_as_cwd():
+eleza tempdir_as_cwd():
     with tempdir() as tmp:
         with save_cwd():
             os.chdir(str(tmp))
             yield tmp
 
 
-class SiteDir:
-    def setUp(self):
+kundi SiteDir:
+    eleza setUp(self):
         self.fixtures = ExitStack()
         self.addCleanup(self.fixtures.close)
         self.site_dir = self.fixtures.enter_context(tempdir())
 
 
-class OnSysPath:
+kundi OnSysPath:
     @staticmethod
     @contextlib.contextmanager
-    def add_sys_path(dir):
+    eleza add_sys_path(dir):
         sys.path[:0] = [str(dir)]
         try:
             yield
         finally:
             sys.path.remove(str(dir))
 
-    def setUp(self):
+    eleza setUp(self):
         super(OnSysPath, self).setUp()
         self.fixtures.enter_context(self.add_sys_path(self.site_dir))
 
 
-class DistInfoPkg(OnSysPath, SiteDir):
+kundi DistInfoPkg(OnSysPath, SiteDir):
     files = {
         "distinfo_pkg-1.0.0.dist-info": {
             "METADATA": """
@@ -87,23 +87,23 @@ class DistInfoPkg(OnSysPath, SiteDir):
             """
             },
         "mod.py": """
-            def main():
-                print("hello world")
+            eleza main():
+                andika("hello world")
             """,
         }
 
-    def setUp(self):
+    eleza setUp(self):
         super(DistInfoPkg, self).setUp()
         build_files(DistInfoPkg.files, self.site_dir)
 
 
-class DistInfoPkgOffPath(SiteDir):
-    def setUp(self):
+kundi DistInfoPkgOffPath(SiteDir):
+    eleza setUp(self):
         super(DistInfoPkgOffPath, self).setUp()
         build_files(DistInfoPkg.files, self.site_dir)
 
 
-class EggInfoPkg(OnSysPath, SiteDir):
+kundi EggInfoPkg(OnSysPath, SiteDir):
     files = {
         "egginfo_pkg.egg-info": {
             "PKG-INFO": """
@@ -130,17 +130,17 @@ class EggInfoPkg(OnSysPath, SiteDir):
             "top_level.txt": "mod\n"
             },
         "mod.py": """
-            def main():
-                print("hello world")
+            eleza main():
+                andika("hello world")
             """,
         }
 
-    def setUp(self):
+    eleza setUp(self):
         super(EggInfoPkg, self).setUp()
         build_files(EggInfoPkg.files, prefix=self.site_dir)
 
 
-class EggInfoFile(OnSysPath, SiteDir):
+kundi EggInfoFile(OnSysPath, SiteDir):
     files = {
         "egginfo_file.egg-info": """
             Metadata-Version: 1.0
@@ -156,12 +156,12 @@ class EggInfoFile(OnSysPath, SiteDir):
             """,
         }
 
-    def setUp(self):
+    eleza setUp(self):
         super(EggInfoFile, self).setUp()
         build_files(EggInfoFile.files, prefix=self.site_dir)
 
 
-def build_files(file_defs, prefix=pathlib.Path()):
+eleza build_files(file_defs, prefix=pathlib.Path()):
     """Build a set of files/directories, as described by the
 
     file_defs dictionary.  Each key/value pair in the dictionary is
@@ -183,11 +183,11 @@ def build_files(file_defs, prefix=pathlib.Path()):
     """
     for name, contents in file_defs.items():
         full_name = prefix / name
-        if isinstance(contents, dict):
+        ikiwa isinstance(contents, dict):
             full_name.mkdir()
             build_files(contents, prefix=full_name)
         else:
-            if isinstance(contents, bytes):
+            ikiwa isinstance(contents, bytes):
                 with full_name.open('wb') as f:
                     f.write(contents)
             else:
@@ -195,6 +195,6 @@ def build_files(file_defs, prefix=pathlib.Path()):
                     f.write(DALS(contents))
 
 
-def DALS(str):
+eleza DALS(str):
     "Dedent and left-strip"
-    return textwrap.dedent(str).lstrip()
+    rudisha textwrap.dedent(str).lstrip()

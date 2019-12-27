@@ -42,13 +42,13 @@ SYSLOG_TCP_PORT             = 514
 
 _MIDNIGHT = 24 * 60 * 60  # number of seconds in a day
 
-class BaseRotatingHandler(logging.FileHandler):
+kundi BaseRotatingHandler(logging.FileHandler):
     """
-    Base class for handlers that rotate log files at a certain point.
+    Base kundi for handlers that rotate log files at a certain point.
     Not meant to be instantiated directly.  Instead, use RotatingFileHandler
     or TimedRotatingFileHandler.
     """
-    def __init__(self, filename, mode, encoding=None, delay=False):
+    eleza __init__(self, filename, mode, encoding=None, delay=False):
         """
         Use the specified filename for streamed logging
         """
@@ -58,7 +58,7 @@ class BaseRotatingHandler(logging.FileHandler):
         self.namer = None
         self.rotator = None
 
-    def emit(self, record):
+    eleza emit(self, record):
         """
         Emit a record.
 
@@ -66,37 +66,37 @@ class BaseRotatingHandler(logging.FileHandler):
         in doRollover().
         """
         try:
-            if self.shouldRollover(record):
+            ikiwa self.shouldRollover(record):
                 self.doRollover()
             logging.FileHandler.emit(self, record)
         except Exception:
             self.handleError(record)
 
-    def rotation_filename(self, default_name):
+    eleza rotation_filename(self, default_name):
         """
         Modify the filename of a log file when rotating.
 
         This is provided so that a custom filename can be provided.
 
         The default implementation calls the 'namer' attribute of the
-        handler, if it's callable, passing the default name to
+        handler, ikiwa it's callable, passing the default name to
         it. If the attribute isn't callable (the default is None), the name
         is returned unchanged.
 
         :param default_name: The default name for the log file.
         """
-        if not callable(self.namer):
+        ikiwa not callable(self.namer):
             result = default_name
         else:
             result = self.namer(default_name)
-        return result
+        rudisha result
 
-    def rotate(self, source, dest):
+    eleza rotate(self, source, dest):
         """
         When rotating, rotate the current log.
 
         The default implementation calls the 'rotator' attribute of the
-        handler, if it's callable, passing the source and dest arguments to
+        handler, ikiwa it's callable, passing the source and dest arguments to
         it. If the attribute isn't callable (the default is None), the source
         is simply renamed to the destination.
 
@@ -105,19 +105,19 @@ class BaseRotatingHandler(logging.FileHandler):
         :param dest:   The destination filename. This is normally
                        what the source is rotated to, e.g. 'test.log.1'.
         """
-        if not callable(self.rotator):
-            # Issue 18940: A file may not have been created if delay is True.
-            if os.path.exists(source):
+        ikiwa not callable(self.rotator):
+            # Issue 18940: A file may not have been created ikiwa delay is True.
+            ikiwa os.path.exists(source):
                 os.rename(source, dest)
         else:
             self.rotator(source, dest)
 
-class RotatingFileHandler(BaseRotatingHandler):
+kundi RotatingFileHandler(BaseRotatingHandler):
     """
     Handler for logging to a set of files, which switches kutoka one file
     to the next when the current file reaches a certain size.
     """
-    def __init__(self, filename, mode='a', maxBytes=0, backupCount=0, encoding=None, delay=False):
+    eleza __init__(self, filename, mode='a', maxBytes=0, backupCount=0, encoding=None, delay=False):
         """
         Open the specified file and use it as the stream for logging.
 
@@ -132,63 +132,63 @@ class RotatingFileHandler(BaseRotatingHandler):
         and a base file name of "app.log", you would get "app.log",
         "app.log.1", "app.log.2", ... through to "app.log.5". The file being
         written to is always "app.log" - when it gets filled up, it is closed
-        and renamed to "app.log.1", and if files "app.log.1", "app.log.2" etc.
+        and renamed to "app.log.1", and ikiwa files "app.log.1", "app.log.2" etc.
         exist, then they are renamed to "app.log.2", "app.log.3" etc.
         respectively.
 
         If maxBytes is zero, rollover never occurs.
         """
         # If rotation/rollover is wanted, it doesn't make sense to use another
-        # mode. If for example 'w' were specified, then if there were multiple
+        # mode. If for example 'w' were specified, then ikiwa there were multiple
         # runs of the calling application, the logs kutoka previous runs would be
-        # lost if the 'w' is respected, because the log file would be truncated
+        # lost ikiwa the 'w' is respected, because the log file would be truncated
         # on each run.
-        if maxBytes > 0:
+        ikiwa maxBytes > 0:
             mode = 'a'
         BaseRotatingHandler.__init__(self, filename, mode, encoding, delay)
         self.maxBytes = maxBytes
         self.backupCount = backupCount
 
-    def doRollover(self):
+    eleza doRollover(self):
         """
         Do a rollover, as described in __init__().
         """
-        if self.stream:
+        ikiwa self.stream:
             self.stream.close()
             self.stream = None
-        if self.backupCount > 0:
+        ikiwa self.backupCount > 0:
             for i in range(self.backupCount - 1, 0, -1):
                 sfn = self.rotation_filename("%s.%d" % (self.baseFilename, i))
                 dfn = self.rotation_filename("%s.%d" % (self.baseFilename,
                                                         i + 1))
-                if os.path.exists(sfn):
-                    if os.path.exists(dfn):
+                ikiwa os.path.exists(sfn):
+                    ikiwa os.path.exists(dfn):
                         os.remove(dfn)
                     os.rename(sfn, dfn)
             dfn = self.rotation_filename(self.baseFilename + ".1")
-            if os.path.exists(dfn):
+            ikiwa os.path.exists(dfn):
                 os.remove(dfn)
             self.rotate(self.baseFilename, dfn)
-        if not self.delay:
+        ikiwa not self.delay:
             self.stream = self._open()
 
-    def shouldRollover(self, record):
+    eleza shouldRollover(self, record):
         """
-        Determine if rollover should occur.
+        Determine ikiwa rollover should occur.
 
-        Basically, see if the supplied record would cause the file to exceed
+        Basically, see ikiwa the supplied record would cause the file to exceed
         the size limit we have.
         """
-        if self.stream is None:                 # delay was set...
+        ikiwa self.stream is None:                 # delay was set...
             self.stream = self._open()
-        if self.maxBytes > 0:                   # are we rolling over?
+        ikiwa self.maxBytes > 0:                   # are we rolling over?
             msg = "%s\n" % self.format(record)
             self.stream.seek(0, 2)  #due to non-posix-compliant Windows feature
-            if self.stream.tell() + len(msg) >= self.maxBytes:
-                return 1
-        return 0
+            ikiwa self.stream.tell() + len(msg) >= self.maxBytes:
+                rudisha 1
+        rudisha 0
 
-class TimedRotatingFileHandler(BaseRotatingHandler):
+kundi TimedRotatingFileHandler(BaseRotatingHandler):
     """
     Handler for logging to a file, rotating the log file at certain timed
     intervals.
@@ -196,7 +196,7 @@ class TimedRotatingFileHandler(BaseRotatingHandler):
     If backupCount is > 0, when rollover is done, no more than backupCount
     files are kept - the oldest ones are deleted.
     """
-    def __init__(self, filename, when='h', interval=1, backupCount=0, encoding=None, delay=False, utc=False, atTime=None):
+    eleza __init__(self, filename, when='h', interval=1, backupCount=0, encoding=None, delay=False, utc=False, atTime=None):
         BaseRotatingHandler.__init__(self, filename, 'a', encoding, delay)
         self.when = when.upper()
         self.backupCount = backupCount
@@ -214,27 +214,27 @@ class TimedRotatingFileHandler(BaseRotatingHandler):
         #
         # Case of the 'when' specifier is not agizaant; lower or upper case
         # will work.
-        if self.when == 'S':
+        ikiwa self.when == 'S':
             self.interval = 1 # one second
             self.suffix = "%Y-%m-%d_%H-%M-%S"
             self.extMatch = r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}(\.\w+)?$"
-        elif self.when == 'M':
+        elikiwa self.when == 'M':
             self.interval = 60 # one minute
             self.suffix = "%Y-%m-%d_%H-%M"
             self.extMatch = r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}(\.\w+)?$"
-        elif self.when == 'H':
+        elikiwa self.when == 'H':
             self.interval = 60 * 60 # one hour
             self.suffix = "%Y-%m-%d_%H"
             self.extMatch = r"^\d{4}-\d{2}-\d{2}_\d{2}(\.\w+)?$"
-        elif self.when == 'D' or self.when == 'MIDNIGHT':
+        elikiwa self.when == 'D' or self.when == 'MIDNIGHT':
             self.interval = 60 * 60 * 24 # one day
             self.suffix = "%Y-%m-%d"
             self.extMatch = r"^\d{4}-\d{2}-\d{2}(\.\w+)?$"
-        elif self.when.startswith('W'):
+        elikiwa self.when.startswith('W'):
             self.interval = 60 * 60 * 24 * 7 # one week
-            if len(self.when) != 2:
+            ikiwa len(self.when) != 2:
                 raise ValueError("You must specify a day for weekly rollover kutoka 0 to 6 (0 is Monday): %s" % self.when)
-            if self.when[1] < '0' or self.when[1] > '6':
+            ikiwa self.when[1] < '0' or self.when[1] > '6':
                 raise ValueError("Invalid day specified for weekly rollover: %s" % self.when)
             self.dayOfWeek = int(self.when[1])
             self.suffix = "%Y-%m-%d"
@@ -247,27 +247,27 @@ class TimedRotatingFileHandler(BaseRotatingHandler):
         # The following line added because the filename passed in could be a
         # path object (see Issue #27493), but self.baseFilename will be a string
         filename = self.baseFilename
-        if os.path.exists(filename):
+        ikiwa os.path.exists(filename):
             t = os.stat(filename)[ST_MTIME]
         else:
             t = int(time.time())
         self.rolloverAt = self.computeRollover(t)
 
-    def computeRollover(self, currentTime):
+    eleza computeRollover(self, currentTime):
         """
         Work out the rollover time based on the specified time.
         """
         result = currentTime + self.interval
         # If we are rolling over at midnight or weekly, then the interval is already known.
         # What we need to figure out is WHEN the next interval is.  In other words,
-        # if you are rolling over at midnight, then your base interval is 1 day,
+        # ikiwa you are rolling over at midnight, then your base interval is 1 day,
         # but you want to start that one day clock at midnight, not now.  So, we
         # have to fudge the rolloverAt value in order to trigger the first rollover
         # at the right time.  After that, the regular interval will take care of
         # the rest.  Note that this code doesn't care about leap seconds. :)
-        if self.when == 'MIDNIGHT' or self.when.startswith('W'):
+        ikiwa self.when == 'MIDNIGHT' or self.when.startswith('W'):
             # This could be done with less code, but I wanted it to be clear
-            if self.utc:
+            ikiwa self.utc:
                 t = time.gmtime(currentTime)
             else:
                 t = time.localtime(currentTime)
@@ -276,7 +276,7 @@ class TimedRotatingFileHandler(BaseRotatingHandler):
             currentSecond = t[5]
             currentDay = t[6]
             # r is the number of seconds left between now and the next rotation
-            if self.atTime is None:
+            ikiwa self.atTime is None:
                 rotate_ts = _MIDNIGHT
             else:
                 rotate_ts = ((self.atTime.hour * 60 + self.atTime.minute)*60 +
@@ -284,7 +284,7 @@ class TimedRotatingFileHandler(BaseRotatingHandler):
 
             r = rotate_ts - ((currentHour * 60 + currentMinute) * 60 +
                 currentSecond)
-            if r < 0:
+            ikiwa r < 0:
                 # Rotate time is before the current time (for example when
                 # self.rotateAt is 13:45 and it now 14:15), rotation is
                 # tomorrow.
@@ -306,39 +306,39 @@ class TimedRotatingFileHandler(BaseRotatingHandler):
             # The calculations described in 2) and 3) above need to have a day added.
             # This is because the above time calculation takes us to midnight on this
             # day, i.e. the start of the next day.
-            if self.when.startswith('W'):
+            ikiwa self.when.startswith('W'):
                 day = currentDay # 0 is Monday
-                if day != self.dayOfWeek:
-                    if day < self.dayOfWeek:
+                ikiwa day != self.dayOfWeek:
+                    ikiwa day < self.dayOfWeek:
                         daysToWait = self.dayOfWeek - day
                     else:
                         daysToWait = 6 - day + self.dayOfWeek + 1
                     newRolloverAt = result + (daysToWait * (60 * 60 * 24))
-                    if not self.utc:
+                    ikiwa not self.utc:
                         dstNow = t[-1]
                         dstAtRollover = time.localtime(newRolloverAt)[-1]
-                        if dstNow != dstAtRollover:
-                            if not dstNow:  # DST kicks in before next rollover, so we need to deduct an hour
+                        ikiwa dstNow != dstAtRollover:
+                            ikiwa not dstNow:  # DST kicks in before next rollover, so we need to deduct an hour
                                 addend = -3600
                             else:           # DST bows out before next rollover, so we need to add an hour
                                 addend = 3600
                             newRolloverAt += addend
                     result = newRolloverAt
-        return result
+        rudisha result
 
-    def shouldRollover(self, record):
+    eleza shouldRollover(self, record):
         """
-        Determine if rollover should occur.
+        Determine ikiwa rollover should occur.
 
         record is not used, as we are just comparing times, but it is needed so
         the method signatures are the same
         """
         t = int(time.time())
-        if t >= self.rolloverAt:
-            return 1
-        return 0
+        ikiwa t >= self.rolloverAt:
+            rudisha 1
+        rudisha 0
 
-    def getFilesToDelete(self):
+    eleza getFilesToDelete(self):
         """
         Determine the files to delete when rolling over.
 
@@ -350,18 +350,18 @@ class TimedRotatingFileHandler(BaseRotatingHandler):
         prefix = baseName + "."
         plen = len(prefix)
         for fileName in fileNames:
-            if fileName[:plen] == prefix:
+            ikiwa fileName[:plen] == prefix:
                 suffix = fileName[plen:]
-                if self.extMatch.match(suffix):
+                ikiwa self.extMatch.match(suffix):
                     result.append(os.path.join(dirName, fileName))
-        if len(result) < self.backupCount:
+        ikiwa len(result) < self.backupCount:
             result = []
         else:
             result.sort()
             result = result[:len(result) - self.backupCount]
-        return result
+        rudisha result
 
-    def doRollover(self):
+    eleza doRollover(self):
         """
         do a rollover; in this case, a date/time stamp is appended to the filename
         when the rollover happens.  However, you want the file to be named for the
@@ -369,56 +369,56 @@ class TimedRotatingFileHandler(BaseRotatingHandler):
         then we have to get a list of matching filenames, sort them and remove
         the one with the oldest suffix.
         """
-        if self.stream:
+        ikiwa self.stream:
             self.stream.close()
             self.stream = None
         # get the time that this sequence started at and make it a TimeTuple
         currentTime = int(time.time())
         dstNow = time.localtime(currentTime)[-1]
         t = self.rolloverAt - self.interval
-        if self.utc:
+        ikiwa self.utc:
             timeTuple = time.gmtime(t)
         else:
             timeTuple = time.localtime(t)
             dstThen = timeTuple[-1]
-            if dstNow != dstThen:
-                if dstNow:
+            ikiwa dstNow != dstThen:
+                ikiwa dstNow:
                     addend = 3600
                 else:
                     addend = -3600
                 timeTuple = time.localtime(t + addend)
         dfn = self.rotation_filename(self.baseFilename + "." +
                                      time.strftime(self.suffix, timeTuple))
-        if os.path.exists(dfn):
+        ikiwa os.path.exists(dfn):
             os.remove(dfn)
         self.rotate(self.baseFilename, dfn)
-        if self.backupCount > 0:
+        ikiwa self.backupCount > 0:
             for s in self.getFilesToDelete():
                 os.remove(s)
-        if not self.delay:
+        ikiwa not self.delay:
             self.stream = self._open()
         newRolloverAt = self.computeRollover(currentTime)
         while newRolloverAt <= currentTime:
             newRolloverAt = newRolloverAt + self.interval
         #If DST changes and midnight or weekly rollover, adjust for this.
-        if (self.when == 'MIDNIGHT' or self.when.startswith('W')) and not self.utc:
+        ikiwa (self.when == 'MIDNIGHT' or self.when.startswith('W')) and not self.utc:
             dstAtRollover = time.localtime(newRolloverAt)[-1]
-            if dstNow != dstAtRollover:
-                if not dstNow:  # DST kicks in before next rollover, so we need to deduct an hour
+            ikiwa dstNow != dstAtRollover:
+                ikiwa not dstNow:  # DST kicks in before next rollover, so we need to deduct an hour
                     addend = -3600
                 else:           # DST bows out before next rollover, so we need to add an hour
                     addend = 3600
                 newRolloverAt += addend
         self.rolloverAt = newRolloverAt
 
-class WatchedFileHandler(logging.FileHandler):
+kundi WatchedFileHandler(logging.FileHandler):
     """
     A handler for logging to a file, which watches the file
-    to see if it has changed while in use. This can happen because of
+    to see ikiwa it has changed while in use. This can happen because of
     usage of programs such as newsyslog and logrotate which perform
     log file rotation. This handler, intended for use under Unix,
-    watches the file to see if it has changed since the last emit.
-    (A file has changed if its device or inode have changed.)
+    watches the file to see ikiwa it has changed since the last emit.
+    (A file has changed ikiwa its device or inode have changed.)
     If it has changed, the old file stream is closed, and the file
     opened to get a new stream.
 
@@ -431,26 +431,26 @@ class WatchedFileHandler(logging.FileHandler):
     This handler is based on a suggestion and patch by Chad J.
     Schroeder.
     """
-    def __init__(self, filename, mode='a', encoding=None, delay=False):
+    eleza __init__(self, filename, mode='a', encoding=None, delay=False):
         logging.FileHandler.__init__(self, filename, mode, encoding, delay)
         self.dev, self.ino = -1, -1
         self._statstream()
 
-    def _statstream(self):
-        if self.stream:
+    eleza _statstream(self):
+        ikiwa self.stream:
             sres = os.fstat(self.stream.fileno())
             self.dev, self.ino = sres[ST_DEV], sres[ST_INO]
 
-    def reopenIfNeeded(self):
+    eleza reopenIfNeeded(self):
         """
-        Reopen log file if needed.
+        Reopen log file ikiwa needed.
 
-        Checks if the underlying file has changed, and if it
+        Checks ikiwa the underlying file has changed, and ikiwa it
         has, close the old stream and reopen the file to get the
         current stream.
         """
         # Reduce the chance of race conditions by stat'ing by path only
-        # once and then fstat'ing our new fd if we opened a new log stream.
+        # once and then fstat'ing our new fd ikiwa we opened a new log stream.
         # See issue #14632: Thanks to John Mulligan for the problem report
         # and patch.
         try:
@@ -459,8 +459,8 @@ class WatchedFileHandler(logging.FileHandler):
         except FileNotFoundError:
             sres = None
         # compare file system stat with that of our stream file handle
-        if not sres or sres[ST_DEV] != self.dev or sres[ST_INO] != self.ino:
-            if self.stream is not None:
+        ikiwa not sres or sres[ST_DEV] != self.dev or sres[ST_INO] != self.ino:
+            ikiwa self.stream is not None:
                 # we have an open file handle, clean it up
                 self.stream.flush()
                 self.stream.close()
@@ -469,7 +469,7 @@ class WatchedFileHandler(logging.FileHandler):
                 self.stream = self._open()
                 self._statstream()
 
-    def emit(self, record):
+    eleza emit(self, record):
         """
         Emit a record.
 
@@ -480,9 +480,9 @@ class WatchedFileHandler(logging.FileHandler):
         logging.FileHandler.emit(self, record)
 
 
-class SocketHandler(logging.Handler):
+kundi SocketHandler(logging.Handler):
     """
-    A handler class which writes logging records, in pickle format, to
+    A handler kundi which writes logging records, in pickle format, to
     a streaming socket. The socket is kept open across logging calls.
     If the peer resets it, an attempt is made to reconnect on the next call.
     The pickle which is sent is that of the LogRecord's attribute dictionary
@@ -493,18 +493,18 @@ class SocketHandler(logging.Handler):
     makeLogRecord function.
     """
 
-    def __init__(self, host, port):
+    eleza __init__(self, host, port):
         """
         Initializes the handler with a specific host address and port.
 
-        When the attribute *closeOnError* is set to True - if a socket error
+        When the attribute *closeOnError* is set to True - ikiwa a socket error
         occurs, the socket is silently closed and then reopened on the next
         logging call.
         """
         logging.Handler.__init__(self)
         self.host = host
         self.port = port
-        if port is None:
+        ikiwa port is None:
             self.address = host
         else:
             self.address = (host, port)
@@ -518,12 +518,12 @@ class SocketHandler(logging.Handler):
         self.retryMax = 30.0
         self.retryFactor = 2.0
 
-    def makeSocket(self, timeout=1):
+    eleza makeSocket(self, timeout=1):
         """
         A factory method which allows subclasses to define the precise
         type of socket they want.
         """
-        if self.port is not None:
+        ikiwa self.port is not None:
             result = socket.create_connection(self.address, timeout=timeout)
         else:
             result = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
@@ -533,9 +533,9 @@ class SocketHandler(logging.Handler):
             except OSError:
                 result.close()  # Issue 19182
                 raise
-        return result
+        rudisha result
 
-    def createSocket(self):
+    eleza createSocket(self):
         """
         Try to create a socket, using an exponential backoff with
         a max retry time. Thanks to Robert Olson for the original patch
@@ -545,50 +545,50 @@ class SocketHandler(logging.Handler):
         # Either retryTime is None, in which case this
         # is the first time back after a disconnect, or
         # we've waited long enough.
-        if self.retryTime is None:
+        ikiwa self.retryTime is None:
             attempt = True
         else:
             attempt = (now >= self.retryTime)
-        if attempt:
+        ikiwa attempt:
             try:
                 self.sock = self.makeSocket()
                 self.retryTime = None # next time, no delay before trying
             except OSError:
                 #Creation failed, so set the retry time and return.
-                if self.retryTime is None:
+                ikiwa self.retryTime is None:
                     self.retryPeriod = self.retryStart
                 else:
                     self.retryPeriod = self.retryPeriod * self.retryFactor
-                    if self.retryPeriod > self.retryMax:
+                    ikiwa self.retryPeriod > self.retryMax:
                         self.retryPeriod = self.retryMax
                 self.retryTime = now + self.retryPeriod
 
-    def send(self, s):
+    eleza send(self, s):
         """
         Send a pickled string to the socket.
 
         This function allows for partial sends which can happen when the
         network is busy.
         """
-        if self.sock is None:
+        ikiwa self.sock is None:
             self.createSocket()
         #self.sock can be None either because we haven't reached the retry
         #time yet, or because we have reached the retry time and retried,
         #but are still unable to connect.
-        if self.sock:
+        ikiwa self.sock:
             try:
                 self.sock.sendall(s)
             except OSError: #pragma: no cover
                 self.sock.close()
                 self.sock = None  # so we can call createSocket next time
 
-    def makePickle(self, record):
+    eleza makePickle(self, record):
         """
         Pickles the record in binary format with a length prefix, and
         returns it ready for transmission across the socket.
         """
         ei = record.exc_info
-        if ei:
+        ikiwa ei:
             # just to get traceback text into record.exc_text ...
             dummy = self.format(record)
         # See issue #14436: If msg or args are objects, they may not be
@@ -598,13 +598,13 @@ class SocketHandler(logging.Handler):
         d['msg'] = record.getMessage()
         d['args'] = None
         d['exc_info'] = None
-        # Issue #25685: delete 'message' if present: redundant with 'msg'
+        # Issue #25685: delete 'message' ikiwa present: redundant with 'msg'
         d.pop('message', None)
         s = pickle.dumps(d, 1)
         slen = struct.pack(">L", len(s))
-        return slen + s
+        rudisha slen + s
 
-    def handleError(self, record):
+    eleza handleError(self, record):
         """
         Handle an error during logging.
 
@@ -612,13 +612,13 @@ class SocketHandler(logging.Handler):
         connection lost. Close the socket so that we can retry on the
         next event.
         """
-        if self.closeOnError and self.sock:
+        ikiwa self.closeOnError and self.sock:
             self.sock.close()
             self.sock = None        #try to reconnect next time
         else:
             logging.Handler.handleError(self, record)
 
-    def emit(self, record):
+    eleza emit(self, record):
         """
         Emit a record.
 
@@ -633,23 +633,23 @@ class SocketHandler(logging.Handler):
         except Exception:
             self.handleError(record)
 
-    def close(self):
+    eleza close(self):
         """
         Closes the socket.
         """
         self.acquire()
         try:
             sock = self.sock
-            if sock:
+            ikiwa sock:
                 self.sock = None
                 sock.close()
             logging.Handler.close(self)
         finally:
             self.release()
 
-class DatagramHandler(SocketHandler):
+kundi DatagramHandler(SocketHandler):
     """
-    A handler class which writes logging records, in pickle format, to
+    A handler kundi which writes logging records, in pickle format, to
     a datagram socket.  The pickle which is sent is that of the LogRecord's
     attribute dictionary (__dict__), so that the receiver does not need to
     have the logging module installed in order to process the logging event.
@@ -658,26 +658,26 @@ class DatagramHandler(SocketHandler):
     makeLogRecord function.
 
     """
-    def __init__(self, host, port):
+    eleza __init__(self, host, port):
         """
         Initializes the handler with a specific host address and port.
         """
         SocketHandler.__init__(self, host, port)
         self.closeOnError = False
 
-    def makeSocket(self):
+    eleza makeSocket(self):
         """
         The factory method of SocketHandler is here overridden to create
         a UDP socket (SOCK_DGRAM).
         """
-        if self.port is None:
+        ikiwa self.port is None:
             family = socket.AF_UNIX
         else:
             family = socket.AF_INET
         s = socket.socket(family, socket.SOCK_DGRAM)
-        return s
+        rudisha s
 
-    def send(self, s):
+    eleza send(self, s):
         """
         Send a pickled string to a socket.
 
@@ -685,13 +685,13 @@ class DatagramHandler(SocketHandler):
         when the network is busy - UDP does not guarantee delivery and
         can deliver packets out of sequence.
         """
-        if self.sock is None:
+        ikiwa self.sock is None:
             self.createSocket()
         self.sock.sendto(s, self.address)
 
-class SysLogHandler(logging.Handler):
+kundi SysLogHandler(logging.Handler):
     """
-    A handler class which sends formatted logging records to a syslog
+    A handler kundi which sends formatted logging records to a syslog
     server. Based on Sam Rushing's syslog module:
     http://www.nightmare.com/squirl/python-ext/misc/syslog.py
     Contributed by Nicolas Untz (after which minor refactoring changes
@@ -792,7 +792,7 @@ class SysLogHandler(logging.Handler):
         "CRITICAL" : "critical"
     }
 
-    def __init__(self, address=('localhost', SYSLOG_UDP_PORT),
+    eleza __init__(self, address=('localhost', SYSLOG_UDP_PORT),
                  facility=LOG_USER, socktype=None):
         """
         Initialize a handler.
@@ -811,7 +811,7 @@ class SysLogHandler(logging.Handler):
         self.facility = facility
         self.socktype = socktype
 
-        if isinstance(address, str):
+        ikiwa isinstance(address, str):
             self.unixsocket = True
             # Syslog server may be unavailable during handler initialisation.
             # C's openlog() function also ignores connection errors.
@@ -823,32 +823,32 @@ class SysLogHandler(logging.Handler):
                 pass
         else:
             self.unixsocket = False
-            if socktype is None:
+            ikiwa socktype is None:
                 socktype = socket.SOCK_DGRAM
             host, port = address
             ress = socket.getaddrinfo(host, port, 0, socktype)
-            if not ress:
+            ikiwa not ress:
                 raise OSError("getaddrinfo returns an empty list")
             for res in ress:
                 af, socktype, proto, _, sa = res
                 err = sock = None
                 try:
                     sock = socket.socket(af, socktype, proto)
-                    if socktype == socket.SOCK_STREAM:
+                    ikiwa socktype == socket.SOCK_STREAM:
                         sock.connect(sa)
                     break
                 except OSError as exc:
                     err = exc
-                    if sock is not None:
+                    ikiwa sock is not None:
                         sock.close()
-            if err is not None:
+            ikiwa err is not None:
                 raise err
             self.socket = sock
             self.socktype = socktype
 
-    def _connect_unixsocket(self, address):
+    eleza _connect_unixsocket(self, address):
         use_socktype = self.socktype
-        if use_socktype is None:
+        ikiwa use_socktype is None:
             use_socktype = socket.SOCK_DGRAM
         self.socket = socket.socket(socket.AF_UNIX, use_socktype)
         try:
@@ -857,7 +857,7 @@ class SysLogHandler(logging.Handler):
             self.socktype = use_socktype
         except OSError:
             self.socket.close()
-            if self.socktype is not None:
+            ikiwa self.socktype is not None:
                 # user didn't specify falling back, so fail
                 raise
             use_socktype = socket.SOCK_STREAM
@@ -870,20 +870,20 @@ class SysLogHandler(logging.Handler):
                 self.socket.close()
                 raise
 
-    def encodePriority(self, facility, priority):
+    eleza encodePriority(self, facility, priority):
         """
         Encode the facility and priority. You can pass in strings or
-        integers - if strings are passed, the facility_names and
+        integers - ikiwa strings are passed, the facility_names and
         priority_names mapping dictionaries are used to convert them to
         integers.
         """
-        if isinstance(facility, str):
+        ikiwa isinstance(facility, str):
             facility = self.facility_names[facility]
-        if isinstance(priority, str):
+        ikiwa isinstance(priority, str):
             priority = self.priority_names[priority]
-        return (facility << 3) | priority
+        rudisha (facility << 3) | priority
 
-    def close(self):
+    eleza close(self):
         """
         Closes the socket.
         """
@@ -894,7 +894,7 @@ class SysLogHandler(logging.Handler):
         finally:
             self.release()
 
-    def mapPriority(self, levelName):
+    eleza mapPriority(self, levelName):
         """
         Map a logging level name to a key in the priority_names map.
         This is useful in two scenarios: when custom levels are being
@@ -902,12 +902,12 @@ class SysLogHandler(logging.Handler):
         mapping by lowercasing the logging level name because of locale-
         specific issues (see SF #1524081).
         """
-        return self.priority_map.get(levelName, "warning")
+        rudisha self.priority_map.get(levelName, "warning")
 
     ident = ''          # prepended to all messages
     append_nul = True   # some old syslog daemons expect a NUL terminator
 
-    def emit(self, record):
+    eleza emit(self, record):
         """
         Emit a record.
 
@@ -916,9 +916,9 @@ class SysLogHandler(logging.Handler):
         """
         try:
             msg = self.format(record)
-            if self.ident:
+            ikiwa self.ident:
                 msg = self.ident + msg
-            if self.append_nul:
+            ikiwa self.append_nul:
                 msg += '\000'
 
             # We need to convert record level to lowercase, maybe this will
@@ -929,25 +929,25 @@ class SysLogHandler(logging.Handler):
             # Message is a string. Convert to bytes as required by RFC 5424
             msg = msg.encode('utf-8')
             msg = prio + msg
-            if self.unixsocket:
+            ikiwa self.unixsocket:
                 try:
                     self.socket.send(msg)
                 except OSError:
                     self.socket.close()
                     self._connect_unixsocket(self.address)
                     self.socket.send(msg)
-            elif self.socktype == socket.SOCK_DGRAM:
+            elikiwa self.socktype == socket.SOCK_DGRAM:
                 self.socket.sendto(msg, self.address)
             else:
                 self.socket.sendall(msg)
         except Exception:
             self.handleError(record)
 
-class SMTPHandler(logging.Handler):
+kundi SMTPHandler(logging.Handler):
     """
-    A handler class which sends an SMTP email for each logging event.
+    A handler kundi which sends an SMTP email for each logging event.
     """
-    def __init__(self, mailhost, fromaddr, toaddrs, subject,
+    eleza __init__(self, mailhost, kutokaaddr, toaddrs, subject,
                  credentials=None, secure=None, timeout=5.0):
         """
         Initialize the handler.
@@ -966,32 +966,32 @@ class SMTPHandler(logging.Handler):
         default is one second).
         """
         logging.Handler.__init__(self)
-        if isinstance(mailhost, (list, tuple)):
+        ikiwa isinstance(mailhost, (list, tuple)):
             self.mailhost, self.mailport = mailhost
         else:
             self.mailhost, self.mailport = mailhost, None
-        if isinstance(credentials, (list, tuple)):
+        ikiwa isinstance(credentials, (list, tuple)):
             self.username, self.password = credentials
         else:
             self.username = None
-        self.fromaddr = fromaddr
-        if isinstance(toaddrs, str):
+        self.kutokaaddr = kutokaaddr
+        ikiwa isinstance(toaddrs, str):
             toaddrs = [toaddrs]
         self.toaddrs = toaddrs
         self.subject = subject
         self.secure = secure
         self.timeout = timeout
 
-    def getSubject(self, record):
+    eleza getSubject(self, record):
         """
         Determine the subject for the email.
 
         If you want to specify a subject line which is record-dependent,
         override this method.
         """
-        return self.subject
+        rudisha self.subject
 
-    def emit(self, record):
+    eleza emit(self, record):
         """
         Emit a record.
 
@@ -1003,17 +1003,17 @@ class SMTPHandler(logging.Handler):
             agiza email.utils
 
             port = self.mailport
-            if not port:
+            ikiwa not port:
                 port = smtplib.SMTP_PORT
             smtp = smtplib.SMTP(self.mailhost, port, timeout=self.timeout)
             msg = EmailMessage()
-            msg['From'] = self.fromaddr
+            msg['From'] = self.kutokaaddr
             msg['To'] = ','.join(self.toaddrs)
             msg['Subject'] = self.getSubject(record)
             msg['Date'] = email.utils.localtime()
             msg.set_content(self.format(record))
-            if self.username:
-                if self.secure is not None:
+            ikiwa self.username:
+                ikiwa self.secure is not None:
                     smtp.ehlo()
                     smtp.starttls(*self.secure)
                     smtp.ehlo()
@@ -1023,9 +1023,9 @@ class SMTPHandler(logging.Handler):
         except Exception:
             self.handleError(record)
 
-class NTEventLogHandler(logging.Handler):
+kundi NTEventLogHandler(logging.Handler):
     """
-    A handler class which sends events to the NT Event Log. Adds a
+    A handler kundi which sends events to the NT Event Log. Adds a
     registry entry for the specified application name. If no dllname is
     provided, win32service.pyd (which contains some basic message
     placeholders) is used. Note that use of these placeholders will make
@@ -1033,13 +1033,13 @@ class NTEventLogHandler(logging.Handler):
     If you want slimmer logs, you have to pass in the name of your own DLL
     which contains the message definitions you want to use in the event log.
     """
-    def __init__(self, appname, dllname=None, logtype="Application"):
+    eleza __init__(self, appname, dllname=None, logtype="Application"):
         logging.Handler.__init__(self)
         try:
             agiza win32evtlogutil, win32evtlog
             self.appname = appname
             self._welu = win32evtlogutil
-            if not dllname:
+            ikiwa not dllname:
                 dllname = os.path.split(self._welu.__file__)
                 dllname = os.path.split(dllname[0])
                 dllname = os.path.join(dllname[0], r'win32service.pyd')
@@ -1055,11 +1055,11 @@ class NTEventLogHandler(logging.Handler):
                 logging.CRITICAL: win32evtlog.EVENTLOG_ERROR_TYPE,
          }
         except ImportError:
-            print("The Python Win32 extensions for NT (service, event "\
+            andika("The Python Win32 extensions for NT (service, event "\
                         "logging) appear not to be available.")
             self._welu = None
 
-    def getMessageID(self, record):
+    eleza getMessageID(self, record):
         """
         Return the message ID for the event record. If you are using your
         own messages, you could do this by having the msg passed to the
@@ -1067,38 +1067,38 @@ class NTEventLogHandler(logging.Handler):
         you could use a dictionary lookup to get the message ID. This
         version returns 1, which is the base message ID in win32service.pyd.
         """
-        return 1
+        rudisha 1
 
-    def getEventCategory(self, record):
+    eleza getEventCategory(self, record):
         """
         Return the event category for the record.
 
-        Override this if you want to specify your own categories. This version
+        Override this ikiwa you want to specify your own categories. This version
         returns 0.
         """
-        return 0
+        rudisha 0
 
-    def getEventType(self, record):
+    eleza getEventType(self, record):
         """
         Return the event type for the record.
 
-        Override this if you want to specify your own types. This version does
+        Override this ikiwa you want to specify your own types. This version does
         a mapping using the handler's typemap attribute, which is set up in
         __init__() to a dictionary which contains mappings for DEBUG, INFO,
         WARNING, ERROR and CRITICAL. If you are using your own levels you will
         either need to override this method or place a suitable dictionary in
         the handler's typemap attribute.
         """
-        return self.typemap.get(record.levelno, self.deftype)
+        rudisha self.typemap.get(record.levelno, self.deftype)
 
-    def emit(self, record):
+    eleza emit(self, record):
         """
         Emit a record.
 
         Determine the message ID, event category and event type. Then
         log the message in the NT event log.
         """
-        if self._welu:
+        ikiwa self._welu:
             try:
                 id = self.getMessageID(record)
                 cat = self.getEventCategory(record)
@@ -1108,12 +1108,12 @@ class NTEventLogHandler(logging.Handler):
             except Exception:
                 self.handleError(record)
 
-    def close(self):
+    eleza close(self):
         """
         Clean up this handler.
 
         You can remove the application name kutoka the registry as a
-        source of event log entries. However, if you do this, you will
+        source of event log entries. However, ikiwa you do this, you will
         not be able to see the events as you intended in the Event Log
         Viewer - it needs to be able to access the registry to get the
         DLL name.
@@ -1121,12 +1121,12 @@ class NTEventLogHandler(logging.Handler):
         #self._welu.RemoveSourceFromRegistry(self.appname, self.logtype)
         logging.Handler.close(self)
 
-class HTTPHandler(logging.Handler):
+kundi HTTPHandler(logging.Handler):
     """
-    A class which sends records to a Web server, using either GET or
+    A kundi which sends records to a Web server, using either GET or
     POST semantics.
     """
-    def __init__(self, host, url, method="GET", secure=False, credentials=None,
+    eleza __init__(self, host, url, method="GET", secure=False, credentials=None,
                  context=None):
         """
         Initialize the instance with the host, the request URL, and the method
@@ -1134,9 +1134,9 @@ class HTTPHandler(logging.Handler):
         """
         logging.Handler.__init__(self)
         method = method.upper()
-        if method not in ["GET", "POST"]:
+        ikiwa method not in ["GET", "POST"]:
             raise ValueError("method must be GET or POST")
-        if not secure and context is not None:
+        ikiwa not secure and context is not None:
             raise ValueError("context parameter only makes sense "
                              "with secure=True")
         self.host = host
@@ -1146,15 +1146,15 @@ class HTTPHandler(logging.Handler):
         self.credentials = credentials
         self.context = context
 
-    def mapLogRecord(self, record):
+    eleza mapLogRecord(self, record):
         """
         Default implementation of mapping the log record into a dict
         that is sent as the CGI data. Overwrite in your class.
         Contributed by Franz Glasner.
         """
-        return record.__dict__
+        rudisha record.__dict__
 
-    def emit(self, record):
+    eleza emit(self, record):
         """
         Emit a record.
 
@@ -1163,50 +1163,50 @@ class HTTPHandler(logging.Handler):
         try:
             agiza http.client, urllib.parse
             host = self.host
-            if self.secure:
+            ikiwa self.secure:
                 h = http.client.HTTPSConnection(host, context=self.context)
             else:
                 h = http.client.HTTPConnection(host)
             url = self.url
             data = urllib.parse.urlencode(self.mapLogRecord(record))
-            if self.method == "GET":
-                if (url.find('?') >= 0):
+            ikiwa self.method == "GET":
+                ikiwa (url.find('?') >= 0):
                     sep = '&'
                 else:
                     sep = '?'
                 url = url + "%c%s" % (sep, data)
             h.putrequest(self.method, url)
             # support multiple hosts on one IP address...
-            # need to strip optional :port kutoka host, if present
+            # need to strip optional :port kutoka host, ikiwa present
             i = host.find(":")
-            if i >= 0:
+            ikiwa i >= 0:
                 host = host[:i]
             # See issue #30904: putrequest call above already adds this header
             # on Python 3.x.
             # h.putheader("Host", host)
-            if self.method == "POST":
+            ikiwa self.method == "POST":
                 h.putheader("Content-type",
                             "application/x-www-form-urlencoded")
                 h.putheader("Content-length", str(len(data)))
-            if self.credentials:
+            ikiwa self.credentials:
                 agiza base64
                 s = ('%s:%s' % self.credentials).encode('utf-8')
                 s = 'Basic ' + base64.b64encode(s).strip().decode('ascii')
                 h.putheader('Authorization', s)
             h.endheaders()
-            if self.method == "POST":
+            ikiwa self.method == "POST":
                 h.send(data.encode('utf-8'))
             h.getresponse()    #can't do anything with the result
         except Exception:
             self.handleError(record)
 
-class BufferingHandler(logging.Handler):
+kundi BufferingHandler(logging.Handler):
     """
-  A handler class which buffers logging records in memory. Whenever each
-  record is added to the buffer, a check is made to see if the buffer should
+  A handler kundi which buffers logging records in memory. Whenever each
+  record is added to the buffer, a check is made to see ikiwa the buffer should
   be flushed. If it should, then flush() is expected to do what's needed.
     """
-    def __init__(self, capacity):
+    eleza __init__(self, capacity):
         """
         Initialize the handler with the buffer size.
         """
@@ -1214,16 +1214,16 @@ class BufferingHandler(logging.Handler):
         self.capacity = capacity
         self.buffer = []
 
-    def shouldFlush(self, record):
+    eleza shouldFlush(self, record):
         """
         Should the handler flush its buffer?
 
-        Returns true if the buffer is up to capacity. This method can be
+        Returns true ikiwa the buffer is up to capacity. This method can be
         overridden to implement custom flushing strategies.
         """
-        return (len(self.buffer) >= self.capacity)
+        rudisha (len(self.buffer) >= self.capacity)
 
-    def emit(self, record):
+    eleza emit(self, record):
         """
         Emit a record.
 
@@ -1231,10 +1231,10 @@ class BufferingHandler(logging.Handler):
         the buffer.
         """
         self.buffer.append(record)
-        if self.shouldFlush(record):
+        ikiwa self.shouldFlush(record):
             self.flush()
 
-    def flush(self):
+    eleza flush(self):
         """
         Override to implement custom flushing behaviour.
 
@@ -1246,7 +1246,7 @@ class BufferingHandler(logging.Handler):
         finally:
             self.release()
 
-    def close(self):
+    eleza close(self):
         """
         Close the handler.
 
@@ -1257,13 +1257,13 @@ class BufferingHandler(logging.Handler):
         finally:
             logging.Handler.close(self)
 
-class MemoryHandler(BufferingHandler):
+kundi MemoryHandler(BufferingHandler):
     """
-    A handler class which buffers logging records in memory, periodically
+    A handler kundi which buffers logging records in memory, periodically
     flushing them to a target handler. Flushing occurs whenever the buffer
     is full, or when an event of a certain severity or greater is seen.
     """
-    def __init__(self, capacity, flushLevel=logging.ERROR, target=None,
+    eleza __init__(self, capacity, flushLevel=logging.ERROR, target=None,
                  flushOnClose=True):
         """
         Initialize the handler with the buffer size, the level at which
@@ -1274,7 +1274,7 @@ class MemoryHandler(BufferingHandler):
 
         The ``flushOnClose`` argument is ``True`` for backward compatibility
         reasons - the old behaviour is that when the handler is closed, the
-        buffer is flushed, even if the flush level hasn't been exceeded nor the
+        buffer is flushed, even ikiwa the flush level hasn't been exceeded nor the
         capacity exceeded. To prevent this, set ``flushOnClose`` to ``False``.
         """
         BufferingHandler.__init__(self, capacity)
@@ -1283,43 +1283,43 @@ class MemoryHandler(BufferingHandler):
         # See Issue #26559 for why this has been added
         self.flushOnClose = flushOnClose
 
-    def shouldFlush(self, record):
+    eleza shouldFlush(self, record):
         """
         Check for buffer full or a record at the flushLevel or higher.
         """
-        return (len(self.buffer) >= self.capacity) or \
+        rudisha (len(self.buffer) >= self.capacity) or \
                 (record.levelno >= self.flushLevel)
 
-    def setTarget(self, target):
+    eleza setTarget(self, target):
         """
         Set the target handler for this handler.
         """
         self.target = target
 
-    def flush(self):
+    eleza flush(self):
         """
         For a MemoryHandler, flushing means just sending the buffered
-        records to the target, if there is one. Override if you want
+        records to the target, ikiwa there is one. Override ikiwa you want
         different behaviour.
 
         The record buffer is also cleared by this operation.
         """
         self.acquire()
         try:
-            if self.target:
+            ikiwa self.target:
                 for record in self.buffer:
                     self.target.handle(record)
                 self.buffer = []
         finally:
             self.release()
 
-    def close(self):
+    eleza close(self):
         """
-        Flush, if appropriately configured, set the target to None and lose the
+        Flush, ikiwa appropriately configured, set the target to None and lose the
         buffer.
         """
         try:
-            if self.flushOnClose:
+            ikiwa self.flushOnClose:
                 self.flush()
         finally:
             self.acquire()
@@ -1330,35 +1330,35 @@ class MemoryHandler(BufferingHandler):
                 self.release()
 
 
-class QueueHandler(logging.Handler):
+kundi QueueHandler(logging.Handler):
     """
     This handler sends events to a queue. Typically, it would be used together
     with a multiprocessing Queue to centralise logging to file in one process
     (in a multi-process application), so as to avoid file write contention
     between processes.
 
-    This code is new in Python 3.2, but this class can be copy pasted into
+    This code is new in Python 3.2, but this kundi can be copy pasted into
     user code for use with earlier Python versions.
     """
 
-    def __init__(self, queue):
+    eleza __init__(self, queue):
         """
         Initialise an instance, using the passed queue.
         """
         logging.Handler.__init__(self)
         self.queue = queue
 
-    def enqueue(self, record):
+    eleza enqueue(self, record):
         """
         Enqueue a record.
 
         The base implementation uses put_nowait. You may want to override
-        this method if you want to use blocking, timeouts or custom queue
+        this method ikiwa you want to use blocking, timeouts or custom queue
         implementations.
         """
         self.queue.put_nowait(record)
 
-    def prepare(self, record):
+    eleza prepare(self, record):
         """
         Prepares a record for queuing. The object returned by this method is
         enqueued.
@@ -1367,16 +1367,16 @@ class QueueHandler(logging.Handler):
         and arguments, and removes unpickleable items kutoka the record
         in-place.
 
-        You might want to override this method if you want to convert
+        You might want to override this method ikiwa you want to convert
         the record to a dict or JSON string, or send a modified copy
         of the record while leaving the original intact.
         """
         # The format operation gets traceback text into record.exc_text
-        # (if there's exception data), and also returns the formatted
+        # (ikiwa there's exception data), and also returns the formatted
         # message. We can then use this to replace the original
         # msg + args, as these might be unpickleable. We also zap the
         # exc_info and exc_text attributes, as they are no longer
-        # needed and, if not None, will typically not be pickleable.
+        # needed and, ikiwa not None, will typically not be pickleable.
         msg = self.format(record)
         # bpo-35726: make copy of record to avoid affecting other handlers in the chain.
         record = copy.copy(record)
@@ -1385,9 +1385,9 @@ class QueueHandler(logging.Handler):
         record.args = None
         record.exc_info = None
         record.exc_text = None
-        return record
+        rudisha record
 
-    def emit(self, record):
+    eleza emit(self, record):
         """
         Emit a record.
 
@@ -1399,15 +1399,15 @@ class QueueHandler(logging.Handler):
             self.handleError(record)
 
 
-class QueueListener(object):
+kundi QueueListener(object):
     """
-    This class implements an internal threaded listener which watches for
+    This kundi implements an internal threaded listener which watches for
     LogRecords being added to a queue, removes them and passes them to a
     list of handlers for processing.
     """
     _sentinel = None
 
-    def __init__(self, queue, *handlers, respect_handler_level=False):
+    eleza __init__(self, queue, *handlers, respect_handler_level=False):
         """
         Initialise an instance with the specified queue and
         handlers.
@@ -1417,16 +1417,16 @@ class QueueListener(object):
         self._thread = None
         self.respect_handler_level = respect_handler_level
 
-    def dequeue(self, block):
+    eleza dequeue(self, block):
         """
-        Dequeue a record and return it, optionally blocking.
+        Dequeue a record and rudisha it, optionally blocking.
 
         The base implementation uses get. You may want to override this method
-        if you want to use timeouts or work with custom queue implementations.
+        ikiwa you want to use timeouts or work with custom queue implementations.
         """
-        return self.queue.get(block)
+        rudisha self.queue.get(block)
 
-    def start(self):
+    eleza start(self):
         """
         Start the listener.
 
@@ -1437,17 +1437,17 @@ class QueueListener(object):
         t.daemon = True
         t.start()
 
-    def prepare(self, record):
+    eleza prepare(self, record):
         """
         Prepare a record for handling.
 
         This method just returns the passed-in record. You may want to
-        override this method if you need to do any custom marshalling or
+        override this method ikiwa you need to do any custom marshalling or
         manipulation of the record before passing it to the handlers.
         """
-        return record
+        rudisha record
 
-    def handle(self, record):
+    eleza handle(self, record):
         """
         Handle a record.
 
@@ -1456,52 +1456,52 @@ class QueueListener(object):
         """
         record = self.prepare(record)
         for handler in self.handlers:
-            if not self.respect_handler_level:
+            ikiwa not self.respect_handler_level:
                 process = True
             else:
                 process = record.levelno >= handler.level
-            if process:
+            ikiwa process:
                 handler.handle(record)
 
-    def _monitor(self):
+    eleza _monitor(self):
         """
         Monitor the queue for records, and ask the handler
         to deal with them.
 
         This method runs on a separate, internal thread.
-        The thread will terminate if it sees a sentinel object in the queue.
+        The thread will terminate ikiwa it sees a sentinel object in the queue.
         """
         q = self.queue
         has_task_done = hasattr(q, 'task_done')
         while True:
             try:
                 record = self.dequeue(True)
-                if record is self._sentinel:
-                    if has_task_done:
+                ikiwa record is self._sentinel:
+                    ikiwa has_task_done:
                         q.task_done()
                     break
                 self.handle(record)
-                if has_task_done:
+                ikiwa has_task_done:
                     q.task_done()
             except queue.Empty:
                 break
 
-    def enqueue_sentinel(self):
+    eleza enqueue_sentinel(self):
         """
         This is used to enqueue the sentinel record.
 
         The base implementation uses put_nowait. You may want to override this
-        method if you want to use timeouts or work with custom queue
+        method ikiwa you want to use timeouts or work with custom queue
         implementations.
         """
         self.queue.put_nowait(self._sentinel)
 
-    def stop(self):
+    eleza stop(self):
         """
         Stop the listener.
 
         This asks the thread to terminate, and then waits for it to do so.
-        Note that if you don't call this before your application exits, there
+        Note that ikiwa you don't call this before your application exits, there
         may be some records still left on the queue, which won't be processed.
         """
         self.enqueue_sentinel()

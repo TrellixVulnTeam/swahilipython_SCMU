@@ -133,7 +133,7 @@ For the sake of clarity, here's the terminology we'll use with Argument Clinic:
 * The last line (``/*[clinic end generated code: checksum=...]*/``) is the *checksum line*.
 * In between the start line and the end line is the *input*.
 * In between the end line and the checksum line is the *output*.
-* All the text collectively, from the start line to the checksum line inclusively,
+* All the text collectively, kutoka the start line to the checksum line inclusively,
   is the *block*.  (A block that hasn't been successfully processed by Argument
   Clinic yet doesn't have output or a checksum line, but it's still considered
   a block.)
@@ -221,7 +221,7 @@ Let's dive in!
    and should be the full dotted path
    to the function—it should start with the name of the module,
    include any sub-modules, and if the function is a method on
-   a class it should include the class name too.
+   a kundi it should include the kundi name too.
 
    Sample::
 
@@ -231,7 +231,7 @@ Let's dive in!
     Write a pickled representation of obj to the open file.
     [clinic start generated code]*/
 
-7. If this is the first time that module or class has been used with Argument
+7. If this is the first time that module or kundi has been used with Argument
    Clinic in this C file,
    you must declare the module and/or class.  Proper Argument Clinic hygiene
    prefers declaring these in a separate block somewhere near the
@@ -239,7 +239,7 @@ Let's dive in!
    the top.  (In our sample code we'll just show the two blocks next to
    each other.)
 
-   The name of the class and module should be the same as the one
+   The name of the kundi and module should be the same as the one
    seen by Python.  Check the name defined in the :c:type:`PyModuleDef`
    or :c:type:`PyTypeObject` as appropriate.
 
@@ -251,7 +251,7 @@ Let's dive in!
 
        /*[clinic input]
        module _pickle
-       class _pickle.Pickler "PicklerObject *" "&Pickler_Type"
+       kundi _pickle.Pickler "PicklerObject *" "&Pickler_Type"
        [clinic start generated code]*/
 
        /*[clinic input]
@@ -265,7 +265,7 @@ Let's dive in!
 
 8. Declare each of the parameters to the function.  Each parameter
    should get its own line.  All the parameter lines should be
-   indented from the function name and the docstring.
+   indented kutoka the function name and the docstring.
 
    The general form of these parameter lines is as follows:
 
@@ -294,7 +294,7 @@ Let's dive in!
    Clinic easier.
 
    For each parameter, copy the "format unit" for that
-   parameter from the ``PyArg_Parse()`` format argument and
+   parameter kutoka the ``PyArg_Parse()`` format argument and
    specify *that* as its converter, as a quoted
    string.  ("format unit" is the formal name for the one-to-three
    character substring of the ``format`` parameter that tells
@@ -309,7 +309,7 @@ Let's dive in!
 
         /*[clinic input]
         module _pickle
-        class _pickle.Pickler "PicklerObject *" "&Pickler_Type"
+        kundi _pickle.Pickler "PicklerObject *" "&Pickler_Type"
         [clinic start generated code]*/
 
         /*[clinic input]
@@ -349,7 +349,7 @@ Let's dive in!
 
         /*[clinic input]
         module _pickle
-        class _pickle.Pickler "PicklerObject *" "&Pickler_Type"
+        kundi _pickle.Pickler "PicklerObject *" "&Pickler_Type"
         [clinic start generated code]*/
 
         /*[clinic input]
@@ -376,7 +376,7 @@ Let's dive in!
 
         /*[clinic input]
         module _pickle
-        class _pickle.Pickler "PicklerObject *" "&Pickler_Type"
+        kundi _pickle.Pickler "PicklerObject *" "&Pickler_Type"
         [clinic start generated code]*/
 
         /*[clinic input]
@@ -482,7 +482,7 @@ Let's dive in!
 
         /*[clinic input]
         module _pickle
-        class _pickle.Pickler "PicklerObject *" "&Pickler_Type"
+        kundi _pickle.Pickler "PicklerObject *" "&Pickler_Type"
         [clinic start generated code]*/
         /*[clinic end generated code: checksum=da39a3ee5e6b4b0d3255bfef95601890afd80709]*/
 
@@ -523,7 +523,7 @@ Let's dive in!
     function?  Find the existing :c:type:`PyMethodDef` structure for this
     function and replace it with a reference to the macro.  (If the builtin
     is at module scope, this will probably be very near the end of the file;
-    if the builtin is a class method, this will probably be below but relatively
+    if the builtin is a kundi method, this will probably be below but relatively
     near to the implementation.)
 
     Note that the body of the macro contains a trailing comma.  So when you
@@ -567,7 +567,7 @@ expression.  Currently the following are explicitly supported:
 * Simple symbolic constants like ``sys.maxsize``, which must
   start with the name of the module
 
-In case you're curious, this is implemented in  ``from_builtin()``
+In case you're curious, this is implemented in  ``kutoka_builtin()``
 in ``Lib/inspect.py``.
 
 (In the future, this may need to get even more elaborate,
@@ -704,7 +704,7 @@ Notes:
   ``group_{direction}_{number}``,
   where ``{direction}`` is either ``right`` or ``left`` depending on whether the group
   is before or after the required parameters, and ``{number}`` is a monotonically
-  increasing number (starting at 1) indicating how far away the group is from
+  increasing number (starting at 1) indicating how far away the group is kutoka
   the required parameters.  When the impl is called, this parameter will be set
   to zero if this group was unused, and set to non-zero if this group was used.
   (By used or unused, I mean whether or not the parameters received arguments
@@ -791,12 +791,12 @@ of these arguments, along with their meanings:
 
   ``encoding``
     Only supported for strings.  Specifies the encoding to use when converting
-    this string from a Python str (Unicode) value into a C ``char *`` value.
+    this string kutoka a Python str (Unicode) value into a C ``char *`` value.
 
 
   ``subclass_of``
     Only supported for the ``object`` converter.  Requires that the Python
-    value be a subclass of a Python type, as expressed in C.
+    value be a subkundi of a Python type, as expressed in C.
 
   ``type``
     Only supported for the ``object`` and ``self`` converters.  Specifies
@@ -916,7 +916,7 @@ or ``encoding`` (for all the format units that start with ``e``).
 When using ``subclass_of``, you may also want to use the other
 custom argument for ``object()``: ``type``, which lets you set the type
 actually used for the parameter.  For example, if you want to ensure
-that the object is a subclass of ``PyUnicode_Type``, you probably want
+that the object is a subkundi of ``PyUnicode_Type``, you probably want
 to use the converter ``object(type='PyUnicodeObject *', subclass_of='&PyUnicode_Type')``.
 
 One possible problem with using Argument Clinic: it takes away some possible
@@ -961,7 +961,7 @@ The ``NULL`` default value
 For string and object parameters, you can set them to ``None`` to indicate
 that there's no default.  However, that means the C variable will be
 initialized to ``Py_None``.  For convenience's sakes, there's a special
-value called ``NULL`` for just this reason: from Python's perspective it
+value called ``NULL`` for just this reason: kutoka Python's perspective it
 behaves like a default value of ``None``, but the C variable is initialized
 with ``NULL``.
 
@@ -985,7 +985,7 @@ in C.  So it stores the default in such a way that it will get evaluated at
 runtime, when the user asks for the function's signature.
 
 What namespace is available when the expression is evaluated?  It's evaluated
-in the context of the module the builtin came from.  So, if your module has an
+in the context of the module the builtin came kutoka.  So, if your module has an
 attribute called "``max_widgets``", you may simply use it:
 
 .. code-block:: none
@@ -1028,8 +1028,8 @@ Using a return converter
 
 By default the impl function Argument Clinic generates for you returns ``PyObject *``.
 But your C function often computes some C type, then converts it into the ``PyObject *``
-at the last moment.  Argument Clinic handles converting your inputs from Python types
-into native C types—why not have it convert your return value from a native C type
+at the last moment.  Argument Clinic handles converting your inputs kutoka Python types
+into native C types—why not have it convert your return value kutoka a native C type
 into a Python type too?
 
 That's what a "return converter" does.  It changes your impl function to return
@@ -1105,7 +1105,7 @@ you reuse:
 
 * its return converter.
 
-The only thing not copied from the original function is its docstring;
+The only thing not copied kutoka the original function is its docstring;
 the syntax allows you to specify a new docstring.
 
 Here's the syntax for cloning a function::
@@ -1123,7 +1123,7 @@ use the full path to *both* functions.)
 Sorry, there's no syntax for partially-cloning a function, or cloning a function
 then modifying it.  Cloning is an all-or nothing proposition.
 
-Also, the function you are cloning from must have been previously defined
+Also, the function you are cloning kutoka must have been previously defined
 in the current file.
 
 Calling Python code
@@ -1164,7 +1164,7 @@ when you declared the type.  However, you can override
 Argument Clinic's converter and specify one yourself.
 Just add your own ``self`` parameter as the first parameter in a
 block, and ensure that its converter is an instance of
-``self_converter`` or a subclass thereof.
+``self_converter`` or a subkundi thereof.
 
 What's the point?  This lets you override the type of ``self``,
 or give it a different default name.
@@ -1190,7 +1190,7 @@ type for ``self``, it's best to create your own converter, subclassing
 ``self_converter`` but overwriting the ``type`` member::
 
     /*[python input]
-    class PicklerObject_converter(self_converter):
+    kundi PicklerObject_converter(self_converter):
         type = "PicklerObject *"
     [python start generated code]*/
 
@@ -1211,18 +1211,18 @@ Writing a custom converter
 --------------------------
 
 As we hinted at in the previous section... you can write your own converters!
-A converter is simply a Python class that inherits from ``CConverter``.
+A converter is simply a Python kundi that inherits kutoka ``CConverter``.
 The main purpose of a custom converter is if you have a parameter using
 the ``O&`` format unit—parsing this parameter means calling
 a :c:func:`PyArg_ParseTuple` "converter function".
 
-Your converter class should be named ``*something*_converter``.
+Your converter kundi should be named ``*something*_converter``.
 If the name follows this convention, then your converter class
 will be automatically registered with Argument Clinic; its name
-will be the name of your class with the ``_converter`` suffix
+will be the name of your kundi with the ``_converter`` suffix
 stripped off.  (This is accomplished with a metaclass.)
 
-You shouldn't subclass ``CConverter.__init__``.  Instead, you should
+You shouldn't subkundi ``CConverter.__init__``.  Instead, you should
 write a ``converter_init()`` function.  ``converter_init()``
 always accepts a ``self`` parameter; after that, all additional
 parameters *must* be keyword-only.  Any arguments passed in to
@@ -1276,11 +1276,11 @@ to specify in your subclass.  Here's the current list:
     the variable when passing it into :c:func:`PyArg_ParseTuple`.
 
 
-Here's the simplest example of a custom converter, from ``Modules/zlibmodule.c``::
+Here's the simplest example of a custom converter, kutoka ``Modules/zlibmodule.c``::
 
     /*[python input]
 
-    class ssize_t_converter(CConverter):
+    kundi ssize_t_converter(CConverter):
         type = 'Py_ssize_t'
         converter = 'ssize_t_converter'
 
@@ -1305,7 +1305,7 @@ Writing a custom return converter is much like writing
 a custom converter.  Except it's somewhat simpler, because return
 converters are themselves much simpler.
 
-Return converters must subclass ``CReturnConverter``.
+Return converters must subkundi ``CReturnConverter``.
 There are no examples yet of custom return converters,
 because they are not widely used yet.  If you wish to
 write your own return converter, please read ``Tools/clinic/clinic.py``,
@@ -1347,7 +1347,7 @@ them ``__new__`` or ``__init__`` as appropriate.  Notes:
 
 * ``__init__`` functions return ``int``, not ``PyObject *``.
 
-* Use the docstring as the class docstring.
+* Use the docstring as the kundi docstring.
 
 * Although ``__new__`` and ``__init__`` functions must always
   accept both the ``args`` and ``kwargs`` objects, when converting
@@ -1420,7 +1420,7 @@ Let's start with defining some terminology:
     A separate "clinic file" that will be created automatically by Clinic.
     The filename chosen for the file is ``{basename}.clinic{extension}``,
     where ``basename`` and ``extension`` were assigned the output
-    from ``os.path.splitext()`` run on the current file.  (Example:
+    kutoka ``os.path.splitext()`` run on the current file.  (Example:
     the ``file`` destination for ``_pickle.c`` would be written to
     ``_pickle.clinic.c``.)
 
@@ -1430,7 +1430,7 @@ Let's start with defining some terminology:
   ``two-pass``
     A buffer like ``buffer``.  However, a two-pass buffer can only
     be dumped once, and it prints out all text sent to it during
-    all processing, even from Clinic blocks *after* the dumping point.
+    all processing, even kutoka Clinic blocks *after* the dumping point.
 
   ``suppress``
     The text is suppressed—thrown away.
@@ -1499,7 +1499,7 @@ preset configurations, as follows:
     The default filename is ``"{dirname}/clinic/{basename}.h"``.
 
   ``buffer``
-    Save up most of the output from Clinic, to be written into
+    Save up most of the output kutoka Clinic, to be written into
     your file near the end.  For Python files implementing modules
     or builtin types, it's recommended that you dump the buffer
     just above the static structures for your module or
@@ -1675,7 +1675,7 @@ like so::
     }
     #endif /* HAVE_FUNCTIONNAME */
 
-Then, remove those three lines from the ``PyMethodDef`` structure,
+Then, remove those three lines kutoka the ``PyMethodDef`` structure,
 replacing them with the macro Argument Clinic generated:
 
 .. code-block:: none
@@ -1707,7 +1707,7 @@ extra code when using the "block" output preset?  It can't go in the output bloc
 because that could be deactivated by the ``#ifdef``.  (That's the whole point!)
 
 In this situation, Argument Clinic writes the extra code to the "buffer" destination.
-This may mean that you get a complaint from Argument Clinic:
+This may mean that you get a complaint kutoka Argument Clinic:
 
 .. code-block:: none
 
@@ -1728,7 +1728,7 @@ There's no point to using Argument Clinic blocks, of course, as the output
 wouldn't make any sense to the Python interpreter.  But using Argument Clinic
 to run Python blocks lets you use Python as a Python preprocessor!
 
-Since Python comments are different from C comments, Argument Clinic
+Since Python comments are different kutoka C comments, Argument Clinic
 blocks embedded in Python files look slightly different.  They look like this:
 
 .. code-block:: python3

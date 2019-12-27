@@ -15,7 +15,7 @@ Example:
 
   >>> agiza smtplib
   >>> s=smtplib.SMTP("localhost")
-  >>> print(s.help())
+  >>> andika(s.help())
   This is Sendmail version 8.8.4
   Topics:
       HELO    EHLO    MAIL    RCPT    DATA
@@ -68,17 +68,17 @@ _MAXLINE = 8192 # more than 8 times larger than RFC 821, 4.5.3
 OLDSTYLE_AUTH = re.compile(r"auth=(.*)", re.I)
 
 # Exception classes used by this module.
-class SMTPException(OSError):
-    """Base class for all exceptions raised by this module."""
+kundi SMTPException(OSError):
+    """Base kundi for all exceptions raised by this module."""
 
-class SMTPNotSupportedError(SMTPException):
+kundi SMTPNotSupportedError(SMTPException):
     """The command or option is not supported by the SMTP server.
 
     This exception is raised when an attempt is made to run a command or a
     command with an option which is not supported by the server.
     """
 
-class SMTPServerDisconnected(SMTPException):
+kundi SMTPServerDisconnected(SMTPException):
     """Not connected to any SMTP server.
 
     This exception is raised when the server unexpectedly disconnects,
@@ -86,8 +86,8 @@ class SMTPServerDisconnected(SMTPException):
     connecting it to a server.
     """
 
-class SMTPResponseException(SMTPException):
-    """Base class for all exceptions that include an SMTP error code.
+kundi SMTPResponseException(SMTPException):
+    """Base kundi for all exceptions that include an SMTP error code.
 
     These exceptions are generated in some instances when the SMTP
     server returns an error code.  The error code is stored in the
@@ -95,25 +95,25 @@ class SMTPResponseException(SMTPException):
     is set to the error message.
     """
 
-    def __init__(self, code, msg):
+    eleza __init__(self, code, msg):
         self.smtp_code = code
         self.smtp_error = msg
         self.args = (code, msg)
 
-class SMTPSenderRefused(SMTPResponseException):
+kundi SMTPSenderRefused(SMTPResponseException):
     """Sender address refused.
 
     In addition to the attributes set by on all SMTPResponseException
     exceptions, this sets `sender' to the string that the SMTP refused.
     """
 
-    def __init__(self, code, msg, sender):
+    eleza __init__(self, code, msg, sender):
         self.smtp_code = code
         self.smtp_error = msg
         self.sender = sender
         self.args = (code, msg, sender)
 
-class SMTPRecipientsRefused(SMTPException):
+kundi SMTPRecipientsRefused(SMTPException):
     """All recipient addresses refused.
 
     The errors for each recipient are accessible through the attribute
@@ -121,62 +121,62 @@ class SMTPRecipientsRefused(SMTPException):
     SMTP.sendmail() returns.
     """
 
-    def __init__(self, recipients):
+    eleza __init__(self, recipients):
         self.recipients = recipients
         self.args = (recipients,)
 
 
-class SMTPDataError(SMTPResponseException):
+kundi SMTPDataError(SMTPResponseException):
     """The SMTP server didn't accept the data."""
 
-class SMTPConnectError(SMTPResponseException):
+kundi SMTPConnectError(SMTPResponseException):
     """Error during connection establishment."""
 
-class SMTPHeloError(SMTPResponseException):
+kundi SMTPHeloError(SMTPResponseException):
     """The server refused our HELO reply."""
 
-class SMTPAuthenticationError(SMTPResponseException):
+kundi SMTPAuthenticationError(SMTPResponseException):
     """Authentication error.
 
     Most probably the server didn't accept the username/password
     combination provided.
     """
 
-def quoteaddr(addrstring):
+eleza quoteaddr(addrstring):
     """Quote a subset of the email addresses defined by RFC 821.
 
     Should be able to handle anything email.utils.parseaddr can handle.
     """
     displayname, addr = email.utils.parseaddr(addrstring)
-    if (displayname, addr) == ('', ''):
+    ikiwa (displayname, addr) == ('', ''):
         # parseaddr couldn't parse it, use it as is and hope for the best.
-        if addrstring.strip().startswith('<'):
-            return addrstring
-        return "<%s>" % addrstring
-    return "<%s>" % addr
+        ikiwa addrstring.strip().startswith('<'):
+            rudisha addrstring
+        rudisha "<%s>" % addrstring
+    rudisha "<%s>" % addr
 
-def _addr_only(addrstring):
+eleza _addr_only(addrstring):
     displayname, addr = email.utils.parseaddr(addrstring)
-    if (displayname, addr) == ('', ''):
+    ikiwa (displayname, addr) == ('', ''):
         # parseaddr couldn't parse it, so use it as is.
-        return addrstring
-    return addr
+        rudisha addrstring
+    rudisha addr
 
 # Legacy method kept for backward compatibility.
-def quotedata(data):
+eleza quotedata(data):
     """Quote data for email.
 
     Double leading '.', and change Unix newline '\\n', or Mac '\\r' into
     Internet CRLF end-of-line.
     """
-    return re.sub(r'(?m)^\.', '..',
+    rudisha re.sub(r'(?m)^\.', '..',
         re.sub(r'(?:\r\n|\n|\r(?!\n))', CRLF, data))
 
-def _quote_periods(bindata):
-    return re.sub(br'(?m)^\.', b'..', bindata)
+eleza _quote_periods(bindata):
+    rudisha re.sub(br'(?m)^\.', b'..', bindata)
 
-def _fix_eols(data):
-    return  re.sub(r'(?:\r\n|\n|\r(?!\n))', CRLF, data)
+eleza _fix_eols(data):
+    rudisha  re.sub(r'(?:\r\n|\n|\r(?!\n))', CRLF, data)
 
 try:
     agiza ssl
@@ -186,8 +186,8 @@ else:
     _have_ssl = True
 
 
-class SMTP:
-    """This class manages a connection to an SMTP or ESMTP server.
+kundi SMTP:
+    """This kundi manages a connection to an SMTP or ESMTP server.
     SMTP Objects:
         SMTP objects have the following attributes:
             helo_resp
@@ -199,14 +199,14 @@ class SMTP:
                 most recent EHLO command. This is usually multiline.
 
             does_esmtp
-                This is a True value _after you do an EHLO command_, if the
+                This is a True value _after you do an EHLO command_, ikiwa the
                 server supports ESMTP.
 
             esmtp_features
-                This is a dictionary, which, if the server supports ESMTP,
+                This is a dictionary, which, ikiwa the server supports ESMTP,
                 will _after you do an EHLO command_, contain the names of the
                 SMTP service extensions this server supports, and their
-                parameters (if any).
+                parameters (ikiwa any).
 
                 Note, all extension names are mapped to lower case in the
                 dictionary.
@@ -225,7 +225,7 @@ class SMTP:
     does_esmtp = 0
     default_port = SMTP_PORT
 
-    def __init__(self, host='', port=0, local_hostname=None,
+    eleza __init__(self, host='', port=0, local_hostname=None,
                  timeout=socket._GLOBAL_DEFAULT_TIMEOUT,
                  source_address=None):
         """Initialize a new instance.
@@ -233,7 +233,7 @@ class SMTP:
         If specified, `host' is the name of the remote host to which to
         connect.  If specified, `port' specifies the port to which to connect.
         By default, smtplib.SMTP_PORT is used.  If a host is specified the
-        connect method is called, and if it returns anything other than a
+        connect method is called, and ikiwa it returns anything other than a
         success code an SMTPConnectError is raised.  If specified,
         `local_hostname` is used as the FQDN of the local host in the HELO/EHLO
         command.  Otherwise, the local hostname is found using
@@ -249,19 +249,19 @@ class SMTP:
         self.command_encoding = 'ascii'
         self.source_address = source_address
 
-        if host:
+        ikiwa host:
             (code, msg) = self.connect(host, port)
-            if code != 220:
+            ikiwa code != 220:
                 self.close()
                 raise SMTPConnectError(code, msg)
-        if local_hostname is not None:
+        ikiwa local_hostname is not None:
             self.local_hostname = local_hostname
         else:
             # RFC 2821 says we should use the fqdn in the EHLO/HELO verb, and
-            # if that can't be calculated, that we should use a domain literal
+            # ikiwa that can't be calculated, that we should use a domain literal
             # instead (essentially an encoded IP address like [A.B.C.D]).
             fqdn = socket.getfqdn()
-            if '.' in fqdn:
+            ikiwa '.' in fqdn:
                 self.local_hostname = fqdn
             else:
                 # We can't find an fqdn hostname, so use a domain literal
@@ -272,20 +272,20 @@ class SMTP:
                     pass
                 self.local_hostname = '[%s]' % addr
 
-    def __enter__(self):
-        return self
+    eleza __enter__(self):
+        rudisha self
 
-    def __exit__(self, *args):
+    eleza __exit__(self, *args):
         try:
             code, message = self.docmd("QUIT")
-            if code != 221:
+            ikiwa code != 221:
                 raise SMTPResponseException(code, message)
         except SMTPServerDisconnected:
             pass
         finally:
             self.close()
 
-    def set_debuglevel(self, debuglevel):
+    eleza set_debuglevel(self, debuglevel):
         """Set the debug output level.
 
         A non-false value results in debug messages for connection and for all
@@ -294,61 +294,61 @@ class SMTP:
         """
         self.debuglevel = debuglevel
 
-    def _print_debug(self, *args):
-        if self.debuglevel > 1:
-            print(datetime.datetime.now().time(), *args, file=sys.stderr)
+    eleza _print_debug(self, *args):
+        ikiwa self.debuglevel > 1:
+            andika(datetime.datetime.now().time(), *args, file=sys.stderr)
         else:
-            print(*args, file=sys.stderr)
+            andika(*args, file=sys.stderr)
 
-    def _get_socket(self, host, port, timeout):
+    eleza _get_socket(self, host, port, timeout):
         # This makes it simpler for SMTP_SSL to use the SMTP connect code
         # and just alter the socket connection bit.
-        if self.debuglevel > 0:
+        ikiwa self.debuglevel > 0:
             self._print_debug('connect: to', (host, port), self.source_address)
-        return socket.create_connection((host, port), timeout,
+        rudisha socket.create_connection((host, port), timeout,
                                         self.source_address)
 
-    def connect(self, host='localhost', port=0, source_address=None):
+    eleza connect(self, host='localhost', port=0, source_address=None):
         """Connect to a host on a given port.
 
         If the hostname ends with a colon (`:') followed by a number, and
         there is no port specified, that suffix will be stripped off and the
         number interpreted as the port number to use.
 
-        Note: This method is automatically invoked by __init__, if a host is
+        Note: This method is automatically invoked by __init__, ikiwa a host is
         specified during instantiation.
 
         """
 
-        if source_address:
+        ikiwa source_address:
             self.source_address = source_address
 
-        if not port and (host.find(':') == host.rfind(':')):
+        ikiwa not port and (host.find(':') == host.rfind(':')):
             i = host.rfind(':')
-            if i >= 0:
+            ikiwa i >= 0:
                 host, port = host[:i], host[i + 1:]
                 try:
                     port = int(port)
                 except ValueError:
                     raise OSError("nonnumeric port")
-        if not port:
+        ikiwa not port:
             port = self.default_port
-        if self.debuglevel > 0:
+        ikiwa self.debuglevel > 0:
             self._print_debug('connect:', (host, port))
         sys.audit("smtplib.connect", self, host, port)
         self.sock = self._get_socket(host, port, self.timeout)
         self.file = None
         (code, msg) = self.getreply()
-        if self.debuglevel > 0:
+        ikiwa self.debuglevel > 0:
             self._print_debug('connect:', repr(msg))
-        return (code, msg)
+        rudisha (code, msg)
 
-    def send(self, s):
+    eleza send(self, s):
         """Send `s' to the server."""
-        if self.debuglevel > 0:
+        ikiwa self.debuglevel > 0:
             self._print_debug('send:', repr(s))
-        if self.sock:
-            if isinstance(s, str):
+        ikiwa self.sock:
+            ikiwa isinstance(s, str):
                 # send is used by the 'data' command, where command_encoding
                 # should not be used, but 'data' needs to convert the string to
                 # binary itself anyway, so that's not a problem.
@@ -362,29 +362,29 @@ class SMTP:
         else:
             raise SMTPServerDisconnected('please run connect() first')
 
-    def putcmd(self, cmd, args=""):
+    eleza putcmd(self, cmd, args=""):
         """Send a command to the server."""
-        if args == "":
+        ikiwa args == "":
             str = '%s%s' % (cmd, CRLF)
         else:
             str = '%s %s%s' % (cmd, args, CRLF)
         self.send(str)
 
-    def getreply(self):
+    eleza getreply(self):
         """Get a reply kutoka the server.
 
         Returns a tuple consisting of:
 
-          - server response code (e.g. '250', or such, if all goes well)
-            Note: returns -1 if it can't read response code.
+          - server response code (e.g. '250', or such, ikiwa all goes well)
+            Note: returns -1 ikiwa it can't read response code.
 
           - server response string corresponding to response code (multiline
             responses are converted to a single, multiline string).
 
-        Raises SMTPServerDisconnected if end-of-file is reached.
+        Raises SMTPServerDisconnected ikiwa end-of-file is reached.
         """
         resp = []
-        if self.file is None:
+        ikiwa self.file is None:
             self.file = self.sock.makefile('rb')
         while 1:
             try:
@@ -393,39 +393,39 @@ class SMTP:
                 self.close()
                 raise SMTPServerDisconnected("Connection unexpectedly closed: "
                                              + str(e))
-            if not line:
+            ikiwa not line:
                 self.close()
                 raise SMTPServerDisconnected("Connection unexpectedly closed")
-            if self.debuglevel > 0:
+            ikiwa self.debuglevel > 0:
                 self._print_debug('reply:', repr(line))
-            if len(line) > _MAXLINE:
+            ikiwa len(line) > _MAXLINE:
                 self.close()
                 raise SMTPResponseException(500, "Line too long.")
             resp.append(line[4:].strip(b' \t\r\n'))
             code = line[:3]
             # Check that the error code is syntactically correct.
-            # Don't attempt to read a continuation line if it is broken.
+            # Don't attempt to read a continuation line ikiwa it is broken.
             try:
                 errcode = int(code)
             except ValueError:
                 errcode = -1
                 break
-            # Check if multiline response.
-            if line[3:4] != b"-":
+            # Check ikiwa multiline response.
+            ikiwa line[3:4] != b"-":
                 break
 
         errmsg = b"\n".join(resp)
-        if self.debuglevel > 0:
+        ikiwa self.debuglevel > 0:
             self._print_debug('reply: retcode (%s); Msg: %a' % (errcode, errmsg))
-        return errcode, errmsg
+        rudisha errcode, errmsg
 
-    def docmd(self, cmd, args=""):
-        """Send a command, and return its response code."""
+    eleza docmd(self, cmd, args=""):
+        """Send a command, and rudisha its response code."""
         self.putcmd(cmd, args)
-        return self.getreply()
+        rudisha self.getreply()
 
     # std smtp commands
-    def helo(self, name=''):
+    eleza helo(self, name=''):
         """SMTP 'helo' command.
         Hostname to send for this command defaults to the FQDN of the local
         host.
@@ -433,9 +433,9 @@ class SMTP:
         self.putcmd("helo", name or self.local_hostname)
         (code, msg) = self.getreply()
         self.helo_resp = msg
-        return (code, msg)
+        rudisha (code, msg)
 
-    def ehlo(self, name=''):
+    eleza ehlo(self, name=''):
         """ SMTP 'ehlo' command.
         Hostname to send for this command defaults to the FQDN of the local
         host.
@@ -446,12 +446,12 @@ class SMTP:
         # According to RFC1869 some (badly written)
         # MTA's will disconnect on an ehlo. Toss an exception if
         # that happens -ddm
-        if code == -1 and len(msg) == 0:
+        ikiwa code == -1 and len(msg) == 0:
             self.close()
             raise SMTPServerDisconnected("Server not connected")
         self.ehlo_resp = msg
-        if code != 250:
-            return (code, msg)
+        ikiwa code != 250:
+            rudisha (code, msg)
         self.does_esmtp = 1
         #parse the ehlo response -ddm
         assert isinstance(self.ehlo_resp, bytes), repr(self.ehlo_resp)
@@ -465,7 +465,7 @@ class SMTP:
             # 2) There are some servers that only advertise the auth methods we
             #    support using the old style.
             auth_match = OLDSTYLE_AUTH.match(each)
-            if auth_match:
+            ikiwa auth_match:
                 # This doesn't remove duplicates, but that's no problem
                 self.esmtp_features["auth"] = self.esmtp_features.get("auth", "") \
                         + " " + auth_match.groups(0)[0]
@@ -474,34 +474,34 @@ class SMTP:
             # RFC 1869 requires a space between ehlo keyword and parameters.
             # It's actually stricter, in that only spaces are allowed between
             # parameters, but were not going to check for that here.  Note
-            # that the space isn't present if there are no parameters.
+            # that the space isn't present ikiwa there are no parameters.
             m = re.match(r'(?P<feature>[A-Za-z0-9][A-Za-z0-9\-]*) ?', each)
-            if m:
+            ikiwa m:
                 feature = m.group("feature").lower()
                 params = m.string[m.end("feature"):].strip()
-                if feature == "auth":
+                ikiwa feature == "auth":
                     self.esmtp_features[feature] = self.esmtp_features.get(feature, "") \
                             + " " + params
                 else:
                     self.esmtp_features[feature] = params
-        return (code, msg)
+        rudisha (code, msg)
 
-    def has_extn(self, opt):
+    eleza has_extn(self, opt):
         """Does the server support a given SMTP service extension?"""
-        return opt.lower() in self.esmtp_features
+        rudisha opt.lower() in self.esmtp_features
 
-    def help(self, args=''):
+    eleza help(self, args=''):
         """SMTP 'help' command.
         Returns help text kutoka server."""
         self.putcmd("help", args)
-        return self.getreply()[1]
+        rudisha self.getreply()[1]
 
-    def rset(self):
+    eleza rset(self):
         """SMTP 'rset' command -- resets session."""
         self.command_encoding = 'ascii'
-        return self.docmd("rset")
+        rudisha self.docmd("rset")
 
-    def _rset(self):
+    eleza _rset(self):
         """Internal 'rset' command which ignores any SMTPServerDisconnected error.
 
         Used internally in the library, since the server disconnected error
@@ -513,11 +513,11 @@ class SMTP:
         except SMTPServerDisconnected:
             pass
 
-    def noop(self):
+    eleza noop(self):
         """SMTP 'noop' command -- doesn't do anything :>"""
-        return self.docmd("noop")
+        rudisha self.docmd("noop")
 
-    def mail(self, sender, options=()):
+    eleza mail(self, sender, options=()):
         """SMTP 'mail' command -- begins mail xfer session.
 
         This method may raise the following exceptions:
@@ -527,70 +527,70 @@ class SMTP:
                                 the server.
         """
         optionlist = ''
-        if options and self.does_esmtp:
-            if any(x.lower()=='smtputf8' for x in options):
-                if self.has_extn('smtputf8'):
+        ikiwa options and self.does_esmtp:
+            ikiwa any(x.lower()=='smtputf8' for x in options):
+                ikiwa self.has_extn('smtputf8'):
                     self.command_encoding = 'utf-8'
                 else:
                     raise SMTPNotSupportedError(
                         'SMTPUTF8 not supported by server')
             optionlist = ' ' + ' '.join(options)
         self.putcmd("mail", "FROM:%s%s" % (quoteaddr(sender), optionlist))
-        return self.getreply()
+        rudisha self.getreply()
 
-    def rcpt(self, recip, options=()):
+    eleza rcpt(self, recip, options=()):
         """SMTP 'rcpt' command -- indicates 1 recipient for this mail."""
         optionlist = ''
-        if options and self.does_esmtp:
+        ikiwa options and self.does_esmtp:
             optionlist = ' ' + ' '.join(options)
         self.putcmd("rcpt", "TO:%s%s" % (quoteaddr(recip), optionlist))
-        return self.getreply()
+        rudisha self.getreply()
 
-    def data(self, msg):
+    eleza data(self, msg):
         """SMTP 'DATA' command -- sends message data to server.
 
         Automatically quotes lines beginning with a period per rfc821.
-        Raises SMTPDataError if there is an unexpected reply to the
-        DATA command; the return value kutoka this method is the final
+        Raises SMTPDataError ikiwa there is an unexpected reply to the
+        DATA command; the rudisha value kutoka this method is the final
         response code received when the all data is sent.  If msg
         is a string, lone '\\r' and '\\n' characters are converted to
         '\\r\\n' characters.  If msg is bytes, it is transmitted as is.
         """
         self.putcmd("data")
         (code, repl) = self.getreply()
-        if self.debuglevel > 0:
+        ikiwa self.debuglevel > 0:
             self._print_debug('data:', (code, repl))
-        if code != 354:
+        ikiwa code != 354:
             raise SMTPDataError(code, repl)
         else:
-            if isinstance(msg, str):
+            ikiwa isinstance(msg, str):
                 msg = _fix_eols(msg).encode('ascii')
             q = _quote_periods(msg)
-            if q[-2:] != bCRLF:
+            ikiwa q[-2:] != bCRLF:
                 q = q + bCRLF
             q = q + b"." + bCRLF
             self.send(q)
             (code, msg) = self.getreply()
-            if self.debuglevel > 0:
+            ikiwa self.debuglevel > 0:
                 self._print_debug('data:', (code, msg))
-            return (code, msg)
+            rudisha (code, msg)
 
-    def verify(self, address):
+    eleza verify(self, address):
         """SMTP 'verify' command -- checks for address validity."""
         self.putcmd("vrfy", _addr_only(address))
-        return self.getreply()
+        rudisha self.getreply()
     # a.k.a.
     vrfy = verify
 
-    def expn(self, address):
+    eleza expn(self, address):
         """SMTP 'expn' command -- expands a mailing list."""
         self.putcmd("expn", _addr_only(address))
-        return self.getreply()
+        rudisha self.getreply()
 
     # some useful methods
 
-    def ehlo_or_helo_if_needed(self):
-        """Call self.ehlo() and/or self.helo() if needed.
+    eleza ehlo_or_helo_if_needed(self):
+        """Call self.ehlo() and/or self.helo() ikiwa needed.
 
         If there has been no previous EHLO or HELO command this session, this
         method tries ESMTP EHLO first.
@@ -600,13 +600,13 @@ class SMTP:
          SMTPHeloError            The server didn't reply properly to
                                   the helo greeting.
         """
-        if self.helo_resp is None and self.ehlo_resp is None:
-            if not (200 <= self.ehlo()[0] <= 299):
+        ikiwa self.helo_resp is None and self.ehlo_resp is None:
+            ikiwa not (200 <= self.ehlo()[0] <= 299):
                 (code, resp) = self.helo()
-                if not (200 <= code <= 299):
+                ikiwa not (200 <= code <= 299):
                     raise SMTPHeloError(code, resp)
 
-    def auth(self, mechanism, authobject, *, initial_response_ok=True):
+    eleza auth(self, mechanism, authobject, *, initial_response_ok=True):
         """Authentication command - requires response processing.
 
         'mechanism' specifies which authentication mechanism is to
@@ -623,51 +623,51 @@ class SMTP:
 
         Keyword arguments:
             - initial_response_ok: Allow sending the RFC 4954 initial-response
-              to the AUTH command, if the authentication methods supports it.
+              to the AUTH command, ikiwa the authentication methods supports it.
         """
         # RFC 4954 allows auth methods to provide an initial response.  Not all
-        # methods support it.  By definition, if they return something other
+        # methods support it.  By definition, ikiwa they rudisha something other
         # than None when challenge is None, then they do.  See issue #15014.
         mechanism = mechanism.upper()
-        initial_response = (authobject() if initial_response_ok else None)
-        if initial_response is not None:
+        initial_response = (authobject() ikiwa initial_response_ok else None)
+        ikiwa initial_response is not None:
             response = encode_base64(initial_response.encode('ascii'), eol='')
             (code, resp) = self.docmd("AUTH", mechanism + " " + response)
         else:
             (code, resp) = self.docmd("AUTH", mechanism)
         # If server responds with a challenge, send the response.
-        if code == 334:
+        ikiwa code == 334:
             challenge = base64.decodebytes(resp)
             response = encode_base64(
                 authobject(challenge).encode('ascii'), eol='')
             (code, resp) = self.docmd(response)
-        if code in (235, 503):
-            return (code, resp)
+        ikiwa code in (235, 503):
+            rudisha (code, resp)
         raise SMTPAuthenticationError(code, resp)
 
-    def auth_cram_md5(self, challenge=None):
+    eleza auth_cram_md5(self, challenge=None):
         """ Authobject to use with CRAM-MD5 authentication. Requires self.user
         and self.password to be set."""
         # CRAM-MD5 does not support initial-response.
-        if challenge is None:
-            return None
-        return self.user + " " + hmac.HMAC(
+        ikiwa challenge is None:
+            rudisha None
+        rudisha self.user + " " + hmac.HMAC(
             self.password.encode('ascii'), challenge, 'md5').hexdigest()
 
-    def auth_plain(self, challenge=None):
+    eleza auth_plain(self, challenge=None):
         """ Authobject to use with PLAIN authentication. Requires self.user and
         self.password to be set."""
-        return "\0%s\0%s" % (self.user, self.password)
+        rudisha "\0%s\0%s" % (self.user, self.password)
 
-    def auth_login(self, challenge=None):
+    eleza auth_login(self, challenge=None):
         """ Authobject to use with LOGIN authentication. Requires self.user and
         self.password to be set."""
-        if challenge is None:
-            return self.user
+        ikiwa challenge is None:
+            rudisha self.user
         else:
-            return self.password
+            rudisha self.password
 
-    def login(self, user, password, *, initial_response_ok=True):
+    eleza login(self, user, password, *, initial_response_ok=True):
         """Log in on an SMTP server that requires authentication.
 
         The arguments are:
@@ -676,12 +676,12 @@ class SMTP:
 
         Keyword arguments:
             - initial_response_ok: Allow sending the RFC 4954 initial-response
-              to the AUTH command, if the authentication methods supports it.
+              to the AUTH command, ikiwa the authentication methods supports it.
 
         If there has been no previous EHLO or HELO command this session, this
         method tries ESMTP EHLO first.
 
-        This method will return normally if the authentication was successful.
+        This method will rudisha normally ikiwa the authentication was successful.
 
         This method may raise the following exceptions:
 
@@ -696,7 +696,7 @@ class SMTP:
         """
 
         self.ehlo_or_helo_if_needed()
-        if not self.has_extn("auth"):
+        ikiwa not self.has_extn("auth"):
             raise SMTPNotSupportedError(
                 "SMTP AUTH extension not supported by server.")
 
@@ -709,12 +709,12 @@ class SMTP:
         # We try the supported authentications in our preferred order, if
         # the server supports them.
         authlist = [auth for auth in preferred_auths
-                    if auth in advertised_authlist]
-        if not authlist:
+                    ikiwa auth in advertised_authlist]
+        ikiwa not authlist:
             raise SMTPException("No suitable authentication method found.")
 
         # Some servers advertise authentication methods they don't really
-        # support, so if authentication fails, we continue until we've tried
+        # support, so ikiwa authentication fails, we continue until we've tried
         # all methods.
         self.user, self.password = user, password
         for authmethod in authlist:
@@ -725,15 +725,15 @@ class SMTP:
                     initial_response_ok=initial_response_ok)
                 # 235 == 'Authentication successful'
                 # 503 == 'Error: already authenticated'
-                if code in (235, 503):
-                    return (code, resp)
+                ikiwa code in (235, 503):
+                    rudisha (code, resp)
             except SMTPAuthenticationError as e:
                 last_exception = e
 
         # We could not login successfully.  Return result of last attempt.
         raise last_exception
 
-    def starttls(self, keyfile=None, certfile=None, context=None):
+    eleza starttls(self, keyfile=None, certfile=None, context=None):
         """Puts the connection to the SMTP server into TLS mode.
 
         If there has been no previous EHLO or HELO command this session, this
@@ -751,24 +751,24 @@ class SMTP:
                                   the helo greeting.
         """
         self.ehlo_or_helo_if_needed()
-        if not self.has_extn("starttls"):
+        ikiwa not self.has_extn("starttls"):
             raise SMTPNotSupportedError(
                 "STARTTLS extension not supported by server.")
         (resp, reply) = self.docmd("STARTTLS")
-        if resp == 220:
-            if not _have_ssl:
+        ikiwa resp == 220:
+            ikiwa not _have_ssl:
                 raise RuntimeError("No SSL support included in this Python")
-            if context is not None and keyfile is not None:
+            ikiwa context is not None and keyfile is not None:
                 raise ValueError("context and keyfile arguments are mutually "
                                  "exclusive")
-            if context is not None and certfile is not None:
+            ikiwa context is not None and certfile is not None:
                 raise ValueError("context and certfile arguments are mutually "
                                  "exclusive")
-            if keyfile is not None or certfile is not None:
+            ikiwa keyfile is not None or certfile is not None:
                 agiza warnings
                 warnings.warn("keyfile and certfile are deprecated, use a "
                               "custom context instead", DeprecationWarning, 2)
-            if context is None:
+            ikiwa context is None:
                 context = ssl._create_stdlib_context(certfile=certfile,
                                                      keyfile=keyfile)
             self.sock = context.wrap_socket(self.sock,
@@ -787,14 +787,14 @@ class SMTP:
             # 501 Syntax error (no parameters allowed)
             # 454 TLS not available due to temporary reason
             raise SMTPResponseException(resp, reply)
-        return (resp, reply)
+        rudisha (resp, reply)
 
-    def sendmail(self, from_addr, to_addrs, msg, mail_options=(),
+    eleza sendmail(self, kutoka_addr, to_addrs, msg, mail_options=(),
                  rcpt_options=()):
         """This command performs an entire mail transaction.
 
         The arguments are:
-            - from_addr    : The address sending this mail.
+            - kutoka_addr    : The address sending this mail.
             - to_addrs     : A list of addresses to send this mail to.  A bare
                              string will be treated as a list with 1 address.
             - msg          : The message to send.
@@ -812,7 +812,7 @@ class SMTP:
         and each of the specified options will be passed to it.  If EHLO
         fails, HELO will be tried and ESMTP options suppressed.
 
-        This method will return normally if the mail is accepted for at least
+        This method will rudisha normally ikiwa the mail is accepted for at least
         one recipient.  It returns a dictionary, with one entry for each
         recipient that was refused.  Each entry contains a tuple of the SMTP
         error code and the accompanying error message sent by the server.
@@ -823,7 +823,7 @@ class SMTP:
                                 the helo greeting.
          SMTPRecipientsRefused  The server rejected ALL recipients
                                 (no mail was sent).
-         SMTPSenderRefused      The server didn't accept the from_addr.
+         SMTPSenderRefused      The server didn't accept the kutoka_addr.
          SMTPDataError          The server replied with an unexpected
                                 error code (other than a refusal of
                                 a recipient).
@@ -849,59 +849,59 @@ class SMTP:
 
         In the above example, the message was accepted for delivery to three
         of the four addresses, and one was rejected, with the error code
-        550.  If all addresses are accepted, then the method will return an
+        550.  If all addresses are accepted, then the method will rudisha an
         empty dictionary.
 
         """
         self.ehlo_or_helo_if_needed()
         esmtp_opts = []
-        if isinstance(msg, str):
+        ikiwa isinstance(msg, str):
             msg = _fix_eols(msg).encode('ascii')
-        if self.does_esmtp:
-            if self.has_extn('size'):
+        ikiwa self.does_esmtp:
+            ikiwa self.has_extn('size'):
                 esmtp_opts.append("size=%d" % len(msg))
             for option in mail_options:
                 esmtp_opts.append(option)
-        (code, resp) = self.mail(from_addr, esmtp_opts)
-        if code != 250:
-            if code == 421:
+        (code, resp) = self.mail(kutoka_addr, esmtp_opts)
+        ikiwa code != 250:
+            ikiwa code == 421:
                 self.close()
             else:
                 self._rset()
-            raise SMTPSenderRefused(code, resp, from_addr)
+            raise SMTPSenderRefused(code, resp, kutoka_addr)
         senderrs = {}
-        if isinstance(to_addrs, str):
+        ikiwa isinstance(to_addrs, str):
             to_addrs = [to_addrs]
         for each in to_addrs:
             (code, resp) = self.rcpt(each, rcpt_options)
-            if (code != 250) and (code != 251):
+            ikiwa (code != 250) and (code != 251):
                 senderrs[each] = (code, resp)
-            if code == 421:
+            ikiwa code == 421:
                 self.close()
                 raise SMTPRecipientsRefused(senderrs)
-        if len(senderrs) == len(to_addrs):
+        ikiwa len(senderrs) == len(to_addrs):
             # the server refused all our recipients
             self._rset()
             raise SMTPRecipientsRefused(senderrs)
         (code, resp) = self.data(msg)
-        if code != 250:
-            if code == 421:
+        ikiwa code != 250:
+            ikiwa code == 421:
                 self.close()
             else:
                 self._rset()
             raise SMTPDataError(code, resp)
-        #if we got here then somebody got our mail
-        return senderrs
+        #ikiwa we got here then somebody got our mail
+        rudisha senderrs
 
-    def send_message(self, msg, from_addr=None, to_addrs=None,
+    eleza send_message(self, msg, kutoka_addr=None, to_addrs=None,
                      mail_options=(), rcpt_options=()):
         """Converts message to a bytestring and passes it to sendmail.
 
         The arguments are as for sendmail, except that msg is an
-        email.message.Message object.  If from_addr is None or to_addrs is
+        email.message.Message object.  If kutoka_addr is None or to_addrs is
         None, these arguments are taken kutoka the headers of the Message as
-        described in RFC 2822 (a ValueError is raised if there is more than
-        one set of 'Resent-' headers).  Regardless of the values of from_addr and
+        described in RFC 2822 (a ValueError is raised ikiwa there is more than
+        one set of 'Resent-' headers).  Regardless of the values of kutoka_addr and
         to_addr, any Bcc field (or Resent-Bcc field, when the Message is a
         resent) of the Message object won't be transmitted.  The Message
         object is then serialized using email.generator.BytesGenerator and
@@ -914,9 +914,9 @@ class SMTP:
         policy.
 
         """
-        # 'Resent-Date' is a mandatory field if the Message is resent (RFC 2822
+        # 'Resent-Date' is a mandatory field ikiwa the Message is resent (RFC 2822
         # Section 3.6.6). In such a case, we use the 'Resent-*' fields.  However,
-        # if there is more than one 'Resent-' block there's no way to
+        # ikiwa there is more than one 'Resent-' block there's no way to
         # unambiguously determine which one is the most recent in all cases,
         # so rather than guess we raise a ValueError in that case.
         #
@@ -926,23 +926,23 @@ class SMTP:
 
         self.ehlo_or_helo_if_needed()
         resent = msg.get_all('Resent-Date')
-        if resent is None:
+        ikiwa resent is None:
             header_prefix = ''
-        elif len(resent) == 1:
+        elikiwa len(resent) == 1:
             header_prefix = 'Resent-'
         else:
             raise ValueError("message has more than one 'Resent-' header block")
-        if from_addr is None:
+        ikiwa kutoka_addr is None:
             # Prefer the sender field per RFC 2822:3.6.2.
-            from_addr = (msg[header_prefix + 'Sender']
-                           if (header_prefix + 'Sender') in msg
+            kutoka_addr = (msg[header_prefix + 'Sender']
+                           ikiwa (header_prefix + 'Sender') in msg
                            else msg[header_prefix + 'From'])
-            from_addr = email.utils.getaddresses([from_addr])[0][1]
-        if to_addrs is None:
+            kutoka_addr = email.utils.getaddresses([kutoka_addr])[0][1]
+        ikiwa to_addrs is None:
             addr_fields = [f for f in (msg[header_prefix + 'To'],
                                        msg[header_prefix + 'Bcc'],
                                        msg[header_prefix + 'Cc'])
-                           if f is not None]
+                           ikiwa f is not None]
             to_addrs = [a[1] for a in email.utils.getaddresses(addr_fields)]
         # Make a local copy so we can delete the bcc headers.
         msg_copy = copy.copy(msg)
@@ -950,16 +950,16 @@ class SMTP:
         del msg_copy['Resent-Bcc']
         international = False
         try:
-            ''.join([from_addr, *to_addrs]).encode('ascii')
+            ''.join([kutoka_addr, *to_addrs]).encode('ascii')
         except UnicodeEncodeError:
-            if not self.has_extn('smtputf8'):
+            ikiwa not self.has_extn('smtputf8'):
                 raise SMTPNotSupportedError(
                     "One or more source or delivery addresses require"
                     " internationalized email support, but the server"
                     " does not advertise the required SMTPUTF8 capability")
             international = True
         with io.BytesIO() as bytesmsg:
-            if international:
+            ikiwa international:
                 g = email.generator.BytesGenerator(
                     bytesmsg, policy=msg.policy.clone(utf8=True))
                 mail_options = (*mail_options, 'SMTPUTF8', 'BODY=8BITMIME')
@@ -967,23 +967,23 @@ class SMTP:
                 g = email.generator.BytesGenerator(bytesmsg)
             g.flatten(msg_copy, linesep='\r\n')
             flatmsg = bytesmsg.getvalue()
-        return self.sendmail(from_addr, to_addrs, flatmsg, mail_options,
+        rudisha self.sendmail(kutoka_addr, to_addrs, flatmsg, mail_options,
                              rcpt_options)
 
-    def close(self):
+    eleza close(self):
         """Close the connection to the SMTP server."""
         try:
             file = self.file
             self.file = None
-            if file:
+            ikiwa file:
                 file.close()
         finally:
             sock = self.sock
             self.sock = None
-            if sock:
+            ikiwa sock:
                 sock.close()
 
-    def quit(self):
+    eleza quit(self):
         """Terminate the SMTP session."""
         res = self.docmd("quit")
         # A new EHLO is required after reconnecting with connect()
@@ -991,13 +991,13 @@ class SMTP:
         self.esmtp_features = {}
         self.does_esmtp = False
         self.close()
-        return res
+        rudisha res
 
-if _have_ssl:
+ikiwa _have_ssl:
 
-    class SMTP_SSL(SMTP):
-        """ This is a subclass derived kutoka SMTP that connects over an SSL
-        encrypted socket (to use this class you need a socket module that was
+    kundi SMTP_SSL(SMTP):
+        """ This is a subkundi derived kutoka SMTP that connects over an SSL
+        encrypted socket (to use this kundi you need a socket module that was
         compiled with SSL support). If host is not specified, '' (the local
         host) is used. If port is omitted, the standard SMTP-over-SSL port
         (465) is used.  local_hostname and source_address have the same meaning
@@ -1011,37 +1011,37 @@ if _have_ssl:
 
         default_port = SMTP_SSL_PORT
 
-        def __init__(self, host='', port=0, local_hostname=None,
+        eleza __init__(self, host='', port=0, local_hostname=None,
                      keyfile=None, certfile=None,
                      timeout=socket._GLOBAL_DEFAULT_TIMEOUT,
                      source_address=None, context=None):
-            if context is not None and keyfile is not None:
+            ikiwa context is not None and keyfile is not None:
                 raise ValueError("context and keyfile arguments are mutually "
                                  "exclusive")
-            if context is not None and certfile is not None:
+            ikiwa context is not None and certfile is not None:
                 raise ValueError("context and certfile arguments are mutually "
                                  "exclusive")
-            if keyfile is not None or certfile is not None:
+            ikiwa keyfile is not None or certfile is not None:
                 agiza warnings
                 warnings.warn("keyfile and certfile are deprecated, use a "
                               "custom context instead", DeprecationWarning, 2)
             self.keyfile = keyfile
             self.certfile = certfile
-            if context is None:
+            ikiwa context is None:
                 context = ssl._create_stdlib_context(certfile=certfile,
                                                      keyfile=keyfile)
             self.context = context
             SMTP.__init__(self, host, port, local_hostname, timeout,
                     source_address)
 
-        def _get_socket(self, host, port, timeout):
-            if self.debuglevel > 0:
+        eleza _get_socket(self, host, port, timeout):
+            ikiwa self.debuglevel > 0:
                 self._print_debug('connect:', (host, port))
             new_socket = socket.create_connection((host, port), timeout,
                     self.source_address)
             new_socket = self.context.wrap_socket(new_socket,
                                                   server_hostname=self._host)
-            return new_socket
+            rudisha new_socket
 
     __all__.append("SMTP_SSL")
 
@@ -1050,7 +1050,7 @@ if _have_ssl:
 #
 LMTP_PORT = 2003
 
-class LMTP(SMTP):
+kundi LMTP(SMTP):
     """LMTP - Local Mail Transfer Protocol
 
     The LMTP protocol, which is very similar to ESMTP, is heavily based
@@ -1066,16 +1066,16 @@ class LMTP(SMTP):
 
     ehlo_msg = "lhlo"
 
-    def __init__(self, host='', port=LMTP_PORT, local_hostname=None,
+    eleza __init__(self, host='', port=LMTP_PORT, local_hostname=None,
             source_address=None):
         """Initialize a new instance."""
         SMTP.__init__(self, host, port, local_hostname=local_hostname,
                       source_address=source_address)
 
-    def connect(self, host='localhost', port=0, source_address=None):
+    eleza connect(self, host='localhost', port=0, source_address=None):
         """Connect to the LMTP daemon, on either a Unix or a TCP socket."""
-        if host[0] != '/':
-            return SMTP.connect(self, host, port, source_address=source_address)
+        ikiwa host[0] != '/':
+            rudisha SMTP.connect(self, host, port, source_address=source_address)
 
         # Handle Unix-domain sockets.
         try:
@@ -1083,38 +1083,38 @@ class LMTP(SMTP):
             self.file = None
             self.sock.connect(host)
         except OSError:
-            if self.debuglevel > 0:
+            ikiwa self.debuglevel > 0:
                 self._print_debug('connect fail:', host)
-            if self.sock:
+            ikiwa self.sock:
                 self.sock.close()
             self.sock = None
             raise
         (code, msg) = self.getreply()
-        if self.debuglevel > 0:
+        ikiwa self.debuglevel > 0:
             self._print_debug('connect:', msg)
-        return (code, msg)
+        rudisha (code, msg)
 
 
 # Test the sendmail method, which tests most of the others.
 # Note: This always sends to localhost.
-if __name__ == '__main__':
-    def prompt(prompt):
+ikiwa __name__ == '__main__':
+    eleza prompt(prompt):
         sys.stdout.write(prompt + ": ")
         sys.stdout.flush()
-        return sys.stdin.readline().strip()
+        rudisha sys.stdin.readline().strip()
 
-    fromaddr = prompt("From")
+    kutokaaddr = prompt("From")
     toaddrs = prompt("To").split(',')
-    print("Enter message, end with ^D:")
+    andika("Enter message, end with ^D:")
     msg = ''
     while 1:
         line = sys.stdin.readline()
-        if not line:
+        ikiwa not line:
             break
         msg = msg + line
-    print("Message length is %d" % len(msg))
+    andika("Message length is %d" % len(msg))
 
     server = SMTP('localhost')
     server.set_debuglevel(1)
-    server.sendmail(fromaddr, toaddrs, msg)
+    server.sendmail(kutokaaddr, toaddrs, msg)
     server.quit()

@@ -61,7 +61,7 @@ The :mod:`pprint` module defines one class:
       Added the *sort_dicts* parameter.
 
 
-      >>> import pprint
+      >>> agiza pprint
       >>> stuff = ['spam', 'eggs', 'lumberjack', 'knights', 'ni']
       >>> stuff.insert(0, stuff[:])
       >>> pp = pprint.PrettyPrinter(indent=4)
@@ -128,7 +128,7 @@ The :mod:`pprint` module also provides several shortcut functions:
    .. versionchanged:: 3.8
       Added the *sort_dicts* parameter.
 
-      >>> import pprint
+      >>> agiza pprint
       >>> stuff = ['spam', 'eggs', 'lumberjack', 'knights', 'ni']
       >>> stuff.insert(0, stuff)
       >>> pprint.pprint(stuff)
@@ -238,11 +238,11 @@ Example
 -------
 
 To demonstrate several uses of the :func:`pprint` function and its parameters,
-let's fetch information about a project from `PyPI <https://pypi.org>`_::
+let's fetch information about a project kutoka `PyPI <https://pypi.org>`_::
 
-   >>> import json
-   >>> import pprint
-   >>> from urllib.request import urlopen
+   >>> agiza json
+   >>> agiza pprint
+   >>> kutoka urllib.request agiza urlopen
    >>> with urlopen('https://pypi.org/pypi/sampleproject/json') as resp:
    ...     project_info = json.load(resp)['info']
 

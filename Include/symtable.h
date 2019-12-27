@@ -18,7 +18,7 @@ struct _symtable_entry;
 
 struct symtable {
     PyObject *st_filename;          /* name of file being compiled,
-                                       decoded from the filesystem encoding */
+                                       decoded kutoka the filesystem encoding */
     struct _symtable_entry *st_cur; /* current symbol table entry */
     struct _symtable_entry *st_top; /* symbol table entry for module */
     PyObject *st_blocks;            /* dict: map AST node addresses
@@ -28,7 +28,7 @@ struct symtable {
     int st_nblocks;                 /* number of blocks used. kept for
                                        consistency with the corresponding
                                        compiler structure */
-    PyObject *st_private;           /* name of current class or NULL */
+    PyObject *st_private;           /* name of current kundi or NULL */
     PyFutureFeatures *st_future;    /* module's future features that affect
                                        the symbol table */
     int recursion_depth;            /* current recursion depth */
@@ -55,7 +55,7 @@ typedef struct _symtable_entry {
     unsigned ste_varkeywords : 1; /* true if block has varkeywords */
     unsigned ste_returns_value : 1;  /* true if namespace uses return with
                                         an argument */
-    unsigned ste_needs_class_closure : 1; /* for class scopes, true if a
+    unsigned ste_needs_class_closure : 1; /* for kundi scopes, true if a
                                              closure over __class__
                                              should be created */
     unsigned ste_comp_iter_target : 1; /* true if visiting comprehension target */
@@ -75,7 +75,7 @@ PyAPI_FUNC(int) PyST_GetScope(PySTEntryObject *, PyObject *);
 
 PyAPI_FUNC(struct symtable *) PySymtable_Build(
     mod_ty mod,
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     PyFutureFeatures *future);
 PyAPI_FUNC(struct symtable *) PySymtable_BuildObject(
     mod_ty mod,
@@ -93,7 +93,7 @@ PyAPI_FUNC(void) PySymtable_Free(struct symtable *);
 #define DEF_NONLOCAL 2<<2      /* nonlocal stmt */
 #define USE 2<<3               /* name is used */
 #define DEF_FREE 2<<4          /* name used but not defined in nested block */
-#define DEF_FREE_CLASS 2<<5    /* free variable from class's method */
+#define DEF_FREE_CLASS 2<<5    /* free variable kutoka class's method */
 #define DEF_IMPORT 2<<6        /* assignment occurred via import */
 #define DEF_ANNOT 2<<7         /* this name is annotated */
 #define DEF_COMP_ITER 2<<8     /* this name is a comprehension iteration variable */
@@ -101,7 +101,7 @@ PyAPI_FUNC(void) PySymtable_Free(struct symtable *);
 #define DEF_BOUND (DEF_LOCAL | DEF_PARAM | DEF_IMPORT)
 
 /* GLOBAL_EXPLICIT and GLOBAL_IMPLICIT are used internally by the symbol
-   table.  GLOBAL is returned from PyST_GetScope() for either of them.
+   table.  GLOBAL is returned kutoka PyST_GetScope() for either of them.
    It is stored in ste_symbols at bits 12-15.
 */
 #define SCOPE_OFFSET 11

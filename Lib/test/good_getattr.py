@@ -1,11 +1,11 @@
 x = 1
 
-def __dir__():
-    return ['a', 'b', 'c']
+eleza __dir__():
+    rudisha ['a', 'b', 'c']
 
-def __getattr__(name):
-    if name == "yolo":
+eleza __getattr__(name):
+    ikiwa name == "yolo":
         raise AttributeError("Deprecated, use whatever instead")
-    return f"There is {name}"
+    rudisha f"There is {name}"
 
 y = 2

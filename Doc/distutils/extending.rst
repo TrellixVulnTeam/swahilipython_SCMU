@@ -18,10 +18,10 @@ should be copied into packages in addition to :file:`.py` files as a
 convenience.
 
 Most distutils command implementations are subclasses of the
-:class:`distutils.cmd.Command` class.  New commands may directly inherit from
-:class:`Command`, while replacements often derive from :class:`Command`
+:class:`distutils.cmd.Command` class.  New commands may directly inherit kutoka
+:class:`Command`, while replacements often derive kutoka :class:`Command`
 indirectly, directly subclassing the command they are replacing.  Commands are
-required to derive from :class:`Command`.
+required to derive kutoka :class:`Command`.
 
 .. % \section{Extending existing commands}
 .. % \label{extend-existing}
@@ -43,10 +43,10 @@ The most common, and possibly the most reasonable for most needs, is to include
 the new implementations with your :file:`setup.py` script, and cause the
 :func:`distutils.core.setup` function use them::
 
-   from distutils.command.build_py import build_py as _build_py
-   from distutils.core import setup
+   kutoka distutils.command.build_py agiza build_py as _build_py
+   kutoka distutils.core agiza setup
 
-   class build_py(_build_py):
+   kundi build_py(_build_py):
        """Specialized Python source builder."""
 
        # implement whatever needs to be different...
@@ -69,7 +69,7 @@ searched for modules implementing commands.  Like all distutils options, this
 can be specified on the command line or in a configuration file.  This option
 can only be set in the ``[global]`` section of a configuration file, or before
 any commands on the command line.  If set in a configuration file, it can be
-overridden from the command line; setting it to an empty string on the command
+overridden kutoka the command line; setting it to an empty string on the command
 line causes the default to be used.  This should never be set in a configuration
 file provided with a package.
 
@@ -82,7 +82,7 @@ separated by commas.  When not specified, the search is only performed in the
 in that order.  New commands are expected to be implemented in modules of the
 same name as the command by classes sharing the same name.  Given the example
 command line option above, the command :command:`bdist_openpkg` could be
-implemented by the class :class:`distcmds.bdist_openpkg.bdist_openpkg` or
+implemented by the kundi :class:`distcmds.bdist_openpkg.bdist_openpkg` or
 :class:`buildcmds.bdist_openpkg.bdist_openpkg`.
 
 

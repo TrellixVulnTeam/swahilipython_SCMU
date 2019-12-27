@@ -1,15 +1,15 @@
 """Utility code for constructing importers, etc."""
 kutoka . agiza abc
-kutoka ._bootstrap agiza module_from_spec
+kutoka ._bootstrap agiza module_kutoka_spec
 kutoka ._bootstrap agiza _resolve_name
-kutoka ._bootstrap agiza spec_from_loader
+kutoka ._bootstrap agiza spec_kutoka_loader
 kutoka ._bootstrap agiza _find_spec
 kutoka ._bootstrap_external agiza MAGIC_NUMBER
 kutoka ._bootstrap_external agiza _RAW_MAGIC_NUMBER
-kutoka ._bootstrap_external agiza cache_from_source
+kutoka ._bootstrap_external agiza cache_kutoka_source
 kutoka ._bootstrap_external agiza decode_source
-kutoka ._bootstrap_external agiza source_from_cache
-kutoka ._bootstrap_external agiza spec_from_file_location
+kutoka ._bootstrap_external agiza source_kutoka_cache
+kutoka ._bootstrap_external agiza spec_kutoka_file_location
 
 kutoka contextlib agiza contextmanager
 agiza _imp
@@ -19,34 +19,34 @@ agiza types
 agiza warnings
 
 
-def source_hash(source_bytes):
+eleza source_hash(source_bytes):
     "Return the hash of *source_bytes* as used in hash-based pyc files."
-    return _imp.source_hash(_RAW_MAGIC_NUMBER, source_bytes)
+    rudisha _imp.source_hash(_RAW_MAGIC_NUMBER, source_bytes)
 
 
-def resolve_name(name, package):
+eleza resolve_name(name, package):
     """Resolve a relative module name to an absolute one."""
-    if not name.startswith('.'):
-        return name
-    elif not package:
+    ikiwa not name.startswith('.'):
+        rudisha name
+    elikiwa not package:
         raise ValueError(f'no package specified for {repr(name)} '
                          '(required for relative module names)')
     level = 0
     for character in name:
-        if character != '.':
+        ikiwa character != '.':
             break
         level += 1
-    return _resolve_name(name[level:], package, level)
+    rudisha _resolve_name(name[level:], package, level)
 
 
-def _find_spec_from_path(name, path=None):
+eleza _find_spec_kutoka_path(name, path=None):
     """Return the spec for the specified module.
 
-    First, sys.modules is checked to see if the module was already imported. If
+    First, sys.modules is checked to see ikiwa the module was already imported. If
     so, then sys.modules[name].__spec__ is returned. If that happens to be
     set to None, then ValueError is raised. If the module is not in
     sys.modules, then sys.meta_path is searched for a suitable spec with the
-    value of 'path' given to the finders. None is returned if no spec could
+    value of 'path' given to the finders. None is returned ikiwa no spec could
     be found.
 
     Dotted names do not have their parent packages implicitly imported. You will
@@ -54,30 +54,30 @@ def _find_spec_from_path(name, path=None):
     order for a submodule to get the correct spec.
 
     """
-    if name not in sys.modules:
-        return _find_spec(name, path)
+    ikiwa name not in sys.modules:
+        rudisha _find_spec(name, path)
     else:
         module = sys.modules[name]
-        if module is None:
-            return None
+        ikiwa module is None:
+            rudisha None
         try:
             spec = module.__spec__
         except AttributeError:
             raise ValueError('{}.__spec__ is not set'.format(name)) kutoka None
         else:
-            if spec is None:
+            ikiwa spec is None:
                 raise ValueError('{}.__spec__ is None'.format(name))
-            return spec
+            rudisha spec
 
 
-def find_spec(name, package=None):
+eleza find_spec(name, package=None):
     """Return the spec for the specified module.
 
-    First, sys.modules is checked to see if the module was already imported. If
+    First, sys.modules is checked to see ikiwa the module was already imported. If
     so, then sys.modules[name].__spec__ is returned. If that happens to be
     set to None, then ValueError is raised. If the module is not in
     sys.modules, then sys.meta_path is searched for a suitable spec with the
-    value of 'path' given to the finders. None is returned if no spec could
+    value of 'path' given to the finders. None is returned ikiwa no spec could
     be found.
 
     If the name is for submodule (contains a dot), the parent module is
@@ -87,11 +87,11 @@ def find_spec(name, package=None):
     In other words, relative module names (with leading dots) work.
 
     """
-    fullname = resolve_name(name, package) if name.startswith('.') else name
-    if fullname not in sys.modules:
+    fullname = resolve_name(name, package) ikiwa name.startswith('.') else name
+    ikiwa fullname not in sys.modules:
         parent_name = fullname.rpartition('.')[0]
-        if parent_name:
-            parent = __import__(parent_name, fromlist=['__path__'])
+        ikiwa parent_name:
+            parent = __import__(parent_name, kutokalist=['__path__'])
             try:
                 parent_path = parent.__path__
             except AttributeError as e:
@@ -100,27 +100,27 @@ def find_spec(name, package=None):
                     f"while trying to find {fullname!r}", name=fullname) kutoka e
         else:
             parent_path = None
-        return _find_spec(fullname, parent_path)
+        rudisha _find_spec(fullname, parent_path)
     else:
         module = sys.modules[fullname]
-        if module is None:
-            return None
+        ikiwa module is None:
+            rudisha None
         try:
             spec = module.__spec__
         except AttributeError:
             raise ValueError('{}.__spec__ is not set'.format(name)) kutoka None
         else:
-            if spec is None:
+            ikiwa spec is None:
                 raise ValueError('{}.__spec__ is None'.format(name))
-            return spec
+            rudisha spec
 
 
 @contextmanager
-def _module_to_load(name):
+eleza _module_to_load(name):
     is_reload = name in sys.modules
 
     module = sys.modules.get(name)
-    if not is_reload:
+    ikiwa not is_reload:
         # This must be done before open() is called as the 'io' module
         # implicitly agizas 'locale' and would otherwise trigger an
         # infinite loop.
@@ -132,7 +132,7 @@ def _module_to_load(name):
     try:
         yield module
     except Exception:
-        if not is_reload:
+        ikiwa not is_reload:
             try:
                 del sys.modules[name]
             except KeyError:
@@ -141,51 +141,51 @@ def _module_to_load(name):
         module.__initializing__ = False
 
 
-def set_package(fxn):
+eleza set_package(fxn):
     """Set __package__ on the returned module.
 
     This function is deprecated.
 
     """
     @functools.wraps(fxn)
-    def set_package_wrapper(*args, **kwargs):
+    eleza set_package_wrapper(*args, **kwargs):
         warnings.warn('The agiza system now takes care of this automatically.',
                       DeprecationWarning, stacklevel=2)
         module = fxn(*args, **kwargs)
-        if getattr(module, '__package__', None) is None:
+        ikiwa getattr(module, '__package__', None) is None:
             module.__package__ = module.__name__
-            if not hasattr(module, '__path__'):
+            ikiwa not hasattr(module, '__path__'):
                 module.__package__ = module.__package__.rpartition('.')[0]
-        return module
-    return set_package_wrapper
+        rudisha module
+    rudisha set_package_wrapper
 
 
-def set_loader(fxn):
+eleza set_loader(fxn):
     """Set __loader__ on the returned module.
 
     This function is deprecated.
 
     """
     @functools.wraps(fxn)
-    def set_loader_wrapper(self, *args, **kwargs):
+    eleza set_loader_wrapper(self, *args, **kwargs):
         warnings.warn('The agiza system now takes care of this automatically.',
                       DeprecationWarning, stacklevel=2)
         module = fxn(self, *args, **kwargs)
-        if getattr(module, '__loader__', None) is None:
+        ikiwa getattr(module, '__loader__', None) is None:
             module.__loader__ = self
-        return module
-    return set_loader_wrapper
+        rudisha module
+    rudisha set_loader_wrapper
 
 
-def module_for_loader(fxn):
+eleza module_for_loader(fxn):
     """Decorator to handle selecting the proper module for loaders.
 
     The decorated function is passed the module to use instead of the module
     name. The module passed in to the function is either kutoka sys.modules if
     it already exists or is a new module. If the module is new, then __name__
     is set the first argument to the method, __loader__ is set to self, and
-    __package__ is set accordingly (if self.is_package() is defined) will be set
-    before it is passed to the decorated function (if self.is_package() does
+    __package__ is set accordingly (ikiwa self.is_package() is defined) will be set
+    before it is passed to the decorated function (ikiwa self.is_package() does
     not work for the module it will be set post-load).
 
     If an exception is raised and the decorator created the module it is
@@ -198,7 +198,7 @@ def module_for_loader(fxn):
     warnings.warn('The agiza system now takes care of this automatically.',
                   DeprecationWarning, stacklevel=2)
     @functools.wraps(fxn)
-    def module_for_loader_wrapper(self, fullname, *args, **kwargs):
+    eleza module_for_loader_wrapper(self, fullname, *args, **kwargs):
         with _module_to_load(fullname) as module:
             module.__loader__ = self
             try:
@@ -206,22 +206,22 @@ def module_for_loader(fxn):
             except (ImportError, AttributeError):
                 pass
             else:
-                if is_package:
+                ikiwa is_package:
                     module.__package__ = fullname
                 else:
                     module.__package__ = fullname.rpartition('.')[0]
             # If __package__ was not set above, __import__() will do it later.
-            return fxn(self, module, *args, **kwargs)
+            rudisha fxn(self, module, *args, **kwargs)
 
-    return module_for_loader_wrapper
+    rudisha module_for_loader_wrapper
 
 
-class _LazyModule(types.ModuleType):
+kundi _LazyModule(types.ModuleType):
 
-    """A subclass of the module type which triggers loading upon attribute access."""
+    """A subkundi of the module type which triggers loading upon attribute access."""
 
-    def __getattribute__(self, attr):
-        """Trigger the load of the module and return the attribute."""
+    eleza __getattribute__(self, attr):
+        """Trigger the load of the module and rudisha the attribute."""
         # All module metadata must be garnered kutoka __spec__ in order to avoid
         # using mutated values.
         # Stop triggering this method.
@@ -238,54 +238,54 @@ class _LazyModule(types.ModuleType):
         for key, value in attrs_now.items():
             # Code that set the attribute may have kept a reference to the
             # assigned object, making identity more agizaant than equality.
-            if key not in attrs_then:
+            ikiwa key not in attrs_then:
                 attrs_updated[key] = value
-            elif id(attrs_now[key]) != id(attrs_then[key]):
+            elikiwa id(attrs_now[key]) != id(attrs_then[key]):
                 attrs_updated[key] = value
         self.__spec__.loader.exec_module(self)
         # If exec_module() was used directly there is no guarantee the module
         # object was put into sys.modules.
-        if original_name in sys.modules:
-            if id(self) != id(sys.modules[original_name]):
+        ikiwa original_name in sys.modules:
+            ikiwa id(self) != id(sys.modules[original_name]):
                 raise ValueError(f"module object for {original_name!r} "
                                   "substituted in sys.modules during a lazy "
                                   "load")
         # Update after loading since that's what would happen in an eager
         # loading situation.
         self.__dict__.update(attrs_updated)
-        return getattr(self, attr)
+        rudisha getattr(self, attr)
 
-    def __delattr__(self, attr):
+    eleza __delattr__(self, attr):
         """Trigger the load and then perform the deletion."""
-        # To trigger the load and raise an exception if the attribute
+        # To trigger the load and raise an exception ikiwa the attribute
         # doesn't exist.
         self.__getattribute__(attr)
         delattr(self, attr)
 
 
-class LazyLoader(abc.Loader):
+kundi LazyLoader(abc.Loader):
 
     """A loader that creates a module which defers loading until attribute access."""
 
     @staticmethod
-    def __check_eager_loader(loader):
-        if not hasattr(loader, 'exec_module'):
+    eleza __check_eager_loader(loader):
+        ikiwa not hasattr(loader, 'exec_module'):
             raise TypeError('loader must define exec_module()')
 
     @classmethod
-    def factory(cls, loader):
+    eleza factory(cls, loader):
         """Construct a callable which returns the eager loader made lazy."""
         cls.__check_eager_loader(loader)
-        return lambda *args, **kwargs: cls(loader(*args, **kwargs))
+        rudisha lambda *args, **kwargs: cls(loader(*args, **kwargs))
 
-    def __init__(self, loader):
+    eleza __init__(self, loader):
         self.__check_eager_loader(loader)
         self.loader = loader
 
-    def create_module(self, spec):
-        return self.loader.create_module(spec)
+    eleza create_module(self, spec):
+        rudisha self.loader.create_module(spec)
 
-    def exec_module(self, module):
+    eleza exec_module(self, module):
         """Make the module load lazily."""
         module.__spec__.loader = self.loader
         module.__loader__ = self.loader

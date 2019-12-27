@@ -13,29 +13,29 @@ __all__ = ['Popen']
 # Wrapper for an fd used while launching a process
 #
 
-class _DupFd(object):
-    def __init__(self, fd):
+kundi _DupFd(object):
+    eleza __init__(self, fd):
         self.fd = fd
-    def detach(self):
-        return self.fd
+    eleza detach(self):
+        rudisha self.fd
 
 #
 # Start child process using a fresh interpreter
 #
 
-class Popen(popen_fork.Popen):
+kundi Popen(popen_fork.Popen):
     method = 'spawn'
     DupFd = _DupFd
 
-    def __init__(self, process_obj):
+    eleza __init__(self, process_obj):
         self._fds = []
         super().__init__(process_obj)
 
-    def duplicate_for_child(self, fd):
+    eleza duplicate_for_child(self, fd):
         self._fds.append(fd)
-        return fd
+        rudisha fd
 
-    def _launch(self, process_obj):
+    eleza _launch(self, process_obj):
         kutoka . agiza resource_tracker
         tracker_fd = resource_tracker.getfd()
         self._fds.append(tracker_fd)
@@ -63,10 +63,10 @@ class Popen(popen_fork.Popen):
         finally:
             fds_to_close = []
             for fd in (parent_r, parent_w):
-                if fd is not None:
+                ikiwa fd is not None:
                     fds_to_close.append(fd)
             self.finalizer = util.Finalize(self, util.close_fds, fds_to_close)
 
             for fd in (child_r, child_w):
-                if fd is not None:
+                ikiwa fd is not None:
                     os.close(fd)

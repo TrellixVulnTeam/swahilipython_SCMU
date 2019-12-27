@@ -10,7 +10,7 @@
 
    ::
 
-       import asyncio
+       agiza asyncio
 
        async def main():
            print('Hello ...')

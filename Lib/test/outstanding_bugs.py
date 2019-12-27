@@ -14,5 +14,5 @@ kutoka test agiza support
 #
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

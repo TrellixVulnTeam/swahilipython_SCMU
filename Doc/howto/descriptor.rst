@@ -12,7 +12,7 @@ Abstract
 
 Defines descriptors, summarizes the protocol, and shows how descriptors are
 called.  Examines a custom descriptor and several built-in Python descriptors
-including functions, properties, static methods, and class methods.  Shows how
+including functions, properties, static methods, and kundi methods.  Shows how
 each works by giving a pure Python equivalent and a sample application.
 
 Learning about descriptors not only provides access to a larger toolset, it
@@ -30,7 +30,7 @@ protocol.  Those methods are :meth:`__get__`, :meth:`__set__`, and
 said to be a descriptor.
 
 The default behavior for attribute access is to get, set, or delete the
-attribute from an object's dictionary.  For instance, ``a.x`` has a lookup chain
+attribute kutoka an object's dictionary.  For instance, ``a.x`` has a lookup chain
 starting with ``a.__dict__['x']``, then ``type(a).__dict__['x']``, and
 continuing through the base classes of ``type(a)`` excluding metaclasses. If the
 looked-up value is an object defining one of the descriptor methods, then Python
@@ -39,7 +39,7 @@ Where this occurs in the precedence chain depends on which descriptor methods
 were defined.
 
 Descriptors are a powerful, general purpose protocol.  They are the mechanism
-behind properties, methods, static methods, class methods, and :func:`super()`.
+behind properties, methods, static methods, kundi methods, and :func:`super()`.
 They are used throughout Python itself to implement the new style classes
 introduced in version 2.2.  Descriptors simplify the underlying C-code and offer
 a flexible set of new tools for everyday Python programs.
@@ -118,7 +118,7 @@ The important points to remember are:
 
 The object returned by ``super()`` also has a custom :meth:`__getattribute__`
 method for invoking descriptors.  The attribute lookup ``super(B, obj).m`` searches
-``obj.__class__.__mro__`` for the base class ``A`` immediately following ``B``
+``obj.__class__.__mro__`` for the base kundi ``A`` immediately following ``B``
 and then returns ``A.__dict__['m'].__get__(obj, B)``.  If not a descriptor,
 ``m`` is returned unchanged.  If not in the dictionary, ``m`` reverts to a
 search using :meth:`object.__getattribute__`.
@@ -131,8 +131,8 @@ The implementation details are in :c:func:`super_getattro()` in
 
 The details above show that the mechanism for descriptors is embedded in the
 :meth:`__getattribute__()` methods for :class:`object`, :class:`type`, and
-:func:`super`.  Classes inherit this machinery when they derive from
-:class:`object` or if they have a meta-class providing similar functionality.
+:func:`super`.  Classes inherit this machinery when they derive kutoka
+:class:`object` or if they have a meta-kundi providing similar functionality.
 Likewise, classes can turn-off descriptor invocation by overriding
 :meth:`__getattribute__()`.
 
@@ -140,12 +140,12 @@ Likewise, classes can turn-off descriptor invocation by overriding
 Descriptor Example
 ------------------
 
-The following code creates a class whose objects are data descriptors which
+The following code creates a kundi whose objects are data descriptors which
 print a message for each get or set.  Overriding :meth:`__getattribute__` is
 alternate approach that could do this for every attribute.  However, this
 descriptor is useful for monitoring just a few chosen attributes::
 
-    class RevealAccess(object):
+    kundi RevealAccess(object):
         """A data descriptor that sets and returns values
            normally and prints a message logging their access.
         """
@@ -162,7 +162,7 @@ descriptor is useful for monitoring just a few chosen attributes::
             print('Updating', self.name)
             self.val = val
 
-    >>> class MyClass(object):
+    >>> kundi MyClass(object):
     ...     x = RevealAccess(10, 'var "x"')
     ...     y = 5
     ...
@@ -180,7 +180,7 @@ descriptor is useful for monitoring just a few chosen attributes::
 
 The protocol is simple and offers exciting possibilities.  Several use cases are
 so common that they have been packaged into individual function calls.
-Properties, bound methods, static methods, and class methods are all
+Properties, bound methods, static methods, and kundi methods are all
 based on the descriptor protocol.
 
 
@@ -194,7 +194,7 @@ triggers function calls upon access to an attribute.  Its signature is::
 
 The documentation shows a typical use to define a managed attribute ``x``::
 
-    class C(object):
+    kundi C(object):
         def getx(self): return self.__x
         def setx(self, value): self.__x = value
         def delx(self): del self.__x
@@ -203,7 +203,7 @@ The documentation shows a typical use to define a managed attribute ``x``::
 To see how :func:`property` is implemented in terms of the descriptor protocol,
 here is a pure Python equivalent::
 
-    class Property(object):
+    kundi Property(object):
         "Emulate PyProperty_Type() in Objects/descrobject.c"
 
         def __init__(self, fget=None, fset=None, fdel=None, doc=None):
@@ -244,13 +244,13 @@ The :func:`property` builtin helps whenever a user interface has granted
 attribute access and then subsequent changes require the intervention of a
 method.
 
-For instance, a spreadsheet class may grant access to a cell value through
+For instance, a spreadsheet kundi may grant access to a cell value through
 ``Cell('b10').value``. Subsequent improvements to the program require the cell
 to be recalculated on every access; however, the programmer does not want to
 affect existing client code accessing the attribute directly.  The solution is
 to wrap access to the value attribute in a property data descriptor::
 
-    class Cell(object):
+    kundi Cell(object):
         . . .
         def getvalue(self):
             "Recalculate the cell before returning value"
@@ -265,19 +265,19 @@ Functions and Methods
 Python's object oriented features are built upon a function based environment.
 Using non-data descriptors, the two are merged seamlessly.
 
-Class dictionaries store methods as functions.  In a class definition, methods
+Class dictionaries store methods as functions.  In a kundi definition, methods
 are written using :keyword:`def` or :keyword:`lambda`, the usual tools for
-creating functions.  Methods only differ from regular functions in that the
+creating functions.  Methods only differ kutoka regular functions in that the
 first argument is reserved for the object instance.  By Python convention, the
 instance reference is called *self* but may be called *this* or any other
 variable name.
 
 To support method calls, functions include the :meth:`__get__` method for
 binding methods during attribute access.  This means that all functions are
-non-data descriptors which return bound methods when they are invoked from an
+non-data descriptors which return bound methods when they are invoked kutoka an
 object.  In pure Python, it works like this::
 
-    class Function(object):
+    kundi Function(object):
         . . .
         def __get__(self, obj, objtype=None):
             "Simulate func_descr_get() in Objects/funcobject.c"
@@ -287,18 +287,18 @@ object.  In pure Python, it works like this::
 
 Running the interpreter shows how the function descriptor works in practice::
 
-    >>> class D(object):
+    >>> kundi D(object):
     ...     def f(self, x):
     ...         return x
     ...
     >>> d = D()
 
-    # Access through the class dictionary does not invoke __get__.
+    # Access through the kundi dictionary does not invoke __get__.
     # It just returns the underlying function object.
     >>> D.__dict__['f']
     <function D.f at 0x00C45070>
 
-    # Dotted access from a class calls __get__() which just returns
+    # Dotted access kutoka a kundi calls __get__() which just returns
     # the underlying function unchanged.
     >>> D.f
     <function D.f at 0x00C45070>
@@ -307,19 +307,19 @@ Running the interpreter shows how the function descriptor works in practice::
     >>> D.f.__qualname__
     'D.f'
 
-    # Dotted access from an instance calls __get__() which returns the
+    # Dotted access kutoka an instance calls __get__() which returns the
     # function wrapped in a bound method object
     >>> d.f
     <bound method D.f of <__main__.D object at 0x00B18C90>>
 
     # Internally, the bound method stores the underlying function,
-    # the bound instance, and the class of the bound instance.
+    # the bound instance, and the kundi of the bound instance.
     >>> d.f.__func__
     <function D.f at 0x1012e5ae8>
     >>> d.f.__self__
     <__main__.D object at 0x1012e1f98>
     >>> d.f.__class__
-    <class 'method'>
+    <kundi 'method'>
 
 
 Static Methods and Class Methods
@@ -336,7 +336,7 @@ becomes ``f(*args)``.
 This chart summarizes the binding and its two most useful variants:
 
       +-----------------+----------------------+------------------+
-      | Transformation  | Called from an       | Called from a    |
+      | Transformation  | Called kutoka an       | Called kutoka a    |
       |                 | Object               | Class            |
       +=================+======================+==================+
       | function        | f(obj, \*args)       | f(\*args)        |
@@ -349,25 +349,25 @@ This chart summarizes the binding and its two most useful variants:
 Static methods return the underlying function without changes.  Calling either
 ``c.f`` or ``C.f`` is the equivalent of a direct lookup into
 ``object.__getattribute__(c, "f")`` or ``object.__getattribute__(C, "f")``. As a
-result, the function becomes identically accessible from either an object or a
+result, the function becomes identically accessible kutoka either an object or a
 class.
 
 Good candidates for static methods are methods that do not reference the
 ``self`` variable.
 
-For instance, a statistics package may include a container class for
-experimental data.  The class provides normal methods for computing the average,
+For instance, a statistics package may include a container kundi for
+experimental data.  The kundi provides normal methods for computing the average,
 mean, median, and other descriptive statistics that depend on the data. However,
 there may be useful functions which are conceptually related but do not depend
 on the data.  For instance, ``erf(x)`` is handy conversion routine that comes up
 in statistical work but does not directly depend on a particular dataset.
-It can be called either from an object or the class:  ``s.erf(1.5) --> .9332`` or
+It can be called either kutoka an object or the class:  ``s.erf(1.5) --> .9332`` or
 ``Sample.erf(1.5) --> .9332``.
 
 Since staticmethods return the underlying function with no changes, the example
 calls are unexciting::
 
-    >>> class E(object):
+    >>> kundi E(object):
     ...     def f(x):
     ...         print(x)
     ...     f = staticmethod(f)
@@ -380,7 +380,7 @@ calls are unexciting::
 Using the non-data descriptor protocol, a pure Python version of
 :func:`staticmethod` would look like this::
 
-    class StaticMethod(object):
+    kundi StaticMethod(object):
         "Emulate PyStaticMethod_Type() in Objects/funcobject.c"
 
         def __init__(self, f):
@@ -389,11 +389,11 @@ Using the non-data descriptor protocol, a pure Python version of
         def __get__(self, obj, objtype=None):
             return self.f
 
-Unlike static methods, class methods prepend the class reference to the
+Unlike static methods, kundi methods prepend the kundi reference to the
 argument list before calling the function.  This format is the same
 for whether the caller is an object or a class::
 
-    >>> class E(object):
+    >>> kundi E(object):
     ...     def f(klass, x):
     ...         return klass.__name__, x
     ...     f = classmethod(f)
@@ -406,29 +406,29 @@ for whether the caller is an object or a class::
 
 This behavior is useful whenever the function only needs to have a class
 reference and does not care about any underlying data.  One use for classmethods
-is to create alternate class constructors.  In Python 2.3, the classmethod
-:func:`dict.fromkeys` creates a new dictionary from a list of keys.  The pure
+is to create alternate kundi constructors.  In Python 2.3, the classmethod
+:func:`dict.kutokakeys` creates a new dictionary kutoka a list of keys.  The pure
 Python equivalent is::
 
-    class Dict(object):
+    kundi Dict(object):
         . . .
-        def fromkeys(klass, iterable, value=None):
-            "Emulate dict_fromkeys() in Objects/dictobject.c"
+        def kutokakeys(klass, iterable, value=None):
+            "Emulate dict_kutokakeys() in Objects/dictobject.c"
             d = klass()
             for key in iterable:
                 d[key] = value
             return d
-        fromkeys = classmethod(fromkeys)
+        kutokakeys = classmethod(kutokakeys)
 
 Now a new dictionary of unique keys can be constructed like this::
 
-    >>> Dict.fromkeys('abracadabra')
+    >>> Dict.kutokakeys('abracadabra')
     {'a': None, 'r': None, 'b': None, 'c': None, 'd': None}
 
 Using the non-data descriptor protocol, a pure Python version of
 :func:`classmethod` would look like this::
 
-    class ClassMethod(object):
+    kundi ClassMethod(object):
         "Emulate PyClassMethod_Type() in Objects/funcobject.c"
 
         def __init__(self, f):

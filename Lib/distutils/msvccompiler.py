@@ -331,7 +331,7 @@ class MSVCCompiler(CCompiler) :
             if ext in self._rc_extensions:
                 obj_names.append (os.path.join (output_dir,
                                                 base + self.res_extension))
-            elif ext in self._mc_extensions:
+            lasivyo ext in self._mc_extensions:
                 obj_names.append (os.path.join (output_dir,
                                                 base + self.res_extension))
             else:
@@ -370,9 +370,9 @@ class MSVCCompiler(CCompiler) :
 
             if ext in self._c_extensions:
                 input_opt = "/Tc" + src
-            elif ext in self._cpp_extensions:
+            lasivyo ext in self._cpp_extensions:
                 input_opt = "/Tp" + src
-            elif ext in self._rc_extensions:
+            lasivyo ext in self._rc_extensions:
                 # compile .RC to .RES file
                 input_opt = src
                 output_opt = "/fo" + obj
@@ -382,7 +382,7 @@ class MSVCCompiler(CCompiler) :
                 except DistutilsExecError as msg:
                     raise CompileError(msg)
                 continue
-            elif ext in self._mc_extensions:
+            lasivyo ext in self._mc_extensions:
                 # Compile .MC to .RC file to .RES file.
                 #   * '-h dir' specifies the directory for the
                 #     generated include file

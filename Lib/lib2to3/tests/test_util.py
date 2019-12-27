@@ -9,84 +9,84 @@ kutoka lib2to3 agiza fixer_util
 kutoka lib2to3.fixer_util agiza Attr, Name, Call, Comma
 kutoka lib2to3.pgen2 agiza token
 
-def parse(code, strip_levels=0):
+eleza parse(code, strip_levels=0):
     # The topmost node is file_input, which we don't care about.
     # The next-topmost node is a *_stmt node, which we also don't care about
     tree = support.parse_string(code)
     for i in range(strip_levels):
         tree = tree.children[0]
     tree.parent = None
-    return tree
+    rudisha tree
 
-class MacroTestCase(support.TestCase):
-    def assertStr(self, node, string):
-        if isinstance(node, (tuple, list)):
+kundi MacroTestCase(support.TestCase):
+    eleza assertStr(self, node, string):
+        ikiwa isinstance(node, (tuple, list)):
             node = Node(fixer_util.syms.simple_stmt, node)
         self.assertEqual(str(node), string)
 
 
-class Test_is_tuple(support.TestCase):
-    def is_tuple(self, string):
-        return fixer_util.is_tuple(parse(string, strip_levels=2))
+kundi Test_is_tuple(support.TestCase):
+    eleza is_tuple(self, string):
+        rudisha fixer_util.is_tuple(parse(string, strip_levels=2))
 
-    def test_valid(self):
+    eleza test_valid(self):
         self.assertTrue(self.is_tuple("(a, b)"))
         self.assertTrue(self.is_tuple("(a, (b, c))"))
         self.assertTrue(self.is_tuple("((a, (b, c)),)"))
         self.assertTrue(self.is_tuple("(a,)"))
         self.assertTrue(self.is_tuple("()"))
 
-    def test_invalid(self):
+    eleza test_invalid(self):
         self.assertFalse(self.is_tuple("(a)"))
         self.assertFalse(self.is_tuple("('foo') % (b, c)"))
 
 
-class Test_is_list(support.TestCase):
-    def is_list(self, string):
-        return fixer_util.is_list(parse(string, strip_levels=2))
+kundi Test_is_list(support.TestCase):
+    eleza is_list(self, string):
+        rudisha fixer_util.is_list(parse(string, strip_levels=2))
 
-    def test_valid(self):
+    eleza test_valid(self):
         self.assertTrue(self.is_list("[]"))
         self.assertTrue(self.is_list("[a]"))
         self.assertTrue(self.is_list("[a, b]"))
         self.assertTrue(self.is_list("[a, [b, c]]"))
         self.assertTrue(self.is_list("[[a, [b, c]],]"))
 
-    def test_invalid(self):
+    eleza test_invalid(self):
         self.assertFalse(self.is_list("[]+[]"))
 
 
-class Test_Attr(MacroTestCase):
-    def test(self):
+kundi Test_Attr(MacroTestCase):
+    eleza test(self):
         call = parse("foo()", strip_levels=2)
 
         self.assertStr(Attr(Name("a"), Name("b")), "a.b")
         self.assertStr(Attr(call, Name("b")), "foo().b")
 
-    def test_returns(self):
+    eleza test_returns(self):
         attr = Attr(Name("a"), Name("b"))
         self.assertEqual(type(attr), list)
 
 
-class Test_Name(MacroTestCase):
-    def test(self):
+kundi Test_Name(MacroTestCase):
+    eleza test(self):
         self.assertStr(Name("a"), "a")
         self.assertStr(Name("foo.foo().bar"), "foo.foo().bar")
         self.assertStr(Name("a", prefix="b"), "ba")
 
 
-class Test_Call(MacroTestCase):
-    def _Call(self, name, args=None, prefix=None):
+kundi Test_Call(MacroTestCase):
+    eleza _Call(self, name, args=None, prefix=None):
         """Help the next test"""
         children = []
-        if isinstance(args, list):
+        ikiwa isinstance(args, list):
             for arg in args:
                 children.append(arg)
                 children.append(Comma())
             children.pop()
-        return Call(Name(name), children, prefix)
+        rudisha Call(Name(name), children, prefix)
 
-    def test(self):
+    eleza test(self):
         kids = [None,
                 [Leaf(token.NUMBER, 1), Leaf(token.NUMBER, 2),
                  Leaf(token.NUMBER, 3)],
@@ -100,23 +100,23 @@ class Test_Call(MacroTestCase):
         self.assertStr(self._Call("d", kids[3], prefix=" "), " d(b, j)")
 
 
-class Test_does_tree_agiza(support.TestCase):
-    def _find_bind_rec(self, name, node):
+kundi Test_does_tree_agiza(support.TestCase):
+    eleza _find_bind_rec(self, name, node):
         # Search a tree for a binding -- used to find the starting
         # point for these tests.
         c = fixer_util.find_binding(name, node)
-        if c: return c
+        ikiwa c: rudisha c
         for child in node.children:
             c = self._find_bind_rec(name, child)
-            if c: return c
+            ikiwa c: rudisha c
 
-    def does_tree_agiza(self, package, name, string):
+    eleza does_tree_agiza(self, package, name, string):
         node = parse(string)
         # Find the binding of start -- that's what we'll go kutoka
         node = self._find_bind_rec('start', node)
-        return fixer_util.does_tree_agiza(package, name, node)
+        rudisha fixer_util.does_tree_agiza(package, name, node)
 
-    def try_with(self, string):
+    eleza try_with(self, string):
         failing_tests = (("a", "a", "kutoka a agiza b"),
                          ("a.d", "a", "kutoka a.d agiza b"),
                          ("d.a", "a", "kutoka d.a agiza b"),
@@ -141,14 +141,14 @@ class Test_does_tree_agiza(support.TestCase):
             n = self.does_tree_agiza(package, name, string + "\n" + import_)
             self.assertTrue(n)
 
-    def test_in_function(self):
-        self.try_with("def foo():\n\tbar.baz()\n\tstart=3")
+    eleza test_in_function(self):
+        self.try_with("eleza foo():\n\tbar.baz()\n\tstart=3")
 
-class Test_find_binding(support.TestCase):
-    def find_binding(self, name, string, package=None):
-        return fixer_util.find_binding(name, parse(string), package)
+kundi Test_find_binding(support.TestCase):
+    eleza find_binding(self, name, string, package=None):
+        rudisha fixer_util.find_binding(name, parse(string), package)
 
-    def test_simple_assignment(self):
+    eleza test_simple_assignment(self):
         self.assertTrue(self.find_binding("a", "a = b"))
         self.assertTrue(self.find_binding("a", "a = [b, c, d]"))
         self.assertTrue(self.find_binding("a", "a = foo()"))
@@ -156,7 +156,7 @@ class Test_find_binding(support.TestCase):
         self.assertFalse(self.find_binding("a", "foo = a"))
         self.assertFalse(self.find_binding("a", "foo = (a, b, c)"))
 
-    def test_tuple_assignment(self):
+    eleza test_tuple_assignment(self):
         self.assertTrue(self.find_binding("a", "(a,) = b"))
         self.assertTrue(self.find_binding("a", "(a, b, c) = [b, c, d]"))
         self.assertTrue(self.find_binding("a", "(c, (d, a), b) = foo()"))
@@ -164,7 +164,7 @@ class Test_find_binding(support.TestCase):
         self.assertFalse(self.find_binding("a", "(foo, b) = (b, a)"))
         self.assertFalse(self.find_binding("a", "(foo, (b, c)) = (a, b, c)"))
 
-    def test_list_assignment(self):
+    eleza test_list_assignment(self):
         self.assertTrue(self.find_binding("a", "[a] = b"))
         self.assertTrue(self.find_binding("a", "[a, b, c] = [b, c, d]"))
         self.assertTrue(self.find_binding("a", "[c, [d, a], b] = foo()"))
@@ -172,19 +172,19 @@ class Test_find_binding(support.TestCase):
         self.assertFalse(self.find_binding("a", "[foo, b] = (b, a)"))
         self.assertFalse(self.find_binding("a", "[foo, [b, c]] = (a, b, c)"))
 
-    def test_invalid_assignments(self):
+    eleza test_invalid_assignments(self):
         self.assertFalse(self.find_binding("a", "foo.a = 5"))
         self.assertFalse(self.find_binding("a", "foo[a] = 5"))
         self.assertFalse(self.find_binding("a", "foo(a) = 5"))
         self.assertFalse(self.find_binding("a", "foo(a, b) = 5"))
 
-    def test_simple_agiza(self):
+    eleza test_simple_agiza(self):
         self.assertTrue(self.find_binding("a", "agiza a"))
         self.assertTrue(self.find_binding("a", "agiza b, c, a, d"))
         self.assertFalse(self.find_binding("a", "agiza b"))
         self.assertFalse(self.find_binding("a", "agiza b, c, d"))
 
-    def test_from_agiza(self):
+    eleza test_kutoka_agiza(self):
         self.assertTrue(self.find_binding("a", "kutoka x agiza a"))
         self.assertTrue(self.find_binding("a", "kutoka a agiza a"))
         self.assertTrue(self.find_binding("a", "kutoka x agiza b, c, a, d"))
@@ -194,13 +194,13 @@ class Test_find_binding(support.TestCase):
         self.assertFalse(self.find_binding("a", "kutoka a.d agiza b"))
         self.assertFalse(self.find_binding("a", "kutoka d.a agiza b"))
 
-    def test_import_as(self):
+    eleza test_import_as(self):
         self.assertTrue(self.find_binding("a", "agiza b as a"))
         self.assertTrue(self.find_binding("a", "agiza b as a, c, a as f, d"))
         self.assertFalse(self.find_binding("a", "agiza a as f"))
         self.assertFalse(self.find_binding("a", "agiza b, c as f, d as e"))
 
-    def test_from_import_as(self):
+    eleza test_kutoka_import_as(self):
         self.assertTrue(self.find_binding("a", "kutoka x agiza b as a"))
         self.assertTrue(self.find_binding("a", "kutoka x agiza g as a, d as b"))
         self.assertTrue(self.find_binding("a", "kutoka x.b agiza t as a"))
@@ -209,13 +209,13 @@ class Test_find_binding(support.TestCase):
         self.assertFalse(self.find_binding("a", "kutoka a.d agiza b as t"))
         self.assertFalse(self.find_binding("a", "kutoka d.a agiza b as t"))
 
-    def test_simple_import_with_package(self):
+    eleza test_simple_import_with_package(self):
         self.assertTrue(self.find_binding("b", "agiza b"))
         self.assertTrue(self.find_binding("b", "agiza b, c, d"))
         self.assertFalse(self.find_binding("b", "agiza b", "b"))
         self.assertFalse(self.find_binding("b", "agiza b, c, d", "c"))
 
-    def test_from_import_with_package(self):
+    eleza test_kutoka_import_with_package(self):
         self.assertTrue(self.find_binding("a", "kutoka x agiza a", "x"))
         self.assertTrue(self.find_binding("a", "kutoka a agiza a", "a"))
         self.assertTrue(self.find_binding("a", "kutoka x agiza *", "x"))
@@ -228,15 +228,15 @@ class Test_find_binding(support.TestCase):
         self.assertFalse(self.find_binding("a", "kutoka d.a agiza b", "a.d"))
         self.assertFalse(self.find_binding("a", "kutoka x.y agiza *", "a.b"))
 
-    def test_import_as_with_package(self):
+    eleza test_import_as_with_package(self):
         self.assertFalse(self.find_binding("a", "agiza b.c as a", "b.c"))
         self.assertFalse(self.find_binding("a", "agiza a as f", "f"))
         self.assertFalse(self.find_binding("a", "agiza a as f", "a"))
 
-    def test_from_import_as_with_package(self):
+    eleza test_kutoka_import_as_with_package(self):
         # Because it would take a lot of special-case code in the fixers
         # to deal with kutoka foo agiza bar as baz, we'll simply always
-        # fail if there is an "kutoka ... agiza ... as ..."
+        # fail ikiwa there is an "kutoka ... agiza ... as ..."
         self.assertFalse(self.find_binding("a", "kutoka x agiza b as a", "x"))
         self.assertFalse(self.find_binding("a", "kutoka x agiza g as a, d as b", "x"))
         self.assertFalse(self.find_binding("a", "kutoka x.b agiza t as a", "x.b"))
@@ -245,40 +245,40 @@ class Test_find_binding(support.TestCase):
         self.assertFalse(self.find_binding("a", "kutoka a agiza b as t", "b"))
         self.assertFalse(self.find_binding("a", "kutoka a agiza b as t", "t"))
 
-    def test_function_def(self):
-        self.assertTrue(self.find_binding("a", "def a(): pass"))
-        self.assertTrue(self.find_binding("a", "def a(b, c, d): pass"))
-        self.assertTrue(self.find_binding("a", "def a(): b = 7"))
-        self.assertFalse(self.find_binding("a", "def d(b, (c, a), e): pass"))
-        self.assertFalse(self.find_binding("a", "def d(a=7): pass"))
-        self.assertFalse(self.find_binding("a", "def d(a): pass"))
-        self.assertFalse(self.find_binding("a", "def d(): a = 7"))
+    eleza test_function_def(self):
+        self.assertTrue(self.find_binding("a", "eleza a(): pass"))
+        self.assertTrue(self.find_binding("a", "eleza a(b, c, d): pass"))
+        self.assertTrue(self.find_binding("a", "eleza a(): b = 7"))
+        self.assertFalse(self.find_binding("a", "eleza d(b, (c, a), e): pass"))
+        self.assertFalse(self.find_binding("a", "eleza d(a=7): pass"))
+        self.assertFalse(self.find_binding("a", "eleza d(a): pass"))
+        self.assertFalse(self.find_binding("a", "eleza d(): a = 7"))
 
         s = """
-            def d():
-                def a():
+            eleza d():
+                eleza a():
                     pass"""
         self.assertFalse(self.find_binding("a", s))
 
-    def test_class_def(self):
-        self.assertTrue(self.find_binding("a", "class a: pass"))
-        self.assertTrue(self.find_binding("a", "class a(): pass"))
-        self.assertTrue(self.find_binding("a", "class a(b): pass"))
-        self.assertTrue(self.find_binding("a", "class a(b, c=8): pass"))
-        self.assertFalse(self.find_binding("a", "class d: pass"))
-        self.assertFalse(self.find_binding("a", "class d(a): pass"))
-        self.assertFalse(self.find_binding("a", "class d(b, a=7): pass"))
-        self.assertFalse(self.find_binding("a", "class d(b, *a): pass"))
-        self.assertFalse(self.find_binding("a", "class d(b, **a): pass"))
-        self.assertFalse(self.find_binding("a", "class d: a = 7"))
+    eleza test_class_def(self):
+        self.assertTrue(self.find_binding("a", "kundi a: pass"))
+        self.assertTrue(self.find_binding("a", "kundi a(): pass"))
+        self.assertTrue(self.find_binding("a", "kundi a(b): pass"))
+        self.assertTrue(self.find_binding("a", "kundi a(b, c=8): pass"))
+        self.assertFalse(self.find_binding("a", "kundi d: pass"))
+        self.assertFalse(self.find_binding("a", "kundi d(a): pass"))
+        self.assertFalse(self.find_binding("a", "kundi d(b, a=7): pass"))
+        self.assertFalse(self.find_binding("a", "kundi d(b, *a): pass"))
+        self.assertFalse(self.find_binding("a", "kundi d(b, **a): pass"))
+        self.assertFalse(self.find_binding("a", "kundi d: a = 7"))
 
         s = """
-            class d():
-                class a():
+            kundi d():
+                kundi a():
                     pass"""
         self.assertFalse(self.find_binding("a", s))
 
-    def test_for(self):
+    eleza test_for(self):
         self.assertTrue(self.find_binding("a", "for a in r: pass"))
         self.assertTrue(self.find_binding("a", "for a, b in r: pass"))
         self.assertTrue(self.find_binding("a", "for (a, b) in r: pass"))
@@ -287,7 +287,7 @@ class Test_find_binding(support.TestCase):
         self.assertTrue(self.find_binding("a", "for c in r: a = c"))
         self.assertFalse(self.find_binding("a", "for c in a: pass"))
 
-    def test_for_nested(self):
+    eleza test_for_nested(self):
         s = """
             for b in r:
                 for a in b:
@@ -336,28 +336,28 @@ class Test_find_binding(support.TestCase):
                     d = 7"""
         self.assertFalse(self.find_binding("a", s))
 
-    def test_if(self):
-        self.assertTrue(self.find_binding("a", "if b in r: a = c"))
-        self.assertFalse(self.find_binding("a", "if a in r: d = e"))
+    eleza test_if(self):
+        self.assertTrue(self.find_binding("a", "ikiwa b in r: a = c"))
+        self.assertFalse(self.find_binding("a", "ikiwa a in r: d = e"))
 
-    def test_if_nested(self):
+    eleza test_if_nested(self):
         s = """
-            if b in r:
-                if c in d:
+            ikiwa b in r:
+                ikiwa c in d:
                     a = c"""
         self.assertTrue(self.find_binding("a", s))
 
         s = """
-            if b in r:
-                if c in d:
+            ikiwa b in r:
+                ikiwa c in d:
                     c = a"""
         self.assertFalse(self.find_binding("a", s))
 
-    def test_while(self):
+    eleza test_while(self):
         self.assertTrue(self.find_binding("a", "while b in r: a = c"))
         self.assertFalse(self.find_binding("a", "while a in r: d = e"))
 
-    def test_while_nested(self):
+    eleza test_while_nested(self):
         s = """
             while b in r:
                 while c in d:
@@ -370,7 +370,7 @@ class Test_find_binding(support.TestCase):
                     c = a"""
         self.assertFalse(self.find_binding("a", s))
 
-    def test_try_except(self):
+    eleza test_try_except(self):
         s = """
             try:
                 a = 6
@@ -401,7 +401,7 @@ class Test_find_binding(support.TestCase):
                 b = 6"""
         self.assertFalse(self.find_binding("a", s))
 
-    def test_try_except_nested(self):
+    eleza test_try_except_nested(self):
         s = """
             try:
                 try:
@@ -478,7 +478,7 @@ class Test_find_binding(support.TestCase):
                     o = y"""
         self.assertFalse(self.find_binding("a", s))
 
-    def test_try_except_finally(self):
+    eleza test_try_except_finally(self):
         s = """
             try:
                 c = 6
@@ -511,7 +511,7 @@ class Test_find_binding(support.TestCase):
                 b = 6"""
         self.assertFalse(self.find_binding("a", s))
 
-    def test_try_except_finally_nested(self):
+    eleza test_try_except_finally_nested(self):
         s = """
             try:
                 c = 6
@@ -546,46 +546,46 @@ class Test_find_binding(support.TestCase):
                     b = 7"""
         self.assertFalse(self.find_binding("a", s))
 
-class Test_touch_agiza(support.TestCase):
+kundi Test_touch_agiza(support.TestCase):
 
-    def test_after_docstring(self):
+    eleza test_after_docstring(self):
         node = parse('"""foo"""\nbar()')
         fixer_util.touch_agiza(None, "foo", node)
         self.assertEqual(str(node), '"""foo"""\nagiza foo\nbar()\n\n')
 
-    def test_after_agizas(self):
+    eleza test_after_agizas(self):
         node = parse('"""foo"""\nagiza bar\nbar()')
         fixer_util.touch_agiza(None, "foo", node)
         self.assertEqual(str(node), '"""foo"""\nagiza bar\nagiza foo\nbar()\n\n')
 
-    def test_beginning(self):
+    eleza test_beginning(self):
         node = parse('bar()')
         fixer_util.touch_agiza(None, "foo", node)
         self.assertEqual(str(node), 'agiza foo\nbar()\n\n')
 
-    def test_from_agiza(self):
+    eleza test_kutoka_agiza(self):
         node = parse('bar()')
         fixer_util.touch_agiza("html", "escape", node)
         self.assertEqual(str(node), 'kutoka html agiza escape\nbar()\n\n')
 
-    def test_name_agiza(self):
+    eleza test_name_agiza(self):
         node = parse('bar()')
         fixer_util.touch_agiza(None, "cgi", node)
         self.assertEqual(str(node), 'agiza cgi\nbar()\n\n')
 
-class Test_find_indentation(support.TestCase):
+kundi Test_find_indentation(support.TestCase):
 
-    def test_nothing(self):
+    eleza test_nothing(self):
         fi = fixer_util.find_indentation
         node = parse("node()")
         self.assertEqual(fi(node), "")
         node = parse("")
         self.assertEqual(fi(node), "")
 
-    def test_simple(self):
+    eleza test_simple(self):
         fi = fixer_util.find_indentation
-        node = parse("def f():\n    x()")
+        node = parse("eleza f():\n    x()")
         self.assertEqual(fi(node), "")
         self.assertEqual(fi(node.children[0].children[4].children[2]), "    ")
-        node = parse("def f():\n    x()\n    y()")
+        node = parse("eleza f():\n    x()\n    y()")
         self.assertEqual(fi(node.children[0].children[4].children[4]), "    ")

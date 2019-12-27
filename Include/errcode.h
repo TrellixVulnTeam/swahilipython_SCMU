@@ -8,8 +8,8 @@ extern "C" {
 /* Error codes passed around between file input, tokenizer, parser and
    interpreter.  This is necessary so we can turn them into Python
    exceptions at a higher level.  Note that some errors have a
-   slightly different meaning when passed from the tokenizer to the
-   parser than when passed from the parser to the interpreter; e.g.
+   slightly different meaning when passed kutoka the tokenizer to the
+   parser than when passed kutoka the parser to the interpreter; e.g.
    the parser only returns E_EOF when it hits EOF immediately, and it
    never returns E_OK. */
 

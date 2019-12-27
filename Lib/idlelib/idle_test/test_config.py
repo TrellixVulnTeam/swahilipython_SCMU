@@ -26,16 +26,16 @@ userhigh = testcfg['highlight'] = config.IdleUserConfParser('')
 userkeys = testcfg['keys'] = config.IdleUserConfParser('')
 userextn = testcfg['extensions'] = config.IdleUserConfParser('')
 
-def setUpModule():
+eleza setUpModule():
     idleConf.userCfg = testcfg
     idlelib.testing = True
 
-def tearDownModule():
+eleza tearDownModule():
     idleConf.userCfg = usercfg
     idlelib.testing = False
 
 
-class IdleConfParserTest(unittest.TestCase):
+kundi IdleConfParserTest(unittest.TestCase):
     """Test that IdleConfParser works"""
 
     config = """
@@ -50,7 +50,7 @@ class IdleConfParserTest(unittest.TestCase):
         three = false
     """
 
-    def test_get(self):
+    eleza test_get(self):
         parser = config.IdleConfParser('')
         parser.read_string(self.config)
         eq = self.assertEqual
@@ -67,11 +67,11 @@ class IdleConfParserTest(unittest.TestCase):
         eq(parser.Get('two', 'two'), 'true')
         eq(parser.Get('two', 'three'), 'false')
 
-        # If option not exist, should return None, or default.
+        # If option not exist, should rudisha None, or default.
         self.assertIsNone(parser.Get('not', 'exist'))
         eq(parser.Get('not', 'exist', default='DEFAULT'), 'DEFAULT')
 
-    def test_get_option_list(self):
+    eleza test_get_option_list(self):
         parser = config.IdleConfParser('')
         parser.read_string(self.config)
         get_list = parser.GetOptionList
@@ -79,12 +79,12 @@ class IdleConfParserTest(unittest.TestCase):
         self.assertCountEqual(get_list('two'), ['one', 'two', 'three'])
         self.assertEqual(get_list('not exist'), [])
 
-    def test_load_nothing(self):
+    eleza test_load_nothing(self):
         parser = config.IdleConfParser('')
         parser.Load()
         self.assertEqual(parser.sections(), [])
 
-    def test_load_file(self):
+    eleza test_load_file(self):
         # Borrow test/cfgparser.1 kutoka test_configparser.
         config_path = findfile('cfgparser.1')
         parser = config.IdleConfParser(config_path)
@@ -94,29 +94,29 @@ class IdleConfParserTest(unittest.TestCase):
         self.assertEqual(parser.GetOptionList('Foo Bar'), ['foo'])
 
 
-class IdleUserConfParserTest(unittest.TestCase):
+kundi IdleUserConfParserTest(unittest.TestCase):
     """Test that IdleUserConfParser works"""
 
-    def new_parser(self, path=''):
-        return config.IdleUserConfParser(path)
+    eleza new_parser(self, path=''):
+        rudisha config.IdleUserConfParser(path)
 
-    def test_set_option(self):
+    eleza test_set_option(self):
         parser = self.new_parser()
         parser.add_section('Foo')
-        # Setting new option in existing section should return True.
+        # Setting new option in existing section should rudisha True.
         self.assertTrue(parser.SetOption('Foo', 'bar', 'true'))
-        # Setting existing option with same value should return False.
+        # Setting existing option with same value should rudisha False.
         self.assertFalse(parser.SetOption('Foo', 'bar', 'true'))
-        # Setting exiting option with new value should return True.
+        # Setting exiting option with new value should rudisha True.
         self.assertTrue(parser.SetOption('Foo', 'bar', 'false'))
         self.assertEqual(parser.Get('Foo', 'bar'), 'false')
 
-        # Setting option in new section should create section and return True.
+        # Setting option in new section should create section and rudisha True.
         self.assertTrue(parser.SetOption('Bar', 'bar', 'true'))
         self.assertCountEqual(parser.sections(), ['Bar', 'Foo'])
         self.assertEqual(parser.Get('Bar', 'bar'), 'true')
 
-    def test_remove_option(self):
+    eleza test_remove_option(self):
         parser = self.new_parser()
         parser.AddSection('Foo')
         parser.SetOption('Foo', 'bar', 'true')
@@ -125,7 +125,7 @@ class IdleUserConfParserTest(unittest.TestCase):
         self.assertFalse(parser.RemoveOption('Foo', 'bar'))
         self.assertFalse(parser.RemoveOption('Not', 'Exist'))
 
-    def test_add_section(self):
+    eleza test_add_section(self):
         parser = self.new_parser()
         self.assertEqual(parser.sections(), [])
 
@@ -136,7 +136,7 @@ class IdleUserConfParserTest(unittest.TestCase):
         parser.AddSection('Bar')
         self.assertCountEqual(parser.sections(), ['Bar', 'Foo'])
 
-    def test_remove_empty_sections(self):
+    eleza test_remove_empty_sections(self):
         parser = self.new_parser()
 
         parser.AddSection('Foo')
@@ -146,7 +146,7 @@ class IdleUserConfParserTest(unittest.TestCase):
         parser.RemoveEmptySections()
         self.assertEqual(parser.sections(), ['Idle'])
 
-    def test_is_empty(self):
+    eleza test_is_empty(self):
         parser = self.new_parser()
 
         parser.AddSection('Foo')
@@ -159,7 +159,7 @@ class IdleUserConfParserTest(unittest.TestCase):
         self.assertFalse(parser.IsEmpty())
         self.assertCountEqual(parser.sections(), ['Foo'])
 
-    def test_save(self):
+    eleza test_save(self):
         with tempfile.TemporaryDirectory() as tdir:
             path = os.path.join(tdir, 'test.cfg')
             parser = self.new_parser(path)
@@ -177,15 +177,15 @@ class IdleUserConfParserTest(unittest.TestCase):
             self.assertFalse(os.path.exists(path))
 
 
-class IdleConfTest(unittest.TestCase):
+kundi IdleConfTest(unittest.TestCase):
     """Test for idleConf"""
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.config_string = {}
 
         conf = config.IdleConf(_utest=True)
-        if __name__ != '__main__':
+        ikiwa __name__ != '__main__':
             idle_dir = os.path.dirname(__file__)
         else:
             idle_dir = os.path.abspath(sys.path[0])
@@ -198,13 +198,13 @@ class IdleConfTest(unittest.TestCase):
         config._warn = Func()
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         config._warn = cls.orig_warn
 
-    def new_config(self, _utest=False):
-        return config.IdleConf(_utest=_utest)
+    eleza new_config(self, _utest=False):
+        rudisha config.IdleConf(_utest=_utest)
 
-    def mock_config(self):
+    eleza mock_config(self):
         """Return a mocked idleConf
 
         Both default and user config used the same config-*.def
@@ -216,10 +216,10 @@ class IdleConfTest(unittest.TestCase):
             conf.userCfg[ctype] = config.IdleUserConfParser('')
             conf.userCfg[ctype].read_string(self.config_string[ctype])
 
-        return conf
+        rudisha conf
 
     @unittest.skipIf(sys.platform.startswith('win'), 'this is test for unix system')
-    def test_get_user_cfg_dir_unix(self):
+    eleza test_get_user_cfg_dir_unix(self):
         # Test to get user config directory under unix.
         conf = self.new_config(_utest=True)
 
@@ -242,7 +242,7 @@ class IdleConfTest(unittest.TestCase):
                     conf.GetUserCfgDir()
 
     @unittest.skipIf(not sys.platform.startswith('win'), 'this is test for Windows system')
-    def test_get_user_cfg_dir_windows(self):
+    eleza test_get_user_cfg_dir_windows(self):
         # Test to get user config directory under Windows.
         conf = self.new_config(_utest=True)
 
@@ -264,7 +264,7 @@ class IdleConfTest(unittest.TestCase):
                 with self.assertRaises(FileNotFoundError):
                     conf.GetUserCfgDir()
 
-    def test_create_config_handlers(self):
+    eleza test_create_config_handlers(self):
         conf = self.new_config(_utest=True)
 
         # Mock out idle_dir
@@ -291,7 +291,7 @@ class IdleConfTest(unittest.TestCase):
             self.assertEqual(parser.file,
                              os.path.join(conf.userdir or '#', f'config-{cfg_type}.cfg'))
 
-    def test_load_cfg_files(self):
+    eleza test_load_cfg_files(self):
         conf = self.new_config(_utest=True)
 
         # Borrow test/cfgparser.1 kutoka test_configparser.
@@ -312,14 +312,14 @@ class IdleConfTest(unittest.TestCase):
         eq(conf.userCfg['foo'].Get('Foo Bar', 'foo'), 'newbar')
         eq(conf.userCfg['foo'].GetOptionList('Foo Bar'), ['foo'])
 
-    def test_save_user_cfg_files(self):
+    eleza test_save_user_cfg_files(self):
         conf = self.mock_config()
 
         with mock.patch('idlelib.config.IdleUserConfParser.Save') as m:
             conf.SaveUserCfgFiles()
             self.assertEqual(m.call_count, len(conf.userCfg))
 
-    def test_get_option(self):
+    eleza test_get_option(self):
         conf = self.mock_config()
 
         eq = self.assertEqual
@@ -331,13 +331,13 @@ class IdleConfTest(unittest.TestCase):
             eq(conf.GetOption('main', 'EditorWindow', 'NotExists', default='NE'), 'NE')
             eq(_warn.call_count, 4)
 
-    def test_set_option(self):
+    eleza test_set_option(self):
         conf = self.mock_config()
 
         conf.SetOption('main', 'Foo', 'bar', 'newbar')
         self.assertEqual(conf.GetOption('main', 'Foo', 'bar'), 'newbar')
 
-    def test_get_section_list(self):
+    eleza test_get_section_list(self):
         conf = self.mock_config()
 
         self.assertCountEqual(
@@ -354,7 +354,7 @@ class IdleConfTest(unittest.TestCase):
         with self.assertRaises(config.InvalidConfigType):
             conf.GetSectionList('default', 'notexists')
 
-    def test_get_highlight(self):
+    eleza test_get_highlight(self):
         conf = self.mock_config()
 
         eq = self.assertEqual
@@ -372,7 +372,7 @@ class IdleConfTest(unittest.TestCase):
             eq(conf.GetHighlight('Foobar', 'normal'), {'foreground': '#747474',
                                                        'background': '#171717'})
 
-    def test_get_theme_dict(self):
+    eleza test_get_theme_dict(self):
         # TODO: finish.
         conf = self.mock_config()
 
@@ -384,18 +384,18 @@ class IdleConfTest(unittest.TestCase):
         with self.assertRaises(config.InvalidTheme):
             conf.GetThemeDict('bad', 'IDLE Classic')
 
-    def test_get_current_theme_and_keys(self):
+    eleza test_get_current_theme_and_keys(self):
         conf = self.mock_config()
 
         self.assertEqual(conf.CurrentTheme(), conf.current_colors_and_keys('Theme'))
         self.assertEqual(conf.CurrentKeys(), conf.current_colors_and_keys('Keys'))
 
-    def test_current_colors_and_keys(self):
+    eleza test_current_colors_and_keys(self):
         conf = self.mock_config()
 
         self.assertEqual(conf.current_colors_and_keys('Theme'), 'IDLE Classic')
 
-    def test_default_keys(self):
+    eleza test_default_keys(self):
         current_platform = sys.platform
         conf = self.new_config(_utest=True)
 
@@ -411,7 +411,7 @@ class IdleConfTest(unittest.TestCase):
         # Restore platform
         sys.platform = current_platform
 
-    def test_get_extensions(self):
+    eleza test_get_extensions(self):
         userextn.read_string('''
             [ZzDummy]
             enable = True
@@ -429,14 +429,14 @@ class IdleConfTest(unittest.TestCase):
         userextn.remove_section('DISABLE')
 
 
-    def test_remove_key_bind_names(self):
+    eleza test_remove_key_bind_names(self):
         conf = self.mock_config()
 
         self.assertCountEqual(
             conf.RemoveKeyBindNames(conf.GetSectionList('default', 'extensions')),
             ['AutoComplete', 'CodeContext', 'FormatParagraph', 'ParenMatch', 'ZzDummy'])
 
-    def test_get_extn_name_for_event(self):
+    eleza test_get_extn_name_for_event(self):
         userextn.read_string('''
             [ZzDummy]
             enable = True
@@ -446,7 +446,7 @@ class IdleConfTest(unittest.TestCase):
         eq(idleConf.GetExtnNameForEvent('z-out'), None)
         userextn.remove_section('ZzDummy')
 
-    def test_get_extension_keys(self):
+    eleza test_get_extension_keys(self):
         userextn.read_string('''
             [ZzDummy]
             enable = True
@@ -455,10 +455,10 @@ class IdleConfTest(unittest.TestCase):
            {'<<z-in>>': ['<Control-Shift-KeyRelease-Insert>']})
         userextn.remove_section('ZzDummy')
 # need option key test
-##        key = ['<Option-Key-2>'] if sys.platform == 'darwin' else ['<Alt-Key-2>']
+##        key = ['<Option-Key-2>'] ikiwa sys.platform == 'darwin' else ['<Alt-Key-2>']
 ##        eq(conf.GetExtensionKeys('ZoomHeight'), {'<<zoom-height>>': key})
 
-    def test_get_extension_bindings(self):
+    eleza test_get_extension_bindings(self):
         userextn.read_string('''
             [ZzDummy]
             enable = True
@@ -471,7 +471,7 @@ class IdleConfTest(unittest.TestCase):
         eq(iGEB('ZzDummy'), expect)
         userextn.remove_section('ZzDummy')
 
-    def test_get_keybinding(self):
+    eleza test_get_keybinding(self):
         conf = self.mock_config()
 
         eq = self.assertEqual
@@ -488,7 +488,7 @@ class IdleConfTest(unittest.TestCase):
         eq(conf.GetKeyBinding('NOT EXISTS', '<<copy>>'), [])
         eq(conf.GetKeyBinding('IDLE Modern Unix', 'NOT EXISTS'), [])
 
-    def test_get_current_keyset(self):
+    eleza test_get_current_keyset(self):
         current_platform = sys.platform
         conf = self.mock_config()
 
@@ -497,7 +497,7 @@ class IdleConfTest(unittest.TestCase):
         self.assertEqual(conf.GetCurrentKeySet(), conf.GetKeySet(conf.CurrentKeys()))
 
         # This should not be the same, since replace <Alt- to <Option-.
-        # Above depended on config-extensions.def having Alt keys,
+        # Above depended on config-extensions.eleza having Alt keys,
         # which is no longer true.
         # sys.platform = 'darwin'
         # self.assertNotEqual(conf.GetCurrentKeySet(), conf.GetKeySet(conf.CurrentKeys()))
@@ -505,7 +505,7 @@ class IdleConfTest(unittest.TestCase):
         # Restore platform
         sys.platform = current_platform
 
-    def test_get_keyset(self):
+    eleza test_get_keyset(self):
         conf = self.mock_config()
 
         # Conflict with key set, should be disable to ''
@@ -515,7 +515,7 @@ class IdleConfTest(unittest.TestCase):
         conf.defaultCfg['extensions'].set('Foobar_cfgBindings', 'newfoo', '<Key-F3>')
         self.assertEqual(conf.GetKeySet('IDLE Modern Unix')['<<newfoo>>'], '')
 
-    def test_is_core_binding(self):
+    eleza test_is_core_binding(self):
         # XXX: Should move out the core keys to config file or other place
         conf = self.mock_config()
 
@@ -524,7 +524,7 @@ class IdleConfTest(unittest.TestCase):
         self.assertTrue(conf.IsCoreBinding('del-word-right'))
         self.assertFalse(conf.IsCoreBinding('not-exists'))
 
-    def test_extra_help_source_list(self):
+    eleza test_extra_help_source_list(self):
         # Test GetExtraHelpSourceList and GetAllExtraHelpSourcesList in same
         # place to prevent prepare input data twice.
         conf = self.mock_config()
@@ -551,7 +551,7 @@ class IdleConfTest(unittest.TestCase):
             conf.GetAllExtraHelpSourcesList(),
             conf.GetExtraHelpSourceList('default') + conf.GetExtraHelpSourceList('user'))
 
-    def test_get_font(self):
+    eleza test_get_font(self):
         kutoka test.support agiza requires
         kutoka tkinter agiza Tk
         kutoka tkinter.font agiza Font
@@ -564,13 +564,13 @@ class IdleConfTest(unittest.TestCase):
         f = Font.actual(Font(name='TkFixedFont', exists=True, root=root))
         self.assertEqual(
             conf.GetFont(root, 'main', 'EditorWindow'),
-            (f['family'], 10 if f['size'] <= 0 else f['size'], f['weight']))
+            (f['family'], 10 ikiwa f['size'] <= 0 else f['size'], f['weight']))
 
         # Cleanup root
         root.destroy()
         del root
 
-    def test_get_core_keys(self):
+    eleza test_get_core_keys(self):
         conf = self.mock_config()
 
         eq = self.assertEqual
@@ -586,7 +586,7 @@ class IdleConfTest(unittest.TestCase):
             ['<Alt-Key-n>', '<Meta-Key-n>'])
 
 
-class CurrentColorKeysTest(unittest.TestCase):
+kundi CurrentColorKeysTest(unittest.TestCase):
     """ Test colorkeys function with user config [Theme] and [Keys] patterns.
 
         colorkeys = config.IdleConf.current_colors_and_keys
@@ -597,7 +597,7 @@ class CurrentColorKeysTest(unittest.TestCase):
     default_theme = 'IDLE Classic'
     default_keys = idleConf.default_keys()
 
-    def test_old_builtin_theme(self):
+    eleza test_old_builtin_theme(self):
         # On initial installation, user main is blank.
         self.assertEqual(self.colorkeys('Theme'), self.default_theme)
         # For old default, name2 must be blank.
@@ -615,7 +615,7 @@ class CurrentColorKeysTest(unittest.TestCase):
         self.assertEqual(self.colorkeys('Theme'), self.default_theme)
         usermain.remove_section('Theme')
 
-    def test_new_builtin_theme(self):
+    eleza test_new_builtin_theme(self):
         # IDLE writes name2 for new builtins.
         usermain.read_string('''
             [Theme]
@@ -631,7 +631,7 @@ class CurrentColorKeysTest(unittest.TestCase):
         self.assertEqual(self.colorkeys('Theme'), self.default_theme)
         usermain.remove_section('Theme')
 
-    def test_user_override_theme(self):
+    eleza test_user_override_theme(self):
         # Erroneous custom name (no definition) reverts to default.
         usermain.read_string('''
             [Theme]
@@ -648,7 +648,7 @@ class CurrentColorKeysTest(unittest.TestCase):
         usermain.remove_section('Theme')
         userhigh.remove_section('Custom Dark')
 
-    def test_old_builtin_keys(self):
+    eleza test_old_builtin_keys(self):
         # On initial installation, user main is blank.
         self.assertEqual(self.colorkeys('Keys'), self.default_keys)
         # For old default, name2 must be blank, name is always used.
@@ -663,7 +663,7 @@ class CurrentColorKeysTest(unittest.TestCase):
         self.assertEqual(self.colorkeys('Keys'), self.default_keys)
         usermain.remove_section('Keys')
 
-    def test_new_builtin_keys(self):
+    eleza test_new_builtin_keys(self):
         # IDLE writes name2 for new builtins.
         usermain.read_string('''
             [Keys]
@@ -679,7 +679,7 @@ class CurrentColorKeysTest(unittest.TestCase):
         self.assertEqual(self.colorkeys('Keys'), self.default_keys)
         usermain.remove_section('Keys')
 
-    def test_user_override_keys(self):
+    eleza test_user_override_keys(self):
         # Erroneous custom name (no definition) reverts to default.
         usermain.read_string('''
             [Keys]
@@ -697,35 +697,35 @@ class CurrentColorKeysTest(unittest.TestCase):
         userkeys.remove_section('Custom Keys')
 
 
-class ChangesTest(unittest.TestCase):
+kundi ChangesTest(unittest.TestCase):
 
     empty = {'main':{}, 'highlight':{}, 'keys':{}, 'extensions':{}}
 
-    def load(self):  # Test_add_option verifies that this works.
+    eleza load(self):  # Test_add_option verifies that this works.
         changes = self.changes
         changes.add_option('main', 'Msec', 'mitem', 'mval')
         changes.add_option('highlight', 'Hsec', 'hitem', 'hval')
         changes.add_option('keys', 'Ksec', 'kitem', 'kval')
-        return changes
+        rudisha changes
 
     loaded = {'main': {'Msec': {'mitem': 'mval'}},
               'highlight': {'Hsec': {'hitem': 'hval'}},
               'keys': {'Ksec': {'kitem':'kval'}},
               'extensions': {}}
 
-    def setUp(self):
+    eleza setUp(self):
         self.changes = config.ConfigChanges()
 
-    def test_init(self):
+    eleza test_init(self):
         self.assertEqual(self.changes, self.empty)
 
-    def test_add_option(self):
+    eleza test_add_option(self):
         changes = self.load()
         self.assertEqual(changes, self.loaded)
         changes.add_option('main', 'Msec', 'mitem', 'mval')
         self.assertEqual(changes, self.loaded)
 
-    def test_save_option(self):  # Static function does not touch changes.
+    eleza test_save_option(self):  # Static function does not touch changes.
         save_option = self.changes.save_option
         self.assertTrue(save_option('main', 'Indent', 'what', '0'))
         self.assertFalse(save_option('main', 'Indent', 'what', '0'))
@@ -737,7 +737,7 @@ class ChangesTest(unittest.TestCase):
         self.assertFalse(usermain.has_option('Indent', 'use-spaces'))
         usermain.remove_section('Indent')
 
-    def test_save_added(self):
+    eleza test_save_added(self):
         changes = self.load()
         self.assertTrue(changes.save_all())
         self.assertEqual(usermain['Msec']['mitem'], 'mval')
@@ -749,7 +749,7 @@ class ChangesTest(unittest.TestCase):
         userhigh.remove_section('Hsec')
         userkeys.remove_section('Ksec')
 
-    def test_save_help(self):
+    eleza test_save_help(self):
         # Any change to HelpFiles overwrites entire section.
         changes = self.changes
         changes.save_option('main', 'HelpFiles', 'IDLE', 'idledoc')
@@ -758,14 +758,14 @@ class ChangesTest(unittest.TestCase):
         self.assertFalse(usermain.has_option('HelpFiles', 'IDLE'))
         self.assertTrue(usermain.has_option('HelpFiles', 'ELDI'))
 
-    def test_save_default(self):  # Cover 2nd and 3rd false branches.
+    eleza test_save_default(self):  # Cover 2nd and 3rd false branches.
         changes = self.changes
         changes.add_option('main', 'Indent', 'use-spaces', '1')
         # save_option returns False; cfg_type_changed remains False.
 
     # TODO: test that save_all calls usercfg Saves.
 
-    def test_delete_section(self):
+    eleza test_delete_section(self):
         changes = self.load()
         changes.delete_section('main', 'fake')  # Test no exception.
         self.assertEqual(changes, self.loaded)  # Test nothing deleted.
@@ -777,15 +777,15 @@ class ChangesTest(unittest.TestCase):
                 testcfg[cfgtype][section]  # and kutoka mock userCfg.
         # TODO test for save call.
 
-    def test_clear(self):
+    eleza test_clear(self):
         changes = self.load()
         changes.clear()
         self.assertEqual(changes, self.empty)
 
 
-class WarningTest(unittest.TestCase):
+kundi WarningTest(unittest.TestCase):
 
-    def test_warn(self):
+    eleza test_warn(self):
         Equal = self.assertEqual
         config._warned = set()
         with captured_stderr() as stderr:
@@ -801,5 +801,5 @@ class WarningTest(unittest.TestCase):
         Equal(stderr.getvalue(), 'warn2'+'\n')
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

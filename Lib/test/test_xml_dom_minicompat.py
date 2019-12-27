@@ -8,10 +8,10 @@ agiza xml.dom
 kutoka xml.dom.minicompat agiza *
 
 
-class EmptyNodeListTestCase(unittest.TestCase):
+kundi EmptyNodeListTestCase(unittest.TestCase):
     """Tests for the EmptyNodeList class."""
 
-    def test_emptynodelist_item(self):
+    eleza test_emptynodelist_item(self):
         # Test item access on an EmptyNodeList.
         node_list = EmptyNodeList()
 
@@ -23,7 +23,7 @@ class EmptyNodeListTestCase(unittest.TestCase):
         with self.assertRaises(IndexError):
             node_list[-1]
 
-    def test_emptynodelist_length(self):
+    eleza test_emptynodelist_length(self):
         node_list = EmptyNodeList()
         # Reading
         self.assertEqual(node_list.length, 0)
@@ -31,19 +31,19 @@ class EmptyNodeListTestCase(unittest.TestCase):
         with self.assertRaises(xml.dom.NoModificationAllowedErr):
             node_list.length = 111
 
-    def test_emptynodelist___add__(self):
+    eleza test_emptynodelist___add__(self):
         node_list = EmptyNodeList() + NodeList()
         self.assertEqual(node_list, NodeList())
 
-    def test_emptynodelist___radd__(self):
+    eleza test_emptynodelist___radd__(self):
         node_list = [1,2] + EmptyNodeList()
         self.assertEqual(node_list, [1,2])
 
 
-class NodeListTestCase(unittest.TestCase):
+kundi NodeListTestCase(unittest.TestCase):
     """Tests for the NodeList class."""
 
-    def test_nodelist_item(self):
+    eleza test_nodelist_item(self):
         # Test items access on a NodeList.
         # First, use an empty NodeList.
         node_list = NodeList()
@@ -66,7 +66,7 @@ class NodeListTestCase(unittest.TestCase):
         self.assertEqual(node_list[0], 111)
         self.assertEqual(node_list[-1], 999)
 
-    def test_nodelist_length(self):
+    eleza test_nodelist_length(self):
         node_list = NodeList([1, 2])
         # Reading
         self.assertEqual(node_list.length, 2)
@@ -74,15 +74,15 @@ class NodeListTestCase(unittest.TestCase):
         with self.assertRaises(xml.dom.NoModificationAllowedErr):
             node_list.length = 111
 
-    def test_nodelist___add__(self):
+    eleza test_nodelist___add__(self):
         node_list = NodeList([3, 4]) + [1, 2]
         self.assertEqual(node_list, NodeList([3, 4, 1, 2]))
 
-    def test_nodelist___radd__(self):
+    eleza test_nodelist___radd__(self):
         node_list = [1, 2] + NodeList([3, 4])
         self.assertEqual(node_list, NodeList([1, 2, 3, 4]))
 
-    def test_nodelist_pickle_roundtrip(self):
+    eleza test_nodelist_pickle_roundtrip(self):
         # Test pickling and unpickling of a NodeList.
 
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -101,7 +101,7 @@ class NodeListTestCase(unittest.TestCase):
             self.assertIsNot(unpickled, node_list)
             self.assertEqual(unpickled, node_list)
 
-    def test_nodelist_copy(self):
+    eleza test_nodelist_copy(self):
         # Empty NodeList.
         node_list = NodeList()
         copied = copy.copy(node_list)
@@ -117,7 +117,7 @@ class NodeListTestCase(unittest.TestCase):
         for x, y in zip(copied, node_list):
             self.assertIs(x, y)
 
-    def test_nodelist_deepcopy(self):
+    eleza test_nodelist_deepcopy(self):
         # Empty NodeList.
         node_list = NodeList()
         copied = copy.deepcopy(node_list)
@@ -134,5 +134,5 @@ class NodeListTestCase(unittest.TestCase):
             self.assertIsNot(x, y)
             self.assertEqual(x, y)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

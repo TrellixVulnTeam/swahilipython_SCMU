@@ -19,7 +19,7 @@ Concepts & Terminology
 
 Using the Distutils is quite simple, both for module developers and for
 users/administrators installing third-party modules.  As a developer, your
-responsibilities (apart from writing solid, well-documented and well-tested
+responsibilities (apart kutoka writing solid, well-documented and well-tested
 code, of course!) are:
 
 * write a setup script (:file:`setup.py` by convention)
@@ -34,7 +34,7 @@ Each of these tasks is covered in this document.
 
 Not all module developers have access to a multitude of platforms, so it's not
 always feasible to expect them to create a multitude of built distributions.  It
-is hoped that a class of intermediaries, called *packagers*, will arise to
+is hoped that a kundi of intermediaries, called *packagers*, will arise to
 address this need.  Packagers will take source distributions released by module
 developers, build them on one or more platforms, and release the resulting built
 distributions.  Thus, users on the most popular platforms will be able to
@@ -58,7 +58,7 @@ distribution.
 If all you want to do is distribute a module called :mod:`foo`, contained in a
 file :file:`foo.py`, then your setup script can be as simple as this::
 
-   from distutils.core import setup
+   kutoka distutils.core agiza setup
    setup(name='foo',
          version='1.0',
          py_modules=['foo'],
@@ -81,7 +81,7 @@ Some observations:
   for an example)
 
 To create a source distribution for this module, you would create a setup
-script, :file:`setup.py`, containing the above code, and run this command from a
+script, :file:`setup.py`, containing the above code, and run this command kutoka a
 terminal::
 
    python setup.py sdist
@@ -97,7 +97,7 @@ The archive file will be named :file:`foo-1.0.tar.gz` (or :file:`.zip`), and
 will unpack into a directory :file:`foo-1.0`.
 
 If an end-user wishes to install your :mod:`foo` module, all they have to do is
-download :file:`foo-1.0.tar.gz` (or :file:`.zip`), unpack it, and---from the
+download :file:`foo-1.0.tar.gz` (or :file:`.zip`), unpack it, and---kutoka the
 :file:`foo-1.0` directory---run ::
 
    python setup.py install
@@ -148,7 +148,7 @@ General Python terminology
 
 If you're reading this document, you probably have a good idea of what modules,
 extensions, and so forth are.  Nevertheless, just to be sure that everyone is
-operating from a common starting point, we offer the following glossary of
+operating kutoka a common starting point, we offer the following glossary of
 common Python terms:
 
 module
@@ -166,12 +166,12 @@ extension module
    for Python, Java for Jython. Typically contained in a single dynamically
    loadable pre-compiled file, e.g. a shared object (:file:`.so`) file for Python
    extensions on Unix, a DLL (given the :file:`.pyd` extension) for Python
-   extensions on Windows, or a Java class file for Jython extensions.  (Note that
+   extensions on Windows, or a Java kundi file for Jython extensions.  (Note that
    currently, the Distutils only handles C/C++ extensions for Python.)
 
 package
    a module that contains other modules; typically contained in a directory in the
-   filesystem and distinguished from other directories by the presence of a file
+   filesystem and distinguished kutoka other directories by the presence of a file
    :file:`__init__.py`.
 
 root package
@@ -211,4 +211,4 @@ non-pure module distribution
 distribution root
    the top-level directory of your source tree (or  source distribution); the
    directory where :file:`setup.py` exists.  Generally  :file:`setup.py` will be
-   run from this directory.
+   run kutoka this directory.

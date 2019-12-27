@@ -23,18 +23,18 @@ agiza sys
 # allocates a bytestring to test various operations near the end will have a
 # minsize of at least 2Gb (or it wouldn't reach the 32-bit limit, so the
 # test wouldn't be very useful) and a memuse of 1 (one byte per size-unit,
-# if it allocates only one big string at a time.)
+# ikiwa it allocates only one big string at a time.)
 #
 # When run with a memory limit set, both decorators skip tests that need
 # more memory than available to be meaningful.  The precisionbigmemtest will
-# always pass minsize as size, even if there is much more memory available.
+# always pass minsize as size, even ikiwa there is much more memory available.
 # The bigmemtest decorator will scale size upward to fill available memory.
 #
 # Bigmem testing houserules:
 #
 #  - Try not to allocate too many large objects. It's okay to rely on
 #    refcounting semantics, and don't forget that 's = create_largestring()'
-#    doesn't release the old 's' (if it exists) until well after its new
+#    doesn't release the old 's' (ikiwa it exists) until well after its new
 #    value has been created. Use 'del s' before the create_largestring call.
 #
 #  - Do *not* compare large objects using assertEqual, assertIn or similar.
@@ -54,7 +54,7 @@ agiza sys
 #    This is so the tests themselves get frequent testing.
 #    Consequently, always make all large allocations based on the
 #    passed-in 'size', and don't rely on the size being very large. Also,
-#    memuse-per-size should remain sane (less than a few thousand); if your
+#    memuse-per-size should remain sane (less than a few thousand); ikiwa your
 #    test uses more, adjust 'size' upward, instead.
 
 # BEWARE: it seems that one failing test can yield other subsequent tests to
@@ -64,14 +64,14 @@ agiza sys
 ascii_char_size = 1
 ucs2_char_size = 2
 ucs4_char_size = 4
-pointer_size = 4 if sys.maxsize < 2**32 else 8
+pointer_size = 4 ikiwa sys.maxsize < 2**32 else 8
 
 
-class BaseStrTest:
+kundi BaseStrTest:
 
-    def _test_capitalize(self, size):
-        _ = self.from_latin1
-        SUBSTR = self.from_latin1(' abc def ghi')
+    eleza _test_capitalize(self, size):
+        _ = self.kutoka_latin1
+        SUBSTR = self.kutoka_latin1(' abc eleza ghi')
         s = _('-') * size + SUBSTR
         caps = s.capitalize()
         self.assertEqual(caps[-len(SUBSTR):],
@@ -79,20 +79,20 @@ class BaseStrTest:
         self.assertEqual(caps.lstrip(_('-')), SUBSTR)
 
     @bigmemtest(size=_2G + 10, memuse=1)
-    def test_center(self, size):
-        SUBSTR = self.from_latin1(' abc def ghi')
+    eleza test_center(self, size):
+        SUBSTR = self.kutoka_latin1(' abc eleza ghi')
         s = SUBSTR.center(size)
         self.assertEqual(len(s), size)
         lpadsize = rpadsize = (len(s) - len(SUBSTR)) // 2
-        if len(s) % 2:
+        ikiwa len(s) % 2:
             lpadsize += 1
         self.assertEqual(s[lpadsize:-rpadsize], SUBSTR)
         self.assertEqual(s.strip(), SUBSTR.strip())
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_count(self, size):
-        _ = self.from_latin1
-        SUBSTR = _(' abc def ghi')
+    eleza test_count(self, size):
+        _ = self.kutoka_latin1
+        SUBSTR = _(' abc eleza ghi')
         s = _('.') * size + SUBSTR
         self.assertEqual(s.count(_('.')), size)
         s += _('.')
@@ -102,9 +102,9 @@ class BaseStrTest:
         self.assertEqual(s.count(_('j')), 0)
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_endswith(self, size):
-        _ = self.from_latin1
-        SUBSTR = _(' abc def ghi')
+    eleza test_endswith(self, size):
+        _ = self.kutoka_latin1
+        SUBSTR = _(' abc eleza ghi')
         s = _('-') * size + SUBSTR
         self.assertTrue(s.endswith(SUBSTR))
         self.assertTrue(s.endswith(s))
@@ -114,8 +114,8 @@ class BaseStrTest:
         self.assertFalse(SUBSTR.endswith(s))
 
     @bigmemtest(size=_2G + 10, memuse=2)
-    def test_expandtabs(self, size):
-        _ = self.from_latin1
+    eleza test_expandtabs(self, size):
+        _ = self.kutoka_latin1
         s = _('-') * size
         tabsize = 8
         self.assertTrue(s.expandtabs() == s)
@@ -127,9 +127,9 @@ class BaseStrTest:
         self.assertEqual(len(s.strip(_(' '))), 0)
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_find(self, size):
-        _ = self.from_latin1
-        SUBSTR = _(' abc def ghi')
+    eleza test_find(self, size):
+        _ = self.kutoka_latin1
+        SUBSTR = _(' abc eleza ghi')
         sublen = len(SUBSTR)
         s = _('').join([SUBSTR, _('-') * size, SUBSTR])
         self.assertEqual(s.find(_(' ')), 0)
@@ -144,9 +144,9 @@ class BaseStrTest:
         self.assertEqual(s.find(_('j')), -1)
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_index(self, size):
-        _ = self.from_latin1
-        SUBSTR = _(' abc def ghi')
+    eleza test_index(self, size):
+        _ = self.kutoka_latin1
+        SUBSTR = _(' abc eleza ghi')
         sublen = len(SUBSTR)
         s = _('').join([SUBSTR, _('-') * size, SUBSTR])
         self.assertEqual(s.index(_(' ')), 0)
@@ -161,8 +161,8 @@ class BaseStrTest:
         self.assertRaises(ValueError, s.index, _('j'))
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_isalnum(self, size):
-        _ = self.from_latin1
+    eleza test_isalnum(self, size):
+        _ = self.kutoka_latin1
         SUBSTR = _('123456')
         s = _('a') * size + SUBSTR
         self.assertTrue(s.isalnum())
@@ -170,8 +170,8 @@ class BaseStrTest:
         self.assertFalse(s.isalnum())
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_isalpha(self, size):
-        _ = self.from_latin1
+    eleza test_isalpha(self, size):
+        _ = self.kutoka_latin1
         SUBSTR = _('zzzzzzz')
         s = _('a') * size + SUBSTR
         self.assertTrue(s.isalpha())
@@ -179,8 +179,8 @@ class BaseStrTest:
         self.assertFalse(s.isalpha())
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_isdigit(self, size):
-        _ = self.from_latin1
+    eleza test_isdigit(self, size):
+        _ = self.kutoka_latin1
         SUBSTR = _('123456')
         s = _('9') * size + SUBSTR
         self.assertTrue(s.isdigit())
@@ -188,10 +188,10 @@ class BaseStrTest:
         self.assertFalse(s.isdigit())
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_islower(self, size):
-        _ = self.from_latin1
+    eleza test_islower(self, size):
+        _ = self.kutoka_latin1
         chars = _(''.join(
-            chr(c) for c in range(255) if not chr(c).isupper()))
+            chr(c) for c in range(255) ikiwa not chr(c).isupper()))
         repeats = size // len(chars) + 2
         s = chars * repeats
         self.assertTrue(s.islower())
@@ -199,8 +199,8 @@ class BaseStrTest:
         self.assertFalse(s.islower())
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_isspace(self, size):
-        _ = self.from_latin1
+    eleza test_isspace(self, size):
+        _ = self.kutoka_latin1
         whitespace = _(' \f\n\r\t\v')
         repeats = size // len(whitespace) + 2
         s = whitespace * repeats
@@ -209,8 +209,8 @@ class BaseStrTest:
         self.assertFalse(s.isspace())
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_istitle(self, size):
-        _ = self.from_latin1
+    eleza test_istitle(self, size):
+        _ = self.kutoka_latin1
         SUBSTR = _('123456')
         s = _('').join([_('A'), _('a') * size, SUBSTR])
         self.assertTrue(s.istitle())
@@ -220,10 +220,10 @@ class BaseStrTest:
         self.assertFalse(s.istitle())
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_isupper(self, size):
-        _ = self.from_latin1
+    eleza test_isupper(self, size):
+        _ = self.kutoka_latin1
         chars = _(''.join(
-            chr(c) for c in range(255) if not chr(c).islower()))
+            chr(c) for c in range(255) ikiwa not chr(c).islower()))
         repeats = size // len(chars) + 2
         s = chars * repeats
         self.assertTrue(s.isupper())
@@ -231,8 +231,8 @@ class BaseStrTest:
         self.assertFalse(s.isupper())
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_join(self, size):
-        _ = self.from_latin1
+    eleza test_join(self, size):
+        _ = self.kutoka_latin1
         s = _('A') * size
         x = s.join([_('aaaaa'), _('bbbbb')])
         self.assertEqual(x.count(_('a')), 5)
@@ -241,26 +241,26 @@ class BaseStrTest:
         self.assertTrue(x.endswith(_('Abbbbb')))
 
     @bigmemtest(size=_2G + 10, memuse=1)
-    def test_ljust(self, size):
-        _ = self.from_latin1
-        SUBSTR = _(' abc def ghi')
+    eleza test_ljust(self, size):
+        _ = self.kutoka_latin1
+        SUBSTR = _(' abc eleza ghi')
         s = SUBSTR.ljust(size)
         self.assertTrue(s.startswith(SUBSTR + _('  ')))
         self.assertEqual(len(s), size)
         self.assertEqual(s.strip(), SUBSTR.strip())
 
     @bigmemtest(size=_2G + 10, memuse=2)
-    def test_lower(self, size):
-        _ = self.from_latin1
+    eleza test_lower(self, size):
+        _ = self.kutoka_latin1
         s = _('A') * size
         s = s.lower()
         self.assertEqual(len(s), size)
         self.assertEqual(s.count(_('a')), size)
 
     @bigmemtest(size=_2G + 10, memuse=1)
-    def test_lstrip(self, size):
-        _ = self.from_latin1
-        SUBSTR = _('abc def ghi')
+    eleza test_lstrip(self, size):
+        _ = self.kutoka_latin1
+        SUBSTR = _('abc eleza ghi')
         s = SUBSTR.rjust(size)
         self.assertEqual(len(s), size)
         self.assertEqual(s.lstrip(), SUBSTR.lstrip())
@@ -268,13 +268,13 @@ class BaseStrTest:
         s = SUBSTR.ljust(size)
         self.assertEqual(len(s), size)
         # Type-specific optimization
-        if isinstance(s, (str, bytes)):
+        ikiwa isinstance(s, (str, bytes)):
             stripped = s.lstrip()
             self.assertTrue(stripped is s)
 
     @bigmemtest(size=_2G + 10, memuse=2)
-    def test_replace(self, size):
-        _ = self.from_latin1
+    eleza test_replace(self, size):
+        _ = self.kutoka_latin1
         replacement = _('a')
         s = _(' ') * size
         s = s.replace(_(' '), replacement)
@@ -286,9 +286,9 @@ class BaseStrTest:
         self.assertEqual(s[-10:], _('      aaaa'))
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_rfind(self, size):
-        _ = self.from_latin1
-        SUBSTR = _(' abc def ghi')
+    eleza test_rfind(self, size):
+        _ = self.kutoka_latin1
+        SUBSTR = _(' abc eleza ghi')
         sublen = len(SUBSTR)
         s = _('').join([SUBSTR, _('-') * size, SUBSTR])
         self.assertEqual(s.rfind(_(' ')), sublen + size + SUBSTR.rfind(_(' ')))
@@ -302,9 +302,9 @@ class BaseStrTest:
         self.assertEqual(s.rfind(_('j')), -1)
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_rindex(self, size):
-        _ = self.from_latin1
-        SUBSTR = _(' abc def ghi')
+    eleza test_rindex(self, size):
+        _ = self.kutoka_latin1
+        SUBSTR = _(' abc eleza ghi')
         sublen = len(SUBSTR)
         s = _('').join([SUBSTR, _('-') * size, SUBSTR])
         self.assertEqual(s.rindex(_(' ')),
@@ -321,18 +321,18 @@ class BaseStrTest:
         self.assertRaises(ValueError, s.rindex, _('j'))
 
     @bigmemtest(size=_2G + 10, memuse=1)
-    def test_rjust(self, size):
-        _ = self.from_latin1
-        SUBSTR = _(' abc def ghi')
+    eleza test_rjust(self, size):
+        _ = self.kutoka_latin1
+        SUBSTR = _(' abc eleza ghi')
         s = SUBSTR.ljust(size)
         self.assertTrue(s.startswith(SUBSTR + _('  ')))
         self.assertEqual(len(s), size)
         self.assertEqual(s.strip(), SUBSTR.strip())
 
     @bigmemtest(size=_2G + 10, memuse=1)
-    def test_rstrip(self, size):
-        _ = self.from_latin1
-        SUBSTR = _(' abc def ghi')
+    eleza test_rstrip(self, size):
+        _ = self.kutoka_latin1
+        SUBSTR = _(' abc eleza ghi')
         s = SUBSTR.ljust(size)
         self.assertEqual(len(s), size)
         self.assertEqual(s.rstrip(), SUBSTR.rstrip())
@@ -340,7 +340,7 @@ class BaseStrTest:
         s = SUBSTR.rjust(size)
         self.assertEqual(len(s), size)
         # Type-specific optimization
-        if isinstance(s, (str, bytes)):
+        ikiwa isinstance(s, (str, bytes)):
             stripped = s.rstrip()
             self.assertTrue(stripped is s)
 
@@ -348,8 +348,8 @@ class BaseStrTest:
     # sqrt(size) substrings of sqrt(size) in size and a list to
     # hold sqrt(size) items. It's close but just over 2x size.
     @bigmemtest(size=_2G, memuse=2.1)
-    def test_split_small(self, size):
-        _ = self.from_latin1
+    eleza test_split_small(self, size):
+        _ = self.kutoka_latin1
         # Crudely calculate an estimate so that the result of s.split won't
         # take up an inordinate amount of memory
         chunksize = int(size ** 0.5 + 2)
@@ -374,8 +374,8 @@ class BaseStrTest:
     # size in bytes!) Nevertheless, a list of size takes
     # 8*size bytes.
     @bigmemtest(size=_2G + 5, memuse=ascii_char_size * 2 + pointer_size)
-    def test_split_large(self, size):
-        _ = self.from_latin1
+    eleza test_split_large(self, size):
+        _ = self.kutoka_latin1
         s = _(' a') * size + _(' ')
         l = s.split()
         self.assertEqual(len(l), size)
@@ -386,8 +386,8 @@ class BaseStrTest:
         self.assertEqual(set(l), set([_(' ')]))
 
     @bigmemtest(size=_2G, memuse=2.1)
-    def test_splitlines(self, size):
-        _ = self.from_latin1
+    eleza test_splitlines(self, size):
+        _ = self.kutoka_latin1
         # Crudely calculate an estimate so that the result of s.split won't
         # take up an inordinate amount of memory
         chunksize = int(size ** 0.5 + 2) // 2
@@ -400,18 +400,18 @@ class BaseStrTest:
             self.assertEqual(item, expected)
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_startswith(self, size):
-        _ = self.from_latin1
-        SUBSTR = _(' abc def ghi')
+    eleza test_startswith(self, size):
+        _ = self.kutoka_latin1
+        SUBSTR = _(' abc eleza ghi')
         s = _('-') * size + SUBSTR
         self.assertTrue(s.startswith(s))
         self.assertTrue(s.startswith(_('-') * size))
         self.assertFalse(s.startswith(SUBSTR))
 
     @bigmemtest(size=_2G, memuse=1)
-    def test_strip(self, size):
-        _ = self.from_latin1
-        SUBSTR = _('   abc def ghi   ')
+    eleza test_strip(self, size):
+        _ = self.kutoka_latin1
+        SUBSTR = _('   abc eleza ghi   ')
         s = SUBSTR.rjust(size)
         self.assertEqual(len(s), size)
         self.assertEqual(s.strip(), SUBSTR.strip())
@@ -420,8 +420,8 @@ class BaseStrTest:
         self.assertEqual(len(s), size)
         self.assertEqual(s.strip(), SUBSTR.strip())
 
-    def _test_swapcase(self, size):
-        _ = self.from_latin1
+    eleza _test_swapcase(self, size):
+        _ = self.kutoka_latin1
         SUBSTR = _("aBcDeFG12.'\xa9\x00")
         sublen = len(SUBSTR)
         repeats = size // sublen + 2
@@ -431,8 +431,8 @@ class BaseStrTest:
         self.assertEqual(s[:sublen * 3], SUBSTR.swapcase() * 3)
         self.assertEqual(s[-sublen * 3:], SUBSTR.swapcase() * 3)
 
-    def _test_title(self, size):
-        _ = self.from_latin1
+    eleza _test_title(self, size):
+        _ = self.kutoka_latin1
         SUBSTR = _('SpaaHAaaAaham')
         s = SUBSTR * (size // len(SUBSTR) + 2)
         s = s.title()
@@ -440,8 +440,8 @@ class BaseStrTest:
         self.assertTrue(s.endswith(SUBSTR.lower() * 3))
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_translate(self, size):
-        _ = self.from_latin1
+    eleza test_translate(self, size):
+        _ = self.kutoka_latin1
         SUBSTR = _('aZz.z.Aaz.')
         trans = bytes.maketrans(b'.aZ', b'-!$')
         sublen = len(SUBSTR)
@@ -456,16 +456,16 @@ class BaseStrTest:
         self.assertEqual(s.count(_('z')), repeats * 3)
 
     @bigmemtest(size=_2G + 5, memuse=2)
-    def test_upper(self, size):
-        _ = self.from_latin1
+    eleza test_upper(self, size):
+        _ = self.kutoka_latin1
         s = _('a') * size
         s = s.upper()
         self.assertEqual(len(s), size)
         self.assertEqual(s.count(_('A')), size)
 
     @bigmemtest(size=_2G + 20, memuse=1)
-    def test_zfill(self, size):
-        _ = self.from_latin1
+    eleza test_zfill(self, size):
+        _ = self.kutoka_latin1
         SUBSTR = _('-568324723598234')
         s = SUBSTR.zfill(size)
         self.assertTrue(s.endswith(_('0') + SUBSTR[1:]))
@@ -474,10 +474,10 @@ class BaseStrTest:
         self.assertEqual(s.count(_('0')), size - len(SUBSTR))
 
     # This test is meaningful even with size < 2G, as long as the
-    # doubled string is > 2G (but it tests more if both are > 2G :)
+    # doubled string is > 2G (but it tests more ikiwa both are > 2G :)
     @bigmemtest(size=_1G + 2, memuse=3)
-    def test_concat(self, size):
-        _ = self.from_latin1
+    eleza test_concat(self, size):
+        _ = self.kutoka_latin1
         s = _('.') * size
         self.assertEqual(len(s), size)
         s = s + s
@@ -485,10 +485,10 @@ class BaseStrTest:
         self.assertEqual(s.count(_('.')), size * 2)
 
     # This test is meaningful even with size < 2G, as long as the
-    # repeated string is > 2G (but it tests more if both are > 2G :)
+    # repeated string is > 2G (but it tests more ikiwa both are > 2G :)
     @bigmemtest(size=_1G + 2, memuse=3)
-    def test_repeat(self, size):
-        _ = self.from_latin1
+    eleza test_repeat(self, size):
+        _ = self.kutoka_latin1
         s = _('.') * size
         self.assertEqual(len(s), size)
         s = s * 2
@@ -496,8 +496,8 @@ class BaseStrTest:
         self.assertEqual(s.count(_('.')), size * 2)
 
     @bigmemtest(size=_2G + 20, memuse=2)
-    def test_slice_and_getitem(self, size):
-        _ = self.from_latin1
+    eleza test_slice_and_getitem(self, size):
+        _ = self.kutoka_latin1
         SUBSTR = _('0123456789')
         sublen = len(SUBSTR)
         s = SUBSTR * (size // sublen)
@@ -507,7 +507,7 @@ class BaseStrTest:
             self.assertEqual(s[i], SUBSTR[0])
             self.assertEqual(s[i:i + sublen], SUBSTR)
             self.assertEqual(s[i:i + sublen:2], SUBSTR[::2])
-            if i > 0:
+            ikiwa i > 0:
                 self.assertEqual(s[i + sublen - 1:i - 1:-3],
                                  SUBSTR[sublen::-3])
         # Make sure we do some slicing and indexing near the end of the
@@ -530,8 +530,8 @@ class BaseStrTest:
         self.assertRaises(IndexError, operator.getitem, s, len(s) + 1<<31)
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_contains(self, size):
-        _ = self.from_latin1
+    eleza test_contains(self, size):
+        _ = self.kutoka_latin1
         SUBSTR = _('0123456789')
         edge = _('-') * (size // 2)
         s = _('').join([edge, SUBSTR, edge])
@@ -544,8 +544,8 @@ class BaseStrTest:
         self.assertTrue(_('a') in s)
 
     @bigmemtest(size=_2G + 10, memuse=2)
-    def test_compare(self, size):
-        _ = self.from_latin1
+    eleza test_compare(self, size):
+        _ = self.kutoka_latin1
         s1 = _('-') * size
         s2 = _('-') * size
         self.assertTrue(s1 == s2)
@@ -557,14 +557,14 @@ class BaseStrTest:
         self.assertFalse(s1 == s2)
 
     @bigmemtest(size=_2G + 10, memuse=1)
-    def test_hash(self, size):
-        # Not sure if we can do any meaningful tests here...  Even if we
+    eleza test_hash(self, size):
+        # Not sure ikiwa we can do any meaningful tests here...  Even ikiwa we
         # start relying on the exact algorithm used, the result will be
         # different depending on the size of the C 'long int'.  Even this
         # test is dodgy (there's no *guarantee* that the two things should
-        # have a different hash, even if they, in the current
+        # have a different hash, even ikiwa they, in the current
         # implementation, almost always do.)
-        _ = self.from_latin1
+        _ = self.kutoka_latin1
         s = _('\x00') * size
         h1 = hash(s)
         del s
@@ -572,13 +572,13 @@ class BaseStrTest:
         self.assertNotEqual(h1, hash(s))
 
 
-class StrTest(unittest.TestCase, BaseStrTest):
+kundi StrTest(unittest.TestCase, BaseStrTest):
 
-    def from_latin1(self, s):
-        return s
+    eleza kutoka_latin1(self, s):
+        rudisha s
 
-    def basic_encode_test(self, size, enc, c='.', expectedsize=None):
-        if expectedsize is None:
+    eleza basic_encode_test(self, size, enc, c='.', expectedsize=None):
+        ikiwa expectedsize is None:
             expectedsize = size
         try:
             s = c * size
@@ -586,12 +586,12 @@ class StrTest(unittest.TestCase, BaseStrTest):
         finally:
             s = None
 
-    def setUp(self):
+    eleza setUp(self):
         # HACK: adjust memory use of tests inherited kutoka BaseStrTest
         # according to character size.
         self._adjusted = {}
         for name in dir(BaseStrTest):
-            if not name.startswith('test_'):
+            ikiwa not name.startswith('test_'):
                 continue
             meth = getattr(type(self), name)
             try:
@@ -601,58 +601,58 @@ class StrTest(unittest.TestCase, BaseStrTest):
             meth.memuse = ascii_char_size * memuse
             self._adjusted[name] = memuse
 
-    def tearDown(self):
+    eleza tearDown(self):
         for name, memuse in self._adjusted.items():
             getattr(type(self), name).memuse = memuse
 
     @bigmemtest(size=_2G, memuse=ucs4_char_size * 3 + ascii_char_size * 2)
-    def test_capitalize(self, size):
+    eleza test_capitalize(self, size):
         self._test_capitalize(size)
 
     @bigmemtest(size=_2G, memuse=ucs4_char_size * 3 + ascii_char_size * 2)
-    def test_title(self, size):
+    eleza test_title(self, size):
         self._test_title(size)
 
     @bigmemtest(size=_2G, memuse=ucs4_char_size * 3 + ascii_char_size * 2)
-    def test_swapcase(self, size):
+    eleza test_swapcase(self, size):
         self._test_swapcase(size)
 
     # Many codecs convert to the legacy representation first, explaining
     # why we add 'ucs4_char_size' to the 'memuse' below.
 
     @bigmemtest(size=_2G + 2, memuse=ascii_char_size + 1)
-    def test_encode(self, size):
-        return self.basic_encode_test(size, 'utf-8')
+    eleza test_encode(self, size):
+        rudisha self.basic_encode_test(size, 'utf-8')
 
     @bigmemtest(size=_4G // 6 + 2, memuse=ascii_char_size + ucs4_char_size + 1)
-    def test_encode_raw_unicode_escape(self, size):
+    eleza test_encode_raw_unicode_escape(self, size):
         try:
-            return self.basic_encode_test(size, 'raw_unicode_escape')
+            rudisha self.basic_encode_test(size, 'raw_unicode_escape')
         except MemoryError:
             pass # acceptable on 32-bit
 
     @bigmemtest(size=_4G // 5 + 70, memuse=ascii_char_size + 8 + 1)
-    def test_encode_utf7(self, size):
+    eleza test_encode_utf7(self, size):
         try:
-            return self.basic_encode_test(size, 'utf7')
+            rudisha self.basic_encode_test(size, 'utf7')
         except MemoryError:
             pass # acceptable on 32-bit
 
     @bigmemtest(size=_4G // 4 + 5, memuse=ascii_char_size + ucs4_char_size + 4)
-    def test_encode_utf32(self, size):
+    eleza test_encode_utf32(self, size):
         try:
-            return self.basic_encode_test(size, 'utf32', expectedsize=4 * size + 4)
+            rudisha self.basic_encode_test(size, 'utf32', expectedsize=4 * size + 4)
         except MemoryError:
             pass # acceptable on 32-bit
 
     @bigmemtest(size=_2G - 1, memuse=ascii_char_size + 1)
-    def test_encode_ascii(self, size):
-        return self.basic_encode_test(size, 'ascii', c='A')
+    eleza test_encode_ascii(self, size):
+        rudisha self.basic_encode_test(size, 'ascii', c='A')
 
     # str % (...) uses a Py_UCS4 intermediate representation
 
     @bigmemtest(size=_2G + 10, memuse=ascii_char_size * 2 + ucs4_char_size)
-    def test_format(self, size):
+    eleza test_format(self, size):
         s = '-' * size
         sf = '%s' % (s,)
         self.assertTrue(s == sf)
@@ -673,7 +673,7 @@ class StrTest(unittest.TestCase, BaseStrTest):
         self.assertEqual(s.count('-'), size * 2)
 
     @bigmemtest(size=_2G + 10, memuse=ascii_char_size * 2)
-    def test_repr_small(self, size):
+    eleza test_repr_small(self, size):
         s = '-' * size
         s = repr(s)
         self.assertEqual(len(s), size + 2)
@@ -694,7 +694,7 @@ class StrTest(unittest.TestCase, BaseStrTest):
         self.assertEqual(s.count('0'), size * 2)
 
     @bigmemtest(size=_2G + 10, memuse=ascii_char_size * 5)
-    def test_repr_large(self, size):
+    eleza test_repr_large(self, size):
         s = '\x00' * size
         s = repr(s)
         self.assertEqual(len(s), size * 4 + 2)
@@ -710,7 +710,7 @@ class StrTest(unittest.TestCase, BaseStrTest):
     # that isn't taken into account here.
     @bigmemtest(size=_2G // 5 + 1, memuse=ucs2_char_size +
                                           ucs4_char_size + ascii_char_size * 6)
-    def test_unicode_repr(self, size):
+    eleza test_unicode_repr(self, size):
         # Use an assigned, but not printable code point.
         # It is in the range of the low surrogates \uDC00-\uDFFF.
         char = "\uDCBA"
@@ -725,7 +725,7 @@ class StrTest(unittest.TestCase, BaseStrTest):
             r = s = None
 
     @bigmemtest(size=_2G // 5 + 1, memuse=ucs4_char_size * 2 + ascii_char_size * 10)
-    def test_unicode_repr_wide(self, size):
+    eleza test_unicode_repr_wide(self, size):
         char = "\U0001DCBA"
         s = char * size
         try:
@@ -742,8 +742,8 @@ class StrTest(unittest.TestCase, BaseStrTest):
     # representation.
 
     @bigmemtest(size=_2G, memuse=ascii_char_size * 2 + ucs4_char_size)
-    def test_translate(self, size):
-        _ = self.from_latin1
+    eleza test_translate(self, size):
+        _ = self.kutoka_latin1
         SUBSTR = _('aZz.z.Aaz.')
         trans = {
             ord(_('.')): _('-'),
@@ -762,55 +762,55 @@ class StrTest(unittest.TestCase, BaseStrTest):
         self.assertEqual(s.count(_('z')), repeats * 3)
 
 
-class BytesTest(unittest.TestCase, BaseStrTest):
+kundi BytesTest(unittest.TestCase, BaseStrTest):
 
-    def from_latin1(self, s):
-        return s.encode("latin-1")
+    eleza kutoka_latin1(self, s):
+        rudisha s.encode("latin-1")
 
     @bigmemtest(size=_2G + 2, memuse=1 + ascii_char_size)
-    def test_decode(self, size):
-        s = self.from_latin1('.') * size
+    eleza test_decode(self, size):
+        s = self.kutoka_latin1('.') * size
         self.assertEqual(len(s.decode('utf-8')), size)
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_capitalize(self, size):
+    eleza test_capitalize(self, size):
         self._test_capitalize(size)
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_title(self, size):
+    eleza test_title(self, size):
         self._test_title(size)
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_swapcase(self, size):
+    eleza test_swapcase(self, size):
         self._test_swapcase(size)
 
 
-class BytearrayTest(unittest.TestCase, BaseStrTest):
+kundi BytearrayTest(unittest.TestCase, BaseStrTest):
 
-    def from_latin1(self, s):
-        return bytearray(s.encode("latin-1"))
+    eleza kutoka_latin1(self, s):
+        rudisha bytearray(s.encode("latin-1"))
 
     @bigmemtest(size=_2G + 2, memuse=1 + ascii_char_size)
-    def test_decode(self, size):
-        s = self.from_latin1('.') * size
+    eleza test_decode(self, size):
+        s = self.kutoka_latin1('.') * size
         self.assertEqual(len(s.decode('utf-8')), size)
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_capitalize(self, size):
+    eleza test_capitalize(self, size):
         self._test_capitalize(size)
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_title(self, size):
+    eleza test_title(self, size):
         self._test_title(size)
 
     @bigmemtest(size=_2G, memuse=2)
-    def test_swapcase(self, size):
+    eleza test_swapcase(self, size):
         self._test_swapcase(size)
 
     test_hash = None
     test_split_large = None
 
-class TupleTest(unittest.TestCase):
+kundi TupleTest(unittest.TestCase):
 
     # Tuples have a small, fixed-sized head and an array of pointers to
     # data.  Since we're testing 64-bit addressing, we can assume that the
@@ -822,7 +822,7 @@ class TupleTest(unittest.TestCase):
     # use of different types of objects as contents in different tests.
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 2)
-    def test_compare(self, size):
+    eleza test_compare(self, size):
         t1 = ('',) * size
         t2 = ('',) * size
         self.assertTrue(t1 == t2)
@@ -835,25 +835,25 @@ class TupleTest(unittest.TestCase):
 
     # Test concatenating into a single tuple of more than 2G in length,
     # and concatenating a tuple of more than 2G in length separately, so
-    # the smaller test still gets run even if there isn't memory for the
+    # the smaller test still gets run even ikiwa there isn't memory for the
     # larger test (but we still let the tester know the larger test is
     # skipped, in verbose mode.)
-    def basic_concat_test(self, size):
+    eleza basic_concat_test(self, size):
         t = ((),) * size
         self.assertEqual(len(t), size)
         t = t + t
         self.assertEqual(len(t), size * 2)
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 3)
-    def test_concat_small(self, size):
-        return self.basic_concat_test(size)
+    eleza test_concat_small(self, size):
+        rudisha self.basic_concat_test(size)
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 3)
-    def test_concat_large(self, size):
-        return self.basic_concat_test(size)
+    eleza test_concat_large(self, size):
+        rudisha self.basic_concat_test(size)
 
     @bigmemtest(size=_2G // 5 + 10, memuse=pointer_size * 5)
-    def test_contains(self, size):
+    eleza test_contains(self, size):
         t = (1, 2, 3, 4, 5) * size
         self.assertEqual(len(t), size * 5)
         self.assertTrue(5 in t)
@@ -861,7 +861,7 @@ class TupleTest(unittest.TestCase):
         self.assertFalse(0 in t)
 
     @bigmemtest(size=_2G + 10, memuse=pointer_size)
-    def test_hash(self, size):
+    eleza test_hash(self, size):
         t1 = (0,) * size
         h1 = hash(t1)
         del t1
@@ -869,7 +869,7 @@ class TupleTest(unittest.TestCase):
         self.assertFalse(h1 == hash(t2))
 
     @bigmemtest(size=_2G + 10, memuse=pointer_size)
-    def test_index_and_slice(self, size):
+    eleza test_index_and_slice(self, size):
         t = (None,) * size
         self.assertEqual(len(t), size)
         self.assertEqual(t[-1], None)
@@ -887,26 +887,26 @@ class TupleTest(unittest.TestCase):
         self.assertEqual(t[size:size+5], ())
 
     # Like test_concat, split in two.
-    def basic_test_repeat(self, size):
+    eleza basic_test_repeat(self, size):
         t = ('',) * size
         self.assertEqual(len(t), size)
         t = t * 2
         self.assertEqual(len(t), size * 2)
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 3)
-    def test_repeat_small(self, size):
-        return self.basic_test_repeat(size)
+    eleza test_repeat_small(self, size):
+        rudisha self.basic_test_repeat(size)
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 3)
-    def test_repeat_large(self, size):
-        return self.basic_test_repeat(size)
+    eleza test_repeat_large(self, size):
+        rudisha self.basic_test_repeat(size)
 
     @bigmemtest(size=_1G - 1, memuse=12)
-    def test_repeat_large_2(self, size):
-        return self.basic_test_repeat(size)
+    eleza test_repeat_large_2(self, size):
+        rudisha self.basic_test_repeat(size)
 
     @bigmemtest(size=_1G - 1, memuse=pointer_size * 2)
-    def test_from_2G_generator(self, size):
+    eleza test_kutoka_2G_generator(self, size):
         try:
             t = tuple(iter([42]*size))
         except MemoryError:
@@ -917,7 +917,7 @@ class TupleTest(unittest.TestCase):
             self.assertEqual(t[-10:], (42,) * 10)
 
     @bigmemtest(size=_1G - 25, memuse=pointer_size * 2)
-    def test_from_almost_2G_generator(self, size):
+    eleza test_kutoka_almost_2G_generator(self, size):
         try:
             t = tuple(iter([42]*size))
         except MemoryError:
@@ -928,7 +928,7 @@ class TupleTest(unittest.TestCase):
             self.assertEqual(t[-10:], (42,) * 10)
 
     # Like test_concat, split in two.
-    def basic_test_repr(self, size):
+    eleza basic_test_repr(self, size):
         t = (False,) * size
         s = repr(t)
         # The repr of a tuple of Falses is exactly 7 times the tuple length.
@@ -937,14 +937,14 @@ class TupleTest(unittest.TestCase):
         self.assertEqual(s[-10:], 'se, False)')
 
     @bigmemtest(size=_2G // 7 + 2, memuse=pointer_size + ascii_char_size * 7)
-    def test_repr_small(self, size):
-        return self.basic_test_repr(size)
+    eleza test_repr_small(self, size):
+        rudisha self.basic_test_repr(size)
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size + ascii_char_size * 7)
-    def test_repr_large(self, size):
-        return self.basic_test_repr(size)
+    eleza test_repr_large(self, size):
+        rudisha self.basic_test_repr(size)
 
-class ListTest(unittest.TestCase):
+kundi ListTest(unittest.TestCase):
 
     # Like tuples, lists have a small, fixed-sized head and an array of
     # pointers to data, so 8 bytes per size. Also like tuples, we make the
@@ -952,7 +952,7 @@ class ListTest(unittest.TestCase):
     # limits.
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 2)
-    def test_compare(self, size):
+    eleza test_compare(self, size):
         l1 = [''] * size
         l2 = [''] * size
         self.assertTrue(l1 == l2)
@@ -965,26 +965,26 @@ class ListTest(unittest.TestCase):
 
     # Test concatenating into a single list of more than 2G in length,
     # and concatenating a list of more than 2G in length separately, so
-    # the smaller test still gets run even if there isn't memory for the
+    # the smaller test still gets run even ikiwa there isn't memory for the
     # larger test (but we still let the tester know the larger test is
     # skipped, in verbose mode.)
-    def basic_test_concat(self, size):
+    eleza basic_test_concat(self, size):
         l = [[]] * size
         self.assertEqual(len(l), size)
         l = l + l
         self.assertEqual(len(l), size * 2)
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 3)
-    def test_concat_small(self, size):
-        return self.basic_test_concat(size)
+    eleza test_concat_small(self, size):
+        rudisha self.basic_test_concat(size)
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 3)
-    def test_concat_large(self, size):
-        return self.basic_test_concat(size)
+    eleza test_concat_large(self, size):
+        rudisha self.basic_test_concat(size)
 
     # XXX This tests suffers kutoka overallocation, just like test_append.
     # This should be fixed in future.
-    def basic_test_inplace_concat(self, size):
+    eleza basic_test_inplace_concat(self, size):
         l = [sys.stdout] * size
         l += l
         self.assertEqual(len(l), size * 2)
@@ -992,15 +992,15 @@ class ListTest(unittest.TestCase):
         self.assertTrue(l[size - 1] is l[size + 1])
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 2 * 9/8)
-    def test_inplace_concat_small(self, size):
-        return self.basic_test_inplace_concat(size)
+    eleza test_inplace_concat_small(self, size):
+        rudisha self.basic_test_inplace_concat(size)
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 2 * 9/8)
-    def test_inplace_concat_large(self, size):
-        return self.basic_test_inplace_concat(size)
+    eleza test_inplace_concat_large(self, size):
+        rudisha self.basic_test_inplace_concat(size)
 
     @bigmemtest(size=_2G // 5 + 10, memuse=pointer_size * 5)
-    def test_contains(self, size):
+    eleza test_contains(self, size):
         l = [1, 2, 3, 4, 5] * size
         self.assertEqual(len(l), size * 5)
         self.assertTrue(5 in l)
@@ -1008,12 +1008,12 @@ class ListTest(unittest.TestCase):
         self.assertFalse(0 in l)
 
     @bigmemtest(size=_2G + 10, memuse=pointer_size)
-    def test_hash(self, size):
+    eleza test_hash(self, size):
         l = [0] * size
         self.assertRaises(TypeError, hash, l)
 
     @bigmemtest(size=_2G + 10, memuse=pointer_size)
-    def test_index_and_slice(self, size):
+    eleza test_index_and_slice(self, size):
         l = [None] * size
         self.assertEqual(len(l), size)
         self.assertEqual(l[-1], None)
@@ -1068,7 +1068,7 @@ class ListTest(unittest.TestCase):
         self.assertEqual(l[0], 4)
 
     # Like test_concat, split in two.
-    def basic_test_repeat(self, size):
+    eleza basic_test_repeat(self, size):
         l = [] * size
         self.assertFalse(l)
         l = [''] * size
@@ -1077,16 +1077,16 @@ class ListTest(unittest.TestCase):
         self.assertEqual(len(l), size * 2)
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 3)
-    def test_repeat_small(self, size):
-        return self.basic_test_repeat(size)
+    eleza test_repeat_small(self, size):
+        rudisha self.basic_test_repeat(size)
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 3)
-    def test_repeat_large(self, size):
-        return self.basic_test_repeat(size)
+    eleza test_repeat_large(self, size):
+        rudisha self.basic_test_repeat(size)
 
     # XXX This tests suffers kutoka overallocation, just like test_append.
     # This should be fixed in future.
-    def basic_test_inplace_repeat(self, size):
+    eleza basic_test_inplace_repeat(self, size):
         l = ['']
         l *= size
         self.assertEqual(len(l), size)
@@ -1099,14 +1099,14 @@ class ListTest(unittest.TestCase):
         self.assertTrue(l[size - 1] is l[-1])
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 2 * 9/8)
-    def test_inplace_repeat_small(self, size):
-        return self.basic_test_inplace_repeat(size)
+    eleza test_inplace_repeat_small(self, size):
+        rudisha self.basic_test_inplace_repeat(size)
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 2 * 9/8)
-    def test_inplace_repeat_large(self, size):
-        return self.basic_test_inplace_repeat(size)
+    eleza test_inplace_repeat_large(self, size):
+        rudisha self.basic_test_inplace_repeat(size)
 
-    def basic_test_repr(self, size):
+    eleza basic_test_repr(self, size):
         l = [False] * size
         s = repr(l)
         # The repr of a list of Falses is exactly 7 times the list length.
@@ -1116,17 +1116,17 @@ class ListTest(unittest.TestCase):
         self.assertEqual(s.count('F'), size)
 
     @bigmemtest(size=_2G // 7 + 2, memuse=pointer_size + ascii_char_size * 7)
-    def test_repr_small(self, size):
-        return self.basic_test_repr(size)
+    eleza test_repr_small(self, size):
+        rudisha self.basic_test_repr(size)
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size + ascii_char_size * 7)
-    def test_repr_large(self, size):
-        return self.basic_test_repr(size)
+    eleza test_repr_large(self, size):
+        rudisha self.basic_test_repr(size)
 
     # list overallocates ~1/8th of the total size (on first expansion) so
     # the single list.append call puts memuse at 9 bytes per size.
     @bigmemtest(size=_2G, memuse=pointer_size * 9/8)
-    def test_append(self, size):
+    eleza test_append(self, size):
         l = [object()] * size
         l.append(object())
         self.assertEqual(len(l), size+1)
@@ -1134,14 +1134,14 @@ class ListTest(unittest.TestCase):
         self.assertFalse(l[-2] is l[-1])
 
     @bigmemtest(size=_2G // 5 + 2, memuse=pointer_size * 5)
-    def test_count(self, size):
+    eleza test_count(self, size):
         l = [1, 2, 3, 4, 5] * size
         self.assertEqual(l.count(1), size)
         self.assertEqual(l.count("1"), 0)
 
     # XXX This tests suffers kutoka overallocation, just like test_append.
     # This should be fixed in future.
-    def basic_test_extend(self, size):
+    eleza basic_test_extend(self, size):
         l = [object] * size
         l.extend(l)
         self.assertEqual(len(l), size * 2)
@@ -1149,15 +1149,15 @@ class ListTest(unittest.TestCase):
         self.assertTrue(l[size - 1] is l[size + 1])
 
     @bigmemtest(size=_2G // 2 + 2, memuse=pointer_size * 2 * 9/8)
-    def test_extend_small(self, size):
-        return self.basic_test_extend(size)
+    eleza test_extend_small(self, size):
+        rudisha self.basic_test_extend(size)
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 2 * 9/8)
-    def test_extend_large(self, size):
-        return self.basic_test_extend(size)
+    eleza test_extend_large(self, size):
+        rudisha self.basic_test_extend(size)
 
     @bigmemtest(size=_2G // 5 + 2, memuse=pointer_size * 5)
-    def test_index(self, size):
+    eleza test_index(self, size):
         l = [1, 2, 3, 4, 5] * size
         size *= 5
         self.assertEqual(l.index(1), 0)
@@ -1168,7 +1168,7 @@ class ListTest(unittest.TestCase):
 
     # This tests suffers kutoka overallocation, just like test_append.
     @bigmemtest(size=_2G + 10, memuse=pointer_size * 9/8)
-    def test_insert(self, size):
+    eleza test_insert(self, size):
         l = [1.0] * size
         l.insert(size - 1, "A")
         size += 1
@@ -1187,7 +1187,7 @@ class ListTest(unittest.TestCase):
         self.assertEqual(l[size - 3:], ["A", 1.0, "B"])
 
     @bigmemtest(size=_2G // 5 + 4, memuse=pointer_size * 5)
-    def test_pop(self, size):
+    eleza test_pop(self, size):
         l = ["a", "b", "c", "d", "e"] * size
         size *= 5
         self.assertEqual(len(l), size)
@@ -1211,7 +1211,7 @@ class ListTest(unittest.TestCase):
         self.assertEqual(l[-2:], ["b", "d"])
 
     @bigmemtest(size=_2G + 10, memuse=pointer_size)
-    def test_remove(self, size):
+    eleza test_remove(self, size):
         l = [10] * size
         self.assertEqual(len(l), size)
 
@@ -1231,7 +1231,7 @@ class ListTest(unittest.TestCase):
         self.assertEqual(l[-2:], [10, 10])
 
     @bigmemtest(size=_2G // 5 + 2, memuse=pointer_size * 5)
-    def test_reverse(self, size):
+    eleza test_reverse(self, size):
         l = [1, 2, 3, 4, 5] * size
         l.reverse()
         self.assertEqual(len(l), size * 5)
@@ -1239,7 +1239,7 @@ class ListTest(unittest.TestCase):
         self.assertEqual(l[:5], [5, 4, 3, 2, 1])
 
     @bigmemtest(size=_2G // 5 + 2, memuse=pointer_size * 5 * 1.5)
-    def test_sort(self, size):
+    eleza test_sort(self, size):
         l = [1, 2, 3, 4, 5] * size
         l.sort()
         self.assertEqual(len(l), size * 5)
@@ -1247,11 +1247,11 @@ class ListTest(unittest.TestCase):
         self.assertEqual(l[:10], [1] * 10)
         self.assertEqual(l[-10:], [5] * 10)
 
-def test_main():
+eleza test_main():
     support.run_unittest(StrTest, BytesTest, BytearrayTest,
         TupleTest, ListTest)
 
-if __name__ == '__main__':
-    if len(sys.argv) > 1:
+ikiwa __name__ == '__main__':
+    ikiwa len(sys.argv) > 1:
         support.set_memlimit(sys.argv[1])
     test_main()

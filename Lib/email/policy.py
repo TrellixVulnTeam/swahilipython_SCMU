@@ -5,7 +5,7 @@ code that adds all the email6 features.
 import re
 import sys
 from email._policybase import Policy, Compat32, compat32, _extend_docstrings
-from email.utils import _has_surrogates
+from email.utils agiza _has_surrogates
 from email.headerregistry import HeaderRegistry as HeaderRegistry
 from email.contentmanager import raw_data_manager
 from email.message import EmailMessage

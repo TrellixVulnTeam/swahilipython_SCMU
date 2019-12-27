@@ -10,7 +10,7 @@ kutoka test agiza support
 # TODO:
 #  - Add new tests, for example for "dgettext"
 #  - Remove dummy tests, for example testing for single and double quotes
-#    has no sense, it would have if we were testing a parser (i.e. pygettext)
+#    has no sense, it would have ikiwa we were testing a parser (i.e. pygettext)
 #  - Tests should have only one assert.
 
 GNU_MO_DATA = b'''\
@@ -115,9 +115,9 @@ UMOFILE = os.path.join(LOCALEDIR, 'ugettext.mo')
 MMOFILE = os.path.join(LOCALEDIR, 'metadata.mo')
 
 
-class GettextBaseTest(unittest.TestCase):
-    def setUp(self):
-        if not os.path.isdir(LOCALEDIR):
+kundi GettextBaseTest(unittest.TestCase):
+    eleza setUp(self):
+        ikiwa not os.path.isdir(LOCALEDIR):
             os.makedirs(LOCALEDIR)
         with open(MOFILE, 'wb') as fp:
             fp.write(base64.decodebytes(GNU_MO_DATA))
@@ -133,7 +133,7 @@ class GettextBaseTest(unittest.TestCase):
         self.env['LANGUAGE'] = 'xx'
         gettext._translations.clear()
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.env.__exit__()
         del self.env
         support.rmtree(os.path.split(LOCALEDIR)[0])
@@ -145,14 +145,14 @@ WCBTdHVkaW8pICAjLSMtIy0jLSMKQ29udGVudC1UeXBlOiB0ZXh0L3BsYWluOyBjaGFyc2V0PVVU
 Ri04CgA=
 '''
 
-class GettextTestCase1(GettextBaseTest):
-    def setUp(self):
+kundi GettextTestCase1(GettextBaseTest):
+    eleza setUp(self):
         GettextBaseTest.setUp(self)
         self.localedir = os.curdir
         self.mofile = MOFILE
         gettext.install('gettext', self.localedir, names=['pgettext'])
 
-    def test_some_translations(self):
+    eleza test_some_translations(self):
         eq = self.assertEqual
         # test some translations
         eq(_('albatross'), 'albatross')
@@ -160,14 +160,14 @@ class GettextTestCase1(GettextBaseTest):
         eq(_(r'Raymond Luxury Yach-t'), 'Throatwobbler Mangrove')
         eq(_(r'nudge nudge'), 'wink wink')
 
-    def test_some_translations_with_context(self):
+    eleza test_some_translations_with_context(self):
         eq = self.assertEqual
         eq(pgettext('my context', 'nudge nudge'),
            'wink wink (in "my context")')
         eq(pgettext('my other context', 'nudge nudge'),
            'wink wink (in "my other context")')
 
-    def test_double_quotes(self):
+    eleza test_double_quotes(self):
         eq = self.assertEqual
         # double quotes
         eq(_("albatross"), 'albatross')
@@ -175,7 +175,7 @@ class GettextTestCase1(GettextBaseTest):
         eq(_(r"Raymond Luxury Yach-t"), 'Throatwobbler Mangrove')
         eq(_(r"nudge nudge"), 'wink wink')
 
-    def test_triple_single_quotes(self):
+    eleza test_triple_single_quotes(self):
         eq = self.assertEqual
         # triple single quotes
         eq(_('''albatross'''), 'albatross')
@@ -183,7 +183,7 @@ class GettextTestCase1(GettextBaseTest):
         eq(_(r'''Raymond Luxury Yach-t'''), 'Throatwobbler Mangrove')
         eq(_(r'''nudge nudge'''), 'wink wink')
 
-    def test_triple_double_quotes(self):
+    eleza test_triple_double_quotes(self):
         eq = self.assertEqual
         # triple double quotes
         eq(_("""albatross"""), 'albatross')
@@ -191,7 +191,7 @@ class GettextTestCase1(GettextBaseTest):
         eq(_(r"""Raymond Luxury Yach-t"""), 'Throatwobbler Mangrove')
         eq(_(r"""nudge nudge"""), 'wink wink')
 
-    def test_multiline_strings(self):
+    eleza test_multiline_strings(self):
         eq = self.assertEqual
         # multiline strings
         eq(_('''This module provides internationalization and localization
@@ -201,7 +201,7 @@ gettext message catalog library.'''),
 fhccbeg sbe lbhe Clguba cebtenzf ol cebivqvat na vagresnpr gb gur TAH
 trggrkg zrffntr pngnybt yvoenel.''')
 
-    def test_the_alternative_interface(self):
+    eleza test_the_alternative_interface(self):
         eq = self.assertEqual
         # test the alternative interface
         with open(self.mofile, 'rb') as fp:
@@ -209,7 +209,7 @@ trggrkg zrffntr pngnybt yvoenel.''')
         # Install the translation object
         t.install()
         eq(_('nudge nudge'), 'wink wink')
-        # Try unicode return type
+        # Try unicode rudisha type
         t.install()
         eq(_('mullusk'), 'bacon')
         # Test installation of other methods
@@ -222,8 +222,8 @@ trggrkg zrffntr pngnybt yvoenel.''')
         del builtins.lgettext
 
 
-class GettextTestCase2(GettextBaseTest):
-    def setUp(self):
+kundi GettextTestCase2(GettextBaseTest):
+    eleza setUp(self):
         GettextBaseTest.setUp(self)
         self.localedir = os.curdir
         # Set up the bindings
@@ -232,13 +232,13 @@ class GettextTestCase2(GettextBaseTest):
         # For convenience
         self._ = gettext.gettext
 
-    def test_bindtextdomain(self):
+    eleza test_bindtextdomain(self):
         self.assertEqual(gettext.bindtextdomain('gettext'), self.localedir)
 
-    def test_textdomain(self):
+    eleza test_textdomain(self):
         self.assertEqual(gettext.textdomain(), 'gettext')
 
-    def test_bad_major_version(self):
+    eleza test_bad_major_version(self):
         with open(MOFILE_BAD_MAJOR_VERSION, 'rb') as fp:
             with self.assertRaises(OSError) as cm:
                 gettext.GNUTranslations(fp)
@@ -248,12 +248,12 @@ class GettextTestCase2(GettextBaseTest):
             self.assertEqual(exception.strerror, "Bad version number 5")
             self.assertEqual(exception.filename, MOFILE_BAD_MAJOR_VERSION)
 
-    def test_bad_minor_version(self):
+    eleza test_bad_minor_version(self):
         with open(MOFILE_BAD_MINOR_VERSION, 'rb') as fp:
             # Check that no error is thrown with a bad minor version number
             gettext.GNUTranslations(fp)
 
-    def test_some_translations(self):
+    eleza test_some_translations(self):
         eq = self.assertEqual
         # test some translations
         eq(self._('albatross'), 'albatross')
@@ -261,21 +261,21 @@ class GettextTestCase2(GettextBaseTest):
         eq(self._(r'Raymond Luxury Yach-t'), 'Throatwobbler Mangrove')
         eq(self._(r'nudge nudge'), 'wink wink')
 
-    def test_some_translations_with_context(self):
+    eleza test_some_translations_with_context(self):
         eq = self.assertEqual
         eq(gettext.pgettext('my context', 'nudge nudge'),
            'wink wink (in "my context")')
         eq(gettext.pgettext('my other context', 'nudge nudge'),
            'wink wink (in "my other context")')
 
-    def test_some_translations_with_context_and_domain(self):
+    eleza test_some_translations_with_context_and_domain(self):
         eq = self.assertEqual
         eq(gettext.dpgettext('gettext', 'my context', 'nudge nudge'),
            'wink wink (in "my context")')
         eq(gettext.dpgettext('gettext', 'my other context', 'nudge nudge'),
            'wink wink (in "my other context")')
 
-    def test_double_quotes(self):
+    eleza test_double_quotes(self):
         eq = self.assertEqual
         # double quotes
         eq(self._("albatross"), 'albatross')
@@ -283,7 +283,7 @@ class GettextTestCase2(GettextBaseTest):
         eq(self._(r"Raymond Luxury Yach-t"), 'Throatwobbler Mangrove')
         eq(self._(r"nudge nudge"), 'wink wink')
 
-    def test_triple_single_quotes(self):
+    eleza test_triple_single_quotes(self):
         eq = self.assertEqual
         # triple single quotes
         eq(self._('''albatross'''), 'albatross')
@@ -291,7 +291,7 @@ class GettextTestCase2(GettextBaseTest):
         eq(self._(r'''Raymond Luxury Yach-t'''), 'Throatwobbler Mangrove')
         eq(self._(r'''nudge nudge'''), 'wink wink')
 
-    def test_triple_double_quotes(self):
+    eleza test_triple_double_quotes(self):
         eq = self.assertEqual
         # triple double quotes
         eq(self._("""albatross"""), 'albatross')
@@ -299,7 +299,7 @@ class GettextTestCase2(GettextBaseTest):
         eq(self._(r"""Raymond Luxury Yach-t"""), 'Throatwobbler Mangrove')
         eq(self._(r"""nudge nudge"""), 'wink wink')
 
-    def test_multiline_strings(self):
+    eleza test_multiline_strings(self):
         eq = self.assertEqual
         # multiline strings
         eq(self._('''This module provides internationalization and localization
@@ -310,19 +310,19 @@ fhccbeg sbe lbhe Clguba cebtenzf ol cebivqvat na vagresnpr gb gur TAH
 trggrkg zrffntr pngnybt yvoenel.''')
 
 
-class PluralFormsTestCase(GettextBaseTest):
-    def setUp(self):
+kundi PluralFormsTestCase(GettextBaseTest):
+    eleza setUp(self):
         GettextBaseTest.setUp(self)
         self.mofile = MOFILE
 
-    def test_plural_forms1(self):
+    eleza test_plural_forms1(self):
         eq = self.assertEqual
         x = gettext.ngettext('There is %s file', 'There are %s files', 1)
         eq(x, 'Hay %s fichero')
         x = gettext.ngettext('There is %s file', 'There are %s files', 2)
         eq(x, 'Hay %s ficheros')
 
-    def test_plural_context_forms1(self):
+    eleza test_plural_context_forms1(self):
         eq = self.assertEqual
         x = gettext.npgettext('With context',
                               'There is %s file', 'There are %s files', 1)
@@ -331,7 +331,7 @@ class PluralFormsTestCase(GettextBaseTest):
                               'There is %s file', 'There are %s files', 2)
         eq(x, 'Hay %s ficheros (context)')
 
-    def test_plural_forms2(self):
+    eleza test_plural_forms2(self):
         eq = self.assertEqual
         with open(self.mofile, 'rb') as fp:
             t = gettext.GNUTranslations(fp)
@@ -340,7 +340,7 @@ class PluralFormsTestCase(GettextBaseTest):
         x = t.ngettext('There is %s file', 'There are %s files', 2)
         eq(x, 'Hay %s ficheros')
 
-    def test_plural_context_forms2(self):
+    eleza test_plural_context_forms2(self):
         eq = self.assertEqual
         with open(self.mofile, 'rb') as fp:
             t = gettext.GNUTranslations(fp)
@@ -353,86 +353,86 @@ class PluralFormsTestCase(GettextBaseTest):
 
     # Examples kutoka http://www.gnu.org/software/gettext/manual/gettext.html
 
-    def test_ja(self):
+    eleza test_ja(self):
         eq = self.assertEqual
         f = gettext.c2py('0')
         s = ''.join([ str(f(x)) for x in range(200) ])
         eq(s, "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")
 
-    def test_de(self):
+    eleza test_de(self):
         eq = self.assertEqual
         f = gettext.c2py('n != 1')
         s = ''.join([ str(f(x)) for x in range(200) ])
         eq(s, "10111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111")
 
-    def test_fr(self):
+    eleza test_fr(self):
         eq = self.assertEqual
         f = gettext.c2py('n>1')
         s = ''.join([ str(f(x)) for x in range(200) ])
         eq(s, "00111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111")
 
-    def test_lv(self):
+    eleza test_lv(self):
         eq = self.assertEqual
         f = gettext.c2py('n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2')
         s = ''.join([ str(f(x)) for x in range(200) ])
         eq(s, "20111111111111111111101111111110111111111011111111101111111110111111111011111111101111111110111111111011111111111111111110111111111011111111101111111110111111111011111111101111111110111111111011111111")
 
-    def test_gd(self):
+    eleza test_gd(self):
         eq = self.assertEqual
         f = gettext.c2py('n==1 ? 0 : n==2 ? 1 : 2')
         s = ''.join([ str(f(x)) for x in range(200) ])
         eq(s, "20122222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222")
 
-    def test_gd2(self):
+    eleza test_gd2(self):
         eq = self.assertEqual
         # Tests the combination of parentheses and "?:"
         f = gettext.c2py('n==1 ? 0 : (n==2 ? 1 : 2)')
         s = ''.join([ str(f(x)) for x in range(200) ])
         eq(s, "20122222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222")
 
-    def test_ro(self):
+    eleza test_ro(self):
         eq = self.assertEqual
         f = gettext.c2py('n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2')
         s = ''.join([ str(f(x)) for x in range(200) ])
         eq(s, "10111111111111111111222222222222222222222222222222222222222222222222222222222222222222222222222222222111111111111111111122222222222222222222222222222222222222222222222222222222222222222222222222222222")
 
-    def test_lt(self):
+    eleza test_lt(self):
         eq = self.assertEqual
         f = gettext.c2py('n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2')
         s = ''.join([ str(f(x)) for x in range(200) ])
         eq(s, "20111111112222222222201111111120111111112011111111201111111120111111112011111111201111111120111111112011111111222222222220111111112011111111201111111120111111112011111111201111111120111111112011111111")
 
-    def test_ru(self):
+    eleza test_ru(self):
         eq = self.assertEqual
         f = gettext.c2py('n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2')
         s = ''.join([ str(f(x)) for x in range(200) ])
         eq(s, "20111222222222222222201112222220111222222011122222201112222220111222222011122222201112222220111222222011122222222222222220111222222011122222201112222220111222222011122222201112222220111222222011122222")
 
-    def test_cs(self):
+    eleza test_cs(self):
         eq = self.assertEqual
         f = gettext.c2py('(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2')
         s = ''.join([ str(f(x)) for x in range(200) ])
         eq(s, "20111222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222")
 
-    def test_pl(self):
+    eleza test_pl(self):
         eq = self.assertEqual
         f = gettext.c2py('n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2')
         s = ''.join([ str(f(x)) for x in range(200) ])
         eq(s, "20111222222222222222221112222222111222222211122222221112222222111222222211122222221112222222111222222211122222222222222222111222222211122222221112222222111222222211122222221112222222111222222211122222")
 
-    def test_sl(self):
+    eleza test_sl(self):
         eq = self.assertEqual
         f = gettext.c2py('n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3')
         s = ''.join([ str(f(x)) for x in range(200) ])
         eq(s, "30122333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333012233333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333")
 
-    def test_ar(self):
+    eleza test_ar(self):
         eq = self.assertEqual
         f = gettext.c2py('n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5')
         s = ''.join([ str(f(x)) for x in range(200) ])
         eq(s, "01233333333444444444444444444444444444444444444444444444444444444444444444444444444444444444444444445553333333344444444444444444444444444444444444444444444444444444444444444444444444444444444444444444")
 
-    def test_security(self):
+    eleza test_security(self):
         raises = self.assertRaises
         # Test for a dangerous expression
         raises(ValueError, gettext.c2py, "os.chmod('/etc/passwd',0777)")
@@ -448,7 +448,7 @@ class PluralFormsTestCase(GettextBaseTest):
         raises(ValueError, gettext.c2py, '('*10000 + 'n' + ')'*10000)
         self.assertEqual(gettext.c2py('('*20 + 'n' + ')'*20)(1), 1)
 
-    def test_chained_comparison(self):
+    eleza test_chained_comparison(self):
         # C doesn't chain comparison as Python so 2 == 2 == 2 gets different results
         f = gettext.c2py('n == n == n')
         self.assertEqual(''.join(str(f(x)) for x in range(3)), '010')
@@ -459,10 +459,10 @@ class PluralFormsTestCase(GettextBaseTest):
         f = gettext.c2py('0 < n < 2')
         self.assertEqual(''.join(str(f(x)) for x in range(3)), '111')
 
-    def test_decimal_number(self):
+    eleza test_decimal_number(self):
         self.assertEqual(gettext.c2py('0123')(1), 123)
 
-    def test_invalid_syntax(self):
+    eleza test_invalid_syntax(self):
         invalid_expressions = [
             'x>1', '(n>1', 'n>1)', '42**42**42', '0xa', '1.0', '1e2',
             'n>0x1', '+n', '-n', 'n()', 'n(1)', '1+', 'nn', 'n n',
@@ -471,13 +471,13 @@ class PluralFormsTestCase(GettextBaseTest):
             with self.assertRaises(ValueError):
                 gettext.c2py(expr)
 
-    def test_nested_condition_operator(self):
+    eleza test_nested_condition_operator(self):
         self.assertEqual(gettext.c2py('n?1?2:3:4')(0), 4)
         self.assertEqual(gettext.c2py('n?1?2:3:4')(1), 2)
         self.assertEqual(gettext.c2py('n?1:3?4:5')(0), 4)
         self.assertEqual(gettext.c2py('n?1:3?4:5')(1), 1)
 
-    def test_division(self):
+    eleza test_division(self):
         f = gettext.c2py('2/n*3')
         self.assertEqual(f(1), 6)
         self.assertEqual(f(2), 3)
@@ -485,7 +485,7 @@ class PluralFormsTestCase(GettextBaseTest):
         self.assertEqual(f(-1), -6)
         self.assertRaises(ZeroDivisionError, f, 0)
 
-    def test_plural_number(self):
+    eleza test_plural_number(self):
         f = gettext.c2py('n != 1')
         self.assertEqual(f(1), 0)
         self.assertEqual(f(2), 1)
@@ -501,18 +501,18 @@ class PluralFormsTestCase(GettextBaseTest):
         self.assertRaises(TypeError, f, object())
 
 
-class LGettextTestCase(GettextBaseTest):
-    def setUp(self):
+kundi LGettextTestCase(GettextBaseTest):
+    eleza setUp(self):
         GettextBaseTest.setUp(self)
         self.mofile = MOFILE
 
     @contextlib.contextmanager
-    def assertDeprecated(self, name):
+    eleza assertDeprecated(self, name):
         with self.assertWarnsRegex(DeprecationWarning,
                                    fr'^{name}\(\) is deprecated'):
             yield
 
-    def test_lgettext(self):
+    eleza test_lgettext(self):
         lgettext = gettext.lgettext
         ldgettext = gettext.ldgettext
         with self.assertDeprecated('lgettext'):
@@ -524,7 +524,7 @@ class LGettextTestCase(GettextBaseTest):
         with self.assertDeprecated('ldgettext'):
             self.assertEqual(ldgettext('gettext', 'spam'), b'spam')
 
-    def test_lgettext_2(self):
+    eleza test_lgettext_2(self):
         with open(self.mofile, 'rb') as fp:
             t = gettext.GNUTranslations(fp)
         lgettext = t.lgettext
@@ -533,7 +533,7 @@ class LGettextTestCase(GettextBaseTest):
         with self.assertDeprecated('lgettext'):
             self.assertEqual(lgettext('spam'), b'spam')
 
-    def test_lgettext_bind_textdomain_codeset(self):
+    eleza test_lgettext_bind_textdomain_codeset(self):
         lgettext = gettext.lgettext
         ldgettext = gettext.ldgettext
         with self.assertDeprecated('bind_textdomain_codeset'):
@@ -554,7 +554,7 @@ class LGettextTestCase(GettextBaseTest):
             with self.assertDeprecated('bind_textdomain_codeset'):
                 gettext.bind_textdomain_codeset('gettext', saved_codeset)
 
-    def test_lgettext_output_encoding(self):
+    eleza test_lgettext_output_encoding(self):
         with open(self.mofile, 'rb') as fp:
             t = gettext.GNUTranslations(fp)
         lgettext = t.lgettext
@@ -565,7 +565,7 @@ class LGettextTestCase(GettextBaseTest):
         with self.assertDeprecated('lgettext'):
             self.assertEqual(lgettext('spam'), 'spam'.encode('utf-16'))
 
-    def test_lngettext(self):
+    eleza test_lngettext(self):
         lngettext = gettext.lngettext
         ldngettext = gettext.ldngettext
         with self.assertDeprecated('lngettext'):
@@ -593,7 +593,7 @@ class LGettextTestCase(GettextBaseTest):
             x = ldngettext('gettext', 'There is %s directory', 'There are %s directories', 2)
         self.assertEqual(x, b'There are %s directories')
 
-    def test_lngettext_2(self):
+    eleza test_lngettext_2(self):
         with open(self.mofile, 'rb') as fp:
             t = gettext.GNUTranslations(fp)
         lngettext = t.lngettext
@@ -610,7 +610,7 @@ class LGettextTestCase(GettextBaseTest):
             x = lngettext('There is %s directory', 'There are %s directories', 2)
         self.assertEqual(x, b'There are %s directories')
 
-    def test_lngettext_bind_textdomain_codeset(self):
+    eleza test_lngettext_bind_textdomain_codeset(self):
         lngettext = gettext.lngettext
         ldngettext = gettext.ldngettext
         with self.assertDeprecated('bind_textdomain_codeset'):
@@ -647,7 +647,7 @@ class LGettextTestCase(GettextBaseTest):
             with self.assertDeprecated('bind_textdomain_codeset'):
                 gettext.bind_textdomain_codeset('gettext', saved_codeset)
 
-    def test_lngettext_output_encoding(self):
+    eleza test_lngettext_output_encoding(self):
         with open(self.mofile, 'rb') as fp:
             t = gettext.GNUTranslations(fp)
         lngettext = t.lngettext
@@ -666,7 +666,7 @@ class LGettextTestCase(GettextBaseTest):
             x = lngettext('There is %s directory', 'There are %s directories', 2)
         self.assertEqual(x, 'There are %s directories'.encode('utf-16'))
 
-    def test_output_encoding(self):
+    eleza test_output_encoding(self):
         with open(self.mofile, 'rb') as fp:
             t = gettext.GNUTranslations(fp)
         with self.assertDeprecated('set_output_charset'):
@@ -675,15 +675,15 @@ class LGettextTestCase(GettextBaseTest):
             self.assertEqual(t.output_charset(), 'utf-16')
 
 
-class GNUTranslationParsingTest(GettextBaseTest):
-    def test_plural_form_error_issue17898(self):
+kundi GNUTranslationParsingTest(GettextBaseTest):
+    eleza test_plural_form_error_issue17898(self):
         with open(MOFILE, 'wb') as fp:
             fp.write(base64.decodebytes(GNU_MO_DATA_ISSUE_17898))
         with open(MOFILE, 'rb') as fp:
             # If this runs cleanly, the bug is fixed.
             t = gettext.GNUTranslations(fp)
 
-    def test_ignore_comments_in_headers_issue36239(self):
+    eleza test_ignore_comments_in_headers_issue36239(self):
         """Checks that comments like:
 
             #-#-#-#-#  messages.po (EdX Studio)  #-#-#-#-#
@@ -697,45 +697,45 @@ class GNUTranslationParsingTest(GettextBaseTest):
             self.assertEqual(t.info()["plural-forms"], "nplurals=2; plural=(n != 1);")
 
 
-class UnicodeTranslationsTest(GettextBaseTest):
-    def setUp(self):
+kundi UnicodeTranslationsTest(GettextBaseTest):
+    eleza setUp(self):
         GettextBaseTest.setUp(self)
         with open(UMOFILE, 'rb') as fp:
             self.t = gettext.GNUTranslations(fp)
         self._ = self.t.gettext
         self.pgettext = self.t.pgettext
 
-    def test_unicode_msgid(self):
+    eleza test_unicode_msgid(self):
         self.assertIsInstance(self._(''), str)
 
-    def test_unicode_msgstr(self):
+    eleza test_unicode_msgstr(self):
         self.assertEqual(self._('ab\xde'), '\xa4yz')
 
-    def test_unicode_context_msgstr(self):
+    eleza test_unicode_context_msgstr(self):
         t = self.pgettext('mycontext\xde', 'ab\xde')
         self.assertTrue(isinstance(t, str))
         self.assertEqual(t, '\xa4yz (context version)')
 
 
-class UnicodeTranslationsPluralTest(GettextBaseTest):
-    def setUp(self):
+kundi UnicodeTranslationsPluralTest(GettextBaseTest):
+    eleza setUp(self):
         GettextBaseTest.setUp(self)
         with open(MOFILE, 'rb') as fp:
             self.t = gettext.GNUTranslations(fp)
         self.ngettext = self.t.ngettext
         self.npgettext = self.t.npgettext
 
-    def test_unicode_msgid(self):
+    eleza test_unicode_msgid(self):
         unless = self.assertTrue
         unless(isinstance(self.ngettext('', '', 1), str))
         unless(isinstance(self.ngettext('', '', 2), str))
 
-    def test_unicode_context_msgid(self):
+    eleza test_unicode_context_msgid(self):
         unless = self.assertTrue
         unless(isinstance(self.npgettext('', '', '', 1), str))
         unless(isinstance(self.npgettext('', '', '', 2), str))
 
-    def test_unicode_msgstr(self):
+    eleza test_unicode_msgstr(self):
         eq = self.assertEqual
         unless = self.assertTrue
         t = self.ngettext("There is %s file", "There are %s files", 1)
@@ -746,7 +746,7 @@ class UnicodeTranslationsPluralTest(GettextBaseTest):
         unless(isinstance(t, str))
         eq(t, "Hay %s ficheros")
 
-    def test_unicode_msgstr_with_context(self):
+    eleza test_unicode_msgstr_with_context(self):
         eq = self.assertEqual
         unless = self.assertTrue
         t = self.npgettext("With context",
@@ -759,8 +759,8 @@ class UnicodeTranslationsPluralTest(GettextBaseTest):
         eq(t, "Hay %s ficheros (context)")
 
 
-class WeirdMetadataTest(GettextBaseTest):
-    def setUp(self):
+kundi WeirdMetadataTest(GettextBaseTest):
+    eleza setUp(self):
         GettextBaseTest.setUp(self)
         with open(MMOFILE, 'rb') as fp:
             try:
@@ -769,20 +769,20 @@ class WeirdMetadataTest(GettextBaseTest):
                 self.tearDown()
                 raise
 
-    def test_weird_metadata(self):
+    eleza test_weird_metadata(self):
         info = self.t.info()
         self.assertEqual(len(info), 9)
         self.assertEqual(info['last-translator'],
            'John Doe <jdoe@example.com>\nJane Foobar <jfoobar@example.com>')
 
 
-class DummyGNUTranslations(gettext.GNUTranslations):
-    def foo(self):
-        return 'foo'
+kundi DummyGNUTranslations(gettext.GNUTranslations):
+    eleza foo(self):
+        rudisha 'foo'
 
 
-class GettextCacheTestCase(GettextBaseTest):
-    def test_cache(self):
+kundi GettextCacheTestCase(GettextBaseTest):
+    eleza test_cache(self):
         self.localedir = os.curdir
         self.mofile = MOFILE
 
@@ -817,13 +817,13 @@ class GettextCacheTestCase(GettextBaseTest):
             self.assertEqual(t.output_charset(), 'utf-16')
 
 
-class MiscTestCase(unittest.TestCase):
-    def test__all__(self):
+kundi MiscTestCase(unittest.TestCase):
+    eleza test__all__(self):
         blacklist = {'c2py', 'ENOENT'}
         support.check__all__(self, gettext, blacklist=blacklist)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()
 
 

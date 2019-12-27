@@ -41,7 +41,7 @@ The :mod:`gc` module provides the following functions:
 .. function:: collect(generation=2)
 
    With no arguments, run a full collection.  The optional argument *generation*
-   may be an integer specifying which generation to collect (from 0 to 2).  A
+   may be an integer specifying which generation to collect (kutoka 0 to 2).  A
    :exc:`ValueError` is raised if the generation number  is invalid. The number of
    unreachable objects found is returned.
 
@@ -149,7 +149,7 @@ The :mod:`gc` module provides the following functions:
    directly reachable.  :c:member:`~PyTypeObject.tp_traverse` methods are supported only by objects
    that support garbage collection, and are only required to visit objects that may
    be involved in a cycle.  So, for example, if an integer is directly reachable
-   from an argument, that integer object may or may not appear in the result list.
+   kutoka an argument, that integer object may or may not appear in the result list.
 
 
 .. function:: is_tracked(obj)

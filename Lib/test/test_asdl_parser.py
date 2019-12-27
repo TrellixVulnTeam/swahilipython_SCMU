@@ -9,16 +9,16 @@ agiza unittest
 
 
 # This test is only relevant for kutoka-source builds of Python.
-if not sysconfig.is_python_build():
+ikiwa not sysconfig.is_python_build():
     raise unittest.SkipTest('test irrelevant for an installed Python')
 
 src_base = dirname(dirname(dirname(__file__)))
 parser_dir = os.path.join(src_base, 'Parser')
 
 
-class TestAsdlParser(unittest.TestCase):
+kundi TestAsdlParser(unittest.TestCase):
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         # Loads the asdl module dynamically, since it's not in a real agizaable
         # package.
         # Parses Python.asdl into an ast.Module and run the check on it.
@@ -31,22 +31,22 @@ class TestAsdlParser(unittest.TestCase):
         cls.assertTrue(cls.asdl.check(cls.mod), 'Module validation failed')
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         del sys.path[0]
 
-    def setUp(self):
+    eleza setUp(self):
         # alias stuff kutoka the class, for convenience
         self.asdl = TestAsdlParser.asdl
         self.mod = TestAsdlParser.mod
         self.types = self.mod.types
 
-    def test_module(self):
+    eleza test_module(self):
         self.assertEqual(self.mod.name, 'Python')
         self.assertIn('stmt', self.types)
         self.assertIn('expr', self.types)
         self.assertIn('mod', self.types)
 
-    def test_definitions(self):
+    eleza test_definitions(self):
         defs = self.mod.dfns
         self.assertIsInstance(defs[0], self.asdl.Type)
         self.assertIsInstance(defs[0].value, self.asdl.Sum)
@@ -54,13 +54,13 @@ class TestAsdlParser(unittest.TestCase):
         self.assertIsInstance(self.types['withitem'], self.asdl.Product)
         self.assertIsInstance(self.types['alias'], self.asdl.Product)
 
-    def test_product(self):
+    eleza test_product(self):
         alias = self.types['alias']
         self.assertEqual(
             str(alias),
             'Product([Field(identifier, name), Field(identifier, asname, opt=True)])')
 
-    def test_attributes(self):
+    eleza test_attributes(self):
         stmt = self.types['stmt']
         self.assertEqual(len(stmt.attributes), 4)
         self.assertEqual(str(stmt.attributes[0]), 'Field(int, lineno)')
@@ -68,7 +68,7 @@ class TestAsdlParser(unittest.TestCase):
         self.assertEqual(str(stmt.attributes[2]), 'Field(int, end_lineno, opt=True)')
         self.assertEqual(str(stmt.attributes[3]), 'Field(int, end_col_offset, opt=True)')
 
-    def test_constructor_fields(self):
+    eleza test_constructor_fields(self):
         ehandler = self.types['excepthandler']
         self.assertEqual(len(ehandler.types), 1)
         self.assertEqual(len(ehandler.attributes), 4)
@@ -93,26 +93,26 @@ class TestAsdlParser(unittest.TestCase):
         self.assertFalse(f2.opt)
         self.assertTrue(f2.seq)
 
-    def test_visitor(self):
-        class CustomVisitor(self.asdl.VisitorBase):
-            def __init__(self):
+    eleza test_visitor(self):
+        kundi CustomVisitor(self.asdl.VisitorBase):
+            eleza __init__(self):
                 super().__init__()
                 self.names_with_seq = []
 
-            def visitModule(self, mod):
+            eleza visitModule(self, mod):
                 for dfn in mod.dfns:
                     self.visit(dfn)
 
-            def visitType(self, type):
+            eleza visitType(self, type):
                 self.visit(type.value)
 
-            def visitSum(self, sum):
+            eleza visitSum(self, sum):
                 for t in sum.types:
                     self.visit(t)
 
-            def visitConstructor(self, cons):
+            eleza visitConstructor(self, cons):
                 for f in cons.fields:
-                    if f.seq:
+                    ikiwa f.seq:
                         self.names_with_seq.append(cons.name)
 
         v = CustomVisitor()
@@ -121,5 +121,5 @@ class TestAsdlParser(unittest.TestCase):
                          ['Module', 'Module', 'Interactive', 'FunctionType', 'Suite'])
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

@@ -29,7 +29,7 @@ information to a file instead of sending it to the browser.
 
 To enable this feature, simply add this to the top of your CGI script::
 
-   import cgitb
+   agiza cgitb
    cgitb.enable()
 
 The options to the :func:`enable` function control whether the report is
@@ -80,5 +80,5 @@ analysis.
    *info* argument should be a 3-tuple containing an exception type, exception
    value, and traceback object, exactly like the tuple returned by
    :func:`sys.exc_info`.  If the *info* argument is not supplied, the current
-   exception is obtained from :func:`sys.exc_info`.
+   exception is obtained kutoka :func:`sys.exc_info`.
 

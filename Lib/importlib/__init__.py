@@ -8,7 +8,7 @@ __all__ = ['__import__', 'import_module', 'invalidate_caches', 'reload']
 # partially initialised package would be present in sys.modules, those
 # modules would get an uninitialised copy of the source version, instead
 # of a fully initialised version (either the frozen one or the one
-# initialised below if the frozen one is not available).
+# initialised below ikiwa the frozen one is not available).
 agiza _imp  # Just the builtin component, NOT the full Python module
 agiza sys
 
@@ -25,7 +25,7 @@ else:
     try:
         _bootstrap.__file__ = __file__.replace('__init__.py', '_bootstrap.py')
     except NameError:
-        # __file__ is not guaranteed to be defined, e.g. if this code gets
+        # __file__ is not guaranteed to be defined, e.g. ikiwa this code gets
         # frozen by a tool like cx_Freeze.
         pass
     sys.modules['importlib._bootstrap'] = _bootstrap
@@ -42,7 +42,7 @@ else:
     try:
         _bootstrap_external.__file__ = __file__.replace('__init__.py', '_bootstrap_external.py')
     except NameError:
-        # __file__ is not guaranteed to be defined, e.g. if this code gets
+        # __file__ is not guaranteed to be defined, e.g. ikiwa this code gets
         # frozen by a tool like cx_Freeze.
         pass
     sys.modules['importlib._bootstrap_external'] = _bootstrap_external
@@ -63,15 +63,15 @@ agiza warnings
 kutoka ._bootstrap agiza __import__
 
 
-def invalidate_caches():
+eleza invalidate_caches():
     """Call the invalidate_caches() method on all meta path finders stored in
     sys.meta_path (where implemented)."""
     for finder in sys.meta_path:
-        if hasattr(finder, 'invalidate_caches'):
+        ikiwa hasattr(finder, 'invalidate_caches'):
             finder.invalidate_caches()
 
 
-def find_loader(name, path=None):
+eleza find_loader(name, path=None):
     """Return the loader for the specified module.
 
     This is a backward-compatible wrapper around find_spec().
@@ -84,10 +84,10 @@ def find_loader(name, path=None):
                   DeprecationWarning, stacklevel=2)
     try:
         loader = sys.modules[name].__loader__
-        if loader is None:
+        ikiwa loader is None:
             raise ValueError('{}.__loader__ is None'.format(name))
         else:
-            return loader
+            rudisha loader
     except KeyError:
         pass
     except AttributeError:
@@ -95,18 +95,18 @@ def find_loader(name, path=None):
 
     spec = _bootstrap._find_spec(name, path)
     # We won't worry about malformed specs (missing attributes).
-    if spec is None:
-        return None
-    if spec.loader is None:
-        if spec.submodule_search_locations is None:
+    ikiwa spec is None:
+        rudisha None
+    ikiwa spec.loader is None:
+        ikiwa spec.submodule_search_locations is None:
             raise ImportError('spec for {} missing loader'.format(name),
                               name=name)
         raise ImportError('namespace packages do not have loaders',
                           name=name)
-    return spec.loader
+    rudisha spec.loader
 
 
-def import_module(name, package=None):
+eleza import_module(name, package=None):
     """Import a module.
 
     The 'package' argument is required when performing a relative agiza. It
@@ -115,43 +115,43 @@ def import_module(name, package=None):
 
     """
     level = 0
-    if name.startswith('.'):
-        if not package:
+    ikiwa name.startswith('.'):
+        ikiwa not package:
             msg = ("the 'package' argument is required to perform a relative "
                    "agiza for {!r}")
             raise TypeError(msg.format(name))
         for character in name:
-            if character != '.':
+            ikiwa character != '.':
                 break
             level += 1
-    return _bootstrap._gcd_agiza(name[level:], package, level)
+    rudisha _bootstrap._gcd_agiza(name[level:], package, level)
 
 
 _RELOADING = {}
 
 
-def reload(module):
-    """Reload the module and return it.
+eleza reload(module):
+    """Reload the module and rudisha it.
 
     The module must have been successfully imported before.
 
     """
-    if not module or not isinstance(module, types.ModuleType):
+    ikiwa not module or not isinstance(module, types.ModuleType):
         raise TypeError("reload() argument must be a module")
     try:
         name = module.__spec__.name
     except AttributeError:
         name = module.__name__
 
-    if sys.modules.get(name) is not module:
+    ikiwa sys.modules.get(name) is not module:
         msg = "module {} not in sys.modules"
         raise ImportError(msg.format(name), name=name)
-    if name in _RELOADING:
-        return _RELOADING[name]
+    ikiwa name in _RELOADING:
+        rudisha _RELOADING[name]
     _RELOADING[name] = module
     try:
         parent_name = name.rpartition('.')[0]
-        if parent_name:
+        ikiwa parent_name:
             try:
                 parent = sys.modules[parent_name]
             except KeyError:
@@ -164,11 +164,11 @@ def reload(module):
             pkgpath = None
         target = module
         spec = module.__spec__ = _bootstrap._find_spec(name, pkgpath, target)
-        if spec is None:
+        ikiwa spec is None:
             raise ModuleNotFoundError(f"spec not found for the module {name!r}", name=name)
         _bootstrap._exec(spec, module)
         # The module may have replaced itself in sys.modules!
-        return sys.modules[name]
+        rudisha sys.modules[name]
     finally:
         try:
             del _RELOADING[name]

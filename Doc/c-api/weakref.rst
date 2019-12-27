@@ -5,7 +5,7 @@
 Weak Reference Objects
 ----------------------
 
-Python supports *weak references* as first-class objects.  There are two
+Python supports *weak references* as first-kundi objects.  There are two
 specific object types which directly implement weak references.  The first is a
 simple reference object, and the second acts as a proxy for the original object
 as much as it can.
@@ -52,7 +52,7 @@ as much as it can.
 
 .. c:function:: PyObject* PyWeakref_GetObject(PyObject *ref)
 
-   Return the referenced object from a weak reference, *ref*.  If the referent is
+   Return the referenced object kutoka a weak reference, *ref*.  If the referent is
    no longer live, returns :const:`Py_None`.
 
    .. note::

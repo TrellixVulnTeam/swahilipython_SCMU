@@ -9,45 +9,45 @@ kutoka typing agiza Optional
 
 __annotations__[1] = 2
 
-class C:
+kundi C:
 
     x = 5; y: Optional['C'] = None
 
 kutoka typing agiza Tuple
 x: int = 5; y: str = x; f: Tuple[int, int]
 
-class M(type):
+kundi M(type):
 
     __annotations__['123'] = 123
     o: type = object
 
 (pars): bool = True
 
-class D(C):
+kundi D(C):
     j: str = 'hi'; k: str= 'bye'
 
 kutoka types agiza new_class
-h_class = new_class('H', (C,))
-j_class = new_class('J')
+h_kundi = new_class('H', (C,))
+j_kundi = new_class('J')
 
-class F():
+kundi F():
     z: int = 5
-    def __init__(self, x):
+    eleza __init__(self, x):
         pass
 
-class Y(F):
-    def __init__(self):
+kundi Y(F):
+    eleza __init__(self):
         super(F, self).__init__(123)
 
-class Meta(type):
-    def __new__(meta, name, bases, namespace):
-        return super().__new__(meta, name, bases, namespace)
+kundi Meta(type):
+    eleza __new__(meta, name, bases, namespace):
+        rudisha super().__new__(meta, name, bases, namespace)
 
-class S(metaclass = Meta):
+kundi S(metakundi = Meta):
     x: str = 'something'
     y: str = 'something else'
 
-def foo(x: int = 10):
-    def bar(y: List[str]):
+eleza foo(x: int = 10):
+    eleza bar(y: List[str]):
         x: str = 'yes'
     bar()

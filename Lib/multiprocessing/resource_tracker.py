@@ -33,7 +33,7 @@ _CLEANUP_FUNCS = {
     'noop': lambda: None,
 }
 
-if os.name == 'posix':
+ikiwa os.name == 'posix':
     agiza _multiprocessing
     agiza _posixshmem
 
@@ -43,26 +43,26 @@ if os.name == 'posix':
     })
 
 
-class ResourceTracker(object):
+kundi ResourceTracker(object):
 
-    def __init__(self):
+    eleza __init__(self):
         self._lock = threading.Lock()
         self._fd = None
         self._pid = None
 
-    def getfd(self):
+    eleza getfd(self):
         self.ensure_running()
-        return self._fd
+        rudisha self._fd
 
-    def ensure_running(self):
+    eleza ensure_running(self):
         '''Make sure that resource tracker process is running.
 
         This can be run kutoka any process.  Usually a child process will use
         the resource created by its parent.'''
         with self._lock:
-            if self._fd is not None:
+            ikiwa self._fd is not None:
                 # resource tracker was launched before, is it still running?
-                if self._check_alive():
+                ikiwa self._check_alive():
                     # => still alive
                     return
                 # => dead, launch it again
@@ -70,9 +70,9 @@ class ResourceTracker(object):
 
                 # Clean-up to avoid dangling processes.
                 try:
-                    # _pid can be None if this process is a child kutoka another
+                    # _pid can be None ikiwa this process is a child kutoka another
                     # python process, which has started the resource_tracker.
-                    if self._pid is not None:
+                    ikiwa self._pid is not None:
                         os.waitpid(self._pid, 0)
                 except ChildProcessError:
                     # The resource_tracker has already been terminated.
@@ -94,7 +94,7 @@ class ResourceTracker(object):
                 fds_to_pass.append(r)
                 # process will out live us, so no need to wait on pid
                 exe = spawn.get_executable()
-                args = [exe] + util._args_from_interpreter_flags()
+                args = [exe] + util._args_kutoka_interpreter_flags()
                 args += ['-c', cmd % r]
                 # bpo-33613: Register a signal mask that will block the signals.
                 # This signal mask will be inherited by the child that is going
@@ -103,11 +103,11 @@ class ResourceTracker(object):
                 # for SIGINT and SIGTERM. The mask is unregistered after spawning
                 # the child.
                 try:
-                    if _HAVE_SIGMASK:
+                    ikiwa _HAVE_SIGMASK:
                         signal.pthread_sigmask(signal.SIG_BLOCK, _IGNORED_SIGNALS)
                     pid = util.spawnv_passfds(exe, args, fds_to_pass)
                 finally:
-                    if _HAVE_SIGMASK:
+                    ikiwa _HAVE_SIGMASK:
                         signal.pthread_sigmask(signal.SIG_UNBLOCK, _IGNORED_SIGNALS)
             except:
                 os.close(w)
@@ -118,29 +118,29 @@ class ResourceTracker(object):
             finally:
                 os.close(r)
 
-    def _check_alive(self):
+    eleza _check_alive(self):
         '''Check that the pipe has not been closed by sending a probe.'''
         try:
             # We cannot use send here as it calls ensure_running, creating
             # a cycle.
             os.write(self._fd, b'PROBE:0:noop\n')
         except OSError:
-            return False
+            rudisha False
         else:
-            return True
+            rudisha True
 
-    def register(self, name, rtype):
+    eleza register(self, name, rtype):
         '''Register name of resource with resource tracker.'''
         self._send('REGISTER', name, rtype)
 
-    def unregister(self, name, rtype):
+    eleza unregister(self, name, rtype):
         '''Unregister name of resource with resource tracker.'''
         self._send('UNREGISTER', name, rtype)
 
-    def _send(self, cmd, name, rtype):
+    eleza _send(self, cmd, name, rtype):
         self.ensure_running()
         msg = '{0}:{1}:{2}\n'.format(cmd, name, rtype).encode('ascii')
-        if len(name) > 512:
+        ikiwa len(name) > 512:
             # posix guarantees that writes to a pipe of less than PIPE_BUF
             # bytes are atomic, and that PIPE_BUF >= 512
             raise ValueError('name too long')
@@ -155,12 +155,12 @@ register = _resource_tracker.register
 unregister = _resource_tracker.unregister
 getfd = _resource_tracker.getfd
 
-def main(fd):
+eleza main(fd):
     '''Run resource tracker.'''
     # protect the process kutoka ^C and "killall python" etc
     signal.signal(signal.SIGINT, signal.SIG_IGN)
     signal.signal(signal.SIGTERM, signal.SIG_IGN)
-    if _HAVE_SIGMASK:
+    ikiwa _HAVE_SIGMASK:
         signal.pthread_sigmask(signal.SIG_UNBLOCK, _IGNORED_SIGNALS)
 
     for f in (sys.stdin, sys.stdout):
@@ -177,16 +177,16 @@ def main(fd):
                 try:
                     cmd, name, rtype = line.strip().decode('ascii').split(':')
                     cleanup_func = _CLEANUP_FUNCS.get(rtype, None)
-                    if cleanup_func is None:
+                    ikiwa cleanup_func is None:
                         raise ValueError(
                             f'Cannot register {name} for automatic cleanup: '
                             f'unknown resource type {rtype}')
 
-                    if cmd == 'REGISTER':
+                    ikiwa cmd == 'REGISTER':
                         cache[rtype].add(name)
-                    elif cmd == 'UNREGISTER':
+                    elikiwa cmd == 'UNREGISTER':
                         cache[rtype].remove(name)
-                    elif cmd == 'PROBE':
+                    elikiwa cmd == 'PROBE':
                         pass
                     else:
                         raise RuntimeError('unrecognized command %r' % cmd)
@@ -198,7 +198,7 @@ def main(fd):
     finally:
         # all processes have terminated; cleanup any remaining resources
         for rtype, rtype_cache in cache.items():
-            if rtype_cache:
+            ikiwa rtype_cache:
                 try:
                     warnings.warn('resource_tracker: There appear to be %d '
                                   'leaked %s objects to clean up at shutdown' %

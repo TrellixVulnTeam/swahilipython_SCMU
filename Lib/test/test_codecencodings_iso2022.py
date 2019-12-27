@@ -10,21 +10,21 @@ COMMON_CODEC_TESTS = (
         (b'ab\x1B$def', 'replace', 'ab\uFFFD'),
     )
 
-class Test_ISO2022_JP(multibytecodec_support.TestBase, unittest.TestCase):
+kundi Test_ISO2022_JP(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'iso2022_jp'
     tstring = multibytecodec_support.load_teststring('iso2022_jp')
     codectests = COMMON_CODEC_TESTS + (
         (b'ab\x1BNdef', 'replace', 'ab\x1BNdef'),
     )
 
-class Test_ISO2022_JP2(multibytecodec_support.TestBase, unittest.TestCase):
+kundi Test_ISO2022_JP2(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'iso2022_jp_2'
     tstring = multibytecodec_support.load_teststring('iso2022_jp')
     codectests = COMMON_CODEC_TESTS + (
         (b'ab\x1BNdef', 'replace', 'abdef'),
     )
 
-class Test_ISO2022_KR(multibytecodec_support.TestBase, unittest.TestCase):
+kundi Test_ISO2022_KR(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'iso2022_kr'
     tstring = multibytecodec_support.load_teststring('iso2022_kr')
     codectests = COMMON_CODEC_TESTS + (
@@ -34,8 +34,8 @@ class Test_ISO2022_KR(multibytecodec_support.TestBase, unittest.TestCase):
     # iso2022_kr.txt cannot be used to test "chunk coding": the escape
     # sequence is only written on the first line
     @unittest.skip('iso2022_kr.txt cannot be used to test "chunk coding"')
-    def test_chunkcoding(self):
+    eleza test_chunkcoding(self):
         pass
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

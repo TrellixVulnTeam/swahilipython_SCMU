@@ -26,48 +26,48 @@ kutoka ._exceptions agiza SAXException, SAXNotRecognizedException, \
                         SAXReaderNotAvailable
 
 
-def parse(source, handler, errorHandler=ErrorHandler()):
+eleza parse(source, handler, errorHandler=ErrorHandler()):
     parser = make_parser()
     parser.setContentHandler(handler)
     parser.setErrorHandler(errorHandler)
     parser.parse(source)
 
-def parseString(string, handler, errorHandler=ErrorHandler()):
+eleza parseString(string, handler, errorHandler=ErrorHandler()):
     agiza io
-    if errorHandler is None:
+    ikiwa errorHandler is None:
         errorHandler = ErrorHandler()
     parser = make_parser()
     parser.setContentHandler(handler)
     parser.setErrorHandler(errorHandler)
 
     inpsrc = InputSource()
-    if isinstance(string, str):
+    ikiwa isinstance(string, str):
         inpsrc.setCharacterStream(io.StringIO(string))
     else:
         inpsrc.setByteStream(io.BytesIO(string))
     parser.parse(inpsrc)
 
-# this is the parser list used by the make_parser function if no
+# this is the parser list used by the make_parser function ikiwa no
 # alternatives are given as parameters to the function
 
 default_parser_list = ["xml.sax.expatreader"]
 
 # tell modulefinder that agizaing sax potentially agizas expatreader
 _false = 0
-if _false:
+ikiwa _false:
     agiza xml.sax.expatreader
 
 agiza os, sys
-if not sys.flags.ignore_environment and "PY_SAX_PARSER" in os.environ:
+ikiwa not sys.flags.ignore_environment and "PY_SAX_PARSER" in os.environ:
     default_parser_list = os.environ["PY_SAX_PARSER"].split(",")
 del os
 
 _key = "python.xml.sax.parser"
-if sys.platform[:4] == "java" and sys.registry.containsKey(_key):
+ikiwa sys.platform[:4] == "java" and sys.registry.containsKey(_key):
     default_parser_list = sys.registry.getProperty(_key).split(",")
 
 
-def make_parser(parser_list=()):
+eleza make_parser(parser_list=()):
     """Creates and returns a SAX parser.
 
     Creates the first parser it is able to instantiate of the ones
@@ -77,10 +77,10 @@ def make_parser(parser_list=()):
 
     for parser_name in list(parser_list) + default_parser_list:
         try:
-            return _create_parser(parser_name)
+            rudisha _create_parser(parser_name)
         except ImportError as e:
             agiza sys
-            if parser_name in sys.modules:
+            ikiwa parser_name in sys.modules:
                 # The parser module was found, but agizaing it
                 # failed unexpectedly, pass this exception through
                 raise
@@ -93,15 +93,15 @@ def make_parser(parser_list=()):
 
 # --- Internal utility methods used by make_parser
 
-if sys.platform[ : 4] == "java":
-    def _create_parser(parser_name):
+ikiwa sys.platform[ : 4] == "java":
+    eleza _create_parser(parser_name):
         kutoka org.python.core agiza imp
         drv_module = imp.agizaName(parser_name, 0, globals())
-        return drv_module.create_parser()
+        rudisha drv_module.create_parser()
 
 else:
-    def _create_parser(parser_name):
+    eleza _create_parser(parser_name):
         drv_module = __import__(parser_name,{},{},['create_parser'])
-        return drv_module.create_parser()
+        rudisha drv_module.create_parser()
 
 del sys

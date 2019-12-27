@@ -19,7 +19,7 @@ M5&AE('-Y;6)O;',@;VX@=&]P(&]F('EO=7(@:V5Y8F]A<F0@87)E("% (R0E
 *7B8J*"E?*WQ^"@  """
 
 # Stolen kutoka io.py
-class FakeIO(io.TextIOWrapper):
+kundi FakeIO(io.TextIOWrapper):
     """Text I/O implementation using an in-memory buffer.
 
     Can be a used as a drop-in replacement for sys.stdin and sys.stdout.
@@ -27,7 +27,7 @@ class FakeIO(io.TextIOWrapper):
 
     # XXX This is really slow, but fully functional
 
-    def __init__(self, initial_value="", encoding="utf-8",
+    eleza __init__(self, initial_value="", encoding="utf-8",
                  errors="strict", newline="\n"):
         super(FakeIO, self).__init__(io.BytesIO(),
                                      encoding=encoding,
@@ -35,29 +35,29 @@ class FakeIO(io.TextIOWrapper):
                                      newline=newline)
         self._encoding = encoding
         self._errors = errors
-        if initial_value:
-            if not isinstance(initial_value, str):
+        ikiwa initial_value:
+            ikiwa not isinstance(initial_value, str):
                 initial_value = str(initial_value)
             self.write(initial_value)
             self.seek(0)
 
-    def getvalue(self):
+    eleza getvalue(self):
         self.flush()
-        return self.buffer.getvalue().decode(self._encoding, self._errors)
+        rudisha self.buffer.getvalue().decode(self._encoding, self._errors)
 
 
-def encodedtextwrapped(mode, filename, backtick=False):
-    if backtick:
+eleza encodedtextwrapped(mode, filename, backtick=False):
+    ikiwa backtick:
         res = (bytes("begin %03o %s\n" % (mode, filename), "ascii") +
                encodedtext.replace(b' ', b'`') + b"\n`\nend\n")
     else:
         res = (bytes("begin %03o %s\n" % (mode, filename), "ascii") +
                encodedtext + b"\n \nend\n")
-    return res
+    rudisha res
 
-class UUTest(unittest.TestCase):
+kundi UUTest(unittest.TestCase):
 
-    def test_encode(self):
+    eleza test_encode(self):
         inp = io.BytesIO(plaintext)
         out = io.BytesIO()
         uu.encode(inp, out, "t1")
@@ -73,7 +73,7 @@ class UUTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             uu.encode(inp, out, "t1", 0o644, True)
 
-    def test_decode(self):
+    eleza test_decode(self):
         for backtick in True, False:
             inp = io.BytesIO(encodedtextwrapped(0o666, "t1", backtick=backtick))
             out = io.BytesIO()
@@ -88,7 +88,7 @@ class UUTest(unittest.TestCase):
             uu.decode(inp, out)
             self.assertEqual(out.getvalue(), plaintext)
 
-    def test_truncatedinput(self):
+    eleza test_truncatedinput(self):
         inp = io.BytesIO(b"begin 644 t1\n" + encodedtext)
         out = io.BytesIO()
         try:
@@ -97,7 +97,7 @@ class UUTest(unittest.TestCase):
         except uu.Error as e:
             self.assertEqual(str(e), "Truncated input file")
 
-    def test_missingbegin(self):
+    eleza test_missingbegin(self):
         inp = io.BytesIO(b"")
         out = io.BytesIO()
         try:
@@ -106,7 +106,7 @@ class UUTest(unittest.TestCase):
         except uu.Error as e:
             self.assertEqual(str(e), "No valid begin line found in input file")
 
-    def test_garbage_padding(self):
+    eleza test_garbage_padding(self):
         # Issue #22406
         encodedtext1 = (
             b"begin 644 file\n"
@@ -136,24 +136,24 @@ class UUTest(unittest.TestCase):
                 decoded = codecs.decode(encodedtext, "uu_codec")
                 self.assertEqual(decoded, plaintext)
 
-class UUStdIOTest(unittest.TestCase):
+kundi UUStdIOTest(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.stdin = sys.stdin
         self.stdout = sys.stdout
 
-    def tearDown(self):
+    eleza tearDown(self):
         sys.stdin = self.stdin
         sys.stdout = self.stdout
 
-    def test_encode(self):
+    eleza test_encode(self):
         sys.stdin = FakeIO(plaintext.decode("ascii"))
         sys.stdout = FakeIO()
         uu.encode("-", "-", "t1", 0o666)
         self.assertEqual(sys.stdout.getvalue(),
                          encodedtextwrapped(0o666, "t1").decode("ascii"))
 
-    def test_decode(self):
+    eleza test_decode(self):
         sys.stdin = FakeIO(encodedtextwrapped(0o666, "t1").decode("ascii"))
         sys.stdout = FakeIO()
         uu.decode("-", "-")
@@ -162,15 +162,15 @@ class UUStdIOTest(unittest.TestCase):
         sys.stdin = self.stdin
         self.assertEqual(stdout.getvalue(), plaintext.decode("ascii"))
 
-class UUFileTest(unittest.TestCase):
+kundi UUFileTest(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.tmpin  = support.TESTFN + "i"
         self.tmpout = support.TESTFN + "o"
         self.addCleanup(support.unlink, self.tmpin)
         self.addCleanup(support.unlink, self.tmpout)
 
-    def test_encode(self):
+    eleza test_encode(self):
         with open(self.tmpin, 'wb') as fin:
             fin.write(plaintext)
 
@@ -188,7 +188,7 @@ class UUFileTest(unittest.TestCase):
             s = fout.read()
         self.assertEqual(s, encodedtextwrapped(0o644, self.tmpin))
 
-    def test_decode(self):
+    eleza test_decode(self):
         with open(self.tmpin, 'wb') as f:
             f.write(encodedtextwrapped(0o644, self.tmpout))
 
@@ -200,7 +200,7 @@ class UUFileTest(unittest.TestCase):
         self.assertEqual(s, plaintext)
         # XXX is there an xp way to verify the mode?
 
-    def test_decode_filename(self):
+    eleza test_decode_filename(self):
         with open(self.tmpin, 'wb') as f:
             f.write(encodedtextwrapped(0o644, self.tmpout))
 
@@ -210,7 +210,7 @@ class UUFileTest(unittest.TestCase):
             s = f.read()
         self.assertEqual(s, plaintext)
 
-    def test_decodetwice(self):
+    eleza test_decodetwice(self):
         # Verify that decode() will refuse to overwrite an existing file
         with open(self.tmpin, 'wb') as f:
             f.write(encodedtextwrapped(0o644, self.tmpout))
@@ -220,7 +220,7 @@ class UUFileTest(unittest.TestCase):
         with open(self.tmpin, 'rb') as f:
             self.assertRaises(uu.Error, uu.decode, f)
 
-    def test_decode_mode(self):
+    eleza test_decode_mode(self):
         # Verify that decode() will set the given mode for the out_file
         expected_mode = 0o444
         with open(self.tmpin, 'wb') as f:
@@ -238,5 +238,5 @@ class UUFileTest(unittest.TestCase):
         )
 
 
-if __name__=="__main__":
+ikiwa __name__=="__main__":
     unittest.main()

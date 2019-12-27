@@ -8,7 +8,7 @@ addition to pressing the STOP button.
 
 kutoka turtle agiza TurtleScreen, RawTurtle, TK
 
-def main():
+eleza main():
     root = TK.Tk()
     cv1 = TK.Canvas(root, width=300, height=200, bg="#ddffff")
     cv2 = TK.Canvas(root, width=300, height=200, bg="#ffeeee")
@@ -46,9 +46,9 @@ def main():
         t.pu()
         t.bk(50)
 
-    return "EVENTLOOP"
+    rudisha "EVENTLOOP"
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()
     TK.mainloop()  # keep window open until user closes it

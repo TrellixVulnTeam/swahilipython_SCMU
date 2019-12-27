@@ -4,7 +4,7 @@ agiza unittest
 agiza glob
 agiza test.support
 
-# Skip tests if dbm module doesn't exist.
+# Skip tests ikiwa dbm module doesn't exist.
 dbm = test.support.import_module('dbm')
 
 try:
@@ -18,10 +18,10 @@ _fname = test.support.TESTFN
 # Iterates over every database module supported by dbm currently available,
 # setting dbm to use each in turn, and yielding that module
 #
-def dbm_iterator():
+eleza dbm_iterator():
     for name in dbm._names:
         try:
-            mod = __import__(name, fromlist=['open'])
+            mod = __import__(name, kutokalist=['open'])
         except ImportError:
             continue
         dbm._modules[name] = mod
@@ -30,14 +30,14 @@ def dbm_iterator():
 #
 # Clean up all scratch databases we might have created during testing
 #
-def delete_files():
+eleza delete_files():
     # we don't know the precise name the underlying database uses
     # so we use glob to locate all names
     for f in glob.glob(_fname + "*"):
         test.support.unlink(f)
 
 
-class AnyDBMTestCase:
+kundi AnyDBMTestCase:
     _dict = {'a': b'Python:',
              'b': b'Programming',
              'c': b'the',
@@ -46,25 +46,25 @@ class AnyDBMTestCase:
              'g': b'intended',
              }
 
-    def init_db(self):
+    eleza init_db(self):
         f = dbm.open(_fname, 'n')
         for k in self._dict:
             f[k.encode("ascii")] = self._dict[k]
         f.close()
 
-    def keys_helper(self, f):
+    eleza keys_helper(self, f):
         keys = sorted(k.decode("ascii") for k in f.keys())
         dkeys = sorted(self._dict.keys())
         self.assertEqual(keys, dkeys)
-        return keys
+        rudisha keys
 
-    def test_error(self):
+    eleza test_error(self):
         self.assertTrue(issubclass(self.module.error, OSError))
 
-    def test_anydbm_not_existing(self):
+    eleza test_anydbm_not_existing(self):
         self.assertRaises(dbm.error, dbm.open, _fname)
 
-    def test_anydbm_creation(self):
+    eleza test_anydbm_creation(self):
         f = dbm.open(_fname, 'c')
         self.assertEqual(list(f.keys()), [])
         for key in self._dict:
@@ -72,13 +72,13 @@ class AnyDBMTestCase:
         self.read_helper(f)
         f.close()
 
-    def test_anydbm_creation_n_file_exists_with_invalid_contents(self):
+    eleza test_anydbm_creation_n_file_exists_with_invalid_contents(self):
         # create an empty file
         test.support.create_empty_file(_fname)
         with dbm.open(_fname, 'n') as f:
             self.assertEqual(len(f), 0)
 
-    def test_anydbm_modification(self):
+    eleza test_anydbm_modification(self):
         self.init_db()
         f = dbm.open(_fname, 'c')
         self._dict['g'] = f[b'g'] = b"indented"
@@ -88,7 +88,7 @@ class AnyDBMTestCase:
         self.assertEqual(f[b'xxx'], b'foo')
         f.close()
 
-    def test_anydbm_read(self):
+    eleza test_anydbm_read(self):
         self.init_db()
         f = dbm.open(_fname, 'r')
         self.read_helper(f)
@@ -100,14 +100,14 @@ class AnyDBMTestCase:
             f[b'xxx']
         f.close()
 
-    def test_anydbm_keys(self):
+    eleza test_anydbm_keys(self):
         self.init_db()
         f = dbm.open(_fname, 'r')
         keys = self.keys_helper(f)
         f.close()
 
-    def test_empty_value(self):
-        if getattr(dbm._defaultmod, 'library', None) == 'Berkeley DB':
+    eleza test_empty_value(self):
+        ikiwa getattr(dbm._defaultmod, 'library', None) == 'Berkeley DB':
             self.skipTest("Berkeley DB doesn't distinguish the empty value "
                           "kutoka the absent one")
         f = dbm.open(_fname, 'c')
@@ -120,7 +120,7 @@ class AnyDBMTestCase:
         self.assertEqual(f.setdefault(b'empty'), b'')
         f.close()
 
-    def test_anydbm_access(self):
+    eleza test_anydbm_access(self):
         self.init_db()
         f = dbm.open(_fname, 'r')
         key = "a".encode("ascii")
@@ -128,27 +128,27 @@ class AnyDBMTestCase:
         assert(f[key] == b"Python:")
         f.close()
 
-    def read_helper(self, f):
+    eleza read_helper(self, f):
         keys = self.keys_helper(f)
         for key in self._dict:
             self.assertEqual(self._dict[key], f[key.encode("ascii")])
 
-    def tearDown(self):
+    eleza tearDown(self):
         delete_files()
 
-    def setUp(self):
+    eleza setUp(self):
         dbm._defaultmod = self.module
         delete_files()
 
 
-class WhichDBTestCase(unittest.TestCase):
-    def test_whichdb(self):
+kundi WhichDBTestCase(unittest.TestCase):
+    eleza test_whichdb(self):
         for module in dbm_iterator():
             # Check whether whichdb correctly guesses module name
             # for databases opened with "module" module.
             # Try with empty files first
             name = module.__name__
-            if name == 'dbm.dumb':
+            ikiwa name == 'dbm.dumb':
                 continue   # whichdb can't support dbm.dumb
             delete_files()
             f = module.open(_fname, 'c')
@@ -165,24 +165,24 @@ class WhichDBTestCase(unittest.TestCase):
             self.assertEqual(name, self.dbm.whichdb(_fname))
 
     @unittest.skipUnless(ndbm, reason='Test requires ndbm')
-    def test_whichdb_ndbm(self):
+    eleza test_whichdb_ndbm(self):
         # Issue 17198: check that ndbm which is referenced in whichdb is defined
         db_file = '{}_ndbm.db'.format(_fname)
         with open(db_file, 'w'):
             self.addCleanup(test.support.unlink, db_file)
         self.assertIsNone(self.dbm.whichdb(db_file[:-3]))
 
-    def tearDown(self):
+    eleza tearDown(self):
         delete_files()
 
-    def setUp(self):
+    eleza setUp(self):
         delete_files()
         self.filename = test.support.TESTFN
         self.d = dbm.open(self.filename, 'c')
         self.d.close()
         self.dbm = test.support.import_fresh_module('dbm')
 
-    def test_keys(self):
+    eleza test_keys(self):
         self.d = dbm.open(self.filename, 'c')
         self.assertEqual(self.d.keys(), [])
         a = [(b'a', b'b'), (b'12345678910', b'019237410982340912840198242')]
@@ -197,7 +197,7 @@ class WhichDBTestCase(unittest.TestCase):
         self.d.close()
 
 
-def load_tests(loader, tests, pattern):
+eleza load_tests(loader, tests, pattern):
     classes = []
     for mod in dbm_iterator():
         classes.append(type("TestCase-" + mod.__name__,
@@ -206,7 +206,7 @@ def load_tests(loader, tests, pattern):
     suites = [unittest.makeSuite(c) for c in classes]
 
     tests.addTests(suites)
-    return tests
+    rudisha tests
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

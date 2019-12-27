@@ -24,7 +24,7 @@ provided by Windows platforms.  It includes functions and several constants.
 
 .. function:: PlaySound(sound, flags)
 
-   Call the underlying :c:func:`PlaySound` function from the Platform API.  The
+   Call the underlying :c:func:`PlaySound` function kutoka the Platform API.  The
    *sound* parameter may be a filename, a system sound alias, audio data as a
    :term:`bytes-like object`, or ``None``.  Its
    interpretation depends on the value of *flags*, which can be a bitwise ORed
@@ -35,7 +35,7 @@ provided by Windows platforms.  It includes functions and several constants.
 
 .. function:: MessageBeep(type=MB_OK)
 
-   Call the underlying :c:func:`MessageBeep` function from the Platform API.  This
+   Call the underlying :c:func:`MessageBeep` function kutoka the Platform API.  This
    plays a sound as specified in the registry.  The *type* argument specifies which
    sound to play; possible values are ``-1``, ``MB_ICONASTERISK``,
    ``MB_ICONEXCLAMATION``, ``MB_ICONHAND``, ``MB_ICONQUESTION``, and ``MB_OK``, all
@@ -52,7 +52,7 @@ provided by Windows platforms.  It includes functions and several constants.
 
 .. data:: SND_ALIAS
 
-   The *sound* parameter is a sound association name from the registry.  If the
+   The *sound* parameter is a sound association name kutoka the registry.  If the
    registry contains no such name, play the system default sound unless
    :const:`SND_NODEFAULT` is also specified. If no default sound is registered,
    raise :exc:`RuntimeError`. Do not use with :const:`SND_FILENAME`.
@@ -76,7 +76,7 @@ provided by Windows platforms.  It includes functions and several constants.
 
    For example::
 
-      import winsound
+      agiza winsound
       # Play Windows exit sound.
       winsound.PlaySound("SystemExit", winsound.SND_ALIAS)
 
@@ -98,7 +98,7 @@ provided by Windows platforms.  It includes functions and several constants.
 
    .. note::
 
-      This module does not support playing from a memory image asynchronously, so a
+      This module does not support playing kutoka a memory image asynchronously, so a
       combination of this flag and :const:`SND_ASYNC` will raise :exc:`RuntimeError`.
 
 

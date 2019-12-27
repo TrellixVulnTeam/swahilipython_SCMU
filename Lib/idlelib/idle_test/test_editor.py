@@ -8,30 +8,30 @@ kutoka tkinter agiza Tk
 Editor = editor.EditorWindow
 
 
-class EditorWindowTest(unittest.TestCase):
+kundi EditorWindowTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         cls.root.update_idletasks()
         for id in cls.root.tk.call('after', 'info'):
             cls.root.after_cancel(id)
         cls.root.destroy()
         del cls.root
 
-    def test_init(self):
+    eleza test_init(self):
         e = Editor(root=self.root)
         self.assertEqual(e.root, self.root)
         e._close()
 
 
-class TestGetLineIndent(unittest.TestCase):
-    def test_empty_lines(self):
+kundi TestGetLineIndent(unittest.TestCase):
+    eleza test_empty_lines(self):
         for tabwidth in [1, 2, 4, 6, 8]:
             for line in ['', '\n']:
                 with self.subTest(line=line, tabwidth=tabwidth):
@@ -40,7 +40,7 @@ class TestGetLineIndent(unittest.TestCase):
                         (0, 0),
                     )
 
-    def test_tabwidth_4(self):
+    eleza test_tabwidth_4(self):
         #        (line, (raw, effective))
         tests = (('no spaces', (0, 0)),
                  # Internal space isn't counted.
@@ -65,7 +65,7 @@ class TestGetLineIndent(unittest.TestCase):
                     expected,
                 )
 
-    def test_tabwidth_8(self):
+    eleza test_tabwidth_8(self):
         #        (line, (raw, effective))
         tests = (('no spaces', (0, 0)),
                  # Internal space isn't counted.
@@ -91,5 +91,5 @@ class TestGetLineIndent(unittest.TestCase):
                 )
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

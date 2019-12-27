@@ -30,7 +30,7 @@ anyone wishing to stay up-to-date after a new release.
    2.0.rst
 
 The "Changelog" is an HTML version of the `file built
-<https://pypi.org/project/blurb>`_ from the contents of the
+<https://pypi.org/project/blurb>`_ kutoka the contents of the
 :source:`Misc/NEWS.d` directory tree, which contains *all* nontrivial changes
 to Python for the current version.
 

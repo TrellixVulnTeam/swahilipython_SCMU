@@ -28,7 +28,7 @@ compile Python sources.
 
    Positional arguments are files to compile or directories that contain
    source files, traversed recursively.  If no argument is given, behave as if
-   the command line was ``-l <directories from sys.path>``.
+   the command line was ``-l <directories kutoka sys.path>``.
 
 .. cmdoption:: -l
 
@@ -60,7 +60,7 @@ compile Python sources.
 .. cmdoption:: -i list
 
    Read the file ``list`` and add each line that it contains to the list of
-   files and directories to compile.  If ``list`` is ``-``, read lines from
+   files and directories to compile.  If ``list`` is ``-``, read lines kutoka
    ``stdin``.
 
 .. cmdoption:: -b
@@ -68,7 +68,7 @@ compile Python sources.
    Write the byte-code files to their legacy locations and names, which may
    overwrite byte-code files created by another version of Python.  The default
    is to write files to their :pep:`3147` locations and names, which allows
-   byte-code files from multiple versions of Python to coexist.
+   byte-code files kutoka multiple versions of Python to coexist.
 
 .. cmdoption:: -r
 
@@ -149,7 +149,7 @@ Public functions
    If *legacy* is true, byte-code files are written to their legacy locations
    and names, which may overwrite byte-code files created by another version of
    Python.  The default is to write files to their :pep:`3147` locations and
-   names, which allows byte-code files from multiple versions of Python to
+   names, which allows byte-code files kutoka multiple versions of Python to
    coexist.
 
    *optimize* specifies the optimization level for the compiler.  It is passed to
@@ -213,7 +213,7 @@ Public functions
    If *legacy* is true, byte-code files are written to their legacy locations
    and names, which may overwrite byte-code files created by another version of
    Python.  The default is to write files to their :pep:`3147` locations and
-   names, which allows byte-code files from multiple versions of Python to
+   names, which allows byte-code files kutoka multiple versions of Python to
    coexist.
 
    *optimize* specifies the optimization level for the compiler.  It is passed to
@@ -267,16 +267,16 @@ Public functions
 To force a recompile of all the :file:`.py` files in the :file:`Lib/`
 subdirectory and all its subdirectories::
 
-   import compileall
+   agiza compileall
 
    compileall.compile_dir('Lib/', force=True)
 
    # Perform same compilation, excluding files in .svn directories.
-   import re
+   agiza re
    compileall.compile_dir('Lib/', rx=re.compile(r'[/\\][.]svn'), force=True)
 
    # pathlib.Path objects can also be used.
-   import pathlib
+   agiza pathlib
    compileall.compile_dir(pathlib.Path('Lib/'), force=True)
 
 .. seealso::

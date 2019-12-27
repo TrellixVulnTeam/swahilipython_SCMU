@@ -23,7 +23,7 @@ internationalized, to the local language and cultural habits.
 #
 # James Henstridge, who also wrote a gettext.py module, which has some
 # interesting, but currently unsupported experimental features: the notion of
-# a Catalog class and instances, and the ability to add to a catalog file via
+# a Catalog kundi and instances, and the ability to add to a catalog file via
 # a Python API.
 #
 # Barry Warsaw integrated these modules, wrote the .install() API and code,
@@ -84,22 +84,22 @@ _token_pattern = re.compile(r"""
         (?P<INVALID>\w+|.)                           # invalid token
     """, re.VERBOSE|re.DOTALL)
 
-def _tokenize(plural):
+eleza _tokenize(plural):
     for mo in re.finditer(_token_pattern, plural):
         kind = mo.lastgroup
-        if kind == 'WHITESPACES':
+        ikiwa kind == 'WHITESPACES':
             continue
         value = mo.group(kind)
-        if kind == 'INVALID':
+        ikiwa kind == 'INVALID':
             raise ValueError('invalid token in plural form: %s' % value)
         yield value
     yield ''
 
-def _error(value):
-    if value:
-        return ValueError('unexpected token in plural form: %s' % value)
+eleza _error(value):
+    ikiwa value:
+        rudisha ValueError('unexpected token in plural form: %s' % value)
     else:
-        return ValueError('unexpected end of plural form')
+        rudisha ValueError('unexpected end of plural form')
 
 _binary_ops = (
     ('||',),
@@ -112,19 +112,19 @@ _binary_ops = (
 _binary_ops = {op: i for i, ops in enumerate(_binary_ops, 1) for op in ops}
 _c2py_ops = {'||': 'or', '&&': 'and', '/': '//'}
 
-def _parse(tokens, priority=-1):
+eleza _parse(tokens, priority=-1):
     result = ''
     nexttok = next(tokens)
     while nexttok == '!':
         result += 'not '
         nexttok = next(tokens)
 
-    if nexttok == '(':
+    ikiwa nexttok == '(':
         sub, nexttok = _parse(tokens)
         result = '%s(%s)' % (result, sub)
-        if nexttok != ')':
+        ikiwa nexttok != ')':
             raise ValueError('unbalanced parenthesis in plural form')
-    elif nexttok == 'n':
+    elikiwa nexttok == 'n':
         result = '%s%s' % (result, nexttok)
     else:
         try:
@@ -137,31 +137,31 @@ def _parse(tokens, priority=-1):
     j = 100
     while nexttok in _binary_ops:
         i = _binary_ops[nexttok]
-        if i < priority:
+        ikiwa i < priority:
             break
         # Break chained comparisons
-        if i in (3, 4) and j in (3, 4):  # '==', '!=', '<', '>', '<=', '>='
+        ikiwa i in (3, 4) and j in (3, 4):  # '==', '!=', '<', '>', '<=', '>='
             result = '(%s)' % result
         # Replace some C operators by their Python equivalents
         op = _c2py_ops.get(nexttok, nexttok)
         right, nexttok = _parse(tokens, i + 1)
         result = '%s %s %s' % (result, op, right)
         j = i
-    if j == priority == 4:  # '<', '>', '<=', '>='
+    ikiwa j == priority == 4:  # '<', '>', '<=', '>='
         result = '(%s)' % result
 
-    if nexttok == '?' and priority <= 0:
+    ikiwa nexttok == '?' and priority <= 0:
         if_true, nexttok = _parse(tokens, 0)
-        if nexttok != ':':
+        ikiwa nexttok != ':':
             raise _error(nexttok)
         if_false, nexttok = _parse(tokens)
-        result = '%s if %s else %s' % (if_true, result, if_false)
-        if priority == 0:
+        result = '%s ikiwa %s else %s' % (if_true, result, if_false)
+        ikiwa priority == 0:
             result = '(%s)' % result
 
-    return result, nexttok
+    rudisha result, nexttok
 
-def _as_int(n):
+eleza _as_int(n):
     try:
         i = round(n)
     except TypeError:
@@ -171,45 +171,45 @@ def _as_int(n):
     warnings.warn('Plural value must be an integer, got %s' %
                   (n.__class__.__name__,),
                   DeprecationWarning, 4)
-    return n
+    rudisha n
 
-def c2py(plural):
+eleza c2py(plural):
     """Gets a C expression as used in PO files for plural forms and returns a
     Python function that implements an equivalent expression.
     """
 
-    if len(plural) > 1000:
+    ikiwa len(plural) > 1000:
         raise ValueError('plural form expression is too long')
     try:
         result, nexttok = _parse(_tokenize(plural))
-        if nexttok:
+        ikiwa nexttok:
             raise _error(nexttok)
 
         depth = 0
         for c in result:
-            if c == '(':
+            ikiwa c == '(':
                 depth += 1
-                if depth > 20:
+                ikiwa depth > 20:
                     # Python compiler limit is about 90.
                     # The most complex example has 2.
                     raise ValueError('plural form expression is too complex')
-            elif c == ')':
+            elikiwa c == ')':
                 depth -= 1
 
         ns = {'_as_int': _as_int}
-        exec('''if True:
-            def func(n):
-                if not isinstance(n, int):
+        exec('''ikiwa True:
+            eleza func(n):
+                ikiwa not isinstance(n, int):
                     n = _as_int(n)
-                return int(%s)
+                rudisha int(%s)
             ''' % result, ns)
-        return ns['func']
+        rudisha ns['func']
     except RecursionError:
         # Recursion error can be raised in _parse() or exec().
         raise ValueError('plural form expression is too complex')
 
 
-def _expand_lang(loc):
+eleza _expand_lang(loc):
     loc = locale.normalize(loc)
     COMPONENT_CODESET   = 1 << 0
     COMPONENT_TERRITORY = 1 << 1
@@ -217,21 +217,21 @@ def _expand_lang(loc):
     # split up the locale into its base components
     mask = 0
     pos = loc.find('@')
-    if pos >= 0:
+    ikiwa pos >= 0:
         modifier = loc[pos:]
         loc = loc[:pos]
         mask |= COMPONENT_MODIFIER
     else:
         modifier = ''
     pos = loc.find('.')
-    if pos >= 0:
+    ikiwa pos >= 0:
         codeset = loc[pos:]
         loc = loc[:pos]
         mask |= COMPONENT_CODESET
     else:
         codeset = ''
     pos = loc.find('_')
-    if pos >= 0:
+    ikiwa pos >= 0:
         territory = loc[pos:]
         loc = loc[:pos]
         mask |= COMPONENT_TERRITORY
@@ -240,120 +240,120 @@ def _expand_lang(loc):
     language = loc
     ret = []
     for i in range(mask+1):
-        if not (i & ~mask):  # if all components for this combo exist ...
+        ikiwa not (i & ~mask):  # ikiwa all components for this combo exist ...
             val = language
-            if i & COMPONENT_TERRITORY: val += territory
-            if i & COMPONENT_CODESET:   val += codeset
-            if i & COMPONENT_MODIFIER:  val += modifier
+            ikiwa i & COMPONENT_TERRITORY: val += territory
+            ikiwa i & COMPONENT_CODESET:   val += codeset
+            ikiwa i & COMPONENT_MODIFIER:  val += modifier
             ret.append(val)
     ret.reverse()
-    return ret
+    rudisha ret
 
 
 
-class NullTranslations:
-    def __init__(self, fp=None):
+kundi NullTranslations:
+    eleza __init__(self, fp=None):
         self._info = {}
         self._charset = None
         self._output_charset = None
         self._fallback = None
-        if fp is not None:
+        ikiwa fp is not None:
             self._parse(fp)
 
-    def _parse(self, fp):
+    eleza _parse(self, fp):
         pass
 
-    def add_fallback(self, fallback):
-        if self._fallback:
+    eleza add_fallback(self, fallback):
+        ikiwa self._fallback:
             self._fallback.add_fallback(fallback)
         else:
             self._fallback = fallback
 
-    def gettext(self, message):
-        if self._fallback:
-            return self._fallback.gettext(message)
-        return message
+    eleza gettext(self, message):
+        ikiwa self._fallback:
+            rudisha self._fallback.gettext(message)
+        rudisha message
 
-    def lgettext(self, message):
+    eleza lgettext(self, message):
         agiza warnings
         warnings.warn('lgettext() is deprecated, use gettext() instead',
                       DeprecationWarning, 2)
-        if self._fallback:
+        ikiwa self._fallback:
             with warnings.catch_warnings():
                 warnings.filterwarnings('ignore', r'.*\blgettext\b.*',
                                         DeprecationWarning)
-                return self._fallback.lgettext(message)
-        if self._output_charset:
-            return message.encode(self._output_charset)
-        return message.encode(locale.getpreferredencoding())
+                rudisha self._fallback.lgettext(message)
+        ikiwa self._output_charset:
+            rudisha message.encode(self._output_charset)
+        rudisha message.encode(locale.getpreferredencoding())
 
-    def ngettext(self, msgid1, msgid2, n):
-        if self._fallback:
-            return self._fallback.ngettext(msgid1, msgid2, n)
-        if n == 1:
-            return msgid1
+    eleza ngettext(self, msgid1, msgid2, n):
+        ikiwa self._fallback:
+            rudisha self._fallback.ngettext(msgid1, msgid2, n)
+        ikiwa n == 1:
+            rudisha msgid1
         else:
-            return msgid2
+            rudisha msgid2
 
-    def lngettext(self, msgid1, msgid2, n):
+    eleza lngettext(self, msgid1, msgid2, n):
         agiza warnings
         warnings.warn('lngettext() is deprecated, use ngettext() instead',
                       DeprecationWarning, 2)
-        if self._fallback:
+        ikiwa self._fallback:
             with warnings.catch_warnings():
                 warnings.filterwarnings('ignore', r'.*\blngettext\b.*',
                                         DeprecationWarning)
-                return self._fallback.lngettext(msgid1, msgid2, n)
-        if n == 1:
+                rudisha self._fallback.lngettext(msgid1, msgid2, n)
+        ikiwa n == 1:
             tmsg = msgid1
         else:
             tmsg = msgid2
-        if self._output_charset:
-            return tmsg.encode(self._output_charset)
-        return tmsg.encode(locale.getpreferredencoding())
+        ikiwa self._output_charset:
+            rudisha tmsg.encode(self._output_charset)
+        rudisha tmsg.encode(locale.getpreferredencoding())
 
-    def pgettext(self, context, message):
-        if self._fallback:
-            return self._fallback.pgettext(context, message)
-        return message
+    eleza pgettext(self, context, message):
+        ikiwa self._fallback:
+            rudisha self._fallback.pgettext(context, message)
+        rudisha message
 
-    def npgettext(self, context, msgid1, msgid2, n):
-        if self._fallback:
-            return self._fallback.npgettext(context, msgid1, msgid2, n)
-        if n == 1:
-            return msgid1
+    eleza npgettext(self, context, msgid1, msgid2, n):
+        ikiwa self._fallback:
+            rudisha self._fallback.npgettext(context, msgid1, msgid2, n)
+        ikiwa n == 1:
+            rudisha msgid1
         else:
-            return msgid2
+            rudisha msgid2
 
-    def info(self):
-        return self._info
+    eleza info(self):
+        rudisha self._info
 
-    def charset(self):
-        return self._charset
+    eleza charset(self):
+        rudisha self._charset
 
-    def output_charset(self):
+    eleza output_charset(self):
         agiza warnings
         warnings.warn('output_charset() is deprecated',
                       DeprecationWarning, 2)
-        return self._output_charset
+        rudisha self._output_charset
 
-    def set_output_charset(self, charset):
+    eleza set_output_charset(self, charset):
         agiza warnings
         warnings.warn('set_output_charset() is deprecated',
                       DeprecationWarning, 2)
         self._output_charset = charset
 
-    def install(self, names=None):
+    eleza install(self, names=None):
         agiza builtins
         builtins.__dict__['_'] = self.gettext
-        if names is not None:
+        ikiwa names is not None:
             allowed = {'gettext', 'lgettext', 'lngettext',
                        'ngettext', 'npgettext', 'pgettext'}
             for name in allowed & set(names):
                 builtins.__dict__[name] = getattr(self, name)
 
 
-class GNUTranslations(NullTranslations):
+kundi GNUTranslations(NullTranslations):
     # Magic number of .mo files
     LE_MAGIC = 0x950412de
     BE_MAGIC = 0xde120495
@@ -365,11 +365,11 @@ class GNUTranslations(NullTranslations):
     # Acceptable .mo versions
     VERSIONS = (0, 1)
 
-    def _get_versions(self, version):
+    eleza _get_versions(self, version):
         """Returns a tuple of major version, minor version"""
-        return (version >> 16, version & 0xffff)
+        rudisha (version >> 16, version & 0xffff)
 
-    def _parse(self, fp):
+    eleza _parse(self, fp):
         """Override this method to support alternative .mo formats."""
         # Delay struct agiza for speeding up gettext agiza when .mo files
         # are not used.
@@ -383,10 +383,10 @@ class GNUTranslations(NullTranslations):
         buflen = len(buf)
         # Are we big endian or little endian?
         magic = unpack('<I', buf[:4])[0]
-        if magic == self.LE_MAGIC:
+        ikiwa magic == self.LE_MAGIC:
             version, msgcount, masteridx, transidx = unpack('<4I', buf[4:20])
             ii = '<II'
-        elif magic == self.BE_MAGIC:
+        elikiwa magic == self.BE_MAGIC:
             version, msgcount, masteridx, transidx = unpack('>4I', buf[4:20])
             ii = '>II'
         else:
@@ -394,7 +394,7 @@ class GNUTranslations(NullTranslations):
 
         major_version, minor_version = self._get_versions(version)
 
-        if major_version not in self.VERSIONS:
+        ikiwa major_version not in self.VERSIONS:
             raise OSError(0, 'Bad version number ' + str(major_version), filename)
 
         # Now put all messages kutoka the .mo file buffer into the catalog
@@ -404,34 +404,34 @@ class GNUTranslations(NullTranslations):
             mend = moff + mlen
             tlen, toff = unpack(ii, buf[transidx:transidx+8])
             tend = toff + tlen
-            if mend < buflen and tend < buflen:
+            ikiwa mend < buflen and tend < buflen:
                 msg = buf[moff:mend]
                 tmsg = buf[toff:tend]
             else:
                 raise OSError(0, 'File is corrupt', filename)
-            # See if we're looking at GNU .mo conventions for metadata
-            if mlen == 0:
+            # See ikiwa we're looking at GNU .mo conventions for metadata
+            ikiwa mlen == 0:
                 # Catalog description
                 lastk = None
                 for b_item in tmsg.split(b'\n'):
                     item = b_item.decode().strip()
-                    if not item:
+                    ikiwa not item:
                         continue
                     # Skip over comment lines:
-                    if item.startswith('#-#-#-#-#') and item.endswith('#-#-#-#-#'):
+                    ikiwa item.startswith('#-#-#-#-#') and item.endswith('#-#-#-#-#'):
                         continue
                     k = v = None
-                    if ':' in item:
+                    ikiwa ':' in item:
                         k, v = item.split(':', 1)
                         k = k.strip().lower()
                         v = v.strip()
                         self._info[k] = v
                         lastk = k
-                    elif lastk:
+                    elikiwa lastk:
                         self._info[lastk] += '\n' + item
-                    if k == 'content-type':
+                    ikiwa k == 'content-type':
                         self._charset = v.split('charset=')[1]
-                    elif k == 'plural-forms':
+                    elikiwa k == 'plural-forms':
                         v = v.split(';')
                         plural = v[1].split('plural=')[1]
                         self.plural = c2py(plural)
@@ -443,9 +443,9 @@ class GNUTranslations(NullTranslations):
             # traditional gettext applications, the msgid conversion will
             # cause no problems since us-ascii should always be a subset of
             # the charset encoding.  We may want to fall back to 8-bit msgids
-            # if the Unicode conversion fails.
+            # ikiwa the Unicode conversion fails.
             charset = self._charset or 'ascii'
-            if b'\x00' in msg:
+            ikiwa b'\x00' in msg:
                 # Plural forms
                 msgid1, msgid2 = msg.split(b'\x00')
                 tmsg = tmsg.split(b'\x00')
@@ -458,117 +458,117 @@ class GNUTranslations(NullTranslations):
             masteridx += 8
             transidx += 8
 
-    def lgettext(self, message):
+    eleza lgettext(self, message):
         agiza warnings
         warnings.warn('lgettext() is deprecated, use gettext() instead',
                       DeprecationWarning, 2)
         missing = object()
         tmsg = self._catalog.get(message, missing)
-        if tmsg is missing:
-            if self._fallback:
-                return self._fallback.lgettext(message)
+        ikiwa tmsg is missing:
+            ikiwa self._fallback:
+                rudisha self._fallback.lgettext(message)
             tmsg = message
-        if self._output_charset:
-            return tmsg.encode(self._output_charset)
-        return tmsg.encode(locale.getpreferredencoding())
+        ikiwa self._output_charset:
+            rudisha tmsg.encode(self._output_charset)
+        rudisha tmsg.encode(locale.getpreferredencoding())
 
-    def lngettext(self, msgid1, msgid2, n):
+    eleza lngettext(self, msgid1, msgid2, n):
         agiza warnings
         warnings.warn('lngettext() is deprecated, use ngettext() instead',
                       DeprecationWarning, 2)
         try:
             tmsg = self._catalog[(msgid1, self.plural(n))]
         except KeyError:
-            if self._fallback:
-                return self._fallback.lngettext(msgid1, msgid2, n)
-            if n == 1:
+            ikiwa self._fallback:
+                rudisha self._fallback.lngettext(msgid1, msgid2, n)
+            ikiwa n == 1:
                 tmsg = msgid1
             else:
                 tmsg = msgid2
-        if self._output_charset:
-            return tmsg.encode(self._output_charset)
-        return tmsg.encode(locale.getpreferredencoding())
+        ikiwa self._output_charset:
+            rudisha tmsg.encode(self._output_charset)
+        rudisha tmsg.encode(locale.getpreferredencoding())
 
-    def gettext(self, message):
+    eleza gettext(self, message):
         missing = object()
         tmsg = self._catalog.get(message, missing)
-        if tmsg is missing:
-            if self._fallback:
-                return self._fallback.gettext(message)
-            return message
-        return tmsg
+        ikiwa tmsg is missing:
+            ikiwa self._fallback:
+                rudisha self._fallback.gettext(message)
+            rudisha message
+        rudisha tmsg
 
-    def ngettext(self, msgid1, msgid2, n):
+    eleza ngettext(self, msgid1, msgid2, n):
         try:
             tmsg = self._catalog[(msgid1, self.plural(n))]
         except KeyError:
-            if self._fallback:
-                return self._fallback.ngettext(msgid1, msgid2, n)
-            if n == 1:
+            ikiwa self._fallback:
+                rudisha self._fallback.ngettext(msgid1, msgid2, n)
+            ikiwa n == 1:
                 tmsg = msgid1
             else:
                 tmsg = msgid2
-        return tmsg
+        rudisha tmsg
 
-    def pgettext(self, context, message):
+    eleza pgettext(self, context, message):
         ctxt_msg_id = self.CONTEXT % (context, message)
         missing = object()
         tmsg = self._catalog.get(ctxt_msg_id, missing)
-        if tmsg is missing:
-            if self._fallback:
-                return self._fallback.pgettext(context, message)
-            return message
-        return tmsg
+        ikiwa tmsg is missing:
+            ikiwa self._fallback:
+                rudisha self._fallback.pgettext(context, message)
+            rudisha message
+        rudisha tmsg
 
-    def npgettext(self, context, msgid1, msgid2, n):
+    eleza npgettext(self, context, msgid1, msgid2, n):
         ctxt_msg_id = self.CONTEXT % (context, msgid1)
         try:
             tmsg = self._catalog[ctxt_msg_id, self.plural(n)]
         except KeyError:
-            if self._fallback:
-                return self._fallback.npgettext(context, msgid1, msgid2, n)
-            if n == 1:
+            ikiwa self._fallback:
+                rudisha self._fallback.npgettext(context, msgid1, msgid2, n)
+            ikiwa n == 1:
                 tmsg = msgid1
             else:
                 tmsg = msgid2
-        return tmsg
+        rudisha tmsg
 
 
 # Locate a .mo file using the gettext strategy
-def find(domain, localedir=None, languages=None, all=False):
+eleza find(domain, localedir=None, languages=None, all=False):
     # Get some reasonable defaults for arguments that were not supplied
-    if localedir is None:
+    ikiwa localedir is None:
         localedir = _default_localedir
-    if languages is None:
+    ikiwa languages is None:
         languages = []
         for envar in ('LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG'):
             val = os.environ.get(envar)
-            if val:
+            ikiwa val:
                 languages = val.split(':')
                 break
-        if 'C' not in languages:
+        ikiwa 'C' not in languages:
             languages.append('C')
     # now normalize and expand the languages
     nelangs = []
     for lang in languages:
         for nelang in _expand_lang(lang):
-            if nelang not in nelangs:
+            ikiwa nelang not in nelangs:
                 nelangs.append(nelang)
     # select a language
-    if all:
+    ikiwa all:
         result = []
     else:
         result = None
     for lang in nelangs:
-        if lang == 'C':
+        ikiwa lang == 'C':
             break
         mofile = os.path.join(localedir, lang, 'LC_MESSAGES', '%s.mo' % domain)
-        if os.path.exists(mofile):
-            if all:
+        ikiwa os.path.exists(mofile):
+            ikiwa all:
                 result.append(mofile)
             else:
-                return mofile
-    return result
+                rudisha mofile
+    rudisha result
 
 
 
@@ -576,14 +576,14 @@ def find(domain, localedir=None, languages=None, all=False):
 _translations = {}
 _unspecified = ['unspecified']
 
-def translation(domain, localedir=None, languages=None,
+eleza translation(domain, localedir=None, languages=None,
                 class_=None, fallback=False, codeset=_unspecified):
-    if class_ is None:
+    ikiwa class_ is None:
         class_ = GNUTranslations
     mofiles = find(domain, localedir, languages, all=True)
-    if not mofiles:
-        if fallback:
-            return NullTranslations()
+    ikiwa not mofiles:
+        ikiwa fallback:
+            rudisha NullTranslations()
         kutoka errno agiza ENOENT
         raise FileNotFoundError(ENOENT,
                                 'No translation file found for domain', domain)
@@ -593,7 +593,7 @@ def translation(domain, localedir=None, languages=None,
     for mofile in mofiles:
         key = (class_, os.path.abspath(mofile))
         t = _translations.get(key)
-        if t is None:
+        ikiwa t is None:
             with open(mofile, 'rb') as fp:
                 t = _translations.setdefault(key, class_(fp))
         # Copy the translation object to allow setting fallbacks and
@@ -603,23 +603,23 @@ def translation(domain, localedir=None, languages=None,
         # are not used.
         agiza copy
         t = copy.copy(t)
-        if codeset is not _unspecified:
+        ikiwa codeset is not _unspecified:
             agiza warnings
             warnings.warn('parameter codeset is deprecated',
                           DeprecationWarning, 2)
-            if codeset:
+            ikiwa codeset:
                 with warnings.catch_warnings():
                     warnings.filterwarnings('ignore', r'.*\bset_output_charset\b.*',
                                             DeprecationWarning)
                     t.set_output_charset(codeset)
-        if result is None:
+        ikiwa result is None:
             result = t
         else:
             result.add_fallback(t)
-    return result
+    rudisha result
 
 
-def install(domain, localedir=None, codeset=_unspecified, names=None):
+eleza install(domain, localedir=None, codeset=_unspecified, names=None):
     t = translation(domain, localedir, fallback=True, codeset=codeset)
     t.install(names)
 
@@ -633,38 +633,38 @@ _localecodesets = {}
 _current_domain = 'messages'
 
 
-def textdomain(domain=None):
+eleza textdomain(domain=None):
     global _current_domain
-    if domain is not None:
+    ikiwa domain is not None:
         _current_domain = domain
-    return _current_domain
+    rudisha _current_domain
 
 
-def bindtextdomain(domain, localedir=None):
+eleza bindtextdomain(domain, localedir=None):
     global _localedirs
-    if localedir is not None:
+    ikiwa localedir is not None:
         _localedirs[domain] = localedir
-    return _localedirs.get(domain, _default_localedir)
+    rudisha _localedirs.get(domain, _default_localedir)
 
 
-def bind_textdomain_codeset(domain, codeset=None):
+eleza bind_textdomain_codeset(domain, codeset=None):
     agiza warnings
     warnings.warn('bind_textdomain_codeset() is deprecated',
                   DeprecationWarning, 2)
     global _localecodesets
-    if codeset is not None:
+    ikiwa codeset is not None:
         _localecodesets[domain] = codeset
-    return _localecodesets.get(domain)
+    rudisha _localecodesets.get(domain)
 
 
-def dgettext(domain, message):
+eleza dgettext(domain, message):
     try:
         t = translation(domain, _localedirs.get(domain, None))
     except OSError:
-        return message
-    return t.gettext(message)
+        rudisha message
+    rudisha t.gettext(message)
 
-def ldgettext(domain, message):
+eleza ldgettext(domain, message):
     agiza warnings
     warnings.warn('ldgettext() is deprecated, use dgettext() instead',
                   DeprecationWarning, 2)
@@ -675,23 +675,23 @@ def ldgettext(domain, message):
                                     DeprecationWarning)
             t = translation(domain, _localedirs.get(domain, None), codeset=codeset)
     except OSError:
-        return message.encode(codeset or locale.getpreferredencoding())
+        rudisha message.encode(codeset or locale.getpreferredencoding())
     with warnings.catch_warnings():
         warnings.filterwarnings('ignore', r'.*\blgettext\b.*',
                                 DeprecationWarning)
-        return t.lgettext(message)
+        rudisha t.lgettext(message)
 
-def dngettext(domain, msgid1, msgid2, n):
+eleza dngettext(domain, msgid1, msgid2, n):
     try:
         t = translation(domain, _localedirs.get(domain, None))
     except OSError:
-        if n == 1:
-            return msgid1
+        ikiwa n == 1:
+            rudisha msgid1
         else:
-            return msgid2
-    return t.ngettext(msgid1, msgid2, n)
+            rudisha msgid2
+    rudisha t.ngettext(msgid1, msgid2, n)
 
-def ldngettext(domain, msgid1, msgid2, n):
+eleza ldngettext(domain, msgid1, msgid2, n):
     agiza warnings
     warnings.warn('ldngettext() is deprecated, use dngettext() instead',
                   DeprecationWarning, 2)
@@ -702,67 +702,67 @@ def ldngettext(domain, msgid1, msgid2, n):
                                     DeprecationWarning)
             t = translation(domain, _localedirs.get(domain, None), codeset=codeset)
     except OSError:
-        if n == 1:
+        ikiwa n == 1:
             tmsg = msgid1
         else:
             tmsg = msgid2
-        return tmsg.encode(codeset or locale.getpreferredencoding())
+        rudisha tmsg.encode(codeset or locale.getpreferredencoding())
     with warnings.catch_warnings():
         warnings.filterwarnings('ignore', r'.*\blngettext\b.*',
                                 DeprecationWarning)
-        return t.lngettext(msgid1, msgid2, n)
+        rudisha t.lngettext(msgid1, msgid2, n)
 
 
-def dpgettext(domain, context, message):
+eleza dpgettext(domain, context, message):
     try:
         t = translation(domain, _localedirs.get(domain, None))
     except OSError:
-        return message
-    return t.pgettext(context, message)
+        rudisha message
+    rudisha t.pgettext(context, message)
 
 
-def dnpgettext(domain, context, msgid1, msgid2, n):
+eleza dnpgettext(domain, context, msgid1, msgid2, n):
     try:
         t = translation(domain, _localedirs.get(domain, None))
     except OSError:
-        if n == 1:
-            return msgid1
+        ikiwa n == 1:
+            rudisha msgid1
         else:
-            return msgid2
-    return t.npgettext(context, msgid1, msgid2, n)
+            rudisha msgid2
+    rudisha t.npgettext(context, msgid1, msgid2, n)
 
 
-def gettext(message):
-    return dgettext(_current_domain, message)
+eleza gettext(message):
+    rudisha dgettext(_current_domain, message)
 
-def lgettext(message):
+eleza lgettext(message):
     agiza warnings
     warnings.warn('lgettext() is deprecated, use gettext() instead',
                   DeprecationWarning, 2)
     with warnings.catch_warnings():
         warnings.filterwarnings('ignore', r'.*\bldgettext\b.*',
                                 DeprecationWarning)
-        return ldgettext(_current_domain, message)
+        rudisha ldgettext(_current_domain, message)
 
-def ngettext(msgid1, msgid2, n):
-    return dngettext(_current_domain, msgid1, msgid2, n)
+eleza ngettext(msgid1, msgid2, n):
+    rudisha dngettext(_current_domain, msgid1, msgid2, n)
 
-def lngettext(msgid1, msgid2, n):
+eleza lngettext(msgid1, msgid2, n):
     agiza warnings
     warnings.warn('lngettext() is deprecated, use ngettext() instead',
                   DeprecationWarning, 2)
     with warnings.catch_warnings():
         warnings.filterwarnings('ignore', r'.*\bldngettext\b.*',
                                 DeprecationWarning)
-        return ldngettext(_current_domain, msgid1, msgid2, n)
+        rudisha ldngettext(_current_domain, msgid1, msgid2, n)
 
 
-def pgettext(context, message):
-    return dpgettext(_current_domain, context, message)
+eleza pgettext(context, message):
+    rudisha dpgettext(_current_domain, context, message)
 
 
-def npgettext(context, msgid1, msgid2, n):
-    return dnpgettext(_current_domain, context, msgid1, msgid2, n)
+eleza npgettext(context, msgid1, msgid2, n):
+    rudisha dnpgettext(_current_domain, context, msgid1, msgid2, n)
 
 
 # dcgettext() has been deemed unnecessary and is not implemented.

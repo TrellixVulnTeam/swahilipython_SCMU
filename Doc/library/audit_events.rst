@@ -14,7 +14,7 @@ information on handling these events.
 
 .. impl-detail::
 
-   This table is generated from the CPython documentation, and may not
+   This table is generated kutoka the CPython documentation, and may not
    represent events raised by other implementations. See your runtime
    specific documentation for actual events raised.
 

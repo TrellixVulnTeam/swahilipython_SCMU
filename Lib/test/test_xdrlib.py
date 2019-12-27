@@ -2,9 +2,9 @@ agiza unittest
 
 agiza xdrlib
 
-class XDRTest(unittest.TestCase):
+kundi XDRTest(unittest.TestCase):
 
-    def test_xdr(self):
+    eleza test_xdr(self):
         p = xdrlib.Packer()
 
         s = b'hello world'
@@ -50,28 +50,28 @@ class XDRTest(unittest.TestCase):
         up.done()
         self.assertRaises(EOFError, up.unpack_uint)
 
-class ConversionErrorTest(unittest.TestCase):
+kundi ConversionErrorTest(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.packer = xdrlib.Packer()
 
-    def assertRaisesConversion(self, *args):
+    eleza assertRaisesConversion(self, *args):
         self.assertRaises(xdrlib.ConversionError, *args)
 
-    def test_pack_int(self):
+    eleza test_pack_int(self):
         self.assertRaisesConversion(self.packer.pack_int, 'string')
 
-    def test_pack_uint(self):
+    eleza test_pack_uint(self):
         self.assertRaisesConversion(self.packer.pack_uint, 'string')
 
-    def test_float(self):
+    eleza test_float(self):
         self.assertRaisesConversion(self.packer.pack_float, 'string')
 
-    def test_double(self):
+    eleza test_double(self):
         self.assertRaisesConversion(self.packer.pack_double, 'string')
 
-    def test_uhyper(self):
+    eleza test_uhyper(self):
         self.assertRaisesConversion(self.packer.pack_uhyper, 'string')
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

@@ -13,20 +13,20 @@ agiza pickle
 # instead of wrestling with test "failures".  See the bottom of the
 # file for extensive notes on what we're testing here and why.
 RUN_ALL_HASH_TESTS = False
-JUST_SHOW_HASH_RESULTS = False # if RUN_ALL_HASH_TESTS, just display
+JUST_SHOW_HASH_RESULTS = False # ikiwa RUN_ALL_HASH_TESTS, just display
 
-class TupleTest(seq_tests.CommonTest):
+kundi TupleTest(seq_tests.CommonTest):
     type2test = tuple
 
-    def test_getitem_error(self):
+    eleza test_getitem_error(self):
         t = ()
         msg = "tuple indices must be integers or slices"
         with self.assertRaisesRegex(TypeError, msg):
             t['a']
 
-    def test_constructors(self):
+    eleza test_constructors(self):
         super().test_constructors()
-        # calling built-in types without argument must return empty
+        # calling built-in types without argument must rudisha empty
         self.assertEqual(tuple(), ())
         t0_3 = (0, 1, 2, 3)
         t0_3_bis = tuple(t0_3)
@@ -35,41 +35,41 @@ class TupleTest(seq_tests.CommonTest):
         self.assertEqual(tuple([0, 1, 2, 3]), (0, 1, 2, 3))
         self.assertEqual(tuple(''), ())
         self.assertEqual(tuple('spam'), ('s', 'p', 'a', 'm'))
-        self.assertEqual(tuple(x for x in range(10) if x % 2),
+        self.assertEqual(tuple(x for x in range(10) ikiwa x % 2),
                          (1, 3, 5, 7, 9))
 
-    def test_keyword_args(self):
+    eleza test_keyword_args(self):
         with self.assertRaisesRegex(TypeError, 'keyword argument'):
             tuple(sequence=())
 
-    def test_truth(self):
+    eleza test_truth(self):
         super().test_truth()
         self.assertTrue(not ())
         self.assertTrue((42, ))
 
-    def test_len(self):
+    eleza test_len(self):
         super().test_len()
         self.assertEqual(len(()), 0)
         self.assertEqual(len((0,)), 1)
         self.assertEqual(len((0, 1, 2)), 3)
 
-    def test_iadd(self):
+    eleza test_iadd(self):
         super().test_iadd()
         u = (0, 1)
         u2 = u
         u += (2, 3)
         self.assertTrue(u is not u2)
 
-    def test_imul(self):
+    eleza test_imul(self):
         super().test_imul()
         u = (0, 1)
         u2 = u
         u *= 3
         self.assertTrue(u is not u2)
 
-    def test_tupleresizebug(self):
+    eleza test_tupleresizebug(self):
         # Check that a specific bug in _PyTuple_Resize() is squashed.
-        def f():
+        eleza f():
             for i in range(1000):
                 yield i
         self.assertEqual(list(tuple(f())), list(range(1000)))
@@ -77,11 +77,11 @@ class TupleTest(seq_tests.CommonTest):
     # We expect tuples whose base components have deterministic hashes to
     # have deterministic hashes too - and, indeed, the same hashes across
     # platforms with hash codes of the same bit width.
-    def test_hash_exact(self):
-        def check_one_exact(t, e32, e64):
+    eleza test_hash_exact(self):
+        eleza check_one_exact(t, e32, e64):
             got = hash(t)
-            expected = e32 if support.NHASHBITS == 32 else e64
-            if got != expected:
+            expected = e32 ikiwa support.NHASHBITS == 32 else e64
+            ikiwa got != expected:
                 msg = f"FAIL hash({t!r}) == {got} != {expected}"
                 self.fail(msg)
 
@@ -93,23 +93,23 @@ class TupleTest(seq_tests.CommonTest):
                         -1845940830829704396)
 
     # Various tests for hashing of tuples to check that we get few collisions.
-    # Does something only if RUN_ALL_HASH_TESTS is true.
+    # Does something only ikiwa RUN_ALL_HASH_TESTS is true.
     #
     # Earlier versions of the tuple hash algorithm had massive collisions
     # reported at:
     # - https://bugs.python.org/issue942952
     # - https://bugs.python.org/issue34751
-    def test_hash_optional(self):
+    eleza test_hash_optional(self):
         kutoka itertools agiza product
 
-        if not RUN_ALL_HASH_TESTS:
+        ikiwa not RUN_ALL_HASH_TESTS:
             return
 
         # If specified, `expected` is a 2-tuple of expected
         # (number_of_collisions, pileup) values, and the test fails if
-        # those aren't the values we get.  Also if specified, the test
-        # fails if z > `zlimit`.
-        def tryone_inner(tag, nbins, hashes, expected=None, zlimit=None):
+        # those aren't the values we get.  Also ikiwa specified, the test
+        # fails ikiwa z > `zlimit`.
+        eleza tryone_inner(tag, nbins, hashes, expected=None, zlimit=None):
             kutoka collections agiza Counter
 
             nballs = len(hashes)
@@ -122,22 +122,22 @@ class TupleTest(seq_tests.CommonTest):
             got = (collisions, pileup)
             failed = False
             prefix = ""
-            if zlimit is not None and z > zlimit:
+            ikiwa zlimit is not None and z > zlimit:
                 failed = True
                 prefix = f"FAIL z > {zlimit}; "
-            if expected is not None and got != expected:
+            ikiwa expected is not None and got != expected:
                 failed = True
                 prefix += f"FAIL {got} != {expected}; "
-            if failed or JUST_SHOW_HASH_RESULTS:
+            ikiwa failed or JUST_SHOW_HASH_RESULTS:
                 msg = f"{prefix}{tag}; pileup {pileup:,} mean {mean:.1f} "
                 msg += f"coll {collisions:,} z {z:+.1f}"
-                if JUST_SHOW_HASH_RESULTS:
+                ikiwa JUST_SHOW_HASH_RESULTS:
                     agiza sys
-                    print(msg, file=sys.__stdout__)
+                    andika(msg, file=sys.__stdout__)
                 else:
                     self.fail(msg)
 
-        def tryone(tag, xs,
+        eleza tryone(tag, xs,
                    native32=None, native64=None, hi32=None, lo32=None,
                    zlimit=None):
             NHASHBITS = support.NHASHBITS
@@ -145,10 +145,10 @@ class TupleTest(seq_tests.CommonTest):
             tryone_inner(tag + f"; {NHASHBITS}-bit hash codes",
                          1 << NHASHBITS,
                          hashes,
-                         native32 if NHASHBITS == 32 else native64,
+                         native32 ikiwa NHASHBITS == 32 else native64,
                          zlimit)
 
-            if NHASHBITS > 32:
+            ikiwa NHASHBITS > 32:
                 shift = NHASHBITS - 32
                 tryone_inner(tag + "; 32-bit upper hash codes",
                              1 << 32,
@@ -163,7 +163,7 @@ class TupleTest(seq_tests.CommonTest):
                              lo32,
                              zlimit)
 
-        # Tuples of smallish positive integers are common - nice if we
+        # Tuples of smallish positive integers are common - nice ikiwa we
         # get "better than random" for these.
         tryone("range(100) by 3", list(product(range(100), repeat=3)),
                (0, 0), (0, 0), (4, 1), (0, 0))
@@ -205,7 +205,7 @@ class TupleTest(seq_tests.CommonTest):
         # to hash randomization for strings.  So we can't say exactly
         # what this should do.  Instead we insist that the # of
         # collisions is no more than 4 sdevs above the theoretically
-        # random mean.  Even if the tuple hash can't achieve that on its
+        # random mean.  Even ikiwa the tuple hash can't achieve that on its
         # own, the string hash is trying to be decently pseudo-random
         # (in all bit positions) on _its_ own.  We can at least test
         # that the tuple hash doesn't systematically ruin that.
@@ -231,7 +231,7 @@ class TupleTest(seq_tests.CommonTest):
         # Even more tortured nesting, and a mix of signed ints of very
         # small magnitude.
         n = 5
-        A = [x for x in range(-n, n+1) if x != -1]
+        A = [x for x in range(-n, n+1) ikiwa x != -1]
         B = A + [(a,) for a in A]
         L2 = list(product(A, repeat=2))
         L3 = L2 + list(product(A, repeat=3))
@@ -252,7 +252,7 @@ class TupleTest(seq_tests.CommonTest):
         tryone("new tuple test", T,
                (9, 1), (0, 0), (21, 5), (6, 1))
 
-    def test_repr(self):
+    eleza test_repr(self):
         l0 = tuple()
         l2 = (0, 1, 2)
         a0 = self.type2test(l0)
@@ -263,20 +263,20 @@ class TupleTest(seq_tests.CommonTest):
         self.assertEqual(repr(a0), "()")
         self.assertEqual(repr(a2), "(0, 1, 2)")
 
-    def _not_tracked(self, t):
+    eleza _not_tracked(self, t):
         # Nested tuples can take several collections to untrack
         gc.collect()
         gc.collect()
         self.assertFalse(gc.is_tracked(t), t)
 
-    def _tracked(self, t):
+    eleza _tracked(self, t):
         self.assertTrue(gc.is_tracked(t), t)
         gc.collect()
         gc.collect()
         self.assertTrue(gc.is_tracked(t), t)
 
     @support.cpython_only
-    def test_track_literals(self):
+    eleza test_track_literals(self):
         # Test GC-optimization of tuple literals
         x, y, z = 1.5, "a", []
 
@@ -288,7 +288,7 @@ class TupleTest(seq_tests.CommonTest):
         self._not_tracked((object(),))
         self._not_tracked(((1, x), y, (2, 3)))
 
-        # Tuples with mutable elements are always tracked, even if those
+        # Tuples with mutable elements are always tracked, even ikiwa those
         # elements are not tracked right now.
         self._tracked(([],))
         self._tracked(([1],))
@@ -296,10 +296,10 @@ class TupleTest(seq_tests.CommonTest):
         self._tracked((set(),))
         self._tracked((x, y, z))
 
-    def check_track_dynamic(self, tp, always_track):
+    eleza check_track_dynamic(self, tp, always_track):
         x, y, z = 1.5, "a", []
 
-        check = self._tracked if always_track else self._not_tracked
+        check = self._tracked ikiwa always_track else self._not_tracked
         check(tp())
         check(tp([]))
         check(tp(set()))
@@ -317,25 +317,25 @@ class TupleTest(seq_tests.CommonTest):
         self._tracked(tuple(tp([obj]) for obj in [x, y, z]))
 
     @support.cpython_only
-    def test_track_dynamic(self):
+    eleza test_track_dynamic(self):
         # Test GC-optimization of dynamically constructed tuples.
         self.check_track_dynamic(tuple, False)
 
     @support.cpython_only
-    def test_track_subtypes(self):
+    eleza test_track_subtypes(self):
         # Tuple subtypes must always be tracked
-        class MyTuple(tuple):
+        kundi MyTuple(tuple):
             pass
         self.check_track_dynamic(MyTuple, True)
 
     @support.cpython_only
-    def test_bug7466(self):
+    eleza test_bug7466(self):
         # Trying to untrack an unfinished tuple could crash Python
         self._not_tracked(tuple(gc.collect() for i in range(101)))
 
-    def test_repr_large(self):
+    eleza test_repr_large(self):
         # Check the repr of large list objects
-        def check(n):
+        eleza check(n):
             l = (0,) * n
             s = repr(l)
             self.assertEqual(s,
@@ -343,7 +343,7 @@ class TupleTest(seq_tests.CommonTest):
         check(10)       # check our checking code
         check(1000000)
 
-    def test_iterator_pickle(self):
+    eleza test_iterator_pickle(self):
         # Userlist iterators don't support pickling yet since
         # they are based on generators.
         data = self.type2test([4, 5, 6, 7])
@@ -359,7 +359,7 @@ class TupleTest(seq_tests.CommonTest):
             d = pickle.dumps(it, proto)
             self.assertEqual(self.type2test(it), self.type2test(data)[1:])
 
-    def test_reversed_pickle(self):
+    eleza test_reversed_pickle(self):
         data = self.type2test([4, 5, 6, 7])
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             itorg = reversed(data)
@@ -373,15 +373,15 @@ class TupleTest(seq_tests.CommonTest):
             d = pickle.dumps(it, proto)
             self.assertEqual(self.type2test(it), self.type2test(reversed(data))[1:])
 
-    def test_no_comdat_folding(self):
+    eleza test_no_comdat_folding(self):
         # Issue 8847: In the PGO build, the MSVC linker's COMDAT folding
         # optimization causes failures in code that relies on distinct
         # function addresses.
-        class T(tuple): pass
+        kundi T(tuple): pass
         with self.assertRaises(TypeError):
             [3,] + T((1,2))
 
-    def test_lexicographic_ordering(self):
+    eleza test_lexicographic_ordering(self):
         # Issue 21100
         a = self.type2test([1, 2])
         b = self.type2test([1, 2, 0])
@@ -422,7 +422,7 @@ class TupleTest(seq_tests.CommonTest):
 # "32-bit upper hash codes" means this was run under a 64-bit build and
 # we've shifted away the lower 32 bits of the hash codes.
 #
-# "pileup" is 0 if there were no collisions across those hash codes.
+# "pileup" is 0 ikiwa there were no collisions across those hash codes.
 # It's 1 less than the maximum number of times any single hash code was
 # seen.  So in this case, there was (at least) one hash code that was
 # seen 50 times:  that hash code "piled up" 49 more times than ideal.
@@ -482,5 +482,5 @@ class TupleTest(seq_tests.CommonTest):
 # [0, 0.5] by 18; 32-bit lower hash codes; \
 #            pileup 262,143 mean 8.0 coll 262,143 z +92683.6
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

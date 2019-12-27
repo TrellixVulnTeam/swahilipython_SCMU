@@ -106,15 +106,15 @@ TESTDATA={
 }
 
 
-class TestPlistlib(unittest.TestCase):
+kundi TestPlistlib(unittest.TestCase):
 
-    def tearDown(self):
+    eleza tearDown(self):
         try:
             os.unlink(support.TESTFN)
         except:
             pass
 
-    def _create(self, fmt=None):
+    eleza _create(self, fmt=None):
         pl = dict(
             aString="Doodah",
             aList=["A", "B", 12, 32.5, [1, 2, 3]],
@@ -139,14 +139,14 @@ class TestPlistlib(unittest.TestCase):
             anEmptyList = list()
         )
         pl['\xc5benraa'] = "That was a unicode key."
-        return pl
+        rudisha pl
 
-    def test_create(self):
+    eleza test_create(self):
         pl = self._create()
         self.assertEqual(pl["aString"], "Doodah")
         self.assertEqual(pl["aDict"]["aFalseValue"], False)
 
-    def test_io(self):
+    eleza test_io(self):
         pl = self._create()
         with open(support.TESTFN, 'wb') as fp:
             plistlib.dump(pl, fp)
@@ -159,14 +159,14 @@ class TestPlistlib(unittest.TestCase):
         self.assertRaises(AttributeError, plistlib.dump, pl, 'filename')
         self.assertRaises(AttributeError, plistlib.load, 'filename')
 
-    def test_invalid_type(self):
+    eleza test_invalid_type(self):
         pl = [ object() ]
 
         for fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 self.assertRaises(TypeError, plistlib.dumps, pl, fmt=fmt)
 
-    def test_invalid_uid(self):
+    eleza test_invalid_uid(self):
         with self.assertRaises(TypeError):
             UID("not an int")
         with self.assertRaises(ValueError):
@@ -174,7 +174,7 @@ class TestPlistlib(unittest.TestCase):
         with self.assertRaises(ValueError):
             UID(-19)
 
-    def test_int(self):
+    eleza test_int(self):
         for pl in [0, 2**8-1, 2**8, 2**16-1, 2**16, 2**32-1, 2**32,
                    2**63-1, 2**64-1, 1, -2**63]:
             for fmt in ALL_FORMATS:
@@ -192,7 +192,7 @@ class TestPlistlib(unittest.TestCase):
                     self.assertRaises(OverflowError, plistlib.dumps,
                                       pl, fmt=fmt)
 
-    def test_bytearray(self):
+    eleza test_bytearray(self):
         for pl in (b'<binary gunk>', b"<lots of binary gunk>\0\1\2\3" * 10):
             for fmt in ALL_FORMATS:
                 with self.subTest(pl=pl, fmt=fmt):
@@ -203,7 +203,7 @@ class TestPlistlib(unittest.TestCase):
                     data2 = plistlib.dumps(pl2, fmt=fmt)
                     self.assertEqual(data, data2)
 
-    def test_bytes(self):
+    eleza test_bytes(self):
         pl = self._create()
         data = plistlib.dumps(pl)
         pl2 = plistlib.loads(data)
@@ -211,19 +211,19 @@ class TestPlistlib(unittest.TestCase):
         data2 = plistlib.dumps(pl2)
         self.assertEqual(data, data2)
 
-    def test_indentation_array(self):
+    eleza test_indentation_array(self):
         data = [[[[[[[[{'test': b'aaaaaa'}]]]]]]]]
         self.assertEqual(plistlib.loads(plistlib.dumps(data)), data)
 
-    def test_indentation_dict(self):
+    eleza test_indentation_dict(self):
         data = {'1': {'2': {'3': {'4': {'5': {'6': {'7': {'8': {'9': b'aaaaaa'}}}}}}}}}
         self.assertEqual(plistlib.loads(plistlib.dumps(data)), data)
 
-    def test_indentation_dict_mix(self):
+    eleza test_indentation_dict_mix(self):
         data = {'1': {'2': [{'3': [[[[[{'test': b'aaaaaa'}]]]]]}]}}
         self.assertEqual(plistlib.loads(plistlib.dumps(data)), data)
 
-    def test_uid(self):
+    eleza test_uid(self):
         data = UID(1)
         self.assertEqual(plistlib.loads(plistlib.dumps(data, fmt=plistlib.FMT_BINARY)), data)
         dict_data = {
@@ -236,33 +236,33 @@ class TestPlistlib(unittest.TestCase):
         }
         self.assertEqual(plistlib.loads(plistlib.dumps(dict_data, fmt=plistlib.FMT_BINARY)), dict_data)
 
-    def test_uid_data(self):
+    eleza test_uid_data(self):
         uid = UID(1)
         self.assertEqual(uid.data, 1)
 
-    def test_uid_eq(self):
+    eleza test_uid_eq(self):
         self.assertEqual(UID(1), UID(1))
         self.assertNotEqual(UID(1), UID(2))
         self.assertNotEqual(UID(1), "not uid")
 
-    def test_uid_hash(self):
+    eleza test_uid_hash(self):
         self.assertEqual(hash(UID(1)), hash(UID(1)))
 
-    def test_uid_repr(self):
+    eleza test_uid_repr(self):
         self.assertEqual(repr(UID(1)), "UID(1)")
 
-    def test_uid_index(self):
+    eleza test_uid_index(self):
         self.assertEqual(operator.index(UID(1)), 1)
 
-    def test_uid_pickle(self):
+    eleza test_uid_pickle(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             self.assertEqual(pickle.loads(pickle.dumps(UID(19), protocol=proto)), UID(19))
 
-    def test_uid_copy(self):
+    eleza test_uid_copy(self):
         self.assertEqual(copy.copy(UID(1)), UID(1))
         self.assertEqual(copy.deepcopy(UID(1)), UID(1))
 
-    def test_appleformatting(self):
+    eleza test_appleformatting(self):
         for use_builtin_types in (True, False):
             for fmt in ALL_FORMATS:
                 with self.subTest(fmt=fmt, use_builtin_types=use_builtin_types):
@@ -273,7 +273,7 @@ class TestPlistlib(unittest.TestCase):
                         "generated data was not identical to Apple's output")
 
 
-    def test_appleformattingfromliteral(self):
+    eleza test_appleformattingkutokaliteral(self):
         self.maxDiff = None
         for fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
@@ -285,7 +285,7 @@ class TestPlistlib(unittest.TestCase):
                 self.assertEqual(dict(pl), dict(pl2),
                     "generated data was not identical to Apple's output")
 
-    def test_bytesio(self):
+    eleza test_bytesio(self):
         for fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 b = BytesIO()
@@ -296,7 +296,7 @@ class TestPlistlib(unittest.TestCase):
                 pl2 = plistlib.load(BytesIO(b.getvalue()))
                 self.assertEqual(dict(pl), dict(pl2))
 
-    def test_keysort_bytesio(self):
+    eleza test_keysort_bytesio(self):
         pl = collections.OrderedDict()
         pl['b'] = 1
         pl['a'] = 2
@@ -312,12 +312,12 @@ class TestPlistlib(unittest.TestCase):
                         dict_type=collections.OrderedDict)
 
                     self.assertEqual(dict(pl), dict(pl2))
-                    if sort_keys:
+                    ikiwa sort_keys:
                         self.assertEqual(list(pl2.keys()), ['a', 'b', 'c'])
                     else:
                         self.assertEqual(list(pl2.keys()), ['b', 'a', 'c'])
 
-    def test_keysort(self):
+    eleza test_keysort(self):
         pl = collections.OrderedDict()
         pl['b'] = 1
         pl['a'] = 2
@@ -330,12 +330,12 @@ class TestPlistlib(unittest.TestCase):
                     pl2 = plistlib.loads(data, dict_type=collections.OrderedDict)
 
                     self.assertEqual(dict(pl), dict(pl2))
-                    if sort_keys:
+                    ikiwa sort_keys:
                         self.assertEqual(list(pl2.keys()), ['a', 'b', 'c'])
                     else:
                         self.assertEqual(list(pl2.keys()), ['b', 'a', 'c'])
 
-    def test_keys_no_string(self):
+    eleza test_keys_no_string(self):
         pl = { 42: 'aNumber' }
 
         for fmt in ALL_FORMATS:
@@ -345,7 +345,7 @@ class TestPlistlib(unittest.TestCase):
                 b = BytesIO()
                 self.assertRaises(TypeError, plistlib.dump, pl, b, fmt=fmt)
 
-    def test_skipkeys(self):
+    eleza test_skipkeys(self):
         pl = {
             42: 'aNumber',
             'snake': 'aWord',
@@ -366,7 +366,7 @@ class TestPlistlib(unittest.TestCase):
                 pl2 = plistlib.loads(fp.getvalue())
                 self.assertEqual(pl2, {'snake': 'aWord'})
 
-    def test_tuple_members(self):
+    eleza test_tuple_members(self):
         pl = {
             'first': (1, 2),
             'second': (1, 2),
@@ -382,10 +382,10 @@ class TestPlistlib(unittest.TestCase):
                     'second': [1, 2],
                     'third': [3, 4],
                 })
-                if fmt != plistlib.FMT_BINARY:
+                ikiwa fmt != plistlib.FMT_BINARY:
                     self.assertIsNot(pl2['first'], pl2['second'])
 
-    def test_list_members(self):
+    eleza test_list_members(self):
         pl = {
             'first': [1, 2],
             'second': [1, 2],
@@ -403,7 +403,7 @@ class TestPlistlib(unittest.TestCase):
                 })
                 self.assertIsNot(pl2['first'], pl2['second'])
 
-    def test_dict_members(self):
+    eleza test_dict_members(self):
         pl = {
             'first': {'a': 1},
             'second': {'a': 1},
@@ -421,28 +421,28 @@ class TestPlistlib(unittest.TestCase):
                 })
                 self.assertIsNot(pl2['first'], pl2['second'])
 
-    def test_controlcharacters(self):
+    eleza test_controlcharacters(self):
         for i in range(128):
             c = chr(i)
             testString = "string containing %s" % c
-            if i >= 32 or c in "\r\n\t":
+            ikiwa i >= 32 or c in "\r\n\t":
                 # \r, \n and \t are the only legal control chars in XML
                 data = plistlib.dumps(testString, fmt=plistlib.FMT_XML)
-                if c != "\r":
+                ikiwa c != "\r":
                     self.assertEqual(plistlib.loads(data), testString)
             else:
                 with self.assertRaises(ValueError):
                     plistlib.dumps(testString, fmt=plistlib.FMT_XML)
             plistlib.dumps(testString, fmt=plistlib.FMT_BINARY)
 
-    def test_non_bmp_characters(self):
+    eleza test_non_bmp_characters(self):
         pl = {'python': '\U0001f40d'}
         for fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 data = plistlib.dumps(pl, fmt=fmt)
                 self.assertEqual(plistlib.loads(data), pl)
 
-    def test_lone_surrogates(self):
+    eleza test_lone_surrogates(self):
         for fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 with self.assertRaises(UnicodeEncodeError):
@@ -450,7 +450,7 @@ class TestPlistlib(unittest.TestCase):
                 with self.assertRaises(UnicodeEncodeError):
                     plistlib.dumps('\udcff', fmt=fmt)
 
-    def test_nondictroot(self):
+    eleza test_nondictroot(self):
         for fmt in ALL_FORMATS:
             with self.subTest(fmt=fmt):
                 test1 = "abc"
@@ -460,14 +460,14 @@ class TestPlistlib(unittest.TestCase):
                 self.assertEqual(test1, result1)
                 self.assertEqual(test2, result2)
 
-    def test_invalidarray(self):
+    eleza test_invalidarray(self):
         for i in ["<key>key inside an array</key>",
                   "<key>key inside an array2</key><real>3</real>",
                   "<true/><key>key inside an array3</key>"]:
             self.assertRaises(ValueError, plistlib.loads,
                               ("<plist><array>%s</array></plist>"%i).encode())
 
-    def test_invaliddict(self):
+    eleza test_invaliddict(self):
         for i in ["<key><true/>k</key><string>compound key</string>",
                   "<key>single key</key>",
                   "<string>missing key</string>",
@@ -478,15 +478,15 @@ class TestPlistlib(unittest.TestCase):
             self.assertRaises(ValueError, plistlib.loads,
                               ("<plist><array><dict>%s</dict></array></plist>"%i).encode())
 
-    def test_invalidinteger(self):
+    eleza test_invalidinteger(self):
         self.assertRaises(ValueError, plistlib.loads,
                           b"<plist><integer>not integer</integer></plist>")
 
-    def test_invalidreal(self):
+    eleza test_invalidreal(self):
         self.assertRaises(ValueError, plistlib.loads,
                           b"<plist><integer>not real</integer></plist>")
 
-    def test_xml_encodings(self):
+    eleza test_xml_encodings(self):
         base = TESTDATA[plistlib.FMT_XML]
 
         for xml_encoding, encoding, bom in [
@@ -506,9 +506,9 @@ class TestPlistlib(unittest.TestCase):
                 self.assertEqual(dict(pl), dict(pl2))
 
 
-class TestBinaryPlistlib(unittest.TestCase):
+kundi TestBinaryPlistlib(unittest.TestCase):
 
-    def test_nonstandard_refs_size(self):
+    eleza test_nonstandard_refs_size(self):
         # Issue #21538: Refs and offsets are 24-bit integers
         data = (b'bplist00'
                 b'\xd1\x00\x00\x01\x00\x00\x02QaQb'
@@ -520,7 +520,7 @@ class TestBinaryPlistlib(unittest.TestCase):
                 b'\x00\x00\x00\x00\x00\x00\x00\x13')
         self.assertEqual(plistlib.loads(data), {'a': 'b'})
 
-    def test_dump_duplicates(self):
+    eleza test_dump_duplicates(self):
         # Test effectiveness of saving duplicated objects
         for x in (None, False, True, 12345, 123.45, 'abcde', b'abcde',
                   datetime.datetime(2004, 10, 26, 10, 33, 33),
@@ -530,7 +530,7 @@ class TestBinaryPlistlib(unittest.TestCase):
                 data = plistlib.dumps([x]*1000, fmt=plistlib.FMT_BINARY)
                 self.assertLess(len(data), 1100, repr(data))
 
-    def test_identity(self):
+    eleza test_identity(self):
         for x in (None, False, True, 12345, 123.45, 'abcde', b'abcde',
                   datetime.datetime(2004, 10, 26, 10, 33, 33),
                   plistlib.Data(b'abcde'), bytearray(b'abcde'),
@@ -538,13 +538,13 @@ class TestBinaryPlistlib(unittest.TestCase):
             with self.subTest(x=x):
                 data = plistlib.dumps([x]*2, fmt=plistlib.FMT_BINARY)
                 a, b = plistlib.loads(data)
-                if isinstance(x, tuple):
+                ikiwa isinstance(x, tuple):
                     x = list(x)
                 self.assertEqual(a, x)
                 self.assertEqual(b, x)
                 self.assertIs(a, b)
 
-    def test_cycles(self):
+    eleza test_cycles(self):
         # recursive list
         a = []
         a.append(a)
@@ -561,16 +561,16 @@ class TestBinaryPlistlib(unittest.TestCase):
         b = plistlib.loads(plistlib.dumps(a, fmt=plistlib.FMT_BINARY))
         self.assertIs(b['x'], b)
 
-    def test_large_timestamp(self):
+    eleza test_large_timestamp(self):
         # Issue #26709: 32-bit timestamp out of range
         for ts in -2**31-1, 2**31:
             with self.subTest(ts=ts):
-                d = (datetime.datetime.utcfromtimestamp(0) +
+                d = (datetime.datetime.utckutokatimestamp(0) +
                      datetime.timedelta(seconds=ts))
                 data = plistlib.dumps(d, fmt=plistlib.FMT_BINARY)
                 self.assertEqual(plistlib.loads(data), d)
 
-    def test_invalid_binary(self):
+    eleza test_invalid_binary(self):
         for data in [
                 # too short data
                 b'',
@@ -621,8 +621,8 @@ class TestBinaryPlistlib(unittest.TestCase):
                 plistlib.loads(b'bplist00' + data, fmt=plistlib.FMT_BINARY)
 
 
-class TestPlistlibDeprecated(unittest.TestCase):
-    def test_io_deprecated(self):
+kundi TestPlistlibDeprecated(unittest.TestCase):
+    eleza test_io_deprecated(self):
         pl_in = {
             'key': 42,
             'sub': {
@@ -661,7 +661,7 @@ class TestPlistlibDeprecated(unittest.TestCase):
 
         self.assertEqual(pl_out, pl2)
 
-    def test_bytes_deprecated(self):
+    eleza test_bytes_deprecated(self):
         pl = {
             'key': 42,
             'sub': {
@@ -690,7 +690,7 @@ class TestPlistlibDeprecated(unittest.TestCase):
             data2 = plistlib.writePlistToBytes(pl2)
         self.assertEqual(data, data2)
 
-    def test_dataobject_deprecated(self):
+    eleza test_dataobject_deprecated(self):
         in_data = { 'key': plistlib.Data(b'hello') }
         out_data = { 'key': b'hello' }
 
@@ -710,8 +710,8 @@ class TestPlistlibDeprecated(unittest.TestCase):
         self.assertEqual(cur, in_data)
 
 
-class TestKeyedArchive(unittest.TestCase):
-    def test_keyed_archive_data(self):
+kundi TestKeyedArchive(unittest.TestCase):
+    eleza test_keyed_archive_data(self):
         # This is the structure of a NSKeyedArchive packed plist
         data = {
             '$version': 100000,
@@ -742,15 +742,15 @@ class TestKeyedArchive(unittest.TestCase):
         self.assertEqual(plistlib.loads(TESTDATA["KEYED_ARCHIVE"]), data)
 
 
-class MiscTestCase(unittest.TestCase):
-    def test__all__(self):
+kundi MiscTestCase(unittest.TestCase):
+    eleza test__all__(self):
         blacklist = {"PlistFormat", "PLISTHEADER"}
         support.check__all__(self, plistlib, blacklist=blacklist)
 
 
-def test_main():
+eleza test_main():
     support.run_unittest(TestPlistlib, TestPlistlibDeprecated, TestKeyedArchive, MiscTestCase)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test_main()

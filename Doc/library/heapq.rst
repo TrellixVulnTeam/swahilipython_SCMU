@@ -19,11 +19,11 @@ as the priority queue algorithm.
 Heaps are binary trees for which every parent node has a value less than or
 equal to any of its children.  This implementation uses arrays for which
 ``heap[k] <= heap[2*k+1]`` and ``heap[k] <= heap[2*k+2]`` for all *k*, counting
-elements from zero.  For the sake of comparison, non-existing elements are
+elements kutoka zero.  For the sake of comparison, non-existing elements are
 considered to be infinite.  The interesting property of a heap is that its
 smallest element is always the root, ``heap[0]``.
 
-The API below differs from textbook heap algorithms in two aspects: (a) We use
+The API below differs kutoka textbook heap algorithms in two aspects: (a) We use
 zero-based indexing.  This makes the relationship between the index for a node
 and the indexes for its children slightly less obvious, but is more suitable
 since Python uses zero-based indexing. (b) Our pop method returns the smallest
@@ -47,14 +47,14 @@ The following functions are provided:
 
 .. function:: heappop(heap)
 
-   Pop and return the smallest item from the *heap*, maintaining the heap
+   Pop and return the smallest item kutoka the *heap*, maintaining the heap
    invariant.  If the heap is empty, :exc:`IndexError` is raised.  To access the
    smallest item without popping it, use ``heap[0]``.
 
 
 .. function:: heappushpop(heap, item)
 
-   Push *item* on the heap, then pop and return the smallest item from the
+   Push *item* on the heap, then pop and return the smallest item kutoka the
    *heap*.  The combined action runs more efficiently than :func:`heappush`
    followed by a separate call to :func:`heappop`.
 
@@ -66,12 +66,12 @@ The following functions are provided:
 
 .. function:: heapreplace(heap, item)
 
-   Pop and return the smallest item from the *heap*, and also push the new *item*.
+   Pop and return the smallest item kutoka the *heap*, and also push the new *item*.
    The heap size doesn't change. If the heap is empty, :exc:`IndexError` is raised.
 
    This one step operation is more efficient than a :func:`heappop` followed by
    :func:`heappush` and can be more appropriate when using a fixed-size heap.
-   The pop/push combination always returns an element from the heap and replaces
+   The pop/push combination always returns an element kutoka the heap and replaces
    it with *item*.
 
    The value returned may be larger than the *item* added.  If that isn't
@@ -86,7 +86,7 @@ The module also offers three general purpose functions based on heaps.
 .. function:: merge(*iterables, key=None, reverse=False)
 
    Merge multiple sorted inputs into a single sorted output (for example, merge
-   timestamped entries from multiple log files).  Returns an :term:`iterator`
+   timestamped entries kutoka multiple log files).  Returns an :term:`iterator`
    over the sorted values.
 
    Similar to ``sorted(itertools.chain(*iterables))`` but returns an iterable, does
@@ -96,13 +96,13 @@ The module also offers three general purpose functions based on heaps.
    Has two optional arguments which must be specified as keyword arguments.
 
    *key* specifies a :term:`key function` of one argument that is used to
-   extract a comparison key from each input element.  The default value is
+   extract a comparison key kutoka each input element.  The default value is
    ``None`` (compare the elements directly).
 
    *reverse* is a boolean value.  If set to ``True``, then the input elements
    are merged as if each comparison were reversed. To achieve behavior similar
    to ``sorted(itertools.chain(*iterables), reverse=True)``, all iterables must
-   be sorted from largest to smallest.
+   be sorted kutoka largest to smallest.
 
    .. versionchanged:: 3.5
       Added the optional *key* and *reverse* parameters.
@@ -110,18 +110,18 @@ The module also offers three general purpose functions based on heaps.
 
 .. function:: nlargest(n, iterable, key=None)
 
-   Return a list with the *n* largest elements from the dataset defined by
+   Return a list with the *n* largest elements kutoka the dataset defined by
    *iterable*.  *key*, if provided, specifies a function of one argument that is
-   used to extract a comparison key from each element in *iterable* (for example,
+   used to extract a comparison key kutoka each element in *iterable* (for example,
    ``key=str.lower``).  Equivalent to:  ``sorted(iterable, key=key,
    reverse=True)[:n]``.
 
 
 .. function:: nsmallest(n, iterable, key=None)
 
-   Return a list with the *n* smallest elements from the dataset defined by
+   Return a list with the *n* smallest elements kutoka the dataset defined by
    *iterable*.  *key*, if provided, specifies a function of one argument that is
-   used to extract a comparison key from each element in *iterable* (for example,
+   used to extract a comparison key kutoka each element in *iterable* (for example,
    ``key=str.lower``).  Equivalent to:  ``sorted(iterable, key=key)[:n]``.
 
 
@@ -179,7 +179,7 @@ for a heap, and it presents several implementation challenges:
   the heap?
 
 * Or if a pending task needs to be deleted, how do you find it and remove it
-  from the queue?
+  kutoka the queue?
 
 A solution to the first two challenges is to store entries as 3-element list
 including the priority, an entry count, and the task.  The entry count serves as
@@ -188,13 +188,13 @@ they were added. And since no two entry counts are the same, the tuple
 comparison will never attempt to directly compare two tasks.
 
 Another solution to the problem of non-comparable tasks is to create a wrapper
-class that ignores the task item and only compares the priority field::
+kundi that ignores the task item and only compares the priority field::
 
-    from dataclasses import dataclass, field
-    from typing import Any
+    kutoka dataclasses agiza dataclass, field
+    kutoka typing agiza Any
 
     @dataclass(order=True)
-    class PrioritizedItem:
+    kundi PrioritizedItem:
         priority: int
         item: Any=field(compare=False)
 
@@ -232,14 +232,14 @@ entry as removed and add a new entry with the revised priority::
             if task is not REMOVED:
                 del entry_finder[task]
                 return task
-        raise KeyError('pop from an empty priority queue')
+        raise KeyError('pop kutoka an empty priority queue')
 
 
 Theory
 ------
 
 Heaps are arrays for which ``a[k] <= a[2*k+1]`` and ``a[k] <= a[2*k+2]`` for all
-*k*, counting elements from 0.  For the sake of comparison, non-existing
+*k*, counting elements kutoka 0.  For the sake of comparison, non-existing
 elements are considered to be infinite.  The interesting property of a heap is
 that ``a[0]`` is always its smallest element.
 

@@ -28,9 +28,9 @@ typedef enum {
        For example, used for timeout to wait "at least" N seconds. */
     _PyTime_ROUND_CEILING=1,
     /* Round to nearest with ties going to nearest even integer.
-       For example, used to round from a Python float. */
+       For example, used to round kutoka a Python float. */
     _PyTime_ROUND_HALF_EVEN=2,
-    /* Round away from zero
+    /* Round away kutoka zero
        For example, used for timeout. _PyTime_ROUND_CEILING rounds
        -1e-9 to 0 milliseconds which causes bpo-31786 issue.
        _PyTime_ROUND_UP rounds -1e-9 to -1 millisecond which keeps
@@ -76,18 +76,18 @@ PyAPI_FUNC(int) _PyTime_ObjectToTimespec(
     _PyTime_round_t);
 
 
-/* Create a timestamp from a number of seconds. */
+/* Create a timestamp kutoka a number of seconds. */
 PyAPI_FUNC(_PyTime_t) _PyTime_FromSeconds(int seconds);
 
-/* Macro to create a timestamp from a number of seconds, no integer overflow.
+/* Macro to create a timestamp kutoka a number of seconds, no integer overflow.
    Only use the macro for small values, prefer _PyTime_FromSeconds(). */
 #define _PYTIME_FROMSECONDS(seconds) \
             ((_PyTime_t)(seconds) * (1000 * 1000 * 1000))
 
-/* Create a timestamp from a number of nanoseconds. */
+/* Create a timestamp kutoka a number of nanoseconds. */
 PyAPI_FUNC(_PyTime_t) _PyTime_FromNanoseconds(_PyTime_t ns);
 
-/* Create a timestamp from nanoseconds (Python int). */
+/* Create a timestamp kutoka nanoseconds (Python int). */
 PyAPI_FUNC(int) _PyTime_FromNanosecondsObject(_PyTime_t *t,
     PyObject *obj);
 
@@ -118,7 +118,7 @@ PyAPI_FUNC(_PyTime_t) _PyTime_AsMicroseconds(_PyTime_t t,
    object. */
 PyAPI_FUNC(PyObject *) _PyTime_AsNanosecondsObject(_PyTime_t t);
 
-/* Create a timestamp from a timeval structure.
+/* Create a timestamp kutoka a timeval structure.
    Raise an exception and return -1 on overflow, return 0 on success. */
 PyAPI_FUNC(int) _PyTime_FromTimeval(_PyTime_t *tp, struct timeval *tv);
 
@@ -148,7 +148,7 @@ PyAPI_FUNC(int) _PyTime_AsTimevalTime_t(
     _PyTime_round_t round);
 
 #if defined(HAVE_CLOCK_GETTIME) || defined(HAVE_KQUEUE)
-/* Create a timestamp from a timespec structure.
+/* Create a timestamp kutoka a timespec structure.
    Raise an exception and return -1 on overflow, return 0 on success. */
 PyAPI_FUNC(int) _PyTime_FromTimespec(_PyTime_t *tp, struct timespec *ts);
 
@@ -164,7 +164,7 @@ PyAPI_FUNC(_PyTime_t) _PyTime_MulDiv(_PyTime_t ticks,
     _PyTime_t mul,
     _PyTime_t div);
 
-/* Get the current time from the system clock.
+/* Get the current time kutoka the system clock.
 
    The function cannot fail. _PyTime_Init() ensures that the system clock
    works. */
@@ -188,7 +188,7 @@ typedef struct {
     double resolution;
 } _Py_clock_info_t;
 
-/* Get the current time from the system clock.
+/* Get the current time kutoka the system clock.
  * Fill clock information if info is not NULL.
  * Raise an exception and return -1 on error, return 0 on success.
  */

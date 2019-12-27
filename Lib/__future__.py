@@ -35,7 +35,7 @@ to use the feature in question, but may continue to use such agizas.
 MandatoryRelease may also be None, meaning that a planned feature got
 dropped.
 
-Instances of class _Feature have two corresponding methods,
+Instances of kundi _Feature have two corresponding methods,
 .getOptionalRelease() and .getMandatoryRelease().
 
 CompilerFlag is the (bitfield) flag that should be passed in the fourth
@@ -77,13 +77,13 @@ CO_FUTURE_BARRY_AS_BDFL = 0x40000
 CO_FUTURE_GENERATOR_STOP  = 0x80000 # StopIteration becomes RuntimeError in generators
 CO_FUTURE_ANNOTATIONS     = 0x100000  # annotations become strings at runtime
 
-class _Feature:
-    def __init__(self, optionalRelease, mandatoryRelease, compiler_flag):
+kundi _Feature:
+    eleza __init__(self, optionalRelease, mandatoryRelease, compiler_flag):
         self.optional = optionalRelease
         self.mandatory = mandatoryRelease
         self.compiler_flag = compiler_flag
 
-    def getOptionalRelease(self):
+    eleza getOptionalRelease(self):
         """Return first release in which this feature was recognized.
 
         This is a 5-tuple, of the same form as sys.version_info.
@@ -91,7 +91,7 @@ class _Feature:
 
         return self.optional
 
-    def getMandatoryRelease(self):
+    eleza getMandatoryRelease(self):
         """Return release in which this feature will become mandatory.
 
         This is a 5-tuple, of the same form as sys.version_info, or, if
@@ -100,7 +100,7 @@ class _Feature:
 
         return self.mandatory
 
-    def __repr__(self):
+    eleza __repr__(self):
         return "_Feature" + repr((self.optional,
                                   self.mandatory,
                                   self.compiler_flag))

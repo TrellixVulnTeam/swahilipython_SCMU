@@ -6,7 +6,7 @@
 Developing with asyncio
 =======================
 
-Asynchronous programming is different from classic "sequential"
+Asynchronous programming is different kutoka classic "sequential"
 programming.
 
 This page lists common mistakes and traps and explains how
@@ -52,7 +52,7 @@ When the debug mode is enabled:
 
 * Many non-threadsafe asyncio APIs (such as :meth:`loop.call_soon` and
   :meth:`loop.call_at` methods) raise an exception if they are called
-  from a wrong thread.
+  kutoka a wrong thread.
 
 * The execution time of the I/O selector is logged if it takes too long to
   perform an I/O operation.
@@ -73,20 +73,20 @@ event loop, no other Tasks can run in the same thread.  When a Task
 executes an ``await`` expression, the running Task gets suspended, and
 the event loop executes the next Task.
 
-To schedule a callback from a different OS thread, the
+To schedule a callback kutoka a different OS thread, the
 :meth:`loop.call_soon_threadsafe` method should be used. Example::
 
     loop.call_soon_threadsafe(callback, *args)
 
 Almost all asyncio objects are not thread safe, which is typically
-not a problem unless there is code that works with them from outside
+not a problem unless there is code that works with them kutoka outside
 of a Task or a callback.  If there's a need for such code to call a
 low-level asyncio API, the :meth:`loop.call_soon_threadsafe` method
 should be used, e.g.::
 
     loop.call_soon_threadsafe(fut.cancel)
 
-To schedule a coroutine object from a different OS thread, the
+To schedule a coroutine object kutoka a different OS thread, the
 :func:`run_coroutine_threadsafe` function should be used. It returns a
 :class:`concurrent.futures.Future` to access the result::
 
@@ -148,7 +148,7 @@ When a coroutine function is called, but not awaited
 or the coroutine is not scheduled with :meth:`asyncio.create_task`, asyncio
 will emit a :exc:`RuntimeWarning`::
 
-    import asyncio
+    agiza asyncio
 
     async def test():
         print("never scheduled")
@@ -193,7 +193,7 @@ Future object is garbage collected.
 
 Example of an unhandled exception::
 
-    import asyncio
+    agiza asyncio
 
     async def bug():
         raise Exception("not consumed")

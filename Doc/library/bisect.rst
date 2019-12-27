@@ -61,7 +61,7 @@ The following functions are provided:
 
    `SortedCollection recipe
    <https://code.activestate.com/recipes/577197-sortedcollection/>`_ that uses
-   bisect to build a full-featured collection class with straight-forward search
+   bisect to build a full-featured collection kundi with straight-forward search
    methods and support for a key-function.  The keys are precomputed to save
    unnecessary calls to the key function during searches.
 

@@ -2,7 +2,7 @@
 ==================================================
 
 .. module:: urllib.parse
-   :synopsis: Parse URLs into or assemble them from components.
+   :synopsis: Parse URLs into or assemble them kutoka components.
 
 **Source code:** :source:`Lib/urllib/parse.py`
 
@@ -48,7 +48,7 @@ or on combining URL components into a URL string.
    result, except for a leading slash in the *path* component, which is retained if
    present.  For example:
 
-      >>> from urllib.parse import urlparse
+      >>> kutoka urllib.parse agiza urlparse
       >>> o = urlparse('http://www.cwi.nl:80/%7Eguido/Python.html')
       >>> o   # doctest: +NORMALIZE_WHITESPACE
       ParseResult(scheme='http', netloc='www.cwi.nl:80', path='/%7Eguido/Python.html',
@@ -68,7 +68,7 @@ or on combining URL components into a URL string.
    .. doctest::
       :options: +NORMALIZE_WHITESPACE
 
-       >>> from urllib.parse import urlparse
+       >>> kutoka urllib.parse agiza urlparse
        >>> urlparse('//www.cwi.nl:80/%7Eguido/Python.html')
        ParseResult(scheme='', netloc='www.cwi.nl:80', path='/%7Eguido/Python.html',
                   params='', query='', fragment='')
@@ -130,7 +130,7 @@ or on combining URL components into a URL string.
    ``#``, ``@``, or ``:`` will raise a :exc:`ValueError`. If the URL is
    decomposed before parsing, no error will be raised.
 
-   As is the case with all named tuples, the subclass has a few additional methods
+   As is the case with all named tuples, the subkundi has a few additional methods
    and attributes that are particularly useful. One such method is :meth:`_replace`.
    The :meth:`_replace` method will return a new ParseResult object replacing specified
    fields with new values.
@@ -138,7 +138,7 @@ or on combining URL components into a URL string.
    .. doctest::
       :options: +NORMALIZE_WHITESPACE
 
-       >>> from urllib.parse import urlparse
+       >>> kutoka urllib.parse agiza urlparse
        >>> u = urlparse('//www.cwi.nl:80/%7Eguido/Python.html')
        >>> u
        ParseResult(scheme='', netloc='www.cwi.nl:80', path='/%7Eguido/Python.html',
@@ -238,7 +238,7 @@ or on combining URL components into a URL string.
 
 .. function:: urlunparse(parts)
 
-   Construct a URL from a tuple as returned by ``urlparse()``. The *parts*
+   Construct a URL kutoka a tuple as returned by ``urlparse()``. The *parts*
    argument can be any six-item iterable. This may result in a slightly
    different, but equivalent URL, if the URL that was parsed originally had
    unnecessary delimiters (for example, a ``?`` with an empty query; the RFC
@@ -247,7 +247,7 @@ or on combining URL components into a URL string.
 
 .. function:: urlsplit(urlstring, scheme='', allow_fragments=True)
 
-   This is similar to :func:`urlparse`, but does not split the params from the URL.
+   This is similar to :func:`urlparse`, but does not split the params kutoka the URL.
    This should generally be used instead of :func:`urlparse` if the more recent URL
    syntax allowing parameters to be applied to each segment of the *path* portion
    of the URL (see :rfc:`2396`) is wanted.  A separate function is needed to
@@ -319,7 +319,7 @@ or on combining URL components into a URL string.
    particular the addressing scheme, the network location and (part of) the
    path, to provide missing components in the relative URL.  For example:
 
-      >>> from urllib.parse import urljoin
+      >>> kutoka urllib.parse agiza urljoin
       >>> urljoin('http://www.cwi.nl/%7Eguido/Python.html', 'FAQ.html')
       'http://www.cwi.nl/%7Eguido/FAQ.html'
 
@@ -372,7 +372,7 @@ or on combining URL components into a URL string.
 
 .. function:: unwrap(url)
 
-   Extract the url from a wrapped URL (that is, a string formatted as
+   Extract the url kutoka a wrapped URL (that is, a string formatted as
    ``<URL:scheme://host/path>``, ``<scheme://host/path>``, ``URL:scheme://host/path``
    or ``scheme://host/path``). If *url* is not a wrapped URL, it is returned
    without changes.
@@ -398,7 +398,7 @@ Attempting to mix :class:`str` data with :class:`bytes` or
 byte values will trigger :exc:`UnicodeDecodeError`.
 
 To support easier conversion of result objects between :class:`str` and
-:class:`bytes`, all return values from URL parsing functions provide
+:class:`bytes`, all return values kutoka URL parsing functions provide
 either an :meth:`encode` method (when the result contains :class:`str`
 data) or a :meth:`decode` method (when the result contains :class:`bytes`
 data). The signatures of these methods match those of the corresponding
@@ -409,7 +409,7 @@ corresponding type that contains either :class:`bytes` data (for
 :meth:`decode` methods).
 
 Applications that need to operate on potentially improperly quoted URLs
-that may contain non-ASCII data will need to do their own decoding from
+that may contain non-ASCII data will need to do their own decoding kutoka
 bytes to characters before invoking the URL parsing methods.
 
 The behaviour described in this section applies only to the URL parsing
@@ -426,7 +426,7 @@ individual URL quoting functions.
 Structured Parse Results
 ------------------------
 
-The result objects from the :func:`urlparse`, :func:`urlsplit`  and
+The result objects kutoka the :func:`urlparse`, :func:`urlsplit`  and
 :func:`urldefrag` functions are subclasses of the :class:`tuple` type.
 These subclasses add the attributes listed in the documentation for
 those functions, the encoding and decoding support described in the
@@ -435,7 +435,7 @@ previous section, as well as an additional method:
 .. method:: urllib.parse.SplitResult.geturl()
 
    Return the re-combined version of the original URL as a string. This may
-   differ from the original URL in that the scheme may be normalized to lower
+   differ kutoka the original URL in that the scheme may be normalized to lower
    case and empty components may be dropped. Specifically, empty parameters,
    queries, and fragment identifiers will be removed.
 
@@ -446,7 +446,7 @@ previous section, as well as an additional method:
    The result of this method remains unchanged if passed back through the original
    parsing function:
 
-      >>> from urllib.parse import urlsplit
+      >>> kutoka urllib.parse agiza urlsplit
       >>> url = 'HTTP://www.Python.org/doc/#'
       >>> r1 = urlsplit(url)
       >>> r1.geturl()
@@ -461,7 +461,7 @@ results when operating on :class:`str` objects:
 
 .. class:: DefragResult(url, fragment)
 
-   Concrete class for :func:`urldefrag` results containing :class:`str`
+   Concrete kundi for :func:`urldefrag` results containing :class:`str`
    data. The :meth:`encode` method returns a :class:`DefragResultBytes`
    instance.
 
@@ -469,13 +469,13 @@ results when operating on :class:`str` objects:
 
 .. class:: ParseResult(scheme, netloc, path, params, query, fragment)
 
-   Concrete class for :func:`urlparse` results containing :class:`str`
+   Concrete kundi for :func:`urlparse` results containing :class:`str`
    data. The :meth:`encode` method returns a :class:`ParseResultBytes`
    instance.
 
 .. class:: SplitResult(scheme, netloc, path, query, fragment)
 
-   Concrete class for :func:`urlsplit` results containing :class:`str`
+   Concrete kundi for :func:`urlsplit` results containing :class:`str`
    data. The :meth:`encode` method returns a :class:`SplitResultBytes`
    instance.
 
@@ -485,7 +485,7 @@ operating on :class:`bytes` or :class:`bytearray` objects:
 
 .. class:: DefragResultBytes(url, fragment)
 
-   Concrete class for :func:`urldefrag` results containing :class:`bytes`
+   Concrete kundi for :func:`urldefrag` results containing :class:`bytes`
    data. The :meth:`decode` method returns a :class:`DefragResult`
    instance.
 
@@ -493,7 +493,7 @@ operating on :class:`bytes` or :class:`bytearray` objects:
 
 .. class:: ParseResultBytes(scheme, netloc, path, params, query, fragment)
 
-   Concrete class for :func:`urlparse` results containing :class:`bytes`
+   Concrete kundi for :func:`urlparse` results containing :class:`bytes`
    data. The :meth:`decode` method returns a :class:`ParseResult`
    instance.
 
@@ -501,7 +501,7 @@ operating on :class:`bytes` or :class:`bytearray` objects:
 
 .. class:: SplitResultBytes(scheme, netloc, path, query, fragment)
 
-   Concrete class for :func:`urlsplit` results containing :class:`bytes`
+   Concrete kundi for :func:`urlsplit` results containing :class:`bytes`
    data. The :meth:`decode` method returns a :class:`SplitResult`
    instance.
 
@@ -514,7 +514,7 @@ URL Quoting
 The URL quoting functions focus on taking program data and making it safe
 for use as URL components by quoting special characters and appropriately
 encoding non-ASCII text. They also support reversing these operations to
-recreate the original data from the contents of a URL component if that
+recreate the original data kutoka the contents of a URL component if that
 task isn't already covered by the URL parsing functions above.
 
 .. function:: quote(string, safe='/', encoding=None, errors=None)
@@ -528,7 +528,7 @@ task isn't already covered by the URL parsing functions above.
    *string* may be either a :class:`str` or a :class:`bytes`.
 
    .. versionchanged:: 3.7
-      Moved from :rfc:`2396` to :rfc:`3986` for quoting URL strings. "~" is now
+      Moved kutoka :rfc:`2396` to :rfc:`3986` for quoting URL strings. "~" is now
       included in the set of reserved characters.
 
    The optional *encoding* and *errors* parameters specify how to deal with
@@ -540,7 +540,7 @@ task isn't already covered by the URL parsing functions above.
    :class:`bytes`, or a :class:`TypeError` is raised.
 
    Note that ``quote(string, safe, encoding, errors)`` is equivalent to
-   ``quote_from_bytes(string.encode(encoding, errors), safe)``.
+   ``quote_kutoka_bytes(string.encode(encoding, errors), safe)``.
 
    Example: ``quote('/El Niño/')`` yields ``'/El%20Ni%C3%B1o/'``.
 
@@ -555,12 +555,12 @@ task isn't already covered by the URL parsing functions above.
    Example: ``quote_plus('/El Niño/')`` yields ``'%2FEl+Ni%C3%B1o%2F'``.
 
 
-.. function:: quote_from_bytes(bytes, safe='/')
+.. function:: quote_kutoka_bytes(bytes, safe='/')
 
    Like :func:`quote`, but accepts a :class:`bytes` object rather than a
    :class:`str`, and does not perform string-to-bytes encoding.
 
-   Example: ``quote_from_bytes(b'a&\xef')`` yields
+   Example: ``quote_kutoka_bytes(b'a&\xef')`` yields
    ``'a%26%EF'``.
 
 

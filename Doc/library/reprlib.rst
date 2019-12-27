@@ -51,8 +51,8 @@ string instead.
    same thread.  If a recursive call is made, the *fillvalue* is returned,
    otherwise, the usual :meth:`__repr__` call is made.  For example:
 
-        >>> from reprlib agiza recursive_repr
-        >>> class MyList(list):
+        >>> kutoka reprlib agiza recursive_repr
+        >>> kundi MyList(list):
         ...     @recursive_repr()
         ...     def __repr__(self):
         ...         return '<' + '|'.join(map(repr, self)) + '>'
@@ -97,7 +97,7 @@ which format specific object types.
 .. attribute:: Repr.maxlong
 
    Maximum number of characters in the representation for an integer.  Digits
-   are dropped from the middle.  The default is ``40``.
+   are dropped kutoka the middle.  The default is ``40``.
 
 
 .. attribute:: Repr.maxstring
@@ -152,7 +152,7 @@ for file objects could be added::
    agiza reprlib
    agiza sys
 
-   class MyRepr(reprlib.Repr):
+   kundi MyRepr(reprlib.Repr):
 
        def repr_TextIOWrapper(self, obj, level):
            if obj.name in {'<stdin>', '<stdout>', '<stderr>'}:

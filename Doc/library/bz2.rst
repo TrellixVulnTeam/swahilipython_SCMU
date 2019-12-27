@@ -18,14 +18,14 @@ decompressing data using the bzip2 compression algorithm.
 
 The :mod:`bz2` module contains:
 
-* The :func:`.open` function and :class:`BZ2File` class for reading and
+* The :func:`.open` function and :class:`BZ2File` kundi for reading and
   writing compressed files.
 * The :class:`BZ2Compressor` and :class:`BZ2Decompressor` classes for
   incremental (de)compression.
 * The :func:`compress` and :func:`decompress` functions for one-shot
   (de)compression.
 
-All of the classes in this module may safely be accessed from multiple threads.
+All of the classes in this module may safely be accessed kutoka multiple threads.
 
 
 (De)compression of files
@@ -38,13 +38,13 @@ All of the classes in this module may safely be accessed from multiple threads.
 
    As with the constructor for :class:`BZ2File`, the *filename* argument can be
    an actual filename (a :class:`str` or :class:`bytes` object), or an existing
-   file object to read from or write to.
+   file object to read kutoka or write to.
 
    The *mode* argument can be any of ``'r'``, ``'rb'``, ``'w'``, ``'wb'``,
    ``'x'``, ``'xb'``, ``'a'`` or ``'ab'`` for binary mode, or ``'rt'``,
    ``'wt'``, ``'xt'``, or ``'at'`` for text mode. The default is ``'rb'``.
 
-   The *compresslevel* argument is an integer from 1 to 9, as for the
+   The *compresslevel* argument is an integer kutoka 1 to 9, as for the
    :class:`BZ2File` constructor.
 
    For binary mode, this function is equivalent to the :class:`BZ2File`
@@ -175,7 +175,7 @@ Incremental (de)compression
    instead.
 
    .. note::
-      This class does not transparently handle inputs containing multiple
+      This kundi does not transparently handle inputs containing multiple
       compressed streams, unlike :func:`decompress` and :class:`BZ2File`. If
       you need to decompress a multi-stream input with :class:`BZ2Decompressor`,
       you must use a new decompressor for each stream.
@@ -263,7 +263,7 @@ Below are some examples of typical usage of the :mod:`bz2` module.
 
 Using :func:`compress` and :func:`decompress` to demonstrate round-trip compression:
 
-    >>> import bz2
+    >>> agiza bz2
 
     >>> data = b"""\
     ... Donec rhoncus quis sapien sit amet molestie. Fusce scelerisque vel augue
@@ -284,7 +284,7 @@ Using :func:`compress` and :func:`decompress` to demonstrate round-trip compress
 
 Using :class:`BZ2Compressor` for incremental compression:
 
-    >>> import bz2
+    >>> agiza bz2
 
     >>> def gen_data(chunks=10, chunksize=1000):
     ...     """Yield incremental blocks of chunksize bytes."""
@@ -307,7 +307,7 @@ while ordered, repetitive data usually yields a high compression ratio.
 
 Writing and reading a bzip2-compressed file in binary mode:
 
-    >>> import bz2
+    >>> agiza bz2
 
     >>> data = b"""\
     ... Donec rhoncus quis sapien sit amet molestie. Fusce scelerisque vel augue
@@ -323,7 +323,7 @@ Writing and reading a bzip2-compressed file in binary mode:
     ...     unused = f.write(data)
 
     >>> with bz2.open("myfile.bz2", "rb") as f:
-    ...     # Decompress data from file
+    ...     # Decompress data kutoka file
     ...     content = f.read()
 
     >>> content == data  # Check equality to original object after round-trip

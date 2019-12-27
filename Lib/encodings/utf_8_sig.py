@@ -7,7 +7,7 @@ This work similar to UTF-8 with the following changes:
 * On decoding/reading if the first three bytes are a UTF-8 encoded BOM, these
   bytes will be skipped.
 """
-import codecs
+agiza codecs
 
 ### Codec APIs
 
@@ -108,7 +108,7 @@ class StreamReader(codecs.StreamReader):
                 # not enough data to decide if this is a BOM
                 # => try again on the next call
                 return ("", 0)
-        elif input[:3] == codecs.BOM_UTF8:
+        lasivyo input[:3] == codecs.BOM_UTF8:
             self.decode = codecs.utf_8_decode
             (output, consumed) = codecs.utf_8_decode(input[3:],errors)
             return (output, consumed+3)

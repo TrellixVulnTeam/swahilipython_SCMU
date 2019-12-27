@@ -1,32 +1,32 @@
-"""Test that the semantics relating to the 'fromlist' argument are correct."""
+"""Test that the semantics relating to the 'kutokalist' argument are correct."""
 kutoka .. agiza util
 agiza warnings
 agiza unittest
 
 
-class ReturnValue:
+kundi ReturnValue:
 
-    """The use of fromlist influences what agiza returns.
+    """The use of kutokalist influences what agiza returns.
 
     If direct ``agiza ...`` statement is used, the root module or package is
-    returned [agiza return]. But if fromlist is set, then the specified module
+    returned [agiza return]. But ikiwa kutokalist is set, then the specified module
     is actually returned (whether it is a relative agiza or not)
     [kutoka return].
 
     """
 
-    def test_return_from_agiza(self):
+    eleza test_return_kutoka_agiza(self):
         # [agiza return]
         with util.mock_spec('pkg.__init__', 'pkg.module') as importer:
             with util.import_state(meta_path=[importer]):
                 module = self.__import__('pkg.module')
                 self.assertEqual(module.__name__, 'pkg')
 
-    def test_return_from_from_agiza(self):
+    eleza test_return_kutoka_kutoka_agiza(self):
         # [kutoka return]
         with util.mock_modules('pkg.__init__', 'pkg.module')as importer:
             with util.import_state(meta_path=[importer]):
-                module = self.__import__('pkg.module', fromlist=['attr'])
+                module = self.__import__('pkg.module', kutokalist=['attr'])
                 self.assertEqual(module.__name__, 'pkg.module')
 
 
@@ -35,135 +35,135 @@ class ReturnValue:
  ) = util.test_both(ReturnValue, __import__=util.__import__)
 
 
-class HandlingFromlist:
+kundi HandlingFromlist:
 
-    """Using fromlist triggers different actions based on what is being asked
+    """Using kutokalist triggers different actions based on what is being asked
     of it.
 
-    If fromlist specifies an object on a module, nothing special happens
-    [object case]. This is even true if the object does not exist [bad object].
+    If kutokalist specifies an object on a module, nothing special happens
+    [object case]. This is even true ikiwa the object does not exist [bad object].
 
-    If a package is being imported, then what is listed in fromlist may be
+    If a package is being imported, then what is listed in kutokalist may be
     treated as a module to be imported [module]. And this extends to what is
     contained in __all__ when '*' is imported [using *]. And '*' does not need
-    to be the only name in the fromlist [using * with others].
+    to be the only name in the kutokalist [using * with others].
 
     """
 
-    def test_object(self):
+    eleza test_object(self):
         # [object case]
         with util.mock_modules('module') as importer:
             with util.import_state(meta_path=[importer]):
-                module = self.__import__('module', fromlist=['attr'])
+                module = self.__import__('module', kutokalist=['attr'])
                 self.assertEqual(module.__name__, 'module')
 
-    def test_nonexistent_object(self):
+    eleza test_nonexistent_object(self):
         # [bad object]
         with util.mock_modules('module') as importer:
             with util.import_state(meta_path=[importer]):
-                module = self.__import__('module', fromlist=['non_existent'])
+                module = self.__import__('module', kutokalist=['non_existent'])
                 self.assertEqual(module.__name__, 'module')
                 self.assertFalse(hasattr(module, 'non_existent'))
 
-    def test_module_from_package(self):
+    eleza test_module_kutoka_package(self):
         # [module]
         with util.mock_modules('pkg.__init__', 'pkg.module') as importer:
             with util.import_state(meta_path=[importer]):
-                module = self.__import__('pkg', fromlist=['module'])
+                module = self.__import__('pkg', kutokalist=['module'])
                 self.assertEqual(module.__name__, 'pkg')
                 self.assertTrue(hasattr(module, 'module'))
                 self.assertEqual(module.module.__name__, 'pkg.module')
 
-    def test_nonexistent_from_package(self):
+    eleza test_nonexistent_kutoka_package(self):
         with util.mock_modules('pkg.__init__') as importer:
             with util.import_state(meta_path=[importer]):
-                module = self.__import__('pkg', fromlist=['non_existent'])
+                module = self.__import__('pkg', kutokalist=['non_existent'])
                 self.assertEqual(module.__name__, 'pkg')
                 self.assertFalse(hasattr(module, 'non_existent'))
 
-    def test_module_from_package_triggers_ModuleNotFoundError(self):
+    eleza test_module_kutoka_package_triggers_ModuleNotFoundError(self):
         # If a submodule causes an ModuleNotFoundError because it tries
         # to agiza a module which doesn't exist, that should let the
         # ModuleNotFoundError propagate.
-        def module_code():
+        eleza module_code():
             agiza i_do_not_exist
         with util.mock_modules('pkg.__init__', 'pkg.mod',
                                module_code={'pkg.mod': module_code}) as importer:
             with util.import_state(meta_path=[importer]):
                 with self.assertRaises(ModuleNotFoundError) as exc:
-                    self.__import__('pkg', fromlist=['mod'])
+                    self.__import__('pkg', kutokalist=['mod'])
                 self.assertEqual('i_do_not_exist', exc.exception.name)
 
-    def test_empty_string(self):
+    eleza test_empty_string(self):
         with util.mock_modules('pkg.__init__', 'pkg.mod') as importer:
             with util.import_state(meta_path=[importer]):
-                module = self.__import__('pkg.mod', fromlist=[''])
+                module = self.__import__('pkg.mod', kutokalist=[''])
                 self.assertEqual(module.__name__, 'pkg.mod')
 
-    def basic_star_test(self, fromlist=['*']):
+    eleza basic_star_test(self, kutokalist=['*']):
         # [using *]
         with util.mock_modules('pkg.__init__', 'pkg.module') as mock:
             with util.import_state(meta_path=[mock]):
                 mock['pkg'].__all__ = ['module']
-                module = self.__import__('pkg', fromlist=fromlist)
+                module = self.__import__('pkg', kutokalist=kutokalist)
                 self.assertEqual(module.__name__, 'pkg')
                 self.assertTrue(hasattr(module, 'module'))
                 self.assertEqual(module.module.__name__, 'pkg.module')
 
-    def test_using_star(self):
+    eleza test_using_star(self):
         # [using *]
         self.basic_star_test()
 
-    def test_fromlist_as_tuple(self):
+    eleza test_kutokalist_as_tuple(self):
         self.basic_star_test(('*',))
 
-    def test_star_with_others(self):
+    eleza test_star_with_others(self):
         # [using * with others]
         context = util.mock_modules('pkg.__init__', 'pkg.module1', 'pkg.module2')
         with context as mock:
             with util.import_state(meta_path=[mock]):
                 mock['pkg'].__all__ = ['module1']
-                module = self.__import__('pkg', fromlist=['module2', '*'])
+                module = self.__import__('pkg', kutokalist=['module2', '*'])
                 self.assertEqual(module.__name__, 'pkg')
                 self.assertTrue(hasattr(module, 'module1'))
                 self.assertTrue(hasattr(module, 'module2'))
                 self.assertEqual(module.module1.__name__, 'pkg.module1')
                 self.assertEqual(module.module2.__name__, 'pkg.module2')
 
-    def test_nonexistent_in_all(self):
+    eleza test_nonexistent_in_all(self):
         with util.mock_modules('pkg.__init__') as importer:
             with util.import_state(meta_path=[importer]):
                 importer['pkg'].__all__ = ['non_existent']
-                module = self.__import__('pkg', fromlist=['*'])
+                module = self.__import__('pkg', kutokalist=['*'])
                 self.assertEqual(module.__name__, 'pkg')
                 self.assertFalse(hasattr(module, 'non_existent'))
 
-    def test_star_in_all(self):
+    eleza test_star_in_all(self):
         with util.mock_modules('pkg.__init__') as importer:
             with util.import_state(meta_path=[importer]):
                 importer['pkg'].__all__ = ['*']
-                module = self.__import__('pkg', fromlist=['*'])
+                module = self.__import__('pkg', kutokalist=['*'])
                 self.assertEqual(module.__name__, 'pkg')
                 self.assertFalse(hasattr(module, '*'))
 
-    def test_invalid_type(self):
+    eleza test_invalid_type(self):
         with util.mock_modules('pkg.__init__') as importer:
             with util.import_state(meta_path=[importer]), \
                  warnings.catch_warnings():
                 warnings.simplefilter('error', BytesWarning)
-                with self.assertRaisesRegex(TypeError, r'\bfrom\b'):
-                    self.__import__('pkg', fromlist=[b'attr'])
-                with self.assertRaisesRegex(TypeError, r'\bfrom\b'):
-                    self.__import__('pkg', fromlist=iter([b'attr']))
+                with self.assertRaisesRegex(TypeError, r'\bkutoka\b'):
+                    self.__import__('pkg', kutokalist=[b'attr'])
+                with self.assertRaisesRegex(TypeError, r'\bkutoka\b'):
+                    self.__import__('pkg', kutokalist=iter([b'attr']))
 
-    def test_invalid_type_in_all(self):
+    eleza test_invalid_type_in_all(self):
         with util.mock_modules('pkg.__init__') as importer:
             with util.import_state(meta_path=[importer]), \
                  warnings.catch_warnings():
                 warnings.simplefilter('error', BytesWarning)
                 importer['pkg'].__all__ = [b'attr']
                 with self.assertRaisesRegex(TypeError, r'\bpkg\.__all__\b'):
-                    self.__import__('pkg', fromlist=['*'])
+                    self.__import__('pkg', kutokalist=['*'])
 
 
 (Frozen_FromList,
@@ -171,5 +171,5 @@ class HandlingFromlist:
  ) = util.test_both(HandlingFromlist, __import__=util.__import__)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

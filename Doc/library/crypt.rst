@@ -76,7 +76,7 @@ Module Attributes
 .. attribute:: methods
 
    A list of available password hashing algorithms, as
-   ``crypt.METHOD_*`` objects.  This list is sorted from strongest to
+   ``crypt.METHOD_*`` objects.  This list is sorted kutoka strongest to
    weakest.
 
 
@@ -88,7 +88,7 @@ The :mod:`crypt` module defines the following functions:
 .. function:: crypt(word, salt=None)
 
    *word* will usually be a user's password as typed at a prompt or  in a graphical
-   interface.  The optional *salt* is either a string as returned from
+   interface.  The optional *salt* is either a string as returned kutoka
    :func:`mksalt`, one of the ``crypt.METHOD_*`` values (though not all
    may be available on all platforms), or a full encrypted password
    including salt, as returned by this function.  If *salt* is not
@@ -106,7 +106,7 @@ The :mod:`crypt` module defines the following functions:
    prefixes a ``$digit$``.
 
    Returns the hashed password as a string, which will be composed of
-   characters from the same alphabet as the salt.
+   characters kutoka the same alphabet as the salt.
 
    .. index:: single: crypt(3)
 
@@ -148,10 +148,10 @@ A simple example illustrating typical use (a constant-time comparison
 operation is needed to limit exposure to timing attacks.
 :func:`hmac.compare_digest` is suitable for this purpose)::
 
-   import pwd
-   import crypt
-   import getpass
-   from hmac import compare_digest as compare_hash
+   agiza pwd
+   agiza crypt
+   agiza getpass
+   kutoka hmac agiza compare_digest as compare_hash
 
    def login():
        username = input('Python login: ')
@@ -167,8 +167,8 @@ operation is needed to limit exposure to timing attacks.
 To generate a hash of a password using the strongest available method and
 check it against the original::
 
-   import crypt
-   from hmac import compare_digest as compare_hash
+   agiza crypt
+   kutoka hmac agiza compare_digest as compare_hash
 
    hashed = crypt.crypt(plaintext)
    if not compare_hash(hashed, crypt.crypt(plaintext, hashed)):

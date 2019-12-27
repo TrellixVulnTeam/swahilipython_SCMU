@@ -8,11 +8,11 @@ __all__ = ["what"]
 # Recognize image headers #
 #-------------------------#
 
-def what(file, h=None):
+eleza what(file, h=None):
     f = None
     try:
-        if h is None:
-            if isinstance(file, (str, PathLike)):
+        ikiwa h is None:
+            ikiwa isinstance(file, (str, PathLike)):
                 f = open(file, 'rb')
                 h = f.read(32)
             else:
@@ -21,11 +21,11 @@ def what(file, h=None):
                 file.seek(location)
         for tf in tests:
             res = tf(h, f)
-            if res:
-                return res
+            ikiwa res:
+                rudisha res
     finally:
-        if f: f.close()
-    return None
+        ikiwa f: f.close()
+    rudisha None
 
 
 #---------------------------------#
@@ -34,93 +34,93 @@ def what(file, h=None):
 
 tests = []
 
-def test_jpeg(h, f):
-    """JPEG data in JFIF or Exif format"""
-    if h[6:10] in (b'JFIF', b'Exif'):
-        return 'jpeg'
+eleza test_jpeg(h, f):
+    """JPEG data in JFIF or Exikiwa format"""
+    ikiwa h[6:10] in (b'JFIF', b'Exif'):
+        rudisha 'jpeg'
 
 tests.append(test_jpeg)
 
-def test_png(h, f):
-    if h.startswith(b'\211PNG\r\n\032\n'):
-        return 'png'
+eleza test_png(h, f):
+    ikiwa h.startswith(b'\211PNG\r\n\032\n'):
+        rudisha 'png'
 
 tests.append(test_png)
 
-def test_gif(h, f):
+eleza test_gif(h, f):
     """GIF ('87 and '89 variants)"""
-    if h[:6] in (b'GIF87a', b'GIF89a'):
-        return 'gif'
+    ikiwa h[:6] in (b'GIF87a', b'GIF89a'):
+        rudisha 'gif'
 
 tests.append(test_gif)
 
-def test_tiff(h, f):
+eleza test_tiff(h, f):
     """TIFF (can be in Motorola or Intel byte order)"""
-    if h[:2] in (b'MM', b'II'):
-        return 'tiff'
+    ikiwa h[:2] in (b'MM', b'II'):
+        rudisha 'tiff'
 
 tests.append(test_tiff)
 
-def test_rgb(h, f):
+eleza test_rgb(h, f):
     """SGI image library"""
-    if h.startswith(b'\001\332'):
-        return 'rgb'
+    ikiwa h.startswith(b'\001\332'):
+        rudisha 'rgb'
 
 tests.append(test_rgb)
 
-def test_pbm(h, f):
+eleza test_pbm(h, f):
     """PBM (portable bitmap)"""
-    if len(h) >= 3 and \
+    ikiwa len(h) >= 3 and \
         h[0] == ord(b'P') and h[1] in b'14' and h[2] in b' \t\n\r':
-        return 'pbm'
+        rudisha 'pbm'
 
 tests.append(test_pbm)
 
-def test_pgm(h, f):
+eleza test_pgm(h, f):
     """PGM (portable graymap)"""
-    if len(h) >= 3 and \
+    ikiwa len(h) >= 3 and \
         h[0] == ord(b'P') and h[1] in b'25' and h[2] in b' \t\n\r':
-        return 'pgm'
+        rudisha 'pgm'
 
 tests.append(test_pgm)
 
-def test_ppm(h, f):
+eleza test_ppm(h, f):
     """PPM (portable pixmap)"""
-    if len(h) >= 3 and \
+    ikiwa len(h) >= 3 and \
         h[0] == ord(b'P') and h[1] in b'36' and h[2] in b' \t\n\r':
-        return 'ppm'
+        rudisha 'ppm'
 
 tests.append(test_ppm)
 
-def test_rast(h, f):
+eleza test_rast(h, f):
     """Sun raster file"""
-    if h.startswith(b'\x59\xA6\x6A\x95'):
-        return 'rast'
+    ikiwa h.startswith(b'\x59\xA6\x6A\x95'):
+        rudisha 'rast'
 
 tests.append(test_rast)
 
-def test_xbm(h, f):
+eleza test_xbm(h, f):
     """X bitmap (X10 or X11)"""
-    if h.startswith(b'#define '):
-        return 'xbm'
+    ikiwa h.startswith(b'#define '):
+        rudisha 'xbm'
 
 tests.append(test_xbm)
 
-def test_bmp(h, f):
-    if h.startswith(b'BM'):
-        return 'bmp'
+eleza test_bmp(h, f):
+    ikiwa h.startswith(b'BM'):
+        rudisha 'bmp'
 
 tests.append(test_bmp)
 
-def test_webp(h, f):
-    if h.startswith(b'RIFF') and h[8:12] == b'WEBP':
-        return 'webp'
+eleza test_webp(h, f):
+    ikiwa h.startswith(b'RIFF') and h[8:12] == b'WEBP':
+        rudisha 'webp'
 
 tests.append(test_webp)
 
-def test_exr(h, f):
-    if h.startswith(b'\x76\x2f\x31\x01'):
-        return 'exr'
+eleza test_exr(h, f):
+    ikiwa h.startswith(b'\x76\x2f\x31\x01'):
+        rudisha 'exr'
 
 tests.append(test_exr)
 
@@ -128,14 +128,14 @@ tests.append(test_exr)
 # Small test program #
 #--------------------#
 
-def test():
+eleza test():
     agiza sys
     recursive = 0
-    if sys.argv[1:] and sys.argv[1] == '-r':
+    ikiwa sys.argv[1:] and sys.argv[1] == '-r':
         del sys.argv[1:2]
         recursive = 1
     try:
-        if sys.argv[1:]:
+        ikiwa sys.argv[1:]:
             testall(sys.argv[1:], recursive, 1)
         else:
             testall(['.'], recursive, 1)
@@ -143,26 +143,26 @@ def test():
         sys.stderr.write('\n[Interrupted]\n')
         sys.exit(1)
 
-def testall(list, recursive, toplevel):
+eleza testall(list, recursive, toplevel):
     agiza sys
     agiza os
     for filename in list:
-        if os.path.isdir(filename):
-            print(filename + '/:', end=' ')
-            if recursive or toplevel:
-                print('recursing down:')
+        ikiwa os.path.isdir(filename):
+            andika(filename + '/:', end=' ')
+            ikiwa recursive or toplevel:
+                andika('recursing down:')
                 agiza glob
                 names = glob.glob(os.path.join(filename, '*'))
                 testall(names, recursive, 0)
             else:
-                print('*** directory (use -r) ***')
+                andika('*** directory (use -r) ***')
         else:
-            print(filename + ':', end=' ')
+            andika(filename + ':', end=' ')
             sys.stdout.flush()
             try:
-                print(what(filename))
+                andika(what(filename))
             except OSError:
-                print('*** not found ***')
+                andika('*** not found ***')
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test()

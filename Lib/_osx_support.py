@@ -178,7 +178,7 @@ def _find_appropriate_compiler(_config_vars):
 
         cc = _find_build_tool('clang')
 
-    elif os.path.basename(cc).startswith('gcc'):
+    lasivyo os.path.basename(cc).startswith('gcc'):
         # Compiler is GCC, check if it is LLVM-GCC
         data = _read_output("'%s' --version"
                              % (cc.replace("'", "'\"'\"'"),))
@@ -352,7 +352,7 @@ def compiler_fixup(compiler_so, cc_args):
     if '-isysroot' in cc_args:
         idx = cc_args.index('-isysroot')
         sysroot = cc_args[idx+1]
-    elif '-isysroot' in compiler_so:
+    lasivyo '-isysroot' in compiler_so:
         idx = compiler_so.index('-isysroot')
         sysroot = compiler_so[idx+1]
 
@@ -470,28 +470,28 @@ def get_platform_osx(_config_vars, osname, release, machine):
 
             if len(archs) == 1:
                 machine = archs[0]
-            elif archs == ('i386', 'ppc'):
+            lasivyo archs == ('i386', 'ppc'):
                 machine = 'fat'
-            elif archs == ('i386', 'x86_64'):
+            lasivyo archs == ('i386', 'x86_64'):
                 machine = 'intel'
-            elif archs == ('i386', 'ppc', 'x86_64'):
+            lasivyo archs == ('i386', 'ppc', 'x86_64'):
                 machine = 'fat3'
-            elif archs == ('ppc64', 'x86_64'):
+            lasivyo archs == ('ppc64', 'x86_64'):
                 machine = 'fat64'
-            elif archs == ('i386', 'ppc', 'ppc64', 'x86_64'):
+            lasivyo archs == ('i386', 'ppc', 'ppc64', 'x86_64'):
                 machine = 'universal'
             else:
                 raise ValueError(
                    "Don't know machine value for archs=%r" % (archs,))
 
-        elif machine == 'i386':
+        lasivyo machine == 'i386':
             # On OSX the machine type returned by uname is always the
             # 32-bit variant, even if the executable architecture is
             # the 64-bit variant
             if sys.maxsize >= 2**32:
                 machine = 'x86_64'
 
-        elif machine in ('PowerPC', 'Power_Macintosh'):
+        lasivyo machine in ('PowerPC', 'Power_Macintosh'):
             # Pick a sane name for the PPC architecture.
             # See 'i386' case
             if sys.maxsize >= 2**32:

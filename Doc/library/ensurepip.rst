@@ -116,7 +116,7 @@ Module API
    Setting both *altinstall* and *default_pip* will trigger
    :exc:`ValueError`.
 
-   *verbosity* controls the level of output to :data:`sys.stdout` from the
+   *verbosity* controls the level of output to :data:`sys.stdout` kutoka the
    bootstrapping operation.
 
    .. audit-event:: ensurepip.bootstrap root ensurepip.bootstrap

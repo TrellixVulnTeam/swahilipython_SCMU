@@ -3,20 +3,20 @@ kutoka __future__ agiza generator_stop
 agiza unittest
 
 
-class TestPEP479(unittest.TestCase):
-    def test_stopiteration_wrapping(self):
-        def f():
+kundi TestPEP479(unittest.TestCase):
+    eleza test_stopiteration_wrapping(self):
+        eleza f():
             raise StopIteration
-        def g():
+        eleza g():
             yield f()
         with self.assertRaisesRegex(RuntimeError,
                                     "generator raised StopIteration"):
             next(g())
 
-    def test_stopiteration_wrapping_context(self):
-        def f():
+    eleza test_stopiteration_wrapping_context(self):
+        eleza f():
             raise StopIteration
-        def g():
+        eleza g():
             yield f()
 
         try:
@@ -30,5 +30,5 @@ class TestPEP479(unittest.TestCase):
                       'were not properly set')
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

@@ -24,15 +24,15 @@ _sysrand = SystemRandom()
 randbits = _sysrand.getrandbits
 choice = _sysrand.choice
 
-def randbelow(exclusive_upper_bound):
+eleza randbelow(exclusive_upper_bound):
     """Return a random int in the range [0, n)."""
-    if exclusive_upper_bound <= 0:
+    ikiwa exclusive_upper_bound <= 0:
         raise ValueError("Upper bound must be positive.")
-    return _sysrand._randbelow(exclusive_upper_bound)
+    rudisha _sysrand._randbelow(exclusive_upper_bound)
 
-DEFAULT_ENTROPY = 32  # number of bytes to return by default
+DEFAULT_ENTROPY = 32  # number of bytes to rudisha by default
 
-def token_bytes(nbytes=None):
+eleza token_bytes(nbytes=None):
     """Return a random byte string containing *nbytes* bytes.
 
     If *nbytes* is ``None`` or not supplied, a reasonable
@@ -42,11 +42,11 @@ def token_bytes(nbytes=None):
     b'\\xebr\\x17D*t\\xae\\xd4\\xe3S\\xb6\\xe2\\xebP1\\x8b'
 
     """
-    if nbytes is None:
+    ikiwa nbytes is None:
         nbytes = DEFAULT_ENTROPY
-    return os.urandom(nbytes)
+    rudisha os.urandom(nbytes)
 
-def token_hex(nbytes=None):
+eleza token_hex(nbytes=None):
     """Return a random text string, in hexadecimal.
 
     The string has *nbytes* random bytes, each byte converted to two
@@ -57,9 +57,9 @@ def token_hex(nbytes=None):
     'f9bf78b9a18ce6d46a0cd2b0b86df9da'
 
     """
-    return binascii.hexlify(token_bytes(nbytes)).decode('ascii')
+    rudisha binascii.hexlify(token_bytes(nbytes)).decode('ascii')
 
-def token_urlsafe(nbytes=None):
+eleza token_urlsafe(nbytes=None):
     """Return a random URL-safe text string, in Base64 encoding.
 
     The string has *nbytes* random bytes.  If *nbytes* is ``None``
@@ -70,4 +70,4 @@ def token_urlsafe(nbytes=None):
 
     """
     tok = token_bytes(nbytes)
-    return base64.urlsafe_b64encode(tok).rstrip(b'=').decode('ascii')
+    rudisha base64.urlsafe_b64encode(tok).rstrip(b'=').decode('ascii')

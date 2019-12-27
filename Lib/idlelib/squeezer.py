@@ -25,10 +25,10 @@ kutoka idlelib.tooltip agiza Hovertip
 kutoka idlelib agiza macosx
 
 
-def count_lines_with_wrapping(s, linewidth=80):
+eleza count_lines_with_wrapping(s, linewidth=80):
     """Count the number of lines in a given string.
 
-    Lines are counted as if the string was wrapped so that lines are never over
+    Lines are counted as ikiwa the string was wrapped so that lines are never over
     linewidth characters long.
 
     Tabs are considered tabwidth characters long.
@@ -45,13 +45,13 @@ def count_lines_with_wrapping(s, linewidth=80):
         current_column += numchars
 
         # Deal with tab or newline.
-        if s[pos] == '\n':
+        ikiwa s[pos] == '\n':
             # Avoid the `current_column == 0` edge-case, and while we're
             # at it, don't bother adding 0.
-            if current_column > linewidth:
+            ikiwa current_column > linewidth:
                 # If the current column was exactly linewidth, divmod
                 # would give (1,0), even though a new line hadn't yet
-                # been started. The same is true if length is any exact
+                # been started. The same is true ikiwa length is any exact
                 # multiple of linewidth. Therefore, subtract 1 before
                 # dividing a non-empty line.
                 linecount += (current_column - 1) // linewidth
@@ -63,7 +63,7 @@ def count_lines_with_wrapping(s, linewidth=80):
 
             # If a tab passes the end of the line, consider the entire
             # tab as being on the next line.
-            if current_column > linewidth:
+            ikiwa current_column > linewidth:
                 linecount += 1
                 current_column = tabwidth
 
@@ -72,16 +72,16 @@ def count_lines_with_wrapping(s, linewidth=80):
     # Process remaining chars (no more tabs or newlines).
     current_column += len(s) - pos
     # Avoid divmod(-1, linewidth).
-    if current_column > 0:
+    ikiwa current_column > 0:
         linecount += (current_column - 1) // linewidth
     else:
         # Text ended with newline; don't count an extra line after it.
         linecount -= 1
 
-    return linecount
+    rudisha linecount
 
 
-class ExpandingButton(tk.Button):
+kundi ExpandingButton(tk.Button):
     """Class for the "squeezed" text buttons used by Squeezer
 
     These buttons are displayed inside a Tk Text widget in place of text. A
@@ -92,7 +92,7 @@ class ExpandingButton(tk.Button):
     Each button is tied to a Squeezer instance, and it knows to update the
     Squeezer instance when it is expanded (and therefore removed).
     """
-    def __init__(self, s, tags, numoflines, squeezer):
+    eleza __init__(self, s, tags, numoflines, squeezer):
         self.s = s
         self.tags = tags
         self.numoflines = numoflines
@@ -102,7 +102,7 @@ class ExpandingButton(tk.Button):
         # The base Text widget is needed to change text before iomark.
         self.base_text = editwin.per.bottom
 
-        line_plurality = "lines" if numoflines != 1 else "line"
+        line_plurality = "lines" ikiwa numoflines != 1 else "line"
         button_text = f"Squeezed text ({numoflines} {line_plurality})."
         tk.Button.__init__(self, text, text=button_text,
                            background="#FFFFC0", activebackground="#FFFFE0")
@@ -113,7 +113,7 @@ class ExpandingButton(tk.Button):
         Hovertip(self, button_tooltip_text, hover_delay=80)
 
         self.bind("<Double-Button-1>", self.expand)
-        if macosx.isAquaTk():
+        ikiwa macosx.isAquaTk():
             # AquaTk defines <2> as the right button, not <3>.
             self.bind("<Button-2>", self.context_menu_event)
         else:
@@ -124,7 +124,7 @@ class ExpandingButton(tk.Button):
         self.is_dangerous = None
         self.after_idle(self.set_is_dangerous)
 
-    def set_is_dangerous(self):
+    eleza set_is_dangerous(self):
         dangerous_line_len = 50 * self.text.winfo_width()
         self.is_dangerous = (
             self.numoflines > 1000 or
@@ -135,7 +135,7 @@ class ExpandingButton(tk.Button):
             )
         )
 
-    def expand(self, event=None):
+    eleza expand(self, event=None):
         """expand event handler
 
         This inserts the original text in place of the button in the Text
@@ -144,9 +144,9 @@ class ExpandingButton(tk.Button):
         If the original text is dangerously long, i.e. expanding it could
         cause a performance degradation, ask the user for confirmation.
         """
-        if self.is_dangerous is None:
+        ikiwa self.is_dangerous is None:
             self.set_is_dangerous()
-        if self.is_dangerous:
+        ikiwa self.is_dangerous:
             confirm = tkMessageBox.askokcancel(
                 title="Expand huge output?",
                 message="\n\n".join([
@@ -157,14 +157,14 @@ class ExpandingButton(tk.Button):
                 ]) % (self.numoflines, len(self.s)),
                 default=tkMessageBox.CANCEL,
                 parent=self.text)
-            if not confirm:
-                return "break"
+            ikiwa not confirm:
+                rudisha "break"
 
         self.base_text.insert(self.text.index(self), self.s, self.tags)
         self.base_text.delete(self)
         self.squeezer.expandingbuttons.remove(self)
 
-    def copy(self, event=None):
+    eleza copy(self, event=None):
         """copy event handler
 
         Copy the original text to the clipboard.
@@ -172,7 +172,7 @@ class ExpandingButton(tk.Button):
         self.clipboard_clear()
         self.clipboard_append(self.s)
 
-    def view(self, event=None):
+    eleza view(self, event=None):
         """view event handler
 
         View the original text in a separate text viewer window.
@@ -186,30 +186,30 @@ class ExpandingButton(tk.Button):
         ('view', 'view'),
     )
 
-    def context_menu_event(self, event):
+    eleza context_menu_event(self, event):
         self.text.mark_set("insert", "@%d,%d" % (event.x, event.y))
         rmenu = tk.Menu(self.text, tearoff=0)
         for label, method_name in self.rmenu_specs:
             rmenu.add_command(label=label, command=getattr(self, method_name))
         rmenu.tk_popup(event.x_root, event.y_root)
-        return "break"
+        rudisha "break"
 
 
-class Squeezer:
+kundi Squeezer:
     """Replace long outputs in the shell with a simple button.
 
     This avoids IDLE's shell slowing down considerably, and even becoming
     completely unresponsive, when very long outputs are written.
     """
     @classmethod
-    def reload(cls):
-        """Load class variables kutoka config."""
+    eleza reload(cls):
+        """Load kundi variables kutoka config."""
         cls.auto_squeeze_min_lines = idleConf.GetOption(
             "main", "PyShell", "auto-squeeze-min-lines",
             type="int", default=50,
         )
 
-    def __init__(self, editwin):
+    eleza __init__(self, editwin):
         """Initialize settings for Squeezer.
 
         editwin is the shell's Editor window.
@@ -240,21 +240,21 @@ class Squeezer:
 
         # Replace the PyShell instance's write method with a wrapper,
         # which inserts an ExpandingButton instead of a long text.
-        def mywrite(s, tags=(), write=editwin.write):
+        eleza mywrite(s, tags=(), write=editwin.write):
             # Only auto-squeeze text which has just the "stdout" tag.
-            if tags != "stdout":
-                return write(s, tags)
+            ikiwa tags != "stdout":
+                rudisha write(s, tags)
 
             # Only auto-squeeze text with at least the minimum
             # configured number of lines.
             auto_squeeze_min_lines = self.auto_squeeze_min_lines
             # First, a very quick check to skip very short texts.
-            if len(s) < auto_squeeze_min_lines:
-                return write(s, tags)
+            ikiwa len(s) < auto_squeeze_min_lines:
+                rudisha write(s, tags)
             # Now the full line-count check.
             numoflines = self.count_lines(s)
-            if numoflines < auto_squeeze_min_lines:
-                return write(s, tags)
+            ikiwa numoflines < auto_squeeze_min_lines:
+                rudisha write(s, tags)
 
             # Create an ExpandingButton instance.
             expandingbutton = ExpandingButton(s, tags, numoflines, self)
@@ -272,20 +272,20 @@ class Squeezer:
 
         editwin.write = mywrite
 
-    def count_lines(self, s):
+    eleza count_lines(self, s):
         """Count the number of lines in a given text.
 
         Before calculation, the tab width and line length of the text are
         fetched, so that up-to-date values are used.
 
-        Lines are counted as if the string was wrapped so that lines are never
+        Lines are counted as ikiwa the string was wrapped so that lines are never
         over linewidth characters long.
 
         Tabs are considered tabwidth characters long.
         """
-        return count_lines_with_wrapping(s, self.editwin.width)
+        rudisha count_lines_with_wrapping(s, self.editwin.width)
 
-    def squeeze_current_text_event(self, event):
+    eleza squeeze_current_text_event(self, event):
         """squeeze-current-text event handler
 
         Squeeze the block of text inside which contains the "insert" cursor.
@@ -296,19 +296,19 @@ class Squeezer:
         # Set tag_name to the first valid tag found on the "insert" cursor.
         tag_names = self.text.tag_names(tk.INSERT)
         for tag_name in ("stdout", "stderr"):
-            if tag_name in tag_names:
+            ikiwa tag_name in tag_names:
                 break
         else:
             # The insert cursor doesn't have a "stdout" or "stderr" tag.
             self.text.bell()
-            return "break"
+            rudisha "break"
 
         # Find the range to squeeze.
         start, end = self.text.tag_prevrange(tag_name, tk.INSERT + "+1c")
         s = self.text.get(start, end)
 
         # If the last char is a newline, remove it kutoka the range.
-        if len(s) > 0 and s[-1] == '\n':
+        ikiwa len(s) > 0 and s[-1] == '\n':
             end = self.text.index("%s-1c" % end)
             s = s[:-1]
 
@@ -332,13 +332,13 @@ class Squeezer:
             i -= 1
         self.expandingbuttons.insert(i, expandingbutton)
 
-        return "break"
+        rudisha "break"
 
 
 Squeezer.reload()
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     kutoka unittest agiza main
     main('idlelib.idle_test.test_squeezer', verbosity=2, exit=False)
 

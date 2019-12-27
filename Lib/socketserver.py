@@ -23,8 +23,8 @@ For request-based servers (including socket-based):
         - threading (each request is handled by a new thread)
 
 The classes in this module favor the server type that is simplest to
-write: a synchronous TCP/IP server.  This is bad class design, but
-save some typing.  (There's also the issue that a deep class hierarchy
+write: a synchronous TCP/IP server.  This is bad kundi design, but
+save some typing.  (There's also the issue that a deep kundi hierarchy
 slows down method lookups.)
 
 There are five classes in an inheritance diagram, four of which represent
@@ -51,26 +51,26 @@ unix server classes.
 
 Forking and threading versions of each type of server can be created
 using the ForkingMixIn and ThreadingMixIn mix-in classes.  For
-instance, a threading UDP server class is created as follows:
+instance, a threading UDP server kundi is created as follows:
 
-        class ThreadingUDPServer(ThreadingMixIn, UDPServer): pass
+        kundi ThreadingUDPServer(ThreadingMixIn, UDPServer): pass
 
-The Mix-in class must come first, since it overrides a method defined
+The Mix-in kundi must come first, since it overrides a method defined
 in UDPServer! Setting the various member variables also changes
 the behavior of the underlying server mechanism.
 
-To implement a service, you must derive a class kutoka
+To implement a service, you must derive a kundi kutoka
 BaseRequestHandler and redefine its handle() method.  You can then run
 various versions of the service by combining one of the server classes
 with your request handler class.
 
-The request handler class must be different for datagram or stream
+The request handler kundi must be different for datagram or stream
 services.  This can be hidden by using the request handler
 subclasses StreamRequestHandler or DatagramRequestHandler.
 
 Of course, you still have to use your head!
 
-For instance, it makes no sense to use a forking server if the service
+For instance, it makes no sense to use a forking server ikiwa the service
 contains state in memory that can be modified by requests (since the
 modifications in the child process would never reach the initial state
 kept in the parent process and passed to each child).  In this case,
@@ -78,10 +78,10 @@ you can use a threading server, but you will probably have to use
 locks to avoid two requests that come in nearly simultaneous to apply
 conflicting changes to the server state.
 
-On the other hand, if you are building e.g. an HTTP server, where all
+On the other hand, ikiwa you are building e.g. an HTTP server, where all
 data is stored externally (e.g. in the file system), a synchronous
-class will essentially render the service "deaf" while one request is
-being handled -- which may be for a very long time if a client is slow
+kundi will essentially render the service "deaf" while one request is
+being handled -- which may be for a very long time ikiwa a client is slow
 to read all the data it has requested.  Here a threading or forking
 server is appropriate.
 
@@ -113,7 +113,7 @@ BaseServer:
   Copyright (C) 2000  Luke Kenneth Casson Leighton <lkcl@samba.org>
 
   example: read entries kutoka a SQL database (requires overriding
-  get_request() to return a table entry kutoka the database).
+  get_request() to rudisha a table entry kutoka the database).
   entry is processed by a RequestHandlerClass.
 
 """
@@ -135,31 +135,31 @@ __all__ = ["BaseServer", "TCPServer", "UDPServer",
            "ThreadingUDPServer", "ThreadingTCPServer",
            "BaseRequestHandler", "StreamRequestHandler",
            "DatagramRequestHandler", "ThreadingMixIn"]
-if hasattr(os, "fork"):
+ikiwa hasattr(os, "fork"):
     __all__.extend(["ForkingUDPServer","ForkingTCPServer", "ForkingMixIn"])
-if hasattr(socket, "AF_UNIX"):
+ikiwa hasattr(socket, "AF_UNIX"):
     __all__.extend(["UnixStreamServer","UnixDatagramServer",
                     "ThreadingUnixStreamServer",
                     "ThreadingUnixDatagramServer"])
 
 # poll/select have the advantage of not requiring any extra file descriptor,
 # contrarily to epoll/kqueue (also, they require a single syscall).
-if hasattr(selectors, 'PollSelector'):
+ikiwa hasattr(selectors, 'PollSelector'):
     _ServerSelector = selectors.PollSelector
 else:
     _ServerSelector = selectors.SelectSelector
 
 
-class BaseServer:
+kundi BaseServer:
 
-    """Base class for server classes.
+    """Base kundi for server classes.
 
     Methods for the caller:
 
     - __init__(server_address, RequestHandlerClass)
     - serve_forever(poll_interval=0.5)
     - shutdown()
-    - handle_request()  # if you do not use serve_forever()
+    - handle_request()  # ikiwa you do not use serve_forever()
     - fileno() -> int   # for selector
 
     Methods that may be overridden:
@@ -197,14 +197,14 @@ class BaseServer:
 
     timeout = None
 
-    def __init__(self, server_address, RequestHandlerClass):
+    eleza __init__(self, server_address, RequestHandlerClass):
         """Constructor.  May be extended, do not override."""
         self.server_address = server_address
         self.RequestHandlerClass = RequestHandlerClass
         self.__is_shut_down = threading.Event()
         self.__shutdown_request = False
 
-    def server_activate(self):
+    eleza server_activate(self):
         """Called by constructor to activate the server.
 
         May be overridden.
@@ -212,7 +212,7 @@ class BaseServer:
         """
         pass
 
-    def serve_forever(self, poll_interval=0.5):
+    eleza serve_forever(self, poll_interval=0.5):
         """Handle one request at a time until shutdown.
 
         Polls for shutdown every poll_interval seconds. Ignores
@@ -231,9 +231,9 @@ class BaseServer:
                 while not self.__shutdown_request:
                     ready = selector.select(poll_interval)
                     # bpo-35017: shutdown() called during select(), exit immediately.
-                    if self.__shutdown_request:
+                    ikiwa self.__shutdown_request:
                         break
-                    if ready:
+                    ikiwa ready:
                         self._handle_request_noblock()
 
                     self.service_actions()
@@ -241,7 +241,7 @@ class BaseServer:
             self.__shutdown_request = False
             self.__is_shut_down.set()
 
-    def shutdown(self):
+    eleza shutdown(self):
         """Stops the serve_forever loop.
 
         Blocks until the loop has finished. This must be called while
@@ -251,10 +251,10 @@ class BaseServer:
         self.__shutdown_request = True
         self.__is_shut_down.wait()
 
-    def service_actions(self):
+    eleza service_actions(self):
         """Called by the serve_forever() loop.
 
-        May be overridden by a subclass / Mixin to implement any code that
+        May be overridden by a subkundi / Mixin to implement any code that
         needs to be run during the loop.
         """
         pass
@@ -270,7 +270,7 @@ class BaseServer:
     # - finish_request() instantiates the request handler class; this
     #   constructor will handle the request all by itself
 
-    def handle_request(self):
+    eleza handle_request(self):
         """Handle one request, possibly blocking.
 
         Respects self.timeout.
@@ -278,11 +278,11 @@ class BaseServer:
         # Support people who used socket.settimeout() to escape
         # handle_request before self.timeout was available.
         timeout = self.socket.gettimeout()
-        if timeout is None:
+        ikiwa timeout is None:
             timeout = self.timeout
-        elif self.timeout is not None:
+        elikiwa self.timeout is not None:
             timeout = min(timeout, self.timeout)
-        if timeout is not None:
+        ikiwa timeout is not None:
             deadline = time() + timeout
 
         # Wait until a request arrives or the timeout expires - the loop is
@@ -292,15 +292,15 @@ class BaseServer:
 
             while True:
                 ready = selector.select(timeout)
-                if ready:
-                    return self._handle_request_noblock()
+                ikiwa ready:
+                    rudisha self._handle_request_noblock()
                 else:
-                    if timeout is not None:
+                    ikiwa timeout is not None:
                         timeout = deadline - time()
-                        if timeout < 0:
-                            return self.handle_timeout()
+                        ikiwa timeout < 0:
+                            rudisha self.handle_timeout()
 
-    def _handle_request_noblock(self):
+    eleza _handle_request_noblock(self):
         """Handle one request, without blocking.
 
         I assume that selector.select() has returned that the socket is
@@ -311,7 +311,7 @@ class BaseServer:
             request, client_address = self.get_request()
         except OSError:
             return
-        if self.verify_request(request, client_address):
+        ikiwa self.verify_request(request, client_address):
             try:
                 self.process_request(request, client_address)
             except Exception:
@@ -323,22 +323,22 @@ class BaseServer:
         else:
             self.shutdown_request(request)
 
-    def handle_timeout(self):
-        """Called if no new request arrives within self.timeout.
+    eleza handle_timeout(self):
+        """Called ikiwa no new request arrives within self.timeout.
 
         Overridden by ForkingMixIn.
         """
         pass
 
-    def verify_request(self, request, client_address):
+    eleza verify_request(self, request, client_address):
         """Verify the request.  May be overridden.
 
-        Return True if we should proceed with this request.
+        Return True ikiwa we should proceed with this request.
 
         """
-        return True
+        rudisha True
 
-    def process_request(self, request, client_address):
+    eleza process_request(self, request, client_address):
         """Call finish_request.
 
         Overridden by ForkingMixIn and ThreadingMixIn.
@@ -347,7 +347,7 @@ class BaseServer:
         self.finish_request(request, client_address)
         self.shutdown_request(request)
 
-    def server_close(self):
+    eleza server_close(self):
         """Called to clean-up the server.
 
         May be overridden.
@@ -355,41 +355,41 @@ class BaseServer:
         """
         pass
 
-    def finish_request(self, request, client_address):
+    eleza finish_request(self, request, client_address):
         """Finish one request by instantiating RequestHandlerClass."""
         self.RequestHandlerClass(request, client_address, self)
 
-    def shutdown_request(self, request):
+    eleza shutdown_request(self, request):
         """Called to shutdown and close an individual request."""
         self.close_request(request)
 
-    def close_request(self, request):
+    eleza close_request(self, request):
         """Called to clean up an individual request."""
         pass
 
-    def handle_error(self, request, client_address):
+    eleza handle_error(self, request, client_address):
         """Handle an error gracefully.  May be overridden.
 
         The default is to print a traceback and continue.
 
         """
-        print('-'*40, file=sys.stderr)
-        print('Exception happened during processing of request kutoka',
+        andika('-'*40, file=sys.stderr)
+        andika('Exception happened during processing of request kutoka',
             client_address, file=sys.stderr)
         agiza traceback
         traceback.print_exc()
-        print('-'*40, file=sys.stderr)
+        andika('-'*40, file=sys.stderr)
 
-    def __enter__(self):
-        return self
+    eleza __enter__(self):
+        rudisha self
 
-    def __exit__(self, *args):
+    eleza __exit__(self, *args):
         self.server_close()
 
 
-class TCPServer(BaseServer):
+kundi TCPServer(BaseServer):
 
-    """Base class for various socket-based server classes.
+    """Base kundi for various socket-based server classes.
 
     Defaults to synchronous IP stream (i.e., TCP).
 
@@ -398,7 +398,7 @@ class TCPServer(BaseServer):
     - __init__(server_address, RequestHandlerClass, bind_and_activate=True)
     - serve_forever(poll_interval=0.5)
     - shutdown()
-    - handle_request()  # if you don't use serve_forever()
+    - handle_request()  # ikiwa you don't use serve_forever()
     - fileno() -> int   # for selector
 
     Methods that may be overridden:
@@ -442,12 +442,12 @@ class TCPServer(BaseServer):
 
     allow_reuse_address = False
 
-    def __init__(self, server_address, RequestHandlerClass, bind_and_activate=True):
+    eleza __init__(self, server_address, RequestHandlerClass, bind_and_activate=True):
         """Constructor.  May be extended, do not override."""
         BaseServer.__init__(self, server_address, RequestHandlerClass)
         self.socket = socket.socket(self.address_family,
                                     self.socket_type)
-        if bind_and_activate:
+        ikiwa bind_and_activate:
             try:
                 self.server_bind()
                 self.server_activate()
@@ -455,18 +455,18 @@ class TCPServer(BaseServer):
                 self.server_close()
                 raise
 
-    def server_bind(self):
+    eleza server_bind(self):
         """Called by constructor to bind the socket.
 
         May be overridden.
 
         """
-        if self.allow_reuse_address:
+        ikiwa self.allow_reuse_address:
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.socket.bind(self.server_address)
         self.server_address = self.socket.getsockname()
 
-    def server_activate(self):
+    eleza server_activate(self):
         """Called by constructor to activate the server.
 
         May be overridden.
@@ -474,7 +474,7 @@ class TCPServer(BaseServer):
         """
         self.socket.listen(self.request_queue_size)
 
-    def server_close(self):
+    eleza server_close(self):
         """Called to clean-up the server.
 
         May be overridden.
@@ -482,23 +482,23 @@ class TCPServer(BaseServer):
         """
         self.socket.close()
 
-    def fileno(self):
+    eleza fileno(self):
         """Return socket file number.
 
         Interface required by selector.
 
         """
-        return self.socket.fileno()
+        rudisha self.socket.fileno()
 
-    def get_request(self):
+    eleza get_request(self):
         """Get the request and client address kutoka the socket.
 
         May be overridden.
 
         """
-        return self.socket.accept()
+        rudisha self.socket.accept()
 
-    def shutdown_request(self, request):
+    eleza shutdown_request(self, request):
         """Called to shutdown and close an individual request."""
         try:
             #explicitly shutdown.  socket.close() merely releases
@@ -508,12 +508,12 @@ class TCPServer(BaseServer):
             pass #some platforms may raise ENOTCONN here
         self.close_request(request)
 
-    def close_request(self, request):
+    eleza close_request(self, request):
         """Called to clean up an individual request."""
         request.close()
 
 
-class UDPServer(TCPServer):
+kundi UDPServer(TCPServer):
 
     """UDP server class."""
 
@@ -523,25 +523,25 @@ class UDPServer(TCPServer):
 
     max_packet_size = 8192
 
-    def get_request(self):
-        data, client_addr = self.socket.recvfrom(self.max_packet_size)
-        return (data, self.socket), client_addr
+    eleza get_request(self):
+        data, client_addr = self.socket.recvkutoka(self.max_packet_size)
+        rudisha (data, self.socket), client_addr
 
-    def server_activate(self):
+    eleza server_activate(self):
         # No need to call listen() for UDP.
         pass
 
-    def shutdown_request(self, request):
+    eleza shutdown_request(self, request):
         # No need to shutdown anything.
         self.close_request(request)
 
-    def close_request(self, request):
+    eleza close_request(self, request):
         # No need to close anything.
         pass
 
-if hasattr(os, "fork"):
-    class ForkingMixIn:
-        """Mix-in class to handle each request in a new process."""
+ikiwa hasattr(os, "fork"):
+    kundi ForkingMixIn:
+        """Mix-in kundi to handle each request in a new process."""
 
         timeout = 300
         active_children = None
@@ -549,9 +549,9 @@ if hasattr(os, "fork"):
         # If true, server_close() waits until all child processes complete.
         block_on_close = True
 
-        def collect_children(self, *, blocking=False):
+        eleza collect_children(self, *, blocking=False):
             """Internal routine to wait for children that have exited."""
-            if self.active_children is None:
+            ikiwa self.active_children is None:
                 return
 
             # If we're above the max number of children, wait and reap them until
@@ -573,9 +573,9 @@ if hasattr(os, "fork"):
             # Now reap all defunct children.
             for pid in self.active_children.copy():
                 try:
-                    flags = 0 if blocking else os.WNOHANG
+                    flags = 0 ikiwa blocking else os.WNOHANG
                     pid, _ = os.waitpid(pid, flags)
-                    # if the child hasn't exited yet, pid will be 0 and ignored by
+                    # ikiwa the child hasn't exited yet, pid will be 0 and ignored by
                     # discard() below
                     self.active_children.discard(pid)
                 except ChildProcessError:
@@ -584,26 +584,26 @@ if hasattr(os, "fork"):
                 except OSError:
                     pass
 
-        def handle_timeout(self):
+        eleza handle_timeout(self):
             """Wait for zombies after self.timeout seconds of inactivity.
 
             May be extended, do not override.
             """
             self.collect_children()
 
-        def service_actions(self):
+        eleza service_actions(self):
             """Collect the zombie child processes regularly in the ForkingMixIn.
 
             service_actions is called in the BaseServer's serve_forever loop.
             """
             self.collect_children()
 
-        def process_request(self, request, client_address):
+        eleza process_request(self, request, client_address):
             """Fork a new subprocess to process the request."""
             pid = os.fork()
-            if pid:
+            ikiwa pid:
                 # Parent process
-                if self.active_children is None:
+                ikiwa self.active_children is None:
                     self.active_children = set()
                 self.active_children.add(pid)
                 self.close_request(request)
@@ -623,13 +623,13 @@ if hasattr(os, "fork"):
                     finally:
                         os._exit(status)
 
-        def server_close(self):
+        eleza server_close(self):
             super().server_close()
             self.collect_children(blocking=self.block_on_close)
 
 
-class ThreadingMixIn:
-    """Mix-in class to handle each request in a new thread."""
+kundi ThreadingMixIn:
+    """Mix-in kundi to handle each request in a new thread."""
 
     # Decides how threads will act upon termination of the
     # main process
@@ -640,7 +640,7 @@ class ThreadingMixIn:
     # used by server_close() to wait for all threads completion.
     _threads = None
 
-    def process_request_thread(self, request, client_address):
+    eleza process_request_thread(self, request, client_address):
         """Same as in BaseServer but as a thread.
 
         In addition, exception handling is done here.
@@ -653,54 +653,54 @@ class ThreadingMixIn:
         finally:
             self.shutdown_request(request)
 
-    def process_request(self, request, client_address):
+    eleza process_request(self, request, client_address):
         """Start a new thread to process the request."""
         t = threading.Thread(target = self.process_request_thread,
                              args = (request, client_address))
         t.daemon = self.daemon_threads
-        if not t.daemon and self.block_on_close:
-            if self._threads is None:
+        ikiwa not t.daemon and self.block_on_close:
+            ikiwa self._threads is None:
                 self._threads = []
             self._threads.append(t)
         t.start()
 
-    def server_close(self):
+    eleza server_close(self):
         super().server_close()
-        if self.block_on_close:
+        ikiwa self.block_on_close:
             threads = self._threads
             self._threads = None
-            if threads:
+            ikiwa threads:
                 for thread in threads:
                     thread.join()
 
 
-if hasattr(os, "fork"):
-    class ForkingUDPServer(ForkingMixIn, UDPServer): pass
-    class ForkingTCPServer(ForkingMixIn, TCPServer): pass
+ikiwa hasattr(os, "fork"):
+    kundi ForkingUDPServer(ForkingMixIn, UDPServer): pass
+    kundi ForkingTCPServer(ForkingMixIn, TCPServer): pass
 
-class ThreadingUDPServer(ThreadingMixIn, UDPServer): pass
-class ThreadingTCPServer(ThreadingMixIn, TCPServer): pass
+kundi ThreadingUDPServer(ThreadingMixIn, UDPServer): pass
+kundi ThreadingTCPServer(ThreadingMixIn, TCPServer): pass
 
-if hasattr(socket, 'AF_UNIX'):
+ikiwa hasattr(socket, 'AF_UNIX'):
 
-    class UnixStreamServer(TCPServer):
+    kundi UnixStreamServer(TCPServer):
         address_family = socket.AF_UNIX
 
-    class UnixDatagramServer(UDPServer):
+    kundi UnixDatagramServer(UDPServer):
         address_family = socket.AF_UNIX
 
-    class ThreadingUnixStreamServer(ThreadingMixIn, UnixStreamServer): pass
+    kundi ThreadingUnixStreamServer(ThreadingMixIn, UnixStreamServer): pass
 
-    class ThreadingUnixDatagramServer(ThreadingMixIn, UnixDatagramServer): pass
+    kundi ThreadingUnixDatagramServer(ThreadingMixIn, UnixDatagramServer): pass
 
-class BaseRequestHandler:
+kundi BaseRequestHandler:
 
-    """Base class for request handler classes.
+    """Base kundi for request handler classes.
 
-    This class is instantiated for each request to be handled.  The
+    This kundi is instantiated for each request to be handled.  The
     constructor sets the instance variables request, client_address
     and server, and then calls the handle() method.  To implement a
-    specific service, all you need to do is to derive a class which
+    specific service, all you need to do is to derive a kundi which
     defines a handle() method.
 
     The handle() method can find the request as self.request, the
@@ -711,7 +711,7 @@ class BaseRequestHandler:
 
     """
 
-    def __init__(self, request, client_address, server):
+    eleza __init__(self, request, client_address, server):
         self.request = request
         self.client_address = client_address
         self.server = server
@@ -721,25 +721,25 @@ class BaseRequestHandler:
         finally:
             self.finish()
 
-    def setup(self):
+    eleza setup(self):
         pass
 
-    def handle(self):
+    eleza handle(self):
         pass
 
-    def finish(self):
+    eleza finish(self):
         pass
 
 
 # The following two classes make it possible to use the same service
-# class for stream or datagram servers.
-# Each class sets up these instance variables:
+# kundi for stream or datagram servers.
+# Each kundi sets up these instance variables:
 # - rfile: a file object kutoka which receives the request is read
 # - wfile: a file object to which the reply is written
 # When the handle() method returns, wfile is flushed properly
 
 
-class StreamRequestHandler(BaseRequestHandler):
+kundi StreamRequestHandler(BaseRequestHandler):
 
     """Define self.rfile and self.wfile for stream sockets."""
 
@@ -753,28 +753,28 @@ class StreamRequestHandler(BaseRequestHandler):
     rbufsize = -1
     wbufsize = 0
 
-    # A timeout to apply to the request socket, if not None.
+    # A timeout to apply to the request socket, ikiwa not None.
     timeout = None
 
-    # Disable nagle algorithm for this socket, if True.
+    # Disable nagle algorithm for this socket, ikiwa True.
     # Use only when wbufsize != 0, to avoid small packets.
     disable_nagle_algorithm = False
 
-    def setup(self):
+    eleza setup(self):
         self.connection = self.request
-        if self.timeout is not None:
+        ikiwa self.timeout is not None:
             self.connection.settimeout(self.timeout)
-        if self.disable_nagle_algorithm:
+        ikiwa self.disable_nagle_algorithm:
             self.connection.setsockopt(socket.IPPROTO_TCP,
                                        socket.TCP_NODELAY, True)
         self.rfile = self.connection.makefile('rb', self.rbufsize)
-        if self.wbufsize == 0:
+        ikiwa self.wbufsize == 0:
             self.wfile = _SocketWriter(self.connection)
         else:
             self.wfile = self.connection.makefile('wb', self.wbufsize)
 
-    def finish(self):
-        if not self.wfile.closed:
+    eleza finish(self):
+        ikiwa not self.wfile.closed:
             try:
                 self.wfile.flush()
             except socket.error:
@@ -784,34 +784,34 @@ class StreamRequestHandler(BaseRequestHandler):
         self.wfile.close()
         self.rfile.close()
 
-class _SocketWriter(BufferedIOBase):
+kundi _SocketWriter(BufferedIOBase):
     """Simple writable BufferedIOBase implementation for a socket
 
     Does not hold data in a buffer, avoiding any need to call flush()."""
 
-    def __init__(self, sock):
+    eleza __init__(self, sock):
         self._sock = sock
 
-    def writable(self):
-        return True
+    eleza writable(self):
+        rudisha True
 
-    def write(self, b):
+    eleza write(self, b):
         self._sock.sendall(b)
         with memoryview(b) as view:
-            return view.nbytes
+            rudisha view.nbytes
 
-    def fileno(self):
-        return self._sock.fileno()
+    eleza fileno(self):
+        rudisha self._sock.fileno()
 
-class DatagramRequestHandler(BaseRequestHandler):
+kundi DatagramRequestHandler(BaseRequestHandler):
 
     """Define self.rfile and self.wfile for datagram sockets."""
 
-    def setup(self):
+    eleza setup(self):
         kutoka io agiza BytesIO
         self.packet, self.socket = self.request
         self.rfile = BytesIO(self.packet)
         self.wfile = BytesIO()
 
-    def finish(self):
+    eleza finish(self):
         self.socket.sendto(self.wfile.getvalue(), self.client_address)

@@ -23,7 +23,7 @@ API Reference
 
 
 The :mod:`distutils.core` module is the only module that needs to be installed
-to use the Distutils. It provides the :func:`setup` (which is called from the
+to use the Distutils. It provides the :func:`setup` (which is called kutoka the
 setup script). Indirectly provides the  :class:`distutils.dist.Distribution` and
 :class:`distutils.cmd.Command` class.
 
@@ -31,7 +31,7 @@ setup script). Indirectly provides the  :class:`distutils.dist.Distribution` and
 .. function:: setup(arguments)
 
    The basic do-everything function that does most everything you could ever ask
-   for from a Distutils method.
+   for kutoka a Distutils method.
 
    The setup function takes a large number of arguments. These are laid out in the
    following table.
@@ -59,7 +59,7 @@ setup script). Indirectly provides the  :class:`distutils.dist.Distribution` and
    |                    | package author                 |                                                             |
    +--------------------+--------------------------------+-------------------------------------------------------------+
    | *maintainer*       | The name of the current        | a string                                                    |
-   |                    | maintainer, if different from  |                                                             |
+   |                    | maintainer, if different kutoka  |                                                             |
    |                    | the author. Note that if       |                                                             |
    |                    | the maintainer is provided,    |                                                             |
    |                    | distutils will use it as the   |                                                             |
@@ -67,7 +67,7 @@ setup script). Indirectly provides the  :class:`distutils.dist.Distribution` and
    +--------------------+--------------------------------+-------------------------------------------------------------+
    | *maintainer_email* | The email address of the       | a string                                                    |
    |                    | current maintainer, if         |                                                             |
-   |                    | different from the author      |                                                             |
+   |                    | different kutoka the author      |                                                             |
    +--------------------+--------------------------------+-------------------------------------------------------------+
    | *url*              | A URL for the package          | a string                                                    |
    |                    | (homepage)                     |                                                             |
@@ -90,8 +90,8 @@ setup script). Indirectly provides the  :class:`distutils.dist.Distribution` and
    | *classifiers*      | A list of categories for the   | a list of strings; valid classifiers are listed on `PyPI    |
    |                    | package                        | <https://pypi.org/classifiers>`_.                           |
    +--------------------+--------------------------------+-------------------------------------------------------------+
-   | *distclass*        | the :class:`Distribution`      | a subclass of                                               |
-   |                    | class to use                   | :class:`distutils.core.Distribution`                        |
+   | *distclass*        | the :class:`Distribution`      | a subkundi of                                               |
+   |                    | kundi to use                   | :class:`distutils.core.Distribution`                        |
    +--------------------+--------------------------------+-------------------------------------------------------------+
    | *script_name*      | The name of the setup.py       | a string                                                    |
    |                    | script - defaults to           |                                                             |
@@ -127,7 +127,7 @@ setup script). Indirectly provides the  :class:`distutils.dist.Distribution` and
    Run a setup script in a somewhat controlled environment, and return  the
    :class:`distutils.dist.Distribution` instance that drives things.   This is
    useful if you need to find out the distribution meta-data  (passed as keyword
-   args from *script* to :func:`setup`), or  the contents of the config files or
+   args kutoka *script* to :func:`setup`), or  the contents of the config files or
    command-line.
 
    *script_name* is a file that will be read and run with :func:`exec`.  ``sys.argv[0]``
@@ -164,11 +164,11 @@ setup script). Indirectly provides the  :class:`distutils.dist.Distribution` and
 In addition, the :mod:`distutils.core` module exposed a number of  classes that
 live elsewhere.
 
-* :class:`~distutils.extension.Extension` from :mod:`distutils.extension`
+* :class:`~distutils.extension.Extension` kutoka :mod:`distutils.extension`
 
-* :class:`~distutils.cmd.Command` from :mod:`distutils.cmd`
+* :class:`~distutils.cmd.Command` kutoka :mod:`distutils.cmd`
 
-* :class:`~distutils.dist.Distribution` from :mod:`distutils.dist`
+* :class:`~distutils.dist.Distribution` kutoka :mod:`distutils.dist`
 
 A short description of each of these follows, but see the relevant module for
 the full reference.
@@ -176,7 +176,7 @@ the full reference.
 
 .. class:: Extension
 
-   The Extension class describes a single C or C++ extension module in a setup
+   The Extension kundi describes a single C or C++ extension module in a setup
    script. It accepts the following keyword arguments in its constructor:
 
    .. tabularcolumns:: |l|L|l|
@@ -265,7 +265,7 @@ the full reference.
    |                        | 'extra_compile_args'.          |                           |
    +------------------------+--------------------------------+---------------------------+
    | *export_symbols*       | list of symbols to be exported | a list of strings         |
-   |                        | from a shared extension. Not   |                           |
+   |                        | kutoka a shared extension. Not   |                           |
    |                        | used on all platforms, and not |                           |
    |                        | generally necessary for Python |                           |
    |                        | extensions, which typically    |                           |
@@ -278,7 +278,7 @@ the full reference.
    | *language*             | extension language (i.e.       | a string                  |
    |                        | ``'c'``, ``'c++'``,            |                           |
    |                        | ``'objc'``). Will be detected  |                           |
-   |                        | from the source extensions if  |                           |
+   |                        | kutoka the source extensions if  |                           |
    |                        | not provided.                  |                           |
    +------------------------+--------------------------------+---------------------------+
    | *optional*             | specifies that a build failure | a boolean                 |
@@ -308,7 +308,7 @@ the full reference.
 
 .. class:: Command
 
-   A :class:`Command` class (or rather, an instance of one of its subclasses)
+   A :class:`Command` kundi (or rather, an instance of one of its subclasses)
    implement a single distutils command.
 
 
@@ -319,7 +319,7 @@ the full reference.
    :synopsis: Abstract CCompiler class
 
 
-This module provides the abstract base class for the :class:`CCompiler`
+This module provides the abstract base kundi for the :class:`CCompiler`
 classes.  A :class:`CCompiler` instance can be used for all the compile  and
 link steps needed to build a single project. Methods are provided to  set
 options for the compiler --- macro definitions, include directories,  link path,
@@ -363,7 +363,7 @@ This module provides the following functions.
 
 .. function:: new_compiler(plat=None, compiler=None, verbose=0, dry_run=0, force=0)
 
-   Factory function to generate an instance of some CCompiler subclass for the
+   Factory function to generate an instance of some CCompiler subkundi for the
    supplied platform/compiler combination. *plat* defaults to ``os.name`` (eg.
    ``'posix'``, ``'nt'``), and *compiler*  defaults to the default compiler for
    that platform. Currently only ``'posix'`` and ``'nt'`` are supported, and the
@@ -385,11 +385,11 @@ This module provides the following functions.
 
 .. class:: CCompiler([verbose=0, dry_run=0, force=0])
 
-   The abstract base class :class:`CCompiler` defines the interface that  must be
-   implemented by real compiler classes.  The class also has  some utility methods
+   The abstract base kundi :class:`CCompiler` defines the interface that  must be
+   implemented by real compiler classes.  The kundi also has  some utility methods
    used by several compiler classes.
 
-   The basic idea behind a compiler abstraction class is that each instance can be
+   The basic idea behind a compiler abstraction kundi is that each instance can be
    used for all the compile/link steps in building a single project.  Thus,
    attributes common to all of those compile and link steps --- include
    directories, macros to define, libraries to link against, etc. --- are
@@ -397,7 +397,7 @@ This module provides the following functions.
    files are treated, most of those attributes may be varied on a per-compilation
    or per-link basis.
 
-   The constructor for each subclass creates an instance of the Compiler object.
+   The constructor for each subkundi creates an instance of the Compiler object.
    Flags are *verbose* (show verbose output), *dry_run* (don't actually execute the
    steps) and *force* (rebuild everything, regardless of dependencies). All of
    these flags default to ``0`` (off). Note that you probably don't want to
@@ -555,7 +555,7 @@ This module provides the following functions.
 
       Define the executables (and options for them) that will be run to perform the
       various stages of compilation.  The exact set of executables that may be
-      specified here depends on the compiler class (via the 'executables' class
+      specified here depends on the compiler kundi (via the 'executables' class
       attribute), but most will have:
 
       +--------------+------------------------------------------+
@@ -586,7 +586,7 @@ This module provides the following functions.
       :file:`.c` file to a :file:`.o` file.)
 
       *sources* must be a list of filenames, most likely C/C++ files, but in reality
-      anything that can be handled by a particular compiler and compiler class (eg.
+      anything that can be handled by a particular compiler and compiler kundi (eg.
       :class:`MSVCCompiler` can handle resource files in *sources*).  Return a list of
       object filenames, one per source filename in *sources*.  Depending on the
       implementation, not all source files will necessarily be compiled, but all
@@ -633,7 +633,7 @@ This module provides the following functions.
       :meth:`set_libraries`, and the libraries supplied as *libraries* (if any).
 
       *output_libname* should be a library name, not a filename; the filename will be
-      inferred from the library name.  *output_dir* is the directory where the library
+      inferred kutoka the library name.  *output_dir* is the directory where the library
       file will be put.
 
       .. XXX defaults to what?
@@ -806,7 +806,7 @@ This module provides the following functions.
    :synopsis: UNIX C Compiler
 
 
-This module provides the :class:`UnixCCompiler` class, a subclass of
+This module provides the :class:`UnixCCompiler` class, a subkundi of
 :class:`CCompiler` that handles the typical Unix-style command-line  C compiler:
 
 * macros defined with :option:`!-Dname[=value]`
@@ -837,7 +837,7 @@ This module provides the :class:`UnixCCompiler` class, a subclass of
 .. XXX: This is *waaaaay* out of date!
 
 This module provides :class:`MSVCCompiler`, an implementation of the abstract
-:class:`CCompiler` class for Microsoft Visual Studio. Typically, extension
+:class:`CCompiler` kundi for Microsoft Visual Studio. Typically, extension
 modules need to be compiled with the same compiler that was used to compile
 Python. For Python 2.3 and earlier, the compiler was Visual Studio 6. For Python
 2.4 and 2.5, the compiler is Visual Studio .NET 2003.
@@ -857,8 +857,8 @@ selection by :class:`MSVCCompiler`.
 .. module:: distutils.bcppcompiler
 
 
-This module provides :class:`BorlandCCompiler`, a subclass of the abstract
-:class:`CCompiler` class for the Borland C++ compiler.
+This module provides :class:`BorlandCCompiler`, a subkundi of the abstract
+:class:`CCompiler` kundi for the Borland C++ compiler.
 
 
 :mod:`distutils.cygwincompiler` --- Cygwin Compiler
@@ -867,9 +867,9 @@ This module provides :class:`BorlandCCompiler`, a subclass of the abstract
 .. module:: distutils.cygwinccompiler
 
 
-This module provides the :class:`CygwinCCompiler` class, a subclass of
+This module provides the :class:`CygwinCCompiler` class, a subkundi of
 :class:`UnixCCompiler` that handles the Cygwin port of the GNU C compiler to
-Windows.  It also contains the Mingw32CCompiler class which handles the mingw32
+Windows.  It also contains the Mingw32CCompiler kundi which handles the mingw32
 port of GCC (same as cygwin in no-cygwin mode).
 
 
@@ -891,7 +891,7 @@ tarballs or zipfiles.
    archive format: one of ``zip``, ``tar``, ``gztar``, ``bztar``, ``xztar``, or
    ``ztar``. *root_dir* is a directory that will be the root directory of the
    archive; ie. we typically ``chdir`` into *root_dir* before  creating the
-   archive.  *base_dir* is the directory where we start  archiving from; ie.
+   archive.  *base_dir* is the directory where we start  archiving kutoka; ie.
    *base_dir* will be the common prefix of all files and directories in the
    archive.  *root_dir* and *base_dir* both default to the current directory.
    Returns the name of the archive file.
@@ -902,7 +902,7 @@ tarballs or zipfiles.
 
 .. function:: make_tarball(base_name, base_dir[, compress='gzip', verbose=0, dry_run=0])
 
-   'Create an (optional compressed) archive as a tar file from all files in and
+   'Create an (optional compressed) archive as a tar file kutoka all files in and
    under *base_dir*. *compress* must be ``'gzip'`` (the default),
    ``'bzip2'``, ``'xz'``, ``'compress'``, or ``None``.  For the ``'compress'``
    method the compression utility named by :program:`compress` must be on the
@@ -917,7 +917,7 @@ tarballs or zipfiles.
 
 .. function:: make_zipfile(base_name, base_dir[, verbose=0, dry_run=0])
 
-   Create a zip file from all files in and under *base_dir*.  The output zip file
+   Create a zip file kutoka all files in and under *base_dir*.  The output zip file
    will be named *base_name* + :file:`.zip`.  Uses either the  :mod:`zipfile` Python
    module (if available) or the InfoZIP :file:`zip`  utility (if installed and
    found on the default search path).  If neither  tool is available, raises
@@ -959,7 +959,7 @@ timestamp dependency analysis.
    *sources*.  In other words, if *target* exists and is newer than every file in
    *sources*, return false; otherwise return true. *missing* controls what we do
    when a source file is missing; the default (``'error'``) is to blow up with an
-   :exc:`OSError` from  inside :func:`os.stat`; if it is ``'ignore'``, we silently
+   :exc:`OSError` kutoka  inside :func:`os.stat`; if it is ``'ignore'``, we silently
    drop any missing source files; if it is ``'newer'``, any missing source files
    make us assume that *target* is out-of-date (this is handy in "dry-run" mode:
    it'll make you pretend to carry out commands that wouldn't work because inputs
@@ -1029,7 +1029,7 @@ directories.
 .. function:: remove_tree(directory[, verbose=0, dry_run=0])
 
    Recursively remove *directory* and all files and directories underneath it. Any
-   errors are ignored (apart from being reported to ``sys.stdout`` if *verbose* is
+   errors are ignored (apart kutoka being reported to ``sys.stdout`` if *verbose* is
    true).
 
 
@@ -1128,7 +1128,7 @@ other utility module.
    processor. For 32-bit universal binaries the architecture is ``fat``,
    for 64-bit universal binaries the architecture is ``fat64``, and
    for 4-way universal binaries the architecture is ``universal``. Starting
-   from Python 2.7 and Python 3.2 the architecture ``fat3`` is used for
+   kutoka Python 2.7 and Python 3.2 the architecture ``fat3`` is used for
    a 3-way universal build (ppc, i386, x86_64) and ``intel`` is used for
    a universal build with the i386 and x86_64 architectures
 
@@ -1191,8 +1191,8 @@ other utility module.
    In short: words are delimited by spaces, as long as those spaces are not escaped
    by a backslash, or inside a quoted string. Single and double quotes are
    equivalent, and the quote characters can be backslash-escaped.  The backslash is
-   stripped from any two-character escape sequence, leaving only the escaped
-   character.  The quote characters are stripped from any quoted string.  Returns a
+   stripped kutoka any two-character escape sequence, leaving only the escaped
+   character.  The quote characters are stripped kutoka any quoted string.  Returns a
    list of words.
 
    .. % Should probably be moved into the standard library.
@@ -1247,7 +1247,7 @@ other utility module.
    doing, leave it set to ``None``.
 
    .. versionchanged:: 3.2.3
-      Create ``.pyc`` files with an :func:`import magic tag
+      Create ``.pyc`` files with an :func:`agiza magic tag
       <imp.get_tag>` in their name, in a :file:`__pycache__` subdirectory
       instead of files without tag in the current directory.
 
@@ -1314,7 +1314,7 @@ Provides exceptions used by the Distutils modules.  Note that Distutils modules
 may raise standard exceptions; in particular, SystemExit is usually raised for
 errors that are obviously the end-user's fault (eg. bad command-line arguments).
 
-This module is safe to use in ``from ... import *`` mode; it only exports
+This module is safe to use in ``kutoka ... agiza *`` mode; it only exports
 symbols whose names start with ``Distutils`` and end with ``Error``.
 
 
@@ -1365,7 +1365,7 @@ provides the following additional features:
    *short_option* should be ``None`` if a *long_option*  doesn't have a
    corresponding *short_option*. All option tuples must have long options.
 
-The :class:`FancyGetopt` class provides the following methods:
+The :class:`FancyGetopt` kundi provides the following methods:
 
 
 .. method:: FancyGetopt.getopt([args=None, object=None])
@@ -1391,7 +1391,7 @@ The :class:`FancyGetopt` class provides the following methods:
 
 .. method:: FancyGetopt.generate_help([header=None])
 
-   Generate help text (a list of strings, one per suggested line of output) from
+   Generate help text (a list of strings, one per suggested line of output) kutoka
    the option table for this :class:`FancyGetopt` object.
 
    If supplied, prints the supplied *header* at the top of the help.
@@ -1529,7 +1529,7 @@ package.
    information includes the selected compiler, compiler and linker options, and the
    extension used by the linker for shared objects.
 
-This function is even more special-purpose, and should only be used from
+This function is even more special-purpose, and should only be used kutoka
 Python's own build procedures.
 
 
@@ -1555,14 +1555,14 @@ lines, and joining lines with backslashes.
 
 .. class:: TextFile([filename=None, file=None, **options])
 
-   This class provides a file-like object that takes care of all  the things you
+   This kundi provides a file-like object that takes care of all  the things you
    commonly want to do when processing a text file  that has some line-by-line
    syntax: strip comments (as long as ``#``  is your comment character), skip blank
    lines, join adjacent lines by escaping the newline (ie. backslash at end of
    line), strip leading and/or trailing whitespace.  All of these are optional and
    independently controllable.
 
-   The class provides a :meth:`warn` method so you can generate  warning messages
+   The kundi provides a :meth:`warn` method so you can generate  warning messages
    that report physical line number, even if the  logical line in question spans
    multiple physical lines.  Also  provides :meth:`unreadline` for implementing
    line-at-a-time lookahead.
@@ -1582,18 +1582,18 @@ lines, and joining lines with backslashes.
    +------------------+--------------------------------+---------+
    | option name      | description                    | default |
    +==================+================================+=========+
-   | *strip_comments* | strip from ``'#'`` to          | true    |
+   | *strip_comments* | strip kutoka ``'#'`` to          | true    |
    |                  | end-of-line, as well as any    |         |
    |                  | whitespace leading up to the   |         |
    |                  | ``'#'``\ ---unless it is       |         |
    |                  | escaped by a backslash         |         |
    +------------------+--------------------------------+---------+
-   | *lstrip_ws*      | strip leading whitespace from  | false   |
+   | *lstrip_ws*      | strip leading whitespace kutoka  | false   |
    |                  | each line before returning it  |         |
    +------------------+--------------------------------+---------+
    | *rstrip_ws*      | strip trailing whitespace      | true    |
    |                  | (including line terminator!)   |         |
-   |                  | from each line before          |         |
+   |                  | kutoka each line before          |         |
    |                  | returning it.                  |         |
    +------------------+--------------------------------+---------+
    | *skip_blanks*    | skip lines that are empty      | true    |
@@ -1617,7 +1617,7 @@ lines, and joining lines with backslashes.
    |                  | lines will be joined to form   |         |
    |                  | one logical line.              |         |
    +------------------+--------------------------------+---------+
-   | *collapse_join*  | strip leading whitespace from  | false   |
+   | *collapse_join*  | strip leading whitespace kutoka  | false   |
    |                  | lines that are joined to their |         |
    |                  | predecessor; only matters if   |         |
    |                  | ``(join_lines and not          |         |
@@ -1625,7 +1625,7 @@ lines, and joining lines with backslashes.
    +------------------+--------------------------------+---------+
 
    Note that since *rstrip_ws* can strip the trailing newline, the semantics of
-   :meth:`readline` must differ from those of the built-in file object's
+   :meth:`readline` must differ kutoka those of the built-in file object's
    :meth:`readline` method!  In particular, :meth:`readline`  returns ``None`` for
    end-of-file: an empty string might just be a  blank line (or an all-whitespace
    line), if *rstrip_ws* is true  but *skip_blanks* is not.
@@ -1655,7 +1655,7 @@ lines, and joining lines with backslashes.
 
    .. method:: TextFile.readline()
 
-      Read and return a single logical line from the current file (or from an internal
+      Read and return a single logical line kutoka the current file (or kutoka an internal
       buffer if lines have previously been "unread" with :meth:`unreadline`).  If the
       *join_lines* option  is true, this may involve reading multiple physical lines
       concatenated into a single string.  Updates the current line number,  so calling
@@ -1695,33 +1695,33 @@ lines, and joining lines with backslashes.
 .. % separate module, with the command name as the name of the module.
 
 
-:mod:`distutils.cmd` --- Abstract base class for Distutils commands
+:mod:`distutils.cmd` --- Abstract base kundi for Distutils commands
 ===================================================================
 
 .. module:: distutils.cmd
-   :synopsis: This module provides the abstract base class Command. This class
+   :synopsis: This module provides the abstract base kundi Command. This class
               is subclassed by the modules in the distutils.command subpackage.
 
 
-This module supplies the abstract base class :class:`Command`.
+This module supplies the abstract base kundi :class:`Command`.
 
 
 .. class:: Command(dist)
 
-   Abstract base class for defining command classes, the "worker bees" of the
+   Abstract base kundi for defining command classes, the "worker bees" of the
    Distutils.  A useful analogy for command classes is to think of them as
    subroutines with local variables called *options*.  The options are declared
    in :meth:`initialize_options` and defined (given their final values) in
    :meth:`finalize_options`, both of which must be defined by every command
    class.  The distinction between the two is necessary because option values
-   might come from the outside world (command line, config file, ...), and any
+   might come kutoka the outside world (command line, config file, ...), and any
    options dependent on other options must be computed after these outside
    influences have been processed --- hence :meth:`finalize_options`.  The body
    of the subroutine, where it does all its work based on the values of its
    options, is the :meth:`run` method, which must also be implemented by every
    command class.
 
-   The class constructor takes a single argument *dist*, a
+   The kundi constructor takes a single argument *dist*, a
    :class:`~distutils.core.Distribution` instance.
 
 
@@ -1733,11 +1733,11 @@ This section outlines the steps to create a new Distutils command.
 A new command lives in a module in the :mod:`distutils.command` package. There
 is a sample template in that directory called :file:`command_template`.  Copy
 this file to a new module with the same name as the new command you're
-implementing.  This module should implement a class with the same name as the
+implementing.  This module should implement a kundi with the same name as the
 module (and the command).  So, for instance, to create the command
 ``peel_banana`` (so that users can run ``setup.py peel_banana``), you'd copy
 :file:`command_template` to :file:`distutils/command/peel_banana.py`, then edit
-it so that it's implementing the class :class:`peel_banana`, a subclass of
+it so that it's implementing the kundi :class:`peel_banana`, a subkundi of
 :class:`distutils.cmd.Command`.
 
 Subclasses of :class:`Command` must define the following methods.
@@ -1754,10 +1754,10 @@ Subclasses of :class:`Command` must define the following methods.
 .. method:: Command.finalize_options()
 
    Set final values for all the options that this command supports. This is
-   always called as late as possible, ie.  after any option assignments from the
-   command-line or from other commands have been done.  Thus, this is the place
+   always called as late as possible, ie.  after any option assignments kutoka the
+   command-line or kutoka other commands have been done.  Thus, this is the place
    to code option dependencies: if *foo* depends on *bar*, then it is safe to
-   set *foo* from *bar* as long as *foo* still has the same value it was
+   set *foo* kutoka *bar* as long as *foo* still has the same value it was
    assigned in :meth:`initialize_options`.
 
 
@@ -1775,7 +1775,7 @@ Subclasses of :class:`Command` must define the following methods.
    *sub_commands* formalizes the notion of a "family" of commands,
    e.g. ``install`` as the parent with sub-commands ``install_lib``,
    ``install_headers``, etc.  The parent of a family of commands defines
-   *sub_commands* as a class attribute; it's a list of 2-tuples ``(command_name,
+   *sub_commands* as a kundi attribute; it's a list of 2-tuples ``(command_name,
    predicate)``, with *command_name* a string and *predicate* a function, a
    string or ``None``.  *predicate* is a method of the parent command that
    determines whether the corresponding command is applicable in the current
@@ -1809,11 +1809,11 @@ Subclasses of :class:`Command` must define the following methods.
 .. % todo
 
 
-:mod:`distutils.command.bdist_packager` --- Abstract base class for packagers
+:mod:`distutils.command.bdist_packager` --- Abstract base kundi for packagers
 =============================================================================
 
 .. module:: distutils.command.bdist_packager
-   :synopsis: Abstract base class for packagers
+   :synopsis: Abstract base kundi for packagers
 
 
 .. % todo
@@ -1927,13 +1927,13 @@ Subclasses of :class:`Command` must define the following methods.
    that is designed to run with both Python 2.x and 3.x, add::
 
      try:
-         from distutils.command.build_py import build_py_2to3 as build_py
+         kutoka distutils.command.build_py agiza build_py_2to3 as build_py
      except ImportError:
-         from distutils.command.build_py import build_py
+         kutoka distutils.command.build_py agiza build_py
 
    to your setup.py, and later::
 
-      cmdclass = {'build_py': build_py}
+      cmdkundi = {'build_py': build_py}
 
    to the invocation of setup().
 
@@ -1982,41 +1982,41 @@ will not be cleaned, as they are not in the build directory.
 .. % todo
 
 
-:mod:`distutils.command.install_data` --- Install data files from a package
+:mod:`distutils.command.install_data` --- Install data files kutoka a package
 ===========================================================================
 
 .. module:: distutils.command.install_data
-   :synopsis: Install data files from a package
+   :synopsis: Install data files kutoka a package
 
 
 .. % todo
 
 
-:mod:`distutils.command.install_headers` --- Install C/C++ header files from a package
+:mod:`distutils.command.install_headers` --- Install C/C++ header files kutoka a package
 ======================================================================================
 
 .. module:: distutils.command.install_headers
-   :synopsis: Install C/C++ header files from a package
+   :synopsis: Install C/C++ header files kutoka a package
 
 
 .. % todo
 
 
-:mod:`distutils.command.install_lib` --- Install library files from a package
+:mod:`distutils.command.install_lib` --- Install library files kutoka a package
 =============================================================================
 
 .. module:: distutils.command.install_lib
-   :synopsis: Install library files from a package
+   :synopsis: Install library files kutoka a package
 
 
 .. % todo
 
 
-:mod:`distutils.command.install_scripts` --- Install script files from a package
+:mod:`distutils.command.install_scripts` --- Install script files kutoka a package
 ================================================================================
 
 .. module:: distutils.command.install_scripts
-   :synopsis: Install script files from a package
+   :synopsis: Install script files kutoka a package
 
 
 .. % todo

@@ -16,13 +16,13 @@ Error Handling
 --------------
 
 When an error occurs, the interpreter prints an error message and a stack trace.
-In interactive mode, it then returns to the primary prompt; when input came from
+In interactive mode, it then returns to the primary prompt; when input came kutoka
 a file, it exits with a nonzero exit status after printing the stack trace.
 (Exceptions handled by an :keyword:`except` clause in a :keyword:`try` statement
 are not errors in this context.)  Some errors are unconditionally fatal and
 cause an exit with a nonzero exit; this applies to internal inconsistencies and
 some cases of running out of memory.  All error messages are written to the
-standard error stream; normal output from executed commands is written to
+standard error stream; normal output kutoka executed commands is written to
 standard output.
 
 Typing the interrupt character (usually :kbd:`Control-C` or :kbd:`Delete`) to the primary or
@@ -75,20 +75,20 @@ file containing your start-up commands.  This is similar to the :file:`.profile`
 feature of the Unix shells.
 
 This file is only read in interactive sessions, not when Python reads commands
-from a script, and not when :file:`/dev/tty` is given as the explicit source of
+kutoka a script, and not when :file:`/dev/tty` is given as the explicit source of
 commands (which otherwise behaves like an interactive session).  It is executed
 in the same namespace where interactive commands are executed, so that objects
 that it defines or imports can be used without qualification in the interactive
 session. You can also change the prompts ``sys.ps1`` and ``sys.ps2`` in this
 file.
 
-If you want to read an additional start-up file from the current directory, you
+If you want to read an additional start-up file kutoka the current directory, you
 can program this in the global start-up file using code like ``if
 os.path.isfile('.pythonrc.py'): exec(open('.pythonrc.py').read())``.
 If you want to use the startup file in a script, you must do this explicitly
 in the script::
 
-   import os
+   agiza os
    filename = os.environ.get('PYTHONSTARTUP')
    if filename and os.path.isfile(filename):
        with open(filename) as fobj:
@@ -105,7 +105,7 @@ Python provides two hooks to let you customize it: :mod:`sitecustomize` and
 :mod:`usercustomize`.  To see how it works, you need first to find the location
 of your user site-packages directory.  Start Python and run this code::
 
-   >>> import site
+   >>> agiza site
    >>> site.getusersitepackages()
    '/home/user/.local/lib/python3.5/site-packages'
 

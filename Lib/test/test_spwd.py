@@ -7,17 +7,17 @@ spwd = support.import_module('spwd')
 
 @unittest.skipUnless(hasattr(os, 'geteuid') and os.geteuid() == 0,
                      'root privileges required')
-class TestSpwdRoot(unittest.TestCase):
+kundi TestSpwdRoot(unittest.TestCase):
 
-    def test_getspall(self):
+    eleza test_getspall(self):
         entries = spwd.getspall()
         self.assertIsInstance(entries, list)
         for entry in entries:
             self.assertIsInstance(entry, spwd.struct_spwd)
 
-    def test_getspnam(self):
+    eleza test_getspnam(self):
         entries = spwd.getspall()
-        if not entries:
+        ikiwa not entries:
             self.skipTest('empty shadow password database')
         random_name = entries[0].sp_namp
         entry = spwd.getspnam(random_name)
@@ -58,9 +58,9 @@ class TestSpwdRoot(unittest.TestCase):
 
 @unittest.skipUnless(hasattr(os, 'geteuid') and os.geteuid() != 0,
                      'non-root user required')
-class TestSpwdNonRoot(unittest.TestCase):
+kundi TestSpwdNonRoot(unittest.TestCase):
 
-    def test_getspnam_exception(self):
+    eleza test_getspnam_exception(self):
         name = 'bin'
         try:
             with self.assertRaises(PermissionError) as cm:
@@ -69,5 +69,5 @@ class TestSpwdNonRoot(unittest.TestCase):
             self.skipTest("spwd entry %r doesn't exist: %s" % (name, exc))
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

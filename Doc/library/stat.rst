@@ -25,53 +25,53 @@ types:
 
 .. function:: S_ISDIR(mode)
 
-   Return non-zero if the mode is from a directory.
+   Return non-zero if the mode is kutoka a directory.
 
 
 .. function:: S_ISCHR(mode)
 
-   Return non-zero if the mode is from a character special device file.
+   Return non-zero if the mode is kutoka a character special device file.
 
 
 .. function:: S_ISBLK(mode)
 
-   Return non-zero if the mode is from a block special device file.
+   Return non-zero if the mode is kutoka a block special device file.
 
 
 .. function:: S_ISREG(mode)
 
-   Return non-zero if the mode is from a regular file.
+   Return non-zero if the mode is kutoka a regular file.
 
 
 .. function:: S_ISFIFO(mode)
 
-   Return non-zero if the mode is from a FIFO (named pipe).
+   Return non-zero if the mode is kutoka a FIFO (named pipe).
 
 
 .. function:: S_ISLNK(mode)
 
-   Return non-zero if the mode is from a symbolic link.
+   Return non-zero if the mode is kutoka a symbolic link.
 
 
 .. function:: S_ISSOCK(mode)
 
-   Return non-zero if the mode is from a socket.
+   Return non-zero if the mode is kutoka a socket.
 
 .. function:: S_ISDOOR(mode)
 
-   Return non-zero if the mode is from a door.
+   Return non-zero if the mode is kutoka a door.
 
    .. versionadded:: 3.4
 
 .. function:: S_ISPORT(mode)
 
-   Return non-zero if the mode is from an event port.
+   Return non-zero if the mode is kutoka an event port.
 
    .. versionadded:: 3.4
 
 .. function:: S_ISWHT(mode)
 
-   Return non-zero if the mode is from a whiteout.
+   Return non-zero if the mode is kutoka a whiteout.
 
    .. versionadded:: 3.4
 
@@ -100,8 +100,8 @@ devices.
 
 Example::
 
-   import os, sys
-   from stat import *
+   agiza os, sys
+   kutoka stat agiza *
 
    def walktree(top, callback):
        '''recursively descend the directory tree rooted at top,
@@ -269,8 +269,8 @@ The following flags can also be used in the *mode* argument of :func:`os.chmod`:
 
    Set-group-ID bit.  This bit has several special uses.  For a directory
    it indicates that BSD semantics is to be used for that directory:
-   files created there inherit their group ID from the directory, not
-   from the effective group ID of the creating process, and directories
+   files created there inherit their group ID kutoka the directory, not
+   kutoka the effective group ID of the creating process, and directories
    created there will also get the :data:`S_ISGID` bit set.  For a
    file that does not have the group execution bit (:data:`S_IXGRP`)
    set, the set-group-ID bit indicates mandatory file/record locking

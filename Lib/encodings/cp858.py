@@ -2,7 +2,7 @@
 
 """
 
-import codecs
+agiza codecs
 
 ### Codec APIs
 

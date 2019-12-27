@@ -20,7 +20,7 @@ in this module.  (C programmers use :c:func:`PyErr_WarnEx`; see
 :ref:`exceptionhandling` for details).
 
 Warning messages are normally written to :data:`sys.stderr`, but their disposition
-can be changed flexibly, from ignoring all warnings to turning them into
+can be changed flexibly, kutoka ignoring all warnings to turning them into
 exceptions.  The disposition of warnings can vary based on the :ref:`warning category
 <warning-categories>`, the text of the warning message, and the source location where it
 is issued.  Repetitions of a particular warning for the same source location are
@@ -58,7 +58,7 @@ While these are technically
 documented here, because conceptually they belong to the warnings mechanism.
 
 User code can define additional warning categories by subclassing one of the
-standard warning categories.  A warning category must always be a subclass of
+standard warning categories.  A warning category must always be a subkundi of
 the :exc:`Warning` class.
 
 The following warnings category classes are currently defined:
@@ -68,8 +68,8 @@ The following warnings category classes are currently defined:
 +----------------------------------+-----------------------------------------------+
 | Class                            | Description                                   |
 +==================================+===============================================+
-| :exc:`Warning`                   | This is the base class of all warning         |
-|                                  | category classes.  It is a subclass of        |
+| :exc:`Warning`                   | This is the base kundi of all warning         |
+|                                  | category classes.  It is a subkundi of        |
 |                                  | :exc:`Exception`.                             |
 +----------------------------------+-----------------------------------------------+
 | :exc:`UserWarning`               | The default category for :func:`warn`.        |
@@ -157,8 +157,8 @@ the disposition of the match.  Each entry is a tuple of the form (*action*,
   the warning message must match.  The expression is compiled to always be
   case-insensitive.
 
-* *category* is a class (a subclass of :exc:`Warning`) of which the warning
-  category must be a subclass in order to match.
+* *category* is a kundi (a subkundi of :exc:`Warning`) of which the warning
+  category must be a subkundi in order to match.
 
 * *module* is a string containing a regular expression that the module name must
   match.  The expression is compiled to be case-sensitive.
@@ -166,7 +166,7 @@ the disposition of the match.  Each entry is a tuple of the form (*action*,
 * *lineno* is an integer that the line number where the warning occurred must
   match, or ``0`` to match all line numbers.
 
-Since the :exc:`Warning` class is derived from the built-in :exc:`Exception`
+Since the :exc:`Warning` kundi is derived kutoka the built-in :exc:`Exception`
 class, to turn a warning into an error we simply raise ``category(message)``.
 
 If a warning is reported and doesn't match any registered filter then the
@@ -251,25 +251,25 @@ Overriding the default filter
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Developers of applications written in Python may wish to hide *all* Python level
-warnings from their users by default, and only display them when running tests
+warnings kutoka their users by default, and only display them when running tests
 or otherwise working on the application. The :data:`sys.warnoptions` attribute
 used to pass filter configurations to the interpreter can be used as a marker to
 indicate whether or not warnings should be disabled::
 
-    import sys
+    agiza sys
 
     if not sys.warnoptions:
-        import warnings
+        agiza warnings
         warnings.simplefilter("ignore")
 
 Developers of test runners for Python code are advised to instead ensure that
 *all* warnings are displayed by default for the code under test, using code
 like::
 
-    import sys
+    agiza sys
 
     if not sys.warnoptions:
-        import os, warnings
+        agiza os, warnings
         warnings.simplefilter("default") # Change the filter in this process
         os.environ["PYTHONWARNINGS"] = "default" # Also affect subprocesses
 
@@ -278,7 +278,7 @@ other than ``__main__`` are advised to ensure that :exc:`DeprecationWarning`
 messages are made visible by default, using code like the following (where
 ``user_ns`` is the module used to execute code entered interactively)::
 
-    import warnings
+    agiza warnings
     warnings.filterwarnings("default", category=DeprecationWarning,
                                        module=user_ns.get("__name__"))
 
@@ -293,7 +293,7 @@ function, but do not want to see the warning (even when warnings have been
 explicitly configured via the command line), then it is possible to suppress
 the warning using the :class:`catch_warnings` context manager::
 
-    import warnings
+    agiza warnings
 
     def fxn():
         warnings.warn("deprecated", DeprecationWarning)
@@ -321,7 +321,7 @@ manager. With it you can temporarily mutate the warnings filter to facilitate
 your testing. For instance, do the following to capture all raised warnings to
 check::
 
-    import warnings
+    agiza warnings
 
     def fxn():
         warnings.warn("deprecated", DeprecationWarning)
@@ -343,7 +343,7 @@ set the warning will not be seen again unless the warnings registry related to
 the warning has been cleared.
 
 Once the context manager exits, the warnings filter is restored to its state
-when the context was entered. This prevents tests from changing the warnings
+when the context was entered. This prevents tests kutoka changing the warnings
 filter in unexpected ways between tests and leading to indeterminate test
 results. The :func:`showwarning` function in the module is also restored to
 its original value.  Note: this can only be guaranteed in a single-threaded
@@ -355,7 +355,7 @@ is important to test them in a manner that confirms each operation is raising
 a new warning (e.g. set warnings to be raised as exceptions and check the
 operations raise exceptions, check that the length of the warning list
 continues to increase after each operation, or else delete the previous
-entries from the warnings list before each new operation).
+entries kutoka the warnings list before each new operation).
 
 
 .. _warning-ignored:
@@ -395,7 +395,7 @@ Available Functions
 .. function:: warn(message, category=None, stacklevel=1, source=None)
 
    Issue a warning, or maybe ignore it or raise an exception.  The *category*
-   argument, if given, must be a :ref:`warning category class <warning-categories>`; it
+   argument, if given, must be a :ref:`warning category kundi <warning-categories>`; it
    defaults to :exc:`UserWarning`.  Alternatively, *message* can be a :exc:`Warning` instance,
    in which case *category* will be ignored and ``message.__class__`` will be used.
    In this case, the message text will be ``str(message)``. This function raises an
@@ -424,7 +424,7 @@ Available Functions
    module name and the registry (which should be the ``__warningregistry__``
    dictionary of the module).  The module name defaults to the filename with
    ``.py`` stripped; if no registry is passed, the warning is never suppressed.
-   *message* must be a string and *category* a subclass of :exc:`Warning` or
+   *message* must be a string and *category* a subkundi of :exc:`Warning` or
    *message* may be a :exc:`Warning` instance, in which case *category* will be
    ignored.
 
@@ -503,7 +503,7 @@ Available Context Managers
     :func:`showwarning`.
 
     The *module* argument takes a module that will be used instead of the
-    module returned when you import :mod:`warnings` whose filter will be
+    module returned when you agiza :mod:`warnings` whose filter will be
     protected. This argument exists primarily for testing the :mod:`warnings`
     module itself.
 

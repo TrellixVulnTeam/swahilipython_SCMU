@@ -38,7 +38,7 @@ This section documents the objects and functions in the ``ssl`` module; for more
 general information about TLS, SSL, and certificates, the reader is referred to
 the documents in the "See Also" section at the bottom.
 
-This module provides a class, :class:`ssl.SSLSocket`, which is derived from the
+This module provides a class, :class:`ssl.SSLSocket`, which is derived kutoka the
 :class:`socket.socket` type, and provides a socket-like wrapper that also
 encrypts and decrypts the data going over the socket with SSL.  It supports
 additional methods such as :meth:`getpeercert`, which retrieves the
@@ -76,8 +76,8 @@ hostname matching.
 
 Client socket example with default context and IPv4/IPv6 dual stack::
 
-    import socket
-    import ssl
+    agiza socket
+    agiza ssl
 
     hostname = 'www.python.org'
     context = ssl.create_default_context()
@@ -168,13 +168,13 @@ purposes.
 
    .. versionchanged:: 3.4.4
 
-     RC4 was dropped from the default cipher string.
+     RC4 was dropped kutoka the default cipher string.
 
    .. versionchanged:: 3.6
 
      ChaCha20/Poly1305 was added to the default cipher string.
 
-     3DES was dropped from the default cipher string.
+     3DES was dropped kutoka the default cipher string.
 
    .. versionchanged:: 3.8
 
@@ -186,7 +186,7 @@ Exceptions
 
 .. exception:: SSLError
 
-   Raised to signal an error from the underlying SSL implementation
+   Raised to signal an error kutoka the underlying SSL implementation
    (currently provided by the OpenSSL library).  This signifies some
    problem in the higher-level encryption and authentication layer that's
    superimposed on the underlying network connection.  This error
@@ -214,7 +214,7 @@ Exceptions
 
 .. exception:: SSLZeroReturnError
 
-   A subclass of :exc:`SSLError` raised when trying to read or write and
+   A subkundi of :exc:`SSLError` raised when trying to read or write and
    the SSL connection has been closed cleanly.  Note that this doesn't
    mean that the underlying transport (read TCP) has been closed.
 
@@ -222,7 +222,7 @@ Exceptions
 
 .. exception:: SSLWantReadError
 
-   A subclass of :exc:`SSLError` raised by a :ref:`non-blocking SSL socket
+   A subkundi of :exc:`SSLError` raised by a :ref:`non-blocking SSL socket
    <ssl-nonblocking>` when trying to read or write data, but more data needs
    to be received on the underlying TCP transport before the request can be
    fulfilled.
@@ -231,7 +231,7 @@ Exceptions
 
 .. exception:: SSLWantWriteError
 
-   A subclass of :exc:`SSLError` raised by a :ref:`non-blocking SSL socket
+   A subkundi of :exc:`SSLError` raised by a :ref:`non-blocking SSL socket
    <ssl-nonblocking>` when trying to read or write data, but more data needs
    to be sent on the underlying TCP transport before the request can be
    fulfilled.
@@ -240,7 +240,7 @@ Exceptions
 
 .. exception:: SSLSyscallError
 
-   A subclass of :exc:`SSLError` raised when a system error was encountered
+   A subkundi of :exc:`SSLError` raised when a system error was encountered
    while trying to fulfill an operation on a SSL socket.  Unfortunately,
    there is no easy way to inspect the original errno number.
 
@@ -248,7 +248,7 @@ Exceptions
 
 .. exception:: SSLEOFError
 
-   A subclass of :exc:`SSLError` raised when the SSL connection has been
+   A subkundi of :exc:`SSLError` raised when the SSL connection has been
    terminated abruptly.  Generally, you shouldn't try to reuse the underlying
    transport when this error is encountered.
 
@@ -256,7 +256,7 @@ Exceptions
 
 .. exception:: SSLCertVerificationError
 
-   A subclass of :exc:`SSLError` raised when certificate validation has
+   A subkundi of :exc:`SSLError` raised when certificate validation has
    failed.
 
    .. versionadded:: 3.7
@@ -329,7 +329,7 @@ Random generation
 
    If you are running an entropy-gathering daemon (EGD) somewhere, and *path*
    is the pathname of a socket connection open to it, this will read 256 bytes
-   of randomness from the socket, and add it to the SSL pseudo-random number
+   of randomness kutoka the socket, and add it to the SSL pseudo-random number
    generator to increase the security of generated secret keys.  This is
    typically only necessary on systems without better sources of randomness.
 
@@ -353,7 +353,7 @@ Certificate handling
 
 .. testsetup::
 
-   import ssl
+   agiza ssl
 
 .. function:: match_hostname(cert, hostname)
 
@@ -401,7 +401,7 @@ Certificate handling
 .. function:: cert_time_to_seconds(cert_time)
 
    Return the time in seconds since the Epoch, given the ``cert_time``
-   string representing the "notBefore" or "notAfter" date from a
+   string representing the "notBefore" or "notAfter" date kutoka a
    certificate in ``"%b %d %H:%M:%S %Y %Z"`` strptime format (C
    locale).
 
@@ -409,12 +409,12 @@ Certificate handling
 
    .. doctest:: newcontext
 
-      >>> import ssl
+      >>> agiza ssl
       >>> timestamp = ssl.cert_time_to_seconds("Jan  5 09:34:43 2018 GMT")
       >>> timestamp  # doctest: +SKIP
       1515144883
-      >>> from datetime import datetime
-      >>> print(datetime.utcfromtimestamp(timestamp))  # doctest: +SKIP
+      >>> kutoka datetime agiza datetime
+      >>> print(datetime.utckutokatimestamp(timestamp))  # doctest: +SKIP
       2018-01-05 09:34:43
 
    "notBefore" or "notAfter" dates must use GMT (:rfc:`5280`).
@@ -441,7 +441,7 @@ Certificate handling
       This function is now IPv6-compatible.
 
    .. versionchanged:: 3.5
-      The default *ssl_version* is changed from :data:`PROTOCOL_SSLv3` to
+      The default *ssl_version* is changed kutoka :data:`PROTOCOL_SSLv3` to
       :data:`PROTOCOL_TLS` for maximum compatibility with modern servers.
 
 .. function:: DER_cert_to_PEM_cert(DER_cert_bytes)
@@ -475,7 +475,7 @@ Certificate handling
 
 .. function:: enum_certificates(store_name)
 
-   Retrieve certificates from Windows' system cert store. *store_name* may be
+   Retrieve certificates kutoka Windows' system cert store. *store_name* may be
    one of ``CA``, ``ROOT`` or ``MY``. Windows may provide additional cert
    stores, too.
 
@@ -498,7 +498,7 @@ Certificate handling
 
 .. function:: enum_crls(store_name)
 
-   Retrieve CRLs from Windows' system cert store. *store_name* may be
+   Retrieve CRLs kutoka Windows' system cert store. *store_name* may be
    one of ``CA``, ``ROOT`` or ``MY``. Windows may provide additional cert
    stores, too.
 
@@ -554,7 +554,7 @@ Constants
    cert is accepted.  Validation errors, such as untrusted or expired cert,
    are ignored and do not abort the TLS/SSL handshake.
 
-   In server mode, no certificate is requested from the client, so the client
+   In server mode, no certificate is requested kutoka the client, so the client
    does not send any for client cert authentication.
 
    See the discussion of :ref:`ssl-security` below.
@@ -580,7 +580,7 @@ Constants
 
    Possible value for :attr:`SSLContext.verify_mode`, or the ``cert_reqs``
    parameter to :func:`wrap_socket`.  In this mode, certificates are
-   required from the other side of the socket connection; an :class:`SSLError`
+   required kutoka the other side of the socket connection; an :class:`SSLError`
    will be raised if no certificate is provided, or if its validation fails.
    This mode is **not** sufficient to verify a certificate in client mode as
    it does not match hostnames.  :attr:`~SSLContext.check_hostname` must be
@@ -755,7 +755,7 @@ Constants
 .. data:: OP_NO_SSLv2
 
    Prevents an SSLv2 connection.  This option is only applicable in
-   conjunction with :const:`PROTOCOL_TLS`.  It prevents the peers from
+   conjunction with :const:`PROTOCOL_TLS`.  It prevents the peers kutoka
    choosing SSLv2 as the protocol version.
 
    .. versionadded:: 3.2
@@ -768,7 +768,7 @@ Constants
 .. data:: OP_NO_SSLv3
 
    Prevents an SSLv3 connection.  This option is only applicable in
-   conjunction with :const:`PROTOCOL_TLS`.  It prevents the peers from
+   conjunction with :const:`PROTOCOL_TLS`.  It prevents the peers kutoka
    choosing SSLv3 as the protocol version.
 
    .. versionadded:: 3.2
@@ -780,7 +780,7 @@ Constants
 .. data:: OP_NO_TLSv1
 
    Prevents a TLSv1 connection.  This option is only applicable in
-   conjunction with :const:`PROTOCOL_TLS`.  It prevents the peers from
+   conjunction with :const:`PROTOCOL_TLS`.  It prevents the peers kutoka
    choosing TLSv1 as the protocol version.
 
    .. versionadded:: 3.2
@@ -793,7 +793,7 @@ Constants
 .. data:: OP_NO_TLSv1_1
 
    Prevents a TLSv1.1 connection. This option is only applicable in conjunction
-   with :const:`PROTOCOL_TLS`. It prevents the peers from choosing TLSv1.1 as
+   with :const:`PROTOCOL_TLS`. It prevents the peers kutoka choosing TLSv1.1 as
    the protocol version. Available only with openssl version 1.0.1+.
 
    .. versionadded:: 3.4
@@ -804,7 +804,7 @@ Constants
 .. data:: OP_NO_TLSv1_2
 
    Prevents a TLSv1.2 connection. This option is only applicable in conjunction
-   with :const:`PROTOCOL_TLS`. It prevents the peers from choosing TLSv1.2 as
+   with :const:`PROTOCOL_TLS`. It prevents the peers kutoka choosing TLSv1.2 as
    the protocol version. Available only with openssl version 1.0.1+.
 
    .. versionadded:: 3.4
@@ -815,7 +815,7 @@ Constants
 .. data:: OP_NO_TLSv1_3
 
    Prevents a TLSv1.3 connection. This option is only applicable in conjunction
-   with :const:`PROTOCOL_TLS`. It prevents the peers from choosing TLSv1.3 as
+   with :const:`PROTOCOL_TLS`. It prevents the peers kutoka choosing TLSv1.3 as
    the protocol version. TLS 1.3 is available with OpenSSL 1.1.1 or later.
    When Python has been compiled against an older version of OpenSSL, the
    flag defaults to *0*.
@@ -882,7 +882,7 @@ Constants
 
 .. data:: OP_NO_TICKET
 
-   Prevent client side from requesting a session ticket.
+   Prevent client side kutoka requesting a session ticket.
 
    .. versionadded:: 3.6
 
@@ -1003,7 +1003,7 @@ Constants
           ALERT_DESCRIPTION_INTERNAL_ERROR
           ALERT_DESCRIPTION_*
 
-   Alert Descriptions from :rfc:`5246` and others. The `IANA TLS Alert Registry
+   Alert Descriptions kutoka :rfc:`5246` and others. The `IANA TLS Alert Registry
    <https://www.iana.org/assignments/tls-parameters/tls-parameters.xml#tls-parameters-6>`_
    contains this list and references to the RFCs where their meaning is defined.
 
@@ -1093,7 +1093,7 @@ SSL Sockets
    - :meth:`~socket.socket.shutdown()`
 
    However, since the SSL (and TLS) protocol has its own framing atop
-   of TCP, the SSL sockets abstraction can, in certain respects, diverge from
+   of TCP, the SSL sockets abstraction can, in certain respects, diverge kutoka
    the specification of normal, OS-level sockets.  See especially the
    :ref:`notes on non-blocking sockets <ssl-nonblocking>`.
 
@@ -1122,7 +1122,7 @@ SSL sockets also have the following additional methods and attributes:
 
 .. method:: SSLSocket.read(len=1024, buffer=None)
 
-   Read up to *len* bytes of data from the SSL socket and return the result as
+   Read up to *len* bytes of data kutoka the SSL socket and return the result as
    a ``bytes`` instance. If *buffer* is specified, then read into the buffer
    instead, and return the number of bytes read.
 
@@ -1196,7 +1196,7 @@ SSL sockets also have the following additional methods and attributes:
    :exc:`ValueError`.
 
    If the ``binary_form`` parameter is :const:`False`, and a certificate was
-   received from the peer, this method returns a :class:`dict` instance.  If the
+   received kutoka the peer, this method returns a :class:`dict` instance.  If the
    certificate was not validated, the dict is empty.  If the certificate was
    validated, it returns a dict with several keys, amongst them ``subject``
    (the principal for which the certificate was issued) and ``issuer``
@@ -1317,16 +1317,16 @@ SSL sockets also have the following additional methods and attributes:
 
 .. method:: SSLSocket.unwrap()
 
-   Performs the SSL shutdown handshake, which removes the TLS layer from the
+   Performs the SSL shutdown handshake, which removes the TLS layer kutoka the
    underlying socket, and returns the underlying socket object.  This can be
-   used to go from encrypted operation over a connection to unencrypted.  The
+   used to go kutoka encrypted operation over a connection to unencrypted.  The
    returned socket should always be used for further communication with the
    other side of the connection, rather than the original socket.
 
 .. method:: SSLSocket.verify_client_post_handshake()
 
-   Requests post-handshake authentication (PHA) from a TLS 1.3 client. PHA
-   can only be initiated for a TLS 1.3 connection from a server-side socket,
+   Requests post-handshake authentication (PHA) kutoka a TLS 1.3 client. PHA
+   can only be initiated for a TLS 1.3 connection kutoka a server-side socket,
    after the initial TLS handshake and with PHA enabled on both sides, see
    :attr:`SSLContext.post_handshake_auth`.
 
@@ -1409,7 +1409,7 @@ SSL Contexts
 An SSL context holds various data longer-lived than single SSL connections,
 such as SSL configuration options, certificate(s) and private key(s).
 It also manages a cache of SSL sessions for server-side sockets, in order
-to speed up repeated connections from the same clients.
+to speed up repeated connections kutoka the same clients.
 
 .. class:: SSLContext(protocol=PROTOCOL_TLS)
 
@@ -1484,7 +1484,7 @@ to speed up repeated connections from the same clients.
    certificate as well as any number of CA certificates needed to establish
    the certificate's authenticity.  The *keyfile* string, if present, must
    point to a file containing the private key in.  Otherwise the private
-   key will be taken from *certfile* as well.  See the discussion of
+   key will be taken kutoka *certfile* as well.  See the discussion of
    :ref:`ssl-certificates` for more information on how the certificate
    is stored in the *certfile*.
 
@@ -1509,11 +1509,11 @@ to speed up repeated connections from the same clients.
 
 .. method:: SSLContext.load_default_certs(purpose=Purpose.SERVER_AUTH)
 
-   Load a set of default "certification authority" (CA) certificates from
-   default locations. On Windows it loads CA certs from the ``CA`` and
+   Load a set of default "certification authority" (CA) certificates kutoka
+   default locations. On Windows it loads CA certs kutoka the ``CA`` and
    ``ROOT`` system stores. On other systems it calls
    :meth:`SSLContext.set_default_verify_paths`. In the future the method may
-   load CA certificates from other locations, too.
+   load CA certificates kutoka other locations, too.
 
    The *purpose* flag specifies what kind of CA certificates are loaded. The
    default settings :data:`Purpose.SERVER_AUTH` loads certificates, that are
@@ -1557,7 +1557,7 @@ to speed up repeated connections from the same clients.
    ``binary_form`` parameter is :const:`False` each list
    entry is a dict like the output of :meth:`SSLSocket.getpeercert`. Otherwise
    the method returns a list of DER-encoded certificates. The returned list
-   does not contain certificates from *capath* unless a certificate was
+   does not contain certificates kutoka *capath* unless a certificate was
    requested and loaded by a SSL connection.
 
    .. note::
@@ -1625,7 +1625,7 @@ to speed up repeated connections from the same clients.
 
 .. method:: SSLContext.set_default_verify_paths()
 
-   Load a set of default "certification authority" (CA) certificates from
+   Load a set of default "certification authority" (CA) certificates kutoka
    a filesystem path defined when building the OpenSSL library.  Unfortunately,
    there's no easy way to know whether this method succeeds: no error is
    returned if no certificates are to be found.  When the OpenSSL library is
@@ -1719,7 +1719,7 @@ to speed up repeated connections from the same clients.
    returned.  Other return values will result in a TLS fatal error with
    :const:`ALERT_DESCRIPTION_INTERNAL_ERROR`.
 
-   If an exception is raised from the *sni_callback* function the TLS
+   If an exception is raised kutoka the *sni_callback* function the TLS
    connection will terminate with a fatal TLS alert message
    :const:`ALERT_DESCRIPTION_HANDSHAKE_FAILURE`.
 
@@ -1785,7 +1785,7 @@ to speed up repeated connections from the same clients.
    socket types are unsupported.
 
    The parameter ``server_side`` is a boolean which identifies whether
-   server-side or client-side behavior is desired from this socket.
+   server-side or client-side behavior is desired kutoka this socket.
 
    For client-side sockets, the context construction is lazy; if the
    underlying socket isn't connected yet, the context construction will be
@@ -1809,10 +1809,10 @@ to speed up repeated connections from the same clients.
    blocking behavior of the socket I/O involved in the handshake.
 
    The parameter ``suppress_ragged_eofs`` specifies how the
-   :meth:`SSLSocket.recv` method should signal unexpected EOF from the other end
+   :meth:`SSLSocket.recv` method should signal unexpected EOF kutoka the other end
    of the connection.  If specified as :const:`True` (the default), it returns a
    normal EOF (an empty bytes object) in response to unexpected EOF errors
-   raised from the underlying socket; if :const:`False`, it will raise the
+   raised kutoka the underlying socket; if :const:`False`, it will raise the
    exceptions back to the caller.
 
    *session*, see :attr:`~SSLSocket.session`.
@@ -1832,7 +1832,7 @@ to speed up repeated connections from the same clients.
 
    The return type of :meth:`SSLContext.wrap_socket`, defaults to
    :class:`SSLSocket`. The attribute can be overridden on instance of class
-   in order to return a custom subclass of :class:`SSLSocket`.
+   in order to return a custom subkundi of :class:`SSLSocket`.
 
    .. versionadded:: 3.7
 
@@ -1841,7 +1841,7 @@ to speed up repeated connections from the same clients.
 
    Wrap the BIO objects *incoming* and *outgoing* and return an instance of
    :attr:`SSLContext.sslobject_class` (default :class:`SSLObject`). The SSL
-   routines will read input data from the incoming BIO and write data to the
+   routines will read input data kutoka the incoming BIO and write data to the
    outgoing BIO.
 
    The *server_side*, *server_hostname* and *session* parameters have the
@@ -1858,7 +1858,7 @@ to speed up repeated connections from the same clients.
 
    The return type of :meth:`SSLContext.wrap_bio`, defaults to
    :class:`SSLObject`. The attribute can be overridden on instance of class
-   in order to return a custom subclass of :class:`SSLObject`.
+   in order to return a custom subkundi of :class:`SSLObject`.
 
    .. versionadded:: 3.7
 
@@ -1880,7 +1880,7 @@ to speed up repeated connections from the same clients.
    :attr:`~SSLContext.verify_mode` must be set to :data:`CERT_OPTIONAL` or
    :data:`CERT_REQUIRED`, and you must pass *server_hostname* to
    :meth:`~SSLContext.wrap_socket` in order to match the hostname.  Enabling
-   hostname checking automatically sets :attr:`~SSLContext.verify_mode` from
+   hostname checking automatically sets :attr:`~SSLContext.verify_mode` kutoka
    :data:`CERT_NONE` to :data:`CERT_REQUIRED`.  It cannot be set back to
    :data:`CERT_NONE` as long as hostname checking is enabled. The
    :data:`PROTOCOL_TLS_CLIENT` protocol enables hostname checking by default.
@@ -1888,7 +1888,7 @@ to speed up repeated connections from the same clients.
 
    Example::
 
-      import socket, ssl
+      agiza socket, ssl
 
       context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
       context.verify_mode = ssl.CERT_REQUIRED
@@ -2112,7 +2112,7 @@ certificate for the issuer of *that* certificate, and so on up the chain till
 you get to a certificate which is *self-signed*, that is, a certificate which
 has the same subject and issuer, sometimes called a *root certificate*.  The
 certificates should just be concatenated together in the certificate file.  For
-example, suppose we had a three certificate chain, from our server certificate
+example, suppose we had a three certificate chain, kutoka our server certificate
 to the certificate of the certification authority that signed our server
 certificate, to the root certificate of the agency which issued the
 certification authority's certificate::
@@ -2159,7 +2159,7 @@ Self-signed certificates
 
 If you are going to create a server that provides SSL-encrypted connection
 services, you will need to acquire a certificate for that service.  There are
-many ways of acquiring appropriate certificates, such as buying one from a
+many ways of acquiring appropriate certificates, such as buying one kutoka a
 certification authority.  Another common practice is to generate a self-signed
 certificate.  The simplest way to do this is with the OpenSSL package, using
 something like the following::
@@ -2201,7 +2201,7 @@ To test for the presence of SSL support in a Python installation, user code
 should use the following idiom::
 
    try:
-       import ssl
+       agiza ssl
    except ImportError:
        pass
    else:
@@ -2216,7 +2216,7 @@ for client sockets, including automatic certificate verification::
    >>> context = ssl.create_default_context()
 
 If you prefer to tune security settings yourself, you might create
-a context from scratch (but beware that you might not get the settings
+a context kutoka scratch (but beware that you might not get the settings
 right)::
 
    >>> context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
@@ -2323,7 +2323,7 @@ and the certificate, so that clients can check your authenticity.  Then
 you'll open a socket, bind it to a port, call :meth:`listen` on it, and start
 waiting for clients to connect::
 
-   import socket, ssl
+   agiza socket, ssl
 
    context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
    context.load_cert_chain(certfile="mycertfile", keyfile="mykeyfile")
@@ -2333,11 +2333,11 @@ waiting for clients to connect::
    bindsocket.listen(5)
 
 When a client connects, you'll call :meth:`accept` on the socket to get the
-new socket from the other end, and use the context's :meth:`SSLContext.wrap_socket`
+new socket kutoka the other end, and use the context's :meth:`SSLContext.wrap_socket`
 method to create a server-side SSL socket for the connection::
 
    while True:
-       newsocket, fromaddr = bindsocket.accept()
+       newsocket, kutokaaddr = bindsocket.accept()
        connstream = context.wrap_socket(newsocket, server_side=True)
        try:
            deal_with_client(connstream)
@@ -2345,7 +2345,7 @@ method to create a server-side SSL socket for the connection::
            connstream.shutdown(socket.SHUT_RDWR)
            connstream.close()
 
-Then you'll read data from the ``connstream`` and do something with it till you
+Then you'll read data kutoka the ``connstream`` and do something with it till you
 are finished with the client (or the client is finished with you)::
 
    def deal_with_client(connstream):
@@ -2379,8 +2379,8 @@ thus several things you need to be aware of:
   block. :exc:`SSLWantReadError` will be raised if a read operation on
   the underlying socket is necessary, and :exc:`SSLWantWriteError` for
   a write operation on the underlying socket. Note that attempts to
-  *write* to an SSL socket may require *reading* from the underlying
-  socket first, and attempts to *read* from the SSL socket may require
+  *write* to an SSL socket may require *reading* kutoka the underlying
+  socket first, and attempts to *read* kutoka the SSL socket may require
   a prior *write* to the underlying socket.
 
   .. versionchanged:: 3.5
@@ -2390,7 +2390,7 @@ thus several things you need to be aware of:
      :exc:`SSLWantReadError`.
 
 - Calling :func:`~select.select` tells you that the OS-level socket can be
-  read from (or written to), but it does not imply that there is sufficient
+  read kutoka (or written to), but it does not imply that there is sufficient
   data at the upper SSL layer.  For example, only part of an SSL frame might
   have arrived.  Therefore, you must be ready to handle :meth:`SSLSocket.recv`
   and :meth:`SSLSocket.send` failures, and retry after another call to
@@ -2435,13 +2435,13 @@ Memory BIO Support
 .. versionadded:: 3.5
 
 Ever since the SSL module was introduced in Python 2.6, the :class:`SSLSocket`
-class has provided two related but distinct areas of functionality:
+kundi has provided two related but distinct areas of functionality:
 
 - SSL protocol handling
 - Network IO
 
 The network IO API is identical to that provided by :class:`socket.socket`,
-from which :class:`SSLSocket` also inherits. This allows an SSL socket to be
+kutoka which :class:`SSLSocket` also inherits. This allows an SSL socket to be
 used as a drop-in replacement for a regular socket, making it very easy to add
 SSL support to an existing application.
 
@@ -2457,19 +2457,19 @@ provided.
 .. class:: SSLObject
 
    A reduced-scope variant of :class:`SSLSocket` representing an SSL protocol
-   instance that does not contain any network IO methods. This class is
+   instance that does not contain any network IO methods. This kundi is
    typically used by framework authors that want to implement asynchronous IO
    for SSL through memory buffers.
 
-   This class implements an interface on top of a low-level SSL object as
+   This kundi implements an interface on top of a low-level SSL object as
    implemented by OpenSSL. This object captures the state of an SSL connection
    but does not provide any network IO itself. IO needs to be performed through
    separate "BIO" objects which are OpenSSL's IO abstraction layer.
 
-   This class has no public constructor.  An :class:`SSLObject` instance
+   This kundi has no public constructor.  An :class:`SSLObject` instance
    must be created using the :meth:`~SSLContext.wrap_bio` method. This
    method will create the :class:`SSLObject` instance and bind it to a
-   pair of BIOs. The *incoming* BIO is used to pass data from Python to the
+   pair of BIOs. The *incoming* BIO is used to pass data kutoka Python to the
    SSL protocol instance, while the *outgoing* BIO is used to pass data the
    other way around.
 
@@ -2530,7 +2530,7 @@ provided.
       supported.
 
 An SSLObject communicates with the outside world using memory buffers. The
-class :class:`MemoryBIO` provides a memory buffer that can be used for this
+kundi :class:`MemoryBIO` provides a memory buffer that can be used for this
 purpose.  It wraps an OpenSSL memory BIO (Basic IO) object:
 
 .. class:: MemoryBIO
@@ -2549,12 +2549,12 @@ purpose.  It wraps an OpenSSL memory BIO (Basic IO) object:
 
    .. method:: MemoryBIO.read(n=-1)
 
-      Read up to *n* bytes from the memory buffer. If *n* is not specified or
+      Read up to *n* bytes kutoka the memory buffer. If *n* is not specified or
       negative, all bytes are returned.
 
    .. method:: MemoryBIO.write(buf)
 
-      Write the bytes from *buf* to the memory BIO. The *buf* argument must be an
+      Write the bytes kutoka *buf* to the memory BIO. The *buf* argument must be an
       object supporting the buffer protocol.
 
       The return value is the number of bytes written, which is always equal to
@@ -2598,10 +2598,10 @@ It will load the system's trusted CA certificates, enable certificate
 validation and hostname checking, and try to choose reasonably secure
 protocol and cipher settings.
 
-For example, here is how you would use the :class:`smtplib.SMTP` class to
+For example, here is how you would use the :class:`smtplib.SMTP` kundi to
 create a trusted, secure connection to a SMTP server::
 
-   >>> import ssl, smtplib
+   >>> agiza ssl, smtplib
    >>> smtp = smtplib.SMTP("mail.python.org", port=587)
    >>> context = ssl.create_default_context()
    >>> smtp.starttls(context=context)
@@ -2670,7 +2670,7 @@ Cipher selection
 
 If you have advanced security requirements, fine-tuning of the ciphers
 enabled when negotiating a SSL session is possible through the
-:meth:`SSLContext.set_ciphers` method.  Starting from Python 3.2.3, the
+:meth:`SSLContext.set_ciphers` method.  Starting kutoka Python 3.2.3, the
 ssl module disables certain weak ciphers by default, but you may want
 to further restrict the cipher choice. Be sure to read OpenSSL's documentation
 about the `cipher list format <https://www.openssl.org/docs/manmaster/man1/ciphers.html#CIPHER-LIST-FORMAT>`_.
@@ -2711,7 +2711,7 @@ of TLS/SSL.  Some new TLS 1.3 features are not yet available.
 - Client-side certificates are also no longer verified during the initial
   handshake.  A server can request a certificate at any time.  Clients
   process certificate requests while they send or receive application data
-  from the server.
+  kutoka the server.
 - TLS 1.3 features like early data, deferred TLS client cert request,
   signature algorithm configuration, and rekeying are not supported yet.
 
@@ -2739,7 +2739,7 @@ with LibreSSL.
        Documentation of underlying :mod:`socket` class
 
    `SSL/TLS Strong Encryption: An Introduction <https://httpd.apache.org/docs/trunk/en/ssl/ssl_intro.html>`_
-       Intro from the Apache HTTP Server documentation
+       Intro kutoka the Apache HTTP Server documentation
 
    :rfc:`RFC 1422: Privacy Enhancement for Internet Electronic Mail: Part II: Certificate-Based Key Management <1422>`
        Steve Kent

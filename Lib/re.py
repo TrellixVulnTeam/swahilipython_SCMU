@@ -49,11 +49,11 @@ The special characters are:
     (?P<name>...) The substring matched by the group is accessible by name.
     (?P=name)     Matches the text matched earlier by the group named name.
     (?#...)  A comment; ignored.
-    (?=...)  Matches if ... matches next, but doesn't consume the string.
-    (?!...)  Matches if ... doesn't match next.
-    (?<=...) Matches if preceded by ... (must be fixed length).
-    (?<!...) Matches if not preceded by ... (must be fixed length).
-    (?(id/name)yes|no) Matches yes pattern if the group with id/name matched,
+    (?=...)  Matches ikiwa ... matches next, but doesn't consume the string.
+    (?!...)  Matches ikiwa ... doesn't match next.
+    (?<=...) Matches ikiwa preceded by ... (must be fixed length).
+    (?<!...) Matches ikiwa not preceded by ... (must be fixed length).
+    (?(id/name)yes|no) Matches yes pattern ikiwa the group with id/name matched,
                        the (optional) no pattern otherwise.
 
 The special sequences consist of "\\" and a character kutoka the list
@@ -89,7 +89,7 @@ This module exports the following functions:
     fullmatch Match a regular expression pattern to all of a string.
     search    Search a string for the presence of a pattern.
     sub       Substitute occurrences of a pattern found in a string.
-    subn      Same as sub, but also return the number of substitutions made.
+    subn      Same as sub, but also rudisha the number of substitutions made.
     split     Split a string by the occurrences of a pattern.
     findall   Find all occurrences of a pattern in a string.
     finditer  Return an iterator yielding a Match object for each match.
@@ -140,7 +140,7 @@ __all__ = [
 
 __version__ = "2.2.1"
 
-class RegexFlag(enum.IntFlag):
+kundi RegexFlag(enum.IntFlag):
     ASCII = A = sre_compile.SRE_FLAG_ASCII # assume ascii "locale"
     IGNORECASE = I = sre_compile.SRE_FLAG_IGNORECASE # ignore case
     LOCALE = L = sre_compile.SRE_FLAG_LOCALE # assume current 8-bit locale
@@ -152,27 +152,27 @@ class RegexFlag(enum.IntFlag):
     TEMPLATE = T = sre_compile.SRE_FLAG_TEMPLATE # disable backtracking
     DEBUG = sre_compile.SRE_FLAG_DEBUG # dump pattern after compilation
 
-    def __repr__(self):
-        if self._name_ is not None:
-            return f're.{self._name_}'
+    eleza __repr__(self):
+        ikiwa self._name_ is not None:
+            rudisha f're.{self._name_}'
         value = self._value_
         members = []
         negative = value < 0
-        if negative:
+        ikiwa negative:
             value = ~value
         for m in self.__class__:
-            if value & m._value_:
+            ikiwa value & m._value_:
                 value &= ~m._value_
                 members.append(f're.{m._name_}')
-        if value:
+        ikiwa value:
             members.append(hex(value))
         res = '|'.join(members)
-        if negative:
-            if len(members) > 1:
+        ikiwa negative:
+            ikiwa len(members) > 1:
                 res = f'~({res})'
             else:
                 res = f'~{res}'
-        return res
+        rudisha res
     __str__ = object.__str__
 
 globals().update(RegexFlag.__members__)
@@ -183,42 +183,42 @@ error = sre_compile.error
 # --------------------------------------------------------------------
 # public interface
 
-def match(pattern, string, flags=0):
+eleza match(pattern, string, flags=0):
     """Try to apply the pattern at the start of the string, returning
-    a Match object, or None if no match was found."""
-    return _compile(pattern, flags).match(string)
+    a Match object, or None ikiwa no match was found."""
+    rudisha _compile(pattern, flags).match(string)
 
-def fullmatch(pattern, string, flags=0):
+eleza fullmatch(pattern, string, flags=0):
     """Try to apply the pattern to all of the string, returning
-    a Match object, or None if no match was found."""
-    return _compile(pattern, flags).fullmatch(string)
+    a Match object, or None ikiwa no match was found."""
+    rudisha _compile(pattern, flags).fullmatch(string)
 
-def search(pattern, string, flags=0):
+eleza search(pattern, string, flags=0):
     """Scan through string looking for a match to the pattern, returning
-    a Match object, or None if no match was found."""
-    return _compile(pattern, flags).search(string)
+    a Match object, or None ikiwa no match was found."""
+    rudisha _compile(pattern, flags).search(string)
 
-def sub(pattern, repl, string, count=0, flags=0):
+eleza sub(pattern, repl, string, count=0, flags=0):
     """Return the string obtained by replacing the leftmost
     non-overlapping occurrences of the pattern in string by the
     replacement repl.  repl can be either a string or a callable;
-    if a string, backslash escapes in it are processed.  If it is
+    ikiwa a string, backslash escapes in it are processed.  If it is
     a callable, it's passed the Match object and must return
     a replacement string to be used."""
-    return _compile(pattern, flags).sub(repl, string, count)
+    rudisha _compile(pattern, flags).sub(repl, string, count)
 
-def subn(pattern, repl, string, count=0, flags=0):
+eleza subn(pattern, repl, string, count=0, flags=0):
     """Return a 2-tuple containing (new_string, number).
     new_string is the string obtained by replacing the leftmost
     non-overlapping occurrences of the pattern in the source
     string by the replacement repl.  number is the number of
     substitutions that were made. repl can be either a string or a
-    callable; if a string, backslash escapes in it are processed.
+    callable; ikiwa a string, backslash escapes in it are processed.
     If it is a callable, it's passed the Match object and must
-    return a replacement string to be used."""
-    return _compile(pattern, flags).subn(repl, string, count)
+    rudisha a replacement string to be used."""
+    rudisha _compile(pattern, flags).subn(repl, string, count)
 
-def split(pattern, string, maxsplit=0, flags=0):
+eleza split(pattern, string, maxsplit=0, flags=0):
     """Split the source string by the occurrences of the pattern,
     returning a list containing the resulting substrings.  If
     capturing parentheses are used in pattern, then the text of all
@@ -226,37 +226,37 @@ def split(pattern, string, maxsplit=0, flags=0):
     list.  If maxsplit is nonzero, at most maxsplit splits occur,
     and the remainder of the string is returned as the final element
     of the list."""
-    return _compile(pattern, flags).split(string, maxsplit)
+    rudisha _compile(pattern, flags).split(string, maxsplit)
 
-def findall(pattern, string, flags=0):
+eleza findall(pattern, string, flags=0):
     """Return a list of all non-overlapping matches in the string.
 
     If one or more capturing groups are present in the pattern, return
-    a list of groups; this will be a list of tuples if the pattern
+    a list of groups; this will be a list of tuples ikiwa the pattern
     has more than one group.
 
     Empty matches are included in the result."""
-    return _compile(pattern, flags).findall(string)
+    rudisha _compile(pattern, flags).findall(string)
 
-def finditer(pattern, string, flags=0):
+eleza finditer(pattern, string, flags=0):
     """Return an iterator over all non-overlapping matches in the
     string.  For each match, the iterator returns a Match object.
 
     Empty matches are included in the result."""
-    return _compile(pattern, flags).finditer(string)
+    rudisha _compile(pattern, flags).finditer(string)
 
-def compile(pattern, flags=0):
+eleza compile(pattern, flags=0):
     "Compile a regular expression pattern, returning a Pattern object."
-    return _compile(pattern, flags)
+    rudisha _compile(pattern, flags)
 
-def purge():
+eleza purge():
     "Clear the regular expression caches"
     _cache.clear()
     _compile_repl.cache_clear()
 
-def template(pattern, flags=0):
+eleza template(pattern, flags=0):
     "Compile a template pattern, returning a Pattern object"
-    return _compile(pattern, flags|T)
+    rudisha _compile(pattern, flags|T)
 
 # SPECIAL_CHARS
 # closing ')', '}' and ']'
@@ -265,15 +265,15 @@ def template(pattern, flags=0):
 # '#' (comment) and WHITESPACE (ignored) in verbose mode
 _special_chars_map = {i: '\\' + chr(i) for i in b'()[]{}?*+-|^$\\.&~# \t\n\r\v\f'}
 
-def escape(pattern):
+eleza escape(pattern):
     """
     Escape special characters in a string.
     """
-    if isinstance(pattern, str):
-        return pattern.translate(_special_chars_map)
+    ikiwa isinstance(pattern, str):
+        rudisha pattern.translate(_special_chars_map)
     else:
         pattern = str(pattern, 'latin1')
-        return pattern.translate(_special_chars_map).encode('latin1')
+        rudisha pattern.translate(_special_chars_map).encode('latin1')
 
 Pattern = type(sre_compile.compile('', 0))
 Match = type(sre_compile.compile('', 0).match(''))
@@ -284,68 +284,68 @@ Match = type(sre_compile.compile('', 0).match(''))
 _cache = {}  # ordered!
 
 _MAXCACHE = 512
-def _compile(pattern, flags):
+eleza _compile(pattern, flags):
     # internal: compile pattern
-    if isinstance(flags, RegexFlag):
+    ikiwa isinstance(flags, RegexFlag):
         flags = flags.value
     try:
-        return _cache[type(pattern), pattern, flags]
+        rudisha _cache[type(pattern), pattern, flags]
     except KeyError:
         pass
-    if isinstance(pattern, Pattern):
-        if flags:
+    ikiwa isinstance(pattern, Pattern):
+        ikiwa flags:
             raise ValueError(
                 "cannot process flags argument with a compiled pattern")
-        return pattern
-    if not sre_compile.isstring(pattern):
+        rudisha pattern
+    ikiwa not sre_compile.isstring(pattern):
         raise TypeError("first argument must be string or compiled pattern")
     p = sre_compile.compile(pattern, flags)
-    if not (flags & DEBUG):
-        if len(_cache) >= _MAXCACHE:
+    ikiwa not (flags & DEBUG):
+        ikiwa len(_cache) >= _MAXCACHE:
             # Drop the oldest item
             try:
                 del _cache[next(iter(_cache))]
             except (StopIteration, RuntimeError, KeyError):
                 pass
         _cache[type(pattern), pattern, flags] = p
-    return p
+    rudisha p
 
 @functools.lru_cache(_MAXCACHE)
-def _compile_repl(repl, pattern):
+eleza _compile_repl(repl, pattern):
     # internal: compile replacement pattern
-    return sre_parse.parse_template(repl, pattern)
+    rudisha sre_parse.parse_template(repl, pattern)
 
-def _expand(pattern, match, template):
+eleza _expand(pattern, match, template):
     # internal: Match.expand implementation hook
     template = sre_parse.parse_template(template, pattern)
-    return sre_parse.expand_template(template, match)
+    rudisha sre_parse.expand_template(template, match)
 
-def _subx(pattern, template):
+eleza _subx(pattern, template):
     # internal: Pattern.sub/subn implementation helper
     template = _compile_repl(template, pattern)
-    if not template[0] and len(template[1]) == 1:
+    ikiwa not template[0] and len(template[1]) == 1:
         # literal replacement
-        return template[1][0]
-    def filter(match, template=template):
-        return sre_parse.expand_template(template, match)
-    return filter
+        rudisha template[1][0]
+    eleza filter(match, template=template):
+        rudisha sre_parse.expand_template(template, match)
+    rudisha filter
 
 # register myself for pickling
 
 agiza copyreg
 
-def _pickle(p):
-    return _compile, (p.pattern, p.flags)
+eleza _pickle(p):
+    rudisha _compile, (p.pattern, p.flags)
 
 copyreg.pickle(Pattern, _pickle, _compile)
 
 # --------------------------------------------------------------------
 # experimental stuff (see python-dev discussions for details)
 
-class Scanner:
-    def __init__(self, lexicon, flags=0):
+kundi Scanner:
+    eleza __init__(self, lexicon, flags=0):
         kutoka sre_constants agiza BRANCH, SUBPATTERN
-        if isinstance(flags, RegexFlag):
+        ikiwa isinstance(flags, RegexFlag):
             flags = flags.value
         self.lexicon = lexicon
         # combine phrases into a compound pattern
@@ -360,23 +360,23 @@ class Scanner:
             s.closegroup(gid, p[-1])
         p = sre_parse.SubPattern(s, [(BRANCH, (None, p))])
         self.scanner = sre_compile.compile(p)
-    def scan(self, string):
+    eleza scan(self, string):
         result = []
         append = result.append
         match = self.scanner.scanner(string).match
         i = 0
         while True:
             m = match()
-            if not m:
+            ikiwa not m:
                 break
             j = m.end()
-            if i == j:
+            ikiwa i == j:
                 break
             action = self.lexicon[m.lastindex-1][1]
-            if callable(action):
+            ikiwa callable(action):
                 self.match = m
                 action = action(self, m.group())
-            if action is not None:
+            ikiwa action is not None:
                 append(action)
             i = j
-        return result, string[i:]
+        rudisha result, string[i:]

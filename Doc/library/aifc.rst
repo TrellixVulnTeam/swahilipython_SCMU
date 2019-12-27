@@ -99,7 +99,7 @@ following methods:
 
    Return a list of markers in the audio file.  A marker consists of a tuple of
    three elements.  The first is the mark ID (an integer), the second is the mark
-   position in frames from the beginning of the data (an integer), the third is the
+   position in frames kutoka the beginning of the data (an integer), the third is the
    name of the mark (a string).
 
 
@@ -111,14 +111,14 @@ following methods:
 
 .. method:: aifc.readframes(nframes)
 
-   Read and return the next *nframes* frames from the audio file.  The returned
+   Read and return the next *nframes* frames kutoka the audio file.  The returned
    data is a string containing for each frame the uncompressed samples of all
    channels.
 
 
 .. method:: aifc.rewind()
 
-   Rewind the read pointer.  The next :meth:`readframes` will start from the
+   Rewind the read pointer.  The next :meth:`readframes` will start kutoka the
    beginning.
 
 

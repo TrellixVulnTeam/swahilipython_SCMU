@@ -27,7 +27,7 @@ filenames = [
 # these normal forms.  For example, HFS Plus uses a variant of Normal Form D
 # in which U+2000 through U+2FFF, U+F900 through U+FAFF, and U+2F800 through
 # U+2FAFF are not decomposed."
-if sys.platform != 'darwin':
+ikiwa sys.platform != 'darwin':
     filenames.extend([
         # Specific code points: NFC(fn), NFD(fn), NFKC(fn) and NFKD(fn) all different
         '11_\u0385\u03d3\u03d4',
@@ -46,7 +46,7 @@ if sys.platform != 'darwin':
 
 
 # Is it Unicode-friendly?
-if not os.path.supports_unicode_filenames:
+ikiwa not os.path.supports_unicode_filenames:
     fsencoding = sys.getfilesystemencoding()
     try:
         for name in filenames:
@@ -56,11 +56,11 @@ if not os.path.supports_unicode_filenames:
                                 "Unicode-friendly filesystem encoding")
 
 
-class UnicodeFileTests(unittest.TestCase):
+kundi UnicodeFileTests(unittest.TestCase):
     files = set(filenames)
     normal_form = None
 
-    def setUp(self):
+    eleza setUp(self):
         try:
             os.mkdir(support.TESTFN)
         except FileExistsError:
@@ -76,23 +76,23 @@ class UnicodeFileTests(unittest.TestCase):
             files.add(name)
         self.files = files
 
-    def norm(self, s):
-        if self.normal_form:
-            return normalize(self.normal_form, s)
-        return s
+    eleza norm(self, s):
+        ikiwa self.normal_form:
+            rudisha normalize(self.normal_form, s)
+        rudisha s
 
-    def _apply_failure(self, fn, filename,
+    eleza _apply_failure(self, fn, filename,
                        expected_exception=FileNotFoundError,
                        check_filename=True):
         with self.assertRaises(expected_exception) as c:
             fn(filename)
         exc_filename = c.exception.filename
-        if check_filename:
+        ikiwa check_filename:
             self.assertEqual(exc_filename, filename, "Function '%s(%a) failed "
                              "with bad filename in the exception: %a" %
                              (fn.__name__, filename, exc_filename))
 
-    def test_failures(self):
+    eleza test_failures(self):
         # Pass non-existing Unicode filenames all over the place.
         for name in self.files:
             name = "not_" + name
@@ -103,13 +103,13 @@ class UnicodeFileTests(unittest.TestCase):
             self._apply_failure(os.remove, name)
             self._apply_failure(os.listdir, name)
 
-    if sys.platform == 'win32':
+    ikiwa sys.platform == 'win32':
         # Windows is lunatic. Issue #13366.
         _listdir_failure = NotADirectoryError, FileNotFoundError
     else:
         _listdir_failure = NotADirectoryError
 
-    def test_open(self):
+    eleza test_open(self):
         for name in self.files:
             f = open(name, 'wb')
             f.write((name+'\n').encode("utf-8"))
@@ -122,7 +122,7 @@ class UnicodeFileTests(unittest.TestCase):
     # NFKD in Python is useless, because darwin will normalize it later and so
     # open(), os.stat(), etc. don't raise any exception.
     @unittest.skipIf(sys.platform == 'darwin', 'irrelevant test on Mac OS X')
-    def test_normalize(self):
+    eleza test_normalize(self):
         files = set(self.files)
         others = set()
         for nf in set(['NFC', 'NFD', 'NFKC', 'NFKD']):
@@ -137,10 +137,10 @@ class UnicodeFileTests(unittest.TestCase):
             self._apply_failure(os.listdir, name)
 
     # Skip the test on darwin, because darwin uses a normalization different
-    # than Python NFD normalization: filenames are different even if we use
+    # than Python NFD normalization: filenames are different even ikiwa we use
     # Python NFD normalization.
     @unittest.skipIf(sys.platform == 'darwin', 'irrelevant test on Mac OS X')
-    def test_listdir(self):
+    eleza test_listdir(self):
         sf0 = set(self.files)
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
@@ -150,12 +150,12 @@ class UnicodeFileTests(unittest.TestCase):
         self.assertEqual(sf0, sf2, "%a != %a" % (sf0, sf2))
         self.assertEqual(len(f1), len(f2))
 
-    def test_rename(self):
+    eleza test_rename(self):
         for name in self.files:
             os.rename(name, "tmp")
             os.rename("tmp", name)
 
-    def test_directory(self):
+    eleza test_directory(self):
         dirname = os.path.join(support.TESTFN, 'Gr\xfc\xdf-\u66e8\u66e9\u66eb')
         filename = '\xdf-\u66e8\u66e9\u66eb'
         with support.temp_cwd(dirname):
@@ -165,23 +165,23 @@ class UnicodeFileTests(unittest.TestCase):
             os.remove(filename)
 
 
-class UnicodeNFCFileTests(UnicodeFileTests):
+kundi UnicodeNFCFileTests(UnicodeFileTests):
     normal_form = 'NFC'
 
 
-class UnicodeNFDFileTests(UnicodeFileTests):
+kundi UnicodeNFDFileTests(UnicodeFileTests):
     normal_form = 'NFD'
 
 
-class UnicodeNFKCFileTests(UnicodeFileTests):
+kundi UnicodeNFKCFileTests(UnicodeFileTests):
     normal_form = 'NFKC'
 
 
-class UnicodeNFKDFileTests(UnicodeFileTests):
+kundi UnicodeNFKDFileTests(UnicodeFileTests):
     normal_form = 'NFKD'
 
 
-def test_main():
+eleza test_main():
     support.run_unittest(
         UnicodeFileTests,
         UnicodeNFCFileTests,
@@ -191,5 +191,5 @@ def test_main():
     )
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

@@ -16,10 +16,10 @@ agiza operator
 agiza sys
 
 
-class BytesTest(unittest.TestCase):
+kundi BytesTest(unittest.TestCase):
 
     @bigaddrspacetest
-    def test_concat(self):
+    eleza test_concat(self):
         # Allocate a bytestring that's near the maximum size allowed by
         # the address space, and then try to build a new, larger one through
         # concatenation.
@@ -30,7 +30,7 @@ class BytesTest(unittest.TestCase):
             x = None
 
     @bigaddrspacetest
-    def test_optimized_concat(self):
+    eleza test_optimized_concat(self):
         try:
             x = b"x" * (MAX_Py_ssize_t - 128)
 
@@ -45,7 +45,7 @@ class BytesTest(unittest.TestCase):
             x = None
 
     @bigaddrspacetest
-    def test_repeat(self):
+    eleza test_repeat(self):
         try:
             x = b"x" * (MAX_Py_ssize_t - 128)
             self.assertRaises(OverflowError, operator.mul, x, 128)
@@ -53,12 +53,12 @@ class BytesTest(unittest.TestCase):
             x = None
 
 
-class StrTest(unittest.TestCase):
+kundi StrTest(unittest.TestCase):
 
-    unicodesize = 2 if sys.maxunicode < 65536 else 4
+    unicodesize = 2 ikiwa sys.maxunicode < 65536 else 4
 
     @bigaddrspacetest
-    def test_concat(self):
+    eleza test_concat(self):
         try:
             # Create a string that would fill almost the address space
             x = "x" * int(MAX_Py_ssize_t // (1.1 * self.unicodesize))
@@ -69,7 +69,7 @@ class StrTest(unittest.TestCase):
             x = None
 
     @bigaddrspacetest
-    def test_optimized_concat(self):
+    eleza test_optimized_concat(self):
         try:
             x = "x" * int(MAX_Py_ssize_t // (1.1 * self.unicodesize))
 
@@ -84,7 +84,7 @@ class StrTest(unittest.TestCase):
             x = None
 
     @bigaddrspacetest
-    def test_repeat(self):
+    eleza test_repeat(self):
         try:
             x = "x" * int(MAX_Py_ssize_t // (1.1 * self.unicodesize))
             self.assertRaises(MemoryError, operator.mul, x, 2)
@@ -92,10 +92,10 @@ class StrTest(unittest.TestCase):
             x = None
 
 
-def test_main():
+eleza test_main():
     support.run_unittest(BytesTest, StrTest)
 
-if __name__ == '__main__':
-    if len(sys.argv) > 1:
+ikiwa __name__ == '__main__':
+    ikiwa len(sys.argv) > 1:
         support.set_memlimit(sys.argv[1])
     test_main()

@@ -63,19 +63,19 @@
 
    - The code must contain a main() function which will
      be executed by the viewer (see provided example scripts).
-     It may return a string which will be displayed in the Label below
+     It may rudisha a string which will be displayed in the Label below
      the source code window (when execution has finished.)
 
    - In order to run mydemo.py by itself, such as during development,
      add the following at the end of the file:
 
-    if __name__ == '__main__':
+    ikiwa __name__ == '__main__':
         main()
         mainloop()  # keep window open
 
     python -m turtledemo.mydemo  # will then run it
 
-   - If the demo is EVENT DRIVEN, main must return the string
+   - If the demo is EVENT DRIVEN, main must rudisha the string
      "EVENTLOOP". This informs the demo viewer that the script is
      still running and must be stopped by the user!
 
@@ -113,8 +113,8 @@ MINIMUM_FONT_SIZE = 6
 MAXIMUM_FONT_SIZE = 100
 font_sizes = [8, 9, 10, 11, 12, 14, 18, 20, 22, 24, 30]
 
-def getExampleEntries():
-    return [entry[:-3] for entry in os.listdir(demo_dir) if
+eleza getExampleEntries():
+    rudisha [entry[:-3] for entry in os.listdir(demo_dir) if
             entry.endswith(".py") and entry[0] != '_']
 
 help_entries = (  # (help_label,  help_doc)
@@ -125,14 +125,14 @@ help_entries = (  # (help_label,  help_doc)
 
 
 
-class DemoWindow(object):
+kundi DemoWindow(object):
 
-    def __init__(self, filename=None):
+    eleza __init__(self, filename=None):
         self.root = root = turtle._root = Tk()
         root.title('Python turtle-graphics examples')
         root.wm_protocol("WM_DELETE_WINDOW", self._destroy)
 
-        if darwin:
+        ikiwa darwin:
             agiza subprocess
             # Make sure we are the currently activated OS X application
             # so that our menu bar appears.
@@ -188,20 +188,20 @@ class DemoWindow(object):
         Percolator(self.text).insertfilter(ColorDelegator())
         self.dirty = False
         self.exitflag = False
-        if filename:
+        ikiwa filename:
             self.loadfile(filename)
         self.configGUI(DISABLED, DISABLED, DISABLED,
                        "Choose example kutoka menu", "black")
         self.state = STARTUP
 
 
-    def onResize(self, event):
+    eleza onResize(self, event):
         cwidth = self._canvas.winfo_width()
         cheight = self._canvas.winfo_height()
         self._canvas.xview_moveto(0.5*(self.canvwidth-cwidth)/self.canvwidth)
         self._canvas.yview_moveto(0.5*(self.canvheight-cheight)/self.canvheight)
 
-    def makeTextFrame(self, root):
+    eleza makeTextFrame(self, root):
         self.text_frame = text_frame = Frame(root)
         self.text = text = Text(text_frame, name='text', padx=5,
                                 wrap='none', width=45)
@@ -217,7 +217,7 @@ class DemoWindow(object):
         text['xscrollcommand'] = hbar.set
 
         text['font'] = tuple(txtfont)
-        shortcut = 'Command' if darwin else 'Control'
+        shortcut = 'Command' ikiwa darwin else 'Control'
         text.bind_all('<%s-minus>' % shortcut, self.decrease_size)
         text.bind_all('<%s-underscore>' % shortcut, self.decrease_size)
         text.bind_all('<%s-equal>' % shortcut, self.increase_size)
@@ -227,9 +227,9 @@ class DemoWindow(object):
         text.bind('<Control-Button-5>', self.decrease_size)
 
         text.pack(side=LEFT, fill=BOTH, expand=1)
-        return text_frame
+        rudisha text_frame
 
-    def makeGraphFrame(self, root):
+    eleza makeGraphFrame(self, root):
         turtle._Screen._root = root
         self.canvwidth = 1000
         self.canvheight = 800
@@ -243,49 +243,49 @@ class DemoWindow(object):
         turtle.TurtleScreen.__init__(_s_, _s_._canvas)
         self.scanvas = _s_._canvas
         turtle.RawTurtle.screens = [_s_]
-        return canvas
+        rudisha canvas
 
-    def set_txtsize(self, size):
+    eleza set_txtsize(self, size):
         txtfont[1] = size
         self.text['font'] = tuple(txtfont)
         self.output_lbl['text'] = 'Font size %d' % size
 
-    def decrease_size(self, dummy=None):
+    eleza decrease_size(self, dummy=None):
         self.set_txtsize(max(txtfont[1] - 1, MINIMUM_FONT_SIZE))
-        return 'break'
+        rudisha 'break'
 
-    def increase_size(self, dummy=None):
+    eleza increase_size(self, dummy=None):
         self.set_txtsize(min(txtfont[1] + 1, MAXIMUM_FONT_SIZE))
-        return 'break'
+        rudisha 'break'
 
-    def update_mousewheel(self, event):
+    eleza update_mousewheel(self, event):
         # For wheel up, event.delta = 120 on Windows, -1 on darwin.
         # X-11 sends Control-Button-4 event instead.
-        if (event.delta < 0) == (not darwin):
-            return self.decrease_size()
+        ikiwa (event.delta < 0) == (not darwin):
+            rudisha self.decrease_size()
         else:
-            return self.increase_size()
+            rudisha self.increase_size()
 
-    def configGUI(self, start, stop, clear, txt="", color="blue"):
+    eleza configGUI(self, start, stop, clear, txt="", color="blue"):
         self.start_btn.config(state=start,
-                              bg="#d00" if start == NORMAL else "#fca")
+                              bg="#d00" ikiwa start == NORMAL else "#fca")
         self.stop_btn.config(state=stop,
-                             bg="#d00" if stop == NORMAL else "#fca")
+                             bg="#d00" ikiwa stop == NORMAL else "#fca")
         self.clear_btn.config(state=clear,
-                              bg="#d00" if clear == NORMAL else"#fca")
+                              bg="#d00" ikiwa clear == NORMAL else"#fca")
         self.output_lbl.config(text=txt, fg=color)
 
-    def makeLoadDemoMenu(self, master):
+    eleza makeLoadDemoMenu(self, master):
         menu = Menu(master)
 
         for entry in getExampleEntries():
-            def load(entry=entry):
+            eleza load(entry=entry):
                 self.loadfile(entry)
             menu.add_command(label=entry, underline=0,
                              font=menufont, command=load)
-        return menu
+        rudisha menu
 
-    def makeFontMenu(self, master):
+    eleza makeFontMenu(self, master):
         menu = Menu(master)
         menu.add_command(label="Decrease (C-'-')", command=self.decrease_size,
                          font=menufont)
@@ -294,27 +294,27 @@ class DemoWindow(object):
         menu.add_separator()
 
         for size in font_sizes:
-            def resize(size=size):
+            eleza resize(size=size):
                 self.set_txtsize(size)
             menu.add_command(label=str(size), underline=0,
                              font=menufont, command=resize)
-        return menu
+        rudisha menu
 
-    def makeHelpMenu(self, master):
+    eleza makeHelpMenu(self, master):
         menu = Menu(master)
 
         for help_label, help_file in help_entries:
-            def show(help_label=help_label, help_file=help_file):
+            eleza show(help_label=help_label, help_file=help_file):
                 view_text(self.root, help_label, help_file)
             menu.add_command(label=help_label, font=menufont, command=show)
-        return menu
+        rudisha menu
 
-    def refreshCanvas(self):
-        if self.dirty:
+    eleza refreshCanvas(self):
+        ikiwa self.dirty:
             self.screen.clear()
             self.dirty=False
 
-    def loadfile(self, filename):
+    eleza loadfile(self, filename):
         self.clearCanvas()
         turtle.TurtleScreen._RUNNING = False
         modname = 'turtledemo.' + filename
@@ -329,7 +329,7 @@ class DemoWindow(object):
                        "Press start button", "red")
         self.state = READY
 
-    def startDemo(self):
+    eleza startDemo(self):
         self.refreshCanvas()
         self.dirty = True
         turtle.TurtleScreen._RUNNING = True
@@ -341,46 +341,46 @@ class DemoWindow(object):
 
         try:
             result = self.module.main()
-            if result == "EVENTLOOP":
+            ikiwa result == "EVENTLOOP":
                 self.state = EVENTDRIVEN
             else:
                 self.state = DONE
         except turtle.Terminator:
-            if self.root is None:
+            ikiwa self.root is None:
                 return
             self.state = DONE
             result = "stopped!"
-        if self.state == DONE:
+        ikiwa self.state == DONE:
             self.configGUI(NORMAL, DISABLED, NORMAL,
                            result)
-        elif self.state == EVENTDRIVEN:
+        elikiwa self.state == EVENTDRIVEN:
             self.exitflag = True
             self.configGUI(DISABLED, NORMAL, DISABLED,
                            "use mouse/keys or STOP", "red")
 
-    def clearCanvas(self):
+    eleza clearCanvas(self):
         self.refreshCanvas()
         self.screen._delete("all")
         self.scanvas.config(cursor="")
         self.configGUI(NORMAL, DISABLED, DISABLED)
 
-    def stopIt(self):
-        if self.exitflag:
+    eleza stopIt(self):
+        ikiwa self.exitflag:
             self.clearCanvas()
             self.exitflag = False
             self.configGUI(NORMAL, DISABLED, DISABLED,
                            "STOPPED!", "red")
         turtle.TurtleScreen._RUNNING = False
 
-    def _destroy(self):
+    eleza _destroy(self):
         turtle.TurtleScreen._RUNNING = False
         self.root.destroy()
         self.root = None
 
 
-def main():
+eleza main():
     demo = DemoWindow()
     demo.root.mainloop()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

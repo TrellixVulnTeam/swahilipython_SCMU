@@ -1,9 +1,9 @@
 doctests = """
 
-Basic class construction.
+Basic kundi construction.
 
-    >>> class C:
-    ...     def meth(self): print("Hello")
+    >>> kundi C:
+    ...     eleza meth(self): andika("Hello")
     ...
     >>> C.__class__ is type
     True
@@ -16,21 +16,21 @@ Basic class construction.
 
 Use *args notation for the bases.
 
-    >>> class A: pass
-    >>> class B: pass
+    >>> kundi A: pass
+    >>> kundi B: pass
     >>> bases = (A, B)
-    >>> class C(*bases): pass
+    >>> kundi C(*bases): pass
     >>> C.__bases__ == bases
     True
     >>>
 
 Use a trivial metaclass.
 
-    >>> class M(type):
+    >>> kundi M(type):
     ...     pass
     ...
-    >>> class C(metaclass=M):
-    ...    def meth(self): print("Hello")
+    >>> kundi C(metaclass=M):
+    ...    eleza meth(self): andika("Hello")
     ...
     >>> C.__class__ is M
     True
@@ -41,10 +41,10 @@ Use a trivial metaclass.
     Hello
     >>>
 
-Use **kwds notation for the metaclass keyword.
+Use **kwds notation for the metakundi keyword.
 
     >>> kwds = {'metaclass': M}
-    >>> class C(**kwds): pass
+    >>> kundi C(**kwds): pass
     ...
     >>> C.__class__ is M
     True
@@ -53,21 +53,21 @@ Use **kwds notation for the metaclass keyword.
     True
     >>>
 
-Use a metaclass with a __prepare__ static method.
+Use a metakundi with a __prepare__ static method.
 
-    >>> class M(type):
+    >>> kundi M(type):
     ...    @staticmethod
-    ...    def __prepare__(*args, **kwds):
-    ...        print("Prepare called:", args, kwds)
-    ...        return dict()
-    ...    def __new__(cls, name, bases, namespace, **kwds):
-    ...        print("New called:", kwds)
-    ...        return type.__new__(cls, name, bases, namespace)
-    ...    def __init__(cls, *args, **kwds):
+    ...    eleza __prepare__(*args, **kwds):
+    ...        andika("Prepare called:", args, kwds)
+    ...        rudisha dict()
+    ...    eleza __new__(cls, name, bases, namespace, **kwds):
+    ...        andika("New called:", kwds)
+    ...        rudisha type.__new__(cls, name, bases, namespace)
+    ...    eleza __init__(cls, *args, **kwds):
     ...        pass
     ...
-    >>> class C(metaclass=M):
-    ...     def meth(self): print("Hello")
+    >>> kundi C(metaclass=M):
+    ...     eleza meth(self): andika("Hello")
     ...
     Prepare called: ('C', ()) {}
     New called: {}
@@ -75,10 +75,10 @@ Use a metaclass with a __prepare__ static method.
 
 Also pass another keyword.
 
-    >>> class C(object, metaclass=M, other="haha"):
+    >>> kundi C(object, metaclass=M, other="haha"):
     ...     pass
     ...
-    Prepare called: ('C', (<class 'object'>,)) {'other': 'haha'}
+    Prepare called: ('C', (<kundi 'object'>,)) {'other': 'haha'}
     New called: {'other': 'haha'}
     >>> C.__class__ is M
     True
@@ -89,10 +89,10 @@ Also pass another keyword.
     True
     >>>
 
-Check that build_class doesn't mutate the kwds dict.
+Check that build_kundi doesn't mutate the kwds dict.
 
     >>> kwds = {'metaclass': type}
-    >>> class C(**kwds): pass
+    >>> kundi C(**kwds): pass
     ...
     >>> kwds == {'metaclass': type}
     True
@@ -102,19 +102,19 @@ Use various combinations of explicit keywords and **kwds.
 
     >>> bases = (object,)
     >>> kwds = {'metaclass': M, 'other': 'haha'}
-    >>> class C(*bases, **kwds): pass
+    >>> kundi C(*bases, **kwds): pass
     ...
-    Prepare called: ('C', (<class 'object'>,)) {'other': 'haha'}
+    Prepare called: ('C', (<kundi 'object'>,)) {'other': 'haha'}
     New called: {'other': 'haha'}
     >>> C.__class__ is M
     True
     >>> C.__bases__ == (object,)
     True
-    >>> class B: pass
+    >>> kundi B: pass
     >>> kwds = {'other': 'haha'}
-    >>> class C(B, metaclass=M, *bases, **kwds): pass
+    >>> kundi C(B, metaclass=M, *bases, **kwds): pass
     ...
-    Prepare called: ('C', (<class 'test.test_metaclass.B'>, <class 'object'>)) {'other': 'haha'}
+    Prepare called: ('C', (<kundi 'test.test_metaclass.B'>, <kundi 'object'>)) {'other': 'haha'}
     New called: {'other': 'haha'}
     >>> C.__class__ is M
     True
@@ -124,7 +124,7 @@ Use various combinations of explicit keywords and **kwds.
 
 Check for duplicate keywords.
 
-    >>> class C(metaclass=type, metaclass=type): pass
+    >>> kundi C(metaclass=type, metaclass=type): pass
     ...
     Traceback (most recent call last):
     [...]
@@ -134,7 +134,7 @@ Check for duplicate keywords.
 Another way.
 
     >>> kwds = {'metaclass': type}
-    >>> class C(metaclass=type, **kwds): pass
+    >>> kundi C(metaclass=type, **kwds): pass
     ...
     Traceback (most recent call last):
     [...]
@@ -143,17 +143,17 @@ Another way.
 
 Use a __prepare__ method that returns an instrumented dict.
 
-    >>> class LoggingDict(dict):
-    ...     def __setitem__(self, key, value):
-    ...         print("d[%r] = %r" % (key, value))
+    >>> kundi LoggingDict(dict):
+    ...     eleza __setitem__(self, key, value):
+    ...         andika("d[%r] = %r" % (key, value))
     ...         dict.__setitem__(self, key, value)
     ...
-    >>> class Meta(type):
+    >>> kundi Meta(type):
     ...    @staticmethod
-    ...    def __prepare__(name, bases):
-    ...        return LoggingDict()
+    ...    eleza __prepare__(name, bases):
+    ...        rudisha LoggingDict()
     ...
-    >>> class C(metaclass=Meta):
+    >>> kundi C(metaclass=Meta):
     ...     foo = 2+2
     ...     foo = 42
     ...     bar = 123
@@ -165,15 +165,15 @@ Use a __prepare__ method that returns an instrumented dict.
     d['bar'] = 123
     >>>
 
-Use a metaclass that doesn't derive kutoka type.
+Use a metakundi that doesn't derive kutoka type.
 
-    >>> def meta(name, bases, namespace, **kwds):
-    ...     print("meta:", name, bases)
-    ...     print("ns:", sorted(namespace.items()))
-    ...     print("kw:", sorted(kwds.items()))
-    ...     return namespace
+    >>> eleza meta(name, bases, namespace, **kwds):
+    ...     andika("meta:", name, bases)
+    ...     andika("ns:", sorted(namespace.items()))
+    ...     andika("kw:", sorted(kwds.items()))
+    ...     rudisha namespace
     ...
-    >>> class C(metaclass=meta):
+    >>> kundi C(metaclass=meta):
     ...     a = 42
     ...     b = 24
     ...
@@ -182,18 +182,18 @@ Use a metaclass that doesn't derive kutoka type.
     kw: []
     >>> type(C) is dict
     True
-    >>> print(sorted(C.items()))
+    >>> andika(sorted(C.items()))
     [('__module__', 'test.test_metaclass'), ('__qualname__', 'C'), ('a', 42), ('b', 24)]
     >>>
 
 And again, with a __prepare__ attribute.
 
-    >>> def prepare(name, bases, **kwds):
-    ...     print("prepare:", name, bases, sorted(kwds.items()))
-    ...     return LoggingDict()
+    >>> eleza prepare(name, bases, **kwds):
+    ...     andika("prepare:", name, bases, sorted(kwds.items()))
+    ...     rudisha LoggingDict()
     ...
     >>> meta.__prepare__ = prepare
-    >>> class C(metaclass=meta, other="booh"):
+    >>> kundi C(metaclass=meta, other="booh"):
     ...    a = 1
     ...    a = 2
     ...    b = 3
@@ -209,7 +209,7 @@ And again, with a __prepare__ attribute.
     kw: [('other', 'booh')]
     >>>
 
-The default metaclass must define a __prepare__() method.
+The default metakundi must define a __prepare__() method.
 
     >>> type.__prepare__()
     {}
@@ -217,30 +217,30 @@ The default metaclass must define a __prepare__() method.
 
 Make sure it works with subclassing.
 
-    >>> class M(type):
+    >>> kundi M(type):
     ...     @classmethod
-    ...     def __prepare__(cls, *args, **kwds):
+    ...     eleza __prepare__(cls, *args, **kwds):
     ...         d = super().__prepare__(*args, **kwds)
     ...         d["hello"] = 42
-    ...         return d
+    ...         rudisha d
     ...
-    >>> class C(metaclass=M):
-    ...     print(hello)
+    >>> kundi C(metaclass=M):
+    ...     andika(hello)
     ...
     42
-    >>> print(C.hello)
+    >>> andika(C.hello)
     42
     >>>
 
 Test failures in looking up the __prepare__ method work.
-    >>> class ObscureException(Exception):
+    >>> kundi ObscureException(Exception):
     ...     pass
-    >>> class FailDescr:
-    ...     def __get__(self, instance, owner):
+    >>> kundi FailDescr:
+    ...     eleza __get__(self, instance, owner):
     ...        raise ObscureException
-    >>> class Meta(type):
+    >>> kundi Meta(type):
     ...     __prepare__ = FailDescr()
-    >>> class X(metaclass=Meta):
+    >>> kundi X(metaclass=Meta):
     ...     pass
     Traceback (most recent call last):
     [...]
@@ -251,15 +251,15 @@ Test failures in looking up the __prepare__ method work.
 agiza sys
 
 # Trace function introduces __locals__ which causes various tests to fail.
-if hasattr(sys, 'gettrace') and sys.gettrace():
+ikiwa hasattr(sys, 'gettrace') and sys.gettrace():
     __test__ = {}
 else:
     __test__ = {'doctests' : doctests}
 
-def test_main(verbose=False):
+eleza test_main(verbose=False):
     kutoka test agiza support
     kutoka test agiza test_metaclass
     support.run_doctest(test_metaclass, verbose)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main(verbose=True)

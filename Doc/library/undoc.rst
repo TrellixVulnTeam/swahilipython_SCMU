@@ -8,7 +8,7 @@ Here's a quick listing of modules that are currently undocumented, but that
 should be documented.  Feel free to contribute documentation for them!  (Send
 via email to docs@python.org.)
 
-The idea and original contents for this chapter were taken from a posting by
+The idea and original contents for this chapter were taken kutoka a posting by
 Fredrik Lundh; the specific contents of this chapter have been substantially
 revised.
 

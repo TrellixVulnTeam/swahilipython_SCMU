@@ -14,7 +14,7 @@ import datetime
 import os
 import re
 import sys
-import _ssl
+agiza _ssl
 
 
 def parse_error_codes(h_file, prefix, libcode):

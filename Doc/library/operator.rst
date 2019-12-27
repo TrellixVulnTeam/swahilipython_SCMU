@@ -10,8 +10,8 @@
 
 .. testsetup::
 
-   import operator
-   from operator import itemgetter, iadd
+   agiza operator
+   kutoka operator agiza itemgetter, iadd
 
 --------------
 
@@ -255,7 +255,7 @@ expect a function argument.
 .. function:: attrgetter(attr)
               attrgetter(*attrs)
 
-   Return a callable object that fetches *attr* from its operand.
+   Return a callable object that fetches *attr* kutoka its operand.
    If more than one attribute is requested, returns a tuple of attributes.
    The attribute names can also contain dots. For example:
 
@@ -290,7 +290,7 @@ expect a function argument.
 .. function:: itemgetter(item)
               itemgetter(*items)
 
-   Return a callable object that fetches *item* from its operand using the
+   Return a callable object that fetches *item* kutoka its operand using the
    operand's :meth:`__getitem__` method.  If multiple items are specified,
    returns a tuple of lookup values.  For example:
 
@@ -328,7 +328,7 @@ expect a function argument.
       >>> itemgetter('rank')(soldier)
       'captain'
 
-   Example of using :func:`itemgetter` to retrieve specific fields from a
+   Example of using :func:`itemgetter` to retrieve specific fields kutoka a
    tuple record:
 
       >>> inventory = [('apple', 3), ('banana', 2), ('pear', 5), ('orange', 1)]

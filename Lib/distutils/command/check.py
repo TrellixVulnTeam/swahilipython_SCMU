@@ -69,7 +69,7 @@ class check(Command):
         if self.restructuredtext:
             if HAS_DOCUTILS:
                 self.check_restructuredtext()
-            elif self.strict:
+            lasivyo self.strict:
                 raise DistutilsSetupError('The docutils package is needed.')
 
         # let's raise an error in strict mode, if we have at least
@@ -98,7 +98,7 @@ class check(Command):
             if not metadata.author_email:
                 self.warn("missing meta-data: if 'author' supplied, " +
                           "'author_email' must be supplied too")
-        elif metadata.maintainer:
+        lasivyo metadata.maintainer:
             if not metadata.maintainer_email:
                 self.warn("missing meta-data: if 'maintainer' supplied, " +
                           "'maintainer_email' must be supplied too")

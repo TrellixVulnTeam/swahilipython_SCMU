@@ -5,10 +5,10 @@
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name
 
-class FixBasestring(fixer_base.BaseFix):
+kundi FixBasestring(fixer_base.BaseFix):
     BM_compatible = True
 
     PATTERN = "'basestring'"
 
-    def transform(self, node, results):
-        return Name("str", prefix=node.prefix)
+    eleza transform(self, node, results):
+        rudisha Name("str", prefix=node.prefix)

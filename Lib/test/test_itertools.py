@@ -15,83 +15,83 @@ agiza threading
 maxsize = support.MAX_Py_ssize_t
 minsize = -maxsize-1
 
-def lzip(*args):
-    return list(zip(*args))
+eleza lzip(*args):
+    rudisha list(zip(*args))
 
-def onearg(x):
+eleza onearg(x):
     'Test function of one argument'
-    return 2*x
+    rudisha 2*x
 
-def errfunc(*args):
+eleza errfunc(*args):
     'Test function that raises an error'
     raise ValueError
 
-def gen3():
+eleza gen3():
     'Non-restartable source sequence'
     for i in (0, 1, 2):
         yield i
 
-def isEven(x):
+eleza isEven(x):
     'Test predicate'
-    return x%2==0
+    rudisha x%2==0
 
-def isOdd(x):
+eleza isOdd(x):
     'Test predicate'
-    return x%2==1
+    rudisha x%2==1
 
-def tupleize(*args):
-    return args
+eleza tupleize(*args):
+    rudisha args
 
-def irange(n):
+eleza irange(n):
     for i in range(n):
         yield i
 
-class StopNow:
+kundi StopNow:
     'Class emulating an empty iterable.'
-    def __iter__(self):
-        return self
-    def __next__(self):
+    eleza __iter__(self):
+        rudisha self
+    eleza __next__(self):
         raise StopIteration
 
-def take(n, seq):
+eleza take(n, seq):
     'Convenience function for partially consuming a long of infinite iterable'
-    return list(islice(seq, n))
+    rudisha list(islice(seq, n))
 
-def prod(iterable):
-    return reduce(operator.mul, iterable, 1)
+eleza prod(iterable):
+    rudisha reduce(operator.mul, iterable, 1)
 
-def fact(n):
+eleza fact(n):
     'Factorial'
-    return prod(range(1, n+1))
+    rudisha prod(range(1, n+1))
 
 # root level methods for pickling ability
-def testR(r):
-    return r[0]
+eleza testR(r):
+    rudisha r[0]
 
-def testR2(r):
-    return r[2]
+eleza testR2(r):
+    rudisha r[2]
 
-def underten(x):
-    return x<10
+eleza underten(x):
+    rudisha x<10
 
 picklecopiers = [lambda s, proto=proto: pickle.loads(pickle.dumps(s, proto))
                  for proto in range(pickle.HIGHEST_PROTOCOL + 1)]
 
-class TestBasicOps(unittest.TestCase):
+kundi TestBasicOps(unittest.TestCase):
 
-    def pickletest(self, protocol, it, stop=4, take=1, compare=None):
+    eleza pickletest(self, protocol, it, stop=4, take=1, compare=None):
         """Test that an iterator is the same after pickling, also when part-consumed"""
-        def expand(it, i=0):
+        eleza expand(it, i=0):
             # Recursively expand iterables, within sensible bounds
-            if i > 10:
+            ikiwa i > 10:
                 raise RuntimeError("infinite recursion encountered")
-            if isinstance(it, str):
-                return it
+            ikiwa isinstance(it, str):
+                rudisha it
             try:
                 l = list(islice(it, stop))
             except TypeError:
-                return it # can't expand it
-            return [expand(e, i+1) for e in l]
+                rudisha it # can't expand it
+            rudisha [expand(e, i+1) for e in l]
 
         # Test the initial copy against the original
         dump = pickle.dumps(it, protocol)
@@ -99,7 +99,7 @@ class TestBasicOps(unittest.TestCase):
         self.assertEqual(type(it), type(i2))
         a, b = expand(it), expand(i2)
         self.assertEqual(a, b)
-        if compare:
+        ikiwa compare:
             c = expand(compare)
             self.assertEqual(a, c)
 
@@ -116,11 +116,11 @@ class TestBasicOps(unittest.TestCase):
         i4 = pickle.loads(dump)
         a, b = expand(i3), expand(i4)
         self.assertEqual(a, b)
-        if compare:
+        ikiwa compare:
             c = expand(compare[took:])
             self.assertEqual(a, c);
 
-    def test_accumulate(self):
+    eleza test_accumulate(self):
         self.assertEqual(list(accumulate(range(10))),               # one positional arg
                           [0, 1, 3, 6, 10, 15, 21, 28, 36, 45])
         self.assertEqual(list(accumulate(iterable=range(10))),      # kw arg
@@ -155,9 +155,9 @@ class TestBasicOps(unittest.TestCase):
         with self.assertRaises(TypeError):
             list(accumulate([10, 20], 100))
 
-    def test_chain(self):
+    eleza test_chain(self):
 
-        def chain2(*iterables):
+        eleza chain2(*iterables):
             'Pure python version in the docs'
             for it in iterables:
                 for element in it:
@@ -170,14 +170,14 @@ class TestBasicOps(unittest.TestCase):
             self.assertEqual(take(4, c('abc', 'def')), list('abcd'))
             self.assertRaises(TypeError, list,c(2, 3))
 
-    def test_chain_from_iterable(self):
-        self.assertEqual(list(chain.from_iterable(['abc', 'def'])), list('abcdef'))
-        self.assertEqual(list(chain.from_iterable(['abc'])), list('abc'))
-        self.assertEqual(list(chain.from_iterable([''])), [])
-        self.assertEqual(take(4, chain.from_iterable(['abc', 'def'])), list('abcd'))
-        self.assertRaises(TypeError, list, chain.from_iterable([2, 3]))
+    eleza test_chain_kutoka_iterable(self):
+        self.assertEqual(list(chain.kutoka_iterable(['abc', 'def'])), list('abcdef'))
+        self.assertEqual(list(chain.kutoka_iterable(['abc'])), list('abc'))
+        self.assertEqual(list(chain.kutoka_iterable([''])), [])
+        self.assertEqual(take(4, chain.kutoka_iterable(['abc', 'def'])), list('abcd'))
+        self.assertRaises(TypeError, list, chain.kutoka_iterable([2, 3]))
 
-    def test_chain_reducible(self):
+    eleza test_chain_reducible(self):
         for oper in [copy.deepcopy] + picklecopiers:
             it = chain('abc', 'def')
             self.assertEqual(list(oper(it)), list('abcdef'))
@@ -190,7 +190,7 @@ class TestBasicOps(unittest.TestCase):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             self.pickletest(proto, chain('abc', 'def'), compare=list('abcdef'))
 
-    def test_chain_setstate(self):
+    eleza test_chain_setstate(self):
         self.assertRaises(TypeError, chain().__setstate__, ())
         self.assertRaises(TypeError, chain().__setstate__, [])
         self.assertRaises(TypeError, chain().__setstate__, 0)
@@ -203,7 +203,7 @@ class TestBasicOps(unittest.TestCase):
         it.__setstate__((iter(['abc', 'def']), iter(['ghi'])))
         self.assertEqual(list(it), ['ghi', 'a', 'b', 'c', 'd', 'e', 'f'])
 
-    def test_combinations(self):
+    eleza test_combinations(self):
         self.assertRaises(TypeError, combinations, 'abc')       # missing r argument
         self.assertRaises(TypeError, combinations, 'abc', 2, 1) # too many arguments
         self.assertRaises(TypeError, combinations, None)        # pool is not iterable
@@ -227,17 +227,17 @@ class TestBasicOps(unittest.TestCase):
                              [(0,1,3), (0,2,3), (1,2,3)])
 
 
-        def combinations1(iterable, r):
+        eleza combinations1(iterable, r):
             'Pure python version shown in the docs'
             pool = tuple(iterable)
             n = len(pool)
-            if r > n:
+            ikiwa r > n:
                 return
             indices = list(range(r))
             yield tuple(pool[i] for i in indices)
             while 1:
                 for i in reversed(range(r)):
-                    if indices[i] != i + n - r:
+                    ikiwa indices[i] != i + n - r:
                         break
                 else:
                     return
@@ -246,27 +246,27 @@ class TestBasicOps(unittest.TestCase):
                     indices[j] = indices[j-1] + 1
                 yield tuple(pool[i] for i in indices)
 
-        def combinations2(iterable, r):
+        eleza combinations2(iterable, r):
             'Pure python version shown in the docs'
             pool = tuple(iterable)
             n = len(pool)
             for indices in permutations(range(n), r):
-                if sorted(indices) == list(indices):
+                ikiwa sorted(indices) == list(indices):
                     yield tuple(pool[i] for i in indices)
 
-        def combinations3(iterable, r):
+        eleza combinations3(iterable, r):
             'Pure python version kutoka cwr()'
             pool = tuple(iterable)
             n = len(pool)
             for indices in combinations_with_replacement(range(n), r):
-                if len(set(indices)) == r:
+                ikiwa len(set(indices)) == r:
                     yield tuple(pool[i] for i in indices)
 
         for n in range(7):
             values = [5*x-12 for x in range(n)]
             for r in range(n+2):
                 result = list(combinations(values, r))
-                self.assertEqual(len(result), 0 if r>n else fact(n) / fact(r) / fact(n-r)) # right number of combs
+                self.assertEqual(len(result), 0 ikiwa r>n else fact(n) / fact(r) / fact(n-r)) # right number of combs
                 self.assertEqual(len(result), len(set(result)))         # no repeats
                 self.assertEqual(result, sorted(result))                # lexicographic order
                 for c in result:
@@ -275,7 +275,7 @@ class TestBasicOps(unittest.TestCase):
                     self.assertEqual(list(c), sorted(c))                # keep original ordering
                     self.assertTrue(all(e in values for e in c))           # elements taken kutoka input iterable
                     self.assertEqual(list(c),
-                                     [e for e in values if e in c])      # comb is a subsequence of the input iterable
+                                     [e for e in values ikiwa e in c])      # comb is a subsequence of the input iterable
                 self.assertEqual(result, list(combinations1(values, r))) # matches first pure python version
                 self.assertEqual(result, list(combinations2(values, r))) # matches second pure python version
                 self.assertEqual(result, list(combinations3(values, r))) # matches second pure python version
@@ -284,17 +284,17 @@ class TestBasicOps(unittest.TestCase):
                     self.pickletest(proto, combinations(values, r))      # test pickling
 
     @support.bigaddrspacetest
-    def test_combinations_overflow(self):
+    eleza test_combinations_overflow(self):
         with self.assertRaises((OverflowError, MemoryError)):
             combinations("AA", 2**29)
 
         # Test implementation detail:  tuple re-use
     @support.impl_detail("tuple reuse is specific to CPython")
-    def test_combinations_tuple_reuse(self):
+    eleza test_combinations_tuple_reuse(self):
         self.assertEqual(len(set(map(id, combinations('abcde', 3)))), 1)
         self.assertNotEqual(len(set(map(id, list(combinations('abcde', 3))))), 1)
 
-    def test_combinations_with_replacement(self):
+    eleza test_combinations_with_replacement(self):
         cwr = combinations_with_replacement
         self.assertRaises(TypeError, cwr, 'abc')       # missing r argument
         self.assertRaises(TypeError, cwr, 'abc', 2, 1) # too many arguments
@@ -310,36 +310,36 @@ class TestBasicOps(unittest.TestCase):
                              [('A','B'), ('A','C'), ('B','B'), ('B','C'), ('C','C')])
 
 
-        def cwr1(iterable, r):
+        eleza cwr1(iterable, r):
             'Pure python version shown in the docs'
             # number items returned:  (n+r-1)! / r! / (n-1)! when n>0
             pool = tuple(iterable)
             n = len(pool)
-            if not n and r:
+            ikiwa not n and r:
                 return
             indices = [0] * r
             yield tuple(pool[i] for i in indices)
             while 1:
                 for i in reversed(range(r)):
-                    if indices[i] != n - 1:
+                    ikiwa indices[i] != n - 1:
                         break
                 else:
                     return
                 indices[i:] = [indices[i] + 1] * (r - i)
                 yield tuple(pool[i] for i in indices)
 
-        def cwr2(iterable, r):
+        eleza cwr2(iterable, r):
             'Pure python version shown in the docs'
             pool = tuple(iterable)
             n = len(pool)
             for indices in product(range(n), repeat=r):
-                if sorted(indices) == list(indices):
+                ikiwa sorted(indices) == list(indices):
                     yield tuple(pool[i] for i in indices)
 
-        def numcombs(n, r):
-            if not n:
-                return 0 if r else 1
-            return fact(n+r-1) / fact(r)/ fact(n-1)
+        eleza numcombs(n, r):
+            ikiwa not n:
+                rudisha 0 ikiwa r else 1
+            rudisha fact(n+r-1) / fact(r)/ fact(n-1)
 
         for n in range(7):
             values = [5*x-12 for x in range(n)]
@@ -351,7 +351,7 @@ class TestBasicOps(unittest.TestCase):
                 self.assertEqual(result, sorted(result))                # lexicographic order
 
                 regular_combs = list(combinations(values, r))           # compare to combs without replacement
-                if n == 0 or r <= 1:
+                ikiwa n == 0 or r <= 1:
                     self.assertEqual(result, regular_combs)            # cases that should be identical
                 else:
                     self.assertTrue(set(result) >= set(regular_combs))     # rest should be supersets of regular combs
@@ -363,7 +363,7 @@ class TestBasicOps(unittest.TestCase):
                     self.assertEqual(list(c), sorted(c))                # keep original ordering
                     self.assertTrue(all(e in values for e in c))           # elements taken kutoka input iterable
                     self.assertEqual(noruns,
-                                     [e for e in values if e in c])     # comb is a subsequence of the input iterable
+                                     [e for e in values ikiwa e in c])     # comb is a subsequence of the input iterable
                 self.assertEqual(result, list(cwr1(values, r)))         # matches first pure python version
                 self.assertEqual(result, list(cwr2(values, r)))         # matches second pure python version
 
@@ -371,18 +371,18 @@ class TestBasicOps(unittest.TestCase):
                     self.pickletest(proto, cwr(values,r))               # test pickling
 
     @support.bigaddrspacetest
-    def test_combinations_with_replacement_overflow(self):
+    eleza test_combinations_with_replacement_overflow(self):
         with self.assertRaises((OverflowError, MemoryError)):
             combinations_with_replacement("AA", 2**30)
 
         # Test implementation detail:  tuple re-use
     @support.impl_detail("tuple reuse is specific to CPython")
-    def test_combinations_with_replacement_tuple_reuse(self):
+    eleza test_combinations_with_replacement_tuple_reuse(self):
         cwr = combinations_with_replacement
         self.assertEqual(len(set(map(id, cwr('abcde', 3)))), 1)
         self.assertNotEqual(len(set(map(id, list(cwr('abcde', 3))))), 1)
 
-    def test_permutations(self):
+    eleza test_permutations(self):
         self.assertRaises(TypeError, permutations)              # too few arguments
         self.assertRaises(TypeError, permutations, 'abc', 2, 1) # too many arguments
         self.assertRaises(TypeError, permutations, None)        # pool is not iterable
@@ -392,12 +392,12 @@ class TestBasicOps(unittest.TestCase):
         self.assertEqual(list(permutations(range(3), 2)),
                                            [(0,1), (0,2), (1,0), (1,2), (2,0), (2,1)])
 
-        def permutations1(iterable, r=None):
+        eleza permutations1(iterable, r=None):
             'Pure python version shown in the docs'
             pool = tuple(iterable)
             n = len(pool)
-            r = n if r is None else r
-            if r > n:
+            r = n ikiwa r is None else r
+            ikiwa r > n:
                 return
             indices = list(range(n))
             cycles = list(range(n-r+1, n+1))[::-1]
@@ -405,7 +405,7 @@ class TestBasicOps(unittest.TestCase):
             while n:
                 for i in reversed(range(r)):
                     cycles[i] -= 1
-                    if cycles[i] == 0:
+                    ikiwa cycles[i] == 0:
                         indices[i:] = indices[i+1:] + indices[i:i+1]
                         cycles[i] = n - i
                     else:
@@ -416,20 +416,20 @@ class TestBasicOps(unittest.TestCase):
                 else:
                     return
 
-        def permutations2(iterable, r=None):
+        eleza permutations2(iterable, r=None):
             'Pure python version shown in the docs'
             pool = tuple(iterable)
             n = len(pool)
-            r = n if r is None else r
+            r = n ikiwa r is None else r
             for indices in product(range(n), repeat=r):
-                if len(set(indices)) == r:
+                ikiwa len(set(indices)) == r:
                     yield tuple(pool[i] for i in indices)
 
         for n in range(7):
             values = [5*x-12 for x in range(n)]
             for r in range(n+2):
                 result = list(permutations(values, r))
-                self.assertEqual(len(result), 0 if r>n else fact(n) / fact(n-r))      # right number of perms
+                self.assertEqual(len(result), 0 ikiwa r>n else fact(n) / fact(n-r))      # right number of perms
                 self.assertEqual(len(result), len(set(result)))         # no repeats
                 self.assertEqual(result, sorted(result))                # lexicographic order
                 for p in result:
@@ -438,7 +438,7 @@ class TestBasicOps(unittest.TestCase):
                     self.assertTrue(all(e in values for e in p))           # elements taken kutoka input iterable
                 self.assertEqual(result, list(permutations1(values, r))) # matches first pure python version
                 self.assertEqual(result, list(permutations2(values, r))) # matches second pure python version
-                if r == n:
+                ikiwa r == n:
                     self.assertEqual(result, list(permutations(values, None))) # test r as None
                     self.assertEqual(result, list(permutations(values)))       # test default r
 
@@ -446,16 +446,16 @@ class TestBasicOps(unittest.TestCase):
                     self.pickletest(proto, permutations(values, r))     # test pickling
 
     @support.bigaddrspacetest
-    def test_permutations_overflow(self):
+    eleza test_permutations_overflow(self):
         with self.assertRaises((OverflowError, MemoryError)):
             permutations("A", 2**30)
 
     @support.impl_detail("tuple reuse is specific to CPython")
-    def test_permutations_tuple_reuse(self):
+    eleza test_permutations_tuple_reuse(self):
         self.assertEqual(len(set(map(id, permutations('abcde', 3)))), 1)
         self.assertNotEqual(len(set(map(id, list(permutations('abcde', 3))))), 1)
 
-    def test_combinatorics(self):
+    eleza test_combinatorics(self):
         # Test relationships between product(), permutations(),
         # combinations() and combinations_with_replacement().
 
@@ -469,9 +469,9 @@ class TestBasicOps(unittest.TestCase):
 
                 # Check size
                 self.assertEqual(len(prod), n**r)
-                self.assertEqual(len(cwr), (fact(n+r-1) / fact(r)/ fact(n-1)) if n else (not r))
-                self.assertEqual(len(perm), 0 if r>n else fact(n) / fact(n-r))
-                self.assertEqual(len(comb), 0 if r>n else fact(n) / fact(r) / fact(n-r))
+                self.assertEqual(len(cwr), (fact(n+r-1) / fact(r)/ fact(n-1)) ikiwa n else (not r))
+                self.assertEqual(len(perm), 0 ikiwa r>n else fact(n) / fact(n-r))
+                self.assertEqual(len(comb), 0 ikiwa r>n else fact(n) / fact(r) / fact(n-r))
 
                 # Check lexicographic order without repeated tuples
                 self.assertEqual(prod, sorted(set(prod)))
@@ -480,15 +480,15 @@ class TestBasicOps(unittest.TestCase):
                 self.assertEqual(comb, sorted(set(comb)))
 
                 # Check interrelationships
-                self.assertEqual(cwr, [t for t in prod if sorted(t)==list(t)]) # cwr: prods which are sorted
-                self.assertEqual(perm, [t for t in prod if len(set(t))==r])    # perm: prods with no dups
-                self.assertEqual(comb, [t for t in perm if sorted(t)==list(t)]) # comb: perms that are sorted
-                self.assertEqual(comb, [t for t in cwr if len(set(t))==r])      # comb: cwrs without dups
+                self.assertEqual(cwr, [t for t in prod ikiwa sorted(t)==list(t)]) # cwr: prods which are sorted
+                self.assertEqual(perm, [t for t in prod ikiwa len(set(t))==r])    # perm: prods with no dups
+                self.assertEqual(comb, [t for t in perm ikiwa sorted(t)==list(t)]) # comb: perms that are sorted
+                self.assertEqual(comb, [t for t in cwr ikiwa len(set(t))==r])      # comb: cwrs without dups
                 self.assertEqual(comb, list(filter(set(cwr).__contains__, perm)))     # comb: perm that is a cwr
                 self.assertEqual(comb, list(filter(set(perm).__contains__, cwr)))     # comb: cwr that is a perm
                 self.assertEqual(comb, sorted(set(cwr) & set(perm)))            # comb: both a cwr and a perm
 
-    def test_compress(self):
+    eleza test_compress(self):
         self.assertEqual(list(compress(data='ABCDEF', selectors=[1,0,1,0,1,1])), list('ACEF'))
         self.assertEqual(list(compress('ABCDEF', [1,0,1,0,1,1])), list('ACEF'))
         self.assertEqual(list(compress('ABCDEF', [0,0,0,0,0,0])), list(''))
@@ -496,8 +496,8 @@ class TestBasicOps(unittest.TestCase):
         self.assertEqual(list(compress('ABCDEF', [1,0,1])), list('AC'))
         self.assertEqual(list(compress('ABC', [0,1,1,1,1,1])), list('BC'))
         n = 10000
-        data = chain.from_iterable(repeat(range(6), n))
-        selectors = chain.from_iterable(repeat((0, 1)))
+        data = chain.kutoka_iterable(repeat(range(6), n))
+        selectors = chain.kutoka_iterable(repeat((0, 1)))
         self.assertEqual(list(compress(data, selectors)), [1,3,5] * n)
         self.assertRaises(TypeError, compress, None, range(6))      # 1st arg not iterable
         self.assertRaises(TypeError, compress, range(6), None)      # 2nd arg not iterable
@@ -517,12 +517,12 @@ class TestBasicOps(unittest.TestCase):
                 self.assertEqual(list(op(compress(data=data, selectors=selectors))), list(result1))
                 self.assertEqual(list(op(compress(data, selectors))), list(result1))
                 testIntermediate = compress(data, selectors)
-                if result1:
+                ikiwa result1:
                     next(testIntermediate)
                     self.assertEqual(list(op(testIntermediate)), list(result2))
 
 
-    def test_count(self):
+    eleza test_count(self):
         self.assertEqual(lzip('abc',count()), [('a', 0), ('b', 1), ('c', 2)])
         self.assertEqual(lzip('abc',count(3)), [('a', 3), ('b', 4), ('c', 5)])
         self.assertEqual(take(2, lzip('abc',count(3))), [('a', 3), ('b', 4)])
@@ -570,7 +570,7 @@ class TestBasicOps(unittest.TestCase):
         #check proper internal error handling for large "step' sizes
         count(1, maxsize+5); sys.exc_info()
 
-    def test_count_with_stride(self):
+    eleza test_count_with_stride(self):
         self.assertEqual(lzip('abc',count(2,3)), [('a', 2), ('b', 5), ('c', 8)])
         self.assertEqual(lzip('abc',count(start=2,step=3)),
                          [('a', 2), ('b', 5), ('c', 8)])
@@ -617,7 +617,7 @@ class TestBasicOps(unittest.TestCase):
             for j in  (-sys.maxsize-5, -sys.maxsize+5 ,-10, -1, 0, 1, 10, sys.maxsize-5, sys.maxsize+5):
                 # Test repr
                 r1 = repr(count(i, j))
-                if j == 1:
+                ikiwa j == 1:
                     r2 = ('count(%r)' % i)
                 else:
                     r2 = ('count(%r, %r)' % (i, j))
@@ -625,7 +625,7 @@ class TestBasicOps(unittest.TestCase):
                 for proto in range(pickle.HIGHEST_PROTOCOL + 1):
                     self.pickletest(proto, count(i, j))
 
-    def test_cycle(self):
+    eleza test_cycle(self):
         self.assertEqual(take(10, cycle('abc')), list('abcabcabca'))
         self.assertEqual(list(cycle('')), [])
         self.assertRaises(TypeError, cycle)
@@ -667,7 +667,7 @@ class TestBasicOps(unittest.TestCase):
             d = pickle.loads(p)                  # rebuild the cycle object
             self.assertEqual(take(20, d), list('cdeabcdeabcdeabcdeab'))
 
-    def test_cycle_setstate(self):
+    eleza test_cycle_setstate(self):
         # Verify both modes for restoring state
 
         # Mode 0 is efficient.  It uses an incompletely consumed input
@@ -703,7 +703,7 @@ class TestBasicOps(unittest.TestCase):
         self.assertRaises(TypeError, cycle('').__setstate__, ())
         self.assertRaises(TypeError, cycle('').__setstate__, ([],))
 
-    def test_groupby(self):
+    eleza test_groupby(self):
         # Check whether it accepts arguments correctly
         self.assertEqual([], list(groupby([])))
         self.assertEqual([], list(groupby([], key=id)))
@@ -784,7 +784,7 @@ class TestBasicOps(unittest.TestCase):
         r = [k for k, g in groupby(sorted(s))]
         self.assertEqual(r, ['a', 'b', 'c', 'd', 'r'])
         # sort s | uniq -d
-        r = [k for k, g in groupby(sorted(s)) if list(islice(g,1,2))]
+        r = [k for k, g in groupby(sorted(s)) ikiwa list(islice(g,1,2))]
         self.assertEqual(r, ['a', 'b', 'r'])
         # sort s | uniq -c
         r = [(len(list(g)), k) for k, g in groupby(sorted(s))]
@@ -794,14 +794,14 @@ class TestBasicOps(unittest.TestCase):
         self.assertEqual(r, [(5, 'a'), (2, 'r'), (2, 'b')])
 
         # iter.__next__ failure
-        class ExpectedError(Exception):
+        kundi ExpectedError(Exception):
             pass
-        def delayed_raise(n=0):
+        eleza delayed_raise(n=0):
             for i in range(n):
                 yield 'yo'
             raise ExpectedError
-        def gulp(iterable, keyp=None, func=list):
-            return [func(g) for k, g in groupby(iterable, keyp)]
+        eleza gulp(iterable, keyp=None, func=list):
+            rudisha [func(g) for k, g in groupby(iterable, keyp)]
 
         # iter.__next__ failure on outer object
         self.assertRaises(ExpectedError, gulp, delayed_raise(0))
@@ -809,8 +809,8 @@ class TestBasicOps(unittest.TestCase):
         self.assertRaises(ExpectedError, gulp, delayed_raise(1))
 
         # __eq__ failure
-        class DummyCmp:
-            def __eq__(self, dst):
+        kundi DummyCmp:
+            eleza __eq__(self, dst):
                 raise ExpectedError
         s = [DummyCmp(), DummyCmp(), None]
 
@@ -820,10 +820,10 @@ class TestBasicOps(unittest.TestCase):
         self.assertRaises(ExpectedError, gulp, s)
 
         # keyfunc failure
-        def keyfunc(obj):
-            if keyfunc.skip > 0:
+        eleza keyfunc(obj):
+            ikiwa keyfunc.skip > 0:
                 keyfunc.skip -= 1
-                return obj
+                rudisha obj
             else:
                 raise ExpectedError
 
@@ -833,7 +833,7 @@ class TestBasicOps(unittest.TestCase):
         keyfunc.skip = 1
         self.assertRaises(ExpectedError, gulp, [None, None], keyfunc)
 
-    def test_filter(self):
+    eleza test_filter(self):
         self.assertEqual(list(filter(isEven, range(6))), [0,2,4])
         self.assertEqual(list(filter(None, [0,1,0,2,0])), [1,2])
         self.assertEqual(list(filter(bool, [0,1,0,2,0])), [1,2])
@@ -860,7 +860,7 @@ class TestBasicOps(unittest.TestCase):
             c = filter(isEven, range(6))
             self.pickletest(proto, c)
 
-    def test_filterfalse(self):
+    eleza test_filterfalse(self):
         self.assertEqual(list(filterfalse(isEven, range(6))), [1,3,5])
         self.assertEqual(list(filterfalse(None, [0,1,0,2,0])), [0,0,0])
         self.assertEqual(list(filterfalse(bool, [0,1,0,2,0])), [0,0,0])
@@ -873,7 +873,7 @@ class TestBasicOps(unittest.TestCase):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             self.pickletest(proto, filterfalse(isEven, range(6)))
 
-    def test_zip(self):
+    eleza test_zip(self):
         # XXX This is rather silly now that builtin zip() calls zip()...
         ans = [(x,y) for x, y in zip('abc',count())]
         self.assertEqual(ans, [('a', 0), ('b', 1), ('c', 2)])
@@ -890,11 +890,11 @@ class TestBasicOps(unittest.TestCase):
                          lzip('abc', 'def'))
 
     @support.impl_detail("tuple reuse is specific to CPython")
-    def test_zip_tuple_reuse(self):
+    eleza test_zip_tuple_reuse(self):
         ids = list(map(id, zip('abc', 'def')))
         self.assertEqual(min(ids), max(ids))
         ids = list(map(id, list(zip('abc', 'def'))))
-        self.assertEqual(len(dict.fromkeys(ids)), len(ids))
+        self.assertEqual(len(dict.kutokakeys(ids)), len(ids))
 
         # check copy, deepcopy, pickle
         ans = [(x,y) for x, y in copy.copy(zip('abc',count()))]
@@ -916,7 +916,7 @@ class TestBasicOps(unittest.TestCase):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             self.pickletest(proto, zip('abc', count()))
 
-    def test_ziplongest(self):
+    eleza test_ziplongest(self):
         for args in [
                 ['abc', range(6)],
                 [range(6), 'abc'],
@@ -924,7 +924,7 @@ class TestBasicOps(unittest.TestCase):
                 [range(1000), range(0), range(3000,3050), range(1200), range(1500)],
                 [range(1000), range(0), range(3000,3050), range(1200), range(1500), range(0)],
             ]:
-            target = [tuple([arg[i] if i < len(arg) else None for arg in args])
+            target = [tuple([arg[i] ikiwa i < len(arg) else None for arg in args])
                       for i in range(max(map(len, args)))]
             self.assertEqual(list(zip_longest(*args)), target)
             self.assertEqual(list(zip_longest(*args, **{})), target)
@@ -959,24 +959,24 @@ class TestBasicOps(unittest.TestCase):
                          list(zip('abc', 'def')))
 
     @support.impl_detail("tuple reuse is specific to CPython")
-    def test_zip_longest_tuple_reuse(self):
+    eleza test_zip_longest_tuple_reuse(self):
         ids = list(map(id, zip_longest('abc', 'def')))
         self.assertEqual(min(ids), max(ids))
         ids = list(map(id, list(zip_longest('abc', 'def'))))
-        self.assertEqual(len(dict.fromkeys(ids)), len(ids))
+        self.assertEqual(len(dict.kutokakeys(ids)), len(ids))
 
-    def test_zip_longest_pickling(self):
+    eleza test_zip_longest_pickling(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             self.pickletest(proto, zip_longest("abc", "def"))
             self.pickletest(proto, zip_longest("abc", "defgh"))
             self.pickletest(proto, zip_longest("abc", "defgh", fillvalue=1))
             self.pickletest(proto, zip_longest("", "defgh"))
 
-    def test_zip_longest_bad_iterable(self):
+    eleza test_zip_longest_bad_iterable(self):
         exception = TypeError()
 
-        class BadIterable:
-            def __iter__(self):
+        kundi BadIterable:
+            eleza __iter__(self):
                 raise exception
 
         with self.assertRaises(TypeError) as cm:
@@ -984,20 +984,20 @@ class TestBasicOps(unittest.TestCase):
 
         self.assertIs(cm.exception, exception)
 
-    def test_bug_7244(self):
+    eleza test_bug_7244(self):
 
-        class Repeater:
-            # this class is similar to itertools.repeat
-            def __init__(self, o, t, e):
+        kundi Repeater:
+            # this kundi is similar to itertools.repeat
+            eleza __init__(self, o, t, e):
                 self.o = o
                 self.t = int(t)
                 self.e = e
-            def __iter__(self): # its iterator is itself
-                return self
-            def __next__(self):
-                if self.t > 0:
+            eleza __iter__(self): # its iterator is itself
+                rudisha self
+            eleza __next__(self):
+                ikiwa self.t > 0:
                     self.t -= 1
-                    return self.o
+                    rudisha self.o
                 else:
                     raise self.e
 
@@ -1005,13 +1005,13 @@ class TestBasicOps(unittest.TestCase):
         # with Undetected Error and Stop Iteration
         r1 = Repeater(1, 3, StopIteration)
         r2 = Repeater(2, 4, StopIteration)
-        def run(r1, r2):
+        eleza run(r1, r2):
             result = []
             for i, j in zip_longest(r1, r2, fillvalue=0):
                 with support.captured_output('stdout'):
-                    print((i, j))
+                    andika((i, j))
                 result.append((i, j))
-            return result
+            rudisha result
         self.assertEqual(run(r1, r2), [(1,2), (1,2), (1,2), (0,2)])
 
         # Formerly, the RuntimeError would be lost
@@ -1024,7 +1024,7 @@ class TestBasicOps(unittest.TestCase):
         self.assertEqual(next(it), (1, 2))
         self.assertRaises(RuntimeError, next, it)
 
-    def test_product(self):
+    eleza test_product(self):
         for args, result in [
             ([], [()]),                     # zero iterables
             (['ab'], [('a',), ('b',)]),     # one iterable
@@ -1040,19 +1040,19 @@ class TestBasicOps(unittest.TestCase):
         self.assertEqual(len(list(product(*[range(7)]*6))), 7**6)
         self.assertRaises(TypeError, product, range(6), None)
 
-        def product1(*args, **kwds):
+        eleza product1(*args, **kwds):
             pools = list(map(tuple, args)) * kwds.get('repeat', 1)
             n = len(pools)
-            if n == 0:
+            ikiwa n == 0:
                 yield ()
                 return
-            if any(len(pool) == 0 for pool in pools):
+            ikiwa any(len(pool) == 0 for pool in pools):
                 return
             indices = [0] * n
             yield tuple(pool[i] for pool, i in zip(pools, indices))
             while 1:
                 for i in reversed(range(n)):  # right to left
-                    if indices[i] == len(pools[i]) - 1:
+                    ikiwa indices[i] == len(pools[i]) - 1:
                         continue
                     indices[i] += 1
                     for j in range(i+1, n):
@@ -1062,7 +1062,7 @@ class TestBasicOps(unittest.TestCase):
                 else:
                     return
 
-        def product2(*args, **kwds):
+        eleza product2(*args, **kwds):
             'Pure python version used in docs'
             pools = list(map(tuple, args)) * kwds.get('repeat', 1)
             result = [[]]
@@ -1083,16 +1083,16 @@ class TestBasicOps(unittest.TestCase):
             self.assertEqual(len(list(product(*args))), expected_len)
 
     @support.bigaddrspacetest
-    def test_product_overflow(self):
+    eleza test_product_overflow(self):
         with self.assertRaises((OverflowError, MemoryError)):
             product(*(['ab']*2**5), repeat=2**25)
 
     @support.impl_detail("tuple reuse is specific to CPython")
-    def test_product_tuple_reuse(self):
+    eleza test_product_tuple_reuse(self):
         self.assertEqual(len(set(map(id, product('abc', 'def')))), 1)
         self.assertNotEqual(len(set(map(id, list(product('abc', 'def'))))), 1)
 
-    def test_product_pickling(self):
+    eleza test_product_pickling(self):
         # check copy, deepcopy, pickle
         for args, result in [
             ([], [()]),                     # zero iterables
@@ -1107,17 +1107,17 @@ class TestBasicOps(unittest.TestCase):
             for proto in range(pickle.HIGHEST_PROTOCOL + 1):
                 self.pickletest(proto, product(*args))
 
-    def test_product_issue_25021(self):
+    eleza test_product_issue_25021(self):
         # test that indices are properly clamped to the length of the tuples
         p = product((1, 2),(3,))
-        p.__setstate__((0, 0x1000))  # will access tuple element 1 if not clamped
+        p.__setstate__((0, 0x1000))  # will access tuple element 1 ikiwa not clamped
         self.assertEqual(next(p), (2, 3))
         # test that empty tuple in the list will result in an immediate StopIteration
         p = product((1, 2), (), (3,))
-        p.__setstate__((0, 0, 0x1000))  # will access tuple element 1 if not clamped
+        p.__setstate__((0, 0, 0x1000))  # will access tuple element 1 ikiwa not clamped
         self.assertRaises(StopIteration, next, p)
 
-    def test_repeat(self):
+    eleza test_repeat(self):
         self.assertEqual(list(repeat(object='a', times=3)), ['a', 'a', 'a'])
         self.assertEqual(lzip(range(3),repeat('a')),
                          [(0, 'a'), (1, 'a'), (2, 'a')])
@@ -1143,13 +1143,13 @@ class TestBasicOps(unittest.TestCase):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             self.pickletest(proto, repeat(object='a', times=10))
 
-    def test_repeat_with_negative_times(self):
+    eleza test_repeat_with_negative_times(self):
         self.assertEqual(repr(repeat('a', -1)), "repeat('a', 0)")
         self.assertEqual(repr(repeat('a', -2)), "repeat('a', 0)")
         self.assertEqual(repr(repeat('a', times=-1)), "repeat('a', 0)")
         self.assertEqual(repr(repeat('a', times=-2)), "repeat('a', 0)")
 
-    def test_map(self):
+    eleza test_map(self):
         self.assertEqual(list(map(operator.pow, range(3), range(1,7))),
                          [0**1, 1**2, 2**3])
         self.assertEqual(list(map(tupleize, 'abc', range(5))),
@@ -1179,7 +1179,7 @@ class TestBasicOps(unittest.TestCase):
             c = map(tupleize, 'abc', count())
             self.pickletest(proto, c)
 
-    def test_starmap(self):
+    eleza test_starmap(self):
         self.assertEqual(list(starmap(operator.pow, zip(range(3), range(1,7)))),
                          [0**1, 1**2, 2**3])
         self.assertEqual(take(3, starmap(operator.pow, zip(count(), count(1)))),
@@ -1206,7 +1206,7 @@ class TestBasicOps(unittest.TestCase):
             c = starmap(operator.pow, zip(range(3), range(1,7)))
             self.pickletest(proto, c)
 
-    def test_islice(self):
+    eleza test_islice(self):
         for args in [          # islice(args) should agree with range(args)
                 (10, 20, 3),
                 (10, 3, 20),
@@ -1289,18 +1289,18 @@ class TestBasicOps(unittest.TestCase):
 
         # Issue #30537: islice can accept integer-like objects as
         # arguments
-        class IntLike(object):
-            def __init__(self, val):
+        kundi IntLike(object):
+            eleza __init__(self, val):
                 self.val = val
-            def __index__(self):
-                return self.val
+            eleza __index__(self):
+                rudisha self.val
         self.assertEqual(list(islice(range(100), IntLike(10))), list(range(10)))
         self.assertEqual(list(islice(range(100), IntLike(10), IntLike(50))),
                          list(range(10, 50)))
         self.assertEqual(list(islice(range(100), IntLike(10), IntLike(50), IntLike(5))),
                          list(range(10,50,5)))
 
-    def test_takewhile(self):
+    eleza test_takewhile(self):
         data = [1, 3, 5, 20, 2, 4, 6, 8]
         self.assertEqual(list(takewhile(underten, data)), [1, 3, 5])
         self.assertEqual(list(takewhile(underten, [])), [])
@@ -1320,7 +1320,7 @@ class TestBasicOps(unittest.TestCase):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             self.pickletest(proto, takewhile(underten, data))
 
-    def test_dropwhile(self):
+    eleza test_dropwhile(self):
         data = [1, 3, 5, 20, 2, 4, 6, 8]
         self.assertEqual(list(dropwhile(underten, data)), [20, 2, 4, 6, 8])
         self.assertEqual(list(dropwhile(underten, [])), [])
@@ -1337,7 +1337,7 @@ class TestBasicOps(unittest.TestCase):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             self.pickletest(proto, dropwhile(underten, data))
 
-    def test_tee(self):
+    eleza test_tee(self):
         n = 200
 
         a, b = tee([])        # test empty iterator
@@ -1486,7 +1486,7 @@ class TestBasicOps(unittest.TestCase):
             self.pickletest(proto, b, compare=ans)
 
     # Issue 13454: Crash when deleting backward iterator kutoka tee()
-    def test_tee_del_backward(self):
+    eleza test_tee_del_backward(self):
         forward, backward = tee(repeat(None, 20000000))
         try:
             any(forward)  # exhaust the iterator
@@ -1495,28 +1495,28 @@ class TestBasicOps(unittest.TestCase):
             del forward, backward
             raise
 
-    def test_tee_reenter(self):
-        class I:
+    eleza test_tee_reenter(self):
+        kundi I:
             first = True
-            def __iter__(self):
-                return self
-            def __next__(self):
+            eleza __iter__(self):
+                rudisha self
+            eleza __next__(self):
                 first = self.first
                 self.first = False
-                if first:
-                    return next(b)
+                ikiwa first:
+                    rudisha next(b)
 
         a, b = tee(I())
         with self.assertRaisesRegex(RuntimeError, "tee"):
             next(a)
 
-    def test_tee_concurrent(self):
+    eleza test_tee_concurrent(self):
         start = threading.Event()
         finish = threading.Event()
-        class I:
-            def __iter__(self):
-                return self
-            def __next__(self):
+        kundi I:
+            eleza __iter__(self):
+                rudisha self
+            eleza __next__(self):
                 start.set()
                 finish.wait()
 
@@ -1531,7 +1531,7 @@ class TestBasicOps(unittest.TestCase):
             finish.set()
             thread.join()
 
-    def test_StopIteration(self):
+    eleza test_StopIteration(self):
         self.assertRaises(StopIteration, next, zip())
 
         for f in (chain, cycle, zip, groupby):
@@ -1554,12 +1554,12 @@ class TestBasicOps(unittest.TestCase):
             self.assertRaises(StopIteration, next, f(lambda x:x, []))
             self.assertRaises(StopIteration, next, f(lambda x:x, StopNow()))
 
-class TestExamples(unittest.TestCase):
+kundi TestExamples(unittest.TestCase):
 
-    def test_accumulate(self):
+    eleza test_accumulate(self):
         self.assertEqual(list(accumulate([1,2,3,4,5])), [1, 3, 6, 10, 15])
 
-    def test_accumulate_reducible(self):
+    eleza test_accumulate_reducible(self):
         # check copy, deepcopy, pickle
         data = [1, 2, 3, 4, 5]
         accumulated = [1, 3, 6, 10, 15]
@@ -1574,7 +1574,7 @@ class TestExamples(unittest.TestCase):
         self.assertEqual(list(copy.deepcopy(it)), accumulated[1:])
         self.assertEqual(list(copy.copy(it)), accumulated[1:])
 
-    def test_accumulate_reducible_none(self):
+    eleza test_accumulate_reducible_none(self):
         # Issue #25718: total is None
         it = accumulate([None, None, None], operator.is_)
         self.assertEqual(next(it), None)
@@ -1584,90 +1584,90 @@ class TestExamples(unittest.TestCase):
         self.assertEqual(list(copy.deepcopy(it)), [True, False])
         self.assertEqual(list(copy.copy(it)), [True, False])
 
-    def test_chain(self):
+    eleza test_chain(self):
         self.assertEqual(''.join(chain('ABC', 'DEF')), 'ABCDEF')
 
-    def test_chain_from_iterable(self):
-        self.assertEqual(''.join(chain.from_iterable(['ABC', 'DEF'])), 'ABCDEF')
+    eleza test_chain_kutoka_iterable(self):
+        self.assertEqual(''.join(chain.kutoka_iterable(['ABC', 'DEF'])), 'ABCDEF')
 
-    def test_combinations(self):
+    eleza test_combinations(self):
         self.assertEqual(list(combinations('ABCD', 2)),
                          [('A','B'), ('A','C'), ('A','D'), ('B','C'), ('B','D'), ('C','D')])
         self.assertEqual(list(combinations(range(4), 3)),
                          [(0,1,2), (0,1,3), (0,2,3), (1,2,3)])
 
-    def test_combinations_with_replacement(self):
+    eleza test_combinations_with_replacement(self):
         self.assertEqual(list(combinations_with_replacement('ABC', 2)),
                          [('A','A'), ('A','B'), ('A','C'), ('B','B'), ('B','C'), ('C','C')])
 
-    def test_compress(self):
+    eleza test_compress(self):
         self.assertEqual(list(compress('ABCDEF', [1,0,1,0,1,1])), list('ACEF'))
 
-    def test_count(self):
+    eleza test_count(self):
         self.assertEqual(list(islice(count(10), 5)), [10, 11, 12, 13, 14])
 
-    def test_cycle(self):
+    eleza test_cycle(self):
         self.assertEqual(list(islice(cycle('ABCD'), 12)), list('ABCDABCDABCD'))
 
-    def test_dropwhile(self):
+    eleza test_dropwhile(self):
         self.assertEqual(list(dropwhile(lambda x: x<5, [1,4,6,4,1])), [6,4,1])
 
-    def test_groupby(self):
+    eleza test_groupby(self):
         self.assertEqual([k for k, g in groupby('AAAABBBCCDAABBB')],
                          list('ABCDAB'))
         self.assertEqual([(list(g)) for k, g in groupby('AAAABBBCCD')],
                          [list('AAAA'), list('BBB'), list('CC'), list('D')])
 
-    def test_filter(self):
+    eleza test_filter(self):
         self.assertEqual(list(filter(lambda x: x%2, range(10))), [1,3,5,7,9])
 
-    def test_filterfalse(self):
+    eleza test_filterfalse(self):
         self.assertEqual(list(filterfalse(lambda x: x%2, range(10))), [0,2,4,6,8])
 
-    def test_map(self):
+    eleza test_map(self):
         self.assertEqual(list(map(pow, (2,3,10), (5,2,3))), [32, 9, 1000])
 
-    def test_islice(self):
+    eleza test_islice(self):
         self.assertEqual(list(islice('ABCDEFG', 2)), list('AB'))
         self.assertEqual(list(islice('ABCDEFG', 2, 4)), list('CD'))
         self.assertEqual(list(islice('ABCDEFG', 2, None)), list('CDEFG'))
         self.assertEqual(list(islice('ABCDEFG', 0, None, 2)), list('ACEG'))
 
-    def test_zip(self):
+    eleza test_zip(self):
         self.assertEqual(list(zip('ABCD', 'xy')), [('A', 'x'), ('B', 'y')])
 
-    def test_zip_longest(self):
+    eleza test_zip_longest(self):
         self.assertEqual(list(zip_longest('ABCD', 'xy', fillvalue='-')),
                          [('A', 'x'), ('B', 'y'), ('C', '-'), ('D', '-')])
 
-    def test_permutations(self):
+    eleza test_permutations(self):
         self.assertEqual(list(permutations('ABCD', 2)),
                          list(map(tuple, 'AB AC AD BA BC BD CA CB CD DA DB DC'.split())))
         self.assertEqual(list(permutations(range(3))),
                          [(0,1,2), (0,2,1), (1,0,2), (1,2,0), (2,0,1), (2,1,0)])
 
-    def test_product(self):
+    eleza test_product(self):
         self.assertEqual(list(product('ABCD', 'xy')),
                          list(map(tuple, 'Ax Ay Bx By Cx Cy Dx Dy'.split())))
         self.assertEqual(list(product(range(2), repeat=3)),
                         [(0,0,0), (0,0,1), (0,1,0), (0,1,1),
                          (1,0,0), (1,0,1), (1,1,0), (1,1,1)])
 
-    def test_repeat(self):
+    eleza test_repeat(self):
         self.assertEqual(list(repeat(10, 3)), [10, 10, 10])
 
-    def test_stapmap(self):
+    eleza test_stapmap(self):
         self.assertEqual(list(starmap(pow, [(2,5), (3,2), (10,3)])),
                          [32, 9, 1000])
 
-    def test_takewhile(self):
+    eleza test_takewhile(self):
         self.assertEqual(list(takewhile(lambda x: x<5, [1,4,6,4,1])), [1,4])
 
 
-class TestPurePythonRoughEquivalents(unittest.TestCase):
+kundi TestPurePythonRoughEquivalents(unittest.TestCase):
 
     @staticmethod
-    def islice(iterable, *args):
+    eleza islice(iterable, *args):
         s = slice(*args)
         start, stop, step = s.start or 0, s.stop or sys.maxsize, s.step or 1
         it = iter(range(start, stop, step))
@@ -1680,7 +1680,7 @@ class TestPurePythonRoughEquivalents(unittest.TestCase):
             return
         try:
             for i, element in enumerate(iterable):
-                if i == nexti:
+                ikiwa i == nexti:
                     yield element
                     nexti = next(it)
         except StopIteration:
@@ -1688,7 +1688,7 @@ class TestPurePythonRoughEquivalents(unittest.TestCase):
             for i, element in zip(range(i + 1, stop), iterable):
                 pass
 
-    def test_islice_recipe(self):
+    eleza test_islice_recipe(self):
         self.assertEqual(list(self.islice('ABCDEFG', 2)), list('AB'))
         self.assertEqual(list(self.islice('ABCDEFG', 2, 4)), list('CD'))
         self.assertEqual(list(self.islice('ABCDEFG', 2, None)), list('CDEFG'))
@@ -1706,187 +1706,187 @@ class TestPurePythonRoughEquivalents(unittest.TestCase):
         self.assertEqual(next(c), 3)
 
 
-class TestGC(unittest.TestCase):
+kundi TestGC(unittest.TestCase):
 
-    def makecycle(self, iterator, container):
+    eleza makecycle(self, iterator, container):
         container.append(iterator)
         next(iterator)
         del container, iterator
 
-    def test_accumulate(self):
+    eleza test_accumulate(self):
         a = []
         self.makecycle(accumulate([1,2,a,3]), a)
 
-    def test_chain(self):
+    eleza test_chain(self):
         a = []
         self.makecycle(chain(a), a)
 
-    def test_chain_from_iterable(self):
+    eleza test_chain_kutoka_iterable(self):
         a = []
-        self.makecycle(chain.from_iterable([a]), a)
+        self.makecycle(chain.kutoka_iterable([a]), a)
 
-    def test_combinations(self):
+    eleza test_combinations(self):
         a = []
         self.makecycle(combinations([1,2,a,3], 3), a)
 
-    def test_combinations_with_replacement(self):
+    eleza test_combinations_with_replacement(self):
         a = []
         self.makecycle(combinations_with_replacement([1,2,a,3], 3), a)
 
-    def test_compress(self):
+    eleza test_compress(self):
         a = []
         self.makecycle(compress('ABCDEF', [1,0,1,0,1,0]), a)
 
-    def test_count(self):
+    eleza test_count(self):
         a = []
         Int = type('Int', (int,), dict(x=a))
         self.makecycle(count(Int(0), Int(1)), a)
 
-    def test_cycle(self):
+    eleza test_cycle(self):
         a = []
         self.makecycle(cycle([a]*2), a)
 
-    def test_dropwhile(self):
+    eleza test_dropwhile(self):
         a = []
         self.makecycle(dropwhile(bool, [0, a, a]), a)
 
-    def test_groupby(self):
+    eleza test_groupby(self):
         a = []
         self.makecycle(groupby([a]*2, lambda x:x), a)
 
-    def test_issue2246(self):
+    eleza test_issue2246(self):
         # Issue 2246 -- the _grouper iterator was not included in GC
         n = 10
         keyfunc = lambda x: x
         for i, j in groupby(range(n), key=keyfunc):
             keyfunc.__dict__.setdefault('x',[]).append(j)
 
-    def test_filter(self):
+    eleza test_filter(self):
         a = []
         self.makecycle(filter(lambda x:True, [a]*2), a)
 
-    def test_filterfalse(self):
+    eleza test_filterfalse(self):
         a = []
         self.makecycle(filterfalse(lambda x:False, a), a)
 
-    def test_zip(self):
+    eleza test_zip(self):
         a = []
         self.makecycle(zip([a]*2, [a]*3), a)
 
-    def test_zip_longest(self):
+    eleza test_zip_longest(self):
         a = []
         self.makecycle(zip_longest([a]*2, [a]*3), a)
         b = [a, None]
         self.makecycle(zip_longest([a]*2, [a]*3, fillvalue=b), a)
 
-    def test_map(self):
+    eleza test_map(self):
         a = []
         self.makecycle(map(lambda x:x, [a]*2), a)
 
-    def test_islice(self):
+    eleza test_islice(self):
         a = []
         self.makecycle(islice([a]*2, None), a)
 
-    def test_permutations(self):
+    eleza test_permutations(self):
         a = []
         self.makecycle(permutations([1,2,a,3], 3), a)
 
-    def test_product(self):
+    eleza test_product(self):
         a = []
         self.makecycle(product([1,2,a,3], repeat=3), a)
 
-    def test_repeat(self):
+    eleza test_repeat(self):
         a = []
         self.makecycle(repeat(a), a)
 
-    def test_starmap(self):
+    eleza test_starmap(self):
         a = []
         self.makecycle(starmap(lambda *t: t, [(a,a)]*2), a)
 
-    def test_takewhile(self):
+    eleza test_takewhile(self):
         a = []
         self.makecycle(takewhile(bool, [1, 0, a, a]), a)
 
-def R(seqn):
+eleza R(seqn):
     'Regular generator'
     for i in seqn:
         yield i
 
-class G:
+kundi G:
     'Sequence using __getitem__'
-    def __init__(self, seqn):
+    eleza __init__(self, seqn):
         self.seqn = seqn
-    def __getitem__(self, i):
-        return self.seqn[i]
+    eleza __getitem__(self, i):
+        rudisha self.seqn[i]
 
-class I:
+kundi I:
     'Sequence using iterator protocol'
-    def __init__(self, seqn):
+    eleza __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
-    def __iter__(self):
-        return self
-    def __next__(self):
-        if self.i >= len(self.seqn): raise StopIteration
+    eleza __iter__(self):
+        rudisha self
+    eleza __next__(self):
+        ikiwa self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
-        return v
+        rudisha v
 
-class Ig:
+kundi Ig:
     'Sequence using iterator protocol defined with a generator'
-    def __init__(self, seqn):
+    eleza __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
-    def __iter__(self):
+    eleza __iter__(self):
         for val in self.seqn:
             yield val
 
-class X:
+kundi X:
     'Missing __getitem__ and __iter__'
-    def __init__(self, seqn):
+    eleza __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
-    def __next__(self):
-        if self.i >= len(self.seqn): raise StopIteration
+    eleza __next__(self):
+        ikiwa self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
-        return v
+        rudisha v
 
-class N:
+kundi N:
     'Iterator missing __next__()'
-    def __init__(self, seqn):
+    eleza __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
-    def __iter__(self):
-        return self
+    eleza __iter__(self):
+        rudisha self
 
-class E:
+kundi E:
     'Test propagation of exceptions'
-    def __init__(self, seqn):
+    eleza __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
-    def __iter__(self):
-        return self
-    def __next__(self):
+    eleza __iter__(self):
+        rudisha self
+    eleza __next__(self):
         3 // 0
 
-class S:
+kundi S:
     'Test immediate stop'
-    def __init__(self, seqn):
+    eleza __init__(self, seqn):
         pass
-    def __iter__(self):
-        return self
-    def __next__(self):
+    eleza __iter__(self):
+        rudisha self
+    eleza __next__(self):
         raise StopIteration
 
-def L(seqn):
+eleza L(seqn):
     'Test multiple tiers of iterators'
-    return chain(map(lambda x:x, R(Ig(G(seqn)))))
+    rudisha chain(map(lambda x:x, R(Ig(G(seqn)))))
 
 
-class TestVariousIteratorArgs(unittest.TestCase):
+kundi TestVariousIteratorArgs(unittest.TestCase):
 
-    def test_accumulate(self):
+    eleza test_accumulate(self):
         s = [1,2,3,4,5]
         r = [1,3,6,10,15]
         n = len(s)
@@ -1897,7 +1897,7 @@ class TestVariousIteratorArgs(unittest.TestCase):
         self.assertRaises(TypeError, accumulate, N(s))
         self.assertRaises(ZeroDivisionError, list, accumulate(E(s)))
 
-    def test_chain(self):
+    eleza test_chain(self):
         for s in ("123", "", range(1000), ('do', 1.2), range(2000,2200,5)):
             for g in (G, I, Ig, S, L, R):
                 self.assertEqual(list(chain(g(s))), list(g(s)))
@@ -1906,7 +1906,7 @@ class TestVariousIteratorArgs(unittest.TestCase):
             self.assertRaises(TypeError, list, chain(N(s)))
             self.assertRaises(ZeroDivisionError, list, chain(E(s)))
 
-    def test_compress(self):
+    eleza test_compress(self):
         for s in ("123", "", range(1000), ('do', 1.2), range(2000,2200,5)):
             n = len(s)
             for g in (G, I, Ig, S, L, R):
@@ -1915,13 +1915,13 @@ class TestVariousIteratorArgs(unittest.TestCase):
             self.assertRaises(TypeError, compress, N(s), repeat(1))
             self.assertRaises(ZeroDivisionError, list, compress(E(s), repeat(1)))
 
-    def test_product(self):
+    eleza test_product(self):
         for s in ("123", "", range(1000), ('do', 1.2), range(2000,2200,5)):
             self.assertRaises(TypeError, product, X(s))
             self.assertRaises(TypeError, product, N(s))
             self.assertRaises(ZeroDivisionError, product, E(s))
 
-    def test_cycle(self):
+    eleza test_cycle(self):
         for s in ("123", "", range(1000), ('do', 1.2), range(2000,2200,5)):
             for g in (G, I, Ig, S, L, R):
                 tgtlen = len(s) * 3
@@ -1932,7 +1932,7 @@ class TestVariousIteratorArgs(unittest.TestCase):
             self.assertRaises(TypeError, cycle, N(s))
             self.assertRaises(ZeroDivisionError, list, cycle(E(s)))
 
-    def test_groupby(self):
+    eleza test_groupby(self):
         for s in (range(10), range(0), range(1000), (7,11), range(2000,2200,5)):
             for g in (G, I, Ig, S, L, R):
                 self.assertEqual([k for k, sb in groupby(g(s))], list(g(s)))
@@ -1940,25 +1940,25 @@ class TestVariousIteratorArgs(unittest.TestCase):
             self.assertRaises(TypeError, groupby, N(s))
             self.assertRaises(ZeroDivisionError, list, groupby(E(s)))
 
-    def test_filter(self):
+    eleza test_filter(self):
         for s in (range(10), range(0), range(1000), (7,11), range(2000,2200,5)):
             for g in (G, I, Ig, S, L, R):
                 self.assertEqual(list(filter(isEven, g(s))),
-                                 [x for x in g(s) if isEven(x)])
+                                 [x for x in g(s) ikiwa isEven(x)])
             self.assertRaises(TypeError, filter, isEven, X(s))
             self.assertRaises(TypeError, filter, isEven, N(s))
             self.assertRaises(ZeroDivisionError, list, filter(isEven, E(s)))
 
-    def test_filterfalse(self):
+    eleza test_filterfalse(self):
         for s in (range(10), range(0), range(1000), (7,11), range(2000,2200,5)):
             for g in (G, I, Ig, S, L, R):
                 self.assertEqual(list(filterfalse(isEven, g(s))),
-                                 [x for x in g(s) if isOdd(x)])
+                                 [x for x in g(s) ikiwa isOdd(x)])
             self.assertRaises(TypeError, filterfalse, isEven, X(s))
             self.assertRaises(TypeError, filterfalse, isEven, N(s))
             self.assertRaises(ZeroDivisionError, list, filterfalse(isEven, E(s)))
 
-    def test_zip(self):
+    eleza test_zip(self):
         for s in ("123", "", range(1000), ('do', 1.2), range(2000,2200,5)):
             for g in (G, I, Ig, S, L, R):
                 self.assertEqual(list(zip(g(s))), lzip(g(s)))
@@ -1967,7 +1967,7 @@ class TestVariousIteratorArgs(unittest.TestCase):
             self.assertRaises(TypeError, zip, N(s))
             self.assertRaises(ZeroDivisionError, list, zip(E(s)))
 
-    def test_ziplongest(self):
+    eleza test_ziplongest(self):
         for s in ("123", "", range(1000), ('do', 1.2), range(2000,2200,5)):
             for g in (G, I, Ig, S, L, R):
                 self.assertEqual(list(zip_longest(g(s))), list(zip(g(s))))
@@ -1976,7 +1976,7 @@ class TestVariousIteratorArgs(unittest.TestCase):
             self.assertRaises(TypeError, zip_longest, N(s))
             self.assertRaises(ZeroDivisionError, list, zip_longest(E(s)))
 
-    def test_map(self):
+    eleza test_map(self):
         for s in (range(10), range(0), range(100), (7,11), range(20,50,5)):
             for g in (G, I, Ig, S, L, R):
                 self.assertEqual(list(map(onearg, g(s))),
@@ -1987,7 +1987,7 @@ class TestVariousIteratorArgs(unittest.TestCase):
             self.assertRaises(TypeError, map, onearg, N(s))
             self.assertRaises(ZeroDivisionError, list, map(onearg, E(s)))
 
-    def test_islice(self):
+    eleza test_islice(self):
         for s in ("12345", "", range(1000), ('do', 1.2), range(2000,2200,5)):
             for g in (G, I, Ig, S, L, R):
                 self.assertEqual(list(islice(g(s),1,None,2)), list(g(s))[1::2])
@@ -1995,7 +1995,7 @@ class TestVariousIteratorArgs(unittest.TestCase):
             self.assertRaises(TypeError, islice, N(s), 10)
             self.assertRaises(ZeroDivisionError, list, islice(E(s), 10))
 
-    def test_starmap(self):
+    eleza test_starmap(self):
         for s in (range(10), range(0), range(100), (7,11), range(20,50,5)):
             for g in (G, I, Ig, S, L, R):
                 ss = lzip(s, s)
@@ -2005,31 +2005,31 @@ class TestVariousIteratorArgs(unittest.TestCase):
             self.assertRaises(TypeError, starmap, operator.pow, N(ss))
             self.assertRaises(ZeroDivisionError, list, starmap(operator.pow, E(ss)))
 
-    def test_takewhile(self):
+    eleza test_takewhile(self):
         for s in (range(10), range(0), range(1000), (7,11), range(2000,2200,5)):
             for g in (G, I, Ig, S, L, R):
                 tgt = []
                 for elem in g(s):
-                    if not isEven(elem): break
+                    ikiwa not isEven(elem): break
                     tgt.append(elem)
                 self.assertEqual(list(takewhile(isEven, g(s))), tgt)
             self.assertRaises(TypeError, takewhile, isEven, X(s))
             self.assertRaises(TypeError, takewhile, isEven, N(s))
             self.assertRaises(ZeroDivisionError, list, takewhile(isEven, E(s)))
 
-    def test_dropwhile(self):
+    eleza test_dropwhile(self):
         for s in (range(10), range(0), range(1000), (7,11), range(2000,2200,5)):
             for g in (G, I, Ig, S, L, R):
                 tgt = []
                 for elem in g(s):
-                    if not tgt and isOdd(elem): continue
+                    ikiwa not tgt and isOdd(elem): continue
                     tgt.append(elem)
                 self.assertEqual(list(dropwhile(isOdd, g(s))), tgt)
             self.assertRaises(TypeError, dropwhile, isOdd, X(s))
             self.assertRaises(TypeError, dropwhile, isOdd, N(s))
             self.assertRaises(ZeroDivisionError, list, dropwhile(isOdd, E(s)))
 
-    def test_tee(self):
+    eleza test_tee(self):
         for s in ("123", "", range(1000), ('do', 1.2), range(2000,2200,5)):
             for g in (G, I, Ig, S, L, R):
                 it1, it2 = tee(g(s))
@@ -2039,40 +2039,40 @@ class TestVariousIteratorArgs(unittest.TestCase):
             self.assertRaises(TypeError, tee, N(s))
             self.assertRaises(ZeroDivisionError, list, tee(E(s))[0])
 
-class LengthTransparency(unittest.TestCase):
+kundi LengthTransparency(unittest.TestCase):
 
-    def test_repeat(self):
+    eleza test_repeat(self):
         self.assertEqual(operator.length_hint(repeat(None, 50)), 50)
         self.assertEqual(operator.length_hint(repeat(None, 0)), 0)
         self.assertEqual(operator.length_hint(repeat(None), 12), 12)
 
-    def test_repeat_with_negative_times(self):
+    eleza test_repeat_with_negative_times(self):
         self.assertEqual(operator.length_hint(repeat(None, -1)), 0)
         self.assertEqual(operator.length_hint(repeat(None, -2)), 0)
         self.assertEqual(operator.length_hint(repeat(None, times=-1)), 0)
         self.assertEqual(operator.length_hint(repeat(None, times=-2)), 0)
 
-class RegressionTests(unittest.TestCase):
+kundi RegressionTests(unittest.TestCase):
 
-    def test_sf_793826(self):
+    eleza test_sf_793826(self):
         # Fix Armin Rigo's successful efforts to wreak havoc
 
-        def mutatingtuple(tuple1, f, tuple2):
+        eleza mutatingtuple(tuple1, f, tuple2):
             # this builds a tuple t which is a copy of tuple1,
             # then calls f(t), then mutates t to be equal to tuple2
             # (needs len(tuple1) == len(tuple2)).
-            def g(value, first=[1]):
-                if first:
+            eleza g(value, first=[1]):
+                ikiwa first:
                     del first[:]
                     f(next(z))
-                return value
+                rudisha value
             items = list(tuple2)
             items[1:1] = list(tuple1)
             gen = map(g, items)
             z = zip(*[gen]*len(tuple1))
             next(z)
 
-        def f(t):
+        eleza f(t):
             global T
             T = t
             first[:] = list(T)
@@ -2083,18 +2083,18 @@ class RegressionTests(unittest.TestCase):
         self.assertEqual(first, second)
 
 
-    def test_sf_950057(self):
+    eleza test_sf_950057(self):
         # Make sure that chain() and cycle() catch exceptions immediately
         # rather than when shifting between input sources
 
-        def gen1():
+        eleza gen1():
             hist.append(0)
             yield 1
             hist.append(1)
             raise AssertionError
             hist.append(2)
 
-        def gen2(x):
+        eleza gen2(x):
             hist.append(3)
             yield 2
             hist.append(4)
@@ -2112,45 +2112,45 @@ class RegressionTests(unittest.TestCase):
         self.assertEqual(hist, [0,1])
 
     @support.skip_if_pgo_task
-    def test_long_chain_of_empty_iterables(self):
+    eleza test_long_chain_of_empty_iterables(self):
         # Make sure itertools.chain doesn't run into recursion limits when
         # dealing with long chains of empty iterables. Even with a high
         # number this would probably only fail in Py_DEBUG mode.
-        it = chain.from_iterable(() for unused in range(10000000))
+        it = chain.kutoka_iterable(() for unused in range(10000000))
         with self.assertRaises(StopIteration):
             next(it)
 
-    def test_issue30347_1(self):
-        def f(n):
-            if n == 5:
+    eleza test_issue30347_1(self):
+        eleza f(n):
+            ikiwa n == 5:
                 list(b)
-            return n != 6
+            rudisha n != 6
         for (k, b) in groupby(range(10), f):
             list(b)  # shouldn't crash
 
-    def test_issue30347_2(self):
-        class K:
-            def __init__(self, v):
+    eleza test_issue30347_2(self):
+        kundi K:
+            eleza __init__(self, v):
                 pass
-            def __eq__(self, other):
+            eleza __eq__(self, other):
                 nonlocal i
                 i += 1
-                if i == 1:
+                ikiwa i == 1:
                     next(g, None)
-                return True
+                rudisha True
         i = 0
         g = next(groupby(range(10), K))[1]
         for j in range(2):
             next(g, None)  # shouldn't crash
 
 
-class SubclassWithKwargsTest(unittest.TestCase):
-    def test_keywords_in_subclass(self):
+kundi SubclassWithKwargsTest(unittest.TestCase):
+    eleza test_keywords_in_subclass(self):
         # count is not subclassable...
         for cls in (repeat, zip, filter, filterfalse, chain, map,
                     starmap, islice, takewhile, dropwhile, cycle, compress):
-            class Subclass(cls):
-                def __init__(self, newarg=None, *args):
+            kundi Subclass(cls):
+                eleza __init__(self, newarg=None, *args):
                     cls.__init__(self, *args)
             try:
                 Subclass(newarg=1)
@@ -2159,32 +2159,32 @@ class SubclassWithKwargsTest(unittest.TestCase):
                 self.assertNotIn("keyword arguments", err.args[0])
 
 @support.cpython_only
-class SizeofTest(unittest.TestCase):
-    def setUp(self):
+kundi SizeofTest(unittest.TestCase):
+    eleza setUp(self):
         self.ssize_t = struct.calcsize('n')
 
     check_sizeof = support.check_sizeof
 
-    def test_product_sizeof(self):
+    eleza test_product_sizeof(self):
         basesize = support.calcobjsize('3Pi')
         check = self.check_sizeof
         check(product('ab', '12'), basesize + 2 * self.ssize_t)
         check(product(*(('abc',) * 10)), basesize + 10 * self.ssize_t)
 
-    def test_combinations_sizeof(self):
+    eleza test_combinations_sizeof(self):
         basesize = support.calcobjsize('3Pni')
         check = self.check_sizeof
         check(combinations('abcd', 3), basesize + 3 * self.ssize_t)
         check(combinations(range(10), 4), basesize + 4 * self.ssize_t)
 
-    def test_combinations_with_replacement_sizeof(self):
+    eleza test_combinations_with_replacement_sizeof(self):
         cwr = combinations_with_replacement
         basesize = support.calcobjsize('3Pni')
         check = self.check_sizeof
         check(cwr('abcd', 3), basesize + 3 * self.ssize_t)
         check(cwr(range(10), 4), basesize + 4 * self.ssize_t)
 
-    def test_permutations_sizeof(self):
+    eleza test_permutations_sizeof(self):
         basesize = support.calcobjsize('4Pni')
         check = self.check_sizeof
         check(permutations('abcd'),
@@ -2202,7 +2202,7 @@ libreftest = """ Doctest for examples in the library reference: libitertools.tex
 
 >>> amounts = [120.15, 764.05, 823.14]
 >>> for checknum, amount in zip(count(1200), amounts):
-...     print('Check %d is for $%.2f' % (checknum, amount))
+...     andika('Check %d is for $%.2f' % (checknum, amount))
 ...
 Check 1200 is for $120.15
 Check 1201 is for $764.05
@@ -2210,7 +2210,7 @@ Check 1202 is for $823.14
 
 >>> agiza operator
 >>> for cube in map(operator.pow, range(1,4), repeat(3)):
-...    print(cube)
+...    andika(cube)
 ...
 1
 8
@@ -2218,7 +2218,7 @@ Check 1202 is for $823.14
 
 >>> reportlines = ['EuroPython', 'Roster', '', 'alex', '', 'laura', '', 'martin', '', 'walter', '', 'samuele']
 >>> for name in islice(reportlines, 3, None, 2):
-...    print(name.title())
+...    andika(name.title())
 ...
 Alex
 Laura
@@ -2230,7 +2230,7 @@ Samuele
 >>> d = dict(a=1, b=2, c=1, d=2, e=1, f=2, g=3)
 >>> di = sorted(sorted(d.items()), key=itemgetter(1))
 >>> for k, g in groupby(di, itemgetter(1)):
-...     print(k, list(map(itemgetter(0), g)))
+...     andika(k, list(map(itemgetter(0), g)))
 ...
 1 ['a', 'c', 'e']
 2 ['b', 'd', 'f']
@@ -2241,7 +2241,7 @@ Samuele
 # same group.
 >>> data = [ 1,  4,5,6, 10, 15,16,17,18, 22, 25,26,27,28]
 >>> for k, g in groupby(enumerate(data), lambda t:t[0]-t[1]):
-...     print(list(map(operator.itemgetter(1), g)))
+...     andika(list(map(operator.itemgetter(1), g)))
 ...
 [1]
 [4, 5, 6]
@@ -2250,83 +2250,83 @@ Samuele
 [22]
 [25, 26, 27, 28]
 
->>> def take(n, iterable):
+>>> eleza take(n, iterable):
 ...     "Return first n items of the iterable as a list"
-...     return list(islice(iterable, n))
+...     rudisha list(islice(iterable, n))
 
->>> def prepend(value, iterator):
+>>> eleza prepend(value, iterator):
 ...     "Prepend a single value in front of an iterator"
 ...     # prepend(1, [2, 3, 4]) -> 1 2 3 4
-...     return chain([value], iterator)
+...     rudisha chain([value], iterator)
 
->>> def enumerate(iterable, start=0):
-...     return zip(count(start), iterable)
+>>> eleza enumerate(iterable, start=0):
+...     rudisha zip(count(start), iterable)
 
->>> def tabulate(function, start=0):
+>>> eleza tabulate(function, start=0):
 ...     "Return function(0), function(1), ..."
-...     return map(function, count(start))
+...     rudisha map(function, count(start))
 
 >>> agiza collections
->>> def consume(iterator, n=None):
+>>> eleza consume(iterator, n=None):
 ...     "Advance the iterator n-steps ahead. If n is None, consume entirely."
 ...     # Use functions that consume iterators at C speed.
-...     if n is None:
+...     ikiwa n is None:
 ...         # feed the entire iterator into a zero-length deque
 ...         collections.deque(iterator, maxlen=0)
 ...     else:
 ...         # advance to the empty slice starting at position n
 ...         next(islice(iterator, n, n), None)
 
->>> def nth(iterable, n, default=None):
+>>> eleza nth(iterable, n, default=None):
 ...     "Returns the nth item or a default value"
-...     return next(islice(iterable, n, None), default)
+...     rudisha next(islice(iterable, n, None), default)
 
->>> def all_equal(iterable):
-...     "Returns True if all the elements are equal to each other"
+>>> eleza all_equal(iterable):
+...     "Returns True ikiwa all the elements are equal to each other"
 ...     g = groupby(iterable)
-...     return next(g, True) and not next(g, False)
+...     rudisha next(g, True) and not next(g, False)
 
->>> def quantify(iterable, pred=bool):
+>>> eleza quantify(iterable, pred=bool):
 ...     "Count how many times the predicate is true"
-...     return sum(map(pred, iterable))
+...     rudisha sum(map(pred, iterable))
 
->>> def padnone(iterable):
+>>> eleza padnone(iterable):
 ...     "Returns the sequence elements and then returns None indefinitely"
-...     return chain(iterable, repeat(None))
+...     rudisha chain(iterable, repeat(None))
 
->>> def ncycles(iterable, n):
+>>> eleza ncycles(iterable, n):
 ...     "Returns the sequence elements n times"
-...     return chain(*repeat(iterable, n))
+...     rudisha chain(*repeat(iterable, n))
 
->>> def dotproduct(vec1, vec2):
-...     return sum(map(operator.mul, vec1, vec2))
+>>> eleza dotproduct(vec1, vec2):
+...     rudisha sum(map(operator.mul, vec1, vec2))
 
->>> def flatten(listOfLists):
-...     return list(chain.from_iterable(listOfLists))
+>>> eleza flatten(listOfLists):
+...     rudisha list(chain.kutoka_iterable(listOfLists))
 
->>> def repeatfunc(func, times=None, *args):
+>>> eleza repeatfunc(func, times=None, *args):
 ...     "Repeat calls to func with specified arguments."
 ...     "   Example:  repeatfunc(random.random)"
-...     if times is None:
-...         return starmap(func, repeat(args))
+...     ikiwa times is None:
+...         rudisha starmap(func, repeat(args))
 ...     else:
-...         return starmap(func, repeat(args, times))
+...         rudisha starmap(func, repeat(args, times))
 
->>> def pairwise(iterable):
+>>> eleza pairwise(iterable):
 ...     "s -> (s0,s1), (s1,s2), (s2, s3), ..."
 ...     a, b = tee(iterable)
 ...     try:
 ...         next(b)
 ...     except StopIteration:
 ...         pass
-...     return zip(a, b)
+...     rudisha zip(a, b)
 
->>> def grouper(n, iterable, fillvalue=None):
+>>> eleza grouper(n, iterable, fillvalue=None):
 ...     "grouper(3, 'ABCDEFG', 'x') --> ABC DEF Gxx"
 ...     args = [iter(iterable)] * n
-...     return zip_longest(*args, fillvalue=fillvalue)
+...     rudisha zip_longest(*args, fillvalue=fillvalue)
 
->>> def roundrobin(*iterables):
+>>> eleza roundrobin(*iterables):
 ...     "roundrobin('ABC', 'D', 'EF') --> A D E B F C"
 ...     # Recipe credited to George Sakkis
 ...     pending = len(iterables)
@@ -2339,36 +2339,36 @@ Samuele
 ...             pending -= 1
 ...             nexts = cycle(islice(nexts, pending))
 
->>> def powerset(iterable):
+>>> eleza powerset(iterable):
 ...     "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
 ...     s = list(iterable)
-...     return chain.from_iterable(combinations(s, r) for r in range(len(s)+1))
+...     rudisha chain.kutoka_iterable(combinations(s, r) for r in range(len(s)+1))
 
->>> def unique_everseen(iterable, key=None):
+>>> eleza unique_everseen(iterable, key=None):
 ...     "List unique elements, preserving order. Remember all elements ever seen."
 ...     # unique_everseen('AAAABBBCCDAABBB') --> A B C D
 ...     # unique_everseen('ABBCcAD', str.lower) --> A B C D
 ...     seen = set()
 ...     seen_add = seen.add
-...     if key is None:
+...     ikiwa key is None:
 ...         for element in iterable:
-...             if element not in seen:
+...             ikiwa element not in seen:
 ...                 seen_add(element)
 ...                 yield element
 ...     else:
 ...         for element in iterable:
 ...             k = key(element)
-...             if k not in seen:
+...             ikiwa k not in seen:
 ...                 seen_add(k)
 ...                 yield element
 
->>> def unique_justseen(iterable, key=None):
+>>> eleza unique_justseen(iterable, key=None):
 ...     "List unique elements, preserving order. Remember only the element just seen."
 ...     # unique_justseen('AAAABBBCCDAABBB') --> A B C D A B
 ...     # unique_justseen('ABBCcAD', str.lower) --> A B C A D
-...     return map(next, map(itemgetter(1), groupby(iterable, key)))
+...     rudisha map(next, map(itemgetter(1), groupby(iterable, key)))
 
->>> def first_true(iterable, default=False, pred=None):
+>>> eleza first_true(iterable, default=False, pred=None):
 ...     '''Returns the first true value in the iterable.
 ...
 ...     If no true value is found, returns *default*
@@ -2378,22 +2378,22 @@ Samuele
 ...
 ...     '''
 ...     # first_true([a,b,c], x) --> a or b or c or x
-...     # first_true([a,b], x, f) --> a if f(a) else b if f(b) else x
-...     return next(filter(pred, iterable), default)
+...     # first_true([a,b], x, f) --> a ikiwa f(a) else b ikiwa f(b) else x
+...     rudisha next(filter(pred, iterable), default)
 
->>> def nth_combination(iterable, r, index):
+>>> eleza nth_combination(iterable, r, index):
 ...     'Equivalent to list(combinations(iterable, r))[index]'
 ...     pool = tuple(iterable)
 ...     n = len(pool)
-...     if r < 0 or r > n:
+...     ikiwa r < 0 or r > n:
 ...         raise ValueError
 ...     c = 1
 ...     k = min(r, n-r)
 ...     for i in range(1, k+1):
 ...         c = c * (n - k + i) // i
-...     if index < 0:
+...     ikiwa index < 0:
 ...         index += c
-...     if index < 0 or index >= c:
+...     ikiwa index < 0 or index >= c:
 ...         raise IndexError
 ...     result = []
 ...     while r:
@@ -2402,7 +2402,7 @@ Samuele
 ...             index -= c
 ...             c, n = c*(n-r)//n, n-1
 ...         result.append(pool[-1-n])
-...     return tuple(result)
+...     rudisha tuple(result)
 
 
 This is not part of the examples but it tests to make sure the definitions
@@ -2512,7 +2512,7 @@ True
 
 __test__ = {'libreftest' : libreftest}
 
-def test_main(verbose=None):
+eleza test_main(verbose=None):
     test_classes = (TestBasicOps, TestVariousIteratorArgs, TestGC,
                     RegressionTests, LengthTransparency,
                     SubclassWithKwargsTest, TestExamples,
@@ -2521,17 +2521,17 @@ def test_main(verbose=None):
     support.run_unittest(*test_classes)
 
     # verify reference counting
-    if verbose and hasattr(sys, "gettotalrefcount"):
+    ikiwa verbose and hasattr(sys, "gettotalrefcount"):
         agiza gc
         counts = [None] * 5
         for i in range(len(counts)):
             support.run_unittest(*test_classes)
             gc.collect()
             counts[i] = sys.gettotalrefcount()
-        print(counts)
+        andika(counts)
 
     # doctest the examples in the library reference
     support.run_doctest(sys.modules[__name__], verbose)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main(verbose=True)

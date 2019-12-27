@@ -17,8 +17,8 @@ CASES = [
     ('\u0123\u4567\u89ab\ucdef\uabcd\uef4a', '"\\u0123\\u4567\\u89ab\\ucdef\\uabcd\\uef4a"'),
 ]
 
-class TestEncodeBasestringAscii:
-    def test_encode_basestring_ascii(self):
+kundi TestEncodeBasestringAscii:
+    eleza test_encode_basestring_ascii(self):
         fname = self.json.encoder.encode_basestring_ascii.__name__
         for input_string, expect in CASES:
             result = self.json.encoder.encode_basestring_ascii(input_string)
@@ -26,22 +26,22 @@ class TestEncodeBasestringAscii:
                 '{0!r} != {1!r} for {2}({3!r})'.format(
                     result, expect, fname, input_string))
 
-    def test_ordered_dict(self):
+    eleza test_ordered_dict(self):
         # See issue 6105
         items = [('one', 1), ('two', 2), ('three', 3), ('four', 4), ('five', 5)]
         s = self.dumps(OrderedDict(items))
         self.assertEqual(s, '{"one": 1, "two": 2, "three": 3, "four": 4, "five": 5}')
 
-    def test_sorted_dict(self):
+    eleza test_sorted_dict(self):
         items = [('one', 1), ('two', 2), ('three', 3), ('four', 4), ('five', 5)]
         s = self.dumps(dict(items), sort_keys=True)
         self.assertEqual(s, '{"five": 5, "four": 4, "one": 1, "three": 3, "two": 2}')
 
 
-class TestPyEncodeBasestringAscii(TestEncodeBasestringAscii, PyTest): pass
-class TestCEncodeBasestringAscii(TestEncodeBasestringAscii, CTest):
+kundi TestPyEncodeBasestringAscii(TestEncodeBasestringAscii, PyTest): pass
+kundi TestCEncodeBasestringAscii(TestEncodeBasestringAscii, CTest):
     @bigaddrspacetest
-    def test_overflow(self):
+    eleza test_overflow(self):
         size = (2**32)//6 + 1
         s = "\x00"*size
         with self.assertRaises(OverflowError):

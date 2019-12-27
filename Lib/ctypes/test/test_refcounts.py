@@ -6,7 +6,7 @@ import gc
 MyCallback = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_int)
 OtherCallback = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_int, ctypes.c_ulonglong)
 
-import _ctypes_test
+agiza _ctypes_test
 dll = ctypes.CDLL(_ctypes_test.__file__)
 
 class RefcountTestCase(unittest.TestCase):

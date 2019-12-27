@@ -42,9 +42,9 @@ Unpack short sequence
 
 Unpack generic sequence
 
-    >>> class Seq:
-    ...     def __getitem__(self, i):
-    ...         if i >= 0 and i < 3: return i
+    >>> kundi Seq:
+    ...     eleza __getitem__(self, i):
+    ...         ikiwa i >= 0 and i < 3: rudisha i
     ...         raise IndexError
     ...
     >>> a, *b = Seq()
@@ -54,7 +54,7 @@ Unpack generic sequence
 Unpack in for statement
 
     >>> for a, *b, c in [(1,2,3), (4,5,6,7)]:
-    ...     print(a, b, c)
+    ...     andika(a, b, c)
     ...
     1 [2] 3
     4 [5, 6] 7
@@ -176,13 +176,13 @@ Generator expression in function arguments
 
 Iterable argument unpacking
 
-    >>> print(*[1], *[2], 3)
+    >>> andika(*[1], *[2], 3)
     1 2 3
 
 Make sure that they don't corrupt the passed-in dicts.
 
-    >>> def f(x, y):
-    ...     print(x, y)
+    >>> eleza f(x, y):
+    ...     andika(x, y)
     ...
     >>> original_dict = {'x': 1}
     >>> f(**original_dict, y=2)
@@ -195,26 +195,26 @@ Now for some failures
 Make sure the raised errors are right for keyword argument unpackings
 
     >>> kutoka collections.abc agiza MutableMapping
-    >>> class CrazyDict(MutableMapping):
-    ...     def __init__(self):
+    >>> kundi CrazyDict(MutableMapping):
+    ...     eleza __init__(self):
     ...         self.d = {}
     ...
-    ...     def __iter__(self):
+    ...     eleza __iter__(self):
     ...         for x in self.d.__iter__():
-    ...             if x == 'c':
+    ...             ikiwa x == 'c':
     ...                 self.d['z'] = 10
     ...             yield x
     ...
-    ...     def __getitem__(self, k):
-    ...         return self.d[k]
+    ...     eleza __getitem__(self, k):
+    ...         rudisha self.d[k]
     ...
-    ...     def __len__(self):
-    ...         return len(self.d)
+    ...     eleza __len__(self):
+    ...         rudisha len(self.d)
     ...
-    ...     def __setitem__(self, k, v):
+    ...     eleza __setitem__(self, k, v):
     ...         self.d[k] = v
     ...
-    ...     def __delitem__(self, k):
+    ...     eleza __delitem__(self, k):
     ...         del self.d[k]
     ...
     >>> d = CrazyDict()
@@ -225,7 +225,7 @@ Make sure the raised errors are right for keyword argument unpackings
     RuntimeError: dictionary changed size during iteration
 
     >>> d.d = {chr(ord('a') + x): x for x in range(5)}
-    >>> def f(**kwargs): print(kwargs)
+    >>> eleza f(**kwargs): andika(kwargs)
     >>> f(**d)
     Traceback (most recent call last):
     ...
@@ -282,14 +282,14 @@ Unpacking sequence too short and target appears last
 Unpacking a sequence where the test for too long raises a different kind of
 error
 
-    >>> class BozoError(Exception):
+    >>> kundi BozoError(Exception):
     ...     pass
     ...
-    >>> class BadSeq:
-    ...     def __getitem__(self, i):
-    ...         if i >= 0 and i < 3:
-    ...             return i
-    ...         elif i == 3:
+    >>> kundi BadSeq:
+    ...     eleza __getitem__(self, i):
+    ...         ikiwa i >= 0 and i < 3:
+    ...             rudisha i
+    ...         elikiwa i == 3:
     ...             raise BozoError
     ...         else:
     ...             raise IndexError
@@ -356,10 +356,10 @@ Some size constraints (all fail.)
 
 __test__ = {'doctests' : doctests}
 
-def test_main(verbose=False):
+eleza test_main(verbose=False):
     kutoka test agiza support
     kutoka test agiza test_unpack_ex
     support.run_doctest(test_unpack_ex, verbose)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main(verbose=True)

@@ -10,13 +10,13 @@ source code.)
 The list of extensions loaded at startup time is configured by editing
 the file config-extensions.def.  See below for details.
 
-An IDLE extension is defined by a class.  Methods of the class define
+An IDLE extension is defined by a class.  Methods of the kundi define
 actions that are invoked by event bindings or menu entries. Class (or
 instance) variables define the bindings and menu additions; these are
 automatically applied by IDLE when the extension is linked to an edit
 window.
 
-An IDLE extension class is instantiated with a single argument,
+An IDLE extension kundi is instantiated with a single argument,
 `editwin', an EditorWindow instance. The extension cannot assume much
 about this argument, but it is guaranteed to have the following instance
 variables:
@@ -27,7 +27,7 @@ variables:
 
 (There are a few more, but they are rarely useful.)
 
-The extension class must not directly bind Window Manager (e.g. X) events.
+The extension kundi must not directly bind Window Manager (e.g. X) events.
 Rather, it must define one or more virtual events, e.g. <<zoom-height>>, and
 corresponding methods, e.g. zoom_height_event().  The virtual events will be
 bound to the corresponding methods, and Window Manager events can then be bound
@@ -35,7 +35,7 @@ to the virtual events. (This indirection is done so that the key bindings can
 easily be changed, and so that other sources of virtual events can exist, such
 as menu entries.)
 
-An extension can define menu entries.  This is done with a class or instance
+An extension can define menu entries.  This is done with a kundi or instance
 variable named menudefs; it should be a list of pairs, where each pair is a
 menu name (lowercase) and a list of menu entries. Each menu entry is either
 None (to insert a separator entry) or a pair of strings (menu_label,
@@ -56,7 +56,7 @@ case there must be empty bindings in cofig-extensions.def)
 
 Here is a complete example:
 
-class ZoomHeight:
+kundi ZoomHeight:
 
     menudefs = [
         ('edit', [
@@ -65,17 +65,17 @@ class ZoomHeight:
          ])
     ]
 
-    def __init__(self, editwin):
+    eleza __init__(self, editwin):
         self.editwin = editwin
 
-    def zoom_height_event(self, event):
+    eleza zoom_height_event(self, event):
         "...Do what you want here..."
 
 The final piece of the puzzle is the file "config-extensions.def", which is
 used to configure the loading of extensions and to establish key (or, more
 generally, event) bindings to the virtual events defined in the extensions.
 
-See the comments at the top of config-extensions.def for information.  It's
+See the comments at the top of config-extensions.eleza for information.  It's
 currently necessary to manually modify that file to change IDLE's extension
 loading or extension key bindings.
 

@@ -41,7 +41,7 @@ typedef struct {
        would collapse identical functions/lambdas defined on different lines.
     */
     Py_ssize_t *co_cell2arg;    /* Maps cell vars which are arguments. */
-    PyObject *co_filename;      /* unicode (where it was loaded from) */
+    PyObject *co_filename;      /* unicode (where it was loaded kutoka) */
     PyObject *co_name;          /* unicode (name, for reference) */
     PyObject *co_lnotab;        /* string (encoding addr<->lineno mapping) See
                                    Objects/lnotab_notes.txt for details. */
@@ -54,7 +54,7 @@ typedef struct {
 
     /* Per opcodes just-in-time cache
      *
-     * To reduce cache size, we use indirect mapping from opcode index to
+     * To reduce cache size, we use indirect mapping kutoka opcode index to
      * cache object:
      *   cache = co_opcache[co_opcache_map[next_instr - first_instr] - 1]
      */
@@ -154,7 +154,7 @@ PyAPI_FUNC(int) _PyCode_CheckLineNumber(PyCodeObject* co,
 
 /* Create a comparable key used to compare constants taking in account the
  * object type. It is used to make sure types are not coerced (e.g., float and
- * complex) _and_ to distinguish 0.0 from -0.0 e.g. on IEEE platforms
+ * complex) _and_ to distinguish 0.0 kutoka -0.0 e.g. on IEEE platforms
  *
  * Return (type(obj), obj, ...): a tuple with variable size (at least 2 items)
  * depending on the type and the value. The type is the first item to not

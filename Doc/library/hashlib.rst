@@ -15,7 +15,7 @@
 
 .. testsetup::
 
-   import hashlib
+   agiza hashlib
 
 
 --------------
@@ -83,7 +83,7 @@ library that Python uses on your platform. On most platforms the
 For example, to obtain the digest of the byte string ``b'Nobody inspects the
 spammish repetition'``::
 
-   >>> import hashlib
+   >>> agiza hashlib
    >>> m = hashlib.sha256()
    >>> m.update(b"Nobody inspects")
    >>> m.update(b" the spammish repetition")
@@ -179,7 +179,7 @@ A hash object has the following methods:
 
    Return the digest of the data passed to the :meth:`update` method so far.
    This is a bytes object of size :attr:`digest_size` which may contain bytes in
-   the whole range from 0 to 255.
+   the whole range kutoka 0 to 255.
 
 
 .. method:: hash.hexdigest()
@@ -207,7 +207,7 @@ by the SHAKE algorithm.
 
    Return the digest of the data passed to the :meth:`update` method so far.
    This is a bytes object of size *length* which may contain bytes in
-   the whole range from 0 to 255.
+   the whole range kutoka 0 to 255.
 
 
 .. method:: shake.hexdigest(length)
@@ -234,7 +234,7 @@ include a `salt <https://en.wikipedia.org/wiki/Salt_%28cryptography%29>`_.
    The string *hash_name* is the desired name of the hash digest algorithm for
    HMAC, e.g. 'sha1' or 'sha256'. *password* and *salt* are interpreted as
    buffers of bytes. Applications and libraries should limit *password* to
-   a sensible length (e.g. 1024). *salt* should be about 16 or more bytes from
+   a sensible length (e.g. 1024). *salt* should be about 16 or more bytes kutoka
    a proper source, e.g. :func:`os.urandom`.
 
    The number of *iterations* should be chosen based on the hash algorithm and
@@ -244,7 +244,7 @@ include a `salt <https://en.wikipedia.org/wiki/Salt_%28cryptography%29>`_.
    *dklen* is the length of the derived key. If *dklen* is ``None`` then the
    digest size of the hash algorithm *hash_name* is used, e.g. 64 for SHA-512.
 
-   >>> import hashlib
+   >>> agiza hashlib
    >>> dk = hashlib.pbkdf2_hmac('sha256', b'password', b'salt', 100000)
    >>> dk.hex()
    '0394a2ede332c9a13eb82e9b24631604c31df978b4e2f0fbd2c549944f9d79a5'
@@ -265,7 +265,7 @@ include a `salt <https://en.wikipedia.org/wiki/Salt_%28cryptography%29>`_.
    *password* and *salt* must be :term:`bytes-like objects
    <bytes-like object>`.  Applications and libraries should limit *password*
    to a sensible length (e.g. 1024).  *salt* should be about 16 or more
-   bytes from a proper source, e.g. :func:`os.urandom`.
+   bytes kutoka a proper source, e.g. :func:`os.urandom`.
 
    *n* is the CPU/Memory cost factor, *r* the block size, *p* parallelization
    factor and *maxmem* limits memory (OpenSSL 1.1.0 defaults to 32 MiB).
@@ -296,7 +296,7 @@ flavors:
 BLAKE2 supports **keyed mode** (a faster and simpler replacement for HMAC_),
 **salted hashing**, **personalization**, and **tree hashing**.
 
-Hash objects from this module follow the API of standard library's
+Hash objects kutoka this module follow the API of standard library's
 :mod:`hashlib` objects.
 
 
@@ -420,7 +420,7 @@ calling the appropriate constructor function (:func:`blake2b` or
 object, and, finally, get the digest out of the object by calling
 :meth:`digest` (or :meth:`hexdigest` for hex-encoded string).
 
-    >>> from hashlib import blake2b
+    >>> kutoka hashlib agiza blake2b
     >>> h = blake2b()
     >>> h.update(b'Hello world')
     >>> h.hexdigest()
@@ -430,14 +430,14 @@ object, and, finally, get the digest out of the object by calling
 As a shortcut, you can pass the first chunk of data to update directly to the
 constructor as the positional argument:
 
-    >>> from hashlib import blake2b
+    >>> kutoka hashlib agiza blake2b
     >>> blake2b(b'Hello world').hexdigest()
     '6ff843ba685842aa82031d3f53c48b66326df7639a63d128974c5c14f31a0f33343a8c65551134ed1ae0f2b0dd2bb495dc81039e3eeb0aa1bb0388bbeac29183'
 
 You can call :meth:`hash.update` as many times as you need to iteratively
 update the hash:
 
-    >>> from hashlib import blake2b
+    >>> kutoka hashlib agiza blake2b
     >>> items = [b'Hello', b' ', b'world']
     >>> h = blake2b()
     >>> for item in items:
@@ -453,7 +453,7 @@ BLAKE2 has configurable size of digests up to 64 bytes for BLAKE2b and up to 32
 bytes for BLAKE2s. For example, to replace SHA-1 with BLAKE2b without changing
 the size of output, we can tell BLAKE2b to produce 20-byte digests:
 
-    >>> from hashlib import blake2b
+    >>> kutoka hashlib agiza blake2b
     >>> h = blake2b(digest_size=20)
     >>> h.update(b'Replacing SHA1 with the more secure function')
     >>> h.hexdigest()
@@ -467,7 +467,7 @@ Hash objects with different digest sizes have completely different outputs
 (shorter hashes are *not* prefixes of longer hashes); BLAKE2b and BLAKE2s
 produce different outputs even if the output length is the same:
 
-    >>> from hashlib import blake2b, blake2s
+    >>> kutoka hashlib agiza blake2b, blake2s
     >>> blake2b(digest_size=10).hexdigest()
     '6fa1d8fcfd719046d762'
     >>> blake2b(digest_size=11).hexdigest()
@@ -485,12 +485,12 @@ Keyed hashing can be used for authentication as a faster and simpler
 replacement for `Hash-based message authentication code
 <https://en.wikipedia.org/wiki/Hash-based_message_authentication_code>`_ (HMAC).
 BLAKE2 can be securely used in prefix-MAC mode thanks to the
-indifferentiability property inherited from BLAKE.
+indifferentiability property inherited kutoka BLAKE.
 
 This example shows how to get a (hex-encoded) 128-bit authentication code for
 message ``b'message data'`` with key ``b'pseudorandom key'``::
 
-    >>> from hashlib import blake2b
+    >>> kutoka hashlib agiza blake2b
     >>> h = blake2b(key=b'pseudorandom key', digest_size=16)
     >>> h.update(b'message data')
     >>> h.hexdigest()
@@ -500,8 +500,8 @@ message ``b'message data'`` with key ``b'pseudorandom key'``::
 As a practical example, a web application can symmetrically sign cookies sent
 to users and later verify them to make sure they weren't tampered with::
 
-    >>> from hashlib import blake2b
-    >>> from hmac import compare_digest
+    >>> kutoka hashlib agiza blake2b
+    >>> kutoka hmac agiza compare_digest
     >>>
     >>> SECRET_KEY = b'pseudorandomly generated server secret key'
     >>> AUTH_SIZE = 16
@@ -529,7 +529,7 @@ to users and later verify them to make sure they weren't tampered with::
 Even though there's a native keyed hashing mode, BLAKE2 can, of course, be used
 in HMAC construction with :mod:`hmac` module::
 
-    >>> import hmac, hashlib
+    >>> agiza hmac, hashlib
     >>> m = hmac.new(b'secret key', digestmod=hashlib.blake2s)
     >>> m.update(b'message')
     >>> m.hexdigest()
@@ -576,8 +576,8 @@ initialization, rather than as an input to each compression function.
     information.
 ..
 
-    >>> import os
-    >>> from hashlib import blake2b
+    >>> agiza os
+    >>> kutoka hashlib agiza blake2b
     >>> msg = b'some message'
     >>> # Calculate the first hash with a random salt.
     >>> salt1 = os.urandom(blake2b.SALT_SIZE)
@@ -612,7 +612,7 @@ function:
 
 BLAKE2 can be personalized by passing bytes to the *person* argument::
 
-    >>> from hashlib import blake2b
+    >>> kutoka hashlib agiza blake2b
     >>> FILES_HASH_PERSON = b'MyApp Files Hash'
     >>> BLOCK_HASH_PERSON = b'MyApp Block Hash'
     >>> h = blake2b(digest_size=32, person=FILES_HASH_PERSON)
@@ -625,10 +625,10 @@ BLAKE2 can be personalized by passing bytes to the *person* argument::
     'cf68fb5761b9c44e7878bfb2c4c9aea52264a80b75005e65619778de59f383a3'
 
 Personalization together with the keyed mode can also be used to derive different
-keys from a single one.
+keys kutoka a single one.
 
-    >>> from hashlib import blake2s
-    >>> from base64 import b64decode, b64encode
+    >>> kutoka hashlib agiza blake2s
+    >>> kutoka base64 agiza b64decode, b64encode
     >>> orig_key = b64decode(b'Rm5EPJai72qcK3RGBpW3vPNfZy5OZothY+kHY6h21KM=')
     >>> enc_key = blake2s(key=orig_key, person=b'kEncrypt').digest()
     >>> mac_key = blake2s(key=orig_key, person=b'kMAC').digest()
@@ -649,7 +649,7 @@ Here's an example of hashing a minimal tree with two leaf nodes::
 This example uses 64-byte internal digests, and returns the 32-byte final
 digest::
 
-    >>> from hashlib import blake2b
+    >>> kutoka hashlib agiza blake2b
     >>>
     >>> FANOUT = 2
     >>> DEPTH = 2
@@ -683,11 +683,11 @@ Wilcox-O'Hearn*, and *Christian Winnerlein* based on SHA-3_ finalist BLAKE_
 created by *Jean-Philippe Aumasson*, *Luca Henzen*, *Willi Meier*, and
 *Raphael C.-W. Phan*.
 
-It uses core algorithm from ChaCha_ cipher designed by *Daniel J.  Bernstein*.
+It uses core algorithm kutoka ChaCha_ cipher designed by *Daniel J.  Bernstein*.
 
 The stdlib implementation is based on pyblake2_ module. It was written by
 *Dmitry Chestnykh* based on C implementation written by *Samuel Neves*. The
-documentation was copied from pyblake2_ and written by *Dmitry Chestnykh*.
+documentation was copied kutoka pyblake2_ and written by *Dmitry Chestnykh*.
 
 The C code was partly rewritten for Python by *Christian Heimes*.
 

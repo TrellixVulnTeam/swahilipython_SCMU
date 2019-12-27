@@ -81,13 +81,13 @@ Sequence Protocol
 
 .. c:function:: int PySequence_SetSlice(PyObject *o, Py_ssize_t i1, Py_ssize_t i2, PyObject *v)
 
-   Assign the sequence object *v* to the slice in sequence object *o* from *i1* to
+   Assign the sequence object *v* to the slice in sequence object *o* kutoka *i1* to
    *i2*.  This is the equivalent of the Python statement ``o[i1:i2] = v``.
 
 
 .. c:function:: int PySequence_DelSlice(PyObject *o, Py_ssize_t i1, Py_ssize_t i2)
 
-   Delete the slice in sequence object *o* from *i1* to *i2*.  Returns ``-1`` on
+   Delete the slice in sequence object *o* kutoka *i1* to *i2*.  Returns ``-1`` on
    failure.  This is the equivalent of the Python statement ``del o[i1:i2]``.
 
 

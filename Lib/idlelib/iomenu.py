@@ -13,7 +13,7 @@ kutoka tkinter.simpledialog agiza askstring
 agiza idlelib
 kutoka idlelib.config agiza idleConf
 
-if idlelib.testing:  # Set True by test.test_idle to avoid setlocale.
+ikiwa idlelib.testing:  # Set True by test.test_idle to avoid setlocale.
     encoding = 'utf-8'
     errors = 'surrogateescape'
 else:
@@ -25,7 +25,7 @@ else:
     except (ImportError, locale.Error):
         pass
 
-    if sys.platform == 'win32':
+    ikiwa sys.platform == 'win32':
         encoding = 'utf-8'
         errors = 'surrogateescape'
     else:
@@ -35,7 +35,7 @@ else:
             # resulting codeset may be unknown to Python. We ignore all
             # these problems, falling back to ASCII
             locale_encoding = locale.nl_langinfo(locale.CODESET)
-            if locale_encoding:
+            ikiwa locale_encoding:
                 codecs.lookup(locale_encoding)
         except (NameError, AttributeError, LookupError):
             # Try getdefaultlocale: it parses environment variables,
@@ -43,12 +43,12 @@ else:
             # bugs that can cause ValueError.
             try:
                 locale_encoding = locale.getdefaultlocale()[1]
-                if locale_encoding:
+                ikiwa locale_encoding:
                     codecs.lookup(locale_encoding)
             except (ValueError, LookupError):
                 pass
 
-        if locale_encoding:
+        ikiwa locale_encoding:
             encoding = locale_encoding.lower()
             errors = 'strict'
         else:
@@ -63,16 +63,16 @@ else:
 coding_re = re.compile(r'^[ \t\f]*#.*?coding[:=][ \t]*([-\w.]+)', re.ASCII)
 blank_re = re.compile(r'^[ \t\f]*(?:[#\r\n]|$)', re.ASCII)
 
-def coding_spec(data):
+eleza coding_spec(data):
     """Return the encoding declaration according to PEP 263.
 
     When checking encoded data, only the first two lines should be passed
-    in to avoid a UnicodeDecodeError if the rest of the data is not unicode.
+    in to avoid a UnicodeDecodeError ikiwa the rest of the data is not unicode.
     The first two lines would contain the encoding specification.
 
-    Raise a LookupError if the encoding is declared but unknown.
+    Raise a LookupError ikiwa the encoding is declared but unknown.
     """
-    if isinstance(data, bytes):
+    ikiwa isinstance(data, bytes):
         # This encoding might be wrong. However, the coding
         # spec must be ASCII-only, so any non-ASCII characters
         # around here will be ignored. Decoding to Latin-1 should
@@ -81,35 +81,35 @@ def coding_spec(data):
     else:
         lines = data
     # consider only the first two lines
-    if '\n' in lines:
+    ikiwa '\n' in lines:
         lst = lines.split('\n', 2)[:2]
-    elif '\r' in lines:
+    elikiwa '\r' in lines:
         lst = lines.split('\r', 2)[:2]
     else:
         lst = [lines]
     for line in lst:
         match = coding_re.match(line)
-        if match is not None:
+        ikiwa match is not None:
             break
-        if not blank_re.match(line):
-            return None
+        ikiwa not blank_re.match(line):
+            rudisha None
     else:
-        return None
+        rudisha None
     name = match.group(1)
     try:
         codecs.lookup(name)
     except LookupError:
         # The standard encoding error does not indicate the encoding
         raise LookupError("Unknown encoding: "+name)
-    return name
+    rudisha name
 
 
-class IOBinding:
+kundi IOBinding:
 # One instance per editor Window so methods know which to save, close.
-# Open returns focus to self.editwin if aborted.
+# Open returns focus to self.editwin ikiwa aborted.
 # EditorWindow.open_module, others, belong here.
 
-    def __init__(self, editwin):
+    eleza __init__(self, editwin):
         self.editwin = editwin
         self.text = editwin.text
         self.__id_open = self.text.bind("<<open-window-kutoka-file>>", self.open)
@@ -121,7 +121,7 @@ class IOBinding:
         self.fileencoding = None
         self.__id_print = self.text.bind("<<print-window>>", self.print_window)
 
-    def close(self):
+    eleza close(self):
         # Undo command bindings
         self.text.unbind("<<open-window-kutoka-file>>", self.__id_open)
         self.text.unbind("<<save-window>>", self.__id_save)
@@ -133,51 +133,51 @@ class IOBinding:
         self.text = None
         self.filename_change_hook = None
 
-    def get_saved(self):
-        return self.editwin.get_saved()
+    eleza get_saved(self):
+        rudisha self.editwin.get_saved()
 
-    def set_saved(self, flag):
+    eleza set_saved(self, flag):
         self.editwin.set_saved(flag)
 
-    def reset_undo(self):
+    eleza reset_undo(self):
         self.editwin.reset_undo()
 
     filename_change_hook = None
 
-    def set_filename_change_hook(self, hook):
+    eleza set_filename_change_hook(self, hook):
         self.filename_change_hook = hook
 
     filename = None
     dirname = None
 
-    def set_filename(self, filename):
-        if filename and os.path.isdir(filename):
+    eleza set_filename(self, filename):
+        ikiwa filename and os.path.isdir(filename):
             self.filename = None
             self.dirname = filename
         else:
             self.filename = filename
             self.dirname = None
             self.set_saved(1)
-            if self.filename_change_hook:
+            ikiwa self.filename_change_hook:
                 self.filename_change_hook()
 
-    def open(self, event=None, editFile=None):
+    eleza open(self, event=None, editFile=None):
         flist = self.editwin.flist
         # Save in case parent window is closed (ie, during askopenfile()).
-        if flist:
-            if not editFile:
+        ikiwa flist:
+            ikiwa not editFile:
                 filename = self.askopenfile()
             else:
                 filename=editFile
-            if filename:
+            ikiwa filename:
                 # If editFile is valid and already open, flist.open will
                 # shift focus to its existing window.
                 # If the current window exists and is a fresh unnamed,
                 # unmodified editor window (not an interpreter shell),
                 # pass self.loadfile to flist.open so it will load the file
-                # in the current window (if the file is not already open)
+                # in the current window (ikiwa the file is not already open)
                 # instead of a new window.
-                if (self.editwin and
+                ikiwa (self.editwin and
                         not getattr(self.editwin, 'interp', None) and
                         not self.filename and
                         self.get_saved()):
@@ -185,31 +185,31 @@ class IOBinding:
                 else:
                     flist.open(filename)
             else:
-                if self.text:
+                ikiwa self.text:
                     self.text.focus_set()
-            return "break"
+            rudisha "break"
 
         # Code for use outside IDLE:
-        if self.get_saved():
+        ikiwa self.get_saved():
             reply = self.maybesave()
-            if reply == "cancel":
+            ikiwa reply == "cancel":
                 self.text.focus_set()
-                return "break"
-        if not editFile:
+                rudisha "break"
+        ikiwa not editFile:
             filename = self.askopenfile()
         else:
             filename=editFile
-        if filename:
+        ikiwa filename:
             self.loadfile(filename)
         else:
             self.text.focus_set()
-        return "break"
+        rudisha "break"
 
     eol = r"(\r\n)|\n|\r"  # \r\n (Windows), \n (UNIX), or \r (Mac)
     eol_re = re.compile(eol)
     eol_convention = os.linesep  # default
 
-    def loadfile(self, filename):
+    eleza loadfile(self, filename):
         try:
             # open the file in binary mode so that we can handle
             # end-of-line convention ourselves.
@@ -219,16 +219,16 @@ class IOBinding:
                 bytes = f.read()
         except OSError as msg:
             tkMessageBox.showerror("I/O Error", str(msg), parent=self.text)
-            return False
+            rudisha False
         chars, converted = self._decode(two_lines, bytes)
-        if chars is None:
+        ikiwa chars is None:
             tkMessageBox.showerror("Decoding Error",
                                    "File %s\nFailed to Decode" % filename,
                                    parent=self.text)
-            return False
+            rudisha False
         # We now convert all end-of-lines to '\n's
         firsteol = self.eol_re.search(chars)
-        if firsteol:
+        ikiwa firsteol:
             self.eol_convention = firsteol.group(0)
             chars = self.eol_re.sub(r"\n", chars)
         self.text.delete("1.0", "end")
@@ -236,29 +236,29 @@ class IOBinding:
         self.text.insert("1.0", chars)
         self.reset_undo()
         self.set_filename(filename)
-        if converted:
+        ikiwa converted:
             # We need to save the conversion results first
             # before being able to execute the code
             self.set_saved(False)
         self.text.mark_set("insert", "1.0")
         self.text.yview("insert")
         self.updaterecentfileslist(filename)
-        return True
+        rudisha True
 
-    def _decode(self, two_lines, bytes):
+    eleza _decode(self, two_lines, bytes):
         "Create a Unicode string."
         chars = None
         # Check presence of a UTF-8 signature first
-        if bytes.startswith(BOM_UTF8):
+        ikiwa bytes.startswith(BOM_UTF8):
             try:
                 chars = bytes[3:].decode("utf-8")
             except UnicodeDecodeError:
                 # has UTF-8 signature, but fails to decode...
-                return None, False
+                rudisha None, False
             else:
                 # Indicates that this file originally had a BOM
                 self.fileencoding = 'BOM'
-                return chars, False
+                rudisha chars, False
         # Next look for coding specification
         try:
             enc = coding_spec(two_lines)
@@ -270,26 +270,26 @@ class IOBinding:
                 parent = self.text)
             enc = None
         except UnicodeDecodeError:
-            return None, False
-        if enc:
+            rudisha None, False
+        ikiwa enc:
             try:
                 chars = str(bytes, enc)
                 self.fileencoding = enc
-                return chars, False
+                rudisha chars, False
             except UnicodeDecodeError:
                 pass
         # Try ascii:
         try:
             chars = str(bytes, 'ascii')
             self.fileencoding = None
-            return chars, False
+            rudisha chars, False
         except UnicodeDecodeError:
             pass
         # Try utf-8:
         try:
             chars = str(bytes, 'utf-8')
             self.fileencoding = 'utf-8'
-            return chars, False
+            rudisha chars, False
         except UnicodeDecodeError:
             pass
         # Finally, try the locale's encoding. This is deprecated;
@@ -305,17 +305,17 @@ class IOBinding:
                 initialvalue = encoding,
                 parent = self.editwin.text)
 
-            if enc:
+            ikiwa enc:
                 chars = str(bytes, enc)
                 self.fileencoding = None
-            return chars, True
+            rudisha chars, True
         except (UnicodeDecodeError, LookupError):
             pass
-        return None, False  # None on failure
+        rudisha None, False  # None on failure
 
-    def maybesave(self):
-        if self.get_saved():
-            return "yes"
+    eleza maybesave(self):
+        ikiwa self.get_saved():
+            rudisha "yes"
         message = "Do you want to save %s before closing?" % (
             self.filename or "this untitled document")
         confirm = tkMessageBox.askyesnocancel(
@@ -323,35 +323,35 @@ class IOBinding:
                   message=message,
                   default=tkMessageBox.YES,
                   parent=self.text)
-        if confirm:
+        ikiwa confirm:
             reply = "yes"
             self.save(None)
-            if not self.get_saved():
+            ikiwa not self.get_saved():
                 reply = "cancel"
-        elif confirm is None:
+        elikiwa confirm is None:
             reply = "cancel"
         else:
             reply = "no"
         self.text.focus_set()
-        return reply
+        rudisha reply
 
-    def save(self, event):
-        if not self.filename:
+    eleza save(self, event):
+        ikiwa not self.filename:
             self.save_as(event)
         else:
-            if self.writefile(self.filename):
+            ikiwa self.writefile(self.filename):
                 self.set_saved(True)
                 try:
                     self.editwin.store_file_breaks()
                 except AttributeError:  # may be a PyShell
                     pass
         self.text.focus_set()
-        return "break"
+        rudisha "break"
 
-    def save_as(self, event):
+    eleza save_as(self, event):
         filename = self.asksavefile()
-        if filename:
-            if self.writefile(filename):
+        ikiwa filename:
+            ikiwa self.writefile(filename):
                 self.set_filename(filename)
                 self.set_saved(1)
                 try:
@@ -360,20 +360,20 @@ class IOBinding:
                     pass
         self.text.focus_set()
         self.updaterecentfileslist(filename)
-        return "break"
+        rudisha "break"
 
-    def save_a_copy(self, event):
+    eleza save_a_copy(self, event):
         filename = self.asksavefile()
-        if filename:
+        ikiwa filename:
             self.writefile(filename)
         self.text.focus_set()
         self.updaterecentfileslist(filename)
-        return "break"
+        rudisha "break"
 
-    def writefile(self, filename):
+    eleza writefile(self, filename):
         self.fixlastline()
         text = self.text.get("1.0", "end-1c")
-        if self.eol_convention != "\n":
+        ikiwa self.eol_convention != "\n":
             text = text.replace("\n", self.eol_convention)
         chars = self.encode(text)
         try:
@@ -381,27 +381,27 @@ class IOBinding:
                 f.write(chars)
                 f.flush()
                 os.fsync(f.fileno())
-            return True
+            rudisha True
         except OSError as msg:
             tkMessageBox.showerror("I/O Error", str(msg),
                                    parent=self.text)
-            return False
+            rudisha False
 
-    def encode(self, chars):
-        if isinstance(chars, bytes):
+    eleza encode(self, chars):
+        ikiwa isinstance(chars, bytes):
             # This is either plain ASCII, or Tk was returning mixed-encoding
             # text to us. Don't try to guess further.
-            return chars
+            rudisha chars
         # Preserve a BOM that might have been present on opening
-        if self.fileencoding == 'BOM':
-            return BOM_UTF8 + chars.encode("utf-8")
+        ikiwa self.fileencoding == 'BOM':
+            rudisha BOM_UTF8 + chars.encode("utf-8")
         # See whether there is anything non-ASCII in it.
         # If not, no need to figure out the encoding.
         try:
-            return chars.encode('ascii')
+            rudisha chars.encode('ascii')
         except UnicodeError:
             pass
-        # Check if there is an encoding declared
+        # Check ikiwa there is an encoding declared
         try:
             # a string, let coding_spec slice it to the first two lines
             enc = coding_spec(chars)
@@ -410,12 +410,12 @@ class IOBinding:
             failed = msg
             enc = None
         else:
-            if not enc:
+            ikiwa not enc:
                 # PEP 3120: default source encoding is UTF-8
                 enc = 'utf-8'
-        if enc:
+        ikiwa enc:
             try:
-                return chars.encode(enc)
+                rudisha chars.encode(enc)
             except UnicodeError:
                 failed = "Invalid encoding '%s'" % enc
         tkMessageBox.showerror(
@@ -424,62 +424,62 @@ class IOBinding:
             parent = self.text)
         # Fallback: save as UTF-8, with BOM - ignoring the incorrect
         # declared encoding
-        return BOM_UTF8 + chars.encode("utf-8")
+        rudisha BOM_UTF8 + chars.encode("utf-8")
 
-    def fixlastline(self):
+    eleza fixlastline(self):
         c = self.text.get("end-2c")
-        if c != '\n':
+        ikiwa c != '\n':
             self.text.insert("end-1c", "\n")
 
-    def print_window(self, event):
+    eleza print_window(self, event):
         confirm = tkMessageBox.askokcancel(
                   title="Print",
                   message="Print to Default Printer",
                   default=tkMessageBox.OK,
                   parent=self.text)
-        if not confirm:
+        ikiwa not confirm:
             self.text.focus_set()
-            return "break"
+            rudisha "break"
         tempfilename = None
         saved = self.get_saved()
-        if saved:
+        ikiwa saved:
             filename = self.filename
         # shell undo is reset after every prompt, looks saved, probably isn't
-        if not saved or filename is None:
+        ikiwa not saved or filename is None:
             (tfd, tempfilename) = tempfile.mkstemp(prefix='IDLE_tmp_')
             filename = tempfilename
             os.close(tfd)
-            if not self.writefile(tempfilename):
+            ikiwa not self.writefile(tempfilename):
                 os.unlink(tempfilename)
-                return "break"
+                rudisha "break"
         platform = os.name
         printPlatform = True
-        if platform == 'posix': #posix platform
+        ikiwa platform == 'posix': #posix platform
             command = idleConf.GetOption('main','General',
                                          'print-command-posix')
             command = command + " 2>&1"
-        elif platform == 'nt': #win32 platform
+        elikiwa platform == 'nt': #win32 platform
             command = idleConf.GetOption('main','General','print-command-win')
         else: #no printing for this platform
             printPlatform = False
-        if printPlatform:  #we can try to print for this platform
+        ikiwa printPlatform:  #we can try to print for this platform
             command = command % shlex.quote(filename)
             pipe = os.popen(command, "r")
-            # things can get ugly on NT if there is no printer available.
+            # things can get ugly on NT ikiwa there is no printer available.
             output = pipe.read().strip()
             status = pipe.close()
-            if status:
+            ikiwa status:
                 output = "Printing failed (exit status 0x%x)\n" % \
                          status + output
-            if output:
+            ikiwa output:
                 output = "Printing command: %s\n" % repr(command) + output
                 tkMessageBox.showerror("Print status", output, parent=self.text)
         else:  #no printing for this platform
             message = "Printing is not enabled for this platform: %s" % platform
             tkMessageBox.showinfo("Print status", message, parent=self.text)
-        if tempfilename:
+        ikiwa tempfilename:
             os.unlink(tempfilename)
-        return "break"
+        rudisha "break"
 
     opendialog = None
     savedialog = None
@@ -490,52 +490,52 @@ class IOBinding:
         ("All files", "*"),
         )
 
-    defaultextension = '.py' if sys.platform == 'darwin' else ''
+    defaultextension = '.py' ikiwa sys.platform == 'darwin' else ''
 
-    def askopenfile(self):
+    eleza askopenfile(self):
         dir, base = self.defaultfilename("open")
-        if not self.opendialog:
+        ikiwa not self.opendialog:
             self.opendialog = tkFileDialog.Open(parent=self.text,
                                                 filetypes=self.filetypes)
         filename = self.opendialog.show(initialdir=dir, initialfile=base)
-        return filename
+        rudisha filename
 
-    def defaultfilename(self, mode="open"):
-        if self.filename:
-            return os.path.split(self.filename)
-        elif self.dirname:
-            return self.dirname, ""
+    eleza defaultfilename(self, mode="open"):
+        ikiwa self.filename:
+            rudisha os.path.split(self.filename)
+        elikiwa self.dirname:
+            rudisha self.dirname, ""
         else:
             try:
                 pwd = os.getcwd()
             except OSError:
                 pwd = ""
-            return pwd, ""
+            rudisha pwd, ""
 
-    def asksavefile(self):
+    eleza asksavefile(self):
         dir, base = self.defaultfilename("save")
-        if not self.savedialog:
+        ikiwa not self.savedialog:
             self.savedialog = tkFileDialog.SaveAs(
                     parent=self.text,
                     filetypes=self.filetypes,
                     defaultextension=self.defaultextension)
         filename = self.savedialog.show(initialdir=dir, initialfile=base)
-        return filename
+        rudisha filename
 
-    def updaterecentfileslist(self,filename):
+    eleza updaterecentfileslist(self,filename):
         "Update recent file list on all editor windows"
-        if self.editwin.flist:
+        ikiwa self.editwin.flist:
             self.editwin.update_recent_files_list(filename)
 
-def _io_binding(parent):  # htest #
+eleza _io_binding(parent):  # htest #
     kutoka tkinter agiza Toplevel, Text
 
     root = Toplevel(parent)
     root.title("Test IOBinding")
     x, y = map(int, parent.geometry().split('+')[1:])
     root.geometry("+%d+%d" % (x, y + 175))
-    class MyEditWin:
-        def __init__(self, text):
+    kundi MyEditWin:
+        eleza __init__(self, text):
             self.text = text
             self.flist = None
             self.text.bind("<Control-o>", self.open)
@@ -543,18 +543,18 @@ def _io_binding(parent):  # htest #
             self.text.bind("<Control-s>", self.save)
             self.text.bind("<Alt-s>", self.saveas)
             self.text.bind('<Control-c>', self.savecopy)
-        def get_saved(self): return 0
-        def set_saved(self, flag): pass
-        def reset_undo(self): pass
-        def open(self, event):
+        eleza get_saved(self): rudisha 0
+        eleza set_saved(self, flag): pass
+        eleza reset_undo(self): pass
+        eleza open(self, event):
             self.text.event_generate("<<open-window-kutoka-file>>")
-        def print(self, event):
+        eleza andika(self, event):
             self.text.event_generate("<<print-window>>")
-        def save(self, event):
+        eleza save(self, event):
             self.text.event_generate("<<save-window>>")
-        def saveas(self, event):
+        eleza saveas(self, event):
             self.text.event_generate("<<save-window-as-file>>")
-        def savecopy(self, event):
+        eleza savecopy(self, event):
             self.text.event_generate("<<save-copy-of-window-as-file>>")
 
     text = Text(root)
@@ -563,7 +563,7 @@ def _io_binding(parent):  # htest #
     editwin = MyEditWin(text)
     IOBinding(editwin)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     kutoka unittest agiza main
     main('idlelib.idle_test.test_iomenu', verbosity=2, exit=False)
 

@@ -30,17 +30,17 @@ __all__ = ["getlocale", "getdefaultlocale", "getpreferredencoding", "Error",
            "normalize", "LC_CTYPE", "LC_COLLATE", "LC_TIME", "LC_MONETARY",
            "LC_NUMERIC", "LC_ALL", "CHAR_MAX"]
 
-def _strcoll(a,b):
+eleza _strcoll(a,b):
     """ strcoll(string,string) -> int.
         Compares two strings according to the locale.
     """
-    return (a > b) - (a < b)
+    rudisha (a > b) - (a < b)
 
-def _strxfrm(s):
+eleza _strxfrm(s):
     """ strxfrm(string) -> string.
         Returns a string that behaves for cmp locale-aware.
     """
-    return s
+    rudisha s
 
 try:
 
@@ -60,12 +60,12 @@ except ImportError:
     LC_TIME = 2
     Error = ValueError
 
-    def localeconv():
+    eleza localeconv():
         """ localeconv() -> dict.
             Returns numeric and monetary locale-specific parameters.
         """
         # 'C' locale default values
-        return {'grouping': [127],
+        rudisha {'grouping': [127],
                 'currency_symbol': '',
                 'n_sign_posn': 127,
                 'p_cs_precedes': 127,
@@ -84,33 +84,33 @@ except ImportError:
                 'mon_decimal_point': '',
                 'int_frac_digits': 127}
 
-    def setlocale(category, value=None):
+    eleza setlocale(category, value=None):
         """ setlocale(integer,string=None) -> string.
             Activates/queries locale processing.
         """
-        if value not in (None, '', 'C'):
+        ikiwa value not in (None, '', 'C'):
             raise Error('_locale emulation only supports "C" locale')
-        return 'C'
+        rudisha 'C'
 
 # These may or may not exist in _locale, so be sure to set them.
-if 'strxfrm' not in globals():
+ikiwa 'strxfrm' not in globals():
     strxfrm = _strxfrm
-if 'strcoll' not in globals():
+ikiwa 'strcoll' not in globals():
     strcoll = _strcoll
 
 
 _localeconv = localeconv
 
-# With this dict, you can override some items of localeconv's return value.
+# With this dict, you can override some items of localeconv's rudisha value.
 # This is useful for testing purposes.
 _override_localeconv = {}
 
 @functools.wraps(_localeconv)
-def localeconv():
+eleza localeconv():
     d = _localeconv()
-    if _override_localeconv:
+    ikiwa _override_localeconv:
         d.update(_override_localeconv)
-    return d
+    rudisha d
 
 
 ### Number formatting APIs
@@ -119,15 +119,15 @@ def localeconv():
 # improved by Georg Brandl
 
 # Iterate over grouping intervals
-def _grouping_intervals(grouping):
+eleza _grouping_intervals(grouping):
     last_interval = None
     for interval in grouping:
-        # if grouping is -1, we are done
-        if interval == CHAR_MAX:
+        # ikiwa grouping is -1, we are done
+        ikiwa interval == CHAR_MAX:
             return
         # 0: re-use last group ad infinitum
-        if interval == 0:
-            if last_interval is None:
+        ikiwa interval == 0:
+            ikiwa last_interval is None:
                 raise ValueError("invalid grouping")
             while True:
                 yield last_interval
@@ -135,13 +135,13 @@ def _grouping_intervals(grouping):
         last_interval = interval
 
 #perform the grouping kutoka right to left
-def _group(s, monetary=False):
+eleza _group(s, monetary=False):
     conv = localeconv()
     thousands_sep = conv[monetary and 'mon_thousands_sep' or 'thousands_sep']
     grouping = conv[monetary and 'mon_grouping' or 'grouping']
-    if not grouping:
-        return (s, 0)
-    if s[-1] == ' ':
+    ikiwa not grouping:
+        rudisha (s, 0)
+    ikiwa s[-1] == ' ':
         stripped = s.rstrip()
         right_spaces = s[len(stripped):]
         s = stripped
@@ -150,23 +150,23 @@ def _group(s, monetary=False):
     left_spaces = ''
     groups = []
     for interval in _grouping_intervals(grouping):
-        if not s or s[-1] not in "0123456789":
+        ikiwa not s or s[-1] not in "0123456789":
             # only non-digit characters remain (sign, spaces)
             left_spaces = s
             s = ''
             break
         groups.append(s[-interval:])
         s = s[:-interval]
-    if s:
+    ikiwa s:
         groups.append(s)
     groups.reverse()
-    return (
+    rudisha (
         left_spaces + thousands_sep.join(groups) + right_spaces,
         len(thousands_sep) * (len(groups) - 1)
     )
 
 # Strip a given amount of excess padding kutoka the given string
-def _strip_padding(s, amount):
+eleza _strip_padding(s, amount):
     lpos = 0
     while amount and s[lpos] == ' ':
         lpos += 1
@@ -175,59 +175,59 @@ def _strip_padding(s, amount):
     while amount and s[rpos] == ' ':
         rpos -= 1
         amount -= 1
-    return s[lpos:rpos+1]
+    rudisha s[lpos:rpos+1]
 
 _percent_re = re.compile(r'%(?:\((?P<key>.*?)\))?'
                          r'(?P<modifiers>[-#0-9 +*.hlL]*?)[eEfFgGdiouxXcrs%]')
 
-def _format(percent, value, grouping=False, monetary=False, *additional):
-    if additional:
+eleza _format(percent, value, grouping=False, monetary=False, *additional):
+    ikiwa additional:
         formatted = percent % ((value,) + additional)
     else:
         formatted = percent % value
     # floats and decimal ints need special action!
-    if percent[-1] in 'eEfFgG':
+    ikiwa percent[-1] in 'eEfFgG':
         seps = 0
         parts = formatted.split('.')
-        if grouping:
+        ikiwa grouping:
             parts[0], seps = _group(parts[0], monetary=monetary)
         decimal_point = localeconv()[monetary and 'mon_decimal_point'
                                               or 'decimal_point']
         formatted = decimal_point.join(parts)
-        if seps:
+        ikiwa seps:
             formatted = _strip_padding(formatted, seps)
-    elif percent[-1] in 'diu':
+    elikiwa percent[-1] in 'diu':
         seps = 0
-        if grouping:
+        ikiwa grouping:
             formatted, seps = _group(formatted, monetary=monetary)
-        if seps:
+        ikiwa seps:
             formatted = _strip_padding(formatted, seps)
-    return formatted
+    rudisha formatted
 
-def format_string(f, val, grouping=False, monetary=False):
+eleza format_string(f, val, grouping=False, monetary=False):
     """Formats a string in the same way that the % formatting would use,
     but takes the current locale into account.
 
-    Grouping is applied if the third parameter is true.
+    Grouping is applied ikiwa the third parameter is true.
     Conversion uses monetary thousands separator and grouping strings if
     forth parameter monetary is true."""
     percents = list(_percent_re.finditer(f))
     new_f = _percent_re.sub('%s', f)
 
-    if isinstance(val, _collections_abc.Mapping):
+    ikiwa isinstance(val, _collections_abc.Mapping):
         new_val = []
         for perc in percents:
-            if perc.group()[-1]=='%':
+            ikiwa perc.group()[-1]=='%':
                 new_val.append('%')
             else:
                 new_val.append(_format(perc.group(), val, grouping, monetary))
     else:
-        if not isinstance(val, tuple):
+        ikiwa not isinstance(val, tuple):
             val = (val,)
         new_val = []
         i = 0
         for perc in percents:
-            if perc.group()[-1]=='%':
+            ikiwa perc.group()[-1]=='%':
                 new_val.append('%')
             else:
                 starcount = perc.group('modifiers').count('*')
@@ -239,9 +239,9 @@ def format_string(f, val, grouping=False, monetary=False):
                 i += (1 + starcount)
     val = tuple(new_val)
 
-    return new_f % val
+    rudisha new_f % val
 
-def format(percent, value, grouping=False, monetary=False, *additional):
+eleza format(percent, value, grouping=False, monetary=False, *additional):
     """Deprecated, use format_string instead."""
     agiza warnings
     warnings.warn(
@@ -251,32 +251,32 @@ def format(percent, value, grouping=False, monetary=False, *additional):
     )
 
     match = _percent_re.match(percent)
-    if not match or len(match.group())!= len(percent):
+    ikiwa not match or len(match.group())!= len(percent):
         raise ValueError(("format() must be given exactly one %%char "
                          "format specifier, %s not valid") % repr(percent))
-    return _format(percent, value, grouping, monetary, *additional)
+    rudisha _format(percent, value, grouping, monetary, *additional)
 
-def currency(val, symbol=True, grouping=False, international=False):
+eleza currency(val, symbol=True, grouping=False, international=False):
     """Formats val according to the currency settings
     in the current locale."""
     conv = localeconv()
 
     # check for illegal values
     digits = conv[international and 'int_frac_digits' or 'frac_digits']
-    if digits == 127:
+    ikiwa digits == 127:
         raise ValueError("Currency formatting is not possible using "
                          "the 'C' locale.")
 
     s = _format('%%.%if' % digits, abs(val), grouping, monetary=True)
-    # '<' and '>' are markers if the sign must be inserted between symbol and value
+    # '<' and '>' are markers ikiwa the sign must be inserted between symbol and value
     s = '<' + s + '>'
 
-    if symbol:
+    ikiwa symbol:
         smb = conv[international and 'int_curr_symbol' or 'currency_symbol']
         precedes = conv[val<0 and 'n_cs_precedes' or 'p_cs_precedes']
         separated = conv[val<0 and 'n_sep_by_space' or 'p_sep_by_space']
 
-        if precedes:
+        ikiwa precedes:
             s = smb + (separated and ' ' or '') + s
         else:
             s = s + (separated and ' ' or '') + smb
@@ -284,59 +284,59 @@ def currency(val, symbol=True, grouping=False, international=False):
     sign_pos = conv[val<0 and 'n_sign_posn' or 'p_sign_posn']
     sign = conv[val<0 and 'negative_sign' or 'positive_sign']
 
-    if sign_pos == 0:
+    ikiwa sign_pos == 0:
         s = '(' + s + ')'
-    elif sign_pos == 1:
+    elikiwa sign_pos == 1:
         s = sign + s
-    elif sign_pos == 2:
+    elikiwa sign_pos == 2:
         s = s + sign
-    elif sign_pos == 3:
+    elikiwa sign_pos == 3:
         s = s.replace('<', sign)
-    elif sign_pos == 4:
+    elikiwa sign_pos == 4:
         s = s.replace('>', sign)
     else:
-        # the default if nothing specified;
+        # the default ikiwa nothing specified;
         # this should be the most fitting sign position
         s = sign + s
 
-    return s.replace('<', '').replace('>', '')
+    rudisha s.replace('<', '').replace('>', '')
 
-def str(val):
+eleza str(val):
     """Convert float to string, taking the locale into account."""
-    return _format("%.12g", val)
+    rudisha _format("%.12g", val)
 
-def delocalize(string):
+eleza delocalize(string):
     "Parses a string as a normalized number according to the locale settings."
 
     conv = localeconv()
 
     #First, get rid of the grouping
     ts = conv['thousands_sep']
-    if ts:
+    ikiwa ts:
         string = string.replace(ts, '')
 
     #next, replace the decimal point with a dot
     dd = conv['decimal_point']
-    if dd:
+    ikiwa dd:
         string = string.replace(dd, '.')
-    return string
+    rudisha string
 
-def atof(string, func=float):
+eleza atof(string, func=float):
     "Parses a string as a float according to the locale settings."
-    return func(delocalize(string))
+    rudisha func(delocalize(string))
 
-def atoi(string):
+eleza atoi(string):
     "Converts a string to an integer according to the locale settings."
-    return int(delocalize(string))
+    rudisha int(delocalize(string))
 
-def _test():
+eleza _test():
     setlocale(LC_ALL, "")
     #do grouping
     s1 = format_string("%d", 123456789,1)
-    print(s1, "is", atoi(s1))
+    andika(s1, "is", atoi(s1))
     #standard formatting
     s1 = str(3.14)
-    print(s1, "is", atof(s1))
+    andika(s1, "is", atof(s1))
 
 ### Locale name aliasing engine
 
@@ -347,41 +347,41 @@ def _test():
 # overridden below)
 _setlocale = setlocale
 
-def _replace_encoding(code, encoding):
-    if '.' in code:
+eleza _replace_encoding(code, encoding):
+    ikiwa '.' in code:
         langname = code[:code.index('.')]
     else:
         langname = code
     # Convert the encoding to a C lib compatible encoding string
     norm_encoding = encodings.normalize_encoding(encoding)
-    #print('norm encoding: %r' % norm_encoding)
+    #andika('norm encoding: %r' % norm_encoding)
     norm_encoding = encodings.aliases.aliases.get(norm_encoding.lower(),
                                                   norm_encoding)
-    #print('aliased encoding: %r' % norm_encoding)
+    #andika('aliased encoding: %r' % norm_encoding)
     encoding = norm_encoding
     norm_encoding = norm_encoding.lower()
-    if norm_encoding in locale_encoding_alias:
+    ikiwa norm_encoding in locale_encoding_alias:
         encoding = locale_encoding_alias[norm_encoding]
     else:
         norm_encoding = norm_encoding.replace('_', '')
         norm_encoding = norm_encoding.replace('-', '')
-        if norm_encoding in locale_encoding_alias:
+        ikiwa norm_encoding in locale_encoding_alias:
             encoding = locale_encoding_alias[norm_encoding]
-    #print('found encoding %r' % encoding)
-    return langname + '.' + encoding
+    #andika('found encoding %r' % encoding)
+    rudisha langname + '.' + encoding
 
-def _append_modifier(code, modifier):
-    if modifier == 'euro':
-        if '.' not in code:
-            return code + '.ISO8859-15'
+eleza _append_modifier(code, modifier):
+    ikiwa modifier == 'euro':
+        ikiwa '.' not in code:
+            rudisha code + '.ISO8859-15'
         _, _, encoding = code.partition('.')
-        if encoding in ('ISO8859-15', 'UTF-8'):
-            return code
-        if encoding == 'ISO8859-1':
-            return _replace_encoding(code, 'ISO8859-15')
-    return code + '@' + modifier
+        ikiwa encoding in ('ISO8859-15', 'UTF-8'):
+            rudisha code
+        ikiwa encoding == 'ISO8859-1':
+            rudisha _replace_encoding(code, 'ISO8859-15')
+    rudisha code + '@' + modifier
 
-def normalize(localename):
+eleza normalize(localename):
 
     """ Returns a normalized locale code for the given locale
         name.
@@ -399,14 +399,14 @@ def normalize(localename):
     """
     # Normalize the locale name and extract the encoding and modifier
     code = localename.lower()
-    if ':' in code:
+    ikiwa ':' in code:
         # ':' is sometimes used as encoding delimiter.
         code = code.replace(':', '.')
-    if '@' in code:
+    ikiwa '@' in code:
         code, modifier = code.split('@', 1)
     else:
         modifier = ''
-    if '.' in code:
+    ikiwa '.' in code:
         langname, encoding = code.split('.')[:2]
     else:
         langname = code
@@ -414,57 +414,57 @@ def normalize(localename):
 
     # First lookup: fullname (possibly with encoding and modifier)
     lang_enc = langname
-    if encoding:
+    ikiwa encoding:
         norm_encoding = encoding.replace('-', '')
         norm_encoding = norm_encoding.replace('_', '')
         lang_enc += '.' + norm_encoding
     lookup_name = lang_enc
-    if modifier:
+    ikiwa modifier:
         lookup_name += '@' + modifier
     code = locale_alias.get(lookup_name, None)
-    if code is not None:
-        return code
-    #print('first lookup failed')
+    ikiwa code is not None:
+        rudisha code
+    #andika('first lookup failed')
 
-    if modifier:
+    ikiwa modifier:
         # Second try: fullname without modifier (possibly with encoding)
         code = locale_alias.get(lang_enc, None)
-        if code is not None:
-            #print('lookup without modifier succeeded')
-            if '@' not in code:
-                return _append_modifier(code, modifier)
-            if code.split('@', 1)[1].lower() == modifier:
-                return code
-        #print('second lookup failed')
+        ikiwa code is not None:
+            #andika('lookup without modifier succeeded')
+            ikiwa '@' not in code:
+                rudisha _append_modifier(code, modifier)
+            ikiwa code.split('@', 1)[1].lower() == modifier:
+                rudisha code
+        #andika('second lookup failed')
 
-    if encoding:
+    ikiwa encoding:
         # Third try: langname (without encoding, possibly with modifier)
         lookup_name = langname
-        if modifier:
+        ikiwa modifier:
             lookup_name += '@' + modifier
         code = locale_alias.get(lookup_name, None)
-        if code is not None:
-            #print('lookup without encoding succeeded')
-            if '@' not in code:
-                return _replace_encoding(code, encoding)
+        ikiwa code is not None:
+            #andika('lookup without encoding succeeded')
+            ikiwa '@' not in code:
+                rudisha _replace_encoding(code, encoding)
             code, modifier = code.split('@', 1)
-            return _replace_encoding(code, encoding) + '@' + modifier
+            rudisha _replace_encoding(code, encoding) + '@' + modifier
 
-        if modifier:
+        ikiwa modifier:
             # Fourth try: langname (without encoding and modifier)
             code = locale_alias.get(langname, None)
-            if code is not None:
-                #print('lookup without modifier and encoding succeeded')
-                if '@' not in code:
+            ikiwa code is not None:
+                #andika('lookup without modifier and encoding succeeded')
+                ikiwa '@' not in code:
                     code = _replace_encoding(code, encoding)
-                    return _append_modifier(code, modifier)
+                    rudisha _append_modifier(code, modifier)
                 code, defmod = code.split('@', 1)
-                if defmod.lower() == modifier:
-                    return _replace_encoding(code, encoding) + '@' + defmod
+                ikiwa defmod.lower() == modifier:
+                    rudisha _replace_encoding(code, encoding) + '@' + defmod
 
-    return localename
+    rudisha localename
 
-def _parse_localename(localename):
+eleza _parse_localename(localename):
 
     """ Parses the locale code for localename and returns the
         result as tuple (language code, encoding).
@@ -479,26 +479,26 @@ def _parse_localename(localename):
 
     """
     code = normalize(localename)
-    if '@' in code:
+    ikiwa '@' in code:
         # Deal with locale modifiers
         code, modifier = code.split('@', 1)
-        if modifier == 'euro' and '.' not in code:
+        ikiwa modifier == 'euro' and '.' not in code:
             # Assume Latin-9 for @euro locales. This is bogus,
             # since some systems may use other encodings for these
             # locales. Also, we ignore other modifiers.
-            return code, 'iso-8859-15'
+            rudisha code, 'iso-8859-15'
 
-    if '.' in code:
-        return tuple(code.split('.')[:2])
-    elif code == 'C':
-        return None, None
-    elif code == 'UTF-8':
+    ikiwa '.' in code:
+        rudisha tuple(code.split('.')[:2])
+    elikiwa code == 'C':
+        rudisha None, None
+    elikiwa code == 'UTF-8':
         # On macOS "LC_CTYPE=UTF-8" is a valid locale setting
         # for getting UTF-8 handling for text.
-        return None, 'UTF-8'
+        rudisha None, 'UTF-8'
     raise ValueError('unknown locale: %s' % localename)
 
-def _build_localename(localetuple):
+eleza _build_localename(localetuple):
 
     """ Builds a locale code kutoka the given tuple (language code,
         encoding).
@@ -509,17 +509,17 @@ def _build_localename(localetuple):
     try:
         language, encoding = localetuple
 
-        if language is None:
+        ikiwa language is None:
             language = 'C'
-        if encoding is None:
-            return language
+        ikiwa encoding is None:
+            rudisha language
         else:
-            return language + '.' + encoding
+            rudisha language + '.' + encoding
     except (TypeError, ValueError):
         raise TypeError('Locale must be None, a string, or an iterable of '
                         'two strings -- language code, encoding.') kutoka None
 
-def getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
+eleza getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
 
     """ Tries to determine the default locale settings and returns
         them as tuple (language code, encoding).
@@ -544,35 +544,35 @@ def getdefaultlocale(envvars=('LC_ALL', 'LC_CTYPE', 'LANG', 'LANGUAGE')):
     """
 
     try:
-        # check if it's supported by the _locale module
+        # check ikiwa it's supported by the _locale module
         agiza _locale
         code, encoding = _locale._getdefaultlocale()
     except (ImportError, AttributeError):
         pass
     else:
         # make sure the code/encoding values are valid
-        if sys.platform == "win32" and code and code[:2] == "0x":
+        ikiwa sys.platform == "win32" and code and code[:2] == "0x":
             # map windows language identifier to language name
             code = windows_locale.get(int(code, 0))
         # ...add other platform-specific processing here, if
         # necessary...
-        return code, encoding
+        rudisha code, encoding
 
     # fall back on POSIX behaviour
     agiza os
     lookup = os.environ.get
     for variable in envvars:
         localename = lookup(variable,None)
-        if localename:
-            if variable == 'LANGUAGE':
+        ikiwa localename:
+            ikiwa variable == 'LANGUAGE':
                 localename = localename.split(':')[0]
             break
     else:
         localename = 'C'
-    return _parse_localename(localename)
+    rudisha _parse_localename(localename)
 
 
-def getlocale(category=LC_CTYPE):
+eleza getlocale(category=LC_CTYPE):
 
     """ Returns the current setting for the given locale category as
         tuple (language code, encoding).
@@ -586,11 +586,11 @@ def getlocale(category=LC_CTYPE):
 
     """
     localename = _setlocale(category)
-    if category == LC_ALL and ';' in localename:
+    ikiwa category == LC_ALL and ';' in localename:
         raise TypeError('category LC_ALL is not supported')
-    return _parse_localename(localename)
+    rudisha _parse_localename(localename)
 
-def setlocale(category, locale=None):
+eleza setlocale(category, locale=None):
 
     """ Set the locale for the given category.  The locale can be
         a string, an iterable of two strings (language code and encoding),
@@ -602,12 +602,12 @@ def setlocale(category, locale=None):
         category may be given as one of the LC_* values.
 
     """
-    if locale and not isinstance(locale, _builtin_str):
+    ikiwa locale and not isinstance(locale, _builtin_str):
         # convert to string
         locale = normalize(_build_localename(locale))
-    return _setlocale(category, locale)
+    rudisha _setlocale(category, locale)
 
-def resetlocale(category=LC_ALL):
+eleza resetlocale(category=LC_ALL):
 
     """ Sets the locale for category to the default setting.
 
@@ -617,53 +617,53 @@ def resetlocale(category=LC_ALL):
     """
     _setlocale(category, _build_localename(getdefaultlocale()))
 
-if sys.platform.startswith("win"):
-    # On Win32, this will return the ANSI code page
-    def getpreferredencoding(do_setlocale = True):
+ikiwa sys.platform.startswith("win"):
+    # On Win32, this will rudisha the ANSI code page
+    eleza getpreferredencoding(do_setlocale = True):
         """Return the charset that the user is likely using."""
-        if sys.flags.utf8_mode:
-            return 'UTF-8'
+        ikiwa sys.flags.utf8_mode:
+            rudisha 'UTF-8'
         agiza _bootlocale
-        return _bootlocale.getpreferredencoding(False)
+        rudisha _bootlocale.getpreferredencoding(False)
 else:
-    # On Unix, if CODESET is available, use that.
+    # On Unix, ikiwa CODESET is available, use that.
     try:
         CODESET
     except NameError:
-        if hasattr(sys, 'getandroidapilevel'):
+        ikiwa hasattr(sys, 'getandroidapilevel'):
             # On Android langinfo.h and CODESET are missing, and UTF-8 is
             # always used in mbstowcs() and wcstombs().
-            def getpreferredencoding(do_setlocale = True):
-                return 'UTF-8'
+            eleza getpreferredencoding(do_setlocale = True):
+                rudisha 'UTF-8'
         else:
             # Fall back to parsing environment variables :-(
-            def getpreferredencoding(do_setlocale = True):
+            eleza getpreferredencoding(do_setlocale = True):
                 """Return the charset that the user is likely using,
                 by looking at environment variables."""
-                if sys.flags.utf8_mode:
-                    return 'UTF-8'
+                ikiwa sys.flags.utf8_mode:
+                    rudisha 'UTF-8'
                 res = getdefaultlocale()[1]
-                if res is None:
+                ikiwa res is None:
                     # LANG not set, default conservatively to ASCII
                     res = 'ascii'
-                return res
+                rudisha res
     else:
-        def getpreferredencoding(do_setlocale = True):
+        eleza getpreferredencoding(do_setlocale = True):
             """Return the charset that the user is likely using,
             according to the system configuration."""
-            if sys.flags.utf8_mode:
-                return 'UTF-8'
+            ikiwa sys.flags.utf8_mode:
+                rudisha 'UTF-8'
             agiza _bootlocale
-            if do_setlocale:
+            ikiwa do_setlocale:
                 oldloc = setlocale(LC_CTYPE)
                 try:
                     setlocale(LC_CTYPE, "")
                 except Error:
                     pass
             result = _bootlocale.getpreferredencoding(False)
-            if do_setlocale:
+            ikiwa do_setlocale:
                 setlocale(LC_CTYPE, oldloc)
-            return result
+            rudisha result
 
 
 ### Database
@@ -1678,61 +1678,61 @@ windows_locale = {
     0x0435: "zu_ZA", # Zulu
 }
 
-def _print_locale():
+eleza _print_locale():
 
     """ Test function.
     """
     categories = {}
-    def _init_categories(categories=categories):
+    eleza _init_categories(categories=categories):
         for k,v in globals().items():
-            if k[:3] == 'LC_':
+            ikiwa k[:3] == 'LC_':
                 categories[k] = v
     _init_categories()
     del categories['LC_ALL']
 
-    print('Locale defaults as determined by getdefaultlocale():')
-    print('-'*72)
+    andika('Locale defaults as determined by getdefaultlocale():')
+    andika('-'*72)
     lang, enc = getdefaultlocale()
-    print('Language: ', lang or '(undefined)')
-    print('Encoding: ', enc or '(undefined)')
-    print()
+    andika('Language: ', lang or '(undefined)')
+    andika('Encoding: ', enc or '(undefined)')
+    andika()
 
-    print('Locale settings on startup:')
-    print('-'*72)
+    andika('Locale settings on startup:')
+    andika('-'*72)
     for name,category in categories.items():
-        print(name, '...')
+        andika(name, '...')
         lang, enc = getlocale(category)
-        print('   Language: ', lang or '(undefined)')
-        print('   Encoding: ', enc or '(undefined)')
-        print()
+        andika('   Language: ', lang or '(undefined)')
+        andika('   Encoding: ', enc or '(undefined)')
+        andika()
 
-    print()
-    print('Locale settings after calling resetlocale():')
-    print('-'*72)
+    andika()
+    andika('Locale settings after calling resetlocale():')
+    andika('-'*72)
     resetlocale()
     for name,category in categories.items():
-        print(name, '...')
+        andika(name, '...')
         lang, enc = getlocale(category)
-        print('   Language: ', lang or '(undefined)')
-        print('   Encoding: ', enc or '(undefined)')
-        print()
+        andika('   Language: ', lang or '(undefined)')
+        andika('   Encoding: ', enc or '(undefined)')
+        andika()
 
     try:
         setlocale(LC_ALL, "")
     except:
-        print('NOTE:')
-        print('setlocale(LC_ALL, "") does not support the default locale')
-        print('given in the OS environment variables.')
+        andika('NOTE:')
+        andika('setlocale(LC_ALL, "") does not support the default locale')
+        andika('given in the OS environment variables.')
     else:
-        print()
-        print('Locale settings after calling setlocale(LC_ALL, ""):')
-        print('-'*72)
+        andika()
+        andika('Locale settings after calling setlocale(LC_ALL, ""):')
+        andika('-'*72)
         for name,category in categories.items():
-            print(name, '...')
+            andika(name, '...')
             lang, enc = getlocale(category)
-            print('   Language: ', lang or '(undefined)')
-            print('   Encoding: ', enc or '(undefined)')
-            print()
+            andika('   Language: ', lang or '(undefined)')
+            andika('   Encoding: ', enc or '(undefined)')
+            andika()
 
 ###
 
@@ -1743,11 +1743,11 @@ except NameError:
 else:
     __all__.append("LC_MESSAGES")
 
-if __name__=='__main__':
-    print('Locale aliasing:')
-    print()
+ikiwa __name__=='__main__':
+    andika('Locale aliasing:')
+    andika()
     _print_locale()
-    print()
-    print('Number formatting:')
-    print()
+    andika()
+    andika('Number formatting:')
+    andika()
     _test()

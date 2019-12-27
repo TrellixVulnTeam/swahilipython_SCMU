@@ -20,38 +20,38 @@ testcfg = {
 }
 
 source = (
-    "if True: int ('1') # keyword, builtin, string, comment\n"
-    "elif False: print(0)  # 'string' in comment\n"
-    "else: float(None)  # if in comment\n"
-    "if iF + If + IF: 'keyword matching must respect case'\n"
+    "ikiwa True: int ('1') # keyword, builtin, string, comment\n"
+    "elikiwa False: andika(0)  # 'string' in comment\n"
+    "else: float(None)  # ikiwa in comment\n"
+    "ikiwa iF + If + IF: 'keyword matching must respect case'\n"
     "if'': x or''  # valid string-keyword no-space combinations\n"
-    "async def f(): await g()\n"
+    "async eleza f(): await g()\n"
     "'x', '''x''', \"x\", \"\"\"x\"\"\"\n"
     )
 
 
-def setUpModule():
+eleza setUpModule():
     colorizer.idleConf.userCfg = testcfg
 
 
-def tearDownModule():
+eleza tearDownModule():
     colorizer.idleConf.userCfg = usercfg
 
 
-class FunctionTest(unittest.TestCase):
+kundi FunctionTest(unittest.TestCase):
 
-    def test_any(self):
+    eleza test_any(self):
         self.assertEqual(colorizer.any('test', ('a', 'b', 'cd')),
                          '(?P<test>a|b|cd)')
 
-    def test_make_pat(self):
+    eleza test_make_pat(self):
         # Tested in more detail by testing prog.
         self.assertTrue(colorizer.make_pat())
 
-    def test_prog(self):
+    eleza test_prog(self):
         prog = colorizer.prog
         eq = self.assertEqual
-        line = 'def f():\n    print("hello")\n'
+        line = 'eleza f():\n    andika("hello")\n'
         m = prog.search(line)
         eq(m.groupdict()['KEYWORD'], 'def')
         m = prog.search(line, m.end())
@@ -63,7 +63,7 @@ class FunctionTest(unittest.TestCase):
         m = prog.search(line, m.end())
         eq(m.groupdict()['SYNC'], '\n')
 
-    def test_idprog(self):
+    eleza test_idprog(self):
         idprog = colorizer.idprog
         m = idprog.match('nospace')
         self.assertIsNone(m)
@@ -71,23 +71,23 @@ class FunctionTest(unittest.TestCase):
         self.assertEqual(m.group(0), ' space')
 
 
-class ColorConfigTest(unittest.TestCase):
+kundi ColorConfigTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         root = cls.root = Tk()
         root.withdraw()
         cls.text = Text(root)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         del cls.text
         cls.root.update_idletasks()
         cls.root.destroy()
         del cls.root
 
-    def test_color_config(self):
+    eleza test_color_config(self):
         text = self.text
         eq = self.assertEqual
         colorizer.color_config(text)
@@ -100,36 +100,36 @@ class ColorConfigTest(unittest.TestCase):
         eq(text['inactiveselectbackground'], 'gray')
 
 
-class ColorDelegatorInstantiationTest(unittest.TestCase):
+kundi ColorDelegatorInstantiationTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         root = cls.root = Tk()
         root.withdraw()
         text = cls.text = Text(root)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         del cls.text
         cls.root.update_idletasks()
         cls.root.destroy()
         del cls.root
 
-    def setUp(self):
+    eleza setUp(self):
         self.color = colorizer.ColorDelegator()
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.color.close()
         self.text.delete('1.0', 'end')
         self.color.resetcache()
         del self.color
 
-    def test_init(self):
+    eleza test_init(self):
         color = self.color
         self.assertIsInstance(color, colorizer.ColorDelegator)
 
-    def test_init_state(self):
+    eleza test_init_state(self):
         # init_state() is called during the instantiation of
         # ColorDelegator in setUp().
         color = self.color
@@ -139,10 +139,10 @@ class ColorDelegatorInstantiationTest(unittest.TestCase):
         self.assertFalse(color.stop_colorizing)
 
 
-class ColorDelegatorTest(unittest.TestCase):
+kundi ColorDelegatorTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         root = cls.root = Tk()
         root.withdraw()
@@ -151,26 +151,26 @@ class ColorDelegatorTest(unittest.TestCase):
         # Delegator stack = [Delegator(text)]
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         cls.percolator.redir.close()
         del cls.percolator, cls.text
         cls.root.update_idletasks()
         cls.root.destroy()
         del cls.root
 
-    def setUp(self):
+    eleza setUp(self):
         self.color = colorizer.ColorDelegator()
         self.percolator.insertfilter(self.color)
         # Calls color.setdelegate(Delegator(text)).
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.color.close()
         self.percolator.removefilter(self.color)
         self.text.delete('1.0', 'end')
         self.color.resetcache()
         del self.color
 
-    def test_setdelegate(self):
+    eleza test_setdelegate(self):
         # Called in setUp when filter is attached to percolator.
         color = self.color
         self.assertIsInstance(color.delegate, colorizer.Delegator)
@@ -178,22 +178,22 @@ class ColorDelegatorTest(unittest.TestCase):
         self.assertEqual(self.root.tk.call(
             'after', 'info', color.after_id)[1], 'timer')
 
-    def test_LoadTagDefs(self):
+    eleza test_LoadTagDefs(self):
         highlight = partial(config.idleConf.GetHighlight, theme='IDLE Classic')
         for tag, colors in self.color.tagdefs.items():
             with self.subTest(tag=tag):
                 self.assertIn('background', colors)
                 self.assertIn('foreground', colors)
-                if tag not in ('SYNC', 'TODO'):
+                ikiwa tag not in ('SYNC', 'TODO'):
                     self.assertEqual(colors, highlight(element=tag.lower()))
 
-    def test_config_colors(self):
+    eleza test_config_colors(self):
         text = self.text
         highlight = partial(config.idleConf.GetHighlight, theme='IDLE Classic')
         for tag in self.color.tagdefs:
             for plane in ('background', 'foreground'):
                 with self.subTest(tag=tag, plane=plane):
-                    if tag in ('SYNC', 'TODO'):
+                    ikiwa tag in ('SYNC', 'TODO'):
                         self.assertEqual(text.tag_cget(tag, plane), '')
                     else:
                         self.assertEqual(text.tag_cget(tag, plane),
@@ -202,7 +202,7 @@ class ColorDelegatorTest(unittest.TestCase):
         self.assertEqual(text.tag_names()[-1], 'sel')
 
     @mock.patch.object(colorizer.ColorDelegator, 'notify_range')
-    def test_insert(self, mock_notify):
+    eleza test_insert(self, mock_notify):
         text = self.text
         # Initial text.
         text.insert('insert', 'foo')
@@ -214,7 +214,7 @@ class ColorDelegatorTest(unittest.TestCase):
         mock_notify.assert_called_with('1.3', '1.3+6c')
 
     @mock.patch.object(colorizer.ColorDelegator, 'notify_range')
-    def test_delete(self, mock_notify):
+    eleza test_delete(self, mock_notify):
         text = self.text
         # Initialize text.
         text.insert('insert', 'abcdefghi')
@@ -228,7 +228,7 @@ class ColorDelegatorTest(unittest.TestCase):
         self.assertEqual(text.get('1.0', 'end'), 'abcgi\n')
         mock_notify.assert_called_with('1.3')
 
-    def test_notify_range(self):
+    eleza test_notify_range(self):
         text = self.text
         color = self.color
         eq = self.assertEqual
@@ -264,7 +264,7 @@ class ColorDelegatorTest(unittest.TestCase):
         # Nothing scheduled when colorizing is off.
         self.assertIsNone(color.after_id)
 
-    def test_toggle_colorize_event(self):
+    eleza test_toggle_colorize_event(self):
         color = self.color
         eq = self.assertEqual
 
@@ -305,7 +305,7 @@ class ColorDelegatorTest(unittest.TestCase):
         self.assertTrue(color.allow_colorizing)
 
     @mock.patch.object(colorizer.ColorDelegator, 'recolorize_main')
-    def test_recolorize(self, mock_recmain):
+    eleza test_recolorize(self, mock_recmain):
         text = self.text
         color = self.color
         eq = self.assertEqual
@@ -350,7 +350,7 @@ class ColorDelegatorTest(unittest.TestCase):
         self.assertIsNone(color.after_id)
 
     @mock.patch.object(colorizer.ColorDelegator, 'notify_range')
-    def test_recolorize_main(self, mock_notify):
+    eleza test_recolorize_main(self, mock_notify):
         text = self.text
         color = self.color
         eq = self.assertEqual
@@ -399,7 +399,7 @@ class ColorDelegatorTest(unittest.TestCase):
 
     @mock.patch.object(colorizer.ColorDelegator, 'recolorize')
     @mock.patch.object(colorizer.ColorDelegator, 'notify_range')
-    def test_removecolors(self, mock_notify, mock_recolorize):
+    eleza test_removecolors(self, mock_notify, mock_recolorize):
         text = self.text
         color = self.color
         text.insert('insert', source)
@@ -419,5 +419,5 @@ class ColorDelegatorTest(unittest.TestCase):
                 self.assertEqual(text.tag_ranges(tag), ())
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

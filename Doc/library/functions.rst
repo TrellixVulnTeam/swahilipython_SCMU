@@ -107,7 +107,7 @@ are always available.  They are listed here in alphabetical order.
    Return a Boolean value, i.e. one of ``True`` or ``False``.  *x* is converted
    using the standard :ref:`truth testing procedure <truth>`.  If *x* is false
    or omitted, this returns ``False``; otherwise it returns ``True``.  The
-   :class:`bool` class is a subclass of :class:`int` (see :ref:`typesnumeric`).
+   :class:`bool` kundi is a subkundi of :class:`int` (see :ref:`typesnumeric`).
    It cannot be subclassed further.  Its only instances are ``False`` and
    ``True`` (see :ref:`bltin-boolean-values`).
 
@@ -136,7 +136,7 @@ are always available.  They are listed here in alphabetical order.
 .. class:: bytearray([source[, encoding[, errors]]])
    :noindex:
 
-   Return a new array of bytes.  The :class:`bytearray` class is a mutable
+   Return a new array of bytes.  The :class:`bytearray` kundi is a mutable
    sequence of integers in the range 0 <= x < 256.  It has most of the usual
    methods of mutable sequences, described in :ref:`typesseq-mutable`, as well
    as most methods that the :class:`bytes` type has, see :ref:`bytes-methods`.
@@ -183,8 +183,8 @@ are always available.  They are listed here in alphabetical order.
    Return :const:`True` if the *object* argument appears callable,
    :const:`False` if not.  If this returns true, it is still possible that a
    call fails, but if it is false, calling *object* will never succeed.
-   Note that classes are callable (calling a class returns a new instance);
-   instances are callable if their class has a :meth:`__call__` method.
+   Note that classes are callable (calling a kundi returns a new instance);
+   instances are callable if their kundi has a :meth:`__call__` method.
 
    .. versionadded:: 3.2
       This function was first removed in Python 3.0 and then brought back
@@ -197,34 +197,34 @@ are always available.  They are listed here in alphabetical order.
    integer *i*.  For example, ``chr(97)`` returns the string ``'a'``, while
    ``chr(8364)`` returns the string ``'€'``. This is the inverse of :func:`ord`.
 
-   The valid range for the argument is from 0 through 1,114,111 (0x10FFFF in
+   The valid range for the argument is kutoka 0 through 1,114,111 (0x10FFFF in
    base 16).  :exc:`ValueError` will be raised if *i* is outside that range.
 
 
 .. decorator:: classmethod
 
-   Transform a method into a class method.
+   Transform a method into a kundi method.
 
-   A class method receives the class as implicit first argument, just like an
-   instance method receives the instance. To declare a class method, use this
+   A kundi method receives the kundi as implicit first argument, just like an
+   instance method receives the instance. To declare a kundi method, use this
    idiom::
 
-      class C:
+      kundi C:
           @classmethod
           def f(cls, arg1, arg2, ...): ...
 
    The ``@classmethod`` form is a function :term:`decorator` -- see
    :ref:`function` for details.
 
-   A class method can be called either on the class (such as ``C.f()``) or on an instance (such
+   A kundi method can be called either on the kundi (such as ``C.f()``) or on an instance (such
    as ``C().f()``).  The instance is ignored except for its class. If a class
-   method is called for a derived class, the derived class object is passed as the
+   method is called for a derived class, the derived kundi object is passed as the
    implied first argument.
 
    Class methods are different than C++ or Java static methods. If you want those,
    see :func:`staticmethod`.
 
-   For more information on class methods, see :ref:`types`.
+   For more information on kundi methods, see :ref:`types`.
 
 
 .. function:: compile(source, filename, mode, flags=0, dont_inherit=False, optimize=-1)
@@ -234,8 +234,8 @@ are always available.  They are listed here in alphabetical order.
    byte string, or an AST object.  Refer to the :mod:`ast` module documentation
    for information on how to work with AST objects.
 
-   The *filename* argument should give the file from which the code was read;
-   pass some recognizable value if it wasn't read from a file (``'<string>'`` is
+   The *filename* argument should give the file kutoka which the code was read;
+   pass some recognizable value if it wasn't read kutoka a file (``'<string>'`` is
    commonly used).
 
    The *mode* argument specifies what kind of code must be compiled; it can be
@@ -327,7 +327,7 @@ are always available.  They are listed here in alphabetical order.
 
    .. note::
 
-      When converting from a string, the string must not contain whitespace
+      When converting kutoka a string, the string must not contain whitespace
       around the central ``+`` or ``-`` operator.  For example,
       ``complex('1+2j')`` is fine, but ``complex('1 + 2j')`` raises
       :exc:`ValueError`.
@@ -374,8 +374,8 @@ are always available.  They are listed here in alphabetical order.
    :func:`dir` reports their attributes.
 
    If the object does not provide :meth:`__dir__`, the function tries its best to
-   gather information from the object's :attr:`~object.__dict__` attribute, if defined, and
-   from its type object.  The resulting list is not necessarily complete, and may
+   gather information kutoka the object's :attr:`~object.__dict__` attribute, if defined, and
+   kutoka its type object.  The resulting list is not necessarily complete, and may
    be inaccurate when the object has a custom :func:`__getattr__`.
 
    The default :func:`dir` mechanism behaves differently with different types of
@@ -385,7 +385,7 @@ are always available.  They are listed here in alphabetical order.
    * If the object is a module object, the list contains the names of the module's
      attributes.
 
-   * If the object is a type or class object, the list contains the names of its
+   * If the object is a type or kundi object, the list contains the names of its
      attributes, and recursively of the attributes of its bases.
 
    * Otherwise, the list contains the object's attributes' names, the names of its
@@ -394,15 +394,15 @@ are always available.  They are listed here in alphabetical order.
 
    The resulting list is sorted alphabetically.  For example:
 
-      >>> import struct
+      >>> agiza struct
       >>> dir()   # show the names in the module namespace  # doctest: +SKIP
       ['__builtins__', '__name__', 'struct']
       >>> dir(struct)   # show the names in the struct module # doctest: +SKIP
       ['Struct', '__all__', '__builtins__', '__cached__', '__doc__', '__file__',
        '__initializing__', '__loader__', '__name__', '__package__',
        '_clearcache', 'calcsize', 'error', 'pack', 'pack_into',
-       'unpack', 'unpack_from']
-      >>> class Shape:
+       'unpack', 'unpack_kutoka']
+      >>> kundi Shape:
       ...     def __dir__(self):
       ...         return ['area', 'perimeter', 'location']
       >>> s = Shape()
@@ -415,7 +415,7 @@ are always available.  They are listed here in alphabetical order.
       interactive prompt, it tries to supply an interesting set of names more
       than it tries to supply a rigorously or consistently defined set of names,
       and its detailed behavior may change across releases.  For example,
-      metaclass attributes are not in the result list when the argument is a
+      metakundi attributes are not in the result list when the argument is a
       class.
 
 
@@ -436,8 +436,8 @@ are always available.  They are listed here in alphabetical order.
    Return an enumerate object. *iterable* must be a sequence, an
    :term:`iterator`, or some other object which supports iteration.
    The :meth:`~iterator.__next__` method of the iterator returned by
-   :func:`enumerate` returns a tuple containing a count (from *start* which
-   defaults to 0) and the values obtained from iterating over *iterable*.
+   :func:`enumerate` returns a tuple containing a count (kutoka *start* which
+   defaults to 0) and the values obtained kutoka iterating over *iterable*.
 
       >>> seasons = ['Spring', 'Summer', 'Fall', 'Winter']
       >>> list(enumerate(seasons))
@@ -515,13 +515,13 @@ are always available.  They are listed here in alphabetical order.
 
    In all cases, if the optional parts are omitted, the code is executed in the
    current scope.  If only *globals* is provided, it must be a dictionary
-   (and not a subclass of dictionary), which
+   (and not a subkundi of dictionary), which
    will be used for both the global and the local variables.  If *globals* and
    *locals* are given, they are used for the global and local variables,
    respectively.  If provided, *locals* can be any mapping object.  Remember
    that at module level, globals and locals are the same dictionary. If exec
    gets two separate objects as *globals* and *locals*, the code will be
-   executed as if it were embedded in a class definition.
+   executed as if it were embedded in a kundi definition.
 
    If the *globals* dictionary does not contain a value for the key
    ``__builtins__``, a reference to the dictionary of the built-in module
@@ -550,7 +550,7 @@ are always available.  They are listed here in alphabetical order.
 
 .. function:: filter(function, iterable)
 
-   Construct an iterator from those elements of *iterable* for which *function*
+   Construct an iterator kutoka those elements of *iterable* for which *function*
    returns true.  *iterable* may be either a sequence, a container which
    supports iteration, or an iterator.  If *function* is ``None``, the identity
    function is assumed, that is, all elements of *iterable* that are false are
@@ -571,7 +571,7 @@ are always available.  They are listed here in alphabetical order.
       single: NaN
       single: Infinity
 
-   Return a floating point number constructed from a number or string *x*.
+   Return a floating point number constructed kutoka a number or string *x*.
 
    If the argument is a string, it should contain a decimal number, optionally
    preceded by a sign, and optionally embedded in whitespace.  The optional
@@ -659,7 +659,7 @@ are always available.  They are listed here in alphabetical order.
 .. class:: frozenset([iterable])
    :noindex:
 
-   Return a new :class:`frozenset` object, optionally with elements taken from
+   Return a new :class:`frozenset` object, optionally with elements taken kutoka
    *iterable*.  ``frozenset`` is a built-in class.  See :class:`frozenset` and
    :ref:`types-set` for documentation about this class.
 
@@ -681,7 +681,7 @@ are always available.  They are listed here in alphabetical order.
 
    Return a dictionary representing the current global symbol table. This is always
    the dictionary of the current module (inside a function or method, this is the
-   module where it is defined, not the module from which it is called).
+   module where it is defined, not the module kutoka which it is called).
 
 
 .. function:: hasattr(object, name)
@@ -771,7 +771,7 @@ are always available.  They are listed here in alphabetical order.
 .. function:: input([prompt])
 
    If the *prompt* argument is present, it is written to standard output without
-   a trailing newline.  The function then reads a line from input, converts it
+   a trailing newline.  The function then reads a line kutoka input, converts it
    to a string (stripping a trailing newline), and returns that.  When EOF is
    read, :exc:`EOFError` is raised.  Example::
 
@@ -797,7 +797,7 @@ are always available.  They are listed here in alphabetical order.
 .. class:: int([x])
            int(x, base=10)
 
-   Return an integer object constructed from a number or string *x*, or return
+   Return an integer object constructed kutoka a number or string *x*, or return
    ``0`` if no arguments are given.  If *x* defines :meth:`__int__`,
    ``int(x)`` returns ``x.__int__()``.  If *x* defines :meth:`__index__`,
    it returns ``x.__index__()``.  If *x* defines :meth:`__trunc__`,
@@ -840,7 +840,7 @@ are always available.  They are listed here in alphabetical order.
 
    Return true if the *object* argument is an instance of the *classinfo*
    argument, or of a (direct, indirect or :term:`virtual <abstract base
-   class>`) subclass thereof.  If *object* is not
+   class>`) subkundi thereof.  If *object* is not
    an object of the given type, the function always returns false.
    If *classinfo* is a tuple of type objects (or recursively, other such
    tuples), return true if *object* is an instance of any of the types.
@@ -850,9 +850,9 @@ are always available.  They are listed here in alphabetical order.
 
 .. function:: issubclass(class, classinfo)
 
-   Return true if *class* is a subclass (direct, indirect or :term:`virtual
+   Return true if *class* is a subkundi (direct, indirect or :term:`virtual
    <abstract base class>`) of *classinfo*.  A
-   class is considered a subclass of itself. *classinfo* may be a tuple of class
+   kundi is considered a subkundi of itself. *classinfo* may be a tuple of class
    objects, in which case every entry in *classinfo* will be checked. In any other
    case, a :exc:`TypeError` exception is raised.
 
@@ -875,10 +875,10 @@ are always available.  They are listed here in alphabetical order.
    See also :ref:`typeiter`.
 
    One useful application of the second form of :func:`iter` is to build a
-   block-reader. For example, reading fixed-width blocks from a binary
+   block-reader. For example, reading fixed-width blocks kutoka a binary
    database file until the end of file is reached::
 
-      from functools import partial
+      kutoka functools agiza partial
       with open('mydata.db', 'rb') as f:
           for block in iter(partial(f.read, 64), b''):
               process_block(block)
@@ -903,7 +903,7 @@ are always available.  They are listed here in alphabetical order.
 
    Update and return a dictionary representing the current local symbol table.
    Free variables are returned by :func:`locals` when it is called in function
-   blocks, but not in class blocks. Note that at the module level, :func:`locals`
+   blocks, but not in kundi blocks. Note that at the module level, :func:`locals`
    and :func:`globals` are the same dictionary.
 
    .. note::
@@ -914,7 +914,7 @@ are always available.  They are listed here in alphabetical order.
 
    Return an iterator that applies *function* to every item of *iterable*,
    yielding the results.  If additional *iterable* arguments are passed,
-   *function* must take that many arguments and is applied to the items from all
+   *function* must take that many arguments and is applied to the items kutoka all
    iterables in parallel.  With multiple iterables, the iterator stops when the
    shortest iterable is exhausted.  For cases where the function inputs are
    already arranged into argument tuples, see :func:`itertools.starmap`\.
@@ -953,7 +953,7 @@ are always available.  They are listed here in alphabetical order.
 .. function:: memoryview(obj)
    :noindex:
 
-   Return a "memory view" object created from the given argument.  See
+   Return a "memory view" object created kutoka the given argument.  See
    :ref:`typememoryview` for more information.
 
 
@@ -988,7 +988,7 @@ are always available.  They are listed here in alphabetical order.
 
 .. function:: next(iterator[, default])
 
-   Retrieve the next item from the *iterator* by calling its
+   Retrieve the next item kutoka the *iterator* by calling its
    :meth:`~iterator.__next__` method.  If *default* is given, it is returned
    if the iterator is exhausted, otherwise :exc:`StopIteration` is raised.
 
@@ -1136,7 +1136,7 @@ are always available.  They are listed here in alphabetical order.
      where there is malformed data.
 
    * ``'surrogateescape'`` will represent any incorrect bytes as code
-     points in the Unicode Private Use Area ranging from U+DC80 to
+     points in the Unicode Private Use Area ranging kutoka U+DC80 to
      U+DCFF.  These private code points will then be turned back into
      the same bytes when the ``surrogateescape`` error handler is used
      when writing data.  This is useful for processing files in an
@@ -1161,7 +1161,7 @@ are always available.  They are listed here in alphabetical order.
    applies to text mode).  It can be ``None``, ``''``, ``'\n'``, ``'\r'``, and
    ``'\r\n'``.  It works as follows:
 
-   * When reading input from the stream, if *newline* is ``None``, universal
+   * When reading input kutoka the stream, if *newline* is ``None``, universal
      newlines mode is enabled.  Lines in the input can end in ``'\n'``,
      ``'\r'``, or ``'\r\n'``, and these are translated into ``'\n'`` before
      being returned to the caller.  If it is ``''``, universal newlines mode is
@@ -1191,7 +1191,7 @@ are always available.  They are listed here in alphabetical order.
    The following example uses the :ref:`dir_fd <dir_fd>` parameter of the
    :func:`os.open` function to open a file relative to a given directory::
 
-      >>> import os
+      >>> agiza os
       >>> dir_fd = os.open('somedir', os.O_RDONLY)
       >>> def opener(path, flags):
       ...     return os.open(path, flags, dir_fd=dir_fd)
@@ -1203,14 +1203,14 @@ are always available.  They are listed here in alphabetical order.
 
    The type of :term:`file object` returned by the :func:`open` function
    depends on the mode.  When :func:`open` is used to open a file in a text
-   mode (``'w'``, ``'r'``, ``'wt'``, ``'rt'``, etc.), it returns a subclass of
+   mode (``'w'``, ``'r'``, ``'wt'``, ``'rt'``, etc.), it returns a subkundi of
    :class:`io.TextIOBase` (specifically :class:`io.TextIOWrapper`).  When used
-   to open a file in a binary mode with buffering, the returned class is a
-   subclass of :class:`io.BufferedIOBase`.  The exact class varies: in read
+   to open a file in a binary mode with buffering, the returned kundi is a
+   subkundi of :class:`io.BufferedIOBase`.  The exact kundi varies: in read
    binary mode, it returns an :class:`io.BufferedReader`; in write binary and
    append binary modes, it returns an :class:`io.BufferedWriter`, and in
    read/write mode, it returns an :class:`io.BufferedRandom`.  When buffering is
-   disabled, the raw stream, a subclass of :class:`io.RawIOBase`,
+   disabled, the raw stream, a subkundi of :class:`io.RawIOBase`,
    :class:`io.FileIO`, is returned.
 
    .. index::
@@ -1228,7 +1228,7 @@ are always available.  They are listed here in alphabetical order.
 
    .. audit-event:: open file,mode,flags open
 
-   The ``mode`` and ``flags`` arguments may have been modified or inferred from
+   The ``mode`` and ``flags`` arguments may have been modified or inferred kutoka
    the original call.
 
    .. versionchanged::
@@ -1261,7 +1261,7 @@ are always available.  They are listed here in alphabetical order.
       3.6
 
          * Support added to accept objects implementing :class:`os.PathLike`.
-         * On Windows, opening a console buffer may return a subclass of
+         * On Windows, opening a console buffer may return a subkundi of
            :class:`io.RawIOBase` other than :class:`io.FileIO`.
 
 .. function:: ord(c)
@@ -1343,7 +1343,7 @@ are always available.  They are listed here in alphabetical order.
 
    A typical use is to define a managed attribute ``x``::
 
-      class C:
+      kundi C:
           def __init__(self):
               self._x = None
 
@@ -1365,7 +1365,7 @@ are always available.  They are listed here in alphabetical order.
    property will copy *fget*'s docstring (if it exists).  This makes it possible to
    create read-only properties easily using :func:`property` as a :term:`decorator`::
 
-      class Parrot:
+      kundi Parrot:
           def __init__(self):
               self._voltage = 100000
 
@@ -1383,7 +1383,7 @@ are always available.  They are listed here in alphabetical order.
    copy of the property with the corresponding accessor function set to the
    decorated function.  This is best explained with an example::
 
-      class C:
+      kundi C:
           def __init__(self):
               self._x = None
 
@@ -1427,7 +1427,7 @@ are always available.  They are listed here in alphabetical order.
    object with the same value when passed to :func:`eval`, otherwise the
    representation is a string enclosed in angle brackets that contains the name
    of the type of the object together with additional information often
-   including the name and address of the object.  A class can control what this
+   including the name and address of the object.  A kundi can control what this
    function returns for its instances by defining a :meth:`__repr__` method.
 
 
@@ -1470,7 +1470,7 @@ are always available.  They are listed here in alphabetical order.
 .. class:: set([iterable])
    :noindex:
 
-   Return a new :class:`set` object, optionally with elements taken from
+   Return a new :class:`set` object, optionally with elements taken kutoka
    *iterable*.  ``set`` is a built-in class.  See :class:`set` and
    :ref:`types-set` for documentation about this class.
 
@@ -1506,12 +1506,12 @@ are always available.  They are listed here in alphabetical order.
 
 .. function:: sorted(iterable, *, key=None, reverse=False)
 
-   Return a new sorted list from the items in *iterable*.
+   Return a new sorted list kutoka the items in *iterable*.
 
    Has two optional arguments which must be specified as keyword arguments.
 
    *key* specifies a function of one argument that is used to extract a comparison
-   key from each element in *iterable* (for example, ``key=str.lower``).  The
+   key kutoka each element in *iterable* (for example, ``key=str.lower``).  The
    default value is ``None`` (compare the elements directly).
 
    *reverse* is a boolean value.  If set to ``True``, then the list elements are
@@ -1534,14 +1534,14 @@ are always available.  They are listed here in alphabetical order.
    A static method does not receive an implicit first argument. To declare a static
    method, use this idiom::
 
-      class C:
+      kundi C:
           @staticmethod
           def f(arg1, arg2, ...): ...
 
    The ``@staticmethod`` form is a function :term:`decorator` -- see
    :ref:`function` for details.
 
-   A static method can be called either on the class (such as ``C.f()``) or on an instance (such
+   A static method can be called either on the kundi (such as ``C.f()``) or on an instance (such
    as ``C().f()``).
 
    Static methods in Python are similar to those found in Java or C++. Also see
@@ -1550,11 +1550,11 @@ are always available.  They are listed here in alphabetical order.
 
    Like all decorators, it is also possible to call ``staticmethod`` as
    a regular function and do something with its result.  This is needed
-   in some cases where you need a reference to a function from a class
+   in some cases where you need a reference to a function kutoka a class
    body and you want to avoid the automatic transformation to instance
    method.  For these cases, use this idiom::
 
-      class C:
+      kundi C:
           builtin_open = staticmethod(open)
 
    For more information on static methods, see :ref:`types`.
@@ -1576,7 +1576,7 @@ are always available.  They are listed here in alphabetical order.
 
 .. function:: sum(iterable, /, start=0)
 
-   Sums *start* and the items of an *iterable* from left to right and returns the
+   Sums *start* and the items of an *iterable* kutoka left to right and returns the
    total.  The *iterable*'s items are normally numbers, and the start value is not
    allowed to be a string.
 
@@ -1592,11 +1592,11 @@ are always available.  They are listed here in alphabetical order.
 .. function:: super([type[, object-or-type]])
 
    Return a proxy object that delegates method calls to a parent or sibling
-   class of *type*.  This is useful for accessing inherited methods that have
+   kundi of *type*.  This is useful for accessing inherited methods that have
    been overridden in a class.
 
    The *object-or-type* determines the :term:`method resolution order`
-   to be searched.  The search starts from the class right after the
+   to be searched.  The search starts kutoka the kundi right after the
    *type*.
 
    For example, if :attr:`~class.__mro__` of *object-or-type* is
@@ -1613,7 +1613,7 @@ are always available.  They are listed here in alphabetical order.
    the second argument is a type, ``issubclass(type2, type)`` must be true (this
    is useful for classmethods).
 
-   There are two typical use cases for *super*.  In a class hierarchy with
+   There are two typical use cases for *super*.  In a kundi hierarchy with
    single inheritance, *super* can be used to refer to parent classes without
    naming them explicitly, thus making the code more maintainable.  This use
    closely parallels the use of *super* in other programming languages.
@@ -1625,12 +1625,12 @@ are always available.  They are listed here in alphabetical order.
    where multiple base classes implement the same method.  Good design dictates
    that this method have the same calling signature in every case (because the
    order of calls is determined at runtime, because that order adapts
-   to changes in the class hierarchy, and because that order can include
+   to changes in the kundi hierarchy, and because that order can include
    sibling classes that are unknown prior to runtime).
 
-   For both use cases, a typical superclass call looks like this::
+   For both use cases, a typical superkundi call looks like this::
 
-      class C(B):
+      kundi C(B):
           def method(self, arg):
               super().method(arg)    # This does the same thing as:
                                      # super(C, self).method(arg)
@@ -1646,11 +1646,11 @@ are always available.  They are listed here in alphabetical order.
    Accordingly, :func:`super` is undefined for implicit lookups using statements or
    operators such as ``super()[name]``.
 
-   Also note that, aside from the zero argument form, :func:`super` is not
+   Also note that, aside kutoka the zero argument form, :func:`super` is not
    limited to use inside methods.  The two argument form specifies the
    arguments exactly and makes the appropriate references.  The zero
-   argument form only works inside a class definition, as the compiler fills
-   in the necessary details to correctly retrieve the class being defined,
+   argument form only works inside a kundi definition, as the compiler fills
+   in the necessary details to correctly retrieve the kundi being defined,
    as well as accessing the current instance for ordinary methods.
 
    For practical suggestions on how to design cooperative classes using
@@ -1681,14 +1681,14 @@ are always available.  They are listed here in alphabetical order.
 
    With three arguments, return a new type object.  This is essentially a
    dynamic form of the :keyword:`class` statement. The *name* string is the
-   class name and becomes the :attr:`~definition.__name__` attribute; the *bases*
+   kundi name and becomes the :attr:`~definition.__name__` attribute; the *bases*
    tuple itemizes the base classes and becomes the :attr:`~class.__bases__`
    attribute; and the *dict* dictionary is the namespace containing definitions
-   for class body and is copied to a standard dictionary to become the
+   for kundi body and is copied to a standard dictionary to become the
    :attr:`~object.__dict__` attribute.  For example, the following two
    statements create identical :class:`type` objects:
 
-      >>> class X:
+      >>> kundi X:
       ...     a = 1
       ...
       >>> X = type('X', (object,), dict(a=1))
@@ -1716,10 +1716,10 @@ are always available.  They are listed here in alphabetical order.
 
 .. function:: zip(*iterables)
 
-   Make an iterator that aggregates elements from each of the iterables.
+   Make an iterator that aggregates elements kutoka each of the iterables.
 
    Returns an iterator of tuples, where the *i*-th tuple contains
-   the *i*-th element from each of the argument sequences or iterables.  The
+   the *i*-th element kutoka each of the argument sequences or iterables.  The
    iterator stops when the shortest input iterable is exhausted. With a single
    iterable argument, it returns an iterator of 1-tuples.  With no arguments,
    it returns an empty iterator.  Equivalent to::
@@ -1744,7 +1744,7 @@ are always available.  They are listed here in alphabetical order.
    This has the effect of dividing the input into n-length chunks.
 
    :func:`zip` should only be used with unequal length inputs when you don't
-   care about trailing, unmatched values from the longer iterables.  If those
+   care about trailing, unmatched values kutoka the longer iterables.  If those
    values are important, use :func:`itertools.zip_longest` instead.
 
    :func:`zip` in conjunction with the ``*`` operator can be used to unzip a
@@ -1760,7 +1760,7 @@ are always available.  They are listed here in alphabetical order.
       True
 
 
-.. function:: __import__(name, globals=None, locals=None, fromlist=(), level=0)
+.. function:: __import__(name, globals=None, locals=None, kutokalist=(), level=0)
 
    .. index::
       statement: import
@@ -1775,15 +1775,15 @@ are always available.  They are listed here in alphabetical order.
    replaced (by importing the :mod:`builtins` module and assigning to
    ``builtins.__import__``) in order to change semantics of the
    :keyword:`!import` statement, but doing so is **strongly** discouraged as it
-   is usually simpler to use import hooks (see :pep:`302`) to attain the same
+   is usually simpler to use agiza hooks (see :pep:`302`) to attain the same
    goals and does not cause issues with code which assumes the default import
    implementation is in use.  Direct use of :func:`__import__` is also
    discouraged in favor of :func:`importlib.import_module`.
 
    The function imports the module *name*, potentially using the given *globals*
    and *locals* to determine how to interpret the name in a package context.
-   The *fromlist* gives the names of objects or submodules that should be
-   imported from the module given by *name*.  The standard implementation does
+   The *kutokalist* gives the names of objects or submodules that should be
+   imported kutoka the module given by *name*.  The standard implementation does
    not use its *locals* argument at all, and uses its *globals* only to
    determine the package context of the :keyword:`import` statement.
 
@@ -1795,33 +1795,33 @@ are always available.  They are listed here in alphabetical order.
 
    When the *name* variable is of the form ``package.module``, normally, the
    top-level package (the name up till the first dot) is returned, *not* the
-   module named by *name*.  However, when a non-empty *fromlist* argument is
+   module named by *name*.  However, when a non-empty *kutokalist* argument is
    given, the module named by *name* is returned.
 
-   For example, the statement ``import spam`` results in bytecode resembling the
+   For example, the statement ``agiza spam`` results in bytecode resembling the
    following code::
 
       spam = __import__('spam', globals(), locals(), [], 0)
 
-   The statement ``import spam.ham`` results in this call::
+   The statement ``agiza spam.ham`` results in this call::
 
       spam = __import__('spam.ham', globals(), locals(), [], 0)
 
    Note how :func:`__import__` returns the toplevel module here because this is
    the object that is bound to a name by the :keyword:`import` statement.
 
-   On the other hand, the statement ``from spam.ham import eggs, sausage as
+   On the other hand, the statement ``kutoka spam.ham agiza eggs, sausage as
    saus`` results in ::
 
       _temp = __import__('spam.ham', globals(), locals(), ['eggs', 'sausage'], 0)
       eggs = _temp.eggs
       saus = _temp.sausage
 
-   Here, the ``spam.ham`` module is returned from :func:`__import__`.  From this
-   object, the names to import are retrieved and assigned to their respective
+   Here, the ``spam.ham`` module is returned kutoka :func:`__import__`.  From this
+   object, the names to agiza are retrieved and assigned to their respective
    names.
 
-   If you simply want to import a module (potentially within a package) by name,
+   If you simply want to agiza a module (potentially within a package) by name,
    use :func:`importlib.import_module`.
 
    .. versionchanged:: 3.3
@@ -1832,5 +1832,5 @@ are always available.  They are listed here in alphabetical order.
 .. rubric:: Footnotes
 
 .. [#] Note that the parser only accepts the Unix-style end of line convention.
-   If you are reading the code from a file, make sure to use newline conversion
+   If you are reading the code kutoka a file, make sure to use newline conversion
    mode to convert Windows or Mac-style newlines.

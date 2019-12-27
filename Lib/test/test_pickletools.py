@@ -4,13 +4,13 @@ kutoka test agiza support
 kutoka test.pickletester agiza AbstractPickleTests
 agiza unittest
 
-class OptimizedPickleTests(AbstractPickleTests):
+kundi OptimizedPickleTests(AbstractPickleTests):
 
-    def dumps(self, arg, proto=None, **kwargs):
-        return pickletools.optimize(pickle.dumps(arg, proto, **kwargs))
+    eleza dumps(self, arg, proto=None, **kwargs):
+        rudisha pickletools.optimize(pickle.dumps(arg, proto, **kwargs))
 
-    def loads(self, buf, **kwds):
-        return pickle.loads(buf, **kwds)
+    eleza loads(self, buf, **kwds):
+        rudisha pickle.loads(buf, **kwds)
 
     # Test relies on precise output of dumps()
     test_pickle_to_2x = None
@@ -18,7 +18,7 @@ class OptimizedPickleTests(AbstractPickleTests):
     # Test relies on writing by chunks into a file object.
     test_framed_write_sizes_with_delayed_writer = None
 
-    def test_optimize_long_binget(self):
+    eleza test_optimize_long_binget(self):
         data = [str(i) for i in range(257)]
         data.append(data[-1])
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -34,7 +34,7 @@ class OptimizedPickleTests(AbstractPickleTests):
             self.assertNotIn(pickle.LONG_BINGET, pickled2)
             self.assertNotIn(pickle.LONG_BINPUT, pickled2)
 
-    def test_optimize_binput_and_memoize(self):
+    eleza test_optimize_binput_and_memoize(self):
         pickled = (b'\x80\x04\x95\x15\x00\x00\x00\x00\x00\x00\x00'
                    b']\x94(\x8c\x04spamq\x01\x8c\x03ham\x94h\x02e.')
         #    0: \x80 PROTO      4
@@ -61,8 +61,8 @@ class OptimizedPickleTests(AbstractPickleTests):
         self.assertNotIn(pickle.BINPUT, pickled2)
 
 
-class MiscTestCase(unittest.TestCase):
-    def test__all__(self):
+kundi MiscTestCase(unittest.TestCase):
+    eleza test__all__(self):
         blacklist = {'bytes_types',
                      'UP_TO_NEWLINE', 'TAKEN_FROM_ARGUMENT1',
                      'TAKEN_FROM_ARGUMENT4', 'TAKEN_FROM_ARGUMENT4U',
@@ -93,11 +93,11 @@ class MiscTestCase(unittest.TestCase):
         support.check__all__(self, pickletools, blacklist=blacklist)
 
 
-def test_main():
+eleza test_main():
     support.run_unittest(OptimizedPickleTests)
     support.run_unittest(MiscTestCase)
     support.run_doctest(pickletools)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

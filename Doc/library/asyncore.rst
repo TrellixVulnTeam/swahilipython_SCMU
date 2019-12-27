@@ -2,13 +2,13 @@
 ===============================================
 
 .. module:: asyncore
-   :synopsis: A base class for developing asynchronous socket handling
+   :synopsis: A base kundi for developing asynchronous socket handling
               services.
 
 .. moduleauthor:: Sam Rushing <rushing@nightmare.com>
 .. sectionauthor:: Christopher Petrilli <petrilli@amber.org>
 .. sectionauthor:: Steve Holden <sholden@holdenweb.com>
-.. heavily adapted from original documentation by Sam Rushing
+.. heavily adapted kutoka original documentation by Sam Rushing
 
 **Source code:** :source:`Lib/asyncore.py`
 
@@ -46,7 +46,7 @@ sophisticated high-performance network servers and clients a snap.  For
 module is invaluable.
 
 The basic idea behind both modules is to create one or more network
-*channels*, instances of class :class:`asyncore.dispatcher` and
+*channels*, instances of kundi :class:`asyncore.dispatcher` and
 :class:`asynchat.async_chat`.  Creating the channels adds them to a global
 map, used by the :func:`loop` function if you do not provide it with your own
 *map*.
@@ -68,7 +68,7 @@ any that have been added to the map during asynchronous service) is closed.
    preference to :func:`~select.select` (the default is ``False``).
 
    The *map* parameter is a dictionary whose items are the channels to watch.
-   As channels are closed they are deleted from their map.  If *map* is
+   As channels are closed they are deleted kutoka their map.  If *map* is
    omitted, a global map is used. Channels (instances of
    :class:`asyncore.dispatcher`, :class:`asynchat.async_chat` and subclasses
    thereof) can freely be mixed in the map.
@@ -76,9 +76,9 @@ any that have been added to the map during asynchronous service) is closed.
 
 .. class:: dispatcher()
 
-   The :class:`dispatcher` class is a thin wrapper around a low-level socket
+   The :class:`dispatcher` kundi is a thin wrapper around a low-level socket
    object. To make it more useful, it has a few methods for event-handling
-   which are called from the asynchronous loop.   Otherwise, it can be treated
+   which are called kutoka the asynchronous loop.   Otherwise, it can be treated
    as a normal non-blocking socket object.
 
    The firing of low-level events at certain times or in certain connection
@@ -108,7 +108,7 @@ any that have been added to the map during asynchronous service) is closed.
    :c:func:`poll`\ ed for read and write events.
 
    Thus, the set of channel events is larger than the basic socket events.  The
-   full set of methods that can be overridden in your subclass follows:
+   full set of methods that can be overridden in your subkundi follows:
 
 
    .. method:: handle_read()
@@ -216,8 +216,8 @@ any that have been added to the map during asynchronous service) is closed.
 
    .. method:: recv(buffer_size)
 
-      Read at most *buffer_size* bytes from the socket's remote end-point.  An
-      empty bytes object implies that the channel has been closed from the
+      Read at most *buffer_size* bytes kutoka the socket's remote end-point.  An
+      empty bytes object implies that the channel has been closed kutoka the
       other end.
 
       Note that :meth:`recv` may raise :exc:`BlockingIOError` , even though
@@ -263,7 +263,7 @@ any that have been added to the map during asynchronous service) is closed.
 
 .. class:: dispatcher_with_send()
 
-   A :class:`dispatcher` subclass which adds simple buffered output capability,
+   A :class:`dispatcher` subkundi which adds simple buffered output capability,
    useful for simple clients. For more sophisticated usage use
    :class:`asynchat.async_chat`.
 
@@ -281,7 +281,7 @@ any that have been added to the map during asynchronous service) is closed.
 
    A file_wrapper takes an integer file descriptor and calls :func:`os.dup` to
    duplicate the handle so that the original handle may be closed independently
-   of the file_wrapper.  This class implements sufficient methods to emulate a
+   of the file_wrapper.  This kundi implements sufficient methods to emulate a
    socket for use by the :class:`file_dispatcher` class.
 
    .. availability:: Unix.
@@ -292,12 +292,12 @@ any that have been added to the map during asynchronous service) is closed.
 asyncore Example basic HTTP client
 ----------------------------------
 
-Here is a very basic HTTP client that uses the :class:`dispatcher` class to
+Here is a very basic HTTP client that uses the :class:`dispatcher` kundi to
 implement its socket handling::
 
-   import asyncore
+   agiza asyncore
 
-   class HTTPClient(asyncore.dispatcher):
+   kundi HTTPClient(asyncore.dispatcher):
 
        def __init__(self, host, path):
            asyncore.dispatcher.__init__(self)
@@ -331,19 +331,19 @@ implement its socket handling::
 asyncore Example basic echo server
 ----------------------------------
 
-Here is a basic echo server that uses the :class:`dispatcher` class to accept
+Here is a basic echo server that uses the :class:`dispatcher` kundi to accept
 connections and dispatches the incoming connections to a handler::
 
-    import asyncore
+    agiza asyncore
 
-    class EchoHandler(asyncore.dispatcher_with_send):
+    kundi EchoHandler(asyncore.dispatcher_with_send):
 
         def handle_read(self):
             data = self.recv(8192)
             if data:
                 self.send(data)
 
-    class EchoServer(asyncore.dispatcher):
+    kundi EchoServer(asyncore.dispatcher):
 
         def __init__(self, host, port):
             asyncore.dispatcher.__init__(self)
@@ -353,7 +353,7 @@ connections and dispatches the incoming connections to a handler::
             self.listen(5)
 
         def handle_accepted(self, sock, addr):
-            print('Incoming connection from %s' % repr(addr))
+            print('Incoming connection kutoka %s' % repr(addr))
             handler = EchoHandler(sock)
 
     server = EchoServer('localhost', 8080)

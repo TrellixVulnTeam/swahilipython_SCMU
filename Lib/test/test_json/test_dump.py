@@ -3,16 +3,16 @@ kutoka test.test_json agiza PyTest, CTest
 
 kutoka test.support agiza bigmemtest, _1G
 
-class TestDump:
-    def test_dump(self):
+kundi TestDump:
+    eleza test_dump(self):
         sio = StringIO()
         self.json.dump({}, sio)
         self.assertEqual(sio.getvalue(), '{}')
 
-    def test_dumps(self):
+    eleza test_dumps(self):
         self.assertEqual(self.dumps({}), '{}')
 
-    def test_dump_skipkeys(self):
+    eleza test_dump_skipkeys(self):
         v = {b'invalid_key': False, 'valid_key': True}
         with self.assertRaises(TypeError):
             self.json.dumps(v)
@@ -22,7 +22,7 @@ class TestDump:
         self.assertIn('valid_key', o)
         self.assertNotIn(b'invalid_key', o)
 
-    def test_encode_truefalse(self):
+    eleza test_encode_truefalse(self):
         self.assertEqual(self.dumps(
                  {True: False, False: True}, sort_keys=True),
                  '{"false": true, "true": false}')
@@ -31,26 +31,26 @@ class TestDump:
                 '{"false": 1, "2": 3.0, "4.0": 5, "6": true}')
 
     # Issue 16228: Crash on encoding resized list
-    def test_encode_mutated(self):
+    eleza test_encode_mutated(self):
         a = [object()] * 10
-        def crasher(obj):
+        eleza crasher(obj):
             del a[-1]
         self.assertEqual(self.dumps(a, default=crasher),
                  '[null, null, null, null, null]')
 
     # Issue 24094
-    def test_encode_evil_dict(self):
-        class D(dict):
-            def keys(self):
-                return L
+    eleza test_encode_evil_dict(self):
+        kundi D(dict):
+            eleza keys(self):
+                rudisha L
 
-        class X:
-            def __hash__(self):
+        kundi X:
+            eleza __hash__(self):
                 del L[0]
-                return 1337
+                rudisha 1337
 
-            def __lt__(self, o):
-                return 0
+            eleza __lt__(self, o):
+                rudisha 0
 
         L = [X() for i in range(1122)]
         d = D()
@@ -58,9 +58,9 @@ class TestDump:
         self.assertEqual(self.dumps(d, sort_keys=True), '{"1337": "true.dat"}')
 
 
-class TestPyDump(TestDump, PyTest): pass
+kundi TestPyDump(TestDump, PyTest): pass
 
-class TestCDump(TestDump, CTest):
+kundi TestCDump(TestDump, CTest):
 
     # The size requirement here is hopefully over-estimated (actual
     # memory consumption depending on implementation details, and also
@@ -68,7 +68,7 @@ class TestCDump(TestDump, CTest):
     # small objects).
 
     @bigmemtest(size=_1G, memuse=1)
-    def test_large_list(self, size):
+    eleza test_large_list(self, size):
         N = int(30 * 1024 * 1024 * (size / _1G))
         l = [1] * N
         encoded = self.dumps(l)

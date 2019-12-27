@@ -18,7 +18,7 @@ Getting and Installing MacPython
 ================================
 
 Mac OS X 10.8 comes with Python 2.7 pre-installed by Apple.  If you wish, you
-are invited to install the most recent version of Python 3 from the Python
+are invited to install the most recent version of Python 3 kutoka the Python
 website (https://www.python.org).  A current "universal binary" build of Python,
 which runs natively on the Mac's new Intel and legacy PPC CPU's, is available
 there.
@@ -28,7 +28,7 @@ What you get after installing is a number of things:
 * A :file:`Python 3.8` folder in your :file:`Applications` folder. In here
   you find IDLE, the development environment that is a standard part of official
   Python distributions; PythonLauncher, which handles double-clicking Python
-  scripts from the Finder; and the "Build Applet" tool, which allows you to
+  scripts kutoka the Finder; and the "Build Applet" tool, which allows you to
   package Python scripts as standalone applications on your system.
 
 * A framework :file:`/Library/Frameworks/Python.framework`, which includes the
@@ -40,7 +40,7 @@ The Apple-provided build of Python is installed in
 :file:`/System/Library/Frameworks/Python.framework` and :file:`/usr/bin/python`,
 respectively. You should never modify or delete these, as they are
 Apple-controlled and are used by Apple- or third-party software.  Remember that
-if you choose to install a newer Python version from python.org, you will have
+if you choose to install a newer Python version kutoka python.org, you will have
 two different but functional Python installations on your computer, so it will
 be important that your paths and usages are consistent with what you want to do.
 
@@ -49,7 +49,7 @@ are completely new to Python you should start reading the tutorial introduction
 in that document.
 
 If you are familiar with Python on other Unix platforms you should read the
-section on running Python scripts from the Unix shell.
+section on running Python scripts kutoka the Unix shell.
 
 
 How to run a Python script
@@ -59,20 +59,20 @@ Your best way to get started with Python on Mac OS X is through the IDLE
 integrated development environment, see section :ref:`ide` and use the Help menu
 when the IDE is running.
 
-If you want to run Python scripts from the Terminal window command line or from
+If you want to run Python scripts kutoka the Terminal window command line or kutoka
 the Finder you first need an editor to create your script. Mac OS X comes with a
 number of standard Unix command line editors, :program:`vim` and
 :program:`emacs` among them. If you want a more Mac-like editor,
-:program:`BBEdit` or :program:`TextWrangler` from Bare Bones Software (see
+:program:`BBEdit` or :program:`TextWrangler` kutoka Bare Bones Software (see
 http://www.barebones.com/products/bbedit/index.html) are good choices, as is
 :program:`TextMate` (see https://macromates.com/). Other editors include
 :program:`Gvim` (http://macvim-dev.github.io/macvim/) and :program:`Aquamacs`
 (http://aquamacs.org/).
 
-To run your script from the Terminal window you must make sure that
+To run your script kutoka the Terminal window you must make sure that
 :file:`/usr/local/bin` is in your shell search path.
 
-To run your script from the Finder you have two options:
+To run your script kutoka the Finder you have two options:
 
 * Drag it to :program:`PythonLauncher`
 
@@ -100,7 +100,7 @@ Configuration
 -------------
 
 Python on OS X honors all standard Unix environment variables such as
-:envvar:`PYTHONPATH`, but setting these variables for programs started from the
+:envvar:`PYTHONPATH`, but setting these variables for programs started kutoka the
 Finder is non-standard as the Finder does not read your :file:`.profile` or
 :file:`.cshrc` at startup. You need to create a file
 :file:`~/.MacOSX/environment.plist`. See Apple's Technical Document QA1067 for
@@ -141,15 +141,15 @@ There are several options for building GUI applications on the Mac with Python.
 
 *PyObjC* is a Python binding to Apple's Objective-C/Cocoa framework, which is
 the foundation of most modern Mac development. Information on PyObjC is
-available from https://pypi.org/project/pyobjc/.
+available kutoka https://pypi.org/project/pyobjc/.
 
 The standard Python GUI toolkit is :mod:`tkinter`, based on the cross-platform
 Tk toolkit (https://www.tcl.tk). An Aqua-native version of Tk is bundled with OS
-X by Apple, and the latest version can be downloaded and installed from
-https://www.activestate.com; it can also be built from source.
+X by Apple, and the latest version can be downloaded and installed kutoka
+https://www.activestate.com; it can also be built kutoka source.
 
 *wxPython* is another popular cross-platform GUI toolkit that runs natively on
-Mac OS X. Packages and documentation are available from https://www.wxpython.org.
+Mac OS X. Packages and documentation are available kutoka https://www.wxpython.org.
 
 *PyQt* is another popular cross-platform GUI toolkit that runs natively on Mac
 OS X. More information can be found at

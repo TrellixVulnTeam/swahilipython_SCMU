@@ -16,7 +16,7 @@ except ImportError:
     # Platform doesn't support dynamic loading.
     create_dynamic = None
 
-kutoka importlib._bootstrap agiza _ERR_MSG, _exec, _load, _builtin_from_name
+kutoka importlib._bootstrap agiza _ERR_MSG, _exec, _load, _builtin_kutoka_name
 kutoka importlib._bootstrap_external agiza SourcelessFileLoader
 
 kutoka importlib agiza machinery
@@ -45,7 +45,7 @@ PY_CODERESOURCE = 8
 IMP_HOOK = 9
 
 
-def new_module(name):
+eleza new_module(name):
     """**DEPRECATED**
 
     Create a new module.
@@ -53,29 +53,29 @@ def new_module(name):
     The module is not entered into sys.modules.
 
     """
-    return types.ModuleType(name)
+    rudisha types.ModuleType(name)
 
 
-def get_magic():
+eleza get_magic():
     """**DEPRECATED**
 
     Return the magic number for .pyc files.
     """
-    return util.MAGIC_NUMBER
+    rudisha util.MAGIC_NUMBER
 
 
-def get_tag():
+eleza get_tag():
     """Return the magic tag for .pyc files."""
-    return sys.implementation.cache_tag
+    rudisha sys.implementation.cache_tag
 
 
-def cache_from_source(path, debug_override=None):
+eleza cache_kutoka_source(path, debug_override=None):
     """**DEPRECATED**
 
-    Given the path to a .py file, return the path to its .pyc file.
+    Given the path to a .py file, rudisha the path to its .pyc file.
 
     The .py file does not need to exist; this simply returns the path to the
-    .pyc file calculated as if the .py file were imported.
+    .pyc file calculated as ikiwa the .py file were imported.
 
     If debug_override is not None, then it must be a boolean and is used in
     place of sys.flags.optimize.
@@ -85,13 +85,13 @@ def cache_from_source(path, debug_override=None):
     """
     with warnings.catch_warnings():
         warnings.simplefilter('ignore')
-        return util.cache_from_source(path, debug_override)
+        rudisha util.cache_kutoka_source(path, debug_override)
 
 
-def source_from_cache(path):
+eleza source_kutoka_cache(path):
     """**DEPRECATED**
 
-    Given the path to a .pyc. file, return the path to its .py file.
+    Given the path to a .pyc. file, rudisha the path to its .py file.
 
     The .pyc file does not need to exist; this simply returns the path to
     the .py file calculated to correspond to the .pyc file.  If path does
@@ -99,19 +99,19 @@ def source_from_cache(path):
     sys.implementation.cache_tag is None then NotImplementedError is raised.
 
     """
-    return util.source_from_cache(path)
+    rudisha util.source_kutoka_cache(path)
 
 
-def get_suffixes():
+eleza get_suffixes():
     """**DEPRECATED**"""
     extensions = [(s, 'rb', C_EXTENSION) for s in machinery.EXTENSION_SUFFIXES]
     source = [(s, 'r', PY_SOURCE) for s in machinery.SOURCE_SUFFIXES]
     bytecode = [(s, 'rb', PY_COMPILED) for s in machinery.BYTECODE_SUFFIXES]
 
-    return extensions + source + bytecode
+    rudisha extensions + source + bytecode
 
 
-class NullImporter:
+kundi NullImporter:
 
     """**DEPRECATED**
 
@@ -119,53 +119,53 @@ class NullImporter:
 
     """
 
-    def __init__(self, path):
-        if path == '':
+    eleza __init__(self, path):
+        ikiwa path == '':
             raise ImportError('empty pathname', path='')
-        elif os.path.isdir(path):
+        elikiwa os.path.isdir(path):
             raise ImportError('existing directory', path=path)
 
-    def find_module(self, fullname):
+    eleza find_module(self, fullname):
         """Always returns None."""
-        return None
+        rudisha None
 
 
-class _HackedGetData:
+kundi _HackedGetData:
 
     """Compatibility support for 'file' arguments of various load_*()
     functions."""
 
-    def __init__(self, fullname, path, file=None):
+    eleza __init__(self, fullname, path, file=None):
         super().__init__(fullname, path)
         self.file = file
 
-    def get_data(self, path):
+    eleza get_data(self, path):
         """Gross hack to contort loader to deal w/ load_*()'s bad API."""
-        if self.file and path == self.path:
-            # The contract of get_data() requires us to return bytes. Reopen the
-            # file in binary mode if needed.
-            if not self.file.closed:
+        ikiwa self.file and path == self.path:
+            # The contract of get_data() requires us to rudisha bytes. Reopen the
+            # file in binary mode ikiwa needed.
+            ikiwa not self.file.closed:
                 file = self.file
-                if 'b' not in file.mode:
+                ikiwa 'b' not in file.mode:
                     file.close()
-            if self.file.closed:
+            ikiwa self.file.closed:
                 self.file = file = open(self.path, 'rb')
 
             with file:
-                return file.read()
+                rudisha file.read()
         else:
-            return super().get_data(path)
+            rudisha super().get_data(path)
 
 
-class _LoadSourceCompatibility(_HackedGetData, machinery.SourceFileLoader):
+kundi _LoadSourceCompatibility(_HackedGetData, machinery.SourceFileLoader):
 
     """Compatibility support for implementing load_source()."""
 
 
-def load_source(name, pathname, file=None):
+eleza load_source(name, pathname, file=None):
     loader = _LoadSourceCompatibility(name, pathname, file)
-    spec = util.spec_from_file_location(name, pathname, loader=loader)
-    if name in sys.modules:
+    spec = util.spec_kutoka_file_location(name, pathname, loader=loader)
+    ikiwa name in sys.modules:
         module = _exec(spec, sys.modules[name])
     else:
         module = _load(spec)
@@ -173,19 +173,19 @@ def load_source(name, pathname, file=None):
     # won't rely on a now-closed file object.
     module.__loader__ = machinery.SourceFileLoader(name, pathname)
     module.__spec__.loader = module.__loader__
-    return module
+    rudisha module
 
 
-class _LoadCompiledCompatibility(_HackedGetData, SourcelessFileLoader):
+kundi _LoadCompiledCompatibility(_HackedGetData, SourcelessFileLoader):
 
     """Compatibility support for implementing load_compiled()."""
 
 
-def load_compiled(name, pathname, file=None):
+eleza load_compiled(name, pathname, file=None):
     """**DEPRECATED**"""
     loader = _LoadCompiledCompatibility(name, pathname, file)
-    spec = util.spec_from_file_location(name, pathname, loader=loader)
-    if name in sys.modules:
+    spec = util.spec_kutoka_file_location(name, pathname, loader=loader)
+    ikiwa name in sys.modules:
         module = _exec(spec, sys.modules[name])
     else:
         module = _load(spec)
@@ -193,65 +193,65 @@ def load_compiled(name, pathname, file=None):
     # won't rely on a now-closed file object.
     module.__loader__ = SourcelessFileLoader(name, pathname)
     module.__spec__.loader = module.__loader__
-    return module
+    rudisha module
 
 
-def load_package(name, path):
+eleza load_package(name, path):
     """**DEPRECATED**"""
-    if os.path.isdir(path):
+    ikiwa os.path.isdir(path):
         extensions = (machinery.SOURCE_SUFFIXES[:] +
                       machinery.BYTECODE_SUFFIXES[:])
         for extension in extensions:
             init_path = os.path.join(path, '__init__' + extension)
-            if os.path.exists(init_path):
+            ikiwa os.path.exists(init_path):
                 path = init_path
                 break
         else:
             raise ValueError('{!r} is not a package'.format(path))
-    spec = util.spec_from_file_location(name, path,
+    spec = util.spec_kutoka_file_location(name, path,
                                         submodule_search_locations=[])
-    if name in sys.modules:
-        return _exec(spec, sys.modules[name])
+    ikiwa name in sys.modules:
+        rudisha _exec(spec, sys.modules[name])
     else:
-        return _load(spec)
+        rudisha _load(spec)
 
 
-def load_module(name, file, filename, details):
+eleza load_module(name, file, filename, details):
     """**DEPRECATED**
 
     Load a module, given information returned by find_module().
 
-    The module name must include the full package name, if any.
+    The module name must include the full package name, ikiwa any.
 
     """
     suffix, mode, type_ = details
-    if mode and (not mode.startswith(('r', 'U')) or '+' in mode):
+    ikiwa mode and (not mode.startswith(('r', 'U')) or '+' in mode):
         raise ValueError('invalid file open mode {!r}'.format(mode))
-    elif file is None and type_ in {PY_SOURCE, PY_COMPILED}:
+    elikiwa file is None and type_ in {PY_SOURCE, PY_COMPILED}:
         msg = 'file object required for agiza (type code {})'.format(type_)
         raise ValueError(msg)
-    elif type_ == PY_SOURCE:
-        return load_source(name, filename, file)
-    elif type_ == PY_COMPILED:
-        return load_compiled(name, filename, file)
-    elif type_ == C_EXTENSION and load_dynamic is not None:
-        if file is None:
+    elikiwa type_ == PY_SOURCE:
+        rudisha load_source(name, filename, file)
+    elikiwa type_ == PY_COMPILED:
+        rudisha load_compiled(name, filename, file)
+    elikiwa type_ == C_EXTENSION and load_dynamic is not None:
+        ikiwa file is None:
             with open(filename, 'rb') as opened_file:
-                return load_dynamic(name, filename, opened_file)
+                rudisha load_dynamic(name, filename, opened_file)
         else:
-            return load_dynamic(name, filename, file)
-    elif type_ == PKG_DIRECTORY:
-        return load_package(name, filename)
-    elif type_ == C_BUILTIN:
-        return init_builtin(name)
-    elif type_ == PY_FROZEN:
-        return init_frozen(name)
+            rudisha load_dynamic(name, filename, file)
+    elikiwa type_ == PKG_DIRECTORY:
+        rudisha load_package(name, filename)
+    elikiwa type_ == C_BUILTIN:
+        rudisha init_builtin(name)
+    elikiwa type_ == PY_FROZEN:
+        rudisha init_frozen(name)
     else:
         msg =  "Don't know how to agiza {} (type code {})".format(name, type_)
         raise ImportError(msg, name=name)
 
 
-def find_module(name, path=None):
+eleza find_module(name, path=None):
     """**DEPRECATED**
 
     Search for a module.
@@ -262,18 +262,18 @@ def find_module(name, path=None):
     submodule name and the package's __path__.
 
     """
-    if not isinstance(name, str):
+    ikiwa not isinstance(name, str):
         raise TypeError("'name' must be a str, not {}".format(type(name)))
-    elif not isinstance(path, (type(None), list)):
+    elikiwa not isinstance(path, (type(None), list)):
         # Backwards-compatibility
         raise RuntimeError("'path' must be None or a list, "
                            "not {}".format(type(path)))
 
-    if path is None:
-        if is_builtin(name):
-            return None, None, ('', '', C_BUILTIN)
-        elif is_frozen(name):
-            return None, None, ('', '', PY_FROZEN)
+    ikiwa path is None:
+        ikiwa is_builtin(name):
+            rudisha None, None, ('', '', C_BUILTIN)
+        elikiwa is_frozen(name):
+            rudisha None, None, ('', '', PY_FROZEN)
         else:
             path = sys.path
 
@@ -282,12 +282,12 @@ def find_module(name, path=None):
         for suffix in ['.py', machinery.BYTECODE_SUFFIXES[0]]:
             package_file_name = '__init__' + suffix
             file_path = os.path.join(package_directory, package_file_name)
-            if os.path.isfile(file_path):
-                return None, package_directory, ('', '', PKG_DIRECTORY)
+            ikiwa os.path.isfile(file_path):
+                rudisha None, package_directory, ('', '', PKG_DIRECTORY)
         for suffix, mode, type_ in get_suffixes():
             file_name = name + suffix
             file_path = os.path.join(entry, file_name)
-            if os.path.isfile(file_path):
+            ikiwa os.path.isfile(file_path):
                 break
         else:
             continue
@@ -296,38 +296,38 @@ def find_module(name, path=None):
         raise ImportError(_ERR_MSG.format(name), name=name)
 
     encoding = None
-    if 'b' not in mode:
+    ikiwa 'b' not in mode:
         with open(file_path, 'rb') as file:
             encoding = tokenize.detect_encoding(file.readline)[0]
     file = open(file_path, mode, encoding=encoding)
-    return file, file_path, (suffix, mode, type_)
+    rudisha file, file_path, (suffix, mode, type_)
 
 
-def reload(module):
+eleza reload(module):
     """**DEPRECATED**
 
-    Reload the module and return it.
+    Reload the module and rudisha it.
 
     The module must have been successfully imported before.
 
     """
-    return importlib.reload(module)
+    rudisha importlib.reload(module)
 
 
-def init_builtin(name):
+eleza init_builtin(name):
     """**DEPRECATED**
 
-    Load and return a built-in module by name, or None is such module doesn't
+    Load and rudisha a built-in module by name, or None is such module doesn't
     exist
     """
     try:
-        return _builtin_from_name(name)
+        rudisha _builtin_kutoka_name(name)
     except ImportError:
-        return None
+        rudisha None
 
 
-if create_dynamic:
-    def load_dynamic(name, path, file=None):
+ikiwa create_dynamic:
+    eleza load_dynamic(name, path, file=None):
         """**DEPRECATED**
 
         Load an extension module.
@@ -339,7 +339,7 @@ if create_dynamic:
         # always load new extension
         spec = importlib.machinery.ModuleSpec(
             name=name, loader=loader, origin=path)
-        return _load(spec)
+        rudisha _load(spec)
 
 else:
     load_dynamic = None

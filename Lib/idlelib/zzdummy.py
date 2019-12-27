@@ -5,7 +5,7 @@ kutoka idlelib.config agiza idleConf
 ztext = idleConf.GetOption('extensions', 'ZzDummy', 'z-text')
 
 
-class ZzDummy:
+kundi ZzDummy:
 
 ##    menudefs = [
 ##        ('format', [
@@ -14,15 +14,15 @@ class ZzDummy:
 ##        ] )
 ##    ]
 
-    def __init__(self, editwin):
+    eleza __init__(self, editwin):
         self.text = editwin.text
         z_in = False
 
     @classmethod
-    def reload(cls):
+    eleza reload(cls):
         cls.ztext = idleConf.GetOption('extensions', 'ZzDummy', 'z-text')
 
-    def z_in_event(self, event):
+    eleza z_in_event(self, event):
         """
         """
         text = self.text
@@ -30,13 +30,13 @@ class ZzDummy:
         for line in range(1, text.index('end')):
             text.insert('%d.0', ztest)
         text.undo_block_stop()
-        return "break"
+        rudisha "break"
 
-    def z_out_event(self, event): pass
+    eleza z_out_event(self, event): pass
 
 ZzDummy.reload()
 
-##if __name__ == "__main__":
+##ikiwa __name__ == "__main__":
 ##    agiza unittest
 ##    unittest.main('idlelib.idle_test.test_zzdummy',
 ##            verbosity=2, exit=False)

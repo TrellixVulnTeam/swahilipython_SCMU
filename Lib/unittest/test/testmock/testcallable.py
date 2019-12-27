@@ -13,26 +13,26 @@ kutoka unittest.mock agiza (
 
 
 
-class TestCallable(unittest.TestCase):
+kundi TestCallable(unittest.TestCase):
 
-    def assertNotCallable(self, mock):
+    eleza assertNotCallable(self, mock):
         self.assertTrue(is_instance(mock, NonCallableMagicMock))
         self.assertFalse(is_instance(mock, CallableMixin))
 
 
-    def test_non_callable(self):
+    eleza test_non_callable(self):
         for mock in NonCallableMagicMock(), NonCallableMock():
             self.assertRaises(TypeError, mock)
             self.assertFalse(hasattr(mock, '__call__'))
             self.assertIn(mock.__class__.__name__, repr(mock))
 
 
-    def test_hierarchy(self):
+    eleza test_hierarchy(self):
         self.assertTrue(issubclass(MagicMock, Mock))
         self.assertTrue(issubclass(NonCallableMagicMock, NonCallableMock))
 
 
-    def test_attributes(self):
+    eleza test_attributes(self):
         one = NonCallableMock()
         self.assertTrue(issubclass(type(one.one), Mock))
 
@@ -40,21 +40,21 @@ class TestCallable(unittest.TestCase):
         self.assertTrue(issubclass(type(two.two), MagicMock))
 
 
-    def test_subclasses(self):
-        class MockSub(Mock):
+    eleza test_subclasses(self):
+        kundi MockSub(Mock):
             pass
 
         one = MockSub()
         self.assertTrue(issubclass(type(one.one), MockSub))
 
-        class MagicSub(MagicMock):
+        kundi MagicSub(MagicMock):
             pass
 
         two = MagicSub()
         self.assertTrue(issubclass(type(two.two), MagicSub))
 
 
-    def test_patch_spec(self):
+    eleza test_patch_spec(self):
         patcher = patch('%s.X' % __name__, spec=True)
         mock = patcher.start()
         self.addCleanup(patcher.stop)
@@ -66,7 +66,7 @@ class TestCallable(unittest.TestCase):
         self.assertRaises(TypeError, instance)
 
 
-    def test_patch_spec_set(self):
+    eleza test_patch_spec_set(self):
         patcher = patch('%s.X' % __name__, spec_set=True)
         mock = patcher.start()
         self.addCleanup(patcher.stop)
@@ -78,7 +78,7 @@ class TestCallable(unittest.TestCase):
         self.assertRaises(TypeError, instance)
 
 
-    def test_patch_spec_instance(self):
+    eleza test_patch_spec_instance(self):
         patcher = patch('%s.X' % __name__, spec=X())
         mock = patcher.start()
         self.addCleanup(patcher.stop)
@@ -87,7 +87,7 @@ class TestCallable(unittest.TestCase):
         self.assertRaises(TypeError, mock)
 
 
-    def test_patch_spec_set_instance(self):
+    eleza test_patch_spec_set_instance(self):
         patcher = patch('%s.X' % __name__, spec_set=X())
         mock = patcher.start()
         self.addCleanup(patcher.stop)
@@ -96,14 +96,14 @@ class TestCallable(unittest.TestCase):
         self.assertRaises(TypeError, mock)
 
 
-    def test_patch_spec_callable_class(self):
-        class CallableX(X):
-            def __call__(self): pass
+    eleza test_patch_spec_callable_class(self):
+        kundi CallableX(X):
+            eleza __call__(self): pass
 
-        class Sub(CallableX):
+        kundi Sub(CallableX):
             pass
 
-        class Multi(SomeClass, Sub):
+        kundi Multi(SomeClass, Sub):
             pass
 
         for arg in 'spec', 'spec_set':
@@ -127,7 +127,7 @@ class TestCallable(unittest.TestCase):
                     result.foo.assert_called_once_with(3, 2, 1)
 
 
-    def test_create_autospec(self):
+    eleza test_create_autospec(self):
         mock = create_autospec(X)
         instance = mock()
         self.assertRaises(TypeError, instance)
@@ -136,7 +136,7 @@ class TestCallable(unittest.TestCase):
         self.assertRaises(TypeError, mock)
 
 
-    def test_create_autospec_instance(self):
+    eleza test_create_autospec_instance(self):
         mock = create_autospec(SomeClass, instance=True)
 
         self.assertRaises(TypeError, mock)
@@ -146,5 +146,5 @@ class TestCallable(unittest.TestCase):
         self.assertRaises(TypeError, mock.wibble, 'some',  'args')
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

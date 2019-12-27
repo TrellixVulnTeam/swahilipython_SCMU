@@ -3,11 +3,11 @@ agiza unittest
 kutoka unittest.test.support agiza LoggingResult
 
 
-class Test_TestSkipping(unittest.TestCase):
+kundi Test_TestSkipping(unittest.TestCase):
 
-    def test_skipping(self):
-        class Foo(unittest.TestCase):
-            def test_skip_me(self):
+    eleza test_skipping(self):
+        kundi Foo(unittest.TestCase):
+            eleza test_skip_me(self):
                 self.skipTest("skip")
         events = []
         result = LoggingResult(events)
@@ -17,10 +17,10 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertEqual(result.skipped, [(test, "skip")])
 
         # Try letting setUp skip the test now.
-        class Foo(unittest.TestCase):
-            def setUp(self):
+        kundi Foo(unittest.TestCase):
+            eleza setUp(self):
                 self.skipTest("testing")
-            def test_nothing(self): pass
+            eleza test_nothing(self): pass
         events = []
         result = LoggingResult(events)
         test = Foo("test_nothing")
@@ -29,9 +29,9 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertEqual(result.skipped, [(test, "testing")])
         self.assertEqual(result.testsRun, 1)
 
-    def test_skipping_subtests(self):
-        class Foo(unittest.TestCase):
-            def test_skip_me(self):
+    eleza test_skipping_subtests(self):
+        kundi Foo(unittest.TestCase):
+            eleza test_skip_me(self):
                 with self.subTest(a=1):
                     with self.subTest(b=2):
                         self.skipTest("skip 1")
@@ -54,16 +54,16 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertIsNot(subtest, test)
         self.assertEqual(result.skipped[2], (test, "skip 3"))
 
-    def test_skipping_decorators(self):
+    eleza test_skipping_decorators(self):
         op_table = ((unittest.skipUnless, False, True),
                     (unittest.skipIf, True, False))
         for deco, do_skip, dont_skip in op_table:
-            class Foo(unittest.TestCase):
+            kundi Foo(unittest.TestCase):
                 @deco(do_skip, "testing")
-                def test_skip(self): pass
+                eleza test_skip(self): pass
 
                 @deco(dont_skip, "testing")
-                def test_dont_skip(self): pass
+                eleza test_dont_skip(self): pass
             test_do_skip = Foo("test_skip")
             test_dont_skip = Foo("test_dont_skip")
             suite = unittest.TestSuite([test_do_skip, test_dont_skip])
@@ -78,10 +78,10 @@ class Test_TestSkipping(unittest.TestCase):
             self.assertEqual(result.skipped, [(test_do_skip, "testing")])
             self.assertTrue(result.wasSuccessful())
 
-    def test_skip_class(self):
+    eleza test_skip_class(self):
         @unittest.skip("testing")
-        class Foo(unittest.TestCase):
-            def test_1(self):
+        kundi Foo(unittest.TestCase):
+            eleza test_1(self):
                 record.append(1)
         record = []
         result = unittest.TestResult()
@@ -91,12 +91,12 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertEqual(result.skipped, [(test, "testing")])
         self.assertEqual(record, [])
 
-    def test_skip_non_unittest_class(self):
+    eleza test_skip_non_unittest_class(self):
         @unittest.skip("testing")
-        class Mixin:
-            def test_1(self):
+        kundi Mixin:
+            eleza test_1(self):
                 record.append(1)
-        class Foo(Mixin, unittest.TestCase):
+        kundi Foo(Mixin, unittest.TestCase):
             pass
         record = []
         result = unittest.TestResult()
@@ -106,10 +106,10 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertEqual(result.skipped, [(test, "testing")])
         self.assertEqual(record, [])
 
-    def test_expected_failure(self):
-        class Foo(unittest.TestCase):
+    eleza test_expected_failure(self):
+        kundi Foo(unittest.TestCase):
             @unittest.expectedFailure
-            def test_die(self):
+            eleza test_die(self):
                 self.fail("help me!")
         events = []
         result = LoggingResult(events)
@@ -120,10 +120,10 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertEqual(result.expectedFailures[0][0], test)
         self.assertTrue(result.wasSuccessful())
 
-    def test_expected_failure_with_wrapped_class(self):
+    eleza test_expected_failure_with_wrapped_class(self):
         @unittest.expectedFailure
-        class Foo(unittest.TestCase):
-            def test_1(self):
+        kundi Foo(unittest.TestCase):
+            eleza test_1(self):
                 self.assertTrue(False)
 
         events = []
@@ -135,13 +135,13 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertEqual(result.expectedFailures[0][0], test)
         self.assertTrue(result.wasSuccessful())
 
-    def test_expected_failure_with_wrapped_subclass(self):
-        class Foo(unittest.TestCase):
-            def test_1(self):
+    eleza test_expected_failure_with_wrapped_subclass(self):
+        kundi Foo(unittest.TestCase):
+            eleza test_1(self):
                 self.assertTrue(False)
 
         @unittest.expectedFailure
-        class Bar(Foo):
+        kundi Bar(Foo):
             pass
 
         events = []
@@ -153,12 +153,12 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertEqual(result.expectedFailures[0][0], test)
         self.assertTrue(result.wasSuccessful())
 
-    def test_expected_failure_subtests(self):
+    eleza test_expected_failure_subtests(self):
         # A failure in any subtest counts as the expected failure of the
         # whole test.
-        class Foo(unittest.TestCase):
+        kundi Foo(unittest.TestCase):
             @unittest.expectedFailure
-            def test_die(self):
+            eleza test_die(self):
                 with self.subTest():
                     # This one succeeds
                     pass
@@ -178,10 +178,10 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertIs(result.expectedFailures[0][0], test)
         self.assertTrue(result.wasSuccessful())
 
-    def test_unexpected_success(self):
-        class Foo(unittest.TestCase):
+    eleza test_unexpected_success(self):
+        kundi Foo(unittest.TestCase):
             @unittest.expectedFailure
-            def test_die(self):
+            eleza test_die(self):
                 pass
         events = []
         result = LoggingResult(events)
@@ -193,12 +193,12 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertEqual(result.unexpectedSuccesses, [test])
         self.assertFalse(result.wasSuccessful())
 
-    def test_unexpected_success_subtests(self):
+    eleza test_unexpected_success_subtests(self):
         # Success in all subtests counts as the unexpected success of
         # the whole test.
-        class Foo(unittest.TestCase):
+        kundi Foo(unittest.TestCase):
             @unittest.expectedFailure
-            def test_die(self):
+            eleza test_die(self):
                 with self.subTest():
                     # This one succeeds
                     pass
@@ -217,16 +217,16 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertEqual(result.unexpectedSuccesses, [test])
         self.assertFalse(result.wasSuccessful())
 
-    def test_skip_doesnt_run_setup(self):
-        class Foo(unittest.TestCase):
+    eleza test_skip_doesnt_run_setup(self):
+        kundi Foo(unittest.TestCase):
             wasSetUp = False
             wasTornDown = False
-            def setUp(self):
+            eleza setUp(self):
                 Foo.wasSetUp = True
-            def tornDown(self):
+            eleza tornDown(self):
                 Foo.wasTornDown = True
             @unittest.skip('testing')
-            def test_1(self):
+            eleza test_1(self):
                 pass
 
         result = unittest.TestResult()
@@ -237,16 +237,16 @@ class Test_TestSkipping(unittest.TestCase):
         self.assertFalse(Foo.wasSetUp)
         self.assertFalse(Foo.wasTornDown)
 
-    def test_decorated_skip(self):
-        def decorator(func):
-            def inner(*a):
-                return func(*a)
-            return inner
+    eleza test_decorated_skip(self):
+        eleza decorator(func):
+            eleza inner(*a):
+                rudisha func(*a)
+            rudisha inner
 
-        class Foo(unittest.TestCase):
+        kundi Foo(unittest.TestCase):
             @decorator
             @unittest.skip('testing')
-            def test_1(self):
+            eleza test_1(self):
                 pass
 
         result = unittest.TestResult()
@@ -255,10 +255,10 @@ class Test_TestSkipping(unittest.TestCase):
         suite.run(result)
         self.assertEqual(result.skipped, [(test, "testing")])
 
-    def test_skip_without_reason(self):
-        class Foo(unittest.TestCase):
+    eleza test_skip_without_reason(self):
+        kundi Foo(unittest.TestCase):
             @unittest.skip
-            def test_1(self):
+            eleza test_1(self):
                 pass
 
         result = unittest.TestResult()
@@ -267,5 +267,5 @@ class Test_TestSkipping(unittest.TestCase):
         suite.run(result)
         self.assertEqual(result.skipped, [(test, "")])
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

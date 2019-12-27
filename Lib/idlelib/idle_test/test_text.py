@@ -1,4 +1,4 @@
-''' Test mock_tk.Text class against tkinter.Text class
+''' Test mock_tk.Text kundi against tkinter.Text class
 
 Run same tests with both by creating a mixin class.
 '''
@@ -6,7 +6,7 @@ agiza unittest
 kutoka test.support agiza requires
 kutoka _tkinter agiza TclError
 
-class TextTest(object):
+kundi TextTest(object):
     "Define items common to both sets of tests."
 
     hw = 'hello\nworld'  # Several tests insert this after initialization.
@@ -15,11 +15,11 @@ class TextTest(object):
     # setUpClass defines cls.Text and maybe cls.root.
     # setUp defines self.text kutoka Text and maybe root.
 
-    def test_init(self):
+    eleza test_init(self):
         self.assertEqual(self.text.get('1.0'), '\n')
         self.assertEqual(self.text.get('end'), '')
 
-    def test_index_empty(self):
+    eleza test_index_empty(self):
         index = self.text.index
 
         for dex in (-1.0, 0.3, '1.-1', '1.0', '1.0 lineend', '1.end', '1.33',
@@ -29,7 +29,7 @@ class TextTest(object):
         for dex in 'end', 2.0, '2.1', '33.44':
             self.assertEqual(index(dex), '2.0')
 
-    def test_index_data(self):
+    eleza test_index_data(self):
         index = self.text.index
         self.text.insert('1.0', self.hw)
 
@@ -42,7 +42,7 @@ class TextTest(object):
         for dex in 'end',  '33.44':
             self.assertEqual(index(dex), '3.0')
 
-    def test_get(self):
+    eleza test_get(self):
         get = self.text.get
         Equal = self.assertEqual
         self.text.insert('1.0', self.hw)
@@ -61,7 +61,7 @@ class TextTest(object):
         Equal(get('1.0', 'end'), self.hwn)
         Equal(get('0.0', '5.0'), self.hwn)
 
-    def test_insert(self):
+    eleza test_insert(self):
         insert = self.text.insert
         get = self.text.get
         Equal = self.assertEqual
@@ -87,8 +87,8 @@ class TextTest(object):
         insert('1.4', 'x\n')
         Equal(get('1.0', 'end'), '*helx\nlo*\nwor*ldx\n')
 
-    def test_no_delete(self):
-        # if index1 == 'insert' or 'end' or >= end, there is no deletion
+    eleza test_no_delete(self):
+        # ikiwa index1 == 'insert' or 'end' or >= end, there is no deletion
         delete = self.text.delete
         get = self.text.get
         Equal = self.assertEqual
@@ -112,7 +112,7 @@ class TextTest(object):
         delete('1.4', '1.4')
         Equal(get('1.0', 'end'), self.hwn)
 
-    def test_delete_char(self):
+    eleza test_delete_char(self):
         delete = self.text.delete
         get = self.text.get
         Equal = self.assertEqual
@@ -136,7 +136,7 @@ class TextTest(object):
         delete('1.3', '2.0')
         Equal(get('1.0', '1.end'), 'lloworld')
 
-    def test_delete_slice(self):
+    eleza test_delete_slice(self):
         delete = self.text.delete
         get = self.text.get
         Equal = self.assertEqual
@@ -159,7 +159,7 @@ class TextTest(object):
         delete('1.2', '2.3')
         Equal(get('1.0', 'end'), 'held\n')
 
-    def test_multiple_lines(self):  # insert and delete
+    eleza test_multiple_lines(self):  # insert and delete
         self.text.insert('1.0', 'hello')
 
         self.text.insert('1.3', '1\n2\n3\n4\n5')
@@ -168,7 +168,7 @@ class TextTest(object):
         self.text.delete('1.3', '5.1')
         self.assertEqual(self.text.get('1.0', 'end'), 'hello\n')
 
-    def test_compare(self):
+    eleza test_compare(self):
         compare = self.text.compare
         Equal = self.assertEqual
         # need data so indexes not squished to 1,0
@@ -191,18 +191,18 @@ class TextTest(object):
             Equal(compare('3.3', op, '2.2'), greater1, op)
 
 
-class MockTextTest(TextTest, unittest.TestCase):
+kundi MockTextTest(TextTest, unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         kutoka idlelib.idle_test.mock_tk agiza Text
         cls.Text = Text
 
-    def setUp(self):
+    eleza setUp(self):
         self.text = self.Text()
 
 
-    def test_decode(self):
+    eleza test_decode(self):
         # test endflags (-1, 0) not tested by test_index (which uses +1)
         decode = self.text._decode
         Equal = self.assertEqual
@@ -214,23 +214,23 @@ class MockTextTest(TextTest, unittest.TestCase):
         Equal(decode('3.1', 0), (2, 6))
 
 
-class TkTextTest(TextTest, unittest.TestCase):
+kundi TkTextTest(TextTest, unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         kutoka tkinter agiza Tk, Text
         cls.Text = Text
         cls.root = Tk()
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         cls.root.destroy()
         del cls.root
 
-    def setUp(self):
+    eleza setUp(self):
         self.text = self.Text(self.root)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2, exit=False)

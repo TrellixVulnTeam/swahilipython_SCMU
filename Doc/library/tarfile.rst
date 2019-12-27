@@ -152,7 +152,7 @@ Some facts and figures:
 
 .. class:: TarFile
 
-   Class for reading and writing tar archives. Do not use this class directly:
+   Class for reading and writing tar archives. Do not use this kundi directly:
    use :func:`tarfile.open` instead. See :ref:`tarfile-objects`.
 
 
@@ -167,7 +167,7 @@ The :mod:`tarfile` module defines the following exceptions:
 
 .. exception:: TarError
 
-   Base class for all :mod:`tarfile` exceptions.
+   Base kundi for all :mod:`tarfile` exceptions.
 
 
 .. exception:: ReadError
@@ -196,7 +196,7 @@ The :mod:`tarfile` module defines the following exceptions:
 
 .. exception:: HeaderError
 
-   Is raised by :meth:`TarInfo.frombuf` if the buffer it gets is invalid.
+   Is raised by :meth:`TarInfo.kutokabuf` if the buffer it gets is invalid.
 
 
 The following constants are available at the module level:
@@ -233,7 +233,7 @@ details.
 
    .. versionchanged:: 3.8
       The default format for new archives was changed to
-      :const:`PAX_FORMAT` from :const:`GNU_FORMAT`.
+      :const:`PAX_FORMAT` kutoka :const:`GNU_FORMAT`.
 
 
 .. seealso::
@@ -278,13 +278,13 @@ be finalized; only the internally used file object will be closed. See the
    It can be omitted if *fileobj* is given.
    In this case, the file object's :attr:`name` attribute is used if it exists.
 
-   *mode* is either ``'r'`` to read from an existing archive, ``'a'`` to append
+   *mode* is either ``'r'`` to read kutoka an existing archive, ``'a'`` to append
    data to an existing file, ``'w'`` to create a new file overwriting an existing
    one, or ``'x'`` to create a new file only if it does not already exist.
 
    If *fileobj* is given, it is used for reading or writing data. If it can be
    determined, *mode* is overridden by *fileobj*'s mode. *fileobj* will be used
-   from position 0.
+   kutoka position 0.
 
    .. note::
 
@@ -306,7 +306,7 @@ be finalized; only the internally used file object will be closed. See the
    If it is :const:`True`, skip empty (and invalid) blocks and try to get as many members
    as possible. This is only useful for reading concatenated or damaged archives.
 
-   *debug* can be set from ``0`` (no debug messages) up to ``3`` (all debug
+   *debug* can be set kutoka ``0`` (no debug messages) up to ``3`` (all debug
    messages). The messages are written to ``sys.stderr``.
 
    If *errorlevel* is ``0``, all errors are ignored when using :meth:`TarFile.extract`.
@@ -382,7 +382,7 @@ be finalized; only the internally used file object will be closed. See the
 
 .. method:: TarFile.extractall(path=".", members=None, *, numeric_owner=False)
 
-   Extract all members from the archive to the current working directory or
+   Extract all members kutoka the archive to the current working directory or
    directory *path*. If optional *members* is given, it must be a subset of the
    list returned by :meth:`getmembers`. Directory information like owner,
    modification time and permissions are set after all members have been extracted.
@@ -390,13 +390,13 @@ be finalized; only the internally used file object will be closed. See the
    reset each time a file is created in it. And, if a directory's permissions do
    not allow writing, extracting files to it will fail.
 
-   If *numeric_owner* is :const:`True`, the uid and gid numbers from the tarfile
+   If *numeric_owner* is :const:`True`, the uid and gid numbers kutoka the tarfile
    are used to set the owner/group for the extracted files. Otherwise, the named
-   values from the tarfile are used.
+   values kutoka the tarfile are used.
 
    .. warning::
 
-      Never extract archives from untrusted sources without prior inspection.
+      Never extract archives kutoka untrusted sources without prior inspection.
       It is possible that files are created outside of *path*, e.g. members
       that have absolute filenames starting with ``"/"`` or filenames with two
       dots ``".."``.
@@ -410,15 +410,15 @@ be finalized; only the internally used file object will be closed. See the
 
 .. method:: TarFile.extract(member, path="", set_attrs=True, *, numeric_owner=False)
 
-   Extract a member from the archive to the current working directory, using its
+   Extract a member kutoka the archive to the current working directory, using its
    full name. Its file information is extracted as accurately as possible. *member*
    may be a filename or a :class:`TarInfo` object. You can specify a different
    directory using *path*. *path* may be a :term:`path-like object`.
    File attributes (owner, mtime, mode) are set unless *set_attrs* is false.
 
-   If *numeric_owner* is :const:`True`, the uid and gid numbers from the tarfile
+   If *numeric_owner* is :const:`True`, the uid and gid numbers kutoka the tarfile
    are used to set the owner/group for the extracted files. Otherwise, the named
-   values from the tarfile are used.
+   values kutoka the tarfile are used.
 
    .. note::
 
@@ -441,7 +441,7 @@ be finalized; only the internally used file object will be closed. See the
 
 .. method:: TarFile.extractfile(member)
 
-   Extract a member from the archive as a file object. *member* may be a filename
+   Extract a member kutoka the archive as a file object. *member* may be a filename
    or a :class:`TarInfo` object. If *member* is a regular file or a link, an
    :class:`io.BufferedReader` object is returned. Otherwise, :const:`None` is
    returned.
@@ -460,7 +460,7 @@ be finalized; only the internally used file object will be closed. See the
    If *filter* is given, it
    should be a function that takes a :class:`TarInfo` object argument and
    returns the changed :class:`TarInfo` object. If it instead returns
-   :const:`None` the :class:`TarInfo` object will be excluded from the
+   :const:`None` the :class:`TarInfo` object will be excluded kutoka the
    archive. See :ref:`tar-examples` for an example.
 
    .. versionchanged:: 3.2
@@ -474,18 +474,18 @@ be finalized; only the internally used file object will be closed. See the
 
    Add the :class:`TarInfo` object *tarinfo* to the archive. If *fileobj* is given,
    it should be a :term:`binary file`, and
-   ``tarinfo.size`` bytes are read from it and added to the archive.  You can
+   ``tarinfo.size`` bytes are read kutoka it and added to the archive.  You can
    create :class:`TarInfo` objects directly, or by using :meth:`gettarinfo`.
 
 
 .. method:: TarFile.gettarinfo(name=None, arcname=None, fileobj=None)
 
-   Create a :class:`TarInfo` object from the result of :func:`os.stat` or
+   Create a :class:`TarInfo` object kutoka the result of :func:`os.stat` or
    equivalent on an existing file.  The file is either named by *name*, or
    specified as a :term:`file object` *fileobj* with a file descriptor.
    *name* may be a :term:`path-like object`.  If
    given, *arcname* specifies an alternative name for the file in the
-   archive, otherwise, the name is taken from *fileobj*’s
+   archive, otherwise, the name is taken kutoka *fileobj*’s
    :attr:`~io.FileIO.name` attribute, or the *name* argument.  The name
    should be a text string.
 
@@ -519,7 +519,7 @@ TarInfo Objects
 ---------------
 
 A :class:`TarInfo` object represents one member in a :class:`TarFile`. Aside
-from storing all required attributes of a file (like file type, size, time,
+kutoka storing all required attributes of a file (like file type, size, time,
 permissions, owner etc.), it provides some useful methods to determine its type.
 It does *not* contain the file's data itself.
 
@@ -532,22 +532,22 @@ It does *not* contain the file's data itself.
    Create a :class:`TarInfo` object.
 
 
-.. classmethod:: TarInfo.frombuf(buf, encoding, errors)
+.. classmethod:: TarInfo.kutokabuf(buf, encoding, errors)
 
-   Create and return a :class:`TarInfo` object from string buffer *buf*.
+   Create and return a :class:`TarInfo` object kutoka string buffer *buf*.
 
    Raises :exc:`HeaderError` if the buffer is invalid.
 
 
-.. classmethod:: TarInfo.fromtarfile(tarfile)
+.. classmethod:: TarInfo.kutokatarfile(tarfile)
 
-   Read the next member from the :class:`TarFile` object *tarfile* and return it as
+   Read the next member kutoka the :class:`TarFile` object *tarfile* and return it as
    a :class:`TarInfo` object.
 
 
 .. method:: TarInfo.tobuf(format=DEFAULT_FORMAT, encoding=ENCODING, errors='surrogateescape')
 
-   Create a string buffer from a :class:`TarInfo` object. For information on the
+   Create a string buffer kutoka a :class:`TarInfo` object. For information on the
    arguments see the constructor of the :class:`TarFile` class.
 
    .. versionchanged:: 3.2
@@ -721,7 +721,7 @@ Command-line options
 .. cmdoption:: -c <tarfile> <source1> ... <sourceN>
                --create <tarfile> <source1> ... <sourceN>
 
-   Create tarfile from source files.
+   Create tarfile kutoka source files.
 
 .. cmdoption:: -e <tarfile> [<output_dir>]
                --extract <tarfile> [<output_dir>]
@@ -744,7 +744,7 @@ Examples
 
 How to extract an entire tar archive to the current working directory::
 
-   import tarfile
+   agiza tarfile
    tar = tarfile.open("sample.tar.gz")
    tar.extractall()
    tar.close()
@@ -752,8 +752,8 @@ How to extract an entire tar archive to the current working directory::
 How to extract a subset of a tar archive with :meth:`TarFile.extractall` using
 a generator function instead of a list::
 
-   import os
-   import tarfile
+   agiza os
+   agiza tarfile
 
    def py_files(members):
        for tarinfo in members:
@@ -764,9 +764,9 @@ a generator function instead of a list::
    tar.extractall(members=py_files(tar))
    tar.close()
 
-How to create an uncompressed tar archive from a list of filenames::
+How to create an uncompressed tar archive kutoka a list of filenames::
 
-   import tarfile
+   agiza tarfile
    tar = tarfile.open("sample.tar", "w")
    for name in ["foo", "bar", "quux"]:
        tar.add(name)
@@ -774,14 +774,14 @@ How to create an uncompressed tar archive from a list of filenames::
 
 The same example using the :keyword:`with` statement::
 
-    import tarfile
+    agiza tarfile
     with tarfile.open("sample.tar", "w") as tar:
         for name in ["foo", "bar", "quux"]:
             tar.add(name)
 
 How to read a gzip compressed tar archive and display some member information::
 
-   import tarfile
+   agiza tarfile
    tar = tarfile.open("sample.tar.gz", "r:gz")
    for tarinfo in tar:
        print(tarinfo.name, "is", tarinfo.size, "bytes in size and is", end="")
@@ -796,7 +796,7 @@ How to read a gzip compressed tar archive and display some member information::
 How to create an archive and reset the user information using the *filter*
 parameter in :meth:`TarFile.add`::
 
-    import tarfile
+    agiza tarfile
     def reset(tarinfo):
         tarinfo.uid = tarinfo.gid = 0
         tarinfo.uname = tarinfo.gname = "root"
@@ -840,7 +840,7 @@ There are three tar formats that can be created with the :mod:`tarfile` module:
 There are some more variants of the tar format which can be read, but not
 created:
 
-* The ancient V7 format. This is the first tar format from Unix Seventh Edition,
+* The ancient V7 format. This is the first tar format kutoka Unix Seventh Edition,
   storing only regular files and directories. Names must not be longer than 100
   characters, there is no user/group name information. Some archives have
   miscalculated header checksums in case of fields with non-ASCII characters.

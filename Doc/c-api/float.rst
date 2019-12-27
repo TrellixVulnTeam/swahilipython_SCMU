@@ -39,7 +39,7 @@ Floating Point Objects
 
 .. c:function:: PyObject* PyFloat_FromDouble(double v)
 
-   Create a :c:type:`PyFloatObject` object from *v*, or *NULL* on failure.
+   Create a :c:type:`PyFloatObject` object kutoka *v*, or *NULL* on failure.
 
 
 .. c:function:: double PyFloat_AsDouble(PyObject *pyfloat)

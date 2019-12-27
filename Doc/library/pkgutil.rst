@@ -2,13 +2,13 @@
 ============================================
 
 .. module:: pkgutil
-   :synopsis: Utilities for the import system.
+   :synopsis: Utilities for the agiza system.
 
 **Source code:** :source:`Lib/pkgutil.py`
 
 --------------
 
-This module provides utilities for the import system, in particular package
+This module provides utilities for the agiza system, in particular package
 support.
 
 .. class:: ModuleInfo(module_finder, name, ispkg)
@@ -22,7 +22,7 @@ support.
    Extend the search path for the modules which comprise a package.  Intended
    use is to place the following code in a package's :file:`__init__.py`::
 
-      from pkgutil import extend_path
+      kutoka pkgutil agiza extend_path
       __path__ = extend_path(__path__, __name__)
 
    This will add to the package's ``__path__`` all subdirectories of directories
@@ -34,7 +34,7 @@ support.
    *name* argument.  This feature is similar to :file:`\*.pth` files (see the
    :mod:`site` module for more information), except that it doesn't special-case
    lines starting with ``import``.  A :file:`\*.pkg` file is trusted at face
-   value: apart from checking for duplicates, all entries found in a
+   value: apart kutoka checking for duplicates, all entries found in a
    :file:`\*.pkg` file are added to the path, regardless of whether they exist
    on the filesystem.  (This is a feature.)
 
@@ -51,7 +51,7 @@ support.
 
 .. class:: ImpImporter(dirname=None)
 
-   :pep:`302` Finder that wraps Python's "classic" import algorithm.
+   :pep:`302` Finder that wraps Python's "classic" agiza algorithm.
 
    If *dirname* is a string, a :pep:`302` finder is created that searches that
    directory.  If *dirname* is ``None``, a :pep:`302` finder is created that
@@ -62,16 +62,16 @@ support.
    placement on :data:`sys.meta_path`.
 
    .. deprecated:: 3.3
-      This emulation is no longer needed, as the standard import mechanism
+      This emulation is no longer needed, as the standard agiza mechanism
       is now fully :pep:`302` compliant and available in :mod:`importlib`.
 
 
 .. class:: ImpLoader(fullname, file, filename, etc)
 
-   :term:`Loader` that wraps Python's "classic" import algorithm.
+   :term:`Loader` that wraps Python's "classic" agiza algorithm.
 
    .. deprecated:: 3.3
-      This emulation is no longer needed, as the standard import mechanism
+      This emulation is no longer needed, as the standard agiza mechanism
       is now fully :pep:`302` compliant and available in :mod:`importlib`.
 
 
@@ -86,7 +86,7 @@ support.
 
    .. versionchanged:: 3.3
       Updated to be based directly on :mod:`importlib` rather than relying
-      on the package internal :pep:`302` import emulation.
+      on the package internal :pep:`302` agiza emulation.
 
    .. versionchanged:: 3.4
       Updated to be based on :pep:`451`
@@ -103,14 +103,14 @@ support.
 
    .. versionchanged:: 3.3
       Updated to be based directly on :mod:`importlib` rather than relying
-      on the package internal :pep:`302` import emulation.
+      on the package internal :pep:`302` agiza emulation.
 
 
 .. function:: get_loader(module_or_name)
 
    Get a :term:`loader` object for *module_or_name*.
 
-   If the module or package is accessible via the normal import mechanism, a
+   If the module or package is accessible via the normal agiza mechanism, a
    wrapper around the relevant part of that machinery is returned.  Returns
    ``None`` if the module cannot be found or imported.  If the named module is
    not already imported, its containing package (if any) is imported, in order
@@ -118,7 +118,7 @@ support.
 
    .. versionchanged:: 3.3
       Updated to be based directly on :mod:`importlib` rather than relying
-      on the package internal :pep:`302` import emulation.
+      on the package internal :pep:`302` agiza emulation.
 
    .. versionchanged:: 3.4
       Updated to be based on :pep:`451`
@@ -139,7 +139,7 @@ support.
 
    .. versionchanged:: 3.3
       Updated to be based directly on :mod:`importlib` rather than relying
-      on the package internal :pep:`302` import emulation.
+      on the package internal :pep:`302` agiza emulation.
 
 
 .. function:: iter_modules(path=None, prefix='')
@@ -160,7 +160,7 @@ support.
 
    .. versionchanged:: 3.3
       Updated to be based directly on :mod:`importlib` rather than relying
-      on the package internal :pep:`302` import emulation.
+      on the package internal :pep:`302` agiza emulation.
 
 
 .. function:: walk_packages(path=None, prefix='', onerror=None)
@@ -172,13 +172,13 @@ support.
 
    *prefix* is a string to output on the front of every module name on output.
 
-   Note that this function must import all *packages* (*not* all modules!) on
+   Note that this function must agiza all *packages* (*not* all modules!) on
    the given *path*, in order to access the ``__path__`` attribute to find
    submodules.
 
    *onerror* is a function which gets called with one argument (the name of the
    package which was being imported) if any exception occurs while trying to
-   import a package.  If no *onerror* function is supplied, :exc:`ImportError`\s
+   agiza a package.  If no *onerror* function is supplied, :exc:`ImportError`\s
    are caught and ignored, while all other exceptions are propagated,
    terminating the search.
 
@@ -199,12 +199,12 @@ support.
 
    .. versionchanged:: 3.3
       Updated to be based directly on :mod:`importlib` rather than relying
-      on the package internal :pep:`302` import emulation.
+      on the package internal :pep:`302` agiza emulation.
 
 
 .. function:: get_data(package, resource)
 
-   Get a resource from a package.
+   Get a resource kutoka a package.
 
    This is a wrapper for the :term:`loader`
    :meth:`get_data <importlib.abc.ResourceLoader.get_data>` API.  The

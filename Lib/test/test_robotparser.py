@@ -7,41 +7,41 @@ kutoka test agiza support
 kutoka http.server agiza BaseHTTPRequestHandler, HTTPServer
 
 
-class BaseRobotTest:
+kundi BaseRobotTest:
     robots_txt = ''
     agent = 'test_robotparser'
     good = []
     bad = []
     site_maps = None
 
-    def setUp(self):
+    eleza setUp(self):
         lines = io.StringIO(self.robots_txt).readlines()
         self.parser = urllib.robotparser.RobotFileParser()
         self.parser.parse(lines)
 
-    def get_agent_and_url(self, url):
-        if isinstance(url, tuple):
+    eleza get_agent_and_url(self, url):
+        ikiwa isinstance(url, tuple):
             agent, url = url
-            return agent, url
-        return self.agent, url
+            rudisha agent, url
+        rudisha self.agent, url
 
-    def test_good_urls(self):
+    eleza test_good_urls(self):
         for url in self.good:
             agent, url = self.get_agent_and_url(url)
             with self.subTest(url=url, agent=agent):
                 self.assertTrue(self.parser.can_fetch(agent, url))
 
-    def test_bad_urls(self):
+    eleza test_bad_urls(self):
         for url in self.bad:
             agent, url = self.get_agent_and_url(url)
             with self.subTest(url=url, agent=agent):
                 self.assertFalse(self.parser.can_fetch(agent, url))
 
-    def test_site_maps(self):
+    eleza test_site_maps(self):
         self.assertEqual(self.parser.site_maps(), self.site_maps)
 
 
-class UserAgentWildcardTest(BaseRobotTest, unittest.TestCase):
+kundi UserAgentWildcardTest(BaseRobotTest, unittest.TestCase):
     robots_txt = """\
 User-agent: *
 Disallow: /cyberworld/map/ # This is an infinite virtual URL space
@@ -52,7 +52,7 @@ Disallow: /foo.html
     bad = ['/cyberworld/map/index.html', '/tmp/xxx', '/foo.html']
 
 
-class CrawlDelayAndCustomAgentTest(BaseRobotTest, unittest.TestCase):
+kundi CrawlDelayAndCustomAgentTest(BaseRobotTest, unittest.TestCase):
     robots_txt = """\
 # robots.txt for http://www.example.com/
 
@@ -69,7 +69,7 @@ Disallow:
     bad = ['/cyberworld/map/index.html']
 
 
-class SitemapTest(BaseRobotTest, unittest.TestCase):
+kundi SitemapTest(BaseRobotTest, unittest.TestCase):
     robots_txt = """\
 # robots.txt for http://www.example.com/
 
@@ -86,7 +86,7 @@ Disallow: /cyberworld/map/ # This is an infinite virtual URL space
                  'http://www.google.com/hostednews/sitemap_index.xml']
 
 
-class RejectAllRobotsTest(BaseRobotTest, unittest.TestCase):
+kundi RejectAllRobotsTest(BaseRobotTest, unittest.TestCase):
     robots_txt = """\
 # go away
 User-agent: *
@@ -96,11 +96,11 @@ Disallow: /
     bad = ['/cyberworld/map/index.html', '/', '/tmp/']
 
 
-class BaseRequestRateTest(BaseRobotTest):
+kundi BaseRequestRateTest(BaseRobotTest):
     request_rate = None
     crawl_delay = None
 
-    def test_request_rate(self):
+    eleza test_request_rate(self):
         parser = self.parser
         for url in self.good + self.bad:
             agent, url = self.get_agent_and_url(url)
@@ -109,7 +109,7 @@ class BaseRequestRateTest(BaseRobotTest):
 
                 parsed_request_rate = parser.request_rate(agent)
                 self.assertEqual(parsed_request_rate, self.request_rate)
-                if self.request_rate is not None:
+                ikiwa self.request_rate is not None:
                     self.assertIsInstance(
                         parsed_request_rate,
                         urllib.robotparser.RequestRate
@@ -124,12 +124,12 @@ class BaseRequestRateTest(BaseRobotTest):
                     )
 
 
-class EmptyFileTest(BaseRequestRateTest, unittest.TestCase):
+kundi EmptyFileTest(BaseRequestRateTest, unittest.TestCase):
     robots_txt = ''
     good = ['/foo']
 
 
-class CrawlDelayAndRequestRateTest(BaseRequestRateTest, unittest.TestCase):
+kundi CrawlDelayAndRequestRateTest(BaseRequestRateTest, unittest.TestCase):
     robots_txt = """\
 User-agent: figtree
 Crawl-delay: 3
@@ -147,11 +147,11 @@ Disallow: /%7ejoe/index.html
            '/a%2fb.html', '/~joe/index.html']
 
 
-class DifferentAgentTest(CrawlDelayAndRequestRateTest):
+kundi DifferentAgentTest(CrawlDelayAndRequestRateTest):
     agent = 'FigTree Robot libwww-perl/5.04'
 
 
-class InvalidRequestRateTest(BaseRobotTest, unittest.TestCase):
+kundi InvalidRequestRateTest(BaseRobotTest, unittest.TestCase):
     robots_txt = """\
 User-agent: *
 Disallow: /tmp/
@@ -167,7 +167,7 @@ Request-rate: 9/banana
     crawl_delay = 3
 
 
-class InvalidCrawlDelayTest(BaseRobotTest, unittest.TestCase):
+kundi InvalidCrawlDelayTest(BaseRobotTest, unittest.TestCase):
     # From bug report #523041
     robots_txt = """\
 User-Agent: *
@@ -179,7 +179,7 @@ Crawl-delay: pears
     bad = []
 
 
-class AnotherInvalidRequestRateTest(BaseRobotTest, unittest.TestCase):
+kundi AnotherInvalidRequestRateTest(BaseRobotTest, unittest.TestCase):
     # also test that Allow and Diasallow works well with each other
     robots_txt = """\
 User-agent: Googlebot
@@ -192,7 +192,7 @@ Request-rate: whale/banana
     bad = ['/folder1/anotherfile.html']
 
 
-class UserAgentOrderingTest(BaseRobotTest, unittest.TestCase):
+kundi UserAgentOrderingTest(BaseRobotTest, unittest.TestCase):
     # the order of User-agent should be correct. note
     # that this file is incorrect because "Googlebot" is a
     # substring of "Googlebot-Mobile"
@@ -207,11 +207,11 @@ Allow: /
     bad = ['/something.jpg']
 
 
-class UserAgentGoogleMobileTest(UserAgentOrderingTest):
+kundi UserAgentGoogleMobileTest(UserAgentOrderingTest):
     agent = 'Googlebot-Mobile'
 
 
-class GoogleURLOrderingTest(BaseRobotTest, unittest.TestCase):
+kundi GoogleURLOrderingTest(BaseRobotTest, unittest.TestCase):
     # Google also got the order wrong. You need
     # to specify the URLs kutoka more specific to more general
     robots_txt = """\
@@ -224,7 +224,7 @@ Disallow: /folder1/
     bad = ['/folder1/anotherfile.html']
 
 
-class DisallowQueryStringTest(BaseRobotTest, unittest.TestCase):
+kundi DisallowQueryStringTest(BaseRobotTest, unittest.TestCase):
     # see issue #6325 for details
     robots_txt = """\
 User-agent: *
@@ -234,7 +234,7 @@ Disallow: /some/path?name=value
     bad = ['/some/path?name=value']
 
 
-class UseFirstUserAgentWildcardTest(BaseRobotTest, unittest.TestCase):
+kundi UseFirstUserAgentWildcardTest(BaseRobotTest, unittest.TestCase):
     # obey first * entry (#4108)
     robots_txt = """\
 User-agent: *
@@ -247,7 +247,7 @@ Disallow: /another/path
     bad = ['/some/path']
 
 
-class EmptyQueryStringTest(BaseRobotTest, unittest.TestCase):
+kundi EmptyQueryStringTest(BaseRobotTest, unittest.TestCase):
     # normalize the URL first (#17403)
     robots_txt = """\
 User-agent: *
@@ -258,7 +258,7 @@ Disallow: /another/path?
     bad = ['/another/path?']
 
 
-class DefaultEntryTest(BaseRequestRateTest, unittest.TestCase):
+kundi DefaultEntryTest(BaseRequestRateTest, unittest.TestCase):
     robots_txt = """\
 User-agent: *
 Crawl-delay: 1
@@ -271,7 +271,7 @@ Disallow: /cyberworld/map/
     bad = ['/cyberworld/map/index.html']
 
 
-class StringFormattingTest(BaseRobotTest, unittest.TestCase):
+kundi StringFormattingTest(BaseRobotTest, unittest.TestCase):
     robots_txt = """\
 User-agent: *
 Crawl-delay: 1
@@ -293,22 +293,22 @@ Request-rate: 3/15
 Disallow: /cyberworld/map/\
 """
 
-    def test_string_formatting(self):
+    eleza test_string_formatting(self):
         self.assertEqual(str(self.parser), self.expected_output)
 
 
-class RobotHandler(BaseHTTPRequestHandler):
+kundi RobotHandler(BaseHTTPRequestHandler):
 
-    def do_GET(self):
+    eleza do_GET(self):
         self.send_error(403, "Forbidden access")
 
-    def log_message(self, format, *args):
+    eleza log_message(self, format, *args):
         pass
 
 
-class PasswordProtectedSiteTestCase(unittest.TestCase):
+kundi PasswordProtectedSiteTestCase(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.server = HTTPServer((support.HOST, 0), RobotHandler)
 
         self.t = threading.Thread(
@@ -321,13 +321,13 @@ class PasswordProtectedSiteTestCase(unittest.TestCase):
         self.t.daemon = True  # In case this function raises.
         self.t.start()
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.server.shutdown()
         self.t.join()
         self.server.server_close()
 
     @support.reap_threads
-    def testPasswordProtectedSite(self):
+    eleza testPasswordProtectedSite(self):
         addr = self.server.server_address
         url = 'http://' + support.HOST + ':' + str(addr[1])
         robots_url = url + "/robots.txt"
@@ -337,31 +337,31 @@ class PasswordProtectedSiteTestCase(unittest.TestCase):
         self.assertFalse(parser.can_fetch("*", robots_url))
 
 
-class NetworkTestCase(unittest.TestCase):
+kundi NetworkTestCase(unittest.TestCase):
 
     base_url = 'http://www.pythontest.net/'
     robots_txt = '{}elsewhere/robots.txt'.format(base_url)
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         support.requires('network')
         with support.transient_internet(cls.base_url):
             cls.parser = urllib.robotparser.RobotFileParser(cls.robots_txt)
             cls.parser.read()
 
-    def url(self, path):
-        return '{}{}{}'.format(
-            self.base_url, path, '/' if not os.path.splitext(path)[1] else ''
+    eleza url(self, path):
+        rudisha '{}{}{}'.format(
+            self.base_url, path, '/' ikiwa not os.path.splitext(path)[1] else ''
         )
 
-    def test_basic(self):
+    eleza test_basic(self):
         self.assertFalse(self.parser.disallow_all)
         self.assertFalse(self.parser.allow_all)
         self.assertGreater(self.parser.mtime(), 0)
         self.assertFalse(self.parser.crawl_delay('*'))
         self.assertFalse(self.parser.request_rate('*'))
 
-    def test_can_fetch(self):
+    eleza test_can_fetch(self):
         self.assertTrue(self.parser.can_fetch('*', self.url('elsewhere')))
         self.assertFalse(self.parser.can_fetch('Nutch', self.base_url))
         self.assertFalse(self.parser.can_fetch('Nutch', self.url('brian')))
@@ -369,7 +369,7 @@ class NetworkTestCase(unittest.TestCase):
         self.assertFalse(self.parser.can_fetch('*', self.url('webstats')))
         self.assertTrue(self.parser.can_fetch('*', self.base_url))
 
-    def test_read_404(self):
+    eleza test_read_404(self):
         parser = urllib.robotparser.RobotFileParser(self.url('i-robot.txt'))
         parser.read()
         self.assertTrue(parser.allow_all)
@@ -378,5 +378,5 @@ class NetworkTestCase(unittest.TestCase):
         self.assertIsNone(parser.crawl_delay('*'))
         self.assertIsNone(parser.request_rate('*'))
 
-if __name__=='__main__':
+ikiwa __name__=='__main__':
     unittest.main()

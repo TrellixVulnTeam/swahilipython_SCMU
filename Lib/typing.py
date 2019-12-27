@@ -117,10 +117,10 @@ __all__ = [
 # legitimate agizas of those modules.
 
 
-def _type_check(arg, msg, is_argument=True):
-    """Check that the argument is a type, and return it (internal helper).
+eleza _type_check(arg, msg, is_argument=True):
+    """Check that the argument is a type, and rudisha it (internal helper).
 
-    As a special case, accept None and return type(None) instead. Also wrap strings
+    As a special case, accept None and rudisha type(None) instead. Also wrap strings
     into ForwardRef instances. Consider several corner cases, for example plain
     special forms like Union are not valid, while Union[int, str] is OK, etc.
     The msg argument is a human-readable error message, e.g::
@@ -130,46 +130,46 @@ def _type_check(arg, msg, is_argument=True):
     We append the repr() of the actual value (truncated to 100 chars).
     """
     invalid_generic_forms = (Generic, Protocol)
-    if is_argument:
+    ikiwa is_argument:
         invalid_generic_forms = invalid_generic_forms + (ClassVar, Final)
 
-    if arg is None:
-        return type(None)
-    if isinstance(arg, str):
-        return ForwardRef(arg)
-    if (isinstance(arg, _GenericAlias) and
+    ikiwa arg is None:
+        rudisha type(None)
+    ikiwa isinstance(arg, str):
+        rudisha ForwardRef(arg)
+    ikiwa (isinstance(arg, _GenericAlias) and
             arg.__origin__ in invalid_generic_forms):
         raise TypeError(f"{arg} is not valid as type argument")
-    if (isinstance(arg, _SpecialForm) and arg not in (Any, NoReturn) or
+    ikiwa (isinstance(arg, _SpecialForm) and arg not in (Any, NoReturn) or
             arg in (Generic, Protocol)):
         raise TypeError(f"Plain {arg} is not valid as type argument")
-    if isinstance(arg, (type, TypeVar, ForwardRef)):
-        return arg
-    if not callable(arg):
+    ikiwa isinstance(arg, (type, TypeVar, ForwardRef)):
+        rudisha arg
+    ikiwa not callable(arg):
         raise TypeError(f"{msg} Got {arg!r:.100}.")
-    return arg
+    rudisha arg
 
 
-def _type_repr(obj):
+eleza _type_repr(obj):
     """Return the repr() of an object, special-casing types (internal helper).
 
-    If obj is a type, we return a shorter version than the default
+    If obj is a type, we rudisha a shorter version than the default
     type.__repr__, based on the module and qualified name, which is
     typically enough to uniquely identify a type.  For everything
     else, we fall back on repr(obj).
     """
-    if isinstance(obj, type):
-        if obj.__module__ == 'builtins':
-            return obj.__qualname__
-        return f'{obj.__module__}.{obj.__qualname__}'
-    if obj is ...:
+    ikiwa isinstance(obj, type):
+        ikiwa obj.__module__ == 'builtins':
+            rudisha obj.__qualname__
+        rudisha f'{obj.__module__}.{obj.__qualname__}'
+    ikiwa obj is ...:
         return('...')
-    if isinstance(obj, types.FunctionType):
-        return obj.__name__
-    return repr(obj)
+    ikiwa isinstance(obj, types.FunctionType):
+        rudisha obj.__name__
+    rudisha repr(obj)
 
 
-def _collect_type_vars(types):
+eleza _collect_type_vars(types):
     """Collect all type variable contained in types in order of
     first appearance (lexicographic order). For example::
 
@@ -177,75 +177,75 @@ def _collect_type_vars(types):
     """
     tvars = []
     for t in types:
-        if isinstance(t, TypeVar) and t not in tvars:
+        ikiwa isinstance(t, TypeVar) and t not in tvars:
             tvars.append(t)
-        if isinstance(t, _GenericAlias) and not t._special:
-            tvars.extend([t for t in t.__parameters__ if t not in tvars])
-    return tuple(tvars)
+        ikiwa isinstance(t, _GenericAlias) and not t._special:
+            tvars.extend([t for t in t.__parameters__ ikiwa t not in tvars])
+    rudisha tuple(tvars)
 
 
-def _subs_tvars(tp, tvars, subs):
+eleza _subs_tvars(tp, tvars, subs):
     """Substitute type variables 'tvars' with substitutions 'subs'.
     These two must have the same length.
     """
-    if not isinstance(tp, _GenericAlias):
-        return tp
+    ikiwa not isinstance(tp, _GenericAlias):
+        rudisha tp
     new_args = list(tp.__args__)
     for a, arg in enumerate(tp.__args__):
-        if isinstance(arg, TypeVar):
+        ikiwa isinstance(arg, TypeVar):
             for i, tvar in enumerate(tvars):
-                if arg == tvar:
+                ikiwa arg == tvar:
                     new_args[a] = subs[i]
         else:
             new_args[a] = _subs_tvars(arg, tvars, subs)
-    if tp.__origin__ is Union:
-        return Union[tuple(new_args)]
-    return tp.copy_with(tuple(new_args))
+    ikiwa tp.__origin__ is Union:
+        rudisha Union[tuple(new_args)]
+    rudisha tp.copy_with(tuple(new_args))
 
 
-def _check_generic(cls, parameters):
+eleza _check_generic(cls, parameters):
     """Check correct count for parameters of a generic cls (internal helper).
     This gives a nice error message in case of count mismatch.
     """
-    if not cls.__parameters__:
+    ikiwa not cls.__parameters__:
         raise TypeError(f"{cls} is not a generic class")
     alen = len(parameters)
     elen = len(cls.__parameters__)
-    if alen != elen:
-        raise TypeError(f"Too {'many' if alen > elen else 'few'} parameters for {cls};"
+    ikiwa alen != elen:
+        raise TypeError(f"Too {'many' ikiwa alen > elen else 'few'} parameters for {cls};"
                         f" actual {alen}, expected {elen}")
 
 
-def _remove_dups_flatten(parameters):
+eleza _remove_dups_flatten(parameters):
     """An internal helper for Union creation and substitution: flatten Unions
     among parameters, then remove duplicates.
     """
     # Flatten out Union[Union[...], ...].
     params = []
     for p in parameters:
-        if isinstance(p, _GenericAlias) and p.__origin__ is Union:
+        ikiwa isinstance(p, _GenericAlias) and p.__origin__ is Union:
             params.extend(p.__args__)
-        elif isinstance(p, tuple) and len(p) > 0 and p[0] is Union:
+        elikiwa isinstance(p, tuple) and len(p) > 0 and p[0] is Union:
             params.extend(p[1:])
         else:
             params.append(p)
     # Weed out strict duplicates, preserving the first of each occurrence.
     all_params = set(params)
-    if len(all_params) < len(params):
+    ikiwa len(all_params) < len(params):
         new_params = []
         for t in params:
-            if t in all_params:
+            ikiwa t in all_params:
                 new_params.append(t)
                 all_params.remove(t)
         params = new_params
         assert not all_params, all_params
-    return tuple(params)
+    rudisha tuple(params)
 
 
 _cleanups = []
 
 
-def _tp_cache(func):
+eleza _tp_cache(func):
     """Internal wrapper caching __getitem__ of generic types with a fallback to
     original function for non-hashable arguments.
     """
@@ -253,120 +253,120 @@ def _tp_cache(func):
     _cleanups.append(cached.cache_clear)
 
     @functools.wraps(func)
-    def inner(*args, **kwds):
+    eleza inner(*args, **kwds):
         try:
-            return cached(*args, **kwds)
+            rudisha cached(*args, **kwds)
         except TypeError:
             pass  # All real errors (not unhashable args) are raised below.
-        return func(*args, **kwds)
-    return inner
+        rudisha func(*args, **kwds)
+    rudisha inner
 
 
-def _eval_type(t, globalns, localns):
+eleza _eval_type(t, globalns, localns):
     """Evaluate all forward reverences in the given type t.
     For use of globalns and localns see the docstring for get_type_hints().
     """
-    if isinstance(t, ForwardRef):
-        return t._evaluate(globalns, localns)
-    if isinstance(t, _GenericAlias):
+    ikiwa isinstance(t, ForwardRef):
+        rudisha t._evaluate(globalns, localns)
+    ikiwa isinstance(t, _GenericAlias):
         ev_args = tuple(_eval_type(a, globalns, localns) for a in t.__args__)
-        if ev_args == t.__args__:
-            return t
+        ikiwa ev_args == t.__args__:
+            rudisha t
         res = t.copy_with(ev_args)
         res._special = t._special
-        return res
-    return t
+        rudisha res
+    rudisha t
 
 
-class _Final:
+kundi _Final:
     """Mixin to prohibit subclassing"""
 
     __slots__ = ('__weakref__',)
 
-    def __init_subclass__(self, /, *args, **kwds):
-        if '_root' not in kwds:
-            raise TypeError("Cannot subclass special typing classes")
+    eleza __init_subclass__(self, /, *args, **kwds):
+        ikiwa '_root' not in kwds:
+            raise TypeError("Cannot subkundi special typing classes")
 
-class _Immutable:
+kundi _Immutable:
     """Mixin to indicate that object should not be copied."""
 
-    def __copy__(self):
-        return self
+    eleza __copy__(self):
+        rudisha self
 
-    def __deepcopy__(self, memo):
-        return self
+    eleza __deepcopy__(self, memo):
+        rudisha self
 
 
-class _SpecialForm(_Final, _Immutable, _root=True):
+kundi _SpecialForm(_Final, _Immutable, _root=True):
     """Internal indicator of special typing constructs.
     See _doc instance attribute for specific docs.
     """
 
     __slots__ = ('_name', '_doc')
 
-    def __new__(cls, *args, **kwds):
+    eleza __new__(cls, *args, **kwds):
         """Constructor.
 
         This only exists to give a better error message in case
-        someone tries to subclass a special typing object (not a good idea).
+        someone tries to subkundi a special typing object (not a good idea).
         """
-        if (len(args) == 3 and
+        ikiwa (len(args) == 3 and
                 isinstance(args[0], str) and
                 isinstance(args[1], tuple)):
             # Close enough.
-            raise TypeError(f"Cannot subclass {cls!r}")
-        return super().__new__(cls)
+            raise TypeError(f"Cannot subkundi {cls!r}")
+        rudisha super().__new__(cls)
 
-    def __init__(self, name, doc):
+    eleza __init__(self, name, doc):
         self._name = name
         self._doc = doc
 
-    def __eq__(self, other):
-        if not isinstance(other, _SpecialForm):
-            return NotImplemented
-        return self._name == other._name
+    eleza __eq__(self, other):
+        ikiwa not isinstance(other, _SpecialForm):
+            rudisha NotImplemented
+        rudisha self._name == other._name
 
-    def __hash__(self):
-        return hash((self._name,))
+    eleza __hash__(self):
+        rudisha hash((self._name,))
 
-    def __repr__(self):
-        return 'typing.' + self._name
+    eleza __repr__(self):
+        rudisha 'typing.' + self._name
 
-    def __reduce__(self):
-        return self._name
+    eleza __reduce__(self):
+        rudisha self._name
 
-    def __call__(self, *args, **kwds):
+    eleza __call__(self, *args, **kwds):
         raise TypeError(f"Cannot instantiate {self!r}")
 
-    def __instancecheck__(self, obj):
+    eleza __instancecheck__(self, obj):
         raise TypeError(f"{self} cannot be used with isinstance()")
 
-    def __subclasscheck__(self, cls):
+    eleza __subclasscheck__(self, cls):
         raise TypeError(f"{self} cannot be used with issubclass()")
 
     @_tp_cache
-    def __getitem__(self, parameters):
-        if self._name in ('ClassVar', 'Final'):
+    eleza __getitem__(self, parameters):
+        ikiwa self._name in ('ClassVar', 'Final'):
             item = _type_check(parameters, f'{self._name} accepts only single type.')
-            return _GenericAlias(self, (item,))
-        if self._name == 'Union':
-            if parameters == ():
+            rudisha _GenericAlias(self, (item,))
+        ikiwa self._name == 'Union':
+            ikiwa parameters == ():
                 raise TypeError("Cannot take a Union of no types.")
-            if not isinstance(parameters, tuple):
+            ikiwa not isinstance(parameters, tuple):
                 parameters = (parameters,)
             msg = "Union[arg, ...]: each arg must be a type."
             parameters = tuple(_type_check(p, msg) for p in parameters)
             parameters = _remove_dups_flatten(parameters)
-            if len(parameters) == 1:
-                return parameters[0]
-            return _GenericAlias(self, parameters)
-        if self._name == 'Optional':
+            ikiwa len(parameters) == 1:
+                rudisha parameters[0]
+            rudisha _GenericAlias(self, parameters)
+        ikiwa self._name == 'Optional':
             arg = _type_check(parameters, "Optional[t] requires a single type.")
-            return Union[arg, type(None)]
-        if self._name == 'Literal':
+            rudisha Union[arg, type(None)]
+        ikiwa self._name == 'Literal':
             # There is no '_type_check' call because arguments to Literal[...] are
             # values, not types.
-            return _GenericAlias(self, parameters)
+            rudisha _GenericAlias(self, parameters)
         raise TypeError(f"{self} is not subscriptable")
 
 
@@ -379,7 +379,7 @@ Any = _SpecialForm('Any', doc=
 
     Note that all the above statements are true kutoka the point of view of
     static type checkers. At runtime, Any should not be used with instance
-    or class checks.
+    or kundi checks.
     """)
 
 NoReturn = _SpecialForm('NoReturn', doc=
@@ -388,7 +388,7 @@ NoReturn = _SpecialForm('NoReturn', doc=
 
       kutoka typing agiza NoReturn
 
-      def stop() -> NoReturn:
+      eleza stop() -> NoReturn:
           raise Exception('no way')
 
     This type is invalid in other positions, e.g., ``List[NoReturn]``
@@ -396,19 +396,19 @@ NoReturn = _SpecialForm('NoReturn', doc=
     """)
 
 ClassVar = _SpecialForm('ClassVar', doc=
-    """Special type construct to mark class variables.
+    """Special type construct to mark kundi variables.
 
     An annotation wrapped in ClassVar indicates that a given
-    attribute is intended to be used as a class variable and
+    attribute is intended to be used as a kundi variable and
     should not be set on instances of that class. Usage::
 
-      class Starship:
-          stats: ClassVar[Dict[str, int]] = {} # class variable
+      kundi Starship:
+          stats: ClassVar[Dict[str, int]] = {} # kundi variable
           damage: int = 10                     # instance variable
 
     ClassVar accepts only types and cannot be further subscribed.
 
-    Note that ClassVar is not a class itself, and should not
+    Note that ClassVar is not a kundi itself, and should not
     be used with isinstance() or issubclass().
     """)
 
@@ -421,10 +421,10 @@ Final = _SpecialForm('Final', doc=
       MAX_SIZE: Final = 9000
       MAX_SIZE += 1  # Error reported by type checker
 
-      class Connection:
+      kundi Connection:
           TIMEOUT: Final[int] = 10
 
-      class FastConnector(Connection):
+      kundi FastConnector(Connection):
           TIMEOUT = 1  # Error reported by type checker
 
     There is no runtime checking of these properties.
@@ -453,7 +453,7 @@ Union = _SpecialForm('Union', doc=
 
         Union[int, str] == Union[str, int]
 
-    - You cannot subclass or instantiate a union.
+    - You cannot subkundi or instantiate a union.
     - You can use Optional[X] as a shorthand for Union[X, None].
     """)
 
@@ -470,11 +470,11 @@ Literal = _SpecialForm('Literal', doc=
     variable or function parameter has a value equivalent to the provided
     literal (or one of several literals):
 
-      def validate_simple(data: Any) -> Literal[True]:  # always returns True
+      eleza validate_simple(data: Any) -> Literal[True]:  # always returns True
           ...
 
       MODE = Literal['r', 'rb', 'w', 'wb']
-      def open_helper(file: str, mode: MODE) -> str:
+      eleza open_helper(file: str, mode: MODE) -> str:
           ...
 
       open_helper('/some/path', 'r')  # Passes type check
@@ -486,15 +486,15 @@ Literal = _SpecialForm('Literal', doc=
     """)
 
 
-class ForwardRef(_Final, _root=True):
+kundi ForwardRef(_Final, _root=True):
     """Internal wrapper to hold a forward reference."""
 
     __slots__ = ('__forward_arg__', '__forward_code__',
                  '__forward_evaluated__', '__forward_value__',
                  '__forward_is_argument__')
 
-    def __init__(self, arg, is_argument=True):
-        if not isinstance(arg, str):
+    eleza __init__(self, arg, is_argument=True):
+        ikiwa not isinstance(arg, str):
             raise TypeError(f"Forward reference must be a string -- got {arg!r}")
         try:
             code = compile(arg, '<string>', 'eval')
@@ -506,37 +506,37 @@ class ForwardRef(_Final, _root=True):
         self.__forward_value__ = None
         self.__forward_is_argument__ = is_argument
 
-    def _evaluate(self, globalns, localns):
-        if not self.__forward_evaluated__ or localns is not globalns:
-            if globalns is None and localns is None:
+    eleza _evaluate(self, globalns, localns):
+        ikiwa not self.__forward_evaluated__ or localns is not globalns:
+            ikiwa globalns is None and localns is None:
                 globalns = localns = {}
-            elif globalns is None:
+            elikiwa globalns is None:
                 globalns = localns
-            elif localns is None:
+            elikiwa localns is None:
                 localns = globalns
             self.__forward_value__ = _type_check(
                 eval(self.__forward_code__, globalns, localns),
                 "Forward references must evaluate to types.",
                 is_argument=self.__forward_is_argument__)
             self.__forward_evaluated__ = True
-        return self.__forward_value__
+        rudisha self.__forward_value__
 
-    def __eq__(self, other):
-        if not isinstance(other, ForwardRef):
-            return NotImplemented
-        if self.__forward_evaluated__ and other.__forward_evaluated__:
-            return (self.__forward_arg__ == other.__forward_arg__ and
+    eleza __eq__(self, other):
+        ikiwa not isinstance(other, ForwardRef):
+            rudisha NotImplemented
+        ikiwa self.__forward_evaluated__ and other.__forward_evaluated__:
+            rudisha (self.__forward_arg__ == other.__forward_arg__ and
                     self.__forward_value__ == other.__forward_value__)
-        return self.__forward_arg__ == other.__forward_arg__
+        rudisha self.__forward_arg__ == other.__forward_arg__
 
-    def __hash__(self):
-        return hash(self.__forward_arg__)
+    eleza __hash__(self):
+        rudisha hash(self.__forward_arg__)
 
-    def __repr__(self):
-        return f'ForwardRef({self.__forward_arg__!r})'
+    eleza __repr__(self):
+        rudisha f'ForwardRef({self.__forward_arg__!r})'
 
 
-class TypeVar(_Final, _Immutable, _root=True):
+kundi TypeVar(_Final, _Immutable, _root=True):
     """Type variable.
 
     Usage::
@@ -546,21 +546,21 @@ class TypeVar(_Final, _Immutable, _root=True):
 
     Type variables exist primarily for the benefit of static type
     checkers.  They serve as the parameters for generic types as well
-    as for generic function definitions.  See class Generic for more
+    as for generic function definitions.  See kundi Generic for more
     information on generic types.  Generic functions work as follows:
 
-      def repeat(x: T, n: int) -> List[T]:
+      eleza repeat(x: T, n: int) -> List[T]:
           '''Return a list containing n references to x.'''
-          return [x]*n
+          rudisha [x]*n
 
-      def longest(x: A, y: A) -> A:
+      eleza longest(x: A, y: A) -> A:
           '''Return the longest of two strings.'''
-          return x if len(x) >= len(y) else y
+          rudisha x ikiwa len(x) >= len(y) else y
 
     The latter example's signature is essentially the overloading
     of (str, str) -> str and (bytes, bytes) -> bytes.  Also note
-    that if the arguments are instances of some subclass of str,
-    the return type is still plain str.
+    that ikiwa the arguments are instances of some subkundi of str,
+    the rudisha type is still plain str.
 
     At runtime, isinstance(x, T) and issubclass(C, T) will raise TypeError.
 
@@ -583,38 +583,38 @@ class TypeVar(_Final, _Immutable, _root=True):
     __slots__ = ('__name__', '__bound__', '__constraints__',
                  '__covariant__', '__contravariant__')
 
-    def __init__(self, name, *constraints, bound=None,
+    eleza __init__(self, name, *constraints, bound=None,
                  covariant=False, contravariant=False):
         self.__name__ = name
-        if covariant and contravariant:
+        ikiwa covariant and contravariant:
             raise ValueError("Bivariant types are not supported.")
         self.__covariant__ = bool(covariant)
         self.__contravariant__ = bool(contravariant)
-        if constraints and bound is not None:
+        ikiwa constraints and bound is not None:
             raise TypeError("Constraints cannot be combined with bound=...")
-        if constraints and len(constraints) == 1:
+        ikiwa constraints and len(constraints) == 1:
             raise TypeError("A single constraint is not allowed")
         msg = "TypeVar(name, constraint, ...): constraints must be types."
         self.__constraints__ = tuple(_type_check(t, msg) for t in constraints)
-        if bound:
+        ikiwa bound:
             self.__bound__ = _type_check(bound, "Bound must be a type.")
         else:
             self.__bound__ = None
         def_mod = sys._getframe(1).f_globals['__name__']  # for pickling
-        if def_mod != 'typing':
+        ikiwa def_mod != 'typing':
             self.__module__ = def_mod
 
-    def __repr__(self):
-        if self.__covariant__:
+    eleza __repr__(self):
+        ikiwa self.__covariant__:
             prefix = '+'
-        elif self.__contravariant__:
+        elikiwa self.__contravariant__:
             prefix = '-'
         else:
             prefix = '~'
-        return prefix + self.__name__
+        rudisha prefix + self.__name__
 
-    def __reduce__(self):
-        return self.__name__
+    eleza __reduce__(self):
+        rudisha self.__name__
 
 
 # Special typing constructs Union, Optional, Generic, Callable and Tuple
@@ -640,11 +640,11 @@ _normalize_alias = {'list': 'List',
                     'type': 'Type',
                     'Set': 'AbstractSet'}
 
-def _is_dunder(attr):
-    return attr.startswith('__') and attr.endswith('__')
+eleza _is_dunder(attr):
+    rudisha attr.startswith('__') and attr.endswith('__')
 
 
-class _GenericAlias(_Final, _root=True):
+kundi _GenericAlias(_Final, _root=True):
     """The central part of internal API.
 
     This represents a generic version of type 'origin' with type arguments 'params'.
@@ -653,74 +653,74 @@ class _GenericAlias(_Final, _root=True):
     have 'name' always set. If 'inst' is False, then the alias can't be instantiated,
     this is used by e.g. typing.List and typing.Dict.
     """
-    def __init__(self, origin, params, *, inst=True, special=False, name=None):
+    eleza __init__(self, origin, params, *, inst=True, special=False, name=None):
         self._inst = inst
         self._special = special
-        if special and name is None:
+        ikiwa special and name is None:
             orig_name = origin.__name__
             name = _normalize_alias.get(orig_name, orig_name)
         self._name = name
-        if not isinstance(params, tuple):
+        ikiwa not isinstance(params, tuple):
             params = (params,)
         self.__origin__ = origin
-        self.__args__ = tuple(... if a is _TypingEllipsis else
-                              () if a is _TypingEmpty else
+        self.__args__ = tuple(... ikiwa a is _TypingEllipsis else
+                              () ikiwa a is _TypingEmpty else
                               a for a in params)
         self.__parameters__ = _collect_type_vars(params)
         self.__slots__ = None  # This is not documented.
-        if not name:
+        ikiwa not name:
             self.__module__ = origin.__module__
 
     @_tp_cache
-    def __getitem__(self, params):
-        if self.__origin__ in (Generic, Protocol):
+    eleza __getitem__(self, params):
+        ikiwa self.__origin__ in (Generic, Protocol):
             # Can't subscript Generic[...] or Protocol[...].
             raise TypeError(f"Cannot subscript already-subscripted {self}")
-        if not isinstance(params, tuple):
+        ikiwa not isinstance(params, tuple):
             params = (params,)
         msg = "Parameters to generic types must be types."
         params = tuple(_type_check(p, msg) for p in params)
         _check_generic(self, params)
-        return _subs_tvars(self, self.__parameters__, params)
+        rudisha _subs_tvars(self, self.__parameters__, params)
 
-    def copy_with(self, params):
+    eleza copy_with(self, params):
         # We don't copy self._special.
-        return _GenericAlias(self.__origin__, params, name=self._name, inst=self._inst)
+        rudisha _GenericAlias(self.__origin__, params, name=self._name, inst=self._inst)
 
-    def __repr__(self):
-        if (self._name != 'Callable' or
+    eleza __repr__(self):
+        ikiwa (self._name != 'Callable' or
                 len(self.__args__) == 2 and self.__args__[0] is Ellipsis):
-            if self._name:
+            ikiwa self._name:
                 name = 'typing.' + self._name
             else:
                 name = _type_repr(self.__origin__)
-            if not self._special:
+            ikiwa not self._special:
                 args = f'[{", ".join([_type_repr(a) for a in self.__args__])}]'
             else:
                 args = ''
-            return (f'{name}{args}')
-        if self._special:
-            return 'typing.Callable'
-        return (f'typing.Callable'
+            rudisha (f'{name}{args}')
+        ikiwa self._special:
+            rudisha 'typing.Callable'
+        rudisha (f'typing.Callable'
                 f'[[{", ".join([_type_repr(a) for a in self.__args__[:-1]])}], '
                 f'{_type_repr(self.__args__[-1])}]')
 
-    def __eq__(self, other):
-        if not isinstance(other, _GenericAlias):
-            return NotImplemented
-        if self.__origin__ != other.__origin__:
-            return False
-        if self.__origin__ is Union and other.__origin__ is Union:
-            return frozenset(self.__args__) == frozenset(other.__args__)
-        return self.__args__ == other.__args__
+    eleza __eq__(self, other):
+        ikiwa not isinstance(other, _GenericAlias):
+            rudisha NotImplemented
+        ikiwa self.__origin__ != other.__origin__:
+            rudisha False
+        ikiwa self.__origin__ is Union and other.__origin__ is Union:
+            rudisha frozenset(self.__args__) == frozenset(other.__args__)
+        rudisha self.__args__ == other.__args__
 
-    def __hash__(self):
-        if self.__origin__ is Union:
-            return hash((Union, frozenset(self.__args__)))
-        return hash((self.__origin__, self.__args__))
+    eleza __hash__(self):
+        ikiwa self.__origin__ is Union:
+            rudisha hash((Union, frozenset(self.__args__)))
+        rudisha hash((self.__origin__, self.__args__))
 
-    def __call__(self, *args, **kwargs):
-        if not self._inst:
+    eleza __call__(self, *args, **kwargs):
+        ikiwa not self._inst:
             raise TypeError(f"Type {self._name} cannot be instantiated; "
                             f"use {self._name.lower()}() instead")
         result = self.__origin__(*args, **kwargs)
@@ -728,182 +728,182 @@ class _GenericAlias(_Final, _root=True):
             result.__orig_class__ = self
         except AttributeError:
             pass
-        return result
+        rudisha result
 
-    def __mro_entries__(self, bases):
-        if self._name:  # generic version of an ABC or built-in class
+    eleza __mro_entries__(self, bases):
+        ikiwa self._name:  # generic version of an ABC or built-in class
             res = []
-            if self.__origin__ not in bases:
+            ikiwa self.__origin__ not in bases:
                 res.append(self.__origin__)
             i = bases.index(self)
-            if not any(isinstance(b, _GenericAlias) or issubclass(b, Generic)
+            ikiwa not any(isinstance(b, _GenericAlias) or issubclass(b, Generic)
                        for b in bases[i+1:]):
                 res.append(Generic)
-            return tuple(res)
-        if self.__origin__ is Generic:
-            if Protocol in bases:
-                return ()
+            rudisha tuple(res)
+        ikiwa self.__origin__ is Generic:
+            ikiwa Protocol in bases:
+                rudisha ()
             i = bases.index(self)
             for b in bases[i+1:]:
-                if isinstance(b, _GenericAlias) and b is not self:
-                    return ()
-        return (self.__origin__,)
+                ikiwa isinstance(b, _GenericAlias) and b is not self:
+                    rudisha ()
+        rudisha (self.__origin__,)
 
-    def __getattr__(self, attr):
+    eleza __getattr__(self, attr):
         # We are careful for copy and pickle.
         # Also for simplicity we just don't relay all dunder names
-        if '__origin__' in self.__dict__ and not _is_dunder(attr):
-            return getattr(self.__origin__, attr)
+        ikiwa '__origin__' in self.__dict__ and not _is_dunder(attr):
+            rudisha getattr(self.__origin__, attr)
         raise AttributeError(attr)
 
-    def __setattr__(self, attr, val):
-        if _is_dunder(attr) or attr in ('_name', '_inst', '_special'):
+    eleza __setattr__(self, attr, val):
+        ikiwa _is_dunder(attr) or attr in ('_name', '_inst', '_special'):
             super().__setattr__(attr, val)
         else:
             setattr(self.__origin__, attr, val)
 
-    def __instancecheck__(self, obj):
-        return self.__subclasscheck__(type(obj))
+    eleza __instancecheck__(self, obj):
+        rudisha self.__subclasscheck__(type(obj))
 
-    def __subclasscheck__(self, cls):
-        if self._special:
-            if not isinstance(cls, _GenericAlias):
-                return issubclass(cls, self.__origin__)
-            if cls._special:
-                return issubclass(cls.__origin__, self.__origin__)
+    eleza __subclasscheck__(self, cls):
+        ikiwa self._special:
+            ikiwa not isinstance(cls, _GenericAlias):
+                rudisha issubclass(cls, self.__origin__)
+            ikiwa cls._special:
+                rudisha issubclass(cls.__origin__, self.__origin__)
         raise TypeError("Subscripted generics cannot be used with"
-                        " class and instance checks")
+                        " kundi and instance checks")
 
-    def __reduce__(self):
-        if self._special:
-            return self._name
+    eleza __reduce__(self):
+        ikiwa self._special:
+            rudisha self._name
 
-        if self._name:
+        ikiwa self._name:
             origin = globals()[self._name]
         else:
             origin = self.__origin__
-        if (origin is Callable and
+        ikiwa (origin is Callable and
             not (len(self.__args__) == 2 and self.__args__[0] is Ellipsis)):
             args = list(self.__args__[:-1]), self.__args__[-1]
         else:
             args = tuple(self.__args__)
-            if len(args) == 1 and not isinstance(args[0], tuple):
+            ikiwa len(args) == 1 and not isinstance(args[0], tuple):
                 args, = args
-        return operator.getitem, (origin, args)
+        rudisha operator.getitem, (origin, args)
 
 
-class _VariadicGenericAlias(_GenericAlias, _root=True):
+kundi _VariadicGenericAlias(_GenericAlias, _root=True):
     """Same as _GenericAlias above but for variadic aliases. Currently,
     this is used only by special internal aliases: Tuple and Callable.
     """
-    def __getitem__(self, params):
-        if self._name != 'Callable' or not self._special:
-            return self.__getitem_inner__(params)
-        if not isinstance(params, tuple) or len(params) != 2:
+    eleza __getitem__(self, params):
+        ikiwa self._name != 'Callable' or not self._special:
+            rudisha self.__getitem_inner__(params)
+        ikiwa not isinstance(params, tuple) or len(params) != 2:
             raise TypeError("Callable must be used as "
                             "Callable[[arg, ...], result].")
         args, result = params
-        if args is Ellipsis:
+        ikiwa args is Ellipsis:
             params = (Ellipsis, result)
         else:
-            if not isinstance(args, list):
+            ikiwa not isinstance(args, list):
                 raise TypeError(f"Callable[args, result]: args must be a list."
                                 f" Got {args}")
             params = (tuple(args), result)
-        return self.__getitem_inner__(params)
+        rudisha self.__getitem_inner__(params)
 
     @_tp_cache
-    def __getitem_inner__(self, params):
-        if self.__origin__ is tuple and self._special:
-            if params == ():
-                return self.copy_with((_TypingEmpty,))
-            if not isinstance(params, tuple):
+    eleza __getitem_inner__(self, params):
+        ikiwa self.__origin__ is tuple and self._special:
+            ikiwa params == ():
+                rudisha self.copy_with((_TypingEmpty,))
+            ikiwa not isinstance(params, tuple):
                 params = (params,)
-            if len(params) == 2 and params[1] is ...:
+            ikiwa len(params) == 2 and params[1] is ...:
                 msg = "Tuple[t, ...]: t must be a type."
                 p = _type_check(params[0], msg)
-                return self.copy_with((p, _TypingEllipsis))
+                rudisha self.copy_with((p, _TypingEllipsis))
             msg = "Tuple[t0, t1, ...]: each t must be a type."
             params = tuple(_type_check(p, msg) for p in params)
-            return self.copy_with(params)
-        if self.__origin__ is collections.abc.Callable and self._special:
+            rudisha self.copy_with(params)
+        ikiwa self.__origin__ is collections.abc.Callable and self._special:
             args, result = params
             msg = "Callable[args, result]: result must be a type."
             result = _type_check(result, msg)
-            if args is Ellipsis:
-                return self.copy_with((_TypingEllipsis, result))
+            ikiwa args is Ellipsis:
+                rudisha self.copy_with((_TypingEllipsis, result))
             msg = "Callable[[arg, ...], result]: each arg must be a type."
             args = tuple(_type_check(arg, msg) for arg in args)
             params = args + (result,)
-            return self.copy_with(params)
-        return super().__getitem__(params)
+            rudisha self.copy_with(params)
+        rudisha super().__getitem__(params)
 
 
-class Generic:
-    """Abstract base class for generic types.
+kundi Generic:
+    """Abstract base kundi for generic types.
 
     A generic type is typically declared by inheriting kutoka
-    this class parameterized with one or more type variables.
+    this kundi parameterized with one or more type variables.
     For example, a generic mapping type might be defined as::
 
-      class Mapping(Generic[KT, VT]):
-          def __getitem__(self, key: KT) -> VT:
+      kundi Mapping(Generic[KT, VT]):
+          eleza __getitem__(self, key: KT) -> VT:
               ...
           # Etc.
 
-    This class can then be used as follows::
+    This kundi can then be used as follows::
 
-      def lookup_name(mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:
+      eleza lookup_name(mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:
           try:
-              return mapping[key]
+              rudisha mapping[key]
           except KeyError:
-              return default
+              rudisha default
     """
     __slots__ = ()
     _is_protocol = False
 
-    def __new__(cls, *args, **kwds):
-        if cls in (Generic, Protocol):
+    eleza __new__(cls, *args, **kwds):
+        ikiwa cls in (Generic, Protocol):
             raise TypeError(f"Type {cls.__name__} cannot be instantiated; "
                             "it can be used only as a base class")
-        if super().__new__ is object.__new__ and cls.__init__ is not object.__init__:
+        ikiwa super().__new__ is object.__new__ and cls.__init__ is not object.__init__:
             obj = super().__new__(cls)
         else:
             obj = super().__new__(cls, *args, **kwds)
-        return obj
+        rudisha obj
 
     @_tp_cache
-    def __class_getitem__(cls, params):
-        if not isinstance(params, tuple):
+    eleza __class_getitem__(cls, params):
+        ikiwa not isinstance(params, tuple):
             params = (params,)
-        if not params and cls is not Tuple:
+        ikiwa not params and cls is not Tuple:
             raise TypeError(
                 f"Parameter list to {cls.__qualname__}[...] cannot be empty")
         msg = "Parameters to generic types must be types."
         params = tuple(_type_check(p, msg) for p in params)
-        if cls in (Generic, Protocol):
+        ikiwa cls in (Generic, Protocol):
             # Generic and Protocol can only be subscripted with unique type variables.
-            if not all(isinstance(p, TypeVar) for p in params):
+            ikiwa not all(isinstance(p, TypeVar) for p in params):
                 raise TypeError(
                     f"Parameters to {cls.__name__}[...] must all be type variables")
-            if len(set(params)) != len(params):
+            ikiwa len(set(params)) != len(params):
                 raise TypeError(
                     f"Parameters to {cls.__name__}[...] must all be unique")
         else:
             # Subscripting a regular Generic subclass.
             _check_generic(cls, params)
-        return _GenericAlias(cls, params)
+        rudisha _GenericAlias(cls, params)
 
-    def __init_subclass__(cls, *args, **kwargs):
+    eleza __init_subclass__(cls, *args, **kwargs):
         super().__init_subclass__(*args, **kwargs)
         tvars = []
-        if '__orig_bases__' in cls.__dict__:
+        ikiwa '__orig_bases__' in cls.__dict__:
             error = Generic in cls.__orig_bases__
         else:
             error = Generic in cls.__bases__ and cls.__name__ != 'Protocol'
-        if error:
+        ikiwa error:
             raise TypeError("Cannot inherit kutoka plain Generic")
-        if '__orig_bases__' in cls.__dict__:
+        ikiwa '__orig_bases__' in cls.__dict__:
             tvars = _collect_type_vars(cls.__orig_bases__)
             # Look for Generic[T1, ..., Tn].
             # If found, tvars must be a subset of it.
@@ -912,17 +912,17 @@ class Generic:
             # and reject multiple Generic[...].
             gvars = None
             for base in cls.__orig_bases__:
-                if (isinstance(base, _GenericAlias) and
+                ikiwa (isinstance(base, _GenericAlias) and
                         base.__origin__ is Generic):
-                    if gvars is not None:
+                    ikiwa gvars is not None:
                         raise TypeError(
                             "Cannot inherit kutoka Generic[...] multiple types.")
                     gvars = base.__parameters__
-            if gvars is not None:
+            ikiwa gvars is not None:
                 tvarset = set(tvars)
                 gvarset = set(gvars)
-                if not tvarset <= gvarset:
-                    s_vars = ', '.join(str(t) for t in tvars if t not in gvarset)
+                ikiwa not tvarset <= gvarset:
+                    s_vars = ', '.join(str(t) for t in tvars ikiwa t not in gvarset)
                     s_args = ', '.join(str(g) for g in gvars)
                     raise TypeError(f"Some type variables ({s_vars}) are"
                                     f" not listed in Generic[{s_args}]")
@@ -930,14 +930,14 @@ class Generic:
         cls.__parameters__ = tuple(tvars)
 
 
-class _TypingEmpty:
+kundi _TypingEmpty:
     """Internal placeholder for () or []. Used by TupleMeta and CallableMeta
     to allow empty list/tuple in specific places, without allowing them
     to sneak in where prohibited.
     """
 
 
-class _TypingEllipsis:
+kundi _TypingEllipsis:
     """Internal placeholder for ... (ellipsis)."""
 
 
@@ -952,43 +952,43 @@ _SPECIAL_NAMES = ['__abstractmethods__', '__annotations__', '__dict__', '__doc__
 EXCLUDED_ATTRIBUTES = _TYPING_INTERNALS + _SPECIAL_NAMES + ['_MutableMapping__marker']
 
 
-def _get_protocol_attrs(cls):
-    """Collect protocol members kutoka a protocol class objects.
+eleza _get_protocol_attrs(cls):
+    """Collect protocol members kutoka a protocol kundi objects.
 
-    This includes names actually defined in the class dictionary, as well
+    This includes names actually defined in the kundi dictionary, as well
     as names that appear in annotations. Special names (above) are skipped.
     """
     attrs = set()
     for base in cls.__mro__[:-1]:  # without object
-        if base.__name__ in ('Protocol', 'Generic'):
+        ikiwa base.__name__ in ('Protocol', 'Generic'):
             continue
         annotations = getattr(base, '__annotations__', {})
         for attr in list(base.__dict__.keys()) + list(annotations.keys()):
-            if not attr.startswith('_abc_') and attr not in EXCLUDED_ATTRIBUTES:
+            ikiwa not attr.startswith('_abc_') and attr not in EXCLUDED_ATTRIBUTES:
                 attrs.add(attr)
-    return attrs
+    rudisha attrs
 
 
-def _is_callable_members_only(cls):
+eleza _is_callable_members_only(cls):
     # PEP 544 prohibits using issubclass() with protocols that have non-method members.
-    return all(callable(getattr(cls, attr, None)) for attr in _get_protocol_attrs(cls))
+    rudisha all(callable(getattr(cls, attr, None)) for attr in _get_protocol_attrs(cls))
 
 
-def _no_init(self, *args, **kwargs):
-    if type(self)._is_protocol:
+eleza _no_init(self, *args, **kwargs):
+    ikiwa type(self)._is_protocol:
         raise TypeError('Protocols cannot be instantiated')
 
 
-def _allow_reckless_class_cheks():
-    """Allow instnance and class checks for special stdlib modules.
+eleza _allow_reckless_class_cheks():
+    """Allow instnance and kundi checks for special stdlib modules.
 
     The abc and functools modules indiscriminately call isinstance() and
     issubclass() on the whole MRO of a user class, which may contain protocols.
     """
     try:
-        return sys._getframe(3).f_globals['__name__'] in ['abc', 'functools']
+        rudisha sys._getframe(3).f_globals['__name__'] in ['abc', 'functools']
     except (AttributeError, ValueError):  # For platforms without _getframe().
-        return True
+        rudisha True
 
 
 _PROTO_WHITELIST = {
@@ -1000,44 +1000,44 @@ _PROTO_WHITELIST = {
 }
 
 
-class _ProtocolMeta(ABCMeta):
-    # This metaclass is really unfortunate and exists only because of
+kundi _ProtocolMeta(ABCMeta):
+    # This metakundi is really unfortunate and exists only because of
     # the lack of __instancehook__.
-    def __instancecheck__(cls, instance):
+    eleza __instancecheck__(cls, instance):
         # We need this method for situations where attributes are
         # assigned in __init__.
-        if ((not getattr(cls, '_is_protocol', False) or
+        ikiwa ((not getattr(cls, '_is_protocol', False) or
                 _is_callable_members_only(cls)) and
                 issubclass(instance.__class__, cls)):
-            return True
-        if cls._is_protocol:
-            if all(hasattr(instance, attr) and
+            rudisha True
+        ikiwa cls._is_protocol:
+            ikiwa all(hasattr(instance, attr) and
                     # All *methods* can be blocked by setting them to None.
                     (not callable(getattr(cls, attr, None)) or
                      getattr(instance, attr) is not None)
                     for attr in _get_protocol_attrs(cls)):
-                return True
-        return super().__instancecheck__(instance)
+                rudisha True
+        rudisha super().__instancecheck__(instance)
 
 
-class Protocol(Generic, metaclass=_ProtocolMeta):
-    """Base class for protocol classes.
+kundi Protocol(Generic, metaclass=_ProtocolMeta):
+    """Base kundi for protocol classes.
 
     Protocol classes are defined as::
 
-        class Proto(Protocol):
-            def meth(self) -> int:
+        kundi Proto(Protocol):
+            eleza meth(self) -> int:
                 ...
 
     Such classes are primarily used with static type checkers that recognize
     structural subtyping (static duck-typing), for example::
 
-        class C:
-            def meth(self) -> int:
-                return 0
+        kundi C:
+            eleza meth(self) -> int:
+                rudisha 0
 
-        def func(x: Proto) -> int:
-            return x.meth()
+        eleza func(x: Proto) -> int:
+            rudisha x.meth()
 
         func(C())  # Passes static type check
 
@@ -1046,70 +1046,70 @@ class Protocol(Generic, metaclass=_ProtocolMeta):
     only the presence of given attributes, ignoring their type signatures.
     Protocol classes can be generic, they are defined as::
 
-        class GenProto(Protocol[T]):
-            def meth(self) -> T:
+        kundi GenProto(Protocol[T]):
+            eleza meth(self) -> T:
                 ...
     """
     __slots__ = ()
     _is_protocol = True
     _is_runtime_protocol = False
 
-    def __init_subclass__(cls, *args, **kwargs):
+    eleza __init_subclass__(cls, *args, **kwargs):
         super().__init_subclass__(*args, **kwargs)
 
-        # Determine if this is a protocol or a concrete subclass.
-        if not cls.__dict__.get('_is_protocol', False):
+        # Determine ikiwa this is a protocol or a concrete subclass.
+        ikiwa not cls.__dict__.get('_is_protocol', False):
             cls._is_protocol = any(b is Protocol for b in cls.__bases__)
 
-        # Set (or override) the protocol subclass hook.
-        def _proto_hook(other):
-            if not cls.__dict__.get('_is_protocol', False):
-                return NotImplemented
+        # Set (or override) the protocol subkundi hook.
+        eleza _proto_hook(other):
+            ikiwa not cls.__dict__.get('_is_protocol', False):
+                rudisha NotImplemented
 
             # First, perform various sanity checks.
-            if not getattr(cls, '_is_runtime_protocol', False):
-                if _allow_reckless_class_cheks():
-                    return NotImplemented
-                raise TypeError("Instance and class checks can only be used with"
+            ikiwa not getattr(cls, '_is_runtime_protocol', False):
+                ikiwa _allow_reckless_class_cheks():
+                    rudisha NotImplemented
+                raise TypeError("Instance and kundi checks can only be used with"
                                 " @runtime_checkable protocols")
-            if not _is_callable_members_only(cls):
-                if _allow_reckless_class_cheks():
-                    return NotImplemented
+            ikiwa not _is_callable_members_only(cls):
+                ikiwa _allow_reckless_class_cheks():
+                    rudisha NotImplemented
                 raise TypeError("Protocols with non-method members"
                                 " don't support issubclass()")
-            if not isinstance(other, type):
+            ikiwa not isinstance(other, type):
                 # Same error message as for issubclass(1, int).
                 raise TypeError('issubclass() arg 1 must be a class')
 
             # Second, perform the actual structural compatibility check.
             for attr in _get_protocol_attrs(cls):
                 for base in other.__mro__:
-                    # Check if the members appears in the class dictionary...
-                    if attr in base.__dict__:
-                        if base.__dict__[attr] is None:
-                            return NotImplemented
+                    # Check ikiwa the members appears in the kundi dictionary...
+                    ikiwa attr in base.__dict__:
+                        ikiwa base.__dict__[attr] is None:
+                            rudisha NotImplemented
                         break
 
-                    # ...or in annotations, if it is a sub-protocol.
+                    # ...or in annotations, ikiwa it is a sub-protocol.
                     annotations = getattr(base, '__annotations__', {})
-                    if (isinstance(annotations, collections.abc.Mapping) and
+                    ikiwa (isinstance(annotations, collections.abc.Mapping) and
                             attr in annotations and
                             issubclass(other, Generic) and other._is_protocol):
                         break
                 else:
-                    return NotImplemented
-            return True
+                    rudisha NotImplemented
+            rudisha True
 
-        if '__subclasshook__' not in cls.__dict__:
+        ikiwa '__subclasshook__' not in cls.__dict__:
             cls.__subclasshook__ = _proto_hook
 
         # We have nothing more to do for non-protocols...
-        if not cls._is_protocol:
+        ikiwa not cls._is_protocol:
             return
 
         # ... otherwise check consistency of bases, and prohibit instantiation.
         for base in cls.__bases__:
-            if not (base in (object, Generic) or
+            ikiwa not (base in (object, Generic) or
                     base.__module__ in _PROTO_WHITELIST and
                     base.__name__ in _PROTO_WHITELIST[base.__module__] or
                     issubclass(base, Generic) and base._is_protocol):
@@ -1118,60 +1118,60 @@ class Protocol(Generic, metaclass=_ProtocolMeta):
         cls.__init__ = _no_init
 
 
-def runtime_checkable(cls):
-    """Mark a protocol class as a runtime protocol.
+eleza runtime_checkable(cls):
+    """Mark a protocol kundi as a runtime protocol.
 
     Such protocol can be used with isinstance() and issubclass().
-    Raise TypeError if applied to a non-protocol class.
+    Raise TypeError ikiwa applied to a non-protocol class.
     This allows a simple-minded structural check very similar to
     one trick ponies in collections.abc such as Iterable.
     For example::
 
         @runtime_checkable
-        class Closable(Protocol):
-            def close(self): ...
+        kundi Closable(Protocol):
+            eleza close(self): ...
 
         assert isinstance(open('/some/file'), Closable)
 
     Warning: this will check only the presence of the required methods,
     not their type signatures!
     """
-    if not issubclass(cls, Generic) or not cls._is_protocol:
+    ikiwa not issubclass(cls, Generic) or not cls._is_protocol:
         raise TypeError('@runtime_checkable can be only applied to protocol classes,'
                         ' got %r' % cls)
     cls._is_runtime_protocol = True
-    return cls
+    rudisha cls
 
 
-def cast(typ, val):
+eleza cast(typ, val):
     """Cast a value to a type.
 
     This returns the value unchanged.  To the type checker this
-    signals that the return value has the designated type, but at
+    signals that the rudisha value has the designated type, but at
     runtime we intentionally don't check anything (we want this
     to be as fast as possible).
     """
-    return val
+    rudisha val
 
 
-def _get_defaults(func):
+eleza _get_defaults(func):
     """Internal helper to extract the default arguments, by name."""
     try:
         code = func.__code__
     except AttributeError:
         # Some built-in functions don't have __code__, __defaults__, etc.
-        return {}
+        rudisha {}
     pos_count = code.co_argcount
     arg_names = code.co_varnames
     arg_names = arg_names[:pos_count]
     defaults = func.__defaults__ or ()
     kwdefaults = func.__kwdefaults__
-    res = dict(kwdefaults) if kwdefaults else {}
+    res = dict(kwdefaults) ikiwa kwdefaults else {}
     pos_offset = pos_count - len(defaults)
     for name, value in zip(arg_names[pos_offset:], defaults):
         assert name not in res
         res[name] = value
-    return res
+    rudisha res
 
 
 _allowed_types = (types.FunctionType, types.BuiltinFunctionType,
@@ -1179,19 +1179,19 @@ _allowed_types = (types.FunctionType, types.BuiltinFunctionType,
                   WrapperDescriptorType, MethodWrapperType, MethodDescriptorType)
 
 
-def get_type_hints(obj, globalns=None, localns=None):
+eleza get_type_hints(obj, globalns=None, localns=None):
     """Return type hints for an object.
 
     This is often the same as obj.__annotations__, but it handles
-    forward references encoded as string literals, and if necessary
-    adds Optional[t] if a default value equal to None is set.
+    forward references encoded as string literals, and ikiwa necessary
+    adds Optional[t] ikiwa a default value equal to None is set.
 
     The argument may be a module, class, method, or function. The annotations
     are returned as a dictionary. For classes, annotations include also
     inherited members.
 
-    TypeError is raised if the argument is not of a type that can contain
-    annotations, and an empty dictionary is returned if no annotations are
+    TypeError is raised ikiwa the argument is not of a type that can contain
+    annotations, and an empty dictionary is returned ikiwa no annotations are
     present.
 
     BEWARE -- the behavior of globalns and localns is counterintuitive
@@ -1210,58 +1210,58 @@ def get_type_hints(obj, globalns=None, localns=None):
       locals, respectively.
     """
 
-    if getattr(obj, '__no_type_check__', None):
-        return {}
+    ikiwa getattr(obj, '__no_type_check__', None):
+        rudisha {}
     # Classes require a special treatment.
-    if isinstance(obj, type):
+    ikiwa isinstance(obj, type):
         hints = {}
         for base in reversed(obj.__mro__):
-            if globalns is None:
+            ikiwa globalns is None:
                 base_globals = sys.modules[base.__module__].__dict__
             else:
                 base_globals = globalns
             ann = base.__dict__.get('__annotations__', {})
             for name, value in ann.items():
-                if value is None:
+                ikiwa value is None:
                     value = type(None)
-                if isinstance(value, str):
+                ikiwa isinstance(value, str):
                     value = ForwardRef(value, is_argument=False)
                 value = _eval_type(value, base_globals, localns)
                 hints[name] = value
-        return hints
+        rudisha hints
 
-    if globalns is None:
-        if isinstance(obj, types.ModuleType):
+    ikiwa globalns is None:
+        ikiwa isinstance(obj, types.ModuleType):
             globalns = obj.__dict__
         else:
             globalns = getattr(obj, '__globals__', {})
-        if localns is None:
+        ikiwa localns is None:
             localns = globalns
-    elif localns is None:
+    elikiwa localns is None:
         localns = globalns
     hints = getattr(obj, '__annotations__', None)
-    if hints is None:
+    ikiwa hints is None:
         # Return empty annotations for something that _could_ have them.
-        if isinstance(obj, _allowed_types):
-            return {}
+        ikiwa isinstance(obj, _allowed_types):
+            rudisha {}
         else:
             raise TypeError('{!r} is not a module, class, method, '
                             'or function.'.format(obj))
     defaults = _get_defaults(obj)
     hints = dict(hints)
     for name, value in hints.items():
-        if value is None:
+        ikiwa value is None:
             value = type(None)
-        if isinstance(value, str):
+        ikiwa isinstance(value, str):
             value = ForwardRef(value)
         value = _eval_type(value, globalns, localns)
-        if name in defaults and defaults[name] is None:
+        ikiwa name in defaults and defaults[name] is None:
             value = Optional[value]
         hints[name] = value
-    return hints
+    rudisha hints
 
 
-def get_origin(tp):
+eleza get_origin(tp):
     """Get the unsubscripted version of a type.
 
     This supports generic types, Callable, Tuple, Union, Literal, Final and ClassVar.
@@ -1275,14 +1275,14 @@ def get_origin(tp):
         get_origin(Union[T, int]) is Union
         get_origin(List[Tuple[T, T]][int]) == list
     """
-    if isinstance(tp, _GenericAlias):
-        return tp.__origin__
-    if tp is Generic:
-        return Generic
-    return None
+    ikiwa isinstance(tp, _GenericAlias):
+        rudisha tp.__origin__
+    ikiwa tp is Generic:
+        rudisha Generic
+    rudisha None
 
 
-def get_args(tp):
+eleza get_args(tp):
     """Get type arguments with all substitutions performed.
 
     For unions, basic simplifications used by Union constructor are performed.
@@ -1293,41 +1293,41 @@ def get_args(tp):
         get_args(Union[int, Tuple[T, int]][str]) == (int, Tuple[str, int])
         get_args(Callable[[], T][int]) == ([], int)
     """
-    if isinstance(tp, _GenericAlias):
+    ikiwa isinstance(tp, _GenericAlias):
         res = tp.__args__
-        if get_origin(tp) is collections.abc.Callable and res[0] is not Ellipsis:
+        ikiwa get_origin(tp) is collections.abc.Callable and res[0] is not Ellipsis:
             res = (list(res[:-1]), res[-1])
-        return res
-    return ()
+        rudisha res
+    rudisha ()
 
 
-def no_type_check(arg):
+eleza no_type_check(arg):
     """Decorator to indicate that annotations are not type hints.
 
-    The argument must be a class or function; if it is a class, it
+    The argument must be a kundi or function; ikiwa it is a class, it
     applies recursively to all methods and classes defined in that class
     (but not to methods defined in its superclasses or subclasses).
 
     This mutates the function(s) or class(es) in place.
     """
-    if isinstance(arg, type):
+    ikiwa isinstance(arg, type):
         arg_attrs = arg.__dict__.copy()
         for attr, val in arg.__dict__.items():
-            if val in arg.__bases__ + (arg,):
+            ikiwa val in arg.__bases__ + (arg,):
                 arg_attrs.pop(attr)
         for obj in arg_attrs.values():
-            if isinstance(obj, types.FunctionType):
+            ikiwa isinstance(obj, types.FunctionType):
                 obj.__no_type_check__ = True
-            if isinstance(obj, type):
+            ikiwa isinstance(obj, type):
                 no_type_check(obj)
     try:
         arg.__no_type_check__ = True
     except TypeError:  # built-in classes
         pass
-    return arg
+    rudisha arg
 
 
-def no_type_check_decorator(decorator):
+eleza no_type_check_decorator(decorator):
     """Decorator to give another decorator the @no_type_check effect.
 
     This wraps the decorator with something that wraps the decorated
@@ -1335,15 +1335,15 @@ def no_type_check_decorator(decorator):
     """
 
     @functools.wraps(decorator)
-    def wrapped_decorator(*args, **kwds):
+    eleza wrapped_decorator(*args, **kwds):
         func = decorator(*args, **kwds)
         func = no_type_check(func)
-        return func
+        rudisha func
 
-    return wrapped_decorator
+    rudisha wrapped_decorator
 
 
-def _overload_dummy(*args, **kwds):
+eleza _overload_dummy(*args, **kwds):
     """Helper for @overload to raise when called."""
     raise NotImplementedError(
         "You should not call an overloaded function. "
@@ -1352,59 +1352,59 @@ def _overload_dummy(*args, **kwds):
         "by an implementation that is not @overload-ed.")
 
 
-def overload(func):
+eleza overload(func):
     """Decorator for overloaded functions/methods.
 
     In a stub file, place two or more stub definitions for the same
     function in a row, each decorated with @overload.  For example:
 
       @overload
-      def utf8(value: None) -> None: ...
+      eleza utf8(value: None) -> None: ...
       @overload
-      def utf8(value: bytes) -> bytes: ...
+      eleza utf8(value: bytes) -> bytes: ...
       @overload
-      def utf8(value: str) -> bytes: ...
+      eleza utf8(value: str) -> bytes: ...
 
     In a non-stub file (i.e. a regular .py file), do the same but
     follow it with an implementation.  The implementation should *not*
     be decorated with @overload.  For example:
 
       @overload
-      def utf8(value: None) -> None: ...
+      eleza utf8(value: None) -> None: ...
       @overload
-      def utf8(value: bytes) -> bytes: ...
+      eleza utf8(value: bytes) -> bytes: ...
       @overload
-      def utf8(value: str) -> bytes: ...
-      def utf8(value):
+      eleza utf8(value: str) -> bytes: ...
+      eleza utf8(value):
           # implementation goes here
     """
-    return _overload_dummy
+    rudisha _overload_dummy
 
 
-def final(f):
+eleza final(f):
     """A decorator to indicate final methods and final classes.
 
     Use this decorator to indicate to type checkers that the decorated
-    method cannot be overridden, and decorated class cannot be subclassed.
+    method cannot be overridden, and decorated kundi cannot be subclassed.
     For example:
 
-      class Base:
+      kundi Base:
           @final
-          def done(self) -> None:
+          eleza done(self) -> None:
               ...
-      class Sub(Base):
-          def done(self) -> None:  # Error reported by type checker
+      kundi Sub(Base):
+          eleza done(self) -> None:  # Error reported by type checker
                 ...
 
       @final
-      class Leaf:
+      kundi Leaf:
           ...
-      class Other(Leaf):  # Error reported by type checker
+      kundi Other(Leaf):  # Error reported by type checker
           ...
 
     There is no runtime checking of these properties.
     """
-    return f
+    rudisha f
 
 
 # Some unconstrained type variables.  These are used by the container types.
@@ -1425,8 +1425,8 @@ AnyStr = TypeVar('AnyStr', bytes, str)
 
 
 # Various ABCs mimicking those in collections.abc.
-def _alias(origin, params, inst=True):
-    return _GenericAlias(origin, params, special=True, inst=inst)
+eleza _alias(origin, params, inst=True):
+    rudisha _GenericAlias(origin, params, special=True, inst=inst)
 
 Hashable = _alias(collections.abc.Hashable, ())  # Not generic.
 Awaitable = _alias(collections.abc.Awaitable, T_co)
@@ -1444,8 +1444,8 @@ Callable.__doc__ = \
     """Callable type; Callable[[int], str] is a function of (int) -> str.
 
     The subscription syntax must always be used with exactly two
-    values: the argument list and the return type.  The argument list
-    must be a list of types or ellipsis; the return type must be a single type.
+    values: the argument list and the rudisha type.  The argument list
+    must be a list of types or ellipsis; the rudisha type must be a single type.
 
     There is no syntax to indicate optional or keyword arguments,
     such function types are rarely used as callback types.
@@ -1487,23 +1487,23 @@ Generator = _alias(collections.abc.Generator, (T_co, T_contra, V_co))
 AsyncGenerator = _alias(collections.abc.AsyncGenerator, (T_co, T_contra))
 Type = _alias(type, CT_co, inst=False)
 Type.__doc__ = \
-    """A special construct usable to annotate class objects.
+    """A special construct usable to annotate kundi objects.
 
     For example, suppose we have the following classes::
 
-      class User: ...  # Abstract base for User classes
-      class BasicUser(User): ...
-      class ProUser(User): ...
-      class TeamUser(User): ...
+      kundi User: ...  # Abstract base for User classes
+      kundi BasicUser(User): ...
+      kundi ProUser(User): ...
+      kundi TeamUser(User): ...
 
-    And a function that takes a class argument that's a subclass of
+    And a function that takes a kundi argument that's a subkundi of
     User and returns an instance of the corresponding class::
 
       U = TypeVar('U', bound=User)
-      def new_user(user_class: Type[U]) -> U:
+      eleza new_user(user_class: Type[U]) -> U:
           user = user_class()
           # (Here we could write the user object to a database)
-          return user
+          rudisha user
 
       joe = new_user(BasicUser)
 
@@ -1512,76 +1512,76 @@ Type.__doc__ = \
 
 
 @runtime_checkable
-class SupportsInt(Protocol):
+kundi SupportsInt(Protocol):
     """An ABC with one abstract method __int__."""
     __slots__ = ()
 
     @abstractmethod
-    def __int__(self) -> int:
+    eleza __int__(self) -> int:
         pass
 
 
 @runtime_checkable
-class SupportsFloat(Protocol):
+kundi SupportsFloat(Protocol):
     """An ABC with one abstract method __float__."""
     __slots__ = ()
 
     @abstractmethod
-    def __float__(self) -> float:
+    eleza __float__(self) -> float:
         pass
 
 
 @runtime_checkable
-class SupportsComplex(Protocol):
+kundi SupportsComplex(Protocol):
     """An ABC with one abstract method __complex__."""
     __slots__ = ()
 
     @abstractmethod
-    def __complex__(self) -> complex:
+    eleza __complex__(self) -> complex:
         pass
 
 
 @runtime_checkable
-class SupportsBytes(Protocol):
+kundi SupportsBytes(Protocol):
     """An ABC with one abstract method __bytes__."""
     __slots__ = ()
 
     @abstractmethod
-    def __bytes__(self) -> bytes:
+    eleza __bytes__(self) -> bytes:
         pass
 
 
 @runtime_checkable
-class SupportsIndex(Protocol):
+kundi SupportsIndex(Protocol):
     """An ABC with one abstract method __index__."""
     __slots__ = ()
 
     @abstractmethod
-    def __index__(self) -> int:
+    eleza __index__(self) -> int:
         pass
 
 
 @runtime_checkable
-class SupportsAbs(Protocol[T_co]):
-    """An ABC with one abstract method __abs__ that is covariant in its return type."""
+kundi SupportsAbs(Protocol[T_co]):
+    """An ABC with one abstract method __abs__ that is covariant in its rudisha type."""
     __slots__ = ()
 
     @abstractmethod
-    def __abs__(self) -> T_co:
+    eleza __abs__(self) -> T_co:
         pass
 
 
 @runtime_checkable
-class SupportsRound(Protocol[T_co]):
-    """An ABC with one abstract method __round__ that is covariant in its return type."""
+kundi SupportsRound(Protocol[T_co]):
+    """An ABC with one abstract method __round__ that is covariant in its rudisha type."""
     __slots__ = ()
 
     @abstractmethod
-    def __round__(self, ndigits: int = 0) -> T_co:
+    eleza __round__(self, ndigits: int = 0) -> T_co:
         pass
 
 
-def _make_nmtuple(name, types):
+eleza _make_nmtuple(name, types):
     msg = "NamedTuple('Name', [(f0, t0), (f1, t1), ...]); each t must be a type"
     types = [(n, _type_check(t, msg)) for n, t in types]
     nm_tpl = collections.namedtuple(name, [n for n, t in types])
@@ -1592,10 +1592,10 @@ def _make_nmtuple(name, types):
         nm_tpl.__module__ = sys._getframe(2).f_globals.get('__name__', '__main__')
     except (AttributeError, ValueError):
         pass
-    return nm_tpl
+    rudisha nm_tpl
 
 
-# attributes prohibited to set in NamedTuple class syntax
+# attributes prohibited to set in NamedTuple kundi syntax
 _prohibited = ('__new__', '__init__', '__slots__', '__getnewargs__',
                '_fields', '_field_defaults', '_field_types',
                '_make', '_replace', '_asdict', '_source')
@@ -1603,21 +1603,21 @@ _prohibited = ('__new__', '__init__', '__slots__', '__getnewargs__',
 _special = ('__module__', '__name__', '__annotations__')
 
 
-class NamedTupleMeta(type):
+kundi NamedTupleMeta(type):
 
-    def __new__(cls, typename, bases, ns):
-        if ns.get('_root', False):
-            return super().__new__(cls, typename, bases, ns)
+    eleza __new__(cls, typename, bases, ns):
+        ikiwa ns.get('_root', False):
+            rudisha super().__new__(cls, typename, bases, ns)
         types = ns.get('__annotations__', {})
         nm_tpl = _make_nmtuple(typename, types.items())
         defaults = []
         defaults_dict = {}
         for field_name in types:
-            if field_name in ns:
+            ikiwa field_name in ns:
                 default_value = ns[field_name]
                 defaults.append(default_value)
                 defaults_dict[field_name] = default_value
-            elif defaults:
+            elikiwa defaults:
                 raise TypeError("Non-default namedtuple field {field_name} cannot "
                                 "follow default field(s) {default_names}"
                                 .format(field_name=field_name,
@@ -1627,19 +1627,19 @@ class NamedTupleMeta(type):
         nm_tpl._field_defaults = defaults_dict
         # update kutoka user namespace without overriding special namedtuple attributes
         for key in ns:
-            if key in _prohibited:
+            ikiwa key in _prohibited:
                 raise AttributeError("Cannot overwrite NamedTuple attribute " + key)
-            elif key not in _special and key not in nm_tpl._fields:
+            elikiwa key not in _special and key not in nm_tpl._fields:
                 setattr(nm_tpl, key, ns[key])
-        return nm_tpl
+        rudisha nm_tpl
 
 
-class NamedTuple(metaclass=NamedTupleMeta):
+kundi NamedTuple(metaclass=NamedTupleMeta):
     """Typed version of namedtuple.
 
     Usage in Python versions >= 3.6::
 
-        class Employee(NamedTuple):
+        kundi Employee(NamedTuple):
             name: str
             id: int
 
@@ -1647,7 +1647,7 @@ class NamedTuple(metaclass=NamedTupleMeta):
 
         Employee = collections.namedtuple('Employee', ['name', 'id'])
 
-    The resulting class has an extra __annotations__ attribute, giving a
+    The resulting kundi has an extra __annotations__ attribute, giving a
     dict that maps field names to types.  (The field names are also in
     the _fields attribute, which is part of the namedtuple API.)
     Alternative equivalent keyword syntax is also accepted::
@@ -1660,13 +1660,13 @@ class NamedTuple(metaclass=NamedTupleMeta):
     """
     _root = True
 
-    def __new__(*args, **kwargs):
-        if not args:
+    eleza __new__(*args, **kwargs):
+        ikiwa not args:
             raise TypeError('NamedTuple.__new__(): not enough arguments')
         cls, *args = args  # allow the "cls" keyword be passed
-        if args:
+        ikiwa args:
             typename, *args = args # allow the "typename" keyword be passed
-        elif 'typename' in kwargs:
+        elikiwa 'typename' in kwargs:
             typename = kwargs.pop('typename')
             agiza warnings
             warnings.warn("Passing 'typename' as keyword argument is deprecated",
@@ -1674,14 +1674,14 @@ class NamedTuple(metaclass=NamedTupleMeta):
         else:
             raise TypeError("NamedTuple.__new__() missing 1 required positional "
                             "argument: 'typename'")
-        if args:
+        ikiwa args:
             try:
                 fields, = args # allow the "fields" keyword be passed
             except ValueError:
                 raise TypeError(f'NamedTuple.__new__() takes kutoka 2 to 3 '
                                 f'positional arguments but {len(args) + 2} '
                                 f'were given') kutoka None
-        elif 'fields' in kwargs and len(kwargs) == 1:
+        elikiwa 'fields' in kwargs and len(kwargs) == 1:
             fields = kwargs.pop('fields')
             agiza warnings
             warnings.warn("Passing 'fields' as keyword argument is deprecated",
@@ -1689,23 +1689,23 @@ class NamedTuple(metaclass=NamedTupleMeta):
         else:
             fields = None
 
-        if fields is None:
+        ikiwa fields is None:
             fields = kwargs.items()
-        elif kwargs:
+        elikiwa kwargs:
             raise TypeError("Either list of fields or keywords"
                             " can be provided to NamedTuple, not both")
-        return _make_nmtuple(typename, fields)
+        rudisha _make_nmtuple(typename, fields)
     __new__.__text_signature__ = '($cls, typename, fields=None, /, **kwargs)'
 
 
-def _dict_new(cls, /, *args, **kwargs):
-    return dict(*args, **kwargs)
+eleza _dict_new(cls, /, *args, **kwargs):
+    rudisha dict(*args, **kwargs)
 
 
-def _typeddict_new(cls, typename, fields=None, /, *, total=True, **kwargs):
-    if fields is None:
+eleza _typeddict_new(cls, typename, fields=None, /, *, total=True, **kwargs):
+    ikiwa fields is None:
         fields = kwargs
-    elif kwargs:
+    elikiwa kwargs:
         raise TypeError("TypedDict takes either a dict or keyword arguments,"
                         " but not both")
 
@@ -1716,25 +1716,25 @@ def _typeddict_new(cls, typename, fields=None, /, *, total=True, **kwargs):
     except (AttributeError, ValueError):
         pass
 
-    return _TypedDictMeta(typename, (), ns)
+    rudisha _TypedDictMeta(typename, (), ns)
 
 
-def _check_fails(cls, other):
+eleza _check_fails(cls, other):
     # Typed dicts are only for static structural subtyping.
-    raise TypeError('TypedDict does not support instance and class checks')
+    raise TypeError('TypedDict does not support instance and kundi checks')
 
 
-class _TypedDictMeta(type):
-    def __new__(cls, name, bases, ns, total=True):
-        """Create new typed dict class object.
+kundi _TypedDictMeta(type):
+    eleza __new__(cls, name, bases, ns, total=True):
+        """Create new typed dict kundi object.
 
         This method is called directly when TypedDict is subclassed,
         or via _typeddict_new when TypedDict is instantiated. This way
         TypedDict supports all three syntax forms described in its docstring.
-        Subclasses and instances of TypedDict return actual dictionaries
+        Subclasses and instances of TypedDict rudisha actual dictionaries
         via _dict_new.
         """
-        ns['__new__'] = _typeddict_new if name == 'TypedDict' else _dict_new
+        ns['__new__'] = _typeddict_new ikiwa name == 'TypedDict' else _dict_new
         tp_dict = super(_TypedDictMeta, cls).__new__(cls, name, (dict,), ns)
 
         anns = ns.get('__annotations__', {})
@@ -1743,14 +1743,14 @@ class _TypedDictMeta(type):
         for base in bases:
             anns.update(base.__dict__.get('__annotations__', {}))
         tp_dict.__annotations__ = anns
-        if not hasattr(tp_dict, '__total__'):
+        ikiwa not hasattr(tp_dict, '__total__'):
             tp_dict.__total__ = total
-        return tp_dict
+        rudisha tp_dict
 
     __instancecheck__ = __subclasscheck__ = _check_fails
 
 
-class TypedDict(dict, metaclass=_TypedDictMeta):
+kundi TypedDict(dict, metaclass=_TypedDictMeta):
     """A simple typed namespace. At runtime it is equivalent to a plain dict.
 
     TypedDict creates a dictionary type that expects all of its
@@ -1759,7 +1759,7 @@ class TypedDict(dict, metaclass=_TypedDictMeta):
     is not checked at runtime but is only enforced by type checkers.
     Usage::
 
-        class Point2D(TypedDict):
+        kundi Point2D(TypedDict):
             x: int
             y: int
             label: str
@@ -1775,12 +1775,12 @@ class TypedDict(dict, metaclass=_TypedDictMeta):
         Point2D = TypedDict('Point2D', x=int, y=int, label=str)
         Point2D = TypedDict('Point2D', {'x': int, 'y': int, 'label': str})
 
-    The class syntax is only supported in Python 3.6+, while two other
+    The kundi syntax is only supported in Python 3.6+, while two other
     syntax forms work for Python 2.7 and 3.2+
     """
 
 
-def NewType(name, tp):
+eleza NewType(name, tp):
     """NewType creates simple unique types with almost zero
     runtime overhead. NewType(name, tp) is considered a subtype of tp
     by static type checkers. At runtime, NewType(name, tp) returns
@@ -1788,7 +1788,7 @@ def NewType(name, tp):
 
         UserId = NewType('UserId', int)
 
-        def name_by_id(user_id: UserId) -> str:
+        eleza name_by_id(user_id: UserId) -> str:
             ...
 
         UserId('user')          # Fails type check
@@ -1799,12 +1799,12 @@ def NewType(name, tp):
         num = UserId(5) + 1     # type: int
     """
 
-    def new_type(x):
-        return x
+    eleza new_type(x):
+        rudisha x
 
     new_type.__name__ = name
     new_type.__supertype__ = tp
-    return new_type
+    rudisha new_type
 
 
 # Python-version-specific alias (Python 2: unicode; Python 3: str)
@@ -1815,10 +1815,10 @@ Text = str
 TYPE_CHECKING = False
 
 
-class IO(Generic[AnyStr]):
-    """Generic base class for TextIO and BinaryIO.
+kundi IO(Generic[AnyStr]):
+    """Generic base kundi for TextIO and BinaryIO.
 
-    This is an abstract, generic version of the return of open().
+    This is an abstract, generic version of the rudisha of open().
 
     NOTE: This does not distinguish between the different possible
     classes (text vs. binary, read vs. write vs. read/write,
@@ -1832,137 +1832,137 @@ class IO(Generic[AnyStr]):
 
     @property
     @abstractmethod
-    def mode(self) -> str:
+    eleza mode(self) -> str:
         pass
 
     @property
     @abstractmethod
-    def name(self) -> str:
+    eleza name(self) -> str:
         pass
 
     @abstractmethod
-    def close(self) -> None:
+    eleza close(self) -> None:
         pass
 
     @abstractmethod
-    def closed(self) -> bool:
+    eleza closed(self) -> bool:
         pass
 
     @abstractmethod
-    def fileno(self) -> int:
+    eleza fileno(self) -> int:
         pass
 
     @abstractmethod
-    def flush(self) -> None:
+    eleza flush(self) -> None:
         pass
 
     @abstractmethod
-    def isatty(self) -> bool:
+    eleza isatty(self) -> bool:
         pass
 
     @abstractmethod
-    def read(self, n: int = -1) -> AnyStr:
+    eleza read(self, n: int = -1) -> AnyStr:
         pass
 
     @abstractmethod
-    def readable(self) -> bool:
+    eleza readable(self) -> bool:
         pass
 
     @abstractmethod
-    def readline(self, limit: int = -1) -> AnyStr:
+    eleza readline(self, limit: int = -1) -> AnyStr:
         pass
 
     @abstractmethod
-    def readlines(self, hint: int = -1) -> List[AnyStr]:
+    eleza readlines(self, hint: int = -1) -> List[AnyStr]:
         pass
 
     @abstractmethod
-    def seek(self, offset: int, whence: int = 0) -> int:
+    eleza seek(self, offset: int, whence: int = 0) -> int:
         pass
 
     @abstractmethod
-    def seekable(self) -> bool:
+    eleza seekable(self) -> bool:
         pass
 
     @abstractmethod
-    def tell(self) -> int:
+    eleza tell(self) -> int:
         pass
 
     @abstractmethod
-    def truncate(self, size: int = None) -> int:
+    eleza truncate(self, size: int = None) -> int:
         pass
 
     @abstractmethod
-    def writable(self) -> bool:
+    eleza writable(self) -> bool:
         pass
 
     @abstractmethod
-    def write(self, s: AnyStr) -> int:
+    eleza write(self, s: AnyStr) -> int:
         pass
 
     @abstractmethod
-    def writelines(self, lines: List[AnyStr]) -> None:
+    eleza writelines(self, lines: List[AnyStr]) -> None:
         pass
 
     @abstractmethod
-    def __enter__(self) -> 'IO[AnyStr]':
+    eleza __enter__(self) -> 'IO[AnyStr]':
         pass
 
     @abstractmethod
-    def __exit__(self, type, value, traceback) -> None:
+    eleza __exit__(self, type, value, traceback) -> None:
         pass
 
 
-class BinaryIO(IO[bytes]):
-    """Typed version of the return of open() in binary mode."""
+kundi BinaryIO(IO[bytes]):
+    """Typed version of the rudisha of open() in binary mode."""
 
     __slots__ = ()
 
     @abstractmethod
-    def write(self, s: Union[bytes, bytearray]) -> int:
+    eleza write(self, s: Union[bytes, bytearray]) -> int:
         pass
 
     @abstractmethod
-    def __enter__(self) -> 'BinaryIO':
+    eleza __enter__(self) -> 'BinaryIO':
         pass
 
 
-class TextIO(IO[str]):
-    """Typed version of the return of open() in text mode."""
+kundi TextIO(IO[str]):
+    """Typed version of the rudisha of open() in text mode."""
 
     __slots__ = ()
 
     @property
     @abstractmethod
-    def buffer(self) -> BinaryIO:
+    eleza buffer(self) -> BinaryIO:
         pass
 
     @property
     @abstractmethod
-    def encoding(self) -> str:
+    eleza encoding(self) -> str:
         pass
 
     @property
     @abstractmethod
-    def errors(self) -> Optional[str]:
+    eleza errors(self) -> Optional[str]:
         pass
 
     @property
     @abstractmethod
-    def line_buffering(self) -> bool:
+    eleza line_buffering(self) -> bool:
         pass
 
     @property
     @abstractmethod
-    def newlines(self) -> Any:
+    eleza newlines(self) -> Any:
         pass
 
     @abstractmethod
-    def __enter__(self) -> 'TextIO':
+    eleza __enter__(self) -> 'TextIO':
         pass
 
 
-class io:
+kundi io:
     """Wrapper namespace for IO generic classes."""
 
     __all__ = ['IO', 'TextIO', 'BinaryIO']
@@ -1977,7 +1977,7 @@ sys.modules[io.__name__] = io
 Pattern = _alias(stdlib_re.Pattern, AnyStr)
 Match = _alias(stdlib_re.Match, AnyStr)
 
-class re:
+kundi re:
     """Wrapper namespace for re type aliases."""
 
     __all__ = ['Pattern', 'Match']

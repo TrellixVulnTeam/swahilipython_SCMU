@@ -15,7 +15,7 @@ agiza unittest
 kutoka test agiza support
 kutoka test.support agiza run_unittest, findfile, python_is_optimized
 
-def get_gdb_version():
+eleza get_gdb_version():
     try:
         proc = subprocess.Popen(["gdb", "-nx", "--version"],
                                 stdout=subprocess.PIPE,
@@ -34,25 +34,25 @@ def get_gdb_version():
     # 'GNU gdb 6.1.1 [FreeBSD]\n' -> 6.1
     # 'GNU gdb (GDB) Fedora (7.5.1-37.fc18)\n' -> 7.5
     match = re.search(r"^GNU gdb.*?\b(\d+)\.(\d+)", version)
-    if match is None:
+    ikiwa match is None:
         raise Exception("unable to parse GDB version: %r" % version)
-    return (version, int(match.group(1)), int(match.group(2)))
+    rudisha (version, int(match.group(1)), int(match.group(2)))
 
 gdb_version, gdb_major_version, gdb_minor_version = get_gdb_version()
-if gdb_major_version < 7:
+ikiwa gdb_major_version < 7:
     raise unittest.SkipTest("gdb versions before 7.0 didn't support python "
                             "embedding. Saw %s.%s:\n%s"
                             % (gdb_major_version, gdb_minor_version,
                                gdb_version))
 
-if not sysconfig.is_python_build():
+ikiwa not sysconfig.is_python_build():
     raise unittest.SkipTest("test_gdb only works on source builds at the moment.")
 
-if 'Clang' in platform.python_compiler() and sys.platform == 'darwin':
+ikiwa 'Clang' in platform.python_compiler() and sys.platform == 'darwin':
     raise unittest.SkipTest("test_gdb doesn't work correctly when python is"
                             " built with LLVM clang")
 
-if ((sysconfig.get_config_var('PGO_PROF_USE_FLAG') or 'xxx') in
+ikiwa ((sysconfig.get_config_var('PGO_PROF_USE_FLAG') or 'xxx') in
     (sysconfig.get_config_var('PY_CORE_CFLAGS') or '')):
     raise unittest.SkipTest("test_gdb is not reliable on PGO builds")
 
@@ -63,14 +63,14 @@ checkout_hook_path = os.path.join(os.path.dirname(sys.executable),
 PYTHONHASHSEED = '123'
 
 
-def cet_protection():
+eleza cet_protection():
     cflags = sysconfig.get_config_var('CFLAGS')
-    if not cflags:
-        return False
+    ikiwa not cflags:
+        rudisha False
     flags = cflags.split()
-    # True if "-mcet -fcf-protection" options are found, but false
-    # if "-fcf-protection=none" or "-fcf-protection=return" is found.
-    return (('-mcet' in flags)
+    # True ikiwa "-mcet -fcf-protection" options are found, but false
+    # ikiwa "-fcf-protection=none" or "-fcf-protection=return" is found.
+    rudisha (('-mcet' in flags)
             and any((flag.startswith('-fcf-protection')
                      and not flag.endswith(("=none", "=return")))
                     for flag in flags))
@@ -79,12 +79,12 @@ def cet_protection():
 CET_PROTECTION = cet_protection()
 
 
-def run_gdb(*args, **env_vars):
+eleza run_gdb(*args, **env_vars):
     """Runs gdb in --batch mode with the additional arguments given by *args.
 
     Returns its (stdout, stderr) decoded kutoka utf-8 using the replace handler.
     """
-    if env_vars:
+    ikiwa env_vars:
         env = os.environ.copy()
         env.update(env_vars)
     else:
@@ -92,7 +92,7 @@ def run_gdb(*args, **env_vars):
     # -nx: Do not execute commands kutoka any .gdbinit initialization files
     #      (issue #22188)
     base_cmd = ('gdb', '--batch', '-nx')
-    if (gdb_major_version, gdb_minor_version) >= (7, 4):
+    ikiwa (gdb_major_version, gdb_minor_version) >= (7, 4):
         base_cmd += ('-iex', 'add-auto-load-safe-path ' + checkout_hook_path)
     proc = subprocess.Popen(base_cmd + args,
                             # Redirect stdin to prevent GDB kutoka messing with
@@ -103,39 +103,39 @@ def run_gdb(*args, **env_vars):
                             env=env)
     with proc:
         out, err = proc.communicate()
-    return out.decode('utf-8', 'replace'), err.decode('utf-8', 'replace')
+    rudisha out.decode('utf-8', 'replace'), err.decode('utf-8', 'replace')
 
 # Verify that "gdb" was built with the embedded python support enabled:
-gdbpy_version, _ = run_gdb("--eval-command=python agiza sys; print(sys.version_info)")
-if not gdbpy_version:
+gdbpy_version, _ = run_gdb("--eval-command=python agiza sys; andika(sys.version_info)")
+ikiwa not gdbpy_version:
     raise unittest.SkipTest("gdb not built with embedded python support")
 
 # Verify that "gdb" can load our custom hooks, as OS security settings may
 # disallow this without a customized .gdbinit.
 _, gdbpy_errors = run_gdb('--args', sys.executable)
-if "auto-loading has been declined" in gdbpy_errors:
+ikiwa "auto-loading has been declined" in gdbpy_errors:
     msg = "gdb security settings prevent use of custom hooks: "
     raise unittest.SkipTest(msg + gdbpy_errors.rstrip())
 
-def gdb_has_frame_select():
+eleza gdb_has_frame_select():
     # Does this build of gdb have gdb.Frame.select ?
-    stdout, _ = run_gdb("--eval-command=python print(dir(gdb.Frame))")
+    stdout, _ = run_gdb("--eval-command=python andika(dir(gdb.Frame))")
     m = re.match(r'.*\[(.*)\].*', stdout)
-    if not m:
+    ikiwa not m:
         raise unittest.SkipTest("Unable to parse output kutoka gdb.Frame.select test")
     gdb_frame_dir = m.group(1).split(', ')
-    return "'select'" in gdb_frame_dir
+    rudisha "'select'" in gdb_frame_dir
 
 HAS_PYUP_PYDOWN = gdb_has_frame_select()
 
 BREAKPOINT_FN='builtin_id'
 
 @unittest.skipIf(support.PGO, "not useful for PGO")
-class DebuggerTests(unittest.TestCase):
+kundi DebuggerTests(unittest.TestCase):
 
     """Test that the debugger can debug Python."""
 
-    def get_stack_trace(self, source=None, script=None,
+    eleza get_stack_trace(self, source=None, script=None,
                         breakpoint=BREAKPOINT_FN,
                         cmds_after_breakpoint=None,
                         import_site=False):
@@ -146,7 +146,7 @@ class DebuggerTests(unittest.TestCase):
 
         Returns the stdout kutoka gdb
 
-        cmds_after_breakpoint: if provided, a list of strings: gdb commands
+        cmds_after_breakpoint: ikiwa provided, a list of strings: gdb commands
         '''
         # We use "set breakpoint pending yes" to avoid blocking with a:
         #   Function "foo" not defined.
@@ -183,11 +183,11 @@ class DebuggerTests(unittest.TestCase):
         # which leads to the selftests failing with errors like this:
         #   AssertionError: 'v@entry=()' != '()'
         # Disable this:
-        if (gdb_major_version, gdb_minor_version) >= (7, 4):
+        ikiwa (gdb_major_version, gdb_minor_version) >= (7, 4):
             commands += ['set print entry-values no']
 
-        if cmds_after_breakpoint:
-            if CET_PROTECTION:
+        ikiwa cmds_after_breakpoint:
+            ikiwa CET_PROTECTION:
                 # bpo-32962: When Python is compiled with -mcet
                 # -fcf-protection, function arguments are unusable before
                 # running the first instruction of the function entry point.
@@ -203,36 +203,36 @@ class DebuggerTests(unittest.TestCase):
         args = ['--eval-command=%s' % cmd for cmd in commands]
         args += ["--args",
                  sys.executable]
-        args.extend(subprocess._args_from_interpreter_flags())
+        args.extend(subprocess._args_kutoka_interpreter_flags())
 
-        if not import_site:
+        ikiwa not import_site:
             # -S suppresses the default 'agiza site'
             args += ["-S"]
 
-        if source:
+        ikiwa source:
             args += ["-c", source]
-        elif script:
+        elikiwa script:
             args += [script]
 
         # Use "args" to invoke gdb, capturing stdout, stderr:
         out, err = run_gdb(*args, PYTHONHASHSEED=PYTHONHASHSEED)
 
         for line in err.splitlines():
-            print(line, file=sys.stderr)
+            andika(line, file=sys.stderr)
 
         # bpo-34007: Sometimes some versions of the shared libraries that
         # are part of the traceback are compiled in optimised mode and the
         # Program Counter (PC) is not present, not allowing gdb to walk the
         # frames back. When this happens, the Python bindings of gdb raise
         # an exception, making the test impossible to succeed.
-        if "PC not saved" in err:
+        ikiwa "PC not saved" in err:
             raise unittest.SkipTest("gdb cannot walk the frame object"
                                     " because the Program Counter is"
                                     " not present")
 
-        return out
+        rudisha out
 
-    def get_gdb_repr(self, source,
+    eleza get_gdb_repr(self, source,
                      cmds_after_breakpoint=None,
                      import_site=False):
         # Given an input python source representation of data,
@@ -264,39 +264,39 @@ class DebuggerTests(unittest.TestCase):
             # Optimization (LTO).
             r'\s+at\s+\S*[A-Za-z]+/[A-Za-z0-9_-]+\.c',
             gdb_output, re.DOTALL)
-        if not m:
+        ikiwa not m:
             self.fail('Unexpected gdb output: %r\n%s' % (gdb_output, gdb_output))
-        return m.group(1), gdb_output
+        rudisha m.group(1), gdb_output
 
-    def assertEndsWith(self, actual, exp_end):
+    eleza assertEndsWith(self, actual, exp_end):
         '''Ensure that the given "actual" string ends with "exp_end"'''
         self.assertTrue(actual.endswith(exp_end),
                         msg='%r did not end with %r' % (actual, exp_end))
 
-    def assertMultilineMatches(self, actual, pattern):
+    eleza assertMultilineMatches(self, actual, pattern):
         m = re.match(pattern, actual, re.DOTALL)
-        if not m:
+        ikiwa not m:
             self.fail(msg='%r did not match %r' % (actual, pattern))
 
-    def get_sample_script(self):
-        return findfile('gdb_sample.py')
+    eleza get_sample_script(self):
+        rudisha findfile('gdb_sample.py')
 
-class PrettyPrintTests(DebuggerTests):
-    def test_getting_backtrace(self):
+kundi PrettyPrintTests(DebuggerTests):
+    eleza test_getting_backtrace(self):
         gdb_output = self.get_stack_trace('id(42)')
         self.assertTrue(BREAKPOINT_FN in gdb_output)
 
-    def assertGdbRepr(self, val, exp_repr=None):
+    eleza assertGdbRepr(self, val, exp_repr=None):
         # Ensure that gdb's rendering of the value in a debugged process
         # matches repr(value) in this process:
         gdb_repr, gdb_output = self.get_gdb_repr('id(' + ascii(val) + ')')
-        if not exp_repr:
+        ikiwa not exp_repr:
             exp_repr = repr(val)
         self.assertEqual(gdb_repr, exp_repr,
                          ('%r did not equal expected %r; full output was:\n%s'
                           % (gdb_repr, exp_repr, gdb_output)))
 
-    def test_int(self):
+    eleza test_int(self):
         'Verify the pretty-printing of various int values'
         self.assertGdbRepr(42)
         self.assertGdbRepr(0)
@@ -304,25 +304,25 @@ class PrettyPrintTests(DebuggerTests):
         self.assertGdbRepr(1000000000000)
         self.assertGdbRepr(-1000000000000000)
 
-    def test_singletons(self):
+    eleza test_singletons(self):
         'Verify the pretty-printing of True, False and None'
         self.assertGdbRepr(True)
         self.assertGdbRepr(False)
         self.assertGdbRepr(None)
 
-    def test_dicts(self):
+    eleza test_dicts(self):
         'Verify the pretty-printing of dictionaries'
         self.assertGdbRepr({})
         self.assertGdbRepr({'foo': 'bar'}, "{'foo': 'bar'}")
         # Python preserves insertion order since 3.6
         self.assertGdbRepr({'foo': 'bar', 'douglas': 42}, "{'foo': 'bar', 'douglas': 42}")
 
-    def test_lists(self):
+    eleza test_lists(self):
         'Verify the pretty-printing of lists'
         self.assertGdbRepr([])
         self.assertGdbRepr(list(range(5)))
 
-    def test_bytes(self):
+    eleza test_bytes(self):
         'Verify the pretty-printing of bytes'
         self.assertGdbRepr(b'')
         self.assertGdbRepr(b'And now for something hopefully the same')
@@ -336,7 +336,7 @@ class PrettyPrintTests(DebuggerTests):
 
         self.assertGdbRepr(bytes([b for b in range(255)]))
 
-    def test_strings(self):
+    eleza test_strings(self):
         'Verify the pretty-printing of unicode strings'
         # We cannot simply call locale.getpreferredencoding() here,
         # as GDB might have been linked against a different version
@@ -344,15 +344,15 @@ class PrettyPrintTests(DebuggerTests):
         # with respect to PEP 538 and PEP 540.
         out, err = run_gdb(
             '--eval-command',
-            'python agiza locale; print(locale.getpreferredencoding())')
+            'python agiza locale; andika(locale.getpreferredencoding())')
 
         encoding = out.rstrip()
-        if err or not encoding:
+        ikiwa err or not encoding:
             raise RuntimeError(
                 f'unable to determine the preferred encoding '
                 f'of embedded Python in GDB: {err}')
 
-        def check_repr(text):
+        eleza check_repr(text):
             try:
                 text.encode(encoding)
                 printable = True
@@ -381,20 +381,20 @@ class PrettyPrintTests(DebuggerTests):
         # UTF-16: 0xD834 0xDD21
         check_repr(chr(0x1D121))
 
-    def test_tuples(self):
+    eleza test_tuples(self):
         'Verify the pretty-printing of tuples'
         self.assertGdbRepr(tuple(), '()')
         self.assertGdbRepr((1,), '(1,)')
         self.assertGdbRepr(('foo', 'bar', 'baz'))
 
-    def test_sets(self):
+    eleza test_sets(self):
         'Verify the pretty-printing of sets'
-        if (gdb_major_version, gdb_minor_version) < (7, 3):
+        ikiwa (gdb_major_version, gdb_minor_version) < (7, 3):
             self.skipTest("pretty-printing of sets needs gdb 7.3 or later")
         self.assertGdbRepr(set(), "set()")
         self.assertGdbRepr(set(['a']), "{'a'}")
         # PYTHONHASHSEED is need to get the exact frozenset item order
-        if not sys.flags.ignore_environment:
+        ikiwa not sys.flags.ignore_environment:
             self.assertGdbRepr(set(['a', 'b']), "{'a', 'b'}")
             self.assertGdbRepr(set([4, 5, 6]), "{4, 5, 6}")
 
@@ -405,18 +405,18 @@ s.remove('a')
 id(s)''')
         self.assertEqual(gdb_repr, "{'b'}")
 
-    def test_frozensets(self):
+    eleza test_frozensets(self):
         'Verify the pretty-printing of frozensets'
-        if (gdb_major_version, gdb_minor_version) < (7, 3):
+        ikiwa (gdb_major_version, gdb_minor_version) < (7, 3):
             self.skipTest("pretty-printing of frozensets needs gdb 7.3 or later")
         self.assertGdbRepr(frozenset(), "frozenset()")
         self.assertGdbRepr(frozenset(['a']), "frozenset({'a'})")
         # PYTHONHASHSEED is need to get the exact frozenset item order
-        if not sys.flags.ignore_environment:
+        ikiwa not sys.flags.ignore_environment:
             self.assertGdbRepr(frozenset(['a', 'b']), "frozenset({'a', 'b'})")
             self.assertGdbRepr(frozenset([4, 5, 6]), "frozenset({4, 5, 6})")
 
-    def test_exceptions(self):
+    eleza test_exceptions(self):
         # Test a RuntimeError
         gdb_repr, gdb_output = self.get_gdb_repr('''
 try:
@@ -438,22 +438,22 @@ except ZeroDivisionError as e:
         self.assertEqual(gdb_repr,
                          "ZeroDivisionError('division by zero',)")
 
-    def test_modern_class(self):
-        'Verify the pretty-printing of new-style class instances'
+    eleza test_modern_class(self):
+        'Verify the pretty-printing of new-style kundi instances'
         gdb_repr, gdb_output = self.get_gdb_repr('''
-class Foo:
+kundi Foo:
     pass
 foo = Foo()
 foo.an_int = 42
 id(foo)''')
         m = re.match(r'<Foo\(an_int=42\) at remote 0x-?[0-9a-f]+>', gdb_repr)
         self.assertTrue(m,
-                        msg='Unexpected new-style class rendering %r' % gdb_repr)
+                        msg='Unexpected new-style kundi rendering %r' % gdb_repr)
 
-    def test_subclassing_list(self):
+    eleza test_subclassing_list(self):
         'Verify the pretty-printing of an instance of a list subclass'
         gdb_repr, gdb_output = self.get_gdb_repr('''
-class Foo(list):
+kundi Foo(list):
     pass
 foo = Foo()
 foo += [1, 2, 3]
@@ -462,14 +462,14 @@ id(foo)''')
         m = re.match(r'<Foo\(an_int=42\) at remote 0x-?[0-9a-f]+>', gdb_repr)
 
         self.assertTrue(m,
-                        msg='Unexpected new-style class rendering %r' % gdb_repr)
+                        msg='Unexpected new-style kundi rendering %r' % gdb_repr)
 
-    def test_subclassing_tuple(self):
+    eleza test_subclassing_tuple(self):
         'Verify the pretty-printing of an instance of a tuple subclass'
         # This should exercise the negative tp_dictoffset code in the
-        # new-style class support
+        # new-style kundi support
         gdb_repr, gdb_output = self.get_gdb_repr('''
-class Foo(tuple):
+kundi Foo(tuple):
     pass
 foo = Foo((1, 2, 3))
 foo.an_int = 42
@@ -477,15 +477,15 @@ id(foo)''')
         m = re.match(r'<Foo\(an_int=42\) at remote 0x-?[0-9a-f]+>', gdb_repr)
 
         self.assertTrue(m,
-                        msg='Unexpected new-style class rendering %r' % gdb_repr)
+                        msg='Unexpected new-style kundi rendering %r' % gdb_repr)
 
-    def assertSane(self, source, corruption, exprepr=None):
+    eleza assertSane(self, source, corruption, exprepr=None):
         '''Run Python under gdb, corrupting variables in the inferior process
         immediately before taking a backtrace.
 
         Verify that the variable's representation is the expected failsafe
         representation'''
-        if corruption:
+        ikiwa corruption:
             cmds_after_breakpoint=[corruption, 'backtrace']
         else:
             cmds_after_breakpoint=['backtrace']
@@ -493,8 +493,8 @@ id(foo)''')
         gdb_repr, gdb_output = \
             self.get_gdb_repr(source,
                               cmds_after_breakpoint=cmds_after_breakpoint)
-        if exprepr:
-            if gdb_repr == exprepr:
+        ikiwa exprepr:
+            ikiwa gdb_repr == exprepr:
                 # gdb managed to print the value in spite of the corruption;
                 # this is good (see http://bugs.python.org/issue8330)
                 return
@@ -504,11 +504,11 @@ id(foo)''')
         pattern = '<.* at remote 0x-?[0-9a-f]+>'
 
         m = re.match(pattern, gdb_repr)
-        if not m:
+        ikiwa not m:
             self.fail('Unexpected gdb representation: %r\n%s' % \
                           (gdb_repr, gdb_output))
 
-    def test_NULL_ptr(self):
+    eleza test_NULL_ptr(self):
         'Ensure that a NULL PyObject* is handled gracefully'
         gdb_repr, gdb_output = (
             self.get_gdb_repr('id(42)',
@@ -518,33 +518,33 @@ id(foo)''')
 
         self.assertEqual(gdb_repr, '0x0')
 
-    def test_NULL_ob_type(self):
+    eleza test_NULL_ob_type(self):
         'Ensure that a PyObject* with NULL ob_type is handled gracefully'
         self.assertSane('id(42)',
                         'set v->ob_type=0')
 
-    def test_corrupt_ob_type(self):
+    eleza test_corrupt_ob_type(self):
         'Ensure that a PyObject* with a corrupt ob_type is handled gracefully'
         self.assertSane('id(42)',
                         'set v->ob_type=0xDEADBEEF',
                         exprepr='42')
 
-    def test_corrupt_tp_flags(self):
+    eleza test_corrupt_tp_flags(self):
         'Ensure that a PyObject* with a type with corrupt tp_flags is handled'
         self.assertSane('id(42)',
                         'set v->ob_type->tp_flags=0x0',
                         exprepr='42')
 
-    def test_corrupt_tp_name(self):
+    eleza test_corrupt_tp_name(self):
         'Ensure that a PyObject* with a type with corrupt tp_name is handled'
         self.assertSane('id(42)',
                         'set v->ob_type->tp_name=0xDEADBEEF',
                         exprepr='42')
 
-    def test_builtins_help(self):
-        'Ensure that the new-style class _Helper in site.py can be handled'
+    eleza test_builtins_help(self):
+        'Ensure that the new-style kundi _Helper in site.py can be handled'
 
-        if sys.flags.no_site:
+        ikiwa sys.flags.no_site:
             self.skipTest("need site module, but -S option was used")
 
         # (this was the issue causing tracebacks in
@@ -555,7 +555,7 @@ id(foo)''')
         self.assertTrue(m,
                         msg='Unexpected rendering %r' % gdb_repr)
 
-    def test_selfreferential_list(self):
+    eleza test_selfreferential_list(self):
         '''Ensure that a reference loop involving a list doesn't lead proxyval
         into an infinite loop:'''
         gdb_repr, gdb_output = \
@@ -566,7 +566,7 @@ id(foo)''')
             self.get_gdb_repr("a = [3, 4, 5] ; b = [a] ; a.append(b) ; id(a)")
         self.assertEqual(gdb_repr, '[3, 4, 5, [[...]]]')
 
-    def test_selfreferential_dict(self):
+    eleza test_selfreferential_dict(self):
         '''Ensure that a reference loop involving a dict doesn't lead proxyval
         into an infinite loop:'''
         gdb_repr, gdb_output = \
@@ -574,10 +574,10 @@ id(foo)''')
 
         self.assertEqual(gdb_repr, "{'foo': {'bar': {...}}}")
 
-    def test_selfreferential_old_style_instance(self):
+    eleza test_selfreferential_old_style_instance(self):
         gdb_repr, gdb_output = \
             self.get_gdb_repr('''
-class Foo:
+kundi Foo:
     pass
 foo = Foo()
 foo.an_attr = foo
@@ -587,10 +587,10 @@ id(foo)''')
                         'Unexpected gdb representation: %r\n%s' % \
                             (gdb_repr, gdb_output))
 
-    def test_selfreferential_new_style_instance(self):
+    eleza test_selfreferential_new_style_instance(self):
         gdb_repr, gdb_output = \
             self.get_gdb_repr('''
-class Foo(object):
+kundi Foo(object):
     pass
 foo = Foo()
 foo.an_attr = foo
@@ -602,7 +602,7 @@ id(foo)''')
 
         gdb_repr, gdb_output = \
             self.get_gdb_repr('''
-class Foo(object):
+kundi Foo(object):
     pass
 a = Foo()
 b = Foo()
@@ -614,7 +614,7 @@ id(a)''')
                         'Unexpected gdb representation: %r\n%s' % \
                             (gdb_repr, gdb_output))
 
-    def test_truncation(self):
+    eleza test_truncation(self):
         'Verify that very long output is truncated'
         gdb_repr, gdb_output = self.get_gdb_repr('id(list(range(1000)))')
         self.assertEqual(gdb_repr,
@@ -642,16 +642,16 @@ id(a)''')
         self.assertEqual(len(gdb_repr),
                          1024 + len('...(truncated)'))
 
-    def test_builtin_method(self):
+    eleza test_builtin_method(self):
         gdb_repr, gdb_output = self.get_gdb_repr('agiza sys; id(sys.stdout.readlines)')
         self.assertTrue(re.match(r'<built-in method readlines of _io.TextIOWrapper object at remote 0x-?[0-9a-f]+>',
                                  gdb_repr),
                         'Unexpected gdb representation: %r\n%s' % \
                             (gdb_repr, gdb_output))
 
-    def test_frames(self):
+    eleza test_frames(self):
         gdb_output = self.get_stack_trace('''
-def foo(a, b, c):
+eleza foo(a, b, c):
     pass
 
 foo(3, 4, 5)
@@ -666,51 +666,51 @@ id(foo.__code__)''',
 
 @unittest.skipIf(python_is_optimized(),
                  "Python was compiled with optimizations")
-class PyListTests(DebuggerTests):
-    def assertListing(self, expected, actual):
+kundi PyListTests(DebuggerTests):
+    eleza assertListing(self, expected, actual):
         self.assertEndsWith(actual, expected)
 
-    def test_basic_command(self):
+    eleza test_basic_command(self):
         'Verify that the "py-list" command works'
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_breakpoint=['py-list'])
 
         self.assertListing('   5    \n'
-                           '   6    def bar(a, b, c):\n'
+                           '   6    eleza bar(a, b, c):\n'
                            '   7        baz(a, b, c)\n'
                            '   8    \n'
-                           '   9    def baz(*args):\n'
+                           '   9    eleza baz(*args):\n'
                            ' >10        id(42)\n'
                            '  11    \n'
                            '  12    foo(1, 2, 3)\n',
                            bt)
 
-    def test_one_abs_arg(self):
+    eleza test_one_abs_arg(self):
         'Verify the "py-list" command with one absolute argument'
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_breakpoint=['py-list 9'])
 
-        self.assertListing('   9    def baz(*args):\n'
+        self.assertListing('   9    eleza baz(*args):\n'
                            ' >10        id(42)\n'
                            '  11    \n'
                            '  12    foo(1, 2, 3)\n',
                            bt)
 
-    def test_two_abs_args(self):
+    eleza test_two_abs_args(self):
         'Verify the "py-list" command with two absolute arguments'
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_breakpoint=['py-list 1,3'])
 
         self.assertListing('   1    # Sample script for use by test_gdb.py\n'
                            '   2    \n'
-                           '   3    def foo(a, b, c):\n',
+                           '   3    eleza foo(a, b, c):\n',
                            bt)
 
-class StackNavigationTests(DebuggerTests):
+kundi StackNavigationTests(DebuggerTests):
     @unittest.skipUnless(HAS_PYUP_PYDOWN, "test requires py-up/py-down commands")
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled with optimizations")
-    def test_pyup_command(self):
+    eleza test_pyup_command(self):
         'Verify that the "py-up" command works'
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_breakpoint=['py-up', 'py-up'])
@@ -721,7 +721,7 @@ class StackNavigationTests(DebuggerTests):
 $''')
 
     @unittest.skipUnless(HAS_PYUP_PYDOWN, "test requires py-up/py-down commands")
-    def test_down_at_bottom(self):
+    eleza test_down_at_bottom(self):
         'Verify handling of "py-down" at the bottom of the stack'
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_breakpoint=['py-down'])
@@ -729,7 +729,7 @@ $''')
                             'Unable to find a newer python frame\n')
 
     @unittest.skipUnless(HAS_PYUP_PYDOWN, "test requires py-up/py-down commands")
-    def test_up_at_top(self):
+    eleza test_up_at_top(self):
         'Verify handling of "py-up" at the top of the stack'
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_breakpoint=['py-up'] * 5)
@@ -739,7 +739,7 @@ $''')
     @unittest.skipUnless(HAS_PYUP_PYDOWN, "test requires py-up/py-down commands")
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled with optimizations")
-    def test_up_then_down(self):
+    eleza test_up_then_down(self):
         'Verify "py-up" followed by "py-down"'
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_breakpoint=['py-up', 'py-up', 'py-down'])
@@ -751,10 +751,10 @@ $''')
     id\(42\)
 $''')
 
-class PyBtTests(DebuggerTests):
+kundi PyBtTests(DebuggerTests):
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled with optimizations")
-    def test_bt(self):
+    eleza test_bt(self):
         'Verify that the "py-bt" command works'
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_breakpoint=['py-bt'])
@@ -774,7 +774,7 @@ Traceback \(most recent call first\):
 
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled with optimizations")
-    def test_bt_full(self):
+    eleza test_bt_full(self):
         'Verify that the "py-bt-full" command works'
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_breakpoint=['py-bt-full'])
@@ -788,15 +788,15 @@ Traceback \(most recent call first\):
     foo\(1, 2, 3\)
 ''')
 
-    def test_threads(self):
+    eleza test_threads(self):
         'Verify that "py-bt" indicates threads that are waiting for the GIL'
         cmd = '''
 kutoka threading agiza Thread
 
-class TestThread(Thread):
+kundi TestThread(Thread):
     # These threads would run forever, but we'll interrupt things with the
     # debugger
-    def run(self):
+    eleza run(self):
         i = 0
         while 1:
              i += 1
@@ -825,13 +825,13 @@ id(42)
     # Some older versions of gdb will fail with
     #  "Cannot find new threads: generic error"
     # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 as a workaround
-    def test_gc(self):
-        'Verify that "py-bt" indicates if a thread is garbage-collecting'
+    eleza test_gc(self):
+        'Verify that "py-bt" indicates ikiwa a thread is garbage-collecting'
         cmd = ('kutoka gc agiza collect\n'
                'id(42)\n'
-               'def foo():\n'
+               'eleza foo():\n'
                '    collect()\n'
-               'def bar():\n'
+               'eleza bar():\n'
                '    foo()\n'
                'bar()\n')
         # Verify with "py-bt":
@@ -851,7 +851,7 @@ id(42)
     # Some older versions of gdb will fail with
     #  "Cannot find new threads: generic error"
     # unless we add LD_PRELOAD=PATH-TO-libpthread.so.1 as a workaround
-    def test_pycfunction(self):
+    eleza test_pycfunction(self):
         'Verify that "py-bt" displays invocations of PyCFunction instances'
         # Various optimizations multiply the code paths by which these are
         # called, so test a variety of calling conventions.
@@ -864,9 +864,9 @@ id(42)
         ):
             with self.subTest(c_name):
                 cmd = ('kutoka time agiza gmtime\n'  # (not always needed)
-                    'def foo():\n'
+                    'eleza foo():\n'
                     f'    {py_name}({py_args})\n'
-                    'def bar():\n'
+                    'eleza bar():\n'
                     '    foo()\n'
                     'bar()\n')
                 # Verify with "py-bt":
@@ -890,17 +890,17 @@ id(42)
 
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled with optimizations")
-    def test_wrapper_call(self):
+    eleza test_wrapper_call(self):
         cmd = textwrap.dedent('''
-            class MyList(list):
-                def __init__(self):
+            kundi MyList(list):
+                eleza __init__(self):
                     super().__init__()   # wrapper_call()
 
             id("first break point")
             l = MyList()
         ''')
         cmds_after_breakpoint = ['break wrapper_call', 'continue']
-        if CET_PROTECTION:
+        ikiwa CET_PROTECTION:
             # bpo-32962: same case as in get_stack_trace():
             # we need an additional 'next' command in order to read
             # arguments of the innermost function of the call stack.
@@ -914,10 +914,10 @@ id(42)
                          r"<method-wrapper u?'__init__' of MyList object at ")
 
 
-class PyPrintTests(DebuggerTests):
+kundi PyPrintTests(DebuggerTests):
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled with optimizations")
-    def test_basic_command(self):
+    eleza test_basic_command(self):
         'Verify that the "py-print" command works'
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_breakpoint=['py-up', 'py-print args'])
@@ -927,7 +927,7 @@ class PyPrintTests(DebuggerTests):
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled with optimizations")
     @unittest.skipUnless(HAS_PYUP_PYDOWN, "test requires py-up/py-down commands")
-    def test_print_after_up(self):
+    eleza test_print_after_up(self):
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_breakpoint=['py-up', 'py-up', 'py-print c', 'py-print b', 'py-print a'])
         self.assertMultilineMatches(bt,
@@ -935,7 +935,7 @@ class PyPrintTests(DebuggerTests):
 
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled with optimizations")
-    def test_printing_global(self):
+    eleza test_printing_global(self):
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_breakpoint=['py-up', 'py-print __name__'])
         self.assertMultilineMatches(bt,
@@ -943,16 +943,16 @@ class PyPrintTests(DebuggerTests):
 
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled with optimizations")
-    def test_printing_builtin(self):
+    eleza test_printing_builtin(self):
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_breakpoint=['py-up', 'py-print len'])
         self.assertMultilineMatches(bt,
                                     r".*\nbuiltin 'len' = <built-in method len of module object at remote 0x-?[0-9a-f]+>\n.*")
 
-class PyLocalsTests(DebuggerTests):
+kundi PyLocalsTests(DebuggerTests):
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled with optimizations")
-    def test_basic_command(self):
+    eleza test_basic_command(self):
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_breakpoint=['py-up', 'py-locals'])
         self.assertMultilineMatches(bt,
@@ -961,17 +961,17 @@ class PyLocalsTests(DebuggerTests):
     @unittest.skipUnless(HAS_PYUP_PYDOWN, "test requires py-up/py-down commands")
     @unittest.skipIf(python_is_optimized(),
                      "Python was compiled with optimizations")
-    def test_locals_after_up(self):
+    eleza test_locals_after_up(self):
         bt = self.get_stack_trace(script=self.get_sample_script(),
                                   cmds_after_breakpoint=['py-up', 'py-up', 'py-locals'])
         self.assertMultilineMatches(bt,
                                     r".*\na = 1\nb = 2\nc = 3\n.*")
 
-def test_main():
-    if support.verbose:
-        print("GDB version %s.%s:" % (gdb_major_version, gdb_minor_version))
+eleza test_main():
+    ikiwa support.verbose:
+        andika("GDB version %s.%s:" % (gdb_major_version, gdb_minor_version))
         for line in gdb_version.splitlines():
-            print(" " * 4 + line)
+            andika(" " * 4 + line)
     run_unittest(PrettyPrintTests,
                  PyListTests,
                  StackNavigationTests,
@@ -980,5 +980,5 @@ def test_main():
                  PyLocalsTests
                  )
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

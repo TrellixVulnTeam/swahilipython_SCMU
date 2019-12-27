@@ -67,15 +67,15 @@ try:
 except ImportError:
     pass
 
-class BaseTest(unittest.TestCase):
+kundi BaseTest(unittest.TestCase):
 
-    """Base class for logging tests."""
+    """Base kundi for logging tests."""
 
     log_format = "%(name)s -> %(levelname)s: %(message)s"
     expected_log_pat = r"^([\w.]+) -> (\w+): (\d+)$"
     message_num = 0
 
-    def setUp(self):
+    eleza setUp(self):
         """Setup the default logging stream to an internal StringIO instance,
         so that we can examine log output as we want."""
         self._threading_key = support.threading_setup()
@@ -107,17 +107,17 @@ class BaseTest(unittest.TestCase):
         self.root_hdlr = logging.StreamHandler(self.stream)
         self.root_formatter = logging.Formatter(self.log_format)
         self.root_hdlr.setFormatter(self.root_formatter)
-        if self.logger1.hasHandlers():
+        ikiwa self.logger1.hasHandlers():
             hlist = self.logger1.handlers + self.root_logger.handlers
             raise AssertionError('Unexpected handlers: %s' % hlist)
-        if self.logger2.hasHandlers():
+        ikiwa self.logger2.hasHandlers():
             hlist = self.logger2.handlers + self.root_logger.handlers
             raise AssertionError('Unexpected handlers: %s' % hlist)
         self.root_logger.addHandler(self.root_hdlr)
         self.assertTrue(self.logger1.hasHandlers())
         self.assertTrue(self.logger2.hasHandlers())
 
-    def tearDown(self):
+    eleza tearDown(self):
         """Remove our logging stream, and restore the original logging
         level."""
         self.stream.close()
@@ -143,7 +143,7 @@ class BaseTest(unittest.TestCase):
             loggerDict.update(self.saved_loggers)
             logger_states = self.logger_states
             for name in self.logger_states:
-                if logger_states[name] is not None:
+                ikiwa logger_states[name] is not None:
                     self.saved_loggers[name].disabled = logger_states[name]
         finally:
             logging._releaseLock()
@@ -151,7 +151,7 @@ class BaseTest(unittest.TestCase):
         self.doCleanups()
         support.threading_cleanup(*self._threading_key)
 
-    def assert_log_lines(self, expected_values, stream=None, pat=None):
+    eleza assert_log_lines(self, expected_values, stream=None, pat=None):
         """Match the collected log lines against the regular expression
         self.expected_log_pat, and compare the extracted group values to
         the expected_values list of tuples."""
@@ -161,25 +161,25 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(len(actual_lines), len(expected_values))
         for actual, expected in zip(actual_lines, expected_values):
             match = pat.search(actual)
-            if not match:
+            ikiwa not match:
                 self.fail("Log line does not match expected pattern:\n" +
                             actual)
             self.assertEqual(tuple(match.groups()), expected)
         s = stream.read()
-        if s:
+        ikiwa s:
             self.fail("Remaining output at end of log stream:\n" + s)
 
-    def next_message(self):
+    eleza next_message(self):
         """Generate a message consisting solely of an auto-incrementing
         integer."""
         self.message_num += 1
-        return "%d" % self.message_num
+        rudisha "%d" % self.message_num
 
 
-class BuiltinLevelsTest(BaseTest):
+kundi BuiltinLevelsTest(BaseTest):
     """Test builtin levels and their inheritance."""
 
-    def test_flat(self):
+    eleza test_flat(self):
         # Logging levels in a flat logger namespace.
         m = self.next_message
 
@@ -226,7 +226,7 @@ class BuiltinLevelsTest(BaseTest):
             ('DEB', 'DEBUG', '11'),
         ])
 
-    def test_nested_explicit(self):
+    eleza test_nested_explicit(self):
         # Logging levels in a nested namespace, all explicitly set.
         m = self.next_message
 
@@ -249,7 +249,7 @@ class BuiltinLevelsTest(BaseTest):
             ('INF.ERR', 'ERROR', '2'),
         ])
 
-    def test_nested_inherited(self):
+    eleza test_nested_inherited(self):
         # Logging levels in a nested namespace, inherited kutoka parent loggers.
         m = self.next_message
 
@@ -284,7 +284,7 @@ class BuiltinLevelsTest(BaseTest):
             ('INF.ERR.UNDEF', 'ERROR', '6'),
         ])
 
-    def test_nested_with_virtual_parent(self):
+    eleza test_nested_with_virtual_parent(self):
         # Logging levels when some parent does not exist yet.
         m = self.next_message
 
@@ -310,16 +310,16 @@ class BuiltinLevelsTest(BaseTest):
             ('INF.BADPARENT', 'INFO', '4'),
         ])
 
-    def test_regression_22386(self):
+    eleza test_regression_22386(self):
         """See issue #22386 for more information."""
         self.assertEqual(logging.getLevelName('INFO'), logging.INFO)
         self.assertEqual(logging.getLevelName(logging.INFO), 'INFO')
 
-    def test_issue27935(self):
+    eleza test_issue27935(self):
         fatal = logging.getLevelName('FATAL')
         self.assertEqual(fatal, logging.FATAL)
 
-    def test_regression_29220(self):
+    eleza test_regression_29220(self):
         """See issue #29220 for more information."""
         logging.addLevelName(logging.INFO, '')
         self.addCleanup(logging.addLevelName, logging.INFO, 'INFO')
@@ -327,11 +327,11 @@ class BuiltinLevelsTest(BaseTest):
         self.assertEqual(logging.getLevelName(logging.NOTSET), 'NOTSET')
         self.assertEqual(logging.getLevelName('NOTSET'), logging.NOTSET)
 
-class BasicFilterTest(BaseTest):
+kundi BasicFilterTest(BaseTest):
 
     """Test the bundled Filter class."""
 
-    def test_filter(self):
+    eleza test_filter(self):
         # Only messages satisfying the specified criteria pass through the
         #  filter.
         filter_ = logging.Filter("spam.eggs")
@@ -355,14 +355,14 @@ class BasicFilterTest(BaseTest):
         finally:
             handler.removeFilter(filter_)
 
-    def test_callable_filter(self):
+    eleza test_callable_filter(self):
         # Only messages satisfying the specified criteria pass through the
         #  filter.
 
-        def filterfunc(record):
+        eleza filterfunc(record):
             parts = record.name.split('.')
             prefix = '.'.join(parts[:2])
-            return prefix == 'spam.eggs'
+            rudisha prefix == 'spam.eggs'
 
         handler = self.root_logger.handlers[0]
         try:
@@ -384,7 +384,7 @@ class BasicFilterTest(BaseTest):
         finally:
             handler.removeFilter(filterfunc)
 
-    def test_empty_filter(self):
+    eleza test_empty_filter(self):
         f = logging.Filter()
         r = logging.makeLogRecord({'name': 'spam.eggs'})
         self.assertTrue(f.filter(r))
@@ -427,38 +427,38 @@ my_logging_levels = {
     BORING      : 'Boring',
 }
 
-class GarrulousFilter(logging.Filter):
+kundi GarrulousFilter(logging.Filter):
 
     """A filter which blocks garrulous messages."""
 
-    def filter(self, record):
-        return record.levelno != GARRULOUS
+    eleza filter(self, record):
+        rudisha record.levelno != GARRULOUS
 
-class VerySpecificFilter(logging.Filter):
+kundi VerySpecificFilter(logging.Filter):
 
     """A filter which blocks sociable and taciturn messages."""
 
-    def filter(self, record):
-        return record.levelno not in [SOCIABLE, TACITURN]
+    eleza filter(self, record):
+        rudisha record.levelno not in [SOCIABLE, TACITURN]
 
 
-class CustomLevelsAndFiltersTest(BaseTest):
+kundi CustomLevelsAndFiltersTest(BaseTest):
 
     """Test various filtering possibilities with custom logging levels."""
 
     # Skip the logger name group.
     expected_log_pat = r"^[\w.]+ -> (\w+): (\d+)$"
 
-    def setUp(self):
+    eleza setUp(self):
         BaseTest.setUp(self)
         for k, v in my_logging_levels.items():
             logging.addLevelName(k, v)
 
-    def log_at_all_levels(self, logger):
+    eleza log_at_all_levels(self, logger):
         for lvl in LEVEL_RANGE:
             logger.log(lvl, self.next_message())
 
-    def test_logger_filter(self):
+    eleza test_logger_filter(self):
         # Filter at logger level.
         self.root_logger.setLevel(VERBOSE)
         # Levels >= 'Verbose' are good.
@@ -472,7 +472,7 @@ class CustomLevelsAndFiltersTest(BaseTest):
             ('Silent', '10'),
         ])
 
-    def test_handler_filter(self):
+    eleza test_handler_filter(self):
         # Filter at handler level.
         self.root_logger.handlers[0].setLevel(SOCIABLE)
         try:
@@ -488,7 +488,7 @@ class CustomLevelsAndFiltersTest(BaseTest):
         finally:
             self.root_logger.handlers[0].setLevel(logging.NOTSET)
 
-    def test_specific_filters(self):
+    eleza test_specific_filters(self):
         # Set a specific filter object on the handler, and then add another
         #  filter object on the logger itself.
         handler = self.root_logger.handlers[0]
@@ -526,13 +526,13 @@ class CustomLevelsAndFiltersTest(BaseTest):
                 ('Silent', '20'),
         ])
         finally:
-            if specific_filter:
+            ikiwa specific_filter:
                 self.root_logger.removeFilter(specific_filter)
             handler.removeFilter(garr)
 
 
-class HandlerTest(BaseTest):
-    def test_name(self):
+kundi HandlerTest(BaseTest):
+    eleza test_name(self):
         h = logging.Handler()
         h.name = 'generic'
         self.assertEqual(h.name, 'generic')
@@ -540,17 +540,17 @@ class HandlerTest(BaseTest):
         self.assertEqual(h.name, 'anothergeneric')
         self.assertRaises(NotImplementedError, h.emit, None)
 
-    def test_builtin_handlers(self):
+    eleza test_builtin_handlers(self):
         # We can't actually *use* too many handlers in the tests,
         # but we can try instantiating them with various options
-        if sys.platform in ('linux', 'darwin'):
+        ikiwa sys.platform in ('linux', 'darwin'):
             for existing in (True, False):
                 fd, fn = tempfile.mkstemp()
                 os.close(fd)
-                if not existing:
+                ikiwa not existing:
                     os.unlink(fn)
                 h = logging.handlers.WatchedFileHandler(fn, delay=True)
-                if existing:
+                ikiwa existing:
                     dev, ino = h.dev, h.ino
                     self.assertEqual(dev, -1)
                     self.assertEqual(ino, -1)
@@ -566,9 +566,9 @@ class HandlerTest(BaseTest):
                     self.assertEqual(h.dev, -1)
                     self.assertEqual(h.ino, -1)
                 h.close()
-                if existing:
+                ikiwa existing:
                     os.unlink(fn)
-            if sys.platform == 'darwin':
+            ikiwa sys.platform == 'darwin':
                 sockname = '/var/run/syslog'
             else:
                 sockname = '/dev/log'
@@ -580,7 +580,7 @@ class HandlerTest(BaseTest):
             except OSError: # syslogd might not be available
                 pass
         for method in ('GET', 'POST', 'PUT'):
-            if method == 'PUT':
+            ikiwa method == 'PUT':
                 self.assertRaises(ValueError, logging.handlers.HTTPHandler,
                                   'localhost', '/log', method)
             else:
@@ -594,7 +594,7 @@ class HandlerTest(BaseTest):
         self.assertFalse(h.shouldFlush(r))
         h.close()
 
-    def test_path_objects(self):
+    eleza test_path_objects(self):
         """
         Test that Path objects are accepted as filename arguments to handlers.
 
@@ -609,7 +609,7 @@ class HandlerTest(BaseTest):
                     (logging.handlers.RotatingFileHandler, (pfn, 'a')),
                     (logging.handlers.TimedRotatingFileHandler, (pfn, 'h')),
                 )
-        if sys.platform in ('linux', 'darwin'):
+        ikiwa sys.platform in ('linux', 'darwin'):
             cases += ((logging.handlers.WatchedFileHandler, (pfn, 'w')),)
         for cls, args in cases:
             h = cls(*args)
@@ -618,9 +618,9 @@ class HandlerTest(BaseTest):
             os.unlink(fn)
 
     @unittest.skipIf(os.name == 'nt', 'WatchedFileHandler not appropriate for Windows.')
-    def test_race(self):
+    eleza test_race(self):
         # Issue #14632 refers.
-        def remove_loop(fname, tries):
+        eleza remove_loop(fname, tries):
             for _ in range(tries):
                 try:
                     os.unlink(fname)
@@ -652,14 +652,14 @@ class HandlerTest(BaseTest):
                         self.handle_time = time.time()
                         h.handle(r)
                     except Exception:
-                        print('Deleted at %s, '
+                        andika('Deleted at %s, '
                               'opened at %s' % (self.deletion_time,
                                                 self.handle_time))
                         raise
             finally:
                 remover.join()
                 h.close()
-                if os.path.exists(fn):
+                ikiwa os.path.exists(fn):
                     os.unlink(fn)
 
     # The implementation relies on os.register_at_fork existing, but we test
@@ -667,15 +667,15 @@ class HandlerTest(BaseTest):
     # This helps ensure that when fork exists (the agizaant concept) that the
     # register_at_fork mechanism is also present and used.
     @unittest.skipIf(not hasattr(os, 'fork'), 'Test requires os.fork().')
-    def test_post_fork_child_no_deadlock(self):
+    eleza test_post_fork_child_no_deadlock(self):
         """Ensure child logging locks are not held; bpo-6721 & bpo-36533."""
-        class _OurHandler(logging.Handler):
-            def __init__(self):
+        kundi _OurHandler(logging.Handler):
+            eleza __init__(self):
                 super().__init__()
                 self.sub_handler = logging.StreamHandler(
                     stream=open('/dev/null', 'wt'))
 
-            def emit(self, record):
+            eleza emit(self, record):
                 self.sub_handler.acquire()
                 try:
                     self.sub_handler.emit(record)
@@ -695,7 +695,7 @@ class HandlerTest(BaseTest):
         locks_held__ready_to_fork = threading.Event()
         fork_happened__release_locks_and_end_thread = threading.Event()
 
-        def lock_holder_thread_fn():
+        eleza lock_holder_thread_fn():
             logging._acquireLock()
             try:
                 refed_h.acquire()
@@ -727,7 +727,7 @@ class HandlerTest(BaseTest):
 
         locks_held__ready_to_fork.wait()
         pid = os.fork()
-        if pid == 0:  # Child.
+        ikiwa pid == 0:  # Child.
             try:
                 test_logger.info(r'Child process did not deadlock. \o/')
             finally:
@@ -740,33 +740,33 @@ class HandlerTest(BaseTest):
             while True:
                 test_logger.debug('Waiting for child process.')
                 waited_pid, status = os.waitpid(pid, os.WNOHANG)
-                if waited_pid == pid:
+                ikiwa waited_pid == pid:
                     break  # child process exited.
-                if time.monotonic() - start_time > 7:
+                ikiwa time.monotonic() - start_time > 7:
                     break  # so long? implies child deadlock.
                 time.sleep(0.05)
             test_logger.debug('Done waiting.')
-            if waited_pid != pid:
+            ikiwa waited_pid != pid:
                 os.kill(pid, signal.SIGKILL)
                 waited_pid, status = os.waitpid(pid, 0)
                 self.fail("child process deadlocked.")
             self.assertEqual(status, 0, msg="child process error")
 
 
-class BadStream(object):
-    def write(self, data):
+kundi BadStream(object):
+    eleza write(self, data):
         raise RuntimeError('deliberate mistake')
 
-class TestStreamHandler(logging.StreamHandler):
-    def handleError(self, record):
+kundi TestStreamHandler(logging.StreamHandler):
+    eleza handleError(self, record):
         self.error_record = record
 
-class StreamWithIntName(object):
+kundi StreamWithIntName(object):
     level = logging.NOTSET
     name = 2
 
-class StreamHandlerTest(BaseTest):
-    def test_error_handling(self):
+kundi StreamHandlerTest(BaseTest):
+    eleza test_error_handling(self):
         h = TestStreamHandler(BadStream())
         r = logging.makeLogRecord({})
         old_raise = logging.raiseExceptions
@@ -788,7 +788,7 @@ class StreamHandlerTest(BaseTest):
         finally:
             logging.raiseExceptions = old_raise
 
-    def test_stream_setting(self):
+    eleza test_stream_setting(self):
         """
         Test setting the handler's stream
         """
@@ -802,16 +802,16 @@ class StreamHandlerTest(BaseTest):
         actual = h.setStream(old)
         self.assertIsNone(actual)
 
-    def test_can_represent_stream_with_int_name(self):
+    eleza test_can_represent_stream_with_int_name(self):
         h = logging.StreamHandler(StreamWithIntName())
         self.assertEqual(repr(h), '<StreamHandler 2 (NOTSET)>')
 
 # -- The following section could be moved into a server_helper.py module
-# -- if it proves to be of wider utility than just test_logging
+# -- ikiwa it proves to be of wider utility than just test_logging
 
-class TestSMTPServer(smtpd.SMTPServer):
+kundi TestSMTPServer(smtpd.SMTPServer):
     """
-    This class implements a test SMTP server.
+    This kundi implements a test SMTP server.
 
     :param addr: A (host, port) tuple which the server listens on.
                  You can specify a port value of zero: the server's
@@ -830,7 +830,7 @@ class TestSMTPServer(smtpd.SMTPServer):
                     :mod:`asyncore` module's global state.
     """
 
-    def __init__(self, addr, handler, poll_interval, sockmap):
+    eleza __init__(self, addr, handler, poll_interval, sockmap):
         smtpd.SMTPServer.__init__(self, addr, None, map=sockmap,
                                   decode_data=True)
         self.port = self.socket.getsockname()[1]
@@ -838,19 +838,19 @@ class TestSMTPServer(smtpd.SMTPServer):
         self._thread = None
         self.poll_interval = poll_interval
 
-    def process_message(self, peer, mailfrom, rcpttos, data):
+    eleza process_message(self, peer, mailkutoka, rcpttos, data):
         """
         Delegates to the handler passed in to the server's constructor.
 
         Typically, this will be a test case method.
         :param peer: The client (host, port) tuple.
-        :param mailfrom: The address of the sender.
+        :param mailkutoka: The address of the sender.
         :param rcpttos: The addresses of the recipients.
         :param data: The message.
         """
-        self._handler(peer, mailfrom, rcpttos, data)
+        self._handler(peer, mailkutoka, rcpttos, data)
 
-    def start(self):
+    eleza start(self):
         """
         Start the server running on a separate daemon thread.
         """
@@ -859,7 +859,7 @@ class TestSMTPServer(smtpd.SMTPServer):
         t.setDaemon(True)
         t.start()
 
-    def serve_forever(self, poll_interval):
+    eleza serve_forever(self, poll_interval):
         """
         Run the :mod:`asyncore` loop until normal termination
         conditions arise.
@@ -869,7 +869,7 @@ class TestSMTPServer(smtpd.SMTPServer):
         """
         asyncore.loop(poll_interval, map=self._map)
 
-    def stop(self, timeout=None):
+    eleza stop(self, timeout=None):
         """
         Stop the thread by closing the server instance.
         Wait for the server thread to terminate.
@@ -883,7 +883,7 @@ class TestSMTPServer(smtpd.SMTPServer):
         asyncore.close_all(map=self._map, ignore_all=True)
 
 
-class ControlMixin(object):
+kundi ControlMixin(object):
     """
     This mixin is used to start a server on a separate thread, and
     shut it down programmatically. Request handling is simplified - instead
@@ -899,13 +899,13 @@ class ControlMixin(object):
                     this should be fine for testing applications.
     :param poll_interval: The polling interval in seconds.
     """
-    def __init__(self, handler, poll_interval):
+    eleza __init__(self, handler, poll_interval):
         self._thread = None
         self.poll_interval = poll_interval
         self._handler = handler
         self.ready = threading.Event()
 
-    def start(self):
+    eleza start(self):
         """
         Create a daemon thread to run the server, and start it.
         """
@@ -914,7 +914,7 @@ class ControlMixin(object):
         t.setDaemon(True)
         t.start()
 
-    def serve_forever(self, poll_interval):
+    eleza serve_forever(self, poll_interval):
         """
         Run the server. Set the ready flag before entering the
         service loop.
@@ -922,7 +922,7 @@ class ControlMixin(object):
         self.ready.set()
         super(ControlMixin, self).serve_forever(poll_interval)
 
-    def stop(self, timeout=None):
+    eleza stop(self, timeout=None):
         """
         Tell the server thread to stop, and wait for it to do so.
 
@@ -930,13 +930,13 @@ class ControlMixin(object):
                         to terminate.
         """
         self.shutdown()
-        if self._thread is not None:
+        ikiwa self._thread is not None:
             support.join_thread(self._thread, timeout)
             self._thread = None
         self.server_close()
         self.ready.clear()
 
-class TestHTTPServer(ControlMixin, HTTPServer):
+kundi TestHTTPServer(ControlMixin, HTTPServer):
     """
     An HTTP server which is controllable using :class:`ControlMixin`.
 
@@ -947,37 +947,37 @@ class TestHTTPServer(ControlMixin, HTTPServer):
     :param poll_interval: The polling interval in seconds.
     :param log: Pass ``True`` to enable log messages.
     """
-    def __init__(self, addr, handler, poll_interval=0.5,
+    eleza __init__(self, addr, handler, poll_interval=0.5,
                  log=False, sslctx=None):
-        class DelegatingHTTPRequestHandler(BaseHTTPRequestHandler):
-            def __getattr__(self, name, default=None):
-                if name.startswith('do_'):
-                    return self.process_request
+        kundi DelegatingHTTPRequestHandler(BaseHTTPRequestHandler):
+            eleza __getattr__(self, name, default=None):
+                ikiwa name.startswith('do_'):
+                    rudisha self.process_request
                 raise AttributeError(name)
 
-            def process_request(self):
+            eleza process_request(self):
                 self.server._handler(self)
 
-            def log_message(self, format, *args):
-                if log:
+            eleza log_message(self, format, *args):
+                ikiwa log:
                     super(DelegatingHTTPRequestHandler,
                           self).log_message(format, *args)
         HTTPServer.__init__(self, addr, DelegatingHTTPRequestHandler)
         ControlMixin.__init__(self, handler, poll_interval)
         self.sslctx = sslctx
 
-    def get_request(self):
+    eleza get_request(self):
         try:
             sock, addr = self.socket.accept()
-            if self.sslctx:
+            ikiwa self.sslctx:
                 sock = self.sslctx.wrap_socket(sock, server_side=True)
         except OSError as e:
             # socket errors are silenced by the caller, print them here
             sys.stderr.write("Got an error:\n%s\n" % e)
             raise
-        return sock, addr
+        rudisha sock, addr
 
-class TestTCPServer(ControlMixin, ThreadingTCPServer):
+kundi TestTCPServer(ControlMixin, ThreadingTCPServer):
     """
     A TCP server which is controllable using :class:`ControlMixin`.
 
@@ -994,21 +994,21 @@ class TestTCPServer(ControlMixin, ThreadingTCPServer):
 
     allow_reuse_address = True
 
-    def __init__(self, addr, handler, poll_interval=0.5,
+    eleza __init__(self, addr, handler, poll_interval=0.5,
                  bind_and_activate=True):
-        class DelegatingTCPRequestHandler(StreamRequestHandler):
+        kundi DelegatingTCPRequestHandler(StreamRequestHandler):
 
-            def handle(self):
+            eleza handle(self):
                 self.server._handler(self)
         ThreadingTCPServer.__init__(self, addr, DelegatingTCPRequestHandler,
                                     bind_and_activate)
         ControlMixin.__init__(self, handler, poll_interval)
 
-    def server_bind(self):
+    eleza server_bind(self):
         super(TestTCPServer, self).server_bind()
         self.port = self.socket.getsockname()[1]
 
-class TestUDPServer(ControlMixin, ThreadingUDPServer):
+kundi TestUDPServer(ControlMixin, ThreadingUDPServer):
     """
     A UDP server which is controllable using :class:`ControlMixin`.
 
@@ -1025,20 +1025,20 @@ class TestUDPServer(ControlMixin, ThreadingUDPServer):
                         before calling :meth:`start`, so that the server will
                         set up the socket and listen on it.
     """
-    def __init__(self, addr, handler, poll_interval=0.5,
+    eleza __init__(self, addr, handler, poll_interval=0.5,
                  bind_and_activate=True):
-        class DelegatingUDPRequestHandler(DatagramRequestHandler):
+        kundi DelegatingUDPRequestHandler(DatagramRequestHandler):
 
-            def handle(self):
+            eleza handle(self):
                 self.server._handler(self)
 
-            def finish(self):
+            eleza finish(self):
                 data = self.wfile.getvalue()
-                if data:
+                ikiwa data:
                     try:
                         super(DelegatingUDPRequestHandler, self).finish()
                     except OSError:
-                        if not self.server._closed:
+                        ikiwa not self.server._closed:
                             raise
 
         ThreadingUDPServer.__init__(self, addr,
@@ -1047,28 +1047,28 @@ class TestUDPServer(ControlMixin, ThreadingUDPServer):
         ControlMixin.__init__(self, handler, poll_interval)
         self._closed = False
 
-    def server_bind(self):
+    eleza server_bind(self):
         super(TestUDPServer, self).server_bind()
         self.port = self.socket.getsockname()[1]
 
-    def server_close(self):
+    eleza server_close(self):
         super(TestUDPServer, self).server_close()
         self._closed = True
 
-if hasattr(socket, "AF_UNIX"):
-    class TestUnixStreamServer(TestTCPServer):
+ikiwa hasattr(socket, "AF_UNIX"):
+    kundi TestUnixStreamServer(TestTCPServer):
         address_family = socket.AF_UNIX
 
-    class TestUnixDatagramServer(TestUDPServer):
+    kundi TestUnixDatagramServer(TestUDPServer):
         address_family = socket.AF_UNIX
 
 # - end of server_helper section
 
-class SMTPHandlerTest(BaseTest):
+kundi SMTPHandlerTest(BaseTest):
     # bpo-14314, bpo-19665, bpo-34092: don't wait forever, timeout of 1 minute
     TIMEOUT = 60.0
 
-    def test_basic(self):
+    eleza test_basic(self):
         sockmap = {}
         server = TestSMTPServer((support.HOST, 0), self.process_message, 0.001,
                                 sockmap)
@@ -1085,25 +1085,25 @@ class SMTPHandlerTest(BaseTest):
         server.stop()
         self.assertTrue(self.handled.is_set())
         self.assertEqual(len(self.messages), 1)
-        peer, mailfrom, rcpttos, data = self.messages[0]
-        self.assertEqual(mailfrom, 'me')
+        peer, mailkutoka, rcpttos, data = self.messages[0]
+        self.assertEqual(mailkutoka, 'me')
         self.assertEqual(rcpttos, ['you'])
         self.assertIn('\nSubject: Log\n', data)
         self.assertTrue(data.endswith('\n\nHello \u2713'))
         h.close()
 
-    def process_message(self, *args):
+    eleza process_message(self, *args):
         self.messages.append(args)
         self.handled.set()
 
-class MemoryHandlerTest(BaseTest):
+kundi MemoryHandlerTest(BaseTest):
 
     """Tests for the MemoryHandler."""
 
     # Do not bother with a logger name group.
     expected_log_pat = r"^[\w.]+ -> (\w+): (\d+)$"
 
-    def setUp(self):
+    eleza setUp(self):
         BaseTest.setUp(self)
         self.mem_hdlr = logging.handlers.MemoryHandler(10, logging.WARNING,
                                                        self.root_hdlr)
@@ -1111,11 +1111,11 @@ class MemoryHandlerTest(BaseTest):
         self.mem_logger.propagate = 0
         self.mem_logger.addHandler(self.mem_hdlr)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.mem_hdlr.close()
         BaseTest.tearDown(self)
 
-    def test_flush(self):
+    eleza test_flush(self):
         # The memory handler flushes to its target handler based on specific
         #  criteria (message count and message level).
         self.mem_logger.debug(self.next_message())
@@ -1143,7 +1143,7 @@ class MemoryHandlerTest(BaseTest):
         self.mem_logger.debug(self.next_message())
         self.assert_log_lines(lines)
 
-    def test_flush_on_close(self):
+    eleza test_flush_on_close(self):
         """
         Test that the flush-on-close configuration works as expected.
         """
@@ -1174,13 +1174,13 @@ class MemoryHandlerTest(BaseTest):
         self.assert_log_lines(lines)  # no change
 
 
-class ExceptionFormatter(logging.Formatter):
+kundi ExceptionFormatter(logging.Formatter):
     """A special exception formatter."""
-    def formatException(self, ei):
-        return "Got a [%s]" % ei[0].__name__
+    eleza formatException(self, ei):
+        rudisha "Got a [%s]" % ei[0].__name__
 
 
-class ConfigFileTest(BaseTest):
+kundi ConfigFileTest(BaseTest):
 
     """Reading logging config kutoka a .ini-style config file."""
 
@@ -1283,7 +1283,7 @@ class ConfigFileTest(BaseTest):
     # config3 has a less subtle configuration error
     config3 = config1.replace("formatter=form1", "formatter=misspelled_name")
 
-    # config4 specifies a custom formatter class to be loaded
+    # config4 specifies a custom formatter kundi to be loaded
     config4 = """
     [loggers]
     keys=root
@@ -1310,7 +1310,7 @@ class ConfigFileTest(BaseTest):
     datefmt=
     """
 
-    # config5 specifies a custom handler class to be loaded
+    # config5 specifies a custom handler kundi to be loaded
     config5 = config1.replace('class=StreamHandler', 'class=logging.StreamHandler')
 
     # config6 uses ', ' delimiters in the handlers and formatters sections
@@ -1435,11 +1435,11 @@ class ConfigFileTest(BaseTest):
     formatter=
     """
 
-    def apply_config(self, conf, **kwargs):
+    eleza apply_config(self, conf, **kwargs):
         file = io.StringIO(textwrap.dedent(conf))
         logging.config.fileConfig(file, **kwargs)
 
-    def test_config0_ok(self):
+    eleza test_config0_ok(self):
         # A simple config file which overrides the default settings.
         with support.captured_stdout() as output:
             self.apply_config(self.config0)
@@ -1454,7 +1454,7 @@ class ConfigFileTest(BaseTest):
             # Original logger output is empty.
             self.assert_log_lines([])
 
-    def test_config0_using_cp_ok(self):
+    eleza test_config0_using_cp_ok(self):
         # A simple config file which overrides the default settings.
         with support.captured_stdout() as output:
             file = io.StringIO(textwrap.dedent(self.config0))
@@ -1472,7 +1472,7 @@ class ConfigFileTest(BaseTest):
             # Original logger output is empty.
             self.assert_log_lines([])
 
-    def test_config1_ok(self, config=config1):
+    eleza test_config1_ok(self, config=config1):
         # A config file defining a sub-parser as well.
         with support.captured_stdout() as output:
             self.apply_config(config)
@@ -1487,15 +1487,15 @@ class ConfigFileTest(BaseTest):
             # Original logger output is empty.
             self.assert_log_lines([])
 
-    def test_config2_failure(self):
+    eleza test_config2_failure(self):
         # A simple config file which overrides the default settings.
         self.assertRaises(Exception, self.apply_config, self.config2)
 
-    def test_config3_failure(self):
+    eleza test_config3_failure(self):
         # A simple config file which overrides the default settings.
         self.assertRaises(Exception, self.apply_config, self.config3)
 
-    def test_config4_ok(self):
+    eleza test_config4_ok(self):
         # A config file specifying a custom formatter class.
         with support.captured_stdout() as output:
             self.apply_config(self.config4)
@@ -1510,13 +1510,13 @@ class ConfigFileTest(BaseTest):
             # Original logger output is empty
             self.assert_log_lines([])
 
-    def test_config5_ok(self):
+    eleza test_config5_ok(self):
         self.test_config1_ok(config=self.config5)
 
-    def test_config6_ok(self):
+    eleza test_config6_ok(self):
         self.test_config1_ok(config=self.config6)
 
-    def test_config7_ok(self):
+    eleza test_config7_ok(self):
         with support.captured_stdout() as output:
             self.apply_config(self.config1a)
             logger = logging.getLogger("compiler.parser")
@@ -1559,9 +1559,9 @@ class ConfigFileTest(BaseTest):
             # Original logger output is empty.
             self.assert_log_lines([])
 
-    def test_config8_ok(self):
+    eleza test_config8_ok(self):
 
-        def cleanup(h1, fn):
+        eleza cleanup(h1, fn):
             h1.close()
             os.remove(fn)
 
@@ -1571,7 +1571,7 @@ class ConfigFileTest(BaseTest):
 
             # Replace single backslash with double backslash in windows
             # to avoid unicode error during string formatting
-            if os.name == "nt":
+            ikiwa os.name == "nt":
                 fn = fn.replace("\\", "\\\\")
 
             config8 = self.config8.format(tempfile=fn)
@@ -1582,7 +1582,7 @@ class ConfigFileTest(BaseTest):
         handler = logging.root.handlers[0]
         self.addCleanup(cleanup, handler, fn)
 
-    def test_logger_disabling(self):
+    eleza test_logger_disabling(self):
         self.apply_config(self.disable_test)
         logger = logging.getLogger('some_pristine_logger')
         self.assertFalse(logger.disabled)
@@ -1591,7 +1591,7 @@ class ConfigFileTest(BaseTest):
         self.apply_config(self.disable_test, disable_existing_loggers=False)
         self.assertFalse(logger.disabled)
 
-    def test_defaults_do_no_interpolation(self):
+    eleza test_defaults_do_no_interpolation(self):
         """bpo-33802 defaults should not get interpolated"""
         ini = textwrap.dedent("""
             [formatters]
@@ -1635,14 +1635,14 @@ class ConfigFileTest(BaseTest):
             os.unlink(fn)
 
 
-class SocketHandlerTest(BaseTest):
+kundi SocketHandlerTest(BaseTest):
 
     """Test for SocketHandler objects."""
 
-    server_class = TestTCPServer
+    server_kundi = TestTCPServer
     address = ('localhost', 0)
 
-    def setUp(self):
+    eleza setUp(self):
         """Set up a TCP server to receive log messages, and a SocketHandler
         pointing to that server's address and port."""
         BaseTest.setUp(self)
@@ -1659,7 +1659,7 @@ class SocketHandlerTest(BaseTest):
             return
         server.ready.wait()
         hcls = logging.handlers.SocketHandler
-        if isinstance(server.server_address, tuple):
+        ikiwa isinstance(server.server_address, tuple):
             self.sock_hdlr = hcls('localhost', server.port)
         else:
             self.sock_hdlr = hcls(server.server_address, None)
@@ -1668,22 +1668,22 @@ class SocketHandlerTest(BaseTest):
         self.root_logger.addHandler(self.sock_hdlr)
         self.handled = threading.Semaphore(0)
 
-    def tearDown(self):
+    eleza tearDown(self):
         """Shutdown the TCP server."""
         try:
-            if self.sock_hdlr:
+            ikiwa self.sock_hdlr:
                 self.root_logger.removeHandler(self.sock_hdlr)
                 self.sock_hdlr.close()
-            if self.server:
+            ikiwa self.server:
                 self.server.stop(2.0)
         finally:
             BaseTest.tearDown(self)
 
-    def handle_socket(self, request):
+    eleza handle_socket(self, request):
         conn = request.connection
         while True:
             chunk = conn.recv(4)
-            if len(chunk) < 4:
+            ikiwa len(chunk) < 4:
                 break
             slen = struct.unpack(">L", chunk)[0]
             chunk = conn.recv(slen)
@@ -1694,9 +1694,9 @@ class SocketHandlerTest(BaseTest):
             self.log_output += record.msg + '\n'
             self.handled.release()
 
-    def test_output(self):
+    eleza test_output(self):
         # The log message sent to the SocketHandler is properly received.
-        if self.server_exception:
+        ikiwa self.server_exception:
             self.skipTest(self.server_exception)
         logger = logging.getLogger("tcp")
         logger.error("spam")
@@ -1705,8 +1705,8 @@ class SocketHandlerTest(BaseTest):
         self.handled.acquire()
         self.assertEqual(self.log_output, "spam\neggs\n")
 
-    def test_noserver(self):
-        if self.server_exception:
+    eleza test_noserver(self):
+        ikiwa self.server_exception:
             self.skipTest(self.server_exception)
         # Avoid timing-related failures due to SocketHandler's own hard-wired
         # one-second timeout on socket.create_connection() (issue #16264).
@@ -1724,39 +1724,39 @@ class SocketHandlerTest(BaseTest):
         time.sleep(self.sock_hdlr.retryTime - now + 0.001)
         self.root_logger.error('Nor this')
 
-def _get_temp_domain_socket():
+eleza _get_temp_domain_socket():
     fd, fn = tempfile.mkstemp(prefix='test_logging_', suffix='.sock')
     os.close(fd)
     # just need a name - file can't be present, or we'll get an
     # 'address already in use' error.
     os.remove(fn)
-    return fn
+    rudisha fn
 
 @unittest.skipUnless(hasattr(socket, "AF_UNIX"), "Unix sockets required")
-class UnixSocketHandlerTest(SocketHandlerTest):
+kundi UnixSocketHandlerTest(SocketHandlerTest):
 
     """Test for SocketHandler with unix sockets."""
 
-    if hasattr(socket, "AF_UNIX"):
-        server_class = TestUnixStreamServer
+    ikiwa hasattr(socket, "AF_UNIX"):
+        server_kundi = TestUnixStreamServer
 
-    def setUp(self):
+    eleza setUp(self):
         # override the definition in the base class
         self.address = _get_temp_domain_socket()
         SocketHandlerTest.setUp(self)
 
-    def tearDown(self):
+    eleza tearDown(self):
         SocketHandlerTest.tearDown(self)
         support.unlink(self.address)
 
-class DatagramHandlerTest(BaseTest):
+kundi DatagramHandlerTest(BaseTest):
 
     """Test for DatagramHandler."""
 
-    server_class = TestUDPServer
+    server_kundi = TestUDPServer
     address = ('localhost', 0)
 
-    def setUp(self):
+    eleza setUp(self):
         """Set up a UDP server to receive log messages, and a DatagramHandler
         pointing to that server's address and port."""
         BaseTest.setUp(self)
@@ -1773,7 +1773,7 @@ class DatagramHandlerTest(BaseTest):
             return
         server.ready.wait()
         hcls = logging.handlers.DatagramHandler
-        if isinstance(server.server_address, tuple):
+        ikiwa isinstance(server.server_address, tuple):
             self.sock_hdlr = hcls('localhost', server.port)
         else:
             self.sock_hdlr = hcls(server.server_address, None)
@@ -1782,18 +1782,18 @@ class DatagramHandlerTest(BaseTest):
         self.root_logger.addHandler(self.sock_hdlr)
         self.handled = threading.Event()
 
-    def tearDown(self):
+    eleza tearDown(self):
         """Shutdown the UDP server."""
         try:
-            if self.server:
+            ikiwa self.server:
                 self.server.stop(2.0)
-            if self.sock_hdlr:
+            ikiwa self.sock_hdlr:
                 self.root_logger.removeHandler(self.sock_hdlr)
                 self.sock_hdlr.close()
         finally:
             BaseTest.tearDown(self)
 
-    def handle_datagram(self, request):
+    eleza handle_datagram(self, request):
         slen = struct.pack('>L', 0) # length of prefix
         packet = request.packet[len(slen):]
         obj = pickle.loads(packet)
@@ -1801,9 +1801,9 @@ class DatagramHandlerTest(BaseTest):
         self.log_output += record.msg + '\n'
         self.handled.set()
 
-    def test_output(self):
+    eleza test_output(self):
         # The log message sent to the DatagramHandler is properly received.
-        if self.server_exception:
+        ikiwa self.server_exception:
             self.skipTest(self.server_exception)
         logger = logging.getLogger("udp")
         logger.error("spam")
@@ -1814,30 +1814,30 @@ class DatagramHandlerTest(BaseTest):
         self.assertEqual(self.log_output, "spam\neggs\n")
 
 @unittest.skipUnless(hasattr(socket, "AF_UNIX"), "Unix sockets required")
-class UnixDatagramHandlerTest(DatagramHandlerTest):
+kundi UnixDatagramHandlerTest(DatagramHandlerTest):
 
     """Test for DatagramHandler using Unix sockets."""
 
-    if hasattr(socket, "AF_UNIX"):
-        server_class = TestUnixDatagramServer
+    ikiwa hasattr(socket, "AF_UNIX"):
+        server_kundi = TestUnixDatagramServer
 
-    def setUp(self):
+    eleza setUp(self):
         # override the definition in the base class
         self.address = _get_temp_domain_socket()
         DatagramHandlerTest.setUp(self)
 
-    def tearDown(self):
+    eleza tearDown(self):
         DatagramHandlerTest.tearDown(self)
         support.unlink(self.address)
 
-class SysLogHandlerTest(BaseTest):
+kundi SysLogHandlerTest(BaseTest):
 
     """Test for SysLogHandler using UDP."""
 
-    server_class = TestUDPServer
+    server_kundi = TestUDPServer
     address = ('localhost', 0)
 
-    def setUp(self):
+    eleza setUp(self):
         """Set up a UDP server to receive log messages, and a SysLogHandler
         pointing to that server's address and port."""
         BaseTest.setUp(self)
@@ -1854,7 +1854,7 @@ class SysLogHandlerTest(BaseTest):
             return
         server.ready.wait()
         hcls = logging.handlers.SysLogHandler
-        if isinstance(server.server_address, tuple):
+        ikiwa isinstance(server.server_address, tuple):
             self.sl_hdlr = hcls((server.server_address[0], server.port))
         else:
             self.sl_hdlr = hcls(server.server_address)
@@ -1863,23 +1863,23 @@ class SysLogHandlerTest(BaseTest):
         self.root_logger.addHandler(self.sl_hdlr)
         self.handled = threading.Event()
 
-    def tearDown(self):
+    eleza tearDown(self):
         """Shutdown the server."""
         try:
-            if self.server:
+            ikiwa self.server:
                 self.server.stop(2.0)
-            if self.sl_hdlr:
+            ikiwa self.sl_hdlr:
                 self.root_logger.removeHandler(self.sl_hdlr)
                 self.sl_hdlr.close()
         finally:
             BaseTest.tearDown(self)
 
-    def handle_datagram(self, request):
+    eleza handle_datagram(self, request):
         self.log_output = request.packet
         self.handled.set()
 
-    def test_output(self):
-        if self.server_exception:
+    eleza test_output(self):
+        ikiwa self.server_exception:
             self.skipTest(self.server_exception)
         # The log message sent to the SysLogHandler is properly received.
         logger = logging.getLogger("slh")
@@ -1898,52 +1898,52 @@ class SysLogHandlerTest(BaseTest):
         self.assertEqual(self.log_output, b'<11>h\xc3\xa4m-sp\xc3\xa4m')
 
 @unittest.skipUnless(hasattr(socket, "AF_UNIX"), "Unix sockets required")
-class UnixSysLogHandlerTest(SysLogHandlerTest):
+kundi UnixSysLogHandlerTest(SysLogHandlerTest):
 
     """Test for SysLogHandler with Unix sockets."""
 
-    if hasattr(socket, "AF_UNIX"):
-        server_class = TestUnixDatagramServer
+    ikiwa hasattr(socket, "AF_UNIX"):
+        server_kundi = TestUnixDatagramServer
 
-    def setUp(self):
+    eleza setUp(self):
         # override the definition in the base class
         self.address = _get_temp_domain_socket()
         SysLogHandlerTest.setUp(self)
 
-    def tearDown(self):
+    eleza tearDown(self):
         SysLogHandlerTest.tearDown(self)
         support.unlink(self.address)
 
 @unittest.skipUnless(support.IPV6_ENABLED,
                      'IPv6 support required for this test.')
-class IPv6SysLogHandlerTest(SysLogHandlerTest):
+kundi IPv6SysLogHandlerTest(SysLogHandlerTest):
 
     """Test for SysLogHandler with IPv6 host."""
 
-    server_class = TestUDPServer
+    server_kundi = TestUDPServer
     address = ('::1', 0)
 
-    def setUp(self):
+    eleza setUp(self):
         self.server_class.address_family = socket.AF_INET6
         super(IPv6SysLogHandlerTest, self).setUp()
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.server_class.address_family = socket.AF_INET
         super(IPv6SysLogHandlerTest, self).tearDown()
 
-class HTTPHandlerTest(BaseTest):
+kundi HTTPHandlerTest(BaseTest):
     """Test for HTTPHandler."""
 
-    def setUp(self):
+    eleza setUp(self):
         """Set up an HTTP server to receive log messages, and a HTTPHandler
         pointing to that server's address and port."""
         BaseTest.setUp(self)
         self.handled = threading.Event()
 
-    def handle_request(self, request):
+    eleza handle_request(self, request):
         self.command = request.command
         self.log_data = urlparse(request.path)
-        if self.command == 'POST':
+        ikiwa self.command == 'POST':
             try:
                 rlen = int(request.headers['Content-Length'])
                 self.post_data = request.rfile.read(rlen)
@@ -1953,14 +1953,14 @@ class HTTPHandlerTest(BaseTest):
         request.end_headers()
         self.handled.set()
 
-    def test_output(self):
+    eleza test_output(self):
         # The log message sent to the HTTPHandler is properly received.
         logger = logging.getLogger("http")
         root_logger = self.root_logger
         root_logger.removeHandler(self.root_logger.handlers[0])
         for secure in (False, True):
             addr = ('localhost', 0)
-            if secure:
+            ikiwa secure:
                 try:
                     agiza ssl
                 except ImportError:
@@ -1996,7 +1996,7 @@ class HTTPHandlerTest(BaseTest):
                 self.handled.wait()
                 self.assertEqual(self.log_data.path, '/frob')
                 self.assertEqual(self.command, method)
-                if method == 'GET':
+                ikiwa method == 'GET':
                     d = parse_qs(self.log_data.query)
                 else:
                     d = parse_qs(self.post_data.decode('utf-8'))
@@ -2008,37 +2008,37 @@ class HTTPHandlerTest(BaseTest):
             self.root_logger.removeHandler(self.h_hdlr)
             self.h_hdlr.close()
 
-class MemoryTest(BaseTest):
+kundi MemoryTest(BaseTest):
 
     """Test memory persistence of logger objects."""
 
-    def setUp(self):
+    eleza setUp(self):
         """Create a dict to remember potentially destroyed objects."""
         BaseTest.setUp(self)
         self._survivors = {}
 
-    def _watch_for_survival(self, *args):
+    eleza _watch_for_survival(self, *args):
         """Watch the given objects for survival, by creating weakrefs to
         them."""
         for obj in args:
             key = id(obj), repr(obj)
             self._survivors[key] = weakref.ref(obj)
 
-    def _assertTruesurvival(self):
+    eleza _assertTruesurvival(self):
         """Assert that all objects watched for survival have survived."""
         # Trigger cycle breaking.
         gc.collect()
         dead = []
         for (id_, repr_), ref in self._survivors.items():
-            if ref() is None:
+            ikiwa ref() is None:
                 dead.append(repr_)
-        if dead:
+        ikiwa dead:
             self.fail("%d objects should have survived "
                 "but have been destroyed: %s" % (len(dead), ", ".join(dead)))
 
-    def test_persistent_loggers(self):
+    eleza test_persistent_loggers(self):
         # Logger objects are persistent and retain their configuration, even
-        #  if visible references are destroyed.
+        #  ikiwa visible references are destroyed.
         self.root_logger.setLevel(logging.INFO)
         foo = logging.getLogger("foo")
         self._watch_for_survival(foo)
@@ -2060,8 +2060,8 @@ class MemoryTest(BaseTest):
         ])
 
 
-class EncodingTest(BaseTest):
-    def test_encoding_plain_file(self):
+kundi EncodingTest(BaseTest):
+    eleza test_encoding_plain_file(self):
         # In Python 2.x, a plain file object is treated as having no encoding.
         log = logging.getLogger("test")
         fd, fn = tempfile.mkstemp(".log", "test_logging-1-")
@@ -2084,15 +2084,15 @@ class EncodingTest(BaseTest):
             finally:
                 f.close()
         finally:
-            if os.path.isfile(fn):
+            ikiwa os.path.isfile(fn):
                 os.remove(fn)
 
-    def test_encoding_cyrillic_unicode(self):
+    eleza test_encoding_cyrillic_unicode(self):
         log = logging.getLogger("test")
         # Get a message in Unicode: Do svidanya in Cyrillic (meaning goodbye)
         message = '\u0434\u043e \u0441\u0432\u0438\u0434\u0430\u043d\u0438\u044f'
         # Ensure it's written in a Cyrillic encoding
-        writer_class = codecs.getwriter('cp1251')
+        writer_kundi = codecs.getwriter('cp1251')
         writer_class.encoding = 'cp1251'
         stream = io.BytesIO()
         writer = writer_class(stream, 'strict')
@@ -2109,9 +2109,9 @@ class EncodingTest(BaseTest):
         self.assertEqual(s, b'\xe4\xee \xf1\xe2\xe8\xe4\xe0\xed\xe8\xff\n')
 
 
-class WarningsTest(BaseTest):
+kundi WarningsTest(BaseTest):
 
-    def test_warnings(self):
+    eleza test_warnings(self):
         with warnings.catch_warnings():
             logging.captureWarnings(True)
             self.addCleanup(logging.captureWarnings, False)
@@ -2126,7 +2126,7 @@ class WarningsTest(BaseTest):
             h.close()
             self.assertGreater(s.find("UserWarning: I'm warning you...\n"), 0)
 
-            # See if an explicit file uses the original implementation
+            # See ikiwa an explicit file uses the original implementation
             a_file = io.StringIO()
             warnings.showwarning("Explicit", UserWarning, "dummy.py", 42,
                                  a_file, "Dummy line")
@@ -2135,7 +2135,7 @@ class WarningsTest(BaseTest):
             self.assertEqual(s,
                 "dummy.py:42: UserWarning: Explicit\n  Dummy line\n")
 
-    def test_warnings_no_handlers(self):
+    eleza test_warnings_no_handlers(self):
         with warnings.catch_warnings():
             logging.captureWarnings(True)
             self.addCleanup(logging.captureWarnings, False)
@@ -2149,20 +2149,20 @@ class WarningsTest(BaseTest):
             self.assertIsInstance(logger.handlers[0], logging.NullHandler)
 
 
-def formatFunc(format, datefmt=None):
-    return logging.Formatter(format, datefmt)
+eleza formatFunc(format, datefmt=None):
+    rudisha logging.Formatter(format, datefmt)
 
-class myCustomFormatter:
-    def __init__(self, fmt, datefmt=None):
+kundi myCustomFormatter:
+    eleza __init__(self, fmt, datefmt=None):
         pass
 
-def handlerFunc():
-    return logging.StreamHandler()
+eleza handlerFunc():
+    rudisha logging.StreamHandler()
 
-class CustomHandler(logging.StreamHandler):
+kundi CustomHandler(logging.StreamHandler):
     pass
 
-class ConfigDictTest(BaseTest):
+kundi ConfigDictTest(BaseTest):
 
     """Reading logging config kutoka a dictionary."""
 
@@ -2354,7 +2354,7 @@ class ConfigDictTest(BaseTest):
         },
     }
 
-    # config4 specifies a custom formatter class to be loaded
+    # config4 specifies a custom formatter kundi to be loaded
     config4 = {
         'version': 1,
         'formatters': {
@@ -2411,7 +2411,7 @@ class ConfigDictTest(BaseTest):
         },
     }
 
-    # config5 specifies a custom handler class to be loaded
+    # config5 specifies a custom handler kundi to be loaded
     config5 = {
         'version': 1,
         'formatters': {
@@ -2438,7 +2438,7 @@ class ConfigDictTest(BaseTest):
         },
     }
 
-    # config6 specifies a custom handler class to be loaded
+    # config6 specifies a custom handler kundi to be loaded
     # but has bad arguments
     config6 = {
         'version': 1,
@@ -2796,7 +2796,7 @@ class ConfigDictTest(BaseTest):
         }
     }
 
-    # Configuration with custom logging.Formatter subclass as '()' key and 'validate' set to False
+    # Configuration with custom logging.Formatter subkundi as '()' key and 'validate' set to False
     custom_formatter_class_validate = {
         'version': 1,
         'formatters': {
@@ -2823,7 +2823,7 @@ class ConfigDictTest(BaseTest):
         }
     }
 
-    # Configuration with custom logging.Formatter subclass as 'class' key and 'validate' set to False
+    # Configuration with custom logging.Formatter subkundi as 'class' key and 'validate' set to False
     custom_formatter_class_validate2 = {
         'version': 1,
         'formatters': {
@@ -2850,7 +2850,7 @@ class ConfigDictTest(BaseTest):
         }
     }
 
-    # Configuration with custom class that is not inherited kutoka logging.Formatter
+    # Configuration with custom kundi that is not inherited kutoka logging.Formatter
     custom_formatter_class_validate3 = {
         'version': 1,
         'formatters': {
@@ -2904,10 +2904,10 @@ class ConfigDictTest(BaseTest):
         }
     }
 
-    def apply_config(self, conf):
+    eleza apply_config(self, conf):
         logging.config.dictConfig(conf)
 
-    def test_config0_ok(self):
+    eleza test_config0_ok(self):
         # A simple config which overrides the default settings.
         with support.captured_stdout() as output:
             self.apply_config(self.config0)
@@ -2922,7 +2922,7 @@ class ConfigDictTest(BaseTest):
             # Original logger output is empty.
             self.assert_log_lines([])
 
-    def test_config1_ok(self, config=config1):
+    eleza test_config1_ok(self, config=config1):
         # A config defining a sub-parser as well.
         with support.captured_stdout() as output:
             self.apply_config(config)
@@ -2937,23 +2937,23 @@ class ConfigDictTest(BaseTest):
             # Original logger output is empty.
             self.assert_log_lines([])
 
-    def test_config2_failure(self):
+    eleza test_config2_failure(self):
         # A simple config which overrides the default settings.
         self.assertRaises(Exception, self.apply_config, self.config2)
 
-    def test_config2a_failure(self):
+    eleza test_config2a_failure(self):
         # A simple config which overrides the default settings.
         self.assertRaises(Exception, self.apply_config, self.config2a)
 
-    def test_config2b_failure(self):
+    eleza test_config2b_failure(self):
         # A simple config which overrides the default settings.
         self.assertRaises(Exception, self.apply_config, self.config2b)
 
-    def test_config3_failure(self):
+    eleza test_config3_failure(self):
         # A simple config which overrides the default settings.
         self.assertRaises(Exception, self.apply_config, self.config3)
 
-    def test_config4_ok(self):
+    eleza test_config4_ok(self):
         # A config specifying a custom formatter class.
         with support.captured_stdout() as output:
             self.apply_config(self.config4)
@@ -2968,7 +2968,7 @@ class ConfigDictTest(BaseTest):
             # Original logger output is empty
             self.assert_log_lines([])
 
-    def test_config4a_ok(self):
+    eleza test_config4a_ok(self):
         # A config specifying a custom formatter class.
         with support.captured_stdout() as output:
             self.apply_config(self.config4a)
@@ -2983,13 +2983,13 @@ class ConfigDictTest(BaseTest):
             # Original logger output is empty
             self.assert_log_lines([])
 
-    def test_config5_ok(self):
+    eleza test_config5_ok(self):
         self.test_config1_ok(config=self.config5)
 
-    def test_config6_failure(self):
+    eleza test_config6_failure(self):
         self.assertRaises(Exception, self.apply_config, self.config6)
 
-    def test_config7_ok(self):
+    eleza test_config7_ok(self):
         with support.captured_stdout() as output:
             self.apply_config(self.config1)
             logger = logging.getLogger("compiler.parser")
@@ -3018,7 +3018,7 @@ class ConfigDictTest(BaseTest):
             self.assert_log_lines([])
 
     # Same as test_config_7_ok but don't disable old loggers.
-    def test_config_8_ok(self):
+    eleza test_config_8_ok(self):
         with support.captured_stdout() as output:
             self.apply_config(self.config1)
             logger = logging.getLogger("compiler.parser")
@@ -3051,7 +3051,7 @@ class ConfigDictTest(BaseTest):
             # Original logger output is empty.
             self.assert_log_lines([])
 
-    def test_config_8a_ok(self):
+    eleza test_config_8a_ok(self):
         with support.captured_stdout() as output:
             self.apply_config(self.config1a)
             logger = logging.getLogger("compiler.parser")
@@ -3094,7 +3094,7 @@ class ConfigDictTest(BaseTest):
             # Original logger output is empty.
             self.assert_log_lines([])
 
-    def test_config_9_ok(self):
+    eleza test_config_9_ok(self):
         with support.captured_stdout() as output:
             self.apply_config(self.config9)
             logger = logging.getLogger("compiler.parser")
@@ -3112,7 +3112,7 @@ class ConfigDictTest(BaseTest):
                 ('INFO', '3'),
             ], stream=output)
 
-    def test_config_10_ok(self):
+    eleza test_config_10_ok(self):
         with support.captured_stdout() as output:
             self.apply_config(self.config10)
             logger = logging.getLogger("compiler.parser")
@@ -3131,16 +3131,16 @@ class ConfigDictTest(BaseTest):
                 ('ERROR', '4'),
             ], stream=output)
 
-    def test_config11_ok(self):
+    eleza test_config11_ok(self):
         self.test_config1_ok(self.config11)
 
-    def test_config12_failure(self):
+    eleza test_config12_failure(self):
         self.assertRaises(Exception, self.apply_config, self.config12)
 
-    def test_config13_failure(self):
+    eleza test_config13_failure(self):
         self.assertRaises(Exception, self.apply_config, self.config13)
 
-    def test_config14_ok(self):
+    eleza test_config14_ok(self):
         with support.captured_stdout() as output:
             self.apply_config(self.config14)
             h = logging._handlers['hand1']
@@ -3149,9 +3149,9 @@ class ConfigDictTest(BaseTest):
             logging.warning('Exclamation')
             self.assertTrue(output.getvalue().endswith('Exclamation!\n'))
 
-    def test_config15_ok(self):
+    eleza test_config15_ok(self):
 
-        def cleanup(h1, fn):
+        eleza cleanup(h1, fn):
             h1.close()
             os.remove(fn)
 
@@ -3178,7 +3178,7 @@ class ConfigDictTest(BaseTest):
         handler = logging.root.handlers[0]
         self.addCleanup(cleanup, handler, fn)
 
-    def setup_via_listener(self, text, verify=None):
+    eleza setup_via_listener(self, text, verify=None):
         text = text.encode("utf-8")
         # Ask for a randomly assigned port (by using port 0)
         t = logging.config.listen(0, verify)
@@ -3206,7 +3206,7 @@ class ConfigDictTest(BaseTest):
             logging.config.stopListening()
             support.join_thread(t, 2.0)
 
-    def test_listen_config_10_ok(self):
+    eleza test_listen_config_10_ok(self):
         with support.captured_stdout() as output:
             self.setup_via_listener(json.dumps(self.config10))
             logger = logging.getLogger("compiler.parser")
@@ -3225,7 +3225,7 @@ class ConfigDictTest(BaseTest):
                 ('ERROR', '4'),
             ], stream=output)
 
-    def test_listen_config_1_ok(self):
+    eleza test_listen_config_1_ok(self):
         with support.captured_stdout() as output:
             self.setup_via_listener(textwrap.dedent(ConfigFileTest.config1))
             logger = logging.getLogger("compiler.parser")
@@ -3239,13 +3239,13 @@ class ConfigDictTest(BaseTest):
             # Original logger output is empty.
             self.assert_log_lines([])
 
-    def test_listen_verify(self):
+    eleza test_listen_verify(self):
 
-        def verify_fail(stuff):
-            return None
+        eleza verify_fail(stuff):
+            rudisha None
 
-        def verify_reverse(stuff):
-            return stuff[::-1]
+        eleza verify_reverse(stuff):
+            rudisha stuff[::-1]
 
         logger = logging.getLogger("compiler.parser")
         to_send = textwrap.dedent(ConfigFileTest.config1)
@@ -3301,10 +3301,10 @@ class ConfigDictTest(BaseTest):
             ('ERROR', '2'),
         ], pat=r"^[\w.]+ -> (\w+): (\d+)$")
 
-    def test_out_of_order(self):
+    eleza test_out_of_order(self):
         self.assertRaises(ValueError, self.apply_config, self.out_of_order)
 
-    def test_out_of_order_with_dollar_style(self):
+    eleza test_out_of_order_with_dollar_style(self):
         config = copy.deepcopy(self.out_of_order)
         config['formatters']['mySimpleFormatter']['format'] = "${asctime} (${name}) ${levelname}: ${message}"
 
@@ -3314,17 +3314,17 @@ class ConfigDictTest(BaseTest):
         self.assertIsInstance(handler.formatter._style,
                               logging.StringTemplateStyle)
 
-    def test_custom_formatter_class_with_validate(self):
+    eleza test_custom_formatter_class_with_validate(self):
         self.apply_config(self.custom_formatter_class_validate)
         handler = logging.getLogger("my_test_logger_custom_formatter").handlers[0]
         self.assertIsInstance(handler.formatter, ExceptionFormatter)
 
-    def test_custom_formatter_class_with_validate2(self):
+    eleza test_custom_formatter_class_with_validate2(self):
         self.apply_config(self.custom_formatter_class_validate2)
         handler = logging.getLogger("my_test_logger_custom_formatter").handlers[0]
         self.assertIsInstance(handler.formatter, ExceptionFormatter)
 
-    def test_custom_formatter_class_with_validate2_with_wrong_fmt(self):
+    eleza test_custom_formatter_class_with_validate2_with_wrong_fmt(self):
         config = self.custom_formatter_class_validate.copy()
         config['formatters']['form1']['style'] = "$"
 
@@ -3333,13 +3333,13 @@ class ConfigDictTest(BaseTest):
         handler = logging.getLogger("my_test_logger_custom_formatter").handlers[0]
         self.assertIsInstance(handler.formatter, ExceptionFormatter)
 
-    def test_custom_formatter_class_with_validate3(self):
+    eleza test_custom_formatter_class_with_validate3(self):
         self.assertRaises(ValueError, self.apply_config, self.custom_formatter_class_validate3)
 
-    def test_custom_formatter_function_with_validate(self):
+    eleza test_custom_formatter_function_with_validate(self):
         self.assertRaises(ValueError, self.apply_config, self.custom_formatter_with_function)
 
-    def test_baseconfig(self):
+    eleza test_baseconfig(self):
         d = {
             'atuple': (1, 2, 3),
             'alist': ['a', 'b', 'c'],
@@ -3361,12 +3361,12 @@ class ConfigDictTest(BaseTest):
         self.assertRaises(ValueError, bc.convert, 'cfg://!')
         self.assertRaises(KeyError, bc.convert, 'cfg://adict[2]')
 
-class ManagerTest(BaseTest):
-    def test_manager_loggerclass(self):
+kundi ManagerTest(BaseTest):
+    eleza test_manager_loggerclass(self):
         logged = []
 
-        class MyLogger(logging.Logger):
-            def _log(self, level, msg, args, exc_info=None, extra=None):
+        kundi MyLogger(logging.Logger):
+            eleza _log(self, level, msg, args, exc_info=None, extra=None):
                 logged.append(msg)
 
         man = logging.Manager(None)
@@ -3378,14 +3378,14 @@ class ManagerTest(BaseTest):
 
         self.assertEqual(logged, ['should appear in logged'])
 
-    def test_set_log_record_factory(self):
+    eleza test_set_log_record_factory(self):
         man = logging.Manager(None)
         expected = object()
         man.setLogRecordFactory(expected)
         self.assertEqual(man.logRecordFactory, expected)
 
-class ChildLoggerTest(BaseTest):
-    def test_child_loggers(self):
+kundi ChildLoggerTest(BaseTest):
+    eleza test_child_loggers(self):
         r = logging.getLogger()
         l1 = logging.getLogger('abc')
         l2 = logging.getLogger('def.ghi')
@@ -3401,35 +3401,35 @@ class ChildLoggerTest(BaseTest):
         self.assertIs(c2, c3)
 
 
-class DerivedLogRecord(logging.LogRecord):
+kundi DerivedLogRecord(logging.LogRecord):
     pass
 
-class LogRecordFactoryTest(BaseTest):
+kundi LogRecordFactoryTest(BaseTest):
 
-    def setUp(self):
-        class CheckingFilter(logging.Filter):
-            def __init__(self, cls):
+    eleza setUp(self):
+        kundi CheckingFilter(logging.Filter):
+            eleza __init__(self, cls):
                 self.cls = cls
 
-            def filter(self, record):
+            eleza filter(self, record):
                 t = type(record)
-                if t is not self.cls:
+                ikiwa t is not self.cls:
                     msg = 'Unexpected LogRecord type %s, expected %s' % (t,
                             self.cls)
                     raise TypeError(msg)
-                return True
+                rudisha True
 
         BaseTest.setUp(self)
         self.filter = CheckingFilter(DerivedLogRecord)
         self.root_logger.addFilter(self.filter)
         self.orig_factory = logging.getLogRecordFactory()
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.root_logger.removeFilter(self.filter)
         BaseTest.tearDown(self)
         logging.setLogRecordFactory(self.orig_factory)
 
-    def test_logrecord_class(self):
+    eleza test_logrecord_class(self):
         self.assertRaises(TypeError, self.root_logger.warning,
                           self.next_message())
         logging.setLogRecordFactory(DerivedLogRecord)
@@ -3439,11 +3439,11 @@ class LogRecordFactoryTest(BaseTest):
         ])
 
 
-class QueueHandlerTest(BaseTest):
+kundi QueueHandlerTest(BaseTest):
     # Do not bother with a logger name group.
     expected_log_pat = r"^[\w.]+ -> (\w+): (\d+)$"
 
-    def setUp(self):
+    eleza setUp(self):
         BaseTest.setUp(self)
         self.queue = queue.Queue(-1)
         self.que_hdlr = logging.handlers.QueueHandler(self.queue)
@@ -3453,11 +3453,11 @@ class QueueHandlerTest(BaseTest):
         self.que_logger.setLevel(logging.WARNING)
         self.que_logger.addHandler(self.que_hdlr)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.que_hdlr.close()
         BaseTest.tearDown(self)
 
-    def test_queue_handler(self):
+    eleza test_queue_handler(self):
         self.que_logger.debug(self.next_message())
         self.assertRaises(queue.Empty, self.queue.get_nowait)
         self.que_logger.info(self.next_message())
@@ -3469,7 +3469,7 @@ class QueueHandlerTest(BaseTest):
         self.assertEqual(data.name, self.que_logger.name)
         self.assertEqual((data.msg, data.args), (msg, None))
 
-    def test_formatting(self):
+    eleza test_formatting(self):
         msg = self.next_message()
         levelname = logging.getLevelName(logging.WARNING)
         log_format_str = '{name} -> {levelname}: {message}'
@@ -3484,7 +3484,7 @@ class QueueHandlerTest(BaseTest):
 
     @unittest.skipUnless(hasattr(logging.handlers, 'QueueListener'),
                          'logging.handlers.QueueListener required for this test')
-    def test_queue_listener(self):
+    eleza test_queue_listener(self):
         handler = support.TestHandler(support.Matcher())
         listener = logging.handlers.QueueListener(self.queue, handler)
         listener.start()
@@ -3519,7 +3519,7 @@ class QueueHandlerTest(BaseTest):
 
     @unittest.skipUnless(hasattr(logging.handlers, 'QueueListener'),
                          'logging.handlers.QueueListener required for this test')
-    def test_queue_listener_with_StreamHandler(self):
+    eleza test_queue_listener_with_StreamHandler(self):
         # Test that traceback only appends once (bpo-34334).
         listener = logging.handlers.QueueListener(self.queue, self.root_hdlr)
         listener.start()
@@ -3533,7 +3533,7 @@ class QueueHandlerTest(BaseTest):
 
     @unittest.skipUnless(hasattr(logging.handlers, 'QueueListener'),
                          'logging.handlers.QueueListener required for this test')
-    def test_queue_listener_with_multiple_handlers(self):
+    eleza test_queue_listener_with_multiple_handlers(self):
         # Test that queue handler format doesn't affect other handler formats (bpo-35726).
         self.que_hdlr.setFormatter(self.root_formatter)
         self.que_logger.addHandler(self.root_hdlr)
@@ -3544,11 +3544,11 @@ class QueueHandlerTest(BaseTest):
         listener.stop()
         self.assertEqual(self.stream.getvalue().strip(), "que -> ERROR: error")
 
-if hasattr(logging.handlers, 'QueueListener'):
+ikiwa hasattr(logging.handlers, 'QueueListener'):
     agiza multiprocessing
     kutoka unittest.mock agiza patch
 
-    class QueueListenerTest(BaseTest):
+    kundi QueueListenerTest(BaseTest):
         """
         Tests based on patch submitted for issue #27930. Ensure that
         QueueListener handles all log messages.
@@ -3557,7 +3557,7 @@ if hasattr(logging.handlers, 'QueueListener'):
         repeat = 20
 
         @staticmethod
-        def setup_and_log(log_queue, ident):
+        eleza setup_and_log(log_queue, ident):
             """
             Creates a logger with a QueueHandler that logs to a queue read by a
             QueueListener. Starts the listener, logs five messages, and stops
@@ -3581,7 +3581,7 @@ if hasattr(logging.handlers, 'QueueListener'):
             handler.close()
 
         @patch.object(logging.handlers.QueueListener, 'handle')
-        def test_handle_called_with_queue_queue(self, mock_handle):
+        eleza test_handle_called_with_queue_queue(self, mock_handle):
             for i in range(self.repeat):
                 log_queue = queue.Queue()
                 self.setup_and_log(log_queue, '%s_%s' % (self.id(), i))
@@ -3589,7 +3589,7 @@ if hasattr(logging.handlers, 'QueueListener'):
                              'correct number of handled log messages')
 
         @patch.object(logging.handlers.QueueListener, 'handle')
-        def test_handle_called_with_mp_queue(self, mock_handle):
+        eleza test_handle_called_with_mp_queue(self, mock_handle):
             # Issue 28668: The multiprocessing (mp) module is not functional
             # when the mp.synchronize module cannot be imported.
             support.import_module('multiprocessing.synchronize')
@@ -3602,14 +3602,14 @@ if hasattr(logging.handlers, 'QueueListener'):
                              'correct number of handled log messages')
 
         @staticmethod
-        def get_all_from_queue(log_queue):
+        eleza get_all_kutoka_queue(log_queue):
             try:
                 while True:
                     yield log_queue.get_nowait()
             except queue.Empty:
-                return []
+                rudisha []
 
-        def test_no_messages_in_queue_after_stop(self):
+        eleza test_no_messages_in_queue_after_stop(self):
             """
             Five messages are logged then the QueueListener is stopped. This
             test then gets everything off the queue. Failure of this test
@@ -3623,17 +3623,17 @@ if hasattr(logging.handlers, 'QueueListener'):
                 queue = multiprocessing.Queue()
                 self.setup_and_log(queue, '%s_%s' %(self.id(), i))
                 # time.sleep(1)
-                items = list(self.get_all_from_queue(queue))
+                items = list(self.get_all_kutoka_queue(queue))
                 queue.close()
                 queue.join_thread()
 
                 expected = [[], [logging.handlers.QueueListener._sentinel]]
                 self.assertIn(items, expected,
                               'Found unexpected messages in queue: %s' % (
-                                    [m.msg if isinstance(m, logging.LogRecord)
+                                    [m.msg ikiwa isinstance(m, logging.LogRecord)
                                      else m for m in items]))
 
-        def test_calls_task_done_after_stop(self):
+        eleza test_calls_task_done_after_stop(self):
             # Issue 36813: Make sure queue.join does not deadlock.
             log_queue = queue.Queue()
             listener = logging.handlers.QueueListener(log_queue)
@@ -3646,19 +3646,19 @@ if hasattr(logging.handlers, 'QueueListener'):
 
 ZERO = datetime.timedelta(0)
 
-class UTC(datetime.tzinfo):
-    def utcoffset(self, dt):
-        return ZERO
+kundi UTC(datetime.tzinfo):
+    eleza utcoffset(self, dt):
+        rudisha ZERO
 
     dst = utcoffset
 
-    def tzname(self, dt):
-        return 'UTC'
+    eleza tzname(self, dt):
+        rudisha 'UTC'
 
 utc = UTC()
 
-class FormatterTest(unittest.TestCase):
-    def setUp(self):
+kundi FormatterTest(unittest.TestCase):
+    eleza setUp(self):
         self.common = {
             'name': 'formatter.test',
             'level': logging.DEBUG,
@@ -3672,19 +3672,19 @@ class FormatterTest(unittest.TestCase):
         self.variants = {
         }
 
-    def get_record(self, name=None):
+    eleza get_record(self, name=None):
         result = dict(self.common)
-        if name is not None:
+        ikiwa name is not None:
             result.update(self.variants[name])
-        return logging.makeLogRecord(result)
+        rudisha logging.makeLogRecord(result)
 
-    def assert_error_message(self, exception, message, *args, **kwargs):
+    eleza assert_error_message(self, exception, message, *args, **kwargs):
         try:
             self.assertRaises(exception, *args, **kwargs)
         except exception as e:
             self.assertEqual(message, e.message)
 
-    def test_percent(self):
+    eleza test_percent(self):
         # Test %-formatting
         r = self.get_record()
         f = logging.Formatter('${%(message)s}')
@@ -3699,7 +3699,7 @@ class FormatterTest(unittest.TestCase):
         f = logging.Formatter('%(asctime)#15s')
         self.assertTrue(f.usesTime())
 
-    def test_braces(self):
+    eleza test_braces(self):
         # Test {}-formatting
         r = self.get_record()
         f = logging.Formatter('$%{message}%$', style='{')
@@ -3715,7 +3715,7 @@ class FormatterTest(unittest.TestCase):
         f = logging.Formatter('{asctime:15}', style='{')
         self.assertTrue(f.usesTime())
 
-    def test_dollars(self):
+    eleza test_dollars(self):
         # Test $-formatting
         r = self.get_record()
         f = logging.Formatter('${message}', style='$')
@@ -3736,7 +3736,7 @@ class FormatterTest(unittest.TestCase):
         f = logging.Formatter('${asctime}--', style='$')
         self.assertTrue(f.usesTime())
 
-    def test_format_validate(self):
+    eleza test_format_validate(self):
         # Check correct formatting
         # Percentage style
         f = logging.Formatter("%(levelname)-15s - %(message) 5s - %(process)03d - %(module) - %(asctime)*.3s")
@@ -3886,10 +3886,10 @@ class FormatterTest(unittest.TestCase):
         )
         self.assertRaises(ValueError, logging.Formatter, '${asctime', style='$')
 
-    def test_invalid_style(self):
+    eleza test_invalid_style(self):
         self.assertRaises(ValueError, logging.Formatter, None, None, 'x')
 
-    def test_time(self):
+    eleza test_time(self):
         r = self.get_record()
         dt = datetime.datetime(1993, 4, 21, 8, 3, 0, 0, utc)
         # We use None to indicate we want the local timezone
@@ -3903,34 +3903,34 @@ class FormatterTest(unittest.TestCase):
         f.format(r)
         self.assertEqual(r.asctime, '1993-04-21 08:03:00,123')
 
-class TestBufferingFormatter(logging.BufferingFormatter):
-    def formatHeader(self, records):
-        return '[(%d)' % len(records)
+kundi TestBufferingFormatter(logging.BufferingFormatter):
+    eleza formatHeader(self, records):
+        rudisha '[(%d)' % len(records)
 
-    def formatFooter(self, records):
-        return '(%d)]' % len(records)
+    eleza formatFooter(self, records):
+        rudisha '(%d)]' % len(records)
 
-class BufferingFormatterTest(unittest.TestCase):
-    def setUp(self):
+kundi BufferingFormatterTest(unittest.TestCase):
+    eleza setUp(self):
         self.records = [
             logging.makeLogRecord({'msg': 'one'}),
             logging.makeLogRecord({'msg': 'two'}),
         ]
 
-    def test_default(self):
+    eleza test_default(self):
         f = logging.BufferingFormatter()
         self.assertEqual('', f.format([]))
         self.assertEqual('onetwo', f.format(self.records))
 
-    def test_custom(self):
+    eleza test_custom(self):
         f = TestBufferingFormatter()
         self.assertEqual('[(2)onetwo(2)]', f.format(self.records))
         lf = logging.Formatter('<%(message)s>')
         f = TestBufferingFormatter(lf)
         self.assertEqual('[(2)<one><two>(2)]', f.format(self.records))
 
-class ExceptionTest(BaseTest):
-    def test_formatting(self):
+kundi ExceptionTest(BaseTest):
+    eleza test_formatting(self):
         r = self.root_logger
         h = RecordingHandler()
         r.addHandler(h)
@@ -3951,8 +3951,8 @@ class ExceptionTest(BaseTest):
                                             'stack_info=True)'))
 
 
-class LastResortTest(BaseTest):
-    def test_last_resort(self):
+kundi LastResortTest(BaseTest):
+    eleza test_last_resort(self):
         # Test the last resort handler
         root = self.root_logger
         root.removeHandler(self.root_hdlr)
@@ -3990,46 +3990,46 @@ class LastResortTest(BaseTest):
             logging.raiseExceptions = old_raise_exceptions
 
 
-class FakeHandler:
+kundi FakeHandler:
 
-    def __init__(self, identifier, called):
+    eleza __init__(self, identifier, called):
         for method in ('acquire', 'flush', 'close', 'release'):
             setattr(self, method, self.record_call(identifier, method, called))
 
-    def record_call(self, identifier, method_name, called):
-        def inner():
+    eleza record_call(self, identifier, method_name, called):
+        eleza inner():
             called.append('{} - {}'.format(identifier, method_name))
-        return inner
+        rudisha inner
 
 
-class RecordingHandler(logging.NullHandler):
+kundi RecordingHandler(logging.NullHandler):
 
-    def __init__(self, *args, **kwargs):
+    eleza __init__(self, *args, **kwargs):
         super(RecordingHandler, self).__init__(*args, **kwargs)
         self.records = []
 
-    def handle(self, record):
+    eleza handle(self, record):
         """Keep track of all the emitted records."""
         self.records.append(record)
 
 
-class ShutdownTest(BaseTest):
+kundi ShutdownTest(BaseTest):
 
     """Test suite for the shutdown method."""
 
-    def setUp(self):
+    eleza setUp(self):
         super(ShutdownTest, self).setUp()
         self.called = []
 
         raise_exceptions = logging.raiseExceptions
         self.addCleanup(setattr, logging, 'raiseExceptions', raise_exceptions)
 
-    def raise_error(self, error):
-        def inner():
+    eleza raise_error(self, error):
+        eleza inner():
             raise error()
-        return inner
+        rudisha inner
 
-    def test_no_failure(self):
+    eleza test_no_failure(self):
         # create some fake handlers
         handler0 = FakeHandler(0, self.called)
         handler1 = FakeHandler(1, self.called)
@@ -4045,7 +4045,7 @@ class ShutdownTest(BaseTest):
                     '0 - acquire', '0 - flush', '0 - close', '0 - release']
         self.assertEqual(expected, self.called)
 
-    def _test_with_failure_in_method(self, method, error):
+    eleza _test_with_failure_in_method(self, method, error):
         handler = FakeHandler(0, self.called)
         setattr(handler, method, self.raise_error(error))
         handlers = [logging.weakref.ref(handler)]
@@ -4054,57 +4054,57 @@ class ShutdownTest(BaseTest):
 
         self.assertEqual('0 - release', self.called[-1])
 
-    def test_with_ioerror_in_acquire(self):
+    eleza test_with_ioerror_in_acquire(self):
         self._test_with_failure_in_method('acquire', OSError)
 
-    def test_with_ioerror_in_flush(self):
+    eleza test_with_ioerror_in_flush(self):
         self._test_with_failure_in_method('flush', OSError)
 
-    def test_with_ioerror_in_close(self):
+    eleza test_with_ioerror_in_close(self):
         self._test_with_failure_in_method('close', OSError)
 
-    def test_with_valueerror_in_acquire(self):
+    eleza test_with_valueerror_in_acquire(self):
         self._test_with_failure_in_method('acquire', ValueError)
 
-    def test_with_valueerror_in_flush(self):
+    eleza test_with_valueerror_in_flush(self):
         self._test_with_failure_in_method('flush', ValueError)
 
-    def test_with_valueerror_in_close(self):
+    eleza test_with_valueerror_in_close(self):
         self._test_with_failure_in_method('close', ValueError)
 
-    def test_with_other_error_in_acquire_without_raise(self):
+    eleza test_with_other_error_in_acquire_without_raise(self):
         logging.raiseExceptions = False
         self._test_with_failure_in_method('acquire', IndexError)
 
-    def test_with_other_error_in_flush_without_raise(self):
+    eleza test_with_other_error_in_flush_without_raise(self):
         logging.raiseExceptions = False
         self._test_with_failure_in_method('flush', IndexError)
 
-    def test_with_other_error_in_close_without_raise(self):
+    eleza test_with_other_error_in_close_without_raise(self):
         logging.raiseExceptions = False
         self._test_with_failure_in_method('close', IndexError)
 
-    def test_with_other_error_in_acquire_with_raise(self):
+    eleza test_with_other_error_in_acquire_with_raise(self):
         logging.raiseExceptions = True
         self.assertRaises(IndexError, self._test_with_failure_in_method,
                           'acquire', IndexError)
 
-    def test_with_other_error_in_flush_with_raise(self):
+    eleza test_with_other_error_in_flush_with_raise(self):
         logging.raiseExceptions = True
         self.assertRaises(IndexError, self._test_with_failure_in_method,
                           'flush', IndexError)
 
-    def test_with_other_error_in_close_with_raise(self):
+    eleza test_with_other_error_in_close_with_raise(self):
         logging.raiseExceptions = True
         self.assertRaises(IndexError, self._test_with_failure_in_method,
                           'close', IndexError)
 
 
-class ModuleLevelMiscTest(BaseTest):
+kundi ModuleLevelMiscTest(BaseTest):
 
     """Test suite for some module level methods."""
 
-    def test_disable(self):
+    eleza test_disable(self):
         old_disable = logging.root.manager.disable
         # confirm our assumptions are correct
         self.assertEqual(old_disable, 0)
@@ -4118,7 +4118,7 @@ class ModuleLevelMiscTest(BaseTest):
         logging.disable()
         self.assertEqual(logging.root.manager.disable, logging.CRITICAL)
 
-    def _test_log(self, method, level=None):
+    eleza _test_log(self, method, level=None):
         called = []
         support.patch(self, logging, 'basicConfig',
                       lambda *a, **kw: called.append((a, kw)))
@@ -4127,7 +4127,7 @@ class ModuleLevelMiscTest(BaseTest):
         logging.root.addHandler(recording)
 
         log_method = getattr(logging, method)
-        if level is not None:
+        ikiwa level is not None:
             log_method(level, "test me: %r", recording)
         else:
             log_method("test me: %r", recording)
@@ -4136,34 +4136,34 @@ class ModuleLevelMiscTest(BaseTest):
         record = recording.records[0]
         self.assertEqual(record.getMessage(), "test me: %r" % recording)
 
-        expected_level = level if level is not None else getattr(logging, method.upper())
+        expected_level = level ikiwa level is not None else getattr(logging, method.upper())
         self.assertEqual(record.levelno, expected_level)
 
         # basicConfig was not called!
         self.assertEqual(called, [])
 
-    def test_log(self):
+    eleza test_log(self):
         self._test_log('log', logging.ERROR)
 
-    def test_debug(self):
+    eleza test_debug(self):
         self._test_log('debug')
 
-    def test_info(self):
+    eleza test_info(self):
         self._test_log('info')
 
-    def test_warning(self):
+    eleza test_warning(self):
         self._test_log('warning')
 
-    def test_error(self):
+    eleza test_error(self):
         self._test_log('error')
 
-    def test_critical(self):
+    eleza test_critical(self):
         self._test_log('critical')
 
-    def test_set_logger_class(self):
+    eleza test_set_logger_class(self):
         self.assertRaises(TypeError, logging.setLoggerClass, object)
 
-        class MyLogger(logging.Logger):
+        kundi MyLogger(logging.Logger):
             pass
 
         logging.setLoggerClass(MyLogger)
@@ -4172,12 +4172,12 @@ class ModuleLevelMiscTest(BaseTest):
         logging.setLoggerClass(logging.Logger)
         self.assertEqual(logging.getLoggerClass(), logging.Logger)
 
-    def test_subclass_logger_cache(self):
+    eleza test_subclass_logger_cache(self):
         # bpo-37258
         message = []
 
-        class MyLogger(logging.getLoggerClass()):
-            def __init__(self, name='MyLogger', level=logging.NOTSET):
+        kundi MyLogger(logging.getLoggerClass()):
+            eleza __init__(self, name='MyLogger', level=logging.NOTSET):
                 super().__init__(name, level)
                 message.append('initialized')
 
@@ -4204,13 +4204,13 @@ class ModuleLevelMiscTest(BaseTest):
             logging.setLoggerClass(logging.Logger)
 
     @support.requires_type_collecting
-    def test_logging_at_shutdown(self):
+    eleza test_logging_at_shutdown(self):
         # Issue #20037
-        code = """if 1:
+        code = """ikiwa 1:
             agiza logging
 
-            class A:
-                def __del__(self):
+            kundi A:
+                eleza __del__(self):
                     try:
                         raise ValueError("some error")
                     except Exception:
@@ -4222,12 +4222,12 @@ class ModuleLevelMiscTest(BaseTest):
         self.assertIn("exception in __del__", err)
         self.assertIn("ValueError: some error", err)
 
-    def test_recursion_error(self):
+    eleza test_recursion_error(self):
         # Issue 36272
-        code = """if 1:
+        code = """ikiwa 1:
             agiza logging
 
-            def rec():
+            eleza rec():
                 logging.error("foo")
                 rec()
 
@@ -4238,14 +4238,14 @@ class ModuleLevelMiscTest(BaseTest):
         self.assertEqual(rc, 1)
 
 
-class LogRecordTest(BaseTest):
-    def test_str_rep(self):
+kundi LogRecordTest(BaseTest):
+    eleza test_str_rep(self):
         r = logging.makeLogRecord({})
         s = str(r)
         self.assertTrue(s.startswith('<LogRecord: '))
         self.assertTrue(s.endswith('>'))
 
-    def test_dict_arg(self):
+    eleza test_dict_arg(self):
         h = RecordingHandler()
         r = logging.getLogger()
         r.addHandler(h)
@@ -4256,7 +4256,7 @@ class LogRecordTest(BaseTest):
         r.removeHandler(h)
         h.close()
 
-    def test_multiprocessing(self):
+    eleza test_multiprocessing(self):
         r = logging.makeLogRecord({})
         self.assertEqual(r.processName, 'MainProcess')
         try:
@@ -4266,7 +4266,7 @@ class LogRecordTest(BaseTest):
         except ImportError:
             pass
 
-    def test_optional(self):
+    eleza test_optional(self):
         r = logging.makeLogRecord({})
         NOT_NONE = self.assertIsNotNone
         NOT_NONE(r.thread)
@@ -4291,11 +4291,11 @@ class LogRecordTest(BaseTest):
             logging.logProcesses = log_processes
             logging.logMultiprocessing = log_multiprocessing
 
-class BasicConfigTest(unittest.TestCase):
+kundi BasicConfigTest(unittest.TestCase):
 
     """Test suite for logging.basicConfig."""
 
-    def setUp(self):
+    eleza setUp(self):
         super(BasicConfigTest, self).setUp()
         self.handlers = logging.root.handlers
         self.saved_handlers = logging._handlers.copy()
@@ -4304,20 +4304,20 @@ class BasicConfigTest(unittest.TestCase):
         self.addCleanup(self.cleanup)
         logging.root.handlers = []
 
-    def tearDown(self):
+    eleza tearDown(self):
         for h in logging.root.handlers[:]:
             logging.root.removeHandler(h)
             h.close()
         super(BasicConfigTest, self).tearDown()
 
-    def cleanup(self):
+    eleza cleanup(self):
         setattr(logging.root, 'handlers', self.handlers)
         logging._handlers.clear()
         logging._handlers.update(self.saved_handlers)
         logging._handlerList[:] = self.saved_handler_list
         logging.root.setLevel(self.original_logging_level)
 
-    def test_no_kwargs(self):
+    eleza test_no_kwargs(self):
         logging.basicConfig()
 
         # handler defaults to a StreamHandler to sys.stderr
@@ -4337,7 +4337,7 @@ class BasicConfigTest(unittest.TestCase):
         # level is not explicitly set
         self.assertEqual(logging.root.level, self.original_logging_level)
 
-    def test_strformatstyle(self):
+    eleza test_strformatstyle(self):
         with support.captured_stdout() as output:
             logging.basicConfig(stream=sys.stdout, style="{")
             logging.error("Log an error")
@@ -4345,7 +4345,7 @@ class BasicConfigTest(unittest.TestCase):
             self.assertEqual(output.getvalue().strip(),
                 "ERROR:root:Log an error")
 
-    def test_stringtemplatestyle(self):
+    eleza test_stringtemplatestyle(self):
         with support.captured_stdout() as output:
             logging.basicConfig(stream=sys.stdout, style="$")
             logging.error("Log an error")
@@ -4353,9 +4353,9 @@ class BasicConfigTest(unittest.TestCase):
             self.assertEqual(output.getvalue().strip(),
                 "ERROR:root:Log an error")
 
-    def test_filename(self):
+    eleza test_filename(self):
 
-        def cleanup(h1, h2, fn):
+        eleza cleanup(h1, h2, fn):
             h1.close()
             h2.close()
             os.remove(fn)
@@ -4371,9 +4371,9 @@ class BasicConfigTest(unittest.TestCase):
         self.assertEqual(handler.stream.name, expected.stream.name)
         self.addCleanup(cleanup, handler, expected, 'test.log')
 
-    def test_filemode(self):
+    eleza test_filemode(self):
 
-        def cleanup(h1, h2, fn):
+        eleza cleanup(h1, h2, fn):
             h1.close()
             h2.close()
             os.remove(fn)
@@ -4385,7 +4385,7 @@ class BasicConfigTest(unittest.TestCase):
         self.assertEqual(handler.stream.mode, expected.stream.mode)
         self.addCleanup(cleanup, handler, expected, 'test.log')
 
-    def test_stream(self):
+    eleza test_stream(self):
         stream = io.StringIO()
         self.addCleanup(stream.close)
         logging.basicConfig(stream=stream)
@@ -4395,25 +4395,25 @@ class BasicConfigTest(unittest.TestCase):
         self.assertIsInstance(handler, logging.StreamHandler)
         self.assertEqual(handler.stream, stream)
 
-    def test_format(self):
+    eleza test_format(self):
         logging.basicConfig(format='%(asctime)s - %(message)s')
 
         formatter = logging.root.handlers[0].formatter
         self.assertEqual(formatter._style._fmt, '%(asctime)s - %(message)s')
 
-    def test_datefmt(self):
+    eleza test_datefmt(self):
         logging.basicConfig(datefmt='bar')
 
         formatter = logging.root.handlers[0].formatter
         self.assertEqual(formatter.datefmt, 'bar')
 
-    def test_style(self):
+    eleza test_style(self):
         logging.basicConfig(style='$')
 
         formatter = logging.root.handlers[0].formatter
         self.assertIsInstance(formatter._style, logging.StringTemplateStyle)
 
-    def test_level(self):
+    eleza test_level(self):
         old_level = logging.root.level
         self.addCleanup(logging.root.setLevel, old_level)
 
@@ -4423,7 +4423,7 @@ class BasicConfigTest(unittest.TestCase):
         logging.basicConfig(level=58)
         self.assertEqual(logging.root.level, 57)
 
-    def test_incompatible(self):
+    eleza test_incompatible(self):
         assertRaises = self.assertRaises
         handlers = [logging.StreamHandler()]
         stream = sys.stderr
@@ -4435,10 +4435,10 @@ class BasicConfigTest(unittest.TestCase):
                                                       handlers=handlers)
         # Issue 23207: test for invalid kwargs
         assertRaises(ValueError, logging.basicConfig, loglevel=logging.INFO)
-        # Should pop both filename and filemode even if filename is None
+        # Should pop both filename and filemode even ikiwa filename is None
         logging.basicConfig(filename=None, filemode='a')
 
-    def test_handlers(self):
+    eleza test_handlers(self):
         handlers = [
             logging.StreamHandler(),
             logging.StreamHandler(sys.stdout),
@@ -4455,7 +4455,7 @@ class BasicConfigTest(unittest.TestCase):
         self.assertIs(handlers[2].formatter, f)
         self.assertIs(handlers[0].formatter, handlers[1].formatter)
 
-    def test_force(self):
+    eleza test_force(self):
         old_string_io = io.StringIO()
         new_string_io = io.StringIO()
         old_handlers = [logging.StreamHandler(old_string_io)]
@@ -4476,12 +4476,12 @@ class BasicConfigTest(unittest.TestCase):
         self.assertEqual(new_string_io.getvalue().strip(),
                          'WARNING:root:warn\nINFO:root:info')
 
-    def _test_log(self, method, level=None):
+    eleza _test_log(self, method, level=None):
         # logging.root has no handlers so basicConfig should be called
         called = []
 
         old_basic_config = logging.basicConfig
-        def my_basic_config(*a, **kw):
+        eleza my_basic_config(*a, **kw):
             old_basic_config()
             old_level = logging.root.level
             logging.root.setLevel(100)  # avoid having messages in stderr
@@ -4491,7 +4491,7 @@ class BasicConfigTest(unittest.TestCase):
         support.patch(self, logging, 'basicConfig', my_basic_config)
 
         log_method = getattr(logging, method)
-        if level is not None:
+        ikiwa level is not None:
             log_method(level, "test me")
         else:
             log_method("test me")
@@ -4499,27 +4499,27 @@ class BasicConfigTest(unittest.TestCase):
         # basicConfig was called with no arguments
         self.assertEqual(called, [((), {})])
 
-    def test_log(self):
+    eleza test_log(self):
         self._test_log('log', logging.WARNING)
 
-    def test_debug(self):
+    eleza test_debug(self):
         self._test_log('debug')
 
-    def test_info(self):
+    eleza test_info(self):
         self._test_log('info')
 
-    def test_warning(self):
+    eleza test_warning(self):
         self._test_log('warning')
 
-    def test_error(self):
+    eleza test_error(self):
         self._test_log('error')
 
-    def test_critical(self):
+    eleza test_critical(self):
         self._test_log('critical')
 
 
-class LoggerAdapterTest(unittest.TestCase):
-    def setUp(self):
+kundi LoggerAdapterTest(unittest.TestCase):
+    eleza setUp(self):
         super(LoggerAdapterTest, self).setUp()
         old_handler_list = logging._handlerList[:]
 
@@ -4529,14 +4529,14 @@ class LoggerAdapterTest(unittest.TestCase):
         self.addCleanup(self.logger.removeHandler, self.recording)
         self.addCleanup(self.recording.close)
 
-        def cleanup():
+        eleza cleanup():
             logging._handlerList[:] = old_handler_list
 
         self.addCleanup(cleanup)
         self.addCleanup(logging.shutdown)
         self.adapter = logging.LoggerAdapter(logger=self.logger, extra=None)
 
-    def test_exception(self):
+    eleza test_exception(self):
         msg = 'testing exception: %r'
         exc = None
         try:
@@ -4553,7 +4553,7 @@ class LoggerAdapterTest(unittest.TestCase):
         self.assertEqual(record.exc_info,
                          (exc.__class__, exc, exc.__traceback__))
 
-    def test_exception_excinfo(self):
+    eleza test_exception_excinfo(self):
         try:
             1 / 0
         except ZeroDivisionError as e:
@@ -4566,7 +4566,7 @@ class LoggerAdapterTest(unittest.TestCase):
         self.assertEqual(record.exc_info,
                          (exc.__class__, exc, exc.__traceback__))
 
-    def test_critical(self):
+    eleza test_critical(self):
         msg = 'critical test! %r'
         self.adapter.critical(msg, self.recording)
 
@@ -4576,14 +4576,14 @@ class LoggerAdapterTest(unittest.TestCase):
         self.assertEqual(record.msg, msg)
         self.assertEqual(record.args, (self.recording,))
 
-    def test_is_enabled_for(self):
+    eleza test_is_enabled_for(self):
         old_disable = self.adapter.logger.manager.disable
         self.adapter.logger.manager.disable = 33
         self.addCleanup(setattr, self.adapter.logger.manager, 'disable',
                         old_disable)
         self.assertFalse(self.adapter.isEnabledFor(32))
 
-    def test_has_handlers(self):
+    eleza test_has_handlers(self):
         self.assertTrue(self.adapter.hasHandlers())
 
         for handler in self.logger.handlers:
@@ -4592,12 +4592,12 @@ class LoggerAdapterTest(unittest.TestCase):
         self.assertFalse(self.logger.hasHandlers())
         self.assertFalse(self.adapter.hasHandlers())
 
-    def test_nested(self):
-        class Adapter(logging.LoggerAdapter):
+    eleza test_nested(self):
+        kundi Adapter(logging.LoggerAdapter):
             prefix = 'Adapter'
 
-            def process(self, msg, kwargs):
-                return f"{self.prefix} {msg}", kwargs
+            eleza process(self, msg, kwargs):
+                rudisha f"{self.prefix} {msg}", kwargs
 
         msg = 'Adapters can be nested, yo.'
         adapter = Adapter(logger=self.logger, extra=None)
@@ -4626,9 +4626,9 @@ class LoggerAdapterTest(unittest.TestCase):
         self.assertIs(self.logger.manager, orig_manager)
 
 
-class LoggerTest(BaseTest):
+kundi LoggerTest(BaseTest):
 
-    def setUp(self):
+    eleza setUp(self):
         super(LoggerTest, self).setUp()
         self.recording = RecordingHandler()
         self.logger = logging.Logger(name='blah')
@@ -4637,10 +4637,10 @@ class LoggerTest(BaseTest):
         self.addCleanup(self.recording.close)
         self.addCleanup(logging.shutdown)
 
-    def test_set_invalid_level(self):
+    eleza test_set_invalid_level(self):
         self.assertRaises(TypeError, self.logger.setLevel, object())
 
-    def test_exception(self):
+    eleza test_exception(self):
         msg = 'testing exception: %r'
         exc = None
         try:
@@ -4657,15 +4657,15 @@ class LoggerTest(BaseTest):
         self.assertEqual(record.exc_info,
                          (exc.__class__, exc, exc.__traceback__))
 
-    def test_log_invalid_level_with_raise(self):
+    eleza test_log_invalid_level_with_raise(self):
         with support.swap_attr(logging, 'raiseExceptions', True):
             self.assertRaises(TypeError, self.logger.log, '10', 'test message')
 
-    def test_log_invalid_level_no_raise(self):
+    eleza test_log_invalid_level_no_raise(self):
         with support.swap_attr(logging, 'raiseExceptions', False):
             self.logger.log('10', 'test message')  # no exception happens
 
-    def test_find_caller_with_stack_info(self):
+    eleza test_find_caller_with_stack_info(self):
         called = []
         support.patch(self, logging.traceback, 'print_stack',
                       lambda f, file: called.append(file.getvalue()))
@@ -4675,16 +4675,16 @@ class LoggerTest(BaseTest):
         self.assertEqual(len(called), 1)
         self.assertEqual('Stack (most recent call last):\n', called[0])
 
-    def test_find_caller_with_stacklevel(self):
+    eleza test_find_caller_with_stacklevel(self):
         the_level = 1
 
-        def innermost():
+        eleza innermost():
             self.logger.warning('test', stacklevel=the_level)
 
-        def inner():
+        eleza inner():
             innermost()
 
-        def outer():
+        eleza outer():
             inner()
 
         records = self.recording.records
@@ -4706,7 +4706,7 @@ class LoggerTest(BaseTest):
         self.assertEqual(records[-1].funcName, 'test_find_caller_with_stacklevel')
         self.assertGreater(records[-1].lineno, lineno)
 
-    def test_make_record_with_extra_overwrite(self):
+    eleza test_make_record_with_extra_overwrite(self):
         name = 'my record'
         level = 13
         fn = lno = msg = args = exc_info = func = sinfo = None
@@ -4719,7 +4719,7 @@ class LoggerTest(BaseTest):
                               fn, lno, msg, args, exc_info,
                               extra=extra, sinfo=sinfo)
 
-    def test_make_record_with_extra_no_overwrite(self):
+    eleza test_make_record_with_extra_no_overwrite(self):
         name = 'my record'
         level = 13
         fn = lno = msg = args = exc_info = func = sinfo = None
@@ -4728,25 +4728,25 @@ class LoggerTest(BaseTest):
                                         exc_info, extra=extra, sinfo=sinfo)
         self.assertIn('valid_key', result.__dict__)
 
-    def test_has_handlers(self):
+    eleza test_has_handlers(self):
         self.assertTrue(self.logger.hasHandlers())
 
         for handler in self.logger.handlers:
             self.logger.removeHandler(handler)
         self.assertFalse(self.logger.hasHandlers())
 
-    def test_has_handlers_no_propagate(self):
+    eleza test_has_handlers_no_propagate(self):
         child_logger = logging.getLogger('blah.child')
         child_logger.propagate = False
         self.assertFalse(child_logger.hasHandlers())
 
-    def test_is_enabled_for(self):
+    eleza test_is_enabled_for(self):
         old_disable = self.logger.manager.disable
         self.logger.manager.disable = 23
         self.addCleanup(setattr, self.logger.manager, 'disable', old_disable)
         self.assertFalse(self.logger.isEnabledFor(22))
 
-    def test_is_enabled_for_disabled_logger(self):
+    eleza test_is_enabled_for_disabled_logger(self):
         old_disabled = self.logger.disabled
         old_disable = self.logger.manager.disable
 
@@ -4758,7 +4758,7 @@ class LoggerTest(BaseTest):
 
         self.assertFalse(self.logger.isEnabledFor(22))
 
-    def test_root_logger_aliases(self):
+    eleza test_root_logger_aliases(self):
         root = logging.getLogger()
         self.assertIs(root, logging.root)
         self.assertIs(root, logging.getLogger(None))
@@ -4770,11 +4770,11 @@ class LoggerTest(BaseTest):
         self.assertIsNot(root, logging.getLogger('\0'))
         self.assertIsNot(root, logging.getLogger('foo.bar').parent)
 
-    def test_invalid_names(self):
+    eleza test_invalid_names(self):
         self.assertRaises(TypeError, logging.getLogger, any)
         self.assertRaises(TypeError, logging.getLogger, b'foo')
 
-    def test_pickling(self):
+    eleza test_pickling(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             for name in ('', 'root', 'foo', 'foo.bar', 'baz.bar'):
                 logger = logging.getLogger(name)
@@ -4782,7 +4782,7 @@ class LoggerTest(BaseTest):
                 unpickled = pickle.loads(s)
                 self.assertIs(unpickled, logger)
 
-    def test_caching(self):
+    eleza test_caching(self):
         root = self.root_logger
         logger1 = logging.getLogger("abc")
         logger2 = logging.getLogger("abc.def")
@@ -4839,31 +4839,31 @@ class LoggerTest(BaseTest):
         self.assertFalse(root.isEnabledFor(logging.CRITICAL))
 
 
-class BaseFileTest(BaseTest):
-    "Base class for handler tests that write log files"
+kundi BaseFileTest(BaseTest):
+    "Base kundi for handler tests that write log files"
 
-    def setUp(self):
+    eleza setUp(self):
         BaseTest.setUp(self)
         fd, self.fn = tempfile.mkstemp(".log", "test_logging-2-")
         os.close(fd)
         self.rmfiles = []
 
-    def tearDown(self):
+    eleza tearDown(self):
         for fn in self.rmfiles:
             os.unlink(fn)
-        if os.path.exists(self.fn):
+        ikiwa os.path.exists(self.fn):
             os.unlink(self.fn)
         BaseTest.tearDown(self)
 
-    def assertLogFile(self, filename):
+    eleza assertLogFile(self, filename):
         "Assert a log file is there and register it for deletion"
         self.assertTrue(os.path.exists(filename),
                         msg="Log file %r does not exist" % filename)
         self.rmfiles.append(filename)
 
 
-class FileHandlerTest(BaseFileTest):
-    def test_delay(self):
+kundi FileHandlerTest(BaseFileTest):
+    eleza test_delay(self):
         os.unlink(self.fn)
         fh = logging.FileHandler(self.fn, delay=True)
         self.assertIsNone(fh.stream)
@@ -4873,23 +4873,23 @@ class FileHandlerTest(BaseFileTest):
         self.assertTrue(os.path.exists(self.fn))
         fh.close()
 
-class RotatingFileHandlerTest(BaseFileTest):
-    def next_rec(self):
-        return logging.LogRecord('n', logging.DEBUG, 'p', 1,
+kundi RotatingFileHandlerTest(BaseFileTest):
+    eleza next_rec(self):
+        rudisha logging.LogRecord('n', logging.DEBUG, 'p', 1,
                                  self.next_message(), None, None, None)
 
-    def test_should_not_rollover(self):
+    eleza test_should_not_rollover(self):
         # If maxbytes is zero rollover never occurs
         rh = logging.handlers.RotatingFileHandler(self.fn, maxBytes=0)
         self.assertFalse(rh.shouldRollover(None))
         rh.close()
 
-    def test_should_rollover(self):
+    eleza test_should_rollover(self):
         rh = logging.handlers.RotatingFileHandler(self.fn, maxBytes=1)
         self.assertTrue(rh.shouldRollover(self.next_rec()))
         rh.close()
 
-    def test_file_created(self):
+    eleza test_file_created(self):
         # checks that the file is created and assumes it was created
         # by us
         rh = logging.handlers.RotatingFileHandler(self.fn)
@@ -4897,9 +4897,9 @@ class RotatingFileHandlerTest(BaseFileTest):
         self.assertLogFile(self.fn)
         rh.close()
 
-    def test_rollover_filenames(self):
-        def namer(name):
-            return name + ".test"
+    eleza test_rollover_filenames(self):
+        eleza namer(name):
+            rudisha name + ".test"
         rh = logging.handlers.RotatingFileHandler(
             self.fn, backupCount=2, maxBytes=1)
         rh.namer = namer
@@ -4913,11 +4913,11 @@ class RotatingFileHandlerTest(BaseFileTest):
         rh.close()
 
     @support.requires_zlib
-    def test_rotator(self):
-        def namer(name):
-            return name + ".gz"
+    eleza test_rotator(self):
+        eleza namer(name):
+            rudisha name + ".gz"
 
-        def rotator(source, dest):
+        eleza rotator(source, dest):
             with open(source, "rb") as sf:
                 data = sf.read()
                 compressed = zlib.compress(data, 9)
@@ -4957,9 +4957,9 @@ class RotatingFileHandlerTest(BaseFileTest):
         self.assertFalse(os.path.exists(namer(self.fn + ".3")))
         rh.close()
 
-class TimedRotatingFileHandlerTest(BaseFileTest):
+kundi TimedRotatingFileHandlerTest(BaseFileTest):
     # other test methods added below
-    def test_rollover(self):
+    eleza test_rollover(self):
         fh = logging.handlers.TimedRotatingFileHandler(self.fn, 'S',
                                                        backupCount=1)
         fmt = logging.Formatter('%(asctime)s %(message)s')
@@ -4984,24 +4984,24 @@ class TimedRotatingFileHandlerTest(BaseFileTest):
             prev = now - datetime.timedelta(seconds=secs)
             fn = self.fn + prev.strftime(".%Y-%m-%d_%H-%M-%S")
             found = os.path.exists(fn)
-            if found:
+            ikiwa found:
                 self.rmfiles.append(fn)
                 break
         msg = 'No rotated files found, went back %d seconds' % GO_BACK
-        if not found:
+        ikiwa not found:
             # print additional diagnostics
             dn, fn = os.path.split(self.fn)
-            files = [f for f in os.listdir(dn) if f.startswith(fn)]
-            print('Test time: %s' % now.strftime("%Y-%m-%d %H-%M-%S"), file=sys.stderr)
-            print('The only matching files are: %s' % files, file=sys.stderr)
+            files = [f for f in os.listdir(dn) ikiwa f.startswith(fn)]
+            andika('Test time: %s' % now.strftime("%Y-%m-%d %H-%M-%S"), file=sys.stderr)
+            andika('The only matching files are: %s' % files, file=sys.stderr)
             for f in files:
-                print('Contents of %s:' % f)
+                andika('Contents of %s:' % f)
                 path = os.path.join(dn, f)
                 with open(path, 'r') as tf:
-                    print(tf.read())
+                    andika(tf.read())
         self.assertTrue(found, msg=msg)
 
-    def test_invalid(self):
+    eleza test_invalid(self):
         assertRaises = self.assertRaises
         assertRaises(ValueError, logging.handlers.TimedRotatingFileHandler,
                      self.fn, 'X', delay=True)
@@ -5010,7 +5010,7 @@ class TimedRotatingFileHandlerTest(BaseFileTest):
         assertRaises(ValueError, logging.handlers.TimedRotatingFileHandler,
                      self.fn, 'W7', delay=True)
 
-    def test_compute_rollover_daily_attime(self):
+    eleza test_compute_rollover_daily_attime(self):
         currentTime = 0
         atTime = datetime.time(12, 0, 0)
         rh = logging.handlers.TimedRotatingFileHandler(
@@ -5026,7 +5026,7 @@ class TimedRotatingFileHandlerTest(BaseFileTest):
             rh.close()
 
     #@unittest.skipIf(True, 'Temporarily skipped while failures investigated.')
-    def test_compute_rollover_weekly_attime(self):
+    eleza test_compute_rollover_weekly_attime(self):
         currentTime = int(time.time())
         today = currentTime - currentTime % 86400
 
@@ -5038,7 +5038,7 @@ class TimedRotatingFileHandlerTest(BaseFileTest):
                 self.fn, when='W%d' % day, interval=1, backupCount=0, utc=True,
                 atTime=atTime)
             try:
-                if wday > day:
+                ikiwa wday > day:
                     # The rollover day has already passed this week, so we
                     # go over into next week
                     expected = (7 - wday + day)
@@ -5051,24 +5051,24 @@ class TimedRotatingFileHandlerTest(BaseFileTest):
                 # Add in adjustment for today
                 expected += today
                 actual = rh.computeRollover(today)
-                if actual != expected:
-                    print('failed in timezone: %d' % time.timezone)
-                    print('local vars: %s' % locals())
+                ikiwa actual != expected:
+                    andika('failed in timezone: %d' % time.timezone)
+                    andika('local vars: %s' % locals())
                 self.assertEqual(actual, expected)
-                if day == wday:
+                ikiwa day == wday:
                     # goes into following week
                     expected += 7 * 24 * 60 * 60
                 actual = rh.computeRollover(today + 13 * 60 * 60)
-                if actual != expected:
-                    print('failed in timezone: %d' % time.timezone)
-                    print('local vars: %s' % locals())
+                ikiwa actual != expected:
+                    andika('failed in timezone: %d' % time.timezone)
+                    andika('local vars: %s' % locals())
                 self.assertEqual(actual, expected)
             finally:
                 rh.close()
 
 
-def secs(**kw):
-    return datetime.timedelta(**kw) // datetime.timedelta(seconds=1)
+eleza secs(**kw):
+    rudisha datetime.timedelta(**kw) // datetime.timedelta(seconds=1)
 
 for when, exp in (('S', 1),
                   ('M', 60),
@@ -5078,18 +5078,18 @@ for when, exp in (('S', 1),
                   # current time (epoch start) is a Thursday, W0 means Monday
                   ('W0', secs(days=4, hours=24)),
                  ):
-    def test_compute_rollover(self, when=when, exp=exp):
+    eleza test_compute_rollover(self, when=when, exp=exp):
         rh = logging.handlers.TimedRotatingFileHandler(
             self.fn, when=when, interval=1, backupCount=0, utc=True)
         currentTime = 0.0
         actual = rh.computeRollover(currentTime)
-        if exp != actual:
+        ikiwa exp != actual:
             # Failures occur on some systems for MIDNIGHT and W0.
             # Print detailed calculation for MIDNIGHT so we can try to see
             # what's going on
-            if when == 'MIDNIGHT':
+            ikiwa when == 'MIDNIGHT':
                 try:
-                    if rh.utc:
+                    ikiwa rh.utc:
                         t = time.gmtime(currentTime)
                     else:
                         t = time.localtime(currentTime)
@@ -5101,22 +5101,22 @@ for when, exp in (('S', 1),
                                                        currentMinute) * 60 +
                             currentSecond)
                     result = currentTime + r
-                    print('t: %s (%s)' % (t, rh.utc), file=sys.stderr)
-                    print('currentHour: %s' % currentHour, file=sys.stderr)
-                    print('currentMinute: %s' % currentMinute, file=sys.stderr)
-                    print('currentSecond: %s' % currentSecond, file=sys.stderr)
-                    print('r: %s' % r, file=sys.stderr)
-                    print('result: %s' % result, file=sys.stderr)
+                    andika('t: %s (%s)' % (t, rh.utc), file=sys.stderr)
+                    andika('currentHour: %s' % currentHour, file=sys.stderr)
+                    andika('currentMinute: %s' % currentMinute, file=sys.stderr)
+                    andika('currentSecond: %s' % currentSecond, file=sys.stderr)
+                    andika('r: %s' % r, file=sys.stderr)
+                    andika('result: %s' % result, file=sys.stderr)
                 except Exception:
-                    print('exception in diagnostic code: %s' % sys.exc_info()[1], file=sys.stderr)
+                    andika('exception in diagnostic code: %s' % sys.exc_info()[1], file=sys.stderr)
         self.assertEqual(exp, actual)
         rh.close()
     setattr(TimedRotatingFileHandlerTest, "test_compute_rollover_%s" % when, test_compute_rollover)
 
 
 @unittest.skipUnless(win32evtlog, 'win32evtlog/win32evtlogutil/pywintypes required for this test.')
-class NTEventLogHandlerTest(BaseTest):
-    def test_basic(self):
+kundi NTEventLogHandlerTest(BaseTest):
+    eleza test_basic(self):
         logtype = 'Application'
         elh = win32evtlog.OpenEventLog(None, logtype)
         num_recs = win32evtlog.GetNumberOfEventLogRecords(elh)
@@ -5124,14 +5124,14 @@ class NTEventLogHandlerTest(BaseTest):
         try:
             h = logging.handlers.NTEventLogHandler('test_logging')
         except pywintypes.error as e:
-            if e.winerror == 5:  # access denied
+            ikiwa e.winerror == 5:  # access denied
                 raise unittest.SkipTest('Insufficient privileges to run test')
             raise
 
         r = logging.makeLogRecord({'msg': 'Test Log Message'})
         h.handle(r)
         h.close()
-        # Now see if the event is recorded
+        # Now see ikiwa the event is recorded
         self.assertLess(num_recs, win32evtlog.GetNumberOfEventLogRecords(elh))
         flags = win32evtlog.EVENTLOG_BACKWARDS_READ | \
                 win32evtlog.EVENTLOG_SEQUENTIAL_READ
@@ -5139,10 +5139,10 @@ class NTEventLogHandlerTest(BaseTest):
         GO_BACK = 100
         events = win32evtlog.ReadEventLog(elh, flags, GO_BACK)
         for e in events:
-            if e.SourceName != 'test_logging':
+            ikiwa e.SourceName != 'test_logging':
                 continue
             msg = win32evtlogutil.SafeFormatMessage(e, logtype)
-            if msg != 'Test Log Message\r\n':
+            ikiwa msg != 'Test Log Message\r\n':
                 continue
             found = True
             break
@@ -5150,8 +5150,8 @@ class NTEventLogHandlerTest(BaseTest):
         self.assertTrue(found, msg=msg)
 
 
-class MiscTestCase(unittest.TestCase):
-    def test__all__(self):
+kundi MiscTestCase(unittest.TestCase):
+    eleza test__all__(self):
         blacklist = {'logThreads', 'logMultiprocessing',
                      'logProcesses', 'currentframe',
                      'PercentStyle', 'StrFormatStyle', 'StringTemplateStyle',
@@ -5164,7 +5164,7 @@ class MiscTestCase(unittest.TestCase):
 # why the test does this, but in any case we save the current locale
 # first and restore it at the end.
 @support.run_with_locale('LC_ALL', '')
-def test_main():
+eleza test_main():
     tests = [
         BuiltinLevelsTest, BasicFilterTest, CustomLevelsAndFiltersTest,
         HandlerTest, MemoryHandlerTest, ConfigFileTest, SocketHandlerTest,
@@ -5179,9 +5179,9 @@ def test_main():
         UnixSocketHandlerTest, UnixDatagramHandlerTest, UnixSysLogHandlerTest,
         MiscTestCase
     ]
-    if hasattr(logging.handlers, 'QueueListener'):
+    ikiwa hasattr(logging.handlers, 'QueueListener'):
         tests.append(QueueListenerTest)
     support.run_unittest(*tests)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

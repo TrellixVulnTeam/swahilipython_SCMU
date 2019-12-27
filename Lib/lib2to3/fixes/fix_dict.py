@@ -38,7 +38,7 @@ kutoka .. agiza fixer_util
 iter_exempt = fixer_util.consuming_calls | {"iter"}
 
 
-class FixDict(fixer_base.BaseFix):
+kundi FixDict(fixer_base.BaseFix):
     BM_compatible = True
 
     PATTERN = """
@@ -51,7 +51,7 @@ class FixDict(fixer_base.BaseFix):
     >
     """
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         head = results["head"]
         method = results["method"][0] # Extract node for method name
         tail = results["tail"]
@@ -59,7 +59,7 @@ class FixDict(fixer_base.BaseFix):
         method_name = method.value
         isiter = method_name.startswith("iter")
         isview = method_name.startswith("view")
-        if isiter or isview:
+        ikiwa isiter or isview:
             method_name = method_name[4:]
         assert method_name in ("keys", "items", "values"), repr(method)
         head = [n.clone() for n in head]
@@ -71,13 +71,13 @@ class FixDict(fixer_base.BaseFix):
                                          prefix=method.prefix)]),
                        results["parens"].clone()]
         new = pytree.Node(syms.power, args)
-        if not (special or isview):
+        ikiwa not (special or isview):
             new.prefix = ""
-            new = Call(Name("iter" if isiter else "list"), [new])
-        if tail:
+            new = Call(Name("iter" ikiwa isiter else "list"), [new])
+        ikiwa tail:
             new = pytree.Node(syms.power, [new] + tail)
         new.prefix = node.prefix
-        return new
+        rudisha new
 
     P1 = "power< func=NAME trailer< '(' node=any ')' > any* >"
     p1 = patcomp.compile_pattern(P1)
@@ -87,20 +87,20 @@ class FixDict(fixer_base.BaseFix):
          """
     p2 = patcomp.compile_pattern(P2)
 
-    def in_special_context(self, node, isiter):
-        if node.parent is None:
-            return False
+    eleza in_special_context(self, node, isiter):
+        ikiwa node.parent is None:
+            rudisha False
         results = {}
-        if (node.parent.parent is not None and
+        ikiwa (node.parent.parent is not None and
                self.p1.match(node.parent.parent, results) and
                results["node"] is node):
-            if isiter:
+            ikiwa isiter:
                 # iter(d.iterkeys()) -> iter(d.keys()), etc.
-                return results["func"].value in iter_exempt
+                rudisha results["func"].value in iter_exempt
             else:
                 # list(d.keys()) -> list(d.keys()), etc.
-                return results["func"].value in fixer_util.consuming_calls
-        if not isiter:
-            return False
+                rudisha results["func"].value in fixer_util.consuming_calls
+        ikiwa not isiter:
+            rudisha False
         # for ... in d.iterkeys() -> for ... in d.keys(), etc.
-        return self.p2.match(node.parent, results) and results["node"] is node
+        rudisha self.p2.match(node.parent, results) and results["node"] is node

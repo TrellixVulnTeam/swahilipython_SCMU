@@ -6,7 +6,7 @@
 kutoka test agiza multibytecodec_support
 agiza unittest
 
-class Test_CP949(multibytecodec_support.TestBase, unittest.TestCase):
+kundi Test_CP949(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'cp949'
     tstring = multibytecodec_support.load_teststring('cp949')
     codectests = (
@@ -18,7 +18,7 @@ class Test_CP949(multibytecodec_support.TestBase, unittest.TestCase):
         (b"abc\x80\x80\xc1\xc4", "ignore",  "abc\uc894"),
     )
 
-class Test_EUCKR(multibytecodec_support.TestBase, unittest.TestCase):
+kundi Test_EUCKR(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'euc_kr'
     tstring = multibytecodec_support.load_teststring('euc_kr')
     codectests = (
@@ -49,7 +49,7 @@ class Test_EUCKR(multibytecodec_support.TestBase, unittest.TestCase):
         (b"\xc1\xc4", "strict", "\uc894"),
     )
 
-class Test_JOHAB(multibytecodec_support.TestBase, unittest.TestCase):
+kundi Test_JOHAB(multibytecodec_support.TestBase, unittest.TestCase):
     encoding = 'johab'
     tstring = multibytecodec_support.load_teststring('johab')
     codectests = (
@@ -65,5 +65,5 @@ class Test_JOHAB(multibytecodec_support.TestBase, unittest.TestCase):
         (b"\x8CBxy", "replace",  "\uFFFDBxy"),
     )
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

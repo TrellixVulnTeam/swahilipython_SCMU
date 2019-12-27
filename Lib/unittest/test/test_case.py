@@ -26,34 +26,34 @@ log_foobar = logging.getLogger('foo.bar')
 log_quux = logging.getLogger('quux')
 
 
-class Test(object):
+kundi Test(object):
     "Keep these TestCase classes out of the main namespace"
 
-    class Foo(unittest.TestCase):
-        def runTest(self): pass
-        def test1(self): pass
+    kundi Foo(unittest.TestCase):
+        eleza runTest(self): pass
+        eleza test1(self): pass
 
-    class Bar(Foo):
-        def test2(self): pass
+    kundi Bar(Foo):
+        eleza test2(self): pass
 
-    class LoggingTestCase(unittest.TestCase):
+    kundi LoggingTestCase(unittest.TestCase):
         """A test case which logs its calls."""
 
-        def __init__(self, events):
+        eleza __init__(self, events):
             super(Test.LoggingTestCase, self).__init__('test')
             self.events = events
 
-        def setUp(self):
+        eleza setUp(self):
             self.events.append('setUp')
 
-        def test(self):
+        eleza test(self):
             self.events.append('test')
 
-        def tearDown(self):
+        eleza tearDown(self):
             self.events.append('tearDown')
 
 
-class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
+kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
     ### Set up attributes used by inherited tests
     ################################################################
@@ -70,7 +70,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     ### /Set up attributes used by inherited tests
 
 
-    # "class TestCase([methodName])"
+    # "kundi TestCase([methodName])"
     # ...
     # "Each instance of TestCase will run a single test method: the
     # method named methodName."
@@ -79,10 +79,10 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     #
     # Make sure it really is optional, and that it defaults to the proper
     # thing.
-    def test_init__no_test_name(self):
-        class Test(unittest.TestCase):
-            def runTest(self): raise MyException()
-            def test(self): pass
+    eleza test_init__no_test_name(self):
+        kundi Test(unittest.TestCase):
+            eleza runTest(self): raise MyException()
+            eleza test(self): pass
 
         self.assertEqual(Test().id()[-13:], '.Test.runTest')
 
@@ -96,25 +96,25 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         with self.assertRaises(AttributeError):
             test.run()
 
-    # "class TestCase([methodName])"
+    # "kundi TestCase([methodName])"
     # ...
     # "Each instance of TestCase will run a single test method: the
     # method named methodName."
-    def test_init__test_name__valid(self):
-        class Test(unittest.TestCase):
-            def runTest(self): raise MyException()
-            def test(self): pass
+    eleza test_init__test_name__valid(self):
+        kundi Test(unittest.TestCase):
+            eleza runTest(self): raise MyException()
+            eleza test(self): pass
 
         self.assertEqual(Test('test').id()[-10:], '.Test.test')
 
-    # "class TestCase([methodName])"
+    # "kundi TestCase([methodName])"
     # ...
     # "Each instance of TestCase will run a single test method: the
     # method named methodName."
-    def test_init__test_name__invalid(self):
-        class Test(unittest.TestCase):
-            def runTest(self): raise MyException()
-            def test(self): pass
+    eleza test_init__test_name__invalid(self):
+        kundi Test(unittest.TestCase):
+            eleza runTest(self): raise MyException()
+            eleza test(self): pass
 
         try:
             Test('testfoo')
@@ -125,9 +125,9 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
     # "Return the number of tests represented by the this test object. For
     # TestCase instances, this will always be 1"
-    def test_countTestCases(self):
-        class Foo(unittest.TestCase):
-            def test(self): pass
+    eleza test_countTestCases(self):
+        kundi Foo(unittest.TestCase):
+            eleza test(self): pass
 
         self.assertEqual(Foo('test').countTestCases(), 1)
 
@@ -135,27 +135,27 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # test. For TestCase instances, this will always be
     # unittest.TestResult;  subclasses of TestCase should
     # override this as necessary."
-    def test_defaultTestResult(self):
-        class Foo(unittest.TestCase):
-            def runTest(self):
+    eleza test_defaultTestResult(self):
+        kundi Foo(unittest.TestCase):
+            eleza runTest(self):
                 pass
 
         result = Foo().defaultTestResult()
         self.assertEqual(type(result), unittest.TestResult)
 
     # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, if a tearDown() method is defined, the
+    # prior to each test. Likewise, ikiwa a tearDown() method is defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence for each test."
     #
-    # Make sure the proper call order is maintained, even if setUp() raises
+    # Make sure the proper call order is maintained, even ikiwa setUp() raises
     # an exception.
-    def test_run_call_order__error_in_setUp(self):
+    eleza test_run_call_order__error_in_setUp(self):
         events = []
         result = LoggingResult(events)
 
-        class Foo(Test.LoggingTestCase):
-            def setUp(self):
+        kundi Foo(Test.LoggingTestCase):
+            eleza setUp(self):
                 super(Foo, self).setUp()
                 raise RuntimeError('raised by Foo.setUp')
 
@@ -164,14 +164,14 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEqual(events, expected)
 
     # "With a temporary result stopTestRun is called when setUp errors.
-    def test_run_call_order__error_in_setUp_default_result(self):
+    eleza test_run_call_order__error_in_setUp_default_result(self):
         events = []
 
-        class Foo(Test.LoggingTestCase):
-            def defaultTestResult(self):
-                return LoggingResult(self.events)
+        kundi Foo(Test.LoggingTestCase):
+            eleza defaultTestResult(self):
+                rudisha LoggingResult(self.events)
 
-            def setUp(self):
+            eleza setUp(self):
                 super(Foo, self).setUp()
                 raise RuntimeError('raised by Foo.setUp')
 
@@ -181,18 +181,18 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEqual(events, expected)
 
     # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, if a tearDown() method is defined, the
+    # prior to each test. Likewise, ikiwa a tearDown() method is defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence for each test."
     #
-    # Make sure the proper call order is maintained, even if the test raises
+    # Make sure the proper call order is maintained, even ikiwa the test raises
     # an error (as opposed to a failure).
-    def test_run_call_order__error_in_test(self):
+    eleza test_run_call_order__error_in_test(self):
         events = []
         result = LoggingResult(events)
 
-        class Foo(Test.LoggingTestCase):
-            def test(self):
+        kundi Foo(Test.LoggingTestCase):
+            eleza test(self):
                 super(Foo, self).test()
                 raise RuntimeError('raised by Foo.test')
 
@@ -203,14 +203,14 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
     # "With a default result, an error in the test still results in stopTestRun
     # being called."
-    def test_run_call_order__error_in_test_default_result(self):
+    eleza test_run_call_order__error_in_test_default_result(self):
         events = []
 
-        class Foo(Test.LoggingTestCase):
-            def defaultTestResult(self):
-                return LoggingResult(self.events)
+        kundi Foo(Test.LoggingTestCase):
+            eleza defaultTestResult(self):
+                rudisha LoggingResult(self.events)
 
-            def test(self):
+            eleza test(self):
                 super(Foo, self).test()
                 raise RuntimeError('raised by Foo.test')
 
@@ -220,18 +220,18 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEqual(events, expected)
 
     # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, if a tearDown() method is defined, the
+    # prior to each test. Likewise, ikiwa a tearDown() method is defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence for each test."
     #
-    # Make sure the proper call order is maintained, even if the test signals
+    # Make sure the proper call order is maintained, even ikiwa the test signals
     # a failure (as opposed to an error).
-    def test_run_call_order__failure_in_test(self):
+    eleza test_run_call_order__failure_in_test(self):
         events = []
         result = LoggingResult(events)
 
-        class Foo(Test.LoggingTestCase):
-            def test(self):
+        kundi Foo(Test.LoggingTestCase):
+            eleza test(self):
                 super(Foo, self).test()
                 self.fail('raised by Foo.test')
 
@@ -241,12 +241,12 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEqual(events, expected)
 
     # "When a test fails with a default result stopTestRun is still called."
-    def test_run_call_order__failure_in_test_default_result(self):
+    eleza test_run_call_order__failure_in_test_default_result(self):
 
-        class Foo(Test.LoggingTestCase):
-            def defaultTestResult(self):
-                return LoggingResult(self.events)
-            def test(self):
+        kundi Foo(Test.LoggingTestCase):
+            eleza defaultTestResult(self):
+                rudisha LoggingResult(self.events)
+            eleza test(self):
                 super(Foo, self).test()
                 self.fail('raised by Foo.test')
 
@@ -257,18 +257,18 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEqual(events, expected)
 
     # "When a setUp() method is defined, the test runner will run that method
-    # prior to each test. Likewise, if a tearDown() method is defined, the
+    # prior to each test. Likewise, ikiwa a tearDown() method is defined, the
     # test runner will invoke that method after each test. In the example,
     # setUp() was used to create a fresh sequence for each test."
     #
-    # Make sure the proper call order is maintained, even if tearDown() raises
+    # Make sure the proper call order is maintained, even ikiwa tearDown() raises
     # an exception.
-    def test_run_call_order__error_in_tearDown(self):
+    eleza test_run_call_order__error_in_tearDown(self):
         events = []
         result = LoggingResult(events)
 
-        class Foo(Test.LoggingTestCase):
-            def tearDown(self):
+        kundi Foo(Test.LoggingTestCase):
+            eleza tearDown(self):
                 super(Foo, self).tearDown()
                 raise RuntimeError('raised by Foo.tearDown')
 
@@ -278,12 +278,12 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEqual(events, expected)
 
     # "When tearDown errors with a default result stopTestRun is still called."
-    def test_run_call_order__error_in_tearDown_default_result(self):
+    eleza test_run_call_order__error_in_tearDown_default_result(self):
 
-        class Foo(Test.LoggingTestCase):
-            def defaultTestResult(self):
-                return LoggingResult(self.events)
-            def tearDown(self):
+        kundi Foo(Test.LoggingTestCase):
+            eleza defaultTestResult(self):
+                rudisha LoggingResult(self.events)
+            eleza tearDown(self):
                 super(Foo, self).tearDown()
                 raise RuntimeError('raised by Foo.tearDown')
 
@@ -295,27 +295,27 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
     # "TestCase.run() still works when the defaultTestResult is a TestResult
     # that does not support startTestRun and stopTestRun.
-    def test_run_call_order_default_result(self):
+    eleza test_run_call_order_default_result(self):
 
-        class Foo(unittest.TestCase):
-            def defaultTestResult(self):
-                return ResultWithNoStartTestRunStopTestRun()
-            def test(self):
+        kundi Foo(unittest.TestCase):
+            eleza defaultTestResult(self):
+                rudisha ResultWithNoStartTestRunStopTestRun()
+            eleza test(self):
                 pass
 
         Foo('test').run()
 
-    def _check_call_order__subtests(self, result, events, expected_events):
-        class Foo(Test.LoggingTestCase):
-            def test(self):
+    eleza _check_call_order__subtests(self, result, events, expected_events):
+        kundi Foo(Test.LoggingTestCase):
+            eleza test(self):
                 super(Foo, self).test()
                 for i in [1, 2, 3]:
                     with self.subTest(i=i):
-                        if i == 1:
+                        ikiwa i == 1:
                             self.fail('failure')
                         for j in [2, 3]:
                             with self.subTest(j=j):
-                                if i * j == 6:
+                                ikiwa i * j == 6:
                                     raise RuntimeError('raised by Foo.test')
                 1 / 0
 
@@ -329,7 +329,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         Foo(events).run(result)
         self.assertEqual(events, expected_events)
 
-    def test_run_call_order__subtests(self):
+    eleza test_run_call_order__subtests(self):
         events = []
         result = LoggingResult(events)
         expected = ['startTest', 'setUp', 'test', 'tearDown',
@@ -338,7 +338,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                     'addSubTestSuccess', 'addError', 'stopTest']
         self._check_call_order__subtests(result, events, expected)
 
-    def test_run_call_order__subtests_legacy(self):
+    eleza test_run_call_order__subtests_legacy(self):
         # With a legacy result object (without an addSubTest method),
         # text execution stops after the first subtest failure.
         events = []
@@ -347,9 +347,9 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                     'addFailure', 'stopTest']
         self._check_call_order__subtests(result, events, expected)
 
-    def _check_call_order__subtests_success(self, result, events, expected_events):
-        class Foo(Test.LoggingTestCase):
-            def test(self):
+    eleza _check_call_order__subtests_success(self, result, events, expected_events):
+        kundi Foo(Test.LoggingTestCase):
+            eleza test(self):
                 super(Foo, self).test()
                 for i in [1, 2]:
                     with self.subTest(i=i):
@@ -360,7 +360,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         Foo(events).run(result)
         self.assertEqual(events, expected_events)
 
-    def test_run_call_order__subtests_success(self):
+    eleza test_run_call_order__subtests_success(self):
         events = []
         result = LoggingResult(events)
         # The 6 subtest successes are individually recorded, in addition
@@ -370,7 +370,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                     + ['addSuccess', 'stopTest'])
         self._check_call_order__subtests_success(result, events, expected)
 
-    def test_run_call_order__subtests_success_legacy(self):
+    eleza test_run_call_order__subtests_success_legacy(self):
         # With a legacy result, only the whole test success is recorded.
         events = []
         result = LegacyLoggingResult(events)
@@ -378,13 +378,13 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                     'addSuccess', 'stopTest']
         self._check_call_order__subtests_success(result, events, expected)
 
-    def test_run_call_order__subtests_failfast(self):
+    eleza test_run_call_order__subtests_failfast(self):
         events = []
         result = LoggingResult(events)
         result.failfast = True
 
-        class Foo(Test.LoggingTestCase):
-            def test(self):
+        kundi Foo(Test.LoggingTestCase):
+            eleza test(self):
                 super(Foo, self).test()
                 with self.subTest(i=1):
                     self.fail('failure')
@@ -397,24 +397,24 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         Foo(events).run(result)
         self.assertEqual(events, expected)
 
-    def test_subtests_failfast(self):
+    eleza test_subtests_failfast(self):
         # Ensure proper test flow with subtests and failfast (issue #22894)
         events = []
 
-        class Foo(unittest.TestCase):
-            def test_a(self):
+        kundi Foo(unittest.TestCase):
+            eleza test_a(self):
                 with self.subTest():
                     events.append('a1')
                 events.append('a2')
 
-            def test_b(self):
+            eleza test_b(self):
                 with self.subTest():
                     events.append('b1')
                 with self.subTest():
                     self.fail('failure')
                 events.append('b2')
 
-            def test_c(self):
+            eleza test_c(self):
                 events.append('c')
 
         result = unittest.TestResult()
@@ -425,12 +425,12 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         expected = ['a1', 'a2', 'b1']
         self.assertEqual(events, expected)
 
-    def test_subtests_debug(self):
+    eleza test_subtests_debug(self):
         # Test debug() with a test that uses subTest() (bpo-34900)
         events = []
 
-        class Foo(unittest.TestCase):
-            def test_a(self):
+        kundi Foo(unittest.TestCase):
+            eleza test_a(self):
                 events.append('test case')
                 with self.subTest():
                     events.append('subtest 1')
@@ -439,30 +439,30 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         self.assertEqual(events, ['test case', 'subtest 1'])
 
-    # "This class attribute gives the exception raised by the test() method.
+    # "This kundi attribute gives the exception raised by the test() method.
     # If a test framework needs to use a specialized exception, possibly to
-    # carry additional information, it must subclass this exception in
+    # carry additional information, it must subkundi this exception in
     # order to ``play fair'' with the framework.  The initial value of this
     # attribute is AssertionError"
-    def test_failureException__default(self):
-        class Foo(unittest.TestCase):
-            def test(self):
+    eleza test_failureException__default(self):
+        kundi Foo(unittest.TestCase):
+            eleza test(self):
                 pass
 
         self.assertIs(Foo('test').failureException, AssertionError)
 
-    # "This class attribute gives the exception raised by the test() method.
+    # "This kundi attribute gives the exception raised by the test() method.
     # If a test framework needs to use a specialized exception, possibly to
-    # carry additional information, it must subclass this exception in
+    # carry additional information, it must subkundi this exception in
     # order to ``play fair'' with the framework."
     #
     # Make sure TestCase.run() respects the designated failureException
-    def test_failureException__subclassing__explicit_raise(self):
+    eleza test_failureException__subclassing__explicit_raise(self):
         events = []
         result = LoggingResult(events)
 
-        class Foo(unittest.TestCase):
-            def test(self):
+        kundi Foo(unittest.TestCase):
+            eleza test(self):
                 raise RuntimeError()
 
             failureException = RuntimeError
@@ -474,18 +474,18 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         expected = ['startTest', 'addFailure', 'stopTest']
         self.assertEqual(events, expected)
 
-    # "This class attribute gives the exception raised by the test() method.
+    # "This kundi attribute gives the exception raised by the test() method.
     # If a test framework needs to use a specialized exception, possibly to
-    # carry additional information, it must subclass this exception in
+    # carry additional information, it must subkundi this exception in
     # order to ``play fair'' with the framework."
     #
     # Make sure TestCase.run() respects the designated failureException
-    def test_failureException__subclassing__implicit_raise(self):
+    eleza test_failureException__subclassing__implicit_raise(self):
         events = []
         result = LoggingResult(events)
 
-        class Foo(unittest.TestCase):
-            def test(self):
+        kundi Foo(unittest.TestCase):
+            eleza test(self):
                 self.fail("foo")
 
             failureException = RuntimeError
@@ -498,18 +498,18 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEqual(events, expected)
 
     # "The default implementation does nothing."
-    def test_setUp(self):
-        class Foo(unittest.TestCase):
-            def runTest(self):
+    eleza test_setUp(self):
+        kundi Foo(unittest.TestCase):
+            eleza runTest(self):
                 pass
 
         # ... and nothing should happen
         Foo().setUp()
 
     # "The default implementation does nothing."
-    def test_tearDown(self):
-        class Foo(unittest.TestCase):
-            def runTest(self):
+    eleza test_tearDown(self):
+        kundi Foo(unittest.TestCase):
+            eleza runTest(self):
                 pass
 
         # ... and nothing should happen
@@ -521,9 +521,9 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # test down too much. Really all that can be asserted is that the id()
     # will be a string (either 8-byte or unicode -- again, because the docs
     # just say "string")
-    def test_id(self):
-        class Foo(unittest.TestCase):
-            def runTest(self):
+    eleza test_id(self):
+        kundi Foo(unittest.TestCase):
+            eleza runTest(self):
                 pass
 
         self.assertIsInstance(Foo().id(), str)
@@ -533,16 +533,16 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # used, and is made available to the caller. As TestCase owns the
     # temporary result startTestRun and stopTestRun are called.
 
-    def test_run__uses_defaultTestResult(self):
+    eleza test_run__uses_defaultTestResult(self):
         events = []
         defaultResult = LoggingResult(events)
 
-        class Foo(unittest.TestCase):
-            def test(self):
+        kundi Foo(unittest.TestCase):
+            eleza test(self):
                 events.append('test')
 
-            def defaultTestResult(self):
-                return defaultResult
+            eleza defaultTestResult(self):
+                rudisha defaultResult
 
         # Make run() find a result object on its own
         result = Foo('test').run()
@@ -554,10 +554,10 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
 
     # "The result object is returned to run's caller"
-    def test_run__returns_given_result(self):
+    eleza test_run__returns_given_result(self):
 
-        class Foo(unittest.TestCase):
-            def test(self):
+        kundi Foo(unittest.TestCase):
+            eleza test(self):
                 pass
 
         result = unittest.TestResult()
@@ -568,29 +568,29 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
     # "The same effect [as method run] may be had by simply calling the
     # TestCase instance."
-    def test_call__invoking_an_instance_delegates_to_run(self):
+    eleza test_call__invoking_an_instance_delegates_to_run(self):
         resultIn = unittest.TestResult()
         resultOut = unittest.TestResult()
 
-        class Foo(unittest.TestCase):
-            def test(self):
+        kundi Foo(unittest.TestCase):
+            eleza test(self):
                 pass
 
-            def run(self, result):
+            eleza run(self, result):
                 self.assertIs(result, resultIn)
-                return resultOut
+                rudisha resultOut
 
         retval = Foo('test')(resultIn)
 
         self.assertIs(retval, resultOut)
 
 
-    def testShortDescriptionWithoutDocstring(self):
+    eleza testShortDescriptionWithoutDocstring(self):
         self.assertIsNone(self.shortDescription())
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
-    def testShortDescriptionWithOneLineDocstring(self):
+    eleza testShortDescriptionWithOneLineDocstring(self):
         """Tests shortDescription() for a method with a docstring."""
         self.assertEqual(
                 self.shortDescription(),
@@ -598,7 +598,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
-    def testShortDescriptionWithMultiLineDocstring(self):
+    eleza testShortDescriptionWithMultiLineDocstring(self):
         """Tests shortDescription() for a method with a longer docstring.
 
         This method ensures that only the first line of a docstring is
@@ -610,42 +610,42 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                  'Tests shortDescription() for a method with a longer '
                  'docstring.')
 
-    def testAddTypeEqualityFunc(self):
-        class SadSnake(object):
-            """Dummy class for test_addTypeEqualityFunc."""
+    eleza testAddTypeEqualityFunc(self):
+        kundi SadSnake(object):
+            """Dummy kundi for test_addTypeEqualityFunc."""
         s1, s2 = SadSnake(), SadSnake()
         self.assertFalse(s1 == s2)
-        def AllSnakesCreatedEqual(a, b, msg=None):
-            return type(a) == type(b) == SadSnake
+        eleza AllSnakesCreatedEqual(a, b, msg=None):
+            rudisha type(a) == type(b) == SadSnake
         self.addTypeEqualityFunc(SadSnake, AllSnakesCreatedEqual)
         self.assertEqual(s1, s2)
         # No this doesn't clean up and remove the SadSnake equality func
         # kutoka this TestCase instance but since it's local nothing else
         # will ever notice that.
 
-    def testAssertIs(self):
+    eleza testAssertIs(self):
         thing = object()
         self.assertIs(thing, thing)
         self.assertRaises(self.failureException, self.assertIs, thing, object())
 
-    def testAssertIsNot(self):
+    eleza testAssertIsNot(self):
         thing = object()
         self.assertIsNot(thing, object())
         self.assertRaises(self.failureException, self.assertIsNot, thing, thing)
 
-    def testAssertIsInstance(self):
+    eleza testAssertIsInstance(self):
         thing = []
         self.assertIsInstance(thing, list)
         self.assertRaises(self.failureException, self.assertIsInstance,
                           thing, dict)
 
-    def testAssertNotIsInstance(self):
+    eleza testAssertNotIsInstance(self):
         thing = []
         self.assertNotIsInstance(thing, dict)
         self.assertRaises(self.failureException, self.assertNotIsInstance,
                           thing, list)
 
-    def testAssertIn(self):
+    eleza testAssertIn(self):
         animals = {'monkey': 'banana', 'cow': 'grass', 'seal': 'fish'}
 
         self.assertIn('a', 'abc')
@@ -666,7 +666,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertRaises(self.failureException, self.assertNotIn, 'cow',
                           animals)
 
-    def testAssertDictContainsSubset(self):
+    eleza testAssertDictContainsSubset(self):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
 
@@ -696,7 +696,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             with self.assertRaises(self.failureException):
                 self.assertDictContainsSubset({'foo': one}, {'foo': '\uFFFD'})
 
-    def testAssertEqual(self):
+    eleza testAssertEqual(self):
         equal_pairs = [
                 ((), ()),
                 ({}, {}),
@@ -733,7 +733,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             self.assertRaises(self.failureException, self.assertEqual, a, b,
                               msg='foo')
 
-    def testEquality(self):
+    eleza testEquality(self):
         self.assertListEqual([], [])
         self.assertTupleEqual((), ())
         self.assertSequenceEqual([], ())
@@ -785,7 +785,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertRaises(self.failureException, self.assertDictEqual, [], d)
         self.assertRaises(self.failureException, self.assertDictEqual, 1, 1)
 
-    def testAssertSequenceEqualMaxDiff(self):
+    eleza testAssertSequenceEqualMaxDiff(self):
         self.assertEqual(self.maxDiff, 80*8)
         seq1 = 'a' + 'x' * 80**2
         seq2 = 'b' + 'x' * 80**2
@@ -825,7 +825,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertGreater(len(msg), len(diff))
         self.assertNotIn(omitted, msg)
 
-    def testTruncateMessage(self):
+    eleza testTruncateMessage(self):
         self.maxDiff = 1
         message = self._truncateMessage('foo', 'bar')
         omitted = unittest.case.DIFF_OMITTED % len('bar')
@@ -839,10 +839,10 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         message = self._truncateMessage('foo', 'bar')
         self.assertEqual(message, 'foobar')
 
-    def testAssertDictEqualTruncates(self):
+    eleza testAssertDictEqualTruncates(self):
         test = unittest.TestCase('assertEqual')
-        def truncate(msg, diff):
-            return 'foo'
+        eleza truncate(msg, diff):
+            rudisha 'foo'
         test._truncateMessage = truncate
         try:
             test.assertDictEqual({}, {1: 0})
@@ -851,10 +851,10 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         else:
             self.fail('assertDictEqual did not fail')
 
-    def testAssertMultiLineEqualTruncates(self):
+    eleza testAssertMultiLineEqualTruncates(self):
         test = unittest.TestCase('assertEqual')
-        def truncate(msg, diff):
-            return 'foo'
+        eleza truncate(msg, diff):
+            rudisha 'foo'
         test._truncateMessage = truncate
         try:
             test.assertMultiLineEqual('foo', 'bar')
@@ -863,7 +863,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         else:
             self.fail('assertMultiLineEqual did not fail')
 
-    def testAssertEqual_diffThreshold(self):
+    eleza testAssertEqual_diffThreshold(self):
         # check threshold value
         self.assertEqual(self._diffThreshold, 2**16)
         # disable madDiff to get diff markers
@@ -883,10 +883,10 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         # over the threshold: diff not used and marker (^) not in error message
         s = 'x' * (2**6)
-        # if the path that uses difflib is taken, _truncateMessage will be
+        # ikiwa the path that uses difflib is taken, _truncateMessage will be
         # called -- replace it with explodingTruncation to verify that this
         # doesn't happen
-        def explodingTruncation(message, diff):
+        eleza explodingTruncation(message, diff):
             raise SystemError('this should not be raised')
         old_truncate = self._truncateMessage
         self._truncateMessage = explodingTruncation
@@ -899,7 +899,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertEqual(str(cm.exception), '%r != %r' % (s1, s2))
         self.assertEqual(s + 'a', s + 'a')
 
-    def testAssertEqual_shorten(self):
+    eleza testAssertEqual_shorten(self):
         # set a lower threshold value and add a cleanup to restore it
         old_threshold = self._diffThreshold
         self._diffThreshold = 0
@@ -928,7 +928,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         d = 'y' * 40 + '[56 chars]yyyy'
         self.assertEqual(str(cm.exception), "'%sa%s' != '%sb%s'" % (c, d, c, d))
 
-    def testAssertCountEqual(self):
+    eleza testAssertCountEqual(self):
         a = object()
         self.assertCountEqual([1, 2, 3], [3, 2, 1])
         self.assertCountEqual(['foo', 'bar', 'baz'], ['bar', 'baz', 'foo'])
@@ -990,7 +990,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         expected = {(3,1,'a'), (1,3,'b'), (1,0,'d'), (0,1,'e')}
         self.assertEqual(diffs, expected)
 
-    def testAssertSetEqual(self):
+    eleza testAssertSetEqual(self):
         set1 = set()
         set2 = set()
         self.assertSetEqual(set1, set2)
@@ -1030,7 +1030,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         set2 = set([(4, 5)])
         self.assertRaises(self.failureException, self.assertSetEqual, set1, set2)
 
-    def testInequality(self):
+    eleza testInequality(self):
         # Try ints
         self.assertGreater(2, 1)
         self.assertGreaterEqual(2, 1)
@@ -1088,7 +1088,7 @@ class Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.assertRaises(self.failureException, self.assertLess, b'ant', b'ant')
         self.assertRaises(self.failureException, self.assertLessEqual, b'bug', b'ant')
 
-    def testAssertMultiLineEqual(self):
+    eleza testAssertMultiLineEqual(self):
         sample_text = """\
 http://www.python.org/doc/2.3/lib/module-unittest.html
 test case
@@ -1098,7 +1098,7 @@ test case
 http://www.python.org/doc/2.4.1/lib/module-unittest.html
 test case
     A test case is the smallest unit of testing. [...] You may provide your
-    own implementation that does not subclass kutoka TestCase, of course.
+    own implementation that does not subkundi kutoka TestCase, of course.
 """
         sample_text_error = """\
 - http://www.python.org/doc/2.3/lib/module-unittest.html
@@ -1109,7 +1109,7 @@ test case
 -     A test case is the smallest unit of testing. [...]
 +     A test case is the smallest unit of testing. [...] You may provide your
 ?                                                       +++++++++++++++++++++
-+     own implementation that does not subclass kutoka TestCase, of course.
++     own implementation that does not subkundi kutoka TestCase, of course.
 """
         self.maxDiff = None
         try:
@@ -1119,7 +1119,7 @@ test case
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
 
-    def testAssertEqualSingleLine(self):
+    eleza testAssertEqualSingleLine(self):
         sample_text = "laden swallows fly slowly"
         revised_sample_text = "unladen swallows fly quickly"
         sample_text_error = """\
@@ -1135,14 +1135,14 @@ test case
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
 
-    def testEqualityBytesWarning(self):
-        if sys.flags.bytes_warning:
-            def bytes_warning():
-                return self.assertWarnsRegex(BytesWarning,
+    eleza testEqualityBytesWarning(self):
+        ikiwa sys.flags.bytes_warning:
+            eleza bytes_warning():
+                rudisha self.assertWarnsRegex(BytesWarning,
                             'Comparison between bytes and string')
         else:
-            def bytes_warning():
-                return contextlib.ExitStack()
+            eleza bytes_warning():
+                rudisha contextlib.ExitStack()
 
         with bytes_warning(), self.assertRaises(self.failureException):
             self.assertEqual('a', b'a')
@@ -1211,21 +1211,21 @@ test case
         with bytes_warning(), self.assertRaises(self.failureException):
             self.assertCountEqual(['a', 'a', []], [b'a', b'a', []])
 
-    def testAssertIsNone(self):
+    eleza testAssertIsNone(self):
         self.assertIsNone(None)
         self.assertRaises(self.failureException, self.assertIsNone, False)
         self.assertIsNotNone('DjZoPloGears on Rails')
         self.assertRaises(self.failureException, self.assertIsNotNone, None)
 
-    def testAssertRegex(self):
+    eleza testAssertRegex(self):
         self.assertRegex('asdfabasdf', r'ab+')
         self.assertRaises(self.failureException, self.assertRegex,
                           'saaas', r'aaaa')
 
-    def testAssertRaisesCallable(self):
-        class ExceptionMock(Exception):
+    eleza testAssertRaisesCallable(self):
+        kundi ExceptionMock(Exception):
             pass
-        def Stub():
+        eleza Stub():
             raise ExceptionMock('We expect')
         self.assertRaises(ExceptionMock, Stub)
         # A tuple of exception classes is accepted
@@ -1242,10 +1242,10 @@ test case
         with self.assertRaises(ExceptionMock):
             self.assertRaises(ValueError, Stub)
 
-    def testAssertRaisesContext(self):
-        class ExceptionMock(Exception):
+    eleza testAssertRaisesContext(self):
+        kundi ExceptionMock(Exception):
             pass
-        def Stub():
+        eleza Stub():
             raise ExceptionMock('We expect')
         with self.assertRaises(ExceptionMock):
             Stub()
@@ -1274,7 +1274,7 @@ test case
         with self.assertRaises(ExceptionMock):
             self.assertRaises(ValueError, Stub)
 
-    def testAssertRaisesNoExceptionType(self):
+    eleza testAssertRaisesNoExceptionType(self):
         with self.assertRaises(TypeError):
             self.assertRaises()
         with self.assertRaises(TypeError):
@@ -1286,10 +1286,10 @@ test case
         with self.assertRaises(TypeError):
             self.assertRaises((ValueError, object))
 
-    def testAssertRaisesRefcount(self):
+    eleza testAssertRaisesRefcount(self):
         # bpo-23890: assertRaises() must not keep objects alive longer
         # than expected
-        def func() :
+        eleza func() :
             try:
                 raise ValueError
             except ValueError:
@@ -1299,11 +1299,11 @@ test case
         self.assertRaises(ValueError, func)
         self.assertEqual(refcount, sys.getrefcount(func))
 
-    def testAssertRaisesRegex(self):
-        class ExceptionMock(Exception):
+    eleza testAssertRaisesRegex(self):
+        kundi ExceptionMock(Exception):
             pass
 
-        def Stub():
+        eleza Stub():
             raise ExceptionMock('We expect')
 
         self.assertRaisesRegex(ExceptionMock, re.compile('expect$'), Stub)
@@ -1311,7 +1311,7 @@ test case
         with self.assertRaises(TypeError):
             self.assertRaisesRegex(ExceptionMock, 'expect$', None)
 
-    def testAssertNotRaisesRegex(self):
+    eleza testAssertNotRaisesRegex(self):
         self.assertRaisesRegex(
                 self.failureException, '^Exception not raised by <lambda>$',
                 self.assertRaisesRegex, Exception, re.compile('x'),
@@ -1329,20 +1329,20 @@ test case
             with self.assertRaisesRegex(Exception, 'expect', foobar=42):
                 pass
 
-    def testAssertRaisesRegexInvalidRegex(self):
+    eleza testAssertRaisesRegexInvalidRegex(self):
         # Issue 20145.
-        class MyExc(Exception):
+        kundi MyExc(Exception):
             pass
         self.assertRaises(TypeError, self.assertRaisesRegex, MyExc, lambda: True)
 
-    def testAssertWarnsRegexInvalidRegex(self):
+    eleza testAssertWarnsRegexInvalidRegex(self):
         # Issue 20145.
-        class MyWarn(Warning):
+        kundi MyWarn(Warning):
             pass
         self.assertRaises(TypeError, self.assertWarnsRegex, MyWarn, lambda: True)
 
-    def testAssertRaisesRegexMismatch(self):
-        def Stub():
+    eleza testAssertRaisesRegexMismatch(self):
+        eleza Stub():
             raise Exception('Unexpected')
 
         self.assertRaisesRegex(
@@ -1356,11 +1356,11 @@ test case
                 self.assertRaisesRegex, Exception,
                 re.compile('^Expected$'), Stub)
 
-    def testAssertRaisesExcValue(self):
-        class ExceptionMock(Exception):
+    eleza testAssertRaisesExcValue(self):
+        kundi ExceptionMock(Exception):
             pass
 
-        def Stub(foo):
+        eleza Stub(foo):
             raise ExceptionMock(foo)
         v = "particular value"
 
@@ -1371,7 +1371,7 @@ test case
         self.assertIsInstance(e, ExceptionMock)
         self.assertEqual(e.args[0], v)
 
-    def testAssertRaisesRegexNoExceptionType(self):
+    eleza testAssertRaisesRegexNoExceptionType(self):
         with self.assertRaises(TypeError):
             self.assertRaisesRegex()
         with self.assertRaises(TypeError):
@@ -1385,8 +1385,8 @@ test case
         with self.assertRaises(TypeError):
             self.assertRaisesRegex((ValueError, object), 'expect')
 
-    def testAssertWarnsCallable(self):
-        def _runtime_warn():
+    eleza testAssertWarnsCallable(self):
+        eleza _runtime_warn():
             warnings.warn("foo", RuntimeWarning)
         # Success when the right warning is triggered, even several times
         self.assertWarns(RuntimeWarning, _runtime_warn)
@@ -1414,10 +1414,10 @@ test case
             with self.assertRaises(RuntimeWarning):
                 self.assertWarns(DeprecationWarning, _runtime_warn)
 
-    def testAssertWarnsContext(self):
+    eleza testAssertWarnsContext(self):
         # Believe it or not, it is preferable to duplicate all tests above,
         # to make sure the __warningregistry__ $@ is circumvented correctly.
-        def _runtime_warn():
+        eleza _runtime_warn():
             warnings.warn("foo", RuntimeWarning)
         _runtime_warn_lineno = inspect.getsourcelines(_runtime_warn)[1]
         with self.assertWarns(RuntimeWarning) as cm:
@@ -1462,7 +1462,7 @@ test case
                 with self.assertWarns(DeprecationWarning):
                     _runtime_warn()
 
-    def testAssertWarnsNoExceptionType(self):
+    eleza testAssertWarnsNoExceptionType(self):
         with self.assertRaises(TypeError):
             self.assertWarns()
         with self.assertRaises(TypeError):
@@ -1476,8 +1476,8 @@ test case
         with self.assertRaises(TypeError):
             self.assertWarns((UserWarning, Exception))
 
-    def testAssertWarnsRegexCallable(self):
-        def _runtime_warn(msg):
+    eleza testAssertWarnsRegexCallable(self):
+        eleza _runtime_warn(msg):
             warnings.warn(msg, RuntimeWarning)
         self.assertWarnsRegex(RuntimeWarning, "o+",
                               _runtime_warn, "foox")
@@ -1509,9 +1509,9 @@ test case
                 self.assertWarnsRegex(RuntimeWarning, "o+",
                                       _runtime_warn, "barz")
 
-    def testAssertWarnsRegexContext(self):
+    eleza testAssertWarnsRegexContext(self):
         # Same as above, but with assertWarnsRegex as a context manager
-        def _runtime_warn(msg):
+        eleza _runtime_warn(msg):
             warnings.warn(msg, RuntimeWarning)
         _runtime_warn_lineno = inspect.getsourcelines(_runtime_warn)[1]
         with self.assertWarnsRegex(RuntimeWarning, "o+") as cm:
@@ -1553,7 +1553,7 @@ test case
                 with self.assertWarnsRegex(RuntimeWarning, "o+"):
                     _runtime_warn("barz")
 
-    def testAssertWarnsRegexNoExceptionType(self):
+    eleza testAssertWarnsRegexNoExceptionType(self):
         with self.assertRaises(TypeError):
             self.assertWarnsRegex()
         with self.assertRaises(TypeError):
@@ -1570,19 +1570,19 @@ test case
             self.assertWarnsRegex((UserWarning, Exception), 'expect')
 
     @contextlib.contextmanager
-    def assertNoStderr(self):
+    eleza assertNoStderr(self):
         with captured_stderr() as buf:
             yield
         self.assertEqual(buf.getvalue(), "")
 
-    def assertLogRecords(self, records, matches):
+    eleza assertLogRecords(self, records, matches):
         self.assertEqual(len(records), len(matches))
         for rec, match in zip(records, matches):
             self.assertIsInstance(rec, logging.LogRecord)
             for k, v in match.items():
                 self.assertEqual(getattr(rec, k), v)
 
-    def testAssertLogsDefaults(self):
+    eleza testAssertLogsDefaults(self):
         # defaults: root logger, level INFO
         with self.assertNoStderr():
             with self.assertLogs() as cm:
@@ -1591,7 +1591,7 @@ test case
             self.assertEqual(cm.output, ["INFO:foo:1"])
             self.assertLogRecords(cm.records, [{'name': 'foo'}])
 
-    def testAssertLogsTwoMatchingMessages(self):
+    eleza testAssertLogsTwoMatchingMessages(self):
         # Same, but with two matching log messages
         with self.assertNoStderr():
             with self.assertLogs() as cm:
@@ -1602,7 +1602,7 @@ test case
             self.assertLogRecords(cm.records,
                                    [{'name': 'foo'}, {'name': 'quux'}])
 
-    def checkAssertLogsPerLevel(self, level):
+    eleza checkAssertLogsPerLevel(self, level):
         # Check level filtering
         with self.assertNoStderr():
             with self.assertLogs(level=level) as cm:
@@ -1613,11 +1613,11 @@ test case
             self.assertLogRecords(cm.records,
                                    [{'name': 'foo.bar'}, {'name': 'quux'}])
 
-    def testAssertLogsPerLevel(self):
+    eleza testAssertLogsPerLevel(self):
         self.checkAssertLogsPerLevel(logging.ERROR)
         self.checkAssertLogsPerLevel('ERROR')
 
-    def checkAssertLogsPerLogger(self, logger):
+    eleza checkAssertLogsPerLogger(self, logger):
         # Check per-logger filtering
         with self.assertNoStderr():
             with self.assertLogs(level='DEBUG') as outer_cm:
@@ -1631,25 +1631,25 @@ test case
             # The outer catchall caught the quux log
             self.assertEqual(outer_cm.output, ["WARNING:quux:3"])
 
-    def testAssertLogsPerLogger(self):
+    eleza testAssertLogsPerLogger(self):
         self.checkAssertLogsPerLogger(logging.getLogger('foo'))
         self.checkAssertLogsPerLogger('foo')
 
-    def testAssertLogsFailureNoLogs(self):
+    eleza testAssertLogsFailureNoLogs(self):
         # Failure due to no logs
         with self.assertNoStderr():
             with self.assertRaises(self.failureException):
                 with self.assertLogs():
                     pass
 
-    def testAssertLogsFailureLevelTooHigh(self):
+    eleza testAssertLogsFailureLevelTooHigh(self):
         # Failure due to level too high
         with self.assertNoStderr():
             with self.assertRaises(self.failureException):
                 with self.assertLogs(level='WARNING'):
                     log_foo.info("1")
 
-    def testAssertLogsFailureMismatchingLogger(self):
+    eleza testAssertLogsFailureMismatchingLogger(self):
         # Failure due to mismatching logger (and the logged message is
         # passed through)
         with self.assertLogs('quux', level='ERROR'):
@@ -1657,7 +1657,7 @@ test case
                 with self.assertLogs('foo'):
                     log_quux.error("1")
 
-    def testDeprecatedMethodNames(self):
+    eleza testDeprecatedMethodNames(self):
         """
         Test that the deprecated methods raise a DeprecationWarning. See #9424.
         """
@@ -1684,9 +1684,9 @@ test case
 
     # disable this test for now. When the version where the fail* methods will
     # be removed is decided, re-enable it and update the version
-    def _testDeprecatedFailMethods(self):
+    eleza _testDeprecatedFailMethods(self):
         """Test that the deprecated fail* methods get removed in 3.x"""
-        if sys.version_info[:2] < (3, 3):
+        ikiwa sys.version_info[:2] < (3, 3):
             return
         deprecated_names = [
             'failIfEqual', 'failUnlessEqual', 'failUnlessAlmostEqual',
@@ -1697,10 +1697,10 @@ test case
             with self.assertRaises(AttributeError):
                 getattr(self, deprecated_name)  # remove these in 3.x
 
-    def testDeepcopy(self):
+    eleza testDeepcopy(self):
         # Issue: 5660
-        class TestableTest(unittest.TestCase):
-            def testNothing(self):
+        kundi TestableTest(unittest.TestCase):
+            eleza testNothing(self):
                 pass
 
         test = TestableTest('testNothing')
@@ -1708,10 +1708,10 @@ test case
         # This shouldn't blow up
         deepcopy(test)
 
-    def testPickle(self):
+    eleza testPickle(self):
         # Issue 10326
 
-        # Can't use TestCase classes defined in Test class as
+        # Can't use TestCase classes defined in Test kundi as
         # pickle does not work with inner classes
         test = unittest.TestCase('run')
         for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -1725,50 +1725,50 @@ test case
             # the type equality lookup mechanism
             unpickled_test.assertEqual(set(), set())
 
-    def testKeyboardInterrupt(self):
-        def _raise(self=None):
+    eleza testKeyboardInterrupt(self):
+        eleza _raise(self=None):
             raise KeyboardInterrupt
-        def nothing(self):
+        eleza nothing(self):
             pass
 
-        class Test1(unittest.TestCase):
+        kundi Test1(unittest.TestCase):
             test_something = _raise
 
-        class Test2(unittest.TestCase):
+        kundi Test2(unittest.TestCase):
             setUp = _raise
             test_something = nothing
 
-        class Test3(unittest.TestCase):
+        kundi Test3(unittest.TestCase):
             test_something = nothing
             tearDown = _raise
 
-        class Test4(unittest.TestCase):
-            def test_something(self):
+        kundi Test4(unittest.TestCase):
+            eleza test_something(self):
                 self.addCleanup(_raise)
 
         for klass in (Test1, Test2, Test3, Test4):
             with self.assertRaises(KeyboardInterrupt):
                 klass('test_something').run()
 
-    def testSkippingEverywhere(self):
-        def _skip(self=None):
+    eleza testSkippingEverywhere(self):
+        eleza _skip(self=None):
             raise unittest.SkipTest('some reason')
-        def nothing(self):
+        eleza nothing(self):
             pass
 
-        class Test1(unittest.TestCase):
+        kundi Test1(unittest.TestCase):
             test_something = _skip
 
-        class Test2(unittest.TestCase):
+        kundi Test2(unittest.TestCase):
             setUp = _skip
             test_something = nothing
 
-        class Test3(unittest.TestCase):
+        kundi Test3(unittest.TestCase):
             test_something = nothing
             tearDown = _skip
 
-        class Test4(unittest.TestCase):
-            def test_something(self):
+        kundi Test4(unittest.TestCase):
+            eleza test_something(self):
                 self.addCleanup(_skip)
 
         for klass in (Test1, Test2, Test3, Test4):
@@ -1777,25 +1777,25 @@ test case
             self.assertEqual(len(result.skipped), 1)
             self.assertEqual(result.testsRun, 1)
 
-    def testSystemExit(self):
-        def _raise(self=None):
+    eleza testSystemExit(self):
+        eleza _raise(self=None):
             raise SystemExit
-        def nothing(self):
+        eleza nothing(self):
             pass
 
-        class Test1(unittest.TestCase):
+        kundi Test1(unittest.TestCase):
             test_something = _raise
 
-        class Test2(unittest.TestCase):
+        kundi Test2(unittest.TestCase):
             setUp = _raise
             test_something = nothing
 
-        class Test3(unittest.TestCase):
+        kundi Test3(unittest.TestCase):
             test_something = nothing
             tearDown = _raise
 
-        class Test4(unittest.TestCase):
-            def test_something(self):
+        kundi Test4(unittest.TestCase):
+            eleza test_something(self):
                 self.addCleanup(_raise)
 
         for klass in (Test1, Test2, Test3, Test4):
@@ -1805,32 +1805,32 @@ test case
             self.assertEqual(result.testsRun, 1)
 
     @support.cpython_only
-    def testNoCycles(self):
+    eleza testNoCycles(self):
         case = unittest.TestCase()
         wr = weakref.ref(case)
         with support.disable_gc():
             del case
             self.assertFalse(wr())
 
-    def test_no_exception_leak(self):
+    eleza test_no_exception_leak(self):
         # Issue #19880: TestCase.run() should not keep a reference
         # to the exception
-        class MyException(Exception):
+        kundi MyException(Exception):
             ninstance = 0
 
-            def __init__(self):
+            eleza __init__(self):
                 MyException.ninstance += 1
                 Exception.__init__(self)
 
-            def __del__(self):
+            eleza __del__(self):
                 MyException.ninstance -= 1
 
-        class TestCase(unittest.TestCase):
-            def test1(self):
+        kundi TestCase(unittest.TestCase):
+            eleza test1(self):
                 raise MyException()
 
             @unittest.expectedFailure
-            def test2(self):
+            eleza test2(self):
                 raise MyException()
 
         for method_name in ('test1', 'test2'):
@@ -1839,5 +1839,5 @@ test case
             self.assertEqual(MyException.ninstance, 0)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

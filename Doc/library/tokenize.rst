@@ -20,7 +20,7 @@ To simplify token stream handling, all :ref:`operator <operators>` and
 :ref:`delimiter <delimiters>` tokens and :data:`Ellipsis` are returned using
 the generic :data:`~token.OP` token type.  The exact
 type can be determined by checking the ``exact_type`` property on the
-:term:`named tuple` returned from :func:`tokenize.tokenize`.
+:term:`named tuple` returned kutoka :func:`tokenize.tokenize`.
 
 Tokenizing Input
 ----------------
@@ -68,7 +68,7 @@ The primary entry point is a :term:`generator`:
    The result is an iterator yielding named tuples, exactly like
    :func:`.tokenize`. It does not yield an :data:`~token.ENCODING` token.
 
-All constants from the :mod:`token` module are also exported from
+All constants kutoka the :mod:`token` module are also exported kutoka
 :mod:`tokenize`.
 
 Another function is provided to reverse the tokenization process. This is
@@ -103,10 +103,10 @@ function it uses to do this is available:
     readline, in the same way as the :func:`.tokenize` generator.
 
     It will call readline a maximum of twice, and return the encoding used
-    (as a string) and a list of any lines (not decoded from bytes) it has read
+    (as a string) and a list of any lines (not decoded kutoka bytes) it has read
     in.
 
-    It detects the encoding from the presence of a UTF-8 BOM or an encoding
+    It detects the encoding kutoka the presence of a UTF-8 BOM or an encoding
     cookie as specified in :pep:`263`. If both a BOM and a cookie are present,
     but disagree, a :exc:`SyntaxError` will be raised. Note that if the BOM is found,
     ``'utf-8-sig'`` will be returned as an encoding.
@@ -151,7 +151,7 @@ Command-Line Usage
 
 .. versionadded:: 3.3
 
-The :mod:`tokenize` module can be executed as a script from the command line.
+The :mod:`tokenize` module can be executed as a script kutoka the command line.
 It is as simple as:
 
 .. code-block:: sh
@@ -179,18 +179,18 @@ Examples
 Example of a script rewriter that transforms float literals into Decimal
 objects::
 
-    from tokenize import tokenize, untokenize, NUMBER, STRING, NAME, OP
-    from io import BytesIO
+    kutoka tokenize agiza tokenize, untokenize, NUMBER, STRING, NAME, OP
+    kutoka io agiza BytesIO
 
     def decistmt(s):
         """Substitute Decimals for floats in a string of statements.
 
-        >>> from decimal import Decimal
+        >>> kutoka decimal agiza Decimal
         >>> s = 'print(+21.3e-5*-.1234/81.7)'
         >>> decistmt(s)
         "print (+Decimal ('21.3e-5')*-Decimal ('.1234')/Decimal ('81.7'))"
 
-        The format of the exponent is inherited from the platform C library.
+        The format of the exponent is inherited kutoka the platform C library.
         Known cases are "e-007" (Windows) and "e-07" (not Windows).  Since
         we're only showing 12 digits, and the 13th isn't close to 5, the
         rest of the output should be platform-independent.
@@ -198,7 +198,7 @@ objects::
         >>> exec(s)  #doctest: +ELLIPSIS
         -3.21716034272e-0...7
 
-        Output from calculations with Decimal should be identical across all
+        Output kutoka calculations with Decimal should be identical across all
         platforms.
 
         >>> exec(decistmt(s))
@@ -218,7 +218,7 @@ objects::
                 result.append((toknum, tokval))
         return untokenize(result).decode('utf-8')
 
-Example of tokenizing from the command line.  The script::
+Example of tokenizing kutoka the command line.  The script::
 
     def say_hello():
         print("Hello, World!")

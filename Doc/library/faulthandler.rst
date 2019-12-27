@@ -159,11 +159,11 @@ handler:
 
 .. code-block:: shell-session
 
-    $ python3 -c "import ctypes; ctypes.string_at(0)"
+    $ python3 -c "agiza ctypes; ctypes.string_at(0)"
     Segmentation fault
 
     $ python3 -q -X faulthandler
-    >>> import ctypes
+    >>> agiza ctypes
     >>> ctypes.string_at(0)
     Fatal Python error: Segmentation fault
 

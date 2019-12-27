@@ -5,7 +5,7 @@
 Boolean Objects
 ---------------
 
-Booleans in Python are implemented as a subclass of integers.  There are only
+Booleans in Python are implemented as a subkundi of integers.  There are only
 two booleans, :const:`Py_False` and :const:`Py_True`.  As such, the normal
 creation and deletion functions don't apply to booleans.  The following macros
 are available, however.
@@ -30,13 +30,13 @@ are available, however.
 
 .. c:macro:: Py_RETURN_FALSE
 
-   Return :const:`Py_False` from a function, properly incrementing its reference
+   Return :const:`Py_False` kutoka a function, properly incrementing its reference
    count.
 
 
 .. c:macro:: Py_RETURN_TRUE
 
-   Return :const:`Py_True` from a function, properly incrementing its reference
+   Return :const:`Py_True` kutoka a function, properly incrementing its reference
    count.
 
 

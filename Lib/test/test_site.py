@@ -23,10 +23,10 @@ agiza tempfile
 kutoka unittest agiza mock
 kutoka copy agiza copy
 
-# These tests are not particularly useful if Python was invoked with -S.
+# These tests are not particularly useful ikiwa Python was invoked with -S.
 # If you add tests that are useful under -S, this skip should be moved
-# to the class level.
-if sys.flags.no_site:
+# to the kundi level.
+ikiwa sys.flags.no_site:
     raise unittest.SkipTest("Python was invoked with -S")
 
 agiza site
@@ -35,11 +35,11 @@ agiza site
 OLD_SYS_PATH = None
 
 
-def setUpModule():
+eleza setUpModule():
     global OLD_SYS_PATH
     OLD_SYS_PATH = sys.path[:]
 
-    if site.ENABLE_USER_SITE and not os.path.isdir(site.USER_SITE):
+    ikiwa site.ENABLE_USER_SITE and not os.path.isdir(site.USER_SITE):
         # need to add user site directory for tests
         try:
             os.makedirs(site.USER_SITE)
@@ -50,15 +50,15 @@ def setUpModule():
                                     % (site.USER_SITE, exc))
 
 
-def tearDownModule():
+eleza tearDownModule():
     sys.path[:] = OLD_SYS_PATH
 
 
-class HelperFunctionsTests(unittest.TestCase):
+kundi HelperFunctionsTests(unittest.TestCase):
     """Tests for helper functions.
     """
 
-    def setUp(self):
+    eleza setUp(self):
         """Save a copy of sys.path"""
         self.sys_path = sys.path[:]
         self.old_base = site.USER_BASE
@@ -67,7 +67,7 @@ class HelperFunctionsTests(unittest.TestCase):
         self.original_vars = sysconfig._CONFIG_VARS
         self.old_vars = copy(sysconfig._CONFIG_VARS)
 
-    def tearDown(self):
+    eleza tearDown(self):
         """Restore sys.path"""
         sys.path[:] = self.sys_path
         site.USER_BASE = self.old_base
@@ -77,36 +77,36 @@ class HelperFunctionsTests(unittest.TestCase):
         sysconfig._CONFIG_VARS.clear()
         sysconfig._CONFIG_VARS.update(self.old_vars)
 
-    def test_makepath(self):
-        # Test makepath() have an absolute path for its first return value
+    eleza test_makepath(self):
+        # Test makepath() have an absolute path for its first rudisha value
         # and a case-normalized version of the absolute path for its
         # second value.
         path_parts = ("Beginning", "End")
         original_dir = os.path.join(*path_parts)
         abs_dir, norm_dir = site.makepath(*path_parts)
         self.assertEqual(os.path.abspath(original_dir), abs_dir)
-        if original_dir == os.path.normcase(original_dir):
+        ikiwa original_dir == os.path.normcase(original_dir):
             self.assertEqual(abs_dir, norm_dir)
         else:
             self.assertEqual(os.path.normcase(abs_dir), norm_dir)
 
-    def test_init_pathinfo(self):
+    eleza test_init_pathinfo(self):
         dir_set = site._init_pathinfo()
         for entry in [site.makepath(path)[1] for path in sys.path
-                        if path and os.path.exists(path)]:
+                        ikiwa path and os.path.exists(path)]:
             self.assertIn(entry, dir_set,
                           "%s kutoka sys.path not found in set returned "
                           "by _init_pathinfo(): %s" % (entry, dir_set))
 
-    def pth_file_tests(self, pth_file):
+    eleza pth_file_tests(self, pth_file):
         """Contain common code for testing results of reading a .pth file"""
         self.assertIn(pth_file.imported, sys.modules,
                       "%s not in sys.modules" % pth_file.imported)
         self.assertIn(site.makepath(pth_file.good_dir_path)[0], sys.path)
         self.assertFalse(os.path.exists(pth_file.bad_dir_path))
 
-    def test_addpackage(self):
-        # Make sure addpackage() agizas if the line starts with 'agiza',
+    eleza test_addpackage(self):
+        # Make sure addpackage() agizas ikiwa the line starts with 'agiza',
         # adds directories to sys.path for any line in the file that is not a
         # comment or agiza that is a valid directory name for where the .pth
         # file resides; invalid directories are not added
@@ -120,17 +120,17 @@ class HelperFunctionsTests(unittest.TestCase):
         finally:
             pth_file.cleanup()
 
-    def make_pth(self, contents, pth_dir='.', pth_name=TESTFN):
-        # Create a .pth file and return its (abspath, basename).
+    eleza make_pth(self, contents, pth_dir='.', pth_name=TESTFN):
+        # Create a .pth file and rudisha its (abspath, basename).
         pth_dir = os.path.abspath(pth_dir)
         pth_basename = pth_name + '.pth'
         pth_fn = os.path.join(pth_dir, pth_basename)
         with open(pth_fn, 'w', encoding='utf-8') as pth_file:
             self.addCleanup(lambda: os.remove(pth_fn))
             pth_file.write(contents)
-        return pth_dir, pth_basename
+        rudisha pth_dir, pth_basename
 
-    def test_addpackage_import_bad_syntax(self):
+    eleza test_addpackage_import_bad_syntax(self):
         # Issue 10642
         pth_dir, pth_fn = self.make_pth("agiza bad-syntax\n")
         with captured_stderr() as err_out:
@@ -145,7 +145,7 @@ class HelperFunctionsTests(unittest.TestCase):
         self.assertRegex(err_out.getvalue(), r'agiza bad-syntax')
         self.assertRegex(err_out.getvalue(), 'SyntaxError')
 
-    def test_addpackage_import_bad_exec(self):
+    eleza test_addpackage_import_bad_exec(self):
         # Issue 10642
         pth_dir, pth_fn = self.make_pth("randompath\nagiza nosuchmodule\n")
         with captured_stderr() as err_out:
@@ -157,17 +157,17 @@ class HelperFunctionsTests(unittest.TestCase):
         self.assertRegex(err_out.getvalue(), 'Traceback')
         self.assertRegex(err_out.getvalue(), 'ModuleNotFoundError')
 
-    def test_addpackage_import_bad_pth_file(self):
+    eleza test_addpackage_import_bad_pth_file(self):
         # Issue 5258
         pth_dir, pth_fn = self.make_pth("abc\x00def\n")
         with captured_stderr() as err_out:
             self.assertFalse(site.addpackage(pth_dir, pth_fn, set()))
         self.assertEqual(err_out.getvalue(), "")
         for path in sys.path:
-            if isinstance(path, str):
+            ikiwa isinstance(path, str):
                 self.assertNotIn("abc\x00def", path)
 
-    def test_addsitedir(self):
+    eleza test_addsitedir(self):
         # Same tests for test_addpackage since addsitedir() essentially just
         # calls addpackage() for every .pth file in the directory
         pth_file = PthFile()
@@ -182,11 +182,11 @@ class HelperFunctionsTests(unittest.TestCase):
 
     # This tests _getuserbase, hence the double underline
     # to distinguish kutoka a test for getuserbase
-    def test__getuserbase(self):
+    eleza test__getuserbase(self):
         self.assertEqual(site._getuserbase(), sysconfig._getuserbase())
 
-    def test_get_path(self):
-        if sys.platform == 'darwin' and sys._framework:
+    eleza test_get_path(self):
+        ikiwa sys.platform == 'darwin' and sys._framework:
             scheme = 'osx_framework_user'
         else:
             scheme = os.name + '_user'
@@ -195,7 +195,7 @@ class HelperFunctionsTests(unittest.TestCase):
 
     @unittest.skipUnless(site.ENABLE_USER_SITE, "requires access to PEP 370 "
                           "user-site (site.ENABLE_USER_SITE)")
-    def test_s_option(self):
+    eleza test_s_option(self):
         # (ncoghlan) Change this to use script_helper...
         usersite = site.USER_SITE
         self.assertIn(usersite, sys.path)
@@ -210,7 +210,7 @@ class HelperFunctionsTests(unittest.TestCase):
         rc = subprocess.call([sys.executable, '-s', '-c',
             'agiza sys; sys.exit(%r in sys.path)' % usersite],
             env=env)
-        if usersite == site.getsitepackages()[0]:
+        ikiwa usersite == site.getsitepackages()[0]:
             self.assertEqual(rc, 1)
         else:
             self.assertEqual(rc, 0, "User site still added to path with -s")
@@ -220,7 +220,7 @@ class HelperFunctionsTests(unittest.TestCase):
         rc = subprocess.call([sys.executable, '-c',
             'agiza sys; sys.exit(%r in sys.path)' % usersite],
             env=env)
-        if usersite == site.getsitepackages()[0]:
+        ikiwa usersite == site.getsitepackages()[0]:
             self.assertEqual(rc, 1)
         else:
             self.assertEqual(rc, 0,
@@ -234,14 +234,14 @@ class HelperFunctionsTests(unittest.TestCase):
         self.assertEqual(rc, 1,
                         "User base not set by PYTHONUSERBASE")
 
-    def test_getuserbase(self):
+    eleza test_getuserbase(self):
         site.USER_BASE = None
         user_base = site.getuserbase()
 
         # the call sets site.USER_BASE
         self.assertEqual(site.USER_BASE, user_base)
 
-        # let's set PYTHONUSERBASE and see if it uses it
+        # let's set PYTHONUSERBASE and see ikiwa it uses it
         site.USER_BASE = None
         agiza sysconfig
         sysconfig._CONFIG_VARS = None
@@ -251,7 +251,7 @@ class HelperFunctionsTests(unittest.TestCase):
             self.assertTrue(site.getuserbase().startswith('xoxo'),
                             site.getuserbase())
 
-    def test_getusersitepackages(self):
+    eleza test_getusersitepackages(self):
         site.USER_SITE = None
         site.USER_BASE = None
         user_site = site.getusersitepackages()
@@ -261,10 +261,10 @@ class HelperFunctionsTests(unittest.TestCase):
         self.assertTrue(user_site.startswith(site.USER_BASE), user_site)
         self.assertEqual(site.USER_BASE, site.getuserbase())
 
-    def test_getsitepackages(self):
+    eleza test_getsitepackages(self):
         site.PREFIXES = ['xoxo']
         dirs = site.getsitepackages()
-        if os.sep == '/':
+        ikiwa os.sep == '/':
             # OS X, Linux, FreeBSD, etc
             self.assertEqual(len(dirs), 1)
             wanted = os.path.join('xoxo', 'lib',
@@ -278,9 +278,9 @@ class HelperFunctionsTests(unittest.TestCase):
             wanted = os.path.join('xoxo', 'lib', 'site-packages')
             self.assertEqual(dirs[1], wanted)
 
-    def test_no_home_directory(self):
+    eleza test_no_home_directory(self):
         # bpo-10496: getuserbase() and getusersitepackages() must not fail if
-        # the current user has no home directory (if expanduser() returns the
+        # the current user has no home directory (ikiwa expanduser() returns the
         # path unchanged).
         site.USER_SITE = None
         site.USER_BASE = None
@@ -303,7 +303,7 @@ class HelperFunctionsTests(unittest.TestCase):
              support.swap_attr(site, 'ENABLE_USER_SITE', True):
 
             # addusersitepackages() must not add user_site to sys.path
-            # if it is not an existing directory
+            # ikiwa it is not an existing directory
             known_paths = set()
             site.addusersitepackages(known_paths)
 
@@ -312,10 +312,10 @@ class HelperFunctionsTests(unittest.TestCase):
             self.assertFalse(known_paths)
 
 
-class PthFile(object):
-    """Helper class for handling testing of .pth files"""
+kundi PthFile(object):
+    """Helper kundi for handling testing of .pth files"""
 
-    def __init__(self, filename_base=TESTFN, imported="time",
+    eleza __init__(self, filename_base=TESTFN, imported="time",
                     good_dirname="__testdir__", bad_dirname="__bad"):
         """Initialize instance variables"""
         self.filename = filename_base + ".pth"
@@ -327,7 +327,7 @@ class PthFile(object):
         self.good_dir_path = os.path.join(self.base_dir, self.good_dirname)
         self.bad_dir_path = os.path.join(self.base_dir, self.bad_dirname)
 
-    def create(self):
+    eleza create(self):
         """Create a .pth file with a comment, blank lines, an ``agiza
         <self.imported>``, a line with self.good_dirname, and a line with
         self.bad_dirname.
@@ -340,49 +340,49 @@ class PthFile(object):
         """
         FILE = open(self.file_path, 'w')
         try:
-            print("#agiza @bad module name", file=FILE)
-            print("\n", file=FILE)
-            print("agiza %s" % self.imported, file=FILE)
-            print(self.good_dirname, file=FILE)
-            print(self.bad_dirname, file=FILE)
+            andika("#agiza @bad module name", file=FILE)
+            andika("\n", file=FILE)
+            andika("agiza %s" % self.imported, file=FILE)
+            andika(self.good_dirname, file=FILE)
+            andika(self.bad_dirname, file=FILE)
         finally:
             FILE.close()
         os.mkdir(self.good_dir_path)
 
-    def cleanup(self, prep=False):
+    eleza cleanup(self, prep=False):
         """Make sure that the .pth file is deleted, self.imported is not in
         sys.modules, and that both self.good_dirname and self.bad_dirname are
         not existing directories."""
-        if os.path.exists(self.file_path):
+        ikiwa os.path.exists(self.file_path):
             os.remove(self.file_path)
-        if prep:
+        ikiwa prep:
             self.imported_module = sys.modules.get(self.imported)
-            if self.imported_module:
+            ikiwa self.imported_module:
                 del sys.modules[self.imported]
         else:
-            if self.imported_module:
+            ikiwa self.imported_module:
                 sys.modules[self.imported] = self.imported_module
-        if os.path.exists(self.good_dir_path):
+        ikiwa os.path.exists(self.good_dir_path):
             os.rmdir(self.good_dir_path)
-        if os.path.exists(self.bad_dir_path):
+        ikiwa os.path.exists(self.bad_dir_path):
             os.rmdir(self.bad_dir_path)
 
-class ImportSideEffectTests(unittest.TestCase):
+kundi ImportSideEffectTests(unittest.TestCase):
     """Test side-effects kutoka agizaing 'site'."""
 
-    def setUp(self):
+    eleza setUp(self):
         """Make a copy of sys.path"""
         self.sys_path = sys.path[:]
 
-    def tearDown(self):
+    eleza tearDown(self):
         """Restore sys.path"""
         sys.path[:] = self.sys_path
 
-    def test_abs_paths(self):
+    eleza test_abs_paths(self):
         # Make sure all imported modules have their __file__ and __cached__
         # attributes as absolute paths.  Arranging to put the Lib directory on
         # PYTHONPATH would cause the os module to have a relative path for
-        # __file__ if abs_paths() does not get run.  sys and builtins (the
+        # __file__ ikiwa abs_paths() does not get run.  sys and builtins (the
         # only other modules imported before site.py runs) do not have
         # __file__ or __cached__ because they are built-in.
         try:
@@ -427,7 +427,7 @@ class ImportSideEffectTests(unittest.TestCase):
                             "expected absolute path, got {}"
                             .format(os__cached__.decode('ascii')))
 
-    def test_abs_paths_cached_None(self):
+    eleza test_abs_paths_cached_None(self):
         """Test for __cached__ is None.
 
         Regarding to PEP 3147, __cached__ can be None.
@@ -438,7 +438,7 @@ class ImportSideEffectTests(unittest.TestCase):
         site.abs_paths()
         self.assertIsNone(sys.modules['test'].__cached__)
 
-    def test_no_duplicate_paths(self):
+    eleza test_no_duplicate_paths(self):
         # No duplicate paths should exist in sys.path
         # Handled by removeduppaths()
         site.removeduppaths()
@@ -448,40 +448,40 @@ class ImportSideEffectTests(unittest.TestCase):
             seen_paths.add(path)
 
     @unittest.skip('test not implemented')
-    def test_add_build_dir(self):
+    eleza test_add_build_dir(self):
         # Test that the build directory's Modules directory is used when it
         # should be.
         # XXX: implement
         pass
 
-    def test_setting_quit(self):
+    eleza test_setting_quit(self):
         # 'quit' and 'exit' should be injected into builtins
         self.assertTrue(hasattr(builtins, "quit"))
         self.assertTrue(hasattr(builtins, "exit"))
 
-    def test_setting_copyright(self):
+    eleza test_setting_copyright(self):
         # 'copyright', 'credits', and 'license' should be in builtins
         self.assertTrue(hasattr(builtins, "copyright"))
         self.assertTrue(hasattr(builtins, "credits"))
         self.assertTrue(hasattr(builtins, "license"))
 
-    def test_setting_help(self):
+    eleza test_setting_help(self):
         # 'help' should be set in builtins
         self.assertTrue(hasattr(builtins, "help"))
 
-    def test_aliasing_mbcs(self):
-        if sys.platform == "win32":
+    eleza test_aliasing_mbcs(self):
+        ikiwa sys.platform == "win32":
             agiza locale
-            if locale.getdefaultlocale()[1].startswith('cp'):
+            ikiwa locale.getdefaultlocale()[1].startswith('cp'):
                 for value in encodings.aliases.aliases.values():
-                    if value == "mbcs":
+                    ikiwa value == "mbcs":
                         break
                 else:
                     self.fail("did not alias mbcs")
 
-    def test_sitecustomize_executed(self):
+    eleza test_sitecustomize_executed(self):
         # If sitecustomize is available, it should have been imported.
-        if "sitecustomize" not in sys.modules:
+        ikiwa "sitecustomize" not in sys.modules:
             try:
                 agiza sitecustomize
             except ImportError:
@@ -495,7 +495,7 @@ class ImportSideEffectTests(unittest.TestCase):
                          'only for released versions')
     @unittest.skipUnless(hasattr(urllib.request, "HTTPSHandler"),
                          'need SSL support to download license')
-    def test_license_exists_at_url(self):
+    eleza test_license_exists_at_url(self):
         # This test is a bit fragile since it depends on the format of the
         # string displayed by license in the absence of a LICENSE file.
         url = license._Printer__data.split()[1]
@@ -509,13 +509,13 @@ class ImportSideEffectTests(unittest.TestCase):
         self.assertEqual(code, 200, msg="Can't find " + url)
 
 
-class StartupImportTests(unittest.TestCase):
+kundi StartupImportTests(unittest.TestCase):
 
-    def test_startup_agizas(self):
+    eleza test_startup_agizas(self):
         # This tests checks which modules are loaded by Python when it
         # initially starts upon startup.
         popen = subprocess.Popen([sys.executable, '-I', '-v', '-c',
-                                  'agiza sys; print(set(sys.modules))'],
+                                  'agiza sys; andika(set(sys.modules))'],
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE,
                                  encoding='utf-8')
@@ -541,18 +541,18 @@ class StartupImportTests(unittest.TestCase):
                           }.difference(sys.builtin_module_names)
         self.assertFalse(modules.intersection(collection_mods), stderr)
 
-    def test_startup_interactivehook(self):
+    eleza test_startup_interactivehook(self):
         r = subprocess.Popen([sys.executable, '-c',
             'agiza sys; sys.exit(hasattr(sys, "__interactivehook__"))']).wait()
         self.assertTrue(r, "'__interactivehook__' not added by site")
 
-    def test_startup_interactivehook_isolated(self):
+    eleza test_startup_interactivehook_isolated(self):
         # issue28192 readline is not automatically enabled in isolated mode
         r = subprocess.Popen([sys.executable, '-I', '-c',
             'agiza sys; sys.exit(hasattr(sys, "__interactivehook__"))']).wait()
         self.assertFalse(r, "'__interactivehook__' added in isolated mode")
 
-    def test_startup_interactivehook_isolated_explicit(self):
+    eleza test_startup_interactivehook_isolated_explicit(self):
         # issue28192 readline can be explicitly enabled in isolated mode
         r = subprocess.Popen([sys.executable, '-I', '-c',
             'agiza site, sys; site.enablerlcompleter(); sys.exit(hasattr(sys, "__interactivehook__"))']).wait()
@@ -560,9 +560,9 @@ class StartupImportTests(unittest.TestCase):
 
 
 @unittest.skipUnless(sys.platform == 'win32', "only supported on Windows")
-class _pthFileTests(unittest.TestCase):
+kundi _pthFileTests(unittest.TestCase):
 
-    def _create_underpth_exe(self, lines):
+    eleza _create_underpth_exe(self, lines):
         temp_dir = tempfile.mkdtemp()
         self.addCleanup(test.support.rmtree, temp_dir)
         exe_file = os.path.join(temp_dir, os.path.split(sys.executable)[1])
@@ -570,19 +570,19 @@ class _pthFileTests(unittest.TestCase):
         _pth_file = os.path.splitext(exe_file)[0] + '._pth'
         with open(_pth_file, 'w') as f:
             for line in lines:
-                print(line, file=f)
-        return exe_file
+                andika(line, file=f)
+        rudisha exe_file
 
-    def _calc_sys_path_for_underpth_nosite(self, sys_prefix, lines):
+    eleza _calc_sys_path_for_underpth_nosite(self, sys_prefix, lines):
         sys_path = []
         for line in lines:
-            if not line or line[0] == '#':
+            ikiwa not line or line[0] == '#':
                 continue
             abs_path = os.path.abspath(os.path.join(sys_prefix, line))
             sys_path.append(abs_path)
-        return sys_path
+        rudisha sys_path
 
-    def test_underpth_nosite_file(self):
+    eleza test_underpth_nosite_file(self):
         libpath = os.path.dirname(os.path.dirname(encodings.__file__))
         exe_prefix = os.path.dirname(sys.executable)
         pth_lines = [
@@ -600,7 +600,7 @@ class _pthFileTests(unittest.TestCase):
         env['PYTHONPATH'] = 'kutoka-env'
         env['PATH'] = '{};{}'.format(exe_prefix, os.getenv('PATH'))
         output = subprocess.check_output([exe_file, '-c',
-            'agiza sys; print("\\n".join(sys.path) if sys.flags.no_site else "")'
+            'agiza sys; andika("\\n".join(sys.path) ikiwa sys.flags.no_site else "")'
         ], env=env, encoding='ansi')
         actual_sys_path = output.rstrip().split('\n')
         self.assertTrue(actual_sys_path, "sys.flags.no_site was False")
@@ -610,7 +610,7 @@ class _pthFileTests(unittest.TestCase):
             "sys.path is incorrect"
         )
 
-    def test_underpth_file(self):
+    eleza test_underpth_file(self):
         libpath = os.path.dirname(os.path.dirname(encodings.__file__))
         exe_prefix = os.path.dirname(sys.executable)
         exe_file = self._create_underpth_exe([
@@ -635,5 +635,5 @@ class _pthFileTests(unittest.TestCase):
         self.assertTrue(rc, "sys.path is incorrect")
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

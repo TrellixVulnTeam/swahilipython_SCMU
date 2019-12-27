@@ -81,7 +81,7 @@ def _check_methods(C, *methods):
             return NotImplemented
     return True
 
-class Hashable(metaclass=ABCMeta):
+kundi Hashable(metaclass=ABCMeta):
 
     __slots__ = ()
 
@@ -96,7 +96,7 @@ class Hashable(metaclass=ABCMeta):
         return NotImplemented
 
 
-class Awaitable(metaclass=ABCMeta):
+kundi Awaitable(metaclass=ABCMeta):
 
     __slots__ = ()
 
@@ -111,7 +111,7 @@ class Awaitable(metaclass=ABCMeta):
         return NotImplemented
 
 
-class Coroutine(Awaitable):
+kundi Coroutine(Awaitable):
 
     __slots__ = ()
 
@@ -155,7 +155,7 @@ class Coroutine(Awaitable):
 Coroutine.register(coroutine)
 
 
-class AsyncIterable(metaclass=ABCMeta):
+kundi AsyncIterable(metaclass=ABCMeta):
 
     __slots__ = ()
 
@@ -170,7 +170,7 @@ class AsyncIterable(metaclass=ABCMeta):
         return NotImplemented
 
 
-class AsyncIterator(AsyncIterable):
+kundi AsyncIterator(AsyncIterable):
 
     __slots__ = ()
 
@@ -189,7 +189,7 @@ class AsyncIterator(AsyncIterable):
         return NotImplemented
 
 
-class AsyncGenerator(AsyncIterator):
+kundi AsyncGenerator(AsyncIterator):
 
     __slots__ = ()
 
@@ -240,7 +240,7 @@ class AsyncGenerator(AsyncIterator):
 AsyncGenerator.register(async_generator)
 
 
-class Iterable(metaclass=ABCMeta):
+kundi Iterable(metaclass=ABCMeta):
 
     __slots__ = ()
 
@@ -256,7 +256,7 @@ class Iterable(metaclass=ABCMeta):
         return NotImplemented
 
 
-class Iterator(Iterable):
+kundi Iterator(Iterable):
 
     __slots__ = ()
 
@@ -290,7 +290,7 @@ Iterator.register(tuple_iterator)
 Iterator.register(zip_iterator)
 
 
-class Reversible(Iterable):
+kundi Reversible(Iterable):
 
     __slots__ = ()
 
@@ -306,7 +306,7 @@ class Reversible(Iterable):
         return NotImplemented
 
 
-class Generator(Iterator):
+kundi Generator(Iterator):
 
     __slots__ = ()
 
@@ -356,7 +356,7 @@ class Generator(Iterator):
 Generator.register(generator)
 
 
-class Sized(metaclass=ABCMeta):
+kundi Sized(metaclass=ABCMeta):
 
     __slots__ = ()
 
@@ -371,7 +371,7 @@ class Sized(metaclass=ABCMeta):
         return NotImplemented
 
 
-class Container(metaclass=ABCMeta):
+kundi Container(metaclass=ABCMeta):
 
     __slots__ = ()
 
@@ -385,7 +385,7 @@ class Container(metaclass=ABCMeta):
             return _check_methods(C, "__contains__")
         return NotImplemented
 
-class Collection(Sized, Iterable, Container):
+kundi Collection(Sized, Iterable, Container):
 
     __slots__ = ()
 
@@ -395,7 +395,7 @@ class Collection(Sized, Iterable, Container):
             return _check_methods(C,  "__len__", "__iter__", "__contains__")
         return NotImplemented
 
-class Callable(metaclass=ABCMeta):
+kundi Callable(metaclass=ABCMeta):
 
     __slots__ = ()
 
@@ -413,11 +413,11 @@ class Callable(metaclass=ABCMeta):
 ### SETS ###
 
 
-class Set(Collection):
+kundi Set(Collection):
 
     """A set is a finite, iterable container.
 
-    This class provides concrete generic implementations of all
+    This kundi provides concrete generic implementations of all
     methods except for __contains__, __iter__ and __len__.
 
     To override the comparisons (presumably for speed, as the
@@ -463,10 +463,10 @@ class Set(Collection):
         return len(self) == len(other) and self.__le__(other)
 
     @classmethod
-    def _from_iterable(cls, it):
-        '''Construct an instance of the class kutoka any iterable input.
+    def _kutoka_iterable(cls, it):
+        '''Construct an instance of the kundi kutoka any iterable input.
 
-        Must override this method if the class constructor signature
+        Must override this method if the kundi constructor signature
         does not accept an iterable for an input.
         '''
         return cls(it)
@@ -474,7 +474,7 @@ class Set(Collection):
     def __and__(self, other):
         if not isinstance(other, Iterable):
             return NotImplemented
-        return self._from_iterable(value for value in other if value in self)
+        return self._kutoka_iterable(value for value in other if value in self)
 
     __rand__ = __and__
 
@@ -489,7 +489,7 @@ class Set(Collection):
         if not isinstance(other, Iterable):
             return NotImplemented
         chain = (e for s in (self, other) for e in s)
-        return self._from_iterable(chain)
+        return self._kutoka_iterable(chain)
 
     __ror__ = __or__
 
@@ -497,23 +497,23 @@ class Set(Collection):
         if not isinstance(other, Set):
             if not isinstance(other, Iterable):
                 return NotImplemented
-            other = self._from_iterable(other)
-        return self._from_iterable(value for value in self
+            other = self._kutoka_iterable(other)
+        return self._kutoka_iterable(value for value in self
                                    if value not in other)
 
     def __rsub__(self, other):
         if not isinstance(other, Set):
             if not isinstance(other, Iterable):
                 return NotImplemented
-            other = self._from_iterable(other)
-        return self._from_iterable(value for value in other
+            other = self._kutoka_iterable(other)
+        return self._kutoka_iterable(value for value in other
                                    if value not in self)
 
     def __xor__(self, other):
         if not isinstance(other, Set):
             if not isinstance(other, Iterable):
                 return NotImplemented
-            other = self._from_iterable(other)
+            other = self._kutoka_iterable(other)
         return (self - other) | (other - self)
 
     __rxor__ = __xor__
@@ -553,10 +553,10 @@ class Set(Collection):
 Set.register(frozenset)
 
 
-class MutableSet(Set):
+kundi MutableSet(Set):
     """A mutable set is a finite, iterable container.
 
-    This class provides concrete generic implementations of all
+    This kundi provides concrete generic implementations of all
     methods except for __contains__, __iter__, __len__,
     add(), and discard().
 
@@ -616,7 +616,7 @@ class MutableSet(Set):
             self.clear()
         else:
             if not isinstance(it, Set):
-                it = self._from_iterable(it)
+                it = self._kutoka_iterable(it)
             for value in it:
                 if value in self:
                     self.discard(value)
@@ -638,14 +638,14 @@ MutableSet.register(set)
 ### MAPPINGS ###
 
 
-class Mapping(Collection):
+kundi Mapping(Collection):
 
     __slots__ = ()
 
     """A Mapping is a generic container for associating key/value
     pairs.
 
-    This class provides concrete generic implementations of all
+    This kundi provides concrete generic implementations of all
     methods except for __getitem__, __iter__, and __len__.
 
     """
@@ -691,7 +691,7 @@ class Mapping(Collection):
 Mapping.register(mappingproxy)
 
 
-class MappingView(Sized):
+kundi MappingView(Sized):
 
     __slots__ = '_mapping',
 
@@ -705,12 +705,12 @@ class MappingView(Sized):
         return '{0.__class__.__name__}({0._mapping!r})'.format(self)
 
 
-class KeysView(MappingView, Set):
+kundi KeysView(MappingView, Set):
 
     __slots__ = ()
 
     @classmethod
-    def _from_iterable(self, it):
+    def _kutoka_iterable(self, it):
         return set(it)
 
     def __contains__(self, key):
@@ -722,12 +722,12 @@ class KeysView(MappingView, Set):
 KeysView.register(dict_keys)
 
 
-class ItemsView(MappingView, Set):
+kundi ItemsView(MappingView, Set):
 
     __slots__ = ()
 
     @classmethod
-    def _from_iterable(self, it):
+    def _kutoka_iterable(self, it):
         return set(it)
 
     def __contains__(self, item):
@@ -746,7 +746,7 @@ class ItemsView(MappingView, Set):
 ItemsView.register(dict_items)
 
 
-class ValuesView(MappingView, Collection):
+kundi ValuesView(MappingView, Collection):
 
     __slots__ = ()
 
@@ -764,14 +764,14 @@ class ValuesView(MappingView, Collection):
 ValuesView.register(dict_values)
 
 
-class MutableMapping(Mapping):
+kundi MutableMapping(Mapping):
 
     __slots__ = ()
 
     """A MutableMapping is a generic container for associating
     key/value pairs.
 
-    This class provides concrete generic implementations of all
+    This kundi provides concrete generic implementations of all
     methods except for __getitem__, __setitem__, __delitem__,
     __iter__, and __len__.
 
@@ -830,7 +830,7 @@ class MutableMapping(Mapping):
         if isinstance(other, Mapping):
             for key in other:
                 self[key] = other[key]
-        elif hasattr(other, "keys"):
+        lasivyo hasattr(other, "keys"):
             for key in other.keys():
                 self[key] = other[key]
         else:
@@ -853,7 +853,7 @@ MutableMapping.register(dict)
 ### SEQUENCES ###
 
 
-class Sequence(Reversible, Collection):
+kundi Sequence(Reversible, Collection):
 
     """All the operations on a read-only sequence.
 
@@ -920,7 +920,7 @@ Sequence.register(range)
 Sequence.register(memoryview)
 
 
-class ByteString(Sequence):
+kundi ByteString(Sequence):
 
     """This unifies bytes and bytearray.
 
@@ -933,7 +933,7 @@ ByteString.register(bytes)
 ByteString.register(bytearray)
 
 
-class MutableSequence(Sequence):
+kundi MutableSequence(Sequence):
 
     __slots__ = ()
 

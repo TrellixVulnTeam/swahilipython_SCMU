@@ -12,7 +12,7 @@ recommended command-line parsing module in the Python standard library.
 .. note::
 
    There are two other modules that fulfill the same task, namely
-   :mod:`getopt` (an equivalent for :c:func:`getopt` from the C
+   :mod:`getopt` (an equivalent for :c:func:`getopt` kutoka the C
    language) and the deprecated :mod:`optparse`.
    Note also that :mod:`argparse` is based on :mod:`optparse`,
    and therefore very similar in terms of usage.
@@ -43,7 +43,7 @@ introductory tutorial by making use of the :command:`ls` command:
    Sort entries alphabetically if none of -cftuvSUX nor --sort is specified.
    ...
 
-A few concepts we can learn from the four commands:
+A few concepts we can learn kutoka the four commands:
 
 * The :command:`ls` command is useful when run without any options at all. It defaults
   to displaying the contents of the current directory.
@@ -71,7 +71,7 @@ The basics
 
 Let us start with a very simple example which does (almost) nothing::
 
-   import argparse
+   agiza argparse
    parser = argparse.ArgumentParser()
    parser.parse_args()
 
@@ -111,7 +111,7 @@ Introducing Positional arguments
 
 An example::
 
-   import argparse
+   agiza argparse
    parser = argparse.ArgumentParser()
    parser.add_argument("echo")
    args = parser.parse_args()
@@ -143,7 +143,7 @@ Here is what's happening:
 
 * Calling our program now requires us to specify an option.
 
-* The :meth:`parse_args` method actually returns some data from the
+* The :meth:`parse_args` method actually returns some data kutoka the
   options specified, in this case, ``echo``.
 
 * The variable is some form of 'magic' that :mod:`argparse` performs for free
@@ -156,7 +156,7 @@ is not as helpful as it can be. For example we see that we got ``echo`` as a
 positional argument, but we don't know what it does, other than by guessing or
 by reading the source code. So, let's make it a bit more useful::
 
-   import argparse
+   agiza argparse
    parser = argparse.ArgumentParser()
    parser.add_argument("echo", help="echo the string you use here")
    args = parser.parse_args()
@@ -177,7 +177,7 @@ And we get:
 
 Now, how about doing something even more useful::
 
-   import argparse
+   agiza argparse
    parser = argparse.ArgumentParser()
    parser.add_argument("square", help="display a square of a given number")
    args = parser.parse_args()
@@ -197,7 +197,7 @@ That didn't go so well. That's because :mod:`argparse` treats the options we
 give it as strings, unless we tell it otherwise. So, let's tell
 :mod:`argparse` to treat that input as an integer::
 
-   import argparse
+   agiza argparse
    parser = argparse.ArgumentParser()
    parser.add_argument("square", help="display a square of a given number",
                        type=int)
@@ -224,7 +224,7 @@ Introducing Optional arguments
 So far we have been playing with positional arguments. Let us
 have a look on how to add optional ones::
 
-   import argparse
+   agiza argparse
    parser = argparse.ArgumentParser()
    parser.add_argument("--verbosity", help="increase output verbosity")
    args = parser.parse_args()
@@ -269,7 +269,7 @@ The above example accepts arbitrary integer values for ``--verbosity``, but for
 our simple program, only two values are actually useful, ``True`` or ``False``.
 Let's modify the code accordingly::
 
-   import argparse
+   agiza argparse
    parser = argparse.ArgumentParser()
    parser.add_argument("--verbose", help="increase output verbosity",
                        action="store_true")
@@ -315,7 +315,7 @@ If you are familiar with command line usage,
 you will notice that I haven't yet touched on the topic of short
 versions of the options. It's quite simple::
 
-   import argparse
+   agiza argparse
    parser = argparse.ArgumentParser()
    parser.add_argument("-v", "--verbose", help="increase output verbosity",
                        action="store_true")
@@ -344,7 +344,7 @@ Combining Positional and Optional arguments
 
 Our program keeps growing in complexity::
 
-   import argparse
+   agiza argparse
    parser = argparse.ArgumentParser()
    parser.add_argument("square", type=int,
                        help="display a square of a given number")
@@ -378,7 +378,7 @@ And now the output:
 How about we give this program of ours back the ability to have
 multiple verbosity values, and actually get to use them::
 
-   import argparse
+   agiza argparse
    parser = argparse.ArgumentParser()
    parser.add_argument("square", type=int,
                        help="display a square of a given number")
@@ -412,7 +412,7 @@ And the output:
 These all look good except the last one, which exposes a bug in our program.
 Let's fix it by restricting the values the ``--verbosity`` option can accept::
 
-   import argparse
+   agiza argparse
    parser = argparse.ArgumentParser()
    parser.add_argument("square", type=int,
                        help="display a square of a given number")
@@ -433,7 +433,7 @@ And the output:
 
    $ python3 prog.py 4 -v 3
    usage: prog.py [-h] [-v {0,1,2}] square
-   prog.py: error: argument -v/--verbosity: invalid choice: 3 (choose from 0, 1, 2)
+   prog.py: error: argument -v/--verbosity: invalid choice: 3 (choose kutoka 0, 1, 2)
    $ python3 prog.py 4 -h
    usage: prog.py [-h] [-v {0,1,2}] square
 
@@ -452,7 +452,7 @@ Now, let's use a different approach of playing with verbosity, which is pretty
 common. It also matches the way the CPython executable handles its own
 verbosity argument (check the output of ``python --help``)::
 
-   import argparse
+   agiza argparse
    parser = argparse.ArgumentParser()
    parser.add_argument("square", type=int,
                        help="display the square of a given number")
@@ -518,7 +518,7 @@ to count the number of occurrences of a specific optional arguments:
 
 Let's fix::
 
-   import argparse
+   agiza argparse
    parser = argparse.ArgumentParser()
    parser.add_argument("square", type=int,
                        help="display a square of a given number")
@@ -557,7 +557,7 @@ And this is what it gives:
 
 Let's fix that bug::
 
-   import argparse
+   agiza argparse
    parser = argparse.ArgumentParser()
    parser.add_argument("square", type=int,
                        help="display a square of a given number")
@@ -598,7 +598,7 @@ Getting a little more advanced
 What if we wanted to expand our tiny program to perform other powers,
 not just squares::
 
-   import argparse
+   agiza argparse
    parser = argparse.ArgumentParser()
    parser.add_argument("x", type=int, help="the base")
    parser.add_argument("y", type=int, help="the exponent")
@@ -637,7 +637,7 @@ Notice that so far we've been using verbosity level to *change* the text
 that gets displayed. The following example instead uses verbosity level
 to display *more* text instead::
 
-   import argparse
+   agiza argparse
    parser = argparse.ArgumentParser()
    parser.add_argument("x", type=int, help="the base")
    parser.add_argument("y", type=int, help="the exponent")
@@ -674,7 +674,7 @@ the new functionality makes more sense:
 we'll introduce the ``--quiet`` option,
 which will be the opposite of the ``--verbose`` one::
 
-   import argparse
+   agiza argparse
 
    parser = argparse.ArgumentParser()
    group = parser.add_mutually_exclusive_group()
@@ -717,7 +717,7 @@ ones.
 Before we conclude, you probably want to tell your users the main purpose of
 your program, just in case they don't know::
 
-   import argparse
+   agiza argparse
 
    parser = argparse.ArgumentParser(description="calculate X to the power of Y")
    group = parser.add_mutually_exclusive_group()

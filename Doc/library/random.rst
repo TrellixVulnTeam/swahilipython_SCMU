@@ -11,7 +11,7 @@
 This module implements pseudo-random number generators for various
 distributions.
 
-For integers, there is uniform selection from a range. For sequences, there is
+For integers, there is uniform selection kutoka a range. For sequences, there is
 uniform selection of a random element, a function to generate a random
 permutation of a list in-place, and a function for random sampling without
 replacement.
@@ -39,9 +39,9 @@ basic generator of your own devising: in that case, override the :meth:`~Random.
 Optionally, a new generator can supply a :meth:`~Random.getrandbits` method --- this
 allows :meth:`randrange` to produce selections over an arbitrarily large range.
 
-The :mod:`random` module also provides the :class:`SystemRandom` class which
+The :mod:`random` module also provides the :class:`SystemRandom` kundi which
 uses the system function :func:`os.urandom` to generate random numbers
-from sources provided by the operating system.
+kutoka sources provided by the operating system.
 
 .. warning::
 
@@ -79,7 +79,7 @@ Bookkeeping functions
    With version 2 (the default), a :class:`str`, :class:`bytes`, or :class:`bytearray`
    object gets converted to an :class:`int` and all of its bits are used.
 
-   With version 1 (provided for reproducing random sequences from older versions
+   With version 1 (provided for reproducing random sequences kutoka older versions
    of Python), the algorithm for :class:`str` and :class:`bytes` generates a
    narrower range of seeds.
 
@@ -94,7 +94,7 @@ Bookkeeping functions
 
 .. function:: setstate(state)
 
-   *state* should have been obtained from a previous call to :func:`getstate`, and
+   *state* should have been obtained kutoka a previous call to :func:`getstate`, and
    :func:`setstate` restores the internal state of the generator to what it was at
    the time :func:`getstate` was called.
 
@@ -113,7 +113,7 @@ Functions for integers
 .. function:: randrange(stop)
               randrange(start, stop[, step])
 
-   Return a randomly selected element from ``range(start, stop, step)``.  This is
+   Return a randomly selected element kutoka ``range(start, stop, step)``.  This is
    equivalent to ``choice(range(start, stop, step))``, but doesn't actually build a
    range object.
 
@@ -136,12 +136,12 @@ Functions for sequences
 
 .. function:: choice(seq)
 
-   Return a random element from the non-empty sequence *seq*. If *seq* is empty,
+   Return a random element kutoka the non-empty sequence *seq*. If *seq* is empty,
    raises :exc:`IndexError`.
 
 .. function:: choices(population, weights=None, *, cum_weights=None, k=1)
 
-   Return a *k* sized list of elements chosen from the *population* with replacement.
+   Return a *k* sized list of elements chosen kutoka the *population* with replacement.
    If the *population* is empty, raises :exc:`IndexError`.
 
    If a *weights* sequence is specified, selections are made according to the
@@ -168,7 +168,7 @@ Functions for sequences
    :func:`choice`.  The algorithm used by :func:`choices` uses floating
    point arithmetic for internal consistency and speed.  The algorithm used
    by :func:`choice` defaults to integer arithmetic with repeated selections
-   to avoid small biases from round-off error.
+   to avoid small biases kutoka round-off error.
 
    .. versionadded:: 3.6
 
@@ -192,10 +192,10 @@ Functions for sequences
 
 .. function:: sample(population, k)
 
-   Return a *k* length list of unique elements chosen from the population sequence
+   Return a *k* length list of unique elements chosen kutoka the population sequence
    or set. Used for random sampling without replacement.
 
-   Returns a new list containing elements from the population while leaving the
+   Returns a new list containing elements kutoka the population while leaving the
    original population unchanged.  The resulting list is in selection order so that
    all sub-slices will also be valid random samples.  This allows raffle winners
    (the sample) to be partitioned into grand prize and second place winners (the
@@ -204,8 +204,8 @@ Functions for sequences
    Members of the population need not be :term:`hashable` or unique.  If the population
    contains repeats, then each occurrence is a possible selection in the sample.
 
-   To choose a sample from a range of integers, use a :func:`range` object as an
-   argument.  This is especially fast and space efficient for sampling from a large
+   To choose a sample kutoka a range of integers, use a :func:`range` object as an
+   argument.  This is especially fast and space efficient for sampling kutoka a large
    population:  ``sample(range(10000000), k=60)``.
 
    If the sample size is larger than the population size, a :exc:`ValueError`
@@ -253,7 +253,7 @@ be found in any statistics text.
    Exponential distribution.  *lambd* is 1.0 divided by the desired
    mean.  It should be nonzero.  (The parameter would be called
    "lambda", but that is a reserved word in Python.)  Returned values
-   range from 0 to positive infinity if *lambd* is positive, and from
+   range kutoka 0 to positive infinity if *lambd* is positive, and kutoka
    negative infinity to 0 if *lambd* is negative.
 
 
@@ -319,7 +319,7 @@ Alternative Generator
 .. class:: SystemRandom([seed])
 
    Class that uses the :func:`os.urandom` function for generating random numbers
-   from sources provided by the operating system. Not available on all systems.
+   kutoka sources provided by the operating system. Not available on all systems.
    Does not rely on software state, and sequences are not reproducible. Accordingly,
    the :meth:`seed` method has no effect and is ignored.
    The :meth:`getstate` and :meth:`setstate` methods raise
@@ -331,7 +331,7 @@ Notes on Reproducibility
 
 Sometimes it is useful to be able to reproduce the sequences given by a pseudo
 random number generator.  By re-using a seed value, the same sequence should be
-reproducible from run to run as long as multiple threads are not running.
+reproducible kutoka run to run as long as multiple threads are not running.
 
 Most of the random module's algorithms and seeding functions are subject to
 change across Python versions, but two aspects are guaranteed not to change:
@@ -358,13 +358,13 @@ Basic examples::
    >>> expovariate(1 / 5)                   # Interval between arrivals averaging 5 seconds
    5.148957571865031
 
-   >>> randrange(10)                        # Integer from 0 to 9 inclusive
+   >>> randrange(10)                        # Integer kutoka 0 to 9 inclusive
    7
 
-   >>> randrange(0, 101, 2)                 # Even integer from 0 to 100 inclusive
+   >>> randrange(0, 101, 2)                 # Even integer kutoka 0 to 100 inclusive
    26
 
-   >>> choice(['win', 'lose', 'draw'])      # Single random element from a sequence
+   >>> choice(['win', 'lose', 'draw'])      # Single random element kutoka a sequence
    'draw'
 
    >>> deck = 'ace two three four'.split()
@@ -381,7 +381,7 @@ Simulations::
    >>> choices(['red', 'black', 'green'], [18, 18, 2], k=6)
    ['red', 'green', 'black', 'black', 'red', 'black']
 
-   >>> # Deal 20 cards without replacement from a deck of 52 playing cards
+   >>> # Deal 20 cards without replacement kutoka a deck of 52 playing cards
    >>> # and determine the proportion of cards with a ten-value
    >>> # (a ten, jack, queen, or king).
    >>> deck = collections.Counter(tens=16, low_cards=36)
@@ -389,7 +389,7 @@ Simulations::
    >>> seen.count('tens') / 20
    0.15
 
-   >>> # Estimate the probability of getting 5 or more heads from 7 spins
+   >>> # Estimate the probability of getting 5 or more heads kutoka 7 spins
    >>> # of a biased coin that settles on heads 60% of the time.
    >>> def trial():
    ...     return choices('HT', cum_weights=(0.60, 1.00), k=7).count('H') >= 5
@@ -410,13 +410,13 @@ with replacement to estimate a confidence interval for the mean of a sample of
 size five::
 
    # http://statistics.about.com/od/Applications/a/Example-Of-Bootstrapping.htm
-   from statistics import fmean as mean
-   from random import choices
+   kutoka statistics agiza fmean as mean
+   kutoka random agiza choices
 
    data = 1, 2, 4, 4, 10
    means = sorted(mean(choices(data, k=5)) for i in range(20))
    print(f'The sample mean of {mean(data):.1f} has a 90% confidence '
-         f'interval from {means[1]:.1f} to {means[-2]:.1f}')
+         f'interval kutoka {means[1]:.1f} to {means[-2]:.1f}')
 
 Example of a `resampling permutation test
 <https://en.wikipedia.org/wiki/Resampling_(statistics)#Permutation_tests>`_
@@ -424,9 +424,9 @@ to determine the statistical significance or `p-value
 <https://en.wikipedia.org/wiki/P-value>`_ of an observed difference
 between the effects of a drug versus a placebo::
 
-    # Example from "Statistics is Easy" by Dennis Shasha and Manda Wilson
-    from statistics import fmean as mean
-    from random import shuffle
+    # Example kutoka "Statistics is Easy" by Dennis Shasha and Manda Wilson
+    kutoka statistics agiza fmean as mean
+    kutoka random agiza shuffle
 
     drug = [54, 73, 53, 70, 73, 68, 52, 65, 65]
     placebo = [54, 51, 58, 44, 55, 52, 42, 47, 58, 46]
@@ -447,8 +447,8 @@ between the effects of a drug versus a placebo::
 
 Simulation of arrival times and service deliveries in a single server queue::
 
-    from random import expovariate, gauss
-    from statistics import mean, median, stdev
+    kutoka random agiza expovariate, gauss
+    kutoka statistics agiza mean, median, stdev
 
     average_arrival_interval = 5.6
     average_service_time = 5.0

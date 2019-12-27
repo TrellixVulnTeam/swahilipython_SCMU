@@ -33,7 +33,7 @@ in Cookie name (as :attr:`~Morsel.key`).
 .. note::
 
    On encountering an invalid cookie, :exc:`CookieError` is raised, so if your
-   cookie data comes from a browser you should always prepare for invalid data
+   cookie data comes kutoka a browser you should always prepare for invalid data
    and catch :exc:`CookieError` on parsing.
 
 
@@ -45,7 +45,7 @@ in Cookie name (as :attr:`~Morsel.key`).
 
 .. class:: BaseCookie([input])
 
-   This class is a dictionary-like object whose keys are strings and whose values
+   This kundi is a dictionary-like object whose keys are strings and whose values
    are :class:`Morsel` instances. Note that upon setting a key to a value, the
    value is first converted to a :class:`Morsel` containing the key and the value.
 
@@ -54,10 +54,10 @@ in Cookie name (as :attr:`~Morsel.key`).
 
 .. class:: SimpleCookie([input])
 
-   This class derives from :class:`BaseCookie` and overrides :meth:`value_decode`
+   This kundi derives kutoka :class:`BaseCookie` and overrides :meth:`value_decode`
    and :meth:`value_encode`. SimpleCookie supports strings as cookie values.
    When setting the value, SimpleCookie calls the builtin :func:`str()` to convert
-   the value to a string. Values received from HTTP are kept as strings.
+   the value to a string. Values received kutoka HTTP are kept as strings.
 
 .. seealso::
 
@@ -77,7 +77,7 @@ Cookie Objects
 
 .. method:: BaseCookie.value_decode(val)
 
-   Return a tuple ``(real_value, coded_value)`` from a string representation.
+   Return a tuple ``(real_value, coded_value)`` kutoka a string representation.
    ``real_value`` can be any type. This method does no decoding in
    :class:`BaseCookie` --- it exists so it can be overridden.
 
@@ -247,7 +247,7 @@ The following example demonstrates how to use the :mod:`http.cookies` module.
 .. doctest::
    :options: +NORMALIZE_WHITESPACE
 
-   >>> from http import cookies
+   >>> kutoka http agiza cookies
    >>> C = cookies.SimpleCookie()
    >>> C["fig"] = "newton"
    >>> C["sugar"] = "wafer"
@@ -265,7 +265,7 @@ The following example demonstrates how to use the :mod:`http.cookies` module.
    >>> print(C.output(attrs=[], header="Cookie:"))
    Cookie: rocky=road
    >>> C = cookies.SimpleCookie()
-   >>> C.load("chips=ahoy; vienna=finger") # load from a string (HTTP header)
+   >>> C.load("chips=ahoy; vienna=finger") # load kutoka a string (HTTP header)
    >>> print(C)
    Set-Cookie: chips=ahoy
    Set-Cookie: vienna=finger

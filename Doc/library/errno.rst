@@ -8,13 +8,13 @@
 
 This module makes available standard ``errno`` system symbols. The value of each
 symbol is the corresponding integer value. The names and descriptions are
-borrowed from :file:`linux/include/errno.h`, which should be pretty
+borrowed kutoka :file:`linux/include/errno.h`, which should be pretty
 all-inclusive.
 
 
 .. data:: errorcode
 
-   Dictionary providing a mapping from the errno value to the string name in the
+   Dictionary providing a mapping kutoka the errno value to the string name in the
    underlying system.  For instance, ``errno.errorcode[errno.EPERM]`` maps to
    ``'EPERM'``.
 

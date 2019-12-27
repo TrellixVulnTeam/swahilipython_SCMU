@@ -4,88 +4,88 @@ agiza os
 kutoka tkinter agiza messagebox as tkMessageBox
 
 
-class FileList:
+kundi FileList:
 
     # N.B. this agiza overridden in PyShellFileList.
     kutoka idlelib.editor agiza EditorWindow
 
-    def __init__(self, root):
+    eleza __init__(self, root):
         self.root = root
         self.dict = {}
         self.inversedict = {}
         self.vars = {} # For EditorWindow.getrawvar (shared Tcl variables)
 
-    def open(self, filename, action=None):
+    eleza open(self, filename, action=None):
         assert filename
         filename = self.canonize(filename)
-        if os.path.isdir(filename):
+        ikiwa os.path.isdir(filename):
             # This can happen when bad filename is passed on command line:
             tkMessageBox.showerror(
                 "File Error",
                 "%r is a directory." % (filename,),
                 master=self.root)
-            return None
+            rudisha None
         key = os.path.normcase(filename)
-        if key in self.dict:
+        ikiwa key in self.dict:
             edit = self.dict[key]
             edit.top.wakeup()
-            return edit
-        if action:
+            rudisha edit
+        ikiwa action:
             # Don't create window, perform 'action', e.g. open in same window
-            return action(filename)
+            rudisha action(filename)
         else:
             edit = self.EditorWindow(self, filename, key)
-            if edit.good_load:
-                return edit
+            ikiwa edit.good_load:
+                rudisha edit
             else:
                 edit._close()
-                return None
+                rudisha None
 
-    def gotofileline(self, filename, lineno=None):
+    eleza gotofileline(self, filename, lineno=None):
         edit = self.open(filename)
-        if edit is not None and lineno is not None:
+        ikiwa edit is not None and lineno is not None:
             edit.gotoline(lineno)
 
-    def new(self, filename=None):
-        return self.EditorWindow(self, filename)
+    eleza new(self, filename=None):
+        rudisha self.EditorWindow(self, filename)
 
-    def close_all_callback(self, *args, **kwds):
+    eleza close_all_callback(self, *args, **kwds):
         for edit in list(self.inversedict):
             reply = edit.close()
-            if reply == "cancel":
+            ikiwa reply == "cancel":
                 break
-        return "break"
+        rudisha "break"
 
-    def unregister_maybe_terminate(self, edit):
+    eleza unregister_maybe_terminate(self, edit):
         try:
             key = self.inversedict[edit]
         except KeyError:
-            print("Don't know this EditorWindow object.  (close)")
+            andika("Don't know this EditorWindow object.  (close)")
             return
-        if key:
+        ikiwa key:
             del self.dict[key]
         del self.inversedict[edit]
-        if not self.inversedict:
+        ikiwa not self.inversedict:
             self.root.quit()
 
-    def filename_changed_edit(self, edit):
+    eleza filename_changed_edit(self, edit):
         edit.saved_change_hook()
         try:
             key = self.inversedict[edit]
         except KeyError:
-            print("Don't know this EditorWindow object.  (rename)")
+            andika("Don't know this EditorWindow object.  (rename)")
             return
         filename = edit.io.filename
-        if not filename:
-            if key:
+        ikiwa not filename:
+            ikiwa key:
                 del self.dict[key]
             self.inversedict[edit] = None
             return
         filename = self.canonize(filename)
         newkey = os.path.normcase(filename)
-        if newkey == key:
+        ikiwa newkey == key:
             return
-        if newkey in self.dict:
+        ikiwa newkey in self.dict:
             conflict = self.dict[newkey]
             self.inversedict[conflict] = None
             tkMessageBox.showerror(
@@ -94,24 +94,24 @@ class FileList:
                 master=self.root)
         self.dict[newkey] = edit
         self.inversedict[edit] = newkey
-        if key:
+        ikiwa key:
             try:
                 del self.dict[key]
             except KeyError:
                 pass
 
-    def canonize(self, filename):
-        if not os.path.isabs(filename):
+    eleza canonize(self, filename):
+        ikiwa not os.path.isabs(filename):
             try:
                 pwd = os.getcwd()
             except OSError:
                 pass
             else:
                 filename = os.path.join(pwd, filename)
-        return os.path.normpath(filename)
+        rudisha os.path.normpath(filename)
 
 
-def _test():  # TODO check and convert to htest
+eleza _test():  # TODO check and convert to htest
     kutoka tkinter agiza Tk
     kutoka idlelib.editor agiza fixwordbreaks
     kutoka idlelib.run agiza fix_scaling
@@ -121,10 +121,10 @@ def _test():  # TODO check and convert to htest
     root.withdraw()
     flist = FileList(root)
     flist.new()
-    if flist.inversedict:
+    ikiwa flist.inversedict:
         root.mainloop()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_filelist', verbosity=2)
 

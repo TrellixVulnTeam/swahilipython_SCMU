@@ -36,7 +36,7 @@ _PY_FROZEN = 7
 packagePathMap = {}
 
 # A Public interface
-def AddPackagePath(packagename, path):
+eleza AddPackagePath(packagename, path):
     packagePathMap.setdefault(packagename, []).append(path)
 
 replacePackageMap = {}
@@ -47,11 +47,11 @@ replacePackageMap = {}
 # ReplacePackage("real_package_name", "faked_package_name")
 # before running ModuleFinder.
 
-def ReplacePackage(oldname, newname):
+eleza ReplacePackage(oldname, newname):
     replacePackageMap[oldname] = newname
 
 
-def _find_module(name, path=None):
+eleza _find_module(name, path=None):
     """An importlib reimplementation of imp.find_module (for our purposes)."""
 
     # It's necessary to clear the caches for our Finder first, in case any
@@ -62,46 +62,46 @@ def _find_module(name, path=None):
 
     spec = importlib.machinery.PathFinder.find_spec(name, path)
 
-    if spec is None:
+    ikiwa spec is None:
         raise ImportError("No module named {name!r}".format(name=name), name=name)
 
     # Some special cases:
 
-    if spec.loader is importlib.machinery.BuiltinImporter:
-        return None, None, ("", "", _C_BUILTIN)
+    ikiwa spec.loader is importlib.machinery.BuiltinImporter:
+        rudisha None, None, ("", "", _C_BUILTIN)
 
-    if spec.loader is importlib.machinery.FrozenImporter:
-        return None, None, ("", "", _PY_FROZEN)
+    ikiwa spec.loader is importlib.machinery.FrozenImporter:
+        rudisha None, None, ("", "", _PY_FROZEN)
 
     file_path = spec.origin
 
-    if spec.loader.is_package(name):
-        return None, os.path.dirname(file_path), ("", "", _PKG_DIRECTORY)
+    ikiwa spec.loader.is_package(name):
+        rudisha None, os.path.dirname(file_path), ("", "", _PKG_DIRECTORY)
 
-    if isinstance(spec.loader, importlib.machinery.SourceFileLoader):
+    ikiwa isinstance(spec.loader, importlib.machinery.SourceFileLoader):
         kind = _PY_SOURCE
         mode = "r"
 
-    elif isinstance(spec.loader, importlib.machinery.ExtensionFileLoader):
+    elikiwa isinstance(spec.loader, importlib.machinery.ExtensionFileLoader):
         kind = _C_EXTENSION
         mode = "rb"
 
-    elif isinstance(spec.loader, importlib.machinery.SourcelessFileLoader):
+    elikiwa isinstance(spec.loader, importlib.machinery.SourcelessFileLoader):
         kind = _PY_COMPILED
         mode = "rb"
 
     else:  # Should never happen.
-        return None, None, ("", "", _SEARCH_ERROR)
+        rudisha None, None, ("", "", _SEARCH_ERROR)
 
     file = open(file_path, mode)
     suffix = os.path.splitext(file_path)[-1]
 
-    return file, file_path, (suffix, mode, kind)
+    rudisha file, file_path, (suffix, mode, kind)
 
 
-class Module:
+kundi Module:
 
-    def __init__(self, name, file=None, path=None):
+    eleza __init__(self, name, file=None, path=None):
         self.__name__ = name
         self.__file__ = file
         self.__path__ = path
@@ -114,167 +114,167 @@ class Module:
         # resolved, ie. a staragiza kutoka a non-Python module.
         self.staragizas = {}
 
-    def __repr__(self):
+    eleza __repr__(self):
         s = "Module(%r" % (self.__name__,)
-        if self.__file__ is not None:
+        ikiwa self.__file__ is not None:
             s = s + ", %r" % (self.__file__,)
-        if self.__path__ is not None:
+        ikiwa self.__path__ is not None:
             s = s + ", %r" % (self.__path__,)
         s = s + ")"
-        return s
+        rudisha s
 
-class ModuleFinder:
+kundi ModuleFinder:
 
-    def __init__(self, path=None, debug=0, excludes=None, replace_paths=None):
-        if path is None:
+    eleza __init__(self, path=None, debug=0, excludes=None, replace_paths=None):
+        ikiwa path is None:
             path = sys.path
         self.path = path
         self.modules = {}
         self.badmodules = {}
         self.debug = debug
         self.indent = 0
-        self.excludes = excludes if excludes is not None else []
-        self.replace_paths = replace_paths if replace_paths is not None else []
+        self.excludes = excludes ikiwa excludes is not None else []
+        self.replace_paths = replace_paths ikiwa replace_paths is not None else []
         self.processed_paths = []   # Used in debugging only
 
-    def msg(self, level, str, *args):
-        if level <= self.debug:
+    eleza msg(self, level, str, *args):
+        ikiwa level <= self.debug:
             for i in range(self.indent):
-                print("   ", end=' ')
-            print(str, end=' ')
+                andika("   ", end=' ')
+            andika(str, end=' ')
             for arg in args:
-                print(repr(arg), end=' ')
-            print()
+                andika(repr(arg), end=' ')
+            andika()
 
-    def msgin(self, *args):
+    eleza msgin(self, *args):
         level = args[0]
-        if level <= self.debug:
+        ikiwa level <= self.debug:
             self.indent = self.indent + 1
             self.msg(*args)
 
-    def msgout(self, *args):
+    eleza msgout(self, *args):
         level = args[0]
-        if level <= self.debug:
+        ikiwa level <= self.debug:
             self.indent = self.indent - 1
             self.msg(*args)
 
-    def run_script(self, pathname):
+    eleza run_script(self, pathname):
         self.msg(2, "run_script", pathname)
         with open(pathname) as fp:
             stuff = ("", "r", _PY_SOURCE)
             self.load_module('__main__', fp, pathname, stuff)
 
-    def load_file(self, pathname):
+    eleza load_file(self, pathname):
         dir, name = os.path.split(pathname)
         name, ext = os.path.splitext(name)
         with open(pathname) as fp:
             stuff = (ext, "r", _PY_SOURCE)
             self.load_module(name, fp, pathname, stuff)
 
-    def import_hook(self, name, caller=None, fromlist=None, level=-1):
-        self.msg(3, "import_hook", name, caller, fromlist, level)
+    eleza import_hook(self, name, caller=None, kutokalist=None, level=-1):
+        self.msg(3, "import_hook", name, caller, kutokalist, level)
         parent = self.determine_parent(caller, level=level)
         q, tail = self.find_head_package(parent, name)
         m = self.load_tail(q, tail)
-        if not fromlist:
-            return q
-        if m.__path__:
-            self.ensure_fromlist(m, fromlist)
-        return None
+        ikiwa not kutokalist:
+            rudisha q
+        ikiwa m.__path__:
+            self.ensure_kutokalist(m, kutokalist)
+        rudisha None
 
-    def determine_parent(self, caller, level=-1):
+    eleza determine_parent(self, caller, level=-1):
         self.msgin(4, "determine_parent", caller, level)
-        if not caller or level == 0:
+        ikiwa not caller or level == 0:
             self.msgout(4, "determine_parent -> None")
-            return None
+            rudisha None
         pname = caller.__name__
-        if level >= 1: # relative agiza
-            if caller.__path__:
+        ikiwa level >= 1: # relative agiza
+            ikiwa caller.__path__:
                 level -= 1
-            if level == 0:
+            ikiwa level == 0:
                 parent = self.modules[pname]
                 assert parent is caller
                 self.msgout(4, "determine_parent ->", parent)
-                return parent
-            if pname.count(".") < level:
+                rudisha parent
+            ikiwa pname.count(".") < level:
                 raise ImportError("relative agizapath too deep")
             pname = ".".join(pname.split(".")[:-level])
             parent = self.modules[pname]
             self.msgout(4, "determine_parent ->", parent)
-            return parent
-        if caller.__path__:
+            rudisha parent
+        ikiwa caller.__path__:
             parent = self.modules[pname]
             assert caller is parent
             self.msgout(4, "determine_parent ->", parent)
-            return parent
-        if '.' in pname:
+            rudisha parent
+        ikiwa '.' in pname:
             i = pname.rfind('.')
             pname = pname[:i]
             parent = self.modules[pname]
             assert parent.__name__ == pname
             self.msgout(4, "determine_parent ->", parent)
-            return parent
+            rudisha parent
         self.msgout(4, "determine_parent -> None")
-        return None
+        rudisha None
 
-    def find_head_package(self, parent, name):
+    eleza find_head_package(self, parent, name):
         self.msgin(4, "find_head_package", parent, name)
-        if '.' in name:
+        ikiwa '.' in name:
             i = name.find('.')
             head = name[:i]
             tail = name[i+1:]
         else:
             head = name
             tail = ""
-        if parent:
+        ikiwa parent:
             qname = "%s.%s" % (parent.__name__, head)
         else:
             qname = head
         q = self.import_module(head, qname, parent)
-        if q:
+        ikiwa q:
             self.msgout(4, "find_head_package ->", (q, tail))
-            return q, tail
-        if parent:
+            rudisha q, tail
+        ikiwa parent:
             qname = head
             parent = None
             q = self.import_module(head, qname, parent)
-            if q:
+            ikiwa q:
                 self.msgout(4, "find_head_package ->", (q, tail))
-                return q, tail
+                rudisha q, tail
         self.msgout(4, "raise ImportError: No module named", qname)
         raise ImportError("No module named " + qname)
 
-    def load_tail(self, q, tail):
+    eleza load_tail(self, q, tail):
         self.msgin(4, "load_tail", q, tail)
         m = q
         while tail:
             i = tail.find('.')
-            if i < 0: i = len(tail)
+            ikiwa i < 0: i = len(tail)
             head, tail = tail[:i], tail[i+1:]
             mname = "%s.%s" % (m.__name__, head)
             m = self.import_module(head, mname, m)
-            if not m:
+            ikiwa not m:
                 self.msgout(4, "raise ImportError: No module named", mname)
                 raise ImportError("No module named " + mname)
         self.msgout(4, "load_tail ->", m)
-        return m
+        rudisha m
 
-    def ensure_fromlist(self, m, fromlist, recursive=0):
-        self.msg(4, "ensure_fromlist", m, fromlist, recursive)
-        for sub in fromlist:
-            if sub == "*":
-                if not recursive:
+    eleza ensure_kutokalist(self, m, kutokalist, recursive=0):
+        self.msg(4, "ensure_kutokalist", m, kutokalist, recursive)
+        for sub in kutokalist:
+            ikiwa sub == "*":
+                ikiwa not recursive:
                     all = self.find_all_submodules(m)
-                    if all:
-                        self.ensure_fromlist(m, all, 1)
-            elif not hasattr(m, sub):
+                    ikiwa all:
+                        self.ensure_kutokalist(m, all, 1)
+            elikiwa not hasattr(m, sub):
                 subname = "%s.%s" % (m.__name__, sub)
                 submod = self.import_module(sub, subname, m)
-                if not submod:
+                ikiwa not submod:
                     raise ImportError("No module named " + subname)
 
-    def find_all_submodules(self, m):
-        if not m.__path__:
+    eleza find_all_submodules(self, m):
+        ikiwa not m.__path__:
             return
         modules = {}
         # 'suffixes' used to be a list hardcoded to [".py", ".pyc"].
@@ -294,14 +294,14 @@ class ModuleFinder:
                 mod = None
                 for suff in suffixes:
                     n = len(suff)
-                    if name[-n:] == suff:
+                    ikiwa name[-n:] == suff:
                         mod = name[:-n]
                         break
-                if mod and mod != "__init__":
+                ikiwa mod and mod != "__init__":
                     modules[mod] = mod
-        return modules.keys()
+        rudisha modules.keys()
 
-    def import_module(self, partname, fqname, parent):
+    eleza import_module(self, partname, fqname, parent):
         self.msgin(3, "import_module", partname, fqname, parent)
         try:
             m = self.modules[fqname]
@@ -309,39 +309,39 @@ class ModuleFinder:
             pass
         else:
             self.msgout(3, "import_module ->", m)
-            return m
-        if fqname in self.badmodules:
+            rudisha m
+        ikiwa fqname in self.badmodules:
             self.msgout(3, "import_module -> None")
-            return None
-        if parent and parent.__path__ is None:
+            rudisha None
+        ikiwa parent and parent.__path__ is None:
             self.msgout(3, "import_module -> None")
-            return None
+            rudisha None
         try:
             fp, pathname, stuff = self.find_module(partname,
                                                    parent and parent.__path__, parent)
         except ImportError:
             self.msgout(3, "import_module ->", None)
-            return None
+            rudisha None
         try:
             m = self.load_module(fqname, fp, pathname, stuff)
         finally:
-            if fp:
+            ikiwa fp:
                 fp.close()
-        if parent:
+        ikiwa parent:
             setattr(parent, partname, m)
         self.msgout(3, "import_module ->", m)
-        return m
+        rudisha m
 
-    def load_module(self, fqname, fp, pathname, file_info):
+    eleza load_module(self, fqname, fp, pathname, file_info):
         suffix, mode, type = file_info
         self.msgin(2, "load_module", fqname, fp and "fp", pathname)
-        if type == _PKG_DIRECTORY:
+        ikiwa type == _PKG_DIRECTORY:
             m = self.load_package(fqname, pathname)
             self.msgout(2, "load_module ->", m)
-            return m
-        if type == _PY_SOURCE:
+            rudisha m
+        ikiwa type == _PY_SOURCE:
             co = compile(fp.read()+'\n', pathname, 'exec')
-        elif type == _PY_COMPILED:
+        elikiwa type == _PY_COMPILED:
             try:
                 data = fp.read()
                 importlib._bootstrap_external._classify_pyc(data, fqname, {})
@@ -353,25 +353,25 @@ class ModuleFinder:
             co = None
         m = self.add_module(fqname)
         m.__file__ = pathname
-        if co:
-            if self.replace_paths:
+        ikiwa co:
+            ikiwa self.replace_paths:
                 co = self.replace_paths_in_code(co)
             m.__code__ = co
             self.scan_code(co, m)
         self.msgout(2, "load_module ->", m)
-        return m
+        rudisha m
 
-    def _add_badmodule(self, name, caller):
-        if name not in self.badmodules:
+    eleza _add_badmodule(self, name, caller):
+        ikiwa name not in self.badmodules:
             self.badmodules[name] = {}
-        if caller:
+        ikiwa caller:
             self.badmodules[name][caller.__name__] = 1
         else:
             self.badmodules[name]["-"] = 1
 
-    def _safe_import_hook(self, name, caller, fromlist, level=-1):
+    eleza _safe_import_hook(self, name, caller, kutokalist, level=-1):
         # wrapper for self.import_hook() that won't raise ImportError
-        if name in self.badmodules:
+        ikiwa name in self.badmodules:
             self._add_badmodule(name, caller)
             return
         try:
@@ -383,10 +383,10 @@ class ModuleFinder:
             self.msg(2, "SyntaxError:", str(msg))
             self._add_badmodule(name, caller)
         else:
-            if fromlist:
-                for sub in fromlist:
+            ikiwa kutokalist:
+                for sub in kutokalist:
                     fullname = name + "." + sub
-                    if fullname in self.badmodules:
+                    ikiwa fullname in self.badmodules:
                         self._add_badmodule(fullname, caller)
                         continue
                     try:
@@ -395,80 +395,80 @@ class ModuleFinder:
                         self.msg(2, "ImportError:", str(msg))
                         self._add_badmodule(fullname, caller)
 
-    def scan_opcodes(self, co):
+    eleza scan_opcodes(self, co):
         # Scan the code, and yield 'interesting' opcode combinations
         code = co.co_code
         names = co.co_names
         consts = co.co_consts
         opargs = [(op, arg) for _, op, arg in dis._unpack_opargs(code)
-                  if op != EXTENDED_ARG]
+                  ikiwa op != EXTENDED_ARG]
         for i, (op, oparg) in enumerate(opargs):
-            if op in STORE_OPS:
+            ikiwa op in STORE_OPS:
                 yield "store", (names[oparg],)
                 continue
-            if (op == IMPORT_NAME and i >= 2
+            ikiwa (op == IMPORT_NAME and i >= 2
                     and opargs[i-1][0] == opargs[i-2][0] == LOAD_CONST):
                 level = consts[opargs[i-2][1]]
-                fromlist = consts[opargs[i-1][1]]
-                if level == 0: # absolute agiza
-                    yield "absolute_agiza", (fromlist, names[oparg])
+                kutokalist = consts[opargs[i-1][1]]
+                ikiwa level == 0: # absolute agiza
+                    yield "absolute_agiza", (kutokalist, names[oparg])
                 else: # relative agiza
-                    yield "relative_agiza", (level, fromlist, names[oparg])
+                    yield "relative_agiza", (level, kutokalist, names[oparg])
                 continue
 
-    def scan_code(self, co, m):
+    eleza scan_code(self, co, m):
         code = co.co_code
         scanner = self.scan_opcodes
         for what, args in scanner(co):
-            if what == "store":
+            ikiwa what == "store":
                 name, = args
                 m.globalnames[name] = 1
-            elif what == "absolute_agiza":
-                fromlist, name = args
+            elikiwa what == "absolute_agiza":
+                kutokalist, name = args
                 have_star = 0
-                if fromlist is not None:
-                    if "*" in fromlist:
+                ikiwa kutokalist is not None:
+                    ikiwa "*" in kutokalist:
                         have_star = 1
-                    fromlist = [f for f in fromlist if f != "*"]
-                self._safe_import_hook(name, m, fromlist, level=0)
-                if have_star:
+                    kutokalist = [f for f in kutokalist ikiwa f != "*"]
+                self._safe_import_hook(name, m, kutokalist, level=0)
+                ikiwa have_star:
                     # We've encountered an "agiza *". If it is a Python module,
                     # the code has already been parsed and we can suck out the
                     # global names.
                     mm = None
-                    if m.__path__:
+                    ikiwa m.__path__:
                         # At this point we don't know whether 'name' is a
                         # submodule of 'm' or a global module. Let's just try
                         # the full name first.
                         mm = self.modules.get(m.__name__ + "." + name)
-                    if mm is None:
+                    ikiwa mm is None:
                         mm = self.modules.get(name)
-                    if mm is not None:
+                    ikiwa mm is not None:
                         m.globalnames.update(mm.globalnames)
                         m.staragizas.update(mm.staragizas)
-                        if mm.__code__ is None:
+                        ikiwa mm.__code__ is None:
                             m.staragizas[name] = 1
                     else:
                         m.staragizas[name] = 1
-            elif what == "relative_agiza":
-                level, fromlist, name = args
-                if name:
-                    self._safe_import_hook(name, m, fromlist, level=level)
+            elikiwa what == "relative_agiza":
+                level, kutokalist, name = args
+                ikiwa name:
+                    self._safe_import_hook(name, m, kutokalist, level=level)
                 else:
                     parent = self.determine_parent(m, level=level)
-                    self._safe_import_hook(parent.__name__, None, fromlist, level=0)
+                    self._safe_import_hook(parent.__name__, None, kutokalist, level=0)
             else:
                 # We don't expect anything else kutoka the generator.
                 raise RuntimeError(what)
 
         for c in co.co_consts:
-            if isinstance(c, type(co)):
+            ikiwa isinstance(c, type(co)):
                 self.scan_code(c, m)
 
-    def load_package(self, fqname, pathname):
+    eleza load_package(self, fqname, pathname):
         self.msgin(2, "load_package", fqname, pathname)
         newname = replacePackageMap.get(fqname)
-        if newname:
+        ikiwa newname:
             fqname = newname
         m = self.add_module(fqname)
         m.__file__ = pathname
@@ -481,78 +481,78 @@ class ModuleFinder:
         try:
             self.load_module(fqname, fp, buf, stuff)
             self.msgout(2, "load_package ->", m)
-            return m
+            rudisha m
         finally:
-            if fp:
+            ikiwa fp:
                 fp.close()
 
-    def add_module(self, fqname):
-        if fqname in self.modules:
-            return self.modules[fqname]
+    eleza add_module(self, fqname):
+        ikiwa fqname in self.modules:
+            rudisha self.modules[fqname]
         self.modules[fqname] = m = Module(fqname)
-        return m
+        rudisha m
 
-    def find_module(self, name, path, parent=None):
-        if parent is not None:
+    eleza find_module(self, name, path, parent=None):
+        ikiwa parent is not None:
             # assert path is not None
             fullname = parent.__name__+'.'+name
         else:
             fullname = name
-        if fullname in self.excludes:
+        ikiwa fullname in self.excludes:
             self.msgout(3, "find_module -> Excluded", fullname)
             raise ImportError(name)
 
-        if path is None:
-            if name in sys.builtin_module_names:
-                return (None, None, ("", "", _C_BUILTIN))
+        ikiwa path is None:
+            ikiwa name in sys.builtin_module_names:
+                rudisha (None, None, ("", "", _C_BUILTIN))
 
             path = self.path
 
-        return _find_module(name, path)
+        rudisha _find_module(name, path)
 
-    def report(self):
+    eleza report(self):
         """Print a report to stdout, listing the found modules with their
         paths, as well as modules that are missing, or seem to be missing.
         """
-        print()
-        print("  %-25s %s" % ("Name", "File"))
-        print("  %-25s %s" % ("----", "----"))
+        andika()
+        andika("  %-25s %s" % ("Name", "File"))
+        andika("  %-25s %s" % ("----", "----"))
         # Print modules found
         keys = sorted(self.modules.keys())
         for key in keys:
             m = self.modules[key]
-            if m.__path__:
-                print("P", end=' ')
+            ikiwa m.__path__:
+                andika("P", end=' ')
             else:
-                print("m", end=' ')
-            print("%-25s" % key, m.__file__ or "")
+                andika("m", end=' ')
+            andika("%-25s" % key, m.__file__ or "")
 
         # Print missing modules
         missing, maybe = self.any_missing_maybe()
-        if missing:
-            print()
-            print("Missing modules:")
+        ikiwa missing:
+            andika()
+            andika("Missing modules:")
             for name in missing:
                 mods = sorted(self.badmodules[name].keys())
-                print("?", name, "imported kutoka", ', '.join(mods))
+                andika("?", name, "imported kutoka", ', '.join(mods))
         # Print modules that may be missing, but then again, maybe not...
-        if maybe:
-            print()
-            print("Submodules that appear to be missing, but could also be", end=' ')
-            print("global names in the parent package:")
+        ikiwa maybe:
+            andika()
+            andika("Submodules that appear to be missing, but could also be", end=' ')
+            andika("global names in the parent package:")
             for name in maybe:
                 mods = sorted(self.badmodules[name].keys())
-                print("?", name, "imported kutoka", ', '.join(mods))
+                andika("?", name, "imported kutoka", ', '.join(mods))
 
-    def any_missing(self):
+    eleza any_missing(self):
         """Return a list of modules that appear to be missing. Use
-        any_missing_maybe() if you want to know which modules are
+        any_missing_maybe() ikiwa you want to know which modules are
         certain to be missing, and which *may* be missing.
         """
         missing, maybe = self.any_missing_maybe()
-        return missing + maybe
+        rudisha missing + maybe
 
-    def any_missing_maybe(self):
+    eleza any_missing_maybe(self):
         """Return two lists, one with modules that are certainly missing
         and one with modules that *may* be missing. The latter names could
         either be submodules *or* just global names in the package.
@@ -564,24 +564,24 @@ class ModuleFinder:
         missing = []
         maybe = []
         for name in self.badmodules:
-            if name in self.excludes:
+            ikiwa name in self.excludes:
                 continue
             i = name.rfind(".")
-            if i < 0:
+            ikiwa i < 0:
                 missing.append(name)
                 continue
             subname = name[i+1:]
             pkgname = name[:i]
             pkg = self.modules.get(pkgname)
-            if pkg is not None:
-                if pkgname in self.badmodules[name]:
+            ikiwa pkg is not None:
+                ikiwa pkgname in self.badmodules[name]:
                     # The package tried to agiza this module itself and
                     # failed. It's definitely missing.
                     missing.append(name)
-                elif subname in pkg.globalnames:
+                elikiwa subname in pkg.globalnames:
                     # It's a global in the package: definitely not missing.
                     pass
-                elif pkg.staragizas:
+                elikiwa pkg.staragizas:
                     # It could be missing, but the package did an "agiza *"
                     # kutoka a non-Python module, so we simply can't be sure.
                     maybe.append(name)
@@ -596,17 +596,17 @@ class ModuleFinder:
                 missing.append(name)
         missing.sort()
         maybe.sort()
-        return missing, maybe
+        rudisha missing, maybe
 
-    def replace_paths_in_code(self, co):
+    eleza replace_paths_in_code(self, co):
         new_filename = original_filename = os.path.normpath(co.co_filename)
         for f, r in self.replace_paths:
-            if original_filename.startswith(f):
+            ikiwa original_filename.startswith(f):
                 new_filename = r + original_filename[len(f):]
                 break
 
-        if self.debug and original_filename not in self.processed_paths:
-            if new_filename != original_filename:
+        ikiwa self.debug and original_filename not in self.processed_paths:
+            ikiwa new_filename != original_filename:
                 self.msgout(2, "co_filename %r changed to %r" \
                                     % (original_filename,new_filename,))
             else:
@@ -616,19 +616,19 @@ class ModuleFinder:
 
         consts = list(co.co_consts)
         for i in range(len(consts)):
-            if isinstance(consts[i], type(co)):
+            ikiwa isinstance(consts[i], type(co)):
                 consts[i] = self.replace_paths_in_code(consts[i])
 
-        return co.replace(co_consts=tuple(consts), co_filename=new_filename)
+        rudisha co.replace(co_consts=tuple(consts), co_filename=new_filename)
 
 
-def test():
+eleza test():
     # Parse command line
     agiza getopt
     try:
         opts, args = getopt.getopt(sys.argv[1:], "dmp:qx:")
     except getopt.error as msg:
-        print(msg)
+        andika(msg)
         return
 
     # Process options
@@ -637,19 +637,19 @@ def test():
     addpath = []
     exclude = []
     for o, a in opts:
-        if o == '-d':
+        ikiwa o == '-d':
             debug = debug + 1
-        if o == '-m':
+        ikiwa o == '-m':
             domods = 1
-        if o == '-p':
+        ikiwa o == '-p':
             addpath = addpath + a.split(os.pathsep)
-        if o == '-q':
+        ikiwa o == '-q':
             debug = 0
-        if o == '-x':
+        ikiwa o == '-x':
             exclude.append(a)
 
     # Provide default arguments
-    if not args:
+    ikiwa not args:
         script = "hello.py"
     else:
         script = args[0]
@@ -658,19 +658,19 @@ def test():
     path = sys.path[:]
     path[0] = os.path.dirname(script)
     path = addpath + path
-    if debug > 1:
-        print("path:")
+    ikiwa debug > 1:
+        andika("path:")
         for item in path:
-            print("   ", repr(item))
+            andika("   ", repr(item))
 
     # Create the module finder and turn its crank
     mf = ModuleFinder(path, debug, exclude)
     for arg in args[1:]:
-        if arg == '-m':
+        ikiwa arg == '-m':
             domods = 1
             continue
-        if domods:
-            if arg[-2:] == '.*':
+        ikiwa domods:
+            ikiwa arg[-2:] == '.*':
                 mf.import_hook(arg[:-2], None, ["*"])
             else:
                 mf.import_hook(arg)
@@ -678,11 +678,11 @@ def test():
             mf.load_file(arg)
     mf.run_script(script)
     mf.report()
-    return mf  # for -i debugging
+    rudisha mf  # for -i debugging
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     try:
         mf = test()
     except KeyboardInterrupt:
-        print("\n[interrupted]")
+        andika("\n[interrupted]")

@@ -34,7 +34,7 @@ printable = digits + ascii_letters + punctuation + whitespace
 # Functions which aren't available as string methods.
 
 # Capitalize the words in a string, e.g. " aBc  dEf " -> "Abc Def".
-def capwords(s, sep=None):
+eleza capwords(s, sep=None):
     """capwords(s [,sep]) -> string
 
     Split the argument into words using split, capitalize each
@@ -45,7 +45,7 @@ def capwords(s, sep=None):
     sep is used to split and join the words.
 
     """
-    return (sep or ' ').join(x.capitalize() for x in s.split(sep))
+    rudisha (sep or ' ').join(x.capitalize() for x in s.split(sep))
 
 
 ####################################################################
@@ -54,7 +54,7 @@ kutoka collections agiza ChainMap as _ChainMap
 
 _sentinel_dict = {}
 
-class _TemplateMetaclass(type):
+kundi _TemplateMetaclass(type):
     pattern = r"""
     %(delim)s(?:
       (?P<escaped>%(delim)s) |   # Escape sequence of two delimiters
@@ -64,9 +64,9 @@ class _TemplateMetaclass(type):
     )
     """
 
-    def __init__(cls, name, bases, dct):
+    eleza __init__(cls, name, bases, dct):
         super(_TemplateMetaclass, cls).__init__(name, bases, dct)
-        if 'pattern' in dct:
+        ikiwa 'pattern' in dct:
             pattern = cls.pattern
         else:
             pattern = _TemplateMetaclass.pattern % {
@@ -77,8 +77,8 @@ class _TemplateMetaclass(type):
         cls.pattern = _re.compile(pattern, cls.flags | _re.VERBOSE)
 
 
-class Template(metaclass=_TemplateMetaclass):
-    """A string class for supporting $-substitutions."""
+kundi Template(metaclass=_TemplateMetaclass):
+    """A string kundi for supporting $-substitutions."""
 
     delimiter = '$'
     # r'[a-z]' matches to non-ASCII letters when used with IGNORECASE, but
@@ -89,15 +89,15 @@ class Template(metaclass=_TemplateMetaclass):
     braceidpattern = None
     flags = _re.IGNORECASE
 
-    def __init__(self, template):
+    eleza __init__(self, template):
         self.template = template
 
     # Search for $$, $identifier, ${identifier}, and any bare $'s
 
-    def _invalid(self, mo):
+    eleza _invalid(self, mo):
         i = mo.start('invalid')
         lines = self.template[:i].splitlines(keepends=True)
-        if not lines:
+        ikiwa not lines:
             colno = 1
             lineno = 1
         else:
@@ -106,45 +106,45 @@ class Template(metaclass=_TemplateMetaclass):
         raise ValueError('Invalid placeholder in string: line %d, col %d' %
                          (lineno, colno))
 
-    def substitute(self, mapping=_sentinel_dict, /, **kws):
-        if mapping is _sentinel_dict:
+    eleza substitute(self, mapping=_sentinel_dict, /, **kws):
+        ikiwa mapping is _sentinel_dict:
             mapping = kws
-        elif kws:
+        elikiwa kws:
             mapping = _ChainMap(kws, mapping)
         # Helper function for .sub()
-        def convert(mo):
+        eleza convert(mo):
             # Check the most common path first.
             named = mo.group('named') or mo.group('braced')
-            if named is not None:
-                return str(mapping[named])
-            if mo.group('escaped') is not None:
-                return self.delimiter
-            if mo.group('invalid') is not None:
+            ikiwa named is not None:
+                rudisha str(mapping[named])
+            ikiwa mo.group('escaped') is not None:
+                rudisha self.delimiter
+            ikiwa mo.group('invalid') is not None:
                 self._invalid(mo)
             raise ValueError('Unrecognized named group in pattern',
                              self.pattern)
-        return self.pattern.sub(convert, self.template)
+        rudisha self.pattern.sub(convert, self.template)
 
-    def safe_substitute(self, mapping=_sentinel_dict, /, **kws):
-        if mapping is _sentinel_dict:
+    eleza safe_substitute(self, mapping=_sentinel_dict, /, **kws):
+        ikiwa mapping is _sentinel_dict:
             mapping = kws
-        elif kws:
+        elikiwa kws:
             mapping = _ChainMap(kws, mapping)
         # Helper function for .sub()
-        def convert(mo):
+        eleza convert(mo):
             named = mo.group('named') or mo.group('braced')
-            if named is not None:
+            ikiwa named is not None:
                 try:
-                    return str(mapping[named])
+                    rudisha str(mapping[named])
                 except KeyError:
-                    return mo.group()
-            if mo.group('escaped') is not None:
-                return self.delimiter
-            if mo.group('invalid') is not None:
-                return mo.group()
+                    rudisha mo.group()
+            ikiwa mo.group('escaped') is not None:
+                rudisha self.delimiter
+            ikiwa mo.group('invalid') is not None:
+                rudisha mo.group()
             raise ValueError('Unrecognized named group in pattern',
                              self.pattern)
-        return self.pattern.sub(convert, self.template)
+        rudisha self.pattern.sub(convert, self.template)
 
 
 
@@ -158,47 +158,47 @@ class Template(metaclass=_TemplateMetaclass):
 # The overall parser is implemented in _string.formatter_parser.
 # The field name parser is implemented in _string.formatter_field_name_split
 
-class Formatter:
-    def format(self, format_string, /, *args, **kwargs):
-        return self.vformat(format_string, args, kwargs)
+kundi Formatter:
+    eleza format(self, format_string, /, *args, **kwargs):
+        rudisha self.vformat(format_string, args, kwargs)
 
-    def vformat(self, format_string, args, kwargs):
+    eleza vformat(self, format_string, args, kwargs):
         used_args = set()
         result, _ = self._vformat(format_string, args, kwargs, used_args, 2)
         self.check_unused_args(used_args, args, kwargs)
-        return result
+        rudisha result
 
-    def _vformat(self, format_string, args, kwargs, used_args, recursion_depth,
+    eleza _vformat(self, format_string, args, kwargs, used_args, recursion_depth,
                  auto_arg_index=0):
-        if recursion_depth < 0:
+        ikiwa recursion_depth < 0:
             raise ValueError('Max string recursion exceeded')
         result = []
         for literal_text, field_name, format_spec, conversion in \
                 self.parse(format_string):
 
             # output the literal text
-            if literal_text:
+            ikiwa literal_text:
                 result.append(literal_text)
 
-            # if there's a field, output it
-            if field_name is not None:
+            # ikiwa there's a field, output it
+            ikiwa field_name is not None:
                 # this is some markup, find the object and do
                 #  the formatting
 
                 # handle arg indexing when empty field_names are given.
-                if field_name == '':
-                    if auto_arg_index is False:
+                ikiwa field_name == '':
+                    ikiwa auto_arg_index is False:
                         raise ValueError('cannot switch kutoka manual field '
                                          'specification to automatic field '
                                          'numbering')
                     field_name = str(auto_arg_index)
                     auto_arg_index += 1
-                elif field_name.isdigit():
-                    if auto_arg_index:
+                elikiwa field_name.isdigit():
+                    ikiwa auto_arg_index:
                         raise ValueError('cannot switch kutoka manual field '
                                          'specification to automatic field '
                                          'numbering')
-                    # disable auto arg incrementing, if it gets
+                    # disable auto arg incrementing, ikiwa it gets
                     # used later on, then an exception will be raised
                     auto_arg_index = False
 
@@ -210,7 +210,7 @@ class Formatter:
                 # do any conversion on the resulting object
                 obj = self.convert_field(obj, conversion)
 
-                # expand the format spec, if needed
+                # expand the format spec, ikiwa needed
                 format_spec, auto_arg_index = self._vformat(
                     format_spec, args, kwargs,
                     used_args, recursion_depth-1,
@@ -219,34 +219,34 @@ class Formatter:
                 # format the object and append to the result
                 result.append(self.format_field(obj, format_spec))
 
-        return ''.join(result), auto_arg_index
+        rudisha ''.join(result), auto_arg_index
 
 
-    def get_value(self, key, args, kwargs):
-        if isinstance(key, int):
-            return args[key]
+    eleza get_value(self, key, args, kwargs):
+        ikiwa isinstance(key, int):
+            rudisha args[key]
         else:
-            return kwargs[key]
+            rudisha kwargs[key]
 
 
-    def check_unused_args(self, used_args, args, kwargs):
+    eleza check_unused_args(self, used_args, args, kwargs):
         pass
 
 
-    def format_field(self, value, format_spec):
-        return format(value, format_spec)
+    eleza format_field(self, value, format_spec):
+        rudisha format(value, format_spec)
 
 
-    def convert_field(self, value, conversion):
+    eleza convert_field(self, value, conversion):
         # do any conversion on the resulting object
-        if conversion is None:
-            return value
-        elif conversion == 's':
-            return str(value)
-        elif conversion == 'r':
-            return repr(value)
-        elif conversion == 'a':
-            return ascii(value)
+        ikiwa conversion is None:
+            rudisha value
+        elikiwa conversion == 's':
+            rudisha str(value)
+        elikiwa conversion == 'r':
+            rudisha repr(value)
+        elikiwa conversion == 'a':
+            rudisha ascii(value)
         raise ValueError("Unknown conversion specifier {0!s}".format(conversion))
 
 
@@ -255,10 +255,10 @@ class Formatter:
     # literal_text can be zero length
     # field_name can be None, in which case there's no
     #  object to format and output
-    # if field_name is not None, it is looked up, formatted
+    # ikiwa field_name is not None, it is looked up, formatted
     #  with format_spec and conversion and then used
-    def parse(self, format_string):
-        return _string.formatter_parser(format_string)
+    eleza parse(self, format_string):
+        rudisha _string.formatter_parser(format_string)
 
 
     # given a field_name, find the object it references.
@@ -266,7 +266,7 @@ class Formatter:
     #                 or "lookup[3]"
     #  used_args:    a set of which args have been used
     #  args, kwargs: as passed in to vformat
-    def get_field(self, field_name, args, kwargs):
+    eleza get_field(self, field_name, args, kwargs):
         first, rest = _string.formatter_field_name_split(field_name)
 
         obj = self.get_value(first, args, kwargs)
@@ -274,9 +274,9 @@ class Formatter:
         # loop through the rest of the field_name, doing
         #  getattr or getitem as needed
         for is_attr, i in rest:
-            if is_attr:
+            ikiwa is_attr:
                 obj = getattr(obj, i)
             else:
                 obj = obj[i]
 
-        return obj, first
+        rudisha obj, first

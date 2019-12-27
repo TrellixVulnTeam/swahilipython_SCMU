@@ -121,7 +121,7 @@ library/difflib,,:bhi,b[blo:bhi]
 library/difflib,,:i1,
 library/difflib,,:i2,
 library/difflib,,:j2,
-library/doctest,,`,``factorial`` from the ``example`` module:
+library/doctest,,`,``factorial`` kutoka the ``example`` module:
 library/doctest,,`,The ``example`` module
 library/doctest,,`,Using ``factorial``
 library/exceptions,,:err,err.object[err.start:err.end]
@@ -158,8 +158,8 @@ library/ipaddress,,:db00,2001:db00::0/24
 library/ipaddress,,::,2001:db00::0/24
 library/ipaddress,,:db00,2001:db00::0/ffff:ff00::
 library/ipaddress,,::,2001:db00::0/ffff:ff00::
-library/itertools,,:step,elements from seq[start:stop:step]
-library/itertools,,:stop,elements from seq[start:stop:step]
+library/itertools,,:step,elements kutoka seq[start:stop:step]
+library/itertools,,:stop,elements kutoka seq[start:stop:step]
 library/logging.handlers,,:port,host:port
 library/mmap,,:i2,obj[i1:i2]
 library/multiprocessing,,`,# Add more tasks using `put()`
@@ -198,10 +198,10 @@ library/readline,,:bind,"python:bind ^I rl_complete"
 library/smtplib,,:port,method must support that as well as a regular host:port
 library/socket,,::,'5aef:2b::8'
 library/socket,,:can,"return (can_id, can_dlc, data[:can_dlc])"
-library/socket,,:len,fds.fromstring(cmsg_data[:len(cmsg_data) - (len(cmsg_data) % fds.itemsize)])
-library/sqlite3,,:age,"cur.execute(""select * from people where name_last=:who and age=:age"", {""who"": who, ""age"": age})"
+library/socket,,:len,fds.kutokastring(cmsg_data[:len(cmsg_data) - (len(cmsg_data) % fds.itemsize)])
+library/sqlite3,,:age,"cur.execute(""select * kutoka people where name_last=:who and age=:age"", {""who"": who, ""age"": age})"
 library/sqlite3,,:memory,
-library/sqlite3,,:who,"cur.execute(""select * from people where name_last=:who and age=:age"", {""who"": who, ""age"": age})"
+library/sqlite3,,:who,"cur.execute(""select * kutoka people where name_last=:who and age=:age"", {""who"": who, ""age"": age})"
 library/sqlite3,,:path,"db = sqlite3.connect('file:path/to/database?mode=ro', uri=True)"
 library/ssl,,:My,"Organizational Unit Name (eg, section) []:My Group"
 library/ssl,,:My,"Organization Name (eg, company) [Internet Widgits Pty Ltd]:My Organization, Inc."

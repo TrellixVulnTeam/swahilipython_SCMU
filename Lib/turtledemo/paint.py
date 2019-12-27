@@ -21,20 +21,20 @@ includes the starting point is filled.
 """
 kutoka turtle agiza *
 
-def switchupdown(x=0, y=0):
-    if pen()["pendown"]:
+eleza switchupdown(x=0, y=0):
+    ikiwa pen()["pendown"]:
         end_fill()
         up()
     else:
         down()
         begin_fill()
 
-def changecolor(x=0, y=0):
+eleza changecolor(x=0, y=0):
     global colors
     colors = colors[1:]+colors[:1]
     color(colors[0])
 
-def main():
+eleza main():
     global colors
     shape("circle")
     resizemode("user")
@@ -46,9 +46,9 @@ def main():
     onscreenclick(goto,1)
     onscreenclick(changecolor,2)
     onscreenclick(switchupdown,3)
-    return "EVENTLOOP"
+    rudisha "EVENTLOOP"
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     msg = main()
-    print(msg)
+    andika(msg)
     mainloop()

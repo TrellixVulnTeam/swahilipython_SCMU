@@ -5,9 +5,9 @@ kutoka test agiza support
 pwd = support.import_module('pwd')
 
 @unittest.skipUnless(hasattr(pwd, 'getpwall'), 'Does not have getpwall()')
-class PwdTest(unittest.TestCase):
+kundi PwdTest(unittest.TestCase):
 
-    def test_values(self):
+    eleza test_values(self):
         entries = pwd.getpwall()
 
         for e in entries:
@@ -33,12 +33,12 @@ class PwdTest(unittest.TestCase):
             # instead of this collect all entries for one uid
             # and check afterwards (done in test_values_extended)
 
-    def test_values_extended(self):
+    eleza test_values_extended(self):
         entries = pwd.getpwall()
         entriesbyname = {}
         entriesbyuid = {}
 
-        if len(entries) > 1000:  # Huge passwd file (NIS?) -- skip this test
+        ikiwa len(entries) > 1000:  # Huge passwd file (NIS?) -- skip this test
             self.skipTest('passwd file is huge; extended test skipped')
 
         for e in entries:
@@ -48,12 +48,12 @@ class PwdTest(unittest.TestCase):
         # check whether the entry returned by getpwuid()
         # for each uid is among those kutoka getpwall() for this uid
         for e in entries:
-            if not e[0] or e[0] == '+':
+            ikiwa not e[0] or e[0] == '+':
                 continue # skip NIS entries etc.
             self.assertIn(pwd.getpwnam(e.pw_name), entriesbyname[e.pw_name])
             self.assertIn(pwd.getpwuid(e.pw_uid), entriesbyuid[e.pw_uid])
 
-    def test_errors(self):
+    eleza test_errors(self):
         self.assertRaises(TypeError, pwd.getpwuid)
         self.assertRaises(TypeError, pwd.getpwuid, 3.14)
         self.assertRaises(TypeError, pwd.getpwnam)
@@ -73,10 +73,10 @@ class PwdTest(unittest.TestCase):
         while fakename in bynames:
             chars = list(fakename)
             for i in range(len(chars)):
-                if chars[i] == 'z':
+                ikiwa chars[i] == 'z':
                     chars[i] = 'A'
                     break
-                elif chars[i] == 'Z':
+                elikiwa chars[i] == 'Z':
                     continue
                 else:
                     chars[i] = chr(ord(chars[i]) + 1)
@@ -86,14 +86,14 @@ class PwdTest(unittest.TestCase):
                 try:
                     fakename = allnames[namei]
                 except IndexError:
-                    # should never happen... if so, just forget it
+                    # should never happen... ikiwa so, just forget it
                     break
             fakename = ''.join(chars)
 
         self.assertRaises(KeyError, pwd.getpwnam, fakename)
 
         # In some cases, byuids isn't a complete list of all users in the
-        # system, so if we try to pick a value not in byuids (via a perturbing
+        # system, so ikiwa we try to pick a value not in byuids (via a perturbing
         # loop, say), pwd.getpwuid() might still be able to find data for that
         # uid. Using sys.maxint may provoke the same problems, but hopefully
         # it will be a more repeatable failure.
@@ -108,5 +108,5 @@ class PwdTest(unittest.TestCase):
         self.assertRaises(KeyError, pwd.getpwuid, 2**128)
         self.assertRaises(KeyError, pwd.getpwuid, -2**128)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

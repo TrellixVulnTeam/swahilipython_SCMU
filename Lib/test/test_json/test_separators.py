@@ -2,8 +2,8 @@ agiza textwrap
 kutoka test.test_json agiza PyTest, CTest
 
 
-class TestSeparators:
-    def test_separators(self):
+kundi TestSeparators:
+    eleza test_separators(self):
         h = [['blorpie'], ['whoops'], [], 'd-shtaeou', 'd-nthiouh', 'i-vhbjkhnth',
              {'nifty': 87}, {'field': 'yes', 'morefield': False} ]
 
@@ -39,12 +39,12 @@ class TestSeparators:
         self.assertEqual(h2, h)
         self.assertEqual(d2, expect)
 
-    def test_illegal_separators(self):
+    eleza test_illegal_separators(self):
         h = {1: 2, 3: 4}
         self.assertRaises(TypeError, self.dumps, h, separators=(b', ', ': '))
         self.assertRaises(TypeError, self.dumps, h, separators=(', ', b': '))
         self.assertRaises(TypeError, self.dumps, h, separators=(b', ', b': '))
 
 
-class TestPySeparators(TestSeparators, PyTest): pass
-class TestCSeparators(TestSeparators, CTest): pass
+kundi TestPySeparators(TestSeparators, PyTest): pass
+kundi TestCSeparators(TestSeparators, CTest): pass

@@ -19,7 +19,7 @@ If all you want is a unique ID, you should probably call :func:`uuid1` or
 a UUID containing the computer's network address.  :func:`uuid4` creates a
 random UUID.
 
-Depending on support from the underlying platform, :func:`uuid1` may or may
+Depending on support kutoka the underlying platform, :func:`uuid1` may or may
 not return a "safe" UUID.  A safe UUID is one which is generated using
 synchronization methods that ensure no two processes can obtain the same
 UUID.  All instances of :class:`UUID` have an :attr:`is_safe` attribute
@@ -44,7 +44,7 @@ which relays any information about the UUID's safety, using this enumeration:
 
 .. class:: UUID(hex=None, bytes=None, bytes_le=None, fields=None, int=None, version=None, *, is_safe=SafeUUID.unknown)
 
-   Create a UUID from either a string of 32 hexadecimal digits, a string of 16
+   Create a UUID kutoka either a string of 32 hexadecimal digits, a string of 16
    bytes in big-endian order as the *bytes* argument, a string of 16 bytes in
    little-endian order as the *bytes_le* argument, a tuple of six integers
    (32-bit *time_low*, 16-bit *time_mid*, 16-bit *time_hi_version*,
@@ -175,7 +175,7 @@ The :mod:`uuid` module defines the following functions:
 
 .. function:: uuid1(node=None, clock_seq=None)
 
-   Generate a UUID from a host ID, sequence number, and the current time. If *node*
+   Generate a UUID kutoka a host ID, sequence number, and the current time. If *node*
    is not given, :func:`getnode` is used to obtain the hardware address. If
    *clock_seq* is given, it is used as the sequence number; otherwise a random
    14-bit sequence number is chosen.
@@ -268,7 +268,7 @@ Example
 
 Here are some examples of typical usage of the :mod:`uuid` module::
 
-   >>> import uuid
+   >>> agiza uuid
 
    >>> # make a UUID based on the host ID and current time
    >>> uuid.uuid1()
@@ -286,7 +286,7 @@ Here are some examples of typical usage of the :mod:`uuid` module::
    >>> uuid.uuid5(uuid.NAMESPACE_DNS, 'python.org')
    UUID('886313e1-3b8a-5372-9b90-0c9aee199e5d')
 
-   >>> # make a UUID from a string of hex digits (braces and hyphens ignored)
+   >>> # make a UUID kutoka a string of hex digits (braces and hyphens ignored)
    >>> x = uuid.UUID('{00010203-0405-0607-0809-0a0b0c0d0e0f}')
 
    >>> # convert a UUID to a string of hex digits in standard form
@@ -297,7 +297,7 @@ Here are some examples of typical usage of the :mod:`uuid` module::
    >>> x.bytes
    b'\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f'
 
-   >>> # make a UUID from a 16-byte string
+   >>> # make a UUID kutoka a 16-byte string
    >>> uuid.UUID(bytes=x.bytes)
    UUID('00010203-0405-0607-0809-0a0b0c0d0e0f')
 

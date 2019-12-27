@@ -17,19 +17,19 @@ described in :rfc:`1014`, written by Sun Microsystems, Inc. June 1987.  It
 supports most of the data types described in the RFC.
 
 The :mod:`xdrlib` module defines two classes, one for packing variables into XDR
-representation, and another for unpacking from XDR representation.  There are
+representation, and another for unpacking kutoka XDR representation.  There are
 also two exception classes.
 
 
 .. class:: Packer()
 
-   :class:`Packer` is the class for packing data into XDR representation. The
-   :class:`Packer` class is instantiated with no arguments.
+   :class:`Packer` is the kundi for packing data into XDR representation. The
+   :class:`Packer` kundi is instantiated with no arguments.
 
 
 .. class:: Unpacker(data)
 
-   ``Unpacker`` is the complementary class which unpacks XDR data values from a
+   ``Unpacker`` is the complementary kundi which unpacks XDR data values kutoka a
    string buffer.  The input buffer is given as *data*.
 
 
@@ -115,13 +115,13 @@ The following methods support packing arrays and lists:
    Packs a *list* of homogeneous items.  This method is useful for lists with an
    indeterminate size; i.e. the size is not available until the entire list has
    been walked.  For each item in the list, an unsigned integer ``1`` is packed
-   first, followed by the data value from the list.  *pack_item* is the function
+   first, followed by the data value kutoka the list.  *pack_item* is the function
    that is called to pack the individual item.  At the end of the list, an unsigned
    integer ``0`` is packed.
 
    For example, to pack a list of integers, the code might appear like this::
 
-      import xdrlib
+      agiza xdrlib
       p = xdrlib.Packer()
       p.pack_list([1, 2, 3], p.pack_int)
 
@@ -146,7 +146,7 @@ The following methods support packing arrays and lists:
 Unpacker Objects
 ----------------
 
-The :class:`Unpacker` class offers the following methods:
+The :class:`Unpacker` kundi offers the following methods:
 
 
 .. method:: Unpacker.reset(data)
@@ -254,7 +254,7 @@ The following methods support unpacking arrays and lists:
 Exceptions
 ----------
 
-Exceptions in this module are coded as class instances:
+Exceptions in this module are coded as kundi instances:
 
 
 .. exception:: Error
@@ -265,11 +265,11 @@ Exceptions in this module are coded as class instances:
 
 .. exception:: ConversionError
 
-   Class derived from :exc:`Error`.  Contains no additional instance variables.
+   Class derived kutoka :exc:`Error`.  Contains no additional instance variables.
 
 Here is an example of how you would catch one of these exceptions::
 
-   import xdrlib
+   agiza xdrlib
    p = xdrlib.Packer()
    try:
        p.pack_double(8.01)

@@ -6,7 +6,7 @@ Allows fine grained feature control of how the package parses and emits data.
 import abc
 from email import header
 from email import charset as _charset
-from email.utils import _has_surrogates
+from email.utils agiza _has_surrogates
 
 __all__ = [
     'Policy',

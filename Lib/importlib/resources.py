@@ -31,89 +31,89 @@ Package = Union[str, ModuleType]
 Resource = Union[str, os.PathLike]
 
 
-def _get_package(package) -> ModuleType:
-    """Take a package name or module object and return the module.
+eleza _get_package(package) -> ModuleType:
+    """Take a package name or module object and rudisha the module.
 
     If a name, the module is imported.  If the passed or imported module
     object is not a package, raise an exception.
     """
-    if hasattr(package, '__spec__'):
-        if package.__spec__.submodule_search_locations is None:
+    ikiwa hasattr(package, '__spec__'):
+        ikiwa package.__spec__.submodule_search_locations is None:
             raise TypeError('{!r} is not a package'.format(
                 package.__spec__.name))
         else:
-            return package
+            rudisha package
     else:
         module = import_module(package)
-        if module.__spec__.submodule_search_locations is None:
+        ikiwa module.__spec__.submodule_search_locations is None:
             raise TypeError('{!r} is not a package'.format(package))
         else:
-            return module
+            rudisha module
 
 
-def _normalize_path(path) -> str:
+eleza _normalize_path(path) -> str:
     """Normalize a path by ensuring it is a string.
 
     If the resulting string contains path separators, an exception is raised.
     """
     parent, file_name = os.path.split(path)
-    if parent:
+    ikiwa parent:
         raise ValueError('{!r} must be only a file name'.format(path))
     else:
-        return file_name
+        rudisha file_name
 
 
-def _get_resource_reader(
+eleza _get_resource_reader(
         package: ModuleType) -> Optional[resources_abc.ResourceReader]:
-    # Return the package's loader if it's a ResourceReader.  We can't use
+    # Return the package's loader ikiwa it's a ResourceReader.  We can't use
     # a issubclass() check here because apparently abc.'s __subclasscheck__()
     # hook wants to create a weak reference to the object, but
     # zipagiza.zipimporter does not support weak references, resulting in a
     # TypeError.  That seems terrible.
     spec = package.__spec__
-    if hasattr(spec.loader, 'get_resource_reader'):
-        return cast(resources_abc.ResourceReader,
+    ikiwa hasattr(spec.loader, 'get_resource_reader'):
+        rudisha cast(resources_abc.ResourceReader,
                     spec.loader.get_resource_reader(spec.name))
-    return None
+    rudisha None
 
 
-def _check_location(package):
-    if package.__spec__.origin is None or not package.__spec__.has_location:
+eleza _check_location(package):
+    ikiwa package.__spec__.origin is None or not package.__spec__.has_location:
         raise FileNotFoundError(f'Package has no location {package!r}')
 
 
-def open_binary(package: Package, resource: Resource) -> BinaryIO:
+eleza open_binary(package: Package, resource: Resource) -> BinaryIO:
     """Return a file-like object opened for binary reading of the resource."""
     resource = _normalize_path(resource)
     package = _get_package(package)
     reader = _get_resource_reader(package)
-    if reader is not None:
-        return reader.open_resource(resource)
+    ikiwa reader is not None:
+        rudisha reader.open_resource(resource)
     _check_location(package)
     absolute_package_path = os.path.abspath(package.__spec__.origin)
     package_path = os.path.dirname(absolute_package_path)
     full_path = os.path.join(package_path, resource)
     try:
-        return open(full_path, mode='rb')
+        rudisha open(full_path, mode='rb')
     except OSError:
         # Just assume the loader is a resource loader; all the relevant
         # importlib.machinery loaders are and an AttributeError for
         # get_data() will make it clear what is needed kutoka the loader.
         loader = cast(ResourceLoader, package.__spec__.loader)
         data = None
-        if hasattr(package.__spec__.loader, 'get_data'):
+        ikiwa hasattr(package.__spec__.loader, 'get_data'):
             with suppress(OSError):
                 data = loader.get_data(full_path)
-        if data is None:
+        ikiwa data is None:
             package_name = package.__spec__.name
             message = '{!r} resource not found in {!r}'.format(
                 resource, package_name)
             raise FileNotFoundError(message)
         else:
-            return BytesIO(data)
+            rudisha BytesIO(data)
 
 
-def open_text(package: Package,
+eleza open_text(package: Package,
               resource: Resource,
               encoding: str = 'utf-8',
               errors: str = 'strict') -> TextIO:
@@ -121,41 +121,41 @@ def open_text(package: Package,
     resource = _normalize_path(resource)
     package = _get_package(package)
     reader = _get_resource_reader(package)
-    if reader is not None:
-        return TextIOWrapper(reader.open_resource(resource), encoding, errors)
+    ikiwa reader is not None:
+        rudisha TextIOWrapper(reader.open_resource(resource), encoding, errors)
     _check_location(package)
     absolute_package_path = os.path.abspath(package.__spec__.origin)
     package_path = os.path.dirname(absolute_package_path)
     full_path = os.path.join(package_path, resource)
     try:
-        return open(full_path, mode='r', encoding=encoding, errors=errors)
+        rudisha open(full_path, mode='r', encoding=encoding, errors=errors)
     except OSError:
         # Just assume the loader is a resource loader; all the relevant
         # importlib.machinery loaders are and an AttributeError for
         # get_data() will make it clear what is needed kutoka the loader.
         loader = cast(ResourceLoader, package.__spec__.loader)
         data = None
-        if hasattr(package.__spec__.loader, 'get_data'):
+        ikiwa hasattr(package.__spec__.loader, 'get_data'):
             with suppress(OSError):
                 data = loader.get_data(full_path)
-        if data is None:
+        ikiwa data is None:
             package_name = package.__spec__.name
             message = '{!r} resource not found in {!r}'.format(
                 resource, package_name)
             raise FileNotFoundError(message)
         else:
-            return TextIOWrapper(BytesIO(data), encoding, errors)
+            rudisha TextIOWrapper(BytesIO(data), encoding, errors)
 
 
-def read_binary(package: Package, resource: Resource) -> bytes:
+eleza read_binary(package: Package, resource: Resource) -> bytes:
     """Return the binary contents of the resource."""
     resource = _normalize_path(resource)
     package = _get_package(package)
     with open_binary(package, resource) as fp:
-        return fp.read()
+        rudisha fp.read()
 
 
-def read_text(package: Package,
+eleza read_text(package: Package,
               resource: Resource,
               encoding: str = 'utf-8',
               errors: str = 'strict') -> str:
@@ -167,23 +167,23 @@ def read_text(package: Package,
     resource = _normalize_path(resource)
     package = _get_package(package)
     with open_text(package, resource, encoding, errors) as fp:
-        return fp.read()
+        rudisha fp.read()
 
 
 @contextmanager
-def path(package: Package, resource: Resource) -> Iterator[Path]:
+eleza path(package: Package, resource: Resource) -> Iterator[Path]:
     """A context manager providing a file path object to the resource.
 
     If the resource does not already exist on its own on the file system,
     a temporary file will be created. If the file was created, the file
     will be deleted upon exiting the context manager (no exception is
-    raised if the file was deleted prior to the context manager
+    raised ikiwa the file was deleted prior to the context manager
     exiting).
     """
     resource = _normalize_path(resource)
     package = _get_package(package)
     reader = _get_resource_reader(package)
-    if reader is not None:
+    ikiwa reader is not None:
         try:
             yield Path(reader.resource_path(resource))
             return
@@ -195,7 +195,7 @@ def path(package: Package, resource: Resource) -> Iterator[Path]:
     # resource_path() raises FileNotFoundError.
     package_directory = Path(package.__spec__.origin).parent
     file_path = package_directory / resource
-    if file_path.exists():
+    ikiwa file_path.exists():
         yield file_path
     else:
         with open_binary(package, resource) as fp:
@@ -215,45 +215,45 @@ def path(package: Package, resource: Resource) -> Iterator[Path]:
                 pass
 
 
-def is_resource(package: Package, name: str) -> bool:
-    """True if 'name' is a resource inside 'package'.
+eleza is_resource(package: Package, name: str) -> bool:
+    """True ikiwa 'name' is a resource inside 'package'.
 
     Directories are *not* resources.
     """
     package = _get_package(package)
     _normalize_path(name)
     reader = _get_resource_reader(package)
-    if reader is not None:
-        return reader.is_resource(name)
+    ikiwa reader is not None:
+        rudisha reader.is_resource(name)
     try:
         package_contents = set(contents(package))
     except (NotADirectoryError, FileNotFoundError):
-        return False
-    if name not in package_contents:
-        return False
+        rudisha False
+    ikiwa name not in package_contents:
+        rudisha False
     # Just because the given file_name lives as an entry in the package's
     # contents doesn't necessarily mean it's a resource.  Directories are not
-    # resources, so let's try to find out if it's a directory or not.
+    # resources, so let's try to find out ikiwa it's a directory or not.
     path = Path(package.__spec__.origin).parent / name
-    return path.is_file()
+    rudisha path.is_file()
 
 
-def contents(package: Package) -> Iterable[str]:
+eleza contents(package: Package) -> Iterable[str]:
     """Return an iterable of entries in 'package'.
 
     Note that not all entries are resources.  Specifically, directories are
     not considered resources.  Use `is_resource()` on each entry returned here
-    to check if it is a resource or not.
+    to check ikiwa it is a resource or not.
     """
     package = _get_package(package)
     reader = _get_resource_reader(package)
-    if reader is not None:
-        return reader.contents()
+    ikiwa reader is not None:
+        rudisha reader.contents()
     # Is the package a namespace package?  By definition, namespace packages
     # cannot have resources.  We could use _check_location() and catch the
     # exception, but that's extra work, so just inline the check.
-    elif package.__spec__.origin is None or not package.__spec__.has_location:
-        return ()
+    elikiwa package.__spec__.origin is None or not package.__spec__.has_location:
+        rudisha ()
     else:
         package_directory = Path(package.__spec__.origin).parent
-        return os.listdir(package_directory)
+        rudisha os.listdir(package_directory)

@@ -57,7 +57,7 @@ __date__    = "07 February 2010"
 _startTime = time.time()
 
 #
-#raiseExceptions is used to see if exceptions during handling should be
+#raiseExceptions is used to see ikiwa exceptions during handling should be
 #propagated
 #
 raiseExceptions = True
@@ -116,7 +116,7 @@ _nameToLevel = {
     'NOTSET': NOTSET,
 }
 
-def getLevelName(level):
+eleza getLevelName(level):
     """
     Return the textual representation of logging level 'level'.
 
@@ -132,14 +132,14 @@ def getLevelName(level):
     """
     # See Issues #22386, #27937 and #29220 for why it's this way
     result = _levelToName.get(level)
-    if result is not None:
-        return result
+    ikiwa result is not None:
+        rudisha result
     result = _nameToLevel.get(level)
-    if result is not None:
-        return result
-    return "Level %s" % level
+    ikiwa result is not None:
+        rudisha result
+    rudisha "Level %s" % level
 
-def addLevelName(level, levelName):
+eleza addLevelName(level, levelName):
     """
     Associate 'levelName' with 'level'.
 
@@ -152,15 +152,15 @@ def addLevelName(level, levelName):
     finally:
         _releaseLock()
 
-if hasattr(sys, '_getframe'):
+ikiwa hasattr(sys, '_getframe'):
     currentframe = lambda: sys._getframe(3)
 else: #pragma: no cover
-    def currentframe():
+    eleza currentframe():
         """Return the frame object for the caller's stack frame."""
         try:
             raise Exception
         except Exception:
-            return sys.exc_info()[2].tb_frame.f_back
+            rudisha sys.exc_info()[2].tb_frame.f_back
 
 #
 # _srcfile is used when walking the stack to check when we've got the first
@@ -178,24 +178,24 @@ _srcfile = os.path.normcase(addLevelName.__code__.co_filename)
 
 # _srcfile is only used in conjunction with sys._getframe().
 # To provide compatibility with older versions of Python, set _srcfile
-# to None if _getframe() is not available; this value will prevent
-# findCaller() kutoka being called. You can also do this if you want to avoid
+# to None ikiwa _getframe() is not available; this value will prevent
+# findCaller() kutoka being called. You can also do this ikiwa you want to avoid
 # the overhead of fetching caller information, even when _getframe() is
 # available.
-#if not hasattr(sys, '_getframe'):
+#ikiwa not hasattr(sys, '_getframe'):
 #    _srcfile = None
 
 
-def _checkLevel(level):
-    if isinstance(level, int):
+eleza _checkLevel(level):
+    ikiwa isinstance(level, int):
         rv = level
-    elif str(level) == level:
-        if level not in _nameToLevel:
+    elikiwa str(level) == level:
+        ikiwa level not in _nameToLevel:
             raise ValueError("Unknown level: %r" % level)
         rv = _nameToLevel[level]
     else:
         raise TypeError("Level not an integer or a valid string: %r" % level)
-    return rv
+    rudisha rv
 
 #---------------------------------------------------------------------------
 #   Thread-related stuff
@@ -205,33 +205,33 @@ def _checkLevel(level):
 #_lock is used to serialize access to shared data structures in this module.
 #This needs to be an RLock because fileConfig() creates and configures
 #Handlers, and so might arbitrary user threads. Since Handler code updates the
-#shared dictionary _handlers, it needs to acquire the lock. But if configuring,
+#shared dictionary _handlers, it needs to acquire the lock. But ikiwa configuring,
 #the lock would already have been acquired - so we need an RLock.
 #The same argument applies to Loggers and Manager.loggerDict.
 #
 _lock = threading.RLock()
 
-def _acquireLock():
+eleza _acquireLock():
     """
     Acquire the module-level lock for serializing access to shared data.
 
     This should be released with _releaseLock().
     """
-    if _lock:
+    ikiwa _lock:
         _lock.acquire()
 
-def _releaseLock():
+eleza _releaseLock():
     """
     Release the module-level lock acquired by calling _acquireLock().
     """
-    if _lock:
+    ikiwa _lock:
         _lock.release()
 
 
 # Prevent a held logging lock kutoka blocking a child kutoka logging.
 
-if not hasattr(os, 'register_at_fork'):  # Windows and friends.
-    def _register_at_fork_reinit_lock(instance):
+ikiwa not hasattr(os, 'register_at_fork'):  # Windows and friends.
+    eleza _register_at_fork_reinit_lock(instance):
         pass  # no-op when os.register_at_fork does not exist.
 else:
     # A collection of instances with a createLock method (logging.Handler)
@@ -241,21 +241,21 @@ else:
     # a new Handler instance with this set in the first place.
     _at_fork_reinit_lock_weakset = weakref.WeakSet()
 
-    def _register_at_fork_reinit_lock(instance):
+    eleza _register_at_fork_reinit_lock(instance):
         _acquireLock()
         try:
             _at_fork_reinit_lock_weakset.add(instance)
         finally:
             _releaseLock()
 
-    def _after_at_fork_child_reinit_locks():
+    eleza _after_at_fork_child_reinit_locks():
         # _acquireLock() was called in the parent before forking.
         for handler in _at_fork_reinit_lock_weakset:
             try:
                 handler.createLock()
             except Exception as err:
                 # Similar to what PyErr_WriteUnraisable does.
-                print("Ignoring exception kutoka logging atfork", instance,
+                andika("Ignoring exception kutoka logging atfork", instance,
                       "._reinit_lock() method:", err, file=sys.stderr)
         _releaseLock()  # Acquired by os.register_at_fork(before=.
 
@@ -269,7 +269,7 @@ else:
 #   The logging record
 #---------------------------------------------------------------------------
 
-class LogRecord(object):
+kundi LogRecord(object):
     """
     A LogRecord instance represents an event being logged.
 
@@ -281,7 +281,7 @@ class LogRecord(object):
     the source line where the logging call was made, and any exception
     information to be logged.
     """
-    def __init__(self, name, level, pathname, lineno,
+    eleza __init__(self, name, level, pathname, lineno,
                  msg, args, exc_info, func=None, sinfo=None, **kwargs):
         """
         Initialize a logging record with interesting information.
@@ -295,9 +295,9 @@ class LogRecord(object):
         #  logging.debug("a %(a)d b %(b)s", {'a':1, 'b':2})
         # Suggested by Stefan Behnel.
         # Note that without the test for args[0], we get a problem because
-        # during formatting, we test to see if the arg is present using
-        # 'if self.args:'. If the event being logged is e.g. 'Value is %d'
-        # and if the passed arg fails 'if self.args:' then no formatting
+        # during formatting, we test to see ikiwa the arg is present using
+        # 'ikiwa self.args:'. If the event being logged is e.g. 'Value is %d'
+        # and ikiwa the passed arg fails 'ikiwa self.args:' then no formatting
         # is done. For example, logger.warning('Value is %d', 0) would log
         # 'Value is %d' instead of 'Value is 0'.
         # For the use case of passing a dictionary, this should not be a
@@ -307,7 +307,7 @@ class LogRecord(object):
         # formatting still seem to suggest a mapping object is required.
         # Thus, while not removing the isinstance check, it does now look
         # for collections.abc.Mapping rather than, as before, dict.
-        if (args and len(args) == 1 and isinstance(args[0], collections.abc.Mapping)
+        ikiwa (args and len(args) == 1 and isinstance(args[0], collections.abc.Mapping)
             and args[0]):
             args = args[0]
         self.args = args
@@ -328,36 +328,36 @@ class LogRecord(object):
         self.created = ct
         self.msecs = (ct - int(ct)) * 1000
         self.relativeCreated = (self.created - _startTime) * 1000
-        if logThreads:
+        ikiwa logThreads:
             self.thread = threading.get_ident()
             self.threadName = threading.current_thread().name
         else: # pragma: no cover
             self.thread = None
             self.threadName = None
-        if not logMultiprocessing: # pragma: no cover
+        ikiwa not logMultiprocessing: # pragma: no cover
             self.processName = None
         else:
             self.processName = 'MainProcess'
             mp = sys.modules.get('multiprocessing')
-            if mp is not None:
-                # Errors may occur if multiprocessing has not finished loading
-                # yet - e.g. if a custom agiza hook causes third-party code
+            ikiwa mp is not None:
+                # Errors may occur ikiwa multiprocessing has not finished loading
+                # yet - e.g. ikiwa a custom agiza hook causes third-party code
                 # to run when multiprocessing calls agiza. See issue 8200
                 # for an example
                 try:
                     self.processName = mp.current_process().name
                 except Exception: #pragma: no cover
                     pass
-        if logProcesses and hasattr(os, 'getpid'):
+        ikiwa logProcesses and hasattr(os, 'getpid'):
             self.process = os.getpid()
         else:
             self.process = None
 
-    def __repr__(self):
-        return '<LogRecord: %s, %s, %s, %s, "%s">'%(self.name, self.levelno,
+    eleza __repr__(self):
+        rudisha '<LogRecord: %s, %s, %s, %s, "%s">'%(self.name, self.levelno,
             self.pathname, self.lineno, self.msg)
 
-    def getMessage(self):
+    eleza getMessage(self):
         """
         Return the message for this LogRecord.
 
@@ -365,16 +365,16 @@ class LogRecord(object):
         arguments with the message.
         """
         msg = str(self.msg)
-        if self.args:
+        ikiwa self.args:
             msg = msg % self.args
-        return msg
+        rudisha msg
 
 #
-#   Determine which class to use when instantiating log records.
+#   Determine which kundi to use when instantiating log records.
 #
 _logRecordFactory = LogRecord
 
-def setLogRecordFactory(factory):
+eleza setLogRecordFactory(factory):
     """
     Set the factory to be used when instantiating a log record.
 
@@ -384,14 +384,14 @@ def setLogRecordFactory(factory):
     global _logRecordFactory
     _logRecordFactory = factory
 
-def getLogRecordFactory():
+eleza getLogRecordFactory():
     """
     Return the factory to be used when instantiating a log record.
     """
 
-    return _logRecordFactory
+    rudisha _logRecordFactory
 
-def makeLogRecord(dict):
+eleza makeLogRecord(dict):
     """
     Make a LogRecord whose attributes are defined by the specified dictionary,
     This function is useful for converting a logging event received over
@@ -400,7 +400,7 @@ def makeLogRecord(dict):
     """
     rv = _logRecordFactory(None, None, "", 0, "", (), None, None)
     rv.__dict__.update(dict)
-    return rv
+    rudisha rv
 
 
 #---------------------------------------------------------------------------
@@ -410,35 +410,35 @@ _str_formatter = StrFormatter()
 del StrFormatter
 
 
-class PercentStyle(object):
+kundi PercentStyle(object):
 
     default_format = '%(message)s'
     asctime_format = '%(asctime)s'
     asctime_search = '%(asctime)'
     validation_pattern = re.compile(r'%\(\w+\)[#0+ -]*(\*|\d+)?(\.(\*|\d+))?[diouxefgcrsa%]', re.I)
 
-    def __init__(self, fmt):
+    eleza __init__(self, fmt):
         self._fmt = fmt or self.default_format
 
-    def usesTime(self):
-        return self._fmt.find(self.asctime_search) >= 0
+    eleza usesTime(self):
+        rudisha self._fmt.find(self.asctime_search) >= 0
 
-    def validate(self):
+    eleza validate(self):
         """Validate the input format, ensure it matches the correct style"""
-        if not self.validation_pattern.search(self._fmt):
+        ikiwa not self.validation_pattern.search(self._fmt):
             raise ValueError("Invalid format '%s' for '%s' style" % (self._fmt, self.default_format[0]))
 
-    def _format(self, record):
-        return self._fmt % record.__dict__
+    eleza _format(self, record):
+        rudisha self._fmt % record.__dict__
 
-    def format(self, record):
+    eleza format(self, record):
         try:
-            return self._format(record)
+            rudisha self._format(record)
         except KeyError as e:
             raise ValueError('Formatting field not found in record: %s' % e)
 
 
-class StrFormatStyle(PercentStyle):
+kundi StrFormatStyle(PercentStyle):
     default_format = '{message}'
     asctime_format = '{asctime}'
     asctime_search = '{asctime'
@@ -446,57 +446,57 @@ class StrFormatStyle(PercentStyle):
     fmt_spec = re.compile(r'^(.?[<>=^])?[+ -]?#?0?(\d+|{\w+})?[,_]?(\.(\d+|{\w+}))?[bcdefgnosx%]?$', re.I)
     field_spec = re.compile(r'^(\d+|\w+)(\.\w+|\[[^]]+\])*$')
 
-    def _format(self, record):
-        return self._fmt.format(**record.__dict__)
+    eleza _format(self, record):
+        rudisha self._fmt.format(**record.__dict__)
 
-    def validate(self):
+    eleza validate(self):
         """Validate the input format, ensure it is the correct string formatting style"""
         fields = set()
         try:
             for _, fieldname, spec, conversion in _str_formatter.parse(self._fmt):
-                if fieldname:
-                    if not self.field_spec.match(fieldname):
+                ikiwa fieldname:
+                    ikiwa not self.field_spec.match(fieldname):
                         raise ValueError('invalid field name/expression: %r' % fieldname)
                     fields.add(fieldname)
-                if conversion and conversion not in 'rsa':
+                ikiwa conversion and conversion not in 'rsa':
                     raise ValueError('invalid conversion: %r' % conversion)
-                if spec and not self.fmt_spec.match(spec):
+                ikiwa spec and not self.fmt_spec.match(spec):
                     raise ValueError('bad specifier: %r' % spec)
         except ValueError as e:
             raise ValueError('invalid format: %s' % e)
-        if not fields:
+        ikiwa not fields:
             raise ValueError('invalid format: no fields')
 
 
-class StringTemplateStyle(PercentStyle):
+kundi StringTemplateStyle(PercentStyle):
     default_format = '${message}'
     asctime_format = '${asctime}'
     asctime_search = '${asctime}'
 
-    def __init__(self, fmt):
+    eleza __init__(self, fmt):
         self._fmt = fmt or self.default_format
         self._tpl = Template(self._fmt)
 
-    def usesTime(self):
+    eleza usesTime(self):
         fmt = self._fmt
-        return fmt.find('$asctime') >= 0 or fmt.find(self.asctime_format) >= 0
+        rudisha fmt.find('$asctime') >= 0 or fmt.find(self.asctime_format) >= 0
 
-    def validate(self):
+    eleza validate(self):
         pattern = Template.pattern
         fields = set()
         for m in pattern.finditer(self._fmt):
             d = m.groupdict()
-            if d['named']:
+            ikiwa d['named']:
                 fields.add(d['named'])
-            elif d['braced']:
+            elikiwa d['braced']:
                 fields.add(d['braced'])
-            elif m.group(0) == '$':
+            elikiwa m.group(0) == '$':
                 raise ValueError('invalid format: bare \'$\' not allowed')
-        if not fields:
+        ikiwa not fields:
             raise ValueError('invalid format: no fields')
 
-    def _format(self, record):
-        return self._tpl.substitute(**record.__dict__)
+    eleza _format(self, record):
+        rudisha self._tpl.substitute(**record.__dict__)
 
 
 BASIC_FORMAT = "%(levelname)s:%(name)s:%(message)s"
@@ -507,7 +507,7 @@ _STYLES = {
     '$': (StringTemplateStyle, '${levelname}:${name}:${message}'),
 }
 
-class Formatter(object):
+kundi Formatter(object):
     """
     Formatter instances are used to convert a LogRecord to text.
 
@@ -530,29 +530,29 @@ class Formatter(object):
     %(levelname)s       Text logging level for the message ("DEBUG", "INFO",
                         "WARNING", "ERROR", "CRITICAL")
     %(pathname)s        Full pathname of the source file where the logging
-                        call was issued (if available)
+                        call was issued (ikiwa available)
     %(filename)s        Filename portion of pathname
     %(module)s          Module (name portion of filename)
     %(lineno)d          Source line number where the logging call was issued
-                        (if available)
+                        (ikiwa available)
     %(funcName)s        Function name
     %(created)f         Time when the LogRecord was created (time.time()
-                        return value)
+                        rudisha value)
     %(asctime)s         Textual time when the LogRecord was created
     %(msecs)d           Millisecond portion of the creation time
     %(relativeCreated)d Time in milliseconds when the LogRecord was created,
                         relative to the time the logging module was loaded
                         (typically at application startup time)
-    %(thread)d          Thread ID (if available)
-    %(threadName)s      Thread name (if available)
-    %(process)d         Process ID (if available)
+    %(thread)d          Thread ID (ikiwa available)
+    %(threadName)s      Thread name (ikiwa available)
+    %(process)d         Process ID (ikiwa available)
     %(message)s         The result of record.getMessage(), computed just as
                         the record is emitted
     """
 
     converter = time.localtime
 
-    def __init__(self, fmt=None, datefmt=None, style='%', validate=True):
+    eleza __init__(self, fmt=None, datefmt=None, style='%', validate=True):
         """
         Initialize the formatter with specified format strings.
 
@@ -568,11 +568,11 @@ class Formatter(object):
         .. versionchanged:: 3.2
            Added the ``style`` parameter.
         """
-        if style not in _STYLES:
+        ikiwa style not in _STYLES:
             raise ValueError('Style must be one of: %s' % ','.join(
                              _STYLES.keys()))
         self._style = _STYLES[style][0](fmt)
-        if validate:
+        ikiwa validate:
             self._style.validate()
 
         self._fmt = self._style._fmt
@@ -581,14 +581,14 @@ class Formatter(object):
     default_time_format = '%Y-%m-%d %H:%M:%S'
     default_msec_format = '%s,%03d'
 
-    def formatTime(self, record, datefmt=None):
+    eleza formatTime(self, record, datefmt=None):
         """
         Return the creation time of the specified LogRecord as formatted text.
 
         This method should be called kutoka format() by a formatter which
         wants to make use of a formatted time. This method can be overridden
         in formatters to provide for any specific requirement, but the
-        basic behaviour is as follows: if datefmt (a string) is specified,
+        basic behaviour is as follows: ikiwa datefmt (a string) is specified,
         it is used with time.strftime() to format the creation time of the
         record. Otherwise, an ISO8601-like (or RFC 3339-like) format is used.
         The resulting string is returned. This function uses a user-configurable
@@ -596,20 +596,20 @@ class Formatter(object):
         time.localtime() is used; to change this for a particular formatter
         instance, set the 'converter' attribute to a function with the same
         signature as time.localtime() or time.gmtime(). To change it for all
-        formatters, for example if you want all logging times to be shown in GMT,
+        formatters, for example ikiwa you want all logging times to be shown in GMT,
         set the 'converter' attribute in the Formatter class.
         """
         ct = self.converter(record.created)
-        if datefmt:
+        ikiwa datefmt:
             s = time.strftime(datefmt, ct)
         else:
             t = time.strftime(self.default_time_format, ct)
             s = self.default_msec_format % (t, record.msecs)
-        return s
+        rudisha s
 
-    def formatException(self, ei):
+    eleza formatException(self, ei):
         """
-        Format and return the specified exception information as a string.
+        Format and rudisha the specified exception information as a string.
 
         This default implementation just uses
         traceback.print_exception()
@@ -617,25 +617,25 @@ class Formatter(object):
         sio = io.StringIO()
         tb = ei[2]
         # See issues #9427, #1553375. Commented out for now.
-        #if getattr(self, 'fullstack', False):
+        #ikiwa getattr(self, 'fullstack', False):
         #    traceback.print_stack(tb.tb_frame.f_back, file=sio)
         traceback.print_exception(ei[0], ei[1], tb, None, sio)
         s = sio.getvalue()
         sio.close()
-        if s[-1:] == "\n":
+        ikiwa s[-1:] == "\n":
             s = s[:-1]
-        return s
+        rudisha s
 
-    def usesTime(self):
+    eleza usesTime(self):
         """
-        Check if the format uses the creation time of the record.
+        Check ikiwa the format uses the creation time of the record.
         """
-        return self._style.usesTime()
+        rudisha self._style.usesTime()
 
-    def formatMessage(self, record):
-        return self._style.format(record)
+    eleza formatMessage(self, record):
+        rudisha self._style.format(record)
 
-    def formatStack(self, stack_info):
+    eleza formatStack(self, stack_info):
         """
         This method is provided as an extension point for specialized
         formatting of stack information.
@@ -646,9 +646,9 @@ class Formatter(object):
 
         The base implementation just returns the value passed in.
         """
-        return stack_info
+        rudisha stack_info
 
-    def format(self, record):
+    eleza format(self, record):
         """
         Format the specified record as text.
 
@@ -662,83 +662,83 @@ class Formatter(object):
         it is formatted using formatException() and appended to the message.
         """
         record.message = record.getMessage()
-        if self.usesTime():
+        ikiwa self.usesTime():
             record.asctime = self.formatTime(record, self.datefmt)
         s = self.formatMessage(record)
-        if record.exc_info:
+        ikiwa record.exc_info:
             # Cache the traceback text to avoid converting it multiple times
             # (it's constant anyway)
-            if not record.exc_text:
+            ikiwa not record.exc_text:
                 record.exc_text = self.formatException(record.exc_info)
-        if record.exc_text:
-            if s[-1:] != "\n":
+        ikiwa record.exc_text:
+            ikiwa s[-1:] != "\n":
                 s = s + "\n"
             s = s + record.exc_text
-        if record.stack_info:
-            if s[-1:] != "\n":
+        ikiwa record.stack_info:
+            ikiwa s[-1:] != "\n":
                 s = s + "\n"
             s = s + self.formatStack(record.stack_info)
-        return s
+        rudisha s
 
 #
 #   The default formatter to use when no other is specified
 #
 _defaultFormatter = Formatter()
 
-class BufferingFormatter(object):
+kundi BufferingFormatter(object):
     """
     A formatter suitable for formatting a number of records.
     """
-    def __init__(self, linefmt=None):
+    eleza __init__(self, linefmt=None):
         """
         Optionally specify a formatter which will be used to format each
         individual record.
         """
-        if linefmt:
+        ikiwa linefmt:
             self.linefmt = linefmt
         else:
             self.linefmt = _defaultFormatter
 
-    def formatHeader(self, records):
+    eleza formatHeader(self, records):
         """
         Return the header string for the specified records.
         """
-        return ""
+        rudisha ""
 
-    def formatFooter(self, records):
+    eleza formatFooter(self, records):
         """
         Return the footer string for the specified records.
         """
-        return ""
+        rudisha ""
 
-    def format(self, records):
+    eleza format(self, records):
         """
-        Format the specified records and return the result as a string.
+        Format the specified records and rudisha the result as a string.
         """
         rv = ""
-        if len(records) > 0:
+        ikiwa len(records) > 0:
             rv = rv + self.formatHeader(records)
             for record in records:
                 rv = rv + self.linefmt.format(record)
             rv = rv + self.formatFooter(records)
-        return rv
+        rudisha rv
 
 #---------------------------------------------------------------------------
 #   Filter classes and functions
 #---------------------------------------------------------------------------
 
-class Filter(object):
+kundi Filter(object):
     """
     Filter instances are used to perform arbitrary filtering of LogRecords.
 
     Loggers and Handlers can optionally use Filter instances to filter
-    records as desired. The base filter class only allows events which are
+    records as desired. The base filter kundi only allows events which are
     below a certain point in the logger hierarchy. For example, a filter
     initialized with "A.B" will allow events logged by loggers "A.B",
     "A.B.C", "A.B.C.D", "A.B.D" etc. but not "A.BB", "B.A.B" etc. If
     initialized with the empty string, all events are passed.
     """
-    def __init__(self, name=''):
+    eleza __init__(self, name=''):
         """
         Initialize a filter.
 
@@ -749,52 +749,52 @@ class Filter(object):
         self.name = name
         self.nlen = len(name)
 
-    def filter(self, record):
+    eleza filter(self, record):
         """
-        Determine if the specified record is to be logged.
+        Determine ikiwa the specified record is to be logged.
 
         Is the specified record to be logged? Returns 0 for no, nonzero for
         yes. If deemed appropriate, the record may be modified in-place.
         """
-        if self.nlen == 0:
-            return True
-        elif self.name == record.name:
-            return True
-        elif record.name.find(self.name, 0, self.nlen) != 0:
-            return False
-        return (record.name[self.nlen] == ".")
+        ikiwa self.nlen == 0:
+            rudisha True
+        elikiwa self.name == record.name:
+            rudisha True
+        elikiwa record.name.find(self.name, 0, self.nlen) != 0:
+            rudisha False
+        rudisha (record.name[self.nlen] == ".")
 
-class Filterer(object):
+kundi Filterer(object):
     """
-    A base class for loggers and handlers which allows them to share
+    A base kundi for loggers and handlers which allows them to share
     common code.
     """
-    def __init__(self):
+    eleza __init__(self):
         """
         Initialize the list of filters to be an empty list.
         """
         self.filters = []
 
-    def addFilter(self, filter):
+    eleza addFilter(self, filter):
         """
         Add the specified filter to this handler.
         """
-        if not (filter in self.filters):
+        ikiwa not (filter in self.filters):
             self.filters.append(filter)
 
-    def removeFilter(self, filter):
+    eleza removeFilter(self, filter):
         """
         Remove the specified filter kutoka this handler.
         """
-        if filter in self.filters:
+        ikiwa filter in self.filters:
             self.filters.remove(filter)
 
-    def filter(self, record):
+    eleza filter(self, record):
         """
-        Determine if a record is loggable by consulting all the filters.
+        Determine ikiwa a record is loggable by consulting all the filters.
 
         The default is to allow the record to be logged; any filter can veto
-        this and the record is then dropped. Returns a zero value if a record
+        this and the record is then dropped. Returns a zero value ikiwa a record
         is to be dropped, else non-zero.
 
         .. versionchanged:: 3.2
@@ -803,14 +803,14 @@ class Filterer(object):
         """
         rv = True
         for f in self.filters:
-            if hasattr(f, 'filter'):
+            ikiwa hasattr(f, 'filter'):
                 result = f.filter(record)
             else:
-                result = f(record) # assume callable - will raise if not
-            if not result:
+                result = f(record) # assume callable - will raise ikiwa not
+            ikiwa not result:
                 rv = False
                 break
-        return rv
+        rudisha rv
 
 #---------------------------------------------------------------------------
 #   Handler classes and functions
@@ -819,24 +819,24 @@ class Filterer(object):
 _handlers = weakref.WeakValueDictionary()  #map of handler names to handlers
 _handlerList = [] # added to allow handlers to be removed in reverse of order initialized
 
-def _removeHandlerRef(wr):
+eleza _removeHandlerRef(wr):
     """
     Remove a handler reference kutoka the internal cleanup list.
     """
     # This function can be called during module teardown, when globals are
     # set to None. It can also be called kutoka another thread. So we need to
-    # pre-emptively grab the necessary globals and check if they're None,
+    # pre-emptively grab the necessary globals and check ikiwa they're None,
     # to prevent race conditions and failures during interpreter shutdown.
     acquire, release, handlers = _acquireLock, _releaseLock, _handlerList
-    if acquire and release and handlers:
+    ikiwa acquire and release and handlers:
         acquire()
         try:
-            if wr in handlers:
+            ikiwa wr in handlers:
                 handlers.remove(wr)
         finally:
             release()
 
-def _addHandlerRef(handler):
+eleza _addHandlerRef(handler):
     """
     Add a handler to the internal cleanup list using a weak reference.
     """
@@ -846,7 +846,7 @@ def _addHandlerRef(handler):
     finally:
         _releaseLock()
 
-class Handler(Filterer):
+kundi Handler(Filterer):
     """
     Handler instances dispatch logging events to specific destinations.
 
@@ -855,7 +855,7 @@ class Handler(Filterer):
     records as desired. By default, no formatter is specified; in this case,
     the 'raw' message as determined by record.message is logged.
     """
-    def __init__(self, level=NOTSET):
+    eleza __init__(self, level=NOTSET):
         """
         Initializes the instance - basically setting the formatter to None
         and the filter list to empty.
@@ -868,63 +868,63 @@ class Handler(Filterer):
         _addHandlerRef(self)
         self.createLock()
 
-    def get_name(self):
-        return self._name
+    eleza get_name(self):
+        rudisha self._name
 
-    def set_name(self, name):
+    eleza set_name(self, name):
         _acquireLock()
         try:
-            if self._name in _handlers:
+            ikiwa self._name in _handlers:
                 del _handlers[self._name]
             self._name = name
-            if name:
+            ikiwa name:
                 _handlers[name] = self
         finally:
             _releaseLock()
 
     name = property(get_name, set_name)
 
-    def createLock(self):
+    eleza createLock(self):
         """
         Acquire a thread lock for serializing access to the underlying I/O.
         """
         self.lock = threading.RLock()
         _register_at_fork_reinit_lock(self)
 
-    def acquire(self):
+    eleza acquire(self):
         """
         Acquire the I/O thread lock.
         """
-        if self.lock:
+        ikiwa self.lock:
             self.lock.acquire()
 
-    def release(self):
+    eleza release(self):
         """
         Release the I/O thread lock.
         """
-        if self.lock:
+        ikiwa self.lock:
             self.lock.release()
 
-    def setLevel(self, level):
+    eleza setLevel(self, level):
         """
         Set the logging level of this handler.  level must be an int or a str.
         """
         self.level = _checkLevel(level)
 
-    def format(self, record):
+    eleza format(self, record):
         """
         Format the specified record.
 
         If a formatter is set, use it. Otherwise, use the default formatter
         for the module.
         """
-        if self.formatter:
+        ikiwa self.formatter:
             fmt = self.formatter
         else:
             fmt = _defaultFormatter
-        return fmt.format(record)
+        rudisha fmt.format(record)
 
-    def emit(self, record):
+    eleza emit(self, record):
         """
         Do whatever it takes to actually log the specified logging record.
 
@@ -934,7 +934,7 @@ class Handler(Filterer):
         raise NotImplementedError('emit must be implemented '
                                   'by Handler subclasses')
 
-    def handle(self, record):
+    eleza handle(self, record):
         """
         Conditionally emit the specified logging record.
 
@@ -944,21 +944,21 @@ class Handler(Filterer):
         emission.
         """
         rv = self.filter(record)
-        if rv:
+        ikiwa rv:
             self.acquire()
             try:
                 self.emit(record)
             finally:
                 self.release()
-        return rv
+        rudisha rv
 
-    def setFormatter(self, fmt):
+    eleza setFormatter(self, fmt):
         """
         Set the formatter for this handler.
         """
         self.formatter = fmt
 
-    def flush(self):
+    eleza flush(self):
         """
         Ensure all logging output has been flushed.
 
@@ -967,7 +967,7 @@ class Handler(Filterer):
         """
         pass
 
-    def close(self):
+    eleza close(self):
         """
         Tidy up any resources used by the handler.
 
@@ -979,12 +979,12 @@ class Handler(Filterer):
         #get the module data lock, as we're updating a shared structure.
         _acquireLock()
         try:    #unlikely to raise an exception, but you never know...
-            if self._name and self._name in _handlers:
+            ikiwa self._name and self._name in _handlers:
                 del _handlers[self._name]
         finally:
             _releaseLock()
 
-    def handleError(self, record):
+    eleza handleError(self, record):
         """
         Handle errors which occur during an emit() call.
 
@@ -993,10 +993,10 @@ class Handler(Filterer):
         exceptions get silently ignored. This is what is mostly wanted
         for a logging system - most users will not care about errors in
         the logging system, they are more interested in application errors.
-        You could, however, replace this with a custom handler if you wish.
+        You could, however, replace this with a custom handler ikiwa you wish.
         The record which was being processed is passed in to this method.
         """
-        if raiseExceptions and sys.stderr:  # see issue 13807
+        ikiwa raiseExceptions and sys.stderr:  # see issue 13807
             t, v, tb = sys.exc_info()
             try:
                 sys.stderr.write('--- Logging error ---\n')
@@ -1008,7 +1008,7 @@ class Handler(Filterer):
                 while (frame and os.path.dirname(frame.f_code.co_filename) ==
                        __path__[0]):
                     frame = frame.f_back
-                if frame:
+                ikiwa frame:
                     traceback.print_stack(frame, file=sys.stderr)
                 else:
                     # couldn't find the right stack frame, for some reason
@@ -1031,42 +1031,42 @@ class Handler(Filterer):
             finally:
                 del t, v, tb
 
-    def __repr__(self):
+    eleza __repr__(self):
         level = getLevelName(self.level)
-        return '<%s (%s)>' % (self.__class__.__name__, level)
+        rudisha '<%s (%s)>' % (self.__class__.__name__, level)
 
-class StreamHandler(Handler):
+kundi StreamHandler(Handler):
     """
-    A handler class which writes logging records, appropriately formatted,
-    to a stream. Note that this class does not close the stream, as
+    A handler kundi which writes logging records, appropriately formatted,
+    to a stream. Note that this kundi does not close the stream, as
     sys.stdout or sys.stderr may be used.
     """
 
     terminator = '\n'
 
-    def __init__(self, stream=None):
+    eleza __init__(self, stream=None):
         """
         Initialize the handler.
 
         If stream is not specified, sys.stderr is used.
         """
         Handler.__init__(self)
-        if stream is None:
+        ikiwa stream is None:
             stream = sys.stderr
         self.stream = stream
 
-    def flush(self):
+    eleza flush(self):
         """
         Flushes the stream.
         """
         self.acquire()
         try:
-            if self.stream and hasattr(self.stream, "flush"):
+            ikiwa self.stream and hasattr(self.stream, "flush"):
                 self.stream.flush()
         finally:
             self.release()
 
-    def emit(self, record):
+    eleza emit(self, record):
         """
         Emit a record.
 
@@ -1088,15 +1088,15 @@ class StreamHandler(Handler):
         except Exception:
             self.handleError(record)
 
-    def setStream(self, stream):
+    eleza setStream(self, stream):
         """
         Sets the StreamHandler's stream to the specified value,
-        if it is different.
+        ikiwa it is different.
 
-        Returns the old stream, if the stream was changed, or None
-        if it wasn't.
+        Returns the old stream, ikiwa the stream was changed, or None
+        ikiwa it wasn't.
         """
-        if stream is self.stream:
+        ikiwa stream is self.stream:
             result = None
         else:
             result = self.stream
@@ -1106,23 +1106,23 @@ class StreamHandler(Handler):
                 self.stream = stream
             finally:
                 self.release()
-        return result
+        rudisha result
 
-    def __repr__(self):
+    eleza __repr__(self):
         level = getLevelName(self.level)
         name = getattr(self.stream, 'name', '')
         #  bpo-36015: name can be an int
         name = str(name)
-        if name:
+        ikiwa name:
             name += ' '
-        return '<%s %s(%s)>' % (self.__class__.__name__, name, level)
+        rudisha '<%s %s(%s)>' % (self.__class__.__name__, name, level)
 
 
-class FileHandler(StreamHandler):
+kundi FileHandler(StreamHandler):
     """
-    A handler class which writes formatted logging records to disk files.
+    A handler kundi which writes formatted logging records to disk files.
     """
-    def __init__(self, filename, mode='a', encoding=None, delay=False):
+    eleza __init__(self, filename, mode='a', encoding=None, delay=False):
         """
         Open the specified file and use it as the stream for logging.
         """
@@ -1134,7 +1134,7 @@ class FileHandler(StreamHandler):
         self.mode = mode
         self.encoding = encoding
         self.delay = delay
-        if delay:
+        ikiwa delay:
             #We don't open the stream, but we still need to call the
             #Handler constructor to set level, formatter, lock etc.
             Handler.__init__(self)
@@ -1142,20 +1142,20 @@ class FileHandler(StreamHandler):
         else:
             StreamHandler.__init__(self, self._open())
 
-    def close(self):
+    eleza close(self):
         """
         Closes the stream.
         """
         self.acquire()
         try:
             try:
-                if self.stream:
+                ikiwa self.stream:
                     try:
                         self.flush()
                     finally:
                         stream = self.stream
                         self.stream = None
-                        if hasattr(stream, "close"):
+                        ikiwa hasattr(stream, "close"):
                             stream.close()
             finally:
                 # Issue #19523: call unconditionally to
@@ -1164,44 +1164,44 @@ class FileHandler(StreamHandler):
         finally:
             self.release()
 
-    def _open(self):
+    eleza _open(self):
         """
         Open the current base file with the (original) mode and encoding.
         Return the resulting stream.
         """
-        return open(self.baseFilename, self.mode, encoding=self.encoding)
+        rudisha open(self.baseFilename, self.mode, encoding=self.encoding)
 
-    def emit(self, record):
+    eleza emit(self, record):
         """
         Emit a record.
 
         If the stream was not opened because 'delay' was specified in the
         constructor, open it before calling the superclass's emit.
         """
-        if self.stream is None:
+        ikiwa self.stream is None:
             self.stream = self._open()
         StreamHandler.emit(self, record)
 
-    def __repr__(self):
+    eleza __repr__(self):
         level = getLevelName(self.level)
-        return '<%s %s (%s)>' % (self.__class__.__name__, self.baseFilename, level)
+        rudisha '<%s %s (%s)>' % (self.__class__.__name__, self.baseFilename, level)
 
 
-class _StderrHandler(StreamHandler):
+kundi _StderrHandler(StreamHandler):
     """
-    This class is like a StreamHandler using sys.stderr, but always uses
+    This kundi is like a StreamHandler using sys.stderr, but always uses
     whatever sys.stderr is currently set to rather than the value of
     sys.stderr at handler construction time.
     """
-    def __init__(self, level=NOTSET):
+    eleza __init__(self, level=NOTSET):
         """
         Initialize the handler.
         """
         Handler.__init__(self, level)
 
     @property
-    def stream(self):
-        return sys.stderr
+    eleza stream(self):
+        rudisha sys.stderr
 
 
 _defaultLastResort = _StderrHandler(WARNING)
@@ -1211,54 +1211,54 @@ lastResort = _defaultLastResort
 #   Manager classes and functions
 #---------------------------------------------------------------------------
 
-class PlaceHolder(object):
+kundi PlaceHolder(object):
     """
     PlaceHolder instances are used in the Manager logger hierarchy to take
-    the place of nodes for which no loggers have been defined. This class is
+    the place of nodes for which no loggers have been defined. This kundi is
     intended for internal use only and not as part of the public API.
     """
-    def __init__(self, alogger):
+    eleza __init__(self, alogger):
         """
         Initialize with the specified logger being a child of this placeholder.
         """
         self.loggerMap = { alogger : None }
 
-    def append(self, alogger):
+    eleza append(self, alogger):
         """
         Add the specified logger as a child of this placeholder.
         """
-        if alogger not in self.loggerMap:
+        ikiwa alogger not in self.loggerMap:
             self.loggerMap[alogger] = None
 
 #
-#   Determine which class to use when instantiating loggers.
+#   Determine which kundi to use when instantiating loggers.
 #
 
-def setLoggerClass(klass):
+eleza setLoggerClass(klass):
     """
-    Set the class to be used when instantiating a logger. The class should
+    Set the kundi to be used when instantiating a logger. The kundi should
     define __init__() such that only a name argument is required, and the
     __init__() should call Logger.__init__()
     """
-    if klass != Logger:
-        if not issubclass(klass, Logger):
+    ikiwa klass != Logger:
+        ikiwa not issubclass(klass, Logger):
             raise TypeError("logger not derived kutoka logging.Logger: "
                             + klass.__name__)
     global _loggerClass
     _loggerClass = klass
 
-def getLoggerClass():
+eleza getLoggerClass():
     """
-    Return the class to be used when instantiating a logger.
+    Return the kundi to be used when instantiating a logger.
     """
-    return _loggerClass
+    rudisha _loggerClass
 
-class Manager(object):
+kundi Manager(object):
     """
     There is [under normal circumstances] just one Manager instance, which
     holds the hierarchy of loggers.
     """
-    def __init__(self, rootnode):
+    eleza __init__(self, rootnode):
         """
         Initialize the manager with the root node of the logger hierarchy.
         """
@@ -1269,10 +1269,10 @@ class Manager(object):
         self.loggerClass = None
         self.logRecordFactory = None
 
-    def getLogger(self, name):
+    eleza getLogger(self, name):
         """
         Get a logger with the specified name (channel name), creating it
-        if it doesn't yet exist. This name is a dot-separated hierarchical
+        ikiwa it doesn't yet exist. This name is a dot-separated hierarchical
         name, such as "a", "a.b", "a.b.c" or similar.
 
         If a PlaceHolder existed for the specified name [i.e. the logger
@@ -1281,13 +1281,13 @@ class Manager(object):
         placeholder to now point to the logger.
         """
         rv = None
-        if not isinstance(name, str):
+        ikiwa not isinstance(name, str):
             raise TypeError('A logger name must be a string')
         _acquireLock()
         try:
-            if name in self.loggerDict:
+            ikiwa name in self.loggerDict:
                 rv = self.loggerDict[name]
-                if isinstance(rv, PlaceHolder):
+                ikiwa isinstance(rv, PlaceHolder):
                     ph = rv
                     rv = (self.loggerClass or _loggerClass)(name)
                     rv.manager = self
@@ -1301,26 +1301,26 @@ class Manager(object):
                 self._fixupParents(rv)
         finally:
             _releaseLock()
-        return rv
+        rudisha rv
 
-    def setLoggerClass(self, klass):
+    eleza setLoggerClass(self, klass):
         """
-        Set the class to be used when instantiating a logger with this Manager.
+        Set the kundi to be used when instantiating a logger with this Manager.
         """
-        if klass != Logger:
-            if not issubclass(klass, Logger):
+        ikiwa klass != Logger:
+            ikiwa not issubclass(klass, Logger):
                 raise TypeError("logger not derived kutoka logging.Logger: "
                                 + klass.__name__)
         self.loggerClass = klass
 
-    def setLogRecordFactory(self, factory):
+    eleza setLogRecordFactory(self, factory):
         """
         Set the factory to be used when instantiating a log record with this
         Manager.
         """
         self.logRecordFactory = factory
 
-    def _fixupParents(self, alogger):
+    eleza _fixupParents(self, alogger):
         """
         Ensure that there are either loggers or placeholders all the way
         kutoka the specified logger to the root of the logger hierarchy.
@@ -1330,21 +1330,21 @@ class Manager(object):
         rv = None
         while (i > 0) and not rv:
             substr = name[:i]
-            if substr not in self.loggerDict:
+            ikiwa substr not in self.loggerDict:
                 self.loggerDict[substr] = PlaceHolder(alogger)
             else:
                 obj = self.loggerDict[substr]
-                if isinstance(obj, Logger):
+                ikiwa isinstance(obj, Logger):
                     rv = obj
                 else:
                     assert isinstance(obj, PlaceHolder)
                     obj.append(alogger)
             i = name.rfind(".", 0, i - 1)
-        if not rv:
+        ikiwa not rv:
             rv = self.root
         alogger.parent = rv
 
-    def _fixupChildren(self, ph, alogger):
+    eleza _fixupChildren(self, ph, alogger):
         """
         Ensure that children of the placeholder ph are connected to the
         specified logger.
@@ -1352,12 +1352,12 @@ class Manager(object):
         name = alogger.name
         namelen = len(name)
         for c in ph.loggerMap.keys():
-            #The if means ... if not c.parent.name.startswith(nm)
-            if c.parent.name[:namelen] != name:
+            #The ikiwa means ... ikiwa not c.parent.name.startswith(nm)
+            ikiwa c.parent.name[:namelen] != name:
                 alogger.parent = c.parent
                 c.parent = alogger
 
-    def _clear_cache(self):
+    eleza _clear_cache(self):
         """
         Clear the cache for all loggers in loggerDict
         Called when level changes are made
@@ -1365,7 +1365,7 @@ class Manager(object):
 
         _acquireLock()
         for logger in self.loggerDict.values():
-            if isinstance(logger, Logger):
+            ikiwa isinstance(logger, Logger):
                 logger._cache.clear()
         self.root._cache.clear()
         _releaseLock()
@@ -1374,9 +1374,9 @@ class Manager(object):
 #   Logger classes and functions
 #---------------------------------------------------------------------------
 
-class Logger(Filterer):
+kundi Logger(Filterer):
     """
-    Instances of the Logger class represent a single logging channel. A
+    Instances of the Logger kundi represent a single logging channel. A
     "logging channel" indicates an area of an application. Exactly how an
     "area" is defined is up to the application developer. Since an
     application can have any number of areas, logging channels are identified
@@ -1389,7 +1389,7 @@ class Logger(Filterer):
     level, and "input.csv", "input.xls" and "input.gnu" for the sub-levels.
     There is no arbitrary limit to the depth of nesting.
     """
-    def __init__(self, name, level=NOTSET):
+    eleza __init__(self, name, level=NOTSET):
         """
         Initialize the logger with a name and an optional level.
         """
@@ -1402,14 +1402,14 @@ class Logger(Filterer):
         self.disabled = False
         self._cache = {}
 
-    def setLevel(self, level):
+    eleza setLevel(self, level):
         """
         Set the logging level of this logger.  level must be an int or a str.
         """
         self.level = _checkLevel(level)
         self.manager._clear_cache()
 
-    def debug(self, msg, *args, **kwargs):
+    eleza debug(self, msg, *args, **kwargs):
         """
         Log 'msg % args' with severity 'DEBUG'.
 
@@ -1418,10 +1418,10 @@ class Logger(Filterer):
 
         logger.debug("Houston, we have a %s", "thorny problem", exc_info=1)
         """
-        if self.isEnabledFor(DEBUG):
+        ikiwa self.isEnabledFor(DEBUG):
             self._log(DEBUG, msg, args, **kwargs)
 
-    def info(self, msg, *args, **kwargs):
+    eleza info(self, msg, *args, **kwargs):
         """
         Log 'msg % args' with severity 'INFO'.
 
@@ -1430,10 +1430,10 @@ class Logger(Filterer):
 
         logger.info("Houston, we have a %s", "interesting problem", exc_info=1)
         """
-        if self.isEnabledFor(INFO):
+        ikiwa self.isEnabledFor(INFO):
             self._log(INFO, msg, args, **kwargs)
 
-    def warning(self, msg, *args, **kwargs):
+    eleza warning(self, msg, *args, **kwargs):
         """
         Log 'msg % args' with severity 'WARNING'.
 
@@ -1442,15 +1442,15 @@ class Logger(Filterer):
 
         logger.warning("Houston, we have a %s", "bit of a problem", exc_info=1)
         """
-        if self.isEnabledFor(WARNING):
+        ikiwa self.isEnabledFor(WARNING):
             self._log(WARNING, msg, args, **kwargs)
 
-    def warn(self, msg, *args, **kwargs):
+    eleza warn(self, msg, *args, **kwargs):
         warnings.warn("The 'warn' method is deprecated, "
             "use 'warning' instead", DeprecationWarning, 2)
         self.warning(msg, *args, **kwargs)
 
-    def error(self, msg, *args, **kwargs):
+    eleza error(self, msg, *args, **kwargs):
         """
         Log 'msg % args' with severity 'ERROR'.
 
@@ -1459,16 +1459,16 @@ class Logger(Filterer):
 
         logger.error("Houston, we have a %s", "major problem", exc_info=1)
         """
-        if self.isEnabledFor(ERROR):
+        ikiwa self.isEnabledFor(ERROR):
             self._log(ERROR, msg, args, **kwargs)
 
-    def exception(self, msg, *args, exc_info=True, **kwargs):
+    eleza exception(self, msg, *args, exc_info=True, **kwargs):
         """
         Convenience method for logging an ERROR with exception information.
         """
         self.error(msg, *args, exc_info=exc_info, **kwargs)
 
-    def critical(self, msg, *args, **kwargs):
+    eleza critical(self, msg, *args, **kwargs):
         """
         Log 'msg % args' with severity 'CRITICAL'.
 
@@ -1477,12 +1477,12 @@ class Logger(Filterer):
 
         logger.critical("Houston, we have a %s", "major disaster", exc_info=1)
         """
-        if self.isEnabledFor(CRITICAL):
+        ikiwa self.isEnabledFor(CRITICAL):
             self._log(CRITICAL, msg, args, **kwargs)
 
     fatal = critical
 
-    def log(self, level, msg, *args, **kwargs):
+    eleza log(self, level, msg, *args, **kwargs):
         """
         Log 'msg % args' with the integer severity 'level'.
 
@@ -1491,15 +1491,15 @@ class Logger(Filterer):
 
         logger.log(level, "We have a %s", "mysterious problem", exc_info=1)
         """
-        if not isinstance(level, int):
-            if raiseExceptions:
+        ikiwa not isinstance(level, int):
+            ikiwa raiseExceptions:
                 raise TypeError("level must be an integer")
             else:
                 return
-        if self.isEnabledFor(level):
+        ikiwa self.isEnabledFor(level):
             self._log(level, msg, args, **kwargs)
 
-    def findCaller(self, stack_info=False, stacklevel=1):
+    eleza findCaller(self, stack_info=False, stacklevel=1):
         """
         Find the stack frame of the caller so that we can note the source
         file name, line number and function name.
@@ -1507,35 +1507,35 @@ class Logger(Filterer):
         f = currentframe()
         #On some versions of IronPython, currentframe() returns None if
         #IronPython isn't run with -X:Frames.
-        if f is not None:
+        ikiwa f is not None:
             f = f.f_back
         orig_f = f
         while f and stacklevel > 1:
             f = f.f_back
             stacklevel -= 1
-        if not f:
+        ikiwa not f:
             f = orig_f
         rv = "(unknown file)", 0, "(unknown function)", None
         while hasattr(f, "f_code"):
             co = f.f_code
             filename = os.path.normcase(co.co_filename)
-            if filename == _srcfile:
+            ikiwa filename == _srcfile:
                 f = f.f_back
                 continue
             sinfo = None
-            if stack_info:
+            ikiwa stack_info:
                 sio = io.StringIO()
                 sio.write('Stack (most recent call last):\n')
                 traceback.print_stack(f, file=sio)
                 sinfo = sio.getvalue()
-                if sinfo[-1] == '\n':
+                ikiwa sinfo[-1] == '\n':
                     sinfo = sinfo[:-1]
                 sio.close()
             rv = (co.co_filename, f.f_lineno, co.co_name, sinfo)
             break
-        return rv
+        rudisha rv
 
-    def makeRecord(self, name, level, fn, lno, msg, args, exc_info,
+    eleza makeRecord(self, name, level, fn, lno, msg, args, exc_info,
                    func=None, extra=None, sinfo=None):
         """
         A factory method which can be overridden in subclasses to create
@@ -1543,21 +1543,21 @@ class Logger(Filterer):
         """
         rv = _logRecordFactory(name, level, fn, lno, msg, args, exc_info, func,
                              sinfo)
-        if extra is not None:
+        ikiwa extra is not None:
             for key in extra:
-                if (key in ["message", "asctime"]) or (key in rv.__dict__):
+                ikiwa (key in ["message", "asctime"]) or (key in rv.__dict__):
                     raise KeyError("Attempt to overwrite %r in LogRecord" % key)
                 rv.__dict__[key] = extra[key]
-        return rv
+        rudisha rv
 
-    def _log(self, level, msg, args, exc_info=None, extra=None, stack_info=False,
+    eleza _log(self, level, msg, args, exc_info=None, extra=None, stack_info=False,
              stacklevel=1):
         """
         Low-level logging routine which creates a LogRecord and then calls
         all the handlers of this logger to handle the record.
         """
         sinfo = None
-        if _srcfile:
+        ikiwa _srcfile:
             #IronPython doesn't track Python frames, so findCaller raises an
             #exception on some versions of IronPython. We trap it here so that
             #IronPython can use logging.
@@ -1567,53 +1567,53 @@ class Logger(Filterer):
                 fn, lno, func = "(unknown file)", 0, "(unknown function)"
         else: # pragma: no cover
             fn, lno, func = "(unknown file)", 0, "(unknown function)"
-        if exc_info:
-            if isinstance(exc_info, BaseException):
+        ikiwa exc_info:
+            ikiwa isinstance(exc_info, BaseException):
                 exc_info = (type(exc_info), exc_info, exc_info.__traceback__)
-            elif not isinstance(exc_info, tuple):
+            elikiwa not isinstance(exc_info, tuple):
                 exc_info = sys.exc_info()
         record = self.makeRecord(self.name, level, fn, lno, msg, args,
                                  exc_info, func, extra, sinfo)
         self.handle(record)
 
-    def handle(self, record):
+    eleza handle(self, record):
         """
         Call the handlers for the specified record.
 
         This method is used for unpickled records received kutoka a socket, as
         well as those created locally. Logger-level filtering is applied.
         """
-        if (not self.disabled) and self.filter(record):
+        ikiwa (not self.disabled) and self.filter(record):
             self.callHandlers(record)
 
-    def addHandler(self, hdlr):
+    eleza addHandler(self, hdlr):
         """
         Add the specified handler to this logger.
         """
         _acquireLock()
         try:
-            if not (hdlr in self.handlers):
+            ikiwa not (hdlr in self.handlers):
                 self.handlers.append(hdlr)
         finally:
             _releaseLock()
 
-    def removeHandler(self, hdlr):
+    eleza removeHandler(self, hdlr):
         """
         Remove the specified handler kutoka this logger.
         """
         _acquireLock()
         try:
-            if hdlr in self.handlers:
+            ikiwa hdlr in self.handlers:
                 self.handlers.remove(hdlr)
         finally:
             _releaseLock()
 
-    def hasHandlers(self):
+    eleza hasHandlers(self):
         """
-        See if this logger has any handlers configured.
+        See ikiwa this logger has any handlers configured.
 
         Loop through all handlers for this logger and its parents in the
-        logger hierarchy. Return True if a handler was found, else False.
+        logger hierarchy. Return True ikiwa a handler was found, else False.
         Stop searching up the hierarchy whenever a logger with the "propagate"
         attribute set to zero is found - that will be the last logger which
         is checked for the existence of handlers.
@@ -1621,16 +1621,16 @@ class Logger(Filterer):
         c = self
         rv = False
         while c:
-            if c.handlers:
+            ikiwa c.handlers:
                 rv = True
                 break
-            if not c.propagate:
+            ikiwa not c.propagate:
                 break
             else:
                 c = c.parent
-        return rv
+        rudisha rv
 
-    def callHandlers(self, record):
+    eleza callHandlers(self, record):
         """
         Pass a record to all relevant handlers.
 
@@ -1645,22 +1645,22 @@ class Logger(Filterer):
         while c:
             for hdlr in c.handlers:
                 found = found + 1
-                if record.levelno >= hdlr.level:
+                ikiwa record.levelno >= hdlr.level:
                     hdlr.handle(record)
-            if not c.propagate:
+            ikiwa not c.propagate:
                 c = None    #break out
             else:
                 c = c.parent
-        if (found == 0):
-            if lastResort:
-                if record.levelno >= lastResort.level:
+        ikiwa (found == 0):
+            ikiwa lastResort:
+                ikiwa record.levelno >= lastResort.level:
                     lastResort.handle(record)
-            elif raiseExceptions and not self.manager.emittedNoHandlerWarning:
+            elikiwa raiseExceptions and not self.manager.emittedNoHandlerWarning:
                 sys.stderr.write("No handlers could be found for logger"
                                  " \"%s\"\n" % self.name)
                 self.manager.emittedNoHandlerWarning = True
 
-    def getEffectiveLevel(self):
+    eleza getEffectiveLevel(self):
         """
         Get the effective level for this logger.
 
@@ -1669,31 +1669,31 @@ class Logger(Filterer):
         """
         logger = self
         while logger:
-            if logger.level:
-                return logger.level
+            ikiwa logger.level:
+                rudisha logger.level
             logger = logger.parent
-        return NOTSET
+        rudisha NOTSET
 
-    def isEnabledFor(self, level):
+    eleza isEnabledFor(self, level):
         """
         Is this logger enabled for level 'level'?
         """
-        if self.disabled:
-            return False
+        ikiwa self.disabled:
+            rudisha False
 
         try:
-            return self._cache[level]
+            rudisha self._cache[level]
         except KeyError:
             _acquireLock()
-            if self.manager.disable >= level:
+            ikiwa self.manager.disable >= level:
                 is_enabled = self._cache[level] = False
             else:
                 is_enabled = self._cache[level] = level >= self.getEffectiveLevel()
             _releaseLock()
 
-            return is_enabled
+            rudisha is_enabled
 
-    def getChild(self, suffix):
+    eleza getChild(self, suffix):
         """
         Get a logger which is a descendant to this one.
 
@@ -1708,51 +1708,51 @@ class Logger(Filterer):
         It's useful, for example, when the parent logger is named using
         __name__ rather than a literal string.
         """
-        if self.root is not self:
+        ikiwa self.root is not self:
             suffix = '.'.join((self.name, suffix))
-        return self.manager.getLogger(suffix)
+        rudisha self.manager.getLogger(suffix)
 
-    def __repr__(self):
+    eleza __repr__(self):
         level = getLevelName(self.getEffectiveLevel())
-        return '<%s %s (%s)>' % (self.__class__.__name__, self.name, level)
+        rudisha '<%s %s (%s)>' % (self.__class__.__name__, self.name, level)
 
-    def __reduce__(self):
+    eleza __reduce__(self):
         # In general, only the root logger will not be accessible via its name.
-        # However, the root logger's class has its own __reduce__ method.
-        if getLogger(self.name) is not self:
+        # However, the root logger's kundi has its own __reduce__ method.
+        ikiwa getLogger(self.name) is not self:
             agiza pickle
             raise pickle.PicklingError('logger cannot be pickled')
-        return getLogger, (self.name,)
+        rudisha getLogger, (self.name,)
 
 
-class RootLogger(Logger):
+kundi RootLogger(Logger):
     """
     A root logger is not that different to any other logger, except that
     it must have a logging level and there is only one instance of it in
     the hierarchy.
     """
-    def __init__(self, level):
+    eleza __init__(self, level):
         """
         Initialize the logger with the name "root".
         """
         Logger.__init__(self, "root", level)
 
-    def __reduce__(self):
-        return getLogger, ()
+    eleza __reduce__(self):
+        rudisha getLogger, ()
 
 _loggerClass = Logger
 
-class LoggerAdapter(object):
+kundi LoggerAdapter(object):
     """
     An adapter for loggers which makes it easier to specify contextual
     information in logging output.
     """
 
-    def __init__(self, logger, extra):
+    eleza __init__(self, logger, extra):
         """
         Initialize the adapter with a logger and a dict-like object which
         provides contextual information. This constructor signature allows
-        easy stacking of LoggerAdapters, if so desired.
+        easy stacking of LoggerAdapters, ikiwa so desired.
 
         You can effectively pass keyword arguments as shown in the
         following example:
@@ -1762,7 +1762,7 @@ class LoggerAdapter(object):
         self.logger = logger
         self.extra = extra
 
-    def process(self, msg, kwargs):
+    eleza process(self, msg, kwargs):
         """
         Process the logging message and keyword arguments passed in to
         a logging call to insert contextual information. You can either
@@ -1770,93 +1770,93 @@ class LoggerAdapter(object):
         the message and kwargs modified (or not) to suit your needs.
 
         Normally, you'll only need to override this one method in a
-        LoggerAdapter subclass for your specific needs.
+        LoggerAdapter subkundi for your specific needs.
         """
         kwargs["extra"] = self.extra
-        return msg, kwargs
+        rudisha msg, kwargs
 
     #
     # Boilerplate convenience methods
     #
-    def debug(self, msg, *args, **kwargs):
+    eleza debug(self, msg, *args, **kwargs):
         """
         Delegate a debug call to the underlying logger.
         """
         self.log(DEBUG, msg, *args, **kwargs)
 
-    def info(self, msg, *args, **kwargs):
+    eleza info(self, msg, *args, **kwargs):
         """
         Delegate an info call to the underlying logger.
         """
         self.log(INFO, msg, *args, **kwargs)
 
-    def warning(self, msg, *args, **kwargs):
+    eleza warning(self, msg, *args, **kwargs):
         """
         Delegate a warning call to the underlying logger.
         """
         self.log(WARNING, msg, *args, **kwargs)
 
-    def warn(self, msg, *args, **kwargs):
+    eleza warn(self, msg, *args, **kwargs):
         warnings.warn("The 'warn' method is deprecated, "
             "use 'warning' instead", DeprecationWarning, 2)
         self.warning(msg, *args, **kwargs)
 
-    def error(self, msg, *args, **kwargs):
+    eleza error(self, msg, *args, **kwargs):
         """
         Delegate an error call to the underlying logger.
         """
         self.log(ERROR, msg, *args, **kwargs)
 
-    def exception(self, msg, *args, exc_info=True, **kwargs):
+    eleza exception(self, msg, *args, exc_info=True, **kwargs):
         """
         Delegate an exception call to the underlying logger.
         """
         self.log(ERROR, msg, *args, exc_info=exc_info, **kwargs)
 
-    def critical(self, msg, *args, **kwargs):
+    eleza critical(self, msg, *args, **kwargs):
         """
         Delegate a critical call to the underlying logger.
         """
         self.log(CRITICAL, msg, *args, **kwargs)
 
-    def log(self, level, msg, *args, **kwargs):
+    eleza log(self, level, msg, *args, **kwargs):
         """
         Delegate a log call to the underlying logger, after adding
         contextual information kutoka this adapter instance.
         """
-        if self.isEnabledFor(level):
+        ikiwa self.isEnabledFor(level):
             msg, kwargs = self.process(msg, kwargs)
             self.logger.log(level, msg, *args, **kwargs)
 
-    def isEnabledFor(self, level):
+    eleza isEnabledFor(self, level):
         """
         Is this logger enabled for level 'level'?
         """
-        return self.logger.isEnabledFor(level)
+        rudisha self.logger.isEnabledFor(level)
 
-    def setLevel(self, level):
+    eleza setLevel(self, level):
         """
         Set the specified level on the underlying logger.
         """
         self.logger.setLevel(level)
 
-    def getEffectiveLevel(self):
+    eleza getEffectiveLevel(self):
         """
         Get the effective level for the underlying logger.
         """
-        return self.logger.getEffectiveLevel()
+        rudisha self.logger.getEffectiveLevel()
 
-    def hasHandlers(self):
+    eleza hasHandlers(self):
         """
-        See if the underlying logger has any handlers.
+        See ikiwa the underlying logger has any handlers.
         """
-        return self.logger.hasHandlers()
+        rudisha self.logger.hasHandlers()
 
-    def _log(self, level, msg, args, exc_info=None, extra=None, stack_info=False):
+    eleza _log(self, level, msg, args, exc_info=None, extra=None, stack_info=False):
         """
         Low-level log implementation, proxied to allow nested logger adapters.
         """
-        return self.logger._log(
+        rudisha self.logger._log(
             level,
             msg,
             args,
@@ -1866,21 +1866,21 @@ class LoggerAdapter(object):
         )
 
     @property
-    def manager(self):
-        return self.logger.manager
+    eleza manager(self):
+        rudisha self.logger.manager
 
     @manager.setter
-    def manager(self, value):
+    eleza manager(self, value):
         self.logger.manager = value
 
     @property
-    def name(self):
-        return self.logger.name
+    eleza name(self):
+        rudisha self.logger.name
 
-    def __repr__(self):
+    eleza __repr__(self):
         logger = self.logger
         level = getLevelName(logger.getEffectiveLevel())
-        return '<%s %s (%s)>' % (self.__class__.__name__, logger.name, level)
+        rudisha '<%s %s (%s)>' % (self.__class__.__name__, logger.name, level)
 
 root = RootLogger(WARNING)
 Logger.root = root
@@ -1890,11 +1890,11 @@ Logger.manager = Manager(Logger.root)
 # Configuration classes and functions
 #---------------------------------------------------------------------------
 
-def basicConfig(**kwargs):
+eleza basicConfig(**kwargs):
     """
     Do basic configuration for the logging system.
 
-    This function does nothing if the root logger already has handlers
+    This function does nothing ikiwa the root logger already has handlers
     configured, unless the keyword argument *force* is set to ``True``.
     It is a convenience method intended for use by simple scripts
     to do one-shot configuration of the logging package.
@@ -1908,8 +1908,8 @@ def basicConfig(**kwargs):
 
     filename  Specifies that a FileHandler be created, using the specified
               filename, rather than a StreamHandler.
-    filemode  Specifies the mode to open the file, if filename is specified
-              (if filemode is unspecified, it defaults to 'a').
+    filemode  Specifies the mode to open the file, ikiwa filename is specified
+              (ikiwa filemode is unspecified, it defaults to 'a').
     format    Use the specified format string for the handler.
     datefmt   Use the specified date/time format.
     style     If a format string is specified, use this to specify the
@@ -1918,7 +1918,7 @@ def basicConfig(**kwargs):
               - defaults to '%').
     level     Set the root logger level to the specified level.
     stream    Use the specified stream to initialize the StreamHandler. Note
-              that this argument is incompatible with 'filename' - if both
+              that this argument is incompatible with 'filename' - ikiwa both
               are present, 'stream' is ignored.
     handlers  If specified, this should be an iterable of already created
               handlers, which will be added to the root handler. Any handler
@@ -1952,24 +1952,24 @@ def basicConfig(**kwargs):
     _acquireLock()
     try:
         force = kwargs.pop('force', False)
-        if force:
+        ikiwa force:
             for h in root.handlers[:]:
                 root.removeHandler(h)
                 h.close()
-        if len(root.handlers) == 0:
+        ikiwa len(root.handlers) == 0:
             handlers = kwargs.pop("handlers", None)
-            if handlers is None:
-                if "stream" in kwargs and "filename" in kwargs:
+            ikiwa handlers is None:
+                ikiwa "stream" in kwargs and "filename" in kwargs:
                     raise ValueError("'stream' and 'filename' should not be "
                                      "specified together")
             else:
-                if "stream" in kwargs or "filename" in kwargs:
+                ikiwa "stream" in kwargs or "filename" in kwargs:
                     raise ValueError("'stream' or 'filename' should not be "
                                      "specified together with 'handlers'")
-            if handlers is None:
+            ikiwa handlers is None:
                 filename = kwargs.pop("filename", None)
                 mode = kwargs.pop("filemode", 'a')
-                if filename:
+                ikiwa filename:
                     h = FileHandler(filename, mode)
                 else:
                     stream = kwargs.pop("stream", None)
@@ -1977,19 +1977,19 @@ def basicConfig(**kwargs):
                 handlers = [h]
             dfs = kwargs.pop("datefmt", None)
             style = kwargs.pop("style", '%')
-            if style not in _STYLES:
+            ikiwa style not in _STYLES:
                 raise ValueError('Style must be one of: %s' % ','.join(
                                  _STYLES.keys()))
             fs = kwargs.pop("format", _STYLES[style][1])
             fmt = Formatter(fs, dfs, style)
             for h in handlers:
-                if h.formatter is None:
+                ikiwa h.formatter is None:
                     h.setFormatter(fmt)
                 root.addHandler(h)
             level = kwargs.pop("level", None)
-            if level is not None:
+            ikiwa level is not None:
                 root.setLevel(level)
-            if kwargs:
+            ikiwa kwargs:
                 keys = ', '.join(kwargs.keys())
                 raise ValueError('Unrecognised argument(s): %s' % keys)
     finally:
@@ -2000,40 +2000,40 @@ def basicConfig(**kwargs):
 # Basically delegate everything to the root logger.
 #---------------------------------------------------------------------------
 
-def getLogger(name=None):
+eleza getLogger(name=None):
     """
-    Return a logger with the specified name, creating it if necessary.
+    Return a logger with the specified name, creating it ikiwa necessary.
 
-    If no name is specified, return the root logger.
+    If no name is specified, rudisha the root logger.
     """
-    if name:
-        return Logger.manager.getLogger(name)
+    ikiwa name:
+        rudisha Logger.manager.getLogger(name)
     else:
-        return root
+        rudisha root
 
-def critical(msg, *args, **kwargs):
+eleza critical(msg, *args, **kwargs):
     """
     Log a message with severity 'CRITICAL' on the root logger. If the logger
     has no handlers, call basicConfig() to add a console handler with a
     pre-defined format.
     """
-    if len(root.handlers) == 0:
+    ikiwa len(root.handlers) == 0:
         basicConfig()
     root.critical(msg, *args, **kwargs)
 
 fatal = critical
 
-def error(msg, *args, **kwargs):
+eleza error(msg, *args, **kwargs):
     """
     Log a message with severity 'ERROR' on the root logger. If the logger has
     no handlers, call basicConfig() to add a console handler with a pre-defined
     format.
     """
-    if len(root.handlers) == 0:
+    ikiwa len(root.handlers) == 0:
         basicConfig()
     root.error(msg, *args, **kwargs)
 
-def exception(msg, *args, exc_info=True, **kwargs):
+eleza exception(msg, *args, exc_info=True, **kwargs):
     """
     Log a message with severity 'ERROR' on the root logger, with exception
     information. If the logger has no handlers, basicConfig() is called to add
@@ -2041,59 +2041,59 @@ def exception(msg, *args, exc_info=True, **kwargs):
     """
     error(msg, *args, exc_info=exc_info, **kwargs)
 
-def warning(msg, *args, **kwargs):
+eleza warning(msg, *args, **kwargs):
     """
     Log a message with severity 'WARNING' on the root logger. If the logger has
     no handlers, call basicConfig() to add a console handler with a pre-defined
     format.
     """
-    if len(root.handlers) == 0:
+    ikiwa len(root.handlers) == 0:
         basicConfig()
     root.warning(msg, *args, **kwargs)
 
-def warn(msg, *args, **kwargs):
+eleza warn(msg, *args, **kwargs):
     warnings.warn("The 'warn' function is deprecated, "
         "use 'warning' instead", DeprecationWarning, 2)
     warning(msg, *args, **kwargs)
 
-def info(msg, *args, **kwargs):
+eleza info(msg, *args, **kwargs):
     """
     Log a message with severity 'INFO' on the root logger. If the logger has
     no handlers, call basicConfig() to add a console handler with a pre-defined
     format.
     """
-    if len(root.handlers) == 0:
+    ikiwa len(root.handlers) == 0:
         basicConfig()
     root.info(msg, *args, **kwargs)
 
-def debug(msg, *args, **kwargs):
+eleza debug(msg, *args, **kwargs):
     """
     Log a message with severity 'DEBUG' on the root logger. If the logger has
     no handlers, call basicConfig() to add a console handler with a pre-defined
     format.
     """
-    if len(root.handlers) == 0:
+    ikiwa len(root.handlers) == 0:
         basicConfig()
     root.debug(msg, *args, **kwargs)
 
-def log(level, msg, *args, **kwargs):
+eleza log(level, msg, *args, **kwargs):
     """
     Log 'msg % args' with the integer severity 'level' on the root logger. If
     the logger has no handlers, call basicConfig() to add a console handler
     with a pre-defined format.
     """
-    if len(root.handlers) == 0:
+    ikiwa len(root.handlers) == 0:
         basicConfig()
     root.log(level, msg, *args, **kwargs)
 
-def disable(level=CRITICAL):
+eleza disable(level=CRITICAL):
     """
     Disable all logging calls of severity 'level' and below.
     """
     root.manager.disable = level
     root.manager._clear_cache()
 
-def shutdown(handlerList=_handlerList):
+eleza shutdown(handlerList=_handlerList):
     """
     Perform any cleanup actions in the logging system (e.g. flushing
     buffers).
@@ -2101,11 +2101,11 @@ def shutdown(handlerList=_handlerList):
     Should be called at application exit.
     """
     for wr in reversed(handlerList[:]):
-        #errors might occur, for example, if files are locked
-        #we just ignore them if raiseExceptions is not set
+        #errors might occur, for example, ikiwa files are locked
+        #we just ignore them ikiwa raiseExceptions is not set
         try:
             h = wr()
-            if h:
+            ikiwa h:
                 try:
                     h.acquire()
                     h.flush()
@@ -2119,7 +2119,7 @@ def shutdown(handlerList=_handlerList):
                 finally:
                     h.release()
         except: # ignore everything, as we're shutting down
-            if raiseExceptions:
+            ikiwa raiseExceptions:
                 raise
             #else, swallow
 
@@ -2129,7 +2129,7 @@ atexit.register(shutdown)
 
 # Null handler
 
-class NullHandler(Handler):
+kundi NullHandler(Handler):
     """
     This handler does nothing. It's intended to be used to avoid the
     "No handlers could be found for logger XXX" one-off warning. This is
@@ -2139,49 +2139,49 @@ class NullHandler(Handler):
     a NullHandler and add it to the top-level logger of the library module or
     package.
     """
-    def handle(self, record):
+    eleza handle(self, record):
         """Stub."""
 
-    def emit(self, record):
+    eleza emit(self, record):
         """Stub."""
 
-    def createLock(self):
+    eleza createLock(self):
         self.lock = None
 
 # Warnings integration
 
 _warnings_showwarning = None
 
-def _showwarning(message, category, filename, lineno, file=None, line=None):
+eleza _showwarning(message, category, filename, lineno, file=None, line=None):
     """
     Implementation of showwarnings which redirects to logging, which will first
-    check to see if the file parameter is None. If a file is specified, it will
+    check to see ikiwa the file parameter is None. If a file is specified, it will
     delegate to the original warnings implementation of showwarning. Otherwise,
     it will call warnings.formatwarning and will log the resulting string to a
     warnings logger named "py.warnings" with level logging.WARNING.
     """
-    if file is not None:
-        if _warnings_showwarning is not None:
+    ikiwa file is not None:
+        ikiwa _warnings_showwarning is not None:
             _warnings_showwarning(message, category, filename, lineno, file, line)
     else:
         s = warnings.formatwarning(message, category, filename, lineno, line)
         logger = getLogger("py.warnings")
-        if not logger.handlers:
+        ikiwa not logger.handlers:
             logger.addHandler(NullHandler())
         logger.warning("%s", s)
 
-def captureWarnings(capture):
+eleza captureWarnings(capture):
     """
     If capture is true, redirect all warnings to the logging package.
     If capture is False, ensure that warnings are not redirected to logging
     but to their original destinations.
     """
     global _warnings_showwarning
-    if capture:
-        if _warnings_showwarning is None:
+    ikiwa capture:
+        ikiwa _warnings_showwarning is None:
             _warnings_showwarning = warnings.showwarning
             warnings.showwarning = _showwarning
     else:
-        if _warnings_showwarning is not None:
+        ikiwa _warnings_showwarning is not None:
             warnings.showwarning = _warnings_showwarning
             _warnings_showwarning = None

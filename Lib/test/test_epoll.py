@@ -28,27 +28,27 @@ agiza socket
 agiza time
 agiza unittest
 
-if not hasattr(select, "epoll"):
+ikiwa not hasattr(select, "epoll"):
     raise unittest.SkipTest("test works only on Linux 2.6")
 
 try:
     select.epoll()
 except OSError as e:
-    if e.errno == errno.ENOSYS:
+    ikiwa e.errno == errno.ENOSYS:
         raise unittest.SkipTest("kernel doesn't support epoll()")
     raise
 
-class TestEPoll(unittest.TestCase):
+kundi TestEPoll(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.serverSocket = socket.create_server(('127.0.0.1', 0))
         self.connections = [self.serverSocket]
 
-    def tearDown(self):
+    eleza tearDown(self):
         for skt in self.connections:
             skt.close()
 
-    def _connected_pair(self):
+    eleza _connected_pair(self):
         client = socket.socket()
         client.setblocking(False)
         try:
@@ -60,9 +60,9 @@ class TestEPoll(unittest.TestCase):
         server, addr = self.serverSocket.accept()
 
         self.connections.extend((client, server))
-        return client, server
+        rudisha client, server
 
-    def test_create(self):
+    eleza test_create(self):
         try:
             ep = select.epoll(16)
         except OSError as e:
@@ -73,12 +73,12 @@ class TestEPoll(unittest.TestCase):
         self.assertTrue(ep.closed)
         self.assertRaises(ValueError, ep.fileno)
 
-        if hasattr(select, "EPOLL_CLOEXEC"):
+        ikiwa hasattr(select, "EPOLL_CLOEXEC"):
             select.epoll(-1, select.EPOLL_CLOEXEC).close()
             select.epoll(flags=select.EPOLL_CLOEXEC).close()
             select.epoll(flags=0).close()
 
-    def test_badcreate(self):
+    eleza test_badcreate(self):
         self.assertRaises(TypeError, select.epoll, 1, 2, 3)
         self.assertRaises(TypeError, select.epoll, 'foo')
         self.assertRaises(TypeError, select.epoll, None)
@@ -90,17 +90,17 @@ class TestEPoll(unittest.TestCase):
         self.assertRaises(ValueError, select.epoll, -2)
         self.assertRaises(ValueError, select.epoll, sizehint=-2)
 
-        if hasattr(select, "EPOLL_CLOEXEC"):
+        ikiwa hasattr(select, "EPOLL_CLOEXEC"):
             self.assertRaises(OSError, select.epoll, flags=12356)
 
-    def test_context_manager(self):
+    eleza test_context_manager(self):
         with select.epoll(16) as ep:
             self.assertGreater(ep.fileno(), 0)
             self.assertFalse(ep.closed)
         self.assertTrue(ep.closed)
         self.assertRaises(ValueError, ep.fileno)
 
-    def test_add(self):
+    eleza test_add(self):
         server, client = self._connected_pair()
 
         ep = select.epoll(2)
@@ -138,11 +138,11 @@ class TestEPoll(unittest.TestCase):
         finally:
             ep.close()
 
-    def test_fromfd(self):
+    eleza test_kutokafd(self):
         server, client = self._connected_pair()
 
         with select.epoll(2) as ep:
-            ep2 = select.epoll.fromfd(ep.fileno())
+            ep2 = select.epoll.kutokafd(ep.fileno())
 
             ep2.register(server.fileno(), select.EPOLLIN | select.EPOLLOUT)
             ep2.register(client.fileno(), select.EPOLLIN | select.EPOLLOUT)
@@ -159,7 +159,7 @@ class TestEPoll(unittest.TestCase):
         else:
             self.fail("epoll on closed fd didn't raise EBADF")
 
-    def test_control_and_wait(self):
+    eleza test_control_and_wait(self):
         client, server = self._connected_pair()
 
         ep = select.epoll(16)
@@ -208,12 +208,12 @@ class TestEPoll(unittest.TestCase):
         expected = [(server.fileno(), select.EPOLLOUT)]
         self.assertEqual(events, expected)
 
-    def test_errors(self):
+    eleza test_errors(self):
         self.assertRaises(ValueError, select.epoll, -2)
         self.assertRaises(ValueError, select.epoll().register, -1,
                           select.EPOLLIN)
 
-    def test_unregister_closed(self):
+    eleza test_unregister_closed(self):
         server, client = self._connected_pair()
         fd = server.fileno()
         ep = select.epoll(16)
@@ -227,7 +227,7 @@ class TestEPoll(unittest.TestCase):
         server.close()
         ep.unregister(fd)
 
-    def test_close(self):
+    eleza test_close(self):
         open_file = open(__file__, "rb")
         self.addCleanup(open_file.close)
         fd = open_file.fileno()
@@ -251,11 +251,11 @@ class TestEPoll(unittest.TestCase):
         self.assertRaises(ValueError, epoll.register, fd, select.EPOLLIN)
         self.assertRaises(ValueError, epoll.unregister, fd)
 
-    def test_fd_non_inheritable(self):
+    eleza test_fd_non_inheritable(self):
         epoll = select.epoll()
         self.addCleanup(epoll.close)
         self.assertEqual(os.get_inheritable(epoll.fileno()), False)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

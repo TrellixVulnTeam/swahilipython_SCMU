@@ -6,44 +6,44 @@ agiza time
 agiza unittest
 
 
-class SIGUSR1Exception(Exception):
+kundi SIGUSR1Exception(Exception):
     pass
 
 
-class InterProcessSignalTests(unittest.TestCase):
-    def setUp(self):
+kundi InterProcessSignalTests(unittest.TestCase):
+    eleza setUp(self):
         self.got_signals = {'SIGHUP': 0, 'SIGUSR1': 0, 'SIGALRM': 0}
 
-    def sighup_handler(self, signum, frame):
+    eleza sighup_handler(self, signum, frame):
         self.got_signals['SIGHUP'] += 1
 
-    def sigusr1_handler(self, signum, frame):
+    eleza sigusr1_handler(self, signum, frame):
         self.got_signals['SIGUSR1'] += 1
         raise SIGUSR1Exception
 
-    def wait_signal(self, child, signame):
-        if child is not None:
+    eleza wait_signal(self, child, signame):
+        ikiwa child is not None:
             # This wait should be interrupted by exc_class
-            # (if set)
+            # (ikiwa set)
             child.wait()
 
         timeout = 10.0
         deadline = time.monotonic() + timeout
 
         while time.monotonic() < deadline:
-            if self.got_signals[signame]:
+            ikiwa self.got_signals[signame]:
                 return
             signal.pause()
 
         self.fail('signal %s not received after %s seconds'
                   % (signame, timeout))
 
-    def subprocess_send_signal(self, pid, signame):
+    eleza subprocess_send_signal(self, pid, signame):
         code = 'agiza os, signal; os.kill(%s, signal.%s)' % (pid, signame)
         args = [sys.executable, '-I', '-c', code]
-        return subprocess.Popen(args)
+        rudisha subprocess.Popen(args)
 
-    def test_interprocess_signal(self):
+    eleza test_interprocess_signal(self):
         # Install handlers. This function runs in a sub-process, so we
         # don't worry about re-setting the default handlers.
         signal.signal(signal.SIGHUP, self.sighup_handler)
@@ -79,5 +79,5 @@ class InterProcessSignalTests(unittest.TestCase):
             signal.alarm(0)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

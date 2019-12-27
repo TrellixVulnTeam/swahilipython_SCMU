@@ -6,10 +6,10 @@ kutoka test.support agiza requires
 kutoka tkinter agiza Tk, Text
 
 
-class CallTipWindowTest(unittest.TestCase):
+kundi CallTipWindowTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
@@ -17,13 +17,13 @@ class CallTipWindowTest(unittest.TestCase):
         cls.calltip = calltip_w.CalltipWindow(cls.text)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         cls.root.update_idletasks()
         cls.root.destroy()
         del cls.text, cls.root
 
-    def test_init(self):
+    eleza test_init(self):
         self.assertEqual(self.calltip.anchor_widget, self.text)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

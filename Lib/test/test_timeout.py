@@ -13,33 +13,33 @@ agiza socket
 
 
 @functools.lru_cache()
-def resolve_address(host, port):
+eleza resolve_address(host, port):
     """Resolve an (host, port) to an address.
 
     We must perform name resolution before timeout tests, otherwise it will be
     performed by connect().
     """
     with support.transient_internet(host):
-        return socket.getaddrinfo(host, port, socket.AF_INET,
+        rudisha socket.getaddrinfo(host, port, socket.AF_INET,
                                   socket.SOCK_STREAM)[0][4]
 
 
-class CreationTestCase(unittest.TestCase):
+kundi CreationTestCase(unittest.TestCase):
     """Test case for socket.gettimeout() and socket.settimeout()"""
 
-    def setUp(self):
+    eleza setUp(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.sock.close()
 
-    def testObjectCreation(self):
+    eleza testObjectCreation(self):
         # Test Socket creation
         self.assertEqual(self.sock.gettimeout(), None,
                          "timeout not disabled by default")
 
-    def testFloatReturnValue(self):
-        # Test return value of gettimeout()
+    eleza testFloatReturnValue(self):
+        # Test rudisha value of gettimeout()
         self.sock.settimeout(7.345)
         self.assertEqual(self.sock.gettimeout(), 7.345)
 
@@ -49,15 +49,15 @@ class CreationTestCase(unittest.TestCase):
         self.sock.settimeout(None)
         self.assertEqual(self.sock.gettimeout(), None)
 
-    def testReturnType(self):
-        # Test return type of gettimeout()
+    eleza testReturnType(self):
+        # Test rudisha type of gettimeout()
         self.sock.settimeout(1)
         self.assertEqual(type(self.sock.gettimeout()), type(1.0))
 
         self.sock.settimeout(3.9)
         self.assertEqual(type(self.sock.gettimeout()), type(1.0))
 
-    def testTypeCheck(self):
+    eleza testTypeCheck(self):
         # Test type checking by settimeout()
         self.sock.settimeout(0)
         self.sock.settimeout(0)
@@ -70,13 +70,13 @@ class CreationTestCase(unittest.TestCase):
         self.assertRaises(TypeError, self.sock.settimeout, {})
         self.assertRaises(TypeError, self.sock.settimeout, 0j)
 
-    def testRangeCheck(self):
+    eleza testRangeCheck(self):
         # Test range checking by settimeout()
         self.assertRaises(ValueError, self.sock.settimeout, -1)
         self.assertRaises(ValueError, self.sock.settimeout, -1)
         self.assertRaises(ValueError, self.sock.settimeout, -1.0)
 
-    def testTimeoutThenBlocking(self):
+    eleza testTimeoutThenBlocking(self):
         # Test settimeout() followed by setblocking()
         self.sock.settimeout(10)
         self.sock.setblocking(1)
@@ -90,7 +90,7 @@ class CreationTestCase(unittest.TestCase):
         self.sock.setblocking(1)
         self.assertEqual(self.sock.gettimeout(), None)
 
-    def testBlockingThenTimeout(self):
+    eleza testBlockingThenTimeout(self):
         # Test setblocking() followed by settimeout()
         self.sock.setblocking(0)
         self.sock.settimeout(1)
@@ -101,7 +101,7 @@ class CreationTestCase(unittest.TestCase):
         self.assertEqual(self.sock.gettimeout(), 1)
 
 
-class TimeoutTestCase(unittest.TestCase):
+kundi TimeoutTestCase(unittest.TestCase):
     # There are a number of tests here trying to make sure that an operation
     # doesn't take too much longer than expected.  But competing machine
     # activity makes it inevitable that such tests will fail at times.
@@ -112,12 +112,12 @@ class TimeoutTestCase(unittest.TestCase):
 
     localhost = support.HOST
 
-    def setUp(self):
+    eleza setUp(self):
         raise NotImplementedError()
 
     tearDown = setUp
 
-    def _sock_operation(self, count, timeout, method, *args):
+    eleza _sock_operation(self, count, timeout, method, *args):
         """
         Test the specified socket method.
 
@@ -140,18 +140,18 @@ class TimeoutTestCase(unittest.TestCase):
         self.assertGreater(delta, timeout - 1.0)
 
 
-class TCPTimeoutTestCase(TimeoutTestCase):
+kundi TCPTimeoutTestCase(TimeoutTestCase):
     """TCP test case for socket.socket() timeout functions"""
 
-    def setUp(self):
+    eleza setUp(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.addr_remote = resolve_address('www.python.org.', 80)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.sock.close()
 
     @unittest.skipIf(True, 'need to replace these hosts; see bpo-35518')
-    def testConnectTimeout(self):
+    eleza testConnectTimeout(self):
         # Testing connect timeout is tricky: we need to have IP connectivity
         # to a host that silently drops our packets.  We can't simulate this
         # kutoka Python because it's a function of the underlying TCP/IP stack.
@@ -175,7 +175,7 @@ class TCPTimeoutTestCase(TimeoutTestCase):
         # incoming protocol.  RSTs are sent for TCP packets, and ICMP UNREACH
         # is sent for UDP/ICMP packets.  This means our attempts to connect to
         # it should be met immediately with ECONNREFUSED.  The test case has
-        # been structured around this premise: if we get an ECONNREFUSED kutoka
+        # been structured around this premise: ikiwa we get an ECONNREFUSED kutoka
         # the whitehole, we proceed with testing connect timeout against the
         # blackhole.  If we don't, we skip the test (with a message about not
         # getting the required RST kutoka the whitehole within the required
@@ -191,9 +191,9 @@ class TCPTimeoutTestCase(TimeoutTestCase):
         #   blackhole_port="56666"
         #   whitehole_port="56667"
         #
-        #   block return in log quick on $ext_if proto { tcp udp } \
+        #   block rudisha in log quick on $ext_ikiwa proto { tcp udp } \
         #       kutoka any to $whitehole_ip port $whitehole_port
-        #   block drop in log quick on $ext_if proto { tcp udp } \
+        #   block drop in log quick on $ext_ikiwa proto { tcp udp } \
         #       kutoka any to $blackhole_ip port $blackhole_port
         #
 
@@ -209,13 +209,13 @@ class TCPTimeoutTestCase(TimeoutTestCase):
         except socket.timeout:
             pass
         except OSError as err:
-            if err.errno == errno.ECONNREFUSED:
+            ikiwa err.errno == errno.ECONNREFUSED:
                 skip = False
         finally:
             sock.close()
             del sock
 
-        if skip:
+        ikiwa skip:
             self.skipTest(
                 "We didn't receive a connection reset (RST) packet kutoka "
                 "{}:{} within {} seconds, so we're unable to test connect "
@@ -230,24 +230,24 @@ class TCPTimeoutTestCase(TimeoutTestCase):
                     )
             )
 
-        # All that hard work just to test if connect times out in 0.001s ;-)
+        # All that hard work just to test ikiwa connect times out in 0.001s ;-)
         self.addr_remote = blackhole
         with support.transient_internet(self.addr_remote[0]):
             self._sock_operation(1, 0.001, 'connect', self.addr_remote)
 
-    def testRecvTimeout(self):
+    eleza testRecvTimeout(self):
         # Test recv() timeout
         with support.transient_internet(self.addr_remote[0]):
             self.sock.connect(self.addr_remote)
             self._sock_operation(1, 1.5, 'recv', 1024)
 
-    def testAcceptTimeout(self):
+    eleza testAcceptTimeout(self):
         # Test accept() timeout
         support.bind_port(self.sock, self.localhost)
         self.sock.listen()
         self._sock_operation(1, 1.5, 'accept')
 
-    def testSend(self):
+    eleza testSend(self):
         # Test send() timeout
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as serv:
             support.bind_port(serv, self.localhost)
@@ -256,7 +256,7 @@ class TCPTimeoutTestCase(TimeoutTestCase):
             # Send a lot of data in order to bypass buffering in the TCP stack.
             self._sock_operation(100, 1.5, 'send', b"X" * 200000)
 
-    def testSendto(self):
+    eleza testSendto(self):
         # Test sendto() timeout
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as serv:
             support.bind_port(serv, self.localhost)
@@ -266,7 +266,7 @@ class TCPTimeoutTestCase(TimeoutTestCase):
             self._sock_operation(100, 1.5, 'sendto', b"X" * 200000,
                                  serv.getsockname())
 
-    def testSendall(self):
+    eleza testSendall(self):
         # Test sendall() timeout
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as serv:
             support.bind_port(serv, self.localhost)
@@ -276,23 +276,23 @@ class TCPTimeoutTestCase(TimeoutTestCase):
             self._sock_operation(100, 1.5, 'sendall', b"X" * 200000)
 
 
-class UDPTimeoutTestCase(TimeoutTestCase):
+kundi UDPTimeoutTestCase(TimeoutTestCase):
     """UDP test case for socket.socket() timeout functions"""
 
-    def setUp(self):
+    eleza setUp(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.sock.close()
 
-    def testRecvfromTimeout(self):
-        # Test recvfrom() timeout
+    eleza testRecvkutokaTimeout(self):
+        # Test recvkutoka() timeout
         # Prevent "Address already in use" socket exceptions
         support.bind_port(self.sock, self.localhost)
-        self._sock_operation(1, 1.5, 'recvfrom', 1024)
+        self._sock_operation(1, 1.5, 'recvkutoka', 1024)
 
 
-def test_main():
+eleza test_main():
     support.requires('network')
     support.run_unittest(
         CreationTestCase,
@@ -300,5 +300,5 @@ def test_main():
         UDPTimeoutTestCase,
     )
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

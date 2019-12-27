@@ -2,9 +2,9 @@ kutoka idlelib.delegator agiza Delegator
 kutoka idlelib.redirector agiza WidgetRedirector
 
 
-class Percolator:
+kundi Percolator:
 
-    def __init__(self, text):
+    eleza __init__(self, text):
         # XXX would be nice to inherit kutoka Delegator
         self.text = text
         self.redir = WidgetRedirector(text)
@@ -13,7 +13,7 @@ class Percolator:
         self.bottom.delete = self.redir.register("delete", self.delete)
         self.filters = []
 
-    def close(self):
+    eleza close(self):
         while self.top is not self.bottom:
             self.removefilter(self.top)
         self.top = None
@@ -23,27 +23,27 @@ class Percolator:
         self.redir = None
         self.text = None
 
-    def insert(self, index, chars, tags=None):
-        # Could go away if inheriting kutoka Delegator
+    eleza insert(self, index, chars, tags=None):
+        # Could go away ikiwa inheriting kutoka Delegator
         self.top.insert(index, chars, tags)
 
-    def delete(self, index1, index2=None):
-        # Could go away if inheriting kutoka Delegator
+    eleza delete(self, index1, index2=None):
+        # Could go away ikiwa inheriting kutoka Delegator
         self.top.delete(index1, index2)
 
-    def insertfilter(self, filter):
+    eleza insertfilter(self, filter):
         # Perhaps rename to pushfilter()?
         assert isinstance(filter, Delegator)
         assert filter.delegate is None
         filter.setdelegate(self.top)
         self.top = filter
 
-    def removefilter(self, filter):
+    eleza removefilter(self, filter):
         # XXX Perhaps should only support popfilter()?
         assert isinstance(filter, Delegator)
         assert filter.delegate is not None
         f = self.top
-        if f is filter:
+        ikiwa f is filter:
             self.top = filter.delegate
             filter.setdelegate(None)
         else:
@@ -55,20 +55,20 @@ class Percolator:
             filter.setdelegate(None)
 
 
-def _percolator(parent):  # htest #
+eleza _percolator(parent):  # htest #
     agiza tkinter as tk
 
-    class Tracer(Delegator):
-        def __init__(self, name):
+    kundi Tracer(Delegator):
+        eleza __init__(self, name):
             self.name = name
             Delegator.__init__(self, None)
 
-        def insert(self, *args):
-            print(self.name, ": insert", args)
+        eleza insert(self, *args):
+            andika(self.name, ": insert", args)
             self.delegate.insert(*args)
 
-        def delete(self, *args):
-            print(self.name, ": delete", args)
+        eleza delete(self, *args):
+            andika(self.name, ": delete", args)
             self.delegate.delete(*args)
 
     box = tk.Toplevel(parent)
@@ -82,10 +82,10 @@ def _percolator(parent):  # htest #
     t1 = Tracer("t1")
     t2 = Tracer("t2")
 
-    def toggle1():
-        (pin if var1.get() else pout)(t1)
-    def toggle2():
-        (pin if var2.get() else pout)(t2)
+    eleza toggle1():
+        (pin ikiwa var1.get() else pout)(t1)
+    eleza toggle2():
+        (pin ikiwa var2.get() else pout)(t2)
 
     text.pack()
     var1 = tk.IntVar(parent)
@@ -95,7 +95,7 @@ def _percolator(parent):  # htest #
     cb2 = tk.Checkbutton(box, text="Tracer2", command=toggle2, variable=var2)
     cb2.pack()
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     kutoka unittest agiza main
     main('idlelib.idle_test.test_percolator', verbosity=2, exit=False)
 

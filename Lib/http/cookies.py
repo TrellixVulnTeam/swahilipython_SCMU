@@ -51,7 +51,7 @@ Most of the time you start by creating a cookie.
 
    >>> C = cookies.SimpleCookie()
 
-Once you've created your Cookie, you can add values just as if it were
+Once you've created your Cookie, you can add values just as ikiwa it were
 a dictionary.
 
    >>> C = cookies.SimpleCookie()
@@ -68,9 +68,9 @@ attributes by using the .output() function
    >>> C = cookies.SimpleCookie()
    >>> C["rocky"] = "road"
    >>> C["rocky"]["path"] = "/cookie"
-   >>> print(C.output(header="Cookie:"))
+   >>> andika(C.output(header="Cookie:"))
    Cookie: rocky=road; Path=/cookie
-   >>> print(C.output(attrs=[], header="Cookie:"))
+   >>> andika(C.output(attrs=[], header="Cookie:"))
    Cookie: rocky=road
 
 The load() method of a Cookie extracts cookies kutoka a string.  In a
@@ -88,7 +88,7 @@ such trickeries do not confuse it.
 
    >>> C = cookies.SimpleCookie()
    >>> C.load('keebler="E=everybody; L=\\"Loves\\"; fudge=\\012;";')
-   >>> print(C)
+   >>> andika(C)
    Set-Cookie: keebler="E=everybody; L=\"Loves\"; fudge=\012;"
 
 Each element of the Cookie also supports all of the RFC 2109
@@ -98,7 +98,7 @@ attribute.
    >>> C = cookies.SimpleCookie()
    >>> C["oreo"] = "doublestuff"
    >>> C["oreo"]["path"] = "/"
-   >>> print(C)
+   >>> andika(C)
    Set-Cookie: oreo=doublestuff; Path=/
 
 Each dictionary element has a 'value' attribute, which gives you
@@ -141,7 +141,7 @@ _spacejoin = ' '.join
 #
 # Define an exception visible to External modules
 #
-class CookieError(Exception):
+kundi CookieError(Exception):
     pass
 
 
@@ -170,29 +170,29 @@ _Translator.update({
 
 _is_legal_key = re.compile('[%s]+' % re.escape(_LegalChars)).fullmatch
 
-def _quote(str):
+eleza _quote(str):
     r"""Quote a string for use in a cookie header.
 
-    If the string does not need to be double-quoted, then just return the
+    If the string does not need to be double-quoted, then just rudisha the
     string.  Otherwise, surround the string in doublequotes and quote
     (with a \) special characters.
     """
-    if str is None or _is_legal_key(str):
-        return str
+    ikiwa str is None or _is_legal_key(str):
+        rudisha str
     else:
-        return '"' + str.translate(_Translator) + '"'
+        rudisha '"' + str.translate(_Translator) + '"'
 
 
 _OctalPatt = re.compile(r"\\[0-3][0-7][0-7]")
 _QuotePatt = re.compile(r"[\\].")
 
-def _unquote(str):
+eleza _unquote(str):
     # If there aren't any doublequotes,
     # then there can't be any special characters.  See RFC 2109.
-    if str is None or len(str) < 2:
-        return str
-    if str[0] != '"' or str[-1] != '"':
-        return str
+    ikiwa str is None or len(str) < 2:
+        rudisha str
+    ikiwa str[0] != '"' or str[-1] != '"':
+        rudisha str
 
     # We have to assume that we must decode this string.
     # Down to work.
@@ -210,16 +210,16 @@ def _unquote(str):
     while 0 <= i < n:
         o_match = _OctalPatt.search(str, i)
         q_match = _QuotePatt.search(str, i)
-        if not o_match and not q_match:              # Neither matched
+        ikiwa not o_match and not q_match:              # Neither matched
             res.append(str[i:])
             break
         # else:
         j = k = -1
-        if o_match:
+        ikiwa o_match:
             j = o_match.start(0)
-        if q_match:
+        ikiwa q_match:
             k = q_match.start(0)
-        if q_match and (not o_match or k < j):     # QuotePatt matched
+        ikiwa q_match and (not o_match or k < j):     # QuotePatt matched
             res.append(str[i:k])
             res.append(str[k+1])
             i = k + 2
@@ -227,7 +227,7 @@ def _unquote(str):
             res.append(str[i:j])
             res.append(chr(int(str[j+1:j+4], 8)))
             i = j + 4
-    return _nulljoin(res)
+    rudisha _nulljoin(res)
 
 # The _getdate() routine is used to set the expiration time in the cookie's HTTP
 # header.  By default, _getdate() returns the current time in the appropriate
@@ -242,20 +242,20 @@ _monthname = [None,
               'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
               'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-def _getdate(future=0, weekdayname=_weekdayname, monthname=_monthname):
+eleza _getdate(future=0, weekdayname=_weekdayname, monthname=_monthname):
     kutoka time agiza gmtime, time
     now = time()
     year, month, day, hh, mm, ss, wd, y, z = gmtime(now + future)
-    return "%s, %02d %3s %4d %02d:%02d:%02d GMT" % \
+    rudisha "%s, %02d %3s %4d %02d:%02d:%02d GMT" % \
            (weekdayname[wd], day, monthname[month], year, hh, mm, ss)
 
 
-class Morsel(dict):
-    """A class to hold ONE (key, value) pair.
+kundi Morsel(dict):
+    """A kundi to hold ONE (key, value) pair.
 
-    In a cookie, each such pair may have several attributes, so this class is
+    In a cookie, each such pair may have several attributes, so this kundi is
     used to keep the attributes associated with the appropriate key,value pair.
-    This class also includes a coded_value attribute, which is used to hold
+    This kundi also includes a coded_value attribute, which is used to hold
     the network representation of the value.
     """
     # RFC 2109 lists these attributes as reserved:
@@ -285,7 +285,7 @@ class Morsel(dict):
 
     _flags = {'secure', 'httponly'}
 
-    def __init__(self):
+    eleza __init__(self):
         # Set defaults
         self._key = self._value = self._coded_value = None
 
@@ -294,61 +294,61 @@ class Morsel(dict):
             dict.__setitem__(self, key, "")
 
     @property
-    def key(self):
-        return self._key
+    eleza key(self):
+        rudisha self._key
 
     @property
-    def value(self):
-        return self._value
+    eleza value(self):
+        rudisha self._value
 
     @property
-    def coded_value(self):
-        return self._coded_value
+    eleza coded_value(self):
+        rudisha self._coded_value
 
-    def __setitem__(self, K, V):
+    eleza __setitem__(self, K, V):
         K = K.lower()
-        if not K in self._reserved:
+        ikiwa not K in self._reserved:
             raise CookieError("Invalid attribute %r" % (K,))
         dict.__setitem__(self, K, V)
 
-    def setdefault(self, key, val=None):
+    eleza setdefault(self, key, val=None):
         key = key.lower()
-        if key not in self._reserved:
+        ikiwa key not in self._reserved:
             raise CookieError("Invalid attribute %r" % (key,))
-        return dict.setdefault(self, key, val)
+        rudisha dict.setdefault(self, key, val)
 
-    def __eq__(self, morsel):
-        if not isinstance(morsel, Morsel):
-            return NotImplemented
-        return (dict.__eq__(self, morsel) and
+    eleza __eq__(self, morsel):
+        ikiwa not isinstance(morsel, Morsel):
+            rudisha NotImplemented
+        rudisha (dict.__eq__(self, morsel) and
                 self._value == morsel._value and
                 self._key == morsel._key and
                 self._coded_value == morsel._coded_value)
 
     __ne__ = object.__ne__
 
-    def copy(self):
+    eleza copy(self):
         morsel = Morsel()
         dict.update(morsel, self)
         morsel.__dict__.update(self.__dict__)
-        return morsel
+        rudisha morsel
 
-    def update(self, values):
+    eleza update(self, values):
         data = {}
         for key, val in dict(values).items():
             key = key.lower()
-            if key not in self._reserved:
+            ikiwa key not in self._reserved:
                 raise CookieError("Invalid attribute %r" % (key,))
             data[key] = val
         dict.update(self, data)
 
-    def isReservedKey(self, K):
-        return K.lower() in self._reserved
+    eleza isReservedKey(self, K):
+        rudisha K.lower() in self._reserved
 
-    def set(self, key, val, coded_val):
-        if key.lower() in self._reserved:
+    eleza set(self, key, val, coded_val):
+        ikiwa key.lower() in self._reserved:
             raise CookieError('Attempt to set a reserved key %r' % (key,))
-        if not _is_legal_key(key):
+        ikiwa not _is_legal_key(key):
             raise CookieError('Illegal key %r' % (key,))
 
         # It's a good key, so save it.
@@ -356,29 +356,29 @@ class Morsel(dict):
         self._value = val
         self._coded_value = coded_val
 
-    def __getstate__(self):
-        return {
+    eleza __getstate__(self):
+        rudisha {
             'key': self._key,
             'value': self._value,
             'coded_value': self._coded_value,
         }
 
-    def __setstate__(self, state):
+    eleza __setstate__(self, state):
         self._key = state['key']
         self._value = state['value']
         self._coded_value = state['coded_value']
 
-    def output(self, attrs=None, header="Set-Cookie:"):
-        return "%s %s" % (header, self.OutputString(attrs))
+    eleza output(self, attrs=None, header="Set-Cookie:"):
+        rudisha "%s %s" % (header, self.OutputString(attrs))
 
     __str__ = output
 
-    def __repr__(self):
-        return '<%s: %s>' % (self.__class__.__name__, self.OutputString())
+    eleza __repr__(self):
+        rudisha '<%s: %s>' % (self.__class__.__name__, self.OutputString())
 
-    def js_output(self, attrs=None):
+    eleza js_output(self, attrs=None):
         # Print javascript
-        return """
+        rudisha """
         <script type="text/javascript">
         <!-- begin hiding
         document.cookie = \"%s\";
@@ -386,7 +386,7 @@ class Morsel(dict):
         </script>
         """ % (self.OutputString(attrs).replace('"', r'\"'))
 
-    def OutputString(self, attrs=None):
+    eleza OutputString(self, attrs=None):
         # Build up our result
         #
         result = []
@@ -396,28 +396,28 @@ class Morsel(dict):
         append("%s=%s" % (self.key, self.coded_value))
 
         # Now add any defined attributes
-        if attrs is None:
+        ikiwa attrs is None:
             attrs = self._reserved
         items = sorted(self.items())
         for key, value in items:
-            if value == "":
+            ikiwa value == "":
                 continue
-            if key not in attrs:
+            ikiwa key not in attrs:
                 continue
-            if key == "expires" and isinstance(value, int):
+            ikiwa key == "expires" and isinstance(value, int):
                 append("%s=%s" % (self._reserved[key], _getdate(value)))
-            elif key == "max-age" and isinstance(value, int):
+            elikiwa key == "max-age" and isinstance(value, int):
                 append("%s=%d" % (self._reserved[key], value))
-            elif key == "comment" and isinstance(value, str):
+            elikiwa key == "comment" and isinstance(value, str):
                 append("%s=%s" % (self._reserved[key], _quote(value)))
-            elif key in self._flags:
-                if value:
+            elikiwa key in self._flags:
+                ikiwa value:
                     append(str(self._reserved[key]))
             else:
                 append("%s=%s" % (self._reserved[key], value))
 
         # Return the result
-        return _semispacejoin(result)
+        rudisha _semispacejoin(result)
 
 
 #
@@ -448,84 +448,84 @@ _CookiePattern = re.compile(r"""
     )?                             # End of optional value group
     \s*                            # Any number of spaces.
     (\s+|;|$)                      # Ending either at space, semicolon, or EOS.
-    """, re.ASCII | re.VERBOSE)    # re.ASCII may be removed if safe.
+    """, re.ASCII | re.VERBOSE)    # re.ASCII may be removed ikiwa safe.
 
 
-# At long last, here is the cookie class.  Using this class is almost just like
+# At long last, here is the cookie class.  Using this kundi is almost just like
 # using a dictionary.  See this module's docstring for example usage.
 #
-class BaseCookie(dict):
-    """A container class for a set of Morsels."""
+kundi BaseCookie(dict):
+    """A container kundi for a set of Morsels."""
 
-    def value_decode(self, val):
+    eleza value_decode(self, val):
         """real_value, coded_value = value_decode(STRING)
         Called prior to setting a cookie's value kutoka the network
         representation.  The VALUE is the value read kutoka HTTP
         header.
         Override this function to modify the behavior of cookies.
         """
-        return val, val
+        rudisha val, val
 
-    def value_encode(self, val):
+    eleza value_encode(self, val):
         """real_value, coded_value = value_encode(VALUE)
         Called prior to setting a cookie's value kutoka the dictionary
         representation.  The VALUE is the value being assigned.
         Override this function to modify the behavior of cookies.
         """
         strval = str(val)
-        return strval, strval
+        rudisha strval, strval
 
-    def __init__(self, input=None):
-        if input:
+    eleza __init__(self, input=None):
+        ikiwa input:
             self.load(input)
 
-    def __set(self, key, real_value, coded_value):
+    eleza __set(self, key, real_value, coded_value):
         """Private method for setting a cookie's value"""
         M = self.get(key, Morsel())
         M.set(key, real_value, coded_value)
         dict.__setitem__(self, key, M)
 
-    def __setitem__(self, key, value):
+    eleza __setitem__(self, key, value):
         """Dictionary style assignment."""
-        if isinstance(value, Morsel):
+        ikiwa isinstance(value, Morsel):
             # allow assignment of constructed Morsels (e.g. for pickling)
             dict.__setitem__(self, key, value)
         else:
             rval, cval = self.value_encode(value)
             self.__set(key, rval, cval)
 
-    def output(self, attrs=None, header="Set-Cookie:", sep="\015\012"):
+    eleza output(self, attrs=None, header="Set-Cookie:", sep="\015\012"):
         """Return a string suitable for HTTP."""
         result = []
         items = sorted(self.items())
         for key, value in items:
             result.append(value.output(attrs, header))
-        return sep.join(result)
+        rudisha sep.join(result)
 
     __str__ = output
 
-    def __repr__(self):
+    eleza __repr__(self):
         l = []
         items = sorted(self.items())
         for key, value in items:
             l.append('%s=%s' % (key, repr(value.value)))
-        return '<%s: %s>' % (self.__class__.__name__, _spacejoin(l))
+        rudisha '<%s: %s>' % (self.__class__.__name__, _spacejoin(l))
 
-    def js_output(self, attrs=None):
+    eleza js_output(self, attrs=None):
         """Return a string suitable for JavaScript."""
         result = []
         items = sorted(self.items())
         for key, value in items:
             result.append(value.js_output(attrs))
-        return _nulljoin(result)
+        rudisha _nulljoin(result)
 
-    def load(self, rawdata):
+    eleza load(self, rawdata):
         """Load cookies kutoka a string (presumably HTTP_COOKIE) or
         kutoka a dictionary.  Loading cookies kutoka a dictionary 'd'
         is equivalent to calling:
             map(Cookie.__setitem__, d.keys(), d.values())
         """
-        if isinstance(rawdata, str):
+        ikiwa isinstance(rawdata, str):
             self.__parse_string(rawdata)
         else:
             # self.update() wouldn't call our custom __setitem__
@@ -533,7 +533,7 @@ class BaseCookie(dict):
                 self[key] = value
         return
 
-    def __parse_string(self, str, patt=_CookiePattern):
+    eleza __parse_string(self, str, patt=_CookiePattern):
         i = 0                 # Our starting point
         n = len(str)          # Length of string
         parsed_items = []     # Parsed (type, key, value) triples
@@ -542,39 +542,39 @@ class BaseCookie(dict):
         TYPE_ATTRIBUTE = 1
         TYPE_KEYVALUE = 2
 
-        # We first parse the whole cookie string and reject it if it's
+        # We first parse the whole cookie string and reject it ikiwa it's
         # syntactically invalid (this helps avoid some classes of injection
         # attacks).
         while 0 <= i < n:
             # Start looking for a cookie
             match = patt.match(str, i)
-            if not match:
+            ikiwa not match:
                 # No more cookies
                 break
 
             key, value = match.group("key"), match.group("val")
             i = match.end(0)
 
-            if key[0] == "$":
-                if not morsel_seen:
+            ikiwa key[0] == "$":
+                ikiwa not morsel_seen:
                     # We ignore attributes which pertain to the cookie
                     # mechanism as a whole, such as "$Version".
                     # See RFC 2965. (Does anyone care?)
                     continue
                 parsed_items.append((TYPE_ATTRIBUTE, key[1:], value))
-            elif key.lower() in Morsel._reserved:
-                if not morsel_seen:
+            elikiwa key.lower() in Morsel._reserved:
+                ikiwa not morsel_seen:
                     # Invalid cookie string
                     return
-                if value is None:
-                    if key.lower() in Morsel._flags:
+                ikiwa value is None:
+                    ikiwa key.lower() in Morsel._flags:
                         parsed_items.append((TYPE_ATTRIBUTE, key, True))
                     else:
                         # Invalid cookie string
                         return
                 else:
                     parsed_items.append((TYPE_ATTRIBUTE, key, _unquote(value)))
-            elif value is not None:
+            elikiwa value is not None:
                 parsed_items.append((TYPE_KEYVALUE, key, self.value_decode(value)))
                 morsel_seen = True
             else:
@@ -584,7 +584,7 @@ class BaseCookie(dict):
         # The cookie string is valid, apply it.
         M = None         # current morsel
         for tp, key, value in parsed_items:
-            if tp == TYPE_ATTRIBUTE:
+            ikiwa tp == TYPE_ATTRIBUTE:
                 assert M is not None
                 M[key] = value
             else:
@@ -594,16 +594,16 @@ class BaseCookie(dict):
                 M = self[key]
 
 
-class SimpleCookie(BaseCookie):
+kundi SimpleCookie(BaseCookie):
     """
     SimpleCookie supports strings as cookie values.  When setting
     the value using the dictionary assignment notation, SimpleCookie
     calls the builtin str() to convert the value to a string.  Values
     received kutoka HTTP are kept as strings.
     """
-    def value_decode(self, val):
-        return _unquote(val), val
+    eleza value_decode(self, val):
+        rudisha _unquote(val), val
 
-    def value_encode(self, val):
+    eleza value_encode(self, val):
         strval = str(val)
-        return strval, _quote(strval)
+        rudisha strval, _quote(strval)

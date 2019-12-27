@@ -9,18 +9,18 @@ kutoka test agiza support
 TIMEOUT = 10
 
 
-class Timer:
-    def __init__(self):
+kundi Timer:
+    eleza __init__(self):
         self._cond = threading.Condition()
         self._time = 0
         self._stop = 0
 
-    def time(self):
+    eleza time(self):
         with self._cond:
-            return self._time
+            rudisha self._time
 
     # increase the time but not beyond the established limit
-    def sleep(self, t):
+    eleza sleep(self, t):
         assert t >= 0
         with self._cond:
             t += self._time
@@ -30,16 +30,16 @@ class Timer:
             self._time = t
 
     # advance time limit for user code
-    def advance(self, t):
+    eleza advance(self, t):
         assert t >= 0
         with self._cond:
             self._stop += t
             self._cond.notify_all()
 
 
-class TestCase(unittest.TestCase):
+kundi TestCase(unittest.TestCase):
 
-    def test_enter(self):
+    eleza test_enter(self):
         l = []
         fun = lambda x: l.append(x)
         scheduler = sched.scheduler(time.time, time.sleep)
@@ -48,7 +48,7 @@ class TestCase(unittest.TestCase):
         scheduler.run()
         self.assertEqual(l, [0.1, 0.2, 0.3, 0.4, 0.5])
 
-    def test_enterabs(self):
+    eleza test_enterabs(self):
         l = []
         fun = lambda x: l.append(x)
         scheduler = sched.scheduler(time.time, time.sleep)
@@ -57,7 +57,7 @@ class TestCase(unittest.TestCase):
         scheduler.run()
         self.assertEqual(l, [0.01, 0.02, 0.03, 0.04, 0.05])
 
-    def test_enter_concurrent(self):
+    eleza test_enter_concurrent(self):
         q = queue.Queue()
         fun = q.put
         timer = Timer()
@@ -86,7 +86,7 @@ class TestCase(unittest.TestCase):
         self.assertTrue(q.empty())
         self.assertEqual(timer.time(), 5)
 
-    def test_priority(self):
+    eleza test_priority(self):
         l = []
         fun = lambda x: l.append(x)
         scheduler = sched.scheduler(time.time, time.sleep)
@@ -95,7 +95,7 @@ class TestCase(unittest.TestCase):
         scheduler.run()
         self.assertEqual(l, [1, 2, 3, 4, 5])
 
-    def test_cancel(self):
+    eleza test_cancel(self):
         l = []
         fun = lambda x: l.append(x)
         scheduler = sched.scheduler(time.time, time.sleep)
@@ -110,7 +110,7 @@ class TestCase(unittest.TestCase):
         scheduler.run()
         self.assertEqual(l, [0.02, 0.03, 0.04])
 
-    def test_cancel_concurrent(self):
+    eleza test_cancel_concurrent(self):
         q = queue.Queue()
         fun = q.put
         timer = Timer()
@@ -141,7 +141,7 @@ class TestCase(unittest.TestCase):
         self.assertTrue(q.empty())
         self.assertEqual(timer.time(), 4)
 
-    def test_empty(self):
+    eleza test_empty(self):
         l = []
         fun = lambda x: l.append(x)
         scheduler = sched.scheduler(time.time, time.sleep)
@@ -152,7 +152,7 @@ class TestCase(unittest.TestCase):
         scheduler.run()
         self.assertTrue(scheduler.empty())
 
-    def test_queue(self):
+    eleza test_queue(self):
         l = []
         fun = lambda x: l.append(x)
         scheduler = sched.scheduler(time.time, time.sleep)
@@ -162,13 +162,13 @@ class TestCase(unittest.TestCase):
         e2 = scheduler.enterabs(now + 0.02, 1, fun)
         e4 = scheduler.enterabs(now + 0.04, 1, fun)
         e3 = scheduler.enterabs(now + 0.03, 1, fun)
-        # queue property is supposed to return an order list of
+        # queue property is supposed to rudisha an order list of
         # upcoming events
         self.assertEqual(scheduler.queue, [e1, e2, e3, e4, e5])
 
-    def test_args_kwargs(self):
+    eleza test_args_kwargs(self):
         seq = []
-        def fun(*a, **b):
+        eleza fun(*a, **b):
             seq.append((a, b))
 
         now = time.time()
@@ -185,7 +185,7 @@ class TestCase(unittest.TestCase):
             ((1, 2), {'foo': 3})
         ])
 
-    def test_run_non_blocking(self):
+    eleza test_run_non_blocking(self):
         l = []
         fun = lambda x: l.append(x)
         scheduler = sched.scheduler(time.time, time.sleep)
@@ -195,5 +195,5 @@ class TestCase(unittest.TestCase):
         self.assertEqual(l, [])
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

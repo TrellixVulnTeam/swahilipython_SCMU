@@ -1,12 +1,12 @@
 kutoka test.test_json agiza PyTest, CTest
 
 
-class JSONTestObject:
+kundi JSONTestObject:
     pass
 
 
-class TestRecursion:
-    def test_listrecursion(self):
+kundi TestRecursion:
+    eleza test_listrecursion(self):
         x = []
         x.append(x)
         try:
@@ -29,7 +29,7 @@ class TestRecursion:
         # ensure that the marker is cleared
         self.dumps(x)
 
-    def test_dictrecursion(self):
+    eleza test_dictrecursion(self):
         x = {}
         x["test"] = x
         try:
@@ -43,16 +43,16 @@ class TestRecursion:
         # ensure that the marker is cleared
         self.dumps(x)
 
-    def test_defaultrecursion(self):
-        class RecursiveJSONEncoder(self.json.JSONEncoder):
+    eleza test_defaultrecursion(self):
+        kundi RecursiveJSONEncoder(self.json.JSONEncoder):
             recurse = False
-            def default(self, o):
-                if o is JSONTestObject:
-                    if self.recurse:
-                        return [JSONTestObject]
+            eleza default(self, o):
+                ikiwa o is JSONTestObject:
+                    ikiwa self.recurse:
+                        rudisha [JSONTestObject]
                     else:
-                        return 'JSONTestObject'
-                return pyjson.JSONEncoder.default(o)
+                        rudisha 'JSONTestObject'
+                rudisha pyjson.JSONEncoder.default(o)
 
         enc = RecursiveJSONEncoder()
         self.assertEqual(enc.encode(JSONTestObject), '"JSONTestObject"')
@@ -65,7 +65,7 @@ class TestRecursion:
             self.fail("didn't raise ValueError on default recursion")
 
 
-    def test_highly_nested_objects_decoding(self):
+    eleza test_highly_nested_objects_decoding(self):
         # test that loading highly-nested objects doesn't segfault when C
         # accelerations are used. See #12017
         with self.assertRaises(RecursionError):
@@ -75,7 +75,7 @@ class TestRecursion:
         with self.assertRaises(RecursionError):
             self.loads('[' * 100000 + '1' + ']' * 100000)
 
-    def test_highly_nested_objects_encoding(self):
+    eleza test_highly_nested_objects_encoding(self):
         # See #12051
         l, d = [], {}
         for x in range(100000):
@@ -85,16 +85,16 @@ class TestRecursion:
         with self.assertRaises(RecursionError):
             self.dumps(d)
 
-    def test_endless_recursion(self):
+    eleza test_endless_recursion(self):
         # See #12051
-        class EndlessJSONEncoder(self.json.JSONEncoder):
-            def default(self, o):
+        kundi EndlessJSONEncoder(self.json.JSONEncoder):
+            eleza default(self, o):
                 """If check_circular is False, this will keep adding another list."""
-                return [o]
+                rudisha [o]
 
         with self.assertRaises(RecursionError):
             EndlessJSONEncoder(check_circular=False).encode(5j)
 
 
-class TestPyRecursion(TestRecursion, PyTest): pass
-class TestCRecursion(TestRecursion, CTest): pass
+kundi TestPyRecursion(TestRecursion, PyTest): pass
+kundi TestCRecursion(TestRecursion, CTest): pass

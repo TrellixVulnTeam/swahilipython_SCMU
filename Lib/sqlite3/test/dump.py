@@ -3,15 +3,15 @@
 agiza unittest
 agiza sqlite3 as sqlite
 
-class DumpTests(unittest.TestCase):
-    def setUp(self):
+kundi DumpTests(unittest.TestCase):
+    eleza setUp(self):
         self.cx = sqlite.connect(":memory:")
         self.cu = self.cx.cursor()
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.cx.close()
 
-    def CheckTableDump(self):
+    eleza CheckTableDump(self):
         expected_sqls = [
                 """CREATE TABLE "index"("index" blob);"""
                 ,
@@ -49,13 +49,13 @@ class DumpTests(unittest.TestCase):
         [self.assertEqual(expected_sqls[i], actual_sqls[i])
             for i in range(len(expected_sqls))]
 
-    def CheckUnorderableRow(self):
+    eleza CheckUnorderableRow(self):
         # iterdump() should be able to cope with unorderable row types (issue #15545)
-        class UnorderableRow:
-            def __init__(self, cursor, row):
+        kundi UnorderableRow:
+            eleza __init__(self, cursor, row):
                 self.row = row
-            def __getitem__(self, index):
-                return self.row[index]
+            eleza __getitem__(self, index):
+                rudisha self.row[index]
         self.cx.row_factory = UnorderableRow
         CREATE_ALPHA = """CREATE TABLE "alpha" ("one");"""
         CREATE_BETA = """CREATE TABLE "beta" ("two");"""
@@ -70,12 +70,12 @@ class DumpTests(unittest.TestCase):
         got = list(self.cx.iterdump())
         self.assertEqual(expected, got)
 
-def suite():
-    return unittest.TestSuite(unittest.makeSuite(DumpTests, "Check"))
+eleza suite():
+    rudisha unittest.TestSuite(unittest.makeSuite(DumpTests, "Check"))
 
-def test():
+eleza test():
     runner = unittest.TextTestRunner()
     runner.run(suite())
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test()

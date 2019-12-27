@@ -12,8 +12,8 @@
 
 --------------
 
-This module defines the class :class:`FTP` and a few related items. The
-:class:`FTP` class implements the client side of the FTP protocol.  You can use
+This module defines the kundi :class:`FTP` and a few related items. The
+:class:`FTP` kundi implements the client side of the FTP protocol.  You can use
 this to write Python programs that perform a variety of automated FTP jobs, such
 as mirroring other FTP servers.  It is also used by the module
 :mod:`urllib.request` to handle URLs that use FTP.  For more information on FTP
@@ -21,7 +21,7 @@ as mirroring other FTP servers.  It is also used by the module
 
 Here's a sample session using the :mod:`ftplib` module::
 
-   >>> from ftplib import FTP
+   >>> kutoka ftplib agiza FTP
    >>> ftp = FTP('ftp.debian.org')     # connect to host, default port
    >>> ftp.login()                     # user anonymous, passwd anonymous@
    '230 Login successful.'
@@ -52,9 +52,9 @@ The module defines the following items:
    will be used). *source_address* is a 2-tuple ``(host, port)`` for the socket
    to bind to as its source address before connecting.
 
-   The :class:`FTP` class supports the :keyword:`with` statement, e.g.:
+   The :class:`FTP` kundi supports the :keyword:`with` statement, e.g.:
 
-    >>> from ftplib import FTP
+    >>> kutoka ftplib agiza FTP
     >>> with FTP("ftp1.at.proftpd.org") as ftp:
     ...     ftp.login()
     ...     ftp.dir()
@@ -75,7 +75,7 @@ The module defines the following items:
 
 .. class:: FTP_TLS(host='', user='', passwd='', acct='', keyfile=None, certfile=None, context=None, timeout=None, source_address=None)
 
-   A :class:`FTP` subclass which adds TLS support to FTP as described in
+   A :class:`FTP` subkundi which adds TLS support to FTP as described in
    :rfc:`4217`.
    Connect as usual to port 21 implicitly securing the FTP control connection
    before authenticating. Securing the data connection requires the user to
@@ -94,7 +94,7 @@ The module defines the following items:
       *source_address* parameter was added.
 
    .. versionchanged:: 3.4
-      The class now supports hostname check with
+      The kundi now supports hostname check with
       :attr:`ssl.SSLContext.check_hostname` and *Server Name Indication* (see
       :data:`ssl.HAS_SNI`).
 
@@ -118,7 +118,7 @@ The module defines the following items:
 
 .. exception:: error_reply
 
-   Exception raised when an unexpected reply is received from the server.
+   Exception raised when an unexpected reply is received kutoka the server.
 
 
 .. exception:: error_temp
@@ -135,7 +135,7 @@ The module defines the following items:
 
 .. exception:: error_proto
 
-   Exception raised when a reply is received from the server that does not fit
+   Exception raised when a reply is received kutoka the server that does not fit
    the response specifications of the File Transfer Protocol, i.e. begin with a
    digit in the range 1--5.
 
@@ -285,7 +285,7 @@ followed by ``lines`` for the text version or ``binary`` for the binary version.
 .. method:: FTP.storlines(cmd, fp, callback=None)
 
    Store a file in ASCII transfer mode.  *cmd* should be an appropriate
-   ``STOR`` command (see :meth:`storbinary`).  Lines are read until EOF from the
+   ``STOR`` command (see :meth:`storbinary`).  Lines are read until EOF kutoka the
    :term:`file object` *fp* (opened in binary mode) using its :meth:`~io.IOBase.readline`
    method to provide the data to be stored.  *callback* is an optional single
    parameter callable that is called on each line after it is sent.
@@ -303,7 +303,7 @@ followed by ``lines`` for the text version or ``binary`` for the binary version.
    *rest* as an argument.  *rest* is usually a byte offset into the requested file,
    telling the server to restart sending the file's bytes at the requested offset,
    skipping over the initial bytes.  Note however that :rfc:`959` requires only that
-   *rest* be a string containing characters in the printable range from ASCII code
+   *rest* be a string containing characters in the printable range kutoka ASCII code
    33 to ASCII code 126.  The :meth:`transfercmd` method, therefore, converts
    *rest* to a string, but no check is performed on the string's contents.  If the
    server does not recognize the ``REST`` command, an :exc:`error_reply` exception
@@ -355,14 +355,14 @@ followed by ``lines`` for the text version or ``binary`` for the binary version.
    .. note:: If your server supports the command, :meth:`mlsd` offers a better API.
 
 
-.. method:: FTP.rename(fromname, toname)
+.. method:: FTP.rename(kutokaname, toname)
 
-   Rename file *fromname* on the server to *toname*.
+   Rename file *kutokaname* on the server to *toname*.
 
 
 .. method:: FTP.delete(filename)
 
-   Remove the file named *filename* from the server.  If successful, returns the
+   Remove the file named *filename* kutoka the server.  If successful, returns the
    text of the response, otherwise raises :exc:`error_perm` on permission errors or
    :exc:`error_reply` on other errors.
 
@@ -416,7 +416,7 @@ followed by ``lines`` for the text version or ``binary`` for the binary version.
 FTP_TLS Objects
 ---------------
 
-:class:`FTP_TLS` class inherits from :class:`FTP`, defining these additional objects:
+:class:`FTP_TLS` kundi inherits kutoka :class:`FTP`, defining these additional objects:
 
 .. attribute:: FTP_TLS.ssl_version
 

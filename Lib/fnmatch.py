@@ -16,7 +16,7 @@ agiza functools
 
 __all__ = ["filter", "fnmatch", "fnmatchcase", "translate"]
 
-def fnmatch(name, pat):
+eleza fnmatch(name, pat):
     """Test whether FILENAME matches PATTERN.
 
     Patterns are Unix shell style:
@@ -28,50 +28,50 @@ def fnmatch(name, pat):
 
     An initial period in FILENAME is not special.
     Both FILENAME and PATTERN are first case-normalized
-    if the operating system requires it.
+    ikiwa the operating system requires it.
     If you don't want this, use fnmatchcase(FILENAME, PATTERN).
     """
     name = os.path.normcase(name)
     pat = os.path.normcase(pat)
-    return fnmatchcase(name, pat)
+    rudisha fnmatchcase(name, pat)
 
 @functools.lru_cache(maxsize=256, typed=True)
-def _compile_pattern(pat):
-    if isinstance(pat, bytes):
+eleza _compile_pattern(pat):
+    ikiwa isinstance(pat, bytes):
         pat_str = str(pat, 'ISO-8859-1')
         res_str = translate(pat_str)
         res = bytes(res_str, 'ISO-8859-1')
     else:
         res = translate(pat)
-    return re.compile(res).match
+    rudisha re.compile(res).match
 
-def filter(names, pat):
+eleza filter(names, pat):
     """Return the subset of the list NAMES that match PAT."""
     result = []
     pat = os.path.normcase(pat)
     match = _compile_pattern(pat)
-    if os.path is posixpath:
+    ikiwa os.path is posixpath:
         # normcase on posix is NOP. Optimize it away kutoka the loop.
         for name in names:
-            if match(name):
+            ikiwa match(name):
                 result.append(name)
     else:
         for name in names:
-            if match(os.path.normcase(name)):
+            ikiwa match(os.path.normcase(name)):
                 result.append(name)
-    return result
+    rudisha result
 
-def fnmatchcase(name, pat):
+eleza fnmatchcase(name, pat):
     """Test whether FILENAME matches PATTERN, including case.
 
     This is a version of fnmatch() which doesn't case-normalize
     its arguments.
     """
     match = _compile_pattern(pat)
-    return match(name) is not None
+    rudisha match(name) is not None
 
 
-def translate(pat):
+eleza translate(pat):
     """Translate a shell PATTERN to a regular expression.
 
     There is no way to quote meta-characters.
@@ -82,30 +82,30 @@ def translate(pat):
     while i < n:
         c = pat[i]
         i = i+1
-        if c == '*':
+        ikiwa c == '*':
             res = res + '.*'
-        elif c == '?':
+        elikiwa c == '?':
             res = res + '.'
-        elif c == '[':
+        elikiwa c == '[':
             j = i
-            if j < n and pat[j] == '!':
+            ikiwa j < n and pat[j] == '!':
                 j = j+1
-            if j < n and pat[j] == ']':
+            ikiwa j < n and pat[j] == ']':
                 j = j+1
             while j < n and pat[j] != ']':
                 j = j+1
-            if j >= n:
+            ikiwa j >= n:
                 res = res + '\\['
             else:
                 stuff = pat[i:j]
-                if '--' not in stuff:
+                ikiwa '--' not in stuff:
                     stuff = stuff.replace('\\', r'\\')
                 else:
                     chunks = []
-                    k = i+2 if pat[i] == '!' else i+1
+                    k = i+2 ikiwa pat[i] == '!' else i+1
                     while True:
                         k = pat.find('-', k, j)
-                        if k < 0:
+                        ikiwa k < 0:
                             break
                         chunks.append(pat[i:k])
                         i = k+1
@@ -118,11 +118,11 @@ def translate(pat):
                 # Escape set operations (&&, ~~ and ||).
                 stuff = re.sub(r'([&~|])', r'\\\1', stuff)
                 i = j+1
-                if stuff[0] == '!':
+                ikiwa stuff[0] == '!':
                     stuff = '^' + stuff[1:]
-                elif stuff[0] in ('^', '['):
+                elikiwa stuff[0] in ('^', '['):
                     stuff = '\\' + stuff
                 res = '%s[%s]' % (res, stuff)
         else:
             res = res + re.escape(c)
-    return r'(?s:%s)\Z' % res
+    rudisha r'(?s:%s)\Z' % res

@@ -5,9 +5,9 @@
 # documentation "SQLite adds new keywords kutoka time to time when it
 # takes on new features. So to prevent your code kutoka being broken by
 # future enhancements, you should normally quote any identifier that
-# is an English language word, even if you do not have to."
+# is an English language word, even ikiwa you do not have to."
 
-def _iterdump(connection):
+eleza _iterdump(connection):
     """
     Returns an iterator to the dump of the database in an SQL text format.
 
@@ -29,14 +29,14 @@ def _iterdump(connection):
         """
     schema_res = cu.execute(q)
     for table_name, type, sql in schema_res.fetchall():
-        if table_name == 'sqlite_sequence':
+        ikiwa table_name == 'sqlite_sequence':
             yield('DELETE FROM "sqlite_sequence";')
-        elif table_name == 'sqlite_stat1':
+        elikiwa table_name == 'sqlite_stat1':
             yield('ANALYZE "sqlite_master";')
-        elif table_name.startswith('sqlite_'):
+        elikiwa table_name.startswith('sqlite_'):
             continue
         # NOTE: Virtual table support not implemented
-        #elif sql.startswith('CREATE VIRTUAL TABLE'):
+        #elikiwa sql.startswith('CREATE VIRTUAL TABLE'):
         #    qtable = table_name.replace("'", "''")
         #    yield("INSERT INTO sqlite_master(type,name,tbl_name,rootpage,sql)"\
         #        "VALUES('table','{0}','{0}',0,'{1}');".format(

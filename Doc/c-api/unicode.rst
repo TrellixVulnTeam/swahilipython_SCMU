@@ -164,7 +164,7 @@ access internal read-only data of Unicode objects:
    Write into a canonical representation *data* (as obtained with
    :c:func:`PyUnicode_DATA`).  This macro does not do any sanity checks and is
    intended for usage in loops.  The caller should cache the *kind* value and
-   *data* pointer as obtained from other macro calls.  *index* is the index in
+   *data* pointer as obtained kutoka other macro calls.  *index* is the index in
    the string (starts at 0) and *value* is the new code point value which should
    be written to that location.
 
@@ -173,7 +173,7 @@ access internal read-only data of Unicode objects:
 
 .. c:function:: Py_UCS4 PyUnicode_READ(int kind, void *data, Py_ssize_t index)
 
-   Read a code point from a canonical representation *data* (as obtained with
+   Read a code point kutoka a canonical representation *data* (as obtained with
    :c:func:`PyUnicode_DATA`).  No checks or ready calls are performed.
 
    .. versionadded:: 3.3
@@ -181,7 +181,7 @@ access internal read-only data of Unicode objects:
 
 .. c:function:: Py_UCS4 PyUnicode_READ_CHAR(PyObject *o, Py_ssize_t index)
 
-   Read a character from a Unicode object *o*, which must be in the "canonical"
+   Read a character kutoka a Unicode object *o*, which must be in the "canonical"
    representation.  This is less efficient than :c:func:`PyUnicode_READ` if you
    do multiple consecutive reads.
 
@@ -411,7 +411,7 @@ APIs:
 
 .. c:function:: PyObject* PyUnicode_FromStringAndSize(const char *u, Py_ssize_t size)
 
-   Create a Unicode object from the char buffer *u*.  The bytes will be
+   Create a Unicode object kutoka the char buffer *u*.  The bytes will be
    interpreted as being UTF-8 encoded.  The buffer is copied into the new
    object. If the buffer is not *NULL*, the return value might be a shared
    object, i.e. modification of the data is not allowed.
@@ -423,7 +423,7 @@ APIs:
 
 .. c:function:: PyObject *PyUnicode_FromString(const char *u)
 
-   Create a Unicode object from a UTF-8 encoded null-terminated char buffer
+   Create a Unicode object kutoka a UTF-8 encoded null-terminated char buffer
    *u*.
 
 
@@ -577,11 +577,11 @@ APIs:
 
 .. c:function:: Py_ssize_t PyUnicode_CopyCharacters(PyObject *to, \
                                                     Py_ssize_t to_start, \
-                                                    PyObject *from, \
-                                                    Py_ssize_t from_start, \
+                                                    PyObject *kutoka, \
+                                                    Py_ssize_t kutoka_start, \
                                                     Py_ssize_t how_many)
 
-   Copy characters from one Unicode object into another.  This function performs
+   Copy characters kutoka one Unicode object into another.  This function performs
    character conversion when necessary and falls back to :c:func:`memcpy` if
    possible.  Returns ``-1`` and sets an exception on error, otherwise returns
    the number of copied characters.
@@ -620,7 +620,7 @@ APIs:
 
 .. c:function:: Py_UCS4 PyUnicode_ReadChar(PyObject *unicode, Py_ssize_t index)
 
-   Read a character from a string.  This function checks that *unicode* is a
+   Read a character kutoka a string.  This function checks that *unicode* is a
    Unicode object and the index is not out of bounds, in contrast to the macro
    version :c:func:`PyUnicode_READ_CHAR`.
 
@@ -630,7 +630,7 @@ APIs:
 .. c:function:: PyObject* PyUnicode_Substring(PyObject *str, Py_ssize_t start, \
                                               Py_ssize_t end)
 
-   Return a substring of *str*, from character index *start* (included) to
+   Return a substring of *str*, kutoka character index *start* (included) to
    character index *end* (excluded).  Negative indices are not supported.
 
    .. versionadded:: 3.3
@@ -669,7 +669,7 @@ Extension modules can continue using them, as they will not be removed in Python
 
 .. c:function:: PyObject* PyUnicode_FromUnicode(const Py_UNICODE *u, Py_ssize_t size)
 
-   Create a Unicode object from the Py_UNICODE buffer *u* of the given size. *u*
+   Create a Unicode object kutoka the Py_UNICODE buffer *u* of the given size. *u*
    may be *NULL* which causes the contents to be undefined. It is the user's
    responsibility to fill in the needed data.  The buffer is copied into the new
    object.
@@ -753,21 +753,21 @@ Extension modules can continue using them, as they will not be removed in Python
 Locale Encoding
 """""""""""""""
 
-The current locale encoding can be used to decode text from the operating
+The current locale encoding can be used to decode text kutoka the operating
 system.
 
 .. c:function:: PyObject* PyUnicode_DecodeLocaleAndSize(const char *str, \
                                                         Py_ssize_t len, \
                                                         const char *errors)
 
-   Decode a string from UTF-8 on Android and VxWorks, or from the current
+   Decode a string kutoka UTF-8 on Android and VxWorks, or kutoka the current
    locale encoding on other platforms. The supported
    error handlers are ``"strict"`` and ``"surrogateescape"``
    (:pep:`383`). The decoder uses ``"strict"`` error handler if
    *errors* is ``NULL``.  *str* must end with a null character but
    cannot contain embedded null characters.
 
-   Use :c:func:`PyUnicode_DecodeFSDefaultAndSize` to decode a string from
+   Use :c:func:`PyUnicode_DecodeFSDefaultAndSize` to decode a string kutoka
    :c:data:`Py_FileSystemDefaultEncoding` (the locale encoding read at
    Python startup).
 
@@ -872,9 +872,9 @@ conversion function:
    If :c:data:`Py_FileSystemDefaultEncoding` is not set, fall back to the
    locale encoding.
 
-   :c:data:`Py_FileSystemDefaultEncoding` is initialized at startup from the
+   :c:data:`Py_FileSystemDefaultEncoding` is initialized at startup kutoka the
    locale encoding and cannot be modified later. If you need to decode a string
-   from the current locale encoding, use
+   kutoka the current locale encoding, use
    :c:func:`PyUnicode_DecodeLocaleAndSize`.
 
    .. seealso::
@@ -909,7 +909,7 @@ conversion function:
    If :c:data:`Py_FileSystemDefaultEncoding` is not set, fall back to the
    locale encoding.
 
-   :c:data:`Py_FileSystemDefaultEncoding` is initialized at startup from the
+   :c:data:`Py_FileSystemDefaultEncoding` is initialized at startup kutoka the
    locale encoding and cannot be modified later. If you need to encode a string
    to the current locale encoding, use :c:func:`PyUnicode_EncodeLocale`.
 
@@ -929,7 +929,7 @@ wchar_t Support
 
 .. c:function:: PyObject* PyUnicode_FromWideChar(const wchar_t *w, Py_ssize_t size)
 
-   Create a Unicode object from the :c:type:`wchar_t` buffer *w* of the given *size*.
+   Create a Unicode object kutoka the :c:type:`wchar_t` buffer *w* of the given *size*.
    Passing ``-1`` as the *size* indicates that the function must itself compute the length,
    using wcslen.
    Return *NULL* on failure.
@@ -994,7 +994,7 @@ Error handling is set by errors which may also be set to *NULL* meaning to use
 the default handling defined for the codec.  Default error handling for all
 built-in codecs is "strict" (:exc:`ValueError` is raised).
 
-The codecs all use a similar interface.  Only deviation from the following
+The codecs all use a similar interface.  Only deviation kutoka the following
 generic ones are documented for simplicity.
 
 
@@ -1118,7 +1118,7 @@ These are the UTF-32 codec APIs:
 .. c:function:: PyObject* PyUnicode_DecodeUTF32(const char *s, Py_ssize_t size, \
                               const char *errors, int *byteorder)
 
-   Decode *size* bytes from a UTF-32 encoded buffer string and return the
+   Decode *size* bytes kutoka a UTF-32 encoded buffer string and return the
    corresponding Unicode object.  *errors* (if non-*NULL*) defines the error
    handling. It defaults to "strict".
 
@@ -1191,7 +1191,7 @@ These are the UTF-16 codec APIs:
 .. c:function:: PyObject* PyUnicode_DecodeUTF16(const char *s, Py_ssize_t size, \
                               const char *errors, int *byteorder)
 
-   Decode *size* bytes from a UTF-16 encoded buffer string and return the
+   Decode *size* bytes kutoka a UTF-16 encoded buffer string and return the
    corresponding Unicode object.  *errors* (if non-*NULL*) defines the error
    handling. It defaults to "strict".
 
@@ -1440,7 +1440,7 @@ These are the mapping codec APIs:
    by the codec.
 
    If *mapping* is *NULL*, Latin-1 decoding will be applied.  Else
-   *mapping* must map bytes ordinals (integers in the range from 0 to 255)
+   *mapping* must map bytes ordinals (integers in the range kutoka 0 to 255)
    to Unicode strings, integers (which are then interpreted as Unicode
    ordinals) or ``None``.  Unmapped data bytes -- ones which cause a
    :exc:`LookupError`, as well as ones which get mapped to ``None``,
@@ -1455,7 +1455,7 @@ These are the mapping codec APIs:
    exception was raised by the codec.
 
    The *mapping* object must map Unicode ordinal integers to bytes objects,
-   integers in the range from 0 to 255 or ``None``.  Unmapped character
+   integers in the range kutoka 0 to 255 or ``None``.  Unmapped character
    ordinals (ones which cause a :exc:`LookupError`) as well as mapped to
    ``None`` are treated as "undefined mapping" and cause an error.
 
@@ -1506,7 +1506,7 @@ MBCS codecs for Windows
 
 These are the MBCS codec APIs. They are currently only available on Windows and
 use the Win32 MBCS converters to implement the conversions.  Note that MBCS (or
-DBCS) is a class of encodings, not just one.  The target encoding is defined by
+DBCS) is a kundi of encodings, not just one.  The target encoding is defined by
 the user settings on the machine running the codec.
 
 .. c:function:: PyObject* PyUnicode_DecodeMBCS(const char *s, Py_ssize_t size, const char *errors)
@@ -1692,7 +1692,7 @@ They all return *NULL* or ``-1`` if an exception occurs.
 
 .. c:function:: PyObject* PyUnicode_Format(PyObject *format, PyObject *args)
 
-   Return a new string object from *format* and *args*; this is analogous to
+   Return a new string object kutoka *format* and *args*; this is analogous to
    ``format % args``.
 
 

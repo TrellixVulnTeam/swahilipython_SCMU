@@ -267,7 +267,7 @@ class Message:
                         payload = bpayload.decode(self.get_param('charset', 'ascii'), 'replace')
                     except LookupError:
                         payload = bpayload.decode('ascii', 'replace')
-            elif decode:
+            lasivyo decode:
                 try:
                     bpayload = payload.encode('ascii')
                 except UnicodeError:
@@ -280,14 +280,14 @@ class Message:
             return payload
         if cte == 'quoted-printable':
             return quopri.decodestring(bpayload)
-        elif cte == 'base64':
+        lasivyo cte == 'base64':
             # XXX: this is a bit of a hack; decode_b should probably be factored
             # out somewhere, but I haven't figured out where yet.
             value, defects = decode_b(b''.join(bpayload.splitlines()))
             for defect in defects:
                 self.policy.handle_defect(self, defect)
             return value
-        elif cte in ('x-uuencode', 'uuencode', 'uue', 'x-uue'):
+        lasivyo cte in ('x-uuencode', 'uuencode', 'uue', 'x-uue'):
             in_file = BytesIO(bpayload)
             out_file = BytesIO()
             try:

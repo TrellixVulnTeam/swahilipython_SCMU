@@ -36,7 +36,7 @@ DBL_MIN_OVERFLOW = 2**DBL_MAX_EXP - 2**(DBL_MAX_EXP - DBL_MANT_DIG - 1)
 
 
 # Pure Python version of correctly-rounded integer-to-float conversion.
-def int_to_float(n):
+eleza int_to_float(n):
     """
     Correctly-rounded integer-to-float conversion.
 
@@ -49,25 +49,25 @@ def int_to_float(n):
     ROUND_HALF_TO_EVEN_CORRECTION = [0, -1, -2, 1, 0, -1, 2, 1]
 
     # Reduce to the case where n is positive.
-    if n == 0:
-        return 0.0
-    elif n < 0:
-        return -int_to_float(-n)
+    ikiwa n == 0:
+        rudisha 0.0
+    elikiwa n < 0:
+        rudisha -int_to_float(-n)
 
     # Convert n to a 'floating-point' number q * 2**shift, where q is an
     # integer with 'PRECISION' significant bits.  When shifting n to create q,
     # the least significant bit of q is treated as 'sticky'.  That is, the
-    # least significant bit of q is set if either the corresponding bit of n
+    # least significant bit of q is set ikiwa either the corresponding bit of n
     # was already set, or any one of the bits of n lost in the shift was set.
     shift = n.bit_length() - PRECISION
-    q = n << -shift if shift < 0 else (n >> shift) | bool(n & ~(-1 << shift))
+    q = n << -shift ikiwa shift < 0 else (n >> shift) | bool(n & ~(-1 << shift))
 
     # Round half to even (actually rounds to the nearest multiple of 4,
     # rounding ties to a multiple of 8).
     q += ROUND_HALF_TO_EVEN_CORRECTION[q & 7]
 
     # Detect overflow.
-    if shift + (q == Q_MAX) > SHIFT_MAX:
+    ikiwa shift + (q == Q_MAX) > SHIFT_MAX:
         raise OverflowError("integer too large to convert to float")
 
     # Checks: q is exactly representable, and q**2**shift doesn't overflow.
@@ -78,24 +78,24 @@ def int_to_float(n):
     # conversion.  But here q is of bounded size, and is exactly representable
     # as a float.  In a low-level C-like language, this operation would be a
     # simple cast (e.g., kutoka unsigned long long to double).
-    return math.ldexp(float(q), shift)
+    rudisha math.ldexp(float(q), shift)
 
 
 # pure Python version of correctly-rounded true division
-def truediv(a, b):
+eleza truediv(a, b):
     """Correctly-rounded true division for integers."""
     negative = a^b < 0
     a, b = abs(a), abs(b)
 
     # exceptions:  division by zero, overflow
-    if not b:
+    ikiwa not b:
         raise ZeroDivisionError("division by zero")
-    if a >= DBL_MIN_OVERFLOW * b:
+    ikiwa a >= DBL_MIN_OVERFLOW * b:
         raise OverflowError("int/int too large to represent as a float")
 
    # find integer d satisfying 2**(d - 1) <= a/b < 2**d
     d = a.bit_length() - b.bit_length()
-    if d >= 0 and a >= 2**d * b or d < 0 and a * 2**-d >= b:
+    ikiwa d >= 0 and a >= 2**d * b or d < 0 and a * 2**-d >= b:
         d += 1
 
     # compute 2**-exp * a / b for suitable exp
@@ -105,14 +105,14 @@ def truediv(a, b):
 
     # round-half-to-even: fractional part is r/b, which is > 0.5 iff
     # 2*r > b, and == 0.5 iff 2*r == b.
-    if 2*r > b or 2*r == b and q % 2 == 1:
+    ikiwa 2*r > b or 2*r == b and q % 2 == 1:
         q += 1
 
     result = math.ldexp(q, exp)
-    return -result if negative else result
+    rudisha -result ikiwa negative else result
 
 
-class LongTest(unittest.TestCase):
+kundi LongTest(unittest.TestCase):
 
     # Get quasi-random long consisting of ndigits digits (in base BASE).
     # quasi == the most-significant digit will not be 0, and the number
@@ -120,7 +120,7 @@ class LongTest(unittest.TestCase):
     # more likely than random bits to provoke digit-boundary errors.
     # The sign of the number is also random.
 
-    def getran(self, ndigits):
+    eleza getran(self, ndigits):
         self.assertGreater(ndigits, 0)
         nbits_hi = ndigits * SHIFT
         nbits_lo = nbits_hi - SHIFT + 1
@@ -133,26 +133,26 @@ class LongTest(unittest.TestCase):
             self.assertTrue(1 <= bits <= SHIFT)
             nbits = nbits + bits
             answer = answer << bits
-            if r & 1:
+            ikiwa r & 1:
                 answer = answer | ((1 << bits) - 1)
             r = int(random.random() * (SHIFT * 2))
         self.assertTrue(nbits_lo <= nbits <= nbits_hi)
-        if random.random() < 0.5:
+        ikiwa random.random() < 0.5:
             answer = -answer
-        return answer
+        rudisha answer
 
     # Get random long consisting of ndigits random digits (relative to base
     # BASE).  The sign bit is also random.
 
-    def getran2(ndigits):
+    eleza getran2(ndigits):
         answer = 0
         for i in range(ndigits):
             answer = (answer << SHIFT) | random.randint(0, MASK)
-        if random.random() < 0.5:
+        ikiwa random.random() < 0.5:
             answer = -answer
-        return answer
+        rudisha answer
 
-    def check_division(self, x, y):
+    eleza check_division(self, x, y):
         eq = self.assertEqual
         with self.subTest(x=x, y=y):
             q, r = divmod(x, y)
@@ -162,12 +162,12 @@ class LongTest(unittest.TestCase):
             eq(q, q2, "divmod returns different quotient than /")
             eq(r, r2, "divmod returns different mod than %")
             eq(x, q*y + r, "x != q*y + r after divmod")
-            if y > 0:
+            ikiwa y > 0:
                 self.assertTrue(0 <= r < y, "bad mod kutoka divmod")
             else:
                 self.assertTrue(y < r <= 0, "bad mod kutoka divmod")
 
-    def test_division(self):
+    eleza test_division(self):
         digits = list(range(1, MAXDIGITS+1)) + list(range(KARATSUBA_CUTOFF,
                                                       KARATSUBA_CUTOFF + 14))
         digits.append(KARATSUBA_CUTOFF * 3)
@@ -206,7 +206,7 @@ class LongTest(unittest.TestCase):
 
 
 
-    def test_karatsuba(self):
+    eleza test_karatsuba(self):
         digits = list(range(1, 5)) + list(range(KARATSUBA_CUTOFF,
                                                 KARATSUBA_CUTOFF + 10))
         digits.extend([KARATSUBA_CUTOFF * 10, KARATSUBA_CUTOFF * 100])
@@ -218,7 +218,7 @@ class LongTest(unittest.TestCase):
         for abits in bits:
             a = (1 << abits) - 1
             for bbits in bits:
-                if bbits < abits:
+                ikiwa bbits < abits:
                     continue
                 with self.subTest(abits=abits, bbits=bbits):
                     b = (1 << bbits) - 1
@@ -229,7 +229,7 @@ class LongTest(unittest.TestCase):
                          1)
                     self.assertEqual(x, y)
 
-    def check_bitop_identities_1(self, x):
+    eleza check_bitop_identities_1(self, x):
         eq = self.assertEqual
         with self.subTest(x=x):
             eq(x & 0, 0)
@@ -256,7 +256,7 @@ class LongTest(unittest.TestCase):
                 eq(x & -p2, x >> n << n)
                 eq(x & -p2, x & ~(p2 - 1))
 
-    def check_bitop_identities_2(self, x, y):
+    eleza check_bitop_identities_2(self, x, y):
         eq = self.assertEqual
         with self.subTest(x=x, y=y):
             eq(x & y, y & x)
@@ -269,7 +269,7 @@ class LongTest(unittest.TestCase):
             eq(x ^ y, (x & ~y) | (~x & y))
             eq(x ^ y, (x | y) & (~x | ~y))
 
-    def check_bitop_identities_3(self, x, y, z):
+    eleza check_bitop_identities_3(self, x, y, z):
         eq = self.assertEqual
         with self.subTest(x=x, y=y, z=z):
             eq((x & y) & z, x & (y & z))
@@ -278,7 +278,7 @@ class LongTest(unittest.TestCase):
             eq(x & (y | z), (x & y) | (x & z))
             eq(x | (y & z), (x | y) & (x | z))
 
-    def test_bitop_identities(self):
+    eleza test_bitop_identities(self):
         for x in special:
             self.check_bitop_identities_1(x)
         digits = range(1, MAXDIGITS+1)
@@ -290,21 +290,21 @@ class LongTest(unittest.TestCase):
                 self.check_bitop_identities_2(x, y)
                 self.check_bitop_identities_3(x, y, self.getran((lenx + leny)//2))
 
-    def slow_format(self, x, base):
+    eleza slow_format(self, x, base):
         digits = []
         sign = 0
-        if x < 0:
+        ikiwa x < 0:
             sign, x = 1, -x
         while x:
             x, r = divmod(x, base)
             digits.append(int(r))
         digits.reverse()
         digits = digits or [0]
-        return '-'[:sign] + \
+        rudisha '-'[:sign] + \
                {2: '0b', 8: '0o', 10: '', 16: '0x'}[base] + \
                "".join("0123456789abcdef"[i] for i in digits)
 
-    def check_format_1(self, x):
+    eleza check_format_1(self, x):
         for base, mapper in (2, bin), (8, oct), (10, str), (10, repr), (16, hex):
             got = mapper(x)
             with self.subTest(x=x, mapper=mapper.__name__):
@@ -313,7 +313,7 @@ class LongTest(unittest.TestCase):
             with self.subTest(got=got):
                 self.assertEqual(int(got, 0), x)
 
-    def test_format(self):
+    eleza test_format(self):
         for x in special:
             self.check_format_1(x)
         for i in range(10):
@@ -321,7 +321,7 @@ class LongTest(unittest.TestCase):
                 x = self.getran(lenx)
                 self.check_format_1(x)
 
-    def test_long(self):
+    eleza test_long(self):
         # Check conversions kutoka string
         LL = [
                 ('1' + '0'*20, 10**20),
@@ -332,7 +332,7 @@ class LongTest(unittest.TestCase):
                 for prefix in "", " ", "\t", "  \t\t  ":
                     ss = prefix + sign + s
                     vv = v
-                    if sign == "-" and v is not ValueError:
+                    ikiwa sign == "-" and v is not ValueError:
                         vv = -v
                     try:
                         self.assertEqual(int(ss), vv)
@@ -346,7 +346,7 @@ class LongTest(unittest.TestCase):
         self.assertRaises(ValueError, int, '-37L')
         self.assertRaises(ValueError, int, '0x32L', 16)
         self.assertRaises(ValueError, int, '1L', 21)
-        # ... but it's just a normal digit if base >= 22
+        # ... but it's just a normal digit ikiwa base >= 22
         self.assertEqual(int('1L', 22), 43)
 
         # tests with base 0
@@ -378,23 +378,23 @@ class LongTest(unittest.TestCase):
         self.assertRaises(ValueError, int, '\u3053\u3093\u306b\u3061\u306f')
 
 
-    def test_conversion(self):
+    eleza test_conversion(self):
 
-        class JustLong:
+        kundi JustLong:
             # test that __long__ no longer used in 3.x
-            def __long__(self):
-                return 42
+            eleza __long__(self):
+                rudisha 42
         self.assertRaises(TypeError, int, JustLong())
 
-        class LongTrunc:
+        kundi LongTrunc:
             # __long__ should be ignored in 3.x
-            def __long__(self):
-                return 42
-            def __trunc__(self):
-                return 1729
+            eleza __long__(self):
+                rudisha 42
+            eleza __trunc__(self):
+                rudisha 1729
         self.assertEqual(int(LongTrunc()), 1729)
 
-    def check_float_conversion(self, n):
+    eleza check_float_conversion(self, n):
         # Check that int -> float conversion behaviour matches
         # that of the pure Python version above.
         try:
@@ -412,7 +412,7 @@ class LongTest(unittest.TestCase):
         self.assertEqual(actual, expected, msg)
 
     @support.requires_IEEE_754
-    def test_float_conversion(self):
+    eleza test_float_conversion(self):
 
         exact_values = [0, 1, 2,
                          2**53-3,
@@ -481,7 +481,7 @@ class LongTest(unittest.TestCase):
             self.check_float_conversion(value)
             self.check_float_conversion(-value)
 
-    def test_float_overflow(self):
+    eleza test_float_overflow(self):
         for x in -2.0, -1.0, 0.0, 1.0, 2.0:
             self.assertEqual(float(int(x)), x)
 
@@ -512,7 +512,7 @@ class LongTest(unittest.TestCase):
         self.assertNotEqual(float(shuge), int(shuge),
             "float(shuge) should not equal int(shuge)")
 
-    def test_logs(self):
+    eleza test_logs(self):
         LOG10E = math.log10(math.e)
 
         for exp in list(range(10)) + [100, 1000, 10000]:
@@ -530,20 +530,20 @@ class LongTest(unittest.TestCase):
             self.assertRaises(ValueError, math.log, bad)
             self.assertRaises(ValueError, math.log10, bad)
 
-    def test_mixed_compares(self):
+    eleza test_mixed_compares(self):
         eq = self.assertEqual
 
         # We're mostly concerned with that mixing floats and ints does the
         # right stuff, even when ints are too large to fit in a float.
         # The safest way to check the results is to use an entirely different
-        # method, which we do here via a skeletal rational class (which
+        # method, which we do here via a skeletal rational kundi (which
         # represents all Python ints and floats exactly).
-        class Rat:
-            def __init__(self, value):
-                if isinstance(value, int):
+        kundi Rat:
+            eleza __init__(self, value):
+                ikiwa isinstance(value, int):
                     self.n = value
                     self.d = 1
-                elif isinstance(value, float):
+                elikiwa isinstance(value, float):
                     # Convert to exact rational equivalent.
                     f, e = math.frexp(abs(value))
                     assert f == 0 or 0.5 <= f < 1.0
@@ -565,13 +565,13 @@ class LongTest(unittest.TestCase):
                         e -= CHUNK
 
                     # Now |value| = top * 2**e exactly.
-                    if e >= 0:
+                    ikiwa e >= 0:
                         n = top << e
                         d = 1
                     else:
                         n = top
                         d = 1 << -e
-                    if value < 0:
+                    ikiwa value < 0:
                         n = -n
                     self.n = n
                     self.d = d
@@ -579,21 +579,21 @@ class LongTest(unittest.TestCase):
                 else:
                     raise TypeError("can't deal with %r" % value)
 
-            def _cmp__(self, other):
-                if not isinstance(other, Rat):
+            eleza _cmp__(self, other):
+                ikiwa not isinstance(other, Rat):
                     other = Rat(other)
                 x, y = self.n * other.d, self.d * other.n
-                return (x > y) - (x < y)
-            def __eq__(self, other):
-                return self._cmp__(other) == 0
-            def __ge__(self, other):
-                return self._cmp__(other) >= 0
-            def __gt__(self, other):
-                return self._cmp__(other) > 0
-            def __le__(self, other):
-                return self._cmp__(other) <= 0
-            def __lt__(self, other):
-                return self._cmp__(other) < 0
+                rudisha (x > y) - (x < y)
+            eleza __eq__(self, other):
+                rudisha self._cmp__(other) == 0
+            eleza __ge__(self, other):
+                rudisha self._cmp__(other) >= 0
+            eleza __gt__(self, other):
+                rudisha self._cmp__(other) > 0
+            eleza __le__(self, other):
+                rudisha self._cmp__(other) <= 0
+            eleza __lt__(self, other):
+                rudisha self._cmp__(other) < 0
 
         cases = [0, 0.001, 0.99, 1.0, 1.5, 1e20, 1e200]
         # 2**48 is an agizaant boundary in the internals.  2**53 is an
@@ -622,7 +622,7 @@ class LongTest(unittest.TestCase):
                     eq(x > y, Rcmp > 0)
                     eq(x >= y, Rcmp >= 0)
 
-    def test__format__(self):
+    eleza test__format__(self):
         self.assertEqual(format(123456789, 'd'), '123456789')
         self.assertEqual(format(123456789, 'd'), '123456789')
         self.assertEqual(format(123456789, ','), '123,456,789')
@@ -705,7 +705,7 @@ class LongTest(unittest.TestCase):
         # ensure that only int and float type specifiers work
         for format_spec in ([chr(x) for x in range(ord('a'), ord('z')+1)] +
                             [chr(x) for x in range(ord('A'), ord('Z')+1)]):
-            if not format_spec in 'bcdoxXeEfFgGn%':
+            ikiwa not format_spec in 'bcdoxXeEfFgGn%':
                 self.assertRaises(ValueError, format, 0, format_spec)
                 self.assertRaises(ValueError, format, 1, format_spec)
                 self.assertRaises(ValueError, format, -1, format_spec)
@@ -719,12 +719,12 @@ class LongTest(unittest.TestCase):
                 self.assertEqual(format(value, format_spec),
                                  format(float(value), format_spec))
 
-    def test_nan_inf(self):
+    eleza test_nan_inf(self):
         self.assertRaises(OverflowError, int, float('inf'))
         self.assertRaises(OverflowError, int, float('-inf'))
         self.assertRaises(ValueError, int, float('nan'))
 
-    def test_mod_division(self):
+    eleza test_mod_division(self):
         with self.assertRaises(ZeroDivisionError):
             _ = 1 % 0
 
@@ -738,7 +738,7 @@ class LongTest(unittest.TestCase):
         self.assertEqual(12 % -4, 0)
         self.assertEqual(-12 % -4, 0)
 
-    def test_true_division(self):
+    eleza test_true_division(self):
         huge = 1 << 40000
         mhuge = -huge
         self.assertEqual(huge / huge, 1.0)
@@ -772,7 +772,7 @@ class LongTest(unittest.TestCase):
         for zero in ["huge / 0", "mhuge / 0"]:
             self.assertRaises(ZeroDivisionError, eval, zero, namespace)
 
-    def test_floordiv(self):
+    eleza test_floordiv(self):
         with self.assertRaises(ZeroDivisionError):
             _ = 1 // 0
 
@@ -791,7 +791,7 @@ class LongTest(unittest.TestCase):
         self.assertEqual(12 // -3, -4)
         self.assertEqual(12 // 3, 4)
 
-    def check_truediv(self, a, b, skip_small=True):
+    eleza check_truediv(self, a, b, skip_small=True):
         """Verify that the result of a/b is correctly rounded, by
         comparing it with a pure Python implementation of correctly
         rounded division.  b should be nonzero."""
@@ -800,7 +800,7 @@ class LongTest(unittest.TestCase):
         # implementation converts the arguments to float directly and
         # then applies a float division.  This can give doubly-rounded
         # results on x87-using machines (particularly 32-bit Linux).
-        if skip_small and max(abs(a), abs(b)) < 2**DBL_MANT_DIG:
+        ikiwa skip_small and max(abs(a), abs(b)) < 2**DBL_MANT_DIG:
             return
 
         try:
@@ -822,7 +822,7 @@ class LongTest(unittest.TestCase):
                          "expected {}, got {}".format(a, b, expected, got))
 
     @support.requires_IEEE_754
-    def test_correctly_rounded_true_division(self):
+    eleza test_correctly_rounded_true_division(self):
         # more stringent tests than those above, checking that the
         # result of true division of ints is always correctly rounded.
         # This test should probably be considered CPython-specific.
@@ -892,7 +892,7 @@ class LongTest(unittest.TestCase):
         # largeish random divisions: a/b where |a| <= |b| <=
         # 2*|a|; |ans| is between 0.5 and 1.0, so error should
         # always be bounded by 2**-54 with equality possible only
-        # if the least significant bit of q=ans*2**53 is zero.
+        # ikiwa the least significant bit of q=ans*2**53 is zero.
         for M in [10**10, 10**100, 10**1000]:
             for i in range(1000):
                 a = random.randrange(1, M)
@@ -913,7 +913,7 @@ class LongTest(unittest.TestCase):
             self.check_truediv(-x, y)
             self.check_truediv(-x, -y)
 
-    def test_negative_shift_count(self):
+    eleza test_negative_shift_count(self):
         with self.assertRaises(ValueError):
             42 << -3
         with self.assertRaises(ValueError):
@@ -923,7 +923,7 @@ class LongTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             42 >> -(1 << 1000)
 
-    def test_lshift_of_zero(self):
+    eleza test_lshift_of_zero(self):
         self.assertEqual(0 << 0, 0)
         self.assertEqual(0 << 10, 0)
         with self.assertRaises(ValueError):
@@ -933,7 +933,7 @@ class LongTest(unittest.TestCase):
             0 << -(1 << 1000)
 
     @support.cpython_only
-    def test_huge_lshift_of_zero(self):
+    eleza test_huge_lshift_of_zero(self):
         # Shouldn't try to allocate memory for a huge shift. See issue #27870.
         # Other implementations may have a different boundary for overflow,
         # or not raise at all.
@@ -942,21 +942,21 @@ class LongTest(unittest.TestCase):
 
     @support.cpython_only
     @support.bigmemtest(sys.maxsize + 1000, memuse=2/15 * 2, dry_run=False)
-    def test_huge_lshift(self, size):
+    eleza test_huge_lshift(self, size):
         self.assertEqual(1 << (sys.maxsize + 1000), 1 << 1000 << sys.maxsize)
 
-    def test_huge_rshift(self):
+    eleza test_huge_rshift(self):
         self.assertEqual(42 >> (1 << 1000), 0)
         self.assertEqual((-42) >> (1 << 1000), -1)
 
     @support.cpython_only
     @support.bigmemtest(sys.maxsize + 500, memuse=2/15, dry_run=False)
-    def test_huge_rshift_of_huge(self, size):
+    eleza test_huge_rshift_of_huge(self, size):
         huge = ((1 << 500) + 11) << sys.maxsize
         self.assertEqual(huge >> (sys.maxsize + 1), (1 << 499) + 5)
         self.assertEqual(huge >> (sys.maxsize + 1000), 0)
 
-    def test_small_ints(self):
+    eleza test_small_ints(self):
         for i in range(-5, 257):
             self.assertIs(i, i + 0)
             self.assertIs(i, i * 1)
@@ -974,19 +974,19 @@ class LongTest(unittest.TestCase):
         self.assertIs(i - i, 0)
         self.assertIs(0 * i, 0)
 
-    def test_bit_length(self):
+    eleza test_bit_length(self):
         tiny = 1e-10
         for x in range(-65000, 65000):
             k = x.bit_length()
             # Check equivalence with Python version
             self.assertEqual(k, len(bin(x).lstrip('-0b')))
             # Behaviour as specified in the docs
-            if x != 0:
+            ikiwa x != 0:
                 self.assertTrue(2**(k-1) <= abs(x) < 2**k)
             else:
                 self.assertEqual(k, 0)
             # Alternative definition: x.bit_length() == 1 + floor(log_2(x))
-            if x != 0:
+            ikiwa x != 0:
                 # When x is an exact power of 2, numeric errors can
                 # cause floor(log(x)/log(2)) to be one too small; for
                 # small x this can be fixed by adding a small quantity
@@ -1008,7 +1008,7 @@ class LongTest(unittest.TestCase):
             self.assertEqual((a+1).bit_length(), i+1)
             self.assertEqual((-a-1).bit_length(), i+1)
 
-    def test_round(self):
+    eleza test_round(self):
         # check round-half-even algorithm. For round to nearest ten;
         # rounding map is invariant under adding multiples of 20
         test_dict = {0:0, 1:0, 2:0, 3:0, 4:0, 5:0,
@@ -1060,7 +1060,7 @@ class LongTest(unittest.TestCase):
             self.assertEqual(got, expect)
             self.assertIs(type(got), int)
 
-        # nonnegative second argument: round(x, n) should just return x
+        # nonnegative second argument: round(x, n) should just rudisha x
         for n in range(5):
             for i in range(100):
                 x = random.randrange(-10000, 10000)
@@ -1082,8 +1082,8 @@ class LongTest(unittest.TestCase):
         for e in bad_exponents:
             self.assertRaises(TypeError, round, 3, e)
 
-    def test_to_bytes(self):
-        def check(tests, byteorder, signed=False):
+    eleza test_to_bytes(self):
+        eleza check(tests, byteorder, signed=False):
             for test, expected in tests.items():
                 try:
                     self.assertEqual(
@@ -1181,12 +1181,12 @@ class LongTest(unittest.TestCase):
                          b'\xff\xff\xff\xff\xff')
         self.assertRaises(OverflowError, (1).to_bytes, 0, 'big')
 
-    def test_from_bytes(self):
-        def check(tests, byteorder, signed=False):
+    eleza test_kutoka_bytes(self):
+        eleza check(tests, byteorder, signed=False):
             for test, expected in tests.items():
                 try:
                     self.assertEqual(
-                        int.from_bytes(test, byteorder, signed=signed),
+                        int.kutoka_bytes(test, byteorder, signed=signed),
                         expected)
                 except Exception as err:
                     raise AssertionError(
@@ -1277,83 +1277,83 @@ class LongTest(unittest.TestCase):
         }
         check(tests4, 'little', signed=False)
 
-        class myint(int):
+        kundi myint(int):
             pass
 
-        self.assertIs(type(myint.from_bytes(b'\x00', 'big')), myint)
-        self.assertEqual(myint.from_bytes(b'\x01', 'big'), 1)
+        self.assertIs(type(myint.kutoka_bytes(b'\x00', 'big')), myint)
+        self.assertEqual(myint.kutoka_bytes(b'\x01', 'big'), 1)
         self.assertIs(
-            type(myint.from_bytes(b'\x00', 'big', signed=False)), myint)
-        self.assertEqual(myint.from_bytes(b'\x01', 'big', signed=False), 1)
-        self.assertIs(type(myint.from_bytes(b'\x00', 'little')), myint)
-        self.assertEqual(myint.from_bytes(b'\x01', 'little'), 1)
-        self.assertIs(type(myint.from_bytes(
+            type(myint.kutoka_bytes(b'\x00', 'big', signed=False)), myint)
+        self.assertEqual(myint.kutoka_bytes(b'\x01', 'big', signed=False), 1)
+        self.assertIs(type(myint.kutoka_bytes(b'\x00', 'little')), myint)
+        self.assertEqual(myint.kutoka_bytes(b'\x01', 'little'), 1)
+        self.assertIs(type(myint.kutoka_bytes(
             b'\x00', 'little', signed=False)), myint)
-        self.assertEqual(myint.from_bytes(b'\x01', 'little', signed=False), 1)
+        self.assertEqual(myint.kutoka_bytes(b'\x01', 'little', signed=False), 1)
         self.assertEqual(
-            int.from_bytes([255, 0, 0], 'big', signed=True), -65536)
+            int.kutoka_bytes([255, 0, 0], 'big', signed=True), -65536)
         self.assertEqual(
-            int.from_bytes((255, 0, 0), 'big', signed=True), -65536)
-        self.assertEqual(int.from_bytes(
+            int.kutoka_bytes((255, 0, 0), 'big', signed=True), -65536)
+        self.assertEqual(int.kutoka_bytes(
             bytearray(b'\xff\x00\x00'), 'big', signed=True), -65536)
-        self.assertEqual(int.from_bytes(
+        self.assertEqual(int.kutoka_bytes(
             bytearray(b'\xff\x00\x00'), 'big', signed=True), -65536)
-        self.assertEqual(int.from_bytes(
+        self.assertEqual(int.kutoka_bytes(
             array.array('B', b'\xff\x00\x00'), 'big', signed=True), -65536)
-        self.assertEqual(int.from_bytes(
+        self.assertEqual(int.kutoka_bytes(
             memoryview(b'\xff\x00\x00'), 'big', signed=True), -65536)
-        self.assertRaises(ValueError, int.from_bytes, [256], 'big')
-        self.assertRaises(ValueError, int.from_bytes, [0], 'big\x00')
-        self.assertRaises(ValueError, int.from_bytes, [0], 'little\x00')
-        self.assertRaises(TypeError, int.from_bytes, "", 'big')
-        self.assertRaises(TypeError, int.from_bytes, "\x00", 'big')
-        self.assertRaises(TypeError, int.from_bytes, 0, 'big')
-        self.assertRaises(TypeError, int.from_bytes, 0, 'big', True)
-        self.assertRaises(TypeError, myint.from_bytes, "", 'big')
-        self.assertRaises(TypeError, myint.from_bytes, "\x00", 'big')
-        self.assertRaises(TypeError, myint.from_bytes, 0, 'big')
-        self.assertRaises(TypeError, int.from_bytes, 0, 'big', True)
+        self.assertRaises(ValueError, int.kutoka_bytes, [256], 'big')
+        self.assertRaises(ValueError, int.kutoka_bytes, [0], 'big\x00')
+        self.assertRaises(ValueError, int.kutoka_bytes, [0], 'little\x00')
+        self.assertRaises(TypeError, int.kutoka_bytes, "", 'big')
+        self.assertRaises(TypeError, int.kutoka_bytes, "\x00", 'big')
+        self.assertRaises(TypeError, int.kutoka_bytes, 0, 'big')
+        self.assertRaises(TypeError, int.kutoka_bytes, 0, 'big', True)
+        self.assertRaises(TypeError, myint.kutoka_bytes, "", 'big')
+        self.assertRaises(TypeError, myint.kutoka_bytes, "\x00", 'big')
+        self.assertRaises(TypeError, myint.kutoka_bytes, 0, 'big')
+        self.assertRaises(TypeError, int.kutoka_bytes, 0, 'big', True)
 
-        class myint2(int):
-            def __new__(cls, value):
-                return int.__new__(cls, value + 1)
+        kundi myint2(int):
+            eleza __new__(cls, value):
+                rudisha int.__new__(cls, value + 1)
 
-        i = myint2.from_bytes(b'\x01', 'big')
+        i = myint2.kutoka_bytes(b'\x01', 'big')
         self.assertIs(type(i), myint2)
         self.assertEqual(i, 2)
 
-        class myint3(int):
-            def __init__(self, value):
+        kundi myint3(int):
+            eleza __init__(self, value):
                 self.foo = 'bar'
 
-        i = myint3.from_bytes(b'\x01', 'big')
+        i = myint3.kutoka_bytes(b'\x01', 'big')
         self.assertIs(type(i), myint3)
         self.assertEqual(i, 1)
         self.assertEqual(getattr(i, 'foo', 'none'), 'bar')
 
-    def test_access_to_nonexistent_digit_0(self):
+    eleza test_access_to_nonexistent_digit_0(self):
         # http://bugs.python.org/issue14630: A bug in _PyLong_Copy meant that
         # ob_digit[0] was being incorrectly accessed for instances of a
-        # subclass of int, with value 0.
-        class Integer(int):
-            def __new__(cls, value=0):
+        # subkundi of int, with value 0.
+        kundi Integer(int):
+            eleza __new__(cls, value=0):
                 self = int.__new__(cls, value)
                 self.foo = 'foo'
-                return self
+                rudisha self
 
         integers = [Integer(0) for i in range(1000)]
         for n in map(int, integers):
             self.assertEqual(n, 0)
 
-    def test_shift_bool(self):
-        # Issue #21422: ensure that bool << int and bool >> int return int
+    eleza test_shift_bool(self):
+        # Issue #21422: ensure that bool << int and bool >> int rudisha int
         for value in (True, False):
             for shift in (0, 2):
                 self.assertEqual(type(value << shift), int)
                 self.assertEqual(type(value >> shift), int)
 
-    def test_as_integer_ratio(self):
-        class myint(int):
+    eleza test_as_integer_ratio(self):
+        kundi myint(int):
             pass
         tests = [10, 0, -10, 1, sys.maxsize + 1, True, False, myint(42)]
         for value in tests:
@@ -1363,5 +1363,5 @@ class LongTest(unittest.TestCase):
             self.assertEqual(type(denominator), int)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

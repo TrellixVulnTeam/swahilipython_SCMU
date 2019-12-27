@@ -27,7 +27,7 @@ def _getlang():
     # Figure out what the current language is set to.
     return locale.getlocale(locale.LC_TIME)
 
-class LocaleTime(object):
+kundi LocaleTime(object):
     """Stores and handles locale-specific information related to time.
 
     ATTRIBUTES:
@@ -167,7 +167,7 @@ class LocaleTime(object):
         self.timezone = (no_saving, has_saving)
 
 
-class TimeRE(dict):
+kundi TimeRE(dict):
     """Handle conversion kutoka format directives to regexes."""
 
     def __init__(self, locale_time=None):
@@ -269,7 +269,7 @@ _TimeRE_cache = TimeRE()
 _CACHE_MAX_SIZE = 5 # Max number of regexes stored in _regex_cache
 _regex_cache = {}
 
-def _calc_julian_from_U_or_W(year, week_of_year, day_of_week, week_starts_Mon):
+def _calc_julian_kutoka_U_or_W(year, week_of_year, day_of_week, week_starts_Mon):
     """Calculate the Julian day based on the year, week of the year, and day of
     the week, with week_start_day representing whether the week of the year
     assumes the week starts on Sunday or Monday (6 or 0)."""
@@ -290,7 +290,7 @@ def _calc_julian_from_U_or_W(year, week_of_year, day_of_week, week_starts_Mon):
         return 1 + days_to_week + day_of_week
 
 
-def _calc_julian_from_V(iso_year, iso_week, iso_weekday):
+def _calc_julian_kutoka_V(iso_year, iso_week, iso_weekday):
     """Calculate the Julian day based on the ISO 8601 year, week, and weekday.
     ISO weeks start on Mondays, with week 01 being the week containing 4 Jan.
     ISO week days range kutoka 1 (Monday) to 7 (Sunday).
@@ -381,21 +381,21 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
                 year += 2000
             else:
                 year += 1900
-        elif group_key == 'Y':
+        lasivyo group_key == 'Y':
             year = int(found_dict['Y'])
-        elif group_key == 'G':
+        lasivyo group_key == 'G':
             iso_year = int(found_dict['G'])
-        elif group_key == 'm':
+        lasivyo group_key == 'm':
             month = int(found_dict['m'])
-        elif group_key == 'B':
+        lasivyo group_key == 'B':
             month = locale_time.f_month.index(found_dict['B'].lower())
-        elif group_key == 'b':
+        lasivyo group_key == 'b':
             month = locale_time.a_month.index(found_dict['b'].lower())
-        elif group_key == 'd':
+        lasivyo group_key == 'd':
             day = int(found_dict['d'])
-        elif group_key == 'H':
+        lasivyo group_key == 'H':
             hour = int(found_dict['H'])
-        elif group_key == 'I':
+        lasivyo group_key == 'I':
             hour = int(found_dict['I'])
             ampm = found_dict.get('p', '').lower()
             # If there was no AM/PM indicator, we'll treat this like AM
@@ -405,37 +405,37 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
                 # 12 midnight == 12 AM == hour 0
                 if hour == 12:
                     hour = 0
-            elif ampm == locale_time.am_pm[1]:
+            lasivyo ampm == locale_time.am_pm[1]:
                 # We're in PM so we need to add 12 to the hour unless
                 # we're looking at 12 noon.
                 # 12 noon == 12 PM == hour 12
                 if hour != 12:
                     hour += 12
-        elif group_key == 'M':
+        lasivyo group_key == 'M':
             minute = int(found_dict['M'])
-        elif group_key == 'S':
+        lasivyo group_key == 'S':
             second = int(found_dict['S'])
-        elif group_key == 'f':
+        lasivyo group_key == 'f':
             s = found_dict['f']
             # Pad to always return microseconds.
             s += "0" * (6 - len(s))
             fraction = int(s)
-        elif group_key == 'A':
+        lasivyo group_key == 'A':
             weekday = locale_time.f_weekday.index(found_dict['A'].lower())
-        elif group_key == 'a':
+        lasivyo group_key == 'a':
             weekday = locale_time.a_weekday.index(found_dict['a'].lower())
-        elif group_key == 'w':
+        lasivyo group_key == 'w':
             weekday = int(found_dict['w'])
             if weekday == 0:
                 weekday = 6
             else:
                 weekday -= 1
-        elif group_key == 'u':
+        lasivyo group_key == 'u':
             weekday = int(found_dict['u'])
             weekday -= 1
-        elif group_key == 'j':
+        lasivyo group_key == 'j':
             julian = int(found_dict['j'])
-        elif group_key in ('U', 'W'):
+        lasivyo group_key in ('U', 'W'):
             week_of_year = int(found_dict[group_key])
             if group_key == 'U':
                 # U starts week on Sunday.
@@ -443,9 +443,9 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
             else:
                 # W starts week on Monday.
                 week_of_year_start = 0
-        elif group_key == 'V':
+        lasivyo group_key == 'V':
             iso_week = int(found_dict['V'])
-        elif group_key == 'z':
+        lasivyo group_key == 'z':
             z = found_dict['z']
             if z == 'Z':
                 gmtoff = 0
@@ -468,7 +468,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
                 if z.startswith("-"):
                     gmtoff = -gmtoff
                     gmtoff_fraction = -gmtoff_fraction
-        elif group_key == 'Z':
+        lasivyo group_key == 'Z':
             # Since -1 is default value only need to worry about setting tz if
             # it can be something other than -1.
             found_zone = found_dict['Z'].lower()
@@ -494,7 +494,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
             raise ValueError("Day of the year directive '%j' is not "
                              "compatible with ISO year directive '%G'. "
                              "Use '%Y' instead.")
-    elif week_of_year is None and iso_week is not None:
+    lasivyo week_of_year is None and iso_week is not None:
         if weekday is None:
             raise ValueError("ISO week directive '%V' must be used with "
                              "the ISO year directive '%G' and a weekday "
@@ -508,7 +508,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
     if year is None and month == 2 and day == 29:
         year = 1904  # 1904 is first leap year of 20th century
         leap_year_fix = True
-    elif year is None:
+    lasivyo year is None:
         year = 1900
 
 
@@ -517,10 +517,10 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
     if julian is None and weekday is not None:
         if week_of_year is not None:
             week_starts_Mon = True if week_of_year_start == 0 else False
-            julian = _calc_julian_from_U_or_W(year, week_of_year, weekday,
+            julian = _calc_julian_kutoka_U_or_W(year, week_of_year, weekday,
                                                 week_starts_Mon)
-        elif iso_year is not None and iso_week is not None:
-            year, julian = _calc_julian_from_V(iso_year, iso_week, weekday + 1)
+        lasivyo iso_year is not None and iso_week is not None:
+            year, julian = _calc_julian_kutoka_V(iso_year, iso_week, weekday + 1)
         if julian is not None and julian <= 0:
             year -= 1
             yday = 366 if calendar.isleap(year) else 365
@@ -535,7 +535,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
                   datetime_date(year, 1, 1).toordinal() + 1
     else:  # Assume that if they bothered to include Julian day (or if it was
            # calculated above with year/week/weekday) it will be accurate.
-        datetime_result = datetime_date.fromordinal(
+        datetime_result = datetime_date.kutokaordinal(
                             (julian - 1) +
                             datetime_date(year, 1, 1).toordinal())
         year = datetime_result.year
@@ -563,7 +563,7 @@ def _strptime_time(data_string, format="%a %b %d %H:%M:%S %Y"):
     return time.struct_time(tt[:time._STRUCT_TM_ITEMS])
 
 def _strptime_datetime(cls, data_string, format="%a %b %d %H:%M:%S %Y"):
-    """Return a class cls instance based on the input string and the
+    """Return a kundi cls instance based on the input string and the
     format string."""
     tt, fraction, gmtoff_fraction = _strptime(data_string, format)
     tzname, gmtoff = tt[-2:]

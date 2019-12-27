@@ -1,24 +1,24 @@
 # line 1
-def wrap(foo=None):
-    def wrapper(func):
-        return func
-    return wrapper
+eleza wrap(foo=None):
+    eleza wrapper(func):
+        rudisha func
+    rudisha wrapper
 
 # line 7
-def replace(func):
-    def insteadfunc():
-        print('hello')
-    return insteadfunc
+eleza replace(func):
+    eleza insteadfunc():
+        andika('hello')
+    rudisha insteadfunc
 
 # line 13
 @wrap()
 @wrap(wrap)
-def wrapped():
+eleza wrapped():
     pass
 
 # line 19
 @replace
-def gone():
+eleza gone():
     pass
 
 # line 24
@@ -34,14 +34,14 @@ tlli = lambda d: d and \
     d
 
 # line 36
-def onelinefunc(): pass
+eleza onelinefunc(): pass
 
 # line 39
-def manyargs(arg1, arg2,
+eleza manyargs(arg1, arg2,
 arg3, arg4): pass
 
 # line 43
-def twolinefunc(m): return m and \
+eleza twolinefunc(m): rudisha m and \
 m
 
 # line 47
@@ -50,12 +50,12 @@ a = [None,
      None]
 
 # line 52
-def setfunc(func):
+eleza setfunc(func):
     globals()["anonymous"] = func
 setfunc(lambda x, y: x*y)
 
 # line 57
-def with_comment():  # hello
+eleza with_comment():  # hello
     world
 
 # line 61
@@ -66,90 +66,90 @@ multiline_sig = [
     ]
 
 # line 68
-def func69():
-    class cls70:
-        def func71():
+eleza func69():
+    kundi cls70:
+        eleza func71():
             pass
-    return cls70
+    rudisha cls70
 extra74 = 74
 
 # line 76
-def func77(): pass
+eleza func77(): pass
 (extra78, stuff78) = 'xy'
 extra79 = 'stop'
 
 # line 81
-class cls82:
-    def func83(): pass
+kundi cls82:
+    eleza func83(): pass
 (extra84, stuff84) = 'xy'
 extra85 = 'stop'
 
 # line 87
-def func88():
+eleza func88():
     # comment
-    return 90
+    rudisha 90
 
 # line 92
-def f():
-    class X:
-        def g():
+eleza f():
+    kundi X:
+        eleza g():
             "doc"
-            return 42
-    return X
-method_in_dynamic_class = f().g
+            rudisha 42
+    rudisha X
+method_in_dynamic_kundi = f().g
 
 #line 101
-def keyworded(*arg1, arg2=1):
+eleza keyworded(*arg1, arg2=1):
     pass
 
 #line 105
-def annotated(arg1: list):
+eleza annotated(arg1: list):
     pass
 
 #line 109
-def keyword_only_arg(*, arg):
+eleza keyword_only_arg(*, arg):
     pass
 
 @wrap(lambda: None)
-def func114():
-    return 115
+eleza func114():
+    rudisha 115
 
-class ClassWithMethod:
-    def method(self):
+kundi ClassWithMethod:
+    eleza method(self):
         pass
 
 kutoka functools agiza wraps
 
-def decorator(func):
+eleza decorator(func):
     @wraps(func)
-    def fake():
-        return 42
-    return fake
+    eleza fake():
+        rudisha 42
+    rudisha fake
 
 #line 129
 @decorator
-def real():
-    return 20
+eleza real():
+    rudisha 20
 
 #line 134
-class cls135:
-    def func136():
-        def func137():
+kundi cls135:
+    eleza func136():
+        eleza func137():
             never_reached1
             never_reached2
 
 #line 141
-def positional_only_arg(a, /):
+eleza positional_only_arg(a, /):
     pass
 
 #line 145
-def all_markers(a, b, /, c, d, *, e, f):
+eleza all_markers(a, b, /, c, d, *, e, f):
     pass
 
 # line 149
-def all_markers_with_args_and_kwargs(a, b, /, c, d, *args, e, f, **kwargs):
+eleza all_markers_with_args_and_kwargs(a, b, /, c, d, *args, e, f, **kwargs):
     pass
 
 #line 153
-def all_markers_with_defaults(a, b=1, /, c=2, d=3, *, e=4, f=5):
+eleza all_markers_with_defaults(a, b=1, /, c=2, d=3, *, e=4, f=5):
     pass

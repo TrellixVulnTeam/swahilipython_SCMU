@@ -22,14 +22,14 @@ The :mod:`functools` module defines the following functions:
 
 .. decorator:: cached_property(func)
 
-   Transform a method of a class into a property whose value is computed once
+   Transform a method of a kundi into a property whose value is computed once
    and then cached as a normal attribute for the life of the instance. Similar
    to :func:`property`, with the addition of caching. Useful for expensive
    computed properties of instances that are otherwise effectively immutable.
 
    Example::
 
-       class DataSet:
+       kundi DataSet:
            def __init__(self, sequence_of_numbers):
                self._data = sequence_of_numbers
 
@@ -48,7 +48,7 @@ The :mod:`functools` module defines the following functions:
       This decorator requires that the ``__dict__`` attribute on each instance
       be a mutable mapping. This means it will not work with some types, such as
       metaclasses (since the ``__dict__`` attributes on type instances are
-      read-only proxies for the class namespace), and those that specify
+      read-only proxies for the kundi namespace), and those that specify
       ``__slots__`` without including ``__dict__`` as one of the defined slots
       (as such classes don't provide a ``__dict__`` attribute at all).
 
@@ -59,7 +59,7 @@ The :mod:`functools` module defines the following functions:
    with tools that accept key functions (such as :func:`sorted`, :func:`min`,
    :func:`max`, :func:`heapq.nlargest`, :func:`heapq.nsmallest`,
    :func:`itertools.groupby`).  This function is primarily used as a transition
-   tool for programs being converted from Python 2 which supported the use of
+   tool for programs being converted kutoka Python 2 which supported the use of
    comparison functions.
 
    A comparison function is any callable that accept two arguments, compares them,
@@ -180,18 +180,18 @@ The :mod:`functools` module defines the following functions:
 
 .. decorator:: total_ordering
 
-   Given a class defining one or more rich comparison ordering methods, this
-   class decorator supplies the rest.  This simplifies the effort involved
+   Given a kundi defining one or more rich comparison ordering methods, this
+   kundi decorator supplies the rest.  This simplifies the effort involved
    in specifying all of the possible rich comparison operations:
 
-   The class must define one of :meth:`__lt__`, :meth:`__le__`,
+   The kundi must define one of :meth:`__lt__`, :meth:`__le__`,
    :meth:`__gt__`, or :meth:`__ge__`.
-   In addition, the class should supply an :meth:`__eq__` method.
+   In addition, the kundi should supply an :meth:`__eq__` method.
 
    For example::
 
        @total_ordering
-       class Student:
+       kundi Student:
            def _is_valid_operand(self, other):
                return (hasattr(other, "lastname") and
                        hasattr(other, "firstname"))
@@ -218,7 +218,7 @@ The :mod:`functools` module defines the following functions:
    .. versionadded:: 3.2
 
    .. versionchanged:: 3.4
-      Returning NotImplemented from the underlying comparison function for
+      Returning NotImplemented kutoka the underlying comparison function for
       unrecognised types is now supported.
 
 .. function:: partial(func, /, *args, **keywords)
@@ -245,7 +245,7 @@ The :mod:`functools` module defines the following functions:
    a callable that behaves like the :func:`int` function where the *base* argument
    defaults to two:
 
-      >>> from functools import partial
+      >>> kutoka functools agiza partial
       >>> basetwo = partial(int, base=2)
       >>> basetwo.__doc__ = 'Convert base 2 string to an int.'
       >>> basetwo('10010')
@@ -275,7 +275,7 @@ The :mod:`functools` module defines the following functions:
 
    Example::
 
-      >>> class Cell(object):
+      >>> kundi Cell(object):
       ...     def __init__(self):
       ...         self._alive = False
       ...     @property
@@ -298,11 +298,11 @@ The :mod:`functools` module defines the following functions:
 
 .. function:: reduce(function, iterable[, initializer])
 
-   Apply *function* of two arguments cumulatively to the items of *iterable*, from
+   Apply *function* of two arguments cumulatively to the items of *iterable*, kutoka
    left to right, so as to reduce the iterable to a single value.  For example,
    ``reduce(lambda x, y: x+y, [1, 2, 3, 4, 5])`` calculates ``((((1+2)+3)+4)+5)``.
    The left argument, *x*, is the accumulated value and the right argument, *y*, is
-   the update value from the *iterable*.  If the optional *initializer* is present,
+   the update value kutoka the *iterable*.  If the optional *initializer* is present,
    it is placed before the items of the iterable in the calculation, and serves as
    a default when the iterable is empty.  If *initializer* is not given and
    *iterable* contains only one item, the first item is returned.
@@ -331,7 +331,7 @@ The :mod:`functools` module defines the following functions:
    decorator. Note that the dispatch happens on the type of the first argument,
    create your function accordingly::
 
-     >>> from functools import singledispatch
+     >>> kutoka functools agiza singledispatch
      >>> @singledispatch
      ... def fun(arg, verbose=False):
      ...     if verbose:
@@ -427,9 +427,9 @@ The :mod:`functools` module defines the following functions:
    attribute::
 
     >>> fun.registry.keys()
-    dict_keys([<class 'NoneType'>, <class 'int'>, <class 'object'>,
-              <class 'decimal.Decimal'>, <class 'list'>,
-              <class 'float'>])
+    dict_keys([<kundi 'NoneType'>, <kundi 'int'>, <kundi 'object'>,
+              <kundi 'decimal.Decimal'>, <kundi 'list'>,
+              <kundi 'float'>])
     >>> fun.registry[float]
     <function fun_num at 0x1035a2840>
     >>> fun.registry[object]
@@ -450,7 +450,7 @@ The :mod:`functools` module defines the following functions:
    decorator. Note that the dispatch happens on the type of the first non-self
    or non-cls argument, create your function accordingly::
 
-    class Negator:
+    kundi Negator:
         @singledispatchmethod
         def neg(self, arg):
             raise NotImplementedError("Cannot negate a")
@@ -466,9 +466,9 @@ The :mod:`functools` module defines the following functions:
    ``@singledispatchmethod`` supports nesting with other decorators such as
    ``@classmethod``. Note that to allow for ``dispatcher.register``,
    ``singledispatchmethod`` must be the *outer most* decorator. Here is the
-   ``Negator`` class with the ``neg`` methods being class bound::
+   ``Negator`` kundi with the ``neg`` methods being kundi bound::
 
-    class Negator:
+    kundi Negator:
         @singledispatchmethod
         @classmethod
         def neg(cls, arg):
@@ -496,7 +496,7 @@ The :mod:`functools` module defines the following functions:
    arguments are tuples to specify which attributes of the original function are
    assigned directly to the matching attributes on the wrapper function and which
    attributes of the wrapper function are updated with the corresponding attributes
-   from the original function. The default values for these arguments are the
+   kutoka the original function. The default values for these arguments are the
    module level constants ``WRAPPER_ASSIGNMENTS`` (which assigns to the wrapper
    function's ``__module__``, ``__name__``, ``__qualname__``, ``__annotations__``
    and ``__doc__``, the documentation string) and ``WRAPPER_UPDATES`` (which
@@ -514,7 +514,7 @@ The :mod:`functools` module defines the following functions:
    than helpful.
 
    :func:`update_wrapper` may be used with callables other than functions. Any
-   attributes named in *assigned* or *updated* that are missing from the object
+   attributes named in *assigned* or *updated* that are missing kutoka the object
    being wrapped are ignored (i.e. this function will not attempt to set them
    on the wrapper function). :exc:`AttributeError` is still raised if the
    wrapper function itself is missing any attributes named in *updated*.
@@ -541,7 +541,7 @@ The :mod:`functools` module defines the following functions:
    ``partial(update_wrapper, wrapped=wrapped, assigned=assigned, updated=updated)``.
    For example::
 
-      >>> from functools import wraps
+      >>> kutoka functools agiza wraps
       >>> def my_decorator(f):
       ...     @wraps(f)
       ...     def wrapper(*args, **kwds):

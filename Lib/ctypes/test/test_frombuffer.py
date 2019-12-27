@@ -50,7 +50,7 @@ class Test(unittest.TestCase):
 
     def test_fortran_contiguous(self):
         try:
-            import _testbuffer
+            agiza _testbuffer
         except ImportError as err:
             self.skipTest(str(err))
         flags = _testbuffer.ND_WRITABLE | _testbuffer.ND_FORTRAN
@@ -121,7 +121,7 @@ class Test(unittest.TestCase):
             (c_int * 1).from_buffer_copy(a, 16 * sizeof(c_int))
 
     def test_abstract(self):
-        from ctypes import _Pointer, _SimpleCData, _CFuncPtr
+        from ctypes agiza _Pointer, _SimpleCData, _CFuncPtr
 
         self.assertRaises(TypeError, Array.from_buffer, bytearray(10))
         self.assertRaises(TypeError, Structure.from_buffer, bytearray(10))

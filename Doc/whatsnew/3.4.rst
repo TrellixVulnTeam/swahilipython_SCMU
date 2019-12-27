@@ -12,10 +12,10 @@
    the new documentation rather than explaining the feature inline.
 
    * While the maintainer will periodically go through Misc/NEWS
-   and add changes, it's best not to rely on this. We know from experience
+   and add changes, it's best not to rely on this. We know kutoka experience
    that any changes that aren't in the What's New documentation around the
    time of the original release will remain largely unknown to the community
-   for years, even if they're added later. We also know from experience that
+   for years, even if they're added later. We also know kutoka experience that
    other priorities can arise, and the maintainer will run out of time to do
    updates -- in such cases, end users will be much better served by partial
    notifications that at least give a hint about new features to
@@ -146,11 +146,11 @@ Security improvements:
   the `PKCS#5 password-based key derivation function 2
   <https://en.wikipedia.org/wiki/PBKDF2>`_.
 * :ref:`TLSv1.1 and TLSv1.2 support <whatsnew-tls-11-12>` for :mod:`ssl`.
-* :ref:`Retrieving certificates from the Windows system cert store support
+* :ref:`Retrieving certificates kutoka the Windows system cert store support
   <whatsnew34-win-cert-store>` for :mod:`ssl`.
 * :ref:`Server-side SNI (Server Name Indication) support
   <whatsnew34-sni>` for :mod:`ssl`.
-* The :class:`ssl.SSLContext` class has a :ref:`lot of improvements
+* The :class:`ssl.SSLContext` kundi has a :ref:`lot of improvements
   <whatsnew34-sslcontext>`.
 * All modules in the standard library that support SSL now support server
   certificate verification, including hostname matching
@@ -211,7 +211,7 @@ overridden through Makefile options.
 On Windows and Mac OS X, the CPython installers now default to installing
 ``pip`` along with CPython itself (users may opt out of installing it
 during the installation process). Window users will need to opt in to the
-automatic ``PATH`` modifications to have ``pip`` available from the command
+automatic ``PATH`` modifications to have ``pip`` available kutoka the command
 line by default, otherwise it can still be accessed through the Python
 launcher for Windows as ``py -m pip``.
 
@@ -328,7 +328,7 @@ compatibility, exceptions raised during encoding and decoding operations
 are wrapped in a chained exception of the same type that mentions the
 name of the codec responsible for producing the error::
 
-    >>> import codecs
+    >>> agiza codecs
 
     >>> codecs.decode(b"abcdefgh", "hex")
     Traceback (most recent call last):
@@ -359,10 +359,10 @@ name of the codec responsible for producing the error::
 Finally, as the examples above show, these improvements have permitted
 the restoration of the convenience aliases for the non-Unicode codecs that
 were themselves restored in Python 3.2. This means that encoding binary data
-to and from its hexadecimal representation (for example) can now be written
+to and kutoka its hexadecimal representation (for example) can now be written
 as::
 
-    >>> from codecs import encode, decode
+    >>> kutoka codecs agiza encode, decode
     >>> encode(b"hello", "hex")
     b'68656c6c6f'
     >>> decode(b"68656c6c6f", "hex")
@@ -381,14 +381,14 @@ PEP 451: A ModuleSpec Type for the Import System
 ------------------------------------------------
 
 :pep:`451` provides an encapsulation of the information about a module that the
-import machinery will use to load it (that is, a module specification).  This
-helps simplify both the import implementation and several import-related APIs.
+agiza machinery will use to load it (that is, a module specification).  This
+helps simplify both the agiza implementation and several import-related APIs.
 The change is also a stepping stone for `several future import-related
 improvements`__.
 
 __ https://mail.python.org/pipermail/python-dev/2013-November/130111.html
 
-The public-facing changes from the PEP are entirely backward-compatible.
+The public-facing changes kutoka the PEP are entirely backward-compatible.
 Furthermore, they should be transparent to everyone but importer authors.  Key
 finder and loader methods have been deprecated, but they will continue working.
 New importers should use the new methods described in the PEP.  Existing
@@ -438,7 +438,7 @@ Some smaller changes made to the core Python language are:
   :issue:`16772`.)
 
 * Frame objects now have a :func:`~frame.clear` method that clears all
-  references to local variables from the frame.  (Contributed by Antoine Pitrou
+  references to local variables kutoka the frame.  (Contributed by Antoine Pitrou
   in :issue:`17934`.)
 
 * :class:`memoryview` is now registered as a :class:`Sequence <collections.abc>`,
@@ -528,7 +528,7 @@ pathlib
 The new :mod:`pathlib` module offers classes representing filesystem paths
 with semantics appropriate for different operating systems.  Path classes are
 divided between *pure paths*, which provide purely computational operations
-without I/O, and *concrete paths*, which inherit from pure paths but also
+without I/O, and *concrete paths*, which inherit kutoka pure paths but also
 provide I/O operations.
 
 For Python 3.4, this module is considered a :term:`provisional API`.
@@ -596,8 +596,8 @@ New function :func:`abc.get_cache_token` can be used to know when to invalidate
 caches that are affected by changes in the object graph.  (Contributed
 by Łukasz Langa in :issue:`16832`.)
 
-New class :class:`~abc.ABC` has :class:`~abc.ABCMeta` as its meta class.
-Using ``ABC`` as a base class has essentially the same effect as specifying
+New kundi :class:`~abc.ABC` has :class:`~abc.ABCMeta` as its meta class.
+Using ``ABC`` as a base kundi has essentially the same effect as specifying
 ``metaclass=abc.ABCMeta``, but is simpler to type and easier to read.
 (Contributed by Bruno Dupuis in :issue:`16049`.)
 
@@ -621,7 +621,7 @@ Storchaka in :issue:`8311`.)
 argparse
 --------
 
-The :class:`~argparse.FileType` class now accepts *encoding* and
+The :class:`~argparse.FileType` kundi now accepts *encoding* and
 *errors* arguments, which are passed through to :func:`open`.  (Contributed
 by Lucas Maystre in :issue:`11175`.)
 
@@ -651,7 +651,7 @@ The encoding and decoding functions in :mod:`base64` now accept any
 
 New functions :func:`~base64.a85encode`, :func:`~base64.a85decode`,
 :func:`~base64.b85encode`, and :func:`~base64.b85decode` provide the ability to
-encode and decode binary data from and to ``Ascii85`` and the git/mercurial
+encode and decode binary data kutoka and to ``Ascii85`` and the git/mercurial
 ``Base85`` formats, respectively.  The ``a85`` functions have options that can
 be used to make them compatible with the variants of the ``Ascii85`` encoding,
 including the Adobe variant.  (Contributed by Martin Morrison, the Mercurial
@@ -680,7 +680,7 @@ contextlib
 ----------
 
 The new :class:`contextlib.suppress` context manager helps to clarify the
-intent of code that deliberately suppresses exceptions from a single
+intent of code that deliberately suppresses exceptions kutoka a single
 statement.  (Contributed by Raymond Hettinger in :issue:`15806` and
 Zero Piraeus in :issue:`19266`.)
 
@@ -690,7 +690,7 @@ for utility scripts to handle inflexible APIs that write their output to
 context manager, the :data:`sys.stdout` output can be redirected to any
 other stream or, in conjunction with :class:`io.StringIO`, to a string.
 The latter can be especially useful, for example, to capture output
-from a function that was written to implement a command line interface.
+kutoka a function that was written to implement a command line interface.
 It is recommended only for utility scripts because it affects the
 global state of :data:`sys.stdout`.  (Contributed by Raymond Hettinger
 in :issue:`15805`.)
@@ -723,10 +723,10 @@ operation.
 A new method, :func:`~dis.get_instructions`, provides an iterator that emits
 the Instruction stream for a given piece of Python code.  Thus it is now
 possible to write a program that inspects and manipulates a bytecode
-object in ways different from those provided by the :mod:`~dis` module
+object in ways different kutoka those provided by the :mod:`~dis` module
 itself.  For example::
 
-    >>> import dis
+    >>> agiza dis
     >>> for instr in dis.get_instructions(lambda x: x + 1):
     ...     print(instr.opname)
     LOAD_FAST
@@ -737,7 +737,7 @@ itself.  For example::
 The various display tools in the :mod:`dis` module have been rewritten to use
 these new components.
 
-In addition, a new application-friendly class :class:`~dis.Bytecode` provides
+In addition, a new application-friendly kundi :class:`~dis.Bytecode` provides
 an object-oriented API for inspecting bytecode in both in human-readable form
 and for iterating over instructions.  The :class:`~dis.Bytecode` constructor
 takes the same arguments that :func:`~dis.get_instruction` does (plus an
@@ -759,9 +759,9 @@ returned as a multi-line string::
      '              6 BINARY_ADD',
      '              7 RETURN_VALUE']
 
-:class:`~dis.Bytecode` also has a class method,
-:meth:`~dis.Bytecode.from_traceback`, that provides the ability to manipulate a
-traceback (that is, ``print(Bytecode.from_traceback(tb).dis())`` is equivalent
+:class:`~dis.Bytecode` also has a kundi method,
+:meth:`~dis.Bytecode.kutoka_traceback`, that provides the ability to manipulate a
+traceback (that is, ``print(Bytecode.kutoka_traceback(tb).dis())`` is equivalent
 to ``distb(tb)``).
 
 (Contributed by Nick Coghlan, Ryan Kelly and Thomas Kluyver in :issue:`11816`
@@ -802,7 +802,7 @@ R. David Murray in :issue:`18600`.)
 New method :meth:`~email.message.Message.as_bytes` added to produce a bytes
 representation of the message in a fashion similar to how ``as_string``
 produces a string representation.  It does not accept the *maxheaderlen*
-argument, but does accept the *unixfrom* and *policy* arguments. The
+argument, but does accept the *unixkutoka* and *policy* arguments. The
 :class:`~email.message.Message` :meth:`~email.message.Message.__bytes__` method
 calls it, meaning that ``bytes(mymsg)`` will now produce the intuitive
 result:  a bytes object containing the fully formatted message.  (Contributed
@@ -822,7 +822,7 @@ A pair of new subclasses of :class:`~email.message.Message` have been added
 :attr:`~email.policy.EmailPolicy.content_manager`.  All documentation is
 currently in the new module, which is being added as part of email's new
 :term:`provisional API`.  These classes provide a number of new methods that
-make extracting content from and inserting content into email messages much
+make extracting content kutoka and inserting content into email messages much
 easier.  For details, see the :mod:`~email.contentmanager` documentation and
 the :ref:`email-examples`.  These API additions complete the
 bulk of the work that was planned as part of the email6 project.  The currently
@@ -854,7 +854,7 @@ The new :func:`~functools.partialmethod` descriptor brings partial argument
 application to descriptors, just as :func:`~functools.partial` provides
 for normal callables. The new descriptor also makes it easier to get
 arbitrary callables (including :func:`~functools.partial` instances)
-to behave like normal instance methods when included in a class definition.
+to behave like normal instance methods when included in a kundi definition.
 (Contributed by Alon Horev and Nick Coghlan in :issue:`4331`.)
 
 .. _whatsnew-singledispatch:
@@ -872,7 +872,7 @@ multiple implementations of an operation that allows it to work with
       PEP written and implemented by Łukasz Langa.
 
 :func:`~functools.total_ordering` now supports a return value of
-:const:`NotImplemented` from the underlying comparison function.  (Contributed
+:const:`NotImplemented` kutoka the underlying comparison function.  (Contributed
 by Katie Miller in :issue:`10042`.)
 
 A pure-python version of the :func:`~functools.partial` function is now in the
@@ -971,10 +971,10 @@ idlelib and IDLE
 ----------------
 
 Since idlelib implements the IDLE shell and editor and is not intended for
-import by other programs, it gets improvements with every release. See
+agiza by other programs, it gets improvements with every release. See
 :file:`Lib/idlelib/NEWS.txt` for a cumulative list of changes since 3.3.0,
 as well as changes made in future 3.4.x releases. This file is also available
-from the IDLE :menuselection:`Help --> About IDLE` dialog.
+kutoka the IDLE :menuselection:`Help --> About IDLE` dialog.
 
 
 importlib
@@ -991,7 +991,7 @@ for the :meth:`~importlib.abc.InspectLoader.get_code` method.  However,
 it will normally be desirable to override the default implementation
 for performance reasons.  (Contributed by Brett Cannon in :issue:`18072`.)
 
-The :func:`~importlib.reload` function has been moved from :mod:`imp` to
+The :func:`~importlib.reload` function has been moved kutoka :mod:`imp` to
 :mod:`importlib` as part of the :mod:`imp` module deprecation.  (Contributed by
 Berker Peksag in :issue:`18193`.)
 
@@ -1000,8 +1000,8 @@ providing access to the bytecode version number.  This replaces the
 :func:`~imp.get_magic` function in the deprecated :mod:`imp` module.
 (Contributed by Brett Cannon in :issue:`18192`.)
 
-New :mod:`importlib.util` functions :func:`~importlib.util.cache_from_source`
-and :func:`~importlib.util.source_from_cache` replace the same-named functions
+New :mod:`importlib.util` functions :func:`~importlib.util.cache_kutoka_source`
+and :func:`~importlib.util.source_kutoka_cache` replace the same-named functions
 in the deprecated :mod:`imp` module.  (Contributed by Brett Cannon in
 :issue:`18194`.)
 
@@ -1011,7 +1011,7 @@ the :class:`.InspectLoader` ABC, which means that ``runpy`` and
 by Brett Cannon in :issue:`18058`.)
 
 :mod:`importlib.util` has a new function :func:`~importlib.util.decode_source`
-that decodes source from bytes using universal newline processing.  This is
+that decodes source kutoka bytes using universal newline processing.  This is
 useful for implementing :meth:`.InspectLoader.get_source` methods.
 
 :class:`importlib.machinery.ExtensionFileLoader` now has a
@@ -1035,7 +1035,7 @@ Daniel Urban, Aaron Iles and Nick Coghlan in :issue:`13266`.)
 
 As part of the implementation of the new :mod:`enum` module, the
 :mod:`inspect` module now has substantially better support for custom
-``__dir__`` methods and dynamic class attributes provided through
+``__dir__`` methods and dynamic kundi attributes provided through
 metaclasses.  (Contributed by Ethan Furman in :issue:`18929` and
 :issue:`19030`.)
 
@@ -1082,14 +1082,14 @@ setting *port* to ``None``).  (Contributed by Vinay Sajip in commit
 ce46195b56a9.)
 
 :func:`~logging.config.fileConfig` now accepts a
-:class:`configparser.RawConfigParser` subclass instance for the *fname*
+:class:`configparser.RawConfigParser` subkundi instance for the *fname*
 parameter.  This facilitates using a configuration file when logging
 configuration is just a part of the overall application configuration, or where
 the application modifies the configuration before passing it to
 :func:`~logging.config.fileConfig`.  (Contributed by Vinay Sajip in
 :issue:`16110`.)
 
-Logging configuration data received from a socket via the
+Logging configuration data received kutoka a socket via the
 :func:`logging.config.listen` function can now be validated before being
 processed by supplying a verification function as the argument to the new
 *verify* keyword argument.  (Contributed by Vinay Sajip in :issue:`15452`.)
@@ -1105,7 +1105,7 @@ the new version restores the Python2 behavior of recording only one copy of
 interned strings and preserving the interning on deserialization, and extends
 this "one copy" ability to any object type (including handling recursive
 references).  This reduces both the size of ``.pyc`` files and the amount of
-memory a module occupies in memory when it is loaded from a ``.pyc`` (or
+memory a module occupies in memory when it is loaded kutoka a ``.pyc`` (or
 ``.pyo``) file.  (Contributed by Kristján Valur Jónsson in :issue:`16475`,
 with additional speedups by Antoine Pitrou in :issue:`19219`.)
 
@@ -1143,7 +1143,7 @@ without interfering with each other.  (Contributed by Richard Oudkerk in
 :issue:`18999`.)
 
 Except when using the old *fork* start method, child processes no longer
-inherit unneeded handles/file descriptors from their parents (part of
+inherit unneeded handles/file descriptors kutoka their parents (part of
 :issue:`8713`).
 
 :mod:`multiprocessing` now relies on :mod:`runpy` (which implements the
@@ -1199,12 +1199,12 @@ pdb
 ---
 
 :mod:`pdb` has been enhanced to handle generators, :keyword:`yield`, and
-``yield from`` in a more useful fashion.  This is especially helpful when
+``yield kutoka`` in a more useful fashion.  This is especially helpful when
 debugging :mod:`asyncio` based programs.  (Contributed by Andrew Svetlov and
 Xavier de Gaye in :issue:`16596`.)
 
-The ``print`` command has been removed from :mod:`pdb`, restoring access to the
-Python :func:`print` function from the pdb command line.  Python2's ``pdb`` did
+The ``print`` command has been removed kutoka :mod:`pdb`, restoring access to the
+Python :func:`print` function kutoka the pdb command line.  Python2's ``pdb`` did
 not have a ``print`` command; instead, entering ``print`` executed the
 ``print`` statement.  In Python3 ``print`` was mistakenly made an alias for the
 pdb :pdbcmd:`p` command.  ``p``, however, prints the ``repr`` of its argument,
@@ -1256,7 +1256,7 @@ Catucci in :issue:`4473`.)
 pprint
 ------
 
-The :mod:`pprint` module's :class:`~pprint.PrettyPrinter` class and its
+The :mod:`pprint` module's :class:`~pprint.PrettyPrinter` kundi and its
 :func:`~pprint.pformat`, and :func:`~pprint.pprint` functions have a new
 option, *compact*, that controls how the output is formatted.  Currently
 setting *compact* to ``True`` means that sequences will be printed with as many
@@ -1270,7 +1270,7 @@ syntax.  (Contributed by Antoine Pitrou in :issue:`17150`.)
 pty
 ---
 
-:func:`pty.spawn` now returns the status value from :func:`os.waitpid` on
+:func:`pty.spawn` now returns the status value kutoka :func:`os.waitpid` on
 the child process, instead of ``None``.  (Contributed by Gregory P. Smith.)
 
 
@@ -1302,7 +1302,7 @@ re
 
 New :func:`~re.fullmatch` function and :meth:`.regex.fullmatch` method anchor
 the pattern at both ends of the string to match.  This provides a way to be
-explicit about the goal of the match, which avoids a class of subtle bugs where
+explicit about the goal of the match, which avoids a kundi of subtle bugs where
 ``$`` characters get lost during code changes or the addition of alternatives
 to an existing regular expression.  (Contributed by Matthew Barnett in
 :issue:`16203`.)
@@ -1379,7 +1379,7 @@ to avoid affecting the global socket map.  (Contributed by Vinay Sajip in
 smtplib
 -------
 
-:exc:`~smtplib.SMTPException` is now a subclass of :exc:`OSError`, which allows
+:exc:`~smtplib.SMTPException` is now a subkundi of :exc:`OSError`, which allows
 both socket level errors and SMTP protocol level errors to be caught in one
 try/except statement by code that only cares whether or not an error occurred.
 (Contributed by Ned Jackson Lovely in :issue:`2118`.)
@@ -1466,7 +1466,7 @@ OpenSSL does not do any CRL verification by default.  (Contributed by
 Christien Heimes in :issue:`8813`.)
 
 New :class:`~ssl.SSLContext` method :meth:`~ssl.SSLContext.load_default_certs`
-loads a set of default "certificate authority" (CA) certificates from default
+loads a set of default "certificate authority" (CA) certificates kutoka default
 locations, which vary according to the platform.  It can be used to load both
 TLS web server authentication certificates
 (``purpose=``:data:`~ssl.Purpose.SERVER_AUTH`) for a client to use to verify a
@@ -1478,7 +1478,7 @@ Heimes in :issue:`19292`.)
 
 Two new windows-only functions, :func:`~ssl.enum_certificates` and
 :func:`~ssl.enum_crls` provide the ability to retrieve certificates,
-certificate information, and CRLs from the Windows cert store.  (Contributed
+certificate information, and CRLs kutoka the Windows cert store.  (Contributed
 by Christian Heimes in :issue:`17134`.)
 
 .. _whatsnew34-sni:
@@ -1564,7 +1564,7 @@ module :ref:`sets it <rlcompleter-config>` to a function that enables tab
 completion and history saving (in :file:`~/.python-history`) if the platform
 supports :mod:`readline`.  If you do not want this (new) behavior, you can
 override it in :envvar:`PYTHONSTARTUP`, :mod:`sitecustomize`, or
-:mod:`usercustomize` by deleting this attribute from :mod:`sys` (or setting it
+:mod:`usercustomize` by deleting this attribute kutoka :mod:`sys` (or setting it
 to some other callable).  (Contributed by Éric Araujo and Antoine Pitrou in
 :issue:`5845`.)
 
@@ -1580,7 +1580,7 @@ extract tarfile archives.  (Contributed by Berker Peksag in :issue:`13477`.)
 textwrap
 --------
 
-The :class:`~textwrap.TextWrapper` class has two new attributes/constructor
+The :class:`~textwrap.TextWrapper` kundi has two new attributes/constructor
 arguments: :attr:`~textwrap.TextWrapper.max_lines`, which limits the number of
 lines in the output, and :attr:`~textwrap.TextWrapper.placeholder`, which is a
 string that will appear at the end of the output if it has been truncated
@@ -1595,8 +1595,8 @@ threading
 ---------
 
 The :class:`~threading.Thread` object representing the main thread can be
-obtained from the new :func:`~threading.main_thread` function.  In normal
-conditions this will be the thread from which the Python interpreter was
+obtained kutoka the new :func:`~threading.main_thread` function.  In normal
+conditions this will be the thread kutoka which the Python interpreter was
 started.  (Contributed by Andrew Svetlov in :issue:`18882`.)
 
 
@@ -1616,7 +1616,7 @@ A new :func:`~types.DynamicClassAttribute` descriptor provides a way to define
 an attribute that acts normally when looked up through an instance object, but
 which is routed to the *class* ``__getattr__`` when looked up through the
 class.  This allows one to have properties active on a class, and have virtual
-attributes on the class with the same name (see :mod:`Enum` for an example).
+attributes on the kundi with the same name (see :mod:`Enum` for an example).
 (Contributed by Ethan Furman in :issue:`19030`.)
 
 
@@ -1629,7 +1629,7 @@ in :issue:`16423`.)
 
 The http method that will be used by a :class:`~urllib.request.Request` class
 can now be specified by setting a :class:`~urllib.request.Request.method`
-class attribute on the subclass.  (Contributed by Jason R Coombs in
+kundi attribute on the subclass.  (Contributed by Jason R Coombs in
 :issue:`18978`.)
 
 :class:`~urllib.request.Request` objects are now reusable: if the
@@ -1639,9 +1639,9 @@ means, for example, that it is now possible to use the same
 :class:`~urllib.request.Request` object in more than one
 :meth:`.OpenerDirector.open` call with different *data* arguments, or to
 modify a :class:`~urllib.request.Request`\ 's ``url`` rather than recomputing it
-from scratch.  There is also a new
+kutoka scratch.  There is also a new
 :meth:`~urllib.request.Request.remove_header` method that can be used to remove
-headers from a :class:`~urllib.request.Request`.  (Contributed by Alexey
+headers kutoka a :class:`~urllib.request.Request`.  (Contributed by Alexey
 Kachayev in :issue:`16464`, Daniel Wozniak in :issue:`17485`, and Damien Brecht
 and Senthil Kumaran in :issue:`17272`.)
 
@@ -1654,7 +1654,7 @@ Berker Peksag in :issue:`15701`.)
 unittest
 --------
 
-The :class:`~unittest.TestCase` class has a new method,
+The :class:`~unittest.TestCase` kundi has a new method,
 :meth:`~unittest.TestCase.subTest`, that produces a context manager whose
 :keyword:`with` block becomes a "sub-test".  This context manager allows a test
 method to dynamically generate subtests  by, say, calling the ``subTest``
@@ -1662,7 +1662,7 @@ context manager inside a loop.  A single test method can thereby produce an
 indefinite number of separately-identified and separately-counted tests, all of
 which will run even if one or more of them fail.  For example::
 
-    class NumbersTest(unittest.TestCase):
+    kundi NumbersTest(unittest.TestCase):
         def test_even(self):
             for i in range(6):
                 with self.subTest(i=i):
@@ -1689,13 +1689,13 @@ consistent test ordering.  (Contributed by Martin Melin and Jeff Ramnani in
 has been run, if the test is successful.  On Python interpreters that do
 garbage collection, this allows the tests to be garbage collected if nothing
 else is holding a reference to the test.  It is possible to override this
-behavior by creating a :class:`~unittest.TestSuite` subclass that defines a
+behavior by creating a :class:`~unittest.TestSuite` subkundi that defines a
 custom ``_removeTestAtIndex`` method.  (Contributed by Tom Wardill, Matt
 McClure, and Andrew Svetlov in :issue:`11798`.)
 
 A new test assertion context-manager, :meth:`~unittest.TestCase.assertLogs`,
 will ensure that a given block of code emits a log message using the
-:mod:`logging` module.  By default the message can come from any logger and
+:mod:`logging` module.  By default the message can come kutoka any logger and
 have a priority of ``INFO`` or higher, but both the logger name and an
 alternative minimum logging level may be specified.  The object returned by the
 context manager can be queried for the :class:`~logging.LogRecord`\ s and/or
@@ -1748,10 +1748,10 @@ object`.  (Contributed by Serhiy Storchaka in :issue:`8311`.)
 weakref
 -------
 
-New :class:`~weakref.WeakMethod` class simulates weak references to bound
+New :class:`~weakref.WeakMethod` kundi simulates weak references to bound
 methods.  (Contributed by Antoine Pitrou in :issue:`14631`.)
 
-New :class:`~weakref.finalize` class makes it possible to register a callback
+New :class:`~weakref.finalize` kundi makes it possible to register a callback
 to be invoked when an object is garbage collected, without needing to
 carefully manage the lifecycle of the weak reference itself.  (Contributed by
 Richard Oudkerk in :issue:`15528`.)
@@ -1783,9 +1783,9 @@ zipfile
 -------
 
 The :meth:`~zipfile.PyZipFile.writepy` method of the
-:class:`~zipfile.PyZipFile` class has a new *filterfunc* option that can be
+:class:`~zipfile.PyZipFile` kundi has a new *filterfunc* option that can be
 used to control which directories and files are added to the archive.  For
-example, this could be used to exclude test files from the archive.
+example, this could be used to exclude test files kutoka the archive.
 (Contributed by Christian Tismer in :issue:`19274`.)
 
 The *allowZip64* parameter to :class:`~zipfile.ZipFile` and
@@ -1825,7 +1825,7 @@ part of a reference cycle.
 As part of this change, module globals are no longer forcibly set to
 :const:`None` during interpreter shutdown in most cases, instead relying
 on the normal operation of the cyclic garbage collector.  This avoids a
-whole class of interpreter-shutdown-time errors, usually involving
+whole kundi of interpreter-shutdown-time errors, usually involving
 ``__del__`` methods, that have plagued Python since the cyclic GC
 was first introduced.
 
@@ -1888,7 +1888,7 @@ Other Build and C API Changes
 -----------------------------
 
 * The new :c:func:`PyType_GetSlot` function has been added to the stable ABI,
-  allowing retrieval of function pointers from named type slots when using
+  allowing retrieval of function pointers kutoka named type slots when using
   the limited API.  (Contributed by Martin von Löwis in :issue:`17162`.)
 
 * The new :c:func:`Py_SetStandardStreamEncoding` pre-initialization API
@@ -1939,14 +1939,14 @@ Other Improvements
   the user's ``site-packages`` directory, and all :envvar:`PYTHON*` environment
   variables are ignored (it implies both ``-s`` and ``-E``).  Other
   restrictions may also be applied in the future, with the goal being to
-  isolate the execution of a script from the user's environment.  This is
+  isolate the execution of a script kutoka the user's environment.  This is
   appropriate, for example, when Python is used to run a system script.  On
   most POSIX systems it can and should be used in the ``#!`` line of system
   scripts.  (Contributed by Christian Heimes in :issue:`16499`.)
 
 * Tab-completion is now enabled by default in the interactive interpreter
   on systems that support :mod:`readline`.  History is also enabled by default,
-  and is written to (and read from) the file :file:`~/.python-history`.
+  and is written to (and read kutoka) the file :file:`~/.python-history`.
   (Contributed by Antoine Pitrou and Éric Araujo in :issue:`5845`.)
 
 * Invoking the Python interpreter with ``--version`` now outputs the version to
@@ -1973,15 +1973,15 @@ Other Improvements
 * ``python -m`` now works with namespace packages.
 
 * The :mod:`stat` module is now implemented in C, which means it gets the
-  values for its constants from the C header files, instead of having the
+  values for its constants kutoka the C header files, instead of having the
   values hard-coded in the python module as was previously the case.
 
-* Loading multiple python modules from a single OS module (``.so``, ``.dll``)
+* Loading multiple python modules kutoka a single OS module (``.so``, ``.dll``)
   now works correctly (previously it silently returned the first python
   module in the file).  (Contributed by Václav Šmilauer in :issue:`16421`.)
 
 * A new opcode, :opcode:`LOAD_CLASSDEREF`, has been added to fix a bug in the
-  loading of free variables in class bodies that could be triggered by certain
+  loading of free variables in kundi bodies that could be triggered by certain
   uses of :ref:`__prepare__ <prepare>`.  (Contributed by Benjamin Peterson in
   :issue:`17853`.)
 
@@ -2057,7 +2057,7 @@ Significant Optimizations
   savings.
 
 * :func:`os.urandom` now uses a lazily-opened persistent file descriptor
-  so as to avoid using many file descriptors when run in parallel from
+  so as to avoid using many file descriptors when run in parallel kutoka
   multiple threads.  (Contributed by Antoine Pitrou in :issue:`18756`.)
 
 
@@ -2094,12 +2094,12 @@ Deprecations in the Python API
   ``exec_module`` method
   (:meth:`importlib.abc.Loader.exec_module`,
   :meth:`importlib.abc.InspectLoader.exec_module`
-  :meth:`importlib.abc.SourceLoader.exec_module`) and let the import system
+  :meth:`importlib.abc.SourceLoader.exec_module`) and let the agiza system
   take care of the rest; and
   :meth:`importlib.abc.Loader.module_repr`,
   :meth:`importlib.util.module_for_loader`, :meth:`importlib.util.set_loader`,
   and :meth:`importlib.util.set_package` are no longer needed because their
-  functions are now handled automatically by the import system.
+  functions are now handled automatically by the agiza system.
 
 * The :mod:`imp` module is pending deprecation. To keep compatibility with
   Python 2/3 code bases, the module's removal is currently not scheduled.
@@ -2111,7 +2111,7 @@ Deprecations in the Python API
   deprecated.  Python 3.6 will require an explicit digest name or constructor as
   *digestmod* argument.
 
-* The internal ``Netrc`` class in the :mod:`ftplib` module has been documented
+* The internal ``Netrc`` kundi in the :mod:`ftplib` module has been documented
   as deprecated in its docstring for quite some time.  It now emits a
   :exc:`DeprecationWarning` and will be removed completely in Python 3.5.
 
@@ -2160,7 +2160,7 @@ Removed
 Operating Systems No Longer Supported
 -------------------------------------
 
-Support for the following operating systems has been removed from the source
+Support for the following operating systems has been removed kutoka the source
 and build tools:
 
 * OS/2 (:issue:`16135`).
@@ -2186,7 +2186,7 @@ removed:
   been meaningless since Python 3.2, when the "new GIL" was introduced
   (:issue:`19199`).
 
-* ``PyLoader`` and ``PyPycLoader`` have been removed from :mod:`importlib`.
+* ``PyLoader`` and ``PyPycLoader`` have been removed kutoka :mod:`importlib`.
   (Contributed by Taras Lyapun in :issue:`15641`.)
 
 * The *strict* argument to :class:`~http.client.HTTPConnection` and
@@ -2198,7 +2198,7 @@ removed:
   ``get_selector``, ``set_proxy``, ``get_origin_req_host``, and
   ``is_unverifiable`` have been removed (use direct attribute access instead).
 
-* Support for loading the deprecated ``TYPE_INT64`` has been removed from
+* Support for loading the deprecated ``TYPE_INT64`` has been removed kutoka
   :mod:`marshal`.  (Contributed by Dan Riti in :issue:`15480`.)
 
 * :class:`inspect.Signature`: positional-only parameters are now required
@@ -2223,7 +2223,7 @@ removed:
 Code Cleanups
 -------------
 
-* The unused and undocumented internal ``Scanner`` class has been removed from
+* The unused and undocumented internal ``Scanner`` kundi has been removed kutoka
   the :mod:`pydoc` module.
 
 * The private and effectively unused ``_gestalt`` module has been removed,
@@ -2289,22 +2289,22 @@ Changes in the Python API
 
 * Frozen packages no longer set ``__path__`` to a list containing the package
   name, they now set it to an empty list.  The previous behavior could cause
-  the import system to do the wrong thing on submodule imports if there was
+  the agiza system to do the wrong thing on submodule imports if there was
   also a directory with the same name as the frozen package.  The correct way
   to determine if a module is a package or not is to use ``hasattr(module,
   '__path__')`` (:issue:`18065`).
 
 * Frozen modules no longer define a ``__file__`` attribute. It's semantically
-  incorrect for frozen modules to set the attribute as they are not loaded from
-  any explicit location. If you must know that a module comes from frozen code
+  incorrect for frozen modules to set the attribute as they are not loaded kutoka
+  any explicit location. If you must know that a module comes kutoka frozen code
   then you can see if the module's ``__spec__.location`` is set to ``'frozen'``,
-  check if the loader is a subclass of
+  check if the loader is a subkundi of
   :class:`importlib.machinery.FrozenImporter`,
   or if Python 2 compatibility is necessary you can use :func:`imp.is_frozen`.
 
 * :func:`py_compile.compile` now raises :exc:`FileExistsError` if the file path
   it would write to is a symlink or a non-regular file. This is to act as a
-  warning that import will overwrite those files with a regular file regardless
+  warning that agiza will overwrite those files with a regular file regardless
   of what type of file path they were originally.
 
 * :meth:`importlib.abc.SourceLoader.get_source` no longer raises
@@ -2351,7 +2351,7 @@ Changes in the Python API
   keyword.  If you've been paying attention to deprecation warnings your code
   should already be specifying any additional arguments via keywords.
 
-* Strings between ``from __future__ import ...`` statements now *always* raise
+* Strings between ``kutoka __future__ agiza ...`` statements now *always* raise
   a :exc:`SyntaxError`.  Previously if there was no leading docstring, an
   interstitial string would sometimes be ignored.  This brings CPython into
   compliance with the language spec; Jython and PyPy already were.
@@ -2372,7 +2372,7 @@ Changes in the Python API
 
 * The :attr:`~cgi.FieldStorage.file` attribute is now automatically closed when
   the creating :class:`cgi.FieldStorage` instance is garbage collected. If you
-  were pulling the file object out separately from the :class:`cgi.FieldStorage`
+  were pulling the file object out separately kutoka the :class:`cgi.FieldStorage`
   instance and not keeping the instance alive, then you should either store the
   entire :class:`cgi.FieldStorage` instance or read the contents of the file
   before the :class:`cgi.FieldStorage` instance is garbage collected.
@@ -2418,7 +2418,7 @@ Changes in the Python API
   since it means state is retained between test runs, breaking the test
   isolation that :mod:`unittest` is designed to provide.  However, if the lack
   of isolation is considered acceptable, the old behavior can be restored by
-  creating a :mod:`~unittest.TestSuite` subclass that defines a
+  creating a :mod:`~unittest.TestSuite` subkundi that defines a
   ``_removeTestAtIndex`` method that does nothing (see
   :meth:`.TestSuite.__iter__`) (:issue:`11798`).
 
@@ -2478,7 +2478,7 @@ Changes in the Python API
   part of the Python startup improvements.  As a consequence of this, it is no
   longer the case that importing :mod:`collections` automatically imports
   :mod:`collections.abc`.  If your program depended on the (undocumented)
-  implicit import, you will need to add an explicit ``import collections.abc``
+  implicit import, you will need to add an explicit ``agiza collections.abc``
   (:issue:`20784`).
 
 
@@ -2532,8 +2532,8 @@ many applications.
 For applications which require the old previous behavior, they can pass an
 alternate context::
 
-    import urllib.request
-    import ssl
+    agiza urllib.request
+    agiza ssl
 
     # This disables all verification
     context = ssl._create_unverified_context()

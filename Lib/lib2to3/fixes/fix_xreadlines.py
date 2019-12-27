@@ -8,7 +8,7 @@ kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name
 
 
-class FixXreadlines(fixer_base.BaseFix):
+kundi FixXreadlines(fixer_base.BaseFix):
     BM_compatible = True
     PATTERN = """
     power< call=any+ trailer< '.' 'xreadlines' > trailer< '(' ')' > >
@@ -16,10 +16,10 @@ class FixXreadlines(fixer_base.BaseFix):
     power< any+ trailer< '.' no_call='xreadlines' > >
     """
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         no_call = results.get("no_call")
 
-        if no_call:
+        ikiwa no_call:
             no_call.replace(Name("__iter__", prefix=no_call.prefix))
         else:
             node.replace([x.clone() for x in results["call"]])

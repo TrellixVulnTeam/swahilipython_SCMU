@@ -13,7 +13,7 @@ class Test_OpenGL_libs(unittest.TestCase):
         if sys.platform == "win32":
             lib_gl = find_library("OpenGL32")
             lib_glu = find_library("Glu32")
-        elif sys.platform == "darwin":
+        lasivyo sys.platform == "darwin":
             lib_gl = lib_glu = find_library("OpenGL")
         else:
             lib_gl = find_library("GL")

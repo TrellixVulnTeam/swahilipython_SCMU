@@ -1,19 +1,19 @@
 #! /usr/bin/env python3
 
 agiza sys
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     sys.modules['idlelib.pyshell'] = sys.modules['__main__']
 
 try:
     kutoka tkinter agiza *
 except ImportError:
-    print("** IDLE can't agiza Tkinter.\n"
+    andika("** IDLE can't agiza Tkinter.\n"
           "Your Python may not be configured for Tk. **", file=sys.__stderr__)
     raise SystemExit(1)
 
 # Valid arguments for the ...Awareness call below are defined in the following.
 # https://msdn.microsoft.com/en-us/library/windows/desktop/dn280512(v=vs.85).aspx
-if sys.platform == 'win32':
+ikiwa sys.platform == 'win32':
     try:
         agiza ctypes
         PROCESS_SYSTEM_DPI_AWARE = 1
@@ -22,7 +22,7 @@ if sys.platform == 'win32':
         pass
 
 agiza tkinter.messagebox as tkMessageBox
-if TkVersion < 8.5:
+ikiwa TkVersion < 8.5:
     root = Tk()  # otherwise create root in main
     root.withdraw()
     kutoka idlelib.run agiza fix_scaling
@@ -64,9 +64,9 @@ PORT = 0  # someday pass in host, port for remote debug capability
 # internal warnings to the console.  ScriptBinding.check_syntax() will
 # temporarily redirect the stream to the shell window to display warnings when
 # checking user's code.
-warning_stream = sys.__stderr__  # None, at least on Windows, if no console.
+warning_stream = sys.__stderr__  # None, at least on Windows, ikiwa no console.
 
-def idle_showwarning(
+eleza idle_showwarning(
         message, category, filename, lineno, file=None, line=None):
     """Show Idle-format warning (after replacing warnings.showwarning).
 
@@ -74,33 +74,33 @@ def idle_showwarning(
     which can be None, the capture of the consequence AttributeError,
     and the output of a hard-coded prompt.
     """
-    if file is None:
+    ikiwa file is None:
         file = warning_stream
     try:
         file.write(idle_formatwarning(
                 message, category, filename, lineno, line=line))
         file.write(">>> ")
     except (AttributeError, OSError):
-        pass  # if file (probably __stderr__) is invalid, skip warning.
+        pass  # ikiwa file (probably __stderr__) is invalid, skip warning.
 
 _warnings_showwarning = None
 
-def capture_warnings(capture):
+eleza capture_warnings(capture):
     "Replace warning.showwarning with idle_showwarning, or reverse."
 
     global _warnings_showwarning
-    if capture:
-        if _warnings_showwarning is None:
+    ikiwa capture:
+        ikiwa _warnings_showwarning is None:
             _warnings_showwarning = warnings.showwarning
             warnings.showwarning = idle_showwarning
     else:
-        if _warnings_showwarning is not None:
+        ikiwa _warnings_showwarning is not None:
             warnings.showwarning = _warnings_showwarning
             _warnings_showwarning = None
 
 capture_warnings(True)
 
-def extended_linecache_checkcache(filename=None,
+eleza extended_linecache_checkcache(filename=None,
                                   orig_checkcache=linecache.checkcache):
     """Extend linecache.checkcache to preserve the <pyshell#...> entries
 
@@ -114,7 +114,7 @@ def extended_linecache_checkcache(filename=None,
     cache = linecache.cache
     save = {}
     for key in list(cache):
-        if key[:1] + key[-1:] == '<>':
+        ikiwa key[:1] + key[-1:] == '<>':
             save[key] = cache.pop(key)
     orig_checkcache(filename)
     cache.update(save)
@@ -123,10 +123,10 @@ def extended_linecache_checkcache(filename=None,
 linecache.checkcache = extended_linecache_checkcache
 
 
-class PyShellEditorWindow(EditorWindow):
+kundi PyShellEditorWindow(EditorWindow):
     "Regular text edit window in IDLE, supports breakpoints"
 
-    def __init__(self, *args):
+    eleza __init__(self, *args):
         self.breakpoints = []
         EditorWindow.__init__(self, *args)
         self.text.bind("<<set-breakpoint-here>>", self.set_breakpoint_here)
@@ -137,12 +137,12 @@ class PyShellEditorWindow(EditorWindow):
         self.breakpointPath = os.path.join(
                 idleConf.userdir, 'breakpoints.lst')
         # whenever a file is changed, restore breakpoints
-        def filename_changed_hook(old_hook=self.io.filename_change_hook,
+        eleza filename_changed_hook(old_hook=self.io.filename_change_hook,
                                   self=self):
             self.restore_file_breaks()
             old_hook()
         self.io.set_filename_change_hook(filename_changed_hook)
-        if self.io.filename:
+        ikiwa self.io.filename:
             self.restore_file_breaks()
         self.color_breakpoint_text()
 
@@ -155,25 +155,25 @@ class PyShellEditorWindow(EditorWindow):
         ("Clear Breakpoint", "<<clear-breakpoint-here>>", None)
     ]
 
-    def color_breakpoint_text(self, color=True):
+    eleza color_breakpoint_text(self, color=True):
         "Turn colorizing of breakpoint text on or off"
-        if self.io is None:
+        ikiwa self.io is None:
             # possible due to update in restore_file_breaks
             return
-        if color:
+        ikiwa color:
             theme = idleConf.CurrentTheme()
             cfg = idleConf.GetHighlight(theme, "break")
         else:
             cfg = {'foreground': '', 'background': ''}
         self.text.tag_config('BREAK', cfg)
 
-    def set_breakpoint(self, lineno):
+    eleza set_breakpoint(self, lineno):
         text = self.text
         filename = self.io.filename
         text.tag_add("BREAK", "%d.0" % lineno, "%d.0" % (lineno+1))
         try:
             self.breakpoints.index(lineno)
-        except ValueError:  # only add if missing, i.e. do once
+        except ValueError:  # only add ikiwa missing, i.e. do once
             self.breakpoints.append(lineno)
         try:    # update the subprocess debugger
             debug = self.flist.pyshell.interp.debugger
@@ -181,19 +181,19 @@ class PyShellEditorWindow(EditorWindow):
         except: # but debugger may not be active right now....
             pass
 
-    def set_breakpoint_here(self, event=None):
+    eleza set_breakpoint_here(self, event=None):
         text = self.text
         filename = self.io.filename
-        if not filename:
+        ikiwa not filename:
             text.bell()
             return
         lineno = int(float(text.index("insert")))
         self.set_breakpoint(lineno)
 
-    def clear_breakpoint_here(self, event=None):
+    eleza clear_breakpoint_here(self, event=None):
         text = self.text
         filename = self.io.filename
-        if not filename:
+        ikiwa not filename:
             text.bell()
             return
         lineno = int(float(text.index("insert")))
@@ -209,11 +209,11 @@ class PyShellEditorWindow(EditorWindow):
         except:
             pass
 
-    def clear_file_breaks(self):
-        if self.breakpoints:
+    eleza clear_file_breaks(self):
+        ikiwa self.breakpoints:
             text = self.text
             filename = self.io.filename
-            if not filename:
+            ikiwa not filename:
                 text.bell()
                 return
             self.breakpoints = []
@@ -224,7 +224,7 @@ class PyShellEditorWindow(EditorWindow):
             except:
                 pass
 
-    def store_file_breaks(self):
+    eleza store_file_breaks(self):
         "Save breakpoints when file is saved"
         # XXX 13 Dec 2002 KBK Currently the file must be saved before it can
         #     be run.  The breaks are saved at that time.  If we introduce
@@ -240,7 +240,7 @@ class PyShellEditorWindow(EditorWindow):
         #     Since a modified file has to be saved before it is
         #     run, and since self.breakpoints (kutoka which the subprocess
         #     debugger is loaded) is updated during the save, the visible
-        #     breaks stay synched with the subprocess even if one of these
+        #     breaks stay synched with the subprocess even ikiwa one of these
         #     unexpected breakpoint deletions occurs.
         breaks = self.breakpoints
         filename = self.io.filename
@@ -252,45 +252,45 @@ class PyShellEditorWindow(EditorWindow):
         try:
             with open(self.breakpointPath, "w") as new_file:
                 for line in lines:
-                    if not line.startswith(filename + '='):
+                    ikiwa not line.startswith(filename + '='):
                         new_file.write(line)
                 self.update_breakpoints()
                 breaks = self.breakpoints
-                if breaks:
+                ikiwa breaks:
                     new_file.write(filename + '=' + str(breaks) + '\n')
         except OSError as err:
-            if not getattr(self.root, "breakpoint_error_displayed", False):
+            ikiwa not getattr(self.root, "breakpoint_error_displayed", False):
                 self.root.breakpoint_error_displayed = True
                 tkMessageBox.showerror(title='IDLE Error',
                     message='Unable to update breakpoint list:\n%s'
                         % str(err),
                     parent=self.text)
 
-    def restore_file_breaks(self):
+    eleza restore_file_breaks(self):
         self.text.update()   # this enables setting "BREAK" tags to be visible
-        if self.io is None:
-            # can happen if IDLE closes due to the .update() call
+        ikiwa self.io is None:
+            # can happen ikiwa IDLE closes due to the .update() call
             return
         filename = self.io.filename
-        if filename is None:
+        ikiwa filename is None:
             return
-        if os.path.isfile(self.breakpointPath):
+        ikiwa os.path.isfile(self.breakpointPath):
             with open(self.breakpointPath, "r") as fp:
                 lines = fp.readlines()
             for line in lines:
-                if line.startswith(filename + '='):
+                ikiwa line.startswith(filename + '='):
                     breakpoint_linenumbers = eval(line[len(filename)+1:])
                     for breakpoint_linenumber in breakpoint_linenumbers:
                         self.set_breakpoint(breakpoint_linenumber)
 
-    def update_breakpoints(self):
+    eleza update_breakpoints(self):
         "Retrieves all the breakpoints in the current window"
         text = self.text
         ranges = text.tag_ranges("BREAK")
         linenumber_list = self.ranges_to_linenumbers(ranges)
         self.breakpoints = linenumber_list
 
-    def ranges_to_linenumbers(self, ranges):
+    eleza ranges_to_linenumbers(self, ranges):
         lines = []
         for index in range(0, len(ranges), 2):
             lineno = int(float(ranges[index].string))
@@ -298,54 +298,54 @@ class PyShellEditorWindow(EditorWindow):
             while lineno < end:
                 lines.append(lineno)
                 lineno += 1
-        return lines
+        rudisha lines
 
 # XXX 13 Dec 2002 KBK Not used currently
-#    def saved_change_hook(self):
-#        "Extend base method - clear breaks if module is modified"
-#        if not self.get_saved():
+#    eleza saved_change_hook(self):
+#        "Extend base method - clear breaks ikiwa module is modified"
+#        ikiwa not self.get_saved():
 #            self.clear_file_breaks()
 #        EditorWindow.saved_change_hook(self)
 
-    def _close(self):
+    eleza _close(self):
         "Extend base method - clear breaks when module is closed"
         self.clear_file_breaks()
         EditorWindow._close(self)
 
 
-class PyShellFileList(FileList):
+kundi PyShellFileList(FileList):
     "Extend base class: IDLE supports a shell and breakpoints"
 
-    # override FileList's class variable, instances return PyShellEditorWindow
+    # override FileList's kundi variable, instances rudisha PyShellEditorWindow
     # instead of EditorWindow when new edit windows are created.
     EditorWindow = PyShellEditorWindow
 
     pyshell = None
 
-    def open_shell(self, event=None):
-        if self.pyshell:
+    eleza open_shell(self, event=None):
+        ikiwa self.pyshell:
             self.pyshell.top.wakeup()
         else:
             self.pyshell = PyShell(self)
-            if self.pyshell:
-                if not self.pyshell.begin():
-                    return None
-        return self.pyshell
+            ikiwa self.pyshell:
+                ikiwa not self.pyshell.begin():
+                    rudisha None
+        rudisha self.pyshell
 
 
-class ModifiedColorDelegator(ColorDelegator):
+kundi ModifiedColorDelegator(ColorDelegator):
     "Extend base class: colorizer for the shell window itself"
 
-    def __init__(self):
+    eleza __init__(self):
         ColorDelegator.__init__(self)
         self.LoadTagDefs()
 
-    def recolorize_main(self):
+    eleza recolorize_main(self):
         self.tag_remove("TODO", "1.0", "iomark")
         self.tag_add("SYNC", "1.0", "iomark")
         ColorDelegator.recolorize_main(self)
 
-    def LoadTagDefs(self):
+    eleza LoadTagDefs(self):
         ColorDelegator.LoadTagDefs(self)
         theme = idleConf.CurrentTheme()
         self.tagdefs.update({
@@ -355,26 +355,26 @@ class ModifiedColorDelegator(ColorDelegator):
             "console": idleConf.GetHighlight(theme, "console"),
         })
 
-    def removecolors(self):
+    eleza removecolors(self):
         # Don't remove shell color tags before "iomark"
         for tag in self.tagdefs:
             self.tag_remove(tag, "iomark", "end")
 
-class ModifiedUndoDelegator(UndoDelegator):
+kundi ModifiedUndoDelegator(UndoDelegator):
     "Extend base class: forbid insert/delete before the I/O mark"
 
-    def insert(self, index, chars, tags=None):
+    eleza insert(self, index, chars, tags=None):
         try:
-            if self.delegate.compare(index, "<", "iomark"):
+            ikiwa self.delegate.compare(index, "<", "iomark"):
                 self.delegate.bell()
                 return
         except TclError:
             pass
         UndoDelegator.insert(self, index, chars, tags)
 
-    def delete(self, index1, index2=None):
+    eleza delete(self, index1, index2=None):
         try:
-            if self.delegate.compare(index1, "<", "iomark"):
+            ikiwa self.delegate.compare(index1, "<", "iomark"):
                 self.delegate.bell()
                 return
         except TclError:
@@ -382,29 +382,29 @@ class ModifiedUndoDelegator(UndoDelegator):
         UndoDelegator.delete(self, index1, index2)
 
 
-class MyRPCClient(rpc.RPCClient):
+kundi MyRPCClient(rpc.RPCClient):
 
-    def handle_EOF(self):
-        "Override the base class - just re-raise EOFError"
+    eleza handle_EOF(self):
+        "Override the base kundi - just re-raise EOFError"
         raise EOFError
 
-def restart_line(width, filename):  # See bpo-38141.
+eleza restart_line(width, filename):  # See bpo-38141.
     """Return width long restart line formatted with filename.
 
     Fill line with balanced '='s, with any extras and at least one at
     the beginning.  Do not end with a trailing space.
     """
     tag = f"= RESTART: {filename or 'Shell'} ="
-    if width >= len(tag):
+    ikiwa width >= len(tag):
         div, mod = divmod((width -len(tag)), 2)
-        return f"{(div+mod)*'='}{tag}{div*'='}"
+        rudisha f"{(div+mod)*'='}{tag}{div*'='}"
     else:
-        return tag[:-2]  # Remove ' ='.
+        rudisha tag[:-2]  # Remove ' ='.
 
 
-class ModifiedInterpreter(InteractiveInterpreter):
+kundi ModifiedInterpreter(InteractiveInterpreter):
 
-    def __init__(self, tkconsole):
+    eleza __init__(self, tkconsole):
         self.tkconsole = tkconsole
         locals = sys.modules['__main__'].__dict__
         InteractiveInterpreter.__init__(self, locals=locals)
@@ -417,12 +417,12 @@ class ModifiedInterpreter(InteractiveInterpreter):
     rpcclt = None
     rpcsubproc = None
 
-    def spawn_subprocess(self):
-        if self.subprocess_arglist is None:
+    eleza spawn_subprocess(self):
+        ikiwa self.subprocess_arglist is None:
             self.subprocess_arglist = self.build_subprocess_arglist()
         self.rpcsubproc = subprocess.Popen(self.subprocess_arglist)
 
-    def build_subprocess_arglist(self):
+    eleza build_subprocess_arglist(self):
         assert (self.port!=0), (
             "Socket should have been assigned a port number.")
         w = ['-W' + s for s in sys.warnoptions]
@@ -432,9 +432,9 @@ class ModifiedInterpreter(InteractiveInterpreter):
         del_exitf = idleConf.GetOption('main', 'General', 'delete-exitfunc',
                                        default=False, type='bool')
         command = "__import__('idlelib.run').run.main(%r)" % (del_exitf,)
-        return [sys.executable] + w + ["-c", command, str(self.port)]
+        rudisha [sys.executable] + w + ["-c", command, str(self.port)]
 
-    def start_subprocess(self):
+    eleza start_subprocess(self):
         addr = (HOST, self.port)
         # GUI makes several attempts to acquire socket, listens for connection
         for i in range(3):
@@ -446,11 +446,11 @@ class ModifiedInterpreter(InteractiveInterpreter):
                 pass
         else:
             self.display_port_binding_error()
-            return None
-        # if PORT was 0, system will assign an 'ephemeral' port. Find it out:
+            rudisha None
+        # ikiwa PORT was 0, system will assign an 'ephemeral' port. Find it out:
         self.port = self.rpcclt.listening_sock.getsockname()[1]
-        # if PORT was not 0, probably working with a remote execution server
-        if PORT != 0:
+        # ikiwa PORT was not 0, probably working with a remote execution server
+        ikiwa PORT != 0:
             # To allow reconnection within the 2MSL wait (cf. Stevens TCP
             # V1, 18.6),  set SO_REUSEADDR.  Note that this can be problematic
             # on Windows since the implementation allows two active sockets on
@@ -465,7 +465,7 @@ class ModifiedInterpreter(InteractiveInterpreter):
             self.rpcclt.accept()
         except socket.timeout:
             self.display_no_subprocess_error()
-            return None
+            rudisha None
         self.rpcclt.register("console", self.tkconsole)
         self.rpcclt.register("stdin", self.tkconsole.stdin)
         self.rpcclt.register("stdout", self.tkconsole.stdout)
@@ -475,15 +475,15 @@ class ModifiedInterpreter(InteractiveInterpreter):
         self.rpcclt.register("interp", self)
         self.transfer_path(with_cwd=True)
         self.poll_subprocess()
-        return self.rpcclt
+        rudisha self.rpcclt
 
-    def restart_subprocess(self, with_cwd=False, filename=''):
-        if self.restarting:
-            return self.rpcclt
+    eleza restart_subprocess(self, with_cwd=False, filename=''):
+        ikiwa self.restarting:
+            rudisha self.rpcclt
         self.restarting = True
         # close only the subprocess debugger
         debug = self.getdebugger()
-        if debug:
+        ikiwa debug:
             try:
                 # Only close subprocess debugger, don't unregister gui_adap!
                 debugger_r.close_subprocess_debugger(self.rpcclt)
@@ -500,7 +500,7 @@ class ModifiedInterpreter(InteractiveInterpreter):
             self.rpcclt.accept()
         except socket.timeout:
             self.display_no_subprocess_error()
-            return None
+            rudisha None
         self.transfer_path(with_cwd=with_cwd)
         console.stop_readline()
         # annotate restart in shell window and mark it
@@ -509,26 +509,26 @@ class ModifiedInterpreter(InteractiveInterpreter):
         console.write(restart_line(console.width, filename))
         console.text.mark_set("restart", "end-1c")
         console.text.mark_gravity("restart", "left")
-        if not filename:
+        ikiwa not filename:
             console.showprompt()
         # restart subprocess debugger
-        if debug:
+        ikiwa debug:
             # Restarted debugger connects to current instance of debug GUI
             debugger_r.restart_subprocess_debugger(self.rpcclt)
             # reload remote debugger breakpoints for all PyShellEditWindows
             debug.load_breakpoints()
         self.compile.compiler.flags = self.original_compiler_flags
         self.restarting = False
-        return self.rpcclt
+        rudisha self.rpcclt
 
-    def __request_interrupt(self):
+    eleza __request_interrupt(self):
         self.rpcclt.remotecall("exec", "interrupt_the_server", (), {})
 
-    def interrupt_subprocess(self):
+    eleza interrupt_subprocess(self):
         threading.Thread(target=self.__request_interrupt).start()
 
-    def kill_subprocess(self):
-        if self._afterid is not None:
+    eleza kill_subprocess(self):
+        ikiwa self._afterid is not None:
             self.tkconsole.text.after_cancel(self._afterid)
         try:
             self.rpcclt.listening_sock.close()
@@ -542,7 +542,7 @@ class ModifiedInterpreter(InteractiveInterpreter):
         self.tkconsole.executing = False
         self.rpcclt = None
 
-    def terminate_subprocess(self):
+    eleza terminate_subprocess(self):
         "Make sure subprocess is terminated"
         try:
             self.rpcsubproc.kill()
@@ -555,14 +555,14 @@ class ModifiedInterpreter(InteractiveInterpreter):
             except OSError:
                 return
 
-    def transfer_path(self, with_cwd=False):
-        if with_cwd:        # Issue 13506
+    eleza transfer_path(self, with_cwd=False):
+        ikiwa with_cwd:        # Issue 13506
             path = ['']     # include Current Working Directory
             path.extend(sys.path)
         else:
             path = sys.path
 
-        self.runcommand("""if 1:
+        self.runcommand("""ikiwa 1:
         agiza sys as _sys
         _sys.path = %r
         del _sys
@@ -570,53 +570,53 @@ class ModifiedInterpreter(InteractiveInterpreter):
 
     active_seq = None
 
-    def poll_subprocess(self):
+    eleza poll_subprocess(self):
         clt = self.rpcclt
-        if clt is None:
+        ikiwa clt is None:
             return
         try:
             response = clt.pollresponse(self.active_seq, wait=0.05)
         except (EOFError, OSError, KeyboardInterrupt):
             # lost connection or subprocess terminated itself, restart
             # [the KBI is kutoka rpc.SocketIO.handle_EOF()]
-            if self.tkconsole.closing:
+            ikiwa self.tkconsole.closing:
                 return
             response = None
             self.restart_subprocess()
-        if response:
+        ikiwa response:
             self.tkconsole.resetoutput()
             self.active_seq = None
             how, what = response
             console = self.tkconsole.console
-            if how == "OK":
-                if what is not None:
-                    print(repr(what), file=console)
-            elif how == "EXCEPTION":
-                if self.tkconsole.getvar("<<toggle-jit-stack-viewer>>"):
+            ikiwa how == "OK":
+                ikiwa what is not None:
+                    andika(repr(what), file=console)
+            elikiwa how == "EXCEPTION":
+                ikiwa self.tkconsole.getvar("<<toggle-jit-stack-viewer>>"):
                     self.remote_stack_viewer()
-            elif how == "ERROR":
+            elikiwa how == "ERROR":
                 errmsg = "pyshell.ModifiedInterpreter: Subprocess ERROR:\n"
-                print(errmsg, what, file=sys.__stderr__)
-                print(errmsg, what, file=console)
+                andika(errmsg, what, file=sys.__stderr__)
+                andika(errmsg, what, file=console)
             # we received a response to the currently active seq number:
             try:
                 self.tkconsole.endexecuting()
             except AttributeError:  # shell may have closed
                 pass
         # Reschedule myself
-        if not self.tkconsole.closing:
+        ikiwa not self.tkconsole.closing:
             self._afterid = self.tkconsole.text.after(
                 self.tkconsole.pollinterval, self.poll_subprocess)
 
     debugger = None
 
-    def setdebugger(self, debugger):
+    eleza setdebugger(self, debugger):
         self.debugger = debugger
 
-    def getdebugger(self):
-        return self.debugger
+    eleza getdebugger(self):
+        rudisha self.debugger
 
-    def open_remote_stack_viewer(self):
+    eleza open_remote_stack_viewer(self):
         """Initiate the remote stack viewer kutoka a separate thread.
 
         This method is called kutoka the subprocess, and by returning kutoka this
@@ -629,10 +629,10 @@ class ModifiedInterpreter(InteractiveInterpreter):
         self.tkconsole.text.after(300, self.remote_stack_viewer)
         return
 
-    def remote_stack_viewer(self):
+    eleza remote_stack_viewer(self):
         kutoka idlelib agiza debugobj_r
         oid = self.rpcclt.remotequeue("exec", "stackviewer", ("flist",), {})
-        if oid is None:
+        ikiwa oid is None:
             self.tkconsole.root.bell()
             return
         item = debugobj_r.StubObjectTreeItem(self.rpcclt, oid)
@@ -648,24 +648,24 @@ class ModifiedInterpreter(InteractiveInterpreter):
 
     gid = 0
 
-    def execsource(self, source):
+    eleza execsource(self, source):
         "Like runsource() but assumes complete exec source"
         filename = self.stuffsource(source)
         self.execfile(filename, source)
 
-    def execfile(self, filename, source=None):
+    eleza execfile(self, filename, source=None):
         "Execute an existing file"
-        if source is None:
+        ikiwa source is None:
             with tokenize.open(filename) as fp:
                 source = fp.read()
-                if use_subprocess:
+                ikiwa use_subprocess:
                     source = (f"__file__ = r'''{os.path.abspath(filename)}'''\n"
                               + source + "\ndel __file__")
         try:
             code = compile(source, filename, "exec")
         except (OverflowError, SyntaxError):
             self.tkconsole.resetoutput()
-            print('*** Error in script or command!\n'
+            andika('*** Error in script or command!\n'
                  'Traceback (most recent call last):',
                   file=self.tkconsole.stderr)
             InteractiveInterpreter.showsyntaxerror(self, filename)
@@ -673,37 +673,37 @@ class ModifiedInterpreter(InteractiveInterpreter):
         else:
             self.runcode(code)
 
-    def runsource(self, source):
-        "Extend base class method: Stuff the source in the line cache first"
+    eleza runsource(self, source):
+        "Extend base kundi method: Stuff the source in the line cache first"
         filename = self.stuffsource(source)
         self.more = 0
         # at the moment, InteractiveInterpreter expects str
         assert isinstance(source, str)
         # InteractiveInterpreter.runsource() calls its runcode() method,
         # which is overridden (see below)
-        return InteractiveInterpreter.runsource(self, source, filename)
+        rudisha InteractiveInterpreter.runsource(self, source, filename)
 
-    def stuffsource(self, source):
+    eleza stuffsource(self, source):
         "Stuff source in the filename cache"
         filename = "<pyshell#%d>" % self.gid
         self.gid = self.gid + 1
         lines = source.split("\n")
         linecache.cache[filename] = len(source)+1, 0, lines, filename
-        return filename
+        rudisha filename
 
-    def prepend_syspath(self, filename):
-        "Prepend sys.path with file's directory if not already included"
-        self.runcommand("""if 1:
+    eleza prepend_syspath(self, filename):
+        "Prepend sys.path with file's directory ikiwa not already included"
+        self.runcommand("""ikiwa 1:
             _filename = %r
             agiza sys as _sys
             kutoka os.path agiza dirname as _dirname
             _dir = _dirname(_filename)
-            if not _dir in _sys.path:
+            ikiwa not _dir in _sys.path:
                 _sys.path.insert(0, _dir)
             del _filename, _sys, _dirname, _dir
             \n""" % (filename,))
 
-    def showsyntaxerror(self, filename=None):
+    eleza showsyntaxerror(self, filename=None):
         """Override Interactive Interpreter method: Use Colorizing
 
         Color the offending position instead of printing it and pointing at it
@@ -717,9 +717,9 @@ class ModifiedInterpreter(InteractiveInterpreter):
         msg = getattr(value, 'msg', '') or value or "<no detail available>"
         lineno = getattr(value, 'lineno', '') or 1
         offset = getattr(value, 'offset', '') or 0
-        if offset == 0:
+        ikiwa offset == 0:
             lineno += 1 #mark end of offending line
-        if lineno == 1:
+        ikiwa lineno == 1:
             pos = "iomark + %d chars" % (offset-1)
         else:
             pos = "iomark linestart + %d lines + %d chars" % \
@@ -729,50 +729,50 @@ class ModifiedInterpreter(InteractiveInterpreter):
         self.write("SyntaxError: %s\n" % msg)
         tkconsole.showprompt()
 
-    def showtraceback(self):
-        "Extend base class method to reset output properly"
+    eleza showtraceback(self):
+        "Extend base kundi method to reset output properly"
         self.tkconsole.resetoutput()
         self.checklinecache()
         InteractiveInterpreter.showtraceback(self)
-        if self.tkconsole.getvar("<<toggle-jit-stack-viewer>>"):
+        ikiwa self.tkconsole.getvar("<<toggle-jit-stack-viewer>>"):
             self.tkconsole.open_stack_viewer()
 
-    def checklinecache(self):
+    eleza checklinecache(self):
         c = linecache.cache
         for key in list(c.keys()):
-            if key[:1] + key[-1:] != "<>":
+            ikiwa key[:1] + key[-1:] != "<>":
                 del c[key]
 
-    def runcommand(self, code):
+    eleza runcommand(self, code):
         "Run the code without invoking the debugger"
         # The code better not raise an exception!
-        if self.tkconsole.executing:
+        ikiwa self.tkconsole.executing:
             self.display_executing_dialog()
-            return 0
-        if self.rpcclt:
+            rudisha 0
+        ikiwa self.rpcclt:
             self.rpcclt.remotequeue("exec", "runcode", (code,), {})
         else:
             exec(code, self.locals)
-        return 1
+        rudisha 1
 
-    def runcode(self, code):
-        "Override base class method"
-        if self.tkconsole.executing:
+    eleza runcode(self, code):
+        "Override base kundi method"
+        ikiwa self.tkconsole.executing:
             self.interp.restart_subprocess()
         self.checklinecache()
         debugger = self.debugger
         try:
             self.tkconsole.beginexecuting()
-            if not debugger and self.rpcclt is not None:
+            ikiwa not debugger and self.rpcclt is not None:
                 self.active_seq = self.rpcclt.asyncqueue("exec", "runcode",
                                                         (code,), {})
-            elif debugger:
+            elikiwa debugger:
                 debugger.run(code, self.locals)
             else:
                 exec(code, self.locals)
         except SystemExit:
-            if not self.tkconsole.closing:
-                if tkMessageBox.askyesno(
+            ikiwa not self.tkconsole.closing:
+                ikiwa tkMessageBox.askyesno(
                     "Exit?",
                     "Do you want to exit altogether?",
                     default="yes",
@@ -783,29 +783,29 @@ class ModifiedInterpreter(InteractiveInterpreter):
             else:
                 raise
         except:
-            if use_subprocess:
-                print("IDLE internal error in runcode()",
+            ikiwa use_subprocess:
+                andika("IDLE internal error in runcode()",
                       file=self.tkconsole.stderr)
                 self.showtraceback()
                 self.tkconsole.endexecuting()
             else:
-                if self.tkconsole.canceled:
+                ikiwa self.tkconsole.canceled:
                     self.tkconsole.canceled = False
-                    print("KeyboardInterrupt", file=self.tkconsole.stderr)
+                    andika("KeyboardInterrupt", file=self.tkconsole.stderr)
                 else:
                     self.showtraceback()
         finally:
-            if not use_subprocess:
+            ikiwa not use_subprocess:
                 try:
                     self.tkconsole.endexecuting()
                 except AttributeError:  # shell may have closed
                     pass
 
-    def write(self, s):
-        "Override base class method"
-        return self.tkconsole.stderr.write(s)
+    eleza write(self, s):
+        "Override base kundi method"
+        rudisha self.tkconsole.stderr.write(s)
 
-    def display_port_binding_error(self):
+    eleza display_port_binding_error(self):
         tkMessageBox.showerror(
             "Port Binding Error",
             "IDLE can't bind to a TCP/IP port, which is necessary to "
@@ -816,7 +816,7 @@ class ModifiedInterpreter(InteractiveInterpreter):
             "subprocess' for further details.",
             parent=self.tkconsole.text)
 
-    def display_no_subprocess_error(self):
+    eleza display_no_subprocess_error(self):
         tkMessageBox.showerror(
             "Subprocess Connection Error",
             "IDLE's subprocess didn't make connection.\n"
@@ -824,7 +824,7 @@ class ModifiedInterpreter(InteractiveInterpreter):
             "https://docs.python.org/3/library/idle.html#startup-failure",
             parent=self.tkconsole.text)
 
-    def display_executing_dialog(self):
+    eleza display_executing_dialog(self):
         tkMessageBox.showerror(
             "Already executing",
             "The Python Shell window is already executing a command; "
@@ -832,7 +832,7 @@ class ModifiedInterpreter(InteractiveInterpreter):
             parent=self.tkconsole.text)
 
 
-class PyShell(OutputWindow):
+kundi PyShell(OutputWindow):
 
     shell_title = "Python " + python_version() + " Shell"
 
@@ -860,13 +860,13 @@ class PyShell(OutputWindow):
     # New classes
     kutoka idlelib.history agiza History
 
-    def __init__(self, flist=None):
-        if use_subprocess:
+    eleza __init__(self, flist=None):
+        ikiwa use_subprocess:
             ms = self.menu_specs
-            if ms[2][0] != "shell":
+            ikiwa ms[2][0] != "shell":
                 ms.insert(2, ("shell", "She_ll"))
         self.interp = ModifiedInterpreter(self)
-        if flist is None:
+        ikiwa flist is None:
             root = Tk()
             fixwordbreaks(root)
             root.withdraw()
@@ -878,7 +878,7 @@ class PyShell(OutputWindow):
         # indentwidth must be 8 when using tabs.  See note in EditorWindow:
         self.indentwidth = 8
 
-        self.sys_ps1 = sys.ps1 if hasattr(sys, 'ps1') else '>>> '
+        self.sys_ps1 = sys.ps1 ikiwa hasattr(sys, 'ps1') else '>>> '
         self.prompt_last_line = self.sys_ps1.split('\n')[-1]
         self.prompt = self.sys_ps1  # Changes when debug active
 
@@ -891,7 +891,7 @@ class PyShell(OutputWindow):
         text.bind("<<open-stack-viewer>>", self.open_stack_viewer)
         text.bind("<<toggle-debugger>>", self.toggle_debugger)
         text.bind("<<toggle-jit-stack-viewer>>", self.toggle_jit_stack_viewer)
-        if use_subprocess:
+        ikiwa use_subprocess:
             text.bind("<<view-restart>>", self.view_restart_mark)
             text.bind("<<restart-shell>>", self.restart_shell)
         squeezer = self.Squeezer(self)
@@ -910,7 +910,7 @@ class PyShell(OutputWindow):
                                     iomenu.encoding, "backslashreplace")
         self.console = StdOutputFile(self, "console",
                                      iomenu.encoding, iomenu.errors)
-        if not use_subprocess:
+        ikiwa not use_subprocess:
             sys.stdout = self.stdout
             sys.stderr = self.stderr
             sys.stdin = self.stdin
@@ -927,8 +927,8 @@ class PyShell(OutputWindow):
         #
         self.pollinterval = 50  # millisec
 
-    def get_standard_extension_names(self):
-        return idleConf.GetExtensions(shell_only=True)
+    eleza get_standard_extension_names(self):
+        rudisha idleConf.GetExtensions(shell_only=True)
 
     reading = False
     executing = False
@@ -937,40 +937,40 @@ class PyShell(OutputWindow):
     closing = False
     _stop_readline_flag = False
 
-    def set_warning_stream(self, stream):
+    eleza set_warning_stream(self, stream):
         global warning_stream
         warning_stream = stream
 
-    def get_warning_stream(self):
-        return warning_stream
+    eleza get_warning_stream(self):
+        rudisha warning_stream
 
-    def toggle_debugger(self, event=None):
-        if self.executing:
+    eleza toggle_debugger(self, event=None):
+        ikiwa self.executing:
             tkMessageBox.showerror("Don't debug now",
                 "You can only toggle the debugger when idle",
                 parent=self.text)
             self.set_debugger_indicator()
-            return "break"
+            rudisha "break"
         else:
             db = self.interp.getdebugger()
-            if db:
+            ikiwa db:
                 self.close_debugger()
             else:
                 self.open_debugger()
 
-    def set_debugger_indicator(self):
+    eleza set_debugger_indicator(self):
         db = self.interp.getdebugger()
         self.setvar("<<toggle-debugger>>", not not db)
 
-    def toggle_jit_stack_viewer(self, event=None):
+    eleza toggle_jit_stack_viewer(self, event=None):
         pass # All we need is the variable
 
-    def close_debugger(self):
+    eleza close_debugger(self):
         db = self.interp.getdebugger()
-        if db:
+        ikiwa db:
             self.interp.setdebugger(None)
             db.close()
-            if self.interp.rpcclt:
+            ikiwa self.interp.rpcclt:
                 debugger_r.close_remote_debugger(self.interp.rpcclt)
             self.resetoutput()
             self.console.write("[DEBUG OFF]\n")
@@ -978,8 +978,8 @@ class PyShell(OutputWindow):
             self.showprompt()
         self.set_debugger_indicator()
 
-    def open_debugger(self):
-        if self.interp.rpcclt:
+    eleza open_debugger(self):
+        ikiwa self.interp.rpcclt:
             dbg_gui = debugger_r.start_remote_debugger(self.interp.rpcclt,
                                                            self)
         else:
@@ -990,36 +990,36 @@ class PyShell(OutputWindow):
         self.showprompt()
         self.set_debugger_indicator()
 
-    def beginexecuting(self):
+    eleza beginexecuting(self):
         "Helper for ModifiedInterpreter"
         self.resetoutput()
         self.executing = 1
 
-    def endexecuting(self):
+    eleza endexecuting(self):
         "Helper for ModifiedInterpreter"
         self.executing = 0
         self.canceled = 0
         self.showprompt()
 
-    def close(self):
+    eleza close(self):
         "Extend EditorWindow.close()"
-        if self.executing:
+        ikiwa self.executing:
             response = tkMessageBox.askokcancel(
                 "Kill?",
                 "Your program is still running!\n Do you want to kill it?",
                 default="ok",
                 parent=self.text)
-            if response is False:
-                return "cancel"
+            ikiwa response is False:
+                rudisha "cancel"
         self.stop_readline()
         self.canceled = True
         self.closing = True
-        return EditorWindow.close(self)
+        rudisha EditorWindow.close(self)
 
-    def _close(self):
+    eleza _close(self):
         "Extend EditorWindow._close(), shut down debugger and execution server"
         self.close_debugger()
-        if use_subprocess:
+        ikiwa use_subprocess:
             self.interp.kill_subprocess()
         # Restore std streams
         sys.stdout = self.save_stdout
@@ -1032,25 +1032,25 @@ class PyShell(OutputWindow):
         self.history = None
         EditorWindow._close(self)
 
-    def ispythonsource(self, filename):
+    eleza ispythonsource(self, filename):
         "Override EditorWindow method: never remove the colorizer"
-        return True
+        rudisha True
 
-    def short_title(self):
-        return self.shell_title
+    eleza short_title(self):
+        rudisha self.shell_title
 
     COPYRIGHT = \
           'Type "help", "copyright", "credits" or "license()" for more information.'
 
-    def begin(self):
+    eleza begin(self):
         self.text.mark_set("iomark", "insert")
         self.resetoutput()
-        if use_subprocess:
+        ikiwa use_subprocess:
             nosub = ''
             client = self.interp.start_subprocess()
-            if not client:
+            ikiwa not client:
                 self.close()
-                return False
+                rudisha False
         else:
             nosub = ("==== No Subprocess ====\n\n" +
                     "WARNING: Running IDLE without a Subprocess is deprecated\n" +
@@ -1064,150 +1064,150 @@ class PyShell(OutputWindow):
         self.showprompt()
         agiza tkinter
         tkinter._default_root = None # 03Jan04 KBK What's this?
-        return True
+        rudisha True
 
-    def stop_readline(self):
-        if not self.reading:  # no nested mainloop to exit.
+    eleza stop_readline(self):
+        ikiwa not self.reading:  # no nested mainloop to exit.
             return
         self._stop_readline_flag = True
         self.top.quit()
 
-    def readline(self):
+    eleza readline(self):
         save = self.reading
         try:
             self.reading = 1
             self.top.mainloop()  # nested mainloop()
         finally:
             self.reading = save
-        if self._stop_readline_flag:
+        ikiwa self._stop_readline_flag:
             self._stop_readline_flag = False
-            return ""
+            rudisha ""
         line = self.text.get("iomark", "end-1c")
-        if len(line) == 0:  # may be EOF if we quit our mainloop with Ctrl-C
+        ikiwa len(line) == 0:  # may be EOF ikiwa we quit our mainloop with Ctrl-C
             line = "\n"
         self.resetoutput()
-        if self.canceled:
+        ikiwa self.canceled:
             self.canceled = 0
-            if not use_subprocess:
+            ikiwa not use_subprocess:
                 raise KeyboardInterrupt
-        if self.endoffile:
+        ikiwa self.endoffile:
             self.endoffile = 0
             line = ""
-        return line
+        rudisha line
 
-    def isatty(self):
-        return True
+    eleza isatty(self):
+        rudisha True
 
-    def cancel_callback(self, event=None):
+    eleza cancel_callback(self, event=None):
         try:
-            if self.text.compare("sel.first", "!=", "sel.last"):
-                return # Active selection -- always use default binding
+            ikiwa self.text.compare("sel.first", "!=", "sel.last"):
+                rudisha # Active selection -- always use default binding
         except:
             pass
-        if not (self.executing or self.reading):
+        ikiwa not (self.executing or self.reading):
             self.resetoutput()
             self.interp.write("KeyboardInterrupt\n")
             self.showprompt()
-            return "break"
+            rudisha "break"
         self.endoffile = 0
         self.canceled = 1
-        if (self.executing and self.interp.rpcclt):
-            if self.interp.getdebugger():
+        ikiwa (self.executing and self.interp.rpcclt):
+            ikiwa self.interp.getdebugger():
                 self.interp.restart_subprocess()
             else:
                 self.interp.interrupt_subprocess()
-        if self.reading:
+        ikiwa self.reading:
             self.top.quit()  # exit the nested mainloop() in readline()
-        return "break"
+        rudisha "break"
 
-    def eof_callback(self, event):
-        if self.executing and not self.reading:
-            return # Let the default binding (delete next char) take over
-        if not (self.text.compare("iomark", "==", "insert") and
+    eleza eof_callback(self, event):
+        ikiwa self.executing and not self.reading:
+            rudisha # Let the default binding (delete next char) take over
+        ikiwa not (self.text.compare("iomark", "==", "insert") and
                 self.text.compare("insert", "==", "end-1c")):
-            return # Let the default binding (delete next char) take over
-        if not self.executing:
+            rudisha # Let the default binding (delete next char) take over
+        ikiwa not self.executing:
             self.resetoutput()
             self.close()
         else:
             self.canceled = 0
             self.endoffile = 1
             self.top.quit()
-        return "break"
+        rudisha "break"
 
-    def linefeed_callback(self, event):
+    eleza linefeed_callback(self, event):
         # Insert a linefeed without entering anything (still autoindented)
-        if self.reading:
+        ikiwa self.reading:
             self.text.insert("insert", "\n")
             self.text.see("insert")
         else:
             self.newline_and_indent_event(event)
-        return "break"
+        rudisha "break"
 
-    def enter_callback(self, event):
-        if self.executing and not self.reading:
-            return # Let the default binding (insert '\n') take over
+    eleza enter_callback(self, event):
+        ikiwa self.executing and not self.reading:
+            rudisha # Let the default binding (insert '\n') take over
         # If some text is selected, recall the selection
-        # (but only if this before the I/O mark)
+        # (but only ikiwa this before the I/O mark)
         try:
             sel = self.text.get("sel.first", "sel.last")
-            if sel:
-                if self.text.compare("sel.last", "<=", "iomark"):
+            ikiwa sel:
+                ikiwa self.text.compare("sel.last", "<=", "iomark"):
                     self.recall(sel, event)
-                    return "break"
+                    rudisha "break"
         except:
             pass
         # If we're strictly before the line containing iomark, recall
         # the current line, less a leading prompt, less leading or
         # trailing whitespace
-        if self.text.compare("insert", "<", "iomark linestart"):
-            # Check if there's a relevant stdin range -- if so, use it
+        ikiwa self.text.compare("insert", "<", "iomark linestart"):
+            # Check ikiwa there's a relevant stdin range -- ikiwa so, use it
             prev = self.text.tag_prevrange("stdin", "insert")
-            if prev and self.text.compare("insert", "<", prev[1]):
+            ikiwa prev and self.text.compare("insert", "<", prev[1]):
                 self.recall(self.text.get(prev[0], prev[1]), event)
-                return "break"
+                rudisha "break"
             next = self.text.tag_nextrange("stdin", "insert")
-            if next and self.text.compare("insert lineend", ">=", next[0]):
+            ikiwa next and self.text.compare("insert lineend", ">=", next[0]):
                 self.recall(self.text.get(next[0], next[1]), event)
-                return "break"
+                rudisha "break"
             # No stdin mark -- just get the current line, less any prompt
             indices = self.text.tag_nextrange("console", "insert linestart")
-            if indices and \
+            ikiwa indices and \
                self.text.compare(indices[0], "<=", "insert linestart"):
                 self.recall(self.text.get(indices[1], "insert lineend"), event)
             else:
                 self.recall(self.text.get("insert linestart", "insert lineend"), event)
-            return "break"
+            rudisha "break"
         # If we're between the beginning of the line and the iomark, i.e.
         # in the prompt area, move to the end of the prompt
-        if self.text.compare("insert", "<", "iomark"):
+        ikiwa self.text.compare("insert", "<", "iomark"):
             self.text.mark_set("insert", "iomark")
         # If we're in the current input and there's only whitespace
         # beyond the cursor, erase that whitespace first
         s = self.text.get("insert", "end-1c")
-        if s and not s.strip():
+        ikiwa s and not s.strip():
             self.text.delete("insert", "end-1c")
         # If we're in the current input before its last line,
         # insert a newline right at the insert point
-        if self.text.compare("insert", "<", "end-1c linestart"):
+        ikiwa self.text.compare("insert", "<", "end-1c linestart"):
             self.newline_and_indent_event(event)
-            return "break"
+            rudisha "break"
         # We're in the last line; append a newline and submit it
         self.text.mark_set("insert", "end-1c")
-        if self.reading:
+        ikiwa self.reading:
             self.text.insert("insert", "\n")
             self.text.see("insert")
         else:
             self.newline_and_indent_event(event)
         self.text.tag_add("stdin", "iomark", "end-1c")
         self.text.update_idletasks()
-        if self.reading:
+        ikiwa self.reading:
             self.top.quit() # Break out of recursive mainloop()
         else:
             self.runit()
-        return "break"
+        rudisha "break"
 
-    def recall(self, s, event):
+    eleza recall(self, s, event):
         # remove leading and trailing empty or whitespace lines
         s = re.sub(r'^\s*\n', '' , s)
         s = re.sub(r'\n\s*$', '', s)
@@ -1217,15 +1217,15 @@ class PyShell(OutputWindow):
             self.text.tag_remove("sel", "1.0", "end")
             self.text.mark_set("insert", "end-1c")
             prefix = self.text.get("insert linestart", "insert")
-            if prefix.rstrip().endswith(':'):
+            ikiwa prefix.rstrip().endswith(':'):
                 self.newline_and_indent_event(event)
                 prefix = self.text.get("insert linestart", "insert")
             self.text.insert("insert", lines[0].strip())
-            if len(lines) > 1:
+            ikiwa len(lines) > 1:
                 orig_base_indent = re.search(r'^([ \t]*)', lines[0]).group(0)
                 new_base_indent  = re.search(r'^([ \t]*)', prefix).group(0)
                 for line in lines[1:]:
-                    if line.startswith(orig_base_indent):
+                    ikiwa line.startswith(orig_base_indent):
                         # replace orig base indentation with new indentation
                         line = new_base_indent + line[len(orig_base_indent):]
                     self.text.insert('insert', '\n'+line.rstrip())
@@ -1233,23 +1233,23 @@ class PyShell(OutputWindow):
             self.text.see("insert")
             self.text.undo_block_stop()
 
-    def runit(self):
+    eleza runit(self):
         line = self.text.get("iomark", "end-1c")
         # Strip off last newline and surrounding whitespace.
-        # (To allow you to hit return twice to end a statement.)
+        # (To allow you to hit rudisha twice to end a statement.)
         i = len(line)
         while i > 0 and line[i-1] in " \t":
             i = i-1
-        if i > 0 and line[i-1] == "\n":
+        ikiwa i > 0 and line[i-1] == "\n":
             i = i-1
         while i > 0 and line[i-1] in " \t":
             i = i-1
         line = line[:i]
         self.interp.runsource(line)
 
-    def open_stack_viewer(self, event=None):
-        if self.interp.rpcclt:
-            return self.interp.remote_stack_viewer()
+    eleza open_stack_viewer(self, event=None):
+        ikiwa self.interp.rpcclt:
+            rudisha self.interp.remote_stack_viewer()
         try:
             sys.last_traceback
         except:
@@ -1261,69 +1261,69 @@ class PyShell(OutputWindow):
         kutoka idlelib.stackviewer agiza StackBrowser
         StackBrowser(self.root, self.flist)
 
-    def view_restart_mark(self, event=None):
+    eleza view_restart_mark(self, event=None):
         self.text.see("iomark")
         self.text.see("restart")
 
-    def restart_shell(self, event=None):
+    eleza restart_shell(self, event=None):
         "Callback for Run/Restart Shell Cntl-F6"
         self.interp.restart_subprocess(with_cwd=True)
 
-    def showprompt(self):
+    eleza showprompt(self):
         self.resetoutput()
         self.console.write(self.prompt)
         self.text.mark_set("insert", "end-1c")
         self.set_line_and_column()
         self.io.reset_undo()
 
-    def show_warning(self, msg):
+    eleza show_warning(self, msg):
         width = self.interp.tkconsole.width
         wrapper = TextWrapper(width=width, tabsize=8, expand_tabs=True)
         wrapped_msg = '\n'.join(wrapper.wrap(msg))
-        if not wrapped_msg.endswith('\n'):
+        ikiwa not wrapped_msg.endswith('\n'):
             wrapped_msg += '\n'
         self.per.bottom.insert("iomark linestart", wrapped_msg, "stderr")
 
-    def resetoutput(self):
+    eleza resetoutput(self):
         source = self.text.get("iomark", "end-1c")
-        if self.history:
+        ikiwa self.history:
             self.history.store(source)
-        if self.text.get("end-2c") != "\n":
+        ikiwa self.text.get("end-2c") != "\n":
             self.text.insert("end-1c", "\n")
         self.text.mark_set("iomark", "end-1c")
         self.set_line_and_column()
 
-    def write(self, s, tags=()):
+    eleza write(self, s, tags=()):
         try:
             self.text.mark_gravity("iomark", "right")
             count = OutputWindow.write(self, s, tags, "iomark")
             self.text.mark_gravity("iomark", "left")
         except:
-            raise ###pass  # ### 11Aug07 KBK if we are expecting exceptions
+            raise ###pass  # ### 11Aug07 KBK ikiwa we are expecting exceptions
                            # let's find out what they are and be specific.
-        if self.canceled:
+        ikiwa self.canceled:
             self.canceled = 0
-            if not use_subprocess:
+            ikiwa not use_subprocess:
                 raise KeyboardInterrupt
-        return count
+        rudisha count
 
-    def rmenu_check_cut(self):
+    eleza rmenu_check_cut(self):
         try:
-            if self.text.compare('sel.first', '<', 'iomark'):
-                return 'disabled'
+            ikiwa self.text.compare('sel.first', '<', 'iomark'):
+                rudisha 'disabled'
         except TclError: # no selection, so the index 'sel.first' doesn't exist
-            return 'disabled'
-        return super().rmenu_check_cut()
+            rudisha 'disabled'
+        rudisha super().rmenu_check_cut()
 
-    def rmenu_check_paste(self):
-        if self.text.compare('insert','<','iomark'):
-            return 'disabled'
-        return super().rmenu_check_paste()
+    eleza rmenu_check_paste(self):
+        ikiwa self.text.compare('insert','<','iomark'):
+            rudisha 'disabled'
+        rudisha super().rmenu_check_paste()
 
 
-def fix_x11_paste(root):
+eleza fix_x11_paste(root):
     "Make paste replace selection on x11.  See issue #5124."
-    if root._windowingsystem == 'x11':
+    ikiwa root._windowingsystem == 'x11':
         for cls in 'Text', 'Entry', 'Spinbox':
             root.bind_class(
                 cls,
@@ -1366,13 +1366,13 @@ idle
         Open an edit window or shell depending on IDLE's configuration.
 
 idle foo.py foobar.py
-        Edit the files, also open a shell if configured to start with shell.
+        Edit the files, also open a shell ikiwa configured to start with shell.
 
 idle -est "Baz" foo.py
         Run $IDLESTARTUP or $PYTHONSTARTUP, edit foo.py, and open a shell
         window with the title "Baz".
 
-idle -c "agiza sys; print(sys.argv)" "foo"
+idle -c "agiza sys; andika(sys.argv)" "foo"
         Open a shell window and run the command, passing "-c" in sys.argv[0]
         and "foo" in sys.argv[1].
 
@@ -1381,12 +1381,12 @@ idle -d -s -r foo.py "Hello World"
         run foo.py, passing "foo.py" in sys.argv[0] and "Hello World" in
         sys.argv[1].
 
-echo "agiza sys; print(sys.argv)" | idle - "foobar"
+echo "agiza sys; andika(sys.argv)" | idle - "foobar"
         Open a shell window, run the script piped in, passing '' in sys.argv[0]
         and "foobar" in sys.argv[1].
 """
 
-def main():
+eleza main():
     agiza getopt
     kutoka platform agiza system
     kutoka idlelib agiza testing  # bool value
@@ -1405,64 +1405,64 @@ def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "c:deihnr:st:")
     except getopt.error as msg:
-        print("Error: %s\n%s" % (msg, usage_msg), file=sys.stderr)
+        andika("Error: %s\n%s" % (msg, usage_msg), file=sys.stderr)
         sys.exit(2)
     for o, a in opts:
-        if o == '-c':
+        ikiwa o == '-c':
             cmd = a
             enable_shell = True
-        if o == '-d':
+        ikiwa o == '-d':
             debug = True
             enable_shell = True
-        if o == '-e':
+        ikiwa o == '-e':
             enable_edit = True
-        if o == '-h':
+        ikiwa o == '-h':
             sys.stdout.write(usage_msg)
             sys.exit()
-        if o == '-i':
+        ikiwa o == '-i':
             enable_shell = True
-        if o == '-n':
-            print(" Warning: running IDLE without a subprocess is deprecated.",
+        ikiwa o == '-n':
+            andika(" Warning: running IDLE without a subprocess is deprecated.",
                   file=sys.stderr)
             use_subprocess = False
-        if o == '-r':
+        ikiwa o == '-r':
             script = a
-            if os.path.isfile(script):
+            ikiwa os.path.isfile(script):
                 pass
             else:
-                print("No script file: ", script)
+                andika("No script file: ", script)
                 sys.exit()
             enable_shell = True
-        if o == '-s':
+        ikiwa o == '-s':
             startup = True
             enable_shell = True
-        if o == '-t':
+        ikiwa o == '-t':
             PyShell.shell_title = a
             enable_shell = True
-    if args and args[0] == '-':
+    ikiwa args and args[0] == '-':
         cmd = sys.stdin.read()
         enable_shell = True
     # process sys.argv and sys.path:
     for i in range(len(sys.path)):
         sys.path[i] = os.path.abspath(sys.path[i])
-    if args and args[0] == '-':
+    ikiwa args and args[0] == '-':
         sys.argv = [''] + args[1:]
-    elif cmd:
+    elikiwa cmd:
         sys.argv = ['-c'] + args
-    elif script:
+    elikiwa script:
         sys.argv = [script] + args
-    elif args:
+    elikiwa args:
         enable_edit = True
         pathx = []
         for filename in args:
             pathx.append(os.path.dirname(filename))
         for dir in pathx:
             dir = os.path.abspath(dir)
-            if not dir in sys.path:
+            ikiwa not dir in sys.path:
                 sys.path.insert(0, dir)
     else:
         dir = os.getcwd()
-        if dir not in sys.path:
+        ikiwa dir not in sys.path:
             sys.path.insert(0, dir)
     # check the IDLE settings configuration (but command line overrides)
     edit_start = idleConf.GetOption('main', 'General',
@@ -1472,7 +1472,7 @@ def main():
 
     # Setup root.  Don't break user code run in IDLE process.
     # Don't change environment when testing.
-    if use_subprocess and not testing:
+    ikiwa use_subprocess and not testing:
         NoDefaultRoot()
     root = Tk(className="Idle")
     root.withdraw()
@@ -1481,11 +1481,11 @@ def main():
 
     # set application icon
     icondir = os.path.join(os.path.dirname(__file__), 'Icons')
-    if system() == 'Windows':
+    ikiwa system() == 'Windows':
         iconfile = os.path.join(icondir, 'idle.ico')
         root.wm_iconbitmap(default=iconfile)
-    elif not macosx.isAquaTk():
-        ext = '.png' if TkVersion >= 8.6 else '.gif'
+    elikiwa not macosx.isAquaTk():
+        ext = '.png' ikiwa TkVersion >= 8.6 else '.gif'
         iconfiles = [os.path.join(icondir, 'idle_%d%s' % (size, ext))
                      for size in (16, 32, 48)]
         icons = [PhotoImage(master=root, file=iconfile)
@@ -1498,20 +1498,20 @@ def main():
     flist = PyShellFileList(root)
     macosx.setupApp(root, flist)
 
-    if enable_edit:
-        if not (cmd or script):
+    ikiwa enable_edit:
+        ikiwa not (cmd or script):
             for filename in args[:]:
-                if flist.open(filename) is None:
+                ikiwa flist.open(filename) is None:
                     # filename is a directory actually, disconsider it
                     args.remove(filename)
-            if not args:
+            ikiwa not args:
                 flist.new()
 
-    if enable_shell:
+    ikiwa enable_shell:
         shell = flist.open_shell()
-        if not shell:
-            return # couldn't open shell
-        if macosx.isAquaTk() and flist.dict:
+        ikiwa not shell:
+            rudisha # couldn't open shell
+        ikiwa macosx.isAquaTk() and flist.dict:
             # On OSX: when the user has double-clicked on a file that causes
             # IDLE to be launched the shell window will open just in front of
             # the file she wants to see. Lower the interpreter window when
@@ -1522,39 +1522,39 @@ def main():
 
     # Handle remaining options. If any of these are set, enable_shell
     # was set also, so shell must be true to reach here.
-    if debug:
+    ikiwa debug:
         shell.open_debugger()
-    if startup:
+    ikiwa startup:
         filename = os.environ.get("IDLESTARTUP") or \
                    os.environ.get("PYTHONSTARTUP")
-        if filename and os.path.isfile(filename):
+        ikiwa filename and os.path.isfile(filename):
             shell.interp.execfile(filename)
-    if cmd or script:
-        shell.interp.runcommand("""if 1:
+    ikiwa cmd or script:
+        shell.interp.runcommand("""ikiwa 1:
             agiza sys as _sys
             _sys.argv = %r
             del _sys
             \n""" % (sys.argv,))
-        if cmd:
+        ikiwa cmd:
             shell.interp.execsource(cmd)
-        elif script:
+        elikiwa script:
             shell.interp.prepend_syspath(script)
             shell.interp.execfile(script)
-    elif shell:
+    elikiwa shell:
         # If there is a shell window and no cmd or script in progress,
         # check for problematic issues and print warning message(s) in
         # the IDLE shell window; this is less intrusive than always
         # opening a separate window.
 
-        # Warn if using a problematic OS X Tk version.
+        # Warn ikiwa using a problematic OS X Tk version.
         tkversionwarning = macosx.tkVersionWarning(root)
-        if tkversionwarning:
+        ikiwa tkversionwarning:
             shell.show_warning(tkversionwarning)
 
-        # Warn if the "Prefer tabs when opening documents" system
+        # Warn ikiwa the "Prefer tabs when opening documents" system
         # preference is set to "Always".
         prefer_tabs_preference_warning = macosx.preferTabsPreferenceWarning()
-        if prefer_tabs_preference_warning:
+        ikiwa prefer_tabs_preference_warning:
             shell.show_warning(prefer_tabs_preference_warning)
 
     while flist.inversedict:  # keep IDLE running while files are open.
@@ -1562,7 +1562,7 @@ def main():
     root.destroy()
     capture_warnings(False)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     main()
 
 capture_warnings(False)  # Make sure turned off; see issue 18081

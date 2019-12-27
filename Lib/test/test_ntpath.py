@@ -23,18 +23,18 @@ else:
     HAVE_GETFINALPATHNAME = True
 
 
-def _norm(path):
-    if isinstance(path, (bytes, str, os.PathLike)):
-        return ntpath.normcase(os.fsdecode(path))
-    elif hasattr(path, "__iter__"):
-        return tuple(ntpath.normcase(os.fsdecode(p)) for p in path)
-    return path
+eleza _norm(path):
+    ikiwa isinstance(path, (bytes, str, os.PathLike)):
+        rudisha ntpath.normcase(os.fsdecode(path))
+    elikiwa hasattr(path, "__iter__"):
+        rudisha tuple(ntpath.normcase(os.fsdecode(p)) for p in path)
+    rudisha path
 
 
-def tester(fn, wantResult):
+eleza tester(fn, wantResult):
     fn = fn.replace("\\", "\\\\")
     gotResult = eval(fn)
-    if wantResult != gotResult and _norm(wantResult) != _norm(gotResult):
+    ikiwa wantResult != gotResult and _norm(wantResult) != _norm(gotResult):
         raise TestFailed("%s should return: %s but returned: %s" \
               %(str(fn), str(wantResult), str(gotResult)))
 
@@ -50,23 +50,23 @@ def tester(fn, wantResult):
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
         gotResult = eval(fn)
-    if _norm(wantResult) != _norm(gotResult):
+    ikiwa _norm(wantResult) != _norm(gotResult):
         raise TestFailed("%s should return: %s but returned: %s" \
               %(str(fn), str(wantResult), repr(gotResult)))
 
 
-class NtpathTestCase(unittest.TestCase):
-    def assertPathEqual(self, path1, path2):
-        if path1 == path2 or _norm(path1) == _norm(path2):
+kundi NtpathTestCase(unittest.TestCase):
+    eleza assertPathEqual(self, path1, path2):
+        ikiwa path1 == path2 or _norm(path1) == _norm(path2):
             return
         self.assertEqual(path1, path2)
 
-    def assertPathIn(self, path, pathset):
+    eleza assertPathIn(self, path, pathset):
         self.assertIn(_norm(path), _norm(pathset))
 
 
-class TestNtpath(NtpathTestCase):
-    def test_splitext(self):
+kundi TestNtpath(NtpathTestCase):
+    eleza test_splitext(self):
         tester('ntpath.splitext("foo.ext")', ('foo', '.ext'))
         tester('ntpath.splitext("/foo/foo.ext")', ('/foo/foo', '.ext'))
         tester('ntpath.splitext(".ext")', ('.ext', ''))
@@ -78,7 +78,7 @@ class TestNtpath(NtpathTestCase):
         tester('ntpath.splitext("xx\\foo.bar.ext")', ('xx\\foo.bar', '.ext'))
         tester('ntpath.splitext("c:a/b\\c.d")', ('c:a/b\\c', '.d'))
 
-    def test_splitdrive(self):
+    eleza test_splitdrive(self):
         tester('ntpath.splitdrive("c:\\foo\\bar")',
                ('c:', '\\foo\\bar'))
         tester('ntpath.splitdrive("c:/foo/bar")',
@@ -99,7 +99,7 @@ class TestNtpath(NtpathTestCase):
         self.assertEqual(ntpath.splitdrive('//conky/MOUNTPOİNT/foo/bar'),
                          ('//conky/MOUNTPOİNT', '/foo/bar'))
 
-    def test_split(self):
+    eleza test_split(self):
         tester('ntpath.split("c:\\foo\\bar")', ('c:\\foo', 'bar'))
         tester('ntpath.split("\\\\conky\\mountpoint\\foo\\bar")',
                ('\\\\conky\\mountpoint\\foo', 'bar'))
@@ -111,13 +111,13 @@ class TestNtpath(NtpathTestCase):
         tester('ntpath.split("c:/")', ('c:/', ''))
         tester('ntpath.split("//conky/mountpoint/")', ('//conky/mountpoint/', ''))
 
-    def test_isabs(self):
+    eleza test_isabs(self):
         tester('ntpath.isabs("c:\\")', 1)
         tester('ntpath.isabs("\\\\conky\\mountpoint\\")', 1)
         tester('ntpath.isabs("\\foo")', 1)
         tester('ntpath.isabs("\\foo\\bar")', 1)
 
-    def test_commonprefix(self):
+    eleza test_commonprefix(self):
         tester('ntpath.commonprefix(["/home/swenson/spam", "/home/swen/spam"])',
                "/home/swen")
         tester('ntpath.commonprefix(["\\home\\swen\\spam", "\\home\\swen\\eggs"])',
@@ -125,7 +125,7 @@ class TestNtpath(NtpathTestCase):
         tester('ntpath.commonprefix(["/home/swen/spam", "/home/swen/spam"])',
                "/home/swen/spam")
 
-    def test_join(self):
+    eleza test_join(self):
         tester('ntpath.join("")', '')
         tester('ntpath.join("", "", "")', '')
         tester('ntpath.join("a")', 'a')
@@ -190,7 +190,7 @@ class TestNtpath(NtpathTestCase):
         tester("ntpath.join('//computer/share', 'a', 'b')", '//computer/share\\a\\b')
         tester("ntpath.join('//computer/share', 'a/b')", '//computer/share\\a/b')
 
-    def test_normpath(self):
+    eleza test_normpath(self):
         tester("ntpath.normpath('A//////././//.//B')", r'A\B')
         tester("ntpath.normpath('A/./B')", r'A\B')
         tester("ntpath.normpath('A/foo/../B')", r'A\B')
@@ -217,7 +217,7 @@ class TestNtpath(NtpathTestCase):
         tester("ntpath.normpath('\\\\.\\NUL')", r'\\.\NUL')
         tester("ntpath.normpath('\\\\?\\D:/XY\\Z')", r'\\?\D:/XY\Z')
 
-    def test_realpath_curdir(self):
+    eleza test_realpath_curdir(self):
         expected = ntpath.normpath(os.getcwd())
         tester("ntpath.realpath('.')", expected)
         tester("ntpath.realpath('./.')", expected)
@@ -225,7 +225,7 @@ class TestNtpath(NtpathTestCase):
         tester("ntpath.realpath('.\\.')", expected)
         tester("ntpath.realpath('\\'.join(['.'] * 100))", expected)
 
-    def test_realpath_pardir(self):
+    eleza test_realpath_pardir(self):
         expected = ntpath.normpath(os.getcwd())
         tester("ntpath.realpath('..')", ntpath.dirname(expected))
         tester("ntpath.realpath('../..')",
@@ -239,7 +239,7 @@ class TestNtpath(NtpathTestCase):
 
     @support.skip_unless_symlink
     @unittest.skipUnless(HAVE_GETFINALPATHNAME, 'need _getfinalpathname')
-    def test_realpath_basic(self):
+    eleza test_realpath_basic(self):
         ABSTFN = ntpath.abspath(support.TESTFN)
         open(ABSTFN, "wb").close()
         self.addCleanup(support.unlink, ABSTFN)
@@ -252,7 +252,7 @@ class TestNtpath(NtpathTestCase):
 
     @support.skip_unless_symlink
     @unittest.skipUnless(HAVE_GETFINALPATHNAME, 'need _getfinalpathname')
-    def test_realpath_relative(self):
+    eleza test_realpath_relative(self):
         ABSTFN = ntpath.abspath(support.TESTFN)
         open(ABSTFN, "wb").close()
         self.addCleanup(support.unlink, ABSTFN)
@@ -263,7 +263,7 @@ class TestNtpath(NtpathTestCase):
 
     @support.skip_unless_symlink
     @unittest.skipUnless(HAVE_GETFINALPATHNAME, 'need _getfinalpathname')
-    def test_realpath_broken_symlinks(self):
+    eleza test_realpath_broken_symlinks(self):
         ABSTFN = ntpath.abspath(support.TESTFN)
         os.mkdir(ABSTFN)
         self.addCleanup(support.rmtree, ABSTFN)
@@ -318,8 +318,8 @@ class TestNtpath(NtpathTestCase):
 
     @support.skip_unless_symlink
     @unittest.skipUnless(HAVE_GETFINALPATHNAME, 'need _getfinalpathname')
-    def test_realpath_symlink_loops(self):
-        # Bug #930024, return the path unchanged if we get into an infinite
+    eleza test_realpath_symlink_loops(self):
+        # Bug #930024, rudisha the path unchanged ikiwa we get into an infinite
         # symlink loop.
         ABSTFN = ntpath.abspath(support.TESTFN)
         self.addCleanup(support.unlink, ABSTFN)
@@ -366,7 +366,7 @@ class TestNtpath(NtpathTestCase):
 
     @support.skip_unless_symlink
     @unittest.skipUnless(HAVE_GETFINALPATHNAME, 'need _getfinalpathname')
-    def test_realpath_symlink_prefix(self):
+    eleza test_realpath_symlink_prefix(self):
         ABSTFN = ntpath.abspath(support.TESTFN)
         self.addCleanup(support.unlink, ABSTFN + "3")
         self.addCleanup(support.unlink, "\\\\?\\" + ABSTFN + "3.")
@@ -399,10 +399,10 @@ class TestNtpath(NtpathTestCase):
                              "\\\\?\\" + ABSTFN + "3.")
 
     @unittest.skipUnless(HAVE_GETFINALPATHNAME, 'need _getfinalpathname')
-    def test_realpath_nul(self):
+    eleza test_realpath_nul(self):
         tester("ntpath.realpath('NUL')", r'\\.\NUL')
 
-    def test_expandvars(self):
+    eleza test_expandvars(self):
         with support.EnvironmentVarGuard() as env:
             env.clear()
             env["foo"] = "bar"
@@ -429,8 +429,8 @@ class TestNtpath(NtpathTestCase):
             tester('ntpath.expandvars("bar\'%foo%")', "bar\'%foo%")
 
     @unittest.skipUnless(support.FS_NONASCII, 'need support.FS_NONASCII')
-    def test_expandvars_nonascii(self):
-        def check(value, expected):
+    eleza test_expandvars_nonascii(self):
+        eleza check(value, expected):
             tester('ntpath.expandvars(%r)' % value, expected)
         with support.EnvironmentVarGuard() as env:
             env.clear()
@@ -448,7 +448,7 @@ class TestNtpath(NtpathTestCase):
             check('%spam%bar', '%sbar' % nonascii)
             check('%{}%bar'.format(nonascii), 'ham%sbar' % nonascii)
 
-    def test_expanduser(self):
+    eleza test_expanduser(self):
         tester('ntpath.expanduser("test")', 'test')
 
         with support.EnvironmentVarGuard() as env:
@@ -485,7 +485,7 @@ class TestNtpath(NtpathTestCase):
             tester('ntpath.expanduser("~")', 'C:\\eric\\idle')
 
     @unittest.skipUnless(nt, "abspath requires 'nt' module")
-    def test_abspath(self):
+    eleza test_abspath(self):
         tester('ntpath.abspath("C:\\")', "C:\\")
         with support.temp_cwd(support.TESTFN) as cwd_dir: # bpo-31047
             tester('ntpath.abspath("")', cwd_dir)
@@ -494,7 +494,7 @@ class TestNtpath(NtpathTestCase):
             drive, _ = ntpath.splitdrive(cwd_dir)
             tester('ntpath.abspath("/abc/")', drive + "\\abc")
 
-    def test_relpath(self):
+    eleza test_relpath(self):
         tester('ntpath.relpath("a")', 'a')
         tester('ntpath.relpath(ntpath.abspath("a"))', 'a')
         tester('ntpath.relpath("a/b")', 'a\\b')
@@ -518,11 +518,11 @@ class TestNtpath(NtpathTestCase):
         tester('ntpath.relpath("/a/b", "/a/b")', '.')
         tester('ntpath.relpath("c:/foo", "C:/FOO")', '.')
 
-    def test_commonpath(self):
-        def check(paths, expected):
+    eleza test_commonpath(self):
+        eleza check(paths, expected):
             tester(('ntpath.commonpath(%r)' % paths).replace('\\\\', '\\'),
                    expected)
-        def check_error(exc, paths):
+        eleza check_error(exc, paths):
             self.assertRaises(exc, ntpath.commonpath, paths)
             self.assertRaises(exc, ntpath.commonpath,
                               [os.fsencode(p) for p in paths])
@@ -587,20 +587,20 @@ class TestNtpath(NtpathTestCase):
         self.assertRaises(TypeError, ntpath.commonpath,
                           ['Program Files', b'C:\\Program Files\\Foo'])
 
-    def test_sameopenfile(self):
+    eleza test_sameopenfile(self):
         with TemporaryFile() as tf1, TemporaryFile() as tf2:
             # Make sure the same file is really the same
             self.assertTrue(ntpath.sameopenfile(tf1.fileno(), tf1.fileno()))
             # Make sure different files are really different
             self.assertFalse(ntpath.sameopenfile(tf1.fileno(), tf2.fileno()))
             # Make sure invalid values don't cause issues on win32
-            if sys.platform == "win32":
+            ikiwa sys.platform == "win32":
                 with self.assertRaises(OSError):
                     # Invalid file descriptors shouldn't display assert
                     # dialogs (#4804)
                     ntpath.sameopenfile(-1, -1)
 
-    def test_ismount(self):
+    eleza test_ismount(self):
         self.assertTrue(ntpath.ismount("c:\\"))
         self.assertTrue(ntpath.ismount("C:\\"))
         self.assertTrue(ntpath.ismount("c:/"))
@@ -618,7 +618,7 @@ class TestNtpath(NtpathTestCase):
         with support.temp_dir() as d:
             self.assertFalse(ntpath.ismount(d))
 
-        if sys.platform == "win32":
+        ikiwa sys.platform == "win32":
             #
             # Make sure the current folder isn't the root folder
             # (or any other volume root). The drive-relative
@@ -635,12 +635,12 @@ class TestNtpath(NtpathTestCase):
             self.assertTrue(ntpath.ismount(b"\\\\localhost\\c$"))
             self.assertTrue(ntpath.ismount(b"\\\\localhost\\c$\\"))
 
-    def assertEqualCI(self, s1, s2):
+    eleza assertEqualCI(self, s1, s2):
         """Assert that two strings are equal ignoring case differences."""
         self.assertEqual(s1.lower(), s2.lower())
 
     @unittest.skipUnless(nt, "OS helpers require 'nt' module")
-    def test_nt_helpers(self):
+    eleza test_nt_helpers(self):
         # Trivial validation that the helpers do not break, and support both
         # unicode and bytes (UTF-8) paths
 
@@ -669,84 +669,84 @@ class TestNtpath(NtpathTestCase):
             self.assertIsInstance(b_final_path, bytes)
             self.assertGreater(len(b_final_path), 0)
 
-class NtCommonTest(test_genericpath.CommonTest, unittest.TestCase):
+kundi NtCommonTest(test_genericpath.CommonTest, unittest.TestCase):
     pathmodule = ntpath
     attributes = ['relpath']
 
 
-class PathLikeTests(NtpathTestCase):
+kundi PathLikeTests(NtpathTestCase):
 
     path = ntpath
 
-    def setUp(self):
+    eleza setUp(self):
         self.file_name = support.TESTFN.lower()
         self.file_path = FakePath(support.TESTFN)
         self.addCleanup(support.unlink, self.file_name)
         with open(self.file_name, 'xb', 0) as file:
             file.write(b"test_ntpath.PathLikeTests")
 
-    def _check_function(self, func):
+    eleza _check_function(self, func):
         self.assertPathEqual(func(self.file_path), func(self.file_name))
 
-    def test_path_normcase(self):
+    eleza test_path_normcase(self):
         self._check_function(self.path.normcase)
 
-    def test_path_isabs(self):
+    eleza test_path_isabs(self):
         self._check_function(self.path.isabs)
 
-    def test_path_join(self):
+    eleza test_path_join(self):
         self.assertEqual(self.path.join('a', FakePath('b'), 'c'),
                          self.path.join('a', 'b', 'c'))
 
-    def test_path_split(self):
+    eleza test_path_split(self):
         self._check_function(self.path.split)
 
-    def test_path_splitext(self):
+    eleza test_path_splitext(self):
         self._check_function(self.path.splitext)
 
-    def test_path_splitdrive(self):
+    eleza test_path_splitdrive(self):
         self._check_function(self.path.splitdrive)
 
-    def test_path_basename(self):
+    eleza test_path_basename(self):
         self._check_function(self.path.basename)
 
-    def test_path_dirname(self):
+    eleza test_path_dirname(self):
         self._check_function(self.path.dirname)
 
-    def test_path_islink(self):
+    eleza test_path_islink(self):
         self._check_function(self.path.islink)
 
-    def test_path_lexists(self):
+    eleza test_path_lexists(self):
         self._check_function(self.path.lexists)
 
-    def test_path_ismount(self):
+    eleza test_path_ismount(self):
         self._check_function(self.path.ismount)
 
-    def test_path_expanduser(self):
+    eleza test_path_expanduser(self):
         self._check_function(self.path.expanduser)
 
-    def test_path_expandvars(self):
+    eleza test_path_expandvars(self):
         self._check_function(self.path.expandvars)
 
-    def test_path_normpath(self):
+    eleza test_path_normpath(self):
         self._check_function(self.path.normpath)
 
-    def test_path_abspath(self):
+    eleza test_path_abspath(self):
         self._check_function(self.path.abspath)
 
-    def test_path_realpath(self):
+    eleza test_path_realpath(self):
         self._check_function(self.path.realpath)
 
-    def test_path_relpath(self):
+    eleza test_path_relpath(self):
         self._check_function(self.path.relpath)
 
-    def test_path_commonpath(self):
+    eleza test_path_commonpath(self):
         common_path = self.path.commonpath([self.file_path, self.file_name])
         self.assertPathEqual(common_path, self.file_name)
 
-    def test_path_isdir(self):
+    eleza test_path_isdir(self):
         self._check_function(self.path.isdir)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

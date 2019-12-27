@@ -3,9 +3,9 @@ agiza time
 agiza unittest
 
 
-class StructSeqTest(unittest.TestCase):
+kundi StructSeqTest(unittest.TestCase):
 
-    def test_tuple(self):
+    eleza test_tuple(self):
         t = time.gmtime()
         self.assertIsInstance(t, tuple)
         astuple = tuple(t)
@@ -27,7 +27,7 @@ class StructSeqTest(unittest.TestCase):
         for i in range(-len(t), len(t)-1):
             self.assertEqual(t[i], astuple[i])
 
-    def test_repr(self):
+    eleza test_repr(self):
         t = time.gmtime()
         self.assertTrue(repr(t))
         t = time.gmtime(0)
@@ -42,30 +42,30 @@ class StructSeqTest(unittest.TestCase):
         self.assertIn("st_ino=", rep)
         self.assertIn("st_dev=", rep)
 
-    def test_concat(self):
+    eleza test_concat(self):
         t1 = time.gmtime()
         t2 = t1 + tuple(t1)
         for i in range(len(t1)):
             self.assertEqual(t2[i], t2[i+len(t1)])
 
-    def test_repeat(self):
+    eleza test_repeat(self):
         t1 = time.gmtime()
         t2 = 3 * t1
         for i in range(len(t1)):
             self.assertEqual(t2[i], t2[i+len(t1)])
             self.assertEqual(t2[i], t2[i+2*len(t1)])
 
-    def test_contains(self):
+    eleza test_contains(self):
         t1 = time.gmtime()
         for item in t1:
             self.assertIn(item, t1)
         self.assertNotIn(-42, t1)
 
-    def test_hash(self):
+    eleza test_hash(self):
         t1 = time.gmtime()
         self.assertEqual(hash(t1), hash(tuple(t1)))
 
-    def test_cmp(self):
+    eleza test_cmp(self):
         t1 = time.gmtime()
         t2 = type(t1)(t1)
         self.assertEqual(t1, t2)
@@ -75,13 +75,13 @@ class StructSeqTest(unittest.TestCase):
         self.assertTrue(t1 >= t2)
         self.assertTrue(not (t1 != t2))
 
-    def test_fields(self):
+    eleza test_fields(self):
         t = time.gmtime()
         self.assertEqual(len(t), t.n_sequence_fields)
         self.assertEqual(t.n_unnamed_fields, 0)
         self.assertEqual(t.n_fields, time._STRUCT_TM_ITEMS)
 
-    def test_constructor(self):
+    eleza test_constructor(self):
         t = time.struct_time
 
         self.assertRaises(TypeError, t)
@@ -93,24 +93,24 @@ class StructSeqTest(unittest.TestCase):
         s = "123456789"
         self.assertEqual("".join(t(s)), s)
 
-    def test_eviltuple(self):
-        class Exc(Exception):
+    eleza test_eviltuple(self):
+        kundi Exc(Exception):
             pass
 
         # Devious code could crash structseqs' constructors
-        class C:
-            def __getitem__(self, i):
+        kundi C:
+            eleza __getitem__(self, i):
                 raise Exc
-            def __len__(self):
-                return 9
+            eleza __len__(self):
+                rudisha 9
 
         self.assertRaises(Exc, time.struct_time, C())
 
-    def test_reduce(self):
+    eleza test_reduce(self):
         t = time.gmtime()
         x = t.__reduce__()
 
-    def test_extended_getslice(self):
+    eleza test_extended_getslice(self):
         # Test extended slicing by comparing with list slicing.
         t = time.gmtime()
         L = list(t)
@@ -122,5 +122,5 @@ class StructSeqTest(unittest.TestCase):
                     self.assertEqual(list(t[start:stop:step]),
                                      L[start:stop:step])
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

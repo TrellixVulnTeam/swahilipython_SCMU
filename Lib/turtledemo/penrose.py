@@ -22,7 +22,7 @@ kutoka time agiza perf_counter as clock, sleep
 f = (5**0.5-1)/2.0   # (sqrt(5)-1)/2 -- golden ratio
 d = 2 * cos(3*pi/10)
 
-def kite(l):
+eleza kite(l):
     fl = f * l
     lt(36)
     fd(l)
@@ -34,7 +34,7 @@ def kite(l):
     fd(l)
     rt(144)
 
-def dart(l):
+eleza dart(l):
     fl = f * l
     lt(36)
     fd(l)
@@ -46,8 +46,8 @@ def dart(l):
     fd(l)
     rt(144)
 
-def inflatekite(l, n):
-    if n == 0:
+eleza inflatekite(l, n):
+    ikiwa n == 0:
         px, py = pos()
         h, x, y = int(heading()), round(px,3), round(py,3)
         tiledict[(h,x,y)] = True
@@ -68,8 +68,8 @@ def inflatekite(l, n):
     inflatedart(fl, n-1)
     lt(36)
 
-def inflatedart(l, n):
-    if n == 0:
+eleza inflatedart(l, n):
+    ikiwa n == 0:
         px, py = pos()
         h, x, y = int(heading()), round(px,3), round(py,3)
         tiledict[(h,x,y)] = False
@@ -87,7 +87,7 @@ def inflatedart(l, n):
     fd(l)
     rt(144)
 
-def draw(l, n, th=2):
+eleza draw(l, n, th=2):
     clear()
     l = l * f**n
     shapesize(l/100.0, l/100.0, th)
@@ -95,7 +95,7 @@ def draw(l, n, th=2):
         h, x, y = k
         setpos(x, y)
         setheading(h)
-        if tiledict[k]:
+        ikiwa tiledict[k]:
             shape("kite")
             color("black", (0, 0.75, 0))
         else:
@@ -103,17 +103,17 @@ def draw(l, n, th=2):
             color("black", (0.75, 0, 0))
         stamp()
 
-def sun(l, n):
+eleza sun(l, n):
     for i in range(5):
         inflatekite(l, n)
         lt(72)
 
-def star(l,n):
+eleza star(l,n):
     for i in range(5):
         inflatedart(l, n)
         lt(72)
 
-def makeshapes():
+eleza makeshapes():
     tracer(0)
     begin_poly()
     kite(100)
@@ -125,14 +125,14 @@ def makeshapes():
     register_shape("dart", get_poly())
     tracer(1)
 
-def start():
+eleza start():
     reset()
     ht()
     pu()
     makeshapes()
     resizemode("user")
 
-def test(l=200, n=4, fun=sun, startpos=(0,0), th=2):
+eleza test(l=200, n=4, fun=sun, startpos=(0,0), th=2):
     global tiledict
     goto(startpos)
     setheading(0)
@@ -141,21 +141,21 @@ def test(l=200, n=4, fun=sun, startpos=(0,0), th=2):
     fun(l, n)
     draw(l, n, th)
     tracer(1)
-    nk = len([x for x in tiledict if tiledict[x]])
-    nd = len([x for x in tiledict if not tiledict[x]])
-    print("%d kites and %d darts = %d pieces." % (nk, nd, nk+nd))
+    nk = len([x for x in tiledict ikiwa tiledict[x]])
+    nd = len([x for x in tiledict ikiwa not tiledict[x]])
+    andika("%d kites and %d darts = %d pieces." % (nk, nd, nk+nd))
 
-def demo(fun=sun):
+eleza demo(fun=sun):
     start()
     for i in range(8):
         a = clock()
         test(300, i, fun)
         b = clock()
         t = b - a
-        if t < 2:
+        ikiwa t < 2:
             sleep(2 - t)
 
-def main():
+eleza main():
     #title("Penrose-tiling with kites and darts.")
     mode("logo")
     bgcolor(0.3, 0.3, 0)
@@ -168,8 +168,8 @@ def main():
     write("Please wait...",
           align="center", font=('Arial Black', 36, 'bold'))
     test(600, 8, startpos=(70, 117))
-    return "Done"
+    rudisha "Done"
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     msg = main()
     mainloop()

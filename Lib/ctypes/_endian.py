@@ -48,7 +48,7 @@ if sys.byteorder == "little":
         __slots__ = ()
         _swappedbytes_ = None
 
-elif sys.byteorder == "big":
+lasivyo sys.byteorder == "big":
     _OTHER_ENDIAN = "__ctype_le__"
 
     BigEndianStructure = Structure

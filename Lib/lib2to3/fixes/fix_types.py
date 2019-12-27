@@ -50,12 +50,12 @@ _TYPE_MAPPING = {
 
 _pats = ["power< 'types' trailer< '.' name='%s' > >" % t for t in _TYPE_MAPPING]
 
-class FixTypes(fixer_base.BaseFix):
+kundi FixTypes(fixer_base.BaseFix):
     BM_compatible = True
     PATTERN = '|'.join(_pats)
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         new_value = _TYPE_MAPPING.get(results["name"].value)
-        if new_value:
-            return Name(new_value, prefix=node.prefix)
-        return None
+        ikiwa new_value:
+            rudisha Name(new_value, prefix=node.prefix)
+        rudisha None

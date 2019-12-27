@@ -59,7 +59,7 @@ List Objects
 .. c:function:: PyObject* PyList_GetItem(PyObject *list, Py_ssize_t index)
 
    Return the object at position *index* in the list pointed to by *list*.  The
-   position must be non-negative; indexing from the end of the list is not
+   position must be non-negative; indexing kutoka the end of the list is not
    supported.  If *index* is out of bounds (<0 or >=len(list)),
    return *NULL* and set an :exc:`IndexError` exception.
 
@@ -111,7 +111,7 @@ List Objects
 
    Return a list of the objects in *list* containing the objects *between* *low*
    and *high*.  Return *NULL* and set an exception if unsuccessful.  Analogous
-   to ``list[low:high]``.  Negative indices, as when slicing from Python, are not
+   to ``list[low:high]``.  Negative indices, as when slicing kutoka Python, are not
    supported.
 
 
@@ -121,7 +121,7 @@ List Objects
    *itemlist*.  Analogous to ``list[low:high] = itemlist``. The *itemlist* may
    be *NULL*, indicating the assignment of an empty list (slice deletion).
    Return ``0`` on success, ``-1`` on failure.  Negative indices, as when
-   slicing from Python, are not supported.
+   slicing kutoka Python, are not supported.
 
 
 .. c:function:: int PyList_Sort(PyObject *list)

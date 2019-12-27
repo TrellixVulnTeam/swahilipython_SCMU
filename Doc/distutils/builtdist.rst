@@ -44,7 +44,7 @@ executable installer on Windows.  (That tar file is considered "dumb" because it
 has to be unpacked in a specific location to work.)
 
 Thus, the above command on a Unix system creates
-:file:`Distutils-1.0.{plat}.tar.gz`; unpacking this tarball from the right place
+:file:`Distutils-1.0.{plat}.tar.gz`; unpacking this tarball kutoka the right place
 installs the Distutils just as though you had downloaded the source distribution
 and run ``python setup.py install``.  (The "right place" is either the root of
 the filesystem or  Python's :file:`{prefix}` directory, depending on the options
@@ -67,7 +67,7 @@ distribution to generate: for example, ::
 
 would, when run on a Unix system, create
 :file:`Distutils-1.0.{plat}.zip`\ ---again, this archive would be unpacked
-from the root directory to install the Distutils.
+kutoka the root directory to install the Distutils.
 
 The available formats for built distributions are:
 
@@ -195,7 +195,7 @@ Distutils is driven by the setup script.  To make your life easier, the
 :command:`bdist_rpm` command normally creates a :file:`.spec` file based on the
 information you supply in the setup script, on the command line, and in any
 Distutils configuration files.  Various options and sections in the
-:file:`.spec` file are derived from options in the setup script as follows:
+:file:`.spec` file are derived kutoka options in the setup script as follows:
 
 +------------------------------------------+----------------------------------------------+
 | RPM :file:`.spec` file option or section | Distutils setup script option                |
@@ -306,11 +306,11 @@ Creating Windows Installers
 
 Executable installers are the natural format for binary distributions on
 Windows.  They display a nice graphical user interface, display some information
-about the module distribution to be installed taken from the metadata in the
+about the module distribution to be installed taken kutoka the metadata in the
 setup script, let the user select a few options, and start or cancel the
 installation.
 
-Since the metadata is taken from the setup script, creating Windows installers
+Since the metadata is taken kutoka the setup script, creating Windows installers
 is usually as easy as running::
 
    python setup.py bdist_wininst
@@ -341,7 +341,7 @@ run, but you can also supply your own 152x261 bitmap which must be a Windows
 :file:`.bmp` file with the :option:`!--bitmap` option.
 
 The installer will also display a large title on the desktop background window
-when it is run, which is constructed from the name of your distribution and the
+when it is run, which is constructed kutoka the name of your distribution and the
 version number.  This can be changed to another text by using the
 :option:`!--title` option.
 
@@ -372,7 +372,7 @@ support this option, so the command::
 would create a 64bit installation executable on your 32bit version of Windows.
 
 To cross-compile, you must download the Python source code and cross-compile
-Python itself for the platform you are targeting - it is not possible from a
+Python itself for the platform you are targeting - it is not possible kutoka a
 binary installation of Python (as the .lib etc file for other platforms are
 not included.)  In practice, this means the user of a 32 bit operating
 system will need to use Visual Studio 2008 to open the

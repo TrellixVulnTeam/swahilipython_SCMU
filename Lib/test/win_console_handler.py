@@ -17,15 +17,15 @@ agiza sys
 # Function prototype for the handler function. Returns BOOL, takes a DWORD.
 HandlerRoutine = WINFUNCTYPE(wintypes.BOOL, wintypes.DWORD)
 
-def _ctrl_handler(sig):
-    """Handle a sig event and return 0 to terminate the process"""
-    if sig == signal.CTRL_C_EVENT:
+eleza _ctrl_handler(sig):
+    """Handle a sig event and rudisha 0 to terminate the process"""
+    ikiwa sig == signal.CTRL_C_EVENT:
         pass
-    elif sig == signal.CTRL_BREAK_EVENT:
+    elikiwa sig == signal.CTRL_BREAK_EVENT:
         pass
     else:
-        print("UNKNOWN EVENT")
-    return 0
+        andika("UNKNOWN EVENT")
+    rudisha 0
 
 ctrl_handler = HandlerRoutine(_ctrl_handler)
 
@@ -34,10 +34,10 @@ SetConsoleCtrlHandler = ctypes.windll.kernel32.SetConsoleCtrlHandler
 SetConsoleCtrlHandler.argtypes = (HandlerRoutine, wintypes.BOOL)
 SetConsoleCtrlHandler.restype = wintypes.BOOL
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     # Add our console control handling function with value 1
-    if not SetConsoleCtrlHandler(ctrl_handler, 1):
-        print("Unable to add SetConsoleCtrlHandler")
+    ikiwa not SetConsoleCtrlHandler(ctrl_handler, 1):
+        andika("Unable to add SetConsoleCtrlHandler")
         exit(-1)
 
     # Awake main process

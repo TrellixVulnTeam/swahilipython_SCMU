@@ -13,7 +13,7 @@ text content and the addresses may contain unicode characters):
 
 
 Parsing :rfc:`822` headers can easily be done by the using the classes
-from the :mod:`~email.parser` module:
+kutoka the :mod:`~email.parser` module:
 
 .. literalinclude:: ../includes/email-headers.py
 
@@ -44,12 +44,12 @@ disk, as well as sending it.
 .. literalinclude:: ../includes/email-alternative.py
 
 
-If we were sent the message from the last example, here is one way we could
+If we were sent the message kutoka the last example, here is one way we could
 process it:
 
 .. literalinclude:: ../includes/email-read-alternative.py
 
-Up to the prompt, the output from the above is:
+Up to the prompt, the output kutoka the above is:
 
 .. code-block:: none
 

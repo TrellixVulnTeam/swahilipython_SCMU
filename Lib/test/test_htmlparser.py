@@ -5,106 +5,106 @@ agiza pprint
 agiza unittest
 
 
-class EventCollector(html.parser.HTMLParser):
+kundi EventCollector(html.parser.HTMLParser):
 
-    def __init__(self, *args, **kw):
+    eleza __init__(self, *args, **kw):
         self.events = []
         self.append = self.events.append
         html.parser.HTMLParser.__init__(self, *args, **kw)
 
-    def get_events(self):
+    eleza get_events(self):
         # Normalize the list of events so that buffer artefacts don't
         # separate runs of contiguous characters.
         L = []
         prevtype = None
         for event in self.events:
             type = event[0]
-            if type == prevtype == "data":
+            ikiwa type == prevtype == "data":
                 L[-1] = ("data", L[-1][1] + event[1])
             else:
                 L.append(event)
             prevtype = type
         self.events = L
-        return L
+        rudisha L
 
     # structure markup
 
-    def handle_starttag(self, tag, attrs):
+    eleza handle_starttag(self, tag, attrs):
         self.append(("starttag", tag, attrs))
 
-    def handle_startendtag(self, tag, attrs):
+    eleza handle_startendtag(self, tag, attrs):
         self.append(("startendtag", tag, attrs))
 
-    def handle_endtag(self, tag):
+    eleza handle_endtag(self, tag):
         self.append(("endtag", tag))
 
     # all other markup
 
-    def handle_comment(self, data):
+    eleza handle_comment(self, data):
         self.append(("comment", data))
 
-    def handle_charref(self, data):
+    eleza handle_charref(self, data):
         self.append(("charref", data))
 
-    def handle_data(self, data):
+    eleza handle_data(self, data):
         self.append(("data", data))
 
-    def handle_decl(self, data):
+    eleza handle_decl(self, data):
         self.append(("decl", data))
 
-    def handle_entityref(self, data):
+    eleza handle_entityref(self, data):
         self.append(("entityref", data))
 
-    def handle_pi(self, data):
+    eleza handle_pi(self, data):
         self.append(("pi", data))
 
-    def unknown_decl(self, decl):
+    eleza unknown_decl(self, decl):
         self.append(("unknown decl", decl))
 
 
-class EventCollectorExtra(EventCollector):
+kundi EventCollectorExtra(EventCollector):
 
-    def handle_starttag(self, tag, attrs):
+    eleza handle_starttag(self, tag, attrs):
         EventCollector.handle_starttag(self, tag, attrs)
         self.append(("starttag_text", self.get_starttag_text()))
 
 
-class EventCollectorCharrefs(EventCollector):
+kundi EventCollectorCharrefs(EventCollector):
 
-    def handle_charref(self, data):
+    eleza handle_charref(self, data):
         self.fail('This should never be called with convert_charrefs=True')
 
-    def handle_entityref(self, data):
+    eleza handle_entityref(self, data):
         self.fail('This should never be called with convert_charrefs=True')
 
 
-class TestCaseBase(unittest.TestCase):
+kundi TestCaseBase(unittest.TestCase):
 
-    def get_collector(self):
-        return EventCollector(convert_charrefs=False)
+    eleza get_collector(self):
+        rudisha EventCollector(convert_charrefs=False)
 
-    def _run_check(self, source, expected_events, collector=None):
-        if collector is None:
+    eleza _run_check(self, source, expected_events, collector=None):
+        ikiwa collector is None:
             collector = self.get_collector()
         parser = collector
         for s in source:
             parser.feed(s)
         parser.close()
         events = parser.get_events()
-        if events != expected_events:
+        ikiwa events != expected_events:
             self.fail("received events did not match expected events" +
                       "\nSource:\n" + repr(source) +
                       "\nExpected:\n" + pprint.pformat(expected_events) +
                       "\nReceived:\n" + pprint.pformat(events))
 
-    def _run_check_extra(self, source, events):
+    eleza _run_check_extra(self, source, events):
         self._run_check(source, events,
                         EventCollectorExtra(convert_charrefs=False))
 
 
-class HTMLParserTestCase(TestCaseBase):
+kundi HTMLParserTestCase(TestCaseBase):
 
-    def test_processing_instruction_only(self):
+    eleza test_processing_instruction_only(self):
         self._run_check("<?processing instruction>", [
             ("pi", "processing instruction"),
             ])
@@ -112,7 +112,7 @@ class HTMLParserTestCase(TestCaseBase):
             ("pi", "processing instruction ?"),
             ])
 
-    def test_simple_html(self):
+    eleza test_simple_html(self):
         self._run_check("""
 <!DOCTYPE html PUBLIC 'foo'>
 <HTML>&entity;&#32;
@@ -144,7 +144,7 @@ text
     ("data", "\n"),
     ])
 
-    def test_malformatted_charref(self):
+    eleza test_malformatted_charref(self):
         self._run_check("<p>&#bad;</p>", [
             ("starttag", "p", []),
             ("data", "&#bad;"),
@@ -157,13 +157,13 @@ text
             ("endtag", "div"),
         ])
 
-    def test_unclosed_entityref(self):
+    eleza test_unclosed_entityref(self):
         self._run_check("&entityref foo", [
             ("entityref", "entityref"),
             ("data", " foo"),
             ])
 
-    def test_bad_nesting(self):
+    eleza test_bad_nesting(self):
         # Strangely, this *is* supposed to test that overlapping
         # elements are allowed.  HTMLParser is more geared toward
         # lexing the input that parsing the structure.
@@ -174,21 +174,21 @@ text
             ("endtag", "b"),
             ])
 
-    def test_bare_ampersands(self):
+    eleza test_bare_ampersands(self):
         self._run_check("this text & contains & ampersands &", [
             ("data", "this text & contains & ampersands &"),
             ])
 
-    def test_bare_pointy_brackets(self):
+    eleza test_bare_pointy_brackets(self):
         self._run_check("this < text > contains < bare>pointy< brackets", [
             ("data", "this < text > contains < bare>pointy< brackets"),
             ])
 
-    def test_starttag_end_boundary(self):
+    eleza test_starttag_end_boundary(self):
         self._run_check("""<a b='<'>""", [("starttag", "a", [("b", "<")])])
         self._run_check("""<a b='>'>""", [("starttag", "a", [("b", ">")])])
 
-    def test_buffer_artefacts(self):
+    eleza test_buffer_artefacts(self):
         output = [("starttag", "a", [("b", "<")])]
         self._run_check(["<a b='<'>"], output)
         self._run_check(["<a ", "b='<'>"], output)
@@ -218,7 +218,7 @@ text
         self._run_check(["<!--abc--", ">"], output)
         self._run_check(["<!--abc-->", ""], output)
 
-    def test_valid_doctypes(self):
+    eleza test_valid_doctypes(self):
         # kutoka http://www.w3.org/QA/2002/04/valid-dtd-list.html
         dtds = ['HTML',  # HTML5 doctype
                 ('HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" '
@@ -242,7 +242,7 @@ text
             self._run_check("<!DOCTYPE %s>" % dtd,
                             [('decl', 'DOCTYPE ' + dtd)])
 
-    def test_startendtag(self):
+    eleza test_startendtag(self):
         self._run_check("<p/>", [
             ("startendtag", "p", []),
             ])
@@ -256,13 +256,13 @@ text
             ("endtag", "p"),
             ])
 
-    def test_get_starttag_text(self):
+    eleza test_get_starttag_text(self):
         s = """<foo:bar   \n   one="1"\ttwo=2   >"""
         self._run_check_extra(s, [
             ("starttag", "foo:bar", [("one", "1"), ("two", "2")]),
             ("starttag_text", s)])
 
-    def test_cdata_content(self):
+    eleza test_cdata_content(self):
         contents = [
             '<!-- not a comment --> &not-an-entity-ref;',
             "<not a='start tag'>",
@@ -293,14 +293,14 @@ text
                                     ("data", content),
                                     ("endtag", element_lower)])
 
-    def test_cdata_with_closing_tags(self):
+    eleza test_cdata_with_closing_tags(self):
         # see issue #13358
         # make sure that HTMLParser calls handle_data only once for each CDATA.
         # The normal event collector normalizes  the events in get_events,
-        # so we override it to return the original list of events.
-        class Collector(EventCollector):
-            def get_events(self):
-                return self.events
+        # so we override it to rudisha the original list of events.
+        kundi Collector(EventCollector):
+            eleza get_events(self):
+                rudisha self.events
 
         content = """<!-- not a comment --> &not-an-entity-ref;
                   <a href="" /> </p><p> <span></span></style>
@@ -315,7 +315,7 @@ text
                                 ("endtag", element_lower)],
                             collector=Collector(convert_charrefs=False))
 
-    def test_comments(self):
+    eleza test_comments(self):
         html = ("<!-- I'm a valid comment -->"
                 '<!--me too!-->'
                 '<!------>'
@@ -332,16 +332,16 @@ text
                     ('comment', ' and I have -- in the middle! ')]
         self._run_check(html, expected)
 
-    def test_condcoms(self):
-        html = ('<!--[if IE & !(lte IE 8)]>aren\'t<![endif]-->'
-                '<!--[if IE 8]>condcoms<![endif]-->'
-                '<!--[if lte IE 7]>pretty?<![endif]-->')
-        expected = [('comment', "[if IE & !(lte IE 8)]>aren't<![endif]"),
-                    ('comment', '[if IE 8]>condcoms<![endif]'),
-                    ('comment', '[if lte IE 7]>pretty?<![endif]')]
+    eleza test_condcoms(self):
+        html = ('<!--[ikiwa IE & !(lte IE 8)]>aren\'t<![endif]-->'
+                '<!--[ikiwa IE 8]>condcoms<![endif]-->'
+                '<!--[ikiwa lte IE 7]>pretty?<![endif]-->')
+        expected = [('comment', "[ikiwa IE & !(lte IE 8)]>aren't<![endif]"),
+                    ('comment', '[ikiwa IE 8]>condcoms<![endif]'),
+                    ('comment', '[ikiwa lte IE 7]>pretty?<![endif]')]
         self._run_check(html, expected)
 
-    def test_convert_charrefs(self):
+    eleza test_convert_charrefs(self):
         # default value for convert_charrefs is now True
         collector = lambda: EventCollectorCharrefs()
         self.assertTrue(collector().convert_charrefs)
@@ -382,7 +382,7 @@ text
 
     # the remaining tests were for the "tolerant" parser (which is now
     # the default), and check various kind of broken markup
-    def test_tolerant_parsing(self):
+    eleza test_tolerant_parsing(self):
         self._run_check('<html <html>te>>xt&a<<bc</a></html>\n'
                         '<img src="URL><//img></html</html>', [
                             ('starttag', 'html', [('<html', None)]),
@@ -395,7 +395,7 @@ text
                             ('comment', '/img'),
                             ('endtag', 'html<')])
 
-    def test_starttag_junk_chars(self):
+    eleza test_starttag_junk_chars(self):
         self._run_check("</>", [])
         self._run_check("</$>", [('comment', '$')])
         self._run_check("</", [('data', '</')])
@@ -414,7 +414,7 @@ text
         self._run_check("<a$b  >", [('starttag', 'a$b', [])])
         self._run_check("<a$b  />", [('startendtag', 'a$b', [])])
 
-    def test_slashes_in_starttag(self):
+    eleza test_slashes_in_starttag(self):
         self._run_check('<a foo="var"/>', [('startendtag', 'a', [('foo', 'var')])])
         html = ('<img width=902 height=250px '
                 'src="/sites/default/files/images/homepage/foo.jpg" '
@@ -445,14 +445,14 @@ text
         ]
         self._run_check(html, expected)
 
-    def test_declaration_junk_chars(self):
+    eleza test_declaration_junk_chars(self):
         self._run_check("<!DOCTYPE foo $ >", [('decl', 'DOCTYPE foo $ ')])
 
-    def test_illegal_declarations(self):
+    eleza test_illegal_declarations(self):
         self._run_check('<!spacer type="block" height="25">',
                         [('comment', 'spacer type="block" height="25"')])
 
-    def test_with_unquoted_attributes(self):
+    eleza test_with_unquoted_attributes(self):
         # see #12008
         html = ("<html><body bgcolor=d0ca90 text='181008'>"
                 "<table cellspacing=0 cellpadding=1 width=100% ><tr>"
@@ -476,19 +476,19 @@ text
         ]
         self._run_check(html, expected)
 
-    def test_comma_between_attributes(self):
+    eleza test_comma_between_attributes(self):
         self._run_check('<form action="/xxx.php?a=1&amp;b=2&amp", '
                         'method="post">', [
                             ('starttag', 'form',
                                 [('action', '/xxx.php?a=1&b=2&'),
                                  (',', None), ('method', 'post')])])
 
-    def test_weird_chars_in_unquoted_attribute_values(self):
+    eleza test_weird_chars_in_unquoted_attribute_values(self):
         self._run_check('<form action=bogus|&#()value>', [
                             ('starttag', 'form',
                                 [('action', 'bogus|&#()value')])])
 
-    def test_invalid_end_tags(self):
+    eleza test_invalid_end_tags(self):
         # A collection of broken end tags. <br> is used as separator.
         # see http://www.w3.org/TR/html5/tokenization.html#end-tag-open-state
         # and #13993
@@ -514,7 +514,7 @@ text
                     ('starttag', 'br', [])]
         self._run_check(html, expected)
 
-    def test_broken_invalid_end_tag(self):
+    eleza test_broken_invalid_end_tag(self):
         # This is technically wrong (the "> shouldn't be included in the 'data')
         # but is probably not worth fixing it (in addition to all the cases of
         # the previous test, it would require a full attribute parsing).
@@ -526,7 +526,7 @@ text
                     ('data', '"> confuses the parser')]
         self._run_check(html, expected)
 
-    def test_correct_detection_of_start_tags(self):
+    eleza test_correct_detection_of_start_tags(self):
         # see #13273
         html = ('<div style=""    ><b>The <a href="some_url">rain</a> '
                 '<br /> in <span>Spain</span></b></div>')
@@ -559,7 +559,7 @@ text
         ]
         self._run_check(html, expected)
 
-    def test_EOF_in_charref(self):
+    eleza test_EOF_in_charref(self):
         # see #17802
         # This test checks that the UnboundLocalError reported in the issue
         # is not raised, however I'm not sure the returned values are correct.
@@ -573,14 +573,14 @@ text
         for html, expected in data:
             self._run_check(html, expected)
 
-    def test_unescape_method(self):
+    eleza test_unescape_method(self):
         kutoka html agiza unescape
         p = self.get_collector()
         with self.assertWarns(DeprecationWarning):
             s = '&quot;&#34;&#x22;&quot&#34&#x22&#bad;'
             self.assertEqual(p.unescape(s), unescape(s))
 
-    def test_broken_comments(self):
+    eleza test_broken_comments(self):
         html = ('<! not really a comment >'
                 '<! not a comment either -->'
                 '<! -- close enough -->'
@@ -596,42 +596,42 @@ text
         ]
         self._run_check(html, expected)
 
-    def test_broken_condcoms(self):
+    eleza test_broken_condcoms(self):
         # these condcoms are missing the '--' after '<!' and before the '>'
-        html = ('<![if !(IE)]>broken condcom<![endif]>'
-                '<![if ! IE]><link href="favicon.tiff"/><![endif]>'
-                '<![if !IE 6]><img src="firefox.png" /><![endif]>'
-                '<![if !ie 6]><b>foo</b><![endif]>'
-                '<![if (!IE)|(lt IE 9)]><img src="mammoth.bmp" /><![endif]>')
+        html = ('<![ikiwa !(IE)]>broken condcom<![endif]>'
+                '<![ikiwa ! IE]><link href="favicon.tiff"/><![endif]>'
+                '<![ikiwa !IE 6]><img src="firefox.png" /><![endif]>'
+                '<![ikiwa !ie 6]><b>foo</b><![endif]>'
+                '<![ikiwa (!IE)|(lt IE 9)]><img src="mammoth.bmp" /><![endif]>')
         # According to the HTML5 specs sections "8.2.4.44 Bogus comment state"
         # and "8.2.4.45 Markup declaration open state", comment tokens should
         # be emitted instead of 'unknown decl', but calling unknown_decl
         # provides more flexibility.
         # See also Lib/_markupbase.py:parse_declaration
         expected = [
-            ('unknown decl', 'if !(IE)'),
+            ('unknown decl', 'ikiwa !(IE)'),
             ('data', 'broken condcom'),
             ('unknown decl', 'endif'),
-            ('unknown decl', 'if ! IE'),
+            ('unknown decl', 'ikiwa ! IE'),
             ('startendtag', 'link', [('href', 'favicon.tiff')]),
             ('unknown decl', 'endif'),
-            ('unknown decl', 'if !IE 6'),
+            ('unknown decl', 'ikiwa !IE 6'),
             ('startendtag', 'img', [('src', 'firefox.png')]),
             ('unknown decl', 'endif'),
-            ('unknown decl', 'if !ie 6'),
+            ('unknown decl', 'ikiwa !ie 6'),
             ('starttag', 'b', []),
             ('data', 'foo'),
             ('endtag', 'b'),
             ('unknown decl', 'endif'),
-            ('unknown decl', 'if (!IE)|(lt IE 9)'),
+            ('unknown decl', 'ikiwa (!IE)|(lt IE 9)'),
             ('startendtag', 'img', [('src', 'mammoth.bmp')]),
             ('unknown decl', 'endif')
         ]
         self._run_check(html, expected)
 
-    def test_convert_charrefs_dropped_text(self):
+    eleza test_convert_charrefs_dropped_text(self):
         # #23144: make sure that all the events are triggered when
-        # convert_charrefs is True, even if we don't call .close()
+        # convert_charrefs is True, even ikiwa we don't call .close()
         parser = EventCollector(convert_charrefs=True)
         # before the fix, bar & baz was missing
         parser.feed("foo <a>link</a> bar &amp; baz")
@@ -642,9 +642,9 @@ text
         )
 
 
-class AttributesTestCase(TestCaseBase):
+kundi AttributesTestCase(TestCaseBase):
 
-    def test_attr_syntax(self):
+    eleza test_attr_syntax(self):
         output = [
           ("starttag", "a", [("b", "v"), ("c", "v"), ("d", "v"), ("e", None)])
         ]
@@ -653,7 +653,7 @@ class AttributesTestCase(TestCaseBase):
         self._run_check("""<a\nb\n=\n'v'\nc\n=\n"v"\nd\n=\nv\ne>""", output)
         self._run_check("""<a\tb\t=\t'v'\tc\t=\t"v"\td\t=\tv\te>""", output)
 
-    def test_attr_values(self):
+    eleza test_attr_values(self):
         self._run_check("""<a b='xxx\n\txxx' c="yyy\t\nyyy" d='\txyz\n'>""",
                         [("starttag", "a", [("b", "xxx\n\txxx"),
                                             ("c", "yyy\t\nyyy"),
@@ -668,7 +668,7 @@ class AttributesTestCase(TestCaseBase):
             "<a href=mailto:xyz@example.com>",
             [("starttag", "a", [("href", "mailto:xyz@example.com")])])
 
-    def test_attr_nonascii(self):
+    eleza test_attr_nonascii(self):
         # see issue 7311
         self._run_check(
             "<img src=/foo/bar.png alt=\u4e2d\u6587>",
@@ -683,30 +683,30 @@ class AttributesTestCase(TestCaseBase):
             [("starttag", "a", [("title", "\u30c6\u30b9\u30c8"),
                                 ("href", "\u30c6\u30b9\u30c8.html")])])
 
-    def test_attr_entity_replacement(self):
+    eleza test_attr_entity_replacement(self):
         self._run_check(
             "<a b='&amp;&gt;&lt;&quot;&apos;'>",
             [("starttag", "a", [("b", "&><\"'")])])
 
-    def test_attr_funky_names(self):
+    eleza test_attr_funky_names(self):
         self._run_check(
             "<a a.b='v' c:d=v e-f=v>",
             [("starttag", "a", [("a.b", "v"), ("c:d", "v"), ("e-f", "v")])])
 
-    def test_entityrefs_in_attributes(self):
+    eleza test_entityrefs_in_attributes(self):
         self._run_check(
             "<html foo='&euro;&amp;&#97;&#x61;&unsupported;'>",
             [("starttag", "html", [("foo", "\u20AC&aa&unsupported;")])])
 
 
-    def test_attr_funky_names2(self):
+    eleza test_attr_funky_names2(self):
         self._run_check(
             r"<a $><b $=%><c \=/>",
             [("starttag", "a", [("$", None)]),
              ("starttag", "b", [("$", "%")]),
              ("starttag", "c", [("\\", "/")])])
 
-    def test_entities_in_attribute_value(self):
+    eleza test_entities_in_attribute_value(self):
         # see #1200313
         for entity in ['&', '&amp;', '&#38;', '&#x26;']:
             self._run_check('<a href="%s">' % entity,
@@ -716,7 +716,7 @@ class AttributesTestCase(TestCaseBase):
             self._run_check("<a href=%s>" % entity,
                             [("starttag", "a", [("href", "&")])])
 
-    def test_malformed_attributes(self):
+    eleza test_malformed_attributes(self):
         # see #13357
         html = (
             "<a href=test'style='color:red;bad1'>test - bad1</a>"
@@ -736,7 +736,7 @@ class AttributesTestCase(TestCaseBase):
         ]
         self._run_check(html, expected)
 
-    def test_malformed_adjacent_attributes(self):
+    eleza test_malformed_adjacent_attributes(self):
         # see #12629
         self._run_check('<x><y z=""o"" /></x>',
                         [('starttag', 'x', []),
@@ -748,7 +748,7 @@ class AttributesTestCase(TestCaseBase):
                             ('endtag', 'x')])
 
     # see #755670 for the following 3 tests
-    def test_adjacent_attributes(self):
+    eleza test_adjacent_attributes(self):
         self._run_check('<a width="100%"cellspacing=0>',
                         [("starttag", "a",
                           [("width", "100%"), ("cellspacing","0")])])
@@ -757,16 +757,16 @@ class AttributesTestCase(TestCaseBase):
                         [("starttag", "a",
                           [("id", "foo"), ("class","bar")])])
 
-    def test_missing_attribute_value(self):
+    eleza test_missing_attribute_value(self):
         self._run_check('<a v=>',
                         [("starttag", "a", [("v", "")])])
 
-    def test_javascript_attribute_value(self):
+    eleza test_javascript_attribute_value(self):
         self._run_check("<a href=javascript:popup('/popup/help.html')>",
                         [("starttag", "a",
                           [("href", "javascript:popup('/popup/help.html')")])])
 
-    def test_end_tag_in_attribute_value(self):
+    eleza test_end_tag_in_attribute_value(self):
         # see #1745761
         self._run_check("<a href='http://www.example.org/\">;'>spam</a>",
                         [("starttag", "a",
@@ -774,5 +774,5 @@ class AttributesTestCase(TestCaseBase):
                          ("data", "spam"), ("endtag", "a")])
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

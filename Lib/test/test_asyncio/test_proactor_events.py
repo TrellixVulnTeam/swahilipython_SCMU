@@ -8,10 +8,10 @@ from unittest import mock
 
 import asyncio
 from asyncio.proactor_events import BaseProactorEventLoop
-from asyncio.proactor_events import _ProactorSocketTransport
-from asyncio.proactor_events import _ProactorWritePipeTransport
-from asyncio.proactor_events import _ProactorDuplexPipeTransport
-from asyncio.proactor_events import _ProactorDatagramTransport
+from asyncio.proactor_events agiza _ProactorSocketTransport
+from asyncio.proactor_events agiza _ProactorWritePipeTransport
+from asyncio.proactor_events agiza _ProactorDuplexPipeTransport
+from asyncio.proactor_events agiza _ProactorDatagramTransport
 from test import support
 from test.test_asyncio import utils as test_utils
 

@@ -18,31 +18,31 @@ well_known_implementations = {
 
 registered = {}
 
-def registerDOMImplementation(name, factory):
+eleza registerDOMImplementation(name, factory):
     """registerDOMImplementation(name, factory)
 
     Register the factory function with the name. The factory function
-    should return an object which implements the DOMImplementation
-    interface. The factory function can either return the same object,
-    or a new one (e.g. if that implementation supports some
+    should rudisha an object which implements the DOMImplementation
+    interface. The factory function can either rudisha the same object,
+    or a new one (e.g. ikiwa that implementation supports some
     customization)."""
 
     registered[name] = factory
 
-def _good_enough(dom, features):
-    "_good_enough(dom, features) -> Return 1 if the dom offers the features"
+eleza _good_enough(dom, features):
+    "_good_enough(dom, features) -> Return 1 ikiwa the dom offers the features"
     for f,v in features:
-        if not dom.hasFeature(f,v):
-            return 0
-    return 1
+        ikiwa not dom.hasFeature(f,v):
+            rudisha 0
+    rudisha 1
 
-def getDOMImplementation(name=None, features=()):
+eleza getDOMImplementation(name=None, features=()):
     """getDOMImplementation(name = None, features = ()) -> DOM implementation.
 
     Return a suitable DOM implementation. The name is either
     well-known, the module name of a DOM implementation, or None. If
     it is not None, agizas the corresponding module and returns
-    DOMImplementation object if the agiza succeeds.
+    DOMImplementation object ikiwa the agiza succeeds.
 
     If name is not given, consider the available implementations to
     find one with the required feature set. If no implementation can
@@ -52,48 +52,48 @@ def getDOMImplementation(name=None, features=()):
     agiza os
     creator = None
     mod = well_known_implementations.get(name)
-    if mod:
+    ikiwa mod:
         mod = __import__(mod, {}, {}, ['getDOMImplementation'])
-        return mod.getDOMImplementation()
-    elif name:
-        return registered[name]()
-    elif not sys.flags.ignore_environment and "PYTHON_DOM" in os.environ:
-        return getDOMImplementation(name = os.environ["PYTHON_DOM"])
+        rudisha mod.getDOMImplementation()
+    elikiwa name:
+        rudisha registered[name]()
+    elikiwa not sys.flags.ignore_environment and "PYTHON_DOM" in os.environ:
+        rudisha getDOMImplementation(name = os.environ["PYTHON_DOM"])
 
     # User did not specify a name, try implementations in arbitrary
     # order, returning the one that has the required features
-    if isinstance(features, str):
+    ikiwa isinstance(features, str):
         features = _parse_feature_string(features)
     for creator in registered.values():
         dom = creator()
-        if _good_enough(dom, features):
-            return dom
+        ikiwa _good_enough(dom, features):
+            rudisha dom
 
     for creator in well_known_implementations.keys():
         try:
             dom = getDOMImplementation(name = creator)
         except Exception: # typically ImportError, or AttributeError
             continue
-        if _good_enough(dom, features):
-            return dom
+        ikiwa _good_enough(dom, features):
+            rudisha dom
 
     raise ImportError("no suitable DOM implementation found")
 
-def _parse_feature_string(s):
+eleza _parse_feature_string(s):
     features = []
     parts = s.split()
     i = 0
     length = len(parts)
     while i < length:
         feature = parts[i]
-        if feature[0] in "0123456789":
+        ikiwa feature[0] in "0123456789":
             raise ValueError("bad feature name: %r" % (feature,))
         i = i + 1
         version = None
-        if i < length:
+        ikiwa i < length:
             v = parts[i]
-            if v[0] in "0123456789":
+            ikiwa v[0] in "0123456789":
                 i = i + 1
                 version = v
         features.append((feature, version))
-    return tuple(features)
+    rudisha tuple(features)

@@ -5,20 +5,20 @@ agiza tempfile
 agiza urllib.response
 agiza unittest
 
-class TestResponse(unittest.TestCase):
+kundi TestResponse(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.fp = self.sock.makefile('rb')
         self.test_headers = {"Host": "www.python.org",
                              "Connection": "close"}
 
-    def test_with(self):
+    eleza test_with(self):
         addbase = urllib.response.addbase(self.fp)
 
         self.assertIsInstance(addbase, tempfile._TemporaryFileWrapper)
 
-        def f():
+        eleza f():
             with addbase as spam:
                 pass
         self.assertFalse(self.fp.closed)
@@ -26,10 +26,10 @@ class TestResponse(unittest.TestCase):
         self.assertTrue(self.fp.closed)
         self.assertRaises(ValueError, f)
 
-    def test_addclosehook(self):
+    eleza test_addclosehook(self):
         closehook_called = False
 
-        def closehook():
+        eleza closehook():
             nonlocal closehook_called
             closehook_called = True
 
@@ -39,11 +39,11 @@ class TestResponse(unittest.TestCase):
         self.assertTrue(self.fp.closed)
         self.assertTrue(closehook_called)
 
-    def test_addinfo(self):
+    eleza test_addinfo(self):
         info = urllib.response.addinfo(self.fp, self.test_headers)
         self.assertEqual(info.info(), self.test_headers)
 
-    def test_addinfourl(self):
+    eleza test_addinfourl(self):
         url = "http://www.python.org"
         code = 200
         infourl = urllib.response.addinfourl(self.fp, self.test_headers,
@@ -52,8 +52,8 @@ class TestResponse(unittest.TestCase):
         self.assertEqual(infourl.geturl(), url)
         self.assertEqual(infourl.getcode(), code)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.sock.close()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

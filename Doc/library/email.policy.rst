@@ -50,7 +50,7 @@ object is created, it acquires a policy.  If the message is created by a
 :mod:`~email.parser`, a policy passed to the parser will be the policy used by
 the message it creates.  If the message is created by the program, then the
 policy can be specified when it is created.  When a message is passed to a
-:mod:`~email.generator`, the generator uses the policy from the message by
+:mod:`~email.generator`, the generator uses the policy kutoka the message by
 default, but you can also pass a specific policy to the generator that will
 override the one stored on the message object.
 
@@ -70,16 +70,16 @@ the hooks that provide the standard behavior and the backward compatible
 behavior and features, respectively.
 
 :class:`Policy` instances are immutable, but they can be cloned, accepting the
-same keyword arguments as the class constructor and returning a new
+same keyword arguments as the kundi constructor and returning a new
 :class:`Policy` instance that is a copy of the original but with the specified
 attributes values changed.
 
-As an example, the following code could be used to read an email message from a
+As an example, the following code could be used to read an email message kutoka a
 file on disk and pass it to the system ``sendmail`` program on a Unix system:
 
 .. testsetup::
 
-   from unittest import mock
+   kutoka unittest agiza mock
    mocker = mock.patch('subprocess.Popen')
    m = mocker.start()
    proc = mock.MagicMock()
@@ -91,12 +91,12 @@ file on disk and pass it to the system ``sendmail`` program on a Unix system:
 
 .. doctest::
 
-   >>> from email import message_from_binary_file
-   >>> from email.generator import BytesGenerator
-   >>> from email import policy
-   >>> from subprocess import Popen, PIPE
+   >>> kutoka email agiza message_kutoka_binary_file
+   >>> kutoka email.generator agiza BytesGenerator
+   >>> kutoka email agiza policy
+   >>> kutoka subprocess agiza Popen, PIPE
    >>> with open('mymsg.txt', 'rb') as f:
-   ...     msg = message_from_binary_file(f, policy=policy.default)
+   ...     msg = message_kutoka_binary_file(f, policy=policy.default)
    >>> p = Popen(['sendmail', msg['To'].addresses[0]], stdin=PIPE)
    >>> g = BytesGenerator(p.stdin, policy=msg.policy.clone(linesep='\r\n'))
    >>> g.flatten(msg)
@@ -107,7 +107,7 @@ file on disk and pass it to the system ``sendmail`` program on a Unix system:
 
    mymsg.close()
    mocker.stop()
-   import os
+   agiza os
    os.remove('mymsg.txt')
 
 Here we are telling :class:`~email.generator.BytesGenerator` to use the RFC
@@ -117,11 +117,11 @@ separators.
 
 Some email package methods accept a *policy* keyword argument, allowing the
 policy to be overridden for that method.  For example, the following code uses
-the :meth:`~email.message.Message.as_bytes` method of the *msg* object from
+the :meth:`~email.message.Message.as_bytes` method of the *msg* object kutoka
 the previous example and writes the message to a file using the native line
 separators for the platform on which it is running::
 
-   >>> import os
+   >>> agiza os
    >>> with open('converted.txt', 'wb') as f:
    ...     f.write(msg.as_bytes(policy=msg.policy.clone(linesep=os.linesep)))
    17
@@ -154,13 +154,13 @@ added matters.  To illustrate::
    implementation of the immutability property, the :meth:`clone` method, and
    the constructor semantics.
 
-   The constructor of a policy class can be passed various keyword arguments.
+   The constructor of a policy kundi can be passed various keyword arguments.
    The arguments that may be specified are any non-method properties on this
    class, plus any additional non-method properties on the concrete class.  A
    value specified in the constructor will override the default value for the
    corresponding attribute.
 
-   This class defines the following properties, and thus values for the
+   This kundi defines the following properties, and thus values for the
    following may be passed in the constructor of any policy class:
 
 
@@ -210,7 +210,7 @@ added matters.  To illustrate::
       :meth:`register_defect` method.
 
 
-   .. attribute:: mangle_from\_
+   .. attribute:: mangle_kutoka\_
 
       If :const:`True`, lines starting with *"From "* in the body are
       escaped by putting a ``>`` in front of them. This parameter is used when
@@ -218,7 +218,7 @@ added matters.  To illustrate::
       Default: :const:`False`.
 
       .. versionadded:: 3.5
-         The *mangle_from_* parameter.
+         The *mangle_kutoka_* parameter.
 
 
    .. attribute:: message_factory
@@ -248,7 +248,7 @@ added matters.  To illustrate::
    .. method:: handle_defect(obj, defect)
 
       Handle a *defect* found on *obj*.  When the email package calls this
-      method, *defect* will always be a subclass of
+      method, *defect* will always be a subkundi of
       :class:`~email.errors.Defect`.
 
       The default implementation checks the :attr:`raise_on_defect` flag.  If
@@ -259,7 +259,7 @@ added matters.  To illustrate::
    .. method:: register_defect(obj, defect)
 
       Register a *defect* on *obj*.  In the email package, *defect* will always
-      be a subclass of :class:`~email.errors.Defect`.
+      be a subkundi of :class:`~email.errors.Defect`.
 
       The default implementation calls the ``append`` method of the ``defects``
       attribute of *obj*.  When the email package calls :attr:`handle_defect`,
@@ -396,7 +396,7 @@ added matters.  To illustrate::
 
    .. attribute:: refold_source
 
-      If the value for a header in the ``Message`` object originated from a
+      If the value for a header in the ``Message`` object originated kutoka a
       :mod:`~email.parser` (as opposed to being set by a program), this
       attribute indicates whether or not a generator should refold that value
       when transforming the message back into serialized form.  The possible
@@ -418,7 +418,7 @@ added matters.  To illustrate::
 
       A callable that takes two arguments, ``name`` and ``value``, where
       ``name`` is a header field name and ``value`` is an unfolded header field
-      value, and returns a string subclass that represents that header.  A
+      value, and returns a string subkundi that represents that header.  A
       default ``header_factory`` (see :mod:`~email.headerregistry`) is provided
       that supports custom parsing for the various address and date :RFC:`5322`
       header field types, and the major MIME header field stypes.  Support for
@@ -439,7 +439,7 @@ added matters.  To illustrate::
       .. versionadded:: 3.4
 
 
-   The class provides the following concrete implementations of the abstract
+   The kundi provides the following concrete implementations of the abstract
    methods of :class:`Policy`:
 
 
@@ -447,7 +447,7 @@ added matters.  To illustrate::
 
       Returns the value of the
       :attr:`~email.headerregistry.BaseHeader.max_count` attribute of the
-      specialized class used to represent the header with the given name.
+      specialized kundi used to represent the header with the given name.
 
 
    .. method:: header_source_parse(sourcelines)
@@ -491,7 +491,7 @@ added matters.  To illustrate::
 
       Source values are split into lines using :meth:`~str.splitlines`.  If
       the value is not to be refolded, the lines are rejoined using the
-      ``linesep`` from the policy and returned.  The exception is lines
+      ``linesep`` kutoka the policy and returned.  The exception is lines
       containing non-ascii binary data.  In that case the value is refolded
       regardless of the ``refold_source`` setting, which causes the binary data
       to be CTE encoded using the ``unknown-8bit`` charset.
@@ -554,12 +554,12 @@ more closely to the RFCs relevant to their domains.
 
 
 With all of these :class:`EmailPolicies <.EmailPolicy>`, the effective API of
-the email package is changed from the Python 3.2 API in the following ways:
+the email package is changed kutoka the Python 3.2 API in the following ways:
 
    * Setting a header on a :class:`~email.message.Message` results in that
      header being parsed and a header object created.
 
-   * Fetching a header value from a :class:`~email.message.Message` results
+   * Fetching a header value kutoka a :class:`~email.message.Message` results
      in that header being parsed and a header object created and
      returned.
 
@@ -588,16 +588,16 @@ The header objects and their attributes are described in
    :const:`compat32`, that is used as the default policy.  Thus the default
    behavior of the email package is to maintain compatibility with Python 3.2.
 
-   The following attributes have values that are different from the
+   The following attributes have values that are different kutoka the
    :class:`Policy` default:
 
 
-   .. attribute:: mangle_from_
+   .. attribute:: mangle_kutoka_
 
       The default is ``True``.
 
 
-   The class provides the following concrete implementations of the
+   The kundi provides the following concrete implementations of the
    abstract methods of :class:`Policy`:
 
 

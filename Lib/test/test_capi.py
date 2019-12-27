@@ -20,25 +20,25 @@ try:
 except ImportError:
     _posixsubprocess = None
 
-# Skip this test if the _testcapi module isn't available.
+# Skip this test ikiwa the _testcapi module isn't available.
 _testcapi = support.import_module('_testcapi')
 
 # Were we compiled --with-pydebug or with #define Py_DEBUG?
 Py_DEBUG = hasattr(sys, 'gettotalrefcount')
 
 
-def testfunction(self):
+eleza testfunction(self):
     """some doc"""
-    return self
+    rudisha self
 
 
-class InstanceMethod:
+kundi InstanceMethod:
     id = _testcapi.instancemethod(id)
     testfunction = _testcapi.instancemethod(testfunction)
 
-class CAPITest(unittest.TestCase):
+kundi CAPITest(unittest.TestCase):
 
-    def test_instancemethod(self):
+    eleza test_instancemethod(self):
         inst = InstanceMethod()
         self.assertEqual(id(inst), inst.id())
         self.assertTrue(inst.testfunction() is inst)
@@ -49,7 +49,7 @@ class CAPITest(unittest.TestCase):
         self.assertEqual(testfunction.attribute, "test")
         self.assertRaises(AttributeError, setattr, inst.testfunction, "attribute", "test")
 
-    def test_no_FatalError_infinite_loop(self):
+    eleza test_no_FatalError_infinite_loop(self):
         with support.SuppressCrashReport():
             p = subprocess.Popen([sys.executable, "-c",
                                   'agiza _testcapi;'
@@ -63,10 +63,10 @@ class CAPITest(unittest.TestCase):
                          b'Fatal Python error:'
                          b' PyThreadState_Get: no current thread'))
 
-    def test_memoryview_from_NULL_pointer(self):
-        self.assertRaises(ValueError, _testcapi.make_memoryview_from_NULL_pointer)
+    eleza test_memoryview_kutoka_NULL_pointer(self):
+        self.assertRaises(ValueError, _testcapi.make_memoryview_kutoka_NULL_pointer)
 
-    def test_exc_info(self):
+    eleza test_exc_info(self):
         raised_exception = ValueError("5")
         new_exc = TypeError("TEST")
         try:
@@ -90,27 +90,27 @@ class CAPITest(unittest.TestCase):
             self.assertTrue(False)
 
     @unittest.skipUnless(_posixsubprocess, '_posixsubprocess required for this test.')
-    def test_seq_bytes_to_charp_array(self):
+    eleza test_seq_bytes_to_charp_array(self):
         # Issue #15732: crash in _PySequence_BytesToCharpArray()
-        class Z(object):
-            def __len__(self):
-                return 1
+        kundi Z(object):
+            eleza __len__(self):
+                rudisha 1
         self.assertRaises(TypeError, _posixsubprocess.fork_exec,
                           1,Z(),3,(1, 2),5,6,7,8,9,10,11,12,13,14,15,16,17)
         # Issue #15736: overflow in _PySequence_BytesToCharpArray()
-        class Z(object):
-            def __len__(self):
-                return sys.maxsize
-            def __getitem__(self, i):
-                return b'x'
+        kundi Z(object):
+            eleza __len__(self):
+                rudisha sys.maxsize
+            eleza __getitem__(self, i):
+                rudisha b'x'
         self.assertRaises(MemoryError, _posixsubprocess.fork_exec,
                           1,Z(),3,(1, 2),5,6,7,8,9,10,11,12,13,14,15,16,17)
 
     @unittest.skipUnless(_posixsubprocess, '_posixsubprocess required for this test.')
-    def test_subprocess_fork_exec(self):
-        class Z(object):
-            def __len__(self):
-                return 1
+    eleza test_subprocess_fork_exec(self):
+        kundi Z(object):
+            eleza __len__(self):
+                rudisha 1
 
         # Issue #15738: crash in subprocess_fork_exec()
         self.assertRaises(TypeError, _posixsubprocess.fork_exec,
@@ -118,7 +118,7 @@ class CAPITest(unittest.TestCase):
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
                      "Signature information for builtins requires docstrings")
-    def test_docstring_signature_parsing(self):
+    eleza test_docstring_signature_parsing(self):
 
         self.assertEqual(_testcapi.no_docstring.__doc__, None)
         self.assertEqual(_testcapi.no_docstring.__text_signature__, None)
@@ -159,7 +159,7 @@ class CAPITest(unittest.TestCase):
         self.assertEqual(_testcapi.docstring_with_signature_and_extra_newlines.__text_signature__,
             "($module, /, parameter)")
 
-    def test_c_type_with_matrix_multiplication(self):
+    eleza test_c_type_with_matrix_multiplication(self):
         M = _testcapi.matmulType
         m1 = M()
         m2 = M()
@@ -176,17 +176,17 @@ class CAPITest(unittest.TestCase):
         o @= m1
         self.assertEqual(o, ("matmul", 42, m1))
 
-    def test_c_type_with_ipow(self):
+    eleza test_c_type_with_ipow(self):
         # When the __ipow__ method of a type was implemented in C, using the
         # modulo param would cause segfaults.
         o = _testcapi.ipowType()
         self.assertEqual(o.__ipow__(1), (1, None))
         self.assertEqual(o.__ipow__(2, 2), (2, 2))
 
-    def test_return_null_without_error(self):
-        # Issue #23571: A function must not return NULL without setting an
+    eleza test_return_null_without_error(self):
+        # Issue #23571: A function must not rudisha NULL without setting an
         # error
-        if Py_DEBUG:
+        ikiwa Py_DEBUG:
             code = textwrap.dedent("""
                 agiza _testcapi
                 kutoka test agiza support
@@ -212,9 +212,9 @@ class CAPITest(unittest.TestCase):
                              'return_null_without_error.* '
                              'returned NULL without setting an error')
 
-    def test_return_result_with_error(self):
-        # Issue #23571: A function must not return a result with an error set
-        if Py_DEBUG:
+    eleza test_return_result_with_error(self):
+        # Issue #23571: A function must not rudisha a result with an error set
+        ikiwa Py_DEBUG:
             code = textwrap.dedent("""
                 agiza _testcapi
                 kutoka test agiza support
@@ -245,14 +245,14 @@ class CAPITest(unittest.TestCase):
                              'return_result_with_error.* '
                              'returned a result with an error set')
 
-    def test_buildvalue_N(self):
+    eleza test_buildvalue_N(self):
         _testcapi.test_buildvalue_N()
 
-    def test_set_nomemory(self):
-        code = """if 1:
+    eleza test_set_nomemory(self):
+        code = """ikiwa 1:
             agiza _testcapi
 
-            class C(): pass
+            kundi C(): pass
 
             # The first loop tests both functions and that remove_mem_hooks()
             # can be called twice in a row. The second loop checks a call to
@@ -261,17 +261,17 @@ class CAPITest(unittest.TestCase):
             for outer_cnt in range(1, 4):
                 start = 10 * outer_cnt
                 for j in range(100):
-                    if j == 0:
-                        if outer_cnt != 3:
+                    ikiwa j == 0:
+                        ikiwa outer_cnt != 3:
                             _testcapi.set_nomemory(start)
                         else:
                             _testcapi.set_nomemory(start, start + 1)
                     try:
                         C()
                     except MemoryError as e:
-                        if outer_cnt != 3:
+                        ikiwa outer_cnt != 3:
                             _testcapi.remove_mem_hooks()
-                        print('MemoryError', outer_cnt, j)
+                        andika('MemoryError', outer_cnt, j)
                         _testcapi.remove_mem_hooks()
                         break
         """
@@ -280,21 +280,21 @@ class CAPITest(unittest.TestCase):
         self.assertIn(b'MemoryError 2 20', out)
         self.assertIn(b'MemoryError 3 30', out)
 
-    def test_mapping_keys_values_items(self):
-        class Mapping1(dict):
-            def keys(self):
-                return list(super().keys())
-            def values(self):
-                return list(super().values())
-            def items(self):
-                return list(super().items())
-        class Mapping2(dict):
-            def keys(self):
-                return tuple(super().keys())
-            def values(self):
-                return tuple(super().values())
-            def items(self):
-                return tuple(super().items())
+    eleza test_mapping_keys_values_items(self):
+        kundi Mapping1(dict):
+            eleza keys(self):
+                rudisha list(super().keys())
+            eleza values(self):
+                rudisha list(super().values())
+            eleza items(self):
+                rudisha list(super().items())
+        kundi Mapping2(dict):
+            eleza keys(self):
+                rudisha tuple(super().keys())
+            eleza values(self):
+                rudisha tuple(super().values())
+            eleza items(self):
+                rudisha tuple(super().items())
         dict_obj = {'foo': 1, 'bar': 2, 'spam': 3}
 
         for mapping in [{}, OrderedDict(), Mapping1(), Mapping2(),
@@ -307,18 +307,18 @@ class CAPITest(unittest.TestCase):
             self.assertListEqual(_testcapi.get_mapping_items(mapping),
                                  list(mapping.items()))
 
-    def test_mapping_keys_values_items_bad_arg(self):
+    eleza test_mapping_keys_values_items_bad_arg(self):
         self.assertRaises(AttributeError, _testcapi.get_mapping_keys, None)
         self.assertRaises(AttributeError, _testcapi.get_mapping_values, None)
         self.assertRaises(AttributeError, _testcapi.get_mapping_items, None)
 
-        class BadMapping:
-            def keys(self):
-                return None
-            def values(self):
-                return None
-            def items(self):
-                return None
+        kundi BadMapping:
+            eleza keys(self):
+                rudisha None
+            eleza values(self):
+                rudisha None
+            eleza items(self):
+                rudisha None
         bad_mapping = BadMapping()
         self.assertRaises(TypeError, _testcapi.get_mapping_keys, bad_mapping)
         self.assertRaises(TypeError, _testcapi.get_mapping_values, bad_mapping)
@@ -326,7 +326,7 @@ class CAPITest(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(_testcapi, 'negative_refcount'),
                          'need _testcapi.negative_refcount')
-    def test_negative_refcount(self):
+    eleza test_negative_refcount(self):
         # bpo-35059: Check that Py_DECREF() reports the correct filename
         # when calling _Py_NegativeRefcount() to abort Python.
         code = textwrap.dedent("""
@@ -342,7 +342,7 @@ class CAPITest(unittest.TestCase):
                          br'_Py_NegativeRefcount: Assertion failed: '
                          br'object has negative ref count')
 
-    def test_trashcan_subclass(self):
+    eleza test_trashcan_subclass(self):
         # bpo-35983: Check that the trashcan mechanism for "list" is NOT
         # activated when its tp_dealloc is being called by a subclass
         kutoka _testcapi agiza MyList
@@ -350,25 +350,25 @@ class CAPITest(unittest.TestCase):
         for i in range(1000):
             L = MyList((L,))
 
-    def test_trashcan_python_class1(self):
+    eleza test_trashcan_python_class1(self):
         self.do_test_trashcan_python_class(list)
 
-    def test_trashcan_python_class2(self):
+    eleza test_trashcan_python_class2(self):
         kutoka _testcapi agiza MyList
         self.do_test_trashcan_python_class(MyList)
 
-    def do_test_trashcan_python_class(self, base):
+    eleza do_test_trashcan_python_class(self, base):
         # Check that the trashcan mechanism works properly for a Python
-        # subclass of a class using the trashcan (this specific test assumes
-        # that the base class "base" behaves like list)
-        class PyList(base):
+        # subkundi of a kundi using the trashcan (this specific test assumes
+        # that the base kundi "base" behaves like list)
+        kundi PyList(base):
             # Count the number of PyList instances to verify that there is
             # no memory leak
             num = 0
-            def __init__(self, *args):
+            eleza __init__(self, *args):
                 __class__.num += 1
                 super().__init__(*args)
-            def __del__(self):
+            eleza __del__(self):
                 __class__.num -= 1
 
         for parity in (0, 1):
@@ -378,23 +378,23 @@ class CAPITest(unittest.TestCase):
             for i in range(2**20):
                 L = PyList((L,))
                 L.attr = i
-            if parity:
+            ikiwa parity:
                 # Add one additional nesting layer
                 L = (L,)
             self.assertGreater(PyList.num, 0)
             del L
             self.assertEqual(PyList.num, 0)
 
-    def test_subclass_of_heap_gc_ctype_with_tpdealloc_decrefs_once(self):
-        class HeapGcCTypeSubclass(_testcapi.HeapGcCType):
-            def __init__(self):
+    eleza test_subclass_of_heap_gc_ctype_with_tpdealloc_decrefs_once(self):
+        kundi HeapGcCTypeSubclass(_testcapi.HeapGcCType):
+            eleza __init__(self):
                 self.value2 = 20
                 super().__init__()
 
         subclass_instance = HeapGcCTypeSubclass()
         type_refcnt = sys.getrefcount(HeapGcCTypeSubclass)
 
-        # Test that subclass instance was fully created
+        # Test that subkundi instance was fully created
         self.assertEqual(subclass_instance.value, 10)
         self.assertEqual(subclass_instance.value2, 20)
 
@@ -402,17 +402,17 @@ class CAPITest(unittest.TestCase):
         del subclass_instance
         self.assertEqual(type_refcnt - 1, sys.getrefcount(HeapGcCTypeSubclass))
 
-    def test_subclass_of_heap_gc_ctype_with_del_modifying_dunder_class_only_decrefs_once(self):
-        class A(_testcapi.HeapGcCType):
-            def __init__(self):
+    eleza test_subclass_of_heap_gc_ctype_with_del_modifying_dunder_class_only_decrefs_once(self):
+        kundi A(_testcapi.HeapGcCType):
+            eleza __init__(self):
                 self.value2 = 20
                 super().__init__()
 
-        class B(A):
-            def __init__(self):
+        kundi B(A):
+            eleza __init__(self):
                 super().__init__()
 
-            def __del__(self):
+            eleza __del__(self):
                 self.__class__ = A
                 A.refcnt_in_del = sys.getrefcount(A)
                 B.refcnt_in_del = sys.getrefcount(B)
@@ -421,7 +421,7 @@ class CAPITest(unittest.TestCase):
         type_refcnt = sys.getrefcount(B)
         new_type_refcnt = sys.getrefcount(A)
 
-        # Test that subclass instance was fully created
+        # Test that subkundi instance was fully created
         self.assertEqual(subclass_instance.value, 10)
         self.assertEqual(subclass_instance.value2, 20)
 
@@ -437,11 +437,11 @@ class CAPITest(unittest.TestCase):
         # Test that subtype_dealloc decref the newly assigned __class__ only once
         self.assertEqual(new_type_refcnt, sys.getrefcount(A))
 
-    def test_c_subclass_of_heap_ctype_with_tpdealloc_decrefs_once(self):
+    eleza test_c_subclass_of_heap_ctype_with_tpdealloc_decrefs_once(self):
         subclass_instance = _testcapi.HeapCTypeSubclass()
         type_refcnt = sys.getrefcount(_testcapi.HeapCTypeSubclass)
 
-        # Test that subclass instance was fully created
+        # Test that subkundi instance was fully created
         self.assertEqual(subclass_instance.value, 10)
         self.assertEqual(subclass_instance.value2, 20)
 
@@ -449,12 +449,12 @@ class CAPITest(unittest.TestCase):
         del subclass_instance
         self.assertEqual(type_refcnt - 1, sys.getrefcount(_testcapi.HeapCTypeSubclass))
 
-    def test_c_subclass_of_heap_ctype_with_del_modifying_dunder_class_only_decrefs_once(self):
+    eleza test_c_subclass_of_heap_ctype_with_del_modifying_dunder_class_only_decrefs_once(self):
         subclass_instance = _testcapi.HeapCTypeSubclassWithFinalizer()
         type_refcnt = sys.getrefcount(_testcapi.HeapCTypeSubclassWithFinalizer)
         new_type_refcnt = sys.getrefcount(_testcapi.HeapCTypeSubclass)
 
-        # Test that subclass instance was fully created
+        # Test that subkundi instance was fully created
         self.assertEqual(subclass_instance.value, 10)
         self.assertEqual(subclass_instance.value2, 20)
 
@@ -472,10 +472,10 @@ class CAPITest(unittest.TestCase):
         self.assertEqual(new_type_refcnt, sys.getrefcount(_testcapi.HeapCTypeSubclass))
 
 
-class TestPendingCalls(unittest.TestCase):
+kundi TestPendingCalls(unittest.TestCase):
 
-    def pendingcalls_submit(self, l, n):
-        def callback():
+    eleza pendingcalls_submit(self, l, n):
+        eleza callback():
             #this function can be interrupted by thread switching so let's
             #use an atomic operation
             l.append(None)
@@ -483,37 +483,37 @@ class TestPendingCalls(unittest.TestCase):
         for i in range(n):
             time.sleep(random.random()*0.02) #0.01 secs on average
             #try submitting callback until successful.
-            #rely on regular interrupt to flush queue if we are
+            #rely on regular interrupt to flush queue ikiwa we are
             #unsuccessful.
             while True:
-                if _testcapi._pending_threadfunc(callback):
+                ikiwa _testcapi._pending_threadfunc(callback):
                     break;
 
-    def pendingcalls_wait(self, l, n, context = None):
+    eleza pendingcalls_wait(self, l, n, context = None):
         #now, stick around until l[0] has grown to 10
         count = 0;
         while len(l) != n:
             #this busy loop is where we expect to be interrupted to
             #run our callbacks.  Note that callbacks are only run on the
             #main thread
-            if False and support.verbose:
-                print("(%i)"%(len(l),),)
+            ikiwa False and support.verbose:
+                andika("(%i)"%(len(l),),)
             for i in range(1000):
                 a = i*i
-            if context and not context.event.is_set():
+            ikiwa context and not context.event.is_set():
                 continue
             count += 1
             self.assertTrue(count < 10000,
                 "timeout waiting for %i callbacks, got %i"%(n, len(l)))
-        if False and support.verbose:
-            print("(%i)"%(len(l),))
+        ikiwa False and support.verbose:
+            andika("(%i)"%(len(l),))
 
-    def test_pendingcalls_threaded(self):
+    eleza test_pendingcalls_threaded(self):
 
         #do every callback on a separate thread
         n = 32 #total callbacks
         threads = []
-        class foo(object):pass
+        kundi foo(object):pass
         context = foo()
         context.l = []
         context.n = 2 #submits per thread
@@ -528,19 +528,19 @@ class TestPendingCalls(unittest.TestCase):
         with support.start_threads(threads):
             self.pendingcalls_wait(context.l, n, context)
 
-    def pendingcalls_thread(self, context):
+    eleza pendingcalls_thread(self, context):
         try:
             self.pendingcalls_submit(context.l, context.n)
         finally:
             with context.lock:
                 context.nFinished += 1
                 nFinished = context.nFinished
-                if False and support.verbose:
-                    print("finished threads: ", nFinished)
-            if nFinished == context.nThreads:
+                ikiwa False and support.verbose:
+                    andika("finished threads: ", nFinished)
+            ikiwa nFinished == context.nThreads:
                 context.event.set()
 
-    def test_pendingcalls_non_threaded(self):
+    eleza test_pendingcalls_non_threaded(self):
         #again, just using the main thread, likely they will all be dispatched at
         #once.  It is ok to ask for too many, because we loop until we find a slot.
         #the loop can be interrupted to dispatch.
@@ -551,12 +551,12 @@ class TestPendingCalls(unittest.TestCase):
         self.pendingcalls_wait(l, n)
 
 
-class SubinterpreterTest(unittest.TestCase):
+kundi SubinterpreterTest(unittest.TestCase):
 
-    def test_subinterps(self):
+    eleza test_subinterps(self):
         agiza builtins
         r, w = os.pipe()
-        code = """if 1:
+        code = """ikiwa 1:
             agiza sys, builtins, pickle
             with open({:d}, "wb") as f:
                 pickle.dump(id(sys.modules), f)
@@ -568,7 +568,7 @@ class SubinterpreterTest(unittest.TestCase):
             self.assertNotEqual(pickle.load(f), id(sys.modules))
             self.assertNotEqual(pickle.load(f), id(builtins))
 
-    def test_mutate_exception(self):
+    eleza test_mutate_exception(self):
         """
         Exceptions saved in global module state get shared between
         individual module instances. This test checks whether or not
@@ -582,15 +582,15 @@ class SubinterpreterTest(unittest.TestCase):
         self.assertFalse(hasattr(binascii.Error, "foobar"))
 
 
-class TestThreadState(unittest.TestCase):
+kundi TestThreadState(unittest.TestCase):
 
     @support.reap_threads
-    def test_thread_state(self):
+    eleza test_thread_state(self):
         # some extra thread-state tests driven via _testcapi
-        def target():
+        eleza target():
             idents = []
 
-            def callback():
+            eleza callback():
                 idents.append(threading.get_ident())
 
             _testcapi._test_thread_state(callback)
@@ -606,25 +606,25 @@ class TestThreadState(unittest.TestCase):
         t.join()
 
 
-class Test_testcapi(unittest.TestCase):
+kundi Test_testcapi(unittest.TestCase):
     locals().update((name, getattr(_testcapi, name))
                     for name in dir(_testcapi)
-                    if name.startswith('test_') and not name.endswith('_code'))
+                    ikiwa name.startswith('test_') and not name.endswith('_code'))
 
 
-class PyMemDebugTests(unittest.TestCase):
+kundi PyMemDebugTests(unittest.TestCase):
     PYTHONMALLOC = 'debug'
     # '0x04c06e0' or '04C06E0'
     PTR_REGEX = r'(?:0x)?[0-9a-fA-F]+'
 
-    def check(self, code):
+    eleza check(self, code):
         with support.SuppressCrashReport():
             out = assert_python_failure('-c', code,
                                         PYTHONMALLOC=self.PYTHONMALLOC)
         stderr = out.err
-        return stderr.decode('ascii', 'replace')
+        rudisha stderr.decode('ascii', 'replace')
 
-    def test_buffer_overflow(self):
+    eleza test_buffer_overflow(self):
         out = self.check('agiza _testcapi; _testcapi.pymem_buffer_overflow()')
         regex = (r"Debug memory block at address p={ptr}: API 'm'\n"
                  r"    16 bytes originally requested\n"
@@ -644,7 +644,7 @@ class PyMemDebugTests(unittest.TestCase):
         regex = re.compile(regex, flags=re.DOTALL)
         self.assertRegex(out, regex)
 
-    def test_api_misuse(self):
+    eleza test_api_misuse(self):
         out = self.check('agiza _testcapi; _testcapi.pymem_api_misuse()')
         regex = (r"Debug memory block at address p={ptr}: API 'm'\n"
                  r"    16 bytes originally requested\n"
@@ -659,25 +659,25 @@ class PyMemDebugTests(unittest.TestCase):
         regex = regex.format(ptr=self.PTR_REGEX)
         self.assertRegex(out, regex)
 
-    def check_malloc_without_gil(self, code):
+    eleza check_malloc_without_gil(self, code):
         out = self.check(code)
         expected = ('Fatal Python error: Python memory allocator called '
                     'without holding the GIL')
         self.assertIn(expected, out)
 
-    def test_pymem_malloc_without_gil(self):
-        # Debug hooks must raise an error if PyMem_Malloc() is called
+    eleza test_pymem_malloc_without_gil(self):
+        # Debug hooks must raise an error ikiwa PyMem_Malloc() is called
         # without holding the GIL
         code = 'agiza _testcapi; _testcapi.pymem_malloc_without_gil()'
         self.check_malloc_without_gil(code)
 
-    def test_pyobject_malloc_without_gil(self):
-        # Debug hooks must raise an error if PyObject_Malloc() is called
+    eleza test_pyobject_malloc_without_gil(self):
+        # Debug hooks must raise an error ikiwa PyObject_Malloc() is called
         # without holding the GIL
         code = 'agiza _testcapi; _testcapi.pyobject_malloc_without_gil()'
         self.check_malloc_without_gil(code)
 
-    def check_pyobject_is_freed(self, func_name):
+    eleza check_pyobject_is_freed(self, func_name):
         code = textwrap.dedent(f'''
             agiza gc, os, sys, _testcapi
             # Disable the GC to avoid crash on GC collection
@@ -692,30 +692,30 @@ class PyMemDebugTests(unittest.TestCase):
         ''')
         assert_python_ok('-c', code, PYTHONMALLOC=self.PYTHONMALLOC)
 
-    def test_pyobject_uninitialized_is_freed(self):
+    eleza test_pyobject_uninitialized_is_freed(self):
         self.check_pyobject_is_freed('check_pyobject_uninitialized_is_freed')
 
-    def test_pyobject_forbidden_bytes_is_freed(self):
+    eleza test_pyobject_forbidden_bytes_is_freed(self):
         self.check_pyobject_is_freed('check_pyobject_forbidden_bytes_is_freed')
 
-    def test_pyobject_freed_is_freed(self):
+    eleza test_pyobject_freed_is_freed(self):
         self.check_pyobject_is_freed('check_pyobject_freed_is_freed')
 
 
-class PyMemMallocDebugTests(PyMemDebugTests):
+kundi PyMemMallocDebugTests(PyMemDebugTests):
     PYTHONMALLOC = 'malloc_debug'
 
 
 @unittest.skipUnless(support.with_pymalloc(), 'need pymalloc')
-class PyMemPymallocDebugTests(PyMemDebugTests):
+kundi PyMemPymallocDebugTests(PyMemDebugTests):
     PYTHONMALLOC = 'pymalloc_debug'
 
 
 @unittest.skipUnless(Py_DEBUG, 'need Py_DEBUG')
-class PyMemDefaultTests(PyMemDebugTests):
+kundi PyMemDefaultTests(PyMemDebugTests):
     # test default allocator of Python compiled in debug mode
     PYTHONMALLOC = ''
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

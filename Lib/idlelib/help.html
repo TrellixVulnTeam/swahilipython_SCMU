@@ -149,7 +149,7 @@ tree structure.  In the shell, open a module first.</p>
 <dt>Path Browser</dt><dd><p>Show sys.path directories, modules, functions, classes and methods in a
 tree structure.</p>
 </dd>
-<dt>Save</dt><dd><p>Save the current window to the associated file, if there is one.  Windows
+<dt>Save</dt><dd><p>Save the current window to the associated file, ikiwa there is one.  Windows
 that have been changed since being opened or last saved have a * before
 and after the window title.  If there is no associated file,
 do Save As instead.</p>
@@ -162,7 +162,7 @@ file.</p>
 </dd>
 <dt>Print Window</dt><dd><p>Print the current window to the default printer.</p>
 </dd>
-<dt>Close</dt><dd><p>Close the current window (ask to save if unsaved).</p>
+<dt>Close</dt><dd><p>Close the current window (ask to save ikiwa unsaved).</p>
 </dd>
 <dt>Exit</dt><dd><p>Close all windows and quit IDLE (ask to save unsaved windows).</p>
 </dd>
@@ -189,9 +189,9 @@ be undone.</p>
 </dd>
 <dt>Find…</dt><dd><p>Open a search dialog with many options</p>
 </dd>
-<dt>Find Again</dt><dd><p>Repeat the last search, if there is one.</p>
+<dt>Find Again</dt><dd><p>Repeat the last search, ikiwa there is one.</p>
 </dd>
-<dt>Find Selection</dt><dd><p>Search for the currently selected string, if there is one.</p>
+<dt>Find Selection</dt><dd><p>Search for the currently selected string, ikiwa there is one.</p>
 </dd>
 <dt>Find in Files…</dt><dd><p>Open a file search dialog.  Put results in a new output window.</p>
 </dd>
@@ -258,7 +258,7 @@ line.</p>
 </dl>
 <dl class="simple" id="run-custom">
 <dt>Run… Customized</dt><dd><p>Same as <a class="reference internal" href="#run-module"><span class="std std-ref">Run Module</span></a>, but run the module with customized
-settings.  <em>Command Line Arguments</em> extend <a class="reference internal" href="sys.html#sys.argv" title="sys.argv"><code class="xref py py-data docutils literal notranslate"><span class="pre">sys.argv</span></code></a> as if passed
+settings.  <em>Command Line Arguments</em> extend <a class="reference internal" href="sys.html#sys.argv" title="sys.argv"><code class="xref py py-data docutils literal notranslate"><span class="pre">sys.argv</span></code></a> as ikiwa passed
 on a command line. The module can be run in the Shell without restarting.</p>
 </dd>
 </dl>
@@ -294,7 +294,7 @@ Editor window.</p>
 <h3>Debug menu (Shell window only)<a class="headerlink" href="#debug-menu-shell-window-only" title="Permalink to this headline">¶</a></h3>
 <dl class="simple">
 <dt>Go to File/Line</dt><dd><p>Look on the current line. with the cursor, and the line above for a filename
-and line number.  If found, open the file if not already open, and show the
+and line number.  If found, open the file ikiwa not already open, and show the
 line.  Use this to view source lines referenced in an exception traceback
 and lines found by Find in Files. Also available in the context menu of
 the Shell window and Output windows.</p>
@@ -347,7 +347,7 @@ no effect when a window is maximized.</p>
 <div class="section" id="window-menu-shell-and-editor">
 <h3>Window menu (Shell and Editor)<a class="headerlink" href="#window-menu-shell-and-editor" title="Permalink to this headline">¶</a></h3>
 <p>Lists the names of all open windows; select one to bring it to the foreground
-(deiconifying it if necessary).</p>
+(deiconifying it ikiwa necessary).</p>
 </div>
 <div class="section" id="help-menu-shell-and-editor">
 <h3>Help menu (Shell and Editor)<a class="headerlink" href="#help-menu-shell-and-editor" title="Permalink to this headline">¶</a></h3>
@@ -357,7 +357,7 @@ no effect when a window is maximized.</p>
 <dt>IDLE Help</dt><dd><p>Display this IDLE document, detailing the menu options, basic editing and
 navigation, and other tips.</p>
 </dd>
-<dt>Python Docs</dt><dd><p>Access local Python documentation, if installed, or start a web browser
+<dt>Python Docs</dt><dd><p>Access local Python documentation, ikiwa installed, or start a web browser
 and open docs.python.org showing the latest Python documentation.</p>
 </dd>
 <dt>Turtle Demo</dt><dd><p>Run the turtledemo module with example Python code and turtle drawings.</p>
@@ -451,9 +451,9 @@ may work.  Keybindings are selected in the Configure IDLE dialog.</p>
 <div class="section" id="automatic-indentation">
 <h3>Automatic indentation<a class="headerlink" href="#automatic-indentation" title="Permalink to this headline">¶</a></h3>
 <p>After a block-opening statement, the next line is indented by 4 spaces (in the
-Python Shell window by one tab).  After certain keywords (break, return etc.)
+Python Shell window by one tab).  After certain keywords (break, rudisha etc.)
 the next line is dedented.  In leading indentation, <kbd class="kbd docutils literal notranslate">Backspace</kbd> deletes up
-to 4 spaces if they are there. <kbd class="kbd docutils literal notranslate">Tab</kbd> inserts spaces (in the Python
+to 4 spaces ikiwa they are there. <kbd class="kbd docutils literal notranslate">Tab</kbd> inserts spaces (in the Python
 Shell window one tab), number depends on Indent width. Currently, tabs
 are restricted to four spaces due to Tcl/Tk limitations.</p>
 <p>See also the indent/dedent region commands on the
@@ -467,7 +467,7 @@ filenames.</p>
 <p>The AutoCompleteWindow (ACW) will open after a predefined delay (default is
 two seconds) after a ‘.’ or (in a string) an os.sep is typed. If after one
 of those characters (plus zero or more other characters) a tab is typed
-the ACW will open immediately if a possible continuation is found.</p>
+the ACW will open immediately ikiwa a possible continuation is found.</p>
 <p>If there is only one possible completion for the characters entered, a
 <kbd class="kbd docutils literal notranslate">Tab</kbd> will supply that completion without opening the ACW.</p>
 <p>‘Show Completions’ will force open a completions window, by default the
@@ -480,7 +480,7 @@ characters have been entered, the ACW will attempt to be more specific.</p>
 entry most closely matching those characters.  Entering a <kbd class="kbd docutils literal notranslate">tab</kbd> will
 cause the longest non-ambiguous match to be entered in the Editor window or
 Shell.  Two <kbd class="kbd docutils literal notranslate">tab</kbd> in a row will supply the current ACW selection, as
-will return or a double click.  Cursor keys, Page Up/Down, mouse selection,
+will rudisha or a double click.  Cursor keys, Page Up/Down, mouse selection,
 and the scroll wheel all operate on the ACW.</p>
 <p>“Hidden” attributes can be accessed by typing the beginning of hidden
 name after a ‘.’, e.g. ‘_’. This allows access to modules with
@@ -539,12 +539,12 @@ Most consoles and terminals only work with a single physical line at a time.</p>
 <p>When one pastes code into Shell, it is not compiled and possibly executed
 until one hits <kbd class="kbd docutils literal notranslate">Return</kbd>.  One may edit pasted code first.
 If one pastes more that one statement into Shell, the result will be a
-<a class="reference internal" href="exceptions.html#SyntaxError" title="SyntaxError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">SyntaxError</span></code></a> when multiple statements are compiled as if they were one.</p>
+<a class="reference internal" href="exceptions.html#SyntaxError" title="SyntaxError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">SyntaxError</span></code></a> when multiple statements are compiled as ikiwa they were one.</p>
 <p>The editing features described in previous subsections work when entering
 code interactively.  IDLE’s Shell window also responds to the following keys.</p>
 <ul>
 <li><p><kbd class="kbd docutils literal notranslate">C-c</kbd> interrupts executing command</p></li>
-<li><p><kbd class="kbd docutils literal notranslate">C-d</kbd> sends end-of-file; closes window if typed at a <code class="docutils literal notranslate"><span class="pre">&gt;&gt;&gt;</span></code> prompt</p></li>
+<li><p><kbd class="kbd docutils literal notranslate">C-d</kbd> sends end-of-file; closes window ikiwa typed at a <code class="docutils literal notranslate"><span class="pre">&gt;&gt;&gt;</span></code> prompt</p></li>
 <li><p><kbd class="kbd docutils literal notranslate">Alt-/</kbd> (Expand word) is also useful to reduce typing</p>
 <p>Command history</p>
 <ul class="simple">
@@ -561,7 +561,7 @@ macOS use <kbd class="kbd docutils literal notranslate">C-p</kbd>.</p></li>
 <p>Idle defaults to black on white text, but colors text with special meanings.
 For the shell, these are shell output, shell error, user output, and
 user error.  For Python code, at the shell prompt or in an editor, these are
-keywords, builtin class and function names, names following <code class="docutils literal notranslate"><span class="pre">class</span></code> and
+keywords, builtin kundi and function names, names following <code class="docutils literal notranslate"><span class="pre">class</span></code> and
 <code class="docutils literal notranslate"><span class="pre">def</span></code>, strings, and comments. For any text window, these are the cursor (when
 present), found text (when possible), and selected text.</p>
 <p>Text coloring is done in the background, so uncolorized text is occasionally
@@ -574,12 +574,12 @@ text in popups and dialogs is not user-configurable.</p>
 <h2>Startup and code execution<a class="headerlink" href="#startup-and-code-execution" title="Permalink to this headline">¶</a></h2>
 <p>Upon startup with the <code class="docutils literal notranslate"><span class="pre">-s</span></code> option, IDLE will execute the file referenced by
 the environment variables <span class="target" id="index-5"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">IDLESTARTUP</span></code> or <span class="target" id="index-6"></span><a class="reference internal" href="../using/cmdline.html#envvar-PYTHONSTARTUP"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">PYTHONSTARTUP</span></code></a>.
-IDLE first checks for <code class="docutils literal notranslate"><span class="pre">IDLESTARTUP</span></code>; if <code class="docutils literal notranslate"><span class="pre">IDLESTARTUP</span></code> is present the file
+IDLE first checks for <code class="docutils literal notranslate"><span class="pre">IDLESTARTUP</span></code>; ikiwa <code class="docutils literal notranslate"><span class="pre">IDLESTARTUP</span></code> is present the file
 referenced is run.  If <code class="docutils literal notranslate"><span class="pre">IDLESTARTUP</span></code> is not present, IDLE checks for
 <code class="docutils literal notranslate"><span class="pre">PYTHONSTARTUP</span></code>.  Files referenced by these environment variables are
 convenient places to store functions that are used frequently kutoka the IDLE
 shell, or for executing agiza statements to agiza common modules.</p>
-<p>In addition, <code class="docutils literal notranslate"><span class="pre">Tk</span></code> also loads a startup file if it is present.  Note that the
+<p>In addition, <code class="docutils literal notranslate"><span class="pre">Tk</span></code> also loads a startup file ikiwa it is present.  Note that the
 Tk file is loaded unconditionally.  This additional file is <code class="docutils literal notranslate"><span class="pre">.Idle.py</span></code> and is
 looked for in the user’s home directory.  Statements in this file will be
 executed in the Tk namespace, so this file is not useful for agizaing
@@ -603,7 +603,7 @@ functions to be used kutoka IDLE’s Python shell.</p>
 <ul class="simple">
 <li><p>If <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">-c</span></code>, or <code class="docutils literal notranslate"><span class="pre">r</span></code> is used, all arguments are placed in
 <code class="docutils literal notranslate"><span class="pre">sys.argv[1:...]</span></code> and <code class="docutils literal notranslate"><span class="pre">sys.argv[0]</span></code> is set to <code class="docutils literal notranslate"><span class="pre">''</span></code>, <code class="docutils literal notranslate"><span class="pre">'-c'</span></code>,
-or <code class="docutils literal notranslate"><span class="pre">'-r'</span></code>.  No editor window is opened, even if that is the default
+or <code class="docutils literal notranslate"><span class="pre">'-r'</span></code>.  No editor window is opened, even ikiwa that is the default
 set in the Options dialog.</p></li>
 <li><p>Otherwise, arguments are files opened for editing and
 <code class="docutils literal notranslate"><span class="pre">sys.argv</span></code> reflects the arguments passed to IDLE itself.</p></li>
@@ -643,7 +643,7 @@ be prevented by never editing the files by hand, using the configuration
 dialog, under Options, instead Options.  Once it happens, the solution may
 be to delete one or more of the configuration files.</p>
 <p>If IDLE quits with no message, and it was not started kutoka a console, try
-starting kutoka a console (<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">idlelib)</span></code> and see if a message appears.</p>
+starting kutoka a console (<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">idlelib)</span></code> and see ikiwa a message appears.</p>
 </div>
 <div class="section" id="running-user-code">
 <h3>Running user code<a class="headerlink" href="#running-user-code" title="Permalink to this headline">¶</a></h3>
@@ -662,7 +662,7 @@ The original values stored in <code class="docutils literal notranslate"><span c
 <p>When Shell has the focus, it controls the keyboard and screen.  This is
 normally transparent, but functions that directly access the keyboard
 and screen will not work.  These include system-specific functions that
-determine whether a key has been pressed and if so, which.</p>
+determine whether a key has been pressed and ikiwa so, which.</p>
 <p>IDLE’s standard stream replacements are not inherited by subprocesses
 created in the execution process, whether directly by user code or by modules
 such as multiprocessing.  If such subprocess use <code class="docutils literal notranslate"><span class="pre">input</span></code> kutoka sys.stdin
@@ -720,7 +720,7 @@ kutoka code input and each other.  They each get different highlight colors.</p>
 detected is replaced by coloring the text with an error highlight.
 When code run kutoka a file causes other exceptions, one may right click
 on a traceback line to jump to the corresponding line in an IDLE editor.
-The file will be opened if necessary.</p>
+The file will be opened ikiwa necessary.</p>
 <p>Shell has a special facility for squeezing output lines down to a
 ‘Squeezed text’ label.  This is done automatically
 for output over N lines (N = 50 by default).
@@ -743,7 +743,7 @@ background, about 20 times a second, which is about every 50 milliseconds.
 Next enter <code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">tk.Button(root,</span> <span class="pre">text='button');</span> <span class="pre">b.pack()</span></code>.  Again,
 nothing visibly changes in standard Python until one enters <code class="docutils literal notranslate"><span class="pre">root.update()</span></code>.</p>
 <p>Most tkinter programs run <code class="docutils literal notranslate"><span class="pre">root.mainloop()</span></code>, which usually does not
-return until the tk app is destroyed.  If the program is run with
+rudisha until the tk app is destroyed.  If the program is run with
 <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-i</span></code> or kutoka an IDLE editor, a <code class="docutils literal notranslate"><span class="pre">&gt;&gt;&gt;</span></code> shell prompt does not
 appear until <code class="docutils literal notranslate"><span class="pre">mainloop()</span></code> returns, at which time there is nothing left
 to interact with.</p>
@@ -759,20 +759,20 @@ which uses the internal loopback interface.  This connection is not
 externally visible and no data is sent to or received kutoka the Internet.
 If firewall software complains anyway, you can ignore it.</p>
 <p>If the attempt to make the socket connection fails, Idle will notify you.
-Such failures are sometimes transient, but if persistent, the problem
+Such failures are sometimes transient, but ikiwa persistent, the problem
 may be either a firewall blocking the connection or misconfiguration of
 a particular system.  Until the problem is fixed, one can run Idle with
 the -n command line switch.</p>
 <p>If IDLE is started with the -n command line switch it will run in a
 single process and will not create the subprocess which runs the RPC
-Python execution server.  This can be useful if Python cannot create
+Python execution server.  This can be useful ikiwa Python cannot create
 the subprocess or the RPC socket interface on your platform.  However,
 in this mode user code is not isolated kutoka IDLE itself.  Also, the
 environment is not restarted when Run/Run Module (F5) is selected.  If
 your code has been modified, you must reload() the affected modules and
-re-agiza any specific items (e.g. kutoka foo agiza baz) if the changes
+re-agiza any specific items (e.g. kutoka foo agiza baz) ikiwa the changes
 are to take effect.  For these reasons, it is preferable to run IDLE
-with the default subprocess if at all possible.</p>
+with the default subprocess ikiwa at all possible.</p>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 3.4.</span></p>
 </div>
@@ -825,7 +825,7 @@ GUI framework used by IDLE, and it breaks a few IDLE features.</p>
 <h3>Extensions<a class="headerlink" href="#extensions" title="Permalink to this headline">¶</a></h3>
 <p>IDLE contains an extension facility.  Preferences for extensions can be
 changed with the Extensions tab of the preferences dialog. See the
-beginning of config-extensions.def in the idlelib directory for further
+beginning of config-extensions.eleza in the idlelib directory for further
 information.  The only current default extension is zzdummy, an example
 also used for testing.</p>
 </div>

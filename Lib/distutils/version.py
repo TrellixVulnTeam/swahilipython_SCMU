@@ -183,14 +183,14 @@ class StrictVersion (Version):
 
         if (not self.prerelease and not other.prerelease):
             return 0
-        elif (self.prerelease and not other.prerelease):
+        lasivyo (self.prerelease and not other.prerelease):
             return -1
-        elif (not self.prerelease and other.prerelease):
+        lasivyo (not self.prerelease and other.prerelease):
             return 1
-        elif (self.prerelease and other.prerelease):
+        lasivyo (self.prerelease and other.prerelease):
             if self.prerelease == other.prerelease:
                 return 0
-            elif self.prerelease < other.prerelease:
+            lasivyo self.prerelease < other.prerelease:
                 return -1
             else:
                 return 1

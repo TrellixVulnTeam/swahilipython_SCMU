@@ -42,7 +42,7 @@ The open file pointer must have methods read(), seek(), and close().
 When the setpos() and rewind() methods are not used, the seek()
 method is not  necessary.
 
-This returns an instance of a class with the following public methods:
+This returns an instance of a kundi with the following public methods:
         getnchannels()  -- returns number of audio channels (1 for
                            mono, 2 for stereo)
         getsampwidth()  -- returns sample width in bytes
@@ -60,12 +60,12 @@ This returns an instance of a class with the following public methods:
         readframes(n)   -- returns at most n frames of audio
         rewind()        -- rewind to the beginning of the audio stream
         setpos(pos)     -- seek to the specified position
-        tell()          -- return the current position
+        tell()          -- rudisha the current position
         close()         -- close the instance (make it unusable)
 The position returned by tell() and the position given to setpos()
 are compatible and have nothing to do with the actual position in the
 file.
-The close() method is called automatically when the class instance
+The close() method is called automatically when the kundi instance
 is destroyed.
 
 Writing audio files:
@@ -74,7 +74,7 @@ where file is either the name of a file or an open file pointer.
 The open file pointer must have methods write(), tell(), seek(), and
 close().
 
-This returns an instance of a class with the following public methods:
+This returns an instance of a kundi with the following public methods:
         setnchannels(n) -- set the number of channels
         setsampwidth(n) -- set the sample width
         setframerate(n) -- set the frame rate
@@ -83,7 +83,7 @@ This returns an instance of a class with the following public methods:
                         -- set the compression type and the
                            human-readable compression type
         setparams(tuple)-- set all parameters at once
-        tell()          -- return current position in output file
+        tell()          -- rudisha current position in output file
         writeframesraw(data)
                         -- write audio frames without pathing up the
                            file header
@@ -99,7 +99,7 @@ It is best to first set all parameters, perhaps possibly the
 compression type, and then write audio frames using writeframesraw.
 When all frames have been written, either call writeframes(b'') or
 close() to patch up the sizes in the header.
-The close() method is called automatically when the class instance
+The close() method is called automatically when the kundi instance
 is destroyed.
 """
 
@@ -134,19 +134,19 @@ _simple_encodings = [AUDIO_FILE_ENCODING_MULAW_8,
                      AUDIO_FILE_ENCODING_LINEAR_32,
                      AUDIO_FILE_ENCODING_ALAW_8]
 
-class Error(Exception):
+kundi Error(Exception):
     pass
 
-def _read_u32(file):
+eleza _read_u32(file):
     x = 0
     for i in range(4):
         byte = file.read(1)
-        if not byte:
+        ikiwa not byte:
             raise EOFError
         x = x*256 + ord(byte)
-    return x
+    rudisha x
 
-def _write_u32(file, x):
+eleza _write_u32(file, x):
     data = []
     for i in range(4):
         d, m = divmod(x, 256)
@@ -154,10 +154,10 @@ def _write_u32(file, x):
         x = d
     file.write(bytes(data))
 
-class Au_read:
+kundi Au_read:
 
-    def __init__(self, f):
-        if type(f) == type(''):
+    eleza __init__(self, f):
+        ikiwa type(f) == type(''):
             agiza builtins
             f = builtins.open(f, 'rb')
             self._opened = True
@@ -165,53 +165,53 @@ class Au_read:
             self._opened = False
         self.initfp(f)
 
-    def __del__(self):
-        if self._file:
+    eleza __del__(self):
+        ikiwa self._file:
             self.close()
 
-    def __enter__(self):
-        return self
+    eleza __enter__(self):
+        rudisha self
 
-    def __exit__(self, *args):
+    eleza __exit__(self, *args):
         self.close()
 
-    def initfp(self, file):
+    eleza initfp(self, file):
         self._file = file
         self._soundpos = 0
         magic = int(_read_u32(file))
-        if magic != AUDIO_FILE_MAGIC:
+        ikiwa magic != AUDIO_FILE_MAGIC:
             raise Error('bad magic number')
         self._hdr_size = int(_read_u32(file))
-        if self._hdr_size < 24:
+        ikiwa self._hdr_size < 24:
             raise Error('header size too small')
-        if self._hdr_size > 100:
+        ikiwa self._hdr_size > 100:
             raise Error('header size ridiculously large')
         self._data_size = _read_u32(file)
-        if self._data_size != AUDIO_UNKNOWN_SIZE:
+        ikiwa self._data_size != AUDIO_UNKNOWN_SIZE:
             self._data_size = int(self._data_size)
         self._encoding = int(_read_u32(file))
-        if self._encoding not in _simple_encodings:
+        ikiwa self._encoding not in _simple_encodings:
             raise Error('encoding not (yet) supported')
-        if self._encoding in (AUDIO_FILE_ENCODING_MULAW_8,
+        ikiwa self._encoding in (AUDIO_FILE_ENCODING_MULAW_8,
                   AUDIO_FILE_ENCODING_ALAW_8):
             self._sampwidth = 2
             self._framesize = 1
-        elif self._encoding == AUDIO_FILE_ENCODING_LINEAR_8:
+        elikiwa self._encoding == AUDIO_FILE_ENCODING_LINEAR_8:
             self._framesize = self._sampwidth = 1
-        elif self._encoding == AUDIO_FILE_ENCODING_LINEAR_16:
+        elikiwa self._encoding == AUDIO_FILE_ENCODING_LINEAR_16:
             self._framesize = self._sampwidth = 2
-        elif self._encoding == AUDIO_FILE_ENCODING_LINEAR_24:
+        elikiwa self._encoding == AUDIO_FILE_ENCODING_LINEAR_24:
             self._framesize = self._sampwidth = 3
-        elif self._encoding == AUDIO_FILE_ENCODING_LINEAR_32:
+        elikiwa self._encoding == AUDIO_FILE_ENCODING_LINEAR_32:
             self._framesize = self._sampwidth = 4
         else:
             raise Error('unknown encoding')
         self._framerate = int(_read_u32(file))
         self._nchannels = int(_read_u32(file))
-        if not self._nchannels:
+        ikiwa not self._nchannels:
             raise Error('bad # of channels')
         self._framesize = self._framesize * self._nchannels
-        if self._hdr_size > 24:
+        ikiwa self._hdr_size > 24:
             self._info = file.read(self._hdr_size - 24)
             self._info, _, _ = self._info.partition(b'\0')
         else:
@@ -221,93 +221,93 @@ class Au_read:
         except (AttributeError, OSError):
             self._data_pos = None
 
-    def getfp(self):
-        return self._file
+    eleza getfp(self):
+        rudisha self._file
 
-    def getnchannels(self):
-        return self._nchannels
+    eleza getnchannels(self):
+        rudisha self._nchannels
 
-    def getsampwidth(self):
-        return self._sampwidth
+    eleza getsampwidth(self):
+        rudisha self._sampwidth
 
-    def getframerate(self):
-        return self._framerate
+    eleza getframerate(self):
+        rudisha self._framerate
 
-    def getnframes(self):
-        if self._data_size == AUDIO_UNKNOWN_SIZE:
-            return AUDIO_UNKNOWN_SIZE
-        if self._encoding in _simple_encodings:
-            return self._data_size // self._framesize
-        return 0                # XXX--must do some arithmetic here
+    eleza getnframes(self):
+        ikiwa self._data_size == AUDIO_UNKNOWN_SIZE:
+            rudisha AUDIO_UNKNOWN_SIZE
+        ikiwa self._encoding in _simple_encodings:
+            rudisha self._data_size // self._framesize
+        rudisha 0                # XXX--must do some arithmetic here
 
-    def getcomptype(self):
-        if self._encoding == AUDIO_FILE_ENCODING_MULAW_8:
-            return 'ULAW'
-        elif self._encoding == AUDIO_FILE_ENCODING_ALAW_8:
-            return 'ALAW'
+    eleza getcomptype(self):
+        ikiwa self._encoding == AUDIO_FILE_ENCODING_MULAW_8:
+            rudisha 'ULAW'
+        elikiwa self._encoding == AUDIO_FILE_ENCODING_ALAW_8:
+            rudisha 'ALAW'
         else:
-            return 'NONE'
+            rudisha 'NONE'
 
-    def getcompname(self):
-        if self._encoding == AUDIO_FILE_ENCODING_MULAW_8:
-            return 'CCITT G.711 u-law'
-        elif self._encoding == AUDIO_FILE_ENCODING_ALAW_8:
-            return 'CCITT G.711 A-law'
+    eleza getcompname(self):
+        ikiwa self._encoding == AUDIO_FILE_ENCODING_MULAW_8:
+            rudisha 'CCITT G.711 u-law'
+        elikiwa self._encoding == AUDIO_FILE_ENCODING_ALAW_8:
+            rudisha 'CCITT G.711 A-law'
         else:
-            return 'not compressed'
+            rudisha 'not compressed'
 
-    def getparams(self):
-        return _sunau_params(self.getnchannels(), self.getsampwidth(),
+    eleza getparams(self):
+        rudisha _sunau_params(self.getnchannels(), self.getsampwidth(),
                   self.getframerate(), self.getnframes(),
                   self.getcomptype(), self.getcompname())
 
-    def getmarkers(self):
-        return None
+    eleza getmarkers(self):
+        rudisha None
 
-    def getmark(self, id):
+    eleza getmark(self, id):
         raise Error('no marks')
 
-    def readframes(self, nframes):
-        if self._encoding in _simple_encodings:
-            if nframes == AUDIO_UNKNOWN_SIZE:
+    eleza readframes(self, nframes):
+        ikiwa self._encoding in _simple_encodings:
+            ikiwa nframes == AUDIO_UNKNOWN_SIZE:
                 data = self._file.read()
             else:
                 data = self._file.read(nframes * self._framesize)
             self._soundpos += len(data) // self._framesize
-            if self._encoding == AUDIO_FILE_ENCODING_MULAW_8:
+            ikiwa self._encoding == AUDIO_FILE_ENCODING_MULAW_8:
                 agiza audioop
                 data = audioop.ulaw2lin(data, self._sampwidth)
-            return data
-        return None             # XXX--not implemented yet
+            rudisha data
+        rudisha None             # XXX--not implemented yet
 
-    def rewind(self):
-        if self._data_pos is None:
+    eleza rewind(self):
+        ikiwa self._data_pos is None:
             raise OSError('cannot seek')
         self._file.seek(self._data_pos)
         self._soundpos = 0
 
-    def tell(self):
-        return self._soundpos
+    eleza tell(self):
+        rudisha self._soundpos
 
-    def setpos(self, pos):
-        if pos < 0 or pos > self.getnframes():
+    eleza setpos(self, pos):
+        ikiwa pos < 0 or pos > self.getnframes():
             raise Error('position not in range')
-        if self._data_pos is None:
+        ikiwa self._data_pos is None:
             raise OSError('cannot seek')
         self._file.seek(self._data_pos + pos * self._framesize)
         self._soundpos = pos
 
-    def close(self):
+    eleza close(self):
         file = self._file
-        if file:
+        ikiwa file:
             self._file = None
-            if self._opened:
+            ikiwa self._opened:
                 file.close()
 
-class Au_write:
+kundi Au_write:
 
-    def __init__(self, f):
-        if type(f) == type(''):
+    eleza __init__(self, f):
+        ikiwa type(f) == type(''):
             agiza builtins
             f = builtins.open(f, 'wb')
             self._opened = True
@@ -315,18 +315,18 @@ class Au_write:
             self._opened = False
         self.initfp(f)
 
-    def __del__(self):
-        if self._file:
+    eleza __del__(self):
+        ikiwa self._file:
             self.close()
         self._file = None
 
-    def __enter__(self):
-        return self
+    eleza __enter__(self):
+        rudisha self
 
-    def __exit__(self, *args):
+    eleza __exit__(self, *args):
         self.close()
 
-    def initfp(self, file):
+    eleza initfp(self, file):
         self._file = file
         self._framerate = 0
         self._nchannels = 0
@@ -339,68 +339,68 @@ class Au_write:
         self._info = b''
         self._comptype = 'ULAW' # default is U-law
 
-    def setnchannels(self, nchannels):
-        if self._nframeswritten:
+    eleza setnchannels(self, nchannels):
+        ikiwa self._nframeswritten:
             raise Error('cannot change parameters after starting to write')
-        if nchannels not in (1, 2, 4):
+        ikiwa nchannels not in (1, 2, 4):
             raise Error('only 1, 2, or 4 channels supported')
         self._nchannels = nchannels
 
-    def getnchannels(self):
-        if not self._nchannels:
+    eleza getnchannels(self):
+        ikiwa not self._nchannels:
             raise Error('number of channels not set')
-        return self._nchannels
+        rudisha self._nchannels
 
-    def setsampwidth(self, sampwidth):
-        if self._nframeswritten:
+    eleza setsampwidth(self, sampwidth):
+        ikiwa self._nframeswritten:
             raise Error('cannot change parameters after starting to write')
-        if sampwidth not in (1, 2, 3, 4):
+        ikiwa sampwidth not in (1, 2, 3, 4):
             raise Error('bad sample width')
         self._sampwidth = sampwidth
 
-    def getsampwidth(self):
-        if not self._framerate:
+    eleza getsampwidth(self):
+        ikiwa not self._framerate:
             raise Error('sample width not specified')
-        return self._sampwidth
+        rudisha self._sampwidth
 
-    def setframerate(self, framerate):
-        if self._nframeswritten:
+    eleza setframerate(self, framerate):
+        ikiwa self._nframeswritten:
             raise Error('cannot change parameters after starting to write')
         self._framerate = framerate
 
-    def getframerate(self):
-        if not self._framerate:
+    eleza getframerate(self):
+        ikiwa not self._framerate:
             raise Error('frame rate not set')
-        return self._framerate
+        rudisha self._framerate
 
-    def setnframes(self, nframes):
-        if self._nframeswritten:
+    eleza setnframes(self, nframes):
+        ikiwa self._nframeswritten:
             raise Error('cannot change parameters after starting to write')
-        if nframes < 0:
+        ikiwa nframes < 0:
             raise Error('# of frames cannot be negative')
         self._nframes = nframes
 
-    def getnframes(self):
-        return self._nframeswritten
+    eleza getnframes(self):
+        rudisha self._nframeswritten
 
-    def setcomptype(self, type, name):
-        if type in ('NONE', 'ULAW'):
+    eleza setcomptype(self, type, name):
+        ikiwa type in ('NONE', 'ULAW'):
             self._comptype = type
         else:
             raise Error('unknown compression type')
 
-    def getcomptype(self):
-        return self._comptype
+    eleza getcomptype(self):
+        rudisha self._comptype
 
-    def getcompname(self):
-        if self._comptype == 'ULAW':
-            return 'CCITT G.711 u-law'
-        elif self._comptype == 'ALAW':
-            return 'CCITT G.711 A-law'
+    eleza getcompname(self):
+        ikiwa self._comptype == 'ULAW':
+            rudisha 'CCITT G.711 u-law'
+        elikiwa self._comptype == 'ALAW':
+            rudisha 'CCITT G.711 A-law'
         else:
-            return 'not compressed'
+            rudisha 'not compressed'
 
-    def setparams(self, params):
+    eleza setparams(self, params):
         nchannels, sampwidth, framerate, nframes, comptype, compname = params
         self.setnchannels(nchannels)
         self.setsampwidth(sampwidth)
@@ -408,19 +408,19 @@ class Au_write:
         self.setnframes(nframes)
         self.setcomptype(comptype, compname)
 
-    def getparams(self):
-        return _sunau_params(self.getnchannels(), self.getsampwidth(),
+    eleza getparams(self):
+        rudisha _sunau_params(self.getnchannels(), self.getsampwidth(),
                   self.getframerate(), self.getnframes(),
                   self.getcomptype(), self.getcompname())
 
-    def tell(self):
-        return self._nframeswritten
+    eleza tell(self):
+        rudisha self._nframeswritten
 
-    def writeframesraw(self, data):
-        if not isinstance(data, (bytes, bytearray)):
+    eleza writeframesraw(self, data):
+        ikiwa not isinstance(data, (bytes, bytearray)):
             data = memoryview(data).cast('B')
         self._ensure_header_written()
-        if self._comptype == 'ULAW':
+        ikiwa self._comptype == 'ULAW':
             agiza audioop
             data = audioop.lin2ulaw(data, self._sampwidth)
         nframes = len(data) // self._framesize
@@ -428,57 +428,57 @@ class Au_write:
         self._nframeswritten = self._nframeswritten + nframes
         self._datawritten = self._datawritten + len(data)
 
-    def writeframes(self, data):
+    eleza writeframes(self, data):
         self.writeframesraw(data)
-        if self._nframeswritten != self._nframes or \
+        ikiwa self._nframeswritten != self._nframes or \
                   self._datalength != self._datawritten:
             self._patchheader()
 
-    def close(self):
-        if self._file:
+    eleza close(self):
+        ikiwa self._file:
             try:
                 self._ensure_header_written()
-                if self._nframeswritten != self._nframes or \
+                ikiwa self._nframeswritten != self._nframes or \
                         self._datalength != self._datawritten:
                     self._patchheader()
                 self._file.flush()
             finally:
                 file = self._file
                 self._file = None
-                if self._opened:
+                ikiwa self._opened:
                     file.close()
 
     #
     # private methods
     #
 
-    def _ensure_header_written(self):
-        if not self._nframeswritten:
-            if not self._nchannels:
+    eleza _ensure_header_written(self):
+        ikiwa not self._nframeswritten:
+            ikiwa not self._nchannels:
                 raise Error('# of channels not specified')
-            if not self._sampwidth:
+            ikiwa not self._sampwidth:
                 raise Error('sample width not specified')
-            if not self._framerate:
+            ikiwa not self._framerate:
                 raise Error('frame rate not specified')
             self._write_header()
 
-    def _write_header(self):
-        if self._comptype == 'NONE':
-            if self._sampwidth == 1:
+    eleza _write_header(self):
+        ikiwa self._comptype == 'NONE':
+            ikiwa self._sampwidth == 1:
                 encoding = AUDIO_FILE_ENCODING_LINEAR_8
                 self._framesize = 1
-            elif self._sampwidth == 2:
+            elikiwa self._sampwidth == 2:
                 encoding = AUDIO_FILE_ENCODING_LINEAR_16
                 self._framesize = 2
-            elif self._sampwidth == 3:
+            elikiwa self._sampwidth == 3:
                 encoding = AUDIO_FILE_ENCODING_LINEAR_24
                 self._framesize = 3
-            elif self._sampwidth == 4:
+            elikiwa self._sampwidth == 4:
                 encoding = AUDIO_FILE_ENCODING_LINEAR_32
                 self._framesize = 4
             else:
                 raise Error('internal error')
-        elif self._comptype == 'ULAW':
+        elikiwa self._comptype == 'ULAW':
             encoding = AUDIO_FILE_ENCODING_MULAW_8
             self._framesize = 1
         else:
@@ -488,7 +488,7 @@ class Au_write:
         header_size = 25 + len(self._info)
         header_size = (header_size + 7) & ~7
         _write_u32(self._file, header_size)
-        if self._nframes == AUDIO_UNKNOWN_SIZE:
+        ikiwa self._nframes == AUDIO_UNKNOWN_SIZE:
             length = AUDIO_UNKNOWN_SIZE
         else:
             length = self._nframes * self._framesize
@@ -504,28 +504,28 @@ class Au_write:
         self._file.write(self._info)
         self._file.write(b'\0'*(header_size - len(self._info) - 24))
 
-    def _patchheader(self):
-        if self._form_length_pos is None:
+    eleza _patchheader(self):
+        ikiwa self._form_length_pos is None:
             raise OSError('cannot seek')
         self._file.seek(self._form_length_pos)
         _write_u32(self._file, self._datawritten)
         self._datalength = self._datawritten
         self._file.seek(0, 2)
 
-def open(f, mode=None):
-    if mode is None:
-        if hasattr(f, 'mode'):
+eleza open(f, mode=None):
+    ikiwa mode is None:
+        ikiwa hasattr(f, 'mode'):
             mode = f.mode
         else:
             mode = 'rb'
-    if mode in ('r', 'rb'):
-        return Au_read(f)
-    elif mode in ('w', 'wb'):
-        return Au_write(f)
+    ikiwa mode in ('r', 'rb'):
+        rudisha Au_read(f)
+    elikiwa mode in ('w', 'wb'):
+        rudisha Au_write(f)
     else:
         raise Error("mode must be 'r', 'rb', 'w', or 'wb'")
 
-def openfp(f, mode=None):
+eleza openfp(f, mode=None):
     warnings.warn("sunau.openfp is deprecated since Python 3.7. "
                   "Use sunau.open instead.", DeprecationWarning, stacklevel=2)
-    return open(f, mode=mode)
+    rudisha open(f, mode=mode)

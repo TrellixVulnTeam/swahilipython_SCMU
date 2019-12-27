@@ -32,16 +32,16 @@ base class:
 
 .. class:: IMAP4(host='', port=IMAP4_PORT)
 
-   This class implements the actual IMAP4 protocol.  The connection is created and
+   This kundi implements the actual IMAP4 protocol.  The connection is created and
    protocol version (IMAP4 or IMAP4rev1) is determined when the instance is
    initialized. If *host* is not specified, ``''`` (the local host) is used. If
    *port* is omitted, the standard IMAP4 port (143) is used.
 
-   The :class:`IMAP4` class supports the :keyword:`with` statement.  When used
+   The :class:`IMAP4` kundi supports the :keyword:`with` statement.  When used
    like this, the IMAP4 ``LOGOUT`` command is issued automatically when the
    :keyword:`!with` statement exits.  E.g.::
 
-    >>> from imaplib import IMAP4
+    >>> kutoka imaplib agiza IMAP4
     >>> with IMAP4("domain.org") as M:
     ...     M.noop()
     ...
@@ -61,27 +61,27 @@ Three exceptions are defined as attributes of the :class:`IMAP4` class:
 
 .. exception:: IMAP4.abort
 
-   IMAP4 server errors cause this exception to be raised.  This is a sub-class of
+   IMAP4 server errors cause this exception to be raised.  This is a sub-kundi of
    :exc:`IMAP4.error`.  Note that closing the instance and instantiating a new one
-   will usually allow recovery from this exception.
+   will usually allow recovery kutoka this exception.
 
 
 .. exception:: IMAP4.readonly
 
    This exception is raised when a writable mailbox has its status changed by the
-   server.  This is a sub-class of :exc:`IMAP4.error`.  Some other client now has
+   server.  This is a sub-kundi of :exc:`IMAP4.error`.  Some other client now has
    write permission, and the mailbox will need to be re-opened to re-obtain write
    permission.
 
 
-There's also a subclass for secure connections:
+There's also a subkundi for secure connections:
 
 
 .. class:: IMAP4_SSL(host='', port=IMAP4_SSL_PORT, keyfile=None, \
                      certfile=None, ssl_context=None)
 
-   This is a subclass derived from :class:`IMAP4` that connects over an SSL
-   encrypted socket (to use this class you need a socket module that was compiled
+   This is a subkundi derived kutoka :class:`IMAP4` that connects over an SSL
+   encrypted socket (to use this kundi you need a socket module that was compiled
    with SSL support).  If *host* is not specified, ``''`` (the local host) is used.
    If *port* is omitted, the standard IMAP4-over-SSL port (993) is used.
    *ssl_context* is a :class:`ssl.SSLContext` object which allows bundling
@@ -99,7 +99,7 @@ There's also a subclass for secure connections:
       *ssl_context* parameter added.
 
    .. versionchanged:: 3.4
-      The class now supports hostname check with
+      The kundi now supports hostname check with
       :attr:`ssl.SSLContext.check_hostname` and *Server Name Indication* (see
       :data:`ssl.HAS_SNI`).
 
@@ -111,12 +111,12 @@ There's also a subclass for secure connections:
        certificates for you.
 
 
-The second subclass allows for connections created by a child process:
+The second subkundi allows for connections created by a child process:
 
 
 .. class:: IMAP4_stream(command)
 
-   This is a subclass derived from :class:`IMAP4` that connects to the
+   This is a subkundi derived kutoka :class:`IMAP4` that connects to the
    ``stdin/stdout`` file descriptors created by passing *command* to
    ``subprocess.Popen()``.
 
@@ -132,7 +132,7 @@ The following utility functions are defined:
 
 .. function:: Int2AP(num)
 
-   Converts an integer into a string representation using characters from the set
+   Converts an integer into a string representation using characters kutoka the set
    [``A`` .. ``P``].
 
 
@@ -185,8 +185,8 @@ you want to avoid having an argument string quoted (eg: the *flags* argument to
 ``STORE``) then enclose the string in parentheses (eg: ``r'(\Deleted)'``).
 
 Each command returns a tuple: ``(type, [data, ...])`` where *type* is usually
-``'OK'`` or ``'NO'``, and *data* is either the text from the command response,
-or mandated results from the command. Each *data* is either a string, or a
+``'OK'`` or ``'NO'``, and *data* is either the text kutoka the command response,
+or mandated results kutoka the command. Each *data* is either a string, or a
 tuple. If a tuple, then the first part is the header of the response, and the
 second part contains the data (ie: 'literal' value).
 
@@ -232,7 +232,7 @@ An :class:`IMAP4` instance has the following methods:
 
 .. method:: IMAP4.close()
 
-   Close currently selected mailbox. Deleted messages are removed from writable
+   Close currently selected mailbox. Deleted messages are removed kutoka writable
    mailbox. This is the recommended command before ``LOGOUT``.
 
 
@@ -268,7 +268,7 @@ An :class:`IMAP4` instance has the following methods:
 
 .. method:: IMAP4.expunge()
 
-   Permanently remove deleted items from selected mailbox. Generates an ``EXPUNGE``
+   Permanently remove deleted items kutoka selected mailbox. Generates an ``EXPUNGE``
    response for each deleted message. Returned data contains a list of ``EXPUNGE``
    message numbers in order received.
 
@@ -378,12 +378,12 @@ An :class:`IMAP4` instance has the following methods:
 
 .. method:: IMAP4.read(size)
 
-   Reads *size* bytes from the remote server. You may override this method.
+   Reads *size* bytes kutoka the remote server. You may override this method.
 
 
 .. method:: IMAP4.readline()
 
-   Reads one line from the remote server. You may override this method.
+   Reads one line kutoka the remote server. You may override this method.
 
 
 .. method:: IMAP4.recent()
@@ -524,7 +524,7 @@ An :class:`IMAP4` instance has the following methods:
       create such tags.  Although it is an RFC violation and IMAP clients and
       servers are supposed to be strict, imaplib nonetheless continues to allow
       such tags to be created for backward compatibility reasons, and as of
-      Python 3.6, handles them if they are sent from the server, since this
+      Python 3.6, handles them if they are sent kutoka the server, since this
       improves real-world compatibility.
 
 .. method:: IMAP4.subscribe(mailbox)
@@ -563,7 +563,7 @@ An :class:`IMAP4` instance has the following methods:
 
 .. method:: IMAP4.unsubscribe(mailbox)
 
-   Unsubscribe from old mailbox.
+   Unsubscribe kutoka old mailbox.
 
 
 .. method:: IMAP4.xatom(name[, ...])
@@ -575,13 +575,13 @@ The following attributes are defined on instances of :class:`IMAP4`:
 
 .. attribute:: IMAP4.PROTOCOL_VERSION
 
-   The most recent supported protocol in the ``CAPABILITY`` response from the
+   The most recent supported protocol in the ``CAPABILITY`` response kutoka the
    server.
 
 
 .. attribute:: IMAP4.debug
 
-   Integer value to control debugging output.  The initialize value is taken from
+   Integer value to control debugging output.  The initialize value is taken kutoka
    the module variable ``Debug``.  Values greater than three trace each command.
 
 
@@ -602,7 +602,7 @@ IMAP4 Example
 Here is a minimal example (without error checking) that opens a mailbox and
 retrieves and prints all messages::
 
-   import getpass, imaplib
+   agiza getpass, imaplib
 
    M = imaplib.IMAP4()
    M.login(getpass.getuser(), getpass.getpass())

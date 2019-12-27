@@ -2,7 +2,7 @@ import unittest
 from ctypes import *
 from ctypes.test import need_symbol
 
-import _ctypes_test
+agiza _ctypes_test
 
 class SlicesTestCase(unittest.TestCase):
     def test_getslice_cint(self):
@@ -147,9 +147,9 @@ class SlicesTestCase(unittest.TestCase):
 
         if sizeof(c_wchar) == sizeof(c_short):
             dll.my_wcsdup.restype = POINTER(c_short)
-        elif sizeof(c_wchar) == sizeof(c_int):
+        lasivyo sizeof(c_wchar) == sizeof(c_int):
             dll.my_wcsdup.restype = POINTER(c_int)
-        elif sizeof(c_wchar) == sizeof(c_long):
+        lasivyo sizeof(c_wchar) == sizeof(c_long):
             dll.my_wcsdup.restype = POINTER(c_long)
         else:
             self.skipTest('Pointers to c_wchar are not supported')

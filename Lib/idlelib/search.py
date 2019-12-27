@@ -9,7 +9,7 @@ kutoka tkinter agiza TclError
 kutoka idlelib agiza searchengine
 kutoka idlelib.searchbase agiza SearchDialogBase
 
-def _setup(text):
+eleza _setup(text):
     """Return the new or existing singleton SearchDialog instance.
 
     The singleton dialog saves user entries and preferences
@@ -20,11 +20,11 @@ def _setup(text):
     """
     root = text._root()
     engine = searchengine.get(root)
-    if not hasattr(engine, "_searchdialog"):
+    ikiwa not hasattr(engine, "_searchdialog"):
         engine._searchdialog = SearchDialog(root, engine)
-    return engine._searchdialog
+    rudisha engine._searchdialog
 
-def find(text):
+eleza find(text):
     """Open the search dialog.
 
     Module-level function to access the singleton SearchDialog
@@ -33,9 +33,9 @@ def find(text):
     is used.  No search is done with this command.
     """
     pat = text.get("sel.first", "sel.last")
-    return _setup(text).open(text, pat)  # Open is inherited kutoka SDBase.
+    rudisha _setup(text).open(text, pat)  # Open is inherited kutoka SDBase.
 
-def find_again(text):
+eleza find_again(text):
     """Repeat the search for the last pattern and preferences.
 
     Module-level function to access the singleton SearchDialog
@@ -44,9 +44,9 @@ def find_again(text):
     search dialog; otherwise, perform the search without showing the
     dialog.
     """
-    return _setup(text).find_again(text)
+    rudisha _setup(text).find_again(text)
 
-def find_selection(text):
+eleza find_selection(text):
     """Search for the selected pattern in the text.
 
     Module-level function to access the singleton SearchDialog
@@ -56,25 +56,25 @@ def find_selection(text):
     and don't display the dialog.  If there has been no prior
     search, open the search dialog.
     """
-    return _setup(text).find_selection(text)
+    rudisha _setup(text).find_selection(text)
 
 
-class SearchDialog(SearchDialogBase):
+kundi SearchDialog(SearchDialogBase):
     "Dialog for finding a pattern in text."
 
-    def create_widgets(self):
+    eleza create_widgets(self):
         "Create the base search dialog and add a button for Find Next."
         SearchDialogBase.create_widgets(self)
         # TODO - why is this here and not in a create_command_buttons?
         self.make_button("Find Next", self.default_command, isdef=True)
 
-    def default_command(self, event=None):
+    eleza default_command(self, event=None):
         "Handle the Find Next button as the default command."
-        if not self.engine.getprog():
+        ikiwa not self.engine.getprog():
             return
         self.find_again(self.text)
 
-    def find_again(self, text):
+    eleza find_again(self, text):
         """Repeat the last search.
 
         If no search was previously run, open a new search dialog.  In
@@ -88,15 +88,15 @@ class SearchDialog(SearchDialogBase):
         Position the window to display the located occurrence in the
         text.
 
-        Return True if the search was successful and False otherwise.
+        Return True ikiwa the search was successful and False otherwise.
         """
-        if not self.engine.getpat():
+        ikiwa not self.engine.getpat():
             self.open(text)
-            return False
-        if not self.engine.getprog():
-            return False
+            rudisha False
+        ikiwa not self.engine.getprog():
+            rudisha False
         res = self.engine.search_text(text)
-        if res:
+        ikiwa res:
             line, m = res
             i, j = m.span()
             first = "%d.%d" % (line, i)
@@ -104,21 +104,21 @@ class SearchDialog(SearchDialogBase):
             try:
                 selfirst = text.index("sel.first")
                 sellast = text.index("sel.last")
-                if selfirst == first and sellast == last:
+                ikiwa selfirst == first and sellast == last:
                     self.bell()
-                    return False
+                    rudisha False
             except TclError:
                 pass
             text.tag_remove("sel", "1.0", "end")
             text.tag_add("sel", first, last)
             text.mark_set("insert", self.engine.isback() and first or last)
             text.see("insert")
-            return True
+            rudisha True
         else:
             self.bell()
-            return False
+            rudisha False
 
-    def find_selection(self, text):
+    eleza find_selection(self, text):
         """Search for selected text with previous dialog preferences.
 
         Instead of using the same pattern for searching (as Find
@@ -127,12 +127,12 @@ class SearchDialog(SearchDialogBase):
         the prior search phrase.
         """
         pat = text.get("sel.first", "sel.last")
-        if pat:
+        ikiwa pat:
             self.engine.setcookedpat(pat)
-        return self.find_again(text)
+        rudisha self.find_again(text)
 
 
-def _search_dialog(parent):  # htest #
+eleza _search_dialog(parent):  # htest #
     "Display search test box."
     kutoka tkinter agiza Toplevel, Text
     kutoka tkinter.ttk agiza Frame, Button
@@ -148,7 +148,7 @@ def _search_dialog(parent):  # htest #
     text.pack()
     text.insert("insert","This is a sample string.\n"*5)
 
-    def show_find():
+    eleza show_find():
         text.tag_add('sel', '1.0', 'end')
         _setup(text).open(text)
         text.tag_remove('sel', '1.0', 'end')
@@ -156,7 +156,7 @@ def _search_dialog(parent):  # htest #
     button = Button(frame, text="Search (selection ignored)", command=show_find)
     button.pack()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_search', verbosity=2, exit=False)
 

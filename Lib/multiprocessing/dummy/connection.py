@@ -15,61 +15,61 @@ kutoka queue agiza Queue
 families = [None]
 
 
-class Listener(object):
+kundi Listener(object):
 
-    def __init__(self, address=None, family=None, backlog=1):
+    eleza __init__(self, address=None, family=None, backlog=1):
         self._backlog_queue = Queue(backlog)
 
-    def accept(self):
-        return Connection(*self._backlog_queue.get())
+    eleza accept(self):
+        rudisha Connection(*self._backlog_queue.get())
 
-    def close(self):
+    eleza close(self):
         self._backlog_queue = None
 
     @property
-    def address(self):
-        return self._backlog_queue
+    eleza address(self):
+        rudisha self._backlog_queue
 
-    def __enter__(self):
-        return self
+    eleza __enter__(self):
+        rudisha self
 
-    def __exit__(self, exc_type, exc_value, exc_tb):
+    eleza __exit__(self, exc_type, exc_value, exc_tb):
         self.close()
 
 
-def Client(address):
+eleza Client(address):
     _in, _out = Queue(), Queue()
     address.put((_out, _in))
-    return Connection(_in, _out)
+    rudisha Connection(_in, _out)
 
 
-def Pipe(duplex=True):
+eleza Pipe(duplex=True):
     a, b = Queue(), Queue()
-    return Connection(a, b), Connection(b, a)
+    rudisha Connection(a, b), Connection(b, a)
 
 
-class Connection(object):
+kundi Connection(object):
 
-    def __init__(self, _in, _out):
+    eleza __init__(self, _in, _out):
         self._out = _out
         self._in = _in
         self.send = self.send_bytes = _out.put
         self.recv = self.recv_bytes = _in.get
 
-    def poll(self, timeout=0.0):
-        if self._in.qsize() > 0:
-            return True
-        if timeout <= 0.0:
-            return False
+    eleza poll(self, timeout=0.0):
+        ikiwa self._in.qsize() > 0:
+            rudisha True
+        ikiwa timeout <= 0.0:
+            rudisha False
         with self._in.not_empty:
             self._in.not_empty.wait(timeout)
-        return self._in.qsize() > 0
+        rudisha self._in.qsize() > 0
 
-    def close(self):
+    eleza close(self):
         pass
 
-    def __enter__(self):
-        return self
+    eleza __enter__(self):
+        rudisha self
 
-    def __exit__(self, exc_type, exc_value, exc_tb):
+    eleza __exit__(self, exc_type, exc_value, exc_tb):
         self.close()

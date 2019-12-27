@@ -24,14 +24,14 @@ Dynamic Type Creation
 
 .. function:: new_class(name, bases=(), kwds=None, exec_body=None)
 
-   Creates a class object dynamically using the appropriate metaclass.
+   Creates a kundi object dynamically using the appropriate metaclass.
 
    The first three arguments are the components that make up a class
-   definition header: the class name, the base classes (in order), the
+   definition header: the kundi name, the base classes (in order), the
    keyword arguments (such as ``metaclass``).
 
    The *exec_body* argument is a callback that is used to populate the
-   freshly created class namespace. It should accept the class namespace
+   freshly created kundi namespace. It should accept the kundi namespace
    as its sole argument and update the namespace directly with the class
    contents. If no callback is provided, it has the same effect as passing
    in ``lambda ns: ns``.
@@ -40,16 +40,16 @@ Dynamic Type Creation
 
 .. function:: prepare_class(name, bases=(), kwds=None)
 
-   Calculates the appropriate metaclass and creates the class namespace.
+   Calculates the appropriate metakundi and creates the kundi namespace.
 
-   The arguments are the components that make up a class definition header:
-   the class name, the base classes (in order) and the keyword arguments
+   The arguments are the components that make up a kundi definition header:
+   the kundi name, the base classes (in order) and the keyword arguments
    (such as ``metaclass``).
 
    The return value is a 3-tuple: ``metaclass, namespace, kwds``
 
    *metaclass* is the appropriate metaclass, *namespace* is the
-   prepared class namespace and *kwds* is an updated copy of the passed
+   prepared kundi namespace and *kwds* is an updated copy of the passed
    in *kwds* argument with any ``'metaclass'`` entry removed. If no *kwds*
    argument is passed in, this will be an empty dict.
 
@@ -59,12 +59,12 @@ Dynamic Type Creation
 
       The default value for the ``namespace`` element of the returned
       tuple has changed.  Now an insertion-order-preserving mapping is
-      used when the metaclass does not have a ``__prepare__`` method.
+      used when the metakundi does not have a ``__prepare__`` method.
 
 .. seealso::
 
    :ref:`metaclasses`
-      Full details of the class creation process supported by these functions
+      Full details of the kundi creation process supported by these functions
 
    :pep:`3115` - Metaclasses in Python 3000
       Introduced the ``__prepare__`` namespace hook
@@ -149,7 +149,7 @@ Standard names are defined for the following types:
 
 .. data:: MethodType
 
-   The type of methods of user-defined class instances.
+   The type of methods of user-defined kundi instances.
 
 
 .. data:: BuiltinFunctionType
@@ -185,8 +185,8 @@ Standard names are defined for the following types:
 
 .. data:: ClassMethodDescriptorType
 
-   The type of *unbound* class methods of some built-in data types such as
-   ``dict.__dict__['fromkeys']``.
+   The type of *unbound* kundi methods of some built-in data types such as
+   ``dict.__dict__['kutokakeys']``.
 
    .. versionadded:: 3.7
 
@@ -197,7 +197,7 @@ Standard names are defined for the following types:
    module to be created and optionally its :term:`docstring`.
 
    .. note::
-      Use :func:`importlib.util.module_from_spec` to create a new module if you
+      Use :func:`importlib.util.module_kutoka_spec` to create a new module if you
       wish to set the various import-controlled attributes.
 
    .. attribute:: __doc__
@@ -320,7 +320,7 @@ Additional Utility Classes and Functions
 
 .. class:: SimpleNamespace
 
-   A simple :class:`object` subclass that provides attribute access to its
+   A simple :class:`object` subkundi that provides attribute access to its
    namespace, as well as a meaningful repr.
 
    Unlike :class:`object`, with ``SimpleNamespace`` you can add and remove
@@ -329,7 +329,7 @@ Additional Utility Classes and Functions
 
    The type is roughly equivalent to the following code::
 
-       class SimpleNamespace:
+       kundi SimpleNamespace:
            def __init__(self, /, **kwargs):
                self.__dict__.update(kwargs)
 
@@ -341,7 +341,7 @@ Additional Utility Classes and Functions
            def __eq__(self, other):
                return self.__dict__ == other.__dict__
 
-   ``SimpleNamespace`` may be useful as a replacement for ``class NS: pass``.
+   ``SimpleNamespace`` may be useful as a replacement for ``kundi NS: pass``.
    However, for a structured record type use :func:`~collections.namedtuple`
    instead.
 
@@ -350,15 +350,15 @@ Additional Utility Classes and Functions
 
 .. function:: DynamicClassAttribute(fget=None, fset=None, fdel=None, doc=None)
 
-   Route attribute access on a class to __getattr__.
+   Route attribute access on a kundi to __getattr__.
 
    This is a descriptor, used to define attributes that act differently when
    accessed through an instance and through a class.  Instance access remains
-   normal, but access to an attribute through a class will be routed to the
+   normal, but access to an attribute through a kundi will be routed to the
    class's __getattr__ method; this is done by raising AttributeError.
 
    This allows one to have properties active on an instance, and have virtual
-   attributes on the class with the same name (see Enum for an example).
+   attributes on the kundi with the same name (see Enum for an example).
 
    .. versionadded:: 3.4
 

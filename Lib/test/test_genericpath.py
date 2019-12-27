@@ -12,24 +12,24 @@ kutoka test.support.script_helper agiza assert_python_ok
 kutoka test.support agiza FakePath
 
 
-def create_file(filename, data=b'foo'):
+eleza create_file(filename, data=b'foo'):
     with open(filename, 'xb', 0) as fp:
         fp.write(data)
 
 
-class GenericTest:
+kundi GenericTest:
     common_attributes = ['commonprefix', 'getsize', 'getatime', 'getctime',
                          'getmtime', 'exists', 'isdir', 'isfile']
     attributes = []
 
-    def test_no_argument(self):
+    eleza test_no_argument(self):
         for attr in self.common_attributes + self.attributes:
             with self.assertRaises(TypeError):
                 getattr(self.pathmodule, attr)()
                 raise self.fail("{}.{}() did not raise a TypeError"
                                 .format(self.pathmodule.__name__, attr))
 
-    def test_commonprefix(self):
+    eleza test_commonprefix(self):
         commonprefix = self.pathmodule.commonprefix
         self.assertEqual(
             commonprefix([]),
@@ -92,11 +92,11 @@ class GenericTest:
                 p = commonprefix([s1, s2])
                 self.assertTrue(s1.startswith(p))
                 self.assertTrue(s2.startswith(p))
-                if s1 != s2:
+                ikiwa s1 != s2:
                     n = len(p)
                     self.assertNotEqual(s1[n:n+1], s2[n:n+1])
 
-    def test_getsize(self):
+    eleza test_getsize(self):
         filename = support.TESTFN
         self.addCleanup(support.unlink, filename)
 
@@ -107,7 +107,7 @@ class GenericTest:
         create_file(filename, b'Hello World!')
         self.assertEqual(self.pathmodule.getsize(filename), 12)
 
-    def test_filetime(self):
+    eleza test_filetime(self):
         filename = support.TESTFN
         self.addCleanup(support.unlink, filename)
 
@@ -125,7 +125,7 @@ class GenericTest:
             self.pathmodule.getmtime(filename)
         )
 
-    def test_exists(self):
+    eleza test_exists(self):
         filename = support.TESTFN
         bfilename = os.fsencode(filename)
         self.addCleanup(support.unlink, filename)
@@ -143,7 +143,7 @@ class GenericTest:
         self.assertIs(self.pathmodule.exists(filename + '\x00'), False)
         self.assertIs(self.pathmodule.exists(bfilename + b'\x00'), False)
 
-        if self.pathmodule is not genericpath:
+        ikiwa self.pathmodule is not genericpath:
             self.assertIs(self.pathmodule.lexists(filename), True)
             self.assertIs(self.pathmodule.lexists(bfilename), True)
 
@@ -153,7 +153,7 @@ class GenericTest:
             self.assertIs(self.pathmodule.lexists(bfilename + b'\x00'), False)
 
     @unittest.skipUnless(hasattr(os, "pipe"), "requires os.pipe()")
-    def test_exists_fd(self):
+    eleza test_exists_fd(self):
         r, w = os.pipe()
         try:
             self.assertTrue(self.pathmodule.exists(r))
@@ -162,7 +162,7 @@ class GenericTest:
             os.close(w)
         self.assertFalse(self.pathmodule.exists(r))
 
-    def test_isdir(self):
+    eleza test_isdir(self):
         filename = support.TESTFN
         bfilename = os.fsencode(filename)
         self.assertIs(self.pathmodule.isdir(filename), False)
@@ -187,7 +187,7 @@ class GenericTest:
         finally:
             support.rmdir(filename)
 
-    def test_isfile(self):
+    eleza test_isfile(self):
         filename = support.TESTFN
         bfilename = os.fsencode(filename)
         self.assertIs(self.pathmodule.isfile(filename), False)
@@ -212,7 +212,7 @@ class GenericTest:
         finally:
             support.rmdir(filename)
 
-    def test_samefile(self):
+    eleza test_samefile(self):
         file1 = support.TESTFN
         file2 = support.TESTFN + "2"
         self.addCleanup(support.unlink, file1)
@@ -226,7 +226,7 @@ class GenericTest:
 
         self.assertRaises(TypeError, self.pathmodule.samefile)
 
-    def _test_samefile_on_link_func(self, func):
+    eleza _test_samefile_on_link_func(self, func):
         test_fn1 = support.TESTFN
         test_fn2 = support.TESTFN + "2"
         self.addCleanup(support.unlink, test_fn1)
@@ -242,16 +242,16 @@ class GenericTest:
         self.assertFalse(self.pathmodule.samefile(test_fn1, test_fn2))
 
     @support.skip_unless_symlink
-    def test_samefile_on_symlink(self):
+    eleza test_samefile_on_symlink(self):
         self._test_samefile_on_link_func(os.symlink)
 
-    def test_samefile_on_link(self):
+    eleza test_samefile_on_link(self):
         try:
             self._test_samefile_on_link_func(os.link)
         except PermissionError as e:
             self.skipTest('os.link(): %s' % e)
 
-    def test_samestat(self):
+    eleza test_samestat(self):
         test_fn1 = support.TESTFN
         test_fn2 = support.TESTFN + "2"
         self.addCleanup(support.unlink, test_fn1)
@@ -267,7 +267,7 @@ class GenericTest:
 
         self.assertRaises(TypeError, self.pathmodule.samestat)
 
-    def _test_samestat_on_link_func(self, func):
+    eleza _test_samestat_on_link_func(self, func):
         test_fn1 = support.TESTFN + "1"
         test_fn2 = support.TESTFN + "2"
         self.addCleanup(support.unlink, test_fn1)
@@ -284,16 +284,16 @@ class GenericTest:
                                                   os.stat(test_fn2)))
 
     @support.skip_unless_symlink
-    def test_samestat_on_symlink(self):
+    eleza test_samestat_on_symlink(self):
         self._test_samestat_on_link_func(os.symlink)
 
-    def test_samestat_on_link(self):
+    eleza test_samestat_on_link(self):
         try:
             self._test_samestat_on_link_func(os.link)
         except PermissionError as e:
             self.skipTest('os.link(): %s' % e)
 
-    def test_sameopenfile(self):
+    eleza test_sameopenfile(self):
         filename = support.TESTFN
         self.addCleanup(support.unlink, filename)
         create_file(filename)
@@ -305,20 +305,20 @@ class GenericTest:
                 self.assertTrue(self.pathmodule.sameopenfile(fd1, fd2))
 
 
-class TestGenericTest(GenericTest, unittest.TestCase):
+kundi TestGenericTest(GenericTest, unittest.TestCase):
     # Issue 16852: GenericTest can't inherit kutoka unittest.TestCase
     # for test discovery purposes; CommonTest inherits kutoka GenericTest
     # and is only meant to be inherited by others.
     pathmodule = genericpath
 
-    def test_invalid_paths(self):
+    eleza test_invalid_paths(self):
         for attr in GenericTest.common_attributes:
             # os.path.commonprefix doesn't raise ValueError
-            if attr == 'commonprefix':
+            ikiwa attr == 'commonprefix':
                 continue
             func = getattr(self.pathmodule, attr)
             with self.subTest(attr=attr):
-                if attr in ('exists', 'isdir', 'isfile'):
+                ikiwa attr in ('exists', 'isdir', 'isfile'):
                     func('/tmp\udfffabcds')
                     func(b'/tmp\xffabcds')
                     func('/tmp\x00abcds')
@@ -336,7 +336,7 @@ class TestGenericTest(GenericTest, unittest.TestCase):
 # Following TestCase is not supposed to be run kutoka test_genericpath.
 # It is inherited by other test modules (ntpath, posixpath).
 
-class CommonTest(GenericTest):
+kundi CommonTest(GenericTest):
     common_attributes = GenericTest.common_attributes + [
         # Properties
         'curdir', 'pardir', 'extsep', 'sep',
@@ -347,7 +347,7 @@ class CommonTest(GenericTest):
         'lexists', 'islink', 'ismount', 'expanduser', 'normpath', 'realpath',
     ]
 
-    def test_normcase(self):
+    eleza test_normcase(self):
         normcase = self.pathmodule.normcase
         # check that normcase() is idempotent
         for p in ["FoO/./BaR", b"FoO/./BaR"]:
@@ -361,7 +361,7 @@ class CommonTest(GenericTest):
         for path in (None, True, 0, 2.5, [], bytearray(b''), {'o','o'}):
             self.assertRaises(TypeError, normcase, path)
 
-    def test_splitdrive(self):
+    eleza test_splitdrive(self):
         # splitdrive for non-NT paths
         splitdrive = self.pathmodule.splitdrive
         self.assertEqual(splitdrive("/foo/bar"), ("", "/foo/bar"))
@@ -372,7 +372,7 @@ class CommonTest(GenericTest):
         self.assertEqual(splitdrive(b"foo:bar"), (b"", b"foo:bar"))
         self.assertEqual(splitdrive(b":foo:bar"), (b"", b":foo:bar"))
 
-    def test_expandvars(self):
+    eleza test_expandvars(self):
         expandvars = self.pathmodule.expandvars
         with support.EnvironmentVarGuard() as env:
             env.clear()
@@ -404,9 +404,9 @@ class CommonTest(GenericTest):
             self.assertEqual(expandvars(b"$bar$bar"), b"$bar$bar")
 
     @unittest.skipUnless(support.FS_NONASCII, 'need support.FS_NONASCII')
-    def test_expandvars_nonascii(self):
+    eleza test_expandvars_nonascii(self):
         expandvars = self.pathmodule.expandvars
-        def check(value, expected):
+        eleza check(value, expected):
             self.assertEqual(expandvars(value), expected)
         with support.EnvironmentVarGuard() as env:
             env.clear()
@@ -429,14 +429,14 @@ class CommonTest(GenericTest):
                   os.fsencode('$bar%s bar' % nonascii))
             check(b'$spam}bar', os.fsencode('%s}bar' % nonascii))
 
-    def test_abspath(self):
+    eleza test_abspath(self):
         self.assertIn("foo", self.pathmodule.abspath("foo"))
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             self.assertIn(b"foo", self.pathmodule.abspath(b"foo"))
 
         # avoid UnicodeDecodeError on Windows
-        undecodable_path = b'' if sys.platform == 'win32' else b'f\xf2\xf2'
+        undecodable_path = b'' ikiwa sys.platform == 'win32' else b'f\xf2\xf2'
 
         # Abspath returns bytes when the arg is bytes
         with warnings.catch_warnings():
@@ -444,18 +444,18 @@ class CommonTest(GenericTest):
             for path in (b'', b'foo', undecodable_path, b'/foo', b'C:\\'):
                 self.assertIsInstance(self.pathmodule.abspath(path), bytes)
 
-    def test_realpath(self):
+    eleza test_realpath(self):
         self.assertIn("foo", self.pathmodule.realpath("foo"))
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", DeprecationWarning)
             self.assertIn(b"foo", self.pathmodule.realpath(b"foo"))
 
-    def test_normpath_issue5827(self):
+    eleza test_normpath_issue5827(self):
         # Make sure normpath preserves unicode
         for path in ('', '.', '/', '\\', '///foo/.//bar//'):
             self.assertIsInstance(self.pathmodule.normpath(path), str)
 
-    def test_abspath_issue3426(self):
+    eleza test_abspath_issue3426(self):
         # Check that abspath returns unicode when the arg is unicode
         # with both ASCII and non-ASCII cwds.
         abspath = self.pathmodule.abspath
@@ -473,15 +473,15 @@ class CommonTest(GenericTest):
                 for path in ('', 'fuu', 'f\xf9\xf9', '/fuu', 'U:\\'):
                     self.assertIsInstance(abspath(path), str)
 
-    def test_nonascii_abspath(self):
-        if (support.TESTFN_UNDECODABLE
+    eleza test_nonascii_abspath(self):
+        ikiwa (support.TESTFN_UNDECODABLE
         # Mac OS X denies the creation of a directory with an invalid
         # UTF-8 name. Windows allows creating a directory with an
         # arbitrary bytes name, but fails to enter this directory
         # (when the bytes name is used).
         and sys.platform not in ('win32', 'darwin')):
             name = support.TESTFN_UNDECODABLE
-        elif support.TESTFN_NONASCII:
+        elikiwa support.TESTFN_NONASCII:
             name = support.TESTFN_NONASCII
         else:
             self.skipTest("need support.TESTFN_NONASCII")
@@ -491,7 +491,7 @@ class CommonTest(GenericTest):
             with support.temp_cwd(name):
                 self.test_abspath()
 
-    def test_join_errors(self):
+    eleza test_join_errors(self):
         # Check join() raises friendly TypeErrors.
         with support.check_warnings(('', BytesWarning), quiet=True):
             errmsg = "Can't mix strings and bytes in path components"
@@ -511,7 +511,7 @@ class CommonTest(GenericTest):
             with self.assertRaisesRegex(TypeError, 'bytearray'):
                 self.pathmodule.join(bytearray(b'foo'), bytearray(b'bar'))
 
-    def test_relpath_errors(self):
+    eleza test_relpath_errors(self):
         # Check relpath() raises friendly TypeErrors.
         with support.check_warnings(('', (BytesWarning, DeprecationWarning)),
                                     quiet=True):
@@ -527,46 +527,46 @@ class CommonTest(GenericTest):
             with self.assertRaisesRegex(TypeError, 'bytearray'):
                 self.pathmodule.relpath(bytearray(b'foo'), bytearray(b'bar'))
 
-    def test_agiza(self):
+    eleza test_agiza(self):
         assert_python_ok('-S', '-c', 'agiza ' + self.pathmodule.__name__)
 
 
-class PathLikeTests(unittest.TestCase):
+kundi PathLikeTests(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.file_name = support.TESTFN.lower()
         self.file_path = FakePath(support.TESTFN)
         self.addCleanup(support.unlink, self.file_name)
         create_file(self.file_name, b"test_genericpath.PathLikeTests")
 
-    def assertPathEqual(self, func):
+    eleza assertPathEqual(self, func):
         self.assertEqual(func(self.file_path), func(self.file_name))
 
-    def test_path_exists(self):
+    eleza test_path_exists(self):
         self.assertPathEqual(os.path.exists)
 
-    def test_path_isfile(self):
+    eleza test_path_isfile(self):
         self.assertPathEqual(os.path.isfile)
 
-    def test_path_isdir(self):
+    eleza test_path_isdir(self):
         self.assertPathEqual(os.path.isdir)
 
-    def test_path_commonprefix(self):
+    eleza test_path_commonprefix(self):
         self.assertEqual(os.path.commonprefix([self.file_path, self.file_name]),
                          self.file_name)
 
-    def test_path_getsize(self):
+    eleza test_path_getsize(self):
         self.assertPathEqual(os.path.getsize)
 
-    def test_path_getmtime(self):
+    eleza test_path_getmtime(self):
         self.assertPathEqual(os.path.getatime)
 
-    def test_path_getctime(self):
+    eleza test_path_getctime(self):
         self.assertPathEqual(os.path.getctime)
 
-    def test_path_samefile(self):
+    eleza test_path_samefile(self):
         self.assertTrue(os.path.samefile(self.file_path, self.file_name))
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

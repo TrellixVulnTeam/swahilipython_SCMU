@@ -7,9 +7,9 @@ kutoka . agiza transports
 kutoka .log agiza logger
 
 
-class BaseSubprocessTransport(transports.SubprocessTransport):
+kundi BaseSubprocessTransport(transports.SubprocessTransport):
 
-    def __init__(self, loop, protocol, args, shell,
+    eleza __init__(self, loop, protocol, args, shell,
                  stdin, stdout, stderr, bufsize,
                  waiter=None, extra=None, **kwargs):
         super().__init__(extra)
@@ -24,11 +24,11 @@ class BaseSubprocessTransport(transports.SubprocessTransport):
         self._pipes = {}
         self._finished = False
 
-        if stdin == subprocess.PIPE:
+        ikiwa stdin == subprocess.PIPE:
             self._pipes[0] = None
-        if stdout == subprocess.PIPE:
+        ikiwa stdout == subprocess.PIPE:
             self._pipes[1] = None
-        if stderr == subprocess.PIPE:
+        ikiwa stderr == subprocess.PIPE:
             self._pipes[2] = None
 
         # Create the child process: set the _proc attribute
@@ -42,8 +42,8 @@ class BaseSubprocessTransport(transports.SubprocessTransport):
         self._pid = self._proc.pid
         self._extra['subprocess'] = self._proc
 
-        if self._loop.get_debug():
-            if isinstance(args, (bytes, str)):
+        ikiwa self._loop.get_debug():
+            ikiwa isinstance(args, (bytes, str)):
                 program = args
             else:
                 program = args[0]
@@ -52,65 +52,65 @@ class BaseSubprocessTransport(transports.SubprocessTransport):
 
         self._loop.create_task(self._connect_pipes(waiter))
 
-    def __repr__(self):
+    eleza __repr__(self):
         info = [self.__class__.__name__]
-        if self._closed:
+        ikiwa self._closed:
             info.append('closed')
-        if self._pid is not None:
+        ikiwa self._pid is not None:
             info.append(f'pid={self._pid}')
-        if self._returncode is not None:
+        ikiwa self._returncode is not None:
             info.append(f'returncode={self._returncode}')
-        elif self._pid is not None:
+        elikiwa self._pid is not None:
             info.append('running')
         else:
             info.append('not started')
 
         stdin = self._pipes.get(0)
-        if stdin is not None:
+        ikiwa stdin is not None:
             info.append(f'stdin={stdin.pipe}')
 
         stdout = self._pipes.get(1)
         stderr = self._pipes.get(2)
-        if stdout is not None and stderr is stdout:
+        ikiwa stdout is not None and stderr is stdout:
             info.append(f'stdout=stderr={stdout.pipe}')
         else:
-            if stdout is not None:
+            ikiwa stdout is not None:
                 info.append(f'stdout={stdout.pipe}')
-            if stderr is not None:
+            ikiwa stderr is not None:
                 info.append(f'stderr={stderr.pipe}')
 
-        return '<{}>'.format(' '.join(info))
+        rudisha '<{}>'.format(' '.join(info))
 
-    def _start(self, args, shell, stdin, stdout, stderr, bufsize, **kwargs):
+    eleza _start(self, args, shell, stdin, stdout, stderr, bufsize, **kwargs):
         raise NotImplementedError
 
-    def set_protocol(self, protocol):
+    eleza set_protocol(self, protocol):
         self._protocol = protocol
 
-    def get_protocol(self):
-        return self._protocol
+    eleza get_protocol(self):
+        rudisha self._protocol
 
-    def is_closing(self):
-        return self._closed
+    eleza is_closing(self):
+        rudisha self._closed
 
-    def close(self):
-        if self._closed:
+    eleza close(self):
+        ikiwa self._closed:
             return
         self._closed = True
 
         for proto in self._pipes.values():
-            if proto is None:
+            ikiwa proto is None:
                 continue
             proto.pipe.close()
 
-        if (self._proc is not None and
+        ikiwa (self._proc is not None and
                 # has the child process finished?
                 self._returncode is None and
                 # the child process has finished, but the
                 # transport hasn't been notified yet?
                 self._proc.poll() is None):
 
-            if self._loop.get_debug():
+            ikiwa self._loop.get_debug():
                 logger.warning('Close running child process: kill %r', self)
 
             try:
@@ -120,57 +120,57 @@ class BaseSubprocessTransport(transports.SubprocessTransport):
 
             # Don't clear the _proc reference yet: _post_init() may still run
 
-    def __del__(self, _warn=warnings.warn):
-        if not self._closed:
+    eleza __del__(self, _warn=warnings.warn):
+        ikiwa not self._closed:
             _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
             self.close()
 
-    def get_pid(self):
-        return self._pid
+    eleza get_pid(self):
+        rudisha self._pid
 
-    def get_returncode(self):
-        return self._returncode
+    eleza get_returncode(self):
+        rudisha self._returncode
 
-    def get_pipe_transport(self, fd):
-        if fd in self._pipes:
-            return self._pipes[fd].pipe
+    eleza get_pipe_transport(self, fd):
+        ikiwa fd in self._pipes:
+            rudisha self._pipes[fd].pipe
         else:
-            return None
+            rudisha None
 
-    def _check_proc(self):
-        if self._proc is None:
+    eleza _check_proc(self):
+        ikiwa self._proc is None:
             raise ProcessLookupError()
 
-    def send_signal(self, signal):
+    eleza send_signal(self, signal):
         self._check_proc()
         self._proc.send_signal(signal)
 
-    def terminate(self):
+    eleza terminate(self):
         self._check_proc()
         self._proc.terminate()
 
-    def kill(self):
+    eleza kill(self):
         self._check_proc()
         self._proc.kill()
 
-    async def _connect_pipes(self, waiter):
+    async eleza _connect_pipes(self, waiter):
         try:
             proc = self._proc
             loop = self._loop
 
-            if proc.stdin is not None:
+            ikiwa proc.stdin is not None:
                 _, pipe = await loop.connect_write_pipe(
                     lambda: WriteSubprocessPipeProto(self, 0),
                     proc.stdin)
                 self._pipes[0] = pipe
 
-            if proc.stdout is not None:
+            ikiwa proc.stdout is not None:
                 _, pipe = await loop.connect_read_pipe(
                     lambda: ReadSubprocessPipeProto(self, 1),
                     proc.stdout)
                 self._pipes[1] = pipe
 
-            if proc.stderr is not None:
+            ikiwa proc.stderr is not None:
                 _, pipe = await loop.connect_read_pipe(
                     lambda: ReadSubprocessPipeProto(self, 2),
                     proc.stderr)
@@ -185,32 +185,32 @@ class BaseSubprocessTransport(transports.SubprocessTransport):
         except (SystemExit, KeyboardInterrupt):
             raise
         except BaseException as exc:
-            if waiter is not None and not waiter.cancelled():
+            ikiwa waiter is not None and not waiter.cancelled():
                 waiter.set_exception(exc)
         else:
-            if waiter is not None and not waiter.cancelled():
+            ikiwa waiter is not None and not waiter.cancelled():
                 waiter.set_result(None)
 
-    def _call(self, cb, *data):
-        if self._pending_calls is not None:
+    eleza _call(self, cb, *data):
+        ikiwa self._pending_calls is not None:
             self._pending_calls.append((cb, data))
         else:
             self._loop.call_soon(cb, *data)
 
-    def _pipe_connection_lost(self, fd, exc):
+    eleza _pipe_connection_lost(self, fd, exc):
         self._call(self._protocol.pipe_connection_lost, fd, exc)
         self._try_finish()
 
-    def _pipe_data_received(self, fd, data):
+    eleza _pipe_data_received(self, fd, data):
         self._call(self._protocol.pipe_data_received, fd, data)
 
-    def _process_exited(self, returncode):
+    eleza _process_exited(self, returncode):
         assert returncode is not None, returncode
         assert self._returncode is None, self._returncode
-        if self._loop.get_debug():
-            logger.info('%r exited with return code %r', self, returncode)
+        ikiwa self._loop.get_debug():
+            logger.info('%r exited with rudisha code %r', self, returncode)
         self._returncode = returncode
-        if self._proc.returncode is None:
+        ikiwa self._proc.returncode is None:
             # asyncio uses a child watcher: copy the status into the Popen
             # object. On Python 3.6, it is required to avoid a ResourceWarning.
             self._proc.returncode = returncode
@@ -219,31 +219,31 @@ class BaseSubprocessTransport(transports.SubprocessTransport):
 
         # wake up futures waiting for wait()
         for waiter in self._exit_waiters:
-            if not waiter.cancelled():
+            ikiwa not waiter.cancelled():
                 waiter.set_result(returncode)
         self._exit_waiters = None
 
-    async def _wait(self):
-        """Wait until the process exit and return the process return code.
+    async eleza _wait(self):
+        """Wait until the process exit and rudisha the process rudisha code.
 
         This method is a coroutine."""
-        if self._returncode is not None:
-            return self._returncode
+        ikiwa self._returncode is not None:
+            rudisha self._returncode
 
         waiter = self._loop.create_future()
         self._exit_waiters.append(waiter)
-        return await waiter
+        rudisha await waiter
 
-    def _try_finish(self):
+    eleza _try_finish(self):
         assert not self._finished
-        if self._returncode is None:
+        ikiwa self._returncode is None:
             return
-        if all(p is not None and p.disconnected
+        ikiwa all(p is not None and p.disconnected
                for p in self._pipes.values()):
             self._finished = True
             self._call(self._call_connection_lost, None)
 
-    def _call_connection_lost(self, exc):
+    eleza _call_connection_lost(self, exc):
         try:
             self._protocol.connection_lost(exc)
         finally:
@@ -252,34 +252,34 @@ class BaseSubprocessTransport(transports.SubprocessTransport):
             self._protocol = None
 
 
-class WriteSubprocessPipeProto(protocols.BaseProtocol):
+kundi WriteSubprocessPipeProto(protocols.BaseProtocol):
 
-    def __init__(self, proc, fd):
+    eleza __init__(self, proc, fd):
         self.proc = proc
         self.fd = fd
         self.pipe = None
         self.disconnected = False
 
-    def connection_made(self, transport):
+    eleza connection_made(self, transport):
         self.pipe = transport
 
-    def __repr__(self):
-        return f'<{self.__class__.__name__} fd={self.fd} pipe={self.pipe!r}>'
+    eleza __repr__(self):
+        rudisha f'<{self.__class__.__name__} fd={self.fd} pipe={self.pipe!r}>'
 
-    def connection_lost(self, exc):
+    eleza connection_lost(self, exc):
         self.disconnected = True
         self.proc._pipe_connection_lost(self.fd, exc)
         self.proc = None
 
-    def pause_writing(self):
+    eleza pause_writing(self):
         self.proc._protocol.pause_writing()
 
-    def resume_writing(self):
+    eleza resume_writing(self):
         self.proc._protocol.resume_writing()
 
 
-class ReadSubprocessPipeProto(WriteSubprocessPipeProto,
+kundi ReadSubprocessPipeProto(WriteSubprocessPipeProto,
                               protocols.Protocol):
 
-    def data_received(self, data):
+    eleza data_received(self, data):
         self.proc._pipe_data_received(self.fd, data)

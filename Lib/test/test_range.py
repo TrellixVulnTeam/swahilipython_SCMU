@@ -6,8 +6,8 @@ agiza pickle
 agiza itertools
 
 # pure Python implementations (3 args only), for comparison
-def pyrange(start, stop, step):
-    if (start - stop) // step < 0:
+eleza pyrange(start, stop, step):
+    ikiwa (start - stop) // step < 0:
         # replace stop with next element in the sequence of integers
         # that are congruent to start modulo step.
         stop += (start - stop) % step
@@ -15,34 +15,34 @@ def pyrange(start, stop, step):
             yield start
             start += step
 
-def pyrange_reversed(start, stop, step):
+eleza pyrange_reversed(start, stop, step):
     stop += (start - stop) % step
-    return pyrange(stop - step, start - step, -step)
+    rudisha pyrange(stop - step, start - step, -step)
 
 
-class RangeTest(unittest.TestCase):
-    def assert_iterators_equal(self, xs, ys, test_id, limit=None):
+kundi RangeTest(unittest.TestCase):
+    eleza assert_iterators_equal(self, xs, ys, test_id, limit=None):
         # check that an iterator xs matches the expected results ys,
         # up to a given limit.
-        if limit is not None:
+        ikiwa limit is not None:
             xs = itertools.islice(xs, limit)
             ys = itertools.islice(ys, limit)
         sentinel = object()
         pairs = itertools.zip_longest(xs, ys, fillvalue=sentinel)
         for i, (x, y) in enumerate(pairs):
-            if x == y:
+            ikiwa x == y:
                 continue
-            elif x == sentinel:
+            elikiwa x == sentinel:
                 self.fail('{}: iterator ended unexpectedly '
                           'at position {}; expected {}'.format(test_id, i, y))
-            elif y == sentinel:
+            elikiwa y == sentinel:
                 self.fail('{}: unexpected excess element {} at '
                           'position {}'.format(test_id, x, i))
             else:
                 self.fail('{}: wrong element at position {}; '
                           'expected {}, got {}'.format(test_id, i, y, x))
 
-    def test_range(self):
+    eleza test_range(self):
         self.assertEqual(list(range(3)), [0, 1, 2])
         self.assertEqual(list(range(1, 5)), [1, 2, 3, 4])
         self.assertEqual(list(range(0)), [])
@@ -90,7 +90,7 @@ class RangeTest(unittest.TestCase):
         r = range(-sys.maxsize, sys.maxsize, 2)
         self.assertEqual(len(r), sys.maxsize)
 
-    def test_large_operands(self):
+    eleza test_large_operands(self):
         x = range(10**20, 10**20+10, 3)
         self.assertEqual(len(x), 4)
         self.assertEqual(len(list(x)), 4)
@@ -146,16 +146,16 @@ class RangeTest(unittest.TestCase):
         self.assertEqual(seq[0], -a)
         self.assertEqual(seq[-1], -a-c)
 
-    def test_large_range(self):
+    eleza test_large_range(self):
         # Check long ranges (len > sys.maxsize)
         # len() is expected to fail due to limitations of the __len__ protocol
-        def _range_len(x):
+        eleza _range_len(x):
             try:
                 length = len(x)
             except OverflowError:
                 step = x[1] - x[0]
                 length = 1 + ((x[-1] - x[0]) // step)
-            return length
+            rudisha length
 
         a = -sys.maxsize
         b = sys.maxsize
@@ -231,7 +231,7 @@ class RangeTest(unittest.TestCase):
         with self.assertRaises(IndexError):
             x[expected_len]
 
-    def test_invalid_invocation(self):
+    eleza test_invalid_invocation(self):
         self.assertRaises(TypeError, range)
         self.assertRaises(TypeError, range, 1, 2, 3, 4)
         self.assertRaises(ValueError, range, 1, 2, 0)
@@ -255,7 +255,7 @@ class RangeTest(unittest.TestCase):
         self.assertRaises(TypeError, range, 0.0, 0.0, 1)
         self.assertRaises(TypeError, range, 0.0, 0.0, 1.0)
 
-    def test_index(self):
+    eleza test_index(self):
         u = range(2)
         self.assertEqual(u.index(0), 0)
         self.assertEqual(u.index(1), 1)
@@ -266,14 +266,14 @@ class RangeTest(unittest.TestCase):
         self.assertEqual(u.index(0), 2)
         self.assertRaises(TypeError, u.index)
 
-        class BadExc(Exception):
+        kundi BadExc(Exception):
             pass
 
-        class BadCmp:
-            def __eq__(self, other):
-                if other == 2:
+        kundi BadCmp:
+            eleza __eq__(self, other):
+                ikiwa other == 2:
                     raise BadExc()
-                return False
+                rudisha False
 
         a = range(4)
         self.assertRaises(BadExc, a.index, BadCmp())
@@ -289,35 +289,35 @@ class RangeTest(unittest.TestCase):
         self.assertRaises(ValueError, range(1, 2**100, 2).index, 2**87)
         self.assertEqual(range(1, 2**100, 2).index(2**87+1), 2**86)
 
-        class AlwaysEqual(object):
-            def __eq__(self, other):
-                return True
+        kundi AlwaysEqual(object):
+            eleza __eq__(self, other):
+                rudisha True
         always_equal = AlwaysEqual()
         self.assertEqual(range(10).index(always_equal), 0)
 
-    def test_user_index_method(self):
+    eleza test_user_index_method(self):
         bignum = 2*sys.maxsize
         smallnum = 42
 
-        # User-defined class with an __index__ method
-        class I:
-            def __init__(self, n):
+        # User-defined kundi with an __index__ method
+        kundi I:
+            eleza __init__(self, n):
                 self.n = int(n)
-            def __index__(self):
-                return self.n
+            eleza __index__(self):
+                rudisha self.n
         self.assertEqual(list(range(I(bignum), I(bignum + 1))), [bignum])
         self.assertEqual(list(range(I(smallnum), I(smallnum + 1))), [smallnum])
 
-        # User-defined class with a failing __index__ method
-        class IX:
-            def __index__(self):
+        # User-defined kundi with a failing __index__ method
+        kundi IX:
+            eleza __index__(self):
                 raise RuntimeError
         self.assertRaises(RuntimeError, range, IX())
 
-        # User-defined class with an invalid __index__ method
-        class IN:
-            def __index__(self):
-                return "not a number"
+        # User-defined kundi with an invalid __index__ method
+        kundi IN:
+            eleza __index__(self):
+                rudisha "not a number"
 
         self.assertRaises(TypeError, range, IN())
 
@@ -330,7 +330,7 @@ class RangeTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             range(0, 10)[:IN()]
 
-    def test_count(self):
+    eleza test_count(self):
         self.assertEqual(range(3).count(-1), 0)
         self.assertEqual(range(3).count(0), 1)
         self.assertEqual(range(3).count(1), 1)
@@ -344,20 +344,20 @@ class RangeTest(unittest.TestCase):
         self.assertEqual(range(1, 2**100, 2).count(2**87), 0)
         self.assertEqual(range(1, 2**100, 2).count(2**87+1), 1)
 
-        class AlwaysEqual(object):
-            def __eq__(self, other):
-                return True
+        kundi AlwaysEqual(object):
+            eleza __eq__(self, other):
+                rudisha True
         always_equal = AlwaysEqual()
         self.assertEqual(range(10).count(always_equal), 10)
 
         self.assertEqual(len(range(sys.maxsize, sys.maxsize+10)), 10)
 
-    def test_repr(self):
+    eleza test_repr(self):
         self.assertEqual(repr(range(1)), 'range(0, 1)')
         self.assertEqual(repr(range(1, 2)), 'range(1, 2)')
         self.assertEqual(repr(range(1, 2, 3)), 'range(1, 2, 3)')
 
-    def test_pickling(self):
+    eleza test_pickling(self):
         testcases = [(13,), (0, 11), (-22, 10), (20, 3, -1),
                      (13, 21, 3), (-2, 2, 2), (2**65, 2**65+2)]
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -367,7 +367,7 @@ class RangeTest(unittest.TestCase):
                     self.assertEqual(list(pickle.loads(pickle.dumps(r, proto))),
                                      list(r))
 
-    def test_iterator_pickling(self):
+    eleza test_iterator_pickling(self):
         testcases = [(13,), (0, 11), (-22, 10), (20, 3, -1),
                      (13, 21, 3), (-2, 2, 2), (2**65, 2**65+2)]
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -389,66 +389,66 @@ class RangeTest(unittest.TestCase):
                 it = pickle.loads(d)
                 self.assertEqual(list(it), data[1:])
 
-    def test_exhausted_iterator_pickling(self):
+    eleza test_exhausted_iterator_pickling(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             r = range(2**65, 2**65+2)
             i = iter(r)
             while True:
                 r = next(i)
-                if r == 2**65+1:
+                ikiwa r == 2**65+1:
                     break
             d = pickle.dumps(i, proto)
             i2 = pickle.loads(d)
             self.assertEqual(list(i), [])
             self.assertEqual(list(i2), [])
 
-    def test_large_exhausted_iterator_pickling(self):
+    eleza test_large_exhausted_iterator_pickling(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             r = range(20)
             i = iter(r)
             while True:
                 r = next(i)
-                if r == 19:
+                ikiwa r == 19:
                     break
             d = pickle.dumps(i, proto)
             i2 = pickle.loads(d)
             self.assertEqual(list(i), [])
             self.assertEqual(list(i2), [])
 
-    def test_odd_bug(self):
+    eleza test_odd_bug(self):
         # This used to raise a "SystemError: NULL result without error"
         # because the range validation step was eating the exception
         # before NULL was returned.
         with self.assertRaises(TypeError):
             range([], 1, -1)
 
-    def test_types(self):
+    eleza test_types(self):
         # Non-integer objects *equal* to any of the range's items are supposed
         # to be contained in the range.
         self.assertIn(1.0, range(3))
         self.assertIn(True, range(3))
         self.assertIn(1+0j, range(3))
 
-        class C1:
-            def __eq__(self, other): return True
+        kundi C1:
+            eleza __eq__(self, other): rudisha True
         self.assertIn(C1(), range(3))
 
         # Objects are never coerced into other types for comparison.
-        class C2:
-            def __int__(self): return 1
-            def __index__(self): return 1
+        kundi C2:
+            eleza __int__(self): rudisha 1
+            eleza __index__(self): rudisha 1
         self.assertNotIn(C2(), range(3))
-        # ..except if explicitly told so.
+        # ..except ikiwa explicitly told so.
         self.assertIn(int(C2()), range(3))
 
         # Check that the range.__contains__ optimization is only
         # used for ints, not for instances of subclasses of int.
-        class C3(int):
-            def __eq__(self, other): return True
+        kundi C3(int):
+            eleza __eq__(self, other): rudisha True
         self.assertIn(C3(11), range(10))
         self.assertIn(C3(11), list(range(10)))
 
-    def test_strided_limits(self):
+    eleza test_strided_limits(self):
         r = range(0, 101, 2)
         self.assertIn(0, r)
         self.assertNotIn(1, r)
@@ -468,7 +468,7 @@ class RangeTest(unittest.TestCase):
         self.assertNotIn(-19, r)
         self.assertNotIn(-20, r)
 
-    def test_empty(self):
+    eleza test_empty(self):
         r = range(0)
         self.assertNotIn(0, r)
         self.assertNotIn(1, r)
@@ -478,7 +478,7 @@ class RangeTest(unittest.TestCase):
         self.assertNotIn(-1, r)
         self.assertNotIn(1, r)
 
-    def test_range_iterators(self):
+    eleza test_range_iterators(self):
         # exercise 'fast' iterators, that use a rangeiterobject internally.
         # see issue 7298
         limits = [base + jiggle
@@ -502,7 +502,7 @@ class RangeTest(unittest.TestCase):
             test_id = "reversed(range({}, {}, {}))".format(start, end, step)
             self.assert_iterators_equal(iter1, iter2, test_id, limit=100)
 
-    def test_range_iterators_invocation(self):
+    eleza test_range_iterators_invocation(self):
         # verify range iterators instances cannot be created by
         # calling their type
         rangeiter_type = type(iter(range(0)))
@@ -510,8 +510,8 @@ class RangeTest(unittest.TestCase):
         long_rangeiter_type = type(iter(range(1 << 1000)))
         self.assertRaises(TypeError, long_rangeiter_type, 1, 3, 1)
 
-    def test_slice(self):
-        def check(start, stop, step=None):
+    eleza test_slice(self):
+        eleza check(start, stop, step=None):
             i = slice(start, stop, step)
             self.assertEqual(list(r[i]), list(r)[i])
             self.assertEqual(len(r[i]), len(list(r)[i]))
@@ -530,7 +530,7 @@ class RangeTest(unittest.TestCase):
             check(0, -1)
             check(-1, -3, -1)
 
-    def test_contains(self):
+    eleza test_contains(self):
         r = range(10)
         self.assertIn(0, r)
         self.assertIn(1, r)
@@ -564,7 +564,7 @@ class RangeTest(unittest.TestCase):
         self.assertNotIn(10, r)
         self.assertNotIn("", r)
 
-    def test_reverse_iteration(self):
+    eleza test_reverse_iteration(self):
         for r in [range(10),
                   range(0),
                   range(1, 9, 3),
@@ -573,7 +573,7 @@ class RangeTest(unittest.TestCase):
                   ]:
             self.assertEqual(list(reversed(r)), list(r)[::-1])
 
-    def test_issue11845(self):
+    eleza test_issue11845(self):
         r = range(*slice(1, 18, 2).indices(20))
         values = {None, 0, 1, -1, 2, -2, 5, -5, 19, -19,
                   20, -20, 21, -21, 30, -30, 99, -99}
@@ -582,7 +582,7 @@ class RangeTest(unittest.TestCase):
                 for k in values - {0}:
                     r[i:j:k]
 
-    def test_comparison(self):
+    eleza test_comparison(self):
         test_ranges = [range(0), range(0, -1), range(1, 1, 3),
                        range(1), range(5, 6), range(5, 6, 2),
                        range(5, 7, 2), range(2), range(0, 4, 2),
@@ -602,7 +602,7 @@ class RangeTest(unittest.TestCase):
         # Equal ranges should have equal hashes.
         for a in test_ranges:
             for b in test_ranges:
-                if a == b:
+                ikiwa a == b:
                     self.assertEqual(hash(a), hash(b))
 
         # Ranges are unequal to other types (even sequence types)
@@ -635,7 +635,7 @@ class RangeTest(unittest.TestCase):
             range(0) >= range(0)
 
 
-    def test_attributes(self):
+    eleza test_attributes(self):
         # test the start, stop and step attributes of range objects
         self.assert_attrs(range(0), 0, 0, 1)
         self.assert_attrs(range(10), 0, 10, 1)
@@ -645,7 +645,7 @@ class RangeTest(unittest.TestCase):
         self.assert_attrs(range(10, 0, -1), 10, 0, -1)
         self.assert_attrs(range(10, 0, -3), 10, 0, -3)
 
-    def assert_attrs(self, rangeobj, start, stop, step):
+    eleza assert_attrs(self, rangeobj, start, stop, step):
         self.assertEqual(rangeobj.start, start)
         self.assertEqual(rangeobj.stop, stop)
         self.assertEqual(rangeobj.step, step)
@@ -664,5 +664,5 @@ class RangeTest(unittest.TestCase):
         with self.assertRaises(AttributeError):
             del rangeobj.step
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

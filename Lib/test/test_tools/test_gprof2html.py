@@ -10,17 +10,17 @@ kutoka test.test_tools agiza skip_if_missing, import_tool
 
 skip_if_missing()
 
-class Gprof2htmlTests(unittest.TestCase):
+kundi Gprof2htmlTests(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.gprof = import_tool('gprof2html')
         oldargv = sys.argv
-        def fixup():
+        eleza fixup():
             sys.argv = oldargv
         self.addCleanup(fixup)
         sys.argv = []
 
-    def test_gprof(self):
+    eleza test_gprof(self):
         # Issue #14508: this used to fail with a NameError.
         with mock.patch.object(self.gprof, 'webbrowser') as wmock, \
                 tempfile.TemporaryDirectory() as tmpdir:
@@ -31,5 +31,5 @@ class Gprof2htmlTests(unittest.TestCase):
         self.assertTrue(wmock.open.called)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

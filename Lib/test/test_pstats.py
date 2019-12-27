@@ -6,10 +6,10 @@ kutoka pstats agiza SortKey
 
 
 
-class AddCallersTestCase(unittest.TestCase):
+kundi AddCallersTestCase(unittest.TestCase):
     """Tests for pstats.add_callers helper."""
 
-    def test_combine_results(self):
+    eleza test_combine_results(self):
         # pstats.add_callers should combine the call results of both target
         # and source by adding the call time. See issue1269.
         # new format: used by the cProfile module
@@ -24,17 +24,17 @@ class AddCallersTestCase(unittest.TestCase):
         self.assertEqual(new_callers, {'a': 2, 'b': 5})
 
 
-class StatsTestCase(unittest.TestCase):
-    def setUp(self):
+kundi StatsTestCase(unittest.TestCase):
+    eleza setUp(self):
         stats_file = support.findfile('pstats.pck')
         self.stats = pstats.Stats(stats_file)
 
-    def test_add(self):
+    eleza test_add(self):
         stream = StringIO()
         stats = pstats.Stats(stream=stream)
         stats.add(self.stats, self.stats)
 
-    def test_sort_stats_int(self):
+    eleza test_sort_stats_int(self):
         valid_args = {-1: 'stdname',
                       0: 'calls',
                       1: 'time',
@@ -44,7 +44,7 @@ class StatsTestCase(unittest.TestCase):
             self.assertEqual(self.stats.sort_type,
                              self.stats.sort_arg_dict_default[arg_str][-1])
 
-    def test_sort_stats_string(self):
+    eleza test_sort_stats_string(self):
         for sort_name in ['calls', 'ncalls', 'cumtime', 'cumulative',
                     'filename', 'line', 'module', 'name', 'nfl', 'pcalls',
                     'stdname', 'time', 'tottime']:
@@ -52,7 +52,7 @@ class StatsTestCase(unittest.TestCase):
             self.assertEqual(self.stats.sort_type,
                              self.stats.sort_arg_dict_default[sort_name][-1])
 
-    def test_sort_stats_partial(self):
+    eleza test_sort_stats_partial(self):
         sortkey = 'filename'
         for sort_name in ['f', 'fi', 'fil', 'file', 'filen', 'filena',
                            'filenam', 'filename']:
@@ -60,14 +60,14 @@ class StatsTestCase(unittest.TestCase):
             self.assertEqual(self.stats.sort_type,
                              self.stats.sort_arg_dict_default[sortkey][-1])
 
-    def test_sort_stats_enum(self):
+    eleza test_sort_stats_enum(self):
         for member in SortKey:
             self.stats.sort_stats(member)
             self.assertEqual(
                     self.stats.sort_type,
                     self.stats.sort_arg_dict_default[member.value][-1])
 
-    def test_sort_starts_mix(self):
+    eleza test_sort_starts_mix(self):
         self.assertRaises(TypeError, self.stats.sort_stats,
                           'calls',
                           SortKey.TIME)
@@ -76,5 +76,5 @@ class StatsTestCase(unittest.TestCase):
                           'calls')
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

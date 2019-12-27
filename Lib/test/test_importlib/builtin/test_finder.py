@@ -8,11 +8,11 @@ agiza unittest
 
 
 @unittest.skipIf(util.BUILTINS.good_name is None, 'no reasonable builtin module')
-class FindSpecTests(abc.FinderTests):
+kundi FindSpecTests(abc.FinderTests):
 
     """Test find_spec() for built-in modules."""
 
-    def test_module(self):
+    eleza test_module(self):
         # Common case.
         with util.uncache(util.BUILTINS.good_name):
             found = self.machinery.BuiltinImporter.find_spec(util.BUILTINS.good_name)
@@ -31,13 +31,13 @@ class FindSpecTests(abc.FinderTests):
     # Built-in modules cannot be a package.
     test_package_over_module = None
 
-    def test_failure(self):
+    eleza test_failure(self):
         name = 'importlib'
         assert name not in sys.builtin_module_names
         spec = self.machinery.BuiltinImporter.find_spec(name)
         self.assertIsNone(spec)
 
-    def test_ignore_path(self):
+    eleza test_ignore_path(self):
         # The value for 'path' should always trigger a failed agiza.
         with util.uncache(util.BUILTINS.good_name):
             spec = self.machinery.BuiltinImporter.find_spec(util.BUILTINS.good_name,
@@ -51,11 +51,11 @@ class FindSpecTests(abc.FinderTests):
 
 
 @unittest.skipIf(util.BUILTINS.good_name is None, 'no reasonable builtin module')
-class FinderTests(abc.FinderTests):
+kundi FinderTests(abc.FinderTests):
 
     """Test find_module() for built-in modules."""
 
-    def test_module(self):
+    eleza test_module(self):
         # Common case.
         with util.uncache(util.BUILTINS.good_name):
             found = self.machinery.BuiltinImporter.find_module(util.BUILTINS.good_name)
@@ -68,12 +68,12 @@ class FinderTests(abc.FinderTests):
     # Built-in modules cannot be in a package.
     test_module_in_package = None
 
-    def test_failure(self):
+    eleza test_failure(self):
         assert 'importlib' not in sys.builtin_module_names
         loader = self.machinery.BuiltinImporter.find_module('importlib')
         self.assertIsNone(loader)
 
-    def test_ignore_path(self):
+    eleza test_ignore_path(self):
         # The value for 'path' should always trigger a failed agiza.
         with util.uncache(util.BUILTINS.good_name):
             loader = self.machinery.BuiltinImporter.find_module(util.BUILTINS.good_name,
@@ -86,5 +86,5 @@ class FinderTests(abc.FinderTests):
  ) = util.test_both(FinderTests, machinery=machinery)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

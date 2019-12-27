@@ -10,7 +10,7 @@ PyAPI_FUNC(void) PyErr_SetNone(PyObject *);
 PyAPI_FUNC(void) PyErr_SetObject(PyObject *, PyObject *);
 PyAPI_FUNC(void) PyErr_SetString(
     PyObject *exception,
-    const char *string   /* decoded from utf-8 */
+    const char *string   /* decoded kutoka utf-8 */
     );
 PyAPI_FUNC(PyObject *) PyErr_Occurred(void);
 PyAPI_FUNC(void) PyErr_Clear(void);
@@ -162,7 +162,7 @@ PyAPI_FUNC(PyObject *) PyErr_SetFromErrnoWithFilenameObjects(
 #endif
 PyAPI_FUNC(PyObject *) PyErr_SetFromErrnoWithFilename(
     PyObject *exc,
-    const char *filename   /* decoded from the filesystem encoding */
+    const char *filename   /* decoded kutoka the filesystem encoding */
     );
 
 PyAPI_FUNC(PyObject *) PyErr_Format(
@@ -180,7 +180,7 @@ PyAPI_FUNC(PyObject *) PyErr_FormatV(
 #ifdef MS_WINDOWS
 PyAPI_FUNC(PyObject *) PyErr_SetFromWindowsErrWithFilename(
     int ierr,
-    const char *filename        /* decoded from the filesystem encoding */
+    const char *filename        /* decoded kutoka the filesystem encoding */
     );
 PyAPI_FUNC(PyObject *) PyErr_SetFromWindowsErr(int);
 PyAPI_FUNC(PyObject *) PyErr_SetExcFromWindowsErrWithFilenameObject(
@@ -192,7 +192,7 @@ PyAPI_FUNC(PyObject *) PyErr_SetExcFromWindowsErrWithFilenameObjects(
 PyAPI_FUNC(PyObject *) PyErr_SetExcFromWindowsErrWithFilename(
     PyObject *exc,
     int ierr,
-    const char *filename        /* decoded from the filesystem encoding */
+    const char *filename        /* decoded kutoka the filesystem encoding */
     );
 PyAPI_FUNC(PyObject *) PyErr_SetExcFromWindowsErr(PyObject *, int);
 #endif /* MS_WINDOWS */
@@ -227,18 +227,18 @@ PyAPI_FUNC(void) PyErr_SetInterrupt(void);
 
 /* Support for adding program text to SyntaxErrors */
 PyAPI_FUNC(void) PyErr_SyntaxLocation(
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     int lineno);
 PyAPI_FUNC(void) PyErr_SyntaxLocationEx(
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     int lineno,
     int col_offset);
 PyAPI_FUNC(PyObject *) PyErr_ProgramText(
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     int lineno);
 
 /* The following functions are used to create and modify unicode
-   exceptions from C */
+   exceptions kutoka C */
 
 /* create a UnicodeDecodeError object */
 PyAPI_FUNC(PyObject *) PyUnicodeDecodeError_Create(

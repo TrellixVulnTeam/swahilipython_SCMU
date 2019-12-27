@@ -49,7 +49,7 @@ complex_nans = [complex(x, y) for x, y in [
         (INF, NAN)
         ]]
 
-class CMathTests(unittest.TestCase):
+kundi CMathTests(unittest.TestCase):
     # list of all functions in cmath
     test_functions = [getattr(cmath, fname) for fname in [
             'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh',
@@ -59,13 +59,13 @@ class CMathTests(unittest.TestCase):
     test_functions.append(lambda x : cmath.log(x, 1729. + 0j))
     test_functions.append(lambda x : cmath.log(14.-27j, x))
 
-    def setUp(self):
+    eleza setUp(self):
         self.test_values = open(test_file)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.test_values.close()
 
-    def assertFloatIdentical(self, x, y):
+    eleza assertFloatIdentical(self, x, y):
         """Fail unless floats x and y are identical, in the sense that:
         (1) both x and y are nans, or
         (2) both x and y are infinities, with the same sign, or
@@ -75,32 +75,32 @@ class CMathTests(unittest.TestCase):
         """
         msg = 'floats {!r} and {!r} are not identical'
 
-        if math.isnan(x) or math.isnan(y):
-            if math.isnan(x) and math.isnan(y):
+        ikiwa math.isnan(x) or math.isnan(y):
+            ikiwa math.isnan(x) and math.isnan(y):
                 return
-        elif x == y:
-            if x != 0.0:
+        elikiwa x == y:
+            ikiwa x != 0.0:
                 return
             # both zero; check that signs match
-            elif math.copysign(1.0, x) == math.copysign(1.0, y):
+            elikiwa math.copysign(1.0, x) == math.copysign(1.0, y):
                 return
             else:
                 msg += ': zeros have different signs'
         self.fail(msg.format(x, y))
 
-    def assertComplexIdentical(self, x, y):
+    eleza assertComplexIdentical(self, x, y):
         """Fail unless complex numbers x and y have equal values and signs.
 
-        In particular, if x and y both have real (or imaginary) part
+        In particular, ikiwa x and y both have real (or imaginary) part
         zero, but the zeros have different signs, this test will fail.
 
         """
         self.assertFloatIdentical(x.real, y.real)
         self.assertFloatIdentical(x.imag, y.imag)
 
-    def rAssertAlmostEqual(self, a, b, rel_err = 2e-15, abs_err = 5e-323,
+    eleza rAssertAlmostEqual(self, a, b, rel_err = 2e-15, abs_err = 5e-323,
                            msg=None):
-        """Fail if the two floating-point numbers are not almost equal.
+        """Fail ikiwa the two floating-point numbers are not almost equal.
 
         Determine whether floating-point values a and b are equal to within
         a (small) rounding error.  The default values for rel_err and
@@ -110,27 +110,27 @@ class CMathTests(unittest.TestCase):
         """
 
         # special values testing
-        if math.isnan(a):
-            if math.isnan(b):
+        ikiwa math.isnan(a):
+            ikiwa math.isnan(b):
                 return
             self.fail(msg or '{!r} should be nan'.format(b))
 
-        if math.isinf(a):
-            if a == b:
+        ikiwa math.isinf(a):
+            ikiwa a == b:
                 return
             self.fail(msg or 'finite result where infinity expected: '
                       'expected {!r}, got {!r}'.format(a, b))
 
-        # if both a and b are zero, check whether they have the same sign
+        # ikiwa both a and b are zero, check whether they have the same sign
         # (in theory there are examples where it would be legitimate for a
         # and b to have opposite signs; in practice these hardly ever
         # occur).
-        if not a and not b:
-            if math.copysign(1., a) != math.copysign(1., b):
+        ikiwa not a and not b:
+            ikiwa math.copysign(1., a) != math.copysign(1., b):
                 self.fail(msg or 'zero has wrong sign: expected {!r}, '
                           'got {!r}'.format(a, b))
 
-        # if a-b overflows, or b is infinite, return False.  Again, in
+        # ikiwa a-b overflows, or b is infinite, rudisha False.  Again, in
         # theory there are examples where a is within a few ulps of the
         # max representable float, and then b could legitimately be
         # infinite.  In practice these examples are rare.
@@ -139,16 +139,16 @@ class CMathTests(unittest.TestCase):
         except OverflowError:
             pass
         else:
-            # test passes if either the absolute error or the relative
+            # test passes ikiwa either the absolute error or the relative
             # error is sufficiently small.  The defaults amount to an
             # error of between 9 ulps and 19 ulps on an IEEE-754 compliant
             # machine.
-            if absolute_error <= max(abs_err, rel_err * abs(a)):
+            ikiwa absolute_error <= max(abs_err, rel_err * abs(a)):
                 return
         self.fail(msg or
                   '{!r} and {!r} are not sufficiently close'.format(a, b))
 
-    def test_constants(self):
+    eleza test_constants(self):
         e_expected = 2.71828182845904523536
         pi_expected = 3.14159265358979323846
         self.assertAlmostEqual(cmath.pi, pi_expected, places=9,
@@ -156,7 +156,7 @@ class CMathTests(unittest.TestCase):
         self.assertAlmostEqual(cmath.e, e_expected, places=9,
             msg="cmath.e is {}; should be {}".format(cmath.e, e_expected))
 
-    def test_infinity_and_nan_constants(self):
+    eleza test_infinity_and_nan_constants(self):
         self.assertEqual(cmath.inf.real, math.inf)
         self.assertEqual(cmath.inf.imag, 0.0)
         self.assertEqual(cmath.infj.real, 0.0)
@@ -173,7 +173,7 @@ class CMathTests(unittest.TestCase):
         self.assertEqual(repr(cmath.nan), "nan")
         self.assertEqual(repr(cmath.nanj), "nanj")
 
-    def test_user_object(self):
+    eleza test_user_object(self):
         # Test automatic calling of __complex__ and __float__ by cmath
         # functions
 
@@ -184,66 +184,66 @@ class CMathTests(unittest.TestCase):
         flt_arg = -6.131677725
 
         # a variety of non-complex numbers, used to check that
-        # non-complex return values kutoka __complex__ give an error
+        # non-complex rudisha values kutoka __complex__ give an error
         non_complexes = ["not complex", 1, 5, 2., None,
                          object(), NotImplemented]
 
         # Now we introduce a variety of classes whose instances might
         # end up being passed to the cmath functions
 
-        # usual case: new-style class implementing __complex__
-        class MyComplex(object):
-            def __init__(self, value):
+        # usual case: new-style kundi implementing __complex__
+        kundi MyComplex(object):
+            eleza __init__(self, value):
                 self.value = value
-            def __complex__(self):
-                return self.value
+            eleza __complex__(self):
+                rudisha self.value
 
-        # old-style class implementing __complex__
-        class MyComplexOS:
-            def __init__(self, value):
+        # old-style kundi implementing __complex__
+        kundi MyComplexOS:
+            eleza __init__(self, value):
                 self.value = value
-            def __complex__(self):
-                return self.value
+            eleza __complex__(self):
+                rudisha self.value
 
         # classes for which __complex__ raises an exception
-        class SomeException(Exception):
+        kundi SomeException(Exception):
             pass
-        class MyComplexException(object):
-            def __complex__(self):
+        kundi MyComplexException(object):
+            eleza __complex__(self):
                 raise SomeException
-        class MyComplexExceptionOS:
-            def __complex__(self):
+        kundi MyComplexExceptionOS:
+            eleza __complex__(self):
                 raise SomeException
 
         # some classes not providing __float__ or __complex__
-        class NeitherComplexNorFloat(object):
+        kundi NeitherComplexNorFloat(object):
             pass
-        class NeitherComplexNorFloatOS:
+        kundi NeitherComplexNorFloatOS:
             pass
-        class Index:
-            def __int__(self): return 2
-            def __index__(self): return 2
-        class MyInt:
-            def __int__(self): return 2
+        kundi Index:
+            eleza __int__(self): rudisha 2
+            eleza __index__(self): rudisha 2
+        kundi MyInt:
+            eleza __int__(self): rudisha 2
 
         # other possible combinations of __float__ and __complex__
         # that should work
-        class FloatAndComplex(object):
-            def __float__(self):
-                return flt_arg
-            def __complex__(self):
-                return cx_arg
-        class FloatAndComplexOS:
-            def __float__(self):
-                return flt_arg
-            def __complex__(self):
-                return cx_arg
-        class JustFloat(object):
-            def __float__(self):
-                return flt_arg
-        class JustFloatOS:
-            def __float__(self):
-                return flt_arg
+        kundi FloatAndComplex(object):
+            eleza __float__(self):
+                rudisha flt_arg
+            eleza __complex__(self):
+                rudisha cx_arg
+        kundi FloatAndComplexOS:
+            eleza __float__(self):
+                rudisha flt_arg
+            eleza __complex__(self):
+                rudisha cx_arg
+        kundi JustFloat(object):
+            eleza __float__(self):
+                rudisha flt_arg
+        kundi JustFloatOS:
+            eleza __float__(self):
+                rudisha flt_arg
 
         for f in self.test_functions:
             # usual usage
@@ -256,14 +256,14 @@ class CMathTests(unittest.TestCase):
             self.assertEqual(f(JustFloatOS()), f(flt_arg))
             self.assertEqual(f(Index()), f(int(Index())))
             # TypeError should be raised for classes not providing
-            # either __complex__ or __float__, even if they provide
+            # either __complex__ or __float__, even ikiwa they provide
             # __int__ or __index__.  An old-style class
             # currently raises AttributeError instead of a TypeError;
             # this could be considered a bug.
             self.assertRaises(TypeError, f, NeitherComplexNorFloat())
             self.assertRaises(TypeError, f, MyInt())
             self.assertRaises(Exception, f, NeitherComplexNorFloatOS())
-            # non-complex return value kutoka __complex__ -> TypeError
+            # non-complex rudisha value kutoka __complex__ -> TypeError
             for bad_complex in non_complexes:
                 self.assertRaises(TypeError, f, MyComplex(bad_complex))
                 self.assertRaises(TypeError, f, MyComplexOS(bad_complex))
@@ -271,7 +271,7 @@ class CMathTests(unittest.TestCase):
             self.assertRaises(SomeException, f, MyComplexException())
             self.assertRaises(SomeException, f, MyComplexExceptionOS())
 
-    def test_input_type(self):
+    eleza test_input_type(self):
         # ints should be acceptable inputs to all cmath
         # functions, by virtue of providing a __float__ method
         for f in self.test_functions:
@@ -283,7 +283,7 @@ class CMathTests(unittest.TestCase):
             for arg in ["a", "long_string", "0", "1j", ""]:
                 self.assertRaises(TypeError, f, arg)
 
-    def test_cmath_matches_math(self):
+    eleza test_cmath_matches_math(self):
         # check that corresponding cmath and math functions are equal
         # for floats in the appropriate range
 
@@ -332,45 +332,45 @@ class CMathTests(unittest.TestCase):
                 self.assertEqual(0., z.imag)
 
     @requires_IEEE_754
-    def test_specific_values(self):
+    eleza test_specific_values(self):
         # Some tests need to be skipped on ancient OS X versions.
         # See issue #27953.
         SKIP_ON_TIGER = {'tan0064'}
 
         osx_version = None
-        if sys.platform == 'darwin':
+        ikiwa sys.platform == 'darwin':
             version_txt = platform.mac_ver()[0]
             try:
                 osx_version = tuple(map(int, version_txt.split('.')))
             except ValueError:
                 pass
 
-        def rect_complex(z):
+        eleza rect_complex(z):
             """Wrapped version of rect that accepts a complex number instead of
             two float arguments."""
-            return cmath.rect(z.real, z.imag)
+            rudisha cmath.rect(z.real, z.imag)
 
-        def polar_complex(z):
+        eleza polar_complex(z):
             """Wrapped version of polar that returns a complex number instead of
             two floats."""
-            return complex(*polar(z))
+            rudisha complex(*polar(z))
 
         for id, fn, ar, ai, er, ei, flags in parse_testfile(test_file):
             arg = complex(ar, ai)
             expected = complex(er, ei)
 
             # Skip certain tests on OS X 10.4.
-            if osx_version is not None and osx_version < (10, 5):
-                if id in SKIP_ON_TIGER:
+            ikiwa osx_version is not None and osx_version < (10, 5):
+                ikiwa id in SKIP_ON_TIGER:
                     continue
 
-            if fn == 'rect':
+            ikiwa fn == 'rect':
                 function = rect_complex
-            elif fn == 'polar':
+            elikiwa fn == 'polar':
                 function = polar_complex
             else:
                 function = getattr(cmath, fn)
-            if 'divide-by-zero' in flags or 'invalid' in flags:
+            ikiwa 'divide-by-zero' in flags or 'invalid' in flags:
                 try:
                     actual = function(arg)
                 except ValueError:
@@ -379,7 +379,7 @@ class CMathTests(unittest.TestCase):
                     self.fail('ValueError not raised in test '
                           '{}: {}(complex({!r}, {!r}))'.format(id, fn, ar, ai))
 
-            if 'overflow' in flags:
+            ikiwa 'overflow' in flags:
                 try:
                     actual = function(arg)
                 except OverflowError:
@@ -390,16 +390,16 @@ class CMathTests(unittest.TestCase):
 
             actual = function(arg)
 
-            if 'ignore-real-sign' in flags:
+            ikiwa 'ignore-real-sign' in flags:
                 actual = complex(abs(actual.real), actual.imag)
                 expected = complex(abs(expected.real), expected.imag)
-            if 'ignore-imag-sign' in flags:
+            ikiwa 'ignore-imag-sign' in flags:
                 actual = complex(actual.real, abs(actual.imag))
                 expected = complex(expected.real, abs(expected.imag))
 
             # for the real part of the log function, we allow an
             # absolute error of up to 2e-15.
-            if fn in ('log', 'log10'):
+            ikiwa fn in ('log', 'log10'):
                 real_abs_err = 2e-15
             else:
                 real_abs_err = 5e-323
@@ -418,8 +418,8 @@ class CMathTests(unittest.TestCase):
             self.rAssertAlmostEqual(expected.imag, actual.imag,
                                         msg=error_message)
 
-    def check_polar(self, func):
-        def check(arg, expected):
+    eleza check_polar(self, func):
+        eleza check(arg, expected):
             got = func(arg)
             for e, g in zip(expected, got):
                 self.rAssertAlmostEqual(e, g)
@@ -446,22 +446,22 @@ class CMathTests(unittest.TestCase):
         check(complex(nan, inf), (inf, nan))
         check(complex(nan, -inf), (inf, nan))
 
-    def test_polar(self):
+    eleza test_polar(self):
         self.check_polar(polar)
 
     @cpython_only
-    def test_polar_errno(self):
+    eleza test_polar_errno(self):
         # Issue #24489: check a previously set C errno doesn't disturb polar()
         kutoka _testcapi agiza set_errno
-        def polar_with_errno_set(z):
+        eleza polar_with_errno_set(z):
             set_errno(11)
             try:
-                return polar(z)
+                rudisha polar(z)
             finally:
                 set_errno(0)
         self.check_polar(polar_with_errno_set)
 
-    def test_phase(self):
+    eleza test_phase(self):
         self.assertAlmostEqual(phase(0), 0.)
         self.assertAlmostEqual(phase(1.), 0.)
         self.assertAlmostEqual(phase(-1.), pi)
@@ -502,7 +502,7 @@ class CMathTests(unittest.TestCase):
         for z in complex_nans:
             self.assertTrue(math.isnan(phase(z)))
 
-    def test_abs(self):
+    eleza test_abs(self):
         # zeros
         for z in complex_zeros:
             self.assertEqual(abs(z), 0.0)
@@ -528,23 +528,23 @@ class CMathTests(unittest.TestCase):
 
 
     @requires_IEEE_754
-    def test_abs_overflows(self):
+    eleza test_abs_overflows(self):
         # result overflows
         self.assertRaises(OverflowError, abs, complex(1.4e308, 1.4e308))
 
-    def assertCEqual(self, a, b):
+    eleza assertCEqual(self, a, b):
         eps = 1E-7
-        if abs(a.real - b[0]) > eps or abs(a.imag - b[1]) > eps:
+        ikiwa abs(a.real - b[0]) > eps or abs(a.imag - b[1]) > eps:
             self.fail((a ,b))
 
-    def test_rect(self):
+    eleza test_rect(self):
         self.assertCEqual(rect(0, 0), (0, 0))
         self.assertCEqual(rect(1, 0), (1., 0))
         self.assertCEqual(rect(1, -pi), (-1., 0))
         self.assertCEqual(rect(1, pi/2), (0, 1.))
         self.assertCEqual(rect(1, -pi/2), (0, -1.))
 
-    def test_isfinite(self):
+    eleza test_isfinite(self):
         real_vals = [float('-inf'), -2.3, -0.0,
                      0.0, 2.3, float('inf'), float('nan')]
         for x in real_vals:
@@ -553,7 +553,7 @@ class CMathTests(unittest.TestCase):
                 self.assertEqual(cmath.isfinite(z),
                                   math.isfinite(x) and math.isfinite(y))
 
-    def test_isnan(self):
+    eleza test_isnan(self):
         self.assertFalse(cmath.isnan(1))
         self.assertFalse(cmath.isnan(1j))
         self.assertFalse(cmath.isnan(INF))
@@ -564,7 +564,7 @@ class CMathTests(unittest.TestCase):
         self.assertTrue(cmath.isnan(complex(NAN, INF)))
         self.assertTrue(cmath.isnan(complex(INF, NAN)))
 
-    def test_isinf(self):
+    eleza test_isinf(self):
         self.assertFalse(cmath.isinf(1))
         self.assertFalse(cmath.isinf(1j))
         self.assertFalse(cmath.isinf(NAN))
@@ -576,7 +576,7 @@ class CMathTests(unittest.TestCase):
         self.assertTrue(cmath.isinf(complex(INF, NAN)))
 
     @requires_IEEE_754
-    def testTanhSign(self):
+    eleza testTanhSign(self):
         for z in complex_zeros:
             self.assertComplexIdentical(cmath.tanh(z), z)
 
@@ -585,20 +585,20 @@ class CMathTests(unittest.TestCase):
     # of zero, then atan and atanh will also have difficulties with
     # the sign of complex zeros.
     @requires_IEEE_754
-    def testAtanSign(self):
+    eleza testAtanSign(self):
         for z in complex_zeros:
             self.assertComplexIdentical(cmath.atan(z), z)
 
     @requires_IEEE_754
-    def testAtanhSign(self):
+    eleza testAtanhSign(self):
         for z in complex_zeros:
             self.assertComplexIdentical(cmath.atanh(z), z)
 
 
-class IsCloseTests(test_math.IsCloseTests):
+kundi IsCloseTests(test_math.IsCloseTests):
     isclose = cmath.isclose
 
-    def test_reject_complex_tolerances(self):
+    eleza test_reject_complex_tolerances(self):
         with self.assertRaises(TypeError):
             self.isclose(1j, 1j, rel_tol=1j)
 
@@ -608,7 +608,7 @@ class IsCloseTests(test_math.IsCloseTests):
         with self.assertRaises(TypeError):
             self.isclose(1j, 1j, rel_tol=1j, abs_tol=1j)
 
-    def test_complex_values(self):
+    eleza test_complex_values(self):
         # test complex values that are close to within 12 decimal places
         complex_examples = [(1.0+1.0j, 1.000000000001+1.0j),
                             (1.0+1.0j, 1.0+1.000000000001j),
@@ -619,7 +619,7 @@ class IsCloseTests(test_math.IsCloseTests):
         self.assertAllClose(complex_examples, rel_tol=1e-12)
         self.assertAllNotClose(complex_examples, rel_tol=1e-13)
 
-    def test_complex_near_zero(self):
+    eleza test_complex_near_zero(self):
         # test values near zero that are near to within three decimal places
         near_zero_examples = [(0.001j, 0),
                               (0.001, 0),
@@ -636,5 +636,5 @@ class IsCloseTests(test_math.IsCloseTests):
         self.assertIsNotClose(0.001-0.001j, 0.001+0.001j, abs_tol=1e-03)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

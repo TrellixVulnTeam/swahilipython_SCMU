@@ -21,11 +21,11 @@ the standard audio interface for Linux and recent versions of FreeBSD.
    to my python-dev query, Thomas Wouters said:
 
    > Likewise, googling shows OpenBSD also uses OSS/Free -- the commercial
-   > OSS installation manual tells you to remove references to OSS/Free from the
+   > OSS installation manual tells you to remove references to OSS/Free kutoka the
    > kernel :)
 
    but Aleksander Piotrowsk actually has an OpenBSD box, and he quotes
-   from its <soundcard.h>:
+   kutoka its <soundcard.h>:
    >  * WARNING!  WARNING!
    >  * This is an OSS (Linux) audio emulator.
    >  * Use the Native NetBSD API for developing new code, and this
@@ -34,7 +34,7 @@ the standard audio interface for Linux and recent versions of FreeBSD.
    There's also an ossaudio manpage on OpenBSD that explains things
    further.  Presumably NetBSD and OpenBSD have a different standard
    audio interface.  That's the great thing about standards, there are so
-   many to choose from ... ;-)
+   many to choose kutoka ... ;-)
 
    This probably all warrants a footnote or two, but I don't understand
    things well enough right now to write it!   --GPW
@@ -60,11 +60,11 @@ the standard audio interface for Linux and recent versions of FreeBSD.
    This exception is raised on certain errors.  The argument is a string describing
    what went wrong.
 
-   (If :mod:`ossaudiodev` receives an error from a system call such as
+   (If :mod:`ossaudiodev` receives an error kutoka a system call such as
    :c:func:`open`, :c:func:`write`, or :c:func:`ioctl`, it raises :exc:`OSError`.
    Errors detected directly by :mod:`ossaudiodev` result in :exc:`OSSAudioError`.)
 
-   (For backwards compatibility, the exception class is also available as
+   (For backwards compatibility, the exception kundi is also available as
    ``ossaudiodev.error``.)
 
 
@@ -110,7 +110,7 @@ the standard audio interface for Linux and recent versions of FreeBSD.
 Audio Device Objects
 --------------------
 
-Before you can write to or read from an audio device, you must call three
+Before you can write to or read kutoka an audio device, you must call three
 methods in the correct order:
 
 #. :meth:`setfmt` to set the output format
@@ -129,7 +129,7 @@ and (read-only) attributes:
 
 .. method:: oss_audio_device.close()
 
-   Explicitly close the audio device.  When you are done writing to or reading from
+   Explicitly close the audio device.  When you are done writing to or reading kutoka
    an audio device, you should explicitly close it.  A closed device cannot be used
    again.
 
@@ -141,7 +141,7 @@ and (read-only) attributes:
 
 .. method:: oss_audio_device.read(size)
 
-   Read *size* bytes from the audio input and return them as a Python string.
+   Read *size* bytes kutoka the audio input and return them as a Python string.
    Unlike most Unix device drivers, OSS audio devices in blocking mode (the
    default) will block :func:`read` until the entire requested amount of data is
    available.
@@ -151,7 +151,7 @@ and (read-only) attributes:
 
    Write a :term:`bytes-like object` *data* to the audio device and return the
    number of bytes written.  If the audio device is in blocking mode (the
-   default), the entire data is always written (again, this is different from
+   default), the entire data is always written (again, this is different kutoka
    usual Unix device semantics).  If the device is in non-blocking mode, some
    data may not be written---see :meth:`writeall`.
 
@@ -400,19 +400,19 @@ The remaining methods are specific to audio mixing:
    :meth:`controls` to determine which).
 
    See the code example for the :meth:`controls` function for an example of getting
-   data from a bitmask.
+   data kutoka a bitmask.
 
 
 .. method:: oss_mixer_device.reccontrols()
 
    Returns a bitmask specifying the mixer controls that may be used to record.  See
-   the code example for :meth:`controls` for an example of reading from a bitmask.
+   the code example for :meth:`controls` for an example of reading kutoka a bitmask.
 
 
 .. method:: oss_mixer_device.get(control)
 
    Returns the volume of a given mixer control.  The returned volume is a 2-tuple
-   ``(left_volume,right_volume)``.  Volumes are specified as numbers from 0
+   ``(left_volume,right_volume)``.  Volumes are specified as numbers kutoka 0
    (silent) to 100 (full volume).  If the control is monophonic, a 2-tuple is still
    returned, but both volumes are the same.
 

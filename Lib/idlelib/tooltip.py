@@ -1,16 +1,16 @@
 """Tools for displaying tool-tips.
 
 This includes:
- * an abstract base-class for different kinds of tooltips
+ * an abstract base-kundi for different kinds of tooltips
  * a simple text-only Tooltip class
 """
 kutoka tkinter agiza *
 
 
-class TooltipBase(object):
-    """abstract base class for tooltips"""
+kundi TooltipBase(object):
+    """abstract base kundi for tooltips"""
 
-    def __init__(self, anchor_widget):
+    eleza __init__(self, anchor_widget):
         """Create a tooltip.
 
         anchor_widget: the widget next to which the tooltip will be shown
@@ -20,12 +20,12 @@ class TooltipBase(object):
         self.anchor_widget = anchor_widget
         self.tipwindow = None
 
-    def __del__(self):
+    eleza __del__(self):
         self.hidetip()
 
-    def showtip(self):
+    eleza showtip(self):
         """display the tooltip"""
-        if self.tipwindow:
+        ikiwa self.tipwindow:
             return
         self.tipwindow = tw = Toplevel(self.anchor_widget)
         # show no border on the top level window
@@ -44,14 +44,14 @@ class TooltipBase(object):
         self.tipwindow.update_idletasks()  # Needed on MacOS -- see #34275.
         self.tipwindow.lift()  # work around bug in Tk 8.5.18+ (issue #24570)
 
-    def position_window(self):
+    eleza position_window(self):
         """(re)-set the tooltip's screen position"""
         x, y = self.get_position()
         root_x = self.anchor_widget.winfo_rootx() + x
         root_y = self.anchor_widget.winfo_rooty() + y
         self.tipwindow.wm_geometry("+%d+%d" % (root_x, root_y))
 
-    def get_position(self):
+    eleza get_position(self):
         """choose a screen position for the tooltip"""
         # The tip window must be completely outside the anchor widget;
         # otherwise when the mouse enters the tip window we get
@@ -60,29 +60,29 @@ class TooltipBase(object):
         #
         # Note: This is a simplistic implementation; sub-classes will likely
         # want to override this.
-        return 20, self.anchor_widget.winfo_height() + 1
+        rudisha 20, self.anchor_widget.winfo_height() + 1
 
-    def showcontents(self):
+    eleza showcontents(self):
         """content display hook for sub-classes"""
         # See ToolTip for an example
         raise NotImplementedError
 
-    def hidetip(self):
+    eleza hidetip(self):
         """hide the tooltip"""
         # Note: This is called by __del__, so careful when overriding/extending
         tw = self.tipwindow
         self.tipwindow = None
-        if tw:
+        ikiwa tw:
             try:
                 tw.destroy()
             except TclError:  # pragma: no cover
                 pass
 
 
-class OnHoverTooltipBase(TooltipBase):
-    """abstract base class for tooltips, with delayed on-hover display"""
+kundi OnHoverTooltipBase(TooltipBase):
+    """abstract base kundi for tooltips, with delayed on-hover display"""
 
-    def __init__(self, anchor_widget, hover_delay=1000):
+    eleza __init__(self, anchor_widget, hover_delay=1000):
         """Create a tooltip with a mouse hover delay.
 
         anchor_widget: the widget next to which the tooltip will be shown
@@ -100,7 +100,7 @@ class OnHoverTooltipBase(TooltipBase):
         self._id2 = self.anchor_widget.bind("<Leave>", self._hide_event)
         self._id3 = self.anchor_widget.bind("<Button>", self._hide_event)
 
-    def __del__(self):
+    eleza __del__(self):
         try:
             self.anchor_widget.unbind("<Enter>", self._id1)
             self.anchor_widget.unbind("<Leave>", self._id2)  # pragma: no cover
@@ -109,31 +109,31 @@ class OnHoverTooltipBase(TooltipBase):
             pass
         super(OnHoverTooltipBase, self).__del__()
 
-    def _show_event(self, event=None):
+    eleza _show_event(self, event=None):
         """event handler to display the tooltip"""
-        if self.hover_delay:
+        ikiwa self.hover_delay:
             self.schedule()
         else:
             self.showtip()
 
-    def _hide_event(self, event=None):
+    eleza _hide_event(self, event=None):
         """event handler to hide the tooltip"""
         self.hidetip()
 
-    def schedule(self):
+    eleza schedule(self):
         """schedule the future display of the tooltip"""
         self.unschedule()
         self._after_id = self.anchor_widget.after(self.hover_delay,
                                                   self.showtip)
 
-    def unschedule(self):
+    eleza unschedule(self):
         """cancel the future display of the tooltip"""
         after_id = self._after_id
         self._after_id = None
-        if after_id:
+        ikiwa after_id:
             self.anchor_widget.after_cancel(after_id)
 
-    def hidetip(self):
+    eleza hidetip(self):
         """hide the tooltip"""
         try:
             self.unschedule()
@@ -142,9 +142,9 @@ class OnHoverTooltipBase(TooltipBase):
         super(OnHoverTooltipBase, self).hidetip()
 
 
-class Hovertip(OnHoverTooltipBase):
+kundi Hovertip(OnHoverTooltipBase):
     "A tooltip that pops up when a mouse hovers over an anchor widget."
-    def __init__(self, anchor_widget, text, hover_delay=1000):
+    eleza __init__(self, anchor_widget, text, hover_delay=1000):
         """Create a text tooltip with a mouse hover delay.
 
         anchor_widget: the widget next to which the tooltip will be shown
@@ -157,13 +157,13 @@ class Hovertip(OnHoverTooltipBase):
         super(Hovertip, self).__init__(anchor_widget, hover_delay=hover_delay)
         self.text = text
 
-    def showcontents(self):
+    eleza showcontents(self):
         label = Label(self.tipwindow, text=self.text, justify=LEFT,
                       background="#ffffe0", relief=SOLID, borderwidth=1)
         label.pack()
 
 
-def _tooltip(parent):  # htest #
+eleza _tooltip(parent):  # htest #
     top = Toplevel(parent)
     top.title("Test tooltip")
     x, y = map(int, parent.geometry().split('+')[1:])
@@ -178,7 +178,7 @@ def _tooltip(parent):  # htest #
     Hovertip(button2, "This is tooltip\ntext for button2.", hover_delay=None)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_tooltip', verbosity=2, exit=False)
 

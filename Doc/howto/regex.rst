@@ -91,10 +91,10 @@ characters.  If you wanted to match only lowercase letters, your RE would be
 
 Metacharacters are not active inside classes.  For example, ``[akm$]`` will
 match any of the characters ``'a'``, ``'k'``, ``'m'``, or ``'$'``; ``'$'`` is
-usually a metacharacter, but inside a character class it's stripped of its
+usually a metacharacter, but inside a character kundi it's stripped of its
 special nature.
 
-You can match the characters not listed within the class by :dfn:`complementing`
+You can match the characters not listed within the kundi by :dfn:`complementing`
 the set.  This is indicated by including a ``'^'`` as the first character of the
 class. For example, ``[^5]`` will match any character except ``'5'``.  If the
 caret appears elsewhere in a character class, it does not have special meaning.
@@ -114,31 +114,31 @@ whitespace.
 
 Let's take an example: ``\w`` matches any alphanumeric character.  If
 the regex pattern is expressed in bytes, this is equivalent to the
-class ``[a-zA-Z0-9_]``.  If the regex pattern is a string, ``\w`` will
+kundi ``[a-zA-Z0-9_]``.  If the regex pattern is a string, ``\w`` will
 match all the characters marked as letters in the Unicode database
 provided by the :mod:`unicodedata` module.  You can use the more
 restricted definition of ``\w`` in a string pattern by supplying the
 :const:`re.ASCII` flag when compiling the regular expression.
 
 The following list of special sequences isn't complete. For a complete
-list of sequences and expanded class definitions for Unicode string
+list of sequences and expanded kundi definitions for Unicode string
 patterns, see the last part of :ref:`Regular Expression Syntax
 <re-syntax>` in the Standard Library reference.  In general, the
 Unicode versions match any character that's in the appropriate
 category in the Unicode database.
 
 ``\d``
-   Matches any decimal digit; this is equivalent to the class ``[0-9]``.
+   Matches any decimal digit; this is equivalent to the kundi ``[0-9]``.
 
 ``\D``
-   Matches any non-digit character; this is equivalent to the class ``[^0-9]``.
+   Matches any non-digit character; this is equivalent to the kundi ``[^0-9]``.
 
 ``\s``
-   Matches any whitespace character; this is equivalent to the class ``[
+   Matches any whitespace character; this is equivalent to the kundi ``[
    \t\n\r\f\v]``.
 
 ``\S``
-   Matches any non-whitespace character; this is equivalent to the class ``[^
+   Matches any non-whitespace character; this is equivalent to the kundi ``[^
    \t\n\r\f\v]``.
 
 ``\w``
@@ -150,7 +150,7 @@ category in the Unicode database.
    ``[^a-zA-Z0-9_]``.
 
 These sequences can be included inside a character class.  For example,
-``[\s,.]`` is a character class that will match any whitespace character, or
+``[\s,.]`` is a character kundi that will match any whitespace character, or
 ``','`` or ``'.'``.
 
 The final metacharacter in this section is ``.``.  It matches anything except a
@@ -182,7 +182,7 @@ fewer repetitions.
 
 A step-by-step example will make this more obvious.  Let's consider the
 expression ``a[bcd]*b``.  This matches the letter ``'a'``, zero or more letters
-from the class ``[bcd]``, and finally ends with a ``'b'``.  Now imagine matching
+kutoka the kundi ``[bcd]``, and finally ends with a ``'b'``.  Now imagine matching
 this RE against the string ``'abcbd'``.
 
 +------+-----------+---------------------------------+
@@ -268,7 +268,7 @@ Regular expressions are compiled into pattern objects, which have
 methods for various operations such as searching for pattern matches or
 performing string substitutions. ::
 
-   >>> import re
+   >>> agiza re
    >>> p = re.compile('ab*')
    >>> p
    re.compile('ab*')
@@ -385,9 +385,9 @@ whether the RE matches or fails. :file:`redemo.py` can be quite useful when
 trying to debug a complicated RE.
 
 This HOWTO uses the standard Python interpreter for its examples. First, run the
-Python interpreter, import the :mod:`re` module, and compile a RE::
+Python interpreter, agiza the :mod:`re` module, and compile a RE::
 
-   >>> import re
+   >>> agiza re
    >>> p = re.compile('[a-z]+')
    >>> p
    re.compile('[a-z]+')
@@ -559,7 +559,7 @@ of each one.
           IGNORECASE
    :noindex:
 
-   Perform case-insensitive matching; character class and literal strings will
+   Perform case-insensitive matching; character kundi and literal strings will
    match letters by ignoring case.  For example, ``[A-Z]`` will match lowercase
    letters, too. Full Unicode matching also works unless the :const:`ASCII`
    flag is used to disable non-ASCII matches.  When the Unicode patterns
@@ -583,7 +583,7 @@ of each one.
    Locales are a feature of the C library intended to help in writing programs
    that take account of language differences.  For example, if you're
    processing encoded French text, you'd want to be able to write ``\w+`` to
-   match words, but ``\w`` only matches the character class ``[A-Za-z]`` in
+   match words, but ``\w`` only matches the character kundi ``[A-Za-z]`` in
    bytes patterns; it won't match bytes corresponding to ``é`` or ``ç``.
    If your system is configured properly and a French locale is selected,
    certain C functions will tell the program that the byte corresponding to
@@ -638,10 +638,10 @@ of each one.
    This flag allows you to write regular expressions that are more readable by
    granting you more flexibility in how you can format them.  When this flag has
    been specified, whitespace within the RE string is ignored, except when the
-   whitespace is in a character class or preceded by an unescaped backslash; this
+   whitespace is in a character kundi or preceded by an unescaped backslash; this
    lets you organize and indent the RE more clearly.  This flag also lets you put
    comments within a RE that will be ignored by the engine; comments are marked by
-   a ``'#'`` that's neither in a character class or preceded by an unescaped
+   a ``'#'`` that's neither in a character kundi or preceded by an unescaped
    backslash.
 
    For example, here's a RE that uses :const:`re.VERBOSE`; see how much easier it
@@ -750,11 +750,11 @@ given location, they can obviously be matched an infinite number of times.
    match when it's contained inside another word. ::
 
       >>> p = re.compile(r'\bclass\b')
-      >>> print(p.search('no class at all'))
+      >>> print(p.search('no kundi at all'))
       <re.Match object; span=(3, 8), match='class'>
       >>> print(p.search('the declassified algorithm'))
       None
-      >>> print(p.search('one subclass is'))
+      >>> print(p.search('one subkundi is'))
       None
 
    There are two subtleties you should remember when using this special sequence.
@@ -766,7 +766,7 @@ given location, they can obviously be matched an infinite number of times.
    in front of the RE string. ::
 
       >>> p = re.compile('\bclass\b')
-      >>> print(p.search('no class at all'))
+      >>> print(p.search('no kundi at all'))
       None
       >>> print(p.search('\b' + 'class' + '\b'))
       <re.Match object; span=(0, 7), match='\x08class\x08'>
@@ -827,9 +827,9 @@ of text that they match. ::
    >>> m.group(0)
    'ab'
 
-Subgroups are numbered from left to right, from 1 upward.  Groups can be nested;
+Subgroups are numbered kutoka left to right, kutoka 1 upward.  Groups can be nested;
 to determine the number, just count the opening parenthesis characters, going
-from left to right. ::
+kutoka left to right. ::
 
    >>> p = re.compile('(a(b)c)d')
    >>> m = p.match('abcd')
@@ -847,7 +847,7 @@ will return a tuple containing the corresponding values for those groups. ::
    ('b', 'abc', 'b')
 
 The :meth:`~re.Match.groups` method returns a tuple containing the strings for all the
-subgroups, from 1 up to however many there are. ::
+subgroups, kutoka 1 up to however many there are. ::
 
    >>> m.groups()
    ('abc', 'b')
@@ -883,7 +883,7 @@ we'll look at that first.
 Perl 5 is well known for its powerful additions to standard regular expressions.
 For these new features the Perl developers couldn't choose new single-keystroke metacharacters
 or new special sequences beginning with ``\`` without making Perl's regular
-expressions confusingly different from standard REs.  If they chose ``&`` as a
+expressions confusingly different kutoka standard REs.  If they chose ``&`` as a
 new metacharacter, for example, old expressions would be assuming that ``&`` was
 a regular character and wouldn't have escaped it by writing ``\&`` or ``[&]``.
 
@@ -950,7 +950,7 @@ Additionally, you can retrieve named groups as a dictionary with
    {'first': 'Jane', 'last': 'Doe'}
 
 Named groups are handy because they let you use easily-remembered names, instead
-of having to remember numbers.  Here's an example RE from the :mod:`imaplib`
+of having to remember numbers.  Here's an example RE kutoka the :mod:`imaplib`
 module::
 
    InternalDate = re.compile(r'INTERNALDATE "'
@@ -1003,7 +1003,7 @@ The pattern to match this is quite simple:
 ``.*[.].*$``
 
 Notice that the ``.`` needs to be treated specially because it's a
-metacharacter, so it's inside a character class to only match that
+metacharacter, so it's inside a character kundi to only match that
 specific character.  Also notice the trailing ``$``; this is added to
 ensure that all the rest of the string must be included in the
 extension.  This regular expression matches ``foo.bar`` and
@@ -1256,7 +1256,7 @@ avoid performing the substitution on parts of words, the pattern would have to
 be ``\bword\b``, in order to require that ``word`` have a word boundary on
 either side.  This takes the job beyond  :meth:`!replace`'s abilities.)
 
-Another common task is deleting every occurrence of a single character from a
+Another common task is deleting every occurrence of a single character kutoka a
 string or replacing it with another single character.  You might do this with
 something like ``re.sub('\n', ' ', S)``, but :meth:`~str.translate` is capable of
 doing both tasks and will be faster than any regular expression operation can
@@ -1323,7 +1323,7 @@ The RE matches the ``'<'`` in ``'<html>'``, and the ``.*`` consumes the rest of
 the string.  There's still more left in the RE, though, and the ``>`` can't
 match at the end of the string, so the regular expression engine has to
 backtrack character by character until it finds a match for the ``>``.   The
-final match extends from the ``'<'`` in ``'<html>'`` to the ``'>'`` in
+final match extends kutoka the ``'<'`` in ``'<html>'`` to the ``'>'`` in
 ``'</title>'``, which isn't what you want.
 
 In this case, the solution is to use the non-greedy qualifiers ``*?``, ``+?``,
@@ -1355,10 +1355,10 @@ expression can be helpful, because it allows you to format the regular
 expression more clearly.
 
 The ``re.VERBOSE`` flag has several effects.  Whitespace in the regular
-expression that *isn't* inside a character class is ignored.  This means that an
+expression that *isn't* inside a character kundi is ignored.  This means that an
 expression such as ``dog | cat`` is equivalent to the less readable ``dog|cat``,
 but ``[a b]`` will still match the characters ``'a'``, ``'b'``, or a space.  In
-addition, you can also put comments inside a RE; comments extend from a ``#``
+addition, you can also put comments inside a RE; comments extend kutoka a ``#``
 character to the next newline.  When used with triple-quoted strings, this
 enables REs to be formatted more neatly::
 
@@ -1390,4 +1390,4 @@ it exclusively concentrates on Perl and Java's flavours of regular expressions,
 and doesn't contain any Python material at all, so it won't be useful as a
 reference for programming in Python.  (The first edition covered Python's
 now-removed :mod:`!regex` module, which won't help you much.)  Consider checking
-it out from your library.
+it out kutoka your library.

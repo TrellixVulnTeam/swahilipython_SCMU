@@ -26,13 +26,13 @@
 # 2001-03-29 fl  Don't require empty params element (kutoka Nicholas Riley)
 # 2001-06-10 fl  Folded in _xmlrpclib accelerator support (1.0b2)
 # 2001-08-20 fl  Base xmlrpclib.Error on built-in Exception (kutoka Paul Prescod)
-# 2001-09-03 fl  Allow Transport subclass to override getparser
+# 2001-09-03 fl  Allow Transport subkundi to override getparser
 # 2001-09-10 fl  Lazy agiza of urllib, cgi, xmllib (20x agiza speedup)
 # 2001-10-01 fl  Remove containers kutoka memo cache when done with them
 # 2001-10-01 fl  Use faster escape method (80% dumps speedup)
 # 2001-10-02 fl  More dumps microtuning
 # 2001-10-04 fl  Make sure agiza expat gets a parser (kutoka Guido van Rossum)
-# 2001-10-10 sm  Allow long ints to be passed as ints if they don't overflow
+# 2001-10-10 sm  Allow long ints to be passed as ints ikiwa they don't overflow
 # 2001-10-17 sm  Test for int and long overflow (allows use on 64-bit systems)
 # 2001-11-12 fl  Use repr() to marshal doubles (kutoka Paul Felix)
 # 2002-03-17 fl  Avoid buffered read when possible (kutoka James Rucker)
@@ -43,7 +43,7 @@
 # 2002-10-22 fl  Added basic authentication (based on code kutoka Phillip Eby)
 # 2003-01-22 sm  Add support for the bool type
 # 2003-02-27 gvr Remove apply calls
-# 2003-04-24 sm  Use cStringIO if available
+# 2003-04-24 sm  Use cStringIO ikiwa available
 # 2003-04-25 ak  Add support for nil
 # 2003-06-15 gn  Add support for time.struct_time
 # 2003-07-12 gp  Correct marshalling of Faults
@@ -94,7 +94,7 @@ implement XML-RPC servers.
 
 Exported exceptions:
 
-  Error          Base class for client errors
+  Error          Base kundi for client errors
   ProtocolError  Indicates an HTTP protocol error
   ResponseError  Indicates a broken response package
   Fault          Indicates an XML-RPC fault package
@@ -123,9 +123,9 @@ Exported functions:
   getparser      Create instance of the fastest available parser & attach
                  to an unmarshalling object
   dumps          Convert an argument tuple or a Fault instance to an XML-RPC
-                 request (or response, if the methodresponse option is used).
+                 request (or response, ikiwa the methodresponse option is used).
   loads          Convert an XML-RPC packet to unmarshalled data plus a method
-                 name (None if not present).
+                 name (None ikiwa not present).
 """
 
 agiza base64
@@ -146,10 +146,10 @@ except ImportError:
 # --------------------------------------------------------------------
 # Internal stuff
 
-def escape(s):
+eleza escape(s):
     s = s.replace("&", "&amp;")
     s = s.replace("<", "&lt;")
-    return s.replace(">", "&gt;",)
+    rudisha s.replace(">", "&gt;",)
 
 # used in User-Agent header sent
 __version__ = '%d.%d' % sys.version_info[:2]
@@ -182,15 +182,15 @@ INTERNAL_ERROR        = -32603
 # Exceptions
 
 ##
-# Base class for all kinds of client-side errors.
+# Base kundi for all kinds of client-side errors.
 
-class Error(Exception):
-    """Base class for client errors."""
+kundi Error(Exception):
+    """Base kundi for client errors."""
     __str__ = object.__str__
 
 ##
 # Indicates an HTTP-level protocol error.  This is raised by the HTTP
-# transport layer, if the server returns an error code other than 200
+# transport layer, ikiwa the server returns an error code other than 200
 # (OK).
 #
 # @param url The target URL.
@@ -198,46 +198,46 @@ class Error(Exception):
 # @param errmsg The HTTP error message.
 # @param headers The HTTP header dictionary.
 
-class ProtocolError(Error):
+kundi ProtocolError(Error):
     """Indicates an HTTP protocol error."""
-    def __init__(self, url, errcode, errmsg, headers):
+    eleza __init__(self, url, errcode, errmsg, headers):
         Error.__init__(self)
         self.url = url
         self.errcode = errcode
         self.errmsg = errmsg
         self.headers = headers
-    def __repr__(self):
-        return (
+    eleza __repr__(self):
+        rudisha (
             "<%s for %s: %s %s>" %
             (self.__class__.__name__, self.url, self.errcode, self.errmsg)
             )
 
 ##
 # Indicates a broken XML-RPC response package.  This exception is
-# raised by the unmarshalling layer, if the XML-RPC response is
+# raised by the unmarshalling layer, ikiwa the XML-RPC response is
 # malformed.
 
-class ResponseError(Error):
+kundi ResponseError(Error):
     """Indicates a broken response package."""
     pass
 
 ##
 # Indicates an XML-RPC fault response package.  This exception is
-# raised by the unmarshalling layer, if the XML-RPC response contains
+# raised by the unmarshalling layer, ikiwa the XML-RPC response contains
 # a fault string.  This exception can also be used as a class, to
 # generate a fault XML-RPC message.
 #
 # @param faultCode The XML-RPC fault code.
 # @param faultString The XML-RPC fault string.
 
-class Fault(Error):
+kundi Fault(Error):
     """Indicates an XML-RPC fault package."""
-    def __init__(self, faultCode, faultString, **extra):
+    eleza __init__(self, faultCode, faultString, **extra):
         Error.__init__(self)
         self.faultCode = faultCode
         self.faultString = faultString
-    def __repr__(self):
-        return "<%s %s: %r>" % (self.__class__.__name__,
+    eleza __repr__(self):
+        rudisha "<%s %s: %r>" % (self.__class__.__name__,
                                 self.faultCode, self.faultString)
 
 # --------------------------------------------------------------------
@@ -264,52 +264,52 @@ boolean = Boolean = bool
 
 # Issue #13305: different format codes across platforms
 _day0 = datetime(1, 1, 1)
-if _day0.strftime('%Y') == '0001':      # Mac OS X
-    def _iso8601_format(value):
-        return value.strftime("%Y%m%dT%H:%M:%S")
-elif _day0.strftime('%4Y') == '0001':   # Linux
-    def _iso8601_format(value):
-        return value.strftime("%4Y%m%dT%H:%M:%S")
+ikiwa _day0.strftime('%Y') == '0001':      # Mac OS X
+    eleza _iso8601_format(value):
+        rudisha value.strftime("%Y%m%dT%H:%M:%S")
+elikiwa _day0.strftime('%4Y') == '0001':   # Linux
+    eleza _iso8601_format(value):
+        rudisha value.strftime("%4Y%m%dT%H:%M:%S")
 else:
-    def _iso8601_format(value):
-        return value.strftime("%Y%m%dT%H:%M:%S").zfill(17)
+    eleza _iso8601_format(value):
+        rudisha value.strftime("%Y%m%dT%H:%M:%S").zfill(17)
 del _day0
 
 
-def _strftime(value):
-    if isinstance(value, datetime):
-        return _iso8601_format(value)
+eleza _strftime(value):
+    ikiwa isinstance(value, datetime):
+        rudisha _iso8601_format(value)
 
-    if not isinstance(value, (tuple, time.struct_time)):
-        if value == 0:
+    ikiwa not isinstance(value, (tuple, time.struct_time)):
+        ikiwa value == 0:
             value = time.time()
         value = time.localtime(value)
 
-    return "%04d%02d%02dT%02d:%02d:%02d" % value[:6]
+    rudisha "%04d%02d%02dT%02d:%02d:%02d" % value[:6]
 
-class DateTime:
+kundi DateTime:
     """DateTime wrapper for an ISO 8601 string or time tuple or
     localtime integer value to generate 'dateTime.iso8601' XML-RPC
     value.
     """
 
-    def __init__(self, value=0):
-        if isinstance(value, str):
+    eleza __init__(self, value=0):
+        ikiwa isinstance(value, str):
             self.value = value
         else:
             self.value = _strftime(value)
 
-    def make_comparable(self, other):
-        if isinstance(other, DateTime):
+    eleza make_comparable(self, other):
+        ikiwa isinstance(other, DateTime):
             s = self.value
             o = other.value
-        elif isinstance(other, datetime):
+        elikiwa isinstance(other, datetime):
             s = self.value
             o = _iso8601_format(other)
-        elif isinstance(other, str):
+        elikiwa isinstance(other, str):
             s = self.value
             o = other
-        elif hasattr(other, "timetuple"):
+        elikiwa hasattr(other, "timetuple"):
             s = self.timetuple()
             o = other.timetuple()
         else:
@@ -318,58 +318,58 @@ class DateTime:
                      or type(other))
             raise TypeError("Can't compare %s and %s" %
                             (self.__class__.__name__, otype))
-        return s, o
+        rudisha s, o
 
-    def __lt__(self, other):
+    eleza __lt__(self, other):
         s, o = self.make_comparable(other)
-        return s < o
+        rudisha s < o
 
-    def __le__(self, other):
+    eleza __le__(self, other):
         s, o = self.make_comparable(other)
-        return s <= o
+        rudisha s <= o
 
-    def __gt__(self, other):
+    eleza __gt__(self, other):
         s, o = self.make_comparable(other)
-        return s > o
+        rudisha s > o
 
-    def __ge__(self, other):
+    eleza __ge__(self, other):
         s, o = self.make_comparable(other)
-        return s >= o
+        rudisha s >= o
 
-    def __eq__(self, other):
+    eleza __eq__(self, other):
         s, o = self.make_comparable(other)
-        return s == o
+        rudisha s == o
 
-    def timetuple(self):
-        return time.strptime(self.value, "%Y%m%dT%H:%M:%S")
+    eleza timetuple(self):
+        rudisha time.strptime(self.value, "%Y%m%dT%H:%M:%S")
 
     ##
     # Get date/time value.
     #
-    # @return Date/time value, as an ISO 8601 string.
+    # @rudisha Date/time value, as an ISO 8601 string.
 
-    def __str__(self):
-        return self.value
+    eleza __str__(self):
+        rudisha self.value
 
-    def __repr__(self):
-        return "<%s %r at %#x>" % (self.__class__.__name__, self.value, id(self))
+    eleza __repr__(self):
+        rudisha "<%s %r at %#x>" % (self.__class__.__name__, self.value, id(self))
 
-    def decode(self, data):
+    eleza decode(self, data):
         self.value = str(data).strip()
 
-    def encode(self, out):
+    eleza encode(self, out):
         out.write("<value><dateTime.iso8601>")
         out.write(self.value)
         out.write("</dateTime.iso8601></value>\n")
 
-def _datetime(data):
+eleza _datetime(data):
     # decode xml element contents into a DateTime structure.
     value = DateTime()
     value.decode(data)
-    return value
+    rudisha value
 
-def _datetime_type(data):
-    return datetime.strptime(data, "%Y%m%dT%H:%M:%S")
+eleza _datetime_type(data):
+    rudisha datetime.strptime(data, "%Y%m%dT%H:%M:%S")
 
 ##
 # Wrapper for binary data.  This can be used to transport any kind
@@ -377,14 +377,14 @@ def _datetime_type(data):
 #
 # @param data An 8-bit string containing arbitrary data.
 
-class Binary:
+kundi Binary:
     """Wrapper for binary data."""
 
-    def __init__(self, data=None):
-        if data is None:
+    eleza __init__(self, data=None):
+        ikiwa data is None:
             data = b""
         else:
-            if not isinstance(data, (bytes, bytearray)):
+            ikiwa not isinstance(data, (bytes, bytearray)):
                 raise TypeError("expected bytes or bytearray, not %s" %
                                 data.__class__.__name__)
             data = bytes(data)  # Make a copy of the bytes!
@@ -393,39 +393,39 @@ class Binary:
     ##
     # Get buffer contents.
     #
-    # @return Buffer contents, as an 8-bit string.
+    # @rudisha Buffer contents, as an 8-bit string.
 
-    def __str__(self):
-        return str(self.data, "latin-1")  # XXX encoding?!
+    eleza __str__(self):
+        rudisha str(self.data, "latin-1")  # XXX encoding?!
 
-    def __eq__(self, other):
-        if isinstance(other, Binary):
+    eleza __eq__(self, other):
+        ikiwa isinstance(other, Binary):
             other = other.data
-        return self.data == other
+        rudisha self.data == other
 
-    def decode(self, data):
+    eleza decode(self, data):
         self.data = base64.decodebytes(data)
 
-    def encode(self, out):
+    eleza encode(self, out):
         out.write("<value><base64>\n")
         encoded = base64.encodebytes(self.data)
         out.write(encoded.decode('ascii'))
         out.write("</base64></value>\n")
 
-def _binary(data):
+eleza _binary(data):
     # decode xml element contents into a Binary structure
     value = Binary()
     value.decode(data)
-    return value
+    rudisha value
 
 WRAPPERS = (DateTime, Binary)
 
 # --------------------------------------------------------------------
 # XML parsers
 
-class ExpatParser:
+kundi ExpatParser:
     # fast expat parser for Python 2.0 and later.
-    def __init__(self, target):
+    eleza __init__(self, target):
         self._parser = parser = expat.ParserCreate(None, None)
         self._target = target
         parser.StartElementHandler = target.start
@@ -434,10 +434,10 @@ class ExpatParser:
         encoding = None
         target.xml(encoding, None)
 
-    def feed(self, data):
+    eleza feed(self, data):
         self._parser.Parse(data, 0)
 
-    def close(self):
+    eleza close(self):
         try:
             parser = self._parser
         except AttributeError:
@@ -456,7 +456,7 @@ class ExpatParser:
 #     value is None (interpreted as UTF-8).
 # @see dumps
 
-class Marshaller:
+kundi Marshaller:
     """Generate an XML-RPC params chunk kutoka a Python data structure.
 
     Create a Marshaller instance for each set of parameters, and use
@@ -466,10 +466,10 @@ class Marshaller:
     function for this purpose.
     """
 
-    # by the way, if you don't understand what's going on in here,
+    # by the way, ikiwa you don't understand what's going on in here,
     # that's perfectly ok.
 
-    def __init__(self, encoding=None, allow_none=False):
+    eleza __init__(self, encoding=None, allow_none=False):
         self.memo = {}
         self.data = None
         self.encoding = encoding
@@ -477,11 +477,11 @@ class Marshaller:
 
     dispatch = {}
 
-    def dumps(self, values):
+    eleza dumps(self, values):
         out = []
         write = out.append
         dump = self.__dump
-        if isinstance(values, Fault):
+        ikiwa isinstance(values, Fault):
             # fault instance
             write("<fault>\n")
             dump({'faultCode': values.faultCode,
@@ -491,7 +491,7 @@ class Marshaller:
         else:
             # parameter block
             # FIXME: the xml-rpc specification allows us to leave out
-            # the entire <params> block if there are no parameters.
+            # the entire <params> block ikiwa there are no parameters.
             # however, changing this may break older code (including
             # old versions of xmlrpclib.py), so this is better left as
             # is for now.  See @XMLRPC3 for more information. /F
@@ -502,40 +502,40 @@ class Marshaller:
                 write("</param>\n")
             write("</params>\n")
         result = "".join(out)
-        return result
+        rudisha result
 
-    def __dump(self, value, write):
+    eleza __dump(self, value, write):
         try:
             f = self.dispatch[type(value)]
         except KeyError:
-            # check if this object can be marshalled as a structure
-            if not hasattr(value, '__dict__'):
+            # check ikiwa this object can be marshalled as a structure
+            ikiwa not hasattr(value, '__dict__'):
                 raise TypeError("cannot marshal %s objects" % type(value))
-            # check if this class is a sub-class of a basic type,
+            # check ikiwa this kundi is a sub-kundi of a basic type,
             # because we don't know how to marshal these types
             # (e.g. a string sub-class)
             for type_ in type(value).__mro__:
-                if type_ in self.dispatch.keys():
+                ikiwa type_ in self.dispatch.keys():
                     raise TypeError("cannot marshal %s objects" % type(value))
             # XXX(twouters): using "_arbitrary_instance" as key as a quick-fix
             # for the p3yk merge, this should probably be fixed more neatly.
             f = self.dispatch["_arbitrary_instance"]
         f(self, value, write)
 
-    def dump_nil (self, value, write):
-        if not self.allow_none:
+    eleza dump_nil (self, value, write):
+        ikiwa not self.allow_none:
             raise TypeError("cannot marshal None unless allow_none is enabled")
         write("<value><nil/></value>")
     dispatch[type(None)] = dump_nil
 
-    def dump_bool(self, value, write):
+    eleza dump_bool(self, value, write):
         write("<value><boolean>")
         write(value and "1" or "0")
         write("</boolean></value>\n")
     dispatch[bool] = dump_bool
 
-    def dump_long(self, value, write):
-        if value > MAXINT or value < MININT:
+    eleza dump_long(self, value, write):
+        ikiwa value > MAXINT or value < MININT:
             raise OverflowError("int exceeds XML-RPC limits")
         write("<value><int>")
         write(str(int(value)))
@@ -545,19 +545,19 @@ class Marshaller:
     # backward compatible
     dump_int = dump_long
 
-    def dump_double(self, value, write):
+    eleza dump_double(self, value, write):
         write("<value><double>")
         write(repr(value))
         write("</double></value>\n")
     dispatch[float] = dump_double
 
-    def dump_unicode(self, value, write, escape=escape):
+    eleza dump_unicode(self, value, write, escape=escape):
         write("<value><string>")
         write(escape(value))
         write("</string></value>\n")
     dispatch[str] = dump_unicode
 
-    def dump_bytes(self, value, write):
+    eleza dump_bytes(self, value, write):
         write("<value><base64>\n")
         encoded = base64.encodebytes(value)
         write(encoded.decode('ascii'))
@@ -565,9 +565,9 @@ class Marshaller:
     dispatch[bytes] = dump_bytes
     dispatch[bytearray] = dump_bytes
 
-    def dump_array(self, value, write):
+    eleza dump_array(self, value, write):
         i = id(value)
-        if i in self.memo:
+        ikiwa i in self.memo:
             raise TypeError("cannot marshal recursive sequences")
         self.memo[i] = None
         dump = self.__dump
@@ -579,16 +579,16 @@ class Marshaller:
     dispatch[tuple] = dump_array
     dispatch[list] = dump_array
 
-    def dump_struct(self, value, write, escape=escape):
+    eleza dump_struct(self, value, write, escape=escape):
         i = id(value)
-        if i in self.memo:
+        ikiwa i in self.memo:
             raise TypeError("cannot marshal recursive dictionaries")
         self.memo[i] = None
         dump = self.__dump
         write("<value><struct>\n")
         for k, v in value.items():
             write("<member>\n")
-            if not isinstance(k, str):
+            ikiwa not isinstance(k, str):
                 raise TypeError("dictionary key must be string")
             write("<name>%s</name>\n" % escape(k))
             dump(v, write)
@@ -597,15 +597,15 @@ class Marshaller:
         del self.memo[i]
     dispatch[dict] = dump_struct
 
-    def dump_datetime(self, value, write):
+    eleza dump_datetime(self, value, write):
         write("<value><dateTime.iso8601>")
         write(_strftime(value))
         write("</dateTime.iso8601></value>\n")
     dispatch[datetime] = dump_datetime
 
-    def dump_instance(self, value, write):
+    eleza dump_instance(self, value, write):
         # check for special wrappers
-        if value.__class__ in WRAPPERS:
+        ikiwa value.__class__ in WRAPPERS:
             self.write = write
             value.encode(self)
             del self.write
@@ -623,7 +623,7 @@ class Marshaller:
 #
 # @see loads
 
-class Unmarshaller:
+kundi Unmarshaller:
     """Unmarshal an XML-RPC response, based on incoming XML event
     messages (start, data, end).  Call close() to get the resulting
     data structure.
@@ -632,10 +632,10 @@ class Unmarshaller:
     XML-RPC data without complaining (but not bogus XML).
     """
 
-    # and again, if you don't understand what's going on in here,
+    # and again, ikiwa you don't understand what's going on in here,
     # that's perfectly ok.
 
-    def __init__(self, use_datetime=False, use_builtin_types=False):
+    eleza __init__(self, use_datetime=False, use_builtin_types=False):
         self._type = None
         self._stack = []
         self._marks = []
@@ -647,88 +647,88 @@ class Unmarshaller:
         self._use_datetime = use_builtin_types or use_datetime
         self._use_bytes = use_builtin_types
 
-    def close(self):
-        # return response tuple and target method
-        if self._type is None or self._marks:
+    eleza close(self):
+        # rudisha response tuple and target method
+        ikiwa self._type is None or self._marks:
             raise ResponseError()
-        if self._type == "fault":
+        ikiwa self._type == "fault":
             raise Fault(**self._stack[0])
-        return tuple(self._stack)
+        rudisha tuple(self._stack)
 
-    def getmethodname(self):
-        return self._methodname
+    eleza getmethodname(self):
+        rudisha self._methodname
 
     #
     # event handlers
 
-    def xml(self, encoding, standalone):
+    eleza xml(self, encoding, standalone):
         self._encoding = encoding
         # FIXME: assert standalone == 1 ???
 
-    def start(self, tag, attrs):
+    eleza start(self, tag, attrs):
         # prepare to handle this element
-        if ':' in tag:
+        ikiwa ':' in tag:
             tag = tag.split(':')[-1]
-        if tag == "array" or tag == "struct":
+        ikiwa tag == "array" or tag == "struct":
             self._marks.append(len(self._stack))
         self._data = []
-        if self._value and tag not in self.dispatch:
+        ikiwa self._value and tag not in self.dispatch:
             raise ResponseError("unknown tag %r" % tag)
         self._value = (tag == "value")
 
-    def data(self, text):
+    eleza data(self, text):
         self._data.append(text)
 
-    def end(self, tag):
+    eleza end(self, tag):
         # call the appropriate end tag handler
         try:
             f = self.dispatch[tag]
         except KeyError:
-            if ':' not in tag:
-                return # unknown tag ?
+            ikiwa ':' not in tag:
+                rudisha # unknown tag ?
             try:
                 f = self.dispatch[tag.split(':')[-1]]
             except KeyError:
-                return # unknown tag ?
-        return f(self, "".join(self._data))
+                rudisha # unknown tag ?
+        rudisha f(self, "".join(self._data))
 
     #
     # accelerator support
 
-    def end_dispatch(self, tag, data):
+    eleza end_dispatch(self, tag, data):
         # dispatch data
         try:
             f = self.dispatch[tag]
         except KeyError:
-            if ':' not in tag:
-                return # unknown tag ?
+            ikiwa ':' not in tag:
+                rudisha # unknown tag ?
             try:
                 f = self.dispatch[tag.split(':')[-1]]
             except KeyError:
-                return # unknown tag ?
-        return f(self, data)
+                rudisha # unknown tag ?
+        rudisha f(self, data)
 
     #
     # element decoders
 
     dispatch = {}
 
-    def end_nil (self, data):
+    eleza end_nil (self, data):
         self.append(None)
         self._value = 0
     dispatch["nil"] = end_nil
 
-    def end_boolean(self, data):
-        if data == "0":
+    eleza end_boolean(self, data):
+        ikiwa data == "0":
             self.append(False)
-        elif data == "1":
+        elikiwa data == "1":
             self.append(True)
         else:
             raise TypeError("bad boolean value")
         self._value = 0
     dispatch["boolean"] = end_boolean
 
-    def end_int(self, data):
+    eleza end_int(self, data):
         self.append(int(data))
         self._value = 0
     dispatch["i1"] = end_int
@@ -738,33 +738,33 @@ class Unmarshaller:
     dispatch["int"] = end_int
     dispatch["biginteger"] = end_int
 
-    def end_double(self, data):
+    eleza end_double(self, data):
         self.append(float(data))
         self._value = 0
     dispatch["double"] = end_double
     dispatch["float"] = end_double
 
-    def end_bigdecimal(self, data):
+    eleza end_bigdecimal(self, data):
         self.append(Decimal(data))
         self._value = 0
     dispatch["bigdecimal"] = end_bigdecimal
 
-    def end_string(self, data):
-        if self._encoding:
+    eleza end_string(self, data):
+        ikiwa self._encoding:
             data = data.decode(self._encoding)
         self.append(data)
         self._value = 0
     dispatch["string"] = end_string
     dispatch["name"] = end_string # struct keys are always strings
 
-    def end_array(self, data):
+    eleza end_array(self, data):
         mark = self._marks.pop()
         # map arrays to Python lists
         self._stack[mark:] = [self._stack[mark:]]
         self._value = 0
     dispatch["array"] = end_array
 
-    def end_struct(self, data):
+    eleza end_struct(self, data):
         mark = self._marks.pop()
         # map structs to Python dictionaries
         dict = {}
@@ -775,40 +775,40 @@ class Unmarshaller:
         self._value = 0
     dispatch["struct"] = end_struct
 
-    def end_base64(self, data):
+    eleza end_base64(self, data):
         value = Binary()
         value.decode(data.encode("ascii"))
-        if self._use_bytes:
+        ikiwa self._use_bytes:
             value = value.data
         self.append(value)
         self._value = 0
     dispatch["base64"] = end_base64
 
-    def end_dateTime(self, data):
+    eleza end_dateTime(self, data):
         value = DateTime()
         value.decode(data)
-        if self._use_datetime:
+        ikiwa self._use_datetime:
             value = _datetime_type(data)
         self.append(value)
     dispatch["dateTime.iso8601"] = end_dateTime
 
-    def end_value(self, data):
-        # if we stumble upon a value element with no internal
+    eleza end_value(self, data):
+        # ikiwa we stumble upon a value element with no internal
         # elements, treat it as a string element
-        if self._value:
+        ikiwa self._value:
             self.end_string(data)
     dispatch["value"] = end_value
 
-    def end_params(self, data):
+    eleza end_params(self, data):
         self._type = "params"
     dispatch["params"] = end_params
 
-    def end_fault(self, data):
+    eleza end_fault(self, data):
         self._type = "fault"
     dispatch["fault"] = end_fault
 
-    def end_methodName(self, data):
-        if self._encoding:
+    eleza end_methodName(self, data):
+        ikiwa self._encoding:
             data = data.decode(self._encoding)
         self._methodname = data
         self._type = "methodName" # no params
@@ -817,34 +817,34 @@ class Unmarshaller:
 ## Multicall support
 #
 
-class _MultiCallMethod:
+kundi _MultiCallMethod:
     # some lesser magic to store calls made to a MultiCall object
     # for batch execution
-    def __init__(self, call_list, name):
+    eleza __init__(self, call_list, name):
         self.__call_list = call_list
         self.__name = name
-    def __getattr__(self, name):
-        return _MultiCallMethod(self.__call_list, "%s.%s" % (self.__name, name))
-    def __call__(self, *args):
+    eleza __getattr__(self, name):
+        rudisha _MultiCallMethod(self.__call_list, "%s.%s" % (self.__name, name))
+    eleza __call__(self, *args):
         self.__call_list.append((self.__name, args))
 
-class MultiCallIterator:
+kundi MultiCallIterator:
     """Iterates over the results of a multicall. Exceptions are
     raised in response to xmlrpc faults."""
 
-    def __init__(self, results):
+    eleza __init__(self, results):
         self.results = results
 
-    def __getitem__(self, i):
+    eleza __getitem__(self, i):
         item = self.results[i]
-        if type(item) == type({}):
+        ikiwa type(item) == type({}):
             raise Fault(item['faultCode'], item['faultString'])
-        elif type(item) == type([]):
-            return item[0]
+        elikiwa type(item) == type([]):
+            rudisha item[0]
         else:
             raise ValueError("unexpected type in multicall result")
 
-class MultiCall:
+kundi MultiCall:
     """server -> an object used to boxcar method calls
 
     server should be a ServerProxy object.
@@ -861,22 +861,22 @@ class MultiCall:
     add_result, address = multicall()
     """
 
-    def __init__(self, server):
+    eleza __init__(self, server):
         self.__server = server
         self.__call_list = []
 
-    def __repr__(self):
-        return "<%s at %#x>" % (self.__class__.__name__, id(self))
+    eleza __repr__(self):
+        rudisha "<%s at %#x>" % (self.__class__.__name__, id(self))
 
-    def __getattr__(self, name):
-        return _MultiCallMethod(self.__call_list, name)
+    eleza __getattr__(self, name):
+        rudisha _MultiCallMethod(self.__call_list, name)
 
-    def __call__(self):
+    eleza __call__(self):
         marshalled_list = []
         for name, args in self.__call_list:
             marshalled_list.append({'methodName' : name, 'params' : args})
 
-        return MultiCallIterator(self.__server.system.multicall(marshalled_list))
+        rudisha MultiCallIterator(self.__server.system.multicall(marshalled_list))
 
 # --------------------------------------------------------------------
 # convenience functions
@@ -887,19 +887,19 @@ FastMarshaller = FastParser = FastUnmarshaller = None
 # Create a parser object, and connect it to an unmarshalling instance.
 # This function picks the fastest available XML parser.
 #
-# return A (parser, unmarshaller) tuple.
+# rudisha A (parser, unmarshaller) tuple.
 
-def getparser(use_datetime=False, use_builtin_types=False):
+eleza getparser(use_datetime=False, use_builtin_types=False):
     """getparser() -> parser, unmarshaller
 
     Create an instance of the fastest available parser, and attach it
     to an unmarshalling object.  Return both objects.
     """
-    if FastParser and FastUnmarshaller:
-        if use_builtin_types:
+    ikiwa FastParser and FastUnmarshaller:
+        ikiwa use_builtin_types:
             mkdatetime = _datetime_type
             mkbytes = base64.decodebytes
-        elif use_datetime:
+        elikiwa use_datetime:
             mkdatetime = _datetime_type
             mkbytes = _binary
         else:
@@ -909,16 +909,16 @@ def getparser(use_datetime=False, use_builtin_types=False):
         parser = FastParser(target)
     else:
         target = Unmarshaller(use_datetime=use_datetime, use_builtin_types=use_builtin_types)
-        if FastParser:
+        ikiwa FastParser:
             parser = FastParser(target)
         else:
             parser = ExpatParser(target)
-    return parser, target
+    rudisha parser, target
 
 ##
 # Convert a Python tuple or a Fault instance to an XML-RPC packet.
 #
-# @def dumps(params, **options)
+# @eleza dumps(params, **options)
 # @param params A tuple or Fault instance.
 # @keyparam methodname If given, create a methodCall request for
 #     this method name.
@@ -926,14 +926,14 @@ def getparser(use_datetime=False, use_builtin_types=False):
 #     If used with a tuple, the tuple must be a singleton (that is,
 #     it must contain exactly one element).
 # @keyparam encoding The packet encoding.
-# @return A string containing marshalled data.
+# @rudisha A string containing marshalled data.
 
-def dumps(params, methodname=None, methodresponse=None, encoding=None,
+eleza dumps(params, methodname=None, methodresponse=None, encoding=None,
           allow_none=False):
     """data [,options] -> marshalled data
 
     Convert an argument tuple or a Fault instance to an XML-RPC
-    request (or response, if the methodresponse option is used).
+    request (or response, ikiwa the methodresponse option is used).
 
     In addition to the data object, the following options can be given
     as keyword arguments:
@@ -952,28 +952,28 @@ def dumps(params, methodname=None, methodresponse=None, encoding=None,
     """
 
     assert isinstance(params, (tuple, Fault)), "argument must be tuple or Fault instance"
-    if isinstance(params, Fault):
+    ikiwa isinstance(params, Fault):
         methodresponse = 1
-    elif methodresponse and isinstance(params, tuple):
+    elikiwa methodresponse and isinstance(params, tuple):
         assert len(params) == 1, "response tuple must be a singleton"
 
-    if not encoding:
+    ikiwa not encoding:
         encoding = "utf-8"
 
-    if FastMarshaller:
+    ikiwa FastMarshaller:
         m = FastMarshaller(encoding)
     else:
         m = Marshaller(encoding, allow_none)
 
     data = m.dumps(params)
 
-    if encoding != "utf-8":
+    ikiwa encoding != "utf-8":
         xmlheader = "<?xml version='1.0' encoding='%s'?>\n" % str(encoding)
     else:
         xmlheader = "<?xml version='1.0'?>\n" # utf-8 is default
 
     # standard XML-RPC wrappings
-    if methodname:
+    ikiwa methodname:
         # a method call
         data = (
             xmlheader,
@@ -982,7 +982,7 @@ def dumps(params, methodname=None, methodresponse=None, encoding=None,
             data,
             "</methodCall>\n"
             )
-    elif methodresponse:
+    elikiwa methodresponse:
         # a method response, or a fault structure
         data = (
             xmlheader,
@@ -991,23 +991,23 @@ def dumps(params, methodname=None, methodresponse=None, encoding=None,
             "</methodResponse>\n"
             )
     else:
-        return data # return as is
-    return "".join(data)
+        rudisha data # rudisha as is
+    rudisha "".join(data)
 
 ##
 # Convert an XML-RPC packet to a Python object.  If the XML-RPC packet
 # represents a fault condition, this function raises a Fault exception.
 #
 # @param data An XML-RPC packet, given as an 8-bit string.
-# @return A tuple containing the unpacked data, and the method name
-#     (None if not present).
+# @rudisha A tuple containing the unpacked data, and the method name
+#     (None ikiwa not present).
 # @see Fault
 
-def loads(data, use_datetime=False, use_builtin_types=False):
+eleza loads(data, use_datetime=False, use_builtin_types=False):
     """data -> unmarshalled data, method name
 
     Convert an XML-RPC packet to unmarshalled data plus a method
-    name (None if not present).
+    name (None ikiwa not present).
 
     If the XML-RPC packet represents a fault condition, this function
     raises a Fault exception.
@@ -1015,7 +1015,7 @@ def loads(data, use_datetime=False, use_builtin_types=False):
     p, u = getparser(use_datetime=use_datetime, use_builtin_types=use_builtin_types)
     p.feed(data)
     p.close()
-    return u.close(), u.getmethodname()
+    rudisha u.close(), u.getmethodname()
 
 ##
 # Encode a string using the gzip content encoding such as specified by the
@@ -1023,19 +1023,19 @@ def loads(data, use_datetime=False, use_builtin_types=False):
 # in the HTTP header, as described in RFC 1952
 #
 # @param data the unencoded data
-# @return the encoded data
+# @rudisha the encoded data
 
-def gzip_encode(data):
+eleza gzip_encode(data):
     """data -> gzip encoded data
 
     Encode data using the gzip content encoding as described in RFC 1952
     """
-    if not gzip:
+    ikiwa not gzip:
         raise NotImplementedError
     f = BytesIO()
     with gzip.GzipFile(mode="wb", fileobj=f, compresslevel=1) as gzf:
         gzf.write(data)
-    return f.getvalue()
+    rudisha f.getvalue()
 
 ##
 # Decode a string using the gzip content encoding such as specified by the
@@ -1045,49 +1045,49 @@ def gzip_encode(data):
 # @param data The encoded data
 # @keyparam max_decode Maximum bytes to decode (20 MiB default), use negative
 #    values for unlimited decoding
-# @return the unencoded data
-# @raises ValueError if data is not correctly coded.
-# @raises ValueError if max gzipped payload length exceeded
+# @rudisha the unencoded data
+# @raises ValueError ikiwa data is not correctly coded.
+# @raises ValueError ikiwa max gzipped payload length exceeded
 
-def gzip_decode(data, max_decode=20971520):
+eleza gzip_decode(data, max_decode=20971520):
     """gzip encoded data -> unencoded data
 
     Decode data using the gzip content encoding as described in RFC 1952
     """
-    if not gzip:
+    ikiwa not gzip:
         raise NotImplementedError
     with gzip.GzipFile(mode="rb", fileobj=BytesIO(data)) as gzf:
         try:
-            if max_decode < 0: # no limit
+            ikiwa max_decode < 0: # no limit
                 decoded = gzf.read()
             else:
                 decoded = gzf.read(max_decode + 1)
         except OSError:
             raise ValueError("invalid data")
-    if max_decode >= 0 and len(decoded) > max_decode:
+    ikiwa max_decode >= 0 and len(decoded) > max_decode:
         raise ValueError("max gzipped payload length exceeded")
-    return decoded
+    rudisha decoded
 
 ##
 # Return a decoded file-like object for the gzip encoding
 # as described in RFC 1952.
 #
 # @param response A stream supporting a read() method
-# @return a file-like object that the decoded data can be read() kutoka
+# @rudisha a file-like object that the decoded data can be read() kutoka
 
-class GzipDecodedResponse(gzip.GzipFile if gzip else object):
+kundi GzipDecodedResponse(gzip.GzipFile ikiwa gzip else object):
     """a file-like object to decode a response encoded with the gzip
     method, as described in RFC 1952.
     """
-    def __init__(self, response):
+    eleza __init__(self, response):
         #response doesn't support tell() and read(), required by
         #GzipFile
-        if not gzip:
+        ikiwa not gzip:
             raise NotImplementedError
         self.io = BytesIO(response.read())
         gzip.GzipFile.__init__(self, mode="rb", fileobj=self.io)
 
-    def close(self):
+    eleza close(self):
         try:
             gzip.GzipFile.close(self)
         finally:
@@ -1097,38 +1097,38 @@ class GzipDecodedResponse(gzip.GzipFile if gzip else object):
 # --------------------------------------------------------------------
 # request dispatcher
 
-class _Method:
+kundi _Method:
     # some magic to bind an XML-RPC method to an RPC server.
     # supports "nested" methods (e.g. examples.getStateName)
-    def __init__(self, send, name):
+    eleza __init__(self, send, name):
         self.__send = send
         self.__name = name
-    def __getattr__(self, name):
-        return _Method(self.__send, "%s.%s" % (self.__name, name))
-    def __call__(self, *args):
-        return self.__send(self.__name, args)
+    eleza __getattr__(self, name):
+        rudisha _Method(self.__send, "%s.%s" % (self.__name, name))
+    eleza __call__(self, *args):
+        rudisha self.__send(self.__name, args)
 
 ##
-# Standard transport class for XML-RPC over HTTP.
+# Standard transport kundi for XML-RPC over HTTP.
 # <p>
 # You can create custom transports by subclassing this method, and
 # overriding selected methods.
 
-class Transport:
+kundi Transport:
     """Handles an HTTP transaction to an XML-RPC server."""
 
     # client identifier (may be overridden)
     user_agent = "Python-xmlrpc/%s" % __version__
 
-    #if true, we'll request gzip encoding
+    #ikiwa true, we'll request gzip encoding
     accept_gzip_encoding = True
 
-    # if positive, encode request using gzip if it exceeds this threshold
-    # note that many servers will get confused, so only use it if you know
+    # ikiwa positive, encode request using gzip ikiwa it exceeds this threshold
+    # note that many servers will get confused, so only use it ikiwa you know
     # that they can decode such a request
     encode_threshold = None #None = don't encode
 
-    def __init__(self, use_datetime=False, use_builtin_types=False,
+    eleza __init__(self, use_datetime=False, use_builtin_types=False,
                  *, headers=()):
         self._use_datetime = use_datetime
         self._use_builtin_types = use_builtin_types
@@ -1138,35 +1138,35 @@ class Transport:
 
     ##
     # Send a complete request, and parse the response.
-    # Retry request if a cached connection has disconnected.
+    # Retry request ikiwa a cached connection has disconnected.
     #
     # @param host Target host.
     # @param handler Target PRC handler.
     # @param request_body XML-RPC request body.
     # @param verbose Debugging flag.
-    # @return Parsed response.
+    # @rudisha Parsed response.
 
-    def request(self, host, handler, request_body, verbose=False):
-        #retry request once if cached connection has gone cold
+    eleza request(self, host, handler, request_body, verbose=False):
+        #retry request once ikiwa cached connection has gone cold
         for i in (0, 1):
             try:
-                return self.single_request(host, handler, request_body, verbose)
+                rudisha self.single_request(host, handler, request_body, verbose)
             except http.client.RemoteDisconnected:
-                if i:
+                ikiwa i:
                     raise
             except OSError as e:
-                if i or e.errno not in (errno.ECONNRESET, errno.ECONNABORTED,
+                ikiwa i or e.errno not in (errno.ECONNRESET, errno.ECONNABORTED,
                                         errno.EPIPE):
                     raise
 
-    def single_request(self, host, handler, request_body, verbose=False):
+    eleza single_request(self, host, handler, request_body, verbose=False):
         # issue XML-RPC request
         try:
             http_conn = self.send_request(host, handler, request_body, verbose)
             resp = http_conn.getresponse()
-            if resp.status == 200:
+            ikiwa resp.status == 200:
                 self.verbose = verbose
-                return self.parse_response(resp)
+                rudisha self.parse_response(resp)
 
         except Fault:
             raise
@@ -1178,7 +1178,7 @@ class Transport:
 
         #We got an error response.
         #Discard any response data and raise exception
-        if resp.getheader("content-length", ""):
+        ikiwa resp.getheader("content-length", ""):
             resp.read()
         raise ProtocolError(
             host + handler,
@@ -1190,32 +1190,32 @@ class Transport:
     ##
     # Create parser.
     #
-    # @return A 2-tuple containing a parser and an unmarshaller.
+    # @rudisha A 2-tuple containing a parser and an unmarshaller.
 
-    def getparser(self):
+    eleza getparser(self):
         # get parser and unmarshaller
-        return getparser(use_datetime=self._use_datetime,
+        rudisha getparser(use_datetime=self._use_datetime,
                          use_builtin_types=self._use_builtin_types)
 
     ##
     # Get authorization info kutoka host parameter
-    # Host may be a string, or a (host, x509-dict) tuple; if a string,
+    # Host may be a string, or a (host, x509-dict) tuple; ikiwa a string,
     # it is checked for a "user:pw@host" format, and a "Basic
-    # Authentication" header is added if appropriate.
+    # Authentication" header is added ikiwa appropriate.
     #
     # @param host Host descriptor (URL or (URL, x509 info) tuple).
-    # @return A 3-tuple containing (actual host, extra headers,
+    # @rudisha A 3-tuple containing (actual host, extra headers,
     #     x509 info).  The header and x509 fields may be None.
 
-    def get_host_info(self, host):
+    eleza get_host_info(self, host):
 
         x509 = {}
-        if isinstance(host, tuple):
+        ikiwa isinstance(host, tuple):
             host, x509 = host
 
         auth, host = urllib.parse._splituser(host)
 
-        if auth:
+        ikiwa auth:
             auth = urllib.parse.unquote_to_bytes(auth)
             auth = base64.encodebytes(auth).decode("utf-8")
             auth = "".join(auth.split()) # get rid of whitespace
@@ -1225,31 +1225,31 @@ class Transport:
         else:
             extra_headers = []
 
-        return host, extra_headers, x509
+        rudisha host, extra_headers, x509
 
     ##
     # Connect to server.
     #
     # @param host Target host.
-    # @return An HTTPConnection object
+    # @rudisha An HTTPConnection object
 
-    def make_connection(self, host):
-        #return an existing connection if possible.  This allows
+    eleza make_connection(self, host):
+        #rudisha an existing connection ikiwa possible.  This allows
         #HTTP/1.1 keep-alive.
-        if self._connection and host == self._connection[0]:
-            return self._connection[1]
+        ikiwa self._connection and host == self._connection[0]:
+            rudisha self._connection[1]
         # create a HTTP connection object kutoka a host descriptor
         chost, self._extra_headers, x509 = self.get_host_info(host)
         self._connection = host, http.client.HTTPConnection(chost)
-        return self._connection[1]
+        rudisha self._connection[1]
 
     ##
     # Clear any cached connection object.
     # Used in the event of socket errors.
     #
-    def close(self):
+    eleza close(self):
         host, connection = self._connection
-        if connection:
+        ikiwa connection:
             self._connection = (None, None)
             connection.close()
 
@@ -1259,15 +1259,15 @@ class Transport:
     # @param host Host descriptor (URL or (URL, x509 info) tuple).
     # @param handler Target RPC handler (a path relative to host)
     # @param request_body The XML-RPC request body
-    # @param debug Enable debugging if debug is true.
-    # @return An HTTPConnection.
+    # @param debug Enable debugging ikiwa debug is true.
+    # @rudisha An HTTPConnection.
 
-    def send_request(self, host, handler, request_body, debug):
+    eleza send_request(self, host, handler, request_body, debug):
         connection = self.make_connection(host)
         headers = self._headers + self._extra_headers
-        if debug:
+        ikiwa debug:
             connection.set_debuglevel(1)
-        if self.accept_gzip_encoding and gzip:
+        ikiwa self.accept_gzip_encoding and gzip:
             connection.putrequest("POST", handler, skip_accept_encoding=True)
             headers.append(("Accept-Encoding", "gzip"))
         else:
@@ -1276,7 +1276,7 @@ class Transport:
         headers.append(("User-Agent", self.user_agent))
         self.send_headers(connection, headers)
         self.send_content(connection, request_body)
-        return connection
+        rudisha connection
 
     ##
     # Send request headers.
@@ -1285,7 +1285,7 @@ class Transport:
     # @param connection httpConnection.
     # @param headers list of key,value pairs for HTTP headers
 
-    def send_headers(self, connection, headers):
+    eleza send_headers(self, connection, headers):
         for key, val in headers:
             connection.putheader(key, val)
 
@@ -1296,9 +1296,9 @@ class Transport:
     # @param connection httpConnection.
     # @param request_body XML-RPC request body.
 
-    def send_content(self, connection, request_body):
+    eleza send_content(self, connection, request_body):
         #optionally encode the request
-        if (self.encode_threshold is not None and
+        ikiwa (self.encode_threshold is not None and
             self.encode_threshold < len(request_body) and
             gzip):
             connection.putheader("Content-Encoding", "gzip")
@@ -1311,13 +1311,13 @@ class Transport:
     # Parse response.
     #
     # @param file Stream.
-    # @return Response tuple and target method.
+    # @rudisha Response tuple and target method.
 
-    def parse_response(self, response):
+    eleza parse_response(self, response):
         # read response data kutoka httpresponse, and parse it
         # Check for new http response object, otherwise it is a file object.
-        if hasattr(response, 'getheader'):
-            if response.getheader("Content-Encoding", "") == "gzip":
+        ikiwa hasattr(response, 'getheader'):
+            ikiwa response.getheader("Content-Encoding", "") == "gzip":
                 stream = GzipDecodedResponse(response)
             else:
                 stream = response
@@ -1328,25 +1328,25 @@ class Transport:
 
         while 1:
             data = stream.read(1024)
-            if not data:
+            ikiwa not data:
                 break
-            if self.verbose:
-                print("body:", repr(data))
+            ikiwa self.verbose:
+                andika("body:", repr(data))
             p.feed(data)
 
-        if stream is not response:
+        ikiwa stream is not response:
             stream.close()
         p.close()
 
-        return u.close()
+        rudisha u.close()
 
 ##
-# Standard transport class for XML-RPC over HTTPS.
+# Standard transport kundi for XML-RPC over HTTPS.
 
-class SafeTransport(Transport):
+kundi SafeTransport(Transport):
     """Handles an HTTPS transaction to an XML-RPC server."""
 
-    def __init__(self, use_datetime=False, use_builtin_types=False,
+    eleza __init__(self, use_datetime=False, use_builtin_types=False,
                  *, headers=(), context=None):
         super().__init__(use_datetime=use_datetime,
                          use_builtin_types=use_builtin_types,
@@ -1355,11 +1355,11 @@ class SafeTransport(Transport):
 
     # FIXME: mostly untested
 
-    def make_connection(self, host):
-        if self._connection and host == self._connection[0]:
-            return self._connection[1]
+    eleza make_connection(self, host):
+        ikiwa self._connection and host == self._connection[0]:
+            rudisha self._connection[1]
 
-        if not hasattr(http.client, "HTTPSConnection"):
+        ikiwa not hasattr(http.client, "HTTPSConnection"):
             raise NotImplementedError(
             "your version of http.client doesn't support HTTPS")
         # create a HTTPS connection object kutoka a host descriptor
@@ -1367,16 +1367,16 @@ class SafeTransport(Transport):
         chost, self._extra_headers, x509 = self.get_host_info(host)
         self._connection = host, http.client.HTTPSConnection(chost,
             None, context=self.context, **(x509 or {}))
-        return self._connection[1]
+        rudisha self._connection[1]
 
 ##
-# Standard server proxy.  This class establishes a virtual connection
+# Standard server proxy.  This kundi establishes a virtual connection
 # to an XML-RPC server.
 # <p>
-# This class is available as ServerProxy and Server.  New code should
+# This kundi is available as ServerProxy and Server.  New code should
 # use ServerProxy, to avoid confusion.
 #
-# @def ServerProxy(uri, **options)
+# @eleza ServerProxy(uri, **options)
 # @param uri The connection point on the server.
 # @keyparam transport A transport factory, compatible with the
 #    standard transport class.
@@ -1386,7 +1386,7 @@ class SafeTransport(Transport):
 #    (printed to standard output).
 # @see Transport
 
-class ServerProxy:
+kundi ServerProxy:
     """uri [,options] -> a logical connection to an XML-RPC server
 
     uri is the connection point on the server, given as
@@ -1408,21 +1408,21 @@ class ServerProxy:
     the given encoding.
     """
 
-    def __init__(self, uri, transport=None, encoding=None, verbose=False,
+    eleza __init__(self, uri, transport=None, encoding=None, verbose=False,
                  allow_none=False, use_datetime=False, use_builtin_types=False,
                  *, headers=(), context=None):
         # establish a "logical" server connection
 
         # get the url
         type, uri = urllib.parse._splittype(uri)
-        if type not in ("http", "https"):
+        ikiwa type not in ("http", "https"):
             raise OSError("unsupported XML-RPC protocol")
         self.__host, self.__handler = urllib.parse._splithost(uri)
-        if not self.__handler:
+        ikiwa not self.__handler:
             self.__handler = "/RPC2"
 
-        if transport is None:
-            if type == "https":
+        ikiwa transport is None:
+            ikiwa type == "https":
                 handler = SafeTransport
                 extra_kwargs = {"context": context}
             else:
@@ -1438,10 +1438,10 @@ class ServerProxy:
         self.__verbose = verbose
         self.__allow_none = allow_none
 
-    def __close(self):
+    eleza __close(self):
         self.__transport.close()
 
-    def __request(self, methodname, params):
+    eleza __request(self, methodname, params):
         # call a method on the remote server
 
         request = dumps(params, methodname, encoding=self.__encoding,
@@ -1454,38 +1454,38 @@ class ServerProxy:
             verbose=self.__verbose
             )
 
-        if len(response) == 1:
+        ikiwa len(response) == 1:
             response = response[0]
 
-        return response
+        rudisha response
 
-    def __repr__(self):
-        return (
+    eleza __repr__(self):
+        rudisha (
             "<%s for %s%s>" %
             (self.__class__.__name__, self.__host, self.__handler)
             )
 
-    def __getattr__(self, name):
+    eleza __getattr__(self, name):
         # magic method dispatcher
-        return _Method(self.__request, name)
+        rudisha _Method(self.__request, name)
 
     # note: to call a remote object with a non-standard name, use
     # result getattr(server, "strange-python-name")(args)
 
-    def __call__(self, attr):
+    eleza __call__(self, attr):
         """A workaround to get special attributes on the ServerProxy
            without interfering with the magic __getattr__
         """
-        if attr == "close":
-            return self.__close
-        elif attr == "transport":
-            return self.__transport
+        ikiwa attr == "close":
+            rudisha self.__close
+        elikiwa attr == "transport":
+            rudisha self.__transport
         raise AttributeError("Attribute %r not found" % (attr,))
 
-    def __enter__(self):
-        return self
+    eleza __enter__(self):
+        rudisha self
 
-    def __exit__(self, *args):
+    eleza __exit__(self, *args):
         self.__close()
 
 # compatibility
@@ -1495,7 +1495,7 @@ Server = ServerProxy
 # --------------------------------------------------------------------
 # test code
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
 
     # simple test program (kutoka the XML-RPC specification)
 
@@ -1503,9 +1503,9 @@ if __name__ == "__main__":
     server = ServerProxy("http://localhost:8000")
 
     try:
-        print(server.currentTime.getCurrentTime())
+        andika(server.currentTime.getCurrentTime())
     except Error as v:
-        print("ERROR", v)
+        andika("ERROR", v)
 
     multi = MultiCall(server)
     multi.getData()
@@ -1513,6 +1513,6 @@ if __name__ == "__main__":
     multi.add(1,2)
     try:
         for response in multi():
-            print(response)
+            andika(response)
     except Error as v:
-        print("ERROR", v)
+        andika("ERROR", v)

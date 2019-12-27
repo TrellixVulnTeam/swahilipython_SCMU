@@ -11,9 +11,9 @@ except ImportError:
 
 import asyncio
 from asyncio.selector_events import BaseSelectorEventLoop
-from asyncio.selector_events import _SelectorTransport
-from asyncio.selector_events import _SelectorSocketTransport
-from asyncio.selector_events import _SelectorDatagramTransport
+from asyncio.selector_events agiza _SelectorTransport
+from asyncio.selector_events agiza _SelectorSocketTransport
+from asyncio.selector_events agiza _SelectorDatagramTransport
 from test.test_asyncio import utils as test_utils
 
 

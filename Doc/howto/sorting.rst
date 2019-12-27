@@ -9,7 +9,7 @@ Sorting HOW TO
 
 Python lists have a built-in :meth:`list.sort` method that modifies the list
 in-place.  There is also a :func:`sorted` built-in function that builds a new
-sorted list from an iterable.
+sorted list kutoka an iterable.
 
 In this document, we explore the various techniques for sorting data using Python.
 
@@ -47,8 +47,8 @@ function to be called on each list element prior to making comparisons.
 
 For example, here's a case-insensitive string comparison:
 
-    >>> sorted("This is a test string from Andrew".split(), key=str.lower)
-    ['a', 'Andrew', 'from', 'is', 'string', 'test', 'This']
+    >>> sorted("This is a test string kutoka Andrew".split(), key=str.lower)
+    ['a', 'Andrew', 'kutoka', 'is', 'string', 'test', 'This']
 
 The value of the *key* parameter should be a function that takes a single argument
 and returns a key to use for sorting purposes. This technique is fast because
@@ -67,7 +67,7 @@ as keys. For example:
 
 The same technique works for objects with named attributes. For example:
 
-    >>> class Student:
+    >>> kundi Student:
     ...     def __init__(self, name, grade, age):
     ...         self.name = name
     ...         self.grade = grade
@@ -93,7 +93,7 @@ convenience functions to make accessor functions easier and faster. The
 
 Using those functions, the above examples become simpler and faster:
 
-    >>> from operator import itemgetter, attrgetter
+    >>> kutoka operator agiza itemgetter, attrgetter
 
     >>> sorted(student_tuples, key=itemgetter(2))
     [('dave', 'B', 10), ('jane', 'B', 12), ('john', 'A', 15)]
@@ -230,13 +230,13 @@ Or you can reverse the order of comparison with:
     >>> sorted([5, 2, 4, 1, 3], cmp=reverse_numeric) # doctest: +SKIP
     [5, 4, 3, 2, 1]
 
-When porting code from Python 2.x to 3.x, the situation can arise when you have
+When porting code kutoka Python 2.x to 3.x, the situation can arise when you have
 the user supplying a comparison function and you need to convert that to a key
 function. The following wrapper makes that easy to do::
 
     def cmp_to_key(mycmp):
         'Convert a cmp= function into a key= function'
-        class K:
+        kundi K:
             def __init__(self, obj, *args):
                 self.obj = obj
             def __lt__(self, other):
@@ -257,7 +257,7 @@ To convert to a key function, just wrap the old comparison function:
 
 .. testsetup::
 
-    from functools import cmp_to_key
+    kutoka functools agiza cmp_to_key
 
 .. doctest::
 
@@ -286,7 +286,7 @@ Odd and Ends
     [('red', 1), ('red', 2), ('blue', 1), ('blue', 2)]
 
 * The sort routines are guaranteed to use :meth:`__lt__` when making comparisons
-  between two objects. So, it is easy to add a standard sort order to a class by
+  between two objects. So, it is easy to add a standard sort order to a kundi by
   defining an :meth:`__lt__` method::
 
     >>> Student.__lt__ = lambda self, other: self.age < other.age

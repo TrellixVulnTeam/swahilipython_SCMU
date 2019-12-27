@@ -63,16 +63,16 @@ code.
 
    If *first_line* is not ``None``, it indicates the line number that should be
    reported for the first source line in the disassembled code.  Otherwise, the
-   source line information (if any) is taken directly from the disassembled code
+   source line information (if any) is taken directly kutoka the disassembled code
    object.
 
    If *current_offset* is not ``None``, it refers to an instruction offset in the
    disassembled code. Setting this means :meth:`.dis` will display a "current
    instruction" marker against the specified opcode.
 
-   .. classmethod:: from_traceback(tb)
+   .. classmethod:: kutoka_traceback(tb)
 
-      Construct a :class:`Bytecode` instance from the given traceback, setting
+      Construct a :class:`Bytecode` instance kutoka the given traceback, setting
       *current_offset* to the instruction responsible for the exception.
 
    .. data:: codeobj
@@ -152,7 +152,7 @@ operation is being performed, so the intermediate analysis object isn't useful:
    method, a function, a generator, an asynchronous generator, a coroutine,
    a code object, a string of source code or a byte sequence of raw bytecode.
    For a module, it disassembles all functions. For a class, it disassembles
-   all methods (including class and static methods). For a code object or
+   all methods (including kundi and static methods). For a code object or
    sequence of raw bytecode, it prints one line per bytecode instruction.
    It also recursively disassembles nested code objects (the code of
    comprehensions, generator expressions and nested functions, and the code
@@ -224,7 +224,7 @@ operation is being performed, so the intermediate analysis object isn't useful:
 
    If *first_line* is not ``None``, it indicates the line number that should be
    reported for the first source line in the disassembled code.  Otherwise, the
-   source line information (if any) is taken directly from the disassembled code
+   source line information (if any) is taken directly kutoka the disassembled code
    object.
 
    .. versionadded:: 3.4
@@ -268,7 +268,7 @@ operation is being performed, so the intermediate analysis object isn't useful:
 Python Bytecode Instructions
 ----------------------------
 
-The :func:`get_instructions` function and :class:`Bytecode` class provide
+The :func:`get_instructions` function and :class:`Bytecode` kundi provide
 details of bytecode instructions as :class:`Instruction` instances:
 
 .. class:: Instruction
@@ -408,7 +408,7 @@ result back on the stack.
 **Binary operations**
 
 Binary operations remove the top of the stack (TOS) and the second top-most
-stack item (TOS1) from the stack.  They perform the operation, and put the
+stack item (TOS1) kutoka the stack.  They perform the operation, and put the
 result back on the stack.
 
 .. opcode:: BINARY_POWER
@@ -585,7 +585,7 @@ the original TOS1.
 
    .. versionadded:: 3.5
    .. versionchanged:: 3.7
-      Returning awaitable objects from ``__aiter__`` is no longer
+      Returning awaitable objects kutoka ``__aiter__`` is no longer
       supported.
 
 
@@ -601,16 +601,16 @@ the original TOS1.
 
    Terminates an :keyword:`async for` loop.  Handles an exception raised
    when awaiting a next item.  If TOS is :exc:`StopAsyncIteration` pop 7
-   values from the stack and restore the exception state using the second
+   values kutoka the stack and restore the exception state using the second
    three of them.  Otherwise re-raise the exception using the three values
-   from the stack.  An exception handler block is removed from the block stack.
+   kutoka the stack.  An exception handler block is removed kutoka the block stack.
 
    .. versionadded:: 3.8
 
 
 .. opcode:: BEFORE_ASYNC_WITH
 
-   Resolves ``__aenter__`` and ``__aexit__`` from the object on top of the
+   Resolves ``__aenter__`` and ``__aexit__`` kutoka the object on top of the
    stack.  Pushes ``__aexit__`` and result of ``__aenter__()`` to the stack.
 
    .. versionadded:: 3.5
@@ -629,7 +629,7 @@ the original TOS1.
 .. opcode:: PRINT_EXPR
 
    Implements the expression statement for the interactive mode.  TOS is removed
-   from the stack and printed.  In non-interactive mode, an expression statement
+   kutoka the stack and printed.  In non-interactive mode, an expression statement
    is terminated with :opcode:`POP_TOP`.
 
 
@@ -665,12 +665,12 @@ iterations of the loop.
 
 .. opcode:: YIELD_VALUE
 
-   Pops TOS and yields it from a :term:`generator`.
+   Pops TOS and yields it kutoka a :term:`generator`.
 
 
 .. opcode:: YIELD_FROM
 
-   Pops TOS and delegates to it as a subiterator from a :term:`generator`.
+   Pops TOS and delegates to it as a subiterator kutoka a :term:`generator`.
 
    .. versionadded:: 3.3
 
@@ -687,37 +687,37 @@ iterations of the loop.
 
 .. opcode:: IMPORT_STAR
 
-   Loads all symbols not starting with ``'_'`` directly from the module TOS to
+   Loads all symbols not starting with ``'_'`` directly kutoka the module TOS to
    the local namespace. The module is popped after loading all names. This
-   opcode implements ``from module import *``.
+   opcode implements ``kutoka module agiza *``.
 
 
 .. opcode:: POP_BLOCK
 
-   Removes one block from the block stack.  Per frame, there is a stack of
+   Removes one block kutoka the block stack.  Per frame, there is a stack of
    blocks, denoting :keyword:`try` statements, and such.
 
 
 .. opcode:: POP_EXCEPT
 
-   Removes one block from the block stack. The popped block must be an exception
+   Removes one block kutoka the block stack. The popped block must be an exception
    handler block, as implicitly created when entering an except handler.  In
-   addition to popping extraneous values from the frame stack, the last three
+   addition to popping extraneous values kutoka the frame stack, the last three
    popped values are used to restore the exception state.
 
 
 .. opcode:: POP_FINALLY (preserve_tos)
 
    Cleans up the value stack and the block stack.  If *preserve_tos* is not
-   ``0`` TOS first is popped from the stack and pushed on the stack after
+   ``0`` TOS first is popped kutoka the stack and pushed on the stack after
    performing other stack operations:
 
    * If TOS is ``NULL`` or an integer (pushed by :opcode:`BEGIN_FINALLY`
-     or :opcode:`CALL_FINALLY`) it is popped from the stack.
+     or :opcode:`CALL_FINALLY`) it is popped kutoka the stack.
    * If TOS is an exception type (pushed when an exception has been raised)
-     6 values are popped from the stack, the last three popped values are
+     6 values are popped kutoka the stack, the last three popped values are
      used to restore the exception state.  An exception handler block is
-     removed from the block stack.
+     removed kutoka the block stack.
 
    It is similar to :opcode:`END_FINALLY`, but doesn't change the bytecode
    counter nor raise an exception.  Used for implementing :keyword:`break`,
@@ -741,15 +741,15 @@ iterations of the loop.
    exception has to be re-raised or execution has to be continued depending on
    the value of TOS.
 
-   * If TOS is ``NULL`` (pushed by :opcode:`BEGIN_FINALLY`) continue from
+   * If TOS is ``NULL`` (pushed by :opcode:`BEGIN_FINALLY`) continue kutoka
      the next instruction. TOS is popped.
    * If TOS is an integer (pushed by :opcode:`CALL_FINALLY`), sets the
      bytecode counter to TOS.  TOS is popped.
    * If TOS is an exception type (pushed when an exception has been raised)
-     6 values are popped from the stack, the first three popped values are
+     6 values are popped kutoka the stack, the first three popped values are
      used to re-raise the exception and the last three popped values are used
      to restore the exception state.  An exception handler block is removed
-     from the block stack.
+     kutoka the block stack.
 
 
 .. opcode:: LOAD_BUILD_CLASS
@@ -761,7 +761,7 @@ iterations of the loop.
 .. opcode:: SETUP_WITH (delta)
 
    This opcode performs several operations before a with block starts.  First,
-   it loads :meth:`~object.__exit__` from the context manager and pushes it onto
+   it loads :meth:`~object.__exit__` kutoka the context manager and pushes it onto
    the stack for later use by :opcode:`WITH_CLEANUP_START`.  Then,
    :meth:`~object.__enter__` is called, and a finally block pointing to *delta*
    is pushed.  Finally, the result of calling the ``__enter__()`` method is pushed onto
@@ -782,7 +782,7 @@ iterations of the loop.
    :meth:`~object.__exit__` or :meth:`~object.__aexit__` bound method.
 
    If TOS is ``NULL``, calls ``SECOND(None, None, None)``,
-   removes the function from the stack, leaving TOS, and pushes ``None``
+   removes the function kutoka the stack, leaving TOS, and pushes ``None``
    to the stack.  Otherwise calls ``SEVENTH(TOP, SECOND, THIRD)``,
    shifts the bottom 3 values of the stack down, replaces the empty spot
    with ``NULL`` and pushes TOS.  Finally pushes the result of the call.
@@ -796,7 +796,7 @@ iterations of the loop.
    by :opcode:`WITH_CLEANUP_START`.  SECOND is ``None`` or an exception type
    (pushed when an exception has been raised).
 
-   Pops two values from the stack.  If SECOND is not None and TOS is true
+   Pops two values kutoka the stack.  If SECOND is not None and TOS is true
    unwinds the EXCEPT_HANDLER block which was created when the exception
    was caught and pushes ``NULL`` to the stack.
 
@@ -867,7 +867,7 @@ All of the following opcodes use their arguments.
 
 .. opcode:: BUILD_TUPLE (count)
 
-   Creates a tuple consuming *count* items from the stack, and pushes the
+   Creates a tuple consuming *count* items kutoka the stack, and pushes the
    resulting tuple onto the stack.
 
 
@@ -888,14 +888,14 @@ All of the following opcodes use their arguments.
    ``{..., TOS3: TOS2, TOS1: TOS}``.
 
    .. versionchanged:: 3.5
-      The dictionary is created from stack items instead of creating an
+      The dictionary is created kutoka stack items instead of creating an
       empty dictionary pre-sized to hold *count* items.
 
 
 .. opcode:: BUILD_CONST_KEY_MAP (count)
 
    The version of :opcode:`BUILD_MAP` specialized for constant keys.  *count*
-   values are consumed from the stack.  The top element on the stack contains
+   values are consumed kutoka the stack.  The top element on the stack contains
    a tuple of keys.
 
    .. versionadded:: 3.6
@@ -903,7 +903,7 @@ All of the following opcodes use their arguments.
 
 .. opcode:: BUILD_STRING (count)
 
-   Concatenates *count* strings from the stack and pushes the resulting string
+   Concatenates *count* strings kutoka the stack and pushes the resulting string
    onto the stack.
 
    .. versionadded:: 3.6
@@ -911,7 +911,7 @@ All of the following opcodes use their arguments.
 
 .. opcode:: BUILD_TUPLE_UNPACK (count)
 
-   Pops *count* iterables from the stack, joins them in a single tuple,
+   Pops *count* iterables kutoka the stack, joins them in a single tuple,
    and pushes the result.  Implements iterable unpacking in tuple
    displays ``(*x, *y, *z)``.
 
@@ -947,7 +947,7 @@ All of the following opcodes use their arguments.
 
 .. opcode:: BUILD_MAP_UNPACK (count)
 
-   Pops *count* mappings from the stack, merges them into a single dictionary,
+   Pops *count* mappings kutoka the stack, merges them into a single dictionary,
    and pushes the result.  Implements dictionary unpacking in dictionary
    displays ``{**x, **y, **z}``.
 
@@ -980,15 +980,15 @@ All of the following opcodes use their arguments.
 .. opcode:: IMPORT_NAME (namei)
 
    Imports the module ``co_names[namei]``.  TOS and TOS1 are popped and provide
-   the *fromlist* and *level* arguments of :func:`__import__`.  The module
+   the *kutokalist* and *level* arguments of :func:`__import__`.  The module
    object is pushed onto the stack.  The current namespace is not affected: for
-   a proper import statement, a subsequent :opcode:`STORE_FAST` instruction
+   a proper agiza statement, a subsequent :opcode:`STORE_FAST` instruction
    modifies the namespace.
 
 
 .. opcode:: IMPORT_FROM (namei)
 
-   Loads the attribute ``co_names[namei]`` from the module found in TOS. The
+   Loads the attribute ``co_names[namei]`` kutoka the module found in TOS. The
    resulting object is pushed onto the stack, to be subsequently stored by a
    :opcode:`STORE_FAST` instruction.
 
@@ -1048,7 +1048,7 @@ All of the following opcodes use their arguments.
 
 .. opcode:: SETUP_FINALLY (delta)
 
-   Pushes a try block from a try-finally or try-except clause onto the block
+   Pushes a try block kutoka a try-finally or try-except clause onto the block
    stack.  *delta* points to the finally block or the first except block.
 
 
@@ -1120,7 +1120,7 @@ All of the following opcodes use their arguments.
 
    * 0: ``raise`` (re-raise previous exception)
    * 1: ``raise TOS`` (raise exception instance or type at ``TOS``)
-   * 2: ``raise TOS1 from TOS`` (raise exception instance or type at ``TOS1``
+   * 2: ``raise TOS1 kutoka TOS`` (raise exception instance or type at ``TOS1``
      with ``__cause__`` set to ``TOS``)
 
 
@@ -1176,7 +1176,7 @@ All of the following opcodes use their arguments.
 
 .. opcode:: LOAD_METHOD (namei)
 
-   Loads a method named ``co_names[namei]`` from TOS object. TOS is popped and
+   Loads a method named ``co_names[namei]`` kutoka TOS object. TOS is popped and
    method and TOS are pushed when interpreter can call unbound method directly.
    TOS will be used as the first argument (``self``) by :opcode:`CALL_METHOD`.
    Otherwise, ``NULL`` and  method is pushed (method is bound method or
@@ -1224,13 +1224,13 @@ All of the following opcodes use their arguments.
    Prefixes any opcode which has an argument too big to fit into the default one
    byte. *ext* holds an additional byte which act as higher bits in the argument.
    For each opcode, at most three prefixal ``EXTENDED_ARG`` are allowed, forming
-   an argument from two-byte to four-byte.
+   an argument kutoka two-byte to four-byte.
 
 
 .. opcode:: FORMAT_VALUE (flags)
 
    Used for implementing formatted literal strings (f-strings).  Pops
-   an optional *fmt_spec* from the stack, then a required *value*.
+   an optional *fmt_spec* kutoka the stack, then a required *value*.
    *flags* is interpreted as follows:
 
    * ``(flags & 0x03) == 0x00``: *value* is formatted as-is.
@@ -1240,7 +1240,7 @@ All of the following opcodes use their arguments.
      formatting it.
    * ``(flags & 0x03) == 0x03``: call :func:`ascii` on *value* before
      formatting it.
-   * ``(flags & 0x04) == 0x04``: pop *fmt_spec* from the stack and use
+   * ``(flags & 0x04) == 0x04``: pop *fmt_spec* kutoka the stack and use
      it, else use an empty *fmt_spec*.
 
    Formatting is performed using :c:func:`PyObject_Format`.  The
@@ -1292,7 +1292,7 @@ instructions:
 
    Sequence of bytecodes that access a free variable (note that 'free' in this
    context refers to names in the current scope that are referenced by inner
-   scopes or names in outer scopes that are referenced from this scope.  It does
+   scopes or names in outer scopes that are referenced kutoka this scope.  It does
    *not* include references to global or builtin scopes).
 
 

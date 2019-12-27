@@ -67,7 +67,7 @@ File Names, Command Line Arguments, and Environment Variables
 
 In Python, file names, command line arguments, and environment variables are
 represented using the string type. On some systems, decoding these strings to
-and from bytes is necessary before passing them to the operating system. Python
+and kutoka bytes is necessary before passing them to the operating system. Python
 uses the file system encoding to perform this conversion (see
 :func:`sys.getfilesystemencoding`).
 
@@ -136,7 +136,7 @@ process and user.
 
    If the platform supports the :func:`unsetenv` function, you can delete items in
    this mapping to unset environment variables. :func:`unsetenv` will be called
-   automatically when an item is deleted from ``os.environ``, and when
+   automatically when an item is deleted kutoka ``os.environ``, and when
    one of the :meth:`pop` or :meth:`clear` methods is called.
 
 
@@ -178,7 +178,7 @@ process and user.
 
 .. function:: fsdecode(filename)
 
-   Decode the :term:`path-like <path-like object>` *filename* from the
+   Decode the :term:`path-like <path-like object>` *filename* kutoka the
    filesystem encoding with ``'surrogateescape'`` error handler, or ``'strict'``
    on Windows; return :class:`str` unchanged.
 
@@ -284,7 +284,7 @@ process and user.
 
    Return list of group ids that *user* belongs to. If *group* is not in the
    list, it is included; typically, *group* is specified as the group ID
-   field from the password record for *user*.
+   field kutoka the password record for *user*.
 
    .. availability:: Unix.
 
@@ -299,7 +299,7 @@ process and user.
 
    .. note::
 
-      On Mac OS X, :func:`getgroups` behavior differs somewhat from
+      On Mac OS X, :func:`getgroups` behavior differs somewhat kutoka
       other Unix platforms. If the Python interpreter was built with a
       deployment target of :const:`10.5` or earlier, :func:`getgroups` returns
       the list of effective group ids associated with the current user process;
@@ -626,7 +626,7 @@ process and user.
    .. availability:: recent flavors of Unix.
 
    .. versionchanged:: 3.3
-      Return type changed from a tuple to a tuple-like object
+      Return type changed kutoka a tuple to a tuple-like object
       with named attributes.
 
 
@@ -697,7 +697,7 @@ as internal buffering of data.
 
 .. function:: closerange(fd_low, fd_high)
 
-   Close all file descriptors from *fd_low* (inclusive) to *fd_high* (exclusive),
+   Close all file descriptors kutoka *fd_low* (inclusive) to *fd_high* (exclusive),
    ignoring errors. Equivalent to (but much faster than)::
 
       for fd in range(fd_low, fd_high):
@@ -709,15 +709,15 @@ as internal buffering of data.
 
 .. function:: copy_file_range(src, dst, count, offset_src=None, offset_dst=None)
 
-   Copy *count* bytes from file descriptor *src*, starting from offset
-   *offset_src*, to file descriptor *dst*, starting from offset *offset_dst*.
-   If *offset_src* is None, then *src* is read from the current position;
+   Copy *count* bytes kutoka file descriptor *src*, starting kutoka offset
+   *offset_src*, to file descriptor *dst*, starting kutoka offset *offset_dst*.
+   If *offset_src* is None, then *src* is read kutoka the current position;
    respectively for *offset_dst*. The files pointed by *src* and *dst*
    must reside in the same filesystem, otherwise an :exc:`OSError` is
    raised with :attr:`~OSError.errno` set to :data:`errno.EXDEV`.
 
    This copy is done without the additional cost of transferring data
-   from the kernel to user space and then back into the kernel. Additionally,
+   kutoka the kernel to user space and then back into the kernel. Additionally,
    some filesystems could implement extra optimizations. The copy is done as if
    both files are opened as binary.
 
@@ -908,7 +908,7 @@ as internal buffering of data.
    by *how*: :const:`SEEK_SET` or ``0`` to set the position relative to the
    beginning of the file; :const:`SEEK_CUR` or ``1`` to set it relative to the
    current position; :const:`SEEK_END` or ``2`` to set it relative to the end of
-   the file. Return the new cursor position in bytes, starting from the beginning.
+   the file. Return the new cursor position in bytes, starting kutoka the beginning.
 
 
 .. data:: SEEK_SET
@@ -1065,7 +1065,7 @@ or `the MSDN <https://msdn.microsoft.com/en-us/library/z0kc8e3z.aspx>`_ on Windo
 .. function:: posix_fallocate(fd, offset, len)
 
    Ensures that enough disk space is allocated for the file specified by *fd*
-   starting from *offset* and continuing for *len* bytes.
+   starting kutoka *offset* and continuing for *len* bytes.
 
    .. availability:: Unix.
 
@@ -1104,7 +1104,7 @@ or `the MSDN <https://msdn.microsoft.com/en-us/library/z0kc8e3z.aspx>`_ on Windo
 
 .. function:: pread(fd, n, offset)
 
-   Read at most *n* bytes from file descriptor *fd* at a position of *offset*,
+   Read at most *n* bytes kutoka file descriptor *fd* at a position of *offset*,
    leaving the file offset unchanged.
 
    Return a bytestring containing the bytes read. If the end of the file
@@ -1117,7 +1117,7 @@ or `the MSDN <https://msdn.microsoft.com/en-us/library/z0kc8e3z.aspx>`_ on Windo
 
 .. function:: preadv(fd, buffers, offset, flags=0)
 
-   Read from a file descriptor *fd* at a position of *offset* into mutable
+   Read kutoka a file descriptor *fd* at a position of *offset* into mutable
    :term:`bytes-like objects <bytes-like object>` *buffers*, leaving the file
    offset unchanged.  Transfer data into each buffer until it is full and then
    move on to the next buffer in the sequence to hold the rest of the data.
@@ -1146,7 +1146,7 @@ or `the MSDN <https://msdn.microsoft.com/en-us/library/z0kc8e3z.aspx>`_ on Windo
 
    Do not wait for data which is not immediately available. If this flag is
    specified, the system call will return instantly if it would have to read
-   data from the backing storage or wait for a lock.
+   data kutoka the backing storage or wait for a lock.
 
    If some data was successfully read, it will return the number of bytes read.
    If no bytes were read, it will return ``-1`` and set errno to
@@ -1232,7 +1232,7 @@ or `the MSDN <https://msdn.microsoft.com/en-us/library/z0kc8e3z.aspx>`_ on Windo
 
 .. function:: read(fd, n)
 
-   Read at most *n* bytes from file descriptor *fd*.
+   Read at most *n* bytes kutoka file descriptor *fd*.
 
    Return a bytestring containing the bytes read. If the end of the file
    referred to by *fd* has been reached, an empty bytes object is returned.
@@ -1254,19 +1254,19 @@ or `the MSDN <https://msdn.microsoft.com/en-us/library/z0kc8e3z.aspx>`_ on Windo
 .. function:: sendfile(out, in, offset, count)
               sendfile(out, in, offset, count, [headers], [trailers], flags=0)
 
-   Copy *count* bytes from file descriptor *in* to file descriptor *out*
+   Copy *count* bytes kutoka file descriptor *in* to file descriptor *out*
    starting at *offset*.
    Return the number of bytes sent. When EOF is reached return 0.
 
    The first function notation is supported by all platforms that define
    :func:`sendfile`.
 
-   On Linux, if *offset* is given as ``None``, the bytes are read from the
+   On Linux, if *offset* is given as ``None``, the bytes are read kutoka the
    current position of *in* and the position of *in* is updated.
 
    The second case may be used on Mac OS X and FreeBSD where *headers* and
    *trailers* are arbitrary sequences of buffers that are written before and
-   after the data from *in* is written. It returns the same as the first case.
+   after the data kutoka *in* is written. It returns the same as the first case.
 
    On Mac OS X and FreeBSD, a value of 0 for *count* specifies to send until
    the end of *in* is reached.
@@ -1313,7 +1313,7 @@ or `the MSDN <https://msdn.microsoft.com/en-us/library/z0kc8e3z.aspx>`_ on Windo
 
 .. function:: readv(fd, buffers)
 
-   Read from a file descriptor *fd* into a number of mutable :term:`bytes-like
+   Read kutoka a file descriptor *fd* into a number of mutable :term:`bytes-like
    objects <bytes-like object>` *buffers*. Transfer data into each buffer until
    it is full and then move on to the next buffer in the sequence to hold the
    rest of the data.
@@ -1417,7 +1417,7 @@ Querying the size of a terminal
 
 .. class:: terminal_size
 
-   A subclass of tuple, holding ``(columns, lines)`` of the terminal window size.
+   A subkundi of tuple, holding ``(columns, lines)`` of the terminal window size.
 
    .. attribute:: columns
 
@@ -1938,7 +1938,7 @@ features:
 .. function:: mkfifo(path, mode=0o666, *, dir_fd=None)
 
    Create a FIFO (a named pipe) named *path* with numeric mode *mode*.
-   The current umask value is first masked out from the mode.
+   The current umask value is first masked out kutoka the mode.
 
    This function can also support :ref:`paths relative to directory descriptors
    <dir_fd>`.
@@ -1982,19 +1982,19 @@ features:
 
 .. function:: major(device)
 
-   Extract the device major number from a raw device number (usually the
-   :attr:`st_dev` or :attr:`st_rdev` field from :c:type:`stat`).
+   Extract the device major number kutoka a raw device number (usually the
+   :attr:`st_dev` or :attr:`st_rdev` field kutoka :c:type:`stat`).
 
 
 .. function:: minor(device)
 
-   Extract the device minor number from a raw device number (usually the
-   :attr:`st_dev` or :attr:`st_rdev` field from :c:type:`stat`).
+   Extract the device minor number kutoka a raw device number (usually the
+   :attr:`st_dev` or :attr:`st_rdev` field kutoka :c:type:`stat`).
 
 
 .. function:: makedev(major, minor)
 
-   Compose a raw device number from the major and minor device numbers.
+   Compose a raw device number kutoka the major and minor device numbers.
 
 
 .. function:: pathconf(path, name)
@@ -2109,7 +2109,7 @@ features:
 .. function:: rename(src, dst, *, src_dir_fd=None, dst_dir_fd=None)
 
    Rename the file or directory *src* to *dst*. If *dst* exists, the operation
-   will fail with an :exc:`OSError` subclass in a number of cases:
+   will fail with an :exc:`OSError` subkundi in a number of cases:
 
    On Windows, if *dst* exists a :exc:`FileExistsError` is always raised.
 
@@ -2434,7 +2434,7 @@ features:
 
    Example::
 
-      >>> import os
+      >>> agiza os
       >>> statinfo = os.stat('somefile.txt')
       >>> statinfo
       os.stat_result(st_mode=33188, st_ino=7876932, st_dev=234881026,
@@ -2629,7 +2629,7 @@ features:
       See the ``IO_REPARSE_TAG_*`` constants in the :mod:`stat` module.
 
    The standard module :mod:`stat` defines functions and constants that are
-   useful for extracting information from a :c:type:`stat` structure. (On
+   useful for extracting information kutoka a :c:type:`stat` structure. (On
    Windows, some items are filled with dummy values.)
 
    For backward compatibility, a :class:`stat_result` instance is also
@@ -2902,7 +2902,7 @@ features:
    :func:`~os.stat` call, depending on the resolution with which your operating
    system records access and modification times; see :func:`~os.stat`. The best
    way to preserve exact times is to use the *st_atime_ns* and *st_mtime_ns*
-   fields from the :func:`os.stat` result object with the *ns* parameter to
+   fields kutoka the :func:`os.stat` result object with the *ns* parameter to
    `utime`.
 
    This function can support :ref:`specifying a file descriptor <path_fd>`,
@@ -2952,7 +2952,7 @@ features:
    no effect on the behavior of the walk, because in bottom-up mode the directories
    in *dirnames* are generated before *dirpath* itself is generated.
 
-   By default, errors from the :func:`scandir` call are ignored.  If optional
+   By default, errors kutoka the :func:`scandir` call are ignored.  If optional
    argument *onerror* is specified, it should be a function; it will be called with
    one argument, an :exc:`OSError` instance.  It can report the error to continue
    with the walk, or raise the exception to abort the walk.  Note that the filename
@@ -2978,8 +2978,8 @@ features:
    directory under the starting directory, except that it doesn't look under any
    CVS subdirectory::
 
-      import os
-      from os.path import join, getsize
+      agiza os
+      kutoka os.path agiza join, getsize
       for root, dirs, files in os.walk('python/Lib/email'):
           print(root, "consumes", end=" ")
           print(sum(getsize(join(root, name)) for name in files), end=" ")
@@ -2991,11 +2991,11 @@ features:
    walking the tree bottom-up is essential, :func:`rmdir` doesn't allow
    deleting a directory before the directory is empty::
 
-      # Delete everything reachable from the directory named in "top",
+      # Delete everything reachable kutoka the directory named in "top",
       # assuming there are no symbolic links.
       # CAUTION:  This is dangerous!  For example, if top == '/', it
       # could delete all your disk files.
-      import os
+      agiza os
       for root, dirs, files in os.walk(top, topdown=False):
           for name in files:
               os.remove(os.path.join(root, name))
@@ -3037,7 +3037,7 @@ features:
    directory under the starting directory, except that it doesn't look under any
    CVS subdirectory::
 
-      import os
+      agiza os
       for root, dirs, files, rootfd in os.fwalk('python/Lib/email'):
           print(root, "consumes", end="")
           print(sum([os.stat(name, dir_fd=rootfd).st_size for name in files]),
@@ -3050,11 +3050,11 @@ features:
    :func:`rmdir` doesn't allow deleting a directory before the directory is
    empty::
 
-      # Delete everything reachable from the directory named in "top",
+      # Delete everything reachable kutoka the directory named in "top",
       # assuming there are no symbolic links.
       # CAUTION:  This is dangerous!  For example, if top == '/', it
       # could delete all your disk files.
-      import os
+      agiza os
       for root, dirs, files, rootfd in os.fwalk(top, topdown=False):
           for name in files:
               os.unlink(name, dir_fd=rootfd)
@@ -3154,7 +3154,7 @@ These functions are all available on Linux only.
 
 .. function:: removexattr(path, attribute, *, follow_symlinks=True)
 
-   Removes the extended filesystem attribute *attribute* from *path*.
+   Removes the extended filesystem attribute *attribute* kutoka *path*.
    *attribute* should be bytes or str (directly or indirectly through the
    :class:`PathLike` interface). If it is a string, it is encoded
    with the filesystem encoding.
@@ -3475,7 +3475,7 @@ written in Python, such as a mail server's external command delivery program.
    parent.  If an error occurs :exc:`OSError` is raised.
 
    Note that some platforms including FreeBSD <= 6.3 and Cygwin have
-   known issues when using fork() from a thread.
+   known issues when using fork() kutoka a thread.
 
    .. warning::
 
@@ -3546,7 +3546,7 @@ written in Python, such as a mail server's external command delivery program.
 
 .. function:: popen(cmd, mode='r', buffering=-1)
 
-   Open a pipe to or from command *cmd*.
+   Open a pipe to or kutoka command *cmd*.
    The return value is an open file object
    connected to the pipe, which can be read or written depending on whether *mode*
    is ``'r'`` (default) or ``'w'``. The *buffering* argument has the same meaning as
@@ -3561,7 +3561,7 @@ written in Python, such as a mail server's external command delivery program.
    by the signal given by the negated value of the return code.  (For
    example, the return value might be ``- signal.SIGKILL`` if the
    subprocess was killed.)  On Windows systems, the return value
-   contains the signed integer return code from the child process.
+   contains the signed integer return code kutoka the child process.
 
    This is implemented using :class:`subprocess.Popen`; see that class's
    documentation for more powerful ways to manage and communicate with
@@ -3572,7 +3572,7 @@ written in Python, such as a mail server's external command delivery program.
                           setpgroup=None, resetids=False, setsid=False, setsigmask=(), \
                           setsigdef=(), scheduler=None)
 
-   Wraps the :c:func:`posix_spawn` C library API for use from Python.
+   Wraps the :c:func:`posix_spawn` C library API for use kutoka Python.
 
    Most users should use :func:`subprocess.run` instead of :func:`posix_spawn`.
 
@@ -3656,7 +3656,7 @@ written in Python, such as a mail server's external command delivery program.
                           setpgroup=None, resetids=False, setsid=False, setsigmask=(), \
                           setsigdef=(), scheduler=None)
 
-   Wraps the :c:func:`posix_spawnp` C library API for use from Python.
+   Wraps the :c:func:`posix_spawnp` C library API for use kutoka Python.
 
    Similar to :func:`posix_spawn` except that the system searches
    for the *executable* file in the list of directories specified by the
@@ -3676,9 +3676,9 @@ written in Python, such as a mail server's external command delivery program.
    Each specifies a different call point.
 
    * *before* is a function called before forking a child process.
-   * *after_in_parent* is a function called from the parent process
+   * *after_in_parent* is a function called kutoka the parent process
      after forking a child process.
-   * *after_in_child* is a function called from the child process.
+   * *after_in_child* is a function called kutoka the child process.
 
    These calls are only made if control is expected to return to the
    Python interpreter.  A typical :mod:`subprocess` launch will not
@@ -3756,7 +3756,7 @@ written in Python, such as a mail server's external command delivery program.
    As an example, the following calls to :func:`spawnlp` and :func:`spawnvpe` are
    equivalent::
 
-      import os
+      agiza os
       os.spawnlp(os.P_WAIT, 'cp', 'cp', 'index.html', '/dev/null')
 
       L = ['cp', 'index.html', '/dev/null']
@@ -3798,7 +3798,7 @@ written in Python, such as a mail server's external command delivery program.
 
    Possible values for the *mode* parameter to the :func:`spawn\* <spawnl>` family of
    functions.  These are less portable than those listed above. :const:`P_DETACH`
-   is similar to :const:`P_NOWAIT`, but the new process is detached from the
+   is similar to :const:`P_NOWAIT`, but the new process is detached kutoka the
    console of the calling process. If :const:`P_OVERLAY` is used, the current
    process will be replaced; the :func:`spawn\* <spawnl>` function will not return.
 
@@ -3811,7 +3811,7 @@ written in Python, such as a mail server's external command delivery program.
 
    When *operation* is not specified or ``'open'``, this acts like double-clicking
    the file in Windows Explorer, or giving the file name as an argument to the
-   :program:`start` command from the interactive command shell: the file is opened
+   :program:`start` command kutoka the interactive command shell: the file is opened
    with whatever application (if any) its extension is associated.
 
    When another *operation* is given, it must be a "command verb" that specifies
@@ -3888,7 +3888,7 @@ written in Python, such as a mail server's external command delivery program.
    .. availability:: Unix, Windows.
 
    .. versionchanged:: 3.3
-      Return type changed from a tuple to a tuple-like object
+      Return type changed kutoka a tuple to a tuple-like object
       with named attributes.
 
 
@@ -3907,7 +3907,7 @@ written in Python, such as a mail server's external command delivery program.
    Wait for the completion of one or more child processes.
    *idtype* can be :data:`P_PID`, :data:`P_PGID` or :data:`P_ALL`.
    *id* specifies the pid to wait on.
-   *options* is constructed from the ORing of one or more of :data:`WEXITED`,
+   *options* is constructed kutoka the ORing of one or more of :data:`WEXITED`,
    :data:`WSTOPPED` or :data:`WCONTINUED` and additionally may be ORed with
    :data:`WNOHANG` or :data:`WNOWAIT`. The return value is an object
    representing the data contained in the :c:type:`siginfo_t` structure, namely:
@@ -4022,7 +4022,7 @@ written in Python, such as a mail server's external command delivery program.
 .. data:: WCONTINUED
 
    This option causes child processes to be reported if they have been continued
-   from a job control stop since their status was last reported.
+   kutoka a job control stop since their status was last reported.
 
    .. availability:: some Unix systems.
 
@@ -4049,7 +4049,7 @@ used to determine the disposition of a process.
 
 .. function:: WIFCONTINUED(status)
 
-   Return ``True`` if the process has been continued from a job control stop,
+   Return ``True`` if the process has been continued kutoka a job control stop,
    otherwise return ``False``.
 
    .. availability:: Unix.
@@ -4147,7 +4147,7 @@ operating system.
 
 .. class:: sched_param(sched_priority)
 
-   This class represents tunable scheduling parameters used in
+   This kundi represents tunable scheduling parameters used in
    :func:`sched_setparam`, :func:`sched_setscheduler`, and
    :func:`sched_getparam`. It is immutable.
 
@@ -4340,7 +4340,7 @@ Higher-level operations on pathnames are defined in the :mod:`os.path` module.
 .. index:: single: . (dot); in pathnames
 .. data:: extsep
 
-   The character which separates the base filename from the extension; for example,
+   The character which separates the base filename kutoka the extension; for example,
    the ``'.'`` in :file:`os.py`. Also available via :mod:`os.path`.
 
 
@@ -4401,7 +4401,7 @@ Random numbers
    These bytes can be used to seed user-space random number generators or for
    cryptographic purposes.
 
-   ``getrandom()`` relies on entropy gathered from device drivers and other
+   ``getrandom()`` relies on entropy gathered kutoka device drivers and other
    sources of environmental noise. Unnecessarily reading large quantities of
    data will have a negative impact on  other users  of the ``/dev/random`` and
    ``/dev/urandom`` devices.
@@ -4421,7 +4421,7 @@ Random numbers
 
    Return a string of *size* random bytes suitable for cryptographic use.
 
-   This function returns random bytes from an OS-specific randomness source.  The
+   This function returns random bytes kutoka an OS-specific randomness source.  The
    returned data should be unpredictable enough for cryptographic applications,
    though its exact quality depends on the OS implementation.
 
@@ -4432,7 +4432,7 @@ Random numbers
    random bytes in non-blocking mode (using the :data:`GRND_NONBLOCK` flag) or
    to poll until the system urandom entropy pool is initialized.
 
-   On a Unix-like system, random bytes are read from the ``/dev/urandom``
+   On a Unix-like system, random bytes are read kutoka the ``/dev/urandom``
    device. If the ``/dev/urandom`` device is not available or not readable, the
    :exc:`NotImplementedError` exception is raised.
 
@@ -4459,8 +4459,8 @@ Random numbers
 
 .. data:: GRND_NONBLOCK
 
-   By  default, when reading from ``/dev/random``, :func:`getrandom` blocks if
-   no random bytes are available, and when reading from ``/dev/urandom``, it blocks
+   By  default, when reading kutoka ``/dev/random``, :func:`getrandom` blocks if
+   no random bytes are available, and when reading kutoka ``/dev/urandom``, it blocks
    if the entropy pool has not yet been initialized.
 
    If the :py:data:`GRND_NONBLOCK` flag is set, then :func:`getrandom` does not
@@ -4470,7 +4470,7 @@ Random numbers
 
 .. data:: GRND_RANDOM
 
-   If  this  bit  is  set,  then  random bytes are drawn from the
+   If  this  bit  is  set,  then  random bytes are drawn kutoka the
    ``/dev/random`` pool instead of the ``/dev/urandom`` pool.
 
    .. versionadded:: 3.6

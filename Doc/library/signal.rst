@@ -36,7 +36,7 @@ This has consequences:
 
 * It makes little sense to catch synchronous errors like :const:`SIGFPE` or
   :const:`SIGSEGV` that are caused by an invalid operation in C code.  Python
-  will return from the signal handler to the C code, which is likely to raise
+  will return kutoka the signal handler to the C code, which is likely to raise
   the same signal again, causing Python to apparently hang.  From Python 3.3
   onwards, you can use the :mod:`faulthandler` module to report on synchronous
   errors.
@@ -56,7 +56,7 @@ Signals and threads
 Python signal handlers are always executed in the main Python thread,
 even if the signal was received in another thread.  This means that signals
 can't be used as a means of inter-thread communication.  You can use
-the synchronization primitives from the :mod:`threading` module instead.
+the synchronization primitives kutoka the :mod:`threading` module instead.
 
 Besides, only the main thread is allowed to set a new signal handler.
 
@@ -173,7 +173,7 @@ The :mod:`signal` module defines one exception:
 
 .. exception:: ItimerError
 
-   Raised to signal an error from the underlying :func:`setitimer` or
+   Raised to signal an error kutoka the underlying :func:`setitimer` or
    :func:`getitimer` implementation. Expect this error if an invalid
    interval timer or a negative time is passed to :func:`setitimer`.
    This error is a subtype of :exc:`OSError`.
@@ -207,7 +207,7 @@ The :mod:`signal` module defines the following functions:
    :const:`signal.SIG_IGN` means that the signal was previously ignored,
    :const:`signal.SIG_DFL` means that the default way of handling the signal was
    previously in use, and ``None`` means that the previous signal handler was not
-   installed from Python.
+   installed kutoka Python.
 
 
 .. function:: strsignal(signalnum)
@@ -282,7 +282,7 @@ The :mod:`signal` module defines the following functions:
 
    * :data:`SIG_BLOCK`: The set of blocked signals is the union of the current
      set and the *mask* argument.
-   * :data:`SIG_UNBLOCK`: The signals in *mask* are removed from the current
+   * :data:`SIG_UNBLOCK`: The signals in *mask* are removed kutoka the current
      set of blocked signals.  It is permissible to attempt to unblock a
      signal which is not blocked.
    * :data:`SIG_SETMASK`: The set of blocked signals is set to the *mask*
@@ -307,7 +307,7 @@ The :mod:`signal` module defines the following functions:
 
    Sets given interval timer (one of :const:`signal.ITIMER_REAL`,
    :const:`signal.ITIMER_VIRTUAL` or :const:`signal.ITIMER_PROF`) specified
-   by *which* to fire after *seconds* (float is accepted, different from
+   by *which* to fire after *seconds* (float is accepted, different kutoka
    :func:`alarm`) and after that every *interval* seconds (if *interval*
    is non-zero). The interval timer specified by *which* can be cleared by
    setting *seconds* to zero.
@@ -343,10 +343,10 @@ The :mod:`signal` module defines the following functions:
    The old wakeup fd is returned (or -1 if file descriptor wakeup was not
    enabled).  If *fd* is -1, file descriptor wakeup is disabled.
    If not -1, *fd* must be non-blocking.  It is up to the library to remove
-   any bytes from *fd* before calling poll or select again.
+   any bytes kutoka *fd* before calling poll or select again.
 
-   When threads are enabled, this function can only be called from the main thread;
-   attempting to call it from other threads will cause a :exc:`ValueError`
+   When threads are enabled, this function can only be called kutoka the main thread;
+   attempting to call it kutoka other threads will cause a :exc:`ValueError`
    exception to be raised.
 
    There are two common ways to use this function. In both approaches,
@@ -398,8 +398,8 @@ The :mod:`signal` module defines the following functions:
    signal handler will be returned (see the description of :func:`getsignal`
    above).  (See the Unix man page :manpage:`signal(2)` for further information.)
 
-   When threads are enabled, this function can only be called from the main thread;
-   attempting to call it from other threads will cause a :exc:`ValueError`
+   When threads are enabled, this function can only be called kutoka the main thread;
+   attempting to call it kutoka other threads will cause a :exc:`ValueError`
    exception to be raised.
 
    The *handler* is called with two arguments: the signal number and the current
@@ -434,7 +434,7 @@ The :mod:`signal` module defines the following functions:
 
    Suspend execution of the calling thread until the delivery of one of the
    signals specified in the signal set *sigset*.  The function accepts the signal
-   (removes it from the pending list of signals), and returns the signal number.
+   (removes it kutoka the pending list of signals), and returns the signal number.
 
    .. availability:: Unix.  See the man page :manpage:`sigwait(3)` for further
       information.
@@ -449,7 +449,7 @@ The :mod:`signal` module defines the following functions:
 
    Suspend execution of the calling thread until the delivery of one of the
    signals specified in the signal set *sigset*.  The function accepts the
-   signal and removes it from the pending list of signals. If one of the
+   signal and removes it kutoka the pending list of signals. If one of the
    signals in *sigset* is already pending for the calling thread, the function
    will return immediately with information about that signal. The signal
    handler is not called for the delivered signal. The function raises an
@@ -505,7 +505,7 @@ serial device that may not be turned on, which would normally cause the
 before opening the file; if the operation takes too long, the alarm signal will
 be sent, and the handler raises an exception. ::
 
-   import signal, os
+   agiza signal, os
 
    def handler(signum, frame):
        print('Signal handler called with signal', signum)
@@ -529,8 +529,8 @@ of its standard output closes early.  This results in an exception
 like :code:`BrokenPipeError: [Errno 32] Broken pipe`.  To handle this
 case, wrap your entry point to catch this exception as follows::
 
-    import os
-    import sys
+    agiza os
+    agiza sys
 
     def main():
         try:

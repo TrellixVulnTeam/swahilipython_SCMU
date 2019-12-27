@@ -57,7 +57,7 @@ To do just the former:
 
 .. class:: Compile()
 
-   Instances of this class have :meth:`__call__` methods identical in signature to
+   Instances of this kundi have :meth:`__call__` methods identical in signature to
    the built-in function :func:`compile`, but with the difference that if the
    instance compiles program text containing a :mod:`__future__` statement, the
    instance 'remembers' and compiles all subsequent program texts with the
@@ -66,7 +66,7 @@ To do just the former:
 
 .. class:: CommandCompiler()
 
-   Instances of this class have :meth:`__call__` methods identical in signature to
+   Instances of this kundi have :meth:`__call__` methods identical in signature to
    :func:`compile_command`; the difference is that if the instance compiles program
    text containing a ``__future__`` statement, the instance 'remembers' and
    compiles all subsequent program texts with the statement in force.

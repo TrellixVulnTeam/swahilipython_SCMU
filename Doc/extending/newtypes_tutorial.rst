@@ -12,7 +12,7 @@ Defining Extension Types: Tutorial
 
 
 Python allows the writer of a C extension module to define new types that
-can be manipulated from Python code, much like the built-in :class:`str`
+can be manipulated kutoka Python code, much like the built-in :class:`str`
 and :class:`list` types.  The code for all extension types follows a
 pattern, but there are some details that you need to understand before you
 can get started.  This document is a gentle introduction to the topic.
@@ -48,7 +48,7 @@ extension module :mod:`custom`:
 .. literalinclude:: ../includes/custom.c
 
 Now that's quite a bit to take in at once, but hopefully bits will seem familiar
-from the previous chapter.  This file defines three things:
+kutoka the previous chapter.  This file defines three things:
 
 #. What a :class:`Custom` **object** contains: this is the ``CustomObject``
    struct, which is allocated once for each :class:`Custom` instance.
@@ -128,7 +128,7 @@ our objects and in some error messages, for example:
 Note that the name is a dotted name that includes both the module name and the
 name of the type within the module. The module in this case is :mod:`custom` and
 the type is :class:`Custom`, so we set the type name to :class:`custom.Custom`.
-Using the real dotted import path is important to make your type compatible
+Using the real dotted agiza path is important to make your type compatible
 with the :mod:`pydoc` and :mod:`pickle` modules. ::
 
    .tp_basicsize = sizeof(CustomObject),
@@ -140,9 +140,9 @@ only used for variable-sized objects and should otherwise be zero.
 
 .. note::
 
-   If you want your type to be subclassable from Python, and your type has the same
+   If you want your type to be subclassable kutoka Python, and your type has the same
    :c:member:`~PyTypeObject.tp_basicsize` as its base type, you may have problems with multiple
-   inheritance.  A Python subclass of your type will have to list your type first
+   inheritance.  A Python subkundi of your type will have to list your type first
    in its :attr:`~class.__bases__`, or else it will not be able to call your type's
    :meth:`__new__` method without getting an error.  You can avoid this problem by
    ensuring that your type has a larger value for :c:member:`~PyTypeObject.tp_basicsize` than its
@@ -150,7 +150,7 @@ only used for variable-sized objects and should otherwise be zero.
    base type will be :class:`object`, or else you will be adding data members to
    your base type, and therefore increasing its size.
 
-We set the class flags to :const:`Py_TPFLAGS_DEFAULT`. ::
+We set the kundi flags to :const:`Py_TPFLAGS_DEFAULT`. ::
 
    .tp_flags = Py_TPFLAGS_DEFAULT,
 
@@ -191,7 +191,7 @@ This adds the type to the module dictionary.  This allows us to create
 
 .. code-block:: pycon
 
-   >>> import custom
+   >>> agiza custom
    >>> mycustom = custom.Custom()
 
 That's it!  All that remains is to build it; put the above code in a file called
@@ -199,7 +199,7 @@ That's it!  All that remains is to build it; put the above code in a file called
 
 .. code-block:: python
 
-   from distutils.core import setup, Extension
+   kutoka distutils.core agiza setup, Extension
    setup(name="custom", version="1.0",
          ext_modules=[Extension("custom", ["custom.c"])])
 
@@ -210,7 +210,7 @@ in a file called :file:`setup.py`; then typing
    $ python setup.py build
 
 at a shell should produce a file :file:`custom.so` in a subdirectory; move to
-that directory and fire up Python --- you should be able to ``import custom`` and
+that directory and fire up Python --- you should be able to ``agiza custom`` and
 play around with Custom objects.
 
 That wasn't so hard, was it?
@@ -325,7 +325,7 @@ handler to initialize the ``first`` and ``last`` attributes to non-*NULL*
 default values.
 
 ``tp_new`` is passed the type being instantiated (not necessarily ``CustomType``,
-if a subclass is instantiated) and any arguments passed when the type was
+if a subkundi is instantiated) and any arguments passed when the type was
 called, and is expected to return the instance created.  ``tp_new`` handlers
 always accept positional and keyword arguments, but they often ignore the
 arguments, leaving the argument handling to initializer (a.k.a. ``tp_init``
@@ -345,7 +345,7 @@ result against *NULL* before proceeding.
 
 .. note::
    We didn't fill the :c:member:`~PyTypeObject.tp_alloc` slot ourselves. Rather
-   :c:func:`PyType_Ready` fills it for us by inheriting it from our base class,
+   :c:func:`PyType_Ready` fills it for us by inheriting it kutoka our base class,
    which is :class:`object` by default.  Most types use the default allocation
    strategy.
 
@@ -356,7 +356,7 @@ result against *NULL* before proceeding.
    order at runtime.  Always statically determine what type you are going to
    call, and call its :c:member:`~PyTypeObject.tp_new` directly, or via
    ``type->tp_base->tp_new``.  If you do not do this, Python subclasses of your
-   type that also inherit from other Python-defined classes may not work correctly.
+   type that also inherit kutoka other Python-defined classes may not work correctly.
    (Specifically, you may not be able to create instances of such subclasses
    without getting a :exc:`TypeError`.)
 
@@ -511,10 +511,10 @@ and assign it to the :c:member:`~PyTypeObject.tp_methods` slot::
 
    .tp_methods = Custom_methods,
 
-Finally, we'll make our type usable as a base class for subclassing.  We've
+Finally, we'll make our type usable as a base kundi for subclassing.  We've
 written our methods carefully so far so that they don't make any assumptions
 about the type of the object being created or used, so all we need to do is
-to add the :const:`Py_TPFLAGS_BASETYPE` to our class flag definition::
+to add the :const:`Py_TPFLAGS_BASETYPE` to our kundi flag definition::
 
    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
 
@@ -526,7 +526,7 @@ Finally, we update our :file:`setup.py` file to build the new module:
 
 .. code-block:: python
 
-   from distutils.core import setup, Extension
+   kutoka distutils.core agiza setup, Extension
    setup(name="custom", version="1.0",
          ext_modules=[
             Extension("custom", ["custom.c"]),
@@ -668,7 +668,7 @@ This can happen when objects are involved in cycles.  For example, consider:
    >>> del l
 
 In this example, we create a list that contains itself. When we delete it, it
-still has a reference from itself. Its reference count doesn't drop to zero.
+still has a reference kutoka itself. Its reference count doesn't drop to zero.
 Fortunately, Python's cyclic garbage collector will eventually figure out that
 the list is garbage and free it.
 
@@ -680,8 +680,8 @@ those two reasons, :class:`Custom` objects can participate in cycles:
 
 .. code-block:: pycon
 
-   >>> import custom3
-   >>> class Derived(custom3.Custom): pass
+   >>> agiza custom3
+   >>> kundi Derived(custom3.Custom): pass
    ...
    >>> n = Derived()
    >>> n.some_attribute = n
@@ -768,7 +768,7 @@ attribute again (*especially* if there is a reference cycle).
 The deallocator ``Custom_dealloc`` may call arbitrary code when clearing
 attributes.  It means the circular GC can be triggered inside the function.
 Since the GC assumes reference count is not zero, we need to untrack the object
-from the GC by calling :c:func:`PyObject_GC_UnTrack` before clearing members.
+kutoka the GC by calling :c:func:`PyObject_GC_UnTrack` before clearing members.
 Here is our reimplemented deallocator using :c:func:`PyObject_GC_UnTrack`
 and ``Custom_clear``::
 
@@ -780,7 +780,7 @@ and ``Custom_clear``::
        Py_TYPE(self)->tp_free((PyObject *) self);
    }
 
-Finally, we add the :const:`Py_TPFLAGS_HAVE_GC` flag to the class flags::
+Finally, we add the :const:`Py_TPFLAGS_HAVE_GC` flag to the kundi flags::
 
    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC,
 
@@ -792,19 +792,19 @@ garbage collection.  Most extensions will use the versions automatically provide
 Subclassing other types
 =======================
 
-It is possible to create new extension types that are derived from existing
-types. It is easiest to inherit from the built in types, since an extension can
+It is possible to create new extension types that are derived kutoka existing
+types. It is easiest to inherit kutoka the built in types, since an extension can
 easily use the :c:type:`PyTypeObject` it needs. It can be difficult to share
 these :c:type:`PyTypeObject` structures between extension modules.
 
-In this example we will create a :class:`SubList` type that inherits from the
+In this example we will create a :class:`SubList` type that inherits kutoka the
 built-in :class:`list` type. The new type will be completely compatible with
 regular lists, but will have an additional :meth:`increment` method that
 increases an internal counter:
 
 .. code-block:: pycon
 
-   >>> import sublist
+   >>> agiza sublist
    >>> s = sublist.SubList(range(3))
    >>> s.extend(s)
    >>> print(len(s))
@@ -848,7 +848,7 @@ This pattern is important when writing a type with custom
 :c:member:`~PyTypeObject.tp_new` and :c:member:`~PyTypeObject.tp_dealloc`
 members.  The :c:member:`~PyTypeObject.tp_new` handler should not actually
 create the memory for the object with its :c:member:`~PyTypeObject.tp_alloc`,
-but let the base class handle it by calling its own :c:member:`~PyTypeObject.tp_new`.
+but let the base kundi handle it by calling its own :c:member:`~PyTypeObject.tp_new`.
 
 The :c:type:`PyTypeObject` struct supports a :c:member:`~PyTypeObject.tp_base`
 specifying the type's concrete base class.  Due to cross-platform compiler
@@ -881,7 +881,7 @@ function::
 Before calling :c:func:`PyType_Ready`, the type structure must have the
 :c:member:`~PyTypeObject.tp_base` slot filled in.  When we are deriving an
 existing type, it is not necessary to fill out the :c:member:`~PyTypeObject.tp_alloc`
-slot with :c:func:`PyType_GenericNew` -- the allocation function from the base
+slot with :c:func:`PyType_GenericNew` -- the allocation function kutoka the base
 type will be inherited.
 
 After that, calling :c:func:`PyType_Ready` and adding the type object to the
@@ -900,7 +900,7 @@ module is the same as with the basic :class:`Custom` examples.
    could be less careful about decrementing their reference counts, however,
    we accept instances of string subclasses.  Even though deallocating normal
    strings won't call back into our objects, we can't guarantee that deallocating
-   an instance of a string subclass won't call back into our objects.
+   an instance of a string subkundi won't call back into our objects.
 
 .. [#] Also, even with our attributes restricted to strings instances, the user
    could pass arbitrary :class:`str` subclasses and therefore still create

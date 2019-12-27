@@ -28,7 +28,7 @@
 --   invalid : raised for invalid inputs (e.g., sqrt(-1))
 --
 --   ignore-sign : indicates that the sign of the result is
---     unspecified; e.g., if the result is given as inf,
+--     unspecified; e.g., ikiwa the result is given as inf,
 --     then both -inf and inf should be accepted as correct.
 --
 -- Flags may appear in any order.

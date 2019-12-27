@@ -19,35 +19,35 @@ stretched to rectangles by shapesize()
 """
 kutoka turtle agiza *
 
-class Disc(Turtle):
-    def __init__(self, n):
+kundi Disc(Turtle):
+    eleza __init__(self, n):
         Turtle.__init__(self, shape="square", visible=False)
         self.pu()
         self.shapesize(1.5, n*1.5, 2) # square-->rectangle
         self.fillcolor(n/6., 0, 1-n/6.)
         self.st()
 
-class Tower(list):
-    "Hanoi tower, a subclass of built-in type list"
-    def __init__(self, x):
+kundi Tower(list):
+    "Hanoi tower, a subkundi of built-in type list"
+    eleza __init__(self, x):
         "create an empty tower. x is x-position of peg"
         self.x = x
-    def push(self, d):
+    eleza push(self, d):
         d.setx(self.x)
         d.sety(-150+34*len(self))
         self.append(d)
-    def pop(self):
+    eleza pop(self):
         d = list.pop(self)
         d.sety(150)
-        return d
+        rudisha d
 
-def hanoi(n, from_, with_, to_):
-    if n > 0:
-        hanoi(n-1, from_, to_, with_)
-        to_.push(from_.pop())
-        hanoi(n-1, with_, from_, to_)
+eleza hanoi(n, kutoka_, with_, to_):
+    ikiwa n > 0:
+        hanoi(n-1, kutoka_, to_, with_)
+        to_.push(kutoka_.pop())
+        hanoi(n-1, with_, kutoka_, to_)
 
-def play():
+eleza play():
     onkey(None,"space")
     clear()
     try:
@@ -57,7 +57,7 @@ def play():
     except Terminator:
         pass  # turtledemo user pressed STOP
 
-def main():
+eleza main():
     global t1, t2, t3
     ht(); penup(); goto(0, -225)   # writer turtle
     t1 = Tower(-250)
@@ -71,9 +71,9 @@ def main():
           align="center", font=("Courier", 16, "bold"))
     onkey(play, "space")
     listen()
-    return "EVENTLOOP"
+    rudisha "EVENTLOOP"
 
-if __name__=="__main__":
+ikiwa __name__=="__main__":
     msg = main()
-    print(msg)
+    andika(msg)
     mainloop()

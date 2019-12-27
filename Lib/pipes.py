@@ -13,7 +13,7 @@ kutoka a disk file or kutoka an open file, and similar for its output.
 
 The module lets you construct a pipeline template by sticking one or
 more conversion steps together.  It will take care of creating and
-removing temporary files if they are necessary to hold intermediate
+removing temporary files ikiwa they are necessary to hold intermediate
 data.  You can then use the template to do conversions kutoka many
 different sources to many different destinations.  The temporary
 file names used are different each time the template is used.
@@ -31,8 +31,8 @@ To create a template:
 
 To add a conversion step to a template:
    t.append(command, kind)
-where kind is a string of two characters: the first is '-' if the
-command reads its standard input or 'f' if it requires a file; the
+where kind is a string of two characters: the first is '-' ikiwa the
+command reads its standard input or 'f' ikiwa it requires a file; the
 second likewise for the output. The command must be valid /bin/sh
 syntax.  If input or output files are required, they are passed as
 $IN and $OUT; otherwise, it must be  possible to use the command in
@@ -44,7 +44,7 @@ To add a conversion step at the beginning:
 To convert a file to another file using a template:
   sts = t.copy(infile, outfile)
 If infile or outfile are the empty string, standard input is read or
-standard output is written, respectively.  The return value is the
+standard output is written, respectively.  The rudisha value is the
 exit status of the conversion pipeline.
 
 To open a file for reading or writing through a conversion pipeline:
@@ -79,106 +79,106 @@ stepkinds = [FILEIN_FILEOUT, STDIN_FILEOUT, FILEIN_STDOUT, STDIN_STDOUT, \
              SOURCE, SINK]
 
 
-class Template:
+kundi Template:
     """Class representing a pipeline template."""
 
-    def __init__(self):
+    eleza __init__(self):
         """Template() returns a fresh pipeline template."""
         self.debugging = 0
         self.reset()
 
-    def __repr__(self):
+    eleza __repr__(self):
         """t.__repr__() implements repr(t)."""
-        return '<Template instance, steps=%r>' % (self.steps,)
+        rudisha '<Template instance, steps=%r>' % (self.steps,)
 
-    def reset(self):
+    eleza reset(self):
         """t.reset() restores a pipeline template to its initial state."""
         self.steps = []
 
-    def clone(self):
+    eleza clone(self):
         """t.clone() returns a new pipeline template with identical
         initial state as the current one."""
         t = Template()
         t.steps = self.steps[:]
         t.debugging = self.debugging
-        return t
+        rudisha t
 
-    def debug(self, flag):
+    eleza debug(self, flag):
         """t.debug(flag) turns debugging on or off."""
         self.debugging = flag
 
-    def append(self, cmd, kind):
+    eleza append(self, cmd, kind):
         """t.append(cmd, kind) adds a new step at the end."""
-        if type(cmd) is not type(''):
+        ikiwa type(cmd) is not type(''):
             raise TypeError('Template.append: cmd must be a string')
-        if kind not in stepkinds:
+        ikiwa kind not in stepkinds:
             raise ValueError('Template.append: bad kind %r' % (kind,))
-        if kind == SOURCE:
+        ikiwa kind == SOURCE:
             raise ValueError('Template.append: SOURCE can only be prepended')
-        if self.steps and self.steps[-1][1] == SINK:
+        ikiwa self.steps and self.steps[-1][1] == SINK:
             raise ValueError('Template.append: already ends with SINK')
-        if kind[0] == 'f' and not re.search(r'\$IN\b', cmd):
+        ikiwa kind[0] == 'f' and not re.search(r'\$IN\b', cmd):
             raise ValueError('Template.append: missing $IN in cmd')
-        if kind[1] == 'f' and not re.search(r'\$OUT\b', cmd):
+        ikiwa kind[1] == 'f' and not re.search(r'\$OUT\b', cmd):
             raise ValueError('Template.append: missing $OUT in cmd')
         self.steps.append((cmd, kind))
 
-    def prepend(self, cmd, kind):
+    eleza prepend(self, cmd, kind):
         """t.prepend(cmd, kind) adds a new step at the front."""
-        if type(cmd) is not type(''):
+        ikiwa type(cmd) is not type(''):
             raise TypeError('Template.prepend: cmd must be a string')
-        if kind not in stepkinds:
+        ikiwa kind not in stepkinds:
             raise ValueError('Template.prepend: bad kind %r' % (kind,))
-        if kind == SINK:
+        ikiwa kind == SINK:
             raise ValueError('Template.prepend: SINK can only be appended')
-        if self.steps and self.steps[0][1] == SOURCE:
+        ikiwa self.steps and self.steps[0][1] == SOURCE:
             raise ValueError('Template.prepend: already begins with SOURCE')
-        if kind[0] == 'f' and not re.search(r'\$IN\b', cmd):
+        ikiwa kind[0] == 'f' and not re.search(r'\$IN\b', cmd):
             raise ValueError('Template.prepend: missing $IN in cmd')
-        if kind[1] == 'f' and not re.search(r'\$OUT\b', cmd):
+        ikiwa kind[1] == 'f' and not re.search(r'\$OUT\b', cmd):
             raise ValueError('Template.prepend: missing $OUT in cmd')
         self.steps.insert(0, (cmd, kind))
 
-    def open(self, file, rw):
+    eleza open(self, file, rw):
         """t.open(file, rw) returns a pipe or file object open for
         reading or writing; the file is the other end of the pipeline."""
-        if rw == 'r':
-            return self.open_r(file)
-        if rw == 'w':
-            return self.open_w(file)
+        ikiwa rw == 'r':
+            rudisha self.open_r(file)
+        ikiwa rw == 'w':
+            rudisha self.open_w(file)
         raise ValueError('Template.open: rw must be \'r\' or \'w\', not %r'
                          % (rw,))
 
-    def open_r(self, file):
+    eleza open_r(self, file):
         """t.open_r(file) and t.open_w(file) implement
         t.open(file, 'r') and t.open(file, 'w') respectively."""
-        if not self.steps:
-            return open(file, 'r')
-        if self.steps[-1][1] == SINK:
+        ikiwa not self.steps:
+            rudisha open(file, 'r')
+        ikiwa self.steps[-1][1] == SINK:
             raise ValueError('Template.open_r: pipeline ends width SINK')
         cmd = self.makepipeline(file, '')
-        return os.popen(cmd, 'r')
+        rudisha os.popen(cmd, 'r')
 
-    def open_w(self, file):
-        if not self.steps:
-            return open(file, 'w')
-        if self.steps[0][1] == SOURCE:
+    eleza open_w(self, file):
+        ikiwa not self.steps:
+            rudisha open(file, 'w')
+        ikiwa self.steps[0][1] == SOURCE:
             raise ValueError('Template.open_w: pipeline begins with SOURCE')
         cmd = self.makepipeline('', file)
-        return os.popen(cmd, 'w')
+        rudisha os.popen(cmd, 'w')
 
-    def copy(self, infile, outfile):
-        return os.system(self.makepipeline(infile, outfile))
+    eleza copy(self, infile, outfile):
+        rudisha os.system(self.makepipeline(infile, outfile))
 
-    def makepipeline(self, infile, outfile):
+    eleza makepipeline(self, infile, outfile):
         cmd = makepipeline(infile, self.steps, outfile)
-        if self.debugging:
-            print(cmd)
+        ikiwa self.debugging:
+            andika(cmd)
             cmd = 'set -x; ' + cmd
-        return cmd
+        rudisha cmd
 
 
-def makepipeline(infile, steps, outfile):
+eleza makepipeline(infile, steps, outfile):
     # Build a list with for each command:
     # [input filename or '', command string, kind, output filename or '']
 
@@ -188,18 +188,18 @@ def makepipeline(infile, steps, outfile):
     #
     # Make sure there is at least one step
     #
-    if not list:
+    ikiwa not list:
         list.append(['', 'cat', '--', ''])
     #
     # Take care of the input and output ends
     #
     [cmd, kind] = list[0][1:3]
-    if kind[0] == 'f' and not infile:
+    ikiwa kind[0] == 'f' and not infile:
         list.insert(0, ['', 'cat', '--', ''])
     list[0][0] = infile
     #
     [cmd, kind] = list[-1][1:3]
-    if kind[1] == 'f' and not outfile:
+    ikiwa kind[1] == 'f' and not outfile:
         list.append(['', 'cat', '--', ''])
     list[-1][-1] = outfile
     #
@@ -209,7 +209,7 @@ def makepipeline(infile, steps, outfile):
     for i in range(1, len(list)):
         lkind = list[i-1][2]
         rkind = list[i][2]
-        if lkind[1] == 'f' or rkind[0] == 'f':
+        ikiwa lkind[1] == 'f' or rkind[0] == 'f':
             (fd, temp) = tempfile.mkstemp()
             os.close(fd)
             garbage.append(temp)
@@ -217,31 +217,31 @@ def makepipeline(infile, steps, outfile):
     #
     for item in list:
         [inf, cmd, kind, outf] = item
-        if kind[1] == 'f':
+        ikiwa kind[1] == 'f':
             cmd = 'OUT=' + quote(outf) + '; ' + cmd
-        if kind[0] == 'f':
+        ikiwa kind[0] == 'f':
             cmd = 'IN=' + quote(inf) + '; ' + cmd
-        if kind[0] == '-' and inf:
+        ikiwa kind[0] == '-' and inf:
             cmd = cmd + ' <' + quote(inf)
-        if kind[1] == '-' and outf:
+        ikiwa kind[1] == '-' and outf:
             cmd = cmd + ' >' + quote(outf)
         item[1] = cmd
     #
     cmdlist = list[0][1]
     for item in list[1:]:
         [cmd, kind] = item[1:3]
-        if item[0] == '':
-            if 'f' in kind:
+        ikiwa item[0] == '':
+            ikiwa 'f' in kind:
                 cmd = '{ ' + cmd + '; }'
             cmdlist = cmdlist + ' |\n' + cmd
         else:
             cmdlist = cmdlist + '\n' + cmd
     #
-    if garbage:
+    ikiwa garbage:
         rmcmd = 'rm -f'
         for file in garbage:
             rmcmd = rmcmd + ' ' + quote(file)
         trapcmd = 'trap ' + quote(rmcmd + '; exit') + ' 1 2 3 13 14 15'
         cmdlist = trapcmd + '\n' + cmdlist + '\n' + rmcmd
     #
-    return cmdlist
+    rudisha cmdlist

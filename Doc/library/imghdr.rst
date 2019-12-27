@@ -24,7 +24,7 @@ The :mod:`imghdr` module defines the following function:
       Accepts a :term:`path-like object`.
 
 The following image types are recognized, as listed below with the return value
-from :func:`what`:
+kutoka :func:`what`:
 
 +------------+-----------------------------------+
 | Value      | Image format                      |
@@ -75,7 +75,7 @@ to this variable:
 
 Example::
 
-   >>> import imghdr
+   >>> agiza imghdr
    >>> imghdr.what('bass.gif')
    'gif'
 

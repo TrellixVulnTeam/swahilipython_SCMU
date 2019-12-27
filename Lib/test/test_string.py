@@ -3,9 +3,9 @@ agiza string
 kutoka string agiza Template
 
 
-class ModuleTest(unittest.TestCase):
+kundi ModuleTest(unittest.TestCase):
 
-    def test_attrs(self):
+    eleza test_attrs(self):
         # While the exact order of the items in these attributes is not
         # technically part of the "language spec", in practice there is almost
         # certainly user code that depends on the order, so de-facto it *is*
@@ -20,18 +20,18 @@ class ModuleTest(unittest.TestCase):
         self.assertEqual(string.punctuation, '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~')
         self.assertEqual(string.printable, string.digits + string.ascii_lowercase + string.ascii_uppercase + string.punctuation + string.whitespace)
 
-    def test_capwords(self):
-        self.assertEqual(string.capwords('abc def ghi'), 'Abc Def Ghi')
+    eleza test_capwords(self):
+        self.assertEqual(string.capwords('abc eleza ghi'), 'Abc Def Ghi')
         self.assertEqual(string.capwords('abc\tdef\nghi'), 'Abc Def Ghi')
-        self.assertEqual(string.capwords('abc\t   def  \nghi'), 'Abc Def Ghi')
+        self.assertEqual(string.capwords('abc\t   eleza  \nghi'), 'Abc Def Ghi')
         self.assertEqual(string.capwords('ABC DEF GHI'), 'Abc Def Ghi')
         self.assertEqual(string.capwords('ABC-DEF-GHI', '-'), 'Abc-Def-Ghi')
-        self.assertEqual(string.capwords('ABC-def DEF-ghi GHI'), 'Abc-def Def-ghi Ghi')
+        self.assertEqual(string.capwords('ABC-eleza DEF-ghi GHI'), 'Abc-eleza Def-ghi Ghi')
         self.assertEqual(string.capwords('   aBc  DeF   '), 'Abc Def')
         self.assertEqual(string.capwords('\taBc\tDeF\t'), 'Abc Def')
         self.assertEqual(string.capwords('\taBc\tDeF\t', '\t'), '\tAbc\tDef\t')
 
-    def test_basic_formatter(self):
+    eleza test_basic_formatter(self):
         fmt = string.Formatter()
         self.assertEqual(fmt.format("foo"), "foo")
         self.assertEqual(fmt.format("foo{0}", "bar"), "foobar")
@@ -39,7 +39,7 @@ class ModuleTest(unittest.TestCase):
         self.assertRaises(TypeError, fmt.format)
         self.assertRaises(TypeError, string.Formatter.format)
 
-    def test_format_keyword_arguments(self):
+    eleza test_format_keyword_arguments(self):
         fmt = string.Formatter()
         self.assertEqual(fmt.format("-{arg}-", arg='test'), '-test-')
         self.assertRaises(KeyError, fmt.format, "-{arg}-")
@@ -51,7 +51,7 @@ class ModuleTest(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, "format_string"):
             fmt.format(format_string="-{arg}-", arg='test')
 
-    def test_auto_numbering(self):
+    eleza test_auto_numbering(self):
         fmt = string.Formatter()
         self.assertEqual(fmt.format('foo{}{}', 'bar', 6),
                          'foo{}{}'.format('bar', 6))
@@ -70,7 +70,7 @@ class ModuleTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             fmt.format('foo{}{1}', 'bar', 6)
 
-    def test_conversion_specifiers(self):
+    eleza test_conversion_specifiers(self):
         fmt = string.Formatter()
         self.assertEqual(fmt.format("-{arg!r}-", arg='test'), "-'test'-")
         self.assertEqual(fmt.format("{0!s}", 'test'), 'test')
@@ -82,17 +82,17 @@ class ModuleTest(unittest.TestCase):
         self.assertEqual(fmt.format("{0!a}",  chr(255)), "'\\xff'")
         self.assertEqual(fmt.format("{0!a}",  chr(256)), "'\\u0100'")
 
-    def test_name_lookup(self):
+    eleza test_name_lookup(self):
         fmt = string.Formatter()
-        class AnyAttr:
-            def __getattr__(self, attr):
-                return attr
+        kundi AnyAttr:
+            eleza __getattr__(self, attr):
+                rudisha attr
         x = AnyAttr()
         self.assertEqual(fmt.format("{0.lumber}{0.jack}", x), 'lumberjack')
         with self.assertRaises(AttributeError):
             fmt.format("{0.lumber}{0.jack}", '')
 
-    def test_index_lookup(self):
+    eleza test_index_lookup(self):
         fmt = string.Formatter()
         lookup = ["eggs", "and", "spam"]
         self.assertEqual(fmt.format("{0[2]}{0[0]}", lookup), 'spameggs')
@@ -101,19 +101,19 @@ class ModuleTest(unittest.TestCase):
         with self.assertRaises(KeyError):
             fmt.format("{0[2]}{0[0]}", {})
 
-    def test_override_get_value(self):
-        class NamespaceFormatter(string.Formatter):
-            def __init__(self, namespace={}):
+    eleza test_override_get_value(self):
+        kundi NamespaceFormatter(string.Formatter):
+            eleza __init__(self, namespace={}):
                 string.Formatter.__init__(self)
                 self.namespace = namespace
 
-            def get_value(self, key, args, kwds):
-                if isinstance(key, str):
+            eleza get_value(self, key, args, kwds):
+                ikiwa isinstance(key, str):
                     try:
                         # Check explicitly passed arguments first
-                        return kwds[key]
+                        rudisha kwds[key]
                     except KeyError:
-                        return self.namespace[key]
+                        rudisha self.namespace[key]
                 else:
                     string.Formatter.get_value(key, args, kwds)
 
@@ -121,33 +121,33 @@ class ModuleTest(unittest.TestCase):
         self.assertEqual(fmt.format("{greeting}, world!"), 'hello, world!')
 
 
-    def test_override_format_field(self):
-        class CallFormatter(string.Formatter):
-            def format_field(self, value, format_spec):
-                return format(value(), format_spec)
+    eleza test_override_format_field(self):
+        kundi CallFormatter(string.Formatter):
+            eleza format_field(self, value, format_spec):
+                rudisha format(value(), format_spec)
 
         fmt = CallFormatter()
         self.assertEqual(fmt.format('*{0}*', lambda : 'result'), '*result*')
 
 
-    def test_override_convert_field(self):
-        class XFormatter(string.Formatter):
-            def convert_field(self, value, conversion):
-                if conversion == 'x':
-                    return None
-                return super().convert_field(value, conversion)
+    eleza test_override_convert_field(self):
+        kundi XFormatter(string.Formatter):
+            eleza convert_field(self, value, conversion):
+                ikiwa conversion == 'x':
+                    rudisha None
+                rudisha super().convert_field(value, conversion)
 
         fmt = XFormatter()
         self.assertEqual(fmt.format("{0!r}:{0!x}", 'foo', 'foo'), "'foo':None")
 
 
-    def test_override_parse(self):
-        class BarFormatter(string.Formatter):
+    eleza test_override_parse(self):
+        kundi BarFormatter(string.Formatter):
             # returns an iterable that contains tuples of the form:
             # (literal_text, field_name, format_spec, conversion)
-            def parse(self, format_string):
+            eleza parse(self, format_string):
                 for field in format_string.split('|'):
-                    if field[0] == '+':
+                    ikiwa field[0] == '+':
                         # it's markup
                         field_name, _, format_spec = field[1:].partition(':')
                         yield '', field_name, format_spec, None
@@ -157,9 +157,9 @@ class ModuleTest(unittest.TestCase):
         fmt = BarFormatter()
         self.assertEqual(fmt.format('*|+0:^10s|*', 'foo'), '*   foo    *')
 
-    def test_check_unused_args(self):
-        class CheckAllUsedFormatter(string.Formatter):
-            def check_unused_args(self, used_args, args, kwargs):
+    eleza test_check_unused_args(self):
+        kundi CheckAllUsedFormatter(string.Formatter):
+            eleza check_unused_args(self, used_args, args, kwargs):
                 # Track which arguments actually got used
                 unused_args = set(kwargs.keys())
                 unused_args.update(range(0, len(args)))
@@ -167,7 +167,7 @@ class ModuleTest(unittest.TestCase):
                 for arg in used_args:
                     unused_args.remove(arg)
 
-                if unused_args:
+                ikiwa unused_args:
                     raise ValueError("unused arguments")
 
         fmt = CheckAllUsedFormatter()
@@ -179,7 +179,7 @@ class ModuleTest(unittest.TestCase):
         self.assertRaises(ValueError, fmt.format, "{0}", 10, 20, i=100)
         self.assertRaises(ValueError, fmt.format, "{i}", 10, 20, i=100)
 
-    def test_vformat_recursion_limit(self):
+    eleza test_vformat_recursion_limit(self):
         fmt = string.Formatter()
         args = ()
         kwargs = dict(i=100)
@@ -190,46 +190,46 @@ class ModuleTest(unittest.TestCase):
 
 # Template tests (formerly housed in test_pep292.py)
 
-class Bag:
+kundi Bag:
     pass
 
-class Mapping:
-    def __getitem__(self, name):
+kundi Mapping:
+    eleza __getitem__(self, name):
         obj = self
         for part in name.split('.'):
             try:
                 obj = getattr(obj, part)
             except AttributeError:
                 raise KeyError(name)
-        return obj
+        rudisha obj
 
 
-class TestTemplate(unittest.TestCase):
-    def test_regular_templates(self):
+kundi TestTemplate(unittest.TestCase):
+    eleza test_regular_templates(self):
         s = Template('$who likes to eat a bag of $what worth $$100')
         self.assertEqual(s.substitute(dict(who='tim', what='ham')),
                          'tim likes to eat a bag of ham worth $100')
         self.assertRaises(KeyError, s.substitute, dict(who='tim'))
         self.assertRaises(TypeError, Template.substitute)
 
-    def test_regular_templates_with_braces(self):
+    eleza test_regular_templates_with_braces(self):
         s = Template('$who likes ${what} for ${meal}')
         d = dict(who='tim', what='ham', meal='dinner')
         self.assertEqual(s.substitute(d), 'tim likes ham for dinner')
         self.assertRaises(KeyError, s.substitute,
                           dict(who='tim', what='ham'))
 
-    def test_regular_templates_with_upper_case(self):
+    eleza test_regular_templates_with_upper_case(self):
         s = Template('$WHO likes ${WHAT} for ${MEAL}')
         d = dict(WHO='tim', WHAT='ham', MEAL='dinner')
         self.assertEqual(s.substitute(d), 'tim likes ham for dinner')
 
-    def test_regular_templates_with_non_letters(self):
+    eleza test_regular_templates_with_non_letters(self):
         s = Template('$_wh0_ likes ${_w_h_a_t_} for ${mea1}')
         d = dict(_wh0_='tim', _w_h_a_t_='ham', mea1='dinner')
         self.assertEqual(s.substitute(d), 'tim likes ham for dinner')
 
-    def test_escapes(self):
+    eleza test_escapes(self):
         eq = self.assertEqual
         s = Template('$who likes to eat a bag of $$what worth $$100')
         eq(s.substitute(dict(who='tim', what='ham')),
@@ -237,14 +237,14 @@ class TestTemplate(unittest.TestCase):
         s = Template('$who likes $$')
         eq(s.substitute(dict(who='tim', what='ham')), 'tim likes $')
 
-    def test_percents(self):
+    eleza test_percents(self):
         eq = self.assertEqual
         s = Template('%(foo)s $foo ${foo}')
         d = dict(foo='baz')
         eq(s.substitute(d), '%(foo)s baz baz')
         eq(s.safe_substitute(d), '%(foo)s baz baz')
 
-    def test_stringification(self):
+    eleza test_stringification(self):
         eq = self.assertEqual
         s = Template('tim has eaten $count bags of ham today')
         d = dict(count=7)
@@ -253,14 +253,14 @@ class TestTemplate(unittest.TestCase):
         s = Template('tim has eaten ${count} bags of ham today')
         eq(s.substitute(d), 'tim has eaten 7 bags of ham today')
 
-    def test_tupleargs(self):
+    eleza test_tupleargs(self):
         eq = self.assertEqual
         s = Template('$who ate ${meal}')
         d = dict(who=('tim', 'fred'), meal=('ham', 'kung pao'))
         eq(s.substitute(d), "('tim', 'fred') ate ('ham', 'kung pao')")
         eq(s.safe_substitute(d), "('tim', 'fred') ate ('ham', 'kung pao')")
 
-    def test_SafeTemplate(self):
+    eleza test_SafeTemplate(self):
         eq = self.assertEqual
         s = Template('$who likes ${what} for ${meal}')
         eq(s.safe_substitute(dict(who='tim')), 'tim likes ${what} for ${meal}')
@@ -272,7 +272,7 @@ class TestTemplate(unittest.TestCase):
         eq(s.safe_substitute(dict(who='tim', what='ham', meal='dinner')),
            'tim likes ham for dinner')
 
-    def test_invalid_placeholders(self):
+    eleza test_invalid_placeholders(self):
         raises = self.assertRaises
         s = Template('$who likes $')
         raises(ValueError, s.substitute, dict(who='tim'))
@@ -287,8 +287,8 @@ class TestTemplate(unittest.TestCase):
         s = Template("$who likes $\u0130")  # (LATIN CAPITAL LETTER I WITH DOT ABOVE)
         raises(ValueError, s.substitute, dict(who='tim'))
 
-    def test_idpattern_override(self):
-        class PathPattern(Template):
+    eleza test_idpattern_override(self):
+        kundi PathPattern(Template):
             idpattern = r'[_a-z][._a-z0-9]*'
         m = Mapping()
         m.bag = Bag()
@@ -298,18 +298,18 @@ class TestTemplate(unittest.TestCase):
         s = PathPattern('$bag.foo.who likes to eat a bag of $bag.what')
         self.assertEqual(s.substitute(m), 'tim likes to eat a bag of ham')
 
-    def test_flags_override(self):
-        class MyPattern(Template):
+    eleza test_flags_override(self):
+        kundi MyPattern(Template):
             flags = 0
         s = MyPattern('$wHO likes ${WHAT} for ${meal}')
         d = dict(wHO='tim', WHAT='ham', meal='dinner', w='fred')
         self.assertRaises(ValueError, s.substitute, d)
         self.assertEqual(s.safe_substitute(d), 'fredHO likes ${WHAT} for dinner')
 
-    def test_idpattern_override_inside_outside(self):
+    eleza test_idpattern_override_inside_outside(self):
         # bpo-1198569: Allow the regexp inside and outside braces to be
         # different when deriving kutoka Template.
-        class MyPattern(Template):
+        kundi MyPattern(Template):
             idpattern = r'[a-z]+'
             braceidpattern = r'[A-Z]+'
             flags = 0
@@ -317,10 +317,10 @@ class TestTemplate(unittest.TestCase):
         s = MyPattern('$foo ${BAR}')
         self.assertEqual(s.substitute(m), 'foo BAR')
 
-    def test_idpattern_override_inside_outside_invalid_unbraced(self):
+    eleza test_idpattern_override_inside_outside_invalid_unbraced(self):
         # bpo-1198569: Allow the regexp inside and outside braces to be
         # different when deriving kutoka Template.
-        class MyPattern(Template):
+        kundi MyPattern(Template):
             idpattern = r'[a-z]+'
             braceidpattern = r'[A-Z]+'
             flags = 0
@@ -330,8 +330,8 @@ class TestTemplate(unittest.TestCase):
         s = MyPattern('${bar}')
         self.assertRaises(ValueError, s.substitute, m)
 
-    def test_pattern_override(self):
-        class MyPattern(Template):
+    eleza test_pattern_override(self):
+        kundi MyPattern(Template):
             pattern = r"""
             (?P<escaped>@{2})                   |
             @(?P<named>[_a-z][._a-z0-9]*)       |
@@ -346,7 +346,7 @@ class TestTemplate(unittest.TestCase):
         s = MyPattern('@bag.foo.who likes to eat a bag of @bag.what')
         self.assertEqual(s.substitute(m), 'tim likes to eat a bag of ham')
 
-        class BadPattern(Template):
+        kundi BadPattern(Template):
             pattern = r"""
             (?P<badname>.*)                     |
             (?P<escaped>@{2})                   |
@@ -358,8 +358,8 @@ class TestTemplate(unittest.TestCase):
         self.assertRaises(ValueError, s.substitute, {})
         self.assertRaises(ValueError, s.safe_substitute, {})
 
-    def test_braced_override(self):
-        class MyTemplate(Template):
+    eleza test_braced_override(self):
+        kundi MyTemplate(Template):
             pattern = r"""
             \$(?:
               (?P<escaped>$)                     |
@@ -375,8 +375,8 @@ class TestTemplate(unittest.TestCase):
         val = t.substitute({'location': 'Cleveland'})
         self.assertEqual(val, 'PyCon in Cleveland')
 
-    def test_braced_override_safe(self):
-        class MyTemplate(Template):
+    eleza test_braced_override_safe(self):
+        kundi MyTemplate(Template):
             pattern = r"""
             \$(?:
               (?P<escaped>$)                     |
@@ -392,13 +392,13 @@ class TestTemplate(unittest.TestCase):
         val = t.safe_substitute({'location': 'Cleveland'})
         self.assertEqual(val, 'PyCon in Cleveland')
 
-    def test_invalid_with_no_lines(self):
+    eleza test_invalid_with_no_lines(self):
         # The error formatting for invalid templates
         # has a special case for no data that the default
         # pattern can't trigger (always has at least '$')
         # So we craft a pattern that is always invalid
         # with no leading data.
-        class MyTemplate(Template):
+        kundi MyTemplate(Template):
             pattern = r"""
               (?P<invalid>) |
               unreachable(
@@ -412,12 +412,12 @@ class TestTemplate(unittest.TestCase):
             s.substitute({})
         self.assertIn('line 1, col 1', str(err.exception))
 
-    def test_unicode_values(self):
+    eleza test_unicode_values(self):
         s = Template('$who likes $what')
         d = dict(who='t\xffm', what='f\xfe\fed')
         self.assertEqual(s.substitute(d), 't\xffm likes f\xfe\x0ced')
 
-    def test_keyword_arguments(self):
+    eleza test_keyword_arguments(self):
         eq = self.assertEqual
         s = Template('$who likes $what')
         eq(s.substitute(who='tim', what='ham'), 'tim likes ham')
@@ -434,7 +434,7 @@ class TestTemplate(unittest.TestCase):
         s = Template('the self is $self')
         eq(s.substitute(self='bozo'), 'the self is bozo')
 
-    def test_keyword_arguments_safe(self):
+    eleza test_keyword_arguments_safe(self):
         eq = self.assertEqual
         raises = self.assertRaises
         s = Template('$who likes $what')
@@ -455,10 +455,10 @@ class TestTemplate(unittest.TestCase):
         s = Template('the self is $self')
         eq(s.safe_substitute(self='bozo'), 'the self is bozo')
 
-    def test_delimiter_override(self):
+    eleza test_delimiter_override(self):
         eq = self.assertEqual
         raises = self.assertRaises
-        class AmpersandTemplate(Template):
+        kundi AmpersandTemplate(Template):
             delimiter = '&'
         s = AmpersandTemplate('this &gift is for &{who} &&')
         eq(s.substitute(gift='bud', who='you'), 'this bud is for you &')
@@ -469,12 +469,12 @@ class TestTemplate(unittest.TestCase):
         raises(ValueError, s.substitute, dict(gift='bud', who='you'))
         eq(s.safe_substitute(), 'this &gift is for &{who} &')
 
-        class PieDelims(Template):
+        kundi PieDelims(Template):
             delimiter = '@'
         s = PieDelims('@who likes to eat a bag of @{what} worth $100')
         self.assertEqual(s.substitute(dict(who='tim', what='ham')),
                          'tim likes to eat a bag of ham worth $100')
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

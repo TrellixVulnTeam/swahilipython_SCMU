@@ -4,7 +4,7 @@ A gui object is anything with a master or parent parameter, which is
 typically required in spite of what the doc strings say.
 """
 
-class Event:
+kundi Event:
     '''Minimal mock with attributes for testing event handlers.
 
     This is not a gui object, but is used as an argument for callbacks
@@ -18,39 +18,39 @@ class Event:
     attributes for specific events, such as keycode for key events.
     tkinter.Event.__doc__ has more but is still not complete.
     '''
-    def __init__(self, **kwds):
+    eleza __init__(self, **kwds):
         "Create event with attributes needed for test"
         self.__dict__.update(kwds)
 
-class Var:
+kundi Var:
     "Use for String/Int/BooleanVar: incomplete"
-    def __init__(self, master=None, value=None, name=None):
+    eleza __init__(self, master=None, value=None, name=None):
         self.master = master
         self.value = value
         self.name = name
-    def set(self, value):
+    eleza set(self, value):
         self.value = value
-    def get(self):
-        return self.value
+    eleza get(self):
+        rudisha self.value
 
-class Mbox_func:
+kundi Mbox_func:
     """Generic mock for messagebox functions, which all have the same signature.
 
     Instead of displaying a message box, the mock's call method saves the
     arguments as instance attributes, which test functions can then examine.
     The test can set the result returned to ask function
     """
-    def __init__(self, result=None):
+    eleza __init__(self, result=None):
         self.result = result  # Return None for all show funcs
-    def __call__(self, title, message, *args, **kwds):
+    eleza __call__(self, title, message, *args, **kwds):
         # Save all args for possible examination by tester
         self.title = title
         self.message = message
         self.args = args
         self.kwds = kwds
-        return self.result  # Set by tester for ask functions
+        rudisha self.result  # Set by tester for ask functions
 
-class Mbox:
+kundi Mbox:
     """Mock for tkinter.messagebox with an Mbox_func for each function.
 
     This module was 'tkMessageBox' in 2.x; hence the 'agiza as' in  3.x.
@@ -62,17 +62,17 @@ agiza module
 orig_mbox = module.tkMessageBox
 showerror = Mbox.showerror  # example, for attribute access in test methods
 
-class Test(unittest.TestCase):
+kundi Test(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         module.tkMessageBox = Mbox
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         module.tkMessageBox = orig_mbox
     ---
-    For 'ask' functions, set func.result return value before calling the method
+    For 'ask' functions, set func.result rudisha value before calling the method
     that uses the message function. When tkMessageBox functions are the
     only gui alls in a method, this replacement makes the method gui-free,
     """
@@ -87,7 +87,7 @@ class Test(unittest.TestCase):
 
 kutoka _tkinter agiza TclError
 
-class Text:
+kundi Text:
     """A semi-functional non-gui replacement for tkinter.Text text editors.
 
     The mock's data model is that a text is a list of \n-terminated lines.
@@ -96,11 +96,11 @@ class Text:
     Tk initializes files with a terminal \n that cannot be deleted. It is
     invisible in the sense that one cannot move the cursor beyond it.
 
-    This class is only tested (and valid) with strings of ascii chars.
+    This kundi is only tested (and valid) with strings of ascii chars.
     For testing, we are not concerned with Tk Text's treatment of,
     for instance, 0-width characters or character + accent.
    """
-    def __init__(self, master=None, cnf={}, **kw):
+    eleza __init__(self, master=None, cnf={}, **kw):
         '''Initialize mock, non-gui, text-only Text widget.
 
         At present, all args are ignored. Almost all affect visual behavior.
@@ -108,11 +108,11 @@ class Text:
         '''
         self.data = ['', '\n']
 
-    def index(self, index):
+    eleza index(self, index):
         "Return string version of index decoded according to current text."
-        return "%s.%s" % self._decode(index, endflag=1)
+        rudisha "%s.%s" % self._decode(index, endflag=1)
 
-    def _decode(self, index, endflag=0):
+    eleza _decode(self, index, endflag=0):
         """Return a (line, char) tuple of int indexes into self.data.
 
         This implements .index without converting the result back to a string.
@@ -128,7 +128,7 @@ class Text:
         * 'end', whose meaning depends on the endflag passed to ._endex.
         * 'sel.first' or 'sel.last', where sel is a tag -- not implemented.
         """
-        if isinstance(index, (float, bytes)):
+        ikiwa isinstance(index, (float, bytes)):
             index = str(index)
         try:
             index=index.lower()
@@ -136,34 +136,34 @@ class Text:
             raise TclError('bad text index "%s"' % index) kutoka None
 
         lastline =  len(self.data) - 1  # same as number of text lines
-        if index == 'insert':
-            return lastline, len(self.data[lastline]) - 1
-        elif index == 'end':
-            return self._endex(endflag)
+        ikiwa index == 'insert':
+            rudisha lastline, len(self.data[lastline]) - 1
+        elikiwa index == 'end':
+            rudisha self._endex(endflag)
 
         line, char = index.split('.')
         line = int(line)
 
         # Out of bounds line becomes first or last ('end') index
-        if line < 1:
-            return 1, 0
-        elif line > lastline:
-            return self._endex(endflag)
+        ikiwa line < 1:
+            rudisha 1, 0
+        elikiwa line > lastline:
+            rudisha self._endex(endflag)
 
         linelength = len(self.data[line])  -1  # position before/at \n
-        if char.endswith(' lineend') or char == 'end':
-            return line, linelength
+        ikiwa char.endswith(' lineend') or char == 'end':
+            rudisha line, linelength
             # Tk requires that ignored chars before ' lineend' be valid int
 
         # Out of bounds char becomes first or last index of line
         char = int(char)
-        if char < 0:
+        ikiwa char < 0:
             char = 0
-        elif char > linelength:
+        elikiwa char > linelength:
             char = linelength
-        return line, char
+        rudisha line, char
 
-    def _endex(self, endflag):
+    eleza _endex(self, endflag):
         '''Return position for 'end' or line overflow corresponding to endflag.
 
        -1: position before terminal \n; for .insert(), .delete
@@ -171,20 +171,20 @@ class Text:
        1: same viewed as beginning of non-existent next line (for .index)
        '''
         n = len(self.data)
-        if endflag == 1:
-            return n, 0
+        ikiwa endflag == 1:
+            rudisha n, 0
         else:
             n -= 1
-            return n, len(self.data[n]) + endflag
+            rudisha n, len(self.data[n]) + endflag
 
 
-    def insert(self, index, chars):
+    eleza insert(self, index, chars):
         "Insert chars before the character at index."
 
-        if not chars:  # ''.splitlines() is [], not ['']
+        ikiwa not chars:  # ''.splitlines() is [], not ['']
             return
         chars = chars.splitlines(True)
-        if chars[-1][-1] == '\n':
+        ikiwa chars[-1][-1] == '\n':
             chars.append('')
         line, char = self._decode(index, -1)
         before = self.data[line][:char]
@@ -194,110 +194,110 @@ class Text:
         self.data[line+len(chars)-1] += after
 
 
-    def get(self, index1, index2=None):
+    eleza get(self, index1, index2=None):
         "Return slice kutoka index1 to index2 (default is 'index1+1')."
 
         startline, startchar = self._decode(index1)
-        if index2 is None:
+        ikiwa index2 is None:
             endline, endchar = startline, startchar+1
         else:
             endline, endchar = self._decode(index2)
 
-        if startline == endline:
-            return self.data[startline][startchar:endchar]
+        ikiwa startline == endline:
+            rudisha self.data[startline][startchar:endchar]
         else:
             lines = [self.data[startline][startchar:]]
             for i in range(startline+1, endline):
                 lines.append(self.data[i])
             lines.append(self.data[endline][:endchar])
-            return ''.join(lines)
+            rudisha ''.join(lines)
 
 
-    def delete(self, index1, index2=None):
+    eleza delete(self, index1, index2=None):
         '''Delete slice kutoka index1 to index2 (default is 'index1+1').
 
         Adjust default index2 ('index+1) for line ends.
         Do not delete the terminal \n at the very end of self.data ([-1][-1]).
         '''
         startline, startchar = self._decode(index1, -1)
-        if index2 is None:
-            if startchar < len(self.data[startline])-1:
+        ikiwa index2 is None:
+            ikiwa startchar < len(self.data[startline])-1:
                 # not deleting \n
                 endline, endchar = startline, startchar+1
-            elif startline < len(self.data) - 1:
+            elikiwa startline < len(self.data) - 1:
                 # deleting non-terminal \n, convert 'index1+1 to start of next line
                 endline, endchar = startline+1, 0
             else:
-                # do not delete terminal \n if index1 == 'insert'
+                # do not delete terminal \n ikiwa index1 == 'insert'
                 return
         else:
             endline, endchar = self._decode(index2, -1)
             # restricting end position to insert position excludes terminal \n
 
-        if startline == endline and startchar < endchar:
+        ikiwa startline == endline and startchar < endchar:
             self.data[startline] = self.data[startline][:startchar] + \
                                              self.data[startline][endchar:]
-        elif startline < endline:
+        elikiwa startline < endline:
             self.data[startline] = self.data[startline][:startchar] + \
                                    self.data[endline][endchar:]
             startline += 1
             for i in range(startline, endline+1):
                 del self.data[startline]
 
-    def compare(self, index1, op, index2):
+    eleza compare(self, index1, op, index2):
         line1, char1 = self._decode(index1)
         line2, char2 = self._decode(index2)
-        if op == '<':
-            return line1 < line2 or line1 == line2 and char1 < char2
-        elif op == '<=':
-            return line1 < line2 or line1 == line2 and char1 <= char2
-        elif op == '>':
-            return line1 > line2 or line1 == line2 and char1 > char2
-        elif op == '>=':
-            return line1 > line2 or line1 == line2 and char1 >= char2
-        elif op == '==':
-            return line1 == line2 and char1 == char2
-        elif op == '!=':
-            return line1 != line2 or  char1 != char2
+        ikiwa op == '<':
+            rudisha line1 < line2 or line1 == line2 and char1 < char2
+        elikiwa op == '<=':
+            rudisha line1 < line2 or line1 == line2 and char1 <= char2
+        elikiwa op == '>':
+            rudisha line1 > line2 or line1 == line2 and char1 > char2
+        elikiwa op == '>=':
+            rudisha line1 > line2 or line1 == line2 and char1 >= char2
+        elikiwa op == '==':
+            rudisha line1 == line2 and char1 == char2
+        elikiwa op == '!=':
+            rudisha line1 != line2 or  char1 != char2
         else:
             raise TclError('''bad comparison operator "%s": '''
                                   '''must be <, <=, ==, >=, >, or !=''' % op)
 
-    # The following Text methods normally do something and return None.
+    # The following Text methods normally do something and rudisha None.
     # Whether doing nothing is sufficient for a test will depend on the test.
 
-    def mark_set(self, name, index):
+    eleza mark_set(self, name, index):
         "Set mark *name* before the character at index."
         pass
 
-    def mark_unset(self, *markNames):
+    eleza mark_unset(self, *markNames):
         "Delete all marks in markNames."
 
-    def tag_remove(self, tagName, index1, index2=None):
+    eleza tag_remove(self, tagName, index1, index2=None):
         "Remove tag tagName kutoka all characters between index1 and index2."
         pass
 
-    # The following Text methods affect the graphics screen and return None.
+    # The following Text methods affect the graphics screen and rudisha None.
     # Doing nothing should always be sufficient for tests.
 
-    def scan_dragto(self, x, y):
+    eleza scan_dragto(self, x, y):
         "Adjust the view of the text according to scan_mark"
 
-    def scan_mark(self, x, y):
+    eleza scan_mark(self, x, y):
         "Remember the current X, Y coordinates."
 
-    def see(self, index):
+    eleza see(self, index):
         "Scroll screen to make the character at INDEX is visible."
         pass
 
     #  The following is a Misc method inherited by Text.
     # It should properly go in a Misc mock, but is included here for now.
 
-    def bind(sequence=None, func=None, add=None):
+    eleza bind(sequence=None, func=None, add=None):
         "Bind to this widget at event sequence a call to function func."
         pass
 
-class Entry:
+kundi Entry:
     "Mock for tkinter.Entry."
-    def focus_set(self):
+    eleza focus_set(self):
         pass

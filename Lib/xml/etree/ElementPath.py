@@ -10,7 +10,7 @@
 # 2003-08-27 fl   fixed parsing of periods in element names
 # 2007-09-10 fl   new selection engine
 # 2007-09-12 fl   fixed parent selector
-# 2007-09-13 fl   added iterfind; changed findall to return a list
+# 2007-09-13 fl   added iterfind; changed findall to rudisha a list
 # 2007-11-30 fl   added namespaces support
 # 2009-10-30 fl   added child element value filter
 #
@@ -53,7 +53,7 @@
 ##
 # Implementation module for XPath support.  There's usually no reason
 # to agiza this module directly; the <b>ElementTree</b> does this for
-# you, if needed.
+# you, ikiwa needed.
 ##
 
 agiza re
@@ -70,21 +70,21 @@ xpath_tokenizer_re = re.compile(
     r"\s+"
     )
 
-def xpath_tokenizer(pattern, namespaces=None):
-    default_namespace = namespaces.get('') if namespaces else None
+eleza xpath_tokenizer(pattern, namespaces=None):
+    default_namespace = namespaces.get('') ikiwa namespaces else None
     parsing_attribute = False
     for token in xpath_tokenizer_re.findall(pattern):
         ttype, tag = token
-        if tag and tag[0] != "{":
-            if ":" in tag:
+        ikiwa tag and tag[0] != "{":
+            ikiwa ":" in tag:
                 prefix, uri = tag.split(":", 1)
                 try:
-                    if not namespaces:
+                    ikiwa not namespaces:
                         raise KeyError
                     yield ttype, "{%s}%s" % (namespaces[prefix], uri)
                 except KeyError:
                     raise SyntaxError("prefix %r not found in prefix map" % prefix) kutoka None
-            elif default_namespace and not parsing_attribute:
+            elikiwa default_namespace and not parsing_attribute:
                 yield ttype, "{%s}%s" % (default_namespace, tag)
             else:
                 yield token
@@ -94,136 +94,136 @@ def xpath_tokenizer(pattern, namespaces=None):
             parsing_attribute = ttype == '@'
 
 
-def get_parent_map(context):
+eleza get_parent_map(context):
     parent_map = context.parent_map
-    if parent_map is None:
+    ikiwa parent_map is None:
         context.parent_map = parent_map = {}
         for p in context.root.iter():
             for e in p:
                 parent_map[e] = p
-    return parent_map
+    rudisha parent_map
 
 
-def _is_wildcard_tag(tag):
-    return tag[:3] == '{*}' or tag[-2:] == '}*'
+eleza _is_wildcard_tag(tag):
+    rudisha tag[:3] == '{*}' or tag[-2:] == '}*'
 
 
-def _prepare_tag(tag):
+eleza _prepare_tag(tag):
     _isinstance, _str = isinstance, str
-    if tag == '{*}*':
+    ikiwa tag == '{*}*':
         # Same as '*', but no comments or processing instructions.
         # It can be a surprise that '*' includes those, but there is no
         # justification for '{*}*' doing the same.
-        def select(context, result):
+        eleza select(context, result):
             for elem in result:
-                if _isinstance(elem.tag, _str):
+                ikiwa _isinstance(elem.tag, _str):
                     yield elem
-    elif tag == '{}*':
+    elikiwa tag == '{}*':
         # Any tag that is not in a namespace.
-        def select(context, result):
+        eleza select(context, result):
             for elem in result:
                 el_tag = elem.tag
-                if _isinstance(el_tag, _str) and el_tag[0] != '{':
+                ikiwa _isinstance(el_tag, _str) and el_tag[0] != '{':
                     yield elem
-    elif tag[:3] == '{*}':
+    elikiwa tag[:3] == '{*}':
         # The tag in any (or no) namespace.
         suffix = tag[2:]  # '}name'
         no_ns = slice(-len(suffix), None)
         tag = tag[3:]
-        def select(context, result):
+        eleza select(context, result):
             for elem in result:
                 el_tag = elem.tag
-                if el_tag == tag or _isinstance(el_tag, _str) and el_tag[no_ns] == suffix:
+                ikiwa el_tag == tag or _isinstance(el_tag, _str) and el_tag[no_ns] == suffix:
                     yield elem
-    elif tag[-2:] == '}*':
+    elikiwa tag[-2:] == '}*':
         # Any tag in the given namespace.
         ns = tag[:-1]
         ns_only = slice(None, len(ns))
-        def select(context, result):
+        eleza select(context, result):
             for elem in result:
                 el_tag = elem.tag
-                if _isinstance(el_tag, _str) and el_tag[ns_only] == ns:
+                ikiwa _isinstance(el_tag, _str) and el_tag[ns_only] == ns:
                     yield elem
     else:
         raise RuntimeError(f"internal parser error, got {tag}")
-    return select
+    rudisha select
 
 
-def prepare_child(next, token):
+eleza prepare_child(next, token):
     tag = token[1]
-    if _is_wildcard_tag(tag):
+    ikiwa _is_wildcard_tag(tag):
         select_tag = _prepare_tag(tag)
-        def select(context, result):
-            def select_child(result):
+        eleza select(context, result):
+            eleza select_child(result):
                 for elem in result:
                     yield kutoka elem
-            return select_tag(context, select_child(result))
+            rudisha select_tag(context, select_child(result))
     else:
-        if tag[:2] == '{}':
+        ikiwa tag[:2] == '{}':
             tag = tag[2:]  # '{}tag' == 'tag'
-        def select(context, result):
+        eleza select(context, result):
             for elem in result:
                 for e in elem:
-                    if e.tag == tag:
+                    ikiwa e.tag == tag:
                         yield e
-    return select
+    rudisha select
 
-def prepare_star(next, token):
-    def select(context, result):
+eleza prepare_star(next, token):
+    eleza select(context, result):
         for elem in result:
             yield kutoka elem
-    return select
+    rudisha select
 
-def prepare_self(next, token):
-    def select(context, result):
+eleza prepare_self(next, token):
+    eleza select(context, result):
         yield kutoka result
-    return select
+    rudisha select
 
-def prepare_descendant(next, token):
+eleza prepare_descendant(next, token):
     try:
         token = next()
     except StopIteration:
         return
-    if token[0] == "*":
+    ikiwa token[0] == "*":
         tag = "*"
-    elif not token[0]:
+    elikiwa not token[0]:
         tag = token[1]
     else:
         raise SyntaxError("invalid descendant")
 
-    if _is_wildcard_tag(tag):
+    ikiwa _is_wildcard_tag(tag):
         select_tag = _prepare_tag(tag)
-        def select(context, result):
-            def select_child(result):
+        eleza select(context, result):
+            eleza select_child(result):
                 for elem in result:
                     for e in elem.iter():
-                        if e is not elem:
+                        ikiwa e is not elem:
                             yield e
-            return select_tag(context, select_child(result))
+            rudisha select_tag(context, select_child(result))
     else:
-        if tag[:2] == '{}':
+        ikiwa tag[:2] == '{}':
             tag = tag[2:]  # '{}tag' == 'tag'
-        def select(context, result):
+        eleza select(context, result):
             for elem in result:
                 for e in elem.iter(tag):
-                    if e is not elem:
+                    ikiwa e is not elem:
                         yield e
-    return select
+    rudisha select
 
-def prepare_parent(next, token):
-    def select(context, result):
-        # FIXME: raise error if .. is applied at toplevel?
+eleza prepare_parent(next, token):
+    eleza select(context, result):
+        # FIXME: raise error ikiwa .. is applied at toplevel?
         parent_map = get_parent_map(context)
         result_map = {}
         for elem in result:
-            if elem in parent_map:
+            ikiwa elem in parent_map:
                 parent = parent_map[elem]
-                if parent not in result_map:
+                ikiwa parent not in result_map:
                     result_map[parent] = None
                     yield parent
-    return select
+    rudisha select
 
-def prepare_predicate(next, token):
+eleza prepare_predicate(next, token):
     # FIXME: replace with real parser!!! refs:
     # http://effbot.org/zone/simple-iterator-parser.htm
     # http://javascript.crockford.com/tdop/tdop.html
@@ -234,90 +234,90 @@ def prepare_predicate(next, token):
             token = next()
         except StopIteration:
             return
-        if token[0] == "]":
+        ikiwa token[0] == "]":
             break
-        if token == ('', ''):
+        ikiwa token == ('', ''):
             # ignore whitespace
             continue
-        if token[0] and token[0][:1] in "'\"":
+        ikiwa token[0] and token[0][:1] in "'\"":
             token = "'", token[0][1:-1]
         signature.append(token[0] or "-")
         predicate.append(token[1])
     signature = "".join(signature)
     # use signature to determine predicate type
-    if signature == "@-":
+    ikiwa signature == "@-":
         # [@attribute] predicate
         key = predicate[1]
-        def select(context, result):
+        eleza select(context, result):
             for elem in result:
-                if elem.get(key) is not None:
+                ikiwa elem.get(key) is not None:
                     yield elem
-        return select
-    if signature == "@-='":
+        rudisha select
+    ikiwa signature == "@-='":
         # [@attribute='value']
         key = predicate[1]
         value = predicate[-1]
-        def select(context, result):
+        eleza select(context, result):
             for elem in result:
-                if elem.get(key) == value:
+                ikiwa elem.get(key) == value:
                     yield elem
-        return select
-    if signature == "-" and not re.match(r"\-?\d+$", predicate[0]):
+        rudisha select
+    ikiwa signature == "-" and not re.match(r"\-?\d+$", predicate[0]):
         # [tag]
         tag = predicate[0]
-        def select(context, result):
+        eleza select(context, result):
             for elem in result:
-                if elem.find(tag) is not None:
+                ikiwa elem.find(tag) is not None:
                     yield elem
-        return select
-    if signature == ".='" or (signature == "-='" and not re.match(r"\-?\d+$", predicate[0])):
+        rudisha select
+    ikiwa signature == ".='" or (signature == "-='" and not re.match(r"\-?\d+$", predicate[0])):
         # [.='value'] or [tag='value']
         tag = predicate[0]
         value = predicate[-1]
-        if tag:
-            def select(context, result):
+        ikiwa tag:
+            eleza select(context, result):
                 for elem in result:
                     for e in elem.findall(tag):
-                        if "".join(e.itertext()) == value:
+                        ikiwa "".join(e.itertext()) == value:
                             yield elem
                             break
         else:
-            def select(context, result):
+            eleza select(context, result):
                 for elem in result:
-                    if "".join(elem.itertext()) == value:
+                    ikiwa "".join(elem.itertext()) == value:
                         yield elem
-        return select
-    if signature == "-" or signature == "-()" or signature == "-()-":
+        rudisha select
+    ikiwa signature == "-" or signature == "-()" or signature == "-()-":
         # [index] or [last()] or [last()-index]
-        if signature == "-":
+        ikiwa signature == "-":
             # [index]
             index = int(predicate[0]) - 1
-            if index < 0:
+            ikiwa index < 0:
                 raise SyntaxError("XPath position >= 1 expected")
         else:
-            if predicate[0] != "last":
+            ikiwa predicate[0] != "last":
                 raise SyntaxError("unsupported function")
-            if signature == "-()-":
+            ikiwa signature == "-()-":
                 try:
                     index = int(predicate[2]) - 1
                 except ValueError:
                     raise SyntaxError("unsupported expression")
-                if index > -2:
+                ikiwa index > -2:
                     raise SyntaxError("XPath offset kutoka last() must be negative")
             else:
                 index = -1
-        def select(context, result):
+        eleza select(context, result):
             parent_map = get_parent_map(context)
             for elem in result:
                 try:
                     parent = parent_map[elem]
-                    # FIXME: what if the selector is "*" ?
+                    # FIXME: what ikiwa the selector is "*" ?
                     elems = list(parent.findall(elem.tag))
-                    if elems[index] is elem:
+                    ikiwa elems[index] is elem:
                         yield elem
                 except (IndexError, KeyError):
                     pass
-        return select
+        rudisha select
     raise SyntaxError("invalid predicate")
 
 ops = {
@@ -331,9 +331,9 @@ ops = {
 
 _cache = {}
 
-class _SelectorContext:
+kundi _SelectorContext:
     parent_map = None
-    def __init__(self, root):
+    eleza __init__(self, root):
         self.root = root
 
 # --------------------------------------------------------------------
@@ -341,21 +341,21 @@ class _SelectorContext:
 ##
 # Generate all matching objects.
 
-def iterfind(elem, path, namespaces=None):
+eleza iterfind(elem, path, namespaces=None):
     # compile selector pattern
-    if path[-1:] == "/":
+    ikiwa path[-1:] == "/":
         path = path + "*" # implicit all (FIXME: keep this?)
 
     cache_key = (path,)
-    if namespaces:
+    ikiwa namespaces:
         cache_key += tuple(sorted(namespaces.items()))
 
     try:
         selector = _cache[cache_key]
     except KeyError:
-        if len(_cache) > 100:
+        ikiwa len(_cache) > 100:
             _cache.clear()
-        if path[:1] == "/":
+        ikiwa path[:1] == "/":
             raise SyntaxError("cannot use absolute path on element")
         next = iter(xpath_tokenizer(path, namespaces)).__next__
         try:
@@ -370,7 +370,7 @@ def iterfind(elem, path, namespaces=None):
                 raise SyntaxError("invalid path") kutoka None
             try:
                 token = next()
-                if token[0] == "/":
+                ikiwa token[0] == "/":
                     token = next()
             except StopIteration:
                 break
@@ -380,26 +380,26 @@ def iterfind(elem, path, namespaces=None):
     context = _SelectorContext(elem)
     for select in selector:
         result = select(context, result)
-    return result
+    rudisha result
 
 ##
 # Find first matching object.
 
-def find(elem, path, namespaces=None):
-    return next(iterfind(elem, path, namespaces), None)
+eleza find(elem, path, namespaces=None):
+    rudisha next(iterfind(elem, path, namespaces), None)
 
 ##
 # Find all matching objects.
 
-def findall(elem, path, namespaces=None):
-    return list(iterfind(elem, path, namespaces))
+eleza findall(elem, path, namespaces=None):
+    rudisha list(iterfind(elem, path, namespaces))
 
 ##
 # Find text for first matching object.
 
-def findtext(elem, path, default=None, namespaces=None):
+eleza findtext(elem, path, default=None, namespaces=None):
     try:
         elem = next(iterfind(elem, path, namespaces))
-        return elem.text or ""
+        rudisha elem.text or ""
     except StopIteration:
-        return default
+        rudisha default

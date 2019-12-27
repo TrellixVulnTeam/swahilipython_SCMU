@@ -51,12 +51,12 @@ when an :class:`~email.message.EmailMessage` is created, either by directly
 instantiating an :class:`~email.message.EmailMessage`  to create a new email,
 or by parsing an input stream using a :mod:`~email.parser`.  But the policy can
 be changed when the message is serialized using a :mod:`~email.generator`.
-This allows, for example, a generic email message to be parsed from disk, but
+This allows, for example, a generic email message to be parsed kutoka disk, but
 to serialize it using standard SMTP settings when sending it to an email
 server.
 
 The email package does its best to hide the details of the various governing
-RFCs from the application.  Conceptually the application should be able to
+RFCs kutoka the application.  Conceptually the application should be able to
 treat the email message as a structured tree of unicode text and binary
 attachments, without having to worry about how these are represented when
 serialized.  In practice, however, it is often necessary to be aware of at
@@ -91,7 +91,7 @@ The foregoing represent the modern (unicode friendly) API of the email package.
 The remaining sections, starting with the :class:`~email.message.Message`
 class, cover the legacy :data:`~email.policy.compat32` API that deals much more
 directly with the details of how email messages are represented.  The
-:data:`~email.policy.compat32` API does *not* hide the details of the RFCs from
+:data:`~email.policy.compat32` API does *not* hide the details of the RFCs kutoka
 the application, but for applications that need to operate at that level, they
 can be useful tools.  This documentation is also relevant for applications that
 are still using the :mod:`~email.policy.compat32` API for backward

@@ -1,9 +1,9 @@
 kutoka tkinter agiza TclError
 
-class WidgetRedirector:
+kundi WidgetRedirector:
     """Support for redirecting arbitrary widget subcommands.
 
-    Some Tk operations don't normally pass through tkinter.  For example, if a
+    Some Tk operations don't normally pass through tkinter.  For example, ikiwa a
     character is inserted into a Text widget by pressing a key, a default Tk
     binding to the widget's 'insert' operation is activated, and the Tk library
     processes the insert without calling back into tkinter.
@@ -24,7 +24,7 @@ class WidgetRedirector:
     of a Percolator chain.  At the bottom of the chain is a call to the
     original Tk widget operation.
     """
-    def __init__(self, widget):
+    eleza __init__(self, widget):
         '''Initialize attributes and setup redirection.
 
         _operations: dict mapping operation name to new function.
@@ -46,12 +46,12 @@ class WidgetRedirector:
         # whose action is to dispatch on the operation passed to the widget:
         tk.createcommand(w, self.dispatch)
 
-    def __repr__(self):
-        return "%s(%s<%s>)" % (self.__class__.__name__,
+    eleza __repr__(self):
+        rudisha "%s(%s<%s>)" % (self.__class__.__name__,
                                self.widget.__class__.__name__,
                                self.widget._w)
 
-    def close(self):
+    eleza close(self):
         "Unregister operations and revert redirection created by .__init__."
         for operation in list(self._operations):
             self.unregister(operation)
@@ -62,14 +62,14 @@ class WidgetRedirector:
         tk.deletecommand(w)
         tk.call("rename", self.orig, w)
         del self.widget, self.tk  # Should not be needed
-        # if instance is deleted after close, as in Percolator.
+        # ikiwa instance is deleted after close, as in Percolator.
 
-    def register(self, operation, function):
+    eleza register(self, operation, function):
         '''Return OriginalCommand(operation) after registering function.
 
         Registration adds an operation: function pair to ._operations.
         It also adds a widget function attribute that masks the tkinter
-        class instance method.  Method masking operates independently
+        kundi instance method.  Method masking operates independently
         kutoka command dispatch.
 
         If a second function is registered for the same operation, the
@@ -77,58 +77,58 @@ class WidgetRedirector:
         '''
         self._operations[operation] = function
         setattr(self.widget, operation, function)
-        return OriginalCommand(self, operation)
+        rudisha OriginalCommand(self, operation)
 
-    def unregister(self, operation):
+    eleza unregister(self, operation):
         '''Return the function for the operation, or None.
 
-        Deleting the instance attribute unmasks the class attribute.
+        Deleting the instance attribute unmasks the kundi attribute.
         '''
-        if operation in self._operations:
+        ikiwa operation in self._operations:
             function = self._operations[operation]
             del self._operations[operation]
             try:
                 delattr(self.widget, operation)
             except AttributeError:
                 pass
-            return function
+            rudisha function
         else:
-            return None
+            rudisha None
 
-    def dispatch(self, operation, *args):
+    eleza dispatch(self, operation, *args):
         '''Callback kutoka Tcl which runs when the widget is referenced.
 
         If an operation has been registered in self._operations, apply the
         associated function to the args passed into Tcl. Otherwise, pass the
         operation through to Tk via the original Tcl function.
 
-        Note that if a registered function is called, the operation is not
+        Note that ikiwa a registered function is called, the operation is not
         passed through to Tk.  Apply the function returned by self.register()
         to *args to accomplish that.  For an example, see colorizer.py.
 
         '''
         m = self._operations.get(operation)
         try:
-            if m:
-                return m(*args)
+            ikiwa m:
+                rudisha m(*args)
             else:
-                return self.tk.call((self.orig, operation) + args)
+                rudisha self.tk.call((self.orig, operation) + args)
         except TclError:
-            return ""
+            rudisha ""
 
 
-class OriginalCommand:
+kundi OriginalCommand:
     '''Callable for original tk command that has been redirected.
 
     Returned by .register; can be used in the function registered.
     redir = WidgetRedirector(text)
-    def my_insert(*args):
-        print("insert", args)
+    eleza my_insert(*args):
+        andika("insert", args)
         original_insert(*args)
     original_insert = redir.register("insert", my_insert)
     '''
 
-    def __init__(self, redir, operation):
+    eleza __init__(self, redir, operation):
         '''Create .tk_call and .orig_and_operation for .__call__ method.
 
         .redir and .operation store the input args for __repr__.
@@ -142,15 +142,15 @@ class OriginalCommand:
         self.tk_call = redir.tk.call
         self.orig_and_operation = (redir.orig, operation)
 
-    def __repr__(self):
-        return "%s(%r, %r)" % (self.__class__.__name__,
+    eleza __repr__(self):
+        rudisha "%s(%r, %r)" % (self.__class__.__name__,
                                self.redir, self.operation)
 
-    def __call__(self, *args):
-        return self.tk_call(self.orig_and_operation + args)
+    eleza __call__(self, *args):
+        rudisha self.tk_call(self.orig_and_operation + args)
 
 
-def _widget_redirector(parent):  # htest #
+eleza _widget_redirector(parent):  # htest #
     kutoka tkinter agiza Toplevel, Text
 
     top = Toplevel(parent)
@@ -161,12 +161,12 @@ def _widget_redirector(parent):  # htest #
     text.pack()
     text.focus_set()
     redir = WidgetRedirector(text)
-    def my_insert(*args):
-        print("insert", args)
+    eleza my_insert(*args):
+        andika("insert", args)
         original_insert(*args)
     original_insert = redir.register("insert", my_insert)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     kutoka unittest agiza main
     main('idlelib.idle_test.test_redirector', verbosity=2, exit=False)
 

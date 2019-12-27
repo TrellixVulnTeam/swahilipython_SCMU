@@ -18,7 +18,7 @@ with open('outgoing.msg', 'rb') as fp:
 # Now the header items can be accessed as a dictionary, and any non-ASCII will
 # be converted to unicode:
 print('To:', msg['to'])
-print('From:', msg['from'])
+print('From:', msg['kutoka'])
 print('Subject:', msg['subject'])
 
 # If we want to print a preview of the message content, we can extract whatever

@@ -43,11 +43,11 @@ Let's create an extension module called ``spam`` (the favorite food of Monty
 Python fans...) and let's say we want to create a Python interface to the C
 library function :c:func:`system` [#]_. This function takes a null-terminated
 character string as argument and returns an integer.  We want this function to
-be callable from Python as follows:
+be callable kutoka Python as follows:
 
 .. code-block:: pycon
 
-   >>> import spam
+   >>> agiza spam
    >>> status = spam.system("ls -l")
 
 Begin by creating a file :file:`spammodule.c`.  (Historically, if a module is
@@ -96,7 +96,7 @@ shortly how it ends up being called)::
        return PyLong_FromLong(sts);
    }
 
-There is a straightforward translation from the argument list in Python (for
+There is a straightforward translation kutoka the argument list in Python (for
 example, the single expression ``"ls -l"``) to the arguments passed to the C
 function.  The C function always has two arguments, conventionally named *self*
 and *args*.
@@ -155,7 +155,7 @@ You can test non-destructively whether an exception has been set with
 :c:func:`PyErr_Occurred`.  This returns the current exception object, or *NULL*
 if no exception has occurred.  You normally don't need to call
 :c:func:`PyErr_Occurred` to see whether an error occurred in a function call,
-since you should be able to tell from the return value.
+since you should be able to tell kutoka the return value.
 
 When a function *f* that calls another function *g* detects that the latter
 fails, *f* should itself return an error value (usually *NULL* or ``-1``).  It
@@ -233,13 +233,13 @@ with an exception object::
    }
 
 Note that the Python name for the exception object is :exc:`spam.error`.  The
-:c:func:`PyErr_NewException` function may create a class with the base class
-being :exc:`Exception` (unless another class is passed in instead of *NULL*),
+:c:func:`PyErr_NewException` function may create a kundi with the base class
+being :exc:`Exception` (unless another kundi is passed in instead of *NULL*),
 described in :ref:`bltin-exceptions`.
 
 Note also that the :c:data:`SpamError` variable retains a reference to the newly
 created exception class; this is intentional!  Since the exception could be
-removed from the module by external code, an owned reference to the class is
+removed kutoka the module by external code, an owned reference to the kundi is
 needed to ensure that it will not be discarded, causing :c:data:`SpamError` to
 become a dangling pointer. Should it become a dangling pointer, C code which
 raises the exception could cause a core dump or other unintended side effects.
@@ -287,7 +287,7 @@ the variable :c:data:`command` should properly be declared as ``const char
 *command``).
 
 The next statement is a call to the Unix function :c:func:`system`, passing it
-the string we just got from :c:func:`PyArg_ParseTuple`::
+the string we just got kutoka :c:func:`PyArg_ParseTuple`::
 
    sts = system(command);
 
@@ -317,7 +317,7 @@ contexts, as we have seen.
 The Module's Method Table and Initialization Function
 =====================================================
 
-I promised to show how :c:func:`spam_system` is called from Python programs.
+I promised to show how :c:func:`spam_system` is called kutoka Python programs.
 First, we need to list its name and address in a "method table"::
 
    static PyMethodDef SpamMethods[] = {
@@ -383,7 +383,7 @@ so that it then gets inserted into ``sys.modules``.
 When embedding Python, the :c:func:`PyInit_spam` function is not called
 automatically unless there's an entry in the :c:data:`PyImport_Inittab` table.
 To add the module to the initialization table, use :c:func:`PyImport_AppendInittab`,
-optionally followed by an import of the module::
+optionally followed by an agiza of the module::
 
    int
    main(int argc, char *argv[])
@@ -403,8 +403,8 @@ optionally followed by an import of the module::
        /* Initialize the Python interpreter.  Required. */
        Py_Initialize();
 
-       /* Optionally import the module; alternatively,
-          import can be deferred until the embedded script
+       /* Optionally agiza the module; alternatively,
+          agiza can be deferred until the embedded script
           imports it. */
        PyImport_ImportModule("spam");
 
@@ -416,7 +416,7 @@ optionally followed by an import of the module::
 
 .. note::
 
-   Removing entries from ``sys.modules`` or importing compiled modules into
+   Removing entries kutoka ``sys.modules`` or importing compiled modules into
    multiple interpreters within a process (or following a :c:func:`fork` without an
    intervening :c:func:`exec`) can create problems for some extension modules.
    Extension module authors should exercise caution when initializing internal data
@@ -429,8 +429,8 @@ read as an example.
 .. note::
 
    Unlike our ``spam`` example, ``xxmodule`` uses *multi-phase initialization*
-   (new in Python 3.5), where a PyModuleDef structure is returned from
-   ``PyInit_spam``, and creation of the module is left to the import machinery.
+   (new in Python 3.5), where a PyModuleDef structure is returned kutoka
+   ``PyInit_spam``, and creation of the module is left to the agiza machinery.
    For details on multi-phase initialization, see :PEP:`489`.
 
 
@@ -473,22 +473,22 @@ on the line in the configuration file as well, for instance:
 
 .. _callingpython:
 
-Calling Python Functions from C
+Calling Python Functions kutoka C
 ===============================
 
-So far we have concentrated on making C functions callable from Python.  The
-reverse is also useful: calling Python functions from C. This is especially the
+So far we have concentrated on making C functions callable kutoka Python.  The
+reverse is also useful: calling Python functions kutoka C. This is especially the
 case for libraries that support so-called "callback" functions.  If a C
 interface makes use of callbacks, the equivalent Python often needs to provide a
 callback mechanism to the Python programmer; the implementation will require
-calling the Python callback functions from a C callback.  Other uses are also
+calling the Python callback functions kutoka a C callback.  Other uses are also
 imaginable.
 
 Fortunately, the Python interpreter is easily called recursively, and there is a
 standard interface to call a Python function.  (I won't dwell on how to call the
 Python parser with a particular string as input --- if you're interested, have a
 look at the implementation of the :option:`-c` command line option in
-:file:`Modules/main.c` from the Python source code.)
+:file:`Modules/main.c` kutoka the Python source code.)
 
 Calling a Python function is easy.  First, the Python program must somehow pass
 you the Python function object.  You should provide a function (or some other
@@ -567,7 +567,7 @@ interested in its value.
 
 Before you do this, however, it is important to check that the return value
 isn't *NULL*.  If it is, the Python function terminated by raising an exception.
-If the C code that called :c:func:`PyObject_CallObject` is called from Python, it
+If the C code that called :c:func:`PyObject_CallObject` is called kutoka Python, it
 should now return an error indication to its Python caller, so the interpreter
 can print a stack trace, or the calling Python code can handle the exception.
 If this is not possible or desirable, the exception should be cleared by calling
@@ -628,7 +628,7 @@ The :c:func:`PyArg_ParseTuple` function is declared as follows::
    int PyArg_ParseTuple(PyObject *arg, const char *format, ...);
 
 The *arg* argument must be a tuple object containing an argument list passed
-from Python to a C function.  The *format* argument must be a format string,
+kutoka Python to a C function.  The *format* argument must be a format string,
 whose syntax is explained in :ref:`arg-parsing` in the Python/C API Reference
 Manual.  The remaining arguments must be addresses of variables whose type is
 determined by the format string.
@@ -722,9 +722,9 @@ The :c:func:`PyArg_ParseTupleAndKeywords` function is declared as follows::
 
 The *arg* and *format* parameters are identical to those of the
 :c:func:`PyArg_ParseTuple` function.  The *kwdict* parameter is the dictionary of
-keywords received as the third parameter from the Python runtime.  The *kwlist*
+keywords received as the third parameter kutoka the Python runtime.  The *kwlist*
 parameter is a *NULL*-terminated list of strings which identify the parameters;
-the names are matched with the type information from *format* from left to
+the names are matched with the type information kutoka *format* kutoka left to
 right.  On success, :c:func:`PyArg_ParseTupleAndKeywords` returns true, otherwise
 it returns false and raises an appropriate exception.
 
@@ -801,7 +801,7 @@ as follows::
 It recognizes a set of format units similar to the ones recognized by
 :c:func:`PyArg_ParseTuple`, but the arguments (which are input to the function,
 not output) must not be pointers, just values.  It returns a new Python object,
-suitable for returning from a C function called from Python.
+suitable for returning kutoka a C function called kutoka Python.
 
 One difference with :c:func:`PyArg_ParseTuple`: while the latter requires its
 first argument to be a tuple (since Python argument lists are always represented
@@ -860,13 +860,13 @@ Common causes of memory leaks are unusual paths through the code.  For instance,
 a function may allocate a block of memory, do some calculation, and then free
 the block again.  Now a change in the requirements for the function may add a
 test to the calculation that detects an error condition and can return
-prematurely from the function.  It's easy to forget to free the allocated memory
+prematurely kutoka the function.  It's easy to forget to free the allocated memory
 block when taking this premature exit, especially when it is added later to the
 code.  Such leaks, once introduced, often go undetected for a long time: the
 error exit is taken only in a small fraction of all calls, and most modern
 machines have plenty of virtual memory, so the leak only becomes apparent in a
 long-running process that uses the leaking function frequently.  Therefore, it's
-important to prevent leaks from happening by having a coding convention or
+important to prevent leaks kutoka happening by having a coding convention or
 strategy that minimizes this kind of errors.
 
 Since Python makes heavy use of :c:func:`malloc` and :c:func:`free`, it needs a
@@ -897,7 +897,7 @@ counting.  Reference cycles consist of objects which contain (possibly indirect)
 references to themselves, so that each object in the cycle has a reference count
 which is non-zero.  Typical reference counting implementations are not able to
 reclaim the memory belonging to any objects in a reference cycle, or referenced
-from the objects in the cycle, even though there are no further references to
+kutoka the objects in the cycle, even though there are no further references to
 the cycle itself.
 
 The cycle detector is able to detect garbage cycles and can reclaim them.
@@ -934,7 +934,7 @@ Forgetting to dispose of an owned reference creates a memory leak.
 
 It is also possible to :dfn:`borrow` [#]_ a reference to an object.  The
 borrower of a reference should not call :c:func:`Py_DECREF`.  The borrower must
-not hold on to the object longer than the owner from which it was borrowed.
+not hold on to the object longer than the owner kutoka which it was borrowed.
 Using a borrowed reference after the owner has disposed of it risks using freed
 memory and should be avoided completely [#]_.
 
@@ -943,11 +943,11 @@ take care of disposing of the reference on all possible paths through the code
 --- in other words, with a borrowed reference you don't run the risk of leaking
 when a premature exit is taken.  The disadvantage of borrowing over owning is
 that there are some subtle situations where in seemingly correct code a borrowed
-reference can be used after the owner from which it was borrowed has in fact
+reference can be used after the owner kutoka which it was borrowed has in fact
 disposed of it.
 
 A borrowed reference can be changed into an owned reference by calling
-:c:func:`Py_INCREF`.  This does not affect the status of the owner from which the
+:c:func:`Py_INCREF`.  This does not affect the status of the owner kutoka which the
 reference was borrowed --- it creates a new owned reference, and gives full
 owner responsibilities (the new owner must dispose of the reference properly, as
 well as the previous owner).
@@ -970,11 +970,11 @@ receive ownership of a new reference to that object.  For instance,
 :c:func:`PyLong_FromLong` maintains a cache of popular values and can return a
 reference to a cached item.
 
-Many functions that extract objects from other objects also transfer ownership
+Many functions that extract objects kutoka other objects also transfer ownership
 with the reference, for instance :c:func:`PyObject_GetAttrString`.  The picture
 is less clear, here, however, since a few common routines are exceptions:
 :c:func:`PyTuple_GetItem`, :c:func:`PyList_GetItem`, :c:func:`PyDict_GetItem`, and
-:c:func:`PyDict_GetItemString` all return references that you borrow from the
+:c:func:`PyDict_GetItemString` all return references that you borrow kutoka the
 tuple, list or dictionary.
 
 The function :c:func:`PyImport_AddModule` also returns a borrowed reference, even
@@ -982,21 +982,21 @@ though it may actually create the object it returns: this is possible because an
 owned reference to the object is stored in ``sys.modules``.
 
 When you pass an object reference into another function, in general, the
-function borrows the reference from you --- if it needs to store it, it will use
+function borrows the reference kutoka you --- if it needs to store it, it will use
 :c:func:`Py_INCREF` to become an independent owner.  There are exactly two
 important exceptions to this rule: :c:func:`PyTuple_SetItem` and
 :c:func:`PyList_SetItem`.  These functions take over ownership of the item passed
 to them --- even if they fail!  (Note that :c:func:`PyDict_SetItem` and friends
 don't take over ownership --- they are "normal.")
 
-When a C function is called from Python, it borrows references to its arguments
-from the caller.  The caller owns a reference to the object, so the borrowed
+When a C function is called kutoka Python, it borrows references to its arguments
+kutoka the caller.  The caller owns a reference to the object, so the borrowed
 reference's lifetime is guaranteed until the function returns.  Only when such a
 borrowed reference must be stored or passed on, it must be turned into an owned
 reference by calling :c:func:`Py_INCREF`.
 
-The object reference returned from a C function that is called from Python must
-be an owned reference --- ownership is transferred from the function to its
+The object reference returned kutoka a C function that is called kutoka Python must
+be an owned reference --- ownership is transferred kutoka the function to its
 caller.
 
 
@@ -1028,8 +1028,8 @@ Looks harmless, right?  But it's not!
 Let's follow the control flow into :c:func:`PyList_SetItem`.  The list owns
 references to all its items, so when item 1 is replaced, it has to dispose of
 the original item 1.  Now let's suppose the original item 1 was an instance of a
-user-defined class, and let's further suppose that the class defined a
-:meth:`__del__` method.  If this class instance has a reference count of 1,
+user-defined class, and let's further suppose that the kundi defined a
+:meth:`__del__` method.  If this kundi instance has a reference count of 1,
 disposing of it will call its :meth:`__del__` method.
 
 Since it is written in Python, the :meth:`__del__` method can execute arbitrary
@@ -1092,7 +1092,7 @@ function --- if each function were to test for *NULL*, there would be a lot of
 redundant tests and the code would run more slowly.
 
 It is better to test for *NULL* only at the "source:" when a pointer that may be
-*NULL* is received, for example, from :c:func:`malloc` or from a function that
+*NULL* is received, for example, kutoka :c:func:`malloc` or kutoka a function that
 may raise an exception.
 
 The macros :c:func:`Py_INCREF` and :c:func:`Py_DECREF` do not check for *NULL*
@@ -1114,7 +1114,7 @@ It is a severe error to ever let a *NULL* pointer "escape" to the Python user.
 .. Frank Stajano:
    A pedagogically buggy example, along the lines of the previous listing, would
    be helpful here -- showing in more concrete terms what sort of actions could
-   cause the problem. I can't very well imagine it from the description.
+   cause the problem. I can't very well imagine it kutoka the description.
 
 
 .. _cplusplus:
@@ -1141,13 +1141,13 @@ Providing a C API for an Extension Module
 .. sectionauthor:: Konrad Hinsen <hinsen@cnrs-orleans.fr>
 
 
-Many extension modules just provide new functions and types to be used from
+Many extension modules just provide new functions and types to be used kutoka
 Python, but sometimes the code in an extension module can be useful for other
 extension modules. For example, an extension module could implement a type
 "collection" which works like lists without order. Just like the standard Python
 list type has a C API which permits extension modules to create and manipulate
 lists, this new collection type should have a set of C functions for direct
-manipulation from other extension modules.
+manipulation kutoka other extension modules.
 
 At first sight this seems easy: just write the functions (without declaring them
 ``static``, of course), provide an appropriate header file, and document
@@ -1165,16 +1165,16 @@ Portability therefore requires not to make any assumptions about symbol
 visibility. This means that all symbols in extension modules should be declared
 ``static``, except for the module's initialization function, in order to
 avoid name clashes with other extension modules (as discussed in section
-:ref:`methodtable`). And it means that symbols that *should* be accessible from
+:ref:`methodtable`). And it means that symbols that *should* be accessible kutoka
 other extension modules must be exported in a different way.
 
-Python provides a special mechanism to pass C-level information (pointers) from
+Python provides a special mechanism to pass C-level information (pointers) kutoka
 one extension module to another one: Capsules. A Capsule is a Python data type
 which stores a pointer (:c:type:`void \*`).  Capsules can only be created and
 accessed via their C API, but they can be passed around like any other Python
 object. In particular,  they can be assigned to a name in an extension module's
-namespace. Other extension modules can then import this module, retrieve the
-value of this name, and then retrieve the pointer from the Capsule.
+namespace. Other extension modules can then agiza this module, retrieve the
+value of this name, and then retrieve the pointer kutoka the Capsule.
 
 There are many ways in which Capsules can be used to export the C API of an
 extension module. Each function could get its own Capsule, or all C API pointers
@@ -1187,7 +1187,7 @@ The function :c:func:`PyCapsule_New` takes a name parameter
 (:c:type:`const char \*`); you're permitted to pass in a *NULL* name, but
 we strongly encourage you to specify a name.  Properly named Capsules provide
 a degree of runtime type-safety; there is no feasible way to tell one unnamed
-Capsule from another.
+Capsule kutoka another.
 
 In particular, Capsules used to expose C APIs should be given a name following
 this convention::
@@ -1207,7 +1207,7 @@ file corresponding to the module provides a macro that takes care of importing
 the module and retrieving its C API pointers; client modules only have to call
 this macro before accessing the C API.
 
-The exporting module is a modification of the :mod:`spam` module from section
+The exporting module is a modification of the :mod:`spam` module kutoka section
 :ref:`extending-simpleexample`. The function :func:`spam.system` does not call
 the C library function :c:func:`system` directly, but a function
 :c:func:`PySpam_System`, which would of course do something more complicated in

@@ -20,40 +20,40 @@ testcfg = {
 }
 code_sample = """\
 
-class C1():
+kundi C1():
     # Class comment.
-    def __init__(self, a, b):
+    eleza __init__(self, a, b):
         self.a = a
         self.b = b
-    def compare(self):
-        if a > b:
-            return a
-        elif a < b:
-            return b
+    eleza compare(self):
+        ikiwa a > b:
+            rudisha a
+        elikiwa a < b:
+            rudisha b
         else:
-            return None
+            rudisha None
 """
 
 
-class DummyEditwin:
-    def __init__(self, root, frame, text):
+kundi DummyEditwin:
+    eleza __init__(self, root, frame, text):
         self.root = root
         self.top = root
         self.text_frame = frame
         self.text = text
         self.label = ''
 
-    def getlineno(self, index):
-        return int(float(self.text.index(index)))
+    eleza getlineno(self, index):
+        rudisha int(float(self.text.index(index)))
 
-    def update_menu_label(self, **kwargs):
+    eleza update_menu_label(self, **kwargs):
         self.label = kwargs['label']
 
 
-class CodeContextTest(unittest.TestCase):
+kundi CodeContextTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         root = cls.root = Tk()
         root.withdraw()
@@ -67,7 +67,7 @@ class CodeContextTest(unittest.TestCase):
         codecontext.idleConf.userCfg = testcfg
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         codecontext.idleConf.userCfg = usercfg
         cls.editor.text.delete('1.0', 'end')
         del cls.editor, cls.frame, cls.text
@@ -75,7 +75,7 @@ class CodeContextTest(unittest.TestCase):
         cls.root.destroy()
         del cls.root
 
-    def setUp(self):
+    eleza setUp(self):
         self.text.yview(0)
         self.text['font'] = 'TkFixedFont'
         self.cc = codecontext.CodeContext(self.editor)
@@ -83,31 +83,31 @@ class CodeContextTest(unittest.TestCase):
         self.highlight_cfg = {"background": '#abcdef',
                               "foreground": '#123456'}
         orig_idleConf_GetHighlight = codecontext.idleConf.GetHighlight
-        def mock_idleconf_GetHighlight(theme, element):
-            if element == 'context':
-                return self.highlight_cfg
-            return orig_idleConf_GetHighlight(theme, element)
+        eleza mock_idleconf_GetHighlight(theme, element):
+            ikiwa element == 'context':
+                rudisha self.highlight_cfg
+            rudisha orig_idleConf_GetHighlight(theme, element)
         GetHighlight_patcher = unittest.mock.patch.object(
             codecontext.idleConf, 'GetHighlight', mock_idleconf_GetHighlight)
         GetHighlight_patcher.start()
         self.addCleanup(GetHighlight_patcher.stop)
 
         self.font_override = 'TkFixedFont'
-        def mock_idleconf_GetFont(root, configType, section):
-            return self.font_override
+        eleza mock_idleconf_GetFont(root, configType, section):
+            rudisha self.font_override
         GetFont_patcher = unittest.mock.patch.object(
             codecontext.idleConf, 'GetFont', mock_idleconf_GetFont)
         GetFont_patcher.start()
         self.addCleanup(GetFont_patcher.stop)
 
-    def tearDown(self):
-        if self.cc.context:
+    eleza tearDown(self):
+        ikiwa self.cc.context:
             self.cc.context.destroy()
         # Explicitly call __del__ to remove scheduled scripts.
         self.cc.__del__()
         del self.cc.context, self.cc
 
-    def test_init(self):
+    eleza test_init(self):
         eq = self.assertEqual
         ed = self.editor
         cc = self.cc
@@ -120,27 +120,27 @@ class CodeContextTest(unittest.TestCase):
         eq(cc.topvisible, 1)
         self.assertIsNone(self.cc.t1)
 
-    def test_del(self):
+    eleza test_del(self):
         self.cc.__del__()
 
-    def test_del_with_timer(self):
+    eleza test_del_with_timer(self):
         timer = self.cc.t1 = self.text.after(10000, lambda: None)
         self.cc.__del__()
         with self.assertRaises(TclError) as cm:
             self.root.tk.call('after', 'info', timer)
         self.assertIn("doesn't exist", str(cm.exception))
 
-    def test_reload(self):
+    eleza test_reload(self):
         codecontext.CodeContext.reload()
         self.assertEqual(self.cc.context_depth, 15)
 
-    def test_toggle_code_context_event(self):
+    eleza test_toggle_code_context_event(self):
         eq = self.assertEqual
         cc = self.cc
         toggle = cc.toggle_code_context_event
 
         # Make sure code context is off.
-        if cc.context:
+        ikiwa cc.context:
             toggle()
 
         # Toggle on.
@@ -170,7 +170,7 @@ class CodeContextTest(unittest.TestCase):
         toggle()
         eq(cc.context.get('1.0', 'end-1c'), line11_context)
 
-    def test_get_context(self):
+    eleza test_get_context(self):
         eq = self.assertEqual
         gc = self.cc.get_context
 
@@ -178,51 +178,51 @@ class CodeContextTest(unittest.TestCase):
         with self.assertRaises(AssertionError):
             gc(1, stopline=0)
 
-        eq(gc(3), ([(2, 0, 'class C1():', 'class')], 0))
+        eq(gc(3), ([(2, 0, 'kundi C1():', 'class')], 0))
 
-        # Don't return comment.
-        eq(gc(4), ([(2, 0, 'class C1():', 'class')], 0))
+        # Don't rudisha comment.
+        eq(gc(4), ([(2, 0, 'kundi C1():', 'class')], 0))
 
         # Two indentation levels and no comment.
-        eq(gc(5), ([(2, 0, 'class C1():', 'class'),
-                    (4, 4, '    def __init__(self, a, b):', 'def')], 0))
+        eq(gc(5), ([(2, 0, 'kundi C1():', 'class'),
+                    (4, 4, '    eleza __init__(self, a, b):', 'def')], 0))
 
         # Only one 'def' is returned, not both at the same indent level.
-        eq(gc(10), ([(2, 0, 'class C1():', 'class'),
-                     (7, 4, '    def compare(self):', 'def'),
-                     (8, 8, '        if a > b:', 'if')], 0))
+        eq(gc(10), ([(2, 0, 'kundi C1():', 'class'),
+                     (7, 4, '    eleza compare(self):', 'def'),
+                     (8, 8, '        ikiwa a > b:', 'if')], 0))
 
         # With 'elif', also show the 'if' even though it's at the same level.
-        eq(gc(11), ([(2, 0, 'class C1():', 'class'),
-                     (7, 4, '    def compare(self):', 'def'),
-                     (8, 8, '        if a > b:', 'if'),
-                     (10, 8, '        elif a < b:', 'elif')], 0))
+        eq(gc(11), ([(2, 0, 'kundi C1():', 'class'),
+                     (7, 4, '    eleza compare(self):', 'def'),
+                     (8, 8, '        ikiwa a > b:', 'if'),
+                     (10, 8, '        elikiwa a < b:', 'elif')], 0))
 
         # Set stop_line to not go back to first line in source code.
         # Return includes stop_line.
-        eq(gc(11, stopline=2), ([(2, 0, 'class C1():', 'class'),
-                                 (7, 4, '    def compare(self):', 'def'),
-                                 (8, 8, '        if a > b:', 'if'),
-                                 (10, 8, '        elif a < b:', 'elif')], 0))
-        eq(gc(11, stopline=3), ([(7, 4, '    def compare(self):', 'def'),
-                                 (8, 8, '        if a > b:', 'if'),
-                                 (10, 8, '        elif a < b:', 'elif')], 4))
-        eq(gc(11, stopline=8), ([(8, 8, '        if a > b:', 'if'),
-                                 (10, 8, '        elif a < b:', 'elif')], 8))
+        eq(gc(11, stopline=2), ([(2, 0, 'kundi C1():', 'class'),
+                                 (7, 4, '    eleza compare(self):', 'def'),
+                                 (8, 8, '        ikiwa a > b:', 'if'),
+                                 (10, 8, '        elikiwa a < b:', 'elif')], 0))
+        eq(gc(11, stopline=3), ([(7, 4, '    eleza compare(self):', 'def'),
+                                 (8, 8, '        ikiwa a > b:', 'if'),
+                                 (10, 8, '        elikiwa a < b:', 'elif')], 4))
+        eq(gc(11, stopline=8), ([(8, 8, '        ikiwa a > b:', 'if'),
+                                 (10, 8, '        elikiwa a < b:', 'elif')], 8))
 
         # Set stop_indent to test indent level to stop at.
-        eq(gc(11, stopindent=4), ([(7, 4, '    def compare(self):', 'def'),
-                                   (8, 8, '        if a > b:', 'if'),
-                                   (10, 8, '        elif a < b:', 'elif')], 4))
+        eq(gc(11, stopindent=4), ([(7, 4, '    eleza compare(self):', 'def'),
+                                   (8, 8, '        ikiwa a > b:', 'if'),
+                                   (10, 8, '        elikiwa a < b:', 'elif')], 4))
         # Check that the 'if' is included.
-        eq(gc(11, stopindent=8), ([(8, 8, '        if a > b:', 'if'),
-                                   (10, 8, '        elif a < b:', 'elif')], 8))
+        eq(gc(11, stopindent=8), ([(8, 8, '        ikiwa a > b:', 'if'),
+                                   (10, 8, '        elikiwa a < b:', 'elif')], 8))
 
-    def test_update_code_context(self):
+    eleza test_update_code_context(self):
         eq = self.assertEqual
         cc = self.cc
         # Ensure code context is active.
-        if not cc.context:
+        ikiwa not cc.context:
             cc.toggle_code_context_event()
 
         # Invoke update_code_context without scrolling - nothing happens.
@@ -240,71 +240,71 @@ class CodeContextTest(unittest.TestCase):
         # Scroll down to line 2.
         cc.text.yview(2)
         cc.update_code_context()
-        eq(cc.info, [(0, -1, '', False), (2, 0, 'class C1():', 'class')])
+        eq(cc.info, [(0, -1, '', False), (2, 0, 'kundi C1():', 'class')])
         eq(cc.topvisible, 3)
-        eq(cc.context.get('1.0', 'end-1c'), 'class C1():')
+        eq(cc.context.get('1.0', 'end-1c'), 'kundi C1():')
 
         # Scroll down to line 3.  Since it's a comment, nothing changes.
         cc.text.yview(3)
         cc.update_code_context()
-        eq(cc.info, [(0, -1, '', False), (2, 0, 'class C1():', 'class')])
+        eq(cc.info, [(0, -1, '', False), (2, 0, 'kundi C1():', 'class')])
         eq(cc.topvisible, 4)
-        eq(cc.context.get('1.0', 'end-1c'), 'class C1():')
+        eq(cc.context.get('1.0', 'end-1c'), 'kundi C1():')
 
         # Scroll down to line 4.
         cc.text.yview(4)
         cc.update_code_context()
         eq(cc.info, [(0, -1, '', False),
-                     (2, 0, 'class C1():', 'class'),
-                     (4, 4, '    def __init__(self, a, b):', 'def')])
+                     (2, 0, 'kundi C1():', 'class'),
+                     (4, 4, '    eleza __init__(self, a, b):', 'def')])
         eq(cc.topvisible, 5)
-        eq(cc.context.get('1.0', 'end-1c'), 'class C1():\n'
-                                            '    def __init__(self, a, b):')
+        eq(cc.context.get('1.0', 'end-1c'), 'kundi C1():\n'
+                                            '    eleza __init__(self, a, b):')
 
         # Scroll down to line 11.  Last 'def' is removed.
         cc.text.yview(11)
         cc.update_code_context()
         eq(cc.info, [(0, -1, '', False),
-                     (2, 0, 'class C1():', 'class'),
-                     (7, 4, '    def compare(self):', 'def'),
-                     (8, 8, '        if a > b:', 'if'),
-                     (10, 8, '        elif a < b:', 'elif')])
+                     (2, 0, 'kundi C1():', 'class'),
+                     (7, 4, '    eleza compare(self):', 'def'),
+                     (8, 8, '        ikiwa a > b:', 'if'),
+                     (10, 8, '        elikiwa a < b:', 'elif')])
         eq(cc.topvisible, 12)
-        eq(cc.context.get('1.0', 'end-1c'), 'class C1():\n'
-                                            '    def compare(self):\n'
-                                            '        if a > b:\n'
-                                            '        elif a < b:')
+        eq(cc.context.get('1.0', 'end-1c'), 'kundi C1():\n'
+                                            '    eleza compare(self):\n'
+                                            '        ikiwa a > b:\n'
+                                            '        elikiwa a < b:')
 
         # No scroll.  No update, even though context_depth changed.
         cc.update_code_context()
         cc.context_depth = 1
         eq(cc.info, [(0, -1, '', False),
-                     (2, 0, 'class C1():', 'class'),
-                     (7, 4, '    def compare(self):', 'def'),
-                     (8, 8, '        if a > b:', 'if'),
-                     (10, 8, '        elif a < b:', 'elif')])
+                     (2, 0, 'kundi C1():', 'class'),
+                     (7, 4, '    eleza compare(self):', 'def'),
+                     (8, 8, '        ikiwa a > b:', 'if'),
+                     (10, 8, '        elikiwa a < b:', 'elif')])
         eq(cc.topvisible, 12)
-        eq(cc.context.get('1.0', 'end-1c'), 'class C1():\n'
-                                            '    def compare(self):\n'
-                                            '        if a > b:\n'
-                                            '        elif a < b:')
+        eq(cc.context.get('1.0', 'end-1c'), 'kundi C1():\n'
+                                            '    eleza compare(self):\n'
+                                            '        ikiwa a > b:\n'
+                                            '        elikiwa a < b:')
 
         # Scroll up.
         cc.text.yview(5)
         cc.update_code_context()
         eq(cc.info, [(0, -1, '', False),
-                     (2, 0, 'class C1():', 'class'),
-                     (4, 4, '    def __init__(self, a, b):', 'def')])
+                     (2, 0, 'kundi C1():', 'class'),
+                     (4, 4, '    eleza __init__(self, a, b):', 'def')])
         eq(cc.topvisible, 6)
         # context_depth is 1.
-        eq(cc.context.get('1.0', 'end-1c'), '    def __init__(self, a, b):')
+        eq(cc.context.get('1.0', 'end-1c'), '    eleza __init__(self, a, b):')
 
-    def test_jumptoline(self):
+    eleza test_jumptoline(self):
         eq = self.assertEqual
         cc = self.cc
         jump = cc.jumptoline
 
-        if not cc.context:
+        ikiwa not cc.context:
             cc.toggle_code_context_event()
 
         # Empty context.
@@ -333,9 +333,9 @@ class CodeContextTest(unittest.TestCase):
         eq(cc.topvisible, 8)
 
     @mock.patch.object(codecontext.CodeContext, 'update_code_context')
-    def test_timer_event(self, mock_update):
+    eleza test_timer_event(self, mock_update):
         # Ensure code context is not active.
-        if self.cc.context:
+        ikiwa self.cc.context:
             self.cc.toggle_code_context_event()
         self.cc.timer_event()
         mock_update.assert_not_called()
@@ -345,7 +345,7 @@ class CodeContextTest(unittest.TestCase):
         self.cc.timer_event()
         mock_update.assert_called()
 
-    def test_font(self):
+    eleza test_font(self):
         eq = self.assertEqual
         cc = self.cc
 
@@ -354,7 +354,7 @@ class CodeContextTest(unittest.TestCase):
         self.assertNotEqual(orig_font, test_font)
 
         # Ensure code context is not active.
-        if cc.context is not None:
+        ikiwa cc.context is not None:
             cc.toggle_code_context_event()
 
         self.font_override = test_font
@@ -370,19 +370,19 @@ class CodeContextTest(unittest.TestCase):
         cc.update_font()
         eq(cc.context['font'], orig_font)
 
-    def test_highlight_colors(self):
+    eleza test_highlight_colors(self):
         eq = self.assertEqual
         cc = self.cc
 
         orig_colors = dict(self.highlight_cfg)
         test_colors = {'background': '#222222', 'foreground': '#ffff00'}
 
-        def assert_colors_are_equal(colors):
+        eleza assert_colors_are_equal(colors):
             eq(cc.context['background'], colors['background'])
             eq(cc.context['foreground'], colors['foreground'])
 
         # Ensure code context is not active.
-        if cc.context:
+        ikiwa cc.context:
             cc.toggle_code_context_event()
 
         self.highlight_cfg = test_colors
@@ -403,9 +403,9 @@ class CodeContextTest(unittest.TestCase):
         assert_colors_are_equal(orig_colors)
 
 
-class HelperFunctionText(unittest.TestCase):
+kundi HelperFunctionText(unittest.TestCase):
 
-    def test_get_spaces_firstword(self):
+    eleza test_get_spaces_firstword(self):
         get = codecontext.get_spaces_firstword
         test_lines = (
             ('    first word', ('    ', 'first')),
@@ -424,7 +424,7 @@ class HelperFunctionText(unittest.TestCase):
                              c=re.compile(r'^(\s*)([^\s]*)')),
                          ('    ', '(continuation)'))
 
-    def test_get_line_info(self):
+    eleza test_get_line_info(self):
         eq = self.assertEqual
         gli = codecontext.get_line_info
         lines = code_sample.splitlines()
@@ -432,16 +432,16 @@ class HelperFunctionText(unittest.TestCase):
         # Line 1 is not a BLOCKOPENER.
         eq(gli(lines[0]), (codecontext.INFINITY, '', False))
         # Line 2 is a BLOCKOPENER without an indent.
-        eq(gli(lines[1]), (0, 'class C1():', 'class'))
-        # Line 3 is not a BLOCKOPENER and does not return the indent level.
+        eq(gli(lines[1]), (0, 'kundi C1():', 'class'))
+        # Line 3 is not a BLOCKOPENER and does not rudisha the indent level.
         eq(gli(lines[2]), (codecontext.INFINITY, '    # Class comment.', False))
         # Line 4 is a BLOCKOPENER and is indented.
-        eq(gli(lines[3]), (4, '    def __init__(self, a, b):', 'def'))
+        eq(gli(lines[3]), (4, '    eleza __init__(self, a, b):', 'def'))
         # Line 8 is a different BLOCKOPENER and is indented.
-        eq(gli(lines[7]), (8, '        if a > b:', 'if'))
+        eq(gli(lines[7]), (8, '        ikiwa a > b:', 'if'))
         # Test tab.
-        eq(gli('\tif a == b:'), (1, '\tif a == b:', 'if'))
+        eq(gli('\tikiwa a == b:'), (1, '\tikiwa a == b:', 'if'))
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -1,6 +1,6 @@
 .. testsetup::
 
-   import ipaddress
+   agiza ipaddress
 
 .. _ipaddress-howto:
 
@@ -25,7 +25,7 @@ Creating Address/Network/Interface objects
 
 Since :mod:`ipaddress` is a module for inspecting and manipulating IP addresses,
 the first thing you'll want to do is create some objects.  You can use
-:mod:`ipaddress` to create objects from strings and integers.
+:mod:`ipaddress` to create objects kutoka strings and integers.
 
 
 A Note on IP Versions
@@ -33,7 +33,7 @@ A Note on IP Versions
 
 For readers that aren't particularly familiar with IP addressing, it's
 important to know that the Internet Protocol is currently in the process
-of moving from version 4 of the protocol to version 6. This transition is
+of moving kutoka version 4 of the protocol to version 6. This transition is
 occurring largely because version 4 of the protocol doesn't provide enough
 addresses to handle the needs of the whole world, especially given the
 increasing number of devices with direct connections to the internet.
@@ -58,7 +58,7 @@ value:
    >>> ipaddress.ip_address('2001:DB8::1')
    IPv6Address('2001:db8::1')
 
-Addresses can also be created directly from integers. Values that will
+Addresses can also be created directly kutoka integers. Values that will
 fit within 32 bits are assumed to be IPv4 addresses::
 
    >>> ipaddress.ip_address(3221225985)
@@ -83,7 +83,7 @@ Defining Networks
 
 Host addresses are usually grouped together into IP networks, so
 :mod:`ipaddress` provides a way to create, inspect and manipulate network
-definitions. IP network objects are constructed from strings that define the
+definitions. IP network objects are constructed kutoka strings that define the
 range of host addresses that are part of that network. The simplest form
 for that information is a "network address/network prefix" pair, where the
 prefix defines the number of leading bits that are compared to determine
@@ -127,7 +127,7 @@ integer, so the network prefix includes the entire network address::
    IPv6Network('2001:db8::/128')
 
 As with addresses, creation of a particular kind of network can be forced
-by calling the class constructor directly instead of using the factory
+by calling the kundi constructor directly instead of using the factory
 function.
 
 
@@ -169,7 +169,7 @@ Extracting the IP version::
    >>> addr4.version
    4
 
-Obtaining the network from an interface::
+Obtaining the network kutoka an interface::
 
    >>> host4 = ipaddress.ip_interface('192.0.2.1/24')
    >>> host4.network
@@ -282,7 +282,7 @@ Using IP Addresses with other modules
 =====================================
 
 Other modules that use IP addresses (such as :mod:`socket`) usually won't
-accept objects from this module directly. Instead, they must be coerced to
+accept objects kutoka this module directly. Instead, they must be coerced to
 an integer or string that the other module will accept::
 
    >>> addr4 = ipaddress.ip_address('192.0.2.1')
@@ -303,13 +303,13 @@ because it's necessary to know whether the value is *supposed* to be IPv4
 or IPv6 in order to provide more detail on why it has been rejected.
 
 To support use cases where it is useful to have access to this additional
-detail, the individual class constructors actually raise the
+detail, the individual kundi constructors actually raise the
 :exc:`ValueError` subclasses :exc:`ipaddress.AddressValueError` and
 :exc:`ipaddress.NetmaskValueError` to indicate exactly which part of
 the definition failed to parse correctly.
 
 The error messages are significantly more detailed when using the
-class constructors directly. For example::
+kundi constructors directly. For example::
 
    >>> ipaddress.ip_address("192.168.0.256")
    Traceback (most recent call last):

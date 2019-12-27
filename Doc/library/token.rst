@@ -16,7 +16,7 @@ in the Python distribution for the definitions of the names in the context of
 the language grammar.  The specific numeric values which the names map to may
 change between Python versions.
 
-The module also provides a mapping from numeric codes to names and some
+The module also provides a mapping kutoka numeric codes to names and some
 functions.  The functions mirror definitions in the Python C header files.
 
 

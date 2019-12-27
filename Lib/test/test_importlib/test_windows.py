@@ -17,7 +17,7 @@ kutoka winreg agiza (
     EnumKey, CloseKey, DeleteKey, OpenKey
 )
 
-def delete_registry_tree(root, subkey):
+eleza delete_registry_tree(root, subkey):
     try:
         hkey = OpenKey(root, subkey, access=KEY_ALL_ACCESS)
     except OSError:
@@ -34,8 +34,8 @@ def delete_registry_tree(root, subkey):
     DeleteKey(root, subkey)
 
 @contextmanager
-def setup_module(machinery, name, path=None):
-    if machinery.WindowsRegistryFinder.DEBUG_BUILD:
+eleza setup_module(machinery, name, path=None):
+    ikiwa machinery.WindowsRegistryFinder.DEBUG_BUILD:
         root = machinery.WindowsRegistryFinder.REGISTRY_KEY_DEBUG
     else:
         root = machinery.WindowsRegistryFinder.REGISTRY_KEY
@@ -44,38 +44,38 @@ def setup_module(machinery, name, path=None):
     try:
         with temp_module(name, "a = 1") as location:
             subkey = CreateKey(HKEY_CURRENT_USER, key)
-            if path is None:
+            ikiwa path is None:
                 path = location + ".py"
             SetValue(subkey, "", REG_SZ, path)
             yield
     finally:
-        if machinery.WindowsRegistryFinder.DEBUG_BUILD:
+        ikiwa machinery.WindowsRegistryFinder.DEBUG_BUILD:
             key = os.path.dirname(key)
         delete_registry_tree(HKEY_CURRENT_USER, key)
 
 
 @unittest.skipUnless(sys.platform.startswith('win'), 'requires Windows')
-class WindowsRegistryFinderTests:
+kundi WindowsRegistryFinderTests:
     # The module name is process-specific, allowing for
     # simultaneous runs of the same test on a single machine.
     test_module = "spamham{}".format(os.getpid())
 
-    def test_find_spec_missing(self):
+    eleza test_find_spec_missing(self):
         spec = self.machinery.WindowsRegistryFinder.find_spec('spam')
         self.assertIs(spec, None)
 
-    def test_find_module_missing(self):
+    eleza test_find_module_missing(self):
         loader = self.machinery.WindowsRegistryFinder.find_module('spam')
         self.assertIs(loader, None)
 
-    def test_module_found(self):
+    eleza test_module_found(self):
         with setup_module(self.machinery, self.test_module):
             loader = self.machinery.WindowsRegistryFinder.find_module(self.test_module)
             spec = self.machinery.WindowsRegistryFinder.find_spec(self.test_module)
             self.assertIsNot(loader, None)
             self.assertIsNot(spec, None)
 
-    def test_module_not_found(self):
+    eleza test_module_not_found(self):
         with setup_module(self.machinery, self.test_module, path="."):
             loader = self.machinery.WindowsRegistryFinder.find_module(self.test_module)
             spec = self.machinery.WindowsRegistryFinder.find_spec(self.test_module)
@@ -87,8 +87,8 @@ class WindowsRegistryFinderTests:
  ) = test_util.test_both(WindowsRegistryFinderTests, machinery=machinery)
 
 @unittest.skipUnless(sys.platform.startswith('win'), 'requires Windows')
-class WindowsExtensionSuffixTests:
-    def test_tagged_suffix(self):
+kundi WindowsExtensionSuffixTests:
+    eleza test_tagged_suffix(self):
         suffixes = self.machinery.EXTENSION_SUFFIXES
         expected_tag = ".cp{0.major}{0.minor}-{1}.pyd".format(sys.version_info,
             re.sub('[^a-zA-Z0-9]', '_', get_platform()))

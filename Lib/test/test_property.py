@@ -5,80 +5,80 @@ agiza sys
 agiza unittest
 kutoka test agiza support
 
-class PropertyBase(Exception):
+kundi PropertyBase(Exception):
     pass
 
-class PropertyGet(PropertyBase):
+kundi PropertyGet(PropertyBase):
     pass
 
-class PropertySet(PropertyBase):
+kundi PropertySet(PropertyBase):
     pass
 
-class PropertyDel(PropertyBase):
+kundi PropertyDel(PropertyBase):
     pass
 
-class BaseClass(object):
-    def __init__(self):
+kundi BaseClass(object):
+    eleza __init__(self):
         self._spam = 5
 
     @property
-    def spam(self):
+    eleza spam(self):
         """BaseClass.getter"""
-        return self._spam
+        rudisha self._spam
 
     @spam.setter
-    def spam(self, value):
+    eleza spam(self, value):
         self._spam = value
 
     @spam.deleter
-    def spam(self):
+    eleza spam(self):
         del self._spam
 
-class SubClass(BaseClass):
+kundi SubClass(BaseClass):
 
     @BaseClass.spam.getter
-    def spam(self):
+    eleza spam(self):
         """SubClass.getter"""
         raise PropertyGet(self._spam)
 
     @spam.setter
-    def spam(self, value):
+    eleza spam(self, value):
         raise PropertySet(self._spam)
 
     @spam.deleter
-    def spam(self):
+    eleza spam(self):
         raise PropertyDel(self._spam)
 
-class PropertyDocBase(object):
+kundi PropertyDocBase(object):
     _spam = 1
-    def _get_spam(self):
-        return self._spam
+    eleza _get_spam(self):
+        rudisha self._spam
     spam = property(_get_spam, doc="spam spam spam")
 
-class PropertyDocSub(PropertyDocBase):
+kundi PropertyDocSub(PropertyDocBase):
     @PropertyDocBase.spam.getter
-    def spam(self):
+    eleza spam(self):
         """The decorator does not use this doc string"""
-        return self._spam
+        rudisha self._spam
 
-class PropertySubNewGetter(BaseClass):
+kundi PropertySubNewGetter(BaseClass):
     @BaseClass.spam.getter
-    def spam(self):
+    eleza spam(self):
         """new docstring"""
-        return 5
+        rudisha 5
 
-class PropertyNewGetter(object):
+kundi PropertyNewGetter(object):
     @property
-    def spam(self):
+    eleza spam(self):
         """original docstring"""
-        return 1
+        rudisha 1
     @spam.getter
-    def spam(self):
+    eleza spam(self):
         """new docstring"""
-        return 8
+        rudisha 8
 
-class PropertyTests(unittest.TestCase):
-    def test_property_decorator_baseclass(self):
+kundi PropertyTests(unittest.TestCase):
+    eleza test_property_decorator_baseclass(self):
         # see #1620
         base = BaseClass()
         self.assertEqual(base.spam, 5)
@@ -93,7 +93,7 @@ class PropertyTests(unittest.TestCase):
         self.assertEqual(base.spam, 20)
         self.assertEqual(base._spam, 20)
 
-    def test_property_decorator_subclass(self):
+    eleza test_property_decorator_subclass(self):
         # see #1620
         sub = SubClass()
         self.assertRaises(PropertyGet, getattr, sub, "spam")
@@ -102,17 +102,17 @@ class PropertyTests(unittest.TestCase):
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
-    def test_property_decorator_subclass_doc(self):
+    eleza test_property_decorator_subclass_doc(self):
         sub = SubClass()
         self.assertEqual(sub.__class__.spam.__doc__, "SubClass.getter")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
-    def test_property_decorator_baseclass_doc(self):
+    eleza test_property_decorator_baseclass_doc(self):
         base = BaseClass()
         self.assertEqual(base.__class__.spam.__doc__, "BaseClass.getter")
 
-    def test_property_decorator_doc(self):
+    eleza test_property_decorator_doc(self):
         base = PropertyDocBase()
         sub = PropertyDocSub()
         self.assertEqual(base.__class__.spam.__doc__, "spam spam spam")
@@ -120,7 +120,7 @@ class PropertyTests(unittest.TestCase):
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
-    def test_property_getter_doc_override(self):
+    eleza test_property_getter_doc_override(self):
         newgettersub = PropertySubNewGetter()
         self.assertEqual(newgettersub.spam, 5)
         self.assertEqual(newgettersub.__class__.spam.__doc__, "new docstring")
@@ -128,10 +128,10 @@ class PropertyTests(unittest.TestCase):
         self.assertEqual(newgetter.spam, 8)
         self.assertEqual(newgetter.__class__.spam.__doc__, "new docstring")
 
-    def test_property___isabstractmethod__descriptor(self):
+    eleza test_property___isabstractmethod__descriptor(self):
         for val in (True, False, [], [1], '', '1'):
-            class C(object):
-                def foo(self):
+            kundi C(object):
+                eleza foo(self):
                     pass
                 foo.__isabstractmethod__ = val
                 foo = property(foo)
@@ -139,13 +139,13 @@ class PropertyTests(unittest.TestCase):
 
         # check that the property's __isabstractmethod__ descriptor does the
         # right thing when presented with a value that fails truth testing:
-        class NotBool(object):
-            def __bool__(self):
+        kundi NotBool(object):
+            eleza __bool__(self):
                 raise ValueError()
             __len__ = __bool__
         with self.assertRaises(ValueError):
-            class C(object):
-                def foo(self):
+            kundi C(object):
+                eleza foo(self):
                     pass
                 foo.__isabstractmethod__ = NotBool()
                 foo = property(foo)
@@ -153,7 +153,7 @@ class PropertyTests(unittest.TestCase):
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
-    def test_property_builtin_doc_writable(self):
+    eleza test_property_builtin_doc_writable(self):
         p = property(doc='basic')
         self.assertEqual(p.__doc__, 'basic')
         p.__doc__ = 'extended'
@@ -161,13 +161,13 @@ class PropertyTests(unittest.TestCase):
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
-    def test_property_decorator_doc_writable(self):
-        class PropertyWritableDoc(object):
+    eleza test_property_decorator_doc_writable(self):
+        kundi PropertyWritableDoc(object):
 
             @property
-            def spam(self):
+            eleza spam(self):
                 """Eggs"""
-                return "eggs"
+                rudisha "eggs"
 
         sub = PropertyWritableDoc()
         self.assertEqual(sub.__class__.spam.__doc__, 'Eggs')
@@ -175,7 +175,7 @@ class PropertyTests(unittest.TestCase):
         self.assertEqual(sub.__class__.spam.__doc__, 'Spam')
 
     @support.refcount_test
-    def test_refleaks_in___init__(self):
+    eleza test_refleaks_in___init__(self):
         gettotalrefcount = support.get_attribute(sys, 'gettotalrefcount')
         fake_prop = property('fget', 'fset', 'fdel', 'doc')
         refs_before = gettotalrefcount()
@@ -185,22 +185,22 @@ class PropertyTests(unittest.TestCase):
 
 
 # Issue 5890: subclasses of property do not preserve method __doc__ strings
-class PropertySub(property):
-    """This is a subclass of property"""
+kundi PropertySub(property):
+    """This is a subkundi of property"""
 
-class PropertySubSlots(property):
-    """This is a subclass of property that defines __slots__"""
+kundi PropertySubSlots(property):
+    """This is a subkundi of property that defines __slots__"""
     __slots__ = ()
 
-class PropertySubclassTests(unittest.TestCase):
+kundi PropertySubclassTests(unittest.TestCase):
 
-    def test_slots_docstring_copy_exception(self):
+    eleza test_slots_docstring_copy_exception(self):
         try:
-            class Foo(object):
+            kundi Foo(object):
                 @PropertySubSlots
-                def spam(self):
+                eleza spam(self):
                     """Trying to copy this docstring will raise an exception"""
-                    return 1
+                    rudisha 1
         except AttributeError:
             pass
         else:
@@ -208,27 +208,27 @@ class PropertySubclassTests(unittest.TestCase):
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
-    def test_docstring_copy(self):
-        class Foo(object):
+    eleza test_docstring_copy(self):
+        kundi Foo(object):
             @PropertySub
-            def spam(self):
+            eleza spam(self):
                 """spam wrapped in property subclass"""
-                return 1
+                rudisha 1
         self.assertEqual(
             Foo.spam.__doc__,
             "spam wrapped in property subclass")
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
-    def test_property_setter_copies_getter_docstring(self):
-        class Foo(object):
-            def __init__(self): self._spam = 1
+    eleza test_property_setter_copies_getter_docstring(self):
+        kundi Foo(object):
+            eleza __init__(self): self._spam = 1
             @PropertySub
-            def spam(self):
+            eleza spam(self):
                 """spam wrapped in property subclass"""
-                return self._spam
+                rudisha self._spam
             @spam.setter
-            def spam(self, value):
+            eleza spam(self, value):
                 """this docstring is ignored"""
                 self._spam = value
         foo = Foo()
@@ -238,9 +238,9 @@ class PropertySubclassTests(unittest.TestCase):
         self.assertEqual(
             Foo.spam.__doc__,
             "spam wrapped in property subclass")
-        class FooSub(Foo):
+        kundi FooSub(Foo):
             @Foo.spam.setter
-            def spam(self, value):
+            eleza spam(self, value):
                 """another ignored docstring"""
                 self._spam = 'eggs'
         foosub = FooSub()
@@ -253,31 +253,31 @@ class PropertySubclassTests(unittest.TestCase):
 
     @unittest.skipIf(sys.flags.optimize >= 2,
                      "Docstrings are omitted with -O2 and above")
-    def test_property_new_getter_new_docstring(self):
+    eleza test_property_new_getter_new_docstring(self):
 
-        class Foo(object):
+        kundi Foo(object):
             @PropertySub
-            def spam(self):
+            eleza spam(self):
                 """a docstring"""
-                return 1
+                rudisha 1
             @spam.getter
-            def spam(self):
+            eleza spam(self):
                 """a new docstring"""
-                return 2
+                rudisha 2
         self.assertEqual(Foo.spam.__doc__, "a new docstring")
-        class FooBase(object):
+        kundi FooBase(object):
             @PropertySub
-            def spam(self):
+            eleza spam(self):
                 """a docstring"""
-                return 1
-        class Foo2(FooBase):
+                rudisha 1
+        kundi Foo2(FooBase):
             @FooBase.spam.getter
-            def spam(self):
+            eleza spam(self):
                 """a new docstring"""
-                return 2
+                rudisha 2
         self.assertEqual(Foo.spam.__doc__, "a new docstring")
 
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

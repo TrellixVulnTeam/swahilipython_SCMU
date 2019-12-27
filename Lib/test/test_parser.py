@@ -13,9 +13,9 @@ kutoka test.support.script_helper agiza assert_python_failure
 #  of the parser module.
 #
 
-class RoundtripLegalSyntaxTestCase(unittest.TestCase):
+kundi RoundtripLegalSyntaxTestCase(unittest.TestCase):
 
-    def roundtrip(self, f, s):
+    eleza roundtrip(self, f, s):
         st1 = f(s)
         t = st1.totuple()
         try:
@@ -26,10 +26,10 @@ class RoundtripLegalSyntaxTestCase(unittest.TestCase):
         self.assertEqual(t, st2.totuple(),
                          "could not re-generate syntax tree")
 
-    def check_expr(self, s):
+    eleza check_expr(self, s):
         self.roundtrip(parser.expr, s)
 
-    def test_flags_passed(self):
+    eleza test_flags_passed(self):
         # The unicode literals flags has to be passed kutoka the parser to AST
         # generation.
         suite = parser.suite("kutoka __future__ agiza unicode_literals; x = ''")
@@ -38,67 +38,67 @@ class RoundtripLegalSyntaxTestCase(unittest.TestCase):
         exec(code, {}, scope)
         self.assertIsInstance(scope["x"], str)
 
-    def check_suite(self, s):
+    eleza check_suite(self, s):
         self.roundtrip(parser.suite, s)
 
-    def test_yield_statement(self):
-        self.check_suite("def f(): yield 1")
-        self.check_suite("def f(): yield")
-        self.check_suite("def f(): x += yield")
-        self.check_suite("def f(): x = yield 1")
-        self.check_suite("def f(): x = y = yield 1")
-        self.check_suite("def f(): x = yield")
-        self.check_suite("def f(): x = y = yield")
-        self.check_suite("def f(): 1 + (yield)*2")
-        self.check_suite("def f(): (yield 1)*2")
-        self.check_suite("def f(): return; yield 1")
-        self.check_suite("def f(): yield 1; return")
-        self.check_suite("def f(): yield kutoka 1")
-        self.check_suite("def f(): x = yield kutoka 1")
-        self.check_suite("def f(): f((yield kutoka 1))")
-        self.check_suite("def f(): yield 1; return 1")
-        self.check_suite("def f():\n"
+    eleza test_yield_statement(self):
+        self.check_suite("eleza f(): yield 1")
+        self.check_suite("eleza f(): yield")
+        self.check_suite("eleza f(): x += yield")
+        self.check_suite("eleza f(): x = yield 1")
+        self.check_suite("eleza f(): x = y = yield 1")
+        self.check_suite("eleza f(): x = yield")
+        self.check_suite("eleza f(): x = y = yield")
+        self.check_suite("eleza f(): 1 + (yield)*2")
+        self.check_suite("eleza f(): (yield 1)*2")
+        self.check_suite("eleza f(): return; yield 1")
+        self.check_suite("eleza f(): yield 1; return")
+        self.check_suite("eleza f(): yield kutoka 1")
+        self.check_suite("eleza f(): x = yield kutoka 1")
+        self.check_suite("eleza f(): f((yield kutoka 1))")
+        self.check_suite("eleza f(): yield 1; rudisha 1")
+        self.check_suite("eleza f():\n"
                          "    for x in range(30):\n"
                          "        yield x\n")
-        self.check_suite("def f():\n"
-                         "    if (yield):\n"
+        self.check_suite("eleza f():\n"
+                         "    ikiwa (yield):\n"
                          "        yield x\n")
 
-    def test_await_statement(self):
-        self.check_suite("async def f():\n await smth()")
-        self.check_suite("async def f():\n foo = await smth()")
-        self.check_suite("async def f():\n foo, bar = await smth()")
-        self.check_suite("async def f():\n (await smth())")
-        self.check_suite("async def f():\n foo((await smth()))")
-        self.check_suite("async def f():\n await foo(); return 42")
+    eleza test_await_statement(self):
+        self.check_suite("async eleza f():\n await smth()")
+        self.check_suite("async eleza f():\n foo = await smth()")
+        self.check_suite("async eleza f():\n foo, bar = await smth()")
+        self.check_suite("async eleza f():\n (await smth())")
+        self.check_suite("async eleza f():\n foo((await smth()))")
+        self.check_suite("async eleza f():\n await foo(); rudisha 42")
 
-    def test_async_with_statement(self):
-        self.check_suite("async def f():\n async with 1: pass")
-        self.check_suite("async def f():\n async with a as b, c as d: pass")
+    eleza test_async_with_statement(self):
+        self.check_suite("async eleza f():\n async with 1: pass")
+        self.check_suite("async eleza f():\n async with a as b, c as d: pass")
 
-    def test_async_for_statement(self):
-        self.check_suite("async def f():\n async for i in (): pass")
-        self.check_suite("async def f():\n async for i, b in (): pass")
+    eleza test_async_for_statement(self):
+        self.check_suite("async eleza f():\n async for i in (): pass")
+        self.check_suite("async eleza f():\n async for i, b in (): pass")
 
-    def test_nonlocal_statement(self):
-        self.check_suite("def f():\n"
+    eleza test_nonlocal_statement(self):
+        self.check_suite("eleza f():\n"
                          "    x = 0\n"
-                         "    def g():\n"
+                         "    eleza g():\n"
                          "        nonlocal x\n")
-        self.check_suite("def f():\n"
+        self.check_suite("eleza f():\n"
                          "    x = y = 0\n"
-                         "    def g():\n"
+                         "    eleza g():\n"
                          "        nonlocal x, y\n")
 
-    def test_expressions(self):
+    eleza test_expressions(self):
         self.check_expr("foo(1)")
         self.check_expr("[1, 2, 3]")
         self.check_expr("[x**3 for x in range(20)]")
-        self.check_expr("[x**3 for x in range(20) if x % 3]")
-        self.check_expr("[x**3 for x in range(20) if x % 2 if x % 3]")
+        self.check_expr("[x**3 for x in range(20) ikiwa x % 3]")
+        self.check_expr("[x**3 for x in range(20) ikiwa x % 2 ikiwa x % 3]")
         self.check_expr("list(x**3 for x in range(20))")
-        self.check_expr("list(x**3 for x in range(20) if x % 3)")
-        self.check_expr("list(x**3 for x in range(20) if x % 2 if x % 3)")
+        self.check_expr("list(x**3 for x in range(20) ikiwa x % 3)")
+        self.check_expr("list(x**3 for x in range(20) ikiwa x % 2 ikiwa x % 3)")
         self.check_expr("foo(*args)")
         self.check_expr("foo(*args, **kw)")
         self.check_expr("foo(**kw)")
@@ -133,15 +133,15 @@ class RoundtripLegalSyntaxTestCase(unittest.TestCase):
         self.check_expr("...")
         self.check_expr("a[...]")
 
-    def test_simple_expression(self):
+    eleza test_simple_expression(self):
         # expr_stmt
         self.check_suite("a")
 
-    def test_simple_assignments(self):
+    eleza test_simple_assignments(self):
         self.check_suite("a = b")
         self.check_suite("a = b = c = d = e")
 
-    def test_var_annot(self):
+    eleza test_var_annot(self):
         self.check_suite("x: int = 5")
         self.check_suite("y: List[T] = []; z: [list] = fun()")
         self.check_suite("x: tuple = (1, 2)")
@@ -149,14 +149,14 @@ class RoundtripLegalSyntaxTestCase(unittest.TestCase):
         self.check_suite("f(d[x]): str = 'abc'")
         self.check_suite("x.y.z.w: complex = 42j")
         self.check_suite("x: int")
-        self.check_suite("def f():\n"
+        self.check_suite("eleza f():\n"
                          "    x: str\n"
                          "    y: int = 5\n")
-        self.check_suite("class C:\n"
+        self.check_suite("kundi C:\n"
                          "    x: str\n"
                          "    y: int = 5\n")
-        self.check_suite("class C:\n"
-                         "    def __init__(self, x: int) -> None:\n"
+        self.check_suite("kundi C:\n"
+                         "    eleza __init__(self, x: int) -> None:\n"
                          "        self.x: int = x\n")
         # double check for nonsense
         with self.assertRaises(SyntaxError):
@@ -180,7 +180,7 @@ class RoundtripLegalSyntaxTestCase(unittest.TestCase):
         with self.assertRaises(SyntaxError):
             exec("f(): int", {}, {})
 
-    def test_simple_augmented_assignments(self):
+    eleza test_simple_augmented_assignments(self):
         self.check_suite("a += b")
         self.check_suite("a -= b")
         self.check_suite("a *= b")
@@ -194,78 +194,78 @@ class RoundtripLegalSyntaxTestCase(unittest.TestCase):
         self.check_suite("a >>= b")
         self.check_suite("a **= b")
 
-    def test_function_defs(self):
-        self.check_suite("def f(): pass")
-        self.check_suite("def f(*args): pass")
-        self.check_suite("def f(*args, **kw): pass")
-        self.check_suite("def f(**kw): pass")
-        self.check_suite("def f(foo=bar): pass")
-        self.check_suite("def f(foo=bar, *args): pass")
-        self.check_suite("def f(foo=bar, *args, **kw): pass")
-        self.check_suite("def f(foo=bar, **kw): pass")
+    eleza test_function_defs(self):
+        self.check_suite("eleza f(): pass")
+        self.check_suite("eleza f(*args): pass")
+        self.check_suite("eleza f(*args, **kw): pass")
+        self.check_suite("eleza f(**kw): pass")
+        self.check_suite("eleza f(foo=bar): pass")
+        self.check_suite("eleza f(foo=bar, *args): pass")
+        self.check_suite("eleza f(foo=bar, *args, **kw): pass")
+        self.check_suite("eleza f(foo=bar, **kw): pass")
 
-        self.check_suite("def f(a, b): pass")
-        self.check_suite("def f(a, b, *args): pass")
-        self.check_suite("def f(a, b, *args, **kw): pass")
-        self.check_suite("def f(a, b, **kw): pass")
-        self.check_suite("def f(a, b, foo=bar): pass")
-        self.check_suite("def f(a, b, foo=bar, *args): pass")
-        self.check_suite("def f(a, b, foo=bar, *args, **kw): pass")
-        self.check_suite("def f(a, b, foo=bar, **kw): pass")
+        self.check_suite("eleza f(a, b): pass")
+        self.check_suite("eleza f(a, b, *args): pass")
+        self.check_suite("eleza f(a, b, *args, **kw): pass")
+        self.check_suite("eleza f(a, b, **kw): pass")
+        self.check_suite("eleza f(a, b, foo=bar): pass")
+        self.check_suite("eleza f(a, b, foo=bar, *args): pass")
+        self.check_suite("eleza f(a, b, foo=bar, *args, **kw): pass")
+        self.check_suite("eleza f(a, b, foo=bar, **kw): pass")
 
         self.check_suite("@staticmethod\n"
-                         "def f(): pass")
+                         "eleza f(): pass")
         self.check_suite("@staticmethod\n"
                          "@funcattrs(x, y)\n"
-                         "def f(): pass")
+                         "eleza f(): pass")
         self.check_suite("@funcattrs()\n"
-                         "def f(): pass")
+                         "eleza f(): pass")
 
         # keyword-only arguments
-        self.check_suite("def f(*, a): pass")
-        self.check_suite("def f(*, a = 5): pass")
-        self.check_suite("def f(*, a = 5, b): pass")
-        self.check_suite("def f(*, a, b = 5): pass")
-        self.check_suite("def f(*, a, b = 5, **kwds): pass")
-        self.check_suite("def f(*args, a): pass")
-        self.check_suite("def f(*args, a = 5): pass")
-        self.check_suite("def f(*args, a = 5, b): pass")
-        self.check_suite("def f(*args, a, b = 5): pass")
-        self.check_suite("def f(*args, a, b = 5, **kwds): pass")
+        self.check_suite("eleza f(*, a): pass")
+        self.check_suite("eleza f(*, a = 5): pass")
+        self.check_suite("eleza f(*, a = 5, b): pass")
+        self.check_suite("eleza f(*, a, b = 5): pass")
+        self.check_suite("eleza f(*, a, b = 5, **kwds): pass")
+        self.check_suite("eleza f(*args, a): pass")
+        self.check_suite("eleza f(*args, a = 5): pass")
+        self.check_suite("eleza f(*args, a = 5, b): pass")
+        self.check_suite("eleza f(*args, a, b = 5): pass")
+        self.check_suite("eleza f(*args, a, b = 5, **kwds): pass")
 
         # positional-only arguments
-        self.check_suite("def f(a, /): pass")
-        self.check_suite("def f(a, /,): pass")
-        self.check_suite("def f(a, b, /): pass")
-        self.check_suite("def f(a, b, /, c): pass")
-        self.check_suite("def f(a, b, /, c = 6): pass")
-        self.check_suite("def f(a, b, /, c, *, d): pass")
-        self.check_suite("def f(a, b, /, c = 1, *, d): pass")
-        self.check_suite("def f(a, b, /, c, *, d = 1): pass")
-        self.check_suite("def f(a, b=1, /, c=2, *, d = 3): pass")
-        self.check_suite("def f(a=0, b=1, /, c=2, *, d = 3): pass")
+        self.check_suite("eleza f(a, /): pass")
+        self.check_suite("eleza f(a, /,): pass")
+        self.check_suite("eleza f(a, b, /): pass")
+        self.check_suite("eleza f(a, b, /, c): pass")
+        self.check_suite("eleza f(a, b, /, c = 6): pass")
+        self.check_suite("eleza f(a, b, /, c, *, d): pass")
+        self.check_suite("eleza f(a, b, /, c = 1, *, d): pass")
+        self.check_suite("eleza f(a, b, /, c, *, d = 1): pass")
+        self.check_suite("eleza f(a, b=1, /, c=2, *, d = 3): pass")
+        self.check_suite("eleza f(a=0, b=1, /, c=2, *, d = 3): pass")
 
         # function annotations
-        self.check_suite("def f(a: int): pass")
-        self.check_suite("def f(a: int = 5): pass")
-        self.check_suite("def f(*args: list): pass")
-        self.check_suite("def f(**kwds: dict): pass")
-        self.check_suite("def f(*, a: int): pass")
-        self.check_suite("def f(*, a: int = 5): pass")
-        self.check_suite("def f() -> int: pass")
+        self.check_suite("eleza f(a: int): pass")
+        self.check_suite("eleza f(a: int = 5): pass")
+        self.check_suite("eleza f(*args: list): pass")
+        self.check_suite("eleza f(**kwds: dict): pass")
+        self.check_suite("eleza f(*, a: int): pass")
+        self.check_suite("eleza f(*, a: int = 5): pass")
+        self.check_suite("eleza f() -> int: pass")
 
-    def test_class_defs(self):
-        self.check_suite("class foo():pass")
-        self.check_suite("class foo(object):pass")
+    eleza test_class_defs(self):
+        self.check_suite("kundi foo():pass")
+        self.check_suite("kundi foo(object):pass")
         self.check_suite("@class_decorator\n"
-                         "class foo():pass")
+                         "kundi foo():pass")
         self.check_suite("@class_decorator(arg)\n"
-                         "class foo():pass")
+                         "kundi foo():pass")
         self.check_suite("@decorator1\n"
                          "@decorator2\n"
-                         "class foo():pass")
+                         "kundi foo():pass")
 
-    def test_import_from_statement(self):
+    eleza test_import_kutoka_statement(self):
         self.check_suite("kutoka sys.path agiza *")
         self.check_suite("kutoka sys.path agiza dirname")
         self.check_suite("kutoka sys.path agiza (dirname)")
@@ -290,14 +290,14 @@ class RoundtripLegalSyntaxTestCase(unittest.TestCase):
             "kutoka sys.path agiza (dirname, basename as my_basename,)")
         self.check_suite("kutoka .bogus agiza x")
 
-    def test_basic_import_statement(self):
+    eleza test_basic_import_statement(self):
         self.check_suite("agiza sys")
         self.check_suite("agiza sys as system")
         self.check_suite("agiza sys, math")
         self.check_suite("agiza sys as system, math")
         self.check_suite("agiza sys, math as my_math")
 
-    def test_relative_agizas(self):
+    eleza test_relative_agizas(self):
         self.check_suite("kutoka . agiza name")
         self.check_suite("kutoka .. agiza name")
         # check all the way up to '....', since '...' is tokenized
@@ -309,19 +309,19 @@ class RoundtripLegalSyntaxTestCase(unittest.TestCase):
         self.check_suite("kutoka ...pkg agiza name")
         self.check_suite("kutoka ....pkg agiza name")
 
-    def test_pep263(self):
+    eleza test_pep263(self):
         self.check_suite("# -*- coding: iso-8859-1 -*-\n"
                          "pass\n")
 
-    def test_assert(self):
+    eleza test_assert(self):
         self.check_suite("assert alo < ahi and blo < bhi\n")
 
-    def test_with(self):
+    eleza test_with(self):
         self.check_suite("with open('x'): pass\n")
         self.check_suite("with open('x') as f: pass\n")
         self.check_suite("with open('x') as f, open('y') as g: pass\n")
 
-    def test_try_stmt(self):
+    eleza test_try_stmt(self):
         self.check_suite("try: pass\nexcept: pass\n")
         self.check_suite("try: pass\nfinally: pass\n")
         self.check_suite("try: pass\nexcept A: pass\nfinally: pass\n")
@@ -331,20 +331,20 @@ class RoundtripLegalSyntaxTestCase(unittest.TestCase):
         self.check_suite("try: pass\nexcept: pass\nelse: pass\n"
                          "finally: pass\n")
 
-    def test_if_stmt(self):
-        self.check_suite("if True:\n  pass\nelse:\n  pass\n")
-        self.check_suite("if True:\n  pass\nelif True:\n  pass\nelse:\n  pass\n")
+    eleza test_if_stmt(self):
+        self.check_suite("ikiwa True:\n  pass\nelse:\n  pass\n")
+        self.check_suite("ikiwa True:\n  pass\nelikiwa True:\n  pass\nelse:\n  pass\n")
 
-    def test_position(self):
+    eleza test_position(self):
         # An absolutely minimal test of position information.  Better
         # tests would be a big project.
-        code = "def f(x):\n    return x + 1"
+        code = "eleza f(x):\n    rudisha x + 1"
         st = parser.suite(code)
 
-        def walk(tree):
+        eleza walk(tree):
             node_type = tree[0]
             next = tree[1]
-            if isinstance(next, (tuple, list)):
+            ikiwa isinstance(next, (tuple, list)):
                 for elt in tree[1:]:
                     for x in walk(elt):
                         yield x
@@ -387,13 +387,13 @@ class RoundtripLegalSyntaxTestCase(unittest.TestCase):
                                                   col_info=True))),
                          [list(x) for x in expected])
 
-    def test_extended_unpacking(self):
+    eleza test_extended_unpacking(self):
         self.check_suite("*a = y")
         self.check_suite("x, *b, = m")
         self.check_suite("[*a, *b] = y")
         self.check_suite("for [*x, b] in x: pass")
 
-    def test_raise_statement(self):
+    eleza test_raise_statement(self):
         self.check_suite("raise\n")
         self.check_suite("raise e\n")
         self.check_suite("try:\n"
@@ -401,18 +401,18 @@ class RoundtripLegalSyntaxTestCase(unittest.TestCase):
                          "except Exception as e:\n"
                          "    raise ValueError kutoka e\n")
 
-    def test_list_displays(self):
+    eleza test_list_displays(self):
         self.check_expr('[]')
         self.check_expr('[*{2}, 3, *[4]]')
 
-    def test_set_displays(self):
+    eleza test_set_displays(self):
         self.check_expr('{*{2}, 3, *[4]}')
         self.check_expr('{2}')
         self.check_expr('{2,}')
         self.check_expr('{2, 3}')
         self.check_expr('{2, 3,}')
 
-    def test_dict_displays(self):
+    eleza test_dict_displays(self):
         self.check_expr('{}')
         self.check_expr('{a:b}')
         self.check_expr('{a:b,}')
@@ -421,35 +421,35 @@ class RoundtripLegalSyntaxTestCase(unittest.TestCase):
         self.check_expr('{**{}}')
         self.check_expr('{**{}, 3:4, **{5:6, 7:8}}')
 
-    def test_argument_unpacking(self):
+    eleza test_argument_unpacking(self):
         self.check_expr("f(*a, **b)")
         self.check_expr('f(a, *b, *c, *d)')
         self.check_expr('f(**a, **b)')
         self.check_expr('f(2, *a, *b, **b, **c, **d)')
         self.check_expr("f(*b, *() or () and (), **{} and {}, **() or {})")
 
-    def test_set_comprehensions(self):
+    eleza test_set_comprehensions(self):
         self.check_expr('{x for x in seq}')
         self.check_expr('{f(x) for x in seq}')
-        self.check_expr('{f(x) for x in seq if condition(x)}')
+        self.check_expr('{f(x) for x in seq ikiwa condition(x)}')
 
-    def test_dict_comprehensions(self):
+    eleza test_dict_comprehensions(self):
         self.check_expr('{x:x for x in seq}')
-        self.check_expr('{x**2:x[3] for x in seq if condition(x)}')
-        self.check_expr('{x:x for x in seq1 for y in seq2 if condition(x, y)}')
+        self.check_expr('{x**2:x[3] for x in seq ikiwa condition(x)}')
+        self.check_expr('{x:x for x in seq1 for y in seq2 ikiwa condition(x, y)}')
 
-    def test_named_expressions(self):
+    eleza test_named_expressions(self):
         self.check_suite("(a := 1)")
         self.check_suite("(a := a)")
-        self.check_suite("if (match := pattern.search(data)) is None: pass")
+        self.check_suite("ikiwa (match := pattern.search(data)) is None: pass")
         self.check_suite("while match := pattern.search(f.read()): pass")
         self.check_suite("[y := f(x), y**2, y**3]")
-        self.check_suite("filtered_data = [y for x in data if (y := f(x)) is None]")
+        self.check_suite("filtered_data = [y for x in data ikiwa (y := f(x)) is None]")
         self.check_suite("(y := f(x))")
         self.check_suite("y0 = (y1 := f(x))")
         self.check_suite("foo(x=(y := f(x)))")
-        self.check_suite("def foo(answer=(p := 42)): pass")
-        self.check_suite("def foo(answer: (p := 42) = 5): pass")
+        self.check_suite("eleza foo(answer=(p := 42)): pass")
+        self.check_suite("eleza foo(answer: (p := 42) = 5): pass")
         self.check_suite("lambda: (x := 1)")
         self.check_suite("(x := lambda: 1)")
         self.check_suite("(x := lambda: (y := 1))")  # not in PEP
@@ -462,12 +462,12 @@ class RoundtripLegalSyntaxTestCase(unittest.TestCase):
         self.check_suite("len(lines := f.readlines())")
         self.check_suite("foo(x := 3, cat='vector')")
         self.check_suite("foo(cat=(category := 'vector'))")
-        self.check_suite("if any(len(longline := l) >= 100 for l in lines): print(longline)")
+        self.check_suite("ikiwa any(len(longline := l) >= 100 for l in lines): andika(longline)")
         self.check_suite(
-            "if env_base := os.environ.get('PYTHONUSERBASE', None): return env_base"
+            "ikiwa env_base := os.environ.get('PYTHONUSERBASE', None): rudisha env_base"
         )
         self.check_suite(
-            "if self._is_special and (ans := self._check_nans(context=context)): return ans"
+            "ikiwa self._is_special and (ans := self._check_nans(context=context)): rudisha ans"
         )
         self.check_suite("foo(b := 2, a=1)")
         self.check_suite("foo(b := 2, a=1)")
@@ -481,9 +481,9 @@ class RoundtripLegalSyntaxTestCase(unittest.TestCase):
 #  rejections for them.
 #
 
-class IllegalSyntaxTestCase(unittest.TestCase):
+kundi IllegalSyntaxTestCase(unittest.TestCase):
 
-    def check_bad_tree(self, tree, label):
+    eleza check_bad_tree(self, tree, label):
         try:
             parser.sequence2st(tree)
         except parser.ParserError:
@@ -491,11 +491,11 @@ class IllegalSyntaxTestCase(unittest.TestCase):
         else:
             self.fail("did not detect invalid tree for %r" % label)
 
-    def test_junk(self):
+    eleza test_junk(self):
         # not even remotely valid:
         self.check_bad_tree((1, 2, 3), "<junk>")
 
-    def test_illegal_terminal(self):
+    eleza test_illegal_terminal(self):
         tree = \
             (257,
              (269,
@@ -541,8 +541,8 @@ class IllegalSyntaxTestCase(unittest.TestCase):
              (0, ''))
         self.check_bad_tree(tree, "too many items in terminal node")
 
-    def test_illegal_yield_1(self):
-        # Illegal yield statement: def f(): return 1; yield 1
+    eleza test_illegal_yield_1(self):
+        # Illegal yield statement: eleza f(): rudisha 1; yield 1
         tree = \
         (257,
          (264,
@@ -594,17 +594,17 @@ class IllegalSyntaxTestCase(unittest.TestCase):
                (6, ''))))),
            (4, ''),
            (0, ''))))
-        self.check_bad_tree(tree, "def f():\n  return 1\n  yield 1")
+        self.check_bad_tree(tree, "eleza f():\n  rudisha 1\n  yield 1")
 
-    def test_illegal_yield_2(self):
-        # Illegal return in generator: def f(): return 1; yield 1
+    eleza test_illegal_yield_2(self):
+        # Illegal rudisha in generator: eleza f(): rudisha 1; yield 1
         tree = \
         (257,
          (264,
           (265,
            (266,
             (278,
-             (1, 'from'),
+             (1, 'kutoka'),
              (281, (1, '__future__')),
              (1, 'agiza'),
              (279, (1, 'generators')))),
@@ -658,9 +658,9 @@ class IllegalSyntaxTestCase(unittest.TestCase):
                (6, ''))))),
            (4, ''),
            (0, ''))))
-        self.check_bad_tree(tree, "def f():\n  return 1\n  yield 1")
+        self.check_bad_tree(tree, "eleza f():\n  rudisha 1\n  yield 1")
 
-    def test_a_comma_comma_c(self):
+    eleza test_a_comma_comma_c(self):
         # Illegal input: a,,c
         tree = \
         (258,
@@ -687,7 +687,7 @@ class IllegalSyntaxTestCase(unittest.TestCase):
          (0, ''))
         self.check_bad_tree(tree, "a,,c")
 
-    def test_illegal_operator(self):
+    eleza test_illegal_operator(self):
         # Illegal input: a $= b
         tree = \
         (257,
@@ -720,7 +720,7 @@ class IllegalSyntaxTestCase(unittest.TestCase):
          (0, ''))
         self.check_bad_tree(tree, "a $= b")
 
-    def test_malformed_global(self):
+    eleza test_malformed_global(self):
         #doesn't have global keyword in ast
         tree = (257,
                 (264,
@@ -731,7 +731,7 @@ class IllegalSyntaxTestCase(unittest.TestCase):
                 (0, ''))
         self.check_bad_tree(tree, "malformed global ast")
 
-    def test_missing_import_source(self):
+    eleza test_missing_import_source(self):
         # kutoka agiza fred
         tree = \
             (257,
@@ -739,13 +739,13 @@ class IllegalSyntaxTestCase(unittest.TestCase):
               (269,
                (270,
                 (282,
-                 (284, (1, 'from'), (1, 'agiza'),
+                 (284, (1, 'kutoka'), (1, 'agiza'),
                   (287, (285, (1, 'fred')))))),
                (4, ''))),
              (4, ''), (0, ''))
         self.check_bad_tree(tree, "kutoka agiza fred")
 
-    def test_illegal_encoding(self):
+    eleza test_illegal_encoding(self):
         # Illegal encoding declaration
         tree = \
             (341,
@@ -763,7 +763,7 @@ class IllegalSyntaxTestCase(unittest.TestCase):
         with self.assertRaises(UnicodeEncodeError):
             parser.sequence2st(tree)
 
-    def test_invalid_node_id(self):
+    eleza test_invalid_node_id(self):
         tree = (257, (269, (-7, '')))
         self.check_bad_tree(tree, "negative node id")
         tree = (257, (269, (99, '')))
@@ -771,7 +771,7 @@ class IllegalSyntaxTestCase(unittest.TestCase):
         tree = (257, (269, (9999, (0, ''))))
         self.check_bad_tree(tree, "invalid symbol id")
 
-    def test_ParserError_message(self):
+    eleza test_ParserError_message(self):
         try:
             parser.sequence2st((257,(269,(257,(0,'')))))
         except parser.ParserError as why:
@@ -780,33 +780,33 @@ class IllegalSyntaxTestCase(unittest.TestCase):
 
 
 
-class CompileTestCase(unittest.TestCase):
+kundi CompileTestCase(unittest.TestCase):
 
     # These tests are very minimal. :-(
 
-    def test_compile_expr(self):
+    eleza test_compile_expr(self):
         st = parser.expr('2 + 3')
         code = parser.compilest(st)
         self.assertEqual(eval(code), 5)
 
-    def test_compile_suite(self):
+    eleza test_compile_suite(self):
         st = parser.suite('x = 2; y = x + 3')
         code = parser.compilest(st)
         globs = {}
         exec(code, globs)
         self.assertEqual(globs['y'], 5)
 
-    def test_compile_error(self):
+    eleza test_compile_error(self):
         st = parser.suite('1 = 3 + 4')
         self.assertRaises(SyntaxError, parser.compilest, st)
 
-    def test_compile_badunicode(self):
+    eleza test_compile_badunicode(self):
         st = parser.suite('a = "\\U12345678"')
         self.assertRaises(SyntaxError, parser.compilest, st)
         st = parser.suite('a = "\\u1"')
         self.assertRaises(SyntaxError, parser.compilest, st)
 
-    def test_issue_9011(self):
+    eleza test_issue_9011(self):
         # Issue 9011: compilation of an unary minus expression changed
         # the meaning of the ST, so that a second compilation produced
         # incorrect results.
@@ -816,7 +816,7 @@ class CompileTestCase(unittest.TestCase):
         code2 = parser.compilest(st)
         self.assertEqual(eval(code2), -3)
 
-    def test_compile_filename(self):
+    eleza test_compile_filename(self):
         st = parser.expr('a + 5')
         code = parser.compilest(st)
         self.assertEqual(code.co_filename, '<syntax-tree>')
@@ -838,21 +838,21 @@ class CompileTestCase(unittest.TestCase):
         self.assertRaises(TypeError, st.compile, list(b'file.py'))
 
 
-class ParserStackLimitTestCase(unittest.TestCase):
+kundi ParserStackLimitTestCase(unittest.TestCase):
     """try to push the parser to/over its limits.
     see http://bugs.python.org/issue1881 for a discussion
     """
-    def _nested_expression(self, level):
-        return "["*level+"]"*level
+    eleza _nested_expression(self, level):
+        rudisha "["*level+"]"*level
 
-    def test_deeply_nested_list(self):
+    eleza test_deeply_nested_list(self):
         # This has fluctuated between 99 levels in 2.x, down to 93 levels in
         # 3.7.X and back up to 99 in 3.8.X. Related to MAXSTACK size in Parser.h
         e = self._nested_expression(99)
         st = parser.expr(e)
         st.compile()
 
-    def test_trigger_memory_error(self):
+    eleza test_trigger_memory_error(self):
         e = self._nested_expression(100)
         rc, out, err = assert_python_failure('-c', e)
         # parsing the expression will result in an error message
@@ -860,10 +860,10 @@ class ParserStackLimitTestCase(unittest.TestCase):
         self.assertIn(b's_push: parser stack overflow', err)
         self.assertIn(b'MemoryError', err)
 
-class STObjectTestCase(unittest.TestCase):
+kundi STObjectTestCase(unittest.TestCase):
     """Test operations on ST objects themselves"""
 
-    def test_comparisons(self):
+    eleza test_comparisons(self):
         # ST objects should support order and equality comparisons
         st1 = parser.expr('2 + 3')
         st2 = parser.suite('x = 2; y = x + 3')
@@ -924,7 +924,7 @@ class STObjectTestCase(unittest.TestCase):
         self.assertRaises(TypeError, operator.lt, st1, 1815)
         self.assertRaises(TypeError, operator.gt, b'waterloo', st2)
 
-    def test_copy_pickle(self):
+    eleza test_copy_pickle(self):
         sts = [
             parser.expr('2 + 3'),
             parser.suite('x = 2; y = x + 3'),
@@ -942,31 +942,31 @@ class STObjectTestCase(unittest.TestCase):
     check_sizeof = support.check_sizeof
 
     @support.cpython_only
-    def test_sizeof(self):
-        def XXXROUNDUP(n):
-            if n <= 1:
-                return n
-            if n <= 128:
-                return (n + 3) & ~3
-            return 1 << (n - 1).bit_length()
+    eleza test_sizeof(self):
+        eleza XXXROUNDUP(n):
+            ikiwa n <= 1:
+                rudisha n
+            ikiwa n <= 128:
+                rudisha (n + 3) & ~3
+            rudisha 1 << (n - 1).bit_length()
 
         basesize = support.calcobjsize('Piii')
         nodesize = struct.calcsize('hP3iP0h2i')
-        def sizeofchildren(node):
-            if node is None:
-                return 0
+        eleza sizeofchildren(node):
+            ikiwa node is None:
+                rudisha 0
             res = 0
             hasstr = len(node) > 1 and isinstance(node[-1], str)
-            if hasstr:
+            ikiwa hasstr:
                 res += len(node[-1]) + 1
-            children = node[1:-1] if hasstr else node[1:]
-            if children:
+            children = node[1:-1] ikiwa hasstr else node[1:]
+            ikiwa children:
                 res += XXXROUNDUP(len(children)) * nodesize
                 for child in children:
                     res += sizeofchildren(child)
-            return res
+            rudisha res
 
-        def check_st_sizeof(st):
+        eleza check_st_sizeof(st):
             self.check_sizeof(st, basesize + nodesize +
                                   sizeofchildren(st.totuple()))
 
@@ -980,12 +980,12 @@ class STObjectTestCase(unittest.TestCase):
 
     # XXX tests for pickling and unpickling of ST objects should go here
 
-class OtherParserCase(unittest.TestCase):
+kundi OtherParserCase(unittest.TestCase):
 
-    def test_two_args_to_expr(self):
+    eleza test_two_args_to_expr(self):
         # See bug #12264
         with self.assertRaises(TypeError):
             parser.expr("a", "b")
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

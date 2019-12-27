@@ -144,7 +144,7 @@ class FancyGetopt:
             if len(option) == 3:
                 long, short, help = option
                 repeat = 0
-            elif len(option) == 4:
+            lasivyo len(option) == 4:
                 long, short, help, repeat = option
             else:
                 # the option table is part of the code, so simply

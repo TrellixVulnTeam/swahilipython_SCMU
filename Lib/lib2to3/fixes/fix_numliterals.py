@@ -9,20 +9,20 @@ kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Number
 
 
-class FixNumliterals(fixer_base.BaseFix):
+kundi FixNumliterals(fixer_base.BaseFix):
     # This is so simple that we don't need the pattern compiler.
 
     _accept_type = token.NUMBER
 
-    def match(self, node):
+    eleza match(self, node):
         # Override
-        return (node.value.startswith("0") or node.value[-1] in "Ll")
+        rudisha (node.value.startswith("0") or node.value[-1] in "Ll")
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         val = node.value
-        if val[-1] in 'Ll':
+        ikiwa val[-1] in 'Ll':
             val = val[:-1]
-        elif val.startswith('0') and val.isdigit() and len(set(val)) > 1:
+        elikiwa val.startswith('0') and val.isdigit() and len(set(val)) > 1:
             val = "0o" + val[1:]
 
-        return Number(val, prefix=node.prefix)
+        rudisha Number(val, prefix=node.prefix)

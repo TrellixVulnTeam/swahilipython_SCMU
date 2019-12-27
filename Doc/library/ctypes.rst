@@ -52,7 +52,7 @@ Here are some examples for Windows. Note that ``msvcrt`` is the MS standard C
 library containing most standard C functions, and uses the cdecl calling
 convention::
 
-   >>> from ctypes import *
+   >>> kutoka ctypes agiza *
    >>> print(windll.kernel32)  # doctest: +WINDOWS
    <WinDLL 'kernel32', handle ... at ...>
    >>> print(cdll.msvcrt)      # doctest: +WINDOWS
@@ -66,7 +66,7 @@ Windows appends the usual ``.dll`` file suffix automatically.
     Accessing the standard C library through ``cdll.msvcrt`` will use an
     outdated version of the library that may be incompatible with the one
     being used by Python. Where possible, use native Python functionality,
-    or else import and use the ``msvcrt`` module.
+    or else agiza and use the ``msvcrt`` module.
 
 On Linux, it is required to specify the filename *including* the extension to
 load a library, so attribute access can not be used to load libraries. Either the
@@ -83,14 +83,14 @@ the library by creating an instance of CDLL by calling the constructor::
 .. XXX Add section for Mac OS X.
 
 
-.. _ctypes-accessing-functions-from-loaded-dlls:
+.. _ctypes-accessing-functions-kutoka-loaded-dlls:
 
-Accessing functions from loaded dlls
+Accessing functions kutoka loaded dlls
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Functions are accessed as attributes of dll objects::
 
-   >>> from ctypes import *
+   >>> kutoka ctypes agiza *
    >>> libc.printf
    <_FuncPtr object at 0x...>
    >>> print(windll.kernel32.GetModuleHandleA)  # doctest: +WINDOWS
@@ -187,7 +187,7 @@ To find out the correct calling convention you have to look into the C header
 file or the documentation for the function you want to call.
 
 On Windows, :mod:`ctypes` uses win32 structured exception handling to prevent
-crashes from general protection faults when functions are called with invalid
+crashes kutoka general protection faults when functions are called with invalid
 argument values::
 
    >>> windll.kernel32.GetModuleHandleA(32)  # doctest: +WINDOWS
@@ -198,7 +198,7 @@ argument values::
 
 There are, however, enough ways to crash Python with :mod:`ctypes`, so you
 should be careful anyway.  The :mod:`faulthandler` module can be helpful in
-debugging crashes (e.g. from segmentation faults produced by erroneous C library
+debugging crashes (e.g. kutoka segmentation faults produced by erroneous C library
 calls).
 
 ``None``, integers, bytes objects and (unicode) strings are the only native
@@ -320,7 +320,7 @@ current memory block contents can be accessed (or changed) with the ``raw``
 property; if you want to access it as NUL terminated string, use the ``value``
 property::
 
-   >>> from ctypes import *
+   >>> kutoka ctypes agiza *
    >>> p = create_string_buffer(3)            # create a 3 byte buffer, initialized to NUL bytes
    >>> print(sizeof(p), repr(p.raw))
    3 b'\x00\x00\x00'
@@ -339,7 +339,7 @@ property::
 
 The :func:`create_string_buffer` function replaces the :func:`c_buffer` function
 (which is still available as an alias), as well as the :func:`c_string` function
-from earlier ctypes releases.  To create a mutable memory block containing
+kutoka earlier ctypes releases.  To create a mutable memory block containing
 unicode characters of the C type :c:type:`wchar_t` use the
 :func:`create_unicode_buffer` function.
 
@@ -351,7 +351,7 @@ Calling functions, continued
 
 Note that printf prints to the real standard output channel, *not* to
 :data:`sys.stdout`, so these examples will only work at the console prompt, not
-from within *IDLE* or *PythonWin*::
+kutoka within *IDLE* or *PythonWin*::
 
    >>> printf = libc.printf
    >>> printf(b"Hello, %s\n", b"World!")
@@ -389,7 +389,7 @@ your own classes be used as function arguments.  :mod:`ctypes` looks for an
 :attr:`_as_parameter_` attribute and uses this as the function argument.  Of
 course, it must be one of integer, string, or bytes::
 
-   >>> class Bottles:
+   >>> kundi Bottles:
    ...     def __init__(self, number):
    ...         self._as_parameter_ = number
    ...
@@ -409,7 +409,7 @@ attribute available on request.
 Specifying the required argument types (function prototypes)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-It is possible to specify the required argument types of functions exported from
+It is possible to specify the required argument types of functions exported kutoka
 DLLs by setting the :attr:`argtypes` attribute.
 
 :attr:`argtypes` must be a sequence of C data types (the ``printf`` function is
@@ -436,8 +436,8 @@ prototype for a C function), and tries to convert the arguments to valid types::
    >>>
 
 If you have defined your own classes which you pass to function calls, you have
-to implement a :meth:`from_param` class method for them to be able to use them
-in the :attr:`argtypes` sequence. The :meth:`from_param` class method receives
+to implement a :meth:`kutoka_param` kundi method for them to be able to use them
+in the :attr:`argtypes` sequence. The :meth:`kutoka_param` kundi method receives
 the Python object passed to the function call, it should do a typecheck or
 whatever is needed to make sure this object is acceptable, and then return the
 object itself, its :attr:`_as_parameter_` attribute, or whatever you want to
@@ -469,7 +469,7 @@ a string pointer and a char, and returns a pointer to a string::
    >>>
 
 If you want to avoid the ``ord("x")`` calls above, you can set the
-:attr:`argtypes` attribute, and the second argument will be converted from a
+:attr:`argtypes` attribute, and the second argument will be converted kutoka a
 single character Python bytes object into a C char::
 
    >>> strchr.restype = c_char_p
@@ -486,7 +486,7 @@ single character Python bytes object into a C char::
    'def'
    >>>
 
-You can also use a callable Python object (a function or a class for example) as
+You can also use a callable Python object (a function or a kundi for example) as
 the :attr:`restype` attribute, if the foreign function returns an integer.  The
 callable will be called with the *integer* the C function returns, and the
 result of this call will be used as the result of your function call. This is
@@ -551,8 +551,8 @@ object in Python itself::
 Structures and unions
 ^^^^^^^^^^^^^^^^^^^^^
 
-Structures and unions must derive from the :class:`Structure` and :class:`Union`
-base classes which are defined in the :mod:`ctypes` module. Each subclass must
+Structures and unions must derive kutoka the :class:`Structure` and :class:`Union`
+base classes which are defined in the :mod:`ctypes` module. Each subkundi must
 define a :attr:`_fields_` attribute.  :attr:`_fields_` must be a list of
 *2-tuples*, containing a *field name* and a *field type*.
 
@@ -562,8 +562,8 @@ derived :mod:`ctypes` type: structure, union, array, pointer.
 Here is a simple example of a POINT structure, which contains two integers named
 *x* and *y*, and also shows how to initialize a structure in the constructor::
 
-   >>> from ctypes import *
-   >>> class POINT(Structure):
+   >>> kutoka ctypes agiza *
+   >>> kundi POINT(Structure):
    ...     _fields_ = [("x", c_int),
    ...                 ("y", c_int)]
    ...
@@ -585,7 +585,7 @@ itself contain other structures by using a structure as a field type.
 Here is a RECT structure which contains two POINTs named *upperleft* and
 *lowerright*::
 
-   >>> class RECT(Structure):
+   >>> kundi RECT(Structure):
    ...     _fields_ = [("upperleft", POINT),
    ...                 ("lowerright", POINT)]
    ...
@@ -601,7 +601,7 @@ Nested structures can also be initialized in the constructor in several ways::
    >>> r = RECT(POINT(1, 2), POINT(3, 4))
    >>> r = RECT((1, 2), (3, 4))
 
-Field :term:`descriptor`\s can be retrieved from the *class*, they are useful
+Field :term:`descriptor`\s can be retrieved kutoka the *class*, they are useful
 for debugging because they can provide useful information::
 
    >>> print(POINT.x)
@@ -625,7 +625,7 @@ Structure/union alignment and byte order
 
 By default, Structure and Union fields are aligned in the same way the C
 compiler does it. It is possible to override this behavior be specifying a
-:attr:`_pack_` class attribute in the subclass definition. This must be set to a
+:attr:`_pack_` kundi attribute in the subkundi definition. This must be set to a
 positive integer and specifies the maximum alignment for the fields. This is
 what ``#pragma pack(n)`` also does in MSVC.
 
@@ -645,7 +645,7 @@ It is possible to create structures and unions containing bit fields. Bit fields
 are only possible for integer fields, the bit width is specified as the third
 item in the :attr:`_fields_` tuples::
 
-   >>> class Int(Structure):
+   >>> kundi Int(Structure):
    ...     _fields_ = [("first_16", c_int, 16),
    ...                 ("second_16", c_int, 16)]
    ...
@@ -671,11 +671,11 @@ positive integer::
 Here is an example of a somewhat artificial data type, a structure containing 4
 POINTs among other stuff::
 
-   >>> from ctypes import *
-   >>> class POINT(Structure):
+   >>> kutoka ctypes agiza *
+   >>> kundi POINT(Structure):
    ...     _fields_ = ("x", c_int), ("y", c_int)
    ...
-   >>> class MyStruct(Structure):
+   >>> kundi MyStruct(Structure):
    ...     _fields_ = [("a", c_int),
    ...                 ("b", c_float),
    ...                 ("point_array", POINT * 4)]
@@ -695,7 +695,7 @@ initialized to zeros.
 
 Initializers of the correct type can also be specified::
 
-   >>> from ctypes import *
+   >>> kutoka ctypes agiza *
    >>> TenIntegers = c_int * 10
    >>> ii = TenIntegers(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
    >>> print(ii)
@@ -714,7 +714,7 @@ Pointers
 Pointer instances are created by calling the :func:`pointer` function on a
 :mod:`ctypes` type::
 
-   >>> from ctypes import *
+   >>> kutoka ctypes agiza *
    >>> i = c_int(42)
    >>> pi = pointer(i)
    >>>
@@ -762,9 +762,9 @@ Assigning to an integer index changes the pointed to value::
    c_long(22)
    >>>
 
-It is also possible to use indexes different from 0, but you must know what
+It is also possible to use indexes different kutoka 0, but you must know what
 you're doing, just as in C: You can access or change arbitrary memory locations.
-Generally you only use this feature if you receive a pointer from a C function,
+Generally you only use this feature if you receive a pointer kutoka a C function,
 and you *know* that the pointer actually points to an array instead of a single
 item.
 
@@ -775,7 +775,7 @@ new type::
 
    >>> PI = POINTER(c_int)
    >>> PI
-   <class 'ctypes.LP_c_long'>
+   <kundi 'ctypes.LP_c_long'>
    >>> PI(42)
    Traceback (most recent call last):
      File "<stdin>", line 1, in <module>
@@ -820,7 +820,7 @@ type are accepted.  There are some exceptions to this rule, where ctypes accepts
 other objects.  For example, you can pass compatible array instances instead of
 pointer types.  So, for ``POINTER(c_int)``, ctypes accepts an array of c_int::
 
-   >>> class Bar(Structure):
+   >>> kundi Bar(Structure):
    ...     _fields_ = [("count", c_int), ("values", POINTER(c_int))]
    ...
    >>> bar = Bar()
@@ -900,7 +900,7 @@ later::
 The straightforward translation into ctypes code would be this, but it does not
 work::
 
-   >>> class cell(Structure):
+   >>> kundi cell(Structure):
    ...     _fields_ = [("name", c_char_p),
    ...                 ("next", POINTER(cell))]
    ...
@@ -910,12 +910,12 @@ work::
    NameError: name 'cell' is not defined
    >>>
 
-because the new ``class cell`` is not available in the class statement itself.
-In :mod:`ctypes`, we can define the ``cell`` class and set the :attr:`_fields_`
-attribute later, after the class statement::
+because the new ``kundi cell`` is not available in the kundi statement itself.
+In :mod:`ctypes`, we can define the ``cell`` kundi and set the :attr:`_fields_`
+attribute later, after the kundi statement::
 
-   >>> from ctypes import *
-   >>> class cell(Structure):
+   >>> kutoka ctypes agiza *
+   >>> kundi cell(Structure):
    ...     pass
    ...
    >>> cell._fields_ = [("name", c_char_p),
@@ -945,10 +945,10 @@ other, and finally follow the pointer chain a few times::
 Callback functions
 ^^^^^^^^^^^^^^^^^^
 
-:mod:`ctypes` allows creating C callable function pointers from Python callables.
+:mod:`ctypes` allows creating C callable function pointers kutoka Python callables.
 These are sometimes called *callback functions*.
 
-First, you must create a class for the callback function. The class knows the
+First, you must create a kundi for the callback function. The kundi knows the
 calling convention, the return type, and the number and types of arguments this
 function will receive.
 
@@ -1044,7 +1044,7 @@ write::
 .. note::
 
    Make sure you keep references to :func:`CFUNCTYPE` objects as long as they
-   are used from C code. :mod:`ctypes` doesn't, and if you don't, they may be
+   are used kutoka C code. :mod:`ctypes` doesn't, and if you don't, they may be
    garbage collected, crashing your program when a callback is made.
 
    Also, note that if the callback function is called in a thread created
@@ -1052,11 +1052,11 @@ write::
    callback), ctypes creates a new dummy Python thread on every invocation. This
    behavior is correct for most purposes, but it means that values stored with
    :class:`threading.local` will *not* survive across different callbacks, even when
-   those calls are made from the same C thread.
+   those calls are made kutoka the same C thread.
 
-.. _ctypes-accessing-values-exported-from-dlls:
+.. _ctypes-accessing-values-exported-kutoka-dlls:
 
-Accessing values exported from dlls
+Accessing values exported kutoka dlls
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Some shared libraries not only export functions, they also export variables. An
@@ -1064,7 +1064,7 @@ example in the Python library itself is the :c:data:`Py_OptimizeFlag`, an intege
 set to 0, 1, or 2, depending on the :option:`-O` or :option:`-OO` flag given on
 startup.
 
-:mod:`ctypes` can access values like this with the :meth:`in_dll` class methods of
+:mod:`ctypes` can access values like this with the :meth:`in_dll` kundi methods of
 the type.  *pythonapi* is a predefined symbol giving access to the Python C
 api::
 
@@ -1090,9 +1090,9 @@ Quoting the docs for that value:
 So manipulating this pointer could even prove useful. To restrict the example
 size, we show only how this table can be read with :mod:`ctypes`::
 
-   >>> from ctypes import *
+   >>> kutoka ctypes agiza *
    >>>
-   >>> class struct_frozen(Structure):
+   >>> kundi struct_frozen(Structure):
    ...     _fields_ = [("name", c_char_p),
    ...                 ("code", POINTER(c_ubyte)),
    ...                 ("size", c_int)]
@@ -1126,7 +1126,7 @@ hit the NULL entry::
 
 The fact that standard Python has a frozen module and a frozen package
 (indicated by the negative size member) is not well known, it is only used for
-testing. Try it out with ``import __hello__`` for example.
+testing. Try it out with ``agiza __hello__`` for example.
 
 
 .. _ctypes-surprises:
@@ -1139,11 +1139,11 @@ than what actually happens.
 
 Consider the following example::
 
-   >>> from ctypes import *
-   >>> class POINT(Structure):
+   >>> kutoka ctypes agiza *
+   >>> kundi POINT(Structure):
    ...     _fields_ = ("x", c_int), ("y", c_int)
    ...
-   >>> class RECT(Structure):
+   >>> kundi RECT(Structure):
    ...     _fields_ = ("a", POINT), ("b", POINT)
    ...
    >>> p1 = POINT(1, 2)
@@ -1171,11 +1171,11 @@ contents of ``temp0`` into ``rc`` 's buffer.  This, in turn, changes the
 contents of ``temp1``. So, the last assignment ``rc.b = temp1``, doesn't have
 the expected effect.
 
-Keep in mind that retrieving sub-objects from Structure, Unions, and Arrays
+Keep in mind that retrieving sub-objects kutoka Structure, Unions, and Arrays
 doesn't *copy* the sub-object, instead it retrieves a wrapper object accessing
 the root-object's underlying buffer.
 
-Another example that may behave differently from what one would expect is this::
+Another example that may behave differently kutoka what one would expect is this::
 
    >>> s = c_char_p()
    >>> s.value = b"abc def ghi"
@@ -1187,7 +1187,7 @@ Another example that may behave differently from what one would expect is this::
 
 .. note::
 
-   Objects instantiated from :class:`c_char_p` can only have their value set to bytes
+   Objects instantiated kutoka :class:`c_char_p` can only have their value set to bytes
    or integers.
 
 Why is it printing ``False``?  ctypes instances are objects containing a memory
@@ -1286,7 +1286,7 @@ It returns the filename of the library file.
 
 Here are some examples::
 
-   >>> from ctypes.util import find_library
+   >>> kutoka ctypes.util agiza find_library
    >>> find_library("m")
    'libm.so.6'
    >>> find_library("c")
@@ -1298,7 +1298,7 @@ Here are some examples::
 On OS X, :func:`find_library` tries several predefined naming schemes and paths
 to locate the library, and returns a full pathname if successful::
 
-   >>> from ctypes.util import find_library
+   >>> kutoka ctypes.util agiza find_library
    >>> find_library("c")
    '/usr/lib/libc.dylib'
    >>> find_library("m")
@@ -1329,14 +1329,14 @@ way is to instantiate one of the following classes:
 
 .. class:: CDLL(name, mode=DEFAULT_MODE, handle=None, use_errno=False, use_last_error=False, winmode=0)
 
-   Instances of this class represent loaded shared libraries. Functions in these
+   Instances of this kundi represent loaded shared libraries. Functions in these
    libraries use the standard C calling convention, and are assumed to return
    :c:type:`int`.
 
 
 .. class:: OleDLL(name, mode=DEFAULT_MODE, handle=None, use_errno=False, use_last_error=False, winmode=0)
 
-   Windows only: Instances of this class represent loaded shared libraries,
+   Windows only: Instances of this kundi represent loaded shared libraries,
    functions in these libraries use the ``stdcall`` calling convention, and are
    assumed to return the windows specific :class:`HRESULT` code.  :class:`HRESULT`
    values contain information specifying whether the function call failed or
@@ -1349,7 +1349,7 @@ way is to instantiate one of the following classes:
 
 .. class:: WinDLL(name, mode=DEFAULT_MODE, handle=None, use_errno=False, use_last_error=False, winmode=0)
 
-   Windows only: Instances of this class represent loaded shared libraries,
+   Windows only: Instances of this kundi represent loaded shared libraries,
    functions in these libraries use the ``stdcall`` calling convention, and are
    assumed to return :c:type:`int` by default.
 
@@ -1363,7 +1363,7 @@ function exported by these libraries, and reacquired afterwards.
 
 .. class:: PyDLL(name, mode=DEFAULT_MODE, handle=None)
 
-   Instances of this class behave like :class:`CDLL` instances, except that the
+   Instances of this kundi behave like :class:`CDLL` instances, except that the
    Python GIL is *not* released during the function call, and after the function
    execution the Python error flag is checked. If the error flag is set, a Python
    exception is raised.
@@ -1436,7 +1436,7 @@ accessing the function through an attribute caches the result and therefore
 accessing it repeatedly returns the same object each time.  On the other hand,
 accessing it through an index returns a new object each time::
 
-   >>> from ctypes import CDLL
+   >>> kutoka ctypes agiza CDLL
    >>> libc = CDLL("libc.so.6")  # On Linux
    >>> libc.time == libc.time
    True
@@ -1540,7 +1540,7 @@ They are instances of a private class:
 
 .. class:: _FuncPtr
 
-   Base class for C callable foreign functions.
+   Base kundi for C callable foreign functions.
 
    Instances of foreign functions are also C compatible data types; they
    represent C function pointers.
@@ -1569,14 +1569,14 @@ They are instances of a private class:
       unspecified arguments as well.
 
       When a foreign function is called, each actual argument is passed to the
-      :meth:`from_param` class method of the items in the :attr:`argtypes`
+      :meth:`kutoka_param` kundi method of the items in the :attr:`argtypes`
       tuple, this method allows adapting the actual argument to an object that
       the foreign function accepts.  For example, a :class:`c_char_p` item in
       the :attr:`argtypes` tuple will convert a string passed as argument into
       a bytes object using ctypes conversion rules.
 
       New: It is now possible to put items in argtypes which are not ctypes
-      types, but each item must have a :meth:`from_param` method which returns a
+      types, but each item must have a :meth:`kutoka_param` method which returns a
       value usable as argument (integer, string, ctypes instance).  This allows
       defining adapters that can adapt custom objects as function parameters.
 
@@ -1600,7 +1600,7 @@ They are instances of a private class:
          the function call, this allows specializing the behavior on the
          arguments used.
 
-      The object that this function returns will be returned from the
+      The object that this function returns will be returned kutoka the
       foreign function call, but it can also check the result value
       and raise an exception if the foreign function call failed.
 
@@ -1664,7 +1664,7 @@ different ways, depending on the type and number of the parameters in the call:
       :noindex:
       :module:
 
-      Create a C callable function (a callback function) from a Python *callable*.
+      Create a C callable function (a callback function) kutoka a Python *callable*.
 
 
    .. function:: prototype(func_spec[, paramflags])
@@ -1716,7 +1716,7 @@ different ways, depending on the type and number of the parameters in the call:
    The optional third item is the default value for this parameter.
 
 This example demonstrates how to wrap the Windows ``MessageBoxW`` function so
-that it supports default parameters and named arguments. The C declaration from
+that it supports default parameters and named arguments. The C declaration kutoka
 the windows header file is this::
 
    WINUSERAPI int WINAPI
@@ -1728,10 +1728,10 @@ the windows header file is this::
 
 Here is the wrapping with :mod:`ctypes`::
 
-   >>> from ctypes import c_int, WINFUNCTYPE, windll
-   >>> from ctypes.wintypes import HWND, LPCWSTR, UINT
+   >>> kutoka ctypes agiza c_int, WINFUNCTYPE, windll
+   >>> kutoka ctypes.wintypes agiza HWND, LPCWSTR, UINT
    >>> prototype = WINFUNCTYPE(c_int, HWND, LPCWSTR, LPCWSTR, UINT)
-   >>> paramflags = (1, "hwnd", 0), (1, "text", "Hi"), (1, "caption", "Hello from ctypes"), (1, "flags", 0)
+   >>> paramflags = (1, "hwnd", 0), (1, "text", "Hi"), (1, "caption", "Hello kutoka ctypes"), (1, "flags", 0)
    >>> MessageBox = prototype(("MessageBoxW", windll.user32), paramflags)
 
 The ``MessageBox`` foreign function can now be called in these ways::
@@ -1751,8 +1751,8 @@ function retrieves the dimensions of a specified window by copying them into
 
 Here is the wrapping with :mod:`ctypes`::
 
-   >>> from ctypes import POINTER, WINFUNCTYPE, windll, WinError
-   >>> from ctypes.wintypes import BOOL, HWND, RECT
+   >>> kutoka ctypes agiza POINTER, WINFUNCTYPE, windll, WinError
+   >>> kutoka ctypes.wintypes agiza BOOL, HWND, RECT
    >>> prototype = WINFUNCTYPE(BOOL, HWND, POINTER(RECT))
    >>> paramflags = (1, "hwnd"), (2, "lprect")
    >>> GetWindowRect = prototype(("GetWindowRect", windll.user32), paramflags)
@@ -1865,14 +1865,14 @@ Utility functions
 .. function:: DllCanUnloadNow()
 
    Windows only: This function is a hook which allows implementing in-process
-   COM servers with ctypes.  It is called from the DllCanUnloadNow function that
+   COM servers with ctypes.  It is called kutoka the DllCanUnloadNow function that
    the _ctypes extension dll exports.
 
 
 .. function:: DllGetClassObject()
 
    Windows only: This function is a hook which allows implementing in-process
-   COM servers with ctypes.  It is called from the DllGetClassObject function
+   COM servers with ctypes.  It is called kutoka the DllGetClassObject function
    that the ``_ctypes`` extension dll exports.
 
 
@@ -1924,7 +1924,7 @@ Utility functions
 
 .. function:: memmove(dst, src, count)
 
-   Same as the standard C memmove library function: copies *count* bytes from
+   Same as the standard C memmove library function: copies *count* bytes kutoka
    *src* to *dst*. *dst* and *src* must be integers or ctypes instances that can
    be converted to pointers.
 
@@ -2016,17 +2016,17 @@ Data types
 
 .. class:: _CData
 
-   This non-public class is the common base class of all ctypes data types.
+   This non-public kundi is the common base kundi of all ctypes data types.
    Among other things, all ctypes type instances contain a memory block that
    hold C compatible data; the address of the memory block is returned by the
    :func:`addressof` helper function. Another instance variable is exposed as
    :attr:`_objects`; this contains other Python objects that need to be kept
    alive in case the memory block contains pointers.
 
-   Common methods of ctypes data types, these are all class methods (to be
+   Common methods of ctypes data types, these are all kundi methods (to be
    exact, they are methods of the :term:`metaclass`):
 
-   .. method:: _CData.from_buffer(source[, offset])
+   .. method:: _CData.kutoka_buffer(source[, offset])
 
       This method returns a ctypes instance that shares the buffer of the
       *source* object.  The *source* object must support the writeable buffer
@@ -2035,26 +2035,26 @@ Data types
       large enough a :exc:`ValueError` is raised.
 
 
-   .. method:: _CData.from_buffer_copy(source[, offset])
+   .. method:: _CData.kutoka_buffer_copy(source[, offset])
 
-      This method creates a ctypes instance, copying the buffer from the
+      This method creates a ctypes instance, copying the buffer kutoka the
       *source* object buffer which must be readable.  The optional *offset*
       parameter specifies an offset into the source buffer in bytes; the default
       is zero.  If the source buffer is not large enough a :exc:`ValueError` is
       raised.
 
-   .. method:: from_address(address)
+   .. method:: kutoka_address(address)
 
       This method returns a ctypes type instance using the memory specified by
       *address* which must be an integer.
 
-      .. audit-event:: ctypes.cdata address ctypes._CData.from_address
+      .. audit-event:: ctypes.cdata address ctypes._CData.kutoka_address
 
          This method, and others that indirectly call this method, raises an
          :ref:`auditing event <auditing>` ``ctypes.cdata`` with argument
          ``address``.
 
-   .. method:: from_param(obj)
+   .. method:: kutoka_param(obj)
 
       This method adapts *obj* to a ctypes type.  It is called with the actual
       object used in a foreign function call when the type is present in the
@@ -2100,9 +2100,9 @@ Fundamental data types
 
 .. class:: _SimpleCData
 
-   This non-public class is the base class of all fundamental ctypes data
+   This non-public kundi is the base kundi of all fundamental ctypes data
    types. It is mentioned here because it contains the common attributes of the
-   fundamental ctypes data types.  :class:`_SimpleCData` is a subclass of
+   fundamental ctypes data types.  :class:`_SimpleCData` is a subkundi of
    :class:`_CData`, so it inherits their methods and attributes. ctypes data
    types that are not and do not contain pointers can now be pickled.
 
@@ -2115,7 +2115,7 @@ Fundamental data types
       character bytes object or string, for character pointer types it is a
       Python bytes object or string.
 
-      When the ``value`` attribute is retrieved from a ctypes instance, usually
+      When the ``value`` attribute is retrieved kutoka a ctypes instance, usually
       a new object is returned each time.  :mod:`ctypes` does *not* implement
       original object return, always a new object is constructed.  The same is
       true for all other ctypes object instances.
@@ -2130,8 +2130,8 @@ object, *not* a :class:`c_char_p` instance.
 .. XXX above is false, it actually returns a Unicode string
 
 Subclasses of fundamental data types do *not* inherit this behavior. So, if a
-foreign functions :attr:`restype` is a subclass of :class:`c_void_p`, you will
-receive an instance of this subclass from the function call. Of course, you can
+foreign functions :attr:`restype` is a subkundi of :class:`c_void_p`, you will
+receive an instance of this subkundi kutoka the function call. Of course, you can
 get the value of the pointer by accessing the ``value`` attribute.
 
 These are the fundamental ctypes data types:
@@ -2315,7 +2315,7 @@ These are the fundamental ctypes data types:
 
 .. class:: c_bool
 
-   Represent the C :c:type:`bool` datatype (more accurately, :c:type:`_Bool` from
+   Represent the C :c:type:`bool` datatype (more accurately, :c:type:`_Bool` kutoka
    C99).  Its value can be ``True`` or ``False``, and the constructor accepts any object
    that has a truth value.
 
@@ -2344,17 +2344,17 @@ Structured data types
 
 .. class:: Union(*args, **kw)
 
-   Abstract base class for unions in native byte order.
+   Abstract base kundi for unions in native byte order.
 
 
 .. class:: BigEndianStructure(*args, **kw)
 
-   Abstract base class for structures in *big endian* byte order.
+   Abstract base kundi for structures in *big endian* byte order.
 
 
 .. class:: LittleEndianStructure(*args, **kw)
 
-   Abstract base class for structures in *little endian* byte order.
+   Abstract base kundi for structures in *little endian* byte order.
 
 Structures with non-native byte order cannot contain pointer type fields, or any
 other data types containing pointer type fields.
@@ -2362,10 +2362,10 @@ other data types containing pointer type fields.
 
 .. class:: Structure(*args, **kw)
 
-   Abstract base class for structures in *native* byte order.
+   Abstract base kundi for structures in *native* byte order.
 
    Concrete structure and union types must be created by subclassing one of these
-   types, and at least define a :attr:`_fields_` class variable. :mod:`ctypes` will
+   types, and at least define a :attr:`_fields_` kundi variable. :mod:`ctypes` will
    create :term:`descriptor`\s which allow reading and writing the fields by direct
    attribute accesses.  These are the
 
@@ -2383,23 +2383,23 @@ other data types containing pointer type fields.
       Field names must be unique within one structure or union.  This is not
       checked, only one field can be accessed when names are repeated.
 
-      It is possible to define the :attr:`_fields_` class variable *after* the
-      class statement that defines the Structure subclass, this allows creating
+      It is possible to define the :attr:`_fields_` kundi variable *after* the
+      kundi statement that defines the Structure subclass, this allows creating
       data types that directly or indirectly reference themselves::
 
-         class List(Structure):
+         kundi List(Structure):
              pass
          List._fields_ = [("pnext", POINTER(List)),
                           ...
                          ]
 
-      The :attr:`_fields_` class variable must, however, be defined before the
+      The :attr:`_fields_` kundi variable must, however, be defined before the
       type is first used (an instance is created, :func:`sizeof` is called on it,
-      and so on).  Later assignments to the :attr:`_fields_` class variable will
+      and so on).  Later assignments to the :attr:`_fields_` kundi variable will
       raise an AttributeError.
 
       It is possible to define sub-subclasses of structure types, they inherit
-      the fields of the base class plus the :attr:`_fields_` defined in the
+      the fields of the base kundi plus the :attr:`_fields_` defined in the
       sub-subclass, if any.
 
 
@@ -2423,12 +2423,12 @@ other data types containing pointer type fields.
 
       Here is an example type (Windows)::
 
-         class _U(Union):
+         kundi _U(Union):
              _fields_ = [("lptdesc", POINTER(TYPEDESC)),
                          ("lpadesc", POINTER(ARRAYDESC)),
                          ("hreftype", HREFTYPE)]
 
-         class TYPEDESC(Structure):
+         kundi TYPEDESC(Structure):
              _anonymous_ = ("u",)
              _fields_ = [("u", _U),
                          ("vt", VARTYPE)]
@@ -2447,7 +2447,7 @@ other data types containing pointer type fields.
          td.u.lptdesc = POINTER(some_type)
 
    It is possible to define sub-subclasses of structures, they inherit the
-   fields of the base class.  If the subclass definition has a separate
+   fields of the base class.  If the subkundi definition has a separate
    :attr:`_fields_` variable, the fields specified in this are appended to the
    fields of the base class.
 
@@ -2466,11 +2466,11 @@ Arrays and pointers
 
 .. class:: Array(\*args)
 
-   Abstract base class for arrays.
+   Abstract base kundi for arrays.
 
    The recommended way to create concrete array types is by multiplying any
    :mod:`ctypes` data type with a positive integer.  Alternatively, you can subclass
-   this type and define :attr:`_length_` and :attr:`_type_` class variables.
+   this type and define :attr:`_length_` and :attr:`_type_` kundi variables.
    Array elements can be read and written using standard
    subscript and slice accesses; for slice reads, the resulting object is
    *not* itself an :class:`Array`.
@@ -2488,13 +2488,13 @@ Arrays and pointers
         Specifies the type of each element in the array.
 
 
-   Array subclass constructors accept positional arguments, used to
+   Array subkundi constructors accept positional arguments, used to
    initialize the elements in order.
 
 
 .. class:: _Pointer
 
-   Private, abstract base class for pointers.
+   Private, abstract base kundi for pointers.
 
    Concrete pointer types are created by calling :func:`POINTER` with the
    type that will be pointed to; this is done automatically by
@@ -2503,7 +2503,7 @@ Arrays and pointers
    If a pointer points to an array, its elements can be read and
    written using standard subscript and slice accesses.  Pointer objects
    have no size, so :func:`len` will raise :exc:`TypeError`.  Negative
-   subscripts will read from the memory *before* the pointer (as in C), and
+   subscripts will read kutoka the memory *before* the pointer (as in C), and
    out-of-range subscripts will probably crash with an access violation (if
    you're lucky).
 

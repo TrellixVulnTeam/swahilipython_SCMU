@@ -2,140 +2,140 @@ agiza types
 agiza unittest
 
 
-class Test(unittest.TestCase):
-    def test_init_subclass(self):
-        class A:
+kundi Test(unittest.TestCase):
+    eleza test_init_subclass(self):
+        kundi A:
             initialized = False
 
-            def __init_subclass__(cls):
+            eleza __init_subclass__(cls):
                 super().__init_subclass__()
                 cls.initialized = True
 
-        class B(A):
+        kundi B(A):
             pass
 
         self.assertFalse(A.initialized)
         self.assertTrue(B.initialized)
 
-    def test_init_subclass_dict(self):
-        class A(dict):
+    eleza test_init_subclass_dict(self):
+        kundi A(dict):
             initialized = False
 
-            def __init_subclass__(cls):
+            eleza __init_subclass__(cls):
                 super().__init_subclass__()
                 cls.initialized = True
 
-        class B(A):
+        kundi B(A):
             pass
 
         self.assertFalse(A.initialized)
         self.assertTrue(B.initialized)
 
-    def test_init_subclass_kwargs(self):
-        class A:
-            def __init_subclass__(cls, **kwargs):
+    eleza test_init_subclass_kwargs(self):
+        kundi A:
+            eleza __init_subclass__(cls, **kwargs):
                 cls.kwargs = kwargs
 
-        class B(A, x=3):
+        kundi B(A, x=3):
             pass
 
         self.assertEqual(B.kwargs, dict(x=3))
 
-    def test_init_subclass_error(self):
-        class A:
-            def __init_subclass__(cls):
+    eleza test_init_subclass_error(self):
+        kundi A:
+            eleza __init_subclass__(cls):
                 raise RuntimeError
 
         with self.assertRaises(RuntimeError):
-            class B(A):
+            kundi B(A):
                 pass
 
-    def test_init_subclass_wrong(self):
-        class A:
-            def __init_subclass__(cls, whatever):
+    eleza test_init_subclass_wrong(self):
+        kundi A:
+            eleza __init_subclass__(cls, whatever):
                 pass
 
         with self.assertRaises(TypeError):
-            class B(A):
+            kundi B(A):
                 pass
 
-    def test_init_subclass_skipped(self):
-        class BaseWithInit:
-            def __init_subclass__(cls, **kwargs):
+    eleza test_init_subclass_skipped(self):
+        kundi BaseWithInit:
+            eleza __init_subclass__(cls, **kwargs):
                 super().__init_subclass__(**kwargs)
                 cls.initialized = cls
 
-        class BaseWithoutInit(BaseWithInit):
+        kundi BaseWithoutInit(BaseWithInit):
             pass
 
-        class A(BaseWithoutInit):
+        kundi A(BaseWithoutInit):
             pass
 
         self.assertIs(A.initialized, A)
         self.assertIs(BaseWithoutInit.initialized, BaseWithoutInit)
 
-    def test_init_subclass_diamond(self):
-        class Base:
-            def __init_subclass__(cls, **kwargs):
+    eleza test_init_subclass_diamond(self):
+        kundi Base:
+            eleza __init_subclass__(cls, **kwargs):
                 super().__init_subclass__(**kwargs)
                 cls.calls = []
 
-        class Left(Base):
+        kundi Left(Base):
             pass
 
-        class Middle:
-            def __init_subclass__(cls, middle, **kwargs):
+        kundi Middle:
+            eleza __init_subclass__(cls, middle, **kwargs):
                 super().__init_subclass__(**kwargs)
                 cls.calls += [middle]
 
-        class Right(Base):
-            def __init_subclass__(cls, right="right", **kwargs):
+        kundi Right(Base):
+            eleza __init_subclass__(cls, right="right", **kwargs):
                 super().__init_subclass__(**kwargs)
                 cls.calls += [right]
 
-        class A(Left, Middle, Right, middle="middle"):
+        kundi A(Left, Middle, Right, middle="middle"):
             pass
 
         self.assertEqual(A.calls, ["right", "middle"])
         self.assertEqual(Left.calls, [])
         self.assertEqual(Right.calls, [])
 
-    def test_set_name(self):
-        class Descriptor:
-            def __set_name__(self, owner, name):
+    eleza test_set_name(self):
+        kundi Descriptor:
+            eleza __set_name__(self, owner, name):
                 self.owner = owner
                 self.name = name
 
-        class A:
+        kundi A:
             d = Descriptor()
 
         self.assertEqual(A.d.name, "d")
         self.assertIs(A.d.owner, A)
 
-    def test_set_name_metaclass(self):
-        class Meta(type):
-            def __new__(cls, name, bases, ns):
+    eleza test_set_name_metaclass(self):
+        kundi Meta(type):
+            eleza __new__(cls, name, bases, ns):
                 ret = super().__new__(cls, name, bases, ns)
                 self.assertEqual(ret.d.name, "d")
                 self.assertIs(ret.d.owner, ret)
-                return 0
+                rudisha 0
 
-        class Descriptor:
-            def __set_name__(self, owner, name):
+        kundi Descriptor:
+            eleza __set_name__(self, owner, name):
                 self.owner = owner
                 self.name = name
 
-        class A(metaclass=Meta):
+        kundi A(metaclass=Meta):
             d = Descriptor()
         self.assertEqual(A, 0)
 
-    def test_set_name_error(self):
-        class Descriptor:
-            def __set_name__(self, owner, name):
+    eleza test_set_name_error(self):
+        kundi Descriptor:
+            eleza __set_name__(self, owner, name):
                 1/0
 
         with self.assertRaises(RuntimeError) as cm:
-            class NotGoingToWork:
+            kundi NotGoingToWork:
                 attr = Descriptor()
 
         exc = cm.exception
@@ -144,13 +144,13 @@ class Test(unittest.TestCase):
         self.assertRegex(str(exc), r'\bDescriptor\b')
         self.assertIsInstance(exc.__cause__, ZeroDivisionError)
 
-    def test_set_name_wrong(self):
-        class Descriptor:
-            def __set_name__(self):
+    eleza test_set_name_wrong(self):
+        kundi Descriptor:
+            eleza __set_name__(self):
                 pass
 
         with self.assertRaises(RuntimeError) as cm:
-            class NotGoingToWork:
+            kundi NotGoingToWork:
                 attr = Descriptor()
 
         exc = cm.exception
@@ -159,37 +159,37 @@ class Test(unittest.TestCase):
         self.assertRegex(str(exc), r'\bDescriptor\b')
         self.assertIsInstance(exc.__cause__, TypeError)
 
-    def test_set_name_lookup(self):
+    eleza test_set_name_lookup(self):
         resolved = []
-        class NonDescriptor:
-            def __getattr__(self, name):
+        kundi NonDescriptor:
+            eleza __getattr__(self, name):
                 resolved.append(name)
 
-        class A:
+        kundi A:
             d = NonDescriptor()
 
         self.assertNotIn('__set_name__', resolved,
                          '__set_name__ is looked up in instance dict')
 
-    def test_set_name_init_subclass(self):
-        class Descriptor:
-            def __set_name__(self, owner, name):
+    eleza test_set_name_init_subclass(self):
+        kundi Descriptor:
+            eleza __set_name__(self, owner, name):
                 self.owner = owner
                 self.name = name
 
-        class Meta(type):
-            def __new__(cls, name, bases, ns):
+        kundi Meta(type):
+            eleza __new__(cls, name, bases, ns):
                 self = super().__new__(cls, name, bases, ns)
                 self.meta_owner = self.owner
                 self.meta_name = self.name
-                return self
+                rudisha self
 
-        class A:
-            def __init_subclass__(cls):
+        kundi A:
+            eleza __init_subclass__(cls):
                 cls.owner = cls.d.owner
                 cls.name = cls.d.name
 
-        class B(A, metaclass=Meta):
+        kundi B(A, metaclass=Meta):
             d = Descriptor()
 
         self.assertIs(B.owner, B)
@@ -197,14 +197,14 @@ class Test(unittest.TestCase):
         self.assertIs(B.meta_owner, B)
         self.assertEqual(B.name, 'd')
 
-    def test_set_name_modifying_dict(self):
+    eleza test_set_name_modifying_dict(self):
         notified = []
-        class Descriptor:
-            def __set_name__(self, owner, name):
+        kundi Descriptor:
+            eleza __set_name__(self, owner, name):
                 setattr(owner, name + 'x', None)
                 notified.append(name)
 
-        class A:
+        kundi A:
             a = Descriptor()
             b = Descriptor()
             c = Descriptor()
@@ -213,12 +213,12 @@ class Test(unittest.TestCase):
 
         self.assertCountEqual(notified, ['a', 'b', 'c', 'd', 'e'])
 
-    def test_errors(self):
-        class MyMeta(type):
+    eleza test_errors(self):
+        kundi MyMeta(type):
             pass
 
         with self.assertRaises(TypeError):
-            class MyClass(metaclass=MyMeta, otherarg=1):
+            kundi MyClass(metaclass=MyMeta, otherarg=1):
                 pass
 
         with self.assertRaises(TypeError):
@@ -227,50 +227,50 @@ class Test(unittest.TestCase):
         types.prepare_class("MyClass", (object,),
                             dict(metaclass=MyMeta, otherarg=1))
 
-        class MyMeta(type):
-            def __init__(self, name, bases, namespace, otherarg):
+        kundi MyMeta(type):
+            eleza __init__(self, name, bases, namespace, otherarg):
                 super().__init__(name, bases, namespace)
 
         with self.assertRaises(TypeError):
-            class MyClass(metaclass=MyMeta, otherarg=1):
+            kundi MyClass(metaclass=MyMeta, otherarg=1):
                 pass
 
-        class MyMeta(type):
-            def __new__(cls, name, bases, namespace, otherarg):
-                return super().__new__(cls, name, bases, namespace)
+        kundi MyMeta(type):
+            eleza __new__(cls, name, bases, namespace, otherarg):
+                rudisha super().__new__(cls, name, bases, namespace)
 
-            def __init__(self, name, bases, namespace, otherarg):
+            eleza __init__(self, name, bases, namespace, otherarg):
                 super().__init__(name, bases, namespace)
                 self.otherarg = otherarg
 
-        class MyClass(metaclass=MyMeta, otherarg=1):
+        kundi MyClass(metaclass=MyMeta, otherarg=1):
             pass
 
         self.assertEqual(MyClass.otherarg, 1)
 
-    def test_errors_changed_pep487(self):
+    eleza test_errors_changed_pep487(self):
         # These tests failed before Python 3.6, PEP 487
-        class MyMeta(type):
-            def __new__(cls, name, bases, namespace):
-                return super().__new__(cls, name=name, bases=bases,
+        kundi MyMeta(type):
+            eleza __new__(cls, name, bases, namespace):
+                rudisha super().__new__(cls, name=name, bases=bases,
                                        dict=namespace)
 
         with self.assertRaises(TypeError):
-            class MyClass(metaclass=MyMeta):
+            kundi MyClass(metaclass=MyMeta):
                 pass
 
-        class MyMeta(type):
-            def __new__(cls, name, bases, namespace, otherarg):
+        kundi MyMeta(type):
+            eleza __new__(cls, name, bases, namespace, otherarg):
                 self = super().__new__(cls, name, bases, namespace)
                 self.otherarg = otherarg
-                return self
+                rudisha self
 
-        class MyClass(metaclass=MyMeta, otherarg=1):
+        kundi MyClass(metaclass=MyMeta, otherarg=1):
             pass
 
         self.assertEqual(MyClass.otherarg, 1)
 
-    def test_type(self):
+    eleza test_type(self):
         t = type('NewClass', (object,), {})
         self.assertIsInstance(t, type)
         self.assertEqual(t.__name__, 'NewClass')
@@ -279,5 +279,5 @@ class Test(unittest.TestCase):
             type(name='NewClass', bases=(object,), dict={})
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

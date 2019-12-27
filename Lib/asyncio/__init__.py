@@ -37,7 +37,7 @@ __all__ = (base_events.__all__ +
            tasks.__all__ +
            transports.__all__)
 
-if sys.platform == 'win32':  # pragma: no cover
+ikiwa sys.platform == 'win32':  # pragma: no cover
     kutoka .windows_events agiza *
     __all__ += windows_events.__all__
 else:

@@ -12,12 +12,12 @@ kutoka datetime agiza date as datetime_date
 
 agiza _strptime
 
-class getlang_Tests(unittest.TestCase):
+kundi getlang_Tests(unittest.TestCase):
     """Test _getlang"""
-    def test_basic(self):
+    eleza test_basic(self):
         self.assertEqual(_strptime._getlang(), locale.getlocale(locale.LC_TIME))
 
-class LocaleTime_Tests(unittest.TestCase):
+kundi LocaleTime_Tests(unittest.TestCase):
     """Tests for _strptime.LocaleTime.
 
     All values are lower-cased when stored in LocaleTime, so make sure to
@@ -25,12 +25,12 @@ class LocaleTime_Tests(unittest.TestCase):
 
     """
 
-    def setUp(self):
+    eleza setUp(self):
         """Create time tuple based on current time."""
         self.time_tuple = time.localtime()
         self.LT_ins = _strptime.LocaleTime()
 
-    def compare_against_time(self, testing, directive, tuple_position,
+    eleza compare_against_time(self, testing, directive, tuple_position,
                              error_msg):
         """Helper method that tests testing against directive based on the
         tuple_position of time_tuple.  Uses error_msg as error message.
@@ -44,7 +44,7 @@ class LocaleTime_Tests(unittest.TestCase):
                          "%s: position within tuple incorrect; %s != %s" %
                          (error_msg, comparison, strftime_output))
 
-    def test_weekday(self):
+    eleza test_weekday(self):
         # Make sure that full and abbreviated weekday names are correct in
         # both string and position with tuple
         self.compare_against_time(self.LT_ins.f_weekday, '%A', 6,
@@ -52,7 +52,7 @@ class LocaleTime_Tests(unittest.TestCase):
         self.compare_against_time(self.LT_ins.a_weekday, '%a', 6,
                                   "Testing of abbreviated weekday name failed")
 
-    def test_month(self):
+    eleza test_month(self):
         # Test full and abbreviated month names; both string and position
         # within the tuple
         self.compare_against_time(self.LT_ins.f_month, '%B', 1,
@@ -60,26 +60,26 @@ class LocaleTime_Tests(unittest.TestCase):
         self.compare_against_time(self.LT_ins.a_month, '%b', 1,
                                   "Testing against abbreviated month name failed")
 
-    def test_am_pm(self):
+    eleza test_am_pm(self):
         # Make sure AM/PM representation done properly
         strftime_output = time.strftime("%p", self.time_tuple).lower()
         self.assertIn(strftime_output, self.LT_ins.am_pm,
                       "AM/PM representation not in tuple")
-        if self.time_tuple[3] < 12: position = 0
+        ikiwa self.time_tuple[3] < 12: position = 0
         else: position = 1
         self.assertEqual(self.LT_ins.am_pm[position], strftime_output,
                          "AM/PM representation in the wrong position within the tuple")
 
-    def test_timezone(self):
+    eleza test_timezone(self):
         # Make sure timezone is correct
         timezone = time.strftime("%Z", self.time_tuple).lower()
-        if timezone:
+        ikiwa timezone:
             self.assertTrue(timezone in self.LT_ins.timezone[0] or
                             timezone in self.LT_ins.timezone[1],
                             "timezone %s not found in %s" %
                             (timezone, self.LT_ins.timezone))
 
-    def test_date_time(self):
+    eleza test_date_time(self):
         # Check that LC_date_time, LC_date, and LC_time are correct
         # the magic date is used so as to not have issues with %c when day of
         #  the month is a single digit and has a leading space.  This is not an
@@ -101,21 +101,21 @@ class LocaleTime_Tests(unittest.TestCase):
         self.assertTrue(LT.LC_time, "LocaleTime's LC directives cannot handle "
                                     "empty strings")
 
-    def test_lang(self):
+    eleza test_lang(self):
         # Make sure lang is set to what _getlang() returns
         # Assuming locale has not changed between now and when self.LT_ins was created
         self.assertEqual(self.LT_ins.lang, _strptime._getlang())
 
 
-class TimeRETests(unittest.TestCase):
+kundi TimeRETests(unittest.TestCase):
     """Tests for TimeRE."""
 
-    def setUp(self):
+    eleza setUp(self):
         """Construct generic TimeRE object."""
         self.time_re = _strptime.TimeRE()
         self.locale_time = _strptime.LocaleTime()
 
-    def test_pattern(self):
+    eleza test_pattern(self):
         # Test TimeRE.pattern
         pattern_string = self.time_re.pattern(r"%a %A %d")
         self.assertTrue(pattern_string.find(self.locale_time.a_weekday[2]) != -1,
@@ -128,7 +128,7 @@ class TimeRETests(unittest.TestCase):
                         "did not find 'd' directive pattern string '%s'" %
                          pattern_string)
 
-    def test_pattern_escaping(self):
+    eleza test_pattern_escaping(self):
         # Make sure any characters in the format string that might be taken as
         # regex syntax is escaped.
         pattern_string = self.time_re.pattern(r"\d+")
@@ -137,7 +137,7 @@ class TimeRETests(unittest.TestCase):
                       pattern_string)
 
     @skip_if_buggy_ucrt_strfptime
-    def test_compile(self):
+    eleza test_compile(self):
         # Check that compiled regex is correct
         found = self.time_re.compile(r"%A").match(self.locale_time.f_weekday[6])
         self.assertTrue(found and found.group('A') == self.locale_time.f_weekday[6],
@@ -163,7 +163,7 @@ class TimeRETests(unittest.TestCase):
                                     (time.strftime("%" + directive),
                                      compiled.pattern))
 
-    def test_blankpattern(self):
+    eleza test_blankpattern(self):
         # Make sure when tuple or something has no values no regex is generated.
         # Fixes bug #661354
         test_locale = _strptime.LocaleTime()
@@ -171,14 +171,14 @@ class TimeRETests(unittest.TestCase):
         self.assertEqual(_strptime.TimeRE(test_locale).pattern("%Z"), '',
                          "with timezone == ('',''), TimeRE().pattern('%Z') != ''")
 
-    def test_matching_with_escapes(self):
+    eleza test_matching_with_escapes(self):
         # Make sure a format that requires escaping of characters works
         compiled_re = self.time_re.compile(r"\w+ %m")
         found = compiled_re.match(r"\w+ 10")
         self.assertTrue(found, r"Escaping failed of format '\w+ 10'")
 
-    def test_locale_data_w_regex_metacharacters(self):
-        # Check that if locale data contains regex metacharacters they are
+    eleza test_locale_data_w_regex_metacharacters(self):
+        # Check that ikiwa locale data contains regex metacharacters they are
         # escaped properly.
         # Discovered by bug #1039270 .
         locale_time = _strptime.LocaleTime()
@@ -190,7 +190,7 @@ class TimeRETests(unittest.TestCase):
                         "locale data that contains regex metacharacters is not"
                         " properly escaped")
 
-    def test_whitespace_substitution(self):
+    eleza test_whitespace_substitution(self):
         # When pattern contains whitespace, make sure it is taken into account
         # so as to not allow subpatterns to end up next to each other and
         # "steal" characters kutoka each other.
@@ -199,14 +199,14 @@ class TimeRETests(unittest.TestCase):
         self.assertTrue(re.match(pattern, "18 0"))
 
 
-class StrptimeTests(unittest.TestCase):
+kundi StrptimeTests(unittest.TestCase):
     """Tests for _strptime.strptime."""
 
-    def setUp(self):
+    eleza setUp(self):
         """Create testing time tuple."""
         self.time_tuple = time.gmtime()
 
-    def test_ValueError(self):
+    eleza test_ValueError(self):
         # Make sure ValueError is raised when match fails or format is bad
         self.assertRaises(ValueError, _strptime._strptime_time, data_string="%d",
                           format="%A")
@@ -241,7 +241,7 @@ class StrptimeTests(unittest.TestCase):
             _strptime._strptime("1999 256", "%G %j")
 
 
-    def test_strptime_exception_context(self):
+    eleza test_strptime_exception_context(self):
         # check that this doesn't chain exceptions needlessly (see #17572)
         with self.assertRaises(ValueError) as e:
             _strptime._strptime_time('', '%D')
@@ -251,11 +251,11 @@ class StrptimeTests(unittest.TestCase):
             _strptime._strptime_time('19', '%Y %')
         self.assertIs(e.exception.__suppress_context__, True)
 
-    def test_unconverteddata(self):
+    eleza test_unconverteddata(self):
         # Check ValueError is raised when there is unconverted data
         self.assertRaises(ValueError, _strptime._strptime_time, "10 12", "%m")
 
-    def helper(self, directive, position):
+    eleza helper(self, directive, position):
         """Helper fxn in testing."""
         strf_output = time.strftime("%" + directive, self.time_tuple)
         strp_output = _strptime._strptime_time(strf_output, "%" + directive)
@@ -264,7 +264,7 @@ class StrptimeTests(unittest.TestCase):
                          (directive, strf_output, strp_output[position],
                           self.time_tuple[position]))
 
-    def test_year(self):
+    eleza test_year(self):
         # Test that the year is handled properly
         for directive in ('y', 'Y'):
             self.helper(directive, 0)
@@ -277,16 +277,16 @@ class StrptimeTests(unittest.TestCase):
                                 "'y' test failed; passed in '%s' "
                                 "and returned '%s'" % (bound, strp_output[0]))
 
-    def test_month(self):
+    eleza test_month(self):
         # Test for month directives
         for directive in ('B', 'b', 'm'):
             self.helper(directive, 1)
 
-    def test_day(self):
+    eleza test_day(self):
         # Test for day directives
         self.helper('d', 2)
 
-    def test_hour(self):
+    eleza test_hour(self):
         # Test hour directives
         self.helper('H', 3)
         strf_output = time.strftime("%I %p", self.time_tuple)
@@ -295,31 +295,31 @@ class StrptimeTests(unittest.TestCase):
                         "testing of '%%I %%p' directive failed; '%s' -> %s != %s" %
                          (strf_output, strp_output[3], self.time_tuple[3]))
 
-    def test_minute(self):
+    eleza test_minute(self):
         # Test minute directives
         self.helper('M', 4)
 
-    def test_second(self):
+    eleza test_second(self):
         # Test second directives
         self.helper('S', 5)
 
-    def test_fraction(self):
+    eleza test_fraction(self):
         # Test microseconds
         agiza datetime
         d = datetime.datetime(2012, 12, 20, 12, 34, 56, 78987)
         tup, frac, _ = _strptime._strptime(str(d), format="%Y-%m-%d %H:%M:%S.%f")
         self.assertEqual(frac, d.microsecond)
 
-    def test_weekday(self):
+    eleza test_weekday(self):
         # Test weekday directives
         for directive in ('A', 'a', 'w', 'u'):
             self.helper(directive,6)
 
-    def test_julian(self):
+    eleza test_julian(self):
         # Test julian directives
         self.helper('j', 7)
 
-    def test_offset(self):
+    eleza test_offset(self):
         one_hour = 60 * 60
         half_hour = 30 * 60
         half_minute = 30
@@ -354,7 +354,7 @@ class StrptimeTests(unittest.TestCase):
         self.assertEqual(offset, 0)
         self.assertEqual(offset_fraction, 0)
 
-    def test_bad_offset(self):
+    eleza test_bad_offset(self):
         with self.assertRaises(ValueError):
             _strptime._strptime("-01:30:30.", "%z")
         with self.assertRaises(ValueError):
@@ -368,7 +368,7 @@ class StrptimeTests(unittest.TestCase):
         self.assertEqual("Inconsistent use of : in -01:3030", str(err.exception))
 
     @skip_if_buggy_ucrt_strfptime
-    def test_timezone(self):
+    eleza test_timezone(self):
         # Test timezone directives.
         # When gmtime() is used with %Z, entire result of strftime() is empty.
         # Check for equal timezone names deals with bad locale info when this
@@ -381,7 +381,7 @@ class StrptimeTests(unittest.TestCase):
         strf_output = time.strftime("%Z")  #UTC does not have a timezone
         strp_output = _strptime._strptime_time(strf_output, "%Z")
         locale_time = _strptime.LocaleTime()
-        if time.tzname[0] != time.tzname[1] or not time.daylight:
+        ikiwa time.tzname[0] != time.tzname[1] or not time.daylight:
             self.assertTrue(strp_output[8] == time_tuple[8],
                             "timezone check failed; '%s' -> %s != %s" %
                              (strf_output, strp_output[8], time_tuple[8]))
@@ -390,11 +390,11 @@ class StrptimeTests(unittest.TestCase):
                             "LocaleTime().timezone has duplicate values and "
                              "time.daylight but timezone value not set to -1")
 
-    def test_bad_timezone(self):
+    eleza test_bad_timezone(self):
         # Explicitly test possibility of bad timezone;
         # when time.tzname[0] == time.tzname[1] and time.daylight
         tz_name = time.tzname[0]
-        if tz_name.upper() in ("UTC", "GMT"):
+        ikiwa tz_name.upper() in ("UTC", "GMT"):
             self.skipTest('need non-UTC/GMT timezone')
 
         with support.swap_attr(time, 'tzname', (tz_name, tz_name)), \
@@ -408,22 +408,22 @@ class StrptimeTests(unittest.TestCase):
                     "time.daylight set to %s and passing in %s" %
                     (time.tzname, tz_value, time.daylight, tz_name))
 
-    def test_date_time(self):
+    eleza test_date_time(self):
         # Test %c directive
         for position in range(6):
             self.helper('c', position)
 
-    def test_date(self):
+    eleza test_date(self):
         # Test %x directive
         for position in range(0,3):
             self.helper('x', position)
 
-    def test_time(self):
+    eleza test_time(self):
         # Test %X directive
         for position in range(3,6):
             self.helper('X', position)
 
-    def test_percent(self):
+    eleza test_percent(self):
         # Make sure % signs are handled properly
         strf_output = time.strftime("%m %% %Y", self.time_tuple)
         strp_output = _strptime._strptime_time(strf_output, "%m %% %Y")
@@ -431,7 +431,7 @@ class StrptimeTests(unittest.TestCase):
                          strp_output[1] == self.time_tuple[1],
                         "handling of percent sign failed")
 
-    def test_caseinsensitive(self):
+    eleza test_caseinsensitive(self):
         # Should handle names case-insensitively.
         strf_output = time.strftime("%B", self.time_tuple)
         self.assertTrue(_strptime._strptime_time(strf_output.upper(), "%B"),
@@ -441,35 +441,35 @@ class StrptimeTests(unittest.TestCase):
         self.assertTrue(_strptime._strptime_time(strf_output.capitalize(), "%B"),
                         "strptime does not handle capword names properly")
 
-    def test_defaults(self):
-        # Default return value should be (1900, 1, 1, 0, 0, 0, 0, 1, 0)
+    eleza test_defaults(self):
+        # Default rudisha value should be (1900, 1, 1, 0, 0, 0, 0, 1, 0)
         defaults = (1900, 1, 1, 0, 0, 0, 0, 1, -1)
         strp_output = _strptime._strptime_time('1', '%m')
         self.assertTrue(strp_output == defaults,
                         "Default values for strptime() are incorrect;"
                         " %s != %s" % (strp_output, defaults))
 
-    def test_escaping(self):
+    eleza test_escaping(self):
         # Make sure all characters that have regex significance are escaped.
         # Parentheses are in a purposeful order; will cause an error of
-        # unbalanced parentheses when the regex is compiled if they are not
+        # unbalanced parentheses when the regex is compiled ikiwa they are not
         # escaped.
         # Test instigated by bug #796149 .
         need_escaping = r".^$*+?{}\[]|)("
         self.assertTrue(_strptime._strptime_time(need_escaping, need_escaping))
 
-    def test_feb29_on_leap_year_without_year(self):
+    eleza test_feb29_on_leap_year_without_year(self):
         time.strptime("Feb 29", "%b %d")
 
-    def test_mar1_comes_after_feb29_even_when_omitting_the_year(self):
+    eleza test_mar1_comes_after_feb29_even_when_omitting_the_year(self):
         self.assertLess(
                 time.strptime("Feb 29", "%b %d"),
                 time.strptime("Mar 1", "%b %d"))
 
-class Strptime12AMPMTests(unittest.TestCase):
+kundi Strptime12AMPMTests(unittest.TestCase):
     """Test a _strptime regression in '%I %p' at 12 noon (12 PM)"""
 
-    def test_twelve_noon_midnight(self):
+    eleza test_twelve_noon_midnight(self):
         eq = self.assertEqual
         eq(time.strptime('12 PM', '%I %p')[3], 12)
         eq(time.strptime('12 AM', '%I %p')[3], 0)
@@ -477,23 +477,23 @@ class Strptime12AMPMTests(unittest.TestCase):
         eq(_strptime._strptime_time('12 AM', '%I %p')[3], 0)
 
 
-class JulianTests(unittest.TestCase):
+kundi JulianTests(unittest.TestCase):
     """Test a _strptime regression that all julian (1-366) are accepted"""
 
-    def test_all_julian_days(self):
+    eleza test_all_julian_days(self):
         eq = self.assertEqual
         for i in range(1, 367):
             # use 2004, since it is a leap year, we have 366 days
             eq(_strptime._strptime_time('%d 2004' % i, '%j %Y')[7], i)
 
-class CalculationTests(unittest.TestCase):
+kundi CalculationTests(unittest.TestCase):
     """Test that strptime() fills in missing info correctly"""
 
-    def setUp(self):
+    eleza setUp(self):
         self.time_tuple = time.gmtime()
 
     @skip_if_buggy_ucrt_strfptime
-    def test_julian_calculation(self):
+    eleza test_julian_calculation(self):
         # Make sure that when Julian is missing that it is calculated
         format_string = "%Y %m %d %H %M %S %w %Z"
         result = _strptime._strptime_time(time.strftime(format_string, self.time_tuple),
@@ -503,7 +503,7 @@ class CalculationTests(unittest.TestCase):
                          (result.tm_yday, self.time_tuple.tm_yday))
 
     @skip_if_buggy_ucrt_strfptime
-    def test_gregorian_calculation(self):
+    eleza test_gregorian_calculation(self):
         # Test that Gregorian date can be calculated kutoka Julian day
         format_string = "%Y %H %M %S %w %j %Z"
         result = _strptime._strptime_time(time.strftime(format_string, self.time_tuple),
@@ -518,7 +518,7 @@ class CalculationTests(unittest.TestCase):
                           self.time_tuple.tm_mday))
 
     @skip_if_buggy_ucrt_strfptime
-    def test_day_of_week_calculation(self):
+    eleza test_day_of_week_calculation(self):
         # Test that the day of the week is calculated as needed
         format_string = "%Y %m %d %H %S %j %Z"
         result = _strptime._strptime_time(time.strftime(format_string, self.time_tuple),
@@ -527,7 +527,7 @@ class CalculationTests(unittest.TestCase):
                         "Calculation of day of the week failed; "
                          "%s != %s" % (result.tm_wday, self.time_tuple.tm_wday))
 
-    if support.is_android:
+    ikiwa support.is_android:
         # Issue #26929: strftime() on Android incorrectly formats %V or %G for
         # the last or the first incomplete week in a year.
         _ymd_excluded = ((1905, 1, 1), (1906, 12, 31), (2008, 12, 29),
@@ -539,12 +539,12 @@ class CalculationTests(unittest.TestCase):
 
     @unittest.skipIf(sys.platform.startswith('aix'),
                      'bpo-29972: broken test on AIX')
-    def test_week_of_year_and_day_of_week_calculation(self):
-        # Should be able to infer date if given year, week of year (%U or %W)
+    eleza test_week_of_year_and_day_of_week_calculation(self):
+        # Should be able to infer date ikiwa given year, week of year (%U or %W)
         # and day of the week
-        def test_helper(ymd_tuple, test_reason):
+        eleza test_helper(ymd_tuple, test_reason):
             for year_week_format in ('%Y %W', '%Y %U', '%G %V'):
-                if (year_week_format in self._formats_excluded and
+                ikiwa (year_week_format in self._formats_excluded and
                         ymd_tuple in self._ymd_excluded):
                     return
                 for weekday_format in ('%w', '%u', '%a', '%A'):
@@ -586,8 +586,8 @@ class CalculationTests(unittest.TestCase):
         test_helper((2006, 12, 31), "Last Sunday of 2006")
         test_helper((2006, 12, 24), "Second to last Sunday of 2006")
 
-    def test_week_0(self):
-        def check(value, format, *expected):
+    eleza test_week_0(self):
+        eleza check(value, format, *expected):
             self.assertEqual(_strptime._strptime_time(value, format)[:-1], expected)
         check('2015 0 0', '%Y %U %w', 2014, 12, 28, 0, 0, 0, 6, 362)
         check('2015 0 0', '%Y %W %w', 2015, 1, 4, 0, 0, 0, 6, 4)
@@ -634,10 +634,10 @@ class CalculationTests(unittest.TestCase):
         check('2009 1 7', '%G %V %u', 2009, 1, 4, 0, 0, 0, 6, 4)
 
 
-class CacheTests(unittest.TestCase):
+kundi CacheTests(unittest.TestCase):
     """Test that caching works properly."""
 
-    def test_time_re_recreation(self):
+    eleza test_time_re_recreation(self):
         # Make sure cache is recreated when current locale does not match what
         # cached object was created with.
         _strptime._strptime_time("10", "%d")
@@ -648,7 +648,7 @@ class CacheTests(unittest.TestCase):
         self.assertIsNot(original_time_re, _strptime._TimeRE_cache)
         self.assertEqual(len(_strptime._regex_cache), 1)
 
-    def test_regex_cleanup(self):
+    eleza test_regex_cleanup(self):
         # Make sure cached regexes are discarded when cache becomes "full".
         try:
             del _strptime._regex_cache['%d']
@@ -661,7 +661,7 @@ class CacheTests(unittest.TestCase):
         _strptime._strptime_time("10", "%d")
         self.assertEqual(len(_strptime._regex_cache), 1)
 
-    def test_new_localetime(self):
+    eleza test_new_localetime(self):
         # A new LocaleTime instance should be created when a new TimeRE object
         # is created.
         locale_time_id = _strptime._TimeRE_cache.locale_time
@@ -669,7 +669,7 @@ class CacheTests(unittest.TestCase):
         _strptime._strptime_time("10", "%d")
         self.assertIsNot(locale_time_id, _strptime._TimeRE_cache.locale_time)
 
-    def test_TimeRE_recreation_locale(self):
+    eleza test_TimeRE_recreation_locale(self):
         # The TimeRE instance should be recreated upon changing the locale.
         locale_info = locale.getlocale(locale.LC_TIME)
         try:
@@ -699,7 +699,7 @@ class CacheTests(unittest.TestCase):
             locale.setlocale(locale.LC_TIME, locale_info)
 
     @support.run_with_tz('STD-1DST,M4.1.0,M10.1.0')
-    def test_TimeRE_recreation_timezone(self):
+    eleza test_TimeRE_recreation_timezone(self):
         # The TimeRE instance should be recreated upon changing the timezone.
         oldtzname = time.tzname
         tm = _strptime._strptime_time(time.tzname[0], '%Z')
@@ -726,5 +726,5 @@ class CacheTests(unittest.TestCase):
             _strptime._strptime_time(oldtzname[1], '%Z')
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

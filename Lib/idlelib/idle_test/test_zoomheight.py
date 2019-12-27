@@ -8,17 +8,17 @@ kutoka tkinter agiza Tk
 kutoka idlelib.editor agiza EditorWindow
 
 
-class Test(unittest.TestCase):
+kundi Test(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
         cls.editwin = EditorWindow(root=cls.root)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         cls.editwin._close()
         cls.root.update_idletasks()
         for id in cls.root.tk.call('after', 'info'):
@@ -26,14 +26,14 @@ class Test(unittest.TestCase):
         cls.root.destroy()
         del cls.root
 
-    def test_init(self):
+    eleza test_init(self):
         zoom = zoomheight.ZoomHeight(self.editwin)
         self.assertIs(zoom.editwin, self.editwin)
 
-    def test_zoom_height_event(self):
+    eleza test_zoom_height_event(self):
         zoom = zoomheight.ZoomHeight(self.editwin)
         zoom.zoom_height_event()
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

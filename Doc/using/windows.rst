@@ -123,7 +123,7 @@ After changing the above option, no further configuration is required.
 Installing Without UI
 ---------------------
 
-All of the options available in the installer UI can also be specified from the
+All of the options available in the installer UI can also be specified kutoka the
 command line, allowing scripted installers to replicate an installation on many
 machines without user interaction.  These options may also be set without
 suppressing the UI in order to change some of the defaults.
@@ -212,7 +212,7 @@ of available options is shown below.
 +---------------------------+--------------------------------------+--------------------------+
 
 For example, to silently install a default, system-wide Python installation,
-you could use the following command (from an elevated command prompt)::
+you could use the following command (kutoka an elevated command prompt)::
 
     python-3.8.0.exe /quiet InstallAllUsers=1 PrependPath=1 Include_test=0
 
@@ -256,7 +256,7 @@ selected features. Note that this download may be bigger than required, but
 where a large number of installations are going to be performed it is very
 useful to have a locally cached copy.
 
-Execute the following command from Command Prompt to download all possible
+Execute the following command kutoka Command Prompt to download all possible
 required files.  Remember to substitute ``python-3.8.0.exe`` for the actual
 name of your installer, and to create layouts in their own directories to
 avoid collisions between files with the same name.
@@ -305,7 +305,7 @@ you select is published by the Python Software Foundation, and install it.
    are asked to pay for it, you have not selected the correct package.
 
 After installation, Python may be launched by finding it in Start.
-Alternatively, it will be available from any Command Prompt or PowerShell
+Alternatively, it will be available kutoka any Command Prompt or PowerShell
 session by typing ``python``. Further, pip and IDLE may be used by typing
 ``pip`` or ``idle``. IDLE can also be found in Start.
 
@@ -322,7 +322,7 @@ and used as normal.
 
 If you have installed another version of Python and added it to your
 ``PATH`` variable, it will be available as ``python.exe`` rather than the
-one from the Microsoft Store. To access the new installation, use
+one kutoka the Microsoft Store. To access the new installation, use
 ``python3.exe`` or ``python3.x.exe``.
 
 To remove Python, open Settings and use Apps and Features, or else find
@@ -334,7 +334,7 @@ Known Issues
 ------------
 
 Currently, the ``py.exe`` launcher cannot be used to start Python when it
-has been installed from the Microsoft Store.
+has been installed kutoka the Microsoft Store.
 
 Because of restrictions on Microsoft Store apps, Python scripts may not have
 full write access to shared locations such as ``TEMP`` and the registry.
@@ -358,7 +358,7 @@ Visit `nuget.org <https://www.nuget.org/>`_ for the most up-to-date information
 on using nuget. What follows is a summary that is sufficient for Python
 developers.
 
-The ``nuget.exe`` command line tool may be downloaded directly from
+The ``nuget.exe`` command line tool may be downloaded directly kutoka
 ``https://aka.ms/nugetclidl``, for example, using curl or PowerShell. With the
 tool, the latest version of Python for 64-bit or 32-bit machines is installed
 using::
@@ -367,7 +367,7 @@ using::
    nuget.exe install pythonx86 -ExcludeVersion -OutputDirectory .
 
 To select a particular version, add a ``-Version 3.x.y``. The output directory
-may be changed from ``.``, and the package will be installed into a
+may be changed kutoka ``.``, and the package will be installed into a
 subdirectory. By default, the subdirectory is named the same as the package,
 and without the ``-ExcludeVersion`` option this name will include the specific
 version installed. Inside the subdirectory is a ``tools`` directory that
@@ -389,7 +389,7 @@ will do this automatically if they do not preserve files between builds.
 Alongside the ``tools`` directory is a ``build\native`` directory. This
 contains a MSBuild properties file ``python.props`` that can be used in a
 C++ project to reference the Python install. Including the settings will
-automatically use the headers and import libraries in your build.
+automatically use the headers and agiza libraries in your build.
 
 The package information pages on nuget.org are
 `www.nuget.org/packages/python <https://www.nuget.org/packages/python>`_
@@ -408,7 +408,7 @@ The embedded distribution is a ZIP file containing a minimal Python environment.
 It is intended for acting as part of another application, rather than being
 directly accessed by end-users.
 
-When extracted, the embedded distribution is (almost) fully isolated from the
+When extracted, the embedded distribution is (almost) fully isolated kutoka the
 user's system, including environment variables, system registry settings, and
 installed packages. The standard library is included as pre-compiled and
 optimized ``.pyc`` files in a ZIP, and ``python3.dll``, ``python37.dll``,
@@ -453,7 +453,7 @@ able to call ``Py_Main`` with a hard-coded command line.
 The simpler approach is to provide a batch file or generated shortcut that
 directly calls the ``python.exe`` or ``pythonw.exe`` with the required
 command-line arguments. In this case, the application will appear to be Python
-and not its actual name, and users may have trouble distinguishing it from other
+and not its actual name, and users may have trouble distinguishing it kutoka other
 running Python processes or file associations.
 
 With the latter approach, packages should be installed as directories alongside
@@ -507,7 +507,7 @@ other libraries, and are not maintained or supported by the core Python team.
 Configuring Python
 ==================
 
-To run Python conveniently from a command prompt, you might consider changing
+To run Python conveniently kutoka a command prompt, you might consider changing
 some default environment variables in Windows.  While the installer provides an
 option to configure the PATH and PATHEXT variables for you, this is only
 reliable for a single, system-wide installation.  If you regularly use multiple
@@ -532,7 +532,7 @@ To temporarily set environment variables, open Command Prompt and use the
     C:\>python
 
 These changes will apply to any further commands executed in that console, and
-will be inherited by any applications started from the console.
+will be inherited by any applications started kutoka the console.
 
 Including the variable name within percent signs will expand to the existing
 value, allowing you to add your new value at either the start or the end.
@@ -596,7 +596,7 @@ If you don't enable this option at install time, you can always re-run the
 installer, select Modify, and enable it.  Alternatively, you can manually
 modify the :envvar:`PATH` using the directions in :ref:`setting-envvars`.  You
 need to set your :envvar:`PATH` environment variable to include the directory
-of your Python installation, delimited by a semicolon from other entries.  An
+of your Python installation, delimited by a semicolon kutoka other entries.  An
 example variable could look like this (assuming the first two entries already
 existed)::
 
@@ -690,8 +690,8 @@ following contents
 .. code-block:: python
 
     #! python
-    import sys
-    sys.stdout.write("hello from Python %s\n" % (sys.version,))
+    agiza sys
+    sys.stdout.write("hello kutoka Python %s\n" % (sys.version,))
 
 From the directory in which hello.py lives, execute the command:
 
@@ -722,7 +722,7 @@ From file associations
 
 The launcher should have been associated with Python files (i.e. ``.py``,
 ``.pyw``, ``.pyc`` files) when it was installed.  This means that
-when you double-click on one of these files from Windows explorer the launcher
+when you double-click on one of these files kutoka Windows explorer the launcher
 will be used, and therefore you can use the same facilities described above to
 have the script specify the version which should be used.
 
@@ -920,13 +920,13 @@ restricted for any program loading the runtime if desired.
 
 When the file exists, all registry and environment variables are ignored,
 isolated mode is enabled, and :mod:`site` is not imported unless one line in the
-file specifies ``import site``. Blank paths and lines starting with ``#`` are
+file specifies ``agiza site``. Blank paths and lines starting with ``#`` are
 ignored. Each path may be absolute or relative to the location of the file.
 Import statements other than to ``site`` are not permitted, and arbitrary code
 cannot be specified.
 
 Note that ``.pth`` files (without leading underscore) will be processed normally
-by the :mod:`site` module when ``import site`` has been specified.
+by the :mod:`site` module when ``agiza site`` has been specified.
 
 When no ``._pth`` file is found, this is how :data:`sys.path` is populated on
 Windows:
@@ -937,7 +937,7 @@ Windows:
 * If the environment variable :envvar:`PYTHONPATH` exists, as described in
   :ref:`using-on-envvars`, its entries are added next.  Note that on Windows,
   paths in this variable must be separated by semicolons, to distinguish them
-  from the colon used in drive identifiers (``C:\`` etc.).
+  kutoka the colon used in drive identifiers (``C:\`` etc.).
 
 * Additional "application paths" can be added in the registry as subkeys of
   :samp:`\\SOFTWARE\\Python\\PythonCore\\{version}\\PythonPath` under both the
@@ -951,7 +951,7 @@ Windows:
   locate a "landmark file" (either ``Lib\os.py`` or ``pythonXY.zip``) to deduce
   the "Python Home".  If a Python home is found, the relevant sub-directories
   added to :data:`sys.path` (``Lib``, ``plat-win``, etc) are based on that
-  folder.  Otherwise, the core Python path is constructed from the PythonPath
+  folder.  Otherwise, the core Python path is constructed kutoka the PythonPath
   stored in the registry.
 
 * If the Python Home cannot be located, no :envvar:`PYTHONPATH` is specified in
@@ -968,12 +968,12 @@ directory one level above the executable, the following variations apply:
 The end result of all this is:
 
 * When running :file:`python.exe`, or any other .exe in the main Python
-  directory (either an installed version, or directly from the PCbuild
+  directory (either an installed version, or directly kutoka the PCbuild
   directory), the core path is deduced, and the core paths in the registry are
   ignored.  Other "application paths" in the registry are always read.
 
 * When Python is hosted in another .exe (different directory, embedded via COM,
-  etc), the "Python Home" will not be deduced, so the core path from the
+  etc), the "Python Home" will not be deduced, so the core path kutoka the
   registry is used.  Other "application paths" in the registry are always read.
 
 * If Python can't find its home and there are no registry value (frozen .exe,
@@ -985,7 +985,7 @@ following advice will prevent conflicts with other installations:
 
 * Include a ``._pth`` file alongside your executable containing the
   directories to include. This will ignore paths listed in the registry and
-  environment variables, and also ignore :mod:`site` unless ``import site`` is
+  environment variables, and also ignore :mod:`site` unless ``agiza site`` is
   listed.
 
 * If you are loading :file:`python3.dll` or :file:`python37.dll` in your own
@@ -993,7 +993,7 @@ following advice will prevent conflicts with other installations:
   :c:func:`Py_SetProgramName` before :c:func:`Py_Initialize`.
 
 * Clear and/or overwrite :envvar:`PYTHONPATH` and set :envvar:`PYTHONHOME`
-  before launching :file:`python.exe` from your application.
+  before launching :file:`python.exe` kutoka your application.
 
 * If you cannot use the previous suggestions (for example, you are a
   distribution that allows people to run :file:`python.exe` directly), ensure
@@ -1010,7 +1010,7 @@ non-standard paths in the registry and user site-packages.
 .. versionchanged::
    3.6
 
-      * Adds ``._pth`` file support and removes ``applocal`` option from
+      * Adds ``._pth`` file support and removes ``applocal`` option kutoka
         ``pyvenv.cfg``.
       * Adds ``pythonXX.zip`` as a potential landmark when directly adjacent
         to the executable.

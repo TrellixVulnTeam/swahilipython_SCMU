@@ -10,7 +10,7 @@
 
 .. testsetup::
 
-   from secrets import *
+   kutoka secrets agiza *
    __name__ = '<doctest>'
 
 **Source code:** :source:`Lib/secrets.py`
@@ -38,13 +38,13 @@ randomness that your operating system provides.
 
 .. class:: SystemRandom
 
-   A class for generating random numbers using the highest-quality
+   A kundi for generating random numbers using the highest-quality
    sources provided by the operating system.  See
    :class:`random.SystemRandom` for additional details.
 
 .. function:: choice(sequence)
 
-   Return a randomly-chosen element from a non-empty sequence.
+   Return a randomly-chosen element kutoka a non-empty sequence.
 
 .. function:: randbelow(n)
 
@@ -144,8 +144,8 @@ Generate an eight-character alphanumeric password:
 
 .. testcode::
 
-   import string
-   import secrets
+   agiza string
+   agiza secrets
    alphabet = string.ascii_letters + string.digits
    password = ''.join(secrets.choice(alphabet) for i in range(8))
 
@@ -164,8 +164,8 @@ three digits:
 
 .. testcode::
 
-   import string
-   import secrets
+   agiza string
+   agiza secrets
    alphabet = string.ascii_letters + string.digits
    while True:
        password = ''.join(secrets.choice(alphabet) for i in range(10))
@@ -179,7 +179,7 @@ Generate an `XKCD-style passphrase <https://xkcd.com/936/>`_:
 
 .. testcode::
 
-   import secrets
+   agiza secrets
    # On standard Linux systems, use a convenient dictionary file.
    # Other platforms may need to provide their own word-list.
    with open('/usr/share/dict/words') as f:
@@ -192,7 +192,7 @@ suitable for password recovery applications:
 
 .. testcode::
 
-   import secrets
+   agiza secrets
    url = 'https://mydomain.com/reset=' + secrets.token_urlsafe()
 
 

@@ -6,24 +6,24 @@ machinery = util.import_importlib('importlib.machinery')
 agiza unittest
 
 
-class FindSpecTests(abc.FinderTests):
+kundi FindSpecTests(abc.FinderTests):
 
     """Test finding frozen modules."""
 
-    def find(self, name, path=None):
+    eleza find(self, name, path=None):
         finder = self.machinery.FrozenImporter
-        return finder.find_spec(name, path)
+        rudisha finder.find_spec(name, path)
 
-    def test_module(self):
+    eleza test_module(self):
         name = '__hello__'
         spec = self.find(name)
         self.assertEqual(spec.origin, 'frozen')
 
-    def test_package(self):
+    eleza test_package(self):
         spec = self.find('__phello__')
         self.assertIsNotNone(spec)
 
-    def test_module_in_package(self):
+    eleza test_module_in_package(self):
         spec = self.find('__phello__.spam', ['__phello__'])
         self.assertIsNotNone(spec)
 
@@ -33,7 +33,7 @@ class FindSpecTests(abc.FinderTests):
     # No easy way to test.
     test_package_over_module = None
 
-    def test_failure(self):
+    eleza test_failure(self):
         spec = self.find('<not real>')
         self.assertIsNone(spec)
 
@@ -43,24 +43,24 @@ class FindSpecTests(abc.FinderTests):
  ) = util.test_both(FindSpecTests, machinery=machinery)
 
 
-class FinderTests(abc.FinderTests):
+kundi FinderTests(abc.FinderTests):
 
     """Test finding frozen modules."""
 
-    def find(self, name, path=None):
+    eleza find(self, name, path=None):
         finder = self.machinery.FrozenImporter
-        return finder.find_module(name, path)
+        rudisha finder.find_module(name, path)
 
-    def test_module(self):
+    eleza test_module(self):
         name = '__hello__'
         loader = self.find(name)
         self.assertTrue(hasattr(loader, 'load_module'))
 
-    def test_package(self):
+    eleza test_package(self):
         loader = self.find('__phello__')
         self.assertTrue(hasattr(loader, 'load_module'))
 
-    def test_module_in_package(self):
+    eleza test_module_in_package(self):
         loader = self.find('__phello__.spam', ['__phello__'])
         self.assertTrue(hasattr(loader, 'load_module'))
 
@@ -70,7 +70,7 @@ class FinderTests(abc.FinderTests):
     # No easy way to test.
     test_package_over_module = None
 
-    def test_failure(self):
+    eleza test_failure(self):
         loader = self.find('<not real>')
         self.assertIsNone(loader)
 
@@ -80,5 +80,5 @@ class FinderTests(abc.FinderTests):
  ) = util.test_both(FinderTests, machinery=machinery)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

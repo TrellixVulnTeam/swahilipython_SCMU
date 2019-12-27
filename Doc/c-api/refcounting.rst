@@ -33,11 +33,11 @@ objects.
    .. warning::
 
       The deallocation function can cause arbitrary Python code to be invoked (e.g.
-      when a class instance with a :meth:`__del__` method is deallocated).  While
+      when a kundi instance with a :meth:`__del__` method is deallocated).  While
       exceptions in such code are not propagated, the executed code has free access to
-      all Python global variables.  This means that any object that is reachable from
+      all Python global variables.  This means that any object that is reachable kutoka
       a global variable should be in a consistent state before :c:func:`Py_DECREF` is
-      invoked.  For example, code to delete an object from a list should copy a
+      invoked.  For example, code to delete an object kutoka a list should copy a
       reference to the deleted object in a temporary variable, update the list data
       structure, and then call :c:func:`Py_DECREF` for the temporary variable.
 

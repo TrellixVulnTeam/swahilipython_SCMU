@@ -24,10 +24,10 @@ sample = ("<?xml version='1.0' encoding='us-ascii'?>\n"
 # The tests of DocumentType agizaing use these helpers to construct
 # the documents to work with, since not all DOM builders actually
 # create the DocumentType nodes.
-def create_doc_without_doctype(doctype=None):
-    return getDOMImplementation().createDocument(None, "doc", doctype)
+eleza create_doc_without_doctype(doctype=None):
+    rudisha getDOMImplementation().createDocument(None, "doc", doctype)
 
-def create_nonempty_doctype():
+eleza create_nonempty_doctype():
     doctype = getDOMImplementation().createDocumentType("doc", None, None)
     doctype.entities._seq = []
     doctype.notations._seq = []
@@ -41,47 +41,47 @@ def create_nonempty_doctype():
     entity.encoding = "utf-8"
     entity.actualEncoding = "us-ascii"
     doctype.entities._seq.append(entity)
-    return doctype
+    rudisha doctype
 
-def create_doc_with_doctype():
+eleza create_doc_with_doctype():
     doctype = create_nonempty_doctype()
     doc = create_doc_without_doctype(doctype)
     doctype.entities.item(0).ownerDocument = doc
     doctype.notations.item(0).ownerDocument = doc
-    return doc
+    rudisha doc
 
-class MinidomTest(unittest.TestCase):
-    def confirm(self, test, testname = "Test"):
+kundi MinidomTest(unittest.TestCase):
+    eleza confirm(self, test, testname = "Test"):
         self.assertTrue(test, testname)
 
-    def checkWholeText(self, node, s):
+    eleza checkWholeText(self, node, s):
         t = node.wholeText
         self.confirm(t == s, "looking for %r, found %r" % (s, t))
 
-    def testDocumentAsyncAttr(self):
+    eleza testDocumentAsyncAttr(self):
         doc = Document()
         self.assertFalse(doc.async_)
         self.assertFalse(Document.async_)
 
-    def testParseFromBinaryFile(self):
+    eleza testParseFromBinaryFile(self):
         with open(tstfile, 'rb') as file:
             dom = parse(file)
             dom.unlink()
             self.confirm(isinstance(dom, Document))
 
-    def testParseFromTextFile(self):
+    eleza testParseFromTextFile(self):
         with open(tstfile, 'r', encoding='iso-8859-1') as file:
             dom = parse(file)
             dom.unlink()
             self.confirm(isinstance(dom, Document))
 
-    def testGetElementsByTagName(self):
+    eleza testGetElementsByTagName(self):
         dom = parse(tstfile)
         self.confirm(dom.getElementsByTagName("LI") == \
                 dom.documentElement.getElementsByTagName("LI"))
         dom.unlink()
 
-    def testInsertBefore(self):
+    eleza testInsertBefore(self):
         dom = parseString("<doc><foo/></doc>")
         root = dom.documentElement
         elem = root.childNodes[0]
@@ -124,7 +124,7 @@ class MinidomTest(unittest.TestCase):
                 , "testInsertBefore -- node properly placed in tree")
         dom.unlink()
 
-    def _create_fragment_test_nodes(self):
+    eleza _create_fragment_test_nodes(self):
         dom = parseString("<doc/>")
         orig = dom.createTextNode("original")
         c1 = dom.createTextNode("foo")
@@ -135,9 +135,9 @@ class MinidomTest(unittest.TestCase):
         frag.appendChild(c1)
         frag.appendChild(c2)
         frag.appendChild(c3)
-        return dom, orig, c1, c2, c3, frag
+        rudisha dom, orig, c1, c2, c3, frag
 
-    def testInsertBeforeFragment(self):
+    eleza testInsertBeforeFragment(self):
         dom, orig, c1, c2, c3, frag = self._create_fragment_test_nodes()
         dom.documentElement.insertBefore(frag, None)
         self.confirm(tuple(dom.documentElement.childNodes) ==
@@ -154,14 +154,14 @@ class MinidomTest(unittest.TestCase):
         frag.unlink()
         dom.unlink()
 
-    def testAppendChild(self):
+    eleza testAppendChild(self):
         dom = parse(tstfile)
         dom.documentElement.appendChild(dom.createComment("Hello"))
         self.confirm(dom.documentElement.childNodes[-1].nodeName == "#comment")
         self.confirm(dom.documentElement.childNodes[-1].data == "Hello")
         dom.unlink()
 
-    def testAppendChildFragment(self):
+    eleza testAppendChildFragment(self):
         dom, orig, c1, c2, c3, frag = self._create_fragment_test_nodes()
         dom.documentElement.appendChild(frag)
         self.confirm(tuple(dom.documentElement.childNodes) ==
@@ -170,7 +170,7 @@ class MinidomTest(unittest.TestCase):
         frag.unlink()
         dom.unlink()
 
-    def testReplaceChildFragment(self):
+    eleza testReplaceChildFragment(self):
         dom, orig, c1, c2, c3, frag = self._create_fragment_test_nodes()
         dom.documentElement.replaceChild(frag, orig)
         orig.unlink()
@@ -179,7 +179,7 @@ class MinidomTest(unittest.TestCase):
         frag.unlink()
         dom.unlink()
 
-    def testLegalChildren(self):
+    eleza testLegalChildren(self):
         dom = Document()
         elem = dom.createElement('element')
         text = dom.createTextNode('text')
@@ -200,7 +200,7 @@ class MinidomTest(unittest.TestCase):
         elem.appendChild(text)
         dom.unlink()
 
-    def testNamedNodeMapSetItem(self):
+    eleza testNamedNodeMapSetItem(self):
         dom = Document()
         elem = dom.createElement('element')
         attrs = elem.attributes
@@ -217,31 +217,31 @@ class MinidomTest(unittest.TestCase):
         elem.unlink()
         dom.unlink()
 
-    def testNonZero(self):
+    eleza testNonZero(self):
         dom = parse(tstfile)
         self.confirm(dom)# should not be zero
         dom.appendChild(dom.createComment("foo"))
         self.confirm(not dom.childNodes[-1].childNodes)
         dom.unlink()
 
-    def testUnlink(self):
+    eleza testUnlink(self):
         dom = parse(tstfile)
         self.assertTrue(dom.childNodes)
         dom.unlink()
         self.assertFalse(dom.childNodes)
 
-    def testContext(self):
+    eleza testContext(self):
         with parse(tstfile) as dom:
             self.assertTrue(dom.childNodes)
         self.assertFalse(dom.childNodes)
 
-    def testElement(self):
+    eleza testElement(self):
         dom = Document()
         dom.appendChild(dom.createElement("abc"))
         self.confirm(dom.documentElement)
         dom.unlink()
 
-    def testAAA(self):
+    eleza testAAA(self):
         dom = parseString("<abc/>")
         el = dom.documentElement
         el.setAttribute("spam", "jam2")
@@ -253,7 +253,7 @@ class MinidomTest(unittest.TestCase):
                 "setAttribute() sets ownerElement")
         dom.unlink()
 
-    def testAAB(self):
+    eleza testAAB(self):
         dom = parseString("<abc/>")
         el = dom.documentElement
         el.setAttribute("spam", "jam")
@@ -261,7 +261,7 @@ class MinidomTest(unittest.TestCase):
         self.confirm(el.toxml() == '<abc spam="jam2"/>', "testAAB")
         dom.unlink()
 
-    def testAddAttr(self):
+    eleza testAddAttr(self):
         dom = Document()
         child = dom.appendChild(dom.createElement("abc"))
 
@@ -282,7 +282,7 @@ class MinidomTest(unittest.TestCase):
         self.confirm(len(child.attributes) == 2)
         dom.unlink()
 
-    def testDeleteAttr(self):
+    eleza testDeleteAttr(self):
         dom = Document()
         child = dom.appendChild(dom.createElement("abc"))
 
@@ -293,7 +293,7 @@ class MinidomTest(unittest.TestCase):
         self.confirm(len(child.attributes) == 0)
         dom.unlink()
 
-    def testRemoveAttr(self):
+    eleza testRemoveAttr(self):
         dom = Document()
         child = dom.appendChild(dom.createElement("abc"))
 
@@ -304,7 +304,7 @@ class MinidomTest(unittest.TestCase):
         self.confirm(len(child.attributes) == 0)
         dom.unlink()
 
-    def testRemoveAttrNS(self):
+    eleza testRemoveAttrNS(self):
         dom = Document()
         child = dom.appendChild(
                 dom.createElementNS("http://www.python.org", "python:abc"))
@@ -318,7 +318,7 @@ class MinidomTest(unittest.TestCase):
         self.confirm(len(child.attributes) == 1)
         dom.unlink()
 
-    def testRemoveAttributeNode(self):
+    eleza testRemoveAttributeNode(self):
         dom = Document()
         child = dom.appendChild(dom.createElement("foo"))
         child.setAttribute("spam", "jam")
@@ -336,13 +336,13 @@ class MinidomTest(unittest.TestCase):
             node2)
         dom.unlink()
 
-    def testHasAttribute(self):
+    eleza testHasAttribute(self):
         dom = Document()
         child = dom.appendChild(dom.createElement("foo"))
         child.setAttribute("spam", "jam")
         self.confirm(child.hasAttribute("spam"))
 
-    def testChangeAttr(self):
+    eleza testChangeAttr(self):
         dom = parseString("<abc/>")
         el = dom.documentElement
         el.setAttribute("spam", "jam")
@@ -380,22 +380,22 @@ class MinidomTest(unittest.TestCase):
                 and el.getAttribute("spam2") == "bam2")
         dom.unlink()
 
-    def testGetAttrList(self):
+    eleza testGetAttrList(self):
         pass
 
-    def testGetAttrValues(self):
+    eleza testGetAttrValues(self):
         pass
 
-    def testGetAttrLength(self):
+    eleza testGetAttrLength(self):
         pass
 
-    def testGetAttribute(self):
+    eleza testGetAttribute(self):
         dom = Document()
         child = dom.appendChild(
             dom.createElementNS("http://www.python.org", "python:abc"))
         self.assertEqual(child.getAttribute('missing'), '')
 
-    def testGetAttributeNS(self):
+    eleza testGetAttributeNS(self):
         dom = Document()
         child = dom.appendChild(
                 dom.createElementNS("http://www.python.org", "python:abc"))
@@ -409,9 +409,9 @@ class MinidomTest(unittest.TestCase):
         self.assertEqual(child2.getAttributeNS("http://www.python.org", "missing"),
                          '')
 
-    def testGetAttributeNode(self): pass
+    eleza testGetAttributeNode(self): pass
 
-    def testGetElementsByTagNameNS(self):
+    eleza testGetElementsByTagNameNS(self):
         d="""<foo xmlns:minidom='http://pyxml.sf.net/minidom'>
         <minidom:myelem/>
         </foo>"""
@@ -426,29 +426,29 @@ class MinidomTest(unittest.TestCase):
                 and elems[0].nodeName == "minidom:myelem")
         dom.unlink()
 
-    def get_empty_nodelist_from_elements_by_tagName_ns_helper(self, doc, nsuri,
+    eleza get_empty_nodelist_kutoka_elements_by_tagName_ns_helper(self, doc, nsuri,
                                                               lname):
         nodelist = doc.getElementsByTagNameNS(nsuri, lname)
         self.confirm(len(nodelist) == 0)
 
-    def testGetEmptyNodeListFromElementsByTagNameNS(self):
+    eleza testGetEmptyNodeListFromElementsByTagNameNS(self):
         doc = parseString('<doc/>')
-        self.get_empty_nodelist_from_elements_by_tagName_ns_helper(
+        self.get_empty_nodelist_kutoka_elements_by_tagName_ns_helper(
             doc, 'http://xml.python.org/namespaces/a', 'localname')
-        self.get_empty_nodelist_from_elements_by_tagName_ns_helper(
+        self.get_empty_nodelist_kutoka_elements_by_tagName_ns_helper(
             doc, '*', 'splat')
-        self.get_empty_nodelist_from_elements_by_tagName_ns_helper(
+        self.get_empty_nodelist_kutoka_elements_by_tagName_ns_helper(
             doc, 'http://xml.python.org/namespaces/a', '*')
 
         doc = parseString('<doc xmlns="http://xml.python.org/splat"><e/></doc>')
-        self.get_empty_nodelist_from_elements_by_tagName_ns_helper(
+        self.get_empty_nodelist_kutoka_elements_by_tagName_ns_helper(
             doc, "http://xml.python.org/splat", "not-there")
-        self.get_empty_nodelist_from_elements_by_tagName_ns_helper(
+        self.get_empty_nodelist_kutoka_elements_by_tagName_ns_helper(
             doc, "*", "not-there")
-        self.get_empty_nodelist_from_elements_by_tagName_ns_helper(
+        self.get_empty_nodelist_kutoka_elements_by_tagName_ns_helper(
             doc, "http://somewhere.else.net/not-there", "e")
 
-    def testElementReprAndStr(self):
+    eleza testElementReprAndStr(self):
         dom = Document()
         el = dom.appendChild(dom.createElement("abc"))
         string1 = repr(el)
@@ -456,7 +456,7 @@ class MinidomTest(unittest.TestCase):
         self.confirm(string1 == string2)
         dom.unlink()
 
-    def testElementReprAndStrUnicode(self):
+    eleza testElementReprAndStrUnicode(self):
         dom = Document()
         el = dom.appendChild(dom.createElement("abc"))
         string1 = repr(el)
@@ -464,7 +464,7 @@ class MinidomTest(unittest.TestCase):
         self.confirm(string1 == string2)
         dom.unlink()
 
-    def testElementReprAndStrUnicodeNS(self):
+    eleza testElementReprAndStrUnicodeNS(self):
         dom = Document()
         el = dom.appendChild(
             dom.createElementNS("http://www.slashdot.org", "slash:abc"))
@@ -474,30 +474,30 @@ class MinidomTest(unittest.TestCase):
         self.confirm("slash:abc" in string1)
         dom.unlink()
 
-    def testAttributeRepr(self):
+    eleza testAttributeRepr(self):
         dom = Document()
         el = dom.appendChild(dom.createElement("abc"))
         node = el.setAttribute("abc", "def")
         self.confirm(str(node) == repr(node))
         dom.unlink()
 
-    def testTextNodeRepr(self): pass
+    eleza testTextNodeRepr(self): pass
 
-    def testWriteXML(self):
+    eleza testWriteXML(self):
         str = '<?xml version="1.0" ?><a b="c"/>'
         dom = parseString(str)
         domstr = dom.toxml()
         dom.unlink()
         self.confirm(str == domstr)
 
-    def testAltNewline(self):
+    eleza testAltNewline(self):
         str = '<?xml version="1.0" ?>\n<a b="c"/>\n'
         dom = parseString(str)
         domstr = dom.toprettyxml(newl="\r\n")
         dom.unlink()
         self.confirm(domstr == str.replace("\n", "\r\n"))
 
-    def test_toprettyxml_with_text_nodes(self):
+    eleza test_toprettyxml_with_text_nodes(self):
         # see issue #4147, text nodes are not indented
         decl = '<?xml version="1.0" ?>\n'
         self.assertEqual(parseString('<B>A</B>').toprettyxml(),
@@ -511,7 +511,7 @@ class MinidomTest(unittest.TestCase):
         self.assertEqual(parseString('<C><B>A</B>A<B>A</B></C>').toprettyxml(),
                          decl + '<C>\n\t<B>A</B>\n\tA\n\t<B>A</B>\n</C>\n')
 
-    def test_toprettyxml_with_adjacent_text_nodes(self):
+    eleza test_toprettyxml_with_adjacent_text_nodes(self):
         # see issue #4147, adjacent text nodes are indented normally
         dom = Document()
         elem = dom.createElement('elem')
@@ -522,7 +522,7 @@ class MinidomTest(unittest.TestCase):
         self.assertEqual(dom.toprettyxml(),
                          decl + '<elem>\n\tTEXT\n\tTEXT\n</elem>\n')
 
-    def test_toprettyxml_preserves_content_of_text_node(self):
+    eleza test_toprettyxml_preserves_content_of_text_node(self):
         # see issue #4147
         for str in ('<B>A</B>', '<A><B>C</B></A>'):
             dom = parseString(str)
@@ -531,7 +531,7 @@ class MinidomTest(unittest.TestCase):
                 dom.getElementsByTagName('B')[0].childNodes[0].toxml(),
                 dom2.getElementsByTagName('B')[0].childNodes[0].toxml())
 
-    def testProcessingInstruction(self):
+    eleza testProcessingInstruction(self):
         dom = parseString('<e><?mypi \t\n data \t\n ?></e>')
         pi = dom.documentElement.firstChild
         self.confirm(pi.target == "mypi"
@@ -546,15 +546,15 @@ class MinidomTest(unittest.TestCase):
                 and pi.localName is None
                 and pi.namespaceURI == xml.dom.EMPTY_NAMESPACE)
 
-    def testProcessingInstructionRepr(self): pass
+    eleza testProcessingInstructionRepr(self): pass
 
-    def testTextRepr(self): pass
+    eleza testTextRepr(self): pass
 
-    def testWriteText(self): pass
+    eleza testWriteText(self): pass
 
-    def testDocumentElement(self): pass
+    eleza testDocumentElement(self): pass
 
-    def testTooManyDocumentElements(self):
+    eleza testTooManyDocumentElements(self):
         doc = parseString("<doc/>")
         elem = doc.createElement("extra")
         # Should raise an exception when adding an extra document element.
@@ -562,27 +562,27 @@ class MinidomTest(unittest.TestCase):
         elem.unlink()
         doc.unlink()
 
-    def testCreateElementNS(self): pass
+    eleza testCreateElementNS(self): pass
 
-    def testCreateAttributeNS(self): pass
+    eleza testCreateAttributeNS(self): pass
 
-    def testParse(self): pass
+    eleza testParse(self): pass
 
-    def testParseString(self): pass
+    eleza testParseString(self): pass
 
-    def testComment(self): pass
+    eleza testComment(self): pass
 
-    def testAttrListItem(self): pass
+    eleza testAttrListItem(self): pass
 
-    def testAttrListItems(self): pass
+    eleza testAttrListItems(self): pass
 
-    def testAttrListItemNS(self): pass
+    eleza testAttrListItemNS(self): pass
 
-    def testAttrListKeys(self): pass
+    eleza testAttrListKeys(self): pass
 
-    def testAttrListKeysNS(self): pass
+    eleza testAttrListKeysNS(self): pass
 
-    def testRemoveNamedItem(self):
+    eleza testRemoveNamedItem(self):
         doc = parseString("<doc a=''/>")
         e = doc.documentElement
         attrs = e.attributes
@@ -591,7 +591,7 @@ class MinidomTest(unittest.TestCase):
         self.confirm(a1.isSameNode(a2))
         self.assertRaises(xml.dom.NotFoundErr, attrs.removeNamedItem, "a")
 
-    def testRemoveNamedItemNS(self):
+    eleza testRemoveNamedItemNS(self):
         doc = parseString("<doc xmlns:a='http://xml.python.org/' a:b=''/>")
         e = doc.documentElement
         attrs = e.attributes
@@ -601,31 +601,31 @@ class MinidomTest(unittest.TestCase):
         self.assertRaises(xml.dom.NotFoundErr, attrs.removeNamedItemNS,
                           "http://xml.python.org/", "b")
 
-    def testAttrListValues(self): pass
+    eleza testAttrListValues(self): pass
 
-    def testAttrListLength(self): pass
+    eleza testAttrListLength(self): pass
 
-    def testAttrList__getitem__(self): pass
+    eleza testAttrList__getitem__(self): pass
 
-    def testAttrList__setitem__(self): pass
+    eleza testAttrList__setitem__(self): pass
 
-    def testSetAttrValueandNodeValue(self): pass
+    eleza testSetAttrValueandNodeValue(self): pass
 
-    def testParseElement(self): pass
+    eleza testParseElement(self): pass
 
-    def testParseAttributes(self): pass
+    eleza testParseAttributes(self): pass
 
-    def testParseElementNamespaces(self): pass
+    eleza testParseElementNamespaces(self): pass
 
-    def testParseAttributeNamespaces(self): pass
+    eleza testParseAttributeNamespaces(self): pass
 
-    def testParseProcessingInstructions(self): pass
+    eleza testParseProcessingInstructions(self): pass
 
-    def testChildNodes(self): pass
+    eleza testChildNodes(self): pass
 
-    def testFirstChild(self): pass
+    eleza testFirstChild(self): pass
 
-    def testHasChildNodes(self):
+    eleza testHasChildNodes(self):
         dom = parseString("<doc><foo/></doc>")
         doc = dom.documentElement
         self.assertTrue(doc.hasChildNodes())
@@ -633,7 +633,7 @@ class MinidomTest(unittest.TestCase):
         doc2 = dom2.documentElement
         self.assertFalse(doc2.hasChildNodes())
 
-    def _testCloneElementCopiesAttributes(self, e1, e2, test):
+    eleza _testCloneElementCopiesAttributes(self, e1, e2, test):
         attrs1 = e1.attributes
         attrs2 = e2.attributes
         keys1 = list(attrs1.keys())
@@ -653,7 +653,7 @@ class MinidomTest(unittest.TestCase):
             self.confirm(a2.ownerElement is e2,
                     "clone of attribute node correctly owned")
 
-    def _setupCloneElement(self, deep):
+    eleza _setupCloneElement(self, deep):
         dom = parseString("<doc attr='value'><foo/></doc>")
         root = dom.documentElement
         clone = root.cloneNode(deep)
@@ -663,9 +663,9 @@ class MinidomTest(unittest.TestCase):
         root.tagName = root.nodeName = "MODIFIED"
         root.setAttribute("attr", "NEW VALUE")
         root.setAttribute("added", "VALUE")
-        return dom, clone
+        rudisha dom, clone
 
-    def testCloneElementShallow(self):
+    eleza testCloneElementShallow(self):
         dom, clone = self._setupCloneElement(0)
         self.confirm(len(clone.childNodes) == 0
                 and clone.childNodes.length == 0
@@ -674,7 +674,7 @@ class MinidomTest(unittest.TestCase):
                 , "testCloneElementShallow")
         dom.unlink()
 
-    def testCloneElementDeep(self):
+    eleza testCloneElementDeep(self):
         dom, clone = self._setupCloneElement(1)
         self.confirm(len(clone.childNodes) == 1
                 and clone.childNodes.length == 1
@@ -683,7 +683,7 @@ class MinidomTest(unittest.TestCase):
                 , "testCloneElementDeep")
         dom.unlink()
 
-    def testCloneDocumentShallow(self):
+    eleza testCloneDocumentShallow(self):
         doc = parseString("<?xml version='1.0'?>\n"
                     "<!-- comment -->"
                     "<!DOCTYPE doc [\n"
@@ -695,7 +695,7 @@ class MinidomTest(unittest.TestCase):
                 "testCloneDocumentShallow:"
                 " shallow cloning of documents makes no sense!")
 
-    def testCloneDocumentDeep(self):
+    eleza testCloneDocumentDeep(self):
         doc = parseString("<?xml version='1.0'?>\n"
                     "<!-- comment -->"
                     "<!DOCTYPE doc [\n"
@@ -713,14 +713,14 @@ class MinidomTest(unittest.TestCase):
             "testCloneDocumentDeep: documentElement owner is not new document")
         self.confirm(not doc.documentElement.isSameNode(doc2.documentElement),
                 "testCloneDocumentDeep: documentElement should not be shared")
-        if doc.doctype is not None:
+        ikiwa doc.doctype is not None:
             # check the doctype iff the original DOM maintained it
             self.confirm(doc2.doctype.nodeType == Node.DOCUMENT_TYPE_NODE,
                     "testCloneDocumentDeep: doctype not a DOCUMENT_TYPE_NODE")
             self.confirm(doc2.doctype.ownerDocument.isSameNode(doc2))
             self.confirm(not doc.doctype.isSameNode(doc2.doctype))
 
-    def testCloneDocumentTypeDeepOk(self):
+    eleza testCloneDocumentTypeDeepOk(self):
         doctype = create_nonempty_doctype()
         clone = doctype.cloneNode(1)
         self.confirm(clone is not None
@@ -754,12 +754,12 @@ class MinidomTest(unittest.TestCase):
                     and cn.publicId == sn.publicId
                     and cn.systemId == sn.systemId)
 
-    def testCloneDocumentTypeDeepNotOk(self):
+    eleza testCloneDocumentTypeDeepNotOk(self):
         doc = create_doc_with_doctype()
         clone = doc.doctype.cloneNode(1)
         self.confirm(clone is None, "testCloneDocumentTypeDeepNotOk")
 
-    def testCloneDocumentTypeShallowOk(self):
+    eleza testCloneDocumentTypeShallowOk(self):
         doctype = create_nonempty_doctype()
         clone = doctype.cloneNode(0)
         self.confirm(clone is not None
@@ -773,37 +773,37 @@ class MinidomTest(unittest.TestCase):
                 and clone.notations.item(0) is None
                 and len(clone.childNodes) == 0)
 
-    def testCloneDocumentTypeShallowNotOk(self):
+    eleza testCloneDocumentTypeShallowNotOk(self):
         doc = create_doc_with_doctype()
         clone = doc.doctype.cloneNode(0)
         self.confirm(clone is None, "testCloneDocumentTypeShallowNotOk")
 
-    def check_import_document(self, deep, testName):
+    eleza check_import_document(self, deep, testName):
         doc1 = parseString("<doc/>")
         doc2 = parseString("<doc/>")
         self.assertRaises(xml.dom.NotSupportedErr, doc1.agizaNode, doc2, deep)
 
-    def testImportDocumentShallow(self):
+    eleza testImportDocumentShallow(self):
         self.check_import_document(0, "testImportDocumentShallow")
 
-    def testImportDocumentDeep(self):
+    eleza testImportDocumentDeep(self):
         self.check_import_document(1, "testImportDocumentDeep")
 
-    def testImportDocumentTypeShallow(self):
+    eleza testImportDocumentTypeShallow(self):
         src = create_doc_with_doctype()
         target = create_doc_without_doctype()
         self.assertRaises(xml.dom.NotSupportedErr, target.agizaNode,
                           src.doctype, 0)
 
-    def testImportDocumentTypeDeep(self):
+    eleza testImportDocumentTypeDeep(self):
         src = create_doc_with_doctype()
         target = create_doc_without_doctype()
         self.assertRaises(xml.dom.NotSupportedErr, target.agizaNode,
                           src.doctype, 1)
 
     # Testing attribute clones uses a helper, and should always be deep,
-    # even if the argument to cloneNode is false.
-    def check_clone_attribute(self, deep, testName):
+    # even ikiwa the argument to cloneNode is false.
+    eleza check_clone_attribute(self, deep, testName):
         doc = parseString("<doc attr='value'/>")
         attr = doc.documentElement.getAttributeNode("attr")
         self.assertNotEqual(attr, None)
@@ -817,13 +817,13 @@ class MinidomTest(unittest.TestCase):
         self.confirm(clone.specified,
                 testName + ": cloned attribute must have specified == True")
 
-    def testCloneAttributeShallow(self):
+    eleza testCloneAttributeShallow(self):
         self.check_clone_attribute(0, "testCloneAttributeShallow")
 
-    def testCloneAttributeDeep(self):
+    eleza testCloneAttributeDeep(self):
         self.check_clone_attribute(1, "testCloneAttributeDeep")
 
-    def check_clone_pi(self, deep, testName):
+    eleza check_clone_pi(self, deep, testName):
         doc = parseString("<?target data?><doc/>")
         pi = doc.firstChild
         self.assertEqual(pi.nodeType, Node.PROCESSING_INSTRUCTION_NODE)
@@ -831,13 +831,13 @@ class MinidomTest(unittest.TestCase):
         self.confirm(clone.target == pi.target
                 and clone.data == pi.data)
 
-    def testClonePIShallow(self):
+    eleza testClonePIShallow(self):
         self.check_clone_pi(0, "testClonePIShallow")
 
-    def testClonePIDeep(self):
+    eleza testClonePIDeep(self):
         self.check_clone_pi(1, "testClonePIDeep")
 
-    def check_clone_node_entity(self, clone_document):
+    eleza check_clone_node_entity(self, clone_document):
         # bpo-35052: Test user data handler in cloneNode() on a document with
         # an entity
         document = xml.dom.minidom.parseString("""
@@ -849,8 +849,8 @@ class MinidomTest(unittest.TestCase):
             <doc>Don't let entities make you frown &smile;</doc>
         """.strip())
 
-        class Handler:
-            def handle(self, operation, key, data, src, dst):
+        kundi Handler:
+            eleza handle(self, operation, key, data, src, dst):
                 self.operation = operation
                 self.key = key
                 self.data = data
@@ -862,7 +862,7 @@ class MinidomTest(unittest.TestCase):
         entity = doctype.entities['smile']
         entity.setUserData("key", "data", handler)
 
-        if clone_document:
+        ikiwa clone_document:
             # clone Document
             clone = document.cloneNode(deep=True)
 
@@ -884,11 +884,11 @@ class MinidomTest(unittest.TestCase):
         self.assertIs(handler.src, entity)
         self.assertIs(handler.dst, dst)
 
-    def testCloneNodeEntity(self):
+    eleza testCloneNodeEntity(self):
         self.check_clone_node_entity(False)
         self.check_clone_node_entity(True)
 
-    def testNormalize(self):
+    eleza testNormalize(self):
         doc = parseString("<doc/>")
         root = doc.documentElement
         root.appendChild(doc.createTextNode("first"))
@@ -913,7 +913,7 @@ class MinidomTest(unittest.TestCase):
                 "testNormalize -- single empty node removed")
         doc.unlink()
 
-    def testNormalizeCombineAndNextSibling(self):
+    eleza testNormalizeCombineAndNextSibling(self):
         doc = parseString("<doc/>")
         root = doc.documentElement
         root.appendChild(doc.createTextNode("first"))
@@ -934,7 +934,7 @@ class MinidomTest(unittest.TestCase):
                 , "testNormalizeCombinedAndNextSibling -- result")
         doc.unlink()
 
-    def testNormalizeDeleteWithPrevSibling(self):
+    eleza testNormalizeDeleteWithPrevSibling(self):
         doc = parseString("<doc/>")
         root = doc.documentElement
         root.appendChild(doc.createTextNode("first"))
@@ -952,7 +952,7 @@ class MinidomTest(unittest.TestCase):
                 , "testNormalizeDeleteWithPrevSibling -- result")
         doc.unlink()
 
-    def testNormalizeDeleteWithNextSibling(self):
+    eleza testNormalizeDeleteWithNextSibling(self):
         doc = parseString("<doc/>")
         root = doc.documentElement
         root.appendChild(doc.createTextNode(""))
@@ -970,7 +970,7 @@ class MinidomTest(unittest.TestCase):
                 , "testNormalizeDeleteWithNextSibling -- result")
         doc.unlink()
 
-    def testNormalizeDeleteWithTwoNonTextSiblings(self):
+    eleza testNormalizeDeleteWithTwoNonTextSiblings(self):
         doc = parseString("<doc/>")
         root = doc.documentElement
         root.appendChild(doc.createElement("i"))
@@ -990,7 +990,7 @@ class MinidomTest(unittest.TestCase):
                 , "testNormalizeDeleteWithTwoSiblings -- result")
         doc.unlink()
 
-    def testNormalizeDeleteAndCombine(self):
+    eleza testNormalizeDeleteAndCombine(self):
         doc = parseString("<doc/>")
         root = doc.documentElement
         root.appendChild(doc.createTextNode(""))
@@ -1011,7 +1011,7 @@ class MinidomTest(unittest.TestCase):
                 , "testNormalizeDeleteAndCombine -- result")
         doc.unlink()
 
-    def testNormalizeRecursion(self):
+    eleza testNormalizeRecursion(self):
         doc = parseString("<doc>"
                             "<o>"
                               "<i/>"
@@ -1074,7 +1074,7 @@ class MinidomTest(unittest.TestCase):
         doc.unlink()
 
 
-    def testBug0777884(self):
+    eleza testBug0777884(self):
         doc = parseString("<o>text</o>")
         text = doc.documentElement.childNodes[0]
         self.assertEqual(text.nodeType, Node.TEXT_NODE)
@@ -1082,7 +1082,7 @@ class MinidomTest(unittest.TestCase):
         text.normalize()
         doc.unlink()
 
-    def testBug1433694(self):
+    eleza testBug1433694(self):
         doc = parseString("<o><i/>t</o>")
         node = doc.documentElement
         node.childNodes[1].nodeValue = ""
@@ -1090,7 +1090,7 @@ class MinidomTest(unittest.TestCase):
         self.confirm(node.childNodes[-1].nextSibling is None,
                      "Final child's .nextSibling should be None")
 
-    def testSiblings(self):
+    eleza testSiblings(self):
         doc = parseString("<doc><?pi?>text?<elm/></doc>")
         root = doc.documentElement
         (pi, text, elm) = root.childNodes
@@ -1104,7 +1104,7 @@ class MinidomTest(unittest.TestCase):
 
         doc.unlink()
 
-    def testParents(self):
+    eleza testParents(self):
         doc = parseString(
             "<doc><elm1><elm2/><elm2><elm3/></elm2></elm1></doc>")
         root = doc.documentElement
@@ -1119,7 +1119,7 @@ class MinidomTest(unittest.TestCase):
                 elm3.parentNode is elm2b, "testParents")
         doc.unlink()
 
-    def testNodeListItem(self):
+    eleza testNodeListItem(self):
         doc = parseString("<doc><e/><e/></doc>")
         children = doc.childNodes
         docelem = children[0]
@@ -1131,7 +1131,7 @@ class MinidomTest(unittest.TestCase):
                 "test NodeList.item()")
         doc.unlink()
 
-    def testEncodings(self):
+    eleza testEncodings(self):
         doc = parseString('<foo>&#x20ac;</foo>')
         self.assertEqual(doc.toxml(),
                          '<?xml version="1.0" ?><foo>\u20ac</foo>')
@@ -1152,14 +1152,14 @@ class MinidomTest(unittest.TestCase):
 
         doc.unlink()
 
-    class UserDataHandler:
+    kundi UserDataHandler:
         called = 0
-        def handle(self, operation, key, data, src, dst):
+        eleza handle(self, operation, key, data, src, dst):
             dst.setUserData(key, data + 1, self)
             src.setUserData(key, None, None)
             self.called = 1
 
-    def testUserData(self):
+    eleza testUserData(self):
         dom = Document()
         n = dom.createElement('e')
         self.confirm(n.getUserData("foo") is None)
@@ -1183,7 +1183,7 @@ class MinidomTest(unittest.TestCase):
         c.unlink()
         dom.unlink()
 
-    def checkRenameNodeSharedConstraints(self, doc, node):
+    eleza checkRenameNodeSharedConstraints(self, doc, node):
         # Make sure illegal NS usage is detected:
         self.assertRaises(xml.dom.NamespaceErr, doc.renameNode, node,
                           "http://xml.python.org/ns", "xmlns:foo")
@@ -1191,7 +1191,7 @@ class MinidomTest(unittest.TestCase):
         self.assertRaises(xml.dom.WrongDocumentErr, doc2.renameNode, node,
                           xml.dom.EMPTY_NAMESPACE, "foo")
 
-    def testRenameAttribute(self):
+    eleza testRenameAttribute(self):
         doc = parseString("<doc a='v'/>")
         elem = doc.documentElement
         attrmap = elem.attributes
@@ -1268,7 +1268,7 @@ class MinidomTest(unittest.TestCase):
         self.checkRenameNodeSharedConstraints(doc, attr)
         doc.unlink()
 
-    def testRenameElement(self):
+    eleza testRenameElement(self):
         doc = parseString("<doc/>")
         elem = doc.documentElement
 
@@ -1311,7 +1311,7 @@ class MinidomTest(unittest.TestCase):
         self.checkRenameNodeSharedConstraints(doc, elem)
         doc.unlink()
 
-    def testRenameOther(self):
+    eleza testRenameOther(self):
         # We have to create a comment node explicitly since not all DOM
         # builders used with minidom add comments to the DOM.
         doc = xml.dom.minidom.getDOMImplementation().createDocument(
@@ -1321,7 +1321,7 @@ class MinidomTest(unittest.TestCase):
                           xml.dom.EMPTY_NAMESPACE, "foo")
         doc.unlink()
 
-    def testWholeText(self):
+    eleza testWholeText(self):
         doc = parseString("<doc>a</doc>")
         elem = doc.documentElement
         text = elem.childNodes[0]
@@ -1357,7 +1357,7 @@ class MinidomTest(unittest.TestCase):
         self.checkWholeText(text, "cabd")
         self.checkWholeText(text2, "cabd")
 
-    def testPatch1094164(self):
+    eleza testPatch1094164(self):
         doc = parseString("<doc><e/></doc>")
         elem = doc.documentElement
         e = elem.firstChild
@@ -1366,8 +1366,8 @@ class MinidomTest(unittest.TestCase):
         elem.replaceChild(e, e)
         self.confirm(e.parentNode is elem, "After replaceChild()")
 
-    def testReplaceWholeText(self):
-        def setup():
+    eleza testReplaceWholeText(self):
+        eleza setup():
             doc = parseString("<doc>a<e/>d</doc>")
             elem = doc.documentElement
             text1 = elem.firstChild
@@ -1375,7 +1375,7 @@ class MinidomTest(unittest.TestCase):
             splitter = text1.nextSibling
             elem.insertBefore(doc.createTextNode("b"), splitter)
             elem.insertBefore(doc.createCDATASection("c"), text1)
-            return doc, elem, text1, splitter, text2
+            rudisha doc, elem, text1, splitter, text2
 
         doc, elem, text1, splitter, text2 = setup()
         text = text1.replaceWholeText("new content")
@@ -1395,7 +1395,7 @@ class MinidomTest(unittest.TestCase):
         self.confirm(text is None
                 and len(elem.childNodes) == 2)
 
-    def testSchemaType(self):
+    eleza testSchemaType(self):
         doc = parseString(
             "<!DOCTYPE doc [\n"
             "  <!ENTITY e1 SYSTEM 'http://xml.python.org/e1'>\n"
@@ -1428,7 +1428,7 @@ class MinidomTest(unittest.TestCase):
             self.confirm(hasattr(t, "name")
                     and t.namespace == xml.dom.EMPTY_NAMESPACE)
 
-    def testSetIdAttribute(self):
+    eleza testSetIdAttribute(self):
         doc = parseString("<doc a1='v' a2='w'/>")
         e = doc.documentElement
         a1 = e.getAttributeNode("a1")
@@ -1459,7 +1459,7 @@ class MinidomTest(unittest.TestCase):
         self.confirm(e.isSameNode(doc.getElementById("w"))
                 and a2.isId)
 
-    def testSetIdAttributeNS(self):
+    eleza testSetIdAttributeNS(self):
         NS1 = "http://xml.python.org/ns1"
         NS2 = "http://xml.python.org/ns2"
         doc = parseString("<doc"
@@ -1495,7 +1495,7 @@ class MinidomTest(unittest.TestCase):
         self.confirm(e.isSameNode(doc.getElementById("w"))
                 and a2.isId)
 
-    def testSetIdAttributeNode(self):
+    eleza testSetIdAttributeNode(self):
         NS1 = "http://xml.python.org/ns1"
         NS2 = "http://xml.python.org/ns2"
         doc = parseString("<doc"
@@ -1531,7 +1531,7 @@ class MinidomTest(unittest.TestCase):
         self.confirm(e.isSameNode(doc.getElementById("w"))
                 and a2.isId)
 
-    def assert_recursive_equal(self, doc, doc2):
+    eleza assert_recursive_equal(self, doc, doc2):
         stack = [(doc, doc2)]
         while stack:
             n1, n2 = stack.pop()
@@ -1540,7 +1540,7 @@ class MinidomTest(unittest.TestCase):
             self.assertEqual(n1.nodeName, n2.nodeName)
             self.assertFalse(n1.isSameNode(n2))
             self.assertFalse(n2.isSameNode(n1))
-            if n1.nodeType == Node.DOCUMENT_TYPE_NODE:
+            ikiwa n1.nodeType == Node.DOCUMENT_TYPE_NODE:
                 len(n1.entities)
                 len(n2.entities)
                 len(n1.notations)
@@ -1562,41 +1562,41 @@ class MinidomTest(unittest.TestCase):
                     self.assertEqual(e1.publicId, e2.publicId)
                     self.assertEqual(e1.systemId, e2.systemId)
                     stack.append((e1, e2))
-            if n1.nodeType != Node.DOCUMENT_NODE:
+            ikiwa n1.nodeType != Node.DOCUMENT_NODE:
                 self.assertTrue(n1.ownerDocument.isSameNode(doc))
                 self.assertTrue(n2.ownerDocument.isSameNode(doc2))
             for i in range(len(n1.childNodes)):
                 stack.append((n1.childNodes[i], n2.childNodes[i]))
 
-    def testPickledDocument(self):
+    eleza testPickledDocument(self):
         doc = parseString(sample)
         for proto in range(2, pickle.HIGHEST_PROTOCOL + 1):
             s = pickle.dumps(doc, proto)
             doc2 = pickle.loads(s)
             self.assert_recursive_equal(doc, doc2)
 
-    def testDeepcopiedDocument(self):
+    eleza testDeepcopiedDocument(self):
         doc = parseString(sample)
         doc2 = copy.deepcopy(doc)
         self.assert_recursive_equal(doc, doc2)
 
-    def testSerializeCommentNodeWithDoubleHyphen(self):
+    eleza testSerializeCommentNodeWithDoubleHyphen(self):
         doc = create_doc_without_doctype()
         doc.appendChild(doc.createComment("foo--bar"))
         self.assertRaises(ValueError, doc.toxml)
 
 
-    def testEmptyXMLNSValue(self):
+    eleza testEmptyXMLNSValue(self):
         doc = parseString("<element xmlns=''>\n"
                           "<foo/>\n</element>")
         doc2 = parseString(doc.toxml())
         self.confirm(doc2.namespaceURI == xml.dom.EMPTY_NAMESPACE)
 
-    def testExceptionOnSpacesInXMLNSValue(self):
+    eleza testExceptionOnSpacesInXMLNSValue(self):
         with self.assertRaisesRegex(ValueError, 'Unsupported syntax'):
             parseString('<element xmlns:abc="http:abc.com/de f g/hi/j k"><abc:foo /></element>')
 
-    def testDocRemoveChild(self):
+    eleza testDocRemoveChild(self):
         doc = parse(tstfile)
         title_tag = doc.documentElement.getElementsByTagName("TITLE")[0]
         self.assertRaises( xml.dom.NotFoundErr, doc.removeChild, title_tag)
@@ -1605,33 +1605,33 @@ class MinidomTest(unittest.TestCase):
         num_children_after = len(doc.childNodes)
         self.assertTrue(num_children_after == num_children_before - 1)
 
-    def testProcessingInstructionNameError(self):
+    eleza testProcessingInstructionNameError(self):
         # wrong variable in .nodeValue property will
         # lead to "NameError: name 'data' is not defined"
         doc = parse(tstfile)
         pi = doc.createProcessingInstruction("y", "z")
         pi.nodeValue = "crash"
 
-    def test_minidom_attribute_order(self):
+    eleza test_minidom_attribute_order(self):
         xml_str = '<?xml version="1.0" ?><curriculum status="public" company="example"/>'
         doc = parseString(xml_str)
         output = io.StringIO()
         doc.writexml(output)
         self.assertEqual(output.getvalue(), xml_str)
 
-    def test_toxml_with_attributes_ordered(self):
+    eleza test_toxml_with_attributes_ordered(self):
         xml_str = '<?xml version="1.0" ?><curriculum status="public" company="example"/>'
         doc = parseString(xml_str)
         self.assertEqual(doc.toxml(), xml_str)
 
-    def test_toprettyxml_with_attributes_ordered(self):
+    eleza test_toprettyxml_with_attributes_ordered(self):
         xml_str = '<?xml version="1.0" ?><curriculum status="public" company="example"/>'
         doc = parseString(xml_str)
         self.assertEqual(doc.toprettyxml(),
                          '<?xml version="1.0" ?>\n'
                          '<curriculum status="public" company="example"/>\n')
 
-    def test_toprettyxml_with_cdata(self):
+    eleza test_toprettyxml_with_cdata(self):
         xml_str = '<?xml version="1.0" ?><root><node><![CDATA[</data>]]></node></root>'
         doc = parseString(xml_str)
         self.assertEqual(doc.toprettyxml(),
@@ -1640,12 +1640,12 @@ class MinidomTest(unittest.TestCase):
                          '\t<node><![CDATA[</data>]]></node>\n'
                          '</root>\n')
 
-    def test_cdata_parsing(self):
+    eleza test_cdata_parsing(self):
         xml_str = '<?xml version="1.0" ?><root><node><![CDATA[</data>]]></node></root>'
         dom1 = parseString(xml_str)
         self.checkWholeText(dom1.getElementsByTagName('node')[0].firstChild, '</data>')
         dom2 = parseString(dom1.toprettyxml())
         self.checkWholeText(dom2.getElementsByTagName('node')[0].firstChild, '</data>')
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

@@ -34,7 +34,7 @@ PyAPI_FUNC(PyObject **) _Py_VaBuildStack_SizeT(
 #endif /* !Py_LIMITED_API */
 #endif
 
-/* Due to a glitch in 3.2, the _SizeT versions weren't exported from the DLL. */
+/* Due to a glitch in 3.2, the _SizeT versions weren't exported kutoka the DLL. */
 #if !defined(PY_SSIZE_T_CLEAN) || !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03030000
 PyAPI_FUNC(int) PyArg_Parse(PyObject *, const char *, ...);
 PyAPI_FUNC(int) PyArg_ParseTuple(PyObject *, const char *, ...);
@@ -150,7 +150,7 @@ PyAPI_FUNC(int) PyModule_ExecDef(PyObject *module, PyModuleDef *def);
 
 #define PYTHON_API_VERSION 1013
 #define PYTHON_API_STRING "1013"
-/* The API version is maintained (independently from the Python version)
+/* The API version is maintained (independently kutoka the Python version)
    so we can detect mismatches between the interpreter and dynamically
    loaded modules.  These are diagnosed by an error message but
    the module is still loaded (because the mismatch can only be tested

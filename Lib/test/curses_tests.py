@@ -10,10 +10,10 @@
 agiza curses
 kutoka curses agiza textpad
 
-def test_textpad(stdscr, insert_mode=False):
+eleza test_textpad(stdscr, insert_mode=False):
     ncols, nlines = 8, 3
     uly, ulx = 3, 2
-    if insert_mode:
+    ikiwa insert_mode:
         mode = 'insert mode'
     else:
         mode = 'overwrite mode'
@@ -36,11 +36,11 @@ def test_textpad(stdscr, insert_mode=False):
         stdscr.move(uly+ncols+2 + i, 0)
         stdscr.clrtoeol()
 
-def main(stdscr):
+eleza main(stdscr):
     stdscr.clear()
     test_textpad(stdscr, False)
     test_textpad(stdscr, True)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     curses.wrapper(main)

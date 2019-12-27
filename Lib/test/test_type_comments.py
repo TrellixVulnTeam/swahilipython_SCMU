@@ -3,22 +3,22 @@ agiza sys
 agiza unittest
 
 
-funcdef = """\
-def foo():
+funceleza = """\
+eleza foo():
     # type: () -> int
     pass
 
-def bar():  # type: () -> None
+eleza bar():  # type: () -> None
     pass
 """
 
-asyncdef = """\
-async def foo():
+asynceleza = """\
+async eleza foo():
     # type: () -> int
-    return await bar()
+    rudisha await bar()
 
-async def bar():  # type: () -> int
-    return await bar()
+async eleza bar():  # type: () -> int
+    rudisha await bar()
 """
 
 asyncvar = """\
@@ -27,7 +27,7 @@ await = 13
 """
 
 asynccomp = """\
-async def foo(xs):
+async eleza foo(xs):
     [x async for x in xs]
 """
 
@@ -44,14 +44,14 @@ underscorednumber = """\
 a = 42_42_42
 """
 
-redundantdef = """\
-def foo():  # type: () -> int
+redundanteleza = """\
+eleza foo():  # type: () -> int
     # type: () -> str
-    return ''
+    rudisha ''
 """
 
-nonasciidef = """\
-def foo():
+nonasciieleza = """\
+eleza foo():
     # type: () -> àçčéñt
     pass
 """
@@ -71,13 +71,13 @@ a = 0  # type: int
 """
 
 ignores = """\
-def foo():
+eleza foo():
     pass  # type: ignore
 
-def bar():
+eleza bar():
     x = 1  # type: ignore
 
-def baz():
+eleza baz():
     pass  # type: ignore[excuse]
     pass  # type: ignore=excuse
     pass  # type: ignore [excuse]
@@ -89,119 +89,119 @@ def baz():
 # var-arg *v, plus a kw-arg **k.  It is verified in test_longargs()
 # that it has exactly these arguments, no more, no fewer.
 longargs = """\
-def fa(
+eleza fa(
     a = 1,  # type: A
 ):
     pass
 
-def fa(
+eleza fa(
     a = 1  # type: A
 ):
     pass
 
-def fa(
+eleza fa(
     a = 1,  # type: A
     /
 ):
     pass
 
-def fab(
+eleza fab(
     a,  # type: A
     b,  # type: B
 ):
     pass
 
-def fab(
+eleza fab(
     a,  # type: A
     /,
     b,  # type: B
 ):
     pass
 
-def fab(
+eleza fab(
     a,  # type: A
     b   # type: B
 ):
     pass
 
-def fv(
+eleza fv(
     *v,  # type: V
 ):
     pass
 
-def fv(
+eleza fv(
     *v  # type: V
 ):
     pass
 
-def fk(
+eleza fk(
     **k,  # type: K
 ):
     pass
 
-def fk(
+eleza fk(
     **k  # type: K
 ):
     pass
 
-def fvk(
+eleza fvk(
     *v,  # type: V
     **k,  # type: K
 ):
     pass
 
-def fvk(
+eleza fvk(
     *v,  # type: V
     **k  # type: K
 ):
     pass
 
-def fav(
+eleza fav(
     a,  # type: A
     *v,  # type: V
 ):
     pass
 
-def fav(
+eleza fav(
     a,  # type: A
     /,
     *v,  # type: V
 ):
     pass
 
-def fav(
+eleza fav(
     a,  # type: A
     *v  # type: V
 ):
     pass
 
-def fak(
+eleza fak(
     a,  # type: A
     **k,  # type: K
 ):
     pass
 
-def fak(
+eleza fak(
     a,  # type: A
     /,
     **k,  # type: K
 ):
     pass
 
-def fak(
+eleza fak(
     a,  # type: A
     **k  # type: K
 ):
     pass
 
-def favk(
+eleza favk(
     a,  # type: A
     *v,  # type: V
     **k,  # type: K
 ):
     pass
 
-def favk(
+eleza favk(
     a,  # type: A
     /,
     *v,  # type: V
@@ -209,7 +209,7 @@ def favk(
 ):
     pass
 
-def favk(
+eleza favk(
     a,  # type: A
     *v,  # type: V
     **k  # type: K
@@ -218,19 +218,19 @@ def favk(
 """
 
 
-class TypeCommentTests(unittest.TestCase):
+kundi TypeCommentTests(unittest.TestCase):
 
     lowest = 4  # Lowest minor version supported
     highest = sys.version_info[1]  # Highest minor version
 
-    def parse(self, source, feature_version=highest):
-        return ast.parse(source, type_comments=True,
+    eleza parse(self, source, feature_version=highest):
+        rudisha ast.parse(source, type_comments=True,
                          feature_version=feature_version)
 
-    def parse_all(self, source, minver=lowest, maxver=highest, expected_regex=""):
+    eleza parse_all(self, source, minver=lowest, maxver=highest, expected_regex=""):
         for version in range(self.lowest, self.highest + 1):
             feature_version = (3, version)
-            if minver <= version <= maxver:
+            ikiwa minver <= version <= maxver:
                 try:
                     yield self.parse(source, feature_version)
                 except SyntaxError as err:
@@ -240,10 +240,10 @@ class TypeCommentTests(unittest.TestCase):
                                             msg=f"feature_version={feature_version}"):
                     self.parse(source, feature_version)
 
-    def classic_parse(self, source):
-        return ast.parse(source)
+    eleza classic_parse(self, source):
+        rudisha ast.parse(source)
 
-    def test_funcdef(self):
+    eleza test_funcdef(self):
         for tree in self.parse_all(funcdef):
             self.assertEqual(tree.body[0].type_comment, "() -> int")
             self.assertEqual(tree.body[1].type_comment, "() -> None")
@@ -251,7 +251,7 @@ class TypeCommentTests(unittest.TestCase):
         self.assertEqual(tree.body[0].type_comment, None)
         self.assertEqual(tree.body[1].type_comment, None)
 
-    def test_asyncdef(self):
+    eleza test_asyncdef(self):
         for tree in self.parse_all(asyncdef, minver=5):
             self.assertEqual(tree.body[0].type_comment, "() -> int")
             self.assertEqual(tree.body[1].type_comment, "() -> int")
@@ -259,54 +259,54 @@ class TypeCommentTests(unittest.TestCase):
         self.assertEqual(tree.body[0].type_comment, None)
         self.assertEqual(tree.body[1].type_comment, None)
 
-    def test_asyncvar(self):
+    eleza test_asyncvar(self):
         for tree in self.parse_all(asyncvar, maxver=6):
             pass
 
-    def test_asynccomp(self):
+    eleza test_asynccomp(self):
         for tree in self.parse_all(asynccomp, minver=6):
             pass
 
-    def test_matmul(self):
+    eleza test_matmul(self):
         for tree in self.parse_all(matmul, minver=5):
             pass
 
-    def test_fstring(self):
+    eleza test_fstring(self):
         for tree in self.parse_all(fstring, minver=6):
             pass
 
-    def test_underscorednumber(self):
+    eleza test_underscorednumber(self):
         for tree in self.parse_all(underscorednumber, minver=6):
             pass
 
-    def test_redundantdef(self):
+    eleza test_redundantdef(self):
         for tree in self.parse_all(redundantdef, maxver=0,
                                 expected_regex="^Cannot have two type comments on def"):
             pass
 
-    def test_nonasciidef(self):
+    eleza test_nonasciidef(self):
         for tree in self.parse_all(nonasciidef):
             self.assertEqual(tree.body[0].type_comment, "() -> àçčéñt")
 
-    def test_forstmt(self):
+    eleza test_forstmt(self):
         for tree in self.parse_all(forstmt):
             self.assertEqual(tree.body[0].type_comment, "int")
         tree = self.classic_parse(forstmt)
         self.assertEqual(tree.body[0].type_comment, None)
 
-    def test_withstmt(self):
+    eleza test_withstmt(self):
         for tree in self.parse_all(withstmt):
             self.assertEqual(tree.body[0].type_comment, "int")
         tree = self.classic_parse(withstmt)
         self.assertEqual(tree.body[0].type_comment, None)
 
-    def test_vardecl(self):
+    eleza test_vardecl(self):
         for tree in self.parse_all(vardecl):
             self.assertEqual(tree.body[0].type_comment, "int")
         tree = self.classic_parse(vardecl)
         self.assertEqual(tree.body[0].type_comment, None)
 
-    def test_ignores(self):
+    eleza test_ignores(self):
         for tree in self.parse_all(ignores):
             self.assertEqual(
                 [(ti.lineno, ti.tag) for ti in tree.type_ignores],
@@ -321,7 +321,7 @@ class TypeCommentTests(unittest.TestCase):
         tree = self.classic_parse(ignores)
         self.assertEqual(tree.type_ignores, [])
 
-    def test_longargs(self):
+    eleza test_longargs(self):
         for tree in self.parse_all(longargs):
             for t in tree.body:
                 # The expected args are encoded in the function name
@@ -331,13 +331,13 @@ class TypeCommentTests(unittest.TestCase):
                 self.assertTrue(t.name.startswith('f'), t.name)
                 for index, c in enumerate(t.name[1:]):
                     todo.remove(c)
-                    if c == 'v':
+                    ikiwa c == 'v':
                         arg = t.args.vararg
-                    elif c == 'k':
+                    elikiwa c == 'k':
                         arg = t.args.kwarg
                     else:
                         assert 0 <= ord(c) - ord('a') < len(t.args.posonlyargs + t.args.args)
-                        if index < len(t.args.posonlyargs):
+                        ikiwa index < len(t.args.posonlyargs):
                             arg = t.args.posonlyargs[ord(c) - ord('a')]
                         else:
                             arg = t.args.args[ord(c) - ord('a') - len(t.args.posonlyargs)]
@@ -347,11 +347,11 @@ class TypeCommentTests(unittest.TestCase):
         tree = self.classic_parse(longargs)
         for t in tree.body:
             for arg in t.args.args + [t.args.vararg, t.args.kwarg]:
-                if arg is not None:
+                ikiwa arg is not None:
                     self.assertIsNone(arg.type_comment, "%s(%s:%r)" %
                                       (t.name, arg.arg, arg.type_comment))
 
-    def test_inappropriate_type_comments(self):
+    eleza test_inappropriate_type_comments(self):
         """Tests for inappropriately-placed type comments.
 
         These should be silently ignored with type comments off,
@@ -360,7 +360,7 @@ class TypeCommentTests(unittest.TestCase):
         This is not meant to be exhaustive.
         """
 
-        def check_both_ways(source):
+        eleza check_both_ways(source):
             ast.parse(source, type_comments=False)
             for tree in self.parse_all(source, maxver=0):
                 pass
@@ -375,12 +375,12 @@ class TypeCommentTests(unittest.TestCase):
         check_both_ways("pass  # type: ignorewhatever\n")
         check_both_ways("pass  # type: ignoreé\n")
 
-    def test_func_type_input(self):
+    eleza test_func_type_input(self):
 
-        def parse_func_type_input(source):
-            return ast.parse(source, "<unknown>", "func_type")
+        eleza parse_func_type_input(source):
+            rudisha ast.parse(source, "<unknown>", "func_type")
 
-        # Some checks below will crash if the returned structure is wrong
+        # Some checks below will crash ikiwa the returned structure is wrong
         tree = parse_func_type_input("() -> int")
         self.assertEqual(tree.argtypes, [])
         self.assertEqual(tree.returns.id, "int")
@@ -408,5 +408,5 @@ class TypeCommentTests(unittest.TestCase):
             tree = parse_func_type_input("(**int, **str) -> float")
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

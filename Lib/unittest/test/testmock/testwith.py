@@ -10,18 +10,18 @@ something  = sentinel.Something
 something_else  = sentinel.SomethingElse
 
 
-class SampleException(Exception): pass
+kundi SampleException(Exception): pass
 
 
-class WithTest(unittest.TestCase):
+kundi WithTest(unittest.TestCase):
 
-    def test_with_statement(self):
+    eleza test_with_statement(self):
         with patch('%s.something' % __name__, sentinel.Something2):
             self.assertEqual(something, sentinel.Something2, "unpatched")
         self.assertEqual(something, sentinel.Something)
 
 
-    def test_with_statement_exception(self):
+    eleza test_with_statement_exception(self):
         with self.assertRaises(SampleException):
             with patch('%s.something' % __name__, sentinel.Something2):
                 self.assertEqual(something, sentinel.Something2, "unpatched")
@@ -29,7 +29,7 @@ class WithTest(unittest.TestCase):
         self.assertEqual(something, sentinel.Something)
 
 
-    def test_with_statement_as(self):
+    eleza test_with_statement_as(self):
         with patch('%s.something' % __name__) as mock_something:
             self.assertEqual(something, mock_something, "unpatched")
             self.assertTrue(is_instance(mock_something, MagicMock),
@@ -37,8 +37,8 @@ class WithTest(unittest.TestCase):
         self.assertEqual(something, sentinel.Something)
 
 
-    def test_patch_object_with_statement(self):
-        class Foo(object):
+    eleza test_patch_object_with_statement(self):
+        kundi Foo(object):
             something = 'foo'
         original = Foo.something
         with patch.object(Foo, 'something'):
@@ -46,7 +46,7 @@ class WithTest(unittest.TestCase):
         self.assertEqual(Foo.something, original)
 
 
-    def test_with_statement_nested(self):
+    eleza test_with_statement_nested(self):
         with catch_warnings(record=True):
             with patch('%s.something' % __name__) as mock_something, patch('%s.something_else' % __name__) as mock_something_else:
                 self.assertEqual(something, mock_something, "unpatched")
@@ -57,14 +57,14 @@ class WithTest(unittest.TestCase):
         self.assertEqual(something_else, sentinel.SomethingElse)
 
 
-    def test_with_statement_specified(self):
+    eleza test_with_statement_specified(self):
         with patch('%s.something' % __name__, sentinel.Patched) as mock_something:
             self.assertEqual(something, mock_something, "unpatched")
             self.assertEqual(mock_something, sentinel.Patched, "wrong patch")
         self.assertEqual(something, sentinel.Something)
 
 
-    def testContextManagerMocking(self):
+    eleza testContextManagerMocking(self):
         mock = Mock()
         mock.__enter__ = Mock()
         mock.__exit__ = Mock()
@@ -76,7 +76,7 @@ class WithTest(unittest.TestCase):
         mock.__exit__.assert_called_with(None, None, None)
 
 
-    def test_context_manager_with_magic_mock(self):
+    eleza test_context_manager_with_magic_mock(self):
         mock = MagicMock()
 
         with self.assertRaises(TypeError):
@@ -86,7 +86,7 @@ class WithTest(unittest.TestCase):
         self.assertTrue(mock.__exit__.called)
 
 
-    def test_with_statement_same_attribute(self):
+    eleza test_with_statement_same_attribute(self):
         with patch('%s.something' % __name__, sentinel.Patched) as mock_something:
             self.assertEqual(something, mock_something, "unpatched")
 
@@ -99,7 +99,7 @@ class WithTest(unittest.TestCase):
         self.assertEqual(something, sentinel.Something, "not restored")
 
 
-    def test_with_statement_imbricated(self):
+    eleza test_with_statement_imbricated(self):
         with patch('%s.something' % __name__) as mock_something:
             self.assertEqual(something, mock_something, "unpatched")
 
@@ -111,7 +111,7 @@ class WithTest(unittest.TestCase):
         self.assertEqual(something_else, sentinel.SomethingElse)
 
 
-    def test_dict_context_manager(self):
+    eleza test_dict_context_manager(self):
         foo = {}
         with patch.dict(foo, {'a': 'b'}):
             self.assertEqual(foo, {'a': 'b'})
@@ -124,9 +124,9 @@ class WithTest(unittest.TestCase):
 
         self.assertEqual(foo, {})
 
-    def test_double_patch_instance_method(self):
-        class C:
-            def f(self): pass
+    eleza test_double_patch_instance_method(self):
+        kundi C:
+            eleza f(self): pass
 
         c = C()
 
@@ -139,9 +139,9 @@ class WithTest(unittest.TestCase):
         self.assertEqual(patch1.call_count, 1)
 
 
-class TestMockOpen(unittest.TestCase):
+kundi TestMockOpen(unittest.TestCase):
 
-    def test_mock_open(self):
+    eleza test_mock_open(self):
         mock = mock_open()
         with patch('%s.open' % __name__, mock, create=True) as patched:
             self.assertIs(patched, mock)
@@ -150,7 +150,7 @@ class TestMockOpen(unittest.TestCase):
         mock.assert_called_once_with('foo')
 
 
-    def test_mock_open_context_manager(self):
+    eleza test_mock_open_context_manager(self):
         mock = mock_open()
         handle = mock.return_value
         with patch('%s.open' % __name__, mock, create=True):
@@ -162,7 +162,7 @@ class TestMockOpen(unittest.TestCase):
         self.assertEqual(mock.mock_calls, expected_calls)
         self.assertIs(f, handle)
 
-    def test_mock_open_context_manager_multiple_times(self):
+    eleza test_mock_open_context_manager_multiple_times(self):
         mock = mock_open()
         with patch('%s.open' % __name__, mock, create=True):
             with open('foo') as f:
@@ -177,7 +177,7 @@ class TestMockOpen(unittest.TestCase):
             call().__exit__(None, None, None)]
         self.assertEqual(mock.mock_calls, expected_calls)
 
-    def test_explicit_mock(self):
+    eleza test_explicit_mock(self):
         mock = MagicMock()
         mock_open(mock)
 
@@ -188,7 +188,7 @@ class TestMockOpen(unittest.TestCase):
         mock.assert_called_once_with('foo')
 
 
-    def test_read_data(self):
+    eleza test_read_data(self):
         mock = mock_open(read_data='foo')
         with patch('%s.open' % __name__, mock, create=True):
             h = open('bar')
@@ -197,9 +197,9 @@ class TestMockOpen(unittest.TestCase):
         self.assertEqual(result, 'foo')
 
 
-    def test_readline_data(self):
-        # Check that readline will return all the lines kutoka the fake file
-        # And that once fully consumed, readline will return an empty string.
+    eleza test_readline_data(self):
+        # Check that readline will rudisha all the lines kutoka the fake file
+        # And that once fully consumed, readline will rudisha an empty string.
         mock = mock_open(read_data='foo\nbar\nbaz\n')
         with patch('%s.open' % __name__, mock, create=True):
             h = open('bar')
@@ -220,8 +220,8 @@ class TestMockOpen(unittest.TestCase):
         self.assertEqual(h.readline(), '')
 
 
-    def test_dunder_iter_data(self):
-        # Check that dunder_iter will return all the lines kutoka the fake file.
+    eleza test_dunder_iter_data(self):
+        # Check that dunder_iter will rudisha all the lines kutoka the fake file.
         mock = mock_open(read_data='foo\nbar\nbaz\n')
         with patch('%s.open' % __name__, mock, create=True):
             h = open('bar')
@@ -233,8 +233,8 @@ class TestMockOpen(unittest.TestCase):
         with self.assertRaises(StopIteration):
             next(h)
 
-    def test_next_data(self):
-        # Check that next will correctly return the next available
+    eleza test_next_data(self):
+        # Check that next will correctly rudisha the next available
         # line and plays well with the dunder_iter part.
         mock = mock_open(read_data='foo\nbar\nbaz\n')
         with patch('%s.open' % __name__, mock, create=True):
@@ -247,7 +247,7 @@ class TestMockOpen(unittest.TestCase):
         self.assertEqual(lines[0], 'baz\n')
         self.assertEqual(h.readline(), '')
 
-    def test_readlines_data(self):
+    eleza test_readlines_data(self):
         # Test that emulating a file that ends in a newline character works
         mock = mock_open(read_data='foo\nbar\nbaz\n')
         with patch('%s.open' % __name__, mock, create=True):
@@ -265,7 +265,7 @@ class TestMockOpen(unittest.TestCase):
         self.assertEqual(result, ['foo\n', 'bar\n', 'baz'])
 
 
-    def test_read_bytes(self):
+    eleza test_read_bytes(self):
         mock = mock_open(read_data=b'\xc6')
         with patch('%s.open' % __name__, mock, create=True):
             with open('abc', 'rb') as f:
@@ -273,7 +273,7 @@ class TestMockOpen(unittest.TestCase):
         self.assertEqual(result, b'\xc6')
 
 
-    def test_readline_bytes(self):
+    eleza test_readline_bytes(self):
         m = mock_open(read_data=b'abc\ndef\nghi\n')
         with patch('%s.open' % __name__, m, create=True):
             with open('abc', 'rb') as f:
@@ -285,7 +285,7 @@ class TestMockOpen(unittest.TestCase):
         self.assertEqual(line3, b'ghi\n')
 
 
-    def test_readlines_bytes(self):
+    eleza test_readlines_bytes(self):
         m = mock_open(read_data=b'abc\ndef\nghi\n')
         with patch('%s.open' % __name__, m, create=True):
             with open('abc', 'rb') as f:
@@ -293,7 +293,7 @@ class TestMockOpen(unittest.TestCase):
         self.assertEqual(result, [b'abc\n', b'def\n', b'ghi\n'])
 
 
-    def test_mock_open_read_with_argument(self):
+    eleza test_mock_open_read_with_argument(self):
         # At one point calling read with an argument was broken
         # for mocks returned by mock_open
         some_data = 'foo\nbar\nbaz'
@@ -306,7 +306,7 @@ class TestMockOpen(unittest.TestCase):
         self.assertEqual(f.read(10), some_data[10:])
 
 
-    def test_interleaved_reads(self):
+    eleza test_interleaved_reads(self):
         # Test that calling read, readline, and readlines pulls data
         # sequentially kutoka the data we preload with
         mock = mock_open(read_data='foo\nbar\nbaz\n')
@@ -326,7 +326,7 @@ class TestMockOpen(unittest.TestCase):
         self.assertEqual(rest, 'bar\nbaz\n')
 
 
-    def test_overriding_return_values(self):
+    eleza test_overriding_return_values(self):
         mock = mock_open(read_data='foo')
         handle = mock()
 
@@ -343,5 +343,5 @@ class TestMockOpen(unittest.TestCase):
         self.assertEqual(handle.readline(), 'bar')
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

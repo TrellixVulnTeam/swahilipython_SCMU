@@ -33,77 +33,77 @@ __all__ = ["ref", "proxy", "getweakrefcount", "getweakrefs",
            "WeakSet", "WeakMethod", "finalize"]
 
 
-class WeakMethod(ref):
+kundi WeakMethod(ref):
     """
-    A custom `weakref.ref` subclass which simulates a weak reference to
+    A custom `weakref.ref` subkundi which simulates a weak reference to
     a bound method, working around the lifetime problem of bound methods.
     """
 
     __slots__ = "_func_ref", "_meth_type", "_alive", "__weakref__"
 
-    def __new__(cls, meth, callback=None):
+    eleza __new__(cls, meth, callback=None):
         try:
             obj = meth.__self__
             func = meth.__func__
         except AttributeError:
             raise TypeError("argument should be a bound method, not {}"
                             .format(type(meth))) kutoka None
-        def _cb(arg):
+        eleza _cb(arg):
             # The self-weakref trick is needed to avoid creating a reference
             # cycle.
             self = self_wr()
-            if self._alive:
+            ikiwa self._alive:
                 self._alive = False
-                if callback is not None:
+                ikiwa callback is not None:
                     callback(self)
         self = ref.__new__(cls, obj, _cb)
         self._func_ref = ref(func, _cb)
         self._meth_type = type(meth)
         self._alive = True
         self_wr = ref(self)
-        return self
+        rudisha self
 
-    def __call__(self):
+    eleza __call__(self):
         obj = super().__call__()
         func = self._func_ref()
-        if obj is None or func is None:
-            return None
-        return self._meth_type(func, obj)
+        ikiwa obj is None or func is None:
+            rudisha None
+        rudisha self._meth_type(func, obj)
 
-    def __eq__(self, other):
-        if isinstance(other, WeakMethod):
-            if not self._alive or not other._alive:
-                return self is other
-            return ref.__eq__(self, other) and self._func_ref == other._func_ref
-        return False
+    eleza __eq__(self, other):
+        ikiwa isinstance(other, WeakMethod):
+            ikiwa not self._alive or not other._alive:
+                rudisha self is other
+            rudisha ref.__eq__(self, other) and self._func_ref == other._func_ref
+        rudisha False
 
-    def __ne__(self, other):
-        if isinstance(other, WeakMethod):
-            if not self._alive or not other._alive:
-                return self is not other
-            return ref.__ne__(self, other) or self._func_ref != other._func_ref
-        return True
+    eleza __ne__(self, other):
+        ikiwa isinstance(other, WeakMethod):
+            ikiwa not self._alive or not other._alive:
+                rudisha self is not other
+            rudisha ref.__ne__(self, other) or self._func_ref != other._func_ref
+        rudisha True
 
     __hash__ = ref.__hash__
 
 
-class WeakValueDictionary(_collections_abc.MutableMapping):
-    """Mapping class that references values weakly.
+kundi WeakValueDictionary(_collections_abc.MutableMapping):
+    """Mapping kundi that references values weakly.
 
     Entries in the dictionary will be discarded when no strong
     reference to the value exists anymore
     """
     # We inherit the constructor without worrying about the input
     # dictionary; since it uses our .update() method, we get the right
-    # checks (if the other dictionary is a WeakValueDictionary,
+    # checks (ikiwa the other dictionary is a WeakValueDictionary,
     # objects are unwrapped on the way out, and we always wrap on the
     # way in).
 
-    def __init__(self, other=(), /, **kw):
-        def remove(wr, selfref=ref(self), _atomic_removal=_remove_dead_weakref):
+    eleza __init__(self, other=(), /, **kw):
+        eleza remove(wr, selfref=ref(self), _atomic_removal=_remove_dead_weakref):
             self = selfref()
-            if self is not None:
-                if self._iterating:
+            ikiwa self is not None:
+                ikiwa self._iterating:
                     self._pending_removals.append(wr.key)
                 else:
                     # Atomic removal is necessary since this function
@@ -116,7 +116,7 @@ class WeakValueDictionary(_collections_abc.MutableMapping):
         self.data = {}
         self.update(other, **kw)
 
-    def _commit_removals(self):
+    eleza _commit_removals(self):
         l = self._pending_removals
         d = self.data
         # We shouldn't encounter any KeyError, because this method should
@@ -125,102 +125,102 @@ class WeakValueDictionary(_collections_abc.MutableMapping):
             key = l.pop()
             _remove_dead_weakref(d, key)
 
-    def __getitem__(self, key):
-        if self._pending_removals:
+    eleza __getitem__(self, key):
+        ikiwa self._pending_removals:
             self._commit_removals()
         o = self.data[key]()
-        if o is None:
+        ikiwa o is None:
             raise KeyError(key)
         else:
-            return o
+            rudisha o
 
-    def __delitem__(self, key):
-        if self._pending_removals:
+    eleza __delitem__(self, key):
+        ikiwa self._pending_removals:
             self._commit_removals()
         del self.data[key]
 
-    def __len__(self):
-        if self._pending_removals:
+    eleza __len__(self):
+        ikiwa self._pending_removals:
             self._commit_removals()
-        return len(self.data)
+        rudisha len(self.data)
 
-    def __contains__(self, key):
-        if self._pending_removals:
+    eleza __contains__(self, key):
+        ikiwa self._pending_removals:
             self._commit_removals()
         try:
             o = self.data[key]()
         except KeyError:
-            return False
-        return o is not None
+            rudisha False
+        rudisha o is not None
 
-    def __repr__(self):
-        return "<%s at %#x>" % (self.__class__.__name__, id(self))
+    eleza __repr__(self):
+        rudisha "<%s at %#x>" % (self.__class__.__name__, id(self))
 
-    def __setitem__(self, key, value):
-        if self._pending_removals:
+    eleza __setitem__(self, key, value):
+        ikiwa self._pending_removals:
             self._commit_removals()
         self.data[key] = KeyedRef(value, self._remove, key)
 
-    def copy(self):
-        if self._pending_removals:
+    eleza copy(self):
+        ikiwa self._pending_removals:
             self._commit_removals()
         new = WeakValueDictionary()
         with _IterationGuard(self):
             for key, wr in self.data.items():
                 o = wr()
-                if o is not None:
+                ikiwa o is not None:
                     new[key] = o
-        return new
+        rudisha new
 
     __copy__ = copy
 
-    def __deepcopy__(self, memo):
+    eleza __deepcopy__(self, memo):
         kutoka copy agiza deepcopy
-        if self._pending_removals:
+        ikiwa self._pending_removals:
             self._commit_removals()
         new = self.__class__()
         with _IterationGuard(self):
             for key, wr in self.data.items():
                 o = wr()
-                if o is not None:
+                ikiwa o is not None:
                     new[deepcopy(key, memo)] = o
-        return new
+        rudisha new
 
-    def get(self, key, default=None):
-        if self._pending_removals:
+    eleza get(self, key, default=None):
+        ikiwa self._pending_removals:
             self._commit_removals()
         try:
             wr = self.data[key]
         except KeyError:
-            return default
+            rudisha default
         else:
             o = wr()
-            if o is None:
+            ikiwa o is None:
                 # This should only happen
-                return default
+                rudisha default
             else:
-                return o
+                rudisha o
 
-    def items(self):
-        if self._pending_removals:
+    eleza items(self):
+        ikiwa self._pending_removals:
             self._commit_removals()
         with _IterationGuard(self):
             for k, wr in self.data.items():
                 v = wr()
-                if v is not None:
+                ikiwa v is not None:
                     yield k, v
 
-    def keys(self):
-        if self._pending_removals:
+    eleza keys(self):
+        ikiwa self._pending_removals:
             self._commit_removals()
         with _IterationGuard(self):
             for k, wr in self.data.items():
-                if wr() is not None:
+                ikiwa wr() is not None:
                     yield k
 
     __iter__ = keys
 
-    def itervaluerefs(self):
+    eleza itervaluerefs(self):
         """Return an iterator that yields the weak references to the values.
 
         The references are not guaranteed to be 'live' at the time
@@ -230,70 +230,70 @@ class WeakValueDictionary(_collections_abc.MutableMapping):
         keep the values around longer than needed.
 
         """
-        if self._pending_removals:
+        ikiwa self._pending_removals:
             self._commit_removals()
         with _IterationGuard(self):
             yield kutoka self.data.values()
 
-    def values(self):
-        if self._pending_removals:
+    eleza values(self):
+        ikiwa self._pending_removals:
             self._commit_removals()
         with _IterationGuard(self):
             for wr in self.data.values():
                 obj = wr()
-                if obj is not None:
+                ikiwa obj is not None:
                     yield obj
 
-    def popitem(self):
-        if self._pending_removals:
+    eleza popitem(self):
+        ikiwa self._pending_removals:
             self._commit_removals()
         while True:
             key, wr = self.data.popitem()
             o = wr()
-            if o is not None:
-                return key, o
+            ikiwa o is not None:
+                rudisha key, o
 
-    def pop(self, key, *args):
-        if self._pending_removals:
+    eleza pop(self, key, *args):
+        ikiwa self._pending_removals:
             self._commit_removals()
         try:
             o = self.data.pop(key)()
         except KeyError:
             o = None
-        if o is None:
-            if args:
-                return args[0]
+        ikiwa o is None:
+            ikiwa args:
+                rudisha args[0]
             else:
                 raise KeyError(key)
         else:
-            return o
+            rudisha o
 
-    def setdefault(self, key, default=None):
+    eleza setdefault(self, key, default=None):
         try:
             o = self.data[key]()
         except KeyError:
             o = None
-        if o is None:
-            if self._pending_removals:
+        ikiwa o is None:
+            ikiwa self._pending_removals:
                 self._commit_removals()
             self.data[key] = KeyedRef(default, self._remove, key)
-            return default
+            rudisha default
         else:
-            return o
+            rudisha o
 
-    def update(self, other=None, /, **kwargs):
-        if self._pending_removals:
+    eleza update(self, other=None, /, **kwargs):
+        ikiwa self._pending_removals:
             self._commit_removals()
         d = self.data
-        if other is not None:
-            if not hasattr(other, "items"):
+        ikiwa other is not None:
+            ikiwa not hasattr(other, "items"):
                 other = dict(other)
             for key, o in other.items():
                 d[key] = KeyedRef(o, self._remove, key)
         for key, o in kwargs.items():
             d[key] = KeyedRef(o, self._remove, key)
 
-    def valuerefs(self):
+    eleza valuerefs(self):
         """Return a list of weak references to the values.
 
         The references are not guaranteed to be 'live' at the time
@@ -303,12 +303,12 @@ class WeakValueDictionary(_collections_abc.MutableMapping):
         keep the values around longer than needed.
 
         """
-        if self._pending_removals:
+        ikiwa self._pending_removals:
             self._commit_removals()
-        return list(self.data.values())
+        rudisha list(self.data.values())
 
 
-class KeyedRef(ref):
+kundi KeyedRef(ref):
     """Specialized reference that includes a key corresponding to the value.
 
     This is used in the WeakValueDictionary to avoid having to create
@@ -320,17 +320,17 @@ class KeyedRef(ref):
 
     __slots__ = "key",
 
-    def __new__(type, ob, callback, key):
+    eleza __new__(type, ob, callback, key):
         self = ref.__new__(type, ob, callback)
         self.key = key
-        return self
+        rudisha self
 
-    def __init__(self, ob, callback, key):
+    eleza __init__(self, ob, callback, key):
         super().__init__(ob, callback)
 
 
-class WeakKeyDictionary(_collections_abc.MutableMapping):
-    """ Mapping class that references keys weakly.
+kundi WeakKeyDictionary(_collections_abc.MutableMapping):
+    """ Mapping kundi that references keys weakly.
 
     Entries in the dictionary will be discarded when there is no
     longer a strong reference to the key. This can be used to
@@ -340,12 +340,12 @@ class WeakKeyDictionary(_collections_abc.MutableMapping):
     accesses.
     """
 
-    def __init__(self, dict=None):
+    eleza __init__(self, dict=None):
         self.data = {}
-        def remove(k, selfref=ref(self)):
+        eleza remove(k, selfref=ref(self)):
             self = selfref()
-            if self is not None:
-                if self._iterating:
+            ikiwa self is not None:
+                ikiwa self._iterating:
                     self._pending_removals.append(k)
                 else:
                     del self.data[k]
@@ -354,13 +354,13 @@ class WeakKeyDictionary(_collections_abc.MutableMapping):
         self._pending_removals = []
         self._iterating = set()
         self._dirty_len = False
-        if dict is not None:
+        ikiwa dict is not None:
             self.update(dict)
 
-    def _commit_removals(self):
+    eleza _commit_removals(self):
         # NOTE: We don't need to call this method before mutating the dict,
         # because a dead weakref never compares equal to a live weakref,
-        # even if they happened to refer to equal objects.
+        # even ikiwa they happened to refer to equal objects.
         # However, it means keys may already have been removed.
         l = self._pending_removals
         d = self.data
@@ -370,85 +370,85 @@ class WeakKeyDictionary(_collections_abc.MutableMapping):
             except KeyError:
                 pass
 
-    def _scrub_removals(self):
+    eleza _scrub_removals(self):
         d = self.data
-        self._pending_removals = [k for k in self._pending_removals if k in d]
+        self._pending_removals = [k for k in self._pending_removals ikiwa k in d]
         self._dirty_len = False
 
-    def __delitem__(self, key):
+    eleza __delitem__(self, key):
         self._dirty_len = True
         del self.data[ref(key)]
 
-    def __getitem__(self, key):
-        return self.data[ref(key)]
+    eleza __getitem__(self, key):
+        rudisha self.data[ref(key)]
 
-    def __len__(self):
-        if self._dirty_len and self._pending_removals:
+    eleza __len__(self):
+        ikiwa self._dirty_len and self._pending_removals:
             # self._pending_removals may still contain keys which were
             # explicitly removed, we have to scrub them (see issue #21173).
             self._scrub_removals()
-        return len(self.data) - len(self._pending_removals)
+        rudisha len(self.data) - len(self._pending_removals)
 
-    def __repr__(self):
-        return "<%s at %#x>" % (self.__class__.__name__, id(self))
+    eleza __repr__(self):
+        rudisha "<%s at %#x>" % (self.__class__.__name__, id(self))
 
-    def __setitem__(self, key, value):
+    eleza __setitem__(self, key, value):
         self.data[ref(key, self._remove)] = value
 
-    def copy(self):
+    eleza copy(self):
         new = WeakKeyDictionary()
         with _IterationGuard(self):
             for key, value in self.data.items():
                 o = key()
-                if o is not None:
+                ikiwa o is not None:
                     new[o] = value
-        return new
+        rudisha new
 
     __copy__ = copy
 
-    def __deepcopy__(self, memo):
+    eleza __deepcopy__(self, memo):
         kutoka copy agiza deepcopy
         new = self.__class__()
         with _IterationGuard(self):
             for key, value in self.data.items():
                 o = key()
-                if o is not None:
+                ikiwa o is not None:
                     new[o] = deepcopy(value, memo)
-        return new
+        rudisha new
 
-    def get(self, key, default=None):
-        return self.data.get(ref(key),default)
+    eleza get(self, key, default=None):
+        rudisha self.data.get(ref(key),default)
 
-    def __contains__(self, key):
+    eleza __contains__(self, key):
         try:
             wr = ref(key)
         except TypeError:
-            return False
-        return wr in self.data
+            rudisha False
+        rudisha wr in self.data
 
-    def items(self):
+    eleza items(self):
         with _IterationGuard(self):
             for wr, value in self.data.items():
                 key = wr()
-                if key is not None:
+                ikiwa key is not None:
                     yield key, value
 
-    def keys(self):
+    eleza keys(self):
         with _IterationGuard(self):
             for wr in self.data:
                 obj = wr()
-                if obj is not None:
+                ikiwa obj is not None:
                     yield obj
 
     __iter__ = keys
 
-    def values(self):
+    eleza values(self):
         with _IterationGuard(self):
             for wr, value in self.data.items():
-                if wr() is not None:
+                ikiwa wr() is not None:
                     yield value
 
-    def keyrefs(self):
+    eleza keyrefs(self):
         """Return a list of weak references to the keys.
 
         The references are not guaranteed to be 'live' at the time
@@ -458,35 +458,35 @@ class WeakKeyDictionary(_collections_abc.MutableMapping):
         keep the keys around longer than needed.
 
         """
-        return list(self.data)
+        rudisha list(self.data)
 
-    def popitem(self):
+    eleza popitem(self):
         self._dirty_len = True
         while True:
             key, value = self.data.popitem()
             o = key()
-            if o is not None:
-                return o, value
+            ikiwa o is not None:
+                rudisha o, value
 
-    def pop(self, key, *args):
+    eleza pop(self, key, *args):
         self._dirty_len = True
-        return self.data.pop(ref(key), *args)
+        rudisha self.data.pop(ref(key), *args)
 
-    def setdefault(self, key, default=None):
-        return self.data.setdefault(ref(key, self._remove),default)
+    eleza setdefault(self, key, default=None):
+        rudisha self.data.setdefault(ref(key, self._remove),default)
 
-    def update(self, dict=None, /, **kwargs):
+    eleza update(self, dict=None, /, **kwargs):
         d = self.data
-        if dict is not None:
-            if not hasattr(dict, "items"):
+        ikiwa dict is not None:
+            ikiwa not hasattr(dict, "items"):
                 dict = type({})(dict)
             for key, value in dict.items():
                 d[ref(key, self._remove)] = value
-        if len(kwargs):
+        ikiwa len(kwargs):
             self.update(kwargs)
 
 
-class finalize:
+kundi finalize:
     """Class for finalization of weakrefable objects
 
     finalize(obj, func, *args, **kwargs) returns a callable finalizer
@@ -511,27 +511,27 @@ class finalize:
     _dirty = False
     _registered_with_atexit = False
 
-    class _Info:
+    kundi _Info:
         __slots__ = ("weakref", "func", "args", "kwargs", "atexit", "index")
 
-    def __init__(*args, **kwargs):
-        if len(args) >= 3:
+    eleza __init__(*args, **kwargs):
+        ikiwa len(args) >= 3:
             self, obj, func, *args = args
-        elif not args:
+        elikiwa not args:
             raise TypeError("descriptor '__init__' of 'finalize' object "
                             "needs an argument")
         else:
-            if 'func' not in kwargs:
+            ikiwa 'func' not in kwargs:
                 raise TypeError('finalize expected at least 2 positional '
                                 'arguments, got %d' % (len(args)-1))
             func = kwargs.pop('func')
-            if len(args) >= 2:
+            ikiwa len(args) >= 2:
                 self, obj, *args = args
                 agiza warnings
                 warnings.warn("Passing 'func' as keyword argument is deprecated",
                               DeprecationWarning, stacklevel=2)
             else:
-                if 'obj' not in kwargs:
+                ikiwa 'obj' not in kwargs:
                     raise TypeError('finalize expected at least 2 positional '
                                     'arguments, got %d' % (len(args)-1))
                 obj = kwargs.pop('obj')
@@ -541,7 +541,7 @@ class finalize:
                               DeprecationWarning, stacklevel=2)
         args = tuple(args)
 
-        if not self._registered_with_atexit:
+        ikiwa not self._registered_with_atexit:
             # We may register the exit function more than once because
             # of a thread race, but that is harmless
             agiza atexit
@@ -558,80 +558,80 @@ class finalize:
         finalize._dirty = True
     __init__.__text_signature__ = '($self, obj, func, /, *args, **kwargs)'
 
-    def __call__(self, _=None):
-        """If alive then mark as dead and return func(*args, **kwargs);
-        otherwise return None"""
+    eleza __call__(self, _=None):
+        """If alive then mark as dead and rudisha func(*args, **kwargs);
+        otherwise rudisha None"""
         info = self._registry.pop(self, None)
-        if info and not self._shutdown:
-            return info.func(*info.args, **(info.kwargs or {}))
+        ikiwa info and not self._shutdown:
+            rudisha info.func(*info.args, **(info.kwargs or {}))
 
-    def detach(self):
-        """If alive then mark as dead and return (obj, func, args, kwargs);
-        otherwise return None"""
+    eleza detach(self):
+        """If alive then mark as dead and rudisha (obj, func, args, kwargs);
+        otherwise rudisha None"""
         info = self._registry.get(self)
         obj = info and info.weakref()
-        if obj is not None and self._registry.pop(self, None):
-            return (obj, info.func, info.args, info.kwargs or {})
+        ikiwa obj is not None and self._registry.pop(self, None):
+            rudisha (obj, info.func, info.args, info.kwargs or {})
 
-    def peek(self):
-        """If alive then return (obj, func, args, kwargs);
-        otherwise return None"""
+    eleza peek(self):
+        """If alive then rudisha (obj, func, args, kwargs);
+        otherwise rudisha None"""
         info = self._registry.get(self)
         obj = info and info.weakref()
-        if obj is not None:
-            return (obj, info.func, info.args, info.kwargs or {})
+        ikiwa obj is not None:
+            rudisha (obj, info.func, info.args, info.kwargs or {})
 
     @property
-    def alive(self):
+    eleza alive(self):
         """Whether finalizer is alive"""
-        return self in self._registry
+        rudisha self in self._registry
 
     @property
-    def atexit(self):
+    eleza atexit(self):
         """Whether finalizer should be called at exit"""
         info = self._registry.get(self)
-        return bool(info) and info.atexit
+        rudisha bool(info) and info.atexit
 
     @atexit.setter
-    def atexit(self, value):
+    eleza atexit(self, value):
         info = self._registry.get(self)
-        if info:
+        ikiwa info:
             info.atexit = bool(value)
 
-    def __repr__(self):
+    eleza __repr__(self):
         info = self._registry.get(self)
         obj = info and info.weakref()
-        if obj is None:
-            return '<%s object at %#x; dead>' % (type(self).__name__, id(self))
+        ikiwa obj is None:
+            rudisha '<%s object at %#x; dead>' % (type(self).__name__, id(self))
         else:
-            return '<%s object at %#x; for %r at %#x>' % \
+            rudisha '<%s object at %#x; for %r at %#x>' % \
                 (type(self).__name__, id(self), type(obj).__name__, id(obj))
 
     @classmethod
-    def _select_for_exit(cls):
+    eleza _select_for_exit(cls):
         # Return live finalizers marked for exit, oldest first
-        L = [(f,i) for (f,i) in cls._registry.items() if i.atexit]
+        L = [(f,i) for (f,i) in cls._registry.items() ikiwa i.atexit]
         L.sort(key=lambda item:item[1].index)
-        return [f for (f,i) in L]
+        rudisha [f for (f,i) in L]
 
     @classmethod
-    def _exitfunc(cls):
+    eleza _exitfunc(cls):
         # At shutdown invoke finalizers for which atexit is true.
         # This is called once all other non-daemonic threads have been
         # joined.
         reenable_gc = False
         try:
-            if cls._registry:
+            ikiwa cls._registry:
                 agiza gc
-                if gc.isenabled():
+                ikiwa gc.isenabled():
                     reenable_gc = True
                     gc.disable()
                 pending = None
                 while True:
-                    if pending is None or finalize._dirty:
+                    ikiwa pending is None or finalize._dirty:
                         pending = cls._select_for_exit()
                         finalize._dirty = False
-                    if not pending:
+                    ikiwa not pending:
                         break
                     f = pending.pop()
                     try:
@@ -646,5 +646,5 @@ class finalize:
         finally:
             # prevent any more finalizers kutoka executing during shutdown
             finalize._shutdown = True
-            if reenable_gc:
+            ikiwa reenable_gc:
                 gc.enable()

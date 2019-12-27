@@ -70,7 +70,7 @@ def source_role(typ, rawtext, text, lineno, inliner, options={}, content=[]):
 
 # Support for marking up implementation details
 
-class ImplementationDetail(Directive):
+kundi ImplementationDetail(Directive):
 
     has_content = True
     required_arguments = 0
@@ -105,7 +105,7 @@ class ImplementationDetail(Directive):
 
 # Support for documenting platform availability
 
-class Availability(Directive):
+kundi Availability(Directive):
 
     has_content = False
     required_arguments = 1
@@ -125,7 +125,7 @@ class Availability(Directive):
 
 # Support for documenting audit event
 
-class AuditEvent(Directive):
+kundi AuditEvent(Directive):
 
     has_content = True
     required_arguments = 1
@@ -216,11 +216,11 @@ class AuditEvent(Directive):
         return True
 
 
-class audit_event_list(nodes.General, nodes.Element):
+kundi audit_event_list(nodes.General, nodes.Element):
     pass
 
 
-class AuditEventListDirective(Directive):
+kundi AuditEventListDirective(Directive):
 
     def run(self):
         return [audit_event_list('')]
@@ -228,7 +228,7 @@ class AuditEventListDirective(Directive):
 
 # Support for documenting decorators
 
-class PyDecoratorMixin(object):
+kundi PyDecoratorMixin(object):
     def handle_signature(self, sig, signode):
         ret = super(PyDecoratorMixin, self).handle_signature(sig, signode)
         signode.insert(0, addnodes.desc_addname('@', '@'))
@@ -238,58 +238,58 @@ class PyDecoratorMixin(object):
         return False
 
 
-class PyDecoratorFunction(PyDecoratorMixin, PyModulelevel):
+kundi PyDecoratorFunction(PyDecoratorMixin, PyModulelevel):
     def run(self):
         # a decorator function is a function after all
         self.name = 'py:function'
         return PyModulelevel.run(self)
 
 
-class PyDecoratorMethod(PyDecoratorMixin, PyClassmember):
+kundi PyDecoratorMethod(PyDecoratorMixin, PyClassmember):
     def run(self):
         self.name = 'py:method'
         return PyClassmember.run(self)
 
 
-class PyCoroutineMixin(object):
+kundi PyCoroutineMixin(object):
     def handle_signature(self, sig, signode):
         ret = super(PyCoroutineMixin, self).handle_signature(sig, signode)
         signode.insert(0, addnodes.desc_annotation('coroutine ', 'coroutine '))
         return ret
 
 
-class PyAwaitableMixin(object):
+kundi PyAwaitableMixin(object):
     def handle_signature(self, sig, signode):
         ret = super(PyAwaitableMixin, self).handle_signature(sig, signode)
         signode.insert(0, addnodes.desc_annotation('awaitable ', 'awaitable '))
         return ret
 
 
-class PyCoroutineFunction(PyCoroutineMixin, PyModulelevel):
+kundi PyCoroutineFunction(PyCoroutineMixin, PyModulelevel):
     def run(self):
         self.name = 'py:function'
         return PyModulelevel.run(self)
 
 
-class PyCoroutineMethod(PyCoroutineMixin, PyClassmember):
+kundi PyCoroutineMethod(PyCoroutineMixin, PyClassmember):
     def run(self):
         self.name = 'py:method'
         return PyClassmember.run(self)
 
 
-class PyAwaitableFunction(PyAwaitableMixin, PyClassmember):
+kundi PyAwaitableFunction(PyAwaitableMixin, PyClassmember):
     def run(self):
         self.name = 'py:function'
         return PyClassmember.run(self)
 
 
-class PyAwaitableMethod(PyAwaitableMixin, PyClassmember):
+kundi PyAwaitableMethod(PyAwaitableMixin, PyClassmember):
     def run(self):
         self.name = 'py:method'
         return PyClassmember.run(self)
 
 
-class PyAbstractMethod(PyClassmember):
+kundi PyAbstractMethod(PyClassmember):
 
     def handle_signature(self, sig, signode):
         ret = super(PyAbstractMethod, self).handle_signature(sig, signode)
@@ -304,7 +304,7 @@ class PyAbstractMethod(PyClassmember):
 
 # Support for documenting version of removal in deprecations
 
-class DeprecatedRemoved(Directive):
+kundi DeprecatedRemoved(Directive):
     has_content = True
     required_arguments = 2
     optional_arguments = 1
@@ -356,7 +356,7 @@ issue_re = re.compile('(?:[Ii]ssue #|bpo-)([0-9]+)')
 whatsnew_re = re.compile(r"(?im)^what's new in (.*?)\??$")
 
 
-class MiscNews(Directive):
+kundi MiscNews(Directive):
     has_content = False
     required_arguments = 1
     optional_arguments = 0
@@ -409,10 +409,10 @@ pydoc_topic_labels = [
 ]
 
 
-class PydocTopicsBuilder(Builder):
+kundi PydocTopicsBuilder(Builder):
     name = 'pydoc-topics'
 
-    default_translator_class = TextTranslator
+    default_translator_kundi = TextTranslator
 
     def init(self):
         self.topics = {}
@@ -494,7 +494,7 @@ def parse_pdb_command(env, sig, signode):
     return fullname
 
 
-def process_audit_events(app, doctree, fromdocname):
+def process_audit_events(app, doctree, kutokadocname):
     for node in doctree.traverse(audit_event_list):
         break
     else:
@@ -544,7 +544,7 @@ def process_audit_events(app, doctree, fromdocname):
                 ref = nodes.reference("", nodes.Text("[{}]".format(i)), internal=True)
                 try:
                     ref['refuri'] = "{}#{}".format(
-                        app.builder.get_relative_uri(fromdocname, doc),
+                        app.builder.get_relative_uri(kutokadocname, doc),
                         label,
                     )
                 except NoUri:

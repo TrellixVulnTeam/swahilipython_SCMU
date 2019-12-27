@@ -72,7 +72,7 @@ Cross Platform
    may look different on different platforms and this is intended.
 
    If *aliased* is true, the function will use aliases for various platforms that
-   report system names which differ from their common names, for example SunOS will
+   report system names which differ kutoka their common names, for example SunOS will
    be reported as Solaris.  The :func:`system_alias` function is used to implement
    this.
 
@@ -176,7 +176,7 @@ Cross Platform
    Entries which cannot be determined are set to ``''``.
 
    .. versionchanged:: 3.3
-      Result changed from a tuple to a namedtuple.
+      Result changed kutoka a tuple to a namedtuple.
 
 
 Java Platform
@@ -199,7 +199,7 @@ Windows Platform
 
 .. function:: win32_ver(release='', version='', csd='', ptype='')
 
-   Get additional version information from the Windows Registry and return a tuple
+   Get additional version information kutoka the Windows Registry and return a tuple
    ``(release, version, csd, ptype)`` referring to OS release, version number,
    CSD level (service pack) and OS type (multi/single processor).
 

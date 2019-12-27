@@ -11,64 +11,64 @@ agiza collections
 agiza collections.abc
 agiza itertools
 
-class PassThru(Exception):
+kundi PassThru(Exception):
     pass
 
-def check_pass_thru():
+eleza check_pass_thru():
     raise PassThru
     yield 1
 
-class BadCmp:
-    def __hash__(self):
-        return 1
-    def __eq__(self, other):
+kundi BadCmp:
+    eleza __hash__(self):
+        rudisha 1
+    eleza __eq__(self, other):
         raise RuntimeError
 
-class ReprWrapper:
+kundi ReprWrapper:
     'Used to test self-referential repr() calls'
-    def __repr__(self):
-        return repr(self.value)
+    eleza __repr__(self):
+        rudisha repr(self.value)
 
-class HashCountingInt(int):
+kundi HashCountingInt(int):
     'int-like object that counts the number of times __hash__ is called'
-    def __init__(self, *args):
+    eleza __init__(self, *args):
         self.hash_count = 0
-    def __hash__(self):
+    eleza __hash__(self):
         self.hash_count += 1
-        return int.__hash__(self)
+        rudisha int.__hash__(self)
 
-class TestJointOps:
+kundi TestJointOps:
     # Tests common to both set and frozenset
 
-    def setUp(self):
+    eleza setUp(self):
         self.word = word = 'simsalabim'
         self.otherword = 'madagascar'
         self.letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
         self.s = self.thetype(word)
-        self.d = dict.fromkeys(word)
+        self.d = dict.kutokakeys(word)
 
-    def test_new_or_init(self):
+    eleza test_new_or_init(self):
         self.assertRaises(TypeError, self.thetype, [], 2)
         self.assertRaises(TypeError, set().__init__, a=1)
 
-    def test_uniquification(self):
+    eleza test_uniquification(self):
         actual = sorted(self.s)
         expected = sorted(self.d)
         self.assertEqual(actual, expected)
         self.assertRaises(PassThru, self.thetype, check_pass_thru())
         self.assertRaises(TypeError, self.thetype, [[]])
 
-    def test_len(self):
+    eleza test_len(self):
         self.assertEqual(len(self.s), len(self.d))
 
-    def test_contains(self):
+    eleza test_contains(self):
         for c in self.letters:
             self.assertEqual(c in self.s, c in self.d)
         self.assertRaises(TypeError, self.s.__contains__, [[]])
         s = self.thetype([frozenset(self.letters)])
         self.assertIn(self.thetype(self.letters), s)
 
-    def test_union(self):
+    eleza test_union(self):
         u = self.s.union(self.otherword)
         for c in self.letters:
             self.assertEqual(c in u, c in self.d or c in self.otherword)
@@ -76,7 +76,7 @@ class TestJointOps:
         self.assertEqual(type(u), self.basetype)
         self.assertRaises(PassThru, self.s.union, check_pass_thru())
         self.assertRaises(TypeError, self.s.union, [[]])
-        for C in set, frozenset, dict.fromkeys, str, list, tuple:
+        for C in set, frozenset, dict.kutokakeys, str, list, tuple:
             self.assertEqual(self.thetype('abcba').union(C('cdc')), set('abcd'))
             self.assertEqual(self.thetype('abcba').union(C('efgfe')), set('abcefg'))
             self.assertEqual(self.thetype('abcba').union(C('ccb')), set('abc'))
@@ -87,7 +87,7 @@ class TestJointOps:
         x = self.thetype()
         self.assertEqual(x.union(set([1]), x, set([2])), self.thetype([1, 2]))
 
-    def test_or(self):
+    eleza test_or(self):
         i = self.s.union(self.otherword)
         self.assertEqual(self.s | set(self.otherword), i)
         self.assertEqual(self.s | frozenset(self.otherword), i)
@@ -98,14 +98,14 @@ class TestJointOps:
         else:
             self.fail("s|t did not screen-out general iterables")
 
-    def test_intersection(self):
+    eleza test_intersection(self):
         i = self.s.intersection(self.otherword)
         for c in self.letters:
             self.assertEqual(c in i, c in self.d and c in self.otherword)
         self.assertEqual(self.s, self.thetype(self.word))
         self.assertEqual(type(i), self.basetype)
         self.assertRaises(PassThru, self.s.intersection, check_pass_thru())
-        for C in set, frozenset, dict.fromkeys, str, list, tuple:
+        for C in set, frozenset, dict.kutokakeys, str, list, tuple:
             self.assertEqual(self.thetype('abcba').intersection(C('cdc')), set('cc'))
             self.assertEqual(self.thetype('abcba').intersection(C('efgfe')), set(''))
             self.assertEqual(self.thetype('abcba').intersection(C('ccb')), set('bc'))
@@ -113,26 +113,26 @@ class TestJointOps:
             self.assertEqual(self.thetype('abcba').intersection(C('cbcf'), C('bag')), set('b'))
         s = self.thetype('abcba')
         z = s.intersection()
-        if self.thetype == frozenset():
+        ikiwa self.thetype == frozenset():
             self.assertEqual(id(s), id(z))
         else:
             self.assertNotEqual(id(s), id(z))
 
-    def test_isdisjoint(self):
-        def f(s1, s2):
+    eleza test_isdisjoint(self):
+        eleza f(s1, s2):
             'Pure python equivalent of isdisjoint()'
-            return not set(s1).intersection(s2)
+            rudisha not set(s1).intersection(s2)
         for larg in '', 'a', 'ab', 'abc', 'ababac', 'cdc', 'cc', 'efgfe', 'ccb', 'ef':
             s1 = self.thetype(larg)
             for rarg in '', 'a', 'ab', 'abc', 'ababac', 'cdc', 'cc', 'efgfe', 'ccb', 'ef':
-                for C in set, frozenset, dict.fromkeys, str, list, tuple:
+                for C in set, frozenset, dict.kutokakeys, str, list, tuple:
                     s2 = C(rarg)
                     actual = s1.isdisjoint(s2)
                     expected = f(s1, s2)
                     self.assertEqual(actual, expected)
                     self.assertTrue(actual is True or actual is False)
 
-    def test_and(self):
+    eleza test_and(self):
         i = self.s.intersection(self.otherword)
         self.assertEqual(self.s & set(self.otherword), i)
         self.assertEqual(self.s & frozenset(self.otherword), i)
@@ -143,7 +143,7 @@ class TestJointOps:
         else:
             self.fail("s&t did not screen-out general iterables")
 
-    def test_difference(self):
+    eleza test_difference(self):
         i = self.s.difference(self.otherword)
         for c in self.letters:
             self.assertEqual(c in i, c in self.d and c not in self.otherword)
@@ -151,7 +151,7 @@ class TestJointOps:
         self.assertEqual(type(i), self.basetype)
         self.assertRaises(PassThru, self.s.difference, check_pass_thru())
         self.assertRaises(TypeError, self.s.difference, [[]])
-        for C in set, frozenset, dict.fromkeys, str, list, tuple:
+        for C in set, frozenset, dict.kutokakeys, str, list, tuple:
             self.assertEqual(self.thetype('abcba').difference(C('cdc')), set('ab'))
             self.assertEqual(self.thetype('abcba').difference(C('efgfe')), set('abc'))
             self.assertEqual(self.thetype('abcba').difference(C('ccb')), set('a'))
@@ -159,7 +159,7 @@ class TestJointOps:
             self.assertEqual(self.thetype('abcba').difference(), set('abc'))
             self.assertEqual(self.thetype('abcba').difference(C('a'), C('b')), set('c'))
 
-    def test_sub(self):
+    eleza test_sub(self):
         i = self.s.difference(self.otherword)
         self.assertEqual(self.s - set(self.otherword), i)
         self.assertEqual(self.s - frozenset(self.otherword), i)
@@ -170,7 +170,7 @@ class TestJointOps:
         else:
             self.fail("s-t did not screen-out general iterables")
 
-    def test_symmetric_difference(self):
+    eleza test_symmetric_difference(self):
         i = self.s.symmetric_difference(self.otherword)
         for c in self.letters:
             self.assertEqual(c in i, (c in self.d) ^ (c in self.otherword))
@@ -178,13 +178,13 @@ class TestJointOps:
         self.assertEqual(type(i), self.basetype)
         self.assertRaises(PassThru, self.s.symmetric_difference, check_pass_thru())
         self.assertRaises(TypeError, self.s.symmetric_difference, [[]])
-        for C in set, frozenset, dict.fromkeys, str, list, tuple:
+        for C in set, frozenset, dict.kutokakeys, str, list, tuple:
             self.assertEqual(self.thetype('abcba').symmetric_difference(C('cdc')), set('abd'))
             self.assertEqual(self.thetype('abcba').symmetric_difference(C('efgfe')), set('abcefg'))
             self.assertEqual(self.thetype('abcba').symmetric_difference(C('ccb')), set('a'))
             self.assertEqual(self.thetype('abcba').symmetric_difference(C('ef')), set('abcef'))
 
-    def test_xor(self):
+    eleza test_xor(self):
         i = self.s.symmetric_difference(self.otherword)
         self.assertEqual(self.s ^ set(self.otherword), i)
         self.assertEqual(self.s ^ frozenset(self.otherword), i)
@@ -195,7 +195,7 @@ class TestJointOps:
         else:
             self.fail("s^t did not screen-out general iterables")
 
-    def test_equality(self):
+    eleza test_equality(self):
         self.assertEqual(self.s, set(self.word))
         self.assertEqual(self.s, frozenset(self.word))
         self.assertEqual(self.s == self.word, False)
@@ -203,12 +203,12 @@ class TestJointOps:
         self.assertNotEqual(self.s, frozenset(self.otherword))
         self.assertEqual(self.s != self.word, True)
 
-    def test_setOfFrozensets(self):
+    eleza test_setOfFrozensets(self):
         t = map(frozenset, ['abcdef', 'bcd', 'bdcb', 'fed', 'fedccba'])
         s = self.thetype(t)
         self.assertEqual(len(s), 3)
 
-    def test_sub_and_super(self):
+    eleza test_sub_and_super(self):
         p, q, r = map(self.thetype, ['ab', 'abcde', 'def'])
         self.assertTrue(p < q)
         self.assertTrue(p <= q)
@@ -224,18 +224,18 @@ class TestJointOps:
         self.assertFalse(set('a').issubset('cbs'))
         self.assertFalse(set('cbs').issuperset('a'))
 
-    def test_pickling(self):
+    eleza test_pickling(self):
         for i in range(pickle.HIGHEST_PROTOCOL + 1):
             p = pickle.dumps(self.s, i)
             dup = pickle.loads(p)
             self.assertEqual(self.s, dup, "%s != %s" % (self.s, dup))
-            if type(self.s) not in (set, frozenset):
+            ikiwa type(self.s) not in (set, frozenset):
                 self.s.x = 10
                 p = pickle.dumps(self.s, i)
                 dup = pickle.loads(p)
                 self.assertEqual(self.s.x, dup.x)
 
-    def test_iterator_pickling(self):
+    eleza test_iterator_pickling(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             itorg = iter(self.s)
             data = self.thetype(self.s)
@@ -256,14 +256,14 @@ class TestJointOps:
             it = pickle.loads(d)
             self.assertEqual(self.thetype(it), data - self.thetype((drop,)))
 
-    def test_deepcopy(self):
-        class Tracer:
-            def __init__(self, value):
+    eleza test_deepcopy(self):
+        kundi Tracer:
+            eleza __init__(self, value):
                 self.value = value
-            def __hash__(self):
-                return self.value
-            def __deepcopy__(self, memo=None):
-                return Tracer(self.value + 1)
+            eleza __hash__(self):
+                rudisha self.value
+            eleza __deepcopy__(self, memo=None):
+                rudisha Tracer(self.value + 1)
         t = Tracer(10)
         s = self.thetype([t])
         dup = copy.deepcopy(s)
@@ -273,9 +273,9 @@ class TestJointOps:
         self.assertNotEqual(id(t), id(newt))
         self.assertEqual(t.value + 1, newt.value)
 
-    def test_gc(self):
+    eleza test_gc(self):
         # Create a nest of cycles to exercise overall ref count check
-        class A:
+        kundi A:
             pass
         s = set(A() for i in range(1000))
         for elem in s:
@@ -283,11 +283,11 @@ class TestJointOps:
             elem.sub = elem
             elem.set = set([elem])
 
-    def test_subclass_with_custom_hash(self):
+    eleza test_subclass_with_custom_hash(self):
         # Bug #1257731
-        class H(self.thetype):
-            def __hash__(self):
-                return int(id(self) & 0x7fffffff)
+        kundi H(self.thetype):
+            eleza __hash__(self):
+                rudisha int(id(self) & 0x7fffffff)
         s=H()
         f=set()
         f.add(s)
@@ -296,28 +296,28 @@ class TestJointOps:
         f.add(s)
         f.discard(s)
 
-    def test_badcmp(self):
+    eleza test_badcmp(self):
         s = self.thetype([BadCmp()])
         # Detect comparison errors during insertion and lookup
         self.assertRaises(RuntimeError, self.thetype, [BadCmp(), BadCmp()])
         self.assertRaises(RuntimeError, s.__contains__, BadCmp())
         # Detect errors during mutating operations
-        if hasattr(s, 'add'):
+        ikiwa hasattr(s, 'add'):
             self.assertRaises(RuntimeError, s.add, BadCmp())
             self.assertRaises(RuntimeError, s.discard, BadCmp())
             self.assertRaises(RuntimeError, s.remove, BadCmp())
 
-    def test_cyclical_repr(self):
+    eleza test_cyclical_repr(self):
         w = ReprWrapper()
         s = self.thetype([w])
         w.value = s
-        if self.thetype == set:
+        ikiwa self.thetype == set:
             self.assertEqual(repr(s), '{set(...)}')
         else:
-            name = repr(s).partition('(')[0]    # strip class name
+            name = repr(s).partition('(')[0]    # strip kundi name
             self.assertEqual(repr(s), '%s({%s(...)})' % (name, name))
 
-    def test_cyclical_print(self):
+    eleza test_cyclical_andika(self):
         w = ReprWrapper()
         s = self.thetype([w])
         w.value = s
@@ -331,28 +331,28 @@ class TestJointOps:
             fo.close()
             support.unlink(support.TESTFN)
 
-    def test_do_not_rehash_dict_keys(self):
+    eleza test_do_not_rehash_dict_keys(self):
         n = 10
-        d = dict.fromkeys(map(HashCountingInt, range(n)))
+        d = dict.kutokakeys(map(HashCountingInt, range(n)))
         self.assertEqual(sum(elem.hash_count for elem in d), n)
         s = self.thetype(d)
         self.assertEqual(sum(elem.hash_count for elem in d), n)
         s.difference(d)
         self.assertEqual(sum(elem.hash_count for elem in d), n)
-        if hasattr(s, 'symmetric_difference_update'):
+        ikiwa hasattr(s, 'symmetric_difference_update'):
             s.symmetric_difference_update(d)
         self.assertEqual(sum(elem.hash_count for elem in d), n)
-        d2 = dict.fromkeys(set(d))
+        d2 = dict.kutokakeys(set(d))
         self.assertEqual(sum(elem.hash_count for elem in d), n)
-        d3 = dict.fromkeys(frozenset(d))
+        d3 = dict.kutokakeys(frozenset(d))
         self.assertEqual(sum(elem.hash_count for elem in d), n)
-        d3 = dict.fromkeys(frozenset(d), 123)
+        d3 = dict.kutokakeys(frozenset(d), 123)
         self.assertEqual(sum(elem.hash_count for elem in d), n)
-        self.assertEqual(d3, dict.fromkeys(d, 123))
+        self.assertEqual(d3, dict.kutokakeys(d, 123))
 
-    def test_container_iterator(self):
+    eleza test_container_iterator(self):
         # Bug #3680: tp_traverse was not implemented for set iterator object
-        class C(object):
+        kundi C(object):
             pass
         obj = C()
         ref = weakref.ref(obj)
@@ -362,14 +362,14 @@ class TestJointOps:
         gc.collect()
         self.assertTrue(ref() is None, "Cycle was not collected")
 
-    def test_free_after_iterating(self):
+    eleza test_free_after_iterating(self):
         support.check_free_after_iterating(self, iter, self.thetype)
 
-class TestSet(TestJointOps, unittest.TestCase):
+kundi TestSet(TestJointOps, unittest.TestCase):
     thetype = set
     basetype = set
 
-    def test_init(self):
+    eleza test_init(self):
         s = self.thetype()
         s.__init__(self.word)
         self.assertEqual(s, set(self.word))
@@ -378,46 +378,46 @@ class TestSet(TestJointOps, unittest.TestCase):
         self.assertRaises(TypeError, s.__init__, s, 2);
         self.assertRaises(TypeError, s.__init__, 1);
 
-    def test_constructor_identity(self):
+    eleza test_constructor_identity(self):
         s = self.thetype(range(3))
         t = self.thetype(s)
         self.assertNotEqual(id(s), id(t))
 
-    def test_set_literal(self):
+    eleza test_set_literal(self):
         s = set([1,2,3])
         t = {1,2,3}
         self.assertEqual(s, t)
 
-    def test_set_literal_insertion_order(self):
+    eleza test_set_literal_insertion_order(self):
         # SF Issue #26020 -- Expect left to right insertion
         s = {1, 1.0, True}
         self.assertEqual(len(s), 1)
         stored_value = s.pop()
         self.assertEqual(type(stored_value), int)
 
-    def test_set_literal_evaluation_order(self):
+    eleza test_set_literal_evaluation_order(self):
         # Expect left to right expression evaluation
         events = []
-        def record(obj):
+        eleza record(obj):
             events.append(obj)
         s = {record(1), record(2), record(3)}
         self.assertEqual(events, [1, 2, 3])
 
-    def test_hash(self):
+    eleza test_hash(self):
         self.assertRaises(TypeError, hash, self.s)
 
-    def test_clear(self):
+    eleza test_clear(self):
         self.s.clear()
         self.assertEqual(self.s, set())
         self.assertEqual(len(self.s), 0)
 
-    def test_copy(self):
+    eleza test_copy(self):
         dup = self.s.copy()
         self.assertEqual(self.s, dup)
         self.assertNotEqual(id(self.s), id(dup))
         self.assertEqual(type(dup), self.basetype)
 
-    def test_add(self):
+    eleza test_add(self):
         self.s.add('Q')
         self.assertIn('Q', self.s)
         dup = self.s.copy()
@@ -425,7 +425,7 @@ class TestSet(TestJointOps, unittest.TestCase):
         self.assertEqual(self.s, dup)
         self.assertRaises(TypeError, self.s.add, [])
 
-    def test_remove(self):
+    eleza test_remove(self):
         self.s.remove('a')
         self.assertNotIn('a', self.s)
         self.assertRaises(KeyError, self.s.remove, 'Q')
@@ -436,7 +436,7 @@ class TestSet(TestJointOps, unittest.TestCase):
         self.assertNotIn(self.thetype(self.word), s)
         self.assertRaises(KeyError, self.s.remove, self.thetype(self.word))
 
-    def test_remove_keyerror_unpacking(self):
+    eleza test_remove_keyerror_unpacking(self):
         # bug:  www.python.org/sf/1576657
         for v1 in ['Q', (1,)]:
             try:
@@ -447,7 +447,7 @@ class TestSet(TestJointOps, unittest.TestCase):
             else:
                 self.fail()
 
-    def test_remove_keyerror_set(self):
+    eleza test_remove_keyerror_set(self):
         key = self.thetype([3, 4])
         try:
             self.s.remove(key)
@@ -458,7 +458,7 @@ class TestSet(TestJointOps, unittest.TestCase):
         else:
             self.fail()
 
-    def test_discard(self):
+    eleza test_discard(self):
         self.s.discard('a')
         self.assertNotIn('a', self.s)
         self.s.discard('Q')
@@ -469,13 +469,13 @@ class TestSet(TestJointOps, unittest.TestCase):
         self.assertNotIn(self.thetype(self.word), s)
         s.discard(self.thetype(self.word))
 
-    def test_pop(self):
+    eleza test_pop(self):
         for i in range(len(self.s)):
             elem = self.s.pop()
             self.assertNotIn(elem, self.s)
         self.assertRaises(KeyError, self.s.pop)
 
-    def test_update(self):
+    eleza test_update(self):
         retval = self.s.update(self.otherword)
         self.assertEqual(retval, None)
         for c in (self.word + self.otherword):
@@ -483,34 +483,34 @@ class TestSet(TestJointOps, unittest.TestCase):
         self.assertRaises(PassThru, self.s.update, check_pass_thru())
         self.assertRaises(TypeError, self.s.update, [[]])
         for p, q in (('cdc', 'abcd'), ('efgfe', 'abcefg'), ('ccb', 'abc'), ('ef', 'abcef')):
-            for C in set, frozenset, dict.fromkeys, str, list, tuple:
+            for C in set, frozenset, dict.kutokakeys, str, list, tuple:
                 s = self.thetype('abcba')
                 self.assertEqual(s.update(C(p)), None)
                 self.assertEqual(s, set(q))
         for p in ('cdc', 'efgfe', 'ccb', 'ef', 'abcda'):
             q = 'ahi'
-            for C in set, frozenset, dict.fromkeys, str, list, tuple:
+            for C in set, frozenset, dict.kutokakeys, str, list, tuple:
                 s = self.thetype('abcba')
                 self.assertEqual(s.update(C(p), C(q)), None)
                 self.assertEqual(s, set(s) | set(p) | set(q))
 
-    def test_ior(self):
+    eleza test_ior(self):
         self.s |= set(self.otherword)
         for c in (self.word + self.otherword):
             self.assertIn(c, self.s)
 
-    def test_intersection_update(self):
+    eleza test_intersection_update(self):
         retval = self.s.intersection_update(self.otherword)
         self.assertEqual(retval, None)
         for c in (self.word + self.otherword):
-            if c in self.otherword and c in self.word:
+            ikiwa c in self.otherword and c in self.word:
                 self.assertIn(c, self.s)
             else:
                 self.assertNotIn(c, self.s)
         self.assertRaises(PassThru, self.s.intersection_update, check_pass_thru())
         self.assertRaises(TypeError, self.s.intersection_update, [[]])
         for p, q in (('cdc', 'c'), ('efgfe', ''), ('ccb', 'bc'), ('ef', '')):
-            for C in set, frozenset, dict.fromkeys, str, list, tuple:
+            for C in set, frozenset, dict.kutokakeys, str, list, tuple:
                 s = self.thetype('abcba')
                 self.assertEqual(s.intersection_update(C(p)), None)
                 self.assertEqual(s, set(q))
@@ -520,19 +520,19 @@ class TestSet(TestJointOps, unittest.TestCase):
                 self.assertEqual(s.intersection_update(C(p), C(t)), None)
                 self.assertEqual(s, set('abcba')&set(p)&set(t))
 
-    def test_iand(self):
+    eleza test_iand(self):
         self.s &= set(self.otherword)
         for c in (self.word + self.otherword):
-            if c in self.otherword and c in self.word:
+            ikiwa c in self.otherword and c in self.word:
                 self.assertIn(c, self.s)
             else:
                 self.assertNotIn(c, self.s)
 
-    def test_difference_update(self):
+    eleza test_difference_update(self):
         retval = self.s.difference_update(self.otherword)
         self.assertEqual(retval, None)
         for c in (self.word + self.otherword):
-            if c in self.word and c not in self.otherword:
+            ikiwa c in self.word and c not in self.otherword:
                 self.assertIn(c, self.s)
             else:
                 self.assertNotIn(c, self.s)
@@ -540,7 +540,7 @@ class TestSet(TestJointOps, unittest.TestCase):
         self.assertRaises(TypeError, self.s.difference_update, [[]])
         self.assertRaises(TypeError, self.s.symmetric_difference_update, [[]])
         for p, q in (('cdc', 'ab'), ('efgfe', 'abc'), ('ccb', 'a'), ('ef', 'abc')):
-            for C in set, frozenset, dict.fromkeys, str, list, tuple:
+            for C in set, frozenset, dict.kutokakeys, str, list, tuple:
                 s = self.thetype('abcba')
                 self.assertEqual(s.difference_update(C(p)), None)
                 self.assertEqual(s, set(q))
@@ -557,39 +557,39 @@ class TestSet(TestJointOps, unittest.TestCase):
                 s.difference_update(C('cdc'), C('aba'))
                 self.assertEqual(s, self.thetype('efghih'))
 
-    def test_isub(self):
+    eleza test_isub(self):
         self.s -= set(self.otherword)
         for c in (self.word + self.otherword):
-            if c in self.word and c not in self.otherword:
+            ikiwa c in self.word and c not in self.otherword:
                 self.assertIn(c, self.s)
             else:
                 self.assertNotIn(c, self.s)
 
-    def test_symmetric_difference_update(self):
+    eleza test_symmetric_difference_update(self):
         retval = self.s.symmetric_difference_update(self.otherword)
         self.assertEqual(retval, None)
         for c in (self.word + self.otherword):
-            if (c in self.word) ^ (c in self.otherword):
+            ikiwa (c in self.word) ^ (c in self.otherword):
                 self.assertIn(c, self.s)
             else:
                 self.assertNotIn(c, self.s)
         self.assertRaises(PassThru, self.s.symmetric_difference_update, check_pass_thru())
         self.assertRaises(TypeError, self.s.symmetric_difference_update, [[]])
         for p, q in (('cdc', 'abd'), ('efgfe', 'abcefg'), ('ccb', 'a'), ('ef', 'abcef')):
-            for C in set, frozenset, dict.fromkeys, str, list, tuple:
+            for C in set, frozenset, dict.kutokakeys, str, list, tuple:
                 s = self.thetype('abcba')
                 self.assertEqual(s.symmetric_difference_update(C(p)), None)
                 self.assertEqual(s, set(q))
 
-    def test_ixor(self):
+    eleza test_ixor(self):
         self.s ^= set(self.otherword)
         for c in (self.word + self.otherword):
-            if (c in self.word) ^ (c in self.otherword):
+            ikiwa (c in self.word) ^ (c in self.otherword):
                 self.assertIn(c, self.s)
             else:
                 self.assertNotIn(c, self.s)
 
-    def test_inplace_on_self(self):
+    eleza test_inplace_on_self(self):
         t = self.s.copy()
         t |= t
         self.assertEqual(t, self.s)
@@ -601,27 +601,27 @@ class TestSet(TestJointOps, unittest.TestCase):
         t ^= t
         self.assertEqual(t, self.thetype())
 
-    def test_weakref(self):
+    eleza test_weakref(self):
         s = self.thetype('gallahad')
         p = weakref.proxy(s)
         self.assertEqual(str(p), str(s))
         s = None
         self.assertRaises(ReferenceError, str, p)
 
-    def test_rich_compare(self):
-        class TestRichSetCompare:
-            def __gt__(self, some_set):
+    eleza test_rich_compare(self):
+        kundi TestRichSetCompare:
+            eleza __gt__(self, some_set):
                 self.gt_called = True
-                return False
-            def __lt__(self, some_set):
+                rudisha False
+            eleza __lt__(self, some_set):
                 self.lt_called = True
-                return False
-            def __ge__(self, some_set):
+                rudisha False
+            eleza __ge__(self, some_set):
                 self.ge_called = True
-                return False
-            def __le__(self, some_set):
+                rudisha False
+            eleza __le__(self, some_set):
                 self.le_called = True
-                return False
+                rudisha False
 
         # This first tries the builtin rich set comparison, which doesn't know
         # how to handle the custom object. Upon returning NotImplemented, the
@@ -646,36 +646,36 @@ class TestSet(TestJointOps, unittest.TestCase):
 
     @unittest.skipUnless(hasattr(set, "test_c_api"),
                          'C API test only available in a debug build')
-    def test_c_api(self):
+    eleza test_c_api(self):
         self.assertEqual(set().test_c_api(), True)
 
-class SetSubclass(set):
+kundi SetSubclass(set):
     pass
 
-class TestSetSubclass(TestSet):
+kundi TestSetSubclass(TestSet):
     thetype = SetSubclass
     basetype = set
 
-class SetSubclassWithKeywordArgs(set):
-    def __init__(self, iterable=[], newarg=None):
+kundi SetSubclassWithKeywordArgs(set):
+    eleza __init__(self, iterable=[], newarg=None):
         set.__init__(self, iterable)
 
-class TestSetSubclassWithKeywordArgs(TestSet):
+kundi TestSetSubclassWithKeywordArgs(TestSet):
 
-    def test_keywords_in_subclass(self):
+    eleza test_keywords_in_subclass(self):
         'SF bug #1486663 -- this used to erroneously raise a TypeError'
         SetSubclassWithKeywordArgs(newarg=1)
 
-class TestFrozenSet(TestJointOps, unittest.TestCase):
+kundi TestFrozenSet(TestJointOps, unittest.TestCase):
     thetype = frozenset
     basetype = frozenset
 
-    def test_init(self):
+    eleza test_init(self):
         s = self.thetype(self.word)
         s.__init__(self.otherword)
         self.assertEqual(s, set(self.word))
 
-    def test_singleton_empty_frozenset(self):
+    eleza test_singleton_empty_frozenset(self):
         f = frozenset()
         efs = [frozenset(), frozenset([]), frozenset(()), frozenset(''),
                frozenset(), frozenset([]), frozenset(()), frozenset(''),
@@ -684,12 +684,12 @@ class TestFrozenSet(TestJointOps, unittest.TestCase):
         # All of the empty frozensets should have just one id()
         self.assertEqual(len(set(map(id, efs))), 1)
 
-    def test_constructor_identity(self):
+    eleza test_constructor_identity(self):
         s = self.thetype(range(3))
         t = self.thetype(s)
         self.assertEqual(id(s), id(t))
 
-    def test_hash(self):
+    eleza test_hash(self):
         self.assertEqual(hash(self.thetype('abcdeb')),
                          hash(self.thetype('ebecda')))
 
@@ -702,11 +702,11 @@ class TestFrozenSet(TestJointOps, unittest.TestCase):
             results.add(hash(self.thetype(seq)))
         self.assertEqual(len(results), 1)
 
-    def test_copy(self):
+    eleza test_copy(self):
         dup = self.s.copy()
         self.assertEqual(id(self.s), id(dup))
 
-    def test_frozen_as_dictkey(self):
+    eleza test_frozen_as_dictkey(self):
         seq = list(range(10)) + list('abcdefg') + ['apple']
         key1 = self.thetype(seq)
         key2 = self.thetype(reversed(seq))
@@ -716,28 +716,28 @@ class TestFrozenSet(TestJointOps, unittest.TestCase):
         d[key1] = 42
         self.assertEqual(d[key2], 42)
 
-    def test_hash_caching(self):
+    eleza test_hash_caching(self):
         f = self.thetype('abcdcda')
         self.assertEqual(hash(f), hash(f))
 
-    def test_hash_effectiveness(self):
+    eleza test_hash_effectiveness(self):
         n = 13
         hashvalues = set()
         addhashvalue = hashvalues.add
         elemmasks = [(i+1, 1<<i) for i in range(n)]
         for i in range(2**n):
-            addhashvalue(hash(frozenset([e for e, m in elemmasks if m&i])))
+            addhashvalue(hash(frozenset([e for e, m in elemmasks ikiwa m&i])))
         self.assertEqual(len(hashvalues), 2**n)
 
-        def zf_range(n):
+        eleza zf_range(n):
             # https://en.wikipedia.org/wiki/Set-theoretic_definition_of_natural_numbers
             nums = [frozenset()]
             for i in range(n-1):
                 num = frozenset(nums)
                 nums.append(num)
-            return nums[:n]
+            rudisha nums[:n]
 
-        def powerset(s):
+        eleza powerset(s):
             for i in range(len(s)+1):
                 yield kutoka map(frozenset, itertools.combinations(s, i))
 
@@ -748,28 +748,28 @@ class TestFrozenSet(TestJointOps, unittest.TestCase):
                 u = len({h & mask for h in map(hash, powerset(nums(n)))})
                 self.assertGreater(4*u, t)
 
-class FrozenSetSubclass(frozenset):
+kundi FrozenSetSubclass(frozenset):
     pass
 
-class TestFrozenSetSubclass(TestFrozenSet):
+kundi TestFrozenSetSubclass(TestFrozenSet):
     thetype = FrozenSetSubclass
     basetype = frozenset
 
-    def test_constructor_identity(self):
+    eleza test_constructor_identity(self):
         s = self.thetype(range(3))
         t = self.thetype(s)
         self.assertNotEqual(id(s), id(t))
 
-    def test_copy(self):
+    eleza test_copy(self):
         dup = self.s.copy()
         self.assertNotEqual(id(self.s), id(dup))
 
-    def test_nested_empty_constructor(self):
+    eleza test_nested_empty_constructor(self):
         s = self.thetype()
         t = self.thetype(s)
         self.assertEqual(s, t)
 
-    def test_singleton_empty_frozenset(self):
+    eleza test_singleton_empty_frozenset(self):
         Frozenset = self.thetype
         f = frozenset()
         F = Frozenset()
@@ -777,7 +777,7 @@ class TestFrozenSetSubclass(TestFrozenSet):
                Frozenset(), Frozenset([]), Frozenset(()), Frozenset(''),
                Frozenset(range(0)), Frozenset(Frozenset()),
                Frozenset(frozenset()), f, F, Frozenset(f), Frozenset(F)]
-        # All empty frozenset subclass instances should have different ids
+        # All empty frozenset subkundi instances should have different ids
         self.assertEqual(len(set(map(id, efs))), len(efs))
 
 # Tests taken kutoka test_sets.py =============================================
@@ -786,13 +786,13 @@ empty_set = set()
 
 #==============================================================================
 
-class TestBasicOps:
+kundi TestBasicOps:
 
-    def test_repr(self):
-        if self.repr is not None:
+    eleza test_repr(self):
+        ikiwa self.repr is not None:
             self.assertEqual(repr(self.set), self.repr)
 
-    def check_repr_against_values(self):
+    eleza check_repr_against_values(self):
         text = repr(self.set)
         self.assertTrue(text.startswith('{'))
         self.assertTrue(text.endswith('}'))
@@ -803,7 +803,7 @@ class TestBasicOps:
         sorted_repr_values.sort()
         self.assertEqual(result, sorted_repr_values)
 
-    def test_print(self):
+    eleza test_andika(self):
         try:
             fo = open(support.TESTFN, "w")
             fo.write(str(self.set))
@@ -814,88 +814,88 @@ class TestBasicOps:
             fo.close()
             support.unlink(support.TESTFN)
 
-    def test_length(self):
+    eleza test_length(self):
         self.assertEqual(len(self.set), self.length)
 
-    def test_self_equality(self):
+    eleza test_self_equality(self):
         self.assertEqual(self.set, self.set)
 
-    def test_equivalent_equality(self):
+    eleza test_equivalent_equality(self):
         self.assertEqual(self.set, self.dup)
 
-    def test_copy(self):
+    eleza test_copy(self):
         self.assertEqual(self.set.copy(), self.dup)
 
-    def test_self_union(self):
+    eleza test_self_union(self):
         result = self.set | self.set
         self.assertEqual(result, self.dup)
 
-    def test_empty_union(self):
+    eleza test_empty_union(self):
         result = self.set | empty_set
         self.assertEqual(result, self.dup)
 
-    def test_union_empty(self):
+    eleza test_union_empty(self):
         result = empty_set | self.set
         self.assertEqual(result, self.dup)
 
-    def test_self_intersection(self):
+    eleza test_self_intersection(self):
         result = self.set & self.set
         self.assertEqual(result, self.dup)
 
-    def test_empty_intersection(self):
+    eleza test_empty_intersection(self):
         result = self.set & empty_set
         self.assertEqual(result, empty_set)
 
-    def test_intersection_empty(self):
+    eleza test_intersection_empty(self):
         result = empty_set & self.set
         self.assertEqual(result, empty_set)
 
-    def test_self_isdisjoint(self):
+    eleza test_self_isdisjoint(self):
         result = self.set.isdisjoint(self.set)
         self.assertEqual(result, not self.set)
 
-    def test_empty_isdisjoint(self):
+    eleza test_empty_isdisjoint(self):
         result = self.set.isdisjoint(empty_set)
         self.assertEqual(result, True)
 
-    def test_isdisjoint_empty(self):
+    eleza test_isdisjoint_empty(self):
         result = empty_set.isdisjoint(self.set)
         self.assertEqual(result, True)
 
-    def test_self_symmetric_difference(self):
+    eleza test_self_symmetric_difference(self):
         result = self.set ^ self.set
         self.assertEqual(result, empty_set)
 
-    def test_empty_symmetric_difference(self):
+    eleza test_empty_symmetric_difference(self):
         result = self.set ^ empty_set
         self.assertEqual(result, self.set)
 
-    def test_self_difference(self):
+    eleza test_self_difference(self):
         result = self.set - self.set
         self.assertEqual(result, empty_set)
 
-    def test_empty_difference(self):
+    eleza test_empty_difference(self):
         result = self.set - empty_set
         self.assertEqual(result, self.dup)
 
-    def test_empty_difference_rev(self):
+    eleza test_empty_difference_rev(self):
         result = empty_set - self.set
         self.assertEqual(result, empty_set)
 
-    def test_iteration(self):
+    eleza test_iteration(self):
         for v in self.set:
             self.assertIn(v, self.values)
         setiter = iter(self.set)
         self.assertEqual(setiter.__length_hint__(), len(self.set))
 
-    def test_pickling(self):
+    eleza test_pickling(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             p = pickle.dumps(self.set, proto)
             copy = pickle.loads(p)
             self.assertEqual(self.set, copy,
                              "%s != %s" % (self.set, copy))
 
-    def test_issue_37219(self):
+    eleza test_issue_37219(self):
         with self.assertRaises(TypeError):
             set().difference(123)
         with self.assertRaises(TypeError):
@@ -903,8 +903,8 @@ class TestBasicOps:
 
 #------------------------------------------------------------------------------
 
-class TestBasicOpsEmpty(TestBasicOps, unittest.TestCase):
-    def setUp(self):
+kundi TestBasicOpsEmpty(TestBasicOps, unittest.TestCase):
+    eleza setUp(self):
         self.case   = "empty set"
         self.values = []
         self.set    = set(self.values)
@@ -914,8 +914,8 @@ class TestBasicOpsEmpty(TestBasicOps, unittest.TestCase):
 
 #------------------------------------------------------------------------------
 
-class TestBasicOpsSingleton(TestBasicOps, unittest.TestCase):
-    def setUp(self):
+kundi TestBasicOpsSingleton(TestBasicOps, unittest.TestCase):
+    eleza setUp(self):
         self.case   = "unit set (number)"
         self.values = [3]
         self.set    = set(self.values)
@@ -923,16 +923,16 @@ class TestBasicOpsSingleton(TestBasicOps, unittest.TestCase):
         self.length = 1
         self.repr   = "{3}"
 
-    def test_in(self):
+    eleza test_in(self):
         self.assertIn(3, self.set)
 
-    def test_not_in(self):
+    eleza test_not_in(self):
         self.assertNotIn(2, self.set)
 
 #------------------------------------------------------------------------------
 
-class TestBasicOpsTuple(TestBasicOps, unittest.TestCase):
-    def setUp(self):
+kundi TestBasicOpsTuple(TestBasicOps, unittest.TestCase):
+    eleza setUp(self):
         self.case   = "unit set (tuple)"
         self.values = [(0, "zero")]
         self.set    = set(self.values)
@@ -940,16 +940,16 @@ class TestBasicOpsTuple(TestBasicOps, unittest.TestCase):
         self.length = 1
         self.repr   = "{(0, 'zero')}"
 
-    def test_in(self):
+    eleza test_in(self):
         self.assertIn((0, "zero"), self.set)
 
-    def test_not_in(self):
+    eleza test_not_in(self):
         self.assertNotIn(9, self.set)
 
 #------------------------------------------------------------------------------
 
-class TestBasicOpsTriple(TestBasicOps, unittest.TestCase):
-    def setUp(self):
+kundi TestBasicOpsTriple(TestBasicOps, unittest.TestCase):
+    eleza setUp(self):
         self.case   = "triple set"
         self.values = [0, "zero", operator.add]
         self.set    = set(self.values)
@@ -959,34 +959,34 @@ class TestBasicOpsTriple(TestBasicOps, unittest.TestCase):
 
 #------------------------------------------------------------------------------
 
-class TestBasicOpsString(TestBasicOps, unittest.TestCase):
-    def setUp(self):
+kundi TestBasicOpsString(TestBasicOps, unittest.TestCase):
+    eleza setUp(self):
         self.case   = "string set"
         self.values = ["a", "b", "c"]
         self.set    = set(self.values)
         self.dup    = set(self.values)
         self.length = 3
 
-    def test_repr(self):
+    eleza test_repr(self):
         self.check_repr_against_values()
 
 #------------------------------------------------------------------------------
 
-class TestBasicOpsBytes(TestBasicOps, unittest.TestCase):
-    def setUp(self):
+kundi TestBasicOpsBytes(TestBasicOps, unittest.TestCase):
+    eleza setUp(self):
         self.case   = "bytes set"
         self.values = [b"a", b"b", b"c"]
         self.set    = set(self.values)
         self.dup    = set(self.values)
         self.length = 3
 
-    def test_repr(self):
+    eleza test_repr(self):
         self.check_repr_against_values()
 
 #------------------------------------------------------------------------------
 
-class TestBasicOpsMixedStringBytes(TestBasicOps, unittest.TestCase):
-    def setUp(self):
+kundi TestBasicOpsMixedStringBytes(TestBasicOps, unittest.TestCase):
+    eleza setUp(self):
         self._warning_filters = support.check_warnings()
         self._warning_filters.__enter__()
         warnings.simplefilter('ignore', BytesWarning)
@@ -996,28 +996,28 @@ class TestBasicOpsMixedStringBytes(TestBasicOps, unittest.TestCase):
         self.dup    = set(self.values)
         self.length = 4
 
-    def tearDown(self):
+    eleza tearDown(self):
         self._warning_filters.__exit__(None, None, None)
 
-    def test_repr(self):
+    eleza test_repr(self):
         self.check_repr_against_values()
 
 #==============================================================================
 
-def baditer():
+eleza baditer():
     raise TypeError
     yield True
 
-def gooditer():
+eleza gooditer():
     yield True
 
-class TestExceptionPropagation(unittest.TestCase):
+kundi TestExceptionPropagation(unittest.TestCase):
     """SF 628246:  Set constructor should not trap iterator TypeErrors"""
 
-    def test_instanceWithException(self):
+    eleza test_instanceWithException(self):
         self.assertRaises(TypeError, set, baditer())
 
-    def test_instancesWithoutException(self):
+    eleza test_instancesWithoutException(self):
         # All of these iterables should load without exception.
         set([1,2,3])
         set((1,2,3))
@@ -1026,7 +1026,7 @@ class TestExceptionPropagation(unittest.TestCase):
         set('abc')
         set(gooditer())
 
-    def test_changingSizeWhileIterating(self):
+    eleza test_changingSizeWhileIterating(self):
         s = set([1,2,3])
         try:
             for i in s:
@@ -1038,8 +1038,8 @@ class TestExceptionPropagation(unittest.TestCase):
 
 #==============================================================================
 
-class TestSetOfSets(unittest.TestCase):
-    def test_constructor(self):
+kundi TestSetOfSets(unittest.TestCase):
+    eleza test_constructor(self):
         inner = frozenset([1])
         outer = set([inner])
         element = outer.pop()
@@ -1051,179 +1051,179 @@ class TestSetOfSets(unittest.TestCase):
 
 #==============================================================================
 
-class TestBinaryOps(unittest.TestCase):
-    def setUp(self):
+kundi TestBinaryOps(unittest.TestCase):
+    eleza setUp(self):
         self.set = set((2, 4, 6))
 
-    def test_eq(self):              # SF bug 643115
+    eleza test_eq(self):              # SF bug 643115
         self.assertEqual(self.set, set({2:1,4:3,6:5}))
 
-    def test_union_subset(self):
+    eleza test_union_subset(self):
         result = self.set | set([2])
         self.assertEqual(result, set((2, 4, 6)))
 
-    def test_union_superset(self):
+    eleza test_union_superset(self):
         result = self.set | set([2, 4, 6, 8])
         self.assertEqual(result, set([2, 4, 6, 8]))
 
-    def test_union_overlap(self):
+    eleza test_union_overlap(self):
         result = self.set | set([3, 4, 5])
         self.assertEqual(result, set([2, 3, 4, 5, 6]))
 
-    def test_union_non_overlap(self):
+    eleza test_union_non_overlap(self):
         result = self.set | set([8])
         self.assertEqual(result, set([2, 4, 6, 8]))
 
-    def test_intersection_subset(self):
+    eleza test_intersection_subset(self):
         result = self.set & set((2, 4))
         self.assertEqual(result, set((2, 4)))
 
-    def test_intersection_superset(self):
+    eleza test_intersection_superset(self):
         result = self.set & set([2, 4, 6, 8])
         self.assertEqual(result, set([2, 4, 6]))
 
-    def test_intersection_overlap(self):
+    eleza test_intersection_overlap(self):
         result = self.set & set([3, 4, 5])
         self.assertEqual(result, set([4]))
 
-    def test_intersection_non_overlap(self):
+    eleza test_intersection_non_overlap(self):
         result = self.set & set([8])
         self.assertEqual(result, empty_set)
 
-    def test_isdisjoint_subset(self):
+    eleza test_isdisjoint_subset(self):
         result = self.set.isdisjoint(set((2, 4)))
         self.assertEqual(result, False)
 
-    def test_isdisjoint_superset(self):
+    eleza test_isdisjoint_superset(self):
         result = self.set.isdisjoint(set([2, 4, 6, 8]))
         self.assertEqual(result, False)
 
-    def test_isdisjoint_overlap(self):
+    eleza test_isdisjoint_overlap(self):
         result = self.set.isdisjoint(set([3, 4, 5]))
         self.assertEqual(result, False)
 
-    def test_isdisjoint_non_overlap(self):
+    eleza test_isdisjoint_non_overlap(self):
         result = self.set.isdisjoint(set([8]))
         self.assertEqual(result, True)
 
-    def test_sym_difference_subset(self):
+    eleza test_sym_difference_subset(self):
         result = self.set ^ set((2, 4))
         self.assertEqual(result, set([6]))
 
-    def test_sym_difference_superset(self):
+    eleza test_sym_difference_superset(self):
         result = self.set ^ set((2, 4, 6, 8))
         self.assertEqual(result, set([8]))
 
-    def test_sym_difference_overlap(self):
+    eleza test_sym_difference_overlap(self):
         result = self.set ^ set((3, 4, 5))
         self.assertEqual(result, set([2, 3, 5, 6]))
 
-    def test_sym_difference_non_overlap(self):
+    eleza test_sym_difference_non_overlap(self):
         result = self.set ^ set([8])
         self.assertEqual(result, set([2, 4, 6, 8]))
 
 #==============================================================================
 
-class TestUpdateOps(unittest.TestCase):
-    def setUp(self):
+kundi TestUpdateOps(unittest.TestCase):
+    eleza setUp(self):
         self.set = set((2, 4, 6))
 
-    def test_union_subset(self):
+    eleza test_union_subset(self):
         self.set |= set([2])
         self.assertEqual(self.set, set((2, 4, 6)))
 
-    def test_union_superset(self):
+    eleza test_union_superset(self):
         self.set |= set([2, 4, 6, 8])
         self.assertEqual(self.set, set([2, 4, 6, 8]))
 
-    def test_union_overlap(self):
+    eleza test_union_overlap(self):
         self.set |= set([3, 4, 5])
         self.assertEqual(self.set, set([2, 3, 4, 5, 6]))
 
-    def test_union_non_overlap(self):
+    eleza test_union_non_overlap(self):
         self.set |= set([8])
         self.assertEqual(self.set, set([2, 4, 6, 8]))
 
-    def test_union_method_call(self):
+    eleza test_union_method_call(self):
         self.set.update(set([3, 4, 5]))
         self.assertEqual(self.set, set([2, 3, 4, 5, 6]))
 
-    def test_intersection_subset(self):
+    eleza test_intersection_subset(self):
         self.set &= set((2, 4))
         self.assertEqual(self.set, set((2, 4)))
 
-    def test_intersection_superset(self):
+    eleza test_intersection_superset(self):
         self.set &= set([2, 4, 6, 8])
         self.assertEqual(self.set, set([2, 4, 6]))
 
-    def test_intersection_overlap(self):
+    eleza test_intersection_overlap(self):
         self.set &= set([3, 4, 5])
         self.assertEqual(self.set, set([4]))
 
-    def test_intersection_non_overlap(self):
+    eleza test_intersection_non_overlap(self):
         self.set &= set([8])
         self.assertEqual(self.set, empty_set)
 
-    def test_intersection_method_call(self):
+    eleza test_intersection_method_call(self):
         self.set.intersection_update(set([3, 4, 5]))
         self.assertEqual(self.set, set([4]))
 
-    def test_sym_difference_subset(self):
+    eleza test_sym_difference_subset(self):
         self.set ^= set((2, 4))
         self.assertEqual(self.set, set([6]))
 
-    def test_sym_difference_superset(self):
+    eleza test_sym_difference_superset(self):
         self.set ^= set((2, 4, 6, 8))
         self.assertEqual(self.set, set([8]))
 
-    def test_sym_difference_overlap(self):
+    eleza test_sym_difference_overlap(self):
         self.set ^= set((3, 4, 5))
         self.assertEqual(self.set, set([2, 3, 5, 6]))
 
-    def test_sym_difference_non_overlap(self):
+    eleza test_sym_difference_non_overlap(self):
         self.set ^= set([8])
         self.assertEqual(self.set, set([2, 4, 6, 8]))
 
-    def test_sym_difference_method_call(self):
+    eleza test_sym_difference_method_call(self):
         self.set.symmetric_difference_update(set([3, 4, 5]))
         self.assertEqual(self.set, set([2, 3, 5, 6]))
 
-    def test_difference_subset(self):
+    eleza test_difference_subset(self):
         self.set -= set((2, 4))
         self.assertEqual(self.set, set([6]))
 
-    def test_difference_superset(self):
+    eleza test_difference_superset(self):
         self.set -= set((2, 4, 6, 8))
         self.assertEqual(self.set, set([]))
 
-    def test_difference_overlap(self):
+    eleza test_difference_overlap(self):
         self.set -= set((3, 4, 5))
         self.assertEqual(self.set, set([2, 6]))
 
-    def test_difference_non_overlap(self):
+    eleza test_difference_non_overlap(self):
         self.set -= set([8])
         self.assertEqual(self.set, set([2, 4, 6]))
 
-    def test_difference_method_call(self):
+    eleza test_difference_method_call(self):
         self.set.difference_update(set([3, 4, 5]))
         self.assertEqual(self.set, set([2, 6]))
 
 #==============================================================================
 
-class TestMutate(unittest.TestCase):
-    def setUp(self):
+kundi TestMutate(unittest.TestCase):
+    eleza setUp(self):
         self.values = ["a", "b", "c"]
         self.set = set(self.values)
 
-    def test_add_present(self):
+    eleza test_add_present(self):
         self.set.add("c")
         self.assertEqual(self.set, set("abc"))
 
-    def test_add_absent(self):
+    eleza test_add_absent(self):
         self.set.add("d")
         self.assertEqual(self.set, set("abcd"))
 
-    def test_add_until_full(self):
+    eleza test_add_until_full(self):
         tmp = set()
         expected_len = 0
         for v in self.values:
@@ -1232,37 +1232,37 @@ class TestMutate(unittest.TestCase):
             self.assertEqual(len(tmp), expected_len)
         self.assertEqual(tmp, self.set)
 
-    def test_remove_present(self):
+    eleza test_remove_present(self):
         self.set.remove("b")
         self.assertEqual(self.set, set("ac"))
 
-    def test_remove_absent(self):
+    eleza test_remove_absent(self):
         try:
             self.set.remove("d")
             self.fail("Removing missing element should have raised LookupError")
         except LookupError:
             pass
 
-    def test_remove_until_empty(self):
+    eleza test_remove_until_empty(self):
         expected_len = len(self.set)
         for v in self.values:
             self.set.remove(v)
             expected_len -= 1
             self.assertEqual(len(self.set), expected_len)
 
-    def test_discard_present(self):
+    eleza test_discard_present(self):
         self.set.discard("c")
         self.assertEqual(self.set, set("ab"))
 
-    def test_discard_absent(self):
+    eleza test_discard_absent(self):
         self.set.discard("d")
         self.assertEqual(self.set, set("abc"))
 
-    def test_clear(self):
+    eleza test_clear(self):
         self.set.clear()
         self.assertEqual(len(self.set), 0)
 
-    def test_pop(self):
+    eleza test_pop(self):
         popped = {}
         while self.set:
             popped[self.set.pop()] = None
@@ -1270,21 +1270,21 @@ class TestMutate(unittest.TestCase):
         for v in self.values:
             self.assertIn(v, popped)
 
-    def test_update_empty_tuple(self):
+    eleza test_update_empty_tuple(self):
         self.set.update(())
         self.assertEqual(self.set, set(self.values))
 
-    def test_update_unit_tuple_overlap(self):
+    eleza test_update_unit_tuple_overlap(self):
         self.set.update(("a",))
         self.assertEqual(self.set, set(self.values))
 
-    def test_update_unit_tuple_non_overlap(self):
+    eleza test_update_unit_tuple_non_overlap(self):
         self.set.update(("a", "z"))
         self.assertEqual(self.set, set(self.values + ["z"]))
 
 #==============================================================================
 
-class TestSubsets:
+kundi TestSubsets:
 
     case2method = {"<=": "issubset",
                    ">=": "issuperset",
@@ -1298,7 +1298,7 @@ class TestSubsets:
                ">=": "<=",
               }
 
-    def test_issubset(self):
+    eleza test_issubset(self):
         x = self.left
         y = self.right
         for case in "!=", "==", "<", "<=", ">", ">=":
@@ -1306,8 +1306,8 @@ class TestSubsets:
             # Test the binary infix spelling.
             result = eval("x" + case + "y", locals())
             self.assertEqual(result, expected)
-            # Test the "friendly" method-name spelling, if one exists.
-            if case in TestSubsets.case2method:
+            # Test the "friendly" method-name spelling, ikiwa one exists.
+            ikiwa case in TestSubsets.case2method:
                 method = getattr(x, TestSubsets.case2method[case])
                 result = method(y)
                 self.assertEqual(result, expected)
@@ -1316,13 +1316,13 @@ class TestSubsets:
             rcase = TestSubsets.reverse[case]
             result = eval("y" + rcase + "x", locals())
             self.assertEqual(result, expected)
-            if rcase in TestSubsets.case2method:
+            ikiwa rcase in TestSubsets.case2method:
                 method = getattr(y, TestSubsets.case2method[rcase])
                 result = method(x)
                 self.assertEqual(result, expected)
 #------------------------------------------------------------------------------
 
-class TestSubsetEqualEmpty(TestSubsets, unittest.TestCase):
+kundi TestSubsetEqualEmpty(TestSubsets, unittest.TestCase):
     left  = set()
     right = set()
     name  = "both empty"
@@ -1330,7 +1330,7 @@ class TestSubsetEqualEmpty(TestSubsets, unittest.TestCase):
 
 #------------------------------------------------------------------------------
 
-class TestSubsetEqualNonEmpty(TestSubsets, unittest.TestCase):
+kundi TestSubsetEqualNonEmpty(TestSubsets, unittest.TestCase):
     left  = set([1, 2])
     right = set([1, 2])
     name  = "equal pair"
@@ -1338,7 +1338,7 @@ class TestSubsetEqualNonEmpty(TestSubsets, unittest.TestCase):
 
 #------------------------------------------------------------------------------
 
-class TestSubsetEmptyNonEmpty(TestSubsets, unittest.TestCase):
+kundi TestSubsetEmptyNonEmpty(TestSubsets, unittest.TestCase):
     left  = set()
     right = set([1, 2])
     name  = "one empty, one non-empty"
@@ -1346,7 +1346,7 @@ class TestSubsetEmptyNonEmpty(TestSubsets, unittest.TestCase):
 
 #------------------------------------------------------------------------------
 
-class TestSubsetPartial(TestSubsets, unittest.TestCase):
+kundi TestSubsetPartial(TestSubsets, unittest.TestCase):
     left  = set([1])
     right = set([1, 2])
     name  = "one a non-empty proper subset of other"
@@ -1354,7 +1354,7 @@ class TestSubsetPartial(TestSubsets, unittest.TestCase):
 
 #------------------------------------------------------------------------------
 
-class TestSubsetNonOverlap(TestSubsets, unittest.TestCase):
+kundi TestSubsetNonOverlap(TestSubsets, unittest.TestCase):
     left  = set([1])
     right = set([2])
     name  = "neither empty, neither contains"
@@ -1362,16 +1362,16 @@ class TestSubsetNonOverlap(TestSubsets, unittest.TestCase):
 
 #==============================================================================
 
-class TestOnlySetsInBinaryOps:
+kundi TestOnlySetsInBinaryOps:
 
-    def test_eq_ne(self):
+    eleza test_eq_ne(self):
         # Unlike the others, this is testing that == and != *are* allowed.
         self.assertEqual(self.other == self.set, False)
         self.assertEqual(self.set == self.other, False)
         self.assertEqual(self.other != self.set, True)
         self.assertEqual(self.set != self.other, True)
 
-    def test_ge_gt_le_lt(self):
+    eleza test_ge_gt_le_lt(self):
         self.assertRaises(TypeError, lambda: self.set < self.other)
         self.assertRaises(TypeError, lambda: self.set <= self.other)
         self.assertRaises(TypeError, lambda: self.set > self.other)
@@ -1382,7 +1382,7 @@ class TestOnlySetsInBinaryOps:
         self.assertRaises(TypeError, lambda: self.other > self.set)
         self.assertRaises(TypeError, lambda: self.other >= self.set)
 
-    def test_update_operator(self):
+    eleza test_update_operator(self):
         try:
             self.set |= self.other
         except TypeError:
@@ -1390,21 +1390,21 @@ class TestOnlySetsInBinaryOps:
         else:
             self.fail("expected TypeError")
 
-    def test_update(self):
-        if self.otherIsIterable:
+    eleza test_update(self):
+        ikiwa self.otherIsIterable:
             self.set.update(self.other)
         else:
             self.assertRaises(TypeError, self.set.update, self.other)
 
-    def test_union(self):
+    eleza test_union(self):
         self.assertRaises(TypeError, lambda: self.set | self.other)
         self.assertRaises(TypeError, lambda: self.other | self.set)
-        if self.otherIsIterable:
+        ikiwa self.otherIsIterable:
             self.set.union(self.other)
         else:
             self.assertRaises(TypeError, self.set.union, self.other)
 
-    def test_intersection_update_operator(self):
+    eleza test_intersection_update_operator(self):
         try:
             self.set &= self.other
         except TypeError:
@@ -1412,23 +1412,23 @@ class TestOnlySetsInBinaryOps:
         else:
             self.fail("expected TypeError")
 
-    def test_intersection_update(self):
-        if self.otherIsIterable:
+    eleza test_intersection_update(self):
+        ikiwa self.otherIsIterable:
             self.set.intersection_update(self.other)
         else:
             self.assertRaises(TypeError,
                               self.set.intersection_update,
                               self.other)
 
-    def test_intersection(self):
+    eleza test_intersection(self):
         self.assertRaises(TypeError, lambda: self.set & self.other)
         self.assertRaises(TypeError, lambda: self.other & self.set)
-        if self.otherIsIterable:
+        ikiwa self.otherIsIterable:
             self.set.intersection(self.other)
         else:
             self.assertRaises(TypeError, self.set.intersection, self.other)
 
-    def test_sym_difference_update_operator(self):
+    eleza test_sym_difference_update_operator(self):
         try:
             self.set ^= self.other
         except TypeError:
@@ -1436,23 +1436,23 @@ class TestOnlySetsInBinaryOps:
         else:
             self.fail("expected TypeError")
 
-    def test_sym_difference_update(self):
-        if self.otherIsIterable:
+    eleza test_sym_difference_update(self):
+        ikiwa self.otherIsIterable:
             self.set.symmetric_difference_update(self.other)
         else:
             self.assertRaises(TypeError,
                               self.set.symmetric_difference_update,
                               self.other)
 
-    def test_sym_difference(self):
+    eleza test_sym_difference(self):
         self.assertRaises(TypeError, lambda: self.set ^ self.other)
         self.assertRaises(TypeError, lambda: self.other ^ self.set)
-        if self.otherIsIterable:
+        ikiwa self.otherIsIterable:
             self.set.symmetric_difference(self.other)
         else:
             self.assertRaises(TypeError, self.set.symmetric_difference, self.other)
 
-    def test_difference_update_operator(self):
+    eleza test_difference_update_operator(self):
         try:
             self.set -= self.other
         except TypeError:
@@ -1460,67 +1460,67 @@ class TestOnlySetsInBinaryOps:
         else:
             self.fail("expected TypeError")
 
-    def test_difference_update(self):
-        if self.otherIsIterable:
+    eleza test_difference_update(self):
+        ikiwa self.otherIsIterable:
             self.set.difference_update(self.other)
         else:
             self.assertRaises(TypeError,
                               self.set.difference_update,
                               self.other)
 
-    def test_difference(self):
+    eleza test_difference(self):
         self.assertRaises(TypeError, lambda: self.set - self.other)
         self.assertRaises(TypeError, lambda: self.other - self.set)
-        if self.otherIsIterable:
+        ikiwa self.otherIsIterable:
             self.set.difference(self.other)
         else:
             self.assertRaises(TypeError, self.set.difference, self.other)
 
 #------------------------------------------------------------------------------
 
-class TestOnlySetsNumeric(TestOnlySetsInBinaryOps, unittest.TestCase):
-    def setUp(self):
+kundi TestOnlySetsNumeric(TestOnlySetsInBinaryOps, unittest.TestCase):
+    eleza setUp(self):
         self.set   = set((1, 2, 3))
         self.other = 19
         self.otherIsIterable = False
 
 #------------------------------------------------------------------------------
 
-class TestOnlySetsDict(TestOnlySetsInBinaryOps, unittest.TestCase):
-    def setUp(self):
+kundi TestOnlySetsDict(TestOnlySetsInBinaryOps, unittest.TestCase):
+    eleza setUp(self):
         self.set   = set((1, 2, 3))
         self.other = {1:2, 3:4}
         self.otherIsIterable = True
 
 #------------------------------------------------------------------------------
 
-class TestOnlySetsOperator(TestOnlySetsInBinaryOps, unittest.TestCase):
-    def setUp(self):
+kundi TestOnlySetsOperator(TestOnlySetsInBinaryOps, unittest.TestCase):
+    eleza setUp(self):
         self.set   = set((1, 2, 3))
         self.other = operator.add
         self.otherIsIterable = False
 
 #------------------------------------------------------------------------------
 
-class TestOnlySetsTuple(TestOnlySetsInBinaryOps, unittest.TestCase):
-    def setUp(self):
+kundi TestOnlySetsTuple(TestOnlySetsInBinaryOps, unittest.TestCase):
+    eleza setUp(self):
         self.set   = set((1, 2, 3))
         self.other = (2, 4, 6)
         self.otherIsIterable = True
 
 #------------------------------------------------------------------------------
 
-class TestOnlySetsString(TestOnlySetsInBinaryOps, unittest.TestCase):
-    def setUp(self):
+kundi TestOnlySetsString(TestOnlySetsInBinaryOps, unittest.TestCase):
+    eleza setUp(self):
         self.set   = set((1, 2, 3))
         self.other = 'abc'
         self.otherIsIterable = True
 
 #------------------------------------------------------------------------------
 
-class TestOnlySetsGenerator(TestOnlySetsInBinaryOps, unittest.TestCase):
-    def setUp(self):
-        def gen():
+kundi TestOnlySetsGenerator(TestOnlySetsInBinaryOps, unittest.TestCase):
+    eleza setUp(self):
+        eleza gen():
             for i in range(0, 10, 2):
                 yield i
         self.set   = set((1, 2, 3))
@@ -1529,9 +1529,9 @@ class TestOnlySetsGenerator(TestOnlySetsInBinaryOps, unittest.TestCase):
 
 #==============================================================================
 
-class TestCopying:
+kundi TestCopying:
 
-    def test_copy(self):
+    eleza test_copy(self):
         dup = self.set.copy()
         dup_list = sorted(dup, key=repr)
         set_list = sorted(self.set, key=repr)
@@ -1539,7 +1539,7 @@ class TestCopying:
         for i in range(len(dup_list)):
             self.assertTrue(dup_list[i] is set_list[i])
 
-    def test_deep_copy(self):
+    eleza test_deep_copy(self):
         dup = copy.deepcopy(self.set)
         ##print type(dup), repr(dup)
         dup_list = sorted(dup, key=repr)
@@ -1550,42 +1550,42 @@ class TestCopying:
 
 #------------------------------------------------------------------------------
 
-class TestCopyingEmpty(TestCopying, unittest.TestCase):
-    def setUp(self):
+kundi TestCopyingEmpty(TestCopying, unittest.TestCase):
+    eleza setUp(self):
         self.set = set()
 
 #------------------------------------------------------------------------------
 
-class TestCopyingSingleton(TestCopying, unittest.TestCase):
-    def setUp(self):
+kundi TestCopyingSingleton(TestCopying, unittest.TestCase):
+    eleza setUp(self):
         self.set = set(["hello"])
 
 #------------------------------------------------------------------------------
 
-class TestCopyingTriple(TestCopying, unittest.TestCase):
-    def setUp(self):
+kundi TestCopyingTriple(TestCopying, unittest.TestCase):
+    eleza setUp(self):
         self.set = set(["zero", 0, None])
 
 #------------------------------------------------------------------------------
 
-class TestCopyingTuple(TestCopying, unittest.TestCase):
-    def setUp(self):
+kundi TestCopyingTuple(TestCopying, unittest.TestCase):
+    eleza setUp(self):
         self.set = set([(1, 2)])
 
 #------------------------------------------------------------------------------
 
-class TestCopyingNested(TestCopying, unittest.TestCase):
-    def setUp(self):
+kundi TestCopyingNested(TestCopying, unittest.TestCase):
+    eleza setUp(self):
         self.set = set([((1, 2), (3, 4))])
 
 #==============================================================================
 
-class TestIdentities(unittest.TestCase):
-    def setUp(self):
+kundi TestIdentities(unittest.TestCase):
+    eleza setUp(self):
         self.a = set('abracadabra')
         self.b = set('alacazam')
 
-    def test_binopsVsSubsets(self):
+    eleza test_binopsVsSubsets(self):
         a, b = self.a, self.b
         self.assertTrue(a - b < a)
         self.assertTrue(b - a < b)
@@ -1595,15 +1595,15 @@ class TestIdentities(unittest.TestCase):
         self.assertTrue(a | b > b)
         self.assertTrue(a ^ b < a | b)
 
-    def test_commutativity(self):
+    eleza test_commutativity(self):
         a, b = self.a, self.b
         self.assertEqual(a&b, b&a)
         self.assertEqual(a|b, b|a)
         self.assertEqual(a^b, b^a)
-        if a != b:
+        ikiwa a != b:
             self.assertNotEqual(a-b, b-a)
 
-    def test_summations(self):
+    eleza test_summations(self):
         # check that sums of parts equal the whole
         a, b = self.a, self.b
         self.assertEqual((a-b)|(a&b)|(b-a), a|b)
@@ -1614,7 +1614,7 @@ class TestIdentities(unittest.TestCase):
         self.assertEqual((b-a)|(a&b), b)
         self.assertEqual((a-b)|(b-a), a^b)
 
-    def test_exclusion(self):
+    eleza test_exclusion(self):
         # check that inverse operations show non-overlap
         a, b, zero = self.a, self.b, set()
         self.assertEqual((a-b)&b, zero)
@@ -1623,86 +1623,86 @@ class TestIdentities(unittest.TestCase):
 
 # Tests derived kutoka test_itertools.py =======================================
 
-def R(seqn):
+eleza R(seqn):
     'Regular generator'
     for i in seqn:
         yield i
 
-class G:
+kundi G:
     'Sequence using __getitem__'
-    def __init__(self, seqn):
+    eleza __init__(self, seqn):
         self.seqn = seqn
-    def __getitem__(self, i):
-        return self.seqn[i]
+    eleza __getitem__(self, i):
+        rudisha self.seqn[i]
 
-class I:
+kundi I:
     'Sequence using iterator protocol'
-    def __init__(self, seqn):
+    eleza __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
-    def __iter__(self):
-        return self
-    def __next__(self):
-        if self.i >= len(self.seqn): raise StopIteration
+    eleza __iter__(self):
+        rudisha self
+    eleza __next__(self):
+        ikiwa self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
-        return v
+        rudisha v
 
-class Ig:
+kundi Ig:
     'Sequence using iterator protocol defined with a generator'
-    def __init__(self, seqn):
+    eleza __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
-    def __iter__(self):
+    eleza __iter__(self):
         for val in self.seqn:
             yield val
 
-class X:
+kundi X:
     'Missing __getitem__ and __iter__'
-    def __init__(self, seqn):
+    eleza __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
-    def __next__(self):
-        if self.i >= len(self.seqn): raise StopIteration
+    eleza __next__(self):
+        ikiwa self.i >= len(self.seqn): raise StopIteration
         v = self.seqn[self.i]
         self.i += 1
-        return v
+        rudisha v
 
-class N:
+kundi N:
     'Iterator missing __next__()'
-    def __init__(self, seqn):
+    eleza __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
-    def __iter__(self):
-        return self
+    eleza __iter__(self):
+        rudisha self
 
-class E:
+kundi E:
     'Test propagation of exceptions'
-    def __init__(self, seqn):
+    eleza __init__(self, seqn):
         self.seqn = seqn
         self.i = 0
-    def __iter__(self):
-        return self
-    def __next__(self):
+    eleza __iter__(self):
+        rudisha self
+    eleza __next__(self):
         3 // 0
 
-class S:
+kundi S:
     'Test immediate stop'
-    def __init__(self, seqn):
+    eleza __init__(self, seqn):
         pass
-    def __iter__(self):
-        return self
-    def __next__(self):
+    eleza __iter__(self):
+        rudisha self
+    eleza __next__(self):
         raise StopIteration
 
 kutoka itertools agiza chain
-def L(seqn):
+eleza L(seqn):
     'Test multiple tiers of iterators'
-    return chain(map(lambda x:x, R(Ig(G(seqn)))))
+    rudisha chain(map(lambda x:x, R(Ig(G(seqn)))))
 
-class TestVariousIteratorArgs(unittest.TestCase):
+kundi TestVariousIteratorArgs(unittest.TestCase):
 
-    def test_constructor(self):
+    eleza test_constructor(self):
         for cons in (set, frozenset):
             for s in ("123", "", range(1000), ('do', 1.2), range(2000,2200,5)):
                 for g in (G, I, Ig, S, L, R):
@@ -1711,14 +1711,14 @@ class TestVariousIteratorArgs(unittest.TestCase):
                 self.assertRaises(TypeError, cons , N(s))
                 self.assertRaises(ZeroDivisionError, cons , E(s))
 
-    def test_inline_methods(self):
+    eleza test_inline_methods(self):
         s = set('november')
         for data in ("123", "", range(1000), ('do', 1.2), range(2000,2200,5), 'december'):
             for meth in (s.union, s.intersection, s.difference, s.symmetric_difference, s.isdisjoint):
                 for g in (G, I, Ig, L, R):
                     expected = meth(data)
                     actual = meth(g(data))
-                    if isinstance(expected, bool):
+                    ikiwa isinstance(expected, bool):
                         self.assertEqual(actual, expected)
                     else:
                         self.assertEqual(sorted(actual, key=repr), sorted(expected, key=repr))
@@ -1726,7 +1726,7 @@ class TestVariousIteratorArgs(unittest.TestCase):
                 self.assertRaises(TypeError, meth, N(s))
                 self.assertRaises(ZeroDivisionError, meth, E(s))
 
-    def test_inplace_methods(self):
+    eleza test_inplace_methods(self):
         for data in ("123", "", range(1000), ('do', 1.2), range(2000,2200,5), 'december'):
             for methname in ('update', 'intersection_update',
                              'difference_update', 'symmetric_difference_update'):
@@ -1741,25 +1741,25 @@ class TestVariousIteratorArgs(unittest.TestCase):
                 self.assertRaises(TypeError, getattr(set('january'), methname), N(data))
                 self.assertRaises(ZeroDivisionError, getattr(set('january'), methname), E(data))
 
-class bad_eq:
-    def __eq__(self, other):
-        if be_bad:
+kundi bad_eq:
+    eleza __eq__(self, other):
+        ikiwa be_bad:
             set2.clear()
             raise ZeroDivisionError
-        return self is other
-    def __hash__(self):
-        return 0
+        rudisha self is other
+    eleza __hash__(self):
+        rudisha 0
 
-class bad_dict_clear:
-    def __eq__(self, other):
-        if be_bad:
+kundi bad_dict_clear:
+    eleza __eq__(self, other):
+        ikiwa be_bad:
             dict2.clear()
-        return self is other
-    def __hash__(self):
-        return 0
+        rudisha self is other
+    eleza __hash__(self):
+        rudisha 0
 
-class TestWeirdBugs(unittest.TestCase):
-    def test_8420_set_merge(self):
+kundi TestWeirdBugs(unittest.TestCase):
+    eleza test_8420_set_merge(self):
         # This used to segfault
         global be_bad, set2, dict2
         be_bad = False
@@ -1774,7 +1774,7 @@ class TestWeirdBugs(unittest.TestCase):
         be_bad = True
         set1.symmetric_difference_update(dict2)
 
-    def test_iter_and_mutate(self):
+    eleza test_iter_and_mutate(self):
         # Issue #24581
         s = set(range(100))
         s.clear()
@@ -1785,13 +1785,13 @@ class TestWeirdBugs(unittest.TestCase):
         s.update(range(100))
         list(si)
 
-    def test_merge_and_mutate(self):
-        class X:
-            def __hash__(self):
-                return hash(0)
-            def __eq__(self, o):
+    eleza test_merge_and_mutate(self):
+        kundi X:
+            eleza __hash__(self):
+                rudisha hash(0)
+            eleza __eq__(self, o):
                 other.clear()
-                return False
+                rudisha False
 
         other = set()
         other = {X() for i in range(10)}
@@ -1800,7 +1800,7 @@ class TestWeirdBugs(unittest.TestCase):
 
 # Application tests (based on David Eppstein's graph recipes ====================================
 
-def powerset(U):
+eleza powerset(U):
     """Generates all subsets of a set or sequence U."""
     U = iter(U)
     try:
@@ -1811,53 +1811,53 @@ def powerset(U):
     except StopIteration:
         yield frozenset()
 
-def cube(n):
+eleza cube(n):
     """Graph of n-dimensional hypercube."""
     singletons = [frozenset([x]) for x in range(n)]
-    return dict([(x, frozenset([x^s for s in singletons]))
+    rudisha dict([(x, frozenset([x^s for s in singletons]))
                  for x in powerset(range(n))])
 
-def linegraph(G):
+eleza linegraph(G):
     """Graph, the vertices of which are edges of G,
     with two vertices being adjacent iff the corresponding
     edges share a vertex."""
     L = {}
     for x in G:
         for y in G[x]:
-            nx = [frozenset([x,z]) for z in G[x] if z != y]
-            ny = [frozenset([y,z]) for z in G[y] if z != x]
+            nx = [frozenset([x,z]) for z in G[x] ikiwa z != y]
+            ny = [frozenset([y,z]) for z in G[y] ikiwa z != x]
             L[frozenset([x,y])] = frozenset(nx+ny)
-    return L
+    rudisha L
 
-def faces(G):
+eleza faces(G):
     'Return a set of faces in G.  Where a face is a set of vertices on that face'
     # currently limited to triangles,squares, and pentagons
     f = set()
     for v1, edges in G.items():
         for v2 in edges:
             for v3 in G[v2]:
-                if v1 == v3:
+                ikiwa v1 == v3:
                     continue
-                if v1 in G[v3]:
+                ikiwa v1 in G[v3]:
                     f.add(frozenset([v1, v2, v3]))
                 else:
                     for v4 in G[v3]:
-                        if v4 == v2:
+                        ikiwa v4 == v2:
                             continue
-                        if v1 in G[v4]:
+                        ikiwa v1 in G[v4]:
                             f.add(frozenset([v1, v2, v3, v4]))
                         else:
                             for v5 in G[v4]:
-                                if v5 == v3 or v5 == v2:
+                                ikiwa v5 == v3 or v5 == v2:
                                     continue
-                                if v1 in G[v5]:
+                                ikiwa v1 in G[v5]:
                                     f.add(frozenset([v1, v2, v3, v4, v5]))
-    return f
+    rudisha f
 
 
-class TestGraphs(unittest.TestCase):
+kundi TestGraphs(unittest.TestCase):
 
-    def test_cube(self):
+    eleza test_cube(self):
 
         g = cube(3)                             # vert --> {v1, v2, v3}
         vertices1 = set(g)
@@ -1872,7 +1872,7 @@ class TestGraphs(unittest.TestCase):
         for face in cubefaces:
             self.assertEqual(len(face), 4)      # each face is a square
 
-    def test_cuboctahedron(self):
+    eleza test_cuboctahedron(self):
 
         # http://en.wikipedia.org/wiki/Cuboctahedron
         # 8 triangular faces and 6 square faces
@@ -1904,5 +1904,5 @@ class TestGraphs(unittest.TestCase):
 
 #==============================================================================
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

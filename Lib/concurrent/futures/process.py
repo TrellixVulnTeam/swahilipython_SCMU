@@ -30,7 +30,7 @@ Executor.submit() called:
 
 Local worker thread:
 - reads work ids kutoka the "Work Ids" queue and looks up the corresponding
-  WorkItem kutoka the "Work Items" dict: if the work item has been cancelled then
+  WorkItem kutoka the "Work Items" dict: ikiwa the work item has been cancelled then
   it is simply removed kutoka the dict, otherwise it is repackaged as a
   _CallItem and put in the "Call Q". New _CallItems are put in the "Call Q"
   until "Call Q" is full. NOTE: the size of the "Call Q" is kept small because
@@ -67,7 +67,7 @@ agiza traceback
 #   - The workers would still be running during interpreter shutdown,
 #     meaning that they would fail in unpredictable ways.
 #   - The workers could be killed while evaluating a work item, which could
-#     be bad if the callable being evaluated has external side-effects e.g.
+#     be bad ikiwa the callable being evaluated has external side-effects e.g.
 #     writing to a file.
 #
 # To work around this problem, an exit handler is installed which tells the
@@ -78,23 +78,23 @@ _threads_wakeups = weakref.WeakKeyDictionary()
 _global_shutdown = False
 
 
-class _ThreadWakeup:
-    def __init__(self):
+kundi _ThreadWakeup:
+    eleza __init__(self):
         self._reader, self._writer = mp.Pipe(duplex=False)
 
-    def close(self):
+    eleza close(self):
         self._writer.close()
         self._reader.close()
 
-    def wakeup(self):
+    eleza wakeup(self):
         self._writer.send_bytes(b"")
 
-    def clear(self):
+    eleza clear(self):
         while self._reader.poll():
             self._reader.recv_bytes()
 
 
-def _python_exit():
+eleza _python_exit():
     global _global_shutdown
     _global_shutdown = True
     items = list(_threads_wakeups.items())
@@ -118,75 +118,75 @@ _MAX_WINDOWS_WORKERS = 63 - 2
 
 # Hack to embed stringification of remote traceback in local traceback
 
-class _RemoteTraceback(Exception):
-    def __init__(self, tb):
+kundi _RemoteTraceback(Exception):
+    eleza __init__(self, tb):
         self.tb = tb
-    def __str__(self):
-        return self.tb
+    eleza __str__(self):
+        rudisha self.tb
 
-class _ExceptionWithTraceback:
-    def __init__(self, exc, tb):
+kundi _ExceptionWithTraceback:
+    eleza __init__(self, exc, tb):
         tb = traceback.format_exception(type(exc), exc, tb)
         tb = ''.join(tb)
         self.exc = exc
         self.tb = '\n"""\n%s"""' % tb
-    def __reduce__(self):
-        return _rebuild_exc, (self.exc, self.tb)
+    eleza __reduce__(self):
+        rudisha _rebuild_exc, (self.exc, self.tb)
 
-def _rebuild_exc(exc, tb):
+eleza _rebuild_exc(exc, tb):
     exc.__cause__ = _RemoteTraceback(tb)
-    return exc
+    rudisha exc
 
-class _WorkItem(object):
-    def __init__(self, future, fn, args, kwargs):
+kundi _WorkItem(object):
+    eleza __init__(self, future, fn, args, kwargs):
         self.future = future
         self.fn = fn
         self.args = args
         self.kwargs = kwargs
 
-class _ResultItem(object):
-    def __init__(self, work_id, exception=None, result=None):
+kundi _ResultItem(object):
+    eleza __init__(self, work_id, exception=None, result=None):
         self.work_id = work_id
         self.exception = exception
         self.result = result
 
-class _CallItem(object):
-    def __init__(self, work_id, fn, args, kwargs):
+kundi _CallItem(object):
+    eleza __init__(self, work_id, fn, args, kwargs):
         self.work_id = work_id
         self.fn = fn
         self.args = args
         self.kwargs = kwargs
 
 
-class _SafeQueue(Queue):
+kundi _SafeQueue(Queue):
     """Safe Queue set exception to the future object linked to a job"""
-    def __init__(self, max_size=0, *, ctx, pending_work_items):
+    eleza __init__(self, max_size=0, *, ctx, pending_work_items):
         self.pending_work_items = pending_work_items
         super().__init__(max_size, ctx=ctx)
 
-    def _on_queue_feeder_error(self, e, obj):
-        if isinstance(obj, _CallItem):
+    eleza _on_queue_feeder_error(self, e, obj):
+        ikiwa isinstance(obj, _CallItem):
             tb = traceback.format_exception(type(e), e, e.__traceback__)
             e.__cause__ = _RemoteTraceback('\n"""\n{}"""'.format(''.join(tb)))
             work_item = self.pending_work_items.pop(obj.work_id, None)
-            # work_item can be None if another process terminated. In this case,
+            # work_item can be None ikiwa another process terminated. In this case,
             # the queue_manager_thread fails all work_items with BrokenProcessPool
-            if work_item is not None:
+            ikiwa work_item is not None:
                 work_item.future.set_exception(e)
         else:
             super()._on_queue_feeder_error(e, obj)
 
 
-def _get_chunks(*iterables, chunksize):
+eleza _get_chunks(*iterables, chunksize):
     """ Iterates over zip()ed iterables in chunks. """
     it = zip(*iterables)
     while True:
         chunk = tuple(itertools.islice(it, chunksize))
-        if not chunk:
+        ikiwa not chunk:
             return
         yield chunk
 
-def _process_chunk(fn, chunk):
+eleza _process_chunk(fn, chunk):
     """ Processes a chunk of an iterable passed to map.
 
     Runs the function passed to map() on a chunk of the
@@ -195,10 +195,10 @@ def _process_chunk(fn, chunk):
     This function is run in a separate process.
 
     """
-    return [fn(*args) for args in chunk]
+    rudisha [fn(*args) for args in chunk]
 
 
-def _sendback_result(result_queue, work_id, result=None, exception=None):
+eleza _sendback_result(result_queue, work_id, result=None, exception=None):
     """Safely send back the given result or exception"""
     try:
         result_queue.put(_ResultItem(work_id, result=result,
@@ -208,7 +208,7 @@ def _sendback_result(result_queue, work_id, result=None, exception=None):
         result_queue.put(_ResultItem(work_id, exception=exc))
 
 
-def _process_worker(call_queue, result_queue, initializer, initargs):
+eleza _process_worker(call_queue, result_queue, initializer, initargs):
     """Evaluates calls kutoka call_queue and places the results in result_queue.
 
     This worker is run in a separate process.
@@ -221,7 +221,7 @@ def _process_worker(call_queue, result_queue, initializer, initargs):
         initializer: A callable initializer, or None
         initargs: A tuple of args for the initializer
     """
-    if initializer is not None:
+    ikiwa initializer is not None:
         try:
             initializer(*initargs)
         except BaseException:
@@ -231,7 +231,7 @@ def _process_worker(call_queue, result_queue, initializer, initargs):
             return
     while True:
         call_item = call_queue.get(block=True)
-        if call_item is None:
+        ikiwa call_item is None:
             # Wake up queue management thread
             result_queue.put(os.getpid())
             return
@@ -249,7 +249,7 @@ def _process_worker(call_queue, result_queue, initializer, initargs):
         del call_item
 
 
-def _add_call_item_to_queue(pending_work_items,
+eleza _add_call_item_to_queue(pending_work_items,
                             work_ids,
                             call_queue):
     """Fills call_queue with _WorkItems kutoka pending_work_items.
@@ -267,7 +267,7 @@ def _add_call_item_to_queue(pending_work_items,
             derived kutoka _WorkItems.
     """
     while True:
-        if call_queue.full():
+        ikiwa call_queue.full():
             return
         try:
             work_id = work_ids.get(block=False)
@@ -276,7 +276,7 @@ def _add_call_item_to_queue(pending_work_items,
         else:
             work_item = pending_work_items[work_id]
 
-            if work_item.future.set_running_or_notify_cancel():
+            ikiwa work_item.future.set_running_or_notify_cancel():
                 call_queue.put(_CallItem(work_id,
                                          work_item.fn,
                                          work_item.args,
@@ -287,7 +287,7 @@ def _add_call_item_to_queue(pending_work_items,
                 continue
 
 
-def _queue_management_worker(executor_reference,
+eleza _queue_management_worker(executor_reference,
                              processes,
                              pending_work_items,
                              work_ids_queue,
@@ -300,7 +300,7 @@ def _queue_management_worker(executor_reference,
 
     Args:
         executor_reference: A weakref.ref to the ProcessPoolExecutor that owns
-            this thread. Used to determine if the ProcessPoolExecutor has been
+            this thread. Used to determine ikiwa the ProcessPoolExecutor has been
             garbage collected and that this function can exit.
         process: A list of the ctx.Process instances used as
             workers.
@@ -317,11 +317,11 @@ def _queue_management_worker(executor_reference,
     """
     executor = None
 
-    def shutting_down():
-        return (_global_shutdown or executor is None
+    eleza shutting_down():
+        rudisha (_global_shutdown or executor is None
                 or executor._shutdown_thread)
 
-    def shutdown_worker():
+    eleza shutdown_worker():
         # This is an upper bound on the number of children alive.
         n_children_alive = sum(p.is_alive() for p in processes.values())
         n_children_to_stop = n_children_alive
@@ -363,21 +363,21 @@ def _queue_management_worker(executor_reference,
 
         cause = None
         is_broken = True
-        if result_reader in ready:
+        ikiwa result_reader in ready:
             try:
                 result_item = result_reader.recv()
                 is_broken = False
             except BaseException as e:
                 cause = traceback.format_exception(type(e), e, e.__traceback__)
 
-        elif wakeup_reader in ready:
+        elikiwa wakeup_reader in ready:
             is_broken = False
             result_item = None
         thread_wakeup.clear()
-        if is_broken:
+        ikiwa is_broken:
             # Mark the process pool broken so that submits fail right now.
             executor = executor_reference()
-            if executor is not None:
+            ikiwa executor is not None:
                 executor._broken = ('A child process terminated '
                                     'abruptly, the process pool is not '
                                     'usable anymore')
@@ -386,7 +386,7 @@ def _queue_management_worker(executor_reference,
             bpe = BrokenProcessPool("A process in the process pool was "
                                     "terminated abruptly while the future was "
                                     "running or pending.")
-            if cause is not None:
+            ikiwa cause is not None:
                 bpe.__cause__ = _RemoteTraceback(
                     f"\n'''\n{''.join(cause)}'''")
             # All futures in flight must be marked failed
@@ -401,20 +401,20 @@ def _queue_management_worker(executor_reference,
                 p.terminate()
             shutdown_worker()
             return
-        if isinstance(result_item, int):
+        ikiwa isinstance(result_item, int):
             # Clean shutdown of a worker using its PID
             # (avoids marking the executor broken)
             assert shutting_down()
             p = processes.pop(result_item)
             p.join()
-            if not processes:
+            ikiwa not processes:
                 shutdown_worker()
                 return
-        elif result_item is not None:
+        elikiwa result_item is not None:
             work_item = pending_work_items.pop(result_item.work_id, None)
-            # work_item can be None if another process terminated (see above)
-            if work_item is not None:
-                if result_item.exception:
+            # work_item can be None ikiwa another process terminated (see above)
+            ikiwa work_item is not None:
+                ikiwa result_item.exception:
                     work_item.future.set_exception(result_item.exception)
                 else:
                     work_item.future.set_result(result_item.result)
@@ -429,15 +429,15 @@ def _queue_management_worker(executor_reference,
         #   - The interpreter is shutting down OR
         #   - The executor that owns this worker has been collected OR
         #   - The executor that owns this worker has been shutdown.
-        if shutting_down():
+        ikiwa shutting_down():
             try:
-                # Flag the executor as shutting down as early as possible if it
+                # Flag the executor as shutting down as early as possible ikiwa it
                 # is not gc-ed yet.
-                if executor is not None:
+                ikiwa executor is not None:
                     executor._shutdown_thread = True
                 # Since no new work items can be added, it is safe to shutdown
-                # this thread if there are no pending work items.
-                if not pending_work_items:
+                # this thread ikiwa there are no pending work items.
+                ikiwa not pending_work_items:
                     shutdown_worker()
                     return
             except Full:
@@ -451,10 +451,10 @@ _system_limits_checked = False
 _system_limited = None
 
 
-def _check_system_limits():
+eleza _check_system_limits():
     global _system_limits_checked, _system_limited
-    if _system_limits_checked:
-        if _system_limited:
+    ikiwa _system_limits_checked:
+        ikiwa _system_limited:
             raise NotImplementedError(_system_limited)
     _system_limits_checked = True
     try:
@@ -462,11 +462,11 @@ def _check_system_limits():
     except (AttributeError, ValueError):
         # sysconf not available or setting not available
         return
-    if nsems_max == -1:
+    ikiwa nsems_max == -1:
         # indetermined limit, assume that limit is determined
         # by available memory only
         return
-    if nsems_max >= 256:
+    ikiwa nsems_max >= 256:
         # minimum number of semaphores available
         # according to POSIX
         return
@@ -475,9 +475,9 @@ def _check_system_limits():
     raise NotImplementedError(_system_limited)
 
 
-def _chain_from_iterable_of_lists(iterable):
+eleza _chain_kutoka_iterable_of_lists(iterable):
     """
-    Specialized implementation of itertools.chain.from_iterable.
+    Specialized implementation of itertools.chain.kutoka_iterable.
     Each item in *iterable* should be a list.  This function is
     careful not to keep references to yielded objects.
     """
@@ -487,15 +487,15 @@ def _chain_from_iterable_of_lists(iterable):
             yield element.pop()
 
 
-class BrokenProcessPool(_base.BrokenExecutor):
+kundi BrokenProcessPool(_base.BrokenExecutor):
     """
     Raised when a process in a ProcessPoolExecutor terminated abruptly
     while a future was in the running state.
     """
 
 
-class ProcessPoolExecutor(_base.Executor):
-    def __init__(self, max_workers=None, mp_context=None,
+kundi ProcessPoolExecutor(_base.Executor):
+    eleza __init__(self, max_workers=None, mp_context=None,
                  initializer=None, initargs=()):
         """Initializes a new ProcessPoolExecutor instance.
 
@@ -510,26 +510,26 @@ class ProcessPoolExecutor(_base.Executor):
         """
         _check_system_limits()
 
-        if max_workers is None:
+        ikiwa max_workers is None:
             self._max_workers = os.cpu_count() or 1
-            if sys.platform == 'win32':
+            ikiwa sys.platform == 'win32':
                 self._max_workers = min(_MAX_WINDOWS_WORKERS,
                                         self._max_workers)
         else:
-            if max_workers <= 0:
+            ikiwa max_workers <= 0:
                 raise ValueError("max_workers must be greater than 0")
-            elif (sys.platform == 'win32' and
+            elikiwa (sys.platform == 'win32' and
                 max_workers > _MAX_WINDOWS_WORKERS):
                 raise ValueError(
                     f"max_workers must be <= {_MAX_WINDOWS_WORKERS}")
 
             self._max_workers = max_workers
 
-        if mp_context is None:
+        ikiwa mp_context is None:
             mp_context = mp.get_context()
         self._mp_context = mp_context
 
-        if initializer is not None and not callable(initializer):
+        ikiwa initializer is not None and not callable(initializer):
             raise TypeError("initializer must be a callable")
         self._initializer = initializer
         self._initargs = initargs
@@ -566,16 +566,16 @@ class ProcessPoolExecutor(_base.Executor):
         # of the main loop of queue_manager_thread kutoka another thread (e.g.
         # when calling executor.submit or executor.shutdown). We do not use the
         # _result_queue to send the wakeup signal to the queue_manager_thread
-        # as it could result in a deadlock if a worker process dies with the
+        # as it could result in a deadlock ikiwa a worker process dies with the
         # _result_queue write lock still acquired.
         self._queue_management_thread_wakeup = _ThreadWakeup()
 
-    def _start_queue_management_thread(self):
-        if self._queue_management_thread is None:
+    eleza _start_queue_management_thread(self):
+        ikiwa self._queue_management_thread is None:
             # When the executor gets garbarge collected, the weakref callback
             # will wake up the queue management thread so that it can terminate
-            # if there is no pending work item.
-            def weakref_cb(_,
+            # ikiwa there is no pending work item.
+            eleza weakref_cb(_,
                            thread_wakeup=self._queue_management_thread_wakeup):
                 mp.util.debug('Executor collected: triggering callback for'
                               ' QueueManager wakeup')
@@ -597,7 +597,7 @@ class ProcessPoolExecutor(_base.Executor):
             _threads_wakeups[self._queue_management_thread] = \
                 self._queue_management_thread_wakeup
 
-    def _adjust_process_count(self):
+    eleza _adjust_process_count(self):
         for _ in range(len(self._processes), self._max_workers):
             p = self._mp_context.Process(
                 target=_process_worker,
@@ -608,13 +608,13 @@ class ProcessPoolExecutor(_base.Executor):
             p.start()
             self._processes[p.pid] = p
 
-    def submit(*args, **kwargs):
-        if len(args) >= 2:
+    eleza submit(*args, **kwargs):
+        ikiwa len(args) >= 2:
             self, fn, *args = args
-        elif not args:
+        elikiwa not args:
             raise TypeError("descriptor 'submit' of 'ProcessPoolExecutor' object "
                             "needs an argument")
-        elif 'fn' in kwargs:
+        elikiwa 'fn' in kwargs:
             fn = kwargs.pop('fn')
             self, *args = args
             agiza warnings
@@ -625,11 +625,11 @@ class ProcessPoolExecutor(_base.Executor):
                             'got %d' % (len(args)-1))
 
         with self._shutdown_lock:
-            if self._broken:
+            ikiwa self._broken:
                 raise BrokenProcessPool(self._broken)
-            if self._shutdown_thread:
+            ikiwa self._shutdown_thread:
                 raise RuntimeError('cannot schedule new futures after shutdown')
-            if _global_shutdown:
+            ikiwa _global_shutdown:
                 raise RuntimeError('cannot schedule new futures after '
                                    'interpreter shutdown')
 
@@ -643,11 +643,11 @@ class ProcessPoolExecutor(_base.Executor):
             self._queue_management_thread_wakeup.wakeup()
 
             self._start_queue_management_thread()
-            return f
+            rudisha f
     submit.__text_signature__ = _base.Executor.submit.__text_signature__
     submit.__doc__ = _base.Executor.submit.__doc__
 
-    def map(self, fn, *iterables, timeout=None, chunksize=1):
+    eleza map(self, fn, *iterables, timeout=None, chunksize=1):
         """Returns an iterator equivalent to map(fn, iter).
 
         Args:
@@ -668,34 +668,34 @@ class ProcessPoolExecutor(_base.Executor):
                 before the given timeout.
             Exception: If fn(*args) raises for any values.
         """
-        if chunksize < 1:
+        ikiwa chunksize < 1:
             raise ValueError("chunksize must be >= 1.")
 
         results = super().map(partial(_process_chunk, fn),
                               _get_chunks(*iterables, chunksize=chunksize),
                               timeout=timeout)
-        return _chain_from_iterable_of_lists(results)
+        rudisha _chain_kutoka_iterable_of_lists(results)
 
-    def shutdown(self, wait=True):
+    eleza shutdown(self, wait=True):
         with self._shutdown_lock:
             self._shutdown_thread = True
-        if self._queue_management_thread:
+        ikiwa self._queue_management_thread:
             # Wake up queue management thread
             self._queue_management_thread_wakeup.wakeup()
-            if wait:
+            ikiwa wait:
                 self._queue_management_thread.join()
         # To reduce the risk of opening too many files, remove references to
         # objects that use file descriptors.
         self._queue_management_thread = None
-        if self._call_queue is not None:
+        ikiwa self._call_queue is not None:
             self._call_queue.close()
-            if wait:
+            ikiwa wait:
                 self._call_queue.join_thread()
             self._call_queue = None
         self._result_queue = None
         self._processes = None
 
-        if self._queue_management_thread_wakeup:
+        ikiwa self._queue_management_thread_wakeup:
             self._queue_management_thread_wakeup.close()
             self._queue_management_thread_wakeup = None
 

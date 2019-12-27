@@ -4,7 +4,7 @@ When called as a script with arguments, this compiles the directories
 given as arguments recursively; the -l option prevents it kutoka
 recursing into directories.
 
-Without arguments, if compiles all modules on sys.path, without
+Without arguments, ikiwa compiles all modules on sys.path, without
 recursing into subdirectories.  (Even though it should do so for
 packages -- for now, you'll have to deal with packages separately.)
 
@@ -20,34 +20,34 @@ kutoka functools agiza partial
 
 __all__ = ["compile_dir","compile_file","compile_path"]
 
-def _walk_dir(dir, ddir=None, maxlevels=10, quiet=0):
-    if quiet < 2 and isinstance(dir, os.PathLike):
+eleza _walk_dir(dir, ddir=None, maxlevels=10, quiet=0):
+    ikiwa quiet < 2 and isinstance(dir, os.PathLike):
         dir = os.fspath(dir)
-    if not quiet:
-        print('Listing {!r}...'.format(dir))
+    ikiwa not quiet:
+        andika('Listing {!r}...'.format(dir))
     try:
         names = os.listdir(dir)
     except OSError:
-        if quiet < 2:
-            print("Can't list {!r}".format(dir))
+        ikiwa quiet < 2:
+            andika("Can't list {!r}".format(dir))
         names = []
     names.sort()
     for name in names:
-        if name == '__pycache__':
+        ikiwa name == '__pycache__':
             continue
         fullname = os.path.join(dir, name)
-        if ddir is not None:
+        ikiwa ddir is not None:
             dfile = os.path.join(ddir, name)
         else:
             dfile = None
-        if not os.path.isdir(fullname):
+        ikiwa not os.path.isdir(fullname):
             yield fullname
-        elif (maxlevels > 0 and name != os.curdir and name != os.pardir and
+        elikiwa (maxlevels > 0 and name != os.curdir and name != os.pardir and
               os.path.isdir(fullname) and not os.path.islink(fullname)):
             yield kutoka _walk_dir(fullname, ddir=dfile,
                                  maxlevels=maxlevels - 1, quiet=quiet)
 
-def compile_dir(dir, maxlevels=10, ddir=None, force=False, rx=None,
+eleza compile_dir(dir, maxlevels=10, ddir=None, force=False, rx=None,
                 quiet=0, legacy=False, optimize=-1, workers=1,
                 invalidation_mode=None):
     """Byte-compile all modules in the given directory tree.
@@ -58,18 +58,18 @@ def compile_dir(dir, maxlevels=10, ddir=None, force=False, rx=None,
     maxlevels: maximum recursion level (default 10)
     ddir:      the directory that will be prepended to the path to the
                file as it is compiled into each byte-code file.
-    force:     if True, force compilation, even if timestamps are up-to-date
+    force:     ikiwa True, force compilation, even ikiwa timestamps are up-to-date
     quiet:     full output with False or 0, errors only with 1,
                no output with 2
-    legacy:    if True, produce legacy pyc paths instead of PEP 3147 paths
+    legacy:    ikiwa True, produce legacy pyc paths instead of PEP 3147 paths
     optimize:  optimization level or -1 for level of the interpreter
     workers:   maximum number of parallel workers
     invalidation_mode: how the up-to-dateness of the pyc will be checked
     """
     ProcessPoolExecutor = None
-    if workers < 0:
+    ikiwa workers < 0:
         raise ValueError('workers must be greater or equal to 0')
-    if workers != 1:
+    ikiwa workers != 1:
         try:
             # Only agiza when needed, as low resource platforms may
             # fail to agiza it
@@ -79,7 +79,7 @@ def compile_dir(dir, maxlevels=10, ddir=None, force=False, rx=None,
     files = _walk_dir(dir, quiet=quiet, maxlevels=maxlevels,
                       ddir=ddir)
     success = True
-    if workers != 1 and ProcessPoolExecutor is not None:
+    ikiwa workers != 1 and ProcessPoolExecutor is not None:
         # If workers == 0, let ProcessPoolExecutor choose
         workers = workers or None
         with ProcessPoolExecutor(max_workers=workers) as executor:
@@ -93,12 +93,12 @@ def compile_dir(dir, maxlevels=10, ddir=None, force=False, rx=None,
             success = min(results, default=True)
     else:
         for file in files:
-            if not compile_file(file, ddir, force, rx, quiet,
+            ikiwa not compile_file(file, ddir, force, rx, quiet,
                                 legacy, optimize, invalidation_mode):
                 success = False
-    return success
+    rudisha success
 
-def compile_file(fullname, ddir=None, force=False, rx=None, quiet=0,
+eleza compile_file(fullname, ddir=None, force=False, rx=None, quiet=0,
                  legacy=False, optimize=-1,
                  invalidation_mode=None):
     """Byte-compile one file.
@@ -106,92 +106,92 @@ def compile_file(fullname, ddir=None, force=False, rx=None, quiet=0,
     Arguments (only fullname is required):
 
     fullname:  the file to byte-compile
-    ddir:      if given, the directory name compiled in to the
+    ddir:      ikiwa given, the directory name compiled in to the
                byte-code file.
-    force:     if True, force compilation, even if timestamps are up-to-date
+    force:     ikiwa True, force compilation, even ikiwa timestamps are up-to-date
     quiet:     full output with False or 0, errors only with 1,
                no output with 2
-    legacy:    if True, produce legacy pyc paths instead of PEP 3147 paths
+    legacy:    ikiwa True, produce legacy pyc paths instead of PEP 3147 paths
     optimize:  optimization level or -1 for level of the interpreter
     invalidation_mode: how the up-to-dateness of the pyc will be checked
     """
     success = True
-    if quiet < 2 and isinstance(fullname, os.PathLike):
+    ikiwa quiet < 2 and isinstance(fullname, os.PathLike):
         fullname = os.fspath(fullname)
     name = os.path.basename(fullname)
-    if ddir is not None:
+    ikiwa ddir is not None:
         dfile = os.path.join(ddir, name)
     else:
         dfile = None
-    if rx is not None:
+    ikiwa rx is not None:
         mo = rx.search(fullname)
-        if mo:
-            return success
-    if os.path.isfile(fullname):
-        if legacy:
+        ikiwa mo:
+            rudisha success
+    ikiwa os.path.isfile(fullname):
+        ikiwa legacy:
             cfile = fullname + 'c'
         else:
-            if optimize >= 0:
-                opt = optimize if optimize >= 1 else ''
-                cfile = importlib.util.cache_from_source(
+            ikiwa optimize >= 0:
+                opt = optimize ikiwa optimize >= 1 else ''
+                cfile = importlib.util.cache_kutoka_source(
                                 fullname, optimization=opt)
             else:
-                cfile = importlib.util.cache_from_source(fullname)
+                cfile = importlib.util.cache_kutoka_source(fullname)
             cache_dir = os.path.dirname(cfile)
         head, tail = name[:-3], name[-3:]
-        if tail == '.py':
-            if not force:
+        ikiwa tail == '.py':
+            ikiwa not force:
                 try:
                     mtime = int(os.stat(fullname).st_mtime)
                     expect = struct.pack('<4sll', importlib.util.MAGIC_NUMBER,
                                          0, mtime)
                     with open(cfile, 'rb') as chandle:
                         actual = chandle.read(12)
-                    if expect == actual:
-                        return success
+                    ikiwa expect == actual:
+                        rudisha success
                 except OSError:
                     pass
-            if not quiet:
-                print('Compiling {!r}...'.format(fullname))
+            ikiwa not quiet:
+                andika('Compiling {!r}...'.format(fullname))
             try:
                 ok = py_compile.compile(fullname, cfile, dfile, True,
                                         optimize=optimize,
                                         invalidation_mode=invalidation_mode)
             except py_compile.PyCompileError as err:
                 success = False
-                if quiet >= 2:
-                    return success
-                elif quiet:
-                    print('*** Error compiling {!r}...'.format(fullname))
+                ikiwa quiet >= 2:
+                    rudisha success
+                elikiwa quiet:
+                    andika('*** Error compiling {!r}...'.format(fullname))
                 else:
-                    print('*** ', end='')
+                    andika('*** ', end='')
                 # escape non-printable characters in msg
                 msg = err.msg.encode(sys.stdout.encoding,
                                      errors='backslashreplace')
                 msg = msg.decode(sys.stdout.encoding)
-                print(msg)
+                andika(msg)
             except (SyntaxError, UnicodeError, OSError) as e:
                 success = False
-                if quiet >= 2:
-                    return success
-                elif quiet:
-                    print('*** Error compiling {!r}...'.format(fullname))
+                ikiwa quiet >= 2:
+                    rudisha success
+                elikiwa quiet:
+                    andika('*** Error compiling {!r}...'.format(fullname))
                 else:
-                    print('*** ', end='')
-                print(e.__class__.__name__ + ':', e)
+                    andika('*** ', end='')
+                andika(e.__class__.__name__ + ':', e)
             else:
-                if ok == 0:
+                ikiwa ok == 0:
                     success = False
-    return success
+    rudisha success
 
-def compile_path(skip_curdir=1, maxlevels=0, force=False, quiet=0,
+eleza compile_path(skip_curdir=1, maxlevels=0, force=False, quiet=0,
                  legacy=False, optimize=-1,
                  invalidation_mode=None):
     """Byte-compile all module on sys.path.
 
     Arguments (all optional):
 
-    skip_curdir: if true, skip current directory (default True)
+    skip_curdir: ikiwa true, skip current directory (default True)
     maxlevels:   max recursion level (default 0)
     force: as for compile_dir() (default False)
     quiet: as for compile_dir() (default 0)
@@ -201,9 +201,9 @@ def compile_path(skip_curdir=1, maxlevels=0, force=False, quiet=0,
     """
     success = True
     for dir in sys.path:
-        if (not dir or dir == os.curdir) and skip_curdir:
-            if quiet < 2:
-                print('Skipping current directory')
+        ikiwa (not dir or dir == os.curdir) and skip_curdir:
+            ikiwa quiet < 2:
+                andika('Skipping current directory')
         else:
             success = success and compile_dir(
                 dir,
@@ -215,10 +215,10 @@ def compile_path(skip_curdir=1, maxlevels=0, force=False, quiet=0,
                 optimize=optimize,
                 invalidation_mode=invalidation_mode,
             )
-    return success
+    rudisha success
 
 
-def main():
+eleza main():
     """Script main program."""
     agiza argparse
 
@@ -229,10 +229,10 @@ def main():
                         help="don't recurse into subdirectories")
     parser.add_argument('-r', type=int, dest='recursion',
                         help=('control the maximum recursion level. '
-                              'if `-l` and `-r` options are specified, '
+                              'ikiwa `-l` and `-r` options are specified, '
                               'then `-r` takes precedence.'))
     parser.add_argument('-f', action='store_true', dest='force',
-                        help='force rebuild even if timestamps are up to date')
+                        help='force rebuild even ikiwa timestamps are up to date')
     parser.add_argument('-q', action='count', dest='quiet', default=0,
                         help='output only error messages; -qq will suppress '
                              'the error messages as well.')
@@ -250,10 +250,10 @@ def main():
     parser.add_argument('-i', metavar='FILE', dest='flist',
                         help=('add all the files and directories listed in '
                               'FILE to the list considered for compilation; '
-                              'if "-", names are read kutoka stdin'))
+                              'ikiwa "-", names are read kutoka stdin'))
     parser.add_argument('compile_dest', metavar='FILE|DIR', nargs='*',
                         help=('zero or more file and directory names '
-                              'to compile; if no arguments given, defaults '
+                              'to compile; ikiwa no arguments given, defaults '
                               'to the equivalent of -l sys.path'))
     parser.add_argument('-j', '--workers', default=1,
                         type=int, help='Run compileall concurrently')
@@ -262,35 +262,35 @@ def main():
     parser.add_argument('--invalidation-mode',
                         choices=sorted(invalidation_modes),
                         help=('set .pyc invalidation mode; defaults to '
-                              '"checked-hash" if the SOURCE_DATE_EPOCH '
+                              '"checked-hash" ikiwa the SOURCE_DATE_EPOCH '
                               'environment variable is set, and '
                               '"timestamp" otherwise.'))
 
     args = parser.parse_args()
     compile_dests = args.compile_dest
 
-    if args.rx:
+    ikiwa args.rx:
         agiza re
         args.rx = re.compile(args.rx)
 
 
-    if args.recursion is not None:
+    ikiwa args.recursion is not None:
         maxlevels = args.recursion
     else:
         maxlevels = args.maxlevels
 
-    # if flist is provided then load it
-    if args.flist:
+    # ikiwa flist is provided then load it
+    ikiwa args.flist:
         try:
-            with (sys.stdin if args.flist=='-' else open(args.flist)) as f:
+            with (sys.stdin ikiwa args.flist=='-' else open(args.flist)) as f:
                 for line in f:
                     compile_dests.append(line.strip())
         except OSError:
-            if args.quiet < 2:
-                print("Error reading file list {}".format(args.flist))
-            return False
+            ikiwa args.quiet < 2:
+                andika("Error reading file list {}".format(args.flist))
+            rudisha False
 
-    if args.invalidation_mode:
+    ikiwa args.invalidation_mode:
         ivl_mode = args.invalidation_mode.replace('-', '_').upper()
         invalidation_mode = py_compile.PycInvalidationMode[ivl_mode]
     else:
@@ -298,31 +298,31 @@ def main():
 
     success = True
     try:
-        if compile_dests:
+        ikiwa compile_dests:
             for dest in compile_dests:
-                if os.path.isfile(dest):
-                    if not compile_file(dest, args.ddir, args.force, args.rx,
+                ikiwa os.path.isfile(dest):
+                    ikiwa not compile_file(dest, args.ddir, args.force, args.rx,
                                         args.quiet, args.legacy,
                                         invalidation_mode=invalidation_mode):
                         success = False
                 else:
-                    if not compile_dir(dest, maxlevels, args.ddir,
+                    ikiwa not compile_dir(dest, maxlevels, args.ddir,
                                        args.force, args.rx, args.quiet,
                                        args.legacy, workers=args.workers,
                                        invalidation_mode=invalidation_mode):
                         success = False
-            return success
+            rudisha success
         else:
-            return compile_path(legacy=args.legacy, force=args.force,
+            rudisha compile_path(legacy=args.legacy, force=args.force,
                                 quiet=args.quiet,
                                 invalidation_mode=invalidation_mode)
     except KeyboardInterrupt:
-        if args.quiet < 2:
-            print("\n[interrupted]")
-        return False
-    return True
+        ikiwa args.quiet < 2:
+            andika("\n[interrupted]")
+        rudisha False
+    rudisha True
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     exit_status = int(not main())
     sys.exit(exit_status)

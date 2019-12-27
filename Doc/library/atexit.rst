@@ -48,7 +48,7 @@ internal error is detected, or when :func:`os._exit` is called.
 
 .. function:: unregister(func)
 
-   Remove *func* from the list of functions to be run at interpreter
+   Remove *func* kutoka the list of functions to be run at interpreter
    shutdown.  After calling :func:`unregister`, *func* is guaranteed not to be
    called when the interpreter shuts down, even if it was registered more than
    once.  :func:`unregister` silently does nothing if *func* was not previously
@@ -68,7 +68,7 @@ internal error is detected, or when :func:`os._exit` is called.
 ---------------------
 
 The following simple example demonstrates how a module can initialize a counter
-from a file when it is imported and save the counter's updated value
+kutoka a file when it is imported and save the counter's updated value
 automatically when the program terminates without relying on the application
 making an explicit call into this module at termination. ::
 
@@ -86,7 +86,7 @@ making an explicit call into this module at termination. ::
        with open("counterfile", "w") as outfile:
            outfile.write("%d" % _count)
 
-   import atexit
+   agiza atexit
    atexit.register(savecounter)
 
 Positional and keyword arguments may also be passed to :func:`register` to be
@@ -95,7 +95,7 @@ passed along to the registered function when it is called::
    def goodbye(name, adjective):
        print('Goodbye, %s, it was %s to meet you.' % (name, adjective))
 
-   import atexit
+   agiza atexit
    atexit.register(goodbye, 'Donny', 'nice')
 
    # or:
@@ -103,7 +103,7 @@ passed along to the registered function when it is called::
 
 Usage as a :term:`decorator`::
 
-   import atexit
+   agiza atexit
 
    @atexit.register
    def goodbye():

@@ -58,8 +58,8 @@ patterns.
    This example will print all file names in the current directory with the
    extension ``.txt``::
 
-      import fnmatch
-      import os
+      agiza fnmatch
+      agiza os
 
       for file in os.listdir('.'):
           if fnmatch.fnmatch(file, '*.txt'):
@@ -86,7 +86,7 @@ patterns.
 
    Example:
 
-      >>> import fnmatch, re
+      >>> agiza fnmatch, re
       >>>
       >>> regex = fnmatch.translate('*.txt')
       >>> regex

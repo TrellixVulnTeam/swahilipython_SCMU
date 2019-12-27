@@ -6,22 +6,22 @@ agiza unittest
 agiza warnings
 
 
-class CallingOrder:
+kundi CallingOrder:
 
     """Calls to the importers on sys.meta_path happen in order that they are
     specified in the sequence, starting with the first importer
     [first called], and then continuing on down until one is found that doesn't
-    return None [continuing]."""
+    rudisha None [continuing]."""
 
 
-    def test_first_called(self):
+    eleza test_first_called(self):
         # [first called]
         mod = 'top_level'
         with util.mock_spec(mod) as first, util.mock_spec(mod) as second:
             with util.import_state(meta_path=[first, second]):
                 self.assertIs(self.__import__(mod), first.modules[mod])
 
-    def test_continuing(self):
+    eleza test_continuing(self):
         # [continuing]
         mod_name = 'for_real'
         with util.mock_spec('nonexistent') as first, \
@@ -30,8 +30,8 @@ class CallingOrder:
             with util.import_state(meta_path=[first, second]):
                 self.assertIs(self.__import__(mod_name), second.modules[mod_name])
 
-    def test_empty(self):
-        # Raise an ImportWarning if sys.meta_path is empty.
+    eleza test_empty(self):
+        # Raise an ImportWarning ikiwa sys.meta_path is empty.
         module_name = 'nothing'
         try:
             del sys.modules[module_name]
@@ -51,21 +51,21 @@ class CallingOrder:
  ) = util.test_both(CallingOrder, __import__=util.__import__)
 
 
-class CallSignature:
+kundi CallSignature:
 
     """If there is no __path__ entry on the parent module, then 'path' is None
     [no path]. Otherwise, the value for __path__ is passed in for the 'path'
     argument [path set]."""
 
-    def log_finder(self, importer):
+    eleza log_finder(self, importer):
         fxn = getattr(importer, self.finder_name)
         log = []
-        def wrapper(self, *args, **kwargs):
+        eleza wrapper(self, *args, **kwargs):
             log.append([args, kwargs])
-            return fxn(*args, **kwargs)
-        return log, wrapper
+            rudisha fxn(*args, **kwargs)
+        rudisha log, wrapper
 
-    def test_no_path(self):
+    eleza test_no_path(self):
         # [no path]
         mod_name = 'top_level'
         assert '.' not in mod_name
@@ -80,7 +80,7 @@ class CallSignature:
                 self.assertEqual(args[0], mod_name)
                 self.assertIsNone(args[1])
 
-    def test_with_path(self):
+    eleza test_with_path(self):
         # [path set]
         pkg_name = 'pkg'
         mod_name = pkg_name + '.module'
@@ -101,7 +101,7 @@ class CallSignature:
                 self.assertIs(args[1], path)
 
 
-class CallSignaturePEP302(CallSignature):
+kundi CallSignaturePEP302(CallSignature):
     mock_modules = util.mock_modules
     finder_name = 'find_module'
 
@@ -111,7 +111,7 @@ class CallSignaturePEP302(CallSignature):
  ) = util.test_both(CallSignaturePEP302, __import__=util.__import__)
 
 
-class CallSignaturePEP451(CallSignature):
+kundi CallSignaturePEP451(CallSignature):
     mock_modules = util.mock_spec
     finder_name = 'find_spec'
 
@@ -121,5 +121,5 @@ class CallSignaturePEP451(CallSignature):
  ) = util.test_both(CallSignaturePEP451, __import__=util.__import__)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

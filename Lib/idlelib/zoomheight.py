@@ -5,64 +5,64 @@ agiza sys
 agiza tkinter
 
 
-class WmInfoGatheringError(Exception):
+kundi WmInfoGatheringError(Exception):
     pass
 
 
-class ZoomHeight:
+kundi ZoomHeight:
     # Cached values for maximized window dimensions, one for each set
     # of screen dimensions.
     _max_height_and_y_coords = {}
 
-    def __init__(self, editwin):
+    eleza __init__(self, editwin):
         self.editwin = editwin
         self.top = self.editwin.top
 
-    def zoom_height_event(self, event=None):
+    eleza zoom_height_event(self, event=None):
         zoomed = self.zoom_height()
 
-        if zoomed is None:
+        ikiwa zoomed is None:
             self.top.bell()
         else:
-            menu_status = 'Restore' if zoomed else 'Zoom'
+            menu_status = 'Restore' ikiwa zoomed else 'Zoom'
             self.editwin.update_menu_label(menu='options', index='* Height',
                                            label=f'{menu_status} Height')
 
-        return "break"
+        rudisha "break"
 
-    def zoom_height(self):
+    eleza zoom_height(self):
         top = self.top
 
         width, height, x, y = get_window_geometry(top)
 
-        if top.wm_state() != 'normal':
+        ikiwa top.wm_state() != 'normal':
             # Can't zoom/restore window height for windows not in the 'normal'
             # state, e.g. maximized and full-screen windows.
-            return None
+            rudisha None
 
         try:
             maxheight, maxy = self.get_max_height_and_y_coord()
         except WmInfoGatheringError:
-            return None
+            rudisha None
 
-        if height != maxheight:
+        ikiwa height != maxheight:
             # Maximize the window's height.
             set_window_geometry(top, (width, maxheight, x, maxy))
-            return True
+            rudisha True
         else:
             # Restore the window's height.
             #
             # .wm_geometry('') makes the window revert to the size requested
             # by the widgets it contains.
             top.wm_geometry('')
-            return False
+            rudisha False
 
-    def get_max_height_and_y_coord(self):
+    eleza get_max_height_and_y_coord(self):
         top = self.top
 
         screen_dimensions = (top.winfo_screenwidth(),
                              top.winfo_screenheight())
-        if screen_dimensions not in self._max_height_and_y_coords:
+        ikiwa screen_dimensions not in self._max_height_and_y_coords:
             orig_state = top.wm_state()
 
             # Get window geometry info for maximized windows.
@@ -76,7 +76,7 @@ class ZoomHeight:
                     'the "zoomed" window state is unavailable.')
             top.update()
             maxwidth, maxheight, maxx, maxy = get_window_geometry(top)
-            if sys.platform == 'win32':
+            ikiwa sys.platform == 'win32':
                 # On Windows, the returned Y coordinate is the one before
                 # maximizing, so we use 0 which is correct unless a user puts
                 # their dock on the top of the screen (very rare).
@@ -104,20 +104,20 @@ class ZoomHeight:
             set_window_geometry(top, orig_geom)
             top.wm_state(orig_state)
 
-        return self._max_height_and_y_coords[screen_dimensions]
+        rudisha self._max_height_and_y_coords[screen_dimensions]
 
 
-def get_window_geometry(top):
+eleza get_window_geometry(top):
     geom = top.wm_geometry()
     m = re.match(r"(\d+)x(\d+)\+(-?\d+)\+(-?\d+)", geom)
-    return tuple(map(int, m.groups()))
+    rudisha tuple(map(int, m.groups()))
 
 
-def set_window_geometry(top, geometry):
+eleza set_window_geometry(top, geometry):
     top.wm_geometry("{:d}x{:d}+{:d}+{:d}".format(*geometry))
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     kutoka unittest agiza main
     main('idlelib.idle_test.test_zoomheight', verbosity=2, exit=False)
 

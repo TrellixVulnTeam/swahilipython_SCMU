@@ -53,7 +53,7 @@ More condensed:
 
 """
 
-# This tuple and __get_builtin_constructor() must be modified if a new
+# This tuple and __get_builtin_constructor() must be modified ikiwa a new
 # always available algorithm is added.
 __always_supported = ('md5', 'sha1', 'sha224', 'sha256', 'sha384', 'sha512',
                       'blake2b', 'blake2s',
@@ -76,37 +76,37 @@ __block_openssl_constructor = {
     'blake2b', 'blake2s',
 }
 
-def __get_builtin_constructor(name):
+eleza __get_builtin_constructor(name):
     cache = __builtin_constructor_cache
     constructor = cache.get(name)
-    if constructor is not None:
-        return constructor
+    ikiwa constructor is not None:
+        rudisha constructor
     try:
-        if name in {'SHA1', 'sha1'}:
+        ikiwa name in {'SHA1', 'sha1'}:
             agiza _sha1
             cache['SHA1'] = cache['sha1'] = _sha1.sha1
-        elif name in {'MD5', 'md5'}:
+        elikiwa name in {'MD5', 'md5'}:
             agiza _md5
             cache['MD5'] = cache['md5'] = _md5.md5
-        elif name in {'SHA256', 'sha256', 'SHA224', 'sha224'}:
+        elikiwa name in {'SHA256', 'sha256', 'SHA224', 'sha224'}:
             agiza _sha256
             cache['SHA224'] = cache['sha224'] = _sha256.sha224
             cache['SHA256'] = cache['sha256'] = _sha256.sha256
-        elif name in {'SHA512', 'sha512', 'SHA384', 'sha384'}:
+        elikiwa name in {'SHA512', 'sha512', 'SHA384', 'sha384'}:
             agiza _sha512
             cache['SHA384'] = cache['sha384'] = _sha512.sha384
             cache['SHA512'] = cache['sha512'] = _sha512.sha512
-        elif name in {'blake2b', 'blake2s'}:
+        elikiwa name in {'blake2b', 'blake2s'}:
             agiza _blake2
             cache['blake2b'] = _blake2.blake2b
             cache['blake2s'] = _blake2.blake2s
-        elif name in {'sha3_224', 'sha3_256', 'sha3_384', 'sha3_512'}:
+        elikiwa name in {'sha3_224', 'sha3_256', 'sha3_384', 'sha3_512'}:
             agiza _sha3
             cache['sha3_224'] = _sha3.sha3_224
             cache['sha3_256'] = _sha3.sha3_256
             cache['sha3_384'] = _sha3.sha3_384
             cache['sha3_512'] = _sha3.sha3_512
-        elif name in {'shake_128', 'shake_256'}:
+        elikiwa name in {'shake_128', 'shake_256'}:
             agiza _sha3
             cache['shake_128'] = _sha3.shake_128
             cache['shake_256'] = _sha3.shake_256
@@ -114,53 +114,53 @@ def __get_builtin_constructor(name):
         pass  # no extension module, this hash is unsupported.
 
     constructor = cache.get(name)
-    if constructor is not None:
-        return constructor
+    ikiwa constructor is not None:
+        rudisha constructor
 
     raise ValueError('unsupported hash type ' + name)
 
 
-def __get_openssl_constructor(name):
-    if name in __block_openssl_constructor:
+eleza __get_openssl_constructor(name):
+    ikiwa name in __block_openssl_constructor:
         # Prefer our blake2 and sha3 implementation.
-        return __get_builtin_constructor(name)
+        rudisha __get_builtin_constructor(name)
     try:
         f = getattr(_hashlib, 'openssl_' + name)
         # Allow the C module to raise ValueError.  The function will be
         # defined but the hash not actually available thanks to OpenSSL.
         f()
         # Use the C function directly (very fast)
-        return f
+        rudisha f
     except (AttributeError, ValueError):
-        return __get_builtin_constructor(name)
+        rudisha __get_builtin_constructor(name)
 
 
-def __py_new(name, data=b'', **kwargs):
+eleza __py_new(name, data=b'', **kwargs):
     """new(name, data=b'', **kwargs) - Return a new hashing object using the
     named algorithm; optionally initialized with data (which must be
     a bytes-like object).
     """
-    return __get_builtin_constructor(name)(data, **kwargs)
+    rudisha __get_builtin_constructor(name)(data, **kwargs)
 
 
-def __hash_new(name, data=b'', **kwargs):
+eleza __hash_new(name, data=b'', **kwargs):
     """new(name, data=b'') - Return a new hashing object using the named algorithm;
     optionally initialized with data (which must be a bytes-like object).
     """
-    if name in __block_openssl_constructor:
+    ikiwa name in __block_openssl_constructor:
         # Prefer our blake2 and sha3 implementation
         # OpenSSL 1.1.0 comes with a limited implementation of blake2b/s.
         # It does neither support keyed blake2 nor advanced features like
         # salt, personal, tree hashing or SSE.
-        return __get_builtin_constructor(name)(data, **kwargs)
+        rudisha __get_builtin_constructor(name)(data, **kwargs)
     try:
-        return _hashlib.new(name, data)
+        rudisha _hashlib.new(name, data)
     except ValueError:
         # If the _hashlib module (OpenSSL) doesn't support the named
         # hash, try using our builtin implementations.
         # This allows for SHA224/256 and SHA384/512 support even though
         # the OpenSSL library prior to 0.9.8 doesn't provide them.
-        return __get_builtin_constructor(name)(data)
+        rudisha __get_builtin_constructor(name)(data)
 
 
 try:
@@ -180,62 +180,62 @@ except ImportError:
     _trans_5C = bytes((x ^ 0x5C) for x in range(256))
     _trans_36 = bytes((x ^ 0x36) for x in range(256))
 
-    def pbkdf2_hmac(hash_name, password, salt, iterations, dklen=None):
+    eleza pbkdf2_hmac(hash_name, password, salt, iterations, dklen=None):
         """Password based key derivation function 2 (PKCS #5 v2.0)
 
         This Python implementations based on the hmac module about as fast
         as OpenSSL's PKCS5_PBKDF2_HMAC for short passwords and much faster
         for long passwords.
         """
-        if not isinstance(hash_name, str):
+        ikiwa not isinstance(hash_name, str):
             raise TypeError(hash_name)
 
-        if not isinstance(password, (bytes, bytearray)):
+        ikiwa not isinstance(password, (bytes, bytearray)):
             password = bytes(memoryview(password))
-        if not isinstance(salt, (bytes, bytearray)):
+        ikiwa not isinstance(salt, (bytes, bytearray)):
             salt = bytes(memoryview(salt))
 
         # Fast inline HMAC implementation
         inner = new(hash_name)
         outer = new(hash_name)
         blocksize = getattr(inner, 'block_size', 64)
-        if len(password) > blocksize:
+        ikiwa len(password) > blocksize:
             password = new(hash_name, password).digest()
         password = password + b'\x00' * (blocksize - len(password))
         inner.update(password.translate(_trans_36))
         outer.update(password.translate(_trans_5C))
 
-        def prf(msg, inner=inner, outer=outer):
+        eleza prf(msg, inner=inner, outer=outer):
             # PBKDF2_HMAC uses the password as key. We can re-use the same
             # digest objects and just update copies to skip initialization.
             icpy = inner.copy()
             ocpy = outer.copy()
             icpy.update(msg)
             ocpy.update(icpy.digest())
-            return ocpy.digest()
+            rudisha ocpy.digest()
 
-        if iterations < 1:
+        ikiwa iterations < 1:
             raise ValueError(iterations)
-        if dklen is None:
+        ikiwa dklen is None:
             dklen = outer.digest_size
-        if dklen < 1:
+        ikiwa dklen < 1:
             raise ValueError(dklen)
 
         dkey = b''
         loop = 1
-        from_bytes = int.from_bytes
+        kutoka_bytes = int.kutoka_bytes
         while len(dkey) < dklen:
             prev = prf(salt + loop.to_bytes(4, 'big'))
             # endianness doesn't matter here as long to / kutoka use the same
-            rkey = int.from_bytes(prev, 'big')
+            rkey = int.kutoka_bytes(prev, 'big')
             for i in range(iterations - 1):
                 prev = prf(prev)
                 # rkey = rkey ^ prev
-                rkey ^= from_bytes(prev, 'big')
+                rkey ^= kutoka_bytes(prev, 'big')
             loop += 1
             dkey += rkey.to_bytes(inner.digest_size, 'big')
 
-        return dkey[:dklen]
+        rudisha dkey[:dklen]
 
 try:
     # OpenSSL's scrypt requires OpenSSL 1.1+

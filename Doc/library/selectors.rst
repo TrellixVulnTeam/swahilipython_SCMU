@@ -117,7 +117,7 @@ constants below:
 
    .. abstractmethod:: unregister(fileobj)
 
-      Unregister a file object from selection, removing it from monitoring. A
+      Unregister a file object kutoka selection, removing it kutoka monitoring. A
       file object shall be unregistered prior to being closed.
 
       *fileobj* must be a file object previously registered.
@@ -243,14 +243,14 @@ Examples
 
 Here is a simple echo server implementation::
 
-   import selectors
-   import socket
+   agiza selectors
+   agiza socket
 
    sel = selectors.DefaultSelector()
 
    def accept(sock, mask):
        conn, addr = sock.accept()  # Should be ready
-       print('accepted', conn, 'from', addr)
+       print('accepted', conn, 'kutoka', addr)
        conn.setblocking(False)
        sel.register(conn, selectors.EVENT_READ, read)
 

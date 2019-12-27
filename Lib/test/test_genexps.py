@@ -2,7 +2,7 @@ doctests = """
 
 Test simple loop with conditional
 
-    >>> sum(i*i for i in range(100) if i&1 == 1)
+    >>> sum(i*i for i in range(100) ikiwa i&1 == 1)
     166650
 
 Test simple nesting
@@ -27,7 +27,7 @@ Test first class
 
     >>> g = (i*i for i in range(4))
     >>> type(g)
-    <class 'generator'>
+    <kundi 'generator'>
     >>> list(g)
     [0, 1, 4, 9]
 
@@ -58,17 +58,17 @@ Does it stay stopped?
 
 Test running gen when defining function is out of scope
 
-    >>> def f(n):
-    ...     return (i*i for i in range(n))
+    >>> eleza f(n):
+    ...     rudisha (i*i for i in range(n))
     >>> list(f(10))
     [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
 
-    >>> def f(n):
-    ...     return ((i,j) for i in range(3) for j in range(n))
+    >>> eleza f(n):
+    ...     rudisha ((i,j) for i in range(3) for j in range(n))
     >>> list(f(4))
     [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3)]
-    >>> def f(n):
-    ...     return ((i,j) for i in range(3) for j in range(4) if j in range(n))
+    >>> eleza f(n):
+    ...     rudisha ((i,j) for i in range(3) for j in range(4) ikiwa j in range(n))
     >>> list(f(4))
     [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3), (2, 0), (2, 1), (2, 2), (2, 3)]
     >>> list(f(2))
@@ -76,8 +76,8 @@ Test running gen when defining function is out of scope
 
 Verify that parenthesis are required in a statement
 
-    >>> def f(n):
-    ...     return i*i for i in range(n)
+    >>> eleza f(n):
+    ...     rudisha i*i for i in range(n)
     Traceback (most recent call last):
        ...
     SyntaxError: invalid syntax
@@ -114,7 +114,7 @@ for iterability
 Verify late binding for the outermost if-expression
 
     >>> include = (2,4,6,8)
-    >>> g = (i*i for i in range(10) if i in include)
+    >>> g = (i*i for i in range(10) ikiwa i in include)
     >>> include = (1,3,5,7,9)
     >>> list(g)
     [1, 9, 25, 49, 81]
@@ -153,16 +153,16 @@ Make a generator that acts like range()
     >>> list(yrange(10))
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-Generators always return to the most recent caller:
+Generators always rudisha to the most recent caller:
 
-    >>> def creator():
+    >>> eleza creator():
     ...     r = yrange(5)
-    ...     print("creator", next(r))
-    ...     return r
-    >>> def caller():
+    ...     andika("creator", next(r))
+    ...     rudisha r
+    >>> eleza caller():
     ...     r = creator()
     ...     for i in r:
-    ...             print("caller", i)
+    ...             andika("caller", i)
     >>> caller()
     creator 0
     caller 1
@@ -172,7 +172,7 @@ Generators always return to the most recent caller:
 
 Generators can call other generators:
 
-    >>> def zrange(n):
+    >>> eleza zrange(n):
     ...     for i in yrange(n):
     ...         yield i
     >>> list(zrange(5))
@@ -209,7 +209,7 @@ Verify exception propagation
         next(g)
     StopIteration
 
-Make sure that None is a valid return value
+Make sure that None is a valid rudisha value
 
     >>> list(None for i in range(10))
     [None, None, None, None, None, None, None, None, None, None]
@@ -218,17 +218,17 @@ Check that generator attributes are present
 
     >>> g = (i*i for i in range(3))
     >>> expected = set(['gi_frame', 'gi_running'])
-    >>> set(attr for attr in dir(g) if not attr.startswith('__')) >= expected
+    >>> set(attr for attr in dir(g) ikiwa not attr.startswith('__')) >= expected
     True
 
     >>> kutoka test.support agiza HAVE_DOCSTRINGS
-    >>> print(g.__next__.__doc__ if HAVE_DOCSTRINGS else 'Implement next(self).')
+    >>> andika(g.__next__.__doc__ ikiwa HAVE_DOCSTRINGS else 'Implement next(self).')
     Implement next(self).
     >>> agiza types
     >>> isinstance(g, types.GeneratorType)
     True
 
-Check the __iter__ slot is defined to return self
+Check the __iter__ slot is defined to rudisha self
 
     >>> iter(g) is g
     True
@@ -261,25 +261,25 @@ Verify that genexps are weakly referencable
 agiza sys
 
 # Trace function can throw off the tuple reuse test.
-if hasattr(sys, 'gettrace') and sys.gettrace():
+ikiwa hasattr(sys, 'gettrace') and sys.gettrace():
     __test__ = {}
 else:
     __test__ = {'doctests' : doctests}
 
-def test_main(verbose=None):
+eleza test_main(verbose=None):
     kutoka test agiza support
     kutoka test agiza test_genexps
     support.run_doctest(test_genexps, verbose)
 
     # verify reference counting
-    if verbose and hasattr(sys, "gettotalrefcount"):
+    ikiwa verbose and hasattr(sys, "gettotalrefcount"):
         agiza gc
         counts = [None] * 5
         for i in range(len(counts)):
             support.run_doctest(test_genexps, verbose)
             gc.collect()
             counts[i] = sys.gettotalrefcount()
-        print(counts)
+        andika(counts)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main(verbose=True)

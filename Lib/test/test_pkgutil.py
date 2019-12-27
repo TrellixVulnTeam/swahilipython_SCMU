@@ -2,7 +2,7 @@ kutoka test.support agiza run_unittest, unload, check_warnings, CleanImport
 agiza unittest
 agiza sys
 agiza importlib
-kutoka importlib.util agiza spec_from_file_location
+kutoka importlib.util agiza spec_kutoka_file_location
 agiza pkgutil
 agiza os
 agiza os.path
@@ -16,17 +16,17 @@ agiza zipfile
 # creating interesting package layouts to a separate module.
 # Issue #15348 declares this is indeed a dodgy hack ;)
 
-class PkgutilTests(unittest.TestCase):
+kundi PkgutilTests(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.dirname = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, self.dirname)
         sys.path.insert(0, self.dirname)
 
-    def tearDown(self):
+    eleza tearDown(self):
         del sys.path[0]
 
-    def test_getdata_filesys(self):
+    eleza test_getdata_filesys(self):
         pkg = 'test_getdata_filesys'
 
         # Include a LF and a CRLF, to test that binary data is read back
@@ -55,7 +55,7 @@ class PkgutilTests(unittest.TestCase):
 
         del sys.modules[pkg]
 
-    def test_getdata_zipfile(self):
+    eleza test_getdata_zipfile(self):
         zip = 'test_getdata_zipfile.zip'
         pkg = 'test_getdata_zipfile'
 
@@ -90,8 +90,8 @@ class PkgutilTests(unittest.TestCase):
 
         del sys.modules[pkg]
 
-    def test_unreadable_dir_on_syspath(self):
-        # issue7367 - walk_packages failed if unreadable dir on sys.path
+    eleza test_unreadable_dir_on_syspath(self):
+        # issue7367 - walk_packages failed ikiwa unreadable dir on sys.path
         package_name = "unreadable_package"
         d = os.path.join(self.dirname, package_name)
         # this does not appear to create an unreadable dir on Windows
@@ -101,7 +101,7 @@ class PkgutilTests(unittest.TestCase):
         for t in pkgutil.walk_packages(path=[self.dirname]):
             self.fail("unexpected package found")
 
-    def test_walkpackages_filesys(self):
+    eleza test_walkpackages_filesys(self):
         pkg1 = 'test_walkpackages_filesys'
         pkg1_dir = os.path.join(self.dirname, pkg1)
         os.mkdir(pkg1_dir)
@@ -137,11 +137,11 @@ class PkgutilTests(unittest.TestCase):
         self.assertEqual(actual, expected)
 
         for pkg in expected:
-            if pkg.endswith('mod'):
+            ikiwa pkg.endswith('mod'):
                 continue
             del sys.modules[pkg]
 
-    def test_walkpackages_zipfile(self):
+    eleza test_walkpackages_zipfile(self):
         """Tests the same as test_walkpackages_filesys, only with a zip file."""
 
         zip = 'test_walkpackages_zipfile.zip'
@@ -172,11 +172,11 @@ class PkgutilTests(unittest.TestCase):
         del sys.path[0]
 
         for pkg in expected:
-            if pkg.endswith('mod'):
+            ikiwa pkg.endswith('mod'):
                 continue
             del sys.modules[pkg]
 
-    def test_walk_packages_raises_on_string_or_bytes_input(self):
+    eleza test_walk_packages_raises_on_string_or_bytes_input(self):
 
         str_input = 'test_dir'
         with self.assertRaises((TypeError, ValueError)):
@@ -187,39 +187,39 @@ class PkgutilTests(unittest.TestCase):
             list(pkgutil.walk_packages(bytes_input))
 
 
-class PkgutilPEP302Tests(unittest.TestCase):
+kundi PkgutilPEP302Tests(unittest.TestCase):
 
-    class MyTestLoader(object):
-        def create_module(self, spec):
-            return None
+    kundi MyTestLoader(object):
+        eleza create_module(self, spec):
+            rudisha None
 
-        def exec_module(self, mod):
+        eleza exec_module(self, mod):
             # Count how many times the module is reloaded
             mod.__dict__['loads'] = mod.__dict__.get('loads', 0) + 1
 
-        def get_data(self, path):
-            return "Hello, world!"
+        eleza get_data(self, path):
+            rudisha "Hello, world!"
 
-    class MyTestImporter(object):
-        def find_spec(self, fullname, path=None, target=None):
+    kundi MyTestImporter(object):
+        eleza find_spec(self, fullname, path=None, target=None):
             loader = PkgutilPEP302Tests.MyTestLoader()
-            return spec_from_file_location(fullname,
+            rudisha spec_kutoka_file_location(fullname,
                                            '<%s>' % loader.__class__.__name__,
                                            loader=loader,
                                            submodule_search_locations=[])
 
-    def setUp(self):
+    eleza setUp(self):
         sys.meta_path.insert(0, self.MyTestImporter())
 
-    def tearDown(self):
+    eleza tearDown(self):
         del sys.meta_path[0]
 
-    def test_getdata_pep302(self):
+    eleza test_getdata_pep302(self):
         # Use a dummy finder/loader
         self.assertEqual(pkgutil.get_data('foo', 'dummy'), "Hello, world!")
         del sys.modules['foo']
 
-    def test_alreadyloaded(self):
+    eleza test_alreadyloaded(self):
         # Ensure that get_data works without reloading - the "loads" module
         # variable in the example loader should count how many times a reload
         # occurs.
@@ -232,8 +232,8 @@ class PkgutilPEP302Tests(unittest.TestCase):
 
 # These tests, especially the setup and cleanup, are hideous. They
 # need to be cleaned up once issue 14715 is addressed.
-class ExtendPathTests(unittest.TestCase):
-    def create_init(self, pkgname):
+kundi ExtendPathTests(unittest.TestCase):
+    eleza create_init(self, pkgname):
         dirname = tempfile.mkdtemp()
         sys.path.insert(0, dirname)
 
@@ -242,14 +242,14 @@ class ExtendPathTests(unittest.TestCase):
         with open(os.path.join(pkgdir, '__init__.py'), 'w') as fl:
             fl.write('kutoka pkgutil agiza extend_path\n__path__ = extend_path(__path__, __name__)\n')
 
-        return dirname
+        rudisha dirname
 
-    def create_submodule(self, dirname, pkgname, submodule_name, value):
+    eleza create_submodule(self, dirname, pkgname, submodule_name, value):
         module_name = os.path.join(dirname, pkgname, submodule_name + '.py')
         with open(module_name, 'w') as fl:
-            print('value={}'.format(value), file=fl)
+            andika('value={}'.format(value), file=fl)
 
-    def test_simple(self):
+    eleza test_simple(self):
         pkgname = 'foo'
         dirname_0 = self.create_init(pkgname)
         dirname_1 = self.create_init(pkgname)
@@ -278,7 +278,7 @@ class ExtendPathTests(unittest.TestCase):
 
     # Another awful testing hack to be cleaned up once the test_runpy
     # helpers are factored out to a common location
-    def test_iter_importers(self):
+    eleza test_iter_importers(self):
         iter_importers = pkgutil.iter_importers
         get_importer = pkgutil.get_importer
 
@@ -326,7 +326,7 @@ class ExtendPathTests(unittest.TestCase):
                 pass
 
 
-    def test_mixed_namespace(self):
+    eleza test_mixed_namespace(self):
         pkgname = 'foo'
         dirname_0 = self.create_init(pkgname)
         dirname_1 = self.create_init(pkgname)
@@ -357,24 +357,24 @@ class ExtendPathTests(unittest.TestCase):
     # XXX: test .pkg files
 
 
-class NestedNamespacePackageTest(unittest.TestCase):
+kundi NestedNamespacePackageTest(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.basedir = tempfile.mkdtemp()
         self.old_path = sys.path[:]
 
-    def tearDown(self):
+    eleza tearDown(self):
         sys.path[:] = self.old_path
         shutil.rmtree(self.basedir)
 
-    def create_module(self, name, contents):
+    eleza create_module(self, name, contents):
         base, final = name.rsplit('.', 1)
         base_path = os.path.join(self.basedir, base.replace('.', os.path.sep))
         os.makedirs(base_path, exist_ok=True)
         with open(os.path.join(base_path, final + ".py"), 'w') as f:
             f.write(contents)
 
-    def test_nested(self):
+    eleza test_nested(self):
         pkgutil_boilerplate = (
             'agiza pkgutil; '
             '__path__ = pkgutil.extend_path(__path__, __name__)')
@@ -398,25 +398,25 @@ class NestedNamespacePackageTest(unittest.TestCase):
         self.assertEqual(d, 2)
 
 
-class ImportlibMigrationTests(unittest.TestCase):
+kundi ImportlibMigrationTests(unittest.TestCase):
     # With full PEP 302 support in the standard agiza machinery, the
     # PEP 302 emulation in this module is in the process of being
     # deprecated in favour of importlib proper
 
-    def check_deprecated(self):
-        return check_warnings(
+    eleza check_deprecated(self):
+        rudisha check_warnings(
             ("This emulation is deprecated, use 'importlib' instead",
              DeprecationWarning))
 
-    def test_importer_deprecated(self):
+    eleza test_importer_deprecated(self):
         with self.check_deprecated():
             pkgutil.ImpImporter("")
 
-    def test_loader_deprecated(self):
+    eleza test_loader_deprecated(self):
         with self.check_deprecated():
             pkgutil.ImpLoader("", "", "", "")
 
-    def test_get_loader_avoids_emulation(self):
+    eleza test_get_loader_avoids_emulation(self):
         with check_warnings() as w:
             self.assertIsNotNone(pkgutil.get_loader("sys"))
             self.assertIsNotNone(pkgutil.get_loader("os"))
@@ -424,7 +424,7 @@ class ImportlibMigrationTests(unittest.TestCase):
             self.assertEqual(len(w.warnings), 0)
 
     @unittest.skipIf(__name__ == '__main__', 'not compatible with __main__')
-    def test_get_loader_handles_missing_loader_attribute(self):
+    eleza test_get_loader_handles_missing_loader_attribute(self):
         global __loader__
         this_loader = __loader__
         del __loader__
@@ -435,7 +435,7 @@ class ImportlibMigrationTests(unittest.TestCase):
         finally:
             __loader__ = this_loader
 
-    def test_get_loader_handles_missing_spec_attribute(self):
+    eleza test_get_loader_handles_missing_spec_attribute(self):
         name = 'spam'
         mod = type(sys)(name)
         del mod.__spec__
@@ -444,7 +444,7 @@ class ImportlibMigrationTests(unittest.TestCase):
             loader = pkgutil.get_loader(name)
         self.assertIsNone(loader)
 
-    def test_get_loader_handles_spec_attribute_none(self):
+    eleza test_get_loader_handles_spec_attribute_none(self):
         name = 'spam'
         mod = type(sys)(name)
         mod.__spec__ = None
@@ -453,7 +453,7 @@ class ImportlibMigrationTests(unittest.TestCase):
             loader = pkgutil.get_loader(name)
         self.assertIsNone(loader)
 
-    def test_get_loader_None_in_sys_modules(self):
+    eleza test_get_loader_None_in_sys_modules(self):
         name = 'totally bogus'
         sys.modules[name] = None
         try:
@@ -462,39 +462,39 @@ class ImportlibMigrationTests(unittest.TestCase):
             del sys.modules[name]
         self.assertIsNone(loader)
 
-    def test_find_loader_missing_module(self):
+    eleza test_find_loader_missing_module(self):
         name = 'totally bogus'
         loader = pkgutil.find_loader(name)
         self.assertIsNone(loader)
 
-    def test_find_loader_avoids_emulation(self):
+    eleza test_find_loader_avoids_emulation(self):
         with check_warnings() as w:
             self.assertIsNotNone(pkgutil.find_loader("sys"))
             self.assertIsNotNone(pkgutil.find_loader("os"))
             self.assertIsNotNone(pkgutil.find_loader("test.support"))
             self.assertEqual(len(w.warnings), 0)
 
-    def test_get_importer_avoids_emulation(self):
+    eleza test_get_importer_avoids_emulation(self):
         # We use an illegal path so *none* of the path hooks should fire
         with check_warnings() as w:
             self.assertIsNone(pkgutil.get_importer("*??"))
             self.assertEqual(len(w.warnings), 0)
 
-    def test_iter_importers_avoids_emulation(self):
+    eleza test_iter_importers_avoids_emulation(self):
         with check_warnings() as w:
             for importer in pkgutil.iter_importers(): pass
             self.assertEqual(len(w.warnings), 0)
 
 
-def test_main():
+eleza test_main():
     run_unittest(PkgutilTests, PkgutilPEP302Tests, ExtendPathTests,
                  NestedNamespacePackageTest, ImportlibMigrationTests)
-    # this is necessary if test is run repeated (like when finding leaks)
+    # this is necessary ikiwa test is run repeated (like when finding leaks)
     agiza zipagiza
     agiza importlib
     zipagiza._zip_directory_cache.clear()
     importlib.invalidate_caches()
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test_main()

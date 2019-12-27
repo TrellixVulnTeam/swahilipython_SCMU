@@ -10,10 +10,10 @@ necessary because the semantics are changed in this case -- the new
 map(None, X) is equivalent to [(x,) for x in X].)
 
 We avoid the transformation (except for the special case mentioned
-above) if the map() call is directly contained in iter(<>), list(<>),
+above) ikiwa the map() call is directly contained in iter(<>), list(<>),
 tuple(<>), sorted(<>), ...join(<>), or for V in <>:.
 
-NOTE: This is still not correct if the original code was depending on
+NOTE: This is still not correct ikiwa the original code was depending on
 map(F, X, Y, ...) to go on until the longest argument is exhausted,
 substituting None for missing values -- like zip(), it now stops as
 soon as the shortest argument is exhausted.
@@ -27,7 +27,7 @@ kutoka ..pygram agiza python_symbols as syms
 kutoka ..pytree agiza Node
 
 
-class FixMap(fixer_base.ConditionalFix):
+kundi FixMap(fixer_base.ConditionalFix):
     BM_compatible = True
 
     PATTERN = """
@@ -61,34 +61,34 @@ class FixMap(fixer_base.ConditionalFix):
 
     skip_on = 'future_builtins.map'
 
-    def transform(self, node, results):
-        if self.should_skip(node):
+    eleza transform(self, node, results):
+        ikiwa self.should_skip(node):
             return
 
         trailers = []
-        if 'extra_trailers' in results:
+        ikiwa 'extra_trailers' in results:
             for t in results['extra_trailers']:
                 trailers.append(t.clone())
 
-        if node.parent.type == syms.simple_stmt:
+        ikiwa node.parent.type == syms.simple_stmt:
             self.warning(node, "You should use a for loop here")
             new = node.clone()
             new.prefix = ""
             new = Call(Name("list"), [new])
-        elif "map_lambda" in results:
+        elikiwa "map_lambda" in results:
             new = ListComp(results["xp"].clone(),
                            results["fp"].clone(),
                            results["it"].clone())
             new = Node(syms.power, [new] + trailers, prefix="")
 
         else:
-            if "map_none" in results:
+            ikiwa "map_none" in results:
                 new = results["arg"].clone()
                 new.prefix = ""
             else:
-                if "args" in results:
+                ikiwa "args" in results:
                     args = results["args"]
-                    if args.type == syms.trailer and \
+                    ikiwa args.type == syms.trailer and \
                        args.children[1].type == syms.arglist and \
                        args.children[1].children[0].type == token.NAME and \
                        args.children[1].children[0].value == "None":
@@ -100,11 +100,11 @@ class FixMap(fixer_base.ConditionalFix):
                     new = Node(syms.power, [Name("map"), args.clone()])
                     new.prefix = ""
 
-                if in_special_context(node):
-                    return None
+                ikiwa in_special_context(node):
+                    rudisha None
 
             new = Node(syms.power, [Name("list"), ArgList([new])] + trailers)
             new.prefix = ""
 
         new.prefix = node.prefix
-        return new
+        rudisha new

@@ -332,13 +332,13 @@ class bdist_wininst(Command):
         if self.target_version and self.target_version < cur_version:
             if self.target_version < "2.4":
                 bv = '6.0'
-            elif self.target_version == "2.4":
+            lasivyo self.target_version == "2.4":
                 bv = '7.1'
-            elif self.target_version == "2.5":
+            lasivyo self.target_version == "2.5":
                 bv = '8.0'
-            elif self.target_version <= "3.2":
+            lasivyo self.target_version <= "3.2":
                 bv = '9.0'
-            elif self.target_version <= "3.4":
+            lasivyo self.target_version <= "3.4":
                 bv = '10.0'
             else:
                 bv = '14.0'

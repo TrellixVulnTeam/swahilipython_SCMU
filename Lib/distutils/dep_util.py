@@ -78,9 +78,9 @@ def newer_group (sources, target, missing='error'):
         if not os.path.exists(source):
             if missing == 'error':      # blow up when we stat() the file
                 pass
-            elif missing == 'ignore':   # missing source dropped from
+            lasivyo missing == 'ignore':   # missing source dropped from
                 continue                #  target's dependency list
-            elif missing == 'newer':    # missing source means target is
+            lasivyo missing == 'newer':    # missing source means target is
                 return 1                #  out-of-date
 
         source_mtime = os.stat(source)[ST_MTIME]

@@ -6,9 +6,9 @@ kutoka test.support agiza requires
 kutoka tkinter agiza Tk
 
 
-class WindowListTest(unittest.TestCase):
+kundi WindowListTest(unittest.TestCase):
 
-    def test_init(self):
+    eleza test_init(self):
         wl = window.WindowList()
         self.assertEqual(wl.dict, {})
         self.assertEqual(wl.callbacks, [])
@@ -16,17 +16,17 @@ class WindowListTest(unittest.TestCase):
     # Further tests need mock Window.
 
 
-class ListedToplevelTest(unittest.TestCase):
+kundi ListedToplevelTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         window.registry = set()
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         window.registry = window.WindowList()
         cls.root.update_idletasks()
 ##        for id in cls.root.tk.call('after', 'info'):
@@ -34,12 +34,12 @@ class ListedToplevelTest(unittest.TestCase):
         cls.root.destroy()
         del cls.root
 
-    def test_init(self):
+    eleza test_init(self):
 
         win = window.ListedToplevel(self.root)
         self.assertIn(win, window.registry)
         self.assertEqual(win.focused_widget, win)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

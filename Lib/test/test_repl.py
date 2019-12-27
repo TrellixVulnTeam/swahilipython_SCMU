@@ -8,7 +8,7 @@ kutoka textwrap agiza dedent
 kutoka test.support agiza cpython_only, SuppressCrashReport
 kutoka test.support.script_helper agiza kill_python
 
-def spawn_repl(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
+eleza spawn_repl(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
     """Run the Python REPL with the given arguments.
 
     kw is extra keyword args to pass to subprocess.Popen. Returns a Popen
@@ -29,22 +29,22 @@ def spawn_repl(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
     # test.support.script_helper.
     env = kw.setdefault('env', dict(os.environ))
     env['TERM'] = 'vt100'
-    return subprocess.Popen(cmd_line, executable=sys.executable,
+    rudisha subprocess.Popen(cmd_line, executable=sys.executable,
                             stdin=subprocess.PIPE,
                             stdout=stdout, stderr=stderr,
                             **kw)
 
-class TestInteractiveInterpreter(unittest.TestCase):
+kundi TestInteractiveInterpreter(unittest.TestCase):
 
     @cpython_only
-    def test_no_memory(self):
+    eleza test_no_memory(self):
         # Issue #30696: Fix the interactive interpreter looping endlessly when
         # no memory. Check also that the fix does not break the interactive
         # loop when an exception is raised.
         user_input = """
             agiza sys, _testcapi
             1/0
-            print('After the exception.')
+            andika('After the exception.')
             _testcapi.set_nomemory(0)
             sys.exit(0)
         """
@@ -58,5 +58,5 @@ class TestInteractiveInterpreter(unittest.TestCase):
         # Exit code 120: Py_FinalizeEx() failed to flush stdout and stderr.
         self.assertIn(p.returncode, (1, 120))
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

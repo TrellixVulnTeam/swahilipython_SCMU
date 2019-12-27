@@ -1,7 +1,7 @@
 # This test module covers support in various parts of the standard library
 # for working with modules located inside zipfiles
 # The tests are centralised in this fashion to make it easy to drop them
-# if a platform doesn't support zipagiza
+# ikiwa a platform doesn't support zipagiza
 agiza test.support
 agiza os
 agiza os.path
@@ -32,10 +32,10 @@ kutoka test agiza (test_doctest, sample_doctest, sample_doctest_no_doctests,
                   sample_doctest_no_docstrings)
 
 
-def _run_object_doctest(obj, module):
+eleza _run_object_doctest(obj, module):
     finder = doctest.DocTestFinder(verbose=verbose, recurse=False)
     runner = doctest.DocTestRunner(verbose=verbose)
-    # Use the object's fully qualified name if it has one
+    # Use the object's fully qualified name ikiwa it has one
     # Otherwise, use the module's name
     try:
         name = "%s.%s" % (obj.__module__, obj.__qualname__)
@@ -44,15 +44,15 @@ def _run_object_doctest(obj, module):
     for example in finder.find(obj, name, module):
         runner.run(example)
     f, t = runner.failures, runner.tries
-    if f:
+    ikiwa f:
         raise test.support.TestFailed("%d of %d doctests failed" % (f, t))
-    if verbose:
+    ikiwa verbose:
         print ('doctest (%s) ... %d tests with zero failures' % (module.__name__, t))
-    return f, t
+    rudisha f, t
 
 
 
-class ZipSupportTests(unittest.TestCase):
+kundi ZipSupportTests(unittest.TestCase):
     # This used to use the ImportHooksBaseTestCase to restore
     # the state of the agiza related information
     # in the sys module after each test. However, that restores
@@ -61,7 +61,7 @@ class ZipSupportTests(unittest.TestCase):
     # sys.modules alone.
     # We also clear the linecache and zipagiza cache
     # just to avoid any bogus errors due to name reuse in the tests
-    def setUp(self):
+    eleza setUp(self):
         linecache.clearcache()
         zipagiza._zip_directory_cache.clear()
         self.path = sys.path[:]
@@ -69,14 +69,14 @@ class ZipSupportTests(unittest.TestCase):
         self.path_hooks = sys.path_hooks[:]
         sys.path_importer_cache.clear()
 
-    def tearDown(self):
+    eleza tearDown(self):
         sys.path[:] = self.path
         sys.meta_path[:] = self.meta_path
         sys.path_hooks[:] = self.path_hooks
         sys.path_importer_cache.clear()
 
-    def test_inspect_getsource_issue4223(self):
-        test_src = "def foo(): pass\n"
+    eleza test_inspect_getsource_issue4223(self):
+        test_src = "eleza foo(): pass\n"
         with test.support.temp_dir() as d:
             init_name = make_script(d, '__init__', test_src)
             name_in_zip = os.path.join('zip_pkg',
@@ -91,7 +91,7 @@ class ZipSupportTests(unittest.TestCase):
             finally:
                 del sys.modules["zip_pkg"]
 
-    def test_doctest_issue4197(self):
+    eleza test_doctest_issue4197(self):
         # To avoid having to keep two copies of the doctest module's
         # unit tests in sync, this test works by taking the source of
         # test_doctest itself, rewriting it a bit to cope with a new
@@ -125,7 +125,7 @@ class ZipSupportTests(unittest.TestCase):
             with zipfile.ZipFile(zip_name, 'a') as z:
                 for mod_name, src in sample_sources.items():
                     z.writestr(mod_name + ".py", src)
-            if verbose:
+            ikiwa verbose:
                 with zipfile.ZipFile(zip_name, 'r') as zip_file:
                     print ('Contents of %r:' % zip_name)
                     zip_file.printdir()
@@ -182,9 +182,9 @@ class ZipSupportTests(unittest.TestCase):
             finally:
                 del sys.modules["test_zipped_doctest"]
 
-    def test_doctest_main_issue4197(self):
+    eleza test_doctest_main_issue4197(self):
         test_src = textwrap.dedent("""\
-                    class Test:
+                    kundi Test:
                         ">>> 'line 2'"
                         pass
 
@@ -196,7 +196,7 @@ class ZipSupportTests(unittest.TestCase):
             script_name = make_script(d, 'script', test_src)
             rc, out, err = assert_python_ok(script_name)
             expected = pattern % (script_name, "__main__.Test")
-            if verbose:
+            ikiwa verbose:
                 print ("Expected line", expected)
                 print ("Got stdout:")
                 print (ascii(out))
@@ -205,15 +205,15 @@ class ZipSupportTests(unittest.TestCase):
                                                 script_name, '__main__.py')
             rc, out, err = assert_python_ok(zip_name)
             expected = pattern % (run_name, "__main__.Test")
-            if verbose:
+            ikiwa verbose:
                 print ("Expected line", expected)
                 print ("Got stdout:")
                 print (ascii(out))
             self.assertIn(expected.encode('utf-8'), out)
 
-    def test_pdb_issue4201(self):
+    eleza test_pdb_issue4201(self):
         test_src = textwrap.dedent("""\
-                    def f():
+                    eleza f():
                         pass
 
                     agiza pdb
@@ -235,8 +235,8 @@ class ZipSupportTests(unittest.TestCase):
             self.assertIn(os.path.normcase(run_name.encode('utf-8')), data)
 
 
-def tearDownModule():
+eleza tearDownModule():
     test.support.reap_children()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

@@ -10,14 +10,14 @@ kutoka xml.dom.NodeFilter agiza NodeFilter
 __all__ = ["DOMBuilder", "DOMEntityResolver", "DOMInputSource"]
 
 
-class Options:
+kundi Options:
     """Features object that has variables set for each DOMBuilder feature.
 
-    The DOMBuilder class uses an instance of this class to pass settings to
+    The DOMBuilder kundi uses an instance of this kundi to pass settings to
     the ExpatBuilder class.
     """
 
-    # Note that the DOMBuilder class in LoadSave constrains which of these
+    # Note that the DOMBuilder kundi in LoadSave constrains which of these
     # values can be set using the DOM Level 3 LoadSave feature.
 
     namespaces = 1
@@ -42,7 +42,7 @@ class Options:
     filter = None
 
 
-class DOMBuilder:
+kundi DOMBuilder:
     entityResolver = None
     errorHandler = None
     filter = None
@@ -55,26 +55,26 @@ class DOMBuilder:
     _legal_actions = (ACTION_REPLACE, ACTION_APPEND_AS_CHILDREN,
                       ACTION_INSERT_AFTER, ACTION_INSERT_BEFORE)
 
-    def __init__(self):
+    eleza __init__(self):
         self._options = Options()
 
-    def _get_entityResolver(self):
-        return self.entityResolver
-    def _set_entityResolver(self, entityResolver):
+    eleza _get_entityResolver(self):
+        rudisha self.entityResolver
+    eleza _set_entityResolver(self, entityResolver):
         self.entityResolver = entityResolver
 
-    def _get_errorHandler(self):
-        return self.errorHandler
-    def _set_errorHandler(self, errorHandler):
+    eleza _get_errorHandler(self):
+        rudisha self.errorHandler
+    eleza _set_errorHandler(self, errorHandler):
         self.errorHandler = errorHandler
 
-    def _get_filter(self):
-        return self.filter
-    def _set_filter(self, filter):
+    eleza _get_filter(self):
+        rudisha self.filter
+    eleza _set_filter(self, filter):
         self.filter = filter
 
-    def setFeature(self, name, state):
-        if self.supportsFeature(name):
+    eleza setFeature(self, name, state):
+        ikiwa self.supportsFeature(name):
             state = state and 1 or 0
             try:
                 settings = self._settings[(_name_xform(name), state)]
@@ -87,12 +87,12 @@ class DOMBuilder:
         else:
             raise xml.dom.NotFoundErr("unknown feature: " + repr(name))
 
-    def supportsFeature(self, name):
-        return hasattr(self._options, _name_xform(name))
+    eleza supportsFeature(self, name):
+        rudisha hasattr(self._options, _name_xform(name))
 
-    def canSetFeature(self, name, state):
+    eleza canSetFeature(self, name, state):
         key = (_name_xform(name), state and 1 or 0)
-        return key in self._settings
+        rudisha key in self._settings
 
     # This dictionary maps kutoka (feature,value) to a list of
     # (option,value) pairs that should be set on the Options object.
@@ -160,14 +160,14 @@ class DOMBuilder:
             ("namespaces", 1)],
     }
 
-    def getFeature(self, name):
+    eleza getFeature(self, name):
         xname = _name_xform(name)
         try:
-            return getattr(self._options, xname)
+            rudisha getattr(self._options, xname)
         except AttributeError:
-            if name == "infoset":
+            ikiwa name == "infoset":
                 options = self._options
-                return (options.datatype_normalization
+                rudisha (options.datatype_normalization
                         and options.whitespace_in_element_content
                         and options.comments
                         and options.charset_overrides_xml_encoding
@@ -178,49 +178,49 @@ class DOMBuilder:
                                  or options.cdata_sections))
             raise xml.dom.NotFoundErr("feature %s not known" % repr(name))
 
-    def parseURI(self, uri):
-        if self.entityResolver:
+    eleza parseURI(self, uri):
+        ikiwa self.entityResolver:
             input = self.entityResolver.resolveEntity(None, uri)
         else:
             input = DOMEntityResolver().resolveEntity(None, uri)
-        return self.parse(input)
+        rudisha self.parse(input)
 
-    def parse(self, input):
+    eleza parse(self, input):
         options = copy.copy(self._options)
         options.filter = self.filter
         options.errorHandler = self.errorHandler
         fp = input.byteStream
-        if fp is None and options.systemId:
+        ikiwa fp is None and options.systemId:
             agiza urllib.request
             fp = urllib.request.urlopen(input.systemId)
-        return self._parse_bytestream(fp, options)
+        rudisha self._parse_bytestream(fp, options)
 
-    def parseWithContext(self, input, cnode, action):
-        if action not in self._legal_actions:
+    eleza parseWithContext(self, input, cnode, action):
+        ikiwa action not in self._legal_actions:
             raise ValueError("not a legal action")
         raise NotImplementedError("Haven't written this yet...")
 
-    def _parse_bytestream(self, stream, options):
+    eleza _parse_bytestream(self, stream, options):
         agiza xml.dom.expatbuilder
         builder = xml.dom.expatbuilder.makeBuilder(options)
-        return builder.parseFile(stream)
+        rudisha builder.parseFile(stream)
 
 
-def _name_xform(name):
-    return name.lower().replace('-', '_')
+eleza _name_xform(name):
+    rudisha name.lower().replace('-', '_')
 
 
-class DOMEntityResolver(object):
+kundi DOMEntityResolver(object):
     __slots__ = '_opener',
 
-    def resolveEntity(self, publicId, systemId):
+    eleza resolveEntity(self, publicId, systemId):
         assert systemId is not None
         source = DOMInputSource()
         source.publicId = publicId
         source.systemId = systemId
         source.byteStream = self._get_opener().open(systemId)
 
-        # determine the encoding if the transport provided it
+        # determine the encoding ikiwa the transport provided it
         source.encoding = self._guess_media_encoding(source)
 
         # determine the base URI is we can
@@ -228,37 +228,37 @@ class DOMEntityResolver(object):
         parts = urllib.parse.urlparse(systemId)
         scheme, netloc, path, params, query, fragment = parts
         # XXX should we check the scheme here as well?
-        if path and not path.endswith("/"):
+        ikiwa path and not path.endswith("/"):
             path = posixpath.dirname(path) + "/"
             parts = scheme, netloc, path, params, query, fragment
             source.baseURI = urllib.parse.urlunparse(parts)
 
-        return source
+        rudisha source
 
-    def _get_opener(self):
+    eleza _get_opener(self):
         try:
-            return self._opener
+            rudisha self._opener
         except AttributeError:
             self._opener = self._create_opener()
-            return self._opener
+            rudisha self._opener
 
-    def _create_opener(self):
+    eleza _create_opener(self):
         agiza urllib.request
-        return urllib.request.build_opener()
+        rudisha urllib.request.build_opener()
 
-    def _guess_media_encoding(self, source):
+    eleza _guess_media_encoding(self, source):
         info = source.byteStream.info()
-        if "Content-Type" in info:
+        ikiwa "Content-Type" in info:
             for param in info.getplist():
-                if param.startswith("charset="):
-                    return param.split("=", 1)[1].lower()
+                ikiwa param.startswith("charset="):
+                    rudisha param.split("=", 1)[1].lower()
 
 
-class DOMInputSource(object):
+kundi DOMInputSource(object):
     __slots__ = ('byteStream', 'characterStream', 'stringData',
                  'encoding', 'publicId', 'systemId', 'baseURI')
 
-    def __init__(self):
+    eleza __init__(self):
         self.byteStream = None
         self.characterStream = None
         self.stringData = None
@@ -267,43 +267,43 @@ class DOMInputSource(object):
         self.systemId = None
         self.baseURI = None
 
-    def _get_byteStream(self):
-        return self.byteStream
-    def _set_byteStream(self, byteStream):
+    eleza _get_byteStream(self):
+        rudisha self.byteStream
+    eleza _set_byteStream(self, byteStream):
         self.byteStream = byteStream
 
-    def _get_characterStream(self):
-        return self.characterStream
-    def _set_characterStream(self, characterStream):
+    eleza _get_characterStream(self):
+        rudisha self.characterStream
+    eleza _set_characterStream(self, characterStream):
         self.characterStream = characterStream
 
-    def _get_stringData(self):
-        return self.stringData
-    def _set_stringData(self, data):
+    eleza _get_stringData(self):
+        rudisha self.stringData
+    eleza _set_stringData(self, data):
         self.stringData = data
 
-    def _get_encoding(self):
-        return self.encoding
-    def _set_encoding(self, encoding):
+    eleza _get_encoding(self):
+        rudisha self.encoding
+    eleza _set_encoding(self, encoding):
         self.encoding = encoding
 
-    def _get_publicId(self):
-        return self.publicId
-    def _set_publicId(self, publicId):
+    eleza _get_publicId(self):
+        rudisha self.publicId
+    eleza _set_publicId(self, publicId):
         self.publicId = publicId
 
-    def _get_systemId(self):
-        return self.systemId
-    def _set_systemId(self, systemId):
+    eleza _get_systemId(self):
+        rudisha self.systemId
+    eleza _set_systemId(self, systemId):
         self.systemId = systemId
 
-    def _get_baseURI(self):
-        return self.baseURI
-    def _set_baseURI(self, uri):
+    eleza _get_baseURI(self):
+        rudisha self.baseURI
+    eleza _set_baseURI(self, uri):
         self.baseURI = uri
 
 
-class DOMBuilderFilter:
+kundi DOMBuilderFilter:
     """Element filter which can be used to tailor construction of
     a DOM instance.
     """
@@ -320,69 +320,69 @@ class DOMBuilderFilter:
 
     whatToShow = NodeFilter.SHOW_ALL
 
-    def _get_whatToShow(self):
-        return self.whatToShow
+    eleza _get_whatToShow(self):
+        rudisha self.whatToShow
 
-    def acceptNode(self, element):
-        return self.FILTER_ACCEPT
+    eleza acceptNode(self, element):
+        rudisha self.FILTER_ACCEPT
 
-    def startContainer(self, element):
-        return self.FILTER_ACCEPT
+    eleza startContainer(self, element):
+        rudisha self.FILTER_ACCEPT
 
 del NodeFilter
 
 
-class DocumentLS:
+kundi DocumentLS:
     """Mixin to create documents that conform to the load/save spec."""
 
     async_ = False
 
-    def _get_async(self):
-        return False
+    eleza _get_async(self):
+        rudisha False
 
-    def _set_async(self, flag):
-        if flag:
+    eleza _set_async(self, flag):
+        ikiwa flag:
             raise xml.dom.NotSupportedErr(
                 "asynchronous document loading is not supported")
 
-    def abort(self):
+    eleza abort(self):
         # What does it mean to "clear" a document?  Does the
         # documentElement disappear?
         raise NotImplementedError(
             "haven't figured out what this means yet")
 
-    def load(self, uri):
+    eleza load(self, uri):
         raise NotImplementedError("haven't written this yet")
 
-    def loadXML(self, source):
+    eleza loadXML(self, source):
         raise NotImplementedError("haven't written this yet")
 
-    def saveXML(self, snode):
-        if snode is None:
+    eleza saveXML(self, snode):
+        ikiwa snode is None:
             snode = self
-        elif snode.ownerDocument is not self:
+        elikiwa snode.ownerDocument is not self:
             raise xml.dom.WrongDocumentErr()
-        return snode.toxml()
+        rudisha snode.toxml()
 
 
-class DOMImplementationLS:
+kundi DOMImplementationLS:
     MODE_SYNCHRONOUS = 1
     MODE_ASYNCHRONOUS = 2
 
-    def createDOMBuilder(self, mode, schemaType):
-        if schemaType is not None:
+    eleza createDOMBuilder(self, mode, schemaType):
+        ikiwa schemaType is not None:
             raise xml.dom.NotSupportedErr(
                 "schemaType not yet supported")
-        if mode == self.MODE_SYNCHRONOUS:
-            return DOMBuilder()
-        if mode == self.MODE_ASYNCHRONOUS:
+        ikiwa mode == self.MODE_SYNCHRONOUS:
+            rudisha DOMBuilder()
+        ikiwa mode == self.MODE_ASYNCHRONOUS:
             raise xml.dom.NotSupportedErr(
                 "asynchronous builders are not supported")
         raise ValueError("unknown value for mode")
 
-    def createDOMWriter(self):
+    eleza createDOMWriter(self):
         raise NotImplementedError(
             "the writer interface hasn't been written yet!")
 
-    def createDOMInputSource(self):
-        return DOMInputSource()
+    eleza createDOMInputSource(self):
+        rudisha DOMInputSource()

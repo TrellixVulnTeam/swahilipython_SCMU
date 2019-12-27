@@ -1,6 +1,6 @@
 agiza sqlite3
 
-class MySum:
+kundi MySum:
     def __init__(self):
         self.count = 0
 

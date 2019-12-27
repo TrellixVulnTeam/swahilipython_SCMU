@@ -4,30 +4,30 @@ agiza collections
 agiza sys
 
 
-class BasicTestMappingProtocol(unittest.TestCase):
-    # This base class can be used to check that an object conforms to the
+kundi BasicTestMappingProtocol(unittest.TestCase):
+    # This base kundi can be used to check that an object conforms to the
     # mapping protocol
 
     # Functions that can be useful to override to adapt to dictionary
     # semantics
-    type2test = None # which class is being tested (overwrite in subclasses)
+    type2test = None # which kundi is being tested (overwrite in subclasses)
 
-    def _reference(self):
+    eleza _reference(self):
         """Return a dictionary of values which are invariant by storage
         in the object under test."""
-        return {"1": "2", "key1":"value1", "key2":(1,2,3)}
-    def _empty_mapping(self):
+        rudisha {"1": "2", "key1":"value1", "key2":(1,2,3)}
+    eleza _empty_mapping(self):
         """Return an empty mapping object"""
-        return self.type2test()
-    def _full_mapping(self, data):
+        rudisha self.type2test()
+    eleza _full_mapping(self, data):
         """Return a mapping object with the value contained in data
         dictionary"""
         x = self._empty_mapping()
         for key, value in data.items():
             x[key] = value
-        return x
+        rudisha x
 
-    def __init__(self, *args, **kw):
+    eleza __init__(self, *args, **kw):
         unittest.TestCase.__init__(self, *args, **kw)
         self.reference = self._reference().copy()
 
@@ -40,12 +40,12 @@ class BasicTestMappingProtocol(unittest.TestCase):
         self.inmapping = {key:value}
         self.reference[key] = value
 
-    def test_read(self):
+    eleza test_read(self):
         # Test for read only operations on mapping
         p = self._empty_mapping()
         p1 = dict(p) #workaround for singleton objects
         d = self._full_mapping(self.reference)
-        if d is p:
+        ikiwa d is p:
             p = p1
         #Indexing
         for key, value in self.reference.items():
@@ -66,10 +66,10 @@ class BasicTestMappingProtocol(unittest.TestCase):
         self.assertNotEqual(p, d)
         self.assertNotEqual(d, p)
         #bool
-        if p: self.fail("Empty mapping must compare to False")
-        if not d: self.fail("Full mapping must compare to True")
+        ikiwa p: self.fail("Empty mapping must compare to False")
+        ikiwa not d: self.fail("Full mapping must compare to True")
         # keys(), items(), iterkeys() ...
-        def check_iterandlist(iter, lst, ref):
+        eleza check_iterandlist(iter, lst, ref):
             self.assertTrue(hasattr(iter, '__next__'))
             self.assertTrue(hasattr(iter, '__iter__'))
             x = list(iter)
@@ -88,7 +88,7 @@ class BasicTestMappingProtocol(unittest.TestCase):
         self.assertEqual(d.get(knownkey, knownvalue), knownvalue)
         self.assertNotIn(knownkey, d)
 
-    def test_write(self):
+    eleza test_write(self):
         # Test for write operations on mapping
         p = self._empty_mapping()
         #Indexing
@@ -130,16 +130,16 @@ class BasicTestMappingProtocol(unittest.TestCase):
         p=self._empty_mapping()
         self.assertRaises(KeyError, p.popitem)
 
-    def test_constructor(self):
+    eleza test_constructor(self):
         self.assertEqual(self._empty_mapping(), self._empty_mapping())
 
-    def test_bool(self):
+    eleza test_bool(self):
         self.assertTrue(not self._empty_mapping())
         self.assertTrue(self.reference)
         self.assertTrue(bool(self._empty_mapping()) is False)
         self.assertTrue(bool(self.reference) is True)
 
-    def test_keys(self):
+    eleza test_keys(self):
         d = self._empty_mapping()
         self.assertEqual(list(d.keys()), [])
         d = self.reference
@@ -147,30 +147,30 @@ class BasicTestMappingProtocol(unittest.TestCase):
         self.assertNotIn(list(self.other.keys())[0], d.keys())
         self.assertRaises(TypeError, d.keys, None)
 
-    def test_values(self):
+    eleza test_values(self):
         d = self._empty_mapping()
         self.assertEqual(list(d.values()), [])
 
         self.assertRaises(TypeError, d.values, None)
 
-    def test_items(self):
+    eleza test_items(self):
         d = self._empty_mapping()
         self.assertEqual(list(d.items()), [])
 
         self.assertRaises(TypeError, d.items, None)
 
-    def test_len(self):
+    eleza test_len(self):
         d = self._empty_mapping()
         self.assertEqual(len(d), 0)
 
-    def test_getitem(self):
+    eleza test_getitem(self):
         d = self.reference
         self.assertEqual(d[list(self.inmapping.keys())[0]],
                          list(self.inmapping.values())[0])
 
         self.assertRaises(TypeError, d.__getitem__)
 
-    def test_update(self):
+    eleza test_update(self):
         # mapping argument
         d = self._empty_mapping()
         d.update(self.other)
@@ -196,78 +196,78 @@ class BasicTestMappingProtocol(unittest.TestCase):
         self.assertRaises((TypeError, AttributeError), d.update, 42)
 
         outerself = self
-        class SimpleUserDict:
-            def __init__(self):
+        kundi SimpleUserDict:
+            eleza __init__(self):
                 self.d = outerself.reference
-            def keys(self):
-                return self.d.keys()
-            def __getitem__(self, i):
-                return self.d[i]
+            eleza keys(self):
+                rudisha self.d.keys()
+            eleza __getitem__(self, i):
+                rudisha self.d[i]
         d.clear()
         d.update(SimpleUserDict())
         i1 = sorted(d.items())
         i2 = sorted(self.reference.items())
         self.assertEqual(i1, i2)
 
-        class Exc(Exception): pass
+        kundi Exc(Exception): pass
 
         d = self._empty_mapping()
-        class FailingUserDict:
-            def keys(self):
+        kundi FailingUserDict:
+            eleza keys(self):
                 raise Exc
         self.assertRaises(Exc, d.update, FailingUserDict())
 
         d.clear()
 
-        class FailingUserDict:
-            def keys(self):
-                class BogonIter:
-                    def __init__(self):
+        kundi FailingUserDict:
+            eleza keys(self):
+                kundi BogonIter:
+                    eleza __init__(self):
                         self.i = 1
-                    def __iter__(self):
-                        return self
-                    def __next__(self):
-                        if self.i:
+                    eleza __iter__(self):
+                        rudisha self
+                    eleza __next__(self):
+                        ikiwa self.i:
                             self.i = 0
-                            return 'a'
+                            rudisha 'a'
                         raise Exc
-                return BogonIter()
-            def __getitem__(self, key):
-                return key
+                rudisha BogonIter()
+            eleza __getitem__(self, key):
+                rudisha key
         self.assertRaises(Exc, d.update, FailingUserDict())
 
-        class FailingUserDict:
-            def keys(self):
-                class BogonIter:
-                    def __init__(self):
+        kundi FailingUserDict:
+            eleza keys(self):
+                kundi BogonIter:
+                    eleza __init__(self):
                         self.i = ord('a')
-                    def __iter__(self):
-                        return self
-                    def __next__(self):
-                        if self.i <= ord('z'):
+                    eleza __iter__(self):
+                        rudisha self
+                    eleza __next__(self):
+                        ikiwa self.i <= ord('z'):
                             rtn = chr(self.i)
                             self.i += 1
-                            return rtn
+                            rudisha rtn
                         raise StopIteration
-                return BogonIter()
-            def __getitem__(self, key):
+                rudisha BogonIter()
+            eleza __getitem__(self, key):
                 raise Exc
         self.assertRaises(Exc, d.update, FailingUserDict())
 
         d = self._empty_mapping()
-        class badseq(object):
-            def __iter__(self):
-                return self
-            def __next__(self):
+        kundi badseq(object):
+            eleza __iter__(self):
+                rudisha self
+            eleza __next__(self):
                 raise Exc()
 
         self.assertRaises(Exc, d.update, badseq())
 
         self.assertRaises(ValueError, d.update, [(1, 2, 3)])
 
-    # no test_fromkeys or test_copy as both os.environ and selves don't support it
+    # no test_kutokakeys or test_copy as both os.environ and selves don't support it
 
-    def test_get(self):
+    eleza test_get(self):
         d = self._empty_mapping()
         self.assertTrue(d.get(list(self.other.keys())[0]) is None)
         self.assertEqual(d.get(list(self.other.keys())[0], 3), 3)
@@ -281,16 +281,16 @@ class BasicTestMappingProtocol(unittest.TestCase):
         self.assertRaises(TypeError, d.get)
         self.assertRaises(TypeError, d.get, None, None, None)
 
-    def test_setdefault(self):
+    eleza test_setdefault(self):
         d = self._empty_mapping()
         self.assertRaises(TypeError, d.setdefault)
 
-    def test_popitem(self):
+    eleza test_popitem(self):
         d = self._empty_mapping()
         self.assertRaises(KeyError, d.popitem)
         self.assertRaises(TypeError, d.popitem, 42)
 
-    def test_pop(self):
+    eleza test_pop(self):
         d = self._empty_mapping()
         k, v = list(self.inmapping.items())[0]
         d[k] = v
@@ -302,20 +302,20 @@ class BasicTestMappingProtocol(unittest.TestCase):
         self.assertRaises(KeyError, d.pop, k)
 
 
-class TestMappingProtocol(BasicTestMappingProtocol):
-    def test_constructor(self):
+kundi TestMappingProtocol(BasicTestMappingProtocol):
+    eleza test_constructor(self):
         BasicTestMappingProtocol.test_constructor(self)
         self.assertTrue(self._empty_mapping() is not self._empty_mapping())
         self.assertEqual(self.type2test(x=1, y=2), {"x": 1, "y": 2})
 
-    def test_bool(self):
+    eleza test_bool(self):
         BasicTestMappingProtocol.test_bool(self)
         self.assertTrue(not self._empty_mapping())
         self.assertTrue(self._full_mapping({"x": "y"}))
         self.assertTrue(bool(self._empty_mapping()) is False)
         self.assertTrue(bool(self._full_mapping({"x": "y"})) is True)
 
-    def test_keys(self):
+    eleza test_keys(self):
         BasicTestMappingProtocol.test_keys(self)
         d = self._empty_mapping()
         self.assertEqual(list(d.keys()), [])
@@ -325,18 +325,18 @@ class TestMappingProtocol(BasicTestMappingProtocol):
         self.assertIn('b', k)
         self.assertNotIn('c', k)
 
-    def test_values(self):
+    eleza test_values(self):
         BasicTestMappingProtocol.test_values(self)
         d = self._full_mapping({1:2})
         self.assertEqual(list(d.values()), [2])
 
-    def test_items(self):
+    eleza test_items(self):
         BasicTestMappingProtocol.test_items(self)
 
         d = self._full_mapping({1:2})
         self.assertEqual(list(d.items()), [(1, 2)])
 
-    def test_contains(self):
+    eleza test_contains(self):
         d = self._empty_mapping()
         self.assertNotIn('a', d)
         self.assertTrue(not ('a' in d))
@@ -348,12 +348,12 @@ class TestMappingProtocol(BasicTestMappingProtocol):
 
         self.assertRaises(TypeError, d.__contains__)
 
-    def test_len(self):
+    eleza test_len(self):
         BasicTestMappingProtocol.test_len(self)
         d = self._full_mapping({'a': 1, 'b': 2})
         self.assertEqual(len(d), 2)
 
-    def test_getitem(self):
+    eleza test_getitem(self):
         BasicTestMappingProtocol.test_getitem(self)
         d = self._full_mapping({'a': 1, 'b': 2})
         self.assertEqual(d['a'], 1)
@@ -367,14 +367,14 @@ class TestMappingProtocol(BasicTestMappingProtocol):
 
         self.assertRaises(TypeError, d.__getitem__)
 
-    def test_clear(self):
+    eleza test_clear(self):
         d = self._full_mapping({1:1, 2:2, 3:3})
         d.clear()
         self.assertEqual(d, {})
 
         self.assertRaises(TypeError, d.clear, None)
 
-    def test_update(self):
+    eleza test_update(self):
         BasicTestMappingProtocol.test_update(self)
         # mapping argument
         d = self._empty_mapping()
@@ -409,65 +409,65 @@ class TestMappingProtocol(BasicTestMappingProtocol):
         d.update(self._full_mapping({1:2, 3:4, 5:6}).items())
         self.assertEqual(d, {1:2, 2:4, 3:4, 5:6})
 
-        class SimpleUserDict:
-            def __init__(self):
+        kundi SimpleUserDict:
+            eleza __init__(self):
                 self.d = {1:1, 2:2, 3:3}
-            def keys(self):
-                return self.d.keys()
-            def __getitem__(self, i):
-                return self.d[i]
+            eleza keys(self):
+                rudisha self.d.keys()
+            eleza __getitem__(self, i):
+                rudisha self.d[i]
         d.clear()
         d.update(SimpleUserDict())
         self.assertEqual(d, {1:1, 2:2, 3:3})
 
-    def test_fromkeys(self):
-        self.assertEqual(self.type2test.fromkeys('abc'), {'a':None, 'b':None, 'c':None})
+    eleza test_kutokakeys(self):
+        self.assertEqual(self.type2test.kutokakeys('abc'), {'a':None, 'b':None, 'c':None})
         d = self._empty_mapping()
-        self.assertTrue(not(d.fromkeys('abc') is d))
-        self.assertEqual(d.fromkeys('abc'), {'a':None, 'b':None, 'c':None})
-        self.assertEqual(d.fromkeys((4,5),0), {4:0, 5:0})
-        self.assertEqual(d.fromkeys([]), {})
-        def g():
+        self.assertTrue(not(d.kutokakeys('abc') is d))
+        self.assertEqual(d.kutokakeys('abc'), {'a':None, 'b':None, 'c':None})
+        self.assertEqual(d.kutokakeys((4,5),0), {4:0, 5:0})
+        self.assertEqual(d.kutokakeys([]), {})
+        eleza g():
             yield 1
-        self.assertEqual(d.fromkeys(g()), {1:None})
-        self.assertRaises(TypeError, {}.fromkeys, 3)
-        class dictlike(self.type2test): pass
-        self.assertEqual(dictlike.fromkeys('a'), {'a':None})
-        self.assertEqual(dictlike().fromkeys('a'), {'a':None})
-        self.assertTrue(dictlike.fromkeys('a').__class__ is dictlike)
-        self.assertTrue(dictlike().fromkeys('a').__class__ is dictlike)
-        self.assertTrue(type(dictlike.fromkeys('a')) is dictlike)
-        class mydict(self.type2test):
-            def __new__(cls):
-                return collections.UserDict()
-        ud = mydict.fromkeys('ab')
+        self.assertEqual(d.kutokakeys(g()), {1:None})
+        self.assertRaises(TypeError, {}.kutokakeys, 3)
+        kundi dictlike(self.type2test): pass
+        self.assertEqual(dictlike.kutokakeys('a'), {'a':None})
+        self.assertEqual(dictlike().kutokakeys('a'), {'a':None})
+        self.assertTrue(dictlike.kutokakeys('a').__class__ is dictlike)
+        self.assertTrue(dictlike().kutokakeys('a').__class__ is dictlike)
+        self.assertTrue(type(dictlike.kutokakeys('a')) is dictlike)
+        kundi mydict(self.type2test):
+            eleza __new__(cls):
+                rudisha collections.UserDict()
+        ud = mydict.kutokakeys('ab')
         self.assertEqual(ud, {'a':None, 'b':None})
         self.assertIsInstance(ud, collections.UserDict)
-        self.assertRaises(TypeError, dict.fromkeys)
+        self.assertRaises(TypeError, dict.kutokakeys)
 
-        class Exc(Exception): pass
+        kundi Exc(Exception): pass
 
-        class baddict1(self.type2test):
-            def __init__(self):
+        kundi baddict1(self.type2test):
+            eleza __init__(self):
                 raise Exc()
 
-        self.assertRaises(Exc, baddict1.fromkeys, [1])
+        self.assertRaises(Exc, baddict1.kutokakeys, [1])
 
-        class BadSeq(object):
-            def __iter__(self):
-                return self
-            def __next__(self):
+        kundi BadSeq(object):
+            eleza __iter__(self):
+                rudisha self
+            eleza __next__(self):
                 raise Exc()
 
-        self.assertRaises(Exc, self.type2test.fromkeys, BadSeq())
+        self.assertRaises(Exc, self.type2test.kutokakeys, BadSeq())
 
-        class baddict2(self.type2test):
-            def __setitem__(self, key, value):
+        kundi baddict2(self.type2test):
+            eleza __setitem__(self, key, value):
                 raise Exc()
 
-        self.assertRaises(Exc, baddict2.fromkeys, [1])
+        self.assertRaises(Exc, baddict2.kutokakeys, [1])
 
-    def test_copy(self):
+    eleza test_copy(self):
         d = self._full_mapping({1:1, 2:2, 3:3})
         self.assertEqual(d.copy(), {1:1, 2:2, 3:3})
         d = self._empty_mapping()
@@ -475,7 +475,7 @@ class TestMappingProtocol(BasicTestMappingProtocol):
         self.assertIsInstance(d.copy(), d.__class__)
         self.assertRaises(TypeError, d.copy, None)
 
-    def test_get(self):
+    eleza test_get(self):
         BasicTestMappingProtocol.test_get(self)
         d = self._empty_mapping()
         self.assertTrue(d.get('c') is None)
@@ -486,7 +486,7 @@ class TestMappingProtocol(BasicTestMappingProtocol):
         self.assertEqual(d.get('a'), 1)
         self.assertEqual(d.get('a', 3), 1)
 
-    def test_setdefault(self):
+    eleza test_setdefault(self):
         BasicTestMappingProtocol.test_setdefault(self)
         d = self._empty_mapping()
         self.assertTrue(d.setdefault('key0') is None)
@@ -497,7 +497,7 @@ class TestMappingProtocol(BasicTestMappingProtocol):
         d.setdefault('key', []).append(4)
         self.assertEqual(len(d['key']), 2)
 
-    def test_popitem(self):
+    eleza test_popitem(self):
         BasicTestMappingProtocol.test_popitem(self)
         for copymode in -1, +1:
             # -1: b has same structure as a
@@ -508,9 +508,9 @@ class TestMappingProtocol(BasicTestMappingProtocol):
                 b = self._empty_mapping()
                 for i in range(size):
                     a[repr(i)] = i
-                    if copymode < 0:
+                    ikiwa copymode < 0:
                         b[repr(i)] = i
-                if copymode > 0:
+                ikiwa copymode > 0:
                     b = a.copy()
                 for i in range(size):
                     ka, va = ta = a.popitem()
@@ -521,7 +521,7 @@ class TestMappingProtocol(BasicTestMappingProtocol):
                 self.assertTrue(not a)
                 self.assertTrue(not b)
 
-    def test_pop(self):
+    eleza test_pop(self):
         BasicTestMappingProtocol.test_pop(self)
 
         # Tests for pop with specified key
@@ -533,29 +533,29 @@ class TestMappingProtocol(BasicTestMappingProtocol):
         self.assertEqual(d.pop(k, 1), v)
 
 
-class TestHashMappingProtocol(TestMappingProtocol):
+kundi TestHashMappingProtocol(TestMappingProtocol):
 
-    def test_getitem(self):
+    eleza test_getitem(self):
         TestMappingProtocol.test_getitem(self)
-        class Exc(Exception): pass
+        kundi Exc(Exception): pass
 
-        class BadEq(object):
-            def __eq__(self, other):
+        kundi BadEq(object):
+            eleza __eq__(self, other):
                 raise Exc()
-            def __hash__(self):
-                return 24
+            eleza __hash__(self):
+                rudisha 24
 
         d = self._empty_mapping()
         d[BadEq()] = 42
         self.assertRaises(KeyError, d.__getitem__, 23)
 
-        class BadHash(object):
+        kundi BadHash(object):
             fail = False
-            def __hash__(self):
-                if self.fail:
+            eleza __hash__(self):
+                ikiwa self.fail:
                     raise Exc()
                 else:
-                    return 42
+                    rudisha 42
 
         d = self._empty_mapping()
         x = BadHash()
@@ -563,27 +563,27 @@ class TestHashMappingProtocol(TestMappingProtocol):
         x.fail = True
         self.assertRaises(Exc, d.__getitem__, x)
 
-    def test_fromkeys(self):
-        TestMappingProtocol.test_fromkeys(self)
-        class mydict(self.type2test):
-            def __new__(cls):
-                return collections.UserDict()
-        ud = mydict.fromkeys('ab')
+    eleza test_kutokakeys(self):
+        TestMappingProtocol.test_kutokakeys(self)
+        kundi mydict(self.type2test):
+            eleza __new__(cls):
+                rudisha collections.UserDict()
+        ud = mydict.kutokakeys('ab')
         self.assertEqual(ud, {'a':None, 'b':None})
         self.assertIsInstance(ud, collections.UserDict)
 
-    def test_pop(self):
+    eleza test_pop(self):
         TestMappingProtocol.test_pop(self)
 
-        class Exc(Exception): pass
+        kundi Exc(Exception): pass
 
-        class BadHash(object):
+        kundi BadHash(object):
             fail = False
-            def __hash__(self):
-                if self.fail:
+            eleza __hash__(self):
+                ikiwa self.fail:
                     raise Exc()
                 else:
-                    return 42
+                    rudisha 42
 
         d = self._empty_mapping()
         x = BadHash()
@@ -591,7 +591,7 @@ class TestHashMappingProtocol(TestMappingProtocol):
         x.fail = True
         self.assertRaises(Exc, d.pop, x)
 
-    def test_mutatingiteration(self):
+    eleza test_mutatingiteration(self):
         d = self._empty_mapping()
         d[1] = 1
         try:
@@ -602,7 +602,7 @@ class TestHashMappingProtocol(TestMappingProtocol):
         else:
             self.fail("changing dict size during iteration doesn't raise Error")
 
-    def test_repr(self):
+    eleza test_repr(self):
         d = self._empty_mapping()
         self.assertEqual(repr(d), '{}')
         d[1] = 2
@@ -611,16 +611,16 @@ class TestHashMappingProtocol(TestMappingProtocol):
         d[1] = d
         self.assertEqual(repr(d), '{1: {...}}')
 
-        class Exc(Exception): pass
+        kundi Exc(Exception): pass
 
-        class BadRepr(object):
-            def __repr__(self):
+        kundi BadRepr(object):
+            eleza __repr__(self):
                 raise Exc()
 
         d = self._full_mapping({1: BadRepr()})
         self.assertRaises(Exc, repr, d)
 
-    def test_repr_deep(self):
+    eleza test_repr_deep(self):
         d = self._empty_mapping()
         for i in range(sys.getrecursionlimit() + 100):
             d0 = d
@@ -628,36 +628,36 @@ class TestHashMappingProtocol(TestMappingProtocol):
             d[1] = d0
         self.assertRaises(RecursionError, repr, d)
 
-    def test_eq(self):
+    eleza test_eq(self):
         self.assertEqual(self._empty_mapping(), self._empty_mapping())
         self.assertEqual(self._full_mapping({1: 2}),
                          self._full_mapping({1: 2}))
 
-        class Exc(Exception): pass
+        kundi Exc(Exception): pass
 
-        class BadCmp(object):
-            def __eq__(self, other):
+        kundi BadCmp(object):
+            eleza __eq__(self, other):
                 raise Exc()
-            def __hash__(self):
-                return 1
+            eleza __hash__(self):
+                rudisha 1
 
         d1 = self._full_mapping({BadCmp(): 1})
         d2 = self._full_mapping({1: 1})
         self.assertRaises(Exc, lambda: BadCmp()==1)
         self.assertRaises(Exc, lambda: d1==d2)
 
-    def test_setdefault(self):
+    eleza test_setdefault(self):
         TestMappingProtocol.test_setdefault(self)
 
-        class Exc(Exception): pass
+        kundi Exc(Exception): pass
 
-        class BadHash(object):
+        kundi BadHash(object):
             fail = False
-            def __hash__(self):
-                if self.fail:
+            eleza __hash__(self):
+                ikiwa self.fail:
                     raise Exc()
                 else:
-                    return 42
+                    rudisha 42
 
         d = self._empty_mapping()
         x = BadHash()

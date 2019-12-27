@@ -33,7 +33,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(result, [b"foo", b"bar"] * 4)
 
         # to not leak references, we must clean _pointer_type_cache
-        from ctypes import _pointer_type_cache
+        from ctypes agiza _pointer_type_cache
         del _pointer_type_cache[cell]
 
 ################################################################

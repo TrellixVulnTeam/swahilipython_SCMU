@@ -3,7 +3,7 @@
 A "shelf" is a persistent, dictionary-like object.  The difference
 with dbm databases is that the values (not the keys!) in a shelf can
 be essentially arbitrary Python objects -- anything that the "pickle"
-module can handle.  This includes most class instances, recursive data
+module can handle.  This includes most kundi instances, recursive data
 types, and objects containing lots of shared sub-objects.  The keys
 are ordinary strings.
 
@@ -16,11 +16,11 @@ object):
         d[key] = data   # store data at key (overwrites old data if
                         # using an existing key)
         data = d[key]   # retrieve a COPY of the data at key (raise
-                        # KeyError if no such key) -- NOTE that this
+                        # KeyError ikiwa no such key) -- NOTE that this
                         # access returns a *copy* of the entry!
         del d[key]      # delete data stored at key (raises KeyError
-                        # if no such key)
-        flag = key in d # true if the key exists
+                        # ikiwa no such key)
+        flag = key in d # true ikiwa the key exists
         list = d.keys() # a list of all existing keys (slow!)
 
         d.close()       # close it
@@ -29,7 +29,7 @@ Dependent on the implementation, closing a persistent dictionary may
 or may not be necessary to flush changes to disk.
 
 Normally, d[key] returns a COPY of the entry.  This needs care when
-mutable entries are mutated: for example, if d[key] is a list,
+mutable entries are mutated: for example, ikiwa d[key] is a list,
         d[key].append(anitem)
 does NOT modify the entry d[key] itself, as stored in the persistent
 mapping -- it only modifies the copy, which is then immediately
@@ -47,13 +47,13 @@ to the persistent mapping when you call d.close().  This ensures that
 such usage as d[key].append(anitem) works as intended.
 
 However, using keyword argument writeback=True may consume vast amount
-of memory for the cache, and it may make d.close() very slow, if you
+of memory for the cache, and it may make d.close() very slow, ikiwa you
 access many of d's entries after opening it in this way: d has no way to
 check which of the entries you access are mutable and/or which ones you
 actually mutate, so it must cache, and write back at close, all of the
 entries that you access.  You can call d.sync() to write back all the
 entries in the cache, and empty the cache (d.sync() also synchronizes
-the persistent dictionary on disk, if feasible).
+the persistent dictionary on disk, ikiwa feasible).
 """
 
 kutoka pickle agiza Pickler, Unpickler
@@ -63,82 +63,82 @@ agiza collections.abc
 
 __all__ = ["Shelf", "BsdDbShelf", "DbfilenameShelf", "open"]
 
-class _ClosedDict(collections.abc.MutableMapping):
+kundi _ClosedDict(collections.abc.MutableMapping):
     'Marker for a closed dict.  Access attempts raise a ValueError.'
 
-    def closed(self, *args):
+    eleza closed(self, *args):
         raise ValueError('invalid operation on closed shelf')
     __iter__ = __len__ = __getitem__ = __setitem__ = __delitem__ = keys = closed
 
-    def __repr__(self):
-        return '<Closed Dictionary>'
+    eleza __repr__(self):
+        rudisha '<Closed Dictionary>'
 
 
-class Shelf(collections.abc.MutableMapping):
-    """Base class for shelf implementations.
+kundi Shelf(collections.abc.MutableMapping):
+    """Base kundi for shelf implementations.
 
     This is initialized with a dictionary-like object.
     See the module's __doc__ string for an overview of the interface.
     """
 
-    def __init__(self, dict, protocol=None, writeback=False,
+    eleza __init__(self, dict, protocol=None, writeback=False,
                  keyencoding="utf-8"):
         self.dict = dict
-        if protocol is None:
+        ikiwa protocol is None:
             protocol = 3
         self._protocol = protocol
         self.writeback = writeback
         self.cache = {}
         self.keyencoding = keyencoding
 
-    def __iter__(self):
+    eleza __iter__(self):
         for k in self.dict.keys():
             yield k.decode(self.keyencoding)
 
-    def __len__(self):
-        return len(self.dict)
+    eleza __len__(self):
+        rudisha len(self.dict)
 
-    def __contains__(self, key):
-        return key.encode(self.keyencoding) in self.dict
+    eleza __contains__(self, key):
+        rudisha key.encode(self.keyencoding) in self.dict
 
-    def get(self, key, default=None):
-        if key.encode(self.keyencoding) in self.dict:
-            return self[key]
-        return default
+    eleza get(self, key, default=None):
+        ikiwa key.encode(self.keyencoding) in self.dict:
+            rudisha self[key]
+        rudisha default
 
-    def __getitem__(self, key):
+    eleza __getitem__(self, key):
         try:
             value = self.cache[key]
         except KeyError:
             f = BytesIO(self.dict[key.encode(self.keyencoding)])
             value = Unpickler(f).load()
-            if self.writeback:
+            ikiwa self.writeback:
                 self.cache[key] = value
-        return value
+        rudisha value
 
-    def __setitem__(self, key, value):
-        if self.writeback:
+    eleza __setitem__(self, key, value):
+        ikiwa self.writeback:
             self.cache[key] = value
         f = BytesIO()
         p = Pickler(f, self._protocol)
         p.dump(value)
         self.dict[key.encode(self.keyencoding)] = f.getvalue()
 
-    def __delitem__(self, key):
+    eleza __delitem__(self, key):
         del self.dict[key.encode(self.keyencoding)]
         try:
             del self.cache[key]
         except KeyError:
             pass
 
-    def __enter__(self):
-        return self
+    eleza __enter__(self):
+        rudisha self
 
-    def __exit__(self, type, value, traceback):
+    eleza __exit__(self, type, value, traceback):
         self.close()
 
-    def close(self):
-        if self.dict is None:
+    eleza close(self):
+        ikiwa self.dict is None:
             return
         try:
             self.sync()
@@ -154,25 +154,25 @@ class Shelf(collections.abc.MutableMapping):
             except:
                 self.dict = None
 
-    def __del__(self):
-        if not hasattr(self, 'writeback'):
+    eleza __del__(self):
+        ikiwa not hasattr(self, 'writeback'):
             # __init__ didn't succeed, so don't bother closing
             # see http://bugs.python.org/issue1339007 for details
             return
         self.close()
 
-    def sync(self):
-        if self.writeback and self.cache:
+    eleza sync(self):
+        ikiwa self.writeback and self.cache:
             self.writeback = False
             for key, entry in self.cache.items():
                 self[key] = entry
             self.writeback = True
             self.cache = {}
-        if hasattr(self.dict, 'sync'):
+        ikiwa hasattr(self.dict, 'sync'):
             self.dict.sync()
 
 
-class BsdDbShelf(Shelf):
+kundi BsdDbShelf(Shelf):
     """Shelf implementation using the "BSD" db interface.
 
     This adds methods first(), next(), previous(), last() and
@@ -185,49 +185,49 @@ class BsdDbShelf(Shelf):
     See the module's __doc__ string for an overview of the interface.
     """
 
-    def __init__(self, dict, protocol=None, writeback=False,
+    eleza __init__(self, dict, protocol=None, writeback=False,
                  keyencoding="utf-8"):
         Shelf.__init__(self, dict, protocol, writeback, keyencoding)
 
-    def set_location(self, key):
+    eleza set_location(self, key):
         (key, value) = self.dict.set_location(key)
         f = BytesIO(value)
-        return (key.decode(self.keyencoding), Unpickler(f).load())
+        rudisha (key.decode(self.keyencoding), Unpickler(f).load())
 
-    def next(self):
+    eleza next(self):
         (key, value) = next(self.dict)
         f = BytesIO(value)
-        return (key.decode(self.keyencoding), Unpickler(f).load())
+        rudisha (key.decode(self.keyencoding), Unpickler(f).load())
 
-    def previous(self):
+    eleza previous(self):
         (key, value) = self.dict.previous()
         f = BytesIO(value)
-        return (key.decode(self.keyencoding), Unpickler(f).load())
+        rudisha (key.decode(self.keyencoding), Unpickler(f).load())
 
-    def first(self):
+    eleza first(self):
         (key, value) = self.dict.first()
         f = BytesIO(value)
-        return (key.decode(self.keyencoding), Unpickler(f).load())
+        rudisha (key.decode(self.keyencoding), Unpickler(f).load())
 
-    def last(self):
+    eleza last(self):
         (key, value) = self.dict.last()
         f = BytesIO(value)
-        return (key.decode(self.keyencoding), Unpickler(f).load())
+        rudisha (key.decode(self.keyencoding), Unpickler(f).load())
 
 
-class DbfilenameShelf(Shelf):
+kundi DbfilenameShelf(Shelf):
     """Shelf implementation using the "dbm" generic dbm interface.
 
     This is initialized with the filename for the dbm database.
     See the module's __doc__ string for an overview of the interface.
     """
 
-    def __init__(self, filename, flag='c', protocol=None, writeback=False):
+    eleza __init__(self, filename, flag='c', protocol=None, writeback=False):
         agiza dbm
         Shelf.__init__(self, dbm.open(filename, flag), protocol, writeback)
 
 
-def open(filename, flag='c', protocol=None, writeback=False):
+eleza open(filename, flag='c', protocol=None, writeback=False):
     """Open a persistent dictionary for reading and writing.
 
     The filename parameter is the base filename for the underlying
@@ -240,4 +240,4 @@ def open(filename, flag='c', protocol=None, writeback=False):
     See the module's __doc__ string for an overview of the interface.
     """
 
-    return DbfilenameShelf(filename, flag, protocol, writeback)
+    rudisha DbfilenameShelf(filename, flag, protocol, writeback)

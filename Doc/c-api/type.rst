@@ -22,7 +22,7 @@ Type Objects
 .. c:function:: int PyType_Check(PyObject *o)
 
    Return true if the object *o* is a type object, including instances of types
-   derived from the standard type object.  Return false in all other cases.
+   derived kutoka the standard type object.  Return false in all other cases.
 
 
 .. c:function:: int PyType_CheckExact(PyObject *o)
@@ -92,7 +92,7 @@ Type Objects
 
    Finalize a type object.  This should be called on all type objects to finish
    their initialization.  This function is responsible for adding inherited slots
-   from a type's base class.  Return ``0`` on success, or return ``-1`` and sets an
+   kutoka a type's base class.  Return ``0`` on success, or return ``-1`` and sets an
    exception on error.
 
 .. c:function:: void* PyType_GetSlot(PyTypeObject *type, int slot)
@@ -118,14 +118,14 @@ The following functions and structs are used to create
 
 .. c:function:: PyObject* PyType_FromSpecWithBases(PyType_Spec *spec, PyObject *bases)
 
-   Creates and returns a heap type object from the *spec*
+   Creates and returns a heap type object kutoka the *spec*
    (:const:`Py_TPFLAGS_HEAPTYPE`).
 
    If *bases* is a tuple, the created heap type contains all types contained
    in it as base types.
 
    If *bases* is *NULL*, the *Py_tp_base* slot is used instead.
-   If that also is *NULL*, the new type derives from :class:`object`.
+   If that also is *NULL*, the new type derives kutoka :class:`object`.
 
    This function calls :c:func:`PyType_Ready` on the new type.
 

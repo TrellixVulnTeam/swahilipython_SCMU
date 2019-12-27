@@ -7,7 +7,7 @@ agiza sys
 # Because PEP 434 declared idle.py a public interface,
 # removal should require deprecation.
 idlelib_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if idlelib_dir not in sys.path:
+ikiwa idlelib_dir not in sys.path:
     sys.path.insert(0, idlelib_dir)
 
 kutoka idlelib.pyshell agiza main  # This is subject to change

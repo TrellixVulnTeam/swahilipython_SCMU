@@ -12,13 +12,13 @@
 
 --------------
 
-The :class:`~netrc.netrc` class parses and encapsulates the netrc file format used by
+The :class:`~netrc.netrc` kundi parses and encapsulates the netrc file format used by
 the Unix :program:`ftp` program and other FTP clients.
 
 
 .. class:: netrc([file])
 
-   A :class:`~netrc.netrc` instance or subclass instance encapsulates data from  a netrc
+   A :class:`~netrc.netrc` instance or subkundi instance encapsulates data kutoka  a netrc
    file.  The initialization argument, if present, specifies the file to parse.  If
    no argument is given, the file :file:`.netrc` in the user's home directory --
    as determined by :func:`os.path.expanduser` -- will be read.  Otherwise,
@@ -41,7 +41,7 @@ the Unix :program:`ftp` program and other FTP clients.
 
 .. exception:: NetrcParseError
 
-   Exception raised by the :class:`~netrc.netrc` class when syntactical errors are
+   Exception raised by the :class:`~netrc.netrc` kundi when syntactical errors are
    encountered in source text.  Instances of this exception provide three
    interesting attributes:  :attr:`msg` is a textual explanation of the error,
    :attr:`filename` is the name of the source file, and :attr:`lineno` gives the
@@ -66,7 +66,7 @@ A :class:`~netrc.netrc` instance has the following methods:
 
 .. method:: netrc.__repr__()
 
-   Dump the class data as a string in the format of a netrc file. (This discards
+   Dump the kundi data as a string in the format of a netrc file. (This discards
    comments and may reorder the entries.)
 
 Instances of :class:`~netrc.netrc` have public instance variables:

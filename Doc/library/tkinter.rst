@@ -15,7 +15,7 @@ the Tk GUI toolkit.  Both Tk and :mod:`tkinter` are available on most Unix
 platforms, as well as on Windows systems.  (Tk itself is not part of Python; it
 is maintained at ActiveState.)
 
-Running ``python -m tkinter`` from the command line should open a window
+Running ``python -m tkinter`` kutoka the command line should open a window
 demonstrating a simple Tk interface, letting you know that :mod:`tkinter` is
 properly installed on your system, and also showing what version of Tcl/Tk is
 installed, so you can read the Tcl/Tk documentation specific to that version.
@@ -26,7 +26,7 @@ installed, so you can read the Tcl/Tk documentation specific to that version.
 
    `Python Tkinter Resources <https://wiki.python.org/moin/TkInter>`_
       The Python Tkinter Topic Guide provides a great deal of information on using Tk
-      from Python and links to other sources of information on Tk.
+      kutoka Python and links to other sources of information on Tk.
 
    `TKDocs <http://www.tkdocs.com/>`_
       Extensive tutorial plus friendlier widget pages for some of the widgets.
@@ -34,7 +34,7 @@ installed, so you can read the Tcl/Tk documentation specific to that version.
    `Tkinter 8.5 reference: a GUI for Python <https://web.archive.org/web/20190524140835/https://infohost.nmt.edu/tcc/help/pubs/tkinter/web/index.html>`_
       On-line reference material.
 
-   `Tkinter docs from effbot <http://effbot.org/tkinterbook/>`_
+   `Tkinter docs kutoka effbot <http://effbot.org/tkinterbook/>`_
       Online reference for tkinter supported by effbot.org.
 
    `Programming Python <http://learning-python.com/about-pp4e.html>`_
@@ -77,19 +77,19 @@ linked with the Python interpreter.
 
 In addition to the Tk interface module, :mod:`tkinter` includes a number of
 Python modules, :mod:`tkinter.constants` being one of the most important.
-Importing :mod:`tkinter` will automatically import :mod:`tkinter.constants`,
-so, usually, to use Tkinter all you need is a simple import statement::
+Importing :mod:`tkinter` will automatically agiza :mod:`tkinter.constants`,
+so, usually, to use Tkinter all you need is a simple agiza statement::
 
-   import tkinter
+   agiza tkinter
 
 Or, more often::
 
-   from tkinter import *
+   kutoka tkinter agiza *
 
 
 .. class:: Tk(screenName=None, baseName=None, className='Tk', useTk=1)
 
-   The :class:`Tk` class is instantiated without arguments. This creates a toplevel
+   The :class:`Tk` kundi is instantiated without arguments. This creates a toplevel
    widget of Tk which usually is the main window of an application. Each instance
    has its own associated Tcl interpreter.
 
@@ -116,7 +116,7 @@ Other modules that provide Tk support include:
    Dialog to let the user choose a color.
 
 :mod:`tkinter.commondialog`
-   Base class for the dialogs defined in the other modules listed here.
+   Base kundi for the dialogs defined in the other modules listed here.
 
 :mod:`tkinter.filedialog`
    Common dialogs to allow the user to specify a file to open or save.
@@ -156,10 +156,10 @@ Credits:
 
 * This Life Preserver was written by Matt Conway at the University of Virginia.
 
-* The HTML rendering, and some liberal editing, was produced from a FrameMaker
+* The HTML rendering, and some liberal editing, was produced kutoka a FrameMaker
   version by Ken Manheimer.
 
-* Fredrik Lundh elaborated and revised the class interface descriptions, to get
+* Fredrik Lundh elaborated and revised the kundi interface descriptions, to get
   them current with Tk 4.2.
 
 * Mike Clarkson converted the documentation to LaTeX, and compiled the  User
@@ -200,9 +200,9 @@ A Simple Hello World Program
 
 ::
 
-    import tkinter as tk
+    agiza tkinter as tk
 
-    class Application(tk.Frame):
+    kundi Application(tk.Frame):
         def __init__(self, master=None):
             super().__init__(master)
             self.master = master
@@ -230,7 +230,7 @@ A Simple Hello World Program
 A (Very) Quick Look at Tcl/Tk
 -----------------------------
 
-The class hierarchy looks complicated, but in actual practice, application
+The kundi hierarchy looks complicated, but in actual practice, application
 programmers almost always refer to the classes at the very bottom of the
 hierarchy.
 
@@ -239,11 +239,11 @@ Notes:
 * These classes are provided for the purposes of organizing certain functions
   under one namespace. They aren't meant to be instantiated independently.
 
-* The :class:`Tk` class is meant to be instantiated only once in an application.
+* The :class:`Tk` kundi is meant to be instantiated only once in an application.
   Application programmers need not instantiate one explicitly, the system creates
   one whenever any of the other classes are instantiated.
 
-* The :class:`Widget` class is not meant to be instantiated, it is meant only
+* The :class:`Widget` kundi is not meant to be instantiated, it is meant only
   for subclassing to make "real" widgets (in C++, this is called an 'abstract
   class').
 
@@ -283,7 +283,7 @@ For example::
    button   .fred   -fg red -text "hi there"
       ^       ^     \______________________/
       |       |                |
-    class    new            options
+    kundi    new            options
    command  widget  (-opt val -opt val ...)
 
 Once created, the pathname to the widget becomes a new command.  This new
@@ -310,7 +310,7 @@ command, would need arguments to specify what range of text to delete.
 Mapping Basic Tk into Tkinter
 -----------------------------
 
-Class commands in Tk correspond to class constructors in Tkinter. ::
+Class commands in Tk correspond to kundi constructors in Tkinter. ::
 
    button .fred                =====>  fred = Button()
 
@@ -331,16 +331,16 @@ dictionary style, for established instances.  See section
 
 In Tk, to perform an action on a widget, use the widget name as a command, and
 follow it with an action name, possibly with arguments (options).  In Tkinter,
-you call methods on the class instance to invoke actions on the widget.  The
+you call methods on the kundi instance to invoke actions on the widget.  The
 actions (methods) that a given widget can perform are listed in
 :file:`tkinter/__init__.py`. ::
 
    .fred invoke                =====>  fred.invoke()
 
 To give a widget to the packer (geometry manager), you call pack with optional
-arguments.  In Tkinter, the Pack class holds all this functionality, and the
+arguments.  In Tkinter, the Pack kundi holds all this functionality, and the
 various forms of the pack command are implemented as methods.  All widgets in
-:mod:`tkinter` are subclassed from the Packer, and so inherit all the packing
+:mod:`tkinter` are subclassed kutoka the Packer, and so inherit all the packing
 methods. See the :mod:`tkinter.tix` module documentation for additional
 information on the Form geometry manager. ::
 
@@ -359,7 +359,7 @@ tkinter (Python Package)
    This call (say, for example, creating a button widget), is implemented in
    the :mod:`tkinter` package, which is written in Python.  This Python
    function will parse the commands and the arguments and convert them into a
-   form that makes them look as if they had come from a Tk script instead of
+   form that makes them look as if they had come kutoka a Tk script instead of
    a Python script.
 
 _tkinter (C)
@@ -419,7 +419,7 @@ page.
 
 No distinction between standard and widget-specific options is made in this
 document.  Some options don't apply to some kinds of widgets. Whether a given
-widget responds to a particular option depends on the class of the widget;
+widget responds to a particular option depends on the kundi of the widget;
 buttons have a ``command`` option, labels do not.
 
 The options supported by a given widget are listed in that widget's man page, or
@@ -441,7 +441,7 @@ back will contain the name of the synonym and the "real" option (such as
 +-------+---------------------------------+--------------+
 | 1     | option name for database lookup | ``'relief'`` |
 +-------+---------------------------------+--------------+
-| 2     | option class for database       | ``'Relief'`` |
+| 2     | option kundi for database       | ``'Relief'`` |
 |       | lookup                          |              |
 +-------+---------------------------------+--------------+
 | 3     | default value                   | ``'raised'`` |
@@ -530,7 +530,7 @@ reason, the widget it's connected to will be updated to reflect the new value.
 Unfortunately, in the current implementation of :mod:`tkinter` it is not
 possible to hand over an arbitrary Python variable to a widget through a
 ``variable`` or ``textvariable`` option.  The only kinds of variables for which
-this works are variables that are subclassed from a class called Variable,
+this works are variables that are subclassed kutoka a kundi called Variable,
 defined in :mod:`tkinter`.
 
 There are many useful subclasses of Variable already defined:
@@ -542,7 +542,7 @@ the variable, with no further intervention on your part.
 
 For example::
 
-   class App(Frame):
+   kundi App(Frame):
        def __init__(self, master=None):
            super().__init__(master)
            self.pack()
@@ -577,7 +577,7 @@ In Tk, there is a utility command, ``wm``, for interacting with the window
 manager.  Options to the ``wm`` command allow you to control things like titles,
 placement, icon bitmaps, and the like.  In :mod:`tkinter`, these commands have
 been implemented as methods on the :class:`Wm` class.  Toplevel widgets are
-subclassed from the :class:`Wm` class, and so can call the :class:`Wm` methods
+subclassed kutoka the :class:`Wm` class, and so can call the :class:`Wm` methods
 directly.
 
 To get at the toplevel window that contains a given widget, you can often just
@@ -589,9 +589,9 @@ part of the implementation, and not an interface to Tk functionality.
 
 Here are some examples of typical usage::
 
-   import tkinter as tk
+   agiza tkinter as tk
 
-   class App(tk.Frame):
+   kundi App(tk.Frame):
        def __init__(self, master=None):
            super().__init__(master)
            self.pack()
@@ -641,7 +641,7 @@ color
    represent any legal hex digit.  See page 160 of Ousterhout's book for details.
 
 cursor
-   The standard X cursor names from :file:`cursorfont.h` can be used, without the
+   The standard X cursor names kutoka :file:`cursorfont.h` can be used, without the
    ``XC_`` prefix.  For example to get a hand cursor (:const:`XC_hand2`), use the
    string ``"hand2"``.  You can also specify a bitmap and mask file of your own.
    See page 179 of Ousterhout's book.
@@ -691,7 +691,7 @@ Bindings and Events
    single: bind (widgets)
    single: events (widgets)
 
-The bind method from the widget command allows you to watch for certain events
+The bind method kutoka the widget command allows you to watch for certain events
 and to have a callback function trigger when that event type occurs.  The form
 of the bind method is::
 
@@ -768,7 +768,7 @@ Menu indexes (menu.invoke(), menu.entryconfig(), etc.)
    menu index is needed for an option or a parameter, you may pass in:
 
    * an integer which refers to the numeric position of the entry in the widget,
-     counted from the top, starting with 0;
+     counted kutoka the top, starting with 0;
 
    * the string ``"active"``, which refers to the menu position that is currently
      under the cursor;
@@ -782,7 +782,7 @@ Menu indexes (menu.invoke(), menu.entryconfig(), etc.)
      with menu.activate() to deactivate all entries, and finally,
 
    * a text string that is pattern matched against the label of the menu entry, as
-     scanned from the top of the menu to the bottom.  Note that this index type is
+     scanned kutoka the top of the menu to the bottom.  Note that this index type is
      considered after all the others, which means that matches for menu items
      labelled ``last``, ``active``, or ``none`` may be interpreted as the above
      literals, instead.
@@ -819,10 +819,10 @@ File Handlers
 -------------
 
 Tk allows you to register and unregister a callback function which will be
-called from the Tk mainloop when I/O is possible on a file descriptor.
+called kutoka the Tk mainloop when I/O is possible on a file descriptor.
 Only one handler may be registered per file descriptor. Example code::
 
-   import tkinter
+   agiza tkinter
    widget = tkinter.Tk()
    mask = tkinter.READABLE | tkinter.WRITABLE
    widget.tk.createfilehandler(file, mask, callback)
@@ -836,7 +836,7 @@ want to use the :class:`~io.BufferedIOBase` or :class:`~io.TextIOBase`
 :meth:`~io.BufferedIOBase.read` or :meth:`~io.IOBase.readline` methods,
 since these will insist on reading a predefined number of bytes.
 For sockets, the :meth:`~socket.socket.recv` or
-:meth:`~socket.socket.recvfrom` methods will work fine; for other files,
+:meth:`~socket.socket.recvkutoka` methods will work fine; for other files,
 use raw reads or ``os.read(file.fileno(), maxbytecount)``.
 
 

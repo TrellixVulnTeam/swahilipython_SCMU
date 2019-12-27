@@ -43,11 +43,11 @@ for the current process:
 Policy Objects
 ==============
 
-The abstract event loop policy base class is defined as follows:
+The abstract event loop policy base kundi is defined as follows:
 
 .. class:: AbstractEventLoopPolicy
 
-   An abstract base class for asyncio policies.
+   An abstract base kundi for asyncio policies.
 
    .. method:: get_event_loop()
 
@@ -224,7 +224,7 @@ implementation used by the asyncio event loop:
    The watcher avoids disrupting other code spawning processes
    by polling every process explicitly on a :py:data:`SIGCHLD` signal.
 
-   There is no limitation for running subprocesses from different threads once the
+   There is no limitation for running subprocesses kutoka different threads once the
    watcher is installed.
 
    The solution is safe but it has a significant overhead when
@@ -235,7 +235,7 @@ implementation used by the asyncio event loop:
 
 .. class:: SafeChildWatcher
 
-   This implementation uses active event loop from the main thread to handle
+   This implementation uses active event loop kutoka the main thread to handle
    :py:data:`SIGCHLD` signal. If the main thread has no running event loop another
    thread cannot spawn a subprocess (:exc:`RuntimeError` is raised).
 
@@ -265,7 +265,7 @@ To implement a new event loop policy, it is recommended to subclass
 :class:`DefaultEventLoopPolicy` and override the methods for which
 custom behavior is wanted, e.g.::
 
-    class MyEventLoopPolicy(asyncio.DefaultEventLoopPolicy):
+    kundi MyEventLoopPolicy(asyncio.DefaultEventLoopPolicy):
 
         def get_event_loop(self):
             """Get the event loop.

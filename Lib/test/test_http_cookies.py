@@ -7,9 +7,9 @@ kutoka http agiza cookies
 agiza pickle
 
 
-class CookieTests(unittest.TestCase):
+kundi CookieTests(unittest.TestCase):
 
-    def test_basic(self):
+    eleza test_basic(self):
         cases = [
             {'data': 'chips=ahoy; vienna=finger',
              'dict': {'chips':'ahoy', 'vienna':'finger'},
@@ -58,7 +58,7 @@ class CookieTests(unittest.TestCase):
             for k, v in sorted(case['dict'].items()):
                 self.assertEqual(C[k].value, v)
 
-    def test_load(self):
+    eleza test_load(self):
         C = cookies.SimpleCookie()
         C.load('Customer="WILE_E_COYOTE"; Version=1; Path=/acme')
 
@@ -83,7 +83,7 @@ class CookieTests(unittest.TestCase):
         </script>
         """)
 
-    def test_extended_encode(self):
+    eleza test_extended_encode(self):
         # Issue 9824: some browsers don't follow the standard; we now
         # encode , and ; to keep them kutoka tripping up.
         C = cookies.SimpleCookie()
@@ -91,7 +91,7 @@ class CookieTests(unittest.TestCase):
         self.assertEqual(C.output(['val']),
             'Set-Cookie: val="some\\054funky\\073stuff"')
 
-    def test_special_attrs(self):
+    eleza test_special_attrs(self):
         # 'expires'
         C = cookies.SimpleCookie('Customer="WILE_E_COYOTE"')
         C['Customer']['expires'] = 0
@@ -114,14 +114,14 @@ class CookieTests(unittest.TestCase):
         self.assertEqual(C.output(),
                          'Set-Cookie: Customer="WILE_E_COYOTE"; Max-Age=10')
 
-    def test_set_secure_httponly_attrs(self):
+    eleza test_set_secure_httponly_attrs(self):
         C = cookies.SimpleCookie('Customer="WILE_E_COYOTE"')
         C['Customer']['secure'] = True
         C['Customer']['httponly'] = True
         self.assertEqual(C.output(),
             'Set-Cookie: Customer="WILE_E_COYOTE"; HttpOnly; Secure')
 
-    def test_samesite_attrs(self):
+    eleza test_samesite_attrs(self):
         samesite_values = ['Strict', 'Lax', 'strict', 'lax']
         for val in samesite_values:
             with self.subTest(val=val):
@@ -134,20 +134,20 @@ class CookieTests(unittest.TestCase):
                 C.load('Customer="WILL_E_COYOTE"; SameSite=%s' % val)
                 self.assertEqual(C['Customer']['samesite'], val)
 
-    def test_secure_httponly_false_if_not_present(self):
+    eleza test_secure_httponly_false_if_not_present(self):
         C = cookies.SimpleCookie()
         C.load('eggs=scrambled; Path=/bacon')
         self.assertFalse(C['eggs']['httponly'])
         self.assertFalse(C['eggs']['secure'])
 
-    def test_secure_httponly_true_if_present(self):
+    eleza test_secure_httponly_true_if_present(self):
         # Issue 16611
         C = cookies.SimpleCookie()
         C.load('eggs=scrambled; httponly; secure; Path=/bacon')
         self.assertTrue(C['eggs']['httponly'])
         self.assertTrue(C['eggs']['secure'])
 
-    def test_secure_httponly_true_if_have_value(self):
+    eleza test_secure_httponly_true_if_have_value(self):
         # This isn't really valid, but demonstrates what the current code
         # is expected to do in this case.
         C = cookies.SimpleCookie()
@@ -159,13 +159,13 @@ class CookieTests(unittest.TestCase):
         self.assertEqual(C['eggs']['httponly'], 'foo')
         self.assertEqual(C['eggs']['secure'], 'bar')
 
-    def test_extra_spaces(self):
+    eleza test_extra_spaces(self):
         C = cookies.SimpleCookie()
         C.load('eggs  =  scrambled  ;  secure  ;  path  =  bar   ; foo=foo   ')
         self.assertEqual(C.output(),
             'Set-Cookie: eggs=scrambled; Path=bar; Secure\r\nSet-Cookie: foo=foo')
 
-    def test_quoted_meta(self):
+    eleza test_quoted_meta(self):
         # Try cookie with quoted meta-data
         C = cookies.SimpleCookie()
         C.load('Customer="WILE_E_COYOTE"; Version="1"; Path="/acme"')
@@ -190,7 +190,7 @@ class CookieTests(unittest.TestCase):
         </script>
         """)
 
-    def test_invalid_cookies(self):
+    eleza test_invalid_cookies(self):
         # Accepting these could be a security issue
         C = cookies.SimpleCookie()
         for s in (']foo=x', '[foo=x', 'blah]foo=x', 'blah[foo=x',
@@ -201,7 +201,7 @@ class CookieTests(unittest.TestCase):
             self.assertEqual(dict(C), {})
             self.assertEqual(C.output(), '')
 
-    def test_pickle(self):
+    eleza test_pickle(self):
         rawdata = 'Customer="WILE_E_COYOTE"; Path=/acme; Version=1'
         expected_output = 'Set-Cookie: %s' % rawdata
 
@@ -214,13 +214,13 @@ class CookieTests(unittest.TestCase):
                 C1 = pickle.loads(pickle.dumps(C, protocol=proto))
                 self.assertEqual(C1.output(), expected_output)
 
-    def test_illegal_chars(self):
+    eleza test_illegal_chars(self):
         rawdata = "a=b; c,d=e"
         C = cookies.SimpleCookie()
         with self.assertRaises(cookies.CookieError):
             C.load(rawdata)
 
-    def test_comment_quoting(self):
+    eleza test_comment_quoting(self):
         c = cookies.SimpleCookie()
         c['foo'] = '\N{COPYRIGHT SIGN}'
         self.assertEqual(str(c['foo']), 'Set-Cookie: foo="\\251"')
@@ -231,10 +231,10 @@ class CookieTests(unittest.TestCase):
         )
 
 
-class MorselTests(unittest.TestCase):
+kundi MorselTests(unittest.TestCase):
     """Tests for the Morsel object."""
 
-    def test_defaults(self):
+    eleza test_defaults(self):
         morsel = cookies.Morsel()
         self.assertIsNone(morsel.key)
         self.assertIsNone(morsel.value)
@@ -243,7 +243,7 @@ class MorselTests(unittest.TestCase):
         for key, val in morsel.items():
             self.assertEqual(val, '', key)
 
-    def test_reserved_keys(self):
+    eleza test_reserved_keys(self):
         M = cookies.Morsel()
         # tests valid and invalid reserved keys for Morsels
         for i in M._reserved:
@@ -258,7 +258,7 @@ class MorselTests(unittest.TestCase):
             self.assertRaises(cookies.CookieError,
                               M.__setitem__, i, '%s_value' % i)
 
-    def test_setter(self):
+    eleza test_setter(self):
         M = cookies.Morsel()
         # tests the .set method to set keys and their values
         for i in M._reserved:
@@ -289,7 +289,7 @@ class MorselTests(unittest.TestCase):
             self.assertRaises(cookies.CookieError,
                               M.set, i, '%s_value' % i, '%s_value' % i)
 
-    def test_set_properties(self):
+    eleza test_set_properties(self):
         morsel = cookies.Morsel()
         with self.assertRaises(AttributeError):
             morsel.key = ''
@@ -298,7 +298,7 @@ class MorselTests(unittest.TestCase):
         with self.assertRaises(AttributeError):
             morsel.coded_value = ''
 
-    def test_eq(self):
+    eleza test_eq(self):
         base_case = ('key', 'value', '"value"')
         attribs = {
             'path': '/',
@@ -350,7 +350,7 @@ class MorselTests(unittest.TestCase):
         self.assertTrue(morsel == dict(morsel))
         self.assertFalse(morsel != dict(morsel))
 
-    def test_copy(self):
+    eleza test_copy(self):
         morsel_a = cookies.Morsel()
         morsel_a.set('foo', 'bar', 'baz')
         morsel_a.update({
@@ -367,7 +367,7 @@ class MorselTests(unittest.TestCase):
         self.assertIsNot(morsel_a, morsel_b)
         self.assertEqual(morsel_a, morsel_b)
 
-    def test_setitem(self):
+    eleza test_setitem(self):
         morsel = cookies.Morsel()
         morsel['expires'] = 0
         self.assertEqual(morsel['expires'], 0)
@@ -380,7 +380,7 @@ class MorselTests(unittest.TestCase):
             morsel['invalid'] = 'value'
         self.assertNotIn('invalid', morsel)
 
-    def test_setdefault(self):
+    eleza test_setdefault(self):
         morsel = cookies.Morsel()
         morsel.update({
             'domain': 'example.com',
@@ -398,7 +398,7 @@ class MorselTests(unittest.TestCase):
             morsel.setdefault('invalid', 'value')
         self.assertNotIn('invalid', morsel)
 
-    def test_update(self):
+    eleza test_update(self):
         attribs = {'expires': 1, 'Version': 2, 'DOMAIN': 'example.com'}
         # test dict update
         morsel = cookies.Morsel()
@@ -425,7 +425,7 @@ class MorselTests(unittest.TestCase):
         self.assertRaises(TypeError, morsel.update)
         self.assertRaises(TypeError, morsel.update, 0)
 
-    def test_pickle(self):
+    eleza test_pickle(self):
         morsel_a = cookies.Morsel()
         morsel_a.set('foo', 'bar', 'baz')
         morsel_a.update({
@@ -439,7 +439,7 @@ class MorselTests(unittest.TestCase):
                 self.assertEqual(morsel_b, morsel_a)
                 self.assertEqual(str(morsel_b), str(morsel_a))
 
-    def test_repr(self):
+    eleza test_repr(self):
         morsel = cookies.Morsel()
         self.assertEqual(repr(morsel), '<Morsel: None=None>')
         self.assertEqual(str(morsel), 'Set-Cookie: None=None')
@@ -479,9 +479,9 @@ class MorselTests(unittest.TestCase):
                 r'Set-Cookie: key=coded_val; '
                 r'expires=\w+, \d+ \w+ \d+ \d+:\d+:\d+ \w+')
 
-def test_main():
+eleza test_main():
     run_unittest(CookieTests, MorselTests)
     run_doctest(cookies)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test_main()

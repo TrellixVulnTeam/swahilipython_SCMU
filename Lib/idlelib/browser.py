@@ -5,7 +5,7 @@ XXX TO DO:
 - reparse when source changed (maybe just a button would be OK?)
     (or recheck on window popup)
 - add popup menu with more options (e.g. doc strings, base classes, agizas)
-- add base classes to class browser tree
+- add base classes to kundi browser tree
 - finish removing limitation to x.py files (ModuleBrowserTreeItem)
 """
 
@@ -23,12 +23,12 @@ file_open = None  # Method...Item and Class...Item use this.
 # Normally pyshell.flist.open, but there is no pyshell.flist for htest.
 
 
-def transform_children(child_dict, modname=None):
+eleza transform_children(child_dict, modname=None):
     """Transform a child dictionary to an ordered sequence of objects.
 
     The dictionary maps names to pyclbr information objects.
     Filter out imported objects.
-    Augment class names with bases.
+    Augment kundi names with bases.
     The insertion order of the dictionary is assumed to have been in line
     number order, so sorting is not necessary.
 
@@ -38,31 +38,31 @@ def transform_children(child_dict, modname=None):
     """
     obs = []  # Use list since values should already be sorted.
     for key, obj in child_dict.items():
-        if modname is None or obj.module == modname:
-            if hasattr(obj, 'super') and obj.super and obj.name == key:
+        ikiwa modname is None or obj.module == modname:
+            ikiwa hasattr(obj, 'super') and obj.super and obj.name == key:
                 # If obj.name != key, it has already been suffixed.
                 supers = []
                 for sup in obj.super:
-                    if type(sup) is type(''):
+                    ikiwa type(sup) is type(''):
                         sname = sup
                     else:
                         sname = sup.name
-                        if sup.module != obj.module:
+                        ikiwa sup.module != obj.module:
                             sname = f'{sup.module}.{sname}'
                     supers.append(sname)
                 obj.name += '({})'.format(', '.join(supers))
             obs.append(obj)
-    return obs
+    rudisha obs
 
 
-class ModuleBrowser:
+kundi ModuleBrowser:
     """Browse module classes and functions in IDLE.
     """
-    # This class is also the base class for pathbrowser.PathBrowser.
+    # This kundi is also the base kundi for pathbrowser.PathBrowser.
     # Init and close are inherited, other methods are overridden.
     # PathBrowser.__init__ does not call __init__ below.
 
-    def __init__(self, master, path, *, _htest=False, _utest=False):
+    eleza __init__(self, master, path, *, _htest=False, _utest=False):
         """Create a window for browsing a module's structure.
 
         Args:
@@ -86,16 +86,16 @@ class ModuleBrowser:
         self._utest = _utest
         self.init()
 
-    def close(self, event=None):
+    eleza close(self, event=None):
         "Dismiss the window and the tree nodes."
         self.top.destroy()
         self.node.destroy()
 
-    def init(self):
+    eleza init(self):
         "Create browser tkinter widgets, including the tree."
         global file_open
         root = self.master
-        flist = (pyshell.flist if not (self._htest or self._utest)
+        flist = (pyshell.flist ikiwa not (self._htest or self._utest)
                  else pyshell.PyShellFileList(root))
         file_open = flist.open
         pyclbr._modules.clear()
@@ -104,7 +104,7 @@ class ModuleBrowser:
         self.top = top = ListedToplevel(root)
         top.protocol("WM_DELETE_WINDOW", self.close)
         top.bind("<Escape>", self.close)
-        if self._htest: # place dialog below parent if running htest
+        ikiwa self._htest: # place dialog below parent ikiwa running htest
             top.geometry("+%d+%d" %
                 (root.winfo_rootx(), root.winfo_rooty() + 200))
         self.settitle()
@@ -118,28 +118,28 @@ class ModuleBrowser:
         sc.frame.pack(expand=1, fill="both")
         item = self.rootnode()
         self.node = node = TreeNode(sc.canvas, None, item)
-        if not self._utest:
+        ikiwa not self._utest:
             node.update()
             node.expand()
 
-    def settitle(self):
+    eleza settitle(self):
         "Set the window title."
         self.top.wm_title("Module Browser - " + os.path.basename(self.path))
         self.top.wm_iconname("Module Browser")
 
-    def rootnode(self):
+    eleza rootnode(self):
         "Return a ModuleBrowserTreeItem as the root of the tree."
-        return ModuleBrowserTreeItem(self.path)
+        rudisha ModuleBrowserTreeItem(self.path)
 
 
-class ModuleBrowserTreeItem(TreeItem):
+kundi ModuleBrowserTreeItem(TreeItem):
     """Browser tree for Python module.
 
     Uses TreeItem as the basis for the structure of the tree.
     Used by both browsers.
     """
 
-    def __init__(self, file):
+    eleza __init__(self, file):
         """Create a TreeItem for the file.
 
         Args:
@@ -147,80 +147,80 @@ class ModuleBrowserTreeItem(TreeItem):
         """
         self.file = file
 
-    def GetText(self):
+    eleza GetText(self):
         "Return the module name as the text string to display."
-        return os.path.basename(self.file)
+        rudisha os.path.basename(self.file)
 
-    def GetIconName(self):
+    eleza GetIconName(self):
         "Return the name of the icon to display."
-        return "python"
+        rudisha "python"
 
-    def GetSubList(self):
+    eleza GetSubList(self):
         "Return ChildBrowserTreeItems for children."
-        return [ChildBrowserTreeItem(obj) for obj in self.listchildren()]
+        rudisha [ChildBrowserTreeItem(obj) for obj in self.listchildren()]
 
-    def OnDoubleClick(self):
+    eleza OnDoubleClick(self):
         "Open a module in an editor window when double clicked."
-        if os.path.normcase(self.file[-3:]) != ".py":
+        ikiwa os.path.normcase(self.file[-3:]) != ".py":
             return
-        if not os.path.exists(self.file):
+        ikiwa not os.path.exists(self.file):
             return
         file_open(self.file)
 
-    def IsExpandable(self):
-        "Return True if Python (.py) file."
-        return os.path.normcase(self.file[-3:]) == ".py"
+    eleza IsExpandable(self):
+        "Return True ikiwa Python (.py) file."
+        rudisha os.path.normcase(self.file[-3:]) == ".py"
 
-    def listchildren(self):
+    eleza listchildren(self):
         "Return sequenced classes and functions in the module."
         dir, base = os.path.split(self.file)
         name, ext = os.path.splitext(base)
-        if os.path.normcase(ext) != ".py":
-            return []
+        ikiwa os.path.normcase(ext) != ".py":
+            rudisha []
         try:
             tree = pyclbr.readmodule_ex(name, [dir] + sys.path)
         except ImportError:
-            return []
-        return transform_children(tree, name)
+            rudisha []
+        rudisha transform_children(tree, name)
 
 
-class ChildBrowserTreeItem(TreeItem):
+kundi ChildBrowserTreeItem(TreeItem):
     """Browser tree for child nodes within the module.
 
     Uses TreeItem as the basis for the structure of the tree.
     """
 
-    def __init__(self, obj):
+    eleza __init__(self, obj):
         "Create a TreeItem for a pyclbr class/function object."
         self.obj = obj
         self.name = obj.name
         self.isfunction = isinstance(obj, pyclbr.Function)
 
-    def GetText(self):
-        "Return the name of the function/class to display."
+    eleza GetText(self):
+        "Return the name of the function/kundi to display."
         name = self.name
-        if self.isfunction:
-            return "def " + name + "(...)"
+        ikiwa self.isfunction:
+            rudisha "eleza " + name + "(...)"
         else:
-            return "class " + name
+            rudisha "kundi " + name
 
-    def GetIconName(self):
+    eleza GetIconName(self):
         "Return the name of the icon to display."
-        if self.isfunction:
-            return "python"
+        ikiwa self.isfunction:
+            rudisha "python"
         else:
-            return "folder"
+            rudisha "folder"
 
-    def IsExpandable(self):
-        "Return True if self.obj has nested objects."
-        return self.obj.children != {}
+    eleza IsExpandable(self):
+        "Return True ikiwa self.obj has nested objects."
+        rudisha self.obj.children != {}
 
-    def GetSubList(self):
+    eleza GetSubList(self):
         "Return ChildBrowserTreeItems for children."
-        return [ChildBrowserTreeItem(obj)
+        rudisha [ChildBrowserTreeItem(obj)
                 for obj in transform_children(self.obj.children)]
 
-    def OnDoubleClick(self):
+    eleza OnDoubleClick(self):
         "Open module with file_open and position to lineno."
         try:
             edit = file_open(self.obj.file)
@@ -229,20 +229,20 @@ class ChildBrowserTreeItem(TreeItem):
             pass
 
 
-def _module_browser(parent): # htest #
-    if len(sys.argv) > 1:  # If pass file on command line.
+eleza _module_browser(parent): # htest #
+    ikiwa len(sys.argv) > 1:  # If pass file on command line.
         file = sys.argv[1]
     else:
         file = __file__
         # Add nested objects for htest.
-        class Nested_in_func(TreeNode):
-            def nested_in_class(): pass
-        def closure():
-            class Nested_in_closure: pass
+        kundi Nested_in_func(TreeNode):
+            eleza nested_in_class(): pass
+        eleza closure():
+            kundi Nested_in_closure: pass
     ModuleBrowser(parent, file, _htest=True)
 
-if __name__ == "__main__":
-    if len(sys.argv) == 1:  # If pass file on command line, unittest fails.
+ikiwa __name__ == "__main__":
+    ikiwa len(sys.argv) == 1:  # If pass file on command line, unittest fails.
         kutoka unittest agiza main
         main('idlelib.idle_test.test_browser', verbosity=2, exit=False)
     kutoka idlelib.idle_test.htest agiza run

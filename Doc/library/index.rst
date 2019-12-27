@@ -28,8 +28,8 @@ tools provided with the operating system to obtain some or all of the
 optional components.
 
 In addition to the standard library, there is a growing collection of
-several thousand components (from individual programs and modules to
-packages and entire application development frameworks), available from
+several thousand components (kutoka individual programs and modules to
+packages and entire application development frameworks), available kutoka
 the `Python Package Index <https://pypi.org>`_.
 
 .. We don't use :numbered: option for the TOC below as it enforces

@@ -8,16 +8,16 @@ __all__ = [
 ]
 
 
-class FileWrapper:
+kundi FileWrapper:
     """Wrapper to convert file-like objects to iterables"""
 
-    def __init__(self, filelike, blksize=8192):
+    eleza __init__(self, filelike, blksize=8192):
         self.filelike = filelike
         self.blksize = blksize
-        if hasattr(filelike,'close'):
+        ikiwa hasattr(filelike,'close'):
             self.close = filelike.close
 
-    def __getitem__(self,key):
+    eleza __getitem__(self,key):
         agiza warnings
         warnings.warn(
             "FileWrapper's __getitem__ method ignores 'key' parameter. "
@@ -26,65 +26,65 @@ class FileWrapper:
             stacklevel=2
         )
         data = self.filelike.read(self.blksize)
-        if data:
-            return data
+        ikiwa data:
+            rudisha data
         raise IndexError
 
-    def __iter__(self):
-        return self
+    eleza __iter__(self):
+        rudisha self
 
-    def __next__(self):
+    eleza __next__(self):
         data = self.filelike.read(self.blksize)
-        if data:
-            return data
+        ikiwa data:
+            rudisha data
         raise StopIteration
 
-def guess_scheme(environ):
+eleza guess_scheme(environ):
     """Return a guess for whether 'wsgi.url_scheme' should be 'http' or 'https'
     """
-    if environ.get("HTTPS") in ('yes','on','1'):
-        return 'https'
+    ikiwa environ.get("HTTPS") in ('yes','on','1'):
+        rudisha 'https'
     else:
-        return 'http'
+        rudisha 'http'
 
-def application_uri(environ):
+eleza application_uri(environ):
     """Return the application's base URI (no PATH_INFO or QUERY_STRING)"""
     url = environ['wsgi.url_scheme']+'://'
     kutoka urllib.parse agiza quote
 
-    if environ.get('HTTP_HOST'):
+    ikiwa environ.get('HTTP_HOST'):
         url += environ['HTTP_HOST']
     else:
         url += environ['SERVER_NAME']
 
-        if environ['wsgi.url_scheme'] == 'https':
-            if environ['SERVER_PORT'] != '443':
+        ikiwa environ['wsgi.url_scheme'] == 'https':
+            ikiwa environ['SERVER_PORT'] != '443':
                 url += ':' + environ['SERVER_PORT']
         else:
-            if environ['SERVER_PORT'] != '80':
+            ikiwa environ['SERVER_PORT'] != '80':
                 url += ':' + environ['SERVER_PORT']
 
     url += quote(environ.get('SCRIPT_NAME') or '/', encoding='latin1')
-    return url
+    rudisha url
 
-def request_uri(environ, include_query=True):
+eleza request_uri(environ, include_query=True):
     """Return the full request URI, optionally including the query string"""
     url = application_uri(environ)
     kutoka urllib.parse agiza quote
     path_info = quote(environ.get('PATH_INFO',''), safe='/;=,', encoding='latin1')
-    if not environ.get('SCRIPT_NAME'):
+    ikiwa not environ.get('SCRIPT_NAME'):
         url += path_info[1:]
     else:
         url += path_info
-    if include_query and environ.get('QUERY_STRING'):
+    ikiwa include_query and environ.get('QUERY_STRING'):
         url += '?' + environ['QUERY_STRING']
-    return url
+    rudisha url
 
-def shift_path_info(environ):
+eleza shift_path_info(environ):
     """Shift a name kutoka PATH_INFO to SCRIPT_NAME, returning it
 
-    If there are no remaining path segments in PATH_INFO, return None.
-    Note: 'environ' is modified in-place; use a copy if you need to keep
+    If there are no remaining path segments in PATH_INFO, rudisha None.
+    Note: 'environ' is modified in-place; use a copy ikiwa you need to keep
     the original PATH_INFO or SCRIPT_NAME.
 
     Note: when PATH_INFO is just a '/', this returns '' and appends a trailing
@@ -94,19 +94,19 @@ def shift_path_info(environ):
     '/x' and '/x/' when traversing to objects.
     """
     path_info = environ.get('PATH_INFO','')
-    if not path_info:
-        return None
+    ikiwa not path_info:
+        rudisha None
 
     path_parts = path_info.split('/')
-    path_parts[1:-1] = [p for p in path_parts[1:-1] if p and p != '.']
+    path_parts[1:-1] = [p for p in path_parts[1:-1] ikiwa p and p != '.']
     name = path_parts[1]
     del path_parts[1]
 
     script_name = environ.get('SCRIPT_NAME','')
     script_name = posixpath.normpath(script_name+'/'+name)
-    if script_name.endswith('/'):
+    ikiwa script_name.endswith('/'):
         script_name = script_name[:-1]
-    if not name and not script_name.endswith('/'):
+    ikiwa not name and not script_name.endswith('/'):
         script_name += '/'
 
     environ['SCRIPT_NAME'] = script_name
@@ -114,14 +114,14 @@ def shift_path_info(environ):
 
     # Special case: '/.' on PATH_INFO doesn't get stripped,
     # because we don't strip the last element of PATH_INFO
-    # if there's only one path part left.  Instead of fixing this
+    # ikiwa there's only one path part left.  Instead of fixing this
     # above, we fix it here so that PATH_INFO gets normalized to
     # an empty string in the environ.
-    if name=='.':
+    ikiwa name=='.':
         name = None
-    return name
+    rudisha name
 
-def setup_testing_defaults(environ):
+eleza setup_testing_defaults(environ):
     """Update 'environ' with trivial defaults for testing purposes
 
     This adds various parameters required for WSGI, including HTTP_HOST,
@@ -140,7 +140,7 @@ def setup_testing_defaults(environ):
     environ.setdefault('HTTP_HOST',environ['SERVER_NAME'])
     environ.setdefault('REQUEST_METHOD','GET')
 
-    if 'SCRIPT_NAME' not in environ and 'PATH_INFO' not in environ:
+    ikiwa 'SCRIPT_NAME' not in environ and 'PATH_INFO' not in environ:
         environ.setdefault('SCRIPT_NAME','')
         environ.setdefault('PATH_INFO','/')
 
@@ -154,9 +154,9 @@ def setup_testing_defaults(environ):
     environ.setdefault('wsgi.errors', StringIO())
     environ.setdefault('wsgi.url_scheme',guess_scheme(environ))
 
-    if environ['wsgi.url_scheme']=='http':
+    ikiwa environ['wsgi.url_scheme']=='http':
         environ.setdefault('SERVER_PORT', '80')
-    elif environ['wsgi.url_scheme']=='https':
+    elikiwa environ['wsgi.url_scheme']=='https':
         environ.setdefault('SERVER_PORT', '443')
 
 
@@ -167,6 +167,6 @@ _hoppish = {
     'upgrade'
 }.__contains__
 
-def is_hop_by_hop(header_name):
-    """Return true if 'header_name' is an HTTP/1.1 "Hop-by-Hop" header"""
-    return _hoppish(header_name.lower())
+eleza is_hop_by_hop(header_name):
+    """Return true ikiwa 'header_name' is an HTTP/1.1 "Hop-by-Hop" header"""
+    rudisha _hoppish(header_name.lower())

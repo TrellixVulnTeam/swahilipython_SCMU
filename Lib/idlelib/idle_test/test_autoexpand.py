@@ -6,15 +6,15 @@ kutoka test.support agiza requires
 kutoka tkinter agiza Text, Tk
 
 
-class DummyEditwin:
+kundi DummyEditwin:
     # AutoExpand.__init__ only needs .text
-    def __init__(self, text):
+    eleza __init__(self, text):
         self.text = text
 
-class AutoExpandTest(unittest.TestCase):
+kundi AutoExpandTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         cls.tk = Tk()
         cls.text = Text(cls.tk)
@@ -37,16 +37,16 @@ class AutoExpandTest(unittest.TestCase):
 ##            cls.text = Text(cls.tk)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         del cls.text, cls.auto_expand
-        if hasattr(cls, 'tk'):
+        ikiwa hasattr(cls, 'tk'):
             cls.tk.destroy()
             del cls.tk
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.text.delete('1.0', 'end')
 
-    def test_get_prevword(self):
+    eleza test_get_prevword(self):
         text = self.text
         previous = self.auto_expand.getprevword
         equal = self.assertEqual
@@ -74,7 +74,7 @@ class AutoExpandTest(unittest.TestCase):
         text.delete('1.0', 'end')
         equal(previous(), '')
 
-    def test_before_only(self):
+    eleza test_before_only(self):
         previous = self.auto_expand.getprevword
         expand = self.auto_expand.expand_word_event
         equal = self.assertEqual
@@ -90,7 +90,7 @@ class AutoExpandTest(unittest.TestCase):
         expand('event')
         equal(previous(), 'a')
 
-    def test_after_only(self):
+    eleza test_after_only(self):
         # Also add punctuation 'noise' that should be ignored.
         text = self.text
         previous = self.auto_expand.getprevword
@@ -109,7 +109,7 @@ class AutoExpandTest(unittest.TestCase):
         expand('event')
         equal(previous(), 'a')
 
-    def test_both_before_after(self):
+    eleza test_both_before_after(self):
         text = self.text
         previous = self.auto_expand.getprevword
         expand = self.auto_expand.expand_word_event
@@ -127,7 +127,7 @@ class AutoExpandTest(unittest.TestCase):
         expand('event')
         equal(previous(), 'a')
 
-    def test_other_expand_cases(self):
+    eleza test_other_expand_cases(self):
         text = self.text
         expand = self.auto_expand.expand_word_event
         equal = self.assertEqual
@@ -151,5 +151,5 @@ class AutoExpandTest(unittest.TestCase):
         self.assertNotEqual(initial_state, new_state)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -25,7 +25,7 @@ kutoka sphinx agiza addnodes
 kutoka sphinx.domains.c agiza CObject
 
 
-class RCEntry:
+kundi RCEntry:
     def __init__(self, name):
         self.name = name
         self.args = []
@@ -33,9 +33,9 @@ class RCEntry:
         self.result_refs = None
 
 
-class Annotations(dict):
+kundi Annotations(dict):
     @classmethod
-    def fromfile(cls, filename):
+    def kutokafile(cls, filename):
         d = cls()
         fp = open(filename, 'r')
         try:
@@ -99,7 +99,7 @@ class Annotations(dict):
 
 
 def init_annotations(app):
-    refcounts = Annotations.fromfile(
+    refcounts = Annotations.kutokafile(
         path.join(app.srcdir, app.config.refcount_file))
     app.connect('doctree-read', refcounts.add_annotations)
 

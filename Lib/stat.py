@@ -18,17 +18,17 @@ ST_CTIME = 9
 
 # Extract bits kutoka the mode
 
-def S_IMODE(mode):
+eleza S_IMODE(mode):
     """Return the portion of the file's mode that can be set by
     os.chmod().
     """
-    return mode & 0o7777
+    rudisha mode & 0o7777
 
-def S_IFMT(mode):
+eleza S_IFMT(mode):
     """Return the portion of the file's mode that describes the
     file type.
     """
-    return mode & 0o170000
+    rudisha mode & 0o170000
 
 # Constants used as S_IFMT() for various file types
 # (not all are implemented on all systems)
@@ -47,45 +47,45 @@ S_IFWHT = 0
 
 # Functions to test for each file type
 
-def S_ISDIR(mode):
-    """Return True if mode is kutoka a directory."""
-    return S_IFMT(mode) == S_IFDIR
+eleza S_ISDIR(mode):
+    """Return True ikiwa mode is kutoka a directory."""
+    rudisha S_IFMT(mode) == S_IFDIR
 
-def S_ISCHR(mode):
-    """Return True if mode is kutoka a character special device file."""
-    return S_IFMT(mode) == S_IFCHR
+eleza S_ISCHR(mode):
+    """Return True ikiwa mode is kutoka a character special device file."""
+    rudisha S_IFMT(mode) == S_IFCHR
 
-def S_ISBLK(mode):
-    """Return True if mode is kutoka a block special device file."""
-    return S_IFMT(mode) == S_IFBLK
+eleza S_ISBLK(mode):
+    """Return True ikiwa mode is kutoka a block special device file."""
+    rudisha S_IFMT(mode) == S_IFBLK
 
-def S_ISREG(mode):
-    """Return True if mode is kutoka a regular file."""
-    return S_IFMT(mode) == S_IFREG
+eleza S_ISREG(mode):
+    """Return True ikiwa mode is kutoka a regular file."""
+    rudisha S_IFMT(mode) == S_IFREG
 
-def S_ISFIFO(mode):
-    """Return True if mode is kutoka a FIFO (named pipe)."""
-    return S_IFMT(mode) == S_IFIFO
+eleza S_ISFIFO(mode):
+    """Return True ikiwa mode is kutoka a FIFO (named pipe)."""
+    rudisha S_IFMT(mode) == S_IFIFO
 
-def S_ISLNK(mode):
-    """Return True if mode is kutoka a symbolic link."""
-    return S_IFMT(mode) == S_IFLNK
+eleza S_ISLNK(mode):
+    """Return True ikiwa mode is kutoka a symbolic link."""
+    rudisha S_IFMT(mode) == S_IFLNK
 
-def S_ISSOCK(mode):
-    """Return True if mode is kutoka a socket."""
-    return S_IFMT(mode) == S_IFSOCK
+eleza S_ISSOCK(mode):
+    """Return True ikiwa mode is kutoka a socket."""
+    rudisha S_IFMT(mode) == S_IFSOCK
 
-def S_ISDOOR(mode):
-    """Return True if mode is kutoka a door."""
-    return False
+eleza S_ISDOOR(mode):
+    """Return True ikiwa mode is kutoka a door."""
+    rudisha False
 
-def S_ISPORT(mode):
-    """Return True if mode is kutoka an event port."""
-    return False
+eleza S_ISPORT(mode):
+    """Return True ikiwa mode is kutoka an event port."""
+    rudisha False
 
-def S_ISWHT(mode):
-    """Return True if mode is kutoka a whiteout."""
-    return False
+eleza S_ISWHT(mode):
+    """Return True ikiwa mode is kutoka a whiteout."""
+    rudisha False
 
 # Names for permission bits
 
@@ -153,17 +153,17 @@ _filemode_table = (
      (S_IXOTH,         "x"))
 )
 
-def filemode(mode):
+eleza filemode(mode):
     """Convert a file's mode to a string of the form '-rwxrwxrwx'."""
     perm = []
     for table in _filemode_table:
         for bit, char in table:
-            if mode & bit == bit:
+            ikiwa mode & bit == bit:
                 perm.append(char)
                 break
         else:
             perm.append("-")
-    return "".join(perm)
+    rudisha "".join(perm)
 
 
 # Windows FILE_ATTRIBUTE constants for interpreting os.stat()'s

@@ -71,7 +71,7 @@ def _reduce_ex(self, proto):
     except AttributeError:
         if getattr(self, "__slots__", None):
             raise TypeError(f"cannot pickle {cls.__name__!r} object: "
-                            f"a class that defines __slots__ without "
+                            f"a kundi that defines __slots__ without "
                             f"defining __getstate__ cannot be pickled "
                             f"with protocol {proto}") kutoka None
         try:
@@ -99,15 +99,15 @@ def __newobj_ex__(cls, args, kwargs):
 def _slotnames(cls):
     """Return a list of slot names for a given class.
 
-    This needs to find slots defined by the class and its bases, so we
+    This needs to find slots defined by the kundi and its bases, so we
     can't simply return the __slots__ attribute.  We must walk down
     the Method Resolution Order and concatenate the __slots__ of each
-    class found there.  (This assumes classes don't modify their
-    __slots__ attribute to misrepresent their slots after the class is
+    kundi found there.  (This assumes classes don't modify their
+    __slots__ attribute to misrepresent their slots after the kundi is
     defined.)
     """
 
-    # Get the value kutoka a cache in the class if possible
+    # Get the value kutoka a cache in the kundi if possible
     names = cls.__dict__.get("__slotnames__")
     if names is not None:
         return names
@@ -115,14 +115,14 @@ def _slotnames(cls):
     # Not cached -- calculate the value
     names = []
     if not hasattr(cls, "__slots__"):
-        # This class has no slots
+        # This kundi has no slots
         pass
     else:
         # Slots found -- gather slot names kutoka all base classes
         for c in cls.__mro__:
             if "__slots__" in c.__dict__:
                 slots = c.__dict__['__slots__']
-                # if class has a single slot, it can be given as a string
+                # if kundi has a single slot, it can be given as a string
                 if isinstance(slots, str):
                     slots = (slots,)
                 for name in slots:
@@ -130,7 +130,7 @@ def _slotnames(cls):
                     if name in ("__dict__", "__weakref__"):
                         continue
                     # mangled names
-                    elif name.startswith('__') and not name.endswith('__'):
+                    lasivyo name.startswith('__') and not name.endswith('__'):
                         stripped = c.__name__.lstrip('_')
                         if stripped:
                             names.append('_%s%s' % (stripped, name))
@@ -139,7 +139,7 @@ def _slotnames(cls):
                     else:
                         names.append(name)
 
-    # Cache the outcome in the class if at all possible
+    # Cache the outcome in the kundi if at all possible
     try:
         cls.__slotnames__ = names
     except:

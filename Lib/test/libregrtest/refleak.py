@@ -5,7 +5,7 @@ import warnings
 from inspect import isabstract
 from test import support
 try:
-    from _abc import _get_dump
+    from _abc agiza _get_dump
 except ImportError:
     import weakref
 

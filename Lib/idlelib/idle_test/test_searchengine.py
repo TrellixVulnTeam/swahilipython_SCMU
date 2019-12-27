@@ -15,25 +15,25 @@ agiza re
 # This works because mock Text.get does not use .index.
 # The tkinter agizas are used to restore searchengine.
 
-def setUpModule():
+eleza setUpModule():
     # Replace s-e module tkinter agizas other than non-gui TclError.
     se.BooleanVar = Var
     se.StringVar = Var
     se.tkMessageBox = Mbox
 
-def tearDownModule():
+eleza tearDownModule():
     # Restore 'just in case', though other tests should also replace.
     se.BooleanVar = BooleanVar
     se.StringVar = StringVar
     se.tkMessageBox = tkMessageBox
 
 
-class Mock:
-    def __init__(self, *args, **kwargs): pass
+kundi Mock:
+    eleza __init__(self, *args, **kwargs): pass
 
-class GetTest(unittest.TestCase):
+kundi GetTest(unittest.TestCase):
     # SearchEngine.get returns singleton created & saved on first call.
-    def test_get(self):
+    eleza test_get(self):
         saved_Engine = se.SearchEngine
         se.SearchEngine = Mock  # monkey-patch class
         try:
@@ -43,55 +43,55 @@ class GetTest(unittest.TestCase):
             self.assertIs(root._searchengine, engine)
             self.assertIs(se.get(root), engine)
         finally:
-            se.SearchEngine = saved_Engine  # restore class to module
+            se.SearchEngine = saved_Engine  # restore kundi to module
 
-class GetLineColTest(unittest.TestCase):
+kundi GetLineColTest(unittest.TestCase):
     #  Test simple text-independent helper function
-    def test_get_line_col(self):
+    eleza test_get_line_col(self):
         self.assertEqual(se.get_line_col('1.0'), (1, 0))
         self.assertEqual(se.get_line_col('1.11'), (1, 11))
 
         self.assertRaises(ValueError, se.get_line_col, ('1.0 lineend'))
         self.assertRaises(ValueError, se.get_line_col, ('end'))
 
-class GetSelectionTest(unittest.TestCase):
+kundi GetSelectionTest(unittest.TestCase):
     # Test text-dependent helper function.
 ##    # Need gui for text.index('sel.first/sel.last/insert').
 ##    @classmethod
-##    def setUpClass(cls):
+##    eleza setUpClass(cls):
 ##        requires('gui')
 ##        cls.root = Tk()
 ##
 ##    @classmethod
-##    def tearDownClass(cls):
+##    eleza tearDownClass(cls):
 ##        cls.root.destroy()
 ##        del cls.root
 
-    def test_get_selection(self):
+    eleza test_get_selection(self):
         # text = Text(master=self.root)
         text = mockText()
         text.insert('1.0',  'Hello World!')
 
         # fix text.index result when called in get_selection
-        def sel(s):
+        eleza sel(s):
             # select entire text, cursor irrelevant
-            if s == 'sel.first': return '1.0'
-            if s == 'sel.last': return '1.12'
+            ikiwa s == 'sel.first': rudisha '1.0'
+            ikiwa s == 'sel.last': rudisha '1.12'
             raise TclError
         text.index = sel  # replaces .tag_add('sel', '1.0, '1.12')
         self.assertEqual(se.get_selection(text), ('1.0', '1.12'))
 
-        def mark(s):
+        eleza mark(s):
             # no selection, cursor after 'Hello'
-            if s == 'insert': return '1.5'
+            ikiwa s == 'insert': rudisha '1.5'
             raise TclError
         text.index = mark  # replaces .mark_set('insert', '1.5')
         self.assertEqual(se.get_selection(text), ('1.5', '1.5'))
 
 
-class ReverseSearchTest(unittest.TestCase):
+kundi ReverseSearchTest(unittest.TestCase):
     # Test helper function that searches backwards within a line.
-    def test_search_reverse(self):
+    eleza test_search_reverse(self):
         Equal = self.assertEqual
         line = "Here is an 'is' test text."
         prog = re.compile('is')
@@ -102,15 +102,15 @@ class ReverseSearchTest(unittest.TestCase):
         Equal(se.search_reverse(prog, line, 6), None)
 
 
-class SearchEngineTest(unittest.TestCase):
-    # Test class methods that do not use Text widget.
+kundi SearchEngineTest(unittest.TestCase):
+    # Test kundi methods that do not use Text widget.
 
-    def setUp(self):
+    eleza setUp(self):
         self.engine = se.SearchEngine(root=None)
         # Engine.root is only used to create error message boxes.
         # The mock replacement ignores the root argument.
 
-    def test_is_get(self):
+    eleza test_is_get(self):
         engine = self.engine
         Equal = self.assertEqual
 
@@ -138,7 +138,7 @@ class SearchEngineTest(unittest.TestCase):
         engine.backvar.set(1)
         Equal(engine.isback(), True)
 
-    def test_setcookedpat(self):
+    eleza test_setcookedpat(self):
         engine = self.engine
         engine.setcookedpat(r'\s')
         self.assertEqual(engine.getpat(), r'\s')
@@ -146,7 +146,7 @@ class SearchEngineTest(unittest.TestCase):
         engine.setcookedpat(r'\s')
         self.assertEqual(engine.getpat(), r'\\s')
 
-    def test_getcookedpat(self):
+    eleza test_getcookedpat(self):
         engine = self.engine
         Equal = self.assertEqual
 
@@ -162,7 +162,7 @@ class SearchEngineTest(unittest.TestCase):
         engine.revar.set(True)
         Equal(engine.getcookedpat(), r'\s')
 
-    def test_getprog(self):
+    eleza test_getprog(self):
         engine = self.engine
         Equal = self.assertEqual
 
@@ -181,7 +181,7 @@ class SearchEngineTest(unittest.TestCase):
         self.assertEqual(Mbox.showerror.message,
                          'Error: nothing to repeat at position 0\nPattern: +')
 
-    def test_report_error(self):
+    eleza test_report_error(self):
         showerror = Mbox.showerror
         Equal = self.assertEqual
         pat = '[a-z'
@@ -198,11 +198,11 @@ class SearchEngineTest(unittest.TestCase):
         Equal(showerror.message, expected_message)
 
 
-class SearchTest(unittest.TestCase):
+kundi SearchTest(unittest.TestCase):
     # Test that search_text makes right call to right method.
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
 ##        requires('gui')
 ##        cls.root = Tk()
 ##        cls.text = Text(master=cls.root)
@@ -219,11 +219,11 @@ class SearchTest(unittest.TestCase):
         cls.engine.search_backward = lambda *args: ('b', args)
 
 ##    @classmethod
-##    def tearDownClass(cls):
+##    eleza tearDownClass(cls):
 ##        cls.root.destroy()
 ##        del cls.root
 
-    def test_search(self):
+    eleza test_search(self):
         Equal = self.assertEqual
         engine = self.engine
         search = engine.search_text
@@ -234,9 +234,9 @@ class SearchTest(unittest.TestCase):
         #engine.revar.set(pat)
         Equal(search(text), None)
 
-        def mark(s):
+        eleza mark(s):
             # no selection, cursor after 'Hello'
-            if s == 'insert': return '1.5'
+            ikiwa s == 'insert': rudisha '1.5'
             raise TclError
         text.index = mark
         Equal(search(text, pat), ('f', (text, pat, 1, 5, True, False)))
@@ -247,9 +247,9 @@ class SearchTest(unittest.TestCase):
         Equal(search(text, pat), ('b', (text, pat, 1, 5, True, False)))
         engine.backvar.set(False)
 
-        def sel(s):
-            if s == 'sel.first': return '2.10'
-            if s == 'sel.last': return '2.16'
+        eleza sel(s):
+            ikiwa s == 'sel.first': rudisha '2.10'
+            ikiwa s == 'sel.last': rudisha '2.16'
             raise TclError
         text.index = sel
         Equal(search(text, pat), ('f', (text, pat, 2, 16, True, False)))
@@ -259,15 +259,15 @@ class SearchTest(unittest.TestCase):
         Equal(search(text, pat, True), ('b', (text, pat, 2, 16, True, True)))
 
 
-class ForwardBackwardTest(unittest.TestCase):
+kundi ForwardBackwardTest(unittest.TestCase):
     # Test that search_forward method finds the target.
 ##    @classmethod
-##    def tearDownClass(cls):
+##    eleza tearDownClass(cls):
 ##        cls.root.destroy()
 ##        del cls.root
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.engine = se.SearchEngine(None)
 ##        requires('gui')
 ##        cls.root = Tk()
@@ -285,14 +285,14 @@ class ForwardBackwardTest(unittest.TestCase):
         cls.failpat = re.compile('xyz')  # not in text
         cls.emptypat = re.compile(r'\w*')  # empty match possible
 
-    def make_search(self, func):
-        def search(pat, line, col, wrap, ok=0):
+    eleza make_search(self, func):
+        eleza search(pat, line, col, wrap, ok=0):
             res = func(self.text, pat, line, col, wrap, ok)
             # res is (line, matchobject) or None
-            return (res[0], res[1].span()) if res else res
-        return search
+            rudisha (res[0], res[1].span()) ikiwa res else res
+        rudisha search
 
-    def test_search_forward(self):
+    eleza test_search_forward(self):
         # search for non-empty match
         Equal = self.assertEqual
         forward = self.make_search(self.engine.search_forward)
@@ -309,7 +309,7 @@ class ForwardBackwardTest(unittest.TestCase):
         # the rest of the line and returning (3, (0,4)) seems buggy - tjr.
         Equal(forward(self.emptypat, 2, 10, True), self.res)
 
-    def test_search_backward(self):
+    eleza test_search_backward(self):
         # search for non-empty match
         Equal = self.assertEqual
         backward = self.make_search(self.engine.search_backward)
@@ -326,5 +326,5 @@ class ForwardBackwardTest(unittest.TestCase):
         Equal(backward(self.emptypat, 2, 9, True), (2, (5, 9)))
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

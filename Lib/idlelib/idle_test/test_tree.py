@@ -7,19 +7,19 @@ requires('gui')
 kutoka tkinter agiza Tk, EventType, SCROLL
 
 
-class TreeTest(unittest.TestCase):
+kundi TreeTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.root = Tk()
         cls.root.withdraw()
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         cls.root.destroy()
         del cls.root
 
-    def test_init(self):
+    eleza test_init(self):
         # Start with code slightly adapted kutoka htest.
         sc = tree.ScrolledCanvas(
             self.root, bg="white", highlightthickness=0, takefocus=1)
@@ -29,17 +29,17 @@ class TreeTest(unittest.TestCase):
         node.expand()
 
 
-class TestScrollEvent(unittest.TestCase):
+kundi TestScrollEvent(unittest.TestCase):
 
-    def test_wheel_event(self):
-        # Fake widget class containing `yview` only.
-        class _Widget:
-            def __init__(widget, *expected):
+    eleza test_wheel_event(self):
+        # Fake widget kundi containing `yview` only.
+        kundi _Widget:
+            eleza __init__(widget, *expected):
                 widget.expected = expected
-            def yview(widget, *args):
+            eleza yview(widget, *args):
                 self.assertTupleEqual(widget.expected, args)
         # Fake event class
-        class _Event:
+        kundi _Event:
             pass
         #        (type, delta, num, amount)
         tests = ((EventType.MouseWheel, 120, -1, -5),
@@ -56,5 +56,5 @@ class TestScrollEvent(unittest.TestCase):
             self.assertEqual(res, "break")
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

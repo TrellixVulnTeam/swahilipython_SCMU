@@ -23,7 +23,7 @@ __version__ = "6"
 agiza os
 agiza sys
 agiza tokenize
-if not hasattr(tokenize, 'NL'):
+ikiwa not hasattr(tokenize, 'NL'):
     raise ValueError("tokenize.NL doesn't exist -- tokenize module too old")
 
 __all__ = ["check", "NannyNag", "process_tokens"]
@@ -31,48 +31,48 @@ __all__ = ["check", "NannyNag", "process_tokens"]
 verbose = 0
 filename_only = 0
 
-def errprint(*args):
+eleza errandika(*args):
     sep = ""
     for arg in args:
         sys.stderr.write(sep + str(arg))
         sep = " "
     sys.stderr.write("\n")
 
-def main():
+eleza main():
     agiza getopt
 
     global verbose, filename_only
     try:
         opts, args = getopt.getopt(sys.argv[1:], "qv")
     except getopt.error as msg:
-        errprint(msg)
+        errandika(msg)
         return
     for o, a in opts:
-        if o == '-q':
+        ikiwa o == '-q':
             filename_only = filename_only + 1
-        if o == '-v':
+        ikiwa o == '-v':
             verbose = verbose + 1
-    if not args:
-        errprint("Usage:", sys.argv[0], "[-v] file_or_directory ...")
+    ikiwa not args:
+        errandika("Usage:", sys.argv[0], "[-v] file_or_directory ...")
         return
     for arg in args:
         check(arg)
 
-class NannyNag(Exception):
+kundi NannyNag(Exception):
     """
-    Raised by process_tokens() if detecting an ambiguous indent.
+    Raised by process_tokens() ikiwa detecting an ambiguous indent.
     Captured and handled in check().
     """
-    def __init__(self, lineno, msg, line):
+    eleza __init__(self, lineno, msg, line):
         self.lineno, self.msg, self.line = lineno, msg, line
-    def get_lineno(self):
-        return self.lineno
-    def get_msg(self):
-        return self.msg
-    def get_line(self):
-        return self.line
+    eleza get_lineno(self):
+        rudisha self.lineno
+    eleza get_msg(self):
+        rudisha self.msg
+    eleza get_line(self):
+        rudisha self.line
 
-def check(file):
+eleza check(file):
     """check(file_or_dir)
 
     If file_or_dir is a directory and not a symbolic link, then recursively
@@ -82,13 +82,13 @@ def check(file):
     written to standard output using the print statement.
     """
 
-    if os.path.isdir(file) and not os.path.islink(file):
-        if verbose:
-            print("%r: listing directory" % (file,))
+    ikiwa os.path.isdir(file) and not os.path.islink(file):
+        ikiwa verbose:
+            andika("%r: listing directory" % (file,))
         names = os.listdir(file)
         for name in names:
             fullname = os.path.join(file, name)
-            if (os.path.isdir(fullname) and
+            ikiwa (os.path.isdir(fullname) and
                 not os.path.islink(fullname) or
                 os.path.normcase(name[-3:]) == ".py"):
                 check(fullname)
@@ -97,43 +97,43 @@ def check(file):
     try:
         f = tokenize.open(file)
     except OSError as msg:
-        errprint("%r: I/O Error: %s" % (file, msg))
+        errandika("%r: I/O Error: %s" % (file, msg))
         return
 
-    if verbose > 1:
-        print("checking %r ..." % file)
+    ikiwa verbose > 1:
+        andika("checking %r ..." % file)
 
     try:
         process_tokens(tokenize.generate_tokens(f.readline))
 
     except tokenize.TokenError as msg:
-        errprint("%r: Token Error: %s" % (file, msg))
+        errandika("%r: Token Error: %s" % (file, msg))
         return
 
     except IndentationError as msg:
-        errprint("%r: Indentation Error: %s" % (file, msg))
+        errandika("%r: Indentation Error: %s" % (file, msg))
         return
 
     except NannyNag as nag:
         badline = nag.get_lineno()
         line = nag.get_line()
-        if verbose:
-            print("%r: *** Line %d: trouble in tab city! ***" % (file, badline))
-            print("offending line: %r" % (line,))
-            print(nag.get_msg())
+        ikiwa verbose:
+            andika("%r: *** Line %d: trouble in tab city! ***" % (file, badline))
+            andika("offending line: %r" % (line,))
+            andika(nag.get_msg())
         else:
-            if ' ' in file: file = '"' + file + '"'
-            if filename_only: print(file)
-            else: print(file, badline, repr(line))
+            ikiwa ' ' in file: file = '"' + file + '"'
+            ikiwa filename_only: andika(file)
+            else: andika(file, badline, repr(line))
         return
 
     finally:
         f.close()
 
-    if verbose:
-        print("%r: Clean bill of health." % (file,))
+    ikiwa verbose:
+        andika("%r: Clean bill of health." % (file,))
 
-class Whitespace:
+kundi Whitespace:
     # the characters used for space and tab
     S, T = ' \t'
 
@@ -156,19 +156,19 @@ class Whitespace:
     #   is_simple
     #       true iff raw[:n] is of the form (T*)(S*)
 
-    def __init__(self, ws):
+    eleza __init__(self, ws):
         self.raw  = ws
         S, T = Whitespace.S, Whitespace.T
         count = []
         b = n = nt = 0
         for ch in self.raw:
-            if ch == S:
+            ikiwa ch == S:
                 n = n + 1
                 b = b + 1
-            elif ch == T:
+            elikiwa ch == T:
                 n = n + 1
                 nt = nt + 1
-                if b >= len(count):
+                ikiwa b >= len(count):
                     count = count + [0] * (b - len(count) + 1)
                 count[b] = count[b] + 1
                 b = 0
@@ -179,18 +179,18 @@ class Whitespace:
         self.norm = tuple(count), b
         self.is_simple = len(count) <= 1
 
-    # return length of longest contiguous run of spaces (whether or not
+    # rudisha length of longest contiguous run of spaces (whether or not
     # preceding a tab)
-    def longest_run_of_spaces(self):
+    eleza longest_run_of_spaces(self):
         count, trailing = self.norm
-        return max(len(count)-1, trailing)
+        rudisha max(len(count)-1, trailing)
 
-    def indent_level(self, tabsize):
+    eleza indent_level(self, tabsize):
         # count, il = self.norm
         # for i in range(len(count)):
-        #    if count[i]:
+        #    ikiwa count[i]:
         #        il = il + (i//tabsize + 1)*tabsize * count[i]
-        # return il
+        # rudisha il
 
         # quicker:
         # il = trailing + sum (i//ts + 1)*ts*count[i] =
@@ -204,27 +204,27 @@ class Whitespace:
         il = 0
         for i in range(tabsize, len(count)):
             il = il + i//tabsize * count[i]
-        return trailing + tabsize * (il + self.nt)
+        rudisha trailing + tabsize * (il + self.nt)
 
-    # return true iff self.indent_level(t) == other.indent_level(t)
+    # rudisha true iff self.indent_level(t) == other.indent_level(t)
     # for all t >= 1
-    def equal(self, other):
-        return self.norm == other.norm
+    eleza equal(self, other):
+        rudisha self.norm == other.norm
 
-    # return a list of tuples (ts, i1, i2) such that
+    # rudisha a list of tuples (ts, i1, i2) such that
     # i1 == self.indent_level(ts) != other.indent_level(ts) == i2.
     # Intended to be used after not self.equal(other) is known, in which
-    # case it will return at least one witnessing tab size.
-    def not_equal_witness(self, other):
+    # case it will rudisha at least one witnessing tab size.
+    eleza not_equal_witness(self, other):
         n = max(self.longest_run_of_spaces(),
                 other.longest_run_of_spaces()) + 1
         a = []
         for ts in range(1, n+1):
-            if self.indent_level(ts) != other.indent_level(ts):
+            ikiwa self.indent_level(ts) != other.indent_level(ts):
                 a.append( (ts,
                            self.indent_level(ts),
                            other.indent_level(ts)) )
-        return a
+        rudisha a
 
     # Return True iff self.indent_level(t) < other.indent_level(t)
     # for all t >= 1.
@@ -239,42 +239,42 @@ class Whitespace:
     # M.num_tabs() <= N.num_tabs(). Proof is easy but kinda long-winded.
     # XXXwrite that up.
     # Note that M is of the form (T*)(S*) iff len(M.norm[0]) <= 1.
-    def less(self, other):
-        if self.n >= other.n:
-            return False
-        if self.is_simple and other.is_simple:
-            return self.nt <= other.nt
+    eleza less(self, other):
+        ikiwa self.n >= other.n:
+            rudisha False
+        ikiwa self.is_simple and other.is_simple:
+            rudisha self.nt <= other.nt
         n = max(self.longest_run_of_spaces(),
                 other.longest_run_of_spaces()) + 1
         # the self.n >= other.n test already did it for ts=1
         for ts in range(2, n+1):
-            if self.indent_level(ts) >= other.indent_level(ts):
-                return False
-        return True
+            ikiwa self.indent_level(ts) >= other.indent_level(ts):
+                rudisha False
+        rudisha True
 
-    # return a list of tuples (ts, i1, i2) such that
+    # rudisha a list of tuples (ts, i1, i2) such that
     # i1 == self.indent_level(ts) >= other.indent_level(ts) == i2.
     # Intended to be used after not self.less(other) is known, in which
-    # case it will return at least one witnessing tab size.
-    def not_less_witness(self, other):
+    # case it will rudisha at least one witnessing tab size.
+    eleza not_less_witness(self, other):
         n = max(self.longest_run_of_spaces(),
                 other.longest_run_of_spaces()) + 1
         a = []
         for ts in range(1, n+1):
-            if self.indent_level(ts) >= other.indent_level(ts):
+            ikiwa self.indent_level(ts) >= other.indent_level(ts):
                 a.append( (ts,
                            self.indent_level(ts),
                            other.indent_level(ts)) )
-        return a
+        rudisha a
 
-def format_witnesses(w):
+eleza format_witnesses(w):
     firsts = (str(tup[0]) for tup in w)
     prefix = "at tab size"
-    if len(w) > 1:
+    ikiwa len(w) > 1:
         prefix = prefix + "s"
-    return prefix + " " + ', '.join(firsts)
+    rudisha prefix + " " + ', '.join(firsts)
 
-def process_tokens(tokens):
+eleza process_tokens(tokens):
     INDENT = tokenize.INDENT
     DEDENT = tokenize.DEDENT
     NEWLINE = tokenize.NEWLINE
@@ -283,7 +283,7 @@ def process_tokens(tokens):
     check_equal = 0
 
     for (type, token, start, end, line) in tokens:
-        if type == NEWLINE:
+        ikiwa type == NEWLINE:
             # a program statement, or ENDMARKER, will eventually follow,
             # after some (possibly empty) run of tokens of the form
             #     (NL | COMMENT)* (INDENT | DEDENT+)?
@@ -291,22 +291,22 @@ def process_tokens(tokens):
             # be undone when we see the INDENT.
             check_equal = 1
 
-        elif type == INDENT:
+        elikiwa type == INDENT:
             check_equal = 0
             thisguy = Whitespace(token)
-            if not indents[-1].less(thisguy):
+            ikiwa not indents[-1].less(thisguy):
                 witness = indents[-1].not_less_witness(thisguy)
                 msg = "indent not greater e.g. " + format_witnesses(witness)
                 raise NannyNag(start[0], msg, line)
             indents.append(thisguy)
 
-        elif type == DEDENT:
+        elikiwa type == DEDENT:
             # there's nothing we need to check here!  what's agizaant is
             # that when the run of DEDENTs ends, the indentation of the
             # program statement (or ENDMARKER) that triggered the run is
             # equal to what's left at the top of the indents stack
 
-            # Ouch!  This assert triggers if the last line of the source
+            # Ouch!  This assert triggers ikiwa the last line of the source
             # is indented *and* lacks a newline -- then DEDENTs pop out
             # of thin air.
             # assert check_equal  # else no earlier NEWLINE, or an earlier INDENT
@@ -314,7 +314,7 @@ def process_tokens(tokens):
 
             del indents[-1]
 
-        elif check_equal and type not in JUNK:
+        elikiwa check_equal and type not in JUNK:
             # this is the first "real token" following a NEWLINE, so it
             # must be the first token of the next program statement, or an
             # ENDMARKER; the "line" argument exposes the leading whitespace
@@ -323,11 +323,11 @@ def process_tokens(tokens):
             # "indents" stack was seeded
             check_equal = 0
             thisguy = Whitespace(line)
-            if not indents[-1].equal(thisguy):
+            ikiwa not indents[-1].equal(thisguy):
                 witness = indents[-1].not_equal_witness(thisguy)
                 msg = "indent not equal e.g. " + format_witnesses(witness)
                 raise NannyNag(start[0], msg, line)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

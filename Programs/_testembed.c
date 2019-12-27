@@ -315,7 +315,7 @@ static void
 dump_config(void)
 {
     (void) PyRun_SimpleStringFlags(
-        "import _testinternalcapi, json; "
+        "agiza _testinternalcapi, json; "
         "print(json.dumps(_testinternalcapi.get_configs()))",
         0);
 }
@@ -1515,7 +1515,7 @@ static void configure_init_main(PyConfig *config)
 {
     wchar_t* argv[] = {
         L"python3", L"-c",
-        (L"import _testinternalcapi, json; "
+        (L"agiza _testinternalcapi, json; "
          L"print(json.dumps(_testinternalcapi.get_configs()))"),
         L"arg2"};
 

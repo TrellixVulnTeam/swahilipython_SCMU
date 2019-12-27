@@ -6,9 +6,9 @@ agiza xmlrpc.client as xmlrpclib
 
 
 @unittest.skip('XXX: buildbot.python.org/all/xmlrpc/ is gone')
-class PythonBuildersTest(unittest.TestCase):
+kundi PythonBuildersTest(unittest.TestCase):
 
-    def test_python_builders(self):
+    eleza test_python_builders(self):
         # Get the list of builders kutoka the XMLRPC buildbot interface at
         # python.org.
         server = xmlrpclib.ServerProxy("http://buildbot.python.org/all/xmlrpc/")
@@ -21,12 +21,12 @@ class PythonBuildersTest(unittest.TestCase):
         # Perform a minimal sanity check on the result, just to be sure
         # the request means what we think it means.
         self.assertIsInstance(builders, collections.abc.Sequence)
-        self.assertTrue([x for x in builders if "3.x" in x], builders)
+        self.assertTrue([x for x in builders ikiwa "3.x" in x], builders)
 
 
-def test_main():
+eleza test_main():
     support.requires("network")
     support.run_unittest(PythonBuildersTest)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

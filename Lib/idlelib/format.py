@@ -11,7 +11,7 @@ kutoka tkinter.simpledialog agiza askinteger
 kutoka idlelib.config agiza idleConf
 
 
-class FormatParagraph:
+kundi FormatParagraph:
     """Format a paragraph, comment block, or selection to a max width.
 
     Does basic, standard text formatting, and also understands Python
@@ -28,18 +28,18 @@ class FormatParagraph:
       spaces, they will not be considered part of the same block.
     * Fancy comments, like this bulleted list, aren't handled :-)
     """
-    def __init__(self, editwin):
+    eleza __init__(self, editwin):
         self.editwin = editwin
 
     @classmethod
-    def reload(cls):
+    eleza reload(cls):
         cls.max_width = idleConf.GetOption('extensions', 'FormatParagraph',
                                            'max-width', type='int', default=72)
 
-    def close(self):
+    eleza close(self):
         self.editwin = None
 
-    def format_paragraph_event(self, event, limit=None):
+    eleza format_paragraph_event(self, event, limit=None):
         """Formats paragraph to a max width specified in idleConf.
 
         If text is selected, format_paragraph_event will start breaking lines
@@ -51,22 +51,22 @@ class FormatParagraph:
 
         The length limit parameter is for testing with a known value.
         """
-        limit = self.max_width if limit is None else limit
+        limit = self.max_width ikiwa limit is None else limit
         text = self.editwin.text
         first, last = self.editwin.get_selection_indices()
-        if first and last:
+        ikiwa first and last:
             data = text.get(first, last)
             comment_header = get_comment_header(data)
         else:
             first, last, comment_header, data = \
                     find_paragraph(text, text.index("insert"))
-        if comment_header:
+        ikiwa comment_header:
             newdata = reformat_comment(data, limit, comment_header)
         else:
             newdata = reformat_paragraph(data, limit)
         text.tag_remove("sel", "1.0", "end")
 
-        if newdata != data:
+        ikiwa newdata != data:
             text.mark_set("insert", first)
             text.undo_block_start()
             text.delete(first, last)
@@ -75,21 +75,21 @@ class FormatParagraph:
         else:
             text.mark_set("insert", last)
         text.see("insert")
-        return "break"
+        rudisha "break"
 
 
 FormatParagraph.reload()
 
-def find_paragraph(text, mark):
+eleza find_paragraph(text, mark):
     """Returns the start/stop indices enclosing the paragraph that mark is in.
 
-    Also returns the comment format string, if any, and paragraph of text
+    Also returns the comment format string, ikiwa any, and paragraph of text
     between the start/stop indices.
     """
     lineno, col = map(int, mark.split("."))
     line = text.get("%d.0" % lineno, "%d.end" % lineno)
 
-    # Look for start of next paragraph if the index passed in is a blank line
+    # Look for start of next paragraph ikiwa the index passed in is a blank line
     while text.compare("%d.0" % lineno, "<", "end") and is_all_white(line):
         lineno = lineno + 1
         line = text.get("%d.0" % lineno, "%d.end" % lineno)
@@ -114,20 +114,20 @@ def find_paragraph(text, mark):
         line = text.get("%d.0" % lineno, "%d.end" % lineno)
     first = "%d.0" % (lineno+1)
 
-    return first, last, comment_header, text.get(first, last)
+    rudisha first, last, comment_header, text.get(first, last)
 
 # This should perhaps be replaced with textwrap.wrap
-def reformat_paragraph(data, limit):
+eleza reformat_paragraph(data, limit):
     """Return data reformatted to specified width (limit)."""
     lines = data.split("\n")
     i = 0
     n = len(lines)
     while i < n and is_all_white(lines[i]):
         i = i+1
-    if i >= n:
-        return data
+    ikiwa i >= n:
+        rudisha data
     indent1 = get_indent(lines[i])
-    if i+1 < n and not is_all_white(lines[i+1]):
+    ikiwa i+1 < n and not is_all_white(lines[i+1]):
         indent2 = get_indent(lines[i+1])
     else:
         indent2 = indent1
@@ -138,22 +138,22 @@ def reformat_paragraph(data, limit):
         words = re.split(r"(\s+)", lines[i])
         for j in range(0, len(words), 2):
             word = words[j]
-            if not word:
+            ikiwa not word:
                 continue # Can happen when line ends in whitespace
-            if len((partial + word).expandtabs()) > limit and \
+            ikiwa len((partial + word).expandtabs()) > limit and \
                    partial != indent1:
                 new.append(partial.rstrip())
                 partial = indent2
             partial = partial + word + " "
-            if j+1 < len(words) and words[j+1] != " ":
+            ikiwa j+1 < len(words) and words[j+1] != " ":
                 partial = partial + " "
         i = i+1
     new.append(partial.rstrip())
     # XXX Should reformat remaining paragraphs as well
     new.extend(lines[i:])
-    return "\n".join(new)
+    rudisha "\n".join(new)
 
-def reformat_comment(data, limit, comment_header):
+eleza reformat_comment(data, limit, comment_header):
     """Return data reformatted to specified width with comment header."""
 
     # Remove header kutoka the comment lines
@@ -170,52 +170,52 @@ def reformat_comment(data, limit, comment_header):
     # comment block that is not made of complete lines, but whatever!)
     # Can't think of a clean solution, so we hack away
     block_suffix = ""
-    if not newdata[-1]:
+    ikiwa not newdata[-1]:
         block_suffix = "\n"
         newdata = newdata[:-1]
-    return '\n'.join(comment_header+line for line in newdata) + block_suffix
+    rudisha '\n'.join(comment_header+line for line in newdata) + block_suffix
 
-def is_all_white(line):
-    """Return True if line is empty or all whitespace."""
+eleza is_all_white(line):
+    """Return True ikiwa line is empty or all whitespace."""
 
-    return re.match(r"^\s*$", line) is not None
+    rudisha re.match(r"^\s*$", line) is not None
 
-def get_indent(line):
+eleza get_indent(line):
     """Return the initial space or tab indent of line."""
-    return re.match(r"^([ \t]*)", line).group()
+    rudisha re.match(r"^([ \t]*)", line).group()
 
-def get_comment_header(line):
+eleza get_comment_header(line):
     """Return string with leading whitespace and '#' kutoka line or ''.
 
-    A null return indicates that the line is not a comment line. A non-
+    A null rudisha indicates that the line is not a comment line. A non-
     null return, such as '    #', will be used to find the other lines of
     a comment block with the same  indent.
     """
     m = re.match(r"^([ \t]*#*)", line)
-    if m is None: return ""
-    return m.group(1)
+    ikiwa m is None: rudisha ""
+    rudisha m.group(1)
 
 
 # Copied kutoka editor.py; agizaing it would cause an agiza cycle.
 _line_indent_re = re.compile(r'[ \t]*')
 
-def get_line_indent(line, tabwidth):
+eleza get_line_indent(line, tabwidth):
     """Return a line's indentation as (# chars, effective # of spaces).
 
     The effective # of spaces is the length after properly "expanding"
     the tabs into spaces, as done by str.expandtabs(tabwidth).
     """
     m = _line_indent_re.match(line)
-    return m.end(), len(m.group().expandtabs(tabwidth))
+    rudisha m.end(), len(m.group().expandtabs(tabwidth))
 
 
-class FormatRegion:
+kundi FormatRegion:
     "Format selected text (region)."
 
-    def __init__(self, editwin):
+    eleza __init__(self, editwin):
         self.editwin = editwin
 
-    def get_region(self):
+    eleza get_region(self):
         """Return line information about the selected text region.
 
         If text is selected, the first and last indices will be
@@ -227,7 +227,7 @@ class FormatRegion:
         """
         text = self.editwin.text
         first, last = self.editwin.get_selection_indices()
-        if first and last:
+        ikiwa first and last:
             head = text.index(first + " linestart")
             tail = text.index(last + "-1c lineend +1c")
         else:
@@ -235,9 +235,9 @@ class FormatRegion:
             tail = text.index("insert lineend +1c")
         chars = text.get(head, tail)
         lines = chars.split("\n")
-        return head, tail, chars, lines
+        rudisha head, tail, chars, lines
 
-    def set_region(self, head, tail, chars, lines):
+    eleza set_region(self, head, tail, chars, lines):
         """Replace the text between the given indices.
 
         Args:
@@ -250,7 +250,7 @@ class FormatRegion:
         """
         text = self.editwin.text
         newchars = "\n".join(lines)
-        if newchars == chars:
+        ikiwa newchars == chars:
             text.bell()
             return
         text.tag_remove("sel", "1.0", "end")
@@ -261,31 +261,31 @@ class FormatRegion:
         text.undo_block_stop()
         text.tag_add("sel", head, "insert")
 
-    def indent_region_event(self, event=None):
+    eleza indent_region_event(self, event=None):
         "Indent region by indentwidth spaces."
         head, tail, chars, lines = self.get_region()
         for pos in range(len(lines)):
             line = lines[pos]
-            if line:
+            ikiwa line:
                 raw, effective = get_line_indent(line, self.editwin.tabwidth)
                 effective = effective + self.editwin.indentwidth
                 lines[pos] = self.editwin._make_blanks(effective) + line[raw:]
         self.set_region(head, tail, chars, lines)
-        return "break"
+        rudisha "break"
 
-    def dedent_region_event(self, event=None):
+    eleza dedent_region_event(self, event=None):
         "Dedent region by indentwidth spaces."
         head, tail, chars, lines = self.get_region()
         for pos in range(len(lines)):
             line = lines[pos]
-            if line:
+            ikiwa line:
                 raw, effective = get_line_indent(line, self.editwin.tabwidth)
                 effective = max(effective - self.editwin.indentwidth, 0)
                 lines[pos] = self.editwin._make_blanks(effective) + line[raw:]
         self.set_region(head, tail, chars, lines)
-        return "break"
+        rudisha "break"
 
-    def comment_region_event(self, event=None):
+    eleza comment_region_event(self, event=None):
         """Comment out each line in region.
 
         ## is appended to the beginning of each line to comment it out.
@@ -295,9 +295,9 @@ class FormatRegion:
             line = lines[pos]
             lines[pos] = '##' + line
         self.set_region(head, tail, chars, lines)
-        return "break"
+        rudisha "break"
 
-    def uncomment_region_event(self, event=None):
+    eleza uncomment_region_event(self, event=None):
         """Uncomment each line in region.
 
         Remove ## or # in the first positions of a line.  If the comment
@@ -306,45 +306,45 @@ class FormatRegion:
         head, tail, chars, lines = self.get_region()
         for pos in range(len(lines)):
             line = lines[pos]
-            if not line:
+            ikiwa not line:
                 continue
-            if line[:2] == '##':
+            ikiwa line[:2] == '##':
                 line = line[2:]
-            elif line[:1] == '#':
+            elikiwa line[:1] == '#':
                 line = line[1:]
             lines[pos] = line
         self.set_region(head, tail, chars, lines)
-        return "break"
+        rudisha "break"
 
-    def tabify_region_event(self, event=None):
+    eleza tabify_region_event(self, event=None):
         "Convert leading spaces to tabs for each line in selected region."
         head, tail, chars, lines = self.get_region()
         tabwidth = self._asktabwidth()
-        if tabwidth is None:
+        ikiwa tabwidth is None:
             return
         for pos in range(len(lines)):
             line = lines[pos]
-            if line:
+            ikiwa line:
                 raw, effective = get_line_indent(line, tabwidth)
                 ntabs, nspaces = divmod(effective, tabwidth)
                 lines[pos] = '\t' * ntabs + ' ' * nspaces + line[raw:]
         self.set_region(head, tail, chars, lines)
-        return "break"
+        rudisha "break"
 
-    def untabify_region_event(self, event=None):
+    eleza untabify_region_event(self, event=None):
         "Expand tabs to spaces for each line in region."
         head, tail, chars, lines = self.get_region()
         tabwidth = self._asktabwidth()
-        if tabwidth is None:
+        ikiwa tabwidth is None:
             return
         for pos in range(len(lines)):
             lines[pos] = lines[pos].expandtabs(tabwidth)
         self.set_region(head, tail, chars, lines)
-        return "break"
+        rudisha "break"
 
-    def _asktabwidth(self):
+    eleza _asktabwidth(self):
         "Return value for tab width."
-        return askinteger(
+        rudisha askinteger(
             "Tab width",
             "Columns per tab? (2-16)",
             parent=self.editwin.text,
@@ -354,16 +354,16 @@ class FormatRegion:
 
 
 # With mixed indents not allowed, these are semi-useless and not unittested.
-class Indents:  # pragma: no cover
+kundi Indents:  # pragma: no cover
     "Change future indents."
 
-    def __init__(self, editwin):
+    eleza __init__(self, editwin):
         self.editwin = editwin
 
-    def toggle_tabs_event(self, event):
+    eleza toggle_tabs_event(self, event):
         editwin = self.editwin
         usetabs = editwin.usetabs
-        if askyesno(
+        ikiwa askyesno(
               "Toggle tabs",
               "Turn tabs " + ("on", "off")[usetabs] +
               "?\nIndent width " +
@@ -374,9 +374,9 @@ class Indents:  # pragma: no cover
             # Try to prevent inconsistent indentation.
             # User must change indent width manually after using tabs.
             editwin.indentwidth = 8
-        return "break"
+        rudisha "break"
 
-    def change_indentwidth_event(self, event):
+    eleza change_indentwidth_event(self, event):
         editwin = self.editwin
         new = askinteger(
                   "Indent width",
@@ -385,16 +385,16 @@ class Indents:  # pragma: no cover
                   initialvalue=editwin.indentwidth,
                   minvalue=2,
                   maxvalue=16)
-        if new and new != editwin.indentwidth and not editwin.usetabs:
+        ikiwa new and new != editwin.indentwidth and not editwin.usetabs:
             editwin.indentwidth = new
-        return "break"
+        rudisha "break"
 
 
-class Rstrip:  # 'Strip Trailing Whitespace" on "Format" menu.
-    def __init__(self, editwin):
+kundi Rstrip:  # 'Strip Trailing Whitespace" on "Format" menu.
+    eleza __init__(self, editwin):
         self.editwin = editwin
 
-    def do_rstrip(self, event=None):
+    eleza do_rstrip(self, event=None):
         text = self.editwin.text
         undo = self.editwin.undo
         undo.undo_block_start()
@@ -404,14 +404,14 @@ class Rstrip:  # 'Strip Trailing Whitespace" on "Format" menu.
             txt = text.get('%i.0' % cur, '%i.end' % cur)
             raw = len(txt)
             cut = len(txt.rstrip())
-            # Since text.delete() marks file as changed, even if not,
+            # Since text.delete() marks file as changed, even ikiwa not,
             # only call it when needed to actually delete something.
-            if cut < raw:
+            ikiwa cut < raw:
                 text.delete('%i.%i' % (cur, cut), '%i.end' % cur)
 
         undo.undo_block_stop()
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     kutoka unittest agiza main
     main('idlelib.idle_test.test_format', verbosity=2, exit=False)

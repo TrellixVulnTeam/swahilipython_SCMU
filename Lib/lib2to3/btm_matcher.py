@@ -14,27 +14,27 @@ kutoka collections agiza defaultdict
 kutoka . agiza pytree
 kutoka .btm_utils agiza reduce_tree
 
-class BMNode(object):
+kundi BMNode(object):
     """Class for a node of the Aho-Corasick automaton used in matching"""
     count = itertools.count()
-    def __init__(self):
+    eleza __init__(self):
         self.transition_table = {}
         self.fixers = []
         self.id = next(BMNode.count)
         self.content = ''
 
-class BottomMatcher(object):
+kundi BottomMatcher(object):
     """The main matcher class. After instantiating the patterns should
     be added using the add_fixer method"""
 
-    def __init__(self):
+    eleza __init__(self):
         self.match = set()
         self.root = BMNode()
         self.nodes = [self.root]
         self.fixers = []
         self.logger = logging.getLogger("RefactoringTool")
 
-    def add_fixer(self, fixer):
+    eleza add_fixer(self, fixer):
         """Reduces a fixer's pattern tree to a linear path and adds it
         to the matcher(a common Aho-Corasick automaton). The fixer is
         appended on the matching states and called when they are
@@ -46,15 +46,15 @@ class BottomMatcher(object):
         for match_node in match_nodes:
             match_node.fixers.append(fixer)
 
-    def add(self, pattern, start):
+    eleza add(self, pattern, start):
         "Recursively adds a linear pattern to the AC automaton"
-        #print("adding pattern", pattern, "to", start)
-        if not pattern:
-            #print("empty pattern")
-            return [start]
-        if isinstance(pattern[0], tuple):
+        #andika("adding pattern", pattern, "to", start)
+        ikiwa not pattern:
+            #andika("empty pattern")
+            rudisha [start]
+        ikiwa isinstance(pattern[0], tuple):
             #alternatives
-            #print("alternatives")
+            #andika("alternatives")
             match_nodes = []
             for alternative in pattern[0]:
                 #add all alternatives, and add the rest of the pattern
@@ -62,11 +62,11 @@ class BottomMatcher(object):
                 end_nodes = self.add(alternative, start=start)
                 for end in end_nodes:
                     match_nodes.extend(self.add(pattern[1:], end))
-            return match_nodes
+            rudisha match_nodes
         else:
             #single token
             #not last
-            if pattern[0] not in start.transition_table:
+            ikiwa pattern[0] not in start.transition_table:
                 #transition did not exist, create new
                 next_node = BMNode()
                 start.transition_table[pattern[0]] = next_node
@@ -74,13 +74,13 @@ class BottomMatcher(object):
                 #transition exists already, follow
                 next_node = start.transition_table[pattern[0]]
 
-            if pattern[1:]:
+            ikiwa pattern[1:]:
                 end_nodes = self.add(pattern[1:], start=next_node)
             else:
                 end_nodes = [next_node]
-            return end_nodes
+            rudisha end_nodes
 
-    def run(self, leaves):
+    eleza run(self, leaves):
         """The main interface with the bottom matcher. The tree is
         traversed kutoka the bottom using the constructed
         automaton. Nodes are only checked once as the tree is
@@ -104,16 +104,16 @@ class BottomMatcher(object):
                 current_ast_node.was_checked = True
                 for child in current_ast_node.children:
                     # multiple statements, recheck
-                    if isinstance(child, pytree.Leaf) and child.value == ";":
+                    ikiwa isinstance(child, pytree.Leaf) and child.value == ";":
                         current_ast_node.was_checked = False
                         break
-                if current_ast_node.type == 1:
+                ikiwa current_ast_node.type == 1:
                     #name
                     node_token = current_ast_node.value
                 else:
                     node_token = current_ast_node.type
 
-                if node_token in current_ac_node.transition_table:
+                ikiwa node_token in current_ac_node.transition_table:
                     #token matches
                     current_ac_node = current_ac_node.transition_table[node_token]
                     for fixer in current_ac_node.fixers:
@@ -121,43 +121,43 @@ class BottomMatcher(object):
                 else:
                     #matching failed, reset automaton
                     current_ac_node = self.root
-                    if (current_ast_node.parent is not None
+                    ikiwa (current_ast_node.parent is not None
                         and current_ast_node.parent.was_checked):
                         #the rest of the tree upwards has been checked, next leaf
                         break
 
                     #recheck the rejected node once kutoka the root
-                    if node_token in current_ac_node.transition_table:
+                    ikiwa node_token in current_ac_node.transition_table:
                         #token matches
                         current_ac_node = current_ac_node.transition_table[node_token]
                         for fixer in current_ac_node.fixers:
                             results[fixer].append(current_ast_node)
 
                 current_ast_node = current_ast_node.parent
-        return results
+        rudisha results
 
-    def print_ac(self):
+    eleza print_ac(self):
         "Prints a graphviz diagram of the BM automaton(for debugging)"
-        print("digraph g{")
-        def print_node(node):
+        andika("digraph g{")
+        eleza print_node(node):
             for subnode_key in node.transition_table.keys():
                 subnode = node.transition_table[subnode_key]
-                print("%d -> %d [label=%s] //%s" %
+                andika("%d -> %d [label=%s] //%s" %
                       (node.id, subnode.id, type_repr(subnode_key), str(subnode.fixers)))
-                if subnode_key == 1:
-                    print(subnode.content)
+                ikiwa subnode_key == 1:
+                    andika(subnode.content)
                 print_node(subnode)
         print_node(self.root)
-        print("}")
+        andika("}")
 
 # taken kutoka pytree.py for debugging; only used by print_ac
 _type_reprs = {}
-def type_repr(type_num):
+eleza type_repr(type_num):
     global _type_reprs
-    if not _type_reprs:
+    ikiwa not _type_reprs:
         kutoka .pygram agiza python_symbols
         # printing tokens is possible but not as useful
         # kutoka .pgen2 agiza token // token.__dict__.items():
         for name, val in python_symbols.__dict__.items():
-            if type(val) == int: _type_reprs[val] = name
-    return _type_reprs.setdefault(type_num, type_num)
+            ikiwa type(val) == int: _type_reprs[val] = name
+    rudisha _type_reprs.setdefault(type_num, type_num)

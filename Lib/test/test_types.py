@@ -10,47 +10,47 @@ agiza types
 agiza unittest.mock
 agiza weakref
 
-class TypesTests(unittest.TestCase):
+kundi TypesTests(unittest.TestCase):
 
-    def test_truth_values(self):
-        if None: self.fail('None is true instead of false')
-        if 0: self.fail('0 is true instead of false')
-        if 0.0: self.fail('0.0 is true instead of false')
-        if '': self.fail('\'\' is true instead of false')
-        if not 1: self.fail('1 is false instead of true')
-        if not 1.0: self.fail('1.0 is false instead of true')
-        if not 'x': self.fail('\'x\' is false instead of true')
-        if not {'x': 1}: self.fail('{\'x\': 1} is false instead of true')
-        def f(): pass
-        class C: pass
+    eleza test_truth_values(self):
+        ikiwa None: self.fail('None is true instead of false')
+        ikiwa 0: self.fail('0 is true instead of false')
+        ikiwa 0.0: self.fail('0.0 is true instead of false')
+        ikiwa '': self.fail('\'\' is true instead of false')
+        ikiwa not 1: self.fail('1 is false instead of true')
+        ikiwa not 1.0: self.fail('1.0 is false instead of true')
+        ikiwa not 'x': self.fail('\'x\' is false instead of true')
+        ikiwa not {'x': 1}: self.fail('{\'x\': 1} is false instead of true')
+        eleza f(): pass
+        kundi C: pass
         x = C()
-        if not f: self.fail('f is false instead of true')
-        if not C: self.fail('C is false instead of true')
-        if not sys: self.fail('sys is false instead of true')
-        if not x: self.fail('x is false instead of true')
+        ikiwa not f: self.fail('f is false instead of true')
+        ikiwa not C: self.fail('C is false instead of true')
+        ikiwa not sys: self.fail('sys is false instead of true')
+        ikiwa not x: self.fail('x is false instead of true')
 
-    def test_boolean_ops(self):
-        if 0 or 0: self.fail('0 or 0 is true instead of false')
-        if 1 and 1: pass
+    eleza test_boolean_ops(self):
+        ikiwa 0 or 0: self.fail('0 or 0 is true instead of false')
+        ikiwa 1 and 1: pass
         else: self.fail('1 and 1 is false instead of true')
-        if not 1: self.fail('not 1 is true instead of false')
+        ikiwa not 1: self.fail('not 1 is true instead of false')
 
-    def test_comparisons(self):
-        if 0 < 1 <= 1 == 1 >= 1 > 0 != 1: pass
+    eleza test_comparisons(self):
+        ikiwa 0 < 1 <= 1 == 1 >= 1 > 0 != 1: pass
         else: self.fail('int comparisons failed')
-        if 0.0 < 1.0 <= 1.0 == 1.0 >= 1.0 > 0.0 != 1.0: pass
+        ikiwa 0.0 < 1.0 <= 1.0 == 1.0 >= 1.0 > 0.0 != 1.0: pass
         else: self.fail('float comparisons failed')
-        if '' < 'a' <= 'a' == 'a' < 'abc' < 'abd' < 'b': pass
+        ikiwa '' < 'a' <= 'a' == 'a' < 'abc' < 'abd' < 'b': pass
         else: self.fail('string comparisons failed')
-        if None is None: pass
+        ikiwa None is None: pass
         else: self.fail('identity test failed')
 
-    def test_float_constructor(self):
+    eleza test_float_constructor(self):
         self.assertRaises(ValueError, float, '')
         self.assertRaises(ValueError, float, '5\0')
         self.assertRaises(ValueError, float, '5_5\0')
 
-    def test_zero_division(self):
+    eleza test_zero_division(self):
         try: 5.0 / 0.0
         except ZeroDivisionError: pass
         else: self.fail("5.0 / 0.0 didn't raise ZeroDivisionError")
@@ -75,19 +75,19 @@ class TypesTests(unittest.TestCase):
         except ZeroDivisionError: pass
         else: self.fail("5 % 0 didn't raise ZeroDivisionError")
 
-    def test_numeric_types(self):
-        if 0 != 0.0 or 1 != 1.0 or -1 != -1.0:
+    eleza test_numeric_types(self):
+        ikiwa 0 != 0.0 or 1 != 1.0 or -1 != -1.0:
             self.fail('int/float value not equal')
-        # calling built-in types without argument must return 0
-        if int() != 0: self.fail('int() does not return 0')
-        if float() != 0.0: self.fail('float() does not return 0.0')
-        if int(1.9) == 1 == int(1.1) and int(-1.1) == -1 == int(-1.9): pass
+        # calling built-in types without argument must rudisha 0
+        ikiwa int() != 0: self.fail('int() does not rudisha 0')
+        ikiwa float() != 0.0: self.fail('float() does not rudisha 0.0')
+        ikiwa int(1.9) == 1 == int(1.1) and int(-1.1) == -1 == int(-1.9): pass
         else: self.fail('int() does not round properly')
-        if float(1) == 1.0 and float(-1) == -1.0 and float(0) == 0.0: pass
+        ikiwa float(1) == 1.0 and float(-1) == -1.0 and float(0) == 0.0: pass
         else: self.fail('float() does not work properly')
 
-    def test_float_to_string(self):
-        def test(f, result):
+    eleza test_float_to_string(self):
+        eleza test(f, result):
             self.assertEqual(f.__format__('e'), result)
             self.assertEqual('%e' % f, result)
 
@@ -112,36 +112,36 @@ class TypesTests(unittest.TestCase):
         self.assertEqual('%g' % 1.0, '1')
         self.assertEqual('%#g' % 1.0, '1.00000')
 
-    def test_normal_integers(self):
+    eleza test_normal_integers(self):
         # Ensure the first 256 integers are shared
         a = 256
         b = 128*2
-        if a is not b: self.fail('256 is not shared')
-        if 12 + 24 != 36: self.fail('int op')
-        if 12 + (-24) != -12: self.fail('int op')
-        if (-12) + 24 != 12: self.fail('int op')
-        if (-12) + (-24) != -36: self.fail('int op')
-        if not 12 < 24: self.fail('int op')
-        if not -24 < -12: self.fail('int op')
+        ikiwa a is not b: self.fail('256 is not shared')
+        ikiwa 12 + 24 != 36: self.fail('int op')
+        ikiwa 12 + (-24) != -12: self.fail('int op')
+        ikiwa (-12) + 24 != 12: self.fail('int op')
+        ikiwa (-12) + (-24) != -36: self.fail('int op')
+        ikiwa not 12 < 24: self.fail('int op')
+        ikiwa not -24 < -12: self.fail('int op')
         # Test for a particular bug in integer multiply
         xsize, ysize, zsize = 238, 356, 4
-        if not (xsize*ysize*zsize == zsize*xsize*ysize == 338912):
+        ikiwa not (xsize*ysize*zsize == zsize*xsize*ysize == 338912):
             self.fail('int mul commutativity')
         # And another.
         m = -sys.maxsize - 1
         for divisor in 1, 2, 4, 8, 16, 32:
             j = m // divisor
             prod = divisor * j
-            if prod != m:
+            ikiwa prod != m:
                 self.fail("%r * %r == %r != %r" % (divisor, j, prod, m))
-            if type(prod) is not int:
+            ikiwa type(prod) is not int:
                 self.fail("expected type(prod) to be int, not %r" %
                                    type(prod))
         # Check for unified integral type
         for divisor in 1, 2, 4, 8, 16, 32:
             j = m // divisor - 1
             prod = divisor * j
-            if type(prod) is not int:
+            ikiwa type(prod) is not int:
                 self.fail("expected type(%r) to be int, not %r" %
                                    (prod, type(prod)))
         # Check for unified integral type
@@ -149,7 +149,7 @@ class TypesTests(unittest.TestCase):
         for divisor in 1, 2, 4, 8, 16, 32:
             j = m // divisor + 1
             prod = divisor * j
-            if type(prod) is not int:
+            ikiwa type(prod) is not int:
                 self.fail("expected type(%r) to be int, not %r" %
                                    (prod, type(prod)))
 
@@ -169,26 +169,26 @@ class TypesTests(unittest.TestCase):
         except ValueError: pass
         else: self.fail('int negative shift >>')
 
-    def test_floats(self):
-        if 12.0 + 24.0 != 36.0: self.fail('float op')
-        if 12.0 + (-24.0) != -12.0: self.fail('float op')
-        if (-12.0) + 24.0 != 12.0: self.fail('float op')
-        if (-12.0) + (-24.0) != -36.0: self.fail('float op')
-        if not 12.0 < 24.0: self.fail('float op')
-        if not -24.0 < -12.0: self.fail('float op')
+    eleza test_floats(self):
+        ikiwa 12.0 + 24.0 != 36.0: self.fail('float op')
+        ikiwa 12.0 + (-24.0) != -12.0: self.fail('float op')
+        ikiwa (-12.0) + 24.0 != 12.0: self.fail('float op')
+        ikiwa (-12.0) + (-24.0) != -36.0: self.fail('float op')
+        ikiwa not 12.0 < 24.0: self.fail('float op')
+        ikiwa not -24.0 < -12.0: self.fail('float op')
 
-    def test_strings(self):
-        if len('') != 0: self.fail('len(\'\')')
-        if len('a') != 1: self.fail('len(\'a\')')
-        if len('abcdef') != 6: self.fail('len(\'abcdef\')')
-        if 'xyz' + 'abcde' != 'xyzabcde': self.fail('string concatenation')
-        if 'xyz'*3 != 'xyzxyzxyz': self.fail('string repetition *3')
-        if 0*'abcde' != '': self.fail('string repetition 0*')
-        if min('abc') != 'a' or max('abc') != 'c': self.fail('min/max string')
-        if 'a' in 'abc' and 'b' in 'abc' and 'c' in 'abc' and 'd' not in 'abc': pass
+    eleza test_strings(self):
+        ikiwa len('') != 0: self.fail('len(\'\')')
+        ikiwa len('a') != 1: self.fail('len(\'a\')')
+        ikiwa len('abcdef') != 6: self.fail('len(\'abcdef\')')
+        ikiwa 'xyz' + 'abcde' != 'xyzabcde': self.fail('string concatenation')
+        ikiwa 'xyz'*3 != 'xyzxyzxyz': self.fail('string repetition *3')
+        ikiwa 0*'abcde' != '': self.fail('string repetition 0*')
+        ikiwa min('abc') != 'a' or max('abc') != 'c': self.fail('min/max string')
+        ikiwa 'a' in 'abc' and 'b' in 'abc' and 'c' in 'abc' and 'd' not in 'abc': pass
         else: self.fail('in/not in string')
         x = 'x'*103
-        if '%s!'%x != x+'!': self.fail('nasty string formatting bug')
+        ikiwa '%s!'%x != x+'!': self.fail('nasty string formatting bug')
 
         #extended slices for strings
         a = '0123456789'
@@ -202,12 +202,12 @@ class TypesTests(unittest.TestCase):
         self.assertEqual(a[100:-100:-1], a[::-1])
         self.assertEqual(a[-100:100:2], '02468')
 
-    def test_type_function(self):
+    eleza test_type_function(self):
         self.assertRaises(TypeError, type, 1, 2)
         self.assertRaises(TypeError, type, 1, 2, 3, 4)
 
-    def test_int__format__(self):
-        def test(i, format_spec, result):
+    eleza test_int__format__(self):
+        eleza test(i, format_spec, result):
             # just make sure we have the unified type for integers
             assert type(i) == int
             assert type(format_spec) == str
@@ -352,7 +352,7 @@ class TypesTests(unittest.TestCase):
         # ensure that only int and float type specifiers work
         for format_spec in ([chr(x) for x in range(ord('a'), ord('z')+1)] +
                             [chr(x) for x in range(ord('A'), ord('Z')+1)]):
-            if not format_spec in 'bcdoxXeEfFgGn%':
+            ikiwa not format_spec in 'bcdoxXeEfFgGn%':
                 self.assertRaises(ValueError, 0 .__format__, format_spec)
                 self.assertRaises(ValueError, 1 .__format__, format_spec)
                 self.assertRaises(ValueError, (-1) .__format__, format_spec)
@@ -376,7 +376,7 @@ class TypesTests(unittest.TestCase):
         test(123456, "*=20", '**************123456')
 
     @run_with_locale('LC_NUMERIC', 'en_US.UTF8')
-    def test_float__format__locale(self):
+    eleza test_float__format__locale(self):
         # test locale support for __format__ code 'n'
 
         for i in range(-10, 10):
@@ -385,7 +385,7 @@ class TypesTests(unittest.TestCase):
             self.assertEqual(locale.format_string('%.10g', x, grouping=True), format(x, '.10n'))
 
     @run_with_locale('LC_NUMERIC', 'en_US.UTF8')
-    def test_int__format__locale(self):
+    eleza test_int__format__locale(self):
         # test locale support for __format__ code 'n' for integers
 
         x = 123456789012345678901234567890
@@ -403,8 +403,8 @@ class TypesTests(unittest.TestCase):
             self.assertEqual(len(format(0, lfmt)), len(format(x, lfmt)))
             self.assertEqual(len(format(0, cfmt)), len(format(x, cfmt)))
 
-    def test_float__format__(self):
-        def test(f, format_spec, result):
+    eleza test_float__format__(self):
+        eleza test(f, format_spec, result):
             self.assertEqual(f.__format__(format_spec), result)
             self.assertEqual(format(f, format_spec), result)
 
@@ -511,7 +511,7 @@ class TypesTests(unittest.TestCase):
         #  in particular int specifiers
         for format_spec in ([chr(x) for x in range(ord('a'), ord('z')+1)] +
                             [chr(x) for x in range(ord('A'), ord('Z')+1)]):
-            if not format_spec in 'eEfFgGn%':
+            ikiwa not format_spec in 'eEfFgGn%':
                 self.assertRaises(ValueError, format, 0.0, format_spec)
                 self.assertRaises(ValueError, format, 1.0, format_spec)
                 self.assertRaises(ValueError, format, -1.0, format_spec)
@@ -553,7 +553,7 @@ class TypesTests(unittest.TestCase):
         test(12345.6, "1=20", '111111111111112345.6')
         test(12345.6, "*=20", '*************12345.6')
 
-    def test_format_spec_errors(self):
+    eleza test_format_spec_errors(self):
         # int, float, and string all share the same format spec
         # mini-language parser.
 
@@ -572,38 +572,38 @@ class TypesTests(unittest.TestCase):
         for code in 'xXobns':
             self.assertRaises(ValueError, format, 0, ',' + code)
 
-    def test_internal_sizes(self):
+    eleza test_internal_sizes(self):
         self.assertGreater(object.__basicsize__, 0)
         self.assertGreater(tuple.__itemsize__, 0)
 
-    def test_slot_wrapper_types(self):
+    eleza test_slot_wrapper_types(self):
         self.assertIsInstance(object.__init__, types.WrapperDescriptorType)
         self.assertIsInstance(object.__str__, types.WrapperDescriptorType)
         self.assertIsInstance(object.__lt__, types.WrapperDescriptorType)
         self.assertIsInstance(int.__lt__, types.WrapperDescriptorType)
 
-    def test_method_wrapper_types(self):
+    eleza test_method_wrapper_types(self):
         self.assertIsInstance(object().__init__, types.MethodWrapperType)
         self.assertIsInstance(object().__str__, types.MethodWrapperType)
         self.assertIsInstance(object().__lt__, types.MethodWrapperType)
         self.assertIsInstance((42).__lt__, types.MethodWrapperType)
 
-    def test_method_descriptor_types(self):
+    eleza test_method_descriptor_types(self):
         self.assertIsInstance(str.join, types.MethodDescriptorType)
         self.assertIsInstance(list.append, types.MethodDescriptorType)
         self.assertIsInstance(''.join, types.BuiltinMethodType)
         self.assertIsInstance([].append, types.BuiltinMethodType)
 
-        self.assertIsInstance(int.__dict__['from_bytes'], types.ClassMethodDescriptorType)
-        self.assertIsInstance(int.from_bytes, types.BuiltinMethodType)
+        self.assertIsInstance(int.__dict__['kutoka_bytes'], types.ClassMethodDescriptorType)
+        self.assertIsInstance(int.kutoka_bytes, types.BuiltinMethodType)
         self.assertIsInstance(int.__new__, types.BuiltinMethodType)
 
 
-class MappingProxyTests(unittest.TestCase):
+kundi MappingProxyTests(unittest.TestCase):
     mappingproxy = types.MappingProxyType
 
-    def test_constructor(self):
-        class userdict(dict):
+    eleza test_constructor(self):
+        kundi userdict(dict):
             pass
 
         mapping = {'x': 1, 'y': 2}
@@ -617,7 +617,7 @@ class MappingProxyTests(unittest.TestCase):
         self.assertRaises(TypeError, self.mappingproxy, ("a", "tuple"))
         self.assertRaises(TypeError, self.mappingproxy, ["a", "list"])
 
-    def test_methods(self):
+    eleza test_methods(self):
         attrs = set(dir(self.mappingproxy({}))) - set(dir(object()))
         self.assertEqual(attrs, {
              '__contains__',
@@ -631,7 +631,7 @@ class MappingProxyTests(unittest.TestCase):
              'values',
         })
 
-    def test_get(self):
+    eleza test_get(self):
         view = self.mappingproxy({'a': 'A', 'b': 'B'})
         self.assertEqual(view['a'], 'A')
         self.assertEqual(view['b'], 'B')
@@ -640,10 +640,10 @@ class MappingProxyTests(unittest.TestCase):
         self.assertIsNone(view.get('xxx'))
         self.assertEqual(view.get('xxx', 42), 42)
 
-    def test_missing(self):
-        class dictmissing(dict):
-            def __missing__(self, key):
-                return "missing=%s" % key
+    eleza test_missing(self):
+        kundi dictmissing(dict):
+            eleza __missing__(self, key):
+                rudisha "missing=%s" % key
 
         view = self.mappingproxy(dictmissing(x=1))
         self.assertEqual(view['x'], 1)
@@ -654,37 +654,37 @@ class MappingProxyTests(unittest.TestCase):
         self.assertTrue('x' in view)
         self.assertFalse('y' in view)
 
-    def test_customdict(self):
-        class customdict(dict):
-            def __contains__(self, key):
-                if key == 'magic':
-                    return True
+    eleza test_customdict(self):
+        kundi customdict(dict):
+            eleza __contains__(self, key):
+                ikiwa key == 'magic':
+                    rudisha True
                 else:
-                    return dict.__contains__(self, key)
+                    rudisha dict.__contains__(self, key)
 
-            def __iter__(self):
-                return iter(('iter',))
+            eleza __iter__(self):
+                rudisha iter(('iter',))
 
-            def __len__(self):
-                return 500
+            eleza __len__(self):
+                rudisha 500
 
-            def copy(self):
-                return 'copy'
+            eleza copy(self):
+                rudisha 'copy'
 
-            def keys(self):
-                return 'keys'
+            eleza keys(self):
+                rudisha 'keys'
 
-            def items(self):
-                return 'items'
+            eleza items(self):
+                rudisha 'items'
 
-            def values(self):
-                return 'values'
+            eleza values(self):
+                rudisha 'values'
 
-            def __getitem__(self, key):
-                return "getitem=%s" % dict.__getitem__(self, key)
+            eleza __getitem__(self, key):
+                rudisha "getitem=%s" % dict.__getitem__(self, key)
 
-            def get(self, key, default=None):
-                return "get=%s" % dict.get(self, key, 'default=%r' % default)
+            eleza get(self, key, default=None):
+                rudisha "get=%s" % dict.get(self, key, 'default=%r' % default)
 
         custom = customdict({'key': 'value'})
         view = self.mappingproxy(custom)
@@ -702,7 +702,7 @@ class MappingProxyTests(unittest.TestCase):
         self.assertEqual(view.keys(), 'keys')
         self.assertEqual(view.values(), 'values')
 
-    def test_chainmap(self):
+    eleza test_chainmap(self):
         d1 = {'x': 1}
         d2 = {'y': 2}
         mapping = collections.ChainMap(d1, d2)
@@ -726,14 +726,14 @@ class MappingProxyTests(unittest.TestCase):
         self.assertEqual(tuple(sorted(view.keys())), ('x', 'y'))
         self.assertEqual(tuple(sorted(view.values())), (1, 2))
 
-    def test_contains(self):
-        view = self.mappingproxy(dict.fromkeys('abc'))
+    eleza test_contains(self):
+        view = self.mappingproxy(dict.kutokakeys('abc'))
         self.assertTrue('a' in view)
         self.assertTrue('b' in view)
         self.assertTrue('c' in view)
         self.assertFalse('xxx' in view)
 
-    def test_views(self):
+    eleza test_views(self):
         mapping = {}
         view = self.mappingproxy(mapping)
         keys = view.keys()
@@ -747,14 +747,14 @@ class MappingProxyTests(unittest.TestCase):
         self.assertEqual(list(values), ['value'])
         self.assertEqual(list(items), [('key', 'value')])
 
-    def test_len(self):
+    eleza test_len(self):
         for expected in range(6):
-            data = dict.fromkeys('abcde'[:expected])
+            data = dict.kutokakeys('abcde'[:expected])
             self.assertEqual(len(data), expected)
             view = self.mappingproxy(data)
             self.assertEqual(len(view), expected)
 
-    def test_iterators(self):
+    eleza test_iterators(self):
         keys = ('x', 'y')
         values = (1, 2)
         items = tuple(zip(keys, values))
@@ -764,7 +764,7 @@ class MappingProxyTests(unittest.TestCase):
         self.assertEqual(set(view.values()), set(values))
         self.assertEqual(set(view.items()), set(items))
 
-    def test_copy(self):
+    eleza test_copy(self):
         original = {'key1': 27, 'key2': 51, 'key3': 93}
         view = self.mappingproxy(original)
         copy = view.copy()
@@ -775,31 +775,31 @@ class MappingProxyTests(unittest.TestCase):
         self.assertEqual(copy['key1'], 27)
 
 
-class ClassCreationTests(unittest.TestCase):
+kundi ClassCreationTests(unittest.TestCase):
 
-    class Meta(type):
-        def __init__(cls, name, bases, ns, **kw):
+    kundi Meta(type):
+        eleza __init__(cls, name, bases, ns, **kw):
             super().__init__(name, bases, ns)
         @staticmethod
-        def __new__(mcls, name, bases, ns, **kw):
-            return super().__new__(mcls, name, bases, ns)
+        eleza __new__(mcls, name, bases, ns, **kw):
+            rudisha super().__new__(mcls, name, bases, ns)
         @classmethod
-        def __prepare__(mcls, name, bases, **kw):
+        eleza __prepare__(mcls, name, bases, **kw):
             ns = super().__prepare__(name, bases)
             ns["y"] = 1
             ns.update(kw)
-            return ns
+            rudisha ns
 
-    def test_new_class_basics(self):
+    eleza test_new_class_basics(self):
         C = types.new_class("C")
         self.assertEqual(C.__name__, "C")
         self.assertEqual(C.__bases__, (object,))
 
-    def test_new_class_subclass(self):
+    eleza test_new_class_subclass(self):
         C = types.new_class("C", (int,))
         self.assertTrue(issubclass(C, int))
 
-    def test_new_class_meta(self):
+    eleza test_new_class_meta(self):
         Meta = self.Meta
         settings = {"metaclass": Meta, "z": 2}
         # We do this twice to make sure the passed in dict isn't mutated
@@ -809,9 +809,9 @@ class ClassCreationTests(unittest.TestCase):
             self.assertEqual(C.y, 1)
             self.assertEqual(C.z, 2)
 
-    def test_new_class_exec_body(self):
+    eleza test_new_class_exec_body(self):
         Meta = self.Meta
-        def func(ns):
+        eleza func(ns):
             ns["x"] = 0
         C = types.new_class("C", (), {"metaclass": Meta, "z": 2}, func)
         self.assertIsInstance(C, Meta)
@@ -819,24 +819,24 @@ class ClassCreationTests(unittest.TestCase):
         self.assertEqual(C.y, 1)
         self.assertEqual(C.z, 2)
 
-    def test_new_class_metaclass_keywords(self):
+    eleza test_new_class_metaclass_keywords(self):
         #Test that keywords are passed to the metaclass:
-        def meta_func(name, bases, ns, **kw):
-            return name, bases, ns, kw
+        eleza meta_func(name, bases, ns, **kw):
+            rudisha name, bases, ns, kw
         res = types.new_class("X",
                               (int, object),
                               dict(metaclass=meta_func, x=0))
         self.assertEqual(res, ("X", (int, object), {}, {"x": 0}))
 
-    def test_new_class_defaults(self):
+    eleza test_new_class_defaults(self):
         # Test defaults/keywords:
         C = types.new_class("C", (), {}, None)
         self.assertEqual(C.__name__, "C")
         self.assertEqual(C.__bases__, (object,))
 
-    def test_new_class_meta_with_base(self):
+    eleza test_new_class_meta_with_base(self):
         Meta = self.Meta
-        def func(ns):
+        eleza func(ns):
             ns["x"] = 0
         C = types.new_class(name="C",
                             bases=(int,),
@@ -848,118 +848,118 @@ class ClassCreationTests(unittest.TestCase):
         self.assertEqual(C.y, 1)
         self.assertEqual(C.z, 2)
 
-    def test_new_class_with_mro_entry(self):
-        class A: pass
-        class C:
-            def __mro_entries__(self, bases):
-                return (A,)
+    eleza test_new_class_with_mro_entry(self):
+        kundi A: pass
+        kundi C:
+            eleza __mro_entries__(self, bases):
+                rudisha (A,)
         c = C()
         D = types.new_class('D', (c,), {})
         self.assertEqual(D.__bases__, (A,))
         self.assertEqual(D.__orig_bases__, (c,))
         self.assertEqual(D.__mro__, (D, A, object))
 
-    def test_new_class_with_mro_entry_none(self):
-        class A: pass
-        class B: pass
-        class C:
-            def __mro_entries__(self, bases):
-                return ()
+    eleza test_new_class_with_mro_entry_none(self):
+        kundi A: pass
+        kundi B: pass
+        kundi C:
+            eleza __mro_entries__(self, bases):
+                rudisha ()
         c = C()
         D = types.new_class('D', (A, c, B), {})
         self.assertEqual(D.__bases__, (A, B))
         self.assertEqual(D.__orig_bases__, (A, c, B))
         self.assertEqual(D.__mro__, (D, A, B, object))
 
-    def test_new_class_with_mro_entry_error(self):
-        class A: pass
-        class C:
-            def __mro_entries__(self, bases):
-                return A
+    eleza test_new_class_with_mro_entry_error(self):
+        kundi A: pass
+        kundi C:
+            eleza __mro_entries__(self, bases):
+                rudisha A
         c = C()
         with self.assertRaises(TypeError):
             types.new_class('D', (c,), {})
 
-    def test_new_class_with_mro_entry_multiple(self):
-        class A1: pass
-        class A2: pass
-        class B1: pass
-        class B2: pass
-        class A:
-            def __mro_entries__(self, bases):
-                return (A1, A2)
-        class B:
-            def __mro_entries__(self, bases):
-                return (B1, B2)
+    eleza test_new_class_with_mro_entry_multiple(self):
+        kundi A1: pass
+        kundi A2: pass
+        kundi B1: pass
+        kundi B2: pass
+        kundi A:
+            eleza __mro_entries__(self, bases):
+                rudisha (A1, A2)
+        kundi B:
+            eleza __mro_entries__(self, bases):
+                rudisha (B1, B2)
         D = types.new_class('D', (A(), B()), {})
         self.assertEqual(D.__bases__, (A1, A2, B1, B2))
 
-    def test_new_class_with_mro_entry_multiple_2(self):
-        class A1: pass
-        class A2: pass
-        class A3: pass
-        class B1: pass
-        class B2: pass
-        class A:
-            def __mro_entries__(self, bases):
-                return (A1, A2, A3)
-        class B:
-            def __mro_entries__(self, bases):
-                return (B1, B2)
-        class C: pass
+    eleza test_new_class_with_mro_entry_multiple_2(self):
+        kundi A1: pass
+        kundi A2: pass
+        kundi A3: pass
+        kundi B1: pass
+        kundi B2: pass
+        kundi A:
+            eleza __mro_entries__(self, bases):
+                rudisha (A1, A2, A3)
+        kundi B:
+            eleza __mro_entries__(self, bases):
+                rudisha (B1, B2)
+        kundi C: pass
         D = types.new_class('D', (A(), C, B()), {})
         self.assertEqual(D.__bases__, (A1, A2, A3, C, B1, B2))
 
     # Many of the following tests are derived kutoka test_descr.py
-    def test_prepare_class(self):
-        # Basic test of metaclass derivation
+    eleza test_prepare_class(self):
+        # Basic test of metakundi derivation
         expected_ns = {}
-        class A(type):
-            def __new__(*args, **kwargs):
-                return type.__new__(*args, **kwargs)
+        kundi A(type):
+            eleza __new__(*args, **kwargs):
+                rudisha type.__new__(*args, **kwargs)
 
-            def __prepare__(*args):
-                return expected_ns
+            eleza __prepare__(*args):
+                rudisha expected_ns
 
         B = types.new_class("B", (object,))
         C = types.new_class("C", (object,), {"metaclass": A})
 
-        # The most derived metaclass of D is A rather than type.
+        # The most derived metakundi of D is A rather than type.
         meta, ns, kwds = types.prepare_class("D", (B, C), {"metaclass": type})
         self.assertIs(meta, A)
         self.assertIs(ns, expected_ns)
         self.assertEqual(len(kwds), 0)
 
-    def test_bad___prepare__(self):
-        # __prepare__() must return a mapping.
-        class BadMeta(type):
+    eleza test_bad___prepare__(self):
+        # __prepare__() must rudisha a mapping.
+        kundi BadMeta(type):
             @classmethod
-            def __prepare__(*args):
-                return None
+            eleza __prepare__(*args):
+                rudisha None
         with self.assertRaisesRegex(TypeError,
                                     r'^BadMeta\.__prepare__\(\) must '
-                                    r'return a mapping, not NoneType$'):
-            class Foo(metaclass=BadMeta):
+                                    r'rudisha a mapping, not NoneType$'):
+            kundi Foo(metaclass=BadMeta):
                 pass
-        # Also test the case in which the metaclass is not a type.
-        class BadMeta:
+        # Also test the case in which the metakundi is not a type.
+        kundi BadMeta:
             @classmethod
-            def __prepare__(*args):
-                return None
+            eleza __prepare__(*args):
+                rudisha None
         with self.assertRaisesRegex(TypeError,
                                     r'^<metaclass>\.__prepare__\(\) must '
-                                    r'return a mapping, not NoneType$'):
-            class Bar(metaclass=BadMeta()):
+                                    r'rudisha a mapping, not NoneType$'):
+            kundi Bar(metaclass=BadMeta()):
                 pass
 
-    def test_resolve_bases(self):
-        class A: pass
-        class B: pass
-        class C:
-            def __mro_entries__(self, bases):
-                if A in bases:
-                    return ()
-                return (A,)
+    eleza test_resolve_bases(self):
+        kundi A: pass
+        kundi B: pass
+        kundi C:
+            eleza __mro_entries__(self, bases):
+                ikiwa A in bases:
+                    rudisha ()
+                rudisha (A,)
         c = C()
         self.assertEqual(types.resolve_bases(()), ())
         self.assertEqual(types.resolve_bases((c,)), (A,))
@@ -974,26 +974,26 @@ class ClassCreationTests(unittest.TestCase):
         for bases in [x, y, z, t]:
             self.assertIs(types.resolve_bases(bases), bases)
 
-    def test_metaclass_derivation(self):
-        # issue1294232: correct metaclass calculation
+    eleza test_metaclass_derivation(self):
+        # issue1294232: correct metakundi calculation
         new_calls = []  # to check the order of __new__ calls
-        class AMeta(type):
-            def __new__(mcls, name, bases, ns):
+        kundi AMeta(type):
+            eleza __new__(mcls, name, bases, ns):
                 new_calls.append('AMeta')
-                return super().__new__(mcls, name, bases, ns)
+                rudisha super().__new__(mcls, name, bases, ns)
             @classmethod
-            def __prepare__(mcls, name, bases):
-                return {}
+            eleza __prepare__(mcls, name, bases):
+                rudisha {}
 
-        class BMeta(AMeta):
-            def __new__(mcls, name, bases, ns):
+        kundi BMeta(AMeta):
+            eleza __new__(mcls, name, bases, ns):
                 new_calls.append('BMeta')
-                return super().__new__(mcls, name, bases, ns)
+                rudisha super().__new__(mcls, name, bases, ns)
             @classmethod
-            def __prepare__(mcls, name, bases):
+            eleza __prepare__(mcls, name, bases):
                 ns = super().__prepare__(name, bases)
                 ns['BMeta_was_here'] = True
-                return ns
+                rudisha ns
 
         A = types.new_class("A", (), {"metaclass": AMeta})
         self.assertEqual(new_calls, ['AMeta'])
@@ -1005,7 +1005,7 @@ class ClassCreationTests(unittest.TestCase):
         new_calls.clear()
 
         C = types.new_class("C", (A, B))
-        # The most derived metaclass is BMeta:
+        # The most derived metakundi is BMeta:
         self.assertEqual(new_calls, ['BMeta', 'AMeta'])
         new_calls.clear()
         # BMeta.__prepare__ should've been called:
@@ -1017,7 +1017,7 @@ class ClassCreationTests(unittest.TestCase):
         new_calls.clear()
         self.assertIn('BMeta_was_here', C2.__dict__)
 
-        # Check correct metaclass calculation when a metaclass is declared:
+        # Check correct metakundi calculation when a metakundi is declared:
         D = types.new_class("D", (C,), {"metaclass": type})
         self.assertEqual(new_calls, ['BMeta', 'AMeta'])
         new_calls.clear()
@@ -1028,15 +1028,15 @@ class ClassCreationTests(unittest.TestCase):
         new_calls.clear()
         self.assertIn('BMeta_was_here', E.__dict__)
 
-    def test_metaclass_override_function(self):
-        # Special case: the given metaclass isn't a class,
-        # so there is no metaclass calculation.
-        class A(metaclass=self.Meta):
+    eleza test_metaclass_override_function(self):
+        # Special case: the given metakundi isn't a class,
+        # so there is no metakundi calculation.
+        kundi A(metaclass=self.Meta):
             pass
 
         marker = object()
-        def func(*args, **kwargs):
-            return marker
+        eleza func(*args, **kwargs):
+            rudisha marker
 
         X = types.new_class("X", (), {"metaclass": func})
         Y = types.new_class("Y", (object,), {"metaclass": func})
@@ -1045,28 +1045,28 @@ class ClassCreationTests(unittest.TestCase):
         self.assertIs(marker, Y)
         self.assertIs(marker, Z)
 
-    def test_metaclass_override_callable(self):
-        # The given metaclass is a class,
+    eleza test_metaclass_override_callable(self):
+        # The given metakundi is a class,
         # but not a descendant of type.
         new_calls = []  # to check the order of __new__ calls
         prepare_calls = []  # to track __prepare__ calls
-        class ANotMeta:
-            def __new__(mcls, *args, **kwargs):
+        kundi ANotMeta:
+            eleza __new__(mcls, *args, **kwargs):
                 new_calls.append('ANotMeta')
-                return super().__new__(mcls)
+                rudisha super().__new__(mcls)
             @classmethod
-            def __prepare__(mcls, name, bases):
+            eleza __prepare__(mcls, name, bases):
                 prepare_calls.append('ANotMeta')
-                return {}
+                rudisha {}
 
-        class BNotMeta(ANotMeta):
-            def __new__(mcls, *args, **kwargs):
+        kundi BNotMeta(ANotMeta):
+            eleza __new__(mcls, *args, **kwargs):
                 new_calls.append('BNotMeta')
-                return super().__new__(mcls)
+                rudisha super().__new__(mcls)
             @classmethod
-            def __prepare__(mcls, name, bases):
+            eleza __prepare__(mcls, name, bases):
                 prepare_calls.append('BNotMeta')
-                return super().__prepare__(name, bases)
+                rudisha super().__prepare__(name, bases)
 
         A = types.new_class("A", (), {"metaclass": ANotMeta})
         self.assertIs(ANotMeta, type(A))
@@ -1096,8 +1096,8 @@ class ClassCreationTests(unittest.TestCase):
         self.assertEqual(new_calls, ['BNotMeta', 'ANotMeta'])
         new_calls.clear()
 
-        # This is a TypeError, because of a metaclass conflict:
-        # BNotMeta is neither a subclass, nor a superclass of type
+        # This is a TypeError, because of a metakundi conflict:
+        # BNotMeta is neither a subclass, nor a superkundi of type
         with self.assertRaises(TypeError):
             D = types.new_class("D", (C,), {"metaclass": type})
 
@@ -1123,34 +1123,34 @@ class ClassCreationTests(unittest.TestCase):
         new_calls.clear()
 
         # TypeError: BNotMeta is neither a
-        # subclass, nor a superclass of int
+        # subclass, nor a superkundi of int
         with self.assertRaises(TypeError):
             X = types.new_class("X", (C, int()))
         with self.assertRaises(TypeError):
             X = types.new_class("X", (int(), C))
 
-    def test_one_argument_type(self):
+    eleza test_one_argument_type(self):
         expected_message = 'type.__new__() takes exactly 3 arguments (1 given)'
 
         # Only type itself can use the one-argument form (#27157)
         self.assertIs(type(5), int)
 
-        class M(type):
+        kundi M(type):
             pass
         with self.assertRaises(TypeError) as cm:
             M(5)
         self.assertEqual(str(cm.exception), expected_message)
 
-        class N(type, metaclass=M):
+        kundi N(type, metaclass=M):
             pass
         with self.assertRaises(TypeError) as cm:
             N(5)
         self.assertEqual(str(cm.exception), expected_message)
 
 
-class SimpleNamespaceTests(unittest.TestCase):
+kundi SimpleNamespaceTests(unittest.TestCase):
 
-    def test_constructor(self):
+    eleza test_constructor(self):
         ns1 = types.SimpleNamespace()
         ns2 = types.SimpleNamespace(x=1, y=2)
         ns3 = types.SimpleNamespace(**dict(x=1, y=2))
@@ -1167,14 +1167,14 @@ class SimpleNamespaceTests(unittest.TestCase):
         self.assertEqual(len(ns3.__dict__), 2)
         self.assertEqual(vars(ns3), {'y': 2, 'x': 1})
 
-    def test_unbound(self):
+    eleza test_unbound(self):
         ns1 = vars(types.SimpleNamespace())
         ns2 = vars(types.SimpleNamespace(x=1, y=2))
 
         self.assertEqual(ns1, {})
         self.assertEqual(ns2, {'y': 2, 'x': 1})
 
-    def test_underlying_dict(self):
+    eleza test_underlying_dict(self):
         ns1 = types.SimpleNamespace()
         ns2 = types.SimpleNamespace(x=1, y=2)
         ns3 = types.SimpleNamespace(a=True, b=False)
@@ -1185,7 +1185,7 @@ class SimpleNamespaceTests(unittest.TestCase):
         self.assertEqual(ns2.__dict__, {'y': 2, 'x': 1})
         self.assertEqual(mapping, dict(a=True, b=False))
 
-    def test_attrget(self):
+    eleza test_attrget(self):
         ns = types.SimpleNamespace(x=1, y=2, w=3)
 
         self.assertEqual(ns.x, 1)
@@ -1194,7 +1194,7 @@ class SimpleNamespaceTests(unittest.TestCase):
         with self.assertRaises(AttributeError):
             ns.z
 
-    def test_attrset(self):
+    eleza test_attrset(self):
         ns1 = types.SimpleNamespace()
         ns2 = types.SimpleNamespace(x=1, y=2, w=3)
         ns1.a = 'spam'
@@ -1205,7 +1205,7 @@ class SimpleNamespaceTests(unittest.TestCase):
         self.assertEqual(ns1.__dict__, dict(a='spam', b='ham'))
         self.assertEqual(ns2.__dict__, dict(x=1, y=2, w=3, z=4, theta=None))
 
-    def test_attrdel(self):
+    eleza test_attrdel(self):
         ns1 = types.SimpleNamespace()
         ns2 = types.SimpleNamespace(x=1, y=2, w=3)
 
@@ -1226,7 +1226,7 @@ class SimpleNamespaceTests(unittest.TestCase):
         del ns1.spam
         self.assertEqual(vars(ns1), {})
 
-    def test_repr(self):
+    eleza test_repr(self):
         ns1 = types.SimpleNamespace(x=1, y=2, w=3)
         ns2 = types.SimpleNamespace()
         ns2.x = "spam"
@@ -1236,7 +1236,7 @@ class SimpleNamespaceTests(unittest.TestCase):
         self.assertEqual(repr(ns1), "{name}(w=3, x=1, y=2)".format(name=name))
         self.assertEqual(repr(ns2), "{name}(_y=5, x='spam')".format(name=name))
 
-    def test_equal(self):
+    eleza test_equal(self):
         ns1 = types.SimpleNamespace(x=1)
         ns2 = types.SimpleNamespace()
         ns2.x = 1
@@ -1245,7 +1245,7 @@ class SimpleNamespaceTests(unittest.TestCase):
         self.assertEqual(ns1, ns2)
         self.assertNotEqual(ns2, types.SimpleNamespace())
 
-    def test_nested(self):
+    eleza test_nested(self):
         ns1 = types.SimpleNamespace(a=1, b=2)
         ns2 = types.SimpleNamespace()
         ns3 = types.SimpleNamespace(x=ns1)
@@ -1259,7 +1259,7 @@ class SimpleNamespaceTests(unittest.TestCase):
         self.assertEqual(vars(ns3), dict(x=ns1))
         self.assertEqual(ns3.x.a, 1)
 
-    def test_recursive(self):
+    eleza test_recursive(self):
         ns1 = types.SimpleNamespace(c='cookie')
         ns2 = types.SimpleNamespace()
         ns3 = types.SimpleNamespace(x=1)
@@ -1274,7 +1274,7 @@ class SimpleNamespaceTests(unittest.TestCase):
         self.assertEqual(ns3.spam, ns2)
         self.assertEqual(ns2.spam.spam, ns2)
 
-    def test_recursive_repr(self):
+    eleza test_recursive_repr(self):
         ns1 = types.SimpleNamespace(c='cookie')
         ns2 = types.SimpleNamespace()
         ns3 = types.SimpleNamespace(x=1)
@@ -1288,7 +1288,7 @@ class SimpleNamespaceTests(unittest.TestCase):
         self.assertEqual(repr(ns1), repr1)
         self.assertEqual(repr(ns2), repr2)
 
-    def test_as_dict(self):
+    eleza test_as_dict(self):
         ns = types.SimpleNamespace(spam='spamspamspam')
 
         with self.assertRaises(TypeError):
@@ -1300,8 +1300,8 @@ class SimpleNamespaceTests(unittest.TestCase):
         with self.assertRaises(TypeError):
             ns['spam']
 
-    def test_subclass(self):
-        class Spam(types.SimpleNamespace):
+    eleza test_subclass(self):
+        kundi Spam(types.SimpleNamespace):
             pass
 
         spam = Spam(ham=8, eggs=9)
@@ -1309,7 +1309,7 @@ class SimpleNamespaceTests(unittest.TestCase):
         self.assertIs(type(spam), Spam)
         self.assertEqual(vars(spam), {'ham': 8, 'eggs': 9})
 
-    def test_pickle(self):
+    eleza test_pickle(self):
         ns = types.SimpleNamespace(breakfast="spam", lunch="spam")
 
         for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -1322,10 +1322,10 @@ class SimpleNamespaceTests(unittest.TestCase):
 
             self.assertEqual(ns, ns_roundtrip, pname)
 
-    def test_fake_namespace_compare(self):
+    eleza test_fake_namespace_compare(self):
         # Issue #24257: Incorrect use of PyObject_IsInstance() caused
         # SystemError.
-        class FakeSimpleNamespace(str):
+        kundi FakeSimpleNamespace(str):
             __class__ = types.SimpleNamespace
         self.assertFalse(types.SimpleNamespace() == FakeSimpleNamespace())
         self.assertTrue(types.SimpleNamespace() != FakeSimpleNamespace())
@@ -1339,38 +1339,38 @@ class SimpleNamespaceTests(unittest.TestCase):
             types.SimpleNamespace() >= FakeSimpleNamespace()
 
 
-class CoroutineTests(unittest.TestCase):
-    def test_wrong_args(self):
+kundi CoroutineTests(unittest.TestCase):
+    eleza test_wrong_args(self):
         samples = [None, 1, object()]
         for sample in samples:
             with self.assertRaisesRegex(TypeError,
                                         'types.coroutine.*expects a callable'):
                 types.coroutine(sample)
 
-    def test_non_gen_values(self):
+    eleza test_non_gen_values(self):
         @types.coroutine
-        def foo():
-            return 'spam'
+        eleza foo():
+            rudisha 'spam'
         self.assertEqual(foo(), 'spam')
 
-        class Awaitable:
-            def __await__(self):
-                return ()
+        kundi Awaitable:
+            eleza __await__(self):
+                rudisha ()
         aw = Awaitable()
         @types.coroutine
-        def foo():
-            return aw
+        eleza foo():
+            rudisha aw
         self.assertIs(aw, foo())
 
         # decorate foo second time
         foo = types.coroutine(foo)
         self.assertIs(aw, foo())
 
-    def test_async_def(self):
+    eleza test_async_def(self):
         # Test that types.coroutine passes 'async def' coroutines
         # without modification
 
-        async def foo(): pass
+        async eleza foo(): pass
         foo_code = foo.__code__
         foo_flags = foo.__code__.co_flags
         decorated_foo = types.coroutine(foo)
@@ -1379,7 +1379,7 @@ class CoroutineTests(unittest.TestCase):
         self.assertIs(decorated_foo.__code__, foo_code)
 
         foo_coro = foo()
-        def bar(): return foo_coro
+        eleza bar(): rudisha foo_coro
         for _ in range(2):
             bar = types.coroutine(bar)
             coro = bar()
@@ -1387,43 +1387,43 @@ class CoroutineTests(unittest.TestCase):
             self.assertEqual(coro.cr_code.co_flags, foo_flags)
             coro.close()
 
-    def test_duck_coro(self):
-        class CoroLike:
-            def send(self): pass
-            def throw(self): pass
-            def close(self): pass
-            def __await__(self): return self
+    eleza test_duck_coro(self):
+        kundi CoroLike:
+            eleza send(self): pass
+            eleza throw(self): pass
+            eleza close(self): pass
+            eleza __await__(self): rudisha self
 
         coro = CoroLike()
         @types.coroutine
-        def foo():
-            return coro
+        eleza foo():
+            rudisha coro
         self.assertIs(foo(), coro)
         self.assertIs(foo().__await__(), coro)
 
-    def test_duck_corogen(self):
-        class CoroGenLike:
-            def send(self): pass
-            def throw(self): pass
-            def close(self): pass
-            def __await__(self): return self
-            def __iter__(self): return self
-            def __next__(self): pass
+    eleza test_duck_corogen(self):
+        kundi CoroGenLike:
+            eleza send(self): pass
+            eleza throw(self): pass
+            eleza close(self): pass
+            eleza __await__(self): rudisha self
+            eleza __iter__(self): rudisha self
+            eleza __next__(self): pass
 
         coro = CoroGenLike()
         @types.coroutine
-        def foo():
-            return coro
+        eleza foo():
+            rudisha coro
         self.assertIs(foo(), coro)
         self.assertIs(foo().__await__(), coro)
 
-    def test_duck_gen(self):
-        class GenLike:
-            def send(self): pass
-            def throw(self): pass
-            def close(self): pass
-            def __iter__(self): pass
-            def __next__(self): pass
+    eleza test_duck_gen(self):
+        kundi GenLike:
+            eleza send(self): pass
+            eleza throw(self): pass
+            eleza close(self): pass
+            eleza __iter__(self): pass
+            eleza __next__(self): pass
 
         # Setup generator mock object
         gen = unittest.mock.MagicMock(GenLike)
@@ -1434,7 +1434,7 @@ class CoroutineTests(unittest.TestCase):
         self.assertIs(gen, iter(gen))
 
         @types.coroutine
-        def foo(): return gen
+        eleza foo(): rudisha gen
 
         wrapper = foo()
         self.assertIsInstance(wrapper, types._GeneratorWrapper)
@@ -1449,7 +1449,7 @@ class CoroutineTests(unittest.TestCase):
         self.assertIs(wrapper.__name__, gen.__name__)
 
         # Test AttributeErrors
-        for name in {'gi_running', 'gi_frame', 'gi_code', 'gi_yieldfrom',
+        for name in {'gi_running', 'gi_frame', 'gi_code', 'gi_yieldkutoka',
                      'cr_running', 'cr_frame', 'cr_code', 'cr_await'}:
             with self.assertRaises(AttributeError):
                 getattr(wrapper, name)
@@ -1458,15 +1458,15 @@ class CoroutineTests(unittest.TestCase):
         gen.gi_running = object()
         gen.gi_frame = object()
         gen.gi_code = object()
-        gen.gi_yieldfrom = object()
+        gen.gi_yieldkutoka = object()
         self.assertIs(wrapper.gi_running, gen.gi_running)
         self.assertIs(wrapper.gi_frame, gen.gi_frame)
         self.assertIs(wrapper.gi_code, gen.gi_code)
-        self.assertIs(wrapper.gi_yieldfrom, gen.gi_yieldfrom)
+        self.assertIs(wrapper.gi_yieldkutoka, gen.gi_yieldkutoka)
         self.assertIs(wrapper.cr_running, gen.gi_running)
         self.assertIs(wrapper.cr_frame, gen.gi_frame)
         self.assertIs(wrapper.cr_code, gen.gi_code)
-        self.assertIs(wrapper.cr_await, gen.gi_yieldfrom)
+        self.assertIs(wrapper.cr_await, gen.gi_yieldkutoka)
 
         wrapper.close()
         gen.close.assert_called_once_with()
@@ -1515,54 +1515,54 @@ class CoroutineTests(unittest.TestCase):
 
         # Test that we do not double wrap
         @types.coroutine
-        def bar(): return wrapper
+        eleza bar(): rudisha wrapper
         self.assertIs(wrapper, bar())
 
         # Test weakrefs support
         ref = weakref.ref(wrapper)
         self.assertIs(ref(), wrapper)
 
-    def test_duck_functional_gen(self):
-        class Generator:
+    eleza test_duck_functional_gen(self):
+        kundi Generator:
             """Emulates the following generator (very clumsy):
 
-              def gen(fut):
+              eleza gen(fut):
                   result = yield fut
-                  return result * 2
+                  rudisha result * 2
             """
-            def __init__(self, fut):
+            eleza __init__(self, fut):
                 self._i = 0
                 self._fut = fut
-            def __iter__(self):
-                return self
-            def __next__(self):
-                return self.send(None)
-            def send(self, v):
+            eleza __iter__(self):
+                rudisha self
+            eleza __next__(self):
+                rudisha self.send(None)
+            eleza send(self, v):
                 try:
-                    if self._i == 0:
+                    ikiwa self._i == 0:
                         assert v is None
-                        return self._fut
-                    if self._i == 1:
+                        rudisha self._fut
+                    ikiwa self._i == 1:
                         raise StopIteration(v * 2)
-                    if self._i > 1:
+                    ikiwa self._i > 1:
                         raise StopIteration
                 finally:
                     self._i += 1
-            def throw(self, tp, *exc):
+            eleza throw(self, tp, *exc):
                 self._i = 100
-                if tp is not GeneratorExit:
+                ikiwa tp is not GeneratorExit:
                     raise tp
-            def close(self):
+            eleza close(self):
                 self.throw(GeneratorExit)
 
         @types.coroutine
-        def foo(): return Generator('spam')
+        eleza foo(): rudisha Generator('spam')
 
         wrapper = foo()
         self.assertIsInstance(wrapper, types._GeneratorWrapper)
 
-        async def corofunc():
-            return await foo() + 100
+        async eleza corofunc():
+            rudisha await foo() + 100
         coro = corofunc()
 
         self.assertEqual(coro.send(None), 'spam')
@@ -1573,13 +1573,13 @@ class CoroutineTests(unittest.TestCase):
         else:
             self.fail('StopIteration was expected')
 
-    def test_gen(self):
-        def gen_func():
+    eleza test_gen(self):
+        eleza gen_func():
             yield 1
-            return (yield 2)
+            rudisha (yield 2)
         gen = gen_func()
         @types.coroutine
-        def foo(): return gen
+        eleza foo(): rudisha gen
         wrapper = foo()
         self.assertIsInstance(wrapper, types._GeneratorWrapper)
         self.assertIs(wrapper.__await__(), gen)
@@ -1605,16 +1605,16 @@ class CoroutineTests(unittest.TestCase):
         foo = types.coroutine(foo)
         self.assertIs(foo().__await__(), gen)
 
-    def test_returning_itercoro(self):
+    eleza test_returning_itercoro(self):
         @types.coroutine
-        def gen():
+        eleza gen():
             yield
 
         gencoro = gen()
 
         @types.coroutine
-        def foo():
-            return gencoro
+        eleza foo():
+            rudisha gencoro
 
         self.assertIs(foo(), gencoro)
 
@@ -1622,8 +1622,8 @@ class CoroutineTests(unittest.TestCase):
         foo = types.coroutine(foo)
         self.assertIs(foo(), gencoro)
 
-    def test_genfunc(self):
-        def gen(): yield
+    eleza test_genfunc(self):
+        eleza gen(): yield
         self.assertIs(types.coroutine(gen), gen)
         self.assertIs(types.coroutine(types.coroutine(gen)), gen)
 
@@ -1636,12 +1636,12 @@ class CoroutineTests(unittest.TestCase):
 
         self.assertIs(types.coroutine(gen), gen)
 
-    def test_wrapper_object(self):
-        def gen():
+    eleza test_wrapper_object(self):
+        eleza gen():
             yield
         @types.coroutine
-        def coro():
-            return gen()
+        eleza coro():
+            rudisha gen()
 
         wrapper = coro()
         self.assertIn('GeneratorWrapper', repr(wrapper))
@@ -1652,5 +1652,5 @@ class CoroutineTests(unittest.TestCase):
             'close', 'throw'}))
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

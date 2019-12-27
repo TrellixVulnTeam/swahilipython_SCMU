@@ -14,10 +14,10 @@ orig_mbox = se.tkMessageBox
 showerror = Mbox.showerror
 
 
-class ReplaceDialogTest(unittest.TestCase):
+kundi ReplaceDialogTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.root = Tk()
         cls.root.withdraw()
         se.tkMessageBox = Mbox
@@ -31,16 +31,16 @@ class ReplaceDialogTest(unittest.TestCase):
         cls.dialog.text = cls.text
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         se.tkMessageBox = orig_mbox
         del cls.text, cls.dialog, cls.engine
         cls.root.destroy()
         del cls.root
 
-    def setUp(self):
+    eleza setUp(self):
         self.text.insert('insert', 'This is a sample sTring')
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.engine.patvar.set('')
         self.dialog.replvar.set('')
         self.engine.wordvar.set(False)
@@ -52,7 +52,7 @@ class ReplaceDialogTest(unittest.TestCase):
         showerror.message = ''
         self.text.delete('1.0', 'end')
 
-    def test_replace_simple(self):
+    eleza test_replace_simple(self):
         # Test replace function with all options at default setting.
         # Wrap around - True
         # Regular Expression - False
@@ -122,7 +122,7 @@ class ReplaceDialogTest(unittest.TestCase):
         # test access method
         self.dialog.find_it(0)
 
-    def test_replace_wrap_around(self):
+    eleza test_replace_wrap_around(self):
         text = self.text
         equal = self.assertEqual
         pv = self.engine.patvar
@@ -151,7 +151,7 @@ class ReplaceDialogTest(unittest.TestCase):
         after_text = text.get('1.0', 'end')
         equal(before_text, after_text)
 
-    def test_replace_whole_word(self):
+    eleza test_replace_whole_word(self):
         text = self.text
         equal = self.assertEqual
         pv = self.engine.patvar
@@ -165,7 +165,7 @@ class ReplaceDialogTest(unittest.TestCase):
         equal(text.get('1.0', '1.4'), 'This')
         equal(text.get('1.5', '1.10'), 'hello')
 
-    def test_replace_match_case(self):
+    eleza test_replace_match_case(self):
         equal = self.assertEqual
         text = self.text
         pv = self.engine.patvar
@@ -184,7 +184,7 @@ class ReplaceDialogTest(unittest.TestCase):
         replace()
         equal(text.get('1.0', '1.4'), 'that')
 
-    def test_replace_regex(self):
+    eleza test_replace_regex(self):
         equal = self.assertEqual
         text = self.text
         pv = self.engine.patvar
@@ -225,7 +225,7 @@ class ReplaceDialogTest(unittest.TestCase):
         self.engine.setcookedpat("?")
         equal(pv.get(), "\\?")
 
-    def test_replace_backwards(self):
+    eleza test_replace_backwards(self):
         equal = self.assertEqual
         text = self.text
         pv = self.engine.patvar
@@ -245,7 +245,7 @@ class ReplaceDialogTest(unittest.TestCase):
         replace()
         equal(text.get('1.2', '1.5'), 'was')
 
-    def test_replace_all(self):
+    eleza test_replace_all(self):
         text = self.text
         pv = self.engine.patvar
         rv = self.dialog.replvar
@@ -273,7 +273,7 @@ class ReplaceDialogTest(unittest.TestCase):
         rv.set('foobar')
         replace_all()
 
-    def test_default_command(self):
+    eleza test_default_command(self):
         text = self.text
         pv = self.engine.patvar
         rv = self.dialog.replvar
@@ -290,5 +290,5 @@ class ReplaceDialogTest(unittest.TestCase):
         replace_find()
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

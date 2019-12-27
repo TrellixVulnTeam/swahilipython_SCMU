@@ -60,7 +60,7 @@ detect_all = re.compile(r'''
 py3 = sys.version_info >= (3, 0)
 
 
-class Rule:
+kundi Rule:
     def __init__(self, docname, lineno, issue, line):
         """A rule for ignoring issues"""
         self.docname = docname # document to which this rule applies
@@ -76,12 +76,12 @@ class Rule:
 
 
 
-class dialect(csv.excel):
+kundi dialect(csv.excel):
     """Our dialect: uses only linefeed as newline."""
     lineterminator = '\n'
 
 
-class CheckSuspiciousMarkupBuilder(Builder):
+kundi CheckSuspiciousMarkupBuilder(Builder):
     """
     Checks for possibly invalid markup that may leak into the output.
     """
@@ -244,7 +244,7 @@ def extract_line(text, index):
     return text[p:q]
 
 
-class SuspiciousVisitor(nodes.GenericNodeVisitor):
+kundi SuspiciousVisitor(nodes.GenericNodeVisitor):
 
     lastlineno = 0
 

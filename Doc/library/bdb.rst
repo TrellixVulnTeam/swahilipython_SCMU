@@ -15,19 +15,19 @@ The following exception is defined:
 
 .. exception:: BdbQuit
 
-   Exception raised by the :class:`Bdb` class for quitting the debugger.
+   Exception raised by the :class:`Bdb` kundi for quitting the debugger.
 
 
 The :mod:`bdb` module also defines two classes:
 
 .. class:: Breakpoint(self, file, line, temporary=0, cond=None, funcname=None)
 
-   This class implements temporary breakpoints, ignore counts, disabling and
+   This kundi implements temporary breakpoints, ignore counts, disabling and
    (re-)enabling, and conditionals.
 
    Breakpoints are indexed by number through a list called :attr:`bpbynumber`
    and by ``(file, line)`` pairs through :attr:`bplist`.  The former points to a
-   single instance of class :class:`Breakpoint`.  The latter points to a list of
+   single instance of kundi :class:`Breakpoint`.  The latter points to a list of
    such instances since there may be more than one breakpoint per line.
 
    When creating a breakpoint, its associated filename should be in canonical
@@ -39,7 +39,7 @@ The :mod:`bdb` module also defines two classes:
 
    .. method:: deleteMe()
 
-      Delete the breakpoint from the list associated to a file/line.  If it is
+      Delete the breakpoint kutoka the list associated to a file/line.  If it is
       the last breakpoint in that position, it also deletes the entry for the
       file/line.
 
@@ -76,9 +76,9 @@ The :mod:`bdb` module also defines two classes:
 
 .. class:: Bdb(skip=None)
 
-   The :class:`Bdb` class acts as a generic Python debugger base class.
+   The :class:`Bdb` kundi acts as a generic Python debugger base class.
 
-   This class takes care of the details of the trace facility; a derived class
+   This kundi takes care of the details of the trace facility; a derived class
    should implement user interaction.  The standard debugger class
    (:class:`pdb.Pdb`) is an example.
 
@@ -136,7 +136,7 @@ The :mod:`bdb` module also defines two classes:
       If the debugger should stop on the current line, invoke the
       :meth:`user_line` method (which should be overridden in subclasses).
       Raise a :exc:`BdbQuit` exception if the :attr:`Bdb.quitting` flag is set
-      (which can be set from :meth:`user_line`).  Return a reference to the
+      (which can be set kutoka :meth:`user_line`).  Return a reference to the
       :meth:`trace_dispatch` method for further tracing in that scope.
 
    .. method:: dispatch_call(frame, arg)
@@ -144,7 +144,7 @@ The :mod:`bdb` module also defines two classes:
       If the debugger should stop on this function call, invoke the
       :meth:`user_call` method (which should be overridden in subclasses).
       Raise a :exc:`BdbQuit` exception if the :attr:`Bdb.quitting` flag is set
-      (which can be set from :meth:`user_call`).  Return a reference to the
+      (which can be set kutoka :meth:`user_call`).  Return a reference to the
       :meth:`trace_dispatch` method for further tracing in that scope.
 
    .. method:: dispatch_return(frame, arg)
@@ -152,7 +152,7 @@ The :mod:`bdb` module also defines two classes:
       If the debugger should stop on this function return, invoke the
       :meth:`user_return` method (which should be overridden in subclasses).
       Raise a :exc:`BdbQuit` exception if the :attr:`Bdb.quitting` flag is set
-      (which can be set from :meth:`user_return`).  Return a reference to the
+      (which can be set kutoka :meth:`user_return`).  Return a reference to the
       :meth:`trace_dispatch` method for further tracing in that scope.
 
    .. method:: dispatch_exception(frame, arg)
@@ -160,7 +160,7 @@ The :mod:`bdb` module also defines two classes:
       If the debugger should stop at this exception, invokes the
       :meth:`user_exception` method (which should be overridden in subclasses).
       Raise a :exc:`BdbQuit` exception if the :attr:`Bdb.quitting` flag is set
-      (which can be set from :meth:`user_exception`).  Return a reference to the
+      (which can be set kutoka :meth:`user_exception`).  Return a reference to the
       :meth:`trace_dispatch` method for further tracing in that scope.
 
    Normally derived classes don't override the following methods, but they may
@@ -187,23 +187,23 @@ The :mod:`bdb` module also defines two classes:
 
    .. method:: user_call(frame, argument_list)
 
-      This method is called from :meth:`dispatch_call` when there is the
+      This method is called kutoka :meth:`dispatch_call` when there is the
       possibility that a break might be necessary anywhere inside the called
       function.
 
    .. method:: user_line(frame)
 
-      This method is called from :meth:`dispatch_line` when either
+      This method is called kutoka :meth:`dispatch_line` when either
       :meth:`stop_here` or :meth:`break_here` yields ``True``.
 
    .. method:: user_return(frame, return_value)
 
-      This method is called from :meth:`dispatch_return` when :meth:`stop_here`
+      This method is called kutoka :meth:`dispatch_return` when :meth:`stop_here`
       yields ``True``.
 
    .. method:: user_exception(frame, exc_info)
 
-      This method is called from :meth:`dispatch_exception` when
+      This method is called kutoka :meth:`dispatch_exception` when
       :meth:`stop_here` yields ``True``.
 
    .. method:: do_clear(arg)
@@ -226,17 +226,17 @@ The :mod:`bdb` module also defines two classes:
 
    .. method:: set_return(frame)
 
-      Stop when returning from the given frame.
+      Stop when returning kutoka the given frame.
 
    .. method:: set_until(frame)
 
       Stop when the line with the line no greater than the current one is
-      reached or when returning from current frame.
+      reached or when returning kutoka current frame.
 
    .. method:: set_trace([frame])
 
-      Start debugging from *frame*.  If *frame* is not specified, debugging
-      starts from caller's frame.
+      Start debugging kutoka *frame*.  If *frame* is not specified, debugging
+      starts kutoka caller's frame.
 
    .. method:: set_continue()
 
@@ -369,4 +369,4 @@ Finally, the module defines the following functions:
 
 .. function:: set_trace()
 
-   Start debugging with a :class:`Bdb` instance from caller's frame.
+   Start debugging with a :class:`Bdb` instance kutoka caller's frame.

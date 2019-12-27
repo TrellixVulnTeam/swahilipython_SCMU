@@ -1,7 +1,7 @@
 """A module to test whether doctest recognizes some 2.2 features,
-like static and class methods.
+like static and kundi methods.
 
->>> print('yup')  # 1
+>>> andika('yup')  # 1
 yup
 
 We include some (random) encoded (utf-8) text in the text surrounding
@@ -14,13 +14,13 @@ the example.  It should be ignored:
 agiza sys
 agiza unittest
 kutoka test agiza support
-if sys.flags.optimize >= 2:
+ikiwa sys.flags.optimize >= 2:
     raise unittest.SkipTest("Cannot test docstrings with -O2")
 
-class C(object):
+kundi C(object):
     """Class C.
 
-    >>> print(C())  # 2
+    >>> andika(C())  # 2
     42
 
 
@@ -31,47 +31,47 @@ class C(object):
 
     """
 
-    def __init__(self):
+    eleza __init__(self):
         """C.__init__.
 
-        >>> print(C()) # 3
+        >>> andika(C()) # 3
         42
         """
 
-    def __str__(self):
+    eleza __str__(self):
         """
-        >>> print(C()) # 4
+        >>> andika(C()) # 4
         42
         """
-        return "42"
+        rudisha "42"
 
-    class D(object):
+    kundi D(object):
         """A nested D class.
 
-        >>> print("In D!")   # 5
+        >>> andika("In D!")   # 5
         In D!
         """
 
-        def nested(self):
+        eleza nested(self):
             """
-            >>> print(3) # 6
+            >>> andika(3) # 6
             3
             """
 
-    def getx(self):
+    eleza getx(self):
         """
         >>> c = C()    # 7
         >>> c.x = 12   # 8
-        >>> print(c.x)  # 9
+        >>> andika(c.x)  # 9
         -12
         """
-        return -self._x
+        rudisha -self._x
 
-    def setx(self, value):
+    eleza setx(self, value):
         """
         >>> c = C()     # 10
         >>> c.x = 12    # 11
-        >>> print(c.x)   # 12
+        >>> andika(c.x)   # 12
         -12
         """
         self._x = value
@@ -79,39 +79,39 @@ class C(object):
     x = property(getx, setx, doc="""\
         >>> c = C()    # 13
         >>> c.x = 12   # 14
-        >>> print(c.x)  # 15
+        >>> andika(c.x)  # 15
         -12
         """)
 
     @staticmethod
-    def statm():
+    eleza statm():
         """
         A static method.
 
-        >>> print(C.statm())    # 16
+        >>> andika(C.statm())    # 16
         666
-        >>> print(C().statm())  # 17
+        >>> andika(C().statm())  # 17
         666
         """
-        return 666
+        rudisha 666
 
     @classmethod
-    def clsm(cls, val):
+    eleza clsm(cls, val):
         """
-        A class method.
+        A kundi method.
 
-        >>> print(C.clsm(22))    # 18
+        >>> andika(C.clsm(22))    # 18
         22
-        >>> print(C().clsm(23))  # 19
+        >>> andika(C().clsm(23))  # 19
         23
         """
-        return val
+        rudisha val
 
-def test_main():
+eleza test_main():
     kutoka test agiza test_doctest2
     EXPECTED = 19
     f, t = support.run_doctest(test_doctest2)
-    if t != EXPECTED:
+    ikiwa t != EXPECTED:
         raise support.TestFailed("expected %d tests to run, not %d" %
                                       (EXPECTED, t))
 
@@ -119,5 +119,5 @@ def test_main():
 # to make sure they don't get tested.
 kutoka doctest agiza *
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test_main()

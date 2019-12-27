@@ -27,7 +27,7 @@ MS_TO_NS = 10 ** 6
 SEC_TO_NS = 10 ** 9
 NS_TO_SEC = 10 ** 9
 
-class _PyTime(enum.IntEnum):
+kundi _PyTime(enum.IntEnum):
     # Round towards minus infinity (-inf)
     ROUND_FLOOR = 0
     # Round towards infinity (+inf)
@@ -47,25 +47,25 @@ ROUNDING_MODES = (
 )
 
 
-class TimeTestCase(unittest.TestCase):
+kundi TimeTestCase(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.t = time.time()
 
-    def test_data_attributes(self):
+    eleza test_data_attributes(self):
         time.altzone
         time.daylight
         time.timezone
         time.tzname
 
-    def test_time(self):
+    eleza test_time(self):
         time.time()
         info = time.get_clock_info('time')
         self.assertFalse(info.monotonic)
         self.assertTrue(info.adjustable)
 
-    def test_time_ns_type(self):
-        def check_ns(sec, ns):
+    eleza test_time_ns_type(self):
+        eleza check_ns(sec, ns):
             self.assertIsInstance(ns, int)
 
             sec_ns = int(sec * 1e9)
@@ -81,17 +81,17 @@ class TimeTestCase(unittest.TestCase):
         check_ns(time.process_time(),
                  time.process_time_ns())
 
-        if hasattr(time, 'thread_time'):
+        ikiwa hasattr(time, 'thread_time'):
             check_ns(time.thread_time(),
                      time.thread_time_ns())
 
-        if hasattr(time, 'clock_gettime'):
+        ikiwa hasattr(time, 'clock_gettime'):
             check_ns(time.clock_gettime(time.CLOCK_REALTIME),
                      time.clock_gettime_ns(time.CLOCK_REALTIME))
 
     @unittest.skipUnless(hasattr(time, 'clock_gettime'),
                          'need time.clock_gettime()')
-    def test_clock_realtime(self):
+    eleza test_clock_realtime(self):
         t = time.clock_gettime(time.CLOCK_REALTIME)
         self.assertIsInstance(t, float)
 
@@ -99,7 +99,7 @@ class TimeTestCase(unittest.TestCase):
                          'need time.clock_gettime()')
     @unittest.skipUnless(hasattr(time, 'CLOCK_MONOTONIC'),
                          'need time.CLOCK_MONOTONIC')
-    def test_clock_monotonic(self):
+    eleza test_clock_monotonic(self):
         a = time.clock_gettime(time.CLOCK_MONOTONIC)
         b = time.clock_gettime(time.CLOCK_MONOTONIC)
         self.assertLessEqual(a, b)
@@ -108,13 +108,13 @@ class TimeTestCase(unittest.TestCase):
                          'need time.pthread_getcpuclockid()')
     @unittest.skipUnless(hasattr(time, 'clock_gettime'),
                          'need time.clock_gettime()')
-    def test_pthread_getcpuclockid(self):
+    eleza test_pthread_getcpuclockid(self):
         clk_id = time.pthread_getcpuclockid(threading.get_ident())
         self.assertTrue(type(clk_id) is int)
         # when in 32-bit mode AIX only returns the predefined constant
-        if not platform.system() == "AIX":
+        ikiwa not platform.system() == "AIX":
             self.assertNotEqual(clk_id, time.CLOCK_THREAD_CPUTIME_ID)
-        elif (sys.maxsize.bit_length() > 32):
+        elikiwa (sys.maxsize.bit_length() > 32):
             self.assertNotEqual(clk_id, time.CLOCK_THREAD_CPUTIME_ID)
         else:
             self.assertEqual(clk_id, time.CLOCK_THREAD_CPUTIME_ID)
@@ -124,36 +124,36 @@ class TimeTestCase(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(time, 'clock_getres'),
                          'need time.clock_getres()')
-    def test_clock_getres(self):
+    eleza test_clock_getres(self):
         res = time.clock_getres(time.CLOCK_REALTIME)
         self.assertGreater(res, 0.0)
         self.assertLessEqual(res, 1.0)
 
     @unittest.skipUnless(hasattr(time, 'clock_settime'),
                          'need time.clock_settime()')
-    def test_clock_settime(self):
+    eleza test_clock_settime(self):
         t = time.clock_gettime(time.CLOCK_REALTIME)
         try:
             time.clock_settime(time.CLOCK_REALTIME, t)
         except PermissionError:
             pass
 
-        if hasattr(time, 'CLOCK_MONOTONIC'):
+        ikiwa hasattr(time, 'CLOCK_MONOTONIC'):
             self.assertRaises(OSError,
                               time.clock_settime, time.CLOCK_MONOTONIC, 0)
 
-    def test_conversions(self):
+    eleza test_conversions(self):
         self.assertEqual(time.ctime(self.t),
                          time.asctime(time.localtime(self.t)))
         self.assertEqual(int(time.mktime(time.localtime(self.t))),
                          int(self.t))
 
-    def test_sleep(self):
+    eleza test_sleep(self):
         self.assertRaises(ValueError, time.sleep, -2)
         self.assertRaises(ValueError, time.sleep, -1)
         time.sleep(1.2)
 
-    def test_strftime(self):
+    eleza test_strftime(self):
         tt = time.gmtime(self.t)
         for directive in ('a', 'A', 'b', 'B', 'c', 'd', 'H', 'I',
                           'j', 'm', 'M', 'p', 'S',
@@ -168,7 +168,7 @@ class TimeTestCase(unittest.TestCase):
         # embedded null character
         self.assertRaises(ValueError, time.strftime, '%S\0', tt)
 
-    def _bounds_checking(self, func):
+    eleza _bounds_checking(self, func):
         # Make sure that strftime() checks the bounds of the various parts
         # of the time tuple (0 is valid for *all* values).
 
@@ -225,10 +225,10 @@ class TimeTestCase(unittest.TestCase):
         self.assertRaises(ValueError, func,
                             (1900, 1, 1, 0, 0, 0, 0, 367, -1))
 
-    def test_strftime_bounding_check(self):
+    eleza test_strftime_bounding_check(self):
         self._bounds_checking(lambda tup: time.strftime('', tup))
 
-    def test_strftime_format_check(self):
+    eleza test_strftime_format_check(self):
         # Test that strftime does not crash on invalid format strings
         # that may trigger a buffer overread. When not triggered,
         # strftime may succeed or raise ValueError depending on
@@ -241,7 +241,7 @@ class TimeTestCase(unittest.TestCase):
                     except ValueError:
                         pass
 
-    def test_default_values_for_zero(self):
+    eleza test_default_values_for_zero(self):
         # Make sure that using all zeros uses the proper default
         # values.  No test for daylight savings since strftime() does
         # not change output based on its value and no test for year
@@ -252,7 +252,7 @@ class TimeTestCase(unittest.TestCase):
         self.assertEqual(expected, result)
 
     @skip_if_buggy_ucrt_strfptime
-    def test_strptime(self):
+    eleza test_strptime(self):
         # Should be able to go round-trip kutoka strftime to strptime without
         # raising an exception.
         tt = time.gmtime(self.t)
@@ -267,12 +267,12 @@ class TimeTestCase(unittest.TestCase):
                 self.fail("conversion specifier %r failed with '%s' input." %
                           (format, strf_output))
 
-    def test_strptime_bytes(self):
+    eleza test_strptime_bytes(self):
         # Make sure only strings are accepted as arguments to strptime.
         self.assertRaises(TypeError, time.strptime, b'2009', "%Y")
         self.assertRaises(TypeError, time.strptime, '2009', b'%Y')
 
-    def test_strptime_exception_context(self):
+    eleza test_strptime_exception_context(self):
         # check that this doesn't chain exceptions needlessly (see #17572)
         with self.assertRaises(ValueError) as e:
             time.strptime('', '%D')
@@ -282,7 +282,7 @@ class TimeTestCase(unittest.TestCase):
             time.strptime('19', '%Y %')
         self.assertIs(e.exception.__suppress_context__, True)
 
-    def test_asctime(self):
+    eleza test_asctime(self):
         time.asctime(time.gmtime(self.t))
 
         # Max year is only limited by the size of C int.
@@ -297,10 +297,10 @@ class TimeTestCase(unittest.TestCase):
         self.assertRaises(TypeError, time.asctime, ())
         self.assertRaises(TypeError, time.asctime, (0,) * 10)
 
-    def test_asctime_bounding_check(self):
+    eleza test_asctime_bounding_check(self):
         self._bounds_checking(time.asctime)
 
-    def test_ctime(self):
+    eleza test_ctime(self):
         t = time.mktime((1973, 9, 16, 1, 3, 52, 0, 0, -1))
         self.assertEqual(time.ctime(t), 'Sun Sep 16 01:03:52 1973')
         t = time.mktime((2000, 1, 1, 0, 0, 0, 0, 0, -1))
@@ -317,7 +317,7 @@ class TimeTestCase(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(time, "tzset"),
                          "time module has no attribute tzset")
-    def test_tzset(self):
+    eleza test_tzset(self):
 
         kutoka os agiza environ
 
@@ -384,43 +384,43 @@ class TimeTestCase(unittest.TestCase):
         finally:
             # Repair TZ environment variable in case any other tests
             # rely on it.
-            if org_TZ is not None:
+            ikiwa org_TZ is not None:
                 environ['TZ'] = org_TZ
-            elif 'TZ' in environ:
+            elikiwa 'TZ' in environ:
                 del environ['TZ']
             time.tzset()
 
-    def test_insane_timestamps(self):
+    eleza test_insane_timestamps(self):
         # It's possible that some platform maps time_t to double,
         # and that this test will fail there.  This test should
-        # exempt such platforms (provided they return reasonable
+        # exempt such platforms (provided they rudisha reasonable
         # results!).
         for func in time.ctime, time.gmtime, time.localtime:
             for unreasonable in -1e200, 1e200:
                 self.assertRaises(OverflowError, func, unreasonable)
 
-    def test_ctime_without_arg(self):
+    eleza test_ctime_without_arg(self):
         # Not sure how to check the values, since the clock could tick
         # at any time.  Make sure these are at least accepted and
         # don't raise errors.
         time.ctime()
         time.ctime(None)
 
-    def test_gmtime_without_arg(self):
+    eleza test_gmtime_without_arg(self):
         gt0 = time.gmtime()
         gt1 = time.gmtime(None)
         t0 = time.mktime(gt0)
         t1 = time.mktime(gt1)
         self.assertAlmostEqual(t1, t0, delta=0.2)
 
-    def test_localtime_without_arg(self):
+    eleza test_localtime_without_arg(self):
         lt0 = time.localtime()
         lt1 = time.localtime(None)
         t0 = time.mktime(lt0)
         t1 = time.mktime(lt1)
         self.assertAlmostEqual(t1, t0, delta=0.2)
 
-    def test_mktime(self):
+    eleza test_mktime(self):
         # Issue #1726687
         for t in (-2, -1, 0, 1):
             try:
@@ -434,8 +434,8 @@ class TimeTestCase(unittest.TestCase):
     # borks the glibc's internal timezone data.
     @unittest.skipUnless(platform.libc_ver()[0] != 'glibc',
                          "disabled because of a bug in glibc. Issue #13309")
-    def test_mktime_error(self):
-        # It may not be possible to reliably make mktime return error
+    eleza test_mktime_error(self):
+        # It may not be possible to reliably make mktime rudisha error
         # on all platfom.  This will make sure that no other exception
         # than OverflowError is raised for an extreme value.
         tt = time.gmtime(self.t)
@@ -447,7 +447,7 @@ class TimeTestCase(unittest.TestCase):
             pass
         self.assertEqual(time.strftime('%Z', tt), tzname)
 
-    def test_monotonic(self):
+    eleza test_monotonic(self):
         # monotonic() should not go backward
         times = [time.monotonic() for n in range(100)]
         t1 = times[0]
@@ -470,10 +470,10 @@ class TimeTestCase(unittest.TestCase):
         self.assertTrue(info.monotonic)
         self.assertFalse(info.adjustable)
 
-    def test_perf_counter(self):
+    eleza test_perf_counter(self):
         time.perf_counter()
 
-    def test_process_time(self):
+    eleza test_process_time(self):
         # process_time() should not include time spend during a sleep
         start = time.process_time()
         time.sleep(0.100)
@@ -486,9 +486,9 @@ class TimeTestCase(unittest.TestCase):
         self.assertTrue(info.monotonic)
         self.assertFalse(info.adjustable)
 
-    def test_thread_time(self):
-        if not hasattr(time, 'thread_time'):
-            if sys.platform.startswith(('linux', 'win')):
+    eleza test_thread_time(self):
+        ikiwa not hasattr(time, 'thread_time'):
+            ikiwa sys.platform.startswith(('linux', 'win')):
                 self.fail("time.thread_time() should be available on %r"
                           % (sys.platform,))
             else:
@@ -508,7 +508,7 @@ class TimeTestCase(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(time, 'clock_settime'),
                          'need time.clock_settime')
-    def test_monotonic_settime(self):
+    eleza test_monotonic_settime(self):
         t1 = time.monotonic()
         realtime = time.clock_gettime(time.CLOCK_REALTIME)
         # jump backward with an offset of 1 hour
@@ -521,7 +521,7 @@ class TimeTestCase(unittest.TestCase):
         # monotonic must not be affected by system clock updates
         self.assertGreaterEqual(t2, t1)
 
-    def test_localtime_failure(self):
+    eleza test_localtime_failure(self):
         # Issue #13847: check for localtime() failure
         invalid_time_t = None
         for time_t in (-1, 2**30, 2**33, 2**60):
@@ -532,7 +532,7 @@ class TimeTestCase(unittest.TestCase):
             except OSError:
                 invalid_time_t = time_t
                 break
-        if invalid_time_t is None:
+        ikiwa invalid_time_t is None:
             self.skipTest("unable to find an invalid time_t value")
 
         self.assertRaises(OSError, time.localtime, invalid_time_t)
@@ -542,7 +542,7 @@ class TimeTestCase(unittest.TestCase):
         self.assertRaises(ValueError, time.localtime, float("nan"))
         self.assertRaises(ValueError, time.ctime, float("nan"))
 
-    def test_get_clock_info(self):
+    eleza test_get_clock_info(self):
         clocks = ['monotonic', 'perf_counter', 'process_time', 'time']
 
         for name in clocks:
@@ -561,14 +561,14 @@ class TimeTestCase(unittest.TestCase):
         self.assertRaises(ValueError, time.get_clock_info, 'xxx')
 
 
-class TestLocale(unittest.TestCase):
-    def setUp(self):
+kundi TestLocale(unittest.TestCase):
+    eleza setUp(self):
         self.oldloc = locale.setlocale(locale.LC_ALL)
 
-    def tearDown(self):
+    eleza tearDown(self):
         locale.setlocale(locale.LC_ALL, self.oldloc)
 
-    def test_bug_3061(self):
+    eleza test_bug_3061(self):
         try:
             tmp = locale.setlocale(locale.LC_ALL, "fr_FR")
         except locale.Error:
@@ -577,42 +577,42 @@ class TestLocale(unittest.TestCase):
         time.strftime("%B", (2009,2,1,0,0,0,0,0,0))
 
 
-class _TestAsctimeYear:
+kundi _TestAsctimeYear:
     _format = '%d'
 
-    def yearstr(self, y):
-        return time.asctime((y,) + (0,) * 8).split()[-1]
+    eleza yearstr(self, y):
+        rudisha time.asctime((y,) + (0,) * 8).split()[-1]
 
-    def test_large_year(self):
+    eleza test_large_year(self):
         # Check that it doesn't crash for year > 9999
         self.assertEqual(self.yearstr(12345), '12345')
         self.assertEqual(self.yearstr(123456789), '123456789')
 
-class _TestStrftimeYear:
+kundi _TestStrftimeYear:
 
     # Issue 13305:  For years < 1000, the value is not always
     # padded to 4 digits across platforms.  The C standard
     # assumes year >= 1900, so it does not specify the number
     # of digits.
 
-    if time.strftime('%Y', (1,) + (0,) * 8) == '0001':
+    ikiwa time.strftime('%Y', (1,) + (0,) * 8) == '0001':
         _format = '%04d'
     else:
         _format = '%d'
 
-    def yearstr(self, y):
-        return time.strftime('%Y', (y,) + (0,) * 8)
+    eleza yearstr(self, y):
+        rudisha time.strftime('%Y', (y,) + (0,) * 8)
 
-    def test_4dyear(self):
-        # Check that we can return the zero padded value.
-        if self._format == '%04d':
+    eleza test_4dyear(self):
+        # Check that we can rudisha the zero padded value.
+        ikiwa self._format == '%04d':
             self.test_year('%04d')
         else:
-            def year4d(y):
-                return time.strftime('%4Y', (y,) + (0,) * 8)
+            eleza year4d(y):
+                rudisha time.strftime('%4Y', (y,) + (0,) * 8)
             self.test_year('%04d', func=year4d)
 
-    def skip_if_not_supported(y):
+    eleza skip_if_not_supported(y):
         msg = "strftime() is limited to [1; 9999] with Visual Studio"
         # Check that it doesn't crash for year > 9999
         try:
@@ -621,23 +621,23 @@ class _TestStrftimeYear:
             cond = False
         else:
             cond = True
-        return unittest.skipUnless(cond, msg)
+        rudisha unittest.skipUnless(cond, msg)
 
     @skip_if_not_supported(10000)
-    def test_large_year(self):
-        return super().test_large_year()
+    eleza test_large_year(self):
+        rudisha super().test_large_year()
 
     @skip_if_not_supported(0)
-    def test_negative(self):
-        return super().test_negative()
+    eleza test_negative(self):
+        rudisha super().test_negative()
 
     del skip_if_not_supported
 
 
-class _Test4dYear:
+kundi _Test4dYear:
     _format = '%d'
 
-    def test_year(self, fmt=None, func=None):
+    eleza test_year(self, fmt=None, func=None):
         fmt = fmt or self._format
         func = func or self.yearstr
         self.assertEqual(func(1),    fmt % 1)
@@ -647,13 +647,13 @@ class _Test4dYear:
         self.assertEqual(func(999),  fmt % 999)
         self.assertEqual(func(9999), fmt % 9999)
 
-    def test_large_year(self):
+    eleza test_large_year(self):
         self.assertEqual(self.yearstr(12345).lstrip('+'), '12345')
         self.assertEqual(self.yearstr(123456789).lstrip('+'), '123456789')
         self.assertEqual(self.yearstr(TIME_MAXYEAR).lstrip('+'), str(TIME_MAXYEAR))
         self.assertRaises(OverflowError, self.yearstr, TIME_MAXYEAR + 1)
 
-    def test_negative(self):
+    eleza test_negative(self):
         self.assertEqual(self.yearstr(-1), self._format % -1)
         self.assertEqual(self.yearstr(-1234), '-1234')
         self.assertEqual(self.yearstr(-123456), '-123456')
@@ -666,30 +666,30 @@ class _Test4dYear:
             self.yearstr(-TIME_MAXYEAR - 1)
 
 
-class TestAsctime4dyear(_TestAsctimeYear, _Test4dYear, unittest.TestCase):
+kundi TestAsctime4dyear(_TestAsctimeYear, _Test4dYear, unittest.TestCase):
     pass
 
-class TestStrftime4dyear(_TestStrftimeYear, _Test4dYear, unittest.TestCase):
+kundi TestStrftime4dyear(_TestStrftimeYear, _Test4dYear, unittest.TestCase):
     pass
 
 
-class TestPytime(unittest.TestCase):
+kundi TestPytime(unittest.TestCase):
     @skip_if_buggy_ucrt_strfptime
     @unittest.skipUnless(time._STRUCT_TM_ITEMS == 11, "needs tm_zone support")
-    def test_localtime_timezone(self):
+    eleza test_localtime_timezone(self):
 
         # Get the localtime and examine it for the offset and zone.
         lt = time.localtime()
         self.assertTrue(hasattr(lt, "tm_gmtoff"))
         self.assertTrue(hasattr(lt, "tm_zone"))
 
-        # See if the offset and zone are similar to the module
+        # See ikiwa the offset and zone are similar to the module
         # attributes.
-        if lt.tm_gmtoff is None:
+        ikiwa lt.tm_gmtoff is None:
             self.assertTrue(not hasattr(time, "timezone"))
         else:
             self.assertEqual(lt.tm_gmtoff, -[time.timezone, time.altzone][lt.tm_isdst])
-        if lt.tm_zone is None:
+        ikiwa lt.tm_zone is None:
             self.assertTrue(not hasattr(time, "tzname"))
         else:
             self.assertEqual(lt.tm_zone, time.tzname[lt.tm_isdst])
@@ -711,14 +711,14 @@ class TestPytime(unittest.TestCase):
         self.assertEqual(new_lt9.tm_zone, lt.tm_zone)
 
     @unittest.skipUnless(time._STRUCT_TM_ITEMS == 11, "needs tm_zone support")
-    def test_strptime_timezone(self):
+    eleza test_strptime_timezone(self):
         t = time.strptime("UTC", "%Z")
         self.assertEqual(t.tm_zone, 'UTC')
         t = time.strptime("+0500", "%z")
         self.assertEqual(t.tm_gmtoff, 5 * 3600)
 
     @unittest.skipUnless(time._STRUCT_TM_ITEMS == 11, "needs tm_zone support")
-    def test_short_times(self):
+    eleza test_short_times(self):
 
         agiza pickle
 
@@ -730,26 +730,26 @@ class TestPytime(unittest.TestCase):
 
 
 @unittest.skipIf(_testcapi is None, 'need the _testcapi module')
-class CPyTimeTestCase:
+kundi CPyTimeTestCase:
     """
-    Base class to test the C _PyTime_t API.
+    Base kundi to test the C _PyTime_t API.
     """
     OVERFLOW_SECONDS = None
 
-    def setUp(self):
+    eleza setUp(self):
         kutoka _testcapi agiza SIZEOF_TIME_T
         bits = SIZEOF_TIME_T * 8 - 1
         self.time_t_min = -2 ** bits
         self.time_t_max = 2 ** bits - 1
 
-    def time_t_filter(self, seconds):
-        return (self.time_t_min <= seconds <= self.time_t_max)
+    eleza time_t_filter(self, seconds):
+        rudisha (self.time_t_min <= seconds <= self.time_t_max)
 
-    def _rounding_values(self, use_float):
+    eleza _rounding_values(self, use_float):
         "Build timestamps used to test rounding."
 
         units = [1, US_TO_NS, MS_TO_NS, SEC_TO_NS]
-        if use_float:
+        ikiwa use_float:
             # picoseconds are only tested to pytime_converter accepting floats
             units.append(1e-3)
 
@@ -784,7 +784,7 @@ class CPyTimeTestCase:
             ))
         for seconds in (_testcapi.INT_MIN, _testcapi.INT_MAX):
             ns_timestamps.append(seconds * SEC_TO_NS)
-        if use_float:
+        ikiwa use_float:
             # numbers with an exact representation in IEEE 754 (base 2)
             for pow2 in (3, 7, 10, 15):
                 ns = 2.0 ** (-pow2)
@@ -794,24 +794,24 @@ class CPyTimeTestCase:
         ns = (2 ** 63 // SEC_TO_NS) * SEC_TO_NS
         ns_timestamps.extend((-ns, ns))
 
-        return ns_timestamps
+        rudisha ns_timestamps
 
-    def _check_rounding(self, pytime_converter, expected_func,
+    eleza _check_rounding(self, pytime_converter, expected_func,
                         use_float, unit_to_sec, value_filter=None):
 
-        def convert_values(ns_timestamps):
-            if use_float:
+        eleza convert_values(ns_timestamps):
+            ikiwa use_float:
                 unit_to_ns = SEC_TO_NS / float(unit_to_sec)
                 values = [ns / unit_to_ns for ns in ns_timestamps]
             else:
                 unit_to_ns = SEC_TO_NS // unit_to_sec
                 values = [ns // unit_to_ns for ns in ns_timestamps]
 
-            if value_filter:
+            ikiwa value_filter:
                 values = filter(value_filter, values)
 
             # remove duplicates and sort
-            return sorted(set(values))
+            rudisha sorted(set(values))
 
         # test rounding
         ns_timestamps = self._rounding_values(use_float)
@@ -841,35 +841,35 @@ class CPyTimeTestCase:
                 with self.assertRaises(OverflowError, msg=debug_info):
                     pytime_converter(value, time_rnd)
 
-    def check_int_rounding(self, pytime_converter, expected_func,
+    eleza check_int_rounding(self, pytime_converter, expected_func,
                            unit_to_sec=1, value_filter=None):
         self._check_rounding(pytime_converter, expected_func,
                              False, unit_to_sec, value_filter)
 
-    def check_float_rounding(self, pytime_converter, expected_func,
+    eleza check_float_rounding(self, pytime_converter, expected_func,
                              unit_to_sec=1, value_filter=None):
         self._check_rounding(pytime_converter, expected_func,
                              True, unit_to_sec, value_filter)
 
-    def decimal_round(self, x):
+    eleza decimal_round(self, x):
         d = decimal.Decimal(x)
         d = d.quantize(1)
-        return int(d)
+        rudisha int(d)
 
 
-class TestCPyTime(CPyTimeTestCase, unittest.TestCase):
+kundi TestCPyTime(CPyTimeTestCase, unittest.TestCase):
     """
     Test the C _PyTime_t API.
     """
     # _PyTime_t is a 64-bit signed integer
     OVERFLOW_SECONDS = math.ceil((2**63 + 1) / SEC_TO_NS)
 
-    def test_FromSeconds(self):
+    eleza test_FromSeconds(self):
         kutoka _testcapi agiza PyTime_FromSeconds
 
         # PyTime_FromSeconds() expects a C int, reject values out of range
-        def c_int_filter(secs):
-            return (_testcapi.INT_MIN <= secs <= _testcapi.INT_MAX)
+        eleza c_int_filter(secs):
+            rudisha (_testcapi.INT_MIN <= secs <= _testcapi.INT_MAX)
 
         self.check_int_rounding(lambda secs, rnd: PyTime_FromSeconds(secs),
                                 lambda secs: secs * SEC_TO_NS,
@@ -880,7 +880,7 @@ class TestCPyTime(CPyTimeTestCase, unittest.TestCase):
             with self.assertRaises(TypeError):
                 PyTime_FromSeconds(float('nan'))
 
-    def test_FromSecondsObject(self):
+    eleza test_FromSecondsObject(self):
         kutoka _testcapi agiza PyTime_FromSecondsObject
 
         self.check_int_rounding(
@@ -896,14 +896,14 @@ class TestCPyTime(CPyTimeTestCase, unittest.TestCase):
             with self.assertRaises(ValueError):
                 PyTime_FromSecondsObject(float('nan'), time_rnd)
 
-    def test_AsSecondsDouble(self):
+    eleza test_AsSecondsDouble(self):
         kutoka _testcapi agiza PyTime_AsSecondsDouble
 
-        def float_converter(ns):
-            if abs(ns) % SEC_TO_NS == 0:
-                return float(ns // SEC_TO_NS)
+        eleza float_converter(ns):
+            ikiwa abs(ns) % SEC_TO_NS == 0:
+                rudisha float(ns // SEC_TO_NS)
             else:
-                return float(ns) / SEC_TO_NS
+                rudisha float(ns) / SEC_TO_NS
 
         self.check_int_rounding(lambda ns, rnd: PyTime_AsSecondsDouble(ns),
                                 float_converter,
@@ -914,30 +914,30 @@ class TestCPyTime(CPyTimeTestCase, unittest.TestCase):
             with self.assertRaises(TypeError):
                 PyTime_AsSecondsDouble(float('nan'))
 
-    def create_decimal_converter(self, denominator):
+    eleza create_decimal_converter(self, denominator):
         denom = decimal.Decimal(denominator)
 
-        def converter(value):
+        eleza converter(value):
             d = decimal.Decimal(value) / denom
-            return self.decimal_round(d)
+            rudisha self.decimal_round(d)
 
-        return converter
+        rudisha converter
 
-    def test_AsTimeval(self):
+    eleza test_AsTimeval(self):
         kutoka _testcapi agiza PyTime_AsTimeval
 
         us_converter = self.create_decimal_converter(US_TO_NS)
 
-        def timeval_converter(ns):
+        eleza timeval_converter(ns):
             us = us_converter(ns)
-            return divmod(us, SEC_TO_US)
+            rudisha divmod(us, SEC_TO_US)
 
-        if sys.platform == 'win32':
+        ikiwa sys.platform == 'win32':
             kutoka _testcapi agiza LONG_MIN, LONG_MAX
 
             # On Windows, timeval.tv_sec type is a C long
-            def seconds_filter(secs):
-                return LONG_MIN <= secs <= LONG_MAX
+            eleza seconds_filter(secs):
+                rudisha LONG_MIN <= secs <= LONG_MAX
         else:
             seconds_filter = self.time_t_filter
 
@@ -948,25 +948,25 @@ class TestCPyTime(CPyTimeTestCase, unittest.TestCase):
 
     @unittest.skipUnless(hasattr(_testcapi, 'PyTime_AsTimespec'),
                          'need _testcapi.PyTime_AsTimespec')
-    def test_AsTimespec(self):
+    eleza test_AsTimespec(self):
         kutoka _testcapi agiza PyTime_AsTimespec
 
-        def timespec_converter(ns):
-            return divmod(ns, SEC_TO_NS)
+        eleza timespec_converter(ns):
+            rudisha divmod(ns, SEC_TO_NS)
 
         self.check_int_rounding(lambda ns, rnd: PyTime_AsTimespec(ns),
                                 timespec_converter,
                                 NS_TO_SEC,
                                 value_filter=self.time_t_filter)
 
-    def test_AsMilliseconds(self):
+    eleza test_AsMilliseconds(self):
         kutoka _testcapi agiza PyTime_AsMilliseconds
 
         self.check_int_rounding(PyTime_AsMilliseconds,
                                 self.create_decimal_converter(MS_TO_NS),
                                 NS_TO_SEC)
 
-    def test_AsMicroseconds(self):
+    eleza test_AsMicroseconds(self):
         kutoka _testcapi agiza PyTime_AsMicroseconds
 
         self.check_int_rounding(PyTime_AsMicroseconds,
@@ -974,7 +974,7 @@ class TestCPyTime(CPyTimeTestCase, unittest.TestCase):
                                 NS_TO_SEC)
 
 
-class TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
+kundi TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
     """
     Test the old C _PyTime_t API: _PyTime_ObjectToXXX() functions.
     """
@@ -982,7 +982,7 @@ class TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
     # time_t is a 32-bit or 64-bit signed integer
     OVERFLOW_SECONDS = 2 ** 64
 
-    def test_object_to_time_t(self):
+    eleza test_object_to_time_t(self):
         kutoka _testcapi agiza pytime_object_to_time_t
 
         self.check_int_rounding(pytime_object_to_time_t,
@@ -993,22 +993,22 @@ class TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
                                   self.decimal_round,
                                   value_filter=self.time_t_filter)
 
-    def create_converter(self, sec_to_unit):
-        def converter(secs):
+    eleza create_converter(self, sec_to_unit):
+        eleza converter(secs):
             floatpart, intpart = math.modf(secs)
             intpart = int(intpart)
             floatpart *= sec_to_unit
             floatpart = self.decimal_round(floatpart)
-            if floatpart < 0:
+            ikiwa floatpart < 0:
                 floatpart += sec_to_unit
                 intpart -= 1
-            elif floatpart >= sec_to_unit:
+            elikiwa floatpart >= sec_to_unit:
                 floatpart -= sec_to_unit
                 intpart += 1
-            return (intpart, floatpart)
-        return converter
+            rudisha (intpart, floatpart)
+        rudisha converter
 
-    def test_object_to_timeval(self):
+    eleza test_object_to_timeval(self):
         kutoka _testcapi agiza pytime_object_to_timeval
 
         self.check_int_rounding(pytime_object_to_timeval,
@@ -1024,7 +1024,7 @@ class TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
             with self.assertRaises(ValueError):
                 pytime_object_to_timeval(float('nan'), time_rnd)
 
-    def test_object_to_timespec(self):
+    eleza test_object_to_timespec(self):
         kutoka _testcapi agiza pytime_object_to_timespec
 
         self.check_int_rounding(pytime_object_to_timespec,
@@ -1041,5 +1041,5 @@ class TestOldPyTime(CPyTimeTestCase, unittest.TestCase):
                 pytime_object_to_timespec(float('nan'), time_rnd)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

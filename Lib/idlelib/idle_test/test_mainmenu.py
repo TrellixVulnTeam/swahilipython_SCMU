@@ -5,17 +5,17 @@ kutoka idlelib agiza mainmenu
 agiza unittest
 
 
-class MainMenuTest(unittest.TestCase):
+kundi MainMenuTest(unittest.TestCase):
 
-    def test_menudefs(self):
+    eleza test_menudefs(self):
         actual = [item[0] for item in mainmenu.menudefs]
         expect = ['file', 'edit', 'format', 'run', 'shell',
                   'debug', 'options', 'window', 'help']
         self.assertEqual(actual, expect)
 
-    def test_default_keydefs(self):
+    eleza test_default_keydefs(self):
         self.assertGreaterEqual(len(mainmenu.default_keydefs), 50)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

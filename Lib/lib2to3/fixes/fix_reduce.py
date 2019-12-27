@@ -3,7 +3,7 @@
 
 """Fixer for reduce().
 
-Makes sure reduce() is imported kutoka the functools module if reduce is
+Makes sure reduce() is imported kutoka the functools module ikiwa reduce is
 used in that module.
 """
 
@@ -12,7 +12,7 @@ kutoka lib2to3.fixer_util agiza touch_agiza
 
 
 
-class FixReduce(fixer_base.BaseFix):
+kundi FixReduce(fixer_base.BaseFix):
 
     BM_compatible = True
     order = "pre"
@@ -31,5 +31,5 @@ class FixReduce(fixer_base.BaseFix):
     >
     """
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         touch_agiza('functools', 'reduce', node)

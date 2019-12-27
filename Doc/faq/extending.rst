@@ -57,7 +57,7 @@ with a tool such as `SWIG <http://www.swig.org>`_.  `SIP
 alternatives for wrapping C++ libraries.
 
 
-How can I execute arbitrary Python statements from C?
+How can I execute arbitrary Python statements kutoka C?
 -----------------------------------------------------
 
 The highest-level function to do this is :c:func:`PyRun_SimpleString` which takes
@@ -68,15 +68,15 @@ a single string argument to be executed in the context of the module
 ``Python/pythonrun.c``.
 
 
-How can I evaluate an arbitrary Python expression from C?
+How can I evaluate an arbitrary Python expression kutoka C?
 ---------------------------------------------------------
 
-Call the function :c:func:`PyRun_String` from the previous question with the
+Call the function :c:func:`PyRun_String` kutoka the previous question with the
 start symbol :c:data:`Py_eval_input`; it parses an expression, evaluates it and
 returns its value.
 
 
-How do I extract C values from a Python object?
+How do I extract C values kutoka a Python object?
 -----------------------------------------------
 
 That depends on the object's type.  If it's a tuple, :c:func:`PyTuple_Size`
@@ -106,7 +106,7 @@ How do I use Py_BuildValue() to create a tuple of arbitrary length?
 You can't.  Use :c:func:`PyTuple_Pack` instead.
 
 
-How do I call an object's method from C?
+How do I call an object's method kutoka C?
 ----------------------------------------
 
 The :c:func:`PyObject_CallMethod` function can be used to call an arbitrary
@@ -138,7 +138,7 @@ and to call a function with one argument, surround the argument in parentheses,
 e.g. "(i)".
 
 
-How do I catch the output from PyErr_Print() (or anything that prints to stdout/stderr)?
+How do I catch the output kutoka PyErr_Print() (or anything that prints to stdout/stderr)?
 ----------------------------------------------------------------------------------------
 
 In Python code, define an object that supports the ``write()`` method.  Assign
@@ -150,7 +150,7 @@ The easiest way to do this is to use the :class:`io.StringIO` class:
 
 .. code-block:: pycon
 
-   >>> import io, sys
+   >>> agiza io, sys
    >>> sys.stdout = io.StringIO()
    >>> print('foo')
    >>> print('hello world!')
@@ -162,14 +162,14 @@ A custom object to do the same would look like this:
 
 .. code-block:: pycon
 
-   >>> import io, sys
-   >>> class StdoutCatcher(io.TextIOBase):
+   >>> agiza io, sys
+   >>> kundi StdoutCatcher(io.TextIOBase):
    ...     def __init__(self):
    ...         self.data = []
    ...     def write(self, stuff):
    ...         self.data.append(stuff)
    ...
-   >>> import sys
+   >>> agiza sys
    >>> sys.stdout = StdoutCatcher()
    >>> print('foo')
    >>> print('hello world!')
@@ -178,7 +178,7 @@ A custom object to do the same would look like this:
    hello world!
 
 
-How do I access a module written in Python from C?
+How do I access a module written in Python kutoka C?
 --------------------------------------------------
 
 You can get a pointer to the module object as follows::
@@ -200,7 +200,7 @@ Calling :c:func:`PyObject_SetAttrString` to assign to variables in the module
 also works.
 
 
-How do I interface to C++ objects from Python?
+How do I interface to C++ objects kutoka Python?
 ----------------------------------------------
 
 Depending on your requirements, there are many approaches.  To do this manually,
@@ -255,7 +255,7 @@ For Red Hat, install the python-devel RPM to get the necessary files.
 For Debian, run ``apt-get install python-dev``.
 
 
-How do I tell "incomplete input" from "invalid input"?
+How do I tell "incomplete input" kutoka "invalid input"?
 ------------------------------------------------------
 
 Sometimes you want to emulate the Python interactive interpreter's behavior,
@@ -278,7 +278,7 @@ thread as your rest application and you can't allow the
 :c:func:`PyRun_InteractiveLoop` to stop while waiting for user input.  The one
 solution then is to call :c:func:`PyParser_ParseString` and test for ``e.error``
 equal to ``E_EOF``, which means the input is incomplete.  Here's a sample code
-fragment, untested, inspired by code from Alex Farber::
+fragment, untested, inspired by code kutoka Alex Farber::
 
    #define PY_SSIZE_T_CLEAN
    #include <Python.h>
@@ -311,7 +311,7 @@ Another solution is trying to compile the received string with
 :c:func:`Py_CompileString`. If it compiles without errors, try to execute the
 returned code object by calling :c:func:`PyEval_EvalCode`. Otherwise save the
 input for later. If the compilation fails, find out if it's an error or just
-more input is required - by extracting the message string from the exception
+more input is required - by extracting the message string kutoka the exception
 tuple and comparing it to the string "unexpected EOF while parsing".  Here is a
 complete example using the GNU readline library (you may want to ignore
 **SIGINT** while calling readline())::
@@ -436,12 +436,12 @@ using g++ (change LINKCC in the Python Modules Makefile), and link your
 extension module using g++ (e.g., ``g++ -shared -o mymodule.so mymodule.o``).
 
 
-Can I create an object class with some methods implemented in C and others in Python (e.g. through inheritance)?
+Can I create an object kundi with some methods implemented in C and others in Python (e.g. through inheritance)?
 ----------------------------------------------------------------------------------------------------------------
 
-Yes, you can inherit from built-in classes such as :class:`int`, :class:`list`,
+Yes, you can inherit kutoka built-in classes such as :class:`int`, :class:`list`,
 :class:`dict`, etc.
 
 The Boost Python Library (BPL, http://www.boost.org/libs/python/doc/index.html)
-provides a way of doing this from C++ (i.e. you can inherit from an extension
-class written in C++ using the BPL).
+provides a way of doing this kutoka C++ (i.e. you can inherit kutoka an extension
+kundi written in C++ using the BPL).

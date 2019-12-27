@@ -13,42 +13,42 @@ agiza unittest
 kutoka textwrap agiza TextWrapper, wrap, fill, dedent, indent, shorten
 
 
-class BaseTestCase(unittest.TestCase):
-    '''Parent class with utility methods for textwrap tests.'''
+kundi BaseTestCase(unittest.TestCase):
+    '''Parent kundi with utility methods for textwrap tests.'''
 
-    def show(self, textin):
-        if isinstance(textin, list):
+    eleza show(self, textin):
+        ikiwa isinstance(textin, list):
             result = []
             for i in range(len(textin)):
                 result.append("  %d: %r" % (i, textin[i]))
-            result = "\n".join(result) if result else "  no lines"
-        elif isinstance(textin, str):
+            result = "\n".join(result) ikiwa result else "  no lines"
+        elikiwa isinstance(textin, str):
             result = "  %s\n" % repr(textin)
-        return result
+        rudisha result
 
 
-    def check(self, result, expect):
+    eleza check(self, result, expect):
         self.assertEqual(result, expect,
             'expected:\n%s\nbut got:\n%s' % (
                 self.show(expect), self.show(result)))
 
-    def check_wrap(self, text, width, expect, **kwargs):
+    eleza check_wrap(self, text, width, expect, **kwargs):
         result = wrap(text, width, **kwargs)
         self.check(result, expect)
 
-    def check_split(self, text, expect):
+    eleza check_split(self, text, expect):
         result = self.wrapper._split(text)
         self.assertEqual(result, expect,
                          "\nexpected %r\n"
                          "but got  %r" % (expect, result))
 
 
-class WrapTestCase(BaseTestCase):
+kundi WrapTestCase(BaseTestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.wrapper = TextWrapper(width=45)
 
-    def test_simple(self):
+    eleza test_simple(self):
         # Simple case: just words, spaces, and a bit of punctuation
 
         text = "Hello there, how are you this fine day?  I'm glad to hear it!"
@@ -65,17 +65,17 @@ class WrapTestCase(BaseTestCase):
                          "I'm glad to hear it!"])
         self.check_wrap(text, 80, [text])
 
-    def test_empty_string(self):
+    eleza test_empty_string(self):
         # Check that wrapping the empty string returns an empty list.
         self.check_wrap("", 6, [])
         self.check_wrap("", 6, [], drop_whitespace=False)
 
-    def test_empty_string_with_initial_indent(self):
+    eleza test_empty_string_with_initial_indent(self):
         # Check that the empty string is not indented.
         self.check_wrap("", 6, [], initial_indent="++")
         self.check_wrap("", 6, [], initial_indent="++", drop_whitespace=False)
 
-    def test_whitespace(self):
+    eleza test_whitespace(self):
         # Whitespace munging and end-of-sentence detection
 
         text = """\
@@ -107,7 +107,7 @@ What a mess!
         expect = ["    Test    custom      tabsize."]
         self.check_wrap(text, 80, expect, tabsize=4)
 
-    def test_fix_sentence_endings(self):
+    eleza test_fix_sentence_endings(self):
         wrapper = TextWrapper(60, fix_sentence_endings=True)
 
         # SF #847346: ensure that fix_sentence_endings=True does the
@@ -149,7 +149,7 @@ What a mess!
         expect = ['File stdio.h is nice.']
         self.check(wrapper.wrap(text), expect)
 
-    def test_wrap_short(self):
+    eleza test_wrap_short(self):
         # Wrapping to make short lines longer
 
         text = "This is a\nshort paragraph."
@@ -159,7 +159,7 @@ What a mess!
         self.check_wrap(text, 40, ["This is a short paragraph."])
 
 
-    def test_wrap_short_1line(self):
+    eleza test_wrap_short_1line(self):
         # Test endcases
 
         text = "This is a short line."
@@ -169,7 +169,7 @@ What a mess!
                         initial_indent="(1) ")
 
 
-    def test_hyphenated(self):
+    eleza test_hyphenated(self):
         # Test breaking hyphenated words
 
         text = ("this-is-a-useful-feature-for-"
@@ -195,7 +195,7 @@ What a mess!
         # The test tests current behavior but is not testing parts of the API.
         self.check_split('half-a-crown', 'half-|a-|crown'.split('|'))
 
-    def test_hyphenated_numbers(self):
+    eleza test_hyphenated_numbers(self):
         # Test that hyphenated numbers (eg. dates) are not broken like words.
         text = ("Python 1.0.0 was released on 1994-01-26.  Python 1.0.1 was\n"
                 "released on 1994-02-15.")
@@ -215,7 +215,7 @@ What a mess!
         self.check_wrap(text, 29, ["I do all my shopping at 7-11."])
         self.check_wrap(text, 1, text.split(), break_long_words=False)
 
-    def test_em_dash(self):
+    eleza test_em_dash(self):
         # Test text with em-dashes
         text = "Em-dashes should be written -- thus."
         self.check_wrap(text, 25,
@@ -270,7 +270,7 @@ What a mess!
         self.check_split(text, expect)
 
 
-    def test_unix_options (self):
+    eleza test_unix_options (self):
         # Test that Unix-style command-line options are wrapped correctly.
         # Both Optik (OptionParser) and Docutils rely on this behaviour!
 
@@ -304,7 +304,7 @@ What a mess!
                   "--dry-", "run", " ", "or", " ", "--dryrun"]
         self.check_split(text, expect)
 
-    def test_funky_hyphens (self):
+    eleza test_funky_hyphens (self):
         # Screwy edge cases cooked up by David Goodger.  All reported
         # in SF bug #596434.
         self.check_split("what the--hey!", ["what", " ", "the", "--", "hey!"])
@@ -321,7 +321,7 @@ What a mess!
         self.check_split("foo --option-opt bar",
                          ["foo", " ", "--option-", "opt", " ", "bar"])
 
-    def test_punct_hyphens(self):
+    eleza test_punct_hyphens(self):
         # Oh bother, SF #965425 found another problem with hyphens --
         # hyphenated words in single quotes weren't handled correctly.
         # In fact, the bug is that *any* punctuation around a hyphenated
@@ -342,7 +342,7 @@ What a mess!
         self.check_split("what-d'you-call-it.",
                          "what-d'you-|call-|it.".split('|'))
 
-    def test_funky_parens (self):
+    eleza test_funky_parens (self):
         # Second part of SF bug #596434: long option strings inside
         # parentheses.
         self.check_split("foo (--option) bar",
@@ -355,7 +355,7 @@ What a mess!
                          ["blah", " ", "(ding", " ", "dong),",
                           " ", "wubba"])
 
-    def test_drop_whitespace_false(self):
+    eleza test_drop_whitespace_false(self):
         # Check that drop_whitespace=False preserves whitespace.
         # SF patch #1581073
         text = " This is a    sentence with     much whitespace."
@@ -364,21 +364,21 @@ What a mess!
                          "with     ", "much white", "space."],
                         drop_whitespace=False)
 
-    def test_drop_whitespace_false_whitespace_only(self):
+    eleza test_drop_whitespace_false_whitespace_only(self):
         # Check that drop_whitespace=False preserves a whitespace-only string.
         self.check_wrap("   ", 6, ["   "], drop_whitespace=False)
 
-    def test_drop_whitespace_false_whitespace_only_with_indent(self):
+    eleza test_drop_whitespace_false_whitespace_only_with_indent(self):
         # Check that a whitespace-only string gets indented (when
         # drop_whitespace is False).
         self.check_wrap("   ", 6, ["     "], drop_whitespace=False,
                         initial_indent="  ")
 
-    def test_drop_whitespace_whitespace_only(self):
+    eleza test_drop_whitespace_whitespace_only(self):
         # Check drop_whitespace on a whitespace-only string.
         self.check_wrap("  ", 6, [])
 
-    def test_drop_whitespace_leading_whitespace(self):
+    eleza test_drop_whitespace_leading_whitespace(self):
         # Check that drop_whitespace does not drop leading whitespace (if
         # followed by non-whitespace).
         # SF bug #622849 reported inconsistent handling of leading
@@ -389,8 +389,8 @@ What a mess!
         self.check_wrap(text, 30,
                         [" This is a sentence with", "leading whitespace."])
 
-    def test_drop_whitespace_whitespace_line(self):
-        # Check that drop_whitespace skips the whole line if a non-leading
+    eleza test_drop_whitespace_whitespace_line(self):
+        # Check that drop_whitespace skips the whole line ikiwa a non-leading
         # line consists only of whitespace.
         text = "abcd    efgh"
         # Include the result for drop_whitespace=False for comparison.
@@ -398,20 +398,20 @@ What a mess!
                         drop_whitespace=False)
         self.check_wrap(text, 6, ["abcd", "efgh"])
 
-    def test_drop_whitespace_whitespace_only_with_indent(self):
+    eleza test_drop_whitespace_whitespace_only_with_indent(self):
         # Check that initial_indent is not applied to a whitespace-only
         # string.  This checks a special case of the fact that dropping
         # whitespace occurs before indenting.
         self.check_wrap("  ", 6, [], initial_indent="++")
 
-    def test_drop_whitespace_whitespace_indent(self):
+    eleza test_drop_whitespace_whitespace_indent(self):
         # Check that drop_whitespace does not drop whitespace indents.
         # This checks a special case of the fact that dropping whitespace
         # occurs before indenting.
         self.check_wrap("abcd efgh", 6, ["  abcd", "  efgh"],
                         initial_indent="  ", subsequent_indent="  ")
 
-    def test_split(self):
+    eleza test_split(self):
         # Ensure that the standard _split() method works as advertised
         # in the comments
 
@@ -422,7 +422,7 @@ What a mess!
              ["Hello", " ", "there", " ", "--", " ", "you", " ", "goof-",
               "ball,", " ", "use", " ", "the", " ", "-b", " ",  "option!"])
 
-    def test_break_on_hyphens(self):
+    eleza test_break_on_hyphens(self):
         # Ensure that the break_on_hyphens attributes work
         text = "yaba daba-doo"
         self.check_wrap(text, 10, ["yaba daba-", "doo"],
@@ -430,21 +430,21 @@ What a mess!
         self.check_wrap(text, 10, ["yaba", "daba-doo"],
                         break_on_hyphens=False)
 
-    def test_bad_width(self):
+    eleza test_bad_width(self):
         # Ensure that width <= 0 is caught.
         text = "Whatever, it doesn't matter."
         self.assertRaises(ValueError, wrap, text, 0)
         self.assertRaises(ValueError, wrap, text, -1)
 
-    def test_no_split_at_umlaut(self):
+    eleza test_no_split_at_umlaut(self):
         text = "Die Empf\xe4nger-Auswahl"
         self.check_wrap(text, 13, ["Die", "Empf\xe4nger-", "Auswahl"])
 
-    def test_umlaut_followed_by_dash(self):
+    eleza test_umlaut_followed_by_dash(self):
         text = "aa \xe4\xe4-\xe4\xe4"
         self.check_wrap(text, 7, ["aa \xe4\xe4-", "\xe4\xe4"])
 
-    def test_non_breaking_space(self):
+    eleza test_non_breaking_space(self):
         text = 'This is a sentence with non-breaking\N{NO-BREAK SPACE}space.'
 
         self.check_wrap(text, 20,
@@ -459,7 +459,7 @@ What a mess!
                          'non-breaking\N{NO-BREAK SPACE}space.'],
                         break_on_hyphens=False)
 
-    def test_narrow_non_breaking_space(self):
+    eleza test_narrow_non_breaking_space(self):
         text = ('This is a sentence with non-breaking'
                 '\N{NARROW NO-BREAK SPACE}space.')
 
@@ -476,10 +476,10 @@ What a mess!
                         break_on_hyphens=False)
 
 
-class MaxLinesTestCase(BaseTestCase):
+kundi MaxLinesTestCase(BaseTestCase):
     text = "Hello there, how are you this fine day?  I'm glad to hear it!"
 
-    def test_simple(self):
+    eleza test_simple(self):
         self.check_wrap(self.text, 12,
                         ["Hello [...]"],
                         max_lines=0)
@@ -504,7 +504,7 @@ class MaxLinesTestCase(BaseTestCase):
                          "it!"],
                         max_lines=6)
 
-    def test_spaces(self):
+    eleza test_spaces(self):
         # strip spaces before placeholder
         self.check_wrap(self.text, 12,
                         ["Hello there,",
@@ -527,7 +527,7 @@ class MaxLinesTestCase(BaseTestCase):
                          "it!"],
                         max_lines=6)
 
-    def test_placeholder(self):
+    eleza test_placeholder(self):
         self.check_wrap(self.text, 12,
                         ["Hello..."],
                         max_lines=1,
@@ -559,7 +559,7 @@ class MaxLinesTestCase(BaseTestCase):
                         placeholder=' [truncated]...')
         self.check_wrap(self.text, 80, [self.text], placeholder='.' * 1000)
 
-    def test_placeholder_backtrack(self):
+    eleza test_placeholder_backtrack(self):
         # Test special case when max_lines insufficient, but what
         # would be last wrapped line so long the placeholder cannot
         # be added there without violence. So, textwrap backtracks,
@@ -571,15 +571,15 @@ class MaxLinesTestCase(BaseTestCase):
                         placeholder='*****')
 
 
-class LongWordTestCase (BaseTestCase):
-    def setUp(self):
+kundi LongWordTestCase (BaseTestCase):
+    eleza setUp(self):
         self.wrapper = TextWrapper()
         self.text = '''\
 Did you say "supercalifragilisticexpialidocious?"
 How *do* you spell that odd word, anyways?
 '''
 
-    def test_break_long(self):
+    eleza test_break_long(self):
         # Wrap text with long words and lots of punctuation
 
         self.check_wrap(self.text, 30,
@@ -615,7 +615,7 @@ How *do* you spell that odd word, anyways?
                          'word,',
                          'anyways?'])
 
-    def test_nobreak_long(self):
+    eleza test_nobreak_long(self):
         # Test with break_long_words disabled
         self.wrapper.break_long_words = 0
         self.wrapper.width = 30
@@ -631,7 +631,7 @@ How *do* you spell that odd word, anyways?
         result = wrap(self.text, width=30, break_long_words=0)
         self.check(result, expect)
 
-    def test_max_lines_long(self):
+    eleza test_max_lines_long(self):
         self.check_wrap(self.text, 12,
                         ['Did you say ',
                          '"supercalifr',
@@ -640,16 +640,16 @@ How *do* you spell that odd word, anyways?
                         max_lines=4)
 
 
-class IndentTestCases(BaseTestCase):
+kundi IndentTestCases(BaseTestCase):
 
     # called before each test method
-    def setUp(self):
+    eleza setUp(self):
         self.text = '''\
 This paragraph will be filled, first without any indentation,
 and then with some (including a hanging indent).'''
 
 
-    def test_fill(self):
+    eleza test_fill(self):
         # Test the fill() method
 
         expect = '''\
@@ -661,7 +661,7 @@ some (including a hanging indent).'''
         self.check(result, expect)
 
 
-    def test_initial_indent(self):
+    eleza test_initial_indent(self):
         # Test initial_indent parameter
 
         expect = ["     This paragraph will be filled,",
@@ -675,7 +675,7 @@ some (including a hanging indent).'''
         self.check(result, expect)
 
 
-    def test_subsequent_indent(self):
+    eleza test_subsequent_indent(self):
         # Test subsequent_indent parameter
 
         expect = '''\
@@ -691,13 +691,13 @@ some (including a hanging indent).'''
 
 # Despite the similar names, DedentTestCase is *not* the inverse
 # of IndentTestCase!
-class DedentTestCase(unittest.TestCase):
+kundi DedentTestCase(unittest.TestCase):
 
-    def assertUnchanged(self, text):
+    eleza assertUnchanged(self, text):
         """assert that dedent() has no effect on 'text'"""
         self.assertEqual(text, dedent(text))
 
-    def test_dedent_nomargin(self):
+    eleza test_dedent_nomargin(self):
         # No lines indented.
         text = "Hello there.\nHow are you?\nOh good, I'm glad."
         self.assertUnchanged(text)
@@ -714,7 +714,7 @@ class DedentTestCase(unittest.TestCase):
         text = "Hello there.\n\n  Boo!\n"
         self.assertUnchanged(text)
 
-    def test_dedent_even(self):
+    eleza test_dedent_even(self):
         # All lines indented by two spaces.
         text = "  Hello there.\n  How are ya?\n  Oh good."
         expect = "Hello there.\nHow are ya?\nOh good."
@@ -730,17 +730,17 @@ class DedentTestCase(unittest.TestCase):
         expect = "Hello there.\n\nHow are ya?\nOh good.\n"
         self.assertEqual(expect, dedent(text))
 
-    def test_dedent_uneven(self):
+    eleza test_dedent_uneven(self):
         # Lines indented unevenly.
         text = '''\
-        def foo():
+        eleza foo():
             while 1:
-                return foo
+                rudisha foo
         '''
         expect = '''\
-def foo():
+eleza foo():
     while 1:
-        return foo
+        rudisha foo
 '''
         self.assertEqual(expect, dedent(text))
 
@@ -754,7 +754,7 @@ def foo():
         expect = "Foo\n  Bar\n\n Baz\n"
         self.assertEqual(expect, dedent(text))
 
-    def test_dedent_declining(self):
+    eleza test_dedent_declining(self):
         # Uneven indentation with declining indent level.
         text = "     Foo\n    Bar\n"  # 5 spaces, then 4
         expect = " Foo\nBar\n"
@@ -771,7 +771,7 @@ def foo():
         self.assertEqual(expect, dedent(text))
 
     # dedent() should not mangle internal tabs
-    def test_dedent_preserve_internal_tabs(self):
+    eleza test_dedent_preserve_internal_tabs(self):
         text = "  hello\tthere\n  how are\tyou?"
         expect = "hello\tthere\nhow are\tyou?"
         self.assertEqual(expect, dedent(text))
@@ -783,11 +783,11 @@ def foo():
     # dedent() should not mangle tabs in the margin (i.e.
     # tabs and spaces both count as margin, but are *not*
     # considered equivalent)
-    def test_dedent_preserve_margin_tabs(self):
+    eleza test_dedent_preserve_margin_tabs(self):
         text = "  hello there\n\thow are you?"
         self.assertUnchanged(text)
 
-        # same effect even if we have 8 spaces
+        # same effect even ikiwa we have 8 spaces
         text = "        hello there\n\thow are you?"
         self.assertUnchanged(text)
 
@@ -813,7 +813,7 @@ def foo():
 
 
 # Test textwrap.indent
-class IndentTestCase(unittest.TestCase):
+kundi IndentTestCase(unittest.TestCase):
     # The examples used for tests. If any of these change, the expected
     # results in the various test cases must also be updated.
     # The roundtrip cases are separate, because textwrap.dedent doesn't
@@ -833,46 +833,46 @@ class IndentTestCase(unittest.TestCase):
       "\nHi.\r\nThis is a test.\n\r\nTesting.\r\n\n",
     )
 
-    def test_indent_nomargin_default(self):
-        # indent should do nothing if 'prefix' is empty.
+    eleza test_indent_nomargin_default(self):
+        # indent should do nothing ikiwa 'prefix' is empty.
         for text in self.CASES:
             self.assertEqual(indent(text, ''), text)
 
-    def test_indent_nomargin_explicit_default(self):
+    eleza test_indent_nomargin_explicit_default(self):
         # The same as test_indent_nomargin, but explicitly requesting
         # the default behaviour by passing None as the predicate
         for text in self.CASES:
             self.assertEqual(indent(text, '', None), text)
 
-    def test_indent_nomargin_all_lines(self):
+    eleza test_indent_nomargin_all_lines(self):
         # The same as test_indent_nomargin, but using the optional
         # predicate argument
         predicate = lambda line: True
         for text in self.CASES:
             self.assertEqual(indent(text, '', predicate), text)
 
-    def test_indent_no_lines(self):
+    eleza test_indent_no_lines(self):
         # Explicitly skip indenting any lines
         predicate = lambda line: False
         for text in self.CASES:
             self.assertEqual(indent(text, '    ', predicate), text)
 
-    def test_roundtrip_spaces(self):
+    eleza test_roundtrip_spaces(self):
         # A whitespace prefix should roundtrip with dedent
         for text in self.ROUNDTRIP_CASES:
             self.assertEqual(dedent(indent(text, '    ')), text)
 
-    def test_roundtrip_tabs(self):
+    eleza test_roundtrip_tabs(self):
         # A whitespace prefix should roundtrip with dedent
         for text in self.ROUNDTRIP_CASES:
             self.assertEqual(dedent(indent(text, '\t\t')), text)
 
-    def test_roundtrip_mixed(self):
+    eleza test_roundtrip_mixed(self):
         # A whitespace prefix should roundtrip with dedent
         for text in self.ROUNDTRIP_CASES:
             self.assertEqual(dedent(indent(text, ' \t  \t ')), text)
 
-    def test_indent_default(self):
+    eleza test_indent_default(self):
         # Test default indenting of lines that are not whitespace only
         prefix = '  '
         expected = (
@@ -890,7 +890,7 @@ class IndentTestCase(unittest.TestCase):
         for text, expect in zip(self.CASES, expected):
             self.assertEqual(indent(text, prefix), expect)
 
-    def test_indent_explicit_default(self):
+    eleza test_indent_explicit_default(self):
         # Test default indenting of lines that are not whitespace only
         prefix = '  '
         expected = (
@@ -908,7 +908,7 @@ class IndentTestCase(unittest.TestCase):
         for text, expect in zip(self.CASES, expected):
             self.assertEqual(indent(text, prefix, None), expect)
 
-    def test_indent_all_lines(self):
+    eleza test_indent_all_lines(self):
         # Add 'prefix' to all lines, including whitespace-only ones.
         prefix = '  '
         expected = (
@@ -927,7 +927,7 @@ class IndentTestCase(unittest.TestCase):
         for text, expect in zip(self.CASES, expected):
             self.assertEqual(indent(text, prefix, predicate), expect)
 
-    def test_indent_empty_lines(self):
+    eleza test_indent_empty_lines(self):
         # Add 'prefix' solely to whitespace-only lines.
         prefix = '  '
         expected = (
@@ -947,13 +947,13 @@ class IndentTestCase(unittest.TestCase):
             self.assertEqual(indent(text, prefix, predicate), expect)
 
 
-class ShortenTestCase(BaseTestCase):
+kundi ShortenTestCase(BaseTestCase):
 
-    def check_shorten(self, text, width, expect, **kwargs):
+    eleza check_shorten(self, text, width, expect, **kwargs):
         result = shorten(text, width, **kwargs)
         self.check(result, expect)
 
-    def test_simple(self):
+    eleza test_simple(self):
         # Simple case: just words, spaces, and a bit of punctuation
         text = "Hello there, how are you this fine day? I'm glad to hear it!"
 
@@ -963,7 +963,7 @@ class ShortenTestCase(BaseTestCase):
             "Hello there, how are you this fine day? "
             "I'm glad to [...]")
 
-    def test_placeholder(self):
+    eleza test_placeholder(self):
         text = "Hello there, how are you this fine day? I'm glad to hear it!"
 
         self.check_shorten(text, 17, "Hello there,$$", placeholder='$$')
@@ -974,10 +974,10 @@ class ShortenTestCase(BaseTestCase):
             "Hello there, how are you this fine day? "
             "I'm glad to hear$$", placeholder='$$')
 
-    def test_empty_string(self):
+    eleza test_empty_string(self):
         self.check_shorten("", 6, "")
 
-    def test_whitespace(self):
+    eleza test_whitespace(self):
         # Whitespace collapsing
         text = """
             This is a  paragraph that  already has
@@ -995,14 +995,14 @@ class ShortenTestCase(BaseTestCase):
         # (it would be ugly otherwise).
         self.check_shorten("hello      world!  ", 10, "[...]")
 
-    def test_width_too_small_for_placeholder(self):
+    eleza test_width_too_small_for_placeholder(self):
         shorten("x" * 20, width=8, placeholder="(......)")
         with self.assertRaises(ValueError):
             shorten("x" * 20, width=8, placeholder="(.......)")
 
-    def test_first_word_too_long_but_placeholder_fits(self):
+    eleza test_first_word_too_long_but_placeholder_fits(self):
         self.check_shorten("Helloo", 5, "[...]")
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

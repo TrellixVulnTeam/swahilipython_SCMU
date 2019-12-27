@@ -70,16 +70,16 @@ def get_msvcr():
         if msc_ver == '1300':
             # MSVC 7.0
             return ['msvcr70']
-        elif msc_ver == '1310':
+        lasivyo msc_ver == '1310':
             # MSVC 7.1
             return ['msvcr71']
-        elif msc_ver == '1400':
+        lasivyo msc_ver == '1400':
             # VS2005 / MSVC 8.0
             return ['msvcr80']
-        elif msc_ver == '1500':
+        lasivyo msc_ver == '1500':
             # VS2008 / MSVC 9.0
             return ['msvcr90']
-        elif msc_ver == '1600':
+        lasivyo msc_ver == '1600':
             # VS2010 / MSVC 10.0
             return ['msvcr100']
         else:

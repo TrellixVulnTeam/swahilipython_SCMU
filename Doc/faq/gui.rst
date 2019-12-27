@@ -60,12 +60,12 @@ Qt
 There are bindings available for the Qt toolkit (using either `PyQt
 <https://riverbankcomputing.com/software/pyqt/intro>`_ or `PySide
 <https://wiki.qt.io/PySide>`_) and for KDE (`PyKDE4 <https://techbase.kde.org/Languages/Python/Using_PyKDE_4>`__).
-PyQt is currently more mature than PySide, but you must buy a PyQt license from
+PyQt is currently more mature than PySide, but you must buy a PyQt license kutoka
 `Riverbank Computing <https://www.riverbankcomputing.com/commercial/license-faq>`_
 if you want to write proprietary applications.  PySide is free for all applications.
 
 Qt 4.5 upwards is licensed under the LGPL license; also, commercial licenses
-are available from `The Qt Company <https://www.qt.io/licensing/>`_.
+are available kutoka `The Qt Company <https://www.qt.io/licensing/>`_.
 
 Gtk+
 ----
@@ -91,7 +91,7 @@ FLTK
 ----
 
 Python bindings for `the FLTK toolkit <http://www.fltk.org>`_, a simple yet
-powerful and mature cross-platform windowing system, are available from `the
+powerful and mature cross-platform windowing system, are available kutoka `the
 PyFLTK project <http://pyfltk.sourceforge.net>`_.
 
 OpenGL
@@ -143,7 +143,7 @@ Can I have Tk events handled while waiting for I/O?
 On platforms other than Windows, yes, and you don't even
 need threads!  But you'll have to restructure your I/O
 code a bit.  Tk has the equivalent of Xt's :c:func:`XtAddInput()` call, which allows you
-to register a callback function which will be called from the Tk mainloop when
+to register a callback function which will be called kutoka the Tk mainloop when
 I/O is possible on a file descriptor.  See :ref:`tkinter-file-handlers`.
 
 

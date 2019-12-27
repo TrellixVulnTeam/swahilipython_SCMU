@@ -29,7 +29,7 @@ import subprocess
 import sys
 import sysconfig
 import tempfile
-import _thread
+agiza _thread
 import threading
 import time
 import types
@@ -70,7 +70,7 @@ except ImportError:
     resource = None
 
 try:
-    import _hashlib
+    agiza _hashlib
 except ImportError:
     _hashlib = None
 
@@ -518,7 +518,7 @@ def _is_gui_available():
             raise ctypes.WinError()
         if not bool(uof.dwFlags & WSF_VISIBLE):
             reason = "gui not available (WSF_VISIBLE flag not set)"
-    elif sys.platform == 'darwin':
+    lasivyo sys.platform == 'darwin':
         # The Aqua Tk implementations on OS X can abort the process if
         # being called in an environment where a window server connection
         # cannot be made, for instance when invoked by a buildbot or ssh
@@ -953,7 +953,7 @@ if os.name == 'nt':
                   % (TESTFN_UNENCODABLE, TESTFN_ENCODING))
             TESTFN_UNENCODABLE = None
 # Mac OS X denies unencodable filenames (invalid utf-8)
-elif sys.platform != 'darwin':
+lasivyo sys.platform != 'darwin':
     try:
         # ascii and utf-8 cannot encode the byte 0xff
         b'\xff'.decode(TESTFN_ENCODING)
@@ -1210,7 +1210,7 @@ def open_urlresource(url, *args, **kw):
         f = open(fn, *args, **kw)
         if check is None:
             return f
-        elif check(f):
+        lasivyo check(f):
             f.seek(0)
             return f
         f.close()
@@ -1258,7 +1258,7 @@ class WarningsRecorder(object):
     def __getattr__(self, attr):
         if len(self._warnings) > self._last:
             return getattr(self._warnings[-1], attr)
-        elif attr in warnings.WarningMessage._WARNING_DETAILS:
+        lasivyo attr in warnings.WarningMessage._WARNING_DETAILS:
             return None
         raise AttributeError("%r has no attribute %r" % (self, attr))
 
@@ -1605,7 +1605,7 @@ def transient_internet(resource_name, *, timeout=30.0, errnos=()):
             # The error can also be wrapped as args[1]:
             #    except socket.error as msg:
             #        raise OSError('socket error', msg).with_traceback(sys.exc_info()[2])
-            elif len(a) >= 2 and isinstance(a[1], OSError):
+            lasivyo len(a) >= 2 and isinstance(a[1], OSError):
                 err = a[1]
             else:
                 break
@@ -1715,7 +1715,7 @@ _TPFLAGS_HAVE_GC = 1<<14
 _TPFLAGS_HEAPTYPE = 1<<9
 
 def check_sizeof(test, o, size):
-    import _testcapi
+    agiza _testcapi
     result = sys.getsizeof(o)
     # add GC header size
     if ((type(o) == type) and (o.__flags__ & _TPFLAGS_HEAPTYPE) or\
@@ -2037,7 +2037,7 @@ def _run_suite(suite):
     if not result.wasSuccessful():
         if len(result.errors) == 1 and not result.failures:
             err = result.errors[0][1]
-        elif len(result.failures) == 1 and not result.errors:
+        lasivyo len(result.failures) == 1 and not result.errors:
             err = result.failures[0][1]
         else:
             err = "multiple errors occurred"
@@ -2079,7 +2079,7 @@ def set_match_tests(patterns):
         func = None
         # set_match_tests(None) behaves as set_match_tests(())
         patterns = ()
-    elif all(map(_is_full_match_test, patterns)):
+    lasivyo all(map(_is_full_match_test, patterns)):
         # Simple case: all patterns are full test identifier.
         # The test.bisect_cmd utility only uses such full test identifiers.
         func = set(patterns).__contains__
@@ -2118,7 +2118,7 @@ def run_unittest(*classes):
                 suite.addTest(unittest.findTestCases(sys.modules[cls]))
             else:
                 raise ValueError("str arguments must be keys in sys.modules")
-        elif isinstance(cls, valid_types):
+        lasivyo isinstance(cls, valid_types):
             suite.addTest(cls)
         else:
             suite.addTest(unittest.makeSuite(cls))
@@ -2515,7 +2515,7 @@ class Matcher(object):
         """
         if type(v) != type(dv):
             result = False
-        elif type(dv) is not str or k not in self._partial_matches:
+        lasivyo type(dv) is not str or k not in self._partial_matches:
             result = (v == dv)
         else:
             result = dv.find(v) >= 0
@@ -2582,7 +2582,7 @@ class PythonSymlink:
 
     if sys.platform == "win32":
         def _platform_specific(self):
-            import _winapi
+            agiza _winapi
 
             if os.path.lexists(self.real) and not os.path.exists(self.real):
                 # App symlink appears to not exist, but we want the
@@ -2780,7 +2780,7 @@ def check__all__(test_case, module, name_of_module=None, extra=(),
 
     if name_of_module is None:
         name_of_module = (module.__name__, )
-    elif isinstance(name_of_module, str):
+    lasivyo isinstance(name_of_module, str):
         name_of_module = (name_of_module, )
 
     expected = set(extra)
@@ -2941,7 +2941,7 @@ def run_in_subinterp(code):
             raise unittest.SkipTest("run_in_subinterp() cannot be used "
                                      "if tracemalloc module is tracing "
                                      "memory allocations")
-    import _testcapi
+    agiza _testcapi
     return _testcapi.run_in_subinterp(code)
 
 
@@ -2983,7 +2983,7 @@ def missing_compiler_executable(cmd_names=[]):
         if cmd_names:
             assert cmd is not None, \
                     "the '%s' executable is not configured" % name
-        elif not cmd:
+        lasivyo not cmd:
             continue
         if spawn.find_executable(cmd[0]) is None:
             return cmd[0]
@@ -3119,7 +3119,7 @@ class SaveSignals:
 
 
 def with_pymalloc():
-    import _testcapi
+    agiza _testcapi
     return _testcapi.WITH_PYMALLOC
 
 

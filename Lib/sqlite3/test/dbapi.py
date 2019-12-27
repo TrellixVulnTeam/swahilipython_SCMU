@@ -28,104 +28,104 @@ agiza sqlite3 as sqlite
 kutoka test.support agiza TESTFN, unlink
 
 
-class ModuleTests(unittest.TestCase):
-    def CheckAPILevel(self):
+kundi ModuleTests(unittest.TestCase):
+    eleza CheckAPILevel(self):
         self.assertEqual(sqlite.apilevel, "2.0",
                          "apilevel is %s, should be 2.0" % sqlite.apilevel)
 
-    def CheckThreadSafety(self):
+    eleza CheckThreadSafety(self):
         self.assertEqual(sqlite.threadsafety, 1,
                          "threadsafety is %d, should be 1" % sqlite.threadsafety)
 
-    def CheckParamStyle(self):
+    eleza CheckParamStyle(self):
         self.assertEqual(sqlite.paramstyle, "qmark",
                          "paramstyle is '%s', should be 'qmark'" %
                          sqlite.paramstyle)
 
-    def CheckWarning(self):
+    eleza CheckWarning(self):
         self.assertTrue(issubclass(sqlite.Warning, Exception),
-                     "Warning is not a subclass of Exception")
+                     "Warning is not a subkundi of Exception")
 
-    def CheckError(self):
+    eleza CheckError(self):
         self.assertTrue(issubclass(sqlite.Error, Exception),
-                        "Error is not a subclass of Exception")
+                        "Error is not a subkundi of Exception")
 
-    def CheckInterfaceError(self):
+    eleza CheckInterfaceError(self):
         self.assertTrue(issubclass(sqlite.InterfaceError, sqlite.Error),
-                        "InterfaceError is not a subclass of Error")
+                        "InterfaceError is not a subkundi of Error")
 
-    def CheckDatabaseError(self):
+    eleza CheckDatabaseError(self):
         self.assertTrue(issubclass(sqlite.DatabaseError, sqlite.Error),
-                        "DatabaseError is not a subclass of Error")
+                        "DatabaseError is not a subkundi of Error")
 
-    def CheckDataError(self):
+    eleza CheckDataError(self):
         self.assertTrue(issubclass(sqlite.DataError, sqlite.DatabaseError),
-                        "DataError is not a subclass of DatabaseError")
+                        "DataError is not a subkundi of DatabaseError")
 
-    def CheckOperationalError(self):
+    eleza CheckOperationalError(self):
         self.assertTrue(issubclass(sqlite.OperationalError, sqlite.DatabaseError),
-                        "OperationalError is not a subclass of DatabaseError")
+                        "OperationalError is not a subkundi of DatabaseError")
 
-    def CheckIntegrityError(self):
+    eleza CheckIntegrityError(self):
         self.assertTrue(issubclass(sqlite.IntegrityError, sqlite.DatabaseError),
-                        "IntegrityError is not a subclass of DatabaseError")
+                        "IntegrityError is not a subkundi of DatabaseError")
 
-    def CheckInternalError(self):
+    eleza CheckInternalError(self):
         self.assertTrue(issubclass(sqlite.InternalError, sqlite.DatabaseError),
-                        "InternalError is not a subclass of DatabaseError")
+                        "InternalError is not a subkundi of DatabaseError")
 
-    def CheckProgrammingError(self):
+    eleza CheckProgrammingError(self):
         self.assertTrue(issubclass(sqlite.ProgrammingError, sqlite.DatabaseError),
-                        "ProgrammingError is not a subclass of DatabaseError")
+                        "ProgrammingError is not a subkundi of DatabaseError")
 
-    def CheckNotSupportedError(self):
+    eleza CheckNotSupportedError(self):
         self.assertTrue(issubclass(sqlite.NotSupportedError,
                                    sqlite.DatabaseError),
-                        "NotSupportedError is not a subclass of DatabaseError")
+                        "NotSupportedError is not a subkundi of DatabaseError")
 
-class ConnectionTests(unittest.TestCase):
+kundi ConnectionTests(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.cx = sqlite.connect(":memory:")
         cu = self.cx.cursor()
         cu.execute("create table test(id integer primary key, name text)")
         cu.execute("insert into test(name) values (?)", ("foo",))
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.cx.close()
 
-    def CheckCommit(self):
+    eleza CheckCommit(self):
         self.cx.commit()
 
-    def CheckCommitAfterNoChanges(self):
+    eleza CheckCommitAfterNoChanges(self):
         """
         A commit should also work when no changes were made to the database.
         """
         self.cx.commit()
         self.cx.commit()
 
-    def CheckRollback(self):
+    eleza CheckRollback(self):
         self.cx.rollback()
 
-    def CheckRollbackAfterNoChanges(self):
+    eleza CheckRollbackAfterNoChanges(self):
         """
         A rollback should also work when no changes were made to the database.
         """
         self.cx.rollback()
         self.cx.rollback()
 
-    def CheckCursor(self):
+    eleza CheckCursor(self):
         cu = self.cx.cursor()
 
-    def CheckFailedOpen(self):
+    eleza CheckFailedOpen(self):
         YOU_CANNOT_OPEN_THIS = "/foo/bar/bla/23534/mydb.db"
         with self.assertRaises(sqlite.OperationalError):
             con = sqlite.connect(YOU_CANNOT_OPEN_THIS)
 
-    def CheckClose(self):
+    eleza CheckClose(self):
         self.cx.close()
 
-    def CheckExceptions(self):
+    eleza CheckExceptions(self):
         # Optional DB-API extension.
         self.assertEqual(self.cx.Warning, sqlite.Warning)
         self.assertEqual(self.cx.Error, sqlite.Error)
@@ -138,7 +138,7 @@ class ConnectionTests(unittest.TestCase):
         self.assertEqual(self.cx.ProgrammingError, sqlite.ProgrammingError)
         self.assertEqual(self.cx.NotSupportedError, sqlite.NotSupportedError)
 
-    def CheckInTransaction(self):
+    eleza CheckInTransaction(self):
         # Can't use db kutoka setUp because we want to test initial state.
         cx = sqlite.connect(":memory:")
         cu = cx.cursor()
@@ -156,23 +156,23 @@ class ConnectionTests(unittest.TestCase):
         row = cu.fetchone()
         self.assertEqual(cx.in_transaction, False)
 
-    def CheckInTransactionRO(self):
+    eleza CheckInTransactionRO(self):
         with self.assertRaises(AttributeError):
             self.cx.in_transaction = True
 
-    def CheckOpenWithPathLikeObject(self):
+    eleza CheckOpenWithPathLikeObject(self):
         """ Checks that we can successfully connect to a database using an object that
             is PathLike, i.e. has __fspath__(). """
         self.addCleanup(unlink, TESTFN)
-        class Path:
-            def __fspath__(self):
-                return TESTFN
+        kundi Path:
+            eleza __fspath__(self):
+                rudisha TESTFN
         path = Path()
         with sqlite.connect(path) as cx:
             cx.execute('create table test(id integer)')
 
-    def CheckOpenUri(self):
-        if sqlite.sqlite_version_info < (3, 7, 7):
+    eleza CheckOpenUri(self):
+        ikiwa sqlite.sqlite_version_info < (3, 7, 7):
             with self.assertRaises(sqlite.NotSupportedError):
                 sqlite.connect(':memory:', uri=True)
             return
@@ -187,13 +187,13 @@ class ConnectionTests(unittest.TestCase):
 
     @unittest.skipIf(sqlite.sqlite_version_info >= (3, 3, 1),
                      'needs sqlite versions older than 3.3.1')
-    def CheckSameThreadErrorOnOldVersion(self):
+    eleza CheckSameThreadErrorOnOldVersion(self):
         with self.assertRaises(sqlite.NotSupportedError) as cm:
             sqlite.connect(':memory:', check_same_thread=False)
         self.assertEqual(str(cm.exception), 'shared connections not available')
 
-class CursorTests(unittest.TestCase):
-    def setUp(self):
+kundi CursorTests(unittest.TestCase):
+    eleza setUp(self):
         self.cx = sqlite.connect(":memory:")
         self.cu = self.cx.cursor()
         self.cu.execute(
@@ -202,25 +202,25 @@ class CursorTests(unittest.TestCase):
         )
         self.cu.execute("insert into test(name) values (?)", ("foo",))
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.cu.close()
         self.cx.close()
 
-    def CheckExecuteNoArgs(self):
+    eleza CheckExecuteNoArgs(self):
         self.cu.execute("delete kutoka test")
 
-    def CheckExecuteIllegalSql(self):
+    eleza CheckExecuteIllegalSql(self):
         with self.assertRaises(sqlite.OperationalError):
             self.cu.execute("select asdf")
 
-    def CheckExecuteTooMuchSql(self):
+    eleza CheckExecuteTooMuchSql(self):
         with self.assertRaises(sqlite.Warning):
             self.cu.execute("select 5+4; select 4+5")
 
-    def CheckExecuteTooMuchSql2(self):
+    eleza CheckExecuteTooMuchSql2(self):
         self.cu.execute("select 5+4; -- foo bar")
 
-    def CheckExecuteTooMuchSql3(self):
+    eleza CheckExecuteTooMuchSql3(self):
         self.cu.execute("""
             select 5+4;
 
@@ -229,107 +229,107 @@ class CursorTests(unittest.TestCase):
             */
             """)
 
-    def CheckExecuteWrongSqlArg(self):
+    eleza CheckExecuteWrongSqlArg(self):
         with self.assertRaises(ValueError):
             self.cu.execute(42)
 
-    def CheckExecuteArgInt(self):
+    eleza CheckExecuteArgInt(self):
         self.cu.execute("insert into test(id) values (?)", (42,))
 
-    def CheckExecuteArgFloat(self):
+    eleza CheckExecuteArgFloat(self):
         self.cu.execute("insert into test(income) values (?)", (2500.32,))
 
-    def CheckExecuteArgString(self):
+    eleza CheckExecuteArgString(self):
         self.cu.execute("insert into test(name) values (?)", ("Hugo",))
 
-    def CheckExecuteArgStringWithZeroByte(self):
+    eleza CheckExecuteArgStringWithZeroByte(self):
         self.cu.execute("insert into test(name) values (?)", ("Hu\x00go",))
 
         self.cu.execute("select name kutoka test where id=?", (self.cu.lastrowid,))
         row = self.cu.fetchone()
         self.assertEqual(row[0], "Hu\x00go")
 
-    def CheckExecuteNonIterable(self):
+    eleza CheckExecuteNonIterable(self):
         with self.assertRaises(ValueError) as cm:
             self.cu.execute("insert into test(id) values (?)", 42)
         self.assertEqual(str(cm.exception), 'parameters are of unsupported type')
 
-    def CheckExecuteWrongNoOfArgs1(self):
+    eleza CheckExecuteWrongNoOfArgs1(self):
         # too many parameters
         with self.assertRaises(sqlite.ProgrammingError):
             self.cu.execute("insert into test(id) values (?)", (17, "Egon"))
 
-    def CheckExecuteWrongNoOfArgs2(self):
+    eleza CheckExecuteWrongNoOfArgs2(self):
         # too little parameters
         with self.assertRaises(sqlite.ProgrammingError):
             self.cu.execute("insert into test(id) values (?)")
 
-    def CheckExecuteWrongNoOfArgs3(self):
+    eleza CheckExecuteWrongNoOfArgs3(self):
         # no parameters, parameters are needed
         with self.assertRaises(sqlite.ProgrammingError):
             self.cu.execute("insert into test(id) values (?)")
 
-    def CheckExecuteParamList(self):
+    eleza CheckExecuteParamList(self):
         self.cu.execute("insert into test(name) values ('foo')")
         self.cu.execute("select name kutoka test where name=?", ["foo"])
         row = self.cu.fetchone()
         self.assertEqual(row[0], "foo")
 
-    def CheckExecuteParamSequence(self):
-        class L(object):
-            def __len__(self):
-                return 1
-            def __getitem__(self, x):
+    eleza CheckExecuteParamSequence(self):
+        kundi L(object):
+            eleza __len__(self):
+                rudisha 1
+            eleza __getitem__(self, x):
                 assert x == 0
-                return "foo"
+                rudisha "foo"
 
         self.cu.execute("insert into test(name) values ('foo')")
         self.cu.execute("select name kutoka test where name=?", L())
         row = self.cu.fetchone()
         self.assertEqual(row[0], "foo")
 
-    def CheckExecuteDictMapping(self):
+    eleza CheckExecuteDictMapping(self):
         self.cu.execute("insert into test(name) values ('foo')")
         self.cu.execute("select name kutoka test where name=:name", {"name": "foo"})
         row = self.cu.fetchone()
         self.assertEqual(row[0], "foo")
 
-    def CheckExecuteDictMapping_Mapping(self):
-        class D(dict):
-            def __missing__(self, key):
-                return "foo"
+    eleza CheckExecuteDictMapping_Mapping(self):
+        kundi D(dict):
+            eleza __missing__(self, key):
+                rudisha "foo"
 
         self.cu.execute("insert into test(name) values ('foo')")
         self.cu.execute("select name kutoka test where name=:name", D())
         row = self.cu.fetchone()
         self.assertEqual(row[0], "foo")
 
-    def CheckExecuteDictMappingTooLittleArgs(self):
+    eleza CheckExecuteDictMappingTooLittleArgs(self):
         self.cu.execute("insert into test(name) values ('foo')")
         with self.assertRaises(sqlite.ProgrammingError):
             self.cu.execute("select name kutoka test where name=:name and id=:id", {"name": "foo"})
 
-    def CheckExecuteDictMappingNoArgs(self):
+    eleza CheckExecuteDictMappingNoArgs(self):
         self.cu.execute("insert into test(name) values ('foo')")
         with self.assertRaises(sqlite.ProgrammingError):
             self.cu.execute("select name kutoka test where name=:name")
 
-    def CheckExecuteDictMappingUnnamed(self):
+    eleza CheckExecuteDictMappingUnnamed(self):
         self.cu.execute("insert into test(name) values ('foo')")
         with self.assertRaises(sqlite.ProgrammingError):
             self.cu.execute("select name kutoka test where name=?", {"name": "foo"})
 
-    def CheckClose(self):
+    eleza CheckClose(self):
         self.cu.close()
 
-    def CheckRowcountExecute(self):
+    eleza CheckRowcountExecute(self):
         self.cu.execute("delete kutoka test")
         self.cu.execute("insert into test(name) values ('foo')")
         self.cu.execute("insert into test(name) values ('foo')")
         self.cu.execute("update test set name='bar'")
         self.assertEqual(self.cu.rowcount, 2)
 
-    def CheckRowcountSelect(self):
+    eleza CheckRowcountSelect(self):
         """
         pysqlite does not know the rowcount of SELECT statements, because we
         don't fetch all rows after executing the select statement. The rowcount
@@ -338,12 +338,12 @@ class CursorTests(unittest.TestCase):
         self.cu.execute("select 5 union select 6")
         self.assertEqual(self.cu.rowcount, -1)
 
-    def CheckRowcountExecutemany(self):
+    eleza CheckRowcountExecutemany(self):
         self.cu.execute("delete kutoka test")
         self.cu.executemany("insert into test(name) values (?)", [(1,), (2,), (3,)])
         self.assertEqual(self.cu.rowcount, 3)
 
-    def CheckTotalChanges(self):
+    eleza CheckTotalChanges(self):
         self.cu.execute("insert into test(name) values ('foo')")
         self.cu.execute("insert into test(name) values ('foo')")
         self.assertLess(2, self.cx.total_changes, msg='total changes reported wrong value')
@@ -352,43 +352,43 @@ class CursorTests(unittest.TestCase):
     # Sequences are required by the DB-API, iterators
     # enhancements in pysqlite.
 
-    def CheckExecuteManySequence(self):
+    eleza CheckExecuteManySequence(self):
         self.cu.executemany("insert into test(income) values (?)", [(x,) for x in range(100, 110)])
 
-    def CheckExecuteManyIterator(self):
-        class MyIter:
-            def __init__(self):
+    eleza CheckExecuteManyIterator(self):
+        kundi MyIter:
+            eleza __init__(self):
                 self.value = 5
 
-            def __next__(self):
-                if self.value == 10:
+            eleza __next__(self):
+                ikiwa self.value == 10:
                     raise StopIteration
                 else:
                     self.value += 1
-                    return (self.value,)
+                    rudisha (self.value,)
 
         self.cu.executemany("insert into test(income) values (?)", MyIter())
 
-    def CheckExecuteManyGenerator(self):
-        def mygen():
+    eleza CheckExecuteManyGenerator(self):
+        eleza mygen():
             for i in range(5):
                 yield (i,)
 
         self.cu.executemany("insert into test(income) values (?)", mygen())
 
-    def CheckExecuteManyWrongSqlArg(self):
+    eleza CheckExecuteManyWrongSqlArg(self):
         with self.assertRaises(ValueError):
             self.cu.executemany(42, [(3,)])
 
-    def CheckExecuteManySelect(self):
+    eleza CheckExecuteManySelect(self):
         with self.assertRaises(sqlite.ProgrammingError):
             self.cu.executemany("select ?", [(3,)])
 
-    def CheckExecuteManyNotIterable(self):
+    eleza CheckExecuteManyNotIterable(self):
         with self.assertRaises(TypeError):
             self.cu.executemany("insert into test(income) values (?)", 42)
 
-    def CheckFetchIter(self):
+    eleza CheckFetchIter(self):
         # Optional DB-API extension.
         self.cu.execute("delete kutoka test")
         self.cu.execute("insert into test(id) values (?)", (5,))
@@ -400,26 +400,26 @@ class CursorTests(unittest.TestCase):
         self.assertEqual(lst[0], 5)
         self.assertEqual(lst[1], 6)
 
-    def CheckFetchone(self):
+    eleza CheckFetchone(self):
         self.cu.execute("select name kutoka test")
         row = self.cu.fetchone()
         self.assertEqual(row[0], "foo")
         row = self.cu.fetchone()
         self.assertEqual(row, None)
 
-    def CheckFetchoneNoStatement(self):
+    eleza CheckFetchoneNoStatement(self):
         cur = self.cx.cursor()
         row = cur.fetchone()
         self.assertEqual(row, None)
 
-    def CheckArraySize(self):
+    eleza CheckArraySize(self):
         # must default ot 1
         self.assertEqual(self.cu.arraysize, 1)
 
         # now set to 2
         self.cu.arraysize = 2
 
-        # now make the query return 3 rows
+        # now make the query rudisha 3 rows
         self.cu.execute("delete kutoka test")
         self.cu.execute("insert into test(name) values ('A')")
         self.cu.execute("insert into test(name) values ('B')")
@@ -429,51 +429,51 @@ class CursorTests(unittest.TestCase):
 
         self.assertEqual(len(res), 2)
 
-    def CheckFetchmany(self):
+    eleza CheckFetchmany(self):
         self.cu.execute("select name kutoka test")
         res = self.cu.fetchmany(100)
         self.assertEqual(len(res), 1)
         res = self.cu.fetchmany(100)
         self.assertEqual(res, [])
 
-    def CheckFetchmanyKwArg(self):
-        """Checks if fetchmany works with keyword arguments"""
+    eleza CheckFetchmanyKwArg(self):
+        """Checks ikiwa fetchmany works with keyword arguments"""
         self.cu.execute("select name kutoka test")
         res = self.cu.fetchmany(size=100)
         self.assertEqual(len(res), 1)
 
-    def CheckFetchall(self):
+    eleza CheckFetchall(self):
         self.cu.execute("select name kutoka test")
         res = self.cu.fetchall()
         self.assertEqual(len(res), 1)
         res = self.cu.fetchall()
         self.assertEqual(res, [])
 
-    def CheckSetinputsizes(self):
+    eleza CheckSetinputsizes(self):
         self.cu.setinputsizes([3, 4, 5])
 
-    def CheckSetoutputsize(self):
+    eleza CheckSetoutputsize(self):
         self.cu.setoutputsize(5, 0)
 
-    def CheckSetoutputsizeNoColumn(self):
+    eleza CheckSetoutputsizeNoColumn(self):
         self.cu.setoutputsize(42)
 
-    def CheckCursorConnection(self):
+    eleza CheckCursorConnection(self):
         # Optional DB-API extension.
         self.assertEqual(self.cu.connection, self.cx)
 
-    def CheckWrongCursorCallable(self):
+    eleza CheckWrongCursorCallable(self):
         with self.assertRaises(TypeError):
-            def f(): pass
+            eleza f(): pass
             cur = self.cx.cursor(f)
 
-    def CheckCursorWrongClass(self):
-        class Foo: pass
+    eleza CheckCursorWrongClass(self):
+        kundi Foo: pass
         foo = Foo()
         with self.assertRaises(TypeError):
             cur = sqlite.Cursor(foo)
 
-    def CheckLastRowIDOnReplace(self):
+    eleza CheckLastRowIDOnReplace(self):
         """
         INSERT OR REPLACE and REPLACE INTO should produce the same behavior.
         """
@@ -483,7 +483,7 @@ class CursorTests(unittest.TestCase):
                 self.cu.execute(sql.format(statement), (1, 'foo'))
                 self.assertEqual(self.cu.lastrowid, 1)
 
-    def CheckLastRowIDOnIgnore(self):
+    eleza CheckLastRowIDOnIgnore(self):
         self.cu.execute(
             "insert or ignore into test(unique_test) values (?)",
             ('test',))
@@ -493,7 +493,7 @@ class CursorTests(unittest.TestCase):
             ('test',))
         self.assertEqual(self.cu.lastrowid, 2)
 
-    def CheckLastRowIDInsertOR(self):
+    eleza CheckLastRowIDInsertOR(self):
         results = []
         for statement in ('FAIL', 'ABORT', 'ROLLBACK'):
             sql = 'INSERT OR {} INTO test(unique_test) VALUES (?)'
@@ -511,18 +511,18 @@ class CursorTests(unittest.TestCase):
         self.assertEqual(results, expected)
 
 
-class ThreadTests(unittest.TestCase):
-    def setUp(self):
+kundi ThreadTests(unittest.TestCase):
+    eleza setUp(self):
         self.con = sqlite.connect(":memory:")
         self.cur = self.con.cursor()
         self.cur.execute("create table test(id integer primary key, name text, bin binary, ratio number, ts timestamp)")
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.cur.close()
         self.con.close()
 
-    def CheckConCursor(self):
-        def run(con, errors):
+    eleza CheckConCursor(self):
+        eleza run(con, errors):
             try:
                 cur = con.cursor()
                 errors.append("did not raise ProgrammingError")
@@ -536,11 +536,11 @@ class ThreadTests(unittest.TestCase):
         t = threading.Thread(target=run, kwargs={"con": self.con, "errors": errors})
         t.start()
         t.join()
-        if len(errors) > 0:
+        ikiwa len(errors) > 0:
             self.fail("\n".join(errors))
 
-    def CheckConCommit(self):
-        def run(con, errors):
+    eleza CheckConCommit(self):
+        eleza run(con, errors):
             try:
                 con.commit()
                 errors.append("did not raise ProgrammingError")
@@ -554,11 +554,11 @@ class ThreadTests(unittest.TestCase):
         t = threading.Thread(target=run, kwargs={"con": self.con, "errors": errors})
         t.start()
         t.join()
-        if len(errors) > 0:
+        ikiwa len(errors) > 0:
             self.fail("\n".join(errors))
 
-    def CheckConRollback(self):
-        def run(con, errors):
+    eleza CheckConRollback(self):
+        eleza run(con, errors):
             try:
                 con.rollback()
                 errors.append("did not raise ProgrammingError")
@@ -572,11 +572,11 @@ class ThreadTests(unittest.TestCase):
         t = threading.Thread(target=run, kwargs={"con": self.con, "errors": errors})
         t.start()
         t.join()
-        if len(errors) > 0:
+        ikiwa len(errors) > 0:
             self.fail("\n".join(errors))
 
-    def CheckConClose(self):
-        def run(con, errors):
+    eleza CheckConClose(self):
+        eleza run(con, errors):
             try:
                 con.close()
                 errors.append("did not raise ProgrammingError")
@@ -590,11 +590,11 @@ class ThreadTests(unittest.TestCase):
         t = threading.Thread(target=run, kwargs={"con": self.con, "errors": errors})
         t.start()
         t.join()
-        if len(errors) > 0:
+        ikiwa len(errors) > 0:
             self.fail("\n".join(errors))
 
-    def CheckCurImplicitBegin(self):
-        def run(cur, errors):
+    eleza CheckCurImplicitBegin(self):
+        eleza run(cur, errors):
             try:
                 cur.execute("insert into test(name) values ('a')")
                 errors.append("did not raise ProgrammingError")
@@ -608,11 +608,11 @@ class ThreadTests(unittest.TestCase):
         t = threading.Thread(target=run, kwargs={"cur": self.cur, "errors": errors})
         t.start()
         t.join()
-        if len(errors) > 0:
+        ikiwa len(errors) > 0:
             self.fail("\n".join(errors))
 
-    def CheckCurClose(self):
-        def run(cur, errors):
+    eleza CheckCurClose(self):
+        eleza run(cur, errors):
             try:
                 cur.close()
                 errors.append("did not raise ProgrammingError")
@@ -626,11 +626,11 @@ class ThreadTests(unittest.TestCase):
         t = threading.Thread(target=run, kwargs={"cur": self.cur, "errors": errors})
         t.start()
         t.join()
-        if len(errors) > 0:
+        ikiwa len(errors) > 0:
             self.fail("\n".join(errors))
 
-    def CheckCurExecute(self):
-        def run(cur, errors):
+    eleza CheckCurExecute(self):
+        eleza run(cur, errors):
             try:
                 cur.execute("select name kutoka test")
                 errors.append("did not raise ProgrammingError")
@@ -645,11 +645,11 @@ class ThreadTests(unittest.TestCase):
         t = threading.Thread(target=run, kwargs={"cur": self.cur, "errors": errors})
         t.start()
         t.join()
-        if len(errors) > 0:
+        ikiwa len(errors) > 0:
             self.fail("\n".join(errors))
 
-    def CheckCurIterNext(self):
-        def run(cur, errors):
+    eleza CheckCurIterNext(self):
+        eleza run(cur, errors):
             try:
                 row = cur.fetchone()
                 errors.append("did not raise ProgrammingError")
@@ -665,33 +665,33 @@ class ThreadTests(unittest.TestCase):
         t = threading.Thread(target=run, kwargs={"cur": self.cur, "errors": errors})
         t.start()
         t.join()
-        if len(errors) > 0:
+        ikiwa len(errors) > 0:
             self.fail("\n".join(errors))
 
-class ConstructorTests(unittest.TestCase):
-    def CheckDate(self):
+kundi ConstructorTests(unittest.TestCase):
+    eleza CheckDate(self):
         d = sqlite.Date(2004, 10, 28)
 
-    def CheckTime(self):
+    eleza CheckTime(self):
         t = sqlite.Time(12, 39, 35)
 
-    def CheckTimestamp(self):
+    eleza CheckTimestamp(self):
         ts = sqlite.Timestamp(2004, 10, 28, 12, 39, 35)
 
-    def CheckDateFromTicks(self):
+    eleza CheckDateFromTicks(self):
         d = sqlite.DateFromTicks(42)
 
-    def CheckTimeFromTicks(self):
+    eleza CheckTimeFromTicks(self):
         t = sqlite.TimeFromTicks(42)
 
-    def CheckTimestampFromTicks(self):
+    eleza CheckTimestampFromTicks(self):
         ts = sqlite.TimestampFromTicks(42)
 
-    def CheckBinary(self):
+    eleza CheckBinary(self):
         b = sqlite.Binary(b"\0'")
 
-class ExtensionTests(unittest.TestCase):
-    def CheckScriptStringSql(self):
+kundi ExtensionTests(unittest.TestCase):
+    eleza CheckScriptStringSql(self):
         con = sqlite.connect(":memory:")
         cur = con.cursor()
         cur.executescript("""
@@ -704,31 +704,31 @@ class ExtensionTests(unittest.TestCase):
         res = cur.fetchone()[0]
         self.assertEqual(res, 5)
 
-    def CheckScriptSyntaxError(self):
+    eleza CheckScriptSyntaxError(self):
         con = sqlite.connect(":memory:")
         cur = con.cursor()
         with self.assertRaises(sqlite.OperationalError):
             cur.executescript("create table test(x); asdf; create table test2(x)")
 
-    def CheckScriptErrorNormal(self):
+    eleza CheckScriptErrorNormal(self):
         con = sqlite.connect(":memory:")
         cur = con.cursor()
         with self.assertRaises(sqlite.OperationalError):
             cur.executescript("create table test(sadfsadfdsa); select foo kutoka hurz;")
 
-    def CheckCursorExecutescriptAsBytes(self):
+    eleza CheckCursorExecutescriptAsBytes(self):
         con = sqlite.connect(":memory:")
         cur = con.cursor()
         with self.assertRaises(ValueError) as cm:
             cur.executescript(b"create table test(foo); insert into test(foo) values (5);")
         self.assertEqual(str(cm.exception), 'script argument must be unicode.')
 
-    def CheckConnectionExecute(self):
+    eleza CheckConnectionExecute(self):
         con = sqlite.connect(":memory:")
         result = con.execute("select 5").fetchone()[0]
         self.assertEqual(result, 5, "Basic test of Connection.execute")
 
-    def CheckConnectionExecutemany(self):
+    eleza CheckConnectionExecutemany(self):
         con = sqlite.connect(":memory:")
         con.execute("create table test(foo)")
         con.executemany("insert into test(foo) values (?)", [(3,), (4,)])
@@ -736,89 +736,89 @@ class ExtensionTests(unittest.TestCase):
         self.assertEqual(result[0][0], 3, "Basic test of Connection.executemany")
         self.assertEqual(result[1][0], 4, "Basic test of Connection.executemany")
 
-    def CheckConnectionExecutescript(self):
+    eleza CheckConnectionExecutescript(self):
         con = sqlite.connect(":memory:")
         con.executescript("create table test(foo); insert into test(foo) values (5);")
         result = con.execute("select foo kutoka test").fetchone()[0]
         self.assertEqual(result, 5, "Basic test of Connection.executescript")
 
-class ClosedConTests(unittest.TestCase):
-    def CheckClosedConCursor(self):
+kundi ClosedConTests(unittest.TestCase):
+    eleza CheckClosedConCursor(self):
         con = sqlite.connect(":memory:")
         con.close()
         with self.assertRaises(sqlite.ProgrammingError):
             cur = con.cursor()
 
-    def CheckClosedConCommit(self):
+    eleza CheckClosedConCommit(self):
         con = sqlite.connect(":memory:")
         con.close()
         with self.assertRaises(sqlite.ProgrammingError):
             con.commit()
 
-    def CheckClosedConRollback(self):
+    eleza CheckClosedConRollback(self):
         con = sqlite.connect(":memory:")
         con.close()
         with self.assertRaises(sqlite.ProgrammingError):
             con.rollback()
 
-    def CheckClosedCurExecute(self):
+    eleza CheckClosedCurExecute(self):
         con = sqlite.connect(":memory:")
         cur = con.cursor()
         con.close()
         with self.assertRaises(sqlite.ProgrammingError):
             cur.execute("select 4")
 
-    def CheckClosedCreateFunction(self):
+    eleza CheckClosedCreateFunction(self):
         con = sqlite.connect(":memory:")
         con.close()
-        def f(x): return 17
+        eleza f(x): rudisha 17
         with self.assertRaises(sqlite.ProgrammingError):
             con.create_function("foo", 1, f)
 
-    def CheckClosedCreateAggregate(self):
+    eleza CheckClosedCreateAggregate(self):
         con = sqlite.connect(":memory:")
         con.close()
-        class Agg:
-            def __init__(self):
+        kundi Agg:
+            eleza __init__(self):
                 pass
-            def step(self, x):
+            eleza step(self, x):
                 pass
-            def finalize(self):
-                return 17
+            eleza finalize(self):
+                rudisha 17
         with self.assertRaises(sqlite.ProgrammingError):
             con.create_aggregate("foo", 1, Agg)
 
-    def CheckClosedSetAuthorizer(self):
+    eleza CheckClosedSetAuthorizer(self):
         con = sqlite.connect(":memory:")
         con.close()
-        def authorizer(*args):
-            return sqlite.DENY
+        eleza authorizer(*args):
+            rudisha sqlite.DENY
         with self.assertRaises(sqlite.ProgrammingError):
             con.set_authorizer(authorizer)
 
-    def CheckClosedSetProgressCallback(self):
+    eleza CheckClosedSetProgressCallback(self):
         con = sqlite.connect(":memory:")
         con.close()
-        def progress(): pass
+        eleza progress(): pass
         with self.assertRaises(sqlite.ProgrammingError):
             con.set_progress_handler(progress, 100)
 
-    def CheckClosedCall(self):
+    eleza CheckClosedCall(self):
         con = sqlite.connect(":memory:")
         con.close()
         with self.assertRaises(sqlite.ProgrammingError):
             con()
 
-class ClosedCurTests(unittest.TestCase):
-    def CheckClosed(self):
+kundi ClosedCurTests(unittest.TestCase):
+    eleza CheckClosed(self):
         con = sqlite.connect(":memory:")
         cur = con.cursor()
         cur.close()
 
         for method_name in ("execute", "executemany", "executescript", "fetchall", "fetchmany", "fetchone"):
-            if method_name in ("execute", "executescript"):
+            ikiwa method_name in ("execute", "executescript"):
                 params = ("select 4 union select 5",)
-            elif method_name == "executemany":
+            elikiwa method_name == "executemany":
                 params = ("insert into foo(bar) values (?)", [(3,), (4,)])
             else:
                 params = []
@@ -828,14 +828,14 @@ class ClosedCurTests(unittest.TestCase):
                 method(*params)
 
 
-class SqliteOnConflictTests(unittest.TestCase):
+kundi SqliteOnConflictTests(unittest.TestCase):
     """
     Tests for SQLite's "insert on conflict" feature.
 
     See https://www.sqlite.org/lang_conflict.html for details.
     """
 
-    def setUp(self):
+    eleza setUp(self):
         self.cx = sqlite.connect(":memory:")
         self.cu = self.cx.cursor()
         self.cu.execute("""
@@ -844,11 +844,11 @@ class SqliteOnConflictTests(unittest.TestCase):
           );
         """)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.cu.close()
         self.cx.close()
 
-    def CheckOnConflictRollbackWithExplicitTransaction(self):
+    eleza CheckOnConflictRollbackWithExplicitTransaction(self):
         self.cx.isolation_level = None  # autocommit mode
         self.cu = self.cx.cursor()
         # Start an explicit transaction.
@@ -863,7 +863,7 @@ class SqliteOnConflictTests(unittest.TestCase):
         # Transaction should have rolled back and nothing should be in table.
         self.assertEqual(self.cu.fetchall(), [])
 
-    def CheckOnConflictAbortRaisesWithExplicitTransactions(self):
+    eleza CheckOnConflictAbortRaisesWithExplicitTransactions(self):
         # Abort cancels the current sql statement but doesn't change anything
         # about the current transaction.
         self.cx.isolation_level = None  # autocommit mode
@@ -879,7 +879,7 @@ class SqliteOnConflictTests(unittest.TestCase):
         # Expect the first two inserts to work, third to do nothing.
         self.assertEqual(self.cu.fetchall(), [('abort_test', None), (None, 'foo',)])
 
-    def CheckOnConflictRollbackWithoutTransaction(self):
+    eleza CheckOnConflictRollbackWithoutTransaction(self):
         # Start of implicit transaction
         self.cu.execute("INSERT INTO test(name) VALUES ('abort_test')")
         self.cu.execute("INSERT OR ROLLBACK INTO test(unique_name) VALUES ('foo')")
@@ -889,7 +889,7 @@ class SqliteOnConflictTests(unittest.TestCase):
         # Implicit transaction is rolled back on error.
         self.assertEqual(self.cu.fetchall(), [])
 
-    def CheckOnConflictAbortRaisesWithoutTransactions(self):
+    eleza CheckOnConflictAbortRaisesWithoutTransactions(self):
         # Abort cancels the current sql statement but doesn't change anything
         # about the current transaction.
         self.cu.execute("INSERT INTO test(name) VALUES ('abort_test')")
@@ -900,20 +900,20 @@ class SqliteOnConflictTests(unittest.TestCase):
         self.cu.execute("SELECT name, unique_name FROM test")
         self.assertEqual(self.cu.fetchall(), [('abort_test', None), (None, 'foo',)])
 
-    def CheckOnConflictFail(self):
+    eleza CheckOnConflictFail(self):
         self.cu.execute("INSERT OR FAIL INTO test(unique_name) VALUES ('foo')")
         with self.assertRaises(sqlite.IntegrityError):
             self.cu.execute("INSERT OR FAIL INTO test(unique_name) VALUES ('foo')")
         self.assertEqual(self.cu.fetchall(), [])
 
-    def CheckOnConflictIgnore(self):
+    eleza CheckOnConflictIgnore(self):
         self.cu.execute("INSERT OR IGNORE INTO test(unique_name) VALUES ('foo')")
         # Nothing should happen.
         self.cu.execute("INSERT OR IGNORE INTO test(unique_name) VALUES ('foo')")
         self.cu.execute("SELECT unique_name FROM test")
         self.assertEqual(self.cu.fetchall(), [('foo',)])
 
-    def CheckOnConflictReplace(self):
+    eleza CheckOnConflictReplace(self):
         self.cu.execute("INSERT OR REPLACE INTO test(name, unique_name) VALUES ('Data!', 'foo')")
         # There shouldn't be an IntegrityError exception.
         self.cu.execute("INSERT OR REPLACE INTO test(name, unique_name) VALUES ('Very different data!', 'foo')")
@@ -921,7 +921,7 @@ class SqliteOnConflictTests(unittest.TestCase):
         self.assertEqual(self.cu.fetchall(), [('Very different data!', 'foo')])
 
 
-def suite():
+eleza suite():
     module_suite = unittest.makeSuite(ModuleTests, "Check")
     connection_suite = unittest.makeSuite(ConnectionTests, "Check")
     cursor_suite = unittest.makeSuite(CursorTests, "Check")
@@ -931,15 +931,15 @@ def suite():
     closed_con_suite = unittest.makeSuite(ClosedConTests, "Check")
     closed_cur_suite = unittest.makeSuite(ClosedCurTests, "Check")
     on_conflict_suite = unittest.makeSuite(SqliteOnConflictTests, "Check")
-    return unittest.TestSuite((
+    rudisha unittest.TestSuite((
         module_suite, connection_suite, cursor_suite, thread_suite,
         constructor_suite, ext_suite, closed_con_suite, closed_cur_suite,
         on_conflict_suite,
     ))
 
-def test():
+eleza test():
     runner = unittest.TextTestRunner()
     runner.run(suite())
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test()

@@ -13,23 +13,23 @@ kutoka test.test_tools agiza scriptsdir, skip_if_missing
 
 skip_if_missing()
 
-class ReindentTests(unittest.TestCase):
+kundi ReindentTests(unittest.TestCase):
     script = os.path.join(scriptsdir, 'reindent.py')
 
-    def test_noargs(self):
+    eleza test_noargs(self):
         assert_python_ok(self.script)
 
-    def test_help(self):
+    eleza test_help(self):
         rc, out, err = assert_python_ok(self.script, '-h')
         self.assertEqual(out, b'')
         self.assertGreater(err, b'')
 
-    def test_reindent_file_with_bad_encoding(self):
+    eleza test_reindent_file_with_bad_encoding(self):
         bad_coding_path = findfile('bad_coding.py')
         rc, out, err = assert_python_ok(self.script, '-r', bad_coding_path)
         self.assertEqual(out, b'')
         self.assertNotEqual(err, b'')
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

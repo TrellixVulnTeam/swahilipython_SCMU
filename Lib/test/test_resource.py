@@ -8,9 +8,9 @@ resource = support.import_module('resource')
 
 # This test is checking a few specific problem spots with the resource module.
 
-class ResourceTest(unittest.TestCase):
+kundi ResourceTest(unittest.TestCase):
 
-    def test_args(self):
+    eleza test_args(self):
         self.assertRaises(TypeError, resource.getrlimit)
         self.assertRaises(TypeError, resource.getrlimit, 42, 42)
         self.assertRaises(TypeError, resource.setrlimit)
@@ -18,7 +18,7 @@ class ResourceTest(unittest.TestCase):
 
     @unittest.skipIf(sys.platform == "vxworks",
                      "setting RLIMIT_FSIZE is not supported on VxWorks")
-    def test_fsize_ismax(self):
+    eleza test_fsize_ismax(self):
         try:
             (cur, max) = resource.getrlimit(resource.RLIMIT_FSIZE)
         except AttributeError:
@@ -32,7 +32,7 @@ class ResourceTest(unittest.TestCase):
             self.assertEqual(resource.RLIM_INFINITY, max)
             resource.setrlimit(resource.RLIMIT_FSIZE, (cur, max))
 
-    def test_fsize_enforced(self):
+    eleza test_fsize_enforced(self):
         try:
             (cur, max) = resource.getrlimit(resource.RLIMIT_FSIZE)
         except AttributeError:
@@ -41,7 +41,7 @@ class ResourceTest(unittest.TestCase):
             # Check to see what happens when the RLIMIT_FSIZE is small.  Some
             # versions of Python were terminated by an uncaught SIGXFSZ, but
             # pythonrun.c has been fixed to ignore that exception.  If so, the
-            # write() should return EFBIG when the limit is exceeded.
+            # write() should rudisha EFBIG when the limit is exceeded.
 
             # At least one platform has an unlimited RLIMIT_FSIZE and attempts
             # to change it raise ValueError instead.
@@ -66,20 +66,20 @@ class ResourceTest(unittest.TestCase):
                             time.sleep(.1)
                             f.flush()
                     except OSError:
-                        if not limit_set:
+                        ikiwa not limit_set:
                             raise
-                    if limit_set:
+                    ikiwa limit_set:
                         # Close will attempt to flush the byte we wrote
                         # Restore limit first to avoid getting a spurious error
                         resource.setrlimit(resource.RLIMIT_FSIZE, (cur, max))
                 finally:
                     f.close()
             finally:
-                if limit_set:
+                ikiwa limit_set:
                     resource.setrlimit(resource.RLIMIT_FSIZE, (cur, max))
                 support.unlink(support.TESTFN)
 
-    def test_fsize_toobig(self):
+    eleza test_fsize_toobig(self):
         # Be sure that setrlimit is checking for really large values
         too_big = 10**50
         try:
@@ -96,7 +96,7 @@ class ResourceTest(unittest.TestCase):
             except (OverflowError, ValueError):
                 pass
 
-    def test_getrusage(self):
+    eleza test_getrusage(self):
         self.assertRaises(TypeError, resource.getrusage)
         self.assertRaises(TypeError, resource.getrusage, 42, 42)
         usageself = resource.getrusage(resource.RUSAGE_SELF)
@@ -114,41 +114,41 @@ class ResourceTest(unittest.TestCase):
     # Issue 6083: Reference counting bug
     @unittest.skipIf(sys.platform == "vxworks",
                      "setting RLIMIT_CPU is not supported on VxWorks")
-    def test_setrusage_refcount(self):
+    eleza test_setrusage_refcount(self):
         try:
             limits = resource.getrlimit(resource.RLIMIT_CPU)
         except AttributeError:
             pass
         else:
-            class BadSequence:
-                def __len__(self):
-                    return 2
-                def __getitem__(self, key):
-                    if key in (0, 1):
-                        return len(tuple(range(1000000)))
+            kundi BadSequence:
+                eleza __len__(self):
+                    rudisha 2
+                eleza __getitem__(self, key):
+                    ikiwa key in (0, 1):
+                        rudisha len(tuple(range(1000000)))
                     raise IndexError
 
             resource.setrlimit(resource.RLIMIT_CPU, BadSequence())
 
-    def test_pagesize(self):
+    eleza test_pagesize(self):
         pagesize = resource.getpagesize()
         self.assertIsInstance(pagesize, int)
         self.assertGreaterEqual(pagesize, 0)
 
     @unittest.skipUnless(sys.platform == 'linux', 'test requires Linux')
-    def test_linux_constants(self):
+    eleza test_linux_constants(self):
         for attr in ['MSGQUEUE', 'NICE', 'RTPRIO', 'RTTIME', 'SIGPENDING']:
             with contextlib.suppress(AttributeError):
                 self.assertIsInstance(getattr(resource, 'RLIMIT_' + attr), int)
 
-    def test_freebsd_contants(self):
+    eleza test_freebsd_contants(self):
         for attr in ['SWAP', 'SBSIZE', 'NPTS']:
             with contextlib.suppress(AttributeError):
                 self.assertIsInstance(getattr(resource, 'RLIMIT_' + attr), int)
 
     @unittest.skipUnless(hasattr(resource, 'prlimit'), 'no prlimit')
     @support.requires_linux_version(2, 6, 36)
-    def test_prlimit(self):
+    eleza test_prlimit(self):
         self.assertRaises(TypeError, resource.prlimit)
         self.assertRaises(ProcessLookupError, resource.prlimit,
                           -1, resource.RLIMIT_AS)
@@ -160,20 +160,20 @@ class ResourceTest(unittest.TestCase):
     # Issue 20191: Reference counting bug
     @unittest.skipUnless(hasattr(resource, 'prlimit'), 'no prlimit')
     @support.requires_linux_version(2, 6, 36)
-    def test_prlimit_refcount(self):
-        class BadSeq:
-            def __len__(self):
-                return 2
-            def __getitem__(self, key):
-                return limits[key] - 1  # new reference
+    eleza test_prlimit_refcount(self):
+        kundi BadSeq:
+            eleza __len__(self):
+                rudisha 2
+            eleza __getitem__(self, key):
+                rudisha limits[key] - 1  # new reference
 
         limits = resource.getrlimit(resource.RLIMIT_AS)
         self.assertEqual(resource.prlimit(0, resource.RLIMIT_AS, BadSeq()),
                          limits)
 
 
-def test_main(verbose=None):
+eleza test_main(verbose=None):
     support.run_unittest(ResourceTest)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

@@ -3,9 +3,9 @@
 # Import the name nested_scopes twice to trigger SF bug #407394 (regression).
 kutoka __future__ agiza nested_scopes, nested_scopes
 
-def f(x):
-    def g(y):
-        return x + y
-    return g
+eleza f(x):
+    eleza g(y):
+        rudisha x + y
+    rudisha g
 
 result = f(2)(4)

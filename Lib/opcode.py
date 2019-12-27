@@ -36,19 +36,19 @@ hasnargs = [] # unused
 opmap = {}
 opname = ['<%r>' % (op,) for op in range(256)]
 
-def def_op(name, op):
+eleza def_op(name, op):
     opname[op] = name
     opmap[name] = op
 
-def name_op(name, op):
+eleza name_op(name, op):
     def_op(name, op)
     hasname.append(op)
 
-def jrel_op(name, op):
+eleza jrel_op(name, op):
     def_op(name, op)
     hasjrel.append(op)
 
-def jabs_op(name, op):
+eleza jabs_op(name, op):
     def_op(name, op)
     hasjabs.append(op)
 

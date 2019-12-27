@@ -1,7 +1,7 @@
 # dialog.py -- Tkinter interface to the tk_dialog script.
 
 from tkinter import *
-from tkinter import _cnfmerge
+from tkinter agiza _cnfmerge
 
 DIALOG_ICON = 'questhead'
 

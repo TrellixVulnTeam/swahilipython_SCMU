@@ -4,7 +4,7 @@
 """Unit tests for pytree.py.
 
 NOTE: Please *don't* add doc strings to individual test methods!
-In verbose mode, printing of the module, class and method name is much
+In verbose mode, printing of the module, kundi and method name is much
 more helpful than printing of (the first line of) the docstring,
 especially when debugging a test.
 """
@@ -17,43 +17,43 @@ kutoka lib2to3 agiza pytree
 try:
     sorted
 except NameError:
-    def sorted(lst):
+    eleza sorted(lst):
         l = list(lst)
         l.sort()
-        return l
+        rudisha l
 
-class TestNodes(support.TestCase):
+kundi TestNodes(support.TestCase):
 
     """Unit tests for nodes (Base, Leaf, Node)."""
 
-    def test_instantiate_base(self):
-        if __debug__:
+    eleza test_instantiate_base(self):
+        ikiwa __debug__:
             # Test that instantiating Base() raises an AssertionError
             self.assertRaises(AssertionError, pytree.Base)
 
-    def test_leaf(self):
+    eleza test_leaf(self):
         l1 = pytree.Leaf(100, "foo")
         self.assertEqual(l1.type, 100)
         self.assertEqual(l1.value, "foo")
 
-    def test_leaf_repr(self):
+    eleza test_leaf_repr(self):
         l1 = pytree.Leaf(100, "foo")
         self.assertEqual(repr(l1), "Leaf(100, 'foo')")
 
-    def test_leaf_str(self):
+    eleza test_leaf_str(self):
         l1 = pytree.Leaf(100, "foo")
         self.assertEqual(str(l1), "foo")
         l2 = pytree.Leaf(100, "foo", context=(" ", (10, 1)))
         self.assertEqual(str(l2), " foo")
 
-    def test_leaf_str_numeric_value(self):
+    eleza test_leaf_str_numeric_value(self):
         # Make sure that the Leaf's value is stringified. Failing to
         #  do this can cause a TypeError in certain situations.
         l1 = pytree.Leaf(2, 5)
         l1.prefix = "foo_"
         self.assertEqual(str(l1), "foo_5")
 
-    def test_leaf_equality(self):
+    eleza test_leaf_equality(self):
         l1 = pytree.Leaf(100, "foo")
         l2 = pytree.Leaf(100, "foo", context=(" ", (1, 0)))
         self.assertEqual(l1, l2)
@@ -62,7 +62,7 @@ class TestNodes(support.TestCase):
         self.assertNotEqual(l1, l3)
         self.assertNotEqual(l1, l4)
 
-    def test_leaf_prefix(self):
+    eleza test_leaf_prefix(self):
         l1 = pytree.Leaf(100, "foo")
         self.assertEqual(l1.prefix, "")
         self.assertFalse(l1.was_changed)
@@ -70,27 +70,27 @@ class TestNodes(support.TestCase):
         self.assertEqual(l1.prefix, "  ##\n\n")
         self.assertTrue(l1.was_changed)
 
-    def test_node(self):
+    eleza test_node(self):
         l1 = pytree.Leaf(100, "foo")
         l2 = pytree.Leaf(200, "bar")
         n1 = pytree.Node(1000, [l1, l2])
         self.assertEqual(n1.type, 1000)
         self.assertEqual(n1.children, [l1, l2])
 
-    def test_node_repr(self):
+    eleza test_node_repr(self):
         l1 = pytree.Leaf(100, "foo")
         l2 = pytree.Leaf(100, "bar", context=(" ", (1, 0)))
         n1 = pytree.Node(1000, [l1, l2])
         self.assertEqual(repr(n1),
                          "Node(1000, [%s, %s])" % (repr(l1), repr(l2)))
 
-    def test_node_str(self):
+    eleza test_node_str(self):
         l1 = pytree.Leaf(100, "foo")
         l2 = pytree.Leaf(100, "bar", context=(" ", (1, 0)))
         n1 = pytree.Node(1000, [l1, l2])
         self.assertEqual(str(n1), "foo bar")
 
-    def test_node_prefix(self):
+    eleza test_node_prefix(self):
         l1 = pytree.Leaf(100, "foo")
         self.assertEqual(l1.prefix, "")
         n1 = pytree.Node(1000, [l1])
@@ -99,7 +99,7 @@ class TestNodes(support.TestCase):
         self.assertEqual(n1.prefix, " ")
         self.assertEqual(l1.prefix, " ")
 
-    def test_get_suffix(self):
+    eleza test_get_suffix(self):
         l1 = pytree.Leaf(100, "foo", prefix="a")
         l2 = pytree.Leaf(100, "bar", prefix="b")
         n1 = pytree.Node(1000, [l1, l2])
@@ -115,14 +115,14 @@ class TestNodes(support.TestCase):
         self.assertEqual(l3.get_suffix(), "")
         self.assertEqual(n2.get_suffix(), "")
 
-    def test_node_equality(self):
+    eleza test_node_equality(self):
         n1 = pytree.Node(1000, ())
         n2 = pytree.Node(1000, [], context=(" ", (1, 0)))
         self.assertEqual(n1, n2)
         n3 = pytree.Node(1001, ())
         self.assertNotEqual(n1, n3)
 
-    def test_node_recursive_equality(self):
+    eleza test_node_recursive_equality(self):
         l1 = pytree.Leaf(100, "foo")
         l2 = pytree.Leaf(100, "foo")
         n1 = pytree.Node(1000, [l1])
@@ -132,7 +132,7 @@ class TestNodes(support.TestCase):
         n3 = pytree.Node(1000, [l3])
         self.assertNotEqual(n1, n3)
 
-    def test_replace(self):
+    eleza test_replace(self):
         l1 = pytree.Leaf(100, "foo")
         l2 = pytree.Leaf(100, "+")
         l3 = pytree.Leaf(100, "bar")
@@ -146,7 +146,7 @@ class TestNodes(support.TestCase):
         self.assertIsInstance(n1.children, list)
         self.assertTrue(n1.was_changed)
 
-    def test_replace_with_list(self):
+    eleza test_replace_with_list(self):
         l1 = pytree.Leaf(100, "foo")
         l2 = pytree.Leaf(100, "+")
         l3 = pytree.Leaf(100, "bar")
@@ -156,7 +156,7 @@ class TestNodes(support.TestCase):
         self.assertEqual(str(n1), "foo**bar")
         self.assertIsInstance(n1.children, list)
 
-    def test_leaves(self):
+    eleza test_leaves(self):
         l1 = pytree.Leaf(100, "foo")
         l2 = pytree.Leaf(100, "bar")
         l3 = pytree.Leaf(100, "fooey")
@@ -166,7 +166,7 @@ class TestNodes(support.TestCase):
 
         self.assertEqual(list(n1.leaves()), [l1, l2, l3])
 
-    def test_depth(self):
+    eleza test_depth(self):
         l1 = pytree.Leaf(100, "foo")
         l2 = pytree.Leaf(100, "bar")
         n2 = pytree.Node(1000, [l1, l2])
@@ -177,7 +177,7 @@ class TestNodes(support.TestCase):
         self.assertEqual(n3.depth(), 1)
         self.assertEqual(n1.depth(), 0)
 
-    def test_post_order(self):
+    eleza test_post_order(self):
         l1 = pytree.Leaf(100, "foo")
         l2 = pytree.Leaf(100, "bar")
         l3 = pytree.Leaf(100, "fooey")
@@ -185,7 +185,7 @@ class TestNodes(support.TestCase):
         n1 = pytree.Node(1000, [c1, l3])
         self.assertEqual(list(n1.post_order()), [l1, l2, c1, l3, n1])
 
-    def test_pre_order(self):
+    eleza test_pre_order(self):
         l1 = pytree.Leaf(100, "foo")
         l2 = pytree.Leaf(100, "bar")
         l3 = pytree.Leaf(100, "fooey")
@@ -193,7 +193,7 @@ class TestNodes(support.TestCase):
         n1 = pytree.Node(1000, [c1, l3])
         self.assertEqual(list(n1.pre_order()), [n1, c1, l1, l2, l3])
 
-    def test_changed(self):
+    eleza test_changed(self):
         l1 = pytree.Leaf(100, "f")
         self.assertFalse(l1.was_changed)
         l1.changed()
@@ -219,13 +219,13 @@ class TestNodes(support.TestCase):
         self.assertTrue(n2.was_changed)
         self.assertFalse(l1.was_changed)
 
-    def test_leaf_constructor_prefix(self):
+    eleza test_leaf_constructor_prefix(self):
         for prefix in ("xyz_", ""):
             l1 = pytree.Leaf(100, "self", prefix=prefix)
             self.assertTrue(str(l1), prefix + "self")
             self.assertEqual(l1.prefix, prefix)
 
-    def test_node_constructor_prefix(self):
+    eleza test_node_constructor_prefix(self):
         for prefix in ("xyz_", ""):
             l1 = pytree.Leaf(100, "self")
             l2 = pytree.Leaf(100, "foo", prefix="_")
@@ -235,7 +235,7 @@ class TestNodes(support.TestCase):
             self.assertEqual(l1.prefix, prefix)
             self.assertEqual(l2.prefix, "_")
 
-    def test_remove(self):
+    eleza test_remove(self):
         l1 = pytree.Leaf(100, "foo")
         l2 = pytree.Leaf(100, "foo")
         n1 = pytree.Node(1000, [l1, l2])
@@ -258,7 +258,7 @@ class TestNodes(support.TestCase):
         self.assertTrue(n1.was_changed)
         self.assertTrue(n2.was_changed)
 
-    def test_remove_parentless(self):
+    eleza test_remove_parentless(self):
         n1 = pytree.Node(1000, [])
         n1.remove()
         self.assertEqual(n1.parent, None)
@@ -267,7 +267,7 @@ class TestNodes(support.TestCase):
         l1.remove()
         self.assertEqual(l1.parent, None)
 
-    def test_node_set_child(self):
+    eleza test_node_set_child(self):
         l1 = pytree.Leaf(100, "foo")
         n1 = pytree.Node(1000, [l1])
 
@@ -288,7 +288,7 @@ class TestNodes(support.TestCase):
         # I don't care what it raises, so long as it's an exception
         self.assertRaises(Exception, n1.set_child, 0, list)
 
-    def test_node_insert_child(self):
+    eleza test_node_insert_child(self):
         l1 = pytree.Leaf(100, "foo")
         n1 = pytree.Node(1000, [l1])
 
@@ -304,7 +304,7 @@ class TestNodes(support.TestCase):
         # I don't care what it raises, so long as it's an exception
         self.assertRaises(Exception, n1.insert_child, 0, list)
 
-    def test_node_append_child(self):
+    eleza test_node_append_child(self):
         n1 = pytree.Node(1000, [])
 
         l1 = pytree.Leaf(100, "foo")
@@ -320,7 +320,7 @@ class TestNodes(support.TestCase):
         # I don't care what it raises, so long as it's an exception
         self.assertRaises(Exception, n1.append_child, list)
 
-    def test_node_next_sibling(self):
+    eleza test_node_next_sibling(self):
         n1 = pytree.Node(1000, [])
         n2 = pytree.Node(1000, [])
         p1 = pytree.Node(1000, [n1, n2])
@@ -329,7 +329,7 @@ class TestNodes(support.TestCase):
         self.assertEqual(n2.next_sibling, None)
         self.assertEqual(p1.next_sibling, None)
 
-    def test_leaf_next_sibling(self):
+    eleza test_leaf_next_sibling(self):
         l1 = pytree.Leaf(100, "a")
         l2 = pytree.Leaf(100, "b")
         p1 = pytree.Node(1000, [l1, l2])
@@ -338,7 +338,7 @@ class TestNodes(support.TestCase):
         self.assertEqual(l2.next_sibling, None)
         self.assertEqual(p1.next_sibling, None)
 
-    def test_node_prev_sibling(self):
+    eleza test_node_prev_sibling(self):
         n1 = pytree.Node(1000, [])
         n2 = pytree.Node(1000, [])
         p1 = pytree.Node(1000, [n1, n2])
@@ -347,7 +347,7 @@ class TestNodes(support.TestCase):
         self.assertEqual(n1.prev_sibling, None)
         self.assertEqual(p1.prev_sibling, None)
 
-    def test_leaf_prev_sibling(self):
+    eleza test_leaf_prev_sibling(self):
         l1 = pytree.Leaf(100, "a")
         l2 = pytree.Leaf(100, "b")
         p1 = pytree.Node(1000, [l1, l2])
@@ -357,11 +357,11 @@ class TestNodes(support.TestCase):
         self.assertEqual(p1.prev_sibling, None)
 
 
-class TestPatterns(support.TestCase):
+kundi TestPatterns(support.TestCase):
 
     """Unit tests for tree matching patterns."""
 
-    def test_basic_patterns(self):
+    eleza test_basic_patterns(self):
         # Build a tree
         l1 = pytree.Leaf(100, "foo")
         l2 = pytree.Leaf(100, "bar")
@@ -397,7 +397,7 @@ class TestPatterns(support.TestCase):
         self.assertFalse(pn.match(l2, results=r))
         self.assertEqual(r, {})
 
-    def test_wildcard(self):
+    eleza test_wildcard(self):
         # Build a tree for testing
         l1 = pytree.Leaf(100, "foo")
         l2 = pytree.Leaf(100, "bar")
@@ -428,7 +428,7 @@ class TestPatterns(support.TestCase):
         self.assertIs(r["pl"], l3)
         r = {}
 
-    def test_generate_matches(self):
+    eleza test_generate_matches(self):
         la = pytree.Leaf(1, "a")
         lb = pytree.Leaf(1, "b")
         lc = pytree.Leaf(1, "c")
@@ -458,7 +458,7 @@ class TestPatterns(support.TestCase):
         for c in "abcdef":
             self.assertEqual(r["p" + c], pytree.Leaf(1, c))
 
-    def test_has_key_example(self):
+    eleza test_has_key_example(self):
         pattern = pytree.NodePattern(331,
                                      (pytree.LeafPattern(7),
                                       pytree.WildcardPattern(name="args"),

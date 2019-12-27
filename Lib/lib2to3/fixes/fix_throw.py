@@ -13,7 +13,7 @@ kutoka ..pgen2 agiza token
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name, Call, ArgList, Attr, is_tuple
 
-class FixThrow(fixer_base.BaseFix):
+kundi FixThrow(fixer_base.BaseFix):
     BM_compatible = True
     PATTERN = """
     power< any trailer< '.' 'throw' >
@@ -23,21 +23,21 @@ class FixThrow(fixer_base.BaseFix):
     power< any trailer< '.' 'throw' > trailer< '(' exc=any ')' > >
     """
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         syms = self.syms
 
         exc = results["exc"].clone()
-        if exc.type is token.STRING:
+        ikiwa exc.type is token.STRING:
             self.cannot_convert(node, "Python 3 does not support string exceptions")
             return
 
         # Leave "g.throw(E)" alone
         val = results.get("val")
-        if val is None:
+        ikiwa val is None:
             return
 
         val = val.clone()
-        if is_tuple(val):
+        ikiwa is_tuple(val):
             args = [c.clone() for c in val.children[1:-1]]
         else:
             val.prefix = ""
@@ -45,7 +45,7 @@ class FixThrow(fixer_base.BaseFix):
 
         throw_args = results["args"]
 
-        if "tb" in results:
+        ikiwa "tb" in results:
             tb = results["tb"].clone()
             tb.prefix = ""
 

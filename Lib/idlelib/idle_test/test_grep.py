@@ -13,48 +13,48 @@ agiza os
 agiza re
 
 
-class Dummy_searchengine:
+kundi Dummy_searchengine:
     '''GrepDialog.__init__ calls parent SearchDiabolBase which attaches the
     passed in SearchEngine instance as attribute 'engine'. Only a few of the
     many possible self.engine.x attributes are needed here.
     '''
-    def getpat(self):
-        return self._pat
+    eleza getpat(self):
+        rudisha self._pat
 
 searchengine = Dummy_searchengine()
 
 
-class Dummy_grep:
+kundi Dummy_grep:
     # Methods tested
     #default_command = GrepDialog.default_command
     grep_it = grep.GrepDialog.grep_it
     # Other stuff needed
     recvar = Var(False)
     engine = searchengine
-    def close(self):  # gui method
+    eleza close(self):  # gui method
         pass
 
 _grep = Dummy_grep()
 
 
-class FindfilesTest(unittest.TestCase):
+kundi FindfilesTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.realpath = os.path.realpath(__file__)
         cls.path = os.path.dirname(cls.realpath)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         del cls.realpath, cls.path
 
-    def test_invaliddir(self):
+    eleza test_invaliddir(self):
         with captured_stdout() as s:
             filelist = list(grep.findfiles('invaliddir', '*.*', False))
         self.assertEqual(filelist, [])
         self.assertIn('invalid', s.getvalue())
 
-    def test_curdir(self):
+    eleza test_curdir(self):
         # Test os.curdir.
         ff = grep.findfiles
         save_cwd = os.getcwd()
@@ -64,7 +64,7 @@ class FindfilesTest(unittest.TestCase):
         self.assertIn(os.path.join(os.curdir, filename), filelist)
         os.chdir(save_cwd)
 
-    def test_base(self):
+    eleza test_base(self):
         ff = grep.findfiles
         readme = os.path.join(self.path, 'README.txt')
 
@@ -86,7 +86,7 @@ class FindfilesTest(unittest.TestCase):
         self.assertEqual(len(filelist), 0)
         self.assertNotIn(self.realpath, filelist)
 
-    def test_recurse(self):
+    eleza test_recurse(self):
         ff = grep.findfiles
         parent = os.path.dirname(self.path)
         grepfile = os.path.join(parent, 'grep.py')
@@ -115,27 +115,27 @@ class FindfilesTest(unittest.TestCase):
         self.assertIn(self.realpath, filelist)
 
 
-class Grep_itTest(unittest.TestCase):
+kundi Grep_itTest(unittest.TestCase):
     # Test captured reports with 0 and some hits.
     # Should test file names, but Windows reports have mixed / and \ separators
     # kutoka incomplete replacement, so 'later'.
 
-    def report(self, pat):
+    eleza report(self, pat):
         _grep.engine._pat = pat
         with captured_stdout() as s:
             _grep.grep_it(re.compile(pat), __file__)
         lines = s.getvalue().split('\n')
         lines.pop()  # remove bogus '' after last \n
-        return lines
+        rudisha lines
 
-    def test_unfound(self):
+    eleza test_unfound(self):
         pat = 'xyz*'*7
         lines = self.report(pat)
         self.assertEqual(len(lines), 2)
         self.assertIn(pat, lines[0])
         self.assertEqual(lines[1], 'No hits.')
 
-    def test_found(self):
+    eleza test_found(self):
 
         pat = '""" !Changing this line will break Test_findfile.test_found!'
         lines = self.report(pat)
@@ -146,11 +146,11 @@ class Grep_itTest(unittest.TestCase):
         self.assertTrue(lines[4].startswith('(Hint:'))
 
 
-class Default_commandTest(unittest.TestCase):
+kundi Default_commandTest(unittest.TestCase):
     # To write this, move outwin agiza to top of GrepDialog
-    # so it can be replaced by captured_stdout in class setup/teardown.
+    # so it can be replaced by captured_stdout in kundi setup/teardown.
     pass
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

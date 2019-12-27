@@ -8,20 +8,20 @@ agiza select
 agiza unittest
 kutoka test.support agiza run_unittest, cpython_only
 
-if not hasattr(select, 'devpoll') :
+ikiwa not hasattr(select, 'devpoll') :
     raise unittest.SkipTest('test works only on Solaris OS family')
 
 
-def find_ready_matching(ready, flag):
+eleza find_ready_matching(ready, flag):
     match = []
     for fd, mode in ready:
-        if mode & flag:
+        ikiwa mode & flag:
             match.append(fd)
-    return match
+    rudisha match
 
-class DevPollTests(unittest.TestCase):
+kundi DevPollTests(unittest.TestCase):
 
-    def test_devpoll1(self):
+    eleza test_devpoll1(self):
         # Basic functional test of poll object
         # Create a bunch of pipe and test that poll works with them.
 
@@ -50,14 +50,14 @@ class DevPollTests(unittest.TestCase):
         while writers:
             ready = p.poll()
             ready_writers = find_ready_matching(ready, select.POLLOUT)
-            if not ready_writers:
+            ikiwa not ready_writers:
                 self.fail("no pipes ready for writing")
             wr = random.choice(ready_writers)
             os.write(wr, MSG)
 
             ready = p.poll()
             ready_readers = find_ready_matching(ready, select.POLLIN)
-            if not ready_readers:
+            ikiwa not ready_readers:
                 self.fail("no pipes ready for reading")
             self.assertEqual([w2r[wr]], ready_readers)
             rd = ready_readers[0]
@@ -71,7 +71,7 @@ class DevPollTests(unittest.TestCase):
 
         self.assertEqual(bufs, [MSG] * NUM_PIPES)
 
-    def test_timeout_overflow(self):
+    eleza test_timeout_overflow(self):
         pollster = select.devpoll()
         w, r = os.pipe()
         pollster.register(w)
@@ -88,7 +88,7 @@ class DevPollTests(unittest.TestCase):
         self.assertRaises(OverflowError, pollster.poll, 1 << 63)
         self.assertRaises(OverflowError, pollster.poll, 1 << 64)
 
-    def test_close(self):
+    eleza test_close(self):
         open_file = open(__file__, "rb")
         self.addCleanup(open_file.close)
         fd = open_file.fileno()
@@ -112,12 +112,12 @@ class DevPollTests(unittest.TestCase):
         self.assertRaises(ValueError, devpoll.register, fd, select.POLLIN)
         self.assertRaises(ValueError, devpoll.unregister, fd)
 
-    def test_fd_non_inheritable(self):
+    eleza test_fd_non_inheritable(self):
         devpoll = select.devpoll()
         self.addCleanup(devpoll.close)
         self.assertEqual(os.get_inheritable(devpoll.fileno()), False)
 
-    def test_events_mask_overflow(self):
+    eleza test_events_mask_overflow(self):
         pollster = select.devpoll()
         w, r = os.pipe()
         pollster.register(w)
@@ -128,7 +128,7 @@ class DevPollTests(unittest.TestCase):
         self.assertRaises(OverflowError, pollster.modify, 1, 1 << 64)
 
     @cpython_only
-    def test_events_mask_overflow_c_limits(self):
+    eleza test_events_mask_overflow_c_limits(self):
         kutoka _testcapi agiza USHRT_MAX
         pollster = select.devpoll()
         w, r = os.pipe()
@@ -138,8 +138,8 @@ class DevPollTests(unittest.TestCase):
         self.assertRaises(OverflowError, pollster.modify, 1, USHRT_MAX + 1)
 
 
-def test_main():
+eleza test_main():
     run_unittest(DevPollTests)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test_main()

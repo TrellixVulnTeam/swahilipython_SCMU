@@ -2,7 +2,7 @@
 ================================================
 
 .. module:: linecache
-   :synopsis: This module provides random access to individual lines from text files.
+   :synopsis: This module provides random access to individual lines kutoka text files.
 
 .. sectionauthor:: Moshe Zadka <moshez@zadka.site.co.il>
 
@@ -10,9 +10,9 @@
 
 --------------
 
-The :mod:`linecache` module allows one to get any line from a Python source file, while
+The :mod:`linecache` module allows one to get any line kutoka a Python source file, while
 attempting to optimize internally, using a cache, the common case where many
-lines are read from a single file.  This is used by the :mod:`traceback` module
+lines are read kutoka a single file.  This is used by the :mod:`traceback` module
 to retrieve source lines for inclusion in  the formatted traceback.
 
 The :func:`tokenize.open` function is used to open files. This
@@ -24,7 +24,7 @@ The :mod:`linecache` module defines the following functions:
 
 .. function:: getline(filename, lineno, module_globals=None)
 
-   Get line *lineno* from file named *filename*. This function will never raise an
+   Get line *lineno* kutoka file named *filename*. This function will never raise an
    exception --- it will return ``''`` on errors (the terminating newline character
    will be included for lines that are found).
 
@@ -41,7 +41,7 @@ The :mod:`linecache` module defines the following functions:
 
 .. function:: clearcache()
 
-   Clear the cache.  Use this function if you no longer need lines from files
+   Clear the cache.  Use this function if you no longer need lines kutoka files
    previously read using :func:`getline`.
 
 
@@ -62,6 +62,6 @@ The :mod:`linecache` module defines the following functions:
 
 Example::
 
-   >>> import linecache
+   >>> agiza linecache
    >>> linecache.getline(linecache.__file__, 8)
-   'import sys\n'
+   'agiza sys\n'

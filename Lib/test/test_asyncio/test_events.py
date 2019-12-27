@@ -42,7 +42,7 @@ def broken_unix_getsockname():
     """Return True if the platform is Mac OS 10.4 or older."""
     if sys.platform.startswith("aix"):
         return True
-    elif sys.platform != 'darwin':
+    lasivyo sys.platform != 'darwin':
         return False
     version = platform.mac_ver()[0]
     version = tuple(map(int, version.split('.')))
@@ -2705,7 +2705,7 @@ class TestPyGetEventLoop(GetEventLoopTestsMixin, unittest.TestCase):
 
 
 try:
-    import _asyncio  # NoQA
+    agiza _asyncio  # NoQA
 except ImportError:
     pass
 else:

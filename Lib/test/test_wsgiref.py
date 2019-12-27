@@ -22,50 +22,50 @@ agiza threading
 agiza unittest
 
 
-class MockServer(WSGIServer):
+kundi MockServer(WSGIServer):
     """Non-socket HTTP server"""
 
-    def __init__(self, server_address, RequestHandlerClass):
+    eleza __init__(self, server_address, RequestHandlerClass):
         BaseServer.__init__(self, server_address, RequestHandlerClass)
         self.server_bind()
 
-    def server_bind(self):
+    eleza server_bind(self):
         host, port = self.server_address
         self.server_name = host
         self.server_port = port
         self.setup_environ()
 
 
-class MockHandler(WSGIRequestHandler):
+kundi MockHandler(WSGIRequestHandler):
     """Non-socket HTTP handler"""
-    def setup(self):
+    eleza setup(self):
         self.connection = self.request
         self.rfile, self.wfile = self.connection
 
-    def finish(self):
+    eleza finish(self):
         pass
 
 
-def hello_app(environ,start_response):
+eleza hello_app(environ,start_response):
     start_response("200 OK", [
         ('Content-Type','text/plain'),
         ('Date','Mon, 05 Jun 2006 18:49:54 GMT')
     ])
-    return [b"Hello, world!"]
+    rudisha [b"Hello, world!"]
 
 
-def header_app(environ, start_response):
+eleza header_app(environ, start_response):
     start_response("200 OK", [
         ('Content-Type', 'text/plain'),
         ('Date', 'Mon, 05 Jun 2006 18:49:54 GMT')
     ])
-    return [';'.join([
+    rudisha [';'.join([
         environ['HTTP_X_TEST_HEADER'], environ['QUERY_STRING'],
         environ['PATH_INFO']
     ]).encode('iso-8859-1')]
 
 
-def run_amock(app=hello_app, data=b"GET / HTTP/1.0\n\n"):
+eleza run_amock(app=hello_app, data=b"GET / HTTP/1.0\n\n"):
     server = make_server("", 80, app, MockServer, MockHandler)
     inp = BufferedReader(BytesIO(data))
     out = BytesIO()
@@ -77,9 +77,9 @@ def run_amock(app=hello_app, data=b"GET / HTTP/1.0\n\n"):
     finally:
         sys.stderr = olderr
 
-    return out.getvalue(), err.getvalue()
+    rudisha out.getvalue(), err.getvalue()
 
-def compare_generic_iter(make_it,match):
+eleza compare_generic_iter(make_it,match):
     """Utility to compare a generic 2.1/2.2+ iterator with an iterable
 
     If running under Python 2.2+, this tests the iterator using iter()/next(),
@@ -89,7 +89,7 @@ def compare_generic_iter(make_it,match):
     it = make_it()
     n = 0
     for item in match:
-        if not it[n]==item: raise AssertionError
+        ikiwa not it[n]==item: raise AssertionError
         n+=1
     try:
         it[n]
@@ -105,9 +105,9 @@ def compare_generic_iter(make_it,match):
     else:
         # Only test iter mode under 2.2+
         it = make_it()
-        if not iter(it) is it: raise AssertionError
+        ikiwa not iter(it) is it: raise AssertionError
         for item in match:
-            if not next(it) == item: raise AssertionError
+            ikiwa not next(it) == item: raise AssertionError
         try:
             next(it)
         except StopIteration:
@@ -116,9 +116,9 @@ def compare_generic_iter(make_it,match):
             raise AssertionError("Too many items kutoka .__next__()", it)
 
 
-class IntegrationTests(TestCase):
+kundi IntegrationTests(TestCase):
 
-    def check_hello(self, out, has_length=True):
+    eleza check_hello(self, out, has_length=True):
         pyver = (python_implementation() + "/" +
                 sys.version.split()[0])
         self.assertEqual(out,
@@ -131,11 +131,11 @@ class IntegrationTests(TestCase):
             "Hello, world!").encode("iso-8859-1")
         )
 
-    def test_plain_hello(self):
+    eleza test_plain_hello(self):
         out, err = run_amock()
         self.check_hello(out)
 
-    def test_environ(self):
+    eleza test_environ(self):
         request = (
             b"GET /p%61th/?query=test HTTP/1.0\n"
             b"X-Test-Header: Python test \n"
@@ -148,20 +148,20 @@ class IntegrationTests(TestCase):
             b"Python test,Python test 2;query=test;/path/"
         )
 
-    def test_request_length(self):
+    eleza test_request_length(self):
         out, err = run_amock(data=b"GET " + (b"x" * 65537) + b" HTTP/1.0\n\n")
         self.assertEqual(out.splitlines()[0],
                          b"HTTP/1.0 414 Request-URI Too Long")
 
-    def test_validated_hello(self):
+    eleza test_validated_hello(self):
         out, err = run_amock(validator(hello_app))
         # the middleware doesn't support len(), so content-length isn't there
         self.check_hello(out, has_length=False)
 
-    def test_simple_validation_error(self):
-        def bad_app(environ,start_response):
+    eleza test_simple_validation_error(self):
+        eleza bad_app(environ,start_response):
             start_response("200 OK", ('Content-Type','text/plain'))
-            return ["Hello, world!"]
+            rudisha ["Hello, world!"]
         out, err = run_amock(validator(bad_app))
         self.assertTrue(out.endswith(
             b"A server error occurred.  Please contact the administrator."
@@ -169,15 +169,15 @@ class IntegrationTests(TestCase):
         self.assertEqual(
             err.splitlines()[-2],
             "AssertionError: Headers (('Content-Type', 'text/plain')) must"
-            " be of type list: <class 'tuple'>"
+            " be of type list: <kundi 'tuple'>"
         )
 
-    def test_status_validation_errors(self):
-        def create_bad_app(status):
-            def bad_app(environ, start_response):
+    eleza test_status_validation_errors(self):
+        eleza create_bad_app(status):
+            eleza bad_app(environ, start_response):
                 start_response(status, [("Content-Type", "text/plain; charset=utf-8")])
-                return [b"Hello, world!"]
-            return bad_app
+                rudisha [b"Hello, world!"]
+            rudisha bad_app
 
         tests = [
             ('200', 'AssertionError: Status must be at least 4 characters'),
@@ -193,11 +193,11 @@ class IntegrationTests(TestCase):
                 ))
                 self.assertEqual(err.splitlines()[-2], exc_message)
 
-    def test_wsgi_input(self):
-        def bad_app(e,s):
+    eleza test_wsgi_input(self):
+        eleza bad_app(e,s):
             e["wsgi.input"].read()
             s("200 OK", [("Content-Type", "text/plain; charset=utf-8")])
-            return [b"data"]
+            rudisha [b"data"]
         out, err = run_amock(validator(bad_app))
         self.assertTrue(out.endswith(
             b"A server error occurred.  Please contact the administrator."
@@ -206,13 +206,13 @@ class IntegrationTests(TestCase):
             err.splitlines()[-2], "AssertionError"
         )
 
-    def test_bytes_validation(self):
-        def app(e, s):
+    eleza test_bytes_validation(self):
+        eleza app(e, s):
             s("200 OK", [
                 ("Content-Type", "text/plain; charset=utf-8"),
                 ("Date", "Wed, 24 Dec 2008 13:29:32 GMT"),
                 ])
-            return [b"data"]
+            rudisha [b"data"]
         out, err = run_amock(validator(app))
         self.assertTrue(err.endswith('"GET / HTTP/1.0" 200 4\n'))
         ver = sys.version.split()[0].encode('ascii')
@@ -227,15 +227,15 @@ class IntegrationTests(TestCase):
                 b"data",
                 out)
 
-    def test_cp1252_url(self):
-        def app(e, s):
+    eleza test_cp1252_url(self):
+        eleza app(e, s):
             s("200 OK", [
                 ("Content-Type", "text/plain"),
                 ("Date", "Wed, 24 Dec 2008 13:29:32 GMT"),
                 ])
             # PEP3333 says environ variables are decoded as latin1.
             # Encode as latin1 to get original bytes
-            return [e["PATH_INFO"].encode("latin1")]
+            rudisha [e["PATH_INFO"].encode("latin1")]
 
         out, err = run_amock(
             validator(app), data=b"GET /\x80%80 HTTP/1.0")
@@ -250,24 +250,24 @@ class IntegrationTests(TestCase):
             ],
             out.splitlines())
 
-    def test_interrupted_write(self):
+    eleza test_interrupted_write(self):
         # BaseHandler._write() and _flush() have to write all data, even if
         # it takes multiple send() calls.  Test this by interrupting a send()
         # call with a Unix signal.
         pthread_kill = support.get_attribute(signal, "pthread_kill")
 
-        def app(environ, start_response):
+        eleza app(environ, start_response):
             start_response("200 OK", [])
-            return [b'\0' * support.SOCK_MAX_SIZE]
+            rudisha [b'\0' * support.SOCK_MAX_SIZE]
 
-        class WsgiHandler(NoLogRequestHandler, WSGIRequestHandler):
+        kundi WsgiHandler(NoLogRequestHandler, WSGIRequestHandler):
             pass
 
         server = make_server(support.HOST, 0, app, handler_class=WsgiHandler)
         self.addCleanup(server.server_close)
         interrupted = threading.Event()
 
-        def signal_handler(signum, frame):
+        eleza signal_handler(signum, frame):
             interrupted.set()
 
         original = signal.signal(signal.SIGUSR1, signal_handler)
@@ -275,7 +275,7 @@ class IntegrationTests(TestCase):
         received = None
         main_thread = threading.get_ident()
 
-        def run_client():
+        eleza run_client():
             http = HTTPConnection(*server.server_address)
             http.request("GET", "/")
             with http.getresponse() as response:
@@ -287,7 +287,7 @@ class IntegrationTests(TestCase):
                 # an inconvenient moment.
                 while True:
                     pthread_kill(main_thread, signal.SIGUSR1)
-                    if interrupted.wait(timeout=float(1)):
+                    ikiwa interrupted.wait(timeout=float(1)):
                         break
                 nonlocal received
                 received = len(response.read())
@@ -300,23 +300,23 @@ class IntegrationTests(TestCase):
         self.assertEqual(received, support.SOCK_MAX_SIZE - 100)
 
 
-class UtilityTests(TestCase):
+kundi UtilityTests(TestCase):
 
-    def checkShift(self,sn_in,pi_in,part,sn_out,pi_out):
+    eleza checkShift(self,sn_in,pi_in,part,sn_out,pi_out):
         env = {'SCRIPT_NAME':sn_in,'PATH_INFO':pi_in}
         util.setup_testing_defaults(env)
         self.assertEqual(util.shift_path_info(env),part)
         self.assertEqual(env['PATH_INFO'],pi_out)
         self.assertEqual(env['SCRIPT_NAME'],sn_out)
-        return env
+        rudisha env
 
-    def checkDefault(self, key, value, alt=None):
+    eleza checkDefault(self, key, value, alt=None):
         # Check defaulting when empty
         env = {}
         util.setup_testing_defaults(env)
-        if isinstance(value, StringIO):
+        ikiwa isinstance(value, StringIO):
             self.assertIsInstance(env[key], StringIO)
-        elif isinstance(value,BytesIO):
+        elikiwa isinstance(value,BytesIO):
             self.assertIsInstance(env[key],BytesIO)
         else:
             self.assertEqual(env[key], value)
@@ -326,23 +326,23 @@ class UtilityTests(TestCase):
         util.setup_testing_defaults(env)
         self.assertIs(env[key], alt)
 
-    def checkCrossDefault(self,key,value,**kw):
+    eleza checkCrossDefault(self,key,value,**kw):
         util.setup_testing_defaults(kw)
         self.assertEqual(kw[key],value)
 
-    def checkAppURI(self,uri,**kw):
+    eleza checkAppURI(self,uri,**kw):
         util.setup_testing_defaults(kw)
         self.assertEqual(util.application_uri(kw),uri)
 
-    def checkReqURI(self,uri,query=1,**kw):
+    eleza checkReqURI(self,uri,query=1,**kw):
         util.setup_testing_defaults(kw)
         self.assertEqual(util.request_uri(kw,query),uri)
 
     @support.ignore_warnings(category=DeprecationWarning)
-    def checkFW(self,text,size,match):
+    eleza checkFW(self,text,size,match):
 
-        def make_it(text=text,size=size):
-            return util.FileWrapper(StringIO(text),size)
+        eleza make_it(text=text,size=size):
+            rudisha util.FileWrapper(StringIO(text),size)
 
         compare_generic_iter(make_it,match)
 
@@ -357,21 +357,21 @@ class UtilityTests(TestCase):
         it.close()
         self.assertTrue(it.filelike.closed)
 
-    def test_filewrapper_getitem_deprecation(self):
+    eleza test_filewrapper_getitem_deprecation(self):
         wrapper = util.FileWrapper(StringIO('foobar'), 3)
         with self.assertWarnsRegex(DeprecationWarning,
                                    r'Use iterator protocol instead'):
             # This should have returned 'bar'.
             self.assertEqual(wrapper[1], 'foo')
 
-    def testSimpleShifts(self):
+    eleza testSimpleShifts(self):
         self.checkShift('','/', '', '/', '')
         self.checkShift('','/x', 'x', '/x', '')
         self.checkShift('/','', None, '/', '')
         self.checkShift('/a','/x/y', 'x', '/a/x', '/y')
         self.checkShift('/a','/x/',  'x', '/a/x', '/')
 
-    def testNormalizedShifts(self):
+    eleza testNormalizedShifts(self):
         self.checkShift('/a/b', '/../y', '..', '/a', '/y')
         self.checkShift('', '/../y', '..', '', '/y')
         self.checkShift('/a/b', '//y', 'y', '/a/b/y', '')
@@ -384,7 +384,7 @@ class UtilityTests(TestCase):
         self.checkShift('/a/b', '/x//', 'x', '/a/b/x', '/')
         self.checkShift('/a/b', '/.', None, '/a/b', '')
 
-    def testDefaults(self):
+    eleza testDefaults(self):
         for key, value in [
             ('SERVER_NAME','127.0.0.1'),
             ('SERVER_PORT', '80'),
@@ -403,7 +403,7 @@ class UtilityTests(TestCase):
         ]:
             self.checkDefault(key,value)
 
-    def testCrossDefaults(self):
+    eleza testCrossDefaults(self):
         self.checkCrossDefault('HTTP_HOST',"foo.bar",SERVER_NAME="foo.bar")
         self.checkCrossDefault('wsgi.url_scheme',"https",HTTPS="on")
         self.checkCrossDefault('wsgi.url_scheme',"https",HTTPS="1")
@@ -412,14 +412,14 @@ class UtilityTests(TestCase):
         self.checkCrossDefault('SERVER_PORT',"80",HTTPS="foo")
         self.checkCrossDefault('SERVER_PORT',"443",HTTPS="on")
 
-    def testGuessScheme(self):
+    eleza testGuessScheme(self):
         self.assertEqual(util.guess_scheme({}), "http")
         self.assertEqual(util.guess_scheme({'HTTPS':"foo"}), "http")
         self.assertEqual(util.guess_scheme({'HTTPS':"on"}), "https")
         self.assertEqual(util.guess_scheme({'HTTPS':"yes"}), "https")
         self.assertEqual(util.guess_scheme({'HTTPS':"1"}), "https")
 
-    def testAppURIs(self):
+    eleza testAppURIs(self):
         self.checkAppURI("http://127.0.0.1/")
         self.checkAppURI("http://127.0.0.1/spam", SCRIPT_NAME="/spam")
         self.checkAppURI("http://127.0.0.1/sp%E4m", SCRIPT_NAME="/sp\xe4m")
@@ -433,7 +433,7 @@ class UtilityTests(TestCase):
         self.checkAppURI("http://127.0.0.1:8000/", SERVER_PORT="8000",
             HTTP_HOST=None)
 
-    def testReqURIs(self):
+    eleza testReqURIs(self):
         self.checkReqURI("http://127.0.0.1/")
         self.checkReqURI("http://127.0.0.1/spam", SCRIPT_NAME="/spam")
         self.checkReqURI("http://127.0.0.1/sp%E4m", SCRIPT_NAME="/sp\xe4m")
@@ -452,10 +452,10 @@ class UtilityTests(TestCase):
         self.checkReqURI("http://127.0.0.1/spammity/spam", 0,
             SCRIPT_NAME="/spammity", PATH_INFO="/spam",QUERY_STRING="say=ni")
 
-    def testFileWrapper(self):
+    eleza testFileWrapper(self):
         self.checkFW("xyz"*50, 120, ["xyz"*40,"xyz"*10])
 
-    def testHopByHop(self):
+    eleza testHopByHop(self):
         for hop in (
             "Connection Keep-Alive Proxy-Authenticate Proxy-Authorization "
             "TE Trailers Transfer-Encoding Upgrade"
@@ -470,9 +470,9 @@ class UtilityTests(TestCase):
             for alt in hop, hop.title(), hop.upper(), hop.lower():
                 self.assertFalse(util.is_hop_by_hop(alt))
 
-class HeaderTests(TestCase):
+kundi HeaderTests(TestCase):
 
-    def testMappingInterface(self):
+    eleza testMappingInterface(self):
         test = [('x','y')]
         self.assertEqual(len(Headers()), 0)
         self.assertEqual(len(Headers([])),0)
@@ -504,10 +504,10 @@ class HeaderTests(TestCase):
         self.assertEqual(h["foo"],"baz")
         self.assertEqual(h["zoo"],"whee")
 
-    def testRequireList(self):
+    eleza testRequireList(self):
         self.assertRaises(TypeError, Headers, "foo")
 
-    def testExtras(self):
+    eleza testExtras(self):
         h = Headers()
         self.assertEqual(str(h),'\r\n')
 
@@ -525,33 +525,33 @@ class HeaderTests(TestCase):
             '\r\n'
         )
 
-class ErrorHandler(BaseCGIHandler):
-    """Simple handler subclass for testing BaseHandler"""
+kundi ErrorHandler(BaseCGIHandler):
+    """Simple handler subkundi for testing BaseHandler"""
 
     # BaseHandler records the OS environment at agiza time, but envvars
     # might have been changed later by other tests, which trips up
     # HandlerTests.testEnviron().
     os_environ = dict(os.environ.items())
 
-    def __init__(self,**kw):
+    eleza __init__(self,**kw):
         setup_testing_defaults(kw)
         BaseCGIHandler.__init__(
             self, BytesIO(), BytesIO(), StringIO(), kw,
             multithread=True, multiprocess=True
         )
 
-class TestHandler(ErrorHandler):
-    """Simple handler subclass for testing BaseHandler, w/error passthru"""
+kundi TestHandler(ErrorHandler):
+    """Simple handler subkundi for testing BaseHandler, w/error passthru"""
 
-    def handle_error(self):
+    eleza handle_error(self):
         raise   # for testing, we want to see what's happening
 
 
-class HandlerTests(TestCase):
+kundi HandlerTests(TestCase):
     # testEnviron() can produce long error message
     maxDiff = 80 * 50
 
-    def testEnviron(self):
+    eleza testEnviron(self):
         os_environ = {
             # very basic environment
             'HOME': '/my/home',
@@ -581,7 +581,7 @@ class HandlerTests(TestCase):
         # Handler inherits os_environ variables which are not overriden
         # by SimpleHandler.add_cgi_vars() (SimpleHandler.base_env)
         for key, value in os_environ.items():
-            if key not in expected:
+            ikiwa key not in expected:
                 expected[key] = value
         expected.update({
             # X doesn't exist in os_environ
@@ -605,19 +605,19 @@ class HandlerTests(TestCase):
         })
         self.assertDictEqual(handler.environ, expected)
 
-    def testCGIEnviron(self):
+    eleza testCGIEnviron(self):
         h = BaseCGIHandler(None,None,None,{})
         h.setup_environ()
         for key in 'wsgi.url_scheme', 'wsgi.input', 'wsgi.errors':
             self.assertIn(key, h.environ)
 
-    def testScheme(self):
+    eleza testScheme(self):
         h=TestHandler(HTTPS="on"); h.setup_environ()
         self.assertEqual(h.environ['wsgi.url_scheme'],'https')
         h=TestHandler(); h.setup_environ()
         self.assertEqual(h.environ['wsgi.url_scheme'],'http')
 
-    def testAbstractMethods(self):
+    eleza testAbstractMethods(self):
         h = BaseHandler()
         for name in [
             '_flush','get_stdin','get_stderr','add_cgi_vars'
@@ -625,25 +625,25 @@ class HandlerTests(TestCase):
             self.assertRaises(NotImplementedError, getattr(h,name))
         self.assertRaises(NotImplementedError, h._write, "test")
 
-    def testContentLength(self):
+    eleza testContentLength(self):
         # Demo one reason iteration is better than write()...  ;)
 
-        def trivial_app1(e,s):
+        eleza trivial_app1(e,s):
             s('200 OK',[])
-            return [e['wsgi.url_scheme'].encode('iso-8859-1')]
+            rudisha [e['wsgi.url_scheme'].encode('iso-8859-1')]
 
-        def trivial_app2(e,s):
+        eleza trivial_app2(e,s):
             s('200 OK',[])(e['wsgi.url_scheme'].encode('iso-8859-1'))
-            return []
+            rudisha []
 
-        def trivial_app3(e,s):
+        eleza trivial_app3(e,s):
             s('200 OK',[])
-            return ['\u0442\u0435\u0441\u0442'.encode("utf-8")]
+            rudisha ['\u0442\u0435\u0441\u0442'.encode("utf-8")]
 
-        def trivial_app4(e,s):
+        eleza trivial_app4(e,s):
             # Simulate a response to a HEAD request
             s('200 OK',[('Content-Length', '12345')])
-            return []
+            rudisha []
 
         h = TestHandler()
         h.run(trivial_app1)
@@ -675,13 +675,13 @@ class HandlerTests(TestCase):
             b'Content-Length: 12345\r\n'
             b'\r\n')
 
-    def testBasicErrorOutput(self):
+    eleza testBasicErrorOutput(self):
 
-        def non_error_app(e,s):
+        eleza non_error_app(e,s):
             s('200 OK',[])
-            return []
+            rudisha []
 
-        def error_app(e,s):
+        eleza error_app(e,s):
             raise AssertionError("This should be caught by handler")
 
         h = ErrorHandler()
@@ -703,9 +703,9 @@ class HandlerTests(TestCase):
 
         self.assertIn("AssertionError", h.stderr.getvalue())
 
-    def testErrorAfterOutput(self):
+    eleza testErrorAfterOutput(self):
         MSG = b"Some output has been sent"
-        def error_app(e,s):
+        eleza error_app(e,s):
             s("200 OK",[])(MSG)
             raise AssertionError("This should be caught by handler")
 
@@ -716,11 +716,11 @@ class HandlerTests(TestCase):
             "\r\n".encode("iso-8859-1")+MSG))
         self.assertIn("AssertionError", h.stderr.getvalue())
 
-    def testHeaderFormats(self):
+    eleza testHeaderFormats(self):
 
-        def non_error_app(e,s):
+        eleza non_error_app(e,s):
             s('200 OK',[])
-            return []
+            rudisha []
 
         stdpat = (
             r"HTTP/%s 200 OK\r\n"
@@ -749,7 +749,7 @@ class HandlerTests(TestCase):
                     h.http_version = version
                     h.server_software = ssw
                     h.run(non_error_app)
-                    if proto=="HTTP/0.9":
+                    ikiwa proto=="HTTP/0.9":
                         self.assertEqual(h.stdout.getvalue(),b"")
                     else:
                         self.assertTrue(
@@ -759,12 +759,12 @@ class HandlerTests(TestCase):
                                 h.stdout.getvalue())
                         )
 
-    def testBytesData(self):
-        def app(e, s):
+    eleza testBytesData(self):
+        eleza app(e, s):
             s("200 OK", [
                 ("Content-Type", "text/plain; charset=utf-8"),
                 ])
-            return [b"data"]
+            rudisha [b"data"]
 
         h = TestHandler()
         h.run(app)
@@ -775,34 +775,34 @@ class HandlerTests(TestCase):
             b"data",
             h.stdout.getvalue())
 
-    def testCloseOnError(self):
+    eleza testCloseOnError(self):
         side_effects = {'close_called': False}
         MSG = b"Some output has been sent"
-        def error_app(e,s):
+        eleza error_app(e,s):
             s("200 OK",[])(MSG)
-            class CrashyIterable(object):
-                def __iter__(self):
+            kundi CrashyIterable(object):
+                eleza __iter__(self):
                     while True:
                         yield b'blah'
                         raise AssertionError("This should be caught by handler")
-                def close(self):
+                eleza close(self):
                     side_effects['close_called'] = True
-            return CrashyIterable()
+            rudisha CrashyIterable()
 
         h = ErrorHandler()
         h.run(error_app)
         self.assertEqual(side_effects['close_called'], True)
 
-    def testPartialWrite(self):
+    eleza testPartialWrite(self):
         written = bytearray()
 
-        class PartialWriter:
-            def write(self, b):
+        kundi PartialWriter:
+            eleza write(self, b):
                 partial = b[:7]
                 written.extend(partial)
-                return len(partial)
+                rudisha len(partial)
 
-            def flush(self):
+            eleza flush(self):
                 pass
 
         environ = {"SERVER_PROTOCOL": "HTTP/1.0"}
@@ -818,7 +818,7 @@ class HandlerTests(TestCase):
             b"Hello, world!",
             written)
 
-    def testClientConnectionTerminations(self):
+    eleza testClientConnectionTerminations(self):
         environ = {"SERVER_PROTOCOL": "HTTP/1.0"}
         for exception in (
             ConnectionAbortedError,
@@ -826,8 +826,8 @@ class HandlerTests(TestCase):
             ConnectionResetError,
         ):
             with self.subTest(exception=exception):
-                class AbortingWriter:
-                    def write(self, b):
+                kundi AbortingWriter:
+                    eleza write(self, b):
                         raise exception
 
                 stderr = StringIO()
@@ -836,16 +836,16 @@ class HandlerTests(TestCase):
 
                 self.assertFalse(stderr.getvalue())
 
-    def testDontResetInternalStateOnException(self):
-        class CustomException(ValueError):
+    eleza testDontResetInternalStateOnException(self):
+        kundi CustomException(ValueError):
             pass
 
         # We are raising CustomException here to trigger an exception
         # during the execution of SimpleHandler.finish_response(), so
         # we can easily test that the internal state of the handler is
         # preserved in case of an exception.
-        class AbortingWriter:
-            def write(self, b):
+        kundi AbortingWriter:
+            eleza write(self, b):
                 raise CustomException
 
         stderr = StringIO()
@@ -862,5 +862,5 @@ class HandlerTests(TestCase):
         self.assertIsNotNone(h.environ)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

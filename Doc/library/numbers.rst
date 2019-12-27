@@ -109,7 +109,7 @@ be a poor hierarchy if it precluded the possibility of adding
 those. You can add ``MyFoo`` between :class:`Complex` and
 :class:`Real` with::
 
-    class MyFoo(Complex): ...
+    kundi MyFoo(Complex): ...
     MyFoo.register(Real)
 
 
@@ -124,7 +124,7 @@ types of both arguments, or convert both to the nearest built in type
 and do the operation there. For subtypes of :class:`Integral`, this
 means that :meth:`__add__` and :meth:`__radd__` should be defined as::
 
-    class MyIntegral(Integral):
+    kundi MyIntegral(Integral):
 
         def __add__(self, other):
             if isinstance(other, MyIntegral):
@@ -159,9 +159,9 @@ Complex``. I'll consider ``a + b``:
     1. If ``A`` defines an :meth:`__add__` which accepts ``b``, all is
        well.
     2. If ``A`` falls back to the boilerplate code, and it were to
-       return a value from :meth:`__add__`, we'd miss the possibility
+       return a value kutoka :meth:`__add__`, we'd miss the possibility
        that ``B`` defines a more intelligent :meth:`__radd__`, so the
-       boilerplate should return :const:`NotImplemented` from
+       boilerplate should return :const:`NotImplemented` kutoka
        :meth:`__add__`. (Or ``A`` may not implement :meth:`__add__` at
        all.)
     3. Then ``B``'s :meth:`__radd__` gets a chance. If it accepts

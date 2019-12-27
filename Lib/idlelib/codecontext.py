@@ -21,12 +21,12 @@ BLOCKOPENERS = {"class", "def", "elif", "else", "except", "finally", "for",
                 "if", "try", "while", "with", "async"}
 
 
-def get_spaces_firstword(codeline, c=re.compile(r"^(\s*)(\w*)")):
+eleza get_spaces_firstword(codeline, c=re.compile(r"^(\s*)(\w*)")):
     "Extract the beginning whitespace and first word kutoka codeline."
-    return c.match(codeline).groups()
+    rudisha c.match(codeline).groups()
 
 
-def get_line_info(codeline):
+eleza get_line_info(codeline):
     """Return tuple of (line indent value, codeline, block start keyword).
 
     The indentation of empty lines (or comment lines) is INFINITY.
@@ -34,17 +34,17 @@ def get_line_info(codeline):
     """
     spaces, firstword = get_spaces_firstword(codeline)
     indent = len(spaces)
-    if len(codeline) == indent or codeline[indent] == '#':
+    ikiwa len(codeline) == indent or codeline[indent] == '#':
         indent = INFINITY
     opener = firstword in BLOCKOPENERS and firstword
-    return indent, codeline, opener
+    rudisha indent, codeline, opener
 
 
-class CodeContext:
+kundi CodeContext:
     "Display block context above the edit window."
     UPDATEINTERVAL = 100  # millisec
 
-    def __init__(self, editwin):
+    eleza __init__(self, editwin):
         """Initialize settings for context block.
 
         editwin is the Editor window for the context block.
@@ -65,7 +65,7 @@ class CodeContext:
         self.text = editwin.text
         self._reset()
 
-    def _reset(self):
+    eleza _reset(self):
         self.context = None
         self.cell00 = None
         self.t1 = None
@@ -73,29 +73,29 @@ class CodeContext:
         self.info = [(0, -1, "", False)]
 
     @classmethod
-    def reload(cls):
-        "Load class variables kutoka config."
+    eleza reload(cls):
+        "Load kundi variables kutoka config."
         cls.context_depth = idleConf.GetOption("extensions", "CodeContext",
                                                "maxlines", type="int",
                                                default=15)
 
-    def __del__(self):
+    eleza __del__(self):
         "Cancel scheduled events."
-        if self.t1 is not None:
+        ikiwa self.t1 is not None:
             try:
                 self.text.after_cancel(self.t1)
             except tkinter.TclError:
                 pass
             self.t1 = None
 
-    def toggle_code_context_event(self, event=None):
+    eleza toggle_code_context_event(self, event=None):
         """Toggle code context display.
 
         If self.context doesn't exist, create it to match the size of the editor
         window text (toggle on).  If it does exist, destroy it (toggle off).
         Return 'break' to complete the processing of the binding.
         """
-        if self.context is None:
+        ikiwa self.context is None:
             # Calculate the border width and horizontal padding required to
             # align the context with the text in the main Text widget.
             #
@@ -107,7 +107,7 @@ class CodeContext:
             border = 0
             for widget in widgets:
                 info = (widget.grid_info()
-                        if widget is self.editwin.text
+                        ikiwa widget is self.editwin.text
                         else widget.pack_info())
                 padx += widget.tk.getint(info['padx'])
                 padx += widget.tk.getint(widget.cget('padx'))
@@ -142,9 +142,9 @@ class CodeContext:
             menu_status = 'Show'
         self.editwin.update_menu_label(menu='options', index='* Code Context',
                                        label=f'{menu_status} Code Context')
-        return "break"
+        rudisha "break"
 
-    def get_context(self, new_topvisible, stopline=1, stopindent=0):
+    eleza get_context(self, new_topvisible, stopline=1, stopindent=0):
         """Return a list of block line tuples and the 'last' indent.
 
         The tuple fields are (linenum, indent, text, opener).
@@ -162,30 +162,30 @@ class CodeContext:
         for linenum in range(new_topvisible, stopline-1, -1):
             codeline = self.text.get(f'{linenum}.0', f'{linenum}.end')
             indent, text, opener = get_line_info(codeline)
-            if indent < lastindent:
+            ikiwa indent < lastindent:
                 lastindent = indent
-                if opener in ("else", "elif"):
-                    # Also show the if statement.
+                ikiwa opener in ("else", "elif"):
+                    # Also show the ikiwa statement.
                     lastindent += 1
-                if opener and linenum < new_topvisible and indent >= stopindent:
+                ikiwa opener and linenum < new_topvisible and indent >= stopindent:
                     lines.append((linenum, indent, text, opener))
-                if lastindent <= stopindent:
+                ikiwa lastindent <= stopindent:
                     break
         lines.reverse()
-        return lines, lastindent
+        rudisha lines, lastindent
 
-    def update_code_context(self):
+    eleza update_code_context(self):
         """Update context information and lines visible in the context pane.
 
-        No update is done if the text hasn't been scrolled.  If the text
+        No update is done ikiwa the text hasn't been scrolled.  If the text
         was scrolled, the lines that should be shown in the context will
         be retrieved and the context area will be updated with the code,
         up to the number of maxlines.
         """
         new_topvisible = self.editwin.getlineno("@0,0")
-        if self.topvisible == new_topvisible:      # Haven't scrolled.
+        ikiwa self.topvisible == new_topvisible:      # Haven't scrolled.
             return
-        if self.topvisible < new_topvisible:       # Scroll down.
+        ikiwa self.topvisible < new_topvisible:       # Scroll down.
             lines, lastindent = self.get_context(new_topvisible,
                                                  self.topvisible)
             # Retain only context info applicable to the region
@@ -206,7 +206,7 @@ class CodeContext:
         self.topvisible = new_topvisible
         # Last context_depth context lines.
         context_strings = [x[2] for x in self.info[-self.context_depth:]]
-        showfirst = 0 if context_strings[0] else 1
+        showfirst = 0 ikiwa context_strings[0] else 1
         # Update widget.
         self.context['height'] = len(context_strings) - showfirst
         self.context['state'] = 'normal'
@@ -214,10 +214,10 @@ class CodeContext:
         self.context.insert('end', '\n'.join(context_strings[showfirst:]))
         self.context['state'] = 'disabled'
 
-    def jumptoline(self, event=None):
+    eleza jumptoline(self, event=None):
         "Show clicked context line at top of editor."
         lines = len(self.info)
-        if lines == 1:  # No context lines are showing.
+        ikiwa lines == 1:  # No context lines are showing.
             newtop = 1
         else:
             # Line number clicked.
@@ -228,24 +228,24 @@ class CodeContext:
         self.text.yview(f'{newtop}.0')
         self.update_code_context()
 
-    def timer_event(self):
+    eleza timer_event(self):
         "Event on editor text widget triggered every UPDATEINTERVAL ms."
-        if self.context is not None:
+        ikiwa self.context is not None:
             self.update_code_context()
             self.t1 = self.text.after(self.UPDATEINTERVAL, self.timer_event)
 
-    def update_font(self):
-        if self.context is not None:
+    eleza update_font(self):
+        ikiwa self.context is not None:
             font = idleConf.GetFont(self.text, 'main', 'EditorWindow')
             self.context['font'] = font
 
-    def update_highlight_colors(self):
-        if self.context is not None:
+    eleza update_highlight_colors(self):
+        ikiwa self.context is not None:
             colors = idleConf.GetHighlight(idleConf.CurrentTheme(), 'context')
             self.context['background'] = colors['background']
             self.context['foreground'] = colors['foreground']
 
-        if self.cell00 is not None:
+        ikiwa self.cell00 is not None:
             line_number_colors = idleConf.GetHighlight(idleConf.CurrentTheme(),
                                                        'linenumber')
             self.cell00.config(bg=line_number_colors['background'])
@@ -254,7 +254,7 @@ class CodeContext:
 CodeContext.reload()
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     kutoka unittest agiza main
     main('idlelib.idle_test.test_codecontext', verbosity=2, exit=False)
 

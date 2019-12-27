@@ -25,9 +25,9 @@
 import os
 import tkinter
 from tkinter import *
-from tkinter import _cnfmerge
+from tkinter agiza _cnfmerge
 
-import _tkinter # If this fails your Python may not be configured for Tk
+agiza _tkinter # If this fails your Python may not be configured for Tk
 
 # Some more constants (for consistency with Tkinter)
 WINDOW = 'window'
@@ -112,7 +112,7 @@ class tixCommand:
         # Copied from Tkinter.py
         if kw:
             cnf = _cnfmerge((cnf, kw))
-        elif cnf:
+        lasivyo cnf:
             cnf = _cnfmerge(cnf)
         if cnf is None:
             return self._getconfigure('tix', 'configure')
@@ -377,7 +377,7 @@ class TixWidget(tkinter.Widget):
         """Set configuration options for all subwidgets (and self)."""
         if option == '':
             return
-        elif not isinstance(option, str):
+        lasivyo not isinstance(option, str):
             option = repr(option)
         if not isinstance(value, str):
             value = repr(value)
@@ -391,7 +391,7 @@ class TixWidget(tkinter.Widget):
             if not master:
                 raise RuntimeError('Too early to create image')
         if kw and cnf: cnf = _cnfmerge((cnf, kw))
-        elif kw: cnf = kw
+        lasivyo kw: cnf = kw
         options = ()
         for k, v in cnf.items():
             if callable(v):
@@ -472,7 +472,7 @@ class DisplayStyle:
         if not master:
             if 'refwindow' in kw:
                 master = kw['refwindow']
-            elif 'refwindow' in cnf:
+            lasivyo 'refwindow' in cnf:
                 master = cnf['refwindow']
             else:
                 master = tkinter._default_root
@@ -489,7 +489,7 @@ class DisplayStyle:
     def _options(self, cnf, kw):
         if kw and cnf:
             cnf = _cnfmerge((cnf, kw))
-        elif kw:
+        lasivyo kw:
             cnf = kw
         opts = ()
         for k, v in cnf.items():

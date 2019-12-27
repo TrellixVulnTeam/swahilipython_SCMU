@@ -14,76 +14,76 @@ kutoka pickle agiza dumps, loads
 F = fractions.Fraction
 gcd = fractions.gcd
 
-class DummyFloat(object):
-    """Dummy float class for testing comparisons with Fractions"""
+kundi DummyFloat(object):
+    """Dummy float kundi for testing comparisons with Fractions"""
 
-    def __init__(self, value):
-        if not isinstance(value, float):
+    eleza __init__(self, value):
+        ikiwa not isinstance(value, float):
             raise TypeError("DummyFloat can only be initialized kutoka float")
         self.value = value
 
-    def _richcmp(self, other, op):
-        if isinstance(other, numbers.Rational):
-            return op(F.from_float(self.value), other)
-        elif isinstance(other, DummyFloat):
-            return op(self.value, other.value)
+    eleza _richcmp(self, other, op):
+        ikiwa isinstance(other, numbers.Rational):
+            rudisha op(F.kutoka_float(self.value), other)
+        elikiwa isinstance(other, DummyFloat):
+            rudisha op(self.value, other.value)
         else:
-            return NotImplemented
+            rudisha NotImplemented
 
-    def __eq__(self, other): return self._richcmp(other, operator.eq)
-    def __le__(self, other): return self._richcmp(other, operator.le)
-    def __lt__(self, other): return self._richcmp(other, operator.lt)
-    def __ge__(self, other): return self._richcmp(other, operator.ge)
-    def __gt__(self, other): return self._richcmp(other, operator.gt)
+    eleza __eq__(self, other): rudisha self._richcmp(other, operator.eq)
+    eleza __le__(self, other): rudisha self._richcmp(other, operator.le)
+    eleza __lt__(self, other): rudisha self._richcmp(other, operator.lt)
+    eleza __ge__(self, other): rudisha self._richcmp(other, operator.ge)
+    eleza __gt__(self, other): rudisha self._richcmp(other, operator.gt)
 
     # shouldn't be calling __float__ at all when doing comparisons
-    def __float__(self):
+    eleza __float__(self):
         assert False, "__float__ should not be invoked for comparisons"
 
     # same goes for subtraction
-    def __sub__(self, other):
+    eleza __sub__(self, other):
         assert False, "__sub__ should not be invoked for comparisons"
     __rsub__ = __sub__
 
 
-class DummyRational(object):
+kundi DummyRational(object):
     """Test comparison of Fraction with a naive rational implementation."""
 
-    def __init__(self, num, den):
+    eleza __init__(self, num, den):
         g = math.gcd(num, den)
         self.num = num // g
         self.den = den // g
 
-    def __eq__(self, other):
-        if isinstance(other, fractions.Fraction):
-            return (self.num == other._numerator and
+    eleza __eq__(self, other):
+        ikiwa isinstance(other, fractions.Fraction):
+            rudisha (self.num == other._numerator and
                     self.den == other._denominator)
         else:
-            return NotImplemented
+            rudisha NotImplemented
 
-    def __lt__(self, other):
+    eleza __lt__(self, other):
         return(self.num * other._denominator < self.den * other._numerator)
 
-    def __gt__(self, other):
+    eleza __gt__(self, other):
         return(self.num * other._denominator > self.den * other._numerator)
 
-    def __le__(self, other):
+    eleza __le__(self, other):
         return(self.num * other._denominator <= self.den * other._numerator)
 
-    def __ge__(self, other):
+    eleza __ge__(self, other):
         return(self.num * other._denominator >= self.den * other._numerator)
 
-    # this class is for testing comparisons; conversion to float
+    # this kundi is for testing comparisons; conversion to float
     # should never be used for a comparison, since it loses accuracy
-    def __float__(self):
+    eleza __float__(self):
         assert False, "__float__ should not be invoked"
 
-class DummyFraction(fractions.Fraction):
-    """Dummy Fraction subclass for copy and deepcopy testing."""
+kundi DummyFraction(fractions.Fraction):
+    """Dummy Fraction subkundi for copy and deepcopy testing."""
 
-class GcdTest(unittest.TestCase):
+kundi GcdTest(unittest.TestCase):
 
-    def testMisc(self):
+    eleza testMisc(self):
         # fractions.gcd() is deprecated
         with self.assertWarnsRegex(DeprecationWarning, r'fractions\.gcd'):
             gcd(1, 1)
@@ -106,23 +106,23 @@ class GcdTest(unittest.TestCase):
             self.assertEqual(gcd(F(120, 77), F(84, 55)), F(12, 385))
 
 
-def _components(r):
-    return (r.numerator, r.denominator)
+eleza _components(r):
+    rudisha (r.numerator, r.denominator)
 
 
-class FractionTest(unittest.TestCase):
+kundi FractionTest(unittest.TestCase):
 
-    def assertTypedEquals(self, expected, actual):
+    eleza assertTypedEquals(self, expected, actual):
         """Asserts that both the types and values are the same."""
         self.assertEqual(type(expected), type(actual))
         self.assertEqual(expected, actual)
 
-    def assertTypedTupleEquals(self, expected, actual):
+    eleza assertTypedTupleEquals(self, expected, actual):
         """Asserts that both the types and values in the tuples are the same."""
         self.assertTupleEqual(expected, actual)
         self.assertListEqual(list(map(type, expected)), list(map(type, actual)))
 
-    def assertRaisesMessage(self, exc_type, message,
+    eleza assertRaisesMessage(self, exc_type, message,
                             callable, *args, **kwargs):
         """Asserts that callable(*args, **kwargs) raises exc_type(message)."""
         try:
@@ -132,7 +132,7 @@ class FractionTest(unittest.TestCase):
         else:
             self.fail("%s not raised" % exc_type.__name__)
 
-    def testInit(self):
+    eleza testInit(self):
         self.assertEqual((0, 1), _components(F()))
         self.assertEqual((7, 1), _components(F(7)))
         self.assertEqual((7, 3), _components(F(F(7, 3))))
@@ -158,7 +158,7 @@ class FractionTest(unittest.TestCase):
         self.assertRaises(TypeError, F, 1, 2, 3)
 
     @requires_IEEE_754
-    def testInitFromFloat(self):
+    eleza testInitFromFloat(self):
         self.assertEqual((5, 2), _components(F(2.5)))
         self.assertEqual((0, 1), _components(F(-0.0)))
         self.assertEqual((3602879701896397, 36028797018963968),
@@ -168,7 +168,7 @@ class FractionTest(unittest.TestCase):
         self.assertRaises(OverflowError, F, float('inf'))
         self.assertRaises(OverflowError, F, float('-inf'))
 
-    def testInitFromDecimal(self):
+    eleza testInitFromDecimal(self):
         self.assertEqual((11, 10),
                          _components(F(Decimal('1.1'))))
         self.assertEqual((7, 200),
@@ -181,7 +181,7 @@ class FractionTest(unittest.TestCase):
         self.assertRaises(OverflowError, F, Decimal('inf'))
         self.assertRaises(OverflowError, F, Decimal('-inf'))
 
-    def testFromString(self):
+    eleza testFromString(self):
         self.assertEqual((5, 1), _components(F("5")))
         self.assertEqual((3, 2), _components(F("3/2")))
         self.assertEqual((3, 2), _components(F(" \n  +3/2")))
@@ -234,7 +234,7 @@ class FractionTest(unittest.TestCase):
             ValueError, "Invalid literal for Fraction: '.'",
             F, ".")
 
-    def testImmutable(self):
+    eleza testImmutable(self):
         r = F(7, 3)
         r.__init__(2, 15)
         self.assertEqual((7, 3), _components(r))
@@ -243,72 +243,72 @@ class FractionTest(unittest.TestCase):
         self.assertRaises(AttributeError, setattr, r, 'denominator', 6)
         self.assertEqual((7, 3), _components(r))
 
-        # But if you _really_ need to:
+        # But ikiwa you _really_ need to:
         r._numerator = 4
         r._denominator = 2
         self.assertEqual((4, 2), _components(r))
         # Which breaks some agizaant operations:
         self.assertNotEqual(F(4, 2), r)
 
-    def testFromFloat(self):
-        self.assertRaises(TypeError, F.from_float, 3+4j)
-        self.assertEqual((10, 1), _components(F.from_float(10)))
+    eleza testFromFloat(self):
+        self.assertRaises(TypeError, F.kutoka_float, 3+4j)
+        self.assertEqual((10, 1), _components(F.kutoka_float(10)))
         bigint = 1234567890123456789
-        self.assertEqual((bigint, 1), _components(F.from_float(bigint)))
-        self.assertEqual((0, 1), _components(F.from_float(-0.0)))
-        self.assertEqual((10, 1), _components(F.from_float(10.0)))
-        self.assertEqual((-5, 2), _components(F.from_float(-2.5)))
+        self.assertEqual((bigint, 1), _components(F.kutoka_float(bigint)))
+        self.assertEqual((0, 1), _components(F.kutoka_float(-0.0)))
+        self.assertEqual((10, 1), _components(F.kutoka_float(10.0)))
+        self.assertEqual((-5, 2), _components(F.kutoka_float(-2.5)))
         self.assertEqual((99999999999999991611392, 1),
-                         _components(F.from_float(1e23)))
-        self.assertEqual(float(10**23), float(F.from_float(1e23)))
+                         _components(F.kutoka_float(1e23)))
+        self.assertEqual(float(10**23), float(F.kutoka_float(1e23)))
         self.assertEqual((3602879701896397, 1125899906842624),
-                         _components(F.from_float(3.2)))
-        self.assertEqual(3.2, float(F.from_float(3.2)))
+                         _components(F.kutoka_float(3.2)))
+        self.assertEqual(3.2, float(F.kutoka_float(3.2)))
 
         inf = 1e1000
         nan = inf - inf
         # bug 16469: error types should be consistent with float -> int
         self.assertRaisesMessage(
             OverflowError, "cannot convert Infinity to integer ratio",
-            F.from_float, inf)
+            F.kutoka_float, inf)
         self.assertRaisesMessage(
             OverflowError, "cannot convert Infinity to integer ratio",
-            F.from_float, -inf)
+            F.kutoka_float, -inf)
         self.assertRaisesMessage(
             ValueError, "cannot convert NaN to integer ratio",
-            F.from_float, nan)
+            F.kutoka_float, nan)
 
-    def testFromDecimal(self):
-        self.assertRaises(TypeError, F.from_decimal, 3+4j)
-        self.assertEqual(F(10, 1), F.from_decimal(10))
-        self.assertEqual(F(0), F.from_decimal(Decimal("-0")))
-        self.assertEqual(F(5, 10), F.from_decimal(Decimal("0.5")))
-        self.assertEqual(F(5, 1000), F.from_decimal(Decimal("5e-3")))
-        self.assertEqual(F(5000), F.from_decimal(Decimal("5e3")))
+    eleza testFromDecimal(self):
+        self.assertRaises(TypeError, F.kutoka_decimal, 3+4j)
+        self.assertEqual(F(10, 1), F.kutoka_decimal(10))
+        self.assertEqual(F(0), F.kutoka_decimal(Decimal("-0")))
+        self.assertEqual(F(5, 10), F.kutoka_decimal(Decimal("0.5")))
+        self.assertEqual(F(5, 1000), F.kutoka_decimal(Decimal("5e-3")))
+        self.assertEqual(F(5000), F.kutoka_decimal(Decimal("5e3")))
         self.assertEqual(1 - F(1, 10**30),
-                         F.from_decimal(Decimal("0." + "9" * 30)))
+                         F.kutoka_decimal(Decimal("0." + "9" * 30)))
 
         # bug 16469: error types should be consistent with decimal -> int
         self.assertRaisesMessage(
             OverflowError, "cannot convert Infinity to integer ratio",
-            F.from_decimal, Decimal("inf"))
+            F.kutoka_decimal, Decimal("inf"))
         self.assertRaisesMessage(
             OverflowError, "cannot convert Infinity to integer ratio",
-            F.from_decimal, Decimal("-inf"))
+            F.kutoka_decimal, Decimal("-inf"))
         self.assertRaisesMessage(
             ValueError, "cannot convert NaN to integer ratio",
-            F.from_decimal, Decimal("nan"))
+            F.kutoka_decimal, Decimal("nan"))
         self.assertRaisesMessage(
             ValueError, "cannot convert NaN to integer ratio",
-            F.from_decimal, Decimal("snan"))
+            F.kutoka_decimal, Decimal("snan"))
 
-    def test_as_integer_ratio(self):
+    eleza test_as_integer_ratio(self):
         self.assertEqual(F(4, 6).as_integer_ratio(), (2, 3))
         self.assertEqual(F(-4, 6).as_integer_ratio(), (-2, 3))
         self.assertEqual(F(4, -6).as_integer_ratio(), (-2, 3))
         self.assertEqual(F(0, 6).as_integer_ratio(), (0, 1))
 
-    def testLimitDenominator(self):
+    eleza testLimitDenominator(self):
         rpi = F('3.1415926535897932')
         self.assertEqual(rpi.limit_denominator(10000), F(355, 113))
         self.assertEqual(-rpi.limit_denominator(10000), F(-355, 113))
@@ -322,7 +322,7 @@ class FractionTest(unittest.TestCase):
                 ValueError, "max_denominator should be at least 1",
                 F(1).limit_denominator, i)
 
-    def testConversions(self):
+    eleza testConversions(self):
         self.assertTypedEquals(-1, math.trunc(F(-11, 10)))
         self.assertTypedEquals(1, math.trunc(F(11, 10)))
         self.assertTypedEquals(-2, math.floor(F(-11, 10)))
@@ -346,14 +346,14 @@ class FractionTest(unittest.TestCase):
 
         self.assertTypedEquals(0.1+0j, complex(F(1,10)))
 
-    def testRound(self):
+    eleza testRound(self):
         self.assertTypedEquals(F(-200), round(F(-150), -2))
         self.assertTypedEquals(F(-200), round(F(-250), -2))
         self.assertTypedEquals(F(30), round(F(26), -1))
         self.assertTypedEquals(F(-2, 10), round(F(-15, 100), 1))
         self.assertTypedEquals(F(-2, 10), round(F(-25, 100), 1))
 
-    def testArithmetic(self):
+    eleza testArithmetic(self):
         self.assertEqual(F(1, 2), F(1, 10) + F(2, 5))
         self.assertEqual(F(-3, 10), F(1, 10) - F(2, 5))
         self.assertEqual(F(1, 25), F(1, 10) * F(2, 5))
@@ -385,7 +385,7 @@ class FractionTest(unittest.TestCase):
         self.assertEqual(p.numerator, 4)
         self.assertEqual(p.denominator, 1)
 
-    def testLargeArithmetic(self):
+    eleza testLargeArithmetic(self):
         self.assertTypedEquals(
             F(10101010100808080808080808101010101010000000000000000,
               1010101010101010101010101011111111101010101010101010101010101),
@@ -419,7 +419,7 @@ class FractionTest(unittest.TestCase):
             divmod(F(-2**100, 3), F(5, 2**100))
         )
 
-    def testMixedArithmetic(self):
+    eleza testMixedArithmetic(self):
         self.assertTypedEquals(F(11, 10), F(1, 10) + 1)
         self.assertTypedEquals(1.1, F(1, 10) + 1.0)
         self.assertTypedEquals(1.1 + 0j, F(1, 10) + (1.0 + 0j))
@@ -488,14 +488,14 @@ class FractionTest(unittest.TestCase):
         self.assertRaises(ZeroDivisionError, operator.pow,
                           F(0, 1), -2)
 
-    def testMixingWithDecimal(self):
+    eleza testMixingWithDecimal(self):
         # Decimal refuses mixed arithmetic (but not mixed comparisons)
         self.assertRaises(TypeError, operator.add,
                           F(3,11), Decimal('3.1415926'))
         self.assertRaises(TypeError, operator.add,
                           Decimal('3.1415926'), F(3,11))
 
-    def testComparisons(self):
+    eleza testComparisons(self):
         self.assertTrue(F(1, 2) < F(2, 3))
         self.assertFalse(F(1, 2) < F(1, 2))
         self.assertTrue(F(1, 2) <= F(2, 3))
@@ -506,7 +506,7 @@ class FractionTest(unittest.TestCase):
         self.assertFalse(F(1, 2) != F(1, 2))
         self.assertTrue(F(1, 2) != F(1, 3))
 
-    def testComparisonsDummyRational(self):
+    eleza testComparisonsDummyRational(self):
         self.assertTrue(F(1, 2) == DummyRational(1, 2))
         self.assertTrue(DummyRational(1, 2) == F(1, 2))
         self.assertFalse(F(1, 2) == DummyRational(3, 4))
@@ -538,7 +538,7 @@ class FractionTest(unittest.TestCase):
         self.assertTrue(DummyRational(1, 2) >= F(1, 2))
         self.assertTrue(DummyRational(1, 2) >= F(1, 7))
 
-    def testComparisonsDummyFloat(self):
+    eleza testComparisonsDummyFloat(self):
         x = DummyFloat(1./3.)
         y = F(1, 3)
         self.assertTrue(x != y)
@@ -550,7 +550,7 @@ class FractionTest(unittest.TestCase):
         self.assertFalse(y == x)
         self.assertFalse(y <= x and y >= x)
 
-    def testMixedLess(self):
+    eleza testMixedLess(self):
         self.assertTrue(2 < F(5, 2))
         self.assertFalse(2 < F(4, 2))
         self.assertTrue(F(5, 2) < 3)
@@ -568,7 +568,7 @@ class FractionTest(unittest.TestCase):
         self.assertFalse(F(17, 12) < float('-inf'))
         self.assertFalse(F(144, -89) < float('nan'))
 
-    def testMixedLessEqual(self):
+    eleza testMixedLessEqual(self):
         self.assertTrue(0.5 <= F(1, 2))
         self.assertFalse(0.6 <= F(1, 2))
         self.assertTrue(F(1, 2) <= 0.5)
@@ -585,7 +585,7 @@ class FractionTest(unittest.TestCase):
         self.assertFalse(F(17, 12) <= float('-inf'))
         self.assertFalse(F(144, -89) <= float('nan'))
 
-    def testBigFloatComparisons(self):
+    eleza testBigFloatComparisons(self):
         # Because 10**23 can't be represented exactly as a float:
         self.assertFalse(F(10**23) == float(10**23))
         # The first test demonstrates why these are agizaant.
@@ -595,7 +595,7 @@ class FractionTest(unittest.TestCase):
         self.assertTrue(1e23 > F(math.trunc(1e23) - 1))
         self.assertFalse(1e23 >= F(math.trunc(1e23) + 1))
 
-    def testBigComplexComparisons(self):
+    eleza testBigComplexComparisons(self):
         self.assertFalse(F(10**23) == complex(10**23))
         self.assertRaises(TypeError, operator.gt, F(10**23), complex(10**23))
         self.assertRaises(TypeError, operator.le, F(10**23), complex(10**23))
@@ -613,7 +613,7 @@ class FractionTest(unittest.TestCase):
             self.assertRaises(TypeError, op, x, w)
             self.assertRaises(TypeError, op, w, x)
 
-    def testMixedEqual(self):
+    eleza testMixedEqual(self):
         self.assertTrue(0.5 == F(1, 2))
         self.assertFalse(0.6 == F(1, 2))
         self.assertTrue(F(1, 2) == 0.5)
@@ -627,7 +627,7 @@ class FractionTest(unittest.TestCase):
         self.assertFalse(F(5, 2) == float('inf'))
         self.assertFalse(float('-inf') == F(2, 5))
 
-    def testStringification(self):
+    eleza testStringification(self):
         self.assertEqual("Fraction(7, 3)", repr(F(7, 3)))
         self.assertEqual("Fraction(6283185307, 2000000000)",
                          repr(F('3.1415926535')))
@@ -636,7 +636,7 @@ class FractionTest(unittest.TestCase):
         self.assertEqual("7/3", str(F(7, 3)))
         self.assertEqual("7", str(F(7, 1)))
 
-    def testHash(self):
+    eleza testHash(self):
         hmod = sys.hash_info.modulus
         hinf = sys.hash_info.inf
         self.assertEqual(hash(2.5), hash(F(5, 2)))
@@ -647,7 +647,7 @@ class FractionTest(unittest.TestCase):
         # consistency with int and Decimal.  (See issue #10356.)
         self.assertEqual(hash(F(-1)), F(-1).__hash__())
 
-    def testApproximatePi(self):
+    eleza testApproximatePi(self):
         # Algorithm borrowed kutoka
         # http://docs.python.org/lib/decimal-recipes.html
         three = F(3)
@@ -660,7 +660,7 @@ class FractionTest(unittest.TestCase):
             s += t
         self.assertAlmostEqual(math.pi, s)
 
-    def testApproximateCos1(self):
+    eleza testApproximateCos1(self):
         # Algorithm borrowed kutoka
         # http://docs.python.org/lib/decimal-recipes.html
         x = F(1)
@@ -674,7 +674,7 @@ class FractionTest(unittest.TestCase):
             s += num / fact * sign
         self.assertAlmostEqual(math.cos(1), s)
 
-    def test_copy_deepcopy_pickle(self):
+    eleza test_copy_deepcopy_pickle(self):
         r = F(13, 7)
         dr = DummyFraction(13, 7)
         self.assertEqual(r, loads(dumps(r)))
@@ -685,10 +685,10 @@ class FractionTest(unittest.TestCase):
         self.assertTypedEquals(dr, copy(dr))
         self.assertTypedEquals(dr, deepcopy(dr))
 
-    def test_slots(self):
+    eleza test_slots(self):
         # Issue 4998
         r = F(13, 7)
         self.assertRaises(AttributeError, setattr, r, 'a', 10)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

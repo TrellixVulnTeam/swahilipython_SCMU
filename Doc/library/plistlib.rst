@@ -6,7 +6,7 @@
 
 .. moduleauthor:: Jack Jansen
 .. sectionauthor:: Georg Brandl <georg@python.org>
-.. (harvested from docstrings in the original file)
+.. (harvested kutoka docstrings in the original file)
 
 **Source code:** :source:`Lib/plistlib.py`
 
@@ -66,11 +66,11 @@ This module defines the following functions:
    as instances of :class:`bytes`, otherwise it is returned as instances of
    :class:`Data`.
 
-   The *dict_type* is the type used for dictionaries that are read from the
+   The *dict_type* is the type used for dictionaries that are read kutoka the
    plist file.
 
    XML data for the :data:`FMT_XML` format is parsed using the Expat parser
-   from :mod:`xml.parsers.expat` -- see its documentation for possible
+   kutoka :mod:`xml.parsers.expat` -- see its documentation for possible
    exceptions on ill-formed XML.  Unknown elements will simply be ignored
    by the plist parser.
 
@@ -82,7 +82,7 @@ This module defines the following functions:
 
 .. function:: loads(data, \*, fmt=None, use_builtin_types=True, dict_type=dict)
 
-   Load a plist from a bytes object. See :func:`load` for an explanation of
+   Load a plist kutoka a bytes object. See :func:`load` for an explanation of
    the keyword arguments.
 
    .. versionadded:: 3.4
@@ -152,7 +152,7 @@ The following functions are deprecated:
 
 .. function:: readPlistFromBytes(data)
 
-   Read a plist data from a bytes object.  Return the root object.
+   Read a plist data kutoka a bytes object.  Return the root object.
 
    See :func:`load` for a description of the keyword arguments.
 
@@ -175,7 +175,7 @@ The following classes are available:
 .. class:: Data(data)
 
    Return a "data" wrapper object around the bytes object *data*.  This is used
-   in functions converting from/to plists to represent the ``<data>`` type
+   in functions converting kutoka/to plists to represent the ``<data>`` type
    available in plists.
 
    It has one attribute, :attr:`data`, that can be used to retrieve the Python
@@ -228,7 +228,7 @@ Generating a plist::
         ),
         someData = b"<binary gunk>",
         someMoreData = b"<lots of binary gunk>" * 10,
-        aDate = datetime.datetime.fromtimestamp(time.mktime(time.gmtime())),
+        aDate = datetime.datetime.kutokatimestamp(time.mktime(time.gmtime())),
     )
     with open(fileName, 'wb') as fp:
         dump(pl, fp)

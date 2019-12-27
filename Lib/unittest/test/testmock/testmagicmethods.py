@@ -7,9 +7,9 @@ kutoka unittest.mock agiza AsyncMock, Mock, MagicMock, _magics
 
 
 
-class TestMockingMagicMethods(unittest.TestCase):
+kundi TestMockingMagicMethods(unittest.TestCase):
 
-    def test_deleting_magic_methods(self):
+    eleza test_deleting_magic_methods(self):
         mock = Mock()
         self.assertFalse(hasattr(mock, '__getitem__'))
 
@@ -20,7 +20,7 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertFalse(hasattr(mock, '__getitem__'))
 
 
-    def test_magicmock_del(self):
+    eleza test_magicmock_del(self):
         mock = MagicMock()
         # before using getitem
         del mock.__getitem__
@@ -33,10 +33,10 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertRaises(TypeError, lambda: mock['foo'])
 
 
-    def test_magic_method_wrapping(self):
+    eleza test_magic_method_wrapping(self):
         mock = Mock()
-        def f(self, name):
-            return self, 'fish'
+        eleza f(self, name):
+            rudisha self, 'fish'
 
         mock.__getitem__ = f
         self.assertIsNot(mock.__getitem__, f)
@@ -47,7 +47,7 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertIs(mock.__getitem__, mock)
 
 
-    def test_magic_methods_isolated_between_mocks(self):
+    eleza test_magic_methods_isolated_between_mocks(self):
         mock1 = Mock()
         mock2 = Mock()
 
@@ -56,37 +56,37 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertRaises(TypeError, lambda: list(mock2))
 
 
-    def test_repr(self):
+    eleza test_repr(self):
         mock = Mock()
         self.assertEqual(repr(mock), "<Mock id='%s'>" % id(mock))
         mock.__repr__ = lambda s: 'foo'
         self.assertEqual(repr(mock), 'foo')
 
 
-    def test_str(self):
+    eleza test_str(self):
         mock = Mock()
         self.assertEqual(str(mock), object.__str__(mock))
         mock.__str__ = lambda s: 'foo'
         self.assertEqual(str(mock), 'foo')
 
 
-    def test_dict_methods(self):
+    eleza test_dict_methods(self):
         mock = Mock()
 
         self.assertRaises(TypeError, lambda: mock['foo'])
-        def _del():
+        eleza _del():
             del mock['foo']
-        def _set():
+        eleza _set():
             mock['foo'] = 3
         self.assertRaises(TypeError, _del)
         self.assertRaises(TypeError, _set)
 
         _dict = {}
-        def getitem(s, name):
-            return _dict[name]
-        def setitem(s, name, value):
+        eleza getitem(s, name):
+            rudisha _dict[name]
+        eleza setitem(s, name, value):
             _dict[name] = value
-        def delitem(s, name):
+        eleza delitem(s, name):
             del _dict[name]
 
         mock.__setitem__ = setitem
@@ -101,21 +101,21 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertEqual(_dict, {})
 
 
-    def test_numeric(self):
+    eleza test_numeric(self):
         original = mock = Mock()
         mock.value = 0
 
         self.assertRaises(TypeError, lambda: mock + 3)
 
-        def add(self, other):
+        eleza add(self, other):
             mock.value += other
-            return self
+            rudisha self
         mock.__add__ = add
         self.assertEqual(mock + 3, mock)
         self.assertEqual(mock.value, 3)
 
         del mock.__add__
-        def iadd(mock):
+        eleza iadd(mock):
             mock += 3
         self.assertRaises(TypeError, iadd, mock)
         mock.__iadd__ = add
@@ -128,20 +128,20 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertEqual(7 + mock, mock)
         self.assertEqual(mock.value, 16)
 
-    def test_division(self):
+    eleza test_division(self):
         original = mock = Mock()
         mock.value = 32
         self.assertRaises(TypeError, lambda: mock / 2)
 
-        def truediv(self, other):
+        eleza truediv(self, other):
             mock.value /= other
-            return self
+            rudisha self
         mock.__truediv__ = truediv
         self.assertEqual(mock / 2, mock)
         self.assertEqual(mock.value, 16)
 
         del mock.__truediv__
-        def itruediv(mock):
+        eleza itruediv(mock):
             mock /= 4
         self.assertRaises(TypeError, itruediv, mock)
         mock.__itruediv__ = truediv
@@ -154,18 +154,18 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertEqual(0.5 / mock, mock)
         self.assertEqual(mock.value, 4)
 
-    def test_hash(self):
+    eleza test_hash(self):
         mock = Mock()
         # test delegation
         self.assertEqual(hash(mock), Mock.__hash__(mock))
 
-        def _hash(s):
-            return 3
+        eleza _hash(s):
+            rudisha 3
         mock.__hash__ = _hash
         self.assertEqual(hash(mock), 3)
 
 
-    def test_nonzero(self):
+    eleza test_nonzero(self):
         m = Mock()
         self.assertTrue(bool(m))
 
@@ -173,10 +173,10 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertFalse(bool(m))
 
 
-    def test_comparison(self):
+    eleza test_comparison(self):
         mock = Mock()
-        def comp(s, o):
-            return True
+        eleza comp(s, o):
+            rudisha True
         mock.__lt__ = mock.__gt__ = mock.__le__ = mock.__ge__ = comp
         self. assertTrue(mock < 3)
         self. assertTrue(mock > 3)
@@ -197,7 +197,7 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertRaises(TypeError, lambda: MagicMock() >= MagicMock())
 
 
-    def test_equality(self):
+    eleza test_equality(self):
         for mock in Mock(), MagicMock():
             self.assertEqual(mock == mock, True)
             self.assertIsInstance(mock == mock, bool)
@@ -206,14 +206,14 @@ class TestMockingMagicMethods(unittest.TestCase):
             self.assertEqual(mock == object(), False)
             self.assertEqual(mock != object(), True)
 
-            def eq(self, other):
-                return other == 3
+            eleza eq(self, other):
+                rudisha other == 3
             mock.__eq__ = eq
             self.assertTrue(mock == 3)
             self.assertFalse(mock == 4)
 
-            def ne(self, other):
-                return other == 3
+            eleza ne(self, other):
+                rudisha other == 3
             mock.__ne__ = ne
             self.assertTrue(mock != 3)
             self.assertFalse(mock != 4)
@@ -228,7 +228,7 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertEqual(mock != 3, False)
 
 
-    def test_len_contains_iter(self):
+    eleza test_len_contains_iter(self):
         mock = Mock()
 
         self.assertRaises(TypeError, len, mock)
@@ -246,7 +246,7 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertEqual(list(mock), list('foobarbaz'))
 
 
-    def test_magicmock(self):
+    eleza test_magicmock(self):
         mock = MagicMock()
 
         mock.__iter__.return_value = iter([1, 2, 3])
@@ -261,7 +261,7 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertFalse(hasattr(mock, '__imaginary__'))
 
 
-    def test_magic_mock_equality(self):
+    eleza test_magic_mock_equality(self):
         mock = MagicMock()
         self.assertIsInstance(mock == object(), bool)
         self.assertIsInstance(mock != object(), bool)
@@ -271,7 +271,7 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertEqual(mock == mock, True)
         self.assertEqual(mock != mock, False)
 
-    def test_asyncmock_defaults(self):
+    eleza test_asyncmock_defaults(self):
         mock = AsyncMock()
         self.assertEqual(int(mock), 1)
         self.assertEqual(complex(mock), 1j)
@@ -297,7 +297,7 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertEqual(hex(mock), '0x1')
         # how to test __sizeof__ ?
 
-    def test_magicmock_defaults(self):
+    eleza test_magicmock_defaults(self):
         mock = MagicMock()
         self.assertEqual(int(mock), 1)
         self.assertEqual(complex(mock), 1j)
@@ -324,7 +324,7 @@ class TestMockingMagicMethods(unittest.TestCase):
         # how to test __sizeof__ ?
 
 
-    def test_magic_methods_fspath(self):
+    eleza test_magic_methods_fspath(self):
         mock = MagicMock()
         expected_path = mock.__fspath__()
         mock.reset_mock()
@@ -333,9 +333,9 @@ class TestMockingMagicMethods(unittest.TestCase):
         mock.__fspath__.assert_called_once()
 
 
-    def test_magic_methods_and_spec(self):
-        class Iterable(object):
-            def __iter__(self): pass
+    eleza test_magic_methods_and_spec(self):
+        kundi Iterable(object):
+            eleza __iter__(self): pass
 
         mock = Mock(spec=Iterable)
         self.assertRaises(AttributeError, lambda: mock.__iter__)
@@ -343,12 +343,12 @@ class TestMockingMagicMethods(unittest.TestCase):
         mock.__iter__ = Mock(return_value=iter([]))
         self.assertEqual(list(mock), [])
 
-        class NonIterable(object):
+        kundi NonIterable(object):
             pass
         mock = Mock(spec=NonIterable)
         self.assertRaises(AttributeError, lambda: mock.__iter__)
 
-        def set_int():
+        eleza set_int():
             mock.__int__ = Mock(return_value=iter([]))
         self.assertRaises(AttributeError, set_int)
 
@@ -357,9 +357,9 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertRaises(AttributeError, set_int)
 
 
-    def test_magic_methods_and_spec_set(self):
-        class Iterable(object):
-            def __iter__(self): pass
+    eleza test_magic_methods_and_spec_set(self):
+        kundi Iterable(object):
+            eleza __iter__(self): pass
 
         mock = Mock(spec_set=Iterable)
         self.assertRaises(AttributeError, lambda: mock.__iter__)
@@ -367,12 +367,12 @@ class TestMockingMagicMethods(unittest.TestCase):
         mock.__iter__ = Mock(return_value=iter([]))
         self.assertEqual(list(mock), [])
 
-        class NonIterable(object):
+        kundi NonIterable(object):
             pass
         mock = Mock(spec_set=NonIterable)
         self.assertRaises(AttributeError, lambda: mock.__iter__)
 
-        def set_int():
+        eleza set_int():
             mock.__int__ = Mock(return_value=iter([]))
         self.assertRaises(AttributeError, set_int)
 
@@ -381,9 +381,9 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertRaises(AttributeError, set_int)
 
 
-    def test_setting_unsupported_magic_method(self):
+    eleza test_setting_unsupported_magic_method(self):
         mock = MagicMock()
-        def set_setattr():
+        eleza set_setattr():
             mock.__setattr__ = lambda self, name: None
         self.assertRaisesRegex(AttributeError,
             "Attempting to set unsupported magic method '__setattr__'.",
@@ -391,20 +391,20 @@ class TestMockingMagicMethods(unittest.TestCase):
         )
 
 
-    def test_attributes_and_return_value(self):
+    eleza test_attributes_and_return_value(self):
         mock = MagicMock()
         attr = mock.foo
-        def _get_type(obj):
+        eleza _get_type(obj):
             # the type of every mock (or magicmock) is a custom subclass
             # so the real type is the second in the mro
-            return type(obj).__mro__[1]
+            rudisha type(obj).__mro__[1]
         self.assertEqual(_get_type(attr), MagicMock)
 
         returned = mock()
         self.assertEqual(_get_type(returned), MagicMock)
 
 
-    def test_magic_methods_are_magic_mocks(self):
+    eleza test_magic_methods_are_magic_mocks(self):
         mock = MagicMock()
         self.assertIsInstance(mock.__getitem__, MagicMock)
 
@@ -412,7 +412,7 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertEqual(mock[1][2][3], 3)
 
 
-    def test_magic_method_reset_mock(self):
+    eleza test_magic_method_reset_mock(self):
         mock = MagicMock()
         str(mock)
         self.assertTrue(mock.__str__.called)
@@ -420,17 +420,17 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertFalse(mock.__str__.called)
 
 
-    def test_dir(self):
+    eleza test_dir(self):
         # overriding the default implementation
         for mock in Mock(), MagicMock():
-            def _dir(self):
-                return ['foo']
+            eleza _dir(self):
+                rudisha ['foo']
             mock.__dir__ = _dir
             self.assertEqual(dir(mock), ['foo'])
 
 
     @unittest.skipIf('PyPy' in sys.version, "This fails differently on pypy")
-    def test_bound_methods(self):
+    eleza test_bound_methods(self):
         m = Mock()
 
         # XXXX should this be an expected failure instead?
@@ -441,21 +441,21 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertRaises(TypeError, iter, m)
 
 
-    def test_magic_method_type(self):
-        class Foo(MagicMock):
+    eleza test_magic_method_type(self):
+        kundi Foo(MagicMock):
             pass
 
         foo = Foo()
         self.assertIsInstance(foo.__int__, Foo)
 
 
-    def test_descriptor_from_class(self):
+    eleza test_descriptor_kutoka_class(self):
         m = MagicMock()
         type(m).__str__.return_value = 'foo'
         self.assertEqual(str(m), 'foo')
 
 
-    def test_iterable_as_iter_return_value(self):
+    eleza test_iterable_as_iter_return_value(self):
         m = MagicMock()
         m.__iter__.return_value = [1, 2, 3]
         self.assertEqual(list(m), [1, 2, 3])
@@ -466,7 +466,7 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertEqual(list(m), [])
 
 
-    def test_matmul(self):
+    eleza test_matmul(self):
         m = MagicMock()
         self.assertIsInstance(m @ 1, MagicMock)
         m.__matmul__.return_value = 42
@@ -477,7 +477,7 @@ class TestMockingMagicMethods(unittest.TestCase):
         m @= 24
         self.assertEqual(m, 24)
 
-    def test_divmod_and_rdivmod(self):
+    eleza test_divmod_and_rdivmod(self):
         m = MagicMock()
         self.assertIsInstance(divmod(5, m), MagicMock)
         m.__divmod__.return_value = (2, 1)
@@ -493,12 +493,12 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertIsInstance(bar_direct, MagicMock)
 
     # http://bugs.python.org/issue23310
-    # Check if you can change behaviour of magic methods in MagicMock init
-    def test_magic_in_initialization(self):
+    # Check ikiwa you can change behaviour of magic methods in MagicMock init
+    eleza test_magic_in_initialization(self):
         m = MagicMock(**{'__str__.return_value': "12"})
         self.assertEqual(str(m), "12")
 
-    def test_changing_magic_set_in_initialization(self):
+    eleza test_changing_magic_set_in_initialization(self):
         m = MagicMock(**{'__str__.return_value': "12"})
         m.__str__.return_value = "13"
         self.assertEqual(str(m), "13")
@@ -507,5 +507,5 @@ class TestMockingMagicMethods(unittest.TestCase):
         self.assertEqual(str(m), "14")
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

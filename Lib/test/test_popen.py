@@ -9,24 +9,24 @@ agiza os, sys
 
 # Test that command-lines get down as we expect.
 # To do this we execute:
-#    python -c "agiza sys;print(sys.argv)" {rest_of_commandline}
+#    python -c "agiza sys;andika(sys.argv)" {rest_of_commandline}
 # This results in Python being spawned and printing the sys.argv list.
 # We can then eval() the result of this, and see what each argv was.
 python = sys.executable
-if ' ' in python:
+ikiwa ' ' in python:
     python = '"' + python + '"'     # quote embedded space for cmdline
 
-class PopenTest(unittest.TestCase):
+kundi PopenTest(unittest.TestCase):
 
-    def _do_test_commandline(self, cmdline, expected):
-        cmd = '%s -c "agiza sys; print(sys.argv)" %s'
+    eleza _do_test_commandline(self, cmdline, expected):
+        cmd = '%s -c "agiza sys; andika(sys.argv)" %s'
         cmd = cmd % (python, cmdline)
         with os.popen(cmd) as p:
             data = p.read()
         got = eval(data)[1:] # strip off argv[0]
         self.assertEqual(got, expected)
 
-    def test_popen(self):
+    eleza test_popen(self):
         self.assertRaises(TypeError, os.popen)
         self._do_test_commandline(
             "foo bar",
@@ -42,24 +42,24 @@ class PopenTest(unittest.TestCase):
         )
         support.reap_children()
 
-    def test_return_code(self):
+    eleza test_return_code(self):
         self.assertEqual(os.popen("exit 0").close(), None)
-        if os.name == 'nt':
+        ikiwa os.name == 'nt':
             self.assertEqual(os.popen("exit 42").close(), 42)
         else:
             self.assertEqual(os.popen("exit 42").close(), 42 << 8)
 
-    def test_contextmanager(self):
+    eleza test_contextmanager(self):
         with os.popen("echo hello") as f:
             self.assertEqual(f.read(), "hello\n")
 
-    def test_iterating(self):
+    eleza test_iterating(self):
         with os.popen("echo hello") as f:
             self.assertEqual(list(f), ["hello\n"])
 
-    def test_keywords(self):
+    eleza test_keywords(self):
         with os.popen(cmd="exit 0", mode="w", buffering=-1):
             pass
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

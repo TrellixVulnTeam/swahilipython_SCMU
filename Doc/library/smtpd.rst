@@ -40,7 +40,7 @@ SMTPServer Objects
    Create a new :class:`SMTPServer` object, which binds to local address
    *localaddr*.  It will treat *remoteaddr* as an upstream SMTP relayer.  Both
    *localaddr* and *remoteaddr* should be a :ref:`(host, port) <host_port>`
-   tuple.  The object inherits from :class:`asyncore.dispatcher`, and so will
+   tuple.  The object inherits kutoka :class:`asyncore.dispatcher`, and so will
    insert itself into :mod:`asyncore`'s event loop on instantiation.
 
    *data_size_limit* specifies the maximum number of bytes that will be
@@ -66,12 +66,12 @@ SMTPServer Objects
    in the ``kwargs['mail_options']`` list. *decode_data* and *enable_SMTPUTF8*
    cannot be set to ``True`` at the same time.
 
-   .. method:: process_message(peer, mailfrom, rcpttos, data, **kwargs)
+   .. method:: process_message(peer, mailkutoka, rcpttos, data, **kwargs)
 
       Raise a :exc:`NotImplementedError` exception. Override this in subclasses to
       do something useful with this message. Whatever was passed in the
       constructor as *remoteaddr* will be available as the :attr:`_remoteaddr`
-      attribute. *peer* is the remote host's address, *mailfrom* is the envelope
+      attribute. *peer* is the remote host's address, *mailkutoka* is the envelope
       originator, *rcpttos* are the envelope recipients and *data* is a string
       containing the contents of the e-mail (which should be in :rfc:`5321`
       format).
@@ -207,7 +207,7 @@ SMTPChannel Objects
 
    .. attribute:: received_lines
 
-      Holds a list of the line strings (decoded using UTF-8) received from
+      Holds a list of the line strings (decoded using UTF-8) received kutoka
       the client. The lines have their ``"\r\n"`` line ending translated to
       ``"\n"``.
 
@@ -221,15 +221,15 @@ SMTPChannel Objects
 
       Holds a string containing the greeting sent by the client in its "HELO".
 
-   .. attribute:: mailfrom
+   .. attribute:: mailkutoka
 
       Holds a string containing the address identified in the "MAIL FROM:" line
-      from the client.
+      kutoka the client.
 
    .. attribute:: rcpttos
 
       Holds a list of strings containing the addresses identified in the
-      "RCPT TO:" lines from the client.
+      "RCPT TO:" lines kutoka the client.
 
    .. attribute:: received_data
 
@@ -247,29 +247,29 @@ SMTPChannel Objects
       where ``conn`` is :attr:`conn`.
 
    The :class:`SMTPChannel` operates by invoking methods named ``smtp_<command>``
-   upon reception of a command line from the client. Built into the base
-   :class:`SMTPChannel` class are methods for handling the following commands
+   upon reception of a command line kutoka the client. Built into the base
+   :class:`SMTPChannel` kundi are methods for handling the following commands
    (and responding to them appropriately):
 
    ======== ===================================================================
    Command  Action taken
    ======== ===================================================================
-   HELO     Accepts the greeting from the client and stores it in
+   HELO     Accepts the greeting kutoka the client and stores it in
             :attr:`seen_greeting`.  Sets server to base command mode.
-   EHLO     Accepts the greeting from the client and stores it in
+   EHLO     Accepts the greeting kutoka the client and stores it in
             :attr:`seen_greeting`.  Sets server to extended command mode.
    NOOP     Takes no action.
    QUIT     Closes the connection cleanly.
    MAIL     Accepts the "MAIL FROM:" syntax and stores the supplied address as
-            :attr:`mailfrom`.  In extended command mode, accepts the
+            :attr:`mailkutoka`.  In extended command mode, accepts the
             :rfc:`1870` SIZE attribute and responds appropriately based on the
             value of *data_size_limit*.
    RCPT     Accepts the "RCPT TO:" syntax and stores the supplied addresses in
             the :attr:`rcpttos` list.
-   RSET     Resets the :attr:`mailfrom`, :attr:`rcpttos`, and
+   RSET     Resets the :attr:`mailkutoka`, :attr:`rcpttos`, and
             :attr:`received_data`, but not the greeting.
    DATA     Sets the internal state to :attr:`DATA` and stores remaining lines
-            from the client in :attr:`received_data` until the terminator
+            kutoka the client in :attr:`received_data` until the terminator
             ``"\r\n.\r\n"`` is received.
    HELP     Returns minimal information on command syntax
    VRFY     Returns code 252 (the server doesn't know if the address is valid)

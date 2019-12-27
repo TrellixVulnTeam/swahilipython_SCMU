@@ -53,7 +53,7 @@ INVALID_UNDERSCORE_LITERALS = [
     '0b1_',
     '0xf_',
     '0o5_',
-    '0 if 1_Else 1',
+    '0 ikiwa 1_Else 1',
     # Underscores in the base selector:
     '0_b0',
     '0_xf',
@@ -99,11 +99,11 @@ INVALID_UNDERSCORE_LITERALS = [
 ]
 
 
-class TokenTests(unittest.TestCase):
+kundi TokenTests(unittest.TestCase):
 
     kutoka test.support agiza check_syntax_error
 
-    def test_backslash(self):
+    eleza test_backslash(self):
         # Backslash means line continuation:
         x = 1 \
         + 1
@@ -113,7 +113,7 @@ class TokenTests(unittest.TestCase):
         x = 0
         self.assertEqual(x, 0, 'backslash ending comment')
 
-    def test_plain_integers(self):
+    eleza test_plain_integers(self):
         self.assertEqual(type(000), type(0))
         self.assertEqual(0xff, 255)
         self.assertEqual(0o377, 255)
@@ -122,7 +122,7 @@ class TokenTests(unittest.TestCase):
         # "0x" is not a valid literal
         self.assertRaises(SyntaxError, eval, "0x")
         kutoka sys agiza maxsize
-        if maxsize == 2147483647:
+        ikiwa maxsize == 2147483647:
             self.assertEqual(-2147483647-1, -0o20000000000)
             # XXX -2147483648
             self.assertTrue(0o37777777777 > 0)
@@ -134,7 +134,7 @@ class TokenTests(unittest.TestCase):
                     x = eval(s)
                 except OverflowError:
                     self.fail("OverflowError on huge integer literal %r" % s)
-        elif maxsize == 9223372036854775807:
+        elikiwa maxsize == 9223372036854775807:
             self.assertEqual(-9223372036854775807-1, -0o1000000000000000000000)
             self.assertTrue(0o1777777777777777777777 > 0)
             self.assertTrue(0xffffffffffffffff > 0)
@@ -149,7 +149,7 @@ class TokenTests(unittest.TestCase):
         else:
             self.fail('Weird maxsize value %r' % maxsize)
 
-    def test_long_integers(self):
+    eleza test_long_integers(self):
         x = 0
         x = 0xffffffffffffffff
         x = 0Xffffffffffffffff
@@ -159,7 +159,7 @@ class TokenTests(unittest.TestCase):
         x = 0b100000000000000000000000000000000000000000000000000000000000000000000
         x = 0B111111111111111111111111111111111111111111111111111111111111111111111
 
-    def test_floats(self):
+    eleza test_floats(self):
         x = 3.14
         x = 314.
         x = 0.314
@@ -173,13 +173,13 @@ class TokenTests(unittest.TestCase):
         x = .3e14
         x = 3.1e4
 
-    def test_float_exponent_tokenization(self):
+    eleza test_float_exponent_tokenization(self):
         # See issue 21642.
-        self.assertEqual(1 if 1else 0, 1)
-        self.assertEqual(1 if 0else 0, 0)
-        self.assertRaises(SyntaxError, eval, "0 if 1Else 0")
+        self.assertEqual(1 ikiwa 1else 0, 1)
+        self.assertEqual(1 ikiwa 0else 0, 0)
+        self.assertRaises(SyntaxError, eval, "0 ikiwa 1Else 0")
 
-    def test_underscore_literals(self):
+    eleza test_underscore_literals(self):
         for lit in VALID_UNDERSCORE_LITERALS:
             self.assertEqual(eval(lit), eval(lit.replace('_', '')))
         for lit in INVALID_UNDERSCORE_LITERALS:
@@ -187,7 +187,7 @@ class TokenTests(unittest.TestCase):
         # Sanity check: no literal begins with an underscore
         self.assertRaises(NameError, eval, "_0")
 
-    def test_bad_numerical_literals(self):
+    eleza test_bad_numerical_literals(self):
         check = self.check_syntax_error
         check("0b12", "invalid digit '2' in binary literal")
         check("0b1_2", "invalid digit '2' in binary literal")
@@ -209,7 +209,7 @@ class TokenTests(unittest.TestCase):
         check("1e2_", "invalid decimal literal")
         check("1e+", "invalid decimal literal")
 
-    def test_string_literals(self):
+    eleza test_string_literals(self):
         x = ''; y = ""; self.assertTrue(len(x) == 0 and x == y)
         x = '\''; y = "'"; self.assertTrue(len(x) == 1 and x == y and ord(x) == 39)
         x = '"'; y = "\""; self.assertTrue(len(x) == 1 and x == y and ord(x) == 34)
@@ -249,13 +249,13 @@ the \'lazy\' dog.\n\
 '
         self.assertEqual(x, y)
 
-    def test_ellipsis(self):
+    eleza test_ellipsis(self):
         x = ...
         self.assertTrue(x is Ellipsis)
         self.assertRaises(SyntaxError, eval, ".. .")
 
-    def test_eof_error(self):
-        samples = ("def foo(", "\ndef foo(", "def foo(\n")
+    eleza test_eof_error(self):
+        samples = ("eleza foo(", "\neleza foo(", "eleza foo(\n")
         for s in samples:
             with self.assertRaises(SyntaxError) as cm:
                 compile(s, "<test>", "exec")
@@ -265,16 +265,16 @@ var_annot_global: int # a global annotated is necessary for test_var_annot
 
 # custom namespace for testing __annotations__
 
-class CNS:
-    def __init__(self):
+kundi CNS:
+    eleza __init__(self):
         self._dct = {}
-    def __setitem__(self, item, value):
+    eleza __setitem__(self, item, value):
         self._dct[item.lower()] = value
-    def __getitem__(self, item):
-        return self._dct[item]
+    eleza __getitem__(self, item):
+        rudisha self._dct[item]
 
 
-class GrammarTests(unittest.TestCase):
+kundi GrammarTests(unittest.TestCase):
 
     kutoka test.support agiza check_syntax_error, check_syntax_warning
 
@@ -287,43 +287,43 @@ class GrammarTests(unittest.TestCase):
     # expr_input: testlist NEWLINE
     # XXX Hard to test -- used only in calls to input()
 
-    def test_eval_input(self):
+    eleza test_eval_input(self):
         # testlist ENDMARKER
         x = eval('1, 0 or 1')
 
-    def test_var_annot_basics(self):
+    eleza test_var_annot_basics(self):
         # all these should be allowed
         var1: int = 5
         var2: [int, str]
         my_lst = [42]
-        def one():
-            return 1
+        eleza one():
+            rudisha 1
         int.new_attr: int
         [list][0]: type
         my_lst[one()-1]: int = 5
         self.assertEqual(my_lst, [5])
 
-    def test_var_annot_syntax_errors(self):
+    eleza test_var_annot_syntax_errors(self):
         # parser pass
-        check_syntax_error(self, "def f: int")
+        check_syntax_error(self, "eleza f: int")
         check_syntax_error(self, "x: int: str")
-        check_syntax_error(self, "def f():\n"
+        check_syntax_error(self, "eleza f():\n"
                                  "    nonlocal x: int\n")
         # AST pass
         check_syntax_error(self, "[x, 0]: int\n")
         check_syntax_error(self, "f(): int\n")
         check_syntax_error(self, "(x,): int")
-        check_syntax_error(self, "def f():\n"
+        check_syntax_error(self, "eleza f():\n"
                                  "    (x, y): int = (1, 2)\n")
         # symtable pass
-        check_syntax_error(self, "def f():\n"
+        check_syntax_error(self, "eleza f():\n"
                                  "    x: int\n"
                                  "    global x\n")
-        check_syntax_error(self, "def f():\n"
+        check_syntax_error(self, "eleza f():\n"
                                  "    global x\n"
                                  "    x: int\n")
 
-    def test_var_annot_basic_semantics(self):
+    eleza test_var_annot_basic_semantics(self):
         # execution order
         with self.assertRaises(ZeroDivisionError):
             no_name[does_not_exist]: no_name_again = 1/0
@@ -332,62 +332,62 @@ class GrammarTests(unittest.TestCase):
         global var_annot_global
 
         # function semantics
-        def f():
+        eleza f():
             st: str = "Hello"
             a.b: int = (1, 2)
-            return st
+            rudisha st
         self.assertEqual(f.__annotations__, {})
-        def f_OK():
+        eleza f_OK():
             x: 1/0
         f_OK()
-        def fbad():
+        eleza fbad():
             x: int
-            print(x)
+            andika(x)
         with self.assertRaises(UnboundLocalError):
             fbad()
-        def f2bad():
+        eleza f2bad():
             (no_such_global): int
-            print(no_such_global)
+            andika(no_such_global)
         try:
             f2bad()
         except Exception as e:
             self.assertIs(type(e), NameError)
 
-        # class semantics
-        class C:
+        # kundi semantics
+        kundi C:
             __foo: int
             s: str = "attr"
             z = 2
-            def __init__(self, x):
+            eleza __init__(self, x):
                 self.x: int = x
         self.assertEqual(C.__annotations__, {'_C__foo': int, 's': str})
         with self.assertRaises(NameError):
-            class CBad:
+            kundi CBad:
                 no_such_name_defined.attr: int = 0
         with self.assertRaises(NameError):
-            class Cbad2(C):
+            kundi Cbad2(C):
                 x: int
                 x.y: list = []
 
-    def test_var_annot_metaclass_semantics(self):
-        class CMeta(type):
+    eleza test_var_annot_metaclass_semantics(self):
+        kundi CMeta(type):
             @classmethod
-            def __prepare__(metacls, name, bases, **kwds):
-                return {'__annotations__': CNS()}
-        class CC(metaclass=CMeta):
+            eleza __prepare__(metacls, name, bases, **kwds):
+                rudisha {'__annotations__': CNS()}
+        kundi CC(metaclass=CMeta):
             XX: 'ANNOT'
         self.assertEqual(CC.__annotations__['xx'], 'ANNOT')
 
-    def test_var_annot_module_semantics(self):
+    eleza test_var_annot_module_semantics(self):
         with self.assertRaises(AttributeError):
-            print(test.__annotations__)
+            andika(test.__annotations__)
         self.assertEqual(ann_module.__annotations__,
                      {1: 2, 'x': int, 'y': str, 'f': typing.Tuple[int, int]})
         self.assertEqual(ann_module.M.__annotations__,
                               {'123': 123, 'o': type})
         self.assertEqual(ann_module2.__annotations__, {})
 
-    def test_var_annot_in_module(self):
+    eleza test_var_annot_in_module(self):
         # check that functions fail the same way when executed
         # outside of module where they were defined
         kutoka test.ann_module3 agiza f_bad_ann, g_bad_ann, D_bad_ann
@@ -398,7 +398,7 @@ class GrammarTests(unittest.TestCase):
         with self.assertRaises(NameError):
             D_bad_ann(5)
 
-    def test_var_annot_simple_exec(self):
+    eleza test_var_annot_simple_exec(self):
         gns = {}; lns= {}
         exec("'docstring'\n"
              "__annotations__[1] = 2\n"
@@ -407,7 +407,7 @@ class GrammarTests(unittest.TestCase):
         with self.assertRaises(KeyError):
             gns['__annotations__']
 
-    def test_var_annot_custom_maps(self):
+    eleza test_var_annot_custom_maps(self):
         # tests with custom locals() and __annotations__
         ns = {'__annotations__': CNS()}
         exec('X: int; Z: str = "Z"; (w): complex = 1j', ns)
@@ -416,40 +416,40 @@ class GrammarTests(unittest.TestCase):
         with self.assertRaises(KeyError):
             ns['__annotations__']['w']
         nonloc_ns = {}
-        class CNS2:
-            def __init__(self):
+        kundi CNS2:
+            eleza __init__(self):
                 self._dct = {}
-            def __setitem__(self, item, value):
+            eleza __setitem__(self, item, value):
                 nonlocal nonloc_ns
                 self._dct[item] = value
                 nonloc_ns[item] = value
-            def __getitem__(self, item):
-                return self._dct[item]
+            eleza __getitem__(self, item):
+                rudisha self._dct[item]
         exec('x: int = 1', {}, CNS2())
         self.assertEqual(nonloc_ns['__annotations__']['x'], int)
 
-    def test_var_annot_refleak(self):
+    eleza test_var_annot_refleak(self):
         # complex case: custom locals plus custom __annotations__
         # this was causing refleak
         cns = CNS()
         nonloc_ns = {'__annotations__': cns}
-        class CNS2:
-            def __init__(self):
+        kundi CNS2:
+            eleza __init__(self):
                 self._dct = {'__annotations__': cns}
-            def __setitem__(self, item, value):
+            eleza __setitem__(self, item, value):
                 nonlocal nonloc_ns
                 self._dct[item] = value
                 nonloc_ns[item] = value
-            def __getitem__(self, item):
-                return self._dct[item]
+            eleza __getitem__(self, item):
+                rudisha self._dct[item]
         exec('X: str', {}, CNS2())
         self.assertEqual(nonloc_ns['__annotations__']['x'], str)
 
-    def test_var_annot_rhs(self):
+    eleza test_var_annot_rhs(self):
         ns = {}
         exec('x: tuple = 1, 2', ns)
         self.assertEqual(ns['x'], (1, 2))
-        stmt = ('def f():\n'
+        stmt = ('eleza f():\n'
                 '    x: int = yield')
         exec(stmt, ns)
         self.assertEqual(list(ns['f']()), [None])
@@ -458,32 +458,32 @@ class GrammarTests(unittest.TestCase):
         exec('x: Tuple[int, ...] = a,*b,c', ns)
         self.assertEqual(ns['x'], (1, 2, 3, 4, 5))
 
-    def test_funcdef(self):
+    eleza test_funcdef(self):
         ### [decorators] 'def' NAME parameters ['->' test] ':' suite
         ### decorator: '@' dotted_name [ '(' [arglist] ')' ] NEWLINE
         ### decorators: decorator+
         ### parameters: '(' [typedargslist] ')'
-        ### typedargslist: ((tfpdef ['=' test] ',')*
-        ###                ('*' [tfpdef] (',' tfpdef ['=' test])* [',' '**' tfpdef] | '**' tfpdef)
-        ###                | tfpdef ['=' test] (',' tfpdef ['=' test])* [','])
+        ### typedargslist: ((tfpeleza ['=' test] ',')*
+        ###                ('*' [tfpdef] (',' tfpeleza ['=' test])* [',' '**' tfpdef] | '**' tfpdef)
+        ###                | tfpeleza ['=' test] (',' tfpeleza ['=' test])* [','])
         ### tfpdef: NAME [':' test]
-        ### varargslist: ((vfpdef ['=' test] ',')*
-        ###              ('*' [vfpdef] (',' vfpdef ['=' test])*  [',' '**' vfpdef] | '**' vfpdef)
-        ###              | vfpdef ['=' test] (',' vfpdef ['=' test])* [','])
+        ### varargslist: ((vfpeleza ['=' test] ',')*
+        ###              ('*' [vfpdef] (',' vfpeleza ['=' test])*  [',' '**' vfpdef] | '**' vfpdef)
+        ###              | vfpeleza ['=' test] (',' vfpeleza ['=' test])* [','])
         ### vfpdef: NAME
-        def f1(): pass
+        eleza f1(): pass
         f1()
         f1(*())
         f1(*(), **{})
-        def f2(one_argument): pass
-        def f3(two, arguments): pass
+        eleza f2(one_argument): pass
+        eleza f3(two, arguments): pass
         self.assertEqual(f2.__code__.co_varnames, ('one_argument',))
         self.assertEqual(f3.__code__.co_varnames, ('two', 'arguments'))
-        def a1(one_arg,): pass
-        def a2(two, args,): pass
-        def v0(*rest): pass
-        def v1(a, *rest): pass
-        def v2(a, b, *rest): pass
+        eleza a1(one_arg,): pass
+        eleza a2(two, args,): pass
+        eleza v0(*rest): pass
+        eleza v1(a, *rest): pass
+        eleza v2(a, b, *rest): pass
 
         f1()
         f2(1)
@@ -505,7 +505,7 @@ class GrammarTests(unittest.TestCase):
         v2(1,2,3,4)
         v2(1,2,3,4,5,6,7,8,9,0)
 
-        def d01(a=1): pass
+        eleza d01(a=1): pass
         d01()
         d01(1)
         d01(*(1,))
@@ -513,18 +513,18 @@ class GrammarTests(unittest.TestCase):
         d01(*() or (), *{} and (), **() or {})
         d01(**{'a':2})
         d01(**{'a':2} or {})
-        def d11(a, b=1): pass
+        eleza d11(a, b=1): pass
         d11(1)
         d11(1, 2)
         d11(1, **{'b':2})
-        def d21(a, b, c=1): pass
+        eleza d21(a, b, c=1): pass
         d21(1, 2)
         d21(1, 2, 3)
         d21(*(1, 2, 3))
         d21(1, *(2, 3))
         d21(1, 2, *(3,))
         d21(1, 2, **{'c':3})
-        def d02(a=1, b=2): pass
+        eleza d02(a=1, b=2): pass
         d02()
         d02(1)
         d02(1, 2)
@@ -532,39 +532,39 @@ class GrammarTests(unittest.TestCase):
         d02(1, *(2,))
         d02(1, **{'b':2})
         d02(**{'a': 1, 'b': 2})
-        def d12(a, b=1, c=2): pass
+        eleza d12(a, b=1, c=2): pass
         d12(1)
         d12(1, 2)
         d12(1, 2, 3)
-        def d22(a, b, c=1, d=2): pass
+        eleza d22(a, b, c=1, d=2): pass
         d22(1, 2)
         d22(1, 2, 3)
         d22(1, 2, 3, 4)
-        def d01v(a=1, *rest): pass
+        eleza d01v(a=1, *rest): pass
         d01v()
         d01v(1)
         d01v(1, 2)
         d01v(*(1, 2, 3, 4))
         d01v(*(1,))
         d01v(**{'a':2})
-        def d11v(a, b=1, *rest): pass
+        eleza d11v(a, b=1, *rest): pass
         d11v(1)
         d11v(1, 2)
         d11v(1, 2, 3)
-        def d21v(a, b, c=1, *rest): pass
+        eleza d21v(a, b, c=1, *rest): pass
         d21v(1, 2)
         d21v(1, 2, 3)
         d21v(1, 2, 3, 4)
         d21v(*(1, 2, 3, 4))
         d21v(1, 2, **{'c': 3})
-        def d02v(a=1, b=2, *rest): pass
+        eleza d02v(a=1, b=2, *rest): pass
         d02v()
         d02v(1)
         d02v(1, 2)
         d02v(1, 2, 3)
         d02v(1, *(2, 3, 4))
         d02v(**{'a': 1, 'b': 2})
-        def d12v(a, b=1, c=2, *rest): pass
+        eleza d12v(a, b=1, c=2, *rest): pass
         d12v(1)
         d12v(1, 2)
         d12v(1, 2, 3)
@@ -572,7 +572,7 @@ class GrammarTests(unittest.TestCase):
         d12v(*(1, 2, 3, 4))
         d12v(1, 2, *(3, 4, 5))
         d12v(1, *(2,), **{'c': 3})
-        def d22v(a, b, c=1, d=2, *rest): pass
+        eleza d22v(a, b, c=1, d=2, *rest): pass
         d22v(1, 2)
         d22v(1, 2, 3)
         d22v(1, 2, 3, 4)
@@ -589,23 +589,23 @@ class GrammarTests(unittest.TestCase):
         else:
             self.fail('Bytes should not work as keyword argument names')
         # keyword only argument tests
-        def pos0key1(*, key): return key
+        eleza pos0key1(*, key): rudisha key
         pos0key1(key=100)
-        def pos2key2(p1, p2, *, k1, k2=100): return p1,p2,k1,k2
+        eleza pos2key2(p1, p2, *, k1, k2=100): rudisha p1,p2,k1,k2
         pos2key2(1, 2, k1=100)
         pos2key2(1, 2, k1=100, k2=200)
         pos2key2(1, 2, k2=100, k1=200)
-        def pos2key2dict(p1, p2, *, k1=100, k2, **kwarg): return p1,p2,k1,k2,kwarg
+        eleza pos2key2dict(p1, p2, *, k1=100, k2, **kwarg): rudisha p1,p2,k1,k2,kwarg
         pos2key2dict(1,2,k2=100,tokwarg1=100,tokwarg2=200)
         pos2key2dict(1,2,tokwarg1=100,tokwarg2=200, k2=100)
 
-        self.assertRaises(SyntaxError, eval, "def f(*): pass")
-        self.assertRaises(SyntaxError, eval, "def f(*,): pass")
-        self.assertRaises(SyntaxError, eval, "def f(*, **kwds): pass")
+        self.assertRaises(SyntaxError, eval, "eleza f(*): pass")
+        self.assertRaises(SyntaxError, eval, "eleza f(*,): pass")
+        self.assertRaises(SyntaxError, eval, "eleza f(*, **kwds): pass")
 
         # keyword arguments after *arglist
-        def f(*args, **kwargs):
-            return args, kwargs
+        eleza f(*args, **kwargs):
+            rudisha args, kwargs
         self.assertEqual(f(1, x=2, *[3, 4], y=5), ((1, 3, 4),
                                                     {'x':2, 'y':5}))
         self.assertEqual(f(1, *(2,3), 4), ((1, 2, 3, 4), {}))
@@ -620,77 +620,77 @@ class GrammarTests(unittest.TestCase):
         check_syntax_error(self, "f(**g(1=2))")
 
         # argument annotation tests
-        def f(x) -> list: pass
+        eleza f(x) -> list: pass
         self.assertEqual(f.__annotations__, {'return': list})
-        def f(x: int): pass
+        eleza f(x: int): pass
         self.assertEqual(f.__annotations__, {'x': int})
-        def f(x: int, /): pass
+        eleza f(x: int, /): pass
         self.assertEqual(f.__annotations__, {'x': int})
-        def f(x: int = 34, /): pass
+        eleza f(x: int = 34, /): pass
         self.assertEqual(f.__annotations__, {'x': int})
-        def f(*x: str): pass
+        eleza f(*x: str): pass
         self.assertEqual(f.__annotations__, {'x': str})
-        def f(**x: float): pass
+        eleza f(**x: float): pass
         self.assertEqual(f.__annotations__, {'x': float})
-        def f(x, y: 1+2): pass
+        eleza f(x, y: 1+2): pass
         self.assertEqual(f.__annotations__, {'y': 3})
-        def f(x, y: 1+2, /): pass
+        eleza f(x, y: 1+2, /): pass
         self.assertEqual(f.__annotations__, {'y': 3})
-        def f(a, b: 1, c: 2, d): pass
+        eleza f(a, b: 1, c: 2, d): pass
         self.assertEqual(f.__annotations__, {'b': 1, 'c': 2})
-        def f(a, b: 1, /, c: 2, d): pass
+        eleza f(a, b: 1, /, c: 2, d): pass
         self.assertEqual(f.__annotations__, {'b': 1, 'c': 2})
-        def f(a, b: 1, c: 2, d, e: 3 = 4, f=5, *g: 6): pass
+        eleza f(a, b: 1, c: 2, d, e: 3 = 4, f=5, *g: 6): pass
         self.assertEqual(f.__annotations__,
                          {'b': 1, 'c': 2, 'e': 3, 'g': 6})
-        def f(a, b: 1, c: 2, d, e: 3 = 4, f=5, *g: 6, h: 7, i=8, j: 9 = 10,
+        eleza f(a, b: 1, c: 2, d, e: 3 = 4, f=5, *g: 6, h: 7, i=8, j: 9 = 10,
               **k: 11) -> 12: pass
         self.assertEqual(f.__annotations__,
                          {'b': 1, 'c': 2, 'e': 3, 'g': 6, 'h': 7, 'j': 9,
                           'k': 11, 'return': 12})
-        def f(a, b: 1, c: 2, d, e: 3 = 4, f: int = 5, /, *g: 6, h: 7, i=8, j: 9 = 10,
+        eleza f(a, b: 1, c: 2, d, e: 3 = 4, f: int = 5, /, *g: 6, h: 7, i=8, j: 9 = 10,
               **k: 11) -> 12: pass
         self.assertEqual(f.__annotations__,
                           {'b': 1, 'c': 2, 'e': 3, 'f': int, 'g': 6, 'h': 7, 'j': 9,
                            'k': 11, 'return': 12})
         # Check for issue #20625 -- annotations mangling
-        class Spam:
-            def f(self, *, __kw: 1):
+        kundi Spam:
+            eleza f(self, *, __kw: 1):
                 pass
-        class Ham(Spam): pass
+        kundi Ham(Spam): pass
         self.assertEqual(Spam.f.__annotations__, {'_Spam__kw': 1})
         self.assertEqual(Ham.f.__annotations__, {'_Spam__kw': 1})
-        # Check for SF Bug #1697248 - mixing decorators and a return annotation
-        def null(x): return x
+        # Check for SF Bug #1697248 - mixing decorators and a rudisha annotation
+        eleza null(x): rudisha x
         @null
-        def f(x) -> list: pass
+        eleza f(x) -> list: pass
         self.assertEqual(f.__annotations__, {'return': list})
 
         # test closures with a variety of opargs
         closure = 1
-        def f(): return closure
-        def f(x=1): return closure
-        def f(*, k=1): return closure
-        def f() -> int: return closure
+        eleza f(): rudisha closure
+        eleza f(x=1): rudisha closure
+        eleza f(*, k=1): rudisha closure
+        eleza f() -> int: rudisha closure
 
-        # Check trailing commas are permitted in funcdef argument list
-        def f(a,): pass
-        def f(*args,): pass
-        def f(**kwds,): pass
-        def f(a, *args,): pass
-        def f(a, **kwds,): pass
-        def f(*args, b,): pass
-        def f(*, b,): pass
-        def f(*args, **kwds,): pass
-        def f(a, *args, b,): pass
-        def f(a, *, b,): pass
-        def f(a, *args, **kwds,): pass
-        def f(*args, b, **kwds,): pass
-        def f(*, b, **kwds,): pass
-        def f(a, *args, b, **kwds,): pass
-        def f(a, *, b, **kwds,): pass
+        # Check trailing commas are permitted in funceleza argument list
+        eleza f(a,): pass
+        eleza f(*args,): pass
+        eleza f(**kwds,): pass
+        eleza f(a, *args,): pass
+        eleza f(a, **kwds,): pass
+        eleza f(*args, b,): pass
+        eleza f(*, b,): pass
+        eleza f(*args, **kwds,): pass
+        eleza f(a, *args, b,): pass
+        eleza f(a, *, b,): pass
+        eleza f(a, *args, **kwds,): pass
+        eleza f(*args, b, **kwds,): pass
+        eleza f(*, b, **kwds,): pass
+        eleza f(a, *args, b, **kwds,): pass
+        eleza f(a, *, b, **kwds,): pass
 
-    def test_lambdef(self):
+    eleza test_lambdef(self):
         ### lambdef: 'lambda' [varargslist] ':' test
         l1 = lambda : 0
         self.assertEqual(l1(), 0)
@@ -729,10 +729,10 @@ class GrammarTests(unittest.TestCase):
     ### stmt: simple_stmt | compound_stmt
     # Tested below
 
-    def test_simple_stmt(self):
+    eleza test_simple_stmt(self):
         ### simple_stmt: small_stmt (';' small_stmt)* [';']
         x = 1; pass; del x
-        def foo():
+        eleza foo():
             # verify statements that end with semi-colons
             x = 1; pass; del x;
         foo()
@@ -740,7 +740,7 @@ class GrammarTests(unittest.TestCase):
     ### small_stmt: expr_stmt | pass_stmt | del_stmt | flow_stmt | import_stmt | global_stmt | access_stmt
     # Tested below
 
-    def test_expr_stmt(self):
+    eleza test_expr_stmt(self):
         # (exprlist '=')* exprlist
         1
         1, 2, 3
@@ -755,16 +755,16 @@ class GrammarTests(unittest.TestCase):
 
     # Check the heuristic for print & exec covers significant cases
     # As well as placing some limits on false positives
-    def test_former_statements_refer_to_builtins(self):
+    eleza test_former_statements_refer_to_builtins(self):
         keywords = "print", "exec"
         # Cases where we want the custom error
         cases = [
             "{} foo",
             "{} {{1:foo}}",
-            "if 1: {} foo",
-            "if 1: {} {{1:foo}}",
-            "if 1:\n    {} foo",
-            "if 1:\n    {} {{1:foo}}",
+            "ikiwa 1: {} foo",
+            "ikiwa 1: {} {{1:foo}}",
+            "ikiwa 1:\n    {} foo",
+            "ikiwa 1:\n    {} {{1:foo}}",
         ]
         for keyword in keywords:
             custom_msg = "call to '{}'".format(keyword)
@@ -778,7 +778,7 @@ class GrammarTests(unittest.TestCase):
                     with self.assertRaisesRegex(SyntaxError, "invalid syntax"):
                         exec(source)
 
-    def test_del_stmt(self):
+    eleza test_del_stmt(self):
         # 'del' exprlist
         abc = [1,2,3]
         x, y, z = abc
@@ -787,18 +787,18 @@ class GrammarTests(unittest.TestCase):
         del abc
         del x, y, (z, xyz)
 
-    def test_pass_stmt(self):
+    eleza test_pass_stmt(self):
         # 'pass'
         pass
 
     # flow_stmt: break_stmt | continue_stmt | return_stmt | raise_stmt
     # Tested below
 
-    def test_break_stmt(self):
+    eleza test_break_stmt(self):
         # 'break'
         while 1: break
 
-    def test_continue_stmt(self):
+    eleza test_continue_stmt(self):
         # 'continue'
         i = 1
         while i: i = 0; continue
@@ -811,7 +811,7 @@ class GrammarTests(unittest.TestCase):
                 msg = "continue failed to continue inside try"
             except:
                 msg = "continue inside try called except block"
-        if msg != "ok":
+        ikiwa msg != "ok":
             self.fail(msg)
 
         msg = ""
@@ -821,10 +821,10 @@ class GrammarTests(unittest.TestCase):
                 continue
             finally:
                 msg = "ok"
-        if msg != "ok":
+        ikiwa msg != "ok":
             self.fail(msg)
 
-    def test_break_continue_loop(self):
+    eleza test_break_continue_loop(self):
         # This test warrants an explanation. It is a test specifically for SF bugs
         # #463359 and #462937. The bug is that a 'break' statement executed or
         # exception raised inside a try/except inside a loop, *after* a continue
@@ -834,37 +834,37 @@ class GrammarTests(unittest.TestCase):
         # *must* written as a function, and the tracking vars *must* be function
         # arguments with default values. Otherwise, the test will loop and loop.
 
-        def test_inner(extra_burning_oil = 1, count=0):
+        eleza test_inner(extra_burning_oil = 1, count=0):
             big_hippo = 2
             while big_hippo:
                 count += 1
                 try:
-                    if extra_burning_oil and big_hippo == 1:
+                    ikiwa extra_burning_oil and big_hippo == 1:
                         extra_burning_oil -= 1
                         break
                     big_hippo -= 1
                     continue
                 except:
                     raise
-            if count > 2 or big_hippo != 1:
+            ikiwa count > 2 or big_hippo != 1:
                 self.fail("continue then break in try/except in loop broken!")
         test_inner()
 
-    def test_return(self):
+    eleza test_return(self):
         # 'return' [testlist_star_expr]
-        def g1(): return
-        def g2(): return 1
-        def g3():
+        eleza g1(): return
+        eleza g2(): rudisha 1
+        eleza g3():
             z = [2, 3]
-            return 1, *z
+            rudisha 1, *z
 
         g1()
         x = g2()
         y = g3()
         self.assertEqual(y, (1, 2, 3), "unparenthesized star expr return")
-        check_syntax_error(self, "class foo:return 1")
+        check_syntax_error(self, "kundi foo:rudisha 1")
 
-    def test_break_in_finally(self):
+    eleza test_break_in_finally(self):
         count = 0
         while count < 2:
             count += 1
@@ -916,7 +916,7 @@ class GrammarTests(unittest.TestCase):
                 break
         self.assertEqual(count, 0)
 
-    def test_continue_in_finally(self):
+    eleza test_continue_in_finally(self):
         count = 0
         while count < 2:
             count += 1
@@ -969,160 +969,160 @@ class GrammarTests(unittest.TestCase):
             break
         self.assertEqual(count, 1)
 
-    def test_return_in_finally(self):
-        def g1():
+    eleza test_return_in_finally(self):
+        eleza g1():
             try:
                 pass
             finally:
-                return 1
+                rudisha 1
         self.assertEqual(g1(), 1)
 
-        def g2():
+        eleza g2():
             try:
-                return 2
+                rudisha 2
             finally:
-                return 3
+                rudisha 3
         self.assertEqual(g2(), 3)
 
-        def g3():
+        eleza g3():
             try:
                 1/0
             finally:
-                return 4
+                rudisha 4
         self.assertEqual(g3(), 4)
 
-    def test_break_in_finally_after_return(self):
+    eleza test_break_in_finally_after_return(self):
         # See issue #37830
-        def g1(x):
+        eleza g1(x):
             for count in [0, 1]:
                 count2 = 0
                 while count2 < 20:
                     count2 += 10
                     try:
-                        return count + count2
+                        rudisha count + count2
                     finally:
-                        if x:
+                        ikiwa x:
                             break
-            return 'end', count, count2
+            rudisha 'end', count, count2
         self.assertEqual(g1(False), 10)
         self.assertEqual(g1(True), ('end', 1, 10))
 
-        def g2(x):
+        eleza g2(x):
             for count in [0, 1]:
                 for count2 in [10, 20]:
                     try:
-                        return count + count2
+                        rudisha count + count2
                     finally:
-                        if x:
+                        ikiwa x:
                             break
-            return 'end', count, count2
+            rudisha 'end', count, count2
         self.assertEqual(g2(False), 10)
         self.assertEqual(g2(True), ('end', 1, 10))
 
-    def test_continue_in_finally_after_return(self):
+    eleza test_continue_in_finally_after_return(self):
         # See issue #37830
-        def g1(x):
+        eleza g1(x):
             count = 0
             while count < 100:
                 count += 1
                 try:
-                    return count
+                    rudisha count
                 finally:
-                    if x:
+                    ikiwa x:
                         continue
-            return 'end', count
+            rudisha 'end', count
         self.assertEqual(g1(False), 1)
         self.assertEqual(g1(True), ('end', 100))
 
-        def g2(x):
+        eleza g2(x):
             for count in [0, 1]:
                 try:
-                    return count
+                    rudisha count
                 finally:
-                    if x:
+                    ikiwa x:
                         continue
-            return 'end', count
+            rudisha 'end', count
         self.assertEqual(g2(False), 0)
         self.assertEqual(g2(True), ('end', 1))
 
-    def test_yield(self):
+    eleza test_yield(self):
         # Allowed as standalone statement
-        def g(): yield 1
-        def g(): yield kutoka ()
+        eleza g(): yield 1
+        eleza g(): yield kutoka ()
         # Allowed as RHS of assignment
-        def g(): x = yield 1
-        def g(): x = yield kutoka ()
+        eleza g(): x = yield 1
+        eleza g(): x = yield kutoka ()
         # Ordinary yield accepts implicit tuples
-        def g(): yield 1, 1
-        def g(): x = yield 1, 1
+        eleza g(): yield 1, 1
+        eleza g(): x = yield 1, 1
         # 'yield kutoka' does not
-        check_syntax_error(self, "def g(): yield kutoka (), 1")
-        check_syntax_error(self, "def g(): x = yield kutoka (), 1")
+        check_syntax_error(self, "eleza g(): yield kutoka (), 1")
+        check_syntax_error(self, "eleza g(): x = yield kutoka (), 1")
         # Requires parentheses as subexpression
-        def g(): 1, (yield 1)
-        def g(): 1, (yield kutoka ())
-        check_syntax_error(self, "def g(): 1, yield 1")
-        check_syntax_error(self, "def g(): 1, yield kutoka ()")
+        eleza g(): 1, (yield 1)
+        eleza g(): 1, (yield kutoka ())
+        check_syntax_error(self, "eleza g(): 1, yield 1")
+        check_syntax_error(self, "eleza g(): 1, yield kutoka ()")
         # Requires parentheses as call argument
-        def g(): f((yield 1))
-        def g(): f((yield 1), 1)
-        def g(): f((yield kutoka ()))
-        def g(): f((yield kutoka ()), 1)
+        eleza g(): f((yield 1))
+        eleza g(): f((yield 1), 1)
+        eleza g(): f((yield kutoka ()))
+        eleza g(): f((yield kutoka ()), 1)
         # Do not require parenthesis for tuple unpacking
-        def g(): rest = 4, 5, 6; yield 1, 2, 3, *rest
+        eleza g(): rest = 4, 5, 6; yield 1, 2, 3, *rest
         self.assertEqual(list(g()), [(1, 2, 3, 4, 5, 6)])
-        check_syntax_error(self, "def g(): f(yield 1)")
-        check_syntax_error(self, "def g(): f(yield 1, 1)")
-        check_syntax_error(self, "def g(): f(yield kutoka ())")
-        check_syntax_error(self, "def g(): f(yield kutoka (), 1)")
+        check_syntax_error(self, "eleza g(): f(yield 1)")
+        check_syntax_error(self, "eleza g(): f(yield 1, 1)")
+        check_syntax_error(self, "eleza g(): f(yield kutoka ())")
+        check_syntax_error(self, "eleza g(): f(yield kutoka (), 1)")
         # Not allowed at top level
         check_syntax_error(self, "yield")
         check_syntax_error(self, "yield kutoka")
-        # Not allowed at class scope
-        check_syntax_error(self, "class foo:yield 1")
-        check_syntax_error(self, "class foo:yield kutoka ()")
+        # Not allowed at kundi scope
+        check_syntax_error(self, "kundi foo:yield 1")
+        check_syntax_error(self, "kundi foo:yield kutoka ()")
         # Check annotation refleak on SyntaxError
-        check_syntax_error(self, "def g(a:(yield)): pass")
+        check_syntax_error(self, "eleza g(a:(yield)): pass")
 
-    def test_yield_in_comprehensions(self):
+    eleza test_yield_in_comprehensions(self):
         # Check yield in comprehensions
-        def g(): [x for x in [(yield 1)]]
-        def g(): [x for x in [(yield kutoka ())]]
+        eleza g(): [x for x in [(yield 1)]]
+        eleza g(): [x for x in [(yield kutoka ())]]
 
         check = self.check_syntax_error
-        check("def g(): [(yield x) for x in ()]",
+        check("eleza g(): [(yield x) for x in ()]",
               "'yield' inside list comprehension")
-        check("def g(): [x for x in () if not (yield x)]",
+        check("eleza g(): [x for x in () ikiwa not (yield x)]",
               "'yield' inside list comprehension")
-        check("def g(): [y for x in () for y in [(yield x)]]",
+        check("eleza g(): [y for x in () for y in [(yield x)]]",
               "'yield' inside list comprehension")
-        check("def g(): {(yield x) for x in ()}",
+        check("eleza g(): {(yield x) for x in ()}",
               "'yield' inside set comprehension")
-        check("def g(): {(yield x): x for x in ()}",
+        check("eleza g(): {(yield x): x for x in ()}",
               "'yield' inside dict comprehension")
-        check("def g(): {x: (yield x) for x in ()}",
+        check("eleza g(): {x: (yield x) for x in ()}",
               "'yield' inside dict comprehension")
-        check("def g(): ((yield x) for x in ())",
+        check("eleza g(): ((yield x) for x in ())",
               "'yield' inside generator expression")
-        check("def g(): [(yield kutoka x) for x in ()]",
+        check("eleza g(): [(yield kutoka x) for x in ()]",
               "'yield' inside list comprehension")
-        check("class C: [(yield x) for x in ()]",
+        check("kundi C: [(yield x) for x in ()]",
               "'yield' inside list comprehension")
         check("[(yield x) for x in ()]",
               "'yield' inside list comprehension")
 
-    def test_raise(self):
+    eleza test_raise(self):
         # 'raise' test [',' test]
         try: raise RuntimeError('just testing')
         except RuntimeError: pass
         try: raise KeyboardInterrupt
         except KeyboardInterrupt: pass
 
-    def test_agiza(self):
+    eleza test_agiza(self):
         # 'agiza' dotted_as_names
         agiza sys
         agiza time, sys
-        # 'from' dotted_name 'agiza' ('*' | '(' import_as_names ')' | import_as_names)
+        # 'kutoka' dotted_name 'agiza' ('*' | '(' import_as_names ')' | import_as_names)
         kutoka time agiza time
         kutoka time agiza (time)
         # not testable inside a function, but already done at top of the module
@@ -1131,21 +1131,21 @@ class GrammarTests(unittest.TestCase):
         kutoka sys agiza (path, argv)
         kutoka sys agiza (path, argv,)
 
-    def test_global(self):
+    eleza test_global(self):
         # 'global' NAME (',' NAME)*
         global a
         global a, b
         global one, two, three, four, five, six, seven, eight, nine, ten
 
-    def test_nonlocal(self):
+    eleza test_nonlocal(self):
         # 'nonlocal' NAME (',' NAME)*
         x = 0
         y = 0
-        def f():
+        eleza f():
             nonlocal x
             nonlocal x, y
 
-    def test_assert(self):
+    eleza test_assert(self):
         # assertTruestmt: 'assert' test [',' test]
         assert 1
         assert 1, 1
@@ -1163,9 +1163,9 @@ class GrammarTests(unittest.TestCase):
             self.fail("'assert True, msg' should not have "
                       "raised an AssertionError")
 
-    # these tests fail if python is run with -O, so check __debug__
-    @unittest.skipUnless(__debug__, "Won't work if __debug__ is False")
-    def testAssert2(self):
+    # these tests fail ikiwa python is run with -O, so check __debug__
+    @unittest.skipUnless(__debug__, "Won't work ikiwa __debug__ is False")
+    eleza testAssert2(self):
         try:
             assert 0, "msg"
         except AssertionError as e:
@@ -1187,23 +1187,23 @@ class GrammarTests(unittest.TestCase):
             compile('assert x, "msg"', '<testcase>', 'exec')
 
 
-    ### compound_stmt: if_stmt | while_stmt | for_stmt | try_stmt | funcdef | classdef
+    ### compound_stmt: if_stmt | while_stmt | for_stmt | try_stmt | funceleza | classdef
     # Tested below
 
-    def test_if(self):
+    eleza test_if(self):
         # 'if' test ':' suite ('elif' test ':' suite)* ['else' ':' suite]
-        if 1: pass
-        if 1: pass
+        ikiwa 1: pass
+        ikiwa 1: pass
         else: pass
-        if 0: pass
-        elif 0: pass
-        if 0: pass
-        elif 0: pass
-        elif 0: pass
-        elif 0: pass
+        ikiwa 0: pass
+        elikiwa 0: pass
+        ikiwa 0: pass
+        elikiwa 0: pass
+        elikiwa 0: pass
+        elikiwa 0: pass
         else: pass
 
-    def test_while(self):
+    eleza test_while(self):
         # 'while' test ':' suite ['else' ':' suite]
         while 0: pass
         while 0: pass
@@ -1218,26 +1218,26 @@ class GrammarTests(unittest.TestCase):
             x = 2
         self.assertEqual(x, 2)
 
-    def test_for(self):
+    eleza test_for(self):
         # 'for' exprlist 'in' exprlist ':' suite ['else' ':' suite]
         for i in 1, 2, 3: pass
         for i, j, k in (): pass
         else: pass
-        class Squares:
-            def __init__(self, max):
+        kundi Squares:
+            eleza __init__(self, max):
                 self.max = max
                 self.sofar = []
-            def __len__(self): return len(self.sofar)
-            def __getitem__(self, i):
-                if not 0 <= i < self.max: raise IndexError
+            eleza __len__(self): rudisha len(self.sofar)
+            eleza __getitem__(self, i):
+                ikiwa not 0 <= i < self.max: raise IndexError
                 n = len(self.sofar)
                 while n <= i:
                     self.sofar.append(n*n)
                     n = n+1
-                return self.sofar[i]
+                rudisha self.sofar[i]
         n = 0
         for x in Squares(10): n = n+x
-        if n != 285:
+        ikiwa n != 285:
             self.fail('for over growing sequence')
 
         result = []
@@ -1245,7 +1245,7 @@ class GrammarTests(unittest.TestCase):
             result.append(x)
         self.assertEqual(result, [1, 2, 3])
 
-    def test_try(self):
+    eleza test_try(self):
         ### try_stmt: 'try' ':' suite (except_clause ':' suite)+ ['else' ':' suite]
         ###         | 'try' ':' suite 'finally' ':' suite
         ### except_clause: 'except' [expr ['as' expr]]
@@ -1267,12 +1267,12 @@ class GrammarTests(unittest.TestCase):
         try: pass
         finally: pass
 
-    def test_suite(self):
+    eleza test_suite(self):
         # simple_stmt | NEWLINE INDENT NEWLINE* (stmt NEWLINE*)+ DEDENT
-        if 1: pass
-        if 1:
+        ikiwa 1: pass
+        ikiwa 1:
             pass
-        if 1:
+        ikiwa 1:
             #
             #
             #
@@ -1282,36 +1282,36 @@ class GrammarTests(unittest.TestCase):
             pass
             #
 
-    def test_test(self):
+    eleza test_test(self):
         ### and_test ('or' and_test)*
         ### and_test: not_test ('and' not_test)*
         ### not_test: 'not' not_test | comparison
-        if not 1: pass
-        if 1 and 1: pass
-        if 1 or 1: pass
-        if not not not 1: pass
-        if not 1 and 1 and 1: pass
-        if 1 and 1 or 1 and 1 and 1 or not 1 and 1: pass
+        ikiwa not 1: pass
+        ikiwa 1 and 1: pass
+        ikiwa 1 or 1: pass
+        ikiwa not not not 1: pass
+        ikiwa not 1 and 1 and 1: pass
+        ikiwa 1 and 1 or 1 and 1 and 1 or not 1 and 1: pass
 
-    def test_comparison(self):
+    eleza test_comparison(self):
         ### comparison: expr (comp_op expr)*
         ### comp_op: '<'|'>'|'=='|'>='|'<='|'!='|'in'|'not' 'in'|'is'|'is' 'not'
-        if 1: pass
+        ikiwa 1: pass
         x = (1 == 1)
-        if 1 == 1: pass
-        if 1 != 1: pass
-        if 1 < 1: pass
-        if 1 > 1: pass
-        if 1 <= 1: pass
-        if 1 >= 1: pass
-        if x is x: pass
-        if x is not x: pass
-        if 1 in (): pass
-        if 1 not in (): pass
-        if 1 < 1 > 1 == 1 >= 1 <= 1 != 1 in 1 not in x is x is not x: pass
+        ikiwa 1 == 1: pass
+        ikiwa 1 != 1: pass
+        ikiwa 1 < 1: pass
+        ikiwa 1 > 1: pass
+        ikiwa 1 <= 1: pass
+        ikiwa 1 >= 1: pass
+        ikiwa x is x: pass
+        ikiwa x is not x: pass
+        ikiwa 1 in (): pass
+        ikiwa 1 not in (): pass
+        ikiwa 1 < 1 > 1 == 1 >= 1 <= 1 != 1 in 1 not in x is x is not x: pass
 
-    def test_comparison_is_literal(self):
-        def check(test, msg='"is" with a literal'):
+    eleza test_comparison_is_literal(self):
+        eleza check(test, msg='"is" with a literal'):
             self.check_syntax_warning(test, msg)
 
         check('x is 1')
@@ -1327,8 +1327,8 @@ class GrammarTests(unittest.TestCase):
             compile('x is True', '<testcase>', 'exec')
             compile('x is ...', '<testcase>', 'exec')
 
-    def test_warn_missed_comma(self):
-        def check(test):
+    eleza test_warn_missed_comma(self):
+        eleza check(test):
             self.check_syntax_warning(test, msg)
 
         msg=r'is not callable; perhaps you missed a comma\?'
@@ -1409,36 +1409,36 @@ class GrammarTests(unittest.TestCase):
             compile('[[1, 2] [1:2]]', '<testcase>', 'exec')
             compile('[{(1, 2): 3} [i, j]]', '<testcase>', 'exec')
 
-    def test_binary_mask_ops(self):
+    eleza test_binary_mask_ops(self):
         x = 1 & 1
         x = 1 ^ 1
         x = 1 | 1
 
-    def test_shift_ops(self):
+    eleza test_shift_ops(self):
         x = 1 << 1
         x = 1 >> 1
         x = 1 << 1 >> 1
 
-    def test_additive_ops(self):
+    eleza test_additive_ops(self):
         x = 1
         x = 1 + 1
         x = 1 - 1 - 1
         x = 1 - 1 + 1 - 1 + 1
 
-    def test_multiplicative_ops(self):
+    eleza test_multiplicative_ops(self):
         x = 1 * 1
         x = 1 / 1
         x = 1 % 1
         x = 1 / 1 * 1 % 1
 
-    def test_unary_ops(self):
+    eleza test_unary_ops(self):
         x = +1
         x = -1
         x = ~1
         x = ~1 ^ 1 & 1 | 1 & 1 ^ -1
         x = -1*1/1 + 1*1 - ---1*1
 
-    def test_selectors(self):
+    eleza test_selectors(self):
         ### trailer: '(' [testlist] ')' | '[' subscript ']' | '.' NAME
         ### subscript: expr | [expr] ':' [expr]
 
@@ -1468,7 +1468,7 @@ class GrammarTests(unittest.TestCase):
         L.sort(key=lambda x: (type(x).__name__, x))
         self.assertEqual(str(L), '[1, (1,), (1, 2), (1, 2, 3)]')
 
-    def test_atoms(self):
+    eleza test_atoms(self):
         ### atom: '(' [testlist] ')' | '[' [testlist] ']' | '{' [dictsetmaker] '}' | NAME | NUMBER | STRING
         ### dictsetmaker: (test ':' test (',' test ':' test)* [',']) | (test (',' test)* [','])
 
@@ -1503,33 +1503,33 @@ class GrammarTests(unittest.TestCase):
     ### testlist: test (',' test)* [',']
     # These have been exercised enough above
 
-    def test_classdef(self):
+    eleza test_classdef(self):
         # 'class' NAME ['(' [testlist] ')'] ':' suite
-        class B: pass
-        class B2(): pass
-        class C1(B): pass
-        class C2(B): pass
-        class D(C1, C2, B): pass
-        class C:
-            def meth1(self): pass
-            def meth2(self, arg): pass
-            def meth3(self, a1, a2): pass
+        kundi B: pass
+        kundi B2(): pass
+        kundi C1(B): pass
+        kundi C2(B): pass
+        kundi D(C1, C2, B): pass
+        kundi C:
+            eleza meth1(self): pass
+            eleza meth2(self, arg): pass
+            eleza meth3(self, a1, a2): pass
 
         # decorator: '@' dotted_name [ '(' [arglist] ')' ] NEWLINE
         # decorators: decorator+
-        # decorated: decorators (classdef | funcdef)
-        def class_decorator(x): return x
+        # decorated: decorators (classeleza | funcdef)
+        eleza class_decorator(x): rudisha x
         @class_decorator
-        class G: pass
+        kundi G: pass
 
-    def test_dictcomps(self):
+    eleza test_dictcomps(self):
         # dictorsetmaker: ( (test ':' test (comp_for |
         #                                   (',' test ':' test)* [','])) |
         #                   (test (comp_for | (',' test)* [','])) )
         nums = [1, 2, 3]
         self.assertEqual({i:i+1 for i in nums}, {1: 2, 2: 3, 3: 4})
 
-    def test_listcomps(self):
+    eleza test_listcomps(self):
         # list comprehension tests
         nums = [1, 2, 3, 4, 5]
         strs = ["Apple", "Banana", "Coconut"]
@@ -1537,33 +1537,33 @@ class GrammarTests(unittest.TestCase):
 
         self.assertEqual([s.strip() for s in spcs], ['Apple', 'Banana', 'Coco  nut'])
         self.assertEqual([3 * x for x in nums], [3, 6, 9, 12, 15])
-        self.assertEqual([x for x in nums if x > 2], [3, 4, 5])
+        self.assertEqual([x for x in nums ikiwa x > 2], [3, 4, 5])
         self.assertEqual([(i, s) for i in nums for s in strs],
                          [(1, 'Apple'), (1, 'Banana'), (1, 'Coconut'),
                           (2, 'Apple'), (2, 'Banana'), (2, 'Coconut'),
                           (3, 'Apple'), (3, 'Banana'), (3, 'Coconut'),
                           (4, 'Apple'), (4, 'Banana'), (4, 'Coconut'),
                           (5, 'Apple'), (5, 'Banana'), (5, 'Coconut')])
-        self.assertEqual([(i, s) for i in nums for s in [f for f in strs if "n" in f]],
+        self.assertEqual([(i, s) for i in nums for s in [f for f in strs ikiwa "n" in f]],
                          [(1, 'Banana'), (1, 'Coconut'), (2, 'Banana'), (2, 'Coconut'),
                           (3, 'Banana'), (3, 'Coconut'), (4, 'Banana'), (4, 'Coconut'),
                           (5, 'Banana'), (5, 'Coconut')])
         self.assertEqual([(lambda a:[a**i for i in range(a+1)])(j) for j in range(5)],
                          [[1], [1, 1], [1, 2, 4], [1, 3, 9, 27], [1, 4, 16, 64, 256]])
 
-        def test_in_func(l):
-            return [0 < x < 3 for x in l if x > 2]
+        eleza test_in_func(l):
+            rudisha [0 < x < 3 for x in l ikiwa x > 2]
 
         self.assertEqual(test_in_func(nums), [False, False, False])
 
-        def test_nested_front():
+        eleza test_nested_front():
             self.assertEqual([[y for y in [x, x + 1]] for x in [1,3,5]],
                              [[1, 2], [3, 4], [5, 6]])
 
         test_nested_front()
 
         check_syntax_error(self, "[i, s for i in nums for s in strs]")
-        check_syntax_error(self, "[x if y]")
+        check_syntax_error(self, "[x ikiwa y]")
 
         suppliers = [
           (1, "Boeing"),
@@ -1586,13 +1586,13 @@ class GrammarTests(unittest.TestCase):
             for (sno, sname) in suppliers
               for (pno, pname) in parts
                 for (sp_sno, sp_pno) in suppart
-                  if sno == sp_sno and pno == sp_pno
+                  ikiwa sno == sp_sno and pno == sp_pno
         ]
 
         self.assertEqual(x, [('Boeing', 'Airliner'), ('Boeing', 'Engine'), ('Ford', 'Engine'),
                              ('Macdonalds', 'Cheeseburger')])
 
-    def test_genexps(self):
+    eleza test_genexps(self):
         # generator expression tests
         g = ([x for x in range(10)] for x in range(1))
         self.assertEqual(next(g), [x for x in range(10)])
@@ -1618,39 +1618,39 @@ class GrammarTests(unittest.TestCase):
         self.assertEqual(sum(b), sum([x for x in range(10)]))
 
         self.assertEqual(sum(x**2 for x in range(10)), sum([x**2 for x in range(10)]))
-        self.assertEqual(sum(x*x for x in range(10) if x%2), sum([x*x for x in range(10) if x%2]))
+        self.assertEqual(sum(x*x for x in range(10) ikiwa x%2), sum([x*x for x in range(10) ikiwa x%2]))
         self.assertEqual(sum(x for x in (y for y in range(10))), sum([x for x in range(10)]))
         self.assertEqual(sum(x for x in (y for y in (z for z in range(10)))), sum([x for x in range(10)]))
         self.assertEqual(sum(x for x in [y for y in (z for z in range(10))]), sum([x for x in range(10)]))
-        self.assertEqual(sum(x for x in (y for y in (z for z in range(10) if True)) if True), sum([x for x in range(10)]))
-        self.assertEqual(sum(x for x in (y for y in (z for z in range(10) if True) if False) if True), 0)
+        self.assertEqual(sum(x for x in (y for y in (z for z in range(10) ikiwa True)) ikiwa True), sum([x for x in range(10)]))
+        self.assertEqual(sum(x for x in (y for y in (z for z in range(10) ikiwa True) ikiwa False) ikiwa True), 0)
         check_syntax_error(self, "foo(x for x in range(10), 100)")
         check_syntax_error(self, "foo(100, x for x in range(10))")
 
-    def test_comprehension_specials(self):
+    eleza test_comprehension_specials(self):
         # test for outmost iterable precomputation
         x = 10; g = (i for i in range(x)); x = 5
         self.assertEqual(len(list(g)), 10)
 
         # This should hold, since we're only precomputing outmost iterable.
-        x = 10; t = False; g = ((i,j) for i in range(x) if t for j in range(x))
+        x = 10; t = False; g = ((i,j) for i in range(x) ikiwa t for j in range(x))
         x = 5; t = True;
         self.assertEqual([(i,j) for i in range(10) for j in range(5)], list(g))
 
         # Grammar allows multiple adjacent 'if's in listcomps and genexps,
         # even though it's silly. Make sure it works (ifelse broke this.)
-        self.assertEqual([ x for x in range(10) if x % 2 if x % 3 ], [1, 5, 7])
-        self.assertEqual(list(x for x in range(10) if x % 2 if x % 3), [1, 5, 7])
+        self.assertEqual([ x for x in range(10) ikiwa x % 2 ikiwa x % 3 ], [1, 5, 7])
+        self.assertEqual(list(x for x in range(10) ikiwa x % 2 ikiwa x % 3), [1, 5, 7])
 
         # verify unpacking single element tuples in listcomp/genexp.
         self.assertEqual([x for x, in [(4,), (5,), (6,)]], [4, 5, 6])
         self.assertEqual(list(x for x, in [(7,), (8,), (9,)]), [7, 8, 9])
 
-    def test_with_statement(self):
-        class manager(object):
-            def __enter__(self):
-                return (1, 2)
-            def __exit__(self, *args):
+    eleza test_with_statement(self):
+        kundi manager(object):
+            eleza __enter__(self):
+                rudisha (1, 2)
+            eleza __exit__(self, *args):
                 pass
 
         with manager():
@@ -1666,34 +1666,34 @@ class GrammarTests(unittest.TestCase):
         with manager() as x, manager():
             pass
 
-    def test_if_else_expr(self):
+    eleza test_if_else_expr(self):
         # Test ifelse expressions in various cases
-        def _checkeval(msg, ret):
+        eleza _checkeval(msg, ret):
             "helper to check that evaluation of expressions is done correctly"
-            print(msg)
-            return ret
+            andika(msg)
+            rudisha ret
 
         # the next line is not allowed anymore
-        #self.assertEqual([ x() for x in lambda: True, lambda: False if x() ], [True])
-        self.assertEqual([ x() for x in (lambda: True, lambda: False) if x() ], [True])
-        self.assertEqual([ x(False) for x in (lambda x: False if x else True, lambda x: True if x else False) if x(False) ], [True])
-        self.assertEqual((5 if 1 else _checkeval("check 1", 0)), 5)
-        self.assertEqual((_checkeval("check 2", 0) if 0 else 5), 5)
-        self.assertEqual((5 and 6 if 0 else 1), 1)
-        self.assertEqual(((5 and 6) if 0 else 1), 1)
-        self.assertEqual((5 and (6 if 1 else 1)), 6)
-        self.assertEqual((0 or _checkeval("check 3", 2) if 0 else 3), 3)
-        self.assertEqual((1 or _checkeval("check 4", 2) if 1 else _checkeval("check 5", 3)), 1)
-        self.assertEqual((0 or 5 if 1 else _checkeval("check 6", 3)), 5)
-        self.assertEqual((not 5 if 1 else 1), False)
-        self.assertEqual((not 5 if 0 else 1), 1)
-        self.assertEqual((6 + 1 if 1 else 2), 7)
-        self.assertEqual((6 - 1 if 1 else 2), 5)
-        self.assertEqual((6 * 2 if 1 else 4), 12)
-        self.assertEqual((6 / 2 if 1 else 3), 3)
-        self.assertEqual((6 < 4 if 0 else 2), 2)
+        #self.assertEqual([ x() for x in lambda: True, lambda: False ikiwa x() ], [True])
+        self.assertEqual([ x() for x in (lambda: True, lambda: False) ikiwa x() ], [True])
+        self.assertEqual([ x(False) for x in (lambda x: False ikiwa x else True, lambda x: True ikiwa x else False) ikiwa x(False) ], [True])
+        self.assertEqual((5 ikiwa 1 else _checkeval("check 1", 0)), 5)
+        self.assertEqual((_checkeval("check 2", 0) ikiwa 0 else 5), 5)
+        self.assertEqual((5 and 6 ikiwa 0 else 1), 1)
+        self.assertEqual(((5 and 6) ikiwa 0 else 1), 1)
+        self.assertEqual((5 and (6 ikiwa 1 else 1)), 6)
+        self.assertEqual((0 or _checkeval("check 3", 2) ikiwa 0 else 3), 3)
+        self.assertEqual((1 or _checkeval("check 4", 2) ikiwa 1 else _checkeval("check 5", 3)), 1)
+        self.assertEqual((0 or 5 ikiwa 1 else _checkeval("check 6", 3)), 5)
+        self.assertEqual((not 5 ikiwa 1 else 1), False)
+        self.assertEqual((not 5 ikiwa 0 else 1), 1)
+        self.assertEqual((6 + 1 ikiwa 1 else 2), 7)
+        self.assertEqual((6 - 1 ikiwa 1 else 2), 5)
+        self.assertEqual((6 * 2 ikiwa 1 else 4), 12)
+        self.assertEqual((6 / 2 ikiwa 1 else 3), 3)
+        self.assertEqual((6 < 4 ikiwa 0 else 2), 2)
 
-    def test_paren_evaluation(self):
+    eleza test_paren_evaluation(self):
         self.assertEqual(16 // (4 // 2), 8)
         self.assertEqual((16 // 4) // 2, 2)
         self.assertEqual(16 // 4 // 2, 2)
@@ -1703,51 +1703,51 @@ class GrammarTests(unittest.TestCase):
         self.assertFalse((False is x) is y)
         self.assertFalse(False is x is y)
 
-    def test_matrix_mul(self):
+    eleza test_matrix_mul(self):
         # This is not intended to be a comprehensive test, rather just to be few
         # samples of the @ operator in test_grammar.py.
-        class M:
-            def __matmul__(self, o):
-                return 4
-            def __imatmul__(self, o):
+        kundi M:
+            eleza __matmul__(self, o):
+                rudisha 4
+            eleza __imatmul__(self, o):
                 self.other = o
-                return self
+                rudisha self
         m = M()
         self.assertEqual(m @ m, 4)
         m @= 42
         self.assertEqual(m.other, 42)
 
-    def test_async_await(self):
-        async def test():
-            def sum():
+    eleza test_async_await(self):
+        async eleza test():
+            eleza sum():
                 pass
-            if 1:
+            ikiwa 1:
                 await someobj()
 
         self.assertEqual(test.__name__, 'test')
         self.assertTrue(bool(test.__code__.co_flags & inspect.CO_COROUTINE))
 
-        def decorator(func):
+        eleza decorator(func):
             setattr(func, '_marked', True)
-            return func
+            rudisha func
 
         @decorator
-        async def test2():
-            return 22
+        async eleza test2():
+            rudisha 22
         self.assertTrue(test2._marked)
         self.assertEqual(test2.__name__, 'test2')
         self.assertTrue(bool(test2.__code__.co_flags & inspect.CO_COROUTINE))
 
-    def test_async_for(self):
-        class Done(Exception): pass
+    eleza test_async_for(self):
+        kundi Done(Exception): pass
 
-        class AIter:
-            def __aiter__(self):
-                return self
-            async def __anext__(self):
+        kundi AIter:
+            eleza __aiter__(self):
+                rudisha self
+            async eleza __anext__(self):
                 raise StopAsyncIteration
 
-        async def foo():
+        async eleza foo():
             async for i in AIter():
                 pass
             async for i, j in AIter():
@@ -1761,16 +1761,16 @@ class GrammarTests(unittest.TestCase):
         with self.assertRaises(Done):
             foo().send(None)
 
-    def test_async_with(self):
-        class Done(Exception): pass
+    eleza test_async_with(self):
+        kundi Done(Exception): pass
 
-        class manager:
-            async def __aenter__(self):
-                return (1, 2)
-            async def __aexit__(self, *exc):
-                return False
+        kundi manager:
+            async eleza __aenter__(self):
+                rudisha (1, 2)
+            async eleza __aexit__(self, *exc):
+                rudisha False
 
-        async def foo():
+        async eleza foo():
             async with manager():
                 pass
             async with manager() as x:
@@ -1789,5 +1789,5 @@ class GrammarTests(unittest.TestCase):
             foo().send(None)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

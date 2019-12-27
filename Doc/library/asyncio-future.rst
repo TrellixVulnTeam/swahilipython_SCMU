@@ -165,7 +165,7 @@ Future Object
 
    .. method:: remove_done_callback(callback)
 
-      Remove *callback* from the callbacks list.
+      Remove *callback* kutoka the callbacks list.
 
       Returns the number of callbacks removed, which is typically 1,
       unless a callback was added more than once.

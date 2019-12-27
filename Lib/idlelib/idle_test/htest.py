@@ -11,7 +11,7 @@ In a tested module, let X be a global name bound to a callable (class
 or function) whose .__name__ attribute is also X (the usual situation).
 The first parameter of X must be 'parent'.  When called, the parent
 argument will be the root window.  X must create a child Toplevel
-window (or subclass thereof).  The Toplevel may be a test widget or
+window (or subkundi thereof).  The Toplevel may be a test widget or
 dialog, in which case the callable is the corresponding class.  Or the
 Toplevel may contain the widget to be tested or set up a context in
 which a test widget is invoked.  In this latter case, the callable is a
@@ -21,23 +21,23 @@ function names, such as _editor_window', should start with '_'.
 
 End the module with
 
-if __name__ == '__main__':
-    <unittest, if there is one>
+ikiwa __name__ == '__main__':
+    <unittest, ikiwa there is one>
     kutoka idlelib.idle_test.htest agiza run
     run(X)
 
 To have wrapper functions and test invocation code ignored by coveragepy
-reports, put '# htest #' on the def statement header line.
+reports, put '# htest #' on the eleza statement header line.
 
-def _wrapper(parent):  # htest #
+eleza _wrapper(parent):  # htest #
 
-Also make sure that the 'if __name__' line matches the above.  Then have
+Also make sure that the 'ikiwa __name__' line matches the above.  Then have
 make sure that .coveragerc includes the following.
 
 [report]
 exclude_lines =
     .*# htest #
-    if __name__ == .__main__.:
+    ikiwa __name__ == .__main__.:
 
 (The "." instead of "'" is intentional and necessary.)
 
@@ -54,7 +54,7 @@ _spec = {
 
 file (no .py): run() agizas file.py.
 kwds: augmented with {'parent':root} and passed to X as **kwds.
-title: an example kwd; some widgets need this, delete if not.
+title: an example kwd; some widgets need this, delete ikiwa not.
 msg: master window hints about testing the widget.
 
 
@@ -94,7 +94,7 @@ _calltip_window_spec = {
 _module_browser_spec = {
     'file': 'browser',
     'kwds': {},
-    'msg': "Inspect names of module, class(with superclass if "
+    'msg': "Inspect names of module, class(with superkundi ikiwa "
            "applicable), methods and functions.\nToggle nested items.\n"
            "Double clicking on items prints a traceback for an exception "
            "that is ignored."
@@ -163,7 +163,7 @@ GetKeysDialog_spec = {
            "<nothing> is invalid.\n"
            "No modifier key is invalid.\n"
            "Shift key with [a-z],[0-9], function key, move key, tab, space "
-           "is invalid.\nNo validity checking if advanced key binding "
+           "is invalid.\nNo validity checking ikiwa advanced key binding "
            "entry is used."
     }
 
@@ -369,7 +369,7 @@ _widget_redirector_spec = {
            "or the IDLE shell."
     }
 
-def run(*tests):
+eleza run(*tests):
     root = tk.Tk()
     root.title('IDLE htest')
     root.resizable(0, 0)
@@ -385,14 +385,14 @@ def run(*tests):
     text.pack(side='left', fill='both', expand=True)
 
     test_list = [] # List of tuples of the form (spec, callable widget)
-    if tests:
+    ikiwa tests:
         for test in tests:
             test_spec = globals()[test.__name__ + '_spec']
             test_spec['name'] = test.__name__
             test_list.append((test_spec,  test))
     else:
         for k, d in globals().items():
-            if k.endswith('_spec'):
+            ikiwa k.endswith('_spec'):
                 test_name = k[:-5]
                 test_spec = d
                 test_spec['name'] = test_name
@@ -404,10 +404,10 @@ def run(*tests):
     callable_object = None
     test_kwds = None
 
-    def next_test():
+    eleza next_test():
 
         nonlocal test_name, callable_object, test_kwds
-        if len(test_list) == 1:
+        ikiwa len(test_list) == 1:
             next_button.pack_forget()
         test_spec, callable_object = test_list.pop()
         test_kwds = test_spec['kwds']
@@ -419,14 +419,14 @@ def run(*tests):
         text.insert("1.0",test_spec['msg'])
         text.configure(state='disabled') # preserve read-only property
 
-    def run_test(_=None):
+    eleza run_test(_=None):
         widget = callable_object(**test_kwds)
         try:
-            print(widget.result)
+            andika(widget.result)
         except AttributeError:
             pass
 
-    def close(_=None):
+    eleza close(_=None):
         root.destroy()
 
     button = tk.Button(root, textvariable=test_name,
@@ -441,5 +441,5 @@ def run(*tests):
     next_test()
     root.mainloop()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     run()

@@ -335,7 +335,7 @@ class AbstractBuilder(object):
         self.check_imports()
 
     def check_imports(self):
-        cmd = [sys.executable, "-c", "import _ssl; import _hashlib"]
+        cmd = [sys.executable, "-c", "agiza _ssl; agiza _hashlib"]
         self._subprocess_call(cmd)
 
     def check_pyssl(self):

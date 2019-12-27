@@ -18,11 +18,11 @@ the function is then applied to the result of the conversion.
    On platforms with hardware and system-level support for signed
    zeros, functions involving branch cuts are continuous on *both*
    sides of the branch cut: the sign of the zero distinguishes one
-   side of the branch cut from the other.  On platforms that do not
+   side of the branch cut kutoka the other.  On platforms that do not
    support signed zeros the continuity is as specified below.
 
 
-Conversions to and from polar coordinates
+Conversions to and kutoka polar coordinates
 -----------------------------------------
 
 A Python complex number ``z`` is stored internally using *rectangular*
@@ -35,11 +35,11 @@ words::
 *Polar coordinates* give an alternative way to represent a complex
 number.  In polar coordinates, a complex number *z* is defined by the
 modulus *r* and the phase angle *phi*. The modulus *r* is the distance
-from *z* to the origin, while the phase *phi* is the counterclockwise
-angle, measured in radians, from the positive x-axis to the line
+kutoka *z* to the origin, while the phase *phi* is the counterclockwise
+angle, measured in radians, kutoka the positive x-axis to the line
 segment that joins the origin to *z*.
 
-The following functions can be used to convert from the native
+The following functions can be used to convert kutoka the native
 rectangular coordinates to polar coordinates and back.
 
 .. function:: phase(x)
@@ -48,7 +48,7 @@ rectangular coordinates to polar coordinates and back.
    float.  ``phase(x)`` is equivalent to ``math.atan2(x.imag,
    x.real)``.  The result lies in the range [-\ *π*, *π*], and the branch
    cut for this operation lies along the negative real axis,
-   continuous from above.  On systems with support for signed zeros
+   continuous kutoka above.  On systems with support for signed zeros
    (which includes most systems in current use), this means that the
    sign of the result is the same as the sign of ``x.imag``, even when
    ``x.imag`` is zero::
@@ -92,8 +92,8 @@ Power and logarithmic functions
 .. function:: log(x[, base])
 
    Returns the logarithm of *x* to the given *base*. If the *base* is not
-   specified, returns the natural logarithm of *x*. There is one branch cut, from 0
-   along the negative real axis to -∞, continuous from above.
+   specified, returns the natural logarithm of *x*. There is one branch cut, kutoka 0
+   along the negative real axis to -∞, continuous kutoka above.
 
 
 .. function:: log10(x)
@@ -112,9 +112,9 @@ Trigonometric functions
 
 .. function:: acos(x)
 
-   Return the arc cosine of *x*. There are two branch cuts: One extends right from
-   1 along the real axis to ∞, continuous from below. The other extends left from
-   -1 along the real axis to -∞, continuous from above.
+   Return the arc cosine of *x*. There are two branch cuts: One extends right kutoka
+   1 along the real axis to ∞, continuous kutoka below. The other extends left kutoka
+   -1 along the real axis to -∞, continuous kutoka above.
 
 
 .. function:: asin(x)
@@ -124,10 +124,10 @@ Trigonometric functions
 
 .. function:: atan(x)
 
-   Return the arc tangent of *x*. There are two branch cuts: One extends from
-   ``1j`` along the imaginary axis to ``∞j``, continuous from the right. The
-   other extends from ``-1j`` along the imaginary axis to ``-∞j``, continuous
-   from the left.
+   Return the arc tangent of *x*. There are two branch cuts: One extends kutoka
+   ``1j`` along the imaginary axis to ``∞j``, continuous kutoka the right. The
+   other extends kutoka ``-1j`` along the imaginary axis to ``-∞j``, continuous
+   kutoka the left.
 
 
 .. function:: cos(x)
@@ -151,22 +151,22 @@ Hyperbolic functions
 .. function:: acosh(x)
 
    Return the inverse hyperbolic cosine of *x*. There is one branch cut,
-   extending left from 1 along the real axis to -∞, continuous from above.
+   extending left kutoka 1 along the real axis to -∞, continuous kutoka above.
 
 
 .. function:: asinh(x)
 
    Return the inverse hyperbolic sine of *x*. There are two branch cuts:
-   One extends from ``1j`` along the imaginary axis to ``∞j``,
-   continuous from the right.  The other extends from ``-1j`` along
-   the imaginary axis to ``-∞j``, continuous from the left.
+   One extends kutoka ``1j`` along the imaginary axis to ``∞j``,
+   continuous kutoka the right.  The other extends kutoka ``-1j`` along
+   the imaginary axis to ``-∞j``, continuous kutoka the left.
 
 
 .. function:: atanh(x)
 
    Return the inverse hyperbolic tangent of *x*. There are two branch cuts: One
-   extends from ``1`` along the real axis to ``∞``, continuous from below. The
-   other extends from ``-1`` along the real axis to ``-∞``, continuous from
+   extends kutoka ``1`` along the real axis to ``∞``, continuous kutoka below. The
+   other extends kutoka ``-1`` along the real axis to ``-∞``, continuous kutoka
    above.
 
 

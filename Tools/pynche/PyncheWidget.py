@@ -39,7 +39,7 @@ class PyncheWidget:
             # import fails or _default_root is None.
             tkroot = None
             try:
-                from Tkinter import _default_root
+                from Tkinter agiza _default_root
                 tkroot = self.__tkroot = _default_root
             except ImportError:
                 pass
@@ -148,7 +148,7 @@ class PyncheWidget:
         return self.__root
 
     def __popup_about(self, event=None):
-        from Main import __version__
+        from Main agiza __version__
         messagebox.showinfo('About Pynche ' + __version__,
                               '''\
 Pynche %s

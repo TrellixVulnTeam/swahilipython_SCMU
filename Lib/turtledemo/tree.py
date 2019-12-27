@@ -18,13 +18,13 @@ there are 1024 turtles.
 kutoka turtle agiza Turtle, mainloop
 kutoka time agiza perf_counter as clock
 
-def tree(plist, l, a, f):
+eleza tree(plist, l, a, f):
     """ plist is list of pens
     l is length of branch
     a is half of the angle between 2 branches
     f is factor by which branch is shortened
     kutoka level to level."""
-    if l > 3:
+    ikiwa l > 3:
         lst = []
         for p in plist:
             p.forward(l)
@@ -36,7 +36,7 @@ def tree(plist, l, a, f):
         for x in tree(lst, l*f, a, f):
             yield None
 
-def maketree():
+eleza maketree():
     p = Turtle()
     p.setundobuffer(None)
     p.hideturtle()
@@ -50,13 +50,13 @@ def maketree():
     for x in t:
         pass
 
-def main():
+eleza main():
     a=clock()
     maketree()
     b=clock()
-    return "done: %.2f sec." % (b-a)
+    rudisha "done: %.2f sec." % (b-a)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     msg = main()
-    print(msg)
+    andika(msg)
     mainloop()

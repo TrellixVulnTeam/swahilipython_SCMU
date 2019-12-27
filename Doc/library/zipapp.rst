@@ -23,15 +23,15 @@ Basic Example
 -------------
 
 The following example shows how the :ref:`zipapp-command-line-interface`
-can be used to create an executable archive from a directory containing
-Python code.  When run, the archive will execute the ``main`` function from
+can be used to create an executable archive kutoka a directory containing
+Python code.  When run, the archive will execute the ``main`` function kutoka
 the module ``myapp`` in the archive.
 
 .. code-block:: shell-session
 
    $ python -m zipapp myapp -m "myapp:main"
    $ python myapp.pyz
-   <output from myapp>
+   <output kutoka myapp>
 
 
 .. _zipapp-command-line-interface:
@@ -39,13 +39,13 @@ the module ``myapp`` in the archive.
 Command-Line Interface
 ----------------------
 
-When called as a program from the command line, the following form is used:
+When called as a program kutoka the command line, the following form is used:
 
 .. code-block:: shell-session
 
    $ python -m zipapp source [options]
 
-If *source* is a directory, this will create an archive from the contents of
+If *source* is a directory, this will create an archive kutoka the contents of
 *source*.  If *source* is a file, it should be an archive, and it will be
 copied to the target archive (or the contents of its shebang line will be
 displayed if the --info option is specified).
@@ -109,12 +109,12 @@ The module defines two convenience functions:
 
 .. function:: create_archive(source, target=None, interpreter=None, main=None, filter=None, compressed=False)
 
-   Create an application archive from *source*.  The source can be any
+   Create an application archive kutoka *source*.  The source can be any
    of the following:
 
    * The name of a directory, or a :term:`path-like object` referring
      to a directory, in which case a new application archive will be
-     created from the content of that directory.
+     created kutoka the content of that directory.
    * The name of an existing application archive file, or a :term:`path-like object`
      referring to such a file, in which case the file is copied to
      the target (modifying it to reflect the value given for the *interpreter*
@@ -167,7 +167,7 @@ The module defines two convenience functions:
 
    When copying an existing archive, file objects supplied only need
    ``read`` and ``readline``, or ``write`` methods.  When creating an
-   archive from a directory, if the target is a file object it will be
+   archive kutoka a directory, if the target is a file object it will be
    passed to the ``zipfile.ZipFile`` class, and must supply the methods
    needed by that class.
 
@@ -193,11 +193,11 @@ Pack up a directory into an archive, and run it.
 
    $ python -m zipapp myapp
    $ python myapp.pyz
-   <output from myapp>
+   <output kutoka myapp>
 
 The same can be done using the :func:`create_archive` function::
 
-   >>> import zipapp
+   >>> agiza zipapp
    >>> zipapp.create_archive('myapp.pyz', 'myapp')
 
 To make the application directly executable on POSIX, specify an interpreter
@@ -207,12 +207,12 @@ to use.
 
    $ python -m zipapp myapp -p "/usr/bin/env python"
    $ ./myapp.pyz
-   <output from myapp>
+   <output kutoka myapp>
 
 To replace the shebang line on an existing archive, create a modified archive
 using the :func:`create_archive` function::
 
-   >>> import zipapp
+   >>> agiza zipapp
    >>> zipapp.create_archive('old_archive.pyz', 'new_archive.pyz', '/usr/bin/python3')
 
 To update the file in place, do the replacement in memory using a :class:`BytesIO`
@@ -222,8 +222,8 @@ the original file.  This code does not protect against such errors, but
 production code should do so.  Also, this method will only work if the archive
 fits in memory::
 
-   >>> import zipapp
-   >>> import io
+   >>> agiza zipapp
+   >>> agiza io
    >>> temp = io.BytesIO()
    >>> zipapp.create_archive('myapp.pyz', temp, '/usr/bin/python2')
    >>> with open('myapp.pyz', 'wb') as f:
@@ -312,7 +312,7 @@ extensions "transparently" (the simplest example is that
 ``subprocess.run(['myapp'])`` won't find your application - you need to
 explicitly specify the extension).
 
-On Windows, therefore, it is often preferable to create an executable from the
+On Windows, therefore, it is often preferable to create an executable kutoka the
 zipapp.  This is relatively easy, although it does require a C compiler.  The
 basic approach relies on the fact that zipfiles can have arbitrary data
 prepended, and Windows exe files can have arbitrary data appended.  So by
@@ -351,11 +351,11 @@ To compile the executable, you can either just use the standard MSVC
 command line tools, or you can take advantage of the fact that distutils
 knows how to compile Python source::
 
-   >>> from distutils.ccompiler import new_compiler
-   >>> import distutils.sysconfig
-   >>> import sys
-   >>> import os
-   >>> from pathlib import Path
+   >>> kutoka distutils.ccompiler agiza new_compiler
+   >>> agiza distutils.sysconfig
+   >>> agiza sys
+   >>> agiza os
+   >>> kutoka pathlib agiza Path
 
    >>> def compile(src):
    >>>     src = Path(src)
@@ -391,9 +391,9 @@ a single file.  In most, if not all, cases they can be addressed without
 needing major changes to your application.
 
 1. If your application depends on a package that includes a C extension, that
-   package cannot be run from a zip file (this is an OS limitation, as executable
+   package cannot be run kutoka a zip file (this is an OS limitation, as executable
    code must be present in the filesystem for the OS loader to load it). In this
-   case, you can exclude that dependency from the zipfile, and either require
+   case, you can exclude that dependency kutoka the zipfile, and either require
    your users to have it installed, or ship it alongside your zipfile and add code
    to your ``__main__.py`` to include the directory containing the unzipped
    module in ``sys.path``. In this case, you will need to make sure to ship
@@ -422,7 +422,7 @@ since version 2.6.  In order to be executed by Python, an application archive
 simply has to be a standard zip file containing a ``__main__.py`` file which
 will be run as the entry point for the application.  As usual for any Python
 script, the parent of the script (in this case the zip file) will be placed on
-:data:`sys.path` and thus further modules can be imported from the zip file.
+:data:`sys.path` and thus further modules can be imported kutoka the zip file.
 
 The zip file format allows arbitrary data to be prepended to a zip file.  The
 zip application format uses this ability to prepend a standard POSIX "shebang"

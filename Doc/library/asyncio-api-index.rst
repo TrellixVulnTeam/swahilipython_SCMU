@@ -34,7 +34,7 @@ await on multiple things with timeouts.
       - Run with a timeout.
 
     * - ``await`` :func:`shield`
-      - Shield from cancellation.
+      - Shield kutoka cancellation.
 
     * - ``await`` :func:`wait`
       - Monitor for completion.
@@ -49,7 +49,7 @@ await on multiple things with timeouts.
       - Task object.
 
     * - :func:`run_coroutine_threadsafe`
-      - Schedule a coroutine from another OS thread.
+      - Schedule a coroutine kutoka another OS thread.
 
     * - ``for in`` :func:`as_completed`
       - Monitor for completion with a ``for`` loop.

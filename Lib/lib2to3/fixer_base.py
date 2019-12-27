@@ -1,7 +1,7 @@
 # Copyright 2006 Google, Inc. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
 
-"""Base class for fixers (optional, but recommended)."""
+"""Base kundi for fixers (optional, but recommended)."""
 
 # Python agizas
 agiza itertools
@@ -11,13 +11,13 @@ kutoka .patcomp agiza PatternCompiler
 kutoka . agiza pygram
 kutoka .fixer_util agiza does_tree_agiza
 
-class BaseFix(object):
+kundi BaseFix(object):
 
-    """Optional base class for fixers.
+    """Optional base kundi for fixers.
 
-    The subclass name must be FixFooBar where FooBar is the result of
+    The subkundi name must be FixFooBar where FooBar is the result of
     removing underscores and capitalizing the words of the fix name.
-    For example, the class name for a fixer named 'has_key' should be
+    For example, the kundi name for a fixer named 'has_key' should be
     FixHasKey.
     """
 
@@ -44,8 +44,8 @@ class BaseFix(object):
     # Shortcut for access to Python grammar symbols
     syms = pygram.python_symbols
 
-    def __init__(self, options, log):
-        """Initializer.  Subclass may override.
+    eleza __init__(self, options, log):
+        """Initializer.  Subkundi may override.
 
         Args:
             options: a dict containing the options passed to RefactoringTool
@@ -56,37 +56,37 @@ class BaseFix(object):
         self.log = log
         self.compile_pattern()
 
-    def compile_pattern(self):
+    eleza compile_pattern(self):
         """Compiles self.PATTERN into self.pattern.
 
-        Subclass may override if it doesn't want to use
+        Subkundi may override ikiwa it doesn't want to use
         self.{pattern,PATTERN} in .match().
         """
-        if self.PATTERN is not None:
+        ikiwa self.PATTERN is not None:
             PC = PatternCompiler()
             self.pattern, self.pattern_tree = PC.compile_pattern(self.PATTERN,
                                                                  with_tree=True)
 
-    def set_filename(self, filename):
+    eleza set_filename(self, filename):
         """Set the filename.
 
         The main refactoring tool should call this.
         """
         self.filename = filename
 
-    def match(self, node):
+    eleza match(self, node):
         """Returns match for a given parse tree node.
 
-        Should return a true or false object (not necessarily a bool).
-        It may return a non-empty dict of matching sub-nodes as
+        Should rudisha a true or false object (not necessarily a bool).
+        It may rudisha a non-empty dict of matching sub-nodes as
         returned by a matching pattern.
 
-        Subclass may override.
+        Subkundi may override.
         """
         results = {"node": node}
-        return self.pattern.match(node, results) and results
+        rudisha self.pattern.match(node, results) and results
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         """Returns the transformation for a given parse tree node.
 
         Args:
@@ -98,11 +98,11 @@ class BaseFix(object):
           argument node.  The node argument may also be modified in-place to
           effect the same change.
 
-        Subclass *must* override.
+        Subkundi *must* override.
         """
         raise NotImplementedError()
 
-    def new_name(self, template="xxx_todo_changeme"):
+    eleza new_name(self, template="xxx_todo_changeme"):
         """Return a string suitable for use as an identifier
 
         The new name is guaranteed not to conflict with other identifiers.
@@ -111,15 +111,15 @@ class BaseFix(object):
         while name in self.used_names:
             name = template + str(next(self.numbers))
         self.used_names.add(name)
-        return name
+        rudisha name
 
-    def log_message(self, message):
-        if self.first_log:
+    eleza log_message(self, message):
+        ikiwa self.first_log:
             self.first_log = False
             self.log.append("### In file %s ###" % self.filename)
         self.log.append(message)
 
-    def cannot_convert(self, node, reason=None):
+    eleza cannot_convert(self, node, reason=None):
         """Warn the user that a given chunk of code is not valid Python 3,
         but that it cannot be converted automatically.
 
@@ -131,10 +131,10 @@ class BaseFix(object):
         for_output.prefix = ""
         msg = "Line %d: could not convert: %s"
         self.log_message(msg % (lineno, for_output))
-        if reason:
+        ikiwa reason:
             self.log_message(reason)
 
-    def warning(self, node, reason):
+    eleza warning(self, node, reason):
         """Used for warning the user about possible uncertainty in the
         translation.
 
@@ -144,7 +144,7 @@ class BaseFix(object):
         lineno = node.get_lineno()
         self.log_message("Line %d: %s" % (lineno, reason))
 
-    def start_tree(self, tree, filename):
+    eleza start_tree(self, tree, filename):
         """Some fixers need to maintain tree-wide state.
         This method is called once, at the start of tree fix-up.
 
@@ -156,7 +156,7 @@ class BaseFix(object):
         self.numbers = itertools.count(1)
         self.first_log = True
 
-    def finish_tree(self, tree, filename):
+    eleza finish_tree(self, tree, filename):
         """Some fixers need to maintain tree-wide state.
         This method is called once, at the conclusion of tree fix-up.
 
@@ -166,21 +166,21 @@ class BaseFix(object):
         pass
 
 
-class ConditionalFix(BaseFix):
-    """ Base class for fixers which not execute if an agiza is found. """
+kundi ConditionalFix(BaseFix):
+    """ Base kundi for fixers which not execute ikiwa an agiza is found. """
 
-    # This is the name of the agiza which, if found, will cause the test to be skipped
+    # This is the name of the agiza which, ikiwa found, will cause the test to be skipped
     skip_on = None
 
-    def start_tree(self, *args):
+    eleza start_tree(self, *args):
         super(ConditionalFix, self).start_tree(*args)
         self._should_skip = None
 
-    def should_skip(self, node):
-        if self._should_skip is not None:
-            return self._should_skip
+    eleza should_skip(self, node):
+        ikiwa self._should_skip is not None:
+            rudisha self._should_skip
         pkg = self.skip_on.split(".")
         name = pkg[-1]
         pkg = ".".join(pkg[:-1])
         self._should_skip = does_tree_agiza(pkg, name, node)
-        return self._should_skip
+        rudisha self._should_skip

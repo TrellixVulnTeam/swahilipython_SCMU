@@ -5,13 +5,13 @@ agiza pickle
 agiza sqlite3
 kutoka collections agiza namedtuple
 
-# Simple class representing a record in our database.
+# Simple kundi representing a record in our database.
 MemoRecord = namedtuple("MemoRecord", "key, task")
 
-class DBPickler(pickle.Pickler):
+kundi DBPickler(pickle.Pickler):
 
     def persistent_id(self, obj):
-        # Instead of pickling MemoRecord as a regular class instance, we emit a
+        # Instead of pickling MemoRecord as a regular kundi instance, we emit a
         # persistent ID.
         if isinstance(obj, MemoRecord):
             # Here, our persistent ID is simply a tuple, containing a tag and a
@@ -23,7 +23,7 @@ class DBPickler(pickle.Pickler):
             return None
 
 
-class DBUnpickler(pickle.Unpickler):
+kundi DBUnpickler(pickle.Unpickler):
 
     def __init__(self, file, connection):
         super().__init__(file)

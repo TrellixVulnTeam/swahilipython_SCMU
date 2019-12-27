@@ -25,7 +25,7 @@ Functions
 pformat()
     Format a Python object into a pretty-printed representation.
 
-pprint()
+pandika()
     Pretty-print a Python object to a stream [default is sys.stdout].
 
 saferepr()
@@ -44,37 +44,37 @@ __all__ = ["pprint","pformat","isreadable","isrecursive","saferepr",
            "PrettyPrinter", "pp"]
 
 
-def pprint(object, stream=None, indent=1, width=80, depth=None, *,
+eleza pandika(object, stream=None, indent=1, width=80, depth=None, *,
            compact=False, sort_dicts=True):
     """Pretty-print a Python object to a stream [default is sys.stdout]."""
     printer = PrettyPrinter(
         stream=stream, indent=indent, width=width, depth=depth,
         compact=compact, sort_dicts=sort_dicts)
-    printer.pprint(object)
+    printer.pandika(object)
 
-def pformat(object, indent=1, width=80, depth=None, *,
+eleza pformat(object, indent=1, width=80, depth=None, *,
             compact=False, sort_dicts=True):
     """Format a Python object into a pretty-printed representation."""
-    return PrettyPrinter(indent=indent, width=width, depth=depth,
+    rudisha PrettyPrinter(indent=indent, width=width, depth=depth,
                          compact=compact, sort_dicts=sort_dicts).pformat(object)
 
-def pp(object, *args, sort_dicts=False, **kwargs):
+eleza pp(object, *args, sort_dicts=False, **kwargs):
     """Pretty-print a Python object"""
-    pprint(object, *args, sort_dicts=sort_dicts, **kwargs)
+    pandika(object, *args, sort_dicts=sort_dicts, **kwargs)
 
-def saferepr(object):
+eleza saferepr(object):
     """Version of repr() which can handle recursive data structures."""
-    return _safe_repr(object, {}, None, 0, True)[0]
+    rudisha _safe_repr(object, {}, None, 0, True)[0]
 
-def isreadable(object):
-    """Determine if saferepr(object) is readable by eval()."""
-    return _safe_repr(object, {}, None, 0, True)[1]
+eleza isreadable(object):
+    """Determine ikiwa saferepr(object) is readable by eval()."""
+    rudisha _safe_repr(object, {}, None, 0, True)[1]
 
-def isrecursive(object):
-    """Determine if object requires a recursive representation."""
-    return _safe_repr(object, {}, None, 0, True)[2]
+eleza isrecursive(object):
+    """Determine ikiwa object requires a recursive representation."""
+    rudisha _safe_repr(object, {}, None, 0, True)[2]
 
-class _safe_key:
+kundi _safe_key:
     """Helper function for key functions when sorting unorderable objects.
 
     The wrapped-object will fallback to a Py2.x style comparison for
@@ -86,22 +86,22 @@ class _safe_key:
 
     __slots__ = ['obj']
 
-    def __init__(self, obj):
+    eleza __init__(self, obj):
         self.obj = obj
 
-    def __lt__(self, other):
+    eleza __lt__(self, other):
         try:
-            return self.obj < other.obj
+            rudisha self.obj < other.obj
         except TypeError:
-            return ((str(type(self.obj)), id(self.obj)) < \
+            rudisha ((str(type(self.obj)), id(self.obj)) < \
                     (str(type(other.obj)), id(other.obj)))
 
-def _safe_tuple(t):
+eleza _safe_tuple(t):
     "Helper function for comparing 2-tuples"
-    return _safe_key(t[0]), _safe_key(t[1])
+    rudisha _safe_key(t[0]), _safe_key(t[1])
 
-class PrettyPrinter:
-    def __init__(self, indent=1, width=80, depth=None, stream=None, *,
+kundi PrettyPrinter:
+    eleza __init__(self, indent=1, width=80, depth=None, stream=None, *,
                  compact=False, sort_dicts=True):
         """Handle pretty printing operations onto a stream using a set of
         configured parameters.
@@ -128,55 +128,55 @@ class PrettyPrinter:
         """
         indent = int(indent)
         width = int(width)
-        if indent < 0:
+        ikiwa indent < 0:
             raise ValueError('indent must be >= 0')
-        if depth is not None and depth <= 0:
+        ikiwa depth is not None and depth <= 0:
             raise ValueError('depth must be > 0')
-        if not width:
+        ikiwa not width:
             raise ValueError('width must be != 0')
         self._depth = depth
         self._indent_per_level = indent
         self._width = width
-        if stream is not None:
+        ikiwa stream is not None:
             self._stream = stream
         else:
             self._stream = _sys.stdout
         self._compact = bool(compact)
         self._sort_dicts = sort_dicts
 
-    def pprint(self, object):
+    eleza pandika(self, object):
         self._format(object, self._stream, 0, 0, {}, 0)
         self._stream.write("\n")
 
-    def pformat(self, object):
+    eleza pformat(self, object):
         sio = _StringIO()
         self._format(object, sio, 0, 0, {}, 0)
-        return sio.getvalue()
+        rudisha sio.getvalue()
 
-    def isrecursive(self, object):
-        return self.format(object, {}, 0, 0)[2]
+    eleza isrecursive(self, object):
+        rudisha self.format(object, {}, 0, 0)[2]
 
-    def isreadable(self, object):
+    eleza isreadable(self, object):
         s, readable, recursive = self.format(object, {}, 0, 0)
-        return readable and not recursive
+        rudisha readable and not recursive
 
-    def _format(self, object, stream, indent, allowance, context, level):
+    eleza _format(self, object, stream, indent, allowance, context, level):
         objid = id(object)
-        if objid in context:
+        ikiwa objid in context:
             stream.write(_recursion(object))
             self._recursive = True
             self._readable = False
             return
         rep = self._repr(object, context, level)
         max_width = self._width - indent - allowance
-        if len(rep) > max_width:
+        ikiwa len(rep) > max_width:
             p = self._dispatch.get(type(object).__repr__, None)
-            if p is not None:
+            ikiwa p is not None:
                 context[objid] = 1
                 p(self, object, stream, indent, allowance, context, level + 1)
                 del context[objid]
                 return
-            elif isinstance(object, dict):
+            elikiwa isinstance(object, dict):
                 context[objid] = 1
                 self._pprint_dict(object, stream, indent, allowance,
                                   context, level + 1)
@@ -186,14 +186,14 @@ class PrettyPrinter:
 
     _dispatch = {}
 
-    def _pprint_dict(self, object, stream, indent, allowance, context, level):
+    eleza _pprint_dict(self, object, stream, indent, allowance, context, level):
         write = stream.write
         write('{')
-        if self._indent_per_level > 1:
+        ikiwa self._indent_per_level > 1:
             write((self._indent_per_level - 1) * ' ')
         length = len(object)
-        if length:
-            if self._sort_dicts:
+        ikiwa length:
+            ikiwa self._sort_dicts:
                 items = sorted(object.items(), key=_safe_tuple)
             else:
                 items = object.items()
@@ -203,8 +203,8 @@ class PrettyPrinter:
 
     _dispatch[dict.__repr__] = _pprint_dict
 
-    def _pprint_ordered_dict(self, object, stream, indent, allowance, context, level):
-        if not len(object):
+    eleza _pprint_ordered_dict(self, object, stream, indent, allowance, context, level):
+        ikiwa not len(object):
             stream.write(repr(object))
             return
         cls = object.__class__
@@ -216,7 +216,7 @@ class PrettyPrinter:
 
     _dispatch[_collections.OrderedDict.__repr__] = _pprint_ordered_dict
 
-    def _pprint_list(self, object, stream, indent, allowance, context, level):
+    eleza _pprint_list(self, object, stream, indent, allowance, context, level):
         stream.write('[')
         self._format_items(object, stream, indent, allowance + 1,
                            context, level)
@@ -224,21 +224,21 @@ class PrettyPrinter:
 
     _dispatch[list.__repr__] = _pprint_list
 
-    def _pprint_tuple(self, object, stream, indent, allowance, context, level):
+    eleza _pprint_tuple(self, object, stream, indent, allowance, context, level):
         stream.write('(')
-        endchar = ',)' if len(object) == 1 else ')'
+        endchar = ',)' ikiwa len(object) == 1 else ')'
         self._format_items(object, stream, indent, allowance + len(endchar),
                            context, level)
         stream.write(endchar)
 
     _dispatch[tuple.__repr__] = _pprint_tuple
 
-    def _pprint_set(self, object, stream, indent, allowance, context, level):
-        if not len(object):
+    eleza _pprint_set(self, object, stream, indent, allowance, context, level):
+        ikiwa not len(object):
             stream.write(repr(object))
             return
         typ = object.__class__
-        if typ is set:
+        ikiwa typ is set:
             stream.write('{')
             endchar = '}'
         else:
@@ -253,22 +253,22 @@ class PrettyPrinter:
     _dispatch[set.__repr__] = _pprint_set
     _dispatch[frozenset.__repr__] = _pprint_set
 
-    def _pprint_str(self, object, stream, indent, allowance, context, level):
+    eleza _pprint_str(self, object, stream, indent, allowance, context, level):
         write = stream.write
-        if not len(object):
+        ikiwa not len(object):
             write(repr(object))
             return
         chunks = []
         lines = object.splitlines(True)
-        if level == 1:
+        ikiwa level == 1:
             indent += 1
             allowance += 1
         max_width1 = max_width = self._width - indent
         for i, line in enumerate(lines):
             rep = repr(line)
-            if i == len(lines) - 1:
+            ikiwa i == len(lines) - 1:
                 max_width1 -= allowance
-            if len(rep) <= max_width1:
+            ikiwa len(rep) <= max_width1:
                 chunks.append(rep)
             else:
                 # A list of alternating (non-space, space) strings
@@ -280,37 +280,37 @@ class PrettyPrinter:
                 current = ''
                 for j, part in enumerate(parts):
                     candidate = current + part
-                    if j == len(parts) - 1 and i == len(lines) - 1:
+                    ikiwa j == len(parts) - 1 and i == len(lines) - 1:
                         max_width2 -= allowance
-                    if len(repr(candidate)) > max_width2:
-                        if current:
+                    ikiwa len(repr(candidate)) > max_width2:
+                        ikiwa current:
                             chunks.append(repr(current))
                         current = part
                     else:
                         current = candidate
-                if current:
+                ikiwa current:
                     chunks.append(repr(current))
-        if len(chunks) == 1:
+        ikiwa len(chunks) == 1:
             write(rep)
             return
-        if level == 1:
+        ikiwa level == 1:
             write('(')
         for i, rep in enumerate(chunks):
-            if i > 0:
+            ikiwa i > 0:
                 write('\n' + ' '*indent)
             write(rep)
-        if level == 1:
+        ikiwa level == 1:
             write(')')
 
     _dispatch[str.__repr__] = _pprint_str
 
-    def _pprint_bytes(self, object, stream, indent, allowance, context, level):
+    eleza _pprint_bytes(self, object, stream, indent, allowance, context, level):
         write = stream.write
-        if len(object) <= 4:
+        ikiwa len(object) <= 4:
             write(repr(object))
             return
         parens = level == 1
-        if parens:
+        ikiwa parens:
             indent += 1
             allowance += 1
             write('(')
@@ -318,14 +318,14 @@ class PrettyPrinter:
         for rep in _wrap_bytes_repr(object, self._width - indent, allowance):
             write(delim)
             write(rep)
-            if not delim:
+            ikiwa not delim:
                 delim = '\n' + ' '*indent
-        if parens:
+        ikiwa parens:
             write(')')
 
     _dispatch[bytes.__repr__] = _pprint_bytes
 
-    def _pprint_bytearray(self, object, stream, indent, allowance, context, level):
+    eleza _pprint_bytearray(self, object, stream, indent, allowance, context, level):
         write = stream.write
         write('bytearray(')
         self._pprint_bytes(bytes(object), stream, indent + 10,
@@ -334,7 +334,7 @@ class PrettyPrinter:
 
     _dispatch[bytearray.__repr__] = _pprint_bytearray
 
-    def _pprint_mappingproxy(self, object, stream, indent, allowance, context, level):
+    eleza _pprint_mappingproxy(self, object, stream, indent, allowance, context, level):
         stream.write('mappingproxy(')
         self._format(object.copy(), stream, indent + 13, allowance + 1,
                      context, level)
@@ -342,7 +342,7 @@ class PrettyPrinter:
 
     _dispatch[_types.MappingProxyType.__repr__] = _pprint_mappingproxy
 
-    def _format_dict_items(self, items, stream, indent, allowance, context,
+    eleza _format_dict_items(self, items, stream, indent, allowance, context,
                            level):
         write = stream.write
         indent += self._indent_per_level
@@ -354,15 +354,15 @@ class PrettyPrinter:
             write(rep)
             write(': ')
             self._format(ent, stream, indent + len(rep) + 2,
-                         allowance if last else 1,
+                         allowance ikiwa last else 1,
                          context, level)
-            if not last:
+            ikiwa not last:
                 write(delimnl)
 
-    def _format_items(self, items, stream, indent, allowance, context, level):
+    eleza _format_items(self, items, stream, indent, allowance, context, level):
         write = stream.write
         indent += self._indent_per_level
-        if self._indent_per_level > 1:
+        ikiwa self._indent_per_level > 1:
             write((self._indent_per_level - 1) * ' ')
         delimnl = ',\n' + ' ' * indent
         delim = ''
@@ -381,14 +381,14 @@ class PrettyPrinter:
                 last = True
                 max_width -= allowance
                 width -= allowance
-            if self._compact:
+            ikiwa self._compact:
                 rep = self._repr(ent, context, level)
                 w = len(rep) + 2
-                if width < w:
+                ikiwa width < w:
                     width = max_width
-                    if delim:
+                    ikiwa delim:
                         delim = delimnl
-                if width >= w:
+                ikiwa width >= w:
                     width -= w
                     write(delim)
                     delim = ', '
@@ -397,27 +397,27 @@ class PrettyPrinter:
             write(delim)
             delim = delimnl
             self._format(ent, stream, indent,
-                         allowance if last else 1,
+                         allowance ikiwa last else 1,
                          context, level)
 
-    def _repr(self, object, context, level):
+    eleza _repr(self, object, context, level):
         repr, readable, recursive = self.format(object, context.copy(),
                                                 self._depth, level)
-        if not readable:
+        ikiwa not readable:
             self._readable = False
-        if recursive:
+        ikiwa recursive:
             self._recursive = True
-        return repr
+        rudisha repr
 
-    def format(self, object, context, maxlevels, level):
+    eleza format(self, object, context, maxlevels, level):
         """Format object for a specific context, returning a string
         and flags indicating whether the representation is 'readable'
         and whether the object represents a recursive construct.
         """
-        return _safe_repr(object, context, maxlevels, level, self._sort_dicts)
+        rudisha _safe_repr(object, context, maxlevels, level, self._sort_dicts)
 
-    def _pprint_default_dict(self, object, stream, indent, allowance, context, level):
-        if not len(object):
+    eleza _pprint_default_dict(self, object, stream, indent, allowance, context, level):
+        ikiwa not len(object):
             stream.write(repr(object))
             return
         rdf = self._repr(object.default_factory, context, level)
@@ -429,13 +429,13 @@ class PrettyPrinter:
 
     _dispatch[_collections.defaultdict.__repr__] = _pprint_default_dict
 
-    def _pprint_counter(self, object, stream, indent, allowance, context, level):
-        if not len(object):
+    eleza _pprint_counter(self, object, stream, indent, allowance, context, level):
+        ikiwa not len(object):
             stream.write(repr(object))
             return
         cls = object.__class__
         stream.write(cls.__name__ + '({')
-        if self._indent_per_level > 1:
+        ikiwa self._indent_per_level > 1:
             stream.write((self._indent_per_level - 1) * ' ')
         items = object.most_common()
         self._format_dict_items(items, stream,
@@ -445,15 +445,15 @@ class PrettyPrinter:
 
     _dispatch[_collections.Counter.__repr__] = _pprint_counter
 
-    def _pprint_chain_map(self, object, stream, indent, allowance, context, level):
-        if not len(object.maps):
+    eleza _pprint_chain_map(self, object, stream, indent, allowance, context, level):
+        ikiwa not len(object.maps):
             stream.write(repr(object))
             return
         cls = object.__class__
         stream.write(cls.__name__ + '(')
         indent += len(cls.__name__) + 1
         for i, m in enumerate(object.maps):
-            if i == len(object.maps) - 1:
+            ikiwa i == len(object.maps) - 1:
                 self._format(m, stream, indent, allowance + 1, context, level)
                 stream.write(')')
             else:
@@ -462,15 +462,15 @@ class PrettyPrinter:
 
     _dispatch[_collections.ChainMap.__repr__] = _pprint_chain_map
 
-    def _pprint_deque(self, object, stream, indent, allowance, context, level):
-        if not len(object):
+    eleza _pprint_deque(self, object, stream, indent, allowance, context, level):
+        ikiwa not len(object):
             stream.write(repr(object))
             return
         cls = object.__class__
         stream.write(cls.__name__ + '(')
         indent += len(cls.__name__) + 1
         stream.write('[')
-        if object.maxlen is None:
+        ikiwa object.maxlen is None:
             self._format_items(object, stream, indent, allowance + 2,
                                context, level)
             stream.write('])')
@@ -482,44 +482,44 @@ class PrettyPrinter:
 
     _dispatch[_collections.deque.__repr__] = _pprint_deque
 
-    def _pprint_user_dict(self, object, stream, indent, allowance, context, level):
+    eleza _pprint_user_dict(self, object, stream, indent, allowance, context, level):
         self._format(object.data, stream, indent, allowance, context, level - 1)
 
     _dispatch[_collections.UserDict.__repr__] = _pprint_user_dict
 
-    def _pprint_user_list(self, object, stream, indent, allowance, context, level):
+    eleza _pprint_user_list(self, object, stream, indent, allowance, context, level):
         self._format(object.data, stream, indent, allowance, context, level - 1)
 
     _dispatch[_collections.UserList.__repr__] = _pprint_user_list
 
-    def _pprint_user_string(self, object, stream, indent, allowance, context, level):
+    eleza _pprint_user_string(self, object, stream, indent, allowance, context, level):
         self._format(object.data, stream, indent, allowance, context, level - 1)
 
     _dispatch[_collections.UserString.__repr__] = _pprint_user_string
 
 # Return triple (repr_string, isreadable, isrecursive).
 
-def _safe_repr(object, context, maxlevels, level, sort_dicts):
+eleza _safe_repr(object, context, maxlevels, level, sort_dicts):
     typ = type(object)
-    if typ in _builtin_scalars:
-        return repr(object), True, False
+    ikiwa typ in _builtin_scalars:
+        rudisha repr(object), True, False
 
     r = getattr(typ, "__repr__", None)
-    if issubclass(typ, dict) and r is dict.__repr__:
-        if not object:
-            return "{}", True, False
+    ikiwa issubclass(typ, dict) and r is dict.__repr__:
+        ikiwa not object:
+            rudisha "{}", True, False
         objid = id(object)
-        if maxlevels and level >= maxlevels:
-            return "{...}", False, objid in context
-        if objid in context:
-            return _recursion(object), False, True
+        ikiwa maxlevels and level >= maxlevels:
+            rudisha "{...}", False, objid in context
+        ikiwa objid in context:
+            rudisha _recursion(object), False, True
         context[objid] = 1
         readable = True
         recursive = False
         components = []
         append = components.append
         level += 1
-        if sort_dicts:
+        ikiwa sort_dicts:
             items = sorted(object.items(), key=_safe_tuple)
         else:
             items = object.items()
@@ -528,28 +528,28 @@ def _safe_repr(object, context, maxlevels, level, sort_dicts):
             vrepr, vreadable, vrecur = _safe_repr(v, context, maxlevels, level, sort_dicts)
             append("%s: %s" % (krepr, vrepr))
             readable = readable and kreadable and vreadable
-            if krecur or vrecur:
+            ikiwa krecur or vrecur:
                 recursive = True
         del context[objid]
-        return "{%s}" % ", ".join(components), readable, recursive
+        rudisha "{%s}" % ", ".join(components), readable, recursive
 
-    if (issubclass(typ, list) and r is list.__repr__) or \
+    ikiwa (issubclass(typ, list) and r is list.__repr__) or \
        (issubclass(typ, tuple) and r is tuple.__repr__):
-        if issubclass(typ, list):
-            if not object:
-                return "[]", True, False
+        ikiwa issubclass(typ, list):
+            ikiwa not object:
+                rudisha "[]", True, False
             format = "[%s]"
-        elif len(object) == 1:
+        elikiwa len(object) == 1:
             format = "(%s,)"
         else:
-            if not object:
-                return "()", True, False
+            ikiwa not object:
+                rudisha "()", True, False
             format = "(%s)"
         objid = id(object)
-        if maxlevels and level >= maxlevels:
-            return format % "...", False, objid in context
-        if objid in context:
-            return _recursion(object), False, True
+        ikiwa maxlevels and level >= maxlevels:
+            rudisha format % "...", False, objid in context
+        ikiwa objid in context:
+            rudisha _recursion(object), False, True
         context[objid] = 1
         readable = True
         recursive = False
@@ -559,27 +559,27 @@ def _safe_repr(object, context, maxlevels, level, sort_dicts):
         for o in object:
             orepr, oreadable, orecur = _safe_repr(o, context, maxlevels, level, sort_dicts)
             append(orepr)
-            if not oreadable:
+            ikiwa not oreadable:
                 readable = False
-            if orecur:
+            ikiwa orecur:
                 recursive = True
         del context[objid]
-        return format % ", ".join(components), readable, recursive
+        rudisha format % ", ".join(components), readable, recursive
 
     rep = repr(object)
-    return rep, (rep and not rep.startswith('<')), False
+    rudisha rep, (rep and not rep.startswith('<')), False
 
 _builtin_scalars = frozenset({str, bytes, bytearray, int, float, complex,
                               bool, type(None)})
 
-def _recursion(object):
-    return ("<Recursion on %s with id=%s>"
+eleza _recursion(object):
+    rudisha ("<Recursion on %s with id=%s>"
             % (type(object).__name__, id(object)))
 
 
-def _perfcheck(object=None):
+eleza _perfcheck(object=None):
     agiza time
-    if object is None:
+    ikiwa object is None:
         object = [("string", (1, 2), [3, 4], {5: 6, 7: 8})] * 100000
     p = PrettyPrinter()
     t1 = time.perf_counter()
@@ -587,25 +587,25 @@ def _perfcheck(object=None):
     t2 = time.perf_counter()
     p.pformat(object)
     t3 = time.perf_counter()
-    print("_safe_repr:", t2 - t1)
-    print("pformat:", t3 - t2)
+    andika("_safe_repr:", t2 - t1)
+    andika("pformat:", t3 - t2)
 
-def _wrap_bytes_repr(object, width, allowance):
+eleza _wrap_bytes_repr(object, width, allowance):
     current = b''
     last = len(object) // 4 * 4
     for i in range(0, len(object), 4):
         part = object[i: i+4]
         candidate = current + part
-        if i == last:
+        ikiwa i == last:
             width -= allowance
-        if len(repr(candidate)) > width:
-            if current:
+        ikiwa len(repr(candidate)) > width:
+            ikiwa current:
                 yield repr(current)
             current = part
         else:
             current = candidate
-    if current:
+    ikiwa current:
         yield repr(current)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     _perfcheck()

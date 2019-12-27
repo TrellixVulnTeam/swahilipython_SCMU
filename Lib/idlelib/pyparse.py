@@ -12,7 +12,7 @@ _chew_ordinaryre - non-special characters.
 """
 agiza re
 
-# Reason last statement is continued (or C_NONE if it's not).
+# Reason last statement is continued (or C_NONE ikiwa it's not).
 (C_NONE, C_BACKSLASH, C_STRING_FIRST_LINE,
  C_STRING_NEXT_LINES, C_BRACKET) = range(5)
 
@@ -73,7 +73,7 @@ _match_stringre = re.compile(r"""
 
 _itemre = re.compile(r"""
     [ \t]*
-    [^\s#\\]    # if we match, m.end()-1 is the interesting char
+    [^\s#\\]    # ikiwa we match, m.end()-1 is the interesting char
 """, re.VERBOSE).match
 
 # Match start of statements that should be followed by a dedent.
@@ -99,8 +99,8 @@ _chew_ordinaryre = re.compile(r"""
 """, re.VERBOSE).match
 
 
-class ParseMap(dict):
-    r"""Dict subclass that maps anything not in dict to 'x'.
+kundi ParseMap(dict):
+    r"""Dict subkundi that maps anything not in dict to 'x'.
 
     This is designed to be used with str.translate in study1.
     Anything not specifically mapped otherwise becomes 'x'.
@@ -111,36 +111,36 @@ class ParseMap(dict):
     'x x x\tx\nx'
     """
     # Calling this triples access time; see bpo-32940
-    def __missing__(self, key):
-        return 120  # ord('x')
+    eleza __missing__(self, key):
+        rudisha 120  # ord('x')
 
 
 # Map all ascii to 120 to avoid __missing__ call, then replace some.
-trans = ParseMap.fromkeys(range(128), 120)
+trans = ParseMap.kutokakeys(range(128), 120)
 trans.update((ord(c), ord('(')) for c in "({[")  # open brackets => '(';
 trans.update((ord(c), ord(')')) for c in ")}]")  # close brackets => ')'.
 trans.update((ord(c), ord(c)) for c in "\"'\\\n#")  # Keep these.
 
 
-class Parser:
+kundi Parser:
 
-    def __init__(self, indentwidth, tabwidth):
+    eleza __init__(self, indentwidth, tabwidth):
         self.indentwidth = indentwidth
         self.tabwidth = tabwidth
 
-    def set_code(self, s):
+    eleza set_code(self, s):
         assert len(s) == 0 or s[-1] == '\n'
         self.code = s
         self.study_level = 0
 
-    def find_good_parse_start(self, is_char_in_string=None,
+    eleza find_good_parse_start(self, is_char_in_string=None,
                               _synchre=_synchre):
         """
         Return index of a good place to begin parsing, as close to the
         end of the string as possible.  This will be the start of some
-        popular stmt like "if" or "def".  Return None if none found:
-        the caller should pass more prior context then, if possible, or
-        if not (the entire program text up until the point of interest
+        popular stmt like "if" or "def".  Return None ikiwa none found:
+        the caller should pass more prior context then, ikiwa possible, or
+        ikiwa not (the entire program text up until the point of interest
         has already been tried) pass 0 to set_lo().
 
         This will be reliable iff given a reliable is_char_in_string()
@@ -149,9 +149,9 @@ class Parser:
         """
         code, pos = self.code, None
 
-        if not is_char_in_string:
+        ikiwa not is_char_in_string:
             # no clue -- make the caller pass everything
-            return None
+            rudisha None
 
         # Peek back kutoka the end for a good place to start,
         # but don't try too often; pos will be left None, or
@@ -159,15 +159,15 @@ class Parser:
         limit = len(code)
         for tries in range(5):
             i = code.rfind(":\n", 0, limit)
-            if i < 0:
+            ikiwa i < 0:
                 break
             i = code.rfind('\n', 0, i) + 1  # start of colon line (-1+1=0)
             m = _synchre(code, i, limit)
-            if m and not is_char_in_string(m.start()):
+            ikiwa m and not is_char_in_string(m.start()):
                 pos = m.start()
                 break
             limit = i
-        if pos is None:
+        ikiwa pos is None:
             # Nothing looks like a block-opener, or stuff does
             # but is_char_in_string keeps returning true; most likely
             # we're in or near a giant string, the colorizer hasn't
@@ -177,40 +177,40 @@ class Parser:
             # give it one last try kutoka the start, but stop wasting
             # time here regardless of the outcome.
             m = _synchre(code)
-            if m and not is_char_in_string(m.start()):
+            ikiwa m and not is_char_in_string(m.start()):
                 pos = m.start()
-            return pos
+            rudisha pos
 
         # Peeking back worked; look forward until _synchre no longer
         # matches.
         i = pos + 1
         while 1:
             m = _synchre(code, i)
-            if m:
+            ikiwa m:
                 s, i = m.span()
-                if not is_char_in_string(s):
+                ikiwa not is_char_in_string(s):
                     pos = s
             else:
                 break
-        return pos
+        rudisha pos
 
-    def set_lo(self, lo):
+    eleza set_lo(self, lo):
         """ Throw away the start of the string.
 
         Intended to be called with the result of find_good_parse_start().
         """
         assert lo == 0 or self.code[lo-1] == '\n'
-        if lo > 0:
+        ikiwa lo > 0:
             self.code = self.code[lo:]
 
-    def _study1(self):
+    eleza _study1(self):
         """Find the line numbers of non-continuation lines.
 
         As quickly as humanly possible <wink>, find the line numbers (0-
         based) of the non-continuation lines.
         Creates self.{goodlines, continuation}.
         """
-        if self.study_level >= 1:
+        ikiwa self.study_level >= 1:
             return
         self.study_level = 1
 
@@ -241,30 +241,30 @@ class Parser:
             i = i+1
 
             # cases are checked in decreasing order of frequency
-            if ch == 'x':
+            ikiwa ch == 'x':
                 continue
 
-            if ch == '\n':
+            ikiwa ch == '\n':
                 lno = lno + 1
-                if level == 0:
+                ikiwa level == 0:
                     push_good(lno)
                     # else we're in an unclosed bracket structure
                 continue
 
-            if ch == '(':
+            ikiwa ch == '(':
                 level = level + 1
                 continue
 
-            if ch == ')':
-                if level:
+            ikiwa ch == ')':
+                ikiwa level:
                     level = level - 1
                     # else the program is invalid, but we can't complain
                 continue
 
-            if ch == '"' or ch == "'":
+            ikiwa ch == '"' or ch == "'":
                 # consume the string
                 quote = ch
-                if code[i-1:i+2] == quote * 3:
+                ikiwa code[i-1:i+2] == quote * 3:
                     quote = quote * 3
                 firstlno = lno
                 w = len(quote) - 1
@@ -273,25 +273,25 @@ class Parser:
                     ch = code[i]
                     i = i+1
 
-                    if ch == 'x':
+                    ikiwa ch == 'x':
                         continue
 
-                    if code[i-1:i+w] == quote:
+                    ikiwa code[i-1:i+w] == quote:
                         i = i+w
                         break
 
-                    if ch == '\n':
+                    ikiwa ch == '\n':
                         lno = lno + 1
-                        if w == 0:
+                        ikiwa w == 0:
                             # unterminated single-quoted string
-                            if level == 0:
+                            ikiwa level == 0:
                                 push_good(lno)
                             break
                         continue
 
-                    if ch == '\\':
+                    ikiwa ch == '\\':
                         assert i < n
-                        if code[i] == '\n':
+                        ikiwa code[i] == '\n':
                             lno = lno + 1
                         i = i+1
                         continue
@@ -301,7 +301,7 @@ class Parser:
                 else:
                     # didn't break out of the loop, so we're still
                     # inside a string
-                    if (lno - 1) == firstlno:
+                    ikiwa (lno - 1) == firstlno:
                         # before the previous \n in code, we were in the first
                         # line of the string
                         continuation = C_STRING_FIRST_LINE
@@ -309,7 +309,7 @@ class Parser:
                         continuation = C_STRING_NEXT_LINES
                 continue    # with outer loop
 
-            if ch == '#':
+            ikiwa ch == '#':
                 # consume the comment
                 i = code.find('\n', i)
                 assert i >= 0
@@ -317,16 +317,16 @@ class Parser:
 
             assert ch == '\\'
             assert i < n
-            if code[i] == '\n':
+            ikiwa code[i] == '\n':
                 lno = lno + 1
-                if i+1 == n:
+                ikiwa i+1 == n:
                     continuation = C_BACKSLASH
             i = i+1
 
         # The last stmt may be continued for all 3 reasons.
         # String continuation takes precedence over bracket
         # continuation, which beats backslash continuation.
-        if (continuation != C_STRING_FIRST_LINE
+        ikiwa (continuation != C_STRING_FIRST_LINE
             and continuation != C_STRING_NEXT_LINES and level > 0):
             continuation = C_BRACKET
         self.continuation = continuation
@@ -334,14 +334,14 @@ class Parser:
         # Push the final line number as a sentinel value, regardless of
         # whether it's continued.
         assert (continuation == C_NONE) == (goodlines[-1] == lno)
-        if goodlines[-1] != lno:
+        ikiwa goodlines[-1] != lno:
             push_good(lno)
 
-    def get_continuation_type(self):
+    eleza get_continuation_type(self):
         self._study1()
-        return self.continuation
+        rudisha self.continuation
 
-    def _study2(self):
+    eleza _study2(self):
         """
         study1 was sufficient to determine the continuation status,
         but doing more requires looking at every character.  study2
@@ -358,9 +358,9 @@ class Parser:
             self.lastch
                 last interesting character before optional trailing comment
             self.lastopenbracketpos
-                if continuation is C_BRACKET, index of last open bracket
+                ikiwa continuation is C_BRACKET, index of last open bracket
         """
-        if self.study_level >= 2:
+        ikiwa self.study_level >= 2:
             return
         self._study1()
         self.study_level = 2
@@ -375,22 +375,22 @@ class Parser:
             # Move p back to the stmt at line number goodlines[i-1].
             q = p
             for nothing in range(goodlines[i-1], goodlines[i]):
-                # tricky: sets p to 0 if no preceding newline
+                # tricky: sets p to 0 ikiwa no preceding newline
                 p = code.rfind('\n', 0, p-1) + 1
             # The stmt code[p:q] isn't a continuation, but may be blank
             # or a non-indenting comment line.
-            if  _junkre(code, p):
+            ikiwa  _junkre(code, p):
                 i = i-1
             else:
                 break
-        if i == 0:
+        ikiwa i == 0:
             # nothing but junk!
             assert p == 0
             q = p
         self.stmt_start, self.stmt_end = p, q
 
-        # Analyze this stmt, to find the last open bracket (if any)
-        # and last interesting character (if any).
+        # Analyze this stmt, to find the last open bracket (ikiwa any)
+        # and last interesting character (ikiwa any).
         lastch = ""
         stack = []  # stack of open bracket indices
         push_stack = stack.append
@@ -398,37 +398,37 @@ class Parser:
         while p < q:
             # suck up all except ()[]{}'"#\\
             m = _chew_ordinaryre(code, p, q)
-            if m:
+            ikiwa m:
                 # we skipped at least one boring char
                 newp = m.end()
                 # back up over totally boring whitespace
                 i = newp - 1    # index of last boring char
                 while i >= p and code[i] in " \t\n":
                     i = i-1
-                if i >= p:
+                ikiwa i >= p:
                     lastch = code[i]
                 p = newp
-                if p >= q:
+                ikiwa p >= q:
                     break
 
             ch = code[p]
 
-            if ch in "([{":
+            ikiwa ch in "([{":
                 push_stack(p)
                 bracketing.append((p, len(stack)))
                 lastch = ch
                 p = p+1
                 continue
 
-            if ch in ")]}":
-                if stack:
+            ikiwa ch in ")]}":
+                ikiwa stack:
                     del stack[-1]
                 lastch = ch
                 p = p+1
                 bracketing.append((p, len(stack)))
                 continue
 
-            if ch == '"' or ch == "'":
+            ikiwa ch == '"' or ch == "'":
                 # consume string
                 # Note that study1 did this with a Python loop, but
                 # we use a regexp here; the reason is speed in both
@@ -442,7 +442,7 @@ class Parser:
                 bracketing.append((p, len(stack)))
                 continue
 
-            if ch == '#':
+            ikiwa ch == '#':
                 # consume comment and trailing newline
                 bracketing.append((p, len(stack)+1))
                 p = code.find('\n', p, q) + 1
@@ -453,7 +453,7 @@ class Parser:
             assert ch == '\\'
             p = p+1     # beyond backslash
             assert p < q
-            if code[p] != '\n':
+            ikiwa code[p] != '\n':
                 # the program is invalid, but can't complain
                 lastch = ch + code[p]
             p = p+1     # beyond escaped char
@@ -461,10 +461,10 @@ class Parser:
         # end while p < q:
 
         self.lastch = lastch
-        self.lastopenbracketpos = stack[-1] if stack else None
+        self.lastopenbracketpos = stack[-1] ikiwa stack else None
         self.stmt_bracketing = tuple(bracketing)
 
-    def compute_bracket_indent(self):
+    eleza compute_bracket_indent(self):
         """Return number of spaces the next line should be indented.
 
         Line continuation must be C_BRACKET.
@@ -479,7 +479,7 @@ class Parser:
         # find first list item; set i to start of its line
         while j < n:
             m = _itemre(code, j)
-            if m:
+            ikiwa m:
                 j = m.end() - 1     # index of first interesting char
                 extra = 0
                 break
@@ -493,9 +493,9 @@ class Parser:
             while code[j] in " \t":
                 j = j+1
             extra = self.indentwidth
-        return len(code[i:j].expandtabs(self.tabwidth)) + extra
+        rudisha len(code[i:j].expandtabs(self.tabwidth)) + extra
 
-    def get_num_lines_in_stmt(self):
+    eleza get_num_lines_in_stmt(self):
         """Return number of physical lines in last stmt.
 
         The statement doesn't have to be an interesting statement.  This is
@@ -503,9 +503,9 @@ class Parser:
         """
         self._study1()
         goodlines = self.goodlines
-        return goodlines[-1] - goodlines[-2]
+        rudisha goodlines[-1] - goodlines[-2]
 
-    def compute_backslash_indent(self):
+    eleza compute_backslash_indent(self):
         """Return number of spaces the next line should be indented.
 
         Line continuation must be C_BACKSLASH.  Also assume that the new
@@ -525,20 +525,20 @@ class Parser:
         found = level = 0
         while i < endpos:
             ch = code[i]
-            if ch in "([{":
+            ikiwa ch in "([{":
                 level = level + 1
                 i = i+1
-            elif ch in ")]}":
-                if level:
+            elikiwa ch in ")]}":
+                ikiwa level:
                     level = level - 1
                 i = i+1
-            elif ch == '"' or ch == "'":
+            elikiwa ch == '"' or ch == "'":
                 i = _match_stringre(code, i, endpos).end()
-            elif ch == '#':
+            elikiwa ch == '#':
                 # This line is unreachable because the # makes a comment of
                 # everything after it.
                 break
-            elif level == 0 and ch == '=' and \
+            elikiwa level == 0 and ch == '=' and \
                    (i == 0 or code[i-1] not in "=<>!") and \
                    code[i+1] != '=':
                 found = 1
@@ -546,23 +546,23 @@ class Parser:
             else:
                 i = i+1
 
-        if found:
+        ikiwa found:
             # found a legit =, but it may be the last interesting
             # thing on the line
             i = i+1     # move beyond the =
             found = re.match(r"\s*\\", code[i:endpos]) is None
 
-        if not found:
+        ikiwa not found:
             # oh well ... settle for moving beyond the first chunk
             # of non-whitespace chars
             i = startpos
             while code[i] not in " \t\n":
                 i = i+1
 
-        return len(code[self.stmt_start:i].expandtabs(\
+        rudisha len(code[self.stmt_start:i].expandtabs(\
                                      self.tabwidth)) + 1
 
-    def get_base_indent_string(self):
+    eleza get_base_indent_string(self):
         """Return the leading whitespace on the initial line of the last
         interesting stmt.
         """
@@ -572,27 +572,27 @@ class Parser:
         code = self.code
         while j < n and code[j] in " \t":
             j = j + 1
-        return code[i:j]
+        rudisha code[i:j]
 
-    def is_block_opener(self):
-        "Return True if the last interesting statement opens a block."
+    eleza is_block_opener(self):
+        "Return True ikiwa the last interesting statement opens a block."
         self._study2()
-        return self.lastch == ':'
+        rudisha self.lastch == ':'
 
-    def is_block_closer(self):
-        "Return True if the last interesting statement closes a block."
+    eleza is_block_closer(self):
+        "Return True ikiwa the last interesting statement closes a block."
         self._study2()
-        return _closere(self.code, self.stmt_start) is not None
+        rudisha _closere(self.code, self.stmt_start) is not None
 
-    def get_last_stmt_bracketing(self):
+    eleza get_last_stmt_bracketing(self):
         """Return bracketing structure of the last interesting statement.
 
         The returned tuple is in the format defined in _study2().
         """
         self._study2()
-        return self.stmt_bracketing
+        rudisha self.stmt_bracketing
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_pyparse', verbosity=2)

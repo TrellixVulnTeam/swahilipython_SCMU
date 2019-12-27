@@ -84,10 +84,10 @@ CPython implementation improvements:
   and similar to the `PyPy dict implementation`_.  This resulted in dictionaries
   using 20% to 25% less memory when compared to Python 3.5.
 
-* Customization of class creation has been simplified with the
+* Customization of kundi creation has been simplified with the
   :ref:`new protocol <whatsnew36-pep487>`.
 
-* The class attribute definition order is
+* The kundi attribute definition order is
   :ref:`now preserved  <whatsnew36-pep520>`.
 
 * The order of elements in ``**kwargs`` now
@@ -213,18 +213,18 @@ PEP 526: Syntax for variable annotations
 
 :pep:`484` introduced the standard for type annotations of function
 parameters, a.k.a. type hints. This PEP adds syntax to Python for annotating
-the types of variables including class variables and instance variables::
+the types of variables including kundi variables and instance variables::
 
     primes: List[int] = []
 
     captain: str  # Note: no initial value!
 
-    class Starship:
+    kundi Starship:
         stats: Dict[str, int] = {}
 
 Just as for function annotations, the Python interpreter does not attach any
 particular meaning to variable annotations and only stores them in the
-``__annotations__`` attribute of a class or module.
+``__annotations__`` attribute of a kundi or module.
 
 In contrast to variable declarations in statically typed languages,
 the goal of annotation syntax is to provide an easy way to specify structured
@@ -289,7 +289,7 @@ function body.  In Python 3.6 this restriction has been lifted, making it
 possible to define *asynchronous generators*::
 
     async def ticker(delay, to):
-        """Yield numbers from 0 to *to* every *delay* seconds."""
+        """Yield numbers kutoka 0 to *to* every *delay* seconds."""
         for i in range(to):
             yield i
             await asyncio.sleep(delay)
@@ -325,34 +325,34 @@ of comprehensions::
 
 .. _whatsnew36-pep487:
 
-PEP 487: Simpler customization of class creation
+PEP 487: Simpler customization of kundi creation
 ------------------------------------------------
 
-It is now possible to customize subclass creation without using a metaclass.
+It is now possible to customize subkundi creation without using a metaclass.
 The new ``__init_subclass__`` classmethod will be called on the base class
-whenever a new subclass is created::
+whenever a new subkundi is created::
 
-    class PluginBase:
+    kundi PluginBase:
         subclasses = []
 
         def __init_subclass__(cls, **kwargs):
             super().__init_subclass__(**kwargs)
             cls.subclasses.append(cls)
 
-    class Plugin1(PluginBase):
+    kundi Plugin1(PluginBase):
         pass
 
-    class Plugin2(PluginBase):
+    kundi Plugin2(PluginBase):
         pass
 
-In order to allow zero-argument :func:`super` calls to work correctly from
+In order to allow zero-argument :func:`super` calls to work correctly kutoka
 :meth:`~object.__init_subclass__` implementations, custom metaclasses must
 ensure that the new ``__classcell__`` namespace entry is propagated to
 ``type.__new__`` (as described in :ref:`class-object-creation`).
 
 .. seealso::
 
- :pep:`487` -- Simpler customization of class creation
+ :pep:`487` -- Simpler customization of kundi creation
     PEP written and implemented by Martin Teichmann.
 
  :ref:`Feature documentation <class-customization>`
@@ -364,14 +364,14 @@ PEP 487: Descriptor Protocol Enhancements
 -----------------------------------------
 
 :pep:`487` extends the descriptor protocol to include the new optional
-:meth:`~object.__set_name__` method.  Whenever a new class is defined, the new
+:meth:`~object.__set_name__` method.  Whenever a new kundi is defined, the new
 method will be called on all descriptors included in the definition, providing
-them with a reference to the class being defined and the name given to the
-descriptor within the class namespace.  In other words, instances of
+them with a reference to the kundi being defined and the name given to the
+descriptor within the kundi namespace.  In other words, instances of
 descriptors can now know the attribute name of the descriptor in the
 owner class::
 
-    class IntField:
+    kundi IntField:
         def __get__(self, instance, owner):
             return instance.__dict__[self.name]
 
@@ -384,13 +384,13 @@ owner class::
         def __set_name__(self, owner, name):
             self.name = name
 
-    class Model:
+    kundi Model:
         int_field = IntField()
 
 
 .. seealso::
 
-    :pep:`487` -- Simpler customization of class creation
+    :pep:`487` -- Simpler customization of kundi creation
         PEP written and implemented by Martin Teichmann.
 
     :ref:`Feature documentation <descriptors>`
@@ -407,7 +407,7 @@ operate on file system paths to assume that such objects are only one
 of those two types (an :class:`int` representing a file descriptor
 does not count as that is not a file path). Unfortunately that
 assumption prevents alternative object representations of file system
-paths like :mod:`pathlib` from working with pre-existing code,
+paths like :mod:`pathlib` kutoka working with pre-existing code,
 including Python's standard library.
 
 To fix this situation, a new interface represented by
@@ -441,16 +441,16 @@ Here are some examples of how the new interface allows for
 :class:`pathlib.Path` to be used more easily and transparently with
 pre-existing code::
 
-  >>> import pathlib
+  >>> agiza pathlib
   >>> with open(pathlib.Path("README")) as f:
   ...     contents = f.read()
   ...
-  >>> import os.path
+  >>> agiza os.path
   >>> os.path.splitext(pathlib.Path("some_file.txt"))
   ('some_file', '.txt')
   >>> os.path.join("/a/b", pathlib.Path("c"))
   '/a/b/c'
-  >>> import os
+  >>> agiza os
   >>> os.fspath(pathlib.Path("some_file.txt"))
   'some_file.txt'
 
@@ -547,11 +547,11 @@ console use, set :envvar:`PYTHONLEGACYWINDOWSSTDIO`.
 PEP 520: Preserving Class Attribute Definition Order
 ----------------------------------------------------
 
-Attributes in a class definition body have a natural ordering: the same
+Attributes in a kundi definition body have a natural ordering: the same
 order in which the names appear in the source.  This order is now
 preserved in the new class's :attr:`~object.__dict__` attribute.
 
-Also, the effective default class *execution* namespace (returned from
+Also, the effective default kundi *execution* namespace (returned kutoka
 :ref:`type.__prepare__() <prepare>`) is now an insertion-order-preserving
 mapping.
 
@@ -745,7 +745,7 @@ Some smaller changes made to the core Python language are:
 
 * It is now possible to set a :ref:`special method <specialnames>` to
   ``None`` to indicate that the corresponding operation is not available.
-  For example, if a class sets :meth:`__iter__` to ``None``, the class
+  For example, if a kundi sets :meth:`__iter__` to ``None``, the class
   is not iterable.
   (Contributed by Andrew Barnert and Ivan Levkivskyi in :issue:`25958`.)
 
@@ -755,12 +755,12 @@ Some smaller changes made to the core Python language are:
   (Contributed by Emanuel Barry in :issue:`26823`.)
 
 * Import now raises the new exception :exc:`ModuleNotFoundError`
-  (subclass of :exc:`ImportError`) when it cannot find a module.  Code
+  (subkundi of :exc:`ImportError`) when it cannot find a module.  Code
   that currently checks for ImportError (in try-except) will still work.
   (Contributed by Eric Snow in :issue:`15767`.)
 
 * Class methods relying on zero-argument ``super()`` will now work correctly
-  when called from metaclass methods during class creation.
+  when called kutoka metakundi methods during kundi creation.
   (Contributed by Martin Teichmann in :issue:`23722`.)
 
 
@@ -819,7 +819,7 @@ Notable changes in the :mod:`asyncio` module since Python 3.5.0
 (all backported to 3.5.x due to the provisional status):
 
 * The :func:`~asyncio.get_event_loop` function has been changed to
-  always return the currently running loop when called from coroutines
+  always return the currently running loop when called kutoka coroutines
   and callbacks.
   (Contributed by Yury Selivanov in :issue:`28613`.)
 
@@ -829,7 +829,7 @@ Notable changes in the :mod:`asyncio` module since Python 3.5.0
   (Contributed by Yury Selivanov.)
 
 * New :func:`~asyncio.run_coroutine_threadsafe` function to submit
-  coroutines to event loops from other threads.
+  coroutines to event loops kutoka other threads.
   (Contributed by Vincent Michel.)
 
 * New :meth:`Transport.is_closing() <asyncio.BaseTransport.is_closing>`
@@ -852,7 +852,7 @@ Notable changes in the :mod:`asyncio` module since Python 3.5.0
   (Contributed by Yury Selivanov in :issue:`27040`.)
 
 * New :meth:`StreamReader.readuntil() <asyncio.StreamReader.readuntil>`
-  method to read data from the stream until a separator bytes
+  method to read data kutoka the stream until a separator bytes
   sequence appears.
   (Contributed by Mark Korenberg.)
 
@@ -920,15 +920,15 @@ and :const:`cmath.nanj` to match the format used by complex repr.
 collections
 -----------
 
-The new :class:`~collections.abc.Collection` abstract base class has been
+The new :class:`~collections.abc.Collection` abstract base kundi has been
 added to represent sized iterable container classes.
 (Contributed by Ivan Levkivskyi, docs by Neil Girdhar in :issue:`27598`.)
 
-The new :class:`~collections.abc.Reversible` abstract base class represents
+The new :class:`~collections.abc.Reversible` abstract base kundi represents
 iterable classes that also provide the :meth:`__reversed__` method.
 (Contributed by Ivan Levkivskyi in :issue:`25987`.)
 
-The new :class:`~collections.abc.AsyncGenerator` abstract base class represents
+The new :class:`~collections.abc.AsyncGenerator` abstract base kundi represents
 asynchronous generators.
 (Contributed by Yury Selivanov in :issue:`28720`.)
 
@@ -949,7 +949,7 @@ concurrent.futures
 ------------------
 
 The :class:`ThreadPoolExecutor <concurrent.futures.ThreadPoolExecutor>`
-class constructor now accepts an optional *thread_name_prefix* argument
+kundi constructor now accepts an optional *thread_name_prefix* argument
 to make it possible to customize the names of the threads created by the
 pool.
 (Contributed by Gregory P. Smith in :issue:`27664`.)
@@ -958,11 +958,11 @@ pool.
 contextlib
 ----------
 
-The :class:`contextlib.AbstractContextManager` class has been added to
-provide an abstract base class for context managers.  It provides a
+The :class:`contextlib.AbstractContextManager` kundi has been added to
+provide an abstract base kundi for context managers.  It provides a
 sensible default implementation for `__enter__()` which returns
 ``self`` and leaves `__exit__()` an abstract method.  A matching
-class has been added to the :mod:`typing` module as
+kundi has been added to the :mod:`typing` module as
 :class:`typing.ContextManager`.
 (Contributed by Brett Cannon in :issue:`25609`.)
 
@@ -1011,7 +1011,7 @@ with a positive denominator::
 distutils
 ---------
 
-The ``default_format`` attribute has been removed from
+The ``default_format`` attribute has been removed kutoka
 :class:`distutils.command.sdist.sdist` and the ``formats``
 attribute defaults to ``['gztar']``. Although not anticipated,
 any code relying on the presence of ``default_format`` may
@@ -1033,7 +1033,7 @@ The :class:`~email.generator.DecodedGenerator` now supports the *policy*
 keyword.
 
 There is a new :mod:`~email.policy` attribute,
-:attr:`~email.policy.Policy.message_factory`, that controls what class is used
+:attr:`~email.policy.Policy.message_factory`, that controls what kundi is used
 by default when the parser creates new message objects.  For the
 :attr:`email.policy.compat32` policy this is :class:`~email.message.Message`,
 for the new policies it is :class:`~email.message.EmailMessage`.
@@ -1057,13 +1057,13 @@ constants that can be combined using the bitwise operators.
 (Contributed by Ethan Furman in :issue:`23591`.)
 
 Many standard library modules have been updated to use the
-:class:`~enum.IntFlags` class for their constants.
+:class:`~enum.IntFlags` kundi for their constants.
 
 The new :class:`enum.auto` value can be used to assign values to enum
 members automatically::
 
-    >>> from enum import Enum, auto
-    >>> class Color(Enum):
+    >>> kutoka enum agiza Enum, auto
+    >>> kundi Color(Enum):
     ...     red = auto()
     ...     blue = auto()
     ...     green = auto()
@@ -1155,7 +1155,7 @@ functions and classes.
 in :issue:`1612262`.)
 
 The IDLE features formerly implemented as extensions have been reimplemented
-as normal features.  Their settings have been moved from the Extensions tab
+as normal features.  Their settings have been moved kutoka the Extensions tab
 to other dialog tabs.
 (Contributed by Charles Wohlganger and Terry Jan Reedy in :issue:`27099`.)
 
@@ -1199,7 +1199,7 @@ importlib
 ---------
 
 Import now raises the new exception :exc:`ModuleNotFoundError`
-(subclass of :exc:`ImportError`) when it cannot find a module.  Code
+(subkundi of :exc:`ImportError`) when it cannot find a module.  Code
 that current checks for ``ImportError`` (in try-except) will still work.
 (Contributed by Eric Snow in :issue:`15767`.)
 
@@ -1209,9 +1209,9 @@ restriction that :class:`importlib.machinery.BuiltinImporter` and
 :class:`importlib.machinery.ExtensionFileLoader` couldn't be used with
 :class:`importlib.util.LazyLoader`.
 
-:func:`importlib.util.cache_from_source`,
-:func:`importlib.util.source_from_cache`, and
-:func:`importlib.util.spec_from_file_location` now accept a
+:func:`importlib.util.cache_kutoka_source`,
+:func:`importlib.util.source_kutoka_cache`, and
+:func:`importlib.util.spec_kutoka_file_location` now accept a
 :term:`path-like object`.
 
 
@@ -1223,7 +1223,7 @@ implicit ``.0`` parameters generated by the compiler for comprehension and
 generator expression scopes as if they were positional-only parameters called
 ``implicit0``. (Contributed by Jelle Zijlstra in :issue:`19611`.)
 
-To reduce code churn when upgrading from Python 2.7 and the legacy
+To reduce code churn when upgrading kutoka Python 2.7 and the legacy
 :func:`inspect.getargspec` API, the previously documented deprecation of
 :func:`inspect.getfullargspec` has been reversed. While this function is
 convenient for single/source Python 2/3 code bases, the richer
@@ -1300,7 +1300,7 @@ See the summary of :ref:`PEP 519 <whatsnew36-pep519>` for details.
 pdb
 ---
 
-The :class:`~pdb.Pdb` class constructor has a new optional *readrc* argument
+The :class:`~pdb.Pdb` kundi constructor has a new optional *readrc* argument
 to control whether ``.pdbrc`` files should be read.
 
 
@@ -1337,7 +1337,7 @@ random
 -------
 
 The new :func:`~random.choices` function returns a list of elements of
-specified size from the given population with optional weights.
+specified size kutoka the given population with optional weights.
 (Contributed by Raymond Hettinger in :issue:`18844`.)
 
 
@@ -1418,7 +1418,7 @@ The :meth:`~socket.socket.setsockopt` now supports the
 The socket module now supports the address family
 :data:`~socket.AF_ALG` to interface with Linux Kernel crypto API. ``ALG_*``,
 ``SOL_ALG`` and :meth:`~socket.socket.sendmsg_afalg` were added.
-(Contributed by Christian Heimes in :issue:`27744` with support from
+(Contributed by Christian Heimes in :issue:`27744` with support kutoka
 Victor Stinner.)
 
 New Linux constants ``TCP_USER_TIMEOUT`` and ``TCP_CONGESTION`` were added.
@@ -1447,7 +1447,7 @@ ssl
 :mod:`ssl` supports OpenSSL 1.1.0.  The minimum recommend version is 1.0.2.
 (Contributed by Christian Heimes in :issue:`26470`.)
 
-3DES has been removed from the default cipher suites and ChaCha20 Poly1305
+3DES has been removed kutoka the default cipher suites and ChaCha20 Poly1305
 cipher suites have been added.
 (Contributed by Christian Heimes in :issue:`27850` and :issue:`27766`.)
 
@@ -1455,7 +1455,7 @@ cipher suites have been added.
 and ciphers.
 (Contributed by Christian Heimes in :issue:`28043`.)
 
-SSL session can be copied from one client-side connection to another
+SSL session can be copied kutoka one client-side connection to another
 with the new :class:`~ssl.SSLSession` class.  TLS session resumption can
 speed up the initial handshake, reduce latency and improve performance
 (Contributed by Christian Heimes in :issue:`19500` based on a draft by
@@ -1586,7 +1586,7 @@ tracemalloc
 The :mod:`tracemalloc` module now supports tracing memory allocations in
 multiple different address spaces.
 
-The new :class:`~tracemalloc.DomainFilter` filter class has been added
+The new :class:`~tracemalloc.DomainFilter` filter kundi has been added
 to filter block traces by their address space (domain).
 
 (Contributed by Victor Stinner in :issue:`26588`.)
@@ -1607,18 +1607,18 @@ type annotation.
 (Contributed by Guido van Rossum in `Github #195
 <https://github.com/python/typing/pull/195>`_.)
 
-The :class:`typing.ContextManager` class has been added for
+The :class:`typing.ContextManager` kundi has been added for
 representing :class:`contextlib.AbstractContextManager`.
 (Contributed by Brett Cannon in :issue:`25609`.)
 
-The :class:`typing.Collection` class has been added for
+The :class:`typing.Collection` kundi has been added for
 representing :class:`collections.abc.Collection`.
 (Contributed by Ivan Levkivskyi in :issue:`27598`.)
 
 The :const:`typing.ClassVar` type construct has been added to
-mark class variables.  As introduced in :pep:`526`, a variable annotation
+mark kundi variables.  As introduced in :pep:`526`, a variable annotation
 wrapped in ClassVar indicates that a given attribute is intended to be used as
-a class variable and should not be set on instances of that class.
+a kundi variable and should not be set on instances of that class.
 (Contributed by Ivan Levkivskyi in `Github #280
 <https://github.com/python/typing/pull/280>`_.)
 
@@ -1630,7 +1630,7 @@ A new :const:`~typing.TYPE_CHECKING` constant that is assumed to be
 A new :func:`~typing.NewType` helper function has been added to create
 lightweight distinct types for annotations::
 
-    from typing import NewType
+    kutoka typing agiza NewType
 
     UserId = NewType('UserId', int)
     some_id = UserId(524313)
@@ -1643,7 +1643,7 @@ of the original type.  (Contributed by Ivan Levkivskyi in `Github #189
 unicodedata
 -----------
 
-The :mod:`unicodedata` module now uses data from `Unicode 9.0.0
+The :mod:`unicodedata` module now uses data kutoka `Unicode 9.0.0
 <http://unicode.org/versions/Unicode9.0.0/>`_.
 (Contributed by Benjamin Peterson.)
 
@@ -1651,7 +1651,7 @@ The :mod:`unicodedata` module now uses data from `Unicode 9.0.0
 unittest.mock
 -------------
 
-The :class:`~unittest.mock.Mock` class has the following improvements:
+The :class:`~unittest.mock.Mock` kundi has the following improvements:
 
 * Two new methods, :meth:`Mock.assert_called()
   <unittest.mock.Mock.assert_called>` and :meth:`Mock.assert_called_once()
@@ -1705,7 +1705,7 @@ used to try to retrieve the traceback where the destroyed object was allocated.
 
 Example with the script ``example.py``::
 
-    import warnings
+    agiza warnings
 
     def func():
         return open(__file__)
@@ -1755,8 +1755,8 @@ for numerics and ``None``.
 zipfile
 -------
 
-A new :meth:`ZipInfo.from_file() <zipfile.ZipInfo.from_file>` class method
-allows making a :class:`~zipfile.ZipInfo` instance from a filesystem file.
+A new :meth:`ZipInfo.kutoka_file() <zipfile.ZipInfo.kutoka_file>` kundi method
+allows making a :class:`~zipfile.ZipInfo` instance kutoka a filesystem file.
 A new :meth:`ZipInfo.is_dir() <zipfile.ZipInfo.is_dir>` method can be used
 to check if the :class:`~zipfile.ZipInfo` instance represents a directory.
 (Contributed by Thomas Kluyver in :issue:`26039`.)
@@ -1780,13 +1780,13 @@ Optimizations
 
 * The Python interpreter now uses a 16-bit wordcode instead of bytecode which
   made a number of opcode optimizations possible.
-  (Contributed by Demur Rumed with input and reviews from
+  (Contributed by Demur Rumed with input and reviews kutoka
   Serhiy Storchaka and Victor Stinner in :issue:`26647` and :issue:`28050`.)
 
-* The :class:`asyncio.Future` class now has an optimized C implementation.
+* The :class:`asyncio.Future` kundi now has an optimized C implementation.
   (Contributed by Yury Selivanov and INADA Naoki in :issue:`26081`.)
 
-* The :class:`asyncio.Task` class now has an optimized
+* The :class:`asyncio.Task` kundi now has an optimized
   C implementation. (Contributed by Yury Selivanov in :issue:`28544`.)
 
 * Various implementation improvements in the :mod:`typing` module
@@ -1815,7 +1815,7 @@ Optimizations
 * ``bytearray % args`` is now between 2.5 and 5 times faster. (Contributed by
   Victor Stinner in :issue:`25399`).
 
-* Optimize :meth:`bytes.fromhex` and :meth:`bytearray.fromhex`: they are now
+* Optimize :meth:`bytes.kutokahex` and :meth:`bytearray.kutokahex`: they are now
   between 2x and 3.5x faster. (Contributed by Victor Stinner in :issue:`25401`).
 
 * Optimize ``bytes.replace(b'', b'.')`` and ``bytearray.replace(b'', b'.')``:
@@ -1851,7 +1851,7 @@ Optimizations
   (Contributed by Serhiy Storchaka in :issue:`25638`, :issue:`25873`,
   and :issue:`25869`.)
 
-* Creation of :class:`fractions.Fraction` instances from floats and
+* Creation of :class:`fractions.Fraction` instances kutoka floats and
   decimals is now 2 to 3 times faster.
   (Contributed by Serhiy Storchaka in :issue:`25971`.)
 
@@ -1891,7 +1891,7 @@ Build and C API Changes
   (Contributed by Emanuel Barry in :issue:`26823`.)
 
 * The new :c:func:`PyErr_SetImportErrorSubclass` function allows for
-  specifying a subclass of :exc:`ImportError` to raise.
+  specifying a subkundi of :exc:`ImportError` to raise.
   (Contributed by Eric Snow in :issue:`15767`.)
 
 * The new :c:func:`PyErr_ResourceWarning` function can be used to generate
@@ -1950,7 +1950,7 @@ a :exc:`DeprecationWarning`.  Although this will eventually become a
 (Contributed by Emanuel Barry in :issue:`27364`.)
 
 When performing a relative import, falling back on ``__name__`` and
-``__path__`` from the calling module when ``__spec__`` or
+``__path__`` kutoka the calling module when ``__spec__`` or
 ``__package__`` are not defined now raises an :exc:`ImportWarning`.
 (Contributed by Rose Ames in :issue:`25791`.)
 
@@ -2009,7 +2009,7 @@ are now deprecated. They were the only remaining implementations of
 been deprecated in previous versions of Python in favour of
 :meth:`importlib.abc.Loader.exec_module`.
 
-The :class:`importlib.machinery.WindowsRegistryFinder` class is now
+The :class:`importlib.machinery.WindowsRegistryFinder` kundi is now
 deprecated. As of 3.6.0, it is still added to :attr:`sys.meta_path` by
 default (on Windows), but this may change in future releases.
 
@@ -2096,19 +2096,19 @@ API and Feature Removals
   name for a given path.
   (Contributed by Yury Selivanov in :issue:`13248`.)
 
-* ``traceback.Ignore`` class and ``traceback.usage``, ``traceback.modname``,
-  ``traceback.fullmodname``, ``traceback.find_lines_from_code``,
+* ``traceback.Ignore`` kundi and ``traceback.usage``, ``traceback.modname``,
+  ``traceback.fullmodname``, ``traceback.find_lines_kutoka_code``,
   ``traceback.find_lines``, ``traceback.find_strings``,
-  ``traceback.find_executable_lines`` methods were removed from the
+  ``traceback.find_executable_lines`` methods were removed kutoka the
   :mod:`traceback` module. They were undocumented methods deprecated since
-  Python 3.2 and equivalent functionality is available from private methods.
+  Python 3.2 and equivalent functionality is available kutoka private methods.
 
 * The ``tk_menuBar()`` and ``tk_bindForTraversal()`` dummy methods in
   :mod:`tkinter` widget classes were removed (corresponding Tk commands
   were obsolete since Tk 4.0).
 
 * The :meth:`~zipfile.ZipFile.open` method of the :class:`zipfile.ZipFile`
-  class no longer supports the ``'U'`` mode (was deprecated since Python 3.4).
+  kundi no longer supports the ``'U'`` mode (was deprecated since Python 3.4).
   Use :class:`io.TextIOWrapper` for reading compressed text files in
   :term:`universal newlines` mode.
 
@@ -2119,7 +2119,7 @@ API and Feature Removals
   script that created these modules is still available in the source
   distribution at :source:`Tools/scripts/h2py.py`.
 
-* The deprecated ``asynchat.fifo`` class has been removed.
+* The deprecated ``asynchat.fifo`` kundi has been removed.
 
 
 Porting to Python 3.6
@@ -2169,7 +2169,7 @@ Changes in the Python API
 
 * The functions in the :mod:`compileall` module now return booleans instead
   of ``1`` or ``0`` to represent success or failure, respectively. Thanks to
-  booleans being a subclass of integers, this should only be an issue if you
+  booleans being a subkundi of integers, this should only be an issue if you
   were doing identity checks for ``1`` or ``0``. See :issue:`25768`.
 
 * Reading the :attr:`~urllib.parse.SplitResult.port` attribute of
@@ -2187,7 +2187,7 @@ Changes in the Python API
   :mod:`fileinput`, :mod:`ftplib`, :mod:`logging`, :mod:`mailbox`,
   :mod:`mimetypes`, :mod:`optparse`, :mod:`plistlib`, :mod:`smtpd`,
   :mod:`subprocess`, :mod:`tarfile`, :mod:`threading` and
-  :mod:`wave`.  This means they will export new symbols when ``import *``
+  :mod:`wave`.  This means they will export new symbols when ``agiza *``
   is used.
   (Contributed by Joel Taddei and Jacek Kołodziej in :issue:`23883`.)
 
@@ -2195,14 +2195,14 @@ Changes in the Python API
   to ``__spec__.parent`` then :exc:`ImportWarning` is raised.
   (Contributed by Brett Cannon in :issue:`25791`.)
 
-* When a relative import is performed and no parent package is known, then
+* When a relative agiza is performed and no parent package is known, then
   :exc:`ImportError` will be raised. Previously, :exc:`SystemError` could be
   raised. (Contributed by Brett Cannon in :issue:`18018`.)
 
 * Servers based on the :mod:`socketserver` module, including those
   defined in :mod:`http.server`, :mod:`xmlrpc.server` and
   :mod:`wsgiref.simple_server`, now only catch exceptions derived
-  from :exc:`Exception`. Therefore if a request handler raises
+  kutoka :exc:`Exception`. Therefore if a request handler raises
   an exception like :exc:`SystemExit` or :exc:`KeyboardInterrupt`,
   :meth:`~socketserver.BaseServer.handle_error` is no longer called, and
   the exception will stop a single-threaded server. (Contributed by
@@ -2234,10 +2234,10 @@ Changes in the Python API
   longer use the one-argument form to get the type of an object.
 
 * As part of :pep:`487`, the handling of keyword arguments passed to
-  :class:`type` (other than the metaclass hint, ``metaclass``) is now
+  :class:`type` (other than the metakundi hint, ``metaclass``) is now
   consistently delegated to :meth:`object.__init_subclass__`. This means that
   :meth:`type.__new__` and :meth:`type.__init__` both now accept arbitrary
-  keyword arguments, but :meth:`object.__init_subclass__` (which is called from
+  keyword arguments, but :meth:`object.__init_subclass__` (which is called kutoka
   :meth:`type.__new__`) will reject them by default. Custom metaclasses
   accepting additional keyword arguments will need to adjust their calls to
   :meth:`type.__new__` (whether direct or via :class:`super`) accordingly.
@@ -2264,7 +2264,7 @@ Changes in the Python API
   it is now sent with HTTP 1.1 chunked encoding. If a file object has to
   be sent to a HTTP 1.0 server, the Content-Length value now has to be
   specified by the caller.
-  (Contributed by Demian Brecht and Rolf Krahl with tweaks from
+  (Contributed by Demian Brecht and Rolf Krahl with tweaks kutoka
   Martin Panter in :issue:`12319`.)
 
 * The :class:`~csv.DictReader` now returns rows of type
@@ -2283,8 +2283,8 @@ Changes in the Python API
   ``LD_LIBRARY_PATH`` for shared libraries.
   (Contributed by Vinay Sajip in :issue:`9998`.)
 
-* The :class:`imaplib.IMAP4` class now handles flags containing the
-  ``']'`` character in messages sent from the server to improve
+* The :class:`imaplib.IMAP4` kundi now handles flags containing the
+  ``']'`` character in messages sent kutoka the server to improve
   real-world compatibility.
   (Contributed by Lita Cho in :issue:`21815`.)
 
@@ -2310,21 +2310,21 @@ Changes in the Python API
   Previously, a :exc:`RuntimeError` was raised in those scenarios.
 
 * when custom metaclasses are combined with zero-argument :func:`super` or
-  direct references from methods to the implicit ``__class__`` closure
+  direct references kutoka methods to the implicit ``__class__`` closure
   variable, the implicit ``__classcell__`` namespace entry must now be passed
   up to ``type.__new__`` for initialisation. Failing to do so will result in
   a :exc:`DeprecationWarning` in Python 3.6 and a :exc:`RuntimeError` in
   Python 3.8.
 
-* With the introduction of :exc:`ModuleNotFoundError`, import system consumers
-  may start expecting import system replacements to raise that more specific
+* With the introduction of :exc:`ModuleNotFoundError`, agiza system consumers
+  may start expecting agiza system replacements to raise that more specific
   exception when appropriate, rather than the less-specific :exc:`ImportError`.
   To provide future compatibility with such consumers, implementors of
-  alternative import systems that completely replace :func:`__import__` will
-  need to update their implementations to raise the new subclass when a module
+  alternative agiza systems that completely replace :func:`__import__` will
+  need to update their implementations to raise the new subkundi when a module
   can't be found at all. Implementors of compliant plugins to the default
-  import system shouldn't need to make any changes, as the default import
-  system will raise the new subclass when appropriate.
+  agiza system shouldn't need to make any changes, as the default import
+  system will raise the new subkundi when appropriate.
 
 
 Changes in the C API
@@ -2346,7 +2346,7 @@ CPython bytecode changes
 There have been several major changes to the :term:`bytecode` in Python 3.6.
 
 * The Python interpreter now uses a 16-bit wordcode instead of bytecode.
-  (Contributed by Demur Rumed with input and reviews from
+  (Contributed by Demur Rumed with input and reviews kutoka
   Serhiy Storchaka and Victor Stinner in :issue:`26647` and :issue:`28050`.)
 
 * The new :opcode:`FORMAT_VALUE` and :opcode:`BUILD_STRING` opcodes as part

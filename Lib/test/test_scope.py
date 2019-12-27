@@ -4,14 +4,14 @@ agiza weakref
 kutoka test.support agiza check_syntax_error, cpython_only
 
 
-class ScopeTests(unittest.TestCase):
+kundi ScopeTests(unittest.TestCase):
 
-    def testSimpleNesting(self):
+    eleza testSimpleNesting(self):
 
-        def make_adder(x):
-            def adder(y):
-                return x + y
-            return adder
+        eleza make_adder(x):
+            eleza adder(y):
+                rudisha x + y
+            rudisha adder
 
         inc = make_adder(1)
         plus10 = make_adder(10)
@@ -19,14 +19,14 @@ class ScopeTests(unittest.TestCase):
         self.assertEqual(inc(1), 2)
         self.assertEqual(plus10(-2), 8)
 
-    def testExtraNesting(self):
+    eleza testExtraNesting(self):
 
-        def make_adder2(x):
-            def extra(): # check freevars passing through non-use scopes
-                def adder(y):
-                    return x + y
-                return adder
-            return extra()
+        eleza make_adder2(x):
+            eleza extra(): # check freevars passing through non-use scopes
+                eleza adder(y):
+                    rudisha x + y
+                rudisha adder
+            rudisha extra()
 
         inc = make_adder2(1)
         plus10 = make_adder2(10)
@@ -34,13 +34,13 @@ class ScopeTests(unittest.TestCase):
         self.assertEqual(inc(1), 2)
         self.assertEqual(plus10(-2), 8)
 
-    def testSimpleAndRebinding(self):
+    eleza testSimpleAndRebinding(self):
 
-        def make_adder3(x):
-            def adder(y):
-                return x + y
+        eleza make_adder3(x):
+            eleza adder(y):
+                rudisha x + y
             x = x + 1 # check tracking of assignment to x in defining scope
-            return adder
+            rudisha adder
 
         inc = make_adder3(0)
         plus10 = make_adder3(9)
@@ -48,16 +48,16 @@ class ScopeTests(unittest.TestCase):
         self.assertEqual(inc(1), 2)
         self.assertEqual(plus10(-2), 8)
 
-    def testNestingGlobalNoFree(self):
+    eleza testNestingGlobalNoFree(self):
 
-        def make_adder4(): # XXX add exta level of indirection
-            def nest():
-                def nest():
-                    def adder(y):
-                        return global_x + y # check that plain old globals work
-                    return adder
-                return nest()
-            return nest()
+        eleza make_adder4(): # XXX add exta level of indirection
+            eleza nest():
+                eleza nest():
+                    eleza adder(y):
+                        rudisha global_x + y # check that plain old globals work
+                    rudisha adder
+                rudisha nest()
+            rudisha nest()
 
         global_x = 1
         adder = make_adder4()
@@ -66,13 +66,13 @@ class ScopeTests(unittest.TestCase):
         global_x = 10
         self.assertEqual(adder(-2), 8)
 
-    def testNestingThroughClass(self):
+    eleza testNestingThroughClass(self):
 
-        def make_adder5(x):
-            class Adder:
-                def __call__(self, y):
-                    return x + y
-            return Adder()
+        eleza make_adder5(x):
+            kundi Adder:
+                eleza __call__(self, y):
+                    rudisha x + y
+            rudisha Adder()
 
         inc = make_adder5(1)
         plus10 = make_adder5(10)
@@ -80,14 +80,14 @@ class ScopeTests(unittest.TestCase):
         self.assertEqual(inc(1), 2)
         self.assertEqual(plus10(-2), 8)
 
-    def testNestingPlusFreeRefToGlobal(self):
+    eleza testNestingPlusFreeRefToGlobal(self):
 
-        def make_adder6(x):
+        eleza make_adder6(x):
             global global_nest_x
-            def adder(y):
-                return global_nest_x + y
+            eleza adder(y):
+                rudisha global_nest_x + y
             global_nest_x = x
-            return adder
+            rudisha adder
 
         inc = make_adder6(1)
         plus10 = make_adder6(10)
@@ -95,53 +95,53 @@ class ScopeTests(unittest.TestCase):
         self.assertEqual(inc(1), 11) # there's only one global
         self.assertEqual(plus10(-2), 8)
 
-    def testNearestEnclosingScope(self):
+    eleza testNearestEnclosingScope(self):
 
-        def f(x):
-            def g(y):
+        eleza f(x):
+            eleza g(y):
                 x = 42 # check that this masks binding in f()
-                def h(z):
-                    return x + z
-                return h
-            return g(2)
+                eleza h(z):
+                    rudisha x + z
+                rudisha h
+            rudisha g(2)
 
         test_func = f(10)
         self.assertEqual(test_func(5), 47)
 
-    def testMixedFreevarsAndCellvars(self):
+    eleza testMixedFreevarsAndCellvars(self):
 
-        def identity(x):
-            return x
+        eleza identity(x):
+            rudisha x
 
-        def f(x, y, z):
-            def g(a, b, c):
+        eleza f(x, y, z):
+            eleza g(a, b, c):
                 a = a + x # 3
-                def h():
+                eleza h():
                     # z * (4 + 9)
                     # 3 * 13
-                    return identity(z * (b + y))
+                    rudisha identity(z * (b + y))
                 y = c + z # 9
-                return h
-            return g
+                rudisha h
+            rudisha g
 
         g = f(1, 2, 3)
         h = g(2, 4, 6)
         self.assertEqual(h(), 39)
 
-    def testFreeVarInMethod(self):
+    eleza testFreeVarInMethod(self):
 
-        def test():
+        eleza test():
             method_and_var = "var"
-            class Test:
-                def method_and_var(self):
-                    return "method"
-                def test(self):
-                    return method_and_var
-                def actual_global(self):
-                    return str("global")
-                def str(self):
-                    return str(self)
-            return Test()
+            kundi Test:
+                eleza method_and_var(self):
+                    rudisha "method"
+                eleza test(self):
+                    rudisha method_and_var
+                eleza actual_global(self):
+                    rudisha str("global")
+                eleza str(self):
+                    rudisha str(self)
+            rudisha Test()
 
         t = test()
         self.assertEqual(t.test(), "var")
@@ -149,84 +149,84 @@ class ScopeTests(unittest.TestCase):
         self.assertEqual(t.actual_global(), "global")
 
         method_and_var = "var"
-        class Test:
-            # this class is not nested, so the rules are different
-            def method_and_var(self):
-                return "method"
-            def test(self):
-                return method_and_var
-            def actual_global(self):
-                return str("global")
-            def str(self):
-                return str(self)
+        kundi Test:
+            # this kundi is not nested, so the rules are different
+            eleza method_and_var(self):
+                rudisha "method"
+            eleza test(self):
+                rudisha method_and_var
+            eleza actual_global(self):
+                rudisha str("global")
+            eleza str(self):
+                rudisha str(self)
 
         t = Test()
         self.assertEqual(t.test(), "var")
         self.assertEqual(t.method_and_var(), "method")
         self.assertEqual(t.actual_global(), "global")
 
-    def testCellIsKwonlyArg(self):
+    eleza testCellIsKwonlyArg(self):
         # Issue 1409: Initialisation of a cell value,
         # when it comes kutoka a keyword-only parameter
-        def foo(*, a=17):
-            def bar():
-                return a + 5
-            return bar() + 3
+        eleza foo(*, a=17):
+            eleza bar():
+                rudisha a + 5
+            rudisha bar() + 3
 
         self.assertEqual(foo(a=42), 50)
         self.assertEqual(foo(), 25)
 
-    def testRecursion(self):
+    eleza testRecursion(self):
 
-        def f(x):
-            def fact(n):
-                if n == 0:
-                    return 1
+        eleza f(x):
+            eleza fact(n):
+                ikiwa n == 0:
+                    rudisha 1
                 else:
-                    return n * fact(n - 1)
-            if x >= 0:
-                return fact(x)
+                    rudisha n * fact(n - 1)
+            ikiwa x >= 0:
+                rudisha fact(x)
             else:
                 raise ValueError("x must be >= 0")
 
         self.assertEqual(f(6), 720)
 
 
-    def testUnoptimizedNamespaces(self):
+    eleza testUnoptimizedNamespaces(self):
 
-        check_syntax_error(self, """if 1:
-            def unoptimized_clash1(strip):
-                def f(s):
+        check_syntax_error(self, """ikiwa 1:
+            eleza unoptimized_clash1(strip):
+                eleza f(s):
                     kutoka sys agiza *
-                    return getrefcount(s) # ambiguity: free or local
-                return f
+                    rudisha getrefcount(s) # ambiguity: free or local
+                rudisha f
             """)
 
-        check_syntax_error(self, """if 1:
-            def unoptimized_clash2():
+        check_syntax_error(self, """ikiwa 1:
+            eleza unoptimized_clash2():
                 kutoka sys agiza *
-                def f(s):
-                    return getrefcount(s) # ambiguity: global or local
-                return f
+                eleza f(s):
+                    rudisha getrefcount(s) # ambiguity: global or local
+                rudisha f
             """)
 
-        check_syntax_error(self, """if 1:
-            def unoptimized_clash2():
+        check_syntax_error(self, """ikiwa 1:
+            eleza unoptimized_clash2():
                 kutoka sys agiza *
-                def g():
-                    def f(s):
-                        return getrefcount(s) # ambiguity: global or local
-                    return f
+                eleza g():
+                    eleza f(s):
+                        rudisha getrefcount(s) # ambiguity: global or local
+                    rudisha f
             """)
 
-        check_syntax_error(self, """if 1:
-            def f():
-                def g():
+        check_syntax_error(self, """ikiwa 1:
+            eleza f():
+                eleza g():
                     kutoka sys agiza *
-                    return getrefcount # global or local?
+                    rudisha getrefcount # global or local?
             """)
 
-    def testLambdas(self):
+    eleza testLambdas(self):
 
         f1 = lambda x: lambda y: x + y
         inc = f1(1)
@@ -250,37 +250,37 @@ class ScopeTests(unittest.TestCase):
         h = g(2, 4, 6)
         self.assertEqual(h(), 18)
 
-    def testUnboundLocal(self):
+    eleza testUnboundLocal(self):
 
-        def errorInOuter():
-            print(y)
-            def inner():
-                return y
+        eleza errorInOuter():
+            andika(y)
+            eleza inner():
+                rudisha y
             y = 1
 
-        def errorInInner():
-            def inner():
-                return y
+        eleza errorInInner():
+            eleza inner():
+                rudisha y
             inner()
             y = 1
 
         self.assertRaises(UnboundLocalError, errorInOuter)
         self.assertRaises(NameError, errorInInner)
 
-    def testUnboundLocal_AfterDel(self):
+    eleza testUnboundLocal_AfterDel(self):
         # #4617: It is now legal to delete a cell variable.
         # The following functions must obviously compile,
         # and give the correct error when accessing the deleted name.
-        def errorInOuter():
+        eleza errorInOuter():
             y = 1
             del y
-            print(y)
-            def inner():
-                return y
+            andika(y)
+            eleza inner():
+                rudisha y
 
-        def errorInInner():
-            def inner():
-                return y
+        eleza errorInInner():
+            eleza inner():
+                rudisha y
             y = 1
             del y
             inner()
@@ -288,11 +288,11 @@ class ScopeTests(unittest.TestCase):
         self.assertRaises(UnboundLocalError, errorInOuter)
         self.assertRaises(NameError, errorInInner)
 
-    def testUnboundLocal_AugAssign(self):
+    eleza testUnboundLocal_AugAssign(self):
         # test for bug #1501934: incorrect LOAD/STORE_GLOBAL generation
-        exec("""if 1:
+        exec("""ikiwa 1:
             global_x = 1
-            def f():
+            eleza f():
                 global_x += 1
             try:
                 f()
@@ -302,99 +302,99 @@ class ScopeTests(unittest.TestCase):
                 fail('scope of global_x not correctly determined')
             """, {'fail': self.fail})
 
-    def testComplexDefinitions(self):
+    eleza testComplexDefinitions(self):
 
-        def makeReturner(*lst):
-            def returner():
-                return lst
-            return returner
+        eleza makeReturner(*lst):
+            eleza returner():
+                rudisha lst
+            rudisha returner
 
         self.assertEqual(makeReturner(1,2,3)(), (1,2,3))
 
-        def makeReturner2(**kwargs):
-            def returner():
-                return kwargs
-            return returner
+        eleza makeReturner2(**kwargs):
+            eleza returner():
+                rudisha kwargs
+            rudisha returner
 
         self.assertEqual(makeReturner2(a=11)()['a'], 11)
 
-    def testScopeOfGlobalStmt(self):
+    eleza testScopeOfGlobalStmt(self):
         # Examples posted by Samuele Pedroni to python-dev on 3/1/2001
 
-        exec("""if 1:
+        exec("""ikiwa 1:
             # I
             x = 7
-            def f():
+            eleza f():
                 x = 1
-                def g():
+                eleza g():
                     global x
-                    def i():
-                        def h():
-                            return x
-                        return h()
-                    return i()
-                return g()
+                    eleza i():
+                        eleza h():
+                            rudisha x
+                        rudisha h()
+                    rudisha i()
+                rudisha g()
             self.assertEqual(f(), 7)
             self.assertEqual(x, 7)
 
             # II
             x = 7
-            def f():
+            eleza f():
                 x = 1
-                def g():
+                eleza g():
                     x = 2
-                    def i():
-                        def h():
-                            return x
-                        return h()
-                    return i()
-                return g()
+                    eleza i():
+                        eleza h():
+                            rudisha x
+                        rudisha h()
+                    rudisha i()
+                rudisha g()
             self.assertEqual(f(), 2)
             self.assertEqual(x, 7)
 
             # III
             x = 7
-            def f():
+            eleza f():
                 x = 1
-                def g():
+                eleza g():
                     global x
                     x = 2
-                    def i():
-                        def h():
-                            return x
-                        return h()
-                    return i()
-                return g()
+                    eleza i():
+                        eleza h():
+                            rudisha x
+                        rudisha h()
+                    rudisha i()
+                rudisha g()
             self.assertEqual(f(), 2)
             self.assertEqual(x, 2)
 
             # IV
             x = 7
-            def f():
+            eleza f():
                 x = 3
-                def g():
+                eleza g():
                     global x
                     x = 2
-                    def i():
-                        def h():
-                            return x
-                        return h()
-                    return i()
-                return g()
+                    eleza i():
+                        eleza h():
+                            rudisha x
+                        rudisha h()
+                    rudisha i()
+                rudisha g()
             self.assertEqual(f(), 2)
             self.assertEqual(x, 2)
 
-            # XXX what about global statements in class blocks?
+            # XXX what about global statements in kundi blocks?
             # do they affect methods?
 
             x = 12
-            class Global:
+            kundi Global:
                 global x
                 x = 13
-                def set(self, val):
+                eleza set(self, val):
                     x = val
-                def get(self):
-                    return x
+                eleza get(self):
+                    rudisha x
 
             g = Global()
             self.assertEqual(g.get(), 13)
@@ -402,21 +402,21 @@ class ScopeTests(unittest.TestCase):
             self.assertEqual(g.get(), 13)
             """)
 
-    def testLeaks(self):
+    eleza testLeaks(self):
 
-        class Foo:
+        kundi Foo:
             count = 0
 
-            def __init__(self):
+            eleza __init__(self):
                 Foo.count += 1
 
-            def __del__(self):
+            eleza __del__(self):
                 Foo.count -= 1
 
-        def f1():
+        eleza f1():
             x = Foo()
-            def f2():
-                return x
+            eleza f2():
+                rudisha x
             f2()
 
         for i in range(100):
@@ -424,15 +424,15 @@ class ScopeTests(unittest.TestCase):
 
         self.assertEqual(Foo.count, 0)
 
-    def testClassAndGlobal(self):
+    eleza testClassAndGlobal(self):
 
-        exec("""if 1:
-            def test(x):
-                class Foo:
+        exec("""ikiwa 1:
+            eleza test(x):
+                kundi Foo:
                     global x
-                    def __call__(self, y):
-                        return x + y
-                return Foo()
+                    eleza __call__(self, y):
+                        rudisha x + y
+                rudisha Foo()
 
             x = 0
             self.assertEqual(test(6)(2), 8)
@@ -440,7 +440,7 @@ class ScopeTests(unittest.TestCase):
             self.assertEqual(test(3)(2), 5)
 
             looked_up_by_load_name = False
-            class X:
+            kundi X:
                 # Implicit globals inside classes are be looked up by LOAD_NAME, not
                 # LOAD_GLOBAL.
                 locals()['looked_up_by_load_name'] = True
@@ -449,100 +449,100 @@ class ScopeTests(unittest.TestCase):
             self.assertTrue(X.passed)
             """)
 
-    def testLocalsFunction(self):
+    eleza testLocalsFunction(self):
 
-        def f(x):
-            def g(y):
-                def h(z):
-                    return y + z
+        eleza f(x):
+            eleza g(y):
+                eleza h(z):
+                    rudisha y + z
                 w = x + y
                 y += 3
-                return locals()
-            return g
+                rudisha locals()
+            rudisha g
 
         d = f(2)(4)
         self.assertIn('h', d)
         del d['h']
         self.assertEqual(d, {'x': 2, 'y': 7, 'w': 6})
 
-    def testLocalsClass(self):
+    eleza testLocalsClass(self):
         # This test verifies that calling locals() does not pollute
-        # the local namespace of the class with free variables.  Old
+        # the local namespace of the kundi with free variables.  Old
         # versions of Python had a bug, where a free variable being
-        # passed through a class namespace would be inserted into
+        # passed through a kundi namespace would be inserted into
         # locals() by locals() or exec or a trace function.
         #
         # The real bug lies in frame code that copies variables
         # between fast locals and the locals dict, e.g. when executing
         # a trace function.
 
-        def f(x):
-            class C:
+        eleza f(x):
+            kundi C:
                 x = 12
-                def m(self):
-                    return x
+                eleza m(self):
+                    rudisha x
                 locals()
-            return C
+            rudisha C
 
         self.assertEqual(f(1).x, 12)
 
-        def f(x):
-            class C:
+        eleza f(x):
+            kundi C:
                 y = x
-                def m(self):
-                    return x
+                eleza m(self):
+                    rudisha x
                 z = list(locals())
-            return C
+            rudisha C
 
         varnames = f(1).z
         self.assertNotIn("x", varnames)
         self.assertIn("y", varnames)
 
     @cpython_only
-    def testLocalsClass_WithTrace(self):
+    eleza testLocalsClass_WithTrace(self):
         # Issue23728: after the trace function returns, the locals()
         # dictionary is used to update all variables, this used to
-        # include free variables. But in class statements, free
+        # include free variables. But in kundi statements, free
         # variables are not inserted...
         agiza sys
         self.addCleanup(sys.settrace, sys.gettrace())
         sys.settrace(lambda a,b,c:None)
         x = 12
 
-        class C:
-            def f(self):
-                return x
+        kundi C:
+            eleza f(self):
+                rudisha x
 
         self.assertEqual(x, 12) # Used to raise UnboundLocalError
 
-    def testBoundAndFree(self):
+    eleza testBoundAndFree(self):
         # var is bound and free in class
 
-        def f(x):
-            class C:
-                def m(self):
-                    return x
+        eleza f(x):
+            kundi C:
+                eleza m(self):
+                    rudisha x
                 a = x
-            return C
+            rudisha C
 
         inst = f(3)()
         self.assertEqual(inst.a, inst.m())
 
     @cpython_only
-    def testInteractionWithTraceFunc(self):
+    eleza testInteractionWithTraceFunc(self):
 
         agiza sys
-        def tracer(a,b,c):
-            return tracer
+        eleza tracer(a,b,c):
+            rudisha tracer
 
-        def adaptgetter(name, klass, getter):
+        eleza adaptgetter(name, klass, getter):
             kind, des = getter
-            if kind == 1:       # AV happens when stepping kutoka this line to next
-                if des == "":
+            ikiwa kind == 1:       # AV happens when stepping kutoka this line to next
+                ikiwa des == "":
                     des = "_%s__%s" % (klass.__name__, name)
-                return lambda obj: getattr(obj, des)
+                rudisha lambda obj: getattr(obj, des)
 
-        class TestClass:
+        kundi TestClass:
             pass
 
         self.addCleanup(sys.settrace, sys.gettrace())
@@ -552,10 +552,10 @@ class ScopeTests(unittest.TestCase):
 
         self.assertRaises(TypeError, sys.settrace)
 
-    def testEvalExecFreeVars(self):
+    eleza testEvalExecFreeVars(self):
 
-        def f(x):
-            return lambda: x + 1
+        eleza f(x):
+            rudisha lambda: x + 1
 
         g = f(3)
         self.assertRaises(TypeError, eval, g.__code__)
@@ -567,53 +567,53 @@ class ScopeTests(unittest.TestCase):
         else:
             self.fail("exec should have failed, because code contained free vars")
 
-    def testListCompLocalVars(self):
+    eleza testListCompLocalVars(self):
 
         try:
-            print(bad)
+            andika(bad)
         except NameError:
             pass
         else:
-            print("bad should not be defined")
+            andika("bad should not be defined")
 
-        def x():
+        eleza x():
             [bad for s in 'a b' for bad in s.split()]
 
         x()
         try:
-            print(bad)
+            andika(bad)
         except NameError:
             pass
 
-    def testEvalFreeVars(self):
+    eleza testEvalFreeVars(self):
 
-        def f(x):
-            def g():
+        eleza f(x):
+            eleza g():
                 x
                 eval("x + 1")
-            return g
+            rudisha g
 
         f(4)()
 
-    def testFreeingCell(self):
+    eleza testFreeingCell(self):
         # Test what happens when a finalizer accesses
         # the cell where the object was stored.
-        class Special:
-            def __del__(self):
+        kundi Special:
+            eleza __del__(self):
                 nestedcell_get()
 
-    def testNonLocalFunction(self):
+    eleza testNonLocalFunction(self):
 
-        def f(x):
-            def inc():
+        eleza f(x):
+            eleza inc():
                 nonlocal x
                 x += 1
-                return x
-            def dec():
+                rudisha x
+            eleza dec():
                 nonlocal x
                 x -= 1
-                return x
-            return inc, dec
+                rudisha x
+            rudisha inc, dec
 
         inc, dec = f(0)
         self.assertEqual(inc(), 1)
@@ -621,40 +621,40 @@ class ScopeTests(unittest.TestCase):
         self.assertEqual(dec(), 1)
         self.assertEqual(dec(), 0)
 
-    def testNonLocalMethod(self):
-        def f(x):
-            class c:
-                def inc(self):
+    eleza testNonLocalMethod(self):
+        eleza f(x):
+            kundi c:
+                eleza inc(self):
                     nonlocal x
                     x += 1
-                    return x
-                def dec(self):
+                    rudisha x
+                eleza dec(self):
                     nonlocal x
                     x -= 1
-                    return x
-            return c()
+                    rudisha x
+            rudisha c()
         c = f(0)
         self.assertEqual(c.inc(), 1)
         self.assertEqual(c.inc(), 2)
         self.assertEqual(c.dec(), 1)
         self.assertEqual(c.dec(), 0)
 
-    def testGlobalInParallelNestedFunctions(self):
+    eleza testGlobalInParallelNestedFunctions(self):
         # A symbol table bug leaked the global statement kutoka one
         # function to other nested functions in the same block.
         # This test verifies that a global statement in the first
         # function does not affect the second function.
         local_ns = {}
         global_ns = {}
-        exec("""if 1:
-            def f():
+        exec("""ikiwa 1:
+            eleza f():
                 y = 1
-                def g():
+                eleza g():
                     global y
-                    return y
-                def h():
-                    return y + 1
-                return g, h
+                    rudisha y
+                eleza h():
+                    rudisha y + 1
+                rudisha g, h
             y = 9
             g, h = f()
             result9 = g()
@@ -663,76 +663,76 @@ class ScopeTests(unittest.TestCase):
         self.assertEqual(2, global_ns["result2"])
         self.assertEqual(9, global_ns["result9"])
 
-    def testNonLocalClass(self):
+    eleza testNonLocalClass(self):
 
-        def f(x):
-            class c:
+        eleza f(x):
+            kundi c:
                 nonlocal x
                 x += 1
-                def get(self):
-                    return x
-            return c()
+                eleza get(self):
+                    rudisha x
+            rudisha c()
 
         c = f(0)
         self.assertEqual(c.get(), 1)
         self.assertNotIn("x", c.__class__.__dict__)
 
 
-    def testNonLocalGenerator(self):
+    eleza testNonLocalGenerator(self):
 
-        def f(x):
-            def g(y):
+        eleza f(x):
+            eleza g(y):
                 nonlocal x
                 for i in range(y):
                     x += 1
                     yield x
-            return g
+            rudisha g
 
         g = f(0)
         self.assertEqual(list(g(5)), [1, 2, 3, 4, 5])
 
-    def testNestedNonLocal(self):
+    eleza testNestedNonLocal(self):
 
-        def f(x):
-            def g():
+        eleza f(x):
+            eleza g():
                 nonlocal x
                 x -= 2
-                def h():
+                eleza h():
                     nonlocal x
                     x += 4
-                    return x
-                return h
-            return g
+                    rudisha x
+                rudisha h
+            rudisha g
 
         g = f(1)
         h = g()
         self.assertEqual(h(), 3)
 
-    def testTopIsNotSignificant(self):
+    eleza testTopIsNotSignificant(self):
         # See #9997.
-        def top(a):
+        eleza top(a):
             pass
-        def b():
+        eleza b():
             global a
 
-    def testClassNamespaceOverridesClosure(self):
+    eleza testClassNamespaceOverridesClosure(self):
         # See #17853.
         x = 42
-        class X:
+        kundi X:
             locals()["x"] = 43
             y = x
         self.assertEqual(X.y, 43)
-        class X:
+        kundi X:
             locals()["x"] = 43
             del x
         self.assertFalse(hasattr(X, "x"))
         self.assertEqual(x, 42)
 
     @cpython_only
-    def testCellLeak(self):
+    eleza testCellLeak(self):
         # Issue 17927.
         #
-        # The issue was that if self was part of a cycle involving the
+        # The issue was that ikiwa self was part of a cycle involving the
         # frame of a method call, *and* the method contained a nested
         # function referencing self, thereby forcing 'self' into a
         # cell, setting self to None would not be enough to break the
@@ -741,9 +741,9 @@ class ScopeTests(unittest.TestCase):
         # (though it will be cleared when the frame is collected).
         # Without the lambda, setting self to None is enough to break
         # the cycle.
-        class Tester:
-            def dig(self):
-                if 0:
+        kundi Tester:
+            eleza dig(self):
+                ikiwa 0:
                     lambda: self
                 try:
                     1/0
@@ -757,5 +757,5 @@ class ScopeTests(unittest.TestCase):
         self.assertIsNone(ref())
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

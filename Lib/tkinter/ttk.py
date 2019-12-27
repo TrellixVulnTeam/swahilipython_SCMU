@@ -26,7 +26,7 @@ __all__ = ["Button", "Checkbutton", "Combobox", "Entry", "Frame", "Label",
            "tclobjs_to_py", "setup_master"]
 
 import tkinter
-from tkinter import _flatten, _join, _stringify, _splitdict
+from tkinter agiza _flatten, _join, _stringify, _splitdict
 
 # Verify if Tk is new enough to not need the Tile package
 _REQUIRE_TILE = True if tkinter.TkVersion < 8.5 else False
@@ -52,7 +52,7 @@ def _format_optvalue(value, script=False):
         # if caller passes a Tcl script to tk.call, all the values need to
         # be grouped into words (arguments to a command in Tcl dialect)
         value = _stringify(value)
-    elif isinstance(value, (list, tuple)):
+    lasivyo isinstance(value, (list, tuple)):
         value = _join(value)
     return value
 
@@ -136,7 +136,7 @@ def _format_elemcreate(etype, script=False, *args, **kw):
 
         opts = _format_optdict(kw, script)
 
-    elif etype == "from": # clone an element
+    lasivyo etype == "from": # clone an element
         # it expects a themename and optionally an element to clone from,
         # otherwise it will clone {} (empty element)
         spec = args[0] # theme name
@@ -327,7 +327,7 @@ def _tclobj_to_py(val):
         else:
             val = list(map(_convert_stringval, val))
 
-    elif hasattr(val, 'typename'): # some other (single) Tcl object
+    lasivyo hasattr(val, 'typename'): # some other (single) Tcl object
         val = _convert_stringval(val)
 
     return val
@@ -451,7 +451,7 @@ class Style(object):
         lspec = None
         if layoutspec:
             lspec = _format_layoutlist(layoutspec)[0]
-        elif layoutspec is not None: # will disable the layout ({}, '', etc)
+        lasivyo layoutspec is not None: # will disable the layout ({}, '', etc)
             lspec = "null" # could be any other word, but this may make sense
                            # when calling layout(style) later
 

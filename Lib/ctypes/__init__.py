@@ -5,9 +5,9 @@ import os as _os, sys as _sys
 __version__ = "1.1.0"
 
 from _ctypes import Union, Structure, Array
-from _ctypes import _Pointer
+from _ctypes agiza _Pointer
 from _ctypes import CFuncPtr as _CFuncPtr
-from _ctypes import __version__ as _ctypes_version
+from _ctypes agiza __version__ as _ctypes_version
 from _ctypes import RTLD_LOCAL, RTLD_GLOBAL
 from _ctypes import ArgumentError
 
@@ -56,7 +56,7 @@ def create_string_buffer(init, size=None):
         buf = buftype()
         buf.value = init
         return buf
-    elif isinstance(init, int):
+    lasivyo isinstance(init, int):
         buftype = c_char * init
         buf = buftype()
         return buf
@@ -129,12 +129,12 @@ if _os.name == "nt":
     if WINFUNCTYPE.__doc__:
         WINFUNCTYPE.__doc__ = CFUNCTYPE.__doc__.replace("CFUNCTYPE", "WINFUNCTYPE")
 
-elif _os.name == "posix":
+lasivyo _os.name == "posix":
     from _ctypes import dlopen as _dlopen
 
 from _ctypes import sizeof, byref, addressof, alignment, resize
 from _ctypes import get_errno, set_errno
-from _ctypes import _SimpleCData
+from _ctypes agiza _SimpleCData
 
 def _check_size(typ, typecode=None):
     # Check if sizeof(ctypes_type) against struct.calcsize.  This
@@ -287,7 +287,7 @@ def create_unicode_buffer(init, size=None):
         buf = buftype()
         buf.value = init
         return buf
-    elif isinstance(init, int):
+    lasivyo isinstance(init, int):
         buftype = c_wchar * init
         buf = buftype()
         return buf
@@ -406,7 +406,7 @@ if _os.name == "nt":
 
     # XXX Hm, what about HRESULT as normal parameter?
     # Mustn't it derive from c_long then?
-    from _ctypes import _check_HRESULT, _SimpleCData
+    from _ctypes agiza _check_HRESULT, _SimpleCData
     class HRESULT(_SimpleCData):
         _type_ = "l"
         # _check_retval_ is called with the function's result when it
@@ -451,7 +451,7 @@ pydll = LibraryLoader(PyDLL)
 
 if _os.name == "nt":
     pythonapi = PyDLL("python dll", None, _sys.dllhandle)
-elif _sys.platform == "cygwin":
+lasivyo _sys.platform == "cygwin":
     pythonapi = PyDLL("libpython%d.%d.dll" % _sys.version_info[:2])
 else:
     pythonapi = PyDLL(None)
@@ -474,16 +474,16 @@ if _os.name == "nt":
 if sizeof(c_uint) == sizeof(c_void_p):
     c_size_t = c_uint
     c_ssize_t = c_int
-elif sizeof(c_ulong) == sizeof(c_void_p):
+lasivyo sizeof(c_ulong) == sizeof(c_void_p):
     c_size_t = c_ulong
     c_ssize_t = c_long
-elif sizeof(c_ulonglong) == sizeof(c_void_p):
+lasivyo sizeof(c_ulonglong) == sizeof(c_void_p):
     c_size_t = c_ulonglong
     c_ssize_t = c_longlong
 
 # functions
 
-from _ctypes import _memmove_addr, _memset_addr, _string_at_addr, _cast_addr
+from _ctypes agiza _memmove_addr, _memset_addr, _string_at_addr, _cast_addr
 
 ## void *memmove(void *, const void *, size_t);
 memmove = CFUNCTYPE(c_void_p, c_void_p, c_void_p, c_size_t)(_memmove_addr)
@@ -510,7 +510,7 @@ def string_at(ptr, size=-1):
     return _string_at(ptr, size)
 
 try:
-    from _ctypes import _wstring_at_addr
+    from _ctypes agiza _wstring_at_addr
 except ImportError:
     pass
 else:
@@ -545,12 +545,12 @@ c_int8 = c_byte
 c_uint8 = c_ubyte
 for kind in [c_short, c_int, c_long, c_longlong]:
     if sizeof(kind) == 2: c_int16 = kind
-    elif sizeof(kind) == 4: c_int32 = kind
-    elif sizeof(kind) == 8: c_int64 = kind
+    lasivyo sizeof(kind) == 4: c_int32 = kind
+    lasivyo sizeof(kind) == 8: c_int64 = kind
 for kind in [c_ushort, c_uint, c_ulong, c_ulonglong]:
     if sizeof(kind) == 2: c_uint16 = kind
-    elif sizeof(kind) == 4: c_uint32 = kind
-    elif sizeof(kind) == 8: c_uint64 = kind
+    lasivyo sizeof(kind) == 4: c_uint32 = kind
+    lasivyo sizeof(kind) == 8: c_uint64 = kind
 del(kind)
 
 _reset_cache()

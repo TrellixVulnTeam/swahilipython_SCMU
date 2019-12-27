@@ -5,84 +5,84 @@ kutoka test agiza support
 
 agiza operator
 
-class Number:
+kundi Number:
 
-    def __init__(self, x):
+    eleza __init__(self, x):
         self.x = x
 
-    def __lt__(self, other):
-        return self.x < other
+    eleza __lt__(self, other):
+        rudisha self.x < other
 
-    def __le__(self, other):
-        return self.x <= other
+    eleza __le__(self, other):
+        rudisha self.x <= other
 
-    def __eq__(self, other):
-        return self.x == other
+    eleza __eq__(self, other):
+        rudisha self.x == other
 
-    def __ne__(self, other):
-        return self.x != other
+    eleza __ne__(self, other):
+        rudisha self.x != other
 
-    def __gt__(self, other):
-        return self.x > other
+    eleza __gt__(self, other):
+        rudisha self.x > other
 
-    def __ge__(self, other):
-        return self.x >= other
+    eleza __ge__(self, other):
+        rudisha self.x >= other
 
-    def __cmp__(self, other):
+    eleza __cmp__(self, other):
         raise support.TestFailed("Number.__cmp__() should not be called")
 
-    def __repr__(self):
-        return "Number(%r)" % (self.x, )
+    eleza __repr__(self):
+        rudisha "Number(%r)" % (self.x, )
 
-class Vector:
+kundi Vector:
 
-    def __init__(self, data):
+    eleza __init__(self, data):
         self.data = data
 
-    def __len__(self):
-        return len(self.data)
+    eleza __len__(self):
+        rudisha len(self.data)
 
-    def __getitem__(self, i):
-        return self.data[i]
+    eleza __getitem__(self, i):
+        rudisha self.data[i]
 
-    def __setitem__(self, i, v):
+    eleza __setitem__(self, i, v):
         self.data[i] = v
 
     __hash__ = None # Vectors cannot be hashed
 
-    def __bool__(self):
+    eleza __bool__(self):
         raise TypeError("Vectors cannot be used in Boolean contexts")
 
-    def __cmp__(self, other):
+    eleza __cmp__(self, other):
         raise support.TestFailed("Vector.__cmp__() should not be called")
 
-    def __repr__(self):
-        return "Vector(%r)" % (self.data, )
+    eleza __repr__(self):
+        rudisha "Vector(%r)" % (self.data, )
 
-    def __lt__(self, other):
-        return Vector([a < b for a, b in zip(self.data, self.__cast(other))])
+    eleza __lt__(self, other):
+        rudisha Vector([a < b for a, b in zip(self.data, self.__cast(other))])
 
-    def __le__(self, other):
-        return Vector([a <= b for a, b in zip(self.data, self.__cast(other))])
+    eleza __le__(self, other):
+        rudisha Vector([a <= b for a, b in zip(self.data, self.__cast(other))])
 
-    def __eq__(self, other):
-        return Vector([a == b for a, b in zip(self.data, self.__cast(other))])
+    eleza __eq__(self, other):
+        rudisha Vector([a == b for a, b in zip(self.data, self.__cast(other))])
 
-    def __ne__(self, other):
-        return Vector([a != b for a, b in zip(self.data, self.__cast(other))])
+    eleza __ne__(self, other):
+        rudisha Vector([a != b for a, b in zip(self.data, self.__cast(other))])
 
-    def __gt__(self, other):
-        return Vector([a > b for a, b in zip(self.data, self.__cast(other))])
+    eleza __gt__(self, other):
+        rudisha Vector([a > b for a, b in zip(self.data, self.__cast(other))])
 
-    def __ge__(self, other):
-        return Vector([a >= b for a, b in zip(self.data, self.__cast(other))])
+    eleza __ge__(self, other):
+        rudisha Vector([a >= b for a, b in zip(self.data, self.__cast(other))])
 
-    def __cast(self, other):
-        if isinstance(other, Vector):
+    eleza __cast(self, other):
+        ikiwa isinstance(other, Vector):
             other = other.data
-        if len(self.data) != len(other):
+        ikiwa len(self.data) != len(other):
             raise ValueError("Cannot compare vectors of different length")
-        return other
+        rudisha other
 
 opmap = {
     "lt": (lambda a,b: a< b, operator.lt, operator.__lt__),
@@ -93,13 +93,13 @@ opmap = {
     "ge": (lambda a,b: a>=b, operator.ge, operator.__ge__)
 }
 
-class VectorTest(unittest.TestCase):
+kundi VectorTest(unittest.TestCase):
 
-    def checkfail(self, error, opname, *args):
+    eleza checkfail(self, error, opname, *args):
         for op in opmap[opname]:
             self.assertRaises(error, op, *args)
 
-    def checkequal(self, opname, a, b, expres):
+    eleza checkequal(self, opname, a, b, expres):
         for op in opmap[opname]:
             realres = op(a, b)
             # can't use assertEqual(realres, expres) here
@@ -108,9 +108,9 @@ class VectorTest(unittest.TestCase):
                 # results are bool, so we can use "is" here
                 self.assertTrue(realres[i] is expres[i])
 
-    def test_mixed(self):
+    eleza test_mixed(self):
         # check that comparisons involving Vector objects
-        # which return rich results (i.e. Vectors with itemwise
+        # which rudisha rich results (i.e. Vectors with itemwise
         # comparison results) work
         a = Vector(range(2))
         b = Vector(range(3))
@@ -120,7 +120,7 @@ class VectorTest(unittest.TestCase):
 
         a = list(range(5))
         b = 5 * [2]
-        # try mixed arguments (but not (a, b) as that won't return a bool vector)
+        # try mixed arguments (but not (a, b) as that won't rudisha a bool vector)
         args = [(a, Vector(b)), (Vector(a), b), (Vector(a), Vector(b))]
         for (a, b) in args:
             self.checkequal("lt", a, b, [True,  True,  False, False, False])
@@ -135,9 +135,9 @@ class VectorTest(unittest.TestCase):
                     # calls __bool__, which should fail
                     self.assertRaises(TypeError, bool, op(a, b))
 
-class NumberTest(unittest.TestCase):
+kundi NumberTest(unittest.TestCase):
 
-    def test_basic(self):
+    eleza test_basic(self):
         # Check that comparisons involving Number objects
         # give the same results give as comparing the
         # corresponding ints
@@ -145,7 +145,7 @@ class NumberTest(unittest.TestCase):
             for b in range(3):
                 for typea in (int, Number):
                     for typeb in (int, Number):
-                        if typea==typeb==int:
+                        ikiwa typea==typeb==int:
                             continue # the combination int, int is useless
                         ta = typea(a)
                         tb = typeb(b)
@@ -155,7 +155,7 @@ class NumberTest(unittest.TestCase):
                                 testoutcome = op(ta, tb)
                                 self.assertEqual(realoutcome, testoutcome)
 
-    def checkvalue(self, opname, a, b, expres):
+    eleza checkvalue(self, opname, a, b, expres):
         for typea in (int, Number):
             for typeb in (int, Number):
                 ta = typea(a)
@@ -165,7 +165,7 @@ class NumberTest(unittest.TestCase):
                     realres = getattr(realres, "x", realres)
                     self.assertTrue(realres is expres)
 
-    def test_values(self):
+    eleza test_values(self):
         # check all operators and all comparison results
         self.checkvalue("lt", 0, 0, False)
         self.checkvalue("le", 0, 0, True )
@@ -188,40 +188,40 @@ class NumberTest(unittest.TestCase):
         self.checkvalue("gt", 1, 0, True )
         self.checkvalue("ge", 1, 0, True )
 
-class MiscTest(unittest.TestCase):
+kundi MiscTest(unittest.TestCase):
 
-    def test_misbehavin(self):
-        class Misb:
-            def __lt__(self_, other): return 0
-            def __gt__(self_, other): return 0
-            def __eq__(self_, other): return 0
-            def __le__(self_, other): self.fail("This shouldn't happen")
-            def __ge__(self_, other): self.fail("This shouldn't happen")
-            def __ne__(self_, other): self.fail("This shouldn't happen")
+    eleza test_misbehavin(self):
+        kundi Misb:
+            eleza __lt__(self_, other): rudisha 0
+            eleza __gt__(self_, other): rudisha 0
+            eleza __eq__(self_, other): rudisha 0
+            eleza __le__(self_, other): self.fail("This shouldn't happen")
+            eleza __ge__(self_, other): self.fail("This shouldn't happen")
+            eleza __ne__(self_, other): self.fail("This shouldn't happen")
         a = Misb()
         b = Misb()
         self.assertEqual(a<b, 0)
         self.assertEqual(a==b, 0)
         self.assertEqual(a>b, 0)
 
-    def test_not(self):
+    eleza test_not(self):
         # Check that exceptions in __bool__ are properly
         # propagated by the not operator
         agiza operator
-        class Exc(Exception):
+        kundi Exc(Exception):
             pass
-        class Bad:
-            def __bool__(self):
+        kundi Bad:
+            eleza __bool__(self):
                 raise Exc
 
-        def do(bad):
+        eleza do(bad):
             not bad
 
         for func in (do, operator.not_):
             self.assertRaises(Exc, func, Bad())
 
     @support.no_tracing
-    def test_recursion(self):
+    eleza test_recursion(self):
         # Check that comparison for recursive objects fails gracefully
         kutoka collections agiza UserList
         a = UserList()
@@ -253,8 +253,8 @@ class MiscTest(unittest.TestCase):
         self.assertTrue(a != b)
         self.assertTrue(a < b)
 
-    def test_exception_message(self):
-        class Spam:
+    eleza test_exception_message(self):
+        kundi Spam:
             pass
 
         tests = [
@@ -278,10 +278,10 @@ class MiscTest(unittest.TestCase):
                     test[0]()
 
 
-class DictTest(unittest.TestCase):
+kundi DictTest(unittest.TestCase):
 
-    def test_dicts(self):
-        # Verify that __eq__ and __ne__ work for dicts even if the keys and
+    eleza test_dicts(self):
+        # Verify that __eq__ and __ne__ work for dicts even ikiwa the keys and
         # values don't support anything other than __eq__ and __ne__ (and
         # __hash__).  Complex numbers are a fine example of that.
         agiza random
@@ -303,9 +303,9 @@ class DictTest(unittest.TestCase):
             for op in opmap[opname]:
                 self.assertRaises(TypeError, op, imag1a, imag2)
 
-class ListTest(unittest.TestCase):
+kundi ListTest(unittest.TestCase):
 
-    def test_coverage(self):
+    eleza test_coverage(self):
         # exercise all comparisons for lists
         x = [42]
         self.assertIs(x<x, False)
@@ -322,13 +322,13 @@ class ListTest(unittest.TestCase):
         self.assertIs(x>y, False)
         self.assertIs(x>=y, False)
 
-    def test_badentry(self):
+    eleza test_badentry(self):
         # make sure that exceptions for item comparison are properly
         # propagated in list comparisons
-        class Exc(Exception):
+        kundi Exc(Exception):
             pass
-        class Bad:
-            def __eq__(self, other):
+        kundi Bad:
+            eleza __eq__(self, other):
                 raise Exc
 
         x = [Bad()]
@@ -337,12 +337,12 @@ class ListTest(unittest.TestCase):
         for op in opmap["eq"]:
             self.assertRaises(Exc, op, x, y)
 
-    def test_goodentry(self):
+    eleza test_goodentry(self):
         # This test exercises the final call to PyObject_RichCompare()
         # in Objects/listobject.c::list_richcompare()
-        class Good:
-            def __lt__(self, other):
-                return True
+        kundi Good:
+            eleza __lt__(self, other):
+                rudisha True
 
         x = [Good()]
         y = [Good()]
@@ -351,5 +351,5 @@ class ListTest(unittest.TestCase):
             self.assertIs(op(x, y), True)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

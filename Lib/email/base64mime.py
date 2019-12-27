@@ -108,7 +108,7 @@ def decode(string):
     """
     if not string:
         return bytes()
-    elif isinstance(string, str):
+    lasivyo isinstance(string, str):
         return a2b_base64(string.encode('raw-unicode-escape'))
     else:
         return a2b_base64(string)

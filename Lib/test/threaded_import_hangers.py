@@ -3,7 +3,7 @@
 # their own thread, as a side effect of being imported.  If the spawned
 # thread doesn't complete in TIMEOUT seconds, an "appeared to hang" message
 # is appended to the module-global `errors` list.  That list remains empty
-# if (and only if) all functions tested complete.
+# ikiwa (and only if) all functions tested complete.
 
 TIMEOUT = 10
 
@@ -14,17 +14,17 @@ agiza os.path
 
 errors = []
 
-# This class merely runs a function in its own thread T.  The thread agizaing
-# this module holds the agiza lock, so if the function called by T tries
+# This kundi merely runs a function in its own thread T.  The thread agizaing
+# this module holds the agiza lock, so ikiwa the function called by T tries
 # to do its own agizas it will block waiting for this module's agiza
 # to complete.
-class Worker(threading.Thread):
-    def __init__(self, function, args):
+kundi Worker(threading.Thread):
+    eleza __init__(self, function, args):
         threading.Thread.__init__(self)
         self.function = function
         self.args = args
 
-    def run(self):
+    eleza run(self):
         self.function(*self.args)
 
 for name, func, args in [
@@ -39,7 +39,7 @@ for name, func, args in [
         t = Worker(func, args)
         t.start()
         t.join(TIMEOUT)
-        if t.is_alive():
+        ikiwa t.is_alive():
             errors.append("%s appeared to hang" % name)
     finally:
         del t

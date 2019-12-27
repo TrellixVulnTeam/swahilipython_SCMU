@@ -9,14 +9,14 @@ kutoka idlelib.scrolledlist agiza ScrolledList
 kutoka idlelib.window agiza ListedToplevel
 
 
-class Idb(bdb.Bdb):
+kundi Idb(bdb.Bdb):
 
-    def __init__(self, gui):
+    eleza __init__(self, gui):
         self.gui = gui  # An instance of Debugger or proxy of remote.
         bdb.Bdb.__init__(self)
 
-    def user_line(self, frame):
-        if self.in_rpc_code(frame):
+    eleza user_line(self, frame):
+        ikiwa self.in_rpc_code(frame):
             self.set_step()
             return
         message = self.__frame2message(frame)
@@ -25,42 +25,42 @@ class Idb(bdb.Bdb):
         except TclError:  # When closing debugger window with [x] in 3.x
             pass
 
-    def user_exception(self, frame, info):
-        if self.in_rpc_code(frame):
+    eleza user_exception(self, frame, info):
+        ikiwa self.in_rpc_code(frame):
             self.set_step()
             return
         message = self.__frame2message(frame)
         self.gui.interaction(message, frame, info)
 
-    def in_rpc_code(self, frame):
-        if frame.f_code.co_filename.count('rpc.py'):
-            return True
+    eleza in_rpc_code(self, frame):
+        ikiwa frame.f_code.co_filename.count('rpc.py'):
+            rudisha True
         else:
             prev_frame = frame.f_back
             prev_name = prev_frame.f_code.co_filename
-            if 'idlelib' in prev_name and 'debugger' in prev_name:
+            ikiwa 'idlelib' in prev_name and 'debugger' in prev_name:
                 # catch both idlelib/debugger.py and idlelib/debugger_r.py
                 # on both Posix and Windows
-                return False
-            return self.in_rpc_code(prev_frame)
+                rudisha False
+            rudisha self.in_rpc_code(prev_frame)
 
-    def __frame2message(self, frame):
+    eleza __frame2message(self, frame):
         code = frame.f_code
         filename = code.co_filename
         lineno = frame.f_lineno
         basename = os.path.basename(filename)
         message = "%s:%s" % (basename, lineno)
-        if code.co_name != "?":
+        ikiwa code.co_name != "?":
             message = "%s: %s()" % (message, code.co_name)
-        return message
+        rudisha message
 
 
-class Debugger:
+kundi Debugger:
 
     vstack = vsource = vlocals = vglobals = None
 
-    def __init__(self, pyshell, idb=None):
-        if idb is None:
+    eleza __init__(self, pyshell, idb=None):
+        ikiwa idb is None:
             idb = Idb(self)
         self.pyshell = pyshell
         self.idb = idb  # If passed, a proxy of remote instance.
@@ -69,7 +69,7 @@ class Debugger:
         self.interacting = 0
         self.nesting_level = 0
 
-    def run(self, *args):
+    eleza run(self, *args):
         # Deal with the scenario where we've already got a program running
         # in the debugger and we want to start another. If that is the case,
         # our second 'run' was invoked kutoka an event dispatched not kutoka
@@ -90,7 +90,7 @@ class Debugger:
         # By this point, we've already called restart_subprocess() in
         # ScriptBinding. However, we also need to unwind the stack back to
         # that outer event loop.  To accomplish this, we:
-        #   - return immediately kutoka the nested run()
+        #   - rudisha immediately kutoka the nested run()
         #   - abort_loop ensures the nested event loop will terminate
         #   - the debugger's interaction routine completes normally
         #   - the restart_subprocess() will have taken care of stopping
@@ -99,34 +99,34 @@ class Debugger:
         # That leaves us back at the outer main event loop, at which point our
         # after event can fire, and we'll come back to this routine with a
         # clean stack.
-        if self.nesting_level > 0:
+        ikiwa self.nesting_level > 0:
             self.abort_loop()
             self.root.after(100, lambda: self.run(*args))
             return
         try:
             self.interacting = 1
-            return self.idb.run(*args)
+            rudisha self.idb.run(*args)
         finally:
             self.interacting = 0
 
-    def close(self, event=None):
+    eleza close(self, event=None):
         try:
             self.quit()
         except Exception:
             pass
-        if self.interacting:
+        ikiwa self.interacting:
             self.top.bell()
             return
-        if self.stackviewer:
+        ikiwa self.stackviewer:
             self.stackviewer.close(); self.stackviewer = None
-        # Clean up pyshell if user clicked debugger control close widget.
-        # (Causes a harmless extra cycle through close_debugger() if user
+        # Clean up pyshell ikiwa user clicked debugger control close widget.
+        # (Causes a harmless extra cycle through close_debugger() ikiwa user
         # toggled debugger kutoka pyshell Debug menu)
         self.pyshell.close_debugger()
         # Now close the debugger control window....
         self.top.destroy()
 
-    def make_gui(self):
+    eleza make_gui(self):
         pyshell = self.pyshell
         self.flist = pyshell.flist
         self.root = root = pyshell.root
@@ -158,24 +158,24 @@ class Debugger:
         self.cframe = cframe = Frame(bframe)
         self.cframe.pack(side="left")
         #
-        if not self.vstack:
+        ikiwa not self.vstack:
             self.__class__.vstack = BooleanVar(top)
             self.vstack.set(1)
         self.bstack = Checkbutton(cframe,
             text="Stack", command=self.show_stack, variable=self.vstack)
         self.bstack.grid(row=0, column=0)
-        if not self.vsource:
+        ikiwa not self.vsource:
             self.__class__.vsource = BooleanVar(top)
         self.bsource = Checkbutton(cframe,
             text="Source", command=self.show_source, variable=self.vsource)
         self.bsource.grid(row=0, column=1)
-        if not self.vlocals:
+        ikiwa not self.vlocals:
             self.__class__.vlocals = BooleanVar(top)
             self.vlocals.set(1)
         self.blocals = Checkbutton(cframe,
             text="Locals", command=self.show_locals, variable=self.vlocals)
         self.blocals.grid(row=1, column=0)
-        if not self.vglobals:
+        ikiwa not self.vglobals:
             self.__class__.vglobals = BooleanVar(top)
         self.bglobals = Checkbutton(cframe,
             text="Globals", command=self.show_globals, variable=self.vglobals)
@@ -194,24 +194,24 @@ class Debugger:
         self.fglobals = Frame(top, height=1)
         self.fglobals.pack(expand=1, fill="both")
         #
-        if self.vstack.get():
+        ikiwa self.vstack.get():
             self.show_stack()
-        if self.vlocals.get():
+        ikiwa self.vlocals.get():
             self.show_locals()
-        if self.vglobals.get():
+        ikiwa self.vglobals.get():
             self.show_globals()
 
-    def interaction(self, message, frame, info=None):
+    eleza interaction(self, message, frame, info=None):
         self.frame = frame
         self.status.configure(text=message)
         #
-        if info:
+        ikiwa info:
             type, value, tb = info
             try:
                 m1 = type.__name__
             except AttributeError:
                 m1 = "%s" % str(type)
-            if value is not None:
+            ikiwa value is not None:
                 try:
                     m1 = "%s: %s" % (m1, str(value))
                 except:
@@ -224,13 +224,13 @@ class Debugger:
         self.error.configure(text=m1, background=bg)
         #
         sv = self.stackviewer
-        if sv:
+        ikiwa sv:
             stack, i = self.idb.get_stack(self.frame, tb)
             sv.load_stack(stack, i)
         #
         self.show_variables(1)
         #
-        if self.vsource.get():
+        ikiwa self.vsource.get():
             self.sync_source_line()
         #
         for b in self.buttons:
@@ -250,119 +250,119 @@ class Debugger:
         self.error.configure(text="", background=self.errorbg)
         self.frame = None
 
-    def sync_source_line(self):
+    eleza sync_source_line(self):
         frame = self.frame
-        if not frame:
+        ikiwa not frame:
             return
         filename, lineno = self.__frame2fileline(frame)
-        if filename[:1] + filename[-1:] != "<>" and os.path.exists(filename):
+        ikiwa filename[:1] + filename[-1:] != "<>" and os.path.exists(filename):
             self.flist.gotofileline(filename, lineno)
 
-    def __frame2fileline(self, frame):
+    eleza __frame2fileline(self, frame):
         code = frame.f_code
         filename = code.co_filename
         lineno = frame.f_lineno
-        return filename, lineno
+        rudisha filename, lineno
 
-    def cont(self):
+    eleza cont(self):
         self.idb.set_continue()
         self.abort_loop()
 
-    def step(self):
+    eleza step(self):
         self.idb.set_step()
         self.abort_loop()
 
-    def next(self):
+    eleza next(self):
         self.idb.set_next(self.frame)
         self.abort_loop()
 
-    def ret(self):
+    eleza ret(self):
         self.idb.set_return(self.frame)
         self.abort_loop()
 
-    def quit(self):
+    eleza quit(self):
         self.idb.set_quit()
         self.abort_loop()
 
-    def abort_loop(self):
+    eleza abort_loop(self):
         self.root.tk.call('set', '::idledebugwait', '1')
 
     stackviewer = None
 
-    def show_stack(self):
-        if not self.stackviewer and self.vstack.get():
+    eleza show_stack(self):
+        ikiwa not self.stackviewer and self.vstack.get():
             self.stackviewer = sv = StackViewer(self.fstack, self.flist, self)
-            if self.frame:
+            ikiwa self.frame:
                 stack, i = self.idb.get_stack(self.frame, None)
                 sv.load_stack(stack, i)
         else:
             sv = self.stackviewer
-            if sv and not self.vstack.get():
+            ikiwa sv and not self.vstack.get():
                 self.stackviewer = None
                 sv.close()
             self.fstack['height'] = 1
 
-    def show_source(self):
-        if self.vsource.get():
+    eleza show_source(self):
+        ikiwa self.vsource.get():
             self.sync_source_line()
 
-    def show_frame(self, stackitem):
+    eleza show_frame(self, stackitem):
         self.frame = stackitem[0]  # lineno is stackitem[1]
         self.show_variables()
 
     localsviewer = None
     globalsviewer = None
 
-    def show_locals(self):
+    eleza show_locals(self):
         lv = self.localsviewer
-        if self.vlocals.get():
-            if not lv:
+        ikiwa self.vlocals.get():
+            ikiwa not lv:
                 self.localsviewer = NamespaceViewer(self.flocals, "Locals")
         else:
-            if lv:
+            ikiwa lv:
                 self.localsviewer = None
                 lv.close()
                 self.flocals['height'] = 1
         self.show_variables()
 
-    def show_globals(self):
+    eleza show_globals(self):
         gv = self.globalsviewer
-        if self.vglobals.get():
-            if not gv:
+        ikiwa self.vglobals.get():
+            ikiwa not gv:
                 self.globalsviewer = NamespaceViewer(self.fglobals, "Globals")
         else:
-            if gv:
+            ikiwa gv:
                 self.globalsviewer = None
                 gv.close()
                 self.fglobals['height'] = 1
         self.show_variables()
 
-    def show_variables(self, force=0):
+    eleza show_variables(self, force=0):
         lv = self.localsviewer
         gv = self.globalsviewer
         frame = self.frame
-        if not frame:
+        ikiwa not frame:
             ldict = gdict = None
         else:
             ldict = frame.f_locals
             gdict = frame.f_globals
-            if lv and gv and ldict is gdict:
+            ikiwa lv and gv and ldict is gdict:
                 ldict = None
-        if lv:
+        ikiwa lv:
             lv.load_dict(ldict, force, self.pyshell.interp.rpcclt)
-        if gv:
+        ikiwa gv:
             gv.load_dict(gdict, force, self.pyshell.interp.rpcclt)
 
-    def set_breakpoint_here(self, filename, lineno):
+    eleza set_breakpoint_here(self, filename, lineno):
         self.idb.set_break(filename, lineno)
 
-    def clear_breakpoint_here(self, filename, lineno):
+    eleza clear_breakpoint_here(self, filename, lineno):
         self.idb.clear_break(filename, lineno)
 
-    def clear_file_breaks(self, filename):
+    eleza clear_file_breaks(self, filename):
         self.idb.clear_all_file_breaks(filename)
 
-    def load_breakpoints(self):
+    eleza load_breakpoints(self):
         "Load PyShellEditorWindow breakpoints into subprocess debugger"
         for editwin in self.pyshell.flist.inversedict:
             filename = editwin.io.filename
@@ -372,12 +372,12 @@ class Debugger:
             except AttributeError:
                 continue
 
-class StackViewer(ScrolledList):
+kundi StackViewer(ScrolledList):
 
-    def __init__(self, master, flist, gui):
-        if macosx.isAquaTk():
+    eleza __init__(self, master, flist, gui):
+        ikiwa macosx.isAquaTk():
             # At least on with the stock AquaTk version on OSX 10.4 you'll
-            # get a shaking GUI that eventually kills IDLE if the width
+            # get a shaking GUI that eventually kills IDLE ikiwa the width
             # argument is specified.
             ScrolledList.__init__(self, master)
         else:
@@ -386,7 +386,7 @@ class StackViewer(ScrolledList):
         self.gui = gui
         self.stack = []
 
-    def load_stack(self, stack, index=None):
+    eleza load_stack(self, stack, index=None):
         self.stack = stack
         self.clear()
         for i in range(len(stack)):
@@ -401,23 +401,23 @@ class StackViewer(ScrolledList):
             agiza linecache
             sourceline = linecache.getline(filename, lineno)
             sourceline = sourceline.strip()
-            if funcname in ("?", "", None):
+            ikiwa funcname in ("?", "", None):
                 item = "%s, line %d: %s" % (modname, lineno, sourceline)
             else:
                 item = "%s.%s(), line %d: %s" % (modname, funcname,
                                                  lineno, sourceline)
-            if i == index:
+            ikiwa i == index:
                 item = "> " + item
             self.append(item)
-        if index is not None:
+        ikiwa index is not None:
             self.select(index)
 
-    def popup_event(self, event):
+    eleza popup_event(self, event):
         "override base method"
-        if self.stack:
-            return ScrolledList.popup_event(self, event)
+        ikiwa self.stack:
+            rudisha ScrolledList.popup_event(self, event)
 
-    def fill_menu(self):
+    eleza fill_menu(self):
         "override base method"
         menu = self.menu
         menu.add_command(label="Go to source line",
@@ -425,42 +425,42 @@ class StackViewer(ScrolledList):
         menu.add_command(label="Show stack frame",
                          command=self.show_stack_frame)
 
-    def on_select(self, index):
+    eleza on_select(self, index):
         "override base method"
-        if 0 <= index < len(self.stack):
+        ikiwa 0 <= index < len(self.stack):
             self.gui.show_frame(self.stack[index])
 
-    def on_double(self, index):
+    eleza on_double(self, index):
         "override base method"
         self.show_source(index)
 
-    def goto_source_line(self):
+    eleza goto_source_line(self):
         index = self.listbox.index("active")
         self.show_source(index)
 
-    def show_stack_frame(self):
+    eleza show_stack_frame(self):
         index = self.listbox.index("active")
-        if 0 <= index < len(self.stack):
+        ikiwa 0 <= index < len(self.stack):
             self.gui.show_frame(self.stack[index])
 
-    def show_source(self, index):
-        if not (0 <= index < len(self.stack)):
+    eleza show_source(self, index):
+        ikiwa not (0 <= index < len(self.stack)):
             return
         frame, lineno = self.stack[index]
         code = frame.f_code
         filename = code.co_filename
-        if os.path.isfile(filename):
+        ikiwa os.path.isfile(filename):
             edit = self.flist.open(filename)
-            if edit:
+            ikiwa edit:
                 edit.gotoline(lineno)
 
 
-class NamespaceViewer:
+kundi NamespaceViewer:
 
-    def __init__(self, master, title, dict=None):
+    eleza __init__(self, master, title, dict=None):
         width = 0
         height = 40
-        if dict:
+        ikiwa dict:
             height = 20*len(dict) # XXX 20 == observed height of Entry widget
         self.master = master
         self.title = title
@@ -486,15 +486,15 @@ class NamespaceViewer:
 
     dict = -1
 
-    def load_dict(self, dict, force=0, rpc_client=None):
-        if dict is self.dict and not force:
+    eleza load_dict(self, dict, force=0, rpc_client=None):
+        ikiwa dict is self.dict and not force:
             return
         subframe = self.subframe
         frame = self.frame
         for c in list(subframe.children.values()):
             c.destroy()
         self.dict = None
-        if not dict:
+        ikiwa not dict:
             l = Label(subframe, text="None")
             l.grid(row=0, column=0)
         else:
@@ -518,7 +518,7 @@ class NamespaceViewer:
                 svalue = self.repr.repr(value) # repr(value)
                 # Strip extra quotes caused by calling repr on the (already)
                 # repr'd value sent across the RPC interface:
-                if rpc_client:
+                ikiwa rpc_client:
                     svalue = svalue[1:-1]
                 l = Label(subframe, text=name)
                 l.grid(row=row, column=0, sticky="nw")
@@ -533,17 +533,17 @@ class NamespaceViewer:
         height = subframe.winfo_reqheight()
         canvas = self.canvas
         self.canvas["scrollregion"] = (0, 0, width, height)
-        if height > 300:
+        ikiwa height > 300:
             canvas["height"] = 300
             frame.pack(expand=1)
         else:
             canvas["height"] = height
             frame.pack(expand=0)
 
-    def close(self):
+    eleza close(self):
         self.frame.destroy()
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     kutoka unittest agiza main
     main('idlelib.idle_test.test_debugger', verbosity=2, exit=False)
 

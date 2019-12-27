@@ -13,25 +13,25 @@ kutoka idlelib agiza searchengine
 # to avoid duplication.
 
 
-class SearchDialogTest(unittest.TestCase):
+kundi SearchDialogTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.root = Tk()
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         cls.root.destroy()
         del cls.root
 
-    def setUp(self):
+    eleza setUp(self):
         self.engine = searchengine.SearchEngine(self.root)
         self.dialog = search.SearchDialog(self.root, self.engine)
         self.dialog.bell = lambda: None
         self.text = Text(self.root)
         self.text.insert('1.0', 'Hello World!')
 
-    def test_find_again(self):
+    eleza test_find_again(self):
         # Search for various expressions
         text = self.text
 
@@ -56,7 +56,7 @@ class SearchDialogTest(unittest.TestCase):
         self.engine.setpat('W[aeiouy]r')
         self.assertTrue(self.dialog.find_again(text))
 
-    def test_find_selection(self):
+    eleza test_find_selection(self):
         # Select some text and make sure it's found
         text = self.text
         # Add additional line to find
@@ -76,5 +76,5 @@ class SearchDialogTest(unittest.TestCase):
         # Remove additional line
         text.delete('2.0', 'end')
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2, exit=2)

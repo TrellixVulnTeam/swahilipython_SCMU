@@ -368,7 +368,7 @@ Other objects
 It is possible to pass "long" integers (integers whose value exceeds the
 platform's :const:`LONG_MAX`) however no proper range checking is done --- the
 most significant bits are silently truncated when the receiving field is too
-small to receive the value (actually, the semantics are inherited from downcasts
+small to receive the value (actually, the semantics are inherited kutoka downcasts
 in C --- your mileage may vary).
 
 A few other characters have a meaning in a format string.  These may not occur
@@ -405,7 +405,7 @@ Note that any Python object references which are provided to the caller are
 
 Additional arguments passed to these functions must be addresses of variables
 whose type is determined by the format string; these are used to store values
-from the input tuple.  There are a few cases, as described in the list of format
+kutoka the input tuple.  There are a few cases, as described in the list of format
 units above, where these parameters are used as input values; they should match
 what is specified for the corresponding format unit in that case.
 
@@ -483,14 +483,14 @@ API Functions
    *args*; it must actually be a tuple.  The length of the tuple must be at least
    *min* and no more than *max*; *min* and *max* may be equal.  Additional
    arguments must be passed to the function, each of which should be a pointer to a
-   :c:type:`PyObject\*` variable; these will be filled in with the values from
+   :c:type:`PyObject\*` variable; these will be filled in with the values kutoka
    *args*; they will contain borrowed references.  The variables which correspond
    to optional parameters not given by *args* will not be filled in; these should
    be initialized by the caller. This function returns true on success and false if
    *args* is not a tuple or contains the wrong number of elements; an exception
    will be set if there was a failure.
 
-   This is an example of the use of this function, taken from the sources for the
+   This is an example of the use of this function, taken kutoka the sources for the
    :mod:`_weakref` helper module for weak references::
 
       static PyObject *

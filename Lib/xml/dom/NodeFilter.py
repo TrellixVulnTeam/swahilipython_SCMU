@@ -1,7 +1,7 @@
 # This is the Python mapping for interface NodeFilter kutoka
 # DOM2-Traversal-Range. It contains only constants.
 
-class NodeFilter:
+kundi NodeFilter:
     """
     This is the DOM2 NodeFilter interface. It contains only constants.
     """
@@ -23,5 +23,5 @@ class NodeFilter:
     SHOW_DOCUMENT_FRAGMENT      = 0x00000400
     SHOW_NOTATION               = 0x00000800
 
-    def acceptNode(self, node):
+    eleza acceptNode(self, node):
         raise NotImplementedError

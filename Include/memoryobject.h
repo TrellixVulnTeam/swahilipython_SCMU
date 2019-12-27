@@ -43,7 +43,7 @@ typedef struct {
     PyObject_HEAD
     int flags;          /* state flags */
     Py_ssize_t exports; /* number of direct memoryview exports */
-    Py_buffer master; /* snapshot buffer obtained from the original exporter */
+    Py_buffer master; /* snapshot buffer obtained kutoka the original exporter */
 } _PyManagedBufferObject;
 
 

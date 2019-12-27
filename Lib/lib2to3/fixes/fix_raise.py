@@ -11,7 +11,7 @@ raise "foo", V, T               -> warns about string exceptions
 
 
 CAVEATS:
-1) "raise E, V" will be incorrectly translated if V is an exception
+1) "raise E, V" will be incorrectly translated ikiwa V is an exception
    instance. The correct Python 3 idiom is
 
         raise E kutoka V
@@ -28,18 +28,18 @@ kutoka ..pgen2 agiza token
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name, Call, Attr, ArgList, is_tuple
 
-class FixRaise(fixer_base.BaseFix):
+kundi FixRaise(fixer_base.BaseFix):
 
     BM_compatible = True
     PATTERN = """
     raise_stmt< 'raise' exc=any [',' val=any [',' tb=any]] >
     """
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         syms = self.syms
 
         exc = results["exc"].clone()
-        if exc.type == token.STRING:
+        ikiwa exc.type == token.STRING:
             msg = "Python 3 does not support string exceptions"
             self.cannot_convert(node, msg)
             return
@@ -50,27 +50,27 @@ class FixRaise(fixer_base.BaseFix):
         #  raise E1, V
         # Since Python 3 will not support this, we recurse down any tuple
         # literals, always taking the first element.
-        if is_tuple(exc):
+        ikiwa is_tuple(exc):
             while is_tuple(exc):
                 # exc.children[1:-1] is the unparenthesized tuple
                 # exc.children[1].children[0] is the first element of the tuple
                 exc = exc.children[1].children[0].clone()
             exc.prefix = " "
 
-        if "val" not in results:
+        ikiwa "val" not in results:
             # One-argument raise
             new = pytree.Node(syms.raise_stmt, [Name("raise"), exc])
             new.prefix = node.prefix
-            return new
+            rudisha new
 
         val = results["val"].clone()
-        if is_tuple(val):
+        ikiwa is_tuple(val):
             args = [c.clone() for c in val.children[1:-1]]
         else:
             val.prefix = ""
             args = [val]
 
-        if "tb" in results:
+        ikiwa "tb" in results:
             tb = results["tb"].clone()
             tb.prefix = ""
 
@@ -78,13 +78,13 @@ class FixRaise(fixer_base.BaseFix):
             # If there's a traceback and None is passed as the value, then don't
             # add a call, since the user probably just wants to add a
             # traceback. See issue #9661.
-            if val.type != token.NAME or val.value != "None":
+            ikiwa val.type != token.NAME or val.value != "None":
                 e = Call(exc, args)
             with_tb = Attr(e, Name('with_traceback')) + [ArgList([tb])]
             new = pytree.Node(syms.simple_stmt, [Name("raise")] + with_tb)
             new.prefix = node.prefix
-            return new
+            rudisha new
         else:
-            return pytree.Node(syms.raise_stmt,
+            rudisha pytree.Node(syms.raise_stmt,
                                [Name("raise"), Call(exc, args)],
                                prefix=node.prefix)

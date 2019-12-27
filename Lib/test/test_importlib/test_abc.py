@@ -17,18 +17,18 @@ util = test_util.import_importlib('importlib.util')
 
 
 ##### Inheritance ##############################################################
-class InheritanceTests:
+kundi InheritanceTests:
 
-    """Test that the specified class is a subclass/superclass of the expected
+    """Test that the specified kundi is a subclass/superkundi of the expected
     classes."""
 
     subclasses = []
     superclasses = []
 
-    def setUp(self):
+    eleza setUp(self):
         self.superclasses = [getattr(self.abc, class_name)
                              for class_name in self.superclass_names]
-        if hasattr(self, 'subclass_names'):
+        ikiwa hasattr(self, 'subclass_names'):
             # Because test.support.import_fresh_module() creates a new
             # importlib._bootstrap per module, inheritance checks fail when
             # checking across module boundaries (i.e. the _bootstrap in abc is
@@ -40,20 +40,20 @@ class InheritanceTests:
         assert self.subclasses or self.superclasses, self.__class__
         self.__test = getattr(self.abc, self._NAME)
 
-    def test_subclasses(self):
+    eleza test_subclasses(self):
         # Test that the expected subclasses inherit.
-        for subclass in self.subclasses:
+        for subkundi in self.subclasses:
             self.assertTrue(issubclass(subclass, self.__test),
-                "{0} is not a subclass of {1}".format(subclass, self.__test))
+                "{0} is not a subkundi of {1}".format(subclass, self.__test))
 
-    def test_superclasses(self):
-        # Test that the class inherits kutoka the expected superclasses.
-        for superclass in self.superclasses:
+    eleza test_superclasses(self):
+        # Test that the kundi inherits kutoka the expected superclasses.
+        for superkundi in self.superclasses:
             self.assertTrue(issubclass(self.__test, superclass),
-               "{0} is not a superclass of {1}".format(superclass, self.__test))
+               "{0} is not a superkundi of {1}".format(superclass, self.__test))
 
 
-class MetaPathFinder(InheritanceTests):
+kundi MetaPathFinder(InheritanceTests):
     superclass_names = ['Finder']
     subclass_names = ['BuiltinImporter', 'FrozenImporter', 'PathFinder',
                       'WindowsRegistryFinder']
@@ -64,7 +64,7 @@ class MetaPathFinder(InheritanceTests):
  ) = test_util.test_both(MetaPathFinder, abc=abc)
 
 
-class PathEntryFinder(InheritanceTests):
+kundi PathEntryFinder(InheritanceTests):
     superclass_names = ['Finder']
     subclass_names = ['FileFinder']
 
@@ -74,7 +74,7 @@ class PathEntryFinder(InheritanceTests):
  ) = test_util.test_both(PathEntryFinder, abc=abc)
 
 
-class ResourceLoader(InheritanceTests):
+kundi ResourceLoader(InheritanceTests):
     superclass_names = ['Loader']
 
 
@@ -83,7 +83,7 @@ class ResourceLoader(InheritanceTests):
  ) = test_util.test_both(ResourceLoader, abc=abc)
 
 
-class InspectLoader(InheritanceTests):
+kundi InspectLoader(InheritanceTests):
     superclass_names = ['Loader']
     subclass_names = ['BuiltinImporter', 'FrozenImporter', 'ExtensionFileLoader']
 
@@ -93,7 +93,7 @@ class InspectLoader(InheritanceTests):
  ) = test_util.test_both(InspectLoader, abc=abc)
 
 
-class ExecutionLoader(InheritanceTests):
+kundi ExecutionLoader(InheritanceTests):
     superclass_names = ['InspectLoader']
     subclass_names = ['ExtensionFileLoader']
 
@@ -103,7 +103,7 @@ class ExecutionLoader(InheritanceTests):
  ) = test_util.test_both(ExecutionLoader, abc=abc)
 
 
-class FileLoader(InheritanceTests):
+kundi FileLoader(InheritanceTests):
     superclass_names = ['ResourceLoader', 'ExecutionLoader']
     subclass_names = ['SourceFileLoader', 'SourcelessFileLoader']
 
@@ -113,7 +113,7 @@ class FileLoader(InheritanceTests):
  ) = test_util.test_both(FileLoader, abc=abc)
 
 
-class SourceLoader(InheritanceTests):
+kundi SourceLoader(InheritanceTests):
     superclass_names = ['ResourceLoader', 'ExecutionLoader']
     subclass_names = ['SourceFileLoader']
 
@@ -123,45 +123,45 @@ class SourceLoader(InheritanceTests):
  ) = test_util.test_both(SourceLoader, abc=abc)
 
 
-##### Default return values ####################################################
+##### Default rudisha values ####################################################
 
-def make_abc_subclasses(base_class, name=None, inst=False, **kwargs):
-    if name is None:
+eleza make_abc_subclasses(base_class, name=None, inst=False, **kwargs):
+    ikiwa name is None:
         name = base_class.__name__
     base = {kind: getattr(splitabc, name)
             for kind, splitabc in abc.items()}
-    return {cls._KIND: cls() if inst else cls
+    rudisha {cls._KIND: cls() ikiwa inst else cls
             for cls in test_util.split_frozen(base_class, base, **kwargs)}
 
 
-class ABCTestHarness:
+kundi ABCTestHarness:
 
     @property
-    def ins(self):
+    eleza ins(self):
         # Lazily set ins on the class.
         cls = self.SPLIT[self._KIND]
         ins = cls()
         self.__class__.ins = ins
-        return ins
+        rudisha ins
 
 
-class MetaPathFinder:
+kundi MetaPathFinder:
 
-    def find_module(self, fullname, path):
-        return super().find_module(fullname, path)
+    eleza find_module(self, fullname, path):
+        rudisha super().find_module(fullname, path)
 
 
-class MetaPathFinderDefaultsTests(ABCTestHarness):
+kundi MetaPathFinderDefaultsTests(ABCTestHarness):
 
     SPLIT = make_abc_subclasses(MetaPathFinder)
 
-    def test_find_module(self):
-        # Default should return None.
+    eleza test_find_module(self):
+        # Default should rudisha None.
         with self.assertWarns(DeprecationWarning):
             found = self.ins.find_module('something', None)
         self.assertIsNone(found)
 
-    def test_invalidate_caches(self):
+    eleza test_invalidate_caches(self):
         # Calling the method is a no-op.
         self.ins.invalidate_caches()
 
@@ -171,25 +171,25 @@ class MetaPathFinderDefaultsTests(ABCTestHarness):
  ) = test_util.test_both(MetaPathFinderDefaultsTests)
 
 
-class PathEntryFinder:
+kundi PathEntryFinder:
 
-    def find_loader(self, fullname):
-        return super().find_loader(fullname)
+    eleza find_loader(self, fullname):
+        rudisha super().find_loader(fullname)
 
 
-class PathEntryFinderDefaultsTests(ABCTestHarness):
+kundi PathEntryFinderDefaultsTests(ABCTestHarness):
 
     SPLIT = make_abc_subclasses(PathEntryFinder)
 
-    def test_find_loader(self):
+    eleza test_find_loader(self):
         with self.assertWarns(DeprecationWarning):
             found = self.ins.find_loader('something')
         self.assertEqual(found, (None, []))
 
-    def find_module(self):
+    eleza find_module(self):
         self.assertEqual(None, self.ins.find_module('something'))
 
-    def test_invalidate_caches(self):
+    eleza test_invalidate_caches(self):
         # Should be a no-op.
         self.ins.invalidate_caches()
 
@@ -199,31 +199,31 @@ class PathEntryFinderDefaultsTests(ABCTestHarness):
  ) = test_util.test_both(PathEntryFinderDefaultsTests)
 
 
-class Loader:
+kundi Loader:
 
-    def load_module(self, fullname):
-        return super().load_module(fullname)
+    eleza load_module(self, fullname):
+        rudisha super().load_module(fullname)
 
 
-class LoaderDefaultsTests(ABCTestHarness):
+kundi LoaderDefaultsTests(ABCTestHarness):
 
     SPLIT = make_abc_subclasses(Loader)
 
-    def test_create_module(self):
+    eleza test_create_module(self):
         spec = 'a spec'
         self.assertIsNone(self.ins.create_module(spec))
 
-    def test_load_module(self):
+    eleza test_load_module(self):
         with self.assertRaises(ImportError):
             self.ins.load_module('something')
 
-    def test_module_repr(self):
+    eleza test_module_repr(self):
         mod = types.ModuleType('blah')
         with self.assertRaises(NotImplementedError):
             self.ins.module_repr(mod)
         original_repr = repr(mod)
         mod.__loader__ = self.ins
-        # Should still return a proper repr.
+        # Should still rudisha a proper repr.
         self.assertTrue(repr(mod))
 
 
@@ -232,17 +232,17 @@ class LoaderDefaultsTests(ABCTestHarness):
  ) = test_util.test_both(LoaderDefaultsTests)
 
 
-class ResourceLoader(Loader):
+kundi ResourceLoader(Loader):
 
-    def get_data(self, path):
-        return super().get_data(path)
+    eleza get_data(self, path):
+        rudisha super().get_data(path)
 
 
-class ResourceLoaderDefaultsTests(ABCTestHarness):
+kundi ResourceLoaderDefaultsTests(ABCTestHarness):
 
     SPLIT = make_abc_subclasses(ResourceLoader)
 
-    def test_get_data(self):
+    eleza test_get_data(self):
         with self.assertRaises(IOError):
             self.ins.get_data('/some/path')
 
@@ -252,27 +252,27 @@ class ResourceLoaderDefaultsTests(ABCTestHarness):
  ) = test_util.test_both(ResourceLoaderDefaultsTests)
 
 
-class InspectLoader(Loader):
+kundi InspectLoader(Loader):
 
-    def is_package(self, fullname):
-        return super().is_package(fullname)
+    eleza is_package(self, fullname):
+        rudisha super().is_package(fullname)
 
-    def get_source(self, fullname):
-        return super().get_source(fullname)
+    eleza get_source(self, fullname):
+        rudisha super().get_source(fullname)
 
 
 SPLIT_IL = make_abc_subclasses(InspectLoader)
 
 
-class InspectLoaderDefaultsTests(ABCTestHarness):
+kundi InspectLoaderDefaultsTests(ABCTestHarness):
 
     SPLIT = SPLIT_IL
 
-    def test_is_package(self):
+    eleza test_is_package(self):
         with self.assertRaises(ImportError):
             self.ins.is_package('blah')
 
-    def test_get_source(self):
+    eleza test_get_source(self):
         with self.assertRaises(ImportError):
             self.ins.get_source('blah')
 
@@ -282,20 +282,20 @@ class InspectLoaderDefaultsTests(ABCTestHarness):
  ) = test_util.test_both(InspectLoaderDefaultsTests)
 
 
-class ExecutionLoader(InspectLoader):
+kundi ExecutionLoader(InspectLoader):
 
-    def get_filename(self, fullname):
-        return super().get_filename(fullname)
+    eleza get_filename(self, fullname):
+        rudisha super().get_filename(fullname)
 
 
 SPLIT_EL = make_abc_subclasses(ExecutionLoader)
 
 
-class ExecutionLoaderDefaultsTests(ABCTestHarness):
+kundi ExecutionLoaderDefaultsTests(ABCTestHarness):
 
     SPLIT = SPLIT_EL
 
-    def test_get_filename(self):
+    eleza test_get_filename(self):
         with self.assertRaises(ImportError):
             self.ins.get_filename('blah')
 
@@ -305,38 +305,38 @@ class ExecutionLoaderDefaultsTests(ABCTestHarness):
  ) = test_util.test_both(InspectLoaderDefaultsTests)
 
 
-class ResourceReader:
+kundi ResourceReader:
 
-    def open_resource(self, *args, **kwargs):
-        return super().open_resource(*args, **kwargs)
+    eleza open_resource(self, *args, **kwargs):
+        rudisha super().open_resource(*args, **kwargs)
 
-    def resource_path(self, *args, **kwargs):
-        return super().resource_path(*args, **kwargs)
+    eleza resource_path(self, *args, **kwargs):
+        rudisha super().resource_path(*args, **kwargs)
 
-    def is_resource(self, *args, **kwargs):
-        return super().is_resource(*args, **kwargs)
+    eleza is_resource(self, *args, **kwargs):
+        rudisha super().is_resource(*args, **kwargs)
 
-    def contents(self, *args, **kwargs):
-        return super().contents(*args, **kwargs)
+    eleza contents(self, *args, **kwargs):
+        rudisha super().contents(*args, **kwargs)
 
 
-class ResourceReaderDefaultsTests(ABCTestHarness):
+kundi ResourceReaderDefaultsTests(ABCTestHarness):
 
     SPLIT = make_abc_subclasses(ResourceReader)
 
-    def test_open_resource(self):
+    eleza test_open_resource(self):
         with self.assertRaises(FileNotFoundError):
             self.ins.open_resource('dummy_file')
 
-    def test_resource_path(self):
+    eleza test_resource_path(self):
         with self.assertRaises(FileNotFoundError):
             self.ins.resource_path('dummy_file')
 
-    def test_is_resource(self):
+    eleza test_is_resource(self):
         with self.assertRaises(FileNotFoundError):
             self.ins.is_resource('dummy_file')
 
-    def test_contents(self):
+    eleza test_contents(self):
         self.assertEqual([], list(self.ins.contents()))
 
 (Frozen_RRDefaultTests,
@@ -345,19 +345,19 @@ class ResourceReaderDefaultsTests(ABCTestHarness):
 
 
 ##### MetaPathFinder concrete methods ##########################################
-class MetaPathFinderFindModuleTests:
+kundi MetaPathFinderFindModuleTests:
 
     @classmethod
-    def finder(cls, spec):
-        class MetaPathSpecFinder(cls.abc.MetaPathFinder):
+    eleza finder(cls, spec):
+        kundi MetaPathSpecFinder(cls.abc.MetaPathFinder):
 
-            def find_spec(self, fullname, path, target=None):
+            eleza find_spec(self, fullname, path, target=None):
                 self.called_for = fullname, path
-                return spec
+                rudisha spec
 
-        return MetaPathSpecFinder()
+        rudisha MetaPathSpecFinder()
 
-    def test_no_spec(self):
+    eleza test_no_spec(self):
         finder = self.finder(None)
         path = ['a', 'b', 'c']
         name = 'blah'
@@ -367,9 +367,9 @@ class MetaPathFinderFindModuleTests:
         self.assertEqual(name, finder.called_for[0])
         self.assertEqual(path, finder.called_for[1])
 
-    def test_spec(self):
+    eleza test_spec(self):
         loader = object()
-        spec = self.util.spec_from_loader('blah', loader)
+        spec = self.util.spec_kutoka_loader('blah', loader)
         finder = self.finder(spec)
         with self.assertWarns(DeprecationWarning):
             found = finder.find_module('blah', None)
@@ -382,19 +382,19 @@ class MetaPathFinderFindModuleTests:
 
 
 ##### PathEntryFinder concrete methods #########################################
-class PathEntryFinderFindLoaderTests:
+kundi PathEntryFinderFindLoaderTests:
 
     @classmethod
-    def finder(cls, spec):
-        class PathEntrySpecFinder(cls.abc.PathEntryFinder):
+    eleza finder(cls, spec):
+        kundi PathEntrySpecFinder(cls.abc.PathEntryFinder):
 
-            def find_spec(self, fullname, target=None):
+            eleza find_spec(self, fullname, target=None):
                 self.called_for = fullname
-                return spec
+                rudisha spec
 
-        return PathEntrySpecFinder()
+        rudisha PathEntrySpecFinder()
 
-    def test_no_spec(self):
+    eleza test_no_spec(self):
         finder = self.finder(None)
         name = 'blah'
         with self.assertWarns(DeprecationWarning):
@@ -403,15 +403,15 @@ class PathEntryFinderFindLoaderTests:
         self.assertEqual([], found[1])
         self.assertEqual(name, finder.called_for)
 
-    def test_spec_with_loader(self):
+    eleza test_spec_with_loader(self):
         loader = object()
-        spec = self.util.spec_from_loader('blah', loader)
+        spec = self.util.spec_kutoka_loader('blah', loader)
         finder = self.finder(spec)
         with self.assertWarns(DeprecationWarning):
             found = finder.find_loader('blah')
         self.assertIs(found[0], spec.loader)
 
-    def test_spec_with_portions(self):
+    eleza test_spec_with_portions(self):
         spec = self.machinery.ModuleSpec('blah', None)
         paths = ['a', 'b', 'c']
         spec.submodule_search_locations = paths
@@ -429,21 +429,21 @@ class PathEntryFinderFindLoaderTests:
 
 
 ##### Loader concrete methods ##################################################
-class LoaderLoadModuleTests:
+kundi LoaderLoadModuleTests:
 
-    def loader(self):
-        class SpecLoader(self.abc.Loader):
+    eleza loader(self):
+        kundi SpecLoader(self.abc.Loader):
             found = None
-            def exec_module(self, module):
+            eleza exec_module(self, module):
                 self.found = module
 
-            def is_package(self, fullname):
+            eleza is_package(self, fullname):
                 """Force some non-default module state to be set."""
-                return True
+                rudisha True
 
-        return SpecLoader()
+        rudisha SpecLoader()
 
-    def test_fresh(self):
+    eleza test_fresh(self):
         loader = self.loader()
         name = 'blah'
         with test_util.uncache(name):
@@ -458,11 +458,11 @@ class LoaderLoadModuleTests:
         self.assertIsNotNone(module.__path__,
                              module.__spec__.submodule_search_locations)
 
-    def test_reload(self):
+    eleza test_reload(self):
         name = 'blah'
         loader = self.loader()
         module = types.ModuleType(name)
-        module.__spec__ = self.util.spec_from_loader(name, loader)
+        module.__spec__ = self.util.spec_kutoka_loader(name, loader)
         module.__loader__ = loader
         with test_util.uncache(name):
             sys.modules[name] = module
@@ -478,41 +478,41 @@ class LoaderLoadModuleTests:
 
 
 ##### InspectLoader concrete methods ###########################################
-class InspectLoaderSourceToCodeTests:
+kundi InspectLoaderSourceToCodeTests:
 
-    def source_to_module(self, data, path=None):
+    eleza source_to_module(self, data, path=None):
         """Help with source_to_code() tests."""
         module = types.ModuleType('blah')
         loader = self.InspectLoaderSubclass()
-        if path is None:
+        ikiwa path is None:
             code = loader.source_to_code(data)
         else:
             code = loader.source_to_code(data, path)
         exec(code, module.__dict__)
-        return module
+        rudisha module
 
-    def test_source_to_code_source(self):
+    eleza test_source_to_code_source(self):
         # Since compile() can handle strings, so should source_to_code().
         source = 'attr = 42'
         module = self.source_to_module(source)
         self.assertTrue(hasattr(module, 'attr'))
         self.assertEqual(module.attr, 42)
 
-    def test_source_to_code_bytes(self):
+    eleza test_source_to_code_bytes(self):
         # Since compile() can handle bytes, so should source_to_code().
         source = b'attr = 42'
         module = self.source_to_module(source)
         self.assertTrue(hasattr(module, 'attr'))
         self.assertEqual(module.attr, 42)
 
-    def test_source_to_code_path(self):
+    eleza test_source_to_code_path(self):
         # Specifying a path should set it for the code object.
         path = 'path/to/somewhere'
         loader = self.InspectLoaderSubclass()
         code = loader.source_to_code('', path)
         self.assertEqual(code.co_filename, path)
 
-    def test_source_to_code_no_path(self):
+    eleza test_source_to_code_no_path(self):
         # Not setting a path should still work and be set to <string> since that
         # is a pre-existing practice as a default to compile().
         loader = self.InspectLoaderSubclass()
@@ -526,9 +526,9 @@ class InspectLoaderSourceToCodeTests:
                          InspectLoaderSubclass=SPLIT_IL)
 
 
-class InspectLoaderGetCodeTests:
+kundi InspectLoaderGetCodeTests:
 
-    def test_get_code(self):
+    eleza test_get_code(self):
         # Test success.
         module = types.ModuleType('blah')
         with mock.patch.object(self.InspectLoaderSubclass, 'get_source') as mocked:
@@ -538,7 +538,7 @@ class InspectLoaderGetCodeTests:
         exec(code, module.__dict__)
         self.assertEqual(module.attr, 42)
 
-    def test_get_code_source_is_None(self):
+    eleza test_get_code_source_is_None(self):
         # If get_source() is None then this should be None.
         with mock.patch.object(self.InspectLoaderSubclass, 'get_source') as mocked:
             mocked.return_value = None
@@ -546,7 +546,7 @@ class InspectLoaderGetCodeTests:
             code = loader.get_code('blah')
         self.assertIsNone(code)
 
-    def test_get_code_source_not_found(self):
+    eleza test_get_code_source_not_found(self):
         # If there is no source then there is no code object.
         loader = self.InspectLoaderSubclass()
         with self.assertRaises(ImportError):
@@ -559,26 +559,26 @@ class InspectLoaderGetCodeTests:
                          InspectLoaderSubclass=SPLIT_IL)
 
 
-class InspectLoaderLoadModuleTests:
+kundi InspectLoaderLoadModuleTests:
 
     """Test InspectLoader.load_module()."""
 
     module_name = 'blah'
 
-    def setUp(self):
+    eleza setUp(self):
         support.unload(self.module_name)
         self.addCleanup(support.unload, self.module_name)
 
-    def load(self, loader):
-        spec = self.util.spec_from_loader(self.module_name, loader)
+    eleza load(self, loader):
+        spec = self.util.spec_kutoka_loader(self.module_name, loader)
         with warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
-            return self.init._bootstrap._load_unlocked(spec)
+            rudisha self.init._bootstrap._load_unlocked(spec)
 
-    def mock_get_code(self):
-        return mock.patch.object(self.InspectLoaderSubclass, 'get_code')
+    eleza mock_get_code(self):
+        rudisha mock.patch.object(self.InspectLoaderSubclass, 'get_code')
 
-    def test_get_code_ImportError(self):
+    eleza test_get_code_ImportError(self):
         # If get_code() raises ImportError, it should propagate.
         with self.mock_get_code() as mocked_get_code:
             mocked_get_code.side_effect = ImportError
@@ -586,7 +586,7 @@ class InspectLoaderLoadModuleTests:
                 loader = self.InspectLoaderSubclass()
                 self.load(loader)
 
-    def test_get_code_None(self):
+    eleza test_get_code_None(self):
         # If get_code() returns None, raise ImportError.
         with self.mock_get_code() as mocked_get_code:
             mocked_get_code.return_value = None
@@ -594,7 +594,7 @@ class InspectLoaderLoadModuleTests:
                 loader = self.InspectLoaderSubclass()
                 self.load(loader)
 
-    def test_module_returned(self):
+    eleza test_module_returned(self):
         # The loaded module should be returned.
         code = compile('attr = 42', '<string>', 'exec')
         with self.mock_get_code() as mocked_get_code:
@@ -613,19 +613,19 @@ class InspectLoaderLoadModuleTests:
 
 
 ##### ExecutionLoader concrete methods #########################################
-class ExecutionLoaderGetCodeTests:
+kundi ExecutionLoaderGetCodeTests:
 
-    def mock_methods(self, *, get_source=False, get_filename=False):
+    eleza mock_methods(self, *, get_source=False, get_filename=False):
         source_mock_context, filename_mock_context = None, None
-        if get_source:
+        ikiwa get_source:
             source_mock_context = mock.patch.object(self.ExecutionLoaderSubclass,
                                                     'get_source')
-        if get_filename:
+        ikiwa get_filename:
             filename_mock_context = mock.patch.object(self.ExecutionLoaderSubclass,
                                                       'get_filename')
-        return source_mock_context, filename_mock_context
+        rudisha source_mock_context, filename_mock_context
 
-    def test_get_code(self):
+    eleza test_get_code(self):
         path = 'blah.py'
         source_mock_context, filename_mock_context = self.mock_methods(
                 get_source=True, get_filename=True)
@@ -639,7 +639,7 @@ class ExecutionLoaderGetCodeTests:
         exec(code, module.__dict__)
         self.assertEqual(module.attr, 42)
 
-    def test_get_code_source_is_None(self):
+    eleza test_get_code_source_is_None(self):
         # If get_source() is None then this should be None.
         source_mock_context, _ = self.mock_methods(get_source=True)
         with source_mock_context as mocked:
@@ -648,13 +648,13 @@ class ExecutionLoaderGetCodeTests:
             code = loader.get_code('blah')
         self.assertIsNone(code)
 
-    def test_get_code_source_not_found(self):
+    eleza test_get_code_source_not_found(self):
         # If there is no source then there is no code object.
         loader = self.ExecutionLoaderSubclass()
         with self.assertRaises(ImportError):
             loader.get_code('blah')
 
-    def test_get_code_no_path(self):
+    eleza test_get_code_no_path(self):
         # If get_filename() raises ImportError then simply skip setting the path
         # on the code object.
         source_mock_context, filename_mock_context = self.mock_methods(
@@ -677,39 +677,39 @@ class ExecutionLoaderGetCodeTests:
 
 
 ##### SourceLoader concrete methods ############################################
-class SourceOnlyLoader:
+kundi SourceOnlyLoader:
 
     # Globals that should be defined for all modules.
     source = (b"_ = '::'.join([__name__, __file__, __cached__, __package__, "
               b"repr(__loader__)])")
 
-    def __init__(self, path):
+    eleza __init__(self, path):
         self.path = path
 
-    def get_data(self, path):
-        if path != self.path:
+    eleza get_data(self, path):
+        ikiwa path != self.path:
             raise IOError
-        return self.source
+        rudisha self.source
 
-    def get_filename(self, fullname):
-        return self.path
+    eleza get_filename(self, fullname):
+        rudisha self.path
 
-    def module_repr(self, module):
-        return '<module>'
+    eleza module_repr(self, module):
+        rudisha '<module>'
 
 
 SPLIT_SOL = make_abc_subclasses(SourceOnlyLoader, 'SourceLoader')
 
 
-class SourceLoader(SourceOnlyLoader):
+kundi SourceLoader(SourceOnlyLoader):
 
     source_mtime = 1
 
-    def __init__(self, path, magic=None):
+    eleza __init__(self, path, magic=None):
         super().__init__(path)
-        self.bytecode_path = self.util.cache_from_source(self.path)
+        self.bytecode_path = self.util.cache_kutoka_source(self.path)
         self.source_size = len(self.source)
-        if magic is None:
+        ikiwa magic is None:
             magic = self.util.MAGIC_NUMBER
         data = bytearray(magic)
         data.extend(self.init._pack_uint32(0))
@@ -721,42 +721,42 @@ class SourceLoader(SourceOnlyLoader):
         self.bytecode = bytes(data)
         self.written = {}
 
-    def get_data(self, path):
-        if path == self.path:
-            return super().get_data(path)
-        elif path == self.bytecode_path:
-            return self.bytecode
+    eleza get_data(self, path):
+        ikiwa path == self.path:
+            rudisha super().get_data(path)
+        elikiwa path == self.bytecode_path:
+            rudisha self.bytecode
         else:
             raise OSError
 
-    def path_stats(self, path):
-        if path != self.path:
+    eleza path_stats(self, path):
+        ikiwa path != self.path:
             raise IOError
-        return {'mtime': self.source_mtime, 'size': self.source_size}
+        rudisha {'mtime': self.source_mtime, 'size': self.source_size}
 
-    def set_data(self, path, data):
+    eleza set_data(self, path, data):
         self.written[path] = bytes(data)
-        return path == self.bytecode_path
+        rudisha path == self.bytecode_path
 
 
 SPLIT_SL = make_abc_subclasses(SourceLoader, util=util, init=init)
 
 
-class SourceLoaderTestHarness:
+kundi SourceLoaderTestHarness:
 
-    def setUp(self, *, is_package=True, **kwargs):
+    eleza setUp(self, *, is_package=True, **kwargs):
         self.package = 'pkg'
-        if is_package:
+        ikiwa is_package:
             self.path = os.path.join(self.package, '__init__.py')
             self.name = self.package
         else:
             module_name = 'mod'
             self.path = os.path.join(self.package, '.'.join(['mod', 'py']))
             self.name = '.'.join([self.package, module_name])
-        self.cached = self.util.cache_from_source(self.path)
+        self.cached = self.util.cache_kutoka_source(self.path)
         self.loader = self.loader_mock(self.path, **kwargs)
 
-    def verify_module(self, module):
+    eleza verify_module(self, module):
         self.assertEqual(module.__name__, self.name)
         self.assertEqual(module.__file__, self.path)
         self.assertEqual(module.__cached__, self.cached)
@@ -769,7 +769,7 @@ class SourceLoaderTestHarness:
         self.assertEqual(values[3], self.package)
         self.assertEqual(values[4], repr(self.loader))
 
-    def verify_code(self, code_object):
+    eleza verify_code(self, code_object):
         module = types.ModuleType(self.name)
         module.__file__ = self.path
         module.__cached__ = self.cached
@@ -780,7 +780,7 @@ class SourceLoaderTestHarness:
         self.verify_module(module)
 
 
-class SourceOnlyLoaderTests(SourceLoaderTestHarness):
+kundi SourceOnlyLoaderTests(SourceLoaderTestHarness):
 
     """Test importlib.abc.SourceLoader for source-only loading.
 
@@ -789,19 +789,19 @@ class SourceOnlyLoaderTests(SourceLoaderTestHarness):
 
     """
 
-    def test_get_source(self):
+    eleza test_get_source(self):
         # Verify the source code is returned as a string.
         # If an OSError is raised by get_data then raise ImportError.
         expected_source = self.loader.source.decode('utf-8')
         self.assertEqual(self.loader.get_source(self.name), expected_source)
-        def raise_OSError(path):
+        eleza raise_OSError(path):
             raise OSError
         self.loader.get_data = raise_OSError
         with self.assertRaises(ImportError) as cm:
             self.loader.get_source(self.name)
         self.assertEqual(cm.exception.name, self.name)
 
-    def test_is_package(self):
+    eleza test_is_package(self):
         # Properly detect when loading a package.
         self.setUp(is_package=False)
         self.assertFalse(self.loader.is_package(self.name))
@@ -809,17 +809,17 @@ class SourceOnlyLoaderTests(SourceLoaderTestHarness):
         self.assertTrue(self.loader.is_package(self.name))
         self.assertFalse(self.loader.is_package(self.name + '.__init__'))
 
-    def test_get_code(self):
+    eleza test_get_code(self):
         # Verify the code object is created.
         code_object = self.loader.get_code(self.name)
         self.verify_code(code_object)
 
-    def test_source_to_code(self):
+    eleza test_source_to_code(self):
         # Verify the compiled code object.
         code = self.loader.source_to_code(self.loader.source, self.path)
         self.verify_code(code)
 
-    def test_load_module(self):
+    eleza test_load_module(self):
         # Loading a module should set __name__, __loader__, __package__,
         # __path__ (for packages), __file__, and __cached__.
         # The module should also be put into sys.modules.
@@ -831,8 +831,8 @@ class SourceOnlyLoaderTests(SourceLoaderTestHarness):
             self.assertEqual(module.__path__, [os.path.dirname(self.path)])
             self.assertIn(self.name, sys.modules)
 
-    def test_package_settings(self):
-        # __package__ needs to be set, while __path__ is set on if the module
+    eleza test_package_settings(self):
+        # __package__ needs to be set, while __path__ is set on ikiwa the module
         # is a package.
         # Testing the values for a package are covered by test_load_module.
         self.setUp(is_package=False)
@@ -843,7 +843,7 @@ class SourceOnlyLoaderTests(SourceLoaderTestHarness):
             self.verify_module(module)
             self.assertFalse(hasattr(module, '__path__'))
 
-    def test_get_source_encoding(self):
+    eleza test_get_source_encoding(self):
         # Source is considered encoded in UTF-8 by default unless otherwise
         # specified by an encoding line.
         source = "_ = 'ü'"
@@ -863,7 +863,7 @@ class SourceOnlyLoaderTests(SourceLoaderTestHarness):
 
 
 @unittest.skipIf(sys.dont_write_bytecode, "sys.dont_write_bytecode is true")
-class SourceLoaderBytecodeTests(SourceLoaderTestHarness):
+kundi SourceLoaderBytecodeTests(SourceLoaderTestHarness):
 
     """Test importlib.abc.SourceLoader's use of bytecode.
 
@@ -871,9 +871,9 @@ class SourceLoaderBytecodeTests(SourceLoaderTestHarness):
 
     """
 
-    def verify_code(self, code_object, *, bytecode_written=False):
+    eleza verify_code(self, code_object, *, bytecode_written=False):
         super().verify_code(code_object)
-        if bytecode_written:
+        ikiwa bytecode_written:
             self.assertIn(self.cached, self.loader.written)
             data = bytearray(self.util.MAGIC_NUMBER)
             data.extend(self.init._pack_uint32(0))
@@ -882,22 +882,22 @@ class SourceLoaderBytecodeTests(SourceLoaderTestHarness):
             data.extend(marshal.dumps(code_object))
             self.assertEqual(self.loader.written[self.cached], bytes(data))
 
-    def test_code_with_everything(self):
+    eleza test_code_with_everything(self):
         # When everything should work.
         code_object = self.loader.get_code(self.name)
         self.verify_code(code_object)
 
-    def test_no_bytecode(self):
+    eleza test_no_bytecode(self):
         # If no bytecode exists then move on to the source.
         self.loader.bytecode_path = "<does not exist>"
         # Sanity check
         with self.assertRaises(OSError):
-            bytecode_path = self.util.cache_from_source(self.path)
+            bytecode_path = self.util.cache_kutoka_source(self.path)
             self.loader.get_data(bytecode_path)
         code_object = self.loader.get_code(self.name)
         self.verify_code(code_object, bytecode_written=True)
 
-    def test_code_bad_timestamp(self):
+    eleza test_code_bad_timestamp(self):
         # Bytecode is only used when the timestamp matches the source EXACTLY.
         for source_mtime in (0, 2):
             assert source_mtime != self.loader.source_mtime
@@ -909,7 +909,7 @@ class SourceLoaderBytecodeTests(SourceLoaderTestHarness):
             self.verify_code(code_object, bytecode_written=True)
             self.loader.source_mtime = original
 
-    def test_code_bad_magic(self):
+    eleza test_code_bad_magic(self):
         # Skip over bytecode with a bad magic number.
         self.setUp(magic=b'0000')
         # If bytecode is used then EOFError would be raised by marshal.
@@ -917,9 +917,9 @@ class SourceLoaderBytecodeTests(SourceLoaderTestHarness):
         code_object = self.loader.get_code(self.name)
         self.verify_code(code_object, bytecode_written=True)
 
-    def test_dont_write_bytecode(self):
-        # Bytecode is not written if sys.dont_write_bytecode is true.
-        # Can assume it is false already thanks to the skipIf class decorator.
+    eleza test_dont_write_bytecode(self):
+        # Bytecode is not written ikiwa sys.dont_write_bytecode is true.
+        # Can assume it is false already thanks to the skipIf kundi decorator.
         try:
             sys.dont_write_bytecode = True
             self.loader.bytecode_path = "<does not exist>"
@@ -928,7 +928,7 @@ class SourceLoaderBytecodeTests(SourceLoaderTestHarness):
         finally:
             sys.dont_write_bytecode = False
 
-    def test_no_set_data(self):
+    eleza test_no_set_data(self):
         # If set_data is not defined, one can still read bytecode.
         self.setUp(magic=b'0000')
         original_set_data = self.loader.__class__.mro()[1].set_data
@@ -939,12 +939,12 @@ class SourceLoaderBytecodeTests(SourceLoaderTestHarness):
         finally:
             self.loader.__class__.mro()[1].set_data = original_set_data
 
-    def test_set_data_raises_exceptions(self):
+    eleza test_set_data_raises_exceptions(self):
         # Raising NotImplementedError or OSError is okay for set_data.
-        def raise_exception(exc):
-            def closure(*args, **kwargs):
+        eleza raise_exception(exc):
+            eleza closure(*args, **kwargs):
                 raise exc
-            return closure
+            rudisha closure
 
         self.setUp(magic=b'0000')
         self.loader.set_data = raise_exception(NotImplementedError)
@@ -958,11 +958,11 @@ class SourceLoaderBytecodeTests(SourceLoaderTestHarness):
                          loader_mock=SPLIT_SL)
 
 
-class SourceLoaderGetSourceTests:
+kundi SourceLoaderGetSourceTests:
 
     """Tests for importlib.abc.SourceLoader.get_source()."""
 
-    def test_default_encoding(self):
+    eleza test_default_encoding(self):
         # Should have no problems with UTF-8 text.
         name = 'mod'
         mock = self.SourceOnlyLoaderMock('mod.file')
@@ -971,7 +971,7 @@ class SourceLoaderGetSourceTests:
         returned_source = mock.get_source(name)
         self.assertEqual(returned_source, source)
 
-    def test_decoded_source(self):
+    eleza test_decoded_source(self):
         # Decoding should work.
         name = 'mod'
         mock = self.SourceOnlyLoaderMock("mod.file")
@@ -981,7 +981,7 @@ class SourceLoaderGetSourceTests:
         returned_source = mock.get_source(name)
         self.assertEqual(returned_source, source)
 
-    def test_universal_newlines(self):
+    eleza test_universal_newlines(self):
         # PEP 302 says universal newlines should be used.
         name = 'mod'
         mock = self.SourceOnlyLoaderMock('mod.file')
@@ -997,5 +997,5 @@ class SourceLoaderGetSourceTests:
                          SourceOnlyLoaderMock=SPLIT_SOL)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

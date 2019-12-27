@@ -4,19 +4,19 @@ agiza unittest
 g = "Global variable"
 
 
-class DictComprehensionTest(unittest.TestCase):
+kundi DictComprehensionTest(unittest.TestCase):
 
-    def test_basics(self):
+    eleza test_basics(self):
         expected = {0: 10, 1: 11, 2: 12, 3: 13, 4: 14, 5: 15, 6: 16, 7: 17,
                     8: 18, 9: 19}
         actual = {k: k + 10 for k in range(10)}
         self.assertEqual(actual, expected)
 
         expected = {0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9}
-        actual = {k: v for k in range(10) for v in range(10) if k == v}
+        actual = {k: v for k in range(10) for v in range(10) ikiwa k == v}
         self.assertEqual(actual, expected)
 
-    def test_scope_isolation(self):
+    eleza test_scope_isolation(self):
         k = "Local Variable"
 
         expected = {0: None, 1: None, 2: None, 3: None, 4: None, 5: None,
@@ -35,7 +35,7 @@ class DictComprehensionTest(unittest.TestCase):
         self.assertEqual(k, "Local Variable")
         self.assertEqual(actual, expected)
 
-    def test_scope_isolation_from_global(self):
+    eleza test_scope_isolation_kutoka_global(self):
         expected = {0: None, 1: None, 2: None, 3: None, 4: None, 5: None,
                     6: None, 7: None, 8: None, 9: None}
         actual = {g: None for g in range(10)}
@@ -52,7 +52,7 @@ class DictComprehensionTest(unittest.TestCase):
         self.assertEqual(g, "Global variable")
         self.assertEqual(actual, expected)
 
-    def test_global_visibility(self):
+    eleza test_global_visibility(self):
         expected = {0: 'Global variable', 1: 'Global variable',
                     2: 'Global variable', 3: 'Global variable',
                     4: 'Global variable', 5: 'Global variable',
@@ -61,7 +61,7 @@ class DictComprehensionTest(unittest.TestCase):
         actual = {k: g for k in range(10)}
         self.assertEqual(actual, expected)
 
-    def test_local_visibility(self):
+    eleza test_local_visibility(self):
         v = "Local variable"
         expected = {0: 'Local variable', 1: 'Local variable',
                     2: 'Local variable', 3: 'Local variable',
@@ -72,7 +72,7 @@ class DictComprehensionTest(unittest.TestCase):
         self.assertEqual(actual, expected)
         self.assertEqual(v, "Local variable")
 
-    def test_illegal_assignment(self):
+    eleza test_illegal_assignment(self):
         with self.assertRaisesRegex(SyntaxError, "cannot assign"):
             compile("{x: y for y, x in ((1, 2), (3, 4))} = 5", "<test>",
                     "exec")
@@ -81,7 +81,7 @@ class DictComprehensionTest(unittest.TestCase):
             compile("{x: y for y, x in ((1, 2), (3, 4))} += 5", "<test>",
                     "exec")
 
-    def test_evaluation_order(self):
+    eleza test_evaluation_order(self):
         expected = {
             'H': 'W',
             'e': 'o',
@@ -99,9 +99,9 @@ class DictComprehensionTest(unittest.TestCase):
 
         actual_calls = []
 
-        def add_call(pos, value):
+        eleza add_call(pos, value):
             actual_calls.append((pos, value))
-            return value
+            rudisha value
 
         actual = {
             add_call('key', k): add_call('value', v)
@@ -111,5 +111,5 @@ class DictComprehensionTest(unittest.TestCase):
         self.assertEqual(actual, expected)
         self.assertEqual(actual_calls, expected_calls)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

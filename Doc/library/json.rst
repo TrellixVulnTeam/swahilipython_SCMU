@@ -23,7 +23,7 @@ is a lightweight data interchange format inspired by
 
 Encoding basic Python object hierarchies::
 
-    >>> import json
+    >>> agiza json
     >>> json.dumps(['foo', {'bar': ('baz', None, 1.0, 2)}])
     '["foo", {"bar": ["baz", null, 1.0, 2]}]'
     >>> print(json.dumps("\"foo\bar"))
@@ -34,7 +34,7 @@ Encoding basic Python object hierarchies::
     "\\"
     >>> print(json.dumps({"c": 0, "b": 0, "a": 0}, sort_keys=True))
     {"a": 0, "b": 0, "c": 0}
-    >>> from io import StringIO
+    >>> kutoka io agiza StringIO
     >>> io = StringIO()
     >>> json.dump(['streaming API'], io)
     >>> io.getvalue()
@@ -42,13 +42,13 @@ Encoding basic Python object hierarchies::
 
 Compact encoding::
 
-    >>> import json
+    >>> agiza json
     >>> json.dumps([1, 2, 3, {'4': 5, '6': 7}], separators=(',', ':'))
     '[1,2,3,{"4":5,"6":7}]'
 
 Pretty printing::
 
-    >>> import json
+    >>> agiza json
     >>> print(json.dumps({'4': 5, '6': 7}, sort_keys=True, indent=4))
     {
         "4": 5,
@@ -57,19 +57,19 @@ Pretty printing::
 
 Decoding JSON::
 
-    >>> import json
+    >>> agiza json
     >>> json.loads('["foo", {"bar":["baz", null, 1.0, 2]}]')
     ['foo', {'bar': ['baz', None, 1.0, 2]}]
     >>> json.loads('"\\"foo\\bar"')
     '"foo\x08ar'
-    >>> from io import StringIO
+    >>> kutoka io agiza StringIO
     >>> io = StringIO('["streaming API"]')
     >>> json.load(io)
     ['streaming API']
 
 Specializing JSON object decoding::
 
-    >>> import json
+    >>> agiza json
     >>> def as_complex(dct):
     ...     if '__complex__' in dct:
     ...         return complex(dct['real'], dct['imag'])
@@ -78,18 +78,18 @@ Specializing JSON object decoding::
     >>> json.loads('{"__complex__": true, "real": 1, "imag": 2}',
     ...     object_hook=as_complex)
     (1+2j)
-    >>> import decimal
+    >>> agiza decimal
     >>> json.loads('1.1', parse_float=decimal.Decimal)
     Decimal('1.1')
 
 Extending :class:`JSONEncoder`::
 
-    >>> import json
-    >>> class ComplexEncoder(json.JSONEncoder):
+    >>> agiza json
+    >>> kundi ComplexEncoder(json.JSONEncoder):
     ...     def default(self, obj):
     ...         if isinstance(obj, complex):
     ...             return [obj.real, obj.imag]
-    ...         # Let the base class default method raise the TypeError
+    ...         # Let the base kundi default method raise the TypeError
     ...         return json.JSONEncoder.default(self, obj)
     ...
     >>> json.dumps(2 + 1j, cls=ComplexEncoder)
@@ -100,7 +100,7 @@ Extending :class:`JSONEncoder`::
     ['[2.0', ', 1.0', ']']
 
 
-Using :mod:`json.tool` from the shell to validate and pretty-print:
+Using :mod:`json.tool` kutoka the shell to validate and pretty-print:
 
 .. code-block:: shell-session
 
@@ -193,7 +193,7 @@ Basic Usage
    If *sort_keys* is true (default: ``False``), then the output of
    dictionaries will be sorted by key.
 
-   To use a custom :class:`JSONEncoder` subclass (e.g. one that overrides the
+   To use a custom :class:`JSONEncoder` subkundi (e.g. one that overrides the
    :meth:`default` method to serialize additional types), specify it with the
    *cls* kwarg; otherwise :class:`JSONEncoder` is used.
 
@@ -234,7 +234,7 @@ Basic Usage
    any object literal decoded (a :class:`dict`).  The return value of
    *object_hook* will be used instead of the :class:`dict`.  This feature can be used
    to implement custom decoders (e.g. `JSON-RPC <http://www.jsonrpc.org>`_
-   class hinting).
+   kundi hinting).
 
    *object_pairs_hook* is an optional function that will be called with the
    result of any object literal decoded with an ordered list of pairs.  The
@@ -334,7 +334,7 @@ Encoders and Decoders
    *object_hook*, if specified, will be called with the result of every JSON
    object decoded and its return value will be used in place of the given
    :class:`dict`.  This can be used to provide custom deserializations (e.g. to
-   support JSON-RPC class hinting).
+   support JSON-RPC kundi hinting).
 
    *object_pairs_hook*, if specified will be called with the result of every
    JSON object decoded with an ordered list of pairs.  The return value of
@@ -381,11 +381,11 @@ Encoders and Decoders
 
    .. method:: raw_decode(s)
 
-      Decode a JSON document from *s* (a :class:`str` beginning with a
+      Decode a JSON document kutoka *s* (a :class:`str` beginning with a
       JSON document) and return a 2-tuple of the Python representation
       and the index in *s* where the document ended.
 
-      This can be used to decode a JSON document from a string that may have
+      This can be used to decode a JSON document kutoka a string that may have
       extraneous data at the end.
 
 
@@ -418,9 +418,9 @@ Encoders and Decoders
    .. versionchanged:: 3.4
       Added support for int- and float-derived Enum classes.
 
-   To extend this to recognize other objects, subclass and implement a
+   To extend this to recognize other objects, subkundi and implement a
    :meth:`default` method with another method that returns a serializable object
-   for ``o`` if possible, otherwise it should call the superclass implementation
+   for ``o`` if possible, otherwise it should call the superkundi implementation
    (to raise :exc:`TypeError`).
 
    If *skipkeys* is false (the default), then it is a :exc:`TypeError` to
@@ -476,7 +476,7 @@ Encoders and Decoders
 
    .. method:: default(o)
 
-      Implement this method in a subclass such that it returns a serializable
+      Implement this method in a subkundi such that it returns a serializable
       object for *o*, or calls the base implementation (to raise a
       :exc:`TypeError`).
 
@@ -490,7 +490,7 @@ Encoders and Decoders
                 pass
             else:
                 return list(iterable)
-            # Let the base class default method raise the TypeError
+            # Let the base kundi default method raise the TypeError
             return json.JSONEncoder.default(self, o)
 
 
@@ -517,7 +517,7 @@ Exceptions
 
 .. exception:: JSONDecodeError(msg, doc, pos)
 
-   Subclass of :exc:`ValueError` with the following additional attributes:
+   Subkundi of :exc:`ValueError` with the following additional attributes:
 
    .. attribute:: msg
 
@@ -719,7 +719,7 @@ Command line options
           }
       ]
 
-   If *infile* is not specified, read from :attr:`sys.stdin`.
+   If *infile* is not specified, read kutoka :attr:`sys.stdin`.
 
 .. cmdoption:: outfile
 

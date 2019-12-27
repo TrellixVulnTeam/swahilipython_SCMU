@@ -84,10 +84,10 @@ def open(file, flag='r', mode=0o666):
         else:
             raise error[0]("db file doesn't exist; "
                            "use 'c' or 'n' flag to create a new db")
-    elif result == "":
+    lasivyo result == "":
         # db type cannot be determined
         raise error[0]("db type could not be determined")
-    elif result not in _modules:
+    lasivyo result not in _modules:
         raise error[0]("db type is {0}, but the module is not "
                        "available".format(result))
     else:

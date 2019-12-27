@@ -11,16 +11,16 @@ kutoka test agiza support
 kutoka fractions agiza Fraction
 
 
-class TestBasicOps:
-    # Superclass with tests common to all generators.
+kundi TestBasicOps:
+    # Superkundi with tests common to all generators.
     # Subclasses must arrange for self.gen to retrieve the Random instance
     # to be tested.
 
-    def randomlist(self, n):
+    eleza randomlist(self, n):
         """Helper function to make a list of random numbers"""
-        return [self.gen.random() for i in range(n)]
+        rudisha [self.gen.random() for i in range(n)]
 
-    def test_autoseed(self):
+    eleza test_autoseed(self):
         self.gen.seed()
         state1 = self.gen.getstate()
         time.sleep(0.1)
@@ -28,7 +28,7 @@ class TestBasicOps:
         state2 = self.gen.getstate()
         self.assertNotEqual(state1, state2)
 
-    def test_saverestore(self):
+    eleza test_saverestore(self):
         N = 1000
         self.gen.seed()
         state = self.gen.getstate()
@@ -36,11 +36,11 @@ class TestBasicOps:
         self.gen.setstate(state)    # should regenerate the same sequence
         self.assertEqual(randseq, self.randomlist(N))
 
-    def test_seedargs(self):
+    eleza test_seedargs(self):
         # Seed value with a negative hash.
-        class MySeed(object):
-            def __hash__(self):
-                return -1729
+        kundi MySeed(object):
+            eleza __hash__(self):
+                rudisha -1729
         for arg in [None, 0, 0, 1, 1, -1, -1, 10**20, -(10**20),
                     3.14, 1+2j, 'a', tuple('abc'), MySeed()]:
             self.gen.seed(arg)
@@ -50,7 +50,7 @@ class TestBasicOps:
         self.assertRaises(TypeError, type(self.gen), [])
 
     @unittest.mock.patch('random._urandom') # os.urandom
-    def test_seed_when_randomness_source_not_found(self, urandom_mock):
+    eleza test_seed_when_randomness_source_not_found(self, urandom_mock):
         # Random.seed() uses time.time() when an operating system specific
         # randomness source is not found. To test this on machines where it
         # exists, run the above test, test_seedargs(), again after mocking
@@ -59,7 +59,7 @@ class TestBasicOps:
         urandom_mock.side_effect = NotImplementedError
         self.test_seedargs()
 
-    def test_shuffle(self):
+    eleza test_shuffle(self):
         shuffle = self.gen.shuffle
         lst = []
         shuffle(lst)
@@ -74,7 +74,7 @@ class TestBasicOps:
         for (seq, shuffled_seq) in zip(seqs, shuffled_seqs):
             self.assertEqual(len(seq), len(shuffled_seq))
             self.assertEqual(set(seq), set(shuffled_seq))
-        # The above tests all would pass if the shuffle was a
+        # The above tests all would pass ikiwa the shuffle was a
         # no-op. The following non-deterministic test covers that.  It
         # asserts that the shuffled sequence of 1000 distinct elements
         # must be different kutoka the original one. Although there is
@@ -92,7 +92,7 @@ class TestBasicOps:
         self.assertTrue(lst != shuffled_lst)
         self.assertRaises(TypeError, shuffle, (1, 2, 3))
 
-    def test_shuffle_random_argument(self):
+    eleza test_shuffle_random_argument(self):
         # Test random argument to shuffle.
         shuffle = self.gen.shuffle
         mock_random = unittest.mock.Mock(return_value=0.5)
@@ -100,14 +100,14 @@ class TestBasicOps:
         shuffle(seq, mock_random)
         mock_random.assert_called_with()
 
-    def test_choice(self):
+    eleza test_choice(self):
         choice = self.gen.choice
         with self.assertRaises(IndexError):
             choice([])
         self.assertEqual(choice([50]), 50)
         self.assertIn(choice([25, 75]), [25, 75])
 
-    def test_sample(self):
+    eleza test_sample(self):
         # For the entire allowable range of 0 <= k <= N, validate that
         # the sample is of the correct length and contains only unique items
         N = 100
@@ -119,11 +119,11 @@ class TestBasicOps:
             self.assertEqual(len(uniq), k)
             self.assertTrue(uniq <= set(population))
         self.assertEqual(self.gen.sample([], 0), [])  # test edge case N==k==0
-        # Exception raised if size of sample exceeds that of population
+        # Exception raised ikiwa size of sample exceeds that of population
         self.assertRaises(ValueError, self.gen.sample, population, N+1)
         self.assertRaises(ValueError, self.gen.sample, [], -1)
 
-    def test_sample_distribution(self):
+    eleza test_sample_distribution(self):
         # For the entire allowable range of 0 <= k <= N, validate that
         # sample generates all possible permutations
         n = 5
@@ -134,12 +134,12 @@ class TestBasicOps:
             perms = {}
             for i in range(trials):
                 perms[tuple(self.gen.sample(pop, k))] = None
-                if len(perms) == expected:
+                ikiwa len(perms) == expected:
                     break
             else:
                 self.fail()
 
-    def test_sample_inputs(self):
+    eleza test_sample_inputs(self):
         # SF bug #801342 -- population can be any iterable defining __len__()
         self.gen.sample(set(range(20)), 2)
         self.gen.sample(range(20), 2)
@@ -147,10 +147,10 @@ class TestBasicOps:
         self.gen.sample(str('abcdefghijklmnopqrst'), 2)
         self.gen.sample(tuple('abcdefghijklmnopqrst'), 2)
 
-    def test_sample_on_dicts(self):
-        self.assertRaises(TypeError, self.gen.sample, dict.fromkeys('abcdef'), 2)
+    eleza test_sample_on_dicts(self):
+        self.assertRaises(TypeError, self.gen.sample, dict.kutokakeys('abcdef'), 2)
 
-    def test_choices(self):
+    eleza test_choices(self):
         choices = self.gen.choices
         data = ['red', 'green', 'blue', 'yellow']
         str_data = 'abcd'
@@ -227,7 +227,7 @@ class TestBasicOps:
         with self.assertRaises(IndexError):
             choices([], cum_weights=[], k=5)
 
-    def test_choices_subnormal(self):
+    eleza test_choices_subnormal(self):
         # Subnormal weights would occasionally trigger an IndexError
         # in choices() when the value returned by random() was large
         # enough to make `random() * total` round up to the total.
@@ -235,7 +235,7 @@ class TestBasicOps:
         choices = self.gen.choices
         choices(population=[1, 2], weights=[1e-323, 1e-323], k=5000)
 
-    def test_gauss(self):
+    eleza test_gauss(self):
         # Ensure that the seed() method initializes all the hidden state.  In
         # particular, through 2.2.1 it failed to reset a piece of state used
         # by (and only by) the .gauss() method.
@@ -252,7 +252,7 @@ class TestBasicOps:
             self.assertEqual(x1, x2)
             self.assertEqual(y1, y2)
 
-    def test_pickling(self):
+    eleza test_pickling(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             state = pickle.dumps(self.gen, proto)
             origseq = [self.gen.random() for i in range(10)]
@@ -260,7 +260,7 @@ class TestBasicOps:
             restoredseq = [newgen.random() for i in range(10)]
             self.assertEqual(origseq, restoredseq)
 
-    def test_bug_1727780(self):
+    eleza test_bug_1727780(self):
         # verify that version-2-pickles can be loaded
         # fine, whether they are created on 32-bit or 64-bit
         # platforms, and that version-3-pickles load fine.
@@ -272,7 +272,7 @@ class TestBasicOps:
                 r = pickle.load(f)
             self.assertEqual(int(r.random()*1000), value)
 
-    def test_bug_9025(self):
+    eleza test_bug_9025(self):
         # Had problem with an uneven distribution in int(n*random())
         # Verify the fix by checking that distributions fall within expectations.
         n = 100000
@@ -288,31 +288,31 @@ else:
     SystemRandom_available = True
 
 @unittest.skipUnless(SystemRandom_available, "random.SystemRandom not available")
-class SystemRandom_TestBasicOps(TestBasicOps, unittest.TestCase):
+kundi SystemRandom_TestBasicOps(TestBasicOps, unittest.TestCase):
     gen = random.SystemRandom()
 
-    def test_autoseed(self):
+    eleza test_autoseed(self):
         # Doesn't need to do anything except not fail
         self.gen.seed()
 
-    def test_saverestore(self):
+    eleza test_saverestore(self):
         self.assertRaises(NotImplementedError, self.gen.getstate)
         self.assertRaises(NotImplementedError, self.gen.setstate, None)
 
-    def test_seedargs(self):
+    eleza test_seedargs(self):
         # Doesn't need to do anything except not fail
         self.gen.seed(100)
 
-    def test_gauss(self):
+    eleza test_gauss(self):
         self.gen.gauss_next = None
         self.gen.seed(100)
         self.assertEqual(self.gen.gauss_next, None)
 
-    def test_pickling(self):
+    eleza test_pickling(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             self.assertRaises(NotImplementedError, pickle.dumps, self.gen, proto)
 
-    def test_53_bits_per_float(self):
+    eleza test_53_bits_per_float(self):
         # This should pass whenever a C double has 53 bit precision.
         span = 2 ** 53
         cum = 0
@@ -320,7 +320,7 @@ class SystemRandom_TestBasicOps(TestBasicOps, unittest.TestCase):
             cum |= int(self.gen.random() * span)
         self.assertEqual(cum, span-1)
 
-    def test_bigrand(self):
+    eleza test_bigrand(self):
         # The randrange routine should build-up the required number of bits
         # in stages so that all bit positions are active.
         span = 2 ** 500
@@ -331,26 +331,26 @@ class SystemRandom_TestBasicOps(TestBasicOps, unittest.TestCase):
             cum |= r
         self.assertEqual(cum, span-1)
 
-    def test_bigrand_ranges(self):
+    eleza test_bigrand_ranges(self):
         for i in [40,80, 160, 200, 211, 250, 375, 512, 550]:
             start = self.gen.randrange(2 ** (i-2))
             stop = self.gen.randrange(2 ** i)
-            if stop <= start:
+            ikiwa stop <= start:
                 continue
             self.assertTrue(start <= self.gen.randrange(start, stop) < stop)
 
-    def test_rangelimits(self):
+    eleza test_rangelimits(self):
         for start, stop in [(-2,0), (-(2**60)-2,-(2**60)), (2**60,2**60+2)]:
             self.assertEqual(set(range(start,stop)),
                 set([self.gen.randrange(start,stop) for i in range(100)]))
 
-    def test_randrange_nonunit_step(self):
+    eleza test_randrange_nonunit_step(self):
         rint = self.gen.randrange(0, 10, 2)
         self.assertIn(rint, (0, 2, 4, 6, 8))
         rint = self.gen.randrange(0, 2, 2)
         self.assertEqual(rint, 0)
 
-    def test_randrange_errors(self):
+    eleza test_randrange_errors(self):
         raises = partial(self.assertRaises, ValueError, self.gen.randrange)
         # Empty range
         raises(3, 3)
@@ -363,7 +363,7 @@ class SystemRandom_TestBasicOps(TestBasicOps, unittest.TestCase):
         raises(0, 42, 0)
         raises(0, 42, 3.14159)
 
-    def test_genrandbits(self):
+    eleza test_genrandbits(self):
         # Verify ranges
         for k in range(1, 1000):
             self.assertTrue(0 <= self.gen.getrandbits(k) < 2**k)
@@ -383,7 +383,7 @@ class SystemRandom_TestBasicOps(TestBasicOps, unittest.TestCase):
         self.assertRaises(ValueError, self.gen.getrandbits, -1)
         self.assertRaises(TypeError, self.gen.getrandbits, 10.1)
 
-    def test_randbelow_logic(self, _log=log, int=int):
+    eleza test_randbelow_logic(self, _log=log, int=int):
         # check bitcount transition points:  2**i and 2**(i+1)-1
         # show that: k = int(1.001 + _log(n, 2))
         # is equal to or one greater than the number of bits in n
@@ -405,10 +405,10 @@ class SystemRandom_TestBasicOps(TestBasicOps, unittest.TestCase):
             self.assertTrue(2**k > n > 2**(k-1))   # note the stronger assertion
 
 
-class MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
+kundi MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
     gen = random.Random()
 
-    def test_guaranteed_stable(self):
+    eleza test_guaranteed_stable(self):
         # These sequences are guaranteed to stay the same across versions of python
         self.gen.seed(3456147, version=1)
         self.assertEqual([self.gen.random().hex() for i in range(4)],
@@ -419,7 +419,7 @@ class MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
             ['0x1.1239ddfb11b7cp-3', '0x1.b3cbb5c51b120p-4',
              '0x1.8c4f55116b60fp-1', '0x1.63eb525174a27p-1'])
 
-    def test_bug_27706(self):
+    eleza test_bug_27706(self):
         # Verify that version 1 seeds are unaffected by hash randomization
 
         self.gen.seed('nofar', version=1)   # hash('nofar') == 5990528763808513177
@@ -437,18 +437,18 @@ class MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
             ['0x1.b0580f98a7dbep-1', '0x1.84129978f9c1ap-1',
              '0x1.aeaa51052e978p-2', '0x1.092178fb945a6p-2'])
 
-    def test_bug_31478(self):
+    eleza test_bug_31478(self):
         # There shouldn't be an assertion failure in _random.Random.seed() in
         # case the argument has a bad __abs__() method.
-        class BadInt(int):
-            def __abs__(self):
-                return None
+        kundi BadInt(int):
+            eleza __abs__(self):
+                rudisha None
         try:
             self.gen.seed(BadInt())
         except TypeError:
             pass
 
-    def test_bug_31482(self):
+    eleza test_bug_31482(self):
         # Verify that version 1 seeds are unaffected by hash randomization
         # when the seeds are expressed as bytes rather than strings.
         # The hash(b) values listed are the Python2.7 hash() values
@@ -475,10 +475,10 @@ class MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
             ['0x1.52c2fde444d23p-1', '0x1.875174f0daea4p-2',
              '0x1.9e9b2c50e5cd2p-1', '0x1.fa57768bd321cp-2'])
 
-    def test_setstate_first_arg(self):
+    eleza test_setstate_first_arg(self):
         self.assertRaises(ValueError, self.gen.setstate, (1, None, None))
 
-    def test_setstate_middle_arg(self):
+    eleza test_setstate_middle_arg(self):
         start_state = self.gen.getstate()
         # Wrong type, s/b tuple
         self.assertRaises(TypeError, self.gen.setstate, (2, None, None))
@@ -508,7 +508,7 @@ class MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         state = (int(x) for x in state_values)
         self.assertRaises(TypeError, self.gen.setstate, (2, state, None))
 
-    def test_referenceImplementation(self):
+    eleza test_referenceImplementation(self):
         # Compare the python implementation with results kutoka the original
         # code.  Create 2000 53-bit precision random floats.  Compare only
         # the last ten entries to show that the independent implementations
@@ -520,7 +520,7 @@ class MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         #         init_by_array(init, length);
         #         for (i=0; i<2000; i++) {
         #           printf("%.15f ", genrand_res53());
-        #           if (i%5==4) printf("\n");
+        #           ikiwa (i%5==4) printf("\n");
         #         }
         #     }
         expected = [0.45839803073713259,
@@ -539,7 +539,7 @@ class MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         for a, e in zip(actual, expected):
             self.assertAlmostEqual(a,e,places=14)
 
-    def test_strong_reference_implementation(self):
+    eleza test_strong_reference_implementation(self):
         # Like test_referenceImplementation, but checks for exact bit-level
         # equality.  This should pass on any box where C double contains
         # at least 53 bits of precision (the underlying algorithm suffers
@@ -561,7 +561,7 @@ class MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         for a, e in zip(actual, expected):
             self.assertEqual(int(ldexp(a, 53)), e)
 
-    def test_long_seed(self):
+    eleza test_long_seed(self):
         # This is most interesting to run in debug mode, just to make sure
         # nothing blows up.  Under the covers, a dynamically resized array
         # is allocated, consuming space proportional to the number of bits
@@ -570,7 +570,7 @@ class MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         seed = (1 << (10000 * 8)) - 1  # about 10K bytes
         self.gen.seed(seed)
 
-    def test_53_bits_per_float(self):
+    eleza test_53_bits_per_float(self):
         # This should pass whenever a C double has 53 bit precision.
         span = 2 ** 53
         cum = 0
@@ -578,7 +578,7 @@ class MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
             cum |= int(self.gen.random() * span)
         self.assertEqual(cum, span-1)
 
-    def test_bigrand(self):
+    eleza test_bigrand(self):
         # The randrange routine should build-up the required number of bits
         # in stages so that all bit positions are active.
         span = 2 ** 500
@@ -589,20 +589,20 @@ class MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
             cum |= r
         self.assertEqual(cum, span-1)
 
-    def test_bigrand_ranges(self):
+    eleza test_bigrand_ranges(self):
         for i in [40,80, 160, 200, 211, 250, 375, 512, 550]:
             start = self.gen.randrange(2 ** (i-2))
             stop = self.gen.randrange(2 ** i)
-            if stop <= start:
+            ikiwa stop <= start:
                 continue
             self.assertTrue(start <= self.gen.randrange(start, stop) < stop)
 
-    def test_rangelimits(self):
+    eleza test_rangelimits(self):
         for start, stop in [(-2,0), (-(2**60)-2,-(2**60)), (2**60,2**60+2)]:
             self.assertEqual(set(range(start,stop)),
                 set([self.gen.randrange(start,stop) for i in range(100)]))
 
-    def test_genrandbits(self):
+    eleza test_genrandbits(self):
         # Verify cross-platform repeatability
         self.gen.seed(1234567)
         self.assertEqual(self.gen.getrandbits(100),
@@ -626,7 +626,7 @@ class MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         self.assertRaises(ValueError, self.gen.getrandbits, 0)
         self.assertRaises(ValueError, self.gen.getrandbits, -1)
 
-    def test_randrange_uses_getrandbits(self):
+    eleza test_randrange_uses_getrandbits(self):
         # Verify use of getrandbits by randrange
         # Use same seed as in the cross-platform repeatability test
         # in test_genrandbits above.
@@ -636,7 +636,7 @@ class MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         self.assertEqual(self.gen.randrange(2**99),
                          97904845777343510404718956115)
 
-    def test_randbelow_logic(self, _log=log, int=int):
+    eleza test_randbelow_logic(self, _log=log, int=int):
         # check bitcount transition points:  2**i and 2**(i+1)-1
         # show that: k = int(1.001 + _log(n, 2))
         # is equal to or one greater than the number of bits in n
@@ -657,7 +657,7 @@ class MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
             self.assertEqual(k, numbits)        # note the stronger assertion
             self.assertTrue(2**k > n > 2**(k-1))   # note the stronger assertion
 
-    def test_randbelow_without_getrandbits(self):
+    eleza test_randbelow_without_getrandbits(self):
         # Random._randbelow() can only use random() when the built-in one
         # has been overridden but no new getrandbits() method was supplied.
         maxsize = 1<<random.BPF
@@ -695,7 +695,7 @@ class MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
             self.gen._randbelow_without_getrandbits(n, maxsize=maxsize)
             self.assertEqual(random_mock.call_count, 2)
 
-    def test_randrange_bug_1590891(self):
+    eleza test_randrange_bug_1590891(self):
         start = 1000000000000
         stop = -100000000000000000000
         step = -200
@@ -703,7 +703,7 @@ class MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         self.assertTrue(stop < x <= start)
         self.assertEqual((x+stop)%step, 0)
 
-    def test_choices_algorithms(self):
+    eleza test_choices_algorithms(self):
         # The various ways of specifying weights should produce the same results
         choices = self.gen.choices
         n = 104729
@@ -736,13 +736,13 @@ class MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         c = self.gen.choices(population, cum_weights=cum_weights, k=10000)
         self.assertEqual(a, c)
 
-def gamma(z, sqrt2pi=(2.0*pi)**0.5):
+eleza gamma(z, sqrt2pi=(2.0*pi)**0.5):
     # Reflection to right half of complex plane
-    if z < 0.5:
-        return pi / sin(pi*z) / gamma(1.0-z)
+    ikiwa z < 0.5:
+        rudisha pi / sin(pi*z) / gamma(1.0-z)
     # Lanczos approximation with g=7
     az = z + (7.0 - 0.5)
-    return az ** (z-0.5) / exp(az) * sqrt2pi * fsum([
+    rudisha az ** (z-0.5) / exp(az) * sqrt2pi * fsum([
         0.9999999999995183,
         676.5203681218835 / z,
         -1259.139216722289 / (z+1.0),
@@ -754,8 +754,8 @@ def gamma(z, sqrt2pi=(2.0*pi)**0.5):
         0.1659470187408462e-06 / (z+7.0),
     ])
 
-class TestDistributions(unittest.TestCase):
-    def test_zeroinputs(self):
+kundi TestDistributions(unittest.TestCase):
+    eleza test_zeroinputs(self):
         # Verify that distributions can handle a series of zero inputs'
         g = random.Random()
         x = [g.random() for i in range(50)] + [0.0]*5
@@ -774,7 +774,7 @@ class TestDistributions(unittest.TestCase):
         g.random = x[:].pop; g.betavariate(3.0, 3.0)
         g.random = x[:].pop; g.triangular(0.0, 1.0, 1.0/3.0)
 
-    def test_avg_std(self):
+    eleza test_avg_std(self):
         # Use integration to test distribution average and standard deviation.
         # Only works for distributions which do not consume variates in pairs
         g = random.Random()
@@ -806,7 +806,7 @@ class TestDistributions(unittest.TestCase):
             self.assertAlmostEqual(s2/(N-1), sigmasqrd, places=2,
                                    msg='%s%r' % (variate.__name__, args))
 
-    def test_constant(self):
+    eleza test_constant(self):
         g = random.Random()
         N = 100
         for variate, args, expected in [
@@ -826,7 +826,7 @@ class TestDistributions(unittest.TestCase):
             for i in range(N):
                 self.assertEqual(variate(*args), expected)
 
-    def test_von_mises_range(self):
+    eleza test_von_mises_range(self):
         # Issue 17149: von mises variates were not consistently in the
         # range [0, 2*PI].
         g = random.Random()
@@ -840,12 +840,12 @@ class TestDistributions(unittest.TestCase):
                         msg=("vonmisesvariate({}, {}) produced a result {} out"
                              " of range [0, 2*pi]").format(mu, kappa, sample))
 
-    def test_von_mises_large_kappa(self):
+    eleza test_von_mises_large_kappa(self):
         # Issue #17141: vonmisesvariate() was hang for large kappas
         random.vonmisesvariate(0, 1e15)
         random.vonmisesvariate(0, 1e100)
 
-    def test_gammavariate_errors(self):
+    eleza test_gammavariate_errors(self):
         # Both alpha and beta must be > 0.0
         self.assertRaises(ValueError, random.gammavariate, -1, 3)
         self.assertRaises(ValueError, random.gammavariate, 0, 2)
@@ -857,7 +857,7 @@ class TestDistributions(unittest.TestCase):
     # are going to do here is to fix the values returned by random() to
     # generate test cases that provide 100% line coverage of the method.
     @unittest.mock.patch('random.Random.random')
-    def test_gammavariate_alpha_greater_one(self, random_mock):
+    eleza test_gammavariate_alpha_greater_one(self, random_mock):
 
         # #1: alpha > 1.0.
         # We want the first random number to be outside the
@@ -868,7 +868,7 @@ class TestDistributions(unittest.TestCase):
         self.assertAlmostEqual(returned_value, 2.53)
 
     @unittest.mock.patch('random.Random.random')
-    def test_gammavariate_alpha_equal_one(self, random_mock):
+    eleza test_gammavariate_alpha_equal_one(self, random_mock):
 
         # #2.a: alpha == 1.
         # The execution body of the while loop executes once.
@@ -879,7 +879,7 @@ class TestDistributions(unittest.TestCase):
         self.assertAlmostEqual(returned_value, 1.877208182372648)
 
     @unittest.mock.patch('random.Random.random')
-    def test_gammavariate_alpha_equal_one_equals_expovariate(self, random_mock):
+    eleza test_gammavariate_alpha_equal_one_equals_expovariate(self, random_mock):
 
         # #2.b: alpha == 1.
         # It must be equivalent of calling expovariate(1.0 / beta).
@@ -890,7 +890,7 @@ class TestDistributions(unittest.TestCase):
         self.assertAlmostEqual(gammavariate_returned_value, expovariate_returned_value)
 
     @unittest.mock.patch('random.Random.random')
-    def test_gammavariate_alpha_between_zero_and_one(self, random_mock):
+    eleza test_gammavariate_alpha_between_zero_and_one(self, random_mock):
 
         # #3: 0 < alpha < 1.
         # This is the most complex region of code to cover,
@@ -901,24 +901,24 @@ class TestDistributions(unittest.TestCase):
         #     u = random()
         #     b = (_e + alpha)/_e
         #     p = b*u
-        #     if p <= 1.0: # <=== (A)
+        #     ikiwa p <= 1.0: # <=== (A)
         #         x = p ** (1.0/alpha)
         #     else: # <=== (B)
         #         x = -_log((b-p)/alpha)
         #     u1 = random()
-        #     if p > 1.0: # <=== (C)
-        #         if u1 <= x ** (alpha - 1.0): # <=== (D)
+        #     ikiwa p > 1.0: # <=== (C)
+        #         ikiwa u1 <= x ** (alpha - 1.0): # <=== (D)
         #             break
-        #     elif u1 <= _exp(-x): # <=== (E)
+        #     elikiwa u1 <= _exp(-x): # <=== (E)
         #         break
-        # return x * beta
+        # rudisha x * beta
         #
         # First, we want (A) to be True. For that we need that:
         # b*random() <= 1.0
         # r1 = random() <= 1.0 / b
         #
         # We now get to the second if-else branch, and here, since p <= 1.0,
-        # (C) is False and we take the elif branch, (E). For it to be True,
+        # (C) is False and we take the elikiwa branch, (E). For it to be True,
         # so that the break is executed, we need that:
         # r2 = random() <= _exp(-x)
         # r2 <= _exp(-(p ** (1.0/alpha)))
@@ -944,7 +944,7 @@ class TestDistributions(unittest.TestCase):
 
         # Let's now make (A) be False. If this is the case, when we get to the
         # second if-else 'p' is greater than 1, so (C) evaluates to True. We
-        # now encounter a second if statement, (D), which in order to execute
+        # now encounter a second ikiwa statement, (D), which in order to execute
         # must satisfy the following condition:
         # r2 <= x ** (alpha - 1.0)
         # r2 <= (-_log((b-p)/alpha)) ** (alpha - 1.0)
@@ -960,123 +960,123 @@ class TestDistributions(unittest.TestCase):
         self.assertAlmostEqual(returned_value, 1.5830349561760781)
 
     @unittest.mock.patch('random.Random.gammavariate')
-    def test_betavariate_return_zero(self, gammavariate_mock):
+    eleza test_betavariate_return_zero(self, gammavariate_mock):
         # betavariate() returns zero when the Gamma distribution
         # that it uses internally returns this same value.
         gammavariate_mock.return_value = 0.0
         self.assertEqual(0.0, random.betavariate(2.71828, 3.14159))
 
 
-class TestRandomSubclassing(unittest.TestCase):
-    def test_random_subclass_with_kwargs(self):
+kundi TestRandomSubclassing(unittest.TestCase):
+    eleza test_random_subclass_with_kwargs(self):
         # SF bug #1486663 -- this used to erroneously raise a TypeError
-        class Subclass(random.Random):
-            def __init__(self, newarg=None):
+        kundi Subclass(random.Random):
+            eleza __init__(self, newarg=None):
                 random.Random.__init__(self)
         Subclass(newarg=1)
 
-    def test_subclasses_overriding_methods(self):
+    eleza test_subclasses_overriding_methods(self):
         # Subclasses with an overridden random, but only the original
         # getrandbits method should not rely on getrandbits in for randrange,
         # but should use a getrandbits-independent implementation instead.
 
-        # subclass providing its own random **and** getrandbits methods
+        # subkundi providing its own random **and** getrandbits methods
         # like random.SystemRandom does => keep relying on getrandbits for
         # randrange
-        class SubClass1(random.Random):
-            def random(self):
+        kundi SubClass1(random.Random):
+            eleza random(self):
                 called.add('SubClass1.random')
-                return random.Random.random(self)
+                rudisha random.Random.random(self)
 
-            def getrandbits(self, n):
+            eleza getrandbits(self, n):
                 called.add('SubClass1.getrandbits')
-                return random.Random.getrandbits(self, n)
+                rudisha random.Random.getrandbits(self, n)
         called = set()
         SubClass1().randrange(42)
         self.assertEqual(called, {'SubClass1.getrandbits'})
 
-        # subclass providing only random => can only use random for randrange
-        class SubClass2(random.Random):
-            def random(self):
+        # subkundi providing only random => can only use random for randrange
+        kundi SubClass2(random.Random):
+            eleza random(self):
                 called.add('SubClass2.random')
-                return random.Random.random(self)
+                rudisha random.Random.random(self)
         called = set()
         SubClass2().randrange(42)
         self.assertEqual(called, {'SubClass2.random'})
 
-        # subclass defining getrandbits to complement its inherited random
+        # subkundi defining getrandbits to complement its inherited random
         # => can now rely on getrandbits for randrange again
-        class SubClass3(SubClass2):
-            def getrandbits(self, n):
+        kundi SubClass3(SubClass2):
+            eleza getrandbits(self, n):
                 called.add('SubClass3.getrandbits')
-                return random.Random.getrandbits(self, n)
+                rudisha random.Random.getrandbits(self, n)
         called = set()
         SubClass3().randrange(42)
         self.assertEqual(called, {'SubClass3.getrandbits'})
 
-        # subclass providing only random and inherited getrandbits
+        # subkundi providing only random and inherited getrandbits
         # => random takes precedence
-        class SubClass4(SubClass3):
-            def random(self):
+        kundi SubClass4(SubClass3):
+            eleza random(self):
                 called.add('SubClass4.random')
-                return random.Random.random(self)
+                rudisha random.Random.random(self)
         called = set()
         SubClass4().randrange(42)
         self.assertEqual(called, {'SubClass4.random'})
 
         # Following subclasses don't define random or getrandbits directly,
         # but inherit them kutoka classes which are not subclasses of Random
-        class Mixin1:
-            def random(self):
+        kundi Mixin1:
+            eleza random(self):
                 called.add('Mixin1.random')
-                return random.Random.random(self)
-        class Mixin2:
-            def getrandbits(self, n):
+                rudisha random.Random.random(self)
+        kundi Mixin2:
+            eleza getrandbits(self, n):
                 called.add('Mixin2.getrandbits')
-                return random.Random.getrandbits(self, n)
+                rudisha random.Random.getrandbits(self, n)
 
-        class SubClass5(Mixin1, random.Random):
+        kundi SubClass5(Mixin1, random.Random):
             pass
         called = set()
         SubClass5().randrange(42)
         self.assertEqual(called, {'Mixin1.random'})
 
-        class SubClass6(Mixin2, random.Random):
+        kundi SubClass6(Mixin2, random.Random):
             pass
         called = set()
         SubClass6().randrange(42)
         self.assertEqual(called, {'Mixin2.getrandbits'})
 
-        class SubClass7(Mixin1, Mixin2, random.Random):
+        kundi SubClass7(Mixin1, Mixin2, random.Random):
             pass
         called = set()
         SubClass7().randrange(42)
         self.assertEqual(called, {'Mixin1.random'})
 
-        class SubClass8(Mixin2, Mixin1, random.Random):
+        kundi SubClass8(Mixin2, Mixin1, random.Random):
             pass
         called = set()
         SubClass8().randrange(42)
         self.assertEqual(called, {'Mixin2.getrandbits'})
 
 
-class TestModule(unittest.TestCase):
-    def testMagicConstants(self):
+kundi TestModule(unittest.TestCase):
+    eleza testMagicConstants(self):
         self.assertAlmostEqual(random.NV_MAGICCONST, 1.71552776992141)
         self.assertAlmostEqual(random.TWOPI, 6.28318530718)
         self.assertAlmostEqual(random.LOG4, 1.38629436111989)
         self.assertAlmostEqual(random.SG_MAGICCONST, 2.50407739677627)
 
-    def test__all__(self):
+    eleza test__all__(self):
         # tests validity but not completeness of the __all__ list
         self.assertTrue(set(random.__all__) <= set(dir(random)))
 
     @unittest.skipUnless(hasattr(os, "fork"), "fork() required")
-    def test_after_fork(self):
+    eleza test_after_fork(self):
         # Test the global Random instance gets reseeded in child
         r, w = os.pipe()
         pid = os.fork()
-        if pid == 0:
+        ikiwa pid == 0:
             # child process
             try:
                 val = random.getrandbits(128)
@@ -1096,5 +1096,5 @@ class TestModule(unittest.TestCase):
             self.assertEqual(status, 0)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

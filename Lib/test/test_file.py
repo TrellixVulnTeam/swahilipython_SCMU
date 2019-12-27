@@ -11,18 +11,18 @@ kutoka test.support agiza TESTFN
 kutoka test agiza support
 kutoka collections agiza UserList
 
-class AutoFileTests:
+kundi AutoFileTests:
     # file tests for which a test file is automatically set up
 
-    def setUp(self):
+    eleza setUp(self):
         self.f = self.open(TESTFN, 'wb')
 
-    def tearDown(self):
-        if self.f:
+    eleza tearDown(self):
+        ikiwa self.f:
             self.f.close()
         support.unlink(TESTFN)
 
-    def testWeakRefs(self):
+    eleza testWeakRefs(self):
         # verify weak references
         p = proxy(self.f)
         p.write(b'teststring')
@@ -31,14 +31,14 @@ class AutoFileTests:
         self.f = None
         self.assertRaises(ReferenceError, getattr, p, 'tell')
 
-    def testAttributes(self):
+    eleza testAttributes(self):
         # verify expected attributes exist
         f = self.f
         f.name     # merely shouldn't blow up
         f.mode     # ditto
         f.closed   # ditto
 
-    def testReadinto(self):
+    eleza testReadinto(self):
         # verify readinto
         self.f.write(b'12')
         self.f.close()
@@ -47,15 +47,15 @@ class AutoFileTests:
         n = self.f.readinto(a)
         self.assertEqual(b'12', a.tobytes()[:n])
 
-    def testReadinto_text(self):
+    eleza testReadinto_text(self):
         # verify readinto refuses text files
         a = array('b', b'x'*10)
         self.f.close()
         self.f = self.open(TESTFN, 'r')
-        if hasattr(self.f, "readinto"):
+        ikiwa hasattr(self.f, "readinto"):
             self.assertRaises(TypeError, self.f.readinto, a)
 
-    def testWritelinesUserList(self):
+    eleza testWritelinesUserList(self):
         # verify writelines with instance sequence
         l = UserList([b'1', b'2'])
         self.f.writelines(l)
@@ -64,35 +64,35 @@ class AutoFileTests:
         buf = self.f.read()
         self.assertEqual(buf, b'12')
 
-    def testWritelinesIntegers(self):
+    eleza testWritelinesIntegers(self):
         # verify writelines with integers
         self.assertRaises(TypeError, self.f.writelines, [1, 2, 3])
 
-    def testWritelinesIntegersUserList(self):
+    eleza testWritelinesIntegersUserList(self):
         # verify writelines with integers in UserList
         l = UserList([1,2,3])
         self.assertRaises(TypeError, self.f.writelines, l)
 
-    def testWritelinesNonString(self):
+    eleza testWritelinesNonString(self):
         # verify writelines with non-string object
-        class NonString:
+        kundi NonString:
             pass
 
         self.assertRaises(TypeError, self.f.writelines,
                           [NonString(), NonString()])
 
-    def testErrors(self):
+    eleza testErrors(self):
         f = self.f
         self.assertEqual(f.name, TESTFN)
         self.assertFalse(f.isatty())
         self.assertFalse(f.closed)
 
-        if hasattr(f, "readinto"):
+        ikiwa hasattr(f, "readinto"):
             self.assertRaises((OSError, TypeError), f.readinto, "")
         f.close()
         self.assertTrue(f.closed)
 
-    def testMethods(self):
+    eleza testMethods(self):
         methods = [('fileno', ()),
                    ('flush', ()),
                    ('isatty', ()),
@@ -120,28 +120,28 @@ class AutoFileTests:
 
         # file is closed, __exit__ shouldn't do anything
         self.assertEqual(self.f.__exit__(None, None, None), None)
-        # it must also return None if an exception was given
+        # it must also rudisha None ikiwa an exception was given
         try:
             1/0
         except:
             self.assertEqual(self.f.__exit__(*sys.exc_info()), None)
 
-    def testReadWhenWriting(self):
+    eleza testReadWhenWriting(self):
         self.assertRaises(OSError, self.f.read)
 
-class CAutoFileTests(AutoFileTests, unittest.TestCase):
+kundi CAutoFileTests(AutoFileTests, unittest.TestCase):
     open = io.open
 
-class PyAutoFileTests(AutoFileTests, unittest.TestCase):
+kundi PyAutoFileTests(AutoFileTests, unittest.TestCase):
     open = staticmethod(pyio.open)
 
 
-class OtherFileTests:
+kundi OtherFileTests:
 
-    def tearDown(self):
+    eleza tearDown(self):
         support.unlink(TESTFN)
 
-    def testModeStrings(self):
+    eleza testModeStrings(self):
         # check invalid mode strings
         self.open(TESTFN, 'wb').close()
         for mode in ("", "aU", "wU+", "U+", "+U", "rU+"):
@@ -153,23 +153,23 @@ class OtherFileTests:
                 f.close()
                 self.fail('%r is an invalid file mode' % mode)
 
-    def testBadModeArgument(self):
+    eleza testBadModeArgument(self):
         # verify that we get a sensible error message for bad mode argument
         bad_mode = "qwerty"
         try:
             f = self.open(TESTFN, bad_mode)
         except ValueError as msg:
-            if msg.args[0] != 0:
+            ikiwa msg.args[0] != 0:
                 s = str(msg)
-                if TESTFN in s or bad_mode not in s:
+                ikiwa TESTFN in s or bad_mode not in s:
                     self.fail("bad error message for invalid mode: %s" % s)
-            # if msg.args[0] == 0, we're probably on Windows where there may be
+            # ikiwa msg.args[0] == 0, we're probably on Windows where there may be
             # no obvious way to discover why open() failed.
         else:
             f.close()
             self.fail("no error for invalid mode: %s" % bad_mode)
 
-    def _checkBufferSize(self, s):
+    eleza _checkBufferSize(self, s):
         try:
             f = self.open(TESTFN, 'wb', s)
             f.write(str(s).encode("ascii"))
@@ -183,7 +183,7 @@ class OtherFileTests:
             self.fail('error setting buffer size %d: %s' % (s, str(msg)))
         self.assertEqual(d, s)
 
-    def testSetBufferSize(self):
+    eleza testSetBufferSize(self):
         # make sure that explicitly setting the buffer size doesn't cause
         # misbehaviour especially with repeated close() calls
         for s in (-1, 0, 512):
@@ -197,7 +197,7 @@ class OtherFileTests:
         with self.assertWarnsRegex(RuntimeWarning, 'line buffering'):
             self._checkBufferSize(1)
 
-    def testTruncateOnWindows(self):
+    eleza testTruncateOnWindows(self):
         # SF bug <http://www.python.org/sf/801631>
         # "file.truncate fault on windows"
 
@@ -209,23 +209,23 @@ class OtherFileTests:
 
             f = self.open(TESTFN,'rb+')
             data = f.read(5)
-            if data != b'12345':
+            ikiwa data != b'12345':
                 self.fail("Read on file opened for update failed %r" % data)
-            if f.tell() != 5:
+            ikiwa f.tell() != 5:
                 self.fail("File pos after read wrong %d" % f.tell())
 
             f.truncate()
-            if f.tell() != 5:
+            ikiwa f.tell() != 5:
                 self.fail("File pos after ftruncate wrong %d" % f.tell())
 
             f.close()
             size = os.path.getsize(TESTFN)
-            if size != 5:
+            ikiwa size != 5:
                 self.fail("File size after ftruncate wrong %d" % size)
         finally:
             f.close()
 
-    def testIteration(self):
+    eleza testIteration(self):
         # Test the complex interaction when mixing file-iteration and the
         # various read* methods.
         dataoffset = 16384
@@ -257,7 +257,7 @@ class OtherFileTests:
             meth(*args)  # This simply shouldn't fail
             f.close()
 
-        # Test to see if harmless (by accident) mixing of read* and
+        # Test to see ikiwa harmless (by accident) mixing of read* and
         # iteration still works. This depends on the size of the internal
         # iteration buffer (currently 8192,) but we can test it in a
         # flexible manner.  Each line in the bag o' ham is 4 bytes
@@ -273,7 +273,7 @@ class OtherFileTests:
         except ValueError:
             self.fail("readline() after next() with supposedly empty "
                         "iteration-buffer failed anyway")
-        if line != testline:
+        ikiwa line != testline:
             self.fail("readline() after next() with empty buffer "
                         "failed. Got %r, expected %r" % (line, testline))
         testline = testlines.pop(0)
@@ -284,7 +284,7 @@ class OtherFileTests:
             self.fail("readinto() after next() with supposedly empty "
                         "iteration-buffer failed anyway")
         line = buf.tobytes()
-        if line != testline:
+        ikiwa line != testline:
             self.fail("readinto() after next() with empty buffer "
                         "failed. Got %r, expected %r" % (line, testline))
 
@@ -294,7 +294,7 @@ class OtherFileTests:
         except ValueError:
             self.fail("read() after next() with supposedly empty "
                         "iteration-buffer failed anyway")
-        if line != testline:
+        ikiwa line != testline:
             self.fail("read() after next() with empty buffer "
                         "failed. Got %r, expected %r" % (line, testline))
         try:
@@ -302,7 +302,7 @@ class OtherFileTests:
         except ValueError:
             self.fail("readlines() after next() with supposedly empty "
                         "iteration-buffer failed anyway")
-        if lines != testlines:
+        ikiwa lines != testlines:
             self.fail("readlines() after next() with empty buffer "
                         "failed. Got %r, expected %r" % (line, testline))
         f.close()
@@ -322,12 +322,12 @@ class OtherFileTests:
         finally:
             f.close()
 
-class COtherFileTests(OtherFileTests, unittest.TestCase):
+kundi COtherFileTests(OtherFileTests, unittest.TestCase):
     open = io.open
 
-class PyOtherFileTests(OtherFileTests, unittest.TestCase):
+kundi PyOtherFileTests(OtherFileTests, unittest.TestCase):
     open = staticmethod(pyio.open)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

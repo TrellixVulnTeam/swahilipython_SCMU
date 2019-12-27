@@ -11,7 +11,7 @@ PyAPI_FUNC(int) PyAST_Validate(mod_ty);
 PyAPI_FUNC(mod_ty) PyAST_FromNode(
     const node *n,
     PyCompilerFlags *flags,
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     PyArena *arena);
 PyAPI_FUNC(mod_ty) PyAST_FromNodeObject(
     const node *n,
@@ -25,7 +25,7 @@ PyAPI_FUNC(mod_ty) PyAST_FromNodeObject(
 PyAPI_FUNC(PyObject *) _PyAST_ExprAsUnicode(expr_ty);
 
 /* Return the borrowed reference to the first literal string in the
-   sequence of statemnts or NULL if it doesn't start from a literal string.
+   sequence of statemnts or NULL if it doesn't start kutoka a literal string.
    Doesn't set exception. */
 PyAPI_FUNC(PyObject *) _PyAST_GetDocString(asdl_seq *);
 

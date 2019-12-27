@@ -5,7 +5,7 @@
 # on non-Windows systems
 from codecs import oem_encode, oem_decode
 # for IncrementalDecoder, IncrementalEncoder, ...
-import codecs
+agiza codecs
 
 ### Codec APIs
 

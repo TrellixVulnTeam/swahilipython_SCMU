@@ -18,7 +18,7 @@ kutoka test.libregrtest agiza main
 main_in_temp_cwd = main
 
 
-def _main():
+eleza _main():
     global __file__
 
     # Remove regrtest.py's own directory kutoka the module search path. Despite
@@ -29,7 +29,7 @@ def _main():
     mydir = os.path.abspath(os.path.normpath(os.path.dirname(sys.argv[0])))
     i = len(sys.path) - 1
     while i >= 0:
-        if os.path.abspath(os.path.normpath(sys.path[i])) == mydir:
+        ikiwa os.path.abspath(os.path.normpath(sys.path[i])) == mydir:
             del sys.path[i]
         else:
             i -= 1
@@ -46,5 +46,5 @@ def _main():
     main()
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     _main()

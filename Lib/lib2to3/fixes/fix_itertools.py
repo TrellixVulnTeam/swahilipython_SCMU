@@ -11,7 +11,7 @@
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name
 
-class FixItertools(fixer_base.BaseFix):
+kundi FixItertools(fixer_base.BaseFix):
     BM_compatible = True
     it_funcs = "('imap'|'ifilter'|'izip'|'izip_longest'|'ifilterfalse')"
     PATTERN = """
@@ -25,10 +25,10 @@ class FixItertools(fixer_base.BaseFix):
     # Needs to be run after fix_(map|zip|filter)
     run_order = 6
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         prefix = None
         func = results['func'][0]
-        if ('it' in results and
+        ikiwa ('it' in results and
             func.value not in ('ifilterfalse', 'izip_longest')):
             dot, it = (results['dot'], results['it'])
             # Remove the 'itertools'

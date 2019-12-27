@@ -7,9 +7,9 @@ Top-level components
 
 .. index:: single: interpreter
 
-The Python interpreter can get its input from a number of sources: from a script
+The Python interpreter can get its input kutoka a number of sources: kutoka a script
 passed to it as standard input or as program argument, typed in interactively,
-from a module source file, etc.  This chapter gives the syntax used in these
+kutoka a module source file, etc.  This chapter gives the syntax used in these
 cases.
 
 
@@ -64,14 +64,14 @@ otherwise, it executes the file as a complete program.
 File input
 ==========
 
-All input read from non-interactive files has the same form:
+All input read kutoka non-interactive files has the same form:
 
 .. productionlist::
    file_input: (NEWLINE | `statement`)*
 
 This syntax is used in the following situations:
 
-* when parsing a complete Python program (from a file or from a string);
+* when parsing a complete Python program (kutoka a file or kutoka a string);
 
 * when parsing a module;
 

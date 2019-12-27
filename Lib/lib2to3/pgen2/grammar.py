@@ -19,12 +19,12 @@ agiza pickle
 kutoka . agiza token
 
 
-class Grammar(object):
+kundi Grammar(object):
     """Pgen parsing tables conversion class.
 
-    Once initialized, this class supplies the grammar tables for the
+    Once initialized, this kundi supplies the grammar tables for the
     parsing engine implemented by parse.py.  The parsing engine
-    accesses the instance variables directly.  The class here does not
+    accesses the instance variables directly.  The kundi here does not
     provide initialization of the tables; several subclasses exist to
     do this (see the conv and pgen modules).
 
@@ -73,7 +73,7 @@ class Grammar(object):
 
     """
 
-    def __init__(self):
+    eleza __init__(self):
         self.symbol2number = {}
         self.number2symbol = {}
         self.states = []
@@ -84,22 +84,22 @@ class Grammar(object):
         self.symbol2label = {}
         self.start = 256
 
-    def dump(self, filename):
+    eleza dump(self, filename):
         """Dump the grammar tables to a pickle file."""
         with open(filename, "wb") as f:
             pickle.dump(self.__dict__, f, pickle.HIGHEST_PROTOCOL)
 
-    def load(self, filename):
+    eleza load(self, filename):
         """Load the grammar tables kutoka a pickle file."""
         with open(filename, "rb") as f:
             d = pickle.load(f)
         self.__dict__.update(d)
 
-    def loads(self, pkl):
+    eleza loads(self, pkl):
         """Load the grammar tables kutoka a pickle bytes object."""
         self.__dict__.update(pickle.loads(pkl))
 
-    def copy(self):
+    eleza copy(self):
         """
         Copy the grammar.
         """
@@ -110,22 +110,22 @@ class Grammar(object):
         new.labels = self.labels[:]
         new.states = self.states[:]
         new.start = self.start
-        return new
+        rudisha new
 
-    def report(self):
+    eleza report(self):
         """Dump the grammar tables to standard output, for debugging."""
         kutoka pprint agiza pprint
-        print("s2n")
-        pprint(self.symbol2number)
-        print("n2s")
-        pprint(self.number2symbol)
-        print("states")
-        pprint(self.states)
-        print("dfas")
-        pprint(self.dfas)
-        print("labels")
-        pprint(self.labels)
-        print("start", self.start)
+        andika("s2n")
+        pandika(self.symbol2number)
+        andika("n2s")
+        pandika(self.number2symbol)
+        andika("states")
+        pandika(self.states)
+        andika("dfas")
+        pandika(self.dfas)
+        andika("labels")
+        pandika(self.labels)
+        andika("start", self.start)
 
 
 # Map kutoka operator to number (since tokenize doesn't do this)
@@ -182,6 +182,6 @@ opmap_raw = """
 
 opmap = {}
 for line in opmap_raw.splitlines():
-    if line:
+    ikiwa line:
         op, name = line.split()
         opmap[op] = getattr(token, name)

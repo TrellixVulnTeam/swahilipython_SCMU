@@ -1,4 +1,4 @@
-# XXX TypeErrors on calling handlers, or on bad return values kutoka a
+# XXX TypeErrors on calling handlers, or on bad rudisha values kutoka a
 # handler, are obscure and unhelpful.
 
 kutoka io agiza BytesIO
@@ -14,35 +14,35 @@ kutoka xml.parsers.expat agiza errors
 kutoka test.support agiza sortdict
 
 
-class SetAttributeTest(unittest.TestCase):
-    def setUp(self):
+kundi SetAttributeTest(unittest.TestCase):
+    eleza setUp(self):
         self.parser = expat.ParserCreate(namespace_separator='!')
 
-    def test_buffer_text(self):
+    eleza test_buffer_text(self):
         self.assertIs(self.parser.buffer_text, False)
         for x in 0, 1, 2, 0:
             self.parser.buffer_text = x
             self.assertIs(self.parser.buffer_text, bool(x))
 
-    def test_namespace_prefixes(self):
+    eleza test_namespace_prefixes(self):
         self.assertIs(self.parser.namespace_prefixes, False)
         for x in 0, 1, 2, 0:
             self.parser.namespace_prefixes = x
             self.assertIs(self.parser.namespace_prefixes, bool(x))
 
-    def test_ordered_attributes(self):
+    eleza test_ordered_attributes(self):
         self.assertIs(self.parser.ordered_attributes, False)
         for x in 0, 1, 2, 0:
             self.parser.ordered_attributes = x
             self.assertIs(self.parser.ordered_attributes, bool(x))
 
-    def test_specified_attributes(self):
+    eleza test_specified_attributes(self):
         self.assertIs(self.parser.specified_attributes, False)
         for x in 0, 1, 2, 0:
             self.parser.specified_attributes = x
             self.assertIs(self.parser.specified_attributes, bool(x))
 
-    def test_invalid_attributes(self):
+    eleza test_invalid_attributes(self):
         with self.assertRaises(AttributeError):
             self.parser.returns_unicode = 1
         with self.assertRaises(AttributeError):
@@ -81,90 +81,90 @@ data = b'''\
 
 
 # Produce UTF-8 output
-class ParseTest(unittest.TestCase):
-    class Outputter:
-        def __init__(self):
+kundi ParseTest(unittest.TestCase):
+    kundi Outputter:
+        eleza __init__(self):
             self.out = []
 
-        def StartElementHandler(self, name, attrs):
+        eleza StartElementHandler(self, name, attrs):
             self.out.append('Start element: ' + repr(name) + ' ' +
                             sortdict(attrs))
 
-        def EndElementHandler(self, name):
+        eleza EndElementHandler(self, name):
             self.out.append('End element: ' + repr(name))
 
-        def CharacterDataHandler(self, data):
+        eleza CharacterDataHandler(self, data):
             data = data.strip()
-            if data:
+            ikiwa data:
                 self.out.append('Character data: ' + repr(data))
 
-        def ProcessingInstructionHandler(self, target, data):
+        eleza ProcessingInstructionHandler(self, target, data):
             self.out.append('PI: ' + repr(target) + ' ' + repr(data))
 
-        def StartNamespaceDeclHandler(self, prefix, uri):
+        eleza StartNamespaceDeclHandler(self, prefix, uri):
             self.out.append('NS decl: ' + repr(prefix) + ' ' + repr(uri))
 
-        def EndNamespaceDeclHandler(self, prefix):
+        eleza EndNamespaceDeclHandler(self, prefix):
             self.out.append('End of NS decl: ' + repr(prefix))
 
-        def StartCdataSectionHandler(self):
+        eleza StartCdataSectionHandler(self):
             self.out.append('Start of CDATA section')
 
-        def EndCdataSectionHandler(self):
+        eleza EndCdataSectionHandler(self):
             self.out.append('End of CDATA section')
 
-        def CommentHandler(self, text):
+        eleza CommentHandler(self, text):
             self.out.append('Comment: ' + repr(text))
 
-        def NotationDeclHandler(self, *args):
+        eleza NotationDeclHandler(self, *args):
             name, base, sysid, pubid = args
             self.out.append('Notation declared: %s' %(args,))
 
-        def UnparsedEntityDeclHandler(self, *args):
+        eleza UnparsedEntityDeclHandler(self, *args):
             entityName, base, systemId, publicId, notationName = args
             self.out.append('Unparsed entity decl: %s' %(args,))
 
-        def NotStandaloneHandler(self):
+        eleza NotStandaloneHandler(self):
             self.out.append('Not standalone')
-            return 1
+            rudisha 1
 
-        def ExternalEntityRefHandler(self, *args):
+        eleza ExternalEntityRefHandler(self, *args):
             context, base, sysId, pubId = args
             self.out.append('External entity ref: %s' %(args[1:],))
-            return 1
+            rudisha 1
 
-        def StartDoctypeDeclHandler(self, *args):
+        eleza StartDoctypeDeclHandler(self, *args):
             self.out.append(('Start doctype', args))
-            return 1
+            rudisha 1
 
-        def EndDoctypeDeclHandler(self):
+        eleza EndDoctypeDeclHandler(self):
             self.out.append("End doctype")
-            return 1
+            rudisha 1
 
-        def EntityDeclHandler(self, *args):
+        eleza EntityDeclHandler(self, *args):
             self.out.append(('Entity declaration', args))
-            return 1
+            rudisha 1
 
-        def XmlDeclHandler(self, *args):
+        eleza XmlDeclHandler(self, *args):
             self.out.append(('XML declaration', args))
-            return 1
+            rudisha 1
 
-        def ElementDeclHandler(self, *args):
+        eleza ElementDeclHandler(self, *args):
             self.out.append(('Element declaration', args))
-            return 1
+            rudisha 1
 
-        def AttlistDeclHandler(self, *args):
+        eleza AttlistDeclHandler(self, *args):
             self.out.append(('Attribute list declaration', args))
-            return 1
+            rudisha 1
 
-        def SkippedEntityHandler(self, *args):
+        eleza SkippedEntityHandler(self, *args):
             self.out.append(("Skipped entity", args))
-            return 1
+            rudisha 1
 
-        def DefaultHandler(self, userData):
+        eleza DefaultHandler(self, userData):
             pass
 
-        def DefaultHandlerExpand(self, userData):
+        eleza DefaultHandlerExpand(self, userData):
             pass
 
     handler_names = [
@@ -179,7 +179,7 @@ class ParseTest(unittest.TestCase):
         'ElementDeclHandler', 'AttlistDeclHandler', 'SkippedEntityHandler',
         ]
 
-    def _hookup_callbacks(self, parser, handler):
+    eleza _hookup_callbacks(self, parser, handler):
         """
         Set each of the callbacks defined on handler and named in
         self.handler_names on the given parser.
@@ -187,7 +187,7 @@ class ParseTest(unittest.TestCase):
         for name in self.handler_names:
             setattr(parser, name, getattr(handler, name))
 
-    def _verify_parse_output(self, operations):
+    eleza _verify_parse_output(self, operations):
         expected_operations = [
             ('XML declaration', ('1.0', 'iso-8859-1', 0)),
             'PI: \'xml-stylesheet\' \'href="stylesheet.css"\'',
@@ -225,7 +225,7 @@ class ParseTest(unittest.TestCase):
         for operation, expected_operation in zip(operations, expected_operations):
             self.assertEqual(operation, expected_operation)
 
-    def test_parse_bytes(self):
+    eleza test_parse_bytes(self):
         out = self.Outputter()
         parser = expat.ParserCreate(namespace_separator='!')
         self._hookup_callbacks(parser, out)
@@ -237,7 +237,7 @@ class ParseTest(unittest.TestCase):
         # Issue #6697.
         self.assertRaises(AttributeError, getattr, parser, '\uD800')
 
-    def test_parse_str(self):
+    eleza test_parse_str(self):
         out = self.Outputter()
         parser = expat.ParserCreate(namespace_separator='!')
         self._hookup_callbacks(parser, out)
@@ -247,7 +247,7 @@ class ParseTest(unittest.TestCase):
         operations = out.out
         self._verify_parse_output(operations)
 
-    def test_parse_file(self):
+    eleza test_parse_file(self):
         # Try parsing a file
         out = self.Outputter()
         parser = expat.ParserCreate(namespace_separator='!')
@@ -259,7 +259,7 @@ class ParseTest(unittest.TestCase):
         operations = out.out
         self._verify_parse_output(operations)
 
-    def test_parse_again(self):
+    eleza test_parse_again(self):
         parser = expat.ParserCreate()
         file = BytesIO(data)
         parser.ParseFile(file)
@@ -271,15 +271,15 @@ class ParseTest(unittest.TestCase):
         self.assertEqual(expat.ErrorString(cm.exception.code),
                           expat.errors.XML_ERROR_FINISHED)
 
-class NamespaceSeparatorTest(unittest.TestCase):
-    def test_legal(self):
+kundi NamespaceSeparatorTest(unittest.TestCase):
+    eleza test_legal(self):
         # Tests that make sure we get errors when the namespace_separator value
         # is illegal, and that we don't for good values:
         expat.ParserCreate()
         expat.ParserCreate(namespace_separator=None)
         expat.ParserCreate(namespace_separator=' ')
 
-    def test_illegal(self):
+    eleza test_illegal(self):
         try:
             expat.ParserCreate(namespace_separator=42)
             self.fail()
@@ -294,7 +294,7 @@ class NamespaceSeparatorTest(unittest.TestCase):
             self.assertEqual(str(e),
                 'namespace_separator must be at most one character, omitted, or None')
 
-    def test_zero_length(self):
+    eleza test_zero_length(self):
         # ParserCreate() needs to accept a namespace_separator of zero length
         # to satisfy the requirements of RDF applications that are required
         # to simply glue together the namespace URI and the localname.  Though
@@ -306,12 +306,12 @@ class NamespaceSeparatorTest(unittest.TestCase):
         expat.ParserCreate(namespace_separator='') # too short
 
 
-class InterningTest(unittest.TestCase):
-    def test(self):
+kundi InterningTest(unittest.TestCase):
+    eleza test(self):
         # Test the interning machinery.
         p = expat.ParserCreate()
         L = []
-        def collector(name, *args):
+        eleza collector(name, *args):
             L.append(name)
         p.StartElementHandler = collector
         p.EndElementHandler = collector
@@ -322,17 +322,17 @@ class InterningTest(unittest.TestCase):
             # L should have the same string repeated over and over.
             self.assertTrue(tag is entry)
 
-    def test_issue9402(self):
+    eleza test_issue9402(self):
         # create an ExternalEntityParserCreate with buffer text
-        class ExternalOutputter:
-            def __init__(self, parser):
+        kundi ExternalOutputter:
+            eleza __init__(self, parser):
                 self.parser = parser
                 self.parser_result = None
 
-            def ExternalEntityRefHandler(self, context, base, sysId, pubId):
+            eleza ExternalEntityRefHandler(self, context, base, sysId, pubId):
                 external_parser = self.parser.ExternalEntityParserCreate("")
                 self.parser_result = external_parser.Parse(b"", 1)
-                return 1
+                rudisha 1
 
         parser = expat.ParserCreate(namespace_separator='!')
         parser.buffer_text = 1
@@ -342,51 +342,51 @@ class InterningTest(unittest.TestCase):
         self.assertEqual(out.parser_result, 1)
 
 
-class BufferTextTest(unittest.TestCase):
-    def setUp(self):
+kundi BufferTextTest(unittest.TestCase):
+    eleza setUp(self):
         self.stuff = []
         self.parser = expat.ParserCreate()
         self.parser.buffer_text = 1
         self.parser.CharacterDataHandler = self.CharacterDataHandler
 
-    def check(self, expected, label):
+    eleza check(self, expected, label):
         self.assertEqual(self.stuff, expected,
                 "%s\nstuff    = %r\nexpected = %r"
                 % (label, self.stuff, map(str, expected)))
 
-    def CharacterDataHandler(self, text):
+    eleza CharacterDataHandler(self, text):
         self.stuff.append(text)
 
-    def StartElementHandler(self, name, attrs):
+    eleza StartElementHandler(self, name, attrs):
         self.stuff.append("<%s>" % name)
         bt = attrs.get("buffer-text")
-        if bt == "yes":
+        ikiwa bt == "yes":
             self.parser.buffer_text = 1
-        elif bt == "no":
+        elikiwa bt == "no":
             self.parser.buffer_text = 0
 
-    def EndElementHandler(self, name):
+    eleza EndElementHandler(self, name):
         self.stuff.append("</%s>" % name)
 
-    def CommentHandler(self, data):
+    eleza CommentHandler(self, data):
         self.stuff.append("<!--%s-->" % data)
 
-    def setHandlers(self, handlers=[]):
+    eleza setHandlers(self, handlers=[]):
         for name in handlers:
             setattr(self.parser, name, getattr(self, name))
 
-    def test_default_to_disabled(self):
+    eleza test_default_to_disabled(self):
         parser = expat.ParserCreate()
         self.assertFalse(parser.buffer_text)
 
-    def test_buffering_enabled(self):
+    eleza test_buffering_enabled(self):
         # Make sure buffering is turned on
         self.assertTrue(self.parser.buffer_text)
         self.parser.Parse(b"<a>1<b/>2<c/>3</a>", 1)
         self.assertEqual(self.stuff, ['123'],
                          "buffered text not properly collapsed")
 
-    def test1(self):
+    eleza test1(self):
         # XXX This test exposes more detail of Expat's text chunking than we
         # XXX like, but it tests what we need to concisely.
         self.setHandlers(["StartElementHandler"])
@@ -395,31 +395,31 @@ class BufferTextTest(unittest.TestCase):
                          ["<a>", "1", "<b>", "2", "\n", "3", "<c>", "4\n5"],
                          "buffering control not reacting as expected")
 
-    def test2(self):
+    eleza test2(self):
         self.parser.Parse(b"<a>1<b/>&lt;2&gt;<c/>&#32;\n&#x20;3</a>", 1)
         self.assertEqual(self.stuff, ["1<2> \n 3"],
                          "buffered text not properly collapsed")
 
-    def test3(self):
+    eleza test3(self):
         self.setHandlers(["StartElementHandler"])
         self.parser.Parse(b"<a>1<b/>2<c/>3</a>", 1)
         self.assertEqual(self.stuff, ["<a>", "1", "<b>", "2", "<c>", "3"],
                          "buffered text not properly split")
 
-    def test4(self):
+    eleza test4(self):
         self.setHandlers(["StartElementHandler", "EndElementHandler"])
         self.parser.CharacterDataHandler = None
         self.parser.Parse(b"<a>1<b/>2<c/>3</a>", 1)
         self.assertEqual(self.stuff,
                          ["<a>", "<b>", "</b>", "<c>", "</c>", "</a>"])
 
-    def test5(self):
+    eleza test5(self):
         self.setHandlers(["StartElementHandler", "EndElementHandler"])
         self.parser.Parse(b"<a>1<b></b>2<c/>3</a>", 1)
         self.assertEqual(self.stuff,
             ["<a>", "1", "<b>", "</b>", "2", "<c>", "</c>", "3", "</a>"])
 
-    def test6(self):
+    eleza test6(self):
         self.setHandlers(["CommentHandler", "EndElementHandler",
                     "StartElementHandler"])
         self.parser.Parse(b"<a>1<b/>2<c></c>345</a> ", 1)
@@ -427,7 +427,7 @@ class BufferTextTest(unittest.TestCase):
             ["<a>", "1", "<b>", "</b>", "2", "<c>", "</c>", "345", "</a>"],
             "buffered text not properly split")
 
-    def test7(self):
+    eleza test7(self):
         self.setHandlers(["CommentHandler", "EndElementHandler",
                     "StartElementHandler"])
         self.parser.Parse(b"<a>1<b/>2<c></c>3<!--abc-->4<!--def-->5</a> ", 1)
@@ -438,15 +438,15 @@ class BufferTextTest(unittest.TestCase):
 
 
 # Test handling of exception kutoka callback:
-class HandlerExceptionTest(unittest.TestCase):
-    def StartElementHandler(self, name, attrs):
+kundi HandlerExceptionTest(unittest.TestCase):
+    eleza StartElementHandler(self, name, attrs):
         raise RuntimeError(name)
 
-    def check_traceback_entry(self, entry, filename, funcname):
+    eleza check_traceback_entry(self, entry, filename, funcname):
         self.assertEqual(os.path.basename(entry[0]), filename)
         self.assertEqual(entry[2], funcname)
 
-    def test_exception(self):
+    eleza test_exception(self):
         parser = expat.ParserCreate()
         parser.StartElementHandler = self.StartElementHandler
         try:
@@ -465,19 +465,19 @@ class HandlerExceptionTest(unittest.TestCase):
                                        "pyexpat.c", "StartElement")
             self.check_traceback_entry(entries[2],
                                        "test_pyexpat.py", "StartElementHandler")
-            if sysconfig.is_python_build():
+            ikiwa sysconfig.is_python_build():
                 self.assertIn('call_with_frame("StartElement"', entries[1][3])
 
 
 # Test Current* members:
-class PositionTest(unittest.TestCase):
-    def StartElementHandler(self, name, attrs):
+kundi PositionTest(unittest.TestCase):
+    eleza StartElementHandler(self, name, attrs):
         self.check_pos('s')
 
-    def EndElementHandler(self, name):
+    eleza EndElementHandler(self, name):
         self.check_pos('e')
 
-    def check_pos(self, event):
+    eleza check_pos(self, event):
         pos = (event,
                self.parser.CurrentByteIndex,
                self.parser.CurrentLineNumber,
@@ -489,7 +489,7 @@ class PositionTest(unittest.TestCase):
                 'Expected position %s, got position %s' %(pos, expected))
         self.upto += 1
 
-    def test(self):
+    eleza test(self):
         self.parser = expat.ParserCreate()
         self.parser.StartElementHandler = self.StartElementHandler
         self.parser.EndElementHandler = self.EndElementHandler
@@ -501,18 +501,18 @@ class PositionTest(unittest.TestCase):
         self.parser.Parse(xml, 1)
 
 
-class sf1296433Test(unittest.TestCase):
-    def test_parse_only_xml_data(self):
+kundi sf1296433Test(unittest.TestCase):
+    eleza test_parse_only_xml_data(self):
         # http://python.org/sf/1296433
         #
         xml = "<?xml version='1.0' encoding='iso8859'?><s>%s</s>" % ('a' * 1025)
         # this one doesn't crash
         #xml = "<?xml version='1.0'?><s>%s</s>" % ('a' * 10000)
 
-        class SpecificException(Exception):
+        kundi SpecificException(Exception):
             pass
 
-        def handler(text):
+        eleza handler(text):
             raise SpecificException
 
         parser = expat.ParserCreate()
@@ -520,18 +520,18 @@ class sf1296433Test(unittest.TestCase):
 
         self.assertRaises(Exception, parser.Parse, xml.encode('iso8859'))
 
-class ChardataBufferTest(unittest.TestCase):
+kundi ChardataBufferTest(unittest.TestCase):
     """
     test setting of chardata buffer size
     """
 
-    def test_1025_bytes(self):
+    eleza test_1025_bytes(self):
         self.assertEqual(self.small_buffer_test(1025), 2)
 
-    def test_1000_bytes(self):
+    eleza test_1000_bytes(self):
         self.assertEqual(self.small_buffer_test(1000), 1)
 
-    def test_wrong_size(self):
+    eleza test_wrong_size(self):
         parser = expat.ParserCreate()
         parser.buffer_text = 1
         with self.assertRaises(ValueError):
@@ -543,7 +543,7 @@ class ChardataBufferTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             parser.buffer_size = 512.0
 
-    def test_unchanged_size(self):
+    eleza test_unchanged_size(self):
         xml1 = b"<?xml version='1.0' encoding='iso8859'?><s>" + b'a' * 512
         xml2 = b'a'*512 + b'</s>'
         parser = expat.ParserCreate()
@@ -566,7 +566,7 @@ class ChardataBufferTest(unittest.TestCase):
         self.assertEqual(self.n, 2)
 
 
-    def test_disabling_buffer(self):
+    eleza test_disabling_buffer(self):
         xml1 = b"<?xml version='1.0' encoding='iso8859'?><a>" + b'a' * 512
         xml2 = b'b' * 1024
         xml3 = b'c' * 1024 + b'</a>';
@@ -596,10 +596,10 @@ class ChardataBufferTest(unittest.TestCase):
         parser.Parse(xml3, 1)
         self.assertEqual(self.n, 12)
 
-    def counting_handler(self, text):
+    eleza counting_handler(self, text):
         self.n += 1
 
-    def small_buffer_test(self, buffer_len):
+    eleza small_buffer_test(self, buffer_len):
         xml = b"<?xml version='1.0' encoding='iso8859'?><s>" + b'a' * buffer_len + b'</s>'
         parser = expat.ParserCreate()
         parser.CharacterDataHandler = self.counting_handler
@@ -608,9 +608,9 @@ class ChardataBufferTest(unittest.TestCase):
 
         self.n = 0
         parser.Parse(xml)
-        return self.n
+        rudisha self.n
 
-    def test_change_size_1(self):
+    eleza test_change_size_1(self):
         xml1 = b"<?xml version='1.0' encoding='iso8859'?><a><s>" + b'a' * 1024
         xml2 = b'aaa</s><s>' + b'a' * 1025 + b'</s></a>'
         parser = expat.ParserCreate()
@@ -626,7 +626,7 @@ class ChardataBufferTest(unittest.TestCase):
         parser.Parse(xml2, 1)
         self.assertEqual(self.n, 2)
 
-    def test_change_size_2(self):
+    eleza test_change_size_2(self):
         xml1 = b"<?xml version='1.0' encoding='iso8859'?><a>a<s>" + b'a' * 1023
         xml2 = b'aaa</s><s>' + b'a' * 1025 + b'</s></a>'
         parser = expat.ParserCreate()
@@ -642,8 +642,8 @@ class ChardataBufferTest(unittest.TestCase):
         parser.Parse(xml2, 1)
         self.assertEqual(self.n, 4)
 
-class MalformedInputTest(unittest.TestCase):
-    def test1(self):
+kundi MalformedInputTest(unittest.TestCase):
+    eleza test1(self):
         xml = b"\0\r\n"
         parser = expat.ParserCreate()
         try:
@@ -652,7 +652,7 @@ class MalformedInputTest(unittest.TestCase):
         except expat.ExpatError as e:
             self.assertEqual(str(e), 'unclosed token: line 2, column 0')
 
-    def test2(self):
+    eleza test2(self):
         # \xc2\x85 is UTF-8 encoded U+0085 (NEXT LINE)
         xml = b"<?xml version\xc2\x85='1.0'?>\r\n"
         parser = expat.ParserCreate()
@@ -660,13 +660,13 @@ class MalformedInputTest(unittest.TestCase):
         with self.assertRaisesRegex(expat.ExpatError, err_pattern):
             parser.Parse(xml, True)
 
-class ErrorMessageTest(unittest.TestCase):
-    def test_codes(self):
+kundi ErrorMessageTest(unittest.TestCase):
+    eleza test_codes(self):
         # verify mapping of errors.codes and errors.messages
         self.assertEqual(errors.XML_ERROR_SYNTAX,
                          errors.messages[errors.codes[errors.XML_ERROR_SYNTAX]])
 
-    def test_expaterror(self):
+    eleza test_expaterror(self):
         xml = b'<'
         parser = expat.ParserCreate()
         try:
@@ -677,20 +677,20 @@ class ErrorMessageTest(unittest.TestCase):
                              errors.codes[errors.XML_ERROR_UNCLOSED_TOKEN])
 
 
-class ForeignDTDTests(unittest.TestCase):
+kundi ForeignDTDTests(unittest.TestCase):
     """
     Tests for the UseForeignDTD method of expat parser objects.
     """
-    def test_use_foreign_dtd(self):
+    eleza test_use_foreign_dtd(self):
         """
         If UseForeignDTD is passed True and a document without an external
         entity reference is parsed, ExternalEntityRefHandler is first called
         with None for the public and system ids.
         """
         handler_call_args = []
-        def resolve_entity(context, base, system_id, public_id):
+        eleza resolve_entity(context, base, system_id, public_id):
             handler_call_args.append((public_id, system_id))
-            return 1
+            rudisha 1
 
         parser = expat.ParserCreate()
         parser.UseForeignDTD(True)
@@ -709,16 +709,16 @@ class ForeignDTDTests(unittest.TestCase):
         parser.Parse(b"<?xml version='1.0'?><element/>")
         self.assertEqual(handler_call_args, [(None, None)])
 
-    def test_ignore_use_foreign_dtd(self):
+    eleza test_ignore_use_foreign_dtd(self):
         """
         If UseForeignDTD is passed True and a document with an external
         entity reference is parsed, ExternalEntityRefHandler is called with
         the public and system ids kutoka the document.
         """
         handler_call_args = []
-        def resolve_entity(context, base, system_id, public_id):
+        eleza resolve_entity(context, base, system_id, public_id):
             handler_call_args.append((public_id, system_id))
-            return 1
+            rudisha 1
 
         parser = expat.ParserCreate()
         parser.UseForeignDTD(True)
@@ -729,5 +729,5 @@ class ForeignDTDTests(unittest.TestCase):
         self.assertEqual(handler_call_args, [("bar", "baz")])
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

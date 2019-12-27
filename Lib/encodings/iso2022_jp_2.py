@@ -4,8 +4,8 @@
 # Written by Hye-Shik Chang <perky@FreeBSD.org>
 #
 
-import _codecs_iso2022, codecs
-import _multibytecodec as mbc
+agiza _codecs_iso2022, codecs
+agiza _multibytecodec as mbc
 
 codec = _codecs_iso2022.getcodec('iso2022_jp_2')
 

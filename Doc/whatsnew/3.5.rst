@@ -82,8 +82,8 @@ New built-in features:
 * :class:`memoryview` now supports tuple indexing (including multi-dimensional).
   (Contributed by Antoine Pitrou in :issue:`23632`.)
 
-* Generators have a new ``gi_yieldfrom`` attribute, which returns the
-  object being iterated by ``yield from`` expressions. (Contributed
+* Generators have a new ``gi_yieldkutoka`` attribute, which returns the
+  object being iterated by ``yield kutoka`` expressions. (Contributed
   by Benno Leslie and Yury Selivanov in :issue:`24450`.)
 
 * A new :exc:`RecursionError` exception is now raised when maximum
@@ -115,7 +115,7 @@ Significant improvements in the standard library:
 
 * The :mod:`ssl` module gained
   :ref:`support for Memory BIO <whatsnew-sslmemorybio>`, which decouples SSL
-  protocol handling from network IO.
+  protocol handling kutoka network IO.
 
 * The new :func:`os.scandir` function provides a
   :ref:`better and significantly faster way <whatsnew-pep-471>`
@@ -188,7 +188,7 @@ over asynchronous iterables.
 
 An example of a rudimentary HTTP client written using the new syntax::
 
-    import asyncio
+    agiza asyncio
 
     async def http_get(domain):
         reader, writer = await asyncio.open_connection(domain, 80)
@@ -215,7 +215,7 @@ An example of a rudimentary HTTP client written using the new syntax::
 Similarly to asynchronous iteration, there is a new syntax for asynchronous
 context managers.  The following script::
 
-    import asyncio
+    agiza asyncio
 
     async def coro(name, lock):
         print('coro {}: waiting for lock'.format(name))
@@ -291,7 +291,7 @@ instead of::
 
 NumPy 1.10 has support for the new operator::
 
-    >>> import numpy
+    >>> agiza numpy
 
     >>> x = numpy.ones(3)
     >>> x
@@ -365,7 +365,7 @@ and :class:`bytearray`.
 
 While interpolation is usually thought of as a string operation, there are
 cases where interpolation on ``bytes`` or ``bytearrays`` makes sense, and the
-work needed to make up for this missing functionality detracts from the
+work needed to make up for this missing functionality detracts kutoka the
 overall readability of the code.  This issue is particularly important when
 dealing with wire format protocols, which are often a mixture of binary
 and ASCII compatible text.
@@ -430,7 +430,7 @@ source code analysis.
 
 The type system supports unions, generic types, and a special type
 named :class:`~typing.Any` which is consistent with (i.e. assignable to
-and from) all types.
+and kutoka) all types.
 
 .. seealso::
 
@@ -537,7 +537,7 @@ by a signal:
 
 * methods of the :class:`~socket.socket` class: :meth:`~socket.socket.accept`,
   :meth:`~socket.socket.connect` (except for non-blocking sockets),
-  :meth:`~socket.socket.recv`, :meth:`~socket.socket.recvfrom`,
+  :meth:`~socket.socket.recv`, :meth:`~socket.socket.recvkutoka`,
   :meth:`~socket.socket.recvmsg`, :meth:`~socket.socket.send`,
   :meth:`~socket.socket.sendall`, :meth:`~socket.socket.sendmsg`,
   :meth:`~socket.socket.sendto`;
@@ -570,12 +570,12 @@ exception is raised inside a generator, it is replaced with a
 this change is to ease debugging in the situation where an unguarded
 :func:`next` call raises ``StopIteration`` and causes the iteration controlled
 by the generator to terminate silently. This is particularly pernicious in
-combination with the ``yield from`` construct.
+combination with the ``yield kutoka`` construct.
 
 This is a backwards incompatible change, so to enable the new behavior,
-a :term:`__future__` import is necessary::
+a :term:`__future__` agiza is necessary::
 
-    >>> from __future__ import generator_stop
+    >>> kutoka __future__ agiza generator_stop
 
     >>> def gen():
     ...     next(iter([]))
@@ -614,7 +614,7 @@ close is determined according to given absolute and relative tolerances.
 Relative tolerance is the maximum allowed difference between ``isclose``
 arguments, relative to the larger absolute value::
 
-    >>> import math
+    >>> agiza math
     >>> a = 5.0
     >>> b = 4.99998
     >>> math.isclose(a, b, rel_tol=1e-5)
@@ -625,7 +625,7 @@ arguments, relative to the larger absolute value::
 It is also possible to compare two values using absolute tolerance, which
 must be a non-negative value::
 
-    >>> import math
+    >>> agiza math
     >>> a = 5.0
     >>> b = 4.99998
     >>> math.isclose(a, b, abs_tol=0.00003)
@@ -666,9 +666,9 @@ PEP 488: Elimination of PYO files
 need to constantly regenerate bytecode files, ``.pyc`` files now have an
 optional ``opt-`` tag in their name when the bytecode is optimized. This has the
 side-effect of no more bytecode file name clashes when running under either
-:option:`-O` or :option:`-OO`. Consequently, bytecode files generated from
+:option:`-O` or :option:`-OO`. Consequently, bytecode files generated kutoka
 :option:`-O`, and :option:`-OO` may now exist simultaneously.
-:func:`importlib.util.cache_from_source` has an updated API to help with
+:func:`importlib.util.cache_kutoka_source` has an updated API to help with
 this change.
 
 .. seealso::
@@ -685,7 +685,7 @@ PEP 489: Multi-phase extension module initialization
 :pep:`489` updates extension module initialization to take advantage of the
 two step module loading mechanism introduced by :pep:`451` in Python 3.4.
 
-This change brings the import semantics of extension modules that opt-in to
+This change brings the agiza semantics of extension modules that opt-in to
 using the new mechanism much closer to those of Python source and bytecode
 modules, including the ability to use any valid identifier as a module name,
 rather than being restricted to ASCII.
@@ -763,7 +763,7 @@ Improved Modules
 argparse
 --------
 
-The :class:`~argparse.ArgumentParser` class now allows disabling
+The :class:`~argparse.ArgumentParser` kundi now allows disabling
 :ref:`abbreviated usage <prefix-matching>` of long options by setting
 :ref:`allow_abbrev` to ``False``.  (Contributed by Jonathan Paugh,
 Steven Bethard, paul j3 and Daniel Eriksson in :issue:`14910`.)
@@ -815,7 +815,7 @@ Notable changes in the :mod:`asyncio` module since Python 3.4.0:
   :meth:`Queue.task_done() <asyncio.Queue.task_done>` queue methods.
   (Contributed by Victor Stinner.)
 
-* The ``JoinableQueue`` class was removed, in favor of the
+* The ``JoinableQueue`` kundi was removed, in favor of the
   :class:`asyncio.Queue` class.
   (Contributed by Victor Stinner.)
 
@@ -827,7 +827,7 @@ Updates in 3.5.1:
   (Contributed by Yury Selivanov.)
 
 * New :func:`~asyncio.run_coroutine_threadsafe` function to submit
-  coroutines to event loops from other threads.
+  coroutines to event loops kutoka other threads.
   (Contributed by Vincent Michel.)
 
 * New :meth:`Transport.is_closing() <asyncio.BaseTransport.is_closing>`
@@ -852,7 +852,7 @@ Updates in 3.5.2:
   (Contributed by Yury Selivanov.)
 
 * New :meth:`StreamReader.readuntil() <asyncio.StreamReader.readuntil>`
-  method to read data from the stream until a separator bytes
+  method to read data kutoka the stream until a separator bytes
   sequence appears.
   (Contributed by Mark Korenberg.)
 
@@ -878,7 +878,7 @@ size of decompressed data. (Contributed by Nikolaus Rath in :issue:`15955`.)
 cgi
 ---
 
-The :class:`~cgi.FieldStorage` class now supports the :term:`context manager`
+The :class:`~cgi.FieldStorage` kundi now supports the :term:`context manager`
 protocol.  (Contributed by Berker Peksag in :issue:`20289`.)
 
 
@@ -902,7 +902,7 @@ collections
 
 .. _whatsnew-ordereddict:
 
-The :class:`~collections.OrderedDict` class is now implemented in C, which
+The :class:`~collections.OrderedDict` kundi is now implemented in C, which
 makes it 4 to 100 times faster.  (Contributed by Eric Snow in :issue:`16991`.)
 
 :meth:`OrderedDict.items() <collections.OrderedDict.items>`,
@@ -911,7 +911,7 @@ makes it 4 to 100 times faster.  (Contributed by Eric Snow in :issue:`16991`.)
 :func:`reversed` iteration.
 (Contributed by Serhiy Storchaka in :issue:`19505`.)
 
-The :class:`~collections.deque` class now defines
+The :class:`~collections.deque` kundi now defines
 :meth:`~collections.deque.index`, :meth:`~collections.deque.insert`, and
 :meth:`~collections.deque.copy`, and supports the ``+`` and ``*`` operators.
 This allows deques to be recognized as a :class:`~collections.abc.MutableSequence`
@@ -927,7 +927,7 @@ Docstrings produced by :func:`~collections.namedtuple` can now be updated::
 
 (Contributed by Berker Peksag in :issue:`24064`.)
 
-The :class:`~collections.UserString` class now implements the
+The :class:`~collections.UserString` kundi now implements the
 :meth:`__getnewargs__`, :meth:`__rmod__`, :meth:`~str.casefold`,
 :meth:`~str.format_map`, :meth:`~str.isprintable`, and :meth:`~str.maketrans`
 methods to match the corresponding methods of :class:`str`.
@@ -997,7 +997,7 @@ a parser instance are inherited by its section proxies.
 
 Example::
 
-    >>> import configparser
+    >>> agiza configparser
     >>> conv = {}
     >>> conv['list'] = lambda v: [e.strip() for e in v.split() if e.strip()]
     >>> cfg = configparser.ConfigParser(converters=conv)
@@ -1024,7 +1024,7 @@ The new :func:`~contextlib.redirect_stderr` :term:`context manager` (similar to
 handle inflexible APIs that write their output to :data:`sys.stderr` and
 don't provide any options to redirect it::
 
-    >>> import contextlib, io, logging
+    >>> agiza contextlib, io, logging
     >>> f = io.StringIO()
     >>> with contextlib.redirect_stderr(f):
     ...     logging.warning('warning')
@@ -1063,12 +1063,12 @@ difflib
 The charset of HTML documents generated by
 :meth:`HtmlDiff.make_file() <difflib.HtmlDiff.make_file>`
 can now be customized by using a new *charset* keyword-only argument.
-The default charset of HTML document changed from ``"ISO-8859-1"``
+The default charset of HTML document changed kutoka ``"ISO-8859-1"``
 to ``"utf-8"``.
 (Contributed by Berker Peksag in :issue:`2052`.)
 
 The :func:`~difflib.diff_bytes` function can now compare lists of byte
-strings.  This fixes a regression from Python 2.
+strings.  This fixes a regression kutoka Python 2.
 (Contributed by Terry J. Reedy and Greg Ward in :issue:`17445`.)
 
 
@@ -1095,7 +1095,7 @@ raising :exc:`ValueError`.  (Contributed by Glenn Jones in :issue:`15916`.)
 email
 -----
 
-A new policy option :attr:`Policy.mangle_from_ <email.policy.Policy.mangle_from_>`
+A new policy option :attr:`Policy.mangle_kutoka_ <email.policy.Policy.mangle_kutoka_>`
 controls whether or not lines that start with ``"From "`` in email bodies are
 prefixed with a ``">"`` character by generators.  The default is ``True`` for
 :attr:`~email.policy.compat32` and ``False`` for all other policies.
@@ -1178,7 +1178,7 @@ passing a :term:`key function` in a new optional *key* keyword argument,
 and a new optional *reverse* keyword argument can be used to reverse element
 comparison::
 
-    >>> import heapq
+    >>> agiza heapq
     >>> a = ['9', '777', '55555']
     >>> b = ['88', '6666']
     >>> list(heapq.merge(a, b, key=len))
@@ -1207,7 +1207,7 @@ remote server connection is closed unexpectedly.  Additionally, if a
 is a subclass) is raised, the client socket is now closed automatically,
 and will reconnect on the next request::
 
-    import http.client
+    agiza http.client
     conn = http.client.HTTPConnection('www.python.org')
     for retries in range(3):
         try:
@@ -1223,16 +1223,16 @@ idlelib and IDLE
 ----------------
 
 Since idlelib implements the IDLE shell and editor and is not intended for
-import by other programs, it gets improvements with every release.  See
+agiza by other programs, it gets improvements with every release.  See
 :file:`Lib/idlelib/NEWS.txt` for a cumulative list of changes since 3.4.0,
 as well as changes made in future 3.5.x releases. This file is also available
-from the IDLE :menuselection:`Help --> About IDLE` dialog.
+kutoka the IDLE :menuselection:`Help --> About IDLE` dialog.
 
 
 imaplib
 -------
 
-The :class:`~imaplib.IMAP4` class now supports the :term:`context manager` protocol.
+The :class:`~imaplib.IMAP4` kundi now supports the :term:`context manager` protocol.
 When used in a :keyword:`with` statement, the IMAP4 ``LOGOUT``
 command will be called automatically at the end of the block.
 (Contributed by Tarek Ziadé and Serhiy Storchaka in :issue:`4972`.)
@@ -1262,17 +1262,17 @@ and the `WebP <https://en.wikipedia.org/wiki/WebP>`_ format
 importlib
 ---------
 
-The :class:`util.LazyLoader <importlib.util.LazyLoader>` class allows for
+The :class:`util.LazyLoader <importlib.util.LazyLoader>` kundi allows for
 lazy loading of modules in applications where startup time is important.
 (Contributed by Brett Cannon in :issue:`17621`.)
 
 The :func:`abc.InspectLoader.source_to_code() <importlib.abc.InspectLoader.source_to_code>`
 method is now a static method.  This makes it easier to initialize a module
-object with code compiled from a string by running
+object with code compiled kutoka a string by running
 ``exec(code, module.__dict__)``.
 (Contributed by Brett Cannon in :issue:`21156`.)
 
-The new :func:`util.module_from_spec() <importlib.util.module_from_spec>`
+The new :func:`util.module_kutoka_spec() <importlib.util.module_kutoka_spec>`
 function is now the preferred way to create a new module.  As opposed to
 creating a :class:`types.ModuleType` instance directly, this new function
 will set the various import-controlled attributes based on the passed-in
@@ -1298,8 +1298,8 @@ method provides a way to set default values for missing arguments::
 
 (Contributed by Yury Selivanov in :issue:`24190`.)
 
-A new class method
-:meth:`Signature.from_callable() <inspect.Signature.from_callable>` makes
+A new kundi method
+:meth:`Signature.kutoka_callable() <inspect.Signature.kutoka_callable>` makes
 subclassing of :class:`~inspect.Signature` easier.  (Contributed
 by Yury Selivanov and Eric Snow in :issue:`17373`.)
 
@@ -1337,9 +1337,9 @@ ipaddress
 
 Both the :class:`~ipaddress.IPv4Network` and :class:`~ipaddress.IPv6Network` classes
 now accept an ``(address, netmask)`` tuple argument, so as to easily construct
-network objects from existing addresses::
+network objects kutoka existing addresses::
 
-    >>> import ipaddress
+    >>> agiza ipaddress
     >>> ipaddress.IPv4Network(('127.0.0.0', 8))
     IPv4Network('127.0.0.0/8')
     >>> ipaddress.IPv4Network(('127.0.0.0', '255.0.0.0'))
@@ -1351,7 +1351,7 @@ A new :attr:`~ipaddress.IPv4Network.reverse_pointer` attribute for the
 :class:`~ipaddress.IPv4Network` and :class:`~ipaddress.IPv6Network` classes
 returns the name of the reverse DNS PTR record::
 
-    >>> import ipaddress
+    >>> agiza ipaddress
     >>> addr = ipaddress.IPv4Address('127.0.0.1')
     >>> addr.reverse_pointer
     '1.0.0.127.in-addr.arpa'
@@ -1391,7 +1391,7 @@ locale
 A new :func:`~locale.delocalize` function can be used to convert a string into
 a normalized number string, taking the ``LC_NUMERIC`` settings into account::
 
-    >>> import locale
+    >>> agiza locale
     >>> locale.setlocale(locale.LC_NUMERIC, 'de_DE.UTF-8')
     'de_DE.UTF-8'
     >>> locale.delocalize('1.234,56')
@@ -1413,7 +1413,7 @@ All logging methods (:class:`~logging.Logger` :meth:`~logging.Logger.log`,
 as an *exc_info* argument, in addition to boolean values and exception
 tuples::
 
-    >>> import logging
+    >>> agiza logging
     >>> try:
     ...     1/0
     ... except ZeroDivisionError as ex:
@@ -1422,12 +1422,12 @@ tuples::
 
 (Contributed by Yury Selivanov in :issue:`20537`.)
 
-The :class:`handlers.HTTPHandler <logging.handlers.HTTPHandler>` class now
+The :class:`handlers.HTTPHandler <logging.handlers.HTTPHandler>` kundi now
 accepts an optional :class:`ssl.SSLContext` instance to configure SSL
 settings used in an HTTP connection.
 (Contributed by Alex Gaynor in :issue:`22788`.)
 
-The :class:`handlers.QueueListener <logging.handlers.QueueListener>` class now
+The :class:`handlers.QueueListener <logging.handlers.QueueListener>` kundi now
 takes a *respect_handler_level* keyword argument which, if set to ``True``,
 will pass messages to handlers taking handler levels into account.
 (Contributed by Vinay Sajip.)
@@ -1525,7 +1525,7 @@ The new :meth:`Path.samefile() <pathlib.Path.samefile>` method can be used
 to check whether the path points to the same file as another path, which can
 be either another :class:`~pathlib.Path` object, or a string::
 
-    >>> import pathlib
+    >>> agiza pathlib
     >>> p1 = pathlib.Path('/etc/hosts')
     >>> p2 = pathlib.Path('/etc/../etc/hosts')
     >>> p1.samefile(p2)
@@ -1541,7 +1541,7 @@ There is a new :meth:`Path.expanduser() <pathlib.Path.expanduser>` method to
 expand ``~`` and ``~user`` prefixes.  (Contributed by Serhiy Storchaka and
 Claudiu Popa in :issue:`19776`.)
 
-A new :meth:`Path.home() <pathlib.Path.home>` class method can be used to get
+A new :meth:`Path.home() <pathlib.Path.home>` kundi method can be used to get
 a :class:`~pathlib.Path` instance representing the user’s home
 directory.
 (Contributed by Victor Salgado and Mayank Tripathi in :issue:`19777`.)
@@ -1555,7 +1555,7 @@ read/write operations on files.
 The following code snippet will create or rewrite existing file
 ``~/spam42``::
 
-    >>> import pathlib
+    >>> agiza pathlib
     >>> p = pathlib.Path('~/spam42')
     >>> p.expanduser().write_text('ham')
     3
@@ -1586,7 +1586,7 @@ re
 References and conditional references to groups with fixed length are now
 allowed in lookbehind assertions::
 
-    >>> import re
+    >>> agiza re
     >>> pat = re.compile(r'(a|b).(?<=\1)c')
     >>> pat.match('aac')
     <_sre.SRE_Match object; span=(0, 3), match='aac'>
@@ -1674,14 +1674,14 @@ to ``False``, the ``process_message`` method must be prepared to accept keyword
 arguments.
 (Contributed by Maciej Szulik in :issue:`19662`.)
 
-The :class:`~smtpd.SMTPServer` class now advertises the ``8BITMIME`` extension
+The :class:`~smtpd.SMTPServer` kundi now advertises the ``8BITMIME`` extension
 (:rfc:`6152`) if *decode_data* has been set ``True``.  If the client
 specifies ``BODY=8BITMIME`` on the ``MAIL`` command, it is passed to
 :meth:`SMTPServer.process_message() <smtpd.SMTPServer.process_message>`
 via the *mail_options* keyword.
 (Contributed by Milan Oberkirch and R.  David Murray in :issue:`21795`.)
 
-The :class:`~smtpd.SMTPServer` class now also supports the ``SMTPUTF8``
+The :class:`~smtpd.SMTPServer` kundi now also supports the ``SMTPUTF8``
 extension (:rfc:`6531`: Internationalized Email).  If the client specified
 ``SMTPUTF8 BODY=8BITMIME`` on the ``MAIL`` command, they are passed to
 :meth:`SMTPServer.process_message() <smtpd.SMTPServer.process_message>`
@@ -1727,7 +1727,7 @@ Functions with timeouts now use a monotonic clock, instead of a system clock.
 
 A new :meth:`socket.sendfile() <socket.socket.sendfile>` method allows
 sending a file over a socket by using the high-performance :func:`os.sendfile`
-function on UNIX, resulting in uploads being from 2 to 3 times faster than when
+function on UNIX, resulting in uploads being kutoka 2 to 3 times faster than when
 using plain :meth:`socket.send() <socket.socket.send>`.
 (Contributed by Giampaolo Rodola' in :issue:`17552`.)
 
@@ -1752,12 +1752,12 @@ Memory BIO Support
 
 (Contributed by Geert Jansen in :issue:`21965`.)
 
-The new :class:`~ssl.SSLObject` class has been added to provide SSL protocol
+The new :class:`~ssl.SSLObject` kundi has been added to provide SSL protocol
 support for cases when the network I/O capabilities of :class:`~ssl.SSLSocket`
 are not necessary or are suboptimal.  ``SSLObject`` represents
 an SSL protocol instance, but does not implement any network I/O methods, and
 instead provides a memory buffer interface.  The new :class:`~ssl.MemoryBIO`
-class can be used to pass data between Python and an SSL protocol instance.
+kundi can be used to pass data between Python and an SSL protocol instance.
 
 The memory BIO SSL support is primarily intended to be used in frameworks
 implementing asynchronous I/O for which :class:`~ssl.SSLSocket`'s readiness
@@ -1793,7 +1793,7 @@ There is a new :meth:`SSLSocket.version() <ssl.SSLSocket.version>` method to
 query the actual protocol version in use.
 (Contributed by Antoine Pitrou in :issue:`20421`.)
 
-The :class:`~ssl.SSLSocket` class now implements
+The :class:`~ssl.SSLSocket` kundi now implements
 a :meth:`SSLSocket.sendfile() <ssl.SSLSocket.sendfile>` method.
 (Contributed by Giampaolo Rodola' in :issue:`17552`.)
 
@@ -1815,7 +1815,7 @@ The :meth:`SSLSocket.do_handshake() <ssl.SSLSocket.do_handshake>`,
 :meth:`SSLSocket.read() <ssl.SSLSocket.read>`,
 :meth:`SSLSocket.shutdown() <ssl.SSLSocket.shutdown>`, and
 :meth:`SSLSocket.write() <ssl.SSLSocket.write>` methods of the :class:`~ssl.SSLSocket`
-class no longer reset the socket timeout every time bytes are received or sent.
+kundi no longer reset the socket timeout every time bytes are received or sent.
 The socket timeout is now the maximum total duration of the method.
 (Contributed by Victor Stinner in :issue:`23853`.)
 
@@ -1826,7 +1826,7 @@ The :func:`~ssl.match_hostname` function now supports matching of IP addresses.
 sqlite3
 -------
 
-The :class:`~sqlite3.Row` class now fully supports the sequence protocol,
+The :class:`~sqlite3.Row` kundi now fully supports the sequence protocol,
 in particular :func:`reversed` iteration and slice indexing.
 (Contributed by Claudiu Popa in :issue:`10203`; by Lucas Sinclair,
 Jessica McKellar, and  Serhiy Storchaka in :issue:`13583`.)
@@ -1893,7 +1893,7 @@ to request exclusive creation.  (Contributed by Berker Peksag in :issue:`21717`.
 The :meth:`TarFile.extractall() <tarfile.TarFile.extractall>` and
 :meth:`TarFile.extract() <tarfile.TarFile.extract>` methods now take a keyword
 argument *numeric_owner*.  If set to ``True``, the extracted files and
-directories will be owned by the numeric ``uid`` and ``gid`` from the tarfile.
+directories will be owned by the numeric ``uid`` and ``gid`` kutoka the tarfile.
 If set to ``False`` (the default, and the behavior in versions prior to 3.5),
 they will be owned by the named user and group in the tarfile.
 (Contributed by Michael Vogt and Eric Smith in :issue:`23193`.)
@@ -1976,7 +1976,7 @@ A new type called :class:`~types.CoroutineType`, which is used for
 unicodedata
 -----------
 
-The :mod:`unicodedata` module now uses data from `Unicode 8.0.0
+The :mod:`unicodedata` module now uses data kutoka `Unicode 8.0.0
 <http://unicode.org/versions/Unicode8.0.0/>`_.
 
 
@@ -2002,9 +2002,9 @@ tracebacks.  (Contributed by Robert Collins in :issue:`22936`.)
 unittest.mock
 -------------
 
-The :class:`~unittest.mock.Mock` class has the following improvements:
+The :class:`~unittest.mock.Mock` kundi has the following improvements:
 
-* The class constructor has a new *unsafe* parameter, which causes mock
+* The kundi constructor has a new *unsafe* parameter, which causes mock
   objects to raise :exc:`AttributeError` on attribute names starting
   with ``"assert"``.
   (Contributed by Kushal Das in :issue:`21238`.)
@@ -2013,7 +2013,7 @@ The :class:`~unittest.mock.Mock` class has the following improvements:
   method to check if the mock object was called.
   (Contributed by Kushal Das in :issue:`21262`.)
 
-The :class:`~unittest.mock.MagicMock` class now supports :meth:`__truediv__`,
+The :class:`~unittest.mock.MagicMock` kundi now supports :meth:`__truediv__`,
 :meth:`__divmod__` and :meth:`__matmul__` operators.
 (Contributed by Johannes Baiter in :issue:`20968`, and Håkan Lövdahl
 in :issue:`23581` and :issue:`23568`.)
@@ -2028,7 +2028,7 @@ urllib
 
 A new
 :class:`request.HTTPPasswordMgrWithPriorAuth <urllib.request.HTTPPasswordMgrWithPriorAuth>`
-class allows HTTP Basic Authentication credentials to be managed so as to
+kundi allows HTTP Basic Authentication credentials to be managed so as to
 eliminate unnecessary ``401`` response handling, or to unconditionally send
 credentials on the first request in order to communicate with servers that
 return a ``404`` response instead of a ``401`` if the ``Authorization`` header
@@ -2054,14 +2054,14 @@ wsgiref
 -------
 
 The *headers* argument of the :class:`headers.Headers <wsgiref.headers.Headers>`
-class constructor is now optional.
+kundi constructor is now optional.
 (Contributed by Pablo Torres Navarrete and SilentGhost in :issue:`5800`.)
 
 
 xmlrpc
 ------
 
-The :class:`client.ServerProxy <xmlrpc.client.ServerProxy>` class now supports
+The :class:`client.ServerProxy <xmlrpc.client.ServerProxy>` kundi now supports
 the :term:`context manager` protocol.
 (Contributed by Claudiu Popa in :issue:`20627`.)
 
@@ -2106,9 +2106,9 @@ Optimizations
 
 The :func:`os.walk` function has been sped up by 3 to 5 times on POSIX systems,
 and by 7 to 20 times on Windows.  This was done using the new :func:`os.scandir`
-function, which exposes file information from the underlying ``readdir`` or
+function, which exposes file information kutoka the underlying ``readdir`` or
 ``FindFirstFile``/``FindNextFile`` system calls.  (Contributed by
-Ben Hoyt with help from Victor Stinner in :issue:`23605`.)
+Ben Hoyt with help kutoka Victor Stinner in :issue:`23605`.)
 
 Construction of ``bytes(int)`` (filled by zero bytes) is faster and uses less
 memory for large objects. ``calloc()`` is used instead of ``malloc()`` to
@@ -2119,7 +2119,7 @@ Some operations on :mod:`ipaddress` :class:`~ipaddress.IPv4Network` and
 :class:`~ipaddress.IPv6Network` have been massively sped up, such as
 :meth:`~ipaddress.IPv4Network.subnets`, :meth:`~ipaddress.IPv4Network.supernet`,
 :func:`~ipaddress.summarize_address_range`, :func:`~ipaddress.collapse_addresses`.
-The speed up can range from 3 to 15 times.
+The speed up can range kutoka 3 to 15 times.
 (Contributed by Antoine Pitrou, Michel Albert, and Markus in
 :issue:`21486`, :issue:`21487`, :issue:`20826`, :issue:`23266`.)
 
@@ -2154,7 +2154,7 @@ Method caching was slightly improved, yielding up to 5% performance
 improvement in some benchmarks.
 (Contributed by Antoine Pitrou in :issue:`22847`.)
 
-Objects from the :mod:`random` module now use 50% less memory on 64-bit
+Objects kutoka the :mod:`random` module now use 50% less memory on 64-bit
 builds.  (Contributed by Serhiy Storchaka in :issue:`23488`.)
 
 The :func:`property` getter calls are up to 25% faster.
@@ -2215,7 +2215,7 @@ Windows builds now require Microsoft Visual C++ 14.0, which
 is available as part of `Visual Studio 2015 <https://www.visualstudio.com/>`_.
 
 Extension modules now include a platform information tag in their filename on
-some platforms (the tag is optional, and CPython will import extensions without
+some platforms (the tag is optional, and CPython will agiza extensions without
 it, although if the tag is present and mismatched, the extension won't be
 loaded):
 
@@ -2310,7 +2310,7 @@ instead.  In addition, the undocumented *LegalChars* parameter of
 
 Passing a format string as keyword argument *format_string* to the
 :meth:`~string.Formatter.format` method of the :class:`string.Formatter`
-class has been deprecated.
+kundi has been deprecated.
 (Contributed by Serhiy Storchaka in :issue:`23671`.)
 
 The :func:`platform.dist` and :func:`platform.linux_distribution` functions
@@ -2318,9 +2318,9 @@ are now deprecated.  Linux distributions use too many different ways of
 describing themselves, so the functionality is left to a package.
 (Contributed by Vajrasky Kok and Berker Peksag in :issue:`1322`.)
 
-The previously undocumented ``from_function`` and ``from_builtin`` methods of
+The previously undocumented ``kutoka_function`` and ``kutoka_builtin`` methods of
 :class:`inspect.Signature` are deprecated.  Use the new
-:meth:`Signature.from_callable() <inspect.Signature.from_callable>`
+:meth:`Signature.kutoka_callable() <inspect.Signature.kutoka_callable>`
 method instead. (Contributed by Yury Selivanov in :issue:`24248`.)
 
 The :func:`inspect.getargspec` function is deprecated and scheduled to be
@@ -2357,17 +2357,17 @@ API and Feature Removals
 The following obsolete and previously deprecated APIs and features have been
 removed:
 
-* The ``__version__`` attribute has been dropped from the email package.  The
-  email code hasn't been shipped separately from the stdlib for a long time,
+* The ``__version__`` attribute has been dropped kutoka the email package.  The
+  email code hasn't been shipped separately kutoka the stdlib for a long time,
   and the ``__version__`` string was not updated in the last few releases.
 
-* The internal ``Netrc`` class in the :mod:`ftplib` module was deprecated in
+* The internal ``Netrc`` kundi in the :mod:`ftplib` module was deprecated in
   3.4, and has now been removed.
   (Contributed by Matt Chaput in :issue:`6623`.)
 
 * The concept of ``.pyo`` files has been removed.
 
-* The JoinableQueue class in the provisional :mod:`asyncio` module was
+* The JoinableQueue kundi in the provisional :mod:`asyncio` module was
   deprecated in 3.4.4 and is now removed.
   (Contributed by A. Jesse Jiryu Davis in :issue:`23464`.)
 
@@ -2409,8 +2409,8 @@ Changes in the Python API
   on a non-blocking socket if the operation would block.  Previously,
   it would return ``0``.  (Contributed by Nikolaus Rath in :issue:`20951`.)
 
-* The ``__name__`` attribute of generators is now set from the function name,
-  instead of being set from the code name. Use ``gen.gi_code.co_name`` to
+* The ``__name__`` attribute of generators is now set kutoka the function name,
+  instead of being set kutoka the code name. Use ``gen.gi_code.co_name`` to
   retrieve the code name. Generators also have a new ``__qualname__``
   attribute, the qualified name, which is now used for the representation
   of a generator (``repr(gen)``).
@@ -2434,16 +2434,16 @@ Changes in the Python API
   **without** caching ``None`` in :data:`sys.path_importer_cache`, which is
   different than the typical case (:issue:`22834`).
 
-* HTTP status code and messages from :mod:`http.client` and :mod:`http.server`
+* HTTP status code and messages kutoka :mod:`http.client` and :mod:`http.server`
   were refactored into a common :class:`~http.HTTPStatus` enum.  The values in
   :mod:`http.client` and :mod:`http.server` remain available for backwards
   compatibility.  (Contributed by Demian Brecht in :issue:`21793`.)
 
-* When an import loader defines :meth:`importlib.machinery.Loader.exec_module`
+* When an agiza loader defines :meth:`importlib.machinery.Loader.exec_module`
   it is now expected to also define
   :meth:`~importlib.machinery.Loader.create_module` (raises a
   :exc:`DeprecationWarning` now, will be an error in Python 3.6). If the loader
-  inherits from :class:`importlib.abc.Loader` then there is nothing to do, else
+  inherits kutoka :class:`importlib.abc.Loader` then there is nothing to do, else
   simply define :meth:`~importlib.machinery.Loader.create_module` to return
   ``None``.  (Contributed by Brett Cannon in :issue:`23014`.)
 
@@ -2465,15 +2465,15 @@ Changes in the Python API
   *LegalChars* parameter of :func:`~http.cookies.Morsel.set` is deprecated and
   is now ignored.  (Contributed by Demian Brecht in :issue:`2211`.)
 
-* :pep:`488` has removed ``.pyo`` files from Python and introduced the optional
+* :pep:`488` has removed ``.pyo`` files kutoka Python and introduced the optional
   ``opt-`` tag in ``.pyc`` file names. The
-  :func:`importlib.util.cache_from_source` has gained an *optimization*
+  :func:`importlib.util.cache_kutoka_source` has gained an *optimization*
   parameter to help control the ``opt-`` tag. Because of this, the
   *debug_override* parameter of the function is now deprecated. `.pyo` files
   are also no longer supported as a file argument to the Python interpreter and
   thus serve no purpose when distributed on their own (i.e. sourceless code
   distribution). Due to the fact that the magic number for bytecode has changed
-  in Python 3.5, all old `.pyo` files from previous versions of Python are
+  in Python 3.5, all old `.pyo` files kutoka previous versions of Python are
   invalid regardless of this PEP.
 
 * The :mod:`socket` module now exports the :data:`~socket.CAN_RAW_FD_FRAMES`
@@ -2496,7 +2496,7 @@ Changes in the Python API
   range.  (Contributed by Serhiy Storchaka in :issue:`24284`.)
 
 * The :func:`inspect.getdoc` function now returns documentation strings
-  inherited from base classes.  Documentation strings no longer need to be
+  inherited kutoka base classes.  Documentation strings no longer need to be
   duplicated if the inherited documentation is appropriate.  To suppress an
   inherited string, an empty string must be specified (or the documentation
   may be filled in).  This change affects the output of the :mod:`pydoc`
@@ -2505,7 +2505,7 @@ Changes in the Python API
 
 * Nested :func:`functools.partial` calls are now flattened.  If you were
   relying on the previous behavior, you can now either add an attribute to a
-  :func:`functools.partial` object or you can create a subclass of
+  :func:`functools.partial` object or you can create a subkundi of
   :func:`functools.partial`.
   (Contributed by Alexander Belopolsky in :issue:`7830`.)
 

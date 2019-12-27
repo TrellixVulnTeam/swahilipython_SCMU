@@ -29,9 +29,9 @@ SIGNED_STRUCT = struct.Struct('q')     # large enough for pid_t
 # Forkserver class
 #
 
-class ForkServer(object):
+kundi ForkServer(object):
 
-    def __init__(self):
+    eleza __init__(self):
         self._forkserver_address = None
         self._forkserver_alive_fd = None
         self._forkserver_pid = None
@@ -39,13 +39,13 @@ class ForkServer(object):
         self._lock = threading.Lock()
         self._preload_modules = ['__main__']
 
-    def _stop(self):
+    eleza _stop(self):
         # Method used by unit tests to stop the server
         with self._lock:
             self._stop_unlocked()
 
-    def _stop_unlocked(self):
-        if self._forkserver_pid is None:
+    eleza _stop_unlocked(self):
+        ikiwa self._forkserver_pid is None:
             return
 
         # close the "alive" file descriptor asks the server to stop
@@ -58,21 +58,21 @@ class ForkServer(object):
         os.unlink(self._forkserver_address)
         self._forkserver_address = None
 
-    def set_forkserver_preload(self, modules_names):
+    eleza set_forkserver_preload(self, modules_names):
         '''Set list of module names to try to load in forkserver process.'''
-        if not all(type(mod) is str for mod in self._preload_modules):
+        ikiwa not all(type(mod) is str for mod in self._preload_modules):
             raise TypeError('module_names must be a list of strings')
         self._preload_modules = modules_names
 
-    def get_inherited_fds(self):
+    eleza get_inherited_fds(self):
         '''Return list of fds inherited kutoka parent process.
 
-        This returns None if the current process was not started by fork
+        This returns None ikiwa the current process was not started by fork
         server.
         '''
-        return self._inherited_fds
+        rudisha self._inherited_fds
 
-    def connect_to_new_process(self, fds):
+    eleza connect_to_new_process(self, fds):
         '''Request forkserver to create a child process.
 
         Returns a pair of fds (status_r, data_w).  The calling process can read
@@ -81,7 +81,7 @@ class ForkServer(object):
         process data.
         '''
         self.ensure_running()
-        if len(fds) + 4 >= MAXFDS_TO_SEND:
+        ikiwa len(fds) + 4 >= MAXFDS_TO_SEND:
             raise ValueError('too many fds')
         with socket.socket(socket.AF_UNIX) as client:
             client.connect(self._forkserver_address)
@@ -92,7 +92,7 @@ class ForkServer(object):
             allfds += fds
             try:
                 reduction.sendfds(client, allfds)
-                return parent_r, parent_w
+                rudisha parent_r, parent_w
             except:
                 os.close(parent_r)
                 os.close(parent_w)
@@ -101,7 +101,7 @@ class ForkServer(object):
                 os.close(child_r)
                 os.close(child_w)
 
-    def ensure_running(self):
+    eleza ensure_running(self):
         '''Make sure that a fork server is running.
 
         This can be called kutoka any process.  Note that usually a child
@@ -110,10 +110,10 @@ class ForkServer(object):
         '''
         with self._lock:
             resource_tracker.ensure_running()
-            if self._forkserver_pid is not None:
+            ikiwa self._forkserver_pid is not None:
                 # forkserver was launched before, is it still running?
                 pid, status = os.waitpid(self._forkserver_pid, os.WNOHANG)
-                if not pid:
+                ikiwa not pid:
                     # still alive
                     return
                 # dead, launch it again
@@ -125,10 +125,10 @@ class ForkServer(object):
             cmd = ('kutoka multiprocessing.forkserver agiza main; ' +
                    'main(%d, %d, %r, **%r)')
 
-            if self._preload_modules:
+            ikiwa self._preload_modules:
                 desired_keys = {'main_path', 'sys_path'}
                 data = spawn.get_preparation_data('ignore')
-                data = {x: y for x, y in data.items() if x in desired_keys}
+                data = {x: y for x, y in data.items() ikiwa x in desired_keys}
             else:
                 data = {}
 
@@ -146,7 +146,7 @@ class ForkServer(object):
                     cmd %= (listener.fileno(), alive_r, self._preload_modules,
                             data)
                     exe = spawn.get_executable()
-                    args = [exe] + util._args_from_interpreter_flags()
+                    args = [exe] + util._args_kutoka_interpreter_flags()
                     args += ['-c', cmd]
                     pid = util.spawnv_passfds(exe, args, fds_to_pass)
                 except:
@@ -162,10 +162,10 @@ class ForkServer(object):
 #
 #
 
-def main(listener_fd, alive_r, preload, main_path=None, sys_path=None):
+eleza main(listener_fd, alive_r, preload, main_path=None, sys_path=None):
     '''Run forkserver.'''
-    if preload:
-        if '__main__' in preload and main_path is not None:
+    ikiwa preload:
+        ikiwa '__main__' in preload and main_path is not None:
             process.current_process()._inheriting = True
             try:
                 spawn.import_main_path(main_path)
@@ -183,7 +183,7 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None):
     os.set_blocking(sig_r, False)
     os.set_blocking(sig_w, False)
 
-    def sigchld_handler(*_unused):
+    eleza sigchld_handler(*_unused):
         # Dummy signal handler, doesn't do anything
         pass
 
@@ -214,15 +214,15 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None):
             try:
                 while True:
                     rfds = [key.fileobj for (key, events) in selector.select()]
-                    if rfds:
+                    ikiwa rfds:
                         break
 
-                if alive_r in rfds:
+                ikiwa alive_r in rfds:
                     # EOF because no more client processes left
                     assert os.read(alive_r, 1) == b'', "Not at EOF?"
                     raise SystemExit
 
-                if sig_r in rfds:
+                ikiwa sig_r in rfds:
                     # Got SIGCHLD
                     os.read(sig_r, 65536)  # exhaust
                     while True:
@@ -231,14 +231,14 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None):
                             pid, sts = os.waitpid(-1, os.WNOHANG)
                         except ChildProcessError:
                             break
-                        if pid == 0:
+                        ikiwa pid == 0:
                             break
                         child_w = pid_to_fd.pop(pid, None)
-                        if child_w is not None:
-                            if os.WIFSIGNALED(sts):
+                        ikiwa child_w is not None:
+                            ikiwa os.WIFSIGNALED(sts):
                                 returncode = -os.WTERMSIG(sts)
                             else:
-                                if not os.WIFEXITED(sts):
+                                ikiwa not os.WIFEXITED(sts):
                                     raise AssertionError(
                                         "Child {0:n} status is {1:n}".format(
                                             pid,sts))
@@ -255,19 +255,19 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None):
                             warnings.warn('forkserver: waitpid returned '
                                           'unexpected pid %d' % pid)
 
-                if listener in rfds:
+                ikiwa listener in rfds:
                     # Incoming fork request
                     with listener.accept()[0] as s:
                         # Receive fds kutoka client
                         fds = reduction.recvfds(s, MAXFDS_TO_SEND + 1)
-                        if len(fds) > MAXFDS_TO_SEND:
+                        ikiwa len(fds) > MAXFDS_TO_SEND:
                             raise RuntimeError(
                                 "Too many ({0:n}) fds to send".format(
                                     len(fds)))
                         child_r, child_w, *fds = fds
                         s.close()
                         pid = os.fork()
-                        if pid == 0:
+                        ikiwa pid == 0:
                             # Child
                             code = 1
                             try:
@@ -296,11 +296,11 @@ def main(listener_fd, alive_r, preload, main_path=None, sys_path=None):
                                 os.close(fd)
 
             except OSError as e:
-                if e.errno != errno.ECONNABORTED:
+                ikiwa e.errno != errno.ECONNABORTED:
                     raise
 
 
-def _serve_one(child_r, fds, unused_fds, handlers):
+eleza _serve_one(child_r, fds, unused_fds, handlers):
     # close unnecessary stuff and reset signal handlers
     signal.set_wakeup_fd(-1)
     for sig, val in handlers.items():
@@ -316,28 +316,28 @@ def _serve_one(child_r, fds, unused_fds, handlers):
     parent_sentinel = os.dup(child_r)
     code = spawn._main(child_r, parent_sentinel)
 
-    return code
+    rudisha code
 
 
 #
 # Read and write signed numbers
 #
 
-def read_signed(fd):
+eleza read_signed(fd):
     data = b''
     length = SIGNED_STRUCT.size
     while len(data) < length:
         s = os.read(fd, length - len(data))
-        if not s:
+        ikiwa not s:
             raise EOFError('unexpected EOF')
         data += s
-    return SIGNED_STRUCT.unpack(data)[0]
+    rudisha SIGNED_STRUCT.unpack(data)[0]
 
-def write_signed(fd, n):
+eleza write_signed(fd, n):
     msg = SIGNED_STRUCT.pack(n)
     while msg:
         nbytes = os.write(fd, msg)
-        if nbytes == 0:
+        ikiwa nbytes == 0:
             raise RuntimeError('should not get here')
         msg = msg[nbytes:]
 

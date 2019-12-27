@@ -8,36 +8,36 @@ agiza sys
 # iterator.  Don't check the type!  Use hasattr to check for both
 # "__iter__" and "__next__" attributes instead.
 
-def _f(): pass
+eleza _f(): pass
 FunctionType = type(_f)
 LambdaType = type(lambda: None)         # Same as FunctionType
 CodeType = type(_f.__code__)
 MappingProxyType = type(type.__dict__)
 SimpleNamespace = type(sys.implementation)
 
-def _cell_factory():
+eleza _cell_factory():
     a = 1
-    def f():
+    eleza f():
         nonlocal a
-    return f.__closure__[0]
+    rudisha f.__closure__[0]
 CellType = type(_cell_factory())
 
-def _g():
+eleza _g():
     yield 1
 GeneratorType = type(_g())
 
-async def _c(): pass
+async eleza _c(): pass
 _c = _c()
 CoroutineType = type(_c)
 _c.close()  # Prevent ResourceWarning
 
-async def _ag():
+async eleza _ag():
     yield
 _ag = _ag()
 AsyncGeneratorType = type(_ag)
 
-class _C:
-    def _m(self): pass
+kundi _C:
+    eleza _m(self): pass
 MethodType = type(_C()._m)
 
 BuiltinFunctionType = type(len)
@@ -46,7 +46,7 @@ BuiltinMethodType = type([].append)     # Same as BuiltinFunctionType
 WrapperDescriptorType = type(object.__init__)
 MethodWrapperType = type(object().__str__)
 MethodDescriptorType = type(str.join)
-ClassMethodDescriptorType = type(dict.__dict__['fromkeys'])
+ClassMethodDescriptorType = type(dict.__dict__['kutokakeys'])
 
 ModuleType = type(sys)
 
@@ -65,100 +65,100 @@ MemberDescriptorType = type(FunctionType.__globals__)
 del sys, _f, _g, _C, _c, _ag  # Not for export
 
 
-# Provide a PEP 3115 compliant mechanism for class creation
-def new_class(name, bases=(), kwds=None, exec_body=None):
-    """Create a class object dynamically using the appropriate metaclass."""
+# Provide a PEP 3115 compliant mechanism for kundi creation
+eleza new_class(name, bases=(), kwds=None, exec_body=None):
+    """Create a kundi object dynamically using the appropriate metaclass."""
     resolved_bases = resolve_bases(bases)
     meta, ns, kwds = prepare_class(name, resolved_bases, kwds)
-    if exec_body is not None:
+    ikiwa exec_body is not None:
         exec_body(ns)
-    if resolved_bases is not bases:
+    ikiwa resolved_bases is not bases:
         ns['__orig_bases__'] = bases
-    return meta(name, resolved_bases, ns, **kwds)
+    rudisha meta(name, resolved_bases, ns, **kwds)
 
-def resolve_bases(bases):
+eleza resolve_bases(bases):
     """Resolve MRO entries dynamically as specified by PEP 560."""
     new_bases = list(bases)
     updated = False
     shift = 0
     for i, base in enumerate(bases):
-        if isinstance(base, type):
+        ikiwa isinstance(base, type):
             continue
-        if not hasattr(base, "__mro_entries__"):
+        ikiwa not hasattr(base, "__mro_entries__"):
             continue
         new_base = base.__mro_entries__(bases)
         updated = True
-        if not isinstance(new_base, tuple):
-            raise TypeError("__mro_entries__ must return a tuple")
+        ikiwa not isinstance(new_base, tuple):
+            raise TypeError("__mro_entries__ must rudisha a tuple")
         else:
             new_bases[i+shift:i+shift+1] = new_base
             shift += len(new_base) - 1
-    if not updated:
-        return bases
-    return tuple(new_bases)
+    ikiwa not updated:
+        rudisha bases
+    rudisha tuple(new_bases)
 
-def prepare_class(name, bases=(), kwds=None):
+eleza prepare_class(name, bases=(), kwds=None):
     """Call the __prepare__ method of the appropriate metaclass.
 
     Returns (metaclass, namespace, kwds) as a 3-tuple
 
     *metaclass* is the appropriate metaclass
-    *namespace* is the prepared class namespace
+    *namespace* is the prepared kundi namespace
     *kwds* is an updated copy of the passed in kwds argument with any
     'metaclass' entry removed. If no kwds argument is passed in, this will
     be an empty dict.
     """
-    if kwds is None:
+    ikiwa kwds is None:
         kwds = {}
     else:
         kwds = dict(kwds) # Don't alter the provided mapping
-    if 'metaclass' in kwds:
+    ikiwa 'metaclass' in kwds:
         meta = kwds.pop('metaclass')
     else:
-        if bases:
+        ikiwa bases:
             meta = type(bases[0])
         else:
             meta = type
-    if isinstance(meta, type):
+    ikiwa isinstance(meta, type):
         # when meta is a type, we first determine the most-derived metaclass
         # instead of invoking the initial candidate directly
         meta = _calculate_meta(meta, bases)
-    if hasattr(meta, '__prepare__'):
+    ikiwa hasattr(meta, '__prepare__'):
         ns = meta.__prepare__(name, bases, **kwds)
     else:
         ns = {}
-    return meta, ns, kwds
+    rudisha meta, ns, kwds
 
-def _calculate_meta(meta, bases):
+eleza _calculate_meta(meta, bases):
     """Calculate the most derived metaclass."""
     winner = meta
     for base in bases:
         base_meta = type(base)
-        if issubclass(winner, base_meta):
+        ikiwa issubclass(winner, base_meta):
             continue
-        if issubclass(base_meta, winner):
+        ikiwa issubclass(base_meta, winner):
             winner = base_meta
             continue
         # else:
-        raise TypeError("metaclass conflict: "
-                        "the metaclass of a derived class "
-                        "must be a (non-strict) subclass "
+        raise TypeError("metakundi conflict: "
+                        "the metakundi of a derived kundi "
+                        "must be a (non-strict) subkundi "
                         "of the metaclasses of all its bases")
-    return winner
+    rudisha winner
 
-class DynamicClassAttribute:
-    """Route attribute access on a class to __getattr__.
+kundi DynamicClassAttribute:
+    """Route attribute access on a kundi to __getattr__.
 
     This is a descriptor, used to define attributes that act differently when
     accessed through an instance and through a class.  Instance access remains
-    normal, but access to an attribute through a class will be routed to the
+    normal, but access to an attribute through a kundi will be routed to the
     class's __getattr__ method; this is done by raising AttributeError.
 
     This allows one to have properties active on an instance, and have virtual
-    attributes on the class with the same name (see Enum for an example).
+    attributes on the kundi with the same name (see Enum for an example).
 
     """
-    def __init__(self, fget=None, fset=None, fdel=None, doc=None):
+    eleza __init__(self, fget=None, fset=None, fdel=None, doc=None):
         self.fget = fget
         self.fset = fset
         self.fdel = fdel
@@ -168,129 +168,129 @@ class DynamicClassAttribute:
         # support for abstract methods
         self.__isabstractmethod__ = bool(getattr(fget, '__isabstractmethod__', False))
 
-    def __get__(self, instance, ownerclass=None):
-        if instance is None:
-            if self.__isabstractmethod__:
-                return self
+    eleza __get__(self, instance, ownerclass=None):
+        ikiwa instance is None:
+            ikiwa self.__isabstractmethod__:
+                rudisha self
             raise AttributeError()
-        elif self.fget is None:
+        elikiwa self.fget is None:
             raise AttributeError("unreadable attribute")
-        return self.fget(instance)
+        rudisha self.fget(instance)
 
-    def __set__(self, instance, value):
-        if self.fset is None:
+    eleza __set__(self, instance, value):
+        ikiwa self.fset is None:
             raise AttributeError("can't set attribute")
         self.fset(instance, value)
 
-    def __delete__(self, instance):
-        if self.fdel is None:
+    eleza __delete__(self, instance):
+        ikiwa self.fdel is None:
             raise AttributeError("can't delete attribute")
         self.fdel(instance)
 
-    def getter(self, fget):
-        fdoc = fget.__doc__ if self.overwrite_doc else None
+    eleza getter(self, fget):
+        fdoc = fget.__doc__ ikiwa self.overwrite_doc else None
         result = type(self)(fget, self.fset, self.fdel, fdoc or self.__doc__)
         result.overwrite_doc = self.overwrite_doc
-        return result
+        rudisha result
 
-    def setter(self, fset):
+    eleza setter(self, fset):
         result = type(self)(self.fget, fset, self.fdel, self.__doc__)
         result.overwrite_doc = self.overwrite_doc
-        return result
+        rudisha result
 
-    def deleter(self, fdel):
+    eleza deleter(self, fdel):
         result = type(self)(self.fget, self.fset, fdel, self.__doc__)
         result.overwrite_doc = self.overwrite_doc
-        return result
+        rudisha result
 
 
-class _GeneratorWrapper:
+kundi _GeneratorWrapper:
     # TODO: Implement this in C.
-    def __init__(self, gen):
+    eleza __init__(self, gen):
         self.__wrapped = gen
         self.__isgen = gen.__class__ is GeneratorType
         self.__name__ = getattr(gen, '__name__', None)
         self.__qualname__ = getattr(gen, '__qualname__', None)
-    def send(self, val):
-        return self.__wrapped.send(val)
-    def throw(self, tp, *rest):
-        return self.__wrapped.throw(tp, *rest)
-    def close(self):
-        return self.__wrapped.close()
+    eleza send(self, val):
+        rudisha self.__wrapped.send(val)
+    eleza throw(self, tp, *rest):
+        rudisha self.__wrapped.throw(tp, *rest)
+    eleza close(self):
+        rudisha self.__wrapped.close()
     @property
-    def gi_code(self):
-        return self.__wrapped.gi_code
+    eleza gi_code(self):
+        rudisha self.__wrapped.gi_code
     @property
-    def gi_frame(self):
-        return self.__wrapped.gi_frame
+    eleza gi_frame(self):
+        rudisha self.__wrapped.gi_frame
     @property
-    def gi_running(self):
-        return self.__wrapped.gi_running
+    eleza gi_running(self):
+        rudisha self.__wrapped.gi_running
     @property
-    def gi_yieldfrom(self):
-        return self.__wrapped.gi_yieldfrom
+    eleza gi_yieldkutoka(self):
+        rudisha self.__wrapped.gi_yieldkutoka
     cr_code = gi_code
     cr_frame = gi_frame
     cr_running = gi_running
-    cr_await = gi_yieldfrom
-    def __next__(self):
-        return next(self.__wrapped)
-    def __iter__(self):
-        if self.__isgen:
-            return self.__wrapped
-        return self
+    cr_await = gi_yieldkutoka
+    eleza __next__(self):
+        rudisha next(self.__wrapped)
+    eleza __iter__(self):
+        ikiwa self.__isgen:
+            rudisha self.__wrapped
+        rudisha self
     __await__ = __iter__
 
-def coroutine(func):
+eleza coroutine(func):
     """Convert regular generator function to a coroutine."""
 
-    if not callable(func):
+    ikiwa not callable(func):
         raise TypeError('types.coroutine() expects a callable')
 
-    if (func.__class__ is FunctionType and
+    ikiwa (func.__class__ is FunctionType and
         getattr(func, '__code__', None).__class__ is CodeType):
 
         co_flags = func.__code__.co_flags
 
-        # Check if 'func' is a coroutine function.
+        # Check ikiwa 'func' is a coroutine function.
         # (0x180 == CO_COROUTINE | CO_ITERABLE_COROUTINE)
-        if co_flags & 0x180:
-            return func
+        ikiwa co_flags & 0x180:
+            rudisha func
 
-        # Check if 'func' is a generator function.
+        # Check ikiwa 'func' is a generator function.
         # (0x20 == CO_GENERATOR)
-        if co_flags & 0x20:
+        ikiwa co_flags & 0x20:
             # TODO: Implement this in C.
             co = func.__code__
             # 0x100 == CO_ITERABLE_COROUTINE
             func.__code__ = co.replace(co_flags=co.co_flags | 0x100)
-            return func
+            rudisha func
 
     # The following code is primarily to support functions that
-    # return generator-like objects (for instance generators
+    # rudisha generator-like objects (for instance generators
     # compiled with Cython).
 
     # Delay functools and _collections_abc agiza for speeding up types agiza.
     agiza functools
     agiza _collections_abc
     @functools.wraps(func)
-    def wrapped(*args, **kwargs):
+    eleza wrapped(*args, **kwargs):
         coro = func(*args, **kwargs)
-        if (coro.__class__ is CoroutineType or
+        ikiwa (coro.__class__ is CoroutineType or
             coro.__class__ is GeneratorType and coro.gi_code.co_flags & 0x100):
             # 'coro' is a native coroutine object or an iterable coroutine
-            return coro
-        if (isinstance(coro, _collections_abc.Generator) and
+            rudisha coro
+        ikiwa (isinstance(coro, _collections_abc.Generator) and
             not isinstance(coro, _collections_abc.Coroutine)):
             # 'coro' is either a pure Python generator iterator, or it
             # implements collections.abc.Generator (and does not implement
             # collections.abc.Coroutine).
-            return _GeneratorWrapper(coro)
+            rudisha _GeneratorWrapper(coro)
         # 'coro' is either an instance of collections.abc.Coroutine or
         # some other object -- pass it through.
-        return coro
+        rudisha coro
 
-    return wrapped
+    rudisha wrapped
 
 
-__all__ = [n for n in globals() if n[:1] != '_']
+__all__ = [n for n in globals() ikiwa n[:1] != '_']

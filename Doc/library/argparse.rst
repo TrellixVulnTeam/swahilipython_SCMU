@@ -32,7 +32,7 @@ Example
 The following code is a Python program that takes a list of integers and
 produces either the sum or the max::
 
-   import argparse
+   agiza argparse
 
    parser = argparse.ArgumentParser(description='Process some integers.')
    parser.add_argument('integers', metavar='N', type=int, nargs='+',
@@ -123,7 +123,7 @@ Parsing arguments
 :class:`ArgumentParser` parses arguments through the
 :meth:`~ArgumentParser.parse_args` method.  This will inspect the command line,
 convert each argument to the appropriate type and then invoke the appropriate action.
-In most cases, this means a simple :class:`Namespace` object will be built up from
+In most cases, this means a simple :class:`Namespace` object will be built up kutoka
 attributes parsed out of the command line::
 
    >>> parser.parse_args(['--sum', '7', '-1', '42'])
@@ -131,7 +131,7 @@ attributes parsed out of the command line::
 
 In a script, :meth:`~ArgumentParser.parse_args` will typically be called with no
 arguments, and the :class:`ArgumentParser` will automatically determine the
-command-line arguments from :data:`sys.argv`.
+command-line arguments kutoka :data:`sys.argv`.
 
 
 ArgumentParser objects
@@ -140,7 +140,7 @@ ArgumentParser objects
 .. class:: ArgumentParser(prog=None, usage=None, description=None, \
                           epilog=None, parents=[], \
                           formatter_class=argparse.HelpFormatter, \
-                          prefix_chars='-', fromfile_prefix_chars=None, \
+                          prefix_chars='-', kutokafile_prefix_chars=None, \
                           argument_default=None, conflict_handler='error', \
                           add_help=True, allow_abbrev=True)
 
@@ -150,7 +150,7 @@ ArgumentParser objects
 
    * prog_ - The name of the program (default: ``sys.argv[0]``)
 
-   * usage_ - The string describing the program usage (default: generated from
+   * usage_ - The string describing the program usage (default: generated kutoka
      arguments added to parser)
 
    * description_ - Text to display before the argument help (default: none)
@@ -160,12 +160,12 @@ ArgumentParser objects
    * parents_ - A list of :class:`ArgumentParser` objects whose arguments should
      also be included
 
-   * formatter_class_ - A class for customizing the help output
+   * formatter_class_ - A kundi for customizing the help output
 
    * prefix_chars_ - The set of characters that prefix optional arguments
      (default: '-')
 
-   * fromfile_prefix_chars_ - The set of characters that prefix files from
+   * kutokafile_prefix_chars_ - The set of characters that prefix files kutoka
      which additional arguments should be read (default: ``None``)
 
    * argument_default_ - The global default value for arguments
@@ -198,13 +198,13 @@ always desirable because it will make the help messages match how the program wa
 invoked on the command line.  For example, consider a file named
 ``myprogram.py`` with the following code::
 
-   import argparse
+   agiza argparse
    parser = argparse.ArgumentParser()
    parser.add_argument('--foo', help='foo help')
    args = parser.parse_args()
 
 The help for this program will display ``myprogram.py`` as the program name
-(regardless of where the program was invoked from):
+(regardless of where the program was invoked kutoka):
 
 .. code-block:: shell-session
 
@@ -232,7 +232,7 @@ To change this default behavior, another value can be supplied using the
    optional arguments:
     -h, --help  show this help message and exit
 
-Note that the program name, whether determined from ``sys.argv[0]`` or from the
+Note that the program name, whether determined kutoka ``sys.argv[0]`` or kutoka the
 ``prog=`` argument, is available to help messages using the ``%(prog)s`` format
 specifier.
 
@@ -251,7 +251,7 @@ specifier.
 usage
 ^^^^^
 
-By default, :class:`ArgumentParser` calculates the usage message from the
+By default, :class:`ArgumentParser` calculates the usage message kutoka the
 arguments it contains::
 
    >>> parser = argparse.ArgumentParser(prog='PROG')
@@ -340,7 +340,7 @@ Sometimes, several parsers share a common set of arguments. Rather than
 repeating the definitions of these arguments, a single parser with all the
 shared arguments and passed to ``parents=`` argument to :class:`ArgumentParser`
 can be used.  The ``parents=`` argument takes a list of :class:`ArgumentParser`
-objects, collects all the positional and optional actions from them, and adds
+objects, collects all the positional and optional actions kutoka them, and adds
 these actions to the :class:`ArgumentParser` object being constructed::
 
    >>> parent_parser = argparse.ArgumentParser(add_help=False)
@@ -492,30 +492,30 @@ characters that does not include ``-`` will cause ``-f/--foo`` options to be
 disallowed.
 
 
-fromfile_prefix_chars
+kutokafile_prefix_chars
 ^^^^^^^^^^^^^^^^^^^^^
 
 Sometimes, for example when dealing with a particularly long argument lists, it
 may make sense to keep the list of arguments in a file rather than typing it out
-at the command line.  If the ``fromfile_prefix_chars=`` argument is given to the
+at the command line.  If the ``kutokafile_prefix_chars=`` argument is given to the
 :class:`ArgumentParser` constructor, then arguments that start with any of the
 specified characters will be treated as files, and will be replaced by the
 arguments they contain.  For example::
 
    >>> with open('args.txt', 'w') as fp:
    ...     fp.write('-f\nbar')
-   >>> parser = argparse.ArgumentParser(fromfile_prefix_chars='@')
+   >>> parser = argparse.ArgumentParser(kutokafile_prefix_chars='@')
    >>> parser.add_argument('-f')
    >>> parser.parse_args(['-f', 'foo', '@args.txt'])
    Namespace(f='bar')
 
-Arguments read from a file must by default be one per line (but see also
+Arguments read kutoka a file must by default be one per line (but see also
 :meth:`~ArgumentParser.convert_arg_line_to_args`) and are treated as if they
 were in the same place as the original file referencing argument on the command
 line.  So in the example above, the expression ``['-f', 'foo', '@args.txt']``
 is considered equivalent to the expression ``['-f', 'foo', '-f', 'bar']``.
 
-The ``fromfile_prefix_chars=`` argument defaults to ``None``, meaning that
+The ``kutokafile_prefix_chars=`` argument defaults to ``None``, meaning that
 arguments will never be treated as file references.
 
 
@@ -604,7 +604,7 @@ By default, ArgumentParser objects add an option which simply displays
 the parser's help message. For example, consider a file named
 ``myprogram.py`` containing the following code::
 
-   import argparse
+   agiza argparse
    parser = argparse.ArgumentParser()
    parser.add_argument('--foo', help='foo help')
    args = parser.parse_args()
@@ -667,7 +667,7 @@ The add_argument() method
 
    * const_ - A constant value required by some action_ and nargs_ selections.
 
-   * default_ - The value produced if the argument is absent from the
+   * default_ - The value produced if the argument is absent kutoka the
      command line.
 
    * type_ - The type to which the command-line argument should be converted.
@@ -776,7 +776,7 @@ how the command-line arguments should be handled. The supplied actions are:
     >>> parser.add_argument('--str', dest='types', action='append_const', const=str)
     >>> parser.add_argument('--int', dest='types', action='append_const', const=int)
     >>> parser.parse_args('--str --int'.split())
-    Namespace(types=[<class 'str'>, <class 'int'>])
+    Namespace(types=[<kundi 'str'>, <kundi 'int'>])
 
 * ``'count'`` - This counts the number of times a keyword argument occurs. For
   example, this is useful for increasing verbosity levels::
@@ -795,7 +795,7 @@ how the command-line arguments should be handled. The supplied actions are:
   :meth:`~ArgumentParser.add_argument` call, and prints version information
   and exits when invoked::
 
-    >>> import argparse
+    >>> agiza argparse
     >>> parser = argparse.ArgumentParser(prog='PROG')
     >>> parser.add_argument('--version', action='version', version='%(prog)s 2.0')
     >>> parser.parse_args(['--version'])
@@ -810,14 +810,14 @@ how the command-line arguments should be handled. The supplied actions are:
     >>> parser.parse_args(["--foo", "f1", "--foo", "f2", "f3", "f4"])
     Namespace(foo=['f1', 'f2', 'f3', 'f4'])
 
-You may also specify an arbitrary action by passing an Action subclass or
+You may also specify an arbitrary action by passing an Action subkundi or
 other object that implements the same interface.  The recommended way to do
 this is to extend :class:`Action`, overriding the ``__call__`` method
 and optionally the ``__init__`` method.
 
 An example of a custom action::
 
-   >>> class FooAction(argparse.Action):
+   >>> kundi FooAction(argparse.Action):
    ...     def __init__(self, option_strings, dest, nargs=None, **kwargs):
    ...         if nargs is not None:
    ...             raise ValueError("nargs not allowed")
@@ -845,7 +845,7 @@ single action to be taken.  The ``nargs`` keyword argument associates a
 different number of command-line arguments with a single action.  The supported
 values are:
 
-* ``N`` (an integer).  ``N`` arguments from the command line will be gathered
+* ``N`` (an integer).  ``N`` arguments kutoka the command line will be gathered
   together into a list.  For example::
 
      >>> parser = argparse.ArgumentParser()
@@ -854,16 +854,16 @@ values are:
      >>> parser.parse_args('c --foo a b'.split())
      Namespace(bar=['c'], foo=['a', 'b'])
 
-  Note that ``nargs=1`` produces a list of one item.  This is different from
+  Note that ``nargs=1`` produces a list of one item.  This is different kutoka
   the default, in which the item is produced by itself.
 
 .. index:: single: ? (question mark); in argparse module
 
-* ``'?'``. One argument will be consumed from the command line if possible, and
-  produced as a single item.  If no command-line argument is present, the value from
+* ``'?'``. One argument will be consumed kutoka the command line if possible, and
+  produced as a single item.  If no command-line argument is present, the value kutoka
   default_ will be produced.  Note that for optional arguments, there is an
   additional case - the option string is present but not followed by a
-  command-line argument.  In this case the value from const_ will be produced.  Some
+  command-line argument.  In this case the value kutoka const_ will be produced.  Some
   examples to illustrate this::
 
      >>> parser = argparse.ArgumentParser()
@@ -941,7 +941,7 @@ const
 ^^^^^
 
 The ``const`` argument of :meth:`~ArgumentParser.add_argument` is used to hold
-constant values that are not read from the command line but are required for
+constant values that are not read kutoka the command line but are required for
 the various :class:`ArgumentParser` actions.  The two most common uses of it are:
 
 * When :meth:`~ArgumentParser.add_argument` is called with
@@ -1067,7 +1067,7 @@ simply check against a range of values::
    Namespace(foo=7)
    >>> parser.parse_args(['11'])
    usage: PROG [-h] {5,6,7,8,9}
-   PROG: error: argument foo: invalid choice: 11 (choose from 5, 6, 7, 8, 9)
+   PROG: error: argument foo: invalid choice: 11 (choose kutoka 5, 6, 7, 8, 9)
 
 See the choices_ section for more details.
 
@@ -1075,7 +1075,7 @@ See the choices_ section for more details.
 choices
 ^^^^^^^
 
-Some command-line arguments should be selected from a restricted set of values.
+Some command-line arguments should be selected kutoka a restricted set of values.
 These can be handled by passing a container object as the *choices* keyword
 argument to :meth:`~ArgumentParser.add_argument`.  When the command line is
 parsed, argument values will be checked, and an error message will be displayed
@@ -1087,7 +1087,7 @@ if the argument was not one of the acceptable values::
    Namespace(move='rock')
    >>> parser.parse_args(['fire'])
    usage: game.py [-h] {rock,paper,scissors}
-   game.py: error: argument move: invalid choice: 'fire' (choose from 'rock',
+   game.py: error: argument move: invalid choice: 'fire' (choose kutoka 'rock',
    'paper', 'scissors')
 
 Note that inclusion in the *choices* container is checked after any type_
@@ -1100,7 +1100,7 @@ container should match the type_ specified::
    Namespace(door=3)
    >>> parser.parse_args(['4'])
    usage: doors.py [-h] {1,2,3}
-   doors.py: error: argument door: invalid choice: 4 (choose from 1, 2, 3)
+   doors.py: error: argument door: invalid choice: 4 (choose kutoka 1, 2, 3)
 
 Any container can be passed as the *choices* value, so :class:`list` objects,
 :class:`set` objects, and custom containers are all supported.
@@ -1266,10 +1266,10 @@ attribute is determined by the ``dest`` keyword argument of
    >>> parser.parse_args(['XXX'])
    Namespace(bar='XXX')
 
-For optional argument actions, the value of ``dest`` is normally inferred from
+For optional argument actions, the value of ``dest`` is normally inferred kutoka
 the option strings.  :class:`ArgumentParser` generates the value of ``dest`` by
 taking the first long option string and stripping away the initial ``--``
-string.  If no long option strings were supplied, ``dest`` will be derived from
+string.  If no long option strings were supplied, ``dest`` will be derived kutoka
 the first short option string by stripping the initial ``-`` character.  Any
 internal ``-`` characters will be converted to ``_`` characters to make sure
 the string is a valid attribute name.  The examples below illustrate this
@@ -1294,7 +1294,7 @@ Action classes
 ^^^^^^^^^^^^^^
 
 Action classes implement the Action API, a callable which returns a callable
-which processes arguments from the command-line. Any object which follows
+which processes arguments kutoka the command-line. Any object which follows
 this API may be passed as the ``action`` parameter to
 :meth:`add_argument`.
 
@@ -1303,8 +1303,8 @@ this API may be passed as the ``action`` parameter to
                   metavar=None)
 
 Action objects are used by an ArgumentParser to represent the information
-needed to parse a single argument from one or more strings from the
-command line. The Action class must accept the two positional arguments
+needed to parse a single argument kutoka one or more strings kutoka the
+command line. The Action kundi must accept the two positional arguments
 plus any keyword arguments passed to :meth:`ArgumentParser.add_argument`
 except for the ``action`` itself.
 
@@ -1346,7 +1346,7 @@ The parse_args() method
    created and how they are assigned. See the documentation for
    :meth:`add_argument` for details.
 
-   * args_ - List of strings to parse.  The default is taken from
+   * args_ - List of strings to parse.  The default is taken kutoka
      :data:`sys.argv`.
 
    * namespace_ - An object to take the attributes.  The default is a new empty
@@ -1521,10 +1521,10 @@ The Namespace object
 
 .. class:: Namespace
 
-   Simple class used by default by :meth:`~ArgumentParser.parse_args` to create
+   Simple kundi used by default by :meth:`~ArgumentParser.parse_args` to create
    an object holding attributes and return it.
 
-This class is deliberately simple, just an :class:`object` subclass with a
+This kundi is deliberately simple, just an :class:`object` subkundi with a
 readable string representation. If you prefer to have dict-like view of the
 attributes, you can use the standard Python idiom, :func:`vars`::
 
@@ -1538,7 +1538,7 @@ It may also be useful to have an :class:`ArgumentParser` assign attributes to an
 already existing object, rather than a new :class:`Namespace` object.  This can
 be achieved by specifying the ``namespace=`` keyword argument::
 
-   >>> class C:
+   >>> kundi C:
    ...     pass
    ...
    >>> c = C()
@@ -1585,8 +1585,8 @@ Sub-commands
      by default the name of the program and any positional arguments before the
      subparser argument
 
-   * parser_class - class which will be used to create sub-parser instances, by
-     default the class of the current parser (e.g. ArgumentParser)
+   * parser_kundi - kundi which will be used to create sub-parser instances, by
+     default the kundi of the current parser (e.g. ArgumentParser)
 
    * action_ - the basic type of action to be taken when this argument is
      encountered at the command line
@@ -1630,7 +1630,7 @@ Sub-commands
    present, and when the ``b`` command is specified, only the ``foo`` and
    ``baz`` attributes are present.
 
-   Similarly, when a help message is requested from a subparser, only the help
+   Similarly, when a help message is requested kutoka a subparser, only the help
    for that particular parser will be printed.  The help message will not
    include parent parser or sibling parser messages.  (A help message for each
    subparser command, however, can be given by supplying the ``help=`` argument
@@ -1981,19 +1981,19 @@ Customizing file parsing
 
 .. method:: ArgumentParser.convert_arg_line_to_args(arg_line)
 
-   Arguments that are read from a file (see the *fromfile_prefix_chars*
+   Arguments that are read kutoka a file (see the *kutokafile_prefix_chars*
    keyword argument to the :class:`ArgumentParser` constructor) are read one
    argument per line. :meth:`convert_arg_line_to_args` can be overridden for
    fancier reading.
 
-   This method takes a single argument *arg_line* which is a string read from
-   the argument file.  It returns a list of arguments parsed from this string.
-   The method is called once per line read from the argument file, in order.
+   This method takes a single argument *arg_line* which is a string read kutoka
+   the argument file.  It returns a list of arguments parsed kutoka this string.
+   The method is called once per line read kutoka the argument file, in order.
 
    A useful override of this method is one that treats each space-separated word
    as an argument.  The following example demonstrates how to do this::
 
-    class MyArgumentParser(argparse.ArgumentParser):
+    kundi MyArgumentParser(argparse.ArgumentParser):
         def convert_arg_line_to_args(self, arg_line):
             return arg_line.split()
 
@@ -2007,7 +2007,7 @@ Exiting methods
    and, if given, it prints a *message* before that. The user can override
    this method to handle these steps differently::
 
-    class ErrorCatchingArgumentParser(argparse.ArgumentParser):
+    kundi ErrorCatchingArgumentParser(argparse.ArgumentParser):
         def exit(self, status=0, message=None):
             if status:
                 raise Exception(f'Exiting because of an error: {message}')
@@ -2079,7 +2079,7 @@ module in a number of ways including:
 * Producing more informative usage messages.
 * Providing a much simpler interface for custom ``type`` and ``action``.
 
-A partial upgrade path from :mod:`optparse` to :mod:`argparse`:
+A partial upgrade path kutoka :mod:`optparse` to :mod:`argparse`:
 
 * Replace all :meth:`optparse.OptionParser.add_option` calls with
   :meth:`ArgumentParser.add_argument` calls.

@@ -79,7 +79,7 @@ def reindent(src, indent):
     """Helper to reindent a multi-line statement."""
     return src.replace("\n", "\n" + " "*indent)
 
-class Timer:
+kundi Timer:
     """Class for timing execution speed of small code snippets.
 
     The constructor takes a statement to be timed, an additional
@@ -99,7 +99,7 @@ class Timer:
 
     def __init__(self, stmt="pass", setup="pass", timer=default_timer,
                  globals=None):
-        """Constructor.  See class doc string."""
+        """Constructor.  See kundi doc string."""
         self.timer = timer
         local_ns = {}
         global_ns = _globals() if globals is None else globals
@@ -109,7 +109,7 @@ class Timer:
             compile(setup, dummy_src_name, "exec")
             stmtprefix = setup + '\n'
             setup = reindent(setup, 4)
-        elif callable(setup):
+        lasivyo callable(setup):
             local_ns['_setup'] = setup
             init += ', _setup=_setup'
             stmtprefix = ''
@@ -120,7 +120,7 @@ class Timer:
             # Check that the code can be compiled outside a function
             compile(stmtprefix + stmt, dummy_src_name, "exec")
             stmt = reindent(stmt, 8)
-        elif callable(stmt):
+        lasivyo callable(stmt):
             local_ns['_stmt'] = stmt
             init += ', _stmt=_stmt'
             stmt = '_stmt()'

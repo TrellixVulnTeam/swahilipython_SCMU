@@ -39,7 +39,7 @@ Direct API functions
 
 .. c:function:: PyObject* PyByteArray_FromObject(PyObject *o)
 
-   Return a new bytearray object from any object, *o*, that implements the
+   Return a new bytearray object kutoka any object, *o*, that implements the
    :ref:`buffer protocol <bufferobjects>`.
 
    .. XXX expand about the buffer protocol, at least somewhere
@@ -47,7 +47,7 @@ Direct API functions
 
 .. c:function:: PyObject* PyByteArray_FromStringAndSize(const char *string, Py_ssize_t len)
 
-   Create a new bytearray object from *string* and its length, *len*.  On
+   Create a new bytearray object kutoka *string* and its length, *len*.  On
    failure, *NULL* is returned.
 
 

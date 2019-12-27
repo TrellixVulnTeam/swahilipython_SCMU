@@ -95,7 +95,7 @@ The module defines the following functions:
 
    An example::
 
-      >>> import array, fcntl, struct, termios, os
+      >>> agiza array, fcntl, struct, termios, os
       >>> os.getpgrp()
       13341
       >>> struct.unpack('h', fcntl.ioctl(0, termios.TIOCGPGRP, "  "))[0]
@@ -151,7 +151,7 @@ The module defines the following functions:
 
 Examples (all on a SVR4 compliant system)::
 
-   import struct, fcntl, os
+   agiza struct, fcntl, os
 
    f = open(...)
    rv = fcntl.fcntl(f, fcntl.F_SETFL, os.O_NDELAY)

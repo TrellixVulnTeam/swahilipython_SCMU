@@ -192,7 +192,7 @@ relative_import_test_3 = [
     [],
     """\
 a/__init__.py
-                                def foo(): pass
+                                eleza foo(): pass
 a/module.py
                                 kutoka . agiza foo
                                 kutoka . agiza bar
@@ -205,7 +205,7 @@ relative_import_test_4 = [
     [],
     """\
 a/__init__.py
-                                def foo(): pass
+                                eleza foo(): pass
 a/module.py
                                 kutoka . agiza *
 """]
@@ -246,40 +246,40 @@ b/c.py
 """]
 
 
-def open_file(path):
+eleza open_file(path):
     dirname = os.path.dirname(path)
     try:
         os.makedirs(dirname)
     except OSError as e:
-        if e.errno != errno.EEXIST:
+        ikiwa e.errno != errno.EEXIST:
             raise
-    return open(path, "w")
+    rudisha open(path, "w")
 
 
-def create_package(source):
+eleza create_package(source):
     ofi = None
     try:
         for line in source.splitlines():
-            if line.startswith(" ") or line.startswith("\t"):
+            ikiwa line.startswith(" ") or line.startswith("\t"):
                 ofi.write(line.strip() + "\n")
             else:
-                if ofi:
+                ikiwa ofi:
                     ofi.close()
                 ofi = open_file(os.path.join(TEST_DIR, line.strip()))
     finally:
-        if ofi:
+        ikiwa ofi:
             ofi.close()
 
 
-class ModuleFinderTest(unittest.TestCase):
-    def _do_test(self, info, report=False, debug=0, replace_paths=[]):
+kundi ModuleFinderTest(unittest.TestCase):
+    eleza _do_test(self, info, report=False, debug=0, replace_paths=[]):
         import_this, modules, missing, maybe_missing, source = info
         create_package(source)
         try:
             mf = modulefinder.ModuleFinder(path=TEST_PATH, debug=debug,
                                            replace_paths=replace_paths)
             mf.import_hook(import_this)
-            if report:
+            ikiwa report:
                 mf.report()
 ##                # This wouldn't work in general when executed several times:
 ##                opath = sys.path[:]
@@ -292,7 +292,7 @@ class ModuleFinderTest(unittest.TestCase):
 ##                return
             modules = sorted(set(modules))
             found = sorted(mf.modules)
-            # check if we found what we expected, not more, not less
+            # check ikiwa we found what we expected, not more, not less
             self.assertEqual(found, modules)
 
             # check for missing and maybe missing modules
@@ -302,37 +302,37 @@ class ModuleFinderTest(unittest.TestCase):
         finally:
             shutil.rmtree(TEST_DIR)
 
-    def test_package(self):
+    eleza test_package(self):
         self._do_test(package_test)
 
-    def test_maybe(self):
+    eleza test_maybe(self):
         self._do_test(maybe_test)
 
-    def test_maybe_new(self):
+    eleza test_maybe_new(self):
         self._do_test(maybe_test_new)
 
-    def test_absolute_agizas(self):
+    eleza test_absolute_agizas(self):
         self._do_test(absolute_import_test)
 
-    def test_relative_agizas(self):
+    eleza test_relative_agizas(self):
         self._do_test(relative_import_test)
 
-    def test_relative_agizas_2(self):
+    eleza test_relative_agizas_2(self):
         self._do_test(relative_import_test_2)
 
-    def test_relative_agizas_3(self):
+    eleza test_relative_agizas_3(self):
         self._do_test(relative_import_test_3)
 
-    def test_relative_agizas_4(self):
+    eleza test_relative_agizas_4(self):
         self._do_test(relative_import_test_4)
 
-    def test_syntax_error(self):
+    eleza test_syntax_error(self):
         self._do_test(syntax_error_test)
 
-    def test_same_name_as_bad(self):
+    eleza test_same_name_as_bad(self):
         self._do_test(same_name_as_bad_test)
 
-    def test_bytecode(self):
+    eleza test_bytecode(self):
         base_path = os.path.join(TEST_DIR, 'a')
         source_path = base_path + importlib.machinery.SOURCE_SUFFIXES[0]
         bytecode_path = base_path + importlib.machinery.BYTECODE_SUFFIXES[0]
@@ -342,7 +342,7 @@ class ModuleFinderTest(unittest.TestCase):
         os.remove(source_path)
         self._do_test(bytecode_test)
 
-    def test_replace_paths(self):
+    eleza test_replace_paths(self):
         old_path = os.path.join(TEST_DIR, 'a', 'module.py')
         new_path = os.path.join(TEST_DIR, 'a', 'spam.py')
         with support.captured_stdout() as output:
@@ -352,7 +352,7 @@ class ModuleFinderTest(unittest.TestCase):
         expected = "co_filename %r changed to %r" % (old_path, new_path)
         self.assertIn(expected, output)
 
-    def test_extended_opargs(self):
+    eleza test_extended_opargs(self):
         extended_opargs_test = [
             "a",
             ["a", "b"],
@@ -366,5 +366,5 @@ b.py
         self._do_test(extended_opargs_test)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

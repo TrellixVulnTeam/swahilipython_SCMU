@@ -10,7 +10,7 @@
 
 The :mod:`queue` module implements multi-producer, multi-consumer queues.
 It is especially useful in threaded programming when information must be
-exchanged safely between multiple threads.  The :class:`Queue` class in this
+exchanged safely between multiple threads.  The :class:`Queue` kundi in this
 module implements all the required locking semantics.
 
 The module implements three types of queue, which differ only in the order in
@@ -63,11 +63,11 @@ The :mod:`queue` module defines the following classes and exceptions:
    If the *data* elements are not comparable, the data can be wrapped in a class
    that ignores the data item and only compares the priority number::
 
-        from dataclasses import dataclass, field
-        from typing import Any
+        kutoka dataclasses agiza dataclass, field
+        kutoka typing agiza Any
 
         @dataclass(order=True)
-        class PrioritizedItem:
+        kundi PrioritizedItem:
             priority: int
             item: Any=field(compare=False)
 
@@ -143,7 +143,7 @@ provide the public methods described below.
 
 .. method:: Queue.get(block=True, timeout=None)
 
-   Remove and return an item from the queue. If optional args *block* is true and
+   Remove and return an item kutoka the queue. If optional args *block* is true and
    *timeout* is ``None`` (the default), block if necessary until an item is available.
    If *timeout* is a positive number, it blocks at most *timeout* seconds and
    raises the :exc:`Empty` exception if no item was available within that time.
@@ -259,7 +259,7 @@ SimpleQueue Objects
 
 .. method:: SimpleQueue.get(block=True, timeout=None)
 
-   Remove and return an item from the queue.  If optional args *block* is true and
+   Remove and return an item kutoka the queue.  If optional args *block* is true and
    *timeout* is ``None`` (the default), block if necessary until an item is available.
    If *timeout* is a positive number, it blocks at most *timeout* seconds and
    raises the :exc:`Empty` exception if no item was available within that time.
@@ -275,7 +275,7 @@ SimpleQueue Objects
 .. seealso::
 
    Class :class:`multiprocessing.Queue`
-      A queue class for use in a multi-processing (rather than multi-threading)
+      A queue kundi for use in a multi-processing (rather than multi-threading)
       context.
 
    :class:`collections.deque` is an alternative implementation of unbounded

@@ -12,7 +12,7 @@ agiza unittest.mock
 agiza unittest.test
 
 
-class TestableTestProgram(unittest.TestProgram):
+kundi TestableTestProgram(unittest.TestProgram):
     module = None
     exit = True
     defaultTest = failfast = catchbreak = buffer = None
@@ -20,37 +20,37 @@ class TestableTestProgram(unittest.TestProgram):
     progName = ''
     testRunner = testLoader = None
 
-    def __init__(self):
+    eleza __init__(self):
         pass
 
 
-class TestDiscovery(unittest.TestCase):
+kundi TestDiscovery(unittest.TestCase):
 
     # Heavily mocked tests so I can avoid hitting the filesystem
-    def test_get_name_from_path(self):
+    eleza test_get_name_kutoka_path(self):
         loader = unittest.TestLoader()
         loader._top_level_dir = '/foo'
-        name = loader._get_name_from_path('/foo/bar/baz.py')
+        name = loader._get_name_kutoka_path('/foo/bar/baz.py')
         self.assertEqual(name, 'bar.baz')
 
-        if not __debug__:
+        ikiwa not __debug__:
             # asserts are off
             return
 
         with self.assertRaises(AssertionError):
-            loader._get_name_from_path('/bar/baz.py')
+            loader._get_name_kutoka_path('/bar/baz.py')
 
-    def test_find_tests(self):
+    eleza test_find_tests(self):
         loader = unittest.TestLoader()
 
         original_listdir = os.listdir
-        def restore_listdir():
+        eleza restore_listdir():
             os.listdir = original_listdir
         original_isfile = os.path.isfile
-        def restore_isfile():
+        eleza restore_isfile():
             os.path.isfile = original_isfile
         original_isdir = os.path.isdir
-        def restore_isdir():
+        eleza restore_isdir():
             os.path.isdir = original_isdir
 
         path_lists = [['test2.py', 'test1.py', 'not_a_test.py', 'test_dir',
@@ -59,23 +59,23 @@ class TestDiscovery(unittest.TestCase):
         os.listdir = lambda path: path_lists.pop(0)
         self.addCleanup(restore_listdir)
 
-        def isdir(path):
-            return path.endswith('dir')
+        eleza isdir(path):
+            rudisha path.endswith('dir')
         os.path.isdir = isdir
         self.addCleanup(restore_isdir)
 
-        def isfile(path):
+        eleza isfile(path):
             # another_dir is not a package and so shouldn't be recursed into
-            return not path.endswith('dir') and not 'another_dir' in path
+            rudisha not path.endswith('dir') and not 'another_dir' in path
         os.path.isfile = isfile
         self.addCleanup(restore_isfile)
 
-        loader._get_module_from_name = lambda path: path + ' module'
+        loader._get_module_kutoka_name = lambda path: path + ' module'
         orig_load_tests = loader.loadTestsFromModule
-        def loadTestsFromModule(module, pattern=None):
+        eleza loadTestsFromModule(module, pattern=None):
             # This is where load_tests is called.
             base = orig_load_tests(module, pattern=pattern)
-            return base + [module + ' tests']
+            rudisha base + [module + ' tests']
         loader.loadTestsFromModule = loadTestsFromModule
         loader.suiteClass = lambda thing: thing
 
@@ -91,19 +91,19 @@ class TestDiscovery(unittest.TestCase):
                     ('test3', 'test4')])
         self.assertEqual(suite, expected)
 
-    def test_find_tests_socket(self):
+    eleza test_find_tests_socket(self):
         # A socket is neither a directory nor a regular file.
         # https://bugs.python.org/issue25320
         loader = unittest.TestLoader()
 
         original_listdir = os.listdir
-        def restore_listdir():
+        eleza restore_listdir():
             os.listdir = original_listdir
         original_isfile = os.path.isfile
-        def restore_isfile():
+        eleza restore_isfile():
             os.path.isfile = original_isfile
         original_isdir = os.path.isdir
-        def restore_isdir():
+        eleza restore_isdir():
             os.path.isdir = original_isdir
 
         path_lists = [['socket']]
@@ -116,12 +116,12 @@ class TestDiscovery(unittest.TestCase):
         os.path.isfile = lambda path: False
         self.addCleanup(restore_isfile)
 
-        loader._get_module_from_name = lambda path: path + ' module'
+        loader._get_module_kutoka_name = lambda path: path + ' module'
         orig_load_tests = loader.loadTestsFromModule
-        def loadTestsFromModule(module, pattern=None):
+        eleza loadTestsFromModule(module, pattern=None):
             # This is where load_tests is called.
             base = orig_load_tests(module, pattern=pattern)
-            return base + [module + ' tests']
+            rudisha base + [module + ' tests']
         loader.loadTestsFromModule = loadTestsFromModule
         loader.suiteClass = lambda thing: thing
 
@@ -131,17 +131,17 @@ class TestDiscovery(unittest.TestCase):
 
         self.assertEqual(suite, [])
 
-    def test_find_tests_with_package(self):
+    eleza test_find_tests_with_package(self):
         loader = unittest.TestLoader()
 
         original_listdir = os.listdir
-        def restore_listdir():
+        eleza restore_listdir():
             os.listdir = original_listdir
         original_isfile = os.path.isfile
-        def restore_isfile():
+        eleza restore_isfile():
             os.path.isfile = original_isfile
         original_isdir = os.path.isdir
-        def restore_isdir():
+        eleza restore_isdir():
             os.path.isdir = original_isdir
 
         directories = ['a_directory', 'test_directory', 'test_directory2']
@@ -155,28 +155,28 @@ class TestDiscovery(unittest.TestCase):
         os.path.isfile = lambda path: os.path.basename(path) not in directories
         self.addCleanup(restore_isfile)
 
-        class Module(object):
+        kundi Module(object):
             paths = []
             load_tests_args = []
 
-            def __init__(self, path):
+            eleza __init__(self, path):
                 self.path = path
                 self.paths.append(path)
-                if os.path.basename(path) == 'test_directory':
-                    def load_tests(loader, tests, pattern):
+                ikiwa os.path.basename(path) == 'test_directory':
+                    eleza load_tests(loader, tests, pattern):
                         self.load_tests_args.append((loader, tests, pattern))
-                        return [self.path + ' load_tests']
+                        rudisha [self.path + ' load_tests']
                     self.load_tests = load_tests
 
-            def __eq__(self, other):
-                return self.path == other.path
+            eleza __eq__(self, other):
+                rudisha self.path == other.path
 
-        loader._get_module_from_name = lambda name: Module(name)
+        loader._get_module_kutoka_name = lambda name: Module(name)
         orig_load_tests = loader.loadTestsFromModule
-        def loadTestsFromModule(module, pattern=None):
+        eleza loadTestsFromModule(module, pattern=None):
             # This is where load_tests is called.
             base = orig_load_tests(module, pattern=pattern)
-            return base + [module.path + ' module tests']
+            rudisha base + [module.path + ' module tests']
         loader.loadTestsFromModule = loadTestsFromModule
         loader.suiteClass = lambda thing: thing
 
@@ -205,17 +205,17 @@ class TestDiscovery(unittest.TestCase):
         self.assertEqual(Module.load_tests_args,
                          [(loader, [], 'test*')])
 
-    def test_find_tests_default_calls_package_load_tests(self):
+    eleza test_find_tests_default_calls_package_load_tests(self):
         loader = unittest.TestLoader()
 
         original_listdir = os.listdir
-        def restore_listdir():
+        eleza restore_listdir():
             os.listdir = original_listdir
         original_isfile = os.path.isfile
-        def restore_isfile():
+        eleza restore_isfile():
             os.path.isfile = original_isfile
         original_isdir = os.path.isdir
-        def restore_isdir():
+        eleza restore_isdir():
             os.path.isdir = original_isdir
 
         directories = ['a_directory', 'test_directory', 'test_directory2']
@@ -229,28 +229,28 @@ class TestDiscovery(unittest.TestCase):
         os.path.isfile = lambda path: os.path.basename(path) not in directories
         self.addCleanup(restore_isfile)
 
-        class Module(object):
+        kundi Module(object):
             paths = []
             load_tests_args = []
 
-            def __init__(self, path):
+            eleza __init__(self, path):
                 self.path = path
                 self.paths.append(path)
-                if os.path.basename(path) == 'test_directory':
-                    def load_tests(loader, tests, pattern):
+                ikiwa os.path.basename(path) == 'test_directory':
+                    eleza load_tests(loader, tests, pattern):
                         self.load_tests_args.append((loader, tests, pattern))
-                        return [self.path + ' load_tests']
+                        rudisha [self.path + ' load_tests']
                     self.load_tests = load_tests
 
-            def __eq__(self, other):
-                return self.path == other.path
+            eleza __eq__(self, other):
+                rudisha self.path == other.path
 
-        loader._get_module_from_name = lambda name: Module(name)
+        loader._get_module_kutoka_name = lambda name: Module(name)
         orig_load_tests = loader.loadTestsFromModule
-        def loadTestsFromModule(module, pattern=None):
+        eleza loadTestsFromModule(module, pattern=None):
             # This is where load_tests is called.
             base = orig_load_tests(module, pattern=pattern)
-            return base + [module.path + ' module tests']
+            rudisha base + [module.path + ' module tests']
         loader.loadTestsFromModule = loadTestsFromModule
         loader.suiteClass = lambda thing: thing
 
@@ -276,21 +276,21 @@ class TestDiscovery(unittest.TestCase):
         self.assertEqual(Module.load_tests_args,
                          [(loader, [], 'test*.py')])
 
-    def test_find_tests_customize_via_package_pattern(self):
+    eleza test_find_tests_customize_via_package_pattern(self):
         # This test uses the example 'do-nothing' load_tests kutoka
         # https://docs.python.org/3/library/unittest.html#load-tests-protocol
         # to make sure that that actually works.
         # Housekeeping
         original_listdir = os.listdir
-        def restore_listdir():
+        eleza restore_listdir():
             os.listdir = original_listdir
         self.addCleanup(restore_listdir)
         original_isfile = os.path.isfile
-        def restore_isfile():
+        eleza restore_isfile():
             os.path.isfile = original_isfile
         self.addCleanup(restore_isfile)
         original_isdir = os.path.isdir
-        def restore_isdir():
+        eleza restore_isdir():
             os.path.isdir = original_isdir
         self.addCleanup(restore_isdir)
         self.addCleanup(sys.path.remove, abspath('/foo'))
@@ -308,40 +308,40 @@ class TestDiscovery(unittest.TestCase):
         # indicating that it was processed and could have been mutated.
         vfs = {abspath('/foo'): ['my_package'],
                abspath('/foo/my_package'): ['__init__.py', 'test_module.py']}
-        def list_dir(path):
-            return list(vfs[path])
+        eleza list_dir(path):
+            rudisha list(vfs[path])
         os.listdir = list_dir
         os.path.isdir = lambda path: not path.endswith('.py')
         os.path.isfile = lambda path: path.endswith('.py')
 
-        class Module(object):
+        kundi Module(object):
             paths = []
             load_tests_args = []
 
-            def __init__(self, path):
+            eleza __init__(self, path):
                 self.path = path
                 self.paths.append(path)
-                if path.endswith('test_module'):
-                    def load_tests(loader, tests, pattern):
+                ikiwa path.endswith('test_module'):
+                    eleza load_tests(loader, tests, pattern):
                         self.load_tests_args.append((loader, tests, pattern))
-                        return [self.path + ' load_tests']
+                        rudisha [self.path + ' load_tests']
                 else:
-                    def load_tests(loader, tests, pattern):
+                    eleza load_tests(loader, tests, pattern):
                         self.load_tests_args.append((loader, tests, pattern))
                         # top level directory cached on loader instance
                         __file__ = '/foo/my_package/__init__.py'
                         this_dir = os.path.dirname(__file__)
                         pkg_tests = loader.discover(
                             start_dir=this_dir, pattern=pattern)
-                        return [self.path + ' load_tests', tests
+                        rudisha [self.path + ' load_tests', tests
                             ] + pkg_tests
                 self.load_tests = load_tests
 
-            def __eq__(self, other):
-                return self.path == other.path
+            eleza __eq__(self, other):
+                rudisha self.path == other.path
 
         loader = unittest.TestLoader()
-        loader._get_module_from_name = lambda name: Module(name)
+        loader._get_module_kutoka_name = lambda name: Module(name)
         loader.suiteClass = lambda thing: thing
 
         loader._top_level_dir = abspath('/foo')
@@ -364,19 +364,19 @@ class TestDiscovery(unittest.TestCase):
                          [(loader, [], 'test*.py'),
                           (loader, [], 'test*.py')])
 
-    def test_discover(self):
+    eleza test_discover(self):
         loader = unittest.TestLoader()
 
         original_isfile = os.path.isfile
         original_isdir = os.path.isdir
-        def restore_isfile():
+        eleza restore_isfile():
             os.path.isfile = original_isfile
 
         os.path.isfile = lambda path: False
         self.addCleanup(restore_isfile)
 
         orig_sys_path = sys.path[:]
-        def restore_path():
+        eleza restore_path():
             sys.path[:] = orig_sys_path
         self.addCleanup(restore_path)
 
@@ -390,14 +390,14 @@ class TestDiscovery(unittest.TestCase):
         os.path.isfile = lambda path: True
         os.path.isdir = lambda path: True
 
-        def restore_isdir():
+        eleza restore_isdir():
             os.path.isdir = original_isdir
         self.addCleanup(restore_isdir)
 
         _find_tests_args = []
-        def _find_tests(start_dir, pattern, namespace=None):
+        eleza _find_tests(start_dir, pattern, namespace=None):
             _find_tests_args.append((start_dir, pattern))
-            return ['tests']
+            rudisha ['tests']
         loader._find_tests = _find_tests
         loader.suiteClass = str
 
@@ -410,7 +410,7 @@ class TestDiscovery(unittest.TestCase):
         self.assertEqual(_find_tests_args, [(start_dir, 'pattern')])
         self.assertIn(top_level_dir, sys.path)
 
-    def test_discover_start_dir_is_package_calls_package_load_tests(self):
+    eleza test_discover_start_dir_is_package_calls_package_load_tests(self):
         # This test verifies that the package load_tests in a package is indeed
         # invoked when the start_dir is a package (and not the top level).
         # http://bugs.python.org/issue22457
@@ -421,8 +421,8 @@ class TestDiscovery(unittest.TestCase):
         # We expect to see our load_tests hook called once.
         vfs = {abspath('/toplevel'): ['startdir'],
                abspath('/toplevel/startdir'): ['__init__.py']}
-        def list_dir(path):
-            return list(vfs[path])
+        eleza list_dir(path):
+            rudisha list(vfs[path])
         self.addCleanup(setattr, os, 'listdir', os.listdir)
         os.listdir = list_dir
         self.addCleanup(setattr, os.path, 'isfile', os.path.isfile)
@@ -431,21 +431,21 @@ class TestDiscovery(unittest.TestCase):
         os.path.isdir = lambda path: not path.endswith('.py')
         self.addCleanup(sys.path.remove, abspath('/toplevel'))
 
-        class Module(object):
+        kundi Module(object):
             paths = []
             load_tests_args = []
 
-            def __init__(self, path):
+            eleza __init__(self, path):
                 self.path = path
 
-            def load_tests(self, loader, tests, pattern):
-                return ['load_tests called ' + self.path]
+            eleza load_tests(self, loader, tests, pattern):
+                rudisha ['load_tests called ' + self.path]
 
-            def __eq__(self, other):
-                return self.path == other.path
+            eleza __eq__(self, other):
+                rudisha self.path == other.path
 
         loader = unittest.TestLoader()
-        loader._get_module_from_name = lambda name: Module(name)
+        loader._get_module_kutoka_name = lambda name: Module(name)
         loader.suiteClass = lambda thing: thing
 
         suite = loader.discover('/toplevel/startdir', top_level_dir='/toplevel')
@@ -455,30 +455,30 @@ class TestDiscovery(unittest.TestCase):
         self.assertEqual(suite,
                          [['load_tests called startdir']])
 
-    def setup_import_issue_tests(self, fakefile):
+    eleza setup_import_issue_tests(self, fakefile):
         listdir = os.listdir
         os.listdir = lambda _: [fakefile]
         isfile = os.path.isfile
         os.path.isfile = lambda _: True
         orig_sys_path = sys.path[:]
-        def restore():
+        eleza restore():
             os.path.isfile = isfile
             os.listdir = listdir
             sys.path[:] = orig_sys_path
         self.addCleanup(restore)
 
-    def setup_import_issue_package_tests(self, vfs):
+    eleza setup_import_issue_package_tests(self, vfs):
         self.addCleanup(setattr, os, 'listdir', os.listdir)
         self.addCleanup(setattr, os.path, 'isfile', os.path.isfile)
         self.addCleanup(setattr, os.path, 'isdir', os.path.isdir)
         self.addCleanup(sys.path.__setitem__, slice(None), list(sys.path))
-        def list_dir(path):
-            return list(vfs[path])
+        eleza list_dir(path):
+            rudisha list(vfs[path])
         os.listdir = list_dir
         os.path.isdir = lambda path: not path.endswith('.py')
         os.path.isfile = lambda path: path.endswith('.py')
 
-    def test_discover_with_modules_that_fail_to_agiza(self):
+    eleza test_discover_with_modules_that_fail_to_agiza(self):
         loader = unittest.TestLoader()
 
         self.setup_import_issue_tests('test_this_does_not_exist.py')
@@ -498,16 +498,16 @@ class TestDiscovery(unittest.TestCase):
         with self.assertRaises(ImportError):
             test.test_this_does_not_exist()
 
-    def test_discover_with_init_modules_that_fail_to_agiza(self):
+    eleza test_discover_with_init_modules_that_fail_to_agiza(self):
         vfs = {abspath('/foo'): ['my_package'],
                abspath('/foo/my_package'): ['__init__.py', 'test_module.py']}
         self.setup_import_issue_package_tests(vfs)
         import_calls = []
-        def _get_module_from_name(name):
+        eleza _get_module_kutoka_name(name):
             import_calls.append(name)
             raise ImportError("Cannot agiza Name")
         loader = unittest.TestLoader()
-        loader._get_module_from_name = _get_module_from_name
+        loader._get_module_kutoka_name = _get_module_kutoka_name
         suite = loader.discover(abspath('/foo'))
 
         self.assertIn(abspath('/foo'), sys.path)
@@ -528,15 +528,15 @@ class TestDiscovery(unittest.TestCase):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             pickle.loads(pickle.dumps(test, proto))
 
-    def test_discover_with_module_that_raises_SkipTest_on_agiza(self):
-        if not unittest.BaseTestSuite._cleanup:
+    eleza test_discover_with_module_that_raises_SkipTest_on_agiza(self):
+        ikiwa not unittest.BaseTestSuite._cleanup:
             raise unittest.SkipTest("Suite cleanup is disabled")
 
         loader = unittest.TestLoader()
 
-        def _get_module_from_name(name):
+        eleza _get_module_kutoka_name(name):
             raise unittest.SkipTest('skipperoo')
-        loader._get_module_from_name = _get_module_from_name
+        loader._get_module_kutoka_name = _get_module_kutoka_name
 
         self.setup_import_issue_tests('test_skip_dummy.py')
 
@@ -551,19 +551,19 @@ class TestDiscovery(unittest.TestCase):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             pickle.loads(pickle.dumps(suite, proto))
 
-    def test_discover_with_init_module_that_raises_SkipTest_on_agiza(self):
-        if not unittest.BaseTestSuite._cleanup:
+    eleza test_discover_with_init_module_that_raises_SkipTest_on_agiza(self):
+        ikiwa not unittest.BaseTestSuite._cleanup:
             raise unittest.SkipTest("Suite cleanup is disabled")
 
         vfs = {abspath('/foo'): ['my_package'],
                abspath('/foo/my_package'): ['__init__.py', 'test_module.py']}
         self.setup_import_issue_package_tests(vfs)
         import_calls = []
-        def _get_module_from_name(name):
+        eleza _get_module_kutoka_name(name):
             import_calls.append(name)
             raise unittest.SkipTest('skipperoo')
         loader = unittest.TestLoader()
-        loader._get_module_from_name = _get_module_from_name
+        loader._get_module_kutoka_name = _get_module_kutoka_name
         suite = loader.discover(abspath('/foo'))
 
         self.assertIn(abspath('/foo'), sys.path)
@@ -578,7 +578,7 @@ class TestDiscovery(unittest.TestCase):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             pickle.loads(pickle.dumps(suite, proto))
 
-    def test_command_line_handling_parseArgs(self):
+    eleza test_command_line_handling_parseArgs(self):
         program = TestableTestProgram()
 
         args = []
@@ -590,7 +590,7 @@ class TestDiscovery(unittest.TestCase):
         program.parseArgs(['something', 'discover', 'foo', 'bar'])
         self.assertEqual(args, [['foo', 'bar']])
 
-    def test_command_line_handling_discover_by_default(self):
+    eleza test_command_line_handling_discover_by_default(self):
         program = TestableTestProgram()
 
         args = []
@@ -602,7 +602,7 @@ class TestDiscovery(unittest.TestCase):
         self.assertIs(program.catchbreak, False)
         self.assertIs(program.failfast, False)
 
-    def test_command_line_handling_discover_by_default_with_options(self):
+    eleza test_command_line_handling_discover_by_default_with_options(self):
         program = TestableTestProgram()
 
         args = []
@@ -615,7 +615,7 @@ class TestDiscovery(unittest.TestCase):
         self.assertIs(program.failfast, True)
 
 
-    def test_command_line_handling_do_discovery_too_many_arguments(self):
+    eleza test_command_line_handling_do_discovery_too_many_arguments(self):
         program = TestableTestProgram()
         program.testLoader = None
 
@@ -627,28 +627,28 @@ class TestDiscovery(unittest.TestCase):
         self.assertIn('usage:', stderr.getvalue())
 
 
-    def test_command_line_handling_do_discovery_uses_default_loader(self):
+    eleza test_command_line_handling_do_discovery_uses_default_loader(self):
         program = object.__new__(unittest.TestProgram)
         program._initArgParsers()
 
-        class Loader(object):
+        kundi Loader(object):
             args = []
-            def discover(self, start_dir, pattern, top_level_dir):
+            eleza discover(self, start_dir, pattern, top_level_dir):
                 self.args.append((start_dir, pattern, top_level_dir))
-                return 'tests'
+                rudisha 'tests'
 
         program.testLoader = Loader()
         program._do_discovery(['-v'])
         self.assertEqual(Loader.args, [('.', 'test*.py', None)])
 
-    def test_command_line_handling_do_discovery_calls_loader(self):
+    eleza test_command_line_handling_do_discovery_calls_loader(self):
         program = TestableTestProgram()
 
-        class Loader(object):
+        kundi Loader(object):
             args = []
-            def discover(self, start_dir, pattern, top_level_dir):
+            eleza discover(self, start_dir, pattern, top_level_dir):
                 self.args.append((start_dir, pattern, top_level_dir))
-                return 'tests'
+                rudisha 'tests'
 
         program._do_discovery(['-v'], Loader=Loader)
         self.assertEqual(program.verbosity, 2)
@@ -715,8 +715,8 @@ class TestDiscovery(unittest.TestCase):
         self.assertTrue(program.failfast)
         self.assertTrue(program.catchbreak)
 
-    def setup_module_clash(self):
-        class Module(object):
+    eleza setup_module_clash(self):
+        kundi Module(object):
             __file__ = 'bar/foo.py'
         sys.modules['foo'] = Module
         full_path = os.path.abspath('foo')
@@ -725,32 +725,32 @@ class TestDiscovery(unittest.TestCase):
         original_isdir = os.path.isdir
         original_realpath = os.path.realpath
 
-        def cleanup():
+        eleza cleanup():
             os.listdir = original_listdir
             os.path.isfile = original_isfile
             os.path.isdir = original_isdir
             os.path.realpath = original_realpath
             del sys.modules['foo']
-            if full_path in sys.path:
+            ikiwa full_path in sys.path:
                 sys.path.remove(full_path)
         self.addCleanup(cleanup)
 
-        def listdir(_):
-            return ['foo.py']
-        def isfile(_):
-            return True
-        def isdir(_):
-            return True
+        eleza listdir(_):
+            rudisha ['foo.py']
+        eleza isfile(_):
+            rudisha True
+        eleza isdir(_):
+            rudisha True
         os.listdir = listdir
         os.path.isfile = isfile
         os.path.isdir = isdir
-        if os.name == 'nt':
+        ikiwa os.name == 'nt':
             # ntpath.realpath may inject path prefixes when failing to
             # resolve real files, so we substitute abspath() here instead.
             os.path.realpath = os.path.abspath
-        return full_path
+        rudisha full_path
 
-    def test_detect_module_clash(self):
+    eleza test_detect_module_clash(self):
         full_path = self.setup_module_clash()
         loader = unittest.TestLoader()
 
@@ -764,7 +764,7 @@ class TestDiscovery(unittest.TestCase):
         )
         self.assertEqual(sys.path[0], full_path)
 
-    def test_module_symlink_ok(self):
+    eleza test_module_symlink_ok(self):
         full_path = self.setup_module_clash()
 
         original_realpath = os.path.realpath
@@ -772,36 +772,36 @@ class TestDiscovery(unittest.TestCase):
         mod_dir = os.path.abspath('bar')
         expected_dir = os.path.abspath('foo')
 
-        def cleanup():
+        eleza cleanup():
             os.path.realpath = original_realpath
         self.addCleanup(cleanup)
 
-        def realpath(path):
-            if path == os.path.join(mod_dir, 'foo.py'):
-                return os.path.join(expected_dir, 'foo.py')
-            return path
+        eleza realpath(path):
+            ikiwa path == os.path.join(mod_dir, 'foo.py'):
+                rudisha os.path.join(expected_dir, 'foo.py')
+            rudisha path
         os.path.realpath = realpath
         loader = unittest.TestLoader()
         loader.discover(start_dir='foo', pattern='foo.py')
 
-    def test_discovery_from_dotted_path(self):
+    eleza test_discovery_kutoka_dotted_path(self):
         loader = unittest.TestLoader()
 
         tests = [self]
         expectedPath = os.path.abspath(os.path.dirname(unittest.test.__file__))
 
         self.wasRun = False
-        def _find_tests(start_dir, pattern, namespace=None):
+        eleza _find_tests(start_dir, pattern, namespace=None):
             self.wasRun = True
             self.assertEqual(start_dir, expectedPath)
-            return tests
+            rudisha tests
         loader._find_tests = _find_tests
         suite = loader.discover('unittest.test')
         self.assertTrue(self.wasRun)
         self.assertEqual(suite._tests, tests)
 
 
-    def test_discovery_from_dotted_path_builtin_modules(self):
+    eleza test_discovery_kutoka_dotted_path_builtin_modules(self):
 
         loader = unittest.TestLoader()
 
@@ -811,7 +811,7 @@ class TestDiscovery(unittest.TestCase):
         isdir = os.path.isdir
         os.path.isdir = lambda _: False
         orig_sys_path = sys.path[:]
-        def restore():
+        eleza restore():
             os.path.isfile = isfile
             os.path.isdir = isdir
             os.listdir = listdir
@@ -824,7 +824,7 @@ class TestDiscovery(unittest.TestCase):
                          'Can not use builtin modules '
                          'as dotted module names')
 
-    def test_discovery_from_dotted_namespace_packages(self):
+    eleza test_discovery_kutoka_dotted_namespace_packages(self):
         loader = unittest.TestLoader()
 
         package = types.ModuleType('package')
@@ -834,14 +834,14 @@ class TestDiscovery(unittest.TestCase):
            submodule_search_locations=['/a', '/b']
         )
 
-        def _agiza(packagename, *args, **kwargs):
+        eleza _agiza(packagename, *args, **kwargs):
             sys.modules[packagename] = package
-            return package
+            rudisha package
 
         _find_tests_args = []
-        def _find_tests(start_dir, pattern, namespace=None):
+        eleza _find_tests(start_dir, pattern, namespace=None):
             _find_tests_args.append((start_dir, pattern))
-            return ['%s/tests' % start_dir]
+            rudisha ['%s/tests' % start_dir]
 
         loader._find_tests = _find_tests
         loader.suiteClass = list
@@ -855,13 +855,13 @@ class TestDiscovery(unittest.TestCase):
 
         self.assertEqual(suite, ['/a/tests', '/b/tests'])
 
-    def test_discovery_failed_discovery(self):
+    eleza test_discovery_failed_discovery(self):
         loader = unittest.TestLoader()
         package = types.ModuleType('package')
 
-        def _agiza(packagename, *args, **kwargs):
+        eleza _agiza(packagename, *args, **kwargs):
             sys.modules[packagename] = package
-            return package
+            rudisha package
 
         with unittest.mock.patch('builtins.__import__', _agiza):
             # Since loader.discover() can modify sys.path, restore it when done.
@@ -875,5 +875,5 @@ class TestDiscovery(unittest.TestCase):
                                      .format(package))
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

@@ -13,7 +13,7 @@
 A "shelf" is a persistent, dictionary-like object.  The difference with "dbm"
 databases is that the values (not the keys!) in a shelf can be essentially
 arbitrary Python objects --- anything that the :mod:`pickle` module can handle.
-This includes most class instances, recursive data types, and objects containing
+This includes most kundi instances, recursive data types, and objects containing
 lots of shared  sub-objects.  The keys are ordinary strings.
 
 
@@ -52,11 +52,11 @@ lots of shared  sub-objects.  The keys are ordinary strings.
 .. warning::
 
    Because the :mod:`shelve` module is backed by :mod:`pickle`, it is insecure
-   to load a shelf from an untrusted source.  Like with pickle, loading a shelf
+   to load a shelf kutoka an untrusted source.  Like with pickle, loading a shelf
    can execute arbitrary code.
 
 Shelf objects support all methods supported by dictionaries.  This eases the
-transition from dictionary based scripts to those requiring persistent storage.
+transition kutoka dictionary based scripts to those requiring persistent storage.
 
 Two additional methods are supported:
 
@@ -105,7 +105,7 @@ Restrictions
 
 .. class:: Shelf(dict, protocol=None, writeback=False, keyencoding='utf-8')
 
-   A subclass of :class:`collections.abc.MutableMapping` which stores pickled
+   A subkundi of :class:`collections.abc.MutableMapping` which stores pickled
    values in the *dict* object.
 
    By default, version 3 pickles are used to serialize values.  The version of the
@@ -133,9 +133,9 @@ Restrictions
 
 .. class:: BsdDbShelf(dict, protocol=None, writeback=False, keyencoding='utf-8')
 
-   A subclass of :class:`Shelf` which exposes :meth:`first`, :meth:`!next`,
+   A subkundi of :class:`Shelf` which exposes :meth:`first`, :meth:`!next`,
    :meth:`previous`, :meth:`last` and :meth:`set_location` which are available
-   in the third-party :mod:`bsddb` module from `pybsddb
+   in the third-party :mod:`bsddb` module kutoka `pybsddb
    <https://www.jcea.es/programacion/pybsddb.htm>`_ but not in other database
    modules.  The *dict* object passed to the constructor must support those
    methods.  This is generally accomplished by calling one of
@@ -146,7 +146,7 @@ Restrictions
 
 .. class:: DbfilenameShelf(filename, flag='c', protocol=None, writeback=False)
 
-   A subclass of :class:`Shelf` which accepts a *filename* instead of a dict-like
+   A subkundi of :class:`Shelf` which accepts a *filename* instead of a dict-like
    object.  The underlying file will be opened using :func:`dbm.open`.  By
    default, the file will be created and opened for both read and write.  The
    optional *flag* parameter has the same interpretation as for the :func:`.open`
@@ -162,7 +162,7 @@ Example
 To summarize the interface (``key`` is a string, ``data`` is an arbitrary
 object)::
 
-   import shelve
+   agiza shelve
 
    d = shelve.open(filename)  # open -- file may get suffix added by low-level
                               # library

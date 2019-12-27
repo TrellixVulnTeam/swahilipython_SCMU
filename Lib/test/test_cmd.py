@@ -10,7 +10,7 @@ agiza unittest
 agiza io
 kutoka test agiza support
 
-class samplecmdclass(cmd.Cmd):
+kundi samplecmdclass(cmd.Cmd):
     """
     Instance the sampleclass:
     >>> mycmd = samplecmdclass()
@@ -133,60 +133,60 @@ class samplecmdclass(cmd.Cmd):
     Hello kutoka postloop
     """
 
-    def preloop(self):
-        print("Hello kutoka preloop")
+    eleza preloop(self):
+        andika("Hello kutoka preloop")
 
-    def postloop(self):
-        print("Hello kutoka postloop")
+    eleza postloop(self):
+        andika("Hello kutoka postloop")
 
-    def completedefault(self, *ignored):
-        print("This is the completedefault method")
+    eleza completedefault(self, *ignored):
+        andika("This is the completedefault method")
 
-    def complete_command(self):
-        print("complete command")
+    eleza complete_command(self):
+        andika("complete command")
 
-    def do_shell(self, s):
+    eleza do_shell(self, s):
         pass
 
-    def do_add(self, s):
+    eleza do_add(self, s):
         l = s.split()
-        if len(l) != 2:
-            print("*** invalid number of arguments")
+        ikiwa len(l) != 2:
+            andika("*** invalid number of arguments")
             return
         try:
             l = [int(i) for i in l]
         except ValueError:
-            print("*** arguments should be numbers")
+            andika("*** arguments should be numbers")
             return
-        print(l[0]+l[1])
+        andika(l[0]+l[1])
 
-    def help_add(self):
-        print("help text for add")
+    eleza help_add(self):
+        andika("help text for add")
         return
 
-    def do_exit(self, arg):
-        return True
+    eleza do_exit(self, arg):
+        rudisha True
 
 
-class TestAlternateInput(unittest.TestCase):
+kundi TestAlternateInput(unittest.TestCase):
 
-    class simplecmd(cmd.Cmd):
+    kundi simplecmd(cmd.Cmd):
 
-        def do_print(self, args):
-            print(args, file=self.stdout)
+        eleza do_andika(self, args):
+            andika(args, file=self.stdout)
 
-        def do_EOF(self, args):
-            return True
-
-
-    class simplecmd2(simplecmd):
-
-        def do_EOF(self, args):
-            print('*** Unknown syntax: EOF', file=self.stdout)
-            return True
+        eleza do_EOF(self, args):
+            rudisha True
 
 
-    def test_file_with_missing_final_nl(self):
+    kundi simplecmd2(simplecmd):
+
+        eleza do_EOF(self, args):
+            andika('*** Unknown syntax: EOF', file=self.stdout)
+            rudisha True
+
+
+    eleza test_file_with_missing_final_nl(self):
         input = io.StringIO("print test\nprint test2")
         output = io.StringIO()
         cmd = self.simplecmd(stdin=input, stdout=output)
@@ -198,7 +198,7 @@ class TestAlternateInput(unittest.TestCase):
              "(Cmd) "))
 
 
-    def test_input_reset_at_EOF(self):
+    eleza test_input_reset_at_EOF(self):
         input = io.StringIO("print test\nprint test2")
         output = io.StringIO()
         cmd = self.simplecmd2(stdin=input, stdout=output)
@@ -219,24 +219,24 @@ class TestAlternateInput(unittest.TestCase):
              "(Cmd) *** Unknown syntax: EOF\n"))
 
 
-def test_main(verbose=None):
+eleza test_main(verbose=None):
     kutoka test agiza test_cmd
     support.run_doctest(test_cmd, verbose)
     support.run_unittest(TestAlternateInput)
 
-def test_coverage(coverdir):
+eleza test_coverage(coverdir):
     trace = support.import_module('trace')
     tracer=trace.Trace(ignoredirs=[sys.base_prefix, sys.base_exec_prefix,],
                         trace=0, count=1)
     tracer.run('agiza importlib; importlib.reload(cmd); test_main()')
     r=tracer.results()
-    print("Writing coverage results...")
+    andika("Writing coverage results...")
     r.write_results(show_missing=True, summary=True, coverdir=coverdir)
 
-if __name__ == "__main__":
-    if "-c" in sys.argv:
+ikiwa __name__ == "__main__":
+    ikiwa "-c" in sys.argv:
         test_coverage('/tmp/cmd.cover')
-    elif "-i" in sys.argv:
+    elikiwa "-i" in sys.argv:
         samplecmdclass().cmdloop()
     else:
         test_main()

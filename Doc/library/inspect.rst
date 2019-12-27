@@ -2,7 +2,7 @@
 =======================================
 
 .. module:: inspect
-   :synopsis: Extract information and source code from live objects.
+   :synopsis: Extract information and source code kutoka live objects.
 
 .. moduleauthor:: Ka-Ping Yee <ping@lfw.org>
 .. sectionauthor:: Ka-Ping Yee <ping@lfw.org>
@@ -29,7 +29,7 @@ Types and members
 -----------------
 
 The :func:`getmembers` function retrieves the members of an object such as a
-class or module. The functions whose names begin with "is" are mainly
+kundi or module. The functions whose names begin with "is" are mainly
 provided as convenient choices for the second argument to :func:`getmembers`.
 They also help you determine when you can expect to find the following special
 attributes:
@@ -45,15 +45,15 @@ attributes:
 |           | __file__          | filename (missing for     |
 |           |                   | built-in modules)         |
 +-----------+-------------------+---------------------------+
-| class     | __doc__           | documentation string      |
+| kundi     | __doc__           | documentation string      |
 +-----------+-------------------+---------------------------+
 |           | __name__          | name with which this      |
-|           |                   | class was defined         |
+|           |                   | kundi was defined         |
 +-----------+-------------------+---------------------------+
 |           | __qualname__      | qualified name            |
 +-----------+-------------------+---------------------------+
 |           | __module__        | name of module in which   |
-|           |                   | this class was defined    |
+|           |                   | this kundi was defined    |
 +-----------+-------------------+---------------------------+
 | method    | __doc__           | documentation string      |
 +-----------+-------------------+---------------------------+
@@ -201,8 +201,8 @@ attributes:
 +-----------+-------------------+---------------------------+
 |           | gi_code           | code                      |
 +-----------+-------------------+---------------------------+
-|           | gi_yieldfrom      | object being iterated by  |
-|           |                   | ``yield from``, or        |
+|           | gi_yieldkutoka      | object being iterated by  |
+|           |                   | ``yield kutoka``, or        |
 |           |                   | ``None``                  |
 +-----------+-------------------+---------------------------+
 | coroutine | __name__          | name                      |
@@ -236,9 +236,9 @@ attributes:
 
 .. versionchanged:: 3.5
 
-   Add ``__qualname__`` and ``gi_yieldfrom`` attributes to generators.
+   Add ``__qualname__`` and ``gi_yieldkutoka`` attributes to generators.
 
-   The ``__name__`` attribute of generators is now set from the function
+   The ``__name__`` attribute of generators is now set kutoka the function
    name, instead of the code name, and it can now be modified.
 
 .. versionchanged:: 3.7
@@ -254,8 +254,8 @@ attributes:
 
    .. note::
 
-      :func:`getmembers` will only return class attributes defined in the
-      metaclass when the argument is a class and those attributes have been
+      :func:`getmembers` will only return kundi attributes defined in the
+      metakundi when the argument is a kundi and those attributes have been
       listed in the metaclass' custom :meth:`__dir__`.
 
 
@@ -335,7 +335,7 @@ attributes:
 
    Return true if the object can be used in :keyword:`await` expression.
 
-   Can also be used to distinguish generator-based coroutines from regular
+   Can also be used to distinguish generator-based coroutines kutoka regular
    generators::
 
       def gen():
@@ -418,7 +418,7 @@ attributes:
    sensible, and :attr:`__doc__` often is.
 
    Methods implemented via descriptors that also pass one of the other tests
-   return false from the :func:`ismethoddescriptor` test, simply because the
+   return false kutoka the :func:`ismethoddescriptor` test, simply because the
    other tests promise more -- you can, e.g., count on having the
    :attr:`__func__` attribute (etc) when an object passes :func:`ismethod`.
 
@@ -468,7 +468,7 @@ Retrieving source code
    Get the documentation string for an object, cleaned up with :func:`cleandoc`.
    If the documentation string for an object is not provided and the object is
    a class, a method, a property or a descriptor, retrieve the documentation
-   string from the inheritance hierarchy.
+   string kutoka the inheritance hierarchy.
 
    .. versionchanged:: 3.5
       Documentation strings are now inherited if not overridden.
@@ -530,11 +530,11 @@ Retrieving source code
 
 .. function:: cleandoc(doc)
 
-   Clean up indentation from docstrings that are indented to line up with blocks
+   Clean up indentation kutoka docstrings that are indented to line up with blocks
    of code.
 
-   All leading whitespace is removed from the first line.  Any leading whitespace
-   that can be uniformly removed from the second line onwards is removed.  Empty
+   All leading whitespace is removed kutoka the first line.  Any leading whitespace
+   that can be uniformly removed kutoka the second line onwards is removed.  Empty
    lines at the beginning and end are subsequently removed.  Also, all tabs are
    expanded to spaces.
 
@@ -554,7 +554,7 @@ function.
 
    Return a :class:`Signature` object for the given ``callable``::
 
-      >>> from inspect import signature
+      >>> kutoka inspect agiza signature
       >>> def foo(a, *, b:int, **kwargs):
       ...     pass
 
@@ -567,9 +567,9 @@ function.
       'b:int'
 
       >>> sig.parameters['b'].annotation
-      <class 'int'>
+      <kundi 'int'>
 
-   Accepts a wide range of Python callables, from plain functions and classes to
+   Accepts a wide range of Python callables, kutoka plain functions and classes to
    :func:`functools.partial` objects.
 
    Raises :exc:`ValueError` if no signature can be provided, and
@@ -634,7 +634,7 @@ function.
 
    .. method:: Signature.bind(*args, **kwargs)
 
-      Create a mapping from positional and keyword arguments to parameters.
+      Create a mapping kutoka positional and keyword arguments to parameters.
       Returns :class:`BoundArguments` if ``*args`` and ``**kwargs`` match the
       signature, or raises a :exc:`TypeError`.
 
@@ -650,7 +650,7 @@ function.
       Create a new Signature instance based on the instance replace was invoked
       on.  It is possible to pass different ``parameters`` and/or
       ``return_annotation`` to override the corresponding properties of the base
-      signature.  To remove return_annotation from the copied Signature, pass in
+      signature.  To remove return_annotation kutoka the copied Signature, pass in
       :attr:`Signature.empty`.
 
       ::
@@ -662,7 +662,7 @@ function.
          >>> str(new_sig)
          "(a, b) -> 'new return anno'"
 
-   .. classmethod:: Signature.from_callable(obj, \*, follow_wrapped=True)
+   .. classmethod:: Signature.kutoka_callable(obj, \*, follow_wrapped=True)
 
        Return a :class:`Signature` (or its subclass) object for a given callable
        ``obj``.  Pass ``follow_wrapped=False`` to get a signature of ``obj``
@@ -670,9 +670,9 @@ function.
 
        This method simplifies subclassing of :class:`Signature`::
 
-         class MySignature(Signature):
+         kundi MySignature(Signature):
              pass
-         sig = MySignature.from_callable(min)
+         sig = MySignature.kutoka_callable(min)
          assert isinstance(sig, MySignature)
 
        .. versionadded:: 3.5
@@ -787,12 +787,12 @@ function.
 
       Create a new Parameter instance based on the instance replaced was invoked
       on.  To override a :class:`Parameter` attribute, pass the corresponding
-      argument.  To remove a default value or/and an annotation from a
+      argument.  To remove a default value or/and an annotation kutoka a
       Parameter, pass :attr:`Parameter.empty`.
 
       ::
 
-         >>> from inspect import Parameter
+         >>> kutoka inspect agiza Parameter
          >>> param = Parameter('foo', Parameter.KEYWORD_ONLY, default=42)
          >>> str(param)
          'foo=42'
@@ -832,12 +832,12 @@ function.
 
    .. attribute:: BoundArguments.args
 
-      A tuple of positional arguments values.  Dynamically computed from the
+      A tuple of positional arguments values.  Dynamically computed kutoka the
       :attr:`arguments` attribute.
 
    .. attribute:: BoundArguments.kwargs
 
-      A dict of keyword arguments values.  Dynamically computed from the
+      A dict of keyword arguments values.  Dynamically computed kutoka the
       :attr:`arguments` attribute.
 
    .. attribute:: BoundArguments.signature
@@ -889,10 +889,10 @@ Classes and functions
 .. function:: getclasstree(classes, unique=False)
 
    Arrange the given list of classes into a hierarchy of nested lists. Where a
-   nested list appears, it contains classes derived from the class whose entry
-   immediately precedes the list.  Each entry is a 2-tuple containing a class and a
+   nested list appears, it contains classes derived kutoka the kundi whose entry
+   immediately precedes the list.  Each entry is a 2-tuple containing a kundi and a
    tuple of its base classes.  If the *unique* argument is true, exactly one entry
-   appears in the returned structure for each class in the given list.  Otherwise,
+   appears in the returned structure for each kundi in the given list.  Otherwise,
    classes using multiple inheritance and their descendants will appear multiple
    times.
 
@@ -934,7 +934,7 @@ Classes and functions
    last *n* positional parameters, or ``None`` if there are no such defaults
    defined.
    *kwonlyargs* is a list of keyword-only parameter names in declaration order.
-   *kwonlydefaults* is a dictionary mapping parameter names from *kwonlyargs*
+   *kwonlydefaults* is a dictionary mapping parameter names kutoka *kwonlyargs*
    to the default values used if no argument is supplied.
    *annotations* is a dictionary mapping parameter names to annotations.
    The special key ``"return"`` is used to report the function return value
@@ -956,7 +956,7 @@ Classes and functions
       This method was previously documented as deprecated in favour of
       :func:`signature` in Python 3.5, but that decision has been reversed
       in order to restore a clearly supported standard interface for
-      single-source Python 2/3 code migrating away from the legacy
+      single-source Python 2/3 code migrating away kutoka the legacy
       :func:`getargspec` API.
 
    .. versionchanged:: 3.7
@@ -979,7 +979,7 @@ Classes and functions
 
 .. function:: formatargspec(args[, varargs, varkw, defaults, kwonlyargs, kwonlydefaults, annotations[, formatarg, formatvarargs, formatvarkw, formatvalue, formatreturns, formatannotations]])
 
-   Format a pretty argument spec from the values returned by
+   Format a pretty argument spec kutoka the values returned by
    :func:`getfullargspec`.
 
    The first seven arguments are (``args``, ``varargs``, ``varkw``,
@@ -991,7 +991,7 @@ Classes and functions
 
    For example:
 
-   >>> from inspect import formatargspec, getfullargspec
+   >>> kutoka inspect agiza formatargspec, getfullargspec
    >>> def f(a: int, b: float):
    ...     pass
    ...
@@ -1006,7 +1006,7 @@ Classes and functions
 
 .. function:: formatargvalues(args[, varargs, varkw, locals, formatarg, formatvarargs, formatvarkw, formatvalue])
 
-   Format a pretty argument spec from the four values returned by
+   Format a pretty argument spec kutoka the four values returned by
    :func:`getargvalues`.  The format\* arguments are the corresponding optional
    formatting functions that are called to turn names and values into strings.
 
@@ -1016,8 +1016,8 @@ Classes and functions
 
 .. function:: getmro(cls)
 
-   Return a tuple of class cls's base classes, including cls, in method resolution
-   order.  No class appears more than once in this tuple. Note that the method
+   Return a tuple of kundi cls's base classes, including cls, in method resolution
+   order.  No kundi appears more than once in this tuple. Note that the method
    resolution order depends on cls's type.  Unless a very peculiar user-defined
    metatype is in use, cls will be the first element of the tuple.
 
@@ -1028,12 +1028,12 @@ Classes and functions
    method *func*, as if it was called with them. For bound methods, bind also the
    first argument (typically named ``self``) to the associated instance. A dict
    is returned, mapping the argument names (including the names of the ``*`` and
-   ``**`` arguments, if any) to their values from *args* and *kwds*. In case of
+   ``**`` arguments, if any) to their values kutoka *args* and *kwds*. In case of
    invoking *func* incorrectly, i.e. whenever ``func(*args, **kwds)`` would raise
    an exception because of incompatible signature, an exception of the same type
    and the same or similar message is raised. For example::
 
-    >>> from inspect import getcallargs
+    >>> kutoka inspect agiza getcallargs
     >>> def f(a, b=1, *pos, **named):
     ...     pass
     >>> getcallargs(f, 1, 2, 3) == {'a': 1, 'named': {}, 'b': 2, 'pos': (3,)}
@@ -1058,7 +1058,7 @@ Classes and functions
    :term:`named tuple` ``ClosureVars(nonlocals, globals, builtins, unbound)``
    is returned. *nonlocals* maps referenced names to lexical closure
    variables, *globals* to the function's module globals and *builtins* to
-   the builtins visible from the function body. *unbound* is the set of names
+   the builtins visible kutoka the function body. *unbound* is the set of names
    referenced in the function that could not be resolved at all given the
    current module globals and builtins.
 
@@ -1094,7 +1094,7 @@ When the following functions return "frame records," each record is a
 ``FrameInfo(frame, filename, lineno, function, code_context, index)``.
 The tuple contains the frame object, the filename, the line number of the
 current line,
-the function name, a list of lines of context from the source code, and the
+the function name, a list of lines of context kutoka the source code, and the
 index of the current line within that list.
 
 .. versionchanged:: 3.5
@@ -1105,7 +1105,7 @@ index of the current line within that list.
    Keeping references to frame objects, as found in the first element of the frame
    records these functions return, can cause your program to create reference
    cycles.  Once a reference cycle has been created, the lifespan of all objects
-   which can be accessed from the objects which form the cycle can become much
+   which can be accessed kutoka the objects which form the cycle can become much
    longer even if Python's optional cycle detector is enabled.  If such cycles must
    be created, it is important to ensure they are explicitly broken to avoid the
    delayed destruction of objects and increased memory consumption which occurs.
@@ -1238,7 +1238,7 @@ for arbitrary getset descriptors invoking these may trigger
 code execution::
 
    # example code for resolving the builtin descriptor types
-   class _foo:
+   kundi _foo:
        __slots__ = ['foo']
 
    slot_descriptor = type(_foo.foo)
@@ -1301,7 +1301,7 @@ updated as expected:
 .. function:: getgeneratorlocals(generator)
 
    Get the mapping of live local variables in *generator* to their current
-   values.  A dictionary is returned that maps from variable names to values.
+   values.  A dictionary is returned that maps kutoka variable names to values.
    This is the equivalent of calling :func:`locals` in the body of the
    generator, and all the same caveats apply.
 
@@ -1376,7 +1376,7 @@ the following flags:
 
    The flag is used to transform generators into generator-based
    coroutines.  Generator objects with this flag can be used in
-   ``await`` expression, and can ``yield from`` coroutine objects.
+   ``await`` expression, and can ``yield kutoka`` coroutine objects.
    See :pep:`492` for more details.
 
    .. versionadded:: 3.5
@@ -1393,7 +1393,7 @@ the following flags:
    The flags are specific to CPython, and may not be defined in other
    Python implementations.  Furthermore, the flags are an implementation
    detail, and can be removed or deprecated in future Python releases.
-   It's recommended to use public APIs from the :mod:`inspect` module
+   It's recommended to use public APIs kutoka the :mod:`inspect` module
    for any introspection needs.
 
 
@@ -1403,12 +1403,12 @@ Command Line Interface
 ----------------------
 
 The :mod:`inspect` module also provides a basic introspection capability
-from the command line.
+kutoka the command line.
 
 .. program:: inspect
 
 By default, accepts the name of a module and prints the source of that
-module. A class or function within the module can be printed instead by
+module. A kundi or function within the module can be printed instead by
 appended a colon and the qualified name of the target object.
 
 .. cmdoption:: --details

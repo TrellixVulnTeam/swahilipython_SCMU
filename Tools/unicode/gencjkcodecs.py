@@ -19,8 +19,8 @@ TEMPLATE = string.Template("""\
 # Written by Hye-Shik Chang <perky@FreeBSD.org>
 #
 
-import _codecs_$owner, codecs
-import _multibytecodec as mbc
+agiza _codecs_$owner, codecs
+agiza _multibytecodec as mbc
 
 codec = _codecs_$owner.getcodec('$encoding')
 

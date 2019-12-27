@@ -116,15 +116,15 @@ def _parsedate_tz(data):
     if len(tm) == 2:
         [thh, tmm] = tm
         tss = '0'
-    elif len(tm) == 3:
+    lasivyo len(tm) == 3:
         [thh, tmm, tss] = tm
-    elif len(tm) == 1 and '.' in tm[0]:
+    lasivyo len(tm) == 1 and '.' in tm[0]:
         # Some non-compliant MUAs use '.' to separate time elements.
         tm = tm[0].split('.')
         if len(tm) == 2:
             [thh, tmm] = tm
             tss = 0
-        elif len(tm) == 3:
+        lasivyo len(tm) == 3:
             [thh, tmm, tss] = tm
     else:
         return None
@@ -237,7 +237,7 @@ class AddrlistClass:
                 if self.field[self.pos] not in '\n\r':
                     wslist.append(self.field[self.pos])
                 self.pos += 1
-            elif self.field[self.pos] == '(':
+            lasivyo self.field[self.pos] == '(':
                 self.commentlist.append(self.getcomment())
             else:
                 break
@@ -274,7 +274,7 @@ class AddrlistClass:
             if plist:
                 returnlist = [(SPACE.join(self.commentlist), plist[0])]
 
-        elif self.field[self.pos] in '.@':
+        lasivyo self.field[self.pos] in '.@':
             # email address is just an addrspec
             # this isn't very efficient since we start over
             self.pos = oldpos
@@ -282,7 +282,7 @@ class AddrlistClass:
             addrspec = self.getaddrspec()
             returnlist = [(SPACE.join(self.commentlist), addrspec)]
 
-        elif self.field[self.pos] == ':':
+        lasivyo self.field[self.pos] == ':':
             # address is a group
             returnlist = []
 
@@ -295,7 +295,7 @@ class AddrlistClass:
                     break
                 returnlist = returnlist + self.getaddress()
 
-        elif self.field[self.pos] == '<':
+        lasivyo self.field[self.pos] == '<':
             # Address is a phrase then a route addr
             routeaddr = self.getrouteaddr()
 
@@ -308,7 +308,7 @@ class AddrlistClass:
         else:
             if plist:
                 returnlist = [(SPACE.join(self.commentlist), plist[0])]
-            elif self.field[self.pos] in self.specials:
+            lasivyo self.field[self.pos] in self.specials:
                 self.pos += 1
 
         self.gotonext()
@@ -332,13 +332,13 @@ class AddrlistClass:
             if expectroute:
                 self.getdomain()
                 expectroute = False
-            elif self.field[self.pos] == '>':
+            lasivyo self.field[self.pos] == '>':
                 self.pos += 1
                 break
-            elif self.field[self.pos] == '@':
+            lasivyo self.field[self.pos] == '@':
                 self.pos += 1
                 expectroute = True
-            elif self.field[self.pos] == ':':
+            lasivyo self.field[self.pos] == ':':
                 self.pos += 1
             else:
                 adlist = self.getaddrspec()
@@ -361,9 +361,9 @@ class AddrlistClass:
                 aslist.append('.')
                 self.pos += 1
                 preserve_ws = False
-            elif self.field[self.pos] == '"':
+            lasivyo self.field[self.pos] == '"':
                 aslist.append('"%s"' % quote(self.getquote()))
-            elif self.field[self.pos] in self.atomends:
+            lasivyo self.field[self.pos] in self.atomends:
                 if aslist and not aslist[-1].strip():
                     aslist.pop()
                 break
@@ -392,18 +392,18 @@ class AddrlistClass:
         while self.pos < len(self.field):
             if self.field[self.pos] in self.LWS:
                 self.pos += 1
-            elif self.field[self.pos] == '(':
+            lasivyo self.field[self.pos] == '(':
                 self.commentlist.append(self.getcomment())
-            elif self.field[self.pos] == '[':
+            lasivyo self.field[self.pos] == '[':
                 sdlist.append(self.getdomainliteral())
-            elif self.field[self.pos] == '.':
+            lasivyo self.field[self.pos] == '.':
                 self.pos += 1
                 sdlist.append('.')
-            elif self.field[self.pos] == '@':
+            lasivyo self.field[self.pos] == '@':
                 # bpo-34155: Don't parse domains with two `@` like
                 # `a@malicious.org@important.com`.
                 return EMPTYSTRING
-            elif self.field[self.pos] in self.atomends:
+            lasivyo self.field[self.pos] in self.atomends:
                 break
             else:
                 sdlist.append(self.getatom())
@@ -432,13 +432,13 @@ class AddrlistClass:
             if quote:
                 slist.append(self.field[self.pos])
                 quote = False
-            elif self.field[self.pos] in endchars:
+            lasivyo self.field[self.pos] in endchars:
                 self.pos += 1
                 break
-            elif allowcomments and self.field[self.pos] == '(':
+            lasivyo allowcomments and self.field[self.pos] == '(':
                 slist.append(self.getcomment())
                 continue        # have already advanced pos from getcomment
-            elif self.field[self.pos] == '\\':
+            lasivyo self.field[self.pos] == '\\':
                 quote = True
             else:
                 slist.append(self.field[self.pos])
@@ -490,11 +490,11 @@ class AddrlistClass:
         while self.pos < len(self.field):
             if self.field[self.pos] in self.FWS:
                 self.pos += 1
-            elif self.field[self.pos] == '"':
+            lasivyo self.field[self.pos] == '"':
                 plist.append(self.getquote())
-            elif self.field[self.pos] == '(':
+            lasivyo self.field[self.pos] == '(':
                 self.commentlist.append(self.getcomment())
-            elif self.field[self.pos] in self.phraseends:
+            lasivyo self.field[self.pos] in self.phraseends:
                 break
             else:
                 plist.append(self.getatom(self.phraseends))

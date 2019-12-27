@@ -15,7 +15,7 @@ The SAX API defines four kinds of handlers: content handlers, DTD handlers,
 error handlers, and entity resolvers. Applications normally only need to
 implement those interfaces whose events they are interested in; they can
 implement the interfaces in a single object or in multiple objects. Handler
-implementations should inherit from the base classes provided in the module
+implementations should inherit kutoka the base classes provided in the module
 :mod:`xml.sax.handler`, so that all methods get default implementations.
 
 
@@ -157,7 +157,7 @@ for the feature and property names.
 ContentHandler Objects
 ----------------------
 
-Users are expected to subclass :class:`ContentHandler` to support their
+Users are expected to subkundi :class:`ContentHandler` to support their
 application.  The following methods are called by the parser on the appropriate
 events in the input document:
 
@@ -206,7 +206,7 @@ events in the input document:
 
    Begin the scope of a prefix-URI Namespace mapping.
 
-   The information from this event is not necessary for normal Namespace
+   The information kutoka this event is not necessary for normal Namespace
    processing: the SAX XML reader will automatically replace prefixes for element
    and attribute names when the ``feature_namespaces`` feature is enabled (the
    default).
@@ -292,7 +292,7 @@ events in the input document:
    The Parser will call this method to report each chunk of character data. SAX
    parsers may return all contiguous character data in a single chunk, or they may
    split it into several chunks; however, all of the characters in any single event
-   must come from the same external entity so that the Locator provides useful
+   must come kutoka the same external entity so that the Locator provides useful
    information.
 
    *content* may be a string or bytes instance; the ``expat`` reader module
@@ -301,7 +301,7 @@ events in the input document:
    .. note::
 
       The earlier SAX 1 interface provided by the Python XML Special Interest Group
-      used a more Java-like interface for this method.  Since most parsers used from
+      used a more Java-like interface for this method.  Since most parsers used kutoka
       Python did not take advantage of the older interface, the simpler signature was
       chosen to replace it.  To convert old code to the new interface, use *content*
       instead of slicing content with the old *offset* and *length* parameters.
@@ -318,7 +318,7 @@ events in the input document:
 
    SAX parsers may return all contiguous whitespace in a single chunk, or they may
    split it into several chunks; however, all of the characters in any single event
-   must come from the same external entity, so that the Locator provides useful
+   must come kutoka the same external entity, so that the Locator provides useful
    information.
 
 
@@ -372,7 +372,7 @@ EntityResolver Objects
 .. method:: EntityResolver.resolveEntity(publicId, systemId)
 
    Resolve the system identifier of an entity and return either the system
-   identifier to read from as a string, or an InputSource to read from. The default
+   identifier to read kutoka as a string, or an InputSource to read kutoka. The default
    implementation returns *systemId*.
 
 
@@ -382,7 +382,7 @@ ErrorHandler Objects
 --------------------
 
 Objects with this interface are used to receive error and warning information
-from the :class:`~xml.sax.xmlreader.XMLReader`.  If you create an object that
+kutoka the :class:`~xml.sax.xmlreader.XMLReader`.  If you create an object that
 implements this interface, then register the object with your
 :class:`~xml.sax.xmlreader.XMLReader`, the parser
 will call the methods in your object to report all warnings and errors. There
@@ -402,7 +402,7 @@ the passed-in exception object.
 
 .. method:: ErrorHandler.fatalError(exception)
 
-   Called when the parser encounters an error it cannot recover from; parsing is
+   Called when the parser encounters an error it cannot recover kutoka; parsing is
    expected to terminate when this method returns.
 
 

@@ -42,11 +42,11 @@ configdialog.py   # Display user configuration dialogs.
 config_help.py    # Specify help source in configdialog.
 config_key.py     # Change keybindings.
 dynoption.py      # Define mutable OptionMenu widget (nim).
-debugobj.py       # Define class used in stackviewer.
+debugobj.py       # Define kundi used in stackviewer.
 debugobj_r.py     # Communicate objects between processes with rpc (nim).
-debugger.py       # Debug code run from shell or editor; show window.
+debugger.py       # Debug code run kutoka shell or editor; show window.
 debugger_r.py     # Debug code run in remote process.
-delegator.py      # Define base class for delegators (nim).
+delegator.py      # Define base kundi for delegators (nim).
 editor.py         # Define most of editor and utility functions.
 filelist.py       # Open files and manage list of open windows (nim).
 grep.py           # Find all occurrences of pattern in multiple files.
@@ -87,10 +87,10 @@ zoomheight.py     # Zoom window to full height of screen.
 
 Configuration
 -------------
-config-extensions.def # Defaults for extensions
-config-highlight.def  # Defaults for colorizing
-config-keys.def       # Defaults for key bindings
-config-main.def       # Defai;ts fpr font and geneal
+config-extensions.eleza # Defaults for extensions
+config-highlight.eleza  # Defaults for colorizing
+config-keys.eleza       # Defaults for key bindings
+config-main.eleza       # Defai;ts fpr font and geneal
 
 Text
 ----
@@ -239,13 +239,13 @@ Put agiza at the top, unless there is a good reason otherwise.
 PEP 8 says to group stdlib, 3rd-party dependencies, and package agizas.
 For idlelib, the groups are general stdlib, tkinter, and idlelib.
 Sort modules within each group, except that tkinter.ttk follows tkinter.
-Sort 'from idlelib agiza mod1' and 'from idlelib.mod2 agiza object'
+Sort 'kutoka idlelib agiza mod1' and 'kutoka idlelib.mod2 agiza object'
 together by module, ignoring within module objects.
 Put 'agiza __main__' after other idlelib agizas.
 
 Imports only needed for testing are put not at the top but in an
-htest function def or "if __name__ == '__main__'" clause.
+htest function eleza or "ikiwa __name__ == '__main__'" clause.
 
-Within module agizas like "from idlelib.mod agiza class" may cause
+Within module agizas like "kutoka idlelib.mod agiza class" may cause
 circular agizas to deadlock.  Even without this, circular agizas may
 require at least one of the agizas to be delayed until a function call.

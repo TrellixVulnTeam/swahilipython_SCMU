@@ -27,13 +27,13 @@ kutoka ..pgen2 agiza token
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Assign, Attr, Name, is_tuple, is_list, syms
 
-def find_excepts(nodes):
+eleza find_excepts(nodes):
     for i, n in enumerate(nodes):
-        if n.type == syms.except_clause:
-            if n.children[0].value == 'except':
+        ikiwa n.type == syms.except_clause:
+            ikiwa n.children[0].value == 'except':
                 yield (n, nodes[i+2])
 
-class FixExcept(fixer_base.BaseFix):
+kundi FixExcept(fixer_base.BaseFix):
     BM_compatible = True
 
     PATTERN = """
@@ -44,18 +44,18 @@ class FixExcept(fixer_base.BaseFix):
                         ['finally' ':' (simple_stmt | suite)]) >
     """
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         syms = self.syms
 
         tail = [n.clone() for n in results["tail"]]
 
         try_cleanup = [ch.clone() for ch in results["cleanup"]]
         for except_clause, e_suite in find_excepts(try_cleanup):
-            if len(except_clause.children) == 4:
+            ikiwa len(except_clause.children) == 4:
                 (E, comma, N) = except_clause.children[1:4]
                 comma.replace(Name("as", prefix=" "))
 
-                if N.type != token.NAME:
+                ikiwa N.type != token.NAME:
                     # Generate a new N for the except clause
                     new_N = Name(self.new_name(), prefix=" ")
                     target = N.clone()
@@ -69,12 +69,12 @@ class FixExcept(fixer_base.BaseFix):
                     #TODO(cwinter) suite-cleanup
                     suite_stmts = e_suite.children
                     for i, stmt in enumerate(suite_stmts):
-                        if isinstance(stmt, pytree.Node):
+                        ikiwa isinstance(stmt, pytree.Node):
                             break
 
-                    # The assignment is different if old_N is a tuple or list
+                    # The assignment is different ikiwa old_N is a tuple or list
                     # In that case, the assignment is old_N = new_N.args
-                    if is_tuple(N) or is_list(N):
+                    ikiwa is_tuple(N) or is_list(N):
                         assign = Assign(target, Attr(new_N, Name('args')))
                     else:
                         assign = Assign(target, new_N)
@@ -83,11 +83,11 @@ class FixExcept(fixer_base.BaseFix):
                     for child in reversed(suite_stmts[:i]):
                         e_suite.insert_child(0, child)
                     e_suite.insert_child(i, assign)
-                elif N.prefix == "":
+                elikiwa N.prefix == "":
                     # No space after a comma is legal; no space after "as",
                     # not so much.
                     N.prefix = " "
 
         #TODO(cwinter) fix this when children becomes a smart list
         children = [c.clone() for c in node.children[:3]] + try_cleanup + tail
-        return pytree.Node(node.type, children)
+        rudisha pytree.Node(node.type, children)

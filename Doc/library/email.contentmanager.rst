@@ -2,7 +2,7 @@
 --------------------------------------------------
 
 .. module:: email.contentmanager
-   :synopsis: Storing and Retrieving Content from MIME Parts
+   :synopsis: Storing and Retrieving Content kutoka MIME Parts
 
 .. moduleauthor:: R. David Murray <rdmurray@bitdance.com>
 .. sectionauthor:: R. David Murray <rdmurray@bitdance.com>
@@ -16,7 +16,7 @@
 
 .. class:: ContentManager()
 
-   Base class for content managers.  Provides the standard registry mechanisms
+   Base kundi for content managers.  Provides the standard registry mechanisms
    to register converters between MIME content and other representations, as
    well as the ``get_content`` and ``set_content`` dispatch methods.
 
@@ -26,7 +26,7 @@
       Look up a handler function based on the ``mimetype`` of *msg* (see next
       paragraph), call it, passing through all arguments, and return the result
       of the call.  The expectation is that the handler will extract the
-      payload from *msg* and return an object that encodes information about
+      payload kutoka *msg* and return an object that encodes information about
       the extracted data.
 
       To find the handler, look for the following keys in the registry,
@@ -188,7 +188,7 @@ Currently the email package provides only one concrete content manager,
 
        If *headers* is specified and is a list of strings of the form
        ``headername: headervalue`` or a list of ``header`` objects
-       (distinguished from strings by having a ``name`` attribute), add the
+       (distinguished kutoka strings by having a ``name`` attribute), add the
        headers to *msg*.
 
 

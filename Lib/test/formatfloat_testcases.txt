@@ -68,7 +68,7 @@
 %#.1f 1.4 -> 1.4
 %#.2f 0.375 -> 0.38
 
--- if precision is omitted it defaults to 6
+-- ikiwa precision is omitted it defaults to 6
 %f 0 -> 0.000000
 %f 1230000 -> 1230000.000000
 %f 1234567 -> 1234567.000000

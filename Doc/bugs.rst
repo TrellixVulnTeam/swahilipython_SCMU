@@ -45,7 +45,7 @@ Bug reports for Python itself should be submitted via the Python Bug Tracker
 pertinent information to be entered and submitted to the developers.
 
 The first step in filing a report is to determine whether the problem has
-already been reported.  The advantage in doing so, aside from saving the
+already been reported.  The advantage in doing so, aside kutoka saving the
 developers time, is that you learn what has been done to fix it; it may be that
 the problem has already been fixed for the next release, or additional
 information is needed (in which case you are welcome to provide it if you can!).

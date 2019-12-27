@@ -18,7 +18,7 @@ On Linux
 Python comes preinstalled on most Linux distributions, and is available as a
 package on all others.  However there are certain features you might want to use
 that are not available on your distro's package.  You can easily compile the
-latest version of Python from source.
+latest version of Python kutoka source.
 
 In the event that Python doesn't come preinstalled and isn't in the repositories as
 well, you can easily make packages for your own distro.  Have a look at the
@@ -57,7 +57,7 @@ On FreeBSD and OpenBSD
 On OpenSolaris
 --------------
 
-You can get Python from `OpenCSW <https://www.opencsw.org/>`_.  Various versions
+You can get Python kutoka `OpenCSW <https://www.opencsw.org/>`_.  Various versions
 of Python are available and can be installed with e.g. ``pkgutil -i python27``.
 
 

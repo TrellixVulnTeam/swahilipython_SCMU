@@ -38,13 +38,13 @@ PyAPI_FUNC(double) PyFloat_GetMax(void);
 PyAPI_FUNC(double) PyFloat_GetMin(void);
 PyAPI_FUNC(PyObject *) PyFloat_GetInfo(void);
 
-/* Return Python float from string PyObject. */
+/* Return Python float kutoka string PyObject. */
 PyAPI_FUNC(PyObject *) PyFloat_FromString(PyObject*);
 
-/* Return Python float from C double. */
+/* Return Python float kutoka C double. */
 PyAPI_FUNC(PyObject *) PyFloat_FromDouble(double);
 
-/* Extract C double from Python float.  The macro version trades safety for
+/* Extract C double kutoka Python float.  The macro version trades safety for
    speed. */
 PyAPI_FUNC(double) PyFloat_AsDouble(PyObject *);
 #ifndef Py_LIMITED_API
@@ -56,8 +56,8 @@ PyAPI_FUNC(double) PyFloat_AsDouble(PyObject *);
  *
  * The struct and pickle (at least) modules need an efficient platform-
  * independent way to store floating-point values as byte strings.
- * The Pack routines produce a string from a C double, and the Unpack
- * routines produce a C double from such a string.  The suffix (4 or 8)
+ * The Pack routines produce a string kutoka a C double, and the Unpack
+ * routines produce a C double kutoka such a string.  The suffix (4 or 8)
  * specifies the number of bytes in the string.
  *
  * On platforms that appear to use (see _PyFloat_Init()) IEEE-754 formats

@@ -7,7 +7,7 @@ except NameError:
     # fake to enable this test on Linux
     WINFUNCTYPE = CFUNCTYPE
 
-import _ctypes_test
+agiza _ctypes_test
 lib = CDLL(_ctypes_test.__file__)
 
 class CFuncPtrTestCase(unittest.TestCase):
@@ -124,7 +124,7 @@ class CFuncPtrTestCase(unittest.TestCase):
         self.assertEqual(strtok(None, b"\n"), None)
 
     def test_abstract(self):
-        from ctypes import _CFuncPtr
+        from ctypes agiza _CFuncPtr
 
         self.assertRaises(TypeError, _CFuncPtr, 13, "name", 42, "iid")
 

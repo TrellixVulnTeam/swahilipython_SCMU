@@ -179,7 +179,7 @@ Py_DEPRECATED(3.3) PyAPI_FUNC(Py_ssize_t) PyUnicode_GetSize(
     );
 
 #if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03030000
-/* Read a character from the string. */
+/* Read a character kutoka the string. */
 
 PyAPI_FUNC(Py_UCS4) PyUnicode_ReadChar(
     PyObject *unicode,
@@ -274,7 +274,7 @@ PyAPI_FUNC(PyObject *) PyUnicode_InternFromString(
 
 #ifdef HAVE_WCHAR_H
 
-/* Create a Unicode Object from the wchar_t buffer w of the given
+/* Create a Unicode Object kutoka the wchar_t buffer w of the given
    size.
 
    The buffer is copied into the new object. */
@@ -319,7 +319,7 @@ PyAPI_FUNC(wchar_t*) PyUnicode_AsWideCharString(
 
 /* --- Unicode ordinals --------------------------------------------------- */
 
-/* Create a Unicode Object from the given Unicode code point ordinal.
+/* Create a Unicode Object kutoka the given Unicode code point ordinal.
 
    The ordinal must be in range(0x110000). A ValueError is
    raised in case it is not.
@@ -352,7 +352,7 @@ PyAPI_FUNC(int) PyUnicode_ClearFreeList(void);
    error handling for all builtin codecs is "strict" (ValueErrors are
    raised).
 
-   The codecs all use a similar interface. Only deviation from the
+   The codecs all use a similar interface. Only deviation kutoka the
    generic ones are documented.
 
 */
@@ -379,7 +379,7 @@ PyAPI_FUNC(PyObject*) PyUnicode_Decode(
 
    This API is DEPRECATED. The only supported standard encoding is rot13.
    Use PyCodec_Decode() to decode with rot13 and non-standard codecs
-   that decode from str. */
+   that decode kutoka str. */
 
 Py_DEPRECATED(3.6) PyAPI_FUNC(PyObject*) PyUnicode_AsDecodedObject(
     PyObject *unicode,          /* Unicode object */
@@ -392,7 +392,7 @@ Py_DEPRECATED(3.6) PyAPI_FUNC(PyObject*) PyUnicode_AsDecodedObject(
 
    This API is DEPRECATED. The only supported standard encoding is rot13.
    Use PyCodec_Decode() to decode with rot13 and non-standard codecs
-   that decode from str to str. */
+   that decode kutoka str to str. */
 
 Py_DEPRECATED(3.6) PyAPI_FUNC(PyObject*) PyUnicode_AsDecodedUnicode(
     PyObject *unicode,          /* Unicode object */
@@ -428,7 +428,7 @@ PyAPI_FUNC(PyObject*) PyUnicode_AsEncodedString(
 
    This API is DEPRECATED.  The only supported standard encodings is rot13.
    Use PyCodec_Encode() to encode with rot13 and non-standard codecs
-   that encode from str to str. */
+   that encode kutoka str to str. */
 
 Py_DEPRECATED(3.6) PyAPI_FUNC(PyObject*) PyUnicode_AsEncodedUnicode(
     PyObject *unicode,          /* Unicode object */
@@ -478,7 +478,7 @@ PyAPI_FUNC(PyObject*) PyUnicode_AsUTF8String(
 
 /* --- UTF-32 Codecs ------------------------------------------------------ */
 
-/* Decodes length bytes from a UTF-32 encoded buffer string and returns
+/* Decodes length bytes kutoka a UTF-32 encoded buffer string and returns
    the corresponding Unicode object.
 
    errors (if non-NULL) defines the error handling. It defaults
@@ -545,7 +545,7 @@ PyAPI_FUNC(PyObject*) PyUnicode_AsUTF32String(
 
 /* --- UTF-16 Codecs ------------------------------------------------------ */
 
-/* Decodes length bytes from a UTF-16 encoded buffer string and returns
+/* Decodes length bytes kutoka a UTF-16 encoded buffer string and returns
    the corresponding Unicode object.
 
    errors (if non-NULL) defines the error handling. It defaults
@@ -652,14 +652,14 @@ PyAPI_FUNC(PyObject*) PyUnicode_AsASCIIString(
 
    This codec uses mappings to encode and decode characters.
 
-   Decoding mappings must map byte ordinals (integers in the range from 0 to
+   Decoding mappings must map byte ordinals (integers in the range kutoka 0 to
    255) to Unicode strings, integers (which are then interpreted as Unicode
    ordinals) or None.  Unmapped data bytes (ones which cause a LookupError)
    as well as mapped to None, 0xFFFE or '\ufffe' are treated as "undefined
    mapping" and cause an error.
 
    Encoding mappings must map Unicode ordinal integers to bytes objects,
-   integers in the range from 0 to 255 or None.  Unmapped character
+   integers in the range kutoka 0 to 255 or None.  Unmapped character
    ordinals (ones which cause a LookupError) as well as mapped to
    None are treated as "undefined mapping" and cause an error.
 
@@ -720,7 +720,7 @@ PyAPI_FUNC(PyObject*) PyUnicode_EncodeCodePage(
 /* --- Locale encoding --------------------------------------------------- */
 
 #if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03030000
-/* Decode a string from the current locale encoding. The decoder is strict if
+/* Decode a string kutoka the current locale encoding. The decoder is strict if
    *surrogateescape* is equal to zero, otherwise it uses the 'surrogateescape'
    error handler (PEP 383) to escape undecodable bytes. If a byte sequence can
    be decoded as a surrogate character and *surrogateescape* is not equal to
@@ -862,7 +862,7 @@ PyAPI_FUNC(PyObject*) PyUnicode_Partition(
     PyObject *sep               /* String separator */
     );
 
-/* Partition a string using a given separator, searching from the end of the
+/* Partition a string using a given separator, searching kutoka the end of the
    string. */
 
 PyAPI_FUNC(PyObject*) PyUnicode_RPartition(
@@ -876,7 +876,7 @@ PyAPI_FUNC(PyObject*) PyUnicode_RPartition(
    substrings. Otherwise, splits occur at the given separator.
 
    At most maxsplit splits will be done. But unlike PyUnicode_Split
-   PyUnicode_RSplit splits from the end of the string. If negative,
+   PyUnicode_RSplit splits kutoka the end of the string. If negative,
    no limit is set.
 
    Separators are not included in the resulting list.

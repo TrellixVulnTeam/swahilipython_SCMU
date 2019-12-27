@@ -24,7 +24,7 @@ extern "C" {
 #endif
 #endif
 
-/* This is modeled after the atomics interface from C1x, according to
+/* This is modeled after the atomics interface kutoka C1x, according to
  * the draft at
  * http://www.open-std.org/JTC1/SC22/wg14/www/docs/n1425.pdf.
  * Operations and types are named the same except with a _Py_ prefix

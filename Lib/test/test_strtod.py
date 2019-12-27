@@ -7,7 +7,7 @@ agiza re
 agiza sys
 agiza test.support
 
-if getattr(sys, 'float_repr_style', '') != 'short':
+ikiwa getattr(sys, 'float_repr_style', '') != 'short':
     raise unittest.SkipTest('correctly-rounded string->float conversions '
                             'not available on this system')
 
@@ -24,7 +24,7 @@ strtod_parser = re.compile(r"""    # A numeric string consists of:
 
 # Pure Python version of correctly rounded string->float conversion.
 # Avoids any use of floating-point by returning the result as a hex string.
-def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
+eleza strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     """Convert a finite decimal string to a hex string representing an
     IEEE 754 binary64 float.  Return 'inf' or '-inf' on overflow.
     This function makes no use of floating-point arithmetic at any
@@ -33,7 +33,7 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     # parse string into a pair of integers 'a' and 'b' such that
     # abs(decimal value) = a/b, along with a boolean 'negative'.
     m = strtod_parser(s)
-    if m is None:
+    ikiwa m is None:
         raise ValueError('invalid numeric string')
     fraction = m.group('frac') or ''
     intpart = int(m.group('int') + fraction)
@@ -41,22 +41,22 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     negative = m.group('sign') == '-'
     a, b = intpart*10**max(exp, 0), 10**max(0, -exp)
 
-    # quick return for zeros
-    if not a:
-        return '-0x0.0p+0' if negative else '0x0.0p+0'
+    # quick rudisha for zeros
+    ikiwa not a:
+        rudisha '-0x0.0p+0' ikiwa negative else '0x0.0p+0'
 
     # compute exponent e for result; may be one too small in the case
     # that the rounded value of a/b lies in a different binade kutoka a/b
     d = a.bit_length() - b.bit_length()
-    d += (a >> d if d >= 0 else a << -d) >= b
+    d += (a >> d ikiwa d >= 0 else a << -d) >= b
     e = max(d, min_exp) - mant_dig
 
-    # approximate a/b by number of the form q * 2**e; adjust e if necessary
+    # approximate a/b by number of the form q * 2**e; adjust e ikiwa necessary
     a, b = a << max(-e, 0), b << max(e, 0)
     q, r = divmod(a, b)
-    if 2*r > b or 2*r == b and q & 1:
+    ikiwa 2*r > b or 2*r == b and q & 1:
         q += 1
-        if q.bit_length() == mant_dig+1:
+        ikiwa q.bit_length() == mant_dig+1:
             q //= 2
             e += 1
 
@@ -65,17 +65,17 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     assert q.bit_length() == mant_dig or e == min_exp - mant_dig
 
     # check for overflow and underflow
-    if e + q.bit_length() > max_exp:
-        return '-inf' if negative else 'inf'
-    if not q:
-        return '-0x0.0p+0' if negative else '0x0.0p+0'
+    ikiwa e + q.bit_length() > max_exp:
+        rudisha '-inf' ikiwa negative else 'inf'
+    ikiwa not q:
+        rudisha '-0x0.0p+0' ikiwa negative else '0x0.0p+0'
 
     # for hex representation, shift so # bits after point is a multiple of 4
     hexdigs = 1 + (mant_dig-2)//4
     shift = 3 - (mant_dig-2)%4
     q, e = q << shift, e - shift
-    return '{}0x{:x}.{:0{}x}p{:+d}'.format(
-        '-' if negative else '',
+    rudisha '{}0x{:x}.{:0{}x}p{:+d}'.format(
+        '-' ikiwa negative else '',
         q // 16**hexdigs,
         q % 16**hexdigs,
         hexdigs,
@@ -83,17 +83,17 @@ def strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
 
 TEST_SIZE = 10
 
-class StrtodTests(unittest.TestCase):
-    def check_strtod(self, s):
+kundi StrtodTests(unittest.TestCase):
+    eleza check_strtod(self, s):
         """Compare the result of Python's builtin correctly rounded
         string->float conversion (using float) to a pure Python
-        correctly rounded string->float implementation.  Fail if the
+        correctly rounded string->float implementation.  Fail ikiwa the
         two methods give different results."""
 
         try:
             fs = float(s)
         except OverflowError:
-            got = '-inf' if s[0] == '-' else 'inf'
+            got = '-inf' ikiwa s[0] == '-' else 'inf'
         except MemoryError:
             got = 'memory error'
         else:
@@ -103,14 +103,14 @@ class StrtodTests(unittest.TestCase):
                          "Incorrectly rounded str->float conversion for {}: "
                          "expected {}, got {}".format(s, expected, got))
 
-    def test_short_halfway_cases(self):
+    eleza test_short_halfway_cases(self):
         # exact halfway cases with a small number of significant digits
         for k in 0, 5, 10, 15, 20:
             # upper = smallest integer >= 2**54/5**k
             upper = -(-2**54//5**k)
             # lower = smallest odd number >= 2**53/5**k
             lower = -(-2**53//5**k)
-            if lower % 2 == 0:
+            ikiwa lower % 2 == 0:
                 lower += 1
             for i in range(TEST_SIZE):
                 # Select a random odd n in [2**53/5**k,
@@ -146,7 +146,7 @@ class StrtodTests(unittest.TestCase):
                     digits *= 5
                     exponent -= 1
 
-    def test_halfway_cases(self):
+    eleza test_halfway_cases(self):
         # test halfway cases for the round-half-to-even rule
         for i in range(100 * TEST_SIZE):
             # bit pattern for a random finite positive (or +0.0) float
@@ -154,7 +154,7 @@ class StrtodTests(unittest.TestCase):
 
             # convert bit pattern to a number of the form m * 2**e
             e, m = divmod(bits, 2**52)
-            if e:
+            ikiwa e:
                 m, e = m + 2**52, e - 1
             e -= 1074
 
@@ -162,7 +162,7 @@ class StrtodTests(unittest.TestCase):
             m, e = 2*m + 1, e - 1
 
             # convert to a decimal string
-            if e >= 0:
+            ikiwa e >= 0:
                 digits = m << e
                 exponent = 0
             else:
@@ -172,7 +172,7 @@ class StrtodTests(unittest.TestCase):
             s = '{}e{}'.format(digits, exponent)
             self.check_strtod(s)
 
-    def test_boundaries(self):
+    eleza test_boundaries(self):
         # boundaries expressed as triples (n, e, u), where
         # n*10**e is an approximation to the boundary value and
         # u*10**e is 1ulp
@@ -192,7 +192,7 @@ class StrtodTests(unittest.TestCase):
                 u *= 10
                 e -= 1
 
-    def test_underflow_boundary(self):
+    eleza test_underflow_boundary(self):
         # test values close to 2**-1075, the underflow boundary; similar
         # to boundary_tests, except that the random error doesn't scale
         # with n
@@ -203,7 +203,7 @@ class StrtodTests(unittest.TestCase):
                 s = '{}e{}'.format(digits, exponent)
                 self.check_strtod(s)
 
-    def test_bigcomp(self):
+    eleza test_bigcomp(self):
         for ndigs in 5, 10, 14, 15, 16, 17, 18, 19, 20, 40, 41, 50:
             dig10 = 10**ndigs
             for i in range(10 * TEST_SIZE):
@@ -212,7 +212,7 @@ class StrtodTests(unittest.TestCase):
                 s = '{}e{}'.format(digits, exponent)
                 self.check_strtod(s)
 
-    def test_parsing(self):
+    eleza test_parsing(self):
         # make '0' more likely to be chosen than other digits
         digits = '000000123456789'
         signs = ('+', '-', '')
@@ -224,21 +224,21 @@ class StrtodTests(unittest.TestCase):
                 s = random.choice(signs)
                 intpart_len = random.randrange(5)
                 s += ''.join(random.choice(digits) for _ in range(intpart_len))
-                if random.choice([True, False]):
+                ikiwa random.choice([True, False]):
                     s += '.'
                     fracpart_len = random.randrange(5)
                     s += ''.join(random.choice(digits)
                                  for _ in range(fracpart_len))
                 else:
                     fracpart_len = 0
-                if random.choice([True, False]):
+                ikiwa random.choice([True, False]):
                     s += random.choice(['e', 'E'])
                     s += random.choice(signs)
                     exponent_len = random.randrange(1, 4)
                     s += ''.join(random.choice(digits)
                                  for _ in range(exponent_len))
 
-                if intpart_len + fracpart_len:
+                ikiwa intpart_len + fracpart_len:
                     self.check_strtod(s)
                 else:
                     try:
@@ -249,7 +249,7 @@ class StrtodTests(unittest.TestCase):
                         assert False, "expected ValueError"
 
     @test.support.bigmemtest(size=test.support._2G+10, memuse=3, dry_run=False)
-    def test_oversized_digit_strings(self, maxsize):
+    eleza test_oversized_digit_strings(self, maxsize):
         # Input string whose length doesn't fit in an INT.
         s = "1." + "1" * maxsize
         with self.assertRaises(ValueError):
@@ -261,16 +261,16 @@ class StrtodTests(unittest.TestCase):
             float(s)
         del s
 
-    def test_large_exponents(self):
+    eleza test_large_exponents(self):
         # Verify that the clipping of the exponent in strtod doesn't affect the
         # output values.
-        def positive_exp(n):
+        eleza positive_exp(n):
             """ Long string with value 1.0 and exponent n"""
-            return '0.{}1e+{}'.format('0'*(n-1), n)
+            rudisha '0.{}1e+{}'.format('0'*(n-1), n)
 
-        def negative_exp(n):
+        eleza negative_exp(n):
             """ Long string with value 1.0 and exponent -n"""
-            return '1{}e-{}'.format('0'*n, n)
+            rudisha '1{}e-{}'.format('0'*n, n)
 
         self.assertEqual(float(positive_exp(10000)), 1.0)
         self.assertEqual(float(positive_exp(20000)), 1.0)
@@ -279,7 +279,7 @@ class StrtodTests(unittest.TestCase):
         self.assertEqual(float(negative_exp(20000)), 1.0)
         self.assertEqual(float(negative_exp(30000)), 1.0)
 
-    def test_particular(self):
+    eleza test_particular(self):
         # inputs that produced crashes or incorrectly rounded results with
         # previous versions of dtoa.c, for various reasons
         test_strings = [
@@ -429,5 +429,5 @@ class StrtodTests(unittest.TestCase):
         for s in test_strings:
             self.check_strtod(s)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

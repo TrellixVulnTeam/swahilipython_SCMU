@@ -2,7 +2,7 @@ agiza socket
 agiza warnings
 
 
-class TransportSocket:
+kundi TransportSocket:
 
     """A socket-like wrapper for exposing real transport sockets.
 
@@ -13,10 +13,10 @@ class TransportSocket:
 
     __slots__ = ('_sock',)
 
-    def __init__(self, sock: socket.socket):
+    eleza __init__(self, sock: socket.socket):
         self._sock = sock
 
-    def _na(self, what):
+    eleza _na(self, what):
         warnings.warn(
             f"Using {what} on sockets returned kutoka get_extra_info('socket') "
             f"will be prohibited in asyncio 3.9. Please report your use case "
@@ -24,183 +24,183 @@ class TransportSocket:
             DeprecationWarning, source=self)
 
     @property
-    def family(self):
-        return self._sock.family
+    eleza family(self):
+        rudisha self._sock.family
 
     @property
-    def type(self):
-        return self._sock.type
+    eleza type(self):
+        rudisha self._sock.type
 
     @property
-    def proto(self):
-        return self._sock.proto
+    eleza proto(self):
+        rudisha self._sock.proto
 
-    def __repr__(self):
+    eleza __repr__(self):
         s = (
             f"<asyncio.TransportSocket fd={self.fileno()}, "
             f"family={self.family!s}, type={self.type!s}, "
             f"proto={self.proto}"
         )
 
-        if self.fileno() != -1:
+        ikiwa self.fileno() != -1:
             try:
                 laddr = self.getsockname()
-                if laddr:
+                ikiwa laddr:
                     s = f"{s}, laddr={laddr}"
             except socket.error:
                 pass
             try:
                 raddr = self.getpeername()
-                if raddr:
+                ikiwa raddr:
                     s = f"{s}, raddr={raddr}"
             except socket.error:
                 pass
 
-        return f"{s}>"
+        rudisha f"{s}>"
 
-    def __getstate__(self):
+    eleza __getstate__(self):
         raise TypeError("Cannot serialize asyncio.TransportSocket object")
 
-    def fileno(self):
-        return self._sock.fileno()
+    eleza fileno(self):
+        rudisha self._sock.fileno()
 
-    def dup(self):
-        return self._sock.dup()
+    eleza dup(self):
+        rudisha self._sock.dup()
 
-    def get_inheritable(self):
-        return self._sock.get_inheritable()
+    eleza get_inheritable(self):
+        rudisha self._sock.get_inheritable()
 
-    def shutdown(self, how):
+    eleza shutdown(self, how):
         # asyncio doesn't currently provide a high-level transport API
         # to shutdown the connection.
         self._sock.shutdown(how)
 
-    def getsockopt(self, *args, **kwargs):
-        return self._sock.getsockopt(*args, **kwargs)
+    eleza getsockopt(self, *args, **kwargs):
+        rudisha self._sock.getsockopt(*args, **kwargs)
 
-    def setsockopt(self, *args, **kwargs):
+    eleza setsockopt(self, *args, **kwargs):
         self._sock.setsockopt(*args, **kwargs)
 
-    def getpeername(self):
-        return self._sock.getpeername()
+    eleza getpeername(self):
+        rudisha self._sock.getpeername()
 
-    def getsockname(self):
-        return self._sock.getsockname()
+    eleza getsockname(self):
+        rudisha self._sock.getsockname()
 
-    def getsockbyname(self):
-        return self._sock.getsockbyname()
+    eleza getsockbyname(self):
+        rudisha self._sock.getsockbyname()
 
-    def accept(self):
+    eleza accept(self):
         self._na('accept() method')
-        return self._sock.accept()
+        rudisha self._sock.accept()
 
-    def connect(self, *args, **kwargs):
+    eleza connect(self, *args, **kwargs):
         self._na('connect() method')
-        return self._sock.connect(*args, **kwargs)
+        rudisha self._sock.connect(*args, **kwargs)
 
-    def connect_ex(self, *args, **kwargs):
+    eleza connect_ex(self, *args, **kwargs):
         self._na('connect_ex() method')
-        return self._sock.connect_ex(*args, **kwargs)
+        rudisha self._sock.connect_ex(*args, **kwargs)
 
-    def bind(self, *args, **kwargs):
+    eleza bind(self, *args, **kwargs):
         self._na('bind() method')
-        return self._sock.bind(*args, **kwargs)
+        rudisha self._sock.bind(*args, **kwargs)
 
-    def ioctl(self, *args, **kwargs):
+    eleza ioctl(self, *args, **kwargs):
         self._na('ioctl() method')
-        return self._sock.ioctl(*args, **kwargs)
+        rudisha self._sock.ioctl(*args, **kwargs)
 
-    def listen(self, *args, **kwargs):
+    eleza listen(self, *args, **kwargs):
         self._na('listen() method')
-        return self._sock.listen(*args, **kwargs)
+        rudisha self._sock.listen(*args, **kwargs)
 
-    def makefile(self):
+    eleza makefile(self):
         self._na('makefile() method')
-        return self._sock.makefile()
+        rudisha self._sock.makefile()
 
-    def sendfile(self, *args, **kwargs):
+    eleza sendfile(self, *args, **kwargs):
         self._na('sendfile() method')
-        return self._sock.sendfile(*args, **kwargs)
+        rudisha self._sock.sendfile(*args, **kwargs)
 
-    def close(self):
+    eleza close(self):
         self._na('close() method')
-        return self._sock.close()
+        rudisha self._sock.close()
 
-    def detach(self):
+    eleza detach(self):
         self._na('detach() method')
-        return self._sock.detach()
+        rudisha self._sock.detach()
 
-    def sendmsg_afalg(self, *args, **kwargs):
+    eleza sendmsg_afalg(self, *args, **kwargs):
         self._na('sendmsg_afalg() method')
-        return self._sock.sendmsg_afalg(*args, **kwargs)
+        rudisha self._sock.sendmsg_afalg(*args, **kwargs)
 
-    def sendmsg(self, *args, **kwargs):
+    eleza sendmsg(self, *args, **kwargs):
         self._na('sendmsg() method')
-        return self._sock.sendmsg(*args, **kwargs)
+        rudisha self._sock.sendmsg(*args, **kwargs)
 
-    def sendto(self, *args, **kwargs):
+    eleza sendto(self, *args, **kwargs):
         self._na('sendto() method')
-        return self._sock.sendto(*args, **kwargs)
+        rudisha self._sock.sendto(*args, **kwargs)
 
-    def send(self, *args, **kwargs):
+    eleza send(self, *args, **kwargs):
         self._na('send() method')
-        return self._sock.send(*args, **kwargs)
+        rudisha self._sock.send(*args, **kwargs)
 
-    def sendall(self, *args, **kwargs):
+    eleza sendall(self, *args, **kwargs):
         self._na('sendall() method')
-        return self._sock.sendall(*args, **kwargs)
+        rudisha self._sock.sendall(*args, **kwargs)
 
-    def set_inheritable(self, *args, **kwargs):
+    eleza set_inheritable(self, *args, **kwargs):
         self._na('set_inheritable() method')
-        return self._sock.set_inheritable(*args, **kwargs)
+        rudisha self._sock.set_inheritable(*args, **kwargs)
 
-    def share(self, process_id):
+    eleza share(self, process_id):
         self._na('share() method')
-        return self._sock.share(process_id)
+        rudisha self._sock.share(process_id)
 
-    def recv_into(self, *args, **kwargs):
+    eleza recv_into(self, *args, **kwargs):
         self._na('recv_into() method')
-        return self._sock.recv_into(*args, **kwargs)
+        rudisha self._sock.recv_into(*args, **kwargs)
 
-    def recvfrom_into(self, *args, **kwargs):
-        self._na('recvfrom_into() method')
-        return self._sock.recvfrom_into(*args, **kwargs)
+    eleza recvkutoka_into(self, *args, **kwargs):
+        self._na('recvkutoka_into() method')
+        rudisha self._sock.recvkutoka_into(*args, **kwargs)
 
-    def recvmsg_into(self, *args, **kwargs):
+    eleza recvmsg_into(self, *args, **kwargs):
         self._na('recvmsg_into() method')
-        return self._sock.recvmsg_into(*args, **kwargs)
+        rudisha self._sock.recvmsg_into(*args, **kwargs)
 
-    def recvmsg(self, *args, **kwargs):
+    eleza recvmsg(self, *args, **kwargs):
         self._na('recvmsg() method')
-        return self._sock.recvmsg(*args, **kwargs)
+        rudisha self._sock.recvmsg(*args, **kwargs)
 
-    def recvfrom(self, *args, **kwargs):
-        self._na('recvfrom() method')
-        return self._sock.recvfrom(*args, **kwargs)
+    eleza recvkutoka(self, *args, **kwargs):
+        self._na('recvkutoka() method')
+        rudisha self._sock.recvkutoka(*args, **kwargs)
 
-    def recv(self, *args, **kwargs):
+    eleza recv(self, *args, **kwargs):
         self._na('recv() method')
-        return self._sock.recv(*args, **kwargs)
+        rudisha self._sock.recv(*args, **kwargs)
 
-    def settimeout(self, value):
-        if value == 0:
+    eleza settimeout(self, value):
+        ikiwa value == 0:
             return
         raise ValueError(
             'settimeout(): only 0 timeout is allowed on transport sockets')
 
-    def gettimeout(self):
-        return 0
+    eleza gettimeout(self):
+        rudisha 0
 
-    def setblocking(self, flag):
-        if not flag:
+    eleza setblocking(self, flag):
+        ikiwa not flag:
             return
         raise ValueError(
             'setblocking(): transport sockets cannot be blocking')
 
-    def __enter__(self):
+    eleza __enter__(self):
         self._na('context manager protocol')
-        return self._sock.__enter__()
+        rudisha self._sock.__enter__()
 
-    def __exit__(self, *err):
+    eleza __exit__(self, *err):
         self._na('context manager protocol')
-        return self._sock.__exit__(*err)
+        rudisha self._sock.__exit__(*err)

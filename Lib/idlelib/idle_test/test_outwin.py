@@ -9,10 +9,10 @@ kutoka idlelib.idle_test.mock_idle agiza Func
 kutoka unittest agiza mock
 
 
-class OutputWindowTest(unittest.TestCase):
+kundi OutputWindowTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         root = cls.root = Tk()
         root.withdraw()
@@ -20,25 +20,25 @@ class OutputWindowTest(unittest.TestCase):
         cls.text = w.text = Text(root)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         cls.window.close()
         del cls.text, cls.window
         cls.root.destroy()
         del cls.root
 
-    def setUp(self):
+    eleza setUp(self):
         self.text.delete('1.0', 'end')
 
-    def test_ispythonsource(self):
-        # OutputWindow overrides ispythonsource to always return False.
+    eleza test_ispythonsource(self):
+        # OutputWindow overrides ispythonsource to always rudisha False.
         w = self.window
         self.assertFalse(w.ispythonsource('test.txt'))
         self.assertFalse(w.ispythonsource(__file__))
 
-    def test_window_title(self):
+    eleza test_window_title(self):
         self.assertEqual(self.window.top.title(), 'Output')
 
-    def test_maybesave(self):
+    eleza test_maybesave(self):
         w = self.window
         eq = self.assertEqual
         w.get_saved = Func()
@@ -52,7 +52,7 @@ class OutputWindowTest(unittest.TestCase):
         eq(w.get_saved.called, 2)
         del w.get_saved
 
-    def test_write(self):
+    eleza test_write(self):
         eq = self.assertEqual
         delete = self.text.delete
         get = self.text.get
@@ -96,7 +96,7 @@ class OutputWindowTest(unittest.TestCase):
         eq(get('1.0', '1.end'), test_text.rstrip('\n'))
         eq(get('2.0', '2.end'), test_text2.rstrip('\n'))
 
-    def test_writelines(self):
+    eleza test_writelines(self):
         eq = self.assertEqual
         get = self.text.get
         writelines = self.window.writelines
@@ -107,7 +107,7 @@ class OutputWindowTest(unittest.TestCase):
         eq(get('3.0', '3.end'), 'Line 3')
         eq(get('insert linestart', 'insert lineend'), '')
 
-    def test_goto_file_line(self):
+    eleza test_goto_file_line(self):
         eq = self.assertEqual
         w = self.window
         text = self.text
@@ -138,19 +138,19 @@ class OutputWindowTest(unittest.TestCase):
         del w.flist.gotofileline, w.showerror
 
 
-class ModuleFunctionTest(unittest.TestCase):
+kundi ModuleFunctionTest(unittest.TestCase):
 
     @classmethod
-    def setUp(cls):
+    eleza setUp(cls):
         outwin.file_line_progs = None
 
-    def test_compile_progs(self):
+    eleza test_compile_progs(self):
         outwin.compile_progs()
         for pat, regex in zip(outwin.file_line_pats, outwin.file_line_progs):
             self.assertEqual(regex.pattern, pat)
 
     @mock.patch('builtins.open')
-    def test_file_line_helper(self, mock_open):
+    eleza test_file_line_helper(self, mock_open):
         flh = outwin.file_line_helper
         test_lines = (
             (r'foo file "testfile1", line 42, bar', ('testfile1', 42)),
@@ -163,9 +163,9 @@ class ModuleFunctionTest(unittest.TestCase):
             )
         for line, expected_output in test_lines:
             self.assertEqual(flh(line), expected_output)
-            if expected_output:
+            ikiwa expected_output:
                 mock_open.assert_called_with(expected_output[0], 'r')
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

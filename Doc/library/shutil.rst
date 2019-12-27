@@ -44,7 +44,7 @@ Directory and files operations
    *length* value means to copy the data without looping over the source data in
    chunks; by default the data is read in chunks to avoid uncontrolled memory
    consumption. Note that if the current file position of the *fsrc* object is not
-   0, only the contents from the current file position to the end of the file will
+   0, only the contents kutoka the current file position to the end of the file will
    be copied.
 
 
@@ -74,7 +74,7 @@ Directory and files operations
 
    .. versionchanged:: 3.4
       Raise :exc:`SameFileError` instead of :exc:`Error`.  Since the former is
-      a subclass of the latter, this change is backward compatible.
+      a subkundi of the latter, this change is backward compatible.
 
    .. versionchanged:: 3.8
       Platform-specific fast-copy syscalls may be used internally in order to
@@ -91,7 +91,7 @@ Directory and files operations
 
 .. function:: copymode(src, dst, *, follow_symlinks=True)
 
-   Copy the permission bits from *src* to *dst*.  The file contents, owner, and
+   Copy the permission bits kutoka *src* to *dst*.  The file contents, owner, and
    group are unaffected.  *src* and *dst* are path-like objects or path names
    given as strings.
    If *follow_symlinks* is false, and both *src* and *dst* are symbolic links,
@@ -107,7 +107,7 @@ Directory and files operations
 .. function:: copystat(src, dst, *, follow_symlinks=True)
 
    Copy the permission bits, last access time, last modification time, and
-   flags from *src* to *dst*.  On Linux, :func:`copystat` also copies the
+   flags kutoka *src* to *dst*.  On Linux, :func:`copystat` also copies the
    "extended attributes" where possible.  The file contents, owner, and
    group are unaffected.  *src* and *dst* are path-like objects or path
    names given as strings.
@@ -115,7 +115,7 @@ Directory and files operations
    If *follow_symlinks* is false, and *src* and *dst* both
    refer to symbolic links, :func:`copystat` will operate on
    the symbolic links themselves rather than the files the
-   symbolic links refer to—reading the information from the
+   symbolic links refer to—reading the information kutoka the
    *src* symbolic link, and writing the information to the
    *dst* symbolic link.
 
@@ -153,7 +153,7 @@ Directory and files operations
 
    Copies the file *src* to the file or directory *dst*.  *src* and *dst*
    should be strings.  If *dst* specifies a directory, the file will be
-   copied into *dst* using the base filename from *src*.  Returns the
+   copied into *dst* using the base filename kutoka *src*.  Returns the
    path to the newly created file.
 
    If *follow_symlinks* is false, and *src* is a symbolic link,
@@ -164,7 +164,7 @@ Directory and files operations
    :func:`~shutil.copy` copies the file data and the file's permission
    mode (see :func:`os.chmod`).  Other metadata, like the
    file's creation and modification times, is not preserved.
-   To preserve all file metadata from the original, use
+   To preserve all file metadata kutoka the original, use
    :func:`~shutil.copy2` instead.
 
    .. versionchanged:: 3.3
@@ -182,7 +182,7 @@ Directory and files operations
    also attempts to preserve file metadata.
 
    When *follow_symlinks* is false, and *src* is a symbolic
-   link, :func:`copy2` attempts to copy all metadata from the
+   link, :func:`copy2` attempts to copy all metadata kutoka the
    *src* symbolic link to the newly-created *dst* symbolic link.
    However, this functionality is not available on all platforms.
    On platforms where some or all of this functionality is
@@ -278,7 +278,7 @@ Directory and files operations
 
    Delete an entire directory tree; *path* must point to a directory (but not a
    symbolic link to a directory).  If *ignore_errors* is true, errors resulting
-   from failed removals will be ignored; if false or omitted, such errors are
+   kutoka failed removals will be ignored; if false or omitted, such errors are
    handled by calling a handler specified by *onerror* or, if that is omitted,
    they raise an exception.
 
@@ -422,7 +422,7 @@ Directory and files operations
 Platform-dependent efficient copy operations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Starting from Python 3.8 all functions involving a file copy (:func:`copyfile`,
+Starting kutoka Python 3.8 all functions involving a file copy (:func:`copyfile`,
 :func:`copy`, :func:`copy2`, :func:`copytree`, and :func:`move`) may use
 platform-specific "fast-copy" syscalls in order to copy the file more
 efficiently (see :issue:`33671`).
@@ -470,7 +470,7 @@ provided by this module. ::
                # XXX What about devices, sockets etc.?
            except OSError as why:
                errors.append((srcname, dstname, str(why)))
-           # catch the Error from the recursive copytree so that we can
+           # catch the Error kutoka the recursive copytree so that we can
            # continue with other files
            except Error as err:
                errors.extend(err.args[0])
@@ -485,7 +485,7 @@ provided by this module. ::
 
 Another example that uses the :func:`ignore_patterns` helper::
 
-   from shutil import copytree, ignore_patterns
+   kutoka shutil agiza copytree, ignore_patterns
 
    copytree(source, destination, ignore=ignore_patterns('*.pyc', 'tmp*'))
 
@@ -494,8 +494,8 @@ name starts with ``tmp``.
 
 Another example that uses the *ignore* argument to add a logging call::
 
-   from shutil import copytree
-   import logging
+   kutoka shutil agiza copytree
+   agiza logging
 
    def _logpath(path, names):
        logging.info('Working in %s', path)
@@ -514,8 +514,8 @@ of the files have their read-only bit set. It uses the onerror callback
 to clear the readonly bit and reattempt the remove. Any subsequent failure
 will propagate. ::
 
-    import os, stat
-    import shutil
+    agiza os, stat
+    agiza shutil
 
     def remove_readonly(func, path, _):
         "Clear the readonly bit and reattempt the removal"
@@ -552,7 +552,7 @@ provided.  They rely on the :mod:`zipfile` and :mod:`tarfile` modules.
    archive; for example, we typically chdir into *root_dir* before creating the
    archive.
 
-   *base_dir* is the directory where we start archiving from;
+   *base_dir* is the directory where we start archiving kutoka;
    i.e. *base_dir* will be the common prefix of all files and
    directories in the archive.
 
@@ -599,7 +599,7 @@ provided.  They rely on the :mod:`zipfile` and :mod:`tarfile` modules.
 
    *function* is the callable that will be used to unpack archives. The callable
    will receive the *base_name* of the file to create, followed by the
-   *base_dir* (which defaults to :data:`os.curdir`) to start archiving from.
+   *base_dir* (which defaults to :data:`os.curdir`) to start archiving kutoka.
    Further arguments are passed as keyword arguments: *owner*, *group*,
    *dry_run* and *logger* (as passed in :func:`make_archive`).
 
@@ -612,7 +612,7 @@ provided.  They rely on the :mod:`zipfile` and :mod:`tarfile` modules.
 
 .. function:: unregister_archive_format(name)
 
-   Remove the archive format *name* from the list of supported formats.
+   Remove the archive format *name* kutoka the list of supported formats.
 
 
 .. function:: unpack_archive(filename[, extract_dir[, format]])
@@ -682,8 +682,8 @@ Archiving example
 In this example, we create a gzip'ed tar-file archive containing all files
 found in the :file:`.ssh` directory of the user::
 
-    >>> from shutil import make_archive
-    >>> import os
+    >>> kutoka shutil agiza make_archive
+    >>> agiza os
     >>> archive_name = os.path.expanduser(os.path.join('~', 'myarchive'))
     >>> root_dir = os.path.expanduser(os.path.join('~', '.ssh'))
     >>> make_archive(archive_name, 'gztar', root_dir)

@@ -2,17 +2,17 @@ kutoka tkinter agiza Toplevel, TclError
 agiza sys
 
 
-class WindowList:
+kundi WindowList:
 
-    def __init__(self):
+    eleza __init__(self):
         self.dict = {}
         self.callbacks = []
 
-    def add(self, window):
+    eleza add(self, window):
         window.after_idle(self.call_callbacks)
         self.dict[str(window)] = window
 
-    def delete(self, window):
+    eleza delete(self, window):
         try:
             del self.dict[str(window)]
         except KeyError:
@@ -20,7 +20,7 @@ class WindowList:
             pass
         self.call_callbacks()
 
-    def add_windows_to_menu(self,  menu):
+    eleza add_windows_to_menu(self,  menu):
         list = []
         for key in self.dict:
             window = self.dict[key]
@@ -33,22 +33,22 @@ class WindowList:
         for title, key, window in list:
             menu.add_command(label=title, command=window.wakeup)
 
-    def register_callback(self, callback):
+    eleza register_callback(self, callback):
         self.callbacks.append(callback)
 
-    def unregister_callback(self, callback):
+    eleza unregister_callback(self, callback):
         try:
             self.callbacks.remove(callback)
         except ValueError:
             pass
 
-    def call_callbacks(self):
+    eleza call_callbacks(self):
         for callback in self.callbacks:
             try:
                 callback()
             except:
                 t, v, tb = sys.exc_info()
-                print("warning: callback failed in WindowList", t, ":", v)
+                andika("warning: callback failed in WindowList", t, ":", v)
 
 
 registry = WindowList()
@@ -58,31 +58,31 @@ register_callback = registry.register_callback
 unregister_callback = registry.unregister_callback
 
 
-class ListedToplevel(Toplevel):
+kundi ListedToplevel(Toplevel):
 
-    def __init__(self, master, **kw):
+    eleza __init__(self, master, **kw):
         Toplevel.__init__(self, master, kw)
         registry.add(self)
         self.focused_widget = self
 
-    def destroy(self):
+    eleza destroy(self):
         registry.delete(self)
         Toplevel.destroy(self)
         # If this is Idle's last window then quit the mainloop
         # (Needed for clean exit on Windows 98)
-        if not registry.dict:
+        ikiwa not registry.dict:
             self.quit()
 
-    def update_windowlist_registry(self, window):
+    eleza update_windowlist_registry(self, window):
         registry.call_callbacks()
 
-    def get_title(self):
-        # Subclass can override
-        return self.wm_title()
+    eleza get_title(self):
+        # Subkundi can override
+        rudisha self.wm_title()
 
-    def wakeup(self):
+    eleza wakeup(self):
         try:
-            if self.wm_state() == "iconic":
+            ikiwa self.wm_state() == "iconic":
                 self.wm_withdraw()
                 self.wm_deiconify()
             self.tkraise()
@@ -93,6 +93,6 @@ class ListedToplevel(Toplevel):
             pass
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     kutoka unittest agiza main
     main('idlelib.idle_test.test_window', verbosity=2)

@@ -44,7 +44,7 @@ or dialogs; if you need such features, consider a user interface library such as
 `Urwid <https://pypi.org/project/urwid/>`_.
 
 The curses library was originally written for BSD Unix; the later System V
-versions of Unix from AT&T added many enhancements and new functions. BSD curses
+versions of Unix kutoka AT&T added many enhancements and new functions. BSD curses
 is no longer maintained, having been replaced by ncurses, which is an
 open-source implementation of the AT&T interface.  If you're using an
 open-source Unix such as Linux or FreeBSD, your system almost certainly uses
@@ -90,7 +90,7 @@ create various internal data structures.  If successful,
 screen; this is usually called ``stdscr`` after the name of the
 corresponding C variable. ::
 
-   import curses
+   agiza curses
    stdscr = curses.initscr()
 
 Usually curses applications turn off automatic echoing of keys to the
@@ -137,7 +137,7 @@ you type them, for example, which makes using the shell difficult.
 In Python you can avoid these complications and make debugging much easier by
 importing the :func:`curses.wrapper` function and using it like this::
 
-   from curses import wrapper
+   kutoka curses agiza wrapper
 
    def main(stdscr):
        # Clear screen
@@ -186,13 +186,13 @@ Note that the coordinate system used in curses is unusual.
 Coordinates are always passed in the order *y,x*, and the top-left
 corner of a window is coordinate (0,0).  This breaks the normal
 convention for handling coordinates where the *x* coordinate comes
-first.  This is an unfortunate difference from most other computer
+first.  This is an unfortunate difference kutoka most other computer
 applications, but it's been part of curses since it was first written,
 and it's too late to change things now.
 
 Your application can determine the size of the screen by using the
 :data:`curses.LINES` and :data:`curses.COLS` variables to obtain the *y* and
-*x* sizes.  Legal coordinates will then extend from ``(0,0)`` to
+*x* sizes.  Legal coordinates will then extend kutoka ``(0,0)`` to
 ``(curses.LINES - 1, curses.COLS - 1)``.
 
 When you call a method to display or erase text, the effect doesn't
@@ -239,7 +239,7 @@ displayed.  ::
    pad.refresh( 0,0, 5,5, 20,75)
 
 The :meth:`refresh` call displays a section of the pad in the rectangle
-extending from coordinate (5,5) to coordinate (20,75) on the screen; the upper
+extending kutoka coordinate (5,5) to coordinate (20,75) on the screen; the upper
 left corner of the displayed section is coordinate (0,0) on the pad.  Beyond
 that difference, pads are exactly like ordinary windows and support the same
 methods.
@@ -435,7 +435,7 @@ The C curses library offers only very simple input mechanisms. Python's
 such as `Urwid <https://pypi.org/project/urwid/>`_ have more extensive
 collections of widgets.)
 
-There are two methods for getting input from a window:
+There are two methods for getting input kutoka a window:
 
 * :meth:`~curses.window.getch` refreshes the screen and then waits for
   the user to hit a key, displaying the key if :func:`~curses.echo` has been
@@ -473,7 +473,7 @@ your program may look something like this::
        elif c == curses.KEY_HOME:
            x = y = 0
 
-The :mod:`curses.ascii` module supplies ASCII class membership functions that
+The :mod:`curses.ascii` module supplies ASCII kundi membership functions that
 take either integer or 1-character string arguments; these may be useful in
 writing more readable tests for such loops.  It also supplies
 conversion functions  that take either integer or 1-character-string arguments
@@ -493,12 +493,12 @@ can optionally be limited to a fixed number of characters. ::
 
 The :mod:`curses.textpad` module supplies a text box that supports an
 Emacs-like set of keybindings.  Various methods of the
-:class:`~curses.textpad.Textbox` class support editing with input
+:class:`~curses.textpad.Textbox` kundi support editing with input
 validation and gathering the edit results either with or without
 trailing spaces.  Here's an example::
 
-   import curses
-   from curses.textpad import Textbox, rectangle
+   agiza curses
+   kutoka curses.textpad agiza Textbox, rectangle
 
    def main(stdscr):
        stdscr.addstr(0, 0, "Enter IM message: (hit Ctrl-G to send)")
@@ -522,7 +522,7 @@ For More Information
 ====================
 
 This HOWTO doesn't cover some advanced topics, such as reading the
-contents of the screen or capturing mouse events from an xterm
+contents of the screen or capturing mouse events kutoka an xterm
 instance, but the Python library page for the :mod:`curses` module is now
 reasonably complete.  You should browse it next.
 

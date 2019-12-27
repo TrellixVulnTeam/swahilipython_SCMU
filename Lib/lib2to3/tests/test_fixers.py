@@ -10,12 +10,12 @@ kutoka lib2to3 agiza pygram, fixer_util
 kutoka lib2to3.tests agiza support
 
 
-class FixerTestCase(support.TestCase):
+kundi FixerTestCase(support.TestCase):
 
-    # Other test cases can subclass this class and replace "fixer_pkg" with
+    # Other test cases can subkundi this kundi and replace "fixer_pkg" with
     # their own.
-    def setUp(self, fix_list=None, fixer_pkg="lib2to3", options=None):
-        if fix_list is None:
+    eleza setUp(self, fix_list=None, fixer_pkg="lib2to3", options=None):
+        ikiwa fix_list is None:
             fix_list = [self.fixer]
         self.refactor = support.get_refactorer(fixer_pkg, fix_list, options)
         self.fixer_log = []
@@ -25,208 +25,208 @@ class FixerTestCase(support.TestCase):
                            self.refactor.post_order):
             fixer.log = self.fixer_log
 
-    def _check(self, before, after):
+    eleza _check(self, before, after):
         before = support.reformat(before)
         after = support.reformat(after)
         tree = self.refactor.refactor_string(before, self.filename)
         self.assertEqual(after, str(tree))
-        return tree
+        rudisha tree
 
-    def check(self, before, after, ignore_warnings=False):
+    eleza check(self, before, after, ignore_warnings=False):
         tree = self._check(before, after)
         self.assertTrue(tree.was_changed)
-        if not ignore_warnings:
+        ikiwa not ignore_warnings:
             self.assertEqual(self.fixer_log, [])
 
-    def warns(self, before, after, message, unchanged=False):
+    eleza warns(self, before, after, message, unchanged=False):
         tree = self._check(before, after)
         self.assertIn(message, "".join(self.fixer_log))
-        if not unchanged:
+        ikiwa not unchanged:
             self.assertTrue(tree.was_changed)
 
-    def warns_unchanged(self, before, message):
+    eleza warns_unchanged(self, before, message):
         self.warns(before, before, message, unchanged=True)
 
-    def unchanged(self, before, ignore_warnings=False):
+    eleza unchanged(self, before, ignore_warnings=False):
         self._check(before, before)
-        if not ignore_warnings:
+        ikiwa not ignore_warnings:
             self.assertEqual(self.fixer_log, [])
 
-    def assert_runs_after(self, *names):
+    eleza assert_runs_after(self, *names):
         fixes = [self.fixer]
         fixes.extend(names)
         r = support.get_refactorer("lib2to3", fixes)
         (pre, post) = r.get_fixers()
         n = "fix_" + self.fixer
-        if post and post[-1].__class__.__module__.endswith(n):
+        ikiwa post and post[-1].__class__.__module__.endswith(n):
             # We're the last fixer to run
             return
-        if pre and pre[-1].__class__.__module__.endswith(n) and not post:
+        ikiwa pre and pre[-1].__class__.__module__.endswith(n) and not post:
             # We're the last in pre and post is empty
             return
         self.fail("Fixer run order (%s) is incorrect; %s should be last."\
                %(", ".join([x.__class__.__module__ for x in (pre+post)]), n))
 
-class Test_ne(FixerTestCase):
+kundi Test_ne(FixerTestCase):
     fixer = "ne"
 
-    def test_basic(self):
-        b = """if x <> y:
+    eleza test_basic(self):
+        b = """ikiwa x <> y:
             pass"""
 
-        a = """if x != y:
-            pass"""
-        self.check(b, a)
-
-    def test_no_spaces(self):
-        b = """if x<>y:
-            pass"""
-
-        a = """if x!=y:
+        a = """ikiwa x != y:
             pass"""
         self.check(b, a)
 
-    def test_chained(self):
-        b = """if x<>y<>z:
+    eleza test_no_spaces(self):
+        b = """ikiwa x<>y:
             pass"""
 
-        a = """if x!=y!=z:
+        a = """ikiwa x!=y:
             pass"""
         self.check(b, a)
 
-class Test_has_key(FixerTestCase):
+    eleza test_chained(self):
+        b = """ikiwa x<>y<>z:
+            pass"""
+
+        a = """ikiwa x!=y!=z:
+            pass"""
+        self.check(b, a)
+
+kundi Test_has_key(FixerTestCase):
     fixer = "has_key"
 
-    def test_1(self):
+    eleza test_1(self):
         b = """x = d.has_key("x") or d.has_key("y")"""
         a = """x = "x" in d or "y" in d"""
         self.check(b, a)
 
-    def test_2(self):
+    eleza test_2(self):
         b = """x = a.b.c.d.has_key("x") ** 3"""
         a = """x = ("x" in a.b.c.d) ** 3"""
         self.check(b, a)
 
-    def test_3(self):
+    eleza test_3(self):
         b = """x = a.b.has_key(1 + 2).__repr__()"""
         a = """x = (1 + 2 in a.b).__repr__()"""
         self.check(b, a)
 
-    def test_4(self):
+    eleza test_4(self):
         b = """x = a.b.has_key(1 + 2).__repr__() ** -3 ** 4"""
         a = """x = (1 + 2 in a.b).__repr__() ** -3 ** 4"""
         self.check(b, a)
 
-    def test_5(self):
+    eleza test_5(self):
         b = """x = a.has_key(f or g)"""
         a = """x = (f or g) in a"""
         self.check(b, a)
 
-    def test_6(self):
+    eleza test_6(self):
         b = """x = a + b.has_key(c)"""
         a = """x = a + (c in b)"""
         self.check(b, a)
 
-    def test_7(self):
+    eleza test_7(self):
         b = """x = a.has_key(lambda: 12)"""
         a = """x = (lambda: 12) in a"""
         self.check(b, a)
 
-    def test_8(self):
+    eleza test_8(self):
         b = """x = a.has_key(a for a in b)"""
         a = """x = (a for a in b) in a"""
         self.check(b, a)
 
-    def test_9(self):
-        b = """if not a.has_key(b): pass"""
-        a = """if b not in a: pass"""
+    eleza test_9(self):
+        b = """ikiwa not a.has_key(b): pass"""
+        a = """ikiwa b not in a: pass"""
         self.check(b, a)
 
-    def test_10(self):
-        b = """if not a.has_key(b).__repr__(): pass"""
-        a = """if not (b in a).__repr__(): pass"""
+    eleza test_10(self):
+        b = """ikiwa not a.has_key(b).__repr__(): pass"""
+        a = """ikiwa not (b in a).__repr__(): pass"""
         self.check(b, a)
 
-    def test_11(self):
-        b = """if not a.has_key(b) ** 2: pass"""
-        a = """if not (b in a) ** 2: pass"""
+    eleza test_11(self):
+        b = """ikiwa not a.has_key(b) ** 2: pass"""
+        a = """ikiwa not (b in a) ** 2: pass"""
         self.check(b, a)
 
-class Test_apply(FixerTestCase):
+kundi Test_apply(FixerTestCase):
     fixer = "apply"
 
-    def test_1(self):
+    eleza test_1(self):
         b = """x = apply(f, g + h)"""
         a = """x = f(*g + h)"""
         self.check(b, a)
 
-    def test_2(self):
+    eleza test_2(self):
         b = """y = apply(f, g, h)"""
         a = """y = f(*g, **h)"""
         self.check(b, a)
 
-    def test_3(self):
+    eleza test_3(self):
         b = """z = apply(fs[0], g or h, h or g)"""
         a = """z = fs[0](*g or h, **h or g)"""
         self.check(b, a)
 
-    def test_4(self):
+    eleza test_4(self):
         b = """apply(f, (x, y) + t)"""
         a = """f(*(x, y) + t)"""
         self.check(b, a)
 
-    def test_5(self):
+    eleza test_5(self):
         b = """apply(f, args,)"""
         a = """f(*args)"""
         self.check(b, a)
 
-    def test_6(self):
+    eleza test_6(self):
         b = """apply(f, args, kwds,)"""
         a = """f(*args, **kwds)"""
         self.check(b, a)
 
     # Test that complex functions are parenthesized
 
-    def test_complex_1(self):
+    eleza test_complex_1(self):
         b = """x = apply(f+g, args)"""
         a = """x = (f+g)(*args)"""
         self.check(b, a)
 
-    def test_complex_2(self):
+    eleza test_complex_2(self):
         b = """x = apply(f*g, args)"""
         a = """x = (f*g)(*args)"""
         self.check(b, a)
 
-    def test_complex_3(self):
+    eleza test_complex_3(self):
         b = """x = apply(f**g, args)"""
         a = """x = (f**g)(*args)"""
         self.check(b, a)
 
     # But dotted names etc. not
 
-    def test_dotted_name(self):
+    eleza test_dotted_name(self):
         b = """x = apply(f.g, args)"""
         a = """x = f.g(*args)"""
         self.check(b, a)
 
-    def test_subscript(self):
+    eleza test_subscript(self):
         b = """x = apply(f[x], args)"""
         a = """x = f[x](*args)"""
         self.check(b, a)
 
-    def test_call(self):
+    eleza test_call(self):
         b = """x = apply(f(), args)"""
         a = """x = f()(*args)"""
         self.check(b, a)
 
     # Extreme case
-    def test_extreme(self):
+    eleza test_extreme(self):
         b = """x = apply(a.b.c.d.e.f, args, kwds)"""
         a = """x = a.b.c.d.e.f(*args, **kwds)"""
         self.check(b, a)
 
     # XXX Comments in weird places still get lost
-    def test_weird_comments(self):
+    eleza test_weird_comments(self):
         b = """apply(   # foo
           f, # bar
           args)"""
@@ -235,65 +235,65 @@ class Test_apply(FixerTestCase):
 
     # These should *not* be touched
 
-    def test_unchanged_1(self):
+    eleza test_unchanged_1(self):
         s = """apply()"""
         self.unchanged(s)
 
-    def test_unchanged_2(self):
+    eleza test_unchanged_2(self):
         s = """apply(f)"""
         self.unchanged(s)
 
-    def test_unchanged_3(self):
+    eleza test_unchanged_3(self):
         s = """apply(f,)"""
         self.unchanged(s)
 
-    def test_unchanged_4(self):
+    eleza test_unchanged_4(self):
         s = """apply(f, args, kwds, extras)"""
         self.unchanged(s)
 
-    def test_unchanged_5(self):
+    eleza test_unchanged_5(self):
         s = """apply(f, *args, **kwds)"""
         self.unchanged(s)
 
-    def test_unchanged_6(self):
+    eleza test_unchanged_6(self):
         s = """apply(f, *args)"""
         self.unchanged(s)
 
-    def test_unchanged_6b(self):
+    eleza test_unchanged_6b(self):
         s = """apply(f, **kwds)"""
         self.unchanged(s)
 
-    def test_unchanged_7(self):
+    eleza test_unchanged_7(self):
         s = """apply(func=f, args=args, kwds=kwds)"""
         self.unchanged(s)
 
-    def test_unchanged_8(self):
+    eleza test_unchanged_8(self):
         s = """apply(f, args=args, kwds=kwds)"""
         self.unchanged(s)
 
-    def test_unchanged_9(self):
+    eleza test_unchanged_9(self):
         s = """apply(f, args, kwds=kwds)"""
         self.unchanged(s)
 
-    def test_space_1(self):
+    eleza test_space_1(self):
         a = """apply(  f,  args,   kwds)"""
         b = """f(*args, **kwds)"""
         self.check(a, b)
 
-    def test_space_2(self):
+    eleza test_space_2(self):
         a = """apply(  f  ,args,kwds   )"""
         b = """f(*args, **kwds)"""
         self.check(a, b)
 
-class Test_reload(FixerTestCase):
+kundi Test_reload(FixerTestCase):
     fixer = "reload"
 
-    def test(self):
+    eleza test(self):
         b = """reload(a)"""
         a = """agiza importlib\nimportlib.reload(a)"""
         self.check(b, a)
 
-    def test_comment(self):
+    eleza test_comment(self):
         b = """reload( a ) # comment"""
         a = """agiza importlib\nimportlib.reload( a ) # comment"""
         self.check(b, a)
@@ -303,7 +303,7 @@ class Test_reload(FixerTestCase):
         a = """agiza importlib\nimportlib.reload( a )  # comment"""
         self.check(b, a)
 
-    def test_space(self):
+    eleza test_space(self):
         b = """reload( a )"""
         a = """agiza importlib\nimportlib.reload( a )"""
         self.check(b, a)
@@ -316,7 +316,7 @@ class Test_reload(FixerTestCase):
         a = """agiza importlib\nimportlib.reload(a )"""
         self.check(b, a)
 
-    def test_unchanged(self):
+    eleza test_unchanged(self):
         s = """reload(a=1)"""
         self.unchanged(s)
 
@@ -344,10 +344,10 @@ class Test_reload(FixerTestCase):
         s = """reload()"""
         self.unchanged(s)
 
-class Test_intern(FixerTestCase):
+kundi Test_intern(FixerTestCase):
     fixer = "intern"
 
-    def test_prefix_preservation(self):
+    eleza test_prefix_preservation(self):
         b = """x =   intern(  a  )"""
         a = """agiza sys\nx =   sys.intern(  a  )"""
         self.check(b, a)
@@ -362,7 +362,7 @@ class Test_intern(FixerTestCase):
         a = """agiza sys\nz = sys.intern(a+b+c.d,   )"""
         self.check(b, a)
 
-    def test(self):
+    eleza test(self):
         b = """x = intern(a)"""
         a = """agiza sys\nx = sys.intern(a)"""
         self.check(b, a)
@@ -377,7 +377,7 @@ class Test_intern(FixerTestCase):
 
     # These should not be refactored
 
-    def test_unchanged(self):
+    eleza test_unchanged(self):
         s = """intern(a=1)"""
         self.unchanged(s)
 
@@ -393,26 +393,26 @@ class Test_intern(FixerTestCase):
         s = """intern()"""
         self.unchanged(s)
 
-class Test_reduce(FixerTestCase):
+kundi Test_reduce(FixerTestCase):
     fixer = "reduce"
 
-    def test_simple_call(self):
+    eleza test_simple_call(self):
         b = "reduce(a, b, c)"
         a = "kutoka functools agiza reduce\nreduce(a, b, c)"
         self.check(b, a)
 
-    def test_bug_7253(self):
+    eleza test_bug_7253(self):
         # fix_tuple_params was being bad and orphaning nodes in the tree.
-        b = "def x(arg): reduce(sum, [])"
-        a = "kutoka functools agiza reduce\ndef x(arg): reduce(sum, [])"
+        b = "eleza x(arg): reduce(sum, [])"
+        a = "kutoka functools agiza reduce\neleza x(arg): reduce(sum, [])"
         self.check(b, a)
 
-    def test_call_with_lambda(self):
+    eleza test_call_with_lambda(self):
         b = "reduce(lambda x, y: x + y, seq)"
         a = "kutoka functools agiza reduce\nreduce(lambda x, y: x + y, seq)"
         self.check(b, a)
 
-    def test_unchanged(self):
+    eleza test_unchanged(self):
         s = "reduce(a)"
         self.unchanged(s)
 
@@ -428,205 +428,205 @@ class Test_reduce(FixerTestCase):
         s = "reduce()"
         self.unchanged(s)
 
-class Test_print(FixerTestCase):
+kundi Test_andika(FixerTestCase):
     fixer = "print"
 
-    def test_prefix_preservation(self):
+    eleza test_prefix_preservation(self):
         b = """print 1,   1+1,   1+1+1"""
-        a = """print(1,   1+1,   1+1+1)"""
+        a = """andika(1,   1+1,   1+1+1)"""
         self.check(b, a)
 
-    def test_idempotency(self):
-        s = """print()"""
+    eleza test_idempotency(self):
+        s = """andika()"""
         self.unchanged(s)
 
-        s = """print('')"""
+        s = """andika('')"""
         self.unchanged(s)
 
-    def test_idempotency_print_as_function(self):
+    eleza test_idempotency_print_as_function(self):
         self.refactor.driver.grammar = pygram.python_grammar_no_print_statement
-        s = """print(1, 1+1, 1+1+1)"""
+        s = """andika(1, 1+1, 1+1+1)"""
         self.unchanged(s)
 
-        s = """print()"""
+        s = """andika()"""
         self.unchanged(s)
 
-        s = """print('')"""
+        s = """andika('')"""
         self.unchanged(s)
 
-    def test_1(self):
+    eleza test_1(self):
         b = """print 1, 1+1, 1+1+1"""
-        a = """print(1, 1+1, 1+1+1)"""
+        a = """andika(1, 1+1, 1+1+1)"""
         self.check(b, a)
 
-    def test_2(self):
+    eleza test_2(self):
         b = """print 1, 2"""
-        a = """print(1, 2)"""
+        a = """andika(1, 2)"""
         self.check(b, a)
 
-    def test_3(self):
+    eleza test_3(self):
         b = """print"""
-        a = """print()"""
+        a = """andika()"""
         self.check(b, a)
 
-    def test_4(self):
+    eleza test_4(self):
         # kutoka bug 3000
         b = """print whatever; print"""
-        a = """print(whatever); print()"""
+        a = """andika(whatever); andika()"""
         self.check(b, a)
 
-    def test_5(self):
+    eleza test_5(self):
         b = """print; print whatever;"""
-        a = """print(); print(whatever);"""
+        a = """andika(); andika(whatever);"""
         self.check(b, a)
 
-    def test_tuple(self):
+    eleza test_tuple(self):
         b = """print (a, b, c)"""
-        a = """print((a, b, c))"""
+        a = """andika((a, b, c))"""
         self.check(b, a)
 
     # trailing commas
 
-    def test_trailing_comma_1(self):
+    eleza test_trailing_comma_1(self):
         b = """print 1, 2, 3,"""
-        a = """print(1, 2, 3, end=' ')"""
+        a = """andika(1, 2, 3, end=' ')"""
         self.check(b, a)
 
-    def test_trailing_comma_2(self):
+    eleza test_trailing_comma_2(self):
         b = """print 1, 2,"""
-        a = """print(1, 2, end=' ')"""
+        a = """andika(1, 2, end=' ')"""
         self.check(b, a)
 
-    def test_trailing_comma_3(self):
+    eleza test_trailing_comma_3(self):
         b = """print 1,"""
-        a = """print(1, end=' ')"""
+        a = """andika(1, end=' ')"""
         self.check(b, a)
 
     # >> stuff
 
-    def test_vargs_without_trailing_comma(self):
+    eleza test_vargs_without_trailing_comma(self):
         b = """print >>sys.stderr, 1, 2, 3"""
-        a = """print(1, 2, 3, file=sys.stderr)"""
+        a = """andika(1, 2, 3, file=sys.stderr)"""
         self.check(b, a)
 
-    def test_with_trailing_comma(self):
+    eleza test_with_trailing_comma(self):
         b = """print >>sys.stderr, 1, 2,"""
-        a = """print(1, 2, end=' ', file=sys.stderr)"""
+        a = """andika(1, 2, end=' ', file=sys.stderr)"""
         self.check(b, a)
 
-    def test_no_trailing_comma(self):
+    eleza test_no_trailing_comma(self):
         b = """print >>sys.stderr, 1+1"""
-        a = """print(1+1, file=sys.stderr)"""
+        a = """andika(1+1, file=sys.stderr)"""
         self.check(b, a)
 
-    def test_spaces_before_file(self):
+    eleza test_spaces_before_file(self):
         b = """print >>  sys.stderr"""
-        a = """print(file=sys.stderr)"""
+        a = """andika(file=sys.stderr)"""
         self.check(b, a)
 
-    def test_with_future_print_function(self):
+    eleza test_with_future_print_function(self):
         s = "kutoka __future__ agiza print_function\n" \
-            "print('Hai!', end=' ')"
+            "andika('Hai!', end=' ')"
         self.unchanged(s)
 
         b = "print 'Hello, world!'"
-        a = "print('Hello, world!')"
+        a = "andika('Hello, world!')"
         self.check(b, a)
 
 
-class Test_exec(FixerTestCase):
+kundi Test_exec(FixerTestCase):
     fixer = "exec"
 
-    def test_prefix_preservation(self):
+    eleza test_prefix_preservation(self):
         b = """  exec code in ns1,   ns2"""
         a = """  exec(code, ns1,   ns2)"""
         self.check(b, a)
 
-    def test_basic(self):
+    eleza test_basic(self):
         b = """exec code"""
         a = """exec(code)"""
         self.check(b, a)
 
-    def test_with_globals(self):
+    eleza test_with_globals(self):
         b = """exec code in ns"""
         a = """exec(code, ns)"""
         self.check(b, a)
 
-    def test_with_globals_locals(self):
+    eleza test_with_globals_locals(self):
         b = """exec code in ns1, ns2"""
         a = """exec(code, ns1, ns2)"""
         self.check(b, a)
 
-    def test_complex_1(self):
+    eleza test_complex_1(self):
         b = """exec (a.b()) in ns"""
         a = """exec((a.b()), ns)"""
         self.check(b, a)
 
-    def test_complex_2(self):
+    eleza test_complex_2(self):
         b = """exec a.b() + c in ns"""
         a = """exec(a.b() + c, ns)"""
         self.check(b, a)
 
     # These should not be touched
 
-    def test_unchanged_1(self):
+    eleza test_unchanged_1(self):
         s = """exec(code)"""
         self.unchanged(s)
 
-    def test_unchanged_2(self):
+    eleza test_unchanged_2(self):
         s = """exec (code)"""
         self.unchanged(s)
 
-    def test_unchanged_3(self):
+    eleza test_unchanged_3(self):
         s = """exec(code, ns)"""
         self.unchanged(s)
 
-    def test_unchanged_4(self):
+    eleza test_unchanged_4(self):
         s = """exec(code, ns1, ns2)"""
         self.unchanged(s)
 
-class Test_repr(FixerTestCase):
+kundi Test_repr(FixerTestCase):
     fixer = "repr"
 
-    def test_prefix_preservation(self):
+    eleza test_prefix_preservation(self):
         b = """x =   `1 + 2`"""
         a = """x =   repr(1 + 2)"""
         self.check(b, a)
 
-    def test_simple_1(self):
+    eleza test_simple_1(self):
         b = """x = `1 + 2`"""
         a = """x = repr(1 + 2)"""
         self.check(b, a)
 
-    def test_simple_2(self):
+    eleza test_simple_2(self):
         b = """y = `x`"""
         a = """y = repr(x)"""
         self.check(b, a)
 
-    def test_complex(self):
+    eleza test_complex(self):
         b = """z = `y`.__repr__()"""
         a = """z = repr(y).__repr__()"""
         self.check(b, a)
 
-    def test_tuple(self):
+    eleza test_tuple(self):
         b = """x = `1, 2, 3`"""
         a = """x = repr((1, 2, 3))"""
         self.check(b, a)
 
-    def test_nested(self):
+    eleza test_nested(self):
         b = """x = `1 + `2``"""
         a = """x = repr(1 + repr(2))"""
         self.check(b, a)
 
-    def test_nested_tuples(self):
+    eleza test_nested_tuples(self):
         b = """x = `1, 2 + `3, 4``"""
         a = """x = repr((1, 2 + repr((3, 4))))"""
         self.check(b, a)
 
-class Test_except(FixerTestCase):
+kundi Test_except(FixerTestCase):
     fixer = "except"
 
-    def test_prefix_preservation(self):
+    eleza test_prefix_preservation(self):
         b = """
             try:
                 pass
@@ -639,7 +639,7 @@ class Test_except(FixerTestCase):
                 pass"""
         self.check(b, a)
 
-    def test_simple(self):
+    eleza test_simple(self):
         b = """
             try:
                 pass
@@ -652,7 +652,7 @@ class Test_except(FixerTestCase):
                 pass"""
         self.check(b, a)
 
-    def test_simple_no_space_before_target(self):
+    eleza test_simple_no_space_before_target(self):
         b = """
             try:
                 pass
@@ -665,9 +665,9 @@ class Test_except(FixerTestCase):
                 pass"""
         self.check(b, a)
 
-    def test_tuple_unpack(self):
+    eleza test_tuple_unpack(self):
         b = """
-            def foo():
+            eleza foo():
                 try:
                     pass
                 except Exception, (f, e):
@@ -676,7 +676,7 @@ class Test_except(FixerTestCase):
                     pass"""
 
         a = """
-            def foo():
+            eleza foo():
                 try:
                     pass
                 except Exception as xxx_todo_changeme:
@@ -686,7 +686,7 @@ class Test_except(FixerTestCase):
                     pass"""
         self.check(b, a)
 
-    def test_multi_class(self):
+    eleza test_multi_class(self):
         b = """
             try:
                 pass
@@ -700,7 +700,7 @@ class Test_except(FixerTestCase):
                 pass"""
         self.check(b, a)
 
-    def test_list_unpack(self):
+    eleza test_list_unpack(self):
         b = """
             try:
                 pass
@@ -715,7 +715,7 @@ class Test_except(FixerTestCase):
                 pass"""
         self.check(b, a)
 
-    def test_weird_target_1(self):
+    eleza test_weird_target_1(self):
         b = """
             try:
                 pass
@@ -730,7 +730,7 @@ class Test_except(FixerTestCase):
                 pass"""
         self.check(b, a)
 
-    def test_weird_target_2(self):
+    eleza test_weird_target_2(self):
         b = """
             try:
                 pass
@@ -745,7 +745,7 @@ class Test_except(FixerTestCase):
                 pass"""
         self.check(b, a)
 
-    def test_weird_target_3(self):
+    eleza test_weird_target_3(self):
         b = """
             try:
                 pass
@@ -760,7 +760,7 @@ class Test_except(FixerTestCase):
                 pass"""
         self.check(b, a)
 
-    def test_bare_except(self):
+    eleza test_bare_except(self):
         b = """
             try:
                 pass
@@ -778,7 +778,7 @@ class Test_except(FixerTestCase):
                 pass"""
         self.check(b, a)
 
-    def test_bare_except_and_else_finally(self):
+    eleza test_bare_except_and_else_finally(self):
         b = """
             try:
                 pass
@@ -804,7 +804,7 @@ class Test_except(FixerTestCase):
                 pass"""
         self.check(b, a)
 
-    def test_multi_fixed_excepts_before_bare_except(self):
+    eleza test_multi_fixed_excepts_before_bare_except(self):
         b = """
             try:
                 pass
@@ -826,7 +826,7 @@ class Test_except(FixerTestCase):
                 pass"""
         self.check(b, a)
 
-    def test_one_line_suites(self):
+    eleza test_one_line_suites(self):
         b = """
             try: raise TypeError
             except TypeError, e:
@@ -874,7 +874,7 @@ class Test_except(FixerTestCase):
 
     # These should not be touched:
 
-    def test_unchanged_1(self):
+    eleza test_unchanged_1(self):
         s = """
             try:
                 pass
@@ -882,7 +882,7 @@ class Test_except(FixerTestCase):
                 pass"""
         self.unchanged(s)
 
-    def test_unchanged_2(self):
+    eleza test_unchanged_2(self):
         s = """
             try:
                 pass
@@ -890,7 +890,7 @@ class Test_except(FixerTestCase):
                 pass"""
         self.unchanged(s)
 
-    def test_unchanged_3(self):
+    eleza test_unchanged_3(self):
         s = """
             try:
                 pass
@@ -898,15 +898,15 @@ class Test_except(FixerTestCase):
                 pass"""
         self.unchanged(s)
 
-class Test_raise(FixerTestCase):
+kundi Test_raise(FixerTestCase):
     fixer = "raise"
 
-    def test_basic(self):
+    eleza test_basic(self):
         b = """raise Exception, 5"""
         a = """raise Exception(5)"""
         self.check(b, a)
 
-    def test_prefix_preservation(self):
+    eleza test_prefix_preservation(self):
         b = """raise Exception,5"""
         a = """raise Exception(5)"""
         self.check(b, a)
@@ -915,7 +915,7 @@ class Test_raise(FixerTestCase):
         a = """raise   Exception(5)"""
         self.check(b, a)
 
-    def test_with_comments(self):
+    eleza test_with_comments(self):
         b = """raise Exception, 5 # foo"""
         a = """raise Exception(5) # foo"""
         self.check(b, a)
@@ -924,282 +924,282 @@ class Test_raise(FixerTestCase):
         a = """raise E((5, 6) % (a, b)) # foo"""
         self.check(b, a)
 
-        b = """def foo():
+        b = """eleza foo():
                     raise Exception, 5, 6 # foo"""
-        a = """def foo():
+        a = """eleza foo():
                     raise Exception(5).with_traceback(6) # foo"""
         self.check(b, a)
 
-    def test_None_value(self):
+    eleza test_None_value(self):
         b = """raise Exception(5), None, tb"""
         a = """raise Exception(5).with_traceback(tb)"""
         self.check(b, a)
 
-    def test_tuple_value(self):
+    eleza test_tuple_value(self):
         b = """raise Exception, (5, 6, 7)"""
         a = """raise Exception(5, 6, 7)"""
         self.check(b, a)
 
-    def test_tuple_detection(self):
+    eleza test_tuple_detection(self):
         b = """raise E, (5, 6) % (a, b)"""
         a = """raise E((5, 6) % (a, b))"""
         self.check(b, a)
 
-    def test_tuple_exc_1(self):
+    eleza test_tuple_exc_1(self):
         b = """raise (((E1, E2), E3), E4), V"""
         a = """raise E1(V)"""
         self.check(b, a)
 
-    def test_tuple_exc_2(self):
+    eleza test_tuple_exc_2(self):
         b = """raise (E1, (E2, E3), E4), V"""
         a = """raise E1(V)"""
         self.check(b, a)
 
     # These should produce a warning
 
-    def test_string_exc(self):
+    eleza test_string_exc(self):
         s = """raise 'foo'"""
         self.warns_unchanged(s, "Python 3 does not support string exceptions")
 
-    def test_string_exc_val(self):
+    eleza test_string_exc_val(self):
         s = """raise "foo", 5"""
         self.warns_unchanged(s, "Python 3 does not support string exceptions")
 
-    def test_string_exc_val_tb(self):
+    eleza test_string_exc_val_tb(self):
         s = """raise "foo", 5, 6"""
         self.warns_unchanged(s, "Python 3 does not support string exceptions")
 
     # These should result in traceback-assignment
 
-    def test_tb_1(self):
-        b = """def foo():
+    eleza test_tb_1(self):
+        b = """eleza foo():
                     raise Exception, 5, 6"""
-        a = """def foo():
+        a = """eleza foo():
                     raise Exception(5).with_traceback(6)"""
         self.check(b, a)
 
-    def test_tb_2(self):
-        b = """def foo():
+    eleza test_tb_2(self):
+        b = """eleza foo():
                     a = 5
                     raise Exception, 5, 6
                     b = 6"""
-        a = """def foo():
+        a = """eleza foo():
                     a = 5
                     raise Exception(5).with_traceback(6)
                     b = 6"""
         self.check(b, a)
 
-    def test_tb_3(self):
-        b = """def foo():
+    eleza test_tb_3(self):
+        b = """eleza foo():
                     raise Exception,5,6"""
-        a = """def foo():
+        a = """eleza foo():
                     raise Exception(5).with_traceback(6)"""
         self.check(b, a)
 
-    def test_tb_4(self):
-        b = """def foo():
+    eleza test_tb_4(self):
+        b = """eleza foo():
                     a = 5
                     raise Exception,5,6
                     b = 6"""
-        a = """def foo():
+        a = """eleza foo():
                     a = 5
                     raise Exception(5).with_traceback(6)
                     b = 6"""
         self.check(b, a)
 
-    def test_tb_5(self):
-        b = """def foo():
+    eleza test_tb_5(self):
+        b = """eleza foo():
                     raise Exception, (5, 6, 7), 6"""
-        a = """def foo():
+        a = """eleza foo():
                     raise Exception(5, 6, 7).with_traceback(6)"""
         self.check(b, a)
 
-    def test_tb_6(self):
-        b = """def foo():
+    eleza test_tb_6(self):
+        b = """eleza foo():
                     a = 5
                     raise Exception, (5, 6, 7), 6
                     b = 6"""
-        a = """def foo():
+        a = """eleza foo():
                     a = 5
                     raise Exception(5, 6, 7).with_traceback(6)
                     b = 6"""
         self.check(b, a)
 
-class Test_throw(FixerTestCase):
+kundi Test_throw(FixerTestCase):
     fixer = "throw"
 
-    def test_1(self):
+    eleza test_1(self):
         b = """g.throw(Exception, 5)"""
         a = """g.throw(Exception(5))"""
         self.check(b, a)
 
-    def test_2(self):
+    eleza test_2(self):
         b = """g.throw(Exception,5)"""
         a = """g.throw(Exception(5))"""
         self.check(b, a)
 
-    def test_3(self):
+    eleza test_3(self):
         b = """g.throw(Exception, (5, 6, 7))"""
         a = """g.throw(Exception(5, 6, 7))"""
         self.check(b, a)
 
-    def test_4(self):
+    eleza test_4(self):
         b = """5 + g.throw(Exception, 5)"""
         a = """5 + g.throw(Exception(5))"""
         self.check(b, a)
 
     # These should produce warnings
 
-    def test_warn_1(self):
+    eleza test_warn_1(self):
         s = """g.throw("foo")"""
         self.warns_unchanged(s, "Python 3 does not support string exceptions")
 
-    def test_warn_2(self):
+    eleza test_warn_2(self):
         s = """g.throw("foo", 5)"""
         self.warns_unchanged(s, "Python 3 does not support string exceptions")
 
-    def test_warn_3(self):
+    eleza test_warn_3(self):
         s = """g.throw("foo", 5, 6)"""
         self.warns_unchanged(s, "Python 3 does not support string exceptions")
 
     # These should not be touched
 
-    def test_untouched_1(self):
+    eleza test_untouched_1(self):
         s = """g.throw(Exception)"""
         self.unchanged(s)
 
-    def test_untouched_2(self):
+    eleza test_untouched_2(self):
         s = """g.throw(Exception(5, 6))"""
         self.unchanged(s)
 
-    def test_untouched_3(self):
+    eleza test_untouched_3(self):
         s = """5 + g.throw(Exception(5, 6))"""
         self.unchanged(s)
 
     # These should result in traceback-assignment
 
-    def test_tb_1(self):
-        b = """def foo():
+    eleza test_tb_1(self):
+        b = """eleza foo():
                     g.throw(Exception, 5, 6)"""
-        a = """def foo():
+        a = """eleza foo():
                     g.throw(Exception(5).with_traceback(6))"""
         self.check(b, a)
 
-    def test_tb_2(self):
-        b = """def foo():
+    eleza test_tb_2(self):
+        b = """eleza foo():
                     a = 5
                     g.throw(Exception, 5, 6)
                     b = 6"""
-        a = """def foo():
+        a = """eleza foo():
                     a = 5
                     g.throw(Exception(5).with_traceback(6))
                     b = 6"""
         self.check(b, a)
 
-    def test_tb_3(self):
-        b = """def foo():
+    eleza test_tb_3(self):
+        b = """eleza foo():
                     g.throw(Exception,5,6)"""
-        a = """def foo():
+        a = """eleza foo():
                     g.throw(Exception(5).with_traceback(6))"""
         self.check(b, a)
 
-    def test_tb_4(self):
-        b = """def foo():
+    eleza test_tb_4(self):
+        b = """eleza foo():
                     a = 5
                     g.throw(Exception,5,6)
                     b = 6"""
-        a = """def foo():
+        a = """eleza foo():
                     a = 5
                     g.throw(Exception(5).with_traceback(6))
                     b = 6"""
         self.check(b, a)
 
-    def test_tb_5(self):
-        b = """def foo():
+    eleza test_tb_5(self):
+        b = """eleza foo():
                     g.throw(Exception, (5, 6, 7), 6)"""
-        a = """def foo():
+        a = """eleza foo():
                     g.throw(Exception(5, 6, 7).with_traceback(6))"""
         self.check(b, a)
 
-    def test_tb_6(self):
-        b = """def foo():
+    eleza test_tb_6(self):
+        b = """eleza foo():
                     a = 5
                     g.throw(Exception, (5, 6, 7), 6)
                     b = 6"""
-        a = """def foo():
+        a = """eleza foo():
                     a = 5
                     g.throw(Exception(5, 6, 7).with_traceback(6))
                     b = 6"""
         self.check(b, a)
 
-    def test_tb_7(self):
-        b = """def foo():
+    eleza test_tb_7(self):
+        b = """eleza foo():
                     a + g.throw(Exception, 5, 6)"""
-        a = """def foo():
+        a = """eleza foo():
                     a + g.throw(Exception(5).with_traceback(6))"""
         self.check(b, a)
 
-    def test_tb_8(self):
-        b = """def foo():
+    eleza test_tb_8(self):
+        b = """eleza foo():
                     a = 5
                     a + g.throw(Exception, 5, 6)
                     b = 6"""
-        a = """def foo():
+        a = """eleza foo():
                     a = 5
                     a + g.throw(Exception(5).with_traceback(6))
                     b = 6"""
         self.check(b, a)
 
-class Test_long(FixerTestCase):
+kundi Test_long(FixerTestCase):
     fixer = "long"
 
-    def test_1(self):
+    eleza test_1(self):
         b = """x = long(x)"""
         a = """x = int(x)"""
         self.check(b, a)
 
-    def test_2(self):
+    eleza test_2(self):
         b = """y = isinstance(x, long)"""
         a = """y = isinstance(x, int)"""
         self.check(b, a)
 
-    def test_3(self):
+    eleza test_3(self):
         b = """z = type(x) in (int, long)"""
         a = """z = type(x) in (int, int)"""
         self.check(b, a)
 
-    def test_unchanged(self):
+    eleza test_unchanged(self):
         s = """long = True"""
         self.unchanged(s)
 
         s = """s.long = True"""
         self.unchanged(s)
 
-        s = """def long(): pass"""
+        s = """eleza long(): pass"""
         self.unchanged(s)
 
-        s = """class long(): pass"""
+        s = """kundi long(): pass"""
         self.unchanged(s)
 
-        s = """def f(long): pass"""
+        s = """eleza f(long): pass"""
         self.unchanged(s)
 
-        s = """def f(g, long): pass"""
+        s = """eleza f(g, long): pass"""
         self.unchanged(s)
 
-        s = """def f(x, long=True): pass"""
+        s = """eleza f(x, long=True): pass"""
         self.unchanged(s)
 
-    def test_prefix_preservation(self):
+    eleza test_prefix_preservation(self):
         b = """x =   long(  x  )"""
         a = """x =   int(  x  )"""
         self.check(b, a)
 
 
-class Test_execfile(FixerTestCase):
+kundi Test_execfile(FixerTestCase):
     fixer = "execfile"
 
-    def test_conversion(self):
+    eleza test_conversion(self):
         b = """execfile("fn")"""
         a = """exec(compile(open("fn", "rb").read(), "fn", 'exec'))"""
         self.check(b, a)
@@ -1224,7 +1224,7 @@ class Test_execfile(FixerTestCase):
         a = """exec(compile(open("fn", "rb").read(), "fn", 'exec'), globals=glob, locals=loc)"""
         self.check(b, a)
 
-    def test_spacing(self):
+    eleza test_spacing(self):
         b = """execfile( "fn" )"""
         a = """exec(compile(open( "fn", "rb" ).read(), "fn", 'exec'))"""
         self.check(b, a)
@@ -1234,10 +1234,10 @@ class Test_execfile(FixerTestCase):
         self.check(b, a)
 
 
-class Test_isinstance(FixerTestCase):
+kundi Test_isinstance(FixerTestCase):
     fixer = "isinstance"
 
-    def test_remove_multiple_items(self):
+    eleza test_remove_multiple_items(self):
         b = """isinstance(x, (int, int, int))"""
         a = """isinstance(x, int)"""
         self.check(b, a)
@@ -1254,43 +1254,43 @@ class Test_isinstance(FixerTestCase):
         a = """isinstance(foo() + bar(), (x(), y(), x(), int))"""
         self.check(b, a)
 
-    def test_prefix_preservation(self):
-        b = """if    isinstance(  foo(), (  bar, bar, baz )) : pass"""
-        a = """if    isinstance(  foo(), (  bar, baz )) : pass"""
+    eleza test_prefix_preservation(self):
+        b = """ikiwa    isinstance(  foo(), (  bar, bar, baz )) : pass"""
+        a = """ikiwa    isinstance(  foo(), (  bar, baz )) : pass"""
         self.check(b, a)
 
-    def test_unchanged(self):
+    eleza test_unchanged(self):
         self.unchanged("isinstance(x, (str, int))")
 
-class Test_dict(FixerTestCase):
+kundi Test_dict(FixerTestCase):
     fixer = "dict"
 
-    def test_prefix_preservation(self):
-        b = "if   d. keys  (  )  : pass"
-        a = "if   list(d. keys  (  ))  : pass"
+    eleza test_prefix_preservation(self):
+        b = "ikiwa   d. keys  (  )  : pass"
+        a = "ikiwa   list(d. keys  (  ))  : pass"
         self.check(b, a)
 
-        b = "if   d. items  (  )  : pass"
-        a = "if   list(d. items  (  ))  : pass"
+        b = "ikiwa   d. items  (  )  : pass"
+        a = "ikiwa   list(d. items  (  ))  : pass"
         self.check(b, a)
 
-        b = "if   d. iterkeys  ( )  : pass"
-        a = "if   iter(d. keys  ( ))  : pass"
+        b = "ikiwa   d. iterkeys  ( )  : pass"
+        a = "ikiwa   iter(d. keys  ( ))  : pass"
         self.check(b, a)
 
         b = "[i for i in    d.  iterkeys(  )  ]"
         a = "[i for i in    d.  keys(  )  ]"
         self.check(b, a)
 
-        b = "if   d. viewkeys  ( )  : pass"
-        a = "if   d. keys  ( )  : pass"
+        b = "ikiwa   d. viewkeys  ( )  : pass"
+        a = "ikiwa   d. keys  ( )  : pass"
         self.check(b, a)
 
         b = "[i for i in    d.  viewkeys(  )  ]"
         a = "[i for i in    d.  keys(  )  ]"
         self.check(b, a)
 
-    def test_trailing_comment(self):
+    eleza test_trailing_comment(self):
         b = "d.keys() # foo"
         a = "list(d.keys()) # foo"
         self.check(b, a)
@@ -1319,7 +1319,7 @@ class Test_dict(FixerTestCase):
         a = "d.items()  # foo"
         self.check(b, a)
 
-    def test_unchanged(self):
+    eleza test_unchanged(self):
         for wrapper in fixer_util.consuming_calls:
             s = "s = %s(d.keys())" % wrapper
             self.unchanged(s)
@@ -1330,7 +1330,7 @@ class Test_dict(FixerTestCase):
             s = "s = %s(d.items())" % wrapper
             self.unchanged(s)
 
-    def test_01(self):
+    eleza test_01(self):
         b = "d.keys()"
         a = "list(d.keys())"
         self.check(b, a)
@@ -1339,163 +1339,163 @@ class Test_dict(FixerTestCase):
         a = "list(a[0].foo().keys())"
         self.check(b, a)
 
-    def test_02(self):
+    eleza test_02(self):
         b = "d.items()"
         a = "list(d.items())"
         self.check(b, a)
 
-    def test_03(self):
+    eleza test_03(self):
         b = "d.values()"
         a = "list(d.values())"
         self.check(b, a)
 
-    def test_04(self):
+    eleza test_04(self):
         b = "d.iterkeys()"
         a = "iter(d.keys())"
         self.check(b, a)
 
-    def test_05(self):
+    eleza test_05(self):
         b = "d.iteritems()"
         a = "iter(d.items())"
         self.check(b, a)
 
-    def test_06(self):
+    eleza test_06(self):
         b = "d.itervalues()"
         a = "iter(d.values())"
         self.check(b, a)
 
-    def test_07(self):
+    eleza test_07(self):
         s = "list(d.keys())"
         self.unchanged(s)
 
-    def test_08(self):
+    eleza test_08(self):
         s = "sorted(d.keys())"
         self.unchanged(s)
 
-    def test_09(self):
+    eleza test_09(self):
         b = "iter(d.keys())"
         a = "iter(list(d.keys()))"
         self.check(b, a)
 
-    def test_10(self):
+    eleza test_10(self):
         b = "foo(d.keys())"
         a = "foo(list(d.keys()))"
         self.check(b, a)
 
-    def test_11(self):
+    eleza test_11(self):
         b = "for i in d.keys(): print i"
         a = "for i in list(d.keys()): print i"
         self.check(b, a)
 
-    def test_12(self):
+    eleza test_12(self):
         b = "for i in d.iterkeys(): print i"
         a = "for i in d.keys(): print i"
         self.check(b, a)
 
-    def test_13(self):
+    eleza test_13(self):
         b = "[i for i in d.keys()]"
         a = "[i for i in list(d.keys())]"
         self.check(b, a)
 
-    def test_14(self):
+    eleza test_14(self):
         b = "[i for i in d.iterkeys()]"
         a = "[i for i in d.keys()]"
         self.check(b, a)
 
-    def test_15(self):
+    eleza test_15(self):
         b = "(i for i in d.keys())"
         a = "(i for i in list(d.keys()))"
         self.check(b, a)
 
-    def test_16(self):
+    eleza test_16(self):
         b = "(i for i in d.iterkeys())"
         a = "(i for i in d.keys())"
         self.check(b, a)
 
-    def test_17(self):
+    eleza test_17(self):
         b = "iter(d.iterkeys())"
         a = "iter(d.keys())"
         self.check(b, a)
 
-    def test_18(self):
+    eleza test_18(self):
         b = "list(d.iterkeys())"
         a = "list(d.keys())"
         self.check(b, a)
 
-    def test_19(self):
+    eleza test_19(self):
         b = "sorted(d.iterkeys())"
         a = "sorted(d.keys())"
         self.check(b, a)
 
-    def test_20(self):
+    eleza test_20(self):
         b = "foo(d.iterkeys())"
         a = "foo(iter(d.keys()))"
         self.check(b, a)
 
-    def test_21(self):
+    eleza test_21(self):
         b = "print h.iterkeys().next()"
         a = "print iter(h.keys()).next()"
         self.check(b, a)
 
-    def test_22(self):
+    eleza test_22(self):
         b = "print h.keys()[0]"
         a = "print list(h.keys())[0]"
         self.check(b, a)
 
-    def test_23(self):
+    eleza test_23(self):
         b = "print list(h.iterkeys().next())"
         a = "print list(iter(h.keys()).next())"
         self.check(b, a)
 
-    def test_24(self):
+    eleza test_24(self):
         b = "for x in h.keys()[0]: print x"
         a = "for x in list(h.keys())[0]: print x"
         self.check(b, a)
 
-    def test_25(self):
+    eleza test_25(self):
         b = "d.viewkeys()"
         a = "d.keys()"
         self.check(b, a)
 
-    def test_26(self):
+    eleza test_26(self):
         b = "d.viewitems()"
         a = "d.items()"
         self.check(b, a)
 
-    def test_27(self):
+    eleza test_27(self):
         b = "d.viewvalues()"
         a = "d.values()"
         self.check(b, a)
 
-    def test_28(self):
+    eleza test_28(self):
         b = "[i for i in d.viewkeys()]"
         a = "[i for i in d.keys()]"
         self.check(b, a)
 
-    def test_29(self):
+    eleza test_29(self):
         b = "(i for i in d.viewkeys())"
         a = "(i for i in d.keys())"
         self.check(b, a)
 
-    def test_30(self):
+    eleza test_30(self):
         b = "iter(d.viewkeys())"
         a = "iter(d.keys())"
         self.check(b, a)
 
-    def test_31(self):
+    eleza test_31(self):
         b = "list(d.viewkeys())"
         a = "list(d.keys())"
         self.check(b, a)
 
-    def test_32(self):
+    eleza test_32(self):
         b = "sorted(d.viewkeys())"
         a = "sorted(d.keys())"
         self.check(b, a)
 
-class Test_xrange(FixerTestCase):
+kundi Test_xrange(FixerTestCase):
     fixer = "xrange"
 
-    def test_prefix_preservation(self):
+    eleza test_prefix_preservation(self):
         b = """x =    xrange(  10  )"""
         a = """x =    range(  10  )"""
         self.check(b, a)
@@ -1508,22 +1508,22 @@ class Test_xrange(FixerTestCase):
         a = """x = range(  0  ,  10 ,  2 )"""
         self.check(b, a)
 
-    def test_single_arg(self):
+    eleza test_single_arg(self):
         b = """x = xrange(10)"""
         a = """x = range(10)"""
         self.check(b, a)
 
-    def test_two_args(self):
+    eleza test_two_args(self):
         b = """x = xrange(1, 10)"""
         a = """x = range(1, 10)"""
         self.check(b, a)
 
-    def test_three_args(self):
+    eleza test_three_args(self):
         b = """x = xrange(0, 10, 2)"""
         a = """x = range(0, 10, 2)"""
         self.check(b, a)
 
-    def test_wrap_in_list(self):
+    eleza test_wrap_in_list(self):
         b = """x = range(10, 3, 9)"""
         a = """x = list(range(10, 3, 9))"""
         self.check(b, a)
@@ -1544,7 +1544,7 @@ class Test_xrange(FixerTestCase):
         a = """x = list(range(10))  [3]"""
         self.check(b, a)
 
-    def test_xrange_in_for(self):
+    eleza test_xrange_in_for(self):
         b = """for i in xrange(10):\n    j=i"""
         a = """for i in range(10):\n    j=i"""
         self.check(b, a)
@@ -1553,32 +1553,32 @@ class Test_xrange(FixerTestCase):
         a = """[i for i in range(10)]"""
         self.check(b, a)
 
-    def test_range_in_for(self):
+    eleza test_range_in_for(self):
         self.unchanged("for i in range(10): pass")
         self.unchanged("[i for i in range(10)]")
 
-    def test_in_contains_test(self):
+    eleza test_in_contains_test(self):
         self.unchanged("x in range(10, 3, 9)")
 
-    def test_in_consuming_context(self):
+    eleza test_in_consuming_context(self):
         for call in fixer_util.consuming_calls:
             self.unchanged("a = %s(range(10))" % call)
 
-class Test_xrange_with_reduce(FixerTestCase):
+kundi Test_xrange_with_reduce(FixerTestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         super(Test_xrange_with_reduce, self).setUp(["xrange", "reduce"])
 
-    def test_double_transform(self):
+    eleza test_double_transform(self):
         b = """reduce(x, xrange(5))"""
         a = """kutoka functools agiza reduce
 reduce(x, range(5))"""
         self.check(b, a)
 
-class Test_raw_input(FixerTestCase):
+kundi Test_raw_input(FixerTestCase):
     fixer = "raw_input"
 
-    def test_prefix_preservation(self):
+    eleza test_prefix_preservation(self):
         b = """x =    raw_input(   )"""
         a = """x =    input(   )"""
         self.check(b, a)
@@ -1587,47 +1587,47 @@ class Test_raw_input(FixerTestCase):
         a = """x = input(   ''   )"""
         self.check(b, a)
 
-    def test_1(self):
+    eleza test_1(self):
         b = """x = raw_input()"""
         a = """x = input()"""
         self.check(b, a)
 
-    def test_2(self):
+    eleza test_2(self):
         b = """x = raw_input('')"""
         a = """x = input('')"""
         self.check(b, a)
 
-    def test_3(self):
+    eleza test_3(self):
         b = """x = raw_input('prompt')"""
         a = """x = input('prompt')"""
         self.check(b, a)
 
-    def test_4(self):
+    eleza test_4(self):
         b = """x = raw_input(foo(a) + 6)"""
         a = """x = input(foo(a) + 6)"""
         self.check(b, a)
 
-    def test_5(self):
+    eleza test_5(self):
         b = """x = raw_input(invite).split()"""
         a = """x = input(invite).split()"""
         self.check(b, a)
 
-    def test_6(self):
+    eleza test_6(self):
         b = """x = raw_input(invite) . split ()"""
         a = """x = input(invite) . split ()"""
         self.check(b, a)
 
-    def test_8(self):
+    eleza test_8(self):
         b = "x = int(raw_input())"
         a = "x = int(input())"
         self.check(b, a)
 
-class Test_funcattrs(FixerTestCase):
+kundi Test_funcattrs(FixerTestCase):
     fixer = "funcattrs"
 
     attrs = ["closure", "doc", "name", "defaults", "code", "globals", "dict"]
 
-    def test(self):
+    eleza test(self):
         for attr in self.attrs:
             b = "a.func_%s" % attr
             a = "a.__%s__" % attr
@@ -1637,7 +1637,7 @@ class Test_funcattrs(FixerTestCase):
             a = "self.foo.__%s__.foo_bar" % attr
             self.check(b, a)
 
-    def test_unchanged(self):
+    eleza test_unchanged(self):
         for attr in self.attrs:
             s = "foo(func_%s + 5)" % attr
             self.unchanged(s)
@@ -1648,10 +1648,10 @@ class Test_funcattrs(FixerTestCase):
             s = "f(foo.__%s__.foo)" % attr
             self.unchanged(s)
 
-class Test_xreadlines(FixerTestCase):
+kundi Test_xreadlines(FixerTestCase):
     fixer = "xreadlines"
 
-    def test_call(self):
+    eleza test_call(self):
         b = "for x in f.xreadlines(): pass"
         a = "for x in f: pass"
         self.check(b, a)
@@ -1664,7 +1664,7 @@ class Test_xreadlines(FixerTestCase):
         a = "for x in (5 + foo()): pass"
         self.check(b, a)
 
-    def test_attr_ref(self):
+    eleza test_attr_ref(self):
         b = "foo(f.xreadlines + 5)"
         a = "foo(f.__iter__ + 5)"
         self.check(b, a)
@@ -1677,7 +1677,7 @@ class Test_xreadlines(FixerTestCase):
         a = "foo((5 + f()).__iter__ + 5)"
         self.check(b, a)
 
-    def test_unchanged(self):
+    eleza test_unchanged(self):
         s = "for x in f.xreadlines(5): pass"
         self.unchanged(s)
 
@@ -1691,9 +1691,9 @@ class Test_xreadlines(FixerTestCase):
         self.unchanged(s)
 
 
-class ImportsFixerTests:
+kundi ImportsFixerTests:
 
-    def test_import_module(self):
+    eleza test_import_module(self):
         for old, new in self.modules.items():
             b = "agiza %s" % old
             a = "agiza %s" % new
@@ -1703,7 +1703,7 @@ class ImportsFixerTests:
             a = "agiza foo, %s, bar" % new
             self.check(b, a)
 
-    def test_import_from(self):
+    eleza test_import_kutoka(self):
         for old, new in self.modules.items():
             b = "kutoka %s agiza foo" % old
             a = "kutoka %s agiza foo" % new
@@ -1717,7 +1717,7 @@ class ImportsFixerTests:
             a = "kutoka %s agiza (yes, no)" % new
             self.check(b, a)
 
-    def test_import_module_as(self):
+    eleza test_import_module_as(self):
         for old, new in self.modules.items():
             b = "agiza %s as foo_bar" % old
             a = "agiza %s as foo_bar" % new
@@ -1727,19 +1727,19 @@ class ImportsFixerTests:
             a = "agiza %s as foo_bar" % new
             self.check(b, a)
 
-    def test_import_from_as(self):
+    eleza test_import_kutoka_as(self):
         for old, new in self.modules.items():
             b = "kutoka %s agiza foo as bar" % old
             a = "kutoka %s agiza foo as bar" % new
             self.check(b, a)
 
-    def test_star(self):
+    eleza test_star(self):
         for old, new in self.modules.items():
             b = "kutoka %s agiza *" % old
             a = "kutoka %s agiza *" % new
             self.check(b, a)
 
-    def test_import_module_usage(self):
+    eleza test_import_module_usage(self):
         for old, new in self.modules.items():
             b = """
                 agiza %s
@@ -1762,7 +1762,7 @@ class ImportsFixerTests:
             self.check(b, a)
 
             s = """
-                def f():
+                eleza f():
                     %s.method()
                 """ % (old,)
             self.unchanged(s)
@@ -1789,16 +1789,16 @@ class ImportsFixerTests:
             self.check(b, a)
 
 
-class Test_agizas(FixerTestCase, ImportsFixerTests):
+kundi Test_agizas(FixerTestCase, ImportsFixerTests):
     fixer = "agizas"
     kutoka ..fixes.fix_agizas agiza MAPPING as modules
 
-    def test_multiple_agizas(self):
+    eleza test_multiple_agizas(self):
         b = """agiza urlparse, cStringIO"""
         a = """agiza urllib.parse, io"""
         self.check(b, a)
 
-    def test_multiple_agizas_as(self):
+    eleza test_multiple_agizas_as(self):
         b = """
             agiza copy_reg as bar, HTMLParser as foo, urlparse
             s = urlparse.spam(bar.foo())
@@ -1810,14 +1810,14 @@ class Test_agizas(FixerTestCase, ImportsFixerTests):
         self.check(b, a)
 
 
-class Test_agizas2(FixerTestCase, ImportsFixerTests):
+kundi Test_agizas2(FixerTestCase, ImportsFixerTests):
     fixer = "agizas2"
     kutoka ..fixes.fix_agizas2 agiza MAPPING as modules
 
 
-class Test_agizas_fixer_order(FixerTestCase, ImportsFixerTests):
+kundi Test_agizas_fixer_order(FixerTestCase, ImportsFixerTests):
 
-    def setUp(self):
+    eleza setUp(self):
         super(Test_agizas_fixer_order, self).setUp(['agizas', 'agizas2'])
         kutoka ..fixes.fix_agizas2 agiza MAPPING as mapping2
         self.modules = mapping2.copy()
@@ -1825,23 +1825,23 @@ class Test_agizas_fixer_order(FixerTestCase, ImportsFixerTests):
         for key in ('dbhash', 'dumbdbm', 'dbm', 'gdbm'):
             self.modules[key] = mapping1[key]
 
-    def test_after_local_agizas_refactoring(self):
+    eleza test_after_local_agizas_refactoring(self):
         for fix in ("agizas", "agizas2"):
             self.fixer = fix
             self.assert_runs_after("agiza")
 
 
-class Test_urllib(FixerTestCase):
+kundi Test_urllib(FixerTestCase):
     fixer = "urllib"
     kutoka ..fixes.fix_urllib agiza MAPPING as modules
 
-    def test_import_module(self):
+    eleza test_import_module(self):
         for old, changes in self.modules.items():
             b = "agiza %s" % old
             a = "agiza %s" % ", ".join(map(itemgetter(0), changes))
             self.check(b, a)
 
-    def test_import_from(self):
+    eleza test_import_kutoka(self):
         for old, changes in self.modules.items():
             all_members = []
             for new, members in changes:
@@ -1867,12 +1867,12 @@ class Test_urllib(FixerTestCase):
                             for (new, members) in changes])
             self.check(b, a)
 
-    def test_import_module_as(self):
+    eleza test_import_module_as(self):
         for old in self.modules:
             s = "agiza %s as foo" % old
             self.warns_unchanged(s, "This module is now multiple modules")
 
-    def test_import_from_as(self):
+    eleza test_import_kutoka_as(self):
         for old, changes in self.modules.items():
             for new, members in changes:
                 for member in members:
@@ -1883,30 +1883,30 @@ class Test_urllib(FixerTestCase):
                     a = "kutoka %s agiza %s as blah, %s" % (new, member, member)
                     self.check(b, a)
 
-    def test_star(self):
+    eleza test_star(self):
         for old in self.modules:
             s = "kutoka %s agiza *" % old
             self.warns_unchanged(s, "Cannot handle star agizas")
 
-    def test_indented(self):
+    eleza test_indented(self):
         b = """
-def foo():
+eleza foo():
     kutoka urllib agiza urlencode, urlopen
 """
         a = """
-def foo():
+eleza foo():
     kutoka urllib.parse agiza urlencode
     kutoka urllib.request agiza urlopen
 """
         self.check(b, a)
 
         b = """
-def foo():
+eleza foo():
     other()
     kutoka urllib agiza urlencode, urlopen
 """
         a = """
-def foo():
+eleza foo():
     other()
     kutoka urllib.parse agiza urlencode
     kutoka urllib.request agiza urlopen
@@ -1915,7 +1915,7 @@ def foo():
 
 
 
-    def test_import_module_usage(self):
+    eleza test_import_module_usage(self):
         for old, changes in self.modules.items():
             for new, members in changes:
                 for member in members:
@@ -1941,10 +1941,10 @@ def foo():
                     self.check(b, a)
 
 
-class Test_input(FixerTestCase):
+kundi Test_input(FixerTestCase):
     fixer = "input"
 
-    def test_prefix_preservation(self):
+    eleza test_prefix_preservation(self):
         b = """x =   input(   )"""
         a = """x =   eval(input(   ))"""
         self.check(b, a)
@@ -1953,12 +1953,12 @@ class Test_input(FixerTestCase):
         a = """x = eval(input(   ''   ))"""
         self.check(b, a)
 
-    def test_trailing_comment(self):
+    eleza test_trailing_comment(self):
         b = """x = input()  #  foo"""
         a = """x = eval(input())  #  foo"""
         self.check(b, a)
 
-    def test_idempotency(self):
+    eleza test_idempotency(self):
         s = """x = eval(input())"""
         self.unchanged(s)
 
@@ -1968,147 +1968,147 @@ class Test_input(FixerTestCase):
         s = """x = eval(input(foo(5) + 9))"""
         self.unchanged(s)
 
-    def test_1(self):
+    eleza test_1(self):
         b = """x = input()"""
         a = """x = eval(input())"""
         self.check(b, a)
 
-    def test_2(self):
+    eleza test_2(self):
         b = """x = input('')"""
         a = """x = eval(input(''))"""
         self.check(b, a)
 
-    def test_3(self):
+    eleza test_3(self):
         b = """x = input('prompt')"""
         a = """x = eval(input('prompt'))"""
         self.check(b, a)
 
-    def test_4(self):
+    eleza test_4(self):
         b = """x = input(foo(5) + 9)"""
         a = """x = eval(input(foo(5) + 9))"""
         self.check(b, a)
 
-class Test_tuple_params(FixerTestCase):
+kundi Test_tuple_params(FixerTestCase):
     fixer = "tuple_params"
 
-    def test_unchanged_1(self):
-        s = """def foo(): pass"""
+    eleza test_unchanged_1(self):
+        s = """eleza foo(): pass"""
         self.unchanged(s)
 
-    def test_unchanged_2(self):
-        s = """def foo(a, b, c): pass"""
+    eleza test_unchanged_2(self):
+        s = """eleza foo(a, b, c): pass"""
         self.unchanged(s)
 
-    def test_unchanged_3(self):
-        s = """def foo(a=3, b=4, c=5): pass"""
+    eleza test_unchanged_3(self):
+        s = """eleza foo(a=3, b=4, c=5): pass"""
         self.unchanged(s)
 
-    def test_1(self):
+    eleza test_1(self):
         b = """
-            def foo(((a, b), c)):
+            eleza foo(((a, b), c)):
                 x = 5"""
 
         a = """
-            def foo(xxx_todo_changeme):
+            eleza foo(xxx_todo_changeme):
                 ((a, b), c) = xxx_todo_changeme
                 x = 5"""
         self.check(b, a)
 
-    def test_2(self):
+    eleza test_2(self):
         b = """
-            def foo(((a, b), c), d):
+            eleza foo(((a, b), c), d):
                 x = 5"""
 
         a = """
-            def foo(xxx_todo_changeme, d):
+            eleza foo(xxx_todo_changeme, d):
                 ((a, b), c) = xxx_todo_changeme
                 x = 5"""
         self.check(b, a)
 
-    def test_3(self):
+    eleza test_3(self):
         b = """
-            def foo(((a, b), c), d) -> e:
+            eleza foo(((a, b), c), d) -> e:
                 x = 5"""
 
         a = """
-            def foo(xxx_todo_changeme, d) -> e:
+            eleza foo(xxx_todo_changeme, d) -> e:
                 ((a, b), c) = xxx_todo_changeme
                 x = 5"""
         self.check(b, a)
 
-    def test_semicolon(self):
+    eleza test_semicolon(self):
         b = """
-            def foo(((a, b), c)): x = 5; y = 7"""
+            eleza foo(((a, b), c)): x = 5; y = 7"""
 
         a = """
-            def foo(xxx_todo_changeme): ((a, b), c) = xxx_todo_changeme; x = 5; y = 7"""
+            eleza foo(xxx_todo_changeme): ((a, b), c) = xxx_todo_changeme; x = 5; y = 7"""
         self.check(b, a)
 
-    def test_keywords(self):
+    eleza test_keywords(self):
         b = """
-            def foo(((a, b), c), d, e=5) -> z:
+            eleza foo(((a, b), c), d, e=5) -> z:
                 x = 5"""
 
         a = """
-            def foo(xxx_todo_changeme, d, e=5) -> z:
+            eleza foo(xxx_todo_changeme, d, e=5) -> z:
                 ((a, b), c) = xxx_todo_changeme
                 x = 5"""
         self.check(b, a)
 
-    def test_varargs(self):
+    eleza test_varargs(self):
         b = """
-            def foo(((a, b), c), d, *vargs, **kwargs) -> z:
+            eleza foo(((a, b), c), d, *vargs, **kwargs) -> z:
                 x = 5"""
 
         a = """
-            def foo(xxx_todo_changeme, d, *vargs, **kwargs) -> z:
+            eleza foo(xxx_todo_changeme, d, *vargs, **kwargs) -> z:
                 ((a, b), c) = xxx_todo_changeme
                 x = 5"""
         self.check(b, a)
 
-    def test_multi_1(self):
+    eleza test_multi_1(self):
         b = """
-            def foo(((a, b), c), (d, e, f)) -> z:
+            eleza foo(((a, b), c), (d, e, f)) -> z:
                 x = 5"""
 
         a = """
-            def foo(xxx_todo_changeme, xxx_todo_changeme1) -> z:
+            eleza foo(xxx_todo_changeme, xxx_todo_changeme1) -> z:
                 ((a, b), c) = xxx_todo_changeme
                 (d, e, f) = xxx_todo_changeme1
                 x = 5"""
         self.check(b, a)
 
-    def test_multi_2(self):
+    eleza test_multi_2(self):
         b = """
-            def foo(x, ((a, b), c), d, (e, f, g), y) -> z:
+            eleza foo(x, ((a, b), c), d, (e, f, g), y) -> z:
                 x = 5"""
 
         a = """
-            def foo(x, xxx_todo_changeme, d, xxx_todo_changeme1, y) -> z:
+            eleza foo(x, xxx_todo_changeme, d, xxx_todo_changeme1, y) -> z:
                 ((a, b), c) = xxx_todo_changeme
                 (e, f, g) = xxx_todo_changeme1
                 x = 5"""
         self.check(b, a)
 
-    def test_docstring(self):
+    eleza test_docstring(self):
         b = """
-            def foo(((a, b), c), (d, e, f)) -> z:
+            eleza foo(((a, b), c), (d, e, f)) -> z:
                 "foo foo foo foo"
                 x = 5"""
 
         a = """
-            def foo(xxx_todo_changeme, xxx_todo_changeme1) -> z:
+            eleza foo(xxx_todo_changeme, xxx_todo_changeme1) -> z:
                 "foo foo foo foo"
                 ((a, b), c) = xxx_todo_changeme
                 (d, e, f) = xxx_todo_changeme1
                 x = 5"""
         self.check(b, a)
 
-    def test_lambda_no_change(self):
+    eleza test_lambda_no_change(self):
         s = """lambda x: x + 5"""
         self.unchanged(s)
 
-    def test_lambda_parens_single_arg(self):
+    eleza test_lambda_parens_single_arg(self):
         b = """lambda (x): x + 5"""
         a = """lambda x: x + 5"""
         self.check(b, a)
@@ -2125,7 +2125,7 @@ class Test_tuple_params(FixerTestCase):
         a = """lambda x: x + 5"""
         self.check(b, a)
 
-    def test_lambda_simple(self):
+    eleza test_lambda_simple(self):
         b = """lambda (x, y): x + f(y)"""
         a = """lambda x_y: x_y[0] + f(x_y[1])"""
         self.check(b, a)
@@ -2142,7 +2142,7 @@ class Test_tuple_params(FixerTestCase):
         a = """lambda x_y: x_y[0] + f(x_y[1])"""
         self.check(b, a)
 
-    def test_lambda_one_tuple(self):
+    eleza test_lambda_one_tuple(self):
         b = """lambda (x,): x + f(x)"""
         a = """lambda x1: x1[0] + f(x1[0])"""
         self.check(b, a)
@@ -2151,17 +2151,17 @@ class Test_tuple_params(FixerTestCase):
         a = """lambda x1: x1[0] + f(x1[0])"""
         self.check(b, a)
 
-    def test_lambda_simple_multi_use(self):
+    eleza test_lambda_simple_multi_use(self):
         b = """lambda (x, y): x + x + f(x) + x"""
         a = """lambda x_y: x_y[0] + x_y[0] + f(x_y[0]) + x_y[0]"""
         self.check(b, a)
 
-    def test_lambda_simple_reverse(self):
+    eleza test_lambda_simple_reverse(self):
         b = """lambda (x, y): y + x"""
         a = """lambda x_y: x_y[1] + x_y[0]"""
         self.check(b, a)
 
-    def test_lambda_nested(self):
+    eleza test_lambda_nested(self):
         b = """lambda (x, (y, z)): x + y + z"""
         a = """lambda x_y_z: x_y_z[0] + x_y_z[1][0] + x_y_z[1][1]"""
         self.check(b, a)
@@ -2170,33 +2170,33 @@ class Test_tuple_params(FixerTestCase):
         a = """lambda x_y_z: x_y_z[0] + x_y_z[1][0] + x_y_z[1][1]"""
         self.check(b, a)
 
-    def test_lambda_nested_multi_use(self):
+    eleza test_lambda_nested_multi_use(self):
         b = """lambda (x, (y, z)): x + y + f(y)"""
         a = """lambda x_y_z: x_y_z[0] + x_y_z[1][0] + f(x_y_z[1][0])"""
         self.check(b, a)
 
-class Test_methodattrs(FixerTestCase):
+kundi Test_methodattrs(FixerTestCase):
     fixer = "methodattrs"
 
     attrs = ["func", "self", "class"]
 
-    def test(self):
+    eleza test(self):
         for attr in self.attrs:
             b = "a.im_%s" % attr
-            if attr == "class":
+            ikiwa attr == "class":
                 a = "a.__self__.__class__"
             else:
                 a = "a.__%s__" % attr
             self.check(b, a)
 
             b = "self.foo.im_%s.foo_bar" % attr
-            if attr == "class":
+            ikiwa attr == "class":
                 a = "self.foo.__self__.__class__.foo_bar"
             else:
                 a = "self.foo.__%s__.foo_bar" % attr
             self.check(b, a)
 
-    def test_unchanged(self):
+    eleza test_unchanged(self):
         for attr in self.attrs:
             s = "foo(im_%s + 5)" % attr
             self.unchanged(s)
@@ -2207,40 +2207,40 @@ class Test_methodattrs(FixerTestCase):
             s = "f(foo.__%s__.foo)" % attr
             self.unchanged(s)
 
-class Test_next(FixerTestCase):
+kundi Test_next(FixerTestCase):
     fixer = "next"
 
-    def test_1(self):
+    eleza test_1(self):
         b = """it.next()"""
         a = """next(it)"""
         self.check(b, a)
 
-    def test_2(self):
+    eleza test_2(self):
         b = """a.b.c.d.next()"""
         a = """next(a.b.c.d)"""
         self.check(b, a)
 
-    def test_3(self):
+    eleza test_3(self):
         b = """(a + b).next()"""
         a = """next((a + b))"""
         self.check(b, a)
 
-    def test_4(self):
+    eleza test_4(self):
         b = """a().next()"""
         a = """next(a())"""
         self.check(b, a)
 
-    def test_5(self):
+    eleza test_5(self):
         b = """a().next() + b"""
         a = """next(a()) + b"""
         self.check(b, a)
 
-    def test_6(self):
+    eleza test_6(self):
         b = """c(      a().next() + b)"""
         a = """c(      next(a()) + b)"""
         self.check(b, a)
 
-    def test_prefix_preservation_1(self):
+    eleza test_prefix_preservation_1(self):
         b = """
             for a in b:
                 foo(a)
@@ -2253,7 +2253,7 @@ class Test_next(FixerTestCase):
             """
         self.check(b, a)
 
-    def test_prefix_preservation_2(self):
+    eleza test_prefix_preservation_2(self):
         b = """
             for a in b:
                 foo(a) # abc
@@ -2268,7 +2268,7 @@ class Test_next(FixerTestCase):
             """
         self.check(b, a)
 
-    def test_prefix_preservation_3(self):
+    eleza test_prefix_preservation_3(self):
         b = """
             next = 5
             for a in b:
@@ -2283,7 +2283,7 @@ class Test_next(FixerTestCase):
             """
         self.check(b, a, ignore_warnings=True)
 
-    def test_prefix_preservation_4(self):
+    eleza test_prefix_preservation_4(self):
         b = """
             next = 5
             for a in b:
@@ -2300,7 +2300,7 @@ class Test_next(FixerTestCase):
             """
         self.check(b, a, ignore_warnings=True)
 
-    def test_prefix_preservation_5(self):
+    eleza test_prefix_preservation_5(self):
         b = """
             next = 5
             for a in b:
@@ -2315,7 +2315,7 @@ class Test_next(FixerTestCase):
             """
         self.check(b, a, ignore_warnings=True)
 
-    def test_prefix_preservation_6(self):
+    eleza test_prefix_preservation_6(self):
         b = """
             for a in b:
                 foo(foo(a), # abc
@@ -2328,315 +2328,315 @@ class Test_next(FixerTestCase):
             """
         self.check(b, a)
 
-    def test_method_1(self):
+    eleza test_method_1(self):
         b = """
-            class A:
-                def next(self):
+            kundi A:
+                eleza next(self):
                     pass
             """
         a = """
-            class A:
-                def __next__(self):
+            kundi A:
+                eleza __next__(self):
                     pass
             """
         self.check(b, a)
 
-    def test_method_2(self):
+    eleza test_method_2(self):
         b = """
-            class A(object):
-                def next(self):
+            kundi A(object):
+                eleza next(self):
                     pass
             """
         a = """
-            class A(object):
-                def __next__(self):
+            kundi A(object):
+                eleza __next__(self):
                     pass
             """
         self.check(b, a)
 
-    def test_method_3(self):
+    eleza test_method_3(self):
         b = """
-            class A:
-                def next(x):
+            kundi A:
+                eleza next(x):
                     pass
             """
         a = """
-            class A:
-                def __next__(x):
+            kundi A:
+                eleza __next__(x):
                     pass
             """
         self.check(b, a)
 
-    def test_method_4(self):
+    eleza test_method_4(self):
         b = """
-            class A:
-                def __init__(self, foo):
+            kundi A:
+                eleza __init__(self, foo):
                     self.foo = foo
 
-                def next(self):
+                eleza next(self):
                     pass
 
-                def __iter__(self):
-                    return self
+                eleza __iter__(self):
+                    rudisha self
             """
         a = """
-            class A:
-                def __init__(self, foo):
+            kundi A:
+                eleza __init__(self, foo):
                     self.foo = foo
 
-                def __next__(self):
+                eleza __next__(self):
                     pass
 
-                def __iter__(self):
-                    return self
+                eleza __iter__(self):
+                    rudisha self
             """
         self.check(b, a)
 
-    def test_method_unchanged(self):
+    eleza test_method_unchanged(self):
         s = """
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.unchanged(s)
 
-    def test_shadowing_assign_simple(self):
+    eleza test_shadowing_assign_simple(self):
         s = """
             next = foo
 
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_shadowing_assign_tuple_1(self):
+    eleza test_shadowing_assign_tuple_1(self):
         s = """
             (next, a) = foo
 
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_shadowing_assign_tuple_2(self):
+    eleza test_shadowing_assign_tuple_2(self):
         s = """
             (a, (b, (next, c)), a) = foo
 
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_shadowing_assign_list_1(self):
+    eleza test_shadowing_assign_list_1(self):
         s = """
             [next, a] = foo
 
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_shadowing_assign_list_2(self):
+    eleza test_shadowing_assign_list_2(self):
         s = """
             [a, [b, [next, c]], a] = foo
 
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_builtin_assign(self):
+    eleza test_builtin_assign(self):
         s = """
-            def foo():
+            eleza foo():
                 __builtin__.next = foo
 
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_builtin_assign_in_tuple(self):
+    eleza test_builtin_assign_in_tuple(self):
         s = """
-            def foo():
+            eleza foo():
                 (a, __builtin__.next) = foo
 
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_builtin_assign_in_list(self):
+    eleza test_builtin_assign_in_list(self):
         s = """
-            def foo():
+            eleza foo():
                 [a, __builtin__.next] = foo
 
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_assign_to_next(self):
+    eleza test_assign_to_next(self):
         s = """
-            def foo():
+            eleza foo():
                 A.next = foo
 
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.unchanged(s)
 
-    def test_assign_to_next_in_tuple(self):
+    eleza test_assign_to_next_in_tuple(self):
         s = """
-            def foo():
+            eleza foo():
                 (a, A.next) = foo
 
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.unchanged(s)
 
-    def test_assign_to_next_in_list(self):
+    eleza test_assign_to_next_in_list(self):
         s = """
-            def foo():
+            eleza foo():
                 [a, A.next] = foo
 
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.unchanged(s)
 
-    def test_shadowing_import_1(self):
+    eleza test_shadowing_import_1(self):
         s = """
             agiza foo.bar as next
 
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_shadowing_import_2(self):
+    eleza test_shadowing_import_2(self):
         s = """
             agiza bar, bar.foo as next
 
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_shadowing_import_3(self):
+    eleza test_shadowing_import_3(self):
         s = """
             agiza bar, bar.foo as next, baz
 
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_shadowing_import_from_1(self):
+    eleza test_shadowing_import_kutoka_1(self):
         s = """
             kutoka x agiza next
 
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_shadowing_import_from_2(self):
+    eleza test_shadowing_import_kutoka_2(self):
         s = """
             kutoka x.a agiza next
 
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_shadowing_import_from_3(self):
+    eleza test_shadowing_import_kutoka_3(self):
         s = """
             kutoka x agiza a, next, b
 
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_shadowing_import_from_4(self):
+    eleza test_shadowing_import_kutoka_4(self):
         s = """
             kutoka x.a agiza a, next, b
 
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_shadowing_funcdef_1(self):
+    eleza test_shadowing_funcdef_1(self):
         s = """
-            def next(a):
+            eleza next(a):
                 pass
 
-            class A:
-                def next(self, a, b):
+            kundi A:
+                eleza next(self, a, b):
                     pass
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_shadowing_funcdef_2(self):
+    eleza test_shadowing_funcdef_2(self):
         b = """
-            def next(a):
+            eleza next(a):
                 pass
 
-            class A:
-                def next(self):
+            kundi A:
+                eleza next(self):
                     pass
 
             it.next()
             """
         a = """
-            def next(a):
+            eleza next(a):
                 pass
 
-            class A:
-                def __next__(self):
+            kundi A:
+                eleza __next__(self):
                     pass
 
             it.__next__()
             """
         self.warns(b, a, "Calls to builtin next() possibly shadowed")
 
-    def test_shadowing_global_1(self):
+    eleza test_shadowing_global_1(self):
         s = """
-            def f():
+            eleza f():
                 global next
                 next = 5
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_shadowing_global_2(self):
+    eleza test_shadowing_global_2(self):
         s = """
-            def f():
+            eleza f():
                 global a, next, b
                 next = 5
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_shadowing_for_simple(self):
+    eleza test_shadowing_for_simple(self):
         s = """
             for next in it():
                 pass
@@ -2646,7 +2646,7 @@ class Test_next(FixerTestCase):
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_shadowing_for_tuple_1(self):
+    eleza test_shadowing_for_tuple_1(self):
         s = """
             for next, b in it():
                 pass
@@ -2656,7 +2656,7 @@ class Test_next(FixerTestCase):
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_shadowing_for_tuple_2(self):
+    eleza test_shadowing_for_tuple_2(self):
         s = """
             for a, (next, c), b in it():
                 pass
@@ -2666,97 +2666,97 @@ class Test_next(FixerTestCase):
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    def test_noncall_access_1(self):
+    eleza test_noncall_access_1(self):
         b = """gnext = g.next"""
         a = """gnext = g.__next__"""
         self.check(b, a)
 
-    def test_noncall_access_2(self):
+    eleza test_noncall_access_2(self):
         b = """f(g.next + 5)"""
         a = """f(g.__next__ + 5)"""
         self.check(b, a)
 
-    def test_noncall_access_3(self):
+    eleza test_noncall_access_3(self):
         b = """f(g().next + 5)"""
         a = """f(g().__next__ + 5)"""
         self.check(b, a)
 
-class Test_nonzero(FixerTestCase):
+kundi Test_nonzero(FixerTestCase):
     fixer = "nonzero"
 
-    def test_1(self):
+    eleza test_1(self):
         b = """
-            class A:
-                def __nonzero__(self):
+            kundi A:
+                eleza __nonzero__(self):
                     pass
             """
         a = """
-            class A:
-                def __bool__(self):
+            kundi A:
+                eleza __bool__(self):
                     pass
             """
         self.check(b, a)
 
-    def test_2(self):
+    eleza test_2(self):
         b = """
-            class A(object):
-                def __nonzero__(self):
+            kundi A(object):
+                eleza __nonzero__(self):
                     pass
             """
         a = """
-            class A(object):
-                def __bool__(self):
+            kundi A(object):
+                eleza __bool__(self):
                     pass
             """
         self.check(b, a)
 
-    def test_unchanged_1(self):
+    eleza test_unchanged_1(self):
         s = """
-            class A(object):
-                def __bool__(self):
+            kundi A(object):
+                eleza __bool__(self):
                     pass
             """
         self.unchanged(s)
 
-    def test_unchanged_2(self):
+    eleza test_unchanged_2(self):
         s = """
-            class A(object):
-                def __nonzero__(self, a):
+            kundi A(object):
+                eleza __nonzero__(self, a):
                     pass
             """
         self.unchanged(s)
 
-    def test_unchanged_func(self):
+    eleza test_unchanged_func(self):
         s = """
-            def __nonzero__(self):
+            eleza __nonzero__(self):
                 pass
             """
         self.unchanged(s)
 
-class Test_numliterals(FixerTestCase):
+kundi Test_numliterals(FixerTestCase):
     fixer = "numliterals"
 
-    def test_octal_1(self):
+    eleza test_octal_1(self):
         b = """0755"""
         a = """0o755"""
         self.check(b, a)
 
-    def test_long_int_1(self):
+    eleza test_long_int_1(self):
         b = """a = 12L"""
         a = """a = 12"""
         self.check(b, a)
 
-    def test_long_int_2(self):
+    eleza test_long_int_2(self):
         b = """a = 12l"""
         a = """a = 12"""
         self.check(b, a)
 
-    def test_long_hex(self):
+    eleza test_long_hex(self):
         b = """b = 0x12l"""
         a = """b = 0x12"""
         self.check(b, a)
 
-    def test_comments_and_spacing(self):
+    eleza test_comments_and_spacing(self):
         b = """b =   0x12L"""
         a = """b =   0x12"""
         self.check(b, a)
@@ -2765,47 +2765,47 @@ class Test_numliterals(FixerTestCase):
         a = """b = 0o755 # spam"""
         self.check(b, a)
 
-    def test_unchanged_int(self):
+    eleza test_unchanged_int(self):
         s = """5"""
         self.unchanged(s)
 
-    def test_unchanged_float(self):
+    eleza test_unchanged_float(self):
         s = """5.0"""
         self.unchanged(s)
 
-    def test_unchanged_octal(self):
+    eleza test_unchanged_octal(self):
         s = """0o755"""
         self.unchanged(s)
 
-    def test_unchanged_hex(self):
+    eleza test_unchanged_hex(self):
         s = """0xABC"""
         self.unchanged(s)
 
-    def test_unchanged_exp(self):
+    eleza test_unchanged_exp(self):
         s = """5.0e10"""
         self.unchanged(s)
 
-    def test_unchanged_complex_int(self):
+    eleza test_unchanged_complex_int(self):
         s = """5 + 4j"""
         self.unchanged(s)
 
-    def test_unchanged_complex_float(self):
+    eleza test_unchanged_complex_float(self):
         s = """5.4 + 4.9j"""
         self.unchanged(s)
 
-    def test_unchanged_complex_bare(self):
+    eleza test_unchanged_complex_bare(self):
         s = """4j"""
         self.unchanged(s)
         s = """4.4j"""
         self.unchanged(s)
 
-class Test_renames(FixerTestCase):
+kundi Test_renames(FixerTestCase):
     fixer = "renames"
 
     modules = {"sys":  ("maxint", "maxsize"),
               }
 
-    def test_import_from(self):
+    eleza test_import_kutoka(self):
         for mod, (old, new) in list(self.modules.items()):
             b = "kutoka %s agiza %s" % (mod, old)
             a = "kutoka %s agiza %s" % (mod, new)
@@ -2814,13 +2814,13 @@ class Test_renames(FixerTestCase):
             s = "kutoka foo agiza %s" % old
             self.unchanged(s)
 
-    def test_import_from_as(self):
+    eleza test_import_kutoka_as(self):
         for mod, (old, new) in list(self.modules.items()):
             b = "kutoka %s agiza %s as foo_bar" % (mod, old)
             a = "kutoka %s agiza %s as foo_bar" % (mod, new)
             self.check(b, a)
 
-    def test_import_module_usage(self):
+    eleza test_import_module_usage(self):
         for mod, (old, new) in list(self.modules.items()):
             b = """
                 agiza %s
@@ -2832,7 +2832,7 @@ class Test_renames(FixerTestCase):
                 """ % (mod, mod, mod, new)
             self.check(b, a)
 
-    def XXX_test_from_import_usage(self):
+    eleza XXX_test_kutoka_import_usage(self):
         # not implemented yet
         for mod, (old, new) in list(self.modules.items()):
             b = """
@@ -2845,10 +2845,10 @@ class Test_renames(FixerTestCase):
                 """ % (mod, new, mod, new)
             self.check(b, a)
 
-class Test_unicode(FixerTestCase):
+kundi Test_unicode(FixerTestCase):
     fixer = "unicode"
 
-    def test_whitespace(self):
+    eleza test_whitespace(self):
         b = """unicode( x)"""
         a = """str( x)"""
         self.check(b, a)
@@ -2861,32 +2861,32 @@ class Test_unicode(FixerTestCase):
         a = """ 'h'"""
         self.check(b, a)
 
-    def test_unicode_call(self):
+    eleza test_unicode_call(self):
         b = """unicode(x, y, z)"""
         a = """str(x, y, z)"""
         self.check(b, a)
 
-    def test_unichr(self):
+    eleza test_unichr(self):
         b = """unichr(u'h')"""
         a = """chr('h')"""
         self.check(b, a)
 
-    def test_unicode_literal_1(self):
+    eleza test_unicode_literal_1(self):
         b = '''u"x"'''
         a = '''"x"'''
         self.check(b, a)
 
-    def test_unicode_literal_2(self):
+    eleza test_unicode_literal_2(self):
         b = """ur'x'"""
         a = """r'x'"""
         self.check(b, a)
 
-    def test_unicode_literal_3(self):
+    eleza test_unicode_literal_3(self):
         b = """UR'''x''' """
         a = """R'''x''' """
         self.check(b, a)
 
-    def test_native_literal_escape_u(self):
+    eleza test_native_literal_escape_u(self):
         b = r"""'\\\u20ac\U0001d121\\u20ac'"""
         a = r"""'\\\\u20ac\\U0001d121\\u20ac'"""
         self.check(b, a)
@@ -2895,7 +2895,7 @@ class Test_unicode(FixerTestCase):
         a = r"""r'\\\u20ac\U0001d121\\u20ac'"""
         self.check(b, a)
 
-    def test_bytes_literal_escape_u(self):
+    eleza test_bytes_literal_escape_u(self):
         b = r"""b'\\\u20ac\U0001d121\\u20ac'"""
         a = r"""b'\\\u20ac\U0001d121\\u20ac'"""
         self.check(b, a)
@@ -2904,7 +2904,7 @@ class Test_unicode(FixerTestCase):
         a = r"""br'\\\u20ac\U0001d121\\u20ac'"""
         self.check(b, a)
 
-    def test_unicode_literal_escape_u(self):
+    eleza test_unicode_literal_escape_u(self):
         b = r"""u'\\\u20ac\U0001d121\\u20ac'"""
         a = r"""'\\\u20ac\U0001d121\\u20ac'"""
         self.check(b, a)
@@ -2913,7 +2913,7 @@ class Test_unicode(FixerTestCase):
         a = r"""r'\\\u20ac\U0001d121\\u20ac'"""
         self.check(b, a)
 
-    def test_native_unicode_literal_escape_u(self):
+    eleza test_native_unicode_literal_escape_u(self):
         f = 'kutoka __future__ agiza unicode_literals\n'
         b = f + r"""'\\\u20ac\U0001d121\\u20ac'"""
         a = f + r"""'\\\u20ac\U0001d121\\u20ac'"""
@@ -2924,21 +2924,21 @@ class Test_unicode(FixerTestCase):
         self.check(b, a)
 
 
-class Test_filter(FixerTestCase):
+kundi Test_filter(FixerTestCase):
     fixer = "filter"
 
-    def test_prefix_preservation(self):
+    eleza test_prefix_preservation(self):
         b = """x =   filter(    foo,     'abc'   )"""
         a = """x =   list(filter(    foo,     'abc'   ))"""
         self.check(b, a)
 
         b = """x =   filter(  None , 'abc'  )"""
-        a = """x =   [_f for _f in 'abc' if _f]"""
+        a = """x =   [_f for _f in 'abc' ikiwa _f]"""
         self.check(b, a)
 
-    def test_filter_basic(self):
+    eleza test_filter_basic(self):
         b = """x = filter(None, 'abc')"""
-        a = """x = [_f for _f in 'abc' if _f]"""
+        a = """x = [_f for _f in 'abc' ikiwa _f]"""
         self.check(b, a)
 
         b = """x = len(filter(f, 'abc'))"""
@@ -2946,17 +2946,17 @@ class Test_filter(FixerTestCase):
         self.check(b, a)
 
         b = """x = filter(lambda x: x%2 == 0, range(10))"""
-        a = """x = [x for x in range(10) if x%2 == 0]"""
+        a = """x = [x for x in range(10) ikiwa x%2 == 0]"""
         self.check(b, a)
 
         # Note the parens around x
         b = """x = filter(lambda (x): x%2 == 0, range(10))"""
-        a = """x = [x for x in range(10) if x%2 == 0]"""
+        a = """x = [x for x in range(10) ikiwa x%2 == 0]"""
         self.check(b, a)
 
-    def test_filter_trailers(self):
+    eleza test_filter_trailers(self):
         b = """x = filter(None, 'abc')[0]"""
-        a = """x = [_f for _f in 'abc' if _f][0]"""
+        a = """x = [_f for _f in 'abc' ikiwa _f][0]"""
         self.check(b, a)
 
         b = """x = len(filter(f, 'abc')[0])"""
@@ -2964,15 +2964,15 @@ class Test_filter(FixerTestCase):
         self.check(b, a)
 
         b = """x = filter(lambda x: x%2 == 0, range(10))[0]"""
-        a = """x = [x for x in range(10) if x%2 == 0][0]"""
+        a = """x = [x for x in range(10) ikiwa x%2 == 0][0]"""
         self.check(b, a)
 
         # Note the parens around x
         b = """x = filter(lambda (x): x%2 == 0, range(10))[0]"""
-        a = """x = [x for x in range(10) if x%2 == 0][0]"""
+        a = """x = [x for x in range(10) ikiwa x%2 == 0][0]"""
         self.check(b, a)
 
-    def test_filter_nochange(self):
+    eleza test_filter_nochange(self):
         a = """b.join(filter(f, 'abc'))"""
         self.unchanged(a)
         a = """(a + foo(5)).join(filter(f, 'abc'))"""
@@ -3012,7 +3012,7 @@ class Test_filter(FixerTestCase):
         a = """(x for x in filter(f, 'abc'))"""
         self.unchanged(a)
 
-    def test_future_builtins(self):
+    eleza test_future_builtins(self):
         a = "kutoka future_builtins agiza spam, filter; filter(f, 'ham')"
         self.unchanged(a)
 
@@ -3023,19 +3023,19 @@ class Test_filter(FixerTestCase):
         a = "kutoka future_builtins agiza *; filter(f, 'ham')"
         self.unchanged(a)
 
-class Test_map(FixerTestCase):
+kundi Test_map(FixerTestCase):
     fixer = "map"
 
-    def check(self, b, a):
+    eleza check(self, b, a):
         self.unchanged("kutoka future_builtins agiza map; " + b, a)
         super(Test_map, self).check(b, a)
 
-    def test_prefix_preservation(self):
+    eleza test_prefix_preservation(self):
         b = """x =    map(   f,    'abc'   )"""
         a = """x =    list(map(   f,    'abc'   ))"""
         self.check(b, a)
 
-    def test_map_trailers(self):
+    eleza test_map_trailers(self):
         b = """x = map(f, 'abc')[0]"""
         a = """x = list(map(f, 'abc'))[0]"""
         self.check(b, a)
@@ -3052,17 +3052,17 @@ class Test_map(FixerTestCase):
         a = """x = list(map(f, 'abc'))[0][1]"""
         self.check(b, a)
 
-    def test_trailing_comment(self):
+    eleza test_trailing_comment(self):
         b = """x = map(f, 'abc')   #   foo"""
         a = """x = list(map(f, 'abc'))   #   foo"""
         self.check(b, a)
 
-    def test_None_with_multiple_arguments(self):
+    eleza test_None_with_multiple_arguments(self):
         s = """x = map(None, a, b, c)"""
         self.warns_unchanged(s, "cannot convert map(None, ...) with "
                              "multiple arguments")
 
-    def test_map_basic(self):
+    eleza test_map_basic(self):
         b = """x = map(f, 'abc')"""
         a = """x = list(map(f, 'abc'))"""
         self.check(b, a)
@@ -3096,7 +3096,7 @@ class Test_map(FixerTestCase):
             """
         self.warns(b, a, "You should use a for loop here")
 
-    def test_map_nochange(self):
+    eleza test_map_nochange(self):
         a = """b.join(map(f, 'abc'))"""
         self.unchanged(a)
         a = """(a + foo(5)).join(map(f, 'abc'))"""
@@ -3136,7 +3136,7 @@ class Test_map(FixerTestCase):
         a = """(x for x in map(f, 'abc'))"""
         self.unchanged(a)
 
-    def test_future_builtins(self):
+    eleza test_future_builtins(self):
         a = "kutoka future_builtins agiza spam, map, eggs; map(f, 'ham')"
         self.unchanged(a)
 
@@ -3147,14 +3147,14 @@ class Test_map(FixerTestCase):
         a = "kutoka future_builtins agiza *; map(f, 'ham')"
         self.unchanged(a)
 
-class Test_zip(FixerTestCase):
+kundi Test_zip(FixerTestCase):
     fixer = "zip"
 
-    def check(self, b, a):
+    eleza check(self, b, a):
         self.unchanged("kutoka future_builtins agiza zip; " + b, a)
         super(Test_zip, self).check(b, a)
 
-    def test_zip_basic(self):
+    eleza test_zip_basic(self):
         b = """x = zip()"""
         a = """x = list(zip())"""
         self.check(b, a)
@@ -3167,7 +3167,7 @@ class Test_zip(FixerTestCase):
         a = """x = len(list(zip(a, b)))"""
         self.check(b, a)
 
-    def test_zip_trailers(self):
+    eleza test_zip_trailers(self):
         b = """x = zip(a, b, c)[0]"""
         a = """x = list(zip(a, b, c))[0]"""
         self.check(b, a)
@@ -3176,7 +3176,7 @@ class Test_zip(FixerTestCase):
         a = """x = list(zip(a, b, c))[0][1]"""
         self.check(b, a)
 
-    def test_zip_nochange(self):
+    eleza test_zip_nochange(self):
         a = """b.join(zip(a, b))"""
         self.unchanged(a)
         a = """(a + foo(5)).join(zip(a, b))"""
@@ -3216,7 +3216,7 @@ class Test_zip(FixerTestCase):
         a = """(x for x in zip(a, b))"""
         self.unchanged(a)
 
-    def test_future_builtins(self):
+    eleza test_future_builtins(self):
         a = "kutoka future_builtins agiza spam, zip, eggs; zip(a, b)"
         self.unchanged(a)
 
@@ -3227,10 +3227,10 @@ class Test_zip(FixerTestCase):
         a = "kutoka future_builtins agiza *; zip(a, b)"
         self.unchanged(a)
 
-class Test_standarderror(FixerTestCase):
+kundi Test_standarderror(FixerTestCase):
     fixer = "standarderror"
 
-    def test(self):
+    eleza test(self):
         b = """x =    StandardError()"""
         a = """x =    Exception()"""
         self.check(b, a)
@@ -3243,10 +3243,10 @@ class Test_standarderror(FixerTestCase):
         a = """f(2 + Exception(a, b, c))"""
         self.check(b, a)
 
-class Test_types(FixerTestCase):
+kundi Test_types(FixerTestCase):
     fixer = "types"
 
-    def test_basic_types_convert(self):
+    eleza test_basic_types_convert(self):
         b = """types.StringType"""
         a = """bytes"""
         self.check(b, a)
@@ -3275,10 +3275,10 @@ class Test_types(FixerTestCase):
         a = "(str,)"
         self.check(b, a)
 
-class Test_idioms(FixerTestCase):
+kundi Test_idioms(FixerTestCase):
     fixer = "idioms"
 
-    def test_while(self):
+    eleza test_while(self):
         b = """while 1: foo()"""
         a = """while True: foo()"""
         self.check(b, a)
@@ -3297,7 +3297,7 @@ class Test_idioms(FixerTestCase):
             """
         self.check(b, a)
 
-    def test_while_unchanged(self):
+    eleza test_while_unchanged(self):
         s = """while 11: foo()"""
         self.unchanged(s)
 
@@ -3310,25 +3310,25 @@ class Test_idioms(FixerTestCase):
         s = """while []: foo()"""
         self.unchanged(s)
 
-    def test_eq_simple(self):
+    eleza test_eq_simple(self):
         b = """type(x) == T"""
         a = """isinstance(x, T)"""
         self.check(b, a)
 
-        b = """if   type(x) == T: pass"""
-        a = """if   isinstance(x, T): pass"""
+        b = """ikiwa   type(x) == T: pass"""
+        a = """ikiwa   isinstance(x, T): pass"""
         self.check(b, a)
 
-    def test_eq_reverse(self):
+    eleza test_eq_reverse(self):
         b = """T == type(x)"""
         a = """isinstance(x, T)"""
         self.check(b, a)
 
-        b = """if   T == type(x): pass"""
-        a = """if   isinstance(x, T): pass"""
+        b = """ikiwa   T == type(x): pass"""
+        a = """ikiwa   isinstance(x, T): pass"""
         self.check(b, a)
 
-    def test_eq_expression(self):
+    eleza test_eq_expression(self):
         b = """type(x+y) == d.get('T')"""
         a = """isinstance(x+y, d.get('T'))"""
         self.check(b, a)
@@ -3337,25 +3337,25 @@ class Test_idioms(FixerTestCase):
         a = """isinstance(x  +  y, d.get('T'))"""
         self.check(b, a)
 
-    def test_is_simple(self):
+    eleza test_is_simple(self):
         b = """type(x) is T"""
         a = """isinstance(x, T)"""
         self.check(b, a)
 
-        b = """if   type(x) is T: pass"""
-        a = """if   isinstance(x, T): pass"""
+        b = """ikiwa   type(x) is T: pass"""
+        a = """ikiwa   isinstance(x, T): pass"""
         self.check(b, a)
 
-    def test_is_reverse(self):
+    eleza test_is_reverse(self):
         b = """T is type(x)"""
         a = """isinstance(x, T)"""
         self.check(b, a)
 
-        b = """if   T is type(x): pass"""
-        a = """if   isinstance(x, T): pass"""
+        b = """ikiwa   T is type(x): pass"""
+        a = """ikiwa   isinstance(x, T): pass"""
         self.check(b, a)
 
-    def test_is_expression(self):
+    eleza test_is_expression(self):
         b = """type(x+y) is d.get('T')"""
         a = """isinstance(x+y, d.get('T'))"""
         self.check(b, a)
@@ -3364,25 +3364,25 @@ class Test_idioms(FixerTestCase):
         a = """isinstance(x  +  y, d.get('T'))"""
         self.check(b, a)
 
-    def test_is_not_simple(self):
+    eleza test_is_not_simple(self):
         b = """type(x) is not T"""
         a = """not isinstance(x, T)"""
         self.check(b, a)
 
-        b = """if   type(x) is not T: pass"""
-        a = """if   not isinstance(x, T): pass"""
+        b = """ikiwa   type(x) is not T: pass"""
+        a = """ikiwa   not isinstance(x, T): pass"""
         self.check(b, a)
 
-    def test_is_not_reverse(self):
+    eleza test_is_not_reverse(self):
         b = """T is not type(x)"""
         a = """not isinstance(x, T)"""
         self.check(b, a)
 
-        b = """if   T is not type(x): pass"""
-        a = """if   not isinstance(x, T): pass"""
+        b = """ikiwa   T is not type(x): pass"""
+        a = """ikiwa   not isinstance(x, T): pass"""
         self.check(b, a)
 
-    def test_is_not_expression(self):
+    eleza test_is_not_expression(self):
         b = """type(x+y) is not d.get('T')"""
         a = """not isinstance(x+y, d.get('T'))"""
         self.check(b, a)
@@ -3391,25 +3391,25 @@ class Test_idioms(FixerTestCase):
         a = """not isinstance(x  +  y, d.get('T'))"""
         self.check(b, a)
 
-    def test_ne_simple(self):
+    eleza test_ne_simple(self):
         b = """type(x) != T"""
         a = """not isinstance(x, T)"""
         self.check(b, a)
 
-        b = """if   type(x) != T: pass"""
-        a = """if   not isinstance(x, T): pass"""
+        b = """ikiwa   type(x) != T: pass"""
+        a = """ikiwa   not isinstance(x, T): pass"""
         self.check(b, a)
 
-    def test_ne_reverse(self):
+    eleza test_ne_reverse(self):
         b = """T != type(x)"""
         a = """not isinstance(x, T)"""
         self.check(b, a)
 
-        b = """if   T != type(x): pass"""
-        a = """if   not isinstance(x, T): pass"""
+        b = """ikiwa   T != type(x): pass"""
+        a = """ikiwa   not isinstance(x, T): pass"""
         self.check(b, a)
 
-    def test_ne_expression(self):
+    eleza test_ne_expression(self):
         b = """type(x+y) != d.get('T')"""
         a = """not isinstance(x+y, d.get('T'))"""
         self.check(b, a)
@@ -3418,11 +3418,11 @@ class Test_idioms(FixerTestCase):
         a = """not isinstance(x  +  y, d.get('T'))"""
         self.check(b, a)
 
-    def test_type_unchanged(self):
+    eleza test_type_unchanged(self):
         a = """type(x).__name__"""
         self.unchanged(a)
 
-    def test_sort_list_call(self):
+    eleza test_sort_list_call(self):
         b = """
             v = list(t)
             v.sort()
@@ -3522,7 +3522,7 @@ class Test_idioms(FixerTestCase):
             # more comments"""
         self.check(b, a)
 
-    def test_sort_simple_expr(self):
+    eleza test_sort_simple_expr(self):
         b = """
             v = t
             v.sort()
@@ -3604,7 +3604,7 @@ class Test_idioms(FixerTestCase):
             """
         self.check(b, a)
 
-    def test_sort_unchanged(self):
+    eleza test_sort_unchanged(self):
         s = """
             v = list(t)
             w.sort()
@@ -3619,36 +3619,36 @@ class Test_idioms(FixerTestCase):
             """
         self.unchanged(s)
 
-class Test_basestring(FixerTestCase):
+kundi Test_basestring(FixerTestCase):
     fixer = "basestring"
 
-    def test_basestring(self):
+    eleza test_basestring(self):
         b = """isinstance(x, basestring)"""
         a = """isinstance(x, str)"""
         self.check(b, a)
 
-class Test_buffer(FixerTestCase):
+kundi Test_buffer(FixerTestCase):
     fixer = "buffer"
 
-    def test_buffer(self):
+    eleza test_buffer(self):
         b = """x = buffer(y)"""
         a = """x = memoryview(y)"""
         self.check(b, a)
 
-    def test_slicing(self):
+    eleza test_slicing(self):
         b = """buffer(y)[4:5]"""
         a = """memoryview(y)[4:5]"""
         self.check(b, a)
 
-class Test_future(FixerTestCase):
+kundi Test_future(FixerTestCase):
     fixer = "future"
 
-    def test_future(self):
+    eleza test_future(self):
         b = """kutoka __future__ agiza braces"""
         a = """"""
         self.check(b, a)
 
-        b = """# comment\nfrom __future__ agiza braces"""
+        b = """# comment\nkutoka __future__ agiza braces"""
         a = """# comment\n"""
         self.check(b, a)
 
@@ -3656,13 +3656,13 @@ class Test_future(FixerTestCase):
         a = """\n# comment"""
         self.check(b, a)
 
-    def test_run_order(self):
+    eleza test_run_order(self):
         self.assert_runs_after('print')
 
-class Test_itertools(FixerTestCase):
+kundi Test_itertools(FixerTestCase):
     fixer = "itertools"
 
-    def checkall(self, before, after):
+    eleza checkall(self, before, after):
         # Because we need to check with and without the itertools prefix
         # and on each of the three functions, these loops make it all
         # much easier
@@ -3672,19 +3672,19 @@ class Test_itertools(FixerTestCase):
                 a = after %(f)
                 self.check(b, a)
 
-    def test_0(self):
+    eleza test_0(self):
         # A simple example -- test_1 covers exactly the same thing,
         # but it's not quite as clear.
         b = "itertools.izip(a, b)"
         a = "zip(a, b)"
         self.check(b, a)
 
-    def test_1(self):
+    eleza test_1(self):
         b = """%s(f, a)"""
         a = """%s(f, a)"""
         self.checkall(b, a)
 
-    def test_qualified(self):
+    eleza test_qualified(self):
         b = """itertools.ifilterfalse(a, b)"""
         a = """itertools.filterfalse(a, b)"""
         self.check(b, a)
@@ -3693,7 +3693,7 @@ class Test_itertools(FixerTestCase):
         a = """itertools.zip_longest(a, b)"""
         self.check(b, a)
 
-    def test_2(self):
+    eleza test_2(self):
         b = """ifilterfalse(a, b)"""
         a = """filterfalse(a, b)"""
         self.check(b, a)
@@ -3702,12 +3702,12 @@ class Test_itertools(FixerTestCase):
         a = """zip_longest(a, b)"""
         self.check(b, a)
 
-    def test_space_1(self):
+    eleza test_space_1(self):
         b = """    %s(f, a)"""
         a = """    %s(f, a)"""
         self.checkall(b, a)
 
-    def test_space_2(self):
+    eleza test_space_2(self):
         b = """    itertools.ifilterfalse(a, b)"""
         a = """    itertools.filterfalse(a, b)"""
         self.check(b, a)
@@ -3716,14 +3716,14 @@ class Test_itertools(FixerTestCase):
         a = """    itertools.zip_longest(a, b)"""
         self.check(b, a)
 
-    def test_run_order(self):
+    eleza test_run_order(self):
         self.assert_runs_after('map', 'zip', 'filter')
 
 
-class Test_itertools_agizas(FixerTestCase):
+kundi Test_itertools_agizas(FixerTestCase):
     fixer = 'itertools_agizas'
 
-    def test_reduced(self):
+    eleza test_reduced(self):
         b = "kutoka itertools agiza imap, izip, foo"
         a = "kutoka itertools agiza foo"
         self.check(b, a)
@@ -3736,12 +3736,12 @@ class Test_itertools_agizas(FixerTestCase):
         a = "kutoka itertools agiza chain"
         self.check(b, a)
 
-    def test_comments(self):
-        b = "#foo\nfrom itertools agiza imap, izip"
+    eleza test_comments(self):
+        b = "#foo\nkutoka itertools agiza imap, izip"
         a = "#foo\n"
         self.check(b, a)
 
-    def test_none(self):
+    eleza test_none(self):
         b = "kutoka itertools agiza imap, izip"
         a = ""
         self.check(b, a)
@@ -3750,7 +3750,7 @@ class Test_itertools_agizas(FixerTestCase):
         a = ""
         self.check(b, a)
 
-    def test_import_as(self):
+    eleza test_import_as(self):
         b = "kutoka itertools agiza izip, bar as bang, imap"
         a = "kutoka itertools agiza bar as bang"
         self.check(b, a)
@@ -3770,7 +3770,7 @@ class Test_itertools_agizas(FixerTestCase):
         s = "kutoka itertools agiza bar as bang"
         self.unchanged(s)
 
-    def test_ifilter_and_zip_longest(self):
+    eleza test_ifilter_and_zip_longest(self):
         for name in "filterfalse", "zip_longest":
             b = "kutoka itertools agiza i%s" % (name,)
             a = "kutoka itertools agiza %s" % (name,)
@@ -3784,47 +3784,47 @@ class Test_itertools_agizas(FixerTestCase):
             a = "kutoka itertools agiza bar, %s, foo" % (name,)
             self.check(b, a)
 
-    def test_import_star(self):
+    eleza test_import_star(self):
         s = "kutoka itertools agiza *"
         self.unchanged(s)
 
 
-    def test_unchanged(self):
+    eleza test_unchanged(self):
         s = "kutoka itertools agiza foo"
         self.unchanged(s)
 
 
-class Test_agiza(FixerTestCase):
+kundi Test_agiza(FixerTestCase):
     fixer = "agiza"
 
-    def setUp(self):
+    eleza setUp(self):
         super(Test_agiza, self).setUp()
         # Need to replace fix_agiza's exists method
         # so we can check that it's doing the right thing
         self.files_checked = []
         self.present_files = set()
         self.always_exists = True
-        def fake_exists(name):
+        eleza fake_exists(name):
             self.files_checked.append(name)
-            return self.always_exists or (name in self.present_files)
+            rudisha self.always_exists or (name in self.present_files)
 
         kutoka lib2to3.fixes agiza fix_agiza
         fix_agiza.exists = fake_exists
 
-    def tearDown(self):
+    eleza tearDown(self):
         kutoka lib2to3.fixes agiza fix_agiza
         fix_agiza.exists = os.path.exists
 
-    def check_both(self, b, a):
+    eleza check_both(self, b, a):
         self.always_exists = True
         super(Test_agiza, self).check(b, a)
         self.always_exists = False
         super(Test_agiza, self).unchanged(b)
 
-    def test_files_checked(self):
-        def p(path):
+    eleza test_files_checked(self):
+        eleza p(path):
             # Takes a unix path and returns a path with correct separators
-            return os.path.pathsep.join(path.split("/"))
+            rudisha os.path.pathsep.join(path.split("/"))
 
         self.always_exists = False
         self.present_files = set(['__init__.py'])
@@ -3836,7 +3836,7 @@ class Test_agiza(FixerTestCase):
             self.filename = name
             self.unchanged("agiza jam")
 
-            if os.path.dirname(name):
+            ikiwa os.path.dirname(name):
                 name = os.path.dirname(name) + '/jam'
             else:
                 name = 'jam'
@@ -3845,42 +3845,42 @@ class Test_agiza(FixerTestCase):
 
             self.assertEqual(set(self.files_checked), expected_checks)
 
-    def test_not_in_package(self):
+    eleza test_not_in_package(self):
         s = "agiza bar"
         self.always_exists = False
         self.present_files = set(["bar.py"])
         self.unchanged(s)
 
-    def test_with_absolute_import_enabled(self):
+    eleza test_with_absolute_import_enabled(self):
         s = "kutoka __future__ agiza absolute_agiza\nagiza bar"
         self.always_exists = False
         self.present_files = set(["__init__.py", "bar.py"])
         self.unchanged(s)
 
-    def test_in_package(self):
+    eleza test_in_package(self):
         b = "agiza bar"
         a = "kutoka . agiza bar"
         self.always_exists = False
         self.present_files = set(["__init__.py", "bar.py"])
         self.check(b, a)
 
-    def test_import_from_package(self):
+    eleza test_import_kutoka_package(self):
         b = "agiza bar"
         a = "kutoka . agiza bar"
         self.always_exists = False
         self.present_files = set(["__init__.py", "bar" + os.path.sep])
         self.check(b, a)
 
-    def test_already_relative_agiza(self):
+    eleza test_already_relative_agiza(self):
         s = "kutoka . agiza bar"
         self.unchanged(s)
 
-    def test_comments_and_indent(self):
+    eleza test_comments_and_indent(self):
         b = "agiza bar # Foo"
         a = "kutoka . agiza bar # Foo"
         self.check(b, a)
 
-    def test_from(self):
+    eleza test_kutoka(self):
         b = "kutoka foo agiza bar, baz"
         a = "kutoka .foo agiza bar, baz"
         self.check_both(b, a)
@@ -3893,17 +3893,17 @@ class Test_agiza(FixerTestCase):
         a = "kutoka .foo agiza (bar, baz)"
         self.check_both(b, a)
 
-    def test_dotted_from(self):
+    eleza test_dotted_kutoka(self):
         b = "kutoka green.eggs agiza ham"
         a = "kutoka .green.eggs agiza ham"
         self.check_both(b, a)
 
-    def test_from_as(self):
+    eleza test_kutoka_as(self):
         b = "kutoka green.eggs agiza ham as spam"
         a = "kutoka .green.eggs agiza ham as spam"
         self.check_both(b, a)
 
-    def test_agiza(self):
+    eleza test_agiza(self):
         b = "agiza foo"
         a = "kutoka . agiza foo"
         self.check_both(b, a)
@@ -3920,7 +3920,7 @@ class Test_agiza(FixerTestCase):
         a = "kutoka . agiza x, y, z"
         self.check_both(b, a)
 
-    def test_import_as(self):
+    eleza test_import_as(self):
         b = "agiza foo as x"
         a = "kutoka . agiza foo as x"
         self.check_both(b, a)
@@ -3929,24 +3929,24 @@ class Test_agiza(FixerTestCase):
         a = "kutoka . agiza a as b, b as c, c as d"
         self.check_both(b, a)
 
-    def test_local_and_absolute(self):
+    eleza test_local_and_absolute(self):
         self.always_exists = False
         self.present_files = set(["foo.py", "__init__.py"])
 
         s = "agiza foo, bar"
         self.warns_unchanged(s, "absolute and local agizas together")
 
-    def test_dotted_agiza(self):
+    eleza test_dotted_agiza(self):
         b = "agiza foo.bar"
         a = "kutoka . agiza foo.bar"
         self.check_both(b, a)
 
-    def test_dotted_import_as(self):
+    eleza test_dotted_import_as(self):
         b = "agiza foo.bar as bang"
         a = "kutoka . agiza foo.bar as bang"
         self.check_both(b, a)
 
-    def test_prefix(self):
+    eleza test_prefix(self):
         b = """
         # prefix
         agiza foo.bar
@@ -3958,11 +3958,11 @@ class Test_agiza(FixerTestCase):
         self.check_both(b, a)
 
 
-class Test_set_literal(FixerTestCase):
+kundi Test_set_literal(FixerTestCase):
 
     fixer = "set_literal"
 
-    def test_basic(self):
+    eleza test_basic(self):
         b = """set([1, 2, 3])"""
         a = """{1, 2, 3}"""
         self.check(b, a)
@@ -3997,13 +3997,13 @@ class Test_set_literal(FixerTestCase):
         a = """{a-234**23}"""
         self.check(b, a)
 
-    def test_listcomps(self):
+    eleza test_listcomps(self):
         b = """set([x for x in y])"""
         a = """{x for x in y}"""
         self.check(b, a)
 
-        b = """set([x for x in y if x == m])"""
-        a = """{x for x in y if x == m}"""
+        b = """set([x for x in y ikiwa x == m])"""
+        a = """{x for x in y ikiwa x == m}"""
         self.check(b, a)
 
         b = """set([x for x in y for a in b])"""
@@ -4014,7 +4014,7 @@ class Test_set_literal(FixerTestCase):
         a = """{f(x) - 23 for x in y}"""
         self.check(b, a)
 
-    def test_whitespace(self):
+    eleza test_whitespace(self):
         b = """set( [1, 2])"""
         a = """{1, 2}"""
         self.check(b, a)
@@ -4046,7 +4046,7 @@ class Test_set_literal(FixerTestCase):
         a = """{1, 2}\n"""
         self.check(b, a)
 
-    def test_comments(self):
+    eleza test_comments(self):
         b = """set((1, 2)) # Hi"""
         a = """{1, 2} # Hi"""
         self.check(b, a)
@@ -4064,7 +4064,7 @@ class Test_set_literal(FixerTestCase):
             """
         self.check(b, a)
 
-    def test_unchanged(self):
+    eleza test_unchanged(self):
         s = """set()"""
         self.unchanged(s)
 
@@ -4078,275 +4078,275 @@ class Test_set_literal(FixerTestCase):
         s = """set(x for x in y)"""
         self.unchanged(s)
 
-        s = """set(x for x in y if z)"""
+        s = """set(x for x in y ikiwa z)"""
         self.unchanged(s)
 
         s = """set(a*823-23**2 + f(23))"""
         self.unchanged(s)
 
 
-class Test_sys_exc(FixerTestCase):
+kundi Test_sys_exc(FixerTestCase):
     fixer = "sys_exc"
 
-    def test_0(self):
+    eleza test_0(self):
         b = "sys.exc_type"
         a = "sys.exc_info()[0]"
         self.check(b, a)
 
-    def test_1(self):
+    eleza test_1(self):
         b = "sys.exc_value"
         a = "sys.exc_info()[1]"
         self.check(b, a)
 
-    def test_2(self):
+    eleza test_2(self):
         b = "sys.exc_traceback"
         a = "sys.exc_info()[2]"
         self.check(b, a)
 
-    def test_3(self):
+    eleza test_3(self):
         b = "sys.exc_type # Foo"
         a = "sys.exc_info()[0] # Foo"
         self.check(b, a)
 
-    def test_4(self):
+    eleza test_4(self):
         b = "sys.  exc_type"
         a = "sys.  exc_info()[0]"
         self.check(b, a)
 
-    def test_5(self):
+    eleza test_5(self):
         b = "sys  .exc_type"
         a = "sys  .exc_info()[0]"
         self.check(b, a)
 
 
-class Test_paren(FixerTestCase):
+kundi Test_paren(FixerTestCase):
     fixer = "paren"
 
-    def test_0(self):
+    eleza test_0(self):
         b = """[i for i in 1, 2 ]"""
         a = """[i for i in (1, 2) ]"""
         self.check(b, a)
 
-    def test_1(self):
+    eleza test_1(self):
         b = """[i for i in 1, 2, ]"""
         a = """[i for i in (1, 2,) ]"""
         self.check(b, a)
 
-    def test_2(self):
+    eleza test_2(self):
         b = """[i for i  in     1, 2 ]"""
         a = """[i for i  in     (1, 2) ]"""
         self.check(b, a)
 
-    def test_3(self):
-        b = """[i for i in 1, 2 if i]"""
-        a = """[i for i in (1, 2) if i]"""
+    eleza test_3(self):
+        b = """[i for i in 1, 2 ikiwa i]"""
+        a = """[i for i in (1, 2) ikiwa i]"""
         self.check(b, a)
 
-    def test_4(self):
+    eleza test_4(self):
         b = """[i for i in 1,    2    ]"""
         a = """[i for i in (1,    2)    ]"""
         self.check(b, a)
 
-    def test_5(self):
+    eleza test_5(self):
         b = """(i for i in 1, 2)"""
         a = """(i for i in (1, 2))"""
         self.check(b, a)
 
-    def test_6(self):
-        b = """(i for i in 1   ,2   if i)"""
-        a = """(i for i in (1   ,2)   if i)"""
+    eleza test_6(self):
+        b = """(i for i in 1   ,2   ikiwa i)"""
+        a = """(i for i in (1   ,2)   ikiwa i)"""
         self.check(b, a)
 
-    def test_unchanged_0(self):
+    eleza test_unchanged_0(self):
         s = """[i for i in (1, 2)]"""
         self.unchanged(s)
 
-    def test_unchanged_1(self):
+    eleza test_unchanged_1(self):
         s = """[i for i in foo()]"""
         self.unchanged(s)
 
-    def test_unchanged_2(self):
-        s = """[i for i in (1, 2) if nothing]"""
+    eleza test_unchanged_2(self):
+        s = """[i for i in (1, 2) ikiwa nothing]"""
         self.unchanged(s)
 
-    def test_unchanged_3(self):
+    eleza test_unchanged_3(self):
         s = """(i for i in (1, 2))"""
         self.unchanged(s)
 
-    def test_unchanged_4(self):
+    eleza test_unchanged_4(self):
         s = """[i for i in m]"""
         self.unchanged(s)
 
-class Test_metaclass(FixerTestCase):
+kundi Test_metaclass(FixerTestCase):
 
     fixer = 'metaclass'
 
-    def test_unchanged(self):
-        self.unchanged("class X(): pass")
-        self.unchanged("class X(object): pass")
-        self.unchanged("class X(object1, object2): pass")
-        self.unchanged("class X(object1, object2, object3): pass")
-        self.unchanged("class X(metaclass=Meta): pass")
-        self.unchanged("class X(b, arg=23, metclass=Meta): pass")
-        self.unchanged("class X(b, arg=23, metaclass=Meta, other=42): pass")
+    eleza test_unchanged(self):
+        self.unchanged("kundi X(): pass")
+        self.unchanged("kundi X(object): pass")
+        self.unchanged("kundi X(object1, object2): pass")
+        self.unchanged("kundi X(object1, object2, object3): pass")
+        self.unchanged("kundi X(metaclass=Meta): pass")
+        self.unchanged("kundi X(b, arg=23, metclass=Meta): pass")
+        self.unchanged("kundi X(b, arg=23, metaclass=Meta, other=42): pass")
 
         s = """
-        class X:
-            def __metaclass__(self): pass
+        kundi X:
+            eleza __metaclass__(self): pass
         """
         self.unchanged(s)
 
         s = """
-        class X:
+        kundi X:
             a[23] = 74
         """
         self.unchanged(s)
 
-    def test_comments(self):
+    eleza test_comments(self):
         b = """
-        class X:
+        kundi X:
             # hi
             __metaclass__ = AppleMeta
         """
         a = """
-        class X(metaclass=AppleMeta):
+        kundi X(metaclass=AppleMeta):
             # hi
             pass
         """
         self.check(b, a)
 
         b = """
-        class X:
+        kundi X:
             __metaclass__ = Meta
             # Bedtime!
         """
         a = """
-        class X(metaclass=Meta):
+        kundi X(metaclass=Meta):
             pass
             # Bedtime!
         """
         self.check(b, a)
 
-    def test_meta(self):
+    eleza test_meta(self):
         # no-parent class, odd body
         b = """
-        class X():
+        kundi X():
             __metaclass__ = Q
             pass
         """
         a = """
-        class X(metaclass=Q):
+        kundi X(metaclass=Q):
             pass
         """
         self.check(b, a)
 
         # one parent class, no body
-        b = """class X(object): __metaclass__ = Q"""
-        a = """class X(object, metaclass=Q): pass"""
+        b = """kundi X(object): __metaclass__ = Q"""
+        a = """kundi X(object, metaclass=Q): pass"""
         self.check(b, a)
 
 
         # one parent, simple body
         b = """
-        class X(object):
+        kundi X(object):
             __metaclass__ = Meta
             bar = 7
         """
         a = """
-        class X(object, metaclass=Meta):
+        kundi X(object, metaclass=Meta):
             bar = 7
         """
         self.check(b, a)
 
         b = """
-        class X:
+        kundi X:
             __metaclass__ = Meta; x = 4; g = 23
         """
         a = """
-        class X(metaclass=Meta):
+        kundi X(metaclass=Meta):
             x = 4; g = 23
         """
         self.check(b, a)
 
         # one parent, simple body, __metaclass__ last
         b = """
-        class X(object):
+        kundi X(object):
             bar = 7
             __metaclass__ = Meta
         """
         a = """
-        class X(object, metaclass=Meta):
+        kundi X(object, metaclass=Meta):
             bar = 7
         """
         self.check(b, a)
 
         # redefining __metaclass__
         b = """
-        class X():
+        kundi X():
             __metaclass__ = A
             __metaclass__ = B
             bar = 7
         """
         a = """
-        class X(metaclass=B):
+        kundi X(metaclass=B):
             bar = 7
         """
         self.check(b, a)
 
         # multiple inheritance, simple body
         b = """
-        class X(clsA, clsB):
+        kundi X(clsA, clsB):
             __metaclass__ = Meta
             bar = 7
         """
         a = """
-        class X(clsA, clsB, metaclass=Meta):
+        kundi X(clsA, clsB, metaclass=Meta):
             bar = 7
         """
         self.check(b, a)
 
-        # keywords in the class statement
-        b = """class m(a, arg=23): __metaclass__ = Meta"""
-        a = """class m(a, arg=23, metaclass=Meta): pass"""
+        # keywords in the kundi statement
+        b = """kundi m(a, arg=23): __metaclass__ = Meta"""
+        a = """kundi m(a, arg=23, metaclass=Meta): pass"""
         self.check(b, a)
 
         b = """
-        class X(expression(2 + 4)):
+        kundi X(expression(2 + 4)):
             __metaclass__ = Meta
         """
         a = """
-        class X(expression(2 + 4), metaclass=Meta):
+        kundi X(expression(2 + 4), metaclass=Meta):
             pass
         """
         self.check(b, a)
 
         b = """
-        class X(expression(2 + 4), x**4):
+        kundi X(expression(2 + 4), x**4):
             __metaclass__ = Meta
         """
         a = """
-        class X(expression(2 + 4), x**4, metaclass=Meta):
+        kundi X(expression(2 + 4), x**4, metaclass=Meta):
             pass
         """
         self.check(b, a)
 
         b = """
-        class X:
+        kundi X:
             __metaclass__ = Meta
             save.py = 23
         """
         a = """
-        class X(metaclass=Meta):
+        kundi X(metaclass=Meta):
             save.py = 23
         """
         self.check(b, a)
 
 
-class Test_getcwdu(FixerTestCase):
+kundi Test_getcwdu(FixerTestCase):
 
     fixer = 'getcwdu'
 
-    def test_basic(self):
+    eleza test_basic(self):
         b = """os.getcwdu"""
         a = """os.getcwd"""
         self.check(b, a)
@@ -4363,12 +4363,12 @@ class Test_getcwdu(FixerTestCase):
         a = """os.getcwd(args)"""
         self.check(b, a)
 
-    def test_comment(self):
+    eleza test_comment(self):
         b = """os.getcwdu() # Foo"""
         a = """os.getcwd() # Foo"""
         self.check(b, a)
 
-    def test_unchanged(self):
+    eleza test_unchanged(self):
         s = """os.getcwd()"""
         self.unchanged(s)
 
@@ -4378,18 +4378,18 @@ class Test_getcwdu(FixerTestCase):
         s = """os.getcwdb()"""
         self.unchanged(s)
 
-    def test_indentation(self):
+    eleza test_indentation(self):
         b = """
-            if 1:
+            ikiwa 1:
                 os.getcwdu()
             """
         a = """
-            if 1:
+            ikiwa 1:
                 os.getcwd()
             """
         self.check(b, a)
 
-    def test_multilation(self):
+    eleza test_multilation(self):
         b = """os .getcwdu()"""
         a = """os .getcwd()"""
         self.check(b, a)
@@ -4403,16 +4403,16 @@ class Test_getcwdu(FixerTestCase):
         self.check(b, a)
 
 
-class Test_operator(FixerTestCase):
+kundi Test_operator(FixerTestCase):
 
     fixer = "operator"
 
-    def test_operator_isCallable(self):
+    eleza test_operator_isCallable(self):
         b = "operator.isCallable(x)"
         a = "callable(x)"
         self.check(b, a)
 
-    def test_operator_sequenceIncludes(self):
+    eleza test_operator_sequenceIncludes(self):
         b = "operator.sequenceIncludes(x, y)"
         a = "operator.contains(x, y)"
         self.check(b, a)
@@ -4425,22 +4425,22 @@ class Test_operator(FixerTestCase):
         a = "operator.  contains(x, y)"
         self.check(b, a)
 
-    def test_operator_isSequenceType(self):
+    eleza test_operator_isSequenceType(self):
         b = "operator.isSequenceType(x)"
         a = "agiza collections.abc\nisinstance(x, collections.abc.Sequence)"
         self.check(b, a)
 
-    def test_operator_isMappingType(self):
+    eleza test_operator_isMappingType(self):
         b = "operator.isMappingType(x)"
         a = "agiza collections.abc\nisinstance(x, collections.abc.Mapping)"
         self.check(b, a)
 
-    def test_operator_isNumberType(self):
+    eleza test_operator_isNumberType(self):
         b = "operator.isNumberType(x)"
         a = "agiza numbers\nisinstance(x, numbers.Number)"
         self.check(b, a)
 
-    def test_operator_repeat(self):
+    eleza test_operator_repeat(self):
         b = "operator.repeat(x, n)"
         a = "operator.mul(x, n)"
         self.check(b, a)
@@ -4453,7 +4453,7 @@ class Test_operator(FixerTestCase):
         a = "operator.  mul(x, n)"
         self.check(b, a)
 
-    def test_operator_irepeat(self):
+    eleza test_operator_irepeat(self):
         b = "operator.irepeat(x, n)"
         a = "operator.imul(x, n)"
         self.check(b, a)
@@ -4466,47 +4466,47 @@ class Test_operator(FixerTestCase):
         a = "operator.  imul(x, n)"
         self.check(b, a)
 
-    def test_bare_isCallable(self):
+    eleza test_bare_isCallable(self):
         s = "isCallable(x)"
         t = "You should use 'callable(x)' here."
         self.warns_unchanged(s, t)
 
-    def test_bare_sequenceIncludes(self):
+    eleza test_bare_sequenceIncludes(self):
         s = "sequenceIncludes(x, y)"
         t = "You should use 'operator.contains(x, y)' here."
         self.warns_unchanged(s, t)
 
-    def test_bare_operator_isSequenceType(self):
+    eleza test_bare_operator_isSequenceType(self):
         s = "isSequenceType(z)"
         t = "You should use 'isinstance(z, collections.abc.Sequence)' here."
         self.warns_unchanged(s, t)
 
-    def test_bare_operator_isMappingType(self):
+    eleza test_bare_operator_isMappingType(self):
         s = "isMappingType(x)"
         t = "You should use 'isinstance(x, collections.abc.Mapping)' here."
         self.warns_unchanged(s, t)
 
-    def test_bare_operator_isNumberType(self):
+    eleza test_bare_operator_isNumberType(self):
         s = "isNumberType(y)"
         t = "You should use 'isinstance(y, numbers.Number)' here."
         self.warns_unchanged(s, t)
 
-    def test_bare_operator_repeat(self):
+    eleza test_bare_operator_repeat(self):
         s = "repeat(x, n)"
         t = "You should use 'operator.mul(x, n)' here."
         self.warns_unchanged(s, t)
 
-    def test_bare_operator_irepeat(self):
+    eleza test_bare_operator_irepeat(self):
         s = "irepeat(y, 187)"
         t = "You should use 'operator.imul(y, 187)' here."
         self.warns_unchanged(s, t)
 
 
-class Test_exitfunc(FixerTestCase):
+kundi Test_exitfunc(FixerTestCase):
 
     fixer = "exitfunc"
 
-    def test_simple(self):
+    eleza test_simple(self):
         b = """
             agiza sys
             sys.exitfunc = my_atexit
@@ -4518,7 +4518,7 @@ class Test_exitfunc(FixerTestCase):
             """
         self.check(b, a)
 
-    def test_names_agiza(self):
+    eleza test_names_agiza(self):
         b = """
             agiza sys, crumbs
             sys.exitfunc = my_func
@@ -4529,7 +4529,7 @@ class Test_exitfunc(FixerTestCase):
             """
         self.check(b, a)
 
-    def test_complex_expression(self):
+    eleza test_complex_expression(self):
         b = """
             agiza sys
             sys.exitfunc = do(d)/a()+complex(f=23, g=23)*expression
@@ -4541,7 +4541,7 @@ class Test_exitfunc(FixerTestCase):
             """
         self.check(b, a)
 
-    def test_comments(self):
+    eleza test_comments(self):
         b = """
             agiza sys # Foo
             sys.exitfunc = f # Blah
@@ -4563,21 +4563,21 @@ class Test_exitfunc(FixerTestCase):
             """
         self.check(b, a)
 
-    def test_in_a_function(self):
+    eleza test_in_a_function(self):
         b = """
             agiza sys
-            def f():
+            eleza f():
                 sys.exitfunc = func
             """
         a = """
             agiza sys
             agiza atexit
-            def f():
+            eleza f():
                 atexit.register(func)
              """
         self.check(b, a)
 
-    def test_no_sys_agiza(self):
+    eleza test_no_sys_agiza(self):
         b = """sys.exitfunc = f"""
         a = """atexit.register(f)"""
         msg = ("Can't find sys agiza; Please add an atexit agiza at the "
@@ -4585,16 +4585,16 @@ class Test_exitfunc(FixerTestCase):
         self.warns(b, a, msg)
 
 
-    def test_unchanged(self):
+    eleza test_unchanged(self):
         s = """f(sys.exitfunc)"""
         self.unchanged(s)
 
 
-class Test_asserts(FixerTestCase):
+kundi Test_asserts(FixerTestCase):
 
     fixer = "asserts"
 
-    def test_deprecated_names(self):
+    eleza test_deprecated_names(self):
         tests = [
             ('self.assert_(True)', 'self.assertTrue(True)'),
             ('self.assertEquals(2, 2)', 'self.assertEqual(2, 2)'),
@@ -4612,7 +4612,7 @@ class Test_asserts(FixerTestCase):
         for b, a in tests:
             self.check(b, a)
 
-    def test_variants(self):
+    eleza test_variants(self):
         b = 'eq = self.assertEquals'
         a = 'eq = self.assertEqual'
         self.check(b, a)
@@ -4635,6 +4635,6 @@ class Test_asserts(FixerTestCase):
         a = 'with self.assertRaises(Explosion) as cm: explode()'
         self.check(b, a)
 
-    def test_unchanged(self):
+    eleza test_unchanged(self):
         self.unchanged('self.assertEqualsOnSaturday')
         self.unchanged('self.assertEqualsOnSaturday(3, 5)')

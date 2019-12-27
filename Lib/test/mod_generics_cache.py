@@ -5,7 +5,7 @@ kutoka textwrap agiza dedent
 kutoka typing agiza TypeVar, Generic, Optional
 
 
-if sys.version_info[:2] >= (3, 6):
+ikiwa sys.version_info[:2] >= (3, 6):
     exec(dedent("""
     default_a: Optional['A'] = None
     default_b: Optional['B'] = None
@@ -13,12 +13,12 @@ if sys.version_info[:2] >= (3, 6):
     T = TypeVar('T')
 
 
-    class A(Generic[T]):
+    kundi A(Generic[T]):
         some_b: 'B'
 
 
-    class B(Generic[T]):
-        class A(Generic[T]):
+    kundi B(Generic[T]):
+        kundi A(Generic[T]):
             pass
 
         my_inner_a1: 'B.A'
@@ -36,14 +36,14 @@ else:  # This should stay in sync with the syntax above.
     T = TypeVar('T')
 
 
-    class A(Generic[T]):
+    kundi A(Generic[T]):
         __annotations__ = dict(
             some_b='B'
         )
 
 
-    class B(Generic[T]):
-        class A(Generic[T]):
+    kundi B(Generic[T]):
+        kundi A(Generic[T]):
             pass
 
         __annotations__ = dict(

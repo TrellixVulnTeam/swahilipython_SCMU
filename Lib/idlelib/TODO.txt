@@ -10,14 +10,14 @@ TO DO:
     - better integration of "debug module"
     - debugger should be global resource (attached to flist, not to shell)
     - fix the stupid bug where you need to step twice
-    - display class name in stack viewer entries for methods
+    - display kundi name in stack viewer entries for methods
     - suppress tracing through IDLE internals (e.g. print) DONE
-    - add a button to suppress through a specific module or class or method
+    - add a button to suppress through a specific module or kundi or method
     - more object inspection to stack viewer, e.g. to view all array items
 - insert the initial current directory into sys.path DONE
 - default directory attribute for each window instead of only for windows
   that have an associated filename
-- command expansion from keywords, module contents, other buffers, etc.
+- command expansion kutoka keywords, module contents, other buffers, etc.
 - "Recent documents" menu item DONE
 - Filter region command
 - Optional horizontal scroll bar
@@ -32,15 +32,15 @@ TO DO:
 - check file mtimes at various points
 - Pluggable interface with RCS/CVS/Perforce/Clearcase
 - better help?
-- don't open second class browser on same module (nor second path browser)
-- unify class and path browsers
+- don't open second kundi browser on same module (nor second path browser)
+- unify kundi and path browsers
 - Need to define a standard way whereby one can determine one is running
   inside IDLE (needed for Tk mainloop, also handy for $PYTHONSTARTUP)
 - Add more utility methods for use by extensions (a la get_selection)
 - Way to run command in totally separate interpreter (fork+os.system?) DONE
 - Way to find definition of fully-qualified name:
   In other words, select "UserDict.UserDict", hit some magic key and
-  it loads up UserDict.py and finds the first def or class for UserDict.
+  it loads up UserDict.py and finds the first eleza or kundi for UserDict.
 - need a way to force colorization on/off
 - need a way to force auto-indent on/off
 
@@ -54,7 +54,7 @@ Details:
 - sometimes forward slashes in pathname remain
 - sometimes star in window name remains in Windows menu
 - With unix bindings, ESC by itself is ignored
-- Sometimes for no apparent reason a selection from the cursor to the
+- Sometimes for no apparent reason a selection kutoka the cursor to the
   end of the command buffer appears, which is hard to get rid of
   because it stays when you are typing!
 - The Line/Col in the status bar can be wrong initially in PyShell DONE
@@ -71,21 +71,21 @@ Jeff Bauer suggests:
 
 - Open Module doesn't appear to handle hierarchical packages.
 - Class browser should also allow hierarchical packages.
-- Open and Open Module could benefit from a history, DONE
+- Open and Open Module could benefit kutoka a history, DONE
   either command line style, or Microsoft recent-file
   style.
 - Add a Smalltalk-style inspector  (i.e. Tkinspect)
 
 The last suggestion is already a reality, but not yet
 integrated into IDLE.  I use a module called inspector.py,
-that used to be available from python.org(?)  It no longer
+that used to be available kutoka python.org(?)  It no longer
 appears to be in the contributed section, and the source
 has no author attribution.
 
 In any case, the code is useful for visually navigating
 an object's attributes, including its container hierarchy.
 
-    >>> from inspector agiza Tkinspect
+    >>> kutoka inspector agiza Tkinspect
     >>> Tkinspect(None, myObject)
 
 Tkinspect could probably be extended and refined to
@@ -130,7 +130,7 @@ Things I'd like to see:
     - The python-mode trick of autoindenting a line with <tab> is neat and
       very handy.
     - (someday) a spellchecker for docstrings and comments.
-    - a pagedown/up command key which moves to next class/def statement (top
+    - a pagedown/up command key which moves to next class/eleza statement (top
       level)
     - split window capability
     - DnD text relocation/copying
@@ -164,7 +164,7 @@ reopening a file that might have been edited by someone else.
 - Use overlapping panels (a "notebook" in MFC terms I think) for info
 that doesn't need to be accessible simultaneously (e.g. HTML source
 and output).  Use multi-pane windows for info that does need to be
-shown together (e.g. class browser and source).  (Albert Brandl)
+shown together (e.g. kundi browser and source).  (Albert Brandl)
 
 - A project should invisibly track all symbols, for instant search,
 replace and cross-ref.  Projects should be allowed to span multiple
@@ -176,9 +176,9 @@ project directories should exist [not so sure --GvR].  (Tim Peters)
 
 - Python Shell should behave more like a "shell window" as users know
 it -- i.e. you can only edit the current command, and the cursor can't
-escape from the command area.  (Albert Brandl)
+escape kutoka the command area.  (Albert Brandl)
 
-- Set X11 class to "idle/Idle", set icon and title to something
+- Set X11 kundi to "idle/Idle", set icon and title to something
 beginning with "idle" -- for window manangers.  (Randall Hopper)
 
 - Config files editable through a preferences dialog.  (me) DONE

@@ -6,7 +6,7 @@ Written by Marc-Andre Lemburg (mal@lemburg.com).
 (c) Copyright CNRI, All Rights Reserved. NO WARRANTY.
 
 """
-import codecs, sys
+agiza codecs, sys
 
 ### Codec APIs
 
@@ -61,9 +61,9 @@ class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
                 codecs.utf_16_ex_decode(input, errors, 0, final)
             if byteorder == -1:
                 self.decoder = codecs.utf_16_le_decode
-            elif byteorder == 1:
+            lasivyo byteorder == 1:
                 self.decoder = codecs.utf_16_be_decode
-            elif consumed >= 2:
+            lasivyo consumed >= 2:
                 raise UnicodeError("UTF-16 stream does not start with BOM")
             return (output, consumed)
         return self.decoder(input, self.errors, final)
@@ -94,7 +94,7 @@ class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
             self.decoder = (codecs.utf_16_be_decode
                             if sys.byteorder == "big"
                             else codecs.utf_16_le_decode)
-        elif state == 1:
+        lasivyo state == 1:
             self.decoder = (codecs.utf_16_le_decode
                             if sys.byteorder == "big"
                             else codecs.utf_16_be_decode)
@@ -135,9 +135,9 @@ class StreamReader(codecs.StreamReader):
             codecs.utf_16_ex_decode(input, errors, 0, False)
         if byteorder == -1:
             self.decode = codecs.utf_16_le_decode
-        elif byteorder == 1:
+        lasivyo byteorder == 1:
             self.decode = codecs.utf_16_be_decode
-        elif consumed>=2:
+        lasivyo consumed>=2:
             raise UnicodeError("UTF-16 stream does not start with BOM")
         return (object, consumed)
 

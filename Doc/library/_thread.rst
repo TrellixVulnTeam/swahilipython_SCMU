@@ -183,7 +183,7 @@ Lock objects have the following methods:
 In addition to these methods, lock objects can also be used via the
 :keyword:`with` statement, e.g.::
 
-   import _thread
+   agiza _thread
 
    a_lock = _thread.allocate_lock()
 

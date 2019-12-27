@@ -25,7 +25,7 @@ objects:
 .. method:: list.extend(iterable)
    :noindex:
 
-   Extend the list by appending all the items from the iterable.  Equivalent to
+   Extend the list by appending all the items kutoka the iterable.  Equivalent to
    ``a[len(a):] = iterable``.
 
 
@@ -40,7 +40,7 @@ objects:
 .. method:: list.remove(x)
    :noindex:
 
-   Remove the first item from the list whose value is equal to *x*.  It raises a
+   Remove the first item kutoka the list whose value is equal to *x*.  It raises a
    :exc:`ValueError` if there is no such item.
 
 
@@ -57,7 +57,7 @@ objects:
 .. method:: list.clear()
    :noindex:
 
-   Remove all items from the list.  Equivalent to ``del a[:]``.
+   Remove all items kutoka the list.  Equivalent to ``del a[:]``.
 
 
 .. method:: list.index(x[, start[, end]])
@@ -143,7 +143,7 @@ Using Lists as Stacks
 
 The list methods make it very easy to use a list as a stack, where the last
 element added is the first element retrieved ("last-in, first-out").  To add an
-item to the top of the stack, use :meth:`append`.  To retrieve an item from the
+item to the top of the stack, use :meth:`append`.  To retrieve an item kutoka the
 top of the stack, use :meth:`pop` without an explicit index.  For example::
 
    >>> stack = [3, 4, 5]
@@ -172,14 +172,14 @@ Using Lists as Queues
 
 It is also possible to use a list as a queue, where the first element added is
 the first element retrieved ("first-in, first-out"); however, lists are not
-efficient for this purpose.  While appends and pops from the end of list are
-fast, doing inserts or pops from the beginning of a list is slow (because all
+efficient for this purpose.  While appends and pops kutoka the end of list are
+fast, doing inserts or pops kutoka the beginning of a list is slow (because all
 of the other elements have to be shifted by one).
 
 To implement a queue, use :class:`collections.deque` which was designed to
-have fast appends and pops from both ends.  For example::
+have fast appends and pops kutoka both ends.  For example::
 
-   >>> from collections import deque
+   >>> kutoka collections agiza deque
    >>> queue = deque(["Eric", "John", "Michael"])
    >>> queue.append("Terry")           # Terry arrives
    >>> queue.append("Graham")          # Graham arrives
@@ -224,7 +224,7 @@ which is more concise and readable.
 
 A list comprehension consists of brackets containing an expression followed
 by a :keyword:`!for` clause, then zero or more :keyword:`!for` or :keyword:`!if`
-clauses.  The result will be a new list resulting from evaluating the expression
+clauses.  The result will be a new list resulting kutoka evaluating the expression
 in the context of the :keyword:`!for` and :keyword:`!if` clauses which follow it.
 For example, this listcomp combines the elements of two lists if they are not
 equal::
@@ -279,7 +279,7 @@ it must be parenthesized. ::
 
 List comprehensions can contain complex expressions and nested functions::
 
-   >>> from math import pi
+   >>> kutoka math agiza pi
    >>> [str(round(pi, i)) for i in range(1, 6)]
    ['3.1', '3.14', '3.142', '3.1416', '3.14159']
 
@@ -340,10 +340,10 @@ See :ref:`tut-unpacking-arguments` for details on the asterisk in this line.
 The :keyword:`!del` statement
 =============================
 
-There is a way to remove an item from a list given its index instead of its
-value: the :keyword:`del` statement.  This differs from the :meth:`pop` method
+There is a way to remove an item kutoka a list given its index instead of its
+value: the :keyword:`del` statement.  This differs kutoka the :meth:`pop` method
 which returns a value.  The :keyword:`!del` statement can also be used to remove
-slices from a list or clear the entire list (which we did earlier by assignment
+slices kutoka a list or clear the entire list (which we did earlier by assignment
 of an empty list to the slice).  For example::
 
    >>> a = [-1, 1, 66.25, 333, 333, 1234.5]
@@ -465,7 +465,7 @@ Here is a brief demonstration::
    >>> 'crabgrass' in basket
    False
 
-   >>> # Demonstrate set operations on unique letters from two words
+   >>> # Demonstrate set operations on unique letters kutoka two words
    ...
    >>> a = set('abracadabra')
    >>> b = set('alacazam')
@@ -542,13 +542,13 @@ Here is a small example using a dictionary::
    >>> 'jack' not in tel
    False
 
-The :func:`dict` constructor builds dictionaries directly from sequences of
+The :func:`dict` constructor builds dictionaries directly kutoka sequences of
 key-value pairs::
 
    >>> dict([('sape', 4139), ('guido', 4127), ('jack', 4098)])
    {'sape': 4139, 'guido': 4127, 'jack': 4098}
 
-In addition, dict comprehensions can be used to create dictionaries from
+In addition, dict comprehensions can be used to create dictionaries kutoka
 arbitrary key and value expressions::
 
    >>> {x: x**2 for x in (2, 4, 6)}
@@ -625,7 +625,7 @@ returns a new sorted list while leaving the source unaltered. ::
 It is sometimes tempting to change a list while you are looping over it;
 however, it is often simpler and safer to create a new list instead. ::
 
-   >>> import math
+   >>> agiza math
    >>> raw_data = [56.2, float('NaN'), 51.7, 55.3, 52.5, float('NaN'), 47.8]
    >>> filtered_data = []
    >>> for value in raw_data:
@@ -661,7 +661,7 @@ not B or C`` is equivalent to ``(A and (not B)) or C``. As always, parentheses
 can be used to express the desired composition.
 
 The Boolean operators ``and`` and ``or`` are so-called *short-circuit*
-operators: their arguments are evaluated from left to right, and evaluation
+operators: their arguments are evaluated kutoka left to right, and evaluation
 stops as soon as the outcome is determined.  For example, if ``A`` and ``C`` are
 true but ``B`` is false, ``A and B and C`` does not evaluate the expression
 ``C``.  When used as a general value and not as a Boolean, the return value of a
@@ -676,7 +676,7 @@ to a variable.  For example, ::
    'Trondheim'
 
 Note that in Python, unlike C, assignment cannot occur inside expressions. C
-programmers may grumble about this, but it avoids a common class of problems
+programmers may grumble about this, but it avoids a common kundi of problems
 encountered in C programs: typing ``=`` in an expression when ``==`` was
 intended.
 

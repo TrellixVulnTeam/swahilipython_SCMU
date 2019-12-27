@@ -103,7 +103,7 @@ structures.
 
 .. function:: add_tables(database, module)
 
-   Add all table content from *module* to *database*. *module* must contain an
+   Add all table content kutoka *module* to *database*. *module* must contain an
    attribute *tables* listing all tables for which content should be added, and one
    attribute per table that has the actual content.
 
@@ -330,7 +330,7 @@ CAB Objects
 
 .. class:: CAB(name)
 
-   The class :class:`CAB` represents a CAB file. During MSI construction, files
+   The kundi :class:`CAB` represents a CAB file. During MSI construction, files
    will be added simultaneously to the ``Files`` table, and to a CAB file. Then,
    when all files have been added, the CAB file can be written, then added to the
    MSI file.
@@ -351,7 +351,7 @@ CAB Objects
    .. method:: commit(database)
 
       Generate a CAB file, add it as a stream to the MSI file, put it into the
-      ``Media`` table, and remove the generated file from the disk.
+      ``Media`` table, and remove the generated file kutoka the disk.
 
 
 .. _msi-directory:
@@ -446,7 +446,7 @@ for installing Python packages.
 
 .. class:: Control(dlg, name)
 
-   Base class of the dialog controls. *dlg* is the dialog object the control
+   Base kundi of the dialog controls. *dlg* is the dialog object the control
    belongs to, and *name* is the control's name.
 
 

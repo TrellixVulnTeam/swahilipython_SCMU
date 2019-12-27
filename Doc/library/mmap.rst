@@ -35,7 +35,7 @@ specify read-only, write-through or copy-on-write memory respectively, or
 :const:`ACCESS_DEFAULT` to defer to *prot*.  *access* can be used on both Unix
 and Windows.  If *access* is not specified, Windows mmap returns a
 write-through mapping.  The initial memory values for all three access types
-are taken from the specified file.  Assignment to an :const:`ACCESS_READ`
+are taken kutoka the specified file.  Assignment to an :const:`ACCESS_READ`
 memory map raises a :exc:`TypeError` exception.  Assignment to an
 :const:`ACCESS_WRITE` memory map affects both memory and the underlying file.
 Assignment to an :const:`ACCESS_COPY` memory map affects memory but does not
@@ -48,7 +48,7 @@ To map anonymous memory, -1 should be passed as the fileno along with the length
 
 .. class:: mmap(fileno, length, tagname=None, access=ACCESS_DEFAULT[, offset])
 
-   **(Windows version)** Maps *length* bytes from the file specified by the
+   **(Windows version)** Maps *length* bytes kutoka the file specified by the
    file handle *fileno*, and creates a mmap object.  If *length* is larger
    than the current size of the file, the file is extended to contain *length*
    bytes.  If *length* is ``0``, the maximum length of the map is the current
@@ -64,7 +64,7 @@ To map anonymous memory, -1 should be passed as the fileno along with the length
    Unix and Windows.
 
    *offset* may be specified as a non-negative integer offset. mmap references
-   will be relative to the offset from the beginning of the file. *offset*
+   will be relative to the offset kutoka the beginning of the file. *offset*
    defaults to 0.  *offset* must be a multiple of the :const:`ALLOCATIONGRANULARITY`.
 
    .. audit-event:: mmap.__new__ fileno,length,access,offset mmap.mmap
@@ -72,7 +72,7 @@ To map anonymous memory, -1 should be passed as the fileno along with the length
 .. class:: mmap(fileno, length, flags=MAP_SHARED, prot=PROT_WRITE|PROT_READ, access=ACCESS_DEFAULT[, offset])
    :noindex:
 
-   **(Unix version)** Maps *length* bytes from the file specified by the file
+   **(Unix version)** Maps *length* bytes kutoka the file specified by the file
    descriptor *fileno*, and returns a mmap object.  If *length* is ``0``, the
    maximum length of the map will be the current size of the file when
    :class:`~mmap.mmap` is called.
@@ -94,7 +94,7 @@ To map anonymous memory, -1 should be passed as the fileno along with the length
    use this parameter.
 
    *offset* may be specified as a non-negative integer offset. mmap references
-   will be relative to the offset from the beginning of the file. *offset*
+   will be relative to the offset kutoka the beginning of the file. *offset*
    defaults to 0. *offset* must be a multiple of :const:`ALLOCATIONGRANULARITY`
    which is equal to :const:`PAGESIZE` on Unix systems.
 
@@ -104,7 +104,7 @@ To map anonymous memory, -1 should be passed as the fileno along with the length
 
    This example shows a simple way of using :class:`~mmap.mmap`::
 
-      import mmap
+      agiza mmap
 
       # write a simple example file
       with open("hello.txt", "wb") as f:
@@ -130,7 +130,7 @@ To map anonymous memory, -1 should be passed as the fileno along with the length
    :class:`~mmap.mmap` can also be used as a context manager in a :keyword:`with`
    statement::
 
-      import mmap
+      agiza mmap
 
       with mmap.mmap(-1, 13) as mm:
           mm.write(b"Hello world!")
@@ -142,8 +142,8 @@ To map anonymous memory, -1 should be passed as the fileno along with the length
    The next example demonstrates how to create an anonymous map and exchange
    data between the parent and child processes::
 
-      import mmap
-      import os
+      agiza mmap
+      agiza os
 
       mm = mmap.mmap(-1, 13)
       mm.write(b"Hello world!")
@@ -226,9 +226,9 @@ To map anonymous memory, -1 should be passed as the fileno along with the length
 
    .. method:: read([n])
 
-      Return a :class:`bytes` containing up to *n* bytes starting from the
+      Return a :class:`bytes` containing up to *n* bytes starting kutoka the
       current file position. If the argument is omitted, ``None`` or negative,
-      return all bytes from the current file position to the end of the
+      return all bytes kutoka the current file position to the end of the
       mapping. The file position is updated to point after the bytes that were
       returned.
 

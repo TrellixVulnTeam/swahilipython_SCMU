@@ -5,7 +5,7 @@ import unittest
 from ctypes import *
 from ctypes.test import need_symbol
 
-import _ctypes_test
+agiza _ctypes_test
 
 class CFunctions(unittest.TestCase):
     _dll = CDLL(_ctypes_test.__file__)

@@ -21,7 +21,7 @@ Completion of variable and module names is
 that the :kbd:`Tab` key invokes the completion function; it looks at
 Python statement names, the current local variables, and the available
 module names.  For dotted expressions such as ``string.a``, it will evaluate
-the expression up to the final ``'.'`` and then suggest completions from
+the expression up to the final ``'.'`` and then suggest completions kutoka
 the attributes of the resulting object.  Note that this may execute
 application-defined code if an object with a :meth:`__getattr__` method
 is part of the expression.  The default configuration also saves your

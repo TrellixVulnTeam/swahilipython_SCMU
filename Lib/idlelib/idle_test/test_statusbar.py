@@ -6,25 +6,25 @@ kutoka test.support agiza requires
 kutoka tkinter agiza Tk
 
 
-class Test(unittest.TestCase):
+kundi Test(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         cls.root.update_idletasks()
         cls.root.destroy()
         del cls.root
 
-    def test_init(self):
+    eleza test_init(self):
         bar = statusbar.MultiStatusBar(self.root)
         self.assertEqual(bar.labels, {})
 
-    def test_set_label(self):
+    eleza test_set_label(self):
         bar = statusbar.MultiStatusBar(self.root)
         bar.set_label('left', text='sometext', width=10)
         self.assertIn('left', bar.labels)
@@ -37,5 +37,5 @@ class Test(unittest.TestCase):
         self.assertEqual(bar.labels['right']['text'], 'correct text')
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

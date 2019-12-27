@@ -4209,10 +4209,10 @@ class TestBase64(unittest.TestCase):
            len(base64mime.body_encode(b'hello', eol='')))
         for size in range(15):
             if   size == 0 : bsize = 0
-            elif size <= 3 : bsize = 4
-            elif size <= 6 : bsize = 8
-            elif size <= 9 : bsize = 12
-            elif size <= 12: bsize = 16
+            lasivyo size <= 3 : bsize = 4
+            lasivyo size <= 6 : bsize = 8
+            lasivyo size <= 9 : bsize = 12
+            lasivyo size <= 12: bsize = 16
             else           : bsize = 20
             eq(base64mime.header_length('x' * size), bsize)
 

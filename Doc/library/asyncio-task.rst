@@ -23,7 +23,7 @@ preferred way of writing asyncio applications.  For example, the following
 snippet of code (requires Python 3.7+) prints "hello", waits 1 second,
 and then prints "world"::
 
-    >>> import asyncio
+    >>> agiza asyncio
 
     >>> async def main():
     ...     print('hello')
@@ -49,8 +49,8 @@ To actually run a coroutine, asyncio provides three main mechanisms:
   print "hello" after waiting for 1 second, and then print "world"
   after waiting for *another* 2 seconds::
 
-      import asyncio
-      import time
+      agiza asyncio
+      agiza time
 
       async def say_after(delay, what):
           await asyncio.sleep(delay)
@@ -119,10 +119,10 @@ There are three main types of *awaitable* objects:
 
 .. rubric:: Coroutines
 
-Python coroutines are *awaitables* and therefore can be awaited from
+Python coroutines are *awaitables* and therefore can be awaited kutoka
 other coroutines::
 
-    import asyncio
+    agiza asyncio
 
     async def nested():
         return 42
@@ -160,7 +160,7 @@ When a coroutine is wrapped into a *Task* with functions like
 :func:`asyncio.create_task` the coroutine is automatically
 scheduled to run soon::
 
-    import asyncio
+    agiza asyncio
 
     async def nested():
         return 42
@@ -299,8 +299,8 @@ Sleeping
    Example of coroutine displaying the current date every second
    for 5 seconds::
 
-    import asyncio
-    import datetime
+    agiza asyncio
+    agiza datetime
 
     async def display_date():
         loop = asyncio.get_running_loop()
@@ -340,7 +340,7 @@ Running Tasks Concurrently
    If ``gather()`` is *cancelled*, all submitted awaitables
    (that have not completed yet) are also *cancelled*.
 
-   If any Task or Future from the *aws* sequence is *cancelled*, it is
+   If any Task or Future kutoka the *aws* sequence is *cancelled*, it is
    treated as if it raised :exc:`CancelledError` -- the ``gather()``
    call is **not** cancelled in this case.  This is to prevent the
    cancellation of one submitted Task/Future to cause other
@@ -353,7 +353,7 @@ Running Tasks Concurrently
 
    Example::
 
-      import asyncio
+      agiza asyncio
 
       async def factorial(name, number):
           f = 1
@@ -396,7 +396,7 @@ Shielding From Cancellation
 .. awaitablefunction:: shield(aw, \*, loop=None)
 
    Protect an :ref:`awaitable object <asyncio-awaitables>`
-   from being :meth:`cancelled <Task.cancel>`.
+   kutoka being :meth:`cancelled <Task.cancel>`.
 
    If *aw* is a coroutine it is automatically scheduled as a Task.
 
@@ -414,7 +414,7 @@ Shielding From Cancellation
    Although its caller is still cancelled, so the "await" expression
    still raises a :exc:`CancelledError`.
 
-   If ``something()`` is cancelled by other means (i.e. from within
+   If ``something()`` is cancelled by other means (i.e. kutoka within
    itself) that would also cancel ``shield()``.
 
    If it is desired to completely ignore cancellation (not recommended)
@@ -582,7 +582,7 @@ Waiting Primitives
    Run :ref:`awaitable objects <asyncio-awaitables>` in the *aws*
    set concurrently.  Return an iterator of :class:`Future` objects.
    Each Future object returned represents the earliest result
-   from the set of the remaining awaitables.
+   kutoka the set of the remaining awaitables.
 
    Raises :exc:`asyncio.TimeoutError` if the timeout occurs before
    all Futures are done.
@@ -605,9 +605,9 @@ Scheduling From Other Threads
    Submit a coroutine to the given event loop.  Thread-safe.
 
    Return a :class:`concurrent.futures.Future` to wait for the result
-   from another OS thread.
+   kutoka another OS thread.
 
-   This function is meant to be called from a different OS thread
+   This function is meant to be called kutoka a different OS thread
    than the one where the event loop is running.  Example::
 
      # Create a coroutine
@@ -702,7 +702,7 @@ Task Object
    suppress the :exc:`CancelledError` exception and was actually
    cancelled.
 
-   :class:`asyncio.Task` inherits from :class:`Future` all of its
+   :class:`asyncio.Task` inherits kutoka :class:`Future` all of its
    APIs except :meth:`Future.set_result` and
    :meth:`Future.set_exception`.
 
@@ -827,7 +827,7 @@ Task Object
 
    .. method:: remove_done_callback(callback)
 
-      Remove *callback* from the callbacks list.
+      Remove *callback* kutoka the callbacks list.
 
       This method should only be used in low-level callback-based code.
 
@@ -844,7 +844,7 @@ Task Object
       If the coroutine was terminated by an exception, this returns
       the list of traceback frames.
 
-      The frames are always ordered from oldest to newest.
+      The frames are always ordered kutoka oldest to newest.
 
       Only one stack frame is returned for a suspended coroutine.
 
@@ -932,7 +932,7 @@ Generator-based Coroutines
    is scheduled for removal in Python 3.10.
 
 Generator-based coroutines predate async/await syntax.  They are
-Python generators that use ``yield from`` expressions to await
+Python generators that use ``yield kutoka`` expressions to await
 on Futures and other coroutines.
 
 Generator-based coroutines should be decorated with
@@ -949,7 +949,7 @@ enforced.
 
         @asyncio.coroutine
         def old_style_coroutine():
-            yield from asyncio.sleep(1)
+            yield kutoka asyncio.sleep(1)
 
         async def main():
             await old_style_coroutine()
@@ -965,7 +965,7 @@ enforced.
 
    Return ``True`` if *obj* is a :ref:`coroutine object <coroutine>`.
 
-   This method is different from :func:`inspect.iscoroutine` because
+   This method is different kutoka :func:`inspect.iscoroutine` because
    it returns ``True`` for generator-based coroutines.
 
 .. function:: iscoroutinefunction(func)
@@ -973,6 +973,6 @@ enforced.
    Return ``True`` if *func* is a :ref:`coroutine function
    <coroutine>`.
 
-   This method is different from :func:`inspect.iscoroutinefunction`
+   This method is different kutoka :func:`inspect.iscoroutinefunction`
    because it returns ``True`` for generator-based coroutine functions
    decorated with :func:`@coroutine <coroutine>`.

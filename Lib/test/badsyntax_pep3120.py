@@ -1,1 +1,1 @@
-print("böse")
+andika("böse")

@@ -10,23 +10,23 @@ kutoka test agiza support
 kutoka test.support.script_helper agiza assert_python_ok
 
 
-class AsyncYieldFrom:
-    def __init__(self, obj):
+kundi AsyncYieldFrom:
+    eleza __init__(self, obj):
         self.obj = obj
 
-    def __await__(self):
+    eleza __await__(self):
         yield kutoka self.obj
 
 
-class AsyncYield:
-    def __init__(self, value):
+kundi AsyncYield:
+    eleza __init__(self, value):
         self.value = value
 
-    def __await__(self):
+    eleza __await__(self):
         yield self.value
 
 
-def run_async(coro):
+eleza run_async(coro):
     assert coro.__class__ in {types.GeneratorType, types.CoroutineType}
 
     buffer = []
@@ -35,12 +35,12 @@ def run_async(coro):
         try:
             buffer.append(coro.send(None))
         except StopIteration as ex:
-            result = ex.args[0] if ex.args else None
+            result = ex.args[0] ikiwa ex.args else None
             break
-    return buffer, result
+    rudisha buffer, result
 
 
-def run_async__await__(coro):
+eleza run_async__await__(coro):
     assert coro.__class__ is types.CoroutineType
     aw = coro.__await__()
     buffer = []
@@ -48,325 +48,325 @@ def run_async__await__(coro):
     i = 0
     while True:
         try:
-            if i % 2:
+            ikiwa i % 2:
                 buffer.append(next(aw))
             else:
                 buffer.append(aw.send(None))
             i += 1
         except StopIteration as ex:
-            result = ex.args[0] if ex.args else None
+            result = ex.args[0] ikiwa ex.args else None
             break
-    return buffer, result
+    rudisha buffer, result
 
 
 @contextlib.contextmanager
-def silence_coro_gc():
+eleza silence_coro_gc():
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         yield
         support.gc_collect()
 
 
-class AsyncBadSyntaxTest(unittest.TestCase):
+kundi AsyncBadSyntaxTest(unittest.TestCase):
 
-    def test_badsyntax_1(self):
+    eleza test_badsyntax_1(self):
         samples = [
-            """def foo():
+            """eleza foo():
                 await something()
             """,
 
             """await something()""",
 
-            """async def foo():
+            """async eleza foo():
                 yield kutoka []
             """,
 
-            """async def foo():
+            """async eleza foo():
                 await await fut
             """,
 
-            """async def foo(a=await something()):
+            """async eleza foo(a=await something()):
                 pass
             """,
 
-            """async def foo(a:await something()):
+            """async eleza foo(a:await something()):
                 pass
             """,
 
-            """async def foo():
-                def bar():
+            """async eleza foo():
+                eleza bar():
                  [i async for i in els]
             """,
 
-            """async def foo():
-                def bar():
+            """async eleza foo():
+                eleza bar():
                  [await i for i in els]
             """,
 
-            """async def foo():
-                def bar():
+            """async eleza foo():
+                eleza bar():
                  [i for i in els
                     async for b in els]
             """,
 
-            """async def foo():
-                def bar():
+            """async eleza foo():
+                eleza bar():
                  [i for i in els
                     for c in b
                     async for b in els]
             """,
 
-            """async def foo():
-                def bar():
+            """async eleza foo():
+                eleza bar():
                  [i for i in els
                     async for b in els
                     for c in b]
             """,
 
-            """async def foo():
-                def bar():
+            """async eleza foo():
+                eleza bar():
                  [i for i in els
                     for b in await els]
             """,
 
-            """async def foo():
-                def bar():
+            """async eleza foo():
+                eleza bar():
                  [i for i in els
                     for b in els
-                        if await b]
+                        ikiwa await b]
             """,
 
-            """async def foo():
-                def bar():
+            """async eleza foo():
+                eleza bar():
                  [i for i in await els]
             """,
 
-            """async def foo():
-                def bar():
-                 [i for i in els if await i]
+            """async eleza foo():
+                eleza bar():
+                 [i for i in els ikiwa await i]
             """,
 
-            """def bar():
+            """eleza bar():
                  [i async for i in els]
             """,
 
-            """def bar():
+            """eleza bar():
                  {i: i async for i in els}
             """,
 
-            """def bar():
+            """eleza bar():
                  {i async for i in els}
             """,
 
-            """def bar():
+            """eleza bar():
                  [await i for i in els]
             """,
 
-            """def bar():
+            """eleza bar():
                  [i for i in els
                     async for b in els]
             """,
 
-            """def bar():
+            """eleza bar():
                  [i for i in els
                     for c in b
                     async for b in els]
             """,
 
-            """def bar():
+            """eleza bar():
                  [i for i in els
                     async for b in els
                     for c in b]
             """,
 
-            """def bar():
+            """eleza bar():
                  [i for i in els
                     for b in await els]
             """,
 
-            """def bar():
+            """eleza bar():
                  [i for i in els
                     for b in els
-                        if await b]
+                        ikiwa await b]
             """,
 
-            """def bar():
+            """eleza bar():
                  [i for i in await els]
             """,
 
-            """def bar():
-                 [i for i in els if await i]
+            """eleza bar():
+                 [i for i in els ikiwa await i]
             """,
 
-            """async def foo():
+            """async eleza foo():
                 await
             """,
 
-            """async def foo():
-                   def bar(): pass
+            """async eleza foo():
+                   eleza bar(): pass
                    await = 1
             """,
 
-            """async def foo():
+            """async eleza foo():
 
-                   def bar(): pass
+                   eleza bar(): pass
                    await = 1
             """,
 
-            """async def foo():
-                   def bar(): pass
-                   if 1:
+            """async eleza foo():
+                   eleza bar(): pass
+                   ikiwa 1:
                        await = 1
             """,
 
-            """def foo():
-                   async def bar(): pass
-                   if 1:
+            """eleza foo():
+                   async eleza bar(): pass
+                   ikiwa 1:
                        await a
             """,
 
-            """def foo():
-                   async def bar(): pass
+            """eleza foo():
+                   async eleza bar(): pass
                    await a
             """,
 
-            """def foo():
-                   def baz(): pass
-                   async def bar(): pass
+            """eleza foo():
+                   eleza baz(): pass
+                   async eleza bar(): pass
                    await a
             """,
 
-            """def foo():
-                   def baz(): pass
+            """eleza foo():
+                   eleza baz(): pass
                    # 456
-                   async def bar(): pass
+                   async eleza bar(): pass
                    # 123
                    await a
             """,
 
-            """async def foo():
-                   def baz(): pass
+            """async eleza foo():
+                   eleza baz(): pass
                    # 456
-                   async def bar(): pass
+                   async eleza bar(): pass
                    # 123
                    await = 2
             """,
 
-            """def foo():
+            """eleza foo():
 
-                   def baz(): pass
+                   eleza baz(): pass
 
-                   async def bar(): pass
+                   async eleza bar(): pass
 
                    await a
             """,
 
-            """async def foo():
+            """async eleza foo():
 
-                   def baz(): pass
+                   eleza baz(): pass
 
-                   async def bar(): pass
+                   async eleza bar(): pass
 
                    await = 2
             """,
 
-            """async def foo():
-                   def async(): pass
+            """async eleza foo():
+                   eleza async(): pass
             """,
 
-            """async def foo():
-                   def await(): pass
+            """async eleza foo():
+                   eleza await(): pass
             """,
 
-            """async def foo():
-                   def bar():
+            """async eleza foo():
+                   eleza bar():
                        await
             """,
 
-            """async def foo():
-                   return lambda async: await
+            """async eleza foo():
+                   rudisha lambda async: await
             """,
 
-            """async def foo():
-                   return lambda a: await
+            """async eleza foo():
+                   rudisha lambda a: await
             """,
 
             """await a()""",
 
-            """async def foo(a=await b):
+            """async eleza foo(a=await b):
                    pass
             """,
 
-            """async def foo(a:await b):
+            """async eleza foo(a:await b):
                    pass
             """,
 
-            """def baz():
-                   async def foo(a=await b):
+            """eleza baz():
+                   async eleza foo(a=await b):
                        pass
             """,
 
-            """async def foo(async):
+            """async eleza foo(async):
                    pass
             """,
 
-            """async def foo():
-                   def bar():
-                        def baz():
+            """async eleza foo():
+                   eleza bar():
+                        eleza baz():
                             async = 1
             """,
 
-            """async def foo():
-                   def bar():
-                        def baz():
+            """async eleza foo():
+                   eleza bar():
+                        eleza baz():
                             pass
                         async = 1
             """,
 
-            """def foo():
-                   async def bar():
+            """eleza foo():
+                   async eleza bar():
 
-                        async def baz():
+                        async eleza baz():
                             pass
 
-                        def baz():
+                        eleza baz():
                             42
 
                         async = 1
             """,
 
-            """async def foo():
-                   def bar():
-                        def baz():
+            """async eleza foo():
+                   eleza bar():
+                        eleza baz():
                             pass\nawait foo()
             """,
 
-            """def foo():
-                   def bar():
-                        async def baz():
+            """eleza foo():
+                   eleza bar():
+                        async eleza baz():
                             pass\nawait foo()
             """,
 
-            """async def foo(await):
+            """async eleza foo(await):
                    pass
             """,
 
-            """def foo():
+            """eleza foo():
 
-                   async def bar(): pass
+                   async eleza bar(): pass
 
                    await a
             """,
 
-            """def foo():
-                   async def bar():
+            """eleza foo():
+                   async eleza bar():
                         pass\nawait a
             """,
-            """def foo():
+            """eleza foo():
                    async for i in arange(2):
                        pass
             """,
-            """def foo():
+            """eleza foo():
                    async with resource:
                        pass
             """,
@@ -382,92 +382,92 @@ class AsyncBadSyntaxTest(unittest.TestCase):
             with self.subTest(code=code), self.assertRaises(SyntaxError):
                 compile(code, "<test>", "exec")
 
-    def test_badsyntax_2(self):
+    eleza test_badsyntax_2(self):
         samples = [
-            """def foo():
+            """eleza foo():
                 await = 1
             """,
 
-            """class Bar:
-                def async(): pass
+            """kundi Bar:
+                eleza async(): pass
             """,
 
-            """class Bar:
+            """kundi Bar:
                 async = 1
             """,
 
-            """class async:
+            """kundi async:
                 pass
             """,
 
-            """class await:
+            """kundi await:
                 pass
             """,
 
             """agiza math as await""",
 
-            """def async():
+            """eleza async():
                 pass""",
 
-            """def foo(*, await=1):
+            """eleza foo(*, await=1):
                 pass"""
 
             """async = 1""",
 
-            """print(await=1)"""
+            """andika(await=1)"""
         ]
 
         for code in samples:
             with self.subTest(code=code), self.assertRaises(SyntaxError):
                 compile(code, "<test>", "exec")
 
-    def test_badsyntax_3(self):
+    eleza test_badsyntax_3(self):
         with self.assertRaises(SyntaxError):
             compile("async = 1", "<test>", "exec")
 
-    def test_badsyntax_4(self):
+    eleza test_badsyntax_4(self):
         samples = [
-            '''def foo(await):
-                async def foo(): pass
-                async def foo():
+            '''eleza foo(await):
+                async eleza foo(): pass
+                async eleza foo():
                     pass
-                return await + 1
+                rudisha await + 1
             ''',
 
-            '''def foo(await):
-                async def foo(): pass
-                async def foo(): pass
-                return await + 1
+            '''eleza foo(await):
+                async eleza foo(): pass
+                async eleza foo(): pass
+                rudisha await + 1
             ''',
 
-            '''def foo(await):
+            '''eleza foo(await):
 
-                async def foo(): pass
+                async eleza foo(): pass
 
-                async def foo(): pass
+                async eleza foo(): pass
 
-                return await + 1
+                rudisha await + 1
             ''',
 
-            '''def foo(await):
+            '''eleza foo(await):
                 """spam"""
-                async def foo(): \
+                async eleza foo(): \
                     pass
                 # 123
-                async def foo(): pass
+                async eleza foo(): pass
                 # 456
-                return await + 1
+                rudisha await + 1
             ''',
 
-            '''def foo(await):
-                def foo(): pass
-                def foo(): pass
-                async def bar(): return await_
+            '''eleza foo(await):
+                eleza foo(): pass
+                eleza foo(): pass
+                async eleza bar(): rudisha await_
                 await_ = await
                 try:
                     bar().send(None)
                 except StopIteration as ex:
-                    return ex.args[0] + 1
+                    rudisha ex.args[0] + 1
             '''
         ]
 
@@ -476,12 +476,12 @@ class AsyncBadSyntaxTest(unittest.TestCase):
                 compile(code, "<test>", "exec")
 
 
-class TokenizerRegrTest(unittest.TestCase):
+kundi TokenizerRegrTest(unittest.TestCase):
 
-    def test_oneline_defs(self):
+    eleza test_oneline_defs(self):
         buf = []
         for i in range(500):
-            buf.append('def i{i}(): return {i}'.format(i=i))
+            buf.append('eleza i{i}(): rudisha {i}'.format(i=i))
         buf = '\n'.join(buf)
 
         # Test that 500 consequent, one-line defs is OK
@@ -491,22 +491,22 @@ class TokenizerRegrTest(unittest.TestCase):
 
         # Test that 500 consequent, one-line defs *and*
         # one 'async def' following them is OK
-        buf += '\nasync def foo():\n    return'
+        buf += '\nasync eleza foo():\n    return'
         ns = {}
         exec(buf, ns, ns)
         self.assertEqual(ns['i499'](), 499)
         self.assertTrue(inspect.iscoroutinefunction(ns['foo']))
 
 
-class CoroutineTest(unittest.TestCase):
+kundi CoroutineTest(unittest.TestCase):
 
-    def test_gen_1(self):
-        def gen(): yield
+    eleza test_gen_1(self):
+        eleza gen(): yield
         self.assertFalse(hasattr(gen, '__await__'))
 
-    def test_func_1(self):
-        async def foo():
-            return 10
+    eleza test_func_1(self):
+        async eleza foo():
+            rudisha 10
 
         f = foo()
         self.assertIsInstance(f, types.CoroutineType)
@@ -518,11 +518,11 @@ class CoroutineTest(unittest.TestCase):
 
         self.assertEqual(run_async__await__(foo()), ([], 10))
 
-        def bar(): pass
+        eleza bar(): pass
         self.assertFalse(bool(bar.__code__.co_flags & inspect.CO_COROUTINE))
 
-    def test_func_2(self):
-        async def foo():
+    eleza test_func_2(self):
+        async eleza foo():
             raise StopIteration
 
         with self.assertRaisesRegex(
@@ -530,16 +530,16 @@ class CoroutineTest(unittest.TestCase):
 
             run_async(foo())
 
-    def test_func_3(self):
-        async def foo():
+    eleza test_func_3(self):
+        async eleza foo():
             raise StopIteration
 
         coro = foo()
         self.assertRegex(repr(coro), '^<coroutine object.* at 0x.*>$')
         coro.close()
 
-    def test_func_4(self):
-        async def foo():
+    eleza test_func_4(self):
+        async eleza foo():
             raise StopIteration
         coro = foo()
 
@@ -567,12 +567,12 @@ class CoroutineTest(unittest.TestCase):
 
         coro.close()
 
-    def test_func_5(self):
+    eleza test_func_5(self):
         @types.coroutine
-        def bar():
+        eleza bar():
             yield 1
 
-        async def foo():
+        async eleza foo():
             await bar()
 
         check = lambda: self.assertRaisesRegex(
@@ -591,13 +591,13 @@ class CoroutineTest(unittest.TestCase):
         self.assertEqual(tuple(bar()), (1,))
         self.assertEqual(next(iter(bar())), 1)
 
-    def test_func_6(self):
+    eleza test_func_6(self):
         @types.coroutine
-        def bar():
+        eleza bar():
             yield 1
             yield 2
 
-        async def foo():
+        async eleza foo():
             await bar()
 
         f = foo()
@@ -606,12 +606,12 @@ class CoroutineTest(unittest.TestCase):
         with self.assertRaises(StopIteration):
             f.send(None)
 
-    def test_func_7(self):
-        async def bar():
-            return 10
+    eleza test_func_7(self):
+        async eleza bar():
+            rudisha 10
         coro = bar()
 
-        def foo():
+        eleza foo():
             yield kutoka coro
 
         with self.assertRaisesRegex(
@@ -622,20 +622,20 @@ class CoroutineTest(unittest.TestCase):
 
         coro.close()
 
-    def test_func_8(self):
+    eleza test_func_8(self):
         @types.coroutine
-        def bar():
-            return (yield kutoka coro)
+        eleza bar():
+            rudisha (yield kutoka coro)
 
-        async def foo():
-            return 'spam'
+        async eleza foo():
+            rudisha 'spam'
 
         coro = foo()
         self.assertEqual(run_async(bar()), ([], 'spam'))
         coro.close()
 
-    def test_func_9(self):
-        async def foo():
+    eleza test_func_9(self):
+        async eleza foo():
             pass
 
         with self.assertWarnsRegex(
@@ -656,11 +656,11 @@ class CoroutineTest(unittest.TestCase):
 
             support.gc_collect()
 
-    def test_func_10(self):
+    eleza test_func_10(self):
         N = 0
 
         @types.coroutine
-        def gen():
+        eleza gen():
             nonlocal N
             try:
                 a = yield
@@ -671,7 +671,7 @@ class CoroutineTest(unittest.TestCase):
             finally:
                 N += 1
 
-        async def foo():
+        async eleza foo():
             await gen()
 
         coro = foo()
@@ -691,8 +691,8 @@ class CoroutineTest(unittest.TestCase):
             aw.throw(ZeroDivisionError, None, None)
         self.assertEqual(N, 102)
 
-    def test_func_11(self):
-        async def func(): pass
+    eleza test_func_11(self):
+        async eleza func(): pass
         coro = func()
         # Test that PyCoro_Type and _PyCoroWrapper_Type types were properly
         # initialized
@@ -701,8 +701,8 @@ class CoroutineTest(unittest.TestCase):
         self.assertIn('coroutine_wrapper', repr(coro.__await__()))
         coro.close() # avoid RuntimeWarning
 
-    def test_func_12(self):
-        async def g():
+    eleza test_func_12(self):
+        async eleza g():
             i = me.send(None)
             await foo
         me = g()
@@ -710,8 +710,8 @@ class CoroutineTest(unittest.TestCase):
                                     "coroutine already executing"):
             me.send(None)
 
-    def test_func_13(self):
-        async def g():
+    eleza test_func_13(self):
+        async eleza g():
             pass
 
         coro = g()
@@ -722,11 +722,11 @@ class CoroutineTest(unittest.TestCase):
 
         coro.close()
 
-    def test_func_14(self):
+    eleza test_func_14(self):
         @types.coroutine
-        def gen():
+        eleza gen():
             yield
-        async def coro():
+        async eleza coro():
             try:
                 await gen()
             except GeneratorExit:
@@ -737,13 +737,13 @@ class CoroutineTest(unittest.TestCase):
                                     "coroutine ignored GeneratorExit"):
             c.close()
 
-    def test_func_15(self):
+    eleza test_func_15(self):
         # See http://bugs.python.org/issue25887 for details
 
-        async def spammer():
-            return 'spam'
-        async def reader(coro):
-            return await coro
+        async eleza spammer():
+            rudisha 'spam'
+        async eleza reader(coro):
+            rudisha await coro
 
         spammer_coro = spammer()
 
@@ -754,18 +754,18 @@ class CoroutineTest(unittest.TestCase):
                                     'cannot reuse already awaited coroutine'):
             reader(spammer_coro).send(None)
 
-    def test_func_16(self):
+    eleza test_func_16(self):
         # See http://bugs.python.org/issue25887 for details
 
         @types.coroutine
-        def nop():
+        eleza nop():
             yield
-        async def send():
+        async eleza send():
             await nop()
-            return 'spam'
-        async def read(coro):
+            rudisha 'spam'
+        async eleza read(coro):
             await nop()
-            return await coro
+            rudisha await coro
 
         spammer = send()
 
@@ -785,11 +785,11 @@ class CoroutineTest(unittest.TestCase):
                                     'cannot reuse already awaited coroutine'):
             reader.throw(Exception('wat'))
 
-    def test_func_17(self):
+    eleza test_func_17(self):
         # See http://bugs.python.org/issue25887 for details
 
-        async def coroutine():
-            return 'spam'
+        async eleza coroutine():
+            rudisha 'spam'
 
         coro = coroutine()
         with self.assertRaisesRegex(StopIteration, 'spam'):
@@ -803,16 +803,16 @@ class CoroutineTest(unittest.TestCase):
                                     'cannot reuse already awaited coroutine'):
             coro.throw(Exception('wat'))
 
-        # Closing a coroutine shouldn't raise any exception even if it's
+        # Closing a coroutine shouldn't raise any exception even ikiwa it's
         # already closed/exhausted (similar to generators)
         coro.close()
         coro.close()
 
-    def test_func_18(self):
+    eleza test_func_18(self):
         # See http://bugs.python.org/issue25887 for details
 
-        async def coroutine():
-            return 'spam'
+        async eleza coroutine():
+            rudisha 'spam'
 
         coro = coroutine()
         await_iter = coro.__await__()
@@ -843,16 +843,16 @@ class CoroutineTest(unittest.TestCase):
                                     'cannot reuse already awaited coroutine'):
             it.throw(Exception('wat'))
 
-        # Closing a coroutine shouldn't raise any exception even if it's
+        # Closing a coroutine shouldn't raise any exception even ikiwa it's
         # already closed/exhausted (similar to generators)
         it.close()
         it.close()
 
-    def test_func_19(self):
+    eleza test_func_19(self):
         CHK = 0
 
         @types.coroutine
-        def foo():
+        eleza foo():
             nonlocal CHK
             yield
             try:
@@ -860,7 +860,7 @@ class CoroutineTest(unittest.TestCase):
             except GeneratorExit:
                 CHK += 1
 
-        async def coroutine():
+        async eleza coroutine():
             await foo()
 
         coro = coroutine()
@@ -873,39 +873,39 @@ class CoroutineTest(unittest.TestCase):
         self.assertEqual(CHK, 1)
 
         for _ in range(3):
-            # Closing a coroutine shouldn't raise any exception even if it's
+            # Closing a coroutine shouldn't raise any exception even ikiwa it's
             # already closed/exhausted (similar to generators)
             coro.close()
             self.assertEqual(CHK, 1)
 
-    def test_coro_wrapper_send_tuple(self):
-        async def foo():
-            return (10,)
+    eleza test_coro_wrapper_send_tuple(self):
+        async eleza foo():
+            rudisha (10,)
 
         result = run_async__await__(foo())
         self.assertEqual(result, ([], (10,)))
 
-    def test_coro_wrapper_send_stop_iterator(self):
-        async def foo():
-            return StopIteration(10)
+    eleza test_coro_wrapper_send_stop_iterator(self):
+        async eleza foo():
+            rudisha StopIteration(10)
 
         result = run_async__await__(foo())
         self.assertIsInstance(result[1], StopIteration)
         self.assertEqual(result[1].value, 10)
 
-    def test_cr_await(self):
+    eleza test_cr_await(self):
         @types.coroutine
-        def a():
+        eleza a():
             self.assertEqual(inspect.getcoroutinestate(coro_b), inspect.CORO_RUNNING)
             self.assertIsNone(coro_b.cr_await)
             yield
             self.assertEqual(inspect.getcoroutinestate(coro_b), inspect.CORO_RUNNING)
             self.assertIsNone(coro_b.cr_await)
 
-        async def c():
+        async eleza c():
             await a()
 
-        async def b():
+        async eleza b():
             self.assertIsNone(coro_b.cr_await)
             await c()
             self.assertIsNone(coro_b.cr_await)
@@ -923,7 +923,7 @@ class CoroutineTest(unittest.TestCase):
         self.assertEqual(inspect.getcoroutinestate(coro_b), inspect.CORO_CLOSED)
         self.assertIsNone(coro_b.cr_await)
 
-    def test_corotype_1(self):
+    eleza test_corotype_1(self):
         ct = types.CoroutineType
         self.assertIn('into coroutine', ct.send.__doc__)
         self.assertIn('inside coroutine', ct.close.__doc__)
@@ -932,145 +932,145 @@ class CoroutineTest(unittest.TestCase):
         self.assertIn('of the coroutine', ct.__dict__['__qualname__'].__doc__)
         self.assertEqual(ct.__name__, 'coroutine')
 
-        async def f(): pass
+        async eleza f(): pass
         c = f()
         self.assertIn('coroutine object', repr(c))
         c.close()
 
-    def test_await_1(self):
+    eleza test_await_1(self):
 
-        async def foo():
+        async eleza foo():
             await 1
         with self.assertRaisesRegex(TypeError, "object int can.t.*await"):
             run_async(foo())
 
-    def test_await_2(self):
-        async def foo():
+    eleza test_await_2(self):
+        async eleza foo():
             await []
         with self.assertRaisesRegex(TypeError, "object list can.t.*await"):
             run_async(foo())
 
-    def test_await_3(self):
-        async def foo():
+    eleza test_await_3(self):
+        async eleza foo():
             await AsyncYieldFrom([1, 2, 3])
 
         self.assertEqual(run_async(foo()), ([1, 2, 3], None))
         self.assertEqual(run_async__await__(foo()), ([1, 2, 3], None))
 
-    def test_await_4(self):
-        async def bar():
-            return 42
+    eleza test_await_4(self):
+        async eleza bar():
+            rudisha 42
 
-        async def foo():
-            return await bar()
+        async eleza foo():
+            rudisha await bar()
 
         self.assertEqual(run_async(foo()), ([], 42))
 
-    def test_await_5(self):
-        class Awaitable:
-            def __await__(self):
+    eleza test_await_5(self):
+        kundi Awaitable:
+            eleza __await__(self):
                 return
 
-        async def foo():
-            return (await Awaitable())
+        async eleza foo():
+            rudisha (await Awaitable())
 
         with self.assertRaisesRegex(
             TypeError, "__await__.*returned non-iterator of type"):
 
             run_async(foo())
 
-    def test_await_6(self):
-        class Awaitable:
-            def __await__(self):
-                return iter([52])
+    eleza test_await_6(self):
+        kundi Awaitable:
+            eleza __await__(self):
+                rudisha iter([52])
 
-        async def foo():
-            return (await Awaitable())
+        async eleza foo():
+            rudisha (await Awaitable())
 
         self.assertEqual(run_async(foo()), ([52], None))
 
-    def test_await_7(self):
-        class Awaitable:
-            def __await__(self):
+    eleza test_await_7(self):
+        kundi Awaitable:
+            eleza __await__(self):
                 yield 42
-                return 100
+                rudisha 100
 
-        async def foo():
-            return (await Awaitable())
+        async eleza foo():
+            rudisha (await Awaitable())
 
         self.assertEqual(run_async(foo()), ([42], 100))
 
-    def test_await_8(self):
-        class Awaitable:
+    eleza test_await_8(self):
+        kundi Awaitable:
             pass
 
-        async def foo(): return await Awaitable()
+        async eleza foo(): rudisha await Awaitable()
 
         with self.assertRaisesRegex(
             TypeError, "object Awaitable can't be used in 'await' expression"):
 
             run_async(foo())
 
-    def test_await_9(self):
-        def wrap():
-            return bar
+    eleza test_await_9(self):
+        eleza wrap():
+            rudisha bar
 
-        async def bar():
-            return 42
+        async eleza bar():
+            rudisha 42
 
-        async def foo():
+        async eleza foo():
             db = {'b':  lambda: wrap}
 
-            class DB:
+            kundi DB:
                 b = wrap
 
-            return (await bar() + await wrap()() + await db['b']()()() +
+            rudisha (await bar() + await wrap()() + await db['b']()()() +
                     await bar() * 1000 + await DB.b()())
 
-        async def foo2():
-            return -await bar()
+        async eleza foo2():
+            rudisha -await bar()
 
         self.assertEqual(run_async(foo()), ([], 42168))
         self.assertEqual(run_async(foo2()), ([], -42))
 
-    def test_await_10(self):
-        async def baz():
-            return 42
+    eleza test_await_10(self):
+        async eleza baz():
+            rudisha 42
 
-        async def bar():
-            return baz()
+        async eleza bar():
+            rudisha baz()
 
-        async def foo():
-            return await (await bar())
+        async eleza foo():
+            rudisha await (await bar())
 
         self.assertEqual(run_async(foo()), ([], 42))
 
-    def test_await_11(self):
-        def ident(val):
-            return val
+    eleza test_await_11(self):
+        eleza ident(val):
+            rudisha val
 
-        async def bar():
-            return 'spam'
+        async eleza bar():
+            rudisha 'spam'
 
-        async def foo():
-            return ident(val=await bar())
+        async eleza foo():
+            rudisha ident(val=await bar())
 
-        async def foo2():
-            return await bar(), 'ham'
+        async eleza foo2():
+            rudisha await bar(), 'ham'
 
         self.assertEqual(run_async(foo2()), ([], ('spam', 'ham')))
 
-    def test_await_12(self):
-        async def coro():
-            return 'spam'
+    eleza test_await_12(self):
+        async eleza coro():
+            rudisha 'spam'
         c = coro()
 
-        class Awaitable:
-            def __await__(self):
-                return c
+        kundi Awaitable:
+            eleza __await__(self):
+                rudisha c
 
-        async def foo():
-            return await Awaitable()
+        async eleza foo():
+            rudisha await Awaitable()
 
         with self.assertRaisesRegex(
                 TypeError, r"__await__\(\) returned a coroutine"):
@@ -1078,42 +1078,42 @@ class CoroutineTest(unittest.TestCase):
 
         c.close()
 
-    def test_await_13(self):
-        class Awaitable:
-            def __await__(self):
-                return self
+    eleza test_await_13(self):
+        kundi Awaitable:
+            eleza __await__(self):
+                rudisha self
 
-        async def foo():
-            return await Awaitable()
+        async eleza foo():
+            rudisha await Awaitable()
 
         with self.assertRaisesRegex(
             TypeError, "__await__.*returned non-iterator of type"):
 
             run_async(foo())
 
-    def test_await_14(self):
-        class Wrapper:
+    eleza test_await_14(self):
+        kundi Wrapper:
             # Forces the interpreter to use CoroutineType.__await__
-            def __init__(self, coro):
+            eleza __init__(self, coro):
                 assert coro.__class__ is types.CoroutineType
                 self.coro = coro
-            def __await__(self):
-                return self.coro.__await__()
+            eleza __await__(self):
+                rudisha self.coro.__await__()
 
-        class FutureLike:
-            def __await__(self):
-                return (yield)
+        kundi FutureLike:
+            eleza __await__(self):
+                rudisha (yield)
 
-        class Marker(Exception):
+        kundi Marker(Exception):
             pass
 
-        async def coro1():
+        async eleza coro1():
             try:
-                return await FutureLike()
+                rudisha await FutureLike()
             except ZeroDivisionError:
                 raise Marker
-        async def coro2():
-            return await Wrapper(coro1())
+        async eleza coro2():
+            rudisha await Wrapper(coro1())
 
         c = coro2()
         c.send(None)
@@ -1125,15 +1125,15 @@ class CoroutineTest(unittest.TestCase):
         with self.assertRaises(Marker):
             c.throw(ZeroDivisionError)
 
-    def test_await_15(self):
+    eleza test_await_15(self):
         @types.coroutine
-        def nop():
+        eleza nop():
             yield
 
-        async def coroutine():
+        async eleza coroutine():
             await nop()
 
-        async def waiter(coro):
+        async eleza waiter(coro):
             await coro
 
         coro = coroutine()
@@ -1143,40 +1143,40 @@ class CoroutineTest(unittest.TestCase):
                                     "coroutine is being awaited already"):
             waiter(coro).send(None)
 
-    def test_await_16(self):
+    eleza test_await_16(self):
         # See https://bugs.python.org/issue29600 for details.
 
-        async def f():
-            return ValueError()
+        async eleza f():
+            rudisha ValueError()
 
-        async def g():
+        async eleza g():
             try:
                 raise KeyError
             except:
-                return await f()
+                rudisha await f()
 
         _, result = run_async(g())
         self.assertIsNone(result.__context__)
 
-    def test_with_1(self):
-        class Manager:
-            def __init__(self, name):
+    eleza test_with_1(self):
+        kundi Manager:
+            eleza __init__(self, name):
                 self.name = name
 
-            async def __aenter__(self):
+            async eleza __aenter__(self):
                 await AsyncYieldFrom(['enter-1-' + self.name,
                                       'enter-2-' + self.name])
-                return self
+                rudisha self
 
-            async def __aexit__(self, *args):
+            async eleza __aexit__(self, *args):
                 await AsyncYieldFrom(['exit-1-' + self.name,
                                       'exit-2-' + self.name])
 
-                if self.name == 'B':
-                    return True
+                ikiwa self.name == 'B':
+                    rudisha True
 
 
-        async def foo():
+        async eleza foo():
             async with Manager("A") as a, Manager("B") as b:
                 await AsyncYieldFrom([('managers', a.name, b.name)])
                 1/0
@@ -1190,7 +1190,7 @@ class CoroutineTest(unittest.TestCase):
                      'exit-1-B', 'exit-2-B', 'exit-1-A', 'exit-2-A']
         )
 
-        async def foo():
+        async eleza foo():
             async with Manager("A") as a, Manager("C") as c:
                 await AsyncYieldFrom([('managers', a.name, c.name)])
                 1/0
@@ -1198,73 +1198,73 @@ class CoroutineTest(unittest.TestCase):
         with self.assertRaises(ZeroDivisionError):
             run_async(foo())
 
-    def test_with_2(self):
-        class CM:
-            def __aenter__(self):
+    eleza test_with_2(self):
+        kundi CM:
+            eleza __aenter__(self):
                 pass
 
-        async def foo():
+        async eleza foo():
             async with CM():
                 pass
 
         with self.assertRaisesRegex(AttributeError, '__aexit__'):
             run_async(foo())
 
-    def test_with_3(self):
-        class CM:
-            def __aexit__(self):
+    eleza test_with_3(self):
+        kundi CM:
+            eleza __aexit__(self):
                 pass
 
-        async def foo():
+        async eleza foo():
             async with CM():
                 pass
 
         with self.assertRaisesRegex(AttributeError, '__aenter__'):
             run_async(foo())
 
-    def test_with_4(self):
-        class CM:
-            def __enter__(self):
+    eleza test_with_4(self):
+        kundi CM:
+            eleza __enter__(self):
                 pass
 
-            def __exit__(self):
+            eleza __exit__(self):
                 pass
 
-        async def foo():
+        async eleza foo():
             async with CM():
                 pass
 
         with self.assertRaisesRegex(AttributeError, '__aexit__'):
             run_async(foo())
 
-    def test_with_5(self):
+    eleza test_with_5(self):
         # While this test doesn't make a lot of sense,
         # it's a regression test for an early bug with opcodes
         # generation
 
-        class CM:
-            async def __aenter__(self):
-                return self
+        kundi CM:
+            async eleza __aenter__(self):
+                rudisha self
 
-            async def __aexit__(self, *exc):
+            async eleza __aexit__(self, *exc):
                 pass
 
-        async def func():
+        async eleza func():
             async with CM():
                 assert (1, ) == 1
 
         with self.assertRaises(AssertionError):
             run_async(func())
 
-    def test_with_6(self):
-        class CM:
-            def __aenter__(self):
-                return 123
+    eleza test_with_6(self):
+        kundi CM:
+            eleza __aenter__(self):
+                rudisha 123
 
-            def __aexit__(self, *e):
-                return 456
+            eleza __aexit__(self, *e):
+                rudisha 456
 
-        async def foo():
+        async eleza foo():
             async with CM():
                 pass
 
@@ -1275,16 +1275,16 @@ class CoroutineTest(unittest.TestCase):
             # it's agizaant that __aexit__ wasn't called
             run_async(foo())
 
-    def test_with_7(self):
-        class CM:
-            async def __aenter__(self):
-                return self
+    eleza test_with_7(self):
+        kundi CM:
+            async eleza __aenter__(self):
+                rudisha self
 
-            def __aexit__(self, *e):
-                return 444
+            eleza __aexit__(self, *e):
+                rudisha 444
 
         # Exit with exception
-        async def foo():
+        async eleza foo():
             async with CM():
                 1/0
 
@@ -1301,18 +1301,18 @@ class CoroutineTest(unittest.TestCase):
             self.fail('invalid asynchronous context manager did not fail')
 
 
-    def test_with_8(self):
+    eleza test_with_8(self):
         CNT = 0
 
-        class CM:
-            async def __aenter__(self):
-                return self
+        kundi CM:
+            async eleza __aenter__(self):
+                rudisha self
 
-            def __aexit__(self, *e):
-                return 456
+            eleza __aexit__(self, *e):
+                rudisha 456
 
         # Normal exit
-        async def foo():
+        async eleza foo():
             nonlocal CNT
             async with CM():
                 CNT += 1
@@ -1324,7 +1324,7 @@ class CoroutineTest(unittest.TestCase):
         self.assertEqual(CNT, 1)
 
         # Exit with 'break'
-        async def foo():
+        async eleza foo():
             nonlocal CNT
             for i in range(2):
                 async with CM():
@@ -1338,7 +1338,7 @@ class CoroutineTest(unittest.TestCase):
         self.assertEqual(CNT, 2)
 
         # Exit with 'continue'
-        async def foo():
+        async eleza foo():
             nonlocal CNT
             for i in range(2):
                 async with CM():
@@ -1352,7 +1352,7 @@ class CoroutineTest(unittest.TestCase):
         self.assertEqual(CNT, 3)
 
         # Exit with 'return'
-        async def foo():
+        async eleza foo():
             nonlocal CNT
             async with CM():
                 CNT += 1
@@ -1365,17 +1365,17 @@ class CoroutineTest(unittest.TestCase):
         self.assertEqual(CNT, 4)
 
 
-    def test_with_9(self):
+    eleza test_with_9(self):
         CNT = 0
 
-        class CM:
-            async def __aenter__(self):
-                return self
+        kundi CM:
+            async eleza __aenter__(self):
+                rudisha self
 
-            async def __aexit__(self, *e):
+            async eleza __aexit__(self, *e):
                 1/0
 
-        async def foo():
+        async eleza foo():
             nonlocal CNT
             async with CM():
                 CNT += 1
@@ -1385,17 +1385,17 @@ class CoroutineTest(unittest.TestCase):
 
         self.assertEqual(CNT, 1)
 
-    def test_with_10(self):
+    eleza test_with_10(self):
         CNT = 0
 
-        class CM:
-            async def __aenter__(self):
-                return self
+        kundi CM:
+            async eleza __aenter__(self):
+                rudisha self
 
-            async def __aexit__(self, *e):
+            async eleza __aexit__(self, *e):
                 1/0
 
-        async def foo():
+        async eleza foo():
             nonlocal CNT
             async with CM():
                 async with CM():
@@ -1411,17 +1411,17 @@ class CoroutineTest(unittest.TestCase):
         else:
             self.fail('exception kutoka __aexit__ did not propagate')
 
-    def test_with_11(self):
+    eleza test_with_11(self):
         CNT = 0
 
-        class CM:
-            async def __aenter__(self):
+        kundi CM:
+            async eleza __aenter__(self):
                 raise NotImplementedError
 
-            async def __aexit__(self, *e):
+            async eleza __aexit__(self, *e):
                 1/0
 
-        async def foo():
+        async eleza foo():
             nonlocal CNT
             async with CM():
                 raise RuntimeError
@@ -1433,17 +1433,17 @@ class CoroutineTest(unittest.TestCase):
         else:
             self.fail('exception kutoka __aenter__ did not propagate')
 
-    def test_with_12(self):
+    eleza test_with_12(self):
         CNT = 0
 
-        class CM:
-            async def __aenter__(self):
-                return self
+        kundi CM:
+            async eleza __aenter__(self):
+                rudisha self
 
-            async def __aexit__(self, *e):
-                return True
+            async eleza __aexit__(self, *e):
+                rudisha True
 
-        async def foo():
+        async eleza foo():
             nonlocal CNT
             async with CM() as cm:
                 self.assertIs(cm.__class__, CM)
@@ -1451,17 +1451,17 @@ class CoroutineTest(unittest.TestCase):
 
         run_async(foo())
 
-    def test_with_13(self):
+    eleza test_with_13(self):
         CNT = 0
 
-        class CM:
-            async def __aenter__(self):
+        kundi CM:
+            async eleza __aenter__(self):
                 1/0
 
-            async def __aexit__(self, *e):
-                return True
+            async eleza __aexit__(self, *e):
+                rudisha True
 
-        async def foo():
+        async eleza foo():
             nonlocal CNT
             CNT += 1
             async with CM():
@@ -1472,32 +1472,32 @@ class CoroutineTest(unittest.TestCase):
             run_async(foo())
         self.assertEqual(CNT, 1)
 
-    def test_for_1(self):
+    eleza test_for_1(self):
         aiter_calls = 0
 
-        class AsyncIter:
-            def __init__(self):
+        kundi AsyncIter:
+            eleza __init__(self):
                 self.i = 0
 
-            def __aiter__(self):
+            eleza __aiter__(self):
                 nonlocal aiter_calls
                 aiter_calls += 1
-                return self
+                rudisha self
 
-            async def __anext__(self):
+            async eleza __anext__(self):
                 self.i += 1
 
-                if not (self.i % 10):
+                ikiwa not (self.i % 10):
                     await AsyncYield(self.i * 10)
 
-                if self.i > 100:
+                ikiwa self.i > 100:
                     raise StopAsyncIteration
 
-                return self.i, self.i
+                rudisha self.i, self.i
 
 
         buffer = []
-        async def test1():
+        async eleza test1():
             async for i1, i2 in AsyncIter():
                 buffer.append(i1 + i2)
 
@@ -1509,11 +1509,11 @@ class CoroutineTest(unittest.TestCase):
 
 
         buffer = []
-        async def test2():
+        async eleza test2():
             nonlocal buffer
             async for i in AsyncIter():
                 buffer.append(i[0])
-                if i[0] == 20:
+                ikiwa i[0] == 20:
                     break
             else:
                 buffer.append('what?')
@@ -1527,10 +1527,10 @@ class CoroutineTest(unittest.TestCase):
 
 
         buffer = []
-        async def test3():
+        async eleza test3():
             nonlocal buffer
             async for i in AsyncIter():
-                if i[0] > 20:
+                ikiwa i[0] > 20:
                     continue
                 buffer.append(i[0])
             else:
@@ -1544,13 +1544,13 @@ class CoroutineTest(unittest.TestCase):
         self.assertEqual(buffer, [i for i in range(1, 21)] +
                                  ['what?', 'end'])
 
-    def test_for_2(self):
+    eleza test_for_2(self):
         tup = (1, 2, 3)
         refs_before = sys.getrefcount(tup)
 
-        async def foo():
+        async eleza foo():
             async for i in tup:
-                print('never going to happen')
+                andika('never going to happen')
 
         with self.assertRaisesRegex(
                 TypeError, "async for' requires an object.*__aiter__.*tuple"):
@@ -1559,17 +1559,17 @@ class CoroutineTest(unittest.TestCase):
 
         self.assertEqual(sys.getrefcount(tup), refs_before)
 
-    def test_for_3(self):
-        class I:
-            def __aiter__(self):
-                return self
+    eleza test_for_3(self):
+        kundi I:
+            eleza __aiter__(self):
+                rudisha self
 
         aiter = I()
         refs_before = sys.getrefcount(aiter)
 
-        async def foo():
+        async eleza foo():
             async for i in aiter:
-                print('never going to happen')
+                andika('never going to happen')
 
         with self.assertRaisesRegex(
                 TypeError,
@@ -1579,20 +1579,20 @@ class CoroutineTest(unittest.TestCase):
 
         self.assertEqual(sys.getrefcount(aiter), refs_before)
 
-    def test_for_4(self):
-        class I:
-            def __aiter__(self):
-                return self
+    eleza test_for_4(self):
+        kundi I:
+            eleza __aiter__(self):
+                rudisha self
 
-            def __anext__(self):
-                return ()
+            eleza __anext__(self):
+                rudisha ()
 
         aiter = I()
         refs_before = sys.getrefcount(aiter)
 
-        async def foo():
+        async eleza foo():
             async for i in aiter:
-                print('never going to happen')
+                andika('never going to happen')
 
         with self.assertRaisesRegex(
                 TypeError,
@@ -1602,30 +1602,30 @@ class CoroutineTest(unittest.TestCase):
 
         self.assertEqual(sys.getrefcount(aiter), refs_before)
 
-    def test_for_6(self):
+    eleza test_for_6(self):
         I = 0
 
-        class Manager:
-            async def __aenter__(self):
+        kundi Manager:
+            async eleza __aenter__(self):
                 nonlocal I
                 I += 10000
 
-            async def __aexit__(self, *args):
+            async eleza __aexit__(self, *args):
                 nonlocal I
                 I += 100000
 
-        class Iterable:
-            def __init__(self):
+        kundi Iterable:
+            eleza __init__(self):
                 self.i = 0
 
-            def __aiter__(self):
-                return self
+            eleza __aiter__(self):
+                rudisha self
 
-            async def __anext__(self):
-                if self.i > 10:
+            async eleza __anext__(self):
+                ikiwa self.i > 10:
                     raise StopAsyncIteration
                 self.i += 1
-                return self.i
+                rudisha self.i
 
         ##############
 
@@ -1634,7 +1634,7 @@ class CoroutineTest(unittest.TestCase):
         mrefs_before = sys.getrefcount(manager)
         irefs_before = sys.getrefcount(iterable)
 
-        async def main():
+        async eleza main():
             nonlocal I
 
             async with manager:
@@ -1654,7 +1654,7 @@ class CoroutineTest(unittest.TestCase):
 
         ##############
 
-        async def main():
+        async eleza main():
             nonlocal I
 
             async with Manager():
@@ -1672,7 +1672,7 @@ class CoroutineTest(unittest.TestCase):
 
         ##############
 
-        async def main():
+        async eleza main():
             nonlocal I
 
             async with Manager():
@@ -1694,12 +1694,12 @@ class CoroutineTest(unittest.TestCase):
         run_async(main())
         self.assertEqual(I, 20555255)
 
-    def test_for_7(self):
+    eleza test_for_7(self):
         CNT = 0
-        class AI:
-            def __aiter__(self):
+        kundi AI:
+            eleza __aiter__(self):
                 1/0
-        async def foo():
+        async eleza foo():
             nonlocal CNT
             async for i in AI():
                 CNT += 1
@@ -1708,12 +1708,12 @@ class CoroutineTest(unittest.TestCase):
             run_async(foo())
         self.assertEqual(CNT, 0)
 
-    def test_for_8(self):
+    eleza test_for_8(self):
         CNT = 0
-        class AI:
-            def __aiter__(self):
+        kundi AI:
+            eleza __aiter__(self):
                 1/0
-        async def foo():
+        async eleza foo():
             nonlocal CNT
             async for i in AI():
                 CNT += 1
@@ -1721,21 +1721,21 @@ class CoroutineTest(unittest.TestCase):
         with self.assertRaises(ZeroDivisionError):
             with warnings.catch_warnings():
                 warnings.simplefilter("error")
-                # Test that if __aiter__ raises an exception it propagates
+                # Test that ikiwa __aiter__ raises an exception it propagates
                 # without any kind of warning.
                 run_async(foo())
         self.assertEqual(CNT, 0)
 
-    def test_for_11(self):
-        class F:
-            def __aiter__(self):
-                return self
-            def __anext__(self):
-                return self
-            def __await__(self):
+    eleza test_for_11(self):
+        kundi F:
+            eleza __aiter__(self):
+                rudisha self
+            eleza __anext__(self):
+                rudisha self
+            eleza __await__(self):
                 1 / 0
 
-        async def main():
+        async eleza main():
             async for _ in F():
                 pass
 
@@ -1746,21 +1746,21 @@ class CoroutineTest(unittest.TestCase):
         err = c.exception
         self.assertIsInstance(err.__cause__, ZeroDivisionError)
 
-    def test_for_tuple(self):
-        class Done(Exception): pass
+    eleza test_for_tuple(self):
+        kundi Done(Exception): pass
 
-        class AIter(tuple):
+        kundi AIter(tuple):
             i = 0
-            def __aiter__(self):
-                return self
-            async def __anext__(self):
-                if self.i >= len(self):
+            eleza __aiter__(self):
+                rudisha self
+            async eleza __anext__(self):
+                ikiwa self.i >= len(self):
                     raise StopAsyncIteration
                 self.i += 1
-                return self[self.i - 1]
+                rudisha self[self.i - 1]
 
         result = []
-        async def foo():
+        async eleza foo():
             async for i in AIter([42]):
                 result.append(i)
             raise Done
@@ -1769,21 +1769,21 @@ class CoroutineTest(unittest.TestCase):
             foo().send(None)
         self.assertEqual(result, [42])
 
-    def test_for_stop_iteration(self):
-        class Done(Exception): pass
+    eleza test_for_stop_iteration(self):
+        kundi Done(Exception): pass
 
-        class AIter(StopIteration):
+        kundi AIter(StopIteration):
             i = 0
-            def __aiter__(self):
-                return self
-            async def __anext__(self):
-                if self.i:
+            eleza __aiter__(self):
+                rudisha self
+            async eleza __anext__(self):
+                ikiwa self.i:
                     raise StopAsyncIteration
                 self.i += 1
-                return self.value
+                rudisha self.value
 
         result = []
-        async def foo():
+        async eleza foo():
             async for i in AIter(42):
                 result.append(i)
             raise Done
@@ -1792,41 +1792,41 @@ class CoroutineTest(unittest.TestCase):
             foo().send(None)
         self.assertEqual(result, [42])
 
-    def test_comp_1(self):
-        async def f(i):
-            return i
+    eleza test_comp_1(self):
+        async eleza f(i):
+            rudisha i
 
-        async def run_list():
-            return [await c for c in [f(1), f(41)]]
+        async eleza run_list():
+            rudisha [await c for c in [f(1), f(41)]]
 
-        async def run_set():
-            return {await c for c in [f(1), f(41)]}
+        async eleza run_set():
+            rudisha {await c for c in [f(1), f(41)]}
 
-        async def run_dict1():
-            return {await c: 'a' for c in [f(1), f(41)]}
+        async eleza run_dict1():
+            rudisha {await c: 'a' for c in [f(1), f(41)]}
 
-        async def run_dict2():
-            return {i: await c for i, c in enumerate([f(1), f(41)])}
+        async eleza run_dict2():
+            rudisha {i: await c for i, c in enumerate([f(1), f(41)])}
 
         self.assertEqual(run_async(run_list()), ([], [1, 41]))
         self.assertEqual(run_async(run_set()), ([], {1, 41}))
         self.assertEqual(run_async(run_dict1()), ([], {1: 'a', 41: 'a'}))
         self.assertEqual(run_async(run_dict2()), ([], {0: 1, 1: 41}))
 
-    def test_comp_2(self):
-        async def f(i):
-            return i
+    eleza test_comp_2(self):
+        async eleza f(i):
+            rudisha i
 
-        async def run_list():
-            return [s for c in [f(''), f('abc'), f(''), f(['de', 'fg'])]
+        async eleza run_list():
+            rudisha [s for c in [f(''), f('abc'), f(''), f(['de', 'fg'])]
                     for s in await c]
 
         self.assertEqual(
             run_async(run_list()),
             ([], ['a', 'b', 'c', 'de', 'fg']))
 
-        async def run_set():
-            return {d
+        async eleza run_set():
+            rudisha {d
                     for c in [f([f([10, 30]),
                                  f([20])])]
                     for s in await c
@@ -1836,8 +1836,8 @@ class CoroutineTest(unittest.TestCase):
             run_async(run_set()),
             ([], {10, 20, 30}))
 
-        async def run_set2():
-            return {await s
+        async eleza run_set2():
+            rudisha {await s
                     for c in [f([f(10), f(20)])]
                     for s in await c}
 
@@ -1845,164 +1845,164 @@ class CoroutineTest(unittest.TestCase):
             run_async(run_set2()),
             ([], {10, 20}))
 
-    def test_comp_3(self):
-        async def f(it):
+    eleza test_comp_3(self):
+        async eleza f(it):
             for i in it:
                 yield i
 
-        async def run_list():
-            return [i + 1 async for i in f([10, 20])]
+        async eleza run_list():
+            rudisha [i + 1 async for i in f([10, 20])]
         self.assertEqual(
             run_async(run_list()),
             ([], [11, 21]))
 
-        async def run_set():
-            return {i + 1 async for i in f([10, 20])}
+        async eleza run_set():
+            rudisha {i + 1 async for i in f([10, 20])}
         self.assertEqual(
             run_async(run_set()),
             ([], {11, 21}))
 
-        async def run_dict():
-            return {i + 1: i + 2 async for i in f([10, 20])}
+        async eleza run_dict():
+            rudisha {i + 1: i + 2 async for i in f([10, 20])}
         self.assertEqual(
             run_async(run_dict()),
             ([], {11: 12, 21: 22}))
 
-        async def run_gen():
+        async eleza run_gen():
             gen = (i + 1 async for i in f([10, 20]))
-            return [g + 100 async for g in gen]
+            rudisha [g + 100 async for g in gen]
         self.assertEqual(
             run_async(run_gen()),
             ([], [111, 121]))
 
-    def test_comp_4(self):
-        async def f(it):
+    eleza test_comp_4(self):
+        async eleza f(it):
             for i in it:
                 yield i
 
-        async def run_list():
-            return [i + 1 async for i in f([10, 20]) if i > 10]
+        async eleza run_list():
+            rudisha [i + 1 async for i in f([10, 20]) ikiwa i > 10]
         self.assertEqual(
             run_async(run_list()),
             ([], [21]))
 
-        async def run_set():
-            return {i + 1 async for i in f([10, 20]) if i > 10}
+        async eleza run_set():
+            rudisha {i + 1 async for i in f([10, 20]) ikiwa i > 10}
         self.assertEqual(
             run_async(run_set()),
             ([], {21}))
 
-        async def run_dict():
-            return {i + 1: i + 2 async for i in f([10, 20]) if i > 10}
+        async eleza run_dict():
+            rudisha {i + 1: i + 2 async for i in f([10, 20]) ikiwa i > 10}
         self.assertEqual(
             run_async(run_dict()),
             ([], {21: 22}))
 
-        async def run_gen():
-            gen = (i + 1 async for i in f([10, 20]) if i > 10)
-            return [g + 100 async for g in gen]
+        async eleza run_gen():
+            gen = (i + 1 async for i in f([10, 20]) ikiwa i > 10)
+            rudisha [g + 100 async for g in gen]
         self.assertEqual(
             run_async(run_gen()),
             ([], [121]))
 
-    def test_comp_4_2(self):
-        async def f(it):
+    eleza test_comp_4_2(self):
+        async eleza f(it):
             for i in it:
                 yield i
 
-        async def run_list():
-            return [i + 10 async for i in f(range(5)) if 0 < i < 4]
+        async eleza run_list():
+            rudisha [i + 10 async for i in f(range(5)) ikiwa 0 < i < 4]
         self.assertEqual(
             run_async(run_list()),
             ([], [11, 12, 13]))
 
-        async def run_set():
-            return {i + 10 async for i in f(range(5)) if 0 < i < 4}
+        async eleza run_set():
+            rudisha {i + 10 async for i in f(range(5)) ikiwa 0 < i < 4}
         self.assertEqual(
             run_async(run_set()),
             ([], {11, 12, 13}))
 
-        async def run_dict():
-            return {i + 10: i + 100 async for i in f(range(5)) if 0 < i < 4}
+        async eleza run_dict():
+            rudisha {i + 10: i + 100 async for i in f(range(5)) ikiwa 0 < i < 4}
         self.assertEqual(
             run_async(run_dict()),
             ([], {11: 101, 12: 102, 13: 103}))
 
-        async def run_gen():
-            gen = (i + 10 async for i in f(range(5)) if 0 < i < 4)
-            return [g + 100 async for g in gen]
+        async eleza run_gen():
+            gen = (i + 10 async for i in f(range(5)) ikiwa 0 < i < 4)
+            rudisha [g + 100 async for g in gen]
         self.assertEqual(
             run_async(run_gen()),
             ([], [111, 112, 113]))
 
-    def test_comp_5(self):
-        async def f(it):
+    eleza test_comp_5(self):
+        async eleza f(it):
             for i in it:
                 yield i
 
-        async def run_list():
-            return [i + 1 for pair in ([10, 20], [30, 40]) if pair[0] > 10
-                    async for i in f(pair) if i > 30]
+        async eleza run_list():
+            rudisha [i + 1 for pair in ([10, 20], [30, 40]) ikiwa pair[0] > 10
+                    async for i in f(pair) ikiwa i > 30]
         self.assertEqual(
             run_async(run_list()),
             ([], [41]))
 
-    def test_comp_6(self):
-        async def f(it):
+    eleza test_comp_6(self):
+        async eleza f(it):
             for i in it:
                 yield i
 
-        async def run_list():
-            return [i + 1 async for seq in f([(10, 20), (30,)])
+        async eleza run_list():
+            rudisha [i + 1 async for seq in f([(10, 20), (30,)])
                     for i in seq]
 
         self.assertEqual(
             run_async(run_list()),
             ([], [11, 21, 31]))
 
-    def test_comp_7(self):
-        async def f():
+    eleza test_comp_7(self):
+        async eleza f():
             yield 1
             yield 2
             raise Exception('aaa')
 
-        async def run_list():
-            return [i async for i in f()]
+        async eleza run_list():
+            rudisha [i async for i in f()]
 
         with self.assertRaisesRegex(Exception, 'aaa'):
             run_async(run_list())
 
-    def test_comp_8(self):
-        async def f():
-            return [i for i in [1, 2, 3]]
+    eleza test_comp_8(self):
+        async eleza f():
+            rudisha [i for i in [1, 2, 3]]
 
         self.assertEqual(
             run_async(f()),
             ([], [1, 2, 3]))
 
-    def test_comp_9(self):
-        async def gen():
+    eleza test_comp_9(self):
+        async eleza gen():
             yield 1
             yield 2
-        async def f():
+        async eleza f():
             l = [i async for i in gen()]
-            return [i for i in l]
+            rudisha [i for i in l]
 
         self.assertEqual(
             run_async(f()),
             ([], [1, 2]))
 
-    def test_comp_10(self):
-        async def f():
+    eleza test_comp_10(self):
+        async eleza f():
             xx = {i for i in [1, 2, 3]}
-            return {x: x for x in xx}
+            rudisha {x: x for x in xx}
 
         self.assertEqual(
             run_async(f()),
             ([], {1: 1, 2: 2, 3: 3}))
 
-    def test_copy(self):
-        async def func(): pass
+    eleza test_copy(self):
+        async eleza func(): pass
         coro = func()
         with self.assertRaises(TypeError):
             copy.copy(coro)
@@ -2014,8 +2014,8 @@ class CoroutineTest(unittest.TestCase):
         finally:
             aw.close()
 
-    def test_pickle(self):
-        async def func(): pass
+    eleza test_pickle(self):
+        async eleza func(): pass
         coro = func()
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             with self.assertRaises((TypeError, pickle.PicklingError)):
@@ -2029,9 +2029,9 @@ class CoroutineTest(unittest.TestCase):
         finally:
             aw.close()
 
-    def test_fatal_coro_warning(self):
+    eleza test_fatal_coro_warning(self):
         # Issue 27811
-        async def func(): pass
+        async eleza func(): pass
         with warnings.catch_warnings(), \
              support.catch_unraisable_exception() as cm:
             warnings.filterwarnings("error")
@@ -2044,96 +2044,96 @@ class CoroutineTest(unittest.TestCase):
             self.assertIn("was never awaited", str(cm.unraisable.exc_value))
             self.assertEqual(repr(cm.unraisable.object), coro_repr)
 
-    def test_for_assign_raising_stop_async_iteration(self):
-        class BadTarget:
-            def __setitem__(self, key, value):
+    eleza test_for_assign_raising_stop_async_iteration(self):
+        kundi BadTarget:
+            eleza __setitem__(self, key, value):
                 raise StopAsyncIteration(42)
         tgt = BadTarget()
-        async def source():
+        async eleza source():
             yield 10
 
-        async def run_for():
+        async eleza run_for():
             with self.assertRaises(StopAsyncIteration) as cm:
                 async for tgt[0] in source():
                     pass
             self.assertEqual(cm.exception.args, (42,))
-            return 'end'
+            rudisha 'end'
         self.assertEqual(run_async(run_for()), ([], 'end'))
 
-        async def run_list():
+        async eleza run_list():
             with self.assertRaises(StopAsyncIteration) as cm:
-                return [0 async for tgt[0] in source()]
+                rudisha [0 async for tgt[0] in source()]
             self.assertEqual(cm.exception.args, (42,))
-            return 'end'
+            rudisha 'end'
         self.assertEqual(run_async(run_list()), ([], 'end'))
 
-        async def run_gen():
+        async eleza run_gen():
             gen = (0 async for tgt[0] in source())
             a = gen.asend(None)
             with self.assertRaises(RuntimeError) as cm:
                 await a
             self.assertIsInstance(cm.exception.__cause__, StopAsyncIteration)
             self.assertEqual(cm.exception.__cause__.args, (42,))
-            return 'end'
+            rudisha 'end'
         self.assertEqual(run_async(run_gen()), ([], 'end'))
 
-    def test_for_assign_raising_stop_async_iteration_2(self):
-        class BadIterable:
-            def __iter__(self):
+    eleza test_for_assign_raising_stop_async_iteration_2(self):
+        kundi BadIterable:
+            eleza __iter__(self):
                 raise StopAsyncIteration(42)
-        async def badpairs():
+        async eleza badpairs():
             yield BadIterable()
 
-        async def run_for():
+        async eleza run_for():
             with self.assertRaises(StopAsyncIteration) as cm:
                 async for i, j in badpairs():
                     pass
             self.assertEqual(cm.exception.args, (42,))
-            return 'end'
+            rudisha 'end'
         self.assertEqual(run_async(run_for()), ([], 'end'))
 
-        async def run_list():
+        async eleza run_list():
             with self.assertRaises(StopAsyncIteration) as cm:
-                return [0 async for i, j in badpairs()]
+                rudisha [0 async for i, j in badpairs()]
             self.assertEqual(cm.exception.args, (42,))
-            return 'end'
+            rudisha 'end'
         self.assertEqual(run_async(run_list()), ([], 'end'))
 
-        async def run_gen():
+        async eleza run_gen():
             gen = (0 async for i, j in badpairs())
             a = gen.asend(None)
             with self.assertRaises(RuntimeError) as cm:
                 await a
             self.assertIsInstance(cm.exception.__cause__, StopAsyncIteration)
             self.assertEqual(cm.exception.__cause__.args, (42,))
-            return 'end'
+            rudisha 'end'
         self.assertEqual(run_async(run_gen()), ([], 'end'))
 
 
-class CoroAsyncIOCompatTest(unittest.TestCase):
+kundi CoroAsyncIOCompatTest(unittest.TestCase):
 
-    def test_asyncio_1(self):
+    eleza test_asyncio_1(self):
         # asyncio cannot be imported when Python is compiled without thread
         # support
         asyncio = support.import_module('asyncio')
 
-        class MyException(Exception):
+        kundi MyException(Exception):
             pass
 
         buffer = []
 
-        class CM:
-            async def __aenter__(self):
+        kundi CM:
+            async eleza __aenter__(self):
                 buffer.append(1)
                 await asyncio.sleep(0.01)
                 buffer.append(2)
-                return self
+                rudisha self
 
-            async def __aexit__(self, exc_type, exc_val, exc_tb):
+            async eleza __aexit__(self, exc_type, exc_val, exc_tb):
                 await asyncio.sleep(0.01)
                 buffer.append(exc_type.__name__)
 
-        async def f():
+        async eleza f():
             async with CM() as c:
                 await asyncio.sleep(0.01)
                 raise MyException
@@ -2152,15 +2152,15 @@ class CoroAsyncIOCompatTest(unittest.TestCase):
         self.assertEqual(buffer, [1, 2, 'MyException'])
 
 
-class OriginTrackingTest(unittest.TestCase):
-    def here(self):
+kundi OriginTrackingTest(unittest.TestCase):
+    eleza here(self):
         info = inspect.getframeinfo(inspect.currentframe().f_back)
-        return (info.filename, info.lineno)
+        rudisha (info.filename, info.lineno)
 
-    def test_origin_tracking(self):
+    eleza test_origin_tracking(self):
         orig_depth = sys.get_coroutine_origin_tracking_depth()
         try:
-            async def corofn():
+            async eleza corofn():
                 pass
 
             sys.set_coroutine_origin_tracking_depth(0)
@@ -2180,8 +2180,8 @@ class OriginTrackingTest(unittest.TestCase):
             sys.set_coroutine_origin_tracking_depth(2)
             self.assertEqual(sys.get_coroutine_origin_tracking_depth(), 2)
 
-            def nested():
-                return (self.here(), corofn())
+            eleza nested():
+                rudisha (self.here(), corofn())
             fname, lineno = self.here()
             ((nested_fname, nested_lineno), coro) = nested()
             with contextlib.closing(coro):
@@ -2203,21 +2203,21 @@ class OriginTrackingTest(unittest.TestCase):
         finally:
             sys.set_coroutine_origin_tracking_depth(orig_depth)
 
-    def test_origin_tracking_warning(self):
-        async def corofn():
+    eleza test_origin_tracking_warning(self):
+        async eleza corofn():
             pass
 
         a1_filename, a1_lineno = self.here()
-        def a1():
-            return corofn()  # comment in a1
+        eleza a1():
+            rudisha corofn()  # comment in a1
         a1_lineno += 2
 
         a2_filename, a2_lineno = self.here()
-        def a2():
-            return a1()  # comment in a2
+        eleza a2():
+            rudisha a1()  # comment in a2
         a2_lineno += 2
 
-        def check(depth, msg):
+        eleza check(depth, msg):
             sys.set_coroutine_origin_tracking_depth(depth)
             with self.assertWarns(RuntimeWarning) as cm:
                 a2()
@@ -2231,25 +2231,25 @@ class OriginTrackingTest(unittest.TestCase):
                 f"coroutine '{corofn.__qualname__}' was never awaited\n",
                 "Coroutine created at (most recent call last)\n",
                 f'  File "{a1_filename}", line {a1_lineno}, in a1\n',
-                f'    return corofn()  # comment in a1',
+                f'    rudisha corofn()  # comment in a1',
             ]))
             check(2, "".join([
                 f"coroutine '{corofn.__qualname__}' was never awaited\n",
                 "Coroutine created at (most recent call last)\n",
                 f'  File "{a2_filename}", line {a2_lineno}, in a2\n',
-                f'    return a1()  # comment in a2\n',
+                f'    rudisha a1()  # comment in a2\n',
                 f'  File "{a1_filename}", line {a1_lineno}, in a1\n',
-                f'    return corofn()  # comment in a1',
+                f'    rudisha corofn()  # comment in a1',
             ]))
 
         finally:
             sys.set_coroutine_origin_tracking_depth(orig_depth)
 
-    def test_unawaited_warning_when_module_broken(self):
+    eleza test_unawaited_warning_when_module_broken(self):
         # Make sure we don't blow up too bad if
         # warnings._warn_unawaited_coroutine is broken somehow (e.g. because
         # of shutdown problems)
-        async def corofn():
+        async eleza corofn():
             pass
 
         orig_wuc = warnings._warn_unawaited_coroutine
@@ -2279,55 +2279,55 @@ class OriginTrackingTest(unittest.TestCase):
             warnings._warn_unawaited_coroutine = orig_wuc
 
 
-class UnawaitedWarningDuringShutdownTest(unittest.TestCase):
+kundi UnawaitedWarningDuringShutdownTest(unittest.TestCase):
     # https://bugs.python.org/issue32591#msg310726
-    def test_unawaited_warning_during_shutdown(self):
+    eleza test_unawaited_warning_during_shutdown(self):
         code = ("agiza asyncio\n"
-                "async def f(): pass\n"
+                "async eleza f(): pass\n"
                 "asyncio.gather(f())\n")
         assert_python_ok("-c", code)
 
         code = ("agiza sys\n"
-                "async def f(): pass\n"
+                "async eleza f(): pass\n"
                 "sys.coro = f()\n")
         assert_python_ok("-c", code)
 
         code = ("agiza sys\n"
-                "async def f(): pass\n"
+                "async eleza f(): pass\n"
                 "sys.corocycle = [f()]\n"
                 "sys.corocycle.append(sys.corocycle)\n")
         assert_python_ok("-c", code)
 
 
 @support.cpython_only
-class CAPITest(unittest.TestCase):
+kundi CAPITest(unittest.TestCase):
 
-    def test_tp_await_1(self):
+    eleza test_tp_await_1(self):
         kutoka _testcapi agiza awaitType as at
 
-        async def foo():
+        async eleza foo():
             future = at(iter([1]))
-            return (await future)
+            rudisha (await future)
 
         self.assertEqual(foo().send(None), 1)
 
-    def test_tp_await_2(self):
+    eleza test_tp_await_2(self):
         # Test tp_await to __await__ mapping
         kutoka _testcapi agiza awaitType as at
         future = at(iter([1]))
         self.assertEqual(next(future.__await__()), 1)
 
-    def test_tp_await_3(self):
+    eleza test_tp_await_3(self):
         kutoka _testcapi agiza awaitType as at
 
-        async def foo():
+        async eleza foo():
             future = at(1)
-            return (await future)
+            rudisha (await future)
 
         with self.assertRaisesRegex(
                 TypeError, "__await__.*returned non-iterator of type 'int'"):
             self.assertEqual(foo().send(None), 1)
 
 
-if __name__=="__main__":
+ikiwa __name__=="__main__":
     unittest.main()

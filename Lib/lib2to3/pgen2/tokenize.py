@@ -34,7 +34,7 @@ kutoka codecs agiza BOM_UTF8, lookup
 kutoka lib2to3.pgen2.token agiza *
 
 kutoka . agiza token
-__all__ = [x for x in dir(token) if x[0] != '_'] + ["tokenize",
+__all__ = [x for x in dir(token) ikiwa x[0] != '_'] + ["tokenize",
            "generate_tokens", "untokenize"]
 del token
 
@@ -45,12 +45,12 @@ except NameError:
     # valid Python 3 code.
     bytes = str
 
-def group(*choices): return '(' + '|'.join(choices) + ')'
-def any(*choices): return group(*choices) + '*'
-def maybe(*choices): return group(*choices) + '?'
-def _combinations(*l):
-    return set(
-        x + y for x in l for y in l + ("",) if x.casefold() != y.casefold()
+eleza group(*choices): rudisha '(' + '|'.join(choices) + ')'
+eleza any(*choices): rudisha group(*choices) + '*'
+eleza maybe(*choices): rudisha group(*choices) + '?'
+eleza _combinations(*l):
+    rudisha set(
+        x + y for x in l for y in l + ("",) ikiwa x.casefold() != y.casefold()
     )
 
 Whitespace = r'[ \f\t]*'
@@ -85,7 +85,7 @@ String = group(_litprefix + r"'[^\n'\\]*(?:\\.[^\n'\\]*)*'",
                _litprefix + r'"[^\n"\\]*(?:\\.[^\n"\\]*)*"')
 
 # Because of leftmost-then-longest match semantics, be sure to put the
-# longest operators first (e.g., if = came before ==, == would get
+# longest operators first (e.g., ikiwa = came before ==, == would get
 # recognized as two instances of =).
 Operator = group(r"\*\*=?", r">>=?", r"<<=?", r"<>", r"!=",
                  r"//=?", r"->",
@@ -135,24 +135,24 @@ single_quoted = (
 
 tabsize = 8
 
-class TokenError(Exception): pass
+kundi TokenError(Exception): pass
 
-class StopTokenizing(Exception): pass
+kundi StopTokenizing(Exception): pass
 
-def printtoken(type, token, xxx_todo_changeme, xxx_todo_changeme1, line): # for testing
+eleza printtoken(type, token, xxx_todo_changeme, xxx_todo_changeme1, line): # for testing
     (srow, scol) = xxx_todo_changeme
     (erow, ecol) = xxx_todo_changeme1
-    print("%d,%d-%d,%d:\t%s\t%s" % \
+    andika("%d,%d-%d,%d:\t%s\t%s" % \
         (srow, scol, erow, ecol, tok_name[type], repr(token)))
 
-def tokenize(readline, tokeneater=printtoken):
+eleza tokenize(readline, tokeneater=printtoken):
     """
     The tokenize() function accepts two parameters: one representing the
     input stream, and one providing an output mechanism for tokenize().
 
     The first parameter, readline, must be a callable object which provides
     the same interface as the readline() method of built-in file objects.
-    Each call to the function should return one line of input as a string.
+    Each call to the function should rudisha one line of input as a string.
 
     The second parameter, tokeneater, must also be a callable object. It is
     called once for each token, with five arguments, corresponding to the
@@ -164,62 +164,62 @@ def tokenize(readline, tokeneater=printtoken):
         pass
 
 # backwards compatible interface
-def tokenize_loop(readline, tokeneater):
+eleza tokenize_loop(readline, tokeneater):
     for token_info in generate_tokens(readline):
         tokeneater(*token_info)
 
-class Untokenizer:
+kundi Untokenizer:
 
-    def __init__(self):
+    eleza __init__(self):
         self.tokens = []
         self.prev_row = 1
         self.prev_col = 0
 
-    def add_whitespace(self, start):
+    eleza add_whitespace(self, start):
         row, col = start
         assert row <= self.prev_row
         col_offset = col - self.prev_col
-        if col_offset:
+        ikiwa col_offset:
             self.tokens.append(" " * col_offset)
 
-    def untokenize(self, iterable):
+    eleza untokenize(self, iterable):
         for t in iterable:
-            if len(t) == 2:
+            ikiwa len(t) == 2:
                 self.compat(t, iterable)
                 break
             tok_type, token, start, end, line = t
             self.add_whitespace(start)
             self.tokens.append(token)
             self.prev_row, self.prev_col = end
-            if tok_type in (NEWLINE, NL):
+            ikiwa tok_type in (NEWLINE, NL):
                 self.prev_row += 1
                 self.prev_col = 0
-        return "".join(self.tokens)
+        rudisha "".join(self.tokens)
 
-    def compat(self, token, iterable):
+    eleza compat(self, token, iterable):
         startline = False
         indents = []
         toks_append = self.tokens.append
         toknum, tokval = token
-        if toknum in (NAME, NUMBER):
+        ikiwa toknum in (NAME, NUMBER):
             tokval += ' '
-        if toknum in (NEWLINE, NL):
+        ikiwa toknum in (NEWLINE, NL):
             startline = True
         for tok in iterable:
             toknum, tokval = tok[:2]
 
-            if toknum in (NAME, NUMBER, ASYNC, AWAIT):
+            ikiwa toknum in (NAME, NUMBER, ASYNC, AWAIT):
                 tokval += ' '
 
-            if toknum == INDENT:
+            ikiwa toknum == INDENT:
                 indents.append(tokval)
                 continue
-            elif toknum == DEDENT:
+            elikiwa toknum == DEDENT:
                 indents.pop()
                 continue
-            elif toknum in (NEWLINE, NL):
+            elikiwa toknum in (NEWLINE, NL):
                 startline = True
-            elif startline and indents:
+            elikiwa startline and indents:
                 toks_append(indents[-1])
                 startline = False
             toks_append(tokval)
@@ -227,31 +227,31 @@ class Untokenizer:
 cookie_re = re.compile(r'^[ \t\f]*#.*?coding[:=][ \t]*([-\w.]+)', re.ASCII)
 blank_re = re.compile(br'^[ \t\f]*(?:[#\r\n]|$)', re.ASCII)
 
-def _get_normal_name(orig_enc):
+eleza _get_normal_name(orig_enc):
     """Imitates get_normal_name in tokenizer.c."""
     # Only care about the first 12 characters.
     enc = orig_enc[:12].lower().replace("_", "-")
-    if enc == "utf-8" or enc.startswith("utf-8-"):
-        return "utf-8"
-    if enc in ("latin-1", "iso-8859-1", "iso-latin-1") or \
+    ikiwa enc == "utf-8" or enc.startswith("utf-8-"):
+        rudisha "utf-8"
+    ikiwa enc in ("latin-1", "iso-8859-1", "iso-latin-1") or \
        enc.startswith(("latin-1-", "iso-8859-1-", "iso-latin-1-")):
-        return "iso-8859-1"
-    return orig_enc
+        rudisha "iso-8859-1"
+    rudisha orig_enc
 
-def detect_encoding(readline):
+eleza detect_encoding(readline):
     """
     The detect_encoding() function is used to detect the encoding that should
     be used to decode a Python source file. It requires one argument, readline,
     in the same way as the tokenize() generator.
 
-    It will call readline a maximum of twice, and return the encoding used
+    It will call readline a maximum of twice, and rudisha the encoding used
     (as a string) and a list of any lines (left as bytes) it has read
     in.
 
     It detects the encoding kutoka the presence of a utf-8 bom or an encoding
     cookie as specified in pep-0263. If both a bom and a cookie are present, but
     disagree, a SyntaxError will be raised. If the encoding cookie is an invalid
-    charset, raise a SyntaxError.  Note that if a utf-8 bom is found,
+    charset, raise a SyntaxError.  Note that ikiwa a utf-8 bom is found,
     'utf-8-sig' is returned.
 
     If no encoding is specified, then the default of 'utf-8' will be returned.
@@ -259,20 +259,20 @@ def detect_encoding(readline):
     bom_found = False
     encoding = None
     default = 'utf-8'
-    def read_or_stop():
+    eleza read_or_stop():
         try:
-            return readline()
+            rudisha readline()
         except StopIteration:
-            return bytes()
+            rudisha bytes()
 
-    def find_cookie(line):
+    eleza find_cookie(line):
         try:
             line_string = line.decode('ascii')
         except UnicodeDecodeError:
-            return None
+            rudisha None
         match = cookie_re.match(line_string)
-        if not match:
-            return None
+        ikiwa not match:
+            rudisha None
         encoding = _get_normal_name(match.group(1))
         try:
             codec = lookup(encoding)
@@ -280,38 +280,38 @@ def detect_encoding(readline):
             # This behaviour mimics the Python interpreter
             raise SyntaxError("unknown encoding: " + encoding)
 
-        if bom_found:
-            if codec.name != 'utf-8':
+        ikiwa bom_found:
+            ikiwa codec.name != 'utf-8':
                 # This behaviour mimics the Python interpreter
                 raise SyntaxError('encoding problem: utf-8')
             encoding += '-sig'
-        return encoding
+        rudisha encoding
 
     first = read_or_stop()
-    if first.startswith(BOM_UTF8):
+    ikiwa first.startswith(BOM_UTF8):
         bom_found = True
         first = first[3:]
         default = 'utf-8-sig'
-    if not first:
-        return default, []
+    ikiwa not first:
+        rudisha default, []
 
     encoding = find_cookie(first)
-    if encoding:
-        return encoding, [first]
-    if not blank_re.match(first):
-        return default, [first]
+    ikiwa encoding:
+        rudisha encoding, [first]
+    ikiwa not blank_re.match(first):
+        rudisha default, [first]
 
     second = read_or_stop()
-    if not second:
-        return default, [first]
+    ikiwa not second:
+        rudisha default, [first]
 
     encoding = find_cookie(second)
-    if encoding:
-        return encoding, [first, second]
+    ikiwa encoding:
+        rudisha encoding, [first, second]
 
-    return default, [first, second]
+    rudisha default, [first, second]
 
-def untokenize(iterable):
+eleza untokenize(iterable):
     """Transform tokens back into Python source code.
 
     Each element returned by the iterable must be a token sequence
@@ -330,14 +330,14 @@ def untokenize(iterable):
         assert t1 == t2
     """
     ut = Untokenizer()
-    return ut.untokenize(iterable)
+    rudisha ut.untokenize(iterable)
 
-def generate_tokens(readline):
+eleza generate_tokens(readline):
     """
     The generate_tokens() generator requires one argument, readline, which
     must be a callable object which provides the same interface as the
     readline() method of built-in file objects. Each call to the function
-    should return one line of input as a string.  Alternately, readline
+    should rudisha one line of input as a string.  Alternately, readline
     can be a callable function terminating with StopIteration:
         readline = open(myfile).next    # Example of alternate readline
 
@@ -355,7 +355,7 @@ def generate_tokens(readline):
 
     # 'stashed' and 'async_*' are used for async/await parsing
     stashed = None
-    async_def = False
+    async_eleza = False
     async_def_indent = 0
     async_def_nl = False
 
@@ -367,17 +367,17 @@ def generate_tokens(readline):
         lnum = lnum + 1
         pos, max = 0, len(line)
 
-        if contstr:                            # continued string
-            if not line:
+        ikiwa contstr:                            # continued string
+            ikiwa not line:
                 raise TokenError("EOF in multi-line string", strstart)
             endmatch = endprog.match(line)
-            if endmatch:
+            ikiwa endmatch:
                 pos = end = endmatch.end(0)
                 yield (STRING, contstr + line[:end],
                        strstart, (lnum, end), contline + line)
                 contstr, needcont = '', 0
                 contline = None
-            elif needcont and line[-2:] != '\\\n' and line[-3:] != '\\\r\n':
+            elikiwa needcont and line[-2:] != '\\\n' and line[-3:] != '\\\r\n':
                 yield (ERRORTOKEN, contstr + line,
                            strstart, (lnum, len(line)), contline)
                 contstr = ''
@@ -388,23 +388,23 @@ def generate_tokens(readline):
                 contline = contline + line
                 continue
 
-        elif parenlev == 0 and not continued:  # new statement
-            if not line: break
+        elikiwa parenlev == 0 and not continued:  # new statement
+            ikiwa not line: break
             column = 0
             while pos < max:                   # measure leading whitespace
-                if line[pos] == ' ': column = column + 1
-                elif line[pos] == '\t': column = (column//tabsize + 1)*tabsize
-                elif line[pos] == '\f': column = 0
+                ikiwa line[pos] == ' ': column = column + 1
+                elikiwa line[pos] == '\t': column = (column//tabsize + 1)*tabsize
+                elikiwa line[pos] == '\f': column = 0
                 else: break
                 pos = pos + 1
-            if pos == max: break
+            ikiwa pos == max: break
 
-            if stashed:
+            ikiwa stashed:
                 yield stashed
                 stashed = None
 
-            if line[pos] in '#\r\n':           # skip comments or blank lines
-                if line[pos] == '#':
+            ikiwa line[pos] in '#\r\n':           # skip comments or blank lines
+                ikiwa line[pos] == '#':
                     comment_token = line[pos:].rstrip('\r\n')
                     nl_pos = pos + len(comment_token)
                     yield (COMMENT, comment_token,
@@ -416,67 +416,67 @@ def generate_tokens(readline):
                            (lnum, pos), (lnum, len(line)), line)
                 continue
 
-            if column > indents[-1]:           # count indents or dedents
+            ikiwa column > indents[-1]:           # count indents or dedents
                 indents.append(column)
                 yield (INDENT, line[:pos], (lnum, 0), (lnum, pos), line)
             while column < indents[-1]:
-                if column not in indents:
+                ikiwa column not in indents:
                     raise IndentationError(
                         "unindent does not match any outer indentation level",
                         ("<tokenize>", lnum, pos, line))
                 indents = indents[:-1]
 
-                if async_def and async_def_indent >= indents[-1]:
-                    async_def = False
+                ikiwa async_eleza and async_def_indent >= indents[-1]:
+                    async_eleza = False
                     async_def_nl = False
                     async_def_indent = 0
 
                 yield (DEDENT, '', (lnum, pos), (lnum, pos), line)
 
-            if async_def and async_def_nl and async_def_indent >= indents[-1]:
-                async_def = False
+            ikiwa async_eleza and async_def_nl and async_def_indent >= indents[-1]:
+                async_eleza = False
                 async_def_nl = False
                 async_def_indent = 0
 
         else:                                  # continued statement
-            if not line:
+            ikiwa not line:
                 raise TokenError("EOF in multi-line statement", (lnum, 0))
             continued = 0
 
         while pos < max:
             pseudomatch = pseudoprog.match(line, pos)
-            if pseudomatch:                                # scan for tokens
+            ikiwa pseudomatch:                                # scan for tokens
                 start, end = pseudomatch.span(1)
                 spos, epos, pos = (lnum, start), (lnum, end), end
                 token, initial = line[start:end], line[start]
 
-                if initial in string.digits or \
+                ikiwa initial in string.digits or \
                    (initial == '.' and token != '.'):      # ordinary number
                     yield (NUMBER, token, spos, epos, line)
-                elif initial in '\r\n':
+                elikiwa initial in '\r\n':
                     newline = NEWLINE
-                    if parenlev > 0:
+                    ikiwa parenlev > 0:
                         newline = NL
-                    elif async_def:
+                    elikiwa async_def:
                         async_def_nl = True
-                    if stashed:
+                    ikiwa stashed:
                         yield stashed
                         stashed = None
                     yield (newline, token, spos, epos, line)
 
-                elif initial == '#':
+                elikiwa initial == '#':
                     assert not token.endswith("\n")
-                    if stashed:
+                    ikiwa stashed:
                         yield stashed
                         stashed = None
                     yield (COMMENT, token, spos, epos, line)
-                elif token in triple_quoted:
+                elikiwa token in triple_quoted:
                     endprog = endprogs[token]
                     endmatch = endprog.match(line, pos)
-                    if endmatch:                           # all on one line
+                    ikiwa endmatch:                           # all on one line
                         pos = endmatch.end(0)
                         token = line[start:pos]
-                        if stashed:
+                        ikiwa stashed:
                             yield stashed
                             stashed = None
                         yield (STRING, token, spos, (lnum, pos), line)
@@ -485,10 +485,10 @@ def generate_tokens(readline):
                         contstr = line[start:]
                         contline = line
                         break
-                elif initial in single_quoted or \
+                elikiwa initial in single_quoted or \
                     token[:2] in single_quoted or \
                     token[:3] in single_quoted:
-                    if token[-1] == '\n':                  # continued string
+                    ikiwa token[-1] == '\n':                  # continued string
                         strstart = (lnum, start)
                         endprog = (endprogs[initial] or endprogs[token[1]] or
                                    endprogs[token[2]])
@@ -496,28 +496,28 @@ def generate_tokens(readline):
                         contline = line
                         break
                     else:                                  # ordinary string
-                        if stashed:
+                        ikiwa stashed:
                             yield stashed
                             stashed = None
                         yield (STRING, token, spos, epos, line)
-                elif initial.isidentifier():               # ordinary name
-                    if token in ('async', 'await'):
-                        if async_def:
-                            yield (ASYNC if token == 'async' else AWAIT,
+                elikiwa initial.isidentifier():               # ordinary name
+                    ikiwa token in ('async', 'await'):
+                        ikiwa async_def:
+                            yield (ASYNC ikiwa token == 'async' else AWAIT,
                                    token, spos, epos, line)
                             continue
 
                     tok = (NAME, token, spos, epos, line)
-                    if token == 'async' and not stashed:
+                    ikiwa token == 'async' and not stashed:
                         stashed = tok
                         continue
 
-                    if token == 'def':
-                        if (stashed
+                    ikiwa token == 'def':
+                        ikiwa (stashed
                                 and stashed[0] == NAME
                                 and stashed[1] == 'async'):
 
-                            async_def = True
+                            async_eleza = True
                             async_def_indent = indents[-1]
 
                             yield (ASYNC, stashed[1],
@@ -525,22 +525,22 @@ def generate_tokens(readline):
                                    stashed[4])
                             stashed = None
 
-                    if stashed:
+                    ikiwa stashed:
                         yield stashed
                         stashed = None
 
                     yield tok
-                elif initial == '\\':                      # continued stmt
+                elikiwa initial == '\\':                      # continued stmt
                     # This yield is new; needed for better idempotency:
-                    if stashed:
+                    ikiwa stashed:
                         yield stashed
                         stashed = None
                     yield (NL, token, spos, (lnum, pos), line)
                     continued = 1
                 else:
-                    if initial in '([{': parenlev = parenlev + 1
-                    elif initial in ')]}': parenlev = parenlev - 1
-                    if stashed:
+                    ikiwa initial in '([{': parenlev = parenlev + 1
+                    elikiwa initial in ')]}': parenlev = parenlev - 1
+                    ikiwa stashed:
                         yield stashed
                         stashed = None
                     yield (OP, token, spos, epos, line)
@@ -549,7 +549,7 @@ def generate_tokens(readline):
                            (lnum, pos), (lnum, pos+1), line)
                 pos = pos + 1
 
-    if stashed:
+    ikiwa stashed:
         yield stashed
         stashed = None
 
@@ -557,7 +557,7 @@ def generate_tokens(readline):
         yield (DEDENT, '', (lnum, 0), (lnum, 0), '')
     yield (ENDMARKER, '', (lnum, 0), (lnum, 0), '')
 
-if __name__ == '__main__':                     # testing
+ikiwa __name__ == '__main__':                     # testing
     agiza sys
-    if len(sys.argv) > 1: tokenize(open(sys.argv[1]).readline)
+    ikiwa len(sys.argv) > 1: tokenize(open(sys.argv[1]).readline)
     else: tokenize(sys.stdin.readline)

@@ -94,7 +94,7 @@ class PyPIRCCommand(Command):
                     if (current['server'] == repository or
                         current['repository'] == repository):
                         return current
-            elif 'server-login' in sections:
+            lasivyo 'server-login' in sections:
                 # old format
                 server = 'server-login'
                 if config.has_option(server, 'repository'):

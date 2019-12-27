@@ -192,7 +192,7 @@ class TextFile:
 
                 # It's definitely a comment -- either "#" is the first
                 # character, or it's elsewhere and unescaped.
-                elif pos == 0 or line[pos-1] != "\\":
+                lasivyo pos == 0 or line[pos-1] != "\\":
                     # Have to preserve the trailing newline, because it's
                     # the job of a later step (rstrip_ws) to remove it --
                     # and if rstrip_ws is false, we'd better preserve it!
@@ -247,9 +247,9 @@ class TextFile:
             # trailing, or one or the other, or neither)
             if self.lstrip_ws and self.rstrip_ws:
                 line = line.strip()
-            elif self.lstrip_ws:
+            lasivyo self.lstrip_ws:
                 line = line.lstrip()
-            elif self.rstrip_ws:
+            lasivyo self.rstrip_ws:
                 line = line.rstrip()
 
             # blank line (whether we rstrip'ed or not)? skip to next line

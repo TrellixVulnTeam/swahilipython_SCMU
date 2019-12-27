@@ -30,7 +30,7 @@
 --   invalid : raised for invalid inputs.
 --
 --   ignore-real-sign : indicates that the sign of the real part of
---     the result is unspecified; if the real part of the result is
+--     the result is unspecified; ikiwa the real part of the result is
 --     given as inf, then both -inf and inf should be accepted as
 --     correct.
 --
@@ -2359,7 +2359,7 @@ tan1052 tan -inf -inf -> -0.0 -1.0 ignore-real-sign
 
 
 ------------------------------------------------------------------------
--- rect: Conversion from polar coordinates to rectangular coordinates --
+-- rect: Conversion kutoka polar coordinates to rectangular coordinates --
 ------------------------------------------------------------------------
 --
 -- For cmath.rect, we can use the same testcase syntax as for the
@@ -2397,7 +2397,7 @@ tan1052 tan -inf -inf -> -0.0 -1.0 ignore-real-sign
 --     part is unspecified
 --   rect(NaN, NaN) returns NaN + i NaN
 --   rect(x, NaN) returns NaN + i NaN for finite nonzero x
---   rect(+0, NaN) return +-0 +- i0, where the signs of the real and
+--   rect(+0, NaN) rudisha +-0 +- i0, where the signs of the real and
 --     imaginary parts are unspecified.
 
 -- special values
@@ -2456,7 +2456,7 @@ rect1051 rect -inf -5.6 -> -inf -inf
 rect1052 rect -inf -7.0 -> -inf inf
 
 -------------------------------------------------------------------------
--- polar: Conversion from rectangular coordinates to polar coordinates --
+-- polar: Conversion kutoka rectangular coordinates to polar coordinates --
 -------------------------------------------------------------------------
 --
 -- For cmath.polar, we can use the same testcase syntax as for the

@@ -38,7 +38,7 @@ PyAPI_FUNC(int) PyErr_WarnExplicitObject(
 PyAPI_FUNC(int) PyErr_WarnExplicit(
     PyObject *category,
     const char *message,        /* UTF-8 encoded string */
-    const char *filename,       /* decoded from the filesystem encoding */
+    const char *filename,       /* decoded kutoka the filesystem encoding */
     int lineno,
     const char *module,         /* UTF-8 encoded string */
     PyObject *registry);

@@ -11,7 +11,7 @@
 
 .. testsetup:: default
 
-   from turtle import *
+   kutoka turtle agiza *
    turtle = Turtle()
 
 --------------
@@ -23,7 +23,7 @@ Turtle graphics is a popular way for introducing programming to kids.  It was
 part of the original Logo programming language developed by Wally Feurzeig,
 Seymour Papert and Cynthia Solomon in 1967.
 
-Imagine a robotic turtle starting at (0, 0) in the x-y plane.  After an ``import turtle``, give it the
+Imagine a robotic turtle starting at (0, 0) in the x-y plane.  After an ``agiza turtle``, give it the
 command ``turtle.forward(15)``, and it moves (on-screen!) 15 pixels in the
 direction it is facing, drawing a line as it moves.  Give it the command
 ``turtle.right(25)``, and it rotates in-place 25 degrees clockwise.
@@ -42,12 +42,12 @@ By combining together these and similar commands, intricate shapes and pictures
 can easily be drawn.
 
 The :mod:`turtle` module is an extended reimplementation of the same-named
-module from the Python standard distribution up to version Python 2.5.
+module kutoka the Python standard distribution up to version Python 2.5.
 
 It tries to keep the merits of the old turtle module and to be (nearly) 100%
 compatible with it.  This means in the first place to enable the learning
 programmer to use all the commands, classes and methods interactively when using
-the module from within IDLE run with the ``-n`` switch.
+the module kutoka within IDLE run with the ``-n`` switch.
 
 The turtle module provides turtle graphics primitives, in both object-oriented
 and procedure-oriented ways.  Because it uses :mod:`tkinter` for the underlying
@@ -55,7 +55,7 @@ graphics, it needs a version of Python installed with Tk support.
 
 The object-oriented interface uses essentially two+two classes:
 
-1. The :class:`TurtleScreen` class defines graphics windows as a playground for
+1. The :class:`TurtleScreen` kundi defines graphics windows as a playground for
    the drawing turtles.  Its constructor needs a :class:`tkinter.Canvas` or a
    :class:`ScrolledCanvas` as argument.  It should be used when :mod:`turtle` is
    used as part of some application.
@@ -63,7 +63,7 @@ The object-oriented interface uses essentially two+two classes:
    The function :func:`Screen` returns a singleton object of a
    :class:`TurtleScreen` subclass. This function should be used when
    :mod:`turtle` is used as a standalone tool for doing graphics.
-   As a singleton object, inheriting from its class is not possible.
+   As a singleton object, inheriting kutoka its kundi is not possible.
 
    All methods of TurtleScreen/Screen also exist as functions, i.e. as part of
    the procedure-oriented interface.
@@ -72,18 +72,18 @@ The object-oriented interface uses essentially two+two classes:
    on a :class:`TurtleScreen`.  Its constructor needs a Canvas, ScrolledCanvas
    or TurtleScreen as argument, so the RawTurtle objects know where to draw.
 
-   Derived from RawTurtle is the subclass :class:`Turtle` (alias: :class:`Pen`),
+   Derived kutoka RawTurtle is the subkundi :class:`Turtle` (alias: :class:`Pen`),
    which draws on "the" :class:`Screen` instance which is automatically
    created, if not already present.
 
    All methods of RawTurtle/Turtle also exist as functions, i.e. part of the
    procedure-oriented interface.
 
-The procedural interface provides functions which are derived from the methods
+The procedural interface provides functions which are derived kutoka the methods
 of the classes :class:`Screen` and :class:`Turtle`.  They have the same names as
 the corresponding methods.  A screen object is automatically created whenever a
-function derived from a Screen method is called.  An (unnamed) turtle object is
-automatically created whenever any of the functions derived from a Turtle method
+function derived kutoka a Screen method is called.  An (unnamed) turtle object is
+automatically created whenever any of the functions derived kutoka a Turtle method
 is called.
 
 To use multiple turtles on a screen one has to use the object-oriented interface.
@@ -620,7 +620,7 @@ Turtle motion
    * "slow":  3
    * "slowest":  1
 
-   Speeds from 1 to 10 enforce increasingly faster animation of line drawing
+   Speeds kutoka 1 to 10 enforce increasingly faster animation of line drawing
    and turtle turning.
 
    Attention: *speed* = 0 means that *no* animation takes
@@ -660,7 +660,7 @@ Tell Turtle's state
    :param x: a number or a pair/vector of numbers or a turtle instance
    :param y: a number if *x* is a number, else ``None``
 
-   Return the angle between the line from turtle position to position specified
+   Return the angle between the line kutoka turtle position to position specified
    by (x,y), the vector or the other turtle.  This depends on the turtle's start
    orientation which depends on the mode - "standard"/"world" or "logo").
 
@@ -723,7 +723,7 @@ Tell Turtle's state
    :param x: a number or a pair/vector of numbers or a turtle instance
    :param y: a number if *x* is a number, else ``None``
 
-   Return the distance from the turtle to (x,y), the given vector, or the given
+   Return the distance kutoka the turtle to (x,y), the given vector, or the given
    other turtle, in turtle step units.
 
    .. doctest::
@@ -825,7 +825,7 @@ Drawing state
 
       >>> turtle.pensize()
       1
-      >>> turtle.pensize(10)   # from here on lines of width 10 are drawn
+      >>> turtle.pensize(10)   # kutoka here on lines of width 10 are drawn
 
 
 .. function:: pen(pen=None, **pendict)
@@ -1065,7 +1065,7 @@ More drawing control
 
 .. function:: reset()
 
-   Delete the turtle's drawings from the screen, re-center the turtle and set
+   Delete the turtle's drawings kutoka the screen, re-center the turtle and set
    variables to the default values.
 
    .. doctest::
@@ -1086,7 +1086,7 @@ More drawing control
 
 .. function:: clear()
 
-   Delete the turtle's drawings from the screen.  Do not move turtle.  State and
+   Delete the turtle's drawings kutoka the screen.  Do not move turtle.  State and
    position of the turtle as well as drawings of other turtles are not affected.
 
 
@@ -1250,7 +1250,7 @@ Appearance
 
    :param angle: a number
 
-   Rotate the turtleshape by *angle* from its current tilt-angle, but do *not*
+   Rotate the turtleshape by *angle* kutoka its current tilt-angle, but do *not*
    change the turtle's heading (direction of movement).
 
    .. doctest::
@@ -1392,7 +1392,7 @@ Using events
    .. doctest::
       :skipif: _tkinter is None
 
-      >>> class MyTurtle(Turtle):
+      >>> kundi MyTurtle(Turtle):
       ...     def glow(self,x,y):
       ...         self.fillcolor("red")
       ...     def unglow(self,x,y):
@@ -1534,7 +1534,7 @@ Compound shapes
 ---------------
 
 To use compound turtle shapes, which consist of several polygons of different
-color, you must use the helper class :class:`Shape` explicitly as described
+color, you must use the helper kundi :class:`Shape` explicitly as described
 below:
 
 1. Create an empty Shape object of type "compound".
@@ -1563,9 +1563,9 @@ below:
 
 .. note::
 
-   The :class:`Shape` class is used internally by the :func:`register_shape`
+   The :class:`Shape` kundi is used internally by the :func:`register_shape`
    method in different ways.  The application programmer has to deal with the
-   Shape class *only* when using compound shapes like shown above!
+   Shape kundi *only* when using compound shapes like shown above!
 
 
 Methods of TurtleScreen/Screen and corresponding functions
@@ -1621,14 +1621,14 @@ Window control
 .. function:: clear()
               clearscreen()
 
-   Delete all drawings and all turtles from the TurtleScreen.  Reset the now
+   Delete all drawings and all turtles kutoka the TurtleScreen.  Reset the now
    empty TurtleScreen to its initial state: white background, no background
    image, no event bindings and tracing on.
 
    .. note::
       This TurtleScreen method is available as a global function only under the
       name ``clearscreen``.  The global function ``clear`` is a different one
-      derived from the Turtle method ``clear``.
+      derived kutoka the Turtle method ``clear``.
 
 
 .. function:: reset()
@@ -1639,7 +1639,7 @@ Window control
    .. note::
       This TurtleScreen method is available as a global function only under the
       name ``resetscreen``.  The global function ``reset`` is another one
-      derived from the Turtle method ``reset``.
+      derived kutoka the Turtle method ``reset``.
 
 
 .. function:: screensize(canvwidth=None, canvheight=None, bg=None)
@@ -1825,7 +1825,7 @@ Using screen events
    .. note::
       This TurtleScreen method is available as a global function only under the
       name ``onscreenclick``.  The global function ``onclick`` is another one
-      derived from the Turtle method ``onclick``.
+      derived kutoka the Turtle method ``onclick``.
 
 
 .. function:: ontimer(fun, t=0)
@@ -1853,7 +1853,7 @@ Using screen events
 
    Starts event loop - calling Tkinter's mainloop function.
    Must be the last statement in a turtle graphics program.
-   Must *not* be used if a script is run from within IDLE in -n mode
+   Must *not* be used if a script is run kutoka within IDLE in -n mode
    (No subprocess) - for interactive use of turtle graphics. ::
 
       >>> screen.mainloop()
@@ -2030,7 +2030,7 @@ Settings and special methods
 
 .. _screenspecific:
 
-Methods specific to Screen, not inherited from TurtleScreen
+Methods specific to Screen, not inherited kutoka TurtleScreen
 -----------------------------------------------------------
 
 .. function:: bye()
@@ -2060,11 +2060,11 @@ Methods specific to Screen, not inherited from TurtleScreen
                  screen; default is 50% of screen
    :param height: if an integer, the height in pixels, if a float, a fraction of
                   the screen; default is 75% of screen
-   :param startx: if positive, starting position in pixels from the left
-                  edge of the screen, if negative from the right edge, if ``None``,
+   :param startx: if positive, starting position in pixels kutoka the left
+                  edge of the screen, if negative kutoka the right edge, if ``None``,
                   center window horizontally
-   :param starty: if positive, starting position in pixels from the top
-                  edge of the screen, if negative from the bottom edge, if ``None``,
+   :param starty: if positive, starting position in pixels kutoka the top
+                  edge of the screen, if negative kutoka the bottom edge, if ``None``,
                   center window vertically
 
    .. doctest::
@@ -2105,7 +2105,7 @@ Public classes
 
 .. class:: Turtle()
 
-   Subclass of RawTurtle, has the same interface but draws on a default
+   Subkundi of RawTurtle, has the same interface but draws on a default
    :class:`Screen` object created automatically when needed for the first time.
 
 
@@ -2118,7 +2118,7 @@ Public classes
 
 .. class:: Screen()
 
-   Subclass of TurtleScreen, with :ref:`four methods added <screenspecific>`.
+   Subkundi of TurtleScreen, with :ref:`four methods added <screenspecific>`.
 
 
 .. class:: ScrolledCanvas(master)
@@ -2126,7 +2126,7 @@ Public classes
    :param master: some Tkinter widget to contain the ScrolledCanvas, i.e.
       a Tkinter-canvas with scrollbars added
 
-   Used by class Screen, which thus automatically provides a ScrolledCanvas as
+   Used by kundi Screen, which thus automatically provides a ScrolledCanvas as
    playground for the turtles.
 
 .. class:: Shape(type_, data)
@@ -2167,9 +2167,9 @@ Public classes
 
 .. class:: Vec2D(x, y)
 
-   A two-dimensional vector class, used as a helper class for implementing
+   A two-dimensional vector class, used as a helper kundi for implementing
    turtle graphics.  May be useful for turtle graphics programs too.  Derived
-   from tuple, so a vector is a tuple!
+   kutoka tuple, so a vector is a tuple!
 
    Provides (for *a*, *b* vectors, *k* number):
 
@@ -2225,7 +2225,7 @@ facilities:
 
          >>> turtle.penup()
 
-- The docstrings of the functions which are derived from methods have a modified
+- The docstrings of the functions which are derived kutoka methods have a modified
   form::
 
      >>> help(bgcolor)
@@ -2260,7 +2260,7 @@ facilities:
          >>> penup()
 
 These modified docstrings are created automatically together with the function
-definitions that are derived from the methods at import time.
+definitions that are derived kutoka the methods at agiza time.
 
 
 Translation of docstrings into different languages
@@ -2285,7 +2285,7 @@ native language, you have to translate the docstrings and save the resulting
 file as e.g. :file:`turtle_docstringdict_german.py`.
 
 If you have an appropriate entry in your :file:`turtle.cfg` file this dictionary
-will be read in at import time and will replace the original English docstrings.
+will be read in at agiza time and will replace the original English docstrings.
 
 At the time of this writing there are docstring dictionaries in German and in
 Italian.  (Requests please to glingl@aon.at.)
@@ -2340,11 +2340,11 @@ Short explanation of selected entries:
 - If you want to reflect the turtle its state, you have to use ``resizemode =
   auto``.
 - If you set e.g. ``language = italian`` the docstringdict
-  :file:`turtle_docstringdict_italian.py` will be loaded at import time (if
-  present on the import path, e.g. in the same directory as :mod:`turtle`.
+  :file:`turtle_docstringdict_italian.py` will be loaded at agiza time (if
+  present on the agiza path, e.g. in the same directory as :mod:`turtle`.
 - The entries *exampleturtle* and *examplescreen* define the names of these
   objects as they occur in the docstrings.  The transformation of
-  method-docstrings to function-docstrings will delete these names from the
+  method-docstrings to function-docstrings will delete these names kutoka the
   docstrings.
 - *using_IDLE*: Set this to ``True`` if you regularly work with IDLE and its -n
   switch ("no subprocess").  This will prevent :func:`exitonclick` to enter the
@@ -2356,7 +2356,7 @@ override the settings of the first one.
 
 The :file:`Lib/turtledemo` directory contains a :file:`turtle.cfg` file.  You can
 study it as an example and see its effects when running the demos (preferably
-not from within the demo-viewer).
+not kutoka within the demo-viewer).
 
 
 :mod:`turtledemo` --- Demo scripts
@@ -2445,7 +2445,7 @@ The demo scripts are:
 | two_canvases   | simple design                | turtles on two        |
 |                |                              | canvases              |
 +----------------+------------------------------+-----------------------+
-| wikipedia      | a pattern from the wikipedia | :func:`clone`,        |
+| wikipedia      | a pattern kutoka the wikipedia | :func:`clone`,        |
 |                | article on turtle graphics   | :func:`undo`          |
 +----------------+------------------------------+-----------------------+
 | yinyang        | another elementary example   | :func:`circle`        |
@@ -2460,7 +2460,7 @@ Changes since Python 2.6
 - The methods :meth:`Turtle.tracer`, :meth:`Turtle.window_width` and
   :meth:`Turtle.window_height` have been eliminated.
   Methods with these names and functionality are now available only
-  as methods of :class:`Screen`. The functions derived from these remain
+  as methods of :class:`Screen`. The functions derived kutoka these remain
   available. (In fact already in Python 2.6 these methods were merely
   duplications of the corresponding
   :class:`TurtleScreen`/:class:`Screen`-methods.)

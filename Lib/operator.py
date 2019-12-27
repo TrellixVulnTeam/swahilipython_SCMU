@@ -24,165 +24,165 @@ kutoka builtins agiza abs as _abs
 
 # Comparison Operations *******************************************************#
 
-def lt(a, b):
+eleza lt(a, b):
     "Same as a < b."
-    return a < b
+    rudisha a < b
 
-def le(a, b):
+eleza le(a, b):
     "Same as a <= b."
-    return a <= b
+    rudisha a <= b
 
-def eq(a, b):
+eleza eq(a, b):
     "Same as a == b."
-    return a == b
+    rudisha a == b
 
-def ne(a, b):
+eleza ne(a, b):
     "Same as a != b."
-    return a != b
+    rudisha a != b
 
-def ge(a, b):
+eleza ge(a, b):
     "Same as a >= b."
-    return a >= b
+    rudisha a >= b
 
-def gt(a, b):
+eleza gt(a, b):
     "Same as a > b."
-    return a > b
+    rudisha a > b
 
 # Logical Operations **********************************************************#
 
-def not_(a):
+eleza not_(a):
     "Same as not a."
-    return not a
+    rudisha not a
 
-def truth(a):
-    "Return True if a is true, False otherwise."
-    return True if a else False
+eleza truth(a):
+    "Return True ikiwa a is true, False otherwise."
+    rudisha True ikiwa a else False
 
-def is_(a, b):
+eleza is_(a, b):
     "Same as a is b."
-    return a is b
+    rudisha a is b
 
-def is_not(a, b):
+eleza is_not(a, b):
     "Same as a is not b."
-    return a is not b
+    rudisha a is not b
 
 # Mathematical/Bitwise Operations *********************************************#
 
-def abs(a):
+eleza abs(a):
     "Same as abs(a)."
-    return _abs(a)
+    rudisha _abs(a)
 
-def add(a, b):
+eleza add(a, b):
     "Same as a + b."
-    return a + b
+    rudisha a + b
 
-def and_(a, b):
+eleza and_(a, b):
     "Same as a & b."
-    return a & b
+    rudisha a & b
 
-def floordiv(a, b):
+eleza floordiv(a, b):
     "Same as a // b."
-    return a // b
+    rudisha a // b
 
-def index(a):
+eleza index(a):
     "Same as a.__index__()."
-    return a.__index__()
+    rudisha a.__index__()
 
-def inv(a):
+eleza inv(a):
     "Same as ~a."
-    return ~a
+    rudisha ~a
 invert = inv
 
-def lshift(a, b):
+eleza lshift(a, b):
     "Same as a << b."
-    return a << b
+    rudisha a << b
 
-def mod(a, b):
+eleza mod(a, b):
     "Same as a % b."
-    return a % b
+    rudisha a % b
 
-def mul(a, b):
+eleza mul(a, b):
     "Same as a * b."
-    return a * b
+    rudisha a * b
 
-def matmul(a, b):
+eleza matmul(a, b):
     "Same as a @ b."
-    return a @ b
+    rudisha a @ b
 
-def neg(a):
+eleza neg(a):
     "Same as -a."
-    return -a
+    rudisha -a
 
-def or_(a, b):
+eleza or_(a, b):
     "Same as a | b."
-    return a | b
+    rudisha a | b
 
-def pos(a):
+eleza pos(a):
     "Same as +a."
-    return +a
+    rudisha +a
 
-def pow(a, b):
+eleza pow(a, b):
     "Same as a ** b."
-    return a ** b
+    rudisha a ** b
 
-def rshift(a, b):
+eleza rshift(a, b):
     "Same as a >> b."
-    return a >> b
+    rudisha a >> b
 
-def sub(a, b):
+eleza sub(a, b):
     "Same as a - b."
-    return a - b
+    rudisha a - b
 
-def truediv(a, b):
+eleza truediv(a, b):
     "Same as a / b."
-    return a / b
+    rudisha a / b
 
-def xor(a, b):
+eleza xor(a, b):
     "Same as a ^ b."
-    return a ^ b
+    rudisha a ^ b
 
 # Sequence Operations *********************************************************#
 
-def concat(a, b):
+eleza concat(a, b):
     "Same as a + b, for a and b sequences."
-    if not hasattr(a, '__getitem__'):
+    ikiwa not hasattr(a, '__getitem__'):
         msg = "'%s' object can't be concatenated" % type(a).__name__
         raise TypeError(msg)
-    return a + b
+    rudisha a + b
 
-def contains(a, b):
+eleza contains(a, b):
     "Same as b in a (note reversed operands)."
-    return b in a
+    rudisha b in a
 
-def countOf(a, b):
+eleza countOf(a, b):
     "Return the number of times b occurs in a."
     count = 0
     for i in a:
-        if i == b:
+        ikiwa i == b:
             count += 1
-    return count
+    rudisha count
 
-def delitem(a, b):
+eleza delitem(a, b):
     "Same as del a[b]."
     del a[b]
 
-def getitem(a, b):
+eleza getitem(a, b):
     "Same as a[b]."
-    return a[b]
+    rudisha a[b]
 
-def indexOf(a, b):
+eleza indexOf(a, b):
     "Return the first index of b in a."
     for i, j in enumerate(a):
-        if j == b:
-            return i
+        ikiwa j == b:
+            rudisha i
     else:
         raise ValueError('sequence.index(x): x not in sequence')
 
-def setitem(a, b, c):
+eleza setitem(a, b, c):
     "Same as a[b] = c."
     a[b] = c
 
-def length_hint(obj, default=0):
+eleza length_hint(obj, default=0):
     """
     Return an estimate of the number of items in obj.
     This is useful for presizing containers when building kutoka an iterable.
@@ -191,39 +191,39 @@ def length_hint(obj, default=0):
     over- or under-estimate by an arbitrary amount. The result will be an
     integer >= 0.
     """
-    if not isinstance(default, int):
+    ikiwa not isinstance(default, int):
         msg = ("'%s' object cannot be interpreted as an integer" %
                type(default).__name__)
         raise TypeError(msg)
 
     try:
-        return len(obj)
+        rudisha len(obj)
     except TypeError:
         pass
 
     try:
         hint = type(obj).__length_hint__
     except AttributeError:
-        return default
+        rudisha default
 
     try:
         val = hint(obj)
     except TypeError:
-        return default
-    if val is NotImplemented:
-        return default
-    if not isinstance(val, int):
+        rudisha default
+    ikiwa val is NotImplemented:
+        rudisha default
+    ikiwa not isinstance(val, int):
         msg = ('__length_hint__ must be integer, not %s' %
                type(val).__name__)
         raise TypeError(msg)
-    if val < 0:
-        msg = '__length_hint__() should return >= 0'
+    ikiwa val < 0:
+        msg = '__length_hint__() should rudisha >= 0'
         raise ValueError(msg)
-    return val
+    rudisha val
 
 # Generalized Lookup Objects **************************************************#
 
-class attrgetter:
+kundi attrgetter:
     """
     Return a callable object that fetches the given attribute(s) kutoka its operand.
     After f = attrgetter('name'), the call f(r) returns r.name.
@@ -233,36 +233,36 @@ class attrgetter:
     """
     __slots__ = ('_attrs', '_call')
 
-    def __init__(self, attr, *attrs):
-        if not attrs:
-            if not isinstance(attr, str):
+    eleza __init__(self, attr, *attrs):
+        ikiwa not attrs:
+            ikiwa not isinstance(attr, str):
                 raise TypeError('attribute name must be a string')
             self._attrs = (attr,)
             names = attr.split('.')
-            def func(obj):
+            eleza func(obj):
                 for name in names:
                     obj = getattr(obj, name)
-                return obj
+                rudisha obj
             self._call = func
         else:
             self._attrs = (attr,) + attrs
             getters = tuple(map(attrgetter, self._attrs))
-            def func(obj):
-                return tuple(getter(obj) for getter in getters)
+            eleza func(obj):
+                rudisha tuple(getter(obj) for getter in getters)
             self._call = func
 
-    def __call__(self, obj):
-        return self._call(obj)
+    eleza __call__(self, obj):
+        rudisha self._call(obj)
 
-    def __repr__(self):
-        return '%s.%s(%s)' % (self.__class__.__module__,
+    eleza __repr__(self):
+        rudisha '%s.%s(%s)' % (self.__class__.__module__,
                               self.__class__.__qualname__,
                               ', '.join(map(repr, self._attrs)))
 
-    def __reduce__(self):
-        return self.__class__, self._attrs
+    eleza __reduce__(self):
+        rudisha self.__class__, self._attrs
 
-class itemgetter:
+kundi itemgetter:
     """
     Return a callable object that fetches the given item(s) kutoka its operand.
     After f = itemgetter(2), the call f(r) returns r[2].
@@ -270,30 +270,30 @@ class itemgetter:
     """
     __slots__ = ('_items', '_call')
 
-    def __init__(self, item, *items):
-        if not items:
+    eleza __init__(self, item, *items):
+        ikiwa not items:
             self._items = (item,)
-            def func(obj):
-                return obj[item]
+            eleza func(obj):
+                rudisha obj[item]
             self._call = func
         else:
             self._items = items = (item,) + items
-            def func(obj):
-                return tuple(obj[i] for i in items)
+            eleza func(obj):
+                rudisha tuple(obj[i] for i in items)
             self._call = func
 
-    def __call__(self, obj):
-        return self._call(obj)
+    eleza __call__(self, obj):
+        rudisha self._call(obj)
 
-    def __repr__(self):
-        return '%s.%s(%s)' % (self.__class__.__module__,
+    eleza __repr__(self):
+        rudisha '%s.%s(%s)' % (self.__class__.__module__,
                               self.__class__.__name__,
                               ', '.join(map(repr, self._items)))
 
-    def __reduce__(self):
-        return self.__class__, self._items
+    eleza __reduce__(self):
+        rudisha self.__class__, self._items
 
-class methodcaller:
+kundi methodcaller:
     """
     Return a callable object that calls the given method on its operand.
     After f = methodcaller('name'), the call f(r) returns r.name().
@@ -302,106 +302,106 @@ class methodcaller:
     """
     __slots__ = ('_name', '_args', '_kwargs')
 
-    def __init__(self, name, /, *args, **kwargs):
+    eleza __init__(self, name, /, *args, **kwargs):
         self._name = name
-        if not isinstance(self._name, str):
+        ikiwa not isinstance(self._name, str):
             raise TypeError('method name must be a string')
         self._args = args
         self._kwargs = kwargs
 
-    def __call__(self, obj):
-        return getattr(obj, self._name)(*self._args, **self._kwargs)
+    eleza __call__(self, obj):
+        rudisha getattr(obj, self._name)(*self._args, **self._kwargs)
 
-    def __repr__(self):
+    eleza __repr__(self):
         args = [repr(self._name)]
         args.extend(map(repr, self._args))
         args.extend('%s=%r' % (k, v) for k, v in self._kwargs.items())
-        return '%s.%s(%s)' % (self.__class__.__module__,
+        rudisha '%s.%s(%s)' % (self.__class__.__module__,
                               self.__class__.__name__,
                               ', '.join(args))
 
-    def __reduce__(self):
-        if not self._kwargs:
-            return self.__class__, (self._name,) + self._args
+    eleza __reduce__(self):
+        ikiwa not self._kwargs:
+            rudisha self.__class__, (self._name,) + self._args
         else:
             kutoka functools agiza partial
-            return partial(self.__class__, self._name, **self._kwargs), self._args
+            rudisha partial(self.__class__, self._name, **self._kwargs), self._args
 
 
 # In-place Operations *********************************************************#
 
-def iadd(a, b):
+eleza iadd(a, b):
     "Same as a += b."
     a += b
-    return a
+    rudisha a
 
-def iand(a, b):
+eleza iand(a, b):
     "Same as a &= b."
     a &= b
-    return a
+    rudisha a
 
-def iconcat(a, b):
+eleza iconcat(a, b):
     "Same as a += b, for a and b sequences."
-    if not hasattr(a, '__getitem__'):
+    ikiwa not hasattr(a, '__getitem__'):
         msg = "'%s' object can't be concatenated" % type(a).__name__
         raise TypeError(msg)
     a += b
-    return a
+    rudisha a
 
-def ifloordiv(a, b):
+eleza ifloordiv(a, b):
     "Same as a //= b."
     a //= b
-    return a
+    rudisha a
 
-def ilshift(a, b):
+eleza ilshift(a, b):
     "Same as a <<= b."
     a <<= b
-    return a
+    rudisha a
 
-def imod(a, b):
+eleza imod(a, b):
     "Same as a %= b."
     a %= b
-    return a
+    rudisha a
 
-def imul(a, b):
+eleza imul(a, b):
     "Same as a *= b."
     a *= b
-    return a
+    rudisha a
 
-def imatmul(a, b):
+eleza imatmul(a, b):
     "Same as a @= b."
     a @= b
-    return a
+    rudisha a
 
-def ior(a, b):
+eleza ior(a, b):
     "Same as a |= b."
     a |= b
-    return a
+    rudisha a
 
-def ipow(a, b):
+eleza ipow(a, b):
     "Same as a **= b."
     a **=b
-    return a
+    rudisha a
 
-def irshift(a, b):
+eleza irshift(a, b):
     "Same as a >>= b."
     a >>= b
-    return a
+    rudisha a
 
-def isub(a, b):
+eleza isub(a, b):
     "Same as a -= b."
     a -= b
-    return a
+    rudisha a
 
-def itruediv(a, b):
+eleza itruediv(a, b):
     "Same as a /= b."
     a /= b
-    return a
+    rudisha a
 
-def ixor(a, b):
+eleza ixor(a, b):
     "Same as a ^= b."
     a ^= b
-    return a
+    rudisha a
 
 
 try:

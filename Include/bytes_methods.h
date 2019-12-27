@@ -62,7 +62,7 @@ extern const char _Py_rjust__doc__[];
 extern const char _Py_center__doc__[];
 extern const char _Py_zfill__doc__[];
 
-/* this is needed because some docs are shared from the .o, not static */
+/* this is needed because some docs are shared kutoka the .o, not static */
 #define PyDoc_STRVAR_shared(name,str) const char name[] = PyDoc_STR(str)
 
 #endif /* !Py_BYTES_CTYPE_H */

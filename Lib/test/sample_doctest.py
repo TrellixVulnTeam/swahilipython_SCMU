@@ -12,7 +12,7 @@ testing the running of these tests.
 """
 
 
-def foo():
+eleza foo():
     """
 
     >>> 2+2
@@ -22,14 +22,14 @@ def foo():
     4
     """
 
-def bar():
+eleza bar():
     """
 
     >>> 2+2
     4
     """
 
-def test_silly_setup():
+eleza test_silly_setup():
     """
 
     >>> agiza test.test_doctest
@@ -37,25 +37,25 @@ def test_silly_setup():
     True
     """
 
-def w_blank():
+eleza w_blank():
     """
-    >>> if 1:
-    ...    print('a')
-    ...    print()
-    ...    print('b')
+    >>> ikiwa 1:
+    ...    andika('a')
+    ...    andika()
+    ...    andika('b')
     a
     <BLANKLINE>
     b
     """
 
 x = 1
-def x_is_one():
+eleza x_is_one():
     """
     >>> x
     1
     """
 
-def y_is_one():
+eleza y_is_one():
     """
     >>> y
     1
@@ -71,6 +71,6 @@ __test__ = {'good': """
                     """,
            }
 
-def test_suite():
+eleza test_suite():
     agiza doctest
-    return doctest.DocTestSuite()
+    rudisha doctest.DocTestSuite()

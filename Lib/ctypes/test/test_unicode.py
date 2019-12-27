@@ -2,7 +2,7 @@ import unittest
 import ctypes
 from ctypes.test import need_symbol
 
-import _ctypes_test
+agiza _ctypes_test
 
 @need_symbol('c_wchar')
 class UnicodeTestCase(unittest.TestCase):

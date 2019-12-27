@@ -8,7 +8,7 @@ kutoka test.support agiza (TESTFN, import_fresh_module,
 c_stat = import_fresh_module('stat', fresh=['_stat'])
 py_stat = import_fresh_module('stat', blocked=['_stat'])
 
-class TestFilemode:
+kundi TestFilemode:
     statmod = None
 
     file_flags = {'SF_APPEND', 'SF_ARCHIVED', 'SF_IMMUTABLE', 'SF_NOUNLINK',
@@ -75,7 +75,7 @@ class TestFilemode:
         'FILE_ATTRIBUTE_TEMPORARY': 256,
         'FILE_ATTRIBUTE_VIRTUAL': 65536}
 
-    def setUp(self):
+    eleza setUp(self):
         try:
             os.remove(TESTFN)
         except OSError:
@@ -85,15 +85,15 @@ class TestFilemode:
                 pass
     tearDown = setUp
 
-    def get_mode(self, fname=TESTFN, lstat=True):
-        if lstat:
+    eleza get_mode(self, fname=TESTFN, lstat=True):
+        ikiwa lstat:
             st_mode = os.lstat(fname).st_mode
         else:
             st_mode = os.stat(fname).st_mode
         modestr = self.statmod.filemode(st_mode)
-        return st_mode, modestr
+        rudisha st_mode, modestr
 
-    def assertS_IS(self, name, mode):
+    eleza assertS_IS(self, name, mode):
         # test format, lstrip is for S_IFIFO
         fmt = getattr(self.statmod, "S_IF" + name.lstrip("F"))
         self.assertEqual(self.statmod.S_IFMT(mode), fmt)
@@ -101,19 +101,19 @@ class TestFilemode:
         testname = "S_IS" + name
         for funcname in self.format_funcs:
             func = getattr(self.statmod, funcname, None)
-            if func is None:
-                if funcname == testname:
+            ikiwa func is None:
+                ikiwa funcname == testname:
                     raise ValueError(funcname)
                 continue
-            if funcname == testname:
+            ikiwa funcname == testname:
                 self.assertTrue(func(mode))
             else:
                 self.assertFalse(func(mode))
 
-    def test_mode(self):
+    eleza test_mode(self):
         with open(TESTFN, 'w'):
             pass
-        if os.name == 'posix':
+        ikiwa os.name == 'posix':
             os.chmod(TESTFN, 0o700)
             st_mode, modestr = self.get_mode()
             self.assertEqual(modestr, '-rwx------')
@@ -148,18 +148,18 @@ class TestFilemode:
             self.assertEqual(self.statmod.S_IFMT(st_mode),
                              self.statmod.S_IFREG)
 
-    def test_directory(self):
+    eleza test_directory(self):
         os.mkdir(TESTFN)
         os.chmod(TESTFN, 0o700)
         st_mode, modestr = self.get_mode()
         self.assertS_IS("DIR", st_mode)
-        if os.name == 'posix':
+        ikiwa os.name == 'posix':
             self.assertEqual(modestr, 'drwx------')
         else:
             self.assertEqual(modestr[0], 'd')
 
     @unittest.skipUnless(hasattr(os, 'symlink'), 'os.symlink not available')
-    def test_link(self):
+    eleza test_link(self):
         try:
             os.symlink(os.getcwd(), TESTFN)
         except (OSError, NotImplementedError) as err:
@@ -170,7 +170,7 @@ class TestFilemode:
             self.assertS_IS("LNK", st_mode)
 
     @unittest.skipUnless(hasattr(os, 'mkfifo'), 'os.mkfifo not available')
-    def test_fifo(self):
+    eleza test_fifo(self):
         try:
             os.mkfifo(TESTFN, 0o700)
         except PermissionError as e:
@@ -180,28 +180,28 @@ class TestFilemode:
         self.assertS_IS("FIFO", st_mode)
 
     @unittest.skipUnless(os.name == 'posix', 'requires Posix')
-    def test_devices(self):
-        if os.path.exists(os.devnull):
+    eleza test_devices(self):
+        ikiwa os.path.exists(os.devnull):
             st_mode, modestr = self.get_mode(os.devnull, lstat=False)
             self.assertEqual(modestr[0], 'c')
             self.assertS_IS("CHR", st_mode)
         # Linux block devices, BSD has no block devices anymore
         for blockdev in ("/dev/sda", "/dev/hda"):
-            if os.path.exists(blockdev):
+            ikiwa os.path.exists(blockdev):
                 st_mode, modestr = self.get_mode(blockdev, lstat=False)
                 self.assertEqual(modestr[0], 'b')
                 self.assertS_IS("BLK", st_mode)
                 break
 
     @skip_unless_bind_unix_socket
-    def test_socket(self):
+    eleza test_socket(self):
         with socket.socket(socket.AF_UNIX) as s:
             s.bind(TESTFN)
             st_mode, modestr = self.get_mode()
             self.assertEqual(modestr[0], 's')
             self.assertS_IS("SOCK", st_mode)
 
-    def test_module_attributes(self):
+    eleza test_module_attributes(self):
         for key, value in self.stat_struct.items():
             modvalue = getattr(self.statmod, key)
             self.assertEqual(value, modvalue, key)
@@ -221,20 +221,20 @@ class TestFilemode:
 
     @unittest.skipUnless(sys.platform == "win32",
                          "FILE_ATTRIBUTE_* constants are Win32 specific")
-    def test_file_attribute_constants(self):
+    eleza test_file_attribute_constants(self):
         for key, value in sorted(self.file_attributes.items()):
             self.assertTrue(hasattr(self.statmod, key), key)
             modvalue = getattr(self.statmod, key)
             self.assertEqual(value, modvalue, key)
 
 
-class TestFilemodeCStat(TestFilemode, unittest.TestCase):
+kundi TestFilemodeCStat(TestFilemode, unittest.TestCase):
     statmod = c_stat
 
 
-class TestFilemodePyStat(TestFilemode, unittest.TestCase):
+kundi TestFilemodePyStat(TestFilemode, unittest.TestCase):
     statmod = py_stat
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

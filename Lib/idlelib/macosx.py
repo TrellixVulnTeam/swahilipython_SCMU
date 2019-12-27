@@ -13,20 +13,20 @@ agiza tkinter
 
 _tk_type = None
 
-def _init_tk_type():
+eleza _init_tk_type():
     """
     Initializes OS X Tk variant values for
     isAquaTk(), isCarbonTk(), isCocoaTk(), and isXQuartz().
     """
     global _tk_type
-    if platform == 'darwin':
+    ikiwa platform == 'darwin':
         root = tkinter.Tk()
         ws = root.tk.call('tk', 'windowingsystem')
-        if 'x11' in ws:
+        ikiwa 'x11' in ws:
             _tk_type = "xquartz"
-        elif 'aqua' not in ws:
+        elikiwa 'aqua' not in ws:
             _tk_type = "other"
-        elif 'AppKit' in root.tk.call('winfo', 'server', '.'):
+        elikiwa 'AppKit' in root.tk.call('winfo', 'server', '.'):
             _tk_type = "cocoa"
         else:
             _tk_type = "carbon"
@@ -34,102 +34,102 @@ def _init_tk_type():
     else:
         _tk_type = "other"
 
-def isAquaTk():
+eleza isAquaTk():
     """
-    Returns True if IDLE is using a native OS X Tk (Cocoa or Carbon).
+    Returns True ikiwa IDLE is using a native OS X Tk (Cocoa or Carbon).
     """
-    if not _tk_type:
+    ikiwa not _tk_type:
         _init_tk_type()
-    return _tk_type == "cocoa" or _tk_type == "carbon"
+    rudisha _tk_type == "cocoa" or _tk_type == "carbon"
 
-def isCarbonTk():
+eleza isCarbonTk():
     """
-    Returns True if IDLE is using a Carbon Aqua Tk (instead of the
+    Returns True ikiwa IDLE is using a Carbon Aqua Tk (instead of the
     newer Cocoa Aqua Tk).
     """
-    if not _tk_type:
+    ikiwa not _tk_type:
         _init_tk_type()
-    return _tk_type == "carbon"
+    rudisha _tk_type == "carbon"
 
-def isCocoaTk():
+eleza isCocoaTk():
     """
-    Returns True if IDLE is using a Cocoa Aqua Tk.
+    Returns True ikiwa IDLE is using a Cocoa Aqua Tk.
     """
-    if not _tk_type:
+    ikiwa not _tk_type:
         _init_tk_type()
-    return _tk_type == "cocoa"
+    rudisha _tk_type == "cocoa"
 
-def isXQuartz():
+eleza isXQuartz():
     """
-    Returns True if IDLE is using an OS X X11 Tk.
+    Returns True ikiwa IDLE is using an OS X X11 Tk.
     """
-    if not _tk_type:
+    ikiwa not _tk_type:
         _init_tk_type()
-    return _tk_type == "xquartz"
+    rudisha _tk_type == "xquartz"
 
 
-def tkVersionWarning(root):
+eleza tkVersionWarning(root):
     """
-    Returns a string warning message if the Tk version in use appears to
+    Returns a string warning message ikiwa the Tk version in use appears to
     be one known to cause problems with IDLE.
     1. Apple Cocoa-based Tk 8.5.7 shipped with Mac OS X 10.6 is unusable.
     2. Apple Cocoa-based Tk 8.5.9 in OS X 10.7 and 10.8 is better but
         can still crash unexpectedly.
     """
 
-    if isCocoaTk():
+    ikiwa isCocoaTk():
         patchlevel = root.tk.call('info', 'patchlevel')
-        if patchlevel not in ('8.5.7', '8.5.9'):
-            return False
-        return ("WARNING: The version of Tcl/Tk ({0}) in use may"
+        ikiwa patchlevel not in ('8.5.7', '8.5.9'):
+            rudisha False
+        rudisha ("WARNING: The version of Tcl/Tk ({0}) in use may"
                 " be unstable.\n"
                 "Visit http://www.python.org/download/mac/tcltk/"
                 " for current information.".format(patchlevel))
     else:
-        return False
+        rudisha False
 
 
-def readSystemPreferences():
+eleza readSystemPreferences():
     """
     Fetch the macOS system preferences.
     """
-    if platform != 'darwin':
-        return None
+    ikiwa platform != 'darwin':
+        rudisha None
 
     plist_path = expanduser('~/Library/Preferences/.GlobalPreferences.plist')
     try:
         with open(plist_path, 'rb') as plist_file:
-            return plistlib.load(plist_file)
+            rudisha plistlib.load(plist_file)
     except OSError:
-        return None
+        rudisha None
 
 
-def preferTabsPreferenceWarning():
+eleza preferTabsPreferenceWarning():
     """
-    Warn if "Prefer tabs when opening documents" is set to "Always".
+    Warn ikiwa "Prefer tabs when opening documents" is set to "Always".
     """
-    if platform != 'darwin':
-        return None
+    ikiwa platform != 'darwin':
+        rudisha None
 
     prefs = readSystemPreferences()
-    if prefs and prefs.get('AppleWindowTabbingMode') == 'always':
-        return (
+    ikiwa prefs and prefs.get('AppleWindowTabbingMode') == 'always':
+        rudisha (
             'WARNING: The system preference "Prefer tabs when opening'
             ' documents" is set to "Always". This will cause various problems'
             ' with IDLE. For the best experience, change this setting when'
             ' running IDLE (via System Preferences -> Dock).'
         )
-    return None
+    rudisha None
 
 
 ## Fix the menu and related functions.
 
-def addOpenEventSupport(root, flist):
+eleza addOpenEventSupport(root, flist):
     """
     This ensures that the application will respond to open AppleEvents, which
     makes is feasible to use IDLE as the default application for python files.
     """
-    def doOpenFile(*args):
+    eleza doOpenFile(*args):
         for fn in args:
             flist.open(fn)
 
@@ -138,14 +138,14 @@ def addOpenEventSupport(root, flist):
     # one for every file that should be opened.
     root.createcommand("::tk::mac::OpenDocument", doOpenFile)
 
-def hideTkConsole(root):
+eleza hideTkConsole(root):
     try:
         root.tk.call('console', 'hide')
     except tkinter.TclError:
         # Some versions of the Tk framework don't have a console object
         pass
 
-def overrideRootMenu(root, flist):
+eleza overrideRootMenu(root, flist):
     """
     Replace the Tk root menu by something that is more appropriate for
     IDLE with an Aqua Tk.
@@ -186,23 +186,23 @@ def overrideRootMenu(root, flist):
     menudict['window'] = menu = Menu(menubar, name='window', tearoff=0)
     menubar.add_cascade(label='Window', menu=menu, underline=0)
 
-    def postwindowsmenu(menu=menu):
+    eleza postwindowsmenu(menu=menu):
         end = menu.index('end')
-        if end is None:
+        ikiwa end is None:
             end = -1
 
-        if end > 0:
+        ikiwa end > 0:
             menu.delete(0, end)
         window.add_windows_to_menu(menu)
     window.register_callback(postwindowsmenu)
 
-    def about_dialog(event=None):
+    eleza about_dialog(event=None):
         "Handle Help 'About IDLE' event."
         # Synchronize with editor.EditorWindow.about_dialog.
         kutoka idlelib agiza help_about
         help_about.AboutDialog(root)
 
-    def config_dialog(event=None):
+    eleza config_dialog(event=None):
         "Handle Options 'Configure IDLE' event."
         # Synchronize with editor.EditorWindow.config_dialog.
         kutoka idlelib agiza configdialog
@@ -214,7 +214,7 @@ def overrideRootMenu(root, flist):
         root.instance_dict = flist.inversedict
         configdialog.ConfigDialog(root, 'Settings')
 
-    def help_dialog(event=None):
+    eleza help_dialog(event=None):
         "Handle Help 'IDLE Help' event."
         # Synchronize with editor.EditorWindow.help_dialog.
         kutoka idlelib agiza help
@@ -223,7 +223,7 @@ def overrideRootMenu(root, flist):
     root.bind('<<about-idle>>', about_dialog)
     root.bind('<<open-config-dialog>>', config_dialog)
     root.createcommand('::tk::mac::ShowPreferences', config_dialog)
-    if flist:
+    ikiwa flist:
         root.bind('<<close-all-windows>>', flist.close_all_callback)
 
         # The binding above doesn't reliably work on all versions of Tk
@@ -231,7 +231,7 @@ def overrideRootMenu(root, flist):
         # right thing for now.
         root.createcommand('exit', flist.close_all_callback)
 
-    if isCarbonTk():
+    ikiwa isCarbonTk():
         # for Carbon AquaTk, replace the default Tk apple menu
         menudict['application'] = menu = Menu(menubar, name='apple',
                                               tearoff=0)
@@ -241,7 +241,7 @@ def overrideRootMenu(root, flist):
                 ('About IDLE', '<<about-idle>>'),
                     None,
                 ]))
-    if isCocoaTk():
+    ikiwa isCocoaTk():
         # replace default About dialog with About IDLE one
         root.createcommand('tkAboutDialog', about_dialog)
         # replace default "Help" item in Help menu
@@ -249,7 +249,7 @@ def overrideRootMenu(root, flist):
         # remove redundant "IDLE Help" kutoka menu
         del mainmenu.menudefs[-1][1][0]
 
-def fixb2context(root):
+eleza fixb2context(root):
     '''Removed bad AquaTk Button-2 (right) and Paste bindings.
 
     They prevent context menu access and seem to be gone in AquaTk8.6.
@@ -259,9 +259,9 @@ def fixb2context(root):
     root.unbind_class('Text', '<B2-Motion>')
     root.unbind_class('Text', '<<PasteSelection>>')
 
-def setupApp(root, flist):
+eleza setupApp(root, flist):
     """
-    Perform initial OS X customizations if needed.
+    Perform initial OS X customizations ikiwa needed.
     Called kutoka pyshell.main() after initial calls to Tk()
 
     There are currently three major versions of Tk in use on OS X:
@@ -275,13 +275,13 @@ def setupApp(root, flist):
     isAquaTk(), isCarbonTk(), isCocoaTk(), isXQuartz() functions which
     are initialized here as well.
     """
-    if isAquaTk():
+    ikiwa isAquaTk():
         hideTkConsole(root)
         overrideRootMenu(root, flist)
         addOpenEventSupport(root, flist)
         fixb2context(root)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_macosx', verbosity=2)

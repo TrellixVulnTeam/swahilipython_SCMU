@@ -9,7 +9,7 @@ kutoka lib2to3.fixer_util agiza token, syms
 
 
 
-class FixSetLiteral(fixer_base.BaseFix):
+kundi FixSetLiteral(fixer_base.BaseFix):
 
     BM_compatible = True
     explicit = True
@@ -24,9 +24,9 @@ class FixSetLiteral(fixer_base.BaseFix):
                      ')' > >
               """
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         single = results.get("single")
-        if single:
+        ikiwa single:
             # Make a fake listmaker
             fake = pytree.Node(syms.listmaker, [single.clone()])
             single.replace(fake)
@@ -44,10 +44,10 @@ class FixSetLiteral(fixer_base.BaseFix):
         maker.prefix = node.prefix
 
         # If the original was a one tuple, we need to remove the extra comma.
-        if len(maker.children) == 4:
+        ikiwa len(maker.children) == 4:
             n = maker.children[2]
             n.remove()
             maker.children[-1].prefix = n.prefix
 
         # Finally, replace the set call with our shiny new literal.
-        return maker
+        rudisha maker

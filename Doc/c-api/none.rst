@@ -22,5 +22,5 @@ same reason.
 
 .. c:macro:: Py_RETURN_NONE
 
-   Properly handle returning :c:data:`Py_None` from within a C function (that is,
+   Properly handle returning :c:data:`Py_None` kutoka within a C function (that is,
    increment the reference count of ``None`` and return it.)

@@ -1,7 +1,7 @@
 """
 Python 'utf-32' Codec
 """
-import codecs, sys
+agiza codecs, sys
 
 ### Codec APIs
 
@@ -56,9 +56,9 @@ class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
                 codecs.utf_32_ex_decode(input, errors, 0, final)
             if byteorder == -1:
                 self.decoder = codecs.utf_32_le_decode
-            elif byteorder == 1:
+            lasivyo byteorder == 1:
                 self.decoder = codecs.utf_32_be_decode
-            elif consumed >= 4:
+            lasivyo consumed >= 4:
                 raise UnicodeError("UTF-32 stream does not start with BOM")
             return (output, consumed)
         return self.decoder(input, self.errors, final)
@@ -89,7 +89,7 @@ class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
             self.decoder = (codecs.utf_32_be_decode
                             if sys.byteorder == "big"
                             else codecs.utf_32_le_decode)
-        elif state == 1:
+        lasivyo state == 1:
             self.decoder = (codecs.utf_32_le_decode
                             if sys.byteorder == "big"
                             else codecs.utf_32_be_decode)
@@ -130,9 +130,9 @@ class StreamReader(codecs.StreamReader):
             codecs.utf_32_ex_decode(input, errors, 0, False)
         if byteorder == -1:
             self.decode = codecs.utf_32_le_decode
-        elif byteorder == 1:
+        lasivyo byteorder == 1:
             self.decode = codecs.utf_32_be_decode
-        elif consumed>=4:
+        lasivyo consumed>=4:
             raise UnicodeError("UTF-32 stream does not start with BOM")
         return (object, consumed)
 

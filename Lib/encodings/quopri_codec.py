@@ -3,7 +3,7 @@
 This codec de/encodes from bytes to bytes.
 """
 
-import codecs
+agiza codecs
 import quopri
 from io import BytesIO
 

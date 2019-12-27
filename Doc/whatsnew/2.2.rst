@@ -50,10 +50,10 @@ complicated section of this article, I'll provide an overview of the changes and
 offer some comments.
 
 A long time ago I wrote a Web page listing flaws in Python's design.  One of the
-most significant flaws was that it's impossible to subclass Python types
-implemented in C.  In particular, it's not possible to subclass built-in types,
+most significant flaws was that it's impossible to subkundi Python types
+implemented in C.  In particular, it's not possible to subkundi built-in types,
 so you can't just subclass, say, lists in order to add a single useful method to
-them. The :mod:`UserList` module provides a class that supports all of the
+them. The :mod:`UserList` module provides a kundi that supports all of the
 methods of lists and that can be subclassed further, but there's lots of C code
 that expects a regular Python list and won't accept a :class:`UserList`
 instance.
@@ -61,10 +61,10 @@ instance.
 Python 2.2 fixes this, and in the process adds some exciting new capabilities.
 A brief summary:
 
-* You can subclass built-in types such as lists and even integers, and your
+* You can subkundi built-in types such as lists and even integers, and your
   subclasses should work in every place that requires the original type.
 
-* It's now possible to define static and class methods, in addition to the
+* It's now possible to define static and kundi methods, in addition to the
   instance methods available in previous versions of Python.
 
 * It's also possible to automatically call methods on accessing or setting an
@@ -85,9 +85,9 @@ its simplicity, and feel that its simplicity is being lost.
 
 Personally, I think there's no need to worry.  Many of the new features are
 quite esoteric, and you can write a lot of Python code without ever needed to be
-aware of them.  Writing a simple class is no more difficult than it ever was, so
+aware of them.  Writing a simple kundi is no more difficult than it ever was, so
 you don't need to bother learning or teaching them unless they're actually
-needed.  Some very complicated tasks that were previously only possible from C
+needed.  Some very complicated tasks that were previously only possible kutoka C
 will now be possible in pure Python, and to my mind that's all for the better.
 
 I'm not going to attempt to cover every single corner case and small change that
@@ -100,8 +100,8 @@ Old and New Classes
 -------------------
 
 First, you should know that Python 2.2 really has two kinds of classes: classic
-or old-style classes, and new-style classes.  The old-style class model is
-exactly the same as the class model in earlier versions of Python.  All the new
+or old-style classes, and new-style classes.  The old-style kundi model is
+exactly the same as the kundi model in earlier versions of Python.  All the new
 features described in this section apply only to new-style classes. This
 divergence isn't intended to last forever; eventually old-style classes will be
 dropped, possibly in Python 3.0.
@@ -109,11 +109,11 @@ dropped, possibly in Python 3.0.
 So how do you define a new-style class?  You do it by subclassing an existing
 new-style class.  Most of Python's built-in types, such as integers, lists,
 dictionaries, and even files, are new-style classes now.  A new-style class
-named :class:`object`, the base class for all built-in types, has also been
+named :class:`object`, the base kundi for all built-in types, has also been
 added so if no built-in type is suitable, you can just subclass
 :class:`object`::
 
-   class C(object):
+   kundi C(object):
        def __init__ (self):
            ...
        ...
@@ -121,7 +121,7 @@ added so if no built-in type is suitable, you can just subclass
 This means that :keyword:`class` statements that don't have any base classes are
 always classic classes in Python 2.2.  (Actually you can also change this by
 setting a module-level variable named :attr:`__metaclass__` --- see :pep:`253`
-for the details --- but it's easier to just subclass :class:`object`.)
+for the details --- but it's easier to just subkundi :class:`object`.)
 
 The type objects for the built-in types are available as built-ins, named using
 a clever trick.  Python has always had built-in functions named :func:`int`,
@@ -137,13 +137,13 @@ To make the set of types complete, new type objects such as :func:`dict` and
 :func:`file` have been added.  Here's a more interesting example, adding a
 :meth:`lock` method to file objects::
 
-   class LockableFile(file):
+   kundi LockableFile(file):
        def lock (self, operation, length=0, start=0, whence=0):
-           import fcntl
+           agiza fcntl
            return fcntl.lockf(self.fileno(), operation,
                               length, start, whence)
 
-The now-obsolete :mod:`posixfile` module contained a class that emulated all of
+The now-obsolete :mod:`posixfile` module contained a kundi that emulated all of
 a file object's methods and also added a :meth:`lock` method, but this class
 couldn't be passed to internal functions that expected a built-in file,
 something which is possible with our new :class:`LockableFile`.
@@ -156,24 +156,24 @@ In previous versions of Python, there was no consistent way to discover what
 attributes and methods were supported by an object. There were some informal
 conventions, such as defining :attr:`__members__` and :attr:`__methods__`
 attributes that were lists of names, but often the author of an extension type
-or a class wouldn't bother to define them.  You could fall back on inspecting
-the :attr:`~object.__dict__` of an object, but when class inheritance or an arbitrary
+or a kundi wouldn't bother to define them.  You could fall back on inspecting
+the :attr:`~object.__dict__` of an object, but when kundi inheritance or an arbitrary
 :meth:`__getattr__` hook were in use this could still be inaccurate.
 
-The one big idea underlying the new class model is that an API for describing
+The one big idea underlying the new kundi model is that an API for describing
 the attributes of an object using :dfn:`descriptors` has been formalized.
 Descriptors specify the value of an attribute, stating whether it's a method or
-a field.  With the descriptor API, static methods and class methods become
+a field.  With the descriptor API, static methods and kundi methods become
 possible, as well as more exotic constructs.
 
-Attribute descriptors are objects that live inside class objects, and have a few
+Attribute descriptors are objects that live inside kundi objects, and have a few
 attributes of their own:
 
 * :attr:`~definition.__name__` is the attribute's name.
 
 * :attr:`__doc__` is the attribute's docstring.
 
-* ``__get__(object)`` is a method that retrieves the attribute value from
+* ``__get__(object)`` is a method that retrieves the attribute value kutoka
   *object*.
 
 * ``__set__(object, value)`` sets the attribute on *object* to *value*.
@@ -188,14 +188,14 @@ are::
 
 For methods, :meth:`descriptor.__get__` returns a temporary object that's
 callable, and wraps up the instance and the method to be called on it. This is
-also why static methods and class methods are now possible; they have
+also why static methods and kundi methods are now possible; they have
 descriptors that wrap up just the method, or the method and the class.  As a
 brief explanation of these new kinds of methods, static methods aren't passed
 the instance, and therefore resemble regular functions.  Class methods are
-passed the class of the object, but not the object itself.  Static and class
+passed the kundi of the object, but not the object itself.  Static and class
 methods are defined like this::
 
-   class C(object):
+   kundi C(object):
        def f(arg1, arg2):
            ...
        f = staticmethod(f)
@@ -205,21 +205,21 @@ methods are defined like this::
        g = classmethod(g)
 
 The :func:`staticmethod` function takes the function :func:`f`, and returns it
-wrapped up in a descriptor so it can be stored in the class object.  You might
+wrapped up in a descriptor so it can be stored in the kundi object.  You might
 expect there to be special syntax for creating such methods (``def static f``,
 ``defstatic f()``, or something like that) but no such syntax has been defined
 yet; that's been left for future versions of Python.
 
 More new features, such as slots and properties, are also implemented as new
-kinds of descriptors, and it's not difficult to write a descriptor class that
+kinds of descriptors, and it's not difficult to write a descriptor kundi that
 does something novel.  For example, it would be possible to write a descriptor
-class that made it possible to write Eiffel-style preconditions and
-postconditions for a method.  A class that used this feature might be defined
+kundi that made it possible to write Eiffel-style preconditions and
+postconditions for a method.  A kundi that used this feature might be defined
 like this::
 
-   from eiffel import eiffelmethod
+   kutoka eiffel agiza eiffelmethod
 
-   class C(object):
+   kundi C(object):
        def f(self, arg1, arg2):
            # The actual function
            ...
@@ -245,24 +245,24 @@ Multiple Inheritance: The Diamond Rule
 
 Multiple inheritance has also been made more useful through changing the rules
 under which names are resolved.  Consider this set of classes (diagram taken
-from :pep:`253` by Guido van Rossum)::
+kutoka :pep:`253` by Guido van Rossum)::
 
-         class A:
+         kundi A:
            ^ ^  def save(self): ...
           /   \
          /     \
         /       \
        /         \
-   class B     class C:
+   kundi B     kundi C:
        ^         ^  def save(self): ...
         \       /
          \     /
           \   /
            \ /
-         class D
+         kundi D
 
 The lookup rule for classic classes is simple but not very smart; the base
-classes are searched depth-first, going from left to right.  A reference to
+classes are searched depth-first, going kutoka left to right.  A reference to
 :meth:`D.save` will search the classes :class:`D`, :class:`B`, and then
 :class:`A`, where :meth:`save` would be found and returned.  :meth:`C.save`
 would never be found at all.  This is bad, because if :class:`C`'s :meth:`save`
@@ -275,7 +275,7 @@ changes this algorithm to one that produces the same results in most cases, but
 produces more useful results for really complicated inheritance graphs.)
 
 #. List all the base classes, following the classic lookup rule and include a
-   class multiple times if it's visited repeatedly.  In the above example, the list
+   kundi multiple times if it's visited repeatedly.  In the above example, the list
    of visited classes is [:class:`D`, :class:`B`, :class:`A`, :class:`C`,
    :class:`A`].
 
@@ -289,18 +289,18 @@ which is the behaviour we're after.  This lookup rule is the same as the one
 followed by Common Lisp.  A new built-in function, :func:`super`, provides a way
 to get at a class's superclasses without having to reimplement Python's
 algorithm. The most commonly used form will be  ``super(class, obj)``, which
-returns  a bound superclass object (not the actual class object).  This form
+returns  a bound superkundi object (not the actual kundi object).  This form
 will be used in methods to call a method in the superclass; for example,
 :class:`D`'s :meth:`save` method would look like this::
 
-   class D (B,C):
+   kundi D (B,C):
        def save (self):
-           # Call superclass .save()
+           # Call superkundi .save()
            super(D, self).save()
            # Save D's private information here
            ...
 
-:func:`super` can also return unbound superclass objects when called as
+:func:`super` can also return unbound superkundi objects when called as
 ``super(class)`` or ``super(class1, class2)``, but this probably won't
 often be useful.
 
@@ -339,7 +339,7 @@ get, set, or delete an attribute, and a docstring.  For example, if you want to
 define a :attr:`size` attribute that's computed, but also settable, you could
 write::
 
-   class C(object):
+   kundi C(object):
        def get_size (self):
            result = ... computation ...
            return result
@@ -356,19 +356,19 @@ write::
 
 That is certainly clearer and easier to write than a pair of
 :meth:`__getattr__`/:meth:`__setattr__` methods that check for the :attr:`size`
-attribute and handle it specially while retrieving all other attributes from the
+attribute and handle it specially while retrieving all other attributes kutoka the
 instance's :attr:`~object.__dict__`.  Accesses to :attr:`size` are also the only ones
 which have to perform the work of calling a function, so references to other
 attributes run at their usual speed.
 
 Finally, it's possible to constrain the list of attributes that can be
-referenced on an object using the new :attr:`~object.__slots__` class attribute. Python
+referenced on an object using the new :attr:`~object.__slots__` kundi attribute. Python
 objects are usually very dynamic; at any time it's possible to define a new
 attribute on an instance by just doing ``obj.new_attr=1``.   A new-style class
-can define a class attribute named :attr:`~object.__slots__` to limit the legal
+can define a kundi attribute named :attr:`~object.__slots__` to limit the legal
 attributes  to a particular set of names.  An example will make this clear::
 
-   >>> class C(object):
+   >>> kundi C(object):
    ...     __slots__ = ('template', 'name')
    ...
    >>> obj = C()
@@ -407,7 +407,7 @@ type objects that make it possible to subtype built-in objects.  :pep:`253` is
 the more complicated PEP of the two, and at a few points the necessary
 explanations of types and meta-types may cause your head to explode.  Both PEPs
 were written and implemented by Guido van Rossum, with substantial assistance
-from the rest of the Zope Corp. team.
+kutoka the rest of the Zope Corp. team.
 
 Finally, there's the ultimate authority: the source code.  Most of the machinery
 for the type handling is in :file:`Objects/typeobject.c`, but you should only
@@ -433,7 +433,7 @@ to define a :meth:`__getitem__` method that looks something like this::
 object so that you can write ``obj[5]`` to retrieve the sixth element.  It's a
 bit misleading when you're using this only to support :keyword:`for` loops.
 Consider some file-like object that wants to be looped over; the *index*
-parameter is essentially meaningless, as the class probably assumes that a
+parameter is essentially meaningless, as the kundi probably assumes that a
 series of :meth:`__getitem__` calls will be made with *index* incrementing by
 one each time.  In other words, the presence of the :meth:`__getitem__` method
 doesn't mean that using ``file[5]``  to randomly access the sixth element will
@@ -563,7 +563,7 @@ A new keyword, :keyword:`yield`, was introduced for generators.  Any function
 containing a :keyword:`!yield` statement is a generator function; this is
 detected by Python's bytecode compiler which compiles the function specially as
 a result.  Because a new keyword was introduced, generators must be explicitly
-enabled in a module by including a ``from __future__ import generators``
+enabled in a module by including a ``kutoka __future__ agiza generators``
 statement near the top of the module's source code.  In Python 2.3 this
 statement will become unnecessary.
 
@@ -631,10 +631,10 @@ the N-Queens problem (placing $N$ queens on an $NxN$ chess board so that no
 queen threatens another) and the Knight's Tour (a route that takes a knight to
 every square of an $NxN$ chessboard without visiting any square twice).
 
-The idea of generators comes from other programming languages, especially Icon
+The idea of generators comes kutoka other programming languages, especially Icon
 (https://www.cs.arizona.edu/icon/), where the idea of generators is central.  In
 Icon, every expression and function call behaves like a generator.  One example
-from "An Overview of the Icon Programming Language" at
+kutoka "An Overview of the Icon Programming Language" at
 https://www.cs.arizona.edu/icon/docs/ipd266.htm gives an idea of what this looks
 like::
 
@@ -660,7 +660,7 @@ a data structure.
 
    :pep:`255` - Simple Generators
       Written by Neil Schemenauer, Tim Peters, Magnus Lie Hetland.  Implemented mostly
-      by Neil Schemenauer and Tim Peters, with other fixes from the Python Labs crew.
+      by Neil Schemenauer and Tim Peters, with other fixes kutoka the Python Labs crew.
 
 .. ======================================================================
 
@@ -678,7 +678,7 @@ in Python 1.5, only regular integers could be used as a slice index, and
 ``'abc'[1L:]`` would raise a :exc:`TypeError` exception with the message 'slice
 index must be int'.
 
-Python 2.2 will shift values from short to long integers as required. The 'L'
+Python 2.2 will shift values kutoka short to long integers as required. The 'L'
 suffix is no longer needed to indicate a long integer literal, as now the
 compiler will choose the appropriate type.  (Using the 'L' suffix will be
 discouraged in future 2.x versions of Python, triggering a warning in Python
@@ -709,7 +709,7 @@ PEP 238: Changing the Division Operator
 =======================================
 
 The most controversial change in Python 2.2 heralds the start of an effort to
-fix an old design flaw that's been in Python from the beginning. Currently
+fix an old design flaw that's been in Python kutoka the beginning. Currently
 Python's division operator, ``/``, behaves like C's division operator when
 presented with two integer arguments: it returns an integer result that's
 truncated down when there would be a fractional part.  For example, ``3/2`` is
@@ -729,7 +729,7 @@ Because this change might break code, it's being introduced very gradually.
 Python 2.2 begins the transition, but the switch won't be complete until Python
 3.0.
 
-First, I'll borrow some terminology from :pep:`238`.  "True division" is the
+First, I'll borrow some terminology kutoka :pep:`238`.  "True division" is the
 division that most non-programmers are familiar with: 3/2 is 1.5, 1/4 is 0.25,
 and so forth.  "Floor division" is what Python's ``/`` operator currently does
 when given integer operands; the result is the floor of the value returned by
@@ -747,7 +747,7 @@ Here are the changes 2.2 introduces:
   ``//`` is always available in Python 2.2; you don't need to enable it using a
   ``__future__`` statement.
 
-* By including a ``from __future__ import division`` in a module, the ``/``
+* By including a ``kutoka __future__ agiza division`` in a module, the ``/``
   operator will be changed to return the result of true division, so ``1/2`` is
   0.5.  Without the ``__future__`` statement, ``/`` still means classic division.
   The default meaning of ``/`` will not change until Python 3.0.
@@ -784,7 +784,7 @@ possible to specify :option:`!--disable-unicode` to completely disable Unicode
 support.)
 
 When built to use UCS-4 (a "wide Python"), the interpreter can natively handle
-Unicode characters from U+000000 to U+110000, so the range of legal values for
+Unicode characters kutoka U+000000 to U+110000, so the range of legal values for
 the :func:`unichr` function is expanded accordingly.  Using an interpreter
 compiled to use UCS-2 (a "narrow Python"), values greater than 65535 will still
 cause :func:`unichr` to raise a :exc:`ValueError` exception. This is all
@@ -819,7 +819,7 @@ encoding, and compression with the :mod:`zlib` module::
    >>> "sheesh".encode('rot-13')
    'furrfu'
 
-To convert a class instance to Unicode, a :meth:`__unicode__` method can be
+To convert a kundi instance to Unicode, a :meth:`__unicode__` method can be
 defined by a class, analogous to :meth:`__str__`.
 
 :meth:`encode`, :meth:`decode`, and :meth:`__unicode__` were implemented by
@@ -839,9 +839,9 @@ PEP 227: Nested Scopes
 ======================
 
 In Python 2.1, statically nested scopes were added as an optional feature, to be
-enabled by a ``from __future__ import nested_scopes`` directive.  In 2.2 nested
+enabled by a ``kutoka __future__ agiza nested_scopes`` directive.  In 2.2 nested
 scopes no longer need to be specially enabled, and are now always present.  The
-rest of this section is a copy of the description of nested scopes from my
+rest of this section is a copy of the description of nested scopes kutoka my
 "What's New in Python 2.1" document; if you read it when 2.1 came out, you can
 skip the rest of this section.
 
@@ -891,14 +891,14 @@ function that contains further function definitions. This seems rather unlikely
 though, since such code would have been pretty confusing to read in the first
 place.
 
-One side effect of the change is that the ``from module import *`` and
+One side effect of the change is that the ``kutoka module agiza *`` and
 ``exec`` statements have been made illegal inside a function scope under
-certain conditions.  The Python reference manual has said all along that ``from
-module import *`` is only legal at the top level of a module, but the CPython
+certain conditions.  The Python reference manual has said all along that ``kutoka
+module agiza *`` is only legal at the top level of a module, but the CPython
 interpreter has never enforced this before.  As part of the implementation of
 nested scopes, the compiler which turns Python source into bytecodes has to
-generate different code to access variables in a containing scope.  ``from
-module import *`` and ``exec`` make it impossible for the compiler to
+generate different code to access variables in a containing scope.  ``kutoka
+module agiza *`` and ``exec`` make it impossible for the compiler to
 figure this out, because they add names to the local namespace that are
 unknowable at compile time. Therefore, if a function contains function
 definitions or :keyword:`lambda` expressions with free variables, the compiler
@@ -936,10 +936,10 @@ New and Improved Modules
 * The :mod:`xmlrpclib` module was contributed to the standard library by Fredrik
   Lundh, providing support for writing XML-RPC clients.  XML-RPC is a simple
   remote procedure call protocol built on top of HTTP and XML. For example, the
-  following snippet retrieves a list of RSS channels from the O'Reilly Network,
+  following snippet retrieves a list of RSS channels kutoka the O'Reilly Network,
   and then  lists the recent headlines for one channel::
 
-     import xmlrpclib
+     agiza xmlrpclib
      s = xmlrpclib.Server(
            'http://www.oreillynet.com/meerkat/xml-rpc/server.php')
      channels = s.meerkat.getChannels()
@@ -1018,12 +1018,12 @@ New and Improved Modules
   parsing and generating e-mail messages.  (Contributed by Barry Warsaw, and
   arising out of his work on Mailman.)
 
-* The :mod:`difflib` module now contains a new :class:`Differ` class for
+* The :mod:`difflib` module now contains a new :class:`Differ` kundi for
   producing human-readable lists of changes (a "delta") between two sequences of
   lines of text.  There are also two generator functions, :func:`ndiff` and
-  :func:`restore`, which respectively return a delta from two sequences, or one of
-  the original sequences from a delta. (Grunt work contributed by David Goodger,
-  from ndiff.py code by Tim Peters who then did the generatorization.)
+  :func:`restore`, which respectively return a delta kutoka two sequences, or one of
+  the original sequences kutoka a delta. (Grunt work contributed by David Goodger,
+  kutoka ndiff.py code by Tim Peters who then did the generatorization.)
 
 * New constants :const:`ascii_letters`, :const:`ascii_lowercase`, and
   :const:`ascii_uppercase` were added to the :mod:`string` module.  There were
@@ -1038,7 +1038,7 @@ New and Improved Modules
   databases by the addition of a :class:`MimeTypes` class, which takes a list of
   filenames to be parsed.  (Contributed by Fred L. Drake, Jr.)
 
-* A :class:`Timer` class was added to the :mod:`threading` module that allows
+* A :class:`Timer` kundi was added to the :mod:`threading` module that allows
   scheduling an activity to happen at some future time.  (Contributed by Itamar
   Shtull-Trauring.)
 
@@ -1086,7 +1086,7 @@ code, none of the changes described here will affect you very much.
 * Rename :c:func:`PyObject_GC_Init` to :c:func:`PyObject_GC_Track` and
     :c:func:`PyObject_GC_Fini` to :c:func:`PyObject_GC_UnTrack`.
 
-* Remove :c:func:`PyGC_HEAD_SIZE` from object size calculations.
+* Remove :c:func:`PyGC_HEAD_SIZE` kutoka object size calculations.
 
 * Remove calls to :c:func:`PyObject_AS_GC` and :c:func:`PyObject_FROM_GC`.
 
@@ -1094,7 +1094,7 @@ code, none of the changes described here will affect you very much.
   takes both a parameter and an encoding name, and converts the parameter to the
   given encoding if the parameter turns out to be a Unicode string, or leaves it
   alone if it's an 8-bit string, assuming it to already be in the desired
-  encoding.  This differs from the ``es`` format character, which assumes that
+  encoding.  This differs kutoka the ``es`` format character, which assumes that
   8-bit strings are in Python's default ASCII encoding and converts them to the
   specified new encoding. (Contributed by M.-A. Lemburg, and used for the MBCS
   support on Windows described in the following section.)
@@ -1120,7 +1120,7 @@ code, none of the changes described here will affect you very much.
 
 * The :c:func:`_PyTuple_Resize` function has lost an unused parameter, so now it
   takes 2 parameters instead of 3.  The third argument was never used, and can
-  simply be discarded when porting code from earlier versions to Python 2.2.
+  simply be discarded when porting code kutoka earlier versions to Python 2.2.
 
 .. ======================================================================
 
@@ -1179,11 +1179,11 @@ Some of the more notable changes are:
 
 * Weak references, added in Python 2.1 as an extension module, are now part of
   the core because they're used in the implementation of new-style classes.  The
-  :exc:`ReferenceError` exception has therefore moved from the :mod:`weakref`
+  :exc:`ReferenceError` exception has therefore moved kutoka the :mod:`weakref`
   module to become a built-in exception.
 
 * A new script, :file:`Tools/scripts/cleanfuture.py` by Tim Peters,
-  automatically removes obsolete ``__future__`` statements from Python source
+  automatically removes obsolete ``__future__`` statements kutoka Python source
   code.
 
 * An additional *flags* argument has been added to the built-in function
@@ -1204,7 +1204,7 @@ Some of the more notable changes are:
   explicitly used by the file APIs, Python's choice of ASCII as the default
   encoding turns out to be an annoyance.  On Unix, the locale's character set is
   used if ``locale.nl_langinfo(CODESET)`` is available.  (Windows support was
-  contributed by Mark Hammond with assistance from Marc-André Lemburg. Unix
+  contributed by Mark Hammond with assistance kutoka Marc-André Lemburg. Unix
   support was added by Martin von Löwis.)
 
 * Large file support is now enabled on Windows.  (Contributed by Tim Peters.)
@@ -1238,8 +1238,8 @@ Some of the more notable changes are:
 
 * Files ending in ``.pyw`` can now be imported on Windows. ``.pyw`` is a
   Windows-only thing, used to indicate that a script needs to be run using
-  PYTHONW.EXE instead of PYTHON.EXE in order to prevent a DOS console from popping
-  up to display the output.  This patch makes it possible to import such scripts,
+  PYTHONW.EXE instead of PYTHON.EXE in order to prevent a DOS console kutoka popping
+  up to display the output.  This patch makes it possible to agiza such scripts,
   in case they're also usable as modules.  (Implemented by David Bolen.)
 
 * On platforms where Python uses the C :c:func:`dlopen` function  to load

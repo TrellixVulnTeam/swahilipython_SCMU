@@ -109,7 +109,7 @@ def _max_append(L, s, maxlen, extra=''):
         s = chr(s)
     if not L:
         L.append(s.lstrip())
-    elif len(L[-1]) + len(s) <= maxlen:
+    lasivyo len(L[-1]) + len(s) <= maxlen:
         L[-1] += extra + s
     else:
         L.append(s.lstrip())
@@ -193,7 +193,7 @@ def body_encode(body, maxlinelen=76, eol=NL):
             if line[stop - 2] == '=':
                 append(line[start:stop - 1])
                 start = stop - 2
-            elif line[stop - 1] == '=':
+            lasivyo line[stop - 1] == '=':
                 append(line[start:stop])
                 start = stop - 1
             else:
@@ -207,7 +207,7 @@ def body_encode(body, maxlinelen=76, eol=NL):
                 # It's a whitespace character at end-of-line, and we have room
                 # for the three-character quoted encoding.
                 q = quote(line[-1])
-            elif room == 2:
+            lasivyo room == 2:
                 # There's room for the whitespace character and a soft break.
                 q = line[-1] + soft_break
             else:
@@ -255,11 +255,11 @@ def decode(encoded, eol=NL):
                 i += 1
             # Otherwise, c == "=".  Are we at the end of the line?  If so, add
             # a soft line break.
-            elif i+1 == n:
+            lasivyo i+1 == n:
                 i += 1
                 continue
             # Decode if in form =AB
-            elif i+2 < n and line[i+1] in hexdigits and line[i+2] in hexdigits:
+            lasivyo i+2 < n and line[i+1] in hexdigits and line[i+2] in hexdigits:
                 decoded += unquote(line[i:i+3])
                 i += 3
             # Otherwise, not in form =AB, pass literally

@@ -8,7 +8,7 @@ kutoka lib2to3 agiza pytree, fixer_base
 kutoka lib2to3.fixer_util agiza Name, Attr, Call, Comma, Newline, syms
 
 
-class FixExitfunc(fixer_base.BaseFix):
+kundi FixExitfunc(fixer_base.BaseFix):
     keep_line_order = True
     BM_compatible = True
 
@@ -27,17 +27,17 @@ class FixExitfunc(fixer_base.BaseFix):
               )
               """
 
-    def __init__(self, *args):
+    eleza __init__(self, *args):
         super(FixExitfunc, self).__init__(*args)
 
-    def start_tree(self, tree, filename):
+    eleza start_tree(self, tree, filename):
         super(FixExitfunc, self).start_tree(tree, filename)
         self.sys_agiza = None
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         # First, find the sys agiza. We'll just hope it's global scope.
-        if "sys_agiza" in results:
-            if self.sys_agiza is None:
+        ikiwa "sys_agiza" in results:
+            ikiwa self.sys_agiza is None:
                 self.sys_agiza = results["sys_agiza"]
             return
 
@@ -49,7 +49,7 @@ class FixExitfunc(fixer_base.BaseFix):
         call = Call(register, [func], node.prefix)
         node.replace(call)
 
-        if self.sys_agiza is None:
+        ikiwa self.sys_agiza is None:
             # That's interesting.
             self.warning(node, "Can't find sys agiza; Please add an atexit "
                              "agiza at the top of your file.")
@@ -57,7 +57,7 @@ class FixExitfunc(fixer_base.BaseFix):
 
         # Now add an atexit agiza after the sys agiza.
         names = self.sys_agiza.children[1]
-        if names.type == syms.dotted_as_names:
+        ikiwa names.type == syms.dotted_as_names:
             names.append_child(Comma())
             names.append_child(Name("atexit", " "))
         else:

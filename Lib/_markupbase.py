@@ -20,8 +20,8 @@ _msmarkedsectionclose = re.compile(r']\s*>')
 del re
 
 
-class ParserBase:
-    """Parser base class which provides some common support methods used
+kundi ParserBase:
+    """Parser base kundi which provides some common support methods used
     by the SGML/HTML and XHTML parsers."""
 
     def __init__(self):
@@ -87,7 +87,7 @@ class ParserBase:
         if rawdata[j:j+2] == '--': #comment
             # Locate --.*-- as the body of the comment
             return self.parse_comment(i)
-        elif rawdata[j] == '[': #marked section
+        lasivyo rawdata[j] == '[': #marked section
             # Locate [statusWord [...arbitrary SGML...]] as the body of the marked section
             # Where statusWord is one of TEMP, CDATA, IGNORE, INCLUDE, RCDATA
             # Note that this is extended by Microsoft Office "Save as Web" function
@@ -118,15 +118,15 @@ class ParserBase:
                 if not m:
                     return -1 # incomplete
                 j = m.end()
-            elif c in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ":
+            lasivyo c in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ":
                 name, j = self._scan_name(j, i)
-            elif c in self._decl_otherchars:
+            lasivyo c in self._decl_otherchars:
                 j = j + 1
-            elif c == "[":
+            lasivyo c == "[":
                 # this could be handled in a separate doctype parser
                 if decltype == "doctype":
                     j = self._parse_doctype_subset(j + 1, i)
-                elif decltype in {"attlist", "linktype", "link", "element"}:
+                lasivyo decltype in {"attlist", "linktype", "link", "element"}:
                     # must tolerate []'d groups in a content model in an element declaration
                     # also in data attribute specifications of attlist declaration
                     # also link type declaration subsets in linktype declarations
@@ -152,7 +152,7 @@ class ParserBase:
         if sectName in {"temp", "cdata", "ignore", "include", "rcdata"}:
             # look for standard ]]> ending
             match= _markedsectionclose.search(rawdata, i+3)
-        elif sectName in {"if", "else", "endif"}:
+        lasivyo sectName in {"if", "else", "endif"}:
             # look for MS Office ]> ending
             match= _msmarkedsectionclose.search(rawdata, i+3)
         else:
@@ -216,7 +216,7 @@ class ParserBase:
                 j = meth(j, declstartpos)
                 if j < 0:
                     return j
-            elif c == "%":
+            lasivyo c == "%":
                 # parameter entity reference
                 if (j + 1) == n:
                     # end of buffer; incomplete
@@ -226,7 +226,7 @@ class ParserBase:
                     return j
                 if rawdata[j] == ";":
                     j = j + 1
-            elif c == "]":
+            lasivyo c == "]":
                 j = j + 1
                 while j < n and rawdata[j].isspace():
                     j = j + 1
@@ -237,7 +237,7 @@ class ParserBase:
                     self.error("unexpected char after internal subset")
                 else:
                     return -1
-            elif c.isspace():
+            lasivyo c.isspace():
                 j = j + 1
             else:
                 self.updatepos(declstartpos, j)
@@ -364,7 +364,7 @@ class ParserBase:
                     j = m.end()
                 else:
                     return -1    # incomplete
-            elif c == ">":
+            lasivyo c == ">":
                 return j + 1
             else:
                 name, j = self._scan_name(j, declstartpos)

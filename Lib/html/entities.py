@@ -2499,7 +2499,7 @@ html5 = {
 codepoint2name = {}
 
 # maps the HTML entity name to the character
-# (or a character reference if the character is outside the Latin-1 range)
+# (or a character reference ikiwa the character is outside the Latin-1 range)
 entitydefs = {}
 
 for (name, codepoint) in name2codepoint.items():

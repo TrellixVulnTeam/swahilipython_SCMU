@@ -23,7 +23,7 @@ The :mod:`pickle` module implements binary protocols for serializing and
 de-serializing a Python object structure.  *"Pickling"* is the process
 whereby a Python object hierarchy is converted into a byte stream, and
 *"unpickling"* is the inverse operation, whereby a byte stream
-(from a :term:`binary file` or :term:`bytes-like object`) is converted
+(kutoka a :term:`binary file` or :term:`bytes-like object`) is converted
 back into an object hierarchy.  Pickling (and unpickling) is alternatively
 known as "serialization", "marshalling," [#]_ or "flattening"; however, to
 avoid confusion, the terms used here are "pickling" and "unpickling".
@@ -34,7 +34,7 @@ avoid confusion, the terms used here are "pickling" and "unpickling".
 
    It is possible to construct malicious pickle data which will **execute
    arbitrary code during unpickling**. Never unpickle data that could have come
-   from an untrusted source, or that could have been tampered with.
+   kutoka an untrusted source, or that could have been tampered with.
 
    Consider signing data with :mod:`hmac` if you need to ensure that it has not
    been tampered with.
@@ -54,7 +54,7 @@ general :mod:`pickle` should always be the preferred way to serialize Python
 objects.  :mod:`marshal` exists primarily to support Python's :file:`.pyc`
 files.
 
-The :mod:`pickle` module differs from :mod:`marshal` in several significant ways:
+The :mod:`pickle` module differs kutoka :mod:`marshal` in several significant ways:
 
 * The :mod:`pickle` module keeps track of the objects it has already serialized,
   so that later references to the same object won't be serialized again.
@@ -70,8 +70,8 @@ The :mod:`pickle` module differs from :mod:`marshal` in several significant ways
   can be very important for mutable objects.
 
 * :mod:`marshal` cannot be used to serialize user-defined classes and their
-  instances.  :mod:`pickle` can save and restore class instances transparently,
-  however the class definition must be importable and live in the same module as
+  instances.  :mod:`pickle` can save and restore kundi instances transparently,
+  however the kundi definition must be importable and live in the same module as
   when the object was stored.
 
 * The :mod:`marshal` serialization format is not guaranteed to be portable
@@ -234,7 +234,7 @@ process more convenient:
 
 .. function:: load(file, \*, fix_imports=True, encoding="ASCII", errors="strict", buffers=None)
 
-   Read the pickled representation of an object from the open :term:`file object`
+   Read the pickled representation of an object kutoka the open :term:`file object`
    *file* and return the reconstituted object hierarchy specified therein.
    This is equivalent to ``Unpickler(file).load()``.
 
@@ -268,7 +268,7 @@ The :mod:`pickle` module defines three exceptions:
 
 .. exception:: PickleError
 
-   Common base class for the other pickling exceptions.  It inherits
+   Common base kundi for the other pickling exceptions.  It inherits
    :exc:`Exception`.
 
 .. exception:: PicklingError
@@ -331,7 +331,7 @@ The :mod:`pickle` module exports three classes, :class:`Pickler`,
 
    .. method:: persistent_id(obj)
 
-      Do nothing by default.  This exists so a subclass can override it.
+      Do nothing by default.  This exists so a subkundi can override it.
 
       If :meth:`persistent_id` returns ``None``, *obj* is pickled as usual.  Any
       other value causes :class:`Pickler` to emit the returned value as a
@@ -347,7 +347,7 @@ The :mod:`pickle` module exports three classes, :class:`Pickler`,
       functions* of the kind which can be declared using
       :func:`copyreg.pickle`.  It is a mapping whose keys are classes
       and whose values are reduction functions.  A reduction function
-      takes a single argument of the associated class and should
+      takes a single argument of the associated kundi and should
       conform to the same interface as a :meth:`__reduce__`
       method.
 
@@ -356,7 +356,7 @@ The :mod:`pickle` module exports three classes, :class:`Pickler`,
       global dispatch table managed by the :mod:`copyreg` module.
       However, to customize the pickling for a specific pickler object
       one can set the :attr:`dispatch_table` attribute to a dict-like
-      object.  Alternatively, if a subclass of :class:`Pickler` has a
+      object.  Alternatively, if a subkundi of :class:`Pickler` has a
       :attr:`dispatch_table` attribute then this will be used as the
       default dispatch table for instances of that class.
 
@@ -427,7 +427,7 @@ The :mod:`pickle` module exports three classes, :class:`Pickler`,
 
    .. method:: load()
 
-      Read the pickled representation of an object from the open file object
+      Read the pickled representation of an object kutoka the open file object
       given in the constructor, and return the reconstituted object hierarchy
       specified therein.  Bytes past the pickled representation of the object
       are ignored.
@@ -444,7 +444,7 @@ The :mod:`pickle` module exports three classes, :class:`Pickler`,
 
    .. method:: find_class(module, name)
 
-      Import *module* if necessary and return the object called *name* from it,
+      Import *module* if necessary and return the object called *name* kutoka it,
       where the *module* and *name* arguments are :class:`str` objects.  Note,
       unlike its name suggests, :meth:`find_class` is also used for finding
       functions.
@@ -453,7 +453,7 @@ The :mod:`pickle` module exports three classes, :class:`Pickler`,
       how they can be loaded, potentially reducing security risks. Refer to
       :ref:`pickle-restrict` for details.
 
-      .. audit-event:: pickle.find_class module,name pickle.Unpickler.find_class
+      .. audit-event:: pickle.find_kundi module,name pickle.Unpickler.find_class
 
 .. class:: PickleBuffer(buffer)
 
@@ -525,20 +525,20 @@ must contain the named object, otherwise an exception will be raised. [#]_
 
 Similarly, classes are pickled by named reference, so the same restrictions in
 the unpickling environment apply.  Note that none of the class's code or data is
-pickled, so in the following example the class attribute ``attr`` is not
+pickled, so in the following example the kundi attribute ``attr`` is not
 restored in the unpickling environment::
 
-   class Foo:
-       attr = 'A class attribute'
+   kundi Foo:
+       attr = 'A kundi attribute'
 
    picklestring = pickle.dumps(Foo)
 
 These restrictions are why picklable functions and classes must be defined in
 the top level of a module.
 
-Similarly, when class instances are pickled, their class's code and data are not
+Similarly, when kundi instances are pickled, their class's code and data are not
 pickled along with them.  Only the instance data are pickled.  This is done on
-purpose, so you can fix bugs in a class or add methods to the class and still
+purpose, so you can fix bugs in a kundi or add methods to the kundi and still
 load objects that were created with an earlier version of the class.  If you
 plan to have long-lived objects that will see many versions of a class, it may
 be worthwhile to put a version number in the objects so that suitable
@@ -553,11 +553,11 @@ Pickling Class Instances
 .. currentmodule:: None
 
 In this section, we describe the general mechanisms available to you to define,
-customize, and control how class instances are pickled and unpickled.
+customize, and control how kundi instances are pickled and unpickled.
 
 In most cases, no additional code is needed to make instances picklable.  By
-default, pickle will retrieve the class and the attributes of an instance via
-introspection. When a class instance is unpickled, its :meth:`__init__` method
+default, pickle will retrieve the kundi and the attributes of an instance via
+introspection. When a kundi instance is unpickled, its :meth:`__init__` method
 is usually *not* invoked.  The default behaviour first creates an uninitialized
 instance and then restores the saved attributes.  The following code shows an
 implementation of this behaviour::
@@ -584,7 +584,7 @@ methods:
    unpickling.
 
    You should implement this method if the :meth:`__new__` method of your
-   class requires keyword-only arguments.  Otherwise, it is recommended for
+   kundi requires keyword-only arguments.  Otherwise, it is recommended for
    compatibility to implement :meth:`__getnewargs__`.
 
    .. versionchanged:: 3.6
@@ -616,7 +616,7 @@ methods:
 
 .. method:: object.__setstate__(state)
 
-   Upon unpickling, if the class defines :meth:`__setstate__`, it is called with
+   Upon unpickling, if the kundi defines :meth:`__setstate__`, it is called with
    the unpickled state.  In that case, there is no requirement for the state
    object to be a dictionary.  Otherwise, the pickled state must be a dictionary
    and its items are assigned to the new instance's dictionary.
@@ -648,7 +648,7 @@ interface for retrieving the data necessary for pickling and copying
 objects. [#]_
 
 Although powerful, implementing :meth:`__reduce__` directly in your classes is
-error prone.  For this reason, class designers should use the high-level
+error prone.  For this reason, kundi designers should use the high-level
 interface (i.e., :meth:`__getnewargs_ex__`, :meth:`__getstate__` and
 :meth:`__setstate__`) whenever possible.  We will show, however, cases where
 using :meth:`__reduce__` is the only option or leads to more efficient pickling
@@ -775,10 +775,10 @@ For example ::
    p.dispatch_table[SomeClass] = reduce_SomeClass
 
 creates an instance of :class:`pickle.Pickler` with a private dispatch
-table which handles the ``SomeClass`` class specially.  Alternatively,
+table which handles the ``SomeClass`` kundi specially.  Alternatively,
 the code ::
 
-   class MyPickler(pickle.Pickler):
+   kundi MyPickler(pickle.Pickler):
        dispatch_table = copyreg.dispatch_table.copy()
        dispatch_table[SomeClass] = reduce_SomeClass
    f = io.BytesIO()
@@ -802,14 +802,14 @@ Handling Stateful Objects
    single: __setstate__() (copy protocol)
 
 Here's an example that shows how to modify pickling behavior for a class.
-The :class:`TextReader` class opens a text file, and returns the line number and
+The :class:`TextReader` kundi opens a text file, and returns the line number and
 line contents each time its :meth:`!readline` method is called. If a
 :class:`TextReader` instance is pickled, all attributes *except* the file object
 member are saved. When the instance is unpickled, the file is reopened, and
-reading resumes from the last location. The :meth:`__setstate__` and
+reading resumes kutoka the last location. The :meth:`__setstate__` and
 :meth:`__getstate__` methods are used to implement this behavior. ::
 
-   class TextReader:
+   kundi TextReader:
        """Print and number lines in a text file."""
 
        def __init__(self, filename):
@@ -827,7 +827,7 @@ reading resumes from the last location. The :meth:`__setstate__` and
            return "%i: %s" % (self.lineno, line)
 
        def __getstate__(self):
-           # Copy the object's state from self.__dict__ which contains
+           # Copy the object's state kutoka self.__dict__ which contains
            # all our instance attributes. Always use the dict.copy()
            # method to avoid modifying the original state.
            state = self.__dict__.copy()
@@ -839,7 +839,7 @@ reading resumes from the last location. The :meth:`__setstate__` and
            # Restore instance attributes (i.e., filename and lineno).
            self.__dict__.update(state)
            # Restore the previously opened file's state. To do so, we need to
-           # reopen it and read from it until the line count is restored.
+           # reopen it and read kutoka it until the line count is restored.
            file = open(self.filename)
            for _ in range(self.lineno):
                file.readline()
@@ -870,7 +870,7 @@ In particular we may want to customize pickling based on another criterion
 than the object's type, or we may want to customize the pickling of
 functions and classes.
 
-For those cases, it is possible to subclass from the :class:`Pickler` class and
+For those cases, it is possible to subkundi kutoka the :class:`Pickler` kundi and
 implement a :meth:`~Pickler.reducer_override` method. This method can return an
 arbitrary reduction tuple (see :meth:`__reduce__`). It can alternatively return
 ``NotImplemented`` to fallback to the traditional behavior.
@@ -889,13 +889,13 @@ If both the :attr:`~Pickler.dispatch_table` and
 Here is a simple example where we allow pickling and reconstructing
 a given class::
 
-   import io
-   import pickle
+   agiza io
+   agiza pickle
 
-   class MyClass:
+   kundi MyClass:
        my_attribute = 1
 
-   class MyPickler(pickle.Pickler):
+   kundi MyPickler(pickle.Pickler):
        def reducer_override(self, obj):
            """Custom reducer for MyClass."""
            if getattr(obj, "__name__", None) == "MyClass":
@@ -911,7 +911,7 @@ a given class::
 
    del MyClass
 
-   unpickled_class = pickle.loads(f.getvalue())
+   unpickled_kundi = pickle.loads(f.getvalue())
 
    assert isinstance(unpickled_class, type)
    assert unpickled_class.__name__ == "MyClass"
@@ -930,7 +930,7 @@ of data.  Therefore, it can be important to minimize the number of memory
 copies, to preserve performance and resource consumption.  However, normal
 operation of the :mod:`pickle` module, as it transforms a graph-like structure
 of objects into a sequential stream of bytes, intrinsically involves copying
-data to and from the pickle stream.
+data to and kutoka the pickle stream.
 
 This constraint can be eschewed if both the *provider* (the implementation
 of the object types to be transferred) and the *consumer* (the implementation
@@ -983,7 +983,7 @@ Example
 Here is a trivial example where we implement a :class:`bytearray` subclass
 able to participate in out-of-band buffer pickling::
 
-   class ZeroCopyByteArray(bytearray):
+   kundi ZeroCopyByteArray(bytearray):
 
        def __reduce_ex__(self, protocol):
            if protocol >= 5:
@@ -1004,7 +1004,7 @@ able to participate in out-of-band buffer pickling::
                else:
                    return cls(obj)
 
-The reconstructor (the ``_reconstruct`` class method) returns the buffer's
+The reconstructor (the ``_reconstruct`` kundi method) returns the buffer's
 providing object if it has the right type.  This is an easy way to simulate
 zero-copy behaviour on this toy example.
 
@@ -1045,12 +1045,12 @@ Restricting Globals
 .. index::
    single: find_class() (pickle protocol)
 
-By default, unpickling will import any class or function that it finds in the
+By default, unpickling will agiza any kundi or function that it finds in the
 pickle data.  For many applications, this behaviour is unacceptable as it
-permits the unpickler to import and invoke arbitrary code.  Just consider what
+permits the unpickler to agiza and invoke arbitrary code.  Just consider what
 this hand-crafted pickle data stream does when loaded::
 
-    >>> import pickle
+    >>> agiza pickle
     >>> pickle.loads(b"cos\nsystem\n(S'echo hello world'\ntR.")
     hello world
     0
@@ -1061,16 +1061,16 @@ inoffensive, it is not difficult to imagine one that could damage your system.
 
 For this reason, you may want to control what gets unpickled by customizing
 :meth:`Unpickler.find_class`.  Unlike its name suggests,
-:meth:`Unpickler.find_class` is called whenever a global (i.e., a class or
+:meth:`Unpickler.find_class` is called whenever a global (i.e., a kundi or
 a function) is requested.  Thus it is possible to either completely forbid
 globals or restrict them to a safe subset.
 
-Here is an example of an unpickler allowing only few safe classes from the
+Here is an example of an unpickler allowing only few safe classes kutoka the
 :mod:`builtins` module to be loaded::
 
-   import builtins
-   import io
-   import pickle
+   agiza builtins
+   agiza io
+   agiza pickle
 
    safe_builtins = {
        'range',
@@ -1080,10 +1080,10 @@ Here is an example of an unpickler allowing only few safe classes from the
        'slice',
    }
 
-   class RestrictedUnpickler(pickle.Unpickler):
+   kundi RestrictedUnpickler(pickle.Unpickler):
 
        def find_class(self, module, name):
-           # Only allow safe classes from builtins.
+           # Only allow safe classes kutoka builtins.
            if module == "builtins" and name in safe_builtins:
                return getattr(builtins, name)
            # Forbid everything else.
@@ -1122,7 +1122,7 @@ third-party solutions.
 Performance
 -----------
 
-Recent versions of the pickle protocol (from protocol 2 and upwards) feature
+Recent versions of the pickle protocol (kutoka protocol 2 and upwards) feature
 efficient binary encodings for several common features and built-in types.
 Also, the :mod:`pickle` module has a transparent optimizer written in C.
 
@@ -1134,7 +1134,7 @@ Examples
 
 For the simplest code, use the :func:`dump` and :func:`load` functions. ::
 
-   import pickle
+   agiza pickle
 
    # An arbitrary collection of objects supported by pickle.
    data = {
@@ -1150,7 +1150,7 @@ For the simplest code, use the :func:`dump` and :func:`load` functions. ::
 
 The following example reads the resulting pickled data. ::
 
-   import pickle
+   agiza pickle
 
    with open('data.pickle', 'rb') as f:
        # The protocol version used is detected automatically, so we do not

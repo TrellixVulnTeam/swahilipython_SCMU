@@ -31,33 +31,33 @@ MEMORY_SANITIZER = (
 )
 
 
-def expected_traceback(lineno1, lineno2, header, min_count=1):
+eleza expected_traceback(lineno1, lineno2, header, min_count=1):
     regex = header
     regex += '  File "<string>", line %s in func\n' % lineno1
     regex += '  File "<string>", line %s in <module>' % lineno2
-    if 1 < min_count:
-        return '^' + (regex + '\n') * (min_count - 1) + regex
+    ikiwa 1 < min_count:
+        rudisha '^' + (regex + '\n') * (min_count - 1) + regex
     else:
-        return '^' + regex + '$'
+        rudisha '^' + regex + '$'
 
-def skip_segfault_on_android(test):
+eleza skip_segfault_on_android(test):
     # Issue #32138: Raising SIGSEGV on Android may not cause a crash.
-    return unittest.skipIf(is_android,
+    rudisha unittest.skipIf(is_android,
                            'raising SIGSEGV on Android is unreliable')(test)
 
 @contextmanager
-def temporary_filename():
+eleza temporary_filename():
     filename = tempfile.mktemp()
     try:
         yield filename
     finally:
         support.unlink(filename)
 
-class FaultHandlerTests(unittest.TestCase):
-    def get_output(self, code, filename=None, fd=None):
+kundi FaultHandlerTests(unittest.TestCase):
+    eleza get_output(self, code, filename=None, fd=None):
         """
         Run the specified code in Python (in a new child process) and read the
-        output kutoka the standard error or kutoka a file (if filename is set).
+        output kutoka the standard error or kutoka a file (ikiwa filename is set).
         Return the output lines as a list.
 
         Strip the reference count kutoka the standard error for Python debug
@@ -66,7 +66,7 @@ class FaultHandlerTests(unittest.TestCase):
         """
         code = dedent(code).strip()
         pass_fds = []
-        if fd is not None:
+        ikiwa fd is not None:
             pass_fds.append(fd)
         with support.SuppressCrashReport():
             process = script_helper.spawn_python('-c', code, pass_fds=pass_fds)
@@ -75,20 +75,20 @@ class FaultHandlerTests(unittest.TestCase):
                 exitcode = process.wait()
         output = support.strip_python_stderr(stdout)
         output = output.decode('ascii', 'backslashreplace')
-        if filename:
+        ikiwa filename:
             self.assertEqual(output, '')
             with open(filename, "rb") as fp:
                 output = fp.read()
             output = output.decode('ascii', 'backslashreplace')
-        elif fd is not None:
+        elikiwa fd is not None:
             self.assertEqual(output, '')
             os.lseek(fd, os.SEEK_SET, 0)
             with open(fd, "rb", closefd=False) as fp:
                 output = fp.read()
             output = output.decode('ascii', 'backslashreplace')
-        return output.splitlines(), exitcode
+        rudisha output.splitlines(), exitcode
 
-    def check_error(self, code, line_number, fatal_error, *,
+    eleza check_error(self, code, line_number, fatal_error, *,
                     filename=None, all_threads=True, other_regex=None,
                     fd=None, know_current_thread=True,
                     py_fatal_error=False):
@@ -96,10 +96,10 @@ class FaultHandlerTests(unittest.TestCase):
         Check that the fault handler for fatal errors is enabled and check the
         traceback kutoka the child process output.
 
-        Raise an error if the output doesn't match the expected format.
+        Raise an error ikiwa the output doesn't match the expected format.
         """
-        if all_threads:
-            if know_current_thread:
+        ikiwa all_threads:
+            ikiwa know_current_thread:
                 header = 'Current thread 0x[0-9a-f]+'
             else:
                 header = 'Thread 0x[0-9a-f]+'
@@ -111,31 +111,31 @@ class FaultHandlerTests(unittest.TestCase):
             {header} \(most recent call first\):
               File "<string>", line {lineno} in <module>
             """
-        if py_fatal_error:
+        ikiwa py_fatal_error:
             fatal_error += "\nPython runtime state: initialized"
         regex = dedent(regex).format(
             lineno=line_number,
             fatal_error=fatal_error,
             header=header).strip()
-        if other_regex:
+        ikiwa other_regex:
             regex += '|' + other_regex
         output, exitcode = self.get_output(code, filename=filename, fd=fd)
         output = '\n'.join(output)
         self.assertRegex(output, regex)
         self.assertNotEqual(exitcode, 0)
 
-    def check_fatal_error(self, code, line_number, name_regex, **kw):
+    eleza check_fatal_error(self, code, line_number, name_regex, **kw):
         fatal_error = 'Fatal Python error: %s' % name_regex
         self.check_error(code, line_number, fatal_error, **kw)
 
-    def check_windows_exception(self, code, line_number, name_regex, **kw):
+    eleza check_windows_exception(self, code, line_number, name_regex, **kw):
         fatal_error = 'Windows fatal exception: %s' % name_regex
         self.check_error(code, line_number, fatal_error, **kw)
 
     @unittest.skipIf(sys.platform.startswith('aix'),
                      "the first page of memory is a mapped read-only on AIX")
-    def test_read_null(self):
-        if not MS_WINDOWS:
+    eleza test_read_null(self):
+        ikiwa not MS_WINDOWS:
             self.check_fatal_error("""
                 agiza faulthandler
                 faulthandler.enable()
@@ -156,7 +156,7 @@ class FaultHandlerTests(unittest.TestCase):
                 'access violation')
 
     @skip_segfault_on_android
-    def test_sigsegv(self):
+    eleza test_sigsegv(self):
         self.check_fatal_error("""
             agiza faulthandler
             faulthandler.enable()
@@ -165,7 +165,7 @@ class FaultHandlerTests(unittest.TestCase):
             3,
             'Segmentation fault')
 
-    def test_fatal_error_c_thread(self):
+    eleza test_fatal_error_c_thread(self):
         self.check_fatal_error("""
             agiza faulthandler
             faulthandler.enable()
@@ -176,7 +176,7 @@ class FaultHandlerTests(unittest.TestCase):
             know_current_thread=False,
             py_fatal_error=True)
 
-    def test_sigabrt(self):
+    eleza test_sigabrt(self):
         self.check_fatal_error("""
             agiza faulthandler
             faulthandler.enable()
@@ -187,7 +187,7 @@ class FaultHandlerTests(unittest.TestCase):
 
     @unittest.skipIf(sys.platform == 'win32',
                      "SIGFPE cannot be caught on Windows")
-    def test_sigfpe(self):
+    eleza test_sigfpe(self):
         self.check_fatal_error("""
             agiza faulthandler
             faulthandler.enable()
@@ -199,7 +199,7 @@ class FaultHandlerTests(unittest.TestCase):
     @unittest.skipIf(_testcapi is None, 'need _testcapi')
     @unittest.skipUnless(hasattr(signal, 'SIGBUS'), 'need signal.SIGBUS')
     @skip_segfault_on_android
-    def test_sigbus(self):
+    eleza test_sigbus(self):
         self.check_fatal_error("""
             agiza faulthandler
             agiza signal
@@ -213,7 +213,7 @@ class FaultHandlerTests(unittest.TestCase):
     @unittest.skipIf(_testcapi is None, 'need _testcapi')
     @unittest.skipUnless(hasattr(signal, 'SIGILL'), 'need signal.SIGILL')
     @skip_segfault_on_android
-    def test_sigill(self):
+    eleza test_sigill(self):
         self.check_fatal_error("""
             agiza faulthandler
             agiza signal
@@ -224,7 +224,7 @@ class FaultHandlerTests(unittest.TestCase):
             5,
             'Illegal instruction')
 
-    def test_fatal_error(self):
+    eleza test_fatal_error(self):
         self.check_fatal_error("""
             agiza faulthandler
             faulthandler._fatal_error(b'xyz')
@@ -233,7 +233,7 @@ class FaultHandlerTests(unittest.TestCase):
             'xyz',
             py_fatal_error=True)
 
-    def test_fatal_error_without_gil(self):
+    eleza test_fatal_error_without_gil(self):
         self.check_fatal_error("""
             agiza faulthandler
             faulthandler._fatal_error(b'xyz', True)
@@ -244,10 +244,10 @@ class FaultHandlerTests(unittest.TestCase):
 
     @unittest.skipIf(sys.platform.startswith('openbsd'),
                      "Issue #12868: sigaltstack() doesn't work on "
-                     "OpenBSD if Python is compiled with pthread")
+                     "OpenBSD ikiwa Python is compiled with pthread")
     @unittest.skipIf(not hasattr(faulthandler, '_stack_overflow'),
                      'need faulthandler._stack_overflow()')
-    def test_stack_overflow(self):
+    eleza test_stack_overflow(self):
         self.check_fatal_error("""
             agiza faulthandler
             faulthandler.enable()
@@ -258,7 +258,7 @@ class FaultHandlerTests(unittest.TestCase):
             other_regex='unable to raise a stack overflow')
 
     @skip_segfault_on_android
-    def test_gil_released(self):
+    eleza test_gil_released(self):
         self.check_fatal_error("""
             agiza faulthandler
             faulthandler.enable()
@@ -270,7 +270,7 @@ class FaultHandlerTests(unittest.TestCase):
     @unittest.skipIf(UB_SANITIZER or MEMORY_SANITIZER,
                      "sanitizer builds change crashing process output.")
     @skip_segfault_on_android
-    def test_enable_file(self):
+    eleza test_enable_file(self):
         with temporary_filename() as filename:
             self.check_fatal_error("""
                 agiza faulthandler
@@ -287,7 +287,7 @@ class FaultHandlerTests(unittest.TestCase):
     @unittest.skipIf(UB_SANITIZER or MEMORY_SANITIZER,
                      "sanitizer builds change crashing process output.")
     @skip_segfault_on_android
-    def test_enable_fd(self):
+    eleza test_enable_fd(self):
         with tempfile.TemporaryFile('wb+') as fp:
             fd = fp.fileno()
             self.check_fatal_error("""
@@ -301,7 +301,7 @@ class FaultHandlerTests(unittest.TestCase):
                 fd=fd)
 
     @skip_segfault_on_android
-    def test_enable_single_thread(self):
+    eleza test_enable_single_thread(self):
         self.check_fatal_error("""
             agiza faulthandler
             faulthandler.enable(all_threads=False)
@@ -312,7 +312,7 @@ class FaultHandlerTests(unittest.TestCase):
             all_threads=False)
 
     @skip_segfault_on_android
-    def test_disable(self):
+    eleza test_disable(self):
         code = """
             agiza faulthandler
             faulthandler.enable()
@@ -326,7 +326,7 @@ class FaultHandlerTests(unittest.TestCase):
                      "%r is present in %r" % (not_expected, stderr))
         self.assertNotEqual(exitcode, 0)
 
-    def test_is_enabled(self):
+    eleza test_is_enabled(self):
         orig_stderr = sys.stderr
         try:
             # regrtest may replace sys.stderr by io.StringIO object, but
@@ -341,26 +341,26 @@ class FaultHandlerTests(unittest.TestCase):
                 faulthandler.disable()
                 self.assertFalse(faulthandler.is_enabled())
             finally:
-                if was_enabled:
+                ikiwa was_enabled:
                     faulthandler.enable()
                 else:
                     faulthandler.disable()
         finally:
             sys.stderr = orig_stderr
 
-    def test_disabled_by_default(self):
+    eleza test_disabled_by_default(self):
         # By default, the module should be disabled
-        code = "agiza faulthandler; print(faulthandler.is_enabled())"
+        code = "agiza faulthandler; andika(faulthandler.is_enabled())"
         args = (sys.executable, "-E", "-c", code)
         # don't use assert_python_ok() because it always enables faulthandler
         output = subprocess.check_output(args)
         self.assertEqual(output.rstrip(), b"False")
 
-    def test_sys_xoptions(self):
+    eleza test_sys_xoptions(self):
         # Test python -X faulthandler
-        code = "agiza faulthandler; print(faulthandler.is_enabled())"
+        code = "agiza faulthandler; andika(faulthandler.is_enabled())"
         args = filter(None, (sys.executable,
-                             "-E" if sys.flags.ignore_environment else "",
+                             "-E" ikiwa sys.flags.ignore_environment else "",
                              "-X", "faulthandler", "-c", code))
         env = os.environ.copy()
         env.pop("PYTHONFAULTHANDLER", None)
@@ -368,9 +368,9 @@ class FaultHandlerTests(unittest.TestCase):
         output = subprocess.check_output(args, env=env)
         self.assertEqual(output.rstrip(), b"True")
 
-    def test_env_var(self):
+    eleza test_env_var(self):
         # empty env var
-        code = "agiza faulthandler; print(faulthandler.is_enabled())"
+        code = "agiza faulthandler; andika(faulthandler.is_enabled())"
         args = (sys.executable, "-c", code)
         env = dict(os.environ)
         env['PYTHONFAULTHANDLER'] = ''
@@ -386,10 +386,10 @@ class FaultHandlerTests(unittest.TestCase):
         output = subprocess.check_output(args, env=env)
         self.assertEqual(output.rstrip(), b"True")
 
-    def check_dump_traceback(self, *, filename=None, fd=None):
+    eleza check_dump_traceback(self, *, filename=None, fd=None):
         """
         Explicitly call dump_traceback() function and check its output.
-        Raise an error if the output doesn't match the expected format.
+        Raise an error ikiwa the output doesn't match the expected format.
         """
         code = """
             agiza faulthandler
@@ -397,17 +397,17 @@ class FaultHandlerTests(unittest.TestCase):
             filename = {filename!r}
             fd = {fd}
 
-            def funcB():
-                if filename:
+            eleza funcB():
+                ikiwa filename:
                     with open(filename, "wb") as fp:
                         faulthandler.dump_traceback(fp, all_threads=False)
-                elif fd is not None:
+                elikiwa fd is not None:
                     faulthandler.dump_traceback(fd,
                                                 all_threads=False)
                 else:
                     faulthandler.dump_traceback(all_threads=False)
 
-            def funcA():
+            eleza funcA():
                 funcB()
 
             funcA()
@@ -416,9 +416,9 @@ class FaultHandlerTests(unittest.TestCase):
             filename=filename,
             fd=fd,
         )
-        if filename:
+        ikiwa filename:
             lineno = 9
-        elif fd is not None:
+        elikiwa fd is not None:
             lineno = 11
         else:
             lineno = 14
@@ -432,27 +432,27 @@ class FaultHandlerTests(unittest.TestCase):
         self.assertEqual(trace, expected)
         self.assertEqual(exitcode, 0)
 
-    def test_dump_traceback(self):
+    eleza test_dump_traceback(self):
         self.check_dump_traceback()
 
-    def test_dump_traceback_file(self):
+    eleza test_dump_traceback_file(self):
         with temporary_filename() as filename:
             self.check_dump_traceback(filename=filename)
 
     @unittest.skipIf(sys.platform == "win32",
                      "subprocess doesn't support pass_fds on Windows")
-    def test_dump_traceback_fd(self):
+    eleza test_dump_traceback_fd(self):
         with tempfile.TemporaryFile('wb+') as fp:
             self.check_dump_traceback(fd=fp.fileno())
 
-    def test_truncate(self):
+    eleza test_truncate(self):
         maxlen = 500
         func_name = 'x' * (maxlen + 50)
         truncated = 'x' * maxlen + '...'
         code = """
             agiza faulthandler
 
-            def {func_name}():
+            eleza {func_name}():
                 faulthandler.dump_traceback(all_threads=False)
 
             {func_name}()
@@ -469,33 +469,33 @@ class FaultHandlerTests(unittest.TestCase):
         self.assertEqual(trace, expected)
         self.assertEqual(exitcode, 0)
 
-    def check_dump_traceback_threads(self, filename):
+    eleza check_dump_traceback_threads(self, filename):
         """
         Call explicitly dump_traceback(all_threads=True) and check the output.
-        Raise an error if the output doesn't match the expected format.
+        Raise an error ikiwa the output doesn't match the expected format.
         """
         code = """
             agiza faulthandler
             kutoka threading agiza Thread, Event
             agiza time
 
-            def dump():
-                if {filename}:
+            eleza dump():
+                ikiwa {filename}:
                     with open({filename}, "wb") as fp:
                         faulthandler.dump_traceback(fp, all_threads=True)
                 else:
                     faulthandler.dump_traceback(all_threads=True)
 
-            class Waiter(Thread):
-                # avoid blocking if the main thread raises an exception.
+            kundi Waiter(Thread):
+                # avoid blocking ikiwa the main thread raises an exception.
                 daemon = True
 
-                def __init__(self):
+                eleza __init__(self):
                     Thread.__init__(self)
                     self.running = Event()
                     self.stop = Event()
 
-                def run(self):
+                eleza run(self):
                     self.running.set()
                     self.stop.wait()
 
@@ -509,7 +509,7 @@ class FaultHandlerTests(unittest.TestCase):
         code = code.format(filename=repr(filename))
         output, exitcode = self.get_output(code, filename)
         output = '\n'.join(output)
-        if filename:
+        ikiwa filename:
             lineno = 8
         else:
             lineno = 10
@@ -528,23 +528,23 @@ class FaultHandlerTests(unittest.TestCase):
         self.assertRegex(output, regex)
         self.assertEqual(exitcode, 0)
 
-    def test_dump_traceback_threads(self):
+    eleza test_dump_traceback_threads(self):
         self.check_dump_traceback_threads(None)
 
-    def test_dump_traceback_threads_file(self):
+    eleza test_dump_traceback_threads_file(self):
         with temporary_filename() as filename:
             self.check_dump_traceback_threads(filename)
 
     @unittest.skipIf(not hasattr(faulthandler, 'dump_traceback_later'),
                      'need faulthandler.dump_traceback_later()')
-    def check_dump_traceback_later(self, repeat=False, cancel=False, loops=1,
+    eleza check_dump_traceback_later(self, repeat=False, cancel=False, loops=1,
                                    *, filename=None, fd=None):
         """
         Check how many times the traceback is written in timeout x 2.5 seconds,
-        or timeout x 3.5 seconds if cancel is True: 1, 2 or 3 times depending
+        or timeout x 3.5 seconds ikiwa cancel is True: 1, 2 or 3 times depending
         on repeat and cancel options.
 
-        Raise an error if the output doesn't match the expect format.
+        Raise an error ikiwa the output doesn't match the expect format.
         """
         timeout_str = str(datetime.timedelta(seconds=TIMEOUT))
         code = """
@@ -559,22 +559,22 @@ class FaultHandlerTests(unittest.TestCase):
             filename = {filename!r}
             fd = {fd}
 
-            def func(timeout, repeat, cancel, file, loops):
+            eleza func(timeout, repeat, cancel, file, loops):
                 for loop in range(loops):
                     faulthandler.dump_traceback_later(timeout, repeat=repeat, file=file)
-                    if cancel:
+                    ikiwa cancel:
                         faulthandler.cancel_dump_traceback_later()
                     time.sleep(timeout * 5)
                     faulthandler.cancel_dump_traceback_later()
 
-            if filename:
+            ikiwa filename:
                 file = open(filename, "wb")
-            elif fd is not None:
+            elikiwa fd is not None:
                 file = sys.stderr.fileno()
             else:
                 file = None
             func(timeout, repeat, cancel, file, loops)
-            if filename:
+            ikiwa filename:
                 file.close()
             """
         code = code.format(
@@ -588,9 +588,9 @@ class FaultHandlerTests(unittest.TestCase):
         trace, exitcode = self.get_output(code, filename)
         trace = '\n'.join(trace)
 
-        if not cancel:
+        ikiwa not cancel:
             count = loops
-            if repeat:
+            ikiwa repeat:
                 count *= 2
             header = r'Timeout \(%s\)!\nThread 0x[0-9a-f]+ \(most recent call first\):\n' % timeout_str
             regex = expected_traceback(17, 26, header, min_count=count)
@@ -599,31 +599,31 @@ class FaultHandlerTests(unittest.TestCase):
             self.assertEqual(trace, '')
         self.assertEqual(exitcode, 0)
 
-    def test_dump_traceback_later(self):
+    eleza test_dump_traceback_later(self):
         self.check_dump_traceback_later()
 
-    def test_dump_traceback_later_repeat(self):
+    eleza test_dump_traceback_later_repeat(self):
         self.check_dump_traceback_later(repeat=True)
 
-    def test_dump_traceback_later_cancel(self):
+    eleza test_dump_traceback_later_cancel(self):
         self.check_dump_traceback_later(cancel=True)
 
-    def test_dump_traceback_later_file(self):
+    eleza test_dump_traceback_later_file(self):
         with temporary_filename() as filename:
             self.check_dump_traceback_later(filename=filename)
 
     @unittest.skipIf(sys.platform == "win32",
                      "subprocess doesn't support pass_fds on Windows")
-    def test_dump_traceback_later_fd(self):
+    eleza test_dump_traceback_later_fd(self):
         with tempfile.TemporaryFile('wb+') as fp:
             self.check_dump_traceback_later(fd=fp.fileno())
 
-    def test_dump_traceback_later_twice(self):
+    eleza test_dump_traceback_later_twice(self):
         self.check_dump_traceback_later(loops=2)
 
     @unittest.skipIf(not hasattr(faulthandler, "register"),
                      "need faulthandler.register")
-    def check_register(self, filename=False, all_threads=False,
+    eleza check_register(self, filename=False, all_threads=False,
                        unregister=False, chain=False, fd=None):
         """
         Register a handler displaying the traceback on a user signal. Raise the
@@ -631,7 +631,7 @@ class FaultHandlerTests(unittest.TestCase):
 
         If chain is True, check that the previous signal handler is called.
 
-        Raise an error if the output doesn't match the expected format.
+        Raise an error ikiwa the output doesn't match the expected format.
         """
         signum = signal.SIGUSR1
         code = """
@@ -647,36 +647,36 @@ class FaultHandlerTests(unittest.TestCase):
             filename = {filename!r}
             fd = {fd}
 
-            def func(signum):
+            eleza func(signum):
                 os.kill(os.getpid(), signum)
 
-            def handler(signum, frame):
+            eleza handler(signum, frame):
                 handler.called = True
             handler.called = False
 
-            if filename:
+            ikiwa filename:
                 file = open(filename, "wb")
-            elif fd is not None:
+            elikiwa fd is not None:
                 file = sys.stderr.fileno()
             else:
                 file = None
-            if chain:
+            ikiwa chain:
                 signal.signal(signum, handler)
             faulthandler.register(signum, file=file,
                                   all_threads=all_threads, chain={chain})
-            if unregister:
+            ikiwa unregister:
                 faulthandler.unregister(signum)
             func(signum)
-            if chain and not handler.called:
-                if file is not None:
+            ikiwa chain and not handler.called:
+                ikiwa file is not None:
                     output = file
                 else:
                     output = sys.stderr
-                print("Error: signal handler not called!", file=output)
+                andika("Error: signal handler not called!", file=output)
                 exitcode = 1
             else:
                 exitcode = 0
-            if filename:
+            ikiwa filename:
                 file.close()
             sys.exit(exitcode)
             """
@@ -690,8 +690,8 @@ class FaultHandlerTests(unittest.TestCase):
         )
         trace, exitcode = self.get_output(code, filename)
         trace = '\n'.join(trace)
-        if not unregister:
-            if all_threads:
+        ikiwa not unregister:
+            ikiwa all_threads:
                 regex = r'Current thread 0x[0-9a-f]+ \(most recent call first\):\n'
             else:
                 regex = r'Stack \(most recent call first\):\n'
@@ -699,35 +699,35 @@ class FaultHandlerTests(unittest.TestCase):
             self.assertRegex(trace, regex)
         else:
             self.assertEqual(trace, '')
-        if unregister:
+        ikiwa unregister:
             self.assertNotEqual(exitcode, 0)
         else:
             self.assertEqual(exitcode, 0)
 
-    def test_register(self):
+    eleza test_register(self):
         self.check_register()
 
-    def test_unregister(self):
+    eleza test_unregister(self):
         self.check_register(unregister=True)
 
-    def test_register_file(self):
+    eleza test_register_file(self):
         with temporary_filename() as filename:
             self.check_register(filename=filename)
 
     @unittest.skipIf(sys.platform == "win32",
                      "subprocess doesn't support pass_fds on Windows")
-    def test_register_fd(self):
+    eleza test_register_fd(self):
         with tempfile.TemporaryFile('wb+') as fp:
             self.check_register(fd=fp.fileno())
 
-    def test_register_threads(self):
+    eleza test_register_threads(self):
         self.check_register(all_threads=True)
 
-    def test_register_chain(self):
+    eleza test_register_chain(self):
         self.check_register(chain=True)
 
     @contextmanager
-    def check_stderr_none(self):
+    eleza check_stderr_none(self):
         stderr = sys.stderr
         try:
             sys.stderr = None
@@ -737,22 +737,22 @@ class FaultHandlerTests(unittest.TestCase):
         finally:
             sys.stderr = stderr
 
-    def test_stderr_None(self):
-        # Issue #21497: provide a helpful error if sys.stderr is None,
+    eleza test_stderr_None(self):
+        # Issue #21497: provide a helpful error ikiwa sys.stderr is None,
         # instead of just an attribute error: "None has no attribute fileno".
         with self.check_stderr_none():
             faulthandler.enable()
         with self.check_stderr_none():
             faulthandler.dump_traceback()
-        if hasattr(faulthandler, 'dump_traceback_later'):
+        ikiwa hasattr(faulthandler, 'dump_traceback_later'):
             with self.check_stderr_none():
                 faulthandler.dump_traceback_later(1e-3)
-        if hasattr(faulthandler, "register"):
+        ikiwa hasattr(faulthandler, "register"):
             with self.check_stderr_none():
                 faulthandler.register(signal.SIGUSR1)
 
     @unittest.skipUnless(MS_WINDOWS, 'specific to Windows')
-    def test_raise_exception(self):
+    eleza test_raise_exception(self):
         for exc, name in (
             ('EXCEPTION_ACCESS_VIOLATION', 'access violation'),
             ('EXCEPTION_INT_DIVIDE_BY_ZERO', 'int divide by zero'),
@@ -767,7 +767,7 @@ class FaultHandlerTests(unittest.TestCase):
                 name)
 
     @unittest.skipUnless(MS_WINDOWS, 'specific to Windows')
-    def test_ignore_exception(self):
+    eleza test_ignore_exception(self):
         for exc_code in (
             0xE06D7363,   # MSC exception ("Emsc")
             0xE0434352,   # COM Callable Runtime exception ("ECCR")
@@ -783,11 +783,11 @@ class FaultHandlerTests(unittest.TestCase):
             self.assertEqual(exitcode, exc_code)
 
     @unittest.skipUnless(MS_WINDOWS, 'specific to Windows')
-    def test_raise_nonfatal_exception(self):
+    eleza test_raise_nonfatal_exception(self):
         # These exceptions are not strictly errors. Letting
         # faulthandler display the traceback when they are
         # raised is likely to result in noise. However, they
-        # may still terminate the process if there is no
+        # may still terminate the process ikiwa there is no
         # handler installed for them (which there typically
         # is, e.g. for debug messages).
         for exc in (
@@ -811,7 +811,7 @@ class FaultHandlerTests(unittest.TestCase):
                           (exc, exc & ~0x10000000))
 
     @unittest.skipUnless(MS_WINDOWS, 'specific to Windows')
-    def test_disable_windows_exc_handler(self):
+    eleza test_disable_windows_exc_handler(self):
         code = dedent("""
             agiza faulthandler
             faulthandler.enable()
@@ -824,5 +824,5 @@ class FaultHandlerTests(unittest.TestCase):
         self.assertEqual(exitcode, 0xC0000005)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

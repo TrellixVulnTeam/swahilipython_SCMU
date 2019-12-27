@@ -76,8 +76,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 agiza sys, os
 agiza textwrap
 
-def _repr(self):
-    return "<%s at 0x%x: %s>" % (self.__class__.__name__, id(self), self)
+eleza _repr(self):
+    rudisha "<%s at 0x%x: %s>" % (self.__class__.__name__, id(self), self)
 
 
 # This file was generated kutoka:
@@ -89,79 +89,79 @@ def _repr(self):
 try:
     kutoka gettext agiza gettext, ngettext
 except ImportError:
-    def gettext(message):
-        return message
+    eleza gettext(message):
+        rudisha message
 
-    def ngettext(singular, plural, n):
-        if n == 1:
-            return singular
-        return plural
+    eleza ngettext(singular, plural, n):
+        ikiwa n == 1:
+            rudisha singular
+        rudisha plural
 
 _ = gettext
 
 
-class OptParseError (Exception):
-    def __init__(self, msg):
+kundi OptParseError (Exception):
+    eleza __init__(self, msg):
         self.msg = msg
 
-    def __str__(self):
-        return self.msg
+    eleza __str__(self):
+        rudisha self.msg
 
 
-class OptionError (OptParseError):
+kundi OptionError (OptParseError):
     """
-    Raised if an Option instance is created with invalid or
+    Raised ikiwa an Option instance is created with invalid or
     inconsistent arguments.
     """
 
-    def __init__(self, msg, option):
+    eleza __init__(self, msg, option):
         self.msg = msg
         self.option_id = str(option)
 
-    def __str__(self):
-        if self.option_id:
-            return "option %s: %s" % (self.option_id, self.msg)
+    eleza __str__(self):
+        ikiwa self.option_id:
+            rudisha "option %s: %s" % (self.option_id, self.msg)
         else:
-            return self.msg
+            rudisha self.msg
 
-class OptionConflictError (OptionError):
+kundi OptionConflictError (OptionError):
     """
-    Raised if conflicting options are added to an OptionParser.
+    Raised ikiwa conflicting options are added to an OptionParser.
     """
 
-class OptionValueError (OptParseError):
+kundi OptionValueError (OptParseError):
     """
-    Raised if an invalid option value is encountered on the command
+    Raised ikiwa an invalid option value is encountered on the command
     line.
     """
 
-class BadOptionError (OptParseError):
+kundi BadOptionError (OptParseError):
     """
-    Raised if an invalid option is seen on the command line.
+    Raised ikiwa an invalid option is seen on the command line.
     """
-    def __init__(self, opt_str):
+    eleza __init__(self, opt_str):
         self.opt_str = opt_str
 
-    def __str__(self):
-        return _("no such option: %s") % self.opt_str
+    eleza __str__(self):
+        rudisha _("no such option: %s") % self.opt_str
 
-class AmbiguousOptionError (BadOptionError):
+kundi AmbiguousOptionError (BadOptionError):
     """
-    Raised if an ambiguous option is seen on the command line.
+    Raised ikiwa an ambiguous option is seen on the command line.
     """
-    def __init__(self, opt_str, possibilities):
+    eleza __init__(self, opt_str, possibilities):
         BadOptionError.__init__(self, opt_str)
         self.possibilities = possibilities
 
-    def __str__(self):
-        return (_("ambiguous option: %s (%s?)")
+    eleza __str__(self):
+        rudisha (_("ambiguous option: %s (%s?)")
                 % (self.opt_str, ", ".join(self.possibilities)))
 
 
-class HelpFormatter:
+kundi HelpFormatter:
 
     """
-    Abstract base class for formatting option help.  OptionParser
+    Abstract base kundi for formatting option help.  OptionParser
     instances should use one of the HelpFormatter subclasses for
     formatting help; by default IndentedHelpFormatter is used.
 
@@ -203,14 +203,14 @@ class HelpFormatter:
 
     NO_DEFAULT_VALUE = "none"
 
-    def __init__(self,
+    eleza __init__(self,
                  indent_increment,
                  max_help_position,
                  width,
                  short_first):
         self.parser = None
         self.indent_increment = indent_increment
-        if width is None:
+        ikiwa width is None:
             try:
                 width = int(os.environ['COLUMNS'])
             except (KeyError, ValueError):
@@ -228,72 +228,72 @@ class HelpFormatter:
         self._short_opt_fmt = "%s %s"
         self._long_opt_fmt = "%s=%s"
 
-    def set_parser(self, parser):
+    eleza set_parser(self, parser):
         self.parser = parser
 
-    def set_short_opt_delimiter(self, delim):
-        if delim not in ("", " "):
+    eleza set_short_opt_delimiter(self, delim):
+        ikiwa delim not in ("", " "):
             raise ValueError(
                 "invalid metavar delimiter for short options: %r" % delim)
         self._short_opt_fmt = "%s" + delim + "%s"
 
-    def set_long_opt_delimiter(self, delim):
-        if delim not in ("=", " "):
+    eleza set_long_opt_delimiter(self, delim):
+        ikiwa delim not in ("=", " "):
             raise ValueError(
                 "invalid metavar delimiter for long options: %r" % delim)
         self._long_opt_fmt = "%s" + delim + "%s"
 
-    def indent(self):
+    eleza indent(self):
         self.current_indent += self.indent_increment
         self.level += 1
 
-    def dedent(self):
+    eleza dedent(self):
         self.current_indent -= self.indent_increment
         assert self.current_indent >= 0, "Indent decreased below 0."
         self.level -= 1
 
-    def format_usage(self, usage):
+    eleza format_usage(self, usage):
         raise NotImplementedError("subclasses must implement")
 
-    def format_heading(self, heading):
+    eleza format_heading(self, heading):
         raise NotImplementedError("subclasses must implement")
 
-    def _format_text(self, text):
+    eleza _format_text(self, text):
         """
         Format a paragraph of free-form text for inclusion in the
         help output at the current indentation level.
         """
         text_width = max(self.width - self.current_indent, 11)
         indent = " "*self.current_indent
-        return textwrap.fill(text,
+        rudisha textwrap.fill(text,
                              text_width,
                              initial_indent=indent,
                              subsequent_indent=indent)
 
-    def format_description(self, description):
-        if description:
-            return self._format_text(description) + "\n"
+    eleza format_description(self, description):
+        ikiwa description:
+            rudisha self._format_text(description) + "\n"
         else:
-            return ""
+            rudisha ""
 
-    def format_epilog(self, epilog):
-        if epilog:
-            return "\n" + self._format_text(epilog) + "\n"
+    eleza format_epilog(self, epilog):
+        ikiwa epilog:
+            rudisha "\n" + self._format_text(epilog) + "\n"
         else:
-            return ""
+            rudisha ""
 
 
-    def expand_default(self, option):
-        if self.parser is None or not self.default_tag:
-            return option.help
+    eleza expand_default(self, option):
+        ikiwa self.parser is None or not self.default_tag:
+            rudisha option.help
 
         default_value = self.parser.defaults.get(option.dest)
-        if default_value is NO_DEFAULT or default_value is None:
+        ikiwa default_value is NO_DEFAULT or default_value is None:
             default_value = self.NO_DEFAULT_VALUE
 
-        return option.help.replace(self.default_tag, str(default_value))
+        rudisha option.help.replace(self.default_tag, str(default_value))
 
-    def format_option(self, option):
+    eleza format_option(self, option):
         # The help for each option consists of two parts:
         #   * the opt strings and metavars
         #     eg. ("-x", or "-fFILENAME, --file=FILENAME")
@@ -303,32 +303,32 @@ class HelpFormatter:
         # If possible, we write both of these on the same line:
         #   -x      turn on expert mode
         #
-        # But if the opt string list is too long, we put the help
+        # But ikiwa the opt string list is too long, we put the help
         # string on a second line, indented to the same column it would
-        # start in if it fit on the first line.
+        # start in ikiwa it fit on the first line.
         #   -fFILENAME, --file=FILENAME
         #           read data kutoka FILENAME
         result = []
         opts = self.option_strings[option]
         opt_width = self.help_position - self.current_indent - 2
-        if len(opts) > opt_width:
+        ikiwa len(opts) > opt_width:
             opts = "%*s%s\n" % (self.current_indent, "", opts)
             indent_first = self.help_position
         else:                       # start help on same line as opts
             opts = "%*s%-*s  " % (self.current_indent, "", opt_width, opts)
             indent_first = 0
         result.append(opts)
-        if option.help:
+        ikiwa option.help:
             help_text = self.expand_default(option)
             help_lines = textwrap.wrap(help_text, self.help_width)
             result.append("%*s%s\n" % (indent_first, "", help_lines[0]))
             result.extend(["%*s%s\n" % (self.help_position, "", line)
                            for line in help_lines[1:]])
-        elif opts[-1] != "\n":
+        elikiwa opts[-1] != "\n":
             result.append("\n")
-        return "".join(result)
+        rudisha "".join(result)
 
-    def store_option_strings(self, parser):
+    eleza store_option_strings(self, parser):
         self.indent()
         max_len = 0
         for opt in parser.option_list:
@@ -346,9 +346,9 @@ class HelpFormatter:
         self.help_position = min(max_len + 2, self.max_help_position)
         self.help_width = max(self.width - self.help_position, 11)
 
-    def format_option_strings(self, option):
+    eleza format_option_strings(self, option):
         """Return a comma-separated list of option strings & metavariables."""
-        if option.takes_value():
+        ikiwa option.takes_value():
             metavar = option.metavar or option.dest.upper()
             short_opts = [self._short_opt_fmt % (sopt, metavar)
                           for sopt in option._short_opts]
@@ -358,18 +358,18 @@ class HelpFormatter:
             short_opts = option._short_opts
             long_opts = option._long_opts
 
-        if self.short_first:
+        ikiwa self.short_first:
             opts = short_opts + long_opts
         else:
             opts = long_opts + short_opts
 
-        return ", ".join(opts)
+        rudisha ", ".join(opts)
 
-class IndentedHelpFormatter (HelpFormatter):
+kundi IndentedHelpFormatter (HelpFormatter):
     """Format help with indented section bodies.
     """
 
-    def __init__(self,
+    eleza __init__(self,
                  indent_increment=2,
                  max_help_position=24,
                  width=None,
@@ -377,18 +377,18 @@ class IndentedHelpFormatter (HelpFormatter):
         HelpFormatter.__init__(
             self, indent_increment, max_help_position, width, short_first)
 
-    def format_usage(self, usage):
-        return _("Usage: %s\n") % usage
+    eleza format_usage(self, usage):
+        rudisha _("Usage: %s\n") % usage
 
-    def format_heading(self, heading):
-        return "%*s%s:\n" % (self.current_indent, "", heading)
+    eleza format_heading(self, heading):
+        rudisha "%*s%s:\n" % (self.current_indent, "", heading)
 
 
-class TitledHelpFormatter (HelpFormatter):
+kundi TitledHelpFormatter (HelpFormatter):
     """Format help with underlined section headers.
     """
 
-    def __init__(self,
+    eleza __init__(self,
                  indent_increment=0,
                  max_help_position=24,
                  width=None,
@@ -396,45 +396,45 @@ class TitledHelpFormatter (HelpFormatter):
         HelpFormatter.__init__ (
             self, indent_increment, max_help_position, width, short_first)
 
-    def format_usage(self, usage):
-        return "%s  %s\n" % (self.format_heading(_("Usage")), usage)
+    eleza format_usage(self, usage):
+        rudisha "%s  %s\n" % (self.format_heading(_("Usage")), usage)
 
-    def format_heading(self, heading):
-        return "%s\n%s\n" % (heading, "=-"[self.level] * len(heading))
+    eleza format_heading(self, heading):
+        rudisha "%s\n%s\n" % (heading, "=-"[self.level] * len(heading))
 
 
-def _parse_num(val, type):
-    if val[:2].lower() == "0x":         # hexadecimal
+eleza _parse_num(val, type):
+    ikiwa val[:2].lower() == "0x":         # hexadecimal
         radix = 16
-    elif val[:2].lower() == "0b":       # binary
+    elikiwa val[:2].lower() == "0b":       # binary
         radix = 2
         val = val[2:] or "0"            # have to remove "0b" prefix
-    elif val[:1] == "0":                # octal
+    elikiwa val[:1] == "0":                # octal
         radix = 8
     else:                               # decimal
         radix = 10
 
-    return type(val, radix)
+    rudisha type(val, radix)
 
-def _parse_int(val):
-    return _parse_num(val, int)
+eleza _parse_int(val):
+    rudisha _parse_num(val, int)
 
 _builtin_cvt = { "int" : (_parse_int, _("integer")),
                  "long" : (_parse_int, _("integer")),
                  "float" : (float, _("floating-point")),
                  "complex" : (complex, _("complex")) }
 
-def check_builtin(option, opt, value):
+eleza check_builtin(option, opt, value):
     (cvt, what) = _builtin_cvt[option.type]
     try:
-        return cvt(value)
+        rudisha cvt(value)
     except ValueError:
         raise OptionValueError(
             _("option %s: invalid %s value: %r") % (opt, what, value))
 
-def check_choice(option, opt, value):
-    if value in option.choices:
-        return value
+eleza check_choice(option, opt, value):
+    ikiwa value in option.choices:
+        rudisha value
     else:
         choices = ", ".join(map(repr, option.choices))
         raise OptionValueError(
@@ -446,7 +446,7 @@ def check_choice(option, opt, value):
 NO_DEFAULT = ("NO", "DEFAULT")
 
 
-class Option:
+kundi Option:
     """
     Instance attributes:
       _short_opts : [string]
@@ -535,8 +535,8 @@ class Option:
     #     (eg. "-a", "--file")
     #   value is the option argument seen on the command-line
     #
-    # The return value should be in the appropriate Python type
-    # for option.type -- eg. an integer if option.type == "int".
+    # The rudisha value should be in the appropriate Python type
+    # for option.type -- eg. an integer ikiwa option.type == "int".
     #
     # If no checker is defined for a type, arguments will be
     # unchecked and remain strings.
@@ -552,7 +552,7 @@ class Option:
     # by the constructor, in order, after all attributes are
     # initialized.  The list is created and filled in later, after all
     # the methods are actually defined.  (I just put it here because I
-    # like to define and document all class attributes in the same
+    # like to define and document all kundi attributes in the same
     # place.)  Subclasses that add another _check_*() method should
     # define their own CHECK_METHODS list that adds their check method
     # to those kutoka this class.
@@ -561,7 +561,7 @@ class Option:
 
     # -- Constructor/initialization methods ----------------------------
 
-    def __init__(self, *opts, **attrs):
+    eleza __init__(self, *opts, **attrs):
         # Set _short_opts, _long_opts attrs kutoka 'opts' tuple.
         # Have to be set now, in case no option strings are supplied.
         self._short_opts = []
@@ -576,51 +576,51 @@ class Option:
         # complicated interdependencies, but luckily they can be farmed
         # out to the _check_*() methods listed in CHECK_METHODS -- which
         # could be handy for subclasses!  The one thing these all share
-        # is that they raise OptionError if they discover a problem.
+        # is that they raise OptionError ikiwa they discover a problem.
         for checker in self.CHECK_METHODS:
             checker(self)
 
-    def _check_opt_strings(self, opts):
+    eleza _check_opt_strings(self, opts):
         # Filter out None because early versions of Optik had exactly
         # one short option and one long option, either of which
         # could be None.
-        opts = [opt for opt in opts if opt]
-        if not opts:
+        opts = [opt for opt in opts ikiwa opt]
+        ikiwa not opts:
             raise TypeError("at least one option string must be supplied")
-        return opts
+        rudisha opts
 
-    def _set_opt_strings(self, opts):
+    eleza _set_opt_strings(self, opts):
         for opt in opts:
-            if len(opt) < 2:
+            ikiwa len(opt) < 2:
                 raise OptionError(
                     "invalid option string %r: "
                     "must be at least two characters long" % opt, self)
-            elif len(opt) == 2:
-                if not (opt[0] == "-" and opt[1] != "-"):
+            elikiwa len(opt) == 2:
+                ikiwa not (opt[0] == "-" and opt[1] != "-"):
                     raise OptionError(
                         "invalid short option string %r: "
                         "must be of the form -x, (x any non-dash char)" % opt,
                         self)
                 self._short_opts.append(opt)
             else:
-                if not (opt[0:2] == "--" and opt[2] != "-"):
+                ikiwa not (opt[0:2] == "--" and opt[2] != "-"):
                     raise OptionError(
                         "invalid long option string %r: "
                         "must start with --, followed by non-dash" % opt,
                         self)
                 self._long_opts.append(opt)
 
-    def _set_attrs(self, attrs):
+    eleza _set_attrs(self, attrs):
         for attr in self.ATTRS:
-            if attr in attrs:
+            ikiwa attr in attrs:
                 setattr(self, attr, attrs[attr])
                 del attrs[attr]
             else:
-                if attr == 'default':
+                ikiwa attr == 'default':
                     setattr(self, attr, NO_DEFAULT)
                 else:
                     setattr(self, attr, None)
-        if attrs:
+        ikiwa attrs:
             attrs = sorted(attrs.keys())
             raise OptionError(
                 "invalid keyword arguments: %s" % ", ".join(attrs),
@@ -629,16 +629,16 @@ class Option:
 
     # -- Constructor validation methods --------------------------------
 
-    def _check_action(self):
-        if self.action is None:
+    eleza _check_action(self):
+        ikiwa self.action is None:
             self.action = "store"
-        elif self.action not in self.ACTIONS:
+        elikiwa self.action not in self.ACTIONS:
             raise OptionError("invalid action: %r" % self.action, self)
 
-    def _check_type(self):
-        if self.type is None:
-            if self.action in self.ALWAYS_TYPED_ACTIONS:
-                if self.choices is not None:
+    eleza _check_type(self):
+        ikiwa self.type is None:
+            ikiwa self.action in self.ALWAYS_TYPED_ACTIONS:
+                ikiwa self.choices is not None:
                     # The "choices" attribute implies "choice" type.
                     self.type = "choice"
                 else:
@@ -647,85 +647,85 @@ class Option:
         else:
             # Allow type objects or builtin type conversion functions
             # (int, str, etc.) as an alternative to their names.
-            if isinstance(self.type, type):
+            ikiwa isinstance(self.type, type):
                 self.type = self.type.__name__
 
-            if self.type == "str":
+            ikiwa self.type == "str":
                 self.type = "string"
 
-            if self.type not in self.TYPES:
+            ikiwa self.type not in self.TYPES:
                 raise OptionError("invalid option type: %r" % self.type, self)
-            if self.action not in self.TYPED_ACTIONS:
+            ikiwa self.action not in self.TYPED_ACTIONS:
                 raise OptionError(
                     "must not supply a type for action %r" % self.action, self)
 
-    def _check_choice(self):
-        if self.type == "choice":
-            if self.choices is None:
+    eleza _check_choice(self):
+        ikiwa self.type == "choice":
+            ikiwa self.choices is None:
                 raise OptionError(
                     "must supply a list of choices for type 'choice'", self)
-            elif not isinstance(self.choices, (tuple, list)):
+            elikiwa not isinstance(self.choices, (tuple, list)):
                 raise OptionError(
                     "choices must be a list of strings ('%s' supplied)"
                     % str(type(self.choices)).split("'")[1], self)
-        elif self.choices is not None:
+        elikiwa self.choices is not None:
             raise OptionError(
                 "must not supply choices for type %r" % self.type, self)
 
-    def _check_dest(self):
+    eleza _check_dest(self):
         # No destination given, and we need one for this action.  The
         # self.type check is for callbacks that take a value.
         takes_value = (self.action in self.STORE_ACTIONS or
                        self.type is not None)
-        if self.dest is None and takes_value:
+        ikiwa self.dest is None and takes_value:
 
             # Glean a destination kutoka the first long option string,
-            # or kutoka the first short option string if no long options.
-            if self._long_opts:
+            # or kutoka the first short option string ikiwa no long options.
+            ikiwa self._long_opts:
                 # eg. "--foo-bar" -> "foo_bar"
                 self.dest = self._long_opts[0][2:].replace('-', '_')
             else:
                 self.dest = self._short_opts[0][1]
 
-    def _check_const(self):
-        if self.action not in self.CONST_ACTIONS and self.const is not None:
+    eleza _check_const(self):
+        ikiwa self.action not in self.CONST_ACTIONS and self.const is not None:
             raise OptionError(
                 "'const' must not be supplied for action %r" % self.action,
                 self)
 
-    def _check_nargs(self):
-        if self.action in self.TYPED_ACTIONS:
-            if self.nargs is None:
+    eleza _check_nargs(self):
+        ikiwa self.action in self.TYPED_ACTIONS:
+            ikiwa self.nargs is None:
                 self.nargs = 1
-        elif self.nargs is not None:
+        elikiwa self.nargs is not None:
             raise OptionError(
                 "'nargs' must not be supplied for action %r" % self.action,
                 self)
 
-    def _check_callback(self):
-        if self.action == "callback":
-            if not callable(self.callback):
+    eleza _check_callback(self):
+        ikiwa self.action == "callback":
+            ikiwa not callable(self.callback):
                 raise OptionError(
                     "callback not callable: %r" % self.callback, self)
-            if (self.callback_args is not None and
+            ikiwa (self.callback_args is not None and
                 not isinstance(self.callback_args, tuple)):
                 raise OptionError(
-                    "callback_args, if supplied, must be a tuple: not %r"
+                    "callback_args, ikiwa supplied, must be a tuple: not %r"
                     % self.callback_args, self)
-            if (self.callback_kwargs is not None and
+            ikiwa (self.callback_kwargs is not None and
                 not isinstance(self.callback_kwargs, dict)):
                 raise OptionError(
-                    "callback_kwargs, if supplied, must be a dict: not %r"
+                    "callback_kwargs, ikiwa supplied, must be a dict: not %r"
                     % self.callback_kwargs, self)
         else:
-            if self.callback is not None:
+            ikiwa self.callback is not None:
                 raise OptionError(
                     "callback supplied (%r) for non-callback option"
                     % self.callback, self)
-            if self.callback_args is not None:
+            ikiwa self.callback_args is not None:
                 raise OptionError(
                     "callback_args supplied for non-callback option", self)
-            if self.callback_kwargs is not None:
+            ikiwa self.callback_kwargs is not None:
                 raise OptionError(
                     "callback_kwargs supplied for non-callback option", self)
 
@@ -741,106 +741,106 @@ class Option:
 
     # -- Miscellaneous methods -----------------------------------------
 
-    def __str__(self):
-        return "/".join(self._short_opts + self._long_opts)
+    eleza __str__(self):
+        rudisha "/".join(self._short_opts + self._long_opts)
 
     __repr__ = _repr
 
-    def takes_value(self):
-        return self.type is not None
+    eleza takes_value(self):
+        rudisha self.type is not None
 
-    def get_opt_string(self):
-        if self._long_opts:
-            return self._long_opts[0]
+    eleza get_opt_string(self):
+        ikiwa self._long_opts:
+            rudisha self._long_opts[0]
         else:
-            return self._short_opts[0]
+            rudisha self._short_opts[0]
 
 
     # -- Processing methods --------------------------------------------
 
-    def check_value(self, opt, value):
+    eleza check_value(self, opt, value):
         checker = self.TYPE_CHECKER.get(self.type)
-        if checker is None:
-            return value
+        ikiwa checker is None:
+            rudisha value
         else:
-            return checker(self, opt, value)
+            rudisha checker(self, opt, value)
 
-    def convert_value(self, opt, value):
-        if value is not None:
-            if self.nargs == 1:
-                return self.check_value(opt, value)
+    eleza convert_value(self, opt, value):
+        ikiwa value is not None:
+            ikiwa self.nargs == 1:
+                rudisha self.check_value(opt, value)
             else:
-                return tuple([self.check_value(opt, v) for v in value])
+                rudisha tuple([self.check_value(opt, v) for v in value])
 
-    def process(self, opt, value, values, parser):
+    eleza process(self, opt, value, values, parser):
 
-        # First, convert the value(s) to the right type.  Howl if any
+        # First, convert the value(s) to the right type.  Howl ikiwa any
         # value(s) are bogus.
         value = self.convert_value(opt, value)
 
         # And then take whatever action is expected of us.
         # This is a separate method to make life easier for
         # subclasses to add new actions.
-        return self.take_action(
+        rudisha self.take_action(
             self.action, self.dest, opt, value, values, parser)
 
-    def take_action(self, action, dest, opt, value, values, parser):
-        if action == "store":
+    eleza take_action(self, action, dest, opt, value, values, parser):
+        ikiwa action == "store":
             setattr(values, dest, value)
-        elif action == "store_const":
+        elikiwa action == "store_const":
             setattr(values, dest, self.const)
-        elif action == "store_true":
+        elikiwa action == "store_true":
             setattr(values, dest, True)
-        elif action == "store_false":
+        elikiwa action == "store_false":
             setattr(values, dest, False)
-        elif action == "append":
+        elikiwa action == "append":
             values.ensure_value(dest, []).append(value)
-        elif action == "append_const":
+        elikiwa action == "append_const":
             values.ensure_value(dest, []).append(self.const)
-        elif action == "count":
+        elikiwa action == "count":
             setattr(values, dest, values.ensure_value(dest, 0) + 1)
-        elif action == "callback":
+        elikiwa action == "callback":
             args = self.callback_args or ()
             kwargs = self.callback_kwargs or {}
             self.callback(self, opt, value, parser, *args, **kwargs)
-        elif action == "help":
+        elikiwa action == "help":
             parser.print_help()
             parser.exit()
-        elif action == "version":
+        elikiwa action == "version":
             parser.print_version()
             parser.exit()
         else:
             raise ValueError("unknown action %r" % self.action)
 
-        return 1
+        rudisha 1
 
-# class Option
+# kundi Option
 
 
 SUPPRESS_HELP = "SUPPRESS"+"HELP"
 SUPPRESS_USAGE = "SUPPRESS"+"USAGE"
 
-class Values:
+kundi Values:
 
-    def __init__(self, defaults=None):
-        if defaults:
+    eleza __init__(self, defaults=None):
+        ikiwa defaults:
             for (attr, val) in defaults.items():
                 setattr(self, attr, val)
 
-    def __str__(self):
-        return str(self.__dict__)
+    eleza __str__(self):
+        rudisha str(self.__dict__)
 
     __repr__ = _repr
 
-    def __eq__(self, other):
-        if isinstance(other, Values):
-            return self.__dict__ == other.__dict__
-        elif isinstance(other, dict):
-            return self.__dict__ == other
+    eleza __eq__(self, other):
+        ikiwa isinstance(other, Values):
+            rudisha self.__dict__ == other.__dict__
+        elikiwa isinstance(other, dict):
+            rudisha self.__dict__ == other
         else:
-            return NotImplemented
+            rudisha NotImplemented
 
-    def _update_careful(self, dict):
+    eleza _update_careful(self, dict):
         """
         Update the option values kutoka an arbitrary dictionary, but only
         use keys kutoka dict that already have a corresponding attribute
@@ -848,12 +848,12 @@ class Values:
         are silently ignored.
         """
         for attr in dir(self):
-            if attr in dict:
+            ikiwa attr in dict:
                 dval = dict[attr]
-                if dval is not None:
+                ikiwa dval is not None:
                     setattr(self, attr, dval)
 
-    def _update_loose(self, dict):
+    eleza _update_loose(self, dict):
         """
         Update the option values kutoka an arbitrary dictionary,
         using all keys kutoka the dictionary regardless of whether
@@ -861,31 +861,31 @@ class Values:
         """
         self.__dict__.update(dict)
 
-    def _update(self, dict, mode):
-        if mode == "careful":
+    eleza _update(self, dict, mode):
+        ikiwa mode == "careful":
             self._update_careful(dict)
-        elif mode == "loose":
+        elikiwa mode == "loose":
             self._update_loose(dict)
         else:
             raise ValueError("invalid update mode: %r" % mode)
 
-    def read_module(self, modname, mode="careful"):
+    eleza read_module(self, modname, mode="careful"):
         __import__(modname)
         mod = sys.modules[modname]
         self._update(vars(mod), mode)
 
-    def read_file(self, filename, mode="careful"):
+    eleza read_file(self, filename, mode="careful"):
         vars = {}
         exec(open(filename).read(), vars)
         self._update(vars, mode)
 
-    def ensure_value(self, attr, value):
-        if not hasattr(self, attr) or getattr(self, attr) is None:
+    eleza ensure_value(self, attr, value):
+        ikiwa not hasattr(self, attr) or getattr(self, attr) is None:
             setattr(self, attr, value)
-        return getattr(self, attr)
+        rudisha getattr(self, attr)
 
 
-class OptionContainer:
+kundi OptionContainer:
 
     """
     Abstract base class.
@@ -893,7 +893,7 @@ class OptionContainer:
     Class attributes:
       standard_option_list : [Option]
         list of standard options that will be accepted by all instances
-        of this parser class (intended to be overridden by subclasses).
+        of this parser kundi (intended to be overridden by subclasses).
 
     Instance attributes:
       option_list : [Option]
@@ -917,18 +917,18 @@ class OptionContainer:
 
     """
 
-    def __init__(self, option_class, conflict_handler, description):
+    eleza __init__(self, option_class, conflict_handler, description):
         # Initialize the option list and related data structures.
         # This method must be provided by subclasses, and it must
         # initialize at least the following instance attributes:
         # option_list, _short_opt, _long_opt, defaults.
         self._create_option_list()
 
-        self.option_class = option_class
+        self.option_kundi = option_class
         self.set_conflict_handler(conflict_handler)
         self.set_description(description)
 
-    def _create_option_mappings(self):
+    eleza _create_option_mappings(self):
         # For use by OptionParser constructor -- create the main
         # option mappings used by this OptionParser and all
         # OptionGroups that it owns.
@@ -937,26 +937,26 @@ class OptionContainer:
         self.defaults = {}              # maps option dest -> default value
 
 
-    def _share_option_mappings(self, parser):
+    eleza _share_option_mappings(self, parser):
         # For use by OptionGroup constructor -- use shared option
         # mappings kutoka the OptionParser that owns this OptionGroup.
         self._short_opt = parser._short_opt
         self._long_opt = parser._long_opt
         self.defaults = parser.defaults
 
-    def set_conflict_handler(self, handler):
-        if handler not in ("error", "resolve"):
+    eleza set_conflict_handler(self, handler):
+        ikiwa handler not in ("error", "resolve"):
             raise ValueError("invalid conflict_resolution value %r" % handler)
         self.conflict_handler = handler
 
-    def set_description(self, description):
+    eleza set_description(self, description):
         self.description = description
 
-    def get_description(self):
-        return self.description
+    eleza get_description(self):
+        rudisha self.description
 
 
-    def destroy(self):
+    eleza destroy(self):
         """see OptionParser.destroy()."""
         del self._short_opt
         del self._long_opt
@@ -965,42 +965,42 @@ class OptionContainer:
 
     # -- Option-adding methods -----------------------------------------
 
-    def _check_conflict(self, option):
+    eleza _check_conflict(self, option):
         conflict_opts = []
         for opt in option._short_opts:
-            if opt in self._short_opt:
+            ikiwa opt in self._short_opt:
                 conflict_opts.append((opt, self._short_opt[opt]))
         for opt in option._long_opts:
-            if opt in self._long_opt:
+            ikiwa opt in self._long_opt:
                 conflict_opts.append((opt, self._long_opt[opt]))
 
-        if conflict_opts:
+        ikiwa conflict_opts:
             handler = self.conflict_handler
-            if handler == "error":
+            ikiwa handler == "error":
                 raise OptionConflictError(
                     "conflicting option string(s): %s"
                     % ", ".join([co[0] for co in conflict_opts]),
                     option)
-            elif handler == "resolve":
+            elikiwa handler == "resolve":
                 for (opt, c_option) in conflict_opts:
-                    if opt.startswith("--"):
+                    ikiwa opt.startswith("--"):
                         c_option._long_opts.remove(opt)
                         del self._long_opt[opt]
                     else:
                         c_option._short_opts.remove(opt)
                         del self._short_opt[opt]
-                    if not (c_option._short_opts or c_option._long_opts):
+                    ikiwa not (c_option._short_opts or c_option._long_opts):
                         c_option.container.option_list.remove(c_option)
 
-    def add_option(self, *args, **kwargs):
+    eleza add_option(self, *args, **kwargs):
         """add_option(Option)
            add_option(opt_str, ..., kwarg=val, ...)
         """
-        if isinstance(args[0], str):
+        ikiwa isinstance(args[0], str):
             option = self.option_class(*args, **kwargs)
-        elif len(args) == 1 and not kwargs:
+        elikiwa len(args) == 1 and not kwargs:
             option = args[0]
-            if not isinstance(option, Option):
+            ikiwa not isinstance(option, Option):
                 raise TypeError("not an Option instance: %r" % option)
         else:
             raise TypeError("invalid arguments")
@@ -1014,33 +1014,33 @@ class OptionContainer:
         for opt in option._long_opts:
             self._long_opt[opt] = option
 
-        if option.dest is not None:     # option has a dest, we need a default
-            if option.default is not NO_DEFAULT:
+        ikiwa option.dest is not None:     # option has a dest, we need a default
+            ikiwa option.default is not NO_DEFAULT:
                 self.defaults[option.dest] = option.default
-            elif option.dest not in self.defaults:
+            elikiwa option.dest not in self.defaults:
                 self.defaults[option.dest] = None
 
-        return option
+        rudisha option
 
-    def add_options(self, option_list):
+    eleza add_options(self, option_list):
         for option in option_list:
             self.add_option(option)
 
     # -- Option query/removal methods ----------------------------------
 
-    def get_option(self, opt_str):
-        return (self._short_opt.get(opt_str) or
+    eleza get_option(self, opt_str):
+        rudisha (self._short_opt.get(opt_str) or
                 self._long_opt.get(opt_str))
 
-    def has_option(self, opt_str):
-        return (opt_str in self._short_opt or
+    eleza has_option(self, opt_str):
+        rudisha (opt_str in self._short_opt or
                 opt_str in self._long_opt)
 
-    def remove_option(self, opt_str):
+    eleza remove_option(self, opt_str):
         option = self._short_opt.get(opt_str)
-        if option is None:
+        ikiwa option is None:
             option = self._long_opt.get(opt_str)
-        if option is None:
+        ikiwa option is None:
             raise ValueError("no such option %r" % opt_str)
 
         for opt in option._short_opts:
@@ -1052,64 +1052,64 @@ class OptionContainer:
 
     # -- Help-formatting methods ---------------------------------------
 
-    def format_option_help(self, formatter):
-        if not self.option_list:
-            return ""
+    eleza format_option_help(self, formatter):
+        ikiwa not self.option_list:
+            rudisha ""
         result = []
         for option in self.option_list:
-            if not option.help is SUPPRESS_HELP:
+            ikiwa not option.help is SUPPRESS_HELP:
                 result.append(formatter.format_option(option))
-        return "".join(result)
+        rudisha "".join(result)
 
-    def format_description(self, formatter):
-        return formatter.format_description(self.get_description())
+    eleza format_description(self, formatter):
+        rudisha formatter.format_description(self.get_description())
 
-    def format_help(self, formatter):
+    eleza format_help(self, formatter):
         result = []
-        if self.description:
+        ikiwa self.description:
             result.append(self.format_description(formatter))
-        if self.option_list:
+        ikiwa self.option_list:
             result.append(self.format_option_help(formatter))
-        return "\n".join(result)
+        rudisha "\n".join(result)
 
 
-class OptionGroup (OptionContainer):
+kundi OptionGroup (OptionContainer):
 
-    def __init__(self, parser, title, description=None):
+    eleza __init__(self, parser, title, description=None):
         self.parser = parser
         OptionContainer.__init__(
             self, parser.option_class, parser.conflict_handler, description)
         self.title = title
 
-    def _create_option_list(self):
+    eleza _create_option_list(self):
         self.option_list = []
         self._share_option_mappings(self.parser)
 
-    def set_title(self, title):
+    eleza set_title(self, title):
         self.title = title
 
-    def destroy(self):
+    eleza destroy(self):
         """see OptionParser.destroy()."""
         OptionContainer.destroy(self)
         del self.option_list
 
     # -- Help-formatting methods ---------------------------------------
 
-    def format_help(self, formatter):
+    eleza format_help(self, formatter):
         result = formatter.format_heading(self.title)
         formatter.indent()
         result += OptionContainer.format_help(self, formatter)
         formatter.dedent()
-        return result
+        rudisha result
 
 
-class OptionParser (OptionContainer):
+kundi OptionParser (OptionContainer):
 
     """
     Class attributes:
       standard_option_list : [Option]
         list of standard options that will be accepted by all instances
-        of this parser class (intended to be overridden by subclasses).
+        of this parser kundi (intended to be overridden by subclasses).
 
     Instance attributes:
       usage : string
@@ -1133,7 +1133,7 @@ class OptionParser (OptionContainer):
         for generating help)
 
       allow_interspersed_args : bool = true
-        if true, positional arguments may be interspersed with options.
+        ikiwa true, positional arguments may be interspersed with options.
         Assuming -a and -b each take a single argument, the command-line
           -ablah foo bar -bboo baz
         will be interpreted the same as
@@ -1146,10 +1146,10 @@ class OptionParser (OptionContainer):
         parsing libraries, but it is generally annoying to users.)
 
       process_default_values : bool = true
-        if true, option default values are processed similarly to option
+        ikiwa true, option default values are processed similarly to option
         values kutoka the command line: that is, they are passed to the
         type-checking function for the option's type (as long as the
-        default value is a string).  (This really only matters if you
+        default value is a string).  (This really only matters ikiwa you
         have defined custom types; see SF bug #955889.)  Set it to false
         to restore the behaviour of Optik 1.4.1 and earlier.
 
@@ -1175,7 +1175,7 @@ class OptionParser (OptionContainer):
 
     standard_option_list = []
 
-    def __init__(self,
+    eleza __init__(self,
                  usage=None,
                  option_list=None,
                  option_class=Option,
@@ -1193,15 +1193,15 @@ class OptionParser (OptionContainer):
         self.version = version
         self.allow_interspersed_args = True
         self.process_default_values = True
-        if formatter is None:
+        ikiwa formatter is None:
             formatter = IndentedHelpFormatter()
         self.formatter = formatter
         self.formatter.set_parser(self)
         self.epilog = epilog
 
         # Populate the option list; initial sources are the
-        # standard_option_list class attribute, the 'option_list'
-        # argument, and (if applicable) the _add_version_option() and
+        # standard_option_list kundi attribute, the 'option_list'
+        # argument, and (ikiwa applicable) the _add_version_option() and
         # _add_help_option() methods.
         self._populate_option_list(option_list,
                                    add_help=add_help_option)
@@ -1209,7 +1209,7 @@ class OptionParser (OptionContainer):
         self._init_parsing_state()
 
 
-    def destroy(self):
+    eleza destroy(self):
         """
         Declare that you are done with this OptionParser.  This cleans up
         reference cycles so the OptionParser (and all objects referenced by
@@ -1227,32 +1227,32 @@ class OptionParser (OptionContainer):
     # -- Private methods -----------------------------------------------
     # (used by our or OptionContainer's constructor)
 
-    def _create_option_list(self):
+    eleza _create_option_list(self):
         self.option_list = []
         self.option_groups = []
         self._create_option_mappings()
 
-    def _add_help_option(self):
+    eleza _add_help_option(self):
         self.add_option("-h", "--help",
                         action="help",
                         help=_("show this help message and exit"))
 
-    def _add_version_option(self):
+    eleza _add_version_option(self):
         self.add_option("--version",
                         action="version",
                         help=_("show program's version number and exit"))
 
-    def _populate_option_list(self, option_list, add_help=True):
-        if self.standard_option_list:
+    eleza _populate_option_list(self, option_list, add_help=True):
+        ikiwa self.standard_option_list:
             self.add_options(self.standard_option_list)
-        if option_list:
+        ikiwa option_list:
             self.add_options(option_list)
-        if self.version:
+        ikiwa self.version:
             self._add_version_option()
-        if add_help:
+        ikiwa add_help:
             self._add_help_option()
 
-    def _init_parsing_state(self):
+    eleza _init_parsing_state(self):
         # These are set in parse_args() for the convenience of callbacks.
         self.rargs = None
         self.largs = None
@@ -1261,26 +1261,26 @@ class OptionParser (OptionContainer):
 
     # -- Simple modifier methods ---------------------------------------
 
-    def set_usage(self, usage):
-        if usage is None:
+    eleza set_usage(self, usage):
+        ikiwa usage is None:
             self.usage = _("%prog [options]")
-        elif usage is SUPPRESS_USAGE:
+        elikiwa usage is SUPPRESS_USAGE:
             self.usage = None
         # For backwards compatibility with Optik 1.3 and earlier.
-        elif usage.lower().startswith("usage: "):
+        elikiwa usage.lower().startswith("usage: "):
             self.usage = usage[7:]
         else:
             self.usage = usage
 
-    def enable_interspersed_args(self):
+    eleza enable_interspersed_args(self):
         """Set parsing to not stop on the first non-option, allowing
         interspersing switches with command arguments. This is the
         default behavior. See also disable_interspersed_args() and the
-        class documentation description of the attribute
+        kundi documentation description of the attribute
         allow_interspersed_args."""
         self.allow_interspersed_args = True
 
-    def disable_interspersed_args(self):
+    eleza disable_interspersed_args(self):
         """Set parsing to stop on the first non-option. Use this if
         you have a command processor which runs another command that
         has options of its own and you want to make sure these options
@@ -1288,71 +1288,71 @@ class OptionParser (OptionContainer):
         """
         self.allow_interspersed_args = False
 
-    def set_process_default_values(self, process):
+    eleza set_process_default_values(self, process):
         self.process_default_values = process
 
-    def set_default(self, dest, value):
+    eleza set_default(self, dest, value):
         self.defaults[dest] = value
 
-    def set_defaults(self, **kwargs):
+    eleza set_defaults(self, **kwargs):
         self.defaults.update(kwargs)
 
-    def _get_all_options(self):
+    eleza _get_all_options(self):
         options = self.option_list[:]
         for group in self.option_groups:
             options.extend(group.option_list)
-        return options
+        rudisha options
 
-    def get_default_values(self):
-        if not self.process_default_values:
+    eleza get_default_values(self):
+        ikiwa not self.process_default_values:
             # Old, pre-Optik 1.5 behaviour.
-            return Values(self.defaults)
+            rudisha Values(self.defaults)
 
         defaults = self.defaults.copy()
         for option in self._get_all_options():
             default = defaults.get(option.dest)
-            if isinstance(default, str):
+            ikiwa isinstance(default, str):
                 opt_str = option.get_opt_string()
                 defaults[option.dest] = option.check_value(opt_str, default)
 
-        return Values(defaults)
+        rudisha Values(defaults)
 
 
     # -- OptionGroup methods -------------------------------------------
 
-    def add_option_group(self, *args, **kwargs):
+    eleza add_option_group(self, *args, **kwargs):
         # XXX lots of overlap with OptionContainer.add_option()
-        if isinstance(args[0], str):
+        ikiwa isinstance(args[0], str):
             group = OptionGroup(self, *args, **kwargs)
-        elif len(args) == 1 and not kwargs:
+        elikiwa len(args) == 1 and not kwargs:
             group = args[0]
-            if not isinstance(group, OptionGroup):
+            ikiwa not isinstance(group, OptionGroup):
                 raise TypeError("not an OptionGroup instance: %r" % group)
-            if group.parser is not self:
+            ikiwa group.parser is not self:
                 raise ValueError("invalid OptionGroup (wrong parser)")
         else:
             raise TypeError("invalid arguments")
 
         self.option_groups.append(group)
-        return group
+        rudisha group
 
-    def get_option_group(self, opt_str):
+    eleza get_option_group(self, opt_str):
         option = (self._short_opt.get(opt_str) or
                   self._long_opt.get(opt_str))
-        if option and option.container is not self:
-            return option.container
-        return None
+        ikiwa option and option.container is not self:
+            rudisha option.container
+        rudisha None
 
 
     # -- Option-parsing methods ----------------------------------------
 
-    def _get_args(self, args):
-        if args is None:
-            return sys.argv[1:]
+    eleza _get_args(self, args):
+        ikiwa args is None:
+            rudisha sys.argv[1:]
         else:
-            return args[:]              # don't modify caller's list
+            rudisha args[:]              # don't modify caller's list
 
-    def parse_args(self, args=None, values=None):
+    eleza parse_args(self, args=None, values=None):
         """
         parse_args(args : [string] = sys.argv[1:],
                    values : Values = None)
@@ -1367,7 +1367,7 @@ class OptionParser (OptionContainer):
         over after parsing options.
         """
         rargs = self._get_args(args)
-        if values is None:
+        ikiwa values is None:
             values = self.get_default_values()
 
         # Store the halves of the argument list as attributes for the
@@ -1389,9 +1389,9 @@ class OptionParser (OptionContainer):
             self.error(str(err))
 
         args = largs + rargs
-        return self.check_values(values, args)
+        rudisha self.check_values(values, args)
 
-    def check_values(self, values, args):
+    eleza check_values(self, values, args):
         """
         check_values(values : Values, args : [string])
         -> (values : Values, args : [string])
@@ -1402,9 +1402,9 @@ class OptionParser (OptionContainer):
         like).  Default implementation just returns the passed-in
         values; subclasses may override as desired.
         """
-        return (values, args)
+        rudisha (values, args)
 
-    def _process_args(self, largs, rargs, values):
+    eleza _process_args(self, largs, rargs, values):
         """_process_args(largs : [string],
                          rargs : [string],
                          values : Values)
@@ -1419,21 +1419,21 @@ class OptionParser (OptionContainer):
             # We handle bare "--" explicitly, and bare "-" is handled by the
             # standard arg handler since the short arg case ensures that the
             # len of the opt string is greater than 1.
-            if arg == "--":
+            ikiwa arg == "--":
                 del rargs[0]
                 return
-            elif arg[0:2] == "--":
+            elikiwa arg[0:2] == "--":
                 # process a single long option (possibly with value(s))
                 self._process_long_opt(rargs, values)
-            elif arg[:1] == "-" and len(arg) > 1:
+            elikiwa arg[:1] == "-" and len(arg) > 1:
                 # process a cluster of short options (possibly with
                 # value(s) for the last one only)
                 self._process_short_opts(rargs, values)
-            elif self.allow_interspersed_args:
+            elikiwa self.allow_interspersed_args:
                 largs.append(arg)
                 del rargs[0]
             else:
-                return                  # stop now, leave this arg in rargs
+                rudisha                  # stop now, leave this arg in rargs
 
         # Say this is the original argument list:
         # [arg0, arg1, ..., arg(i-1), arg(i), arg(i+1), ..., arg(N-1)]
@@ -1455,21 +1455,21 @@ class OptionParser (OptionContainer):
         # *empty* -- still a subset of [arg0, ..., arg(i-1)], but
         # not a very interesting subset!
 
-    def _match_long_opt(self, opt):
+    eleza _match_long_opt(self, opt):
         """_match_long_opt(opt : string) -> string
 
         Determine which long option string 'opt' matches, ie. which one
         it is an unambiguous abbreviation for.  Raises BadOptionError if
         'opt' doesn't unambiguously match any long option string.
         """
-        return _match_abbrev(opt, self._long_opt)
+        rudisha _match_abbrev(opt, self._long_opt)
 
-    def _process_long_opt(self, rargs, values):
+    eleza _process_long_opt(self, rargs, values):
         arg = rargs.pop(0)
 
         # Value explicitly attached to arg?  Pretend it's the next
         # argument.
-        if "=" in arg:
+        ikiwa "=" in arg:
             (opt, next_arg) = arg.split("=", 1)
             rargs.insert(0, next_arg)
             had_explicit_value = True
@@ -1479,20 +1479,20 @@ class OptionParser (OptionContainer):
 
         opt = self._match_long_opt(opt)
         option = self._long_opt[opt]
-        if option.takes_value():
+        ikiwa option.takes_value():
             nargs = option.nargs
-            if len(rargs) < nargs:
+            ikiwa len(rargs) < nargs:
                 self.error(ngettext(
                     "%(option)s option requires %(number)d argument",
                     "%(option)s option requires %(number)d arguments",
                     nargs) % {"option": opt, "number": nargs})
-            elif nargs == 1:
+            elikiwa nargs == 1:
                 value = rargs.pop(0)
             else:
                 value = tuple(rargs[0:nargs])
                 del rargs[0:nargs]
 
-        elif had_explicit_value:
+        elikiwa had_explicit_value:
             self.error(_("%s option does not take a value") % opt)
 
         else:
@@ -1500,7 +1500,7 @@ class OptionParser (OptionContainer):
 
         option.process(opt, value, values, self)
 
-    def _process_short_opts(self, rargs, values):
+    eleza _process_short_opts(self, rargs, values):
         arg = rargs.pop(0)
         stop = False
         i = 1
@@ -1509,22 +1509,22 @@ class OptionParser (OptionContainer):
             option = self._short_opt.get(opt)
             i += 1                      # we have consumed a character
 
-            if not option:
+            ikiwa not option:
                 raise BadOptionError(opt)
-            if option.takes_value():
+            ikiwa option.takes_value():
                 # Any characters left in arg?  Pretend they're the
                 # next arg, and stop consuming characters of arg.
-                if i < len(arg):
+                ikiwa i < len(arg):
                     rargs.insert(0, arg[i:])
                     stop = True
 
                 nargs = option.nargs
-                if len(rargs) < nargs:
+                ikiwa len(rargs) < nargs:
                     self.error(ngettext(
                         "%(option)s option requires %(number)d argument",
                         "%(option)s option requires %(number)d arguments",
                         nargs) % {"option": opt, "number": nargs})
-                elif nargs == 1:
+                elikiwa nargs == 1:
                     value = rargs.pop(0)
                 else:
                     value = tuple(rargs[0:nargs])
@@ -1535,121 +1535,121 @@ class OptionParser (OptionContainer):
 
             option.process(opt, value, values, self)
 
-            if stop:
+            ikiwa stop:
                 break
 
 
     # -- Feedback methods ----------------------------------------------
 
-    def get_prog_name(self):
-        if self.prog is None:
-            return os.path.basename(sys.argv[0])
+    eleza get_prog_name(self):
+        ikiwa self.prog is None:
+            rudisha os.path.basename(sys.argv[0])
         else:
-            return self.prog
+            rudisha self.prog
 
-    def expand_prog_name(self, s):
-        return s.replace("%prog", self.get_prog_name())
+    eleza expand_prog_name(self, s):
+        rudisha s.replace("%prog", self.get_prog_name())
 
-    def get_description(self):
-        return self.expand_prog_name(self.description)
+    eleza get_description(self):
+        rudisha self.expand_prog_name(self.description)
 
-    def exit(self, status=0, msg=None):
-        if msg:
+    eleza exit(self, status=0, msg=None):
+        ikiwa msg:
             sys.stderr.write(msg)
         sys.exit(status)
 
-    def error(self, msg):
+    eleza error(self, msg):
         """error(msg : string)
 
         Print a usage message incorporating 'msg' to stderr and exit.
-        If you override this in a subclass, it should not return -- it
+        If you override this in a subclass, it should not rudisha -- it
         should either exit or raise an exception.
         """
         self.print_usage(sys.stderr)
         self.exit(2, "%s: error: %s\n" % (self.get_prog_name(), msg))
 
-    def get_usage(self):
-        if self.usage:
-            return self.formatter.format_usage(
+    eleza get_usage(self):
+        ikiwa self.usage:
+            rudisha self.formatter.format_usage(
                 self.expand_prog_name(self.usage))
         else:
-            return ""
+            rudisha ""
 
-    def print_usage(self, file=None):
+    eleza print_usage(self, file=None):
         """print_usage(file : file = stdout)
 
         Print the usage message for the current program (self.usage) to
         'file' (default stdout).  Any occurrence of the string "%prog" in
         self.usage is replaced with the name of the current program
-        (basename of sys.argv[0]).  Does nothing if self.usage is empty
+        (basename of sys.argv[0]).  Does nothing ikiwa self.usage is empty
         or not defined.
         """
-        if self.usage:
-            print(self.get_usage(), file=file)
+        ikiwa self.usage:
+            andika(self.get_usage(), file=file)
 
-    def get_version(self):
-        if self.version:
-            return self.expand_prog_name(self.version)
+    eleza get_version(self):
+        ikiwa self.version:
+            rudisha self.expand_prog_name(self.version)
         else:
-            return ""
+            rudisha ""
 
-    def print_version(self, file=None):
+    eleza print_version(self, file=None):
         """print_version(file : file = stdout)
 
         Print the version message for this program (self.version) to
         'file' (default stdout).  As with print_usage(), any occurrence
         of "%prog" in self.version is replaced by the current program's
-        name.  Does nothing if self.version is empty or undefined.
+        name.  Does nothing ikiwa self.version is empty or undefined.
         """
-        if self.version:
-            print(self.get_version(), file=file)
+        ikiwa self.version:
+            andika(self.get_version(), file=file)
 
-    def format_option_help(self, formatter=None):
-        if formatter is None:
+    eleza format_option_help(self, formatter=None):
+        ikiwa formatter is None:
             formatter = self.formatter
         formatter.store_option_strings(self)
         result = []
         result.append(formatter.format_heading(_("Options")))
         formatter.indent()
-        if self.option_list:
+        ikiwa self.option_list:
             result.append(OptionContainer.format_option_help(self, formatter))
             result.append("\n")
         for group in self.option_groups:
             result.append(group.format_help(formatter))
             result.append("\n")
         formatter.dedent()
-        # Drop the last "\n", or the header if no options or option groups:
-        return "".join(result[:-1])
+        # Drop the last "\n", or the header ikiwa no options or option groups:
+        rudisha "".join(result[:-1])
 
-    def format_epilog(self, formatter):
-        return formatter.format_epilog(self.epilog)
+    eleza format_epilog(self, formatter):
+        rudisha formatter.format_epilog(self.epilog)
 
-    def format_help(self, formatter=None):
-        if formatter is None:
+    eleza format_help(self, formatter=None):
+        ikiwa formatter is None:
             formatter = self.formatter
         result = []
-        if self.usage:
+        ikiwa self.usage:
             result.append(self.get_usage() + "\n")
-        if self.description:
+        ikiwa self.description:
             result.append(self.format_description(formatter) + "\n")
         result.append(self.format_option_help(formatter))
         result.append(self.format_epilog(formatter))
-        return "".join(result)
+        rudisha "".join(result)
 
-    def print_help(self, file=None):
+    eleza print_help(self, file=None):
         """print_help(file : file = stdout)
 
         Print an extended help message, listing all options and any
         help text provided with them, to 'file' (default stdout).
         """
-        if file is None:
+        ikiwa file is None:
             file = sys.stdout
         file.write(self.format_help())
 
-# class OptionParser
+# kundi OptionParser
 
 
-def _match_abbrev(s, wordmap):
+eleza _match_abbrev(s, wordmap):
     """_match_abbrev(s : string, wordmap : {string : Option}) -> string
 
     Return the string key in 'wordmap' for which 's' is an unambiguous
@@ -1657,16 +1657,16 @@ def _match_abbrev(s, wordmap):
     'words', raise BadOptionError.
     """
     # Is there an exact match?
-    if s in wordmap:
-        return s
+    ikiwa s in wordmap:
+        rudisha s
     else:
         # Isolate all words with s as a prefix.
         possibilities = [word for word in wordmap.keys()
-                         if word.startswith(s)]
+                         ikiwa word.startswith(s)]
         # No exact match, so there had better be just one possibility.
-        if len(possibilities) == 1:
-            return possibilities[0]
-        elif not possibilities:
+        ikiwa len(possibilities) == 1:
+            rudisha possibilities[0]
+        elikiwa not possibilities:
             raise BadOptionError(s)
         else:
             # More than one possible completion: ambiguous prefix.

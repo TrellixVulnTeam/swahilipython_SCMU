@@ -72,7 +72,7 @@ PyObject_{New, NewVar, Del}.
  */
 
 /* Functions to call the same malloc/realloc/free as used by Python's
-   object allocator.  If WITH_PYMALLOC is enabled, these may differ from
+   object allocator.  If WITH_PYMALLOC is enabled, these may differ kutoka
    the platform malloc/realloc/free.  The Python object allocator is
    designed for fast, cache-conscious allocation of many "small" objects,
    and with low hidden memory overhead.

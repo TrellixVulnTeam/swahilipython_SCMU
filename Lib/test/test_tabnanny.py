@@ -22,67 +22,67 @@ SOURCE_CODES = {
         '    "Orange",\n'
         '    "Banana",\n'
         '\n'
-        'print(fruits)\n'
+        'andika(fruits)\n'
     ),
     "wrong_indented": (
-        'if True:\n'
-        '    print("hello")\n'
-        '  print("world")\n'
+        'ikiwa True:\n'
+        '    andika("hello")\n'
+        '  andika("world")\n'
         'else:\n'
-        '    print("else called")\n'
+        '    andika("else called")\n'
     ),
     "nannynag_errored": (
-        'if True:\n'
-        ' \tprint("hello")\n'
-        '\tprint("world")\n'
+        'ikiwa True:\n'
+        ' \tandika("hello")\n'
+        '\tandika("world")\n'
         'else:\n'
-        '    print("else called")\n'
+        '    andika("else called")\n'
     ),
     "error_free": (
-        'if True:\n'
-        '    print("hello")\n'
-        '    print("world")\n'
+        'ikiwa True:\n'
+        '    andika("hello")\n'
+        '    andika("world")\n'
         'else:\n'
-        '    print("else called")\n'
+        '    andika("else called")\n'
     ),
     "tab_space_errored_1": (
-        'def my_func():\n'
-        '\t  print("hello world")\n'
-        '\t  if True:\n'
-        '\t\tprint("If called")'
+        'eleza my_func():\n'
+        '\t  andika("hello world")\n'
+        '\t  ikiwa True:\n'
+        '\t\tandika("If called")'
     ),
     "tab_space_errored_2": (
-        'def my_func():\n'
-        '\t\tprint("Hello world")\n'
-        '\t\tif True:\n'
-        '\t        print("If called")'
+        'eleza my_func():\n'
+        '\t\tandika("Hello world")\n'
+        '\t\tikiwa True:\n'
+        '\t        andika("If called")'
     )
 }
 
 
-class TemporaryPyFile:
+kundi TemporaryPyFile:
     """Create a temporary python source code file."""
 
-    def __init__(self, source_code='', directory=None):
+    eleza __init__(self, source_code='', directory=None):
         self.source_code = source_code
         self.dir = directory
 
-    def __enter__(self):
+    eleza __enter__(self):
         with tempfile.NamedTemporaryFile(
             mode='w', dir=self.dir, suffix=".py", delete=False
         ) as f:
             f.write(self.source_code)
         self.file_path = f.name
-        return self.file_path
+        rudisha self.file_path
 
-    def __exit__(self, exc_type, exc_value, exc_traceback):
+    eleza __exit__(self, exc_type, exc_value, exc_traceback):
         unlink(self.file_path)
 
 
-class TestFormatWitnesses(TestCase):
+kundi TestFormatWitnesses(TestCase):
     """Testing `tabnanny.format_witnesses()`."""
 
-    def test_format_witnesses(self):
+    eleza test_format_witnesses(self):
         """Asserting formatter result by giving various input samples."""
         tests = [
             ('Test', 'at tab sizes T, e, s, t'),
@@ -96,11 +96,11 @@ class TestFormatWitnesses(TestCase):
                 self.assertEqual(tabnanny.format_witnesses(words), expected)
 
 
-class TestErrPrint(TestCase):
-    """Testing `tabnanny.errprint()`."""
+kundi TestErrPrint(TestCase):
+    """Testing `tabnanny.errandika()`."""
 
-    def test_errprint(self):
-        """Asserting result of `tabnanny.errprint()` by giving sample inputs."""
+    eleza test_errandika(self):
+        """Asserting result of `tabnanny.errandika()` by giving sample inputs."""
         tests = [
             (['first', 'second'], 'first second\n'),
             (['first'], 'first\n'),
@@ -111,12 +111,12 @@ class TestErrPrint(TestCase):
         for args, expected in tests:
             with self.subTest(arguments=args, expected=expected):
                 with captured_stderr() as stderr:
-                    tabnanny.errprint(*args)
+                    tabnanny.errandika(*args)
                 self.assertEqual(stderr.getvalue() , expected)
 
 
-class TestNannyNag(TestCase):
-    def test_all_methods(self):
+kundi TestNannyNag(TestCase):
+    eleza test_all_methods(self):
         """Asserting behaviour of `tabnanny.NannyNag` exception."""
         tests = [
             (
@@ -142,14 +142,14 @@ class TestNannyNag(TestCase):
                 self.assertEqual(expected['line'], line)
 
 
-class TestCheck(TestCase):
+kundi TestCheck(TestCase):
     """Testing tabnanny.check()."""
 
-    def setUp(self):
+    eleza setUp(self):
         self.addCleanup(setattr, tabnanny, 'verbose', tabnanny.verbose)
         tabnanny.verbose = 0  # Forcefully deactivating verbose mode.
 
-    def verify_tabnanny_check(self, dir_or_file, out="", err=""):
+    eleza verify_tabnanny_check(self, dir_or_file, out="", err=""):
         """Common verification for tabnanny.check().
 
         Use this method to assert expected values of `stdout` and `stderr` after
@@ -162,12 +162,12 @@ class TestCheck(TestCase):
         self.assertEqual(stdout.getvalue(), out)
         self.assertEqual(stderr.getvalue(), err)
 
-    def test_correct_file(self):
+    eleza test_correct_file(self):
         """A python source code file without any errors."""
         with TemporaryPyFile(SOURCE_CODES["error_free"]) as file_path:
             self.verify_tabnanny_check(file_path)
 
-    def test_correct_directory_verbose(self):
+    eleza test_correct_directory_verbose(self):
         """Directory containing few error free python source code files.
 
         Because order of files returned by `os.lsdir()` is not fixed, verify the
@@ -191,13 +191,13 @@ class TestCheck(TestCase):
                         self.assertIn(line, stdout)
                 self.assertEqual(stderr.getvalue(), "")
 
-    def test_correct_directory(self):
+    eleza test_correct_directory(self):
         """Directory which contains few error free python source code files."""
         with tempfile.TemporaryDirectory() as tmp_dir:
             with TemporaryPyFile(SOURCE_CODES["error_free"], directory=tmp_dir):
                 self.verify_tabnanny_check(tmp_dir)
 
-    def test_when_wrong_indented(self):
+    eleza test_when_wrong_indented(self):
         """A python source code file eligible for raising `IndentationError`."""
         with TemporaryPyFile(SOURCE_CODES["wrong_indented"]) as file_path:
             err = ('unindent does not match any outer indentation level'
@@ -205,40 +205,40 @@ class TestCheck(TestCase):
             err = f"{file_path!r}: Indentation Error: {err}"
             self.verify_tabnanny_check(file_path, err=err)
 
-    def test_when_tokenize_tokenerror(self):
+    eleza test_when_tokenize_tokenerror(self):
         """A python source code file eligible for raising 'tokenize.TokenError'."""
         with TemporaryPyFile(SOURCE_CODES["incomplete_expression"]) as file_path:
             err = "('EOF in multi-line statement', (7, 0))\n"
             err = f"{file_path!r}: Token Error: {err}"
             self.verify_tabnanny_check(file_path, err=err)
 
-    def test_when_nannynag_error_verbose(self):
+    eleza test_when_nannynag_error_verbose(self):
         """A python source code file eligible for raising `tabnanny.NannyNag`.
 
         Tests will assert `stdout` after activating `tabnanny.verbose` mode.
         """
         with TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) as file_path:
             out = f"{file_path!r}: *** Line 3: trouble in tab city! ***\n"
-            out += "offending line: '\\tprint(\"world\")\\n'\n"
+            out += "offending line: '\\tandika(\"world\")\\n'\n"
             out += "indent not equal e.g. at tab size 1\n"
 
             tabnanny.verbose = 1
             self.verify_tabnanny_check(file_path, out=out)
 
-    def test_when_nannynag_error(self):
+    eleza test_when_nannynag_error(self):
         """A python source code file eligible for raising `tabnanny.NannyNag`."""
         with TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) as file_path:
-            out = f"{file_path} 3 '\\tprint(\"world\")\\n'\n"
+            out = f"{file_path} 3 '\\tandika(\"world\")\\n'\n"
             self.verify_tabnanny_check(file_path, out=out)
 
-    def test_when_no_file(self):
+    eleza test_when_no_file(self):
         """A python file which does not exist actually in system."""
         path = 'no_file.py'
         err = (f"{path!r}: I/O Error: [Errno {errno.ENOENT}] "
               f"{os.strerror(errno.ENOENT)}: {path!r}\n")
         self.verify_tabnanny_check(path, err=err)
 
-    def test_errored_directory(self):
+    eleza test_errored_directory(self):
         """Directory containing wrongly indented python source code files."""
         with tempfile.TemporaryDirectory() as tmp_dir:
             error_file = TemporaryPyFile(
@@ -254,11 +254,11 @@ class TestCheck(TestCase):
                 self.verify_tabnanny_check(tmp_dir, err=err)
 
 
-class TestProcessTokens(TestCase):
+kundi TestProcessTokens(TestCase):
     """Testing `tabnanny.process_tokens()`."""
 
     @mock.patch('tabnanny.NannyNag')
-    def test_with_correct_code(self, MockNannyNag):
+    eleza test_with_correct_code(self, MockNannyNag):
         """A python source code without any whitespace related problems."""
 
         with TemporaryPyFile(SOURCE_CODES["error_free"]) as file_path:
@@ -266,7 +266,7 @@ class TestProcessTokens(TestCase):
                 tabnanny.process_tokens(tokenize.generate_tokens(f.readline))
             self.assertFalse(MockNannyNag.called)
 
-    def test_with_errored_codes_samples(self):
+    eleza test_with_errored_codes_samples(self):
         """A python source code with whitespace related sampled problems."""
 
         # "tab_space_errored_1": executes block under type == tokenize.INDENT
@@ -284,17 +284,17 @@ class TestProcessTokens(TestCase):
                             tabnanny.process_tokens(tokens)
 
 
-class TestCommandLine(TestCase):
+kundi TestCommandLine(TestCase):
     """Tests command line interface of `tabnanny`."""
 
-    def validate_cmd(self, *args, stdout="", stderr="", partial=False):
+    eleza validate_cmd(self, *args, stdout="", stderr="", partial=False):
         """Common function to assert the behaviour of command line interface."""
         _, out, err = script_helper.assert_python_ok('-m', 'tabnanny', *args)
         # Note: The `splitlines()` will solve the problem of CRLF(\r) added
         # by OS Windows.
         out = out.decode('ascii')
         err = err.decode('ascii')
-        if partial:
+        ikiwa partial:
             for std, output in ((stdout, out), (stderr, err)):
                 _output = output.splitlines()
                 for _std in std.splitlines():
@@ -304,7 +304,7 @@ class TestCommandLine(TestCase):
             self.assertListEqual(out.splitlines(), stdout.splitlines())
             self.assertListEqual(err.splitlines(), stderr.splitlines())
 
-    def test_with_errored_file(self):
+    eleza test_with_errored_file(self):
         """Should displays error when errored python file is given."""
         with TemporaryPyFile(SOURCE_CODES["wrong_indented"]) as file_path:
             stderr  = f"{file_path!r}: Indentation Error: "
@@ -312,35 +312,35 @@ class TestCommandLine(TestCase):
                     ' (<tokenize>, line 3)')
             self.validate_cmd(file_path, stderr=stderr)
 
-    def test_with_error_free_file(self):
-        """Should not display anything if python file is correctly indented."""
+    eleza test_with_error_free_file(self):
+        """Should not display anything ikiwa python file is correctly indented."""
         with TemporaryPyFile(SOURCE_CODES["error_free"]) as file_path:
             self.validate_cmd(file_path)
 
-    def test_command_usage(self):
+    eleza test_command_usage(self):
         """Should display usage on no arguments."""
         path = findfile('tabnanny.py')
         stderr = f"Usage: {path} [-v] file_or_directory ..."
         self.validate_cmd(stderr=stderr)
 
-    def test_quiet_flag(self):
+    eleza test_quiet_flag(self):
         """Should display less when quite mode is on."""
         with TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) as file_path:
             stdout = f"{file_path}\n"
             self.validate_cmd("-q", file_path, stdout=stdout)
 
-    def test_verbose_mode(self):
-        """Should display more error information if verbose mode is on."""
+    eleza test_verbose_mode(self):
+        """Should display more error information ikiwa verbose mode is on."""
         with TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) as path:
             stdout = textwrap.dedent(
-                "offending line: '\\tprint(\"world\")\\n'"
+                "offending line: '\\tandika(\"world\")\\n'"
             ).strip()
             self.validate_cmd("-v", path, stdout=stdout, partial=True)
 
-    def test_double_verbose_mode(self):
-        """Should display detailed error information if double verbose is on."""
+    eleza test_double_verbose_mode(self):
+        """Should display detailed error information ikiwa double verbose is on."""
         with TemporaryPyFile(SOURCE_CODES["nannynag_errored"]) as path:
             stdout = textwrap.dedent(
-                "offending line: '\\tprint(\"world\")\\n'"
+                "offending line: '\\tandika(\"world\")\\n'"
             ).strip()
             self.validate_cmd("-vv", path, stdout=stdout, partial=True)

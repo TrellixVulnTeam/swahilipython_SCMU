@@ -15,15 +15,15 @@ agiza unittest
 kutoka test.support agiza captured_stdout
 
 
-class TestFrozen(unittest.TestCase):
-    def test_frozen(self):
+kundi TestFrozen(unittest.TestCase):
+    eleza test_frozen(self):
         name = '__hello__'
-        if name in sys.modules:
+        ikiwa name in sys.modules:
             del sys.modules[name]
         with captured_stdout() as out:
             agiza __hello__
         self.assertEqual(out.getvalue(), 'Hello world!\n')
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

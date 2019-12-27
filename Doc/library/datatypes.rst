@@ -10,7 +10,7 @@ queues, and enumerations.
 
 Python also provides some built-in data types, in particular,
 :class:`dict`, :class:`list`, :class:`set` and :class:`frozenset`, and
-:class:`tuple`.  The :class:`str` class is used to hold
+:class:`tuple`.  The :class:`str` kundi is used to hold
 Unicode strings, and the :class:`bytes` and :class:`bytearray` classes are used
 to hold binary data.
 

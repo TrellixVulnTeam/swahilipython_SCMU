@@ -19,8 +19,8 @@ only one client per server, this was not a limitation.
    | [attribute of RPCServer]|        |                 |
    +-------------------------+        +-----------------+
 
-The RPCServer handler class is expected to provide register/unregister methods.
-RPCHandler inherits the mix-in class SocketIO, which provides these methods.
+The RPCServer handler kundi is expected to provide register/unregister methods.
+RPCHandler inherits the mix-in kundi SocketIO, which provides these methods.
 
 See the Idle run.main() docstring for further information on how this was
 accomplished in Idle.
@@ -42,46 +42,46 @@ agiza threading
 agiza traceback
 agiza types
 
-def unpickle_code(ms):
+eleza unpickle_code(ms):
     "Return code object kutoka marshal string ms."
     co = marshal.loads(ms)
     assert isinstance(co, types.CodeType)
-    return co
+    rudisha co
 
-def pickle_code(co):
+eleza pickle_code(co):
     "Return unpickle function and tuple with marshalled co code object."
     assert isinstance(co, types.CodeType)
     ms = marshal.dumps(co)
-    return unpickle_code, (ms,)
+    rudisha unpickle_code, (ms,)
 
-def dumps(obj, protocol=None):
+eleza dumps(obj, protocol=None):
     "Return pickled (or marshalled) string for obj."
     # IDLE passes 'None' to select pickle.DEFAULT_PROTOCOL.
     f = io.BytesIO()
     p = CodePickler(f, protocol)
     p.dump(obj)
-    return f.getvalue()
+    rudisha f.getvalue()
 
 
-class CodePickler(pickle.Pickler):
+kundi CodePickler(pickle.Pickler):
     dispatch_table = {types.CodeType: pickle_code, **copyreg.dispatch_table}
 
 
 BUFSIZE = 8*1024
 LOCALHOST = '127.0.0.1'
 
-class RPCServer(socketserver.TCPServer):
+kundi RPCServer(socketserver.TCPServer):
 
-    def __init__(self, addr, handlerclass=None):
-        if handlerclass is None:
-            handlerclass = RPCHandler
+    eleza __init__(self, addr, handlerclass=None):
+        ikiwa handlerkundi is None:
+            handlerkundi = RPCHandler
         socketserver.TCPServer.__init__(self, addr, handlerclass)
 
-    def server_bind(self):
+    eleza server_bind(self):
         "Override TCPServer method, no bind() phase for connecting entity"
         pass
 
-    def server_activate(self):
+    eleza server_activate(self):
         """Override TCPServer method, connect() instead of listen()
 
         Due to the reversed connection, self.server_address is actually the
@@ -90,14 +90,14 @@ class RPCServer(socketserver.TCPServer):
         """
         self.socket.connect(self.server_address)
 
-    def get_request(self):
-        "Override TCPServer method, return already connected socket"
-        return self.socket, self.server_address
+    eleza get_request(self):
+        "Override TCPServer method, rudisha already connected socket"
+        rudisha self.socket, self.server_address
 
-    def handle_error(self, request, client_address):
+    eleza handle_error(self, request, client_address):
         """Override TCPServer method
 
-        Error message goes to __stderr__.  No error message if exiting
+        Error message goes to __stderr__.  No error message ikiwa exiting
         normally or socket raised EOF.  Other exceptions not handled in
         server code will cause os._exit.
 
@@ -108,96 +108,96 @@ class RPCServer(socketserver.TCPServer):
             raise
         except:
             erf = sys.__stderr__
-            print('\n' + '-'*40, file=erf)
-            print('Unhandled server exception!', file=erf)
-            print('Thread: %s' % threading.current_thread().name, file=erf)
-            print('Client Address: ', client_address, file=erf)
-            print('Request: ', repr(request), file=erf)
+            andika('\n' + '-'*40, file=erf)
+            andika('Unhandled server exception!', file=erf)
+            andika('Thread: %s' % threading.current_thread().name, file=erf)
+            andika('Client Address: ', client_address, file=erf)
+            andika('Request: ', repr(request), file=erf)
             traceback.print_exc(file=erf)
-            print('\n*** Unrecoverable, server exiting!', file=erf)
-            print('-'*40, file=erf)
+            andika('\n*** Unrecoverable, server exiting!', file=erf)
+            andika('-'*40, file=erf)
             os._exit(0)
 
-#----------------- end class RPCServer --------------------
+#----------------- end kundi RPCServer --------------------
 
 objecttable = {}
 request_queue = queue.Queue(0)
 response_queue = queue.Queue(0)
 
 
-class SocketIO(object):
+kundi SocketIO(object):
 
     nextseq = 0
 
-    def __init__(self, sock, objtable=None, debugging=None):
+    eleza __init__(self, sock, objtable=None, debugging=None):
         self.sockthread = threading.current_thread()
-        if debugging is not None:
+        ikiwa debugging is not None:
             self.debugging = debugging
         self.sock = sock
-        if objtable is None:
+        ikiwa objtable is None:
             objtable = objecttable
         self.objtable = objtable
         self.responses = {}
         self.cvars = {}
 
-    def close(self):
+    eleza close(self):
         sock = self.sock
         self.sock = None
-        if sock is not None:
+        ikiwa sock is not None:
             sock.close()
 
-    def exithook(self):
+    eleza exithook(self):
         "override for specific exit action"
         os._exit(0)
 
-    def debug(self, *args):
-        if not self.debugging:
+    eleza debug(self, *args):
+        ikiwa not self.debugging:
             return
         s = self.location + " " + str(threading.current_thread().name)
         for a in args:
             s = s + " " + str(a)
-        print(s, file=sys.__stderr__)
+        andika(s, file=sys.__stderr__)
 
-    def register(self, oid, object):
+    eleza register(self, oid, object):
         self.objtable[oid] = object
 
-    def unregister(self, oid):
+    eleza unregister(self, oid):
         try:
             del self.objtable[oid]
         except KeyError:
             pass
 
-    def localcall(self, seq, request):
+    eleza localcall(self, seq, request):
         self.debug("localcall:", request)
         try:
             how, (oid, methodname, args, kwargs) = request
         except TypeError:
-            return ("ERROR", "Bad request format")
-        if oid not in self.objtable:
-            return ("ERROR", "Unknown object id: %r" % (oid,))
+            rudisha ("ERROR", "Bad request format")
+        ikiwa oid not in self.objtable:
+            rudisha ("ERROR", "Unknown object id: %r" % (oid,))
         obj = self.objtable[oid]
-        if methodname == "__methods__":
+        ikiwa methodname == "__methods__":
             methods = {}
             _getmethods(obj, methods)
-            return ("OK", methods)
-        if methodname == "__attributes__":
+            rudisha ("OK", methods)
+        ikiwa methodname == "__attributes__":
             attributes = {}
             _getattributes(obj, attributes)
-            return ("OK", attributes)
-        if not hasattr(obj, methodname):
-            return ("ERROR", "Unsupported method name: %r" % (methodname,))
+            rudisha ("OK", attributes)
+        ikiwa not hasattr(obj, methodname):
+            rudisha ("ERROR", "Unsupported method name: %r" % (methodname,))
         method = getattr(obj, methodname)
         try:
-            if how == 'CALL':
+            ikiwa how == 'CALL':
                 ret = method(*args, **kwargs)
-                if isinstance(ret, RemoteObject):
+                ikiwa isinstance(ret, RemoteObject):
                     ret = remoteref(ret)
-                return ("OK", ret)
-            elif how == 'QUEUE':
+                rudisha ("OK", ret)
+            elikiwa how == 'QUEUE':
                 request_queue.put((seq, (method, args, kwargs)))
                 return("QUEUED", None)
             else:
-                return ("ERROR", "Unsupported message type: %s" % how)
+                rudisha ("ERROR", "Unsupported message type: %s" % how)
         except SystemExit:
             raise
         except KeyboardInterrupt:
@@ -205,76 +205,76 @@ class SocketIO(object):
         except OSError:
             raise
         except Exception as ex:
-            return ("CALLEXC", ex)
+            rudisha ("CALLEXC", ex)
         except:
             msg = "*** Internal Error: rpc.py:SocketIO.localcall()\n\n"\
                   " Object: %s \n Method: %s \n Args: %s\n"
-            print(msg % (oid, method, args), file=sys.__stderr__)
+            andika(msg % (oid, method, args), file=sys.__stderr__)
             traceback.print_exc(file=sys.__stderr__)
-            return ("EXCEPTION", None)
+            rudisha ("EXCEPTION", None)
 
-    def remotecall(self, oid, methodname, args, kwargs):
+    eleza remotecall(self, oid, methodname, args, kwargs):
         self.debug("remotecall:asynccall: ", oid, methodname)
         seq = self.asynccall(oid, methodname, args, kwargs)
-        return self.asyncreturn(seq)
+        rudisha self.asyncreturn(seq)
 
-    def remotequeue(self, oid, methodname, args, kwargs):
+    eleza remotequeue(self, oid, methodname, args, kwargs):
         self.debug("remotequeue:asyncqueue: ", oid, methodname)
         seq = self.asyncqueue(oid, methodname, args, kwargs)
-        return self.asyncreturn(seq)
+        rudisha self.asyncreturn(seq)
 
-    def asynccall(self, oid, methodname, args, kwargs):
+    eleza asynccall(self, oid, methodname, args, kwargs):
         request = ("CALL", (oid, methodname, args, kwargs))
         seq = self.newseq()
-        if threading.current_thread() != self.sockthread:
+        ikiwa threading.current_thread() != self.sockthread:
             cvar = threading.Condition()
             self.cvars[seq] = cvar
         self.debug(("asynccall:%d:" % seq), oid, methodname, args, kwargs)
         self.putmessage((seq, request))
-        return seq
+        rudisha seq
 
-    def asyncqueue(self, oid, methodname, args, kwargs):
+    eleza asyncqueue(self, oid, methodname, args, kwargs):
         request = ("QUEUE", (oid, methodname, args, kwargs))
         seq = self.newseq()
-        if threading.current_thread() != self.sockthread:
+        ikiwa threading.current_thread() != self.sockthread:
             cvar = threading.Condition()
             self.cvars[seq] = cvar
         self.debug(("asyncqueue:%d:" % seq), oid, methodname, args, kwargs)
         self.putmessage((seq, request))
-        return seq
+        rudisha seq
 
-    def asyncreturn(self, seq):
+    eleza asyncreturn(self, seq):
         self.debug("asyncreturn:%d:call getresponse(): " % seq)
         response = self.getresponse(seq, wait=0.05)
         self.debug(("asyncreturn:%d:response: " % seq), response)
-        return self.decoderesponse(response)
+        rudisha self.decoderesponse(response)
 
-    def decoderesponse(self, response):
+    eleza decoderesponse(self, response):
         how, what = response
-        if how == "OK":
-            return what
-        if how == "QUEUED":
-            return None
-        if how == "EXCEPTION":
+        ikiwa how == "OK":
+            rudisha what
+        ikiwa how == "QUEUED":
+            rudisha None
+        ikiwa how == "EXCEPTION":
             self.debug("decoderesponse: EXCEPTION")
-            return None
-        if how == "EOF":
+            rudisha None
+        ikiwa how == "EOF":
             self.debug("decoderesponse: EOF")
             self.decode_interrupthook()
-            return None
-        if how == "ERROR":
+            rudisha None
+        ikiwa how == "ERROR":
             self.debug("decoderesponse: Internal ERROR:", what)
             raise RuntimeError(what)
-        if how == "CALLEXC":
+        ikiwa how == "CALLEXC":
             self.debug("decoderesponse: Call Exception:", what)
             raise what
         raise SystemError(how, what)
 
-    def decode_interrupthook(self):
+    eleza decode_interrupthook(self):
         ""
         raise EOFError
 
-    def mainloop(self):
+    eleza mainloop(self):
         """Listen on socket until I/O not ready or EOF
 
         pollresponse() will loop looking for seq number None, which
@@ -287,30 +287,30 @@ class SocketIO(object):
             self.debug("mainloop:return")
             return
 
-    def getresponse(self, myseq, wait):
+    eleza getresponse(self, myseq, wait):
         response = self._getresponse(myseq, wait)
-        if response is not None:
+        ikiwa response is not None:
             how, what = response
-            if how == "OK":
+            ikiwa how == "OK":
                 response = how, self._proxify(what)
-        return response
+        rudisha response
 
-    def _proxify(self, obj):
-        if isinstance(obj, RemoteProxy):
-            return RPCProxy(self, obj.oid)
-        if isinstance(obj, list):
-            return list(map(self._proxify, obj))
+    eleza _proxify(self, obj):
+        ikiwa isinstance(obj, RemoteProxy):
+            rudisha RPCProxy(self, obj.oid)
+        ikiwa isinstance(obj, list):
+            rudisha list(map(self._proxify, obj))
         # XXX Check for other types -- not currently needed
-        return obj
+        rudisha obj
 
-    def _getresponse(self, myseq, wait):
+    eleza _getresponse(self, myseq, wait):
         self.debug("_getresponse:myseq:", myseq)
-        if threading.current_thread() is self.sockthread:
+        ikiwa threading.current_thread() is self.sockthread:
             # this thread does all reading of requests or responses
             while 1:
                 response = self.pollresponse(myseq, wait)
-                if response is not None:
-                    return response
+                ikiwa response is not None:
+                    rudisha response
         else:
             # wait for notification kutoka socket handling thread
             cvar = self.cvars[myseq]
@@ -323,18 +323,18 @@ class SocketIO(object):
             del self.responses[myseq]
             del self.cvars[myseq]
             cvar.release()
-            return response
+            rudisha response
 
-    def newseq(self):
+    eleza newseq(self):
         self.nextseq = seq = self.nextseq + 2
-        return seq
+        rudisha seq
 
-    def putmessage(self, message):
+    eleza putmessage(self, message):
         self.debug("putmessage:%d:" % message[0])
         try:
             s = dumps(message)
         except pickle.PicklingError:
-            print("Cannot pickle:", repr(message), file=sys.__stderr__)
+            andika("Cannot pickle:", repr(message), file=sys.__stderr__)
             raise
         s = struct.pack("<i", len(s)) + s
         while len(s) > 0:
@@ -349,52 +349,52 @@ class SocketIO(object):
     bufneed = 4
     bufstate = 0 # meaning: 0 => reading count; 1 => reading data
 
-    def pollpacket(self, wait):
+    eleza pollpacket(self, wait):
         self._stage0()
-        if len(self.buff) < self.bufneed:
+        ikiwa len(self.buff) < self.bufneed:
             r, w, x = select.select([self.sock.fileno()], [], [], wait)
-            if len(r) == 0:
-                return None
+            ikiwa len(r) == 0:
+                rudisha None
             try:
                 s = self.sock.recv(BUFSIZE)
             except OSError:
                 raise EOFError
-            if len(s) == 0:
+            ikiwa len(s) == 0:
                 raise EOFError
             self.buff += s
             self._stage0()
-        return self._stage1()
+        rudisha self._stage1()
 
-    def _stage0(self):
-        if self.bufstate == 0 and len(self.buff) >= 4:
+    eleza _stage0(self):
+        ikiwa self.bufstate == 0 and len(self.buff) >= 4:
             s = self.buff[:4]
             self.buff = self.buff[4:]
             self.bufneed = struct.unpack("<i", s)[0]
             self.bufstate = 1
 
-    def _stage1(self):
-        if self.bufstate == 1 and len(self.buff) >= self.bufneed:
+    eleza _stage1(self):
+        ikiwa self.bufstate == 1 and len(self.buff) >= self.bufneed:
             packet = self.buff[:self.bufneed]
             self.buff = self.buff[self.bufneed:]
             self.bufneed = 4
             self.bufstate = 0
-            return packet
+            rudisha packet
 
-    def pollmessage(self, wait):
+    eleza pollmessage(self, wait):
         packet = self.pollpacket(wait)
-        if packet is None:
-            return None
+        ikiwa packet is None:
+            rudisha None
         try:
             message = pickle.loads(packet)
         except pickle.UnpicklingError:
-            print("-----------------------", file=sys.__stderr__)
-            print("cannot unpickle packet:", repr(packet), file=sys.__stderr__)
+            andika("-----------------------", file=sys.__stderr__)
+            andika("cannot unpickle packet:", repr(packet), file=sys.__stderr__)
             traceback.print_stack(file=sys.__stderr__)
-            print("-----------------------", file=sys.__stderr__)
+            andika("-----------------------", file=sys.__stderr__)
             raise
-        return message
+        rudisha message
 
-    def pollresponse(self, myseq, wait):
+    eleza pollresponse(self, myseq, wait):
         """Handle messages received on the socket.
 
         Some messages received may be asynchronous 'call' or 'queue' requests,
@@ -418,7 +418,7 @@ class SocketIO(object):
 
         """
         while 1:
-            # send queued response if there is one available
+            # send queued response ikiwa there is one available
             try:
                 qmsg = response_queue.get(0)
             except queue.Empty:
@@ -430,44 +430,44 @@ class SocketIO(object):
             # poll for message on link
             try:
                 message = self.pollmessage(wait)
-                if message is None:  # socket not ready
-                    return None
+                ikiwa message is None:  # socket not ready
+                    rudisha None
             except EOFError:
                 self.handle_EOF()
-                return None
+                rudisha None
             except AttributeError:
-                return None
+                rudisha None
             seq, resq = message
             how = resq[0]
             self.debug("pollresponse:%d:myseq:%s" % (seq, myseq))
             # process or queue a request
-            if how in ("CALL", "QUEUE"):
+            ikiwa how in ("CALL", "QUEUE"):
                 self.debug("pollresponse:%d:localcall:call:" % seq)
                 response = self.localcall(seq, resq)
                 self.debug("pollresponse:%d:localcall:response:%s"
                            % (seq, response))
-                if how == "CALL":
+                ikiwa how == "CALL":
                     self.putmessage((seq, response))
-                elif how == "QUEUE":
+                elikiwa how == "QUEUE":
                     # don't acknowledge the 'queue' request!
                     pass
                 continue
-            # return if completed message transaction
-            elif seq == myseq:
-                return resq
+            # rudisha ikiwa completed message transaction
+            elikiwa seq == myseq:
+                rudisha resq
             # must be a response for a different thread:
             else:
                 cv = self.cvars.get(seq, None)
                 # response involving unknown sequence number is discarded,
                 # probably intended for prior incarnation of server
-                if cv is not None:
+                ikiwa cv is not None:
                     cv.acquire()
                     self.responses[seq] = resq
                     cv.notify()
                     cv.release()
                 continue
 
-    def handle_EOF(self):
+    eleza handle_EOF(self):
         "action taken upon link being closed by peer"
         self.EOFhook()
         self.debug("handle_EOF")
@@ -480,140 +480,140 @@ class SocketIO(object):
         # call our (possibly overridden) exit function
         self.exithook()
 
-    def EOFhook(self):
+    eleza EOFhook(self):
         "Classes using rpc client/server can override to augment EOF action"
         pass
 
-#----------------- end class SocketIO --------------------
+#----------------- end kundi SocketIO --------------------
 
-class RemoteObject(object):
+kundi RemoteObject(object):
     # Token mix-in class
     pass
 
 
-def remoteref(obj):
+eleza remoteref(obj):
     oid = id(obj)
     objecttable[oid] = obj
-    return RemoteProxy(oid)
+    rudisha RemoteProxy(oid)
 
 
-class RemoteProxy(object):
+kundi RemoteProxy(object):
 
-    def __init__(self, oid):
+    eleza __init__(self, oid):
         self.oid = oid
 
 
-class RPCHandler(socketserver.BaseRequestHandler, SocketIO):
+kundi RPCHandler(socketserver.BaseRequestHandler, SocketIO):
 
     debugging = False
     location = "#S"  # Server
 
-    def __init__(self, sock, addr, svr):
+    eleza __init__(self, sock, addr, svr):
         svr.current_handler = self ## cgt xxx
         SocketIO.__init__(self, sock)
         socketserver.BaseRequestHandler.__init__(self, sock, addr, svr)
 
-    def handle(self):
+    eleza handle(self):
         "handle() method required by socketserver"
         self.mainloop()
 
-    def get_remote_proxy(self, oid):
-        return RPCProxy(self, oid)
+    eleza get_remote_proxy(self, oid):
+        rudisha RPCProxy(self, oid)
 
 
-class RPCClient(SocketIO):
+kundi RPCClient(SocketIO):
 
     debugging = False
     location = "#C"  # Client
 
     nextseq = 1 # Requests coming kutoka the client are odd numbered
 
-    def __init__(self, address, family=socket.AF_INET, type=socket.SOCK_STREAM):
+    eleza __init__(self, address, family=socket.AF_INET, type=socket.SOCK_STREAM):
         self.listening_sock = socket.socket(family, type)
         self.listening_sock.bind(address)
         self.listening_sock.listen(1)
 
-    def accept(self):
+    eleza accept(self):
         working_sock, address = self.listening_sock.accept()
-        if self.debugging:
-            print("****** Connection request kutoka ", address, file=sys.__stderr__)
-        if address[0] == LOCALHOST:
+        ikiwa self.debugging:
+            andika("****** Connection request kutoka ", address, file=sys.__stderr__)
+        ikiwa address[0] == LOCALHOST:
             SocketIO.__init__(self, working_sock)
         else:
-            print("** Invalid host: ", address, file=sys.__stderr__)
+            andika("** Invalid host: ", address, file=sys.__stderr__)
             raise OSError
 
-    def get_remote_proxy(self, oid):
-        return RPCProxy(self, oid)
+    eleza get_remote_proxy(self, oid):
+        rudisha RPCProxy(self, oid)
 
 
-class RPCProxy(object):
+kundi RPCProxy(object):
 
     __methods = None
     __attributes = None
 
-    def __init__(self, sockio, oid):
+    eleza __init__(self, sockio, oid):
         self.sockio = sockio
         self.oid = oid
 
-    def __getattr__(self, name):
-        if self.__methods is None:
+    eleza __getattr__(self, name):
+        ikiwa self.__methods is None:
             self.__getmethods()
-        if self.__methods.get(name):
-            return MethodProxy(self.sockio, self.oid, name)
-        if self.__attributes is None:
+        ikiwa self.__methods.get(name):
+            rudisha MethodProxy(self.sockio, self.oid, name)
+        ikiwa self.__attributes is None:
             self.__getattributes()
-        if name in self.__attributes:
+        ikiwa name in self.__attributes:
             value = self.sockio.remotecall(self.oid, '__getattribute__',
                                            (name,), {})
-            return value
+            rudisha value
         else:
             raise AttributeError(name)
 
-    def __getattributes(self):
+    eleza __getattributes(self):
         self.__attributes = self.sockio.remotecall(self.oid,
                                                 "__attributes__", (), {})
 
-    def __getmethods(self):
+    eleza __getmethods(self):
         self.__methods = self.sockio.remotecall(self.oid,
                                                 "__methods__", (), {})
 
-def _getmethods(obj, methods):
+eleza _getmethods(obj, methods):
     # Helper to get a list of methods kutoka an object
     # Adds names to dictionary argument 'methods'
     for name in dir(obj):
         attr = getattr(obj, name)
-        if callable(attr):
+        ikiwa callable(attr):
             methods[name] = 1
-    if isinstance(obj, type):
+    ikiwa isinstance(obj, type):
         for super in obj.__bases__:
             _getmethods(super, methods)
 
-def _getattributes(obj, attributes):
+eleza _getattributes(obj, attributes):
     for name in dir(obj):
         attr = getattr(obj, name)
-        if not callable(attr):
+        ikiwa not callable(attr):
             attributes[name] = 1
 
 
-class MethodProxy(object):
+kundi MethodProxy(object):
 
-    def __init__(self, sockio, oid, name):
+    eleza __init__(self, sockio, oid, name):
         self.sockio = sockio
         self.oid = oid
         self.name = name
 
-    def __call__(self, /, *args, **kwargs):
+    eleza __call__(self, /, *args, **kwargs):
         value = self.sockio.remotecall(self.oid, self.name, args, kwargs)
-        return value
+        rudisha value
 
 
 # XXX KBK 09Sep03  We need a proper unit test for this module.  Previously
 #                  existing test code was removed at Rev 1.27 (r34098).
 
-def displayhook(value):
+eleza displayhook(value):
     """Override standard display hook to use non-locale encoding"""
-    if value is None:
+    ikiwa value is None:
         return
     # Set '_' to None to avoid recursion
     builtins._ = None
@@ -630,6 +630,6 @@ def displayhook(value):
     builtins._ = value
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_rpc', verbosity=2,)

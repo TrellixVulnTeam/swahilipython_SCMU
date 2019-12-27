@@ -13,43 +13,43 @@ NotDefined = object()
 # arguments.
 dispatch = {
     (False, False, False):
-        lambda args, sep, end, file: print(*args),
+        lambda args, sep, end, file: andika(*args),
     (False, False, True):
-        lambda args, sep, end, file: print(file=file, *args),
+        lambda args, sep, end, file: andika(file=file, *args),
     (False, True,  False):
-        lambda args, sep, end, file: print(end=end, *args),
+        lambda args, sep, end, file: andika(end=end, *args),
     (False, True,  True):
-        lambda args, sep, end, file: print(end=end, file=file, *args),
+        lambda args, sep, end, file: andika(end=end, file=file, *args),
     (True,  False, False):
-        lambda args, sep, end, file: print(sep=sep, *args),
+        lambda args, sep, end, file: andika(sep=sep, *args),
     (True,  False, True):
-        lambda args, sep, end, file: print(sep=sep, file=file, *args),
+        lambda args, sep, end, file: andika(sep=sep, file=file, *args),
     (True,  True,  False):
-        lambda args, sep, end, file: print(sep=sep, end=end, *args),
+        lambda args, sep, end, file: andika(sep=sep, end=end, *args),
     (True,  True,  True):
-        lambda args, sep, end, file: print(sep=sep, end=end, file=file, *args),
+        lambda args, sep, end, file: andika(sep=sep, end=end, file=file, *args),
 }
 
 
 # Class used to test __str__ and print
-class ClassWith__str__:
-    def __init__(self, x):
+kundi ClassWith__str__:
+    eleza __init__(self, x):
         self.x = x
 
-    def __str__(self):
-        return self.x
+    eleza __str__(self):
+        rudisha self.x
 
 
-class TestPrint(unittest.TestCase):
+kundi TestPrint(unittest.TestCase):
     """Test correct operation of the print function."""
 
-    def check(self, expected, args,
+    eleza check(self, expected, args,
               sep=NotDefined, end=NotDefined, file=NotDefined):
         # Capture sys.stdout in a StringIO.  Call print with args,
-        # and with sep, end, and file, if they're defined.  Result
+        # and with sep, end, and file, ikiwa they're defined.  Result
         # must match expected.
 
-        # Look up the actual function to call, based on if sep, end,
+        # Look up the actual function to call, based on ikiwa sep, end,
         # and file are defined.
         fn = dispatch[(sep is not NotDefined,
                        end is not NotDefined,
@@ -60,8 +60,8 @@ class TestPrint(unittest.TestCase):
 
         self.assertEqual(t.getvalue(), expected)
 
-    def test_print(self):
-        def x(expected, args, sep=NotDefined, end=NotDefined):
+    eleza test_andika(self):
+        eleza x(expected, args, sep=NotDefined, end=NotDefined):
             # Run the test 2 ways: not using file, and using
             # file directed to a StringIO.
 
@@ -100,100 +100,100 @@ class TestPrint(unittest.TestCase):
         self.assertRaises(TypeError, print, '', end=3)
         self.assertRaises(AttributeError, print, '', file='')
 
-    def test_print_flush(self):
+    eleza test_print_flush(self):
         # operation of the flush flag
-        class filelike:
-            def __init__(self):
+        kundi filelike:
+            eleza __init__(self):
                 self.written = ''
                 self.flushed = 0
 
-            def write(self, str):
+            eleza write(self, str):
                 self.written += str
 
-            def flush(self):
+            eleza flush(self):
                 self.flushed += 1
 
         f = filelike()
-        print(1, file=f, end='', flush=True)
-        print(2, file=f, end='', flush=True)
-        print(3, file=f, flush=False)
+        andika(1, file=f, end='', flush=True)
+        andika(2, file=f, end='', flush=True)
+        andika(3, file=f, flush=False)
         self.assertEqual(f.written, '123\n')
         self.assertEqual(f.flushed, 2)
 
         # ensure exceptions kutoka flush are passed through
-        class noflush:
-            def write(self, str):
+        kundi noflush:
+            eleza write(self, str):
                 pass
 
-            def flush(self):
+            eleza flush(self):
                 raise RuntimeError
         self.assertRaises(RuntimeError, print, 1, file=noflush(), flush=True)
 
 
-class TestPy2MigrationHint(unittest.TestCase):
+kundi TestPy2MigrationHint(unittest.TestCase):
     """Test that correct hint is produced analogous to Python3 syntax,
-    if print statement is executed as in Python 2.
+    ikiwa print statement is executed as in Python 2.
     """
 
-    def test_normal_string(self):
+    eleza test_normal_string(self):
         python2_print_str = 'print "Hello World"'
         with self.assertRaises(SyntaxError) as context:
             exec(python2_print_str)
 
-        self.assertIn('print("Hello World")', str(context.exception))
+        self.assertIn('andika("Hello World")', str(context.exception))
 
-    def test_string_with_soft_space(self):
+    eleza test_string_with_soft_space(self):
         python2_print_str = 'print "Hello World",'
         with self.assertRaises(SyntaxError) as context:
             exec(python2_print_str)
 
-        self.assertIn('print("Hello World", end=" ")', str(context.exception))
+        self.assertIn('andika("Hello World", end=" ")', str(context.exception))
 
-    def test_string_with_excessive_whitespace(self):
+    eleza test_string_with_excessive_whitespace(self):
         python2_print_str = 'print  "Hello World", '
         with self.assertRaises(SyntaxError) as context:
             exec(python2_print_str)
 
-        self.assertIn('print("Hello World", end=" ")', str(context.exception))
+        self.assertIn('andika("Hello World", end=" ")', str(context.exception))
 
-    def test_string_with_leading_whitespace(self):
-        python2_print_str = '''if 1:
+    eleza test_string_with_leading_whitespace(self):
+        python2_print_str = '''ikiwa 1:
             print "Hello World"
         '''
         with self.assertRaises(SyntaxError) as context:
             exec(python2_print_str)
 
-        self.assertIn('print("Hello World")', str(context.exception))
+        self.assertIn('andika("Hello World")', str(context.exception))
 
     # bpo-32685: Suggestions for print statement should be proper when
     # it is in the same line as the header of a compound statement
     # and/or followed by a semicolon
-    def test_string_with_semicolon(self):
+    eleza test_string_with_semicolon(self):
         python2_print_str = 'print p;'
         with self.assertRaises(SyntaxError) as context:
             exec(python2_print_str)
 
-        self.assertIn('print(p)', str(context.exception))
+        self.assertIn('andika(p)', str(context.exception))
 
-    def test_string_in_loop_on_same_line(self):
+    eleza test_string_in_loop_on_same_line(self):
         python2_print_str = 'for i in s: print i'
         with self.assertRaises(SyntaxError) as context:
             exec(python2_print_str)
 
-        self.assertIn('print(i)', str(context.exception))
+        self.assertIn('andika(i)', str(context.exception))
 
-    def test_stream_redirection_hint_for_py2_migration(self):
+    eleza test_stream_redirection_hint_for_py2_migration(self):
         # Test correct hint produced for Py2 redirection syntax
         with self.assertRaises(TypeError) as context:
             print >> sys.stderr, "message"
-        self.assertIn('Did you mean "print(<message>, '
+        self.assertIn('Did you mean "andika(<message>, '
                 'file=<output_stream>)"?', str(context.exception))
 
         # Test correct hint is produced in the case where RHS implements
         # __rrshift__ but returns NotImplemented
         with self.assertRaises(TypeError) as context:
             print >> 42
-        self.assertIn('Did you mean "print(<message>, '
+        self.assertIn('Did you mean "andika(<message>, '
                 'file=<output_stream>)"?', str(context.exception))
 
         # Test stream redirection hint is specific to print
@@ -207,13 +207,13 @@ class TestPy2MigrationHint(unittest.TestCase):
         self.assertNotIn('Did you mean', str(context.exception))
 
         # Ensure right operand implementing rrshift still works
-        class OverrideRRShift:
-            def __rrshift__(self, lhs):
-                return 42 # Force result independent of LHS
+        kundi OverrideRRShift:
+            eleza __rrshift__(self, lhs):
+                rudisha 42 # Force result independent of LHS
 
         self.assertEqual(print >> OverrideRRShift(), 42)
 
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

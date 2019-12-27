@@ -17,31 +17,31 @@ CERTFILE = os.path.join(here, 'keycert.pem')
 
 # This one's based on HTTPServer, which is based on socketserver
 
-class HTTPSServer(_HTTPServer):
+kundi HTTPSServer(_HTTPServer):
 
-    def __init__(self, server_address, handler_class, context):
+    eleza __init__(self, server_address, handler_class, context):
         _HTTPServer.__init__(self, server_address, handler_class)
         self.context = context
 
-    def __str__(self):
-        return ('<%s %s:%s>' %
+    eleza __str__(self):
+        rudisha ('<%s %s:%s>' %
                 (self.__class__.__name__,
                  self.server_name,
                  self.server_port))
 
-    def get_request(self):
+    eleza get_request(self):
         # override this to wrap socket with SSL
         try:
             sock, addr = self.socket.accept()
             sslconn = self.context.wrap_socket(sock, server_side=True)
         except OSError as e:
             # socket errors are silenced by the caller, print them here
-            if support.verbose:
+            ikiwa support.verbose:
                 sys.stderr.write("Got an error:\n%s\n" % e)
             raise
-        return sslconn, addr
+        rudisha sslconn, addr
 
-class RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
+kundi RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
     # need to override translate_path to get a known root,
     # instead of using os.curdir, since the test could be
     # run kutoka anywhere
@@ -51,7 +51,7 @@ class RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
     # Avoid hanging when a request gets interrupted by the client
     timeout = 5
 
-    def translate_path(self, path):
+    eleza translate_path(self, path):
         """Translate a /-separated PATH to the local filename syntax.
 
         Components that mean special things to the local file system
@@ -69,11 +69,11 @@ class RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
             drive, word = os.path.splitdrive(word)
             head, word = os.path.split(word)
             path = os.path.join(path, word)
-        return path
+        rudisha path
 
-    def log_message(self, format, *args):
+    eleza log_message(self, format, *args):
         # we override this to suppress logging unless "verbose"
-        if support.verbose:
+        ikiwa support.verbose:
             sys.stdout.write(" server (%s:%d %s):\n   [%s] %s\n" %
                              (self.server.server_address,
                               self.server.server_port,
@@ -82,14 +82,14 @@ class RootedHTTPRequestHandler(SimpleHTTPRequestHandler):
                               format%args))
 
 
-class StatsRequestHandler(BaseHTTPRequestHandler):
+kundi StatsRequestHandler(BaseHTTPRequestHandler):
     """Example HTTP request handler which returns SSL statistics on GET
     requests.
     """
 
     server_version = "StatsHTTPS/1.0"
 
-    def do_GET(self, send_body=True):
+    eleza do_GET(self, send_body=True):
         """Serve a GET request."""
         sock = self.rfile.raw._sock
         context = sock.context
@@ -104,51 +104,51 @@ class StatsRequestHandler(BaseHTTPRequestHandler):
         self.send_header("Content-type", "text/plain; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
-        if send_body:
+        ikiwa send_body:
             self.wfile.write(body)
 
-    def do_HEAD(self):
+    eleza do_HEAD(self):
         """Serve a HEAD request."""
         self.do_GET(send_body=False)
 
-    def log_request(self, format, *args):
-        if support.verbose:
+    eleza log_request(self, format, *args):
+        ikiwa support.verbose:
             BaseHTTPRequestHandler.log_request(self, format, *args)
 
 
-class HTTPSServerThread(threading.Thread):
+kundi HTTPSServerThread(threading.Thread):
 
-    def __init__(self, context, host=HOST, handler_class=None):
+    eleza __init__(self, context, host=HOST, handler_class=None):
         self.flag = None
         self.server = HTTPSServer((host, 0),
-                                  handler_class or RootedHTTPRequestHandler,
+                                  handler_kundi or RootedHTTPRequestHandler,
                                   context)
         self.port = self.server.server_port
         threading.Thread.__init__(self)
         self.daemon = True
 
-    def __str__(self):
-        return "<%s %s>" % (self.__class__.__name__, self.server)
+    eleza __str__(self):
+        rudisha "<%s %s>" % (self.__class__.__name__, self.server)
 
-    def start(self, flag=None):
+    eleza start(self, flag=None):
         self.flag = flag
         threading.Thread.start(self)
 
-    def run(self):
-        if self.flag:
+    eleza run(self):
+        ikiwa self.flag:
             self.flag.set()
         try:
             self.server.serve_forever(0.05)
         finally:
             self.server.server_close()
 
-    def stop(self):
+    eleza stop(self):
         self.server.shutdown()
 
 
-def make_https_server(case, *, context=None, certfile=CERTFILE,
+eleza make_https_server(case, *, context=None, certfile=CERTFILE,
                       host=HOST, handler_class=None):
-    if context is None:
+    ikiwa context is None:
         context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
     # We assume the certfile contains both private key and certificate
     context.load_cert_chain(certfile)
@@ -156,18 +156,18 @@ def make_https_server(case, *, context=None, certfile=CERTFILE,
     flag = threading.Event()
     server.start(flag)
     flag.wait()
-    def cleanup():
-        if support.verbose:
+    eleza cleanup():
+        ikiwa support.verbose:
             sys.stdout.write('stopping HTTPS server\n')
         server.stop()
-        if support.verbose:
+        ikiwa support.verbose:
             sys.stdout.write('joining HTTPS thread\n')
         server.join()
     case.addCleanup(cleanup)
-    return server
+    rudisha server
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     agiza argparse
     parser = argparse.ArgumentParser(
         description='Run a test HTTPS server. '
@@ -177,7 +177,7 @@ if __name__ == "__main__":
     parser.add_argument('-q', '--quiet', dest='verbose', default=True,
                         action='store_false', help='be less verbose')
     parser.add_argument('-s', '--stats', dest='use_stats_handler', default=False,
-                        action='store_true', help='always return stats page')
+                        action='store_true', help='always rudisha stats page')
     parser.add_argument('--curve-name', dest='curve_name', type=str,
                         action='store',
                         help='curve name for EC-based Diffie-Hellman')
@@ -188,21 +188,21 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     support.verbose = args.verbose
-    if args.use_stats_handler:
-        handler_class = StatsRequestHandler
+    ikiwa args.use_stats_handler:
+        handler_kundi = StatsRequestHandler
     else:
-        handler_class = RootedHTTPRequestHandler
+        handler_kundi = RootedHTTPRequestHandler
         handler_class.root = os.getcwd()
     context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
     context.load_cert_chain(CERTFILE)
-    if args.curve_name:
+    ikiwa args.curve_name:
         context.set_ecdh_curve(args.curve_name)
-    if args.dh_file:
+    ikiwa args.dh_file:
         context.load_dh_params(args.dh_file)
-    if args.ciphers:
+    ikiwa args.ciphers:
         context.set_ciphers(args.ciphers)
 
     server = HTTPSServer(("", args.port), handler_class, context)
-    if args.verbose:
-        print("Listening on https://localhost:{0.port}".format(args))
+    ikiwa args.verbose:
+        andika("Listening on https://localhost:{0.port}".format(args))
     server.serve_forever(0.1)

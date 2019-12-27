@@ -135,8 +135,8 @@ foo#bar\nbaz|foo|baz|
 áéíóú|áéíóú|
 """
 
-class ShlexTest(unittest.TestCase):
-    def setUp(self):
+kundi ShlexTest(unittest.TestCase):
+    eleza setUp(self):
         self.data = [x.split("|")[:-1]
                      for x in data.splitlines()]
         self.posix_data = [x.split("|")[:-1]
@@ -146,27 +146,27 @@ class ShlexTest(unittest.TestCase):
         for item in self.posix_data:
             item[0] = item[0].replace(r"\n", "\n")
 
-    def splitTest(self, data, comments):
+    eleza splitTest(self, data, comments):
         for i in range(len(data)):
             l = shlex.split(data[i][0], comments=comments)
             self.assertEqual(l, data[i][1:],
                              "%s: %s != %s" %
                              (data[i][0], l, data[i][1:]))
 
-    def oldSplit(self, s):
+    eleza oldSplit(self, s):
         ret = []
         lex = shlex.shlex(io.StringIO(s))
         tok = lex.get_token()
         while tok:
             ret.append(tok)
             tok = lex.get_token()
-        return ret
+        rudisha ret
 
-    def testSplitPosix(self):
+    eleza testSplitPosix(self):
         """Test data splitting with posix parser"""
         self.splitTest(self.posix_data, comments=True)
 
-    def testCompat(self):
+    eleza testCompat(self):
         """Test compatibility interface"""
         for i in range(len(self.data)):
             l = self.oldSplit(self.data[i][0])
@@ -174,7 +174,7 @@ class ShlexTest(unittest.TestCase):
                              "%s: %s != %s" %
                              (self.data[i][0], l, self.data[i][1:]))
 
-    def testSyntaxSplitAmpersandAndPipe(self):
+    eleza testSyntaxSplitAmpersandAndPipe(self):
         """Test handling of syntax splitting of &, |"""
         # Could take these forms: &&, &, |&, ;&, ;;&
         # of course, the same applies to | and ||
@@ -191,7 +191,7 @@ class ShlexTest(unittest.TestCase):
                 self.assertEqual(ref, result,
                                  "While splitting '%s' [ws=%s]" % (ss, ws))
 
-    def testSyntaxSplitSemicolon(self):
+    eleza testSyntaxSplitSemicolon(self):
         """Test handling of syntax splitting of ;"""
         # Could take these forms: ;, ;;, ;&, ;;&
         # these should all parse to the same output
@@ -207,7 +207,7 @@ class ShlexTest(unittest.TestCase):
                 self.assertEqual(ref, result,
                                  "While splitting '%s' [ws=%s]" % (ss, ws))
 
-    def testSyntaxSplitRedirect(self):
+    eleza testSyntaxSplitRedirect(self):
         """Test handling of syntax splitting of >"""
         # of course, the same applies to <, |
         # these should all parse to the same output
@@ -222,7 +222,7 @@ class ShlexTest(unittest.TestCase):
                 self.assertEqual(ref, result,
                                  "While splitting '%s' [ws=%s]" % (ss, ws))
 
-    def testSyntaxSplitParen(self):
+    eleza testSyntaxSplitParen(self):
         """Test handling of syntax splitting of ()"""
         # these should all parse to the same output
         src = ['( echo hi )',
@@ -235,7 +235,7 @@ class ShlexTest(unittest.TestCase):
             self.assertEqual(ref, result,
                              "While splitting '%s' [ws=%s]" % (ss, ws))
 
-    def testSyntaxSplitCustom(self):
+    eleza testSyntaxSplitCustom(self):
         """Test handling of syntax splitting with custom chars"""
         ss = "~/a&&b-c --color=auto||d *.py?"
         ref = ['~/a', '&', '&', 'b-c', '--color=auto', '||', 'd', '*.py?']
@@ -248,7 +248,7 @@ class ShlexTest(unittest.TestCase):
         result = list(s)
         self.assertEqual(ref, result, "While splitting '%s' [ws=True]" % ss)
 
-    def testTokenTypes(self):
+    eleza testTokenTypes(self):
         """Test that tokens are split with types as expected."""
         for source, expected in (
                                 ('a && b || c',
@@ -259,22 +259,22 @@ class ShlexTest(unittest.TestCase):
             observed = []
             while True:
                 t = s.get_token()
-                if t == s.eof:
+                ikiwa t == s.eof:
                     break
-                if t[0] in s.punctuation_chars:
+                ikiwa t[0] in s.punctuation_chars:
                     tt = 'c'
                 else:
                     tt = 'a'
                 observed.append((t, tt))
             self.assertEqual(observed, expected)
 
-    def testPunctuationInWordChars(self):
+    eleza testPunctuationInWordChars(self):
         """Test that any punctuation chars are removed kutoka wordchars"""
         s = shlex.shlex('a_b__c', punctuation_chars='_')
         self.assertNotIn('_', s.wordchars)
         self.assertEqual(list(s), ['a', '_', 'b', '__', 'c'])
 
-    def testPunctuationWithWhitespaceSplit(self):
+    eleza testPunctuationWithWhitespaceSplit(self):
         """Test that with whitespace_split, behaviour is as expected"""
         s = shlex.shlex('a  && b  ||  c', punctuation_chars='&')
         # whitespace_split is False, so splitting will be based on
@@ -286,7 +286,7 @@ class ShlexTest(unittest.TestCase):
         # white space
         self.assertEqual(list(s), ['a', '&&', 'b', '||', 'c'])
 
-    def testPunctuationWithPosix(self):
+    eleza testPunctuationWithPosix(self):
         """Test that punctuation_chars and posix behave correctly together."""
         # see Issue #29132
         s = shlex.shlex('f >"abc"', posix=True, punctuation_chars=True)
@@ -294,7 +294,7 @@ class ShlexTest(unittest.TestCase):
         s = shlex.shlex('f >\\"abc\\"', posix=True, punctuation_chars=True)
         self.assertEqual(list(s), ['f', '>', '"abc"'])
 
-    def testEmptyStringHandling(self):
+    eleza testEmptyStringHandling(self):
         """Test that parsing of empty strings is correctly handled."""
         # see Issue #21999
         expected = ['', ')', 'abc']
@@ -306,7 +306,7 @@ class ShlexTest(unittest.TestCase):
         s = shlex.shlex("'')abc", punctuation_chars=True)
         self.assertEqual(list(s), expected)
 
-    def testUnicodeHandling(self):
+    eleza testUnicodeHandling(self):
         """Test punctuation_chars and whitespace_split handle unicode."""
         ss = "\u2119\u01b4\u2602\u210c\u00f8\u1f24"
         # Should be parsed as one complete token (whitespace_split=True).
@@ -319,7 +319,7 @@ class ShlexTest(unittest.TestCase):
         s = shlex.shlex(ss, punctuation_chars=True)
         self.assertEqual(list(s), ref)
 
-    def testQuote(self):
+    eleza testQuote(self):
         safeunquoted = string.ascii_letters + string.digits + '@%_-+=:,./'
         unicode_sample = '\xe9\xe0\xdf'  # e + acute accent, a + grave, sharp s
         unsafe = '"`$\\!' + unicode_sample
@@ -334,7 +334,7 @@ class ShlexTest(unittest.TestCase):
             self.assertEqual(shlex.quote("test%s'name'" % u),
                              "'test%s'\"'\"'name'\"'\"''" % u)
 
-    def testJoin(self):
+    eleza testJoin(self):
         for split_command, command in [
             (['a ', 'b'], "'a ' b"),
             (['a', ' b'], "a ' b'"),
@@ -345,7 +345,7 @@ class ShlexTest(unittest.TestCase):
                 joined = shlex.join(split_command)
                 self.assertEqual(joined, command)
 
-    def testJoinRoundtrip(self):
+    eleza testJoinRoundtrip(self):
         all_data = self.data + self.posix_data
         for command, *split_command in all_data:
             with self.subTest(command=command):
@@ -353,7 +353,7 @@ class ShlexTest(unittest.TestCase):
                 resplit = shlex.split(joined)
                 self.assertEqual(split_command, resplit)
 
-    def testPunctuationCharsReadOnly(self):
+    eleza testPunctuationCharsReadOnly(self):
         punctuation_chars = "/|$%^"
         shlex_instance = shlex.shlex(punctuation_chars=punctuation_chars)
         self.assertEqual(shlex_instance.punctuation_chars, punctuation_chars)
@@ -362,10 +362,10 @@ class ShlexTest(unittest.TestCase):
 
 
 # Allow this test to be used with old shlex.py
-if not getattr(shlex, "split", None):
+ikiwa not getattr(shlex, "split", None):
     for methname in dir(ShlexTest):
-        if methname.startswith("test") and methname != "testCompat":
+        ikiwa methname.startswith("test") and methname != "testCompat":
             delattr(ShlexTest, methname)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

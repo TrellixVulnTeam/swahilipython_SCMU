@@ -1,2 +1,2 @@
-kutoka .from_cycle2 agiza a
+kutoka .kutoka_cycle2 agiza a
 b = 1

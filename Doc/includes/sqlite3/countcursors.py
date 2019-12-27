@@ -1,6 +1,6 @@
 agiza sqlite3
 
-class CountCursorsConnection(sqlite3.Connection):
+kundi CountCursorsConnection(sqlite3.Connection):
     def __init__(self, *args, **kwargs):
         sqlite3.Connection.__init__(self, *args, **kwargs)
         self.numcursors = 0

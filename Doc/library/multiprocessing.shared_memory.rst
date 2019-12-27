@@ -66,7 +66,7 @@ copying of data.
 
    .. method:: close()
 
-      Closes access to the shared memory from this instance.  In order to
+      Closes access to the shared memory kutoka this instance.  In order to
       ensure proper cleanup of resources, all instances should call
       ``close()`` once the instance is no longer needed.  Note that calling
       ``close()`` does not cause the shared memory block itself to be
@@ -101,10 +101,10 @@ copying of data.
 The following example demonstrates low-level use of :class:`SharedMemory`
 instances::
 
-   >>> from multiprocessing import shared_memory
+   >>> kutoka multiprocessing agiza shared_memory
    >>> shm_a = shared_memory.SharedMemory(create=True, size=10)
    >>> type(shm_a.buf)
-   <class 'memoryview'>
+   <kundi 'memoryview'>
    >>> buffer = shm_a.buf
    >>> len(buffer)
    10
@@ -112,7 +112,7 @@ instances::
    >>> buffer[4] = 100                           # Modify single byte at a time
    >>> # Attach to an existing shared memory block
    >>> shm_b = shared_memory.SharedMemory(shm_a.name)
-   >>> import array
+   >>> agiza array
    >>> array.array('b', shm_b.buf[:5])  # Copy the data into a new array.array
    array('b', [22, 33, 44, 55, 100])
    >>> shm_b.buf[:5] = b'howdy'  # Modify via shm_b using bytes
@@ -125,16 +125,16 @@ instances::
 
 
 The following example demonstrates a practical use of the :class:`SharedMemory`
-class with `NumPy arrays <https://www.numpy.org/>`_, accessing the
-same ``numpy.ndarray`` from two distinct Python shells:
+kundi with `NumPy arrays <https://www.numpy.org/>`_, accessing the
+same ``numpy.ndarray`` kutoka two distinct Python shells:
 
 .. doctest::
    :options: +SKIP
 
    >>> # In the first Python interactive shell
-   >>> import numpy as np
+   >>> agiza numpy as np
    >>> a = np.array([1, 1, 2, 3, 5, 8])  # Start with an existing NumPy array
-   >>> from multiprocessing import shared_memory
+   >>> kutoka multiprocessing agiza shared_memory
    >>> shm = shared_memory.SharedMemory(create=True, size=a.nbytes)
    >>> # Now create a NumPy array backed by shared memory
    >>> b = np.ndarray(a.shape, dtype=a.dtype, buffer=shm.buf)
@@ -142,15 +142,15 @@ same ``numpy.ndarray`` from two distinct Python shells:
    >>> b
    array([1, 1, 2, 3, 5, 8])
    >>> type(b)
-   <class 'numpy.ndarray'>
+   <kundi 'numpy.ndarray'>
    >>> type(a)
-   <class 'numpy.ndarray'>
+   <kundi 'numpy.ndarray'>
    >>> shm.name  # We did not specify a name so one was chosen for us
    'psm_21467_46075'
 
    >>> # In either the same shell or a new Python shell on the same machine
-   >>> import numpy as np
-   >>> from multiprocessing import shared_memory
+   >>> agiza numpy as np
+   >>> kutoka multiprocessing agiza shared_memory
    >>> # Attach to the existing shared memory block
    >>> existing_shm = shared_memory.SharedMemory(name='psm_21467_46075')
    >>> # Note that a.shape is (6,) and a.dtype is np.int64 in this example
@@ -165,11 +165,11 @@ same ``numpy.ndarray`` from two distinct Python shells:
    >>> b
    array([  1,   1,   2,   3,   5, 888])
 
-   >>> # Clean up from within the second Python shell
+   >>> # Clean up kutoka within the second Python shell
    >>> del c  # Unnecessary; merely emphasizing the array is no longer used
    >>> existing_shm.close()
 
-   >>> # Clean up from within the first Python shell
+   >>> # Clean up kutoka within the first Python shell
    >>> del b  # Unnecessary; merely emphasizing the array is no longer used
    >>> shm.close()
    >>> shm.unlink()  # Free and release the shared memory block at the very end
@@ -178,7 +178,7 @@ same ``numpy.ndarray`` from two distinct Python shells:
 .. class:: SharedMemoryManager([address[, authkey]])
    :module: multiprocessing.managers
 
-   A subclass of :class:`~multiprocessing.managers.BaseManager` which can be
+   A subkundi of :class:`~multiprocessing.managers.BaseManager` which can be
    used for the management of shared memory blocks across processes.
 
    A call to :meth:`~multiprocessing.managers.BaseManager.start` on a
@@ -193,14 +193,14 @@ same ``numpy.ndarray`` from two distinct Python shells:
    through a ``SharedMemoryManager``, we avoid the need to manually track
    and trigger the freeing of shared memory resources.
 
-   This class provides methods for creating and returning :class:`SharedMemory`
+   This kundi provides methods for creating and returning :class:`SharedMemory`
    instances and for creating a list-like object (:class:`ShareableList`)
    backed by shared memory.
 
    Refer to :class:`multiprocessing.managers.BaseManager` for a description
    of the inherited *address* and *authkey* optional input arguments and how
    they may be used to connect to an existing ``SharedMemoryManager`` service
-   from other processes.
+   kutoka other processes.
 
    .. method:: SharedMemory(size)
 
@@ -210,7 +210,7 @@ same ``numpy.ndarray`` from two distinct Python shells:
    .. method:: ShareableList(sequence)
 
       Create and return a new :class:`ShareableList` object, initialized
-      by the values from the input ``sequence``.
+      by the values kutoka the input ``sequence``.
 
 
 The following example demonstrates the basic mechanisms of a
@@ -219,7 +219,7 @@ The following example demonstrates the basic mechanisms of a
 .. doctest::
    :options: +SKIP
 
-   >>> from multiprocessing.managers import SharedMemoryManager
+   >>> kutoka multiprocessing.managers agiza SharedMemoryManager
    >>> smm = SharedMemoryManager()
    >>> smm.start()  # Start the process that manages the shared memory blocks
    >>> sl = smm.ShareableList(range(4))
@@ -261,7 +261,7 @@ shared memory blocks created using that manager are all released when the
    stored in a shared memory block.  This constrains storable values to
    only the ``int``, ``float``, ``bool``, ``str`` (less than 10M bytes each),
    ``bytes`` (less than 10M bytes each), and ``None`` built-in data types.
-   It also notably differs from the built-in ``list`` type in that these
+   It also notably differs kutoka the built-in ``list`` type in that these
    lists can not change their overall length (i.e. no append, insert, etc.)
    and do not support the dynamic creation of new :class:`ShareableList`
    instances via slicing.
@@ -297,10 +297,10 @@ shared memory blocks created using that manager are all released when the
 The following example demonstrates basic use of a :class:`ShareableList`
 instance:
 
-   >>> from multiprocessing import shared_memory
+   >>> kutoka multiprocessing agiza shared_memory
    >>> a = shared_memory.ShareableList(['howdy', b'HoWdY', -273.154, 100, None, True, 42])
    >>> [ type(entry) for entry in a ]
-   [<class 'str'>, <class 'bytes'>, <class 'float'>, <class 'int'>, <class 'NoneType'>, <class 'bool'>, <class 'int'>]
+   [<kundi 'str'>, <kundi 'bytes'>, <kundi 'float'>, <kundi 'int'>, <kundi 'NoneType'>, <kundi 'bool'>, <kundi 'int'>]
    >>> a[2]
    -273.154
    >>> a[2] = -78.5

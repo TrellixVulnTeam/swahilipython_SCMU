@@ -97,8 +97,8 @@ can be manually configured to use :class:`~selectors.SelectSelector`
 or :class:`~selectors.PollSelector` to support character devices on
 these older versions of macOS.  Example::
 
-    import asyncio
-    import selectors
+    agiza asyncio
+    agiza selectors
 
     selector = selectors.SelectSelector()
     loop = asyncio.SelectorEventLoop(selector)

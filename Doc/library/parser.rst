@@ -21,7 +21,7 @@
 The :mod:`parser` module provides an interface to Python's internal parser and
 byte-code compiler.  The primary purpose for this interface is to allow Python
 code to edit the parse tree of a Python expression and create executable code
-from this.  This is better than trying to parse and modify an arbitrary Python
+kutoka this.  This is better than trying to parse and modify an arbitrary Python
 code fragment as a string because parsing is performed in a manner identical to
 the code forming the application.  It is also faster.
 
@@ -39,18 +39,18 @@ presented.
 Most importantly, a good understanding of the Python grammar processed by the
 internal parser is required.  For full information on the language syntax, refer
 to :ref:`reference-index`.  The parser
-itself is created from a grammar specification defined in the file
+itself is created kutoka a grammar specification defined in the file
 :file:`Grammar/Grammar` in the standard Python distribution.  The parse trees
-stored in the ST objects created by this module are the actual output from the
+stored in the ST objects created by this module are the actual output kutoka the
 internal parser when created by the :func:`expr` or :func:`suite` functions,
 described below.  The ST objects created by :func:`sequence2st` faithfully
 simulate those structures.  Be aware that the values of the sequences which are
-considered "correct" will vary from one version of Python to another as the
-formal grammar for the language is revised.  However, transporting code from one
+considered "correct" will vary kutoka one version of Python to another as the
+formal grammar for the language is revised.  However, transporting code kutoka one
 Python version to another as source text will always allow correct parse trees
 to be created in the target version, with the only restriction being that
 migrating to an older version of the interpreter will not support more recent
-language constructs.  The parse trees are not typically compatible from one
+language constructs.  The parse trees are not typically compatible kutoka one
 version to another, though source code has usually been forward-compatible within
 a major release series.
 
@@ -82,7 +82,7 @@ but are provided for three purposes: to allow an application to amortize the
 cost of processing complex parse trees, to provide a parse tree representation
 which conserves memory space when compared to the Python list or tuple
 representation, and to ease the creation of additional modules in C which
-manipulate parse trees.  A simple "wrapper" class may be created in Python to
+manipulate parse trees.  A simple "wrapper" kundi may be created in Python to
 hide the use of ST objects.
 
 The :mod:`parser` module defines functions for a few distinct purposes.  The
@@ -107,8 +107,8 @@ ST object.
 Creating ST Objects
 -------------------
 
-ST objects may be created from source code or from a parse tree. When creating
-an ST object from source, different functions are used to create the ``'eval'``
+ST objects may be created kutoka source code or kutoka a parse tree. When creating
+an ST object kutoka source, different functions are used to create the ``'eval'``
 and ``'exec'`` forms.
 
 
@@ -133,7 +133,7 @@ and ``'exec'`` forms.
    This function accepts a parse tree represented as a sequence and builds an
    internal representation if possible.  If it can validate that the tree conforms
    to the Python grammar and all nodes are valid node types in the host version of
-   Python, an ST object is created from the internal representation and returned
+   Python, an ST object is created kutoka the internal representation and returned
    to the called.  If there is a problem creating the internal representation, or
    if the tree cannot be validated, a :exc:`ParserError` exception is raised.  An
    ST object created this way should not be assumed to compile correctly; normal
@@ -169,7 +169,7 @@ numbering information.
 
 .. function:: st2list(st, line_info=False, col_info=False)
 
-   This function accepts an ST object from the caller in *st* and returns a
+   This function accepts an ST object kutoka the caller in *st* and returns a
    Python list representing the equivalent parse tree.  The resulting list
    representation can be used for inspection or the creation of a new parse tree in
    list form.  This function does not fail so long as memory is available to build
@@ -187,7 +187,7 @@ numbering information.
 
 .. function:: st2tuple(st, line_info=False, col_info=False)
 
-   This function accepts an ST object from the caller in *st* and returns a
+   This function accepts an ST object kutoka the caller in *st* and returns a
    Python tuple representing the equivalent parse tree.  Other than returning a
    tuple instead of a list, this function is identical to :func:`st2list`.
 
@@ -205,7 +205,7 @@ numbering information.
    The Python byte compiler can be invoked on an ST object to produce code objects
    which can be used as part of a call to the built-in :func:`exec` or :func:`eval`
    functions. This function provides the interface to the compiler, passing the
-   internal parse tree from *st* to the parser, using the source file name
+   internal parse tree kutoka *st* to the parser, using the source file name
    specified by the *filename* parameter. The default value supplied for *filename*
    indicates that the source was an ST object.
 
@@ -226,8 +226,8 @@ Queries on ST Objects
 
 Two functions are provided which allow an application to determine if an ST was
 created as an expression or a suite.  Neither of these functions can be used to
-determine if an ST was created from source code via :func:`expr` or
-:func:`suite` or from a parse tree via :func:`sequence2st`.
+determine if an ST was created kutoka source code via :func:`expr` or
+:func:`suite` or kutoka a parse tree via :func:`sequence2st`.
 
 
 .. function:: isexpr(st)
@@ -255,7 +255,7 @@ Exceptions and Error Handling
 -----------------------------
 
 The parser module defines a single exception, but may also pass other built-in
-exceptions from other portions of the Python runtime environment.  See each
+exceptions kutoka other portions of the Python runtime environment.  See each
 function for information about the exceptions it can raise.
 
 
@@ -265,7 +265,7 @@ function for information about the exceptions it can raise.
    generally produced for validation failures rather than the built-in
    :exc:`SyntaxError` raised during normal parsing. The exception argument is
    either a string describing the reason of the failure or a tuple containing a
-   sequence causing the failure from a parse tree passed to :func:`sequence2st`
+   sequence causing the failure kutoka a parse tree passed to :func:`sequence2st`
    and an explanatory string.  Calls to :func:`sequence2st` need to be able to
    handle either type of exception, while calls to other functions in the module
    will only need to be aware of the simple string values.
@@ -336,7 +336,7 @@ to the code ::
 The equivalent operation using the :mod:`parser` module is somewhat longer, and
 allows the intermediate internal parse tree to be retained as an ST object::
 
-   >>> import parser
+   >>> agiza parser
    >>> st = parser.expr('a + 5')
    >>> code = st.compile('file.py')
    >>> a = 5
@@ -346,7 +346,7 @@ allows the intermediate internal parse tree to be retained as an ST object::
 An application which needs both ST and code objects can package this code into
 readily available functions::
 
-   import parser
+   agiza parser
 
    def load_suite(source_string):
        st = parser.suite(source_string)

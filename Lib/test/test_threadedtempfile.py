@@ -29,11 +29,11 @@ FILES_PER_THREAD = 50
 startEvent = threading.Event()
 
 
-class TempFileGreedy(threading.Thread):
+kundi TempFileGreedy(threading.Thread):
     error_count = 0
     ok_count = 0
 
-    def run(self):
+    eleza run(self):
         self.errors = io.StringIO()
         startEvent.wait()
         for i in range(FILES_PER_THREAD):
@@ -47,19 +47,19 @@ class TempFileGreedy(threading.Thread):
                 self.ok_count += 1
 
 
-class ThreadedTempFileTest(unittest.TestCase):
-    def test_main(self):
+kundi ThreadedTempFileTest(unittest.TestCase):
+    eleza test_main(self):
         threads = [TempFileGreedy() for i in range(NUM_THREADS)]
         with start_threads(threads, startEvent.set):
             pass
         ok = sum(t.ok_count for t in threads)
         errors = [str(t.name) + str(t.errors.getvalue())
-                  for t in threads if t.error_count]
+                  for t in threads ikiwa t.error_count]
 
         msg = "Errors: errors %d ok %d\n%s" % (len(errors), ok,
             '\n'.join(errors))
         self.assertEqual(errors, [], msg)
         self.assertEqual(ok, NUM_THREADS * FILES_PER_THREAD)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

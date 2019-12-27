@@ -282,16 +282,16 @@ Functions to preinitialize Python:
 
 .. c:function:: PyStatus Py_PreInitialize(const PyPreConfig *preconfig)
 
-   Preinitialize Python from *preconfig* preconfiguration.
+   Preinitialize Python kutoka *preconfig* preconfiguration.
 
 .. c:function:: PyStatus Py_PreInitializeFromBytesArgs(const PyPreConfig *preconfig, int argc, char * const *argv)
 
-   Preinitialize Python from *preconfig* preconfiguration and command line
+   Preinitialize Python kutoka *preconfig* preconfiguration and command line
    arguments (bytes strings).
 
 .. c:function:: PyStatus Py_PreInitializeFromArgs(const PyPreConfig *preconfig, int argc, wchar_t * const * argv)
 
-   Preinitialize Python from *preconfig* preconfiguration and command line
+   Preinitialize Python kutoka *preconfig* preconfiguration and command line
    arguments (wide strings).
 
 The caller is responsible to handle exceptions (error or exit) using
@@ -367,7 +367,7 @@ PyConfig
 
    .. c:function:: PyStatus PyConfig_SetArgv(PyConfig *config, int argc, wchar_t * const *argv)
 
-      Set command line arguments from wide character strings.
+      Set command line arguments kutoka wide character strings.
 
       Preinitialize Python if needed.
 
@@ -506,12 +506,12 @@ PyConfig
 
       Python home directory.
 
-      Initialized from :envvar:`PYTHONHOME` environment variable value by
+      Initialized kutoka :envvar:`PYTHONHOME` environment variable value by
       default.
 
    .. c:member:: int import_time
 
-      If non-zero, profile import time.
+      If non-zero, profile agiza time.
 
    .. c:member:: int inspect
 
@@ -529,10 +529,10 @@ PyConfig
 
       If greater than 0, enable isolated mode:
 
-      * :data:`sys.path` contains neither the script's directory (computed from
+      * :data:`sys.path` contains neither the script's directory (computed kutoka
         ``argv[0]`` or the current directory) nor the user's site-packages
         directory.
-      * Python REPL doesn't import :mod:`readline` nor enable default readline
+      * Python REPL doesn't agiza :mod:`readline` nor enable default readline
         configuration on interactive prompts.
       * Set :c:member:`~PyConfig.use_environment` and
         :c:member:`~PyConfig.user_site_directory` to 0.
@@ -558,7 +558,7 @@ PyConfig
       Module search paths as a string separated by ``DELIM``
       (:data:`os.path.pathsep`).
 
-      Initialized from :envvar:`PYTHONPATH` environment variable value by
+      Initialized kutoka :envvar:`PYTHONPATH` environment variable value by
       default.
 
    .. c:member:: PyWideStringList module_search_paths
@@ -580,7 +580,7 @@ PyConfig
    .. c:member:: int parse_argv
 
       If non-zero, parse :c:member:`~PyConfig.argv` the same way the regular
-      Python command line arguments, and strip Python arguments from
+      Python command line arguments, and strip Python arguments kutoka
       :c:member:`~PyConfig.argv`: see :ref:`Command Line Arguments
       <using-on-cmdline>`.
 
@@ -696,7 +696,7 @@ PyConfig
 
 If ``parse_argv`` is non-zero, ``argv`` arguments are parsed the same
 way the regular Python parses command line arguments, and Python
-arguments are stripped from ``argv``: see :ref:`Command Line Arguments
+arguments are stripped kutoka ``argv``: see :ref:`Command Line Arguments
 <using-on-cmdline>`.
 
 The ``xoptions`` options are parsed to set other options: see :option:`-X`
@@ -710,7 +710,7 @@ Function to initialize Python:
 
 .. c:function:: PyStatus Py_InitializeFromConfig(const PyConfig *config)
 
-   Initialize Python from *config* configuration.
+   Initialize Python kutoka *config* configuration.
 
 The caller is responsible to handle exceptions (error or exit) using
 :c:func:`PyStatus_Exception` and :c:func:`Py_ExitStatusException`.
@@ -758,7 +758,7 @@ configuration, and then override some parameters::
         PyConfig_InitPythonConfig(&config);
 
         /* Set the program name before reading the configuraton
-           (decode byte string from the locale encoding).
+           (decode byte string kutoka the locale encoding).
 
            Implicitly preinitialize Python. */
         status = PyConfig_SetBytesString(&config, &config.program_name,
@@ -802,7 +802,7 @@ Isolated Configuration
 
 :c:func:`PyPreConfig_InitIsolatedConfig` and
 :c:func:`PyConfig_InitIsolatedConfig` functions create a configuration to
-isolate Python from the system. For example, to embed Python into an
+isolate Python kutoka the system. For example, to embed Python into an
 application.
 
 This configuration ignores global configuration variables, environments
@@ -883,7 +883,7 @@ Path Configuration
   * :c:member:`PyConfig.pythonpath_env`
   * current working directory: to get absolute paths
   * ``PATH`` environment variable to get the program full path
-    (from :c:member:`PyConfig.program_name`)
+    (kutoka :c:member:`PyConfig.program_name`)
   * ``__PYVENV_LAUNCHER__`` environment variable
   * (Windows only) Application paths in the registry under
     "Software\Python\PythonCore\X.Y\PythonPath" of HKEY_CURRENT_USER and
@@ -917,7 +917,7 @@ Set :c:member:`~PyConfig.pathconfig_warnings` to 0 to suppress warnings when
 calculating the path configuration (Unix only, Windows does not log any warning).
 
 If :c:member:`~PyConfig.base_prefix` or :c:member:`~PyConfig.base_exec_prefix`
-fields are not set, they inherit their value from :c:member:`~PyConfig.prefix`
+fields are not set, they inherit their value kutoka :c:member:`~PyConfig.prefix`
 and :c:member:`~PyConfig.exec_prefix` respectively.
 
 :c:func:`Py_RunMain` and :c:func:`Py_Main` modify :data:`sys.path`:
@@ -1007,7 +1007,7 @@ No module is imported during the "Core" phase and the ``importlib`` module is
 not configured: the :ref:`Path Configuration <init-path-config>` is only
 applied during the "Main" phase. It may allow to customize Python in Python to
 override or tune the :ref:`Path Configuration <init-path-config>`, maybe
-install a custom :data:`sys.meta_path` importer or an import hook, etc.
+install a custom :data:`sys.meta_path` importer or an agiza hook, etc.
 
 It may become possible to calculatin the :ref:`Path Configuration
 <init-path-config>` in Python, after the Core phase and before the Main phase,
@@ -1040,7 +1040,7 @@ phases::
         /* Use sys.stderr because sys.stdout is only created
            by _Py_InitializeMain() */
         int res = PyRun_SimpleString(
-            "import sys; "
+            "agiza sys; "
             "print('Run Python code before _Py_InitializeMain', "
                    "file=sys.stderr)");
         if (res < 0) {

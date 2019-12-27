@@ -18,8 +18,8 @@ except LookupError:
 
 
 
-class TestEmailAsianCodecs(TestEmailBase):
-    def test_japanese_codecs(self):
+kundi TestEmailAsianCodecs(TestEmailBase):
+    eleza test_japanese_codecs(self):
         eq = self.ndiffAssertEqual
         jcode = "euc-jp"
         gcode = "iso-8859-1"
@@ -58,7 +58,7 @@ Hello World! =?iso-2022-jp?b?GyRCJU8lbSE8JW8hPCVrJUkhKhsoQg==?=
         # TK: full decode comparison
         eq(str(h).encode(jcode), subject_bytes)
 
-    def test_payload_encoding_utf8(self):
+    eleza test_payload_encoding_utf8(self):
         jhello = str(b'\xa5\xcf\xa5\xed\xa1\xbc\xa5\xef\xa1\xbc'
                      b'\xa5\xeb\xa5\xc9\xa1\xaa', 'euc-jp')
         msg = Message()
@@ -66,7 +66,7 @@ Hello World! =?iso-2022-jp?b?GyRCJU8lbSE8JW8hPCVrJUkhKhsoQg==?=
         ustr = msg.get_payload(decode=True).decode(msg.get_content_charset())
         self.assertEqual(jhello, ustr)
 
-    def test_payload_encoding(self):
+    eleza test_payload_encoding(self):
         jcode  = 'euc-jp'
         jhello = str(b'\xa5\xcf\xa5\xed\xa1\xbc\xa5\xef\xa1\xbc'
                      b'\xa5\xeb\xa5\xc9\xa1\xaa', jcode)
@@ -77,5 +77,5 @@ Hello World! =?iso-2022-jp?b?GyRCJU8lbSE8JW8hPCVrJUkhKhsoQg==?=
 
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

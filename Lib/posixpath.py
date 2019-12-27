@@ -38,37 +38,37 @@ __all__ = ["normcase","isabs","join","splitdrive","split","splitext",
            "commonpath"]
 
 
-def _get_sep(path):
-    if isinstance(path, bytes):
-        return b'/'
+eleza _get_sep(path):
+    ikiwa isinstance(path, bytes):
+        rudisha b'/'
     else:
-        return '/'
+        rudisha '/'
 
 # Normalize the case of a pathname.  Trivial in Posix, string.lower on Mac.
 # On MS-DOS this may also turn slashes into backslashes; however, other
 # normalizations (such as optimizing '../' away) are not allowed
 # (another function should be defined to do that).
 
-def normcase(s):
+eleza normcase(s):
     """Normalize case of pathname.  Has no effect under Posix"""
-    return os.fspath(s)
+    rudisha os.fspath(s)
 
 
 # Return whether a path is absolute.
 # Trivial in Posix, harder on the Mac or MS-DOS.
 
-def isabs(s):
+eleza isabs(s):
     """Test whether a path is absolute"""
     s = os.fspath(s)
     sep = _get_sep(s)
-    return s.startswith(sep)
+    rudisha s.startswith(sep)
 
 
 # Join pathnames.
-# Ignore the previous parts if a part is absolute.
+# Ignore the previous parts ikiwa a part is absolute.
 # Insert a '/' unless the first part is empty or already ends in '/'.
 
-def join(a, *p):
+eleza join(a, *p):
     """Join two or more pathname components, inserting '/' as needed.
     If any component is an absolute path, all previous path components
     will be discarded.  An empty last part will result in a path that
@@ -77,19 +77,19 @@ def join(a, *p):
     sep = _get_sep(a)
     path = a
     try:
-        if not p:
-            path[:0] + sep  #23780: Ensure compatible data type even if p is null.
+        ikiwa not p:
+            path[:0] + sep  #23780: Ensure compatible data type even ikiwa p is null.
         for b in map(os.fspath, p):
-            if b.startswith(sep):
+            ikiwa b.startswith(sep):
                 path = b
-            elif not path or path.endswith(sep):
+            elikiwa not path or path.endswith(sep):
                 path += b
             else:
                 path += sep + b
     except (TypeError, AttributeError, BytesWarning):
         genericpath._check_arg_types('join', a, *p)
         raise
-    return path
+    rudisha path
 
 
 # Split a path in head (everything up to the last '/') and tail (the
@@ -97,16 +97,16 @@ def join(a, *p):
 # '/' in the path, head  will be empty.
 # Trailing '/'es are stripped kutoka head unless it is the root.
 
-def split(p):
+eleza split(p):
     """Split a pathname.  Returns tuple "(head, tail)" where "tail" is
     everything after the final slash.  Either part may be empty."""
     p = os.fspath(p)
     sep = _get_sep(p)
     i = p.rfind(sep) + 1
     head, tail = p[:i], p[i:]
-    if head and head != sep*len(head):
+    ikiwa head and head != sep*len(head):
         head = head.rstrip(sep)
-    return head, tail
+    rudisha head, tail
 
 
 # Split a path in root and extension.
@@ -114,88 +114,88 @@ def split(p):
 # pathname component; the root is everything before that.
 # It is always true that root + ext == p.
 
-def splitext(p):
+eleza splitext(p):
     p = os.fspath(p)
-    if isinstance(p, bytes):
+    ikiwa isinstance(p, bytes):
         sep = b'/'
         extsep = b'.'
     else:
         sep = '/'
         extsep = '.'
-    return genericpath._splitext(p, sep, None, extsep)
+    rudisha genericpath._splitext(p, sep, None, extsep)
 splitext.__doc__ = genericpath._splitext.__doc__
 
 # Split a pathname into a drive specification and the rest of the
 # path.  Useful on DOS/Windows/NT; on Unix, the drive is always empty.
 
-def splitdrive(p):
+eleza splitdrive(p):
     """Split a pathname into drive and path. On Posix, drive is always
     empty."""
     p = os.fspath(p)
-    return p[:0], p
+    rudisha p[:0], p
 
 
 # Return the tail (basename) part of a path, same as split(path)[1].
 
-def basename(p):
+eleza basename(p):
     """Returns the final component of a pathname"""
     p = os.fspath(p)
     sep = _get_sep(p)
     i = p.rfind(sep) + 1
-    return p[i:]
+    rudisha p[i:]
 
 
 # Return the head (dirname) part of a path, same as split(path)[0].
 
-def dirname(p):
+eleza dirname(p):
     """Returns the directory component of a pathname"""
     p = os.fspath(p)
     sep = _get_sep(p)
     i = p.rfind(sep) + 1
     head = p[:i]
-    if head and head != sep*len(head):
+    ikiwa head and head != sep*len(head):
         head = head.rstrip(sep)
-    return head
+    rudisha head
 
 
 # Is a path a symbolic link?
-# This will always return false on systems where os.lstat doesn't exist.
+# This will always rudisha false on systems where os.lstat doesn't exist.
 
-def islink(path):
+eleza islink(path):
     """Test whether a path is a symbolic link"""
     try:
         st = os.lstat(path)
     except (OSError, ValueError, AttributeError):
-        return False
-    return stat.S_ISLNK(st.st_mode)
+        rudisha False
+    rudisha stat.S_ISLNK(st.st_mode)
 
 # Being true for dangling symbolic links is also useful.
 
-def lexists(path):
+eleza lexists(path):
     """Test whether a path exists.  Returns True for broken symbolic links"""
     try:
         os.lstat(path)
     except (OSError, ValueError):
-        return False
-    return True
+        rudisha False
+    rudisha True
 
 
 # Is a path a mount point?
 # (Does this work for all UNIXes?  Is it even guaranteed to work by Posix?)
 
-def ismount(path):
+eleza ismount(path):
     """Test whether a path is a mount point"""
     try:
         s1 = os.lstat(path)
     except (OSError, ValueError):
         # It doesn't exist -- so not a mount point. :-)
-        return False
+        rudisha False
     else:
         # A symlink can never be a mount point
-        if stat.S_ISLNK(s1.st_mode):
-            return False
+        ikiwa stat.S_ISLNK(s1.st_mode):
+            rudisha False
 
-    if isinstance(path, bytes):
+    ikiwa isinstance(path, bytes):
         parent = join(path, b'..')
     else:
         parent = join(path, '..')
@@ -203,72 +203,72 @@ def ismount(path):
     try:
         s2 = os.lstat(parent)
     except (OSError, ValueError):
-        return False
+        rudisha False
 
     dev1 = s1.st_dev
     dev2 = s2.st_dev
-    if dev1 != dev2:
-        return True     # path/.. on a different device as path
+    ikiwa dev1 != dev2:
+        rudisha True     # path/.. on a different device as path
     ino1 = s1.st_ino
     ino2 = s2.st_ino
-    if ino1 == ino2:
-        return True     # path/.. is the same i-node as path
-    return False
+    ikiwa ino1 == ino2:
+        rudisha True     # path/.. is the same i-node as path
+    rudisha False
 
 
 # Expand paths beginning with '~' or '~user'.
 # '~' means $HOME; '~user' means that user's home directory.
-# If the path doesn't begin with '~', or if the user or $HOME is unknown,
+# If the path doesn't begin with '~', or ikiwa the user or $HOME is unknown,
 # the path is returned unchanged (leaving error reporting to whatever
 # function is called with the expanded path as argument).
 # See also module 'glob' for expansion of *, ? and [...] in pathnames.
 # (A function should also be defined to do full *sh-style environment
 # variable expansion.)
 
-def expanduser(path):
+eleza expanduser(path):
     """Expand ~ and ~user constructions.  If user or $HOME is unknown,
     do nothing."""
     path = os.fspath(path)
-    if isinstance(path, bytes):
+    ikiwa isinstance(path, bytes):
         tilde = b'~'
     else:
         tilde = '~'
-    if not path.startswith(tilde):
-        return path
+    ikiwa not path.startswith(tilde):
+        rudisha path
     sep = _get_sep(path)
     i = path.find(sep, 1)
-    if i < 0:
+    ikiwa i < 0:
         i = len(path)
-    if i == 1:
-        if 'HOME' not in os.environ:
+    ikiwa i == 1:
+        ikiwa 'HOME' not in os.environ:
             agiza pwd
             try:
                 userhome = pwd.getpwuid(os.getuid()).pw_dir
             except KeyError:
-                # bpo-10496: if the current user identifier doesn't exist in the
-                # password database, return the path unchanged
-                return path
+                # bpo-10496: ikiwa the current user identifier doesn't exist in the
+                # password database, rudisha the path unchanged
+                rudisha path
         else:
             userhome = os.environ['HOME']
     else:
         agiza pwd
         name = path[1:i]
-        if isinstance(name, bytes):
+        ikiwa isinstance(name, bytes):
             name = str(name, 'ASCII')
         try:
             pwent = pwd.getpwnam(name)
         except KeyError:
-            # bpo-10496: if the user name kutoka the path doesn't exist in the
-            # password database, return the path unchanged
-            return path
+            # bpo-10496: ikiwa the user name kutoka the path doesn't exist in the
+            # password database, rudisha the path unchanged
+            rudisha path
         userhome = pwent.pw_dir
-    if isinstance(path, bytes):
+    ikiwa isinstance(path, bytes):
         userhome = os.fsencode(userhome)
         root = b'/'
     else:
         root = '/'
     userhome = userhome.rstrip(root)
-    return (userhome + path[i:]) or root
+    rudisha (userhome + path[i:]) or root
 
 
 # Expand paths containing shell variable substitutions.
@@ -278,15 +278,15 @@ def expanduser(path):
 _varprog = None
 _varprogb = None
 
-def expandvars(path):
+eleza expandvars(path):
     """Expand shell variables of form $var and ${var}.  Unknown variables
     are left unchanged."""
     path = os.fspath(path)
     global _varprog, _varprogb
-    if isinstance(path, bytes):
-        if b'$' not in path:
-            return path
-        if not _varprogb:
+    ikiwa isinstance(path, bytes):
+        ikiwa b'$' not in path:
+            rudisha path
+        ikiwa not _varprogb:
             agiza re
             _varprogb = re.compile(br'\$(\w+|\{[^}]*\})', re.ASCII)
         search = _varprogb.search
@@ -294,9 +294,9 @@ def expandvars(path):
         end = b'}'
         environ = getattr(os, 'environb', None)
     else:
-        if '$' not in path:
-            return path
-        if not _varprog:
+        ikiwa '$' not in path:
+            rudisha path
+        ikiwa not _varprog:
             agiza re
             _varprog = re.compile(r'\$(\w+|\{[^}]*\})', re.ASCII)
         search = _varprog.search
@@ -306,14 +306,14 @@ def expandvars(path):
     i = 0
     while True:
         m = search(path, i)
-        if not m:
+        ikiwa not m:
             break
         i, j = m.span(0)
         name = m.group(1)
-        if name.startswith(start) and name.endswith(end):
+        ikiwa name.startswith(start) and name.endswith(end):
             name = name[1:-1]
         try:
-            if environ is None:
+            ikiwa environ is None:
                 value = os.fsencode(os.environ[os.fsdecode(name)])
             else:
                 value = environ[name]
@@ -324,17 +324,17 @@ def expandvars(path):
             path = path[:i] + value
             i = len(path)
             path += tail
-    return path
+    rudisha path
 
 
 # Normalize a path, e.g. A//B, A/./B and A/foo/../B all become A/B.
 # It should be understood that this may change the meaning of the path
-# if it contains symbolic links!
+# ikiwa it contains symbolic links!
 
-def normpath(path):
+eleza normpath(path):
     """Normalize path, eliminating double slashes, etc."""
     path = os.fspath(path)
-    if isinstance(path, bytes):
+    ikiwa isinstance(path, bytes):
         sep = b'/'
         empty = b''
         dot = b'.'
@@ -344,57 +344,57 @@ def normpath(path):
         empty = ''
         dot = '.'
         dotdot = '..'
-    if path == empty:
-        return dot
+    ikiwa path == empty:
+        rudisha dot
     initial_slashes = path.startswith(sep)
     # POSIX allows one or two initial slashes, but treats three or more
     # as single slash.
-    if (initial_slashes and
+    ikiwa (initial_slashes and
         path.startswith(sep*2) and not path.startswith(sep*3)):
         initial_slashes = 2
     comps = path.split(sep)
     new_comps = []
     for comp in comps:
-        if comp in (empty, dot):
+        ikiwa comp in (empty, dot):
             continue
-        if (comp != dotdot or (not initial_slashes and not new_comps) or
+        ikiwa (comp != dotdot or (not initial_slashes and not new_comps) or
              (new_comps and new_comps[-1] == dotdot)):
             new_comps.append(comp)
-        elif new_comps:
+        elikiwa new_comps:
             new_comps.pop()
     comps = new_comps
     path = sep.join(comps)
-    if initial_slashes:
+    ikiwa initial_slashes:
         path = sep*initial_slashes + path
-    return path or dot
+    rudisha path or dot
 
 
-def abspath(path):
+eleza abspath(path):
     """Return an absolute path."""
     path = os.fspath(path)
-    if not isabs(path):
-        if isinstance(path, bytes):
+    ikiwa not isabs(path):
+        ikiwa isinstance(path, bytes):
             cwd = os.getcwdb()
         else:
             cwd = os.getcwd()
         path = join(cwd, path)
-    return normpath(path)
+    rudisha normpath(path)
 
 
 # Return a canonical path (i.e. the absolute location of a file on the
 # filesystem).
 
-def realpath(filename):
+eleza realpath(filename):
     """Return the canonical path of the specified filename, eliminating any
 symbolic links encountered in the path."""
     filename = os.fspath(filename)
     path, ok = _joinrealpath(filename[:0], filename, {})
-    return abspath(path)
+    rudisha abspath(path)
 
 # Join two paths, normalizing and eliminating any symbolic links
 # encountered in the second path.
-def _joinrealpath(path, rest, seen):
-    if isinstance(path, bytes):
+eleza _joinrealpath(path, rest, seen):
+    ikiwa isinstance(path, bytes):
         sep = b'/'
         curdir = b'.'
         pardir = b'..'
@@ -403,57 +403,57 @@ def _joinrealpath(path, rest, seen):
         curdir = '.'
         pardir = '..'
 
-    if isabs(rest):
+    ikiwa isabs(rest):
         rest = rest[1:]
         path = sep
 
     while rest:
         name, _, rest = rest.partition(sep)
-        if not name or name == curdir:
+        ikiwa not name or name == curdir:
             # current dir
             continue
-        if name == pardir:
+        ikiwa name == pardir:
             # parent dir
-            if path:
+            ikiwa path:
                 path, name = split(path)
-                if name == pardir:
+                ikiwa name == pardir:
                     path = join(path, pardir, pardir)
             else:
                 path = pardir
             continue
         newpath = join(path, name)
-        if not islink(newpath):
+        ikiwa not islink(newpath):
             path = newpath
             continue
         # Resolve the symbolic link
-        if newpath in seen:
+        ikiwa newpath in seen:
             # Already seen this path
             path = seen[newpath]
-            if path is not None:
+            ikiwa path is not None:
                 # use cached value
                 continue
             # The symlink is not resolved, so we must have a symlink loop.
             # Return already resolved part + rest of the path unchanged.
-            return join(newpath, rest), False
+            rudisha join(newpath, rest), False
         seen[newpath] = None # not resolved symlink
         path, ok = _joinrealpath(path, os.readlink(newpath), seen)
-        if not ok:
-            return join(path, rest), False
+        ikiwa not ok:
+            rudisha join(path, rest), False
         seen[newpath] = path # resolved symlink
 
-    return path, True
+    rudisha path, True
 
 
 supports_unicode_filenames = (sys.platform == 'darwin')
 
-def relpath(path, start=None):
+eleza relpath(path, start=None):
     """Return a relative version of a path"""
 
-    if not path:
+    ikiwa not path:
         raise ValueError("no path specified")
 
     path = os.fspath(path)
-    if isinstance(path, bytes):
+    ikiwa isinstance(path, bytes):
         curdir = b'.'
         sep = b'/'
         pardir = b'..'
@@ -462,21 +462,21 @@ def relpath(path, start=None):
         sep = '/'
         pardir = '..'
 
-    if start is None:
+    ikiwa start is None:
         start = curdir
     else:
         start = os.fspath(start)
 
     try:
-        start_list = [x for x in abspath(start).split(sep) if x]
-        path_list = [x for x in abspath(path).split(sep) if x]
+        start_list = [x for x in abspath(start).split(sep) ikiwa x]
+        path_list = [x for x in abspath(path).split(sep) ikiwa x]
         # Work out how much of the filepath is shared by start and path.
         i = len(commonprefix([start_list, path_list]))
 
         rel_list = [pardir] * (len(start_list)-i) + path_list[i:]
-        if not rel_list:
-            return curdir
-        return join(*rel_list)
+        ikiwa not rel_list:
+            rudisha curdir
+        rudisha join(*rel_list)
     except (TypeError, AttributeError, BytesWarning, DeprecationWarning):
         genericpath._check_arg_types('relpath', path, start)
         raise
@@ -487,14 +487,14 @@ def relpath(path, start=None):
 # responsibility of the caller). Any trailing separator is stripped kutoka the
 # returned path.
 
-def commonpath(paths):
+eleza commonpath(paths):
     """Given a sequence of path names, returns the longest common sub-path."""
 
-    if not paths:
+    ikiwa not paths:
         raise ValueError('commonpath() arg is an empty sequence')
 
     paths = tuple(map(os.fspath, paths))
-    if isinstance(paths[0], bytes):
+    ikiwa isinstance(paths[0], bytes):
         sep = b'/'
         curdir = b'.'
     else:
@@ -509,17 +509,17 @@ def commonpath(paths):
         except ValueError:
             raise ValueError("Can't mix absolute and relative paths") kutoka None
 
-        split_paths = [[c for c in s if c and c != curdir] for s in split_paths]
+        split_paths = [[c for c in s ikiwa c and c != curdir] for s in split_paths]
         s1 = min(split_paths)
         s2 = max(split_paths)
         common = s1
         for i, c in enumerate(s1):
-            if c != s2[i]:
+            ikiwa c != s2[i]:
                 common = s1[:i]
                 break
 
-        prefix = sep if isabs else sep[:0]
-        return prefix + sep.join(common)
+        prefix = sep ikiwa isabs else sep[:0]
+        rudisha prefix + sep.join(common)
     except (TypeError, AttributeError):
         genericpath._check_arg_types('commonpath', *paths)
         raise

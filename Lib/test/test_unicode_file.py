@@ -8,7 +8,7 @@ agiza unittest
 kutoka test.support agiza (run_unittest, rmtree, change_cwd,
     TESTFN_ENCODING, TESTFN_UNICODE, TESTFN_UNENCODABLE, create_empty_file)
 
-if not os.path.supports_unicode_filenames:
+ikiwa not os.path.supports_unicode_filenames:
     try:
         TESTFN_UNICODE.encode(TESTFN_ENCODING)
     except (UnicodeError, TypeError):
@@ -16,17 +16,17 @@ if not os.path.supports_unicode_filenames:
         # cannot be encoded in the file system encoding.
         raise unittest.SkipTest("No Unicode filesystem semantics on this platform.")
 
-def remove_if_exists(filename):
-    if os.path.exists(filename):
+eleza remove_if_exists(filename):
+    ikiwa os.path.exists(filename):
         os.unlink(filename)
 
-class TestUnicodeFiles(unittest.TestCase):
+kundi TestUnicodeFiles(unittest.TestCase):
     # The 'do_' functions are the actual tests.  They generally assume the
     # file already exists etc.
 
     # Do all the tests we can given only a single filename.  The file should
     # exist.
-    def _do_single(self, filename):
+    eleza _do_single(self, filename):
         self.assertTrue(os.path.exists(filename))
         self.assertTrue(os.path.isfile(filename))
         self.assertTrue(os.access(filename, os.R_OK))
@@ -45,14 +45,14 @@ class TestUnicodeFiles(unittest.TestCase):
         path, base = os.path.split(os.path.abspath(filename))
         file_list = os.listdir(path)
         # Normalize the unicode strings, as round-tripping the name via the OS
-        # may return a different (but equivalent) value.
+        # may rudisha a different (but equivalent) value.
         base = unicodedata.normalize("NFD", base)
         file_list = [unicodedata.normalize("NFD", f) for f in file_list]
 
         self.assertIn(base, file_list)
 
     # Tests that copy, move, etc one file to another.
-    def _do_copyish(self, filename1, filename2):
+    eleza _do_copyish(self, filename1, filename2):
         # Should be able to rename the file using either name.
         self.assertTrue(os.path.isfile(filename1)) # must exist.
         os.rename(filename1, filename2 + ".new")
@@ -81,8 +81,8 @@ class TestUnicodeFiles(unittest.TestCase):
         os.unlink(filename1 + ".new")
         self.assertFalse(os.path.exists(filename2 + '.new'))
 
-    def _do_directory(self, make_name, chdir_name):
-        if os.path.isdir(make_name):
+    eleza _do_directory(self, make_name, chdir_name):
+        ikiwa os.path.isdir(make_name):
             rmtree(make_name)
         os.mkdir(make_name)
         try:
@@ -98,8 +98,8 @@ class TestUnicodeFiles(unittest.TestCase):
             os.rmdir(make_name)
 
     # The '_test' functions 'entry points with params' - ie, what the
-    # top-level 'test' functions would be if they could take params
-    def _test_single(self, filename):
+    # top-level 'test' functions would be ikiwa they could take params
+    eleza _test_single(self, filename):
         remove_if_exists(filename)
         create_empty_file(filename)
         try:
@@ -117,24 +117,24 @@ class TestUnicodeFiles(unittest.TestCase):
 
     # The 'test' functions are unittest entry points, and simply call our
     # _test functions with each of the filename combinations we wish to test
-    def test_single_files(self):
+    eleza test_single_files(self):
         self._test_single(TESTFN_UNICODE)
-        if TESTFN_UNENCODABLE is not None:
+        ikiwa TESTFN_UNENCODABLE is not None:
             self._test_single(TESTFN_UNENCODABLE)
 
-    def test_directories(self):
+    eleza test_directories(self):
         # For all 'equivalent' combinations:
         #  Make dir with encoded, chdir with unicode, checkdir with encoded
         #  (or unicode/encoded/unicode, etc
         ext = ".dir"
         self._do_directory(TESTFN_UNICODE+ext, TESTFN_UNICODE+ext)
         # Our directory name that can't use a non-unicode name.
-        if TESTFN_UNENCODABLE is not None:
+        ikiwa TESTFN_UNENCODABLE is not None:
             self._do_directory(TESTFN_UNENCODABLE+ext,
                                TESTFN_UNENCODABLE+ext)
 
-def test_main():
+eleza test_main():
     run_unittest(__name__)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

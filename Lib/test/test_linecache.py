@@ -19,27 +19,27 @@ MODULE_PATH = os.path.dirname(FILENAME)
 SOURCE_1 = '''
 " Docstring "
 
-def function():
-    return result
+eleza function():
+    rudisha result
 
 '''
 
 SOURCE_2 = '''
-def f():
-    return 1 + 1
+eleza f():
+    rudisha 1 + 1
 
 a = f()
 
 '''
 
 SOURCE_3 = '''
-def f():
-    return 3''' # No ending newline
+eleza f():
+    rudisha 3''' # No ending newline
 
 
-class TempFile:
+kundi TempFile:
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
         with tempfile.NamedTemporaryFile(delete=False) as fp:
             self.file_name = fp.name
@@ -47,68 +47,68 @@ class TempFile:
         self.addCleanup(support.unlink, self.file_name)
 
 
-class GetLineTestsGoodData(TempFile):
+kundi GetLineTestsGoodData(TempFile):
     # file_list   = ['list\n', 'of\n', 'good\n', 'strings\n']
 
-    def setUp(self):
+    eleza setUp(self):
         self.file_byte_string = ''.join(self.file_list).encode('utf-8')
         super().setUp()
 
-    def test_getline(self):
+    eleza test_getline(self):
         with tokenize.open(self.file_name) as fp:
             for index, line in enumerate(fp):
-                if not line.endswith('\n'):
+                ikiwa not line.endswith('\n'):
                     line += '\n'
 
                 cached_line = linecache.getline(self.file_name, index + 1)
                 self.assertEqual(line, cached_line)
 
-    def test_getlines(self):
+    eleza test_getlines(self):
         lines = linecache.getlines(self.file_name)
         self.assertEqual(lines, self.file_list)
 
 
-class GetLineTestsBadData(TempFile):
+kundi GetLineTestsBadData(TempFile):
     # file_byte_string = b'Bad data goes here'
 
-    def test_getline(self):
+    eleza test_getline(self):
         self.assertRaises((SyntaxError, UnicodeDecodeError),
                           linecache.getline, self.file_name, 1)
 
-    def test_getlines(self):
+    eleza test_getlines(self):
         self.assertRaises((SyntaxError, UnicodeDecodeError),
                           linecache.getlines, self.file_name)
 
 
-class EmptyFile(GetLineTestsGoodData, unittest.TestCase):
+kundi EmptyFile(GetLineTestsGoodData, unittest.TestCase):
     file_list = []
 
 
-class SingleEmptyLine(GetLineTestsGoodData, unittest.TestCase):
+kundi SingleEmptyLine(GetLineTestsGoodData, unittest.TestCase):
     file_list = ['\n']
 
 
-class GoodUnicode(GetLineTestsGoodData, unittest.TestCase):
+kundi GoodUnicode(GetLineTestsGoodData, unittest.TestCase):
     file_list = ['á\n', 'b\n', 'abcdef\n', 'ááááá\n']
 
 
-class BadUnicode(GetLineTestsBadData, unittest.TestCase):
+kundi BadUnicode(GetLineTestsBadData, unittest.TestCase):
     file_byte_string = b'\x80abc'
 
 
-class LineCacheTests(unittest.TestCase):
+kundi LineCacheTests(unittest.TestCase):
 
-    def test_getline(self):
+    eleza test_getline(self):
         getline = linecache.getline
 
-        # Bad values for line number should return an empty string
+        # Bad values for line number should rudisha an empty string
         self.assertEqual(getline(FILENAME, 2**15), EMPTY)
         self.assertEqual(getline(FILENAME, -1), EMPTY)
 
         # Float values currently raise TypeError, should it?
         self.assertRaises(TypeError, getline, FILENAME, 1.1)
 
-        # Bad filenames should return an empty string
+        # Bad filenames should rudisha an empty string
         self.assertEqual(getline(EMPTY, 1), EMPTY)
         self.assertEqual(getline(INVALID_NAME, 1), EMPTY)
 
@@ -123,14 +123,14 @@ class LineCacheTests(unittest.TestCase):
         empty = linecache.getlines('a/b/c/__init__.py')
         self.assertEqual(empty, [])
 
-    def test_no_ending_newline(self):
+    eleza test_no_ending_newline(self):
         self.addCleanup(support.unlink, support.TESTFN)
         with open(support.TESTFN, "w") as fp:
             fp.write(SOURCE_3)
         lines = linecache.getlines(support.TESTFN)
-        self.assertEqual(lines, ["\n", "def f():\n", "    return 3\n"])
+        self.assertEqual(lines, ["\n", "eleza f():\n", "    rudisha 3\n"])
 
-    def test_clearcache(self):
+    eleza test_clearcache(self):
         cached = []
         for entry in MODULES:
             filename = os.path.join(MODULE_PATH, entry) + '.py'
@@ -139,15 +139,15 @@ class LineCacheTests(unittest.TestCase):
 
         # Are all files cached?
         self.assertNotEqual(cached, [])
-        cached_empty = [fn for fn in cached if fn not in linecache.cache]
+        cached_empty = [fn for fn in cached ikiwa fn not in linecache.cache]
         self.assertEqual(cached_empty, [])
 
         # Can we clear the cache?
         linecache.clearcache()
-        cached_empty = [fn for fn in cached if fn in linecache.cache]
+        cached_empty = [fn for fn in cached ikiwa fn in linecache.cache]
         self.assertEqual(cached_empty, [])
 
-    def test_checkcache(self):
+    eleza test_checkcache(self):
         getline = linecache.getline
         # Create a source file and cache its contents
         source_name = support.TESTFN + '.py'
@@ -180,23 +180,23 @@ class LineCacheTests(unittest.TestCase):
                 self.assertEqual(line, getline(source_name, index + 1))
                 source_list.append(line)
 
-    def test_lazycache_no_globals(self):
+    eleza test_lazycache_no_globals(self):
         lines = linecache.getlines(FILENAME)
         linecache.clearcache()
         self.assertEqual(False, linecache.lazycache(FILENAME, None))
         self.assertEqual(lines, linecache.getlines(FILENAME))
 
-    def test_lazycache_smoke(self):
+    eleza test_lazycache_smoke(self):
         lines = linecache.getlines(NONEXISTENT_FILENAME, globals())
         linecache.clearcache()
         self.assertEqual(
             True, linecache.lazycache(NONEXISTENT_FILENAME, globals()))
         self.assertEqual(1, len(linecache.cache[NONEXISTENT_FILENAME]))
         # Note here that we're looking up a nonexistent filename with no
-        # globals: this would error if the lazy value wasn't resolved.
+        # globals: this would error ikiwa the lazy value wasn't resolved.
         self.assertEqual(lines, linecache.getlines(NONEXISTENT_FILENAME))
 
-    def test_lazycache_provide_after_failed_lookup(self):
+    eleza test_lazycache_provide_after_failed_lookup(self):
         linecache.clearcache()
         lines = linecache.getlines(NONEXISTENT_FILENAME, globals())
         linecache.clearcache()
@@ -204,17 +204,17 @@ class LineCacheTests(unittest.TestCase):
         linecache.lazycache(NONEXISTENT_FILENAME, globals())
         self.assertEqual(lines, linecache.updatecache(NONEXISTENT_FILENAME))
 
-    def test_lazycache_check(self):
+    eleza test_lazycache_check(self):
         linecache.clearcache()
         linecache.lazycache(NONEXISTENT_FILENAME, globals())
         linecache.checkcache()
 
-    def test_lazycache_bad_filename(self):
+    eleza test_lazycache_bad_filename(self):
         linecache.clearcache()
         self.assertEqual(False, linecache.lazycache('', globals()))
         self.assertEqual(False, linecache.lazycache('<foo>', globals()))
 
-    def test_lazycache_already_cached(self):
+    eleza test_lazycache_already_cached(self):
         linecache.clearcache()
         lines = linecache.getlines(NONEXISTENT_FILENAME, globals())
         self.assertEqual(
@@ -222,10 +222,10 @@ class LineCacheTests(unittest.TestCase):
             linecache.lazycache(NONEXISTENT_FILENAME, globals()))
         self.assertEqual(4, len(linecache.cache[NONEXISTENT_FILENAME]))
 
-    def test_memoryerror(self):
+    eleza test_memoryerror(self):
         lines = linecache.getlines(FILENAME)
         self.assertTrue(lines)
-        def raise_memoryerror(*args, **kwargs):
+        eleza raise_memoryerror(*args, **kwargs):
             raise MemoryError
         with support.swap_attr(linecache, 'updatecache', raise_memoryerror):
             lines2 = linecache.getlines(FILENAME)
@@ -238,5 +238,5 @@ class LineCacheTests(unittest.TestCase):
         self.assertEqual(linecache.getlines(FILENAME), lines)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

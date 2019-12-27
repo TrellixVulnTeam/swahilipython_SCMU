@@ -13,7 +13,7 @@ a2b_functions = ['a2b_base64', 'a2b_hex', 'a2b_hqx', 'a2b_qp', 'a2b_uu',
 all_functions = a2b_functions + b2a_functions + ['crc32', 'crc_hqx']
 
 
-class BinASCIITest(unittest.TestCase):
+kundi BinASCIITest(unittest.TestCase):
 
     type2test = bytes
     # Create binary test data
@@ -22,21 +22,21 @@ class BinASCIITest(unittest.TestCase):
     rawdata += bytes(range(256))
     rawdata += b"\r\nHello world.\n"
 
-    def setUp(self):
+    eleza setUp(self):
         self.data = self.type2test(self.rawdata)
 
-    def test_exceptions(self):
+    eleza test_exceptions(self):
         # Check module exceptions
         self.assertTrue(issubclass(binascii.Error, Exception))
         self.assertTrue(issubclass(binascii.Incomplete, Exception))
 
-    def test_functions(self):
+    eleza test_functions(self):
         # Check presence of all functions
         for name in all_functions:
             self.assertTrue(hasattr(getattr(binascii, name), '__call__'))
             self.assertRaises(TypeError, getattr(binascii, name))
 
-    def test_returned_value(self):
+    eleza test_returned_value(self):
         # Limit to the minimum of all limits (b2a_uu)
         MAX_ALL = 45
         raw = self.rawdata[:MAX_ALL]
@@ -48,7 +48,7 @@ class BinASCIITest(unittest.TestCase):
                 res = a2b(self.type2test(a))
             except Exception as err:
                 self.fail("{}/{} conversion raises {!r}".format(fb, fa, err))
-            if fb == 'b2a_hqx':
+            ikiwa fb == 'b2a_hqx':
                 # b2a_hqx returns a tuple
                 res, _ = res
             self.assertEqual(res, raw, "{}/{} conversion: "
@@ -59,7 +59,7 @@ class BinASCIITest(unittest.TestCase):
         self.assertIsInstance(binascii.crc_hqx(raw, 0), int)
         self.assertIsInstance(binascii.crc32(raw), int)
 
-    def test_base64valid(self):
+    eleza test_base64valid(self):
         # Test base64 with valid data
         MAX_BASE64 = 57
         lines = []
@@ -74,7 +74,7 @@ class BinASCIITest(unittest.TestCase):
             res += b
         self.assertEqual(res, self.rawdata)
 
-    def test_base64invalid(self):
+    eleza test_base64invalid(self):
         # Test base64 with random invalid characters sprinkled throughout
         # (This requires a new version of binascii.)
         MAX_BASE64 = 57
@@ -87,19 +87,19 @@ class BinASCIITest(unittest.TestCase):
         fillers = bytearray()
         valid = b"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/"
         for i in range(256):
-            if i not in valid:
+            ikiwa i not in valid:
                 fillers.append(i)
-        def addnoise(line):
+        eleza addnoise(line):
             noise = fillers
             ratio = len(line) // len(noise)
             res = bytearray()
             while line and noise:
-                if len(line) // len(noise) > ratio:
+                ikiwa len(line) // len(noise) > ratio:
                     c, line = line[0], line[1:]
                 else:
                     c, noise = noise[0], noise[1:]
                 res.append(c)
-            return res + noise + line
+            rudisha res + noise + line
         res = bytearray()
         for line in map(addnoise, lines):
             a = self.type2test(line)
@@ -111,9 +111,9 @@ class BinASCIITest(unittest.TestCase):
         # empty strings. TBD: shouldn't it raise an exception instead ?
         self.assertEqual(binascii.a2b_base64(self.type2test(fillers)), b'')
 
-    def test_base64errors(self):
+    eleza test_base64errors(self):
         # Test base64 with invalid padding
-        def assertIncorrectPadding(data):
+        eleza assertIncorrectPadding(data):
             with self.assertRaisesRegex(binascii.Error, r'(?i)Incorrect padding'):
                 binascii.a2b_base64(self.type2test(data))
 
@@ -127,7 +127,7 @@ class BinASCIITest(unittest.TestCase):
         assertIncorrectPadding(b'a\nb=')
 
         # Test base64 with invalid number of valid characters (1 mod 4)
-        def assertInvalidLength(data):
+        eleza assertInvalidLength(data):
             n_data_chars = len(re.sub(br'[^A-Za-z0-9/+]', br'', data))
             expected_errmsg_re = \
                 r'(?i)Invalid.+number of data characters.+' + str(n_data_chars)
@@ -142,7 +142,7 @@ class BinASCIITest(unittest.TestCase):
         assertInvalidLength(b'a' * (4 * 87 + 1))
         assertInvalidLength(b'A\tB\nC ??DE')  # only 5 valid characters
 
-    def test_uu(self):
+    eleza test_uu(self):
         MAX_UU = 45
         for backtick in (True, False):
             lines = []
@@ -179,7 +179,7 @@ class BinASCIITest(unittest.TestCase):
         with self.assertRaises(TypeError):
             binascii.b2a_uu(b"", True)
 
-    def test_crc_hqx(self):
+    eleza test_crc_hqx(self):
         crc = binascii.crc_hqx(self.type2test(b"Test the CRC-32 of"), 0)
         crc = binascii.crc_hqx(self.type2test(b" this string."), crc)
         self.assertEqual(crc, 14290)
@@ -191,14 +191,14 @@ class BinASCIITest(unittest.TestCase):
             self.assertEqual(binascii.crc_hqx(self.type2test(b''), crc),
                              crc & 0xffff)
 
-    def test_crc32(self):
+    eleza test_crc32(self):
         crc = binascii.crc32(self.type2test(b"Test the CRC-32 of"))
         crc = binascii.crc32(self.type2test(b" this string."), crc)
         self.assertEqual(crc, 1571220330)
 
         self.assertRaises(TypeError, binascii.crc32)
 
-    def test_hqx(self):
+    eleza test_hqx(self):
         # Perform binhex4 style RLE-compression
         # Then calculate the hexbin4 binary-to-ASCII translation
         rle = binascii.rlecode_hqx(self.data)
@@ -208,7 +208,7 @@ class BinASCIITest(unittest.TestCase):
         res = binascii.rledecode_hqx(b)
         self.assertEqual(res, self.rawdata)
 
-    def test_rle(self):
+    eleza test_rle(self):
         # test repetition with a repetition longer than the limit of 255
         data = (b'a' * 100 + b'b' + b'c' * 300)
 
@@ -222,7 +222,7 @@ class BinASCIITest(unittest.TestCase):
         decoded = binascii.rledecode_hqx(encoded)
         self.assertEqual(decoded, data)
 
-    def test_hex(self):
+    eleza test_hex(self):
         # test hexlification
         s = b'{s\005\000\000\000worldi\002\000\000\000s\005\000\000\000helloi\001\000\000\0000'
         t = binascii.b2a_hex(self.type2test(s))
@@ -240,7 +240,7 @@ class BinASCIITest(unittest.TestCase):
         self.assertEqual(binascii.hexlify(self.type2test(s)), t)
         self.assertEqual(binascii.unhexlify(self.type2test(t)), u)
 
-    def test_hex_separator(self):
+    eleza test_hex_separator(self):
         """Test that hexlify and b2a_hex are binary versions of bytes.hex."""
         # Logic of separators is tested in test_bytes.py.  This checks that
         # arg parsing works and exercises the direct to bytes object code
@@ -252,7 +252,7 @@ class BinASCIITest(unittest.TestCase):
         expected1 = s.hex(':').encode('ascii')
         self.assertEqual(binascii.b2a_hex(self.type2test(s), ':'), expected1)
 
-    def test_qp(self):
+    eleza test_qp(self):
         type2test = self.type2test
         a2b_qp = binascii.a2b_qp
         b2a_qp = binascii.b2a_qp
@@ -354,11 +354,11 @@ class BinASCIITest(unittest.TestCase):
         self.assertEqual(b2a_qp(type2test(b'a.\n')), b'a.\n')
         self.assertEqual(b2a_qp(type2test(b'.a')[:-1]), b'=2E')
 
-    def test_empty_string(self):
+    eleza test_empty_string(self):
         # A test for SF bug #1022953.  Make sure SystemError is not raised.
         empty = self.type2test(b'')
         for func in all_functions:
-            if func == 'crc_hqx':
+            ikiwa func == 'crc_hqx':
                 # crc_hqx needs 2 arguments
                 binascii.crc_hqx(empty, 0)
                 continue
@@ -368,7 +368,7 @@ class BinASCIITest(unittest.TestCase):
             except Exception as err:
                 self.fail("{}({!r}) raises {!r}".format(func, empty, err))
 
-    def test_unicode_b2a(self):
+    eleza test_unicode_b2a(self):
         # Unicode strings are not accepted by b2a_* functions.
         for func in set(all_functions) - set(a2b_functions) | {'rledecode_hqx'}:
             try:
@@ -378,12 +378,12 @@ class BinASCIITest(unittest.TestCase):
         # crc_hqx needs 2 arguments
         self.assertRaises(TypeError, binascii.crc_hqx, "test", 0)
 
-    def test_unicode_a2b(self):
+    eleza test_unicode_a2b(self):
         # Unicode strings are accepted by a2b_* functions.
         MAX_ALL = 45
         raw = self.rawdata[:MAX_ALL]
         for fa, fb in zip(a2b_functions, b2a_functions):
-            if fa == 'rledecode_hqx':
+            ikiwa fa == 'rledecode_hqx':
                 # Takes non-ASCII data
                 continue
             a2b = getattr(binascii, fa)
@@ -395,7 +395,7 @@ class BinASCIITest(unittest.TestCase):
                 res = a2b(a)
             except Exception as err:
                 self.fail("{}/{} conversion raises {!r}".format(fb, fa, err))
-            if fb == 'b2a_hqx':
+            ikiwa fb == 'b2a_hqx':
                 # b2a_hqx returns a tuple
                 res, _ = res
                 binary_res, _ = binary_res
@@ -406,7 +406,7 @@ class BinASCIITest(unittest.TestCase):
             # non-ASCII string
             self.assertRaises(ValueError, a2b, "\x80")
 
-    def test_b2a_base64_newline(self):
+    eleza test_b2a_base64_newline(self):
         # Issue #25357: test newline parameter
         b = self.type2test(b'hello')
         self.assertEqual(binascii.b2a_base64(b),
@@ -417,18 +417,18 @@ class BinASCIITest(unittest.TestCase):
                          b'aGVsbG8=')
 
 
-class ArrayBinASCIITest(BinASCIITest):
-    def type2test(self, s):
-        return array.array('B', list(s))
+kundi ArrayBinASCIITest(BinASCIITest):
+    eleza type2test(self, s):
+        rudisha array.array('B', list(s))
 
 
-class BytearrayBinASCIITest(BinASCIITest):
+kundi BytearrayBinASCIITest(BinASCIITest):
     type2test = bytearray
 
 
-class MemoryviewBinASCIITest(BinASCIITest):
+kundi MemoryviewBinASCIITest(BinASCIITest):
     type2test = memoryview
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

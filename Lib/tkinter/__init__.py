@@ -33,7 +33,7 @@ tk.mainloop()
 import enum
 import sys
 
-import _tkinter # If this fails your Python may not be configured for Tk
+agiza _tkinter # If this fails your Python may not be configured for Tk
 TclError = _tkinter.TclError
 from tkinter.constants import *
 import re
@@ -71,14 +71,14 @@ def _stringify(value):
         value = str(value)
         if not value:
             value = '{}'
-        elif _magic_re.search(value):
+        lasivyo _magic_re.search(value):
             # add '\' before special characters and spaces
             value = _magic_re.sub(r'\\\1', value)
             value = value.replace('\n', r'\n')
             value = _space_re.sub(r'\\\1', value)
             if value[0] == '"':
                 value = '\\' + value
-        elif value[0] == '"' or _space_re.search(value):
+        lasivyo value[0] == '"' or _space_re.search(value):
             value = '{%s}' % value
     return value
 
@@ -89,7 +89,7 @@ def _flatten(seq):
     for item in seq:
         if isinstance(item, (tuple, list)):
             res = res + _flatten(item)
-        elif item is not None:
+        lasivyo item is not None:
             res = res + (item,)
     return res
 
@@ -102,7 +102,7 @@ def _cnfmerge(cnfs):
     """Internal function."""
     if isinstance(cnfs, dict):
         return cnfs
-    elif isinstance(cnfs, (type(None), str)):
+    lasivyo isinstance(cnfs, (type(None), str)):
         return cnfs
     else:
         cnf = {}
@@ -236,13 +236,13 @@ class Event:
         attrs = {k: v for k, v in self.__dict__.items() if v != '??'}
         if not self.char:
             del attrs['char']
-        elif self.char != '??':
+        lasivyo self.char != '??':
             attrs['char'] = repr(self.char)
         if not getattr(self, 'send_event', True):
             del attrs['send_event']
         if self.state == 0:
             del attrs['state']
-        elif isinstance(self.state, int):
+        lasivyo isinstance(self.state, int):
             state = self.state
             mods = ('Shift', 'Lock', 'Control',
                     'Mod1', 'Mod2', 'Mod3', 'Mod4', 'Mod5',
@@ -341,7 +341,7 @@ class Variable:
             _varnum += 1
         if value is not None:
             self.initialize(value)
-        elif not self._tk.getboolean(self._tk.call("info", "exists", self._name)):
+        lasivyo not self._tk.getboolean(self._tk.call("info", "exists", self._name)):
             self.initialize(self._default)
 
     def __del__(self):
@@ -1327,7 +1327,7 @@ class Misc:
         """Internal function."""
         if isinstance(func, str):
             self.tk.call(what + (sequence, func))
-        elif func:
+        lasivyo func:
             funcid = self._register(func, self._substitute,
                         needcleanup)
             cmd = ('%sif {"[%s %s]" == "break"} break\n'
@@ -1336,7 +1336,7 @@ class Misc:
                 funcid, self._subst_format_str))
             self.tk.call(what + (sequence, cmd))
             return funcid
-        elif sequence:
+        lasivyo sequence:
             return self.tk.call(what + (sequence,))
         else:
             return self.tk.splitlist(self.tk.call(what))
@@ -1468,12 +1468,12 @@ class Misc:
                 if k[-1] == '_': k = k[:-1]
                 if callable(v):
                     v = self._register(v)
-                elif isinstance(v, (tuple, list)):
+                lasivyo isinstance(v, (tuple, list)):
                     nv = []
                     for item in v:
                         if isinstance(item, int):
                             nv.append(str(item))
-                        elif isinstance(item, str):
+                        lasivyo isinstance(item, str):
                             nv.append(_stringify(item))
                         else:
                             break
@@ -1618,7 +1618,7 @@ class Misc:
         """Internal function."""
         if kw:
             cnf = _cnfmerge((cnf, kw))
-        elif cnf:
+        lasivyo cnf:
             cnf = _cnfmerge(cnf)
         if cnf is None:
             return self._getconfigure(_flatten((self._w, cmd)))
@@ -1735,7 +1735,7 @@ class Misc:
                 svalue = str(value)
                 if not svalue:
                     return None
-                elif '.' in svalue:
+                lasivyo '.' in svalue:
                     return self.tk.getdouble(svalue)
                 else:
                     return self.tk.getint(svalue)
@@ -3113,7 +3113,7 @@ class Frame(Widget):
         if 'class_' in cnf:
             extra = ('-class', cnf['class_'])
             del cnf['class_']
-        elif 'class' in cnf:
+        lasivyo 'class' in cnf:
             extra = ('-class', cnf['class'])
             del cnf['class']
         Widget.__init__(self, master, 'frame', cnf, {}, extra)
@@ -3997,7 +3997,7 @@ class Image:
             Image._last_id += 1
             name = "pyimage%r" % (Image._last_id,) # tk itself would use image<x>
         if kw and cnf: cnf = _cnfmerge((cnf, kw))
-        elif kw: cnf = kw
+        lasivyo kw: cnf = kw
         options = ()
         for k, v in cnf.items():
             if callable(v):

@@ -10,25 +10,25 @@ agiza struct
 
 BIG = 100000
 
-def fail():
+eleza fail():
     raise SyntaxError
     yield 1
 
-class BadCmp:
-    def __eq__(self, other):
+kundi BadCmp:
+    eleza __eq__(self, other):
         raise RuntimeError
 
-class MutateCmp:
-    def __init__(self, deque, result):
+kundi MutateCmp:
+    eleza __init__(self, deque, result):
         self.deque = deque
         self.result = result
-    def __eq__(self, other):
+    eleza __eq__(self, other):
         self.deque.clear()
-        return self.result
+        rudisha self.result
 
-class TestBasic(unittest.TestCase):
+kundi TestBasic(unittest.TestCase):
 
-    def test_basics(self):
+    eleza test_basics(self):
         d = deque(range(-5125, -5000))
         d.__init__(range(200))
         for i in range(200, 400):
@@ -47,7 +47,7 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(right, list(range(150, 400)))
         self.assertEqual(list(d), list(range(50, 150)))
 
-    def test_maxlen(self):
+    eleza test_maxlen(self):
         self.assertRaises(ValueError, deque, 'abc', -1)
         self.assertRaises(ValueError, deque, 'abc', -2)
         it = iter(range(10))
@@ -89,7 +89,7 @@ class TestBasic(unittest.TestCase):
             fo.close()
             support.unlink(support.TESTFN)
 
-    def test_maxlen_zero(self):
+    eleza test_maxlen_zero(self):
         it = iter(range(100))
         deque(it, maxlen=0)
         self.assertEqual(list(it), [])
@@ -104,7 +104,7 @@ class TestBasic(unittest.TestCase):
         d.extendleft(it)
         self.assertEqual(list(it), [])
 
-    def test_maxlen_attribute(self):
+    eleza test_maxlen_attribute(self):
         self.assertEqual(deque().maxlen, None)
         self.assertEqual(deque('abc').maxlen, None)
         self.assertEqual(deque('abc', maxlen=4).maxlen, 4)
@@ -114,7 +114,7 @@ class TestBasic(unittest.TestCase):
             d = deque('abc')
             d.maxlen = 10
 
-    def test_count(self):
+    eleza test_count(self):
         for s in ('', 'abracadabra', 'simsalabim'*500+'abc'):
             s = list(s)
             d = deque(s)
@@ -122,17 +122,17 @@ class TestBasic(unittest.TestCase):
                 self.assertEqual(s.count(letter), d.count(letter), (s, d, letter))
         self.assertRaises(TypeError, d.count)       # too few args
         self.assertRaises(TypeError, d.count, 1, 2) # too many args
-        class BadCompare:
-            def __eq__(self, other):
+        kundi BadCompare:
+            eleza __eq__(self, other):
                 raise ArithmeticError
         d = deque([1, 2, BadCompare(), 3])
         self.assertRaises(ArithmeticError, d.count, 2)
         d = deque([1, 2, 3])
         self.assertRaises(ArithmeticError, d.count, BadCompare())
-        class MutatingCompare:
-            def __eq__(self, other):
+        kundi MutatingCompare:
+            eleza __eq__(self, other):
                 self.d.pop()
-                return True
+                rudisha True
         m = MutatingCompare()
         d = deque([1, 2, 3, m, 4, 5])
         m.d = d
@@ -147,7 +147,7 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(d.count(1), 0)
         self.assertEqual(d.count(None), 16)
 
-    def test_comparisons(self):
+    eleza test_comparisons(self):
         d = deque('xabc'); d.popleft()
         for e in [d, deque('abc'), deque('ab'), deque(), list(d)]:
             self.assertEqual(d==e, type(d)==type(e) and list(d)==list(e))
@@ -163,7 +163,7 @@ class TestBasic(unittest.TestCase):
                 self.assertEqual(x >  y, list(x) >  list(y), (x,y))
                 self.assertEqual(x >= y, list(x) >= list(y), (x,y))
 
-    def test_contains(self):
+    eleza test_contains(self):
         n = 200
 
         d = deque(range(n))
@@ -183,7 +183,7 @@ class TestBasic(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             n in d
 
-    def test_extend(self):
+    eleza test_extend(self):
         d = deque('a')
         self.assertRaises(TypeError, d.extend, 1)
         d.extend('bcd')
@@ -191,7 +191,7 @@ class TestBasic(unittest.TestCase):
         d.extend(d)
         self.assertEqual(list(d), list('abcdabcd'))
 
-    def test_add(self):
+    eleza test_add(self):
         d = deque()
         e = deque('abc')
         f = deque('def')
@@ -211,14 +211,14 @@ class TestBasic(unittest.TestCase):
         with self.assertRaises(TypeError):
             deque('abc') + 'def'
 
-    def test_iadd(self):
+    eleza test_iadd(self):
         d = deque('a')
         d += 'bcd'
         self.assertEqual(list(d), list('abcd'))
         d += d
         self.assertEqual(list(d), list('abcdabcd'))
 
-    def test_extendleft(self):
+    eleza test_extendleft(self):
         d = deque('a')
         self.assertRaises(TypeError, d.extendleft, 1)
         d.extendleft('bcd')
@@ -230,14 +230,14 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(list(d), list(reversed(range(1000))))
         self.assertRaises(SyntaxError, d.extendleft, fail())
 
-    def test_getitem(self):
+    eleza test_getitem(self):
         n = 200
         d = deque(range(n))
         l = list(range(n))
         for i in range(n):
             d.popleft()
             l.pop(0)
-            if random.random() < 0.5:
+            ikiwa random.random() < 0.5:
                 d.append(i)
                 l.append(i)
             for j in range(1-len(l), len(l)):
@@ -250,7 +250,7 @@ class TestBasic(unittest.TestCase):
         self.assertRaises(IndexError, d.__getitem__, 0)
         self.assertRaises(IndexError, d.__getitem__, -1)
 
-    def test_index(self):
+    eleza test_index(self):
         for n in 1, 2, 30, 40, 200:
 
             d = deque(range(n))
@@ -296,12 +296,12 @@ class TestBasic(unittest.TestCase):
             # Repeat test with a different internal offset
             d.rotate()
 
-    def test_index_bug_24913(self):
+    eleza test_index_bug_24913(self):
         d = deque('A' * 3)
         with self.assertRaises(ValueError):
             i = d.index("Hello world", 0, 4)
 
-    def test_insert(self):
+    eleza test_insert(self):
         # Test to make sure insert behaves like lists
         elements = 'ABCDEFGHI'
         for i in range(-5 - len(elements)*2, 5 + len(elements) * 2):
@@ -311,7 +311,7 @@ class TestBasic(unittest.TestCase):
             s.insert(i, 'Z')
             self.assertEqual(list(d), s)
 
-    def test_insert_bug_26194(self):
+    eleza test_insert_bug_26194(self):
         data = 'ABC'
         d = deque(data, maxlen=len(data))
         with self.assertRaises(IndexError):
@@ -321,12 +321,12 @@ class TestBasic(unittest.TestCase):
         for i in range(-len(elements), len(elements)):
             d = deque(elements, maxlen=len(elements)+1)
             d.insert(i, 'Z')
-            if i >= 0:
+            ikiwa i >= 0:
                 self.assertEqual(d[i], 'Z')
             else:
                 self.assertEqual(d[i-1], 'Z')
 
-    def test_imul(self):
+    eleza test_imul(self):
         for n in (-10, -1, 0, 1, 2, 10, 1000):
             d = deque()
             d *= n
@@ -357,7 +357,7 @@ class TestBasic(unittest.TestCase):
             self.assertEqual(d, deque(('abcdef' * n)[-500:]))
             self.assertEqual(d.maxlen, 500)
 
-    def test_mul(self):
+    eleza test_mul(self):
         d = deque('abc')
         self.assertEqual(d * -5, deque())
         self.assertEqual(d * 0, deque())
@@ -383,7 +383,7 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(d * 2, deque('bcabc'))
         self.assertEqual(d * 30, deque('bcabc'))
 
-    def test_setitem(self):
+    eleza test_setitem(self):
         n = 200
         d = deque(range(n))
         for i in range(n):
@@ -395,7 +395,7 @@ class TestBasic(unittest.TestCase):
             l[i] = 7*i
         self.assertEqual(list(d), l)
 
-    def test_delitem(self):
+    eleza test_delitem(self):
         n = 500         # O(n**2) test, don't make this too big
         d = deque(range(n))
         self.assertRaises(IndexError, d.__delitem__, -n-1)
@@ -409,7 +409,7 @@ class TestBasic(unittest.TestCase):
             self.assertNotIn(val, d)
         self.assertEqual(len(d), 0)
 
-    def test_reverse(self):
+    eleza test_reverse(self):
         n = 500         # O(n**2) test, don't make this too big
         data = [random.random() for i in range(n)]
         for i in range(n):
@@ -421,7 +421,7 @@ class TestBasic(unittest.TestCase):
             self.assertEqual(list(d), data[:i])
         self.assertRaises(TypeError, d.reverse, 1)          # Arity is zero
 
-    def test_rotate(self):
+    eleza test_rotate(self):
         s = tuple('abcde')
         n = len(s)
 
@@ -474,7 +474,7 @@ class TestBasic(unittest.TestCase):
         d.rotate()              # rotate an empty deque
         self.assertEqual(d, deque())
 
-    def test_len(self):
+    eleza test_len(self):
         d = deque('ab')
         self.assertEqual(len(d), 2)
         d.popleft()
@@ -490,12 +490,12 @@ class TestBasic(unittest.TestCase):
         d.clear()
         self.assertEqual(len(d), 0)
 
-    def test_underflow(self):
+    eleza test_underflow(self):
         d = deque()
         self.assertRaises(IndexError, d.pop)
         self.assertRaises(IndexError, d.popleft)
 
-    def test_clear(self):
+    eleza test_clear(self):
         d = deque(range(100))
         self.assertEqual(len(d), 100)
         d.clear()
@@ -504,7 +504,7 @@ class TestBasic(unittest.TestCase):
         d.clear()               # clear an empty deque
         self.assertEqual(list(d), [])
 
-    def test_remove(self):
+    eleza test_remove(self):
         d = deque('abcdefghcij')
         d.remove('c')
         self.assertEqual(d, deque('abdefghcij'))
@@ -528,20 +528,20 @@ class TestBasic(unittest.TestCase):
             self.assertRaises(IndexError, d.remove, 'c')
             self.assertEqual(d, deque())
 
-    def test_repr(self):
+    eleza test_repr(self):
         d = deque(range(200))
         e = eval(repr(d))
         self.assertEqual(list(d), list(e))
         d.append(d)
         self.assertIn('...', repr(d))
 
-    def test_print(self):
+    eleza test_andika(self):
         d = deque(range(200))
         d.append(d)
         try:
             support.unlink(support.TESTFN)
             fo = open(support.TESTFN, "w")
-            print(d, file=fo, end='')
+            andika(d, file=fo, end='')
             fo.close()
             fo = open(support.TESTFN, "r")
             self.assertEqual(fo.read(), repr(d))
@@ -549,37 +549,37 @@ class TestBasic(unittest.TestCase):
             fo.close()
             support.unlink(support.TESTFN)
 
-    def test_init(self):
+    eleza test_init(self):
         self.assertRaises(TypeError, deque, 'abc', 2, 3);
         self.assertRaises(TypeError, deque, 1);
 
-    def test_hash(self):
+    eleza test_hash(self):
         self.assertRaises(TypeError, hash, deque('abc'))
 
-    def test_long_steadystate_queue_popleft(self):
+    eleza test_long_steadystate_queue_popleft(self):
         for size in (0, 1, 2, 100, 1000):
             d = deque(range(size))
             append, pop = d.append, d.popleft
             for i in range(size, BIG):
                 append(i)
                 x = pop()
-                if x != i - size:
+                ikiwa x != i - size:
                     self.assertEqual(x, i-size)
             self.assertEqual(list(d), list(range(BIG-size, BIG)))
 
-    def test_long_steadystate_queue_popright(self):
+    eleza test_long_steadystate_queue_popright(self):
         for size in (0, 1, 2, 100, 1000):
             d = deque(reversed(range(size)))
             append, pop = d.appendleft, d.pop
             for i in range(size, BIG):
                 append(i)
                 x = pop()
-                if x != i - size:
+                ikiwa x != i - size:
                     self.assertEqual(x, i-size)
             self.assertEqual(list(reversed(list(d))),
                              list(range(BIG-size, BIG)))
 
-    def test_big_queue_popleft(self):
+    eleza test_big_queue_popleft(self):
         pass
         d = deque()
         append, pop = d.append, d.popleft
@@ -587,48 +587,48 @@ class TestBasic(unittest.TestCase):
             append(i)
         for i in range(BIG):
             x = pop()
-            if x != i:
+            ikiwa x != i:
                 self.assertEqual(x, i)
 
-    def test_big_queue_popright(self):
+    eleza test_big_queue_popright(self):
         d = deque()
         append, pop = d.appendleft, d.pop
         for i in range(BIG):
             append(i)
         for i in range(BIG):
             x = pop()
-            if x != i:
+            ikiwa x != i:
                 self.assertEqual(x, i)
 
-    def test_big_stack_right(self):
+    eleza test_big_stack_right(self):
         d = deque()
         append, pop = d.append, d.pop
         for i in range(BIG):
             append(i)
         for i in reversed(range(BIG)):
             x = pop()
-            if x != i:
+            ikiwa x != i:
                 self.assertEqual(x, i)
         self.assertEqual(len(d), 0)
 
-    def test_big_stack_left(self):
+    eleza test_big_stack_left(self):
         d = deque()
         append, pop = d.appendleft, d.popleft
         for i in range(BIG):
             append(i)
         for i in reversed(range(BIG)):
             x = pop()
-            if x != i:
+            ikiwa x != i:
                 self.assertEqual(x, i)
         self.assertEqual(len(d), 0)
 
-    def test_roundtrip_iter_init(self):
+    eleza test_roundtrip_iter_init(self):
         d = deque(range(200))
         e = deque(d)
         self.assertNotEqual(id(d), id(e))
         self.assertEqual(list(d), list(e))
 
-    def test_pickle(self):
+    eleza test_pickle(self):
         for d in deque(range(200)), deque(range(200), 100):
             for i in range(pickle.HIGHEST_PROTOCOL + 1):
                 s = pickle.dumps(d, i)
@@ -637,7 +637,7 @@ class TestBasic(unittest.TestCase):
                 self.assertEqual(list(e), list(d))
                 self.assertEqual(e.maxlen, d.maxlen)
 
-    def test_pickle_recursive(self):
+    eleza test_pickle_recursive(self):
         for d in deque('abc'), deque('abc', 3):
             d.append(d)
             for i in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -646,7 +646,7 @@ class TestBasic(unittest.TestCase):
                 self.assertEqual(id(e[-1]), id(e))
                 self.assertEqual(e.maxlen, d.maxlen)
 
-    def test_iterator_pickle(self):
+    eleza test_iterator_pickle(self):
         orig = deque(range(200))
         data = [i*1.01 for i in orig]
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -687,7 +687,7 @@ class TestBasic(unittest.TestCase):
             self.assertEqual(type(it), type(itorg))
             self.assertEqual(list(it), [])
 
-    def test_deepcopy(self):
+    eleza test_deepcopy(self):
         mut = [10]
         d = deque([mut])
         e = copy.deepcopy(d)
@@ -696,7 +696,7 @@ class TestBasic(unittest.TestCase):
         self.assertNotEqual(id(d), id(e))
         self.assertNotEqual(list(d), list(e))
 
-    def test_copy(self):
+    eleza test_copy(self):
         mut = [10]
         d = deque([mut])
         e = copy.copy(d)
@@ -708,13 +708,13 @@ class TestBasic(unittest.TestCase):
         for i in range(5):
             for maxlen in range(-1, 6):
                 s = [random.random() for j in range(i)]
-                d = deque(s) if maxlen == -1 else deque(s, maxlen)
+                d = deque(s) ikiwa maxlen == -1 else deque(s, maxlen)
                 e = d.copy()
                 self.assertEqual(d, e)
                 self.assertEqual(d.maxlen, e.maxlen)
                 self.assertTrue(all(x is y for x, y in zip(d, e)))
 
-    def test_copy_method(self):
+    eleza test_copy_method(self):
         mut = [10]
         d = deque([mut])
         e = d.copy()
@@ -723,16 +723,16 @@ class TestBasic(unittest.TestCase):
         self.assertNotEqual(id(d), id(e))
         self.assertEqual(list(d), list(e))
 
-    def test_reversed(self):
+    eleza test_reversed(self):
         for s in ('abcd', range(2000)):
             self.assertEqual(list(reversed(deque(s))), list(reversed(s)))
 
-    def test_reversed_new(self):
+    eleza test_reversed_new(self):
         klass = type(reversed(deque()))
         for s in ('abcd', range(2000)):
             self.assertEqual(list(klass(deque(s))), list(reversed(s)))
 
-    def test_gc_doesnt_blowup(self):
+    eleza test_gc_doesnt_blowup(self):
         agiza gc
         # This used to assert-fail in deque_traverse() under a debug
         # build, or run wild with a NULL pointer in a release build.
@@ -741,14 +741,14 @@ class TestBasic(unittest.TestCase):
             d.append(1)
             gc.collect()
 
-    def test_container_iterator(self):
+    eleza test_container_iterator(self):
         # Bug #3680: tp_traverse was not implemented for deque iterator objects
-        class C(object):
+        kundi C(object):
             pass
         for i in range(2):
             obj = C()
             ref = weakref.ref(obj)
-            if i == 0:
+            ikiwa i == 0:
                 container = deque([obj, 1])
             else:
                 container = reversed(deque([obj, 1]))
@@ -760,7 +760,7 @@ class TestBasic(unittest.TestCase):
     check_sizeof = support.check_sizeof
 
     @support.cpython_only
-    def test_sizeof(self):
+    eleza test_sizeof(self):
         BLOCKLEN = 64
         basesize = support.calcvobjsize('2P4nP')
         blocksize = struct.calcsize('P%dPP' % BLOCKLEN)
@@ -772,9 +772,9 @@ class TestBasic(unittest.TestCase):
         check(deque('a' * BLOCKLEN), basesize + 2 * blocksize)
         check(deque('a' * (42 * BLOCKLEN)), basesize + 43 * blocksize)
 
-class TestVariousIteratorArgs(unittest.TestCase):
+kundi TestVariousIteratorArgs(unittest.TestCase):
 
-    def test_constructor(self):
+    eleza test_constructor(self):
         for s in ("123", "", range(1000), ('do', 1.2), range(2000,2200,5)):
             for g in (seq_tests.Sequence, seq_tests.IterFunc,
                       seq_tests.IterGen, seq_tests.IterFuncStop,
@@ -784,28 +784,28 @@ class TestVariousIteratorArgs(unittest.TestCase):
             self.assertRaises(TypeError, deque, seq_tests.IterNoNext(s))
             self.assertRaises(ZeroDivisionError, deque, seq_tests.IterGenExc(s))
 
-    def test_iter_with_altered_data(self):
+    eleza test_iter_with_altered_data(self):
         d = deque('abcdefg')
         it = iter(d)
         d.pop()
         self.assertRaises(RuntimeError, next, it)
 
-    def test_runtime_error_on_empty_deque(self):
+    eleza test_runtime_error_on_empty_deque(self):
         d = deque()
         it = iter(d)
         d.append(10)
         self.assertRaises(RuntimeError, next, it)
 
-class Deque(deque):
+kundi Deque(deque):
     pass
 
-class DequeWithBadIter(deque):
-    def __iter__(self):
+kundi DequeWithBadIter(deque):
+    eleza __iter__(self):
         raise TypeError
 
-class TestSubclass(unittest.TestCase):
+kundi TestSubclass(unittest.TestCase):
 
-    def test_basics(self):
+    eleza test_basics(self):
         d = Deque(range(25))
         d.__init__(range(200))
         for i in range(200, 400):
@@ -827,7 +827,7 @@ class TestSubclass(unittest.TestCase):
         d.clear()
         self.assertEqual(len(d), 0)
 
-    def test_copy_pickle(self):
+    eleza test_copy_pickle(self):
 
         d = Deque('abc')
 
@@ -863,7 +863,7 @@ class TestSubclass(unittest.TestCase):
             self.assertEqual(type(d), type(e))
             self.assertEqual(list(d), list(e))
 
-    def test_pickle_recursive(self):
+    eleza test_pickle_recursive(self):
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
             for d in Deque('abc'), Deque('abc', 3):
                 d.append(d)
@@ -884,31 +884,31 @@ class TestSubclass(unittest.TestCase):
             for d in DequeWithBadIter('abc'), DequeWithBadIter('abc', 2):
                 self.assertRaises(TypeError, pickle.dumps, d, proto)
 
-    def test_weakref(self):
+    eleza test_weakref(self):
         d = deque('gallahad')
         p = weakref.proxy(d)
         self.assertEqual(str(p), str(d))
         d = None
         self.assertRaises(ReferenceError, str, p)
 
-    def test_strange_subclass(self):
-        class X(deque):
-            def __iter__(self):
-                return iter([])
+    eleza test_strange_subclass(self):
+        kundi X(deque):
+            eleza __iter__(self):
+                rudisha iter([])
         d1 = X([1,2,3])
         d2 = X([4,5,6])
-        d1 == d2   # not clear if this is supposed to be True or False,
+        d1 == d2   # not clear ikiwa this is supposed to be True or False,
                    # but it used to give a SystemError
 
     @support.cpython_only
-    def test_bug_31608(self):
+    eleza test_bug_31608(self):
         # The interpreter used to crash in specific cases where a deque
-        # subclass returned a non-deque.
-        class X(deque):
+        # subkundi returned a non-deque.
+        kundi X(deque):
             pass
         d = X()
-        def bad___new__(cls, *args, **kwargs):
-            return [42]
+        eleza bad___new__(cls, *args, **kwargs):
+            rudisha [42]
         X.__new__ = bad___new__
         with self.assertRaises(TypeError):
             d * 42  # shouldn't crash
@@ -916,31 +916,31 @@ class TestSubclass(unittest.TestCase):
             d + deque([1, 2, 3])  # shouldn't crash
 
 
-class SubclassWithKwargs(deque):
-    def __init__(self, newarg=1):
+kundi SubclassWithKwargs(deque):
+    eleza __init__(self, newarg=1):
         deque.__init__(self)
 
-class TestSubclassWithKwargs(unittest.TestCase):
-    def test_subclass_with_kwargs(self):
+kundi TestSubclassWithKwargs(unittest.TestCase):
+    eleza test_subclass_with_kwargs(self):
         # SF bug #1486663 -- this used to erroneously raise a TypeError
         SubclassWithKwargs(newarg=1)
 
-class TestSequence(seq_tests.CommonTest):
+kundi TestSequence(seq_tests.CommonTest):
     type2test = deque
 
-    def test_getitem(self):
+    eleza test_getitem(self):
         # For now, bypass tests that require slicing
         pass
 
-    def test_getslice(self):
+    eleza test_getslice(self):
         # For now, bypass tests that require slicing
         pass
 
-    def test_subscript(self):
+    eleza test_subscript(self):
         # For now, bypass tests that require slicing
         pass
 
-    def test_free_after_iterating(self):
+    eleza test_free_after_iterating(self):
         # For now, bypass tests that require slicing
         self.skipTest("Exhausted deque iterator doesn't free a deque")
 
@@ -952,7 +952,7 @@ Example kutoka the Library Reference:  Doc/lib/libcollections.tex
 >>> kutoka collections agiza deque
 >>> d = deque('ghi')                 # make a new deque with three items
 >>> for elem in d:                   # iterate over the deque's elements
-...     print(elem.upper())
+...     andika(elem.upper())
 G
 H
 I
@@ -960,9 +960,9 @@ I
 >>> d.appendleft('f')                # add a new entry to the left side
 >>> d                                # show the representation of the deque
 deque(['f', 'g', 'h', 'i', 'j'])
->>> d.pop()                          # return and remove the rightmost item
+>>> d.pop()                          # rudisha and remove the rightmost item
 'j'
->>> d.popleft()                      # return and remove the leftmost item
+>>> d.popleft()                      # rudisha and remove the leftmost item
 'f'
 >>> list(d)                          # list the contents of the deque
 ['g', 'h', 'i']
@@ -998,7 +998,7 @@ deque(['c', 'b', 'a'])
 
 
 
->>> def delete_nth(d, n):
+>>> eleza delete_nth(d, n):
 ...     d.rotate(-n)
 ...     d.popleft()
 ...     d.rotate(n)
@@ -1010,7 +1010,7 @@ deque(['a', 'b', 'd', 'e', 'f'])
 
 
 
->>> def roundrobin(*iterables):
+>>> eleza roundrobin(*iterables):
 ...     pending = deque(iter(i) for i in iterables)
 ...     while pending:
 ...         task = pending.popleft()
@@ -1022,7 +1022,7 @@ deque(['a', 'b', 'd', 'e', 'f'])
 ...
 
 >>> for value in roundrobin('abc', 'd', 'efgh'):
-...     print(value)
+...     andika(value)
 ...
 a
 d
@@ -1034,14 +1034,14 @@ g
 h
 
 
->>> def maketree(iterable):
+>>> eleza maketree(iterable):
 ...     d = deque(iterable)
 ...     while len(d) > 1:
 ...         pair = [d.popleft(), d.popleft()]
 ...         d.append(pair)
-...     return list(d)
+...     rudisha list(d)
 ...
->>> print(maketree('abcdefgh'))
+>>> andika(maketree('abcdefgh'))
 [[[['a', 'b'], ['c', 'd']], [['e', 'f'], ['g', 'h']]]]
 
 """
@@ -1051,7 +1051,7 @@ h
 
 __test__ = {'libreftest' : libreftest}
 
-def test_main(verbose=None):
+eleza test_main(verbose=None):
     agiza sys
     test_classes = (
         TestBasic,
@@ -1064,18 +1064,18 @@ def test_main(verbose=None):
     support.run_unittest(*test_classes)
 
     # verify reference counting
-    if verbose and hasattr(sys, "gettotalrefcount"):
+    ikiwa verbose and hasattr(sys, "gettotalrefcount"):
         agiza gc
         counts = [None] * 5
         for i in range(len(counts)):
             support.run_unittest(*test_classes)
             gc.collect()
             counts[i] = sys.gettotalrefcount()
-        print(counts)
+        andika(counts)
 
     # doctests
     kutoka test agiza test_deque
     support.run_doctest(test_deque, verbose)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main(verbose=True)

@@ -3,7 +3,7 @@ doctests = """
 
 Test simple loop with conditional
 
-    >>> sum({i*i for i in range(100) if i&1 == 1})
+    >>> sum({i*i for i in range(100) ikiwa i&1 == 1})
     166650
 
 Test simple case
@@ -45,8 +45,8 @@ Verify that syntax error's are raised for setcomps used as lvalues
 
 Make a nested set comprehension that acts like set(range())
 
-    >>> def srange(n):
-    ...     return {i for i in range(n)}
+    >>> eleza srange(n):
+    ...     rudisha {i for i in range(n)}
     >>> list(sorted(srange(10)))
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
@@ -58,14 +58,14 @@ Same again, only as a lambda expression instead of a function definition
 
 Generators can call other generators:
 
-    >>> def grange(n):
+    >>> eleza grange(n):
     ...     for x in {i for i in range(n)}:
     ...         yield x
     >>> list(sorted(grange(5)))
     [0, 1, 2, 3, 4]
 
 
-Make sure that None is a valid return value
+Make sure that None is a valid rudisha value
 
     >>> {None for i in range(10)}
     {None}
@@ -100,29 +100,29 @@ And confirm that a closure can jump over the list comp scope
 
 We also repeat each of the above scoping tests inside a function
 
-    >>> def test_func():
+    >>> eleza test_func():
     ...     items = {(lambda i=i: i) for i in range(5)}
-    ...     return {x() for x in items}
+    ...     rudisha {x() for x in items}
     >>> test_func() == set(range(5))
     True
 
-    >>> def test_func():
+    >>> eleza test_func():
     ...     items = {(lambda: i) for i in range(5)}
-    ...     return {x() for x in items}
+    ...     rudisha {x() for x in items}
     >>> test_func()
     {4}
 
-    >>> def test_func():
+    >>> eleza test_func():
     ...     items = {(lambda: i) for i in range(5)}
     ...     i = 20
-    ...     return {x() for x in items}
+    ...     rudisha {x() for x in items}
     >>> test_func()
     {4}
 
-    >>> def test_func():
+    >>> eleza test_func():
     ...     items = {(lambda: y) for i in range(5)}
     ...     y = 2
-    ...     return {x() for x in items}
+    ...     rudisha {x() for x in items}
     >>> test_func()
     {2}
 
@@ -131,21 +131,21 @@ We also repeat each of the above scoping tests inside a function
 
 __test__ = {'doctests' : doctests}
 
-def test_main(verbose=None):
+eleza test_main(verbose=None):
     agiza sys
     kutoka test agiza support
     kutoka test agiza test_setcomps
     support.run_doctest(test_setcomps, verbose)
 
     # verify reference counting
-    if verbose and hasattr(sys, "gettotalrefcount"):
+    ikiwa verbose and hasattr(sys, "gettotalrefcount"):
         agiza gc
         counts = [None] * 5
         for i in range(len(counts)):
             support.run_doctest(test_setcomps, verbose)
             gc.collect()
             counts[i] = sys.gettotalrefcount()
-        print(counts)
+        andika(counts)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main(verbose=True)

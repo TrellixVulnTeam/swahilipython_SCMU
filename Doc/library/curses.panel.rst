@@ -30,7 +30,7 @@ The module :mod:`curses.panel` defines the following functions:
 
    Returns a panel object, associating it with the given window *win*. Be aware
    that you need to keep the returned panel object referenced explicitly.  If you
-   don't, the panel object is garbage collected and removed from the panel stack.
+   don't, the panel object is garbage collected and removed kutoka the panel stack.
 
 
 .. function:: top_panel()

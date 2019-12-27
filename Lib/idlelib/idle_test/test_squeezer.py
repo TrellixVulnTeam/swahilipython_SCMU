@@ -19,54 +19,54 @@ kutoka idlelib.pyshell agiza PyShell
 SENTINEL_VALUE = sentinel.SENTINEL_VALUE
 
 
-def get_test_tk_root(test_instance):
+eleza get_test_tk_root(test_instance):
     """Helper for tests: Create a root Tk object."""
     requires('gui')
     root = Tk()
     root.withdraw()
 
-    def cleanup_root():
+    eleza cleanup_root():
         root.update_idletasks()
         root.destroy()
     test_instance.addCleanup(cleanup_root)
 
-    return root
+    rudisha root
 
 
-class CountLinesTest(unittest.TestCase):
+kundi CountLinesTest(unittest.TestCase):
     """Tests for the count_lines_with_wrapping function."""
-    def check(self, expected, text, linewidth):
-        return self.assertEqual(
+    eleza check(self, expected, text, linewidth):
+        rudisha self.assertEqual(
             expected,
             count_lines_with_wrapping(text, linewidth),
         )
 
-    def test_count_empty(self):
+    eleza test_count_empty(self):
         """Test with an empty string."""
         self.assertEqual(count_lines_with_wrapping(""), 0)
 
-    def test_count_begins_with_empty_line(self):
+    eleza test_count_begins_with_empty_line(self):
         """Test with a string which begins with a newline."""
         self.assertEqual(count_lines_with_wrapping("\ntext"), 2)
 
-    def test_count_ends_with_empty_line(self):
+    eleza test_count_ends_with_empty_line(self):
         """Test with a string which ends with a newline."""
         self.assertEqual(count_lines_with_wrapping("text\n"), 1)
 
-    def test_count_several_lines(self):
+    eleza test_count_several_lines(self):
         """Test with several lines of text."""
         self.assertEqual(count_lines_with_wrapping("1\n2\n3\n"), 3)
 
-    def test_empty_lines(self):
+    eleza test_empty_lines(self):
         self.check(expected=1, text='\n', linewidth=80)
         self.check(expected=2, text='\n\n', linewidth=80)
         self.check(expected=10, text='\n' * 10, linewidth=80)
 
-    def test_long_line(self):
+    eleza test_long_line(self):
         self.check(expected=3, text='a' * 200, linewidth=80)
         self.check(expected=3, text='a' * 200 + '\n', linewidth=80)
 
-    def test_several_lines_different_lengths(self):
+    eleza test_several_lines_different_lengths(self):
         text = dedent("""\
             13 characters
             43 is the number of characters on this line
@@ -80,42 +80,42 @@ class CountLinesTest(unittest.TestCase):
         self.check(expected=11, text=text, linewidth=10)
 
 
-class SqueezerTest(unittest.TestCase):
+kundi SqueezerTest(unittest.TestCase):
     """Tests for the Squeezer class."""
-    def make_mock_editor_window(self, with_text_widget=False):
+    eleza make_mock_editor_window(self, with_text_widget=False):
         """Create a mock EditorWindow instance."""
         editwin = NonCallableMagicMock()
         editwin.width = 80
 
-        if with_text_widget:
+        ikiwa with_text_widget:
             editwin.root = get_test_tk_root(self)
             text_widget = self.make_text_widget(root=editwin.root)
             editwin.text = editwin.per.bottom = text_widget
 
-        return editwin
+        rudisha editwin
 
-    def make_squeezer_instance(self, editor_window=None):
+    eleza make_squeezer_instance(self, editor_window=None):
         """Create an actual Squeezer instance with a mock EditorWindow."""
-        if editor_window is None:
+        ikiwa editor_window is None:
             editor_window = self.make_mock_editor_window()
         squeezer = Squeezer(editor_window)
-        return squeezer
+        rudisha squeezer
 
-    def make_text_widget(self, root=None):
-        if root is None:
+    eleza make_text_widget(self, root=None):
+        ikiwa root is None:
             root = get_test_tk_root(self)
         text_widget = Text(root)
         text_widget["font"] = ('Courier', 10)
         text_widget.mark_set("iomark", "1.0")
-        return text_widget
+        rudisha text_widget
 
-    def set_idleconf_option_with_cleanup(self, configType, section, option, value):
+    eleza set_idleconf_option_with_cleanup(self, configType, section, option, value):
         prev_val = idleConf.GetOption(configType, section, option)
         idleConf.SetOption(configType, section, option, value)
         self.addCleanup(idleConf.SetOption,
                         configType, section, option, prev_val)
 
-    def test_count_lines(self):
+    eleza test_count_lines(self):
         """Test Squeezer.count_lines() with various inputs."""
         editwin = self.make_mock_editor_window()
         squeezer = self.make_squeezer_instance(editwin)
@@ -137,14 +137,14 @@ class SqueezerTest(unittest.TestCase):
                 with patch.object(editwin, 'width', line_width):
                     self.assertEqual(squeezer.count_lines(text), expected)
 
-    def test_init(self):
+    eleza test_init(self):
         """Test the creation of Squeezer instances."""
         editwin = self.make_mock_editor_window()
         squeezer = self.make_squeezer_instance(editwin)
         self.assertIs(squeezer.editwin, editwin)
         self.assertEqual(squeezer.expandingbuttons, [])
 
-    def test_write_no_tags(self):
+    eleza test_write_no_tags(self):
         """Test Squeezer's overriding of the EditorWindow's write() method."""
         editwin = self.make_mock_editor_window()
         for text in ['', 'TEXT', 'LONG TEXT' * 1000, 'MANY_LINES\n' * 100]:
@@ -156,7 +156,7 @@ class SqueezerTest(unittest.TestCase):
             orig_write.assert_called_with(text, ())
             self.assertEqual(len(squeezer.expandingbuttons), 0)
 
-    def test_write_not_stdout(self):
+    eleza test_write_not_stdout(self):
         """Test Squeezer's overriding of the EditorWindow's write() method."""
         for text in ['', 'TEXT', 'LONG TEXT' * 1000, 'MANY_LINES\n' * 100]:
             editwin = self.make_mock_editor_window()
@@ -170,7 +170,7 @@ class SqueezerTest(unittest.TestCase):
             orig_write.assert_called_with(text, "stderr")
             self.assertEqual(len(squeezer.expandingbuttons), 0)
 
-    def test_write_stdout(self):
+    eleza test_write_stdout(self):
         """Test Squeezer's overriding of the EditorWindow's write() method."""
         editwin = self.make_mock_editor_window()
 
@@ -194,7 +194,7 @@ class SqueezerTest(unittest.TestCase):
             self.assertEqual(orig_write.call_count, 0)
             self.assertEqual(len(squeezer.expandingbuttons), 1)
 
-    def test_auto_squeeze(self):
+    eleza test_auto_squeeze(self):
         """Test that the auto-squeezing creates an ExpandingButton properly."""
         editwin = self.make_mock_editor_window(with_text_widget=True)
         text_widget = editwin.text
@@ -206,7 +206,7 @@ class SqueezerTest(unittest.TestCase):
         self.assertEqual(text_widget.get('1.0', 'end'), '\n')
         self.assertEqual(len(squeezer.expandingbuttons), 1)
 
-    def test_squeeze_current_text_event(self):
+    eleza test_squeeze_current_text_event(self):
         """Test the squeeze_current_text event."""
         # Squeezing text should work for both stdout and stderr.
         for tag_name in ["stdout", "stderr"]:
@@ -235,7 +235,7 @@ class SqueezerTest(unittest.TestCase):
             self.assertEqual(text_widget.get('1.0', 'end'), 'SOME\nTEXT\n\n')
             self.assertEqual(len(squeezer.expandingbuttons), 0)
 
-    def test_squeeze_current_text_event_no_allowed_tags(self):
+    eleza test_squeeze_current_text_event_no_allowed_tags(self):
         """Test that the event doesn't squeeze text without a relevant tag."""
         editwin = self.make_mock_editor_window(with_text_widget=True)
         text_widget = editwin.text
@@ -255,7 +255,7 @@ class SqueezerTest(unittest.TestCase):
         self.assertEqual(text_widget.get('1.0', 'end'), 'SOME\nTEXT\n\n')
         self.assertEqual(len(squeezer.expandingbuttons), 0)
 
-    def test_squeeze_text_before_existing_squeezed_text(self):
+    eleza test_squeeze_text_before_existing_squeezed_text(self):
         """Test squeezing text before existing squeezed text."""
         editwin = self.make_mock_editor_window(with_text_widget=True)
         text_widget = editwin.text
@@ -281,7 +281,7 @@ class SqueezerTest(unittest.TestCase):
             squeezer.expandingbuttons[1],
         ))
 
-    def test_reload(self):
+    eleza test_reload(self):
         """Test the reload() class-method."""
         editwin = self.make_mock_editor_window(with_text_widget=True)
         squeezer = self.make_squeezer_instance(editwin)
@@ -298,16 +298,16 @@ class SqueezerTest(unittest.TestCase):
         self.assertEqual(squeezer.auto_squeeze_min_lines,
                          new_auto_squeeze_min_lines)
 
-    def test_reload_no_squeezer_instances(self):
+    eleza test_reload_no_squeezer_instances(self):
         """Test that Squeezer.reload() runs without any instances existing."""
         Squeezer.reload()
 
 
-class ExpandingButtonTest(unittest.TestCase):
+kundi ExpandingButtonTest(unittest.TestCase):
     """Tests for the ExpandingButton class."""
     # In these tests the squeezer instance is a mock, but actual tkinter
     # Text and Button instances are created.
-    def make_mock_squeezer(self):
+    eleza make_mock_squeezer(self):
         """Helper for tests: Create a mock Squeezer object."""
         root = get_test_tk_root(self)
         squeezer = Mock()
@@ -315,10 +315,10 @@ class ExpandingButtonTest(unittest.TestCase):
 
         # Set default values for the configuration settings.
         squeezer.auto_squeeze_min_lines = 50
-        return squeezer
+        rudisha squeezer
 
     @patch('idlelib.squeezer.Hovertip', autospec=Hovertip)
-    def test_init(self, MockHovertip):
+    eleza test_init(self, MockHovertip):
         """Test the simplest creation of an ExpandingButton."""
         squeezer = self.make_mock_squeezer()
         text_widget = squeezer.editwin.text
@@ -335,7 +335,7 @@ class ExpandingButtonTest(unittest.TestCase):
 
         # Check that the mouse events are bound.
         self.assertIn('<Double-Button-1>', expandingbutton.bind())
-        right_button_code = '<Button-%s>' % ('2' if macosx.isAquaTk() else '3')
+        right_button_code = '<Button-%s>' % ('2' ikiwa macosx.isAquaTk() else '3')
         self.assertIn(right_button_code, expandingbutton.bind())
 
         # Check that ToolTip was called once, with appropriate values.
@@ -346,7 +346,7 @@ class ExpandingButtonTest(unittest.TestCase):
         tooltip_text = MockHovertip.call_args[0][1]
         self.assertIn('right-click', tooltip_text.lower())
 
-    def test_expand(self):
+    eleza test_expand(self):
         """Test the expand event."""
         squeezer = self.make_mock_squeezer()
         expandingbutton = ExpandingButton('TEXT', 'TAGS', 50, squeezer)
@@ -378,7 +378,7 @@ class ExpandingButtonTest(unittest.TestCase):
         self.assertEqual(squeezer.expandingbuttons.remove.call_count, 1)
         squeezer.expandingbuttons.remove.assert_called_with(expandingbutton)
 
-    def test_expand_dangerous_oupput(self):
+    eleza test_expand_dangerous_oupput(self):
         """Test that expanding very long output asks user for confirmation."""
         squeezer = self.make_mock_squeezer()
         text = 'a' * 10**5
@@ -396,7 +396,7 @@ class ExpandingButtonTest(unittest.TestCase):
         # changes afterwards.
         expandingbutton.base_text = expandingbutton.text
 
-        # Patch the message box module to always return False.
+        # Patch the message box module to always rudisha False.
         with patch('idlelib.squeezer.tkMessageBox') as mock_msgbox:
             mock_msgbox.askokcancel.return_value = False
             mock_msgbox.askyesno.return_value = False
@@ -407,7 +407,7 @@ class ExpandingButtonTest(unittest.TestCase):
         self.assertEqual(retval, 'break')
         self.assertEqual(expandingbutton.text.get('1.0', 'end-1c'), '')
 
-        # Patch the message box module to always return True.
+        # Patch the message box module to always rudisha True.
         with patch('idlelib.squeezer.tkMessageBox') as mock_msgbox:
             mock_msgbox.askokcancel.return_value = True
             mock_msgbox.askyesno.return_value = True
@@ -418,7 +418,7 @@ class ExpandingButtonTest(unittest.TestCase):
         self.assertEqual(retval, None)
         self.assertEqual(expandingbutton.text.get('1.0', 'end-1c'), text)
 
-    def test_copy(self):
+    eleza test_copy(self):
         """Test the copy event."""
         # Testing with the actual clipboard proved problematic, so this
         # test replaces the clipboard manipulation functions with mocks
@@ -438,7 +438,7 @@ class ExpandingButtonTest(unittest.TestCase):
         self.assertEqual(expandingbutton.clipboard_append.call_count, 1)
         expandingbutton.clipboard_append.assert_called_with('TEXT')
 
-    def test_view(self):
+    eleza test_view(self):
         """Test the view event."""
         squeezer = self.make_mock_squeezer()
         expandingbutton = ExpandingButton('TEXT', 'TAGS', 50, squeezer)
@@ -455,7 +455,7 @@ class ExpandingButtonTest(unittest.TestCase):
             # Check that the proper text was passed.
             self.assertEqual(mock_view_text.call_args[0][2], 'TEXT')
 
-    def test_rmenu(self):
+    eleza test_rmenu(self):
         """Test the context menu."""
         squeezer = self.make_mock_squeezer()
         expandingbutton = ExpandingButton('TEXT', 'TAGS', 50, squeezer)
@@ -472,5 +472,5 @@ class ExpandingButtonTest(unittest.TestCase):
                 mock_menu.add_command.assert_any_call(label=label, command=ANY)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

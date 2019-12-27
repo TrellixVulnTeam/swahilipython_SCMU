@@ -91,8 +91,8 @@ def RLock(*args, **kwargs):
         return _PyRLock(*args, **kwargs)
     return _CRLock(*args, **kwargs)
 
-class _RLock:
-    """This class implements reentrant lock objects.
+kundi _RLock:
+    """This kundi implements reentrant lock objects.
 
     A reentrant lock must be released by the thread that acquired it. Once a
     thread has acquired a reentrant lock, the same thread may acquire it
@@ -207,7 +207,7 @@ class _RLock:
 _PyRLock = _RLock
 
 
-class Condition:
+kundi Condition:
     """Class that implements a condition variable.
 
     A condition variable allows one or more threads to wait until they are
@@ -285,7 +285,7 @@ class Condition:
         When the underlying lock is an RLock, it is not released using its
         release() method, since this may not actually unlock the lock when it
         was acquired multiple times recursively. Instead, an internal interface
-        of the RLock class is used, which really unlocks it even when it has
+        of the RLock kundi is used, which really unlocks it even when it has
         been recursively acquired several times. Another internal interface is
         then used to restore the recursion level when the lock is reacquired.
 
@@ -373,8 +373,8 @@ class Condition:
     notifyAll = notify_all
 
 
-class Semaphore:
-    """This class implements semaphore objects.
+kundi Semaphore:
+    """This kundi implements semaphore objects.
 
     Semaphores manage a counter representing the number of release() calls minus
     the number of acquire() calls, plus an initial value. The acquire() method
@@ -453,7 +453,7 @@ class Semaphore:
         self.release()
 
 
-class BoundedSemaphore(Semaphore):
+kundi BoundedSemaphore(Semaphore):
     """Implements a bounded semaphore.
 
     A bounded semaphore checks to make sure its current value doesn't exceed its
@@ -491,7 +491,7 @@ class BoundedSemaphore(Semaphore):
             self._cond.notify()
 
 
-class Event:
+kundi Event:
     """Class implementing event objects.
 
     Events manage a flag that can be set to true with the set() method and reset
@@ -500,7 +500,7 @@ class Event:
 
     """
 
-    # After Tim Peters' event class (without is_posted())
+    # After Tim Peters' event kundi (without is_posted())
 
     def __init__(self):
         self._cond = Condition(Lock())
@@ -560,7 +560,7 @@ class Event:
 
 
 # A barrier class.  Inspired in part by the pthread_barrier_* api and
-# the CyclicBarrier class kutoka Java.  See
+# the CyclicBarrier kundi kutoka Java.  See
 # http://sourceware.org/pthreads-win32/manual/pthread_barrier_init.html and
 # http://java.sun.com/j2se/1.5.0/docs/api/java/util/concurrent/
 #        CyclicBarrier.html
@@ -570,7 +570,7 @@ class Event:
 # since the previous cycle.  In addition, a 'resetting' state exists which is
 # similar to 'draining' except that threads leave with a BrokenBarrierError,
 # and a 'broken' state in which all threads get the exception.
-class Barrier:
+kundi Barrier:
     """Implements a Barrier.
 
     Useful for synchronizing a fixed number of threads at known synchronization
@@ -680,7 +680,7 @@ class Barrier:
                 if self._state == 0:
                     #reset the barrier, waking up threads
                     self._state = -1
-                elif self._state == -2:
+                lasivyo self._state == -2:
                     #was broken, set it to reset state
                     #which clears when the last thread exits
                     self._state = -1
@@ -724,7 +724,7 @@ class Barrier:
         return self._state == -2
 
 # exception raised by the Barrier class
-class BrokenBarrierError(RuntimeError):
+kundi BrokenBarrierError(RuntimeError):
     pass
 
 
@@ -745,12 +745,12 @@ _dangling = WeakSet()
 _shutdown_locks_lock = _allocate_lock()
 _shutdown_locks = set()
 
-# Main class for threads
+# Main kundi for threads
 
-class Thread:
-    """A class that represents a thread of control.
+kundi Thread:
+    """A kundi that represents a thread of control.
 
-    This class can be safely subclassed in a limited fashion. There are two ways
+    This kundi can be safely subclassed in a limited fashion. There are two ways
     to specify the activity: by passing a callable object to the constructor, or
     by overriding the run() method in a subclass.
 
@@ -763,7 +763,7 @@ class Thread:
         """This constructor should always be called with keyword arguments. Arguments are:
 
         *group* should be None; reserved for future extension when a ThreadGroup
-        class is implemented.
+        kundi is implemented.
 
         *target* is the callable object to be invoked by the run()
         method. Defaults to None, meaning nothing is called.
@@ -776,8 +776,8 @@ class Thread:
         *kwargs* is a dictionary of keyword arguments for the target
         invocation. Defaults to {}.
 
-        If a subclass overrides the constructor, it must make sure to invoke
-        the base class constructor (Thread.__init__()) before doing anything
+        If a subkundi overrides the constructor, it must make sure to invoke
+        the base kundi constructor (Thread.__init__()) before doing anything
         else to the thread.
 
         """
@@ -1024,7 +1024,7 @@ class Thread:
         lock = self._tstate_lock
         if lock is None:  # already determined that the C code is done
             assert self._is_stopped
-        elif lock.acquire(block, timeout):
+        lasivyo lock.acquire(block, timeout):
             lock.release()
             self._stop()
 
@@ -1153,7 +1153,7 @@ except ImportError:
 
         if _sys is not None and _sys.stderr is not None:
             stderr = _sys.stderr
-        elif args.thread is not None:
+        lasivyo args.thread is not None:
             stderr = args.thread._stderr
             if stderr is None:
                 # do nothing if sys.stderr is None and sys.stderr was None
@@ -1225,9 +1225,9 @@ def _make_invoke_excepthook():
     return invoke_excepthook
 
 
-# The timer class was contributed by Itamar Shtull-Trauring
+# The timer kundi was contributed by Itamar Shtull-Trauring
 
-class Timer(Thread):
+kundi Timer(Thread):
     """Call a function after a specified number of seconds:
 
             t = Timer(30.0, f, args=None, kwargs=None)
@@ -1255,9 +1255,9 @@ class Timer(Thread):
         self.finished.set()
 
 
-# Special thread class to represent the main thread
+# Special thread kundi to represent the main thread
 
-class _MainThread(Thread):
+kundi _MainThread(Thread):
 
     def __init__(self):
         Thread.__init__(self, name="MainThread", daemon=False)
@@ -1270,7 +1270,7 @@ class _MainThread(Thread):
             _active[self._ident] = self
 
 
-# Dummy thread class to represent threads not started here.
+# Dummy thread kundi to represent threads not started here.
 # These aren't garbage collected when they die, nor can they be waited for.
 # If they invoke anything in threading.py that calls current_thread(), they
 # leave an entry in the _active dict forever after.
@@ -1278,7 +1278,7 @@ class _MainThread(Thread):
 # They are marked as daemon threads so we won't wait for them
 # when we exit (conform previous semantics).
 
-class _DummyThread(Thread):
+kundi _DummyThread(Thread):
 
     def __init__(self):
         Thread.__init__(self, name=_newname("Dummy-%d"), daemon=True)

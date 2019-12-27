@@ -12,11 +12,11 @@
 
 .. testsetup::
 
-    import asyncio
-    import unittest
-    from unittest.mock import Mock, MagicMock, AsyncMock, patch, call, sentinel
+    agiza asyncio
+    agiza unittest
+    kutoka unittest.mock agiza Mock, MagicMock, AsyncMock, patch, call, sentinel
 
-    class SomeClass:
+    kundi SomeClass:
         attribute = 'this is a doctest'
 
         @staticmethod
@@ -48,7 +48,7 @@ and attributes that allow you to make assertions about how it has been used.
 .. note::
 
     In most of these examples the :class:`Mock` and :class:`MagicMock` classes
-    are interchangeable. As the ``MagicMock`` is the more capable class it makes
+    are interchangeable. As the ``MagicMock`` is the more capable kundi it makes
     a sensible one to use by default.
 
 Once the mock has been called its :attr:`~Mock.called` attribute is set to
@@ -59,7 +59,7 @@ the correct arguments.
 This example tests that calling ``ProductionClass().method`` results in a call to
 the ``something`` method:
 
-    >>> class ProductionClass:
+    >>> kundi ProductionClass:
     ...     def method(self):
     ...         self.something(1, 2, 3)
     ...     def something(self, a, b, c):
@@ -83,7 +83,7 @@ in the correct way.
 The simple ``ProductionClass`` below has a ``closer`` method. If it is called with
 an object then it calls ``close`` on it.
 
-    >>> class ProductionClass:
+    >>> kundi ProductionClass:
     ...     def closer(self, something):
     ...         something.close()
     ...
@@ -106,12 +106,12 @@ Mocking Classes
 ~~~~~~~~~~~~~~~
 
 A common use case is to mock out classes instantiated by your code under test.
-When you patch a class, then that class is replaced with a mock. Instances
+When you patch a class, then that kundi is replaced with a mock. Instances
 are created by *calling the class*. This means you access the "mock instance"
 by looking at the return value of the mocked class.
 
 In the example below we have a function ``some_function`` that instantiates ``Foo``
-and calls a method on it. The call to :func:`patch` replaces the class ``Foo`` with a
+and calls a method on it. The call to :func:`patch` replaces the kundi ``Foo`` with a
 mock. The ``Foo`` instance is the result of calling the mock, so it is configured
 by modifying the mock :attr:`~Mock.return_value`. ::
 
@@ -233,7 +233,7 @@ Raising exceptions with mocks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A useful attribute is :attr:`~Mock.side_effect`. If you set this to an
-exception class or instance then the exception will be raised when the mock
+exception kundi or instance then the exception will be raised when the mock
 is called.
 
     >>> mock = Mock(side_effect=Exception('Boom!'))
@@ -250,7 +250,7 @@ Side effect functions and iterables
 ``side_effect`` as an iterable is where your mock is going to be called several
 times, and you want each call to return a different value. When you set
 ``side_effect`` to an iterable every call to the mock returns the next value
-from the iterable:
+kutoka the iterable:
 
     >>> mock = MagicMock(side_effect=[4, 5, 6])
     >>> mock()
@@ -302,7 +302,7 @@ Since Python 3.8, ``AsyncMock`` and ``MagicMock`` have support to mock
 By default, ``__aenter__`` and ``__aexit__`` are ``AsyncMock`` instances that
 return an async function.
 
-    >>> class AsyncContextManager:
+    >>> kundi AsyncContextManager:
     ...     async def __aenter__(self):
     ...         return self
     ...     async def __aexit__(self, exc_type, exc, tb):
@@ -318,12 +318,12 @@ return an async function.
     >>> mock_instance.__aexit__.assert_awaited_once()
 
 
-Creating a Mock from an Existing Object
+Creating a Mock kutoka an Existing Object
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 One problem with over use of mocking is that it couples your tests to the
 implementation of your mocks rather than your real code. Suppose you have a
-class that implements ``some_method``. In a test for another class, you
+kundi that implements ``some_method``. In a test for another class, you
 provide a mock of this object that *also* provides ``some_method``. If later
 you refactor the first class, so that it no longer has ``some_method`` - then
 your tests will continue to pass even though your code is now broken!
@@ -332,8 +332,8 @@ your tests will continue to pass even though your code is now broken!
 using the *spec* keyword argument. Accessing methods / attributes on the
 mock that don't exist on your specification object will immediately raise an
 attribute error. If you change the implementation of your specification, then
-tests that use that class will start failing immediately without you having to
-instantiate the class in those tests.
+tests that use that kundi will start failing immediately without you having to
+instantiate the kundi in those tests.
 
     >>> mock = Mock(spec=SomeClass)
     >>> mock.old_method()
@@ -371,8 +371,8 @@ Patch Decorators
    read :ref:`where to patch <where-to-patch>`.
 
 
-A common need in tests is to patch a class attribute or a module attribute,
-for example patching a builtin or patching a class in a module to test that it
+A common need in tests is to patch a kundi attribute or a module attribute,
+for example patching a builtin or patching a kundi in a module to test that it
 is instantiated. Modules and classes are effectively global, so patching on
 them has to be undone after the test or the patch will persist into other
 tests and cause hard to diagnose problems.
@@ -380,7 +380,7 @@ tests and cause hard to diagnose problems.
 mock provides three convenient decorators for this: :func:`patch`, :func:`patch.object` and
 :func:`patch.dict`. ``patch`` takes a single string, of the form
 ``package.module.Class.attribute`` to specify the attribute you are patching. It
-also optionally takes a value that you want the attribute (or class or
+also optionally takes a value that you want the attribute (or kundi or
 whatever) to be replaced with. 'patch.object' takes an object and the name of
 the attribute you would like patched, plus optionally the value to patch it
 with.
@@ -397,7 +397,7 @@ with.
 
     >>> @patch('package.module.attribute', sentinel.attribute)
     ... def test():
-    ...     from package.module import attribute
+    ...     kutoka package.module agiza attribute
     ...     assert attribute is sentinel.attribute
     ...
     >>> test()
@@ -416,14 +416,14 @@ The module name can be 'dotted', in the form ``package.module`` if needed::
 
     >>> @patch('package.module.ClassName.attribute', sentinel.attribute)
     ... def test():
-    ...     from package.module import ClassName
+    ...     kutoka package.module agiza ClassName
     ...     assert ClassName.attribute == sentinel.attribute
     ...
     >>> test()
 
 A nice pattern is to actually decorate test methods themselves:
 
-    >>> class MyTest(unittest.TestCase):
+    >>> kundi MyTest(unittest.TestCase):
     ...     @patch.object(SomeClass, 'attribute', sentinel.attribute)
     ...     def test_something(self):
     ...         self.assertEqual(SomeClass.attribute, sentinel.attribute)
@@ -436,7 +436,7 @@ If you want to patch with a Mock, you can use :func:`patch` with only one argume
 (or :func:`patch.object` with two arguments). The mock will be created for you and
 passed into the test function / method:
 
-    >>> class MyTest(unittest.TestCase):
+    >>> kundi MyTest(unittest.TestCase):
     ...     @patch.object(SomeClass, 'static_method')
     ...     def test_something(self, mock_method):
     ...         SomeClass.static_method()
@@ -446,7 +446,7 @@ passed into the test function / method:
 
 You can stack up multiple patch decorators using this pattern::
 
-    >>> class MyTest(unittest.TestCase):
+    >>> kundi MyTest(unittest.TestCase):
     ...     @patch('package.module.ClassName1')
     ...     @patch('package.module.ClassName2')
     ...     def test_something(self, MockClass2, MockClass1):
@@ -457,7 +457,7 @@ You can stack up multiple patch decorators using this pattern::
 
 When you nest patch decorators the mocks are passed in to the decorated
 function in the same order they applied (the normal *Python* order that
-decorators are applied). This means from the bottom up, so in the example
+decorators are applied). This means kutoka the bottom up, so in the example
 above the mock for ``test_module.ClassName2`` is passed in first.
 
 There is also :func:`patch.dict` for setting values in a dictionary just
@@ -476,7 +476,7 @@ ends:
 Where you use :func:`patch` to create a mock for you, you can get a reference to the
 mock using the "as" form of the with statement:
 
-    >>> class ProductionClass:
+    >>> kundi ProductionClass:
     ...     def method(self):
     ...         pass
     ...
@@ -489,7 +489,7 @@ mock using the "as" form of the with statement:
 
 
 As an alternative ``patch``, ``patch.object`` and ``patch.dict`` can be used as
-class decorators. When used in this way it is the same as applying the
+kundi decorators. When used in this way it is the same as applying the
 decorator individually to every method whose name starts with "test".
 
 
@@ -510,7 +510,7 @@ understand the :attr:`~Mock.return_value` attribute. When a mock is called for
 the first time, or you fetch its ``return_value`` before it has been called, a
 new :class:`Mock` is created.
 
-This means that you can see how the object returned from a call to a mocked
+This means that you can see how the object returned kutoka a call to a mocked
 object has been used by interrogating the ``return_value`` mock:
 
     >>> mock = Mock()
@@ -524,7 +524,7 @@ testable way in the first place...
 
 So, suppose we have some code that looks a little bit like this:
 
-    >>> class Something:
+    >>> kundi Something:
     ...     def __init__(self):
     ...         self.backend = BackendProvider()
     ...     def method(self):
@@ -535,9 +535,9 @@ Assuming that ``BackendProvider`` is already well tested, how do we test
 ``method()``? Specifically, we want to test that the code section ``# more
 code`` uses the response object in the correct way.
 
-As this chain of calls is made from an instance attribute we can monkey patch
+As this chain of calls is made kutoka an instance attribute we can monkey patch
 the ``backend`` attribute on a ``Something`` instance. In this particular case
-we are only interested in the return value from the final call to
+we are only interested in the return value kutoka the final call to
 ``start_call`` so we don't have much configuration to do. Let's assume the
 object it returns is 'file-like', so we'll ensure that our response object
 uses the builtin :func:`open` as its ``spec``.
@@ -577,21 +577,21 @@ Partial mocking
 ~~~~~~~~~~~~~~~
 
 In some tests I wanted to mock out a call to :meth:`datetime.date.today`
-to return a known date, but I didn't want to prevent the code under test from
+to return a known date, but I didn't want to prevent the code under test kutoka
 creating new date objects. Unfortunately :class:`datetime.date` is written in C, and
 so I couldn't just monkey-patch out the static :meth:`date.today` method.
 
 I found a simple way of doing this that involved effectively wrapping the date
-class with a mock, but passing through calls to the constructor to the real
-class (and returning real instances).
+kundi with a mock, but passing through calls to the constructor to the real
+kundi (and returning real instances).
 
 The :func:`patch decorator <patch>` is used here to
-mock out the ``date`` class in the module under test. The :attr:`side_effect`
-attribute on the mock date class is then set to a lambda function that returns
-a real date. When the mock date class is called a real date will be
+mock out the ``date`` kundi in the module under test. The :attr:`side_effect`
+attribute on the mock date kundi is then set to a lambda function that returns
+a real date. When the mock date kundi is called a real date will be
 constructed and returned by ``side_effect``. ::
 
-    >>> from datetime import date
+    >>> kutoka datetime agiza date
     >>> with patch('mymodule.date') as mock_date:
     ...     mock_date.today.return_value = date(2010, 10, 8)
     ...     mock_date.side_effect = lambda *args, **kw: date(*args, **kw)
@@ -626,9 +626,9 @@ the generator object that is then iterated over. The protocol method for
 iteration is :meth:`~container.__iter__`, so we can
 mock this using a :class:`MagicMock`.
 
-Here's an example class with an "iter" method implemented as a generator:
+Here's an example kundi with an "iter" method implemented as a generator:
 
-    >>> class Foo:
+    >>> kundi Foo:
     ...     def iter(self):
     ...         for i in [1, 2, 3]:
     ...             yield i
@@ -640,7 +640,7 @@ Here's an example class with an "iter" method implemented as a generator:
 
 How would we mock this class, and in particular its "iter" method?
 
-To configure the values returned from the iteration (implicit in the call to
+To configure the values returned kutoka the iteration (implicit in the call to
 :class:`list`), we need to configure the object returned by the call to ``foo.iter()``.
 
     >>> mock_foo = MagicMock()
@@ -661,12 +661,12 @@ Applying the same patch to every test method
 If you want several patches in place for multiple test methods the obvious way
 is to apply the patch decorators to every method. This can feel like unnecessary
 repetition. For Python 2.6 or more recent you can use :func:`patch` (in all its
-various forms) as a class decorator. This applies the patches to all test
+various forms) as a kundi decorator. This applies the patches to all test
 methods on the class. A test method is identified by methods whose names start
 with ``test``::
 
     >>> @patch('mymodule.SomeClass')
-    ... class MyTest(unittest.TestCase):
+    ... kundi MyTest(unittest.TestCase):
     ...
     ...     def test_one(self, MockSomeClass):
     ...         self.assertIs(mymodule.SomeClass, MockSomeClass)
@@ -686,7 +686,7 @@ An alternative way of managing patches is to use the :ref:`start-and-stop`.
 These allow you to move the patching into your ``setUp`` and ``tearDown`` methods.
 ::
 
-    >>> class MyTest(unittest.TestCase):
+    >>> kundi MyTest(unittest.TestCase):
     ...     def setUp(self):
     ...         self.patcher = patch('mymodule.foo')
     ...         self.mock_foo = self.patcher.start()
@@ -704,7 +704,7 @@ calling ``stop``. This can be fiddlier than you might think, because if an
 exception is raised in the setUp then tearDown is not called.
 :meth:`unittest.TestCase.addCleanup` makes this easier::
 
-    >>> class MyTest(unittest.TestCase):
+    >>> kundi MyTest(unittest.TestCase):
     ...     def setUp(self):
     ...         patcher = patch('mymodule.foo')
     ...         self.addCleanup(patcher.stop)
@@ -720,11 +720,11 @@ Mocking Unbound Methods
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Whilst writing tests today I needed to patch an *unbound method* (patching the
-method on the class rather than on the instance). I needed self to be passed
+method on the kundi rather than on the instance). I needed self to be passed
 in as the first argument because I want to make asserts about which objects
 were calling this particular method. The issue is that you can't patch with a
 mock for this, because if you replace an unbound method with a mock it doesn't
-become a bound method when fetched from the instance, and so it doesn't get
+become a bound method when fetched kutoka the instance, and so it doesn't get
 self passed in. The workaround is to patch the unbound method with a real
 function instead. The :func:`patch` decorator makes it so simple to
 patch out methods with a mock that having to create a real function becomes a
@@ -734,12 +734,12 @@ If you pass ``autospec=True`` to patch then it does the patching with a
 *real* function object. This function object has the same signature as the one
 it is replacing, but delegates to a mock under the hood. You still get your
 mock auto-created in exactly the same way as before. What it means though, is
-that if you use it to patch out an unbound method on a class the mocked
-function will be turned into a bound method if it is fetched from an instance.
+that if you use it to patch out an unbound method on a kundi the mocked
+function will be turned into a bound method if it is fetched kutoka an instance.
 It will have ``self`` passed in as the first argument, which is exactly what I
 wanted:
 
-    >>> class Foo:
+    >>> kundi Foo:
     ...   def foo(self):
     ...     pass
     ...
@@ -843,8 +843,8 @@ example I'm using *another* mock to store the arguments so that I can use the
 mock methods for doing the assertion. Again a helper function sets this up for
 me. ::
 
-    >>> from copy import deepcopy
-    >>> from unittest.mock import Mock, patch, DEFAULT
+    >>> kutoka copy agiza deepcopy
+    >>> kutoka unittest.mock agiza Mock, patch, DEFAULT
     >>> def copy_call_args(mock):
     ...     new_mock = Mock()
     ...     def side_effect(*args, **kwargs):
@@ -884,12 +884,12 @@ the args and calls our ``new_mock`` with the copy.
             ...
         AssertionError
 
-An alternative approach is to create a subclass of :class:`Mock` or
+An alternative approach is to create a subkundi of :class:`Mock` or
 :class:`MagicMock` that copies (using :func:`copy.deepcopy`) the arguments.
 Here's an example implementation:
 
-    >>> from copy import deepcopy
-    >>> class CopyingMock(MagicMock):
+    >>> kutoka copy agiza deepcopy
+    >>> kundi CopyingMock(MagicMock):
     ...     def __call__(self, /, *args, **kwargs):
     ...         args = deepcopy(args)
     ...         kwargs = deepcopy(kwargs)
@@ -908,8 +908,8 @@ Here's an example implementation:
     >>> c.foo
     <CopyingMock name='mock.foo' id='...'>
 
-When you subclass ``Mock`` or ``MagicMock`` all dynamically created attributes,
-and the ``return_value`` will use your subclass automatically. That means all
+When you subkundi ``Mock`` or ``MagicMock`` all dynamically created attributes,
+and the ``return_value`` will use your subkundi automatically. That means all
 children of a ``CopyingMock`` will also have the type ``CopyingMock``.
 
 
@@ -920,7 +920,7 @@ Using patch as a context manager is nice, but if you do multiple patches you
 can end up with nested with statements indenting further and further to the
 right::
 
-    >>> class MyTest(unittest.TestCase):
+    >>> kundi MyTest(unittest.TestCase):
     ...
     ...     def test_foo(self):
     ...         with patch('mymodule.Foo') as mock_foo:
@@ -939,7 +939,7 @@ achieve the same effect without the nested indentation. A simple helper
 method, ``create_patch``, puts the patch in place and returns the created mock
 for us::
 
-    >>> class MyTest(unittest.TestCase):
+    >>> kundi MyTest(unittest.TestCase):
     ...
     ...     def create_patch(self, name):
     ...         patcher = patch(name)
@@ -1039,10 +1039,10 @@ mock methods and attributes:
 Mock subclasses and their attributes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There are various reasons why you might want to subclass :class:`Mock`. One
+There are various reasons why you might want to subkundi :class:`Mock`. One
 reason might be to add helper methods. Here's a silly example:
 
-    >>> class MyMock(MagicMock):
+    >>> kundi MyMock(MagicMock):
     ...     def has_been_called(self):
     ...         return self.called
     ...
@@ -1079,11 +1079,11 @@ Having this applied to attributes too actually causes errors.
 
 ``Mock`` (in all its flavours) uses a method called ``_get_child_mock`` to create
 these "sub-mocks" for attributes and return values. You can prevent your
-subclass being used for attributes by overriding this method. The signature is
+subkundi being used for attributes by overriding this method. The signature is
 that it takes arbitrary keyword arguments (``**kwargs``) which are then passed
 onto the mock constructor:
 
-    >>> class Subclass(MagicMock):
+    >>> kundi Subclass(MagicMock):
     ...     def _get_child_mock(self, /, **kwargs):
     ...         return MagicMock(**kwargs)
     ...
@@ -1102,22 +1102,22 @@ onto the mock constructor:
 Mocking imports with patch.dict
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-One situation where mocking can be hard is where you have a local import inside
-a function. These are harder to mock because they aren't using an object from
+One situation where mocking can be hard is where you have a local agiza inside
+a function. These are harder to mock because they aren't using an object kutoka
 the module namespace that we can patch out.
 
 Generally local imports are to be avoided. They are sometimes done to prevent
 circular dependencies, for which there is *usually* a much better way to solve
 the problem (refactor the code) or to prevent "up front costs" by delaying the
 import. This can also be solved in better ways than an unconditional local
-import (store the module as a class or module attribute and only do the import
+agiza (store the module as a kundi or module attribute and only do the import
 on first use).
 
 That aside there is a way to use ``mock`` to affect the results of an import.
-Importing fetches an *object* from the :data:`sys.modules` dictionary. Note that it
+Importing fetches an *object* kutoka the :data:`sys.modules` dictionary. Note that it
 fetches an *object*, which need not be a module. Importing a module for the
 first time results in a module object being put in `sys.modules`, so usually
-when you import something you get a module back. This need not be the case
+when you agiza something you get a module back. This need not be the case
 however.
 
 This means you can use :func:`patch.dict` to *temporarily* put a mock in place
@@ -1128,24 +1128,24 @@ previously will be restored safely.
 
 Here's an example that mocks out the 'fooble' module.
 
-    >>> import sys
+    >>> agiza sys
     >>> mock = Mock()
     >>> with patch.dict('sys.modules', {'fooble': mock}):
-    ...    import fooble
+    ...    agiza fooble
     ...    fooble.blob()
     ...
     <Mock name='mock.blob()' id='...'>
     >>> assert 'fooble' not in sys.modules
     >>> mock.blob.assert_called_once_with()
 
-As you can see the ``import fooble`` succeeds, but on exit there is no 'fooble'
+As you can see the ``agiza fooble`` succeeds, but on exit there is no 'fooble'
 left in :data:`sys.modules`.
 
-This also works for the ``from module import name`` form:
+This also works for the ``kutoka module agiza name`` form:
 
     >>> mock = Mock()
     >>> with patch.dict('sys.modules', {'fooble': mock}):
-    ...    from fooble import blob
+    ...    kutoka fooble agiza blob
     ...    blob.blip()
     ...
     <Mock name='mock.blob.blip()' id='...'>
@@ -1156,7 +1156,7 @@ With slightly more work you can also mock package imports:
     >>> mock = Mock()
     >>> modules = {'package': mock, 'package.module': mock.module}
     >>> with patch.dict('sys.modules', modules):
-    ...    from package.module import fooble
+    ...    kutoka package.module agiza fooble
     ...    fooble()
     ...
     <Mock name='mock.module.fooble()' id='...'>
@@ -1166,14 +1166,14 @@ With slightly more work you can also mock package imports:
 Tracking order of calls and less verbose call assertions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The :class:`Mock` class allows you to track the *order* of method calls on
+The :class:`Mock` kundi allows you to track the *order* of method calls on
 your mock objects through the :attr:`~Mock.method_calls` attribute. This
 doesn't allow you to track the order of calls between separate mock objects,
 however we can use :attr:`~Mock.mock_calls` to achieve the same effect.
 
 Because mocks track calls to child mocks in ``mock_calls``, and accessing an
 arbitrary attribute of a mock creates a child mock, we can create our separate
-mocks from a parent one. Calls to those child mock will then all be recorded,
+mocks kutoka a parent one. Calls to those child mock will then all be recorded,
 in order, in the ``mock_calls`` of the parent:
 
     >>> manager = Mock()
@@ -1258,7 +1258,7 @@ for us.
 You can see in this example how a 'standard' call to ``assert_called_with`` isn't
 sufficient:
 
-    >>> class Foo:
+    >>> kundi Foo:
     ...     def __init__(self, a, b):
     ...         self.a, self.b = a, b
     ...
@@ -1270,7 +1270,7 @@ sufficient:
     AssertionError: Expected: call(<__main__.Foo object at 0x...>)
     Actual call: call(<__main__.Foo object at 0x...>)
 
-A comparison function for our ``Foo`` class might look something like this:
+A comparison function for our ``Foo`` kundi might look something like this:
 
     >>> def compare(self, other):
     ...     if not type(self) == type(other):
@@ -1285,7 +1285,7 @@ A comparison function for our ``Foo`` class might look something like this:
 And a matcher object that can use comparison functions like this for its
 equality operation would look something like this:
 
-    >>> class Matcher:
+    >>> kundi Matcher:
     ...     def __init__(self, compare, some_obj):
     ...         self.compare = compare
     ...         self.some_obj = some_obj

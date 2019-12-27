@@ -5,7 +5,7 @@ More Control Flow Tools
 ***********************
 
 Besides the :keyword:`while` statement just introduced, Python uses the usual
-flow control statements known from other languages, with some twists.
+flow control statements known kutoka other languages, with some twists.
 
 
 .. _tut-if:
@@ -45,7 +45,7 @@ to avoid excessive indentation.  An  :keyword:`!if` ... :keyword:`!elif` ...
 .. index::
    statement: for
 
-The :keyword:`for` statement in Python differs a bit from what you may be used
+The :keyword:`for` statement in Python differs a bit kutoka what you may be used
 to in C or Pascal.  Rather than always iterating over an arithmetic progression
 of numbers (like in Pascal), or giving the user the ability to define both the
 iteration step and halting condition (as C), Python's :keyword:`!for` statement
@@ -140,7 +140,7 @@ the desired sequence when you iterate over it, but it doesn't really make
 the list, thus saving space.
 
 We say such an object is :term:`iterable`, that is, suitable as a target for
-functions and constructs that expect something from which they can
+functions and constructs that expect something kutoka which they can
 obtain successive items until the supply is exhausted.  We have seen that
 the :keyword:`for` statement is such a construct, while an example of function
 that takes an iterable is :func:`sum`::
@@ -149,7 +149,7 @@ that takes an iterable is :func:`sum`::
     6
 
 Later we will see more functions that return iterables and take iterables as
-arguments.  Lastly, maybe you are curious about how to get a list from a range.
+arguments.  Lastly, maybe you are curious about how to get a list kutoka a range.
 Here is the solution::
 
    >>> list(range(4))
@@ -200,7 +200,7 @@ when no exception occurs, and a loop's ``else`` clause runs when no ``break``
 occurs. For more on the :keyword:`!try` statement and exceptions, see
 :ref:`tut-handling`.
 
-The :keyword:`continue` statement, also borrowed from C, continues with the next
+The :keyword:`continue` statement, also borrowed kutoka C, continues with the next
 iteration of the loop::
 
     >>> for num in range(2, 10):
@@ -231,7 +231,7 @@ required syntactically but the program requires no action. For example::
 
 This is commonly used for creating minimal classes::
 
-   >>> class MyEmptyClass:
+   >>> kundi MyEmptyClass:
    ...     pass
    ...
 
@@ -309,7 +309,7 @@ mechanism::
    >>> f(100)
    0 1 1 2 3 5 8 13 21 34 55 89
 
-Coming from other languages, you might object that ``fib`` is not a function but
+Coming kutoka other languages, you might object that ``fib`` is not a function but
 a procedure since it doesn't return a value.  In fact, even functions without a
 :keyword:`return` statement do return a value, albeit a rather boring one.  This
 value is called ``None`` (it's a built-in name).  Writing the value ``None`` is
@@ -338,7 +338,7 @@ Fibonacci series, instead of printing it::
 
 This example, as usual, demonstrates some new Python features:
 
-* The :keyword:`return` statement returns with a value from a function.
+* The :keyword:`return` statement returns with a value kutoka a function.
   :keyword:`!return` without an expression argument returns ``None``. Falling off
   the end of a function also returns ``None``.
 
@@ -567,7 +567,7 @@ Looking at this in a bit more detail, it is possible to mark certain parameters
 as *positional-only*. If *positional-only*, the parameters' order matters, and
 the parameters cannot be passed by keyword. Positional-only parameters are
 placed before a ``/`` (forward-slash). The ``/`` is used to logically
-separate the positional-only parameters from the rest of the parameters.
+separate the positional-only parameters kutoka the rest of the parameters.
 If there is no ``/`` in the function definition, there are no positional-only
 parameters.
 
@@ -744,7 +744,7 @@ or tuple::
    >>> list(range(3, 6))            # normal call with separate arguments
    [3, 4, 5]
    >>> args = [3, 6]
-   >>> list(range(*args))            # call with arguments unpacked from a list
+   >>> list(range(*args))            # call with arguments unpacked kutoka a list
    [3, 4, 5]
 
 .. index::
@@ -773,7 +773,7 @@ This function returns the sum of its two arguments: ``lambda a, b: a+b``.
 Lambda functions can be used wherever function objects are required.  They are
 syntactically restricted to a single expression.  Semantically, they are just
 syntactic sugar for a normal function definition.  Like nested function
-definitions, lambda functions can reference variables from the containing
+definitions, lambda functions can reference variables kutoka the containing
 scope::
 
    >>> def make_incrementor(n):
@@ -814,18 +814,18 @@ verb describing a function's operation).  This line should begin with a capital
 letter and end with a period.
 
 If there are more lines in the documentation string, the second line should be
-blank, visually separating the summary from the rest of the description.  The
+blank, visually separating the summary kutoka the rest of the description.  The
 following lines should be one or more paragraphs describing the object's calling
 conventions, its side effects, etc.
 
-The Python parser does not strip indentation from multi-line string literals in
+The Python parser does not strip indentation kutoka multi-line string literals in
 Python, so tools that process documentation have to strip indentation if
 desired.  This is done using the following convention. The first non-blank line
 *after* the first line of the string determines the amount of indentation for
 the entire documentation string.  (We can't use the first line since it is
 generally adjacent to the string's opening quotes so its indentation is not
 apparent in the string literal.)  Whitespace "equivalent" to this indentation is
-then stripped from the start of all lines of the string.  Lines that are
+then stripped kutoka the start of all lines of the string.  Lines that are
 indented less should not occur, but if they occur all their leading whitespace
 should be stripped.  Equivalence of whitespace should be tested after expansion
 of tabs (to 8 spaces, normally).
@@ -875,7 +875,7 @@ value annotated::
    ...     return ham + ' and ' + eggs
    ...
    >>> f('spam')
-   Annotations: {'ham': <class 'str'>, 'return': <class 'str'>, 'eggs': <class 'str'>}
+   Annotations: {'ham': <kundi 'str'>, 'return': <kundi 'str'>, 'eggs': <kundi 'str'>}
    Arguments: spam eggs
    'spam and eggs'
 

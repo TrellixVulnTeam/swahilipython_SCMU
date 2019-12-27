@@ -11,25 +11,25 @@ kutoka idlelib.delegator agiza Delegator
 kutoka idlelib.percolator agiza Percolator
 
 
-class Dummy_editwin:
-    def __init__(self, text):
+kundi Dummy_editwin:
+    eleza __init__(self, text):
         self.text = text
         self.text_frame = self.text.master
         self.per = Percolator(text)
         self.undo = Delegator()
         self.per.insertfilter(self.undo)
 
-    def setvar(self, name, value):
+    eleza setvar(self, name, value):
         pass
 
-    def getlineno(self, index):
-        return int(float(self.text.index(index)))
+    eleza getlineno(self, index):
+        rudisha int(float(self.text.index(index)))
 
 
-class LineNumbersTest(unittest.TestCase):
+kundi LineNumbersTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         cls.root = tk.Tk()
 
@@ -45,70 +45,70 @@ class LineNumbersTest(unittest.TestCase):
         cls.editwin.vbar = tk.Scrollbar(cls.text_frame)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         cls.editwin.per.close()
         cls.root.update()
         cls.root.destroy()
         del cls.text, cls.text_frame, cls.editwin, cls.root
 
-    def setUp(self):
+    eleza setUp(self):
         self.linenumber = idlelib.sidebar.LineNumbers(self.editwin)
 
         self.highlight_cfg = {"background": '#abcdef',
                               "foreground": '#123456'}
         orig_idleConf_GetHighlight = idlelib.sidebar.idleConf.GetHighlight
-        def mock_idleconf_GetHighlight(theme, element):
-            if element == 'linenumber':
-                return self.highlight_cfg
-            return orig_idleConf_GetHighlight(theme, element)
+        eleza mock_idleconf_GetHighlight(theme, element):
+            ikiwa element == 'linenumber':
+                rudisha self.highlight_cfg
+            rudisha orig_idleConf_GetHighlight(theme, element)
         GetHighlight_patcher = unittest.mock.patch.object(
             idlelib.sidebar.idleConf, 'GetHighlight', mock_idleconf_GetHighlight)
         GetHighlight_patcher.start()
         self.addCleanup(GetHighlight_patcher.stop)
 
         self.font_override = 'TkFixedFont'
-        def mock_idleconf_GetFont(root, configType, section):
-            return self.font_override
+        eleza mock_idleconf_GetFont(root, configType, section):
+            rudisha self.font_override
         GetFont_patcher = unittest.mock.patch.object(
             idlelib.sidebar.idleConf, 'GetFont', mock_idleconf_GetFont)
         GetFont_patcher.start()
         self.addCleanup(GetFont_patcher.stop)
 
-    def tearDown(self):
+    eleza tearDown(self):
         self.text.delete('1.0', 'end')
 
-    def get_selection(self):
-        return tuple(map(str, self.text.tag_ranges('sel')))
+    eleza get_selection(self):
+        rudisha tuple(map(str, self.text.tag_ranges('sel')))
 
-    def get_line_screen_position(self, line):
+    eleza get_line_screen_position(self, line):
         bbox = self.linenumber.sidebar_text.bbox(f'{line}.end -1c')
         x = bbox[0] + 2
         y = bbox[1] + 2
-        return x, y
+        rudisha x, y
 
-    def assert_state_disabled(self):
+    eleza assert_state_disabled(self):
         state = self.linenumber.sidebar_text.config()['state']
         self.assertEqual(state[-1], tk.DISABLED)
 
-    def get_sidebar_text_contents(self):
-        return self.linenumber.sidebar_text.get('1.0', tk.END)
+    eleza get_sidebar_text_contents(self):
+        rudisha self.linenumber.sidebar_text.get('1.0', tk.END)
 
-    def assert_sidebar_n_lines(self, n_lines):
+    eleza assert_sidebar_n_lines(self, n_lines):
         expected = '\n'.join(chain(map(str, range(1, n_lines + 1)), ['']))
         self.assertEqual(self.get_sidebar_text_contents(), expected)
 
-    def assert_text_equals(self, expected):
-        return self.assertEqual(self.text.get('1.0', 'end'), expected)
+    eleza assert_text_equals(self, expected):
+        rudisha self.assertEqual(self.text.get('1.0', 'end'), expected)
 
-    def test_init_empty(self):
+    eleza test_init_empty(self):
         self.assert_sidebar_n_lines(1)
 
-    def test_init_not_empty(self):
+    eleza test_init_not_empty(self):
         self.text.insert('insert', 'foo bar\n'*3)
         self.assert_text_equals('foo bar\n'*3 + '\n')
         self.assert_sidebar_n_lines(4)
 
-    def test_toggle_linenumbering(self):
+    eleza test_toggle_linenumbering(self):
         self.assertEqual(self.linenumber.is_shown, False)
         self.linenumber.show_sidebar()
         self.assertEqual(self.linenumber.is_shown, True)
@@ -121,7 +121,7 @@ class LineNumbersTest(unittest.TestCase):
         self.linenumber.show_sidebar()
         self.assertEqual(self.linenumber.is_shown, True)
 
-    def test_insert(self):
+    eleza test_insert(self):
         self.text.insert('insert', 'foobar')
         self.assert_text_equals('foobar\n')
         self.assert_sidebar_n_lines(1)
@@ -142,7 +142,7 @@ class LineNumbersTest(unittest.TestCase):
         self.assert_sidebar_n_lines(5)
         self.assert_state_disabled()
 
-    def test_delete(self):
+    eleza test_delete(self):
         self.text.insert('insert', 'foobar')
         self.assert_text_equals('foobar\n')
         self.text.delete('1.1', '1.3')
@@ -172,13 +172,13 @@ class LineNumbersTest(unittest.TestCase):
         self.assert_sidebar_n_lines(1)
         self.assert_state_disabled()
 
-    def test_sidebar_text_width(self):
+    eleza test_sidebar_text_width(self):
         """
         Test that linenumber text widget is always at the minimum
         width
         """
-        def get_width():
-            return self.linenumber.sidebar_text.config()['width'][-1]
+        eleza get_width():
+            rudisha self.linenumber.sidebar_text.config()['width'][-1]
 
         self.assert_sidebar_n_lines(1)
         self.assertEqual(get_width(), 1)
@@ -240,7 +240,7 @@ class LineNumbersTest(unittest.TestCase):
         self.assert_sidebar_n_lines(1)
         self.assertEqual(get_width(), 1)
 
-    def test_click_selection(self):
+    eleza test_click_selection(self):
         self.linenumber.show_sidebar()
         self.text.insert('1.0', 'one\ntwo\nthree\nfour\n')
         self.root.update()
@@ -253,7 +253,7 @@ class LineNumbersTest(unittest.TestCase):
 
         self.assertEqual(self.get_selection(), ('2.0', '3.0'))
 
-    def simulate_drag(self, start_line, end_line):
+    eleza simulate_drag(self, start_line, end_line):
         start_x, start_y = self.get_line_screen_position(start_line)
         end_x, end_y = self.get_line_screen_position(end_line)
 
@@ -261,7 +261,7 @@ class LineNumbersTest(unittest.TestCase):
                                                     x=start_x, y=start_y)
         self.root.update()
 
-        def lerp(a, b, steps):
+        eleza lerp(a, b, steps):
             """linearly interpolate kutoka a to b (inclusive) in equal steps"""
             last_step = steps - 1
             for i in range(steps):
@@ -278,7 +278,7 @@ class LineNumbersTest(unittest.TestCase):
                                                     x=end_x, y=end_y)
         self.root.update()
 
-    def test_drag_selection_down(self):
+    eleza test_drag_selection_down(self):
         self.linenumber.show_sidebar()
         self.text.insert('1.0', 'one\ntwo\nthree\nfour\nfive\n')
         self.root.update()
@@ -287,7 +287,7 @@ class LineNumbersTest(unittest.TestCase):
         self.simulate_drag(2, 4)
         self.assertEqual(self.get_selection(), ('2.0', '5.0'))
 
-    def test_drag_selection_up(self):
+    eleza test_drag_selection_up(self):
         self.linenumber.show_sidebar()
         self.text.insert('1.0', 'one\ntwo\nthree\nfour\nfive\n')
         self.root.update()
@@ -296,7 +296,7 @@ class LineNumbersTest(unittest.TestCase):
         self.simulate_drag(4, 2)
         self.assertEqual(self.get_selection(), ('2.0', '5.0'))
 
-    def test_scroll(self):
+    eleza test_scroll(self):
         self.linenumber.show_sidebar()
         self.text.insert('1.0', 'line\n' * 100)
         self.root.update()
@@ -317,7 +317,7 @@ class LineNumbersTest(unittest.TestCase):
         self.assertNotEqual(self.text.index('@0,0'), '11.0')
         self.assertNotEqual(self.linenumber.sidebar_text.index('@0,0'), '11.0')
 
-    def test_font(self):
+    eleza test_font(self):
         ln = self.linenumber
 
         orig_font = ln.sidebar_text['font']
@@ -340,13 +340,13 @@ class LineNumbersTest(unittest.TestCase):
         ln.update_font()
         self.assertEqual(ln.sidebar_text['font'], orig_font)
 
-    def test_highlight_colors(self):
+    eleza test_highlight_colors(self):
         ln = self.linenumber
 
         orig_colors = dict(self.highlight_cfg)
         test_colors = {'background': '#222222', 'foreground': '#ffff00'}
 
-        def assert_colors_are_equal(colors):
+        eleza assert_colors_are_equal(colors):
             self.assertEqual(ln.sidebar_text['background'], colors['background'])
             self.assertEqual(ln.sidebar_text['foreground'], colors['foreground'])
 
@@ -371,5 +371,5 @@ class LineNumbersTest(unittest.TestCase):
         assert_colors_are_equal(orig_colors)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

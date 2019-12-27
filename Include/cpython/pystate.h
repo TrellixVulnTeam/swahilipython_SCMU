@@ -38,7 +38,7 @@ typedef struct _err_stackitem {
      * per-coroutine state. (Coroutine in the computer science sense,
      * including the thread and generators).
      * This ensures that the exception state is not impacted by "yields"
-     * from an except handler.
+     * kutoka an except handler.
      */
     PyObject *exc_type, *exc_value, *exc_traceback;
 
@@ -64,7 +64,7 @@ struct _ts {
     int stackcheck_counter;
 
     /* 'tracing' keeps track of the execution depth when tracing/profiling.
-       This is to prevent the actual trace/profile code from being recorded in
+       This is to prevent the actual trace/profile code kutoka being recorded in
        the trace/profile. */
     int tracing;
     int use_tracing;
@@ -102,7 +102,7 @@ struct _ts {
      * is destroyed after fork().
      * Pain:  to prevent rare but fatal shutdown errors (issue 18808),
      * Thread.join() must wait for the join'ed thread's tstate to be unlinked
-     * from the tstate chain.  That happens at the end of a thread's life,
+     * kutoka the tstate chain.  That happens at the end of a thread's life,
      * in pystate.c.
      * The obvious way doesn't quite work:  create a lock which the tstate
      * unlinking code releases, and have Thread.join() wait to acquire that
@@ -199,7 +199,7 @@ typedef struct _xid {
     // (see _PyObject_GetCrossInterpreterData).  It will be NULL if the
     // new_object func (below) encodes the data.
     void *data;
-    // obj is the Python object from which the data was derived.  This
+    // obj is the Python object kutoka which the data was derived.  This
     // is non-NULL only if the data remains bound to the object in some
     // way, such that the object must be "released" (via a decref) when
     // the data is released.  In that case the code that sets the field,

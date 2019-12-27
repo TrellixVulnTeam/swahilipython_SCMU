@@ -77,16 +77,16 @@ The constants defined in this module are:
 Custom String Formatting
 ------------------------
 
-The built-in string class provides the ability to do complex variable
+The built-in string kundi provides the ability to do complex variable
 substitutions and value formatting via the :meth:`~str.format` method described in
-:pep:`3101`.  The :class:`Formatter` class in the :mod:`string` module allows
+:pep:`3101`.  The :class:`Formatter` kundi in the :mod:`string` module allows
 you to create and customize your own string formatting behaviors using the same
 implementation as the built-in :meth:`~str.format` method.
 
 
 .. class:: Formatter
 
-   The :class:`Formatter` class has the following public methods:
+   The :class:`Formatter` kundi has the following public methods:
 
    .. method:: format(format_string, /, *args, **kwargs)
 
@@ -163,7 +163,7 @@ implementation as the built-in :meth:`~str.format` method.
       function is the set of all argument keys that were actually referred to in
       the format string (integers for positional arguments, and strings for
       named arguments), and a reference to the *args* and *kwargs* that was
-      passed to vformat.  The set of unused args can be calculated from these
+      passed to vformat.  The set of unused args can be calculated kutoka these
       parameters.  :meth:`check_unused_args` is assumed to raise an exception if
       the check fails.
 
@@ -185,7 +185,7 @@ implementation as the built-in :meth:`~str.format` method.
 Format String Syntax
 --------------------
 
-The :meth:`str.format` method and the :class:`Formatter` class share the same
+The :meth:`str.format` method and the :class:`Formatter` kundi share the same
 syntax for format strings (although in the case of :class:`Formatter`,
 subclasses can define their own format string syntax).  The syntax is
 related to that of :ref:`formatted string literals <f-strings>`, but
@@ -392,7 +392,7 @@ alternate form causes the result of the conversion to always contain a
 decimal-point character, even if no digits follow it. Normally, a
 decimal-point character appears in the result of these conversions
 only if a digit follows it. In addition, for ``'g'`` and ``'G'``
-conversions, trailing zeros are not removed from the result.
+conversions, trailing zeros are not removed kutoka the result.
 
 .. index:: single: , (comma); in string formatting
 
@@ -428,7 +428,7 @@ displayed after the decimal point for a floating point value formatted with
 ``'f'`` and ``'F'``, or before and after the decimal point for a floating point
 value formatted with ``'g'`` or ``'G'``.  For non-number types the field
 indicates the maximum field size - in other words, how many characters will be
-used from the field content. The *precision* is not allowed for integer values.
+used kutoka the field content. The *precision* is not allowed for integer values.
 
 Finally, the *type* determines how the data should be presented.
 
@@ -507,7 +507,7 @@ The available presentation types for floating point and decimal values are:
    |         | ``p-1-exp``.  Otherwise, the number is formatted         |
    |         | with presentation type ``'e'`` and precision ``p-1``.    |
    |         | In both cases insignificant trailing zeros are removed   |
-   |         | from the significand, and the decimal point is also      |
+   |         | kutoka the significand, and the decimal point is also      |
    |         | removed if there are no remaining digits following it,   |
    |         | unless the ``'#'`` option is used.                       |
    |         |                                                          |
@@ -578,10 +578,10 @@ Accessing arguments by name::
 Accessing arguments' attributes::
 
    >>> c = 3-5j
-   >>> ('The complex number {0} is formed from the real part {0.real} '
+   >>> ('The complex number {0} is formed kutoka the real part {0.real} '
    ...  'and the imaginary part {0.imag}.').format(c)
-   'The complex number (3-5j) is formed from the real part 3.0 and the imaginary part -5.0.'
-   >>> class Point:
+   'The complex number (3-5j) is formed kutoka the real part 3.0 and the imaginary part -5.0.'
+   >>> kundi Point:
    ...     def __init__(self, x, y):
    ...         self.x, self.y = x, y
    ...     def __str__(self):
@@ -644,7 +644,7 @@ Expressing a percentage::
 
 Using type-specific formatting::
 
-   >>> import datetime
+   >>> agiza datetime
    >>> d = datetime.datetime(2010, 7, 4, 12, 15, 58)
    >>> '{:%Y-%m-%d %H:%M:%S}'.format(d)
    '2010-07-04 12:15:58'
@@ -713,7 +713,7 @@ Template strings support ``$``-based substitutions, using the following rules:
 Any other appearance of ``$`` in the string will result in a :exc:`ValueError`
 being raised.
 
-The :mod:`string` module provides a :class:`Template` class that implements
+The :mod:`string` module provides a :class:`Template` kundi that implements
 these rules.  The methods of :class:`Template` are:
 
 
@@ -728,12 +728,12 @@ these rules.  The methods of :class:`Template` are:
       any dictionary-like object with keys that match the placeholders in the
       template.  Alternatively, you can provide keyword arguments, where the
       keywords are the placeholders.  When both *mapping* and *kwds* are given
-      and there are duplicates, the placeholders from *kwds* take precedence.
+      and there are duplicates, the placeholders kutoka *kwds* take precedence.
 
 
    .. method:: safe_substitute(mapping={}, /, **kwds)
 
-      Like :meth:`substitute`, except that if placeholders are missing from
+      Like :meth:`substitute`, except that if placeholders are missing kutoka
       *mapping* and *kwds*, instead of raising a :exc:`KeyError` exception, the
       original placeholder will appear in the resulting string intact.  Also,
       unlike with :meth:`substitute`, any other appearances of the ``$`` will
@@ -755,7 +755,7 @@ these rules.  The methods of :class:`Template` are:
 
 Here is an example of how to use a Template::
 
-   >>> from string import Template
+   >>> kutoka string agiza Template
    >>> s = Template('$who likes $what')
    >>> s.substitute(who='tim', what='kung pao')
    'tim likes kung pao'
@@ -780,8 +780,8 @@ attributes:
   introducing delimiter.  The default value is ``$``.  Note that this should
   *not* be a regular expression, as the implementation will call
   :meth:`re.escape` on this string as needed.  Note further that you cannot
-  change the delimiter after class creation (i.e. a different delimiter must
-  be set in the subclass's class namespace).
+  change the delimiter after kundi creation (i.e. a different delimiter must
+  be set in the subclass's kundi namespace).
 
 * *idpattern* -- This is the regular expression describing the pattern for
   non-braced placeholders.  The default value is the regular expression
@@ -815,7 +815,7 @@ attributes:
   .. versionadded:: 3.2
 
 Alternatively, you can provide the entire regular expression pattern by
-overriding the class attribute *pattern*.  If you do this, the value must be a
+overriding the kundi attribute *pattern*.  If you do this, the value must be a
 regular expression object with four named capturing groups.  The capturing
 groups correspond to the rules given above, along with the invalid placeholder
 rule:

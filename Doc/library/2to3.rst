@@ -98,7 +98,7 @@ process.
 
 Since some print statements can be parsed as function calls or statements, 2to3
 cannot always read files containing the print function.  When 2to3 detects the
-presence of the ``from __future__ import print_function`` compiler directive, it
+presence of the ``kutoka __future__ agiza print_function`` compiler directive, it
 modifies its internal grammar to interpret :func:`print` as a function.  This
 change can also be enabled manually with the :option:`!-p` flag.  Use
 :option:`!-p` to run fixers on code that already has had its print statements
@@ -115,7 +115,7 @@ when not overwriting the input files.
 The :option:`!-W` or :option:`!--write-unchanged-files` flag tells 2to3 to always
 write output files even if no changes were required to the file.  This is most
 useful with :option:`!-o` so that an entire Python source tree is copied with
-translation from one directory to another.
+translation kutoka one directory to another.
 This option implies the :option:`!-w` flag as it would not make sense otherwise.
 
 .. versionadded:: 3.2.3
@@ -134,7 +134,7 @@ Will cause a converted file named ``example.py3`` to be written.
 .. versionadded:: 3.2.3
    The :option:`!--add-suffix` option was added.
 
-To translate an entire project from one directory tree to another use:
+To translate an entire project kutoka one directory tree to another use:
 
 .. code-block:: shell-session
 
@@ -238,7 +238,7 @@ and off individually.  They are described here in more detail.
 
 .. 2to3fixer:: future
 
-   Removes ``from __future__ import new_feature`` statements.
+   Removes ``kutoka __future__ agiza new_feature`` statements.
 
 .. 2to3fixer:: getcwdu
 
@@ -273,7 +273,7 @@ and off individually.  They are described here in more detail.
 
 .. 2to3fixer:: imports2
 
-   Handles other modules renames in the standard library.  It is separate from
+   Handles other modules renames in the standard library.  It is separate kutoka
    the :2to3fixer:`imports` fixer only because of technical limitations.
 
 .. 2to3fixer:: input
@@ -310,13 +310,13 @@ and off individually.  They are described here in more detail.
 .. 2to3fixer:: map
 
    Wraps :func:`map` in a :class:`list` call.  It also changes ``map(None, x)``
-   to ``list(x)``.  Using ``from future_builtins import map`` disables this
+   to ``list(x)``.  Using ``kutoka future_builtins agiza map`` disables this
    fixer.
 
 .. 2to3fixer:: metaclass
 
-   Converts the old metaclass syntax (``__metaclass__ = Meta`` in the class
-   body) to the new (``class X(metaclass=Meta)``).
+   Converts the old metakundi syntax (``__metaclass__ = Meta`` in the class
+   body) to the new (``kundi X(metaclass=Meta)``).
 
 .. 2to3fixer:: methodattrs
 
@@ -345,7 +345,7 @@ and off individually.  They are described here in more detail.
 
    Converts calls to various functions in the :mod:`operator` module to other,
    but equivalent, function calls.  When needed, the appropriate ``import``
-   statements are added, e.g. ``import collections.abc``.  The following mapping
+   statements are added, e.g. ``agiza collections.abc``.  The following mapping
    are made:
 
    ==================================  =============================================
@@ -420,7 +420,7 @@ and off individually.  They are described here in more detail.
 
 .. 2to3fixer:: types
 
-   Fixes code broken from the removal of some members in the :mod:`types`
+   Fixes code broken kutoka the removal of some members in the :mod:`types`
    module.
 
 .. 2to3fixer:: unicode
@@ -434,7 +434,7 @@ and off individually.  They are described here in more detail.
 
 .. 2to3fixer:: ws_comma
 
-   Removes excess whitespace from comma separated items.  This fixer is
+   Removes excess whitespace kutoka comma separated items.  This fixer is
    optional.
 
 .. 2to3fixer:: xrange
@@ -449,7 +449,7 @@ and off individually.  They are described here in more detail.
 .. 2to3fixer:: zip
 
    Wraps :func:`zip` usage in a :class:`list` call.  This is disabled when
-   ``from future_builtins import zip`` appears.
+   ``kutoka future_builtins agiza zip`` appears.
 
 
 :mod:`lib2to3` - 2to3's library

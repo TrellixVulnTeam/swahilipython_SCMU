@@ -191,7 +191,7 @@ class bdist_rpm(Command):
                 self.python = sys.executable
             else:
                 self.python = "python3"
-        elif self.fix_python:
+        lasivyo self.fix_python:
             raise DistutilsOptionError(
                   "--python and --fix-python are mutually exclusive options")
 
@@ -313,7 +313,7 @@ class bdist_rpm(Command):
 
         if self.source_only: # what kind of RPMs?
             rpm_cmd.append('-bs')
-        elif self.binary_only:
+        lasivyo self.binary_only:
             rpm_cmd.append('-bb')
         else:
             rpm_cmd.append('-ba')
@@ -461,7 +461,7 @@ class bdist_rpm(Command):
             val = getattr(self, field.lower())
             if isinstance(val, list):
                 spec_file.append('%s: %s' % (field, ' '.join(val)))
-            elif val is not None:
+            lasivyo val is not None:
                 spec_file.append('%s: %s' % (field, val))
 
 
@@ -568,7 +568,7 @@ class bdist_rpm(Command):
             line = line.strip()
             if line[0] == '*':
                 new_changelog.extend(['', line])
-            elif line[0] == '-':
+            lasivyo line[0] == '-':
                 new_changelog.append(line)
             else:
                 new_changelog.append('  ' + line)

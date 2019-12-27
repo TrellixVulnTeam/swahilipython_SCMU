@@ -33,24 +33,24 @@ agiza re
 kutoka pgen2 agiza grammar, token
 
 
-class Converter(grammar.Grammar):
-    """Grammar subclass that reads classic pgen output files.
+kundi Converter(grammar.Grammar):
+    """Grammar subkundi that reads classic pgen output files.
 
     The run() method reads the tables as produced by the pgen parser
     generator, typically contained in two C files, graminit.h and
     graminit.c.  The other methods are for internal use only.
 
-    See the base class for more documentation.
+    See the base kundi for more documentation.
 
     """
 
-    def run(self, graminit_h, graminit_c):
+    eleza run(self, graminit_h, graminit_c):
         """Load the grammar tables kutoka the text files written by pgen."""
         self.parse_graminit_h(graminit_h)
         self.parse_graminit_c(graminit_c)
         self.finish_off()
 
-    def parse_graminit_h(self, filename):
+    eleza parse_graminit_h(self, filename):
         """Parse the .h file written by pgen.  (Internal)
 
         This file is a sequence of #define statements defining the
@@ -61,16 +61,16 @@ class Converter(grammar.Grammar):
         try:
             f = open(filename)
         except OSError as err:
-            print("Can't open %s: %s" % (filename, err))
-            return False
+            andika("Can't open %s: %s" % (filename, err))
+            rudisha False
         self.symbol2number = {}
         self.number2symbol = {}
         lineno = 0
         for line in f:
             lineno += 1
             mo = re.match(r"^#define\s+(\w+)\s+(\d+)$", line)
-            if not mo and line.strip():
-                print("%s(%s): can't parse %s" % (filename, lineno,
+            ikiwa not mo and line.strip():
+                andika("%s(%s): can't parse %s" % (filename, lineno,
                                                   line.strip()))
             else:
                 symbol, number = mo.groups()
@@ -79,9 +79,9 @@ class Converter(grammar.Grammar):
                 assert number not in self.number2symbol
                 self.symbol2number[symbol] = number
                 self.number2symbol[number] = symbol
-        return True
+        rudisha True
 
-    def parse_graminit_c(self, filename):
+    eleza parse_graminit_c(self, filename):
         """Parse the .c file written by pgen.  (Internal)
 
         The file looks as follows.  The first two lines are always this:
@@ -112,8 +112,8 @@ class Converter(grammar.Grammar):
         try:
             f = open(filename)
         except OSError as err:
-            print("Can't open %s: %s" % (filename, err))
-            return False
+            andika("Can't open %s: %s" % (filename, err))
+            rudisha False
         # The code below essentially uses f's iterator-ness!
         lineno = 0
 
@@ -188,7 +188,7 @@ class Converter(grammar.Grammar):
             for i, c in enumerate(rawbitset):
                 byte = ord(c)
                 for j in range(8):
-                    if byte & (1<<j):
+                    ikiwa byte & (1<<j):
                         first[i*8 + j] = 1
             dfas[number] = (state, first)
         lineno, line = lineno+1, next(f)
@@ -207,7 +207,7 @@ class Converter(grammar.Grammar):
             assert mo, (lineno, line)
             x, y = mo.groups()
             x = int(x)
-            if y == "0":
+            ikiwa y == "0":
                 y = None
             else:
                 y = eval(y)
@@ -246,12 +246,12 @@ class Converter(grammar.Grammar):
         else:
             assert 0, (lineno, line)
 
-    def finish_off(self):
+    eleza finish_off(self):
         """Create additional useful structures.  (Internal)."""
         self.keywords = {} # map kutoka keyword strings to arc labels
         self.tokens = {}   # map kutoka numeric token values to arc labels
         for ilabel, (type, value) in enumerate(self.labels):
-            if type == token.NAME and value is not None:
+            ikiwa type == token.NAME and value is not None:
                 self.keywords[value] = ilabel
-            elif value is None:
+            elikiwa value is None:
                 self.tokens[type] = ilabel

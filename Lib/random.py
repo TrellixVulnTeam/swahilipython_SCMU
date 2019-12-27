@@ -75,13 +75,13 @@ RECIP_BPF = 2**-BPF
 
 agiza _random
 
-class Random(_random.Random):
-    """Random number generator base class used by bound module functions.
+kundi Random(_random.Random):
+    """Random number generator base kundi used by bound module functions.
 
     Used to instantiate instances of Random to get generators that don't
     share state.
 
-    Class Random can also be subclassed if you want to use a different basic
+    Class Random can also be subclassed ikiwa you want to use a different basic
     generator of your own devising: in that case, override the following
     methods:  random(), seed(), getstate(), and setstate().
     Optionally, implement a getrandbits() method so that randrange()
@@ -91,7 +91,7 @@ class Random(_random.Random):
 
     VERSION = 3     # used by getstate/setstate
 
-    def __init__(self, x=None):
+    eleza __init__(self, x=None):
         """Initialize an instance.
 
         Optional argument x controls seeding, as for Random.seed().
@@ -100,69 +100,69 @@ class Random(_random.Random):
         self.seed(x)
         self.gauss_next = None
 
-    def __init_subclass__(cls, /, **kwargs):
+    eleza __init_subclass__(cls, /, **kwargs):
         """Control how subclasses generate random integers.
 
-        The algorithm a subclass can use depends on the random() and/or
+        The algorithm a subkundi can use depends on the random() and/or
         getrandbits() implementation available to it and determines
         whether it can generate random integers kutoka arbitrarily large
         ranges.
         """
 
         for c in cls.__mro__:
-            if '_randbelow' in c.__dict__:
+            ikiwa '_randbelow' in c.__dict__:
                 # just inherit it
                 break
-            if 'getrandbits' in c.__dict__:
+            ikiwa 'getrandbits' in c.__dict__:
                 cls._randbelow = cls._randbelow_with_getrandbits
                 break
-            if 'random' in c.__dict__:
+            ikiwa 'random' in c.__dict__:
                 cls._randbelow = cls._randbelow_without_getrandbits
                 break
 
-    def seed(self, a=None, version=2):
+    eleza seed(self, a=None, version=2):
         """Initialize internal state kutoka hashable object.
 
         None or no argument seeds kutoka current time or kutoka an operating
-        system specific randomness source if available.
+        system specific randomness source ikiwa available.
 
         If *a* is an int, all bits are used.
 
-        For version 2 (the default), all of the bits are used if *a* is a str,
+        For version 2 (the default), all of the bits are used ikiwa *a* is a str,
         bytes, or bytearray.  For version 1 (provided for reproducing random
         sequences kutoka older versions of Python), the algorithm for str and
         bytes generates a narrower range of seeds.
 
         """
 
-        if version == 1 and isinstance(a, (str, bytes)):
-            a = a.decode('latin-1') if isinstance(a, bytes) else a
-            x = ord(a[0]) << 7 if a else 0
+        ikiwa version == 1 and isinstance(a, (str, bytes)):
+            a = a.decode('latin-1') ikiwa isinstance(a, bytes) else a
+            x = ord(a[0]) << 7 ikiwa a else 0
             for c in map(ord, a):
                 x = ((1000003 * x) ^ c) & 0xFFFFFFFFFFFFFFFF
             x ^= len(a)
-            a = -2 if x == -1 else x
+            a = -2 ikiwa x == -1 else x
 
-        if version == 2 and isinstance(a, (str, bytes, bytearray)):
-            if isinstance(a, str):
+        ikiwa version == 2 and isinstance(a, (str, bytes, bytearray)):
+            ikiwa isinstance(a, str):
                 a = a.encode()
             a += _sha512(a).digest()
-            a = int.from_bytes(a, 'big')
+            a = int.kutoka_bytes(a, 'big')
 
         super().seed(a)
         self.gauss_next = None
 
-    def getstate(self):
+    eleza getstate(self):
         """Return internal state; can be passed to setstate() later."""
-        return self.VERSION, super().getstate(), self.gauss_next
+        rudisha self.VERSION, super().getstate(), self.gauss_next
 
-    def setstate(self, state):
+    eleza setstate(self, state):
         """Restore internal state kutoka object returned by getstate()."""
         version = state[0]
-        if version == 3:
+        ikiwa version == 3:
             version, internalstate, self.gauss_next = state
             super().setstate(internalstate)
-        elif version == 2:
+        elikiwa version == 2:
             version, internalstate, self.gauss_next = state
             # In version 2, the state was saved as signed ints, which causes
             #   inconsistencies between 32/64-bit systems. The state is
@@ -186,18 +186,18 @@ class Random(_random.Random):
     # Issue 17489: Since __reduce__ was defined to fix #759889 this is no
     # longer called; we leave it here because it has been here since random was
     # rewritten back in 2001 and why risk breaking something.
-    def __getstate__(self): # for pickle
-        return self.getstate()
+    eleza __getstate__(self): # for pickle
+        rudisha self.getstate()
 
-    def __setstate__(self, state):  # for pickle
+    eleza __setstate__(self, state):  # for pickle
         self.setstate(state)
 
-    def __reduce__(self):
-        return self.__class__, (), self.getstate()
+    eleza __reduce__(self):
+        rudisha self.__class__, (), self.getstate()
 
 ## -------------------- integer methods  -------------------
 
-    def randrange(self, start, stop=None, step=1, _int=int):
+    eleza randrange(self, start, stop=None, step=1, _int=int):
         """Choose a random item kutoka range(start, stop[, step]).
 
         This fixes the problem with randint() which includes the
@@ -208,98 +208,98 @@ class Random(_random.Random):
         # This code is a bit messy to make it fast for the
         # common case while still doing adequate error checking.
         istart = _int(start)
-        if istart != start:
+        ikiwa istart != start:
             raise ValueError("non-integer arg 1 for randrange()")
-        if stop is None:
-            if istart > 0:
-                return self._randbelow(istart)
+        ikiwa stop is None:
+            ikiwa istart > 0:
+                rudisha self._randbelow(istart)
             raise ValueError("empty range for randrange()")
 
         # stop argument supplied.
         istop = _int(stop)
-        if istop != stop:
+        ikiwa istop != stop:
             raise ValueError("non-integer stop for randrange()")
         width = istop - istart
-        if step == 1 and width > 0:
-            return istart + self._randbelow(width)
-        if step == 1:
+        ikiwa step == 1 and width > 0:
+            rudisha istart + self._randbelow(width)
+        ikiwa step == 1:
             raise ValueError("empty range for randrange() (%d, %d, %d)" % (istart, istop, width))
 
         # Non-unit step argument supplied.
         istep = _int(step)
-        if istep != step:
+        ikiwa istep != step:
             raise ValueError("non-integer step for randrange()")
-        if istep > 0:
+        ikiwa istep > 0:
             n = (width + istep - 1) // istep
-        elif istep < 0:
+        elikiwa istep < 0:
             n = (width + istep + 1) // istep
         else:
             raise ValueError("zero step for randrange()")
 
-        if n <= 0:
+        ikiwa n <= 0:
             raise ValueError("empty range for randrange()")
 
-        return istart + istep*self._randbelow(n)
+        rudisha istart + istep*self._randbelow(n)
 
-    def randint(self, a, b):
+    eleza randint(self, a, b):
         """Return random integer in range [a, b], including both end points.
         """
 
-        return self.randrange(a, b+1)
+        rudisha self.randrange(a, b+1)
 
-    def _randbelow_with_getrandbits(self, n):
-        "Return a random int in the range [0,n).  Raises ValueError if n==0."
+    eleza _randbelow_with_getrandbits(self, n):
+        "Return a random int in the range [0,n).  Raises ValueError ikiwa n==0."
 
         getrandbits = self.getrandbits
         k = n.bit_length()  # don't use (n-1) here because n can be 1
         r = getrandbits(k)          # 0 <= r < 2**k
         while r >= n:
             r = getrandbits(k)
-        return r
+        rudisha r
 
-    def _randbelow_without_getrandbits(self, n, int=int, maxsize=1<<BPF):
-        """Return a random int in the range [0,n).  Raises ValueError if n==0.
+    eleza _randbelow_without_getrandbits(self, n, int=int, maxsize=1<<BPF):
+        """Return a random int in the range [0,n).  Raises ValueError ikiwa n==0.
 
         The implementation does not use getrandbits, but only random.
         """
 
         random = self.random
-        if n >= maxsize:
+        ikiwa n >= maxsize:
             _warn("Underlying random() generator does not supply \n"
                 "enough bits to choose kutoka a population range this large.\n"
                 "To remove the range limitation, add a getrandbits() method.")
-            return int(random() * n)
-        if n == 0:
+            rudisha int(random() * n)
+        ikiwa n == 0:
             raise ValueError("Boundary cannot be zero")
         rem = maxsize % n
         limit = (maxsize - rem) / maxsize   # int(limit * maxsize) % n == 0
         r = random()
         while r >= limit:
             r = random()
-        return int(r*maxsize) % n
+        rudisha int(r*maxsize) % n
 
     _randbelow = _randbelow_with_getrandbits
 
 ## -------------------- sequence methods  -------------------
 
-    def choice(self, seq):
+    eleza choice(self, seq):
         """Choose a random element kutoka a non-empty sequence."""
         try:
             i = self._randbelow(len(seq))
         except ValueError:
             raise IndexError('Cannot choose kutoka an empty sequence') kutoka None
-        return seq[i]
+        rudisha seq[i]
 
-    def shuffle(self, x, random=None):
-        """Shuffle list x in place, and return None.
+    eleza shuffle(self, x, random=None):
+        """Shuffle list x in place, and rudisha None.
 
         Optional argument random is a 0-argument function returning a
-        random float in [0.0, 1.0); if it is the default None, the
+        random float in [0.0, 1.0); ikiwa it is the default None, the
         standard random.random will be used.
 
         """
 
-        if random is None:
+        ikiwa random is None:
             randbelow = self._randbelow
             for i in reversed(range(1, len(x))):
                 # pick an element in x[:i+1] with which to exchange x[i]
@@ -312,7 +312,7 @@ class Random(_random.Random):
                 j = _int(random() * (i+1))
                 x[i], x[j] = x[j], x[i]
 
-    def sample(self, population, k):
+    eleza sample(self, population, k):
         """Chooses k unique random elements kutoka a population sequence or set.
 
         Returns a new list containing elements kutoka the population while
@@ -353,19 +353,19 @@ class Random(_random.Random):
         # too many calls to _randbelow(), making them slower and
         # causing them to eat more entropy than necessary.
 
-        if isinstance(population, _Set):
+        ikiwa isinstance(population, _Set):
             population = tuple(population)
-        if not isinstance(population, _Sequence):
+        ikiwa not isinstance(population, _Sequence):
             raise TypeError("Population must be a sequence or set.  For dicts, use list(d).")
         randbelow = self._randbelow
         n = len(population)
-        if not 0 <= k <= n:
+        ikiwa not 0 <= k <= n:
             raise ValueError("Sample larger than population or is negative")
         result = [None] * k
         setsize = 21        # size of a small set minus size of an empty list
-        if k > 5:
+        ikiwa k > 5:
             setsize += 4 ** _ceil(_log(k * 3, 4)) # table size for big sets
-        if n <= setsize:
+        ikiwa n <= setsize:
             # An n-length list is smaller than a k-length set
             pool = list(population)
             for i in range(k):         # invariant:  non-selected at [0,n-i)
@@ -381,9 +381,9 @@ class Random(_random.Random):
                     j = randbelow(n)
                 selected_add(j)
                 result[i] = population[j]
-        return result
+        rudisha result
 
-    def choices(self, population, weights=None, *, cum_weights=None, k=1):
+    eleza choices(self, population, weights=None, *, cum_weights=None, k=1):
         """Return a k sized list of population elements chosen with replacement.
 
         If the relative weights or cumulative weights are not specified,
@@ -392,33 +392,33 @@ class Random(_random.Random):
         """
         random = self.random
         n = len(population)
-        if cum_weights is None:
-            if weights is None:
+        ikiwa cum_weights is None:
+            ikiwa weights is None:
                 _int = int
                 n += 0.0    # convert to float for a small speed improvement
-                return [population[_int(random() * n)] for i in _repeat(None, k)]
+                rudisha [population[_int(random() * n)] for i in _repeat(None, k)]
             cum_weights = list(_accumulate(weights))
-        elif weights is not None:
+        elikiwa weights is not None:
             raise TypeError('Cannot specify both weights and cumulative weights')
-        if len(cum_weights) != n:
+        ikiwa len(cum_weights) != n:
             raise ValueError('The number of weights does not match the population')
         bisect = _bisect
         total = cum_weights[-1] + 0.0   # convert to float
         hi = n - 1
-        return [population[bisect(cum_weights, random() * total, 0, hi)]
+        rudisha [population[bisect(cum_weights, random() * total, 0, hi)]
                 for i in _repeat(None, k)]
 
 ## -------------------- real-valued distributions  -------------------
 
 ## -------------------- uniform distribution -------------------
 
-    def uniform(self, a, b):
+    eleza uniform(self, a, b):
         "Get a random number in the range [a, b) or [a, b] depending on rounding."
-        return a + (b-a) * self.random()
+        rudisha a + (b-a) * self.random()
 
 ## -------------------- triangular --------------------
 
-    def triangular(self, low=0.0, high=1.0, mode=None):
+    eleza triangular(self, low=0.0, high=1.0, mode=None):
         """Triangular distribution.
 
         Continuous distribution bounded by given lower and upper limits,
@@ -429,18 +429,18 @@ class Random(_random.Random):
         """
         u = self.random()
         try:
-            c = 0.5 if mode is None else (mode - low) / (high - low)
+            c = 0.5 ikiwa mode is None else (mode - low) / (high - low)
         except ZeroDivisionError:
-            return low
-        if u > c:
+            rudisha low
+        ikiwa u > c:
             u = 1.0 - u
             c = 1.0 - c
             low, high = high, low
-        return low + (high - low) * _sqrt(u * c)
+        rudisha low + (high - low) * _sqrt(u * c)
 
 ## -------------------- normal distribution --------------------
 
-    def normalvariate(self, mu, sigma):
+    eleza normalvariate(self, mu, sigma):
         """Normal distribution.
 
         mu is the mean, and sigma is the standard deviation.
@@ -459,13 +459,13 @@ class Random(_random.Random):
             u2 = 1.0 - random()
             z = NV_MAGICCONST*(u1-0.5)/u2
             zz = z*z/4.0
-            if zz <= -_log(u2):
+            ikiwa zz <= -_log(u2):
                 break
-        return mu + z*sigma
+        rudisha mu + z*sigma
 
 ## -------------------- lognormal distribution --------------------
 
-    def lognormvariate(self, mu, sigma):
+    eleza lognormvariate(self, mu, sigma):
         """Log normal distribution.
 
         If you take the natural logarithm of this distribution, you'll get a
@@ -473,18 +473,18 @@ class Random(_random.Random):
         mu can have any value, and sigma must be greater than zero.
 
         """
-        return _exp(self.normalvariate(mu, sigma))
+        rudisha _exp(self.normalvariate(mu, sigma))
 
 ## -------------------- exponential distribution --------------------
 
-    def expovariate(self, lambd):
+    eleza expovariate(self, lambd):
         """Exponential distribution.
 
         lambd is 1.0 divided by the desired mean.  It should be
         nonzero.  (The parameter would be called "lambda", but that is
         a reserved word in Python.)  Returned values range kutoka 0 to
-        positive infinity if lambd is positive, and kutoka negative
-        infinity to 0 if lambd is negative.
+        positive infinity ikiwa lambd is positive, and kutoka negative
+        infinity to 0 ikiwa lambd is negative.
 
         """
         # lambd: rate lambd = 1/mean
@@ -492,11 +492,11 @@ class Random(_random.Random):
 
         # we use 1-random() instead of random() to preclude the
         # possibility of taking the log of zero.
-        return -_log(1.0 - self.random())/lambd
+        rudisha -_log(1.0 - self.random())/lambd
 
 ## -------------------- von Mises distribution --------------------
 
-    def vonmisesvariate(self, mu, kappa):
+    eleza vonmisesvariate(self, mu, kappa):
         """Circular data distribution.
 
         mu is the mean angle, expressed in radians between 0 and 2*pi, and
@@ -507,7 +507,7 @@ class Random(_random.Random):
         """
         # mu:    mean angle (in radians between 0 and 2*pi)
         # kappa: concentration parameter kappa (>= 0)
-        # if kappa = 0 generate uniform random angle
+        # ikiwa kappa = 0 generate uniform random angle
 
         # Based upon an algorithm published in: Fisher, N.I.,
         # "Statistical Analysis of Circular Data", Cambridge
@@ -517,8 +517,8 @@ class Random(_random.Random):
         # implementation of step 4.
 
         random = self.random
-        if kappa <= 1e-6:
-            return TWOPI * random()
+        ikiwa kappa <= 1e-6:
+            rudisha TWOPI * random()
 
         s = 0.5 / kappa
         r = s + _sqrt(1.0 + s * s)
@@ -529,22 +529,22 @@ class Random(_random.Random):
 
             d = z / (r + z)
             u2 = random()
-            if u2 < 1.0 - d * d or u2 <= (1.0 - d) * _exp(d):
+            ikiwa u2 < 1.0 - d * d or u2 <= (1.0 - d) * _exp(d):
                 break
 
         q = 1.0 / r
         f = (q + z) / (1.0 + q * z)
         u3 = random()
-        if u3 > 0.5:
+        ikiwa u3 > 0.5:
             theta = (mu + _acos(f)) % TWOPI
         else:
             theta = (mu - _acos(f)) % TWOPI
 
-        return theta
+        rudisha theta
 
 ## -------------------- gamma distribution --------------------
 
-    def gammavariate(self, alpha, beta):
+    eleza gammavariate(self, alpha, beta):
         """Gamma distribution.  Not the gamma function!
 
         Conditions on the parameters are alpha > 0 and beta > 0.
@@ -561,11 +561,11 @@ class Random(_random.Random):
 
         # Warning: a few older sources define the gamma distribution in terms
         # of alpha > -1.0
-        if alpha <= 0.0 or beta <= 0.0:
+        ikiwa alpha <= 0.0 or beta <= 0.0:
             raise ValueError('gammavariate: alpha and beta must be > 0.0')
 
         random = self.random
-        if alpha > 1.0:
+        ikiwa alpha > 1.0:
 
             # Uses R.C.H. Cheng, "The generation of Gamma
             # variables with non-integral shape parameters",
@@ -577,19 +577,19 @@ class Random(_random.Random):
 
             while 1:
                 u1 = random()
-                if not 1e-7 < u1 < .9999999:
+                ikiwa not 1e-7 < u1 < .9999999:
                     continue
                 u2 = 1.0 - random()
                 v = _log(u1/(1.0-u1))/ainv
                 x = alpha*_exp(v)
                 z = u1*u1*u2
                 r = bbb+ccc*v-x
-                if r + SG_MAGICCONST - 4.5*z >= 0.0 or r >= _log(z):
-                    return x * beta
+                ikiwa r + SG_MAGICCONST - 4.5*z >= 0.0 or r >= _log(z):
+                    rudisha x * beta
 
-        elif alpha == 1.0:
+        elikiwa alpha == 1.0:
             # expovariate(1/beta)
-            return -_log(1.0 - random()) * beta
+            rudisha -_log(1.0 - random()) * beta
 
         else:   # alpha is between 0 and 1 (exclusive)
 
@@ -599,21 +599,21 @@ class Random(_random.Random):
                 u = random()
                 b = (_e + alpha)/_e
                 p = b*u
-                if p <= 1.0:
+                ikiwa p <= 1.0:
                     x = p ** (1.0/alpha)
                 else:
                     x = -_log((b-p)/alpha)
                 u1 = random()
-                if p > 1.0:
-                    if u1 <= x ** (alpha - 1.0):
+                ikiwa p > 1.0:
+                    ikiwa u1 <= x ** (alpha - 1.0):
                         break
-                elif u1 <= _exp(-x):
+                elikiwa u1 <= _exp(-x):
                     break
-            return x * beta
+            rudisha x * beta
 
 ## -------------------- Gauss (faster alternative) --------------------
 
-    def gauss(self, mu, sigma):
+    eleza gauss(self, mu, sigma):
         """Gaussian distribution.
 
         mu is the mean, and sigma is the standard deviation.  This is
@@ -636,7 +636,7 @@ class Random(_random.Random):
 
         # Multithreading note: When two threads call this function
         # simultaneously, it is possible that they will receive the
-        # same return value.  The window is very small though.  To
+        # same rudisha value.  The window is very small though.  To
         # avoid this, you have to use a lock around all calls.  (I
         # didn't want to slow this down in the serial case by using a
         # lock here.)
@@ -644,29 +644,29 @@ class Random(_random.Random):
         random = self.random
         z = self.gauss_next
         self.gauss_next = None
-        if z is None:
+        ikiwa z is None:
             x2pi = random() * TWOPI
             g2rad = _sqrt(-2.0 * _log(1.0 - random()))
             z = _cos(x2pi) * g2rad
             self.gauss_next = _sin(x2pi) * g2rad
 
-        return mu + z*sigma
+        rudisha mu + z*sigma
 
 ## -------------------- beta --------------------
 ## See
 ## http://mail.python.org/pipermail/python-bugs-list/2001-January/003752.html
 ## for Ivan Frohne's insightful analysis of why the original implementation:
 ##
-##    def betavariate(self, alpha, beta):
+##    eleza betavariate(self, alpha, beta):
 ##        # Discrete Event Simulation in C, pp 87-88.
 ##
 ##        y = self.expovariate(alpha)
 ##        z = self.expovariate(1.0/beta)
-##        return z/(y+z)
+##        rudisha z/(y+z)
 ##
 ## was dead wrong, and how it probably got that way.
 
-    def betavariate(self, alpha, beta):
+    eleza betavariate(self, alpha, beta):
         """Beta distribution.
 
         Conditions on the parameters are alpha > 0 and beta > 0.
@@ -677,23 +677,23 @@ class Random(_random.Random):
         # This version due to Janne Sinkkonen, and matches all the std
         # texts (e.g., Knuth Vol 2 Ed 3 pg 134 "the beta distribution").
         y = self.gammavariate(alpha, 1.0)
-        if y == 0:
-            return 0.0
+        ikiwa y == 0:
+            rudisha 0.0
         else:
-            return y / (y + self.gammavariate(beta, 1.0))
+            rudisha y / (y + self.gammavariate(beta, 1.0))
 
 ## -------------------- Pareto --------------------
 
-    def paretovariate(self, alpha):
+    eleza paretovariate(self, alpha):
         """Pareto distribution.  alpha is the shape parameter."""
         # Jain, pg. 495
 
         u = 1.0 - self.random()
-        return 1.0 / u ** (1.0/alpha)
+        rudisha 1.0 / u ** (1.0/alpha)
 
 ## -------------------- Weibull --------------------
 
-    def weibullvariate(self, alpha, beta):
+    eleza weibullvariate(self, alpha, beta):
         """Weibull distribution.
 
         alpha is the scale parameter and beta is the shape parameter.
@@ -702,11 +702,11 @@ class Random(_random.Random):
         # Jain, pg. 499; bug fix courtesy Bill Arms
 
         u = 1.0 - self.random()
-        return alpha * (-_log(u)) ** (1.0/beta)
+        rudisha alpha * (-_log(u)) ** (1.0/beta)
 
 ## --------------- Operating System Random Source  ------------------
 
-class SystemRandom(Random):
+kundi SystemRandom(Random):
     """Alternate random number generator using sources provided
     by the operating system (such as /dev/urandom on Unix or
     CryptGenRandom on Windows).
@@ -714,32 +714,32 @@ class SystemRandom(Random):
      Not available on all systems (see os.urandom() for details).
     """
 
-    def random(self):
+    eleza random(self):
         """Get the next random number in the range [0.0, 1.0)."""
-        return (int.from_bytes(_urandom(7), 'big') >> 3) * RECIP_BPF
+        rudisha (int.kutoka_bytes(_urandom(7), 'big') >> 3) * RECIP_BPF
 
-    def getrandbits(self, k):
+    eleza getrandbits(self, k):
         """getrandbits(k) -> x.  Generates an int with k random bits."""
-        if k <= 0:
+        ikiwa k <= 0:
             raise ValueError('number of bits must be greater than zero')
         numbytes = (k + 7) // 8                       # bits / 8 and rounded up
-        x = int.from_bytes(_urandom(numbytes), 'big')
-        return x >> (numbytes * 8 - k)                # trim excess bits
+        x = int.kutoka_bytes(_urandom(numbytes), 'big')
+        rudisha x >> (numbytes * 8 - k)                # trim excess bits
 
-    def seed(self, *args, **kwds):
+    eleza seed(self, *args, **kwds):
         "Stub method.  Not used for a system random number generator."
-        return None
+        rudisha None
 
-    def _notimplemented(self, *args, **kwds):
+    eleza _notimplemented(self, *args, **kwds):
         "Method should not be called for a system random number generator."
         raise NotImplementedError('System entropy source does not have state.')
     getstate = setstate = _notimplemented
 
 ## -------------------- test program --------------------
 
-def _test_generator(n, func, args):
+eleza _test_generator(n, func, args):
     agiza time
-    print(n, 'times', func.__name__)
+    andika(n, 'times', func.__name__)
     total = 0.0
     sqsum = 0.0
     smallest = 1e10
@@ -752,14 +752,14 @@ def _test_generator(n, func, args):
         smallest = min(x, smallest)
         largest = max(x, largest)
     t1 = time.perf_counter()
-    print(round(t1-t0, 3), 'sec,', end=' ')
+    andika(round(t1-t0, 3), 'sec,', end=' ')
     avg = total/n
     stddev = _sqrt(sqsum/n - avg*avg)
-    print('avg %g, stddev %g, min %g, max %g\n' % \
+    andika('avg %g, stddev %g, min %g, max %g\n' % \
               (avg, stddev, smallest, largest))
 
 
-def _test(N=2000):
+eleza _test(N=2000):
     _test_generator(N, random, ())
     _test_generator(N, normalvariate, (0.0, 1.0))
     _test_generator(N, lognormvariate, (0.0, 1.0))
@@ -807,9 +807,9 @@ getstate = _inst.getstate
 setstate = _inst.setstate
 getrandbits = _inst.getrandbits
 
-if hasattr(_os, "fork"):
+ikiwa hasattr(_os, "fork"):
     _os.register_at_fork(after_in_child=_inst.seed)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     _test()

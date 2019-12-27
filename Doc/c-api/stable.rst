@@ -23,7 +23,7 @@ link with a newer one.
 Since Python 3.2, a subset of the API has been declared to guarantee a stable
 ABI. Extension modules wishing to use this API (called "limited API") need to
 define ``Py_LIMITED_API``. A number of interpreter details then become hidden
-from the extension module; in return, a module is built that works on any 3.x
+kutoka the extension module; in return, a module is built that works on any 3.x
 version (x>=2) without recompilation.
 
 In some cases, the stable ABI needs to be extended with new functions.

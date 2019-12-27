@@ -20,12 +20,12 @@ should not be imported; use xml.dom.minidom instead.
 #                    as efficiently as possible in both Python 2.2+
 #                    and older versions.  For example:
 #
-#                        class MyClass(GetattrMagic):
-#                            def _get_myattr(self):
-#                                return something
+#                        kundi MyClass(GetattrMagic):
+#                            eleza _get_myattr(self):
+#                                rudisha something
 #
 #                        defproperty(MyClass, "myattr",
-#                                    "return some value")
+#                                    "rudisha some value")
 #
 #                    For Python 2.2 and newer, this will construct a
 #                    property object on the class, which avoids
@@ -47,17 +47,17 @@ agiza xml.dom
 StringTypes = (str,)
 
 
-class NodeList(list):
+kundi NodeList(list):
     __slots__ = ()
 
-    def item(self, index):
-        if 0 <= index < len(self):
-            return self[index]
+    eleza item(self, index):
+        ikiwa 0 <= index < len(self):
+            rudisha self[index]
 
-    def _get_length(self):
-        return len(self)
+    eleza _get_length(self):
+        rudisha len(self)
 
-    def _set_length(self, value):
+    eleza _set_length(self, value):
         raise xml.dom.NoModificationAllowedErr(
             "attempt to modify read-only attribute 'length'")
 
@@ -65,32 +65,32 @@ class NodeList(list):
                       doc="The number of nodes in the NodeList.")
 
     # For backward compatibility
-    def __setstate__(self, state):
-        if state is None:
+    eleza __setstate__(self, state):
+        ikiwa state is None:
             state = []
         self[:] = state
 
 
-class EmptyNodeList(tuple):
+kundi EmptyNodeList(tuple):
     __slots__ = ()
 
-    def __add__(self, other):
+    eleza __add__(self, other):
         NL = NodeList()
         NL.extend(other)
-        return NL
+        rudisha NL
 
-    def __radd__(self, other):
+    eleza __radd__(self, other):
         NL = NodeList()
         NL.extend(other)
-        return NL
+        rudisha NL
 
-    def item(self, index):
-        return None
+    eleza item(self, index):
+        rudisha None
 
-    def _get_length(self):
-        return 0
+    eleza _get_length(self):
+        rudisha 0
 
-    def _set_length(self, value):
+    eleza _set_length(self, value):
         raise xml.dom.NoModificationAllowedErr(
             "attempt to modify read-only attribute 'length'")
 
@@ -98,9 +98,9 @@ class EmptyNodeList(tuple):
                       doc="The number of nodes in the NodeList.")
 
 
-def defproperty(klass, name, doc):
+eleza defproperty(klass, name, doc):
     get = getattr(klass, ("_get_" + name))
-    def set(self, value, name=name):
+    eleza set(self, value, name=name):
         raise xml.dom.NoModificationAllowedErr(
             "attempt to modify read-only attribute " + repr(name))
     assert not hasattr(klass, "_set_" + name), \

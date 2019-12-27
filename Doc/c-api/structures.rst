@@ -50,7 +50,7 @@ the definition of all other Python objects.
 .. c:macro:: PyObject_VAR_HEAD
 
    This is a macro used when declaring new types which represent objects
-   with a length that varies from instance to instance.
+   with a length that varies kutoka instance to instance.
    The PyObject_VAR_HEAD macro expands to::
 
       PyVarObject ob_base;
@@ -240,7 +240,7 @@ method.
    .. index:: builtin: classmethod
 
    The method will be passed the type object as the first parameter rather
-   than an instance of the type.  This is used to create *class methods*,
+   than an instance of the type.  This is used to create *kundi methods*,
    similar to what is created when using the :func:`classmethod` built-in
    function.
 

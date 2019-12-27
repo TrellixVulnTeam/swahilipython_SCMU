@@ -8,55 +8,55 @@ kutoka unittest agiza mock
 kutoka test agiza support
 
 
-class PlatformTest(unittest.TestCase):
-    def clear_caches(self):
+kundi PlatformTest(unittest.TestCase):
+    eleza clear_caches(self):
         platform._platform_cache.clear()
         platform._sys_version_cache.clear()
         platform._uname_cache = None
 
-    def test_architecture(self):
+    eleza test_architecture(self):
         res = platform.architecture()
 
     @support.skip_unless_symlink
-    def test_architecture_via_symlink(self): # issue3762
+    eleza test_architecture_via_symlink(self): # issue3762
         with support.PythonSymlink() as py:
-            cmd = "-c", "agiza platform; print(platform.architecture())"
+            cmd = "-c", "agiza platform; andika(platform.architecture())"
             self.assertEqual(py.call_real(*cmd), py.call_link(*cmd))
 
-    def test_platform(self):
+    eleza test_platform(self):
         for aliased in (False, True):
             for terse in (False, True):
                 res = platform.platform(aliased, terse)
 
-    def test_system(self):
+    eleza test_system(self):
         res = platform.system()
 
-    def test_node(self):
+    eleza test_node(self):
         res = platform.node()
 
-    def test_release(self):
+    eleza test_release(self):
         res = platform.release()
 
-    def test_version(self):
+    eleza test_version(self):
         res = platform.version()
 
-    def test_machine(self):
+    eleza test_machine(self):
         res = platform.machine()
 
-    def test_processor(self):
+    eleza test_processor(self):
         res = platform.processor()
 
-    def setUp(self):
+    eleza setUp(self):
         self.save_version = sys.version
         self.save_git = sys._git
         self.save_platform = sys.platform
 
-    def tearDown(self):
+    eleza tearDown(self):
         sys.version = self.save_version
         sys._git = self.save_git
         sys.platform = self.save_platform
 
-    def test_sys_version(self):
+    eleza test_sys_version(self):
         # Old test.
         for input, output in (
             ('2.4.3 (#1, Jun 21 2006, 13:54:21) \n[GCC 3.3.4 (pre 3.3.5 20040809)]',
@@ -129,12 +129,12 @@ class PlatformTest(unittest.TestCase):
         for (version_tag, scm, sys_platform), info in \
                 sys_versions.items():
             sys.version = version_tag
-            if scm is None:
-                if hasattr(sys, "_git"):
+            ikiwa scm is None:
+                ikiwa hasattr(sys, "_git"):
                     del sys._git
             else:
                 sys._git = scm
-            if sys_platform is not None:
+            ikiwa sys_platform is not None:
                 sys.platform = sys_platform
             self.assertEqual(platform.python_implementation(), info[0])
             self.assertEqual(platform.python_version(), info[1])
@@ -143,14 +143,14 @@ class PlatformTest(unittest.TestCase):
             self.assertEqual(platform.python_build(), info[4])
             self.assertEqual(platform.python_compiler(), info[5])
 
-    def test_system_alias(self):
+    eleza test_system_alias(self):
         res = platform.system_alias(
             platform.system(),
             platform.release(),
             platform.version(),
         )
 
-    def test_uname(self):
+    eleza test_uname(self):
         res = platform.uname()
         self.assertTrue(any(res))
         self.assertEqual(res[0], res.system)
@@ -161,14 +161,14 @@ class PlatformTest(unittest.TestCase):
         self.assertEqual(res[5], res.processor)
 
     @unittest.skipUnless(sys.platform.startswith('win'), "windows only test")
-    def test_uname_win32_ARCHITEW6432(self):
+    eleza test_uname_win32_ARCHITEW6432(self):
         # Issue 7860: make sure we get architecture kutoka the correct variable
-        # on 64 bit Windows: if PROCESSOR_ARCHITEW6432 exists we should be
+        # on 64 bit Windows: ikiwa PROCESSOR_ARCHITEW6432 exists we should be
         # using it, per
         # http://blogs.msdn.com/david.wang/archive/2006/03/26/HOWTO-Detect-Process-Bitness.aspx
         try:
             with support.EnvironmentVarGuard() as environ:
-                if 'PROCESSOR_ARCHITEW6432' in environ:
+                ikiwa 'PROCESSOR_ARCHITEW6432' in environ:
                     del environ['PROCESSOR_ARCHITEW6432']
                 environ['PROCESSOR_ARCHITECTURE'] = 'foo'
                 platform._uname_cache = None
@@ -181,23 +181,23 @@ class PlatformTest(unittest.TestCase):
         finally:
             platform._uname_cache = None
 
-    def test_java_ver(self):
+    eleza test_java_ver(self):
         res = platform.java_ver()
-        if sys.platform == 'java':
+        ikiwa sys.platform == 'java':
             self.assertTrue(all(res))
 
-    def test_win32_ver(self):
+    eleza test_win32_ver(self):
         res = platform.win32_ver()
 
-    def test_mac_ver(self):
+    eleza test_mac_ver(self):
         res = platform.mac_ver()
 
-        if platform.uname().system == 'Darwin':
+        ikiwa platform.uname().system == 'Darwin':
             # We are on a macOS system, check that the right version
             # information is returned
             output = subprocess.check_output(['sw_vers'], text=True)
             for line in output.splitlines():
-                if line.startswith('ProductVersion:'):
+                ikiwa line.startswith('ProductVersion:'):
                     real_ver = line.strip().split()[-1]
                     break
             else:
@@ -207,7 +207,7 @@ class PlatformTest(unittest.TestCase):
             expect_list = real_ver.split('.')
             len_diff = len(result_list) - len(expect_list)
             # On Snow Leopard, sw_vers reports 10.6.0 as 10.6
-            if len_diff > 0:
+            ikiwa len_diff > 0:
                 expect_list.extend(['0'] * len_diff)
             self.assertEqual(result_list, expect_list)
 
@@ -216,20 +216,20 @@ class PlatformTest(unittest.TestCase):
             # That information is no longer available
             self.assertEqual(res[1], ('', '', ''))
 
-            if sys.byteorder == 'little':
+            ikiwa sys.byteorder == 'little':
                 self.assertIn(res[2], ('i386', 'x86_64'))
             else:
                 self.assertEqual(res[2], 'PowerPC')
 
 
     @unittest.skipUnless(sys.platform == 'darwin', "OSX only test")
-    def test_mac_ver_with_fork(self):
+    eleza test_mac_ver_with_fork(self):
         # Issue7895: platform.mac_ver() crashes when using fork without exec
         #
         # This test checks that the fix for that issue works.
         #
         pid = os.fork()
-        if pid == 0:
+        ikiwa pid == 0:
             # child
             info = platform.mac_ver()
             os._exit(0)
@@ -240,13 +240,13 @@ class PlatformTest(unittest.TestCase):
             self.assertEqual(cpid, pid)
             self.assertEqual(sts, 0)
 
-    def test_libc_ver(self):
+    eleza test_libc_ver(self):
         # check that libc_ver(executable) doesn't raise an exception
-        if os.path.isdir(sys.executable) and \
+        ikiwa os.path.isdir(sys.executable) and \
            os.path.exists(sys.executable+'.exe'):
             # Cygwin horror
             executable = sys.executable + '.exe'
-        elif sys.platform == "win32" and not os.path.exists(sys.executable):
+        elikiwa sys.platform == "win32" and not os.path.exists(sys.executable):
             # App symlink appears to not exist, but we want the
             # real executable here anyway
             agiza _winapi
@@ -274,7 +274,7 @@ class PlatformTest(unittest.TestCase):
                     fp.write(b'[xxx%sxxx]' % data)
                     fp.flush()
 
-                # os.confstr() must not be used if executable is set
+                # os.confstr() must not be used ikiwa executable is set
                 self.assertEqual(platform.libc_ver(executable=filename),
                                  expected)
 
@@ -289,7 +289,7 @@ class PlatformTest(unittest.TestCase):
                          ('glibc', '1.23.4'))
 
     @support.cpython_only
-    def test__comparable_version(self):
+    eleza test__comparable_version(self):
         kutoka platform agiza _comparable_version as V
         self.assertEqual(V('1.2.3'), V('1.2.3'))
         self.assertLess(V('1.2.3'), V('1.2.10'))
@@ -325,7 +325,7 @@ class PlatformTest(unittest.TestCase):
         self.assertLess(V('0.960923'), V('2.2beta29'))
 
 
-    def test_macos(self):
+    eleza test_macos(self):
         self.addCleanup(self.clear_caches)
 
         uname = ('Darwin', 'hostname', '17.7.0',
@@ -353,5 +353,5 @@ class PlatformTest(unittest.TestCase):
                     self.assertEqual(platform.platform(), expected)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

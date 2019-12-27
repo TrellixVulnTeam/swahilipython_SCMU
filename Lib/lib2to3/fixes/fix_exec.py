@@ -14,7 +14,7 @@ kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Comma, Name, Call
 
 
-class FixExec(fixer_base.BaseFix):
+kundi FixExec(fixer_base.BaseFix):
     BM_compatible = True
 
     PATTERN = """
@@ -23,7 +23,7 @@ class FixExec(fixer_base.BaseFix):
     exec_stmt< 'exec' (not atom<'(' [any] ')'>) a=any >
     """
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         assert results
         syms = self.syms
         a = results["a"]
@@ -31,9 +31,9 @@ class FixExec(fixer_base.BaseFix):
         c = results.get("c")
         args = [a.clone()]
         args[0].prefix = ""
-        if b is not None:
+        ikiwa b is not None:
             args.extend([Comma(), b.clone()])
-        if c is not None:
+        ikiwa c is not None:
             args.extend([Comma(), c.clone()])
 
-        return Call(Name("exec"), args, prefix=node.prefix)
+        rudisha Call(Name("exec"), args, prefix=node.prefix)

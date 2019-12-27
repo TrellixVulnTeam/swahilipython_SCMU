@@ -6,21 +6,21 @@ agiza unittest
 kutoka .. agiza util
 
 
-class SpecLoaderMock:
+kundi SpecLoaderMock:
 
-    def find_spec(self, fullname, path=None, target=None):
-        return machinery.ModuleSpec(fullname, self)
+    eleza find_spec(self, fullname, path=None, target=None):
+        rudisha machinery.ModuleSpec(fullname, self)
 
-    def create_module(self, spec):
-        return None
+    eleza create_module(self, spec):
+        rudisha None
 
-    def exec_module(self, module):
+    eleza exec_module(self, module):
         pass
 
 
-class SpecLoaderAttributeTests:
+kundi SpecLoaderAttributeTests:
 
-    def test___loader__(self):
+    eleza test___loader__(self):
         loader = SpecLoaderMock()
         with util.uncache('blah'), util.import_state(meta_path=[loader]):
             module = self.__import__('blah')
@@ -32,19 +32,19 @@ class SpecLoaderAttributeTests:
  ) = util.test_both(SpecLoaderAttributeTests, __import__=util.__import__)
 
 
-class LoaderMock:
+kundi LoaderMock:
 
-    def find_module(self, fullname, path=None):
-        return self
+    eleza find_module(self, fullname, path=None):
+        rudisha self
 
-    def load_module(self, fullname):
+    eleza load_module(self, fullname):
         sys.modules[fullname] = self.module
-        return self.module
+        rudisha self.module
 
 
-class LoaderAttributeTests:
+kundi LoaderAttributeTests:
 
-    def test___loader___missing(self):
+    eleza test___loader___missing(self):
         module = types.ModuleType('blah')
         try:
             del module.__loader__
@@ -56,7 +56,7 @@ class LoaderAttributeTests:
             module = self.__import__('blah')
         self.assertEqual(loader, module.__loader__)
 
-    def test___loader___is_None(self):
+    eleza test___loader___is_None(self):
         module = types.ModuleType('blah')
         module.__loader__ = None
         loader = LoaderMock()
@@ -71,5 +71,5 @@ class LoaderAttributeTests:
  ) = util.test_both(LoaderAttributeTests, __import__=util.__import__)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

@@ -13,27 +13,27 @@ ISBIGENDIAN = sys.byteorder == "big"
 integer_codes = 'b', 'B', 'h', 'H', 'i', 'I', 'l', 'L', 'q', 'Q', 'n', 'N'
 byteorders = '', '@', '=', '<', '>', '!'
 
-def iter_integer_formats(byteorders=byteorders):
+eleza iter_integer_formats(byteorders=byteorders):
     for code in integer_codes:
         for byteorder in byteorders:
-            if (byteorder not in ('', '@') and code in ('n', 'N')):
+            ikiwa (byteorder not in ('', '@') and code in ('n', 'N')):
                 continue
             yield code, byteorder
 
-def string_reverse(s):
-    return s[::-1]
+eleza string_reverse(s):
+    rudisha s[::-1]
 
-def bigendian_to_native(value):
-    if ISBIGENDIAN:
-        return value
+eleza bigendian_to_native(value):
+    ikiwa ISBIGENDIAN:
+        rudisha value
     else:
-        return string_reverse(value)
+        rudisha string_reverse(value)
 
-class StructTest(unittest.TestCase):
-    def test_isbigendian(self):
+kundi StructTest(unittest.TestCase):
+    eleza test_isbigendian(self):
         self.assertEqual((struct.pack('=i', 1)[0] == 0), ISBIGENDIAN)
 
-    def test_consistence(self):
+    eleza test_consistence(self):
         self.assertRaises(struct.error, struct.calcsize, 'Z')
 
         sz = struct.calcsize('i')
@@ -54,7 +54,7 @@ class StructTest(unittest.TestCase):
         self.assertRaises(struct.error, struct.unpack, 'iii', s)
         self.assertRaises(struct.error, struct.unpack, 'i', s)
 
-    def test_transitiveness(self):
+    eleza test_transitiveness(self):
         c = b'a'
         b = 1
         h = 255
@@ -78,7 +78,7 @@ class StructTest(unittest.TestCase):
                 self.assertEqual(int(100 * dp), int(100 * d))
                 self.assertEqual(tp, t)
 
-    def test_new_features(self):
+    eleza test_new_features(self):
         # Test some of the new features in detail
         # (format, argument, big-endian result, little-endian result, asymmetric)
         tests = [
@@ -128,10 +128,10 @@ class StructTest(unittest.TestCase):
                 self.assertEqual(res, exp)
                 self.assertEqual(struct.calcsize(xfmt), len(res))
                 rev = struct.unpack(xfmt, res)[0]
-                if rev != arg:
+                ikiwa rev != arg:
                     self.assertTrue(asy)
 
-    def test_calcsize(self):
+    eleza test_calcsize(self):
         expected_size = {
             'b': 1, 'B': 1,
             'h': 2, 'H': 2,
@@ -165,26 +165,26 @@ class StructTest(unittest.TestCase):
         self.assertGreaterEqual(struct.calcsize('n'), struct.calcsize('i'))
         self.assertGreaterEqual(struct.calcsize('n'), struct.calcsize('P'))
 
-    def test_integers(self):
+    eleza test_integers(self):
         # Integer tests (bBhHiIlLqQnN).
         agiza binascii
 
-        class IntTester(unittest.TestCase):
-            def __init__(self, format):
+        kundi IntTester(unittest.TestCase):
+            eleza __init__(self, format):
                 super(IntTester, self).__init__(methodName='test_one')
                 self.format = format
                 self.code = format[-1]
                 self.byteorder = format[:-1]
-                if not self.byteorder in byteorders:
+                ikiwa not self.byteorder in byteorders:
                     raise ValueError("unrecognized packing byteorder: %s" %
                                      self.byteorder)
                 self.bytesize = struct.calcsize(format)
                 self.bitsize = self.bytesize * 8
-                if self.code in tuple('bhilqn'):
+                ikiwa self.code in tuple('bhilqn'):
                     self.signed = True
                     self.min_value = -(2**(self.bitsize-1))
                     self.max_value = 2**(self.bitsize-1) - 1
-                elif self.code in tuple('BHILQN'):
+                elikiwa self.code in tuple('BHILQN'):
                     self.signed = False
                     self.min_value = 0
                     self.max_value = 2**self.bitsize - 1
@@ -192,24 +192,24 @@ class StructTest(unittest.TestCase):
                     raise ValueError("unrecognized format code: %s" %
                                      self.code)
 
-            def test_one(self, x, pack=struct.pack,
+            eleza test_one(self, x, pack=struct.pack,
                                   unpack=struct.unpack,
                                   unhexlify=binascii.unhexlify):
 
                 format = self.format
-                if self.min_value <= x <= self.max_value:
+                ikiwa self.min_value <= x <= self.max_value:
                     expected = x
-                    if self.signed and x < 0:
+                    ikiwa self.signed and x < 0:
                         expected += 1 << self.bitsize
                     self.assertGreaterEqual(expected, 0)
                     expected = '%x' % expected
-                    if len(expected) & 1:
+                    ikiwa len(expected) & 1:
                         expected = "0" + expected
                     expected = expected.encode('ascii')
                     expected = unhexlify(expected)
                     expected = (b"\x00" * (self.bytesize - len(expected)) +
                                 expected)
-                    if (self.byteorder == '<' or
+                    ikiwa (self.byteorder == '<' or
                         self.byteorder in ('', '@', '=') and not ISBIGENDIAN):
                         expected = string_reverse(expected)
                     self.assertEqual(len(expected), self.bytesize)
@@ -230,7 +230,7 @@ class StructTest(unittest.TestCase):
                     self.assertRaises((OverflowError, ValueError, struct.error),
                                       pack, format, x)
 
-            def run(self):
+            eleza run(self):
                 kutoka random agiza randrange
 
                 # Create all interesting powers of 2.
@@ -259,28 +259,28 @@ class StructTest(unittest.TestCase):
                             self.test_one(x)
 
                 # Some error cases.
-                class NotAnInt:
-                    def __int__(self):
-                        return 42
+                kundi NotAnInt:
+                    eleza __int__(self):
+                        rudisha 42
 
                 # Objects with an '__index__' method should be allowed
                 # to pack as integers.  That is assuming the implemented
                 # '__index__' method returns an 'int'.
-                class Indexable(object):
-                    def __init__(self, value):
+                kundi Indexable(object):
+                    eleza __init__(self, value):
                         self._value = value
 
-                    def __index__(self):
-                        return self._value
+                    eleza __index__(self):
+                        rudisha self._value
 
                 # If the '__index__' method raises a type error, then
                 # '__int__' should be used with a deprecation warning.
-                class BadIndex(object):
-                    def __index__(self):
+                kundi BadIndex(object):
+                    eleza __index__(self):
                         raise TypeError
 
-                    def __int__(self):
-                        return 42
+                    eleza __int__(self):
+                        rudisha 42
 
                 self.assertRaises((TypeError, struct.error),
                                   struct.pack, self.format,
@@ -319,9 +319,9 @@ class StructTest(unittest.TestCase):
             t = IntTester(format)
             t.run()
 
-    def test_nN_code(self):
+    eleza test_nN_code(self):
         # n and N don't exist in standard sizes
-        def assertStructError(func, *args, **kwargs):
+        eleza assertStructError(func, *args, **kwargs):
             with self.assertRaises(struct.error) as cm:
                 func(*args, **kwargs)
             self.assertIn("bad char in struct format", str(cm.exception))
@@ -332,7 +332,7 @@ class StructTest(unittest.TestCase):
                 assertStructError(struct.pack, format, 0)
                 assertStructError(struct.unpack, format, b"")
 
-    def test_p_code(self):
+    eleza test_p_code(self):
         # Test p ("Pascal string") code.
         for code, input, expected, expectedback in [
                 ('p',  b'abc', b'\x00',            b''),
@@ -348,7 +348,7 @@ class StructTest(unittest.TestCase):
             (got,) = struct.unpack(code, got)
             self.assertEqual(got, expectedback)
 
-    def test_705836(self):
+    eleza test_705836(self):
         # SF bug 705836.  "<f" and ">f" had a severe rounding bug, where a carry
         # kutoka the low-order discarded bits could propagate into the exponent
         # field, causing the result to be wrong by a factor of 2.
@@ -381,7 +381,7 @@ class StructTest(unittest.TestCase):
         big = math.ldexp(big, 127 - 24)
         self.assertRaises(OverflowError, struct.pack, ">f", big)
 
-    def test_1530559(self):
+    eleza test_1530559(self):
         for code, byteorder in iter_integer_formats():
             format = byteorder + code
             self.assertRaises(struct.error, struct.pack, format, 1.0)
@@ -389,34 +389,34 @@ class StructTest(unittest.TestCase):
         self.assertRaises(struct.error, struct.pack, 'P', 1.0)
         self.assertRaises(struct.error, struct.pack, 'P', 1.5)
 
-    def test_unpack_from(self):
+    eleza test_unpack_kutoka(self):
         test_string = b'abcd01234'
         fmt = '4s'
         s = struct.Struct(fmt)
         for cls in (bytes, bytearray):
             data = cls(test_string)
-            self.assertEqual(s.unpack_from(data), (b'abcd',))
-            self.assertEqual(s.unpack_from(data, 2), (b'cd01',))
-            self.assertEqual(s.unpack_from(data, 4), (b'0123',))
+            self.assertEqual(s.unpack_kutoka(data), (b'abcd',))
+            self.assertEqual(s.unpack_kutoka(data, 2), (b'cd01',))
+            self.assertEqual(s.unpack_kutoka(data, 4), (b'0123',))
             for i in range(6):
-                self.assertEqual(s.unpack_from(data, i), (data[i:i+4],))
+                self.assertEqual(s.unpack_kutoka(data, i), (data[i:i+4],))
             for i in range(6, len(test_string) + 1):
-                self.assertRaises(struct.error, s.unpack_from, data, i)
+                self.assertRaises(struct.error, s.unpack_kutoka, data, i)
         for cls in (bytes, bytearray):
             data = cls(test_string)
-            self.assertEqual(struct.unpack_from(fmt, data), (b'abcd',))
-            self.assertEqual(struct.unpack_from(fmt, data, 2), (b'cd01',))
-            self.assertEqual(struct.unpack_from(fmt, data, 4), (b'0123',))
+            self.assertEqual(struct.unpack_kutoka(fmt, data), (b'abcd',))
+            self.assertEqual(struct.unpack_kutoka(fmt, data, 2), (b'cd01',))
+            self.assertEqual(struct.unpack_kutoka(fmt, data, 4), (b'0123',))
             for i in range(6):
-                self.assertEqual(struct.unpack_from(fmt, data, i), (data[i:i+4],))
+                self.assertEqual(struct.unpack_kutoka(fmt, data, i), (data[i:i+4],))
             for i in range(6, len(test_string) + 1):
-                self.assertRaises(struct.error, struct.unpack_from, fmt, data, i)
+                self.assertRaises(struct.error, struct.unpack_kutoka, fmt, data, i)
 
         # keyword arguments
-        self.assertEqual(s.unpack_from(buffer=test_string, offset=2),
+        self.assertEqual(s.unpack_kutoka(buffer=test_string, offset=2),
                          (b'cd01',))
 
-    def test_pack_into(self):
+    eleza test_pack_into(self):
         test_string = b'Reykjavik rocks, eow!'
         writable_buf = array.array('b', b' '*100)
         fmt = '21s'
@@ -424,13 +424,13 @@ class StructTest(unittest.TestCase):
 
         # Test without offset
         s.pack_into(writable_buf, 0, test_string)
-        from_buf = writable_buf.tobytes()[:len(test_string)]
-        self.assertEqual(from_buf, test_string)
+        kutoka_buf = writable_buf.tobytes()[:len(test_string)]
+        self.assertEqual(kutoka_buf, test_string)
 
         # Test with offset.
         s.pack_into(writable_buf, 10, test_string)
-        from_buf = writable_buf.tobytes()[:len(test_string)+10]
-        self.assertEqual(from_buf, test_string[:10] + test_string)
+        kutoka_buf = writable_buf.tobytes()[:len(test_string)+10]
+        self.assertEqual(kutoka_buf, test_string[:10] + test_string)
 
         # Go beyond boundaries.
         small_buf = array.array('b', b' '*10)
@@ -444,7 +444,7 @@ class StructTest(unittest.TestCase):
         self.assertRaises((TypeError, struct.error), struct.pack_into, b'', sb,
                           None)
 
-    def test_pack_into_fn(self):
+    eleza test_pack_into_fn(self):
         test_string = b'Reykjavik rocks, eow!'
         writable_buf = array.array('b', b' '*100)
         fmt = '21s'
@@ -452,13 +452,13 @@ class StructTest(unittest.TestCase):
 
         # Test without offset.
         pack_into(writable_buf, 0, test_string)
-        from_buf = writable_buf.tobytes()[:len(test_string)]
-        self.assertEqual(from_buf, test_string)
+        kutoka_buf = writable_buf.tobytes()[:len(test_string)]
+        self.assertEqual(kutoka_buf, test_string)
 
         # Test with offset.
         pack_into(writable_buf, 10, test_string)
-        from_buf = writable_buf.tobytes()[:len(test_string)+10]
-        self.assertEqual(from_buf, test_string[:10] + test_string)
+        kutoka_buf = writable_buf.tobytes()[:len(test_string)+10]
+        self.assertEqual(kutoka_buf, test_string[:10] + test_string)
 
         # Go beyond boundaries.
         small_buf = array.array('b', b' '*10)
@@ -467,7 +467,7 @@ class StructTest(unittest.TestCase):
         self.assertRaises((ValueError, struct.error), pack_into, small_buf, 2,
                           test_string)
 
-    def test_unpack_with_buffer(self):
+    eleza test_unpack_with_buffer(self):
         # SF bug 1563759: struct.unpack doesn't support buffer protocol objects
         data1 = array.array('B', b'\x12\x34\x56\x78')
         data2 = memoryview(b'\x12\x34\x56\x78') # XXX b'......XXXX......', 6, 4
@@ -475,9 +475,9 @@ class StructTest(unittest.TestCase):
             value, = struct.unpack('>I', data)
             self.assertEqual(value, 0x12345678)
 
-    def test_bool(self):
-        class ExplodingBool(object):
-            def __bool__(self):
+    eleza test_bool(self):
+        kundi ExplodingBool(object):
+            eleza __bool__(self):
                 raise OSError
         for prefix in tuple("<>!=")+('',):
             false = (), [], [], '', 0
@@ -503,7 +503,7 @@ class StructTest(unittest.TestCase):
 
             self.assertEqual(len(packed), struct.calcsize(prefix+'?'))
 
-            if len(packed) != 1:
+            ikiwa len(packed) != 1:
                 self.assertFalse(prefix, msg='encoded bool is not one byte: %r'
                                              %packed)
 
@@ -518,28 +518,28 @@ class StructTest(unittest.TestCase):
         for c in [b'\x01', b'\x7f', b'\xff', b'\x0f', b'\xf0']:
             self.assertTrue(struct.unpack('>?', c)[0])
 
-    def test_count_overflow(self):
+    eleza test_count_overflow(self):
         hugecount = '{}b'.format(sys.maxsize+1)
         self.assertRaises(struct.error, struct.calcsize, hugecount)
 
         hugecount2 = '{}b{}H'.format(sys.maxsize//2, sys.maxsize//2)
         self.assertRaises(struct.error, struct.calcsize, hugecount2)
 
-    def test_trailing_counter(self):
+    eleza test_trailing_counter(self):
         store = array.array('b', b' '*100)
 
         # format lists containing only count spec should result in an error
         self.assertRaises(struct.error, struct.pack, '12345')
         self.assertRaises(struct.error, struct.unpack, '12345', b'')
         self.assertRaises(struct.error, struct.pack_into, '12345', store, 0)
-        self.assertRaises(struct.error, struct.unpack_from, '12345', store, 0)
+        self.assertRaises(struct.error, struct.unpack_kutoka, '12345', store, 0)
 
         # Format lists with trailing count spec should result in an error
         self.assertRaises(struct.error, struct.pack, 'c12345', 'x')
         self.assertRaises(struct.error, struct.unpack, 'c12345', b'x')
         self.assertRaises(struct.error, struct.pack_into, 'c12345', store, 0,
                            'x')
-        self.assertRaises(struct.error, struct.unpack_from, 'c12345', store,
+        self.assertRaises(struct.error, struct.unpack_kutoka, 'c12345', store,
                            0)
 
         # Mixed format tests
@@ -548,16 +548,16 @@ class StructTest(unittest.TestCase):
                           b'spam and eggs')
         self.assertRaises(struct.error, struct.pack_into, '14s42', store, 0,
                           'spam and eggs')
-        self.assertRaises(struct.error, struct.unpack_from, '14s42', store, 0)
+        self.assertRaises(struct.error, struct.unpack_kutoka, '14s42', store, 0)
 
-    def test_Struct_reinitialization(self):
+    eleza test_Struct_reinitialization(self):
         # Issue 9422: there was a memory leak when reinitializing a
         # Struct instance.  This test can be used to detect the leak
         # when running with regrtest -L.
         s = struct.Struct('i')
         s.__init__('ii')
 
-    def check_sizeof(self, format_str, number_of_codes):
+    eleza check_sizeof(self, format_str, number_of_codes):
         # The size of 'PyStructObject'
         totalsize = support.calcobjsize('2n3P')
         # The size taken up by the 'formatcode' dynamic array
@@ -565,7 +565,7 @@ class StructTest(unittest.TestCase):
         support.check_sizeof(self, struct.Struct(format_str), totalsize)
 
     @support.cpython_only
-    def test__sizeof__(self):
+    eleza test__sizeof__(self):
         for code in integer_codes:
             self.check_sizeof(code, 1)
         self.check_sizeof('BHILfdspP', 9)
@@ -578,7 +578,7 @@ class StructTest(unittest.TestCase):
         self.check_sizeof('0s', 1)
         self.check_sizeof('0c', 0)
 
-    def test_boundary_error_message(self):
+    eleza test_boundary_error_message(self):
         regex1 = (
             r'pack_into requires a buffer of at least 6 '
             r'bytes for packing 1 bytes at offset 5 '
@@ -588,14 +588,14 @@ class StructTest(unittest.TestCase):
             struct.pack_into('b', bytearray(1), 5, 1)
 
         regex2 = (
-            r'unpack_from requires a buffer of at least 6 '
+            r'unpack_kutoka requires a buffer of at least 6 '
             r'bytes for unpacking 1 bytes at offset 5 '
             r'\(actual buffer size is 1\)'
         )
         with self.assertRaisesRegex(struct.error, regex2):
-            struct.unpack_from('b', bytearray(1), 5)
+            struct.unpack_kutoka('b', bytearray(1), 5)
 
-    def test_boundary_error_message_with_negative_offset(self):
+    eleza test_boundary_error_message_with_negative_offset(self):
         byte_list = bytearray(10)
         with self.assertRaisesRegex(
                 struct.error,
@@ -610,14 +610,14 @@ class StructTest(unittest.TestCase):
         with self.assertRaisesRegex(
                 struct.error,
                 r'not enough data to unpack 4 bytes at offset -2'):
-            struct.unpack_from('<I', byte_list, -2)
+            struct.unpack_kutoka('<I', byte_list, -2)
 
         with self.assertRaisesRegex(
                 struct.error,
                 "offset -11 out of range for 10-byte buffer"):
-            struct.unpack_from('<B', byte_list, -11)
+            struct.unpack_kutoka('<B', byte_list, -11)
 
-    def test_boundary_error_message_with_large_offset(self):
+    eleza test_boundary_error_message_with_large_offset(self):
         # Test overflows cause by large offset and value size (issue 30245)
         regex1 = (
             r'pack_into requires a buffer of at least ' + str(sys.maxsize + 4) +
@@ -628,14 +628,14 @@ class StructTest(unittest.TestCase):
             struct.pack_into('<I', bytearray(10), sys.maxsize, 1)
 
         regex2 = (
-            r'unpack_from requires a buffer of at least ' + str(sys.maxsize + 4) +
+            r'unpack_kutoka requires a buffer of at least ' + str(sys.maxsize + 4) +
             r' bytes for unpacking 4 bytes at offset ' + str(sys.maxsize) +
             r' \(actual buffer size is 10\)'
         )
         with self.assertRaisesRegex(struct.error, regex2):
-            struct.unpack_from('<I', bytearray(10), sys.maxsize)
+            struct.unpack_kutoka('<I', bytearray(10), sys.maxsize)
 
-    def test_issue29802(self):
+    eleza test_issue29802(self):
         # When the second argument of struct.unpack() was of wrong type
         # the Struct object was decrefed twice and the reference to
         # deallocated object was left in a cache.
@@ -644,7 +644,7 @@ class StructTest(unittest.TestCase):
         # Shouldn't crash.
         self.assertEqual(struct.unpack('b', b'a'), (b'a'[0],))
 
-    def test_format_attr(self):
+    eleza test_format_attr(self):
         s = struct.Struct('=i2H')
         self.assertEqual(s.format, '=i2H')
 
@@ -653,13 +653,13 @@ class StructTest(unittest.TestCase):
         self.assertEqual(s2.format, s.format)
 
 
-class UnpackIteratorTest(unittest.TestCase):
+kundi UnpackIteratorTest(unittest.TestCase):
     """
     Tests for iterative unpacking (struct.Struct.iter_unpack).
     """
 
-    def test_construct(self):
-        def _check_iterator(it):
+    eleza test_construct(self):
+        eleza _check_iterator(it):
             self.assertIsInstance(it, abc.Iterator)
             self.assertIsInstance(it, abc.Iterable)
         s = struct.Struct('>ibcp')
@@ -679,7 +679,7 @@ class UnpackIteratorTest(unittest.TestCase):
         with self.assertRaises(struct.error):
             s.iter_unpack(b"12")
 
-    def test_iterate(self):
+    eleza test_iterate(self):
         s = struct.Struct('>IB')
         b = bytes(range(1, 16))
         it = s.iter_unpack(b)
@@ -689,7 +689,7 @@ class UnpackIteratorTest(unittest.TestCase):
         self.assertRaises(StopIteration, next, it)
         self.assertRaises(StopIteration, next, it)
 
-    def test_arbitrary_buffer(self):
+    eleza test_arbitrary_buffer(self):
         s = struct.Struct('>IB')
         b = bytes(range(1, 11))
         it = s.iter_unpack(memoryview(b))
@@ -698,7 +698,7 @@ class UnpackIteratorTest(unittest.TestCase):
         self.assertRaises(StopIteration, next, it)
         self.assertRaises(StopIteration, next, it)
 
-    def test_length_hint(self):
+    eleza test_length_hint(self):
         lh = operator.length_hint
         s = struct.Struct('>IB')
         b = bytes(range(1, 16))
@@ -713,7 +713,7 @@ class UnpackIteratorTest(unittest.TestCase):
         self.assertRaises(StopIteration, next, it)
         self.assertEqual(lh(it), 0)
 
-    def test_module_func(self):
+    eleza test_module_func(self):
         # Sanity check for the global struct.iter_unpack()
         it = struct.iter_unpack('>IB', bytes(range(1, 11)))
         self.assertEqual(next(it), (0x01020304, 5))
@@ -721,7 +721,7 @@ class UnpackIteratorTest(unittest.TestCase):
         self.assertRaises(StopIteration, next, it)
         self.assertRaises(StopIteration, next, it)
 
-    def test_half_float(self):
+    eleza test_half_float(self):
         # Little-endian examples kutoka:
         # http://en.wikipedia.org/wiki/Half_precision_floating-point_format
         format_bits_float__cleanRoundtrip_list = [
@@ -743,7 +743,7 @@ class UnpackIteratorTest(unittest.TestCase):
             self.assertEqual(le_bits, struct.pack('<e', f))
             self.assertEqual(f, struct.unpack('>e', be_bits)[0])
             self.assertEqual(be_bits, struct.pack('>e', f))
-            if sys.byteorder == 'little':
+            ikiwa sys.byteorder == 'little':
                 self.assertEqual(f, struct.unpack('e', le_bits)[0])
                 self.assertEqual(le_bits, struct.pack('e', f))
             else:
@@ -819,12 +819,12 @@ class UnpackIteratorTest(unittest.TestCase):
 
         # Double rounding
         format_bits_float__doubleRoundingError_list = [
-            ('>e', b'\x67\xff', 0x1ffdffffff * 2**-26), # should be 2047, if double-rounded 64>32>16, becomes 2048
+            ('>e', b'\x67\xff', 0x1ffdffffff * 2**-26), # should be 2047, ikiwa double-rounded 64>32>16, becomes 2048
         ]
 
         for formatcode, bits, f in format_bits_float__doubleRoundingError_list:
             self.assertEqual(bits, struct.pack(formatcode, f))
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

@@ -45,7 +45,7 @@ the :mod:`glob` module.)
    are several versions of this module in the standard library.  The
    :mod:`os.path` module is always the path module suitable for the operating
    system Python is running on, and therefore usable for local paths.  However,
-   you can also import and use the individual modules if you want to manipulate
+   you can also agiza and use the individual modules if you want to manipulate
    a path that is *always* in one of the different formats.  They all have the
    same interface:
 
@@ -76,7 +76,7 @@ the :mod:`glob` module.)
    Return the base name of pathname *path*.  This is the second element of the
    pair returned by passing *path* to the function :func:`split`.  Note that
    the result of this function is different
-   from the Unix :program:`basename` program; where :program:`basename` for
+   kutoka the Unix :program:`basename` program; where :program:`basename` for
    ``'/foo/bar/'`` returns ``'bar'``, the :func:`basename` function returns an
    empty string (``''``).
 
@@ -175,7 +175,7 @@ the :mod:`glob` module.)
 
    On Windows, :envvar:`USERPROFILE` will be used if set, otherwise a combination
    of :envvar:`HOMEPATH` and :envvar:`HOMEDRIVE` will be used.  An initial
-   ``~user`` is handled by stripping the last directory component from the created
+   ``~user`` is handled by stripping the last directory component kutoka the created
    user path derived above.
 
    If the expansion fails or if the path does not begin with a tilde, the path is
@@ -293,7 +293,7 @@ the :mod:`glob` module.)
    and POSIX variants.  It is not able to reliably detect bind mounts on the
    same filesystem.  On Windows, a drive letter root and a share UNC are
    always mount points, and for any other path ``GetVolumePathName`` is called
-   to see if it is different from the input path.
+   to see if it is different kutoka the input path.
 
    .. versionadded:: 3.4
       Support for detecting non-root mount points on Windows.
@@ -309,7 +309,7 @@ the :mod:`glob` module.)
    directory separator (``os.sep``) following each non-empty part except the
    last, meaning that the result will only end in a separator if the last
    part is empty.  If a component is an absolute path, all previous
-   components are thrown away and joining continues from the absolute path
+   components are thrown away and joining continues kutoka the absolute path
    component.
 
    On Windows, the drive letter is not reset when an absolute path component
@@ -364,8 +364,8 @@ the :mod:`glob` module.)
 
 .. function:: relpath(path, start=os.curdir)
 
-   Return a relative filepath to *path* either from the current directory or
-   from an optional *start* directory.  This is a path computation:  the
+   Return a relative filepath to *path* either kutoka the current directory or
+   kutoka an optional *start* directory.  This is a path computation:  the
    filesystem is not accessed to confirm the existence or nature of *path* or
    *start*.
 
@@ -431,7 +431,7 @@ the :mod:`glob` module.)
    *tail* part will never contain a slash; if *path* ends in a slash, *tail*
    will be empty.  If there is no slash in *path*, *head* will be empty.  If
    *path* is empty, both *head* and *tail* are empty.  Trailing slashes are
-   stripped from *head* unless it is the root (one or more slashes only).  In
+   stripped kutoka *head* unless it is the root (one or more slashes only).  In
    all cases, ``join(head, tail)`` returns a path to the same location as *path*
    (but the strings may differ).  Also see the functions :func:`dirname` and
    :func:`basename`.

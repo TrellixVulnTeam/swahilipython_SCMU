@@ -15,23 +15,23 @@ kutoka idlelib agiza browser
 kutoka idlelib.tree agiza TreeNode
 
 
-class PathBrowserTest(unittest.TestCase):
+kundi PathBrowserTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         requires('gui')
         cls.root = Tk()
         cls.root.withdraw()
         cls.pb = pathbrowser.PathBrowser(cls.root, _utest=True)
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         cls.pb.close()
         cls.root.update_idletasks()
         cls.root.destroy()
         del cls.root, cls.pb
 
-    def test_init(self):
+    eleza test_init(self):
         pb = self.pb
         eq = self.assertEqual
         eq(pb.master, self.root)
@@ -39,17 +39,17 @@ class PathBrowserTest(unittest.TestCase):
         self.assertIsInstance(pb.node, TreeNode)
         self.assertIsNotNone(browser.file_open)
 
-    def test_settitle(self):
+    eleza test_settitle(self):
         pb = self.pb
         self.assertEqual(pb.top.title(), 'Path Browser')
         self.assertEqual(pb.top.iconname(), 'Path Browser')
 
-    def test_rootnode(self):
+    eleza test_rootnode(self):
         pb = self.pb
         rn = pb.rootnode()
         self.assertIsInstance(rn, pathbrowser.PathBrowserTreeItem)
 
-    def test_close(self):
+    eleza test_close(self):
         pb = self.pb
         pb.top.destroy = Func()
         pb.node.destroy = Func()
@@ -59,9 +59,9 @@ class PathBrowserTest(unittest.TestCase):
         del pb.top.destroy, pb.node.destroy
 
 
-class DirBrowserTreeItemTest(unittest.TestCase):
+kundi DirBrowserTreeItemTest(unittest.TestCase):
 
-    def test_DirBrowserTreeItem(self):
+    eleza test_DirBrowserTreeItem(self):
         # Issue16226 - make sure that getting a sublist works
         d = pathbrowser.DirBrowserTreeItem('')
         d.GetSubList()
@@ -72,9 +72,9 @@ class DirBrowserTreeItemTest(unittest.TestCase):
         self.assertEqual(d.ispackagedir(dir + '/Icons'), False)
 
 
-class PathBrowserTreeItemTest(unittest.TestCase):
+kundi PathBrowserTreeItemTest(unittest.TestCase):
 
-    def test_PathBrowserTreeItem(self):
+    eleza test_PathBrowserTreeItem(self):
         p = pathbrowser.PathBrowserTreeItem()
         self.assertEqual(p.GetText(), 'sys.path')
         sub = p.GetSubList()
@@ -82,5 +82,5 @@ class PathBrowserTreeItemTest(unittest.TestCase):
         self.assertEqual(type(sub[0]), pathbrowser.DirBrowserTreeItem)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2, exit=False)

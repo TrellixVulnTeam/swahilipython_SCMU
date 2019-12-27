@@ -9,13 +9,13 @@ kutoka test agiza support
 code = support.import_module('code')
 
 
-class TestInteractiveConsole(unittest.TestCase):
+kundi TestInteractiveConsole(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.console = code.InteractiveConsole()
         self.mock_sys()
 
-    def mock_sys(self):
+    eleza mock_sys(self):
         "Mock system environment for InteractiveConsole"
         # use exit stack to match patch context managers to addCleanup
         stack = ExitStack()
@@ -26,12 +26,12 @@ class TestInteractiveConsole(unittest.TestCase):
         self.stderr = stack.enter_context(mock.patch('code.sys.stderr'))
         prepatch = mock.patch('code.sys', wraps=code.sys, spec=code.sys)
         self.sysmod = stack.enter_context(prepatch)
-        if sys.excepthook is sys.__excepthook__:
+        ikiwa sys.excepthook is sys.__excepthook__:
             self.sysmod.excepthook = self.sysmod.__excepthook__
         del self.sysmod.ps1
         del self.sysmod.ps2
 
-    def test_ps1(self):
+    eleza test_ps1(self):
         self.infunc.side_effect = EOFError('Finished')
         self.console.interact()
         self.assertEqual(self.sysmod.ps1, '>>> ')
@@ -39,7 +39,7 @@ class TestInteractiveConsole(unittest.TestCase):
         self.console.interact()
         self.assertEqual(self.sysmod.ps1, 'custom1> ')
 
-    def test_ps2(self):
+    eleza test_ps2(self):
         self.infunc.side_effect = EOFError('Finished')
         self.console.interact()
         self.assertEqual(self.sysmod.ps2, '... ')
@@ -47,25 +47,25 @@ class TestInteractiveConsole(unittest.TestCase):
         self.console.interact()
         self.assertEqual(self.sysmod.ps1, 'custom2> ')
 
-    def test_console_stderr(self):
+    eleza test_console_stderr(self):
         self.infunc.side_effect = ["'antioch'", "", EOFError('Finished')]
         self.console.interact()
         for call in list(self.stdout.method_calls):
-            if 'antioch' in ''.join(call[1]):
+            ikiwa 'antioch' in ''.join(call[1]):
                 break
         else:
             raise AssertionError("no console stdout")
 
-    def test_syntax_error(self):
+    eleza test_syntax_error(self):
         self.infunc.side_effect = ["undefined", EOFError('Finished')]
         self.console.interact()
         for call in self.stderr.method_calls:
-            if 'NameError' in ''.join(call[1]):
+            ikiwa 'NameError' in ''.join(call[1]):
                 break
         else:
             raise AssertionError("No syntax error kutoka console")
 
-    def test_sysexcepthook(self):
+    eleza test_sysexcepthook(self):
         self.infunc.side_effect = ["raise ValueError('')",
                                     EOFError('Finished')]
         hook = mock.Mock()
@@ -73,7 +73,7 @@ class TestInteractiveConsole(unittest.TestCase):
         self.console.interact()
         self.assertTrue(hook.called)
 
-    def test_banner(self):
+    eleza test_banner(self):
         # with banner
         self.infunc.side_effect = EOFError('Finished')
         self.console.interact(banner='Foo')
@@ -87,7 +87,7 @@ class TestInteractiveConsole(unittest.TestCase):
         self.console.interact(banner='')
         self.assertEqual(len(self.stderr.method_calls), 2)
 
-    def test_exit_msg(self):
+    eleza test_exit_msg(self):
         # default exit message
         self.infunc.side_effect = EOFError('Finished')
         self.console.interact(banner='')
@@ -115,7 +115,7 @@ class TestInteractiveConsole(unittest.TestCase):
         self.assertEqual(err_msg, ['write', (expected,), {}])
 
 
-    def test_cause_tb(self):
+    eleza test_cause_tb(self):
         self.infunc.side_effect = ["raise ValueError('') kutoka AttributeError",
                                     EOFError('Finished')]
         self.console.interact()
@@ -131,7 +131,7 @@ class TestInteractiveConsole(unittest.TestCase):
         """)
         self.assertIn(expected, output)
 
-    def test_context_tb(self):
+    eleza test_context_tb(self):
         self.infunc.side_effect = ["try: ham\nexcept: eggs\n",
                                     EOFError('Finished')]
         self.console.interact()
@@ -150,5 +150,5 @@ class TestInteractiveConsole(unittest.TestCase):
         self.assertIn(expected, output)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

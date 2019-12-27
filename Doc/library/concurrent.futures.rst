@@ -25,7 +25,7 @@ Executor Objects
 
 .. class:: Executor
 
-   An abstract class that provides methods to execute calls asynchronously.  It
+   An abstract kundi that provides methods to execute calls asynchronously.  It
    should not be used directly, but through its concrete subclasses.
 
     .. method:: submit(fn, *args, **kwargs)
@@ -49,12 +49,12 @@ Executor Objects
 
        The returned iterator raises a :exc:`concurrent.futures.TimeoutError`
        if :meth:`~iterator.__next__` is called and the result isn't available
-       after *timeout* seconds from the original call to :meth:`Executor.map`.
+       after *timeout* seconds kutoka the original call to :meth:`Executor.map`.
        *timeout* can be an int or a float.  If *timeout* is not specified or
        ``None``, there is no limit to the wait time.
 
        If a *func* call raises an exception, then that exception will be
-       raised when its value is retrieved from the iterator.
+       raised when its value is retrieved kutoka the iterator.
 
        When using :class:`ProcessPoolExecutor`, this method chops *iterables*
        into a number of chunks which it submits to the pool as separate
@@ -87,7 +87,7 @@ Executor Objects
        (waiting as if :meth:`Executor.shutdown` were called with *wait* set to
        ``True``)::
 
-          import shutil
+          agiza shutil
           with ThreadPoolExecutor(max_workers=4) as e:
               e.submit(shutil.copy, 'src1.txt', 'dest1.txt')
               e.submit(shutil.copy, 'src2.txt', 'dest2.txt')
@@ -98,13 +98,13 @@ Executor Objects
 ThreadPoolExecutor
 ------------------
 
-:class:`ThreadPoolExecutor` is an :class:`Executor` subclass that uses a pool of
+:class:`ThreadPoolExecutor` is an :class:`Executor` subkundi that uses a pool of
 threads to execute calls asynchronously.
 
 Deadlocks can occur when the callable associated with a :class:`Future` waits on
 the results of another :class:`Future`.  For example::
 
-   import time
+   agiza time
    def wait_on_b():
        time.sleep(5)
        print(b.result())  # b will never complete because it is waiting on a.
@@ -134,7 +134,7 @@ And::
 
 .. class:: ThreadPoolExecutor(max_workers=None, thread_name_prefix='', initializer=None, initargs=())
 
-   An :class:`Executor` subclass that uses a pool of at most *max_workers*
+   An :class:`Executor` subkundi that uses a pool of at most *max_workers*
    threads to execute calls asynchronously.
 
    *initializer* is an optional callable that is called at the start of
@@ -175,8 +175,8 @@ ThreadPoolExecutor Example
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
-   import concurrent.futures
-   import urllib.request
+   agiza concurrent.futures
+   agiza urllib.request
 
    URLS = ['http://www.foxnews.com/',
            'http://www.cnn.com/',
@@ -206,7 +206,7 @@ ThreadPoolExecutor Example
 ProcessPoolExecutor
 -------------------
 
-The :class:`ProcessPoolExecutor` class is an :class:`Executor` subclass that
+The :class:`ProcessPoolExecutor` kundi is an :class:`Executor` subkundi that
 uses a pool of processes to execute calls asynchronously.
 :class:`ProcessPoolExecutor` uses the :mod:`multiprocessing` module, which
 allows it to side-step the :term:`Global Interpreter Lock` but also means that
@@ -215,12 +215,12 @@ only picklable objects can be executed and returned.
 The ``__main__`` module must be importable by worker subprocesses. This means
 that :class:`ProcessPoolExecutor` will not work in the interactive interpreter.
 
-Calling :class:`Executor` or :class:`Future` methods from a callable submitted
+Calling :class:`Executor` or :class:`Future` methods kutoka a callable submitted
 to a :class:`ProcessPoolExecutor` will result in deadlock.
 
 .. class:: ProcessPoolExecutor(max_workers=None, mp_context=None, initializer=None, initargs=())
 
-   An :class:`Executor` subclass that executes calls asynchronously using a pool
+   An :class:`Executor` subkundi that executes calls asynchronously using a pool
    of at most *max_workers* processes.  If *max_workers* is ``None`` or not
    given, it will default to the number of processors on the machine.
    If *max_workers* is lower or equal to ``0``, then a :exc:`ValueError`
@@ -258,8 +258,8 @@ ProcessPoolExecutor Example
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
-   import concurrent.futures
-   import math
+   agiza concurrent.futures
+   agiza math
 
    PRIMES = [
        112272535095293,
@@ -295,7 +295,7 @@ ProcessPoolExecutor Example
 Future Objects
 --------------
 
-The :class:`Future` class encapsulates the asynchronous execution of a callable.
+The :class:`Future` kundi encapsulates the asynchronous execution of a callable.
 :class:`Future` instances are created by :meth:`Executor.submit`.
 
 .. class:: Future
@@ -461,7 +461,7 @@ Module Functions
    are duplicated will be returned once. Any futures that completed before
    :func:`as_completed` is called will be yielded first.  The returned iterator
    raises a :exc:`concurrent.futures.TimeoutError` if :meth:`~iterator.__next__`
-   is called and the result isn't available after *timeout* seconds from the
+   is called and the result isn't available after *timeout* seconds kutoka the
    original call to :func:`as_completed`.  *timeout* can be an int or float. If
    *timeout* is not specified or ``None``, there is no limit to the wait time.
 
@@ -488,7 +488,7 @@ Exception classes
 
 .. exception:: BrokenExecutor
 
-   Derived from :exc:`RuntimeError`, this exception class is raised
+   Derived kutoka :exc:`RuntimeError`, this exception kundi is raised
    when an executor is broken for some reason, and cannot be used
    to submit or execute new tasks.
 
@@ -505,8 +505,8 @@ Exception classes
 
 .. exception:: BrokenThreadPool
 
-   Derived from :exc:`~concurrent.futures.BrokenExecutor`, this exception
-   class is raised when one of the workers of a :class:`ThreadPoolExecutor`
+   Derived kutoka :exc:`~concurrent.futures.BrokenExecutor`, this exception
+   kundi is raised when one of the workers of a :class:`ThreadPoolExecutor`
    has failed initializing.
 
    .. versionadded:: 3.7
@@ -515,9 +515,9 @@ Exception classes
 
 .. exception:: BrokenProcessPool
 
-   Derived from :exc:`~concurrent.futures.BrokenExecutor` (formerly
-   :exc:`RuntimeError`), this exception class is raised when one of the
+   Derived kutoka :exc:`~concurrent.futures.BrokenExecutor` (formerly
+   :exc:`RuntimeError`), this exception kundi is raised when one of the
    workers of a :class:`ProcessPoolExecutor` has terminated in a non-clean
-   fashion (for example, if it was killed from the outside).
+   fashion (for example, if it was killed kutoka the outside).
 
    .. versionadded:: 3.3

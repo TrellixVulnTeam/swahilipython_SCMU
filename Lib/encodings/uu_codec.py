@@ -7,7 +7,7 @@ adapted from uu.py which was written by Lance Ellinghouse and
 modified by Jack Jansen and Fredrik Lundh.
 """
 
-import codecs
+agiza codecs
 import binascii
 from io import BytesIO
 

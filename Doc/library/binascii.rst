@@ -157,10 +157,10 @@ The :mod:`binascii` module defines the following functions:
 
    If *sep* is specified, it must be a single character str or bytes object.
    It will be inserted in the output after every *bytes_per_sep* input bytes.
-   Separator placement is counted from the right end of the output by default,
-   if you wish to count from the left, supply a negative *bytes_per_sep* value.
+   Separator placement is counted kutoka the right end of the output by default,
+   if you wish to count kutoka the left, supply a negative *bytes_per_sep* value.
 
-      >>> import binascii
+      >>> agiza binascii
       >>> binascii.b2a_hex(b'\xb9\x01\xef')
       b'b901ef'
       >>> binascii.hexlify(b'\xb9\x01\xef', '-')
@@ -183,7 +183,7 @@ The :mod:`binascii` module defines the following functions:
 
    Similar functionality (accepting only text string arguments, but more
    liberal towards whitespace) is also accessible using the
-   :meth:`bytes.fromhex` class method.
+   :meth:`bytes.kutokahex` kundi method.
 
 .. exception:: Error
 

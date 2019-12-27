@@ -11,8 +11,8 @@ agiza _pyio as pyio # Python implementation.
 lengths = list(range(1, 257)) + [512, 1000, 1024, 2048, 4096, 8192, 10000,
                                  16384, 32768, 65536, 1000000]
 
-class BufferSizeTest:
-    def try_one(self, s):
+kundi BufferSizeTest:
+    eleza try_one(self, s):
         # Write s + "\n" + s to file, then open it and ensure that successive
         # .readline()s deliver what we wrote.
 
@@ -39,7 +39,7 @@ class BufferSizeTest:
         finally:
             support.unlink(support.TESTFN)
 
-    def drive_one(self, pattern):
+    eleza drive_one(self, pattern):
         for length in lengths:
             # Repeat string 'pattern' as often as needed to reach total length
             # 'length'.  Then call try_one with that string, a string one larger
@@ -53,21 +53,21 @@ class BufferSizeTest:
             self.try_one(teststring + b"x")
             self.try_one(teststring[:-1])
 
-    def test_primepat(self):
+    eleza test_primepat(self):
         # A pattern with prime length, to avoid simple relationships with
         # stdio buffer sizes.
         self.drive_one(b"1234567890\00\01\02\03\04\05\06")
 
-    def test_nullpat(self):
+    eleza test_nullpat(self):
         self.drive_one(b'\0' * 1000)
 
 
-class CBufferSizeTest(BufferSizeTest, unittest.TestCase):
+kundi CBufferSizeTest(BufferSizeTest, unittest.TestCase):
     open = io.open
 
-class PyBufferSizeTest(BufferSizeTest, unittest.TestCase):
+kundi PyBufferSizeTest(BufferSizeTest, unittest.TestCase):
     open = staticmethod(pyio.open)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

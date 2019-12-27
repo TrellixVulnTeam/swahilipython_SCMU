@@ -23,7 +23,7 @@ is an installation option, other places are possible; check with your local
 Python guru or system administrator.  (E.g., :file:`/usr/local/python` is a
 popular alternative location.)
 
-On Windows machines where you have installed from the :ref:`Microsoft Store
+On Windows machines where you have installed kutoka the :ref:`Microsoft Store
 <windows-store>`, the :file:`python3.8` command will be available. If you have
 the :ref:`py.exe launcher <launcher>` installed, you can use the :file:`py`
 command. See :ref:`setting-envvars` for other ways to launch Python.
@@ -41,12 +41,12 @@ typing :kbd:`Control-P` to the first Python prompt you get.  If it beeps, you
 have command line editing; see Appendix :ref:`tut-interacting` for an
 introduction to the keys.  If nothing appears to happen, or if ``^P`` is
 echoed, command line editing isn't available; you'll only be able to use
-backspace to remove characters from the current line.
+backspace to remove characters kutoka the current line.
 
 The interpreter operates somewhat like the Unix shell: when called with standard
 input connected to a tty device, it reads and executes commands interactively;
 when called with a file name argument or with a file as standard input, it reads
-and executes a *script* from that file.
+and executes a *script* kutoka that file.
 
 A second way of starting the interpreter is ``python -c command [arg] ...``,
 which executes the statement(s) in *command*, analogous to the shell's
@@ -88,7 +88,7 @@ left in ``sys.argv`` for  the command or module to handle.
 Interactive Mode
 ----------------
 
-When commands are read from a tty, the interpreter is said to be in *interactive
+When commands are read kutoka a tty, the interpreter is said to be in *interactive
 mode*.  In this mode it prompts for the next command with the *primary prompt*,
 usually three greater-than signs (``>>>``); for continuation lines it prompts
 with the *secondary prompt*, by default three dots (``...``). The interpreter

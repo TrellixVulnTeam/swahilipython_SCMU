@@ -8,12 +8,12 @@ agiza unittest
 
 kutoka collections agiza defaultdict
 
-def foobar():
-    return list
+eleza foobar():
+    rudisha list
 
-class TestDefaultDict(unittest.TestCase):
+kundi TestDefaultDict(unittest.TestCase):
 
-    def test_basic(self):
+    eleza test_basic(self):
         d1 = defaultdict()
         self.assertEqual(d1.default_factory, None)
         d1.default_factory = list
@@ -49,13 +49,13 @@ class TestDefaultDict(unittest.TestCase):
             self.fail("d2[15] didn't raise KeyError")
         self.assertRaises(TypeError, defaultdict, 1)
 
-    def test_missing(self):
+    eleza test_missing(self):
         d1 = defaultdict()
         self.assertRaises(KeyError, d1.__missing__, 42)
         d1.default_factory = list
         self.assertEqual(d1.__missing__(42), [])
 
-    def test_repr(self):
+    eleza test_repr(self):
         d1 = defaultdict()
         self.assertEqual(d1.default_factory, None)
         self.assertEqual(repr(d1), "defaultdict(None, {})")
@@ -65,16 +65,16 @@ class TestDefaultDict(unittest.TestCase):
         d2 = defaultdict(int)
         self.assertEqual(d2.default_factory, int)
         d2[12] = 42
-        self.assertEqual(repr(d2), "defaultdict(<class 'int'>, {12: 42})")
-        def foo(): return 43
+        self.assertEqual(repr(d2), "defaultdict(<kundi 'int'>, {12: 42})")
+        eleza foo(): rudisha 43
         d3 = defaultdict(foo)
         self.assertTrue(d3.default_factory is foo)
         d3[13]
         self.assertEqual(repr(d3), "defaultdict(%s, {13: 43})" % repr(foo))
 
-    def test_print(self):
+    eleza test_andika(self):
         d1 = defaultdict()
-        def foo(): return 42
+        eleza foo(): rudisha 42
         d2 = defaultdict(foo, {1: 2})
         # NOTE: We can't use tempfile.[Named]TemporaryFile since this
         # code must exercise the tp_print C code, which only gets
@@ -83,8 +83,8 @@ class TestDefaultDict(unittest.TestCase):
         try:
             f = open(tfn, "w+")
             try:
-                print(d1, file=f)
-                print(d2, file=f)
+                andika(d1, file=f)
+                andika(d2, file=f)
                 f.seek(0)
                 self.assertEqual(f.readline(), repr(d1) + "\n")
                 self.assertEqual(f.readline(), repr(d2) + "\n")
@@ -93,7 +93,7 @@ class TestDefaultDict(unittest.TestCase):
         finally:
             os.remove(tfn)
 
-    def test_copy(self):
+    eleza test_copy(self):
         d1 = defaultdict()
         d2 = d1.copy()
         self.assertEqual(type(d2), defaultdict)
@@ -118,7 +118,7 @@ class TestDefaultDict(unittest.TestCase):
         e = d.copy()
         self.assertEqual(e['a'], 42)
 
-    def test_shallow_copy(self):
+    eleza test_shallow_copy(self):
         d1 = defaultdict(foobar, {1: 1})
         d2 = copy.copy(d1)
         self.assertEqual(d2.default_factory, foobar)
@@ -128,7 +128,7 @@ class TestDefaultDict(unittest.TestCase):
         self.assertEqual(d2.default_factory, list)
         self.assertEqual(d2, d1)
 
-    def test_deep_copy(self):
+    eleza test_deep_copy(self):
         d1 = defaultdict(foobar, {1: [1]})
         d2 = copy.deepcopy(d1)
         self.assertEqual(d2.default_factory, foobar)
@@ -139,7 +139,7 @@ class TestDefaultDict(unittest.TestCase):
         self.assertEqual(d2.default_factory, list)
         self.assertEqual(d2, d1)
 
-    def test_keyerror_without_factory(self):
+    eleza test_keyerror_without_factory(self):
         d1 = defaultdict()
         try:
             d1[(1,)]
@@ -148,34 +148,34 @@ class TestDefaultDict(unittest.TestCase):
         else:
             self.fail("expected KeyError")
 
-    def test_recursive_repr(self):
+    eleza test_recursive_repr(self):
         # Issue2045: stack overflow when default_factory is a bound method
-        class sub(defaultdict):
-            def __init__(self):
+        kundi sub(defaultdict):
+            eleza __init__(self):
                 self.default_factory = self._factory
-            def _factory(self):
-                return []
+            eleza _factory(self):
+                rudisha []
         d = sub()
         self.assertRegex(repr(d),
             r"sub\(<bound method .*sub\._factory "
             r"of sub\(\.\.\., \{\}\)>, \{\}\)")
 
-        # NOTE: printing a subclass of a builtin type does not call its
+        # NOTE: printing a subkundi of a builtin type does not call its
         # tp_print slot. So this part is essentially the same test as above.
         tfn = tempfile.mktemp()
         try:
             f = open(tfn, "w+")
             try:
-                print(d, file=f)
+                andika(d, file=f)
             finally:
                 f.close()
         finally:
             os.remove(tfn)
 
-    def test_callable_arg(self):
+    eleza test_callable_arg(self):
         self.assertRaises(TypeError, defaultdict, {})
 
-    def test_pickling(self):
+    eleza test_pickling(self):
         d = defaultdict(int)
         d[1]
         for proto in range(pickle.HIGHEST_PROTOCOL + 1):
@@ -183,5 +183,5 @@ class TestDefaultDict(unittest.TestCase):
             o = pickle.loads(s)
             self.assertEqual(d, o)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

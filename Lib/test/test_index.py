@@ -3,26 +3,26 @@ kutoka test agiza support
 agiza operator
 maxsize = support.MAX_Py_ssize_t
 
-class newstyle:
-    def __index__(self):
-        return self.ind
+kundi newstyle:
+    eleza __index__(self):
+        rudisha self.ind
 
-class TrapInt(int):
-    def __index__(self):
-        return int(self)
+kundi TrapInt(int):
+    eleza __index__(self):
+        rudisha int(self)
 
-class BaseTestCase(unittest.TestCase):
-    def setUp(self):
+kundi BaseTestCase(unittest.TestCase):
+    eleza setUp(self):
         self.o = newstyle()
         self.n = newstyle()
 
-    def test_basic(self):
+    eleza test_basic(self):
         self.o.ind = -2
         self.n.ind = 2
         self.assertEqual(operator.index(self.o), -2)
         self.assertEqual(operator.index(self.n), 2)
 
-    def test_slice(self):
+    eleza test_slice(self):
         self.o.ind = 1
         self.n.ind = 2
         slc = slice(self.o, self.o, self.o)
@@ -32,7 +32,7 @@ class BaseTestCase(unittest.TestCase):
         check_slc = slice(2, 2, 2)
         self.assertEqual(slc.indices(self.n), check_slc.indices(2))
 
-    def test_wrappers(self):
+    eleza test_wrappers(self):
         self.o.ind = 4
         self.n.ind = 5
         self.assertEqual(6 .__index__(), 6)
@@ -42,12 +42,12 @@ class BaseTestCase(unittest.TestCase):
         self.assertEqual(True.__index__(), 1)
         self.assertEqual(False.__index__(), 0)
 
-    def test_subclasses(self):
+    eleza test_subclasses(self):
         r = list(range(10))
         self.assertEqual(r[TrapInt(5):TrapInt(10)], r[5:10])
         self.assertEqual(slice(TrapInt()).indices(0), (0,0,1))
 
-    def test_error(self):
+    eleza test_error(self):
         self.o.ind = 'dumb'
         self.n.ind = 'bad'
         self.assertRaises(TypeError, operator.index, self.o)
@@ -55,12 +55,12 @@ class BaseTestCase(unittest.TestCase):
         self.assertRaises(TypeError, slice(self.o).indices, 0)
         self.assertRaises(TypeError, slice(self.n).indices, 0)
 
-    def test_int_subclass_with_index(self):
+    eleza test_int_subclass_with_index(self):
         # __index__ should be used when computing indices, even for int
         # subclasses.  See issue #17576.
-        class MyInt(int):
-            def __index__(self):
-                return int(str(self)) + 1
+        kundi MyInt(int):
+            eleza __index__(self):
+                rudisha int(str(self)) + 1
 
         my_int = MyInt(7)
         direct_index = my_int.__index__()
@@ -71,14 +71,14 @@ class BaseTestCase(unittest.TestCase):
         self.assertIs(type(direct_index), int)
         #self.assertIs(type(operator_index), int)
 
-    def test_index_returns_int_subclass(self):
-        class BadInt:
-            def __index__(self):
-                return True
+    eleza test_index_returns_int_subclass(self):
+        kundi BadInt:
+            eleza __index__(self):
+                rudisha True
 
-        class BadInt2(int):
-            def __index__(self):
-                return True
+        kundi BadInt2(int):
+            eleza __index__(self):
+                rudisha True
 
         bad_int = BadInt()
         with self.assertWarns(DeprecationWarning):
@@ -90,22 +90,22 @@ class BaseTestCase(unittest.TestCase):
         self.assertEqual(n, 0)
 
 
-class SeqTestCase:
+kundi SeqTestCase:
     # This test case isn't run directly. It just defines common tests
     # to the different sequence types below
-    def setUp(self):
+    eleza setUp(self):
         self.o = newstyle()
         self.n = newstyle()
         self.o2 = newstyle()
         self.n2 = newstyle()
 
-    def test_index(self):
+    eleza test_index(self):
         self.o.ind = -2
         self.n.ind = 2
         self.assertEqual(self.seq[self.n], self.seq[2])
         self.assertEqual(self.seq[self.o], self.seq[-2])
 
-    def test_slice(self):
+    eleza test_slice(self):
         self.o.ind = 1
         self.o2.ind = 3
         self.n.ind = 2
@@ -113,7 +113,7 @@ class SeqTestCase:
         self.assertEqual(self.seq[self.o:self.o2], self.seq[1:3])
         self.assertEqual(self.seq[self.n:self.n2], self.seq[2:4])
 
-    def test_slice_bug7532(self):
+    eleza test_slice_bug7532(self):
         seqlen = len(self.seq)
         self.o.ind = int(seqlen * 1.5)
         self.n.ind = seqlen + 2
@@ -128,7 +128,7 @@ class SeqTestCase:
         self.assertEqual(self.seq[self.n2:], self.seq)
         self.assertEqual(self.seq[:self.n2], self.seq[0:0])
 
-    def test_repeat(self):
+    eleza test_repeat(self):
         self.o.ind = 3
         self.n.ind = 2
         self.assertEqual(self.seq * self.o, self.seq * 3)
@@ -136,7 +136,7 @@ class SeqTestCase:
         self.assertEqual(self.o * self.seq, self.seq * 3)
         self.assertEqual(self.n * self.seq, self.seq * 2)
 
-    def test_wrappers(self):
+    eleza test_wrappers(self):
         self.o.ind = 4
         self.n.ind = 5
         self.assertEqual(self.seq.__getitem__(self.o), self.seq[4])
@@ -146,10 +146,10 @@ class SeqTestCase:
         self.assertEqual(self.seq.__mul__(self.n), self.seq * 5)
         self.assertEqual(self.seq.__rmul__(self.n), self.seq * 5)
 
-    def test_subclasses(self):
+    eleza test_subclasses(self):
         self.assertEqual(self.seq[TrapInt()], self.seq[0])
 
-    def test_error(self):
+    eleza test_error(self):
         self.o.ind = 'dumb'
         self.n.ind = 'bad'
         indexobj = lambda x, obj: obj.seq[x]
@@ -160,10 +160,10 @@ class SeqTestCase:
         self.assertRaises(TypeError, sliceobj, self.n, self)
 
 
-class ListTestCase(SeqTestCase, unittest.TestCase):
+kundi ListTestCase(SeqTestCase, unittest.TestCase):
     seq = [0,10,20,30,40,50]
 
-    def test_setdelitem(self):
+    eleza test_setdelitem(self):
         self.o.ind = -2
         self.n.ind = 2
         lst = list('ab!cdefghi!j')
@@ -179,7 +179,7 @@ class ListTestCase(SeqTestCase, unittest.TestCase):
         lst.__delitem__(self.n)
         self.assertEqual(lst, [5, 6, 8, 9, 10, 11])
 
-    def test_inplace_repeat(self):
+    eleza test_inplace_repeat(self):
         self.o.ind = 2
         self.n.ind = 3
         lst = [6, 4]
@@ -194,70 +194,70 @@ class ListTestCase(SeqTestCase, unittest.TestCase):
         self.assertEqual(lst, [5, 6, 7, 8, 9, 11] * 3)
 
 
-class NewSeq:
+kundi NewSeq:
 
-    def __init__(self, iterable):
+    eleza __init__(self, iterable):
         self._list = list(iterable)
 
-    def __repr__(self):
-        return repr(self._list)
+    eleza __repr__(self):
+        rudisha repr(self._list)
 
-    def __eq__(self, other):
-        return self._list == other
+    eleza __eq__(self, other):
+        rudisha self._list == other
 
-    def __len__(self):
-        return len(self._list)
+    eleza __len__(self):
+        rudisha len(self._list)
 
-    def __mul__(self, n):
-        return self.__class__(self._list*n)
+    eleza __mul__(self, n):
+        rudisha self.__class__(self._list*n)
     __rmul__ = __mul__
 
-    def __getitem__(self, index):
-        return self._list[index]
+    eleza __getitem__(self, index):
+        rudisha self._list[index]
 
 
-class TupleTestCase(SeqTestCase, unittest.TestCase):
+kundi TupleTestCase(SeqTestCase, unittest.TestCase):
     seq = (0,10,20,30,40,50)
 
-class ByteArrayTestCase(SeqTestCase, unittest.TestCase):
+kundi ByteArrayTestCase(SeqTestCase, unittest.TestCase):
     seq = bytearray(b"this is a test")
 
-class BytesTestCase(SeqTestCase, unittest.TestCase):
+kundi BytesTestCase(SeqTestCase, unittest.TestCase):
     seq = b"this is a test"
 
-class StringTestCase(SeqTestCase, unittest.TestCase):
+kundi StringTestCase(SeqTestCase, unittest.TestCase):
     seq = "this is a test"
 
-class NewSeqTestCase(SeqTestCase, unittest.TestCase):
+kundi NewSeqTestCase(SeqTestCase, unittest.TestCase):
     seq = NewSeq((0,10,20,30,40,50))
 
 
 
-class RangeTestCase(unittest.TestCase):
+kundi RangeTestCase(unittest.TestCase):
 
-    def test_range(self):
+    eleza test_range(self):
         n = newstyle()
         n.ind = 5
         self.assertEqual(range(1, 20)[n], 6)
         self.assertEqual(range(1, 20).__getitem__(n), 6)
 
 
-class OverflowTestCase(unittest.TestCase):
+kundi OverflowTestCase(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.pos = 2**100
         self.neg = -self.pos
 
-    def test_large_longs(self):
+    eleza test_large_longs(self):
         self.assertEqual(self.pos.__index__(), self.pos)
         self.assertEqual(self.neg.__index__(), self.neg)
 
-    def test_getitem(self):
-        class GetItem:
-            def __len__(self):
+    eleza test_getitem(self):
+        kundi GetItem:
+            eleza __len__(self):
                 assert False, "__len__ should not be invoked"
-            def __getitem__(self, key):
-                return key
+            eleza __getitem__(self, key):
+                rudisha key
         x = GetItem()
         self.assertEqual(x[self.pos], self.pos)
         self.assertEqual(x[self.neg], self.neg)
@@ -266,10 +266,10 @@ class OverflowTestCase(unittest.TestCase):
         self.assertEqual(x[self.neg:self.pos:1].indices(maxsize),
                          (0, maxsize, 1))
 
-    def test_sequence_repeat(self):
+    eleza test_sequence_repeat(self):
         self.assertRaises(OverflowError, lambda: "a" * self.pos)
         self.assertRaises(OverflowError, lambda: "a" * self.neg)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

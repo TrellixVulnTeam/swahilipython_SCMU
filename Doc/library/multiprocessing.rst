@@ -25,10 +25,10 @@ analogs in the :mod:`threading` module.  A prime example of this is the
 parallelizing the execution of a function across multiple input values,
 distributing the input data across processes (data parallelism).  The following
 example demonstrates the common practice of defining such functions in a module
-so that child processes can successfully import that module.  This basic example
+so that child processes can successfully agiza that module.  This basic example
 of data parallelism using :class:`~multiprocessing.pool.Pool`, ::
 
-   from multiprocessing import Pool
+   kutoka multiprocessing agiza Pool
 
    def f(x):
        return x*x
@@ -50,7 +50,7 @@ object and then calling its :meth:`~Process.start` method.  :class:`Process`
 follows the API of :class:`threading.Thread`.  A trivial example of a
 multiprocess program is ::
 
-   from multiprocessing import Process
+   kutoka multiprocessing agiza Process
 
    def f(name):
        print('hello', name)
@@ -62,8 +62,8 @@ multiprocess program is ::
 
 To show the individual process IDs involved, here is an expanded example::
 
-    from multiprocessing import Process
-    import os
+    kutoka multiprocessing agiza Process
+    agiza os
 
     def info(title):
         print(title)
@@ -98,7 +98,7 @@ to start a process.  These *start methods* are
     The parent process starts a fresh python interpreter process.  The
     child process will only inherit those resources necessary to run
     the process objects :meth:`~Process.run` method.  In particular,
-    unnecessary file descriptors and handles from the parent process
+    unnecessary file descriptors and handles kutoka the parent process
     will not be inherited.  Starting a process using this method is
     rather slow compared to using *fork* or *forkserver*.
 
@@ -153,7 +153,7 @@ To select a start method you use the :func:`set_start_method` in
 the ``if __name__ == '__main__'`` clause of the main module.  For
 example::
 
-       import multiprocessing as mp
+       agiza multiprocessing as mp
 
        def foo(q):
            q.put('hello')
@@ -174,7 +174,7 @@ object.  Context objects have the same API as the multiprocessing
 module, and allow one to use multiple start methods in the same
 program. ::
 
-       import multiprocessing as mp
+       agiza multiprocessing as mp
 
        def foo(q):
            q.put('hello')
@@ -212,10 +212,10 @@ processes:
 
 **Queues**
 
-   The :class:`Queue` class is a near clone of :class:`queue.Queue`.  For
+   The :class:`Queue` kundi is a near clone of :class:`queue.Queue`.  For
    example::
 
-      from multiprocessing import Process, Queue
+      kutoka multiprocessing agiza Process, Queue
 
       def f(q):
           q.put([42, None, 'hello'])
@@ -234,7 +234,7 @@ processes:
    The :func:`Pipe` function returns a pair of connection objects connected by a
    pipe which by default is duplex (two-way).  For example::
 
-      from multiprocessing import Process, Pipe
+      kutoka multiprocessing agiza Process, Pipe
 
       def f(conn):
           conn.send([42, None, 'hello'])
@@ -250,9 +250,9 @@ processes:
    The two connection objects returned by :func:`Pipe` represent the two ends of
    the pipe.  Each connection object has :meth:`~Connection.send` and
    :meth:`~Connection.recv` methods (among others).  Note that data in a pipe
-   may become corrupted if two processes (or threads) try to read from or write
+   may become corrupted if two processes (or threads) try to read kutoka or write
    to the *same* end of the pipe at the same time.  Of course there is no risk
-   of corruption from processes using different ends of the pipe at the same
+   of corruption kutoka processes using different ends of the pipe at the same
    time.
 
 
@@ -260,10 +260,10 @@ Synchronization between processes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :mod:`multiprocessing` contains equivalents of all the synchronization
-primitives from :mod:`threading`.  For instance one can use a lock to ensure
+primitives kutoka :mod:`threading`.  For instance one can use a lock to ensure
 that only one process prints to standard output at a time::
 
-   from multiprocessing import Process, Lock
+   kutoka multiprocessing agiza Process, Lock
 
    def f(l, i):
        l.acquire()
@@ -278,7 +278,7 @@ that only one process prints to standard output at a time::
        for num in range(10):
            Process(target=f, args=(lock, num)).start()
 
-Without using the lock output from the different processes is liable to get all
+Without using the lock output kutoka the different processes is liable to get all
 mixed up.
 
 
@@ -297,7 +297,7 @@ However, if you really do need to use some shared data then
    Data can be stored in a shared memory map using :class:`Value` or
    :class:`Array`.  For example, the following code ::
 
-      from multiprocessing import Process, Value, Array
+      kutoka multiprocessing agiza Process, Value, Array
 
       def f(n, a):
           n.value = 3.1415927
@@ -327,7 +327,7 @@ However, if you really do need to use some shared data then
 
    For more flexibility in using shared memory one can use the
    :mod:`multiprocessing.sharedctypes` module which supports the creation of
-   arbitrary ctypes objects allocated from shared memory.
+   arbitrary ctypes objects allocated kutoka shared memory.
 
 **Server process**
 
@@ -341,7 +341,7 @@ However, if you really do need to use some shared data then
    :class:`Condition`, :class:`Event`, :class:`Barrier`,
    :class:`Queue`, :class:`Value` and :class:`Array`.  For example, ::
 
-      from multiprocessing import Process, Manager
+      kutoka multiprocessing agiza Process, Manager
 
       def f(d, l):
           d[1] = '1'
@@ -375,15 +375,15 @@ However, if you really do need to use some shared data then
 Using a pool of workers
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-The :class:`~multiprocessing.pool.Pool` class represents a pool of worker
+The :class:`~multiprocessing.pool.Pool` kundi represents a pool of worker
 processes.  It has methods which allows tasks to be offloaded to the worker
 processes in a few different ways.
 
 For example::
 
-   from multiprocessing import Pool, TimeoutError
-   import time
-   import os
+   kutoka multiprocessing agiza Pool, TimeoutError
+   agiza time
+   agiza os
 
    def f(x):
        return x*x
@@ -434,7 +434,7 @@ process which created it.
    as the :class:`multiprocessing.pool.Pool` examples will not work in the
    interactive interpreter. For example::
 
-      >>> from multiprocessing import Pool
+      >>> kutoka multiprocessing agiza Pool
       >>> p = Pool(5)
       >>> def f(x):
       ...     return x*x
@@ -469,7 +469,7 @@ The :mod:`multiprocessing` package mostly replicates the API of the
                    *, daemon=None)
 
    Process objects represent activity that is run in a separate process. The
-   :class:`Process` class has equivalents of all the methods of
+   :class:`Process` kundi has equivalents of all the methods of
    :class:`threading.Thread`.
 
    The constructor should always be called with keyword arguments. *group*
@@ -481,12 +481,12 @@ The :mod:`multiprocessing` package mostly replicates the API of the
    dictionary of keyword arguments for the target invocation.  If provided,
    the keyword-only *daemon* argument sets the process :attr:`daemon` flag
    to ``True`` or ``False``.  If ``None`` (the default), this flag will be
-   inherited from the creating process.
+   inherited kutoka the creating process.
 
    By default, no arguments are passed to *target*.
 
-   If a subclass overrides the constructor, it must make sure it invokes the
-   base class constructor (:meth:`Process.__init__`) before doing anything else
+   If a subkundi overrides the constructor, it must make sure it invokes the
+   base kundi constructor (:meth:`Process.__init__`) before doing anything else
    to the process.
 
    .. versionchanged:: 3.3
@@ -499,7 +499,7 @@ The :mod:`multiprocessing` package mostly replicates the API of the
       You may override this method in a subclass.  The standard :meth:`run`
       method invokes the callable object passed to the object's constructor as
       the target argument, if any, with sequential and keyword arguments taken
-      from the *args* and *kwargs* arguments, respectively.
+      kutoka the *args* and *kwargs* arguments, respectively.
 
    .. method:: start()
 
@@ -537,7 +537,7 @@ The :mod:`multiprocessing` package mostly replicates the API of the
 
       Return whether the process is alive.
 
-      Roughly, a process object is alive from the moment the :meth:`start`
+      Roughly, a process object is alive kutoka the moment the :meth:`start`
       method returns until the child process terminates.
 
    .. attribute:: daemon
@@ -545,7 +545,7 @@ The :mod:`multiprocessing` package mostly replicates the API of the
       The process's daemon flag, a Boolean value.  This must be set before
       :meth:`start` is called.
 
-      The initial value is inherited from the creating process.
+      The initial value is inherited kutoka the creating process.
 
       When a process exits, it attempts to terminate all of its daemonic child
       processes.
@@ -594,7 +594,7 @@ The :mod:`multiprocessing` package mostly replicates the API of the
 
       On Windows, this is an OS handle usable with the ``WaitForSingleObject``
       and ``WaitForMultipleObjects`` family of API calls.  On Unix, this is
-      a file descriptor usable with primitives from the :mod:`select` module.
+      a file descriptor usable with primitives kutoka the :mod:`select` module.
 
       .. versionadded:: 3.3
 
@@ -640,7 +640,7 @@ The :mod:`multiprocessing` package mostly replicates the API of the
    .. doctest::
       :options: +ELLIPSIS
 
-       >>> import multiprocessing, time, signal
+       >>> agiza multiprocessing, time, signal
        >>> p = multiprocessing.Process(target=time.sleep, args=(1000,))
        >>> print(p, p.is_alive())
        <Process ... initial> False
@@ -656,7 +656,7 @@ The :mod:`multiprocessing` package mostly replicates the API of the
 
 .. exception:: ProcessError
 
-   The base class of all :mod:`multiprocessing` exceptions.
+   The base kundi of all :mod:`multiprocessing` exceptions.
 
 .. exception:: BufferTooShort
 
@@ -686,13 +686,13 @@ processes) or a queue (which allows multiple producers and consumers).
 
 The :class:`Queue`, :class:`SimpleQueue` and :class:`JoinableQueue` types
 are multi-producer, multi-consumer :abbr:`FIFO (first-in, first-out)`
-queues modelled on the :class:`queue.Queue` class in the
+queues modelled on the :class:`queue.Queue` kundi in the
 standard library.  They differ in that :class:`Queue` lacks the
 :meth:`~queue.Queue.task_done` and :meth:`~queue.Queue.join` methods introduced
 into Python 2.5's :class:`queue.Queue` class.
 
 If you use :class:`JoinableQueue` then you **must** call
-:meth:`JoinableQueue.task_done` for each task removed from the queue or else the
+:meth:`JoinableQueue.task_done` for each task removed kutoka the queue or else the
 semaphore used to count the number of unfinished tasks may eventually overflow,
 raising an exception.
 
@@ -703,7 +703,7 @@ Note that one can also create a shared queue by using a manager object -- see
 
    :mod:`multiprocessing` uses the usual :exc:`queue.Empty` and
    :exc:`queue.Full` exceptions to signal a timeout.  They are not available in
-   the :mod:`multiprocessing` namespace so you need to import them from
+   the :mod:`multiprocessing` namespace so you need to agiza them kutoka
    :mod:`queue`.
 
 .. note::
@@ -767,9 +767,9 @@ For an example of the usage of queues for interprocess communication see
 
    Returns a process shared queue implemented using a pipe and a few
    locks/semaphores.  When a process first puts an item on the queue a feeder
-   thread is started which transfers objects from a buffer into the pipe.
+   thread is started which transfers objects kutoka a buffer into the pipe.
 
-   The usual :exc:`queue.Empty` and :exc:`queue.Full` exceptions from the
+   The usual :exc:`queue.Empty` and :exc:`queue.Full` exceptions kutoka the
    standard library's :mod:`queue` module are raised to signal timeouts.
 
    :class:`Queue` implements all the methods of :class:`queue.Queue` except for
@@ -814,7 +814,7 @@ For an example of the usage of queues for interprocess communication see
 
    .. method:: get([block[, timeout]])
 
-      Remove and return an item from the queue.  If optional args *block* is
+      Remove and return an item kutoka the queue.  If optional args *block* is
       ``True`` (the default) and *timeout* is ``None`` (the default), block if
       necessary until an item is available.  If *timeout* is a positive number,
       it blocks at most *timeout* seconds and raises the :exc:`queue.Empty`
@@ -853,8 +853,8 @@ For an example of the usage of queues for interprocess communication see
 
    .. method:: cancel_join_thread()
 
-      Prevent :meth:`join_thread` from blocking.  In particular, this prevents
-      the background thread from being joined automatically when the process
+      Prevent :meth:`join_thread` kutoka blocking.  In particular, this prevents
+      the background thread kutoka being joined automatically when the process
       exits -- see :meth:`join_thread`.
 
       A better name for this method might be
@@ -868,7 +868,7 @@ For an example of the usage of queues for interprocess communication see
 
       This class's functionality requires a functioning shared semaphore
       implementation on the host operating system. Without one, the
-      functionality in this class will be disabled, and attempts to
+      functionality in this kundi will be disabled, and attempts to
       instantiate a :class:`Queue` will result in an :exc:`ImportError`. See
       :issue:`3770` for additional information.  The same holds true for any
       of the specialized queue types listed below.
@@ -883,7 +883,7 @@ For an example of the usage of queues for interprocess communication see
 
    .. method:: get()
 
-      Remove and return an item from the queue.
+      Remove and return an item kutoka the queue.
 
    .. method:: put(item)
 
@@ -967,7 +967,7 @@ Miscellaneous
    One needs to call this function straight after the ``if __name__ ==
    '__main__'`` line of the main module.  For example::
 
-      from multiprocessing import Process, freeze_support
+      kutoka multiprocessing agiza Process, freeze_support
 
       def f():
           print('hello world!')
@@ -1077,7 +1077,7 @@ Connection objects are usually created using
 
    .. method:: recv()
 
-      Return an object sent from the other end of the connection using
+      Return an object sent kutoka the other end of the connection using
       :meth:`send`.  Blocks until there is something to receive.  Raises
       :exc:`EOFError` if there is nothing left to receive
       and the other end was closed.
@@ -1105,16 +1105,16 @@ Connection objects are usually created using
 
    .. method:: send_bytes(buffer[, offset[, size]])
 
-      Send byte data from a :term:`bytes-like object` as a complete message.
+      Send byte data kutoka a :term:`bytes-like object` as a complete message.
 
-      If *offset* is given then data is read from that position in *buffer*.  If
-      *size* is given then that many bytes will be read from buffer.  Very large
+      If *offset* is given then data is read kutoka that position in *buffer*.  If
+      *size* is given then that many bytes will be read kutoka buffer.  Very large
       buffers (approximately 32 MiB+, though it depends on the OS) may raise a
       :exc:`ValueError` exception
 
    .. method:: recv_bytes([maxlength])
 
-      Return a complete message of byte data sent from the other end of the
+      Return a complete message of byte data sent kutoka the other end of the
       connection as a string.  Blocks until there is something to receive.
       Raises :exc:`EOFError` if there is nothing left
       to receive and the other end has closed.
@@ -1130,14 +1130,14 @@ Connection objects are usually created using
 
    .. method:: recv_bytes_into(buffer[, offset])
 
-      Read into *buffer* a complete message of byte data sent from the other end
+      Read into *buffer* a complete message of byte data sent kutoka the other end
       of the connection and return the number of bytes in the message.  Blocks
       until there is something to receive.  Raises
       :exc:`EOFError` if there is nothing left to receive and the other end was
       closed.
 
       *buffer* must be a writable :term:`bytes-like object`.  If
-      *offset* is given then the message will be written into the buffer from
+      *offset* is given then the message will be written into the buffer kutoka
       that position.  Offset must be a non-negative integer less than the
       length of *buffer* (in bytes).
 
@@ -1158,7 +1158,7 @@ For example:
 
 .. doctest::
 
-    >>> from multiprocessing import Pipe
+    >>> kutoka multiprocessing agiza Pipe
     >>> a, b = Pipe()
     >>> a.send([1, 'hello', None])
     >>> b.recv()
@@ -1166,7 +1166,7 @@ For example:
     >>> b.send_bytes(b'thank you')
     >>> a.recv_bytes()
     b'thank you'
-    >>> import array
+    >>> agiza array
     >>> arr1 = array.array('i', range(5))
     >>> arr2 = array.array('i', [0] * 10)
     >>> a.send_bytes(arr1)
@@ -1217,11 +1217,11 @@ object -- see :ref:`multiprocessing-managers`.
    A bounded semaphore object: a close analog of
    :class:`threading.BoundedSemaphore`.
 
-   A solitary difference from its close analog exists: its ``acquire`` method's
+   A solitary difference kutoka its close analog exists: its ``acquire`` method's
    first argument is named *block*, as is consistent with :meth:`Lock.acquire`.
 
    .. note::
-      On Mac OS X, this is indistinguishable from :class:`Semaphore` because
+      On Mac OS X, this is indistinguishable kutoka :class:`Semaphore` because
       ``sem_getvalue()`` is not implemented on that platform.
 
 .. class:: Condition([lock])
@@ -1229,7 +1229,7 @@ object -- see :ref:`multiprocessing-managers`.
    A condition variable: an alias for :class:`threading.Condition`.
 
    If *lock* is specified then it should be a :class:`Lock` or :class:`RLock`
-   object from :mod:`multiprocessing`.
+   object kutoka :mod:`multiprocessing`.
 
    .. versionchanged:: 3.3
       The :meth:`~threading.Condition.wait_for` method was added.
@@ -1243,7 +1243,7 @@ object -- see :ref:`multiprocessing-managers`.
 
    A non-recursive lock object: a close analog of :class:`threading.Lock`.
    Once a process or thread has acquired a lock, subsequent attempts to
-   acquire it from any process or thread will block until it is released;
+   acquire it kutoka any process or thread will block until it is released;
    any process or thread may release it.  The concepts and behaviors of
    :class:`threading.Lock` as it applies to threads are replicated here in
    :class:`multiprocessing.Lock` as it applies to either processes or threads,
@@ -1263,7 +1263,7 @@ object -- see :ref:`multiprocessing-managers`.
       With the *block* argument set to ``True`` (the default), the method call
       will block until the lock is in an unlocked state, then set it to locked
       and return ``True``.  Note that the name of this first argument differs
-      from that in :meth:`threading.Lock.acquire`.
+      kutoka that in :meth:`threading.Lock.acquire`.
 
       With the *block* argument set to ``False``, the method call does not
       block.  If the lock is currently in a locked state, return ``False``;
@@ -1275,7 +1275,7 @@ object -- see :ref:`multiprocessing-managers`.
       *timeout* are equivalent to a *timeout* of zero.  Invocations with a
       *timeout* value of ``None`` (the default) set the timeout period to
       infinite.  Note that the treatment of negative or ``None`` values for
-      *timeout* differs from the implemented behavior in
+      *timeout* differs kutoka the implemented behavior in
       :meth:`threading.Lock.acquire`.  The *timeout* argument has no practical
       implications if the *block* argument is set to ``False`` and is thus
       ignored.  Returns ``True`` if the lock has been acquired or ``False`` if
@@ -1284,7 +1284,7 @@ object -- see :ref:`multiprocessing-managers`.
 
    .. method:: release()
 
-      Release a lock.  This can be called from any process or thread, not only
+      Release a lock.  This can be called kutoka any process or thread, not only
       the process or thread which originally acquired the lock.
 
       Behavior is the same as in :meth:`threading.Lock.release` except that
@@ -1331,7 +1331,7 @@ object -- see :ref:`multiprocessing-managers`.
 
       Use and behaviors of the *timeout* argument are the same as in
       :meth:`Lock.acquire`.  Note that some of these behaviors of *timeout*
-      differ from the implemented behaviors in :meth:`threading.RLock.acquire`.
+      differ kutoka the implemented behaviors in :meth:`threading.RLock.acquire`.
 
 
    .. method:: release()
@@ -1348,14 +1348,14 @@ object -- see :ref:`multiprocessing-managers`.
       An :exc:`AssertionError` is raised if this method is called by a process
       or thread other than the owner or if the lock is in an unlocked (unowned)
       state.  Note that the type of exception raised in this situation
-      differs from the implemented behavior in :meth:`threading.RLock.release`.
+      differs kutoka the implemented behavior in :meth:`threading.RLock.release`.
 
 
 .. class:: Semaphore([value])
 
    A semaphore object: a close analog of :class:`threading.Semaphore`.
 
-   A solitary difference from its close analog exists: its ``acquire`` method's
+   A solitary difference kutoka its close analog exists: its ``acquire`` method's
    first argument is named *block*, as is consistent with :meth:`Lock.acquire`.
 
 .. note::
@@ -1371,7 +1371,7 @@ object -- see :ref:`multiprocessing-managers`.
    or :meth:`Condition.wait` then the call will be immediately interrupted and
    :exc:`KeyboardInterrupt` will be raised.
 
-   This differs from the behaviour of :mod:`threading` where SIGINT will be
+   This differs kutoka the behaviour of :mod:`threading` where SIGINT will be
    ignored while the equivalent blocking calls are in progress.
 
 .. note::
@@ -1379,7 +1379,7 @@ object -- see :ref:`multiprocessing-managers`.
    Some of this package's functionality requires a functioning shared semaphore
    implementation on the host operating system. Without one, the
    :mod:`multiprocessing.synchronize` module will be disabled, and attempts to
-   import it will result in an :exc:`ImportError`. See
+   agiza it will result in an :exc:`ImportError`. See
    :issue:`3770` for additional information.
 
 
@@ -1391,7 +1391,7 @@ inherited by child processes.
 
 .. function:: Value(typecode_or_type, *args, lock=True)
 
-   Return a :mod:`ctypes` object allocated from shared memory.  By default the
+   Return a :mod:`ctypes` object allocated kutoka shared memory.  By default the
    return value is actually a synchronized wrapper for the object.  The object
    itself can be accessed via the *value* attribute of a :class:`Value`.
 
@@ -1422,7 +1422,7 @@ inherited by child processes.
 
 .. function:: Array(typecode_or_type, size_or_initializer, *, lock=True)
 
-   Return a ctypes array allocated from shared memory.  By default the return
+   Return a ctypes array allocated kutoka shared memory.  By default the return
    value is actually a synchronized wrapper for the array.
 
    *typecode_or_type* determines the type of the elements of the returned array:
@@ -1449,10 +1449,10 @@ The :mod:`multiprocessing.sharedctypes` module
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 .. module:: multiprocessing.sharedctypes
-   :synopsis: Allocate ctypes objects from shared memory.
+   :synopsis: Allocate ctypes objects kutoka shared memory.
 
 The :mod:`multiprocessing.sharedctypes` module provides functions for allocating
-:mod:`ctypes` objects from shared memory which can be inherited by child
+:mod:`ctypes` objects kutoka shared memory which can be inherited by child
 processes.
 
 .. note::
@@ -1460,12 +1460,12 @@ processes.
    Although it is possible to store a pointer in shared memory remember that
    this will refer to a location in the address space of a specific process.
    However, the pointer is quite likely to be invalid in the context of a second
-   process and trying to dereference the pointer from the second process may
+   process and trying to dereference the pointer kutoka the second process may
    cause a crash.
 
 .. function:: RawArray(typecode_or_type, size_or_initializer)
 
-   Return a ctypes array allocated from shared memory.
+   Return a ctypes array allocated kutoka shared memory.
 
    *typecode_or_type* determines the type of the elements of the returned array:
    it is either a ctypes type or a one character typecode of the kind used by
@@ -1480,7 +1480,7 @@ processes.
 
 .. function:: RawValue(typecode_or_type, *args)
 
-   Return a ctypes object allocated from shared memory.
+   Return a ctypes object allocated kutoka shared memory.
 
    *typecode_or_type* determines the type of the returned object: it is either a
    ctypes type or a one character typecode of the kind used by the :mod:`array`
@@ -1527,7 +1527,7 @@ processes.
 
 .. function:: copy(obj)
 
-   Return a ctypes object allocated from shared memory which is a copy of the
+   Return a ctypes object allocated kutoka shared memory which is a copy of the
    ctypes object *obj*.
 
 .. function:: synchronized(obj[, lock])
@@ -1547,9 +1547,9 @@ processes.
       Synchronized objects support the :term:`context manager` protocol.
 
 
-The table below compares the syntax for creating shared ctypes objects from
+The table below compares the syntax for creating shared ctypes objects kutoka
 shared memory with the normal ctypes syntax.  (In the table ``MyStruct`` is some
-subclass of :class:`ctypes.Structure`.)
+subkundi of :class:`ctypes.Structure`.)
 
 ==================== ========================== ===========================
 ctypes               sharedctypes using type    sharedctypes using typecode
@@ -1564,11 +1564,11 @@ MyStruct(4, 6)       RawValue(MyStruct, 4, 6)
 Below is an example where a number of ctypes objects are modified by a child
 process::
 
-   from multiprocessing import Process, Lock
-   from multiprocessing.sharedctypes import Value, Array
-   from ctypes import Structure, c_double
+   kutoka multiprocessing agiza Process, Lock
+   kutoka multiprocessing.sharedctypes agiza Value, Array
+   kutoka ctypes agiza Structure, c_double
 
-   class Point(Structure):
+   kundi Point(Structure):
        _fields_ = [('x', c_double), ('y', c_double)]
 
    def modify(n, x, s, A):
@@ -1660,7 +1660,7 @@ their parent process exits.  The manager classes are defined in the
       the control of the Manager. The :class:`Server` object supports the
       :meth:`serve_forever` method::
 
-      >>> from multiprocessing.managers import BaseManager
+      >>> kutoka multiprocessing.managers agiza BaseManager
       >>> manager = BaseManager(address=('', 50000), authkey=b'abc')
       >>> server = manager.get_server()
       >>> server.serve_forever()
@@ -1671,7 +1671,7 @@ their parent process exits.  The manager classes are defined in the
 
       Connect a local manager object to a remote manager process::
 
-      >>> from multiprocessing.managers import BaseManager
+      >>> kutoka multiprocessing.managers agiza BaseManager
       >>> m = BaseManager(address=('127.0.0.1', 50000), authkey=b'abc')
       >>> m.connect()
 
@@ -1696,9 +1696,9 @@ their parent process exits.  The manager classes are defined in the
       *create_method* argument is ``False`` then this can be left as
       ``None``.
 
-      *proxytype* is a subclass of :class:`BaseProxy` which is used to create
+      *proxytype* is a subkundi of :class:`BaseProxy` which is used to create
       proxies for shared objects with this *typeid*.  If ``None`` then a proxy
-      class is created automatically.
+      kundi is created automatically.
 
       *exposed* is used to specify a sequence of method names which proxies for
       this typeid should be allowed to access using
@@ -1737,7 +1737,7 @@ their parent process exits.  The manager classes are defined in the
 
 .. class:: SyncManager
 
-   A subclass of :class:`BaseManager` which can be used for the synchronization
+   A subkundi of :class:`BaseManager` which can be used for the synchronization
    of processes.  Objects of this type are returned by
    :func:`multiprocessing.Manager`.
 
@@ -1843,19 +1843,19 @@ their parent process exits.  The manager classes are defined in the
 Customized managers
 >>>>>>>>>>>>>>>>>>>
 
-To create one's own manager, one creates a subclass of :class:`BaseManager` and
+To create one's own manager, one creates a subkundi of :class:`BaseManager` and
 uses the :meth:`~BaseManager.register` classmethod to register new types or
 callables with the manager class.  For example::
 
-   from multiprocessing.managers import BaseManager
+   kutoka multiprocessing.managers agiza BaseManager
 
-   class MathsClass:
+   kundi MathsClass:
        def add(self, x, y):
            return x + y
        def mul(self, x, y):
            return x * y
 
-   class MyManager(BaseManager):
+   kundi MyManager(BaseManager):
        pass
 
    MyManager.register('Maths', MathsClass)
@@ -1871,15 +1871,15 @@ Using a remote manager
 >>>>>>>>>>>>>>>>>>>>>>
 
 It is possible to run a manager server on one machine and have clients use it
-from other machines (assuming that the firewalls involved allow it).
+kutoka other machines (assuming that the firewalls involved allow it).
 
 Running the following commands creates a server for a single shared queue which
 remote clients can access::
 
-   >>> from multiprocessing.managers import BaseManager
-   >>> from queue import Queue
+   >>> kutoka multiprocessing.managers agiza BaseManager
+   >>> kutoka queue agiza Queue
    >>> queue = Queue()
-   >>> class QueueManager(BaseManager): pass
+   >>> kundi QueueManager(BaseManager): pass
    >>> QueueManager.register('get_queue', callable=lambda:queue)
    >>> m = QueueManager(address=('', 50000), authkey=b'abracadabra')
    >>> s = m.get_server()
@@ -1887,8 +1887,8 @@ remote clients can access::
 
 One client can access the server as follows::
 
-   >>> from multiprocessing.managers import BaseManager
-   >>> class QueueManager(BaseManager): pass
+   >>> kutoka multiprocessing.managers agiza BaseManager
+   >>> kundi QueueManager(BaseManager): pass
    >>> QueueManager.register('get_queue')
    >>> m = QueueManager(address=('foo.bar.org', 50000), authkey=b'abracadabra')
    >>> m.connect()
@@ -1897,8 +1897,8 @@ One client can access the server as follows::
 
 Another client can also use it::
 
-   >>> from multiprocessing.managers import BaseManager
-   >>> class QueueManager(BaseManager): pass
+   >>> kutoka multiprocessing.managers agiza BaseManager
+   >>> kundi QueueManager(BaseManager): pass
    >>> QueueManager.register('get_queue')
    >>> m = QueueManager(address=('foo.bar.org', 50000), authkey=b'abracadabra')
    >>> m.connect()
@@ -1906,12 +1906,12 @@ Another client can also use it::
    >>> queue.get()
    'hello'
 
-Local processes can also access that queue, using the code from above on the
+Local processes can also access that queue, using the code kutoka above on the
 client to access it remotely::
 
-    >>> from multiprocessing import Process, Queue
-    >>> from multiprocessing.managers import BaseManager
-    >>> class Worker(Process):
+    >>> kutoka multiprocessing agiza Process, Queue
+    >>> kutoka multiprocessing.managers agiza BaseManager
+    >>> kundi Worker(Process):
     ...     def __init__(self, q):
     ...         self.q = q
     ...         super(Worker, self).__init__()
@@ -1921,7 +1921,7 @@ client to access it remotely::
     >>> queue = Queue()
     >>> w = Worker(queue)
     >>> w.start()
-    >>> class QueueManager(BaseManager): pass
+    >>> kundi QueueManager(BaseManager): pass
     ...
     >>> QueueManager.register('get_queue', callable=lambda: queue)
     >>> m = QueueManager(address=('', 50000), authkey=b'abracadabra')
@@ -1943,7 +1943,7 @@ the proxy).  In this way, a proxy can be used just like its referent can:
 
 .. doctest::
 
-   >>> from multiprocessing import Manager
+   >>> kutoka multiprocessing agiza Manager
    >>> manager = Manager()
    >>> l = manager.list([i*i for i in range(10)])
    >>> print(l)
@@ -2086,9 +2086,9 @@ Cleanup
 >>>>>>>
 
 A proxy object uses a weakref callback so that when it gets garbage collected it
-deregisters itself from the manager which owns its referent.
+deregisters itself kutoka the manager which owns its referent.
 
-A shared object gets deleted from the manager process when there are no longer
+A shared object gets deleted kutoka the manager process when there are no longer
 any proxies referring to it.
 
 
@@ -2211,7 +2211,7 @@ with the :class:`Pool` class.
 
    .. method:: imap_unordered(func, iterable[, chunksize])
 
-      The same as :meth:`imap` except that the ordering of the results from the
+      The same as :meth:`imap` except that the ordering of the results kutoka the
       returned iterator should be considered arbitrary.  (Only when there is
       only one worker process is the order guaranteed to be "correct".)
 
@@ -2235,7 +2235,7 @@ with the :class:`Pool` class.
 
    .. method:: close()
 
-      Prevents any more tasks from being submitted to the pool.  Once all the
+      Prevents any more tasks kutoka being submitted to the pool.  Once all the
       tasks have been completed the worker processes will exit.
 
    .. method:: terminate()
@@ -2257,7 +2257,7 @@ with the :class:`Pool` class.
 
 .. class:: AsyncResult
 
-   The class of the result returned by :meth:`Pool.apply_async` and
+   The kundi of the result returned by :meth:`Pool.apply_async` and
    :meth:`Pool.map_async`.
 
    .. method:: get([timeout])
@@ -2286,8 +2286,8 @@ with the :class:`Pool` class.
 
 The following example demonstrates the use of a pool::
 
-   from multiprocessing import Pool
-   import time
+   kutoka multiprocessing agiza Pool
+   agiza time
 
    def f(x):
        return x*x
@@ -2350,7 +2350,7 @@ multiple connections at the same time.
    *address*, returning a :class:`~Connection`.
 
    The type of the connection is determined by *family* argument, but this can
-   generally be omitted since it can usually be inferred from the format of
+   generally be omitted since it can usually be inferred kutoka the format of
    *address*. (See :ref:`multiprocessing-address-formats`)
 
    If *authkey* is given and not None, it should be a byte string and will be
@@ -2377,7 +2377,7 @@ multiple connections at the same time.
    the strings ``'AF_INET'`` (for a TCP socket), ``'AF_UNIX'`` (for a Unix
    domain socket) or ``'AF_PIPE'`` (for a Windows named pipe).  Of these only
    the first is guaranteed to be available.  If *family* is ``None`` then the
-   family is inferred from the format of *address*.  If *address* is also
+   family is inferred kutoka the format of *address*.  If *address* is also
    ``None`` then a default is chosen.  This default is the family which is
    assumed to be the fastest available.  See
    :ref:`multiprocessing-address-formats`.  Note that if *family* is
@@ -2415,7 +2415,7 @@ multiple connections at the same time.
 
    .. attribute:: last_accepted
 
-      The address from which the last accepted connection came.  If this is
+      The address kutoka which the last accepted connection came.  If this is
       unavailable then it is ``None``.
 
    .. versionadded:: 3.3
@@ -2440,7 +2440,7 @@ multiple connections at the same time.
      :class:`~multiprocessing.Process` object.
 
    A connection or socket object is ready when there is data available
-   to be read from it, or the other end has been closed.
+   to be read kutoka it, or the other end has been closed.
 
    **Unix**: ``wait(object_list, timeout)`` almost equivalent
    ``select.select(object_list, [], [], timeout)``.  The difference is
@@ -2464,14 +2464,14 @@ The following server code creates a listener which uses ``'secret password'`` as
 an authentication key.  It then waits for a connection and sends some data to
 the client::
 
-   from multiprocessing.connection import Listener
-   from array import array
+   kutoka multiprocessing.connection agiza Listener
+   kutoka array agiza array
 
    address = ('localhost', 6000)     # family is deduced to be 'AF_INET'
 
    with Listener(address, authkey=b'secret password') as listener:
        with listener.accept() as conn:
-           print('connection accepted from', listener.last_accepted)
+           print('connection accepted kutoka', listener.last_accepted)
 
            conn.send([2.25, None, 'junk', float])
 
@@ -2479,11 +2479,11 @@ the client::
 
            conn.send_bytes(array('i', [42, 1729]))
 
-The following code connects to the server and receives some data from the
+The following code connects to the server and receives some data kutoka the
 server::
 
-   from multiprocessing.connection import Client
-   from array import array
+   kutoka multiprocessing.connection agiza Client
+   kutoka array agiza array
 
    address = ('localhost', 6000)
 
@@ -2497,11 +2497,11 @@ server::
        print(arr)                          # => array('i', [42, 1729, 0, 0, 0])
 
 The following code uses :func:`~multiprocessing.connection.wait` to
-wait for messages from multiple processes at once::
+wait for messages kutoka multiple processes at once::
 
-   import time, random
-   from multiprocessing import Process, Pipe, current_process
-   from multiprocessing.connection import wait
+   agiza time, random
+   kutoka multiprocessing agiza Process, Pipe, current_process
+   kutoka multiprocessing.connection agiza wait
 
    def foo(w):
        for i in range(10):
@@ -2559,7 +2559,7 @@ Authentication keys
 
 When one uses :meth:`Connection.recv <Connection.recv>`, the
 data received is automatically
-unpickled. Unfortunately unpickling data from an untrusted source is a security
+unpickled. Unfortunately unpickling data kutoka an untrusted source is a security
 risk. Therefore :class:`Listener` and :func:`Client` use the :mod:`hmac` module
 to provide digest authentication.
 
@@ -2585,7 +2585,7 @@ Logging
 
 Some support for logging is available.  Note, however, that the :mod:`logging`
 package does not use process shared locks so it is possible (depending on the
-handler type) for messages from different processes to get mixed up.
+handler type) for messages kutoka different processes to get mixed up.
 
 .. currentmodule:: multiprocessing
 .. function:: get_logger()
@@ -2611,7 +2611,7 @@ handler type) for messages from different processes to get mixed up.
 
 Below is an example session with logging turned on::
 
-    >>> import multiprocessing, logging
+    >>> agiza multiprocessing, logging
     >>> logger = multiprocessing.log_to_stderr()
     >>> logger.setLevel(logging.INFO)
     >>> logger.warning('doomed')
@@ -2666,7 +2666,7 @@ Picklability
 
 Thread safety of proxies
 
-    Do not use a proxy object from more than one thread unless you protect it
+    Do not use a proxy object kutoka more than one thread unless you protect it
     with a lock.
 
     (There is never a problem with different processes using the *same* proxy.)
@@ -2684,12 +2684,12 @@ Joining zombie processes
 Better to inherit than pickle/unpickle
 
     When using the *spawn* or *forkserver* start methods many types
-    from :mod:`multiprocessing` need to be picklable so that child
+    kutoka :mod:`multiprocessing` need to be picklable so that child
     processes can use them.  However, one should generally avoid
     sending shared objects to other processes using pipes or queues.
     Instead you should arrange the program so that a process which
     needs access to a shared resource created elsewhere can inherit it
-    from an ancestor process.
+    kutoka an ancestor process.
 
 Avoid terminating processes
 
@@ -2719,7 +2719,7 @@ Joining processes that use queues
 
     An example which will deadlock is the following::
 
-        from multiprocessing import Process, Queue
+        kutoka multiprocessing agiza Process, Queue
 
         def f(q):
             q.put('X' * 1000000)
@@ -2741,7 +2741,7 @@ Explicitly pass resources to child processes
     global resource.  However, it is better to pass the object as an
     argument to the constructor for the child process.
 
-    Apart from making the code (potentially) compatible with Windows
+    Apart kutoka making the code (potentially) compatible with Windows
     and the other start methods this also ensures that as long as the
     child process is still alive the object will not be garbage
     collected in the parent process.  This might be important if some
@@ -2750,7 +2750,7 @@ Explicitly pass resources to child processes
 
     So for instance ::
 
-        from multiprocessing import Process, Lock
+        kutoka multiprocessing agiza Process, Lock
 
         def f():
             ... do something using "lock" ...
@@ -2762,7 +2762,7 @@ Explicitly pass resources to child processes
 
     should be rewritten as ::
 
-        from multiprocessing import Process, Lock
+        kutoka multiprocessing agiza Process, Lock
 
         def f(l):
             ... do something using "l" ...
@@ -2814,7 +2814,7 @@ start method.
 More picklability
 
     Ensure that all arguments to :meth:`Process.__init__` are picklable.
-    Also, if you subclass :class:`~multiprocessing.Process` then make sure that
+    Also, if you subkundi :class:`~multiprocessing.Process` then make sure that
     instances will be picklable when the :meth:`Process.start
     <multiprocessing.Process.start>` method is called.
 
@@ -2838,7 +2838,7 @@ Safe importing of main module
     running the following module would fail with a
     :exc:`RuntimeError`::
 
-        from multiprocessing import Process
+        kutoka multiprocessing agiza Process
 
         def foo():
             print('hello')
@@ -2849,7 +2849,7 @@ Safe importing of main module
     Instead one should protect the "entry point" of the program by using ``if
     __name__ == '__main__':`` as follows::
 
-       from multiprocessing import Process, freeze_support, set_start_method
+       kutoka multiprocessing agiza Process, freeze_support, set_start_method
 
        def foo():
            print('hello')
@@ -2863,7 +2863,7 @@ Safe importing of main module
     (The ``freeze_support()`` line can be omitted if the program will be run
     normally instead of frozen.)
 
-    This allows the newly spawned Python interpreter to safely import the module
+    This allows the newly spawned Python interpreter to safely agiza the module
     and then run the module's ``foo()`` function.
 
     Similar restrictions apply if a pool or manager is created in the main

@@ -1,4 +1,4 @@
-/* PickleBuffer object. This is built-in for ease of use from third-party
+/* PickleBuffer object. This is built-in for ease of use kutoka third-party
  * C extensions.
  */
 

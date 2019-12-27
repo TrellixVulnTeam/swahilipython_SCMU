@@ -17,10 +17,10 @@ except ImportError:
     resource = None
 
 
-if hasattr(socket, 'socketpair'):
+ikiwa hasattr(socket, 'socketpair'):
     socketpair = socket.socketpair
 else:
-    def socketpair(family=socket.AF_INET, type=socket.SOCK_STREAM, proto=0):
+    eleza socketpair(family=socket.AF_INET, type=socket.SOCK_STREAM, proto=0):
         with socket.socket(family, type, proto) as l:
             l.bind((support.HOST, 0))
             l.listen()
@@ -31,31 +31,31 @@ else:
                 while True:
                     a, addr = l.accept()
                     # check that we've got the correct client
-                    if addr == caddr:
-                        return c, a
+                    ikiwa addr == caddr:
+                        rudisha c, a
                     a.close()
             except OSError:
                 c.close()
                 raise
 
 
-def find_ready_matching(ready, flag):
+eleza find_ready_matching(ready, flag):
     match = []
     for key, events in ready:
-        if events & flag:
+        ikiwa events & flag:
             match.append(key.fileobj)
-    return match
+    rudisha match
 
 
-class BaseSelectorTestCase(unittest.TestCase):
+kundi BaseSelectorTestCase(unittest.TestCase):
 
-    def make_socketpair(self):
+    eleza make_socketpair(self):
         rd, wr = socketpair()
         self.addCleanup(rd.close)
         self.addCleanup(wr.close)
-        return rd, wr
+        rudisha rd, wr
 
-    def test_register(self):
+    eleza test_register(self):
         s = self.SELECTOR()
         self.addCleanup(s.close)
 
@@ -81,7 +81,7 @@ class BaseSelectorTestCase(unittest.TestCase):
         self.assertRaises(KeyError, s.register, rd.fileno(),
                           selectors.EVENT_READ)
 
-    def test_unregister(self):
+    eleza test_unregister(self):
         s = self.SELECTOR()
         self.addCleanup(s.close)
 
@@ -96,7 +96,7 @@ class BaseSelectorTestCase(unittest.TestCase):
         # unregister twice
         self.assertRaises(KeyError, s.unregister, rd)
 
-    def test_unregister_after_fd_close(self):
+    eleza test_unregister_after_fd_close(self):
         s = self.SELECTOR()
         self.addCleanup(s.close)
         rd, wr = self.make_socketpair()
@@ -109,7 +109,7 @@ class BaseSelectorTestCase(unittest.TestCase):
         s.unregister(w)
 
     @unittest.skipUnless(os.name == 'posix', "requires posix")
-    def test_unregister_after_fd_close_and_reuse(self):
+    eleza test_unregister_after_fd_close_and_reuse(self):
         s = self.SELECTOR()
         self.addCleanup(s.close)
         rd, wr = self.make_socketpair()
@@ -126,7 +126,7 @@ class BaseSelectorTestCase(unittest.TestCase):
         s.unregister(r)
         s.unregister(w)
 
-    def test_unregister_after_socket_close(self):
+    eleza test_unregister_after_socket_close(self):
         s = self.SELECTOR()
         self.addCleanup(s.close)
         rd, wr = self.make_socketpair()
@@ -137,7 +137,7 @@ class BaseSelectorTestCase(unittest.TestCase):
         s.unregister(rd)
         s.unregister(wr)
 
-    def test_modify(self):
+    eleza test_modify(self):
         s = self.SELECTOR()
         self.addCleanup(s.close)
 
@@ -175,16 +175,16 @@ class BaseSelectorTestCase(unittest.TestCase):
         self.assertFalse(s.register.called)
         self.assertFalse(s.unregister.called)
 
-    def test_modify_unregister(self):
+    eleza test_modify_unregister(self):
         # Make sure the fd is unregister()ed in case of error on
         # modify(): http://bugs.python.org/issue30014
-        if self.SELECTOR.__name__ == 'EpollSelector':
+        ikiwa self.SELECTOR.__name__ == 'EpollSelector':
             patch = unittest.mock.patch(
                 'selectors.EpollSelector._selector_cls')
-        elif self.SELECTOR.__name__ == 'PollSelector':
+        elikiwa self.SELECTOR.__name__ == 'PollSelector':
             patch = unittest.mock.patch(
                 'selectors.PollSelector._selector_cls')
-        elif self.SELECTOR.__name__ == 'DevpollSelector':
+        elikiwa self.SELECTOR.__name__ == 'DevpollSelector':
             patch = unittest.mock.patch(
                 'selectors.DevpollSelector._selector_cls')
         else:
@@ -202,7 +202,7 @@ class BaseSelectorTestCase(unittest.TestCase):
                 s.modify(rd, selectors.EVENT_WRITE)
             self.assertEqual(len(s._map), 0)
 
-    def test_close(self):
+    eleza test_close(self):
         s = self.SELECTOR()
         self.addCleanup(s.close)
 
@@ -218,7 +218,7 @@ class BaseSelectorTestCase(unittest.TestCase):
         self.assertRaises(KeyError, mapping.__getitem__, rd)
         self.assertRaises(KeyError, mapping.__getitem__, wr)
 
-    def test_get_key(self):
+    eleza test_get_key(self):
         s = self.SELECTOR()
         self.addCleanup(s.close)
 
@@ -230,7 +230,7 @@ class BaseSelectorTestCase(unittest.TestCase):
         # unknown file obj
         self.assertRaises(KeyError, s.get_key, 999999)
 
-    def test_get_map(self):
+    eleza test_get_map(self):
         s = self.SELECTOR()
         self.addCleanup(s.close)
 
@@ -255,7 +255,7 @@ class BaseSelectorTestCase(unittest.TestCase):
         with self.assertRaises(TypeError):
             del keys[rd]
 
-    def test_select(self):
+    eleza test_select(self):
         s = self.SELECTOR()
         self.addCleanup(s.close)
 
@@ -273,7 +273,7 @@ class BaseSelectorTestCase(unittest.TestCase):
 
         self.assertEqual([(wr_key, selectors.EVENT_WRITE)], result)
 
-    def test_context_manager(self):
+    eleza test_context_manager(self):
         s = self.SELECTOR()
         self.addCleanup(s.close)
 
@@ -286,16 +286,16 @@ class BaseSelectorTestCase(unittest.TestCase):
         self.assertRaises(RuntimeError, s.get_key, rd)
         self.assertRaises(RuntimeError, s.get_key, wr)
 
-    def test_fileno(self):
+    eleza test_fileno(self):
         s = self.SELECTOR()
         self.addCleanup(s.close)
 
-        if hasattr(s, 'fileno'):
+        ikiwa hasattr(s, 'fileno'):
             fd = s.fileno()
             self.assertTrue(isinstance(fd, int))
             self.assertGreaterEqual(fd, 0)
 
-    def test_selector(self):
+    eleza test_selector(self):
         s = self.SELECTOR()
         self.addCleanup(s.close)
 
@@ -321,7 +321,7 @@ class BaseSelectorTestCase(unittest.TestCase):
         while writers:
             ready = s.select()
             ready_writers = find_ready_matching(ready, selectors.EVENT_WRITE)
-            if not ready_writers:
+            ikiwa not ready_writers:
                 self.fail("no sockets ready for writing")
             wr = random.choice(ready_writers)
             wr.send(MSG)
@@ -330,7 +330,7 @@ class BaseSelectorTestCase(unittest.TestCase):
                 ready = s.select()
                 ready_readers = find_ready_matching(ready,
                                                     selectors.EVENT_READ)
-                if ready_readers:
+                ikiwa ready_readers:
                     break
                 # there might be a delay between the write to the write end and
                 # the read end is reported ready
@@ -350,14 +350,14 @@ class BaseSelectorTestCase(unittest.TestCase):
 
     @unittest.skipIf(sys.platform == 'win32',
                      'select.select() cannot be used with empty fd sets')
-    def test_empty_select(self):
+    eleza test_empty_select(self):
         # Issue #23009: Make sure EpollSelector.select() works when no FD is
         # registered.
         s = self.SELECTOR()
         self.addCleanup(s.close)
         self.assertEqual(s.select(timeout=0), [])
 
-    def test_timeout(self):
+    eleza test_timeout(self):
         s = self.SELECTOR()
         self.addCleanup(s.close)
 
@@ -385,16 +385,16 @@ class BaseSelectorTestCase(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(signal, "alarm"),
                          "signal.alarm() required for this test")
-    def test_select_interrupt_exc(self):
+    eleza test_select_interrupt_exc(self):
         s = self.SELECTOR()
         self.addCleanup(s.close)
 
         rd, wr = self.make_socketpair()
 
-        class InterruptSelect(Exception):
+        kundi InterruptSelect(Exception):
             pass
 
-        def handler(*args):
+        eleza handler(*args):
             raise InterruptSelect
 
         orig_alrm_handler = signal.signal(signal.SIGALRM, handler)
@@ -415,7 +415,7 @@ class BaseSelectorTestCase(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(signal, "alarm"),
                          "signal.alarm() required for this test")
-    def test_select_interrupt_noraise(self):
+    eleza test_select_interrupt_noraise(self):
         s = self.SELECTOR()
         self.addCleanup(s.close)
 
@@ -438,12 +438,12 @@ class BaseSelectorTestCase(unittest.TestCase):
             signal.alarm(0)
 
 
-class ScalableSelectorMixIn:
+kundi ScalableSelectorMixIn:
 
     # see issue #18963 for why it's skipped on older OS X versions
     @support.requires_mac_ver(10, 5)
     @unittest.skipUnless(resource, "Test needs resource module")
-    def test_above_fd_setsize(self):
+    eleza test_above_fd_setsize(self):
         # A scalable implementation should have no problem with more than
         # FD_SETSIZE file descriptors. Since we don't know the value, we just
         # try to set the soft RLIMIT_NOFILE to the hard RLIMIT_NOFILE ceiling.
@@ -475,8 +475,8 @@ class ScalableSelectorMixIn:
                 s.register(rd, selectors.EVENT_READ)
                 s.register(wr, selectors.EVENT_WRITE)
             except OSError as e:
-                if e.errno == errno.ENOSPC:
-                    # this can be raised by epoll if we go over
+                ikiwa e.errno == errno.ENOSPC:
+                    # this can be raised by epoll ikiwa we go over
                     # fs.epoll.max_user_watches sysctl
                     self.skipTest("FD limit reached")
                 raise
@@ -484,37 +484,37 @@ class ScalableSelectorMixIn:
         try:
             fds = s.select()
         except OSError as e:
-            if e.errno == errno.EINVAL and sys.platform == 'darwin':
+            ikiwa e.errno == errno.EINVAL and sys.platform == 'darwin':
                 # unexplainable errors on macOS don't need to fail the test
                 self.skipTest("Invalid argument error calling poll()")
             raise
         self.assertEqual(NUM_FDS // 2, len(fds))
 
 
-class DefaultSelectorTestCase(BaseSelectorTestCase):
+kundi DefaultSelectorTestCase(BaseSelectorTestCase):
 
     SELECTOR = selectors.DefaultSelector
 
 
-class SelectSelectorTestCase(BaseSelectorTestCase):
+kundi SelectSelectorTestCase(BaseSelectorTestCase):
 
     SELECTOR = selectors.SelectSelector
 
 
 @unittest.skipUnless(hasattr(selectors, 'PollSelector'),
                      "Test needs selectors.PollSelector")
-class PollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn):
+kundi PollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn):
 
     SELECTOR = getattr(selectors, 'PollSelector', None)
 
 
 @unittest.skipUnless(hasattr(selectors, 'EpollSelector'),
                      "Test needs selectors.EpollSelector")
-class EpollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn):
+kundi EpollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn):
 
     SELECTOR = getattr(selectors, 'EpollSelector', None)
 
-    def test_register_file(self):
+    eleza test_register_file(self):
         # epoll(7) returns EPERM when given a file to watch
         s = self.SELECTOR()
         with tempfile.NamedTemporaryFile() as f:
@@ -527,11 +527,11 @@ class EpollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn):
 
 @unittest.skipUnless(hasattr(selectors, 'KqueueSelector'),
                      "Test needs selectors.KqueueSelector)")
-class KqueueSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn):
+kundi KqueueSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn):
 
     SELECTOR = getattr(selectors, 'KqueueSelector', None)
 
-    def test_register_bad_fd(self):
+    eleza test_register_bad_fd(self):
         # a file descriptor that's been closed should raise an OSError
         # with EBADF
         s = self.SELECTOR()
@@ -546,13 +546,13 @@ class KqueueSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn):
 
 @unittest.skipUnless(hasattr(selectors, 'DevpollSelector'),
                      "Test needs selectors.DevpollSelector")
-class DevpollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn):
+kundi DevpollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn):
 
     SELECTOR = getattr(selectors, 'DevpollSelector', None)
 
 
 
-def test_main():
+eleza test_main():
     tests = [DefaultSelectorTestCase, SelectSelectorTestCase,
              PollSelectorTestCase, EpollSelectorTestCase,
              KqueueSelectorTestCase, DevpollSelectorTestCase]
@@ -560,5 +560,5 @@ def test_main():
     support.reap_children()
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

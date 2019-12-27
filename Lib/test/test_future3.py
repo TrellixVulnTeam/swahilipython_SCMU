@@ -4,23 +4,23 @@ kutoka __future__ agiza division
 agiza unittest
 
 x = 2
-def nester():
+eleza nester():
     x = 3
-    def inner():
-        return x
-    return inner()
+    eleza inner():
+        rudisha x
+    rudisha inner()
 
 
-class TestFuture(unittest.TestCase):
+kundi TestFuture(unittest.TestCase):
 
-    def test_floor_div_operator(self):
+    eleza test_floor_div_operator(self):
         self.assertEqual(7 // 2, 3)
 
-    def test_true_div_as_default(self):
+    eleza test_true_div_as_default(self):
         self.assertAlmostEqual(7 / 2, 3.5)
 
-    def test_nested_scopes(self):
+    eleza test_nested_scopes(self):
         self.assertEqual(nester(), 3)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

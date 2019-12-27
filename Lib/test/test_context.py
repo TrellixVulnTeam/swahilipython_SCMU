@@ -13,17 +13,17 @@ except ImportError:
     hamt = None
 
 
-def isolated_context(func):
+eleza isolated_context(func):
     """Needed to make reftracking test mode work."""
     @functools.wraps(func)
-    def wrapper(*args, **kwargs):
+    eleza wrapper(*args, **kwargs):
         ctx = contextvars.Context()
-        return ctx.run(func, *args, **kwargs)
-    return wrapper
+        rudisha ctx.run(func, *args, **kwargs)
+    rudisha wrapper
 
 
-class ContextTest(unittest.TestCase):
-    def test_context_var_new_1(self):
+kundi ContextTest(unittest.TestCase):
+    eleza test_context_var_new_1(self):
         with self.assertRaisesRegex(TypeError, 'takes exactly 1'):
             contextvars.ContextVar()
 
@@ -38,11 +38,11 @@ class ContextTest(unittest.TestCase):
 
         self.assertNotEqual(hash(c), hash('aaa'))
 
-    def test_context_var_new_2(self):
+    eleza test_context_var_new_2(self):
         self.assertIsNone(contextvars.ContextVar[int])
 
     @isolated_context
-    def test_context_var_repr_1(self):
+    eleza test_context_var_repr_1(self):
         c = contextvars.ContextVar('a')
         self.assertIn('a', repr(c))
 
@@ -61,21 +61,21 @@ class ContextTest(unittest.TestCase):
         c.reset(t)
         self.assertIn(' used ', repr(t))
 
-    def test_context_subclassing_1(self):
+    eleza test_context_subclassing_1(self):
         with self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
-            class MyContextVar(contextvars.ContextVar):
+            kundi MyContextVar(contextvars.ContextVar):
                 # Potentially we might want ContextVars to be subclassable.
                 pass
 
         with self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
-            class MyContext(contextvars.Context):
+            kundi MyContext(contextvars.Context):
                 pass
 
         with self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
-            class MyToken(contextvars.Token):
+            kundi MyToken(contextvars.Token):
                 pass
 
-    def test_context_new_1(self):
+    eleza test_context_new_1(self):
         with self.assertRaisesRegex(TypeError, 'any arguments'):
             contextvars.Context(1)
         with self.assertRaisesRegex(TypeError, 'any arguments'):
@@ -84,7 +84,7 @@ class ContextTest(unittest.TestCase):
             contextvars.Context(a=1)
         contextvars.Context(**{})
 
-    def test_context_typerrors_1(self):
+    eleza test_context_typerrors_1(self):
         ctx = contextvars.Context()
 
         with self.assertRaisesRegex(TypeError, 'ContextVar key was expected'):
@@ -94,23 +94,23 @@ class ContextTest(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, 'ContextVar key was expected'):
             ctx.get(1)
 
-    def test_context_get_context_1(self):
+    eleza test_context_get_context_1(self):
         ctx = contextvars.copy_context()
         self.assertIsInstance(ctx, contextvars.Context)
 
-    def test_context_run_1(self):
+    eleza test_context_run_1(self):
         ctx = contextvars.Context()
 
         with self.assertRaisesRegex(TypeError, 'missing 1 required'):
             ctx.run()
 
-    def test_context_run_2(self):
+    eleza test_context_run_2(self):
         ctx = contextvars.Context()
 
-        def func(*args, **kwargs):
+        eleza func(*args, **kwargs):
             kwargs['spam'] = 'foo'
             args += ('bar',)
-            return args, kwargs
+            rudisha args, kwargs
 
         for f in (func, functools.partial(func)):
             # partial doesn't support FASTCALL
@@ -132,10 +132,10 @@ class ContextTest(unittest.TestCase):
                 ((11, 'bar'), {'spam': 'foo'}))
             self.assertEqual(a, {})
 
-    def test_context_run_3(self):
+    eleza test_context_run_3(self):
         ctx = contextvars.Context()
 
-        def func(*args, **kwargs):
+        eleza func(*args, **kwargs):
             1 / 0
 
         with self.assertRaises(ZeroDivisionError):
@@ -146,15 +146,15 @@ class ContextTest(unittest.TestCase):
             ctx.run(func, 1, 2, a=123)
 
     @isolated_context
-    def test_context_run_4(self):
+    eleza test_context_run_4(self):
         ctx1 = contextvars.Context()
         ctx2 = contextvars.Context()
         var = contextvars.ContextVar('var')
 
-        def func2():
+        eleza func2():
             self.assertIsNone(var.get(None))
 
-        def func1():
+        eleza func1():
             self.assertIsNone(var.get(None))
             var.set('spam')
             ctx2.run(func2)
@@ -163,18 +163,18 @@ class ContextTest(unittest.TestCase):
             cur = contextvars.copy_context()
             self.assertEqual(len(cur), 1)
             self.assertEqual(cur[var], 'spam')
-            return cur
+            rudisha cur
 
         returned_ctx = ctx1.run(func1)
         self.assertEqual(ctx1, returned_ctx)
         self.assertEqual(returned_ctx[var], 'spam')
         self.assertIn(var, returned_ctx)
 
-    def test_context_run_5(self):
+    eleza test_context_run_5(self):
         ctx = contextvars.Context()
         var = contextvars.ContextVar('var')
 
-        def func():
+        eleza func():
             self.assertIsNone(var.get(None))
             var.set('spam')
             1 / 0
@@ -184,11 +184,11 @@ class ContextTest(unittest.TestCase):
 
         self.assertIsNone(var.get(None))
 
-    def test_context_run_6(self):
+    eleza test_context_run_6(self):
         ctx = contextvars.Context()
         c = contextvars.ContextVar('a', default=0)
 
-        def fun():
+        eleza fun():
             self.assertEqual(c.get(), 0)
             self.assertIsNone(ctx.get(c))
 
@@ -198,17 +198,17 @@ class ContextTest(unittest.TestCase):
 
         ctx.run(fun)
 
-    def test_context_run_7(self):
+    eleza test_context_run_7(self):
         ctx = contextvars.Context()
 
-        def fun():
+        eleza fun():
             with self.assertRaisesRegex(RuntimeError, 'is already entered'):
                 ctx.run(fun)
 
         ctx.run(fun)
 
     @isolated_context
-    def test_context_getset_1(self):
+    eleza test_context_getset_1(self):
         c = contextvars.ContextVar('c')
         with self.assertRaises(LookupError):
             c.get()
@@ -262,7 +262,7 @@ class ContextTest(unittest.TestCase):
         self.assertEqual(list(ctx2), [])
 
     @isolated_context
-    def test_context_getset_2(self):
+    eleza test_context_getset_2(self):
         v1 = contextvars.ContextVar('v1')
         v2 = contextvars.ContextVar('v2')
 
@@ -271,11 +271,11 @@ class ContextTest(unittest.TestCase):
             v2.reset(t1)
 
     @isolated_context
-    def test_context_getset_3(self):
+    eleza test_context_getset_3(self):
         c = contextvars.ContextVar('c', default=42)
         ctx = contextvars.Context()
 
-        def fun():
+        eleza fun():
             self.assertEqual(c.get(), 42)
             with self.assertRaises(KeyError):
                 ctx[c]
@@ -296,7 +296,7 @@ class ContextTest(unittest.TestCase):
         ctx.run(fun)
 
     @isolated_context
-    def test_context_getset_4(self):
+    eleza test_context_getset_4(self):
         c = contextvars.ContextVar('c', default=42)
         ctx = contextvars.Context()
 
@@ -306,11 +306,11 @@ class ContextTest(unittest.TestCase):
             c.reset(tok)
 
     @isolated_context
-    def test_context_getset_5(self):
+    eleza test_context_getset_5(self):
         c = contextvars.ContextVar('c', default=42)
         c.set([])
 
-        def fun():
+        eleza fun():
             c.set([])
             c.get().append(42)
             self.assertEqual(c.get(), [42])
@@ -318,11 +318,11 @@ class ContextTest(unittest.TestCase):
         contextvars.copy_context().run(fun)
         self.assertEqual(c.get(), [])
 
-    def test_context_copy_1(self):
+    eleza test_context_copy_1(self):
         ctx1 = contextvars.Context()
         c = contextvars.ContextVar('c', default=42)
 
-        def ctx1_fun():
+        eleza ctx1_fun():
             c.set(10)
 
             ctx2 = ctx1.copy()
@@ -336,7 +336,7 @@ class ContextTest(unittest.TestCase):
             self.assertEqual(ctx1[c], 20)
             self.assertEqual(ctx2[c], 30)
 
-        def ctx2_fun():
+        eleza ctx2_fun():
             self.assertEqual(c.get(), 10)
             c.set(30)
             self.assertEqual(c.get(), 30)
@@ -344,15 +344,15 @@ class ContextTest(unittest.TestCase):
         ctx1.run(ctx1_fun)
 
     @isolated_context
-    def test_context_threads_1(self):
+    eleza test_context_threads_1(self):
         cvar = contextvars.ContextVar('cvar')
 
-        def sub(num):
+        eleza sub(num):
             for i in range(10):
                 cvar.set(num + i)
                 time.sleep(random.uniform(0.001, 0.05))
                 self.assertEqual(cvar.get(), num + i)
-            return num
+            rudisha num
 
         tp = concurrent.futures.ThreadPoolExecutor(max_workers=10)
         try:
@@ -365,77 +365,77 @@ class ContextTest(unittest.TestCase):
 # HAMT Tests
 
 
-class HashKey:
+kundi HashKey:
     _crasher = None
 
-    def __init__(self, hash, name, *, error_on_eq_to=None):
+    eleza __init__(self, hash, name, *, error_on_eq_to=None):
         assert hash != -1
         self.name = name
         self.hash = hash
         self.error_on_eq_to = error_on_eq_to
 
-    def __repr__(self):
-        return f'<Key name:{self.name} hash:{self.hash}>'
+    eleza __repr__(self):
+        rudisha f'<Key name:{self.name} hash:{self.hash}>'
 
-    def __hash__(self):
-        if self._crasher is not None and self._crasher.error_on_hash:
+    eleza __hash__(self):
+        ikiwa self._crasher is not None and self._crasher.error_on_hash:
             raise HashingError
 
-        return self.hash
+        rudisha self.hash
 
-    def __eq__(self, other):
-        if not isinstance(other, HashKey):
-            return NotImplemented
+    eleza __eq__(self, other):
+        ikiwa not isinstance(other, HashKey):
+            rudisha NotImplemented
 
-        if self._crasher is not None and self._crasher.error_on_eq:
+        ikiwa self._crasher is not None and self._crasher.error_on_eq:
             raise EqError
 
-        if self.error_on_eq_to is not None and self.error_on_eq_to is other:
+        ikiwa self.error_on_eq_to is not None and self.error_on_eq_to is other:
             raise ValueError(f'cannot compare {self!r} to {other!r}')
-        if other.error_on_eq_to is not None and other.error_on_eq_to is self:
+        ikiwa other.error_on_eq_to is not None and other.error_on_eq_to is self:
             raise ValueError(f'cannot compare {other!r} to {self!r}')
 
-        return (self.name, self.hash) == (other.name, other.hash)
+        rudisha (self.name, self.hash) == (other.name, other.hash)
 
 
-class KeyStr(str):
-    def __hash__(self):
-        if HashKey._crasher is not None and HashKey._crasher.error_on_hash:
+kundi KeyStr(str):
+    eleza __hash__(self):
+        ikiwa HashKey._crasher is not None and HashKey._crasher.error_on_hash:
             raise HashingError
-        return super().__hash__()
+        rudisha super().__hash__()
 
-    def __eq__(self, other):
-        if HashKey._crasher is not None and HashKey._crasher.error_on_eq:
+    eleza __eq__(self, other):
+        ikiwa HashKey._crasher is not None and HashKey._crasher.error_on_eq:
             raise EqError
-        return super().__eq__(other)
+        rudisha super().__eq__(other)
 
 
-class HaskKeyCrasher:
-    def __init__(self, *, error_on_hash=False, error_on_eq=False):
+kundi HaskKeyCrasher:
+    eleza __init__(self, *, error_on_hash=False, error_on_eq=False):
         self.error_on_hash = error_on_hash
         self.error_on_eq = error_on_eq
 
-    def __enter__(self):
-        if HashKey._crasher is not None:
+    eleza __enter__(self):
+        ikiwa HashKey._crasher is not None:
             raise RuntimeError('cannot nest crashers')
         HashKey._crasher = self
 
-    def __exit__(self, *exc):
+    eleza __exit__(self, *exc):
         HashKey._crasher = None
 
 
-class HashingError(Exception):
+kundi HashingError(Exception):
     pass
 
 
-class EqError(Exception):
+kundi EqError(Exception):
     pass
 
 
 @unittest.skipIf(hamt is None, '_testcapi lacks "hamt()" function')
-class HamtTest(unittest.TestCase):
+kundi HamtTest(unittest.TestCase):
 
-    def test_hashkey_helper_1(self):
+    eleza test_hashkey_helper_1(self):
         k1 = HashKey(10, 'aaa')
         k2 = HashKey(10, 'bbb')
 
@@ -449,11 +449,11 @@ class HamtTest(unittest.TestCase):
         self.assertEqual(d[k1], 'a')
         self.assertEqual(d[k2], 'b')
 
-    def test_hamt_basics_1(self):
+    eleza test_hamt_basics_1(self):
         h = hamt()
         h = None  # NoQA
 
-    def test_hamt_basics_2(self):
+    eleza test_hamt_basics_2(self):
         h = hamt()
         self.assertEqual(len(h), 0)
 
@@ -483,14 +483,14 @@ class HamtTest(unittest.TestCase):
 
         h = h2 = h3 = None
 
-    def test_hamt_basics_3(self):
+    eleza test_hamt_basics_3(self):
         h = hamt()
         o = object()
         h1 = h.set('1', o)
         h2 = h1.set('1', o)
         self.assertIs(h1, h2)
 
-    def test_hamt_basics_4(self):
+    eleza test_hamt_basics_4(self):
         h = hamt()
         h1 = h.set('key', [])
         h2 = h1.set('key', [])
@@ -499,7 +499,7 @@ class HamtTest(unittest.TestCase):
         self.assertEqual(len(h2), 1)
         self.assertIsNot(h1.get('key'), h2.get('key'))
 
-    def test_hamt_collision_1(self):
+    eleza test_hamt_collision_1(self):
         k1 = HashKey(10, 'aaa')
         k2 = HashKey(10, 'bbb')
         k3 = HashKey(10, 'ccc')
@@ -536,7 +536,7 @@ class HamtTest(unittest.TestCase):
         self.assertEqual(len(h4), 2)
         self.assertEqual(len(h5), 3)
 
-    def test_hamt_stress(self):
+    eleza test_hamt_stress(self):
         COLLECTION_SIZE = 7000
         TEST_ITERS_EVERY = 647
         CRASH_HASH_EVERY = 97
@@ -550,14 +550,14 @@ class HamtTest(unittest.TestCase):
             for i in range(COLLECTION_SIZE):
                 key = KeyStr(i)
 
-                if not (i % CRASH_HASH_EVERY):
+                ikiwa not (i % CRASH_HASH_EVERY):
                     with HaskKeyCrasher(error_on_hash=True):
                         with self.assertRaises(HashingError):
                             h.set(key, i)
 
                 h = h.set(key, i)
 
-                if not (i % CRASH_EQ_EVERY):
+                ikiwa not (i % CRASH_EQ_EVERY):
                     with HaskKeyCrasher(error_on_eq=True):
                         with self.assertRaises(EqError):
                             h.get(KeyStr(i))  # really trigger __eq__
@@ -565,7 +565,7 @@ class HamtTest(unittest.TestCase):
                 d[key] = i
                 self.assertEqual(len(d), len(h))
 
-                if not (i % TEST_ITERS_EVERY):
+                ikiwa not (i % TEST_ITERS_EVERY):
                     self.assertEqual(set(h.items()), set(d.items()))
                     self.assertEqual(len(h.items()), len(d.items()))
 
@@ -579,12 +579,12 @@ class HamtTest(unittest.TestCase):
             for iter_i, i in enumerate(keys_to_delete):
                 key = KeyStr(i)
 
-                if not (iter_i % CRASH_HASH_EVERY):
+                ikiwa not (iter_i % CRASH_HASH_EVERY):
                     with HaskKeyCrasher(error_on_hash=True):
                         with self.assertRaises(HashingError):
                             h.delete(key)
 
-                if not (iter_i % CRASH_EQ_EVERY):
+                ikiwa not (iter_i % CRASH_EQ_EVERY):
                     with HaskKeyCrasher(error_on_eq=True):
                         with self.assertRaises(EqError):
                             h.delete(KeyStr(i))
@@ -594,11 +594,11 @@ class HamtTest(unittest.TestCase):
                 del d[key]
                 self.assertEqual(len(d), len(h))
 
-                if iter_i == COLLECTION_SIZE // 2:
+                ikiwa iter_i == COLLECTION_SIZE // 2:
                     hm = h
                     dm = d.copy()
 
-                if not (iter_i % TEST_ITERS_EVERY):
+                ikiwa not (iter_i % TEST_ITERS_EVERY):
                     self.assertEqual(set(h.keys()), set(d.keys()))
                     self.assertEqual(len(h.keys()), len(d.keys()))
 
@@ -617,7 +617,7 @@ class HamtTest(unittest.TestCase):
                 dm.pop(str(key), None)
                 self.assertEqual(len(d), len(h))
 
-                if not (i % TEST_ITERS_EVERY):
+                ikiwa not (i % TEST_ITERS_EVERY):
                     self.assertEqual(set(h.values()), set(d.values()))
                     self.assertEqual(len(h.values()), len(d.values()))
 
@@ -625,7 +625,7 @@ class HamtTest(unittest.TestCase):
             self.assertEqual(len(h), 0)
             self.assertEqual(list(h.items()), [])
 
-    def test_hamt_delete_1(self):
+    eleza test_hamt_delete_1(self):
         A = HashKey(100, 'A')
         B = HashKey(101, 'B')
         C = HashKey(102, 'C')
@@ -670,7 +670,7 @@ class HamtTest(unittest.TestCase):
         self.assertEqual(h.get(B), 'b')
         self.assertEqual(h.get(E), 'e')
 
-    def test_hamt_delete_2(self):
+    eleza test_hamt_delete_2(self):
         A = HashKey(100, 'A')
         B = HashKey(201001, 'B')
         C = HashKey(101001, 'C')
@@ -722,7 +722,7 @@ class HamtTest(unittest.TestCase):
         h = h.delete(E)
         self.assertEqual(len(h), 0)
 
-    def test_hamt_delete_3(self):
+    eleza test_hamt_delete_3(self):
         A = HashKey(100, 'A')
         B = HashKey(101, 'B')
         C = HashKey(100100, 'C')
@@ -758,7 +758,7 @@ class HamtTest(unittest.TestCase):
         self.assertEqual(h.get(C), 'c')
         self.assertEqual(h.get(B), 'b')
 
-    def test_hamt_delete_4(self):
+    eleza test_hamt_delete_4(self):
         A = HashKey(100, 'A')
         B = HashKey(101, 'B')
         C = HashKey(100100, 'C')
@@ -800,7 +800,7 @@ class HamtTest(unittest.TestCase):
         h = h.delete(B)
         self.assertEqual(len(h), 0)
 
-    def test_hamt_delete_5(self):
+    eleza test_hamt_delete_5(self):
         h = hamt()
 
         keys = []
@@ -849,7 +849,7 @@ class HamtTest(unittest.TestCase):
             h = h.delete(key)
         self.assertEqual(len(h), 0)
 
-    def test_hamt_items_1(self):
+    eleza test_hamt_items_1(self):
         A = HashKey(100, 'A')
         B = HashKey(201001, 'B')
         C = HashKey(101001, 'C')
@@ -870,7 +870,7 @@ class HamtTest(unittest.TestCase):
             set(list(it)),
             {(A, 'a'), (B, 'b'), (C, 'c'), (D, 'd'), (E, 'e'), (F, 'f')})
 
-    def test_hamt_items_2(self):
+    eleza test_hamt_items_2(self):
         A = HashKey(100, 'A')
         B = HashKey(101, 'B')
         C = HashKey(100100, 'C')
@@ -891,7 +891,7 @@ class HamtTest(unittest.TestCase):
             set(list(it)),
             {(A, 'a'), (B, 'b'), (C, 'c'), (D, 'd'), (E, 'e'), (F, 'f')})
 
-    def test_hamt_keys_1(self):
+    eleza test_hamt_keys_1(self):
         A = HashKey(100, 'A')
         B = HashKey(101, 'B')
         C = HashKey(100100, 'C')
@@ -910,12 +910,12 @@ class HamtTest(unittest.TestCase):
         self.assertEqual(set(list(h.keys())), {A, B, C, D, E, F})
         self.assertEqual(set(list(h)), {A, B, C, D, E, F})
 
-    def test_hamt_items_3(self):
+    eleza test_hamt_items_3(self):
         h = hamt()
         self.assertEqual(len(h.items()), 0)
         self.assertEqual(list(h.items()), [])
 
-    def test_hamt_eq_1(self):
+    eleza test_hamt_eq_1(self):
         A = HashKey(100, 'A')
         B = HashKey(101, 'B')
         C = HashKey(100100, 'C')
@@ -962,7 +962,7 @@ class HamtTest(unittest.TestCase):
         self.assertFalse(h1 == h2)
         self.assertTrue(h1 != h2)
 
-    def test_hamt_eq_2(self):
+    eleza test_hamt_eq_2(self):
         A = HashKey(100, 'A')
         Er = HashKey(100, 'Er', error_on_eq_to=A)
 
@@ -978,7 +978,7 @@ class HamtTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'cannot compare'):
             h1 != h2
 
-    def test_hamt_gc_1(self):
+    eleza test_hamt_gc_1(self):
         A = HashKey(100, 'A')
 
         h = hamt()
@@ -1001,7 +1001,7 @@ class HamtTest(unittest.TestCase):
 
         self.assertIsNone(ref())
 
-    def test_hamt_gc_2(self):
+    eleza test_hamt_gc_2(self):
         A = HashKey(100, 'A')
         B = HashKey(101, 'B')
 
@@ -1021,7 +1021,7 @@ class HamtTest(unittest.TestCase):
 
         self.assertIsNone(ref())
 
-    def test_hamt_in_1(self):
+    eleza test_hamt_in_1(self):
         A = HashKey(100, 'A')
         AA = HashKey(100, 'A')
 
@@ -1041,7 +1041,7 @@ class HamtTest(unittest.TestCase):
             with HaskKeyCrasher(error_on_hash=True):
                 AA in h
 
-    def test_hamt_getitem_1(self):
+    eleza test_hamt_getitem_1(self):
         A = HashKey(100, 'A')
         AA = HashKey(100, 'A')
 
@@ -1065,5 +1065,5 @@ class HamtTest(unittest.TestCase):
                 h[AA]
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

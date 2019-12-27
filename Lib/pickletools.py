@@ -25,7 +25,7 @@ bytes_types = pickle.bytes_types
 # - A pickle verifier:  read a pickle and check it exhaustively for
 #   well-formedness.  dis() does a lot of this already.
 #
-# - A protocol identifier:  examine a pickle and return its protocol number
+# - A protocol identifier:  examine a pickle and rudisha its protocol number
 #   (== the highest .proto attr value among all the opcodes in the pickle).
 #   dis() already prints this info at the end.
 #
@@ -171,7 +171,7 @@ TAKEN_FROM_ARGUMENT4  = -3   # num bytes is 4-byte signed little-endian int
 TAKEN_FROM_ARGUMENT4U = -4   # num bytes is 4-byte unsigned little-endian int
 TAKEN_FROM_ARGUMENT8U = -5   # num bytes is 8-byte unsigned little-endian int
 
-class ArgumentDescriptor(object):
+kundi ArgumentDescriptor(object):
     __slots__ = (
         # name of descriptor record, also a module global name; a string
         'name',
@@ -190,7 +190,7 @@ class ArgumentDescriptor(object):
         'doc',
     )
 
-    def __init__(self, name, n, reader, doc):
+    eleza __init__(self, name, n, reader, doc):
         assert isinstance(name, str)
         self.name = name
 
@@ -209,7 +209,7 @@ class ArgumentDescriptor(object):
 
 kutoka struct agiza unpack as _unpack
 
-def read_uint1(f):
+eleza read_uint1(f):
     r"""
     >>> agiza io
     >>> read_uint1(io.BytesIO(b'\xff'))
@@ -217,8 +217,8 @@ def read_uint1(f):
     """
 
     data = f.read(1)
-    if data:
-        return data[0]
+    ikiwa data:
+        rudisha data[0]
     raise ValueError("not enough data in stream to read uint1")
 
 uint1 = ArgumentDescriptor(
@@ -228,7 +228,7 @@ uint1 = ArgumentDescriptor(
             doc="One-byte unsigned integer.")
 
 
-def read_uint2(f):
+eleza read_uint2(f):
     r"""
     >>> agiza io
     >>> read_uint2(io.BytesIO(b'\xff\x00'))
@@ -238,8 +238,8 @@ def read_uint2(f):
     """
 
     data = f.read(2)
-    if len(data) == 2:
-        return _unpack("<H", data)[0]
+    ikiwa len(data) == 2:
+        rudisha _unpack("<H", data)[0]
     raise ValueError("not enough data in stream to read uint2")
 
 uint2 = ArgumentDescriptor(
@@ -249,7 +249,7 @@ uint2 = ArgumentDescriptor(
             doc="Two-byte unsigned integer, little-endian.")
 
 
-def read_int4(f):
+eleza read_int4(f):
     r"""
     >>> agiza io
     >>> read_int4(io.BytesIO(b'\xff\x00\x00\x00'))
@@ -259,8 +259,8 @@ def read_int4(f):
     """
 
     data = f.read(4)
-    if len(data) == 4:
-        return _unpack("<i", data)[0]
+    ikiwa len(data) == 4:
+        rudisha _unpack("<i", data)[0]
     raise ValueError("not enough data in stream to read int4")
 
 int4 = ArgumentDescriptor(
@@ -270,7 +270,7 @@ int4 = ArgumentDescriptor(
            doc="Four-byte signed integer, little-endian, 2's complement.")
 
 
-def read_uint4(f):
+eleza read_uint4(f):
     r"""
     >>> agiza io
     >>> read_uint4(io.BytesIO(b'\xff\x00\x00\x00'))
@@ -280,8 +280,8 @@ def read_uint4(f):
     """
 
     data = f.read(4)
-    if len(data) == 4:
-        return _unpack("<I", data)[0]
+    ikiwa len(data) == 4:
+        rudisha _unpack("<I", data)[0]
     raise ValueError("not enough data in stream to read uint4")
 
 uint4 = ArgumentDescriptor(
@@ -291,7 +291,7 @@ uint4 = ArgumentDescriptor(
             doc="Four-byte unsigned integer, little-endian.")
 
 
-def read_uint8(f):
+eleza read_uint8(f):
     r"""
     >>> agiza io
     >>> read_uint8(io.BytesIO(b'\xff\x00\x00\x00\x00\x00\x00\x00'))
@@ -301,8 +301,8 @@ def read_uint8(f):
     """
 
     data = f.read(8)
-    if len(data) == 8:
-        return _unpack("<Q", data)[0]
+    ikiwa len(data) == 8:
+        rudisha _unpack("<Q", data)[0]
     raise ValueError("not enough data in stream to read uint8")
 
 uint8 = ArgumentDescriptor(
@@ -312,7 +312,7 @@ uint8 = ArgumentDescriptor(
             doc="Eight-byte unsigned integer, little-endian.")
 
 
-def read_stringnl(f, decode=True, stripquotes=True):
+eleza read_stringnl(f, decode=True, stripquotes=True):
     r"""
     >>> agiza io
     >>> read_stringnl(io.BytesIO(b"'abcd'\nefg\n"))
@@ -340,14 +340,14 @@ def read_stringnl(f, decode=True, stripquotes=True):
     """
 
     data = f.readline()
-    if not data.endswith(b'\n'):
+    ikiwa not data.endswith(b'\n'):
         raise ValueError("no newline found when trying to read stringnl")
     data = data[:-1]    # lose the newline
 
-    if stripquotes:
+    ikiwa stripquotes:
         for q in (b'"', b"'"):
-            if data.startswith(q):
-                if not data.endswith(q):
+            ikiwa data.startswith(q):
+                ikiwa not data.endswith(q):
                     raise ValueError("strinq quote %r not found at both "
                                      "ends of %r" % (q, data))
                 data = data[1:-1]
@@ -355,9 +355,9 @@ def read_stringnl(f, decode=True, stripquotes=True):
         else:
             raise ValueError("no string quotes around %r" % data)
 
-    if decode:
+    ikiwa decode:
         data = codecs.escape_decode(data)[0].decode("ascii")
-    return data
+    rudisha data
 
 stringnl = ArgumentDescriptor(
                name='stringnl',
@@ -369,8 +369,8 @@ stringnl = ArgumentDescriptor(
                    bracketing quotes.
                    """)
 
-def read_stringnl_noescape(f):
-    return read_stringnl(f, stripquotes=False)
+eleza read_stringnl_noescape(f):
+    rudisha read_stringnl(f, stripquotes=False)
 
 stringnl_noescape = ArgumentDescriptor(
                         name='stringnl_noescape',
@@ -383,14 +383,14 @@ stringnl_noescape = ArgumentDescriptor(
                         printable ASCII characters.
                         """)
 
-def read_stringnl_noescape_pair(f):
+eleza read_stringnl_noescape_pair(f):
     r"""
     >>> agiza io
     >>> read_stringnl_noescape_pair(io.BytesIO(b"Queue\nEmpty\njunk"))
     'Queue Empty'
     """
 
-    return "%s %s" % (read_stringnl_noescape(f), read_stringnl_noescape(f))
+    rudisha "%s %s" % (read_stringnl_noescape(f), read_stringnl_noescape(f))
 
 stringnl_noescape_pair = ArgumentDescriptor(
                              name='stringnl_noescape_pair',
@@ -406,7 +406,7 @@ stringnl_noescape_pair = ArgumentDescriptor(
                              """)
 
 
-def read_string1(f):
+eleza read_string1(f):
     r"""
     >>> agiza io
     >>> read_string1(io.BytesIO(b"\x00"))
@@ -418,8 +418,8 @@ def read_string1(f):
     n = read_uint1(f)
     assert n >= 0
     data = f.read(n)
-    if len(data) == n:
-        return data.decode("latin-1")
+    ikiwa len(data) == n:
+        rudisha data.decode("latin-1")
     raise ValueError("expected %d bytes in a string1, but only %d remain" %
                      (n, len(data)))
 
@@ -435,7 +435,7 @@ string1 = ArgumentDescriptor(
               """)
 
 
-def read_string4(f):
+eleza read_string4(f):
     r"""
     >>> agiza io
     >>> read_string4(io.BytesIO(b"\x00\x00\x00\x00abc"))
@@ -449,11 +449,11 @@ def read_string4(f):
     """
 
     n = read_int4(f)
-    if n < 0:
+    ikiwa n < 0:
         raise ValueError("string4 byte count < 0: %d" % n)
     data = f.read(n)
-    if len(data) == n:
-        return data.decode("latin-1")
+    ikiwa len(data) == n:
+        rudisha data.decode("latin-1")
     raise ValueError("expected %d bytes in a string4, but only %d remain" %
                      (n, len(data)))
 
@@ -469,7 +469,7 @@ string4 = ArgumentDescriptor(
               """)
 
 
-def read_bytes1(f):
+eleza read_bytes1(f):
     r"""
     >>> agiza io
     >>> read_bytes1(io.BytesIO(b"\x00"))
@@ -481,8 +481,8 @@ def read_bytes1(f):
     n = read_uint1(f)
     assert n >= 0
     data = f.read(n)
-    if len(data) == n:
-        return data
+    ikiwa len(data) == n:
+        rudisha data
     raise ValueError("expected %d bytes in a bytes1, but only %d remain" %
                      (n, len(data)))
 
@@ -497,7 +497,7 @@ bytes1 = ArgumentDescriptor(
               """)
 
 
-def read_bytes4(f):
+eleza read_bytes4(f):
     r"""
     >>> agiza io
     >>> read_bytes4(io.BytesIO(b"\x00\x00\x00\x00abc"))
@@ -512,11 +512,11 @@ def read_bytes4(f):
 
     n = read_uint4(f)
     assert n >= 0
-    if n > sys.maxsize:
+    ikiwa n > sys.maxsize:
         raise ValueError("bytes4 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
-    if len(data) == n:
-        return data
+    ikiwa len(data) == n:
+        rudisha data
     raise ValueError("expected %d bytes in a bytes4, but only %d remain" %
                      (n, len(data)))
 
@@ -531,7 +531,7 @@ bytes4 = ArgumentDescriptor(
               """)
 
 
-def read_bytes8(f):
+eleza read_bytes8(f):
     r"""
     >>> agiza io, struct, sys
     >>> read_bytes8(io.BytesIO(b"\x00\x00\x00\x00\x00\x00\x00\x00abc"))
@@ -547,11 +547,11 @@ def read_bytes8(f):
 
     n = read_uint8(f)
     assert n >= 0
-    if n > sys.maxsize:
+    ikiwa n > sys.maxsize:
         raise ValueError("bytes8 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
-    if len(data) == n:
-        return data
+    ikiwa len(data) == n:
+        rudisha data
     raise ValueError("expected %d bytes in a bytes8, but only %d remain" %
                      (n, len(data)))
 
@@ -566,7 +566,7 @@ bytes8 = ArgumentDescriptor(
               """)
 
 
-def read_bytearray8(f):
+eleza read_bytearray8(f):
     r"""
     >>> agiza io, struct, sys
     >>> read_bytearray8(io.BytesIO(b"\x00\x00\x00\x00\x00\x00\x00\x00abc"))
@@ -582,11 +582,11 @@ def read_bytearray8(f):
 
     n = read_uint8(f)
     assert n >= 0
-    if n > sys.maxsize:
+    ikiwa n > sys.maxsize:
         raise ValueError("bytearray8 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
-    if len(data) == n:
-        return bytearray(data)
+    ikiwa len(data) == n:
+        rudisha bytearray(data)
     raise ValueError("expected %d bytes in a bytearray8, but only %d remain" %
                      (n, len(data)))
 
@@ -600,7 +600,7 @@ bytearray8 = ArgumentDescriptor(
               the number of bytes, and the second argument is that many bytes.
               """)
 
-def read_unicodestringnl(f):
+eleza read_unicodestringnl(f):
     r"""
     >>> agiza io
     >>> read_unicodestringnl(io.BytesIO(b"abc\\uabcd\njunk")) == 'abc\uabcd'
@@ -608,11 +608,11 @@ def read_unicodestringnl(f):
     """
 
     data = f.readline()
-    if not data.endswith(b'\n'):
+    ikiwa not data.endswith(b'\n'):
         raise ValueError("no newline found when trying to read "
                          "unicodestringnl")
     data = data[:-1]    # lose the newline
-    return str(data, 'raw-unicode-escape')
+    rudisha str(data, 'raw-unicode-escape')
 
 unicodestringnl = ArgumentDescriptor(
                       name='unicodestringnl',
@@ -626,7 +626,7 @@ unicodestringnl = ArgumentDescriptor(
                       """)
 
 
-def read_unicodestring1(f):
+eleza read_unicodestring1(f):
     r"""
     >>> agiza io
     >>> s = 'abcd\uabcd'
@@ -647,8 +647,8 @@ def read_unicodestring1(f):
     n = read_uint1(f)
     assert n >= 0
     data = f.read(n)
-    if len(data) == n:
-        return str(data, 'utf-8', 'surrogatepass')
+    ikiwa len(data) == n:
+        rudisha str(data, 'utf-8', 'surrogatepass')
     raise ValueError("expected %d bytes in a unicodestring1, but only %d "
                      "remain" % (n, len(data)))
 
@@ -665,7 +665,7 @@ unicodestring1 = ArgumentDescriptor(
                     """)
 
 
-def read_unicodestring4(f):
+eleza read_unicodestring4(f):
     r"""
     >>> agiza io
     >>> s = 'abcd\uabcd'
@@ -685,11 +685,11 @@ def read_unicodestring4(f):
 
     n = read_uint4(f)
     assert n >= 0
-    if n > sys.maxsize:
+    ikiwa n > sys.maxsize:
         raise ValueError("unicodestring4 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
-    if len(data) == n:
-        return str(data, 'utf-8', 'surrogatepass')
+    ikiwa len(data) == n:
+        rudisha str(data, 'utf-8', 'surrogatepass')
     raise ValueError("expected %d bytes in a unicodestring4, but only %d "
                      "remain" % (n, len(data)))
 
@@ -706,7 +706,7 @@ unicodestring4 = ArgumentDescriptor(
                     """)
 
 
-def read_unicodestring8(f):
+eleza read_unicodestring8(f):
     r"""
     >>> agiza io
     >>> s = 'abcd\uabcd'
@@ -726,11 +726,11 @@ def read_unicodestring8(f):
 
     n = read_uint8(f)
     assert n >= 0
-    if n > sys.maxsize:
+    ikiwa n > sys.maxsize:
         raise ValueError("unicodestring8 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
-    if len(data) == n:
-        return str(data, 'utf-8', 'surrogatepass')
+    ikiwa len(data) == n:
+        rudisha str(data, 'utf-8', 'surrogatepass')
     raise ValueError("expected %d bytes in a unicodestring8, but only %d "
                      "remain" % (n, len(data)))
 
@@ -747,7 +747,7 @@ unicodestring8 = ArgumentDescriptor(
                     """)
 
 
-def read_decimalnl_short(f):
+eleza read_decimalnl_short(f):
     r"""
     >>> agiza io
     >>> read_decimalnl_short(io.BytesIO(b"1234\n56"))
@@ -762,14 +762,14 @@ def read_decimalnl_short(f):
     s = read_stringnl(f, decode=False, stripquotes=False)
 
     # There's a hack for True and False here.
-    if s == b"00":
-        return False
-    elif s == b"01":
-        return True
+    ikiwa s == b"00":
+        rudisha False
+    elikiwa s == b"01":
+        rudisha True
 
-    return int(s)
+    rudisha int(s)
 
-def read_decimalnl_long(f):
+eleza read_decimalnl_long(f):
     r"""
     >>> agiza io
 
@@ -781,9 +781,9 @@ def read_decimalnl_long(f):
     """
 
     s = read_stringnl(f, decode=False, stripquotes=False)
-    if s[-1:] == b'L':
+    ikiwa s[-1:] == b'L':
         s = s[:-1]
-    return int(s)
+    rudisha int(s)
 
 
 decimalnl_short = ArgumentDescriptor(
@@ -810,14 +810,14 @@ decimalnl_long = ArgumentDescriptor(
                          """)
 
 
-def read_floatnl(f):
+eleza read_floatnl(f):
     r"""
     >>> agiza io
     >>> read_floatnl(io.BytesIO(b"-1.25\n6"))
     -1.25
     """
     s = read_stringnl(f, decode=False, stripquotes=False)
-    return float(s)
+    rudisha float(s)
 
 floatnl = ArgumentDescriptor(
               name='floatnl',
@@ -832,7 +832,7 @@ floatnl = ArgumentDescriptor(
               for infinities or NaNs).
               """)
 
-def read_float8(f):
+eleza read_float8(f):
     r"""
     >>> agiza io, struct
     >>> raw = struct.pack(">d", -1.25)
@@ -843,8 +843,8 @@ def read_float8(f):
     """
 
     data = f.read(8)
-    if len(data) == 8:
-        return _unpack(">d", data)[0]
+    ikiwa len(data) == 8:
+        rudisha _unpack(">d", data)[0]
     raise ValueError("not enough data in stream to read float8")
 
 
@@ -870,7 +870,7 @@ float8 = ArgumentDescriptor(
 
 kutoka pickle agiza decode_long
 
-def read_long1(f):
+eleza read_long1(f):
     r"""
     >>> agiza io
     >>> read_long1(io.BytesIO(b"\x00"))
@@ -887,9 +887,9 @@ def read_long1(f):
 
     n = read_uint1(f)
     data = f.read(n)
-    if len(data) != n:
+    ikiwa len(data) != n:
         raise ValueError("not enough data in stream to read long1")
-    return decode_long(data)
+    rudisha decode_long(data)
 
 long1 = ArgumentDescriptor(
     name="long1",
@@ -902,7 +902,7 @@ long1 = ArgumentDescriptor(
     If the size is 0, that's taken as a shortcut for the long 0L.
     """)
 
-def read_long4(f):
+eleza read_long4(f):
     r"""
     >>> agiza io
     >>> read_long4(io.BytesIO(b"\x02\x00\x00\x00\xff\x00"))
@@ -918,12 +918,12 @@ def read_long4(f):
     """
 
     n = read_int4(f)
-    if n < 0:
+    ikiwa n < 0:
         raise ValueError("long4 byte count < 0: %d" % n)
     data = f.read(n)
-    if len(data) != n:
+    ikiwa len(data) != n:
         raise ValueError("not enough data in stream to read long4")
-    return decode_long(data)
+    rudisha decode_long(data)
 
 long4 = ArgumentDescriptor(
     name="long4",
@@ -945,7 +945,7 @@ long4 = ArgumentDescriptor(
 # descriptors we need names to describe the various types of objects that can
 # appear on the stack.
 
-class StackObject(object):
+kundi StackObject(object):
     __slots__ = (
         # name of descriptor record, for info only
         'name',
@@ -958,12 +958,12 @@ class StackObject(object):
         'doc',
     )
 
-    def __init__(self, name, obtype, doc):
+    eleza __init__(self, name, obtype, doc):
         assert isinstance(name, str)
         self.name = name
 
         assert isinstance(obtype, type) or isinstance(obtype, tuple)
-        if isinstance(obtype, tuple):
+        ikiwa isinstance(obtype, tuple):
             for contained in obtype:
                 assert isinstance(contained, type)
         self.obtype = obtype
@@ -971,8 +971,8 @@ class StackObject(object):
         assert isinstance(doc, str)
         self.doc = doc
 
-    def __repr__(self):
-        return self.name
+    eleza __repr__(self):
+        rudisha self.name
 
 
 pyint = pylong = StackObject(
@@ -1090,7 +1090,7 @@ topmost markobject too).
 ##############################################################################
 # Descriptors for pickle opcodes.
 
-class OpcodeInfo(object):
+kundi OpcodeInfo(object):
 
     __slots__ = (
         # symbolic name of opcode; a string
@@ -1121,7 +1121,7 @@ class OpcodeInfo(object):
         'doc',
     )
 
-    def __init__(self, name, code, arg,
+    eleza __init__(self, name, code, arg,
                  stack_before, stack_after, proto, doc):
         assert isinstance(name, str)
         self.name = name
@@ -1175,8 +1175,8 @@ opcodes = [
       2.2.2, mapping to ints 1 and 0.  For compatibility in both directions,
       True gets pickled as INT + "I01\\n", and False as INT + "I00\\n".
       Leading zeroes are never produced for a genuine integer.  The 2.3
-      (and later) unpicklers special-case these and return bool instead;
-      earlier unpicklers ignore the leading "0" and return the int.
+      (and later) unpicklers special-case these and rudisha bool instead;
+      earlier unpicklers ignore the leading "0" and rudisha the int.
       """),
 
     I(name='BININT',
@@ -1483,7 +1483,7 @@ opcodes = [
       on most boxes).
 
       In general, FLOAT cannot be used to transport infinities, NaNs, or
-      minus zero across boxes (or even on a single box, if the platform C
+      minus zero across boxes (or even on a single box, ikiwa the platform C
       library can't read the strings it produces for such things -- Windows
       is like that), but may do less damage than BINFLOAT on boxes with
       greater precision or dynamic range than IEEE-754 double.
@@ -1499,7 +1499,7 @@ opcodes = [
 
       This generally requires less than half the space of FLOAT encoding.
       In general, BINFLOAT cannot be used to transport infinities, NaNs, or
-      minus zero, raises an exception if the exponent exceeds the range of
+      minus zero, raises an exception ikiwa the exponent exceeds the range of
       an IEEE-754 double, and retains no more than 53 bits of precision (if
       there are more than that, "add a half and chop" rounding is used to
       cut it back to 53 significant bits).
@@ -1920,7 +1920,7 @@ opcodes = [
       See EXT1.  EXT4 has a four-byte integer argument.
       """),
 
-    # Push a class object, or module function, on the stack, via its module
+    # Push a kundi object, or module function, on the stack, via its module
     # and name.
 
     I(name='GLOBAL',
@@ -1932,8 +1932,8 @@ opcodes = [
       doc="""Push a global object (module.attr) on the stack.
 
       Two newline-terminated strings follow the GLOBAL opcode.  The first is
-      taken as a module name, and the second as a class name.  The class
-      object module.class is pushed on the stack.  More accurately, the
+      taken as a module name, and the second as a kundi name.  The class
+      object module.kundi is pushed on the stack.  More accurately, the
       object returned by self.find_class(module, class) is pushed on the
       stack, so unpickling subclasses can override this form of lookup.
       """),
@@ -2012,13 +2012,13 @@ opcodes = [
       stack_before=[markobject, stackslice],
       stack_after=[anyobject],
       proto=0,
-      doc="""Build a class instance.
+      doc="""Build a kundi instance.
 
       This is the protocol 0 version of protocol 1's OBJ opcode.
       INST is followed by two newline-terminated strings, giving a
-      module and class name, just as for the GLOBAL opcode (and see
+      module and kundi name, just as for the GLOBAL opcode (and see
       GLOBAL for more details about that).  self.find_class(module, name)
-      is used to get a class object.
+      is used to get a kundi object.
 
       In addition, all the objects on the stack following the topmost
       markobject are gathered into a tuple and popped (along with the
@@ -2029,25 +2029,25 @@ opcodes = [
         + The argtuple is empty (markobject was at the top of the stack
           at the start).
 
-        + The class object does not have a __getinitargs__ attribute.
+        + The kundi object does not have a __getinitargs__ attribute.
 
-      then we want to create an old-style class instance without invoking
+      then we want to create an old-style kundi instance without invoking
       its __init__() method (pickle has waffled on this over the years; not
       calling __init__() is current wisdom).  In this case, an instance of
-      an old-style dummy class is created, and then we try to rebind its
-      __class__ attribute to the desired class object.  If this succeeds,
+      an old-style dummy kundi is created, and then we try to rebind its
+      __class__ attribute to the desired kundi object.  If this succeeds,
       the new instance object is pushed on the stack, and we're done.
 
-      Else (the argtuple is not empty, it's not an old-style class object,
-      or the class object does have a __getinitargs__ attribute), the code
-      first insists that the class object have a __safe_for_unpickling__
+      Else (the argtuple is not empty, it's not an old-style kundi object,
+      or the kundi object does have a __getinitargs__ attribute), the code
+      first insists that the kundi object have a __safe_for_unpickling__
       attribute.  Unlike as for the __safe_for_unpickling__ check in REDUCE,
       it doesn't matter whether this attribute has a true or false value, it
       only matters whether it exists (XXX this is a bug).  If
       __safe_for_unpickling__ doesn't exist, UnpicklingError is raised.
 
-      Else (the class object does have a __safe_for_unpickling__ attr),
-      the class object obtained kutoka INST's arguments is applied to the
+      Else (the kundi object does have a __safe_for_unpickling__ attr),
+      the kundi object obtained kutoka INST's arguments is applied to the
       argtuple obtained kutoka the stack, and the resulting instance object
       is pushed on the stack.
 
@@ -2062,17 +2062,17 @@ opcodes = [
       stack_before=[markobject, anyobject, stackslice],
       stack_after=[anyobject],
       proto=1,
-      doc="""Build a class instance.
+      doc="""Build a kundi instance.
 
       This is the protocol 1 version of protocol 0's INST opcode, and is
-      very much like it.  The major difference is that the class object
+      very much like it.  The major difference is that the kundi object
       is taken off the stack, allowing it to be retrieved kutoka the memo
-      repeatedly if several instances of the same class are created.  This
+      repeatedly ikiwa several instances of the same kundi are created.  This
       can be much more efficient (in both time and space) than repeatedly
-      embedding the module and class names in INST opcodes.
+      embedding the module and kundi names in INST opcodes.
 
       Unlike INST, OBJ takes no arguments kutoka the opcode stream.  Instead
-      the class object is taken off the stack, immediately above the
+      the kundi object is taken off the stack, immediately above the
       topmost markobject:
 
       Stack before: ... markobject classobject stackslice
@@ -2084,7 +2084,7 @@ opcodes = [
       a bug).  See INST for the gory details.
 
       NOTE:  In Python 2.3, INST and OBJ are identical except for how they
-      get the class object.  That was always the intent; the implementations
+      get the kundi object.  That was always the intent; the implementations
       had diverged for accidental reasons.
       """),
 
@@ -2199,10 +2199,10 @@ name2i = {}
 code2i = {}
 
 for i, d in enumerate(opcodes):
-    if d.name in name2i:
+    ikiwa d.name in name2i:
         raise ValueError("repeated name %r at indices %d and %d" %
                          (d.name, name2i[d.name], i))
-    if d.code in code2i:
+    ikiwa d.code in code2i:
         raise ValueError("repeated code %r at indices %d and %d" %
                          (d.code, code2i[d.code], i))
 
@@ -2221,27 +2221,27 @@ for d in opcodes:
     code2op[d.code] = d
 del d
 
-def assure_pickle_consistency(verbose=False):
+eleza assure_pickle_consistency(verbose=False):
 
     copy = code2op.copy()
     for name in pickle.__all__:
-        if not re.match("[A-Z][A-Z0-9_]+$", name):
-            if verbose:
-                print("skipping %r: it doesn't look like an opcode name" % name)
+        ikiwa not re.match("[A-Z][A-Z0-9_]+$", name):
+            ikiwa verbose:
+                andika("skipping %r: it doesn't look like an opcode name" % name)
             continue
         picklecode = getattr(pickle, name)
-        if not isinstance(picklecode, bytes) or len(picklecode) != 1:
-            if verbose:
-                print(("skipping %r: value %r doesn't look like a pickle "
+        ikiwa not isinstance(picklecode, bytes) or len(picklecode) != 1:
+            ikiwa verbose:
+                andika(("skipping %r: value %r doesn't look like a pickle "
                        "code" % (name, picklecode)))
             continue
         picklecode = picklecode.decode("latin-1")
-        if picklecode in copy:
-            if verbose:
-                print("checking name %r w/ code %r for consistency" % (
+        ikiwa picklecode in copy:
+            ikiwa verbose:
+                andika("checking name %r w/ code %r for consistency" % (
                       name, picklecode))
             d = copy[picklecode]
-            if d.name != name:
+            ikiwa d.name != name:
                 raise ValueError("for pickle code %r, pickle.py uses name %r "
                                  "but we're using name %r" % (picklecode,
                                                               name,
@@ -2253,7 +2253,7 @@ def assure_pickle_consistency(verbose=False):
             raise ValueError("pickle.py appears to have a pickle opcode with "
                              "name %r and code %r, but we don't" %
                              (name, picklecode))
-    if copy:
+    ikiwa copy:
         msg = ["we appear to have pickle opcodes that pickle.py doesn't have:"]
         for code, d in copy.items():
             msg.append("    name %r with code %r" % (d.name, code))
@@ -2265,11 +2265,11 @@ del assure_pickle_consistency
 ##############################################################################
 # A pickle opcode generator.
 
-def _genops(data, yield_end_pos=False):
-    if isinstance(data, bytes_types):
+eleza _genops(data, yield_end_pos=False):
+    ikiwa isinstance(data, bytes_types):
         data = io.BytesIO(data)
 
-    if hasattr(data, "tell"):
+    ikiwa hasattr(data, "tell"):
         getpos = data.tell
     else:
         getpos = lambda: None
@@ -2278,26 +2278,26 @@ def _genops(data, yield_end_pos=False):
         pos = getpos()
         code = data.read(1)
         opcode = code2op.get(code.decode("latin-1"))
-        if opcode is None:
-            if code == b"":
+        ikiwa opcode is None:
+            ikiwa code == b"":
                 raise ValueError("pickle exhausted before seeing STOP")
             else:
                 raise ValueError("at position %s, opcode %r unknown" % (
-                                 "<unknown>" if pos is None else pos,
+                                 "<unknown>" ikiwa pos is None else pos,
                                  code))
-        if opcode.arg is None:
+        ikiwa opcode.arg is None:
             arg = None
         else:
             arg = opcode.arg.reader(data)
-        if yield_end_pos:
+        ikiwa yield_end_pos:
             yield opcode, arg, pos, getpos()
         else:
             yield opcode, arg, pos
-        if code == b'.':
+        ikiwa code == b'.':
             assert opcode.name == 'STOP'
             break
 
-def genops(pickle):
+eleza genops(pickle):
     """Generate all the opcodes in a pickle.
 
     'pickle' is a file-like object, or string, containing the pickle.
@@ -2320,12 +2320,12 @@ def genops(pickle):
     used.  Else (the pickle doesn't have a tell(), and it's not obvious how
     to query its current position) pos is None.
     """
-    return _genops(pickle)
+    rudisha _genops(pickle)
 
 ##############################################################################
 # A pickle optimizer.
 
-def optimize(p):
+eleza optimize(p):
     'Optimize a pickle string by removing unused PUT opcodes'
     put = 'PUT'
     get = 'GET'
@@ -2335,24 +2335,24 @@ def optimize(p):
     proto = 0
     protoheader = b''
     for opcode, arg, pos, end_pos in _genops(p, yield_end_pos=True):
-        if 'PUT' in opcode.name:
+        ikiwa 'PUT' in opcode.name:
             oldids.add(arg)
             opcodes.append((put, arg))
-        elif opcode.name == 'MEMOIZE':
+        elikiwa opcode.name == 'MEMOIZE':
             idx = len(oldids)
             oldids.add(idx)
             opcodes.append((put, idx))
-        elif 'FRAME' in opcode.name:
+        elikiwa 'FRAME' in opcode.name:
             pass
-        elif 'GET' in opcode.name:
-            if opcode.proto > proto:
+        elikiwa 'GET' in opcode.name:
+            ikiwa opcode.proto > proto:
                 proto = opcode.proto
             newids[arg] = None
             opcodes.append((get, arg))
-        elif opcode.name == 'PROTO':
-            if arg > proto:
+        elikiwa opcode.name == 'PROTO':
+            ikiwa arg > proto:
                 proto = arg
-            if pos == 0:
+            ikiwa pos == 0:
                 protoheader = p[pos:end_pos]
             else:
                 opcodes.append((pos, end_pos))
@@ -2365,34 +2365,34 @@ def optimize(p):
     # Write the PROTO header before any framing
     out.write(protoheader)
     pickler = pickle._Pickler(out, proto)
-    if proto >= 4:
+    ikiwa proto >= 4:
         pickler.framer.start_framing()
     idx = 0
     for op, arg in opcodes:
         frameless = False
-        if op is put:
-            if arg not in newids:
+        ikiwa op is put:
+            ikiwa arg not in newids:
                 continue
             data = pickler.put(idx)
             newids[arg] = idx
             idx += 1
-        elif op is get:
+        elikiwa op is get:
             data = pickler.get(newids[arg])
         else:
             data = p[op:arg]
             frameless = len(data) > pickler.framer._FRAME_SIZE_TARGET
         pickler.framer.commit_frame(force=frameless)
-        if frameless:
+        ikiwa frameless:
             pickler.framer.file_write(data)
         else:
             pickler.write(data)
     pickler.framer.end_framing()
-    return out.getvalue()
+    rudisha out.getvalue()
 
 ##############################################################################
 # A symbolic pickle disassembler.
 
-def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
+eleza dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
     """Produce a symbolic disassembly of a pickle.
 
     'pickle' is a file-like object, or string, containing a (at least one)
@@ -2403,7 +2403,7 @@ def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
     printed.  It defaults to sys.stdout.
 
     Optional arg 'memo' is a Python dict, used as the pickle's memo.  It
-    may be mutated by dis(), if the pickle contains PUT or BINPUT opcodes.
+    may be mutated by dis(), ikiwa the pickle contains PUT or BINPUT opcodes.
     Passing the same memo object to another dis() call then allows disassembly
     to proceed across multiple pickles that were all created by the same
     pickler with the same memo.  Ordinarily you don't need to worry about this.
@@ -2411,7 +2411,7 @@ def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
     Optional arg 'indentlevel' is the number of blanks by which to indent
     a new MARK level.  It defaults to 4.
 
-    Optional arg 'annotate' if nonzero instructs dis() to add short
+    Optional arg 'annotate' ikiwa nonzero instructs dis() to add short
     description of the opcode on each line of disassembled output.
     The value given to 'annotate' must be an integer and is used as a
     hint for the column where annotation should start.  The default
@@ -2438,7 +2438,7 @@ def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
     # (which in turn is needed to indent MARK blocks correctly).
 
     stack = []          # crude emulation of unpickler stack
-    if memo is None:
+    ikiwa memo is None:
         memo = {}       # crude emulation of unpickler memo
     maxproto = -1       # max protocol number seen
     markstack = []      # bytecode positions of MARK opcodes
@@ -2446,8 +2446,8 @@ def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
     errormsg = None
     annocol = annotate  # column hint for annotations
     for opcode, arg, pos in genops(pickle):
-        if pos is not None:
-            print("%5d:" % pos, end=' ', file=out)
+        ikiwa pos is not None:
+            andika("%5d:" % pos, end=' ', file=out)
 
         line = "%-4s %s%s" % (repr(opcode.code)[1:-1],
                               indentchunk * len(markstack),
@@ -2460,16 +2460,16 @@ def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
 
         # See whether a MARK should be popped.
         markmsg = None
-        if markobject in before or (opcode.name == "POP" and
+        ikiwa markobject in before or (opcode.name == "POP" and
                                     stack and
                                     stack[-1] is markobject):
             assert markobject not in after
-            if __debug__:
-                if markobject in before:
+            ikiwa __debug__:
+                ikiwa markobject in before:
                     assert before[-1] is stackslice
-            if markstack:
+            ikiwa markstack:
                 markpos = markstack.pop()
-                if markpos is None:
+                ikiwa markpos is None:
                     markmsg = "(MARK at unknown opcode offset)"
                 else:
                     markmsg = "(MARK at %d)" % markpos
@@ -2487,68 +2487,68 @@ def dis(pickle, out=None, memo=None, indentlevel=4, annotate=0):
                 errormsg = markmsg = "no MARK exists on stack"
 
         # Check for correct memo usage.
-        if opcode.name in ("PUT", "BINPUT", "LONG_BINPUT", "MEMOIZE"):
-            if opcode.name == "MEMOIZE":
+        ikiwa opcode.name in ("PUT", "BINPUT", "LONG_BINPUT", "MEMOIZE"):
+            ikiwa opcode.name == "MEMOIZE":
                 memo_idx = len(memo)
                 markmsg = "(as %d)" % memo_idx
             else:
                 assert arg is not None
                 memo_idx = arg
-            if memo_idx in memo:
+            ikiwa memo_idx in memo:
                 errormsg = "memo key %r already defined" % arg
-            elif not stack:
+            elikiwa not stack:
                 errormsg = "stack is empty -- can't store into memo"
-            elif stack[-1] is markobject:
+            elikiwa stack[-1] is markobject:
                 errormsg = "can't store markobject in the memo"
             else:
                 memo[memo_idx] = stack[-1]
-        elif opcode.name in ("GET", "BINGET", "LONG_BINGET"):
-            if arg in memo:
+        elikiwa opcode.name in ("GET", "BINGET", "LONG_BINGET"):
+            ikiwa arg in memo:
                 assert len(after) == 1
                 after = [memo[arg]]     # for better stack emulation
             else:
                 errormsg = "memo key %r has never been stored into" % arg
 
-        if arg is not None or markmsg:
+        ikiwa arg is not None or markmsg:
             # make a mild effort to align arguments
             line += ' ' * (10 - len(opcode.name))
-            if arg is not None:
+            ikiwa arg is not None:
                 line += ' ' + repr(arg)
-            if markmsg:
+            ikiwa markmsg:
                 line += ' ' + markmsg
-        if annotate:
+        ikiwa annotate:
             line += ' ' * (annocol - len(line))
             # make a mild effort to align annotations
             annocol = len(line)
-            if annocol > 50:
+            ikiwa annocol > 50:
                 annocol = annotate
             line += ' ' + opcode.doc.split('\n', 1)[0]
-        print(line, file=out)
+        andika(line, file=out)
 
-        if errormsg:
+        ikiwa errormsg:
             # Note that we delayed complaining until the offending opcode
             # was printed.
             raise ValueError(errormsg)
 
         # Emulate the stack effects.
-        if len(stack) < numtopop:
+        ikiwa len(stack) < numtopop:
             raise ValueError("tries to pop %d items kutoka stack with "
                              "only %d items" % (numtopop, len(stack)))
-        if numtopop:
+        ikiwa numtopop:
             del stack[-numtopop:]
-        if markobject in after:
+        ikiwa markobject in after:
             assert markobject not in before
             markstack.append(pos)
 
         stack.extend(after)
 
-    print("highest protocol among opcodes =", maxproto, file=out)
-    if stack:
+    andika("highest protocol among opcodes =", maxproto, file=out)
+    ikiwa stack:
         raise ValueError("stack not empty after STOP: %r" % stack)
 
-# For use in the doctest, simply as an example of a class to pickle.
-class _Example:
-    def __init__(self, value):
+# For use in the doctest, simply as an example of a kundi to pickle.
+kundi _Example:
+    eleza __init__(self, value):
         self.value = value
 
 _dis_test = r"""
@@ -2839,11 +2839,11 @@ __test__ = {'disassembler_test': _dis_test,
             'disassembler_memo_test': _memo_test,
            }
 
-def _test():
+eleza _test():
     agiza doctest
-    return doctest.testmod()
+    rudisha doctest.testmod()
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     agiza argparse
     parser = argparse.ArgumentParser(
         description='disassemble one or more pickle files')
@@ -2864,7 +2864,7 @@ if __name__ == "__main__":
         help='annotate each line with a short opcode description')
     parser.add_argument(
         '-p', '--preamble', default="==> {name} <==",
-        help='if more than one pickle file is specified, print this before'
+        help='ikiwa more than one pickle file is specified, print this before'
         ' each disassembly')
     parser.add_argument(
         '-t', '--test', action='store_true',
@@ -2873,17 +2873,17 @@ if __name__ == "__main__":
         '-v', action='store_true',
         help='run verbosely; only affects self-test run')
     args = parser.parse_args()
-    if args.test:
+    ikiwa args.test:
         _test()
     else:
-        annotate = 30 if args.annotate else 0
-        if not args.pickle_file:
+        annotate = 30 ikiwa args.annotate else 0
+        ikiwa not args.pickle_file:
             parser.print_help()
-        elif len(args.pickle_file) == 1:
+        elikiwa len(args.pickle_file) == 1:
             dis(args.pickle_file[0], args.output, None,
                 args.indentlevel, annotate)
         else:
-            memo = {} if args.memo else None
+            memo = {} ikiwa args.memo else None
             for f in args.pickle_file:
                 preamble = args.preamble.format(name=f.name)
                 args.output.write(preamble + '\n')

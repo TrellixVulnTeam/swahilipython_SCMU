@@ -64,10 +64,10 @@ for entry_list in MAILCAPDICT_DEPRECATED.values():
         entry.pop('lineno')
 
 
-class HelperFunctionTest(unittest.TestCase):
+kundi HelperFunctionTest(unittest.TestCase):
 
-    def test_listmailcapfiles(self):
-        # The return value for listmailcapfiles() will vary by system.
+    eleza test_listmailcapfiles(self):
+        # The rudisha value for listmailcapfiles() will vary by system.
         # So verify that listmailcapfiles() returns a list of strings that is of
         # non-zero length.
         mcfiles = mailcap.listmailcapfiles()
@@ -75,9 +75,9 @@ class HelperFunctionTest(unittest.TestCase):
         for m in mcfiles:
             self.assertIsInstance(m, str)
         with test.support.EnvironmentVarGuard() as env:
-            # According to RFC 1524, if MAILCAPS env variable exists, use that
+            # According to RFC 1524, ikiwa MAILCAPS env variable exists, use that
             # and only that.
-            if "MAILCAPS" in env:
+            ikiwa "MAILCAPS" in env:
                 env_mailcaps = env["MAILCAPS"].split(os.pathsep)
             else:
                 env_mailcaps = ["/testdir1/.mailcap", "/testdir2/mailcap"]
@@ -85,14 +85,14 @@ class HelperFunctionTest(unittest.TestCase):
                 mcfiles = mailcap.listmailcapfiles()
         self.assertEqual(env_mailcaps, mcfiles)
 
-    def test_readmailcapfile(self):
+    eleza test_readmailcapfile(self):
         # Test readmailcapfile() using test file. It should match MAILCAPDICT.
         with open(MAILCAPFILE, 'r') as mcf:
             with self.assertWarns(DeprecationWarning):
                 d = mailcap.readmailcapfile(mcf)
         self.assertDictEqual(d, MAILCAPDICT_DEPRECATED)
 
-    def test_lookup(self):
+    eleza test_lookup(self):
         # Test without key
         expected = [{'view': 'animate %s', 'lineno': 12},
                     {'view': 'mpeg_play %s', 'lineno': 13}]
@@ -114,7 +114,7 @@ class HelperFunctionTest(unittest.TestCase):
         actual = mailcap.lookup(MAILCAPDICT_DEPRECATED, 'video/mpeg')
         self.assertListEqual(expected, actual)
 
-    def test_subst(self):
+    eleza test_subst(self):
         plist = ['id=1', 'number=2', 'total=3']
         # test case: ([field, MIMEtype, filename, plist=[]], <expected string>)
         test_cases = [
@@ -130,9 +130,9 @@ class HelperFunctionTest(unittest.TestCase):
             self.assertEqual(mailcap.subst(*tc[0]), tc[1])
 
 
-class GetcapsTest(unittest.TestCase):
+kundi GetcapsTest(unittest.TestCase):
 
-    def test_mock_getcaps(self):
+    eleza test_mock_getcaps(self):
         # Test mailcap.getcaps() using mock mailcap file in this dir.
         # Temporarily override any existing system mailcap file by pointing the
         # MAILCAPS environment variable to our mock file.
@@ -141,13 +141,13 @@ class GetcapsTest(unittest.TestCase):
             caps = mailcap.getcaps()
             self.assertDictEqual(caps, MAILCAPDICT)
 
-    def test_system_mailcap(self):
-        # Test mailcap.getcaps() with mailcap file(s) on system, if any.
+    eleza test_system_mailcap(self):
+        # Test mailcap.getcaps() with mailcap file(s) on system, ikiwa any.
         caps = mailcap.getcaps()
         self.assertIsInstance(caps, dict)
         mailcapfiles = mailcap.listmailcapfiles()
-        existingmcfiles = [mcf for mcf in mailcapfiles if os.path.exists(mcf)]
-        if existingmcfiles:
+        existingmcfiles = [mcf for mcf in mailcapfiles ikiwa os.path.exists(mcf)]
+        ikiwa existingmcfiles:
             # At least 1 mailcap file exists, so test that.
             for (k, v) in caps.items():
                 self.assertIsInstance(k, str)
@@ -155,13 +155,13 @@ class GetcapsTest(unittest.TestCase):
                 for e in v:
                     self.assertIsInstance(e, dict)
         else:
-            # No mailcap files on system. getcaps() should return empty dict.
+            # No mailcap files on system. getcaps() should rudisha empty dict.
             self.assertEqual({}, caps)
 
 
-class FindmatchTest(unittest.TestCase):
+kundi FindmatchTest(unittest.TestCase):
 
-    def test_findmatch(self):
+    eleza test_findmatch(self):
 
         # default findmatch arguments
         c = MAILCAPDICT
@@ -213,9 +213,9 @@ class FindmatchTest(unittest.TestCase):
         self._run_cases(cases)
 
     @unittest.skipUnless(os.name == "posix", "Requires 'test' command on system")
-    def test_test(self):
+    eleza test_test(self):
         # findmatch() will automatically check any "test" conditions and skip
-        # the entry if the check fails.
+        # the entry ikiwa the check fails.
         caps = {"test/pass": [{"test": "test 1 -eq 1"}],
                 "test/fail": [{"test": "test 1 -eq 0"}]}
         # test case: (findmatch args, findmatch keyword args, expected output)
@@ -223,17 +223,17 @@ class FindmatchTest(unittest.TestCase):
         #   keyword args: N/A
         #   output: (command line, mailcap entry)
         cases = [
-            # findmatch will return the mailcap entry for test/pass because it evaluates to true
+            # findmatch will rudisha the mailcap entry for test/pass because it evaluates to true
             ([caps, "test/pass", "test"], {}, ("test 1 -eq 1", {"test": "test 1 -eq 1"})),
-            # findmatch will return None because test/fail evaluates to false
+            # findmatch will rudisha None because test/fail evaluates to false
             ([caps, "test/fail", "test"], {}, (None, None))
         ]
         self._run_cases(cases)
 
-    def _run_cases(self, cases):
+    eleza _run_cases(self, cases):
         for c in cases:
             self.assertEqual(mailcap.findmatch(*c[0], **c[1]), c[2])
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

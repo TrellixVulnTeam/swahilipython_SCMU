@@ -9,7 +9,7 @@ File Objects
 
 These APIs are a minimal emulation of the Python 2 C API for built-in file
 objects, which used to rely on the buffered I/O (:c:type:`FILE\*`) support
-from the C standard library.  In Python 3, files and streams use the new
+kutoka the C standard library.  In Python 3, files and streams use the new
 :mod:`io` module, which defines several layers over the low-level unbuffered
 I/O of the operating system.  The functions described below are
 convenience C wrappers over these new APIs, and meant mostly for internal
@@ -19,7 +19,7 @@ the :mod:`io` APIs instead.
 
 .. c:function:: PyFile_FromFd(int fd, const char *name, const char *mode, int buffering, const char *encoding, const char *errors, const char *newline, int closefd)
 
-   Create a Python file object from the file descriptor of an already
+   Create a Python file object kutoka the file descriptor of an already
    opened file *fd*.  The arguments *name*, *encoding*, *errors* and *newline*
    can be *NULL* to use the defaults; *buffering* can be *-1* to use the
    default. *name* is ignored and kept for backward compatibility. Return
@@ -49,12 +49,12 @@ the :mod:`io` APIs instead.
 
    .. index:: single: EOFError (built-in exception)
 
-   Equivalent to ``p.readline([n])``, this function reads one line from the
+   Equivalent to ``p.readline([n])``, this function reads one line kutoka the
    object *p*.  *p* may be a file object or any object with a
    :meth:`~io.IOBase.readline`
    method.  If *n* is ``0``, exactly one line is read, regardless of the length of
    the line.  If *n* is greater than ``0``, no more than *n* bytes will be read
-   from the file; a partial line can be returned.  In both cases, an empty string
+   kutoka the file; a partial line can be returned.  In both cases, an empty string
    is returned if the end of the file is reached immediately.  If *n* is less than
    ``0``, however, one line is read regardless of length, but :exc:`EOFError` is
    raised if the end of the file is reached immediately.
@@ -69,7 +69,7 @@ the :mod:`io` APIs instead.
    void *userData)`, where *path* is guaranteed to be :c:type:`PyUnicodeObject`.
 
    The *userData* pointer is passed into the hook function. Since hook
-   functions may be called from different runtimes, this pointer should not
+   functions may be called kutoka different runtimes, this pointer should not
    refer directly to Python state.
 
    As this hook is intentionally used during import, avoid importing new modules

@@ -63,7 +63,7 @@ Is there a tool to help find bugs or perform static analysis?
 Yes.
 
 PyChecker is a static analysis tool that finds bugs in Python source code and
-warns about code complexity and style.  You can get PyChecker from
+warns about code complexity and style.  You can get PyChecker kutoka
 http://pychecker.sourceforge.net/.
 
 `Pylint <https://www.pylint.org/>`_ is another tool that checks
@@ -80,7 +80,7 @@ Static type checkers such as `Mypy <http://mypy-lang.org/>`_,
 source code.
 
 
-How can I create a stand-alone binary from a Python script?
+How can I create a stand-alone binary kutoka a Python script?
 -----------------------------------------------------------
 
 You don't need the ability to compile Python to C code if all you want is a
@@ -94,7 +94,7 @@ One is to use the freeze tool, which is included in the Python source tree as
 embed all your modules into a new program, which is then linked with the
 standard Python modules.
 
-It works by scanning your source recursively for import statements (in both
+It works by scanning your source recursively for agiza statements (in both
 forms) and looking for the modules in the standard Python path as well as in the
 source directory (for built-in modules).  It then turns the bytecode for modules
 written in Python into C code (array initializers that can be turned into code
@@ -169,7 +169,7 @@ global:
    10
 
 This explicit declaration is required in order to remind you that (unlike the
-superficially analogous situation with class and instance variables) you are
+superficially analogous situation with kundi and instance variables) you are
 actually modifying the value of the variable in the outer scope:
 
    >>> print(x)
@@ -263,7 +263,7 @@ How do I share global variables across modules?
 ------------------------------------------------
 
 The canonical way to share information across modules within a single program is
-to create a special module (often called config or cfg).  Just import the config
+to create a special module (often called config or cfg).  Just agiza the config
 module in all modules of your application; the module then becomes available as
 a global name.  Because there is only one instance of each module, any changes
 made to the module object get reflected everywhere.  For example:
@@ -274,59 +274,59 @@ config.py::
 
 mod.py::
 
-   import config
+   agiza config
    config.x = 1
 
 main.py::
 
-   import config
-   import mod
+   agiza config
+   agiza mod
    print(config.x)
 
 Note that using a module is also the basis for implementing the Singleton design
 pattern, for the same reason.
 
 
-What are the "best practices" for using import in a module?
+What are the "best practices" for using agiza in a module?
 -----------------------------------------------------------
 
-In general, don't use ``from modulename import *``.  Doing so clutters the
+In general, don't use ``kutoka modulename agiza *``.  Doing so clutters the
 importer's namespace, and makes it much harder for linters to detect undefined
 names.
 
 Import modules at the top of a file.  Doing so makes it clear what other modules
 your code requires and avoids questions of whether the module name is in scope.
-Using one import per line makes it easy to add and delete module imports, but
+Using one agiza per line makes it easy to add and delete module imports, but
 using multiple imports per line uses less screen space.
 
-It's good practice if you import modules in the following order:
+It's good practice if you agiza modules in the following order:
 
 1. standard library modules -- e.g. ``sys``, ``os``, ``getopt``, ``re``
 2. third-party library modules (anything installed in Python's site-packages
    directory) -- e.g. mx.DateTime, ZODB, PIL.Image, etc.
 3. locally-developed modules
 
-It is sometimes necessary to move imports to a function or class to avoid
+It is sometimes necessary to move imports to a function or kundi to avoid
 problems with circular imports.  Gordon McMillan says:
 
-   Circular imports are fine where both modules use the "import <module>" form
+   Circular imports are fine where both modules use the "agiza <module>" form
    of import.  They fail when the 2nd module wants to grab a name out of the
-   first ("from module import name") and the import is at the top level.  That's
+   first ("kutoka module agiza name") and the agiza is at the top level.  That's
    because names in the 1st are not yet available, because the first module is
    busy importing the 2nd.
 
 In this case, if the second module is only used in one function, then the import
-can easily be moved into that function.  By the time the import is called, the
+can easily be moved into that function.  By the time the agiza is called, the
 first module will have finished initializing, and the second module can do its
 import.
 
 It may also be necessary to move imports out of the top level of code if some of
 the modules are platform-specific.  In that case, it may not even be possible to
-import all of the modules at the top of the file.  In this case, importing the
+agiza all of the modules at the top of the file.  In this case, importing the
 correct modules in the corresponding platform-specific code is a good option.
 
 Only move imports into a local scope, such as inside a function definition, if
-it's necessary to solve a problem such as avoiding a circular import or are
+it's necessary to solve a problem such as avoiding a circular agiza or are
 trying to reduce the initialization time of a module.  This technique is
 especially helpful if many of the imports are unnecessary depending on how the
 program executes.  You may also want to move imports into a function if the
@@ -357,8 +357,8 @@ the function is defined.  If that object is changed, like the dictionary in this
 example, subsequent calls to the function will refer to this changed object.
 
 By definition, immutable objects such as numbers, strings, tuples, and ``None``,
-are safe from change. Changes to mutable objects such as dictionaries, lists,
-and class instances can lead to confusion.
+are safe kutoka change. Changes to mutable objects such as dictionaries, lists,
+and kundi instances can lead to confusion.
 
 Because of this feature, it is good programming practice to not use mutable
 objects as default values.  Instead, use ``None`` as the default value and
@@ -393,7 +393,7 @@ You could use a global variable containing a dictionary instead of the default
 value; it's a matter of taste.
 
 
-How can I pass optional or keyword parameters from one function to another?
+How can I pass optional or keyword parameters kutoka one function to another?
 ---------------------------------------------------------------------------
 
 Collect the arguments using the ``*`` and ``**`` specifiers in the function's
@@ -409,8 +409,8 @@ calling another function by using ``*`` and ``**``::
 
 
 .. index::
-   single: argument; difference from parameter
-   single: parameter; difference from argument
+   single: argument; difference kutoka parameter
+   single: parameter; difference kutoka argument
 
 .. _faq-argument-vs-parameter:
 
@@ -457,7 +457,7 @@ There are two factors that produce this result:
 2) Lists are :term:`mutable`, which means that you can change their content.
 
 After the call to :meth:`~list.append`, the content of the mutable object has
-changed from ``[]`` to ``[10]``.  Since both the variables refer to the same
+changed kutoka ``[]`` to ``[10]``.  Since both the variables refer to the same
 object, using either name accesses the modified value ``[10]``.
 
 If we instead assign an immutable object to ``x``::
@@ -487,7 +487,7 @@ mistakenly write ``y.sort()`` thinking it will give you a sorted copy of ``y``,
 you'll instead end up with ``None``, which will likely cause your program to
 generate an easily diagnosed error.
 
-However, there is one class of operations where the same operation sometimes
+However, there is one kundi of operations where the same operation sometimes
 has different behaviors with different types:  the augmented assignment
 operators.  For example, ``+=`` mutates lists but not tuples or ints (``a_list
 += [1, 2, 3]`` is equivalent to ``a_list.extend([1, 2, 3])`` and mutates
@@ -551,9 +551,9 @@ desired effect in a number of ways.
       func3(args)
       print(args['a'], args['b'])
 
-5) Or bundle up values in a class instance::
+5) Or bundle up values in a kundi instance::
 
-      class callByRef:
+      kundi callByRef:
           def __init__(self, /, **args):
               for key, value in args.items():
                   setattr(self, key, value)
@@ -586,7 +586,7 @@ function ``f(x)`` that computes the value ``a*x+b``.  Using nested scopes::
 
 Or using a callable object::
 
-   class linear:
+   kundi linear:
 
        def __init__(self, a, b):
            self.a, self.b = a, b
@@ -604,14 +604,14 @@ The callable object approach has the disadvantage that it is a bit slower and
 results in slightly longer code.  However, note that a collection of callables
 can share their signature via inheritance::
 
-   class exponential(linear):
+   kundi exponential(linear):
        # __init__ inherited
        def __call__(self, x):
            return self.a * (x ** self.b)
 
 Object can encapsulate state for several methods::
 
-   class counter:
+   kundi counter:
 
        value = 0
 
@@ -663,7 +663,7 @@ Essentially, assignment always binds a name to a value; the same is true of
 ``def`` and ``class`` statements, but in that case the value is a
 callable. Consider the following code::
 
-   >>> class A:
+   >>> kundi A:
    ...     pass
    ...
    >>> B = A
@@ -674,9 +674,9 @@ callable. Consider the following code::
    >>> print(a)
    <__main__.A object at 0x16D07CC>
 
-Arguably the class has a name: even though it is bound to two names and invoked
+Arguably the kundi has a name: even though it is bound to two names and invoked
 through the name B the created instance is still reported as an instance of
-class A.  However, it is impossible to say whether the instance's name is a or
+kundi A.  However, it is impossible to say whether the instance's name is a or
 b, since both names are bound to the same value.
 
 Generally speaking it should not be necessary for your code to "know the names"
@@ -743,7 +743,7 @@ Is it possible to write obfuscated one-liners in Python?
 Yes.  Usually this is done by nesting :keyword:`lambda` within
 :keyword:`!lambda`.  See the following three examples, due to Ulf Bartelt::
 
-   from functools import reduce
+   kutoka functools agiza reduce
 
    # Primes < 1000
    print(list(filter(None,map(lambda y:y*reduce(lambda x,y:x*y!=0,
@@ -852,7 +852,7 @@ e.g. ``float('144') == 144.0``.
 
 By default, these interpret the number as decimal, so that ``int('0144') ==
 144`` and ``int('0x144')`` raises :exc:`ValueError`. ``int(string, base)`` takes
-the base to convert from as a second optional argument, so ``int('0x144', 16) ==
+the base to convert kutoka as a second optional argument, so ``int('0x144', 16) ==
 324``.  If the base is specified as 0, the number is interpreted using Python's
 rules: a leading '0o' indicates octal, and '0x' indicates a hex number.
 
@@ -883,12 +883,12 @@ How do I modify a string in place?
 ----------------------------------
 
 You can't, because strings are immutable.  In most situations, you should
-simply construct a new string from the various parts you want to assemble
-it from.  However, if you need an object with the ability to modify in-place
+simply construct a new string kutoka the various parts you want to assemble
+it kutoka.  However, if you need an object with the ability to modify in-place
 unicode data, try using an :class:`io.StringIO` object or the :mod:`array`
 module::
 
-   >>> import io
+   >>> agiza io
    >>> s = "Hello, world"
    >>> sio = io.StringIO(s)
    >>> sio.getvalue()
@@ -900,7 +900,7 @@ module::
    >>> sio.getvalue()
    'Hello, there!'
 
-   >>> import array
+   >>> agiza array
    >>> a = array.array('u', s)
    >>> print(a)
    array('u', 'Hello, world')
@@ -933,7 +933,7 @@ There are various techniques.
 
 * Use the built-in function :func:`getattr`::
 
-     import foo
+     agiza foo
      getattr(foo, 'bar')()
 
   Note that :func:`getattr` works on any object, including classes, class
@@ -941,7 +941,7 @@ There are various techniques.
 
   This is used in several places in the standard library, like this::
 
-     class Foo:
+     kundi Foo:
          def do_foo(self):
              ...
 
@@ -969,11 +969,11 @@ There are various techniques.
   control over the contents of the string, someone could pass a string that
   resulted in an arbitrary function being executed.
 
-Is there an equivalent to Perl's chomp() for removing trailing newlines from strings?
+Is there an equivalent to Perl's chomp() for removing trailing newlines kutoka strings?
 -------------------------------------------------------------------------------------
 
 You can use ``S.rstrip("\r\n")`` to remove all occurrences of any line
-terminator from the end of the string ``S`` without removing other trailing
+terminator kutoka the end of the string ``S`` without removing other trailing
 whitespace.  If the string ``S`` represents more than one line, with several
 empty lines at the end, the line terminators for all the blank lines will
 be removed::
@@ -1126,7 +1126,7 @@ index and so forth.  Think of ``seq[-n]`` as the same as ``seq[len(seq)-n]``.
 
 Using negative indices can be very convenient.  For example ``S[:-1]`` is all of
 the string except for its last character, which is useful for removing the
-trailing newline from a string.
+trailing newline kutoka a string.
 
 
 How do I iterate over a sequence in reverse order?
@@ -1146,14 +1146,14 @@ With Python 2.3, you can use an extended slice syntax::
        ...  # do something with x ...
 
 
-How do you remove duplicates from a list?
+How do you remove duplicates kutoka a list?
 -----------------------------------------
 
 See the Python Cookbook for a long discussion of many ways to do this:
 
    https://code.activestate.com/recipes/52560/
 
-If you don't mind reordering the list, sort it and then scan from the end of the
+If you don't mind reordering the list, sort it and then scan kutoka the end of the
 list, deleting duplicates as you go::
 
    if mylist:
@@ -1359,7 +1359,7 @@ Python, use the ``key`` argument for the :meth:`list.sort` method::
    Isorted.sort(key=lambda s: int(s[10:15]))
 
 
-How can I sort one list by values from another list?
+How can I sort one list by values kutoka another list?
 ----------------------------------------------------
 
 Merge them into an iterator of tuples, sort the resulting list, and then pick
@@ -1386,7 +1386,7 @@ list comprehension.  However, it is almost twice as slow for long lists.  Why?
 First, the ``append()`` operation has to reallocate memory, and while it uses
 some tricks to avoid doing that each time, it still has to do it occasionally,
 and that costs quite a bit.  Second, the expression "result.append" requires an
-extra attribute lookup, and third, there's a speed reduction from having to make
+extra attribute lookup, and third, there's a speed reduction kutoka having to make
 all those function calls.
 
 
@@ -1396,14 +1396,14 @@ Objects
 What is a class?
 ----------------
 
-A class is the particular object type created by executing a class statement.
+A kundi is the particular object type created by executing a kundi statement.
 Class objects are used as templates to create instance objects, which embody
 both the data (attributes) and code (methods) specific to a datatype.
 
-A class can be based on one or more other classes, called its base class(es). It
+A kundi can be based on one or more other classes, called its base class(es). It
 then inherits the attributes and methods of its base classes. This allows an
 object model to be successively refined by inheritance.  You might have a
-generic ``Mailbox`` class that provides basic accessor methods for a mailbox,
+generic ``Mailbox`` kundi that provides basic accessor methods for a mailbox,
 and subclasses such as ``MboxMailbox``, ``MaildirMailbox``, ``OutlookMailbox``
 that handle various specific mailbox formats.
 
@@ -1415,7 +1415,7 @@ A method is a function on some object ``x`` that you normally call as
 ``x.name(arguments...)``.  Methods are defined as functions inside the class
 definition::
 
-   class C:
+   kundi C:
        def meth(self, arg):
            return arg * 2 + self.attribute
 
@@ -1425,13 +1425,13 @@ What is self?
 
 Self is merely a conventional name for the first argument of a method.  A method
 defined as ``meth(self, a, b, c)`` should be called as ``x.meth(a, b, c)`` for
-some instance ``x`` of the class in which the definition occurs; the called
+some instance ``x`` of the kundi in which the definition occurs; the called
 method will think it is called as ``meth(x, a, b, c)``.
 
 See also :ref:`why-self`.
 
 
-How do I check if an object is an instance of a given class or of a subclass of it?
+How do I check if an object is an instance of a given kundi or of a subkundi of it?
 -----------------------------------------------------------------------------------
 
 Use the built-in function ``isinstance(obj, cls)``.  You can check if an object
@@ -1443,8 +1443,8 @@ check whether an object is one of Python's built-in types, e.g.
 Note that most programs do not use :func:`isinstance` on user-defined classes
 very often.  If you are developing the classes yourself, a more proper
 object-oriented style is to define methods on the classes that encapsulate a
-particular behaviour, instead of checking the object's class and doing a
-different thing based on what class it is.  For example, if you have a function
+particular behaviour, instead of checking the object's kundi and doing a
+different thing based on what kundi it is.  For example, if you have a function
 that does something::
 
    def search(obj):
@@ -1457,11 +1457,11 @@ that does something::
 A better approach is to define a ``search()`` method on all the classes and just
 call it::
 
-   class Mailbox:
+   kundi Mailbox:
        def search(self):
            ...  # code to search a mailbox
 
-   class Document:
+   kundi Document:
        def search(self):
            ...  # code to search a document
 
@@ -1473,15 +1473,15 @@ What is delegation?
 
 Delegation is an object oriented technique (also called a design pattern).
 Let's say you have an object ``x`` and want to change the behaviour of just one
-of its methods.  You can create a new class that provides a new implementation
+of its methods.  You can create a new kundi that provides a new implementation
 of the method you're interested in changing and delegates all other methods to
 the corresponding method of ``x``.
 
 Python programmers can easily implement delegation.  For example, the following
-class implements a class that behaves like a file but converts all written data
+kundi implements a kundi that behaves like a file but converts all written data
 to uppercase::
 
-   class UpperOut:
+   kundi UpperOut:
 
        def __init__(self, outfile):
            self._outfile = outfile
@@ -1492,7 +1492,7 @@ to uppercase::
        def __getattr__(self, name):
            return getattr(self._outfile, name)
 
-Here the ``UpperOut`` class redefines the ``write()`` method to convert the
+Here the ``UpperOut`` kundi redefines the ``write()`` method to convert the
 argument string to uppercase before calling the underlying
 ``self.__outfile.write()`` method.  All other methods are delegated to the
 underlying ``self.__outfile`` object.  The delegation is accomplished via the
@@ -1500,11 +1500,11 @@ underlying ``self.__outfile`` object.  The delegation is accomplished via the
 for more information about controlling attribute access.
 
 Note that for more general cases delegation can get trickier. When attributes
-must be set as well as retrieved, the class must define a :meth:`__setattr__`
+must be set as well as retrieved, the kundi must define a :meth:`__setattr__`
 method too, and it must do so carefully.  The basic implementation of
 :meth:`__setattr__` is roughly equivalent to the following::
 
-   class X:
+   kundi X:
        ...
        def __setattr__(self, name, value):
            self.__dict__[name] = value
@@ -1514,17 +1514,17 @@ Most :meth:`__setattr__` implementations must modify ``self.__dict__`` to store
 local state for self without causing an infinite recursion.
 
 
-How do I call a method defined in a base class from a derived class that overrides it?
+How do I call a method defined in a base kundi kutoka a derived kundi that overrides it?
 --------------------------------------------------------------------------------------
 
 Use the built-in :func:`super` function::
 
-   class Derived(Base):
+   kundi Derived(Base):
        def meth(self):
            super(Derived, self).meth()
 
 For version prior to 3.0, you may be using classic classes: For a class
-definition such as ``class Derived(Base): ...`` you can call method ``meth()``
+definition such as ``kundi Derived(Base): ...`` you can call method ``meth()``
 defined in ``Base`` (or one of ``Base``'s base classes) as ``Base.meth(self,
 arguments...)``.  Here, ``Base.meth`` is an unbound method, so you need to
 provide the ``self`` argument.
@@ -1533,30 +1533,30 @@ provide the ``self`` argument.
 How can I organize my code to make it easier to change the base class?
 ----------------------------------------------------------------------
 
-You could define an alias for the base class, assign the real base class to it
-before your class definition, and use the alias throughout your class.  Then all
+You could define an alias for the base class, assign the real base kundi to it
+before your kundi definition, and use the alias throughout your class.  Then all
 you have to change is the value assigned to the alias.  Incidentally, this trick
 is also handy if you want to decide dynamically (e.g. depending on availability
-of resources) which base class to use.  Example::
+of resources) which base kundi to use.  Example::
 
    BaseAlias = <real base class>
 
-   class Derived(BaseAlias):
+   kundi Derived(BaseAlias):
        def meth(self):
            BaseAlias.meth(self)
            ...
 
 
-How do I create static class data and static class methods?
+How do I create static kundi data and static kundi methods?
 -----------------------------------------------------------
 
 Both static data and static methods (in the sense of C++ or Java) are supported
 in Python.
 
-For static data, simply define a class attribute.  To assign a new value to the
-attribute, you have to explicitly use the class name in the assignment::
+For static data, simply define a kundi attribute.  To assign a new value to the
+attribute, you have to explicitly use the kundi name in the assignment::
 
-   class C:
+   kundi C:
        count = 0   # number of times C.__init__ called
 
        def __init__(self):
@@ -1566,19 +1566,19 @@ attribute, you have to explicitly use the class name in the assignment::
            return C.count  # or return self.count
 
 ``c.count`` also refers to ``C.count`` for any ``c`` such that ``isinstance(c,
-C)`` holds, unless overridden by ``c`` itself or by some class on the base-class
-search path from ``c.__class__`` back to ``C``.
+C)`` holds, unless overridden by ``c`` itself or by some kundi on the base-class
+search path kutoka ``c.__class__`` back to ``C``.
 
 Caution: within a method of C, an assignment like ``self.count = 42`` creates a
 new and unrelated instance named "count" in ``self``'s own dict.  Rebinding of a
-class-static data name must always specify the class whether inside a method or
+class-static data name must always specify the kundi whether inside a method or
 not::
 
    C.count = 314
 
 Static methods are possible::
 
-   class C:
+   kundi C:
        @staticmethod
        def static(arg1, arg2, arg3):
            # No 'self' parameter!
@@ -1590,7 +1590,7 @@ via a simple module-level function::
    def getcount():
        return C.count
 
-If your code is structured so as to define one class (or tightly related class
+If your code is structured so as to define one kundi (or tightly related class
 hierarchy) per module, this supplies the desired encapsulation.
 
 
@@ -1604,7 +1604,7 @@ In C++ you'd write
 
 .. code-block:: c
 
-    class C {
+    kundi C {
         C() { cout << "No arguments\n"; }
         C(int i) { cout << "Argument is " << i << "\n"; }
     }
@@ -1612,7 +1612,7 @@ In C++ you'd write
 In Python you have to write a single constructor that catches all cases using
 default arguments.  For example::
 
-   class C:
+   kundi C:
        def __init__(self, i=None):
            if i is None:
                print("No arguments")
@@ -1633,10 +1633,10 @@ I try to use __spam and I get an error about _SomeClassName__spam.
 ------------------------------------------------------------------
 
 Variable names with double leading underscores are "mangled" to provide a simple
-but effective way to define class private variables.  Any identifier of the form
+but effective way to define kundi private variables.  Any identifier of the form
 ``__spam`` (at least two leading underscores, at most one trailing underscore)
 is textually replaced with ``_classname__spam``, where ``classname`` is the
-current class name with any leading underscores stripped.
+current kundi name with any leading underscores stripped.
 
 This doesn't guarantee privacy: an outside user can still deliberately access
 the "_classname__spam" attribute, and private values are visible in the object's
@@ -1644,7 +1644,7 @@ the "_classname__spam" attribute, and private values are visible in the object's
 names at all.
 
 
-My class defines __del__ but it is not called when I delete the object.
+My kundi defines __del__ but it is not called when I delete the object.
 -----------------------------------------------------------------------
 
 There are several possible reasons for this.
@@ -1691,7 +1691,7 @@ is printed to :data:`sys.stderr`.
 How do I get a list of all instances of a given class?
 ------------------------------------------------------
 
-Python does not keep track of all instances of a class (or of a built-in type).
+Python does not keep track of all instances of a kundi (or of a built-in type).
 You can program the class's constructor to keep track of all instances by
 keeping a list of weak references to each instance.
 
@@ -1701,7 +1701,7 @@ Why does the result of ``id()`` appear to be not unique?
 
 The :func:`id` builtin returns an integer that is guaranteed to be unique during
 the lifetime of the object.  Since in CPython, this is the object's memory
-address, it happens frequently that after an object is deleted from memory, the
+address, it happens frequently that after an object is deleted kutoka memory, the
 next freshly created object is allocated at the same position in memory.  This
 is illustrated by this example:
 
@@ -1746,7 +1746,7 @@ creation of a .pyc file is automatic if you're importing a module and Python
 has the ability (permissions, free space, etc...) to create a ``__pycache__``
 subdirectory and write the compiled module to that subdirectory.
 
-Running Python on a top level script is not considered an import and no
+Running Python on a top level script is not considered an agiza and no
 ``.pyc`` will be created.  For example, if you have a top-level module
 ``foo.py`` that imports another module ``xyz.py``, when you run ``foo`` (by
 typing ``python foo.py`` as a shell command), a ``.pyc`` will be created for
@@ -1760,7 +1760,7 @@ If you need to create a ``.pyc`` file for ``foo`` -- that is, to create a
 The :mod:`py_compile` module can manually compile any module.  One way is to use
 the ``compile()`` function in that module interactively::
 
-   >>> import py_compile
+   >>> agiza py_compile
    >>> py_compile.compile('foo.py')                 # doctest: +SKIP
 
 This will write the ``.pyc`` to a ``__pycache__`` subdirectory in the same
@@ -1768,7 +1768,7 @@ location as ``foo.py`` (or you can override that with the optional parameter
 ``cfile``).
 
 You can also automatically compile all files in a directory or directories using
-the :mod:`compileall` module.  You can do it from the shell prompt by running
+the :mod:`compileall` module.  You can do it kutoka the shell prompt by running
 ``compileall.py`` and providing the path of a directory containing Python files
 to compile::
 
@@ -1792,19 +1792,19 @@ after checking ``__name__``::
        main()
 
 
-How can I have modules that mutually import each other?
+How can I have modules that mutually agiza each other?
 -------------------------------------------------------
 
 Suppose you have the following modules:
 
 foo.py::
 
-   from bar import bar_var
+   kutoka bar agiza bar_var
    foo_var = 1
 
 bar.py::
 
-   from foo import foo_var
+   kutoka foo agiza foo_var
    bar_var = 2
 
 The problem is that the interpreter will perform the following steps:
@@ -1821,22 +1821,22 @@ The problem is that the interpreter will perform the following steps:
 The last step fails, because Python isn't done with interpreting ``foo`` yet and
 the global symbol dictionary for ``foo`` is still empty.
 
-The same thing happens when you use ``import foo``, and then try to access
+The same thing happens when you use ``agiza foo``, and then try to access
 ``foo.foo_var`` in global code.
 
 There are (at least) three possible workarounds for this problem.
 
-Guido van Rossum recommends avoiding all uses of ``from <module> import ...``,
+Guido van Rossum recommends avoiding all uses of ``kutoka <module> agiza ...``,
 and placing all code inside functions.  Initializations of global variables and
-class variables should use constants or built-in functions only.  This means
-everything from an imported module is referenced as ``<module>.<name>``.
+kundi variables should use constants or built-in functions only.  This means
+everything kutoka an imported module is referenced as ``<module>.<name>``.
 
 Jim Roskind suggests performing steps in the following order in each module:
 
 * exports (globals, functions, and classes that don't need imported base
   classes)
 * ``import`` statements
-* active code (including globals that are initialized from imported values).
+* active code (including globals that are initialized kutoka imported values).
 
 van Rossum doesn't like this approach much because the imports appear in a
 strange place, but it does work.
@@ -1850,13 +1850,13 @@ These solutions are not mutually exclusive.
 __import__('x.y.z') returns <module 'x'>; how do I get z?
 ---------------------------------------------------------
 
-Consider using the convenience function :func:`~importlib.import_module` from
+Consider using the convenience function :func:`~importlib.import_module` kutoka
 :mod:`importlib` instead::
 
    z = importlib.import_module('x.y.z')
 
 
-When I edit an imported module and reimport it, the changes don't show up.  Why does this happen?
+When I edit an imported module and reagiza it, the changes don't show up.  Why does this happen?
 -------------------------------------------------------------------------------------------------
 
 For reasons of efficiency as well as consistency, Python only reads the module
@@ -1865,30 +1865,30 @@ consisting of many modules where each one imports the same basic module, the
 basic module would be parsed and re-parsed many times.  To force re-reading of a
 changed module, do this::
 
-   import importlib
-   import modname
+   agiza importlib
+   agiza modname
    importlib.reload(modname)
 
 Warning: this technique is not 100% fool-proof.  In particular, modules
 containing statements like ::
 
-   from modname import some_objects
+   kutoka modname agiza some_objects
 
 will continue to work with the old version of the imported objects.  If the
-module contains class definitions, existing class instances will *not* be
-updated to use the new class definition.  This can result in the following
+module contains kundi definitions, existing kundi instances will *not* be
+updated to use the new kundi definition.  This can result in the following
 paradoxical behaviour::
 
-   >>> import importlib
-   >>> import cls
+   >>> agiza importlib
+   >>> agiza cls
    >>> c = cls.C()                # Create an instance of C
    >>> importlib.reload(cls)
-   <module 'cls' from 'cls.py'>
+   <module 'cls' kutoka 'cls.py'>
    >>> isinstance(c, cls.C)       # isinstance is false?!?
    False
 
 The nature of the problem is made clear if you print out the "identity" of the
-class objects::
+kundi objects::
 
    >>> hex(id(c.__class__))
    '0x7352a0'

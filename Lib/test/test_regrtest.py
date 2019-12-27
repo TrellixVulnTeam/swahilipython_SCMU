@@ -37,17 +37,17 @@ TEST_INTERRUPTED = textwrap.dedent("""
     """)
 
 
-class ParseArgsTestCase(unittest.TestCase):
+kundi ParseArgsTestCase(unittest.TestCase):
     """
     Test regrtest's argument parsing, function _parse_args().
     """
 
-    def checkError(self, args, msg):
+    eleza checkError(self, args, msg):
         with support.captured_stderr() as err, self.assertRaises(SystemExit):
             libregrtest._parse_args(args)
         self.assertIn(msg, err.getvalue())
 
-    def test_help(self):
+    eleza test_help(self):
         for opt in '-h', '--help':
             with self.subTest(opt=opt):
                 with support.captured_stdout() as out, \
@@ -57,29 +57,29 @@ class ParseArgsTestCase(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(faulthandler, 'dump_traceback_later'),
                          "faulthandler.dump_traceback_later() required")
-    def test_timeout(self):
+    eleza test_timeout(self):
         ns = libregrtest._parse_args(['--timeout', '4.2'])
         self.assertEqual(ns.timeout, 4.2)
         self.checkError(['--timeout'], 'expected one argument')
         self.checkError(['--timeout', 'foo'], 'invalid float value')
 
-    def test_wait(self):
+    eleza test_wait(self):
         ns = libregrtest._parse_args(['--wait'])
         self.assertTrue(ns.wait)
 
-    def test_worker_args(self):
+    eleza test_worker_args(self):
         ns = libregrtest._parse_args(['--worker-args', '[[], {}]'])
         self.assertEqual(ns.worker_args, '[[], {}]')
         self.checkError(['--worker-args'], 'expected one argument')
 
-    def test_start(self):
+    eleza test_start(self):
         for opt in '-S', '--start':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt, 'foo'])
                 self.assertEqual(ns.start, 'foo')
                 self.checkError([opt], 'expected one argument')
 
-    def test_verbose(self):
+    eleza test_verbose(self):
         ns = libregrtest._parse_args(['-v'])
         self.assertEqual(ns.verbose, 1)
         ns = libregrtest._parse_args(['-vvv'])
@@ -91,73 +91,73 @@ class ParseArgsTestCase(unittest.TestCase):
         ns = libregrtest._parse_args([])
         self.assertEqual(ns.verbose, 0)
 
-    def test_verbose2(self):
+    eleza test_verbose2(self):
         for opt in '-w', '--verbose2':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt])
                 self.assertTrue(ns.verbose2)
 
-    def test_verbose3(self):
+    eleza test_verbose3(self):
         for opt in '-W', '--verbose3':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt])
                 self.assertTrue(ns.verbose3)
 
-    def test_quiet(self):
+    eleza test_quiet(self):
         for opt in '-q', '--quiet':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt])
                 self.assertTrue(ns.quiet)
                 self.assertEqual(ns.verbose, 0)
 
-    def test_slowest(self):
+    eleza test_slowest(self):
         for opt in '-o', '--slowest':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt])
                 self.assertTrue(ns.print_slow)
 
-    def test_header(self):
+    eleza test_header(self):
         ns = libregrtest._parse_args(['--header'])
         self.assertTrue(ns.header)
 
         ns = libregrtest._parse_args(['--verbose'])
         self.assertTrue(ns.header)
 
-    def test_randomize(self):
+    eleza test_randomize(self):
         for opt in '-r', '--randomize':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt])
                 self.assertTrue(ns.randomize)
 
-    def test_randseed(self):
+    eleza test_randseed(self):
         ns = libregrtest._parse_args(['--randseed', '12345'])
         self.assertEqual(ns.random_seed, 12345)
         self.assertTrue(ns.randomize)
         self.checkError(['--randseed'], 'expected one argument')
         self.checkError(['--randseed', 'foo'], 'invalid int value')
 
-    def test_fromfile(self):
-        for opt in '-f', '--fromfile':
+    eleza test_kutokafile(self):
+        for opt in '-f', '--kutokafile':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt, 'foo'])
-                self.assertEqual(ns.fromfile, 'foo')
+                self.assertEqual(ns.kutokafile, 'foo')
                 self.checkError([opt], 'expected one argument')
                 self.checkError([opt, 'foo', '-s'], "don't go together")
 
-    def test_exclude(self):
+    eleza test_exclude(self):
         for opt in '-x', '--exclude':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt])
                 self.assertTrue(ns.exclude)
 
-    def test_single(self):
+    eleza test_single(self):
         for opt in '-s', '--single':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt])
                 self.assertTrue(ns.single)
                 self.checkError([opt, '-f', 'foo'], "don't go together")
 
-    def test_match(self):
+    eleza test_match(self):
         for opt in '-m', '--match':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt, 'pattern'])
@@ -170,8 +170,8 @@ class ParseArgsTestCase(unittest.TestCase):
 
         self.addCleanup(support.unlink, support.TESTFN)
         with open(support.TESTFN, "w") as fp:
-            print('matchfile1', file=fp)
-            print('matchfile2', file=fp)
+            andika('matchfile1', file=fp)
+            andika('matchfile2', file=fp)
 
         filename = os.path.abspath(support.TESTFN)
         ns = libregrtest._parse_args(['-m', 'match',
@@ -179,7 +179,7 @@ class ParseArgsTestCase(unittest.TestCase):
         self.assertEqual(ns.match_tests,
                          ['match', 'matchfile1', 'matchfile2'])
 
-    def test_failfast(self):
+    eleza test_failfast(self):
         for opt in '-G', '--failfast':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt, '-v'])
@@ -188,7 +188,7 @@ class ParseArgsTestCase(unittest.TestCase):
                 self.assertTrue(ns.failfast)
                 self.checkError([opt], '-G/--failfast needs either -v or -W')
 
-    def test_use(self):
+    eleza test_use(self):
         for opt in '-u', '--use':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt, 'gui,network'])
@@ -213,25 +213,25 @@ class ParseArgsTestCase(unittest.TestCase):
                 ns = libregrtest._parse_args([opt, 'extralargefile'])
                 self.assertEqual(ns.use_resources, ['extralargefile'])
 
-    def test_memlimit(self):
+    eleza test_memlimit(self):
         for opt in '-M', '--memlimit':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt, '4G'])
                 self.assertEqual(ns.memlimit, '4G')
                 self.checkError([opt], 'expected one argument')
 
-    def test_testdir(self):
+    eleza test_testdir(self):
         ns = libregrtest._parse_args(['--testdir', 'foo'])
         self.assertEqual(ns.testdir, os.path.join(support.SAVEDCWD, 'foo'))
         self.checkError(['--testdir'], 'expected one argument')
 
-    def test_runleaks(self):
+    eleza test_runleaks(self):
         for opt in '-L', '--runleaks':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt])
                 self.assertTrue(ns.runleaks)
 
-    def test_huntrleaks(self):
+    eleza test_huntrleaks(self):
         for opt in '-R', '--huntrleaks':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt, ':'])
@@ -248,7 +248,7 @@ class ParseArgsTestCase(unittest.TestCase):
                 self.checkError([opt, 'foo:'], 'invalid huntrleaks value')
                 self.checkError([opt, '6:foo'], 'invalid huntrleaks value')
 
-    def test_multiprocess(self):
+    eleza test_multiprocess(self):
         for opt in '-j', '--multiprocess':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt, '2'])
@@ -258,13 +258,13 @@ class ParseArgsTestCase(unittest.TestCase):
                 self.checkError([opt, '2', '-T'], "don't go together")
                 self.checkError([opt, '0', '-T'], "don't go together")
 
-    def test_coverage(self):
+    eleza test_coverage(self):
         for opt in '-T', '--coverage':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt])
                 self.assertTrue(ns.trace)
 
-    def test_coverdir(self):
+    eleza test_coverdir(self):
         for opt in '-D', '--coverdir':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt, 'foo'])
@@ -272,13 +272,13 @@ class ParseArgsTestCase(unittest.TestCase):
                                  os.path.join(support.SAVEDCWD, 'foo'))
                 self.checkError([opt], 'expected one argument')
 
-    def test_nocoverdir(self):
+    eleza test_nocoverdir(self):
         for opt in '-N', '--nocoverdir':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt])
                 self.assertIsNone(ns.coverdir)
 
-    def test_threshold(self):
+    eleza test_threshold(self):
         for opt in '-t', '--threshold':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt, '1000'])
@@ -286,7 +286,7 @@ class ParseArgsTestCase(unittest.TestCase):
                 self.checkError([opt], 'expected one argument')
                 self.checkError([opt, 'foo'], 'invalid int value')
 
-    def test_nowindows(self):
+    eleza test_nowindows(self):
         for opt in '-n', '--nowindows':
             with self.subTest(opt=opt):
                 with contextlib.redirect_stderr(io.StringIO()) as stderr:
@@ -295,72 +295,72 @@ class ParseArgsTestCase(unittest.TestCase):
                 err = stderr.getvalue()
                 self.assertIn('the --nowindows (-n) option is deprecated', err)
 
-    def test_forever(self):
+    eleza test_forever(self):
         for opt in '-F', '--forever':
             with self.subTest(opt=opt):
                 ns = libregrtest._parse_args([opt])
                 self.assertTrue(ns.forever)
 
-    def test_unrecognized_argument(self):
+    eleza test_unrecognized_argument(self):
         self.checkError(['--xxx'], 'usage:')
 
-    def test_long_option__partial(self):
+    eleza test_long_option__partial(self):
         ns = libregrtest._parse_args(['--qui'])
         self.assertTrue(ns.quiet)
         self.assertEqual(ns.verbose, 0)
 
-    def test_two_options(self):
+    eleza test_two_options(self):
         ns = libregrtest._parse_args(['--quiet', '--exclude'])
         self.assertTrue(ns.quiet)
         self.assertEqual(ns.verbose, 0)
         self.assertTrue(ns.exclude)
 
-    def test_option_with_empty_string_value(self):
+    eleza test_option_with_empty_string_value(self):
         ns = libregrtest._parse_args(['--start', ''])
         self.assertEqual(ns.start, '')
 
-    def test_arg(self):
+    eleza test_arg(self):
         ns = libregrtest._parse_args(['foo'])
         self.assertEqual(ns.args, ['foo'])
 
-    def test_option_and_arg(self):
+    eleza test_option_and_arg(self):
         ns = libregrtest._parse_args(['--quiet', 'foo'])
         self.assertTrue(ns.quiet)
         self.assertEqual(ns.verbose, 0)
         self.assertEqual(ns.args, ['foo'])
 
-    def test_arg_option_arg(self):
+    eleza test_arg_option_arg(self):
         ns = libregrtest._parse_args(['test_unaryop', '-v', 'test_binop'])
         self.assertEqual(ns.verbose, 1)
         self.assertEqual(ns.args, ['test_unaryop', 'test_binop'])
 
-    def test_unknown_option(self):
+    eleza test_unknown_option(self):
         self.checkError(['--unknown-option'],
                         'unrecognized arguments: --unknown-option')
 
 
-class BaseTestCase(unittest.TestCase):
+kundi BaseTestCase(unittest.TestCase):
     TEST_UNIQUE_ID = 1
     TESTNAME_PREFIX = 'test_regrtest_'
     TESTNAME_REGEX = r'test_[a-zA-Z0-9_]+'
 
-    def setUp(self):
+    eleza setUp(self):
         self.testdir = os.path.realpath(os.path.dirname(__file__))
 
         self.tmptestdir = tempfile.mkdtemp()
         self.addCleanup(support.rmtree, self.tmptestdir)
 
-    def create_test(self, name=None, code=None):
-        if not name:
+    eleza create_test(self, name=None, code=None):
+        ikiwa not name:
             name = 'noop%s' % BaseTestCase.TEST_UNIQUE_ID
             BaseTestCase.TEST_UNIQUE_ID += 1
 
-        if code is None:
+        ikiwa code is None:
             code = textwrap.dedent("""
                     agiza unittest
 
-                    class Tests(unittest.TestCase):
-                        def test_empty_test(self):
+                    kundi Tests(unittest.TestCase):
+                        eleza test_empty_test(self):
                             pass
                 """)
 
@@ -375,81 +375,81 @@ class BaseTestCase(unittest.TestCase):
             with open(path, 'x', encoding='utf-8') as fp:
                 fp.write(code)
         except PermissionError as exc:
-            if not sysconfig.is_python_build():
+            ikiwa not sysconfig.is_python_build():
                 self.skipTest("cannot write %s: %s" % (path, exc))
             raise
-        return name
+        rudisha name
 
-    def regex_search(self, regex, output):
+    eleza regex_search(self, regex, output):
         match = re.search(regex, output, re.MULTILINE)
-        if not match:
+        ikiwa not match:
             self.fail("%r not found in %r" % (regex, output))
-        return match
+        rudisha match
 
-    def check_line(self, output, regex):
+    eleza check_line(self, output, regex):
         regex = re.compile(r'^' + regex, re.MULTILINE)
         self.assertRegex(output, regex)
 
-    def parse_executed_tests(self, output):
+    eleza parse_executed_tests(self, output):
         regex = (r'^%s\[ *[0-9]+(?:/ *[0-9]+)*\] (%s)'
                  % (LOG_PREFIX, self.TESTNAME_REGEX))
         parser = re.finditer(regex, output, re.MULTILINE)
-        return list(match.group(1) for match in parser)
+        rudisha list(match.group(1) for match in parser)
 
-    def check_executed_tests(self, output, tests, skipped=(), failed=(),
+    eleza check_executed_tests(self, output, tests, skipped=(), failed=(),
                              env_changed=(), omitted=(),
                              rerun=(), no_test_ran=(),
                              randomize=False, interrupted=False,
                              fail_env_changed=False):
-        if isinstance(tests, str):
+        ikiwa isinstance(tests, str):
             tests = [tests]
-        if isinstance(skipped, str):
+        ikiwa isinstance(skipped, str):
             skipped = [skipped]
-        if isinstance(failed, str):
+        ikiwa isinstance(failed, str):
             failed = [failed]
-        if isinstance(env_changed, str):
+        ikiwa isinstance(env_changed, str):
             env_changed = [env_changed]
-        if isinstance(omitted, str):
+        ikiwa isinstance(omitted, str):
             omitted = [omitted]
-        if isinstance(rerun, str):
+        ikiwa isinstance(rerun, str):
             rerun = [rerun]
-        if isinstance(no_test_ran, str):
+        ikiwa isinstance(no_test_ran, str):
             no_test_ran = [no_test_ran]
 
         executed = self.parse_executed_tests(output)
-        if randomize:
+        ikiwa randomize:
             self.assertEqual(set(executed), set(tests), output)
         else:
             self.assertEqual(executed, tests, output)
 
-        def plural(count):
-            return 's' if count != 1 else ''
+        eleza plural(count):
+            rudisha 's' ikiwa count != 1 else ''
 
-        def list_regex(line_format, tests):
+        eleza list_regex(line_format, tests):
             count = len(tests)
             names = ' '.join(sorted(tests))
             regex = line_format % (count, plural(count))
             regex = r'%s:\n    %s$' % (regex, names)
-            return regex
+            rudisha regex
 
-        if skipped:
+        ikiwa skipped:
             regex = list_regex('%s test%s skipped', skipped)
             self.check_line(output, regex)
 
-        if failed:
+        ikiwa failed:
             regex = list_regex('%s test%s failed', failed)
             self.check_line(output, regex)
 
-        if env_changed:
+        ikiwa env_changed:
             regex = list_regex('%s test%s altered the execution environment',
                                env_changed)
             self.check_line(output, regex)
 
-        if omitted:
+        ikiwa omitted:
             regex = list_regex('%s test%s omitted', omitted)
             self.check_line(output, regex)
 
-        if rerun:
+        ikiwa rerun:
             regex = list_regex('%s re-run test%s', rerun)
             self.check_line(output, regex)
             regex = LOG_PREFIX + r"Re-running failed tests in verbose mode"
@@ -458,57 +458,57 @@ class BaseTestCase(unittest.TestCase):
                 regex = LOG_PREFIX + f"Re-running {test_name} in verbose mode"
                 self.check_line(output, regex)
 
-        if no_test_ran:
+        ikiwa no_test_ran:
             regex = list_regex('%s test%s run no tests', no_test_ran)
             self.check_line(output, regex)
 
         good = (len(tests) - len(skipped) - len(failed)
                 - len(omitted) - len(env_changed) - len(no_test_ran))
-        if good:
+        ikiwa good:
             regex = r'%s test%s OK\.$' % (good, plural(good))
-            if not skipped and not failed and good > 1:
+            ikiwa not skipped and not failed and good > 1:
                 regex = 'All %s' % regex
             self.check_line(output, regex)
 
-        if interrupted:
+        ikiwa interrupted:
             self.check_line(output, 'Test suite interrupted by signal SIGINT.')
 
         result = []
-        if failed:
+        ikiwa failed:
             result.append('FAILURE')
-        elif fail_env_changed and env_changed:
+        elikiwa fail_env_changed and env_changed:
             result.append('ENV CHANGED')
-        if interrupted:
+        ikiwa interrupted:
             result.append('INTERRUPTED')
-        if not any((good, result, failed, interrupted, skipped,
+        ikiwa not any((good, result, failed, interrupted, skipped,
                     env_changed, fail_env_changed)):
             result.append("NO TEST RUN")
-        elif not result:
+        elikiwa not result:
             result.append('SUCCESS')
         result = ', '.join(result)
-        if rerun:
+        ikiwa rerun:
             self.check_line(output, 'Tests result: FAILURE')
             result = 'FAILURE then %s' % result
 
         self.check_line(output, 'Tests result: %s' % result)
 
-    def parse_random_seed(self, output):
+    eleza parse_random_seed(self, output):
         match = self.regex_search(r'Using random seed ([0-9]+)', output)
         randseed = int(match.group(1))
         self.assertTrue(0 <= randseed <= 10000000, randseed)
-        return randseed
+        rudisha randseed
 
-    def run_command(self, args, input=None, exitcode=0, **kw):
-        if not input:
+    eleza run_command(self, args, input=None, exitcode=0, **kw):
+        ikiwa not input:
             input = ''
-        if 'stderr' not in kw:
+        ikiwa 'stderr' not in kw:
             kw['stderr'] = subprocess.PIPE
         proc = subprocess.run(args,
                               universal_newlines=True,
                               input=input,
                               stdout=subprocess.PIPE,
                               **kw)
-        if proc.returncode != exitcode:
+        ikiwa proc.returncode != exitcode:
             msg = ("Command %s failed with exit code %s\n"
                    "\n"
                    "stdout:\n"
@@ -516,7 +516,7 @@ class BaseTestCase(unittest.TestCase):
                    "%s\n"
                    "---\n"
                    % (str(args), proc.returncode, proc.stdout))
-            if proc.stderr:
+            ikiwa proc.stderr:
                 msg += ("\n"
                         "stderr:\n"
                         "---\n"
@@ -524,20 +524,20 @@ class BaseTestCase(unittest.TestCase):
                         "---\n"
                         % proc.stderr)
             self.fail(msg)
-        return proc
+        rudisha proc
 
-    def run_python(self, args, **kw):
+    eleza run_python(self, args, **kw):
         args = [sys.executable, '-X', 'faulthandler', '-I', *args]
         proc = self.run_command(args, **kw)
-        return proc.stdout
+        rudisha proc.stdout
 
 
-class CheckActualTests(BaseTestCase):
+kundi CheckActualTests(BaseTestCase):
     """
     Check that regrtest appears to find the expected set of tests.
     """
 
-    def test_finds_expected_number_of_tests(self):
+    eleza test_finds_expected_number_of_tests(self):
         args = ['-Wd', '-E', '-bb', '-m', 'test.regrtest', '--list-tests']
         output = self.run_python(args)
         rough_number_of_tests_found = len(output.splitlines())
@@ -557,7 +557,7 @@ class CheckActualTests(BaseTestCase):
                            f'{", ".join(output.splitlines())}')
 
 
-class ProgramsTestCase(BaseTestCase):
+kundi ProgramsTestCase(BaseTestCase):
     """
     Test various ways to run the Python test suite. Use options close
     to options used on the buildbot.
@@ -565,7 +565,7 @@ class ProgramsTestCase(BaseTestCase):
 
     NTEST = 4
 
-    def setUp(self):
+    eleza setUp(self):
         super().setUp()
 
         # Create NTEST tests doing nothing
@@ -574,52 +574,52 @@ class ProgramsTestCase(BaseTestCase):
         self.python_args = ['-Wd', '-E', '-bb']
         self.regrtest_args = ['-uall', '-rwW',
                               '--testdir=%s' % self.tmptestdir]
-        if hasattr(faulthandler, 'dump_traceback_later'):
+        ikiwa hasattr(faulthandler, 'dump_traceback_later'):
             self.regrtest_args.extend(('--timeout', '3600', '-j4'))
-        if sys.platform == 'win32':
+        ikiwa sys.platform == 'win32':
             self.regrtest_args.append('-n')
 
-    def check_output(self, output):
+    eleza check_output(self, output):
         self.parse_random_seed(output)
         self.check_executed_tests(output, self.tests, randomize=True)
 
-    def run_tests(self, args):
+    eleza run_tests(self, args):
         output = self.run_python(args)
         self.check_output(output)
 
-    def test_script_regrtest(self):
+    eleza test_script_regrtest(self):
         # Lib/test/regrtest.py
         script = os.path.join(self.testdir, 'regrtest.py')
 
         args = [*self.python_args, script, *self.regrtest_args, *self.tests]
         self.run_tests(args)
 
-    def test_module_test(self):
+    eleza test_module_test(self):
         # -m test
         args = [*self.python_args, '-m', 'test',
                 *self.regrtest_args, *self.tests]
         self.run_tests(args)
 
-    def test_module_regrtest(self):
+    eleza test_module_regrtest(self):
         # -m test.regrtest
         args = [*self.python_args, '-m', 'test.regrtest',
                 *self.regrtest_args, *self.tests]
         self.run_tests(args)
 
-    def test_module_autotest(self):
+    eleza test_module_autotest(self):
         # -m test.autotest
         args = [*self.python_args, '-m', 'test.autotest',
                 *self.regrtest_args, *self.tests]
         self.run_tests(args)
 
-    def test_module_from_test_autotest(self):
+    eleza test_module_kutoka_test_autotest(self):
         # kutoka test agiza autotest
         code = 'kutoka test agiza autotest'
         args = [*self.python_args, '-c', code,
                 *self.regrtest_args, *self.tests]
         self.run_tests(args)
 
-    def test_script_autotest(self):
+    eleza test_script_autotest(self):
         # Lib/test/autotest.py
         script = os.path.join(self.testdir, 'autotest.py')
         args = [*self.python_args, script, *self.regrtest_args, *self.tests]
@@ -627,63 +627,63 @@ class ProgramsTestCase(BaseTestCase):
 
     @unittest.skipUnless(sysconfig.is_python_build(),
                          'run_tests.py script is not installed')
-    def test_tools_script_run_tests(self):
+    eleza test_tools_script_run_tests(self):
         # Tools/scripts/run_tests.py
         script = os.path.join(ROOT_DIR, 'Tools', 'scripts', 'run_tests.py')
         args = [script, *self.regrtest_args, *self.tests]
         self.run_tests(args)
 
-    def run_batch(self, *args):
+    eleza run_batch(self, *args):
         proc = self.run_command(args)
         self.check_output(proc.stdout)
 
     @unittest.skipUnless(sysconfig.is_python_build(),
                          'test.bat script is not installed')
     @unittest.skipUnless(sys.platform == 'win32', 'Windows only')
-    def test_tools_buildbot_test(self):
+    eleza test_tools_buildbot_test(self):
         # Tools\buildbot\test.bat
         script = os.path.join(ROOT_DIR, 'Tools', 'buildbot', 'test.bat')
         test_args = ['--testdir=%s' % self.tmptestdir]
-        if platform.machine() == 'ARM64':
+        ikiwa platform.machine() == 'ARM64':
             test_args.append('-arm64') # ARM 64-bit build
-        elif platform.architecture()[0] == '64bit':
+        elikiwa platform.architecture()[0] == '64bit':
             test_args.append('-x64')   # 64-bit build
-        if not Py_DEBUG:
+        ikiwa not Py_DEBUG:
             test_args.append('+d')     # Release build, use python.exe
         self.run_batch(script, *test_args, *self.tests)
 
     @unittest.skipUnless(sys.platform == 'win32', 'Windows only')
-    def test_pcbuild_rt(self):
+    eleza test_pcbuild_rt(self):
         # PCbuild\rt.bat
         script = os.path.join(ROOT_DIR, r'PCbuild\rt.bat')
-        if not os.path.isfile(script):
+        ikiwa not os.path.isfile(script):
             self.skipTest(f'File "{script}" does not exist')
         rt_args = ["-q"]             # Quick, don't run tests twice
-        if platform.machine() == 'ARM64':
+        ikiwa platform.machine() == 'ARM64':
             rt_args.append('-arm64') # ARM 64-bit build
-        elif platform.architecture()[0] == '64bit':
+        elikiwa platform.architecture()[0] == '64bit':
             rt_args.append('-x64')   # 64-bit build
-        if Py_DEBUG:
+        ikiwa Py_DEBUG:
             rt_args.append('-d')     # Debug build, use python_d.exe
         self.run_batch(script, *rt_args, *self.regrtest_args, *self.tests)
 
 
-class ArgsTestCase(BaseTestCase):
+kundi ArgsTestCase(BaseTestCase):
     """
     Test arguments of the Python test suite.
     """
 
-    def run_tests(self, *testargs, **kw):
+    eleza run_tests(self, *testargs, **kw):
         cmdargs = ['-m', 'test', '--testdir=%s' % self.tmptestdir, *testargs]
-        return self.run_python(cmdargs, **kw)
+        rudisha self.run_python(cmdargs, **kw)
 
-    def test_failing_test(self):
+    eleza test_failing_test(self):
         # test a failing test
         code = textwrap.dedent("""
             agiza unittest
 
-            class FailingTest(unittest.TestCase):
-                def test_failing(self):
+            kundi FailingTest(unittest.TestCase):
+                eleza test_failing(self):
                     self.fail("bug")
         """)
         test_ok = self.create_test('ok')
@@ -693,15 +693,15 @@ class ArgsTestCase(BaseTestCase):
         output = self.run_tests(*tests, exitcode=2)
         self.check_executed_tests(output, tests, failed=test_failing)
 
-    def test_resources(self):
+    eleza test_resources(self):
         # test -u command line option
         tests = {}
         for resource in ('audio', 'network'):
             code = textwrap.dedent("""
                         kutoka test agiza support; support.requires(%r)
                         agiza unittest
-                        class PassingTest(unittest.TestCase):
-                            def test_pass(self):
+                        kundi PassingTest(unittest.TestCase):
+                            eleza test_pass(self):
                                 pass
                     """ % resource)
 
@@ -722,11 +722,11 @@ class ArgsTestCase(BaseTestCase):
         self.check_executed_tests(output, test_names,
                                   skipped=test_names)
 
-    def test_random(self):
+    eleza test_random(self):
         # test -r and --randseed command line option
         code = textwrap.dedent("""
             agiza random
-            print("TESTRANDOM: %s" % random.randint(1, 1000))
+            andika("TESTRANDOM: %s" % random.randint(1, 1000))
         """)
         test = self.create_test('random', code)
 
@@ -745,8 +745,8 @@ class ArgsTestCase(BaseTestCase):
         test_random2 = int(match.group(1))
         self.assertEqual(test_random2, test_random)
 
-    def test_fromfile(self):
-        # test --fromfile
+    eleza test_kutokafile(self):
+        # test --kutokafile
         tests = [self.create_test() for index in range(5)]
 
         # Write the list of files using a format similar to regrtest output:
@@ -761,46 +761,46 @@ class ArgsTestCase(BaseTestCase):
             for index, name in enumerate(tests, 1):
                 line = ("00:00:%02i [%s/%s] %s"
                         % (index, index, len(tests), name))
-                if previous:
+                ikiwa previous:
                     line += " -- %s took 0 sec" % previous
-                print(line, file=fp)
+                andika(line, file=fp)
                 previous = name
 
-        output = self.run_tests('--fromfile', filename)
+        output = self.run_tests('--kutokafile', filename)
         self.check_executed_tests(output, tests)
 
         # test format '[2/7] test_opcodes'
         with open(filename, "w") as fp:
             for index, name in enumerate(tests, 1):
-                print("[%s/%s] %s" % (index, len(tests), name), file=fp)
+                andika("[%s/%s] %s" % (index, len(tests), name), file=fp)
 
-        output = self.run_tests('--fromfile', filename)
+        output = self.run_tests('--kutokafile', filename)
         self.check_executed_tests(output, tests)
 
         # test format 'test_opcodes'
         with open(filename, "w") as fp:
             for name in tests:
-                print(name, file=fp)
+                andika(name, file=fp)
 
-        output = self.run_tests('--fromfile', filename)
+        output = self.run_tests('--kutokafile', filename)
         self.check_executed_tests(output, tests)
 
         # test format 'Lib/test/test_opcodes.py'
         with open(filename, "w") as fp:
             for name in tests:
-                print('Lib/test/%s.py' % name, file=fp)
+                andika('Lib/test/%s.py' % name, file=fp)
 
-        output = self.run_tests('--fromfile', filename)
+        output = self.run_tests('--kutokafile', filename)
         self.check_executed_tests(output, tests)
 
-    def test_interrupted(self):
+    eleza test_interrupted(self):
         code = TEST_INTERRUPTED
         test = self.create_test('sigint', code=code)
         output = self.run_tests(test, exitcode=130)
         self.check_executed_tests(output, test, omitted=test,
                                   interrupted=True)
 
-    def test_slowest(self):
+    eleza test_slowest(self):
         # test --slowest
         tests = [self.create_test() for index in range(3)]
         output = self.run_tests("--slowest", *tests)
@@ -810,14 +810,14 @@ class ArgsTestCase(BaseTestCase):
                  % (self.TESTNAME_REGEX, len(tests)))
         self.check_line(output, regex)
 
-    def test_slowest_interrupted(self):
+    eleza test_slowest_interrupted(self):
         # Issue #25373: test --slowest with an interrupted test
         code = TEST_INTERRUPTED
         test = self.create_test("sigint", code=code)
 
         for multiprocessing in (False, True):
             with self.subTest(multiprocessing=multiprocessing):
-                if multiprocessing:
+                ikiwa multiprocessing:
                     args = ("--slowest", "-j2", test)
                 else:
                     args = ("--slowest", test)
@@ -828,7 +828,7 @@ class ArgsTestCase(BaseTestCase):
                 regex = ('10 slowest tests:\n')
                 self.check_line(output, regex)
 
-    def test_coverage(self):
+    eleza test_coverage(self):
         # test --coverage
         test = self.create_test('coverage')
         output = self.run_tests("--coverage", test)
@@ -837,25 +837,25 @@ class ArgsTestCase(BaseTestCase):
                  r'(?: *[0-9]+ *[0-9]{1,2}% *[^ ]+ +\([^)]+\)+)+')
         self.check_line(output, regex)
 
-    def test_wait(self):
+    eleza test_wait(self):
         # test --wait
         test = self.create_test('wait')
         output = self.run_tests("--wait", test, input='key')
         self.check_line(output, 'Press any key to continue')
 
-    def test_forever(self):
+    eleza test_forever(self):
         # test --forever
         code = textwrap.dedent("""
             agiza builtins
             agiza unittest
 
-            class ForeverTester(unittest.TestCase):
-                def test_run(self):
+            kundi ForeverTester(unittest.TestCase):
+                eleza test_run(self):
                     # Store the state in the builtins module, because the test
                     # module is reload at each run
-                    if 'RUN' in builtins.__dict__:
+                    ikiwa 'RUN' in builtins.__dict__:
                         builtins.__dict__['RUN'] += 1
-                        if builtins.__dict__['RUN'] >= 3:
+                        ikiwa builtins.__dict__['RUN'] >= 3:
                             self.fail("fail at the 3rd runs")
                     else:
                         builtins.__dict__['RUN'] = 1
@@ -864,7 +864,7 @@ class ArgsTestCase(BaseTestCase):
         output = self.run_tests('--forever', test, exitcode=2)
         self.check_executed_tests(output, [test]*3, failed=test)
 
-    def check_leak(self, code, what):
+    eleza check_leak(self, code, what):
         test = self.create_test('huntrleaks', code=code)
 
         filename = 'reflog.txt'
@@ -885,49 +885,49 @@ class ArgsTestCase(BaseTestCase):
             self.assertIn(line2, reflog)
 
     @unittest.skipUnless(Py_DEBUG, 'need a debug build')
-    def test_huntrleaks(self):
+    eleza test_huntrleaks(self):
         # test --huntrleaks
         code = textwrap.dedent("""
             agiza unittest
 
             GLOBAL_LIST = []
 
-            class RefLeakTest(unittest.TestCase):
-                def test_leak(self):
+            kundi RefLeakTest(unittest.TestCase):
+                eleza test_leak(self):
                     GLOBAL_LIST.append(object())
         """)
         self.check_leak(code, 'references')
 
     @unittest.skipUnless(Py_DEBUG, 'need a debug build')
-    def test_huntrleaks_fd_leak(self):
+    eleza test_huntrleaks_fd_leak(self):
         # test --huntrleaks for file descriptor leak
         code = textwrap.dedent("""
             agiza os
             agiza unittest
 
-            class FDLeakTest(unittest.TestCase):
-                def test_leak(self):
+            kundi FDLeakTest(unittest.TestCase):
+                eleza test_leak(self):
                     fd = os.open(__file__, os.O_RDONLY)
                     # bug: never close the file descriptor
         """)
         self.check_leak(code, 'file descriptors')
 
-    def test_list_tests(self):
+    eleza test_list_tests(self):
         # test --list-tests
         tests = [self.create_test() for i in range(5)]
         output = self.run_tests('--list-tests', *tests)
         self.assertEqual(output.rstrip().splitlines(),
                          tests)
 
-    def test_list_cases(self):
+    eleza test_list_cases(self):
         # test --list-cases
         code = textwrap.dedent("""
             agiza unittest
 
-            class Tests(unittest.TestCase):
-                def test_method1(self):
+            kundi Tests(unittest.TestCase):
+                eleza test_method1(self):
                     pass
-                def test_method2(self):
+                eleza test_method2(self):
                     pass
         """)
         testname = self.create_test(code=code)
@@ -946,7 +946,7 @@ class ArgsTestCase(BaseTestCase):
         self.assertEqual(output.splitlines(), all_methods)
 
     @support.cpython_only
-    def test_crashed(self):
+    eleza test_crashed(self):
         # Any code which causes a crash
         code = 'agiza faulthandler; faulthandler._sigsegv()'
         crash_test = self.create_test(name="crash", code=code)
@@ -956,22 +956,22 @@ class ArgsTestCase(BaseTestCase):
         self.check_executed_tests(output, tests, failed=crash_test,
                                   randomize=True)
 
-    def parse_methods(self, output):
+    eleza parse_methods(self, output):
         regex = re.compile("^(test[^ ]+).*ok$", flags=re.MULTILINE)
-        return [match.group(1) for match in regex.finditer(output)]
+        rudisha [match.group(1) for match in regex.finditer(output)]
 
-    def test_matchfile(self):
+    eleza test_matchfile(self):
         code = textwrap.dedent("""
             agiza unittest
 
-            class Tests(unittest.TestCase):
-                def test_method1(self):
+            kundi Tests(unittest.TestCase):
+                eleza test_method1(self):
                     pass
-                def test_method2(self):
+                eleza test_method2(self):
                     pass
-                def test_method3(self):
+                eleza test_method3(self):
                     pass
-                def test_method4(self):
+                eleza test_method4(self):
                     pass
         """)
         all_methods = ['test_method1', 'test_method2',
@@ -994,19 +994,19 @@ class ArgsTestCase(BaseTestCase):
             '%s.Tests.test_method3' % testname]
         with open(filename, "w") as fp:
             for name in subset:
-                print(name, file=fp)
+                andika(name, file=fp)
 
         output = self.run_tests("-v", "--matchfile", filename, testname)
         methods = self.parse_methods(output)
         subset = ['test_method1', 'test_method3']
         self.assertEqual(methods, subset)
 
-    def test_env_changed(self):
+    eleza test_env_changed(self):
         code = textwrap.dedent("""
             agiza unittest
 
-            class Tests(unittest.TestCase):
-                def test_env_changed(self):
+            kundi Tests(unittest.TestCase):
+                eleza test_env_changed(self):
                     open("env_changed", "w").close()
         """)
         testname = self.create_test(code=code)
@@ -1020,13 +1020,13 @@ class ArgsTestCase(BaseTestCase):
         self.check_executed_tests(output, [testname], env_changed=testname,
                                   fail_env_changed=True)
 
-    def test_rerun_fail(self):
+    eleza test_rerun_fail(self):
         # FAILURE then FAILURE
         code = textwrap.dedent("""
             agiza unittest
 
-            class Tests(unittest.TestCase):
-                def test_bug(self):
+            kundi Tests(unittest.TestCase):
+                eleza test_bug(self):
                     # test always fail
                     self.fail("bug")
         """)
@@ -1036,17 +1036,17 @@ class ArgsTestCase(BaseTestCase):
         self.check_executed_tests(output, [testname],
                                   failed=testname, rerun=testname)
 
-    def test_rerun_success(self):
+    eleza test_rerun_success(self):
         # FAILURE then SUCCESS
         code = textwrap.dedent("""
             agiza builtins
             agiza unittest
 
-            class Tests(unittest.TestCase):
+            kundi Tests(unittest.TestCase):
                 failed = False
 
-                def test_fail_once(self):
-                    if not hasattr(builtins, '_test_failed'):
+                eleza test_fail_once(self):
+                    ikiwa not hasattr(builtins, '_test_failed'):
                         builtins._test_failed = True
                         self.fail("bug")
         """)
@@ -1056,12 +1056,12 @@ class ArgsTestCase(BaseTestCase):
         self.check_executed_tests(output, [testname],
                                   rerun=testname)
 
-    def test_no_tests_ran(self):
+    eleza test_no_tests_ran(self):
         code = textwrap.dedent("""
             agiza unittest
 
-            class Tests(unittest.TestCase):
-                def test_bug(self):
+            kundi Tests(unittest.TestCase):
+                eleza test_bug(self):
                     pass
         """)
         testname = self.create_test(code=code)
@@ -1069,12 +1069,12 @@ class ArgsTestCase(BaseTestCase):
         output = self.run_tests(testname, "-m", "nosuchtest", exitcode=0)
         self.check_executed_tests(output, [testname], no_test_ran=testname)
 
-    def test_no_tests_ran_skip(self):
+    eleza test_no_tests_ran_skip(self):
         code = textwrap.dedent("""
             agiza unittest
 
-            class Tests(unittest.TestCase):
-                def test_skipped(self):
+            kundi Tests(unittest.TestCase):
+                eleza test_skipped(self):
                     self.skipTest("because")
         """)
         testname = self.create_test(code=code)
@@ -1082,12 +1082,12 @@ class ArgsTestCase(BaseTestCase):
         output = self.run_tests(testname, exitcode=0)
         self.check_executed_tests(output, [testname])
 
-    def test_no_tests_ran_multiple_tests_nonexistent(self):
+    eleza test_no_tests_ran_multiple_tests_nonexistent(self):
         code = textwrap.dedent("""
             agiza unittest
 
-            class Tests(unittest.TestCase):
-                def test_bug(self):
+            kundi Tests(unittest.TestCase):
+                eleza test_bug(self):
                     pass
         """)
         testname = self.create_test(code=code)
@@ -1097,20 +1097,20 @@ class ArgsTestCase(BaseTestCase):
         self.check_executed_tests(output, [testname, testname2],
                                   no_test_ran=[testname, testname2])
 
-    def test_no_test_ran_some_test_exist_some_not(self):
+    eleza test_no_test_ran_some_test_exist_some_not(self):
         code = textwrap.dedent("""
             agiza unittest
 
-            class Tests(unittest.TestCase):
-                def test_bug(self):
+            kundi Tests(unittest.TestCase):
+                eleza test_bug(self):
                     pass
         """)
         testname = self.create_test(code=code)
         other_code = textwrap.dedent("""
             agiza unittest
 
-            class Tests(unittest.TestCase):
-                def test_other_bug(self):
+            kundi Tests(unittest.TestCase):
+                eleza test_other_bug(self):
                     pass
         """)
         testname2 = self.create_test(code=other_code)
@@ -1121,19 +1121,19 @@ class ArgsTestCase(BaseTestCase):
                                   no_test_ran=[testname])
 
     @support.cpython_only
-    def test_findleaks(self):
+    eleza test_findleaks(self):
         code = textwrap.dedent(r"""
             agiza _testcapi
             agiza gc
             agiza unittest
 
             @_testcapi.with_tp_del
-            class Garbage:
-                def __tp_del__(self):
+            kundi Garbage:
+                eleza __tp_del__(self):
                     pass
 
-            class Tests(unittest.TestCase):
-                def test_garbage(self):
+            kundi Tests(unittest.TestCase):
+                eleza test_garbage(self):
                     # create an uncollectable object
                     obj = Garbage()
                     obj.ref_cycle = obj
@@ -1152,7 +1152,7 @@ class ArgsTestCase(BaseTestCase):
                                   env_changed=[testname],
                                   fail_env_changed=True)
 
-    def test_multiprocessing_timeout(self):
+    eleza test_multiprocessing_timeout(self):
         code = textwrap.dedent(r"""
             agiza time
             agiza unittest
@@ -1161,12 +1161,12 @@ class ArgsTestCase(BaseTestCase):
             except ImportError:
                 faulthandler = None
 
-            class Tests(unittest.TestCase):
+            kundi Tests(unittest.TestCase):
                 # test hangs and so should be stopped by the timeout
-                def test_sleep(self):
+                eleza test_sleep(self):
                     # we want to test regrtest multiprocessing timeout,
                     # not faulthandler timeout
-                    if faulthandler is not None:
+                    ikiwa faulthandler is not None:
                         faulthandler.cancel_dump_traceback_later()
 
                     time.sleep(60 * 5)
@@ -1179,7 +1179,7 @@ class ArgsTestCase(BaseTestCase):
         self.assertRegex(output,
                          re.compile('%s timed out' % testname, re.MULTILINE))
 
-    def test_cleanup(self):
+    eleza test_cleanup(self):
         dirname = os.path.join(self.tmptestdir, "test_python_123")
         os.mkdir(dirname)
         filename = os.path.join(self.tmptestdir, "test_python_456")
@@ -1195,8 +1195,8 @@ class ArgsTestCase(BaseTestCase):
             self.assertFalse(os.path.exists(name), name)
 
 
-class TestUtils(unittest.TestCase):
-    def test_format_duration(self):
+kundi TestUtils(unittest.TestCase):
+    eleza test_format_duration(self):
         self.assertEqual(utils.format_duration(0),
                          '0 ms')
         self.assertEqual(utils.format_duration(1e-9),
@@ -1219,5 +1219,5 @@ class TestUtils(unittest.TestCase):
                          '3 hour 1 sec')
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

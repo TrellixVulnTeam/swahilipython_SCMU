@@ -30,7 +30,7 @@ try:
     agiza _winapi
     kutoka _winapi agiza WAIT_OBJECT_0, WAIT_ABANDONED_0, WAIT_TIMEOUT, INFINITE
 except ImportError:
-    if sys.platform == 'win32':
+    ikiwa sys.platform == 'win32':
         raise
     _winapi = None
 
@@ -47,63 +47,63 @@ _mmap_counter = itertools.count()
 default_family = 'AF_INET'
 families = ['AF_INET']
 
-if hasattr(socket, 'AF_UNIX'):
+ikiwa hasattr(socket, 'AF_UNIX'):
     default_family = 'AF_UNIX'
     families += ['AF_UNIX']
 
-if sys.platform == 'win32':
+ikiwa sys.platform == 'win32':
     default_family = 'AF_PIPE'
     families += ['AF_PIPE']
 
 
-def _init_timeout(timeout=CONNECTION_TIMEOUT):
-    return time.monotonic() + timeout
+eleza _init_timeout(timeout=CONNECTION_TIMEOUT):
+    rudisha time.monotonic() + timeout
 
-def _check_timeout(t):
-    return time.monotonic() > t
+eleza _check_timeout(t):
+    rudisha time.monotonic() > t
 
 #
 #
 #
 
-def arbitrary_address(family):
+eleza arbitrary_address(family):
     '''
     Return an arbitrary free address for the given family
     '''
-    if family == 'AF_INET':
-        return ('localhost', 0)
-    elif family == 'AF_UNIX':
-        return tempfile.mktemp(prefix='listener-', dir=util.get_temp_dir())
-    elif family == 'AF_PIPE':
-        return tempfile.mktemp(prefix=r'\\.\pipe\pyc-%d-%d-' %
+    ikiwa family == 'AF_INET':
+        rudisha ('localhost', 0)
+    elikiwa family == 'AF_UNIX':
+        rudisha tempfile.mktemp(prefix='listener-', dir=util.get_temp_dir())
+    elikiwa family == 'AF_PIPE':
+        rudisha tempfile.mktemp(prefix=r'\\.\pipe\pyc-%d-%d-' %
                                (os.getpid(), next(_mmap_counter)), dir="")
     else:
         raise ValueError('unrecognized family')
 
-def _validate_family(family):
+eleza _validate_family(family):
     '''
-    Checks if the family is valid for the current environment.
+    Checks ikiwa the family is valid for the current environment.
     '''
-    if sys.platform != 'win32' and family == 'AF_PIPE':
+    ikiwa sys.platform != 'win32' and family == 'AF_PIPE':
         raise ValueError('Family %s is not recognized.' % family)
 
-    if sys.platform == 'win32' and family == 'AF_UNIX':
+    ikiwa sys.platform == 'win32' and family == 'AF_UNIX':
         # double check
-        if not hasattr(socket, family):
+        ikiwa not hasattr(socket, family):
             raise ValueError('Family %s is not recognized.' % family)
 
-def address_type(address):
+eleza address_type(address):
     '''
     Return the types of the address
 
     This can be 'AF_INET', 'AF_UNIX', or 'AF_PIPE'
     '''
-    if type(address) == tuple:
-        return 'AF_INET'
-    elif type(address) is str and address.startswith('\\\\'):
-        return 'AF_PIPE'
-    elif type(address) is str:
-        return 'AF_UNIX'
+    ikiwa type(address) == tuple:
+        rudisha 'AF_INET'
+    elikiwa type(address) is str and address.startswith('\\\\'):
+        rudisha 'AF_PIPE'
+    elikiwa type(address) is str:
+        rudisha 'AF_UNIX'
     else:
         raise ValueError('address type of %r unrecognized' % address)
 
@@ -111,14 +111,14 @@ def address_type(address):
 # Connection classes
 #
 
-class _ConnectionBase:
+kundi _ConnectionBase:
     _handle = None
 
-    def __init__(self, handle, readable=True, writable=True):
+    eleza __init__(self, handle, readable=True, writable=True):
         handle = handle.__index__()
-        if handle < 0:
+        ikiwa handle < 0:
             raise ValueError("invalid handle")
-        if not readable and not writable:
+        ikiwa not readable and not writable:
             raise ValueError(
                 "at least one of `readable` and `writable` must be True")
         self._handle = handle
@@ -127,98 +127,98 @@ class _ConnectionBase:
 
     # XXX should we use util.Finalize instead of a __del__?
 
-    def __del__(self):
-        if self._handle is not None:
+    eleza __del__(self):
+        ikiwa self._handle is not None:
             self._close()
 
-    def _check_closed(self):
-        if self._handle is None:
+    eleza _check_closed(self):
+        ikiwa self._handle is None:
             raise OSError("handle is closed")
 
-    def _check_readable(self):
-        if not self._readable:
+    eleza _check_readable(self):
+        ikiwa not self._readable:
             raise OSError("connection is write-only")
 
-    def _check_writable(self):
-        if not self._writable:
+    eleza _check_writable(self):
+        ikiwa not self._writable:
             raise OSError("connection is read-only")
 
-    def _bad_message_length(self):
-        if self._writable:
+    eleza _bad_message_length(self):
+        ikiwa self._writable:
             self._readable = False
         else:
             self.close()
         raise OSError("bad message length")
 
     @property
-    def closed(self):
-        """True if the connection is closed"""
-        return self._handle is None
+    eleza closed(self):
+        """True ikiwa the connection is closed"""
+        rudisha self._handle is None
 
     @property
-    def readable(self):
-        """True if the connection is readable"""
-        return self._readable
+    eleza readable(self):
+        """True ikiwa the connection is readable"""
+        rudisha self._readable
 
     @property
-    def writable(self):
-        """True if the connection is writable"""
-        return self._writable
+    eleza writable(self):
+        """True ikiwa the connection is writable"""
+        rudisha self._writable
 
-    def fileno(self):
+    eleza fileno(self):
         """File descriptor or handle of the connection"""
         self._check_closed()
-        return self._handle
+        rudisha self._handle
 
-    def close(self):
+    eleza close(self):
         """Close the connection"""
-        if self._handle is not None:
+        ikiwa self._handle is not None:
             try:
                 self._close()
             finally:
                 self._handle = None
 
-    def send_bytes(self, buf, offset=0, size=None):
+    eleza send_bytes(self, buf, offset=0, size=None):
         """Send the bytes data kutoka a bytes-like object"""
         self._check_closed()
         self._check_writable()
         m = memoryview(buf)
         # HACK for byte-indexing of non-bytewise buffers (e.g. array.array)
-        if m.itemsize > 1:
+        ikiwa m.itemsize > 1:
             m = memoryview(bytes(m))
         n = len(m)
-        if offset < 0:
+        ikiwa offset < 0:
             raise ValueError("offset is negative")
-        if n < offset:
+        ikiwa n < offset:
             raise ValueError("buffer length < offset")
-        if size is None:
+        ikiwa size is None:
             size = n - offset
-        elif size < 0:
+        elikiwa size < 0:
             raise ValueError("size is negative")
-        elif offset + size > n:
+        elikiwa offset + size > n:
             raise ValueError("buffer length < offset + size")
         self._send_bytes(m[offset:offset + size])
 
-    def send(self, obj):
+    eleza send(self, obj):
         """Send a (picklable) object"""
         self._check_closed()
         self._check_writable()
         self._send_bytes(_ForkingPickler.dumps(obj))
 
-    def recv_bytes(self, maxlength=None):
+    eleza recv_bytes(self, maxlength=None):
         """
         Receive bytes data as a bytes object.
         """
         self._check_closed()
         self._check_readable()
-        if maxlength is not None and maxlength < 0:
+        ikiwa maxlength is not None and maxlength < 0:
             raise ValueError("negative maxlength")
         buf = self._recv_bytes(maxlength)
-        if buf is None:
+        ikiwa buf is None:
             self._bad_message_length()
-        return buf.getvalue()
+        rudisha buf.getvalue()
 
-    def recv_bytes_into(self, buf, offset=0):
+    eleza recv_bytes_into(self, buf, offset=0):
         """
         Receive bytes data into a writeable bytes-like object.
         Return the number of bytes read.
@@ -229,57 +229,57 @@ class _ConnectionBase:
             # Get bytesize of arbitrary buffer
             itemsize = m.itemsize
             bytesize = itemsize * len(m)
-            if offset < 0:
+            ikiwa offset < 0:
                 raise ValueError("negative offset")
-            elif offset > bytesize:
+            elikiwa offset > bytesize:
                 raise ValueError("offset too large")
             result = self._recv_bytes()
             size = result.tell()
-            if bytesize < offset + size:
+            ikiwa bytesize < offset + size:
                 raise BufferTooShort(result.getvalue())
             # Message can fit in dest
             result.seek(0)
             result.readinto(m[offset // itemsize :
                               (offset + size) // itemsize])
-            return size
+            rudisha size
 
-    def recv(self):
+    eleza recv(self):
         """Receive a (picklable) object"""
         self._check_closed()
         self._check_readable()
         buf = self._recv_bytes()
-        return _ForkingPickler.loads(buf.getbuffer())
+        rudisha _ForkingPickler.loads(buf.getbuffer())
 
-    def poll(self, timeout=0.0):
+    eleza poll(self, timeout=0.0):
         """Whether there is any input available to be read"""
         self._check_closed()
         self._check_readable()
-        return self._poll(timeout)
+        rudisha self._poll(timeout)
 
-    def __enter__(self):
-        return self
+    eleza __enter__(self):
+        rudisha self
 
-    def __exit__(self, exc_type, exc_value, exc_tb):
+    eleza __exit__(self, exc_type, exc_value, exc_tb):
         self.close()
 
 
-if _winapi:
+ikiwa _winapi:
 
-    class PipeConnection(_ConnectionBase):
+    kundi PipeConnection(_ConnectionBase):
         """
-        Connection class based on a Windows named pipe.
+        Connection kundi based on a Windows named pipe.
         Overlapped I/O is used, so the handles must have been created
         with FILE_FLAG_OVERLAPPED.
         """
         _got_empty_message = False
 
-        def _close(self, _CloseHandle=_winapi.CloseHandle):
+        eleza _close(self, _CloseHandle=_winapi.CloseHandle):
             _CloseHandle(self._handle)
 
-        def _send_bytes(self, buf):
+        eleza _send_bytes(self, buf):
             ov, err = _winapi.WriteFile(self._handle, buf, overlapped=True)
             try:
-                if err == _winapi.ERROR_IO_PENDING:
+                ikiwa err == _winapi.ERROR_IO_PENDING:
                     waitres = _winapi.WaitForMultipleObjects(
                         [ov.event], False, INFINITE)
                     assert waitres == WAIT_OBJECT_0
@@ -291,17 +291,17 @@ if _winapi:
             assert err == 0
             assert nwritten == len(buf)
 
-        def _recv_bytes(self, maxsize=None):
-            if self._got_empty_message:
+        eleza _recv_bytes(self, maxsize=None):
+            ikiwa self._got_empty_message:
                 self._got_empty_message = False
-                return io.BytesIO()
+                rudisha io.BytesIO()
             else:
-                bsize = 128 if maxsize is None else min(maxsize, 128)
+                bsize = 128 ikiwa maxsize is None else min(maxsize, 128)
                 try:
                     ov, err = _winapi.ReadFile(self._handle, bsize,
                                                 overlapped=True)
                     try:
-                        if err == _winapi.ERROR_IO_PENDING:
+                        ikiwa err == _winapi.ERROR_IO_PENDING:
                             waitres = _winapi.WaitForMultipleObjects(
                                 [ov.event], False, INFINITE)
                             assert waitres == WAIT_OBJECT_0
@@ -310,86 +310,86 @@ if _winapi:
                         raise
                     finally:
                         nread, err = ov.GetOverlappedResult(True)
-                        if err == 0:
+                        ikiwa err == 0:
                             f = io.BytesIO()
                             f.write(ov.getbuffer())
-                            return f
-                        elif err == _winapi.ERROR_MORE_DATA:
-                            return self._get_more_data(ov, maxsize)
+                            rudisha f
+                        elikiwa err == _winapi.ERROR_MORE_DATA:
+                            rudisha self._get_more_data(ov, maxsize)
                 except OSError as e:
-                    if e.winerror == _winapi.ERROR_BROKEN_PIPE:
+                    ikiwa e.winerror == _winapi.ERROR_BROKEN_PIPE:
                         raise EOFError
                     else:
                         raise
             raise RuntimeError("shouldn't get here; expected KeyboardInterrupt")
 
-        def _poll(self, timeout):
-            if (self._got_empty_message or
+        eleza _poll(self, timeout):
+            ikiwa (self._got_empty_message or
                         _winapi.PeekNamedPipe(self._handle)[0] != 0):
-                return True
-            return bool(wait([self], timeout))
+                rudisha True
+            rudisha bool(wait([self], timeout))
 
-        def _get_more_data(self, ov, maxsize):
+        eleza _get_more_data(self, ov, maxsize):
             buf = ov.getbuffer()
             f = io.BytesIO()
             f.write(buf)
             left = _winapi.PeekNamedPipe(self._handle)[1]
             assert left > 0
-            if maxsize is not None and len(buf) + left > maxsize:
+            ikiwa maxsize is not None and len(buf) + left > maxsize:
                 self._bad_message_length()
             ov, err = _winapi.ReadFile(self._handle, left, overlapped=True)
             rbytes, err = ov.GetOverlappedResult(True)
             assert err == 0
             assert rbytes == left
             f.write(ov.getbuffer())
-            return f
+            rudisha f
 
 
-class Connection(_ConnectionBase):
+kundi Connection(_ConnectionBase):
     """
-    Connection class based on an arbitrary file descriptor (Unix only), or
+    Connection kundi based on an arbitrary file descriptor (Unix only), or
     a socket handle (Windows).
     """
 
-    if _winapi:
-        def _close(self, _close=_multiprocessing.closesocket):
+    ikiwa _winapi:
+        eleza _close(self, _close=_multiprocessing.closesocket):
             _close(self._handle)
         _write = _multiprocessing.send
         _read = _multiprocessing.recv
     else:
-        def _close(self, _close=os.close):
+        eleza _close(self, _close=os.close):
             _close(self._handle)
         _write = os.write
         _read = os.read
 
-    def _send(self, buf, write=_write):
+    eleza _send(self, buf, write=_write):
         remaining = len(buf)
         while True:
             n = write(self._handle, buf)
             remaining -= n
-            if remaining == 0:
+            ikiwa remaining == 0:
                 break
             buf = buf[n:]
 
-    def _recv(self, size, read=_read):
+    eleza _recv(self, size, read=_read):
         buf = io.BytesIO()
         handle = self._handle
         remaining = size
         while remaining > 0:
             chunk = read(handle, remaining)
             n = len(chunk)
-            if n == 0:
-                if remaining == size:
+            ikiwa n == 0:
+                ikiwa remaining == size:
                     raise EOFError
                 else:
                     raise OSError("got end of file during message")
             buf.write(chunk)
             remaining -= n
-        return buf
+        rudisha buf
 
-    def _send_bytes(self, buf):
+    eleza _send_bytes(self, buf):
         n = len(buf)
-        if n > 0x7fffffff:
+        ikiwa n > 0x7fffffff:
             pre_header = struct.pack("!i", -1)
             header = struct.pack("!Q", n)
             self._send(pre_header)
@@ -398,7 +398,7 @@ class Connection(_ConnectionBase):
         else:
             # For wire compatibility with 3.7 and lower
             header = struct.pack("!i", n)
-            if n > 16384:
+            ikiwa n > 16384:
                 # The payload is large so Nagle's algorithm won't be triggered
                 # and we'd better avoid the cost of concatenation.
                 self._send(header)
@@ -407,117 +407,117 @@ class Connection(_ConnectionBase):
                 # Issue #20540: concatenate before sending, to avoid delays due
                 # to Nagle's algorithm on a TCP socket.
                 # Also note we want to avoid sending a 0-length buffer separately,
-                # to avoid "broken pipe" errors if the other end closed the pipe.
+                # to avoid "broken pipe" errors ikiwa the other end closed the pipe.
                 self._send(header + buf)
 
-    def _recv_bytes(self, maxsize=None):
+    eleza _recv_bytes(self, maxsize=None):
         buf = self._recv(4)
         size, = struct.unpack("!i", buf.getvalue())
-        if size == -1:
+        ikiwa size == -1:
             buf = self._recv(8)
             size, = struct.unpack("!Q", buf.getvalue())
-        if maxsize is not None and size > maxsize:
-            return None
-        return self._recv(size)
+        ikiwa maxsize is not None and size > maxsize:
+            rudisha None
+        rudisha self._recv(size)
 
-    def _poll(self, timeout):
+    eleza _poll(self, timeout):
         r = wait([self], timeout)
-        return bool(r)
+        rudisha bool(r)
 
 
 #
 # Public functions
 #
 
-class Listener(object):
+kundi Listener(object):
     '''
     Returns a listener object.
 
     This is a wrapper for a bound socket which is 'listening' for
     connections, or for a Windows named pipe.
     '''
-    def __init__(self, address=None, family=None, backlog=1, authkey=None):
+    eleza __init__(self, address=None, family=None, backlog=1, authkey=None):
         family = family or (address and address_type(address)) \
                  or default_family
         address = address or arbitrary_address(family)
 
         _validate_family(family)
-        if family == 'AF_PIPE':
+        ikiwa family == 'AF_PIPE':
             self._listener = PipeListener(address, backlog)
         else:
             self._listener = SocketListener(address, family, backlog)
 
-        if authkey is not None and not isinstance(authkey, bytes):
+        ikiwa authkey is not None and not isinstance(authkey, bytes):
             raise TypeError('authkey should be a byte string')
 
         self._authkey = authkey
 
-    def accept(self):
+    eleza accept(self):
         '''
         Accept a connection on the bound socket or named pipe of `self`.
 
         Returns a `Connection` object.
         '''
-        if self._listener is None:
+        ikiwa self._listener is None:
             raise OSError('listener is closed')
         c = self._listener.accept()
-        if self._authkey:
+        ikiwa self._authkey:
             deliver_challenge(c, self._authkey)
             answer_challenge(c, self._authkey)
-        return c
+        rudisha c
 
-    def close(self):
+    eleza close(self):
         '''
         Close the bound socket or named pipe of `self`.
         '''
         listener = self._listener
-        if listener is not None:
+        ikiwa listener is not None:
             self._listener = None
             listener.close()
 
     @property
-    def address(self):
-        return self._listener._address
+    eleza address(self):
+        rudisha self._listener._address
 
     @property
-    def last_accepted(self):
-        return self._listener._last_accepted
+    eleza last_accepted(self):
+        rudisha self._listener._last_accepted
 
-    def __enter__(self):
-        return self
+    eleza __enter__(self):
+        rudisha self
 
-    def __exit__(self, exc_type, exc_value, exc_tb):
+    eleza __exit__(self, exc_type, exc_value, exc_tb):
         self.close()
 
 
-def Client(address, family=None, authkey=None):
+eleza Client(address, family=None, authkey=None):
     '''
     Returns a connection to the address of a `Listener`
     '''
     family = family or address_type(address)
     _validate_family(family)
-    if family == 'AF_PIPE':
+    ikiwa family == 'AF_PIPE':
         c = PipeClient(address)
     else:
         c = SocketClient(address)
 
-    if authkey is not None and not isinstance(authkey, bytes):
+    ikiwa authkey is not None and not isinstance(authkey, bytes):
         raise TypeError('authkey should be a byte string')
 
-    if authkey is not None:
+    ikiwa authkey is not None:
         answer_challenge(c, authkey)
         deliver_challenge(c, authkey)
 
-    return c
+    rudisha c
 
 
-if sys.platform != 'win32':
+ikiwa sys.platform != 'win32':
 
-    def Pipe(duplex=True):
+    eleza Pipe(duplex=True):
         '''
         Returns pair of connection objects at either end of a pipe
         '''
-        if duplex:
+        ikiwa duplex:
             s1, s2 = socket.socketpair()
             s1.setblocking(True)
             s2.setblocking(True)
@@ -528,16 +528,16 @@ if sys.platform != 'win32':
             c1 = Connection(fd1, writable=False)
             c2 = Connection(fd2, readable=False)
 
-        return c1, c2
+        rudisha c1, c2
 
 else:
 
-    def Pipe(duplex=True):
+    eleza Pipe(duplex=True):
         '''
         Returns pair of connection objects at either end of a pipe
         '''
         address = arbitrary_address('AF_PIPE')
-        if duplex:
+        ikiwa duplex:
             openmode = _winapi.PIPE_ACCESS_DUPLEX
             access = _winapi.GENERIC_READ | _winapi.GENERIC_WRITE
             obsize, ibsize = BUFSIZE, BUFSIZE
@@ -570,21 +570,21 @@ else:
         c1 = PipeConnection(h1, writable=duplex)
         c2 = PipeConnection(h2, readable=duplex)
 
-        return c1, c2
+        rudisha c1, c2
 
 #
 # Definitions for connections based on sockets
 #
 
-class SocketListener(object):
+kundi SocketListener(object):
     '''
     Representation of a socket which is bound to an address and listening
     '''
-    def __init__(self, address, family, backlog=1):
+    eleza __init__(self, address, family, backlog=1):
         self._socket = socket.socket(getattr(socket, family))
         try:
             # SO_REUSEADDR has different semantics on Windows (issue #2550).
-            if os.name == 'posix':
+            ikiwa os.name == 'posix':
                 self._socket.setsockopt(socket.SOL_SOCKET,
                                         socket.SO_REUSEADDR, 1)
             self._socket.setblocking(True)
@@ -597,29 +597,29 @@ class SocketListener(object):
         self._family = family
         self._last_accepted = None
 
-        if family == 'AF_UNIX':
+        ikiwa family == 'AF_UNIX':
             self._unlink = util.Finalize(
                 self, os.unlink, args=(address,), exitpriority=0
                 )
         else:
             self._unlink = None
 
-    def accept(self):
+    eleza accept(self):
         s, self._last_accepted = self._socket.accept()
         s.setblocking(True)
-        return Connection(s.detach())
+        rudisha Connection(s.detach())
 
-    def close(self):
+    eleza close(self):
         try:
             self._socket.close()
         finally:
             unlink = self._unlink
-            if unlink is not None:
+            ikiwa unlink is not None:
                 self._unlink = None
                 unlink()
 
 
-def SocketClient(address):
+eleza SocketClient(address):
     '''
     Return a connection object connected to the socket given by `address`
     '''
@@ -627,19 +627,19 @@ def SocketClient(address):
     with socket.socket( getattr(socket, family) ) as s:
         s.setblocking(True)
         s.connect(address)
-        return Connection(s.detach())
+        rudisha Connection(s.detach())
 
 #
 # Definitions for connections based on named pipes
 #
 
-if sys.platform == 'win32':
+ikiwa sys.platform == 'win32':
 
-    class PipeListener(object):
+    kundi PipeListener(object):
         '''
         Representation of a named pipe
         '''
-        def __init__(self, address, backlog=None):
+        eleza __init__(self, address, backlog=None):
             self._address = address
             self._handle_queue = [self._new_handle(first=True)]
 
@@ -650,11 +650,11 @@ if sys.platform == 'win32':
                 args=(self._handle_queue, self._address), exitpriority=0
                 )
 
-        def _new_handle(self, first=False):
+        eleza _new_handle(self, first=False):
             flags = _winapi.PIPE_ACCESS_DUPLEX | _winapi.FILE_FLAG_OVERLAPPED
-            if first:
+            ikiwa first:
                 flags |= _winapi.FILE_FLAG_FIRST_PIPE_INSTANCE
-            return _winapi.CreateNamedPipe(
+            rudisha _winapi.CreateNamedPipe(
                 self._address, flags,
                 _winapi.PIPE_TYPE_MESSAGE | _winapi.PIPE_READMODE_MESSAGE |
                 _winapi.PIPE_WAIT,
@@ -662,15 +662,15 @@ if sys.platform == 'win32':
                 _winapi.NMPWAIT_WAIT_FOREVER, _winapi.NULL
                 )
 
-        def accept(self):
+        eleza accept(self):
             self._handle_queue.append(self._new_handle())
             handle = self._handle_queue.pop(0)
             try:
                 ov = _winapi.ConnectNamedPipe(handle, overlapped=True)
             except OSError as e:
-                if e.winerror != _winapi.ERROR_NO_DATA:
+                ikiwa e.winerror != _winapi.ERROR_NO_DATA:
                     raise
-                # ERROR_NO_DATA can occur if a client has already connected,
+                # ERROR_NO_DATA can occur ikiwa a client has already connected,
                 # written data and then disconnected -- see Issue 14725.
             else:
                 try:
@@ -683,15 +683,15 @@ if sys.platform == 'win32':
                 finally:
                     _, err = ov.GetOverlappedResult(True)
                     assert err == 0
-            return PipeConnection(handle)
+            rudisha PipeConnection(handle)
 
         @staticmethod
-        def _finalize_pipe_listener(queue, address):
+        eleza _finalize_pipe_listener(queue, address):
             util.sub_debug('closing listener with address=%r', address)
             for handle in queue:
                 _winapi.CloseHandle(handle)
 
-    def PipeClient(address):
+    eleza PipeClient(address):
         '''
         Return a connection object connected to the pipe given by `address`
         '''
@@ -705,7 +705,7 @@ if sys.platform == 'win32':
                     _winapi.FILE_FLAG_OVERLAPPED, _winapi.NULL
                     )
             except OSError as e:
-                if e.winerror not in (_winapi.ERROR_SEM_TIMEOUT,
+                ikiwa e.winerror not in (_winapi.ERROR_SEM_TIMEOUT,
                                       _winapi.ERROR_PIPE_BUSY) or _check_timeout(t):
                     raise
             else:
@@ -716,7 +716,7 @@ if sys.platform == 'win32':
         _winapi.SetNamedPipeHandleState(
             h, _winapi.PIPE_READMODE_MESSAGE, None, None
             )
-        return PipeConnection(h)
+        rudisha PipeConnection(h)
 
 #
 # Authentication stuff
@@ -728,24 +728,24 @@ CHALLENGE = b'#CHALLENGE#'
 WELCOME = b'#WELCOME#'
 FAILURE = b'#FAILURE#'
 
-def deliver_challenge(connection, authkey):
+eleza deliver_challenge(connection, authkey):
     agiza hmac
-    if not isinstance(authkey, bytes):
+    ikiwa not isinstance(authkey, bytes):
         raise ValueError(
             "Authkey must be bytes, not {0!s}".format(type(authkey)))
     message = os.urandom(MESSAGE_LENGTH)
     connection.send_bytes(CHALLENGE + message)
     digest = hmac.new(authkey, message, 'md5').digest()
     response = connection.recv_bytes(256)        # reject large message
-    if response == digest:
+    ikiwa response == digest:
         connection.send_bytes(WELCOME)
     else:
         connection.send_bytes(FAILURE)
         raise AuthenticationError('digest received was wrong')
 
-def answer_challenge(connection, authkey):
+eleza answer_challenge(connection, authkey):
     agiza hmac
-    if not isinstance(authkey, bytes):
+    ikiwa not isinstance(authkey, bytes):
         raise ValueError(
             "Authkey must be bytes, not {0!s}".format(type(authkey)))
     message = connection.recv_bytes(256)         # reject large message
@@ -754,84 +754,84 @@ def answer_challenge(connection, authkey):
     digest = hmac.new(authkey, message, 'md5').digest()
     connection.send_bytes(digest)
     response = connection.recv_bytes(256)        # reject large message
-    if response != WELCOME:
+    ikiwa response != WELCOME:
         raise AuthenticationError('digest sent was rejected')
 
 #
 # Support for using xmlrpclib for serialization
 #
 
-class ConnectionWrapper(object):
-    def __init__(self, conn, dumps, loads):
+kundi ConnectionWrapper(object):
+    eleza __init__(self, conn, dumps, loads):
         self._conn = conn
         self._dumps = dumps
         self._loads = loads
         for attr in ('fileno', 'close', 'poll', 'recv_bytes', 'send_bytes'):
             obj = getattr(conn, attr)
             setattr(self, attr, obj)
-    def send(self, obj):
+    eleza send(self, obj):
         s = self._dumps(obj)
         self._conn.send_bytes(s)
-    def recv(self):
+    eleza recv(self):
         s = self._conn.recv_bytes()
-        return self._loads(s)
+        rudisha self._loads(s)
 
-def _xml_dumps(obj):
-    return xmlrpclib.dumps((obj,), None, None, None, 1).encode('utf-8')
+eleza _xml_dumps(obj):
+    rudisha xmlrpclib.dumps((obj,), None, None, None, 1).encode('utf-8')
 
-def _xml_loads(s):
+eleza _xml_loads(s):
     (obj,), method = xmlrpclib.loads(s.decode('utf-8'))
-    return obj
+    rudisha obj
 
-class XmlListener(Listener):
-    def accept(self):
+kundi XmlListener(Listener):
+    eleza accept(self):
         global xmlrpclib
         agiza xmlrpc.client as xmlrpclib
         obj = Listener.accept(self)
-        return ConnectionWrapper(obj, _xml_dumps, _xml_loads)
+        rudisha ConnectionWrapper(obj, _xml_dumps, _xml_loads)
 
-def XmlClient(*args, **kwds):
+eleza XmlClient(*args, **kwds):
     global xmlrpclib
     agiza xmlrpc.client as xmlrpclib
-    return ConnectionWrapper(Client(*args, **kwds), _xml_dumps, _xml_loads)
+    rudisha ConnectionWrapper(Client(*args, **kwds), _xml_dumps, _xml_loads)
 
 #
 # Wait
 #
 
-if sys.platform == 'win32':
+ikiwa sys.platform == 'win32':
 
-    def _exhaustive_wait(handles, timeout):
+    eleza _exhaustive_wait(handles, timeout):
         # Return ALL handles which are currently signalled.  (Only
         # returning the first signalled might create starvation issues.)
         L = list(handles)
         ready = []
         while L:
             res = _winapi.WaitForMultipleObjects(L, False, timeout)
-            if res == WAIT_TIMEOUT:
+            ikiwa res == WAIT_TIMEOUT:
                 break
-            elif WAIT_OBJECT_0 <= res < WAIT_OBJECT_0 + len(L):
+            elikiwa WAIT_OBJECT_0 <= res < WAIT_OBJECT_0 + len(L):
                 res -= WAIT_OBJECT_0
-            elif WAIT_ABANDONED_0 <= res < WAIT_ABANDONED_0 + len(L):
+            elikiwa WAIT_ABANDONED_0 <= res < WAIT_ABANDONED_0 + len(L):
                 res -= WAIT_ABANDONED_0
             else:
                 raise RuntimeError('Should not get here')
             ready.append(L[res])
             L = L[res+1:]
             timeout = 0
-        return ready
+        rudisha ready
 
     _ready_errors = {_winapi.ERROR_BROKEN_PIPE, _winapi.ERROR_NETNAME_DELETED}
 
-    def wait(object_list, timeout=None):
+    eleza wait(object_list, timeout=None):
         '''
         Wait till an object in object_list is ready/readable.
 
         Returns list of those objects in object_list which are ready/readable.
         '''
-        if timeout is None:
+        ikiwa timeout is None:
             timeout = INFINITE
-        elif timeout < 0:
+        elikiwa timeout < 0:
             timeout = 0
         else:
             timeout = int(timeout * 1000 + 0.5)
@@ -854,23 +854,23 @@ if sys.platform == 'win32':
                         ov, err = _winapi.ReadFile(fileno(), 0, True)
                     except OSError as e:
                         ov, err = None, e.winerror
-                        if err not in _ready_errors:
+                        ikiwa err not in _ready_errors:
                             raise
-                    if err == _winapi.ERROR_IO_PENDING:
+                    ikiwa err == _winapi.ERROR_IO_PENDING:
                         ov_list.append(ov)
                         waithandle_to_obj[ov.event] = o
                     else:
                         # If o.fileno() is an overlapped pipe handle and
                         # err == 0 then there is a zero length message
                         # in the pipe, but it HAS NOT been consumed...
-                        if ov and sys.getwindowsversion()[:2] >= (6, 2):
+                        ikiwa ov and sys.getwindowsversion()[:2] >= (6, 2):
                             # ... except on Windows 8 and later, where
                             # the message HAS been consumed.
                             try:
                                 _, err = ov.GetOverlappedResult(False)
                             except OSError as e:
                                 err = e.winerror
-                            if not err and hasattr(o, '_got_empty_message'):
+                            ikiwa not err and hasattr(o, '_got_empty_message'):
                                 o._got_empty_message = True
                         ready_objects.add(o)
                         timeout = 0
@@ -887,19 +887,19 @@ if sys.platform == 'win32':
                     _, err = ov.GetOverlappedResult(True)
                 except OSError as e:
                     err = e.winerror
-                    if err not in _ready_errors:
+                    ikiwa err not in _ready_errors:
                         raise
-                if err != _winapi.ERROR_OPERATION_ABORTED:
+                ikiwa err != _winapi.ERROR_OPERATION_ABORTED:
                     o = waithandle_to_obj[ov.event]
                     ready_objects.add(o)
-                    if err == 0:
+                    ikiwa err == 0:
                         # If o.fileno() is an overlapped pipe handle then
                         # a zero length message HAS been consumed.
-                        if hasattr(o, '_got_empty_message'):
+                        ikiwa hasattr(o, '_got_empty_message'):
                             o._got_empty_message = True
 
         ready_objects.update(waithandle_to_obj[h] for h in ready_handles)
-        return [o for o in object_list if o in ready_objects]
+        rudisha [o for o in object_list ikiwa o in ready_objects]
 
 else:
 
@@ -908,12 +908,12 @@ else:
     # poll/select have the advantage of not requiring any extra file
     # descriptor, contrarily to epoll/kqueue (also, they require a single
     # syscall).
-    if hasattr(selectors, 'PollSelector'):
+    ikiwa hasattr(selectors, 'PollSelector'):
         _WaitSelector = selectors.PollSelector
     else:
         _WaitSelector = selectors.SelectSelector
 
-    def wait(object_list, timeout=None):
+    eleza wait(object_list, timeout=None):
         '''
         Wait till an object in object_list is ready/readable.
 
@@ -923,50 +923,50 @@ else:
             for obj in object_list:
                 selector.register(obj, selectors.EVENT_READ)
 
-            if timeout is not None:
+            ikiwa timeout is not None:
                 deadline = time.monotonic() + timeout
 
             while True:
                 ready = selector.select(timeout)
-                if ready:
-                    return [key.fileobj for (key, events) in ready]
+                ikiwa ready:
+                    rudisha [key.fileobj for (key, events) in ready]
                 else:
-                    if timeout is not None:
+                    ikiwa timeout is not None:
                         timeout = deadline - time.monotonic()
-                        if timeout < 0:
-                            return ready
+                        ikiwa timeout < 0:
+                            rudisha ready
 
 #
-# Make connection and socket objects sharable if possible
+# Make connection and socket objects sharable ikiwa possible
 #
 
-if sys.platform == 'win32':
-    def reduce_connection(conn):
+ikiwa sys.platform == 'win32':
+    eleza reduce_connection(conn):
         handle = conn.fileno()
-        with socket.fromfd(handle, socket.AF_INET, socket.SOCK_STREAM) as s:
+        with socket.kutokafd(handle, socket.AF_INET, socket.SOCK_STREAM) as s:
             kutoka . agiza resource_sharer
             ds = resource_sharer.DupSocket(s)
-            return rebuild_connection, (ds, conn.readable, conn.writable)
-    def rebuild_connection(ds, readable, writable):
+            rudisha rebuild_connection, (ds, conn.readable, conn.writable)
+    eleza rebuild_connection(ds, readable, writable):
         sock = ds.detach()
-        return Connection(sock.detach(), readable, writable)
+        rudisha Connection(sock.detach(), readable, writable)
     reduction.register(Connection, reduce_connection)
 
-    def reduce_pipe_connection(conn):
-        access = ((_winapi.FILE_GENERIC_READ if conn.readable else 0) |
-                  (_winapi.FILE_GENERIC_WRITE if conn.writable else 0))
+    eleza reduce_pipe_connection(conn):
+        access = ((_winapi.FILE_GENERIC_READ ikiwa conn.readable else 0) |
+                  (_winapi.FILE_GENERIC_WRITE ikiwa conn.writable else 0))
         dh = reduction.DupHandle(conn.fileno(), access)
-        return rebuild_pipe_connection, (dh, conn.readable, conn.writable)
-    def rebuild_pipe_connection(dh, readable, writable):
+        rudisha rebuild_pipe_connection, (dh, conn.readable, conn.writable)
+    eleza rebuild_pipe_connection(dh, readable, writable):
         handle = dh.detach()
-        return PipeConnection(handle, readable, writable)
+        rudisha PipeConnection(handle, readable, writable)
     reduction.register(PipeConnection, reduce_pipe_connection)
 
 else:
-    def reduce_connection(conn):
+    eleza reduce_connection(conn):
         df = reduction.DupFd(conn.fileno())
-        return rebuild_connection, (df, conn.readable, conn.writable)
-    def rebuild_connection(df, readable, writable):
+        rudisha rebuild_connection, (df, conn.readable, conn.writable)
+    eleza rebuild_connection(df, readable, writable):
         fd = df.detach()
-        return Connection(fd, readable, writable)
+        rudisha Connection(fd, readable, writable)
     reduction.register(Connection, reduce_connection)

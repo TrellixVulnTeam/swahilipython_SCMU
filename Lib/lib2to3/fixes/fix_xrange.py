@@ -9,7 +9,7 @@ kutoka ..fixer_util agiza Name, Call, consuming_calls
 kutoka .. agiza patcomp
 
 
-class FixXrange(fixer_base.BaseFix):
+kundi FixXrange(fixer_base.BaseFix):
     BM_compatible = True
     PATTERN = """
               power<
@@ -17,30 +17,30 @@ class FixXrange(fixer_base.BaseFix):
               rest=any* >
               """
 
-    def start_tree(self, tree, filename):
+    eleza start_tree(self, tree, filename):
         super(FixXrange, self).start_tree(tree, filename)
         self.transformed_xranges = set()
 
-    def finish_tree(self, tree, filename):
+    eleza finish_tree(self, tree, filename):
         self.transformed_xranges = None
 
-    def transform(self, node, results):
+    eleza transform(self, node, results):
         name = results["name"]
-        if name.value == "xrange":
-            return self.transform_xrange(node, results)
-        elif name.value == "range":
-            return self.transform_range(node, results)
+        ikiwa name.value == "xrange":
+            rudisha self.transform_xrange(node, results)
+        elikiwa name.value == "range":
+            rudisha self.transform_range(node, results)
         else:
             raise ValueError(repr(name))
 
-    def transform_xrange(self, node, results):
+    eleza transform_xrange(self, node, results):
         name = results["name"]
         name.replace(Name("range", prefix=name.prefix))
         # This prevents the new range call kutoka being wrapped in a list later.
         self.transformed_xranges.add(id(node))
 
-    def transform_range(self, node, results):
-        if (id(node) not in self.transformed_xranges and
+    eleza transform_range(self, node, results):
+        ikiwa (id(node) not in self.transformed_xranges and
             not self.in_special_context(node)):
             range_call = Call(Name("range"), [results["args"].clone()])
             # Encase the range call in list().
@@ -49,7 +49,7 @@ class FixXrange(fixer_base.BaseFix):
             # Put things that were after the range() call after the list call.
             for n in results["rest"]:
                 list_call.append_child(n)
-            return list_call
+            rudisha list_call
 
     P1 = "power< func=NAME trailer< '(' node=any ')' > any* >"
     p1 = patcomp.compile_pattern(P1)
@@ -60,14 +60,14 @@ class FixXrange(fixer_base.BaseFix):
          """
     p2 = patcomp.compile_pattern(P2)
 
-    def in_special_context(self, node):
-        if node.parent is None:
-            return False
+    eleza in_special_context(self, node):
+        ikiwa node.parent is None:
+            rudisha False
         results = {}
-        if (node.parent.parent is not None and
+        ikiwa (node.parent.parent is not None and
                self.p1.match(node.parent.parent, results) and
                results["node"] is node):
             # list(d.keys()) -> list(d.keys()), etc.
-            return results["func"].value in consuming_calls
+            rudisha results["func"].value in consuming_calls
         # for ... in d.iterkeys() -> for ... in d.keys(), etc.
-        return self.p2.match(node.parent, results) and results["node"] is node
+        rudisha self.p2.match(node.parent, results) and results["node"] is node

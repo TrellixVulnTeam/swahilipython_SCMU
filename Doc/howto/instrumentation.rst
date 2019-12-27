@@ -14,7 +14,7 @@ what the processes on a computer system are doing.  They both use
 domain-specific languages allowing a user to write scripts which:
 
   - filter which processes are to be observed
-  - gather data from the processes of interest
+  - gather data kutoka the processes of interest
   - generate reports on the data
 
 As of Python 3.6, CPython can be built with embedded "markers", also
@@ -254,7 +254,7 @@ and the remainder indicates the call/return hierarchy as the script executes.
 
 For a `--enable-shared` build of CPython, the markers are contained within the
 libpython shared library, and the probe's dotted path needs to reflect this. For
-example, this line from the above example:
+example, this line kutoka the above example:
 
 .. code-block:: none
 

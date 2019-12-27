@@ -28,7 +28,7 @@ __all__ = ["POP3","error_proto"]
 
 # Exception raised when an error or invalid response is received:
 
-class error_proto(Exception): pass
+kundi error_proto(Exception): pass
 
 # Standard Port
 POP3_PORT = 110
@@ -48,9 +48,9 @@ CRLF = CR+LF
 _MAXLINE = 2048
 
 
-class POP3:
+kundi POP3:
 
-    """This class supports both the minimal and optional command sets.
+    """This kundi supports both the minimal and optional command sets.
     Arguments can be strings or integers (where appropriate)
     (e.g.: retr(1) and retr('1') both work equally well.
 
@@ -95,7 +95,7 @@ class POP3:
 
     encoding = 'UTF-8'
 
-    def __init__(self, host, port=POP3_PORT,
+    eleza __init__(self, host, port=POP3_PORT,
                  timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
         self.host = host
         self.port = port
@@ -106,131 +106,131 @@ class POP3:
         self._debugging = 0
         self.welcome = self._getresp()
 
-    def _create_socket(self, timeout):
-        return socket.create_connection((self.host, self.port), timeout)
+    eleza _create_socket(self, timeout):
+        rudisha socket.create_connection((self.host, self.port), timeout)
 
-    def _putline(self, line):
-        if self._debugging > 1: print('*put*', repr(line))
+    eleza _putline(self, line):
+        ikiwa self._debugging > 1: andika('*put*', repr(line))
         sys.audit("poplib.putline", self, line)
         self.sock.sendall(line + CRLF)
 
 
     # Internal: send one command to the server (through _putline())
 
-    def _putcmd(self, line):
-        if self._debugging: print('*cmd*', repr(line))
+    eleza _putcmd(self, line):
+        ikiwa self._debugging: andika('*cmd*', repr(line))
         line = bytes(line, self.encoding)
         self._putline(line)
 
 
-    # Internal: return one line kutoka the server, stripping CRLF.
+    # Internal: rudisha one line kutoka the server, stripping CRLF.
     # This is where all the CPU time of this module is consumed.
-    # Raise error_proto('-ERR EOF') if the connection is closed.
+    # Raise error_proto('-ERR EOF') ikiwa the connection is closed.
 
-    def _getline(self):
+    eleza _getline(self):
         line = self.file.readline(_MAXLINE + 1)
-        if len(line) > _MAXLINE:
+        ikiwa len(line) > _MAXLINE:
             raise error_proto('line too long')
 
-        if self._debugging > 1: print('*get*', repr(line))
-        if not line: raise error_proto('-ERR EOF')
+        ikiwa self._debugging > 1: andika('*get*', repr(line))
+        ikiwa not line: raise error_proto('-ERR EOF')
         octets = len(line)
         # server can send any combination of CR & LF
         # however, 'readline()' returns lines ending in LF
         # so only possibilities are ...LF, ...CRLF, CR...LF
-        if line[-2:] == CRLF:
-            return line[:-2], octets
-        if line[:1] == CR:
-            return line[1:-1], octets
-        return line[:-1], octets
+        ikiwa line[-2:] == CRLF:
+            rudisha line[:-2], octets
+        ikiwa line[:1] == CR:
+            rudisha line[1:-1], octets
+        rudisha line[:-1], octets
 
 
     # Internal: get a response kutoka the server.
-    # Raise 'error_proto' if the response doesn't start with '+'.
+    # Raise 'error_proto' ikiwa the response doesn't start with '+'.
 
-    def _getresp(self):
+    eleza _getresp(self):
         resp, o = self._getline()
-        if self._debugging > 1: print('*resp*', repr(resp))
-        if not resp.startswith(b'+'):
+        ikiwa self._debugging > 1: andika('*resp*', repr(resp))
+        ikiwa not resp.startswith(b'+'):
             raise error_proto(resp)
-        return resp
+        rudisha resp
 
 
     # Internal: get a response plus following text kutoka the server.
 
-    def _getlongresp(self):
+    eleza _getlongresp(self):
         resp = self._getresp()
         list = []; octets = 0
         line, o = self._getline()
         while line != b'.':
-            if line.startswith(b'..'):
+            ikiwa line.startswith(b'..'):
                 o = o-1
                 line = line[1:]
             octets = octets + o
             list.append(line)
             line, o = self._getline()
-        return resp, list, octets
+        rudisha resp, list, octets
 
 
     # Internal: send a command and get the response
 
-    def _shortcmd(self, line):
+    eleza _shortcmd(self, line):
         self._putcmd(line)
-        return self._getresp()
+        rudisha self._getresp()
 
 
     # Internal: send a command and get the response plus following text
 
-    def _longcmd(self, line):
+    eleza _longcmd(self, line):
         self._putcmd(line)
-        return self._getlongresp()
+        rudisha self._getlongresp()
 
 
     # These can be useful:
 
-    def getwelcome(self):
-        return self.welcome
+    eleza getwelcome(self):
+        rudisha self.welcome
 
 
-    def set_debuglevel(self, level):
+    eleza set_debuglevel(self, level):
         self._debugging = level
 
 
     # Here are all the POP commands:
 
-    def user(self, user):
-        """Send user name, return response
+    eleza user(self, user):
+        """Send user name, rudisha response
 
         (should indicate password required).
         """
-        return self._shortcmd('USER %s' % user)
+        rudisha self._shortcmd('USER %s' % user)
 
 
-    def pass_(self, pswd):
-        """Send password, return response
+    eleza pass_(self, pswd):
+        """Send password, rudisha response
 
         (response includes message count, mailbox size).
 
         NB: mailbox is locked by server kutoka here to 'quit()'
         """
-        return self._shortcmd('PASS %s' % pswd)
+        rudisha self._shortcmd('PASS %s' % pswd)
 
 
-    def stat(self):
+    eleza stat(self):
         """Get mailbox status.
 
         Result is tuple of 2 ints (message count, mailbox size)
         """
         retval = self._shortcmd('STAT')
         rets = retval.split()
-        if self._debugging: print('*stat*', repr(rets))
+        ikiwa self._debugging: andika('*stat*', repr(rets))
         numMessages = int(rets[1])
         sizeMessages = int(rets[2])
-        return (numMessages, sizeMessages)
+        rudisha (numMessages, sizeMessages)
 
 
-    def list(self, which=None):
-        """Request listing, return result.
+    eleza list(self, which=None):
+        """Request listing, rudisha result.
 
         Result without a message number argument is in form
         ['response', ['mesg_num octets', ...], octets].
@@ -238,64 +238,64 @@ class POP3:
         Result when a message number argument is given is a
         single response: the "scan listing" for that message.
         """
-        if which is not None:
-            return self._shortcmd('LIST %s' % which)
-        return self._longcmd('LIST')
+        ikiwa which is not None:
+            rudisha self._shortcmd('LIST %s' % which)
+        rudisha self._longcmd('LIST')
 
 
-    def retr(self, which):
+    eleza retr(self, which):
         """Retrieve whole message number 'which'.
 
         Result is in form ['response', ['line', ...], octets].
         """
-        return self._longcmd('RETR %s' % which)
+        rudisha self._longcmd('RETR %s' % which)
 
 
-    def dele(self, which):
+    eleza dele(self, which):
         """Delete message number 'which'.
 
         Result is 'response'.
         """
-        return self._shortcmd('DELE %s' % which)
+        rudisha self._shortcmd('DELE %s' % which)
 
 
-    def noop(self):
+    eleza noop(self):
         """Does nothing.
 
         One supposes the response indicates the server is alive.
         """
-        return self._shortcmd('NOOP')
+        rudisha self._shortcmd('NOOP')
 
 
-    def rset(self):
+    eleza rset(self):
         """Unmark all messages marked for deletion."""
-        return self._shortcmd('RSET')
+        rudisha self._shortcmd('RSET')
 
 
-    def quit(self):
+    eleza quit(self):
         """Signoff: commit changes on server, unlock mailbox, close connection."""
         resp = self._shortcmd('QUIT')
         self.close()
-        return resp
+        rudisha resp
 
-    def close(self):
+    eleza close(self):
         """Close the connection without assuming anything about it."""
         try:
             file = self.file
             self.file = None
-            if file is not None:
+            ikiwa file is not None:
                 file.close()
         finally:
             sock = self.sock
             self.sock = None
-            if sock is not None:
+            ikiwa sock is not None:
                 try:
                     sock.shutdown(socket.SHUT_RDWR)
                 except OSError as exc:
                     # The server might already have closed the connection.
                     # On Windows, this may result in WSAEINVAL (error 10022):
                     # An invalid operation was attempted.
-                    if (exc.errno != errno.ENOTCONN
+                    ikiwa (exc.errno != errno.ENOTCONN
                        and getattr(exc, 'winerror', 0) != 10022):
                         raise
                 finally:
@@ -306,17 +306,17 @@ class POP3:
 
     # optional commands:
 
-    def rpop(self, user):
+    eleza rpop(self, user):
         """Not sure what this does."""
-        return self._shortcmd('RPOP %s' % user)
+        rudisha self._shortcmd('RPOP %s' % user)
 
 
     timestamp = re.compile(br'\+OK.[^<]*(<.*>)')
 
-    def apop(self, user, password):
+    eleza apop(self, user, password):
         """Authorisation
 
-        - only possible if server has supplied a timestamp in initial greeting.
+        - only possible ikiwa server has supplied a timestamp in initial greeting.
 
         Args:
                 user     - mailbox user;
@@ -326,42 +326,42 @@ class POP3:
         """
         secret = bytes(password, self.encoding)
         m = self.timestamp.match(self.welcome)
-        if not m:
+        ikiwa not m:
             raise error_proto('-ERR APOP not supported by server')
         agiza hashlib
         digest = m.group(1)+secret
         digest = hashlib.md5(digest).hexdigest()
-        return self._shortcmd('APOP %s %s' % (user, digest))
+        rudisha self._shortcmd('APOP %s %s' % (user, digest))
 
 
-    def top(self, which, howmuch):
+    eleza top(self, which, howmuch):
         """Retrieve message header of message number 'which'
         and first 'howmuch' lines of message body.
 
         Result is in form ['response', ['line', ...], octets].
         """
-        return self._longcmd('TOP %s %s' % (which, howmuch))
+        rudisha self._longcmd('TOP %s %s' % (which, howmuch))
 
 
-    def uidl(self, which=None):
+    eleza uidl(self, which=None):
         """Return message digest (unique id) list.
 
         If 'which', result contains unique id for that message
         in the form 'response mesgnum uid', otherwise result is
         the list ['response', ['mesgnum uid', ...], octets]
         """
-        if which is not None:
-            return self._shortcmd('UIDL %s' % which)
-        return self._longcmd('UIDL')
+        ikiwa which is not None:
+            rudisha self._shortcmd('UIDL %s' % which)
+        rudisha self._longcmd('UIDL')
 
 
-    def utf8(self):
+    eleza utf8(self):
         """Try to enter UTF-8 mode (see RFC 6856). Returns server response.
         """
-        return self._shortcmd('UTF8')
+        rudisha self._shortcmd('UTF8')
 
 
-    def capa(self):
+    eleza capa(self):
         """Return server capabilities (RFC 2449) as a dictionary
         >>> c=poplib.POP3('localhost')
         >>> c.capa()
@@ -374,9 +374,9 @@ class POP3:
         Really, according to RFC 2449, the cyrus folks should avoid
         having the implementation split into multiple arguments...
         """
-        def _parsecap(line):
+        eleza _parsecap(line):
             lst = line.decode('ascii').split()
-            return lst[0], lst[1:]
+            rudisha lst[0], lst[1:]
 
         caps = {}
         try:
@@ -387,35 +387,35 @@ class POP3:
                 caps[capnm] = capargs
         except error_proto as _err:
             raise error_proto('-ERR CAPA not supported by server')
-        return caps
+        rudisha caps
 
 
-    def stls(self, context=None):
+    eleza stls(self, context=None):
         """Start a TLS session on the active connection as specified in RFC 2595.
 
                 context - a ssl.SSLContext
         """
-        if not HAVE_SSL:
+        ikiwa not HAVE_SSL:
             raise error_proto('-ERR TLS support missing')
-        if self._tls_established:
+        ikiwa self._tls_established:
             raise error_proto('-ERR TLS session already established')
         caps = self.capa()
-        if not 'STLS' in caps:
+        ikiwa not 'STLS' in caps:
             raise error_proto('-ERR STLS not supported by server')
-        if context is None:
+        ikiwa context is None:
             context = ssl._create_stdlib_context()
         resp = self._shortcmd('STLS')
         self.sock = context.wrap_socket(self.sock,
                                         server_hostname=self.host)
         self.file = self.sock.makefile('rb')
         self._tls_established = True
-        return resp
+        rudisha resp
 
 
-if HAVE_SSL:
+ikiwa HAVE_SSL:
 
-    class POP3_SSL(POP3):
-        """POP3 client class over SSL connection
+    kundi POP3_SSL(POP3):
+        """POP3 client kundi over SSL connection
 
         Instantiate with: POP3_SSL(hostname, port=995, keyfile=None, certfile=None,
                                    context=None)
@@ -426,36 +426,36 @@ if HAVE_SSL:
                certfile - PEM formatted certificate chain file
                context - a ssl.SSLContext
 
-        See the methods of the parent class POP3 for more documentation.
+        See the methods of the parent kundi POP3 for more documentation.
         """
 
-        def __init__(self, host, port=POP3_SSL_PORT, keyfile=None, certfile=None,
+        eleza __init__(self, host, port=POP3_SSL_PORT, keyfile=None, certfile=None,
                      timeout=socket._GLOBAL_DEFAULT_TIMEOUT, context=None):
-            if context is not None and keyfile is not None:
+            ikiwa context is not None and keyfile is not None:
                 raise ValueError("context and keyfile arguments are mutually "
                                  "exclusive")
-            if context is not None and certfile is not None:
+            ikiwa context is not None and certfile is not None:
                 raise ValueError("context and certfile arguments are mutually "
                                  "exclusive")
-            if keyfile is not None or certfile is not None:
+            ikiwa keyfile is not None or certfile is not None:
                 agiza warnings
                 warnings.warn("keyfile and certfile are deprecated, use a "
                               "custom context instead", DeprecationWarning, 2)
             self.keyfile = keyfile
             self.certfile = certfile
-            if context is None:
+            ikiwa context is None:
                 context = ssl._create_stdlib_context(certfile=certfile,
                                                      keyfile=keyfile)
             self.context = context
             POP3.__init__(self, host, port, timeout)
 
-        def _create_socket(self, timeout):
+        eleza _create_socket(self, timeout):
             sock = POP3._create_socket(self, timeout)
             sock = self.context.wrap_socket(sock,
                                             server_hostname=self.host)
-            return sock
+            rudisha sock
 
-        def stls(self, keyfile=None, certfile=None, context=None):
+        eleza stls(self, keyfile=None, certfile=None, context=None):
             """The method unconditionally raises an exception since the
             STLS command doesn't make any sense on an already established
             SSL/TLS session.
@@ -464,18 +464,18 @@ if HAVE_SSL:
 
     __all__.append("POP3_SSL")
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     agiza sys
     a = POP3(sys.argv[1])
-    print(a.getwelcome())
+    andika(a.getwelcome())
     a.user(sys.argv[2])
     a.pass_(sys.argv[3])
     a.list()
     (numMsgs, totalSize) = a.stat()
     for i in range(1, numMsgs + 1):
         (header, msg, octets) = a.retr(i)
-        print("Message %d:" % i)
+        andika("Message %d:" % i)
         for line in msg:
-            print('   ' + line)
-        print('-----------------------')
+            andika('   ' + line)
+        andika('-----------------------')
     a.quit()

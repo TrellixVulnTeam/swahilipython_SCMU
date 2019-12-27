@@ -3,7 +3,7 @@ agiza math
 agiza string
 agiza sys
 kutoka test agiza support
-# Skip this test if the _testcapi module isn't available.
+# Skip this test ikiwa the _testcapi module isn't available.
 _testcapi = support.import_module('_testcapi')
 kutoka _testcapi agiza getargs_keywords, getargs_keyword_only
 
@@ -35,7 +35,7 @@ kutoka _testcapi agiza getargs_keywords, getargs_keyword_only
 #
 # Plus a C API or two, e.g. PyLong_AsUnsignedLongMask() ->
 # unsigned long and PyLong_AsUnsignedLongLongMask() -> unsigned
-# long long (if that exists).
+# long long (ikiwa that exists).
 
 LARGE = 0x7FFFFFFF
 VERY_LARGE = 0xFF0000121212121212121242
@@ -53,105 +53,105 @@ LLONG_MAX = 2**63-1
 LLONG_MIN = -2**63
 ULLONG_MAX = 2**64-1
 
-class Index:
-    def __index__(self):
-        return 99
+kundi Index:
+    eleza __index__(self):
+        rudisha 99
 
-class IndexIntSubclass(int):
-    def __index__(self):
-        return 99
+kundi IndexIntSubclass(int):
+    eleza __index__(self):
+        rudisha 99
 
-class BadIndex:
-    def __index__(self):
-        return 1.0
+kundi BadIndex:
+    eleza __index__(self):
+        rudisha 1.0
 
-class BadIndex2:
-    def __index__(self):
-        return True
+kundi BadIndex2:
+    eleza __index__(self):
+        rudisha True
 
-class BadIndex3(int):
-    def __index__(self):
-        return True
-
-
-class Int:
-    def __int__(self):
-        return 99
-
-class IntSubclass(int):
-    def __int__(self):
-        return 99
-
-class BadInt:
-    def __int__(self):
-        return 1.0
-
-class BadInt2:
-    def __int__(self):
-        return True
-
-class BadInt3(int):
-    def __int__(self):
-        return True
+kundi BadIndex3(int):
+    eleza __index__(self):
+        rudisha True
 
 
-class Float:
-    def __float__(self):
-        return 4.25
+kundi Int:
+    eleza __int__(self):
+        rudisha 99
 
-class FloatSubclass(float):
+kundi IntSubclass(int):
+    eleza __int__(self):
+        rudisha 99
+
+kundi BadInt:
+    eleza __int__(self):
+        rudisha 1.0
+
+kundi BadInt2:
+    eleza __int__(self):
+        rudisha True
+
+kundi BadInt3(int):
+    eleza __int__(self):
+        rudisha True
+
+
+kundi Float:
+    eleza __float__(self):
+        rudisha 4.25
+
+kundi FloatSubclass(float):
     pass
 
-class FloatSubclass2(float):
-    def __float__(self):
-        return 4.25
+kundi FloatSubclass2(float):
+    eleza __float__(self):
+        rudisha 4.25
 
-class BadFloat:
-    def __float__(self):
-        return 687
+kundi BadFloat:
+    eleza __float__(self):
+        rudisha 687
 
-class BadFloat2:
-    def __float__(self):
-        return FloatSubclass(4.25)
+kundi BadFloat2:
+    eleza __float__(self):
+        rudisha FloatSubclass(4.25)
 
-class BadFloat3(float):
-    def __float__(self):
-        return FloatSubclass(4.25)
+kundi BadFloat3(float):
+    eleza __float__(self):
+        rudisha FloatSubclass(4.25)
 
 
-class Complex:
-    def __complex__(self):
-        return 4.25+0.5j
+kundi Complex:
+    eleza __complex__(self):
+        rudisha 4.25+0.5j
 
-class ComplexSubclass(complex):
+kundi ComplexSubclass(complex):
     pass
 
-class ComplexSubclass2(complex):
-    def __complex__(self):
-        return 4.25+0.5j
+kundi ComplexSubclass2(complex):
+    eleza __complex__(self):
+        rudisha 4.25+0.5j
 
-class BadComplex:
-    def __complex__(self):
-        return 1.25
+kundi BadComplex:
+    eleza __complex__(self):
+        rudisha 1.25
 
-class BadComplex2:
-    def __complex__(self):
-        return ComplexSubclass(4.25+0.5j)
+kundi BadComplex2:
+    eleza __complex__(self):
+        rudisha ComplexSubclass(4.25+0.5j)
 
-class BadComplex3(complex):
-    def __complex__(self):
-        return ComplexSubclass(4.25+0.5j)
+kundi BadComplex3(complex):
+    eleza __complex__(self):
+        rudisha ComplexSubclass(4.25+0.5j)
 
 
-class TupleSubclass(tuple):
+kundi TupleSubclass(tuple):
     pass
 
-class DictSubclass(dict):
+kundi DictSubclass(dict):
     pass
 
 
-class Unsigned_TestCase(unittest.TestCase):
-    def test_b(self):
+kundi Unsigned_TestCase(unittest.TestCase):
+    eleza test_b(self):
         kutoka _testcapi agiza getargs_b
         # b returns 'unsigned char', and does range checking (0 ... UCHAR_MAX)
         self.assertRaises(TypeError, getargs_b, 3.14)
@@ -177,7 +177,7 @@ class Unsigned_TestCase(unittest.TestCase):
         self.assertEqual(42, getargs_b(42))
         self.assertRaises(OverflowError, getargs_b, VERY_LARGE)
 
-    def test_B(self):
+    eleza test_B(self):
         kutoka _testcapi agiza getargs_B
         # B returns 'unsigned char', no range checking
         self.assertRaises(TypeError, getargs_B, 3.14)
@@ -203,7 +203,7 @@ class Unsigned_TestCase(unittest.TestCase):
         self.assertEqual(42, getargs_B(42))
         self.assertEqual(UCHAR_MAX & VERY_LARGE, getargs_B(VERY_LARGE))
 
-    def test_H(self):
+    eleza test_H(self):
         kutoka _testcapi agiza getargs_H
         # H returns 'unsigned short', no range checking
         self.assertRaises(TypeError, getargs_H, 3.14)
@@ -230,7 +230,7 @@ class Unsigned_TestCase(unittest.TestCase):
 
         self.assertEqual(VERY_LARGE & USHRT_MAX, getargs_H(VERY_LARGE))
 
-    def test_I(self):
+    eleza test_I(self):
         kutoka _testcapi agiza getargs_I
         # I returns 'unsigned int', no range checking
         self.assertRaises(TypeError, getargs_I, 3.14)
@@ -257,7 +257,7 @@ class Unsigned_TestCase(unittest.TestCase):
 
         self.assertEqual(VERY_LARGE & UINT_MAX, getargs_I(VERY_LARGE))
 
-    def test_k(self):
+    eleza test_k(self):
         kutoka _testcapi agiza getargs_k
         # k returns 'unsigned long', no range checking
         # it does not accept float, or instances with __int__
@@ -282,8 +282,8 @@ class Unsigned_TestCase(unittest.TestCase):
 
         self.assertEqual(VERY_LARGE & ULONG_MAX, getargs_k(VERY_LARGE))
 
-class Signed_TestCase(unittest.TestCase):
-    def test_h(self):
+kundi Signed_TestCase(unittest.TestCase):
+    eleza test_h(self):
         kutoka _testcapi agiza getargs_h
         # h returns 'short', and does range checking (SHRT_MIN ... SHRT_MAX)
         self.assertRaises(TypeError, getargs_h, 3.14)
@@ -309,7 +309,7 @@ class Signed_TestCase(unittest.TestCase):
         self.assertEqual(42, getargs_h(42))
         self.assertRaises(OverflowError, getargs_h, VERY_LARGE)
 
-    def test_i(self):
+    eleza test_i(self):
         kutoka _testcapi agiza getargs_i
         # i returns 'int', and does range checking (INT_MIN ... INT_MAX)
         self.assertRaises(TypeError, getargs_i, 3.14)
@@ -335,7 +335,7 @@ class Signed_TestCase(unittest.TestCase):
         self.assertEqual(42, getargs_i(42))
         self.assertRaises(OverflowError, getargs_i, VERY_LARGE)
 
-    def test_l(self):
+    eleza test_l(self):
         kutoka _testcapi agiza getargs_l
         # l returns 'long', and does range checking (LONG_MIN ... LONG_MAX)
         self.assertRaises(TypeError, getargs_l, 3.14)
@@ -361,7 +361,7 @@ class Signed_TestCase(unittest.TestCase):
         self.assertEqual(42, getargs_l(42))
         self.assertRaises(OverflowError, getargs_l, VERY_LARGE)
 
-    def test_n(self):
+    eleza test_n(self):
         kutoka _testcapi agiza getargs_n
         # n returns 'Py_ssize_t', and does range checking
         # (PY_SSIZE_T_MIN ... PY_SSIZE_T_MAX)
@@ -387,8 +387,8 @@ class Signed_TestCase(unittest.TestCase):
         self.assertRaises(OverflowError, getargs_n, VERY_LARGE)
 
 
-class LongLong_TestCase(unittest.TestCase):
-    def test_L(self):
+kundi LongLong_TestCase(unittest.TestCase):
+    eleza test_L(self):
         kutoka _testcapi agiza getargs_L
         # L returns 'long long', and does range checking (LLONG_MIN
         # ... LLONG_MAX)
@@ -416,9 +416,9 @@ class LongLong_TestCase(unittest.TestCase):
         self.assertEqual(42, getargs_L(42))
         self.assertRaises(OverflowError, getargs_L, VERY_LARGE)
 
-    def test_K(self):
+    eleza test_K(self):
         kutoka _testcapi agiza getargs_K
-        # K return 'unsigned long long', no range checking
+        # K rudisha 'unsigned long long', no range checking
         self.assertRaises(TypeError, getargs_K, 3.14)
         self.assertRaises(TypeError, getargs_K, Index())
         self.assertEqual(0, getargs_K(IndexIntSubclass()))
@@ -440,12 +440,12 @@ class LongLong_TestCase(unittest.TestCase):
         self.assertEqual(VERY_LARGE & ULLONG_MAX, getargs_K(VERY_LARGE))
 
 
-class Float_TestCase(unittest.TestCase):
-    def assertEqualWithSign(self, actual, expected):
+kundi Float_TestCase(unittest.TestCase):
+    eleza assertEqualWithSign(self, actual, expected):
         self.assertEqual(actual, expected)
         self.assertEqual(math.copysign(1, actual), math.copysign(1, expected))
 
-    def test_f(self):
+    eleza test_f(self):
         kutoka _testcapi agiza getargs_f
         self.assertEqual(getargs_f(4.25), 4.25)
         self.assertEqual(getargs_f(4), 4.0)
@@ -462,10 +462,10 @@ class Float_TestCase(unittest.TestCase):
 
         for x in (FLT_MIN, -FLT_MIN, FLT_MAX, -FLT_MAX, INF, -INF):
             self.assertEqual(getargs_f(x), x)
-        if FLT_MAX < DBL_MAX:
+        ikiwa FLT_MAX < DBL_MAX:
             self.assertEqual(getargs_f(DBL_MAX), INF)
             self.assertEqual(getargs_f(-DBL_MAX), -INF)
-        if FLT_MIN > DBL_MIN:
+        ikiwa FLT_MIN > DBL_MIN:
             self.assertEqualWithSign(getargs_f(DBL_MIN), 0.0)
             self.assertEqualWithSign(getargs_f(-DBL_MIN), -0.0)
         self.assertEqualWithSign(getargs_f(0.0), 0.0)
@@ -474,12 +474,12 @@ class Float_TestCase(unittest.TestCase):
         self.assertNotEqual(r, r)
 
     @support.requires_IEEE_754
-    def test_f_rounding(self):
+    eleza test_f_rounding(self):
         kutoka _testcapi agiza getargs_f
         self.assertEqual(getargs_f(3.40282356e38), FLT_MAX)
         self.assertEqual(getargs_f(-3.40282356e38), -FLT_MAX)
 
-    def test_d(self):
+    eleza test_d(self):
         kutoka _testcapi agiza getargs_d
         self.assertEqual(getargs_d(4.25), 4.25)
         self.assertEqual(getargs_d(4), 4.0)
@@ -503,7 +503,7 @@ class Float_TestCase(unittest.TestCase):
         r = getargs_d(NAN)
         self.assertNotEqual(r, r)
 
-    def test_D(self):
+    eleza test_D(self):
         kutoka _testcapi agiza getargs_D
         self.assertEqual(getargs_D(4.25+0.5j), 4.25+0.5j)
         self.assertEqual(getargs_D(4.25), 4.25+0j)
@@ -529,13 +529,13 @@ class Float_TestCase(unittest.TestCase):
         self.assertEqualWithSign(getargs_D(complex(1.0, -0.0)).imag, -0.0)
 
 
-class Paradox:
+kundi Paradox:
     "This statement is false."
-    def __bool__(self):
+    eleza __bool__(self):
         raise NotImplementedError
 
-class Boolean_TestCase(unittest.TestCase):
-    def test_p(self):
+kundi Boolean_TestCase(unittest.TestCase):
+    eleza test_p(self):
         kutoka _testcapi agiza getargs_p
         self.assertEqual(0, getargs_p(False))
         self.assertEqual(0, getargs_p(None))
@@ -560,8 +560,8 @@ class Boolean_TestCase(unittest.TestCase):
         self.assertRaises(NotImplementedError, getargs_p, Paradox())
 
 
-class Tuple_TestCase(unittest.TestCase):
-    def test_args(self):
+kundi Tuple_TestCase(unittest.TestCase):
+    eleza test_args(self):
         kutoka _testcapi agiza get_args
 
         ret = get_args(1, 2)
@@ -588,22 +588,22 @@ class Tuple_TestCase(unittest.TestCase):
         self.assertIn(ret, ((), None))
         self.assertIn(type(ret), (tuple, type(None)))
 
-    def test_tuple(self):
+    eleza test_tuple(self):
         kutoka _testcapi agiza getargs_tuple
 
         ret = getargs_tuple(1, (2, 3))
         self.assertEqual(ret, (1,2,3))
 
         # make sure invalid tuple arguments are handled correctly
-        class seq:
-            def __len__(self):
-                return 2
-            def __getitem__(self, n):
+        kundi seq:
+            eleza __len__(self):
+                rudisha 2
+            eleza __getitem__(self, n):
                 raise ValueError
         self.assertRaises(TypeError, getargs_tuple, 1, seq())
 
-class Keywords_TestCase(unittest.TestCase):
-    def test_kwargs(self):
+kundi Keywords_TestCase(unittest.TestCase):
+    eleza test_kwargs(self):
         kutoka _testcapi agiza get_kwargs
 
         ret = get_kwargs(a=1, b=2)
@@ -626,35 +626,35 @@ class Keywords_TestCase(unittest.TestCase):
         self.assertIn(ret, ({}, None))
         self.assertIn(type(ret), (dict, type(None)))
 
-    def test_positional_args(self):
+    eleza test_positional_args(self):
         # using all positional args
         self.assertEqual(
             getargs_keywords((1,2), 3, (4,(5,6)), (7,8,9), 10),
             (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
             )
 
-    def test_mixed_args(self):
+    eleza test_mixed_args(self):
         # positional and keyword args
         self.assertEqual(
             getargs_keywords((1,2), 3, (4,(5,6)), arg4=(7,8,9), arg5=10),
             (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
             )
 
-    def test_keyword_args(self):
+    eleza test_keyword_args(self):
         # all keywords
         self.assertEqual(
             getargs_keywords(arg1=(1,2), arg2=3, arg3=(4,(5,6)), arg4=(7,8,9), arg5=10),
             (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
             )
 
-    def test_optional_args(self):
+    eleza test_optional_args(self):
         # missing optional keyword args, skipping tuples
         self.assertEqual(
             getargs_keywords(arg1=(1,2), arg2=3, arg5=10),
             (1, 2, 3, -1, -1, -1, -1, -1, -1, 10)
             )
 
-    def test_required_args(self):
+    eleza test_required_args(self):
         # required arg missing
         try:
             getargs_keywords(arg1=(1,2))
@@ -664,7 +664,7 @@ class Keywords_TestCase(unittest.TestCase):
         else:
             self.fail('TypeError should have been raised')
 
-    def test_too_many_args(self):
+    eleza test_too_many_args(self):
         try:
             getargs_keywords((1,2),3,(4,(5,6)),(7,8,9),10,111)
         except TypeError as err:
@@ -672,7 +672,7 @@ class Keywords_TestCase(unittest.TestCase):
         else:
             self.fail('TypeError should have been raised')
 
-    def test_invalid_keyword(self):
+    eleza test_invalid_keyword(self):
         # extraneous keyword arg
         try:
             getargs_keywords((1,2),3,arg5=10,arg666=666)
@@ -681,7 +681,7 @@ class Keywords_TestCase(unittest.TestCase):
         else:
             self.fail('TypeError should have been raised')
 
-    def test_surrogate_keyword(self):
+    eleza test_surrogate_keyword(self):
         try:
             getargs_keywords((1,2), 3, (4,(5,6)), (7,8,9), **{'\uDC80': 10})
         except TypeError as err:
@@ -689,29 +689,29 @@ class Keywords_TestCase(unittest.TestCase):
         else:
             self.fail('TypeError should have been raised')
 
-class KeywordOnly_TestCase(unittest.TestCase):
-    def test_positional_args(self):
+kundi KeywordOnly_TestCase(unittest.TestCase):
+    eleza test_positional_args(self):
         # using all possible positional args
         self.assertEqual(
             getargs_keyword_only(1, 2),
             (1, 2, -1)
             )
 
-    def test_mixed_args(self):
+    eleza test_mixed_args(self):
         # positional and keyword args
         self.assertEqual(
             getargs_keyword_only(1, 2, keyword_only=3),
             (1, 2, 3)
             )
 
-    def test_keyword_args(self):
+    eleza test_keyword_args(self):
         # all keywords
         self.assertEqual(
             getargs_keyword_only(required=1, optional=2, keyword_only=3),
             (1, 2, 3)
             )
 
-    def test_optional_args(self):
+    eleza test_optional_args(self):
         # missing optional keyword args, skipping tuples
         self.assertEqual(
             getargs_keyword_only(required=1, optional=2),
@@ -722,7 +722,7 @@ class KeywordOnly_TestCase(unittest.TestCase):
             (1, -1, 3)
             )
 
-    def test_required_args(self):
+    eleza test_required_args(self):
         self.assertEqual(
             getargs_keyword_only(1),
             (1, -1, -1)
@@ -740,7 +740,7 @@ class KeywordOnly_TestCase(unittest.TestCase):
             r"function missing required argument 'required' \(pos 1\)"):
             getargs_keyword_only(keyword_only=3)
 
-    def test_too_many_args(self):
+    eleza test_too_many_args(self):
         with self.assertRaisesRegex(TypeError,
             r"function takes at most 2 positional arguments \(3 given\)"):
             getargs_keyword_only(1, 2, 3)
@@ -749,35 +749,35 @@ class KeywordOnly_TestCase(unittest.TestCase):
             r"function takes at most 3 arguments \(4 given\)"):
             getargs_keyword_only(1, 2, 3, keyword_only=5)
 
-    def test_invalid_keyword(self):
+    eleza test_invalid_keyword(self):
         # extraneous keyword arg
         with self.assertRaisesRegex(TypeError,
             "'monster' is an invalid keyword argument for this function"):
             getargs_keyword_only(1, 2, monster=666)
 
-    def test_surrogate_keyword(self):
+    eleza test_surrogate_keyword(self):
         with self.assertRaisesRegex(TypeError,
             "'\udc80' is an invalid keyword argument for this function"):
             getargs_keyword_only(1, 2, **{'\uDC80': 10})
 
 
-class PositionalOnlyAndKeywords_TestCase(unittest.TestCase):
+kundi PositionalOnlyAndKeywords_TestCase(unittest.TestCase):
     kutoka _testcapi agiza getargs_positional_only_and_keywords as getargs
 
-    def test_positional_args(self):
+    eleza test_positional_args(self):
         # using all possible positional args
         self.assertEqual(self.getargs(1, 2, 3), (1, 2, 3))
 
-    def test_mixed_args(self):
+    eleza test_mixed_args(self):
         # positional and keyword args
         self.assertEqual(self.getargs(1, 2, keyword=3), (1, 2, 3))
 
-    def test_optional_args(self):
+    eleza test_optional_args(self):
         # missing optional args
         self.assertEqual(self.getargs(1, 2), (1, 2, -1))
         self.assertEqual(self.getargs(1, keyword=3), (1, -1, 3))
 
-    def test_required_args(self):
+    eleza test_required_args(self):
         self.assertEqual(self.getargs(1), (1, -1, -1))
         # required positional arg missing
         with self.assertRaisesRegex(TypeError,
@@ -788,14 +788,14 @@ class PositionalOnlyAndKeywords_TestCase(unittest.TestCase):
             r"function takes at least 1 positional argument \(0 given\)"):
             self.getargs(keyword=3)
 
-    def test_empty_keyword(self):
+    eleza test_empty_keyword(self):
         with self.assertRaisesRegex(TypeError,
             "'' is an invalid keyword argument for this function"):
             self.getargs(1, 2, **{'': 666})
 
 
-class Bytes_TestCase(unittest.TestCase):
-    def test_c(self):
+kundi Bytes_TestCase(unittest.TestCase):
+    eleza test_c(self):
         kutoka _testcapi agiza getargs_c
         self.assertRaises(TypeError, getargs_c, b'abc')  # len > 1
         self.assertEqual(getargs_c(b'a'), 97)
@@ -805,7 +805,7 @@ class Bytes_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_c, 97)
         self.assertRaises(TypeError, getargs_c, None)
 
-    def test_y(self):
+    eleza test_y(self):
         kutoka _testcapi agiza getargs_y
         self.assertRaises(TypeError, getargs_y, 'abc\xe9')
         self.assertEqual(getargs_y(b'bytes'), b'bytes')
@@ -814,7 +814,7 @@ class Bytes_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_y, memoryview(b'memoryview'))
         self.assertRaises(TypeError, getargs_y, None)
 
-    def test_y_star(self):
+    eleza test_y_star(self):
         kutoka _testcapi agiza getargs_y_star
         self.assertRaises(TypeError, getargs_y_star, 'abc\xe9')
         self.assertEqual(getargs_y_star(b'bytes'), b'bytes')
@@ -823,7 +823,7 @@ class Bytes_TestCase(unittest.TestCase):
         self.assertEqual(getargs_y_star(memoryview(b'memoryview')), b'memoryview')
         self.assertRaises(TypeError, getargs_y_star, None)
 
-    def test_y_hash(self):
+    eleza test_y_hash(self):
         kutoka _testcapi agiza getargs_y_hash
         self.assertRaises(TypeError, getargs_y_hash, 'abc\xe9')
         self.assertEqual(getargs_y_hash(b'bytes'), b'bytes')
@@ -832,7 +832,7 @@ class Bytes_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_y_hash, memoryview(b'memoryview'))
         self.assertRaises(TypeError, getargs_y_hash, None)
 
-    def test_w_star(self):
+    eleza test_w_star(self):
         # getargs_w_star() modifies first and last byte
         kutoka _testcapi agiza getargs_w_star
         self.assertRaises(TypeError, getargs_w_star, 'abc\xe9')
@@ -848,8 +848,8 @@ class Bytes_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_w_star, None)
 
 
-class String_TestCase(unittest.TestCase):
-    def test_C(self):
+kundi String_TestCase(unittest.TestCase):
+    eleza test_C(self):
         kutoka _testcapi agiza getargs_C
         self.assertRaises(TypeError, getargs_C, 'abc')  # len > 1
         self.assertEqual(getargs_C('a'), 97)
@@ -861,7 +861,7 @@ class String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_C, 97)
         self.assertRaises(TypeError, getargs_C, None)
 
-    def test_s(self):
+    eleza test_s(self):
         kutoka _testcapi agiza getargs_s
         self.assertEqual(getargs_s('abc\xe9'), b'abc\xc3\xa9')
         self.assertRaises(ValueError, getargs_s, 'nul:\0')
@@ -870,7 +870,7 @@ class String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_s, memoryview(b'memoryview'))
         self.assertRaises(TypeError, getargs_s, None)
 
-    def test_s_star(self):
+    eleza test_s_star(self):
         kutoka _testcapi agiza getargs_s_star
         self.assertEqual(getargs_s_star('abc\xe9'), b'abc\xc3\xa9')
         self.assertEqual(getargs_s_star('nul:\0'), b'nul:\0')
@@ -879,7 +879,7 @@ class String_TestCase(unittest.TestCase):
         self.assertEqual(getargs_s_star(memoryview(b'memoryview')), b'memoryview')
         self.assertRaises(TypeError, getargs_s_star, None)
 
-    def test_s_hash(self):
+    eleza test_s_hash(self):
         kutoka _testcapi agiza getargs_s_hash
         self.assertEqual(getargs_s_hash('abc\xe9'), b'abc\xc3\xa9')
         self.assertEqual(getargs_s_hash('nul:\0'), b'nul:\0')
@@ -888,7 +888,7 @@ class String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_s_hash, memoryview(b'memoryview'))
         self.assertRaises(TypeError, getargs_s_hash, None)
 
-    def test_z(self):
+    eleza test_z(self):
         kutoka _testcapi agiza getargs_z
         self.assertEqual(getargs_z('abc\xe9'), b'abc\xc3\xa9')
         self.assertRaises(ValueError, getargs_z, 'nul:\0')
@@ -897,7 +897,7 @@ class String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_z, memoryview(b'memoryview'))
         self.assertIsNone(getargs_z(None))
 
-    def test_z_star(self):
+    eleza test_z_star(self):
         kutoka _testcapi agiza getargs_z_star
         self.assertEqual(getargs_z_star('abc\xe9'), b'abc\xc3\xa9')
         self.assertEqual(getargs_z_star('nul:\0'), b'nul:\0')
@@ -906,7 +906,7 @@ class String_TestCase(unittest.TestCase):
         self.assertEqual(getargs_z_star(memoryview(b'memoryview')), b'memoryview')
         self.assertIsNone(getargs_z_star(None))
 
-    def test_z_hash(self):
+    eleza test_z_hash(self):
         kutoka _testcapi agiza getargs_z_hash
         self.assertEqual(getargs_z_hash('abc\xe9'), b'abc\xc3\xa9')
         self.assertEqual(getargs_z_hash('nul:\0'), b'nul:\0')
@@ -915,7 +915,7 @@ class String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_z_hash, memoryview(b'memoryview'))
         self.assertIsNone(getargs_z_hash(None))
 
-    def test_es(self):
+    eleza test_es(self):
         kutoka _testcapi agiza getargs_es
         self.assertEqual(getargs_es('abc\xe9'), b'abc\xc3\xa9')
         self.assertEqual(getargs_es('abc\xe9', 'latin1'), b'abc\xe9')
@@ -927,7 +927,7 @@ class String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_es, None, 'latin1')
         self.assertRaises(TypeError, getargs_es, 'nul:\0', 'latin1')
 
-    def test_et(self):
+    eleza test_et(self):
         kutoka _testcapi agiza getargs_et
         self.assertEqual(getargs_et('abc\xe9'), b'abc\xc3\xa9')
         self.assertEqual(getargs_et('abc\xe9', 'latin1'), b'abc\xe9')
@@ -941,7 +941,7 @@ class String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_et, b'nul:\0', 'latin1')
         self.assertRaises(TypeError, getargs_et, bytearray(b'nul:\0'), 'latin1')
 
-    def test_es_hash(self):
+    eleza test_es_hash(self):
         kutoka _testcapi agiza getargs_es_hash
         self.assertEqual(getargs_es_hash('abc\xe9'), b'abc\xc3\xa9')
         self.assertEqual(getargs_es_hash('abc\xe9', 'latin1'), b'abc\xe9')
@@ -965,7 +965,7 @@ class String_TestCase(unittest.TestCase):
         buf = bytearray()
         self.assertRaises(ValueError, getargs_es_hash, 'abc\xe9', 'latin1', buf)
 
-    def test_et_hash(self):
+    eleza test_et_hash(self):
         kutoka _testcapi agiza getargs_et_hash
         self.assertEqual(getargs_et_hash('abc\xe9'), b'abc\xc3\xa9')
         self.assertEqual(getargs_et_hash('abc\xe9', 'latin1'), b'abc\xe9')
@@ -991,7 +991,7 @@ class String_TestCase(unittest.TestCase):
         buf = bytearray()
         self.assertRaises(ValueError, getargs_et_hash, 'abc\xe9', 'latin1', buf)
 
-    def test_u(self):
+    eleza test_u(self):
         kutoka _testcapi agiza getargs_u
         self.assertEqual(getargs_u('abc\xe9'), 'abc\xe9')
         self.assertRaises(ValueError, getargs_u, 'nul:\0')
@@ -1000,7 +1000,7 @@ class String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_u, memoryview(b'memoryview'))
         self.assertRaises(TypeError, getargs_u, None)
 
-    def test_u_hash(self):
+    eleza test_u_hash(self):
         kutoka _testcapi agiza getargs_u_hash
         self.assertEqual(getargs_u_hash('abc\xe9'), 'abc\xe9')
         self.assertEqual(getargs_u_hash('nul:\0'), 'nul:\0')
@@ -1009,7 +1009,7 @@ class String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_u_hash, memoryview(b'memoryview'))
         self.assertRaises(TypeError, getargs_u_hash, None)
 
-    def test_Z(self):
+    eleza test_Z(self):
         kutoka _testcapi agiza getargs_Z
         self.assertEqual(getargs_Z('abc\xe9'), 'abc\xe9')
         self.assertRaises(ValueError, getargs_Z, 'nul:\0')
@@ -1018,7 +1018,7 @@ class String_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_Z, memoryview(b'memoryview'))
         self.assertIsNone(getargs_Z(None))
 
-    def test_Z_hash(self):
+    eleza test_Z_hash(self):
         kutoka _testcapi agiza getargs_Z_hash
         self.assertEqual(getargs_Z_hash('abc\xe9'), 'abc\xe9')
         self.assertEqual(getargs_Z_hash('nul:\0'), 'nul:\0')
@@ -1028,8 +1028,8 @@ class String_TestCase(unittest.TestCase):
         self.assertIsNone(getargs_Z_hash(None))
 
 
-class Object_TestCase(unittest.TestCase):
-    def test_S(self):
+kundi Object_TestCase(unittest.TestCase):
+    eleza test_S(self):
         kutoka _testcapi agiza getargs_S
         obj = b'bytes'
         self.assertIs(getargs_S(obj), obj)
@@ -1038,7 +1038,7 @@ class Object_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_S, None)
         self.assertRaises(TypeError, getargs_S, memoryview(obj))
 
-    def test_Y(self):
+    eleza test_Y(self):
         kutoka _testcapi agiza getargs_Y
         obj = bytearray(b'bytearray')
         self.assertIs(getargs_Y(obj), obj)
@@ -1047,7 +1047,7 @@ class Object_TestCase(unittest.TestCase):
         self.assertRaises(TypeError, getargs_Y, None)
         self.assertRaises(TypeError, getargs_Y, memoryview(obj))
 
-    def test_U(self):
+    eleza test_U(self):
         kutoka _testcapi agiza getargs_U
         obj = 'str'
         self.assertIs(getargs_U(obj), obj)
@@ -1057,14 +1057,14 @@ class Object_TestCase(unittest.TestCase):
 
 
 # Bug #6012
-class Test6012(unittest.TestCase):
-    def test(self):
+kundi Test6012(unittest.TestCase):
+    eleza test(self):
         self.assertEqual(_testcapi.argparsing("Hello", "World"), 1)
 
 
-class SkipitemTest(unittest.TestCase):
+kundi SkipitemTest(unittest.TestCase):
 
-    def test_skipitem(self):
+    eleza test_skipitem(self):
         """
         If this test failed, you probably added a new "format unit"
         in Python/getargs.c, but neglected to update our poor friend
@@ -1072,10 +1072,10 @@ class SkipitemTest(unittest.TestCase):
 
         With a few exceptions**, this function brute-force tests all
         printable ASCII*** characters (32 to 126 inclusive) as format units,
-        checking to see that PyArg_ParseTupleAndKeywords() return consistent
+        checking to see that PyArg_ParseTupleAndKeywords() rudisha consistent
         errors both when the unit is attempted to be used and when it is
         skipped.  If the format unit doesn't exist, we'll get one of two
-        specific error messages (one for used, one for skipped); if it does
+        specific error messages (one for used, one for skipped); ikiwa it does
         exist we *won't* get that error--we'll get either no error or some
         other error.  If we get the specific "does not exist" error for one
         test and not for the other, there's a mismatch, and the test fails.
@@ -1101,7 +1101,7 @@ class SkipitemTest(unittest.TestCase):
             # skip parentheses, the error reporting is inconsistent about them
             # skip 'e', it's always a two-character code
             # skip '|' and '$', they don't represent arguments anyway
-            if c in '()e|$':
+            ikiwa c in '()e|$':
                 continue
 
             # test the format unit when not skipped
@@ -1132,7 +1132,7 @@ class SkipitemTest(unittest.TestCase):
                     c, i, when_skipped, when_not_skipped))
             self.assertIs(when_skipped, when_not_skipped, message)
 
-    def test_skipitem_with_suffix(self):
+    eleza test_skipitem_with_suffix(self):
         parse = _testcapi.parse_tuple_and_keywords
         empty_tuple = ()
         tuple_1 = (0,)
@@ -1145,7 +1145,7 @@ class SkipitemTest(unittest.TestCase):
                 f = c + c2
                 with self.subTest(format=f):
                     optional_format = "|" + f + "i"
-                    if f in supported:
+                    ikiwa f in supported:
                         parse(empty_tuple, dict_b, optional_format, keywords)
                     else:
                         with self.assertRaisesRegex(SystemError,
@@ -1156,7 +1156,7 @@ class SkipitemTest(unittest.TestCase):
             f = 'e' + c
             optional_format = "|" + f + "i"
             with self.subTest(format=f):
-                if c in 'st':
+                ikiwa c in 'st':
                     parse(empty_tuple, dict_b, optional_format, keywords)
                 else:
                     with self.assertRaisesRegex(SystemError,
@@ -1164,9 +1164,9 @@ class SkipitemTest(unittest.TestCase):
                         parse(empty_tuple, dict_b, optional_format, keywords)
 
 
-class ParseTupleAndKeywords_Test(unittest.TestCase):
+kundi ParseTupleAndKeywords_Test(unittest.TestCase):
 
-    def test_parse_tuple_and_keywords(self):
+    eleza test_parse_tuple_and_keywords(self):
         # Test handling errors in the parse_tuple_and_keywords helper itself
         self.assertRaises(TypeError, _testcapi.parse_tuple_and_keywords,
                           (), {}, 42, [])
@@ -1177,7 +1177,7 @@ class ParseTupleAndKeywords_Test(unittest.TestCase):
         self.assertRaises(ValueError, _testcapi.parse_tuple_and_keywords,
                           (), {}, '', [42])
 
-    def test_bad_use(self):
+    eleza test_bad_use(self):
         # Test handling invalid format and keywords in
         # PyArg_ParseTupleAndKeywords()
         self.assertRaises(SystemError, _testcapi.parse_tuple_and_keywords,
@@ -1201,7 +1201,7 @@ class ParseTupleAndKeywords_Test(unittest.TestCase):
         self.assertRaises(SystemError, _testcapi.parse_tuple_and_keywords,
                           (), {}, '|OO', ['a', ''])
 
-    def test_positional_only(self):
+    eleza test_positional_only(self):
         parse = _testcapi.parse_tuple_and_keywords
 
         parse((1, 2, 3), {}, 'OOO', ['', '', 'a'])
@@ -1227,11 +1227,11 @@ class ParseTupleAndKeywords_Test(unittest.TestCase):
             parse((1,), {}, 'O|OO', ['', 'a', ''])
 
 
-class Test_testcapi(unittest.TestCase):
+kundi Test_testcapi(unittest.TestCase):
     locals().update((name, getattr(_testcapi, name))
                     for name in dir(_testcapi)
-                    if name.startswith('test_') and name.endswith('_code'))
+                    ikiwa name.startswith('test_') and name.endswith('_code'))
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

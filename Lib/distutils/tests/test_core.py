@@ -65,7 +65,7 @@ class CoreTestCase(support.EnvironGuard, unittest.TestCase):
         path = test.support.TESTFN
         if os.path.isfile(path):
             os.remove(path)
-        elif os.path.isdir(path):
+        lasivyo os.path.isdir(path):
             shutil.rmtree(path)
 
     def write_setup(self, text, path=test.support.TESTFN):

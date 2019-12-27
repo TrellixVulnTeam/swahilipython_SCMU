@@ -9,13 +9,13 @@ kutoka tkinter agiza ttk
 agiza unittest
 kutoka idlelib agiza pyshell
 
-class PasteTest(unittest.TestCase):
+kundi PasteTest(unittest.TestCase):
     '''Test pasting into widgets that allow pasting.
 
     On X11, replacing selections requires tk fix.
     '''
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.root = root = tk.Tk()
         cls.root.withdraw()
         pyshell.fix_x11_paste(root)
@@ -27,14 +27,14 @@ class PasteTest(unittest.TestCase):
         root.clipboard_append('two')
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         del cls.text, cls.entry, cls.tentry
         cls.root.clipboard_clear()
         cls.root.update_idletasks()
         cls.root.destroy()
         del cls.root
 
-    def test_paste_text(self):
+    eleza test_paste_text(self):
         "Test pasting into text with and without a selection."
         text = self.text
         for tag, ans in ('', 'onetwo\n'), ('sel', 'two\n'):
@@ -44,7 +44,7 @@ class PasteTest(unittest.TestCase):
                 text.event_generate('<<Paste>>')
                 self.assertEqual(text.get('1.0', 'end'), ans)
 
-    def test_paste_entry(self):
+    eleza test_paste_entry(self):
         "Test pasting into an entry with and without a selection."
         # Generated <<Paste>> fails for tk entry without empty select
         # range for 'no selection'.  Live widget works fine.
@@ -57,7 +57,7 @@ class PasteTest(unittest.TestCase):
                     entry.event_generate('<<Paste>>')
                     self.assertEqual(entry.get(), ans)
 
-    def test_paste_spin(self):
+    eleza test_paste_spin(self):
         "Test pasting into a spinbox with and without a selection."
         # See note above for entry.
         spin = self.spin
@@ -70,5 +70,5 @@ class PasteTest(unittest.TestCase):
                 self.assertEqual(spin.get(), ans)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

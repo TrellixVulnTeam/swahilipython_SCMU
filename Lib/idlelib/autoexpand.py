@@ -16,81 +16,81 @@ agiza re
 agiza string
 
 
-class AutoExpand:
+kundi AutoExpand:
     wordchars = string.ascii_letters + string.digits + "_"
 
-    def __init__(self, editwin):
+    eleza __init__(self, editwin):
         self.text = editwin.text
         self.bell = self.text.bell
         self.state = None
 
-    def expand_word_event(self, event):
+    eleza expand_word_event(self, event):
         "Replace the current word with the next expansion."
         curinsert = self.text.index("insert")
         curline = self.text.get("insert linestart", "insert lineend")
-        if not self.state:
+        ikiwa not self.state:
             words = self.getwords()
             index = 0
         else:
             words, index, insert, line = self.state
-            if insert != curinsert or line != curline:
+            ikiwa insert != curinsert or line != curline:
                 words = self.getwords()
                 index = 0
-        if not words:
+        ikiwa not words:
             self.bell()
-            return "break"
+            rudisha "break"
         word = self.getprevword()
         self.text.delete("insert - %d chars" % len(word), "insert")
         newword = words[index]
         index = (index + 1) % len(words)
-        if index == 0:
+        ikiwa index == 0:
             self.bell()            # Warn we cycled around
         self.text.insert("insert", newword)
         curinsert = self.text.index("insert")
         curline = self.text.get("insert linestart", "insert lineend")
         self.state = words, index, curinsert, curline
-        return "break"
+        rudisha "break"
 
-    def getwords(self):
+    eleza getwords(self):
         "Return a list of words that match the prefix before the cursor."
         word = self.getprevword()
-        if not word:
-            return []
+        ikiwa not word:
+            rudisha []
         before = self.text.get("1.0", "insert wordstart")
         wbefore = re.findall(r"\b" + word + r"\w+\b", before)
         del before
         after = self.text.get("insert wordend", "end")
         wafter = re.findall(r"\b" + word + r"\w+\b", after)
         del after
-        if not wbefore and not wafter:
-            return []
+        ikiwa not wbefore and not wafter:
+            rudisha []
         words = []
         dict = {}
         # search backwards through words before
         wbefore.reverse()
         for w in wbefore:
-            if dict.get(w):
+            ikiwa dict.get(w):
                 continue
             words.append(w)
             dict[w] = w
         # search onwards through words after
         for w in wafter:
-            if dict.get(w):
+            ikiwa dict.get(w):
                 continue
             words.append(w)
             dict[w] = w
         words.append(word)
-        return words
+        rudisha words
 
-    def getprevword(self):
+    eleza getprevword(self):
         "Return the word prefix before the cursor."
         line = self.text.get("insert linestart", "insert")
         i = len(line)
         while i > 0 and line[i-1] in self.wordchars:
             i = i-1
-        return line[i:]
+        rudisha line[i:]
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_autoexpand', verbosity=2)

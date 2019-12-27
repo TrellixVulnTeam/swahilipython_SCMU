@@ -239,7 +239,7 @@ class NumberTestCase(unittest.TestCase):
     def test_perf(self):
         check_perf()
 
-from ctypes import _SimpleCData
+from ctypes agiza _SimpleCData
 class c_int_S(_SimpleCData):
     _type_ = "i"
     __slots__ = []

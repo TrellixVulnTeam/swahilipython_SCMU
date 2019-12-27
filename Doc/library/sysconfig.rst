@@ -37,7 +37,7 @@ Notice that on Windows, it's a much smaller set.
    With no arguments, return a dictionary of all configuration variables
    relevant for the current platform.
 
-   With arguments, return a list of values that result from looking up each
+   With arguments, return a list of values that result kutoka looking up each
    argument in the configuration variable dictionary.
 
    For each argument, if the value is not found, return ``None``.
@@ -52,7 +52,7 @@ Notice that on Windows, it's a much smaller set.
 
 Example of usage::
 
-   >>> import sysconfig
+   >>> agiza sysconfig
    >>> sysconfig.get_config_var('Py_ENABLE_SHARED')
    0
    >>> sysconfig.get_config_var('LIBDIR')
@@ -115,10 +115,10 @@ identifier.  Python currently uses eight paths:
 
 .. function:: get_path(name, [scheme, [vars, [expand]]])
 
-   Return an installation path corresponding to the path *name*, from the
+   Return an installation path corresponding to the path *name*, kutoka the
    install scheme named *scheme*.
 
-   *name* has to be a value from the list returned by :func:`get_path_names`.
+   *name* has to be a value kutoka the list returned by :func:`get_path_names`.
 
    :mod:`sysconfig` stores installation paths corresponding to each path name,
    for each platform, with variables to be expanded.  For instance the *stdlib*
@@ -128,7 +128,7 @@ identifier.  Python currently uses eight paths:
    to expand the path.  All variables have default values for each platform so
    one may call this function and get the default value.
 
-   If *scheme* is provided, it must be a value from the list returned by
+   If *scheme* is provided, it must be a value kutoka the list returned by
    :func:`get_scheme_names`.  Otherwise, the default scheme for the current
    platform is used.
 
@@ -200,8 +200,8 @@ Other functions
 
 .. function:: is_python_build()
 
-   Return ``True`` if the running Python interpreter was built from source and
-   is being run from its built location, and not from a location resulting from
+   Return ``True`` if the running Python interpreter was built kutoka source and
+   is being run kutoka its built location, and not kutoka a location resulting kutoka
    e.g. running ``make install`` or installing via a binary installer.
 
 

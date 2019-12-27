@@ -9,23 +9,23 @@ agiza warnings
 kutoka test.support agiza requires_hashdigest
 
 
-def ignore_warning(func):
+eleza ignore_warning(func):
     @functools.wraps(func)
-    def wrapper(*args, **kwargs):
+    eleza wrapper(*args, **kwargs):
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore",
                                     category=DeprecationWarning)
-            return func(*args, **kwargs)
-    return wrapper
+            rudisha func(*args, **kwargs)
+    rudisha wrapper
 
 
-class TestVectorsTestCase(unittest.TestCase):
+kundi TestVectorsTestCase(unittest.TestCase):
 
     @requires_hashdigest('md5', openssl=True)
-    def test_md5_vectors(self):
+    eleza test_md5_vectors(self):
         # Test the HMAC module against test vectors kutoka the RFC.
 
-        def md5test(key, data, digest):
+        eleza md5test(key, data, digest):
             h = hmac.HMAC(key, data, digestmod=hashlib.md5)
             self.assertEqual(h.hexdigest().upper(), digest.upper())
             self.assertEqual(h.digest(), binascii.unhexlify(digest))
@@ -80,8 +80,8 @@ class TestVectorsTestCase(unittest.TestCase):
                 "6f630fad67cda0ee1fb1f562db3aa53e")
 
     @requires_hashdigest('sha1', openssl=True)
-    def test_sha_vectors(self):
-        def shatest(key, data, digest):
+    eleza test_sha_vectors(self):
+        eleza shatest(key, data, digest):
             h = hmac.HMAC(key, data, digestmod=hashlib.sha1)
             self.assertEqual(h.hexdigest().upper(), digest.upper())
             self.assertEqual(h.digest(), binascii.unhexlify(digest))
@@ -131,8 +131,8 @@ class TestVectorsTestCase(unittest.TestCase):
                  b"and Larger Than One Block-Size Data"),
                 "e8e99d0f45237d786d6bbaa7965c7808bbff1a91")
 
-    def _rfc4231_test_cases(self, hashfunc, hash_name, digest_size, block_size):
-        def hmactest(key, data, hexdigests):
+    eleza _rfc4231_test_cases(self, hashfunc, hash_name, digest_size, block_size):
+        eleza hmactest(key, data, hexdigests):
             hmac_name = "hmac-" + hash_name
             h = hmac.HMAC(key, data, digestmod=hashfunc)
             self.assertEqual(h.hexdigest().lower(), hexdigests[hashfunc])
@@ -273,32 +273,32 @@ class TestVectorsTestCase(unittest.TestCase):
                  })
 
     @requires_hashdigest('sha224', openssl=True)
-    def test_sha224_rfc4231(self):
+    eleza test_sha224_rfc4231(self):
         self._rfc4231_test_cases(hashlib.sha224, 'sha224', 28, 64)
 
     @requires_hashdigest('sha256', openssl=True)
-    def test_sha256_rfc4231(self):
+    eleza test_sha256_rfc4231(self):
         self._rfc4231_test_cases(hashlib.sha256, 'sha256', 32, 64)
 
     @requires_hashdigest('sha384', openssl=True)
-    def test_sha384_rfc4231(self):
+    eleza test_sha384_rfc4231(self):
         self._rfc4231_test_cases(hashlib.sha384, 'sha384', 48, 128)
 
     @requires_hashdigest('sha512', openssl=True)
-    def test_sha512_rfc4231(self):
+    eleza test_sha512_rfc4231(self):
         self._rfc4231_test_cases(hashlib.sha512, 'sha512', 64, 128)
 
     @requires_hashdigest('sha256')
-    def test_legacy_block_size_warnings(self):
-        class MockCrazyHash(object):
+    eleza test_legacy_block_size_warnings(self):
+        kundi MockCrazyHash(object):
             """Ain't no block_size attribute here."""
-            def __init__(self, *args):
+            eleza __init__(self, *args):
                 self._x = hashlib.sha256(*args)
                 self.digest_size = self._x.digest_size
-            def update(self, v):
+            eleza update(self, v):
                 self._x.update(v)
-            def digest(self):
-                return self._x.digest()
+            eleza digest(self):
+                rudisha self._x.digest()
 
         with warnings.catch_warnings():
             warnings.simplefilter('error', RuntimeWarning)
@@ -311,21 +311,21 @@ class TestVectorsTestCase(unittest.TestCase):
                 hmac.HMAC(b'a', b'b', digestmod=MockCrazyHash)
                 self.fail('Expected warning about small block_size')
 
-    def test_with_digestmod_no_default(self):
+    eleza test_with_digestmod_no_default(self):
         with self.assertRaises(ValueError):
             key = b"\x0b" * 16
             data = b"Hi There"
             hmac.HMAC(key, data, digestmod=None)
 
 
-class ConstructorTestCase(unittest.TestCase):
+kundi ConstructorTestCase(unittest.TestCase):
 
     expected = (
         "6c845b47f52b3b47f6590c502db7825aad757bf4fadc8fa972f7cd2e76a5bdeb"
     )
 
     @requires_hashdigest('sha256')
-    def test_normal(self):
+    eleza test_normal(self):
         # Standard constructor call.
         try:
             hmac.HMAC(b"key", digestmod='sha256')
@@ -333,21 +333,21 @@ class ConstructorTestCase(unittest.TestCase):
             self.fail("Standard constructor call raised exception.")
 
     @requires_hashdigest('sha256')
-    def test_with_str_key(self):
+    eleza test_with_str_key(self):
         # Pass a key of type str, which is an error, because it expects a key
         # of type bytes
         with self.assertRaises(TypeError):
             h = hmac.HMAC("key", digestmod='sha256')
 
     @requires_hashdigest('sha256')
-    def test_dot_new_with_str_key(self):
+    eleza test_dot_new_with_str_key(self):
         # Pass a key of type str, which is an error, because it expects a key
         # of type bytes
         with self.assertRaises(TypeError):
             h = hmac.new("key", digestmod='sha256')
 
     @requires_hashdigest('sha256')
-    def test_withtext(self):
+    eleza test_withtext(self):
         # Constructor call with text.
         try:
             h = hmac.HMAC(b"key", b"hash this!", digestmod='sha256')
@@ -356,7 +356,7 @@ class ConstructorTestCase(unittest.TestCase):
         self.assertEqual(h.hexdigest(), self.expected)
 
     @requires_hashdigest('sha256')
-    def test_with_bytearray(self):
+    eleza test_with_bytearray(self):
         try:
             h = hmac.HMAC(bytearray(b"key"), bytearray(b"hash this!"),
                           digestmod="sha256")
@@ -365,7 +365,7 @@ class ConstructorTestCase(unittest.TestCase):
             self.assertEqual(h.hexdigest(), self.expected)
 
     @requires_hashdigest('sha256')
-    def test_with_memoryview_msg(self):
+    eleza test_with_memoryview_msg(self):
         try:
             h = hmac.HMAC(b"key", memoryview(b"hash this!"), digestmod="sha256")
         except Exception:
@@ -373,7 +373,7 @@ class ConstructorTestCase(unittest.TestCase):
             self.assertEqual(h.hexdigest(), self.expected)
 
     @requires_hashdigest('sha256')
-    def test_withmodule(self):
+    eleza test_withmodule(self):
         # Constructor call with text and digest module.
         try:
             h = hmac.HMAC(b"key", b"", hashlib.sha256)
@@ -381,10 +381,10 @@ class ConstructorTestCase(unittest.TestCase):
             self.fail("Constructor call with hashlib.sha256 raised exception.")
 
 
-class SanityTestCase(unittest.TestCase):
+kundi SanityTestCase(unittest.TestCase):
 
     @requires_hashdigest('sha256')
-    def test_exercise_all_methods(self):
+    eleza test_exercise_all_methods(self):
         # Exercising all methods once.
         # This must not raise any exceptions
         try:
@@ -397,11 +397,11 @@ class SanityTestCase(unittest.TestCase):
             self.fail("Exception raised during normal usage of HMAC class.")
 
 
-class CopyTestCase(unittest.TestCase):
+kundi CopyTestCase(unittest.TestCase):
 
     @requires_hashdigest('sha256')
-    def test_attributes(self):
-        # Testing if attributes are of same type.
+    eleza test_attributes(self):
+        # Testing ikiwa attributes are of same type.
         h1 = hmac.HMAC(b"key", digestmod="sha256")
         h2 = h1.copy()
         self.assertTrue(h1.digest_cons == h2.digest_cons,
@@ -412,8 +412,8 @@ class CopyTestCase(unittest.TestCase):
             "Types of outer don't match.")
 
     @requires_hashdigest('sha256')
-    def test_realcopy(self):
-        # Testing if the copy method created a real copy.
+    eleza test_realcopy(self):
+        # Testing ikiwa the copy method created a real copy.
         h1 = hmac.HMAC(b"key", digestmod="sha256")
         h2 = h1.copy()
         # Using id() in case somebody has overridden __eq__/__ne__.
@@ -424,8 +424,8 @@ class CopyTestCase(unittest.TestCase):
             "No real copy of the attribute 'outer'.")
 
     @requires_hashdigest('sha256')
-    def test_equality(self):
-        # Testing if the copy has the same digests.
+    eleza test_equality(self):
+        # Testing ikiwa the copy has the same digests.
         h1 = hmac.HMAC(b"key", digestmod="sha256")
         h1.update(b"some random text")
         h2 = h1.copy()
@@ -434,9 +434,9 @@ class CopyTestCase(unittest.TestCase):
         self.assertEqual(h1.hexdigest(), h2.hexdigest(),
             "Hexdigest of copy doesn't match original hexdigest.")
 
-class CompareDigestTestCase(unittest.TestCase):
+kundi CompareDigestTestCase(unittest.TestCase):
 
-    def test_compare_digest(self):
+    eleza test_compare_digest(self):
         # Testing input type exception handling
         a, b = 100, 200
         self.assertRaises(TypeError, hmac.compare_digest, a, b)
@@ -519,9 +519,9 @@ class CompareDigestTestCase(unittest.TestCase):
         self.assertRaises(TypeError, hmac.compare_digest, a, b)
 
         # subclasses are supported by ignore __eq__
-        class mystr(str):
-            def __eq__(self, other):
-                return False
+        kundi mystr(str):
+            eleza __eq__(self, other):
+                rudisha False
 
         a, b = mystr("foobar"), mystr("foobar")
         self.assertTrue(hmac.compare_digest(a, b))
@@ -530,9 +530,9 @@ class CompareDigestTestCase(unittest.TestCase):
         a, b = mystr("foobar"), mystr("foobaz")
         self.assertFalse(hmac.compare_digest(a, b))
 
-        class mybytes(bytes):
-            def __eq__(self, other):
-                return False
+        kundi mybytes(bytes):
+            eleza __eq__(self, other):
+                rudisha False
 
         a, b = mybytes(b"foobar"), mybytes(b"foobar")
         self.assertTrue(hmac.compare_digest(a, b))
@@ -542,5 +542,5 @@ class CompareDigestTestCase(unittest.TestCase):
         self.assertFalse(hmac.compare_digest(a, b))
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

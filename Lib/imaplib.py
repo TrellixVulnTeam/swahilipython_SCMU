@@ -115,7 +115,7 @@ MapCRLF = re.compile(br'\r\n|\r|\n')
 # We no longer exclude the ']' character kutoka the data portion of the response
 # code, even though it violates the RFC.  Popular IMAP servers such as Gmail
 # allow flags with ']', and there are programs (including imaplib!) that can
-# produce them.  The problem with this is if the 'text' portion of the response
+# produce them.  The problem with this is ikiwa the 'text' portion of the response
 # includes a ']' we'll parse the response wrong (which is the point of the RFC
 # restriction).  However, that seems less likely to be a problem in practice
 # than being unable to correctly parse flags that include ']' chars, which
@@ -131,7 +131,7 @@ _Untagged_status = br'\* (?P<data>\d+) (?P<type>[A-Z-]+)( (?P<data2>.*))?'
 
 
 
-class IMAP4:
+kundi IMAP4:
 
     r"""IMAP4 client class.
 
@@ -160,11 +160,11 @@ class IMAP4:
     is the header of the response, and the second part contains
     the data (ie: 'literal' value).
 
-    Errors raise the exception class <instance>.error("<reason>").
+    Errors raise the exception kundi <instance>.error("<reason>").
     IMAP4 server errors raise <instance>.abort("<reason>"),
-    which is a sub-class of 'error'. Mailbox status changes
+    which is a sub-kundi of 'error'. Mailbox status changes
     kutoka READ-WRITE to READ-ONLY raise the exception class
-    <instance>.readonly("<reason>"), which is a sub-class of 'abort'.
+    <instance>.readonly("<reason>"), which is a sub-kundi of 'abort'.
 
     "error" exceptions imply a program error.
     "abort" exceptions imply the connection should be reset, and
@@ -177,11 +177,11 @@ class IMAP4:
     most IMAP servers implement a sub-set of the commands available here.
     """
 
-    class error(Exception): pass    # Logical errors - debug required
-    class abort(error): pass        # Service errors - close and retry
-    class readonly(abort): pass     # Mailbox status changed to READ-ONLY
+    kundi error(Exception): pass    # Logical errors - debug required
+    kundi abort(error): pass        # Service errors - close and retry
+    kundi readonly(abort): pass     # Mailbox status changed to READ-ONLY
 
-    def __init__(self, host='', port=IMAP4_PORT):
+    eleza __init__(self, host='', port=IMAP4_PORT):
         self.debug = Debug
         self.state = 'LOGOUT'
         self.literal = None             # A literal argument to a command
@@ -206,21 +206,21 @@ class IMAP4:
                 pass
             raise
 
-    def _mode_ascii(self):
+    eleza _mode_ascii(self):
         self.utf8_enabled = False
         self._encoding = 'ascii'
         self.Literal = re.compile(_Literal, re.ASCII)
         self.Untagged_status = re.compile(_Untagged_status, re.ASCII)
 
 
-    def _mode_utf8(self):
+    eleza _mode_utf8(self):
         self.utf8_enabled = True
         self._encoding = 'utf-8'
         self.Literal = re.compile(_Literal)
         self.Untagged_status = re.compile(_Untagged_status)
 
 
-    def _connect(self):
+    eleza _connect(self):
         # Create unique tag for this session,
         # and compile tagged response matcher.
 
@@ -232,29 +232,29 @@ class IMAP4:
         # Get server welcome message,
         # request and store CAPABILITY response.
 
-        if __debug__:
+        ikiwa __debug__:
             self._cmd_log_len = 10
             self._cmd_log_idx = 0
             self._cmd_log = {}           # Last `_cmd_log_len' interactions
-            if self.debug >= 1:
+            ikiwa self.debug >= 1:
                 self._mesg('imaplib version %s' % __version__)
                 self._mesg('new IMAP4 connection, tag=%s' % self.tagpre)
 
         self.welcome = self._get_response()
-        if 'PREAUTH' in self.untagged_responses:
+        ikiwa 'PREAUTH' in self.untagged_responses:
             self.state = 'AUTH'
-        elif 'OK' in self.untagged_responses:
+        elikiwa 'OK' in self.untagged_responses:
             self.state = 'NONAUTH'
         else:
             raise self.error(self.welcome)
 
         self._get_capabilities()
-        if __debug__:
-            if self.debug >= 3:
+        ikiwa __debug__:
+            ikiwa self.debug >= 3:
                 self._mesg('CAPABILITIES: %r' % (self.capabilities,))
 
         for version in AllowedVersions:
-            if not version in self.capabilities:
+            ikiwa not version in self.capabilities:
                 continue
             self.PROTOCOL_VERSION = version
             return
@@ -262,17 +262,17 @@ class IMAP4:
         raise self.error('server not IMAP4 compliant')
 
 
-    def __getattr__(self, attr):
+    eleza __getattr__(self, attr):
         #       Allow UPPERCASE variants of IMAP4 command methods.
-        if attr in Commands:
-            return getattr(self, attr.lower())
+        ikiwa attr in Commands:
+            rudisha getattr(self, attr.lower())
         raise AttributeError("Unknown IMAP4 command: '%s'" % attr)
 
-    def __enter__(self):
-        return self
+    eleza __enter__(self):
+        rudisha self
 
-    def __exit__(self, *args):
-        if self.state == "LOGOUT":
+    eleza __exit__(self, *args):
+        ikiwa self.state == "LOGOUT":
             return
 
         try:
@@ -284,15 +284,15 @@ class IMAP4:
     #       Overridable methods
 
 
-    def _create_socket(self):
+    eleza _create_socket(self):
         # Default value of IMAP4.host is '', but socket.getaddrinfo()
         # (which is used by socket.create_connection()) expects None
         # as a default value for host.
-        host = None if not self.host else self.host
+        host = None ikiwa not self.host else self.host
         sys.audit("imaplib.open", self, self.host, self.port)
-        return socket.create_connection((host, self.port))
+        rudisha socket.create_connection((host, self.port))
 
-    def open(self, host = '', port = IMAP4_PORT):
+    eleza open(self, host = '', port = IMAP4_PORT):
         """Setup connection to remote server on "host:port"
             (default: localhost:standard IMAP4 port).
         This connection will be used by the routines:
@@ -304,26 +304,26 @@ class IMAP4:
         self.file = self.sock.makefile('rb')
 
 
-    def read(self, size):
+    eleza read(self, size):
         """Read 'size' bytes kutoka remote."""
-        return self.file.read(size)
+        rudisha self.file.read(size)
 
 
-    def readline(self):
+    eleza readline(self):
         """Read line kutoka remote."""
         line = self.file.readline(_MAXLINE + 1)
-        if len(line) > _MAXLINE:
+        ikiwa len(line) > _MAXLINE:
             raise self.error("got more than %d bytes" % _MAXLINE)
-        return line
+        rudisha line
 
 
-    def send(self, data):
+    eleza send(self, data):
         """Send data to remote."""
         sys.audit("imaplib.send", self, data)
         self.sock.sendall(data)
 
 
-    def shutdown(self):
+    eleza shutdown(self):
         """Close I/O established in "open"."""
         self.file.close()
         try:
@@ -332,57 +332,57 @@ class IMAP4:
             # The server might already have closed the connection.
             # On Windows, this may result in WSAEINVAL (error 10022):
             # An invalid operation was attempted.
-            if (exc.errno != errno.ENOTCONN
+            ikiwa (exc.errno != errno.ENOTCONN
                and getattr(exc, 'winerror', 0) != 10022):
                 raise
         finally:
             self.sock.close()
 
 
-    def socket(self):
+    eleza socket(self):
         """Return socket instance used to connect to IMAP4 server.
 
         socket = <instance>.socket()
         """
-        return self.sock
+        rudisha self.sock
 
 
 
     #       Utility methods
 
 
-    def recent(self):
-        """Return most recent 'RECENT' responses if any exist,
+    eleza recent(self):
+        """Return most recent 'RECENT' responses ikiwa any exist,
         else prompt server for an update using the 'NOOP' command.
 
         (typ, [data]) = <instance>.recent()
 
-        'data' is None if no new messages,
+        'data' is None ikiwa no new messages,
         else list of RECENT responses, most recent last.
         """
         name = 'RECENT'
         typ, dat = self._untagged_response('OK', [None], name)
-        if dat[-1]:
-            return typ, dat
+        ikiwa dat[-1]:
+            rudisha typ, dat
         typ, dat = self.noop()  # Prod server for response
-        return self._untagged_response(typ, dat, name)
+        rudisha self._untagged_response(typ, dat, name)
 
 
-    def response(self, code):
-        """Return data for response 'code' if received, or None.
+    eleza response(self, code):
+        """Return data for response 'code' ikiwa received, or None.
 
         Old value for response 'code' is cleared.
 
         (code, [data]) = <instance>.response(code)
         """
-        return self._untagged_response(code, [None], code.upper())
+        rudisha self._untagged_response(code, [None], code.upper())
 
 
 
     #       IMAP4 commands
 
 
-    def append(self, mailbox, flags, date_time, message):
+    eleza append(self, mailbox, flags, date_time, message):
         """Append message to named mailbox.
 
         (typ, [data]) = <instance>.append(mailbox, flags, date_time, message)
@@ -390,25 +390,25 @@ class IMAP4:
                 All args except `message' can be None.
         """
         name = 'APPEND'
-        if not mailbox:
+        ikiwa not mailbox:
             mailbox = 'INBOX'
-        if flags:
-            if (flags[0],flags[-1]) != ('(',')'):
+        ikiwa flags:
+            ikiwa (flags[0],flags[-1]) != ('(',')'):
                 flags = '(%s)' % flags
         else:
             flags = None
-        if date_time:
+        ikiwa date_time:
             date_time = Time2Internaldate(date_time)
         else:
             date_time = None
         literal = MapCRLF.sub(CRLF, message)
-        if self.utf8_enabled:
+        ikiwa self.utf8_enabled:
             literal = b'UTF8 (' + literal + b')'
         self.literal = literal
-        return self._simple_command(name, mailbox, flags, date_time)
+        rudisha self._simple_command(name, mailbox, flags, date_time)
 
 
-    def authenticate(self, mechanism, authobject):
+    eleza authenticate(self, mechanism, authobject):
         """Authenticate command - requires response processing.
 
         'mechanism' specifies which authentication mechanism is to
@@ -420,41 +420,41 @@ class IMAP4:
                 data = authobject(response)
 
         It will be called to process server continuation responses; the
-        response argument it is passed will be a bytes.  It should return bytes
+        response argument it is passed will be a bytes.  It should rudisha bytes
         data that will be base64 encoded and sent to the server.  It should
-        return None if the client abort response '*' should be sent instead.
+        rudisha None ikiwa the client abort response '*' should be sent instead.
         """
         mech = mechanism.upper()
         # XXX: shouldn't this code be removed, not commented out?
         #cap = 'AUTH=%s' % mech
-        #if not cap in self.capabilities:       # Let the server decide!
+        #ikiwa not cap in self.capabilities:       # Let the server decide!
         #    raise self.error("Server doesn't allow %s authentication." % mech)
         self.literal = _Authenticator(authobject).process
         typ, dat = self._simple_command('AUTHENTICATE', mech)
-        if typ != 'OK':
+        ikiwa typ != 'OK':
             raise self.error(dat[-1].decode('utf-8', 'replace'))
         self.state = 'AUTH'
-        return typ, dat
+        rudisha typ, dat
 
 
-    def capability(self):
+    eleza capability(self):
         """(typ, [data]) = <instance>.capability()
         Fetch capabilities list kutoka server."""
 
         name = 'CAPABILITY'
         typ, dat = self._simple_command(name)
-        return self._untagged_response(typ, dat, name)
+        rudisha self._untagged_response(typ, dat, name)
 
 
-    def check(self):
+    eleza check(self):
         """Checkpoint mailbox on server.
 
         (typ, [data]) = <instance>.check()
         """
-        return self._simple_command('CHECK')
+        rudisha self._simple_command('CHECK')
 
 
-    def close(self):
+    eleza close(self):
         """Close currently selected mailbox.
 
         Deleted messages are removed kutoka writable mailbox.
@@ -466,52 +466,52 @@ class IMAP4:
             typ, dat = self._simple_command('CLOSE')
         finally:
             self.state = 'AUTH'
-        return typ, dat
+        rudisha typ, dat
 
 
-    def copy(self, message_set, new_mailbox):
+    eleza copy(self, message_set, new_mailbox):
         """Copy 'message_set' messages onto end of 'new_mailbox'.
 
         (typ, [data]) = <instance>.copy(message_set, new_mailbox)
         """
-        return self._simple_command('COPY', message_set, new_mailbox)
+        rudisha self._simple_command('COPY', message_set, new_mailbox)
 
 
-    def create(self, mailbox):
+    eleza create(self, mailbox):
         """Create new mailbox.
 
         (typ, [data]) = <instance>.create(mailbox)
         """
-        return self._simple_command('CREATE', mailbox)
+        rudisha self._simple_command('CREATE', mailbox)
 
 
-    def delete(self, mailbox):
+    eleza delete(self, mailbox):
         """Delete old mailbox.
 
         (typ, [data]) = <instance>.delete(mailbox)
         """
-        return self._simple_command('DELETE', mailbox)
+        rudisha self._simple_command('DELETE', mailbox)
 
-    def deleteacl(self, mailbox, who):
+    eleza deleteacl(self, mailbox, who):
         """Delete the ACLs (remove any rights) set for who on mailbox.
 
         (typ, [data]) = <instance>.deleteacl(mailbox, who)
         """
-        return self._simple_command('DELETEACL', mailbox, who)
+        rudisha self._simple_command('DELETEACL', mailbox, who)
 
-    def enable(self, capability):
+    eleza enable(self, capability):
         """Send an RFC5161 enable string to the server.
 
         (typ, [data]) = <intance>.enable(capability)
         """
-        if 'ENABLE' not in self.capabilities:
+        ikiwa 'ENABLE' not in self.capabilities:
             raise IMAP4.error("Server does not support ENABLE")
         typ, data = self._simple_command('ENABLE', capability)
-        if typ == 'OK' and 'UTF8=ACCEPT' in capability.upper():
+        ikiwa typ == 'OK' and 'UTF8=ACCEPT' in capability.upper():
             self._mode_utf8()
-        return typ, data
+        rudisha typ, data
 
-    def expunge(self):
+    eleza expunge(self):
         """Permanently remove deleted items kutoka selected mailbox.
 
         Generates 'EXPUNGE' response for each deleted message.
@@ -522,10 +522,10 @@ class IMAP4:
         """
         name = 'EXPUNGE'
         typ, dat = self._simple_command(name)
-        return self._untagged_response(typ, dat, name)
+        rudisha self._untagged_response(typ, dat, name)
 
 
-    def fetch(self, message_set, message_parts):
+    eleza fetch(self, message_set, message_parts):
         """Fetch (parts of) messages.
 
         (typ, [data, ...]) = <instance>.fetch(message_set, message_parts)
@@ -537,27 +537,27 @@ class IMAP4:
         """
         name = 'FETCH'
         typ, dat = self._simple_command(name, message_set, message_parts)
-        return self._untagged_response(typ, dat, name)
+        rudisha self._untagged_response(typ, dat, name)
 
 
-    def getacl(self, mailbox):
+    eleza getacl(self, mailbox):
         """Get the ACLs for a mailbox.
 
         (typ, [data]) = <instance>.getacl(mailbox)
         """
         typ, dat = self._simple_command('GETACL', mailbox)
-        return self._untagged_response(typ, dat, 'ACL')
+        rudisha self._untagged_response(typ, dat, 'ACL')
 
 
-    def getannotation(self, mailbox, entry, attribute):
+    eleza getannotation(self, mailbox, entry, attribute):
         """(typ, [data]) = <instance>.getannotation(mailbox, entry, attribute)
         Retrieve ANNOTATIONs."""
 
         typ, dat = self._simple_command('GETANNOTATION', mailbox, entry, attribute)
-        return self._untagged_response(typ, dat, 'ANNOTATION')
+        rudisha self._untagged_response(typ, dat, 'ANNOTATION')
 
 
-    def getquota(self, root):
+    eleza getquota(self, root):
         """Get the quota root's resource usage and limits.
 
         Part of the IMAP4 QUOTA extension defined in rfc2087.
@@ -565,10 +565,10 @@ class IMAP4:
         (typ, [data]) = <instance>.getquota(root)
         """
         typ, dat = self._simple_command('GETQUOTA', root)
-        return self._untagged_response(typ, dat, 'QUOTA')
+        rudisha self._untagged_response(typ, dat, 'QUOTA')
 
 
-    def getquotaroot(self, mailbox):
+    eleza getquotaroot(self, mailbox):
         """Get the list of quota roots for the named mailbox.
 
         (typ, [[QUOTAROOT responses...], [QUOTA responses]]) = <instance>.getquotaroot(mailbox)
@@ -576,10 +576,10 @@ class IMAP4:
         typ, dat = self._simple_command('GETQUOTAROOT', mailbox)
         typ, quota = self._untagged_response(typ, dat, 'QUOTA')
         typ, quotaroot = self._untagged_response(typ, dat, 'QUOTAROOT')
-        return typ, [quotaroot, quota]
+        rudisha typ, [quotaroot, quota]
 
 
-    def list(self, directory='""', pattern='*'):
+    eleza list(self, directory='""', pattern='*'):
         """List mailbox names in directory matching pattern.
 
         (typ, [data]) = <instance>.list(directory='""', pattern='*')
@@ -588,10 +588,10 @@ class IMAP4:
         """
         name = 'LIST'
         typ, dat = self._simple_command(name, directory, pattern)
-        return self._untagged_response(typ, dat, name)
+        rudisha self._untagged_response(typ, dat, name)
 
 
-    def login(self, user, password):
+    eleza login(self, user, password):
         """Identify client using plaintext password.
 
         (typ, [data]) = <instance>.login(user, password)
@@ -599,30 +599,30 @@ class IMAP4:
         NB: 'password' will be quoted.
         """
         typ, dat = self._simple_command('LOGIN', user, self._quote(password))
-        if typ != 'OK':
+        ikiwa typ != 'OK':
             raise self.error(dat[-1])
         self.state = 'AUTH'
-        return typ, dat
+        rudisha typ, dat
 
 
-    def login_cram_md5(self, user, password):
+    eleza login_cram_md5(self, user, password):
         """ Force use of CRAM-MD5 authentication.
 
         (typ, [data]) = <instance>.login_cram_md5(user, password)
         """
         self.user, self.password = user, password
-        return self.authenticate('CRAM-MD5', self._CRAM_MD5_AUTH)
+        rudisha self.authenticate('CRAM-MD5', self._CRAM_MD5_AUTH)
 
 
-    def _CRAM_MD5_AUTH(self, challenge):
+    eleza _CRAM_MD5_AUTH(self, challenge):
         """ Authobject to use with CRAM-MD5 authentication. """
         agiza hmac
-        pwd = (self.password.encode('utf-8') if isinstance(self.password, str)
+        pwd = (self.password.encode('utf-8') ikiwa isinstance(self.password, str)
                                              else self.password)
-        return self.user + " " + hmac.HMAC(pwd, challenge, 'md5').hexdigest()
+        rudisha self.user + " " + hmac.HMAC(pwd, challenge, 'md5').hexdigest()
 
 
-    def logout(self):
+    eleza logout(self):
         """Shutdown connection to server.
 
         (typ, [data]) = <instance>.logout()
@@ -632,10 +632,10 @@ class IMAP4:
         self.state = 'LOGOUT'
         typ, dat = self._simple_command('LOGOUT')
         self.shutdown()
-        return typ, dat
+        rudisha typ, dat
 
 
-    def lsub(self, directory='""', pattern='*'):
+    eleza lsub(self, directory='""', pattern='*'):
         """List 'subscribed' mailbox names in directory matching pattern.
 
         (typ, [data, ...]) = <instance>.lsub(directory='""', pattern='*')
@@ -644,38 +644,38 @@ class IMAP4:
         """
         name = 'LSUB'
         typ, dat = self._simple_command(name, directory, pattern)
-        return self._untagged_response(typ, dat, name)
+        rudisha self._untagged_response(typ, dat, name)
 
-    def myrights(self, mailbox):
+    eleza myrights(self, mailbox):
         """Show my ACLs for a mailbox (i.e. the rights that I have on mailbox).
 
         (typ, [data]) = <instance>.myrights(mailbox)
         """
         typ,dat = self._simple_command('MYRIGHTS', mailbox)
-        return self._untagged_response(typ, dat, 'MYRIGHTS')
+        rudisha self._untagged_response(typ, dat, 'MYRIGHTS')
 
-    def namespace(self):
+    eleza namespace(self):
         """ Returns IMAP namespaces ala rfc2342
 
         (typ, [data, ...]) = <instance>.namespace()
         """
         name = 'NAMESPACE'
         typ, dat = self._simple_command(name)
-        return self._untagged_response(typ, dat, name)
+        rudisha self._untagged_response(typ, dat, name)
 
 
-    def noop(self):
+    eleza noop(self):
         """Send NOOP command.
 
         (typ, [data]) = <instance>.noop()
         """
-        if __debug__:
-            if self.debug >= 3:
+        ikiwa __debug__:
+            ikiwa self.debug >= 3:
                 self._dump_ur(self.untagged_responses)
-        return self._simple_command('NOOP')
+        rudisha self._simple_command('NOOP')
 
 
-    def partial(self, message_num, message_part, start, length):
+    eleza partial(self, message_num, message_part, start, length):
         """Fetch truncated part of a message.
 
         (typ, [data, ...]) = <instance>.partial(message_num, message_part, start, length)
@@ -684,10 +684,10 @@ class IMAP4:
         """
         name = 'PARTIAL'
         typ, dat = self._simple_command(name, message_num, message_part, start, length)
-        return self._untagged_response(typ, dat, 'FETCH')
+        rudisha self._untagged_response(typ, dat, 'FETCH')
 
 
-    def proxyauth(self, user):
+    eleza proxyauth(self, user):
         """Assume authentication as "user".
 
         Allows an authorised administrator to proxy into any user's
@@ -697,18 +697,18 @@ class IMAP4:
         """
 
         name = 'PROXYAUTH'
-        return self._simple_command('PROXYAUTH', user)
+        rudisha self._simple_command('PROXYAUTH', user)
 
 
-    def rename(self, oldmailbox, newmailbox):
+    eleza rename(self, oldmailbox, newmailbox):
         """Rename old mailbox name to new.
 
         (typ, [data]) = <instance>.rename(oldmailbox, newmailbox)
         """
-        return self._simple_command('RENAME', oldmailbox, newmailbox)
+        rudisha self._simple_command('RENAME', oldmailbox, newmailbox)
 
 
-    def search(self, charset, *criteria):
+    eleza search(self, charset, *criteria):
         """Search mailbox for matching messages.
 
         (typ, [data]) = <instance>.search(charset, criterion, ...)
@@ -717,16 +717,16 @@ class IMAP4:
         If UTF8 is enabled, charset MUST be None.
         """
         name = 'SEARCH'
-        if charset:
-            if self.utf8_enabled:
+        ikiwa charset:
+            ikiwa self.utf8_enabled:
                 raise IMAP4.error("Non-None charset not valid in UTF8 mode")
             typ, dat = self._simple_command(name, 'CHARSET', charset, *criteria)
         else:
             typ, dat = self._simple_command(name, *criteria)
-        return self._untagged_response(typ, dat, name)
+        rudisha self._untagged_response(typ, dat, name)
 
 
-    def select(self, mailbox='INBOX', readonly=False):
+    eleza select(self, mailbox='INBOX', readonly=False):
         """Select a mailbox.
 
         Flush all untagged responses.
@@ -740,76 +740,76 @@ class IMAP4:
         """
         self.untagged_responses = {}    # Flush old responses.
         self.is_readonly = readonly
-        if readonly:
+        ikiwa readonly:
             name = 'EXAMINE'
         else:
             name = 'SELECT'
         typ, dat = self._simple_command(name, mailbox)
-        if typ != 'OK':
+        ikiwa typ != 'OK':
             self.state = 'AUTH'     # Might have been 'SELECTED'
-            return typ, dat
+            rudisha typ, dat
         self.state = 'SELECTED'
-        if 'READ-ONLY' in self.untagged_responses \
+        ikiwa 'READ-ONLY' in self.untagged_responses \
                 and not readonly:
-            if __debug__:
-                if self.debug >= 1:
+            ikiwa __debug__:
+                ikiwa self.debug >= 1:
                     self._dump_ur(self.untagged_responses)
             raise self.readonly('%s is not writable' % mailbox)
-        return typ, self.untagged_responses.get('EXISTS', [None])
+        rudisha typ, self.untagged_responses.get('EXISTS', [None])
 
 
-    def setacl(self, mailbox, who, what):
+    eleza setacl(self, mailbox, who, what):
         """Set a mailbox acl.
 
         (typ, [data]) = <instance>.setacl(mailbox, who, what)
         """
-        return self._simple_command('SETACL', mailbox, who, what)
+        rudisha self._simple_command('SETACL', mailbox, who, what)
 
 
-    def setannotation(self, *args):
+    eleza setannotation(self, *args):
         """(typ, [data]) = <instance>.setannotation(mailbox[, entry, attribute]+)
         Set ANNOTATIONs."""
 
         typ, dat = self._simple_command('SETANNOTATION', *args)
-        return self._untagged_response(typ, dat, 'ANNOTATION')
+        rudisha self._untagged_response(typ, dat, 'ANNOTATION')
 
 
-    def setquota(self, root, limits):
+    eleza setquota(self, root, limits):
         """Set the quota root's resource limits.
 
         (typ, [data]) = <instance>.setquota(root, limits)
         """
         typ, dat = self._simple_command('SETQUOTA', root, limits)
-        return self._untagged_response(typ, dat, 'QUOTA')
+        rudisha self._untagged_response(typ, dat, 'QUOTA')
 
 
-    def sort(self, sort_criteria, charset, *search_criteria):
+    eleza sort(self, sort_criteria, charset, *search_criteria):
         """IMAP4rev1 extension SORT command.
 
         (typ, [data]) = <instance>.sort(sort_criteria, charset, search_criteria, ...)
         """
         name = 'SORT'
-        #if not name in self.capabilities:      # Let the server decide!
+        #ikiwa not name in self.capabilities:      # Let the server decide!
         #       raise self.error('unimplemented extension command: %s' % name)
-        if (sort_criteria[0],sort_criteria[-1]) != ('(',')'):
+        ikiwa (sort_criteria[0],sort_criteria[-1]) != ('(',')'):
             sort_criteria = '(%s)' % sort_criteria
         typ, dat = self._simple_command(name, sort_criteria, charset, *search_criteria)
-        return self._untagged_response(typ, dat, name)
+        rudisha self._untagged_response(typ, dat, name)
 
 
-    def starttls(self, ssl_context=None):
+    eleza starttls(self, ssl_context=None):
         name = 'STARTTLS'
-        if not HAVE_SSL:
+        ikiwa not HAVE_SSL:
             raise self.error('SSL support missing')
-        if self._tls_established:
+        ikiwa self._tls_established:
             raise self.abort('TLS session already established')
-        if name not in self.capabilities:
+        ikiwa name not in self.capabilities:
             raise self.abort('TLS not supported by server')
-        # Generate a default SSL context if none was passed.
-        if ssl_context is None:
+        # Generate a default SSL context ikiwa none was passed.
+        ikiwa ssl_context is None:
             ssl_context = ssl._create_stdlib_context()
         typ, dat = self._simple_command(name)
-        if typ == 'OK':
+        ikiwa typ == 'OK':
             self.sock = ssl_context.wrap_socket(self.sock,
                                                 server_hostname=self.host)
             self.file = self.sock.makefile('rb')
@@ -817,51 +817,51 @@ class IMAP4:
             self._get_capabilities()
         else:
             raise self.error("Couldn't establish TLS session")
-        return self._untagged_response(typ, dat, name)
+        rudisha self._untagged_response(typ, dat, name)
 
 
-    def status(self, mailbox, names):
+    eleza status(self, mailbox, names):
         """Request named status conditions for mailbox.
 
         (typ, [data]) = <instance>.status(mailbox, names)
         """
         name = 'STATUS'
-        #if self.PROTOCOL_VERSION == 'IMAP4':   # Let the server decide!
+        #ikiwa self.PROTOCOL_VERSION == 'IMAP4':   # Let the server decide!
         #    raise self.error('%s unimplemented in IMAP4 (obtain IMAP4rev1 server, or re-code)' % name)
         typ, dat = self._simple_command(name, mailbox, names)
-        return self._untagged_response(typ, dat, name)
+        rudisha self._untagged_response(typ, dat, name)
 
 
-    def store(self, message_set, command, flags):
+    eleza store(self, message_set, command, flags):
         """Alters flag dispositions for messages in mailbox.
 
         (typ, [data]) = <instance>.store(message_set, command, flags)
         """
-        if (flags[0],flags[-1]) != ('(',')'):
+        ikiwa (flags[0],flags[-1]) != ('(',')'):
             flags = '(%s)' % flags  # Avoid quoting the flags
         typ, dat = self._simple_command('STORE', message_set, command, flags)
-        return self._untagged_response(typ, dat, 'FETCH')
+        rudisha self._untagged_response(typ, dat, 'FETCH')
 
 
-    def subscribe(self, mailbox):
+    eleza subscribe(self, mailbox):
         """Subscribe to new mailbox.
 
         (typ, [data]) = <instance>.subscribe(mailbox)
         """
-        return self._simple_command('SUBSCRIBE', mailbox)
+        rudisha self._simple_command('SUBSCRIBE', mailbox)
 
 
-    def thread(self, threading_algorithm, charset, *search_criteria):
+    eleza thread(self, threading_algorithm, charset, *search_criteria):
         """IMAPrev1 extension THREAD command.
 
         (type, [data]) = <instance>.thread(threading_algorithm, charset, search_criteria, ...)
         """
         name = 'THREAD'
         typ, dat = self._simple_command(name, threading_algorithm, charset, *search_criteria)
-        return self._untagged_response(typ, dat, name)
+        rudisha self._untagged_response(typ, dat, name)
 
 
-    def uid(self, command, *args):
+    eleza uid(self, command, *args):
         """Execute "command arg ..." with messages identified by UID,
                 rather than message number.
 
@@ -870,31 +870,31 @@ class IMAP4:
         Returns response appropriate to 'command'.
         """
         command = command.upper()
-        if not command in Commands:
+        ikiwa not command in Commands:
             raise self.error("Unknown IMAP4 UID command: %s" % command)
-        if self.state not in Commands[command]:
+        ikiwa self.state not in Commands[command]:
             raise self.error("command %s illegal in state %s, "
                              "only allowed in states %s" %
                              (command, self.state,
                               ', '.join(Commands[command])))
         name = 'UID'
         typ, dat = self._simple_command(name, command, *args)
-        if command in ('SEARCH', 'SORT', 'THREAD'):
+        ikiwa command in ('SEARCH', 'SORT', 'THREAD'):
             name = command
         else:
             name = 'FETCH'
-        return self._untagged_response(typ, dat, name)
+        rudisha self._untagged_response(typ, dat, name)
 
 
-    def unsubscribe(self, mailbox):
+    eleza unsubscribe(self, mailbox):
         """Unsubscribe kutoka old mailbox.
 
         (typ, [data]) = <instance>.unsubscribe(mailbox)
         """
-        return self._simple_command('UNSUBSCRIBE', mailbox)
+        rudisha self._simple_command('UNSUBSCRIBE', mailbox)
 
 
-    def xatom(self, name, *args):
+    eleza xatom(self, name, *args):
         """Allow simple extension commands
                 notified by server in CAPABILITY response.
 
@@ -905,40 +905,40 @@ class IMAP4:
         Returns response appropriate to extension command `name'.
         """
         name = name.upper()
-        #if not name in self.capabilities:      # Let the server decide!
+        #ikiwa not name in self.capabilities:      # Let the server decide!
         #    raise self.error('unknown extension command: %s' % name)
-        if not name in Commands:
+        ikiwa not name in Commands:
             Commands[name] = (self.state,)
-        return self._simple_command(name, *args)
+        rudisha self._simple_command(name, *args)
 
 
 
     #       Private methods
 
 
-    def _append_untagged(self, typ, dat):
-        if dat is None:
+    eleza _append_untagged(self, typ, dat):
+        ikiwa dat is None:
             dat = b''
         ur = self.untagged_responses
-        if __debug__:
-            if self.debug >= 5:
+        ikiwa __debug__:
+            ikiwa self.debug >= 5:
                 self._mesg('untagged_responses[%s] %s += ["%r"]' %
                         (typ, len(ur.get(typ,'')), dat))
-        if typ in ur:
+        ikiwa typ in ur:
             ur[typ].append(dat)
         else:
             ur[typ] = [dat]
 
 
-    def _check_bye(self):
+    eleza _check_bye(self):
         bye = self.untagged_responses.get('BYE')
-        if bye:
+        ikiwa bye:
             raise self.abort(bye[-1].decode(self._encoding, 'replace'))
 
 
-    def _command(self, name, *args):
+    eleza _command(self, name, *args):
 
-        if self.state not in Commands[name]:
+        ikiwa self.state not in Commands[name]:
             self.literal = None
             raise self.error("command %s illegal in state %s, "
                              "only allowed in states %s" %
@@ -946,10 +946,10 @@ class IMAP4:
                               ', '.join(Commands[name])))
 
         for typ in ('OK', 'NO', 'BAD'):
-            if typ in self.untagged_responses:
+            ikiwa typ in self.untagged_responses:
                 del self.untagged_responses[typ]
 
-        if 'READ-ONLY' in self.untagged_responses \
+        ikiwa 'READ-ONLY' in self.untagged_responses \
         and not self.is_readonly:
             raise self.readonly('mailbox status changed to READ-ONLY')
 
@@ -957,22 +957,22 @@ class IMAP4:
         name = bytes(name, self._encoding)
         data = tag + b' ' + name
         for arg in args:
-            if arg is None: continue
-            if isinstance(arg, str):
+            ikiwa arg is None: continue
+            ikiwa isinstance(arg, str):
                 arg = bytes(arg, self._encoding)
             data = data + b' ' + arg
 
         literal = self.literal
-        if literal is not None:
+        ikiwa literal is not None:
             self.literal = None
-            if type(literal) is type(self._command):
+            ikiwa type(literal) is type(self._command):
                 literator = literal
             else:
                 literator = None
                 data = data + bytes(' {%s}' % len(literal), self._encoding)
 
-        if __debug__:
-            if self.debug >= 4:
+        ikiwa __debug__:
+            ikiwa self.debug >= 4:
                 self._mesg('> %r' % data)
             else:
                 self._log('> %r' % data)
@@ -982,23 +982,23 @@ class IMAP4:
         except OSError as val:
             raise self.abort('socket error: %s' % val)
 
-        if literal is None:
-            return tag
+        ikiwa literal is None:
+            rudisha tag
 
         while 1:
             # Wait for continuation response
 
             while self._get_response():
-                if self.tagged_commands[tag]:   # BAD/NO?
-                    return tag
+                ikiwa self.tagged_commands[tag]:   # BAD/NO?
+                    rudisha tag
 
             # Send literal
 
-            if literator:
+            ikiwa literator:
                 literal = literator(self.continuation_response)
 
-            if __debug__:
-                if self.debug >= 4:
+            ikiwa __debug__:
+                ikiwa self.debug >= 4:
                     self._mesg('write literal size %s' % len(literal))
 
             try:
@@ -1007,16 +1007,16 @@ class IMAP4:
             except OSError as val:
                 raise self.abort('socket error: %s' % val)
 
-            if not literator:
+            ikiwa not literator:
                 break
 
-        return tag
+        rudisha tag
 
 
-    def _command_complete(self, name, tag):
+    eleza _command_complete(self, name, tag):
         logout = (name == 'LOGOUT')
         # BYE is expected after LOGOUT
-        if not logout:
+        ikiwa not logout:
             self._check_bye()
         try:
             typ, data = self._get_tagged_response(tag, expect_bye=logout)
@@ -1024,23 +1024,23 @@ class IMAP4:
             raise self.abort('command: %s => %s' % (name, val))
         except self.error as val:
             raise self.error('command: %s => %s' % (name, val))
-        if not logout:
+        ikiwa not logout:
             self._check_bye()
-        if typ == 'BAD':
+        ikiwa typ == 'BAD':
             raise self.error('%s command error: %s %s' % (name, typ, data))
-        return typ, data
+        rudisha typ, data
 
 
-    def _get_capabilities(self):
+    eleza _get_capabilities(self):
         typ, dat = self.capability()
-        if dat == [None]:
+        ikiwa dat == [None]:
             raise self.error('no CAPABILITY response kutoka server')
         dat = str(dat[-1], self._encoding)
         dat = dat.upper()
         self.capabilities = tuple(dat.split())
 
 
-    def _get_response(self):
+    eleza _get_response(self):
 
         # Read response and store.
         #
@@ -1051,9 +1051,9 @@ class IMAP4:
 
         # Command completion response?
 
-        if self._match(self.tagre, resp):
+        ikiwa self._match(self.tagre, resp):
             tag = self.mo.group('tag')
-            if not tag in self.tagged_commands:
+            ikiwa not tag in self.tagged_commands:
                 raise self.abort('unexpected tagged response: %r' % resp)
 
             typ = self.mo.group('type')
@@ -1065,24 +1065,24 @@ class IMAP4:
 
             # '*' (untagged) responses?
 
-            if not self._match(Untagged_response, resp):
-                if self._match(self.Untagged_status, resp):
+            ikiwa not self._match(Untagged_response, resp):
+                ikiwa self._match(self.Untagged_status, resp):
                     dat2 = self.mo.group('data2')
 
-            if self.mo is None:
+            ikiwa self.mo is None:
                 # Only other possibility is '+' (continuation) response...
 
-                if self._match(Continuation, resp):
+                ikiwa self._match(Continuation, resp):
                     self.continuation_response = self.mo.group('data')
-                    return None     # NB: indicates continuation
+                    rudisha None     # NB: indicates continuation
 
                 raise self.abort("unexpected response: %r" % resp)
 
             typ = self.mo.group('type')
             typ = str(typ, self._encoding)
             dat = self.mo.group('data')
-            if dat is None: dat = b''        # Null untagged response
-            if dat2: dat = dat + b' ' + dat2
+            ikiwa dat is None: dat = b''        # Null untagged response
+            ikiwa dat2: dat = dat + b' ' + dat2
 
             # Is there a literal to come?
 
@@ -1091,8 +1091,8 @@ class IMAP4:
                 # Read literal direct kutoka connection.
 
                 size = int(self.mo.group('size'))
-                if __debug__:
-                    if self.debug >= 4:
+                ikiwa __debug__:
+                    ikiwa self.debug >= 4:
                         self._mesg('read literal size %s' % size)
                 data = self.read(size)
 
@@ -1108,32 +1108,32 @@ class IMAP4:
 
         # Bracketed response information?
 
-        if typ in ('OK', 'NO', 'BAD') and self._match(Response_code, dat):
+        ikiwa typ in ('OK', 'NO', 'BAD') and self._match(Response_code, dat):
             typ = self.mo.group('type')
             typ = str(typ, self._encoding)
             self._append_untagged(typ, self.mo.group('data'))
 
-        if __debug__:
-            if self.debug >= 1 and typ in ('NO', 'BAD', 'BYE'):
+        ikiwa __debug__:
+            ikiwa self.debug >= 1 and typ in ('NO', 'BAD', 'BYE'):
                 self._mesg('%s response: %r' % (typ, dat))
 
-        return resp
+        rudisha resp
 
 
-    def _get_tagged_response(self, tag, expect_bye=False):
+    eleza _get_tagged_response(self, tag, expect_bye=False):
 
         while 1:
             result = self.tagged_commands[tag]
-            if result is not None:
+            ikiwa result is not None:
                 del self.tagged_commands[tag]
-                return result
+                rudisha result
 
-            if expect_bye:
+            ikiwa expect_bye:
                 typ = 'BYE'
                 bye = self.untagged_responses.pop(typ, None)
-                if bye is not None:
+                ikiwa bye is not None:
                     # Server replies to the "LOGOUT" command with "BYE"
-                    return (typ, bye)
+                    rudisha (typ, bye)
 
             # If we've seen a BYE at this point, the socket will be
             # closed, so report the BYE now.
@@ -1147,101 +1147,101 @@ class IMAP4:
             try:
                 self._get_response()
             except self.abort as val:
-                if __debug__:
-                    if self.debug >= 1:
+                ikiwa __debug__:
+                    ikiwa self.debug >= 1:
                         self.print_log()
                 raise
 
 
-    def _get_line(self):
+    eleza _get_line(self):
 
         line = self.readline()
-        if not line:
+        ikiwa not line:
             raise self.abort('socket error: EOF')
 
         # Protocol mandates all lines terminated by CRLF
-        if not line.endswith(b'\r\n'):
+        ikiwa not line.endswith(b'\r\n'):
             raise self.abort('socket error: unterminated line: %r' % line)
 
         line = line[:-2]
-        if __debug__:
-            if self.debug >= 4:
+        ikiwa __debug__:
+            ikiwa self.debug >= 4:
                 self._mesg('< %r' % line)
             else:
                 self._log('< %r' % line)
-        return line
+        rudisha line
 
 
-    def _match(self, cre, s):
+    eleza _match(self, cre, s):
 
         # Run compiled regular expression match method on 's'.
-        # Save result, return success.
+        # Save result, rudisha success.
 
         self.mo = cre.match(s)
-        if __debug__:
-            if self.mo is not None and self.debug >= 5:
+        ikiwa __debug__:
+            ikiwa self.mo is not None and self.debug >= 5:
                 self._mesg("\tmatched %r => %r" % (cre.pattern, self.mo.groups()))
-        return self.mo is not None
+        rudisha self.mo is not None
 
 
-    def _new_tag(self):
+    eleza _new_tag(self):
 
         tag = self.tagpre + bytes(str(self.tagnum), self._encoding)
         self.tagnum = self.tagnum + 1
         self.tagged_commands[tag] = None
-        return tag
+        rudisha tag
 
 
-    def _quote(self, arg):
+    eleza _quote(self, arg):
 
         arg = arg.replace('\\', '\\\\')
         arg = arg.replace('"', '\\"')
 
-        return '"' + arg + '"'
+        rudisha '"' + arg + '"'
 
 
-    def _simple_command(self, name, *args):
+    eleza _simple_command(self, name, *args):
 
-        return self._command_complete(name, self._command(name, *args))
+        rudisha self._command_complete(name, self._command(name, *args))
 
 
-    def _untagged_response(self, typ, dat, name):
-        if typ == 'NO':
-            return typ, dat
-        if not name in self.untagged_responses:
-            return typ, [None]
+    eleza _untagged_response(self, typ, dat, name):
+        ikiwa typ == 'NO':
+            rudisha typ, dat
+        ikiwa not name in self.untagged_responses:
+            rudisha typ, [None]
         data = self.untagged_responses.pop(name)
-        if __debug__:
-            if self.debug >= 5:
+        ikiwa __debug__:
+            ikiwa self.debug >= 5:
                 self._mesg('untagged_responses[%s] => %s' % (name, data))
-        return typ, data
+        rudisha typ, data
 
 
-    if __debug__:
+    ikiwa __debug__:
 
-        def _mesg(self, s, secs=None):
-            if secs is None:
+        eleza _mesg(self, s, secs=None):
+            ikiwa secs is None:
                 secs = time.time()
             tm = time.strftime('%M:%S', time.localtime(secs))
             sys.stderr.write('  %s.%02d %s\n' % (tm, (secs*100)%100, s))
             sys.stderr.flush()
 
-        def _dump_ur(self, dict):
+        eleza _dump_ur(self, dict):
             # Dump untagged responses (in `dict').
             l = dict.items()
-            if not l: return
+            ikiwa not l: return
             t = '\n\t\t'
             l = map(lambda x:'%s: "%s"' % (x[0], x[1][0] and '" "'.join(x[1]) or ''), l)
             self._mesg('untagged responses dump:%s%s' % (t, t.join(l)))
 
-        def _log(self, line):
+        eleza _log(self, line):
             # Keep log of last `_cmd_log_len' interactions for debugging.
             self._cmd_log[self._cmd_log_idx] = (line, time.time())
             self._cmd_log_idx += 1
-            if self._cmd_log_idx >= self._cmd_log_len:
+            ikiwa self._cmd_log_idx >= self._cmd_log_len:
                 self._cmd_log_idx = 0
 
-        def print_log(self):
+        eleza print_log(self):
             self._mesg('last %d IMAP4 interactions:' % len(self._cmd_log))
             i, n = self._cmd_log_idx, self._cmd_log_len
             while n:
@@ -1250,16 +1250,16 @@ class IMAP4:
                 except:
                     pass
                 i += 1
-                if i >= self._cmd_log_len:
+                ikiwa i >= self._cmd_log_len:
                     i = 0
                 n -= 1
 
 
-if HAVE_SSL:
+ikiwa HAVE_SSL:
 
-    class IMAP4_SSL(IMAP4):
+    kundi IMAP4_SSL(IMAP4):
 
-        """IMAP4 client class over SSL connection
+        """IMAP4 client kundi over SSL connection
 
         Instantiate with: IMAP4_SSL([host[, port[, keyfile[, certfile[, ssl_context]]]]])
 
@@ -1269,39 +1269,39 @@ if HAVE_SSL:
                 certfile - PEM formatted certificate chain file (default: None);
                 ssl_context - a SSLContext object that contains your certificate chain
                               and private key (default: None)
-                Note: if ssl_context is provided, then parameters keyfile or
+                Note: ikiwa ssl_context is provided, then parameters keyfile or
                 certfile should not be set otherwise ValueError is raised.
 
-        for more documentation see the docstring of the parent class IMAP4.
+        for more documentation see the docstring of the parent kundi IMAP4.
         """
 
 
-        def __init__(self, host='', port=IMAP4_SSL_PORT, keyfile=None,
+        eleza __init__(self, host='', port=IMAP4_SSL_PORT, keyfile=None,
                      certfile=None, ssl_context=None):
-            if ssl_context is not None and keyfile is not None:
+            ikiwa ssl_context is not None and keyfile is not None:
                 raise ValueError("ssl_context and keyfile arguments are mutually "
                                  "exclusive")
-            if ssl_context is not None and certfile is not None:
+            ikiwa ssl_context is not None and certfile is not None:
                 raise ValueError("ssl_context and certfile arguments are mutually "
                                  "exclusive")
-            if keyfile is not None or certfile is not None:
+            ikiwa keyfile is not None or certfile is not None:
                 agiza warnings
                 warnings.warn("keyfile and certfile are deprecated, use a "
                               "custom ssl_context instead", DeprecationWarning, 2)
             self.keyfile = keyfile
             self.certfile = certfile
-            if ssl_context is None:
+            ikiwa ssl_context is None:
                 ssl_context = ssl._create_stdlib_context(certfile=certfile,
                                                          keyfile=keyfile)
             self.ssl_context = ssl_context
             IMAP4.__init__(self, host, port)
 
-        def _create_socket(self):
+        eleza _create_socket(self):
             sock = IMAP4._create_socket(self)
-            return self.ssl_context.wrap_socket(sock,
+            rudisha self.ssl_context.wrap_socket(sock,
                                                 server_hostname=self.host)
 
-        def open(self, host='', port=IMAP4_SSL_PORT):
+        eleza open(self, host='', port=IMAP4_SSL_PORT):
             """Setup connection to remote server on "host:port".
                 (default: localhost:standard IMAP4 SSL port).
             This connection will be used by the routines:
@@ -1312,24 +1312,24 @@ if HAVE_SSL:
     __all__.append("IMAP4_SSL")
 
 
-class IMAP4_stream(IMAP4):
+kundi IMAP4_stream(IMAP4):
 
-    """IMAP4 client class over a stream
+    """IMAP4 client kundi over a stream
 
     Instantiate with: IMAP4_stream(command)
 
             "command" - a string that can be passed to subprocess.Popen()
 
-    for more documentation see the docstring of the parent class IMAP4.
+    for more documentation see the docstring of the parent kundi IMAP4.
     """
 
 
-    def __init__(self, command):
+    eleza __init__(self, command):
         self.command = command
         IMAP4.__init__(self)
 
 
-    def open(self, host = None, port = None):
+    eleza open(self, host = None, port = None):
         """Setup a stream connection.
         This connection will be used by the routines:
             read, readline, send, shutdown.
@@ -1345,23 +1345,23 @@ class IMAP4_stream(IMAP4):
         self.writefile = self.process.stdin
         self.readfile = self.process.stdout
 
-    def read(self, size):
+    eleza read(self, size):
         """Read 'size' bytes kutoka remote."""
-        return self.readfile.read(size)
+        rudisha self.readfile.read(size)
 
 
-    def readline(self):
+    eleza readline(self):
         """Read line kutoka remote."""
-        return self.readfile.readline()
+        rudisha self.readfile.readline()
 
 
-    def send(self, data):
+    eleza send(self, data):
         """Send data to remote."""
         self.writefile.write(data)
         self.writefile.flush()
 
 
-    def shutdown(self):
+    eleza shutdown(self):
         """Close I/O established in "open"."""
         self.readfile.close()
         self.writefile.close()
@@ -1369,22 +1369,22 @@ class IMAP4_stream(IMAP4):
 
 
 
-class _Authenticator:
+kundi _Authenticator:
 
-    """Private class to provide en/decoding
+    """Private kundi to provide en/decoding
             for base64-based authentication conversation.
     """
 
-    def __init__(self, mechinst):
+    eleza __init__(self, mechinst):
         self.mech = mechinst    # Callable object to provide/process data
 
-    def process(self, data):
+    eleza process(self, data):
         ret = self.mech(self.decode(data))
-        if ret is None:
-            return b'*'     # Abort conversation
-        return self.encode(ret)
+        ikiwa ret is None:
+            rudisha b'*'     # Abort conversation
+        rudisha self.encode(ret)
 
-    def encode(self, inp):
+    eleza encode(self, inp):
         #
         #  Invoke binascii.b2a_base64 iteratively with
         #  short even length buffers, strip the trailing
@@ -1394,38 +1394,38 @@ class _Authenticator:
         #  there's no partial 6-bit output.
         #
         oup = b''
-        if isinstance(inp, str):
+        ikiwa isinstance(inp, str):
             inp = inp.encode('utf-8')
         while inp:
-            if len(inp) > 48:
+            ikiwa len(inp) > 48:
                 t = inp[:48]
                 inp = inp[48:]
             else:
                 t = inp
                 inp = b''
             e = binascii.b2a_base64(t)
-            if e:
+            ikiwa e:
                 oup = oup + e[:-1]
-        return oup
+        rudisha oup
 
-    def decode(self, inp):
-        if not inp:
-            return b''
-        return binascii.a2b_base64(inp)
+    eleza decode(self, inp):
+        ikiwa not inp:
+            rudisha b''
+        rudisha binascii.a2b_base64(inp)
 
 Months = ' Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ')
 Mon2num = {s.encode():n+1 for n, s in enumerate(Months[1:])}
 
-def Internaldate2tuple(resp):
+eleza Internaldate2tuple(resp):
     """Parse an IMAP4 INTERNALDATE string.
 
-    Return corresponding local time.  The return value is a
-    time.struct_time tuple or None if the string has wrong format.
+    Return corresponding local time.  The rudisha value is a
+    time.struct_time tuple or None ikiwa the string has wrong format.
     """
 
     mo = InternalDate.match(resp)
-    if not mo:
-        return None
+    ikiwa not mo:
+        rudisha None
 
     mon = Mon2num[mo.group('mon')]
     zonen = mo.group('zonen')
@@ -1441,17 +1441,17 @@ def Internaldate2tuple(resp):
     # INTERNALDATE timezone must be subtracted to get UT
 
     zone = (zoneh*60 + zonem)*60
-    if zonen == b'-':
+    ikiwa zonen == b'-':
         zone = -zone
 
     tt = (year, mon, day, hour, min, sec, -1, -1, -1)
     utc = calendar.timegm(tt) - zone
 
-    return time.localtime(utc)
+    rudisha time.localtime(utc)
 
 
 
-def Int2AP(num):
+eleza Int2AP(num):
 
     """Convert integer to A-P string representation."""
 
@@ -1460,22 +1460,22 @@ def Int2AP(num):
     while num:
         num, mod = divmod(num, 16)
         val = AP[mod:mod+1] + val
-    return val
+    rudisha val
 
 
 
-def ParseFlags(resp):
+eleza ParseFlags(resp):
 
     """Convert IMAP4 flags response to python tuple."""
 
     mo = Flags.match(resp)
-    if not mo:
-        return ()
+    ikiwa not mo:
+        rudisha ()
 
-    return tuple(mo.group('flags').split())
+    rudisha tuple(mo.group('flags').split())
 
 
-def Time2Internaldate(date_time):
+eleza Time2Internaldate(date_time):
 
     """Convert date_time to IMAP4 INTERNALDATE representation.
 
@@ -1487,36 +1487,36 @@ def Time2Internaldate(date_time):
     double-quoted string.  In the last case, it is assumed to already
     be in the correct format.
     """
-    if isinstance(date_time, (int, float)):
-        dt = datetime.fromtimestamp(date_time,
+    ikiwa isinstance(date_time, (int, float)):
+        dt = datetime.kutokatimestamp(date_time,
                                     timezone.utc).astimezone()
-    elif isinstance(date_time, tuple):
+    elikiwa isinstance(date_time, tuple):
         try:
             gmtoff = date_time.tm_gmtoff
         except AttributeError:
-            if time.daylight:
+            ikiwa time.daylight:
                 dst = date_time[8]
-                if dst == -1:
+                ikiwa dst == -1:
                     dst = time.localtime(time.mktime(date_time))[8]
                 gmtoff = -(time.timezone, time.altzone)[dst]
             else:
                 gmtoff = -time.timezone
         delta = timedelta(seconds=gmtoff)
         dt = datetime(*date_time[:6], tzinfo=timezone(delta))
-    elif isinstance(date_time, datetime):
-        if date_time.tzinfo is None:
+    elikiwa isinstance(date_time, datetime):
+        ikiwa date_time.tzinfo is None:
             raise ValueError("date_time must be aware")
         dt = date_time
-    elif isinstance(date_time, str) and (date_time[0],date_time[-1]) == ('"','"'):
-        return date_time        # Assume in correct format
+    elikiwa isinstance(date_time, str) and (date_time[0],date_time[-1]) == ('"','"'):
+        rudisha date_time        # Assume in correct format
     else:
         raise ValueError("date_time not of a known type")
     fmt = '"%d-{}-%Y %H:%M:%S %z"'.format(Months[dt.month])
-    return dt.strftime(fmt)
+    rudisha dt.strftime(fmt)
 
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
 
     # To test: invoke either as 'python imaplib.py [IMAP4_server_hostname]'
     # or 'python imaplib.py -s "rsh IMAP4_server_hostname exec /etc/rimapd"'
@@ -1531,13 +1531,13 @@ if __name__ == '__main__':
 
     stream_command = None
     for opt,val in optlist:
-        if opt == '-d':
+        ikiwa opt == '-d':
             Debug = int(val)
-        elif opt == '-s':
+        elikiwa opt == '-s':
             stream_command = val
-            if not args: args = (stream_command,)
+            ikiwa not args: args = (stream_command,)
 
-    if not args: args = ('',)
+    ikiwa not args: args = ('',)
 
     host = args[0]
 
@@ -1572,19 +1572,19 @@ if __name__ == '__main__':
     ('logout', ()),
     )
 
-    def run(cmd, args):
+    eleza run(cmd, args):
         M._mesg('%s %s' % (cmd, args))
         typ, dat = getattr(M, cmd)(*args)
         M._mesg('%s => %s %s' % (cmd, typ, dat))
-        if typ == 'NO': raise dat[0]
-        return dat
+        ikiwa typ == 'NO': raise dat[0]
+        rudisha dat
 
     try:
-        if stream_command:
+        ikiwa stream_command:
             M = IMAP4_stream(stream_command)
         else:
             M = IMAP4(host)
-        if M.state == 'AUTH':
+        ikiwa M.state == 'AUTH':
             test_seq1 = test_seq1[1:]   # Login not needed
         M._mesg('PROTOCOL_VERSION = %s' % M.PROTOCOL_VERSION)
         M._mesg('CAPABILITIES = %r' % (M.capabilities,))
@@ -1594,28 +1594,28 @@ if __name__ == '__main__':
 
         for ml in run('list', ('/tmp/', 'yy%')):
             mo = re.match(r'.*"([^"]+)"$', ml)
-            if mo: path = mo.group(1)
+            ikiwa mo: path = mo.group(1)
             else: path = ml.split()[-1]
             run('delete', (path,))
 
         for cmd,args in test_seq2:
             dat = run(cmd, args)
 
-            if (cmd,args) != ('uid', ('SEARCH', 'ALL')):
+            ikiwa (cmd,args) != ('uid', ('SEARCH', 'ALL')):
                 continue
 
             uid = dat[-1].split()
-            if not uid: continue
+            ikiwa not uid: continue
             run('uid', ('FETCH', '%s' % uid[-1],
                     '(FLAGS INTERNALDATE RFC822.SIZE RFC822.HEADER RFC822.TEXT)'))
 
-        print('\nAll tests OK.')
+        andika('\nAll tests OK.')
 
     except:
-        print('\nTests failed.')
+        andika('\nTests failed.')
 
-        if not Debug:
-            print('''
+        ikiwa not Debug:
+            andika('''
 If you would like to see debugging output,
 try: %s -d5
 ''' % sys.argv[0])

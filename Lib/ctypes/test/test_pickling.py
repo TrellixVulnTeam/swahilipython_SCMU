@@ -1,7 +1,7 @@
 import unittest
 import pickle
 from ctypes import *
-import _ctypes_test
+agiza _ctypes_test
 dll = CDLL(_ctypes_test.__file__)
 
 class X(Structure):

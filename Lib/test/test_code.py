@@ -1,9 +1,9 @@
 """This module includes tests of the code object representation.
 
->>> def f(x):
-...     def g(y):
-...         return x + y
-...     return g
+>>> eleza f(x):
+...     eleza g(y):
+...         rudisha x + y
+...     rudisha g
 ...
 
 >>> dump(f.__code__)
@@ -32,11 +32,11 @@ nlocals: 1
 flags: 19
 consts: ('None',)
 
->>> def h(x, y):
+>>> eleza h(x, y):
 ...     a = x + y
 ...     b = x - y
 ...     c = a * b
-...     return c
+...     rudisha c
 ...
 
 >>> dump(h.__code__)
@@ -52,10 +52,10 @@ nlocals: 5
 flags: 67
 consts: ('None',)
 
->>> def attrs(obj):
-...     print(obj.attr1)
-...     print(obj.attr2)
-...     print(obj.attr3)
+>>> eleza attrs(obj):
+...     andika(obj.attr1)
+...     andika(obj.attr2)
+...     andika(obj.attr3)
 
 >>> dump(attrs.__code__)
 name: attrs
@@ -70,7 +70,7 @@ nlocals: 1
 flags: 67
 consts: ('None',)
 
->>> def optimize_away():
+>>> eleza optimize_away():
 ...     'doc string'
 ...     'not a docstring'
 ...     53
@@ -89,8 +89,8 @@ nlocals: 0
 flags: 67
 consts: ("'doc string'", 'None')
 
->>> def keywordonly_args(a,b,*,k1):
-...     return a,b,k1
+>>> eleza keywordonly_args(a,b,*,k1):
+...     rudisha a,b,k1
 ...
 
 >>> dump(keywordonly_args.__code__)
@@ -106,8 +106,8 @@ nlocals: 3
 flags: 67
 consts: ('None',)
 
->>> def posonly_args(a,b,/,c):
-...     return a,b,c
+>>> eleza posonly_args(a,b,/,c):
+...     rudisha a,b,c
 ...
 
 >>> dump(posonly_args.__code__)
@@ -139,32 +139,32 @@ kutoka test.support agiza (run_doctest, run_unittest, cpython_only,
                           check_impl_detail)
 
 
-def consts(t):
+eleza consts(t):
     """Yield a doctest-safe sequence of object reprs."""
     for elt in t:
         r = repr(elt)
-        if r.startswith("<code object"):
+        ikiwa r.startswith("<code object"):
             yield "<code object %s>" % elt.co_name
         else:
             yield r
 
-def dump(co):
+eleza dump(co):
     """Print out a text representation of a code object."""
     for attr in ["name", "argcount", "posonlyargcount",
                  "kwonlyargcount", "names", "varnames",
                  "cellvars", "freevars", "nlocals", "flags"]:
-        print("%s: %s" % (attr, getattr(co, "co_" + attr)))
-    print("consts:", tuple(consts(co.co_consts)))
+        andika("%s: %s" % (attr, getattr(co, "co_" + attr)))
+    andika("consts:", tuple(consts(co.co_consts)))
 
 # Needed for test_closure_injection below
 # Defined at global scope to avoid implicitly closing over __class__
-def external_getitem(self, i):
-    return f"Foreign getitem: {super().__getitem__(i)}"
+eleza external_getitem(self, i):
+    rudisha f"Foreign getitem: {super().__getitem__(i)}"
 
-class CodeTest(unittest.TestCase):
+kundi CodeTest(unittest.TestCase):
 
     @cpython_only
-    def test_newempty(self):
+    eleza test_newempty(self):
         agiza _testcapi
         co = _testcapi.code_newempty("filename", "funcname", 15)
         self.assertEqual(co.co_filename, "filename")
@@ -172,25 +172,25 @@ class CodeTest(unittest.TestCase):
         self.assertEqual(co.co_firstlineno, 15)
 
     @cpython_only
-    def test_closure_injection(self):
+    eleza test_closure_injection(self):
         # From https://bugs.python.org/issue32176
         kutoka types agiza FunctionType
 
-        def create_closure(__class__):
-            return (lambda: __class__).__closure__
+        eleza create_closure(__class__):
+            rudisha (lambda: __class__).__closure__
 
-        def new_code(c):
+        eleza new_code(c):
             '''A new code object with a __class__ cell added to freevars'''
-            return c.replace(co_freevars=c.co_freevars + ('__class__',))
+            rudisha c.replace(co_freevars=c.co_freevars + ('__class__',))
 
-        def add_foreign_method(cls, name, f):
+        eleza add_foreign_method(cls, name, f):
             code = new_code(f.__code__)
             assert not f.__closure__
             closure = create_closure(cls)
             defaults = f.__defaults__
             setattr(cls, name, FunctionType(code, globals(), name, defaults, closure))
 
-        class List(list):
+        kundi List(list):
             pass
 
         add_foreign_method(List, "__getitem__", external_getitem)
@@ -208,13 +208,13 @@ class CodeTest(unittest.TestCase):
         obj = List([1, 2, 3])
         self.assertEqual(obj[0], "Foreign getitem: 1")
 
-    def test_constructor(self):
-        def func(): pass
+    eleza test_constructor(self):
+        eleza func(): pass
         co = func.__code__
         CodeType = type(co)
 
         # test code constructor
-        return CodeType(co.co_argcount,
+        rudisha CodeType(co.co_argcount,
                         co.co_posonlyargcount,
                         co.co_kwonlyargcount,
                         co.co_nlocals,
@@ -231,16 +231,16 @@ class CodeTest(unittest.TestCase):
                         co.co_freevars,
                         co.co_cellvars)
 
-    def test_replace(self):
-        def func():
+    eleza test_replace(self):
+        eleza func():
             x = 1
-            return x
+            rudisha x
         code = func.__code__
 
         # different co_name, co_varnames, co_consts
-        def func2():
+        eleza func2():
             y = 2
-            return y
+            rudisha y
         code2 = func.__code__
 
         for attr, value in (
@@ -266,69 +266,69 @@ class CodeTest(unittest.TestCase):
                 self.assertEqual(getattr(new_code, attr), value)
 
 
-def isinterned(s):
-    return s is sys.intern(('_' + s + '_')[1:-1])
+eleza isinterned(s):
+    rudisha s is sys.intern(('_' + s + '_')[1:-1])
 
-class CodeConstsTest(unittest.TestCase):
+kundi CodeConstsTest(unittest.TestCase):
 
-    def find_const(self, consts, value):
+    eleza find_const(self, consts, value):
         for v in consts:
-            if v == value:
-                return v
+            ikiwa v == value:
+                rudisha v
         self.assertIn(value, consts)  # raises an exception
         self.fail('Should never be reached')
 
-    def assertIsInterned(self, s):
-        if not isinterned(s):
+    eleza assertIsInterned(self, s):
+        ikiwa not isinterned(s):
             self.fail('String %r is not interned' % (s,))
 
-    def assertIsNotInterned(self, s):
-        if isinterned(s):
+    eleza assertIsNotInterned(self, s):
+        ikiwa isinterned(s):
             self.fail('String %r is interned' % (s,))
 
     @cpython_only
-    def test_interned_string(self):
+    eleza test_interned_string(self):
         co = compile('res = "str_value"', '?', 'exec')
         v = self.find_const(co.co_consts, 'str_value')
         self.assertIsInterned(v)
 
     @cpython_only
-    def test_interned_string_in_tuple(self):
+    eleza test_interned_string_in_tuple(self):
         co = compile('res = ("str_value",)', '?', 'exec')
         v = self.find_const(co.co_consts, ('str_value',))
         self.assertIsInterned(v[0])
 
     @cpython_only
-    def test_interned_string_in_frozenset(self):
+    eleza test_interned_string_in_frozenset(self):
         co = compile('res = a in {"str_value"}', '?', 'exec')
         v = self.find_const(co.co_consts, frozenset(('str_value',)))
         self.assertIsInterned(tuple(v)[0])
 
     @cpython_only
-    def test_interned_string_default(self):
-        def f(a='str_value'):
-            return a
+    eleza test_interned_string_default(self):
+        eleza f(a='str_value'):
+            rudisha a
         self.assertIsInterned(f())
 
     @cpython_only
-    def test_interned_string_with_null(self):
+    eleza test_interned_string_with_null(self):
         co = compile(r'res = "str\0value!"', '?', 'exec')
         v = self.find_const(co.co_consts, 'str\0value!')
         self.assertIsNotInterned(v)
 
 
-class CodeWeakRefTest(unittest.TestCase):
+kundi CodeWeakRefTest(unittest.TestCase):
 
-    def test_basic(self):
+    eleza test_basic(self):
         # Create a code object in a clean environment so that we know we have
         # the only reference to it left.
         namespace = {}
-        exec("def f(): pass", globals(), namespace)
+        exec("eleza f(): pass", globals(), namespace)
         f = namespace["f"]
         del namespace
 
         self.called = False
-        def callback(code):
+        eleza callback(code):
             self.called = True
 
         # f is now the last reference to the function, and through it, the code
@@ -342,7 +342,7 @@ class CodeWeakRefTest(unittest.TestCase):
         self.assertTrue(self.called)
 
 
-if check_impl_detail(cpython=True) and ctypes is not None:
+ikiwa check_impl_detail(cpython=True) and ctypes is not None:
     py = ctypes.pythonapi
     freefunc = ctypes.CFUNCTYPE(None,ctypes.c_voidp)
 
@@ -360,21 +360,21 @@ if check_impl_detail(cpython=True) and ctypes is not None:
     GetExtra.restype = ctypes.c_int
 
     LAST_FREED = None
-    def myfree(ptr):
+    eleza myfree(ptr):
         global LAST_FREED
         LAST_FREED = ptr
 
     FREE_FUNC = freefunc(myfree)
     FREE_INDEX = RequestCodeExtraIndex(FREE_FUNC)
 
-    class CoExtra(unittest.TestCase):
-        def get_func(self):
+    kundi CoExtra(unittest.TestCase):
+        eleza get_func(self):
             # Defining a function causes the containing function to have a
             # reference to the code object.  We need the code objects to go
             # away, so we eval a lambda.
-            return eval('lambda:42')
+            rudisha eval('lambda:42')
 
-        def test_get_non_code(self):
+        eleza test_get_non_code(self):
             f = self.get_func()
 
             self.assertRaises(SystemError, SetExtra, 42, FREE_INDEX,
@@ -382,14 +382,14 @@ if check_impl_detail(cpython=True) and ctypes is not None:
             self.assertRaises(SystemError, GetExtra, 42, FREE_INDEX,
                               ctypes.c_voidp(100))
 
-        def test_bad_index(self):
+        eleza test_bad_index(self):
             f = self.get_func()
             self.assertRaises(SystemError, SetExtra, f.__code__,
                               FREE_INDEX+100, ctypes.c_voidp(100))
             self.assertEqual(GetExtra(f.__code__, FREE_INDEX+100,
                               ctypes.c_voidp(100)), 0)
 
-        def test_free_called(self):
+        eleza test_free_called(self):
             # Verify that the provided free function gets invoked
             # when the code object is cleaned up.
             f = self.get_func()
@@ -398,7 +398,7 @@ if check_impl_detail(cpython=True) and ctypes is not None:
             del f
             self.assertEqual(LAST_FREED, 100)
 
-        def test_get_set(self):
+        eleza test_get_set(self):
             # Test basic get/set round tripping.
             f = self.get_func()
 
@@ -414,16 +414,16 @@ if check_impl_detail(cpython=True) and ctypes is not None:
             self.assertEqual(extra.value, 300)
             del f
 
-        def test_free_different_thread(self):
+        eleza test_free_different_thread(self):
             # Freeing a code object on a different thread then
             # where the co_extra was set should be safe.
             f = self.get_func()
-            class ThreadTest(threading.Thread):
-                def __init__(self, f, test):
+            kundi ThreadTest(threading.Thread):
+                eleza __init__(self, f, test):
                     super().__init__()
                     self.f = f
                     self.test = test
-                def run(self):
+                eleza run(self):
                     del self.f
                     self.test.assertEqual(LAST_FREED, 500)
 
@@ -435,16 +435,16 @@ if check_impl_detail(cpython=True) and ctypes is not None:
             self.assertEqual(LAST_FREED, 500)
 
         @cpython_only
-        def test_clean_stack_on_return(self):
+        eleza test_clean_stack_on_return(self):
 
-            def f(x):
-                return x
+            eleza f(x):
+                rudisha x
 
             code = f.__code__
             ct = type(f.__code__)
 
             # Insert an extra LOAD_FAST, this duplicates the value of
-            # 'x' in the stack, leaking it if the frame is not properly
+            # 'x' in the stack, leaking it ikiwa the frame is not properly
             # cleaned up upon exit.
 
             bytecode = list(code.co_code)
@@ -459,25 +459,25 @@ if check_impl_detail(cpython=True) and ctypes is not None:
                    code.co_lnotab, code.co_freevars, code.co_cellvars)
             new_function = type(f)(c, f.__globals__, 'nf', f.__defaults__, f.__closure__)
 
-            class Var:
+            kundi Var:
                 pass
             the_object = Var()
             var = weakref.ref(the_object)
 
             new_function(the_object)
 
-            # Check if the_object is leaked
+            # Check ikiwa the_object is leaked
             del the_object
             assert var() is None
 
 
-def test_main(verbose=None):
+eleza test_main(verbose=None):
     kutoka test agiza test_code
     run_doctest(test_code, verbose)
     tests = [CodeTest, CodeConstsTest, CodeWeakRefTest]
-    if check_impl_detail(cpython=True) and ctypes is not None:
+    ikiwa check_impl_detail(cpython=True) and ctypes is not None:
         tests.append(CoExtra)
     run_unittest(*tests)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test_main()

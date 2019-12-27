@@ -3,7 +3,7 @@ from ctypes.test import need_symbol
 import unittest
 import os
 
-import _ctypes_test
+agiza _ctypes_test
 
 class BITS(Structure):
     _fields_ = [("A", c_int, 1),

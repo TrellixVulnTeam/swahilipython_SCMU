@@ -330,7 +330,7 @@ class build_py (Command):
     def build_module(self, module, module_file, package):
         if isinstance(package, str):
             package = package.split('.')
-        elif not isinstance(package, (list, tuple)):
+        lasivyo not isinstance(package, (list, tuple)):
             raise TypeError(
                   "'package' must be a string (dot-separated), list, or tuple")
 

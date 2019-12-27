@@ -16,21 +16,21 @@ myrepr = Repr()
 myrepr.maxstring = 100
 myrepr.maxother = 100
 
-class ObjectTreeItem(TreeItem):
-    def __init__(self, labeltext, object, setfunction=None):
+kundi ObjectTreeItem(TreeItem):
+    eleza __init__(self, labeltext, object, setfunction=None):
         self.labeltext = labeltext
         self.object = object
         self.setfunction = setfunction
-    def GetLabelText(self):
-        return self.labeltext
-    def GetText(self):
-        return myrepr.repr(self.object)
-    def GetIconName(self):
-        if not self.IsExpandable():
-            return "python"
-    def IsEditable(self):
-        return self.setfunction is not None
-    def SetText(self, text):
+    eleza GetLabelText(self):
+        rudisha self.labeltext
+    eleza GetText(self):
+        rudisha myrepr.repr(self.object)
+    eleza GetIconName(self):
+        ikiwa not self.IsExpandable():
+            rudisha "python"
+    eleza IsEditable(self):
+        rudisha self.setfunction is not None
+    eleza SetText(self, text):
         try:
             value = eval(text)
             self.setfunction(value)
@@ -38,9 +38,9 @@ class ObjectTreeItem(TreeItem):
             pass
         else:
             self.object = value
-    def IsExpandable(self):
-        return not not dir(self.object)
-    def GetSubList(self):
+    eleza IsExpandable(self):
+        rudisha not not dir(self.object)
+    eleza GetSubList(self):
         keys = dir(self.object)
         sublist = []
         for key in keys:
@@ -54,51 +54,51 @@ class ObjectTreeItem(TreeItem):
                 lambda value, key=key, object=self.object:
                     setattr(object, key, value))
             sublist.append(item)
-        return sublist
+        rudisha sublist
 
-class ClassTreeItem(ObjectTreeItem):
-    def IsExpandable(self):
-        return True
-    def GetSubList(self):
+kundi ClassTreeItem(ObjectTreeItem):
+    eleza IsExpandable(self):
+        rudisha True
+    eleza GetSubList(self):
         sublist = ObjectTreeItem.GetSubList(self)
-        if len(self.object.__bases__) == 1:
+        ikiwa len(self.object.__bases__) == 1:
             item = make_objecttreeitem("__bases__[0] =",
                 self.object.__bases__[0])
         else:
             item = make_objecttreeitem("__bases__ =", self.object.__bases__)
         sublist.insert(0, item)
-        return sublist
+        rudisha sublist
 
-class AtomicObjectTreeItem(ObjectTreeItem):
-    def IsExpandable(self):
-        return False
+kundi AtomicObjectTreeItem(ObjectTreeItem):
+    eleza IsExpandable(self):
+        rudisha False
 
-class SequenceTreeItem(ObjectTreeItem):
-    def IsExpandable(self):
-        return len(self.object) > 0
-    def keys(self):
-        return range(len(self.object))
-    def GetSubList(self):
+kundi SequenceTreeItem(ObjectTreeItem):
+    eleza IsExpandable(self):
+        rudisha len(self.object) > 0
+    eleza keys(self):
+        rudisha range(len(self.object))
+    eleza GetSubList(self):
         sublist = []
         for key in self.keys():
             try:
                 value = self.object[key]
             except KeyError:
                 continue
-            def setfunction(value, key=key, object=self.object):
+            eleza setfunction(value, key=key, object=self.object):
                 object[key] = value
             item = make_objecttreeitem("%r:" % (key,), value, setfunction)
             sublist.append(item)
-        return sublist
+        rudisha sublist
 
-class DictTreeItem(SequenceTreeItem):
-    def keys(self):
+kundi DictTreeItem(SequenceTreeItem):
+    eleza keys(self):
         keys = list(self.object.keys())
         try:
             keys.sort()
         except:
             pass
-        return keys
+        rudisha keys
 
 dispatch = {
     int: AtomicObjectTreeItem,
@@ -110,16 +110,16 @@ dispatch = {
     type: ClassTreeItem,
 }
 
-def make_objecttreeitem(labeltext, object, setfunction=None):
+eleza make_objecttreeitem(labeltext, object, setfunction=None):
     t = type(object)
-    if t in dispatch:
+    ikiwa t in dispatch:
         c = dispatch[t]
     else:
         c = ObjectTreeItem
-    return c(labeltext, object, setfunction)
+    rudisha c(labeltext, object, setfunction)
 
 
-def _object_browser(parent):  # htest #
+eleza _object_browser(parent):  # htest #
     agiza sys
     kutoka tkinter agiza Toplevel
     top = Toplevel(parent)
@@ -134,7 +134,7 @@ def _object_browser(parent):  # htest #
     node = TreeNode(sc.canvas, None, item)
     node.update()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     kutoka unittest agiza main
     main('idlelib.idle_test.test_debugobj', verbosity=2, exit=False)
 

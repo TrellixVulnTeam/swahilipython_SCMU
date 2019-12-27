@@ -6,10 +6,10 @@ agiza test.support
 
 test.support.verbose = 0
 
-def runtest(name):
+eleza runtest(name):
     __import__(name)
     module = sys.modules[name]
-    if hasattr(module, "test_main"):
+    ikiwa hasattr(module, "test_main"):
         module.test_main()
 
 runtest("test.test_minidom")

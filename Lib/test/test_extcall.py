@@ -8,17 +8,17 @@ We're going the use these types for extra testing
 
 We're defining four helper functions
 
-    >>> def e(a,b):
-    ...     print(a, b)
+    >>> eleza e(a,b):
+    ...     andika(a, b)
 
-    >>> def f(*a, **k):
-    ...     print(a, support.sortdict(k))
+    >>> eleza f(*a, **k):
+    ...     andika(a, support.sortdict(k))
 
-    >>> def g(x, *y, **z):
-    ...     print(x, y, support.sortdict(z))
+    >>> eleza g(x, *y, **z):
+    ...     andika(x, y, support.sortdict(z))
 
-    >>> def h(j=1, a=2, h=3):
-    ...     print(j, a, h)
+    >>> eleza h(j=1, a=2, h=3):
+    ...     andika(j, a, h)
 
 Argument list examples
 
@@ -113,15 +113,15 @@ Verify clearing of SF bug #733667
     >>> g(1, 2, 3, *(4, 5))
     1 (2, 3, 4, 5) {}
 
-    >>> class Nothing: pass
+    >>> kundi Nothing: pass
     ...
     >>> g(*Nothing())
     Traceback (most recent call last):
       ...
     TypeError: g() argument after * must be an iterable, not Nothing
 
-    >>> class Nothing:
-    ...     def __len__(self): return 5
+    >>> kundi Nothing:
+    ...     eleza __len__(self): rudisha 5
     ...
 
     >>> g(*Nothing())
@@ -129,25 +129,25 @@ Verify clearing of SF bug #733667
       ...
     TypeError: g() argument after * must be an iterable, not Nothing
 
-    >>> class Nothing():
-    ...     def __len__(self): return 5
-    ...     def __getitem__(self, i):
-    ...         if i<3: return i
+    >>> kundi Nothing():
+    ...     eleza __len__(self): rudisha 5
+    ...     eleza __getitem__(self, i):
+    ...         ikiwa i<3: rudisha i
     ...         else: raise IndexError(i)
     ...
 
     >>> g(*Nothing())
     0 (1, 2) {}
 
-    >>> class Nothing:
-    ...     def __init__(self): self.c = 0
-    ...     def __iter__(self): return self
-    ...     def __next__(self):
-    ...         if self.c == 4:
+    >>> kundi Nothing:
+    ...     eleza __init__(self): self.c = 0
+    ...     eleza __iter__(self): rudisha self
+    ...     eleza __next__(self):
+    ...         ikiwa self.c == 4:
     ...             raise StopIteration
     ...         c = self.c
     ...         self.c += 1
-    ...         return c
+    ...         rudisha c
     ...
 
     >>> g(*Nothing())
@@ -156,7 +156,7 @@ Verify clearing of SF bug #733667
 Check for issue #4806: Does a TypeError in a generator get propagated with the
 right error message? (Also check with other iterables.)
 
-    >>> def broken(): raise TypeError("myerror")
+    >>> eleza broken(): raise TypeError("myerror")
     ...
 
     >>> g(*(broken() for i in range(1)))
@@ -168,8 +168,8 @@ right error message? (Also check with other iterables.)
       ...
     TypeError: myerror
 
-    >>> class BrokenIterable1:
-    ...     def __iter__(self):
+    >>> kundi BrokenIterable1:
+    ...     eleza __iter__(self):
     ...         raise TypeError('myerror')
     ...
     >>> g(*BrokenIterable1())
@@ -181,8 +181,8 @@ right error message? (Also check with other iterables.)
       ...
     TypeError: myerror
 
-    >>> class BrokenIterable2:
-    ...     def __iter__(self):
+    >>> kundi BrokenIterable2:
+    ...     eleza __iter__(self):
     ...         yield 0
     ...         raise TypeError('myerror')
     ...
@@ -195,8 +195,8 @@ right error message? (Also check with other iterables.)
       ...
     TypeError: myerror
 
-    >>> class BrokenSequence:
-    ...     def __getitem__(self, idx):
+    >>> kundi BrokenSequence:
+    ...     eleza __getitem__(self, idx):
     ...         raise TypeError('myerror')
     ...
     >>> g(*BrokenSequence())
@@ -219,9 +219,9 @@ Make sure that the function doesn't stomp the dictionary
 
 What about willful misconduct?
 
-    >>> def saboteur(**kw):
+    >>> eleza saboteur(**kw):
     ...     kw['x'] = 'm'
-    ...     return kw
+    ...     rudisha kw
 
     >>> d = {}
     >>> kw = saboteur(a=1, **d)
@@ -320,30 +320,30 @@ not function
 Test a kwargs mapping with duplicated keys.
 
     >>> kutoka collections.abc agiza Mapping
-    >>> class MultiDict(Mapping):
-    ...     def __init__(self, items):
+    >>> kundi MultiDict(Mapping):
+    ...     eleza __init__(self, items):
     ...         self._items = items
     ...
-    ...     def __iter__(self):
-    ...         return (k for k, v in self._items)
+    ...     eleza __iter__(self):
+    ...         rudisha (k for k, v in self._items)
     ...
-    ...     def __getitem__(self, key):
+    ...     eleza __getitem__(self, key):
     ...         for k, v in self._items:
-    ...             if k == key:
-    ...                 return v
+    ...             ikiwa k == key:
+    ...                 rudisha v
     ...         raise KeyError(key)
     ...
-    ...     def __len__(self):
-    ...         return len(self._items)
+    ...     eleza __len__(self):
+    ...         rudisha len(self._items)
     ...
-    ...     def keys(self):
-    ...         return [k for k, v in self._items]
+    ...     eleza keys(self):
+    ...         rudisha [k for k, v in self._items]
     ...
-    ...     def values(self):
-    ...         return [v for k, v in self._items]
+    ...     eleza values(self):
+    ...         rudisha [v for k, v in self._items]
     ...
-    ...     def items(self):
-    ...         return [(k, v) for k, v in self._items]
+    ...     eleza items(self):
+    ...         rudisha [(k, v) for k, v in self._items]
     ...
     >>> g(**MultiDict([('x', 1), ('y', 2)]))
     1 () {'y': 2}
@@ -365,8 +365,8 @@ Test a kwargs mapping with duplicated keys.
 
 Another helper function
 
-    >>> def f2(*a, **b):
-    ...     return a, b
+    >>> eleza f2(*a, **b):
+    ...     rudisha a, b
 
 
     >>> d = {}
@@ -377,9 +377,9 @@ Another helper function
     >>> len(a), len(b), b == d
     (3, 512, True)
 
-    >>> class Foo:
-    ...     def method(self, arg1, arg2):
-    ...         return arg1+arg2
+    >>> kundi Foo:
+    ...     eleza method(self, arg1, arg2):
+    ...         rudisha arg1+arg2
 
     >>> x = Foo()
     >>> Foo.method(*(x, 1, 2))
@@ -393,7 +393,7 @@ Another helper function
 
 A PyCFunction that takes only positional parameters should allow an
 empty keyword dictionary to pass without a complaint, but raise a
-TypeError if te dictionary is not empty
+TypeError ikiwa te dictionary is not empty
 
     >>> try:
     ...     silence = id(1, *{})
@@ -410,50 +410,50 @@ TypeError if te dictionary is not empty
 A corner case of keyword dictionary items being deleted during
 the function call setup. See <http://bugs.python.org/issue2016>.
 
-    >>> class Name(str):
-    ...     def __eq__(self, other):
+    >>> kundi Name(str):
+    ...     eleza __eq__(self, other):
     ...         try:
     ...              del x[self]
     ...         except KeyError:
     ...              pass
-    ...         return str.__eq__(self, other)
-    ...     def __hash__(self):
-    ...         return str.__hash__(self)
+    ...         rudisha str.__eq__(self, other)
+    ...     eleza __hash__(self):
+    ...         rudisha str.__hash__(self)
 
     >>> x = {Name("a"):1, Name("b"):2}
-    >>> def f(a, b):
-    ...     print(a,b)
+    >>> eleza f(a, b):
+    ...     andika(a,b)
     >>> f(**x)
     1 2
 
 Too many arguments:
 
-    >>> def f(): pass
+    >>> eleza f(): pass
     >>> f(1)
     Traceback (most recent call last):
       ...
     TypeError: f() takes 0 positional arguments but 1 was given
-    >>> def f(a): pass
+    >>> eleza f(a): pass
     >>> f(1, 2)
     Traceback (most recent call last):
       ...
     TypeError: f() takes 1 positional argument but 2 were given
-    >>> def f(a, b=1): pass
+    >>> eleza f(a, b=1): pass
     >>> f(1, 2, 3)
     Traceback (most recent call last):
       ...
     TypeError: f() takes kutoka 1 to 2 positional arguments but 3 were given
-    >>> def f(*, kw): pass
+    >>> eleza f(*, kw): pass
     >>> f(1, kw=3)
     Traceback (most recent call last):
       ...
     TypeError: f() takes 0 positional arguments but 1 positional argument (and 1 keyword-only argument) were given
-    >>> def f(*, kw, b): pass
+    >>> eleza f(*, kw, b): pass
     >>> f(1, 2, 3, b=3, kw=3)
     Traceback (most recent call last):
       ...
     TypeError: f() takes 0 positional arguments but 3 positional arguments (and 2 keyword-only arguments) were given
-    >>> def f(a, b=2, *, kw): pass
+    >>> eleza f(a, b=2, *, kw): pass
     >>> f(2, 3, 4, kw=4)
     Traceback (most recent call last):
       ...
@@ -461,27 +461,27 @@ Too many arguments:
 
 Too few and missing arguments:
 
-    >>> def f(a): pass
+    >>> eleza f(a): pass
     >>> f()
     Traceback (most recent call last):
       ...
     TypeError: f() missing 1 required positional argument: 'a'
-    >>> def f(a, b): pass
+    >>> eleza f(a, b): pass
     >>> f()
     Traceback (most recent call last):
       ...
     TypeError: f() missing 2 required positional arguments: 'a' and 'b'
-    >>> def f(a, b, c): pass
+    >>> eleza f(a, b, c): pass
     >>> f()
     Traceback (most recent call last):
       ...
     TypeError: f() missing 3 required positional arguments: 'a', 'b', and 'c'
-    >>> def f(a, b, c, d, e): pass
+    >>> eleza f(a, b, c, d, e): pass
     >>> f()
     Traceback (most recent call last):
       ...
     TypeError: f() missing 5 required positional arguments: 'a', 'b', 'c', 'd', and 'e'
-    >>> def f(a, b=4, c=5, d=5): pass
+    >>> eleza f(a, b=4, c=5, d=5): pass
     >>> f(c=12, b=9)
     Traceback (most recent call last):
       ...
@@ -489,12 +489,12 @@ Too few and missing arguments:
 
 Same with keyword only args:
 
-    >>> def f(*, w): pass
+    >>> eleza f(*, w): pass
     >>> f()
     Traceback (most recent call last):
       ...
     TypeError: f() missing 1 required keyword-only argument: 'w'
-    >>> def f(*, a, b, c, d, e): pass
+    >>> eleza f(*, a, b, c, d, e): pass
     >>> f()
     Traceback (most recent call last):
       ...
@@ -505,8 +505,8 @@ Same with keyword only args:
 agiza sys
 kutoka test agiza support
 
-def test_main():
+eleza test_main():
     support.run_doctest(sys.modules[__name__], True)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test_main()

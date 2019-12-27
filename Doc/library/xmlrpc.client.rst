@@ -94,7 +94,7 @@ between conformable Python objects and XML on the wire.
    +======================+=======================================================+
    | ``boolean``          | :class:`bool`                                         |
    +----------------------+-------------------------------------------------------+
-   | ``int``, ``i1``,     | :class:`int` in range from -2147483648 to 2147483647. |
+   | ``int``, ``i1``,     | :class:`int` in range kutoka -2147483648 to 2147483647. |
    | ``i2``,  ``i4``,     | Values get the ``<int>`` tag.                         |
    | ``i8`` or            |                                                       |
    | ``biginteger``       |                                                       |
@@ -130,7 +130,7 @@ between conformable Python objects and XML on the wire.
    This is the full set of data types supported by XML-RPC.  Method calls may also
    raise a special :exc:`Fault` instance, used to signal XML-RPC server errors, or
    :exc:`ProtocolError` used to signal an error in the HTTP/HTTPS transport layer.
-   Both :exc:`Fault` and :exc:`ProtocolError` derive from a base class called
+   Both :exc:`Fault` and :exc:`ProtocolError` derive kutoka a base kundi called
    :exc:`Error`.  Note that the xmlrpc client module currently does not marshal
    instances of subclasses of built-in types.
 
@@ -141,7 +141,7 @@ between conformable Python objects and XML on the wire.
    tab, newline and carriage return); failing to do this will result in an XML-RPC
    request that isn't well-formed XML.  If you have to pass arbitrary bytes
    via XML-RPC, use :class:`bytes` or :class:`bytearray` classes or the
-   :class:`Binary` wrapper class described below.
+   :class:`Binary` wrapper kundi described below.
 
    :class:`Server` is retained as an alias for :class:`ServerProxy` for backwards
    compatibility.  New code should use :class:`ServerProxy`.
@@ -232,7 +232,7 @@ grouped under the reserved :attr:`~ServerProxy.system` attribute:
 
 A working example follows. The server code::
 
-   from xmlrpc.server import SimpleXMLRPCServer
+   kutoka xmlrpc.server agiza SimpleXMLRPCServer
 
    def is_even(n):
        return n % 2 == 0
@@ -244,7 +244,7 @@ A working example follows. The server code::
 
 The client code for the preceding server::
 
-   import xmlrpc.client
+   agiza xmlrpc.client
 
    with xmlrpc.client.ServerProxy("http://localhost:8000/") as proxy:
        print("3 is even: %s" % str(proxy.is_even(3)))
@@ -257,7 +257,7 @@ DateTime Objects
 
 .. class:: DateTime
 
-   This class may be initialized with seconds since the epoch, a time
+   This kundi may be initialized with seconds since the epoch, a time
    tuple, an ISO 8601 time/date string, or a :class:`datetime.datetime`
    instance.  It has the following methods, supported mainly for internal
    use by the marshalling/unmarshalling code:
@@ -278,9 +278,9 @@ DateTime Objects
 
 A working example follows. The server code::
 
-   import datetime
-   from xmlrpc.server import SimpleXMLRPCServer
-   import xmlrpc.client
+   agiza datetime
+   kutoka xmlrpc.server agiza SimpleXMLRPCServer
+   agiza xmlrpc.client
 
    def today():
        today = datetime.datetime.today()
@@ -293,8 +293,8 @@ A working example follows. The server code::
 
 The client code for the preceding server::
 
-   import xmlrpc.client
-   import datetime
+   agiza xmlrpc.client
+   agiza datetime
 
    proxy = xmlrpc.client.ServerProxy("http://localhost:8000/")
 
@@ -310,7 +310,7 @@ Binary Objects
 
 .. class:: Binary
 
-   This class may be initialized from bytes data (which may include NULs). The
+   This kundi may be initialized kutoka bytes data (which may include NULs). The
    primary access to the content of a :class:`Binary` object is provided by an
    attribute:
 
@@ -344,8 +344,8 @@ Binary Objects
 Example usage of the binary objects.  We're going to transfer an image over
 XMLRPC::
 
-   from xmlrpc.server import SimpleXMLRPCServer
-   import xmlrpc.client
+   kutoka xmlrpc.server agiza SimpleXMLRPCServer
+   agiza xmlrpc.client
 
    def python_logo():
        with open("python_logo.jpg", "rb") as handle:
@@ -359,7 +359,7 @@ XMLRPC::
 
 The client gets the image and saves it to a file::
 
-   import xmlrpc.client
+   agiza xmlrpc.client
 
    proxy = xmlrpc.client.ServerProxy("http://localhost:8000/")
    with open("fetched_python_logo.jpg", "wb") as handle:
@@ -388,7 +388,7 @@ Fault Objects
 In the following example we're going to intentionally cause a :exc:`Fault` by
 returning a complex type object.  The server code::
 
-   from xmlrpc.server import SimpleXMLRPCServer
+   kutoka xmlrpc.server agiza SimpleXMLRPCServer
 
    # A marshalling error is going to occur because we're returning a
    # complex number
@@ -403,7 +403,7 @@ returning a complex type object.  The server code::
 
 The client code for the preceding server::
 
-   import xmlrpc.client
+   agiza xmlrpc.client
 
    proxy = xmlrpc.client.ServerProxy("http://localhost:8000/")
    try:
@@ -450,7 +450,7 @@ ProtocolError Objects
 In the following example we're going to intentionally cause a :exc:`ProtocolError`
 by providing an invalid URI::
 
-   import xmlrpc.client
+   agiza xmlrpc.client
 
    # create a ServerProxy with a URI that doesn't respond to XMLRPC requests
    proxy = xmlrpc.client.ServerProxy("http://google.com/")
@@ -481,9 +481,9 @@ remote server into a single request [#]_.
    is a :term:`generator`; iterating over this generator yields the individual
    results.
 
-A usage example of this class follows.  The server code::
+A usage example of this kundi follows.  The server code::
 
-   from xmlrpc.server import SimpleXMLRPCServer
+   kutoka xmlrpc.server agiza SimpleXMLRPCServer
 
    def add(x, y):
        return x + y
@@ -509,7 +509,7 @@ A usage example of this class follows.  The server code::
 
 The client code for the preceding server::
 
-   import xmlrpc.client
+   agiza xmlrpc.client
 
    proxy = xmlrpc.client.ServerProxy("http://localhost:8000/")
    multicall = xmlrpc.client.MultiCall(proxy)
@@ -560,8 +560,8 @@ Example of Client Usage
 
 ::
 
-   # simple test program (from the XML-RPC specification)
-   from xmlrpc.client import ServerProxy, Error
+   # simple test program (kutoka the XML-RPC specification)
+   kutoka xmlrpc.client agiza ServerProxy, Error
 
    # server = ServerProxy("http://localhost:8000") # local server
    with ServerProxy("http://betty.userland.com") as proxy:
@@ -576,10 +576,10 @@ Example of Client Usage
 To access an XML-RPC server through a HTTP proxy, you need to define a custom
 transport.  The following example shows how::
 
-   import http.client
-   import xmlrpc.client
+   agiza http.client
+   agiza xmlrpc.client
 
-   class ProxiedTransport(xmlrpc.client.Transport):
+   kundi ProxiedTransport(xmlrpc.client.Transport):
 
        def set_proxy(self, host, port=None, headers=None):
            self.proxy = host, port

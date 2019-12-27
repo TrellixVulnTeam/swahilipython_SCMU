@@ -65,7 +65,7 @@ JSONDOCS = [
     # http://json.org/JSON_checker/test/fail31.json
     '[0e+-1]',
     # http://json.org/JSON_checker/test/fail32.json
-    '{"Comma instead if closing brace": true,',
+    '{"Comma instead ikiwa closing brace": true,',
     # http://json.org/JSON_checker/test/fail33.json
     '["mismatch"}',
     # http://code.google.com/p/simplejson/issues/detail?id=3
@@ -77,11 +77,11 @@ SKIPS = {
     18: "spec doesn't specify any nesting limitations",
 }
 
-class TestFail:
-    def test_failures(self):
+kundi TestFail:
+    eleza test_failures(self):
         for idx, doc in enumerate(JSONDOCS):
             idx = idx + 1
-            if idx in SKIPS:
+            ikiwa idx in SKIPS:
                 self.loads(doc)
                 continue
             try:
@@ -91,19 +91,19 @@ class TestFail:
             else:
                 self.fail("Expected failure for fail{0}.json: {1!r}".format(idx, doc))
 
-    def test_non_string_keys_dict(self):
+    eleza test_non_string_keys_dict(self):
         data = {'a' : 1, (1, 2) : 2}
         with self.assertRaisesRegex(TypeError,
                 'keys must be str, int, float, bool or None, not tuple'):
             self.dumps(data)
 
-    def test_not_serializable(self):
+    eleza test_not_serializable(self):
         agiza sys
         with self.assertRaisesRegex(TypeError,
                 'Object of type module is not JSON serializable'):
             self.dumps(sys)
 
-    def test_truncated_input(self):
+    eleza test_truncated_input(self):
         test_cases = [
             ('', 'Expecting value', 0),
             ('[', 'Expecting value', 1),
@@ -137,7 +137,7 @@ class TestFail:
                              '%s: line 1 column %d (char %d)' %
                              (msg, idx + 1, idx))
 
-    def test_unexpected_data(self):
+    eleza test_unexpected_data(self):
         test_cases = [
             ('[,', 'Expecting value', 1),
             ('{"spam":[}', 'Expecting value', 9),
@@ -173,7 +173,7 @@ class TestFail:
                              '%s: line 1 column %d (char %d)' %
                              (msg, idx + 1, idx))
 
-    def test_extra_data(self):
+    eleza test_extra_data(self):
         test_cases = [
             ('[]]', 'Extra data', 2),
             ('{}}', 'Extra data', 2),
@@ -196,7 +196,7 @@ class TestFail:
                              '%s: line 1 column %d (char %d)' %
                              (msg, idx + 1, idx))
 
-    def test_linecol(self):
+    eleza test_linecol(self):
         test_cases = [
             ('!', 1, 1, 0),
             (' !', 1, 2, 1),
@@ -215,5 +215,5 @@ class TestFail:
                              'Expecting value: line %s column %d (char %d)' %
                              (line, col, idx))
 
-class TestPyFail(TestFail, PyTest): pass
-class TestCFail(TestFail, CTest): pass
+kundi TestPyFail(TestFail, PyTest): pass
+kundi TestCFail(TestFail, CTest): pass

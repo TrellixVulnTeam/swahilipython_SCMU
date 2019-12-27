@@ -13,7 +13,7 @@ interface).
 
 .. index:: module: os
 
-**Do not import this module directly.**  Instead, import the module :mod:`os`,
+**Do not agiza this module directly.**  Instead, agiza the module :mod:`os`,
 which provides a *portable* version of this interface.  On Unix, the :mod:`os`
 module provides a superset of the :mod:`posix` interface.  On non-Unix operating
 systems the :mod:`posix` module is not available, but a subset is always
@@ -38,7 +38,7 @@ Large File Support
 .. sectionauthor:: Steve Clift <clift@mail.anacapa.net>
 
 Several operating systems (including AIX, HP-UX, Irix and Solaris) provide
-support for files that are larger than 2 GiB from a C programming model where
+support for files that are larger than 2 GiB kutoka a C programming model where
 :c:type:`int` and :c:type:`long` are 32-bit values. This is typically accomplished
 by defining the relevant size and offset types as 64-bit values. Such files are
 sometimes referred to as :dfn:`large files`.

@@ -15,24 +15,24 @@ kutoka test.support agiza (TESTFN, captured_stderr, check_impl_detail,
 kutoka test agiza support
 
 
-class NaiveException(Exception):
-    def __init__(self, x):
+kundi NaiveException(Exception):
+    eleza __init__(self, x):
         self.x = x
 
-class SlottedNaiveException(Exception):
+kundi SlottedNaiveException(Exception):
     __slots__ = ('x',)
-    def __init__(self, x):
+    eleza __init__(self, x):
         self.x = x
 
-class BrokenStrException(Exception):
-    def __str__(self):
+kundi BrokenStrException(Exception):
+    eleza __str__(self):
         raise Exception("str() is broken")
 
 # XXX This is not really enough, each *operation* should be tested!
 
-class ExceptionTests(unittest.TestCase):
+kundi ExceptionTests(unittest.TestCase):
 
-    def raise_catch(self, exc, excname):
+    eleza raise_catch(self, exc, excname):
         try:
             raise exc("spam")
         except exc as err:
@@ -44,7 +44,7 @@ class ExceptionTests(unittest.TestCase):
         self.assertEqual(buf1, buf2)
         self.assertEqual(exc.__name__, excname)
 
-    def testRaising(self):
+    eleza testRaising(self):
         self.raise_catch(AttributeError, "AttributeError")
         self.assertRaises(AttributeError, getattr, sys, "undefined_attribute")
 
@@ -128,20 +128,20 @@ class ExceptionTests(unittest.TestCase):
 
         self.raise_catch(StopAsyncIteration, "StopAsyncIteration")
 
-    def testSyntaxErrorMessage(self):
+    eleza testSyntaxErrorMessage(self):
         # make sure the right exception message is raised for each of
         # these code fragments
 
-        def ckmsg(src, msg):
+        eleza ckmsg(src, msg):
             try:
                 compile(src, '<fragment>', 'exec')
             except SyntaxError as e:
-                if e.msg != msg:
+                ikiwa e.msg != msg:
                     self.fail("expected %s, got %s" % (msg, e.msg))
             else:
                 self.fail("failed to get expected SyntaxError")
 
-        s = '''if 1:
+        s = '''ikiwa 1:
         try:
             continue
         except:
@@ -150,53 +150,53 @@ class ExceptionTests(unittest.TestCase):
         ckmsg(s, "'continue' not properly in loop")
         ckmsg("continue\n", "'continue' not properly in loop")
 
-    def testSyntaxErrorMissingParens(self):
-        def ckmsg(src, msg, exception=SyntaxError):
+    eleza testSyntaxErrorMissingParens(self):
+        eleza ckmsg(src, msg, exception=SyntaxError):
             try:
                 compile(src, '<fragment>', 'exec')
             except exception as e:
-                if e.msg != msg:
+                ikiwa e.msg != msg:
                     self.fail("expected %s, got %s" % (msg, e.msg))
             else:
                 self.fail("failed to get expected SyntaxError")
 
         s = '''print "old style"'''
         ckmsg(s, "Missing parentheses in call to 'print'. "
-                 "Did you mean print(\"old style\")?")
+                 "Did you mean andika(\"old style\")?")
 
         s = '''print "old style",'''
         ckmsg(s, "Missing parentheses in call to 'print'. "
-                 "Did you mean print(\"old style\", end=\" \")?")
+                 "Did you mean andika(\"old style\", end=\" \")?")
 
         s = '''exec "old style"'''
         ckmsg(s, "Missing parentheses in call to 'exec'")
 
         # should not apply to subclasses, see issue #31161
-        s = '''if True:\nprint "No indent"'''
+        s = '''ikiwa True:\nprint "No indent"'''
         ckmsg(s, "expected an indented block", IndentationError)
 
-        s = '''if True:\n        print()\n\texec "mixed tabs and spaces"'''
+        s = '''ikiwa True:\n        andika()\n\texec "mixed tabs and spaces"'''
         ckmsg(s, "inconsistent use of tabs and spaces in indentation", TabError)
 
-    def testSyntaxErrorOffset(self):
-        def check(src, lineno, offset):
+    eleza testSyntaxErrorOffset(self):
+        eleza check(src, lineno, offset):
             with self.assertRaises(SyntaxError) as cm:
                 compile(src, '<fragment>', 'exec')
             self.assertEqual(cm.exception.lineno, lineno)
             self.assertEqual(cm.exception.offset, offset)
 
-        check('def fact(x):\n\treturn x!\n', 2, 10)
+        check('eleza fact(x):\n\trudisha x!\n', 2, 10)
         check('1 +\n', 1, 4)
-        check('def spam():\n  print(1)\n print(2)', 3, 10)
+        check('eleza spam():\n  andika(1)\n andika(2)', 3, 10)
         check('Python = "Python" +', 1, 20)
         check('Python = "\u1e54\xfd\u0163\u0125\xf2\xf1" +', 1, 20)
         check('x = "a', 1, 7)
         check('lambda x: x = 2', 1, 1)
 
         # Errors thrown by compile.c
-        check('class foo:return 1', 1, 11)
-        check('def f():\n  continue', 2, 3)
-        check('def f():\n  break', 2, 3)
+        check('kundi foo:rudisha 1', 1, 11)
+        check('eleza f():\n  continue', 2, 3)
+        check('eleza f():\n  break', 2, 3)
         check('try:\n  pass\nexcept:\n  pass\nexcept ValueError:\n  pass', 2, 3)
 
         # Errors thrown by tokenizer.c
@@ -208,18 +208,18 @@ class ExceptionTests(unittest.TestCase):
 
         # Errors thrown by symtable.c
         check('x = [(yield i) for i in range(3)]', 1, 5)
-        check('def f():\n  kutoka _ agiza *', 1, 1)
-        check('def f(x, x):\n  pass', 1, 1)
-        check('def f(x):\n  nonlocal x', 2, 3)
-        check('def f(x):\n  x = 1\n  global x', 3, 3)
+        check('eleza f():\n  kutoka _ agiza *', 1, 1)
+        check('eleza f(x, x):\n  pass', 1, 1)
+        check('eleza f(x):\n  nonlocal x', 2, 3)
+        check('eleza f(x):\n  x = 1\n  global x', 3, 3)
         check('nonlocal x', 1, 1)
-        check('def f():\n  global x\n  nonlocal x', 2, 3)
+        check('eleza f():\n  global x\n  nonlocal x', 2, 3)
 
         # Errors thrown by ast.c
         check('for 1 in []: pass', 1, 5)
-        check('def f(*):\n  pass', 1, 7)
+        check('eleza f(*):\n  pass', 1, 7)
         check('[*x for x in xs]', 1, 2)
-        check('def f():\n  x, y: int', 2, 3)
+        check('eleza f():\n  x, y: int', 2, 3)
         check('(yield i) = 2', 1, 1)
         check('foo(x for x in range(10), 100)', 1, 5)
         check('foo(1=2)', 1, 5)
@@ -227,22 +227,22 @@ class ExceptionTests(unittest.TestCase):
         # Errors thrown by future.c
         check('kutoka __future__ agiza doesnt_exist', 1, 1)
         check('kutoka __future__ agiza braces', 1, 1)
-        check('x=1\nfrom __future__ agiza division', 2, 1)
+        check('x=1\nkutoka __future__ agiza division', 2, 1)
 
 
     @cpython_only
-    def testSettingException(self):
-        # test that setting an exception at the C level works even if the
+    eleza testSettingException(self):
+        # test that setting an exception at the C level works even ikiwa the
         # exception object can't be constructed.
 
-        class BadException(Exception):
-            def __init__(self_):
+        kundi BadException(Exception):
+            eleza __init__(self_):
                 raise RuntimeError("can't instantiate BadException")
 
-        class InvalidException:
+        kundi InvalidException:
             pass
 
-        def test_capi1():
+        eleza test_capi1():
             agiza _testcapi
             try:
                 _testcapi.raise_exception(BadException, 1)
@@ -254,7 +254,7 @@ class ExceptionTests(unittest.TestCase):
             else:
                 self.fail("Expected exception")
 
-        def test_capi2():
+        eleza test_capi2():
             agiza _testcapi
             try:
                 _testcapi.raise_exception(BadException, 0)
@@ -268,17 +268,17 @@ class ExceptionTests(unittest.TestCase):
             else:
                 self.fail("Expected exception")
 
-        def test_capi3():
+        eleza test_capi3():
             agiza _testcapi
             self.assertRaises(SystemError, _testcapi.raise_exception,
                               InvalidException, 1)
 
-        if not sys.platform.startswith('java'):
+        ikiwa not sys.platform.startswith('java'):
             test_capi1()
             test_capi2()
             test_capi3()
 
-    def test_WindowsError(self):
+    eleza test_WindowsError(self):
         try:
             WindowsError
         except NameError:
@@ -319,7 +319,7 @@ class ExceptionTests(unittest.TestCase):
 
     @unittest.skipUnless(sys.platform == 'win32',
                          'test specific to Windows')
-    def test_windows_message(self):
+    eleza test_windows_message(self):
         """Should fill in unknown error code in Windows error message"""
         ctypes = import_module('ctypes')
         # this error code has no message, Python formats it as hexadecimal
@@ -327,7 +327,7 @@ class ExceptionTests(unittest.TestCase):
         with self.assertRaisesRegex(OSError, 'Windows Error 0x%x' % code):
             ctypes.pythonapi.PyErr_SetFromWindowsErr(code)
 
-    def testAttributes(self):
+    eleza testAttributes(self):
         # test that exception attributes are happy
 
         exceptionList = [
@@ -425,11 +425,11 @@ class ExceptionTests(unittest.TestCase):
             try:
                 e = exc(*args)
             except:
-                print("\nexc=%r, args=%r" % (exc, args), file=sys.stderr)
+                andika("\nexc=%r, args=%r" % (exc, args), file=sys.stderr)
                 raise
             else:
                 # Verify module name
-                if not type(e).__name__.endswith('NaiveException'):
+                ikiwa not type(e).__name__.endswith('NaiveException'):
                     self.assertEqual(type(e).__module__, 'builtins')
                 # Verify no ref leaks in Exc_str()
                 s = str(e)
@@ -453,7 +453,7 @@ class ExceptionTests(unittest.TestCase):
                                              'pickled "%r", attribute "%s' %
                                              (e, checkArgName))
 
-    def testWithTraceback(self):
+    eleza testWithTraceback(self):
         try:
             raise IndexError(4)
         except:
@@ -467,14 +467,14 @@ class ExceptionTests(unittest.TestCase):
         self.assertIsInstance(e, IndexError)
         self.assertEqual(e.__traceback__, tb)
 
-        class MyException(Exception):
+        kundi MyException(Exception):
             pass
 
         e = MyException().with_traceback(tb)
         self.assertIsInstance(e, MyException)
         self.assertEqual(e.__traceback__, tb)
 
-    def testInvalidTraceback(self):
+    eleza testInvalidTraceback(self):
         try:
             Exception().__traceback__ = 5
         except TypeError as e:
@@ -482,13 +482,13 @@ class ExceptionTests(unittest.TestCase):
         else:
             self.fail("No exception raised")
 
-    def testInvalidAttrs(self):
+    eleza testInvalidAttrs(self):
         self.assertRaises(TypeError, setattr, Exception(), '__cause__', 1)
         self.assertRaises(TypeError, delattr, Exception(), '__cause__')
         self.assertRaises(TypeError, setattr, Exception(), '__context__', 1)
         self.assertRaises(TypeError, delattr, Exception(), '__context__')
 
-    def testNoneClearsTracebackAttr(self):
+    eleza testNoneClearsTracebackAttr(self):
         try:
             raise IndexError(4)
         except:
@@ -499,7 +499,7 @@ class ExceptionTests(unittest.TestCase):
         e.__traceback__ = None
         self.assertEqual(e.__traceback__, None)
 
-    def testChainingAttrs(self):
+    eleza testChainingAttrs(self):
         e = Exception()
         self.assertIsNone(e.__context__)
         self.assertIsNone(e.__cause__)
@@ -508,14 +508,14 @@ class ExceptionTests(unittest.TestCase):
         self.assertIsNone(e.__context__)
         self.assertIsNone(e.__cause__)
 
-        class MyException(OSError):
+        kundi MyException(OSError):
             pass
 
         e = MyException()
         self.assertIsNone(e.__context__)
         self.assertIsNone(e.__cause__)
 
-    def testChainingDescriptors(self):
+    eleza testChainingDescriptors(self):
         try:
             raise Exception()
         except Exception as exc:
@@ -533,13 +533,13 @@ class ExceptionTests(unittest.TestCase):
         e.__suppress_context__ = False
         self.assertFalse(e.__suppress_context__)
 
-    def testKeywordArgs(self):
+    eleza testKeywordArgs(self):
         # test that builtin exception don't take keyword args,
-        # but user-defined subclasses can if they want
+        # but user-defined subclasses can ikiwa they want
         self.assertRaises(TypeError, BaseException, a=1)
 
-        class DerivedException(BaseException):
-            def __init__(self, fancy_arg):
+        kundi DerivedException(BaseException):
+            eleza __init__(self, fancy_arg):
                 BaseException.__init__(self)
                 self.fancy_arg = fancy_arg
 
@@ -547,25 +547,25 @@ class ExceptionTests(unittest.TestCase):
         self.assertEqual(x.fancy_arg, 42)
 
     @no_tracing
-    def testInfiniteRecursion(self):
-        def f():
-            return f()
+    eleza testInfiniteRecursion(self):
+        eleza f():
+            rudisha f()
         self.assertRaises(RecursionError, f)
 
-        def g():
+        eleza g():
             try:
-                return g()
+                rudisha g()
             except ValueError:
-                return -1
+                rudisha -1
         self.assertRaises(RecursionError, g)
 
-    def test_str(self):
+    eleza test_str(self):
         # Make sure both instances and classes have a str representation.
         self.assertTrue(str(Exception))
         self.assertTrue(str(Exception('a')))
         self.assertTrue(str(Exception('a', 'b')))
 
-    def testExceptionCleanupNames(self):
+    eleza testExceptionCleanupNames(self):
         # Make sure the local variable bound to the exception instance by
         # an "except" statement is only visible inside the except block.
         try:
@@ -575,17 +575,17 @@ class ExceptionTests(unittest.TestCase):
             del e
         self.assertNotIn('e', locals())
 
-    def testExceptionCleanupState(self):
+    eleza testExceptionCleanupState(self):
         # Make sure exception state is cleaned up as soon as the except
         # block is left. See #2507
 
-        class MyException(Exception):
-            def __init__(self, obj):
+        kundi MyException(Exception):
+            eleza __init__(self, obj):
                 self.obj = obj
-        class MyObj:
+        kundi MyObj:
             pass
 
-        def inner_raising_func():
+        eleza inner_raising_func():
             # Create some references in exception value and traceback
             local_ref = obj
             raise MyException(obj)
@@ -652,7 +652,7 @@ class ExceptionTests(unittest.TestCase):
             obj = None
             obj = wr()
             # guarantee no ref cycles on CPython (don't gc_collect)
-            if check_impl_detail(cpython=False):
+            ikiwa check_impl_detail(cpython=False):
                 gc_collect()
             self.assertIsNone(obj)
 
@@ -670,31 +670,31 @@ class ExceptionTests(unittest.TestCase):
             except MyException:
                 pass
         obj = None
-        if check_impl_detail(cpython=False):
+        ikiwa check_impl_detail(cpython=False):
             gc_collect()
         obj = wr()
         self.assertIsNone(obj)
 
         # Inside an exception-silencing "with" block
-        class Context:
-            def __enter__(self):
-                return self
-            def __exit__ (self, exc_type, exc_value, exc_tb):
-                return True
+        kundi Context:
+            eleza __enter__(self):
+                rudisha self
+            eleza __exit__ (self, exc_type, exc_value, exc_tb):
+                rudisha True
         obj = MyObj()
         wr = weakref.ref(obj)
         with Context():
             inner_raising_func()
         obj = None
-        if check_impl_detail(cpython=False):
+        ikiwa check_impl_detail(cpython=False):
             gc_collect()
         obj = wr()
         self.assertIsNone(obj)
 
-    def test_exception_target_in_nested_scope(self):
+    eleza test_exception_target_in_nested_scope(self):
         # issue 4617: This used to raise a SyntaxError
         # "can not delete variable 'e' referenced in nested scope"
-        def print_error():
+        eleza print_error():
             e
         try:
             something
@@ -702,10 +702,10 @@ class ExceptionTests(unittest.TestCase):
             print_error()
             # implicit "del e" here
 
-    def test_generator_leaking(self):
+    eleza test_generator_leaking(self):
         # Test that generator exception state doesn't leak into the calling
         # frame
-        def yield_raise():
+        eleza yield_raise():
             try:
                 raise KeyError("caught")
             except KeyError:
@@ -732,9 +732,9 @@ class ExceptionTests(unittest.TestCase):
             del g
             self.assertEqual(sys.exc_info()[0], TypeError)
 
-    def test_generator_leaking2(self):
+    eleza test_generator_leaking2(self):
         # See issue 12475.
-        def g():
+        eleza g():
             yield
         try:
             raise RuntimeError
@@ -747,10 +747,10 @@ class ExceptionTests(unittest.TestCase):
             pass
         self.assertEqual(sys.exc_info(), (None, None, None))
 
-    def test_generator_leaking3(self):
+    eleza test_generator_leaking3(self):
         # See issue #23353.  When gen.throw() is called, the caller's
         # exception state should be save and restored.
-        def g():
+        eleza g():
             try:
                 yield
             except ZeroDivisionError:
@@ -766,10 +766,10 @@ class ExceptionTests(unittest.TestCase):
             self.assertIs(gen_exc, e)
         self.assertEqual(sys.exc_info(), (None, None, None))
 
-    def test_generator_leaking4(self):
+    eleza test_generator_leaking4(self):
         # See issue #23353.  When an exception is raised by a generator,
         # the caller's exception state should still be restored.
-        def g():
+        eleza g():
             try:
                 1/0
             except ZeroDivisionError:
@@ -793,8 +793,8 @@ class ExceptionTests(unittest.TestCase):
         # We used to find TypeError here.
         self.assertEqual(sys.exc_info(), (None, None, None))
 
-    def test_generator_doesnt_retain_old_exc(self):
-        def g():
+    eleza test_generator_doesnt_retain_old_exc(self):
+        eleza g():
             self.assertIsInstance(sys.exc_info()[1], RuntimeError)
             yield
             self.assertEqual(sys.exc_info(), (None, None, None))
@@ -805,30 +805,30 @@ class ExceptionTests(unittest.TestCase):
             next(it)
         self.assertRaises(StopIteration, next, it)
 
-    def test_generator_finalizing_and_exc_info(self):
+    eleza test_generator_finalizing_and_exc_info(self):
         # See #7173
-        def simple_gen():
+        eleza simple_gen():
             yield 1
-        def run_gen():
+        eleza run_gen():
             gen = simple_gen()
             try:
                 raise RuntimeError
             except RuntimeError:
-                return next(gen)
+                rudisha next(gen)
         run_gen()
         gc_collect()
         self.assertEqual(sys.exc_info(), (None, None, None))
 
-    def _check_generator_cleanup_exc_state(self, testfunc):
+    eleza _check_generator_cleanup_exc_state(self, testfunc):
         # Issue #12791: exception state is cleaned up as soon as a generator
         # is closed (reference cycles are broken).
-        class MyException(Exception):
-            def __init__(self, obj):
+        kundi MyException(Exception):
+            eleza __init__(self, obj):
                 self.obj = obj
-        class MyObj:
+        kundi MyObj:
             pass
 
-        def raising_gen():
+        eleza raising_gen():
             try:
                 raise MyException(obj)
             except MyException:
@@ -843,26 +843,26 @@ class ExceptionTests(unittest.TestCase):
         obj = wr()
         self.assertIsNone(obj)
 
-    def test_generator_throw_cleanup_exc_state(self):
-        def do_throw(g):
+    eleza test_generator_throw_cleanup_exc_state(self):
+        eleza do_throw(g):
             try:
                 g.throw(RuntimeError())
             except RuntimeError:
                 pass
         self._check_generator_cleanup_exc_state(do_throw)
 
-    def test_generator_close_cleanup_exc_state(self):
-        def do_close(g):
+    eleza test_generator_close_cleanup_exc_state(self):
+        eleza do_close(g):
             g.close()
         self._check_generator_cleanup_exc_state(do_close)
 
-    def test_generator_del_cleanup_exc_state(self):
-        def do_del(g):
+    eleza test_generator_del_cleanup_exc_state(self):
+        eleza do_del(g):
             g = None
         self._check_generator_cleanup_exc_state(do_del)
 
-    def test_generator_next_cleanup_exc_state(self):
-        def do_next(g):
+    eleza test_generator_next_cleanup_exc_state(self):
+        eleza do_next(g):
             try:
                 next(g)
             except StopIteration:
@@ -871,8 +871,8 @@ class ExceptionTests(unittest.TestCase):
                 self.fail("should have raised StopIteration")
         self._check_generator_cleanup_exc_state(do_next)
 
-    def test_generator_send_cleanup_exc_state(self):
-        def do_send(g):
+    eleza test_generator_send_cleanup_exc_state(self):
+        eleza do_send(g):
             try:
                 g.send(None)
             except StopIteration:
@@ -881,11 +881,11 @@ class ExceptionTests(unittest.TestCase):
                 self.fail("should have raised StopIteration")
         self._check_generator_cleanup_exc_state(do_send)
 
-    def test_3114(self):
+    eleza test_3114(self):
         # Bug #3114: in its destructor, MyObject retrieves a pointer to
         # obsolete and/or deallocated objects.
-        class MyObject:
-            def __del__(self):
+        kundi MyObject:
+            eleza __del__(self):
                 nonlocal e
                 e = sys.exc_info()
         e = ()
@@ -895,7 +895,7 @@ class ExceptionTests(unittest.TestCase):
             pass
         self.assertEqual(e, (None, None, None))
 
-    def test_unicode_change_attributes(self):
+    eleza test_unicode_change_attributes(self):
         # See issue 7309. This was a crasher.
 
         u = UnicodeEncodeError('baz', 'xxxxx', 1, 5, 'foo')
@@ -932,20 +932,20 @@ class ExceptionTests(unittest.TestCase):
         u.start = 1000
         self.assertEqual(str(u), "can't translate characters in position 1000-4: 965230951443685724997")
 
-    def test_unicode_errors_no_object(self):
+    eleza test_unicode_errors_no_object(self):
         # See issue #21134.
         klasses = UnicodeEncodeError, UnicodeDecodeError, UnicodeTranslateError
         for klass in klasses:
             self.assertEqual(str(klass.__new__(klass)), "")
 
     @no_tracing
-    def test_badisinstance(self):
-        # Bug #2542: if issubclass(e, MyException) raises an exception,
+    eleza test_badisinstance(self):
+        # Bug #2542: ikiwa issubclass(e, MyException) raises an exception,
         # it should be ignored
-        class Meta(type):
-            def __subclasscheck__(cls, subclass):
+        kundi Meta(type):
+            eleza __subclasscheck__(cls, subclass):
                 raise ValueError()
-        class MyException(Exception, metaclass=Meta):
+        kundi MyException(Exception, metaclass=Meta):
             pass
 
         with captured_stderr() as stderr:
@@ -960,17 +960,17 @@ class ExceptionTests(unittest.TestCase):
             else:
                 self.fail("Should have raised KeyError")
 
-        def g():
+        eleza g():
             try:
-                return g()
+                rudisha g()
             except RecursionError:
-                return sys.exc_info()
+                rudisha sys.exc_info()
         e, v, tb = g()
         self.assertIsInstance(v, RecursionError, type(v))
         self.assertIn("maximum recursion depth exceeded", str(v))
 
     @cpython_only
-    def test_recursion_normalizing_exception(self):
+    eleza test_recursion_normalizing_exception(self):
         # Issue #22898.
         # Test that a RecursionError is raised when tstate->recursion_depth is
         # equal to recursion_limit in PyErr_NormalizeException() and check
@@ -980,30 +980,30 @@ class ExceptionTests(unittest.TestCase):
         # singleton was being used in that case, that held traceback data and
         # locals indefinitely and would cause a segfault in _PyExc_Fini() upon
         # finalization of these locals.
-        code = """if 1:
+        code = """ikiwa 1:
             agiza sys
             kutoka _testcapi agiza get_recursion_depth
 
-            class MyException(Exception): pass
+            kundi MyException(Exception): pass
 
-            def setrecursionlimit(depth):
+            eleza setrecursionlimit(depth):
                 while 1:
                     try:
                         sys.setrecursionlimit(depth)
-                        return depth
+                        rudisha depth
                     except RecursionError:
                         # sys.setrecursionlimit() raises a RecursionError if
                         # the new recursion limit is too low (issue #25274).
                         depth += 1
 
-            def recurse(cnt):
+            eleza recurse(cnt):
                 cnt -= 1
-                if cnt:
+                ikiwa cnt:
                     recurse(cnt)
                 else:
                     generator.throw(MyException)
 
-            def gen():
+            eleza gen():
                 f = open(%a, mode='rb', buffering=0)
                 yield
 
@@ -1019,7 +1019,7 @@ class ExceptionTests(unittest.TestCase):
                 recurse(setrecursionlimit(depth + 2) - depth - 1)
             finally:
                 sys.setrecursionlimit(recursionlimit)
-                print('Done.')
+                andika('Done.')
         """ % __file__
         rc, out, err = script_helper.assert_python_failure("-Wd", "-c", code)
         # Check that the program does not fail with SIGABRT.
@@ -1029,16 +1029,16 @@ class ExceptionTests(unittest.TestCase):
         self.assertIn(b'Done.', out)
 
     @cpython_only
-    def test_recursion_normalizing_infinite_exception(self):
+    eleza test_recursion_normalizing_infinite_exception(self):
         # Issue #30697. Test that a RecursionError is raised when
         # PyErr_NormalizeException() maximum recursion depth has been
         # exceeded.
-        code = """if 1:
+        code = """ikiwa 1:
             agiza _testcapi
             try:
                 raise _testcapi.RecursingInfinitelyError
             finally:
-                print('Done.')
+                andika('Done.')
         """
         rc, out, err = script_helper.assert_python_failure("-c", code)
         self.assertEqual(rc, 1)
@@ -1047,17 +1047,17 @@ class ExceptionTests(unittest.TestCase):
         self.assertIn(b'Done.', out)
 
     @cpython_only
-    def test_recursion_normalizing_with_no_memory(self):
+    eleza test_recursion_normalizing_with_no_memory(self):
         # Issue #30697. Test that in the abort that occurs when there is no
         # memory left and the size of the Python frames stack is greater than
         # the size of the list of preallocated MemoryError instances, the
         # Fatal Python error message mentions MemoryError.
-        code = """if 1:
+        code = """ikiwa 1:
             agiza _testcapi
-            class C(): pass
-            def recurse(cnt):
+            kundi C(): pass
+            eleza recurse(cnt):
                 cnt -= 1
-                if cnt:
+                ikiwa cnt:
                     recurse(cnt)
                 else:
                     _testcapi.set_nomemory(0)
@@ -1070,26 +1070,26 @@ class ExceptionTests(unittest.TestCase):
                           b'MemoryErrors while normalizing exceptions.', err)
 
     @cpython_only
-    def test_MemoryError(self):
+    eleza test_MemoryError(self):
         # PyErr_NoMemory always raises the same exception instance.
         # Check that the traceback is not doubled.
         agiza traceback
         kutoka _testcapi agiza raise_memoryerror
-        def raiseMemError():
+        eleza raiseMemError():
             try:
                 raise_memoryerror()
             except MemoryError as e:
                 tb = e.__traceback__
             else:
                 self.fail("Should have raises a MemoryError")
-            return traceback.format_tb(tb)
+            rudisha traceback.format_tb(tb)
 
         tb1 = raiseMemError()
         tb2 = raiseMemError()
         self.assertEqual(tb1, tb2)
 
     @cpython_only
-    def test_exception_with_doc(self):
+    eleza test_exception_with_doc(self):
         agiza _testcapi
         doc2 = "This is a test docstring."
         doc4 = "This is another test docstring."
@@ -1113,7 +1113,7 @@ class ExceptionTests(unittest.TestCase):
         self.assertTrue(issubclass(error3, error2))
 
         # test with explicit base tuple
-        class C(object):
+        kundi C(object):
             pass
         error4 = _testcapi.make_exception_with_doc("_testcapi.error4", doc4,
                                                    (error3, C))
@@ -1129,14 +1129,14 @@ class ExceptionTests(unittest.TestCase):
         self.assertEqual(error5.__doc__, "")
 
     @cpython_only
-    def test_memory_error_cleanup(self):
+    eleza test_memory_error_cleanup(self):
         # Issue #5437: preallocated MemoryError instances should not keep
         # traceback objects alive.
         kutoka _testcapi agiza raise_memoryerror
-        class C:
+        kundi C:
             pass
         wr = None
-        def inner():
+        eleza inner():
             nonlocal wr
             c = C()
             wr = weakref.ref(c)
@@ -1151,12 +1151,12 @@ class ExceptionTests(unittest.TestCase):
         self.assertEqual(wr(), None)
 
     @no_tracing
-    def test_recursion_error_cleanup(self):
+    eleza test_recursion_error_cleanup(self):
         # Same test as above, but with "recursion exceeded" errors
-        class C:
+        kundi C:
             pass
         wr = None
-        def inner():
+        eleza inner():
             nonlocal wr
             c = C()
             wr = weakref.ref(c)
@@ -1170,16 +1170,16 @@ class ExceptionTests(unittest.TestCase):
             self.fail("RecursionError not raised")
         self.assertEqual(wr(), None)
 
-    def test_errno_ENOTDIR(self):
+    eleza test_errno_ENOTDIR(self):
         # Issue #12802: "not a directory" errors are ENOTDIR even on Windows
         with self.assertRaises(OSError) as cm:
             os.listdir(__file__)
         self.assertEqual(cm.exception.errno, errno.ENOTDIR, cm.exception)
 
-    def test_unraisable(self):
+    eleza test_unraisable(self):
         # Issue #22836: PyErr_WriteUnraisable() should give sensible reports
-        class BrokenDel:
-            def __del__(self):
+        kundi BrokenDel:
+            eleza __del__(self):
                 exc = ValueError("del is broken")
                 # The following line is included in the traceback report:
                 raise exc
@@ -1191,7 +1191,7 @@ class ExceptionTests(unittest.TestCase):
             self.assertEqual(cm.unraisable.object, BrokenDel.__del__)
             self.assertIsNotNone(cm.unraisable.exc_traceback)
 
-    def test_unhandled(self):
+    eleza test_unhandled(self):
         # Check for sensible reporting of unhandled exceptions
         for exc_type in (ValueError, BrokenStrException):
             with self.subTest(exc_type):
@@ -1206,17 +1206,17 @@ class ExceptionTests(unittest.TestCase):
                 self.assertIn("test_exceptions.py", report)
                 self.assertIn("raise exc", report)
                 self.assertIn(exc_type.__name__, report)
-                if exc_type is BrokenStrException:
+                ikiwa exc_type is BrokenStrException:
                     self.assertIn("<exception str() failed>", report)
                 else:
                     self.assertIn("test message", report)
                 self.assertTrue(report.endswith("\n"))
 
     @cpython_only
-    def test_memory_error_in_PyErr_PrintEx(self):
-        code = """if 1:
+    eleza test_memory_error_in_PyErr_PrintEx(self):
+        code = """ikiwa 1:
             agiza _testcapi
-            class C(): pass
+            kundi C(): pass
             _testcapi.set_nomemory(0, %d)
             C()
         """
@@ -1229,15 +1229,15 @@ class ExceptionTests(unittest.TestCase):
             self.assertIn(rc, (1, 120))
             self.assertIn(b'MemoryError', err)
 
-    def test_yield_in_nested_try_excepts(self):
+    eleza test_yield_in_nested_try_excepts(self):
         #Issue #25612
-        class MainError(Exception):
+        kundi MainError(Exception):
             pass
 
-        class SubError(Exception):
+        kundi SubError(Exception):
             pass
 
-        def main():
+        eleza main():
             try:
                 raise MainError()
             except MainError:
@@ -1252,9 +1252,9 @@ class ExceptionTests(unittest.TestCase):
         with self.assertRaises(MainError):
             coro.throw(SubError())
 
-    def test_generator_doesnt_retain_old_exc2(self):
+    eleza test_generator_doesnt_retain_old_exc2(self):
         #Issue 28884#msg282532
-        def g():
+        eleza g():
             try:
                 raise ValueError
             except ValueError:
@@ -1270,9 +1270,9 @@ class ExceptionTests(unittest.TestCase):
             self.assertEqual(next(gen), 1)
         self.assertEqual(next(gen), 2)
 
-    def test_raise_in_generator(self):
+    eleza test_raise_in_generator(self):
         #Issue 25612#msg304117
-        def g():
+        eleza g():
             yield 1
             raise
             yield 2
@@ -1286,9 +1286,9 @@ class ExceptionTests(unittest.TestCase):
                 next(i)
 
 
-class ImportErrorTests(unittest.TestCase):
+kundi ImportErrorTests(unittest.TestCase):
 
-    def test_attributes(self):
+    eleza test_attributes(self):
         # Setting 'name' and 'path' should not be a problem.
         exc = ImportError('test')
         self.assertIsNone(exc.name)
@@ -1322,7 +1322,7 @@ class ImportErrorTests(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, msg):
             ImportError('test', invalid='keyword', another=True)
 
-    def test_reset_attributes(self):
+    eleza test_reset_attributes(self):
         exc = ImportError('test', name='name', path='path')
         self.assertEqual(exc.args, ('test',))
         self.assertEqual(exc.msg, 'test')
@@ -1336,14 +1336,14 @@ class ImportErrorTests(unittest.TestCase):
         self.assertEqual(exc.name, None)
         self.assertEqual(exc.path, None)
 
-    def test_non_str_argument(self):
+    eleza test_non_str_argument(self):
         # Issue #15778
         with check_warnings(('', BytesWarning), quiet=True):
             arg = b'abc'
             exc = ImportError(arg)
             self.assertEqual(str(arg), str(exc))
 
-    def test_copy_pickle(self):
+    eleza test_copy_pickle(self):
         for kwargs in (dict(),
                        dict(name='somename'),
                        dict(path='somepath'),
@@ -1363,5 +1363,5 @@ class ImportErrorTests(unittest.TestCase):
                 self.assertEqual(exc.path, orig.path)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

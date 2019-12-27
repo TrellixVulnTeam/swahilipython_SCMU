@@ -1,4 +1,4 @@
-/* Former class object interface -- now only bound methods are here  */
+/* Former kundi object interface -- now only bound methods are here  */
 
 /* Revealing some structures (not for general use) */
 

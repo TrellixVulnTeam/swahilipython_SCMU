@@ -22,31 +22,31 @@ agiza _pyio
 
 
 @unittest.skipUnless(os.name == 'posix', 'tests requires a posix system.')
-class TestFileIOSignalInterrupt:
-    def setUp(self):
+kundi TestFileIOSignalInterrupt:
+    eleza setUp(self):
         self._process = None
 
-    def tearDown(self):
-        if self._process and self._process.poll() is None:
+    eleza tearDown(self):
+        ikiwa self._process and self._process.poll() is None:
             try:
                 self._process.kill()
             except OSError:
                 pass
 
-    def _generate_infile_setup_code(self):
+    eleza _generate_infile_setup_code(self):
         """Returns the infile = ... line of code for the reader process.
 
         subclasseses should override this to test different IO objects.
         """
-        return ('agiza %s as io ;'
+        rudisha ('agiza %s as io ;'
                 'infile = io.FileIO(sys.stdin.fileno(), "rb")' %
                 self.modname)
 
-    def fail_with_process_info(self, why, stdout=b'', stderr=b'',
+    eleza fail_with_process_info(self, why, stdout=b'', stderr=b'',
                                communicate=True):
         """A common way to cleanup and fail with useful debug output.
 
-        Kills the process if it is still running, collects remaining output
+        Kills the process ikiwa it is still running, collects remaining output
         and fails the test with an error message including the output.
 
         Args:
@@ -56,20 +56,20 @@ class TestFileIOSignalInterrupt:
             communicate: bool, when True we call communicate() on the process
                 after killing it to gather additional output.
         """
-        if self._process.poll() is None:
+        ikiwa self._process.poll() is None:
             time.sleep(0.1)  # give it time to finish printing the error.
             try:
                 self._process.terminate()  # Ensure it dies.
             except OSError:
                 pass
-        if communicate:
+        ikiwa communicate:
             stdout_end, stderr_end = self._process.communicate()
             stdout += stdout_end
             stderr += stderr_end
         self.fail('Error kutoka IO process %s:\nSTDOUT:\n%sSTDERR:\n%s\n' %
                   (why, stdout.decode(), stderr.decode()))
 
-    def _test_reading(self, data_to_write, read_and_verify_code):
+    eleza _test_reading(self, data_to_write, read_and_verify_code):
         """Generic buffered read method test harness to validate EINTR behavior.
 
         Also validates that Python signal handlers are run during the read.
@@ -103,7 +103,7 @@ class TestFileIOSignalInterrupt:
 
         # Wait for the signal handler to be installed.
         worm_sign = self._process.stderr.read(len(b'Worm Sign!\n'))
-        if worm_sign != b'Worm Sign!\n':  # See also, Dune by Frank Herbert.
+        ikiwa worm_sign != b'Worm Sign!\n':  # See also, Dune by Frank Herbert.
             self.fail_with_process_info('while awaiting a sign',
                                         stderr=worm_sign)
         self._process.stdin.write(data_to_write)
@@ -119,13 +119,13 @@ class TestFileIOSignalInterrupt:
             rlist, _, _ = select.select([self._process.stderr], (), (), 0.05)
             self._process.send_signal(signal.SIGINT)
             signals_sent += 1
-            if signals_sent > 200:
+            ikiwa signals_sent > 200:
                 self._process.kill()
                 self.fail('reader process failed to handle our signals.')
         # This assumes anything unexpected that writes to stderr will also
         # write a newline.  That is true of the traceback printing code.
         signal_line = self._process.stderr.readline()
-        if signal_line != b'$\n':
+        ikiwa signal_line != b'$\n':
             self.fail_with_process_info('while awaiting signal',
                                         stderr=signal_line)
 
@@ -134,7 +134,7 @@ class TestFileIOSignalInterrupt:
         # the read call that was interrupted by a signal before the end of
         # the data stream has been reached.
         stdout, stderr = self._process.communicate(input=b'\n')
-        if self._process.returncode:
+        ikiwa self._process.returncode:
             self.fail_with_process_info(
                     'exited rc=%d' % self._process.returncode,
                     stdout, stderr, communicate=False)
@@ -149,7 +149,7 @@ class TestFileIOSignalInterrupt:
                     '"got data %r\\nexpected %r" % (got, expected))'
             )
 
-    def test_readline(self):
+    eleza test_readline(self):
         """readline() must handle signals and not lose data."""
         self._test_reading(
                 data_to_write=b'hello, world!',
@@ -157,7 +157,7 @@ class TestFileIOSignalInterrupt:
                         read_method_name='readline',
                         expected=b'hello, world!\n'))
 
-    def test_readlines(self):
+    eleza test_readlines(self):
         """readlines() must handle signals and not lose data."""
         self._test_reading(
                 data_to_write=b'hello\nworld!',
@@ -165,7 +165,7 @@ class TestFileIOSignalInterrupt:
                         read_method_name='readlines',
                         expected=[b'hello\n', b'world!\n']))
 
-    def test_readall(self):
+    eleza test_readall(self):
         """readall() must handle signals and not lose data."""
         self._test_reading(
                 data_to_write=b'hello\nworld!',
@@ -180,21 +180,21 @@ class TestFileIOSignalInterrupt:
                         expected=b'hello\nworld!\n'))
 
 
-class CTestFileIOSignalInterrupt(TestFileIOSignalInterrupt, unittest.TestCase):
+kundi CTestFileIOSignalInterrupt(TestFileIOSignalInterrupt, unittest.TestCase):
     modname = '_io'
 
-class PyTestFileIOSignalInterrupt(TestFileIOSignalInterrupt, unittest.TestCase):
+kundi PyTestFileIOSignalInterrupt(TestFileIOSignalInterrupt, unittest.TestCase):
     modname = '_pyio'
 
 
-class TestBufferedIOSignalInterrupt(TestFileIOSignalInterrupt):
-    def _generate_infile_setup_code(self):
+kundi TestBufferedIOSignalInterrupt(TestFileIOSignalInterrupt):
+    eleza _generate_infile_setup_code(self):
         """Returns the infile = ... line of code to make a BufferedReader."""
-        return ('agiza %s as io ;infile = io.open(sys.stdin.fileno(), "rb") ;'
+        rudisha ('agiza %s as io ;infile = io.open(sys.stdin.fileno(), "rb") ;'
                 'assert isinstance(infile, io.BufferedReader)' %
                 self.modname)
 
-    def test_readall(self):
+    eleza test_readall(self):
         """BufferedReader.read() must handle signals and not lose data."""
         self._test_reading(
                 data_to_write=b'hello\nworld!',
@@ -202,22 +202,22 @@ class TestBufferedIOSignalInterrupt(TestFileIOSignalInterrupt):
                         read_method_name='read',
                         expected=b'hello\nworld!\n'))
 
-class CTestBufferedIOSignalInterrupt(TestBufferedIOSignalInterrupt, unittest.TestCase):
+kundi CTestBufferedIOSignalInterrupt(TestBufferedIOSignalInterrupt, unittest.TestCase):
     modname = '_io'
 
-class PyTestBufferedIOSignalInterrupt(TestBufferedIOSignalInterrupt, unittest.TestCase):
+kundi PyTestBufferedIOSignalInterrupt(TestBufferedIOSignalInterrupt, unittest.TestCase):
     modname = '_pyio'
 
 
-class TestTextIOSignalInterrupt(TestFileIOSignalInterrupt):
-    def _generate_infile_setup_code(self):
+kundi TestTextIOSignalInterrupt(TestFileIOSignalInterrupt):
+    eleza _generate_infile_setup_code(self):
         """Returns the infile = ... line of code to make a TextIOWrapper."""
-        return ('agiza %s as io ;'
+        rudisha ('agiza %s as io ;'
                 'infile = io.open(sys.stdin.fileno(), "rt", newline=None) ;'
                 'assert isinstance(infile, io.TextIOWrapper)' %
                 self.modname)
 
-    def test_readline(self):
+    eleza test_readline(self):
         """readline() must handle signals and not lose data."""
         self._test_reading(
                 data_to_write=b'hello, world!',
@@ -225,7 +225,7 @@ class TestTextIOSignalInterrupt(TestFileIOSignalInterrupt):
                         read_method_name='readline',
                         expected='hello, world!\n'))
 
-    def test_readlines(self):
+    eleza test_readlines(self):
         """readlines() must handle signals and not lose data."""
         self._test_reading(
                 data_to_write=b'hello\r\nworld!',
@@ -233,7 +233,7 @@ class TestTextIOSignalInterrupt(TestFileIOSignalInterrupt):
                         read_method_name='readlines',
                         expected=['hello\n', 'world!\n']))
 
-    def test_readall(self):
+    eleza test_readall(self):
         """read() must handle signals and not lose data."""
         self._test_reading(
                 data_to_write=b'hello\nworld!',
@@ -241,12 +241,12 @@ class TestTextIOSignalInterrupt(TestFileIOSignalInterrupt):
                         read_method_name='read',
                         expected="hello\nworld!\n"))
 
-class CTestTextIOSignalInterrupt(TestTextIOSignalInterrupt, unittest.TestCase):
+kundi CTestTextIOSignalInterrupt(TestTextIOSignalInterrupt, unittest.TestCase):
     modname = '_io'
 
-class PyTestTextIOSignalInterrupt(TestTextIOSignalInterrupt, unittest.TestCase):
+kundi PyTestTextIOSignalInterrupt(TestTextIOSignalInterrupt, unittest.TestCase):
     modname = '_pyio'
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

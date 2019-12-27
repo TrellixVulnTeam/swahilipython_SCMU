@@ -38,7 +38,7 @@ Display the top 10
 
 Display the 10 files allocating the most memory::
 
-    import tracemalloc
+    agiza tracemalloc
 
     tracemalloc.start()
 
@@ -66,7 +66,7 @@ Example of output of the Python test suite::
     <string>:5: size=49.7 KiB, count=148, average=344 B
     /usr/lib/python3.4/sysconfig.py:411: size=48.0 KiB, count=1, average=48.0 KiB
 
-We can see that Python loaded ``4855 KiB`` data (bytecode and constants) from
+We can see that Python loaded ``4855 KiB`` data (bytecode and constants) kutoka
 modules and that the :mod:`collections` module allocated ``244 KiB`` to build
 :class:`~collections.namedtuple` types.
 
@@ -78,7 +78,7 @@ Compute differences
 
 Take two snapshots and display the differences::
 
-    import tracemalloc
+    agiza tracemalloc
     tracemalloc.start()
     # ... start your application ...
 
@@ -122,7 +122,7 @@ Get the traceback of a memory block
 
 Code to display the traceback of the biggest memory block::
 
-    import tracemalloc
+    agiza tracemalloc
 
     # Store 25 frames
     tracemalloc.start(25)
@@ -149,7 +149,7 @@ Example of output of the Python test suite (traceback limited to 25 frames)::
       File "<frozen importlib._bootstrap>", line 1581
       File "<frozen importlib._bootstrap>", line 1614
       File "/usr/lib/python3.4/doctest.py", line 101
-        import pdb
+        agiza pdb
       File "<frozen importlib._bootstrap>", line 284
       File "<frozen importlib._bootstrap>", line 938
       File "<frozen importlib._bootstrap>", line 1068
@@ -157,7 +157,7 @@ Example of output of the Python test suite (traceback limited to 25 frames)::
       File "<frozen importlib._bootstrap>", line 1581
       File "<frozen importlib._bootstrap>", line 1614
       File "/usr/lib/python3.4/test/support/__init__.py", line 1728
-        import doctest
+        agiza doctest
       File "/usr/lib/python3.4/test/test_pickletools.py", line 21
         support.run_doctest(pickletools)
       File "/usr/lib/python3.4/test/regrtest.py", line 1276
@@ -176,8 +176,8 @@ Example of output of the Python test suite (traceback limited to 25 frames)::
         "__main__", fname, loader, pkg_name)
 
 We can see that the most memory was allocated in the :mod:`importlib` module to
-load data (bytecode and constants) from modules: ``870.1 KiB``. The traceback is
-where the :mod:`importlib` loaded data most recently: on the ``import pdb``
+load data (bytecode and constants) kutoka modules: ``870.1 KiB``. The traceback is
+where the :mod:`importlib` loaded data most recently: on the ``agiza pdb``
 line of the :mod:`doctest` module. The traceback may change if a new module is
 loaded.
 
@@ -188,9 +188,9 @@ Pretty top
 Code to display the 10 lines allocating the most memory with a pretty output,
 ignoring ``<frozen importlib._bootstrap>`` and ``<unknown>`` files::
 
-    import linecache
-    import os
-    import tracemalloc
+    agiza linecache
+    agiza os
+    agiza tracemalloc
 
     def display_top(snapshot, key_type='lineno', limit=10):
         snapshot = snapshot.filter_traces((
@@ -451,7 +451,7 @@ Frame
 
    Frame of a traceback.
 
-   The :class:`Traceback` class is a sequence of :class:`Frame` instances.
+   The :class:`Traceback` kundi is a sequence of :class:`Frame` instances.
 
    .. attribute:: filename
 
@@ -479,7 +479,7 @@ Snapshot
       See the :meth:`Snapshot.statistics` method for *key_type* and *cumulative*
       parameters.
 
-      The result is sorted from the biggest to the smallest by: absolute value
+      The result is sorted kutoka the biggest to the smallest by: absolute value
       of :attr:`StatisticDiff.size_diff`, :attr:`StatisticDiff.size`, absolute
       value of :attr:`StatisticDiff.count_diff`, :attr:`Statistic.count` and
       then by :attr:`StatisticDiff.traceback`.
@@ -509,7 +509,7 @@ Snapshot
 
    .. classmethod:: load(filename)
 
-      Load a snapshot from a file.
+      Load a snapshot kutoka a file.
 
       See also :meth:`dump`.
 
@@ -532,7 +532,7 @@ Snapshot
       The cumulative mode can only be used with *key_type* equals to
       ``'filename'`` and ``'lineno'``.
 
-      The result is sorted from the biggest to the smallest by:
+      The result is sorted kutoka the biggest to the smallest by:
       :attr:`Statistic.size`, :attr:`Statistic.count` and then by
       :attr:`Statistic.traceback`.
 
@@ -650,7 +650,7 @@ Traceback
 
 .. class:: Traceback
 
-   Sequence of :class:`Frame` instances sorted from the oldest frame to the
+   Sequence of :class:`Frame` instances sorted kutoka the oldest frame to the
    most recent frame.
 
    A traceback contains at least ``1`` frame. If the ``tracemalloc`` module
@@ -664,12 +664,12 @@ Traceback
    instance.
 
    .. versionchanged:: 3.7
-      Frames are now sorted from the oldest to the most recent, instead of most recent to oldest.
+      Frames are now sorted kutoka the oldest to the most recent, instead of most recent to oldest.
 
    .. method:: format(limit=None, most_recent_first=False)
 
       Format the traceback as a list of lines with newlines. Use the
-      :mod:`linecache` module to retrieve lines from the source code.
+      :mod:`linecache` module to retrieve lines kutoka the source code.
       If *limit* is set, format the *limit* most recent frames if *limit*
       is positive. Otherwise, format the ``abs(limit)`` oldest frames.
       If *most_recent_first* is ``True``, the order of the formatted frames

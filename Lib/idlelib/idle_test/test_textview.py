@@ -16,12 +16,12 @@ kutoka tkinter.ttk agiza Button
 kutoka idlelib.idle_test.mock_idle agiza Func
 kutoka idlelib.idle_test.mock_tk agiza Mbox_func
 
-def setUpModule():
+eleza setUpModule():
     global root
     root = Tk()
     root.withdraw()
 
-def tearDownModule():
+eleza tearDownModule():
     global root
     root.update_idletasks()
     root.destroy()
@@ -32,35 +32,35 @@ def tearDownModule():
 # Have also gotten tk error 'can't invoke "event" command'.
 
 
-class VW(tv.ViewWindow):  # Used in ViewWindowTest.
+kundi VW(tv.ViewWindow):  # Used in ViewWindowTest.
     transient = Func()
     grab_set = Func()
     wait_window = Func()
 
 
-# Call wrapper class VW with mock wait_window.
-class ViewWindowTest(unittest.TestCase):
+# Call wrapper kundi VW with mock wait_window.
+kundi ViewWindowTest(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         VW.transient.__init__()
         VW.grab_set.__init__()
         VW.wait_window.__init__()
 
-    def test_init_modal(self):
+    eleza test_init_modal(self):
         view = VW(root, 'Title', 'test text')
         self.assertTrue(VW.transient.called)
         self.assertTrue(VW.grab_set.called)
         self.assertTrue(VW.wait_window.called)
         view.ok()
 
-    def test_init_nonmodal(self):
+    eleza test_init_nonmodal(self):
         view = VW(root, 'Title', 'test text', modal=False)
         self.assertFalse(VW.transient.called)
         self.assertFalse(VW.grab_set.called)
         self.assertFalse(VW.wait_window.called)
         view.ok()
 
-    def test_ok(self):
+    eleza test_ok(self):
         view = VW(root, 'Title', 'test text', modal=False)
         view.destroy = Func()
         view.ok()
@@ -69,41 +69,41 @@ class ViewWindowTest(unittest.TestCase):
         view.destroy()
 
 
-class AutoHideScrollbarTest(unittest.TestCase):
+kundi AutoHideScrollbarTest(unittest.TestCase):
     # Method set is tested in ScrollableTextFrameTest
-    def test_forbidden_geometry(self):
+    eleza test_forbidden_geometry(self):
         scroll = tv.AutoHideScrollbar(root)
         self.assertRaises(TclError, scroll.pack)
         self.assertRaises(TclError, scroll.place)
 
 
-class ScrollableTextFrameTest(unittest.TestCase):
+kundi ScrollableTextFrameTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.root = root = Tk()
         root.withdraw()
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         cls.root.update_idletasks()
         cls.root.destroy()
         del cls.root
 
-    def make_frame(self, wrap=NONE, **kwargs):
+    eleza make_frame(self, wrap=NONE, **kwargs):
         frame = tv.ScrollableTextFrame(self.root, wrap=wrap, **kwargs)
-        def cleanup_frame():
+        eleza cleanup_frame():
             frame.update_idletasks()
             frame.destroy()
         self.addCleanup(cleanup_frame)
-        return frame
+        rudisha frame
 
-    def test_line1(self):
+    eleza test_line1(self):
         frame = self.make_frame()
         frame.text.insert('1.0', 'test text')
         self.assertEqual(frame.text.get('1.0', '1.end'), 'test text')
 
-    def test_horiz_scrollbar(self):
+    eleza test_horiz_scrollbar(self):
         # The horizontal scrollbar should be shown/hidden according to
         # the 'wrap' setting: It should only be shown when 'wrap' is
         # set to NONE.
@@ -121,46 +121,46 @@ class ScrollableTextFrameTest(unittest.TestCase):
                 self.assertIsNone(frame.xscroll)
 
 
-class ViewFrameTest(unittest.TestCase):
+kundi ViewFrameTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.root = root = Tk()
         root.withdraw()
         cls.frame = tv.ViewFrame(root, 'test text')
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         del cls.frame
         cls.root.update_idletasks()
         cls.root.destroy()
         del cls.root
 
-    def test_line1(self):
+    eleza test_line1(self):
         get = self.frame.text.get
         self.assertEqual(get('1.0', '1.end'), 'test text')
 
 
 # Call ViewWindow with modal=False.
-class ViewFunctionTest(unittest.TestCase):
+kundi ViewFunctionTest(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    eleza setUpClass(cls):
         cls.orig_error = tv.showerror
         tv.showerror = Mbox_func()
 
     @classmethod
-    def tearDownClass(cls):
+    eleza tearDownClass(cls):
         tv.showerror = cls.orig_error
         del cls.orig_error
 
-    def test_view_text(self):
+    eleza test_view_text(self):
         view = tv.view_text(root, 'Title', 'test text', modal=False)
         self.assertIsInstance(view, tv.ViewWindow)
         self.assertIsInstance(view.viewframe, tv.ViewFrame)
         view.viewframe.ok()
 
-    def test_view_file(self):
+    eleza test_view_file(self):
         view = tv.view_file(root, 'Title', __file__, 'ascii', modal=False)
         self.assertIsInstance(view, tv.ViewWindow)
         self.assertIsInstance(view.viewframe, tv.ViewFrame)
@@ -168,38 +168,38 @@ class ViewFunctionTest(unittest.TestCase):
         self.assertIn('Test', get('1.0', '1.end'))
         view.ok()
 
-    def test_bad_file(self):
-        # Mock showerror will be used; view_file will return None.
+    eleza test_bad_file(self):
+        # Mock showerror will be used; view_file will rudisha None.
         view = tv.view_file(root, 'Title', 'abc.xyz', 'ascii', modal=False)
         self.assertIsNone(view)
         self.assertEqual(tv.showerror.title, 'File Load Error')
 
-    def test_bad_encoding(self):
+    eleza test_bad_encoding(self):
         p = os.path
         fn = p.abspath(p.join(p.dirname(__file__), '..', 'CREDITS.txt'))
         view = tv.view_file(root, 'Title', fn, 'ascii', modal=False)
         self.assertIsNone(view)
         self.assertEqual(tv.showerror.title, 'Unicode Decode Error')
 
-    def test_nowrap(self):
+    eleza test_nowrap(self):
         view = tv.view_text(root, 'Title', 'test', modal=False, wrap='none')
         text_widget = view.viewframe.textframe.text
         self.assertEqual(text_widget.cget('wrap'), 'none')
 
 
 # Call ViewWindow with _utest=True.
-class ButtonClickTest(unittest.TestCase):
+kundi ButtonClickTest(unittest.TestCase):
 
-    def setUp(self):
+    eleza setUp(self):
         self.view = None
         self.called = False
 
-    def tearDown(self):
-        if self.view:
+    eleza tearDown(self):
+        ikiwa self.view:
             self.view.destroy()
 
-    def test_view_text_bind_with_button(self):
-        def _command():
+    eleza test_view_text_bind_with_button(self):
+        eleza _command():
             self.called = True
             self.view = tv.view_text(root, 'TITLE_TEXT', 'COMMAND', _utest=True)
         button = Button(root, text='BUTTON', command=_command)
@@ -211,8 +211,8 @@ class ButtonClickTest(unittest.TestCase):
         self.assertEqual(self.view.viewframe.textframe.text.get('1.0', '1.end'),
                          'COMMAND')
 
-    def test_view_file_bind_with_button(self):
-        def _command():
+    eleza test_view_file_bind_with_button(self):
+        eleza _command():
             self.called = True
             self.view = tv.view_file(root, 'TITLE_FILE', __file__,
                                      encoding='ascii', _utest=True)
@@ -229,5 +229,5 @@ class ButtonClickTest(unittest.TestCase):
             self.assertEqual(get('3.0', '3.end'), f.readline().strip())
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main(verbosity=2)

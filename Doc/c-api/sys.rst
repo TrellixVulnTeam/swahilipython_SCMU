@@ -39,7 +39,7 @@ Operating System Utilities
 .. c:function:: void PyOS_AfterFork_Parent()
 
    Function to update some internal state after a process fork.  This
-   should be called from the parent process after calling :c:func:`fork`
+   should be called kutoka the parent process after calling :c:func:`fork`
    or any similar function that clones the current process, regardless
    of whether process cloning was successful.
    Only available on systems where :c:func:`fork` is defined.
@@ -50,7 +50,7 @@ Operating System Utilities
 .. c:function:: void PyOS_AfterFork_Child()
 
    Function to update internal interpreter state after a process fork.
-   This must be called from the child process after calling :c:func:`fork`,
+   This must be called kutoka the child process after calling :c:func:`fork`,
    or any similar function that clones the current process, if there is
    any chance the process will call back into the Python interpreter.
    Only available on systems where :c:func:`fork` is defined.
@@ -100,7 +100,7 @@ Operating System Utilities
 
 .. c:function:: wchar_t* Py_DecodeLocale(const char* arg, size_t *size)
 
-   Decode a byte string from the locale encoding with the :ref:`surrogateescape
+   Decode a byte string kutoka the locale encoding with the :ref:`surrogateescape
    error handler <surrogateescape>`: undecodable bytes are decoded as
    characters in range U+DC80..U+DCFF. If a byte sequence can be decoded as a
    surrogate character, escape the bytes using the surrogateescape error
@@ -195,19 +195,19 @@ Operating System Utilities
 System Functions
 ================
 
-These are utility functions that make functionality from the :mod:`sys` module
+These are utility functions that make functionality kutoka the :mod:`sys` module
 accessible to C code.  They all work with the current interpreter thread's
 :mod:`sys` module's dict, which is contained in the internal thread state structure.
 
 .. c:function:: PyObject *PySys_GetObject(const char *name)
 
-   Return the object *name* from the :mod:`sys` module or *NULL* if it does
+   Return the object *name* kutoka the :mod:`sys` module or *NULL* if it does
    not exist, without setting an exception.
 
 .. c:function:: int PySys_SetObject(const char *name, PyObject *v)
 
    Set *name* in the :mod:`sys` module to *v* unless *v* is *NULL*, in which
-   case *name* is deleted from the sys module. Returns ``0`` on success, ``-1``
+   case *name* is deleted kutoka the sys module. Returns ``0`` on success, ``-1``
    on error.
 
 .. c:function:: void PySys_ResetWarnOptions()
@@ -224,8 +224,8 @@ accessible to C code.  They all work with the current interpreter thread's
 
    Append *unicode* to :data:`sys.warnoptions`.
 
-   Note: this function is not currently usable from outside the CPython
-   implementation, as it must be called prior to the implicit import of
+   Note: this function is not currently usable kutoka outside the CPython
+   implementation, as it must be called prior to the implicit agiza of
    :mod:`warnings` in :c:func:`Py_Initialize` to be effective, but can't be
    called until enough of the runtime has been initialized to permit the
    creation of Unicode objects.
@@ -295,14 +295,14 @@ accessible to C code.  They all work with the current interpreter thread's
    and non-zero with an exception set on failure.
 
    If any hooks have been added, *format* and other arguments will be used
-   to construct a tuple to pass. Apart from ``N``, the same format characters
+   to construct a tuple to pass. Apart kutoka ``N``, the same format characters
    as used in :c:func:`Py_BuildValue` are available. If the built value is not
    a tuple, it will be added into a single-element tuple. (The ``N`` format
    option consumes a reference, but since there is no way to know whether
    arguments to this function will be consumed, using it may cause reference
    leaks.)
 
-   :func:`sys.audit` performs the same function from Python code.
+   :func:`sys.audit` performs the same function kutoka Python code.
 
    .. versionadded:: 3.8
 
@@ -316,7 +316,7 @@ accessible to C code.  They all work with the current interpreter thread's
 
    This function is safe to call before :c:func:`Py_Initialize`. When called
    after runtime initialization, existing audit hooks are notified and may
-   silently abort the operation by raising an error subclassed from
+   silently abort the operation by raising an error subclassed kutoka
    :class:`Exception` (other errors will not be silenced).
 
    The hook function is of type :c:type:`int (*)(const char *event, PyObject
@@ -325,7 +325,7 @@ accessible to C code.  They all work with the current interpreter thread's
    held by the Python interpreter that raised the event.
 
    The *userData* pointer is passed into the hook function. Since hook
-   functions may be called from different runtimes, this pointer should not
+   functions may be called kutoka different runtimes, this pointer should not
    refer directly to Python state.
 
    See :pep:`578` for a detailed description of auditing. Functions in the
@@ -364,7 +364,7 @@ Process Control
    indicates an error, the exit status is set to 120.
 
    .. versionchanged:: 3.6
-      Errors from finalization no longer ignored.
+      Errors kutoka finalization no longer ignored.
 
 
 .. c:function:: int Py_AtExit(void (*func) ())

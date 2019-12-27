@@ -74,7 +74,7 @@ available, as well as :meth:`get` and :meth:`setdefault`.
    :meth:`get` and :meth:`setdefault` are now available in all database modules.
 
 .. versionchanged:: 3.8
-   Deleting a key from a read-only database raises database module specific error
+   Deleting a key kutoka a read-only database raises database module specific error
    instead of :exc:`KeyError`.
 
 Key and values are always stored as bytes. This means that when
@@ -91,7 +91,7 @@ will automatically close them when done.
 The following example records some hostnames and a corresponding title,  and
 then prints out the contents of the database::
 
-   import dbm
+   agiza dbm
 
    # Open database, creating it if necessary.
    with dbm.open('cache', 'c') as db:

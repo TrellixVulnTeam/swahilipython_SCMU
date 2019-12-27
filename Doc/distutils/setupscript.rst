@@ -23,7 +23,7 @@ the package into Python 1.5.2.) ::
 
     #!/usr/bin/env python
 
-    from distutils.core import setup
+    kutoka distutils.core agiza setup
 
     setup(name='Distutils',
           version='1.0',
@@ -149,17 +149,17 @@ compiler/linker are needed, describing this extension is quite simple::
 
     Extension('foo', ['foo.c'])
 
-The :class:`Extension` class can be imported from :mod:`distutils.core` along
+The :class:`Extension` kundi can be imported kutoka :mod:`distutils.core` along
 with :func:`setup`.  Thus, the setup script for a module distribution that
 contains only this one extension and nothing else might be::
 
-    from distutils.core import setup, Extension
+    kutoka distutils.core agiza setup, Extension
     setup(name='foo',
           version='1.0',
           ext_modules=[Extension('foo', ['foo.c'])],
           )
 
-The :class:`Extension` class (actually, the underlying extension-building
+The :class:`Extension` kundi (actually, the underlying extension-building
 machinery implemented by the :command:`build_ext` command) supports a great deal
 of flexibility in describing Python extensions, which is explained in the
 following sections.
@@ -256,7 +256,7 @@ code: it's probably better to write C code like  ::
 
     #include <X11/Xlib.h>
 
-If you need to include header files from some other Python extension, you can
+If you need to include header files kutoka some other Python extension, you can
 take advantage of the fact that header files are installed in a consistent way
 by the Distutils :command:`install_headers` command.  For example, the Numerical
 Python header files are installed (on a standard Unix installation) to
@@ -272,7 +272,7 @@ If you must put the :file:`Numerical` include directory right into your header
 search path, though, you can find that directory using the Distutils
 :mod:`distutils.sysconfig` module::
 
-    from distutils.sysconfig import get_python_inc
+    kutoka distutils.sysconfig agiza get_python_inc
     incdir = os.path.join(get_python_inc(plat_specific=1), 'Numerical')
     setup(...,
           Extension(..., include_dirs=[incdir]),
@@ -443,7 +443,7 @@ Installing Scripts
 So far we have been dealing with pure and non-pure Python modules, which are
 usually not run by themselves but imported by scripts.
 
-Scripts are files containing Python source code, intended to be started from the
+Scripts are files containing Python source code, intended to be started kutoka the
 command line.  Scripts don't require Distutils to do anything very complicated.
 The only clever feature is that if the first line of the script starts with
 ``#!`` and contains the word "python", the Distutils will adjust the first line
@@ -474,10 +474,10 @@ containing documentation that might be of interest to programmers using the
 package.  These files are called :dfn:`package data`.
 
 Package data can be added to packages using the ``package_data`` keyword
-argument to the :func:`setup` function.  The value must be a mapping from
+argument to the :func:`setup` function.  The value must be a mapping kutoka
 package name to a list of relative path names that should be copied into the
 package.  The paths are interpreted as relative to the directory containing the
-package (information from the ``package_dir`` mapping is used if appropriate);
+package (information kutoka the ``package_dir`` mapping is used if appropriate);
 that is, the files are expected to be part of the package in the source
 directories. They may contain glob patterns as well.
 
@@ -540,7 +540,7 @@ The *directory* should be a relative path. It is interpreted relative to the
 installation prefix (Python's ``sys.prefix`` for system installations;
 ``site.USER_BASE`` for user installations). Distutils allows *directory* to be
 an absolute installation path, but this is discouraged since it is
-incompatible with the wheel packaging format. No directory information from
+incompatible with the wheel packaging format. No directory information kutoka
 *files* is used to determine the final location of the installed file; only
 the name of the file is used.
 
@@ -619,7 +619,7 @@ Notes:
 
 (5)
     The ``license`` field is a text indicating the license covering the
-    package where the license is not a selection from the "License" Trove
+    package where the license is not a selection kutoka the "License" Trove
     classifiers. See the ``Classifier`` field. Notice that
     there's a ``licence`` distribution option which is deprecated but still
     acts as an alias for ``license``.
@@ -700,7 +700,7 @@ wants.
 Distutils catches any exceptions when running the setup script, and print a
 simple error message before the script is terminated.  The motivation for this
 behaviour is to not confuse administrators who don't know much about Python and
-are trying to install a package.  If they get a big long traceback from deep
+are trying to install a package.  If they get a big long traceback kutoka deep
 inside the guts of Distutils, they may think the package or the Python
 installation is broken because they don't read all the way down to the bottom
 and see that it's a permission problem.

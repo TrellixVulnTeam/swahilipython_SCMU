@@ -11,7 +11,7 @@ Integer Objects
 All integers are implemented as "long" integer objects of arbitrary size.
 
 On error, most ``PyLong_As*`` APIs return ``(return type)-1`` which cannot be
-distinguished from a number.  Use :c:func:`PyErr_Occurred` to disambiguate.
+distinguished kutoka a number.  Use :c:func:`PyErr_Occurred` to disambiguate.
 
 .. c:type:: PyLongObject
 
@@ -38,7 +38,7 @@ distinguished from a number.  Use :c:func:`PyErr_Occurred` to disambiguate.
 
 .. c:function:: PyObject* PyLong_FromLong(long v)
 
-   Return a new :c:type:`PyLongObject` object from *v*, or *NULL* on failure.
+   Return a new :c:type:`PyLongObject` object kutoka *v*, or *NULL* on failure.
 
    The current implementation keeps an array of integer objects for all integers
    between ``-5`` and ``256``, when you create an int in that range you actually
@@ -49,37 +49,37 @@ distinguished from a number.  Use :c:func:`PyErr_Occurred` to disambiguate.
 
 .. c:function:: PyObject* PyLong_FromUnsignedLong(unsigned long v)
 
-   Return a new :c:type:`PyLongObject` object from a C :c:type:`unsigned long`, or
+   Return a new :c:type:`PyLongObject` object kutoka a C :c:type:`unsigned long`, or
    *NULL* on failure.
 
 
 .. c:function:: PyObject* PyLong_FromSsize_t(Py_ssize_t v)
 
-   Return a new :c:type:`PyLongObject` object from a C :c:type:`Py_ssize_t`, or
+   Return a new :c:type:`PyLongObject` object kutoka a C :c:type:`Py_ssize_t`, or
    *NULL* on failure.
 
 
 .. c:function:: PyObject* PyLong_FromSize_t(size_t v)
 
-   Return a new :c:type:`PyLongObject` object from a C :c:type:`size_t`, or
+   Return a new :c:type:`PyLongObject` object kutoka a C :c:type:`size_t`, or
    *NULL* on failure.
 
 
 .. c:function:: PyObject* PyLong_FromLongLong(long long v)
 
-   Return a new :c:type:`PyLongObject` object from a C :c:type:`long long`, or *NULL*
+   Return a new :c:type:`PyLongObject` object kutoka a C :c:type:`long long`, or *NULL*
    on failure.
 
 
 .. c:function:: PyObject* PyLong_FromUnsignedLongLong(unsigned long long v)
 
-   Return a new :c:type:`PyLongObject` object from a C :c:type:`unsigned long long`,
+   Return a new :c:type:`PyLongObject` object kutoka a C :c:type:`unsigned long long`,
    or *NULL* on failure.
 
 
 .. c:function:: PyObject* PyLong_FromDouble(double v)
 
-   Return a new :c:type:`PyLongObject` object from the integer part of *v*, or
+   Return a new :c:type:`PyLongObject` object kutoka the integer part of *v*, or
    *NULL* on failure.
 
 
@@ -119,8 +119,8 @@ distinguished from a number.  Use :c:func:`PyErr_Occurred` to disambiguate.
 
 .. c:function:: PyObject* PyLong_FromVoidPtr(void *p)
 
-   Create a Python integer from the pointer *p*. The pointer value can be
-   retrieved from the resulting value using :c:func:`PyLong_AsVoidPtr`.
+   Create a Python integer kutoka the pointer *p*. The pointer value can be
+   retrieved kutoka the resulting value using :c:func:`PyLong_AsVoidPtr`.
 
 
 .. XXX alias PyLong_AS_LONG (for now)

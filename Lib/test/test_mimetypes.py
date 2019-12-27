@@ -14,11 +14,11 @@ mimetypes.inited = False
 mimetypes._default_mime_types()
 
 
-class MimeTypesTestCase(unittest.TestCase):
-    def setUp(self):
+kundi MimeTypesTestCase(unittest.TestCase):
+    eleza setUp(self):
         self.db = mimetypes.MimeTypes()
 
-    def test_default_data(self):
+    eleza test_default_data(self):
         eq = self.assertEqual
         eq(self.db.guess_type("foo.html"), ("text/html", None))
         eq(self.db.guess_type("foo.tgz"), ("application/x-tar", "gzip"))
@@ -27,14 +27,14 @@ class MimeTypesTestCase(unittest.TestCase):
         eq(self.db.guess_type("foo.tar.bz2"), ("application/x-tar", "bzip2"))
         eq(self.db.guess_type("foo.tar.xz"), ("application/x-tar", "xz"))
 
-    def test_data_urls(self):
+    eleza test_data_urls(self):
         eq = self.assertEqual
         guess_type = self.db.guess_type
         eq(guess_type("data:,thisIsTextPlain"), ("text/plain", None))
         eq(guess_type("data:;base64,thisIsTextPlain"), ("text/plain", None))
         eq(guess_type("data:text/x-foo,thisIsTextXFoo"), ("text/x-foo", None))
 
-    def test_file_parsing(self):
+    eleza test_file_parsing(self):
         eq = self.assertEqual
         sio = io.StringIO("x-application/x-unittest pyunit\n")
         self.db.readfp(sio)
@@ -42,7 +42,7 @@ class MimeTypesTestCase(unittest.TestCase):
            ("x-application/x-unittest", None))
         eq(self.db.guess_extension("x-application/x-unittest"), ".pyunit")
 
-    def test_non_standard_types(self):
+    eleza test_non_standard_types(self):
         eq = self.assertEqual
         # First try strict
         eq(self.db.guess_type('foo.xul', strict=True), (None, None))
@@ -51,7 +51,7 @@ class MimeTypesTestCase(unittest.TestCase):
         eq(self.db.guess_type('foo.xul', strict=False), ('text/xul', None))
         eq(self.db.guess_extension('image/jpg', strict=False), '.jpg')
 
-    def test_guess_all_types(self):
+    eleza test_guess_all_types(self):
         eq = self.assertEqual
         unless = self.assertTrue
         # First try strict.  Use a set here for testing the results because if
@@ -67,7 +67,7 @@ class MimeTypesTestCase(unittest.TestCase):
         all = self.db.guess_all_extensions('image/jpg', strict=True)
         eq(all, [])
 
-    def test_encoding(self):
+    eleza test_encoding(self):
         getpreferredencoding = locale.getpreferredencoding
         self.addCleanup(setattr, locale, 'getpreferredencoding',
                                  getpreferredencoding)
@@ -79,7 +79,7 @@ class MimeTypesTestCase(unittest.TestCase):
                                           strict=True)
         self.assertEqual(exts, ['.g3', '.g\xb3'])
 
-    def test_init_reinitializes(self):
+    eleza test_init_reinitializes(self):
         # Issue 4936: make sure an init starts clean
         # First, put some poison into the types table
         mimetypes.add_type('foo/bar', '.foobar')
@@ -89,8 +89,8 @@ class MimeTypesTestCase(unittest.TestCase):
         # Poison should be gone.
         self.assertEqual(mimetypes.guess_extension('foo/bar'), None)
 
-    def test_preferred_extension(self):
-        def check_extensions():
+    eleza test_preferred_extension(self):
+        eleza check_extensions():
             self.assertEqual(mimetypes.guess_extension('application/octet-stream'), '.bin')
             self.assertEqual(mimetypes.guess_extension('application/postscript'), '.ps')
             self.assertEqual(mimetypes.guess_extension('application/vnd.apple.mpegurl'), '.m3u')
@@ -112,7 +112,7 @@ class MimeTypesTestCase(unittest.TestCase):
         mimetypes.init()
         check_extensions()
 
-    def test_init_stability(self):
+    eleza test_init_stability(self):
         mimetypes.init()
 
         suffix_map = mimetypes.suffix_map
@@ -130,7 +130,7 @@ class MimeTypesTestCase(unittest.TestCase):
         self.assertEqual(types_map, mimetypes.types_map)
         self.assertEqual(common_types, mimetypes.common_types)
 
-    def test_path_like_ob(self):
+    eleza test_path_like_ob(self):
         filename = "LICENSE.txt"
         filepath = pathlib.Path(filename)
         filepath_with_abs_dir = pathlib.Path('/dir/'+filename)
@@ -145,7 +145,7 @@ class MimeTypesTestCase(unittest.TestCase):
         self.assertEqual(self.db.guess_type(filepath_relative), expected)
         self.assertEqual(self.db.guess_type(path_dir), (None, None))
 
-    def test_keywords_args_api(self):
+    eleza test_keywords_args_api(self):
         self.assertEqual(self.db.guess_type(
             url="foo.html", strict=True), ("text/html", None))
         self.assertEqual(self.db.guess_all_extensions(
@@ -155,22 +155,22 @@ class MimeTypesTestCase(unittest.TestCase):
 
 
 @unittest.skipUnless(sys.platform.startswith("win"), "Windows only")
-class Win32MimeTypesTestCase(unittest.TestCase):
-    def setUp(self):
+kundi Win32MimeTypesTestCase(unittest.TestCase):
+    eleza setUp(self):
         # ensure all entries actually come kutoka the Windows registry
         self.original_types_map = mimetypes.types_map.copy()
         mimetypes.types_map.clear()
         mimetypes.init()
         self.db = mimetypes.MimeTypes()
 
-    def tearDown(self):
+    eleza tearDown(self):
         # restore default settings
         mimetypes.types_map.clear()
         mimetypes.types_map.update(self.original_types_map)
 
     @unittest.skipIf(win32_edition() in ('NanoServer', 'WindowsCoreHeadless', 'IoTEdgeOS'),
                                          "MIME types registry keys unavailable")
-    def test_registry_parsing(self):
+    eleza test_registry_parsing(self):
         # the original, minimum contents of the MIME database in the
         # Windows registry is undocumented AFAIK.
         # Use file types that should *always* exist:
@@ -180,10 +180,10 @@ class Win32MimeTypesTestCase(unittest.TestCase):
         eq(self.db.guess_type("image.png"), ("image/png", None))
 
 
-class MiscTestCase(unittest.TestCase):
-    def test__all__(self):
+kundi MiscTestCase(unittest.TestCase):
+    eleza test__all__(self):
         support.check__all__(self, mimetypes)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

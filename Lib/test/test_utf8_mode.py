@@ -14,38 +14,38 @@ MS_WINDOWS = (sys.platform == 'win32')
 POSIX_LOCALES = ('C', 'POSIX')
 VXWORKS = (sys.platform == "vxworks")
 
-class UTF8ModeTests(unittest.TestCase):
+kundi UTF8ModeTests(unittest.TestCase):
     DEFAULT_ENV = {
         'PYTHONUTF8': '',
         'PYTHONLEGACYWINDOWSFSENCODING': '',
         'PYTHONCOERCECLOCALE': '0',
     }
 
-    def posix_locale(self):
+    eleza posix_locale(self):
         loc = locale.setlocale(locale.LC_CTYPE, None)
-        return (loc in POSIX_LOCALES)
+        rudisha (loc in POSIX_LOCALES)
 
-    def get_output(self, *args, failure=False, **kw):
+    eleza get_output(self, *args, failure=False, **kw):
         kw = dict(self.DEFAULT_ENV, **kw)
-        if failure:
+        ikiwa failure:
             out = assert_python_failure(*args, **kw)
             out = out[2]
         else:
             out = assert_python_ok(*args, **kw)
             out = out[1]
-        return out.decode().rstrip("\n\r")
+        rudisha out.decode().rstrip("\n\r")
 
     @unittest.skipIf(MS_WINDOWS, 'Windows has no POSIX locale')
-    def test_posix_locale(self):
-        code = 'agiza sys; print(sys.flags.utf8_mode)'
+    eleza test_posix_locale(self):
+        code = 'agiza sys; andika(sys.flags.utf8_mode)'
 
         for loc in POSIX_LOCALES:
             with self.subTest(LC_ALL=loc):
                 out = self.get_output('-c', code, LC_ALL=loc)
                 self.assertEqual(out, '1')
 
-    def test_xoption(self):
-        code = 'agiza sys; print(sys.flags.utf8_mode)'
+    eleza test_xoption(self):
+        code = 'agiza sys; andika(sys.flags.utf8_mode)'
 
         out = self.get_output('-X', 'utf8', '-c', code)
         self.assertEqual(out, '1')
@@ -57,15 +57,15 @@ class UTF8ModeTests(unittest.TestCase):
         out = self.get_output('-X', 'utf8=0', '-c', code)
         self.assertEqual(out, '0')
 
-        if MS_WINDOWS:
+        ikiwa MS_WINDOWS:
             # PYTHONLEGACYWINDOWSFSENCODING disables the UTF-8 Mode
             # and has the priority over -X utf8
             out = self.get_output('-X', 'utf8', '-c', code,
                                   PYTHONLEGACYWINDOWSFSENCODING='1')
             self.assertEqual(out, '0')
 
-    def test_env_var(self):
-        code = 'agiza sys; print(sys.flags.utf8_mode)'
+    eleza test_env_var(self):
+        code = 'agiza sys; andika(sys.flags.utf8_mode)'
 
         out = self.get_output('-c', code, PYTHONUTF8='1')
         self.assertEqual(out, '1')
@@ -77,7 +77,7 @@ class UTF8ModeTests(unittest.TestCase):
         out = self.get_output('-X', 'utf8=0', '-c', code, PYTHONUTF8='1')
         self.assertEqual(out, '0')
 
-        if MS_WINDOWS:
+        ikiwa MS_WINDOWS:
             # PYTHONLEGACYWINDOWSFSENCODING disables the UTF-8 mode
             # and has the priority over PYTHONUTF8
             out = self.get_output('-X', 'utf8', '-c', code, PYTHONUTF8='1',
@@ -86,8 +86,8 @@ class UTF8ModeTests(unittest.TestCase):
 
         # Cannot test with the POSIX locale, since the POSIX locale enables
         # the UTF-8 mode
-        if not self.posix_locale():
-            # PYTHONUTF8 should be ignored if -E is used
+        ikiwa not self.posix_locale():
+            # PYTHONUTF8 should be ignored ikiwa -E is used
             out = self.get_output('-E', '-c', code, PYTHONUTF8='1')
             self.assertEqual(out, '0')
 
@@ -96,14 +96,14 @@ class UTF8ModeTests(unittest.TestCase):
         self.assertIn('invalid PYTHONUTF8 environment variable value',
                       out.rstrip())
 
-    def test_filesystemencoding(self):
+    eleza test_filesystemencoding(self):
         code = textwrap.dedent('''
             agiza sys
-            print("{}/{}".format(sys.getfilesystemencoding(),
+            andika("{}/{}".format(sys.getfilesystemencoding(),
                                  sys.getfilesystemencodeerrors()))
         ''')
 
-        if MS_WINDOWS:
+        ikiwa MS_WINDOWS:
             expected = 'utf-8/surrogatepass'
         else:
             expected = 'utf-8/surrogateescape'
@@ -111,7 +111,7 @@ class UTF8ModeTests(unittest.TestCase):
         out = self.get_output('-X', 'utf8', '-c', code)
         self.assertEqual(out, expected)
 
-        if MS_WINDOWS:
+        ikiwa MS_WINDOWS:
             # PYTHONLEGACYWINDOWSFSENCODING disables the UTF-8 mode
             # and has the priority over -X utf8 and PYTHONUTF8
             out = self.get_output('-X', 'utf8', '-c', code,
@@ -119,12 +119,12 @@ class UTF8ModeTests(unittest.TestCase):
                                   PYTHONLEGACYWINDOWSFSENCODING='1')
             self.assertEqual(out, 'mbcs/replace')
 
-    def test_stdio(self):
+    eleza test_stdio(self):
         code = textwrap.dedent('''
             agiza sys
-            print(f"stdin: {sys.stdin.encoding}/{sys.stdin.errors}")
-            print(f"stdout: {sys.stdout.encoding}/{sys.stdout.errors}")
-            print(f"stderr: {sys.stderr.encoding}/{sys.stderr.errors}")
+            andika(f"stdin: {sys.stdin.encoding}/{sys.stdin.errors}")
+            andika(f"stdout: {sys.stdout.encoding}/{sys.stdout.errors}")
+            andika(f"stderr: {sys.stderr.encoding}/{sys.stderr.errors}")
         ''')
 
         out = self.get_output('-X', 'utf8', '-c', code,
@@ -149,57 +149,57 @@ class UTF8ModeTests(unittest.TestCase):
                           'stdout: utf-8/namereplace',
                           'stderr: utf-8/backslashreplace'])
 
-    def test_io(self):
+    eleza test_io(self):
         code = textwrap.dedent('''
             agiza sys
             filename = sys.argv[1]
             with open(filename) as fp:
-                print(f"{fp.encoding}/{fp.errors}")
+                andika(f"{fp.encoding}/{fp.errors}")
         ''')
         filename = __file__
 
         out = self.get_output('-c', code, filename, PYTHONUTF8='1')
         self.assertEqual(out, 'UTF-8/strict')
 
-    def _check_io_encoding(self, module, encoding=None, errors=None):
+    eleza _check_io_encoding(self, module, encoding=None, errors=None):
         filename = __file__
 
         # Encoding explicitly set
         args = []
-        if encoding:
+        ikiwa encoding:
             args.append(f'encoding={encoding!r}')
-        if errors:
+        ikiwa errors:
             args.append(f'errors={errors!r}')
         code = textwrap.dedent('''
             agiza sys
             kutoka %s agiza open
             filename = sys.argv[1]
             with open(filename, %s) as fp:
-                print(f"{fp.encoding}/{fp.errors}")
+                andika(f"{fp.encoding}/{fp.errors}")
         ''') % (module, ', '.join(args))
         out = self.get_output('-c', code, filename,
                               PYTHONUTF8='1')
 
-        if not encoding:
+        ikiwa not encoding:
             encoding = 'UTF-8'
-        if not errors:
+        ikiwa not errors:
             errors = 'strict'
         self.assertEqual(out, f'{encoding}/{errors}')
 
-    def check_io_encoding(self, module):
+    eleza check_io_encoding(self, module):
         self._check_io_encoding(module, encoding="latin1")
         self._check_io_encoding(module, errors="namereplace")
         self._check_io_encoding(module,
                                 encoding="latin1", errors="namereplace")
 
-    def test_io_encoding(self):
+    eleza test_io_encoding(self):
         self.check_io_encoding('io')
 
-    def test_pyio_encoding(self):
+    eleza test_pyio_encoding(self):
         self.check_io_encoding('_pyio')
 
-    def test_locale_getpreferredencoding(self):
-        code = 'agiza locale; print(locale.getpreferredencoding(False), locale.getpreferredencoding(True))'
+    eleza test_locale_getpreferredencoding(self):
+        code = 'agiza locale; andika(locale.getpreferredencoding(False), locale.getpreferredencoding(True))'
         out = self.get_output('-X', 'utf8', '-c', code)
         self.assertEqual(out, 'UTF-8 UTF-8')
 
@@ -209,13 +209,13 @@ class UTF8ModeTests(unittest.TestCase):
                 self.assertEqual(out, 'UTF-8 UTF-8')
 
     @unittest.skipIf(MS_WINDOWS, 'test specific to Unix')
-    def test_cmd_line(self):
+    eleza test_cmd_line(self):
         arg = 'h\xe9\u20ac'.encode('utf-8')
         arg_utf8 = arg.decode('utf-8')
         arg_ascii = arg.decode('ascii', 'surrogateescape')
-        code = 'agiza locale, sys; print("%s:%s" % (locale.getpreferredencoding(), ascii(sys.argv[1:])))'
+        code = 'agiza locale, sys; andika("%s:%s" % (locale.getpreferredencoding(), ascii(sys.argv[1:])))'
 
-        def check(utf8_opt, expected, **kw):
+        eleza check(utf8_opt, expected, **kw):
             out = self.get_output('-X', utf8_opt, '-c', code, arg, **kw)
             args = out.partition(':')[2].rstrip()
             self.assertEqual(args, ascii(expected), out)
@@ -225,9 +225,9 @@ class UTF8ModeTests(unittest.TestCase):
             with self.subTest(LC_ALL=loc):
                 check('utf8', [arg_utf8], LC_ALL=loc)
 
-        if sys.platform == 'darwin' or support.is_android or VXWORKS:
+        ikiwa sys.platform == 'darwin' or support.is_android or VXWORKS:
             c_arg = arg_utf8
-        elif sys.platform.startswith("aix"):
+        elikiwa sys.platform.startswith("aix"):
             c_arg = arg.decode('iso-8859-1')
         else:
             c_arg = arg_ascii
@@ -235,21 +235,21 @@ class UTF8ModeTests(unittest.TestCase):
             with self.subTest(LC_ALL=loc):
                 check('utf8=0', [c_arg], LC_ALL=loc)
 
-    def test_optim_level(self):
+    eleza test_optim_level(self):
         # CPython: check that Py_Main() doesn't increment Py_OptimizeFlag
         # twice when -X utf8 requires to parse the configuration twice (when
         # the encoding changes after reading the configuration, the
         # configuration is read again with the new encoding).
-        code = 'agiza sys; print(sys.flags.optimize)'
+        code = 'agiza sys; andika(sys.flags.optimize)'
         out = self.get_output('-X', 'utf8', '-O', '-c', code)
         self.assertEqual(out, '1')
         out = self.get_output('-X', 'utf8', '-OO', '-c', code)
         self.assertEqual(out, '2')
 
-        code = 'agiza sys; print(sys.flags.ignore_environment)'
+        code = 'agiza sys; andika(sys.flags.ignore_environment)'
         out = self.get_output('-X', 'utf8', '-E', '-c', code)
         self.assertEqual(out, '1')
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

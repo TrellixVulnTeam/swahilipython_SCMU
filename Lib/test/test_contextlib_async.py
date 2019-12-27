@@ -7,27 +7,27 @@ agiza unittest
 kutoka test.test_contextlib agiza TestBaseExitStack
 
 
-def _async_test(func):
+eleza _async_test(func):
     """Decorator to turn an async function into a test case."""
     @functools.wraps(func)
-    def wrapper(*args, **kwargs):
+    eleza wrapper(*args, **kwargs):
         coro = func(*args, **kwargs)
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         try:
-            return loop.run_until_complete(coro)
+            rudisha loop.run_until_complete(coro)
         finally:
             loop.close()
             asyncio.set_event_loop_policy(None)
-    return wrapper
+    rudisha wrapper
 
 
-class TestAbstractAsyncContextManager(unittest.TestCase):
+kundi TestAbstractAsyncContextManager(unittest.TestCase):
 
     @_async_test
-    async def test_enter(self):
-        class DefaultEnter(AbstractAsyncContextManager):
-            async def __aexit__(self, *args):
+    async eleza test_enter(self):
+        kundi DefaultEnter(AbstractAsyncContextManager):
+            async eleza __aexit__(self, *args):
                 await super().__aexit__(*args)
 
         manager = DefaultEnter()
@@ -37,14 +37,14 @@ class TestAbstractAsyncContextManager(unittest.TestCase):
             self.assertIs(manager, context)
 
     @_async_test
-    async def test_async_gen_propagates_generator_exit(self):
+    async eleza test_async_gen_propagates_generator_exit(self):
         # A regression test for https://bugs.python.org/issue33786.
 
         @asynccontextmanager
-        async def ctx():
+        async eleza ctx():
             yield
 
-        async def gen():
+        async eleza gen():
             async with ctx():
                 yield 11
 
@@ -58,46 +58,46 @@ class TestAbstractAsyncContextManager(unittest.TestCase):
 
         self.assertEqual(ret, [11])
 
-    def test_exit_is_abstract(self):
-        class MissingAexit(AbstractAsyncContextManager):
+    eleza test_exit_is_abstract(self):
+        kundi MissingAexit(AbstractAsyncContextManager):
             pass
 
         with self.assertRaises(TypeError):
             MissingAexit()
 
-    def test_structural_subclassing(self):
-        class ManagerFromScratch:
-            async def __aenter__(self):
-                return self
-            async def __aexit__(self, exc_type, exc_value, traceback):
-                return None
+    eleza test_structural_subclassing(self):
+        kundi ManagerFromScratch:
+            async eleza __aenter__(self):
+                rudisha self
+            async eleza __aexit__(self, exc_type, exc_value, traceback):
+                rudisha None
 
         self.assertTrue(issubclass(ManagerFromScratch, AbstractAsyncContextManager))
 
-        class DefaultEnter(AbstractAsyncContextManager):
-            async def __aexit__(self, *args):
+        kundi DefaultEnter(AbstractAsyncContextManager):
+            async eleza __aexit__(self, *args):
                 await super().__aexit__(*args)
 
         self.assertTrue(issubclass(DefaultEnter, AbstractAsyncContextManager))
 
-        class NoneAenter(ManagerFromScratch):
+        kundi NoneAenter(ManagerFromScratch):
             __aenter__ = None
 
         self.assertFalse(issubclass(NoneAenter, AbstractAsyncContextManager))
 
-        class NoneAexit(ManagerFromScratch):
+        kundi NoneAexit(ManagerFromScratch):
             __aexit__ = None
 
         self.assertFalse(issubclass(NoneAexit, AbstractAsyncContextManager))
 
 
-class AsyncContextManagerTestCase(unittest.TestCase):
+kundi AsyncContextManagerTestCase(unittest.TestCase):
 
     @_async_test
-    async def test_contextmanager_plain(self):
+    async eleza test_contextmanager_plain(self):
         state = []
         @asynccontextmanager
-        async def woohoo():
+        async eleza woohoo():
             state.append(1)
             yield 42
             state.append(999)
@@ -108,10 +108,10 @@ class AsyncContextManagerTestCase(unittest.TestCase):
         self.assertEqual(state, [1, 42, 999])
 
     @_async_test
-    async def test_contextmanager_finally(self):
+    async eleza test_contextmanager_finally(self):
         state = []
         @asynccontextmanager
-        async def woohoo():
+        async eleza woohoo():
             state.append(1)
             try:
                 yield 42
@@ -126,9 +126,9 @@ class AsyncContextManagerTestCase(unittest.TestCase):
         self.assertEqual(state, [1, 42, 999])
 
     @_async_test
-    async def test_contextmanager_no_reraise(self):
+    async eleza test_contextmanager_no_reraise(self):
         @asynccontextmanager
-        async def whee():
+        async eleza whee():
             yield
         ctx = whee()
         await ctx.__aenter__()
@@ -136,9 +136,9 @@ class AsyncContextManagerTestCase(unittest.TestCase):
         self.assertFalse(await ctx.__aexit__(TypeError, TypeError("foo"), None))
 
     @_async_test
-    async def test_contextmanager_trap_yield_after_throw(self):
+    async eleza test_contextmanager_trap_yield_after_throw(self):
         @asynccontextmanager
-        async def whoo():
+        async eleza whoo():
             try:
                 yield
             except:
@@ -149,19 +149,19 @@ class AsyncContextManagerTestCase(unittest.TestCase):
             await ctx.__aexit__(TypeError, TypeError('foo'), None)
 
     @_async_test
-    async def test_contextmanager_trap_no_yield(self):
+    async eleza test_contextmanager_trap_no_yield(self):
         @asynccontextmanager
-        async def whoo():
-            if False:
+        async eleza whoo():
+            ikiwa False:
                 yield
         ctx = whoo()
         with self.assertRaises(RuntimeError):
             await ctx.__aenter__()
 
     @_async_test
-    async def test_contextmanager_trap_second_yield(self):
+    async eleza test_contextmanager_trap_second_yield(self):
         @asynccontextmanager
-        async def whoo():
+        async eleza whoo():
             yield
             yield
         ctx = whoo()
@@ -170,9 +170,9 @@ class AsyncContextManagerTestCase(unittest.TestCase):
             await ctx.__aexit__(None, None, None)
 
     @_async_test
-    async def test_contextmanager_non_normalised(self):
+    async eleza test_contextmanager_non_normalised(self):
         @asynccontextmanager
-        async def whoo():
+        async eleza whoo():
             try:
                 yield
             except RuntimeError:
@@ -184,10 +184,10 @@ class AsyncContextManagerTestCase(unittest.TestCase):
             await ctx.__aexit__(RuntimeError, None, None)
 
     @_async_test
-    async def test_contextmanager_except(self):
+    async eleza test_contextmanager_except(self):
         state = []
         @asynccontextmanager
-        async def woohoo():
+        async eleza woohoo():
             state.append(1)
             try:
                 yield 42
@@ -202,9 +202,9 @@ class AsyncContextManagerTestCase(unittest.TestCase):
         self.assertEqual(state, [1, 42, 999])
 
     @_async_test
-    async def test_contextmanager_except_stopiter(self):
+    async eleza test_contextmanager_except_stopiter(self):
         @asynccontextmanager
-        async def woohoo():
+        async eleza woohoo():
             yield
 
         for stop_exc in (StopIteration('spam'), StopAsyncIteration('ham')):
@@ -218,9 +218,9 @@ class AsyncContextManagerTestCase(unittest.TestCase):
                     self.fail(f'{stop_exc} was suppressed')
 
     @_async_test
-    async def test_contextmanager_wrap_runtimeerror(self):
+    async eleza test_contextmanager_wrap_runtimeerror(self):
         @asynccontextmanager
-        async def woohoo():
+        async eleza woohoo():
             try:
                 yield
             except Exception as exc:
@@ -237,52 +237,52 @@ class AsyncContextManagerTestCase(unittest.TestCase):
             async with woohoo():
                 raise StopAsyncIteration
 
-    def _create_contextmanager_attribs(self):
-        def attribs(**kw):
-            def decorate(func):
+    eleza _create_contextmanager_attribs(self):
+        eleza attribs(**kw):
+            eleza decorate(func):
                 for k,v in kw.items():
                     setattr(func,k,v)
-                return func
-            return decorate
+                rudisha func
+            rudisha decorate
         @asynccontextmanager
         @attribs(foo='bar')
-        async def baz(spam):
+        async eleza baz(spam):
             """Whee!"""
             yield
-        return baz
+        rudisha baz
 
-    def test_contextmanager_attribs(self):
+    eleza test_contextmanager_attribs(self):
         baz = self._create_contextmanager_attribs()
         self.assertEqual(baz.__name__,'baz')
         self.assertEqual(baz.foo, 'bar')
 
     @support.requires_docstrings
-    def test_contextmanager_doc_attrib(self):
+    eleza test_contextmanager_doc_attrib(self):
         baz = self._create_contextmanager_attribs()
         self.assertEqual(baz.__doc__, "Whee!")
 
     @support.requires_docstrings
     @_async_test
-    async def test_instance_docstring_given_cm_docstring(self):
+    async eleza test_instance_docstring_given_cm_docstring(self):
         baz = self._create_contextmanager_attribs()(None)
         self.assertEqual(baz.__doc__, "Whee!")
         async with baz:
             pass  # suppress warning
 
     @_async_test
-    async def test_keywords(self):
+    async eleza test_keywords(self):
         # Ensure no keyword arguments are inhibited
         @asynccontextmanager
-        async def woohoo(self, func, args, kwds):
+        async eleza woohoo(self, func, args, kwds):
             yield (self, func, args, kwds)
         async with woohoo(self=11, func=22, args=33, kwds=44) as target:
             self.assertEqual(target, (11, 22, 33, 44))
 
 
-class TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
-    class SyncAsyncExitStack(AsyncExitStack):
+kundi TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
+    kundi SyncAsyncExitStack(AsyncExitStack):
         @staticmethod
-        def run_coroutine(coro):
+        eleza run_coroutine(coro):
             loop = asyncio.get_event_loop()
 
             f = asyncio.ensure_future(coro)
@@ -291,8 +291,8 @@ class TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
 
             exc = f.exception()
 
-            if not exc:
-                return f.result()
+            ikiwa not exc:
+                rudisha f.result()
             else:
                 context = exc.__context__
 
@@ -302,25 +302,25 @@ class TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
                     exc.__context__ = context
                     raise exc
 
-        def close(self):
-            return self.run_coroutine(self.aclose())
+        eleza close(self):
+            rudisha self.run_coroutine(self.aclose())
 
-        def __enter__(self):
-            return self.run_coroutine(self.__aenter__())
+        eleza __enter__(self):
+            rudisha self.run_coroutine(self.__aenter__())
 
-        def __exit__(self, *exc_details):
-            return self.run_coroutine(self.__aexit__(*exc_details))
+        eleza __exit__(self, *exc_details):
+            rudisha self.run_coroutine(self.__aexit__(*exc_details))
 
     exit_stack = SyncAsyncExitStack
 
-    def setUp(self):
+    eleza setUp(self):
         self.loop = asyncio.new_event_loop()
         asyncio.set_event_loop(self.loop)
         self.addCleanup(self.loop.close)
         self.addCleanup(asyncio.set_event_loop_policy, None)
 
     @_async_test
-    async def test_async_callback(self):
+    async eleza test_async_callback(self):
         expected = [
             ((), {}),
             ((1,), {}),
@@ -330,17 +330,17 @@ class TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             ((1,2), dict(example=1)),
         ]
         result = []
-        async def _exit(*args, **kwds):
+        async eleza _exit(*args, **kwds):
             """Test metadata propagation"""
             result.append((args, kwds))
 
         async with AsyncExitStack() as stack:
             for args, kwds in reversed(expected):
-                if args and kwds:
+                ikiwa args and kwds:
                     f = stack.push_async_callback(_exit, *args, **kwds)
-                elif args:
+                elikiwa args:
                     f = stack.push_async_callback(_exit, *args)
-                elif kwds:
+                elikiwa kwds:
                     f = stack.push_async_callback(_exit, **kwds)
                 else:
                     f = stack.push_async_callback(_exit)
@@ -363,22 +363,22 @@ class TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
         self.assertEqual(result, [((), {'arg': 3})])
 
     @_async_test
-    async def test_async_push(self):
+    async eleza test_async_push(self):
         exc_raised = ZeroDivisionError
-        async def _expect_exc(exc_type, exc, exc_tb):
+        async eleza _expect_exc(exc_type, exc, exc_tb):
             self.assertIs(exc_type, exc_raised)
-        async def _suppress_exc(*exc_details):
-            return True
-        async def _expect_ok(exc_type, exc, exc_tb):
+        async eleza _suppress_exc(*exc_details):
+            rudisha True
+        async eleza _expect_ok(exc_type, exc, exc_tb):
             self.assertIsNone(exc_type)
             self.assertIsNone(exc)
             self.assertIsNone(exc_tb)
-        class ExitCM(object):
-            def __init__(self, check_exc):
+        kundi ExitCM(object):
+            eleza __init__(self, check_exc):
                 self.check_exc = check_exc
-            async def __aenter__(self):
+            async eleza __aenter__(self):
                 self.fail("Should not be called!")
-            async def __aexit__(self, *exc_details):
+            async eleza __aexit__(self, *exc_details):
                 await self.check_exc(*exc_details)
 
         async with self.exit_stack() as stack:
@@ -399,11 +399,11 @@ class TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
             1/0
 
     @_async_test
-    async def test_async_enter_context(self):
-        class TestCM(object):
-            async def __aenter__(self):
+    async eleza test_async_enter_context(self):
+        kundi TestCM(object):
+            async eleza __aenter__(self):
                 result.append(1)
-            async def __aexit__(self, *exc_details):
+            async eleza __aexit__(self, *exc_details):
                 result.append(3)
 
         result = []
@@ -411,7 +411,7 @@ class TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
 
         async with AsyncExitStack() as stack:
             @stack.push_async_callback  # Registered first => cleaned up last
-            async def _exit():
+            async eleza _exit():
                 result.append(4)
             self.assertIsNotNone(_exit)
             await stack.enter_async_context(cm)
@@ -421,16 +421,16 @@ class TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
         self.assertEqual(result, [1, 2, 3, 4])
 
     @_async_test
-    async def test_async_exit_exception_chaining(self):
+    async eleza test_async_exit_exception_chaining(self):
         # Ensure exception chaining matches the reference behaviour
-        async def raise_exc(exc):
+        async eleza raise_exc(exc):
             raise exc
 
         saved_details = None
-        async def suppress_exc(*exc_details):
+        async eleza suppress_exc(*exc_details):
             nonlocal saved_details
             saved_details = exc_details
-            return True
+            rudisha True
 
         try:
             async with self.exit_stack() as stack:
@@ -453,5 +453,5 @@ class TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
         self.assertIsInstance(inner_exc.__context__, ZeroDivisionError)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     unittest.main()

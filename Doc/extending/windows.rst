@@ -68,19 +68,19 @@ program's memory; instead, the code already uses the DLL's lookup table, and the
 lookup table is modified at runtime to point to the functions and data.
 
 In Unix, there is only one type of library file (:file:`.a`) which contains code
-from several object files (:file:`.o`).  During the link step to create a shared
+kutoka several object files (:file:`.o`).  During the link step to create a shared
 object file (:file:`.so`), the linker may find that it doesn't know where an
 identifier is defined.  The linker will look for it in the object files in the
-libraries; if it finds it, it will include all the code from that object file.
+libraries; if it finds it, it will include all the code kutoka that object file.
 
 In Windows, there are two types of library, a static library and an import
 library (both called :file:`.lib`).  A static library is like a Unix :file:`.a`
-file; it contains code to be included as necessary. An import library is
+file; it contains code to be included as necessary. An agiza library is
 basically used only to reassure the linker that a certain identifier is legal,
 and will be present in the program when the DLL is loaded.  So the linker uses
-the information from the import library to build the lookup table for using
+the information kutoka the agiza library to build the lookup table for using
 identifiers that are not included in the DLL.  When an application or a DLL is
-linked, an import library may be generated, which will need to be used for all
+linked, an agiza library may be generated, which will need to be used for all
 future DLLs that depend on the symbols in the application or DLL.
 
 Suppose you are building two dynamic-load modules, B and C, which should share
@@ -91,9 +91,9 @@ twice, so that B and C would each have their own copy.  In Windows, building
 linker for B and C.  :file:`A.lib` does not contain code; it just contains
 information which will be used at runtime to access A's code.
 
-In Windows, using an import library is sort of like using ``import spam``; it
+In Windows, using an agiza library is sort of like using ``agiza spam``; it
 gives you access to spam's names, but does not create a separate copy.  On Unix,
-linking with a library is more like ``from spam import *``; it does create a
+linking with a library is more like ``kutoka spam agiza *``; it does create a
 separate copy.
 
 
@@ -122,7 +122,7 @@ as :c:func:`PyArg_ParseTuple`), but it does know how to find the Python code
 thanks to :file:`pythonXY.lib`.
 
 The second command created :file:`ni.dll` (and :file:`.obj` and :file:`.lib`),
-which knows how to find the necessary functions from spam, and also from the
+which knows how to find the necessary functions kutoka spam, and also kutoka the
 Python executable.
 
 Not every identifier is exported to the lookup table.  If you want any other
@@ -130,7 +130,7 @@ modules (including Python) to be able to see your identifiers, you have to say
 ``_declspec(dllexport)``, as in ``void _declspec(dllexport) initspam(void)`` or
 ``PyObject _declspec(dllexport) *NiGetSpamData(void)``.
 
-Developer Studio will throw in a lot of import libraries that you do not really
+Developer Studio will throw in a lot of agiza libraries that you do not really
 need, adding about 100K to your executable.  To get rid of them, use the Project
 Settings dialog, Link tab, to specify *ignore default libraries*.  Add the
 correct :file:`msvcrtxx.lib` to the list of libraries.

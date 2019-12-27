@@ -45,8 +45,8 @@ PyAPI_FUNC(void) _Py_DumpTraceback(
    of the current thread. It is not an error if the function is unable to get
    the current Python thread state.
 
-   If interp is NULL, the function tries to get the interpreter state from
-   the current Python thread state, or from
+   If interp is NULL, the function tries to get the interpreter state kutoka
+   the current Python thread state, or kutoka
    _PyGILState_GetInterpreterStateUnsafe() in last resort.
 
    It is better to pass NULL to interp and current_tstate, the function tries

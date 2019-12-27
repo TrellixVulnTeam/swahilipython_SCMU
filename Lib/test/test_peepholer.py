@@ -4,67 +4,67 @@ agiza unittest
 kutoka test.bytecode_helper agiza BytecodeTestCase
 
 
-def count_instr_recursively(f, opname):
+eleza count_instr_recursively(f, opname):
     count = 0
     for instr in dis.get_instructions(f):
-        if instr.opname == opname:
+        ikiwa instr.opname == opname:
             count += 1
-    if hasattr(f, '__code__'):
+    ikiwa hasattr(f, '__code__'):
         f = f.__code__
     for c in f.co_consts:
-        if hasattr(c, 'co_code'):
+        ikiwa hasattr(c, 'co_code'):
             count += count_instr_recursively(c, opname)
-    return count
+    rudisha count
 
 
-class TestTranforms(BytecodeTestCase):
+kundi TestTranforms(BytecodeTestCase):
 
-    def check_jump_targets(self, code):
+    eleza check_jump_targets(self, code):
         instructions = list(dis.get_instructions(code))
         targets = {instr.offset: instr for instr in instructions}
         for instr in instructions:
-            if 'JUMP_' not in instr.opname:
+            ikiwa 'JUMP_' not in instr.opname:
                 continue
             tgt = targets[instr.argval]
             # jump to unconditional jump
-            if tgt.opname in ('JUMP_ABSOLUTE', 'JUMP_FORWARD'):
+            ikiwa tgt.opname in ('JUMP_ABSOLUTE', 'JUMP_FORWARD'):
                 self.fail(f'{instr.opname} at {instr.offset} '
                           f'jumps to {tgt.opname} at {tgt.offset}')
             # unconditional jump to RETURN_VALUE
-            if (instr.opname in ('JUMP_ABSOLUTE', 'JUMP_FORWARD') and
+            ikiwa (instr.opname in ('JUMP_ABSOLUTE', 'JUMP_FORWARD') and
                 tgt.opname == 'RETURN_VALUE'):
                 self.fail(f'{instr.opname} at {instr.offset} '
                           f'jumps to {tgt.opname} at {tgt.offset}')
             # JUMP_IF_*_OR_POP jump to conditional jump
-            if '_OR_POP' in instr.opname and 'JUMP_IF_' in tgt.opname:
+            ikiwa '_OR_POP' in instr.opname and 'JUMP_IF_' in tgt.opname:
                 self.fail(f'{instr.opname} at {instr.offset} '
                           f'jumps to {tgt.opname} at {tgt.offset}')
 
-    def check_lnotab(self, code):
+    eleza check_lnotab(self, code):
         "Check that the lnotab byte offsets are sensible."
         code = dis._get_code_object(code)
         lnotab = list(dis.findlinestarts(code))
-        # Don't bother checking if the line info is sensible, because
+        # Don't bother checking ikiwa the line info is sensible, because
         # most of the line info we can get at comes kutoka lnotab.
         min_bytecode = min(t[0] for t in lnotab)
         max_bytecode = max(t[0] for t in lnotab)
         self.assertGreaterEqual(min_bytecode, 0)
         self.assertLess(max_bytecode, len(code.co_code))
         # This could conceivably test more (and probably should, as there
-        # aren't very many tests of lnotab), if peepholer wasn't scheduled
+        # aren't very many tests of lnotab), ikiwa peepholer wasn't scheduled
         # to be replaced anyway.
 
-    def test_unot(self):
+    eleza test_unot(self):
         # UNARY_NOT POP_JUMP_IF_FALSE  -->  POP_JUMP_IF_TRUE'
-        def unot(x):
-            if not x == 2:
+        eleza unot(x):
+            ikiwa not x == 2:
                 del x
         self.assertNotInBytecode(unot, 'UNARY_NOT')
         self.assertNotInBytecode(unot, 'POP_JUMP_IF_FALSE')
         self.assertInBytecode(unot, 'POP_JUMP_IF_TRUE')
         self.check_lnotab(unot)
 
-    def test_elim_inversion_of_is_or_in(self):
+    eleza test_elim_inversion_of_is_or_in(self):
         for line, cmp_op in (
             ('not a is b', 'is not',),
             ('not a in b', 'not in',),
@@ -75,45 +75,45 @@ class TestTranforms(BytecodeTestCase):
             self.assertInBytecode(code, 'COMPARE_OP', cmp_op)
             self.check_lnotab(code)
 
-    def test_global_as_constant(self):
+    eleza test_global_as_constant(self):
         # LOAD_GLOBAL None/True/False  -->  LOAD_CONST None/True/False
-        def f():
+        eleza f():
             x = None
             x = None
-            return x
-        def g():
+            rudisha x
+        eleza g():
             x = True
-            return x
-        def h():
+            rudisha x
+        eleza h():
             x = False
-            return x
+            rudisha x
 
         for func, elem in ((f, None), (g, True), (h, False)):
             self.assertNotInBytecode(func, 'LOAD_GLOBAL')
             self.assertInBytecode(func, 'LOAD_CONST', elem)
             self.check_lnotab(func)
 
-        def f():
+        eleza f():
             'Adding a docstring made this test fail in Py2.5.0'
-            return None
+            rudisha None
 
         self.assertNotInBytecode(f, 'LOAD_GLOBAL')
         self.assertInBytecode(f, 'LOAD_CONST', None)
         self.check_lnotab(f)
 
-    def test_while_one(self):
+    eleza test_while_one(self):
         # Skip over:  LOAD_CONST trueconst  POP_JUMP_IF_FALSE xx
-        def f():
+        eleza f():
             while 1:
                 pass
-            return list
+            rudisha list
         for elem in ('LOAD_CONST', 'POP_JUMP_IF_FALSE'):
             self.assertNotInBytecode(f, elem)
         for elem in ('JUMP_ABSOLUTE',):
             self.assertInBytecode(f, elem)
         self.check_lnotab(f)
 
-    def test_pack_unpack(self):
+    eleza test_pack_unpack(self):
         for line, elem in (
             ('a, = a,', 'LOAD_CONST',),
             ('a, b = a, b', 'ROT_TWO',),
@@ -125,7 +125,7 @@ class TestTranforms(BytecodeTestCase):
             self.assertNotInBytecode(code, 'UNPACK_TUPLE')
             self.check_lnotab(code)
 
-    def test_folding_of_tuples_of_constants(self):
+    eleza test_folding_of_tuples_of_constants(self):
         for line, elem in (
             ('a = 1,2,3', (1, 2, 3)),
             ('("a","b","c")', ('a', 'b', 'c')),
@@ -141,16 +141,16 @@ class TestTranforms(BytecodeTestCase):
         # Long tuples should be folded too.
         code = compile(repr(tuple(range(10000))),'','single')
         self.assertNotInBytecode(code, 'BUILD_TUPLE')
-        # One LOAD_CONST for the tuple, one for the None return value
+        # One LOAD_CONST for the tuple, one for the None rudisha value
         load_consts = [instr for instr in dis.get_instructions(code)
-                              if instr.opname == 'LOAD_CONST']
+                              ikiwa instr.opname == 'LOAD_CONST']
         self.assertEqual(len(load_consts), 2)
         self.check_lnotab(code)
 
         # Bug 1053819:  Tuple of constants misidentified when presented with:
         # . . . opcode_with_arg 100   unary_opcode   BUILD_TUPLE 1  . . .
         # The following would segfault upon compilation
-        def crater():
+        eleza crater():
             (~[
                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -165,7 +165,7 @@ class TestTranforms(BytecodeTestCase):
             ],)
         self.check_lnotab(crater)
 
-    def test_folding_of_lists_of_constants(self):
+    eleza test_folding_of_lists_of_constants(self):
         for line, elem in (
             # in/not in constants with BUILD_LIST should be folded to a tuple:
             ('a in [1,2,3]', (1, 2, 3)),
@@ -178,7 +178,7 @@ class TestTranforms(BytecodeTestCase):
             self.assertNotInBytecode(code, 'BUILD_LIST')
             self.check_lnotab(code)
 
-    def test_folding_of_sets_of_constants(self):
+    eleza test_folding_of_sets_of_constants(self):
         for line, elem in (
             # in/not in constants with BUILD_SET should be folded to a frozenset:
             ('a in {1,2,3}', frozenset({1, 2, 3})),
@@ -193,11 +193,11 @@ class TestTranforms(BytecodeTestCase):
             self.check_lnotab(code)
 
         # Ensure that the resulting code actually works:
-        def f(a):
-            return a in {1, 2, 3}
+        eleza f(a):
+            rudisha a in {1, 2, 3}
 
-        def g(a):
-            return a not in {1, 2, 3}
+        eleza g(a):
+            rudisha a not in {1, 2, 3}
 
         self.assertTrue(f(3))
         self.assertTrue(not f(4))
@@ -208,7 +208,7 @@ class TestTranforms(BytecodeTestCase):
         self.check_lnotab(g)
 
 
-    def test_folding_of_binops_on_constants(self):
+    eleza test_folding_of_binops_on_constants(self):
         for line, elem in (
             ('a = 2+3+4', 9),                   # chained fold
             ('"@"*4', '@@@@'),                  # check string ops
@@ -252,7 +252,7 @@ class TestTranforms(BytecodeTestCase):
         self.assertNotIn(2**1000, code.co_consts)
         self.check_lnotab(code)
 
-    def test_binary_subscr_on_unicode(self):
+    eleza test_binary_subscr_on_unicode(self):
         # valid code get optimized
         code = compile('"foo"[0]', '', 'single')
         self.assertInBytecode(code, 'LOAD_CONST', 'f')
@@ -275,7 +275,7 @@ class TestTranforms(BytecodeTestCase):
         self.assertInBytecode(code, 'BINARY_SUBSCR')
         self.check_lnotab(code)
 
-    def test_folding_of_unaryops_on_constants(self):
+    eleza test_folding_of_unaryops_on_constants(self):
         for line, elem in (
             ('-0.5', -0.5),                     # unary negative
             ('-0.0', -0.0),                     # -0.0
@@ -291,8 +291,8 @@ class TestTranforms(BytecodeTestCase):
             self.check_lnotab(code)
 
         # Check that -0.0 works after marshaling
-        def negzero():
-            return -(1.0-1.0)
+        eleza negzero():
+            rudisha -(1.0-1.0)
 
         for instr in dis.get_instructions(negzero):
             self.assertFalse(instr.opname.startswith('UNARY_'))
@@ -308,36 +308,36 @@ class TestTranforms(BytecodeTestCase):
             self.assertInBytecode(code, opname)
             self.check_lnotab(code)
 
-    def test_elim_extra_return(self):
+    eleza test_elim_extra_return(self):
         # RETURN LOAD_CONST None RETURN  -->  RETURN
-        def f(x):
-            return x
+        eleza f(x):
+            rudisha x
         self.assertNotInBytecode(f, 'LOAD_CONST', None)
         returns = [instr for instr in dis.get_instructions(f)
-                          if instr.opname == 'RETURN_VALUE']
+                          ikiwa instr.opname == 'RETURN_VALUE']
         self.assertEqual(len(returns), 1)
         self.check_lnotab(f)
 
-    def test_elim_jump_to_return(self):
+    eleza test_elim_jump_to_return(self):
         # JUMP_FORWARD to RETURN -->  RETURN
-        def f(cond, true_value, false_value):
+        eleza f(cond, true_value, false_value):
             # Intentionally use two-line expression to test issue37213.
-            return (true_value if cond
+            rudisha (true_value ikiwa cond
                     else false_value)
         self.check_jump_targets(f)
         self.assertNotInBytecode(f, 'JUMP_FORWARD')
         self.assertNotInBytecode(f, 'JUMP_ABSOLUTE')
         returns = [instr for instr in dis.get_instructions(f)
-                          if instr.opname == 'RETURN_VALUE']
+                          ikiwa instr.opname == 'RETURN_VALUE']
         self.assertEqual(len(returns), 2)
         self.check_lnotab(f)
 
-    def test_elim_jump_to_uncond_jump(self):
+    eleza test_elim_jump_to_uncond_jump(self):
         # POP_JUMP_IF_FALSE to JUMP_FORWARD --> POP_JUMP_IF_FALSE to non-jump
-        def f():
-            if a:
+        eleza f():
+            ikiwa a:
                 # Intentionally use two-line expression to test issue37213.
-                if (c
+                ikiwa (c
                     or d):
                     foo()
             else:
@@ -345,36 +345,36 @@ class TestTranforms(BytecodeTestCase):
         self.check_jump_targets(f)
         self.check_lnotab(f)
 
-    def test_elim_jump_to_uncond_jump2(self):
+    eleza test_elim_jump_to_uncond_jump2(self):
         # POP_JUMP_IF_FALSE to JUMP_ABSOLUTE --> POP_JUMP_IF_FALSE to non-jump
-        def f():
+        eleza f():
             while a:
                 # Intentionally use two-line expression to test issue37213.
-                if (c
+                ikiwa (c
                     or d):
                     a = foo()
         self.check_jump_targets(f)
         self.check_lnotab(f)
 
-    def test_elim_jump_to_uncond_jump3(self):
+    eleza test_elim_jump_to_uncond_jump3(self):
         # Intentionally use two-line expressions to test issue37213.
         # JUMP_IF_FALSE_OR_POP to JUMP_IF_FALSE_OR_POP --> JUMP_IF_FALSE_OR_POP to non-jump
-        def f(a, b, c):
-            return ((a and b)
+        eleza f(a, b, c):
+            rudisha ((a and b)
                     and c)
         self.check_jump_targets(f)
         self.check_lnotab(f)
         self.assertEqual(count_instr_recursively(f, 'JUMP_IF_FALSE_OR_POP'), 2)
         # JUMP_IF_TRUE_OR_POP to JUMP_IF_TRUE_OR_POP --> JUMP_IF_TRUE_OR_POP to non-jump
-        def f(a, b, c):
-            return ((a or b)
+        eleza f(a, b, c):
+            rudisha ((a or b)
                     or c)
         self.check_jump_targets(f)
         self.check_lnotab(f)
         self.assertEqual(count_instr_recursively(f, 'JUMP_IF_TRUE_OR_POP'), 2)
         # JUMP_IF_FALSE_OR_POP to JUMP_IF_TRUE_OR_POP --> POP_JUMP_IF_FALSE to non-jump
-        def f(a, b, c):
-            return ((a and b)
+        eleza f(a, b, c):
+            rudisha ((a and b)
                     or c)
         self.check_jump_targets(f)
         self.check_lnotab(f)
@@ -382,8 +382,8 @@ class TestTranforms(BytecodeTestCase):
         self.assertInBytecode(f, 'JUMP_IF_TRUE_OR_POP')
         self.assertInBytecode(f, 'POP_JUMP_IF_FALSE')
         # JUMP_IF_TRUE_OR_POP to JUMP_IF_FALSE_OR_POP --> POP_JUMP_IF_TRUE to non-jump
-        def f(a, b, c):
-            return ((a or b)
+        eleza f(a, b, c):
+            rudisha ((a or b)
                     and c)
         self.check_jump_targets(f)
         self.check_lnotab(f)
@@ -391,48 +391,48 @@ class TestTranforms(BytecodeTestCase):
         self.assertInBytecode(f, 'JUMP_IF_FALSE_OR_POP')
         self.assertInBytecode(f, 'POP_JUMP_IF_TRUE')
 
-    def test_elim_jump_after_return1(self):
+    eleza test_elim_jump_after_return1(self):
         # Eliminate dead code: jumps immediately after returns can't be reached
-        def f(cond1, cond2):
-            if cond1: return 1
-            if cond2: return 2
+        eleza f(cond1, cond2):
+            ikiwa cond1: rudisha 1
+            ikiwa cond2: rudisha 2
             while 1:
-                return 3
+                rudisha 3
             while 1:
-                if cond1: return 4
-                return 5
-            return 6
+                ikiwa cond1: rudisha 4
+                rudisha 5
+            rudisha 6
         self.assertNotInBytecode(f, 'JUMP_FORWARD')
         self.assertNotInBytecode(f, 'JUMP_ABSOLUTE')
         returns = [instr for instr in dis.get_instructions(f)
-                          if instr.opname == 'RETURN_VALUE']
+                          ikiwa instr.opname == 'RETURN_VALUE']
         self.assertLessEqual(len(returns), 6)
         self.check_lnotab(f)
 
-    def test_elim_jump_after_return2(self):
+    eleza test_elim_jump_after_return2(self):
         # Eliminate dead code: jumps immediately after returns can't be reached
-        def f(cond1, cond2):
+        eleza f(cond1, cond2):
             while 1:
-                if cond1: return 4
+                ikiwa cond1: rudisha 4
         self.assertNotInBytecode(f, 'JUMP_FORWARD')
         # There should be one jump for the while loop.
         returns = [instr for instr in dis.get_instructions(f)
-                          if instr.opname == 'JUMP_ABSOLUTE']
+                          ikiwa instr.opname == 'JUMP_ABSOLUTE']
         self.assertEqual(len(returns), 1)
         returns = [instr for instr in dis.get_instructions(f)
-                          if instr.opname == 'RETURN_VALUE']
+                          ikiwa instr.opname == 'RETURN_VALUE']
         self.assertLessEqual(len(returns), 2)
         self.check_lnotab(f)
 
-    def test_make_function_doesnt_bail(self):
-        def f():
-            def g()->1+1:
+    eleza test_make_function_doesnt_bail(self):
+        eleza f():
+            eleza g()->1+1:
                 pass
-            return g
+            rudisha g
         self.assertNotInBytecode(f, 'BINARY_ADD')
         self.check_lnotab(f)
 
-    def test_constant_folding(self):
+    eleza test_constant_folding(self):
         # Issue #11244: aggressive constant folding.
         exprs = [
             '3 * -5',
@@ -453,61 +453,61 @@ class TestTranforms(BytecodeTestCase):
                 self.assertFalse(instr.opname.startswith('BUILD_'))
             self.check_lnotab(code)
 
-    def test_in_literal_list(self):
-        def containtest():
-            return x in [a, b]
+    eleza test_in_literal_list(self):
+        eleza containtest():
+            rudisha x in [a, b]
         self.assertEqual(count_instr_recursively(containtest, 'BUILD_LIST'), 0)
         self.check_lnotab(containtest)
 
-    def test_iterate_literal_list(self):
-        def forloop():
+    eleza test_iterate_literal_list(self):
+        eleza forloop():
             for x in [a, b]:
                 pass
         self.assertEqual(count_instr_recursively(forloop, 'BUILD_LIST'), 0)
         self.check_lnotab(forloop)
 
-    def test_condition_with_binop_with_bools(self):
-        def f():
-            if True or False:
-                return 1
-            return 0
+    eleza test_condition_with_binop_with_bools(self):
+        eleza f():
+            ikiwa True or False:
+                rudisha 1
+            rudisha 0
         self.assertEqual(f(), 1)
         self.check_lnotab(f)
 
-    def test_if_with_if_expression(self):  # XXX does this belong in 3.8?
+    eleza test_if_with_if_expression(self):  # XXX does this belong in 3.8?
         # Check bpo-37289
-        def f(x):
-            if (True if x else False):
-                return True
-            return False
+        eleza f(x):
+            ikiwa (True ikiwa x else False):
+                rudisha True
+            rudisha False
         self.assertTrue(f(True))
         self.check_lnotab(f)
 
-    def test_trailing_nops(self):
+    eleza test_trailing_nops(self):
         # Check the lnotab of a function that even after trivial
         # optimization has trailing nops, which the lnotab adjustment has to
         # handle properly (bpo-38115).
-        def f(x):
+        eleza f(x):
             while 1:
-                return 3
+                rudisha 3
             while 1:
-                return 5
-            return 6
+                rudisha 5
+            rudisha 6
         self.check_lnotab(f)
 
 
-class TestBuglets(unittest.TestCase):
+kundi TestBuglets(unittest.TestCase):
 
-    def test_bug_11510(self):
+    eleza test_bug_11510(self):
         # folded constant set optimization was commingled with the tuple
-        # unpacking optimization which would fail if the set had duplicate
+        # unpacking optimization which would fail ikiwa the set had duplicate
         # elements so that the set length was unexpected
-        def f():
+        eleza f():
             x, y = {1, 1}
-            return x, y
+            rudisha x, y
         with self.assertRaises(ValueError):
             f()
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     unittest.main()

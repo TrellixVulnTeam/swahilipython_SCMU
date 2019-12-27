@@ -2,7 +2,7 @@
 ==============================================================
 
 .. module:: importlib
-   :synopsis: The implementation of the import machinery.
+   :synopsis: The implementation of the agiza machinery.
 
 .. moduleauthor:: Brett Cannon <brett@python.org>
 .. sectionauthor:: Brett Cannon <brett@python.org>
@@ -25,7 +25,7 @@ comprehend than one implemented in a programming language other than Python.
 
 Two, the components to implement :keyword:`import` are exposed in this
 package, making it easier for users to create their own custom objects (known
-generically as an :term:`importer`) to participate in the import process.
+generically as an :term:`importer`) to participate in the agiza process.
 
 .. seealso::
 
@@ -80,7 +80,7 @@ generically as an :term:`importer`) to participate in the import process.
 Functions
 ---------
 
-.. function:: __import__(name, globals=None, locals=None, fromlist=(), level=0)
+.. function:: __import__(name, globals=None, locals=None, kutokalist=(), level=0)
 
     An implementation of the built-in :func:`__import__` function.
 
@@ -91,7 +91,7 @@ Functions
 .. function:: import_module(name, package=None)
 
     Import a module. The *name* argument specifies what module to
-    import in absolute or relative terms
+    agiza in absolute or relative terms
     (e.g. either ``pkg.mod`` or ``..mod``). If the name is
     specified in relative terms, then the *package* argument must be set to
     the name of the package which is to act as the anchor for resolving the
@@ -100,7 +100,7 @@ Functions
 
     The :func:`import_module` function acts as a simplifying wrapper around
     :func:`importlib.__import__`. This means all semantics of the function are
-    derived from :func:`importlib.__import__`. The most important difference
+    derived kutoka :func:`importlib.__import__`. The most important difference
     between these two functions is that :func:`import_module` returns the
     specified package or module (e.g. ``pkg.mod``), while :func:`__import__`
     returns the top-level package or module (e.g. ``pkg``).
@@ -108,7 +108,7 @@ Functions
     If you are dynamically importing a module that was created since the
     interpreter began execution (e.g., created a Python source file), you may
     need to call :func:`invalidate_caches` in order for the new module to be
-    noticed by the import system.
+    noticed by the agiza system.
 
     .. versionchanged:: 3.3
        Parent packages are automatically imported.
@@ -122,8 +122,8 @@ Functions
    is done. ``None`` is returned if no loader is found.
 
    A dotted name does not have its parents implicitly imported as that requires
-   loading them and that may not be desired. To properly import a submodule you
-   will need to import all parent packages of the submodule and use the correct
+   loading them and that may not be desired. To properly agiza a submodule you
+   will need to agiza all parent packages of the submodule and use the correct
    argument to *path*.
 
    .. versionadded:: 3.3
@@ -194,15 +194,15 @@ Functions
    designed to be initialized more than once, and may fail in arbitrary ways
    when reloaded.
 
-   If a module imports objects from another module using :keyword:`from` ...
+   If a module imports objects kutoka another module using :keyword:`kutoka` ...
    :keyword:`import` ..., calling :func:`reload` for the other module does not
-   redefine the objects imported from it --- one way around this is to
-   re-execute the :keyword:`!from` statement, another is to use :keyword:`!import`
+   redefine the objects imported kutoka it --- one way around this is to
+   re-execute the :keyword:`!kutoka` statement, another is to use :keyword:`!import`
    and qualified names (*module.name*) instead.
 
    If a module instantiates instances of a class, reloading the module that
-   defines the class does not affect the method definitions of the instances ---
-   they continue to use the old class definition.  The same is true for derived
+   defines the kundi does not affect the method definitions of the instances ---
+   they continue to use the old kundi definition.  The same is true for derived
    classes.
 
    .. versionadded:: 3.4
@@ -242,7 +242,7 @@ ABC hierarchy::
 
 .. class:: Finder
 
-   An abstract base class representing a :term:`finder`.
+   An abstract base kundi representing a :term:`finder`.
 
    .. deprecated:: 3.3
       Use :class:`MetaPathFinder` or :class:`PathEntryFinder` instead.
@@ -251,7 +251,7 @@ ABC hierarchy::
 
       An abstract method for finding a :term:`loader` for the specified
       module.  Originally specified in :pep:`302`, this method was meant
-      for use in :data:`sys.meta_path` and in the path-based import subsystem.
+      for use in :data:`sys.meta_path` and in the path-based agiza subsystem.
 
       .. versionchanged:: 3.4
          Returns ``None`` when called instead of raising
@@ -260,8 +260,8 @@ ABC hierarchy::
 
 .. class:: MetaPathFinder
 
-   An abstract base class representing a :term:`meta path finder`. For
-   compatibility, this is a subclass of :class:`Finder`.
+   An abstract base kundi representing a :term:`meta path finder`. For
+   compatibility, this is a subkundi of :class:`Finder`.
 
    .. versionadded:: 3.3
 
@@ -270,11 +270,11 @@ ABC hierarchy::
       An abstract method for finding a :term:`spec <module spec>` for
       the specified module.  If this is a top-level import, *path* will
       be ``None``.  Otherwise, this is a search for a subpackage or
-      module and *path* will be the value of :attr:`__path__` from the
+      module and *path* will be the value of :attr:`__path__` kutoka the
       parent package. If a spec cannot be found, ``None`` is returned.
       When passed in, ``target`` is a module object that the finder may
       use to make a more educated guess about what spec to return.
-      :func:`importlib.util.spec_from_loader` may be useful for implementing
+      :func:`importlib.util.spec_kutoka_loader` may be useful for implementing
       concrete ``MetaPathFinders``.
 
       .. versionadded:: 3.4
@@ -284,7 +284,7 @@ ABC hierarchy::
       A legacy method for finding a :term:`loader` for the specified
       module.  If this is a top-level import, *path* will be ``None``.
       Otherwise, this is a search for a subpackage or module and *path*
-      will be the value of :attr:`__path__` from the parent
+      will be the value of :attr:`__path__` kutoka the parent
       package. If a loader cannot be found, ``None`` is returned.
 
       If :meth:`find_spec` is defined, backwards-compatible functionality is
@@ -310,10 +310,10 @@ ABC hierarchy::
 
 .. class:: PathEntryFinder
 
-   An abstract base class representing a :term:`path entry finder`.  Though
+   An abstract base kundi representing a :term:`path entry finder`.  Though
    it bears some similarities to :class:`MetaPathFinder`, ``PathEntryFinder``
-   is meant for use only within the path-based import subsystem provided
-   by :class:`PathFinder`. This ABC is a subclass of :class:`Finder` for
+   is meant for use only within the path-based agiza subsystem provided
+   by :class:`PathFinder`. This ABC is a subkundi of :class:`Finder` for
    compatibility reasons only.
 
    .. versionadded:: 3.3
@@ -325,7 +325,7 @@ ABC hierarchy::
       within the :term:`path entry` to which it is assigned.  If a spec
       cannot be found, ``None`` is returned.  When passed in, ``target``
       is a module object that the finder may use to make a more educated
-      guess about what spec to return. :func:`importlib.util.spec_from_loader`
+      guess about what spec to return. :func:`importlib.util.spec_kutoka_loader`
       may be useful for implementing concrete ``PathEntryFinders``.
 
       .. versionadded:: 3.4
@@ -369,7 +369,7 @@ ABC hierarchy::
 
 .. class:: Loader
 
-    An abstract base class for a :term:`loader`.
+    An abstract base kundi for a :term:`loader`.
     See :pep:`302` for the exact definition for a loader.
 
     Loaders that wish to support resource reading should implement a
@@ -413,8 +413,8 @@ ABC hierarchy::
         module should be used and reloaded.
         Otherwise the loader should create a new module and insert it into
         :data:`sys.modules` before any loading begins, to prevent recursion
-        from the import. If the loader inserted a module and the load fails, it
-        must be removed by the loader from :data:`sys.modules`; modules already
+        kutoka the import. If the loader inserted a module and the load fails, it
+        must be removed by the loader kutoka :data:`sys.modules`; modules already
         in :data:`sys.modules` before the loader began execution should be left
         alone (see :func:`importlib.util.module_for_loader`).
 
@@ -459,7 +459,7 @@ ABC hierarchy::
         .. deprecated:: 3.4
            The recommended API for loading a module is :meth:`exec_module`
            (and :meth:`create_module`).  Loaders should implement
-           it instead of load_module().  The import machinery takes care of
+           it instead of load_module().  The agiza machinery takes care of
            all the other responsibilities of load_module() when exec_module()
            is implemented.
 
@@ -475,7 +475,7 @@ ABC hierarchy::
            Made optional instead of an abstractmethod.
 
         .. deprecated:: 3.4
-           The import machinery now takes care of this automatically.
+           The agiza machinery now takes care of this automatically.
 
 
 .. class:: ResourceReader
@@ -486,7 +486,7 @@ ABC hierarchy::
     From the perspective of this ABC, a *resource* is a binary
     artifact that is shipped within a package. Typically this is
     something like a data file that lives next to the ``__init__.py``
-    file of the package. The purpose of this class is to help abstract
+    file of the package. The purpose of this kundi is to help abstract
     out the accessing of such data files so that it does not matter if
     the package and its data file(s) are stored in a e.g. zip file
     versus on the file system.
@@ -498,7 +498,7 @@ ABC hierarchy::
     because the location of the package the reader is for, acts as the
     "directory". Hence the metaphor for directories and file
     names is packages and resources, respectively. This is also why
-    instances of this class are expected to directly correlate to
+    instances of this kundi are expected to directly correlate to
     a specific package (instead of potentially representing multiple
     packages or a module).
 
@@ -552,8 +552,8 @@ ABC hierarchy::
 
 .. class:: ResourceLoader
 
-    An abstract base class for a :term:`loader` which implements the optional
-    :pep:`302` protocol for loading arbitrary resources from the storage
+    An abstract base kundi for a :term:`loader` which implements the optional
+    :pep:`302` protocol for loading arbitrary resources kutoka the storage
     back-end.
 
     .. deprecated:: 3.7
@@ -568,7 +568,7 @@ ABC hierarchy::
         can implement this abstract method to give direct access
         to the data stored. :exc:`OSError` is to be raised if the *path* cannot
         be found. The *path* is expected to be constructed using a module's
-        :attr:`__file__` attribute or an item from a package's :attr:`__path__`.
+        :attr:`__file__` attribute or an item kutoka a package's :attr:`__path__`.
 
         .. versionchanged:: 3.4
            Raises :exc:`OSError` instead of :exc:`NotImplementedError`.
@@ -576,7 +576,7 @@ ABC hierarchy::
 
 .. class:: InspectLoader
 
-    An abstract base class for a :term:`loader` which implements the optional
+    An abstract base kundi for a :term:`loader` which implements the optional
     :pep:`302` protocol for loaders that inspect modules.
 
     .. method:: get_code(fullname)
@@ -618,11 +618,11 @@ ABC hierarchy::
 
     .. staticmethod:: source_to_code(data, path='<string>')
 
-        Create a code object from Python source.
+        Create a code object kutoka Python source.
 
         The *data* argument can be whatever the :func:`compile` function
         supports (i.e. string or bytes). The *path* argument should be
-        the "path" to where the source code originated from, which can be an
+        the "path" to where the source code originated kutoka, which can be an
         abstract concept (e.g. location in a zip file).
 
         With the subsequent code object one can execute it in a module by
@@ -649,7 +649,7 @@ ABC hierarchy::
 
 .. class:: ExecutionLoader
 
-    An abstract base class which inherits from :class:`InspectLoader` that,
+    An abstract base kundi which inherits kutoka :class:`InspectLoader` that,
     when implemented, helps a module to be executed as a script. The ABC
     represents an optional :pep:`302` protocol.
 
@@ -669,7 +669,7 @@ ABC hierarchy::
 
 .. class:: FileLoader(fullname, path)
 
-   An abstract base class which inherits from :class:`ResourceLoader` and
+   An abstract base kundi which inherits kutoka :class:`ResourceLoader` and
    :class:`ExecutionLoader`, providing concrete implementations of
    :meth:`ResourceLoader.get_data` and :meth:`ExecutionLoader.get_filename`.
 
@@ -699,13 +699,13 @@ ABC hierarchy::
 
    .. abstractmethod:: get_data(path)
 
-      Reads *path* as a binary file and returns the bytes from it.
+      Reads *path* as a binary file and returns the bytes kutoka it.
 
 
 .. class:: SourceLoader
 
-    An abstract base class for implementing source (and optionally bytecode)
-    file loading. The class inherits from both :class:`ResourceLoader` and
+    An abstract base kundi for implementing source (and optionally bytecode)
+    file loading. The kundi inherits kutoka both :class:`ResourceLoader` and
     :class:`ExecutionLoader`, requiring the implementation of:
 
     * :meth:`ResourceLoader.get_data`
@@ -713,7 +713,7 @@ ABC hierarchy::
           Should only return the path to the source file; sourceless
           loading is not supported.
 
-    The abstract methods defined by this class are to add optional bytecode
+    The abstract methods defined by this kundi are to add optional bytecode
     file support. Not implementing these optional methods (or causing them to
     raise :exc:`NotImplementedError`) causes the loader to
     only work with source code. Implementing the methods allows the loader to
@@ -807,8 +807,8 @@ ABC hierarchy::
 
 .. versionadded:: 3.7
 
-This module leverages Python's import system to provide access to *resources*
-within *packages*.  If you can import a package, you can access resources
+This module leverages Python's agiza system to provide access to *resources*
+within *packages*.  If you can agiza a package, you can access resources
 within that package.  Resources can be opened or read, in either binary or
 text mode.
 
@@ -829,7 +829,7 @@ not** have to exist as physical files and directories on the file system.
    The standalone backport of this module provides more information
    on `using importlib.resources
    <http://importlib-resources.readthedocs.io/en/latest/using.html>`_ and
-   `migrating from pkg_resources to importlib.resources
+   `migrating kutoka pkg_resources to importlib.resources
    <http://importlib-resources.readthedocs.io/en/latest/migration.html>`_.
 
 Loaders that wish to support resource reading should implement a
@@ -911,7 +911,7 @@ The following functions are available.
     The context manager provides a :class:`pathlib.Path` object.
 
     Exiting the context manager cleans up any temporary file created when the
-    resource needs to be extracted from e.g. a zip file.
+    resource needs to be extracted kutoka e.g. a zip file.
 
     *package* is either a name or a module object which conforms to the
     ``Package`` requirements.  *resource* is the name of the resource to open
@@ -997,7 +997,7 @@ find and load modules.
 .. function:: all_suffixes()
 
    Returns a combined list of strings representing all file suffixes for
-   modules recognized by the standard import machinery. This is a
+   modules recognized by the standard agiza machinery. This is a
    helper for code which simply needs to know if a filesystem path
    potentially refers to a module without needing any details on the kind
    of module (for example, :func:`inspect.getmodulename`).
@@ -1008,11 +1008,11 @@ find and load modules.
 .. class:: BuiltinImporter
 
     An :term:`importer` for built-in modules. All known built-in modules are
-    listed in :data:`sys.builtin_module_names`. This class implements the
+    listed in :data:`sys.builtin_module_names`. This kundi implements the
     :class:`importlib.abc.MetaPathFinder` and
     :class:`importlib.abc.InspectLoader` ABCs.
 
-    Only class methods are defined by this class to alleviate the need for
+    Only kundi methods are defined by this kundi to alleviate the need for
     instantiation.
 
     .. versionchanged:: 3.5
@@ -1022,11 +1022,11 @@ find and load modules.
 
 .. class:: FrozenImporter
 
-    An :term:`importer` for frozen modules. This class implements the
+    An :term:`importer` for frozen modules. This kundi implements the
     :class:`importlib.abc.MetaPathFinder` and
     :class:`importlib.abc.InspectLoader` ABCs.
 
-    Only class methods are defined by this class to alleviate the need for
+    Only kundi methods are defined by this kundi to alleviate the need for
     instantiation.
 
 
@@ -1035,7 +1035,7 @@ find and load modules.
    :term:`Finder` for modules declared in the Windows registry.  This class
    implements the :class:`importlib.abc.MetaPathFinder` ABC.
 
-   Only class methods are defined by this class to alleviate the need for
+   Only kundi methods are defined by this kundi to alleviate the need for
    instantiation.
 
    .. versionadded:: 3.3
@@ -1048,9 +1048,9 @@ find and load modules.
 .. class:: PathFinder
 
    A :term:`Finder` for :data:`sys.path` and package ``__path__`` attributes.
-   This class implements the :class:`importlib.abc.MetaPathFinder` ABC.
+   This kundi implements the :class:`importlib.abc.MetaPathFinder` ABC.
 
-   Only class methods are defined by this class to alleviate the need for
+   Only kundi methods are defined by this kundi to alleviate the need for
    instantiation.
 
    .. classmethod:: find_spec(fullname, path=None, target=None)
@@ -1099,7 +1099,7 @@ find and load modules.
 .. class:: FileFinder(path, \*loader_details)
 
    A concrete implementation of :class:`importlib.abc.PathEntryFinder` which
-   caches results from the file system.
+   caches results kutoka the file system.
 
    The *path* argument is the directory for which the finder is in charge of
    searching.
@@ -1116,7 +1116,7 @@ find and load modules.
    searching for a module, creating a new file, and then searching for the
    module the new file represents. If the operations happen fast enough to fit
    within the granularity of stat calls, then the module search will fail. To
-   prevent this from happening, when you create a module dynamically, make sure
+   prevent this kutoka happening, when you create a module dynamically, make sure
    to call :func:`importlib.invalidate_caches`.
 
    .. versionadded:: 3.3
@@ -1141,7 +1141,7 @@ find and load modules.
 
    .. classmethod:: path_hook(\*loader_details)
 
-      A class method which returns a closure for use on :attr:`sys.path_hooks`.
+      A kundi method which returns a closure for use on :attr:`sys.path_hooks`.
       An instance of :class:`FileFinder` is returned by the closure using the
       path argument given to the closure directly and *loader_details*
       indirectly.
@@ -1191,10 +1191,10 @@ find and load modules.
 .. class:: SourcelessFileLoader(fullname, path)
 
    A concrete implementation of :class:`importlib.abc.FileLoader` which can
-   import bytecode files (i.e. no source code files exist).
+   agiza bytecode files (i.e. no source code files exist).
 
    Please note that direct use of bytecode files (and thus not source code
-   files) inhibits your modules from being usable by all Python
+   files) inhibits your modules kutoka being usable by all Python
    implementations or new versions of Python which change the bytecode
    format.
 
@@ -1214,7 +1214,7 @@ find and load modules.
 
    .. method:: get_code(fullname)
 
-      Returns the code object for :attr:`name` created from :attr:`path`.
+      Returns the code object for :attr:`name` created kutoka :attr:`path`.
 
    .. method:: get_source(fullname)
 
@@ -1251,7 +1251,7 @@ find and load modules.
 
    .. method:: create_module(spec)
 
-      Creates the module object from the given specification in accordance
+      Creates the module object kutoka the given specification in accordance
       with :pep:`489`.
 
       .. versionadded:: 3.5
@@ -1313,8 +1313,8 @@ find and load modules.
 
    (``__file__``)
 
-   Name of the place from which the module is loaded, e.g. "builtin" for
-   built-in modules and the filename for modules loaded from source.
+   Name of the place kutoka which the module is loaded, e.g. "builtin" for
+   built-in modules and the filename for modules loaded kutoka source.
    Normally "origin" should be set, but it may be ``None`` (the default)
    which indicates it is unspecified (e.g. for namespace packages).
 
@@ -1369,12 +1369,12 @@ an :term:`importer`.
 
    .. versionadded:: 3.4
 
-.. function:: cache_from_source(path, debug_override=None, *, optimization=None)
+.. function:: cache_kutoka_source(path, debug_override=None, *, optimization=None)
 
    Return the :pep:`3147`/:pep:`488` path to the byte-compiled file associated
    with the source *path*.  For example, if *path* is ``/foo/bar/baz.py`` the return
    value would be ``/foo/bar/__pycache__/baz.cpython-32.pyc`` for Python 3.2.
-   The ``cpython-32`` string comes from the current magic tag (see
+   The ``cpython-32`` string comes kutoka the current magic tag (see
    :func:`get_tag`; if :attr:`sys.implementation.cache_tag` is not defined then
    :exc:`NotImplementedError` will be raised).
 
@@ -1404,7 +1404,7 @@ an :term:`importer`.
       Accepts a :term:`path-like object`.
 
 
-.. function:: source_from_cache(path)
+.. function:: source_kutoka_cache(path)
 
    Given the *path* to a :pep:`3147` file name, return the associated source code
    file path.  For example, if *path* is
@@ -1439,7 +1439,7 @@ an :term:`importer`.
    :exc:`ValueError` is raised if **name** is a relative module name but
    package is a false value (e.g. ``None`` or the empty string).
    :exc:`ValueError` is also raised a relative name would escape its containing
-   package (e.g. requesting ``..bacon`` from within the ``spam`` package).
+   package (e.g. requesting ``..bacon`` kutoka within the ``spam`` package).
 
    .. versionadded:: 3.3
 
@@ -1464,7 +1464,7 @@ an :term:`importer`.
       **package** is in fact not a package (i.e. lacks a :attr:`__path__`
       attribute).
 
-.. function:: module_from_spec(spec)
+.. function:: module_kutoka_spec(spec)
 
    Create a new module based on **spec** and
    :meth:`spec.loader.create_module <importlib.abc.Loader.create_module>`.
@@ -1494,14 +1494,14 @@ an :term:`importer`.
     The decorated method will take in the **name** of the module to be loaded
     as expected for a :term:`loader`. If the module is not found in
     :data:`sys.modules` then a new one is constructed. Regardless of where the
-    module came from, :attr:`__loader__` set to **self** and :attr:`__package__`
+    module came kutoka, :attr:`__loader__` set to **self** and :attr:`__package__`
     is set based on what :meth:`importlib.abc.InspectLoader.is_package` returns
     (if available). These attributes are set unconditionally to support
     reloading.
 
     If an exception is raised by the decorated method and a module was added to
     :data:`sys.modules`, then the module will be removed to prevent a partially
-    initialized module from being in left in :data:`sys.modules`. If the module
+    initialized module kutoka being in left in :data:`sys.modules`. If the module
     was already in :data:`sys.modules` then it is left alone.
 
     .. versionchanged:: 3.3
@@ -1513,7 +1513,7 @@ an :term:`importer`.
        unconditionally to support reloading.
 
     .. deprecated:: 3.4
-       The import machinery now directly performs all the functionality
+       The agiza machinery now directly performs all the functionality
        provided by this function.
 
 .. decorator:: set_loader
@@ -1530,7 +1530,7 @@ an :term:`importer`.
       exist.
 
    .. deprecated:: 3.4
-      The import machinery takes care of this automatically.
+      The agiza machinery takes care of this automatically.
 
 .. decorator:: set_package
 
@@ -1539,9 +1539,9 @@ an :term:`importer`.
    is set and has a value other than ``None`` it will not be changed.
 
    .. deprecated:: 3.4
-      The import machinery takes care of this automatically.
+      The agiza machinery takes care of this automatically.
 
-.. function:: spec_from_loader(name, loader, *, origin=None, is_package=None)
+.. function:: spec_kutoka_loader(name, loader, *, origin=None, is_package=None)
 
    A factory function for creating a :class:`ModuleSpec` instance based
    on a loader.  The parameters have the same meaning as they do for
@@ -1551,7 +1551,7 @@ an :term:`importer`.
 
    .. versionadded:: 3.4
 
-.. function:: spec_from_file_location(name, location, *, loader=None, submodule_search_locations=None)
+.. function:: spec_kutoka_file_location(name, location, *, loader=None, submodule_search_locations=None)
 
    A factory function for creating a :class:`ModuleSpec` instance based
    on the path to a file.  Missing information will be filled in on the
@@ -1573,10 +1573,10 @@ an :term:`importer`.
 
 .. class:: LazyLoader(loader)
 
-   A class which postpones the execution of the loader of a module until the
+   A kundi which postpones the execution of the loader of a module until the
    module has an attribute accessed.
 
-   This class **only** works with loaders that define
+   This kundi **only** works with loaders that define
    :meth:`~importlib.abc.Loader.exec_module` as control over what module type
    is used for the module is required. For those same reasons, the loader's
    :meth:`~importlib.abc.Loader.create_module` method must return ``None`` or a
@@ -1587,9 +1587,9 @@ an :term:`importer`.
    :exc:`ValueError` is raised if such a substitution is detected.
 
    .. note::
-      For projects where startup time is critical, this class allows for
+      For projects where startup time is critical, this kundi allows for
       potentially minimizing the cost of loading a module if it is never used.
-      For projects where startup time is not essential then use of this class is
+      For projects where startup time is not essential then use of this kundi is
       **heavily** discouraged due to error messages created during loading being
       postponed and thus occurring out of context.
 
@@ -1620,10 +1620,10 @@ Examples
 Importing programmatically
 ''''''''''''''''''''''''''
 
-To programmatically import a module, use :func:`importlib.import_module`.
+To programmatically agiza a module, use :func:`importlib.import_module`.
 ::
 
-  import importlib
+  agiza importlib
 
   itertools = importlib.import_module('itertools')
 
@@ -1635,8 +1635,8 @@ If you need to find out if a module can be imported without actually doing the
 import, then you should use :func:`importlib.util.find_spec`.
 ::
 
-  import importlib.util
-  import sys
+  agiza importlib.util
+  agiza sys
 
   # For illustrative purposes.
   name = 'itertools'
@@ -1644,8 +1644,8 @@ import, then you should use :func:`importlib.util.find_spec`.
   if name in sys.modules:
       print(f"{name!r} already in sys.modules")
   elif (spec := importlib.util.find_spec(name)) is not None:
-      # If you chose to perform the actual import ...
-      module = importlib.util.module_from_spec(spec)
+      # If you chose to perform the actual agiza ...
+      module = importlib.util.module_kutoka_spec(spec)
       sys.modules[name] = module
       spec.loader.exec_module(module)
       print(f"{name!r} has been imported")
@@ -1656,19 +1656,19 @@ import, then you should use :func:`importlib.util.find_spec`.
 Importing a source file directly
 ''''''''''''''''''''''''''''''''
 
-To import a Python source file directly, use the following recipe
+To agiza a Python source file directly, use the following recipe
 (Python 3.5 and newer only)::
 
-  import importlib.util
-  import sys
+  agiza importlib.util
+  agiza sys
 
   # For illustrative purposes.
-  import tokenize
+  agiza tokenize
   file_path = tokenize.__file__
   module_name = tokenize.__name__
 
-  spec = importlib.util.spec_from_file_location(module_name, file_path)
-  module = importlib.util.module_from_spec(spec)
+  spec = importlib.util.spec_kutoka_file_location(module_name, file_path)
+  module = importlib.util.module_kutoka_spec(spec)
   sys.modules[module_name] = module
   spec.loader.exec_module(module)
 
@@ -1679,17 +1679,17 @@ Setting up an importer
 
 For deep customizations of import, you typically want to implement an
 :term:`importer`. This means managing both the :term:`finder` and :term:`loader`
-side of things. For finders there are two flavours to choose from depending on
+side of things. For finders there are two flavours to choose kutoka depending on
 your needs: a :term:`meta path finder` or a :term:`path entry finder`. The
 former is what you would put on :attr:`sys.meta_path` while the latter is what
 you create using a :term:`path entry hook` on :attr:`sys.path_hooks` which works
 with :attr:`sys.path` entries to potentially create a finder. This example will
-show you how to register your own importers so that import will use them (for
+show you how to register your own importers so that agiza will use them (for
 creating an importer for yourself, read the documentation for the appropriate
 classes defined within this package)::
 
-  import importlib.machinery
-  import sys
+  agiza importlib.machinery
+  agiza sys
 
   # For illustrative purposes only.
   SpamMetaPathFinder = importlib.machinery.PathFinder
@@ -1712,15 +1712,15 @@ Approximating :func:`importlib.import_module`
 '''''''''''''''''''''''''''''''''''''''''''''
 
 Import itself is implemented in Python code, making it possible to
-expose most of the import machinery through importlib. The following
+expose most of the agiza machinery through importlib. The following
 helps illustrate the various APIs that importlib exposes by providing an
 approximate implementation of
 :func:`importlib.import_module` (Python 3.4 and newer for the importlib usage,
 Python 3.6 and newer for other parts of the code).
 ::
 
-  import importlib.util
-  import sys
+  agiza importlib.util
+  agiza sys
 
   def import_module(name, package=None):
       """An approximate implementation of import."""
@@ -1742,7 +1742,7 @@ Python 3.6 and newer for other parts of the code).
       else:
           msg = f'No module named {absolute_name!r}'
           raise ModuleNotFoundError(msg, name=absolute_name)
-      module = importlib.util.module_from_spec(spec)
+      module = importlib.util.module_kutoka_spec(spec)
       sys.modules[absolute_name] = module
       spec.loader.exec_module(module)
       if path is not None:

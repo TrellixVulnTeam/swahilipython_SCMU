@@ -83,8 +83,8 @@ def _do_cmp(f1, f2):
 
 # Directory comparison class.
 #
-class dircmp:
-    """A class that manages the comparison of 2 directories.
+kundi dircmp:
+    """A kundi that manages the comparison of 2 directories.
 
     dircmp(a, b, ignore=None, hide=None)
       A and B are directories.
@@ -170,9 +170,9 @@ class dircmp:
                 b_type = stat.S_IFMT(b_stat.st_mode)
                 if a_type != b_type:
                     self.common_funny.append(x)
-                elif stat.S_ISDIR(a_type):
+                lasivyo stat.S_ISDIR(a_type):
                     self.common_dirs.append(x)
-                elif stat.S_ISREG(a_type):
+                lasivyo stat.S_ISREG(a_type):
                     self.common_files.append(x)
                 else:
                     self.common_funny.append(x)

@@ -1,4 +1,4 @@
-:mod:`fileinput` --- Iterate over lines from multiple input streams
+:mod:`fileinput` --- Iterate over lines kutoka multiple input streams
 ===================================================================
 
 .. module:: fileinput
@@ -11,13 +11,13 @@
 
 --------------
 
-This module implements a helper class and functions to quickly write a
+This module implements a helper kundi and functions to quickly write a
 loop over standard input or a list of files. If you just want to read or
 write one file see :func:`open`.
 
 The typical use is::
 
-   import fileinput
+   agiza fileinput
    for line in fileinput.input():
        process(line)
 
@@ -115,14 +115,14 @@ if there is no active state, :exc:`RuntimeError` is raised.
 
 .. function:: isstdin()
 
-   Returns true if the last line was read from ``sys.stdin``, otherwise returns
+   Returns true if the last line was read kutoka ``sys.stdin``, otherwise returns
    false.
 
 
 .. function:: nextfile()
 
-   Close the current file so that the next iteration will read the first line from
-   the next file (if any); lines not read from the file will not count towards the
+   Close the current file so that the next iteration will read the first line kutoka
+   the next file (if any); lines not read kutoka the file will not count towards the
    cumulative line count.  The filename is not changed until after the first line
    of the next file has been read.  Before the first line has been read, this
    function has no effect; it cannot be used to skip the first file.  After the
@@ -133,7 +133,7 @@ if there is no active state, :exc:`RuntimeError` is raised.
 
    Close the sequence.
 
-The class which implements the sequence behavior provided by the module is
+The kundi which implements the sequence behavior provided by the module is
 available for subclassing as well:
 
 
